@@ -45,16 +45,16 @@ uint8 gRightTunnelCount;
 uint8 gVerticalTunnelHeight;
 #endif
 
-static void blank_tiles_paint(int x, int y);
-static void sub_68B3FB(int x, int y);
+static void blank_tiles_paint(sint32 x, sint32 y);
+static void sub_68B3FB(sint32 x, sint32 y);
 
-const int SEGMENTS_ALL = SEGMENT_B4 | SEGMENT_B8 | SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4;
+const sint32 SEGMENTS_ALL = SEGMENT_B4 | SEGMENT_B8 | SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4;
 
 /**
  *
  *  rct2: 0x0068B35F
  */
-void map_element_paint_setup(int x, int y)
+void map_element_paint_setup(sint32 x, sint32 y)
 {
 	if (
 		x < gMapSizeUnits &&
@@ -77,7 +77,7 @@ void map_element_paint_setup(int x, int y)
  *
  *  rct2: 0x0068B2B7
  */
-void sub_68B2B7(int x, int y)
+void sub_68B2B7(sint32 x, sint32 y)
 {
 	if (
 		x < gMapSizeUnits &&
@@ -100,11 +100,11 @@ void sub_68B2B7(int x, int y)
  *
  *  rct2: 0x0068B60E
  */
-static void blank_tiles_paint(int x, int y)
+static void blank_tiles_paint(sint32 x, sint32 y)
 {
 	rct_drawpixelinfo *dpi = unk_140E9A8;
 
-	int dx = 0;
+	sint32 dx = 0;
 	switch (get_current_rotation()) {
 	case 0:
 		dx = x + y;
@@ -125,7 +125,7 @@ static void blank_tiles_paint(int x, int y)
 	}
 	dx /= 2;
 	dx -= 16;
-	int bx = dx + 32;
+	sint32 bx = dx + 32;
 	if (bx <= dpi->y) return;
 	dx -= 20;
 	dx -= dpi->height;
@@ -142,7 +142,7 @@ bool gShowSupportSegmentHeights = false;
  *
  *  rct2: 0x0068B3FB
  */
-static void sub_68B3FB(int x, int y)
+static void sub_68B3FB(sint32 x, sint32 y)
 {
 	rct_drawpixelinfo *dpi = unk_140E9A8;
 
@@ -163,7 +163,7 @@ static void sub_68B3FB(int x, int y)
 	rct_map_element* map_element = map_get_first_element_at(x >> 5, y >> 5);
 	uint8 rotation = get_current_rotation();
 
-	int dx = 0;
+	sint32 dx = 0;
 	switch (rotation) {
 	case 0:
 		dx = x + y;
@@ -196,7 +196,7 @@ static void sub_68B3FB(int x, int y)
 			arrowRotation +
 			(gMapSelectArrowDirection & 0xFC) +
 			0x20900C27;
-		int arrowZ = gMapSelectArrowPosition.z;
+		sint32 arrowZ = gMapSelectArrowPosition.z;
 
 		gUnk9DE568 = x;
 		gUnk9DE56C = y;
@@ -204,7 +204,7 @@ static void sub_68B3FB(int x, int y)
 
 		sub_98197C(imageId, 0, 0, 32, 32, 0xFF, arrowZ, 0, 0, arrowZ + 18, rotation);
 	}
-	int bx = dx + 52;
+	sint32 bx = dx + 52;
 
 	if (bx <= dpi->y)
 		return;
@@ -236,8 +236,8 @@ static void sub_68B3FB(int x, int y)
 	gUnk9DE56C = y;
 	gDidPassSurface = false;
 	do {
-		int direction = (map_element->type + rotation) & MAP_ELEMENT_DIRECTION_MASK;
-		int height = map_element->base_height * 8;
+		sint32 direction = (map_element->type + rotation) & MAP_ELEMENT_DIRECTION_MASK;
+		sint32 height = map_element->base_height * 8;
 
 		rct_xy16 dword_9DE574 = gPaintMapPosition;
 		g_currently_drawn_item = map_element;
@@ -289,24 +289,24 @@ static void sub_68B3FB(int x, int y)
 		return;
 	}
 
-	static const int segmentPositions[][3] = {
+	static const sint32 segmentPositions[][3] = {
 		{0, 6, 2},
 		{5, 4, 8},
 		{1, 7, 3},
 	};
 
-	for (int sy = 0; sy < 3; sy++) {
-		for (int sx = 0; sx < 3; sx++) {
+	for (sint32 sy = 0; sy < 3; sy++) {
+		for (sint32 sx = 0; sx < 3; sx++) {
 			uint16 segmentHeight = gSupportSegments[segmentPositions[sy][sx]].height;
-			int imageColourFlats = 0b101111 << 19 | 0x40000000;
+			sint32 imageColourFlats = 0b101111 << 19 | 0x40000000;
 			if (segmentHeight == 0xFFFF) {
 				segmentHeight = gSupport.height;
 				// white: 0b101101
 				imageColourFlats = 0b111011 << 19 | 0x40000000;
 			}
 
-			int xOffset = sy * 10;
-			int yOffset = -22 + sx * 10;
+			sint32 xOffset = sy * 10;
+			sint32 yOffset = -22 + sx * 10;
 			paint_struct * ps = sub_98197C(5504 | imageColourFlats, xOffset, yOffset, 10, 10, 1, segmentHeight, xOffset + 1, yOffset + 16, segmentHeight, get_current_rotation());
 			if (ps != NULL) {
 				ps->flags &= PAINT_STRUCT_FLAG_IS_MASKED;
@@ -363,9 +363,9 @@ const uint16 segment_offsets[9] = {
 	SEGMENT_D4
 };
 
-void paint_util_set_segment_support_height(int segments, uint16 height, uint8 slope)
+void paint_util_set_segment_support_height(sint32 segments, uint16 height, uint8 slope)
 {
-	for (int s = 0; s < 9; s++) {
+	for (sint32 s = 0; s < 9; s++) {
 		if (segments & segment_offsets[s]) {
 			gSupportSegments[s].height = height;
 			if (height != 0xFFFF) {

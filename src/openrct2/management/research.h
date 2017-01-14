@@ -92,19 +92,19 @@ void research_remove_non_separate_vehicle_types();
 void research_populate_list_random();
 void research_populate_list_researched();
 
-void research_set_funding(int amount);
-void research_set_priority(int activeCategories);
-void game_command_set_research_funding(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp);
+void research_set_funding(sint32 amount);
+void research_set_priority(sint32 activeCategories);
+void game_command_set_research_funding(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp);
 void research_finish_item(sint32 entryIndex);
-void research_insert(int researched, int entryIndex, int category);
+void research_insert(sint32 researched, sint32 entryIndex, sint32 category);
 void research_remove(sint32 entryIndex);
 
 void research_insert_ride_entry(uint8 entryIndex, bool researched);
 void research_insert_scenery_group_entry(uint8 entryIndex, bool researched);
 
-bool ride_type_is_invented(int rideType);
-bool ride_entry_is_invented(int rideEntryIndex);
-bool track_type_is_invented(uint8 rideType, int trackType);
+bool ride_type_is_invented(sint32 rideType);
+bool ride_entry_is_invented(sint32 rideEntryIndex);
+bool track_type_is_invented(uint8 rideType, sint32 trackType);
 bool scenery_is_invented(uint16 sceneryItem);
 
 #endif

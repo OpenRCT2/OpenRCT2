@@ -46,7 +46,7 @@ enum
 	SEGMENT_C4 = (1 << 8), // 4
 };
 
-extern const int SEGMENTS_ALL;
+extern const sint32 SEGMENTS_ALL;
 extern const uint16 segment_offsets[9];
 
 enum
@@ -116,18 +116,18 @@ void paint_util_set_vertical_tunnel(uint16 height);
 
 void paint_util_set_general_support_height(sint16 height, uint8 slope);
 void paint_util_force_set_general_support_height(sint16 height, uint8 slope);
-void paint_util_set_segment_support_height(int segments, uint16 height, uint8 slope);
+void paint_util_set_segment_support_height(sint32 segments, uint16 height, uint8 slope);
 uint16 paint_util_rotate_segments(uint16 segments, uint8 rotation);
 
-void map_element_paint_setup(int x, int y);
+void map_element_paint_setup(sint32 x, sint32 y);
 
-void entrance_paint(uint8 direction, int height, rct_map_element* map_element);
-void banner_paint(uint8 direction, int height, rct_map_element* map_element);
+void entrance_paint(uint8 direction, sint32 height, rct_map_element* map_element);
+void banner_paint(uint8 direction, sint32 height, rct_map_element* map_element);
 void surface_paint(uint8 direction, uint16 height, rct_map_element *mapElement);
 void path_paint(uint8 direction, uint16 height, rct_map_element *mapElement);
-void scenery_paint(uint8 direction, int height, rct_map_element* mapElement);
-void fence_paint(uint8 direction, int height, rct_map_element* mapElement);
+void scenery_paint(uint8 direction, sint32 height, rct_map_element* mapElement);
+void fence_paint(uint8 direction, sint32 height, rct_map_element* mapElement);
 void scenery_multiple_paint(uint8 direction, uint16 height, rct_map_element *mapElement);
-void track_paint(uint8 direction, int height, rct_map_element *mapElement);
+void track_paint(uint8 direction, sint32 height, rct_map_element *mapElement);
 
 #endif

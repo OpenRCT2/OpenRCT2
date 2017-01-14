@@ -73,18 +73,18 @@ const uint8 BaseTerrain[] = { TERRAIN_GRASS, TERRAIN_SAND, TERRAIN_SAND_LIGHT, T
 #define BLOB_HEIGHT 255
 
 static void mapgen_place_trees();
-static void mapgen_set_water_level(int height);
-static void mapgen_blobs(int count, int lowSize, int highSize, int lowHeight, int highHeight);
-static void mapgen_blob(int cx, int cy, int size, int height);
-static void mapgen_smooth_height(int iterations);
+static void mapgen_set_water_level(sint32 height);
+static void mapgen_blobs(sint32 count, sint32 lowSize, sint32 highSize, sint32 lowHeight, sint32 highHeight);
+static void mapgen_blob(sint32 cx, sint32 cy, sint32 size, sint32 height);
+static void mapgen_smooth_height(sint32 iterations);
 static void mapgen_set_height();
 
 static void mapgen_simplex(mapgen_settings *settings);
 
-static int _heightSize;
+static sint32 _heightSize;
 static uint8 *_height;
 
-static int get_height(int x, int y)
+static sint32 get_height(sint32 x, sint32 y)
 {
 	if (x >= 0 && y >= 0 && x < _heightSize && y < _heightSize)
 		return _height[x + y * _heightSize];
@@ -92,7 +92,7 @@ static int get_height(int x, int y)
 		return 0;
 }
 
-static void set_height(int x, int y, int height)
+static void set_height(sint32 x, sint32 y, sint32 height)
 {
 	if (x >= 0 && y >= 0 && x < _heightSize && y < _heightSize)
 		_height[x + y * _heightSize] = height;
@@ -100,7 +100,7 @@ static void set_height(int x, int y, int height)
 
 void mapgen_generate_blank(mapgen_settings *settings)
 {
-	int x, y;
+	sint32 x, y;
 	rct_map_element *mapElement;
 
 	map_clear_all_elements();
@@ -121,10 +121,10 @@ void mapgen_generate_blank(mapgen_settings *settings)
 
 void mapgen_generate(mapgen_settings *settings)
 {
-	int x, y, mapSize, floorTexture, wallTexture, waterLevel;
+	sint32 x, y, mapSize, floorTexture, wallTexture, waterLevel;
 	rct_map_element *mapElement;
 
-	util_srand((int)SDL_GetTicks());
+	util_srand((sint32)SDL_GetTicks());
 
 	mapSize = settings->mapSize;
 	floorTexture = settings->floor;
@@ -196,7 +196,7 @@ void mapgen_generate(mapgen_settings *settings)
 	mapgen_set_water_level(waterLevel);
 
 	// Add sandy beaches
-	int beachTexture = floorTexture;
+	sint32 beachTexture = floorTexture;
 	if (settings->floor == -1 && floorTexture == TERRAIN_GRASS) {
 		switch (util_rand() % 4) {
 		case 0:
@@ -223,9 +223,9 @@ void mapgen_generate(mapgen_settings *settings)
 	map_reorganise_elements();
 }
 
-static void mapgen_place_tree(int type, int x, int y)
+static void mapgen_place_tree(sint32 type, sint32 x, sint32 y)
 {
-	int surfaceZ;
+	sint32 surfaceZ;
 	rct_map_element *mapElement;
 	rct_scenery_entry *sceneryEntry = get_small_scenery_entry(type);
 
@@ -245,19 +245,19 @@ static void mapgen_place_tree(int type, int x, int y)
  */
 static void mapgen_place_trees()
 {
-	int numGrassTreeIds = 0, numDesertTreeIds = 0, numSnowTreeIds = 0;
-	int *grassTreeIds = (int*)malloc(countof(GrassTrees) * sizeof(int));
-	int *desertTreeIds = (int*)malloc(countof(DesertTrees) * sizeof(int));
-	int *snowTreeIds = (int*)malloc(countof(SnowTrees) * sizeof(int));
+	sint32 numGrassTreeIds = 0, numDesertTreeIds = 0, numSnowTreeIds = 0;
+	sint32 *grassTreeIds = (sint32*)malloc(countof(GrassTrees) * sizeof(sint32));
+	sint32 *desertTreeIds = (sint32*)malloc(countof(DesertTrees) * sizeof(sint32));
+	sint32 *snowTreeIds = (sint32*)malloc(countof(SnowTrees) * sizeof(sint32));
 
-	for (int i = 0; i < object_entry_group_counts[OBJECT_TYPE_SMALL_SCENERY]; i++) {
+	for (sint32 i = 0; i < object_entry_group_counts[OBJECT_TYPE_SMALL_SCENERY]; i++) {
 		rct_scenery_entry *sceneryEntry = get_small_scenery_entry(i);
 		rct_object_entry_extended *entry = &object_entry_groups[OBJECT_TYPE_SMALL_SCENERY].entries[i];
 
 		if (sceneryEntry == (rct_scenery_entry*)-1 || sceneryEntry == NULL)
 			continue;
 
-		int j;
+		sint32 j;
 		for (j = 0; j < countof(GrassTrees); j++)
 			if (strncmp(GrassTrees[j], entry->name, 8) == 0)
 				break;
@@ -283,13 +283,13 @@ static void mapgen_place_trees()
 		}
 	}
 
-	int availablePositionsCount = 0;
-	struct { int x; int y; } tmp, *pos, *availablePositions;
+	sint32 availablePositionsCount = 0;
+	struct { sint32 x; sint32 y; } tmp, *pos, *availablePositions;
 	availablePositions = malloc(256 * 256 * sizeof(tmp));
 
 	// Create list of available tiles
-	for (int y = 1; y < gMapSize - 1; y++) {
-		for (int x = 1; x < gMapSize - 1; x++) {
+	for (sint32 y = 1; y < gMapSize - 1; y++) {
+		for (sint32 x = 1; x < gMapSize - 1; x++) {
 			rct_map_element *mapElement = map_get_surface_element_at(x, y);
 
 			// Exclude water tiles
@@ -303,8 +303,8 @@ static void mapgen_place_trees()
 	}
 
 	// Shuffle list
-	for (int i = 0; i < availablePositionsCount; i++) {
-		int rindex = util_rand() % availablePositionsCount;
+	for (sint32 i = 0; i < availablePositionsCount; i++) {
+		sint32 rindex = util_rand() % availablePositionsCount;
 		if (rindex == i)
 			continue;
 
@@ -315,12 +315,12 @@ static void mapgen_place_trees()
 
 	// Place trees
 	float treeToLandRatio = (10 + (util_rand() % 30)) / 100.0f;
-	int numTrees = max(4, (int)(availablePositionsCount * treeToLandRatio));
+	sint32 numTrees = max(4, (sint32)(availablePositionsCount * treeToLandRatio));
 
-	for (int i = 0; i < numTrees; i++) {
+	for (sint32 i = 0; i < numTrees; i++) {
 		pos = &availablePositions[i];
 
-		int type = -1;
+		sint32 type = -1;
 		rct_map_element *mapElement = map_get_surface_element_at(pos->x, pos->y);
 		switch (map_element_get_terrain(mapElement)) {
 		case TERRAIN_GRASS:
@@ -363,9 +363,9 @@ static void mapgen_place_trees()
 /**
  * Sets each tile's water level to the specified water level if underneath that water level.
  */
-static void mapgen_set_water_level(int waterLevel)
+static void mapgen_set_water_level(sint32 waterLevel)
 {
-	int x, y, mapSize;
+	sint32 x, y, mapSize;
 	rct_map_element *mapElement;
 
 	mapSize = gMapSize;
@@ -379,20 +379,20 @@ static void mapgen_set_water_level(int waterLevel)
 	}
 }
 
-static void mapgen_blobs(int count, int lowSize, int highSize, int lowHeight, int highHeight)
+static void mapgen_blobs(sint32 count, sint32 lowSize, sint32 highSize, sint32 lowHeight, sint32 highHeight)
 {
-	int i;
-	int sizeRange = highSize - lowSize;
-	int heightRange = highHeight - lowHeight;
+	sint32 i;
+	sint32 sizeRange = highSize - lowSize;
+	sint32 heightRange = highHeight - lowHeight;
 
-	int border = 2 + (util_rand() % 24);
-	int borderRange = _heightSize - (border * 2);
+	sint32 border = 2 + (util_rand() % 24);
+	sint32 borderRange = _heightSize - (border * 2);
 	for (i = 0; i < count; i++) {
-		int radius = lowSize + (util_rand() % sizeRange);
+		sint32 radius = lowSize + (util_rand() % sizeRange);
 		mapgen_blob(
 			border + (util_rand() % borderRange),
 			border + (util_rand() % borderRange),
-			(int)(M_PI * radius * radius),
+			(sint32)(M_PI * radius * radius),
 			lowHeight + (util_rand() % heightRange)
 		);
 	}
@@ -401,22 +401,22 @@ static void mapgen_blobs(int count, int lowSize, int highSize, int lowHeight, in
 /**
  * Sets any holes within a new created blob to the specified height.
  */
-static void mapgen_blob_fill(int height)
+static void mapgen_blob_fill(sint32 height)
 {
 	// For each square find out whether it is landlocked by BLOB_HEIGHT and then fill it if it is
-	int left = 0,
+	sint32 left = 0,
 		top = 0,
 		right = _heightSize - 1,
 		bottom = _heightSize - 1;
 
 	uint8 *landX = (uint8*)malloc(_heightSize * _heightSize * sizeof(uint8));
-	int firstLand, lastLand;
+	sint32 firstLand, lastLand;
 
 	// Check each row and see if each tile is between first land x and last land x
-	for (int y = top; y <= bottom; y++) {
+	for (sint32 y = top; y <= bottom; y++) {
 		// Calculate first land
 		firstLand = -1;
-		for (int xx = left; xx <= right; xx++) {
+		for (sint32 xx = left; xx <= right; xx++) {
 			if (get_height(xx, y) == BLOB_HEIGHT) {
 				firstLand = xx;
 				break;
@@ -426,7 +426,7 @@ static void mapgen_blob_fill(int height)
 		lastLand = -1;
 		if (firstLand >= 0) {
 			// Calculate last land
-			for (int xx = right; xx >= left; xx--) {
+			for (sint32 xx = right; xx >= left; xx--) {
 				if (get_height(xx, y) == BLOB_HEIGHT) {
 					lastLand = xx;
 					break;
@@ -437,16 +437,16 @@ static void mapgen_blob_fill(int height)
 			continue;
 		}
 
-		for (int x = left; x <= right; x++)
+		for (sint32 x = left; x <= right; x++)
 			if (x >= firstLand && x <= lastLand)
 				landX[x * _heightSize + y] = 1;
 	}
 
 	// Do the same for Y
-	for (int x = left; x <= right; x++) {
+	for (sint32 x = left; x <= right; x++) {
 		// Calculate first land
 		firstLand = -1;
-		for (int yy = top; yy <= bottom; yy++) {
+		for (sint32 yy = top; yy <= bottom; yy++) {
 			if (get_height(x, yy) == BLOB_HEIGHT) {
 				firstLand = yy;
 				break;
@@ -456,7 +456,7 @@ static void mapgen_blob_fill(int height)
 		lastLand = -1;
 		if (firstLand >= 0) {
 			// Calculate last land
-			for (int yy = bottom; yy >= top; yy--) {
+			for (sint32 yy = bottom; yy >= top; yy--) {
 				if (get_height(x, yy) == BLOB_HEIGHT) {
 					lastLand = yy;
 					break;
@@ -467,7 +467,7 @@ static void mapgen_blob_fill(int height)
 			continue;
 		}
 
-		for (int y = top; y <= bottom; y++) {
+		for (sint32 y = top; y <= bottom; y++) {
 			if (y >= firstLand && y <= lastLand && landX[x * _heightSize + y]) {
 				// Not only do we know its landlocked to both x and y
 				// we can change the land too
@@ -477,8 +477,8 @@ static void mapgen_blob_fill(int height)
 	}
 
 	// Replace all the BLOB_HEIGHT with the actual land height
-	for (int x = left; x <= right; x++)
-		for (int y = top; y <= bottom; y++)
+	for (sint32 x = left; x <= right; x++)
+		for (sint32 y = top; y <= bottom; y++)
 			if (get_height(x, y) == BLOB_HEIGHT)
 				set_height(x, y, height);
 
@@ -488,9 +488,9 @@ static void mapgen_blob_fill(int height)
 /**
  * Sets a rough circular blob of tiles of the specified size to the specified height.
  */
-static void mapgen_blob(int cx, int cy, int size, int height)
+static void mapgen_blob(sint32 cx, sint32 cy, sint32 size, sint32 height)
 {
-	int x, y, currentSize, direction;
+	sint32 x, y, currentSize, direction;
 
 	x = cx;
 	y = cy;
@@ -570,10 +570,10 @@ static void mapgen_blob(int cx, int cy, int size, int height)
 /**
  * Smooths the height map.
  */
-static void mapgen_smooth_height(int iterations)
+static void mapgen_smooth_height(sint32 iterations)
 {
-	int i, x, y, xx, yy, avg;
-	int arraySize = _heightSize * _heightSize * sizeof(uint8);
+	sint32 i, x, y, xx, yy, avg;
+	sint32 arraySize = _heightSize * _heightSize * sizeof(uint8);
 	uint8 *copyHeight = malloc(arraySize);
 
 	for (i = 0; i < iterations; i++) {
@@ -598,7 +598,7 @@ static void mapgen_smooth_height(int iterations)
  */
 static void mapgen_set_height()
 {
-	int x, y, heightX, heightY, mapSize;
+	sint32 x, y, heightX, heightY, mapSize;
 	rct_map_element *mapElement;
 
 	mapSize = _heightSize / 2;
@@ -640,22 +640,22 @@ static void mapgen_set_height()
  */
 
 static float generate(float x, float y);
-static int fast_floor(float x);
-static float grad(int hash, float x, float y);
+static sint32 fast_floor(float x);
+static float grad(sint32 hash, float x, float y);
 
 static uint8 perm[512];
 
 static void noise_rand()
 {
-	for (int i = 0; i < countof(perm); i++)
+	for (sint32 i = 0; i < countof(perm); i++)
 		perm[i] = util_rand() & 0xFF;
 }
 
-static float fractal_noise(int x, int y, float frequency, int octaves, float lacunarity, float persistence)
+static float fractal_noise(sint32 x, sint32 y, float frequency, sint32 octaves, float lacunarity, float persistence)
 {
 	float total = 0.0f;
 	float amplitude = persistence;
-	for (int i = 0; i < octaves; i++) {
+	for (sint32 i = 0; i < octaves; i++) {
 		total += generate(x * frequency, y * frequency) * amplitude;
 		frequency *= lacunarity;
 		amplitude *= persistence;
@@ -674,8 +674,8 @@ static float generate(float x, float y)
 	float s = (x + y) * F2; // Hairy factor for 2D
 	float xs = x + s;
 	float ys = y + s;
-	int i = fast_floor(xs);
-	int j = fast_floor(ys);
+	sint32 i = fast_floor(xs);
+	sint32 j = fast_floor(ys);
 
 	float t = (float)(i + j) * G2;
 	float X0 = i - t; // Unskew the cell origin back to (x,y) space
@@ -685,7 +685,7 @@ static float generate(float x, float y)
 
 	// For the 2D case, the simplex shape is an equilateral triangle.
 	// Determine which simplex we are in.
-	int i1, j1; // Offsets for second (middle) corner of simplex in (i,j) coords
+	sint32 i1, j1; // Offsets for second (middle) corner of simplex in (i,j) coords
 	if (x0 > y0) { i1 = 1; j1 = 0; } // lower triangle, XY order: (0,0)->(1,0)->(1,1)
 	else { i1 = 0; j1 = 1; }      // upper triangle, YX order: (0,0)->(0,1)->(1,1)
 
@@ -699,8 +699,8 @@ static float generate(float x, float y)
 	float y2 = y0 - 1.0f + 2.0f * G2;
 
 	// Wrap the integer indices at 256, to avoid indexing perm[] out of bounds
-	int ii = i % 256;
-	int jj = j % 256;
+	sint32 ii = i % 256;
+	sint32 jj = j % 256;
 
 	// Calculate the contribution from the three corners
 	float t0 = 0.5f - x0 * x0 - y0 * y0;
@@ -729,14 +729,14 @@ static float generate(float x, float y)
 	return 40.0f * (n0 + n1 + n2); // TODO: The scale factor is preliminary!
 }
 
-static int fast_floor(float x)
+static sint32 fast_floor(float x)
 {
-	return (x > 0) ? ((int)x) : (((int)x) - 1);
+	return (x > 0) ? ((sint32)x) : (((sint32)x) - 1);
 }
 
-static float grad(int hash, float x, float y)
+static float grad(sint32 hash, float x, float y)
 {
-	int h = hash & 7;      // Convert low 3 bits of hash code
+	sint32 h = hash & 7;      // Convert low 3 bits of hash code
 	float u = h < 4 ? x : y;  // into 8 simple gradient directions,
 	float v = h < 4 ? y : x;  // and compute the dot product with (x,y).
 	return ((h & 1) != 0 ? -u : u) + ((h & 2) != 0 ? -2.0f * v : 2.0f * v);
@@ -744,13 +744,13 @@ static float grad(int hash, float x, float y)
 
 static void mapgen_simplex(mapgen_settings *settings)
 {
-	int x, y;
+	sint32 x, y;
 
 	float freq = settings->simplex_base_freq * (1.0f / _heightSize);
-	int octaves = settings->simplex_octaves;
+	sint32 octaves = settings->simplex_octaves;
 
-	int low = settings->simplex_low;
-	int high = settings->simplex_high;
+	sint32 low = settings->simplex_low;
+	sint32 high = settings->simplex_high;
 
 	noise_rand();
 	for (y = 0; y < _heightSize; y++) {
@@ -758,7 +758,7 @@ static void mapgen_simplex(mapgen_settings *settings)
 			float noiseValue = clamp(-1.0f, fractal_noise(x, y, freq, octaves, 2.0f, 0.65f), 1.0f);
 			float normalisedNoiseValue = (noiseValue + 1.0f) / 2.0f;
 
-			set_height(x, y, low + (int)(normalisedNoiseValue * high));
+			set_height(x, y, low + (sint32)(normalisedNoiseValue * high));
 		}
 	}
 }

@@ -36,10 +36,10 @@ enum
  *
  *  rct2: 0x006D5DA9
  */
-void vehicle_visual_roto_drop(int x, int imageDirection, int y, int z, rct_vehicle *vehicle, const rct_ride_entry_vehicle *vehicleEntry)
+void vehicle_visual_roto_drop(sint32 x, sint32 imageDirection, sint32 y, sint32 z, rct_vehicle *vehicle, const rct_ride_entry_vehicle *vehicleEntry)
 {
-	int image_id;
-	int baseImage_id = (vehicleEntry->base_image_id + 4) + ((vehicle->var_C5 / 4) & 0x3);
+	sint32 image_id;
+	sint32 baseImage_id = (vehicleEntry->base_image_id + 4) + ((vehicle->var_C5 / 4) & 0x3);
 	if (vehicle->restraints_position >= 64) {
 		baseImage_id += 7;
 		baseImage_id += (vehicle->restraints_position / 64);
@@ -56,7 +56,7 @@ void vehicle_visual_roto_drop(int x, int imageDirection, int y, int z, rct_vehic
 
 	uint8 riding_peep_sprites[64];
 	memset(riding_peep_sprites, 0xFF, sizeof(riding_peep_sprites));
-	for (int i = 0; i < vehicle->num_peeps; i++) {
+	for (sint32 i = 0; i < vehicle->num_peeps; i++) {
 		uint8 cl = (i & 3) * 16;
 		cl += (i & 0xFC);
 		cl += vehicle->var_C5 / 4;
@@ -66,8 +66,8 @@ void vehicle_visual_roto_drop(int x, int imageDirection, int y, int z, rct_vehic
 	}
 
 	// Draw riding peep sprites in back to front order:
-	for (int j = 0; j <= 48; j++) {
-		int i = (j % 2) ? (48 - (j / 2)) : (j / 2);
+	for (sint32 j = 0; j <= 48; j++) {
+		sint32 i = (j % 2) ? (48 - (j / 2)) : (j / 2);
 		if (riding_peep_sprites[i] != 0xFF) {
 			baseImage_id = vehicleEntry->base_image_id + 20 + i;
 			if (vehicle->restraints_position >= 64) {
@@ -84,11 +84,11 @@ void vehicle_visual_roto_drop(int x, int imageDirection, int y, int z, rct_vehic
 }
 
 /** rct2: 0x00886194 */
-static void paint_roto_drop_base(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+static void paint_roto_drop_base(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
 	trackSequence = track_map_3x3[direction][trackSequence];
 
-	int edges = edges_3x3[trackSequence];
+	sint32 edges = edges_3x3[trackSequence];
 	rct_ride * ride = get_ride(rideIndex);
 	rct_xy16 position = {gPaintMapPosition.x, gPaintMapPosition.y};
 
@@ -121,7 +121,7 @@ static void paint_roto_drop_base(uint8 rideIndex, uint8 trackSequence, uint8 dir
 		return;
 	}
 
-	int blockedSegments = 0;
+	sint32 blockedSegments = 0;
 	switch (trackSequence) {
 		case 1: blockedSegments = SEGMENT_B8 | SEGMENT_C8 | SEGMENT_B4 | SEGMENT_CC | SEGMENT_BC; break;
 		case 2: blockedSegments = SEGMENT_B4 | SEGMENT_CC | SEGMENT_BC; break;
@@ -138,7 +138,7 @@ static void paint_roto_drop_base(uint8 rideIndex, uint8 trackSequence, uint8 dir
 }
 
 /** rct2: 0x008861A4 */
-static void paint_roto_drop_tower_section(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+static void paint_roto_drop_tower_section(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
 	if (trackSequence == 1) {
 		return;
@@ -162,7 +162,7 @@ static void paint_roto_drop_tower_section(uint8 rideIndex, uint8 trackSequence, 
 /**
  * rct2: 0x00886074
  */
-TRACK_PAINT_FUNCTION get_track_paint_function_roto_drop(int trackType, int direction)
+TRACK_PAINT_FUNCTION get_track_paint_function_roto_drop(sint32 trackType, sint32 direction)
 {
 	switch (trackType) {
 		case TRACK_ELEM_TOWER_BASE:

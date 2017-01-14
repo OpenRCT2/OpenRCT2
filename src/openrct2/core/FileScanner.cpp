@@ -302,10 +302,10 @@ protected:
     void GetDirectoryChildren(std::vector<DirectoryChild> &children, const std::string &path) override
     {
         struct dirent * * namelist;
-        int count = scandir(path.c_str(), &namelist, FilterFunc, alphasort);
+		sint32 count = scandir(path.c_str(), &namelist, FilterFunc, alphasort);
         if (count > 0)
         {
-            for (int i = 0; i < count; i++)
+            for (sint32 i = 0; i < count; i++)
             {
                 const struct dirent * node = namelist[i];
                 if (!String::Equals(node->d_name, ".") &&
@@ -321,7 +321,7 @@ protected:
     }
 
 private:
-    static int FilterFunc(const struct dirent * d)
+    static sint32 FilterFunc(const struct dirent * d)
     {
         return 1;
     }
@@ -345,7 +345,7 @@ private:
             Path::Append(path, pathSize, node->d_name);
 
             struct stat statInfo;
-            int statRes = stat(path, &statInfo);
+            sint32 statRes = stat(path, &statInfo);
             if (statRes != -1)
             {
                 result.Size = statInfo.st_size;

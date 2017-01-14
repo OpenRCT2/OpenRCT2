@@ -35,7 +35,7 @@ const rct_xy16 BannerBoundBoxes[][2] = {
  *
  *  rct2: 0x006B9CC4
  */
-void banner_paint(uint8 direction, int height, rct_map_element* map_element)
+void banner_paint(uint8 direction, sint32 height, rct_map_element* map_element)
 {
 	uint16 boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ;
 	rct_drawpixelinfo* dpi = unk_140E9A8;

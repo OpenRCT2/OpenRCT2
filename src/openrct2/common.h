@@ -37,8 +37,6 @@
 #include <string.h>
 #include <stdbool.h>
 
-#include "diagnostic.h"
-
 typedef int8_t sint8;
 typedef int16_t sint16;
 typedef int32_t sint32;
@@ -47,6 +45,8 @@ typedef uint8_t uint8;
 typedef uint16_t uint16;
 typedef uint32_t uint32;
 typedef uint64_t uint64;
+
+#include "diagnostic.h"
 
 typedef char utf8;
 typedef utf8* utf8string;
@@ -98,7 +98,7 @@ typedef uint8 colour_t;
  * e.g. in a structure initializer (or where-ever else comma expressions
  * aren't permitted).
  */
-#define BUILD_BUG_ON_ZERO(e) (sizeof(struct { int:-!!(e); }))
+#define BUILD_BUG_ON_ZERO(e) (sizeof(struct { sint32:-!!(e); }))
 
 /* &a[0] degrades to a pointer: a different type from an array */
 #define __must_be_array(a) \
@@ -177,7 +177,7 @@ typedef fixed32_1dp money32;
 #define MONEY32_UNDEFINED				((money32)0x80000000)
 
 typedef void (EMPTY_ARGS_VOID_POINTER)();
-typedef unsigned short rct_string_id;
+typedef uint16 rct_string_id;
 
 #define SafeFree(x) do { free(x); (x) = NULL; } while (0)
 
@@ -254,48 +254,48 @@ typedef unsigned short rct_string_id;
 #pragma pack(push, 1)
 typedef struct registers {
 	union {
-		int eax;
-		short ax;
+		sint32 eax;
+		sint16 ax;
 		struct {
 			char al;
 			char ah;
 		};
 	};
 	union {
-		int ebx;
-		short bx;
+		sint32 ebx;
+		sint16 bx;
 		struct {
 			char bl;
 			char bh;
 		};
 	};
 	union {
-		int ecx;
-		short cx;
+		sint32 ecx;
+		sint16 cx;
 		struct {
 			char cl;
 			char ch;
 		};
 	};
 	union {
-		int edx;
-		short dx;
+		sint32 edx;
+		sint16 dx;
 		struct {
 			char dl;
 			char dh;
 		};
 	};
 	union {
-		int esi;
-		short si;
+		sint32 esi;
+		sint16 si;
 	};
 	union {
-		int edi;
-		short di;
+		sint32 edi;
+		sint16 di;
 	};
 	union {
-		int ebp;
-		short bp;
+		sint32 ebp;
+		sint16 bp;
 	};
 } registers;
 assert_struct_size(registers, 7 * 4);

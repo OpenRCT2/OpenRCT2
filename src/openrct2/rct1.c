@@ -33,7 +33,7 @@ bool rct1_read_sc4(const char *path, rct1_s4 *s4)
 		return 0;
 	}
 
-	int fileType = sawyercoding_detect_file_type(buffer, length);
+	sint32 fileType = sawyercoding_detect_file_type(buffer, length);
 
 	decodedBuffer = malloc(sizeof(rct1_s4));
 	decodedLength = (fileType & FILE_VERSION_MASK) == FILE_VERSION_RCT1 ?
@@ -84,7 +84,7 @@ bool rideTypeShouldLoseSeparateFlag(const rct_ride_entry *rideEntry)
 	}
 
 	bool remove_flag = true;
-	for (int j = 0; j < 3; j++) {
+	for (sint32 j = 0; j < 3; j++) {
 		if (rideEntry->ride_type[j] == RIDE_TYPE_NULL) {
 			continue;
 		}

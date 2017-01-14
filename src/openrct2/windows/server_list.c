@@ -47,7 +47,7 @@ typedef struct server_entry {
 
 static char _playerName[32 + 1];
 static server_entry *_serverEntries = NULL;
-static int _numServerEntries = 0;
+static sint32 _numServerEntries = 0;
 static SDL_mutex *_mutex = 0;
 static uint32 _numPlayersOnline = 0;
 
@@ -80,17 +80,17 @@ static rct_widget window_server_list_widgets[] = {
 };
 
 static void window_server_list_close(rct_window *w);
-static void window_server_list_mouseup(rct_window *w, int widgetIndex);
+static void window_server_list_mouseup(rct_window *w, sint32 widgetIndex);
 static void window_server_list_resize(rct_window *w);
-static void window_server_list_dropdown(rct_window *w, int widgetIndex, int dropdownIndex);
+static void window_server_list_dropdown(rct_window *w, sint32 widgetIndex, sint32 dropdownIndex);
 static void window_server_list_update(rct_window *w);
-static void window_server_list_scroll_getsize(rct_window *w, int scrollIndex, int *width, int *height);
-static void window_server_list_scroll_mousedown(rct_window *w, int scrollIndex, int x, int y);
-static void window_server_list_scroll_mouseover(rct_window *w, int scrollIndex, int x, int y);
-static void window_server_list_textinput(rct_window *w, int widgetIndex, char *text);
+static void window_server_list_scroll_getsize(rct_window *w, sint32 scrollIndex, sint32 *width, sint32 *height);
+static void window_server_list_scroll_mousedown(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y);
+static void window_server_list_scroll_mouseover(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y);
+static void window_server_list_textinput(rct_window *w, sint32 widgetIndex, char *text);
 static void window_server_list_invalidate(rct_window *w);
 static void window_server_list_paint(rct_window *w, rct_drawpixelinfo *dpi);
-static void window_server_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scrollIndex);
+static void window_server_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 scrollIndex);
 
 static rct_window_event_list window_server_list_events = {
 	window_server_list_close,
@@ -128,15 +128,15 @@ enum {
 	DDIDX_FAVOURITE
 };
 
-static int _hoverButtonIndex = -1;
+static sint32 _hoverButtonIndex = -1;
 
-static void server_list_get_item_button(int buttonIndex, int x, int y, int width, int *outX, int *outY);
+static void server_list_get_item_button(sint32 buttonIndex, sint32 x, sint32 y, sint32 width, sint32 *outX, sint32 *outY);
 static void server_list_load_server_entries();
 static void server_list_save_server_entries();
 static void dispose_server_entry_list();
 static void dispose_server_entry(server_entry *serverInfo);
 static server_entry* add_server_entry(char *address);
-static void remove_server_entry(int index);
+static void remove_server_entry(sint32 index);
 static void sort_servers();
 static void join_server(char *address);
 static void fetch_servers();
@@ -203,7 +203,7 @@ static void window_server_list_close(rct_window *w)
 	}
 }
 
-static void window_server_list_mouseup(rct_window *w, int widgetIndex)
+static void window_server_list_mouseup(rct_window *w, sint32 widgetIndex)
 {
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
@@ -213,7 +213,7 @@ static void window_server_list_mouseup(rct_window *w, int widgetIndex)
 		window_start_textbox(w, widgetIndex, STR_STRING, _playerName, 63);
 		break;
 	case WIDX_LIST:{
-		int serverIndex = w->selected_list_item;
+		sint32 serverIndex = w->selected_list_item;
 		if (serverIndex >= 0 && serverIndex < _numServerEntries) {
 			if (strcmp(_serverEntries[serverIndex].version, NETWORK_STREAM_ID) != 0 && strcmp(_serverEntries[serverIndex].version, "") != 0) {
 				set_format_arg(0, void *, _serverEntries[serverIndex].version);
@@ -241,9 +241,9 @@ static void window_server_list_resize(rct_window *w)
 	window_set_resize(w, WWIDTH_MIN, WHEIGHT_MIN, WWIDTH_MAX, WHEIGHT_MAX);
 }
 
-static void window_server_list_dropdown(rct_window *w, int widgetIndex, int dropdownIndex)
+static void window_server_list_dropdown(rct_window *w, sint32 widgetIndex, sint32 dropdownIndex)
 {
-	int serverIndex = w->selected_list_item;
+	sint32 serverIndex = w->selected_list_item;
 	if (serverIndex < 0) return;
 	if (serverIndex >= _numServerEntries) return;
 
@@ -273,21 +273,21 @@ static void window_server_list_update(rct_window *w)
 	}
 }
 
-static void window_server_list_scroll_getsize(rct_window *w, int scrollIndex, int *width, int *height)
+static void window_server_list_scroll_getsize(rct_window *w, sint32 scrollIndex, sint32 *width, sint32 *height)
 {
 	*width = 0;
 	*height = w->no_list_items * ITEM_HEIGHT;
 }
 
-static void window_server_list_scroll_mousedown(rct_window *w, int scrollIndex, int x, int y)
+static void window_server_list_scroll_mousedown(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y)
 {
-	int serverIndex = w->selected_list_item;
+	sint32 serverIndex = w->selected_list_item;
 	if (serverIndex < 0) return;
 	if (serverIndex >= _numServerEntries) return;
 
 	rct_widget *listWidget = &w->widgets[WIDX_LIST];
-	int ddx = w->x + listWidget->left + x + 2 - w->scrolls[0].h_left;
-	int ddy = w->y + listWidget->top + y + 2 - w->scrolls[0].v_top;
+	sint32 ddx = w->x + listWidget->left + x + 2 - w->scrolls[0].h_left;
+	sint32 ddy = w->y + listWidget->top + y + 2 - w->scrolls[0].v_top;
 
 	gDropdownItemsFormat[0] = STR_JOIN_GAME;
 	if (_serverEntries[serverIndex].favourite) {
@@ -300,20 +300,20 @@ static void window_server_list_scroll_mousedown(rct_window *w, int scrollIndex, 
 
 char *gVersion = NULL;
 
-static void window_server_list_scroll_mouseover(rct_window *w, int scrollIndex, int x, int y)
+static void window_server_list_scroll_mouseover(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y)
 {
 	// Item
-	int index = y / ITEM_HEIGHT;
+	sint32 index = y / ITEM_HEIGHT;
 	if (index < 0 || index >= w->no_list_items) {
 		index = -1;
 	}
 
-	int hoverButtonIndex = -1;
+	sint32 hoverButtonIndex = -1;
 	if (index != -1) {
-		int width = w->widgets[WIDX_LIST].right - w->widgets[WIDX_LIST].left;
-		int sy = index * ITEM_HEIGHT;
-		for (int i = 0; i < 2; i++) {
-			int bx, by;
+		sint32 width = w->widgets[WIDX_LIST].right - w->widgets[WIDX_LIST].left;
+		sint32 sy = index * ITEM_HEIGHT;
+		for (sint32 i = 0; i < 2; i++) {
+			sint32 bx, by;
 
 			server_list_get_item_button(i, 0, sy, width, &bx, &by);
 			if (x >= bx && y >= by && x < bx + 24 && y < by + 24) {
@@ -323,8 +323,8 @@ static void window_server_list_scroll_mouseover(rct_window *w, int scrollIndex, 
 		}
 	}
 
-	int width = w->widgets[WIDX_LIST].right - w->widgets[WIDX_LIST].left;
-	int right = width - 3 - 14 - 10;
+	sint32 width = w->widgets[WIDX_LIST].right - w->widgets[WIDX_LIST].left;
+	sint32 right = width - 3 - 14 - 10;
 	if (x < right)
 	{
 		w->widgets[WIDX_LIST].tooltip = STR_NONE;
@@ -339,7 +339,7 @@ static void window_server_list_scroll_mouseover(rct_window *w, int scrollIndex, 
 	}
 }
 
-static void window_server_list_textinput(rct_window *w, int widgetIndex, char *text)
+static void window_server_list_textinput(rct_window *w, sint32 widgetIndex, char *text)
 {
 	if (text == NULL || text[0] == 0) return;
 
@@ -384,11 +384,11 @@ static void window_server_list_invalidate(rct_window *w)
 	window_server_list_widgets[WIDX_CLOSE].left = w->width - 2 - 11;
 	window_server_list_widgets[WIDX_CLOSE].right = w->width - 2 - 11 + 10;
 
-	int margin = 6;
-	int buttonHeight = 11;
-	int buttonTop = w->height - margin - buttonHeight - 13;
-	int buttonBottom = buttonTop + buttonHeight;
-	int listBottom = buttonTop - margin;
+	sint32 margin = 6;
+	sint32 buttonHeight = 11;
+	sint32 buttonTop = w->height - margin - buttonHeight - 13;
+	sint32 buttonBottom = buttonTop + buttonHeight;
+	sint32 listBottom = buttonTop - margin;
 
 	window_server_list_widgets[WIDX_PLAYER_NAME_INPUT].right = w->width - 6;
 	window_server_list_widgets[WIDX_LIST].left = 6;
@@ -415,16 +415,16 @@ static void window_server_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	gfx_draw_string_left(dpi, STR_X_PLAYERS_ONLINE, (void*)&_numPlayersOnline, COLOUR_WHITE, w->x + 8, w->y + w->height - 15);
 }
 
-static void window_server_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scrollIndex)
+static void window_server_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 scrollIndex)
 {
 	uint8 paletteIndex = ColourMapA[w->colours[1]].mid_light;
 	gfx_clear(dpi, paletteIndex);
 
-	int width = w->widgets[WIDX_LIST].right - w->widgets[WIDX_LIST].left;
+	sint32 width = w->widgets[WIDX_LIST].right - w->widgets[WIDX_LIST].left;
 
-	int y = 0;
+	sint32 y = 0;
 	w->widgets[WIDX_LIST].tooltip = STR_NONE;
-	for (int i = 0; i < w->no_list_items; i++) {
+	for (sint32 i = 0; i < w->no_list_items; i++) {
 		if (y >= dpi->y + dpi->height) continue;
 		// if (y + ITEM_HEIGHT < dpi->y) continue;
 
@@ -438,7 +438,7 @@ static void window_server_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi
 			w->widgets[WIDX_LIST].tooltip = STR_NETWORK_VERSION_TIP;
 		}
 
-		int colour = w->colours[1];
+		sint32 colour = w->colours[1];
 		if (serverDetails->favourite) {
 			colour = COLOUR_YELLOW;
 		}
@@ -450,11 +450,11 @@ static void window_server_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi
 			gfx_draw_string(dpi, serverDetails->name, colour, 3, y + 3);
 		}
 
-		int right = width - 3 - 14;
+		sint32 right = width - 3 - 14;
 
 		// Draw compatibility icon
 		right -= 10;
-		int compatibilitySpriteId;
+		sint32 compatibilitySpriteId;
 		if (str_is_null_or_empty(serverDetails->version)) {
 			// Server not online...
 			compatibilitySpriteId = SPR_G2_RCT1_CLOSE_BUTTON_0;
@@ -479,14 +479,14 @@ static void window_server_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi
 		if (serverDetails->maxplayers > 0) {
 			snprintf(players, 32, "%d/%d", serverDetails->players, serverDetails->maxplayers);
 		}
-		int numPlayersStringWidth = gfx_get_string_width(players);
+		sint32 numPlayersStringWidth = gfx_get_string_width(players);
 		gfx_draw_string(dpi, players, w->colours[1], right - numPlayersStringWidth, y + 3);
 
 		y += ITEM_HEIGHT;
 	}
 }
 
-static void server_list_get_item_button(int buttonIndex, int x, int y, int width, int *outX, int *outY)
+static void server_list_get_item_button(sint32 buttonIndex, sint32 x, sint32 y, sint32 width, sint32 *outX, sint32 *outY)
 {
 	*outX = width - 3 - 36 - (30 * buttonIndex);
 	*outY = y + 2;
@@ -494,11 +494,11 @@ static void server_list_get_item_button(int buttonIndex, int x, int y, int width
 
 static char *freadstralloc(SDL_RWops *file)
 {
-	int capacity = 64;
+	sint32 capacity = 64;
 	char *buffer = malloc(capacity);
 
-	int length = 0;
-	int c;
+	sint32 length = 0;
+	sint32 c;
 	for (;;) {
 		c = 0;
 		if (SDL_RWread(file, &c, 1, 1) != 1) break;
@@ -548,7 +548,7 @@ static void server_list_load_server_entries()
 	_serverEntries = malloc(_numServerEntries * sizeof(server_entry));
 
 	// Load each server entry
-	for (int i = 0; i < _numServerEntries; i++) {
+	for (sint32 i = 0; i < _numServerEntries; i++) {
 		server_entry *serverInfo = &_serverEntries[i];
 
 		serverInfo->address = freadstralloc(file);
@@ -581,8 +581,8 @@ static void server_list_save_server_entries()
 	}
 
 	SDL_LockMutex(_mutex);
-	int count = 0;
-	for (int i = 0; i < _numServerEntries; i++) {
+	sint32 count = 0;
+	for (sint32 i = 0; i < _numServerEntries; i++) {
 		server_entry *serverInfo = &_serverEntries[i];
 		if (serverInfo->favourite) {
 			count++;
@@ -592,7 +592,7 @@ static void server_list_save_server_entries()
 	SDL_RWwrite(file, &count, sizeof(uint32), 1);
 
 	// Write each server entry
-	for (int i = 0; i < _numServerEntries; i++) {
+	for (sint32 i = 0; i < _numServerEntries; i++) {
 		server_entry *serverInfo = &_serverEntries[i];
 		if (serverInfo->favourite) {
 			SDL_RWwrite(file, serverInfo->address, strlen(serverInfo->address) + 1, 1);
@@ -609,7 +609,7 @@ static void dispose_server_entry_list()
 {
 	SDL_LockMutex(_mutex);
 	if (_serverEntries != NULL) {
-		for (int i = 0; i < _numServerEntries; i++) {
+		for (sint32 i = 0; i < _numServerEntries; i++) {
 			dispose_server_entry(&_serverEntries[i]);
 		}
 		free(_serverEntries);
@@ -630,7 +630,7 @@ static void dispose_server_entry(server_entry *serverInfo)
 static server_entry* add_server_entry(char *address)
 {
 	SDL_LockMutex(_mutex);
-	for (int i = 0; i < _numServerEntries; i++) {
+	for (sint32 i = 0; i < _numServerEntries; i++) {
 		if (strcmp(_serverEntries[i].address, address) == 0) {
 			SDL_UnlockMutex(_mutex);
 			return &_serverEntries[i];
@@ -644,7 +644,7 @@ static server_entry* add_server_entry(char *address)
 		_serverEntries = realloc(_serverEntries, _numServerEntries * sizeof(server_entry));
 	}
 
-	int index = _numServerEntries - 1;
+	sint32 index = _numServerEntries - 1;
 	server_entry* newserver = &_serverEntries[index];
 	newserver->address = _strdup(address);
 	newserver->name = _strdup(address);
@@ -658,11 +658,11 @@ static server_entry* add_server_entry(char *address)
 	return newserver;
 }
 
-static void remove_server_entry(int index)
+static void remove_server_entry(sint32 index)
 {
 	SDL_LockMutex(_mutex);
 	if (_numServerEntries > index) {
-		int serversToMove = _numServerEntries - index - 1;
+		sint32 serversToMove = _numServerEntries - index - 1;
 		memmove(&_serverEntries[index], &_serverEntries[index + 1], serversToMove * sizeof(server_entry));
 
 		_numServerEntries--;
@@ -671,7 +671,7 @@ static void remove_server_entry(int index)
 	SDL_UnlockMutex(_mutex);
 }
 
-static int server_compare(const void *a, const void *b)
+static sint32 server_compare(const void *a, const void *b)
 {
 	const server_entry *serverA = (const server_entry*)a;
 	const server_entry *serverB = (const server_entry*)b;
@@ -708,7 +708,7 @@ static void sort_servers()
 	qsort(_serverEntries, _numServerEntries, sizeof(server_entry), server_compare);
 }
 
-static char *substr(char *start, int length)
+static char *substr(char *start, sint32 length)
 {
 	char *result = malloc(length + 1);
 	memcpy(result, start, length);
@@ -718,7 +718,7 @@ static char *substr(char *start, int length)
 
 static void join_server(char *address)
 {
-	int port = gConfigNetwork.default_port;
+	sint32 port = gConfigNetwork.default_port;
 
 	bool addresscopied = false;
 
@@ -728,13 +728,13 @@ static void join_server(char *address)
 
 	char *colon = strrchr(address, ':');
 	if (colon != NULL && (endbracket != NULL || dot != NULL)) {
-		address = substr(address, (int)(colon - address));
+		address = substr(address, (sint32)(colon - address));
 		sscanf(colon + 1, "%d", &port);
 		addresscopied = true;
 	}
 
 	if (startbracket && endbracket) {
-		address = substr(startbracket + 1, (int)(endbracket - startbracket - 1));
+		address = substr(startbracket + 1, (sint32)(endbracket - startbracket - 1));
 		addresscopied = true;
 	}
 
@@ -750,7 +750,7 @@ static void join_server(char *address)
 static uint32 get_total_player_count()
 {
 	uint32 numPlayers = 0;
-	for (int i = 0; i < _numServerEntries; i++) {
+	for (sint32 i = 0; i < _numServerEntries; i++) {
 		server_entry *serverDetails = &_serverEntries[i];
 		numPlayers += serverDetails->players;
 	}
@@ -766,7 +766,7 @@ static void fetch_servers()
 	}
 
 	SDL_LockMutex(_mutex);
-	for (int i = 0; i < _numServerEntries; i++) {
+	for (sint32 i = 0; i < _numServerEntries; i++) {
 		if (!_serverEntries[i].favourite) {
 			remove_server_entry(i);
 			i = 0;
@@ -799,7 +799,7 @@ static void fetch_servers_callback(http_response_t* response)
 		return;
 	}
 
-	int status = (int)json_integer_value(jsonStatus);
+	sint32 status = (sint32)json_integer_value(jsonStatus);
 	if (status != 200) {
 		http_request_dispose(response);
 		log_warning("Master server failed to return servers");
@@ -813,8 +813,8 @@ static void fetch_servers_callback(http_response_t* response)
 		return;
 	}
 
-	int count = (int)json_array_size(jsonServers);
-	for (int i = 0; i < count; i++) {
+	sint32 count = (sint32)json_array_size(jsonServers);
+	for (sint32 i = 0; i < count; i++) {
 		json_t *server = json_array_get(jsonServers, i);
 		if (!json_is_object(server)) {
 			continue;
@@ -838,7 +838,7 @@ static void fetch_servers_callback(http_response_t* response)
 		}
 
 		char address[256];
-		snprintf(address, sizeof(address), "%s:%d", json_string_value(addressIp), (int)json_integer_value(port));
+		snprintf(address, sizeof(address), "%s:%d", json_string_value(addressIp), (sint32)json_integer_value(port));
 
 		SDL_LockMutex(_mutex);
 		server_entry* newserver = add_server_entry(address);

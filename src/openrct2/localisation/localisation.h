@@ -24,10 +24,10 @@
 #include "string_ids.h"
 #include "../management/marketing.h"
 
-bool utf8_is_format_code(int codepoint);
-bool utf8_is_colour_code(int codepoint);
-bool utf8_should_use_sprite_for_codepoint(int codepoint);
-int utf8_get_format_code_arg_length(int codepoint);
+bool utf8_is_format_code(sint32 codepoint);
+bool utf8_is_colour_code(sint32 codepoint);
+bool utf8_should_use_sprite_for_codepoint(sint32 codepoint);
+sint32 utf8_get_format_code_arg_length(sint32 codepoint);
 void utf8_remove_formatting(utf8* string, bool allowColours);
 
 void format_string(char *dest, size_t size, rct_string_id format, void *args);
@@ -36,21 +36,21 @@ void format_string_to_upper(char *dest, size_t size, rct_string_id format, void 
 void generate_string_file();
 utf8 *get_string_end(const utf8 *text);
 size_t get_string_size(const utf8 *text);
-int get_string_length(const utf8 *text);
+sint32 get_string_length(const utf8 *text);
 
 money32 string_to_money(char * string_to_monetise);
 void money_to_string(money32 amount, char * buffer_to_put_value_to, size_t buffer_len);
 
 void user_string_clear_all();
-rct_string_id user_string_allocate(int base, const utf8 *text);
+rct_string_id user_string_allocate(sint32 base, const utf8 *text);
 void user_string_free(rct_string_id id);
 bool is_user_string_id(rct_string_id stringId);
 
 utf8 *win1252_to_utf8_alloc(const char *src, size_t srcMaxSize);
-int win1252_to_utf8(utf8string dst, const char *src, size_t srcLength, size_t maxBufferLength);
+sint32 win1252_to_utf8(utf8string dst, const char *src, size_t srcLength, size_t maxBufferLength);
 
-int rct2_to_utf8(utf8 *dst, const char *src);
-int utf8_to_rct2(char *dst, const utf8 *src);
+sint32 rct2_to_utf8(utf8 *dst, const char *src);
+sint32 utf8_to_rct2(char *dst, const utf8 *src);
 wchar_t encoding_convert_rct2_to_unicode(wchar_t rct2str);
 wchar_t encoding_convert_unicode_to_rct2(wchar_t unicode);
 wchar_t encoding_convert_gb2312_to_unicode(wchar_t gb2312);

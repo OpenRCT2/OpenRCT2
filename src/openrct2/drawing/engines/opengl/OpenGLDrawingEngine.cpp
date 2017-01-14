@@ -307,7 +307,7 @@ public:
 
     void SetPalette(SDL_Color * palette) override
     {
-        for (int i = 0; i < 256; i++)
+        for (sint32 i = 0; i < 256; i++)
         {
             SDL_Color colour = palette[i];
             colour.a = i == 0 ? 0 : 255;
@@ -371,7 +371,7 @@ public:
         framebuffer->Bind();
         void * pixels = framebuffer->GetPixels();
 
-        int result = screenshot_dump_png_32bpp(_width, _height, pixels);
+        sint32 result = screenshot_dump_png_32bpp(_width, _height, pixels);
         Memory::Free(pixels);
         return result;
     }
@@ -691,7 +691,7 @@ void OpenGLDrawingContext::DrawLine(uint32 colour, sint32 x1, sint32 y1, sint32 
 
 void OpenGLDrawingContext::DrawSprite(uint32 image, sint32 x, sint32 y, uint32 tertiaryColour)
 {
-    int g1Id = image & 0x7FFFF;
+    sint32 g1Id = image & 0x7FFFF;
     rct_g1_element * g1Element = gfx_get_g1_element(g1Id);
 
     if (_dpi->zoom_level != 0)
@@ -726,7 +726,7 @@ void OpenGLDrawingContext::DrawSprite(uint32 image, sint32 x, sint32 y, uint32 t
     sint32 left = x + drawOffsetX;
     sint32 top = y + drawOffsetY;
 
-    int zoom_mask = 0xFFFFFFFF << _dpi->zoom_level;
+    sint32 zoom_mask = 0xFFFFFFFF << _dpi->zoom_level;
     if (_dpi->zoom_level && g1Element->flags & G1_FLAG_RLE_COMPRESSION){
         top -= ~zoom_mask;
     }
@@ -880,7 +880,7 @@ void OpenGLDrawingContext::DrawSpriteSolid(uint32 image, sint32 x, sint32 y, uin
 {
     vec4f paletteColour = _engine->GLPalette[colour & 0xFF];
 
-    int g1Id = image & 0x7FFFF;
+    sint32 g1Id = image & 0x7FFFF;
     rct_g1_element * g1Element = gfx_get_g1_element(g1Id);
 
     auto texture = _textureCache->GetOrLoadImageTexture(image);
@@ -932,7 +932,7 @@ void OpenGLDrawingContext::DrawSpriteSolid(uint32 image, sint32 x, sint32 y, uin
 
 void OpenGLDrawingContext::DrawGlyph(uint32 image, sint32 x, sint32 y, uint8 * palette)
 {
-    int g1Id = image & 0x7FFFF;
+    sint32 g1Id = image & 0x7FFFF;
     rct_g1_element * g1Element = gfx_get_g1_element(g1Id);
 
     auto texture = _textureCache->GetOrLoadGlyphTexture(image, palette);

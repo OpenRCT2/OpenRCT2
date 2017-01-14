@@ -83,8 +83,8 @@ extern "C"
 
     void    cursors_initialise();
     void    cursors_dispose();
-    int     cursors_getcurrentcursor();
-    void    cursors_setcurrentcursor(int cursorId);
+    sint32     cursors_getcurrentcursor();
+    void    cursors_setcurrentcursor(sint32 cursorId);
 
 #ifdef __cplusplus
 }

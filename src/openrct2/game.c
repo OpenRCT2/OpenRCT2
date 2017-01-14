@@ -60,10 +60,10 @@
 uint16 gTicksSinceLastUpdate;
 uint32 gLastTickCount;
 uint8 gGamePaused = 0;
-int gGameSpeed = 1;
+sint32 gGameSpeed = 1;
 float gDayNightCycle = 0;
 bool gInUpdateCode = false;
-int gGameCommandNestLevel;
+sint32 gGameCommandNestLevel;
 bool gGameCommandIsNetworked;
 
 uint8 gUnk13CA740;
@@ -86,16 +86,16 @@ GAME_COMMAND_CALLBACK_POINTER* game_command_callback_table[] = {
 	game_command_callback_pickup_guest,
 	game_command_callback_pickup_staff,
 };
-int game_command_playerid = -1;
+sint32 game_command_playerid = -1;
 
 rct_string_id gGameCommandErrorTitle;
 rct_string_id gGameCommandErrorText;
 uint8 gErrorType;
 rct_string_id gErrorStringId;
 
-int game_command_callback_get_index(GAME_COMMAND_CALLBACK_POINTER* callback)
+sint32 game_command_callback_get_index(GAME_COMMAND_CALLBACK_POINTER* callback)
 {
-	for (int i = 0; i < countof(game_command_callback_table); i++ ) {
+	for (sint32 i = 0; i < countof(game_command_callback_table); i++ ) {
 		if (game_command_callback_table[i] == callback) {
 			return i;
 		}
@@ -103,7 +103,7 @@ int game_command_callback_get_index(GAME_COMMAND_CALLBACK_POINTER* callback)
 	return 0;
 }
 
-GAME_COMMAND_CALLBACK_POINTER* game_command_callback_get_callback(int index)
+GAME_COMMAND_CALLBACK_POINTER* game_command_callback_get_callback(sint32 index)
 {
 	if (index < countof(game_command_callback_table)) {
 		return game_command_callback_table[index];
@@ -162,16 +162,16 @@ void update_palette_effects()
 
 	if (gClimateLightningFlash == 1) {
 		// change palette to lighter colour during lightning
-		int palette = SPR_GAME_PALETTE_DEFAULT;
+		sint32 palette = SPR_GAME_PALETTE_DEFAULT;
 
 		if ((intptr_t)water_type != -1) {
 			palette = water_type->image_id;
 		}
 		rct_g1_element g1_element = g1Elements[palette];
-		int xoffset = g1_element.x_offset;
+		sint32 xoffset = g1_element.x_offset;
 		xoffset = xoffset * 4;
 		uint8 *paletteOffset = gGamePalette + xoffset;
-		for (int i = 0; i < g1_element.width; i++) {
+		for (sint32 i = 0; i < g1_element.width; i++) {
 			paletteOffset[(i * 4) + 0] = -((0xFF - g1_element.offset[(i * 3) + 0]) / 2) - 1;
 			paletteOffset[(i * 4) + 1] = -((0xFF - g1_element.offset[(i * 3) + 1]) / 2) - 1;
 			paletteOffset[(i * 4) + 2] = -((0xFF - g1_element.offset[(i * 3) + 2]) / 2) - 1;
@@ -181,17 +181,17 @@ void update_palette_effects()
 	} else {
 		if (gClimateLightningFlash == 2) {
 			// change palette back to normal after lightning
-			int palette = SPR_GAME_PALETTE_DEFAULT;
+			sint32 palette = SPR_GAME_PALETTE_DEFAULT;
 
 			if ((intptr_t)water_type != -1) {
 				palette = water_type->image_id;
 			}
 
 			rct_g1_element g1_element = g1Elements[palette];
-			int xoffset = g1_element.x_offset;
+			sint32 xoffset = g1_element.x_offset;
 			xoffset = xoffset * 4;
 			uint8 *paletteOffset = gGamePalette + xoffset;
-			for (int i = 0; i < g1_element.width; i++) {
+			for (sint32 i = 0; i < g1_element.width; i++) {
 				paletteOffset[(i * 4) + 0] = g1_element.offset[(i * 3) + 0];
 				paletteOffset[(i * 4) + 1] = g1_element.offset[(i * 3) + 1];
 				paletteOffset[(i * 4) + 2] = g1_element.offset[(i * 3) + 2];
@@ -199,7 +199,7 @@ void update_palette_effects()
 		}
 
 		// animate the water/lava/chain movement palette
-		int q = 0;
+		sint32 q = 0;
 		if (gConfigGeneral.render_weather_gloom) {
 			uint8 gloom = gClimateCurrentWeatherGloom;
 			if (gloom != 0) {
@@ -212,15 +212,15 @@ void update_palette_effects()
 		}
 		uint32 j = gPaletteEffectFrame;
 		j = (((uint16)((~j / 2) * 128) * 15) >> 16);
-		int p = SPR_GAME_PALETTE_WATER;
+		sint32 p = SPR_GAME_PALETTE_WATER;
 		if ((intptr_t)water_type != -1) {
 			p = water_type->var_06;
 		}
 		rct_g1_element g1_element = g1Elements[q + p];
 		uint8* vs = &g1_element.offset[j * 3];
 		uint8* vd = &gGamePalette[230 * 4];
-		int n = 5;
-		for (int i = 0; i < n; i++) {
+		sint32 n = 5;
+		for (sint32 i = 0; i < n; i++) {
 			vd[0] = vs[0];
 			vd[1] = vs[1];
 			vd[2] = vs[2];
@@ -238,7 +238,7 @@ void update_palette_effects()
 		g1_element = g1Elements[q + p];
 		vs = &g1_element.offset[j * 3];
 		n = 5;
-		for (int i = 0; i < n; i++) {
+		for (sint32 i = 0; i < n; i++) {
 			vd[0] = vs[0];
 			vd[1] = vs[1];
 			vd[2] = vs[2];
@@ -255,7 +255,7 @@ void update_palette_effects()
 		vs = &g1_element.offset[j * 3];
 		vd += 12;
 		n = 3;
-		for (int i = 0; i < n; i++) {
+		for (sint32 i = 0; i < n; i++) {
 			vd[0] = vs[0];
 			vd[1] = vs[1];
 			vd[2] = vs[2];
@@ -276,7 +276,7 @@ void update_palette_effects()
 
 void game_update()
 {
-	int i, numUpdates;
+	sint32 i, numUpdates;
 
 	// 0x006E3AEC // screen_game_process_mouse_input();
 	screenshot_check();
@@ -435,7 +435,7 @@ void game_logic_update()
  *
  * @param cost (ebp)
  */
-static int game_check_affordability(int cost)
+static sint32 game_check_affordability(sint32 cost)
 {
 	if (cost <= 0)return cost;
 	if (gUnk141F568 & 0xF0) return cost;
@@ -454,7 +454,7 @@ static int game_check_affordability(int cost)
  * @param flags (ebx)
  * @param command (esi)
  */
-int game_do_command(int eax, int ebx, int ecx, int edx, int esi, int edi, int ebp)
+sint32 game_do_command(sint32 eax, sint32 ebx, sint32 ecx, sint32 edx, sint32 esi, sint32 edi, sint32 ebp)
 {
 	return game_do_command_p(esi, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
 }
@@ -466,10 +466,10 @@ int game_do_command(int eax, int ebx, int ecx, int edx, int esi, int edi, int eb
 * @param flags (ebx)
 * @param command (esi)
 */
-int game_do_command_p(int command, int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp)
+sint32 game_do_command_p(sint32 command, sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *edx, sint32 *esi, sint32 *edi, sint32 *ebp)
 {
-	int cost, flags;
-	int original_ebx, original_edx, original_esi, original_edi, original_ebp;
+	sint32 cost, flags;
+	sint32 original_ebx, original_edx, original_esi, original_edi, original_ebp;
 
 	*esi = command;
 	original_ebx = *ebx;
@@ -514,7 +514,7 @@ int game_do_command_p(int command, int *eax, int *ebx, int *ecx, int *edx, int *
 
 	if (cost != MONEY32_UNDEFINED) {
 		// Check funds
-		int insufficientFunds = 0;
+		sint32 insufficientFunds = 0;
 		if (gGameCommandNestLevel == 1 && !(flags & GAME_COMMAND_FLAG_2) && !(flags & GAME_COMMAND_FLAG_5) && cost != 0)
 			insufficientFunds = game_check_affordability(cost);
 
@@ -631,7 +631,7 @@ bool game_is_not_paused()
  *
  *  rct2: 0x00667C15
  */
-void game_pause_toggle(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp)
+void game_pause_toggle(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *edx, sint32 *esi, sint32 *edi, sint32 *ebp)
 {
 	if (*ebx & GAME_COMMAND_FLAG_APPLY)
 		pause_toggle();
@@ -643,7 +643,7 @@ void game_pause_toggle(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *ed
  *
  *  rct2: 0x0066DB5F
  */
-static void game_load_or_quit(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp)
+static void game_load_or_quit(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *edx, sint32 *esi, sint32 *edi, sint32 *ebp)
 {
 	if (*ebx & GAME_COMMAND_FLAG_APPLY) {
 		switch (*edx & 0xFF) {
@@ -720,7 +720,7 @@ void game_convert_strings_to_utf8()
 	rct2_to_utf8_self(gScenarioDetails, 256);
 
 	// User strings
-	for (int i = 0; i < MAX_USER_STRINGS; i++) {
+	for (sint32 i = 0; i < MAX_USER_STRINGS; i++) {
 		utf8 *userString = &gUserStrings[i * USER_STRING_MAX_LENGTH];
 
 		if (!str_is_null_or_empty(userString)) {
@@ -730,7 +730,7 @@ void game_convert_strings_to_utf8()
 	}
 
 	// News items
-	for (int i = 0; i < MAX_NEWS_ITEMS; i++) {
+	for (sint32 i = 0; i < MAX_NEWS_ITEMS; i++) {
 		rct_news_item *newsItem = news_item_get(i);
 
 		if (!str_is_null_or_empty(newsItem->text)) {
@@ -750,7 +750,7 @@ void game_convert_strings_to_rct2(rct_s6_data *s6)
 	utf8_to_rct2_self(s6->scenario_description, sizeof(s6->scenario_description));
 
 	// User strings
-	for (int i = 0; i < MAX_USER_STRINGS; i++) {
+	for (sint32 i = 0; i < MAX_USER_STRINGS; i++) {
 		char *userString = &s6->custom_strings[i * USER_STRING_MAX_LENGTH];
 
 		if (!str_is_null_or_empty(userString)) {
@@ -759,7 +759,7 @@ void game_convert_strings_to_rct2(rct_s6_data *s6)
 	}
 
 	// News items
-	for (int i = 0; i < MAX_NEWS_ITEMS; i++) {
+	for (sint32 i = 0; i < MAX_NEWS_ITEMS; i++) {
 		rct_news_item *newsItem = &s6->news_items[i];
 
 		if (!str_is_null_or_empty(newsItem->text)) {
@@ -786,8 +786,8 @@ void game_fix_save_vars() {
 	peep_sort();
 
 	// Fixes broken saves where a surface element could be null
-	for (int y = 0; y < 256; y++) {
-		for (int x = 0; x < 256; x++) {
+	for (sint32 y = 0; y < 256; y++) {
+		for (sint32 x = 0; x < 256; x++) {
 			rct_map_element *mapElement = map_get_surface_element_at(x, y);
 
 			if (mapElement == NULL)
@@ -803,7 +803,7 @@ void game_fix_save_vars() {
 	}
 
 	// Fix invalid research items
-	for (int i = 0; i < 500; i++) {
+	for (sint32 i = 0; i < 500; i++) {
 		rct_research_item *researchItem = &gResearchItems[i];
 		if (researchItem->entryIndex == RESEARCHED_ITEMS_SEPARATOR) continue;
 		if (researchItem->entryIndex == RESEARCHED_ITEMS_END) continue;
@@ -965,13 +965,13 @@ void save_game_as()
 	window_loadsave_open(LOADSAVETYPE_SAVE | LOADSAVETYPE_GAME, name);
 }
 
-static int compare_autosave_file_paths (const void * a, const void * b ) {
+static sint32 compare_autosave_file_paths (const void * a, const void * b ) {
 	return strcmp(*(char **)a, *(char **)b);
 }
 
 static void limit_autosave_count(const size_t numberOfFilesToKeep)
 {
-	int fileEnumHandle = 0;
+	sint32 fileEnumHandle = 0;
 
 	size_t autosavesCount = 0;
 	size_t numAutosavesToDelete = 0;
@@ -1121,7 +1121,7 @@ bool game_load_save_or_scenario(const utf8 * path)
 	return false;
 }
 
-static void game_load_or_quit_no_save_prompt_callback(int result, const utf8 * path)
+static void game_load_or_quit_no_save_prompt_callback(sint32 result, const utf8 * path)
 {
 	if (result == MODAL_RESULT_OK && game_load_save_or_scenario(path)) {
 		gFirstTimeSave = 0;

@@ -19,8 +19,8 @@
 #include <stdio.h>
 #include "diagnostic.h"
 
-int _log_levels[DIAGNOSTIC_LEVEL_COUNT] = { 1, 1, 1, 0, 1 };
-int _log_location_enabled = 1;
+static bool _log_location_enabled = true;
+bool _log_levels[DIAGNOSTIC_LEVEL_COUNT] = { true, true, true, false, true };
 
 const char * _level_strings[] = {
 	"FATAL",
@@ -30,7 +30,7 @@ const char * _level_strings[] = {
 	"INFO"
 };
 
-void diagnostic_log(int diagnosticLevel, const char *format, ...)
+void diagnostic_log(DiagnosticLevel diagnosticLevel, const char *format, ...)
 {
 	FILE *stream;
 	va_list args;
@@ -52,7 +52,7 @@ void diagnostic_log(int diagnosticLevel, const char *format, ...)
 	fprintf(stream, "\n");
 }
 
-void diagnostic_log_with_location(int diagnosticLevel, const char *file, const char *function, int line, const char *format, ...)
+void diagnostic_log_with_location(DiagnosticLevel diagnosticLevel, const char *file, const char *function, sint32 line, const char *format, ...)
 {
 	FILE *stream;
 	va_list args;

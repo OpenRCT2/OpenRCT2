@@ -26,12 +26,12 @@ extern paint_struct * gWoodenSupportsPrependTo;
 #define gWoodenSupportsPrependTo		RCT2_GLOBAL(0x009DEA58, paint_struct *)
 #endif
 
-bool wooden_a_supports_paint_setup(int supportType, int special, int height, uint32 imageColourFlags, bool* underground);
-bool wooden_b_supports_paint_setup(int supportType, int special, int height, uint32 imageColourFlags, bool* underground);
-bool metal_a_supports_paint_setup(uint8 supportType, uint8 segment, int special, int height, uint32 imageColourFlags);
-bool metal_b_supports_paint_setup(uint8 supportType, uint8 segment, int special, int height, uint32 imageColourFlags);
-bool path_a_supports_paint_setup(int supportType, int special, int height, uint32 imageColourFlags, rct_footpath_entry * pathEntry, bool * underground);
-bool path_b_supports_paint_setup(int supportType, int special, int height, uint32 imageColourFlags, rct_footpath_entry * pathEntry);
+bool wooden_a_supports_paint_setup(sint32 supportType, sint32 special, sint32 height, uint32 imageColourFlags, bool* underground);
+bool wooden_b_supports_paint_setup(sint32 supportType, sint32 special, sint32 height, uint32 imageColourFlags, bool* underground);
+bool metal_a_supports_paint_setup(uint8 supportType, uint8 segment, sint32 special, sint32 height, uint32 imageColourFlags);
+bool metal_b_supports_paint_setup(uint8 supportType, uint8 segment, sint32 special, sint32 height, uint32 imageColourFlags);
+bool path_a_supports_paint_setup(sint32 supportType, sint32 special, sint32 height, uint32 imageColourFlags, rct_footpath_entry * pathEntry, bool * underground);
+bool path_b_supports_paint_setup(sint32 supportType, sint32 special, sint32 height, uint32 imageColourFlags, rct_footpath_entry * pathEntry);
 
 // There are 13 types of metal supports. A graphic showing all of them is available here: https://cloud.githubusercontent.com/assets/737603/19420485/7eaba28e-93ec-11e6-83cb-03190accc094.png
 enum {

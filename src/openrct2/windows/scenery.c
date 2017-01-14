@@ -62,19 +62,19 @@ enum {
 };
 
 static void window_scenery_close(rct_window *w);
-static void window_scenery_mouseup(rct_window *w, int widgetIndex);
+static void window_scenery_mouseup(rct_window *w, sint32 widgetIndex);
 static void window_scenery_resize(rct_window *w);
-static void window_scenery_mousedown(int widgetIndex, rct_window* w, rct_widget* widget);
-static void window_scenery_dropdown(rct_window *w, int widgetIndex, int dropdownIndex);
+static void window_scenery_mousedown(sint32 widgetIndex, rct_window* w, rct_widget* widget);
+static void window_scenery_dropdown(rct_window *w, sint32 widgetIndex, sint32 dropdownIndex);
 static void window_scenery_update(rct_window *w);
 static void window_scenery_event_07(rct_window *w);
-static void window_scenery_scrollgetsize(rct_window *w, int scrollIndex, int *width, int *height);
-static void window_scenery_scrollmousedown(rct_window *w, int scrollIndex, int x, int y);
-static void window_scenery_scrollmouseover(rct_window *w, int scrollIndex, int x, int y);
-static void window_scenery_tooltip(rct_window* w, int widgetIndex, rct_string_id *stringId);
+static void window_scenery_scrollgetsize(rct_window *w, sint32 scrollIndex, sint32 *width, sint32 *height);
+static void window_scenery_scrollmousedown(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y);
+static void window_scenery_scrollmouseover(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y);
+static void window_scenery_tooltip(rct_window* w, sint32 widgetIndex, rct_string_id *stringId);
 static void window_scenery_invalidate(rct_window *w);
 static void window_scenery_paint(rct_window *w, rct_drawpixelinfo *dpi);
-static void window_scenery_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scrollIndex);
+static void window_scenery_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 scrollIndex);
 
 static rct_window_event_list window_scenery_events = {
 	window_scenery_close,
@@ -186,11 +186,11 @@ void window_scenery_update_scroll(rct_window *w);
  * Was part of 0x006DFA00
  * The same code repeated five times for every scenery entry type
  */
-static void init_scenery_entry(rct_scenery_entry *sceneryEntry, int index, uint8 sceneryTabId)
+static void init_scenery_entry(rct_scenery_entry *sceneryEntry, sint32 index, uint8 sceneryTabId)
 {
 	if (scenery_is_invented(index)) {
 		if (sceneryTabId != 0xFF) {
-			for (int i = 0; i < SCENERY_ENTRIES_BY_TAB; i++) {
+			for (sint32 i = 0; i < SCENERY_ENTRIES_BY_TAB; i++) {
 				if (window_scenery_tab_entries[sceneryTabId][i] == -1)
 				{
 					window_scenery_tab_entries[sceneryTabId][i] = index;
@@ -200,8 +200,8 @@ static void init_scenery_entry(rct_scenery_entry *sceneryEntry, int index, uint8
 			}
 		}
 
-		for (int i = 0; i < 19; i++) {
-			int counter = 0;
+		for (sint32 i = 0; i < 19; i++) {
+			sint32 counter = 0;
 
 			while (window_scenery_tab_entries[i][counter] != -1)
 			{
@@ -213,7 +213,7 @@ static void init_scenery_entry(rct_scenery_entry *sceneryEntry, int index, uint8
 			}
 		}
 
-		for (int i = 0; i < SCENERY_ENTRIES_BY_TAB; i++) {
+		for (sint32 i = 0; i < SCENERY_ENTRIES_BY_TAB; i++) {
 			if (window_scenery_tab_entries[19][i] == -1)
 			{
 				window_scenery_tab_entries[19][i] = index;
@@ -232,7 +232,7 @@ void init_scenery()
 {
 	bool enabledScenerySets[20] = { false };
 
-	for (int scenerySetIndex = 0; scenerySetIndex < 20; scenerySetIndex++) {
+	for (sint32 scenerySetIndex = 0; scenerySetIndex < 20; scenerySetIndex++) {
 		window_scenery_tab_entries[scenerySetIndex][0] = -1;
 		if (scenerySetIndex == 19)
 			continue;
@@ -241,8 +241,8 @@ void init_scenery()
 		if (scenerySetEntry == (rct_scenery_set_entry *)-1)
 			continue;
 
-		int sceneryTabEntryCount = 0;
-		for (int i = 0; i < scenerySetEntry->entry_count; i++) {
+		sint32 sceneryTabEntryCount = 0;
+		for (sint32 i = 0; i < scenerySetEntry->entry_count; i++) {
 			uint16 sceneryEntryId = scenerySetEntry->scenery_entries[i];
 			if (scenery_is_invented(sceneryEntryId)) {
 				window_scenery_tab_entries[scenerySetIndex][sceneryTabEntryCount] = sceneryEntryId;
@@ -263,8 +263,8 @@ void init_scenery()
 	}
 
 	// large scenery
-	for (int sceneryId = 0x300; sceneryId < 0x380; sceneryId++) {
-		int largeSceneryIndex = sceneryId - 0x300;
+	for (sint32 sceneryId = 0x300; sceneryId < 0x380; sceneryId++) {
+		sint32 largeSceneryIndex = sceneryId - 0x300;
 
 		if (get_large_scenery_entry(largeSceneryIndex) == (rct_scenery_entry *)-1)
 			continue;
@@ -274,8 +274,8 @@ void init_scenery()
 	}
 
 	// walls
-	for (int sceneryId = 0x200; sceneryId < 0x280; sceneryId++) {
-		int wallSceneryIndex = sceneryId - 0x200;
+	for (sint32 sceneryId = 0x200; sceneryId < 0x280; sceneryId++) {
+		sint32 wallSceneryIndex = sceneryId - 0x200;
 
 		if (get_wall_entry(wallSceneryIndex) == (rct_scenery_entry *)-1)
 			continue;
@@ -285,8 +285,8 @@ void init_scenery()
 	}
 
 	// banners
-	for (int sceneryId = 0x400; sceneryId < 0x420; sceneryId++) {
-		int bannerIndex = sceneryId - 0x400;
+	for (sint32 sceneryId = 0x400; sceneryId < 0x420; sceneryId++) {
+		sint32 bannerIndex = sceneryId - 0x400;
 
 		if (get_banner_entry(bannerIndex) == (rct_scenery_entry *)-1)
 			continue;
@@ -296,8 +296,8 @@ void init_scenery()
 	}
 
 	// path bits
-	for (int sceneryId = 0x100; sceneryId < 0x10F; sceneryId++) {
-		int pathBitIndex = sceneryId - 0x100;
+	for (sint32 sceneryId = 0x100; sceneryId < 0x10F; sceneryId++) {
+		sint32 pathBitIndex = sceneryId - 0x100;
 
 		if (get_footpath_item_entry(pathBitIndex) == (rct_scenery_entry *)-1)
 			continue;
@@ -306,14 +306,14 @@ void init_scenery()
 		init_scenery_entry(sceneryEntry, sceneryId, sceneryEntry->path_bit.scenery_tab_id);
 	}
 
-	for (int widgetIndex = WIDX_SCENERY_TAB_1; widgetIndex < WIDX_SCENERY_LIST; widgetIndex++)
+	for (sint32 widgetIndex = WIDX_SCENERY_TAB_1; widgetIndex < WIDX_SCENERY_LIST; widgetIndex++)
 		window_scenery_widgets[widgetIndex].type = WWT_EMPTY;
 
 	uint8 tabIndexes[20];
 	uint8 order[20];
-	int usedValues = 0;
+	sint32 usedValues = 0;
 
-	for (int scenerySetId = 0; scenerySetId < 19; scenerySetId++) {
+	for (sint32 scenerySetId = 0; scenerySetId < 19; scenerySetId++) {
 		rct_scenery_set_entry* sceneryEntry = get_scenery_group_entry(scenerySetId);
 		if (sceneryEntry == (rct_scenery_set_entry *)-1)
 			continue;
@@ -326,7 +326,7 @@ void init_scenery()
 
 	while (true) {
 		bool finished = true;
-		for (int i = 1; i < usedValues; i++) {
+		for (sint32 i = 1; i < usedValues; i++) {
 			if (order[i - 1] > order[i]) {
 				uint8 tmp = tabIndexes[i - 1];
 				tabIndexes[i - 1] = tabIndexes[i];
@@ -346,7 +346,7 @@ void init_scenery()
 	usedValues++;
 
 	uint16 left = 3;
-	for (int i = 0; i < usedValues; i ++) {
+	for (sint32 i = 0; i < usedValues; i ++) {
 		uint32 tabIndex = tabIndexes[i];
 		rct_widget* tabWidget = &window_scenery_widgets[tabIndex + WIDX_SCENERY_TAB_1];
 
@@ -384,17 +384,17 @@ void scenery_set_default_placement_configuration()
 	gWindowSceneryTertiaryColour = COLOUR_DARK_BROWN;
 	init_scenery();
 
-	for (int i = 0; i < 20; i++)
+	for (sint32 i = 0; i < 20; i++)
 		gWindowSceneryTabSelections[i] = -1;
 
-	for (int i = 0; i < 20; i++) {
+	for (sint32 i = 0; i < 20; i++) {
 		if (window_scenery_tab_entries[i][0] != -1) {
 			gWindowSceneryActiveTabIndex = i;
 			return;
 		}
 	}
 
-	for (int i = 0; i < 16; i++) {
+	for (sint32 i = 0; i < 16; i++) {
 		rct_widget *tabWidget = &window_scenery_widgets[WIDX_SCENERY_TAB_1 + i];
 		if (tabWidget->type != WWT_EMPTY) {
 			gWindowSceneryActiveTabIndex = i;
@@ -484,8 +484,8 @@ void window_scenery_open()
  *  rct2: 0x0066DB3D
  */
 static bool window_scenery_is_scenery_tool_active() {
-	int toolWindowClassification = gCurrentToolWidget.window_classification;
-	int toolWidgetIndex = gCurrentToolWidget.widget_index;
+	sint32 toolWindowClassification = gCurrentToolWidget.window_classification;
+	sint32 toolWidgetIndex = gCurrentToolWidget.widget_index;
 
 	if (gInputFlags & INPUT_FLAG_TOOL_ACTIVE)
 		if (toolWindowClassification == WC_TOP_TOOLBAR && toolWidgetIndex == 9) // 9 is WIDX_SCENERY
@@ -509,22 +509,22 @@ void window_scenery_close(rct_window *w)
 		tool_cancel();
 }
 
-static int count_rows(int items){
-	int rows = items / 9;
+static sint32 count_rows(sint32 items){
+	sint32 rows = items / 9;
 
 	return rows;
 }
 
 typedef struct scenery_item {
-	int allRows;
-	int selected_item;
+	sint32 allRows;
+	sint32 selected_item;
 	sint16 sceneryId;
 } scenery_item;
 
-static scenery_item window_scenery_count_rows_with_selected_item(int tabIndex)
+static scenery_item window_scenery_count_rows_with_selected_item(sint32 tabIndex)
 {
 	scenery_item sceneryItem = { 0, 0, -1 };
-	int totalItems = 0;
+	sint32 totalItems = 0;
 	sint16 id = 0;
 	sint16 sceneryId = gWindowSceneryTabSelections[tabIndex];
 
@@ -539,25 +539,25 @@ static scenery_item window_scenery_count_rows_with_selected_item(int tabIndex)
 	return sceneryItem;
 }
 
-static int window_scenery_count_rows()
+static sint32 window_scenery_count_rows()
 {
-	int tabIndex = gWindowSceneryActiveTabIndex;
-	int totalItems = 0;
+	sint32 tabIndex = gWindowSceneryActiveTabIndex;
+	sint32 totalItems = 0;
 
 	while (window_scenery_tab_entries[tabIndex][totalItems] != -1){
 		totalItems++;
 	}
 
-	int rows = count_rows(totalItems + 8);
+	sint32 rows = count_rows(totalItems + 8);
 	return rows;
 }
 
-static int window_scenery_rows_height(int rows)
+static sint32 window_scenery_rows_height(sint32 rows)
 {
 	return rows * SCENERY_BUTTON_HEIGHT;
 }
 
-static int rows_on_page(int height)
+static sint32 rows_on_page(sint32 height)
 {
 	return height / 90;
 }
@@ -566,7 +566,7 @@ static int rows_on_page(int height)
  *
  *  rct2: 0x006BD94C
  */
-static void window_scenery_mouseup(rct_window *w, int widgetIndex)
+static void window_scenery_mouseup(rct_window *w, sint32 widgetIndex)
 {
 	switch (widgetIndex) {
 	case WIDX_SCENERY_CLOSE:
@@ -603,13 +603,13 @@ static void window_scenery_mouseup(rct_window *w, int widgetIndex)
  */
 void window_scenery_update_scroll(rct_window *w)
 {
-	int tabIndex = gWindowSceneryActiveTabIndex;
+	sint32 tabIndex = gWindowSceneryActiveTabIndex;
 
 	scenery_item sceneryItem = window_scenery_count_rows_with_selected_item(tabIndex);
 	w->scrolls[0].v_bottom = window_scenery_rows_height(sceneryItem.allRows) + 1;
 
-	int rowsOnPage = rows_on_page(w->height);
-	int rowSelected = count_rows(sceneryItem.selected_item);
+	sint32 rowsOnPage = rows_on_page(w->height);
+	sint32 rowSelected = count_rows(sceneryItem.selected_item);
 
 	if (sceneryItem.allRows - rowSelected <= rowsOnPage){
 		rowSelected = sceneryItem.allRows - rowsOnPage;
@@ -667,7 +667,7 @@ static void window_scenery_resize(rct_window *w)
  *
  *  rct2: 0x006E1A25
  */
-static void window_scenery_mousedown(int widgetIndex, rct_window* w, rct_widget* widget) {
+static void window_scenery_mousedown(sint32 widgetIndex, rct_window* w, rct_widget* widget) {
 	switch (widgetIndex) {
 	case WIDX_SCENERY_PRIMARY_COLOUR_BUTTON:
 		window_dropdown_show_colour(w, widget, w->colours[1], gWindowSceneryPrimaryColour);
@@ -694,7 +694,7 @@ static void window_scenery_mousedown(int widgetIndex, rct_window* w, rct_widget*
  *
  *  rct2: 0x006E1A54
  */
-static void window_scenery_dropdown(rct_window *w, int widgetIndex, int dropdownIndex)
+static void window_scenery_dropdown(rct_window *w, sint32 widgetIndex, sint32 dropdownIndex)
 {
 	if (dropdownIndex == -1)
 		return;
@@ -731,11 +731,11 @@ static void window_scenery_update(rct_window *w)
 {
 	rct_window *other = window_find_from_point(gCursorState.x, gCursorState.y);
 	if (other == w) {
-		int window_x = gCursorState.x - w->x + 26;
-		int window_y = gCursorState.y - w->y;
+		sint32 window_x = gCursorState.x - w->x + 26;
+		sint32 window_y = gCursorState.y - w->y;
 
 		if (window_y < 44 || window_x <= w->width) {
-			int widgetIndex = window_find_widget_from_point(w, gCursorState.x, gCursorState.y);
+			sint32 widgetIndex = window_find_widget_from_point(w, gCursorState.x, gCursorState.y);
 			if (widgetIndex >= WIDX_SCENERY_TAB_CONTENT_PANEL) {
 				w->scenery.hover_counter++;
 				if (w->scenery.hover_counter < 8) {
@@ -746,7 +746,7 @@ static void window_scenery_update(rct_window *w)
 						w->max_height = WINDOW_SCENERY_HEIGHT;
 					}
 				} else {
-					int windowHeight = min(463, w->scrolls[0].v_bottom + 62);
+					sint32 windowHeight = min(463, w->scrolls[0].v_bottom + 62);
 					if (gScreenHeight < 600)
 						windowHeight = min(374, windowHeight);
 
@@ -800,18 +800,18 @@ static void window_scenery_update(rct_window *w)
  *
  *  rct2: 0x006E1A91
  */
-void window_scenery_scrollgetsize(rct_window *w, int scrollIndex, int *width, int *height)
+void window_scenery_scrollgetsize(rct_window *w, sint32 scrollIndex, sint32 *width, sint32 *height)
 {
-	int rows = window_scenery_count_rows();
+	sint32 rows = window_scenery_count_rows();
 	*height = window_scenery_rows_height(rows);
 }
 
-static short get_scenery_id_by_cursor_pos(short x, short y)
+static sint16 get_scenery_id_by_cursor_pos(sint16 x, sint16 y)
 {
-	int tabSceneryIndex = x / SCENERY_BUTTON_WIDTH + (y / SCENERY_BUTTON_HEIGHT) * 9;
+	sint32 tabSceneryIndex = x / SCENERY_BUTTON_WIDTH + (y / SCENERY_BUTTON_HEIGHT) * 9;
 	uint8 tabIndex = gWindowSceneryActiveTabIndex;
 
-	int itemCounter = 0;
+	sint32 itemCounter = 0;
 	sint16 sceneryId = 0;
 	while (itemCounter <= tabSceneryIndex) {
 		sceneryId = window_scenery_tab_entries[tabIndex][itemCounter];
@@ -828,9 +828,9 @@ static short get_scenery_id_by_cursor_pos(short x, short y)
  *
  *  rct2: 0x006E1C4A
  */
-void window_scenery_scrollmousedown(rct_window *w, int scrollIndex, int x, int y)
+void window_scenery_scrollmousedown(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y)
 {
-	short sceneryId = get_scenery_id_by_cursor_pos(x, y);
+	sint16 sceneryId = get_scenery_id_by_cursor_pos(x, y);
 	if (sceneryId == -1)
 		return;
 
@@ -848,9 +848,9 @@ void window_scenery_scrollmousedown(rct_window *w, int scrollIndex, int x, int y
  *
  *  rct2: 0x006E1BB8
  */
-void window_scenery_scrollmouseover(rct_window *w, int scrollIndex, int x, int y)
+void window_scenery_scrollmouseover(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y)
 {
-	short sceneryId = get_scenery_id_by_cursor_pos(x, y);
+	sint16 sceneryId = get_scenery_id_by_cursor_pos(x, y);
 	if (sceneryId != -1) {
 		w->scenery.selected_scenery_id = sceneryId;
 		window_invalidate(w);
@@ -861,7 +861,7 @@ void window_scenery_scrollmouseover(rct_window *w, int scrollIndex, int x, int y
  *
  *  rct2: 0x006E1C05
  */
-void window_scenery_tooltip(rct_window* w, int widgetIndex, rct_string_id *stringId)
+void window_scenery_tooltip(rct_window* w, sint32 widgetIndex, rct_string_id *stringId)
 {
 	switch (widgetIndex) {
 	case WIDX_SCENERY_LIST:
@@ -1087,13 +1087,13 @@ void window_scenery_paint(rct_window *w, rct_drawpixelinfo *dpi)
 *
 *  rct2: 0x006E15ED
 */
-void window_scenery_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scrollIndex)
+void window_scenery_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 scrollIndex)
 {
 	gfx_clear(dpi, ColourMapA[w->colours[1]].mid_light);
 
 	uint8 tabIndex = gWindowSceneryActiveTabIndex;
 
-	int sceneryTabItemIndex = 0;
+	sint32 sceneryTabItemIndex = 0;
 	sint16 currentSceneryGlobalId = -1;
 	sint16 left = 0, top = 0;
 

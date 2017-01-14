@@ -51,11 +51,11 @@ static void paint_circus_show_tent(uint8 rideIndex, uint8 direction, sint8 al, s
 /**
  * rct2: 0x0076FAD4
  */
-static void paint_circus_show(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+static void paint_circus_show(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
 	trackSequence = track_map_3x3[direction][trackSequence];
 
-	int edges = edges_3x3[trackSequence];
+	sint32 edges = edges_3x3[trackSequence];
 	rct_ride * ride = get_ride(rideIndex);
 	rct_xy16 position = {gPaintMapPosition.x, gPaintMapPosition.y};
 
@@ -74,7 +74,7 @@ static void paint_circus_show(uint8 rideIndex, uint8 trackSequence, uint8 direct
 		case 8: paint_circus_show_tent(rideIndex, direction, -32, 0, height); break;
 	}
 
-	int cornerSegments = 0;
+	sint32 cornerSegments = 0;
 	switch (trackSequence) {
 		case 1:
 			// top
@@ -102,7 +102,7 @@ static void paint_circus_show(uint8 rideIndex, uint8 trackSequence, uint8 direct
 /**
  * rct2: 0x0076F8D4
  */
-TRACK_PAINT_FUNCTION get_track_paint_function_circus_show(int trackType, int direction)
+TRACK_PAINT_FUNCTION get_track_paint_function_circus_show(sint32 trackType, sint32 direction)
 {
 	if (trackType != FLAT_TRACK_ELEM_3_X_3) {
 		return NULL;

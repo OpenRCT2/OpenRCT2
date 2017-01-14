@@ -45,13 +45,13 @@ bool gCheatsDisablePlantAging = false;
 bool gCheatsEnableChainLiftOnAllTrack = false;
 bool gCheatsAllowArbitraryRideTypeChanges = false;
 
-int park_rating_spinner_value;
+sint32 park_rating_spinner_value;
 
 #pragma region Cheat functions
 
-static void cheat_set_grass_length(int length)
+static void cheat_set_grass_length(sint32 length)
 {
-	int x, y;
+	sint32 x, y;
 	rct_map_element *mapElement;
 
 	for (y = 0; y < 256; y++) {
@@ -138,7 +138,7 @@ static void cheat_remove_litter()
 
 static void cheat_fix_rides()
 {
-	int rideIndex;
+	sint32 rideIndex;
 	rct_ride *ride;
 	rct_peep *mechanic;
 
@@ -160,7 +160,7 @@ static void cheat_fix_rides()
 
 static void cheat_renew_rides()
 {
-	int i;
+	sint32 i;
 	rct_ride *ride;
 
 	FOR_ALL_RIDES(i, ride)
@@ -175,7 +175,7 @@ static void cheat_renew_rides()
 
 static void cheat_make_destructible()
 {
-	int i;
+	sint32 i;
 	rct_ride *ride;
 	FOR_ALL_RIDES(i, ride)
 	{
@@ -189,7 +189,7 @@ static void cheat_make_destructible()
 
 static void cheat_reset_crash_status()
 {
-	int i;
+	sint32 i;
 	rct_ride *ride;
 
 	FOR_ALL_RIDES(i, ride){
@@ -204,7 +204,7 @@ static void cheat_reset_crash_status()
 
 static void cheat_10_minute_inspections()
 {
-	int i;
+	sint32 i;
 	rct_ride *ride;
 
 	FOR_ALL_RIDES(i, ride) {
@@ -275,9 +275,9 @@ static void cheat_clear_loan()
 	game_do_command(0, GAME_COMMAND_FLAG_APPLY, 0, newLoan, GAME_COMMAND_SET_CURRENT_LOAN, 0, 0);
 }
 
-static void cheat_generate_guests(int count)
+static void cheat_generate_guests(sint32 count)
 {
-	int i;
+	sint32 i;
 
 	for (i = 0; i < count; i++)
 		generate_new_guest();
@@ -285,9 +285,9 @@ static void cheat_generate_guests(int count)
 	window_invalidate_by_class(WC_BOTTOM_TOOLBAR);
 }
 
-static void cheat_set_guest_parameter(int parameter, int value)
+static void cheat_set_guest_parameter(sint32 parameter, sint32 value)
 {
-	int spriteIndex;
+	sint32 spriteIndex;
 	rct_peep *peep;
 
 	FOR_ALL_GUESTS(spriteIndex, peep) {
@@ -328,9 +328,9 @@ static void cheat_set_guest_parameter(int parameter, int value)
 
 }
 
-static void cheat_give_all_guests(int object)
+static void cheat_give_all_guests(sint32 object)
 {
-	int spriteIndex;
+	sint32 spriteIndex;
 	rct_peep *peep;
 
 	FOR_ALL_GUESTS(spriteIndex, peep) {
@@ -370,7 +370,7 @@ static void cheat_remove_all_guests()
 		}
 	}
 
-	int i;
+	sint32 i;
 	rct_ride *ride;
 
 	FOR_ALL_RIDES(i, ride)
@@ -378,7 +378,7 @@ static void cheat_remove_all_guests()
 		ride_clear_for_construction(i);
 		ride_set_status(i, RIDE_STATUS_CLOSED);
 
-		for(int j = 0; j < 4; j++) {
+		for (size_t j = 0; j < 4; j++) {
 			ride->queue_length[j] = 0;
 			ride->last_peep_in_queue[j] = SPRITE_INDEX_NULL;
 		}
@@ -389,7 +389,7 @@ static void cheat_remove_all_guests()
 
 static void cheat_explode_guests()
 {
-	int sprite_index;
+	sint32 sprite_index;
 	rct_peep *peep;
 
 	FOR_ALL_GUESTS(sprite_index, peep) {
@@ -422,9 +422,9 @@ static void cheat_set_staff_speed(uint8 value)
 
 #pragma endregion
 
-void game_command_cheat(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp)
+void game_command_cheat(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp)
 {
-	int cheat = *ecx;
+	sint32 cheat = *ecx;
 	if (*ebx & GAME_COMMAND_FLAG_APPLY) {
 		switch (cheat) {
 			case CHEAT_SANDBOXMODE: gCheatsSandboxMode = *edx != 0; window_invalidate_by_class(WC_MAP); window_invalidate_by_class(WC_FOOTPATH); break;

@@ -48,7 +48,7 @@ static sint8 TopSpinSeatPositionOffset[] = {
  *
  *  rct2: 0x0076750D
  */
-static void top_spin_paint_vehicle(sint8 al, sint8 cl, uint8 rideIndex, uint8 direction, int height, rct_map_element* mapElement) {
+static void top_spin_paint_vehicle(sint8 al, sint8 cl, uint8 rideIndex, uint8 direction, sint32 height, rct_map_element* mapElement) {
 	uint16 boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ;
 	// As we will be drawing a vehicle we need to backup the mapElement that
 	// is assigned to the drawings.
@@ -256,10 +256,10 @@ static void top_spin_paint_vehicle(sint8 al, sint8 cl, uint8 rideIndex, uint8 di
 /**
  * rct2: 0x0076679C
  */
-static void paint_top_spin(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement) {
+static void paint_top_spin(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement) {
 	trackSequence = track_map_3x3[direction][trackSequence];
 
-	int edges = edges_3x3[trackSequence];
+	sint32 edges = edges_3x3[trackSequence];
 	rct_ride *ride = get_ride(rideIndex);
 	rct_xy16 position = {gPaintMapPosition.x, gPaintMapPosition.y};
 
@@ -278,7 +278,7 @@ static void paint_top_spin(uint8 rideIndex, uint8 trackSequence, uint8 direction
 		case 8: top_spin_paint_vehicle(-32, 0, rideIndex, direction, height, mapElement); break;
 	}
 
-	int cornerSegments = 0;
+	sint32 cornerSegments = 0;
 	switch (trackSequence) {
 		case 1:
 			// top
@@ -305,7 +305,7 @@ static void paint_top_spin(uint8 rideIndex, uint8 trackSequence, uint8 direction
 
 
 /* 0x0076659C */
-TRACK_PAINT_FUNCTION get_track_paint_function_topspin(int trackType, int direction)
+TRACK_PAINT_FUNCTION get_track_paint_function_topspin(sint32 trackType, sint32 direction)
 {
 	if (trackType != FLAT_TRACK_ELEM_3_X_3) {
 		return NULL;

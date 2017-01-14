@@ -40,7 +40,7 @@ static rct_widget window_shortcut_change_widgets[] = {
 	{ WIDGETS_END }
 };
 
-static void window_shortcut_change_mouseup(rct_window *w, int widgetIndex);
+static void window_shortcut_change_mouseup(rct_window *w, sint32 widgetIndex);
 static void window_shortcut_change_invalidate(rct_window *w);
 static void window_shortcut_change_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
@@ -76,7 +76,7 @@ static rct_window_event_list window_shortcut_change_events = {
 	NULL
 };
 
-void window_shortcut_change_open(int selected_key){
+void window_shortcut_change_open(sint32 selected_key){
 	// Move this to window_shortcut_change_open
 	window_close_by_class(WC_CHANGE_KEYBOARD_SHORTCUT);
 	// Save the item we are selecting for new window
@@ -92,7 +92,7 @@ void window_shortcut_change_open(int selected_key){
 *
 *  rct2: 0x006E3AE0
 */
-static void window_shortcut_change_mouseup(rct_window *w, int widgetIndex)
+static void window_shortcut_change_mouseup(rct_window *w, sint32 widgetIndex)
 {
 	switch (widgetIndex){
 	case WIDX_CLOSE:
@@ -114,8 +114,8 @@ static void window_shortcut_change_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
 	window_draw_widgets(w, dpi);
 
-	int x = w->x + 125;
-	int y = w->y + 30;
+	sint32 x = w->x + 125;
+	sint32 y = w->y + 30;
 
 	set_format_arg(0, rct_string_id, ShortcutStringIds[gKeyboardShortcutChangeId]);
 	gfx_draw_string_centred_wrapped(dpi, gCommonFormatArgs, x, y, 242, STR_SHORTCUT_CHANGE_PROMPT, COLOUR_BLACK);

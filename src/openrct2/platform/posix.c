@@ -49,11 +49,11 @@ utf8 _openrctDataDirectoryPath[MAX_PATH] = { 0 };
  * The function that is called directly from the host application (rct2.exe)'s WinMain.
  * This will be removed when OpenRCT2 can be built as a stand alone application.
  */
-int main(int argc, const char **argv)
+sint32 main(sint32 argc, const char **argv)
 {
 	core_init();
 
-	int run_game = cmdline_run(argv, argc);
+	sint32 run_game = cmdline_run(argv, argc);
 	if (run_game == 1)
 	{
 		openrct2_launch();
@@ -145,7 +145,7 @@ bool platform_directory_exists(const utf8 *path)
 	char buffer[MAX_PATH];
 	platform_utf8_to_multibyte(path, buffer, MAX_PATH);
 	struct stat dirinfo;
-	int result = stat(buffer, &dirinfo);
+	sint32 result = stat(buffer, &dirinfo);
 	log_verbose("checking dir %s, result = %d, is_dir = %d", buffer, result, S_ISDIR(dirinfo.st_mode));
 	if ((result != 0) || !S_ISDIR(dirinfo.st_mode))
 	{
@@ -272,7 +272,7 @@ bool platform_lock_single_instance()
 	// take care of that, because flock keeps the lock as long as the
 	// file is open and closes it automatically on file close.
 	// This is intentional.
-	int pidFile = open(pidFilePath, O_CREAT | O_RDWR, 0666);
+	sint32 pidFile = open(pidFilePath, O_CREAT | O_RDWR, 0666);
 
 	if (pidFile == -1) {
 		log_warning("Cannot open lock file for writing.");
@@ -294,24 +294,24 @@ typedef struct enumerate_file_info {
 	char pattern[MAX_PATH];
 	struct dirent **fileListTemp;
 	char **paths;
-	int cnt;
-	int handle;
+	sint32 cnt;
+	sint32 handle;
 	void* data;
 } enumerate_file_info;
 static enumerate_file_info _enumerateFileInfoList[8] = { 0 };
 
 char *g_file_pattern;
 
-static int winfilter(const struct dirent *d)
+static sint32 winfilter(const struct dirent *d)
 {
-	int entry_length = strnlen(d->d_name, MAX_PATH);
+	sint32 entry_length = strnlen(d->d_name, MAX_PATH);
 	char *name_upper = malloc(entry_length + 1);
 	if (name_upper == NULL)
 	{
 		log_error("out of memory");
 		return 0;
 	}
-	for (int i = 0; i < entry_length; i++)
+	for (sint32 i = 0; i < entry_length; i++)
 	{
 		name_upper[i] = (char)toupper(d->d_name[i]);
 	}
@@ -322,7 +322,7 @@ static int winfilter(const struct dirent *d)
 	return match;
 }
 
-int platform_enumerate_files_begin(const utf8 *pattern)
+sint32 platform_enumerate_files_begin(const utf8 *pattern)
 {
 	char npattern[MAX_PATH];
 	platform_utf8_to_multibyte(pattern, npattern, MAX_PATH);
@@ -341,15 +341,15 @@ int platform_enumerate_files_begin(const utf8 *pattern)
 	}
 
 
-	int pattern_length = strlen(file_name);
+	sint32 pattern_length = strlen(file_name);
 	g_file_pattern = strndup(file_name, pattern_length);
-	for (int j = 0; j < pattern_length; j++)
+	for (sint32 j = 0; j < pattern_length; j++)
 	{
 		g_file_pattern[j] = (char)toupper(g_file_pattern[j]);
 	}
 	log_verbose("looking for file matching %s", g_file_pattern);
-	int cnt;
-	for (int i = 0; i < countof(_enumerateFileInfoList); i++) {
+	sint32 cnt;
+	for (sint32 i = 0; i < countof(_enumerateFileInfoList); i++) {
 		enumFileInfo = &_enumerateFileInfoList[i];
 		if (!enumFileInfo->active) {
 			safe_strcpy(enumFileInfo->pattern, npattern, sizeof(enumFileInfo->pattern));
@@ -363,11 +363,11 @@ int platform_enumerate_files_begin(const utf8 *pattern)
 			enumFileInfo->paths = malloc(cnt * sizeof(char *));
 			char **paths = enumFileInfo->paths;
 			// 256 is size of dirent.d_name
-			const int dir_name_len = strnlen(dir_name, MAX_PATH);
-			for (int idx = 0; idx < cnt; idx++)
+			const sint32 dir_name_len = strnlen(dir_name, MAX_PATH);
+			for (sint32 idx = 0; idx < cnt; idx++)
 			{
 				struct dirent *d = enumFileInfo->fileListTemp[idx];
-				const int entry_len = strnlen(d->d_name, MAX_PATH);
+				const sint32 entry_len = strnlen(d->d_name, MAX_PATH);
 				// 1 for separator, 1 for trailing null
 				size_t path_len = sizeof(char) * min(MAX_PATH, entry_len + dir_name_len + 2);
 				paths[idx] = malloc(path_len);
@@ -391,7 +391,7 @@ int platform_enumerate_files_begin(const utf8 *pattern)
 	return -1;
 }
 
-bool platform_enumerate_files_next(int handle, file_info *outFileInfo)
+bool platform_enumerate_files_next(sint32 handle, file_info *outFileInfo)
 {
 
 	if (handle < 0)
@@ -408,11 +408,11 @@ bool platform_enumerate_files_next(int handle, file_info *outFileInfo)
 	}
 
 	if (result) {
-		int entryIdx = enumFileInfo->handle++;
+		sint32 entryIdx = enumFileInfo->handle++;
 		struct stat fileInfo;
 		log_verbose("trying handle %d", entryIdx);
 		char *fileName = enumFileInfo->paths[entryIdx];
-		int statRes;
+		sint32 statRes;
 		statRes = stat(fileName, &fileInfo);
 		if (statRes == -1) {
 			log_error("failed to stat file '%s'! errno = %i", fileName, errno);
@@ -427,15 +427,15 @@ bool platform_enumerate_files_next(int handle, file_info *outFileInfo)
 	}
 }
 
-void platform_enumerate_files_end(int handle)
+void platform_enumerate_files_end(sint32 handle)
 {
 	if (handle < 0)
 	{
 		return;
 	}
 	enumerate_file_info *enumFileInfo = &_enumerateFileInfoList[handle];
-	int cnt = enumFileInfo->cnt;
-	for (int i = 0; i < cnt; i++) {
+	sint32 cnt = enumFileInfo->cnt;
+	for (sint32 i = 0; i < cnt; i++) {
 		free(enumFileInfo->fileListTemp[i]);
 		free(enumFileInfo->paths[i]);
 	}
@@ -447,7 +447,7 @@ void platform_enumerate_files_end(int handle)
 	enumFileInfo->active = 0;
 }
 
-static int dirfilter(const struct dirent *d)
+static sint32 dirfilter(const struct dirent *d)
 {
 	if (d->d_name[0] == '.') {
 		return 0;
@@ -464,17 +464,17 @@ static int dirfilter(const struct dirent *d)
 #endif // defined(_DIRENT_HAVE_D_TYPE) || defined(DT_UNKNOWN)
 }
 
-int platform_enumerate_directories_begin(const utf8 *directory)
+sint32 platform_enumerate_directories_begin(const utf8 *directory)
 {
 	char npattern[MAX_PATH];
-	int length = platform_utf8_to_multibyte(directory, npattern, MAX_PATH) + 1;
+	sint32 length = platform_utf8_to_multibyte(directory, npattern, MAX_PATH) + 1;
 	enumerate_file_info *enumFileInfo;
 	log_verbose("begin directory listing, path: %s", npattern);
 
 	// TODO: add some checking for stringness and directoryness
 
-	int cnt;
-	for (int i = 0; i < countof(_enumerateFileInfoList); i++) {
+	sint32 cnt;
+	for (sint32 i = 0; i < countof(_enumerateFileInfoList); i++) {
 		enumFileInfo = &_enumerateFileInfoList[i];
 		if (!enumFileInfo->active) {
 			safe_strcpy(enumFileInfo->pattern, npattern, length);
@@ -488,11 +488,11 @@ int platform_enumerate_directories_begin(const utf8 *directory)
 			enumFileInfo->paths = malloc(cnt * sizeof(char *));
 			char **paths = enumFileInfo->paths;
 			// 256 is size of dirent.d_name
-			const int dir_name_len = strnlen(npattern, MAX_PATH);
-			for (int idx = 0; idx < cnt; idx++)
+			const sint32 dir_name_len = strnlen(npattern, MAX_PATH);
+			for (sint32 idx = 0; idx < cnt; idx++)
 			{
 				struct dirent *d = enumFileInfo->fileListTemp[idx];
-				const int entry_len = strnlen(d->d_name, MAX_PATH);
+				const sint32 entry_len = strnlen(d->d_name, MAX_PATH);
 				// 1 for separator, 1 for trailing null
 				size_t path_len = sizeof(char) * min(MAX_PATH, entry_len + dir_name_len + 2);
 				paths[idx] = malloc(path_len);
@@ -510,7 +510,7 @@ int platform_enumerate_directories_begin(const utf8 *directory)
 	return -1;
 }
 
-bool platform_enumerate_directories_next(int handle, utf8 *path)
+bool platform_enumerate_directories_next(sint32 handle, utf8 *path)
 {
 	if (handle < 0)
 	{
@@ -528,10 +528,10 @@ bool platform_enumerate_directories_next(int handle, utf8 *path)
 	}
 
 	if (result) {
-		int entryIdx = enumFileInfo->handle++;
+		sint32 entryIdx = enumFileInfo->handle++;
 		struct stat fileInfo;
 		char *fileName = enumFileInfo->paths[entryIdx];
-		int statRes;
+		sint32 statRes;
 		statRes = stat(fileName, &fileInfo);
 		if (statRes == -1) {
 			log_error("failed to stat file '%s'! errno = %i", fileName, errno);
@@ -546,15 +546,15 @@ bool platform_enumerate_directories_next(int handle, utf8 *path)
 	}
 }
 
-void platform_enumerate_directories_end(int handle)
+void platform_enumerate_directories_end(sint32 handle)
 {
 	if (handle < 0)
 	{
 		return;
 	}
 	enumerate_file_info *enumFileInfo = &_enumerateFileInfoList[handle];
-	int cnt = enumFileInfo->cnt;
-	for (int i = 0; i < cnt; i++) {
+	sint32 cnt = enumFileInfo->cnt;
+	for (sint32 i = 0; i < cnt; i++) {
 		free(enumFileInfo->fileListTemp[i]);
 		free(enumFileInfo->paths[i]);
 	}
@@ -566,7 +566,7 @@ void platform_enumerate_directories_end(int handle)
 	enumFileInfo->active = 0;
 }
 
-int platform_get_drives(){
+sint32 platform_get_drives(){
 	// POSIX systems do not know drives. Return 0.
 	return 0;
 }
@@ -632,21 +632,21 @@ bool platform_file_move(const utf8 *srcPath, const utf8 *dstPath)
 
 bool platform_file_delete(const utf8 *path)
 {
-	int ret = unlink(path);
+	sint32 ret = unlink(path);
 	return ret == 0;
 }
 
 static wchar_t *regular_to_wchar(const char* src)
 {
-	int len = strnlen(src, MAX_PATH);
+	sint32 len = strnlen(src, MAX_PATH);
 	wchar_t *w_buffer = malloc((len + 1) * sizeof(wchar_t));
 	mbtowc (NULL, NULL, 0);  /* reset mbtowc */
 
-	int max = len;
-	int i = 0;
+	sint32 max = len;
+	sint32 i = 0;
 	while (max > 0)
 	{
-		int length;
+		sint32 length;
 		length = mbtowc(&w_buffer[i], &src[i], max);
 		if (length < 1)
 		{
@@ -697,7 +697,7 @@ void platform_resolve_user_data_path()
 	platform_posix_sub_user_data_path(buffer, MAX_PATH, homedir);
 
 	log_verbose("OpenRCT2 user data directory = '%s'", buffer);
-	int len = strnlen(buffer, MAX_PATH);
+	sint32 len = strnlen(buffer, MAX_PATH);
 	wchar_t *w_buffer = regular_to_wchar(buffer);
 	w_buffer[len] = '\0';
 	utf8 *path = widechar_to_utf8(w_buffer);
@@ -763,7 +763,7 @@ void platform_get_user_directory(utf8 *outPath, const utf8 *subDirectory, size_t
 		safe_strcat_path(buffer, subDirectory, sizeof(buffer));
 		path_end_with_separator(buffer, sizeof(buffer));
 	}
-	int len = strnlen(buffer, MAX_PATH);
+	sint32 len = strnlen(buffer, MAX_PATH);
 	wchar_t *w_buffer = regular_to_wchar(buffer);
 	w_buffer[len] = '\0';
 	utf8 *path = widechar_to_utf8(w_buffer);

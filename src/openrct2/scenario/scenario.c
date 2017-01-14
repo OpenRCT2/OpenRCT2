@@ -66,7 +66,7 @@ char gScenarioDetails[256];
 char gScenarioCompletedBy[32];
 char gScenarioSavePath[MAX_PATH];
 char gScenarioExpansionPacks[3256];
-int gFirstTimeSave = 1;
+sint32 gFirstTimeSave = 1;
 uint16 gSavedAge;
 uint32 gLastAutoSaveUpdate = 0;
 
@@ -85,7 +85,7 @@ uint16 gScenarioParkRatingWarningDays;
 money32 gScenarioCompletedCompanyValue;
 money32 gScenarioCompanyValueRecord;
 
-static int scenario_create_ducks();
+static sint32 scenario_create_ducks();
 static void scenario_objective_check();
 
 /**
@@ -125,7 +125,7 @@ bool scenario_load_basic(const char *path, rct_s6_header *header, rct_s6_info *i
 	return false;
 }
 
-int scenario_load_and_play_from_path(const char *path)
+sint32 scenario_load_and_play_from_path(const char *path)
 {
 	window_close_construction_windows();
 
@@ -382,7 +382,7 @@ static void scenario_entrance_fee_too_high_check()
 	money16 max_fee = totalRideValue + (totalRideValue / 2);
 
 	if ((gParkFlags & PARK_FLAGS_PARK_OPEN) && park_get_entrance_fee() > max_fee) {
-		for (int i = 0; gParkEntranceX[i] != SPRITE_LOCATION_NULL; i++) {
+		for (sint32 i = 0; gParkEntranceX[i] != SPRITE_LOCATION_NULL; i++) {
 			x = gParkEntranceX[i] + 16;
 			y = gParkEntranceY[i] + 16;
 		}
@@ -449,7 +449,7 @@ static void scenario_day_update()
 
 static void scenario_week_update()
 {
-	int month = gDateMonthsElapsed & 7;
+	sint32 month = gDateMonthsElapsed & 7;
 
 	finance_pay_wages();
 	finance_pay_research();
@@ -463,7 +463,7 @@ static void scenario_week_update()
 
 	if (month <= MONTH_APRIL && (intptr_t)water_type != -1 && water_type->var_0E & 1) {
 		// 100 attempts at finding some water to create a few ducks at
-		for (int i = 0; i < 100; i++) {
+		for (sint32 i = 0; i < 100; i++) {
 			if (scenario_create_ducks())
 				break;
 		}
@@ -547,9 +547,9 @@ void scenario_update()
  *
  *  rct2: 0x006744A9
  */
-static int scenario_create_ducks()
+static sint32 scenario_create_ducks()
 {
-	int i, j, r, c, x, y, waterZ, centreWaterZ, x2, y2;
+	sint32 i, j, r, c, x, y, waterZ, centreWaterZ, x2, y2;
 
 	r = scenario_rand();
 	x = ((r >> 16) & 0xFFFF) & 0x7F;
@@ -604,7 +604,7 @@ static int scenario_create_ducks()
  *
  * @return eax
  */
-unsigned int scenario_rand()
+uint32 scenario_rand()
 {
 #ifdef DEBUG_DESYNC
 	if (!gInUpdateCode) {
@@ -618,12 +618,12 @@ unsigned int scenario_rand()
 	return gScenarioSrand1 = ror32(originalSrand0, 3);
 }
 
-unsigned int scenario_rand_max(unsigned int max)
+uint32 scenario_rand_max(uint32 max)
 {
 	if (max < 2) return 0;
 	if ((max & (max - 1)) == 0)
 		return scenario_rand() & (max - 1);
-	unsigned int rand, cap = ~((unsigned int)0) - (~((unsigned int)0) % max) - 1;
+	uint32 rand, cap = ~((uint32)0) - (~((uint32)0) % max) - 1;
 	do {
 		rand = scenario_rand();
 	} while (rand > cap);
@@ -636,7 +636,7 @@ unsigned int scenario_rand_max(unsigned int max)
  */
 static void scenario_prepare_rides_for_save()
 {
-	int isFiveCoasterObjective = gScenarioObjectiveType == OBJECTIVE_FINISH_5_ROLLERCOASTERS;
+	sint32 isFiveCoasterObjective = gScenarioObjectiveType == OBJECTIVE_FINISH_5_ROLLERCOASTERS;
 
 	// Set all existing track to be indestructible
 	map_element_iterator it;
@@ -651,7 +651,7 @@ static void scenario_prepare_rides_for_save()
 	} while (map_element_iterator_next(&it));
 
 	// Set all existing rides to have indestructible track
-	int i;
+	sint32 i;
 	rct_ride *ride;
 	FOR_ALL_RIDES(i, ride) {
 		if (isFiveCoasterObjective)
@@ -665,7 +665,7 @@ static void scenario_prepare_rides_for_save()
  *
  *  rct2: 0x006726C7
  */
-int scenario_prepare_for_save()
+sint32 scenario_prepare_for_save()
 {
 	gS6Info.entry.flags = 255;
 
@@ -701,10 +701,10 @@ int scenario_prepare_for_save()
  *
  *  rct2: 0x006AA039
  */
-static int scenario_write_available_objects(FILE *file)
+static sint32 scenario_write_available_objects(FILE *file)
 {
-	const int totalEntries = OBJECT_ENTRY_COUNT;
-	const int bufferLength = totalEntries * sizeof(rct_object_entry);
+	const sint32 totalEntries = OBJECT_ENTRY_COUNT;
+	const sint32 bufferLength = totalEntries * sizeof(rct_object_entry);
 
 	// Initialise buffers
 	uint8 *buffer = malloc(bufferLength);
@@ -721,7 +721,7 @@ static int scenario_write_available_objects(FILE *file)
 
 	// Write entries
 	rct_object_entry *dstEntry = (rct_object_entry*)buffer;
-	for (int i = 0; i < OBJECT_ENTRY_COUNT; i++) {
+	for (sint32 i = 0; i < OBJECT_ENTRY_COUNT; i++) {
 		void *entryData = get_loaded_object_chunk(i);
 		if (entryData == (void*)-1) {
 			memset(dstEntry, 0xFF, sizeof(rct_object_entry));
@@ -752,12 +752,12 @@ void scenario_fix_ghosts(rct_s6_data *s6)
 	// Remove all ghost elements
 	rct_map_element *destinationElement = s6->map_elements;
 
-	for (int y = 0; y < 256; y++) {
-		for (int x = 0; x < 256; x++) {
+	for (sint32 y = 0; y < 256; y++) {
+		for (sint32 x = 0; x < 256; x++) {
 			rct_map_element *originalElement = map_get_first_element_at(x, y);
 			do {
 				if (originalElement->flags & MAP_ELEMENT_FLAG_GHOST) {
-					int bannerIndex = map_element_get_banner_index(originalElement);
+					sint32 bannerIndex = map_element_get_banner_index(originalElement);
 					if (bannerIndex != -1) {
 						rct_banner *banner = &s6->banners[bannerIndex];
 						if (banner->type != BANNER_NULL) {
@@ -781,7 +781,7 @@ void scenario_remove_trackless_rides(rct_s6_data *s6)
 {
 	bool rideHasTrack[MAX_RIDES];
 	ride_all_has_any_track_elements(rideHasTrack);
-	for (int i = 0; i < MAX_RIDES; i++) {
+	for (sint32 i = 0; i < MAX_RIDES; i++) {
 		rct_ride *ride = &s6->rides[i];
 
 		if (rideHasTrack[i] || ride->type == RIDE_TYPE_NULL) {
@@ -833,7 +833,7 @@ static void scenario_objective_check_park_value_by()
 **/
 static void scenario_objective_check_10_rollercoasters()
 {
-	int i, rcs = 0;
+	sint32 i, rcs = 0;
 	uint8 type_already_counted[256];
 	rct_ride* ride;
 
@@ -914,7 +914,7 @@ static void scenario_objective_check_monthly_ride_income()
  */
 static void scenario_objective_check_10_rollercoasters_length()
 {
-	int i, rcs = 0;
+	sint32 i, rcs = 0;
 	uint8 type_already_counted[256];
 	sint16 objective_length = gScenarioObjectiveNumGuests;
 	rct_ride* ride;
@@ -949,9 +949,9 @@ static void scenario_objective_check_finish_5_rollercoasters()
 	// ORIGINAL BUG?:
 	// This does not check if the rides are even rollercoasters nevermind the right rollercoasters to be finished.
 	// It also did not exclude null rides.
-	int i;
+	sint32 i;
 	rct_ride* ride;
-	int rcs = 0;
+	sint32 rcs = 0;
 	FOR_ALL_RIDES(i, ride)
 		if (ride->status != RIDE_STATUS_CLOSED && ride->excitement >= objectiveRideExcitement)
 			rcs++;

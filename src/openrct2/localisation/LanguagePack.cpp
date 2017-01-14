@@ -37,10 +37,10 @@ constexpr uint64 MAX_OBJECT_OVERRIDES = 4096;
 constexpr uint64 MAX_SCENARIO_OVERRIDES = 4096;
 
 constexpr rct_string_id ObjectOverrideBase             = 0x6000;
-constexpr int           ObjectOverrideMaxStringCount   = 4;
+constexpr sint32           ObjectOverrideMaxStringCount   = 4;
 
 constexpr rct_string_id ScenarioOverrideBase           = 0x7000;
-constexpr int           ScenarioOverrideMaxStringCount = 3;
+constexpr sint32           ScenarioOverrideMaxStringCount = 3;
 
 struct ObjectOverride
 {
@@ -147,7 +147,7 @@ public:
         }
         for (size_t i = 0; i < _objectOverrides.size(); i++)
         {
-            for (int j = 0; j < ObjectOverrideMaxStringCount; j++)
+            for (sint32 j = 0; j < ObjectOverrideMaxStringCount; j++)
             {
                 const utf8 * * strPtr = &(_objectOverrides[i].strings[j]);
                 if (*strPtr != nullptr)
@@ -158,7 +158,7 @@ public:
         }
         for (size_t i = 0; i < _scenarioOverrides.size(); i++)
         {
-            for (int j = 0; j < ScenarioOverrideMaxStringCount; j++)
+            for (sint32 j = 0; j < ScenarioOverrideMaxStringCount; j++)
             {
                 const utf8 **strPtr = &(_scenarioOverrides[i].strings[j]);
                 if (*strPtr != nullptr)
@@ -205,9 +205,9 @@ public:
     {
         if (stringId >= ScenarioOverrideBase)
         {
-            int offset = stringId - ScenarioOverrideBase;
-            int ooIndex = offset / ScenarioOverrideMaxStringCount;
-            int ooStringIndex = offset % ScenarioOverrideMaxStringCount;
+            sint32 offset = stringId - ScenarioOverrideBase;
+            sint32 ooIndex = offset / ScenarioOverrideMaxStringCount;
+            sint32 ooStringIndex = offset % ScenarioOverrideMaxStringCount;
 
             if (_scenarioOverrides.size() > (size_t)ooIndex)
             {
@@ -220,9 +220,9 @@ public:
         }
         else if (stringId >= ObjectOverrideBase)
         {
-            int offset = stringId - ObjectOverrideBase;
-            int ooIndex = offset / ObjectOverrideMaxStringCount;
-            int ooStringIndex = offset % ObjectOverrideMaxStringCount;
+            sint32 offset = stringId - ObjectOverrideBase;
+            sint32 ooIndex = offset / ObjectOverrideMaxStringCount;
+            sint32 ooStringIndex = offset % ObjectOverrideMaxStringCount;
 
             if (_objectOverrides.size() > (size_t)ooIndex)
             {
@@ -251,7 +251,7 @@ public:
         Guard::ArgumentNotNull(objectIdentifier);
         Guard::Assert(index < ObjectOverrideMaxStringCount);
 
-        int ooIndex = 0;
+        sint32 ooIndex = 0;
         for (const ObjectOverride &objectOverride : _objectOverrides)
         {
             if (strncmp(objectOverride.name, objectIdentifier, 8) == 0)
@@ -273,7 +273,7 @@ public:
         Guard::ArgumentNotNull(scenarioFilename);
         Guard::Assert(index < ScenarioOverrideMaxStringCount);
 
-        int ooIndex = 0;
+        sint32 ooIndex = 0;
         for (const ScenarioOverride &scenarioOverride : _scenarioOverrides)
         {
             if (String::Equals(scenarioOverride.filename.c_str(), scenarioFilename, true))
@@ -558,7 +558,7 @@ public:
         // Validate identifier
         const utf8 * identifier = sb.GetBuffer();
 
-        int stringId;
+        sint32 stringId;
         if (_currentGroup == nullptr)
         {
             if (sscanf(identifier, "STR_%4d", &stringId) != 1)
@@ -598,7 +598,7 @@ public:
                     }
                     else
                     {
-                        sb.Append((int)token);
+                        sb.Append((sint32)token);
                     }
                 }
                 else
@@ -672,7 +672,7 @@ public:
         // Handle explicit byte values
         if (*token == 0)
         {
-            int number;
+            sint32 number;
             if (sscanf(tokenName, "%d", &number) == 1)
             {
                 *token = Math::Clamp(0, number, 255);

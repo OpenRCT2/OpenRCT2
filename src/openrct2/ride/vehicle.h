@@ -367,22 +367,22 @@ enum {
 #define VEHICLE_SEAT_NUM_MASK	0x7F
 
 void vehicle_update_all();
-int sub_6BC2F3(rct_vehicle* vehicle);
+sint32 sub_6BC2F3(rct_vehicle* vehicle);
 void vehicle_sounds_update();
-void vehicle_get_g_forces(rct_vehicle *vehicle, int *verticalG, int *lateralG);
+void vehicle_get_g_forces(rct_vehicle *vehicle, sint32 *verticalG, sint32 *lateralG);
 void vehicle_set_map_toolbar(rct_vehicle *vehicle);
-int vehicle_is_used_in_pairs(rct_vehicle *vehicle);
-int vehicle_update_track_motion(rct_vehicle *vehicle, int *outStation);
+sint32 vehicle_is_used_in_pairs(rct_vehicle *vehicle);
+sint32 vehicle_update_track_motion(rct_vehicle *vehicle, sint32 *outStation);
 rct_ride_entry_vehicle *vehicle_get_vehicle_entry(rct_vehicle *vehicle);
-int vehicle_get_total_num_peeps(rct_vehicle *vehicle);
+sint32 vehicle_get_total_num_peeps(rct_vehicle *vehicle);
 void vehicle_invalidate_window(rct_vehicle *vehicle);
 void vehicle_update_test_finish(rct_vehicle* vehicle);
 void vehicle_test_reset(rct_vehicle* vehicle);
 void vehicle_peep_easteregg_here_we_are(rct_vehicle* vehicle);
 rct_vehicle *vehicle_get_head(rct_vehicle *vehicle);
 rct_vehicle *vehicle_get_tail(rct_vehicle *vehicle);
-const rct_vehicle_info *vehicle_get_move_info(int cd, int typeAndDirection, int offset);
-uint16 vehicle_get_move_info_size(int cd, int typeAndDirection);
+const rct_vehicle_info *vehicle_get_move_info(sint32 cd, sint32 typeAndDirection, sint32 offset);
+uint16 vehicle_get_move_info_size(sint32 cd, sint32 typeAndDirection);
 bool vehicle_update_bumper_car_collision(rct_vehicle *vehicle, sint16 x, sint16 y, uint16 *spriteId);
 
 extern rct_vehicle *gCurrentVehicle;

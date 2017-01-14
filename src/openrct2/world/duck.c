@@ -81,7 +81,7 @@ const uint8 * duck_animations[] = {
  *
  *  rct2: 0x0067440F
  */
-void create_duck(int targetX, int targetY)
+void create_duck(sint32 targetX, sint32 targetY)
 {
 	rct_sprite* sprite = create_sprite(2);
 	if (sprite != NULL) {
@@ -90,7 +90,7 @@ void create_duck(int targetX, int targetY)
 		sprite->duck.var_14 = 9;
 		sprite->duck.var_09 = 0xC;
 		sprite->duck.var_15 = 9;
-		int offset_xy = scenario_rand() & 0x1E;
+		sint32 offset_xy = scenario_rand() & 0x1E;
 		targetX += offset_xy;
 		targetY += offset_xy;
 		sprite->duck.target_x = targetX;
@@ -161,21 +161,21 @@ static void duck_update_fly_to_water(rct_duck *duck)
 		duck->frame = 0;
 
 	duck_invalidate(duck);
-	int manhattanDistance = abs(duck->target_x - duck->x) + abs(duck->target_y - duck->y);
-	int direction = duck->sprite_direction >> 3;
-	int x = duck->x + duck_move_offset[direction].x;
-	int y = duck->y + duck_move_offset[direction].y;
-	int manhattanDistanceN = abs(duck->target_x - x) + abs(duck->target_y - y);
+	sint32 manhattanDistance = abs(duck->target_x - duck->x) + abs(duck->target_y - duck->y);
+	sint32 direction = duck->sprite_direction >> 3;
+	sint32 x = duck->x + duck_move_offset[direction].x;
+	sint32 y = duck->y + duck_move_offset[direction].y;
+	sint32 manhattanDistanceN = abs(duck->target_x - x) + abs(duck->target_y - y);
 
 	rct_map_element *mapElement = map_get_surface_element_at(duck->target_x >> 5, duck->target_y >> 5);
-	int waterHeight = mapElement->properties.surface.terrain & 0x1F;
+	sint32 waterHeight = mapElement->properties.surface.terrain & 0x1F;
 	if (waterHeight == 0) {
 		duck->state = DUCK_STATE_FLY_AWAY;
 		duck_update_fly_away(duck);
 		return;
 	}
 	waterHeight <<= 4;
-	int z = abs(duck->z - waterHeight);
+	sint32 z = abs(duck->z - waterHeight);
 
 	if (manhattanDistanceN <= manhattanDistance) {
 		if (z > manhattanDistanceN) {
@@ -224,7 +224,7 @@ static void duck_update_swim(rct_duck *duck)
 		return;
 	}
 
-	int currentMonth = date_get_month(gDateMonthsElapsed);
+	sint32 currentMonth = date_get_month(gDateMonthsElapsed);
 	if (currentMonth >= MONTH_SEPTEMBER && (randomNumber >> 16) < 218) {
 		duck->state = DUCK_STATE_FLY_AWAY;
 		duck_update_fly_away(duck);
@@ -232,8 +232,8 @@ static void duck_update_swim(rct_duck *duck)
 	}
 
 	duck_invalidate(duck);
-	int landZ = map_element_height(duck->x, duck->y);
-	int waterZ = (landZ >> 16) & 0xFFFF;
+	sint32 landZ = map_element_height(duck->x, duck->y);
+	sint32 waterZ = (landZ >> 16) & 0xFFFF;
 	landZ &= 0xFFFF;
 
 	if (duck->z < landZ || waterZ == 0) {
@@ -249,9 +249,9 @@ static void duck_update_swim(rct_duck *duck)
 		duck->sprite_direction = randomNumber & 0x18;
 	}
 
-	int direction = duck->sprite_direction >> 3;
-	int x = duck->x + duck_move_offset[direction].x;
-	int y = duck->y + duck_move_offset[direction].y;
+	sint32 direction = duck->sprite_direction >> 3;
+	sint32 x = duck->x + duck_move_offset[direction].x;
+	sint32 y = duck->y + duck_move_offset[direction].y;
 	landZ = map_element_height(x, y);
 	waterZ = (landZ >> 16) & 0xFFFF;
 	landZ &= 0xFFFF;
@@ -309,15 +309,15 @@ static void duck_update_fly_away(rct_duck *duck)
 		duck->frame = 0;
 
 	duck_invalidate(duck);
-	int direction = duck->sprite_direction >> 3;
-	int x = duck->x + (duck_move_offset[direction].x * 2);
-	int y = duck->y + (duck_move_offset[direction].y * 2);
+	sint32 direction = duck->sprite_direction >> 3;
+	sint32 x = duck->x + (duck_move_offset[direction].x * 2);
+	sint32 y = duck->y + (duck_move_offset[direction].y * 2);
 	if (x < 0 || y < 0 || x >= (32 * 256) || y >= (32 * 256)) {
 		sprite_remove((rct_sprite*)duck);
 		return;
 	}
 
-	int z = min(duck->z + 2, 496);
+	sint32 z = min(duck->z + 2, 496);
 	sprite_move(x, y, z, (rct_sprite*)duck);
 	duck_invalidate(duck);
 }

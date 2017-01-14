@@ -33,7 +33,7 @@ void drawing_engine_init();
 void drawing_engine_resize();
 void drawing_engine_set_palette(SDL_Color * colours);
 void drawing_engine_draw();
-void drawing_engine_copy_rect(int x, int y, int width, int height, int dx, int dy);
+void drawing_engine_copy_rect(sint32 x, sint32 y, sint32 width, sint32 height, sint32 dx, sint32 dy);
 void drawing_engine_dispose();
 
 rct_drawpixelinfo * drawing_engine_get_dpi();

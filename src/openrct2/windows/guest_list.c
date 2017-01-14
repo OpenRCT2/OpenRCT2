@@ -89,18 +89,18 @@ static rct_widget window_guest_list_widgets[] = {
 	{ WIDGETS_END },
 };
 
-static void window_guest_list_mouseup(rct_window *w, int widgetIndex);
+static void window_guest_list_mouseup(rct_window *w, sint32 widgetIndex);
 static void window_guest_list_resize(rct_window *w);
-static void window_guest_list_mousedown(int widgetIndex, rct_window*w, rct_widget* widget);
-static void window_guest_list_dropdown(rct_window *w, int widgetIndex, int dropdownIndex);
+static void window_guest_list_mousedown(sint32 widgetIndex, rct_window*w, rct_widget* widget);
+static void window_guest_list_dropdown(rct_window *w, sint32 widgetIndex, sint32 dropdownIndex);
 static void window_guest_list_update(rct_window *w);
-static void window_guest_list_scrollgetsize(rct_window *w, int scrollIndex, int *width, int *height);
-static void window_guest_list_scrollmousedown(rct_window *w, int scrollIndex, int x, int y);
-static void window_guest_list_scrollmouseover(rct_window *w, int scrollIndex, int x, int y);
-static void window_guest_list_tooltip(rct_window* w, int widgetIndex, rct_string_id *stringId);
+static void window_guest_list_scrollgetsize(rct_window *w, sint32 scrollIndex, sint32 *width, sint32 *height);
+static void window_guest_list_scrollmousedown(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y);
+static void window_guest_list_scrollmouseover(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y);
+static void window_guest_list_tooltip(rct_window* w, sint32 widgetIndex, rct_string_id *stringId);
 static void window_guest_list_invalidate(rct_window *w);
 static void window_guest_list_paint(rct_window *w, rct_drawpixelinfo *dpi);
-static void window_guest_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scrollIndex);
+static void window_guest_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 scrollIndex);
 
 static rct_window_event_list window_guest_list_events = {
 	NULL,
@@ -137,13 +137,13 @@ static uint32 _window_guest_list_last_find_groups_tick;
 static uint32 _window_guest_list_last_find_groups_selected_view;
 static uint32 _window_guest_list_last_find_groups_wait;
 
-static int _window_guest_list_highlighted_index; // 0x00F1EE10
-static int _window_guest_list_selected_tab;      // 0x00F1EE12
-static int _window_guest_list_selected_filter;   // 0x00F1EE06
-static int _window_guest_list_selected_page;     // 0x00F1EE07
+static sint32 _window_guest_list_highlighted_index; // 0x00F1EE10
+static sint32 _window_guest_list_selected_tab;      // 0x00F1EE12
+static sint32 _window_guest_list_selected_filter;   // 0x00F1EE06
+static sint32 _window_guest_list_selected_page;     // 0x00F1EE07
 static uint32 _window_guest_list_selected_view;  // 0x00F1EE13
-static int _window_guest_list_num_pages;         // 0x00F1EE08
-static int _window_guest_list_num_groups;        // 0x00F1AF22
+static sint32 _window_guest_list_num_pages;         // 0x00F1EE08
+static sint32 _window_guest_list_num_groups;        // 0x00F1AF22
 static bool _window_guest_list_tracking_only;
 static uint16 _window_guest_list_filter_arguments[4];
 
@@ -153,7 +153,7 @@ static uint32 _window_guest_list_groups_argument_2[240];
 static uint8 _window_guest_list_groups_guest_faces[240 * 58];
 static uint8 _window_guest_list_group_index[240];
 
-static int window_guest_list_is_peep_in_filter(rct_peep* peep);
+static sint32 window_guest_list_is_peep_in_filter(rct_peep* peep);
 static void window_guest_list_find_groups();
 
 static void get_arguments_from_peep(rct_peep *peep, uint32 *argument_1, uint32* argument_2);
@@ -231,7 +231,7 @@ void window_guest_list_open()
  *
  * @param index The number of the ride or index of the thought
  */
-void window_guest_list_open_with_filter(int type, int index)
+void window_guest_list_open_with_filter(sint32 type, sint32 index)
 {
 	window_guest_list_open();
 
@@ -305,7 +305,7 @@ void window_guest_list_open_with_filter(int type, int index)
  *
  *  rct2: 0x00699AAF
  */
-static void window_guest_list_mouseup(rct_window *w, int widgetIndex)
+static void window_guest_list_mouseup(rct_window *w, sint32 widgetIndex)
 {
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
@@ -348,9 +348,9 @@ static void window_guest_list_resize(rct_window *w)
  *
  *  rct2: 0x00699AC4
  */
-static void window_guest_list_mousedown(int widgetIndex, rct_window*w, rct_widget* widget)
+static void window_guest_list_mousedown(sint32 widgetIndex, rct_window*w, rct_widget* widget)
 {
-	int i;
+	sint32 i;
 	switch (widgetIndex) {
 	case WIDX_TAB_1:
 	case WIDX_TAB_2:
@@ -416,7 +416,7 @@ static void window_guest_list_mousedown(int widgetIndex, rct_window*w, rct_widge
  *
  *  rct2: 0x00699AE1
  */
-static void window_guest_list_dropdown(rct_window *w, int widgetIndex, int dropdownIndex)
+static void window_guest_list_dropdown(rct_window *w, sint32 widgetIndex, sint32 dropdownIndex)
 {
 	switch (widgetIndex) {
 	case WIDX_PAGE_DROPDOWN_BUTTON:
@@ -453,9 +453,9 @@ static void window_guest_list_update(rct_window *w)
  *
  *  rct2: 0x00699C55
  */
-static void window_guest_list_scrollgetsize(rct_window *w, int scrollIndex, int *width, int *height)
+static void window_guest_list_scrollgetsize(rct_window *w, sint32 scrollIndex, sint32 *width, sint32 *height)
 {
-	int i, y, numGuests, spriteIndex;
+	sint32 i, y, numGuests, spriteIndex;
 	rct_peep *peep;
 
 	switch (_window_guest_list_selected_tab) {
@@ -475,7 +475,7 @@ static void window_guest_list_scrollgetsize(rct_window *w, int scrollIndex, int 
 		}
 		w->var_492 = numGuests;
 		y = numGuests * 10;
-		_window_guest_list_num_pages = (int) ceilf((float)numGuests / 3173);
+		_window_guest_list_num_pages = (sint32) ceilf((float)numGuests / 3173);
 		if (_window_guest_list_num_pages == 0)
 			_window_guest_list_selected_page = 0;
 		else if (_window_guest_list_selected_page >= _window_guest_list_num_pages)
@@ -520,9 +520,9 @@ static void window_guest_list_scrollgetsize(rct_window *w, int scrollIndex, int 
  *
  *  rct2: 0x00699D7D
  */
-static void window_guest_list_scrollmousedown(rct_window *w, int scrollIndex, int x, int y)
+static void window_guest_list_scrollmousedown(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y)
 {
-	int i, spriteIndex;
+	sint32 i, spriteIndex;
 	rct_peep *peep;
 
 	switch (_window_guest_list_selected_tab) {
@@ -567,9 +567,9 @@ static void window_guest_list_scrollmousedown(rct_window *w, int scrollIndex, in
  *
  *  rct2: 0x00699D3B
  */
-static void window_guest_list_scrollmouseover(rct_window *w, int scrollIndex, int x, int y)
+static void window_guest_list_scrollmouseover(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y)
 {
-	int i;
+	sint32 i;
 
 	i = y / (_window_guest_list_selected_tab == PAGE_INDIVIDUAL ? 10 : 21);
 	i += _window_guest_list_selected_page * 3173;
@@ -583,7 +583,7 @@ static void window_guest_list_scrollmouseover(rct_window *w, int scrollIndex, in
  *
  *  rct2: 0x00699E4A
  */
-static void window_guest_list_tooltip(rct_window* w, int widgetIndex, rct_string_id *stringId)
+static void window_guest_list_tooltip(rct_window* w, sint32 widgetIndex, rct_string_id *stringId)
 {
 	set_format_arg(0, rct_string_id, STR_LIST);
 }
@@ -633,7 +633,7 @@ static void window_guest_list_invalidate(rct_window *w)
  */
 static void window_guest_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
-	int i, x, y;
+	sint32 i, x, y;
 	rct_string_id format;
 
 	// Widgets
@@ -689,9 +689,9 @@ static void window_guest_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
  *
  *  rct2: 0x00699701
  */
-static void window_guest_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scrollIndex)
+static void window_guest_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 scrollIndex)
 {
-	int spriteIndex, numGuests, i, j, y;
+	sint32 spriteIndex, numGuests, i, j, y;
 	rct_string_id format;
 	rct_peep *peep;
 	rct_peep_thought *thought;
@@ -822,7 +822,7 @@ static void window_guest_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi,
  * returns 0 for in filter and 1 for not in filter
  *  rct2: 0x0069B865
  */
-static int window_guest_list_is_peep_in_filter(rct_peep* peep)
+static sint32 window_guest_list_is_peep_in_filter(rct_peep* peep)
 {
 	char temp;
 
@@ -886,7 +886,7 @@ static void get_arguments_from_peep(rct_peep *peep, uint32 *argument_1, uint32* 
  */
 static void window_guest_list_find_groups()
 {
-	int spriteIndex, spriteIndex2, groupIndex, faceIndex;
+	sint32 spriteIndex, spriteIndex2, groupIndex, faceIndex;
 	rct_peep *peep, *peep2;
 
 	uint32 tick256 = floor2(gScenarioTicks, 256);
@@ -956,8 +956,8 @@ static void window_guest_list_find_groups()
 			continue;
 		}
 
-		int curr_num_guests = _window_guest_list_groups_num_guests[groupIndex];
-		int swap_position = 0;
+		sint32 curr_num_guests = _window_guest_list_groups_num_guests[groupIndex];
+		sint32 swap_position = 0;
 		//This section places the groups in size order.
 		while (1) {
 			if (swap_position >= groupIndex)
@@ -967,12 +967,12 @@ static void window_guest_list_find_groups()
 			swap_position++;
 		}
 
-		int argument_1 = _window_guest_list_groups_argument_1[groupIndex];
-		int argument_2 = _window_guest_list_groups_argument_2[groupIndex];
-		int bl = _window_guest_list_group_index[groupIndex];
+		sint32 argument_1 = _window_guest_list_groups_argument_1[groupIndex];
+		sint32 argument_2 = _window_guest_list_groups_argument_2[groupIndex];
+		sint32 bl = _window_guest_list_group_index[groupIndex];
 
 		do {
-			int temp = curr_num_guests;
+			sint32 temp = curr_num_guests;
 			curr_num_guests = _window_guest_list_groups_num_guests[swap_position];
 			_window_guest_list_groups_num_guests[swap_position] = temp;
 

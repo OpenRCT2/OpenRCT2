@@ -17,6 +17,6 @@
 #ifndef _MAP_HELPERS_H_
 #define _MAP_HELPERS_H_
 
-int map_smooth(int l, int t, int r, int b);
+sint32 map_smooth(sint32 l, sint32 t, sint32 r, sint32 b);
 
 #endif

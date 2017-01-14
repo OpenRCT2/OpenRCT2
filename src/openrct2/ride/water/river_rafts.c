@@ -291,7 +291,7 @@ static const sprite_bb RiverRaftsRightQuarterTurn5_Side[4][5] = {
 };
 
 /** rct2: 0x0089B170 */
-static void paint_river_rafts_track_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+static void paint_river_rafts_track_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
 	uint32 imageId;
 
@@ -322,7 +322,7 @@ static void paint_river_rafts_track_flat(uint8 rideIndex, uint8 trackSequence, u
 }
 
 /** rct2: 0x0089B1A0 */
-static void paint_river_rafts_station(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+static void paint_river_rafts_station(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
 	rct_ride *ride = get_ride(rideIndex);
 
@@ -351,7 +351,7 @@ static void paint_river_rafts_station(uint8 rideIndex, uint8 trackSequence, uint
 }
 
 /** rct2: 0x0089B1D0 */
-static void paint_river_rafts_track_left_quarter_turn_5_tiles(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+static void paint_river_rafts_track_left_quarter_turn_5_tiles(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
 	track_paint_util_right_quarter_turn_5_tiles_paint_2(height, direction, get_current_rotation(), trackSequence, gTrackColours[SCHEME_TRACK], RiverRaftsLeftQuarterTurn5_Top);
 	track_paint_util_right_quarter_turn_5_tiles_paint_2(height, direction, get_current_rotation(), trackSequence, gTrackColours[SCHEME_TRACK], RiverRaftsLeftQuarterTurn5_Side);
@@ -394,7 +394,7 @@ static void paint_river_rafts_track_left_quarter_turn_5_tiles(uint8 rideIndex, u
 }
 
 /** rct2: 0x0089B1D0 */
-static void paint_river_rafts_track_right_quarter_turn_5_tiles(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+static void paint_river_rafts_track_right_quarter_turn_5_tiles(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
 	track_paint_util_right_quarter_turn_5_tiles_paint_2(height, direction, get_current_rotation(), trackSequence, gTrackColours[SCHEME_TRACK], RiverRaftsRightQuarterTurn5_Top);
 	track_paint_util_right_quarter_turn_5_tiles_paint_2(height, direction, get_current_rotation(), trackSequence, gTrackColours[SCHEME_TRACK], RiverRaftsRightQuarterTurn5_Side);
@@ -437,7 +437,7 @@ static void paint_river_rafts_track_right_quarter_turn_5_tiles(uint8 rideIndex, 
 }
 
 /** rct2: 0x0089B180 */
-static void paint_river_rafts_track_s_bend_left(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+static void paint_river_rafts_track_s_bend_left(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
 	static const uint32 imageIds[4][4][2] =
 	{
@@ -475,7 +475,7 @@ static void paint_river_rafts_track_s_bend_left(uint8 rideIndex, uint8 trackSequ
 		sub_98197C_rotated(direction, imageId, 0, 0, 32, 26, 2, height, 0, bboy, height);
 		sub_98197C_rotated(direction, frontImageId, 0, 0, 32, 26, 0, height, 0, bboy, height + 27);
 
-		static const int supportTypes1[] = { 5, 2, 3, 4 };
+		static const sint32 supportTypes1[] = { 5, 2, 3, 4 };
 		wooden_a_supports_paint_setup(supportTypes1[direction], 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
 
 		paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -485,7 +485,7 @@ static void paint_river_rafts_track_s_bend_left(uint8 rideIndex, uint8 trackSequ
 		sub_98197C_rotated(direction, imageId, 0, 0, 32, 26, 2, height, 0, bboy, height);
 		sub_98197C_rotated(direction, frontImageId, 0, 0, 32, 26, 0, height, 0, bboy, height + 27);
 
-		static const int supportTypes2[] = { 3, 4, 5, 2 };
+		static const sint32 supportTypes2[] = { 3, 4, 5, 2 };
 		wooden_a_supports_paint_setup(supportTypes2[direction], 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
 
 		paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
@@ -512,7 +512,7 @@ static void paint_river_rafts_track_s_bend_left(uint8 rideIndex, uint8 trackSequ
 }
 
 /** rct2: 0x0089B190 */
-static void paint_river_rafts_track_s_bend_right(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+static void paint_river_rafts_track_s_bend_right(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
 	static const uint32 imageIds[4][4][2] =
 	{
@@ -550,7 +550,7 @@ static void paint_river_rafts_track_s_bend_right(uint8 rideIndex, uint8 trackSeq
 		sub_98197C_rotated(direction, imageId, 0, 0, 32, 26, 2, height, 0, bboy, height);
 		sub_98197C_rotated(direction, frontImageId, 0, 0, 32, 26, 0, height, 0, bboy, height + 27);
 
-		static const int supportTypes1[] = { 4, 5, 2, 3 };
+		static const sint32 supportTypes1[] = { 4, 5, 2, 3 };
 		wooden_a_supports_paint_setup(supportTypes1[direction], 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
 
 		paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
@@ -560,7 +560,7 @@ static void paint_river_rafts_track_s_bend_right(uint8 rideIndex, uint8 trackSeq
 		sub_98197C_rotated(direction, imageId, 0, 0, 32, 26, 2, height, 0, bboy, height);
 		sub_98197C_rotated(direction, frontImageId, 0, 0, 32, 26, 0, height, 0, bboy, height + 27);
 
-		static const int supportTypes2[] = { 2, 3, 4, 5 };
+		static const sint32 supportTypes2[] = { 2, 3, 4, 5 };
 		wooden_a_supports_paint_setup(supportTypes2[direction], 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
 
 		paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -589,7 +589,7 @@ static void paint_river_rafts_track_s_bend_right(uint8 rideIndex, uint8 trackSeq
 /**
  * rct2: 0x0089B0C0
  */
-TRACK_PAINT_FUNCTION get_track_paint_function_river_rafts(int trackType, int direction)
+TRACK_PAINT_FUNCTION get_track_paint_function_river_rafts(sint32 trackType, sint32 direction)
 {
 	switch (trackType) {
 	case TRACK_ELEM_FLAT: return paint_river_rafts_track_flat;

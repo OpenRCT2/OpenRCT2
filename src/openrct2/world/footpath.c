@@ -24,8 +24,8 @@
 #include "../ride/track_data.h"
 #include "../util/util.h"
 
-void footpath_interrupt_peeps(int x, int y, int z);
-void sub_6A7642(int x, int y, rct_map_element *mapElement);
+void footpath_interrupt_peeps(sint32 x, sint32 y, sint32 z);
+void sub_6A7642(sint32 x, sint32 y, rct_map_element *mapElement);
 
 uint8 gFootpathProvisionalFlags;
 rct_xyz16 gFootpathProvisionalPosition;
@@ -79,14 +79,14 @@ static const uint8 connected_path_count[] = {
 	4, // 0b1111
 };
 
-int entrance_get_directions(rct_map_element *mapElement)
+sint32 entrance_get_directions(rct_map_element *mapElement)
 {
 	uint8 entranceType = mapElement->properties.entrance.type;
 	uint8 sequence = mapElement->properties.entrance.index & 0x0F;
 	return EntranceDirections[(entranceType * 8) + sequence];
 }
 
-static bool entrance_has_direction(rct_map_element *mapElement, int direction)
+static bool entrance_has_direction(rct_map_element *mapElement, sint32 direction)
 {
 	return entrance_get_directions(mapElement) & (1 << direction);
 }
@@ -95,9 +95,9 @@ static bool entrance_has_direction(rct_map_element *mapElement, int direction)
  *
  *  rct2: 0x006A65AD
  */
-static void automatically_set_peep_spawn(int x, int y, int z)
+static void automatically_set_peep_spawn(sint32 x, sint32 y, sint32 z)
 {
-	int direction = 0;
+	sint32 direction = 0;
 	if (x != 32) {
 		direction++;
 		if (y != gMapSizeUnits - 32) {
@@ -117,7 +117,7 @@ static void automatically_set_peep_spawn(int x, int y, int z)
 	peepSpawn->z = z;
 }
 
-static rct_map_element *map_get_footpath_element(int x, int y, int z)
+static rct_map_element *map_get_footpath_element(sint32 x, sint32 y, sint32 z)
 {
 	rct_map_element *mapElement;
 
@@ -130,7 +130,7 @@ static rct_map_element *map_get_footpath_element(int x, int y, int z)
 	return NULL;
 }
 
-static rct_map_element *map_get_footpath_element_slope(int x, int y, int z, int slope)
+static rct_map_element *map_get_footpath_element_slope(sint32 x, sint32 y, sint32 z, sint32 slope)
 {
 	rct_map_element *mapElement;
 
@@ -148,11 +148,11 @@ static rct_map_element *map_get_footpath_element_slope(int x, int y, int z, int 
 	return NULL;
 }
 
-static void loc_6A6620(int flags, int x, int y, rct_map_element *mapElement)
+static void loc_6A6620(sint32 flags, sint32 x, sint32 y, rct_map_element *mapElement)
 {
 	if ((mapElement->properties.path.type & 4) && !(flags & GAME_COMMAND_FLAG_GHOST)) {
-		int direction = mapElement->properties.path.type & 3;
-		int z = mapElement->base_height;
+		sint32 direction = mapElement->properties.path.type & 3;
+		sint32 z = mapElement->base_height;
 		map_remove_intersecting_walls(x, y, z, z + 6, direction ^ 2);
 		map_remove_intersecting_walls(x, y, z, z + 6, direction);
 		mapElement = map_get_footpath_element(x / 32, y / 32, z);
@@ -170,10 +170,10 @@ static const uint8 byte_98D7EC[] = {
 	207, 159, 63, 111
 };
 
-static money32 footpath_element_insert(int type, int x, int y, int z, int slope, int flags, uint8 pathItemType)
+static money32 footpath_element_insert(sint32 type, sint32 x, sint32 y, sint32 z, sint32 slope, sint32 flags, uint8 pathItemType)
 {
 	rct_map_element *mapElement;
-	int bl, zHigh;
+	sint32 bl, zHigh;
 
 	if (!map_check_free_elements_and_reorganise(1))
 		return MONEY32_UNDEFINED;
@@ -202,7 +202,7 @@ static money32 footpath_element_insert(int type, int x, int y, int z, int slope,
 
 	mapElement = map_get_surface_element_at((x / 32), (y / 32));
 
-	int supportHeight = z - mapElement->base_height;
+	sint32 supportHeight = z - mapElement->base_height;
 	gFootpathPrice += supportHeight < 0 ? MONEY(20, 00) : (supportHeight / 2) * MONEY(5, 00);
 
 	if (flags & GAME_COMMAND_FLAG_APPLY) {
@@ -231,7 +231,7 @@ static money32 footpath_element_insert(int type, int x, int y, int z, int slope,
 	return gParkFlags & PARK_FLAGS_NO_MONEY ? 0 : gFootpathPrice;
 }
 
-static money32 footpath_element_update(int x, int y, rct_map_element *mapElement, int type, int flags, uint8 pathItemType)
+static money32 footpath_element_update(sint32 x, sint32 y, rct_map_element *mapElement, sint32 type, sint32 flags, uint8 pathItemType)
 {
 	if ((mapElement->properties.path.type >> 4) != (type & 0x0F) || (mapElement->type & 1) != (type >> 7)) {
 		gFootpathPrice += MONEY(6, 00);
@@ -332,7 +332,7 @@ static money32 footpath_element_update(int x, int y, rct_map_element *mapElement
 	return gParkFlags & PARK_FLAGS_NO_MONEY ? 0 : gFootpathPrice;
 }
 
-static money32 footpath_place_real(int type, int x, int y, int z, int slope, int flags, uint8 pathItemType)
+static money32 footpath_place_real(sint32 type, sint32 x, sint32 y, sint32 z, sint32 slope, sint32 flags, uint8 pathItemType)
 {
 	rct_map_element *mapElement;
 
@@ -399,7 +399,7 @@ static money32 footpath_place_real(int type, int x, int y, int z, int slope, int
  *
  *  rct2: 0x006BA23E
  */
-static void remove_banners_at_element(int x, int y, rct_map_element* mapElement){
+static void remove_banners_at_element(sint32 x, sint32 y, rct_map_element* mapElement){
 	while (!map_element_is_last_for_tile(mapElement++)){
 		if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_PATH)return;
 		else if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_BANNER)continue;
@@ -409,7 +409,7 @@ static void remove_banners_at_element(int x, int y, rct_map_element* mapElement)
 	}
 }
 
-money32 footpath_remove_real(int x, int y, int z, int flags)
+money32 footpath_remove_real(sint32 x, sint32 y, sint32 z, sint32 flags)
 {
 	rct_map_element *mapElement;
 
@@ -456,7 +456,7 @@ money32 footpath_remove_real(int x, int y, int z, int flags)
  *
  *  rct2: 0x006A61DE
  */
-void game_command_place_footpath(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp)
+void game_command_place_footpath(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *edx, sint32 *esi, sint32 *edi, sint32 *ebp)
 {
 	*ebx = footpath_place_real(
 		(*edx >> 8) & 0xFF,
@@ -469,7 +469,7 @@ void game_command_place_footpath(int *eax, int *ebx, int *ecx, int *edx, int *es
 	);
 }
 
-static money32 footpath_place_from_track(int type, int x, int y, int z, int slope, int edges, int flags)
+static money32 footpath_place_from_track(sint32 type, sint32 x, sint32 y, sint32 z, sint32 slope, sint32 edges, sint32 flags)
 {
 	rct_map_element *mapElement;
 
@@ -514,7 +514,7 @@ static money32 footpath_place_from_track(int type, int x, int y, int z, int slop
 
 	gFootpathPrice += 120;
 	uint8 bl = 15;
-	int zHigh = z + 4;
+	sint32 zHigh = z + 4;
 	if (slope & 4) {
 		bl = byte_98D7EC[slope & 3];
 		zHigh += 2;
@@ -531,7 +531,7 @@ static money32 footpath_place_from_track(int type, int x, int y, int z, int slop
 
 	mapElement = map_get_surface_element_at((x / 32), (y / 32));
 
-	int supportHeight = z - mapElement->base_height;
+	sint32 supportHeight = z - mapElement->base_height;
 	gFootpathPrice += supportHeight < 0 ? MONEY(20, 00) : (supportHeight / 2) * MONEY(5, 00);
 
 	if (flags & GAME_COMMAND_FLAG_APPLY) {
@@ -565,7 +565,7 @@ static money32 footpath_place_from_track(int type, int x, int y, int z, int slop
  *
  *  rct2: 0x006A68AE
  */
-void game_command_place_footpath_from_track(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp)
+void game_command_place_footpath_from_track(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *edx, sint32 *esi, sint32 *edi, sint32 *ebp)
 {
 	*ebx = footpath_place_from_track(
 		(*edx >> 8) & 0xFF,
@@ -582,17 +582,17 @@ void game_command_place_footpath_from_track(int *eax, int *ebx, int *ecx, int *e
  *
  *  rct2: 0x006A67C0
  */
-void game_command_remove_footpath(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp)
+void game_command_remove_footpath(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *edx, sint32 *esi, sint32 *edi, sint32 *ebp)
 {
 	*ebx = footpath_remove_real((*eax & 0xFFFF), (*ecx & 0xFFFF), (*edx & 0xFF), (*ebx & 0xFF));
 }
 
-money32 footpath_place(int type, int x, int y, int z, int slope, int flags)
+money32 footpath_place(sint32 type, sint32 x, sint32 y, sint32 z, sint32 slope, sint32 flags)
 {
 	return game_do_command(x, (slope << 8) | flags, y, (type << 8) | z, GAME_COMMAND_PLACE_PATH, 0, 0);
 }
 
-void footpath_remove(int x, int y, int z, int flags)
+void footpath_remove(sint32 x, sint32 y, sint32 z, sint32 flags)
 {
 	game_do_command(x, flags, y, z, GAME_COMMAND_REMOVE_PATH, 0, 0);
 }
@@ -601,7 +601,7 @@ void footpath_remove(int x, int y, int z, int flags)
  *
  *  rct2: 0x006A76FF
  */
-money32 footpath_provisional_set(int type, int x, int y, int z, int slope)
+money32 footpath_provisional_set(sint32 type, sint32 x, sint32 y, sint32 z, sint32 slope)
 {
 	money32 cost;
 
@@ -676,9 +676,9 @@ void footpath_provisional_update()
  *		direction: ecx
  *		mapElement: edx
  */
-void footpath_get_coordinates_from_pos(int screenX, int screenY, int *x, int *y, int *direction, rct_map_element **mapElement)
+void footpath_get_coordinates_from_pos(sint32 screenX, sint32 screenY, sint32 *x, sint32 *y, sint32 *direction, rct_map_element **mapElement)
 {
-	int z = 0, interactionType;
+	sint32 z = 0, interactionType;
 	rct_map_element *myMapElement;
 	rct_viewport *viewport;
 	rct_xy16 position = { 0 };
@@ -707,7 +707,7 @@ void footpath_get_coordinates_from_pos(int screenX, int screenY, int *x, int *y,
 
 	rct_xy16 start_vp_pos = screen_coord_to_viewport_coord(viewport, screenX, screenY);
 
-	for (int i = 0; i < 5; i++) {
+	for (sint32 i = 0; i < 5; i++) {
 		if (interactionType != VIEWPORT_INTERACTION_ITEM_FOOTPATH) {
 			z = map_element_height(position.x, position.y);
 		}
@@ -718,7 +718,7 @@ void footpath_get_coordinates_from_pos(int screenX, int screenY, int *x, int *y,
 
 	// Determine to which edge the cursor is closest
 	uint32 myDirection;
-	int mod_x = position.x & 0x1F, mod_y = position.y & 0x1F;
+	sint32 mod_x = position.x & 0x1F, mod_y = position.y & 0x1F;
 	if (mod_x < mod_y) {
 		if (mod_x + mod_y < 32) {
 			myDirection = 0;
@@ -749,10 +749,10 @@ void footpath_get_coordinates_from_pos(int screenX, int screenY, int *x, int *y,
  * direction: cl
  * mapElement: edx
  */
-void footpath_bridge_get_info_from_pos(int screenX, int screenY, int *x, int *y, int *direction, rct_map_element **mapElement)
+void footpath_bridge_get_info_from_pos(sint32 screenX, sint32 screenY, sint32 *x, sint32 *y, sint32 *direction, rct_map_element **mapElement)
 {
 	// First check if we point at an entrance or exit. In that case, we would want the path coming from the entrance/exit.
-	int interactionType;
+	sint32 interactionType;
 	rct_viewport *viewport;
 
 	rct_xy16 map_pos = { 0 };
@@ -764,9 +764,9 @@ void footpath_bridge_get_info_from_pos(int screenX, int screenY, int *x, int *y,
 		&& viewport->flags & (VIEWPORT_FLAG_UNDERGROUND_INSIDE | VIEWPORT_FLAG_HIDE_BASE | VIEWPORT_FLAG_HIDE_VERTICAL)
 		&& map_element_get_type(*mapElement) == MAP_ELEMENT_TYPE_ENTRANCE
 	) {
-		int directions = entrance_get_directions(*mapElement);
+		sint32 directions = entrance_get_directions(*mapElement);
 		if (directions & 0x0F) {
-			int bx = bitscanforward(directions);
+			sint32 bx = bitscanforward(directions);
 			bx += (*mapElement)->type;
 			bx &= 3;
 			if (direction != NULL) *direction = bx;
@@ -778,9 +778,9 @@ void footpath_bridge_get_info_from_pos(int screenX, int screenY, int *x, int *y,
 	*x = map_pos.x;
 	*y = map_pos.y;
 	if (interactionType == VIEWPORT_INTERACTION_ITEM_RIDE && map_element_get_type(*mapElement) == MAP_ELEMENT_TYPE_ENTRANCE) {
-		int directions = entrance_get_directions(*mapElement);
+		sint32 directions = entrance_get_directions(*mapElement);
 		if (directions & 0x0F) {
-			int bx = bitscanforward(directions);
+			sint32 bx = bitscanforward(directions);
 			bx += (*mapElement)->type; // First two bits seem to contain the direction of entrance/exit
 			bx &= 3;
 			if (direction != NULL) *direction = bx;
@@ -796,14 +796,14 @@ void footpath_bridge_get_info_from_pos(int screenX, int screenY, int *x, int *y,
  *
  *  rct2: 0x00673883
  */
-void footpath_remove_litter(int x, int y, int z)
+void footpath_remove_litter(sint32 x, sint32 y, sint32 z)
 {
 	uint16 spriteIndex = sprite_get_first_in_quadrant(x, y);
 	while (spriteIndex != SPRITE_INDEX_NULL) {
 		rct_litter *sprite = &get_sprite(spriteIndex)->litter;
 		uint16 nextSpriteIndex = sprite->next_in_quadrant;
 		if (sprite->linked_list_type_offset == SPRITE_LIST_LITTER * 2) {
-			int distanceZ = abs(sprite->z - z);
+			sint32 distanceZ = abs(sprite->z - z);
 			if (distanceZ <= 32) {
 				invalidate_sprite_0((rct_sprite*)sprite);
 				sprite_remove((rct_sprite*)sprite);
@@ -817,7 +817,7 @@ void footpath_remove_litter(int x, int y, int z)
  *
  *  rct2: 0x0069A48B
  */
-void footpath_interrupt_peeps(int x, int y, int z)
+void footpath_interrupt_peeps(sint32 x, sint32 y, sint32 z)
 {
 	uint16 spriteIndex = sprite_get_first_in_quadrant(x, y);
 	while (spriteIndex != SPRITE_INDEX_NULL) {
@@ -844,7 +844,7 @@ void footpath_interrupt_peeps(int x, int y, int z)
  *
  *  rct2: 0x006E59DC
  */
-bool fence_in_the_way(int x, int y, int z0, int z1, int direction)
+bool fence_in_the_way(sint32 x, sint32 y, sint32 z0, sint32 z1, sint32 direction)
 {
 	rct_map_element *mapElement;
 
@@ -868,7 +868,7 @@ bool fence_in_the_way(int x, int y, int z0, int z1, int direction)
 	return false;
 }
 
-static bool map_is_edge(int x, int y)
+static bool map_is_edge(sint32 x, sint32 y)
 {
 	return (
 		x < 32 ||
@@ -878,7 +878,7 @@ static bool map_is_edge(int x, int y)
 	);
 }
 
-static rct_map_element *footpath_connect_corners_get_neighbour(int x, int y, int z, int requireEdges)
+static rct_map_element *footpath_connect_corners_get_neighbour(sint32 x, sint32 y, sint32 z, sint32 requireEdges)
 {
 	rct_map_element *mapElement = map_get_first_element_at(x >> 5, y >> 5);
 	do {
@@ -904,7 +904,7 @@ static rct_map_element *footpath_connect_corners_get_neighbour(int x, int y, int
  *
  *  rct2: 0x006A70EB
  */
-static void footpath_connect_corners(int initialX, int initialY, rct_map_element *initialMapElement)
+static void footpath_connect_corners(sint32 initialX, sint32 initialY, rct_map_element *initialMapElement)
 {
 	rct_map_element *mapElement[4];
 
@@ -914,11 +914,11 @@ static void footpath_connect_corners(int initialX, int initialY, rct_map_element
 		return;
 
 	mapElement[0] = initialMapElement;
-	int z = initialMapElement->base_height;
-	for (int initialDirection = 0; initialDirection < 4; initialDirection++) {
-		int x = initialX;
-		int y = initialY;
-		int direction = initialDirection;
+	sint32 z = initialMapElement->base_height;
+	for (sint32 initialDirection = 0; initialDirection < 4; initialDirection++) {
+		sint32 x = initialX;
+		sint32 y = initialY;
+		sint32 direction = initialDirection;
 
 		x += TileDirectionDelta[direction].x;
 		y += TileDirectionDelta[direction].y;
@@ -972,10 +972,10 @@ typedef struct rct_neighbour {
 
 typedef struct rct_neighbour_list {
 	rct_neighbour items[8];
-	int count;
+	sint32 count;
 } rct_neighbour_list;
 
-static int rct_neighbour_compare(const void *a, const void *b)
+static sint32 rct_neighbour_compare(const void *a, const void *b)
 {
 	uint8 va = ((rct_neighbour*)a)->order;
 	uint8 vb = ((rct_neighbour*)b)->order;
@@ -995,7 +995,7 @@ static void neighbour_list_init(rct_neighbour_list *neighbourList)
 	neighbourList->count = 0;
 }
 
-static void neighbour_list_push(rct_neighbour_list *neighbourList, int order, int direction, uint8 rideIndex, uint8 entrance_index)
+static void neighbour_list_push(rct_neighbour_list *neighbourList, sint32 order, sint32 direction, uint8 rideIndex, uint8 entrance_index)
 {
 	neighbourList->items[neighbourList->count].order = order;
 	neighbourList->items[neighbourList->count].direction = direction;
@@ -1010,15 +1010,15 @@ static bool neighbour_list_pop(rct_neighbour_list *neighbourList, rct_neighbour 
 		return false;
 
 	*outNeighbour = neighbourList->items[0];
-	for (int i = 0; i < neighbourList->count - 1; i++)
+	for (sint32 i = 0; i < neighbourList->count - 1; i++)
 		neighbourList->items[i] = neighbourList->items[i + 1];
 	neighbourList->count--;
 	return true;
 }
 
-static void neighbour_list_remove(rct_neighbour_list *neighbourList, int index)
+static void neighbour_list_remove(rct_neighbour_list *neighbourList, sint32 index)
 {
-	int itemsRemaining = neighbourList->count - index - 1;
+	sint32 itemsRemaining = neighbourList->count - index - 1;
 	if (itemsRemaining > 0) {
 		memmove(&neighbourList->items[index], &neighbourList->items[index + 1], sizeof(rct_neighbour) * itemsRemaining);
 	}
@@ -1030,10 +1030,10 @@ static void neighbour_list_sort(rct_neighbour_list *neighbourList)
 	qsort(neighbourList->items, neighbourList->count, sizeof(rct_neighbour), rct_neighbour_compare);
 }
 
-static rct_map_element *footpath_get_element(int x, int y, int z0, int z1, int direction)
+static rct_map_element *footpath_get_element(sint32 x, sint32 y, sint32 z0, sint32 z1, sint32 direction)
 {
 	rct_map_element *mapElement;
-	int slope;
+	sint32 slope;
 
 	mapElement = map_get_first_element_at(x >> 5, y >> 5);
 	do {
@@ -1062,15 +1062,15 @@ static rct_map_element *footpath_get_element(int x, int y, int z0, int z1, int d
 	return NULL;
 }
 
-static bool sub_footpath_disconnect_queue_from_path(int x, int y, rct_map_element *mapElement, int action, int direction) {
+static bool sub_footpath_disconnect_queue_from_path(sint32 x, sint32 y, rct_map_element *mapElement, sint32 action, sint32 direction) {
 	if (((mapElement->properties.path.edges & (1 << direction)) == 0) ^ (action < 0))
 		return false;
 	if ((action < 0) && fence_in_the_way(x, y, mapElement->base_height, mapElement->clearance_height, direction))
 		return false;
 
-	int x1 = x + TileDirectionDelta[direction].x;
-	int y1 = y + TileDirectionDelta[direction].y;
-	int z = mapElement->base_height;
+	sint32 x1 = x + TileDirectionDelta[direction].x;
+	sint32 y1 = y + TileDirectionDelta[direction].y;
+	sint32 z = mapElement->base_height;
 	rct_map_element *otherMapElement = footpath_get_element(x1, y1, z - 2, z, direction);
 	if (otherMapElement != NULL && !footpath_element_is_queue(otherMapElement)) {
 		mapElement->properties.path.type &= 0xFC;
@@ -1089,7 +1089,7 @@ static bool sub_footpath_disconnect_queue_from_path(int x, int y, rct_map_elemen
 	return false;
 }
 
-static bool footpath_disconnect_queue_from_path(int x, int y, rct_map_element *mapElement, int action) {
+static bool footpath_disconnect_queue_from_path(sint32 x, sint32 y, rct_map_element *mapElement, sint32 action) {
 	if (!footpath_element_is_queue(mapElement)) return false;
 
 	if (footpath_element_is_sloped(mapElement)) return false;
@@ -1102,7 +1102,7 @@ static bool footpath_disconnect_queue_from_path(int x, int y, rct_map_element *m
 			return true;
 	}
 
-	for (int direction = 0; direction < 4; direction++) {
+	for (sint32 direction = 0; direction < 4; direction++) {
 		if ((action < 0) && (direction == (mapElement->properties.path.type & 3))) continue;
 		if (sub_footpath_disconnect_queue_from_path(x, y, mapElement, action, direction))
 			return true;
@@ -1111,7 +1111,7 @@ static bool footpath_disconnect_queue_from_path(int x, int y, rct_map_element *m
 	return false;
 }
 
-static bool footpath_is_queue_connected_to_path(int x, int y, rct_map_element *mapElement, int direction)
+static bool footpath_is_queue_connected_to_path(sint32 x, sint32 y, rct_map_element *mapElement, sint32 direction)
 {
 	if (!footpath_element_is_queue(mapElement)) return false;
 	if (!(mapElement->properties.path.edges & (1 << direction))) return false;
@@ -1130,11 +1130,11 @@ static bool footpath_is_queue_connected_to_path(int x, int y, rct_map_element *m
  *  rct2: 0x006A6D7E
  */
 static void loc_6A6D7E(
-	int initialX, int initialY, int z, int direction, rct_map_element *initialMapElement,
-	int flags, bool query, rct_neighbour_list *neighbourList
+	sint32 initialX, sint32 initialY, sint32 z, sint32 direction, rct_map_element *initialMapElement,
+	sint32 flags, bool query, rct_neighbour_list *neighbourList
 ) {
-	int x = initialX + TileDirectionDelta[direction].x;
-	int y = initialY + TileDirectionDelta[direction].y;
+	sint32 x = initialX + TileDirectionDelta[direction].x;
+	sint32 y = initialY + TileDirectionDelta[direction].y;
 	if (((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode) && map_is_edge(x, y)) {
 		if (query) {
 			neighbour_list_push(neighbourList, 7, direction, 255, 255);
@@ -1240,8 +1240,8 @@ loc_6A6FD2:
 }
 
 static void loc_6A6C85(
-	int x, int y, int direction, rct_map_element *mapElement,
-	int flags, bool query, rct_neighbour_list *neighbourList
+	sint32 x, sint32 y, sint32 direction, rct_map_element *mapElement,
+	sint32 flags, bool query, rct_neighbour_list *neighbourList
 ) {
 	if (query && fence_in_the_way(x, y, mapElement->base_height, mapElement->clearance_height, direction))
 		return;
@@ -1268,7 +1268,7 @@ static void loc_6A6C85(
 		}
 	}
 
-	int z = mapElement->base_height;
+	sint32 z = mapElement->base_height;
 	if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_PATH) {
 		if (footpath_element_is_sloped(mapElement)) {
 			if ((footpath_element_get_slope_direction(mapElement) - direction) & 1) {
@@ -1287,7 +1287,7 @@ static void loc_6A6C85(
  *
  *  rct2: 0x006A6C66
  */
-void footpath_connect_edges(int x, int y, rct_map_element *mapElement, int flags)
+void footpath_connect_edges(sint32 x, sint32 y, rct_map_element *mapElement, sint32 flags)
 {
 	rct_neighbour_list neighbourList;
 	rct_neighbour neighbour;
@@ -1297,16 +1297,16 @@ void footpath_connect_edges(int x, int y, rct_map_element *mapElement, int flags
 	neighbour_list_init(&neighbourList);
 
 	sub_6A7642(x, y, mapElement);
-	for (int direction = 0; direction < 4; direction++) {
+	for (sint32 direction = 0; direction < 4; direction++) {
 		loc_6A6C85(x, y, direction, mapElement, flags, true, &neighbourList);
 	}
 
 	neighbour_list_sort(&neighbourList);
 
 	if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_PATH && footpath_element_is_queue(mapElement)) {
-		int rideIndex = -1;
+		sint32 rideIndex = -1;
 		uint8 entranceIndex = 255;
-		for (int i = 0; i < neighbourList.count; i++) {
+		for (sint32 i = 0; i < neighbourList.count; i++) {
 			if (neighbourList.items[i].ride_index != 255) {
 				if (rideIndex == -1) {
 					rideIndex = neighbourList.items[i].ride_index;
@@ -1337,14 +1337,14 @@ void footpath_connect_edges(int x, int y, rct_map_element *mapElement, int flags
  *
  *  rct2: 0x006A742F
  */
-void footpath_chain_ride_queue(int rideIndex, int entranceIndex, int x, int y, rct_map_element *mapElement, int direction)
+void footpath_chain_ride_queue(sint32 rideIndex, sint32 entranceIndex, sint32 x, sint32 y, rct_map_element *mapElement, sint32 direction)
 {
 	rct_map_element *lastPathElement, *lastQueuePathElement;
-	int lastPathX = x, lastPathY = y, lastPathDirection = direction;
+	sint32 lastPathX = x, lastPathY = y, lastPathDirection = direction;
 
 	lastPathElement = NULL;
 	lastQueuePathElement = NULL;
-	int z = mapElement->base_height;
+	sint32 z = mapElement->base_height;
 	for (;;) {
 		if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_PATH) {
 			lastPathElement = mapElement;
@@ -1390,10 +1390,10 @@ void footpath_chain_ride_queue(int rideIndex, int entranceIndex, int x, int y, r
 		if (footpath_element_is_queue(mapElement)) {
 			// Fix #2051: Stop queue paths that are already connected to two other tiles
 			//            from connecting to the tile we are coming from.
-			int edges = mapElement->properties.path.edges;
-			int numEdges = bitcount(edges);
+			sint32 edges = mapElement->properties.path.edges;
+			sint32 numEdges = bitcount(edges);
 			if (numEdges >= 2) {
-				int requiredEdgeMask = 1 << (direction ^ 2);
+				sint32 requiredEdgeMask = 1 << (direction ^ 2);
 				if (!(edges & requiredEdgeMask)) {
 					break;
 				}
@@ -1473,7 +1473,7 @@ void sub_6A759F()
 			continue;
 		}
 
-		for (int i = 0; i < 4; i++) {
+		for (sint32 i = 0; i < 4; i++) {
 			if (ride->entrances[i] == 0xFFFF) {
 				continue;
 			}
@@ -1499,14 +1499,14 @@ void sub_6A759F()
  *
  *  rct2: 0x0069ADBD
  */
-static void footpath_unown(int x, int y, rct_map_element *pathElement)
+static void footpath_unown(sint32 x, sint32 y, rct_map_element *pathElement)
 {
 	map_buy_land_rights(x, y, x, y, 6, 1);
 }
 
-static bool get_next_direction(int edges, int *direction)
+static bool get_next_direction(sint32 edges, sint32 *direction)
 {
-	int index = bitscanforward(edges);
+	sint32 index = bitscanforward(edges);
 	if (index == -1)
 		return false;
 
@@ -1521,12 +1521,12 @@ static bool get_next_direction(int edges, int *direction)
  *              (1 << 5): Unown
  *              (1 << 7): Ignore no entry signs
  */
-static int footpath_is_connected_to_map_edge_recurse(
-	int x, int y, int z, int direction, int flags,
-	int level, int distanceFromJunction, int junctionTolerance
+static sint32 footpath_is_connected_to_map_edge_recurse(
+	sint32 x, sint32 y, sint32 z, sint32 direction, sint32 flags,
+	sint32 level, sint32 distanceFromJunction, sint32 junctionTolerance
 ) {
 	rct_map_element *mapElement;
-	int edges, slopeDirection;
+	sint32 edges, slopeDirection;
 
 	x += TileDirectionDelta[direction].x;
 	y += TileDirectionDelta[direction].y;
@@ -1567,14 +1567,14 @@ static int footpath_is_connected_to_map_edge_recurse(
 		direction ^= 2;
 		if (!(flags & (1 << 7))) {
 			if (mapElement[1].type == MAP_ELEMENT_TYPE_BANNER) {
-				for (int i = 1; i < 4; i++) {
+				for (sint32 i = 1; i < 4; i++) {
 					if (map_element_is_last_for_tile(&mapElement[i - 1])) break;
 					if (mapElement[i].type != MAP_ELEMENT_TYPE_BANNER) break;
 					edges &= mapElement[i].properties.banner.flags;
 				}
 			}
 			if (mapElement[2].type == MAP_ELEMENT_TYPE_BANNER && mapElement[1].type != MAP_ELEMENT_TYPE_PATH) {
-				for (int i = 1; i < 6; i++) {
+				for (sint32 i = 1; i < 6; i++) {
 					if (map_element_is_last_for_tile(&mapElement[i - 1])) break;
 					if (mapElement[i].type != MAP_ELEMENT_TYPE_BANNER) break;
 					edges &= mapElement[i].properties.banner.flags;
@@ -1620,7 +1620,7 @@ searchFromFootpath:
 			if (footpath_element_is_sloped(mapElement) && footpath_element_get_slope_direction(mapElement) == direction) {
 				z += 2;
 			}
-			int result = footpath_is_connected_to_map_edge_recurse(x, y, z, direction, flags, level, 0, junctionTolerance);
+			sint32 result = footpath_is_connected_to_map_edge_recurse(x, y, z, direction, flags, level, 0, junctionTolerance);
 			if (result == FOOTPATH_SEARCH_SUCCESS) {
 				return result;
 			}
@@ -1630,7 +1630,7 @@ searchFromFootpath:
 	}
 }
 
-int footpath_is_connected_to_map_edge(int x, int y, int z, int direction, int flags)
+sint32 footpath_is_connected_to_map_edge(sint32 x, sint32 y, sint32 z, sint32 direction, sint32 flags)
 {
 	flags |= (1 << 0);
 	return footpath_is_connected_to_map_edge_recurse(x, y, z, direction, flags, 0, 0, 16);
@@ -1701,7 +1701,7 @@ uint8 footpath_element_get_type(rct_map_element *mapElement)
 *  clears the wide footpath flag for all footpaths
 *  at location
 */
-static void footpath_clear_wide(int x, int y)
+static void footpath_clear_wide(sint32 x, sint32 y)
 {
 	rct_map_element *mapElement = map_get_first_element_at(x / 32, y / 32);
 	do {
@@ -1717,7 +1717,7 @@ static void footpath_clear_wide(int x, int y)
 *  returns footpath element if it can be made wide
 *  returns NULL if it can not be made wide
 */
-static rct_map_element* footpath_can_be_wide(int x, int y, uint8 height)
+static rct_map_element* footpath_can_be_wide(sint32 x, sint32 y, uint8 height)
 {
 	rct_map_element *mapElement = map_get_first_element_at(x / 32, y / 32);
 	do {
@@ -1740,7 +1740,7 @@ static rct_map_element* footpath_can_be_wide(int x, int y, uint8 height)
 *
 *  rct2: 0x006A87BB
 */
-void footpath_update_path_wide_flags(int x, int y)
+void footpath_update_path_wide_flags(sint32 x, sint32 y)
 {
 	if (x < 0x20)
 		return;
@@ -1930,14 +1930,14 @@ void footpath_update_path_wide_flags(int x, int y)
  *
  *  rct2: 0x006A7642
  */
-void sub_6A7642(int x, int y, rct_map_element *mapElement)
+void sub_6A7642(sint32 x, sint32 y, rct_map_element *mapElement)
 {
-	int elementType = map_element_get_type(mapElement);
+	sint32 elementType = map_element_get_type(mapElement);
 	switch (elementType) {
 	case MAP_ELEMENT_TYPE_PATH:
 		if (footpath_element_is_queue(mapElement)) {
 			footpath_queue_chain_push(mapElement->properties.path.ride_index);
-			for (int direction = 0; direction < 4; direction++) {
+			for (sint32 direction = 0; direction < 4; direction++) {
 				if (mapElement->properties.path.edges & (1 << direction)) {
 					footpath_chain_ride_queue(255, 0, x, y, mapElement, direction);
 				}
@@ -1958,9 +1958,9 @@ void sub_6A7642(int x, int y, rct_map_element *mapElement)
  *
  *  rct2: 0x006A6B7F
  */
-static void footpath_remove_edges_towards_here(int x, int y, int z, int direction, rct_map_element *mapElement, bool isQueue)
+static void footpath_remove_edges_towards_here(sint32 x, sint32 y, sint32 z, sint32 direction, rct_map_element *mapElement, bool isQueue)
 {
-	int d;
+	sint32 d;
 
 	if (footpath_element_is_queue(mapElement)) {
 		footpath_queue_chain_push(mapElement->properties.path.ride_index);
@@ -2001,10 +2001,10 @@ static void footpath_remove_edges_towards_here(int x, int y, int z, int directio
  *
  *  rct2: 0x006A6B14
  */
-static void footpath_remove_edges_towards(int x, int y, int z0, int z1, int direction, bool isQueue)
+static void footpath_remove_edges_towards(sint32 x, sint32 y, sint32 z0, sint32 z1, sint32 direction, bool isQueue)
 {
 	rct_map_element *mapElement;
-	int slope;
+	sint32 slope;
 
 	mapElement = map_get_first_element_at(x >> 5, y >> 5);
 	do {
@@ -2040,10 +2040,10 @@ static void footpath_remove_edges_towards(int x, int y, int z0, int z1, int dire
  * @param x x-coordinate in units (not tiles)
  * @param y y-coordinate in units (not tiles)
  */
-void footpath_remove_edges_at(int x, int y, rct_map_element *mapElement)
+void footpath_remove_edges_at(sint32 x, sint32 y, rct_map_element *mapElement)
 {
 	if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_TRACK) {
-		int rideIndex = mapElement->properties.track.ride_index;
+		sint32 rideIndex = mapElement->properties.track.ride_index;
 		rct_ride *ride = get_ride(rideIndex);
 		if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE))
 			return;
@@ -2051,18 +2051,18 @@ void footpath_remove_edges_at(int x, int y, rct_map_element *mapElement)
 
 	sub_6A7642(x, y, mapElement);
 
-	for (int direction = 0; direction < 4; direction++) {
-		int z1 = mapElement->base_height;
+	for (sint32 direction = 0; direction < 4; direction++) {
+		sint32 z1 = mapElement->base_height;
 		if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_PATH) {
 			if (footpath_element_is_sloped(mapElement)) {
-				int slope = footpath_element_get_slope_direction(mapElement);
+				sint32 slope = footpath_element_get_slope_direction(mapElement);
 				if ((slope - direction) & 1)
 					continue;
 
 				z1 += slope == direction ? 2 : 0;
 			}
 		}
-		int z0 = z1 - 2;
+		sint32 z0 = z1 - 2;
 		footpath_remove_edges_towards(x + TileDirectionDelta[direction].x, y + TileDirectionDelta[direction].y,
 			z0, z1, direction, footpath_element_is_queue(mapElement));
 	}
@@ -2071,7 +2071,7 @@ void footpath_remove_edges_at(int x, int y, rct_map_element *mapElement)
 		mapElement->properties.path.edges = 0;
 }
 
-rct_footpath_entry *get_footpath_entry(int entryIndex)
+rct_footpath_entry *get_footpath_entry(sint32 entryIndex)
 {
 	return gFootpathEntries[entryIndex];
 }

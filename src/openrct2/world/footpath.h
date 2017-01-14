@@ -67,25 +67,25 @@ extern uint8 gFootpathGroundFlags;
 
 extern const rct_xy16 word_981D6C[4];
 
-money32 footpath_remove_real(int x, int y, int z, int flags);
-void game_command_place_footpath(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
-void game_command_place_footpath_from_track(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
-void game_command_remove_footpath(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
-money32 footpath_place(int type, int x, int y, int z, int slope, int flags);
-void footpath_remove(int x, int y, int z, int flags);
-money32 footpath_provisional_set(int type, int x, int y, int z, int slope);
+money32 footpath_remove_real(sint32 x, sint32 y, sint32 z, sint32 flags);
+void game_command_place_footpath(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *edx, sint32 *esi, sint32 *edi, sint32 *ebp);
+void game_command_place_footpath_from_track(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *edx, sint32 *esi, sint32 *edi, sint32 *ebp);
+void game_command_remove_footpath(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *edx, sint32 *esi, sint32 *edi, sint32 *ebp);
+money32 footpath_place(sint32 type, sint32 x, sint32 y, sint32 z, sint32 slope, sint32 flags);
+void footpath_remove(sint32 x, sint32 y, sint32 z, sint32 flags);
+money32 footpath_provisional_set(sint32 type, sint32 x, sint32 y, sint32 z, sint32 slope);
 void footpath_provisional_remove();
 void footpath_provisional_update();
-void footpath_get_coordinates_from_pos(int screenX, int screenY, int *x, int *y, int *direction, rct_map_element **mapElement);
-void footpath_bridge_get_info_from_pos(int screenX, int screenY, int *x, int *y, int *direction, rct_map_element **mapElement);
-void footpath_remove_litter(int x, int y, int z);
-void footpath_connect_edges(int x, int y, rct_map_element *mapElement, int flags);
+void footpath_get_coordinates_from_pos(sint32 screenX, sint32 screenY, sint32 *x, sint32 *y, sint32 *direction, rct_map_element **mapElement);
+void footpath_bridge_get_info_from_pos(sint32 screenX, sint32 screenY, sint32 *x, sint32 *y, sint32 *direction, rct_map_element **mapElement);
+void footpath_remove_litter(sint32 x, sint32 y, sint32 z);
+void footpath_connect_edges(sint32 x, sint32 y, rct_map_element *mapElement, sint32 flags);
 void sub_6A759F();
-bool fence_in_the_way(int x, int y, int z0, int z1, int direction);
-void footpath_chain_ride_queue(int rideIndex, int entranceIndex, int x, int y, rct_map_element *mapElement, int direction);
-void footpath_update_path_wide_flags(int x, int y);
+bool fence_in_the_way(sint32 x, sint32 y, sint32 z0, sint32 z1, sint32 direction);
+void footpath_chain_ride_queue(sint32 rideIndex, sint32 entranceIndex, sint32 x, sint32 y, rct_map_element *mapElement, sint32 direction);
+void footpath_update_path_wide_flags(sint32 x, sint32 y);
 
-int footpath_is_connected_to_map_edge(int x, int y, int z, int direction, int flags);
+sint32 footpath_is_connected_to_map_edge(sint32 x, sint32 y, sint32 z, sint32 direction, sint32 flags);
 bool footpath_element_is_sloped(rct_map_element *mapElement);
 uint8 footpath_element_get_slope_direction(rct_map_element *mapElement);
 bool footpath_element_is_queue(rct_map_element *mapElement);
@@ -97,10 +97,10 @@ void footpath_element_set_path_scenery(rct_map_element *mapElement, uint8 pathSc
 uint8 footpath_element_get_path_scenery_index(rct_map_element *mapElement);
 bool footpath_element_path_scenery_is_ghost(rct_map_element *mapElement);
 void footpath_scenery_set_is_ghost(rct_map_element *mapElement, bool isGhost);
-void footpath_remove_edges_at(int x, int y, rct_map_element *mapElement);
-int entrance_get_directions(rct_map_element *mapElement);
+void footpath_remove_edges_at(sint32 x, sint32 y, rct_map_element *mapElement);
+sint32 entrance_get_directions(rct_map_element *mapElement);
 
-rct_footpath_entry *get_footpath_entry(int entryIndex);
+rct_footpath_entry *get_footpath_entry(sint32 entryIndex);
 
 void footpath_queue_chain_reset();
 void footpath_queue_chain_push(uint8 rideIndex);

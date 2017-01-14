@@ -31,7 +31,7 @@
 uint8 gIntroState;
 
 // Used mainly for timing but also for Y coordinate and fading.
-static int _introStateCounter;
+static sint32 _introStateCounter;
 
 static void *_soundChannel = NULL;
 static bool _chainLiftFinished;
@@ -161,7 +161,7 @@ void intro_update()
 
 void intro_draw(rct_drawpixelinfo *dpi)
 {
-	int screenWidth = gScreenWidth;
+	sint32 screenWidth = gScreenWidth;
 
 	switch (gIntroState) {
 	case INTRO_STATE_DISCLAIMER_1:

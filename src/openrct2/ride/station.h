@@ -23,6 +23,6 @@
 
 #define MAX_STATIONS 4
 
-void ride_update_station(rct_ride *ride, int stationIndex);
+void ride_update_station(rct_ride *ride, sint32 stationIndex);
 
 #endif

@@ -132,16 +132,16 @@ extern char gRCT2AddressObjectDataPath[];
 extern char gRCT2AddressTracksPath[];
 
 bool rct2_init();
-int rct2_init_directories();
-int rct2_startup_checks();
+sint32 rct2_init_directories();
+sint32 rct2_startup_checks();
 void rct2_dispose();
 void rct2_update();
 void substitute_path(char *dest, size_t size, const char *path, const char *filename);
-int check_mutex();
-int check_file_paths();
-int check_file_path(int pathId);
-int check_files_integrity();
-const char *get_file_path(int pathId);
+sint32 check_mutex();
+sint32 check_file_paths();
+sint32 check_file_path(sint32 pathId);
+sint32 check_files_integrity();
+const char *get_file_path(sint32 pathId);
 void rct2_quit();
 
 bool rct2_open_file(const char *path);

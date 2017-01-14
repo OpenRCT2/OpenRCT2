@@ -41,8 +41,8 @@ static rct_draw_scroll_text _drawScrollTextList[MAX_SCROLLING_TEXT_ENTRIES];
 static uint8 _characterBitmaps[224 * 8];
 static uint32 _drawSCrollNextIndex = 0;
 
-void scrolling_text_set_bitmap_for_sprite(utf8 *text, int scroll, uint8 *bitmap, const sint16 *scrollPositionOffsets);
-void scrolling_text_set_bitmap_for_ttf(utf8 *text, int scroll, uint8 *bitmap, const sint16 *scrollPositionOffsets);
+void scrolling_text_set_bitmap_for_sprite(utf8 *text, sint32 scroll, uint8 *bitmap, const sint16 *scrollPositionOffsets);
+void scrolling_text_set_bitmap_for_ttf(utf8 *text, sint32 scroll, uint8 *bitmap, const sint16 *scrollPositionOffsets);
 
 void scrolling_text_initialise_bitmaps()
 {
@@ -58,13 +58,13 @@ void scrolling_text_initialise_bitmaps()
 	};
 
 
-	for (int i = 0; i < 224; i++) {
+	for (sint32 i = 0; i < 224; i++) {
 		memset(drawingSurface, 0, sizeof(drawingSurface));
 		gfx_draw_sprite_software(&dpi, SPR_CHAR_START + FONT_SPRITE_BASE_TINY + i, -1, 0, 0);
 
-		for (int x = 0; x < 8; x++) {
+		for (sint32 x = 0; x < 8; x++) {
 			uint8 val = 0;
-			for (int y = 0; y < 8; y++) {
+			for (sint32 y = 0; y < 8; y++) {
 				val >>= 1;
 				if (dpi.bits[x + y * 8] == 1) {
 					val |= 0x80;
@@ -74,7 +74,7 @@ void scrolling_text_initialise_bitmaps()
 		}
 	}
 
-	for (int i = 0; i < MAX_SCROLLING_TEXT_ENTRIES; i++) {
+	for (sint32 i = 0; i < MAX_SCROLLING_TEXT_ENTRIES; i++) {
 		rct_g1_element *g1 = &g1Elements[SPR_SCROLLING_TEXT_START + i];
 		g1->offset = _drawScrollTextList[i].bitmap;
 		g1->width = 64;
@@ -88,17 +88,17 @@ void scrolling_text_initialise_bitmaps()
 	}
 }
 
-static uint8 *font_sprite_get_codepoint_bitmap(int codepoint)
+static uint8 *font_sprite_get_codepoint_bitmap(sint32 codepoint)
 {
 	return &_characterBitmaps[font_sprite_get_codepoint_offset(codepoint) * 8];
 }
 
 
-static int scrolling_text_get_matching_or_oldest(rct_string_id stringId, uint16 scroll, uint16 scrollingMode)
+static sint32 scrolling_text_get_matching_or_oldest(rct_string_id stringId, uint16 scroll, uint16 scrollingMode)
 {
 	uint32 oldestId = 0xFFFFFFFF;
-	int scrollIndex = -1;
-	for (int i = 0; i < MAX_SCROLLING_TEXT_ENTRIES; i++) {
+	sint32 scrollIndex = -1;
+	for (sint32 i = 0; i < MAX_SCROLLING_TEXT_ENTRIES; i++) {
 		rct_draw_scroll_text *scrollText = &_drawScrollTextList[i];
 		if (oldestId >= scrollText->id) {
 			oldestId = scrollText->id;
@@ -125,7 +125,7 @@ static int scrolling_text_get_matching_or_oldest(rct_string_id stringId, uint16 
 
 static uint8 scrolling_text_get_colour(uint32 character)
 {
-	int colour = character & 0x7F;
+	sint32 colour = character & 0x7F;
 	if (character & COLOUR_FLAG_TRANSLUCENT) {
 		return ColourMapA[colour].light;
 	} else {
@@ -1414,7 +1414,7 @@ static const sint16* _scrollPositions[MAX_SCROLLING_TEXT_MODES] = {
  * @param scrollingMode (bp)
  * @returns ebx
  */
-int scrolling_text_setup(rct_string_id stringId, uint16 scroll, uint16 scrollingMode)
+sint32 scrolling_text_setup(rct_string_id stringId, uint16 scroll, uint16 scrollingMode)
 {
 	assert(scrollingMode < MAX_SCROLLING_TEXT_MODES);
 
@@ -1424,7 +1424,7 @@ int scrolling_text_setup(rct_string_id stringId, uint16 scroll, uint16 scrolling
 
 	_drawSCrollNextIndex++;
 
-	int scrollIndex = scrolling_text_get_matching_or_oldest(stringId, scroll, scrollingMode);
+	sint32 scrollIndex = scrolling_text_get_matching_or_oldest(stringId, scroll, scrollingMode);
 	if (scrollIndex >= SPR_SCROLLING_TEXT_START) return scrollIndex;
 
 	// Setup scrolling text
@@ -1458,7 +1458,7 @@ int scrolling_text_setup(rct_string_id stringId, uint16 scroll, uint16 scrolling
 	return imageId;
 }
 
-void scrolling_text_set_bitmap_for_sprite(utf8 *text, int scroll, uint8 *bitmap, const sint16 *scrollPositionOffsets)
+void scrolling_text_set_bitmap_for_sprite(utf8 *text, sint32 scroll, uint8 *bitmap, const sint16 *scrollPositionOffsets)
 {
 	uint8 characterColour = scrolling_text_get_colour(gCommonFormatArgs[7]);
 
@@ -1482,7 +1482,7 @@ void scrolling_text_set_bitmap_for_sprite(utf8 *text, int scroll, uint8 *bitmap,
 		// If another type of control character ignore
 		if (codepoint < 32) continue;
 
-		int characterWidth = font_sprite_get_codepoint_width(FONT_SPRITE_BASE_TINY, codepoint);
+		sint32 characterWidth = font_sprite_get_codepoint_width(FONT_SPRITE_BASE_TINY, codepoint);
 		uint8 *characterBitmap = font_sprite_get_codepoint_bitmap(codepoint);
 		for (; characterWidth != 0; characterWidth--, characterBitmap++) {
 			// Skip any none displayed columns
@@ -1507,7 +1507,7 @@ void scrolling_text_set_bitmap_for_sprite(utf8 *text, int scroll, uint8 *bitmap,
 	}
 }
 
-void scrolling_text_set_bitmap_for_ttf(utf8 *text, int scroll, uint8 *bitmap, const sint16 *scrollPositionOffsets)
+void scrolling_text_set_bitmap_for_ttf(utf8 *text, sint32 scroll, uint8 *bitmap, const sint16 *scrollPositionOffsets)
 {
 #ifndef NO_TTF
 	TTFFontDescriptor *fontDesc = ttf_get_font_from_sprite_base(FONT_SPRITE_BASE_TINY);
@@ -1521,7 +1521,7 @@ void scrolling_text_set_bitmap_for_ttf(utf8 *text, int scroll, uint8 *bitmap, co
 
 	utf8 *dstCh = text;
 	utf8 *ch = text;
-	int codepoint;
+	sint32 codepoint;
 	while ((codepoint = utf8_get_next(ch, (const utf8**)&ch)) != 0) {
 		if (utf8_is_format_code(codepoint)) {
 			if (codepoint >= FORMAT_COLOUR_CODE_START && codepoint <= FORMAT_COLOUR_CODE_END) {
@@ -1548,9 +1548,9 @@ void scrolling_text_set_bitmap_for_ttf(utf8 *text, int scroll, uint8 *bitmap, co
 		return;
 	}
 
-	int pitch = surface->pitch;
-	int width = surface->w;
-	int height = surface->h;
+	sint32 pitch = surface->pitch;
+	sint32 width = surface->w;
+	sint32 height = surface->h;
 	uint8 *src = surface->pixels;
 
 	// Offset
@@ -1558,7 +1558,7 @@ void scrolling_text_set_bitmap_for_ttf(utf8 *text, int scroll, uint8 *bitmap, co
 	src += 3 * pitch;
 	height = min(height, 8);
 
-	int x = 0;
+	sint32 x = 0;
 	while (true) {
 		// Skip any none displayed columns
 		if (scroll == 0) {
@@ -1567,7 +1567,7 @@ void scrolling_text_set_bitmap_for_ttf(utf8 *text, int scroll, uint8 *bitmap, co
 			if (scrollPosition > -1) {
 				uint8 *dst = &bitmap[scrollPosition];
 
-				for (int y = 0; y < height; y++) {
+				for (sint32 y = 0; y < height; y++) {
 					if (src[y * pitch + x] != 0) *dst = colour;
 
 					// Jump to next row

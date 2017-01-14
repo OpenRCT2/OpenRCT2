@@ -18,9 +18,9 @@
 #include "../localisation/localisation.h"
 #include "graph.h"
 
-static void graph_draw_months_uint8(rct_drawpixelinfo *dpi, uint8 *history, int count, int baseX, int baseY)
+static void graph_draw_months_uint8(rct_drawpixelinfo *dpi, uint8 *history, sint32 count, sint32 baseX, sint32 baseY)
 {
-	int i, x, y, yearOver32, currentMonth, currentDay;
+	sint32 i, x, y, yearOver32, currentMonth, currentDay;
 
 	currentMonth = date_get_month(gDateMonthsElapsed);
 	currentDay = gDateMonthTicks;
@@ -42,9 +42,9 @@ static void graph_draw_months_uint8(rct_drawpixelinfo *dpi, uint8 *history, int 
 	}
 }
 
-static void graph_draw_line_a_uint8(rct_drawpixelinfo *dpi, uint8 *history, int count, int baseX, int baseY)
+static void graph_draw_line_a_uint8(rct_drawpixelinfo *dpi, uint8 *history, sint32 count, sint32 baseX, sint32 baseY)
 {
-	int i, x, y, lastX, lastY;
+	sint32 i, x, y, lastX, lastY;
 	lastX = -1;
 	lastY = -1;
 	x = baseX;
@@ -66,9 +66,9 @@ static void graph_draw_line_a_uint8(rct_drawpixelinfo *dpi, uint8 *history, int 
 	}
 }
 
-static void graph_draw_line_b_uint8(rct_drawpixelinfo *dpi, uint8 *history, int count, int baseX, int baseY)
+static void graph_draw_line_b_uint8(rct_drawpixelinfo *dpi, uint8 *history, sint32 count, sint32 baseX, sint32 baseY)
 {
-	int i, x, y, lastX, lastY;
+	sint32 i, x, y, lastX, lastY;
 
 	lastX = -1;
 	lastY = -1;
@@ -89,16 +89,16 @@ static void graph_draw_line_b_uint8(rct_drawpixelinfo *dpi, uint8 *history, int 
 	}
 }
 
-void graph_draw_uint8(rct_drawpixelinfo *dpi, uint8 *history, int count, int baseX, int baseY)
+void graph_draw_uint8(rct_drawpixelinfo *dpi, uint8 *history, sint32 count, sint32 baseX, sint32 baseY)
 {
 	graph_draw_months_uint8(dpi, history, count, baseX, baseY);
 	graph_draw_line_a_uint8(dpi, history, count, baseX, baseY);
 	graph_draw_line_b_uint8(dpi, history, count, baseX, baseY);
 }
 
-static void graph_draw_months_money32(rct_drawpixelinfo *dpi, money32 *history, int count, int baseX, int baseY)
+static void graph_draw_months_money32(rct_drawpixelinfo *dpi, money32 *history, sint32 count, sint32 baseX, sint32 baseY)
 {
-	int i, x, y, yearOver32, currentMonth, currentDay;
+	sint32 i, x, y, yearOver32, currentMonth, currentDay;
 
 	currentMonth = date_get_month(gDateMonthsElapsed);
 	currentDay = gDateMonthTicks;
@@ -120,9 +120,9 @@ static void graph_draw_months_money32(rct_drawpixelinfo *dpi, money32 *history, 
 	}
 }
 
-static void graph_draw_line_a_money32(rct_drawpixelinfo *dpi, money32 *history, int count, int baseX, int baseY, int modifier, int offset)
+static void graph_draw_line_a_money32(rct_drawpixelinfo *dpi, money32 *history, sint32 count, sint32 baseX, sint32 baseY, sint32 modifier, sint32 offset)
 {
-	int i, x, y, lastX, lastY;
+	sint32 i, x, y, lastX, lastY;
 	lastX = -1;
 	lastY = -1;
 	x = baseX;
@@ -144,9 +144,9 @@ static void graph_draw_line_a_money32(rct_drawpixelinfo *dpi, money32 *history, 
 	}
 }
 
-static void graph_draw_line_b_money32(rct_drawpixelinfo *dpi, money32 *history, int count, int baseX, int baseY, int modifier, int offset)
+static void graph_draw_line_b_money32(rct_drawpixelinfo *dpi, money32 *history, sint32 count, sint32 baseX, sint32 baseY, sint32 modifier, sint32 offset)
 {
-	int i, x, y, lastX, lastY;
+	sint32 i, x, y, lastX, lastY;
 
 	lastX = -1;
 	lastY = -1;
@@ -167,7 +167,7 @@ static void graph_draw_line_b_money32(rct_drawpixelinfo *dpi, money32 *history, 
 	}
 }
 
-void graph_draw_money32(rct_drawpixelinfo *dpi, money32 *history, int count, int baseX, int baseY, int modifier, int offset)
+void graph_draw_money32(rct_drawpixelinfo *dpi, money32 *history, sint32 count, sint32 baseX, sint32 baseY, sint32 modifier, sint32 offset)
 {
 	graph_draw_months_money32(dpi, history, count, baseX, baseY);
 	graph_draw_line_a_money32(dpi, history, count, baseX, baseY, modifier, offset);

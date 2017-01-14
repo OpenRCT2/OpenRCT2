@@ -52,8 +52,8 @@ constexpr uint32 UPDATE_TIME_MS = 25;
 
 extern "C"
 {
-    int gExitCode;
-    int gOpenRCT2StartupAction = STARTUP_ACTION_TITLE;
+    sint32 gExitCode;
+    sint32 gOpenRCT2StartupAction = STARTUP_ACTION_TITLE;
     utf8 gOpenRCT2StartupActionPath[512] = { 0 };
     utf8 gExePath[MAX_PATH];
     utf8 gCustomUserDataPath[MAX_PATH] = { 0 };

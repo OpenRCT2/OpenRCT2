@@ -1732,7 +1732,7 @@ const rct_ride_lift_data RideLiftData[] = {
 };
 
 /** rct2: 0x0097D7CB */
-const int RidePhotoItems[] = {
+const sint32 RidePhotoItems[] = {
 	SHOP_ITEM_PHOTO,	// RIDE_TYPE_SPIRAL_ROLLER_COASTER
 	SHOP_ITEM_PHOTO,	// RIDE_TYPE_STAND_UP_ROLLER_COASTER
 	SHOP_ITEM_PHOTO2,	// RIDE_TYPE_SUSPENDED_SWINGING_COASTER

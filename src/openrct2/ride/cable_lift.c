@@ -27,7 +27,7 @@ static void cable_lift_update_departing(rct_vehicle *vehicle);
 static void cable_lift_update_travelling(rct_vehicle *vehicle);
 static void cable_lift_update_arriving(rct_vehicle *vehicle);
 
-rct_vehicle *cable_lift_segment_create(int rideIndex, int x, int y, int z, int direction, uint16 var_44, sint32 remaining_distance, bool head)
+rct_vehicle *cable_lift_segment_create(sint32 rideIndex, sint32 x, sint32 y, sint32 z, sint32 direction, uint16 var_44, sint32 remaining_distance, bool head)
 {
 	rct_ride *ride = get_ride(rideIndex);
 	rct_vehicle *current = &(create_sprite(1)->vehicle);
@@ -66,7 +66,7 @@ rct_vehicle *cable_lift_segment_create(int rideIndex, int x, int y, int z, int d
 	current->scream_sound_id = 0xFF;
 	current->vehicle_sprite_type = 0;
 	current->bank_rotation = 0;
-	for (int j = 0; j < 32; j++) {
+	for (sint32 j = 0; j < 32; j++) {
 		current->peep[j] = SPRITE_INDEX_NULL;
 	}
 	current->var_CD = 0;
@@ -243,8 +243,8 @@ static bool sub_6DF01A_loop(rct_vehicle* vehicle) {
 
 			rct_xy_element input;
 			rct_xy_element output;
-			int outputZ;
-			int outputDirection;
+			sint32 outputZ;
+			sint32 outputDirection;
 
 			input.x = vehicle->track_x;
 			input.y = vehicle->track_y;
@@ -390,7 +390,7 @@ static bool sub_6DF21B_loop(rct_vehicle* vehicle) {
  *
  *  rct2: 0x006DEF56
  */
-int cable_lift_update_track_motion(rct_vehicle *cableLift)
+sint32 cable_lift_update_track_motion(rct_vehicle *cableLift)
 {
 	_vehicleF64E2C = 0;
 	gCurrentVehicle = cableLift;

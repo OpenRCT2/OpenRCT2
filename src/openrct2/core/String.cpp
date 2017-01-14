@@ -206,7 +206,7 @@ namespace String
         utf8 * buffer = Memory::Allocate<utf8>(bufferSize);
 
         // Start with initial buffer
-        int len = vsnprintf(buffer, bufferSize, format, args);
+        sint32 len = vsnprintf(buffer, bufferSize, format, args);
         if (len < 0)
         {
             Memory::Free(buffer);
@@ -307,7 +307,7 @@ namespace String
 
     const utf8 * SkipBOM(const utf8 * buffer)
     {
-        if ((unsigned char)buffer[0] == 0xEF && (unsigned char)buffer[1] == 0xBB && (unsigned char)buffer[2] == 0xBF)
+        if ((uint8)buffer[0] == 0xEF && (uint8)buffer[1] == 0xBB && (uint8)buffer[2] == 0xBF)
         {
             return buffer + 3;
         }

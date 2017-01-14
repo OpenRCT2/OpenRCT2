@@ -60,9 +60,9 @@ static rct_window_event_list window_map_tooltip_events = {
 
 #define MAP_TOOLTIP_ARGS
 
-static int _lastCursorX;
-static int _lastCursorY;
-static int _cursorHoldDuration;
+static sint32 _lastCursorX;
+static sint32 _lastCursorY;
+static sint32 _cursorHoldDuration;
 
 static void window_map_tooltip_open();
 
@@ -72,7 +72,7 @@ static void window_map_tooltip_open();
  */
 void window_map_tooltip_update_visibility()
 {
-	int cursorX, cursorY, inputFlags;
+	sint32 cursorX, cursorY, inputFlags;
 
 	cursorX = gCursorState.x;
 	cursorY = gCursorState.y;
@@ -108,7 +108,7 @@ void window_map_tooltip_update_visibility()
 static void window_map_tooltip_open()
 {
 	rct_window* w;
-	int x, y, width, height;
+	sint32 x, y, width, height;
 
 	width = 200;
 	height = 44;

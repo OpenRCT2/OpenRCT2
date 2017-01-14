@@ -119,14 +119,14 @@ enum {
 	ERROR_TYPE_FILE_LOAD = 255
 };
 
-typedef void (GAME_COMMAND_POINTER)(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp);
+typedef void (GAME_COMMAND_POINTER)(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp);
 
-typedef void (GAME_COMMAND_CALLBACK_POINTER)(int eax, int ebx, int ecx, int edx, int esi, int edi, int ebp);
+typedef void (GAME_COMMAND_CALLBACK_POINTER)(sint32 eax, sint32 ebx, sint32 ecx, sint32 edx, sint32 esi, sint32 edi, sint32 ebp);
 
 extern GAME_COMMAND_CALLBACK_POINTER* game_command_callback;
-int game_command_callback_get_index(GAME_COMMAND_CALLBACK_POINTER* callback);
-GAME_COMMAND_CALLBACK_POINTER* game_command_callback_get_callback(int index);
-extern int game_command_playerid;
+sint32 game_command_callback_get_index(GAME_COMMAND_CALLBACK_POINTER* callback);
+GAME_COMMAND_CALLBACK_POINTER* game_command_callback_get_callback(sint32 index);
+extern sint32 game_command_playerid;
 
 extern rct_string_id gGameCommandErrorTitle;
 extern rct_string_id gGameCommandErrorText;
@@ -144,10 +144,10 @@ extern uint32 gCurrentTicks;
 extern uint16 gTicksSinceLastUpdate;
 extern uint32 gLastTickCount;
 extern uint8 gGamePaused;
-extern int gGameSpeed;
+extern sint32 gGameSpeed;
 extern float gDayNightCycle;
 extern bool gInUpdateCode;
-extern int gGameCommandNestLevel;
+extern sint32 gGameCommandNestLevel;
 extern bool gGameCommandIsNetworked;
 
 extern uint8 gUnk13CA740;
@@ -162,16 +162,16 @@ void game_logic_update();
 void reset_all_sprite_quadrant_placements();
 void update_palette_effects();
 
-int game_do_command(int eax, int ebx, int ecx, int edx, int esi, int edi, int ebp);
-int game_do_command_p(int command, int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
+sint32 game_do_command(sint32 eax, sint32 ebx, sint32 ecx, sint32 edx, sint32 esi, sint32 edi, sint32 ebp);
+sint32 game_do_command_p(sint32 command, sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *edx, sint32 *esi, sint32 *edi, sint32 *ebp);
 
 void game_load_or_quit_no_save_prompt();
 bool game_load_sv6_path(const char * path);
 bool game_load_sv6(SDL_RWops* rw);
-int game_load_network(SDL_RWops* rw);
+sint32 game_load_network(SDL_RWops* rw);
 bool game_load_save(const utf8 *path);
 void game_load_init();
-void game_pause_toggle(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
+void game_pause_toggle(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *edx, sint32 *esi, sint32 *edi, sint32 *ebp);
 void pause_toggle();
 bool game_is_paused();
 bool game_is_not_paused();

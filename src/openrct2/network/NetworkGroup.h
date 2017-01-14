@@ -40,7 +40,7 @@ public:
     void Write(NetworkPacket &packet);
     void ToggleActionPermission(size_t index);
     bool CanPerformAction(size_t index) const;
-    bool CanPerformCommand(int command) const;
+    bool CanPerformCommand(sint32 command) const;
 
     json_t * ToJson() const;
 

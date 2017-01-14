@@ -32,15 +32,15 @@ static void scenery_multiple_paint_supports(uint8 direction, uint16 height, rct_
 		return;
 	}
 
-	int ax = 0;
-	int supportHeight = height;
+	sint32 ax = 0;
+	sint32 supportHeight = height;
 
 	if (supportHeight & 0xF) {
 		supportHeight &= 0xFFFFFFF0;
 		ax = 49;
 	}
 
-	int supportImageColourFlags = 0x20000000;
+	sint32 supportImageColourFlags = 0x20000000;
 
 	if (dword_F4387C) {
 		supportImageColourFlags = dword_F4387C;
@@ -48,7 +48,7 @@ static void scenery_multiple_paint_supports(uint8 direction, uint16 height, rct_
 
 	wooden_b_supports_paint_setup((direction & 1), ax, supportHeight, supportImageColourFlags, NULL);
 
-	int clearanceHeight = ceil2(mapElement->clearance_height * 8 + 15, 16);
+	sint32 clearanceHeight = ceil2(mapElement->clearance_height * 8 + 15, 16);
 
 	if (tile->var_7 & 0x40) {
 		paint_util_set_segment_support_height(SEGMENTS_ALL, clearanceHeight, 0x20);
@@ -67,9 +67,9 @@ static rct_large_scenery_text_glyph *scenery_multiple_sign_get_glyph(rct_large_s
 	return &text->glyphs[codepoint];
 }
 
-static int scenery_multiple_sign_text_width(const utf8 *str, rct_large_scenery_text *text)
+static sint32 scenery_multiple_sign_text_width(const utf8 *str, rct_large_scenery_text *text)
 {
-	int width = 0;
+	sint32 width = 0;
 	uint32 codepoint;
 	while ((codepoint = utf8_get_next(str, &str)) != 0) {
 		width += scenery_multiple_sign_get_glyph(text, codepoint)->width;
@@ -77,9 +77,9 @@ static int scenery_multiple_sign_text_width(const utf8 *str, rct_large_scenery_t
 	return width;
 }
 
-static int scenery_multiple_sign_text_height(const utf8 *str, rct_large_scenery_text *text)
+static sint32 scenery_multiple_sign_text_height(const utf8 *str, rct_large_scenery_text *text)
 {
-	int height = 0;
+	sint32 height = 0;
 	uint32 codepoint;
 	while ((codepoint = utf8_get_next(str, &str)) != 0) {
 		height += scenery_multiple_sign_get_glyph(text, codepoint)->height;
@@ -92,7 +92,7 @@ static const utf8 *scenery_multiple_sign_fit_text(const utf8 *str, rct_large_sce
 	static utf8 fitStr[32];
 	utf8 *fitStrEnd = fitStr;
 	safe_strcpy(fitStr, str, sizeof(fitStr));
-	int w = 0;
+	sint32 w = 0;
 	uint32 codepoint;
 	while (w <= text->max_width && (codepoint = utf8_get_next(fitStrEnd, (const utf8**)&fitStrEnd)) != 0) {
 		if (height) {
@@ -105,16 +105,16 @@ static const utf8 *scenery_multiple_sign_fit_text(const utf8 *str, rct_large_sce
 	return fitStr;
 }
 
-static int div_to_minus_infinity(int a, int b) {
+static sint32 div_to_minus_infinity(sint32 a, sint32 b) {
 	return (a / b) - (a % b < 0);
 }
 
-static void scenery_multiple_sign_paint_line(const utf8 *str, rct_large_scenery_text *text, int textImage, int textColour, uint8 direction, int y_offset)
+static void scenery_multiple_sign_paint_line(const utf8 *str, rct_large_scenery_text *text, sint32 textImage, sint32 textColour, uint8 direction, sint32 y_offset)
 {
 	const utf8 *fitStr = scenery_multiple_sign_fit_text(str, text, false);
-	int width = scenery_multiple_sign_text_width(fitStr, text);
-	int x_offset = text->offset[(direction & 1)].x;
-	int acc = y_offset * ((direction & 1) ? -1 : 1);
+	sint32 width = scenery_multiple_sign_text_width(fitStr, text);
+	sint32 x_offset = text->offset[(direction & 1)].x;
+	sint32 acc = y_offset * ((direction & 1) ? -1 : 1);
 	if (!(text->var_C & 0x1)) {
 		// sign is horizontal, center text:
 		x_offset -= (width / 2);
@@ -122,7 +122,7 @@ static void scenery_multiple_sign_paint_line(const utf8 *str, rct_large_scenery_
 	}
 	uint32 codepoint;
 	while ((codepoint = utf8_get_next(fitStr, &fitStr)) != 0) {
-		int glyph_offset = scenery_multiple_sign_get_glyph(text, codepoint)->image_offset;
+		sint32 glyph_offset = scenery_multiple_sign_get_glyph(text, codepoint)->image_offset;
 		uint8 glyph_type = direction & 1;
 		if (text->var_C & 0x1) { // vertical sign
 			glyph_offset *= 2;
@@ -139,7 +139,7 @@ static void scenery_multiple_sign_paint_line(const utf8 *str, rct_large_scenery_
 				}
 			}
 		}
-		int image_id = (textImage + glyph_offset + glyph_type) | textColour;
+		sint32 image_id = (textImage + glyph_offset + glyph_type) | textColour;
 		if (direction == 3) {
 			paint_attach_to_previous_ps(image_id, x_offset, -div_to_minus_infinity(acc, 2));
 		} else {
@@ -184,7 +184,7 @@ static const boundbox s98E3C4[] = {
 * rct2: 0x006B7F0C
 */
 void scenery_multiple_paint(uint8 direction, uint16 height, rct_map_element *mapElement) {
-	//RCT2_CALLPROC_X(0x6B7F0C, 0, 0, direction, height, (int)mapElement, 0, 0); return;
+	//RCT2_CALLPROC_X(0x6B7F0C, 0, 0, direction, height, (sint32)mapElement, 0, 0); return;
 	gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_LARGE_SCENERY;
 	uint32 ebp = mapElement->properties.scenerymultiple.type >> 10;
 	rct_scenery_entry *entry = get_large_scenery_entry(mapElement->properties.scenerymultiple.type & 0x3FF);
@@ -209,13 +209,13 @@ void scenery_multiple_paint(uint8 direction, uint16 height, rct_map_element *map
 		dword_F4387C = ebp;
 		image_id |= dword_F4387C;
 	}
-	int ah = tile->z_clearance;
+	sint32 ah = tile->z_clearance;
 	if (ah > 0x80) {
 		ah = 0x80;
 	}
 	ah -= 3;
 	uint16 edi = tile->var_7;
-	int esi = 16;
+	sint32 esi = 16;
 	if (edi & 0xF00) {
 		edi &= 0xF000;
 		edi = rol16(edi, direction);
@@ -234,7 +234,7 @@ void scenery_multiple_paint(uint8 direction, uint16 height, rct_map_element *map
 	}
 	if (entry->large_scenery.flags & 0x4) {
 		if (entry->large_scenery.tiles[1].x_offset != (sint16)(uint16)0xFFFF) {
-			int al = ((mapElement->properties.surface.terrain >> 2) - 1) & 3;
+			sint32 al = ((mapElement->properties.surface.terrain >> 2) - 1) & 3;
 			if (al != direction) {
 				scenery_multiple_paint_supports(direction, height, mapElement, dword_F4387C, tile);
 				return;
@@ -249,7 +249,7 @@ void scenery_multiple_paint(uint8 direction, uint16 height, rct_map_element *map
 		// Draw sign text:
 		set_format_arg(0, uint32, 0);
 		set_format_arg(4, uint32, 0);
-		int textColour = mapElement->properties.scenerymultiple.colour[1] & 0x1F;
+		sint32 textColour = mapElement->properties.scenerymultiple.colour[1] & 0x1F;
 		if (dword_F4387C) {
 			textColour = COLOUR_GREY;
 		}
@@ -265,14 +265,14 @@ void scenery_multiple_paint(uint8 direction, uint16 height, rct_map_element *map
 		utf8 signString[MAX_PATH];
 		format_string(signString, MAX_PATH, stringId, gCommonFormatArgs);
 		rct_large_scenery_text *text = entry->large_scenery.text;
-		int y_offset = (text->offset[(direction & 1)].y * 2);
+		sint32 y_offset = (text->offset[(direction & 1)].y * 2);
 		if (text->var_C & 0x1) {
 			// Draw vertical sign:
 			y_offset += 1;
 			utf8 fitStr[32];
 			const utf8 *fitStrPtr = fitStr;
 			safe_strcpy(fitStr, scenery_multiple_sign_fit_text(signString, text, true), sizeof(fitStr));
-			int height2 = scenery_multiple_sign_text_height(fitStr, text);
+			sint32 height2 = scenery_multiple_sign_text_height(fitStr, text);
 			uint32 codepoint;
 			while ((codepoint = utf8_get_next(fitStrPtr, &fitStrPtr)) != 0) {
 				utf8 str[5] = {0};
@@ -284,17 +284,17 @@ void scenery_multiple_paint(uint8 direction, uint16 height, rct_map_element *map
 			y_offset -= (direction & 1);
 			if (text->var_C & 0x2) {
 				// Draw two-line sign:
-				int width = scenery_multiple_sign_text_width(signString, text);
+				sint32 width = scenery_multiple_sign_text_width(signString, text);
 				if (width > text->max_width) {
 					y_offset -= scenery_multiple_sign_get_glyph(text, 'A')->height + 1;
 					utf8 *src = signString;
-					for (int i = 0; i < 2; i++) {
+					for (sint32 i = 0; i < 2; i++) {
 						utf8 str1[64] = {0};
 						utf8 *dst = str1;
 						utf8 *srcold = src;
 						utf8 *spacesrc = 0;
 						utf8 *spacedst = 0;
-						int w = 0;
+						sint32 w = 0;
 						uint32 codepoint = utf8_get_next(src, (const utf8**)&src);
 						do {
 							w += scenery_multiple_sign_get_glyph(text, codepoint)->width;

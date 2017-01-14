@@ -99,7 +99,7 @@ void MemoryStream::SetPosition(uint64 position)
     Seek(position, STREAM_SEEK_BEGIN);
 }
 
-void MemoryStream::Seek(sint64 offset, int origin)
+void MemoryStream::Seek(sint64 offset, sint32 origin)
 {
     uint64 newPosition;
     switch (origin) {

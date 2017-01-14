@@ -82,12 +82,12 @@ const uint8 byte_98D8A4[] = {
 	0, 0, 1, 0, 0, 0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0
 };
 
-void loc_6A37C9(rct_map_element * mapElement, int height, rct_footpath_entry * footpathEntry, bool hasFences, uint32 imageFlags, uint32 sceneryImageFlags);
+void loc_6A37C9(rct_map_element * mapElement, sint32 height, rct_footpath_entry * footpathEntry, bool hasFences, uint32 imageFlags, uint32 sceneryImageFlags);
 
 void loc_6A3B57(rct_map_element* mapElement, sint16 height, rct_footpath_entry* footpathEntry, bool hasFences, uint32 imageFlags, uint32 sceneryImageFlags);
 
 /* rct2: 0x006A5AE5 */
-static void path_bit_lights_paint(rct_scenery_entry* pathBitEntry, rct_map_element* mapElement, int height, uint8 edges, uint32 pathBitImageFlags) {
+static void path_bit_lights_paint(rct_scenery_entry* pathBitEntry, rct_map_element* mapElement, sint32 height, uint8 edges, uint32 pathBitImageFlags) {
 	if (footpath_element_is_sloped(mapElement))
 		height += 8;
 
@@ -138,7 +138,7 @@ static void path_bit_lights_paint(rct_scenery_entry* pathBitEntry, rct_map_eleme
 }
 
 /* rct2: 0x006A5C94 */
-static void path_bit_bins_paint(rct_scenery_entry* pathBitEntry, rct_map_element* mapElement, int height, uint8 edges, uint32 pathBitImageFlags) {
+static void path_bit_bins_paint(rct_scenery_entry* pathBitEntry, rct_map_element* mapElement, sint32 height, uint8 edges, uint32 pathBitImageFlags) {
 	if (footpath_element_is_sloped(mapElement))
 		height += 8;
 
@@ -217,7 +217,7 @@ static void path_bit_bins_paint(rct_scenery_entry* pathBitEntry, rct_map_element
 }
 
 /* rct2: 0x006A5E81 */
-static void path_bit_benches_paint(rct_scenery_entry* pathBitEntry, rct_map_element* mapElement, int height, uint8 edges, uint32 pathBitImageFlags) {
+static void path_bit_benches_paint(rct_scenery_entry* pathBitEntry, rct_map_element* mapElement, sint32 height, uint8 edges, uint32 pathBitImageFlags) {
 	uint32 imageId;
 
 	if (!(edges & (1 << 0))) {
@@ -265,7 +265,7 @@ static void path_bit_benches_paint(rct_scenery_entry* pathBitEntry, rct_map_elem
 }
 
 /* rct2: 0x006A6008 */
-static void path_bit_jumping_fountains_paint(rct_scenery_entry* pathBitEntry, rct_map_element* mapElement, int height, uint8 edges, uint32 pathBitImageFlags, rct_drawpixelinfo* dpi) {
+static void path_bit_jumping_fountains_paint(rct_scenery_entry* pathBitEntry, rct_map_element* mapElement, sint32 height, uint8 edges, uint32 pathBitImageFlags, rct_drawpixelinfo* dpi) {
 	if (dpi->zoom_level != 0)
 		return;
 
@@ -742,7 +742,7 @@ void path_paint(uint8 direction, uint16 height, rct_map_element * map_element)
 
 		if (staff_is_patrol_area_set(200 + staffType, x, y)) {
 			uint32 imageId = 2618;
-			int height2 = map_element->base_height * 8;
+			sint32 height2 = map_element->base_height * 8;
 			if (footpath_element_is_sloped(map_element)) {
 				imageId = 2619 + ((map_element->properties.path.type + get_current_rotation()) & 3);
 				height2 += 16;
@@ -794,7 +794,7 @@ void path_paint(uint8 direction, uint16 height, rct_map_element * map_element)
 #endif
 }
 
-void loc_6A37C9(rct_map_element * mapElement, int height, rct_footpath_entry * footpathEntry, bool hasFences, uint32 imageFlags, uint32 sceneryImageFlags)
+void loc_6A37C9(rct_map_element * mapElement, sint32 height, rct_footpath_entry * footpathEntry, bool hasFences, uint32 imageFlags, uint32 sceneryImageFlags)
 {
 	// Rol edges around rotation
 	uint8 edges = ((mapElement->properties.path.edges << get_current_rotation()) & 0xF) |

@@ -355,7 +355,7 @@ static void paint_reverse_freefall_rc_vertical(uint8 rideIndex, uint8 trackSeque
 	}
 }
 
-TRACK_PAINT_FUNCTION get_track_paint_function_reverse_freefall_rc(int trackType, int direction)
+TRACK_PAINT_FUNCTION get_track_paint_function_reverse_freefall_rc(sint32 trackType, sint32 direction)
 {
 	switch (trackType) {
 	case TRACK_ELEM_FLAT:

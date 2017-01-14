@@ -45,7 +45,7 @@ static rct_widget window_staff_fire_widgets[] = {
 	{ WIDGETS_END }
 };
 
-static void window_staff_fire_mouseup(rct_window *w, int widgetIndex);
+static void window_staff_fire_mouseup(rct_window *w, sint32 widgetIndex);
 static void window_staff_fire_invalidate(rct_window *w);
 static void window_staff_fire_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
@@ -104,7 +104,7 @@ void window_staff_fire_prompt_open(rct_peep* peep)
 *
 *  rct2: 0x006C0B40
 */
-static void window_staff_fire_mouseup(rct_window *w, int widgetIndex)
+static void window_staff_fire_mouseup(rct_window *w, sint32 widgetIndex)
 {
 	rct_peep* peep = &get_sprite(w->number)->peep;
 
@@ -136,8 +136,8 @@ static void window_staff_fire_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	set_format_arg(0, rct_string_id, peep->name_string_idx);
 	set_format_arg(2, uint32, peep->id);
 
-	int x = w->x + WW / 2;
-	int y = w->y + (WH / 2) - 3;
+	sint32 x = w->x + WW / 2;
+	sint32 y = w->y + (WH / 2) - 3;
 
 	gfx_draw_string_centred_wrapped(dpi, gCommonFormatArgs, x, y, WW - 4, STR_FIRE_STAFF_ID, COLOUR_BLACK);
 }

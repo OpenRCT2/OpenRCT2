@@ -19,20 +19,20 @@
 
 typedef struct mapgen_settings {
 	// Base
-	int mapSize;
-	int height;
-	int waterLevel;
-	int floor;
-	int wall;
+	sint32 mapSize;
+	sint32 height;
+	sint32 waterLevel;
+	sint32 floor;
+	sint32 wall;
 
 	// Features (e.g. tree, rivers, lakes etc.)
-	int trees;
+	sint32 trees;
 
 	// Simplex Noise Parameters
-	int simplex_low;
-	int simplex_high;
+	sint32 simplex_low;
+	sint32 simplex_high;
 	float simplex_base_freq;
-	int simplex_octaves;
+	sint32 simplex_octaves;
 } mapgen_settings;
 
 void mapgen_generate_blank(mapgen_settings *settings);

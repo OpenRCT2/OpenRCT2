@@ -45,7 +45,7 @@ const money32 research_cost_table[4] = {
 	MONEY(400,00)		// Maximum funding
 };
 
-int dword_988E60[] = { 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0 };
+sint32 dword_988E60[] = { 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0 };
 
 money32 gInitialCash;
 money32 gCashEncrypted;
@@ -139,7 +139,7 @@ void finance_pay_interest()
  */
 void finance_pay_ride_upkeep()
 {
-	int i;
+	sint32 i;
 	rct_ride* ride;
 
 	FOR_ALL_RIDES(i, ride) {
@@ -165,7 +165,7 @@ void finance_pay_ride_upkeep()
 
 void finance_reset_history()
 {
-	for (int i = 0; i < 128; i++) {
+	for (sint32 i = 0; i < 128; i++) {
 		gCashHistory[i] = MONEY32_UNDEFINED;
 		gWeeklyProfitHistory[i] = MONEY32_UNDEFINED;
 		gParkValueHistory[i] = MONEY32_UNDEFINED;
@@ -237,7 +237,7 @@ void finance_update_daily_profit()
 
 		// Ride costs
 		rct_ride *ride;
-		int i;
+		sint32 i;
 		FOR_ALL_RIDES(i, ride) {
 			if (ride->status != RIDE_STATUS_CLOSED && ride->upkeep_cost != -1) {
 				current_profit -= 2 * ride->upkeep_cost;
@@ -286,7 +286,7 @@ money32 finance_get_current_cash()
  *
  *  rct2: 0x0069DFB3
  */
-void game_command_set_current_loan(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp)
+void game_command_set_current_loan(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp)
 {
 	money32 money, loanDifference, currentLoan;
 	money32 newLoan = *edx;

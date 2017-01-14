@@ -83,26 +83,26 @@ const uint8 _fountainPatternFlags[] = {
 };
 
 static void jumping_fountain_continue(rct_jumping_fountain *jumpingFountain);
-static bool is_jumping_fountain(int type, int x, int y, int z);
+static bool is_jumping_fountain(sint32 type, sint32 x, sint32 y, sint32 z);
 
-static void jumping_fountain_goto_edge(rct_jumping_fountain *jumpingFountain, int x, int y, int z, int availableDirections);
-static void jumping_fountain_bounce(rct_jumping_fountain *jumpingFountain, int x, int y, int z, int availableDirections);
-static void jumping_fountain_split(rct_jumping_fountain *jumpingFountain, int x, int y, int z, int availableDirections);
-static void jumping_fountain_random(rct_jumping_fountain *jumpingFountain, int x, int y, int z, int availableDirections);
-static void jumping_fountain_create_next(rct_jumping_fountain *jumpingFountain, int x, int y, int z, int direction);
+static void jumping_fountain_goto_edge(rct_jumping_fountain *jumpingFountain, sint32 x, sint32 y, sint32 z, sint32 availableDirections);
+static void jumping_fountain_bounce(rct_jumping_fountain *jumpingFountain, sint32 x, sint32 y, sint32 z, sint32 availableDirections);
+static void jumping_fountain_split(rct_jumping_fountain *jumpingFountain, sint32 x, sint32 y, sint32 z, sint32 availableDirections);
+static void jumping_fountain_random(rct_jumping_fountain *jumpingFountain, sint32 x, sint32 y, sint32 z, sint32 availableDirections);
+static void jumping_fountain_create_next(rct_jumping_fountain *jumpingFountain, sint32 x, sint32 y, sint32 z, sint32 direction);
 
 /**
  *
  *  rct2: 0x00673DBA (water)
  *  rct2: 0x00673F51 (snow)
  */
-void jumping_fountain_begin(int type, int x, int y, rct_map_element *mapElement)
+void jumping_fountain_begin(sint32 type, sint32 x, sint32 y, rct_map_element *mapElement)
 {
-	int i, randomIndex;
-	int z = mapElement->base_height * 8;
+	sint32 i, randomIndex;
+	sint32 z = mapElement->base_height * 8;
 
 	// Change pattern approximately every 51 seconds
-	int pattern = (gCurrentTicks >> 11) & 7;
+	sint32 pattern = (gCurrentTicks >> 11) & 7;
 	switch (pattern) {
 	case PATTERN_CYCLIC_SQUARES:
 		// 0, 1, 2, 3
@@ -178,7 +178,7 @@ void jumping_fountain_begin(int type, int x, int y, rct_map_element *mapElement)
  *  rct2: 0x0067396A (water)
  *  rct2: 0x006739A4 (snow)
  */
-void jumping_fountain_create(int type, int x, int y, int z, int direction, int flags, int iteration)
+void jumping_fountain_create(sint32 type, sint32 x, sint32 y, sint32 z, sint32 direction, sint32 flags, sint32 iteration)
 {
 	rct_jumping_fountain *jumpingFountain;
 
@@ -208,7 +208,7 @@ void jumping_fountain_create(int type, int x, int y, int z, int direction, int f
  */
 void jumping_fountain_update(rct_jumping_fountain *jumpingFountain)
 {
-	int original_var_26a = jumpingFountain->var_26a;
+	sint32 original_var_26a = jumpingFountain->var_26a;
 	jumpingFountain->var_26a += 160;
 	if (original_var_26a <= 255 - 160)
 		return;
@@ -241,17 +241,17 @@ void jumping_fountain_update(rct_jumping_fountain *jumpingFountain)
  */
 static void jumping_fountain_continue(rct_jumping_fountain *jumpingFountain)
 {
-	int direction = (jumpingFountain->sprite_direction >> 3) & 7;
-	int x = jumpingFountain->x + TileDirectionDelta[direction].x;
-	int y = jumpingFountain->y + TileDirectionDelta[direction].y;
-	int z = jumpingFountain->z;
+	sint32 direction = (jumpingFountain->sprite_direction >> 3) & 7;
+	sint32 x = jumpingFountain->x + TileDirectionDelta[direction].x;
+	sint32 y = jumpingFountain->y + TileDirectionDelta[direction].y;
+	sint32 z = jumpingFountain->z;
 
-	int type = jumpingFountain->misc_identifier == SPRITE_MISC_JUMPING_FOUNTAIN_SNOW ?
+	sint32 type = jumpingFountain->misc_identifier == SPRITE_MISC_JUMPING_FOUNTAIN_SNOW ?
 		JUMPING_FOUNTAIN_TYPE_SNOW :
 		JUMPING_FOUNTAIN_TYPE_WATER;
 
-	int availableDirections = 0;
-	for (int i = 0; i < 8; i++) {
+	sint32 availableDirections = 0;
+	for (sint32 i = 0; i < 8; i++) {
 		if (is_jumping_fountain(type, x + dword_97F000[i].x, y + dword_97F000[i].y, z))
 			availableDirections |= 1 << i;
 	}
@@ -280,11 +280,11 @@ static void jumping_fountain_continue(rct_jumping_fountain *jumpingFountain)
 	jumping_fountain_random(jumpingFountain, x, y, z, availableDirections);
 }
 
-static bool is_jumping_fountain(int type, int x, int y, int z)
+static bool is_jumping_fountain(sint32 type, sint32 x, sint32 y, sint32 z)
 {
 	z = z >> 3;
 
-	int pathBitFlagMask = type == JUMPING_FOUNTAIN_TYPE_SNOW ?
+	sint32 pathBitFlagMask = type == JUMPING_FOUNTAIN_TYPE_SNOW ?
 		PATH_BIT_FLAG_JUMPING_FOUNTAIN_SNOW :
 		PATH_BIT_FLAG_JUMPING_FOUNTAIN_WATER;
 
@@ -315,9 +315,9 @@ static bool is_jumping_fountain(int type, int x, int y, int z)
  *
  *  rct2: 0x00673B6E
  */
-static void jumping_fountain_goto_edge(rct_jumping_fountain *jumpingFountain, int x, int y, int z, int availableDirections)
+static void jumping_fountain_goto_edge(rct_jumping_fountain *jumpingFountain, sint32 x, sint32 y, sint32 z, sint32 availableDirections)
 {
-	int direction = (jumpingFountain->sprite_direction >> 3) << 1;
+	sint32 direction = (jumpingFountain->sprite_direction >> 3) << 1;
 	if (availableDirections & (1 << direction)) {
 		jumping_fountain_create_next(jumpingFountain, x, y, z, direction);
 		return;
@@ -349,13 +349,13 @@ static void jumping_fountain_goto_edge(rct_jumping_fountain *jumpingFountain, in
  *
  *  rct2: 0x00673B45
  */
-static void jumping_fountain_bounce(rct_jumping_fountain *jumpingFountain, int x, int y, int z, int availableDirections)
+static void jumping_fountain_bounce(rct_jumping_fountain *jumpingFountain, sint32 x, sint32 y, sint32 z, sint32 availableDirections)
 {
 	jumpingFountain->iteration++;
 	if (jumpingFountain->iteration >= 8)
 		return;
 
-	int direction = ((jumpingFountain->sprite_direction >> 3) ^ 2) << 1;
+	sint32 direction = ((jumpingFountain->sprite_direction >> 3) ^ 2) << 1;
 	if (availableDirections & (1 << direction)) {
 		jumping_fountain_create_next(jumpingFountain, x, y, z, direction);
 		return;
@@ -370,16 +370,16 @@ static void jumping_fountain_bounce(rct_jumping_fountain *jumpingFountain, int x
  *
  *  rct2: 0x00673ACE
  */
-static void jumping_fountain_split(rct_jumping_fountain *jumpingFountain, int x, int y, int z, int availableDirections)
+static void jumping_fountain_split(rct_jumping_fountain *jumpingFountain, sint32 x, sint32 y, sint32 z, sint32 availableDirections)
 {
 	if (jumpingFountain->iteration >= 3)
 		return;
 
-	int type = jumpingFountain->misc_identifier == SPRITE_MISC_JUMPING_FOUNTAIN_SNOW ?
+	sint32 type = jumpingFountain->misc_identifier == SPRITE_MISC_JUMPING_FOUNTAIN_SNOW ?
 		JUMPING_FOUNTAIN_TYPE_SNOW :
 		JUMPING_FOUNTAIN_TYPE_WATER;
 
-	int direction = ((jumpingFountain->sprite_direction >> 3) ^ 2) << 1;
+	sint32 direction = ((jumpingFountain->sprite_direction >> 3) ^ 2) << 1;
 	availableDirections &= ~(1 << direction);
 	direction++;
 	availableDirections &= ~(1 << direction);
@@ -411,13 +411,13 @@ static void jumping_fountain_split(rct_jumping_fountain *jumpingFountain, int x,
  *
  *  rct2: 0x00673AAC
  */
-static void jumping_fountain_random(rct_jumping_fountain *jumpingFountain, int x, int y, int z, int availableDirections)
+static void jumping_fountain_random(rct_jumping_fountain *jumpingFountain, sint32 x, sint32 y, sint32 z, sint32 availableDirections)
 {
 	uint32 randomIndex = scenario_rand();
 	if ((randomIndex & 0xFFFF) < 0x2000)
 		return;
 
-	int direction = randomIndex & 7;
+	sint32 direction = randomIndex & 7;
 	while (!(availableDirections & (1 << direction)))
 		direction = (direction + 1) & 7;
 
@@ -428,13 +428,13 @@ static void jumping_fountain_random(rct_jumping_fountain *jumpingFountain, int x
  *
  *  rct2: 0x00673B45
  */
-static void jumping_fountain_create_next(rct_jumping_fountain *jumpingFountain, int x, int y, int z, int direction)
+static void jumping_fountain_create_next(rct_jumping_fountain *jumpingFountain, sint32 x, sint32 y, sint32 z, sint32 direction)
 {
-	int flags = jumpingFountain->fountain_flags & ~FOUNTAIN_FLAG_7;
+	sint32 flags = jumpingFountain->fountain_flags & ~FOUNTAIN_FLAG_7;
 	if (direction & 1)
 		flags |= FOUNTAIN_FLAG_7;
 
-	int type = jumpingFountain->misc_identifier == SPRITE_MISC_JUMPING_FOUNTAIN_SNOW ?
+	sint32 type = jumpingFountain->misc_identifier == SPRITE_MISC_JUMPING_FOUNTAIN_SNOW ?
 		JUMPING_FOUNTAIN_TYPE_SNOW :
 		JUMPING_FOUNTAIN_TYPE_WATER;
 

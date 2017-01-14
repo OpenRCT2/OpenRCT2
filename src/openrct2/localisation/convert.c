@@ -25,9 +25,9 @@ static const encoding_convert_entry GB2312ToUnicodeTable[7445];
 static const encoding_convert_entry Big5ToUnicodeTable[13710];
 static const encoding_convert_entry RCT2ToUnicodeTable[256];
 
-int rct2_to_utf8(utf8 *dst, const char *src)
+sint32 rct2_to_utf8(utf8 *dst, const char *src)
 {
-	int codepoint;
+	sint32 codepoint;
 
 	utf8 *start = dst;
 	const char *ch = src;
@@ -47,14 +47,14 @@ int rct2_to_utf8(utf8 *dst, const char *src)
 		dst = utf8_write_codepoint(dst, codepoint);
 	}
 	dst = utf8_write_codepoint(dst, 0);
-	return (int)(dst - start);
+	return (sint32)(dst - start);
 }
 
-int utf8_to_rct2(char *dst, const utf8 *src)
+sint32 utf8_to_rct2(char *dst, const utf8 *src)
 {
 	char *start = dst;
 	const utf8 *ch = src;
-	int codepoint;
+	sint32 codepoint;
 	while ((codepoint = utf8_get_next(ch, &ch)) != 0) {
 		codepoint = encoding_convert_unicode_to_rct2(codepoint);
 		if (codepoint < 256) {
@@ -66,10 +66,10 @@ int utf8_to_rct2(char *dst, const utf8 *src)
 		}
 	}
 	*dst++ = 0;
-	return (int)(dst - start);
+	return (sint32)(dst - start);
 }
 
-static int encoding_search_compare(const void *pKey, const void *pEntry)
+static sint32 encoding_search_compare(const void *pKey, const void *pEntry)
 {
 	uint16 key = *((uint16*)pKey);
 	encoding_convert_entry *entry = (encoding_convert_entry*)pEntry;
@@ -78,7 +78,7 @@ static int encoding_search_compare(const void *pKey, const void *pEntry)
 	return 0;
 }
 
-static wchar_t encoding_convert_x_to_unicode(wchar_t code, const encoding_convert_entry *table, int count)
+static wchar_t encoding_convert_x_to_unicode(wchar_t code, const encoding_convert_entry *table, sint32 count)
 {
 	encoding_convert_entry *entry = bsearch(&code, table, count, sizeof(encoding_convert_entry), encoding_search_compare);
 	if (entry == NULL) return code;
@@ -88,7 +88,7 @@ static wchar_t encoding_convert_x_to_unicode(wchar_t code, const encoding_conver
 wchar_t encoding_convert_unicode_to_rct2(wchar_t unicode)
 {
 	// Can't do a binary search as its sorted by RCT2 code, not unicode
-	for (int i = 0; i < countof(RCT2ToUnicodeTable); i++) {
+	for (sint32 i = 0; i < countof(RCT2ToUnicodeTable); i++) {
 		if (RCT2ToUnicodeTable[i].unicode == unicode) return RCT2ToUnicodeTable[i].code;
 	}
 	return unicode;

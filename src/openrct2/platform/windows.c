@@ -48,7 +48,7 @@
 static utf8 _userDataDirectoryPath[MAX_PATH] = { 0 };
 static utf8 _openrctDataDirectoryPath[MAX_PATH] = { 0 };
 
-utf8 **windows_get_command_line_args(int *outNumArgs);
+utf8 **windows_get_command_line_args(sint32 *outNumArgs);
 
 #define OPENRCT2_DLL_MODULE_NAME "openrct2.dll"
 
@@ -57,7 +57,7 @@ static HMODULE _dllModule = NULL;
 /**
  * Windows entry point to OpenRCT2 with a console window using a traditional C main function.
  */
-int RunOpenRCT2(int argc, char * * argv)
+sint32 RunOpenRCT2(int argc, char * * argv)
 {
 	HINSTANCE hInstance = GetModuleHandle(NULL);
 	_dllModule = hInstance;
@@ -104,9 +104,9 @@ BOOL APIENTRY DllMain(HANDLE hModule, DWORD dwReason, LPVOID lpReserved)
  * The function that is called directly from the host application (rct2.exe)'s WinMain. This will be removed when OpenRCT2 can
  * be built as a stand alone application.
  */
-__declspec(dllexport) int StartOpenRCT(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
+__declspec(dllexport) sint32 StartOpenRCT(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, sint32 nCmdShow)
 {
-	int argc, runGame;
+	sint32 argc, runGame;
 	char **argv;
 
 	if (_dllModule == NULL) {
@@ -120,7 +120,7 @@ __declspec(dllexport) int StartOpenRCT(HINSTANCE hInstance, HINSTANCE hPrevInsta
 	runGame = cmdline_run((const char **)argv, argc);
 
 	// Free argv
-	for (int i = 0; i < argc; i++) {
+	for (sint32 i = 0; i < argc; i++) {
 		free(argv[i]);
 	}
 	free(argv);
@@ -137,7 +137,7 @@ __declspec(dllexport) int StartOpenRCT(HINSTANCE hInstance, HINSTANCE hPrevInsta
 
 utf8 **windows_get_command_line_args(int *outNumArgs)
 {
-	int argc;
+	sint32 argc;
 
 	// Get command line arguments as widechar
 	LPWSTR commandLine = GetCommandLineW();
@@ -145,7 +145,7 @@ utf8 **windows_get_command_line_args(int *outNumArgs)
 
 	// Convert to UTF-8
 	utf8 **argvUtf8 = (utf8**)malloc(argc * sizeof(utf8*));
-	for (int i = 0; i < argc; i++) {
+	for (sint32 i = 0; i < argc; i++) {
 		argvUtf8[i] = widechar_to_utf8(argvW[i]);
 	}
 	LocalFree(argvW);
@@ -235,7 +235,7 @@ bool platform_directory_delete(const utf8 *path)
 	fileop.lpszProgressTitle     = NULL;
 	fileop.hNameMappings         = NULL;
 
-	int ret = SHFileOperationW(&fileop);
+	sint32 ret = SHFileOperationW(&fileop);
 	return (ret == 0);
 }
 
@@ -268,9 +268,9 @@ typedef struct {
 } enumerate_file_info;
 static enumerate_file_info _enumerateFileInfoList[8] = { 0 };
 
-int platform_enumerate_files_begin(const utf8 *pattern)
+sint32 platform_enumerate_files_begin(const utf8 *pattern)
 {
-	int i;
+	sint32 i;
 	enumerate_file_info *enumFileInfo;
 
 	wchar_t *wPattern = utf8_to_widechar(pattern);
@@ -334,7 +334,7 @@ static bool match_wildcard(const wchar_t *fileName, const wchar_t *pattern)
 	return *pattern == '\0';
 }
 
-bool platform_enumerate_files_next(int handle, file_info *outFileInfo)
+bool platform_enumerate_files_next(sint32 handle, file_info *outFileInfo)
 {
 	bool result;
 	enumerate_file_info *enumFileInfo;
@@ -374,7 +374,7 @@ bool platform_enumerate_files_next(int handle, file_info *outFileInfo)
 	}
 }
 
-void platform_enumerate_files_end(int handle)
+void platform_enumerate_files_end(sint32 handle)
 {
 	enumerate_file_info *enumFileInfo;
 
@@ -387,9 +387,9 @@ void platform_enumerate_files_end(int handle)
 	SafeFree(enumFileInfo->outFilename);
 }
 
-int platform_enumerate_directories_begin(const utf8 *directory)
+sint32 platform_enumerate_directories_begin(const utf8 *directory)
 {
-	int i;
+	sint32 i;
 	enumerate_file_info *enumFileInfo;
 
 	wchar_t *wDirectory = utf8_to_widechar(directory);
@@ -405,7 +405,7 @@ int platform_enumerate_directories_begin(const utf8 *directory)
 			wcsncpy(enumFileInfo->pattern, wDirectory, MAX_PATH);
 
 			// Ensure pattern ends with a slash
-			int patternLength = lstrlenW(enumFileInfo->pattern);
+			sint32 patternLength = lstrlenW(enumFileInfo->pattern);
 			wchar_t lastChar = enumFileInfo->pattern[patternLength - 1];
 			if (lastChar != '\\' && lastChar != '/') {
 				wcsncat(enumFileInfo->pattern, L"\\", MAX_PATH);
@@ -425,7 +425,7 @@ int platform_enumerate_directories_begin(const utf8 *directory)
 	return INVALID_HANDLE;
 }
 
-bool platform_enumerate_directories_next(int handle, utf8 *path)
+bool platform_enumerate_directories_next(sint32 handle, utf8 *path)
 {
 	enumerate_file_info *enumFileInfo;
 	HANDLE fileHandle;
@@ -461,7 +461,7 @@ bool platform_enumerate_directories_next(int handle, utf8 *path)
 	return true;
 }
 
-void platform_enumerate_directories_end(int handle)
+void platform_enumerate_directories_end(sint32 handle)
 {
 	enumerate_file_info *enumFileInfo;
 
@@ -473,7 +473,7 @@ void platform_enumerate_directories_end(int handle)
 	enumFileInfo->active = false;
 }
 
-int platform_get_drives()
+sint32 platform_get_drives()
 {
 	return GetLogicalDrives();
 }
@@ -625,7 +625,7 @@ bool platform_open_common_file_dialog(utf8 *outFilename, file_dialog_desc *desc,
 
 	utf8 filters[256];
 	utf8 *ch = filters;
-	for (int i = 0; i < countof(desc->filters); i++) {
+	for (sint32 i = 0; i < countof(desc->filters); i++) {
 		if (desc->filters[i].name != NULL) {
 			safe_strcpy(ch, desc->filters[i].name, sizeof(filters) - (ch - filters));
 			ch = strchr(ch, 0) + 1;
@@ -677,7 +677,7 @@ bool platform_open_common_file_dialog(utf8 *outFilename, file_dialog_desc *desc,
 		// If there is no extension, append the pattern
 		const utf8 *outFilenameExtension = path_get_extension(outFilename);
 		if (str_is_null_or_empty(outFilenameExtension)) {
-			int filterIndex = openFileName.nFilterIndex - 1;
+			sint32 filterIndex = openFileName.nFilterIndex - 1;
 
 			assert(filterIndex >= 0);
 			assert(filterIndex < countof(desc->filters));
@@ -732,7 +732,7 @@ utf8 *platform_open_directory_browser(utf8 *title)
 		// Copy the path directory to the buffer
 		if (SHGetPathFromIDListW(pidl, pszBuffer)) {
 			// Store pszBuffer (and the path) in the outPath
-			int outPathCapacity = lstrlenW(pszBuffer) * 4 + 1;
+			sint32 outPathCapacity = lstrlenW(pszBuffer) * 4 + 1;
 			outPath = (utf8*)malloc(outPathCapacity);
 			WideCharToMultiByte(CP_UTF8, 0, pszBuffer, countof(pszBuffer), outPath, outPathCapacity, NULL, NULL);
 		}
@@ -745,7 +745,7 @@ utf8 *platform_open_directory_browser(utf8 *title)
  *
  *  rct2: 0x00407978
  */
-int windows_get_registry_install_info(rct2_install_info *installInfo, char *source, char *font, uint8 charset)
+sint32 windows_get_registry_install_info(rct2_install_info *installInfo, char *source, char *font, uint8 charset)
 {
 	char subkeyInfogrames[MAX_PATH], subkeyFishTechGroup[MAX_PATH], keyName[100];
 	HKEY hKey;
@@ -773,7 +773,7 @@ int windows_get_registry_install_info(rct2_install_info *installInfo, char *sour
 
 	size = 4;
 	RegQueryValueExA(hKey, "InstallLevel", 0, &type, (LPBYTE)&installInfo->installLevel, &size);
-	for (int i = 0; i <= 15; i++) {
+	for (sint32 i = 0; i <= 15; i++) {
 		snprintf(keyName, 100, "AddonPack%d", i);
 		size = sizeof(installInfo->expansionPackNames[i]);
 		if (RegQueryValueExA(hKey, keyName, 0, &type, (LPBYTE)installInfo->expansionPackNames[i], &size) == ERROR_SUCCESS)
@@ -979,7 +979,7 @@ void platform_get_exe_path(utf8 *outPath, size_t outSize)
 	*exeDelimiter = L'\0';
 	wcscpy_s(tempPath, MAX_PATH, exePath);
 	_wfullpath(exePath, tempPath, MAX_PATH);
-	WideCharToMultiByte(CP_UTF8, 0, exePath, MAX_PATH, outPath, (int) outSize, NULL, NULL);
+	WideCharToMultiByte(CP_UTF8, 0, exePath, MAX_PATH, outPath, (sint32) outSize, NULL, NULL);
 }
 
 bool platform_get_font_path(TTFFontDescriptor *font, utf8 *buffer, size_t size)
@@ -1062,7 +1062,7 @@ static bool windows_setup_file_association(
 	wchar_t exePathW[MAX_PATH];
 	wchar_t dllPathW[MAX_PATH];
 
-	int printResult;
+	sint32 printResult;
 
 	GetModuleFileNameW(NULL, exePathW, sizeof(exePathW));
 	GetModuleFileNameW(_dllModule, dllPathW, sizeof(dllPathW));

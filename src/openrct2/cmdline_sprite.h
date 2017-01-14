@@ -17,12 +17,14 @@
 #ifndef _CMDLINE_SPRITE_H_
 #define _CMDLINE_SPRITE_H_
 
+#include "common.h"
+
 #ifdef __cplusplus
 extern "C"
 {
 #endif
 
-int cmdline_for_sprite(const char **argv, int argc);
+sint32 cmdline_for_sprite(const char **argv, sint32 argc);
 
 #ifdef __cplusplus
 }

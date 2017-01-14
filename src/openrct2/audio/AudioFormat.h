@@ -25,16 +25,16 @@
  */
 struct AudioFormat
 {
-    int             freq;
+    sint32          freq;
     SDL_AudioFormat format;
-    int             channels;
+    sint32          channels;
 
-    int BytesPerSample() const
+    sint32 BytesPerSample() const
     {
         return (SDL_AUDIO_BITSIZE(format)) / 8;
     }
 
-    int GetByteRate() const
+    sint32 GetByteRate() const
     {
         return BytesPerSample() * channels;
     }

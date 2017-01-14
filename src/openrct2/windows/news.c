@@ -41,14 +41,14 @@ static rct_widget window_news_widgets[] = {
 	{ WIDGETS_END },
 };
 
-static void window_news_mouseup(rct_window *w, int widgetIndex);
+static void window_news_mouseup(rct_window *w, sint32 widgetIndex);
 static void window_news_update(rct_window *w);
-static void window_news_scrollgetsize(rct_window *w, int scrollIndex, int *width, int *height);
-static void window_news_scrollmousedown(rct_window *w, int scrollIndex, int x, int y);
-static void window_news_tooltip(rct_window* w, int widgetIndex, rct_string_id *stringId);
+static void window_news_scrollgetsize(rct_window *w, sint32 scrollIndex, sint32 *width, sint32 *height);
+static void window_news_scrollmousedown(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y);
+static void window_news_tooltip(rct_window* w, sint32 widgetIndex, rct_string_id *stringId);
 static void window_news_invalidate(rct_window *w);
 static void window_news_paint(rct_window *w, rct_drawpixelinfo *dpi);
-static void window_news_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scrollIndex);
+static void window_news_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 scrollIndex);
 
 static rct_window_event_list window_news_events = {
 	NULL,
@@ -108,8 +108,8 @@ void window_news_open()
 // sub_66E4BA:
 	rct_widget *widget;
 
-	int width = 0;
-	int height = 0;
+	sint32 width = 0;
+	sint32 height = 0;
 	window_get_scroll_size(window, 0, &width, &height);
 	widget = &window_news_widgets[WIDX_SCROLL];
 	window->scrolls[0].v_top = max(0, height - (widget->bottom - widget->top - 1));
@@ -121,7 +121,7 @@ void window_news_open()
  *
  *  rct2: 0x0066D4D5
  */
-static void window_news_mouseup(rct_window *w, int widgetIndex)
+static void window_news_mouseup(rct_window *w, sint32 widgetIndex)
 {
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
@@ -139,7 +139,7 @@ static void window_news_mouseup(rct_window *w, int widgetIndex)
  */
 static void window_news_update(rct_window *w)
 {
-	int i, j, x, y, z;
+	sint32 i, j, x, y, z;
 
 	if (w->news.var_480 == -1)
 		return;
@@ -179,9 +179,9 @@ static void window_news_update(rct_window *w)
  *
  *  rct2: 0x0066EA3C
  */
-static void window_news_scrollgetsize(rct_window *w, int scrollIndex, int *width, int *height)
+static void window_news_scrollgetsize(rct_window *w, sint32 scrollIndex, sint32 *width, sint32 *height)
 {
-	int i;
+	sint32 i;
 
 	*height = 0;
 	for (i = 11; i < 61; i++) {
@@ -196,9 +196,9 @@ static void window_news_scrollgetsize(rct_window *w, int scrollIndex, int *width
  *
  *  rct2: 0x0066EA5C
  */
-static void window_news_scrollmousedown(rct_window *w, int scrollIndex, int x, int y)
+static void window_news_scrollmousedown(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y)
 {
-	int i, buttonIndex;
+	sint32 i, buttonIndex;
 
 	buttonIndex = 0;
 	for (i = 11; i < 61; i++) {
@@ -247,7 +247,7 @@ static void window_news_scrollmousedown(rct_window *w, int scrollIndex, int x, i
  *
  *  rct2: 0x0066EAAE
  */
-static void window_news_tooltip(rct_window* w, int widgetIndex, rct_string_id *stringId)
+static void window_news_tooltip(rct_window* w, sint32 widgetIndex, rct_string_id *stringId)
 {
 	set_format_arg(0, rct_string_id, STR_LIST);
 }
@@ -270,9 +270,9 @@ static void window_news_invalidate(rct_window *w)
  *
  *  rct2: 0x0066E4EE
  */
-static void window_news_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scrollIndex)
+static void window_news_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 scrollIndex)
 {
-	int i, x, y, yy, press;
+	sint32 i, x, y, yy, press;
 
 	y = 0;
 	for (i = 11; i < 61; i++) {
@@ -329,11 +329,11 @@ static void window_news_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int s
 				}
 
 				rct_peep* peep = GET_PEEP(newsItem->assoc);
-				int clip_x = 10, clip_y = 19;
+				sint32 clip_x = 10, clip_y = 19;
 
 				// If normal peep set sprite to normal (no food)
 				// If staff set sprite to staff sprite
-				int sprite_type = 0;
+				sint32 sprite_type = 0;
 				if (peep->type == PEEP_TYPE_STAFF){
 					sprite_type = peep->sprite_type;
 					if (peep->staff_type == STAFF_TYPE_ENTERTAINER){

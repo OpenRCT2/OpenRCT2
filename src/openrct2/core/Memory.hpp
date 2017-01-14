@@ -123,7 +123,7 @@ namespace Memory
     template<typename T>
     static T * Set(T * dst, uint8 value, size_t size)
     {
-        return (T*)memset((void*)dst, (int)value, size);
+        return (T*)memset((void*)dst, (sint32)value, size);
     }
 
     template<typename T>

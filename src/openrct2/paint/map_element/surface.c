@@ -313,7 +313,7 @@ struct tile_descriptor
 	corner_height corner_heights;
 };
 
-static uint8 viewport_surface_paint_setup_get_relative_slope(rct_map_element * mapElement, int rotation)
+static uint8 viewport_surface_paint_setup_get_relative_slope(rct_map_element * mapElement, sint32 rotation)
 {
 	uint8 slope = mapElement->properties.surface.slope;
 
@@ -994,7 +994,7 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
 	tile_descriptor tileDescriptors[5];
 	tileDescriptors[0] = selfDescriptor;
 
-	for (int i = 0; i < 4; i++) {
+	for (sint32 i = 0; i < 4; i++) {
 		rct_xy16 offset = viewport_surface_paint_data[i][rotation];
 		rct_xy16 position = {.x = base.x + offset.x, .y = base.y + offset.y};
 
@@ -1025,10 +1025,10 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
 	if ((gCurrentViewportFlags & VIEWPORT_FLAG_LAND_HEIGHTS) && (zoomLevel == 0)) {
 		sint16 x = gPaintMapPosition.x, y = gPaintMapPosition.y;
 
-		int dx = map_element_height(x + 16, y + 16) & 0xFFFF;
+		sint32 dx = map_element_height(x + 16, y + 16) & 0xFFFF;
 		dx += 3;
 
-		int image_id = (SPR_HEIGHT_MARKER_BASE + dx / 16) | 0x20780000;
+		sint32 image_id = (SPR_HEIGHT_MARKER_BASE + dx / 16) | 0x20780000;
 		image_id += get_height_marker_offset();
 		image_id -= gMapBaseZ;
 
@@ -1046,7 +1046,7 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
 	} else {
 		bool showGridlines = (gCurrentViewportFlags & VIEWPORT_FLAG_GRIDLINES);
 
-		int branch = -1;
+		sint32 branch = -1;
 		if ((mapElement->properties.surface.terrain & 0xE0) == 0) {
 			if ((mapElement->type & 0x3) == 0) {
 				if (zoomLevel == 0) {
@@ -1059,7 +1059,7 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
 
 		assert(surfaceShape < countof(byte_97B444));
 		uint8 image_offset = byte_97B444[surfaceShape];
-		int image_id;
+		sint32 image_id;
 		uint32 ebp = terrain_type;
 		switch (branch) {
 			case 0:
@@ -1098,7 +1098,7 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
 			{
 				sint16 x = gPaintMapPosition.x & 0x20;
 				sint16 y = gPaintMapPosition.y & 0x20;
-				int index = (y | (x << 1)) >> 5;
+				sint32 index = (y | (x << 1)) >> 5;
 
 				if (branch == 6) {
 					image_id = dword_97B878[index][showGridlines ? 1 : 0] + image_offset;
@@ -1147,14 +1147,14 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
 		gCurrentViewportFlags & VIEWPORT_FLAG_LAND_OWNERSHIP
 	) {
 		rct_xy16 pos = {gPaintMapPosition.x, gPaintMapPosition.y};
-		for (int i = 0; i < 2; ++i) {
+		for (sint32 i = 0; i < 2; ++i) {
 			rct2_peep_spawn * spawn = &gPeepSpawns[i];
 
 			if ((spawn->x & 0xFFE0) == pos.x && (spawn->y & 0xFFE0) == pos.y) {
 				// TODO: SPR_TERRAIN_SELECTION_SQUARE_SIMPLE ??? (no variations)
 				sub_98196C(2624, 0, 0, 32, 32, 16, spawn->z * 16, rotation);
 
-				int offset = ((spawn->direction ^ 2) + rotation) & 3;
+				sint32 offset = ((spawn->direction ^ 2) + rotation) & 3;
 				uint32 image_id = (3111 + offset) | 0x20380000;
 				sub_98196C(image_id, 0, 0, 32, 32, 19, spawn->z * 16, rotation);
 			}
@@ -1170,7 +1170,7 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
 		} else if (mapElement->properties.surface.ownership & OWNERSHIP_AVAILABLE) {
 			rct_xy16 pos = {gPaintMapPosition.x, gPaintMapPosition.y};
 			paint_struct * backup = g_ps_F1AD28;
-			int height2 = (map_element_height(pos.x + 16, pos.y + 16) & 0xFFFF) + 3;
+			sint32 height2 = (map_element_height(pos.x + 16, pos.y + 16) & 0xFFFF) + 3;
 			sub_98196C(22955, 16, 16, 1, 1, 0, height2, rotation);
 			g_ps_F1AD28 = backup;
 		}
@@ -1185,7 +1185,7 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
 		} else if (mapElement->properties.surface.ownership & OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE) {
 			paint_struct * backup = g_ps_F1AD28;
 			rct_xy16 pos = {gPaintMapPosition.x, gPaintMapPosition.y};
-			int height2 = map_element_height(pos.x + 16, pos.y + 16) & 0xFFFF;
+			sint32 height2 = map_element_height(pos.x + 16, pos.y + 16) & 0xFFFF;
 			sub_98196C(22956, 16, 16, 1, 1, 0, height2 + 3, rotation);
 			g_ps_F1AD28 = backup;
 		}
@@ -1227,11 +1227,11 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
 				uint32 image_id = (SPR_TERRAIN_SELECTION_CORNER + byte_97B444[surfaceShape]) | eax | 0x20000000;
 				paint_attach_to_previous_ps(image_id, 0, 0);
 			} else {
-				int local_surfaceShape = surfaceShape;
-				int local_height = height;
+				sint32 local_surfaceShape = surfaceShape;
+				sint32 local_height = height;
 				// Water tool
 				if (mapElement->properties.surface.terrain & 0x1F) {
-					int waterHeight = (mapElement->properties.surface.terrain & 0x1F) * 16;
+					sint32 waterHeight = (mapElement->properties.surface.terrain & 0x1F) * 16;
 					if (waterHeight > height) {
 						local_height += 16;
 
@@ -1249,7 +1249,7 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
 					}
 				}
 
-				int image_id = (SPR_TERRAIN_SELECTION_CORNER + byte_97B444[local_surfaceShape]) | 0x21300000;
+				sint32 image_id = (SPR_TERRAIN_SELECTION_CORNER + byte_97B444[local_surfaceShape]) | 0x21300000;
 
 				paint_struct * backup = g_ps_F1AD28;
 				sub_98196C(image_id, 0, 0, 32, 32, 1, local_height, rotation);
@@ -1318,7 +1318,7 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
 
 #ifdef __MINGW32__
 		// The other code crashes mingw 4.8.2, as available on Travis
-		for (int i = 0; i < TUNNEL_MAX_COUNT; i++) {
+		for (sint32 i = 0; i < TUNNEL_MAX_COUNT; i++) {
 			backupLeftTunnels[i] = gLeftTunnels[i];
 			backupRightTunnels[i] = gRightTunnels[i];
 		}
@@ -1335,7 +1335,7 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
 
 #ifdef __MINGW32__
 		// The other code crashes mingw 4.8.2, as available on Travis
-		for (int i = 0; i < TUNNEL_MAX_COUNT; i++) {
+		for (sint32 i = 0; i < TUNNEL_MAX_COUNT; i++) {
 			gLeftTunnels[i] = backupLeftTunnels[i];
 			gRightTunnels[i] = backupRightTunnels[i];
 		}
@@ -1355,12 +1355,12 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
 		if (!gTrackDesignSaveMode) {
 			gUnk141E9DC = waterHeight;
 
-			int image_offset = 0;
+			sint32 image_offset = 0;
 			if (waterHeight <= localHeight) {
 				image_offset = byte_97B740[surfaceShape & 0xF];
 			}
 
-			int image_id = (SPR_WATER_MASK + image_offset) | 0x60000000 | PALETTE_WATER << 19;
+			sint32 image_id = (SPR_WATER_MASK + image_offset) | 0x60000000 | PALETTE_WATER << 19;
 			sub_98196C(image_id, 0, 0, 32, 32, -1, waterHeight, rotation);
 
 			paint_attach_to_previous_ps(SPR_WATER_OVERLAY + image_offset, 0, 0);
@@ -1393,8 +1393,8 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
 
 		uint8 al = regs.al | regs.ah;
 
-		for (int i = 0; i < 4; i++) {
-			int bit = al & 1;
+		for (sint32 i = 0; i < 4; i++) {
+			sint32 bit = al & 1;
 			al >>= 1;
 
 			if (bit == 0) {
@@ -1402,7 +1402,7 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
 			}
 
 
-			int bit_1, bit_8, bit_4, bit_2;
+			sint32 bit_1, bit_8, bit_4, bit_2;
 			rct_xy8 offset;
 			rct_xy16 box_offset, box_size;
 			uint32 image_1, image_2, image_3;
@@ -1475,9 +1475,9 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
 				image_5 = image_3;
 			}
 
-			int local_ebx = surfaceShape;
-			int local_height = height;
-			int image_id = 0;
+			sint32 local_ebx = surfaceShape;
+			sint32 local_height = height;
+			sint32 image_id = 0;
 			if (!(local_ebx & bit_1)) { // first
 				if (local_ebx & bit_8) { // second
 					image_id = image_3;

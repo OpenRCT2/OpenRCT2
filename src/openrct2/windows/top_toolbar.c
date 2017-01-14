@@ -135,7 +135,7 @@ enum {
 #pragma region Toolbar_widget_ordering
 
 // from left to right
-static const int left_aligned_widgets_order[] = {
+static const sint32 left_aligned_widgets_order[] = {
 	WIDX_PAUSE,
 	WIDX_FASTFORWARD,
 	WIDX_FILE_MENU,
@@ -153,7 +153,7 @@ static const int left_aligned_widgets_order[] = {
 };
 
 // from right to left
-static const int right_aligned_widgets_order[] = {
+static const sint32 right_aligned_widgets_order[] = {
 	WIDX_NEWS,
 	WIDX_GUESTS,
 	WIDX_STAFF,
@@ -206,14 +206,14 @@ static rct_widget window_top_toolbar_widgets[] = {
 	{ WIDGETS_END },
 };
 
-static void window_top_toolbar_mouseup(rct_window *w, int widgetIndex);
-static void window_top_toolbar_mousedown(int widgetIndex, rct_window*w, rct_widget* widget);
-static void window_top_toolbar_dropdown(rct_window *w, int widgetIndex, int dropdownIndex);
-static void window_top_toolbar_tool_update(rct_window* w, int widgetIndex, int x, int y);
-static void window_top_toolbar_tool_down(rct_window* w, int widgetIndex, int x, int y);
-static void window_top_toolbar_tool_drag(rct_window* w, int widgetIndex, int x, int y);
-static void window_top_toolbar_tool_up(rct_window* w, int widgetIndex, int x, int y);
-static void window_top_toolbar_tool_abort(rct_window *w, int widgetIndex);
+static void window_top_toolbar_mouseup(rct_window *w, sint32 widgetIndex);
+static void window_top_toolbar_mousedown(sint32 widgetIndex, rct_window*w, rct_widget* widget);
+static void window_top_toolbar_dropdown(rct_window *w, sint32 widgetIndex, sint32 dropdownIndex);
+static void window_top_toolbar_tool_update(rct_window* w, sint32 widgetIndex, sint32 x, sint32 y);
+static void window_top_toolbar_tool_down(rct_window* w, sint32 widgetIndex, sint32 x, sint32 y);
+static void window_top_toolbar_tool_drag(rct_window* w, sint32 widgetIndex, sint32 x, sint32 y);
+static void window_top_toolbar_tool_up(rct_window* w, sint32 widgetIndex, sint32 x, sint32 y);
+static void window_top_toolbar_tool_abort(rct_window *w, sint32 widgetIndex);
 static void window_top_toolbar_invalidate(rct_window *w);
 static void window_top_toolbar_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
@@ -249,20 +249,20 @@ static rct_window_event_list window_top_toolbar_events = {
 };
 
 void top_toolbar_init_view_menu(rct_window *window, rct_widget *widget);
-void top_toolbar_view_menu_dropdown(short dropdownIndex);
+void top_toolbar_view_menu_dropdown(sint16 dropdownIndex);
 void top_toolbar_init_fastforward_menu(rct_window *window, rct_widget *widget);
-void top_toolbar_fastforward_menu_dropdown(short dropdownIndex);
+void top_toolbar_fastforward_menu_dropdown(sint16 dropdownIndex);
 void top_toolbar_init_rotate_menu(rct_window *window, rct_widget *widget);
-void top_toolbar_rotate_menu_dropdown(short dropdownIndex);
+void top_toolbar_rotate_menu_dropdown(sint16 dropdownIndex);
 void top_toolbar_init_debug_menu(rct_window *window, rct_widget *widget);
-void top_toolbar_debug_menu_dropdown(short dropdownIndex);
+void top_toolbar_debug_menu_dropdown(sint16 dropdownIndex);
 void top_toolbar_init_network_menu(rct_window *window, rct_widget *widget);
-void top_toolbar_network_menu_dropdown(short dropdownIndex);
+void top_toolbar_network_menu_dropdown(sint16 dropdownIndex);
 
 void toggle_footpath_window();
-void toggle_land_window(rct_window *topToolbar, int widgetIndex);
-void toggle_clear_scenery_window(rct_window *topToolbar, int widgetIndex);
-void toggle_water_window(rct_window *topToolbar, int widgetIndex);
+void toggle_land_window(rct_window *topToolbar, sint32 widgetIndex);
+void toggle_clear_scenery_window(rct_window *topToolbar, sint32 widgetIndex);
+void toggle_water_window(rct_window *topToolbar, sint32 widgetIndex);
 
 money32 selection_lower_land(uint8 flags);
 money32 selection_raise_land(uint8 flags);
@@ -296,7 +296,7 @@ void window_top_toolbar_open()
  *
  *  rct2: 0x0066C957
  */
-static void window_top_toolbar_mouseup(rct_window *w, int widgetIndex)
+static void window_top_toolbar_mouseup(rct_window *w, sint32 widgetIndex)
 {
 	rct_window *mainWindow;
 
@@ -363,9 +363,9 @@ static void window_top_toolbar_mouseup(rct_window *w, int widgetIndex)
  *
  *  rct2: 0x0066CA3B
  */
-static void window_top_toolbar_mousedown(int widgetIndex, rct_window*w, rct_widget* widget)
+static void window_top_toolbar_mousedown(sint32 widgetIndex, rct_window*w, rct_widget* widget)
 {
-	int numItems;
+	sint32 numItems;
 
 	switch (widgetIndex) {
 	case WIDX_FILE_MENU:
@@ -513,7 +513,7 @@ static void window_top_toolbar_scenarioselect_callback(const utf8 *path)
  *
  *  rct2: 0x0066C9EA
  */
-static void window_top_toolbar_dropdown(rct_window *w, int widgetIndex, int dropdownIndex)
+static void window_top_toolbar_dropdown(rct_window *w, sint32 widgetIndex, sint32 dropdownIndex)
 {
 	switch (widgetIndex) {
 	case WIDX_FILE_MENU:
@@ -630,7 +630,7 @@ static void window_top_toolbar_dropdown(rct_window *w, int widgetIndex, int drop
  */
 static void window_top_toolbar_invalidate(rct_window *w)
 {
-	int x, enabledWidgets, widgetIndex, widgetWidth, firstAlignment;
+	sint32 x, enabledWidgets, widgetIndex, widgetWidth, firstAlignment;
 	rct_widget *widget;
 
 	colour_scheme_update(w);
@@ -729,7 +729,7 @@ static void window_top_toolbar_invalidate(rct_window *w)
 	// Align left hand side toolbar buttons
 	firstAlignment = 1;
 	x = 0;
-	for (int i = 0; i < countof(left_aligned_widgets_order); ++i) {
+	for (sint32 i = 0; i < countof(left_aligned_widgets_order); ++i) {
 		widgetIndex = left_aligned_widgets_order[i];
 		widget = &window_top_toolbar_widgets[widgetIndex];
 		if (widget->type == WWT_EMPTY && widgetIndex != WIDX_SEPARATOR)
@@ -749,7 +749,7 @@ static void window_top_toolbar_invalidate(rct_window *w)
 	// Align right hand side toolbar buttons
 	firstAlignment = 1;
 	x = max(640, gScreenWidth);
-	for (int i = 0; i < countof(right_aligned_widgets_order); ++i) {
+	for (sint32 i = 0; i < countof(right_aligned_widgets_order); ++i) {
 		widgetIndex = right_aligned_widgets_order[i];
 		widget = &window_top_toolbar_widgets[widgetIndex];
 		if (widget->type == WWT_EMPTY && widgetIndex != WIDX_SEPARATOR)
@@ -793,7 +793,7 @@ static void window_top_toolbar_invalidate(rct_window *w)
  */
 static void window_top_toolbar_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
-	int x, y, imgId;
+	sint32 x, y, imgId;
 
 	window_draw_widgets(w, dpi);
 
@@ -818,10 +818,10 @@ static void window_top_toolbar_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		gfx_draw_sprite(dpi, imgId, x + 6, y + 3, 0);
 
 
-		for (int i = 0; i < gGameSpeed && gGameSpeed <= 4; i++) {
+		for (sint32 i = 0; i < gGameSpeed && gGameSpeed <= 4; i++) {
 			gfx_draw_sprite(dpi, SPR_G2_SPEED_ARROW, x + 5 + i * 5, y + 15, 0);
 		}
-		for (int i = 0; i < 3 && i < gGameSpeed - 4 && gGameSpeed >= 5; i++) {
+		for (sint32 i = 0; i < 3 && i < gGameSpeed - 4 && gGameSpeed >= 5; i++) {
 			gfx_draw_sprite(dpi, SPR_G2_HYPER_ARROW, x + 5 + i * 6, y + 15, 0);
 		}
 	}
@@ -894,7 +894,7 @@ static void window_top_toolbar_paint(rct_window *w, rct_drawpixelinfo *dpi)
 static void repaint_scenery_tool_down(sint16 x, sint16 y, sint16 widgetIndex){
 	// ax, cx, bl
 	sint16 grid_x, grid_y;
-	int type;
+	sint32 type;
 	// edx
 	rct_map_element* map_element;
 	uint16 flags =
@@ -1046,7 +1046,7 @@ static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid
 					VIEWPORT_INTERACTION_MASK_FOOTPATH &
 					VIEWPORT_INTERACTION_MASK_WALL &
 					VIEWPORT_INTERACTION_MASK_LARGE_SCENERY;
-				int interaction_type;
+				sint32 interaction_type;
 				get_map_coordinates_from_pos(x, y, flags, NULL, NULL, &interaction_type, &map_element, NULL);
 
 				if (interaction_type != VIEWPORT_INTERACTION_ITEM_NONE){
@@ -1162,7 +1162,7 @@ static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid
 			uint16 flags =
 				VIEWPORT_INTERACTION_MASK_TERRAIN &
 				VIEWPORT_INTERACTION_MASK_WATER;
-			int interaction_type = 0;
+			sint32 interaction_type = 0;
 			rct_map_element* map_element;
 
 			get_map_coordinates_from_pos(x, y, flags, grid_x, grid_y, &interaction_type, &map_element, NULL);
@@ -1241,7 +1241,7 @@ static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid
 		uint16 flags =
 			VIEWPORT_INTERACTION_MASK_FOOTPATH &
 			VIEWPORT_INTERACTION_MASK_FOOTPATH_ITEM;
-		int interaction_type = 0;
+		sint32 interaction_type = 0;
 		rct_map_element* map_element;
 
 		get_map_coordinates_from_pos(x, y, flags, grid_x, grid_y, &interaction_type, &map_element, NULL);
@@ -1388,7 +1388,7 @@ static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid
 		uint16 flags =
 			VIEWPORT_INTERACTION_MASK_FOOTPATH &
 			VIEWPORT_INTERACTION_MASK_FOOTPATH_ITEM;
-		int interaction_type = 0;
+		sint32 interaction_type = 0;
 		rct_map_element* map_element;
 
 		get_map_coordinates_from_pos(x, y, flags, grid_x, grid_y, &interaction_type, &map_element, NULL);
@@ -1422,10 +1422,10 @@ static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid
 	}
 }
 
-void game_command_callback_place_banner(int eax, int ebx, int ecx, int edx, int esi, int edi, int ebp)
+void game_command_callback_place_banner(sint32 eax, sint32 ebx, sint32 ecx, sint32 edx, sint32 esi, sint32 edi, sint32 ebp)
 {
 	if (ebx != MONEY32_UNDEFINED) {
-		int bannerId = edi;
+		sint32 bannerId = edi;
 
 		audio_play_sound_at_location(SOUND_PLACE_ITEM, gCommandPosition.x, gCommandPosition.y, gCommandPosition.z);
 		window_banner_open(bannerId);
@@ -1435,7 +1435,7 @@ void game_command_callback_place_banner(int eax, int ebx, int ecx, int edx, int 
  *
  *  rct2: 0x006E2CC6
  */
-static void window_top_toolbar_scenery_tool_down(short x, short y, rct_window *w, short widgetIndex)
+static void window_top_toolbar_scenery_tool_down(sint16 x, sint16 y, rct_window *w, sint16 widgetIndex)
 {
 	scenery_remove_ghost_tool_placement();
 	if (gWindowSceneryPaintEnabled & 1) {
@@ -1443,7 +1443,7 @@ static void window_top_toolbar_scenery_tool_down(short x, short y, rct_window *w
 		return;
 	}
 
-	int selectedTab = gWindowSceneryTabSelections[gWindowSceneryActiveTabIndex];
+	sint32 selectedTab = gWindowSceneryTabSelections[gWindowSceneryActiveTabIndex];
 	uint8 sceneryType = (selectedTab & 0xFF00) >> 8;
 
 	if (selectedTab == -1) return;
@@ -1458,14 +1458,14 @@ static void window_top_toolbar_scenery_tool_down(short x, short y, rct_window *w
 	switch (sceneryType){
 	case SCENERY_TYPE_SMALL:
 	{
-		int quantity = 1;
+		sint32 quantity = 1;
 		bool isCluster = gWindowSceneryClusterEnabled && (network_get_mode() != NETWORK_MODE_CLIENT || network_can_perform_command(network_get_current_player_group_index(), -2));
 		if (isCluster) {
 			quantity = 35;
 		}
-		int successfulPlacements = 0;
-		for (int q = 0; q < quantity; q++) {
-			int zCoordinate = gSceneryPlaceZ;
+		sint32 successfulPlacements = 0;
+		for (sint32 q = 0; q < quantity; q++) {
+			sint32 zCoordinate = gSceneryPlaceZ;
 			rct_scenery_entry* scenery = get_small_scenery_entry((parameter_1 >> 8) & 0xFF);
 
 			sint16 cur_grid_x = gridX;
@@ -1495,11 +1495,11 @@ static void window_top_toolbar_scenery_tool_down(short x, short y, rct_window *w
 
 			bool success = false;
 			for (; zAttemptRange != 0; zAttemptRange--){
-				int flags = GAME_COMMAND_FLAG_APPLY | (parameter_1 & 0xFF00);
+				sint32 flags = GAME_COMMAND_FLAG_APPLY | (parameter_1 & 0xFF00);
 
 				gDisableErrorWindowSound = true;
 				gGameCommandErrorTitle = STR_CANT_POSITION_THIS_HERE;
-				int cost = game_do_command(
+				sint32 cost = game_do_command(
 					cur_grid_x,
 					flags,
 					cur_grid_y,
@@ -1546,10 +1546,10 @@ static void window_top_toolbar_scenery_tool_down(short x, short y, rct_window *w
 	}
 	case SCENERY_TYPE_PATH_ITEM:
 	{
-		int flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_7 | (parameter_1 & 0xFF00);
+		sint32 flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_7 | (parameter_1 & 0xFF00);
 
 		gGameCommandErrorTitle = STR_CANT_POSITION_THIS_HERE;
-		int cost = game_do_command(gridX, flags, gridY, parameter_2, GAME_COMMAND_PLACE_PATH, parameter_3, 0);
+		sint32 cost = game_do_command(gridX, flags, gridY, parameter_2, GAME_COMMAND_PLACE_PATH, parameter_3, 0);
 		if (cost != MONEY32_UNDEFINED) {
 			audio_play_sound_at_location(SOUND_PLACE_ITEM, gCommandPosition.x, gCommandPosition.y, gCommandPosition.z);
 		}
@@ -1566,11 +1566,11 @@ static void window_top_toolbar_scenery_tool_down(short x, short y, rct_window *w
 		}
 
 		for (; zAttemptRange != 0; zAttemptRange--) {
-			int flags = (parameter_1 & 0xFF00) | GAME_COMMAND_FLAG_APPLY;
+			sint32 flags = (parameter_1 & 0xFF00) | GAME_COMMAND_FLAG_APPLY;
 
 			gDisableErrorWindowSound = true;
 			gGameCommandErrorTitle = STR_CANT_BUILD_PARK_ENTRANCE_HERE;
-			int cost = game_do_command(gridX, flags, gridY, parameter_2, GAME_COMMAND_PLACE_FENCE, gSceneryPlaceZ, _unkF64F15);
+			sint32 cost = game_do_command(gridX, flags, gridY, parameter_2, GAME_COMMAND_PLACE_FENCE, gSceneryPlaceZ, _unkF64F15);
 			gDisableErrorWindowSound = false;
 
 			if (cost != MONEY32_UNDEFINED){
@@ -1603,11 +1603,11 @@ static void window_top_toolbar_scenery_tool_down(short x, short y, rct_window *w
 		}
 
 		for (; zAttemptRange != 0; zAttemptRange--) {
-			int flags = (parameter_1 & 0xFF00) | GAME_COMMAND_FLAG_APPLY;
+			sint32 flags = (parameter_1 & 0xFF00) | GAME_COMMAND_FLAG_APPLY;
 
 			gDisableErrorWindowSound = true;
 			gGameCommandErrorTitle = STR_CANT_POSITION_THIS_HERE;
-			int cost = game_do_command(gridX, flags, gridY, parameter_2, GAME_COMMAND_PLACE_LARGE_SCENERY, parameter_3, gSceneryPlaceZ);
+			sint32 cost = game_do_command(gridX, flags, gridY, parameter_2, GAME_COMMAND_PLACE_LARGE_SCENERY, parameter_3, gSceneryPlaceZ);
 			gDisableErrorWindowSound = false;
 
 			if (cost != MONEY32_UNDEFINED){
@@ -1631,7 +1631,7 @@ static void window_top_toolbar_scenery_tool_down(short x, short y, rct_window *w
 	}
 	case SCENERY_TYPE_BANNER:
 	{
-		int flags = (parameter_1 & 0xFF00) | GAME_COMMAND_FLAG_APPLY;
+		sint32 flags = (parameter_1 & 0xFF00) | GAME_COMMAND_FLAG_APPLY;
 
 		gGameCommandErrorTitle = STR_CANT_POSITION_THIS_HERE;
 		game_command_callback = game_command_callback_place_banner;
@@ -1711,11 +1711,11 @@ static void top_toolbar_tool_update_scenery_clear(sint16 x, sint16 y){
 	if (!state_changed)
 		return;
 
-	int eax = gMapSelectPositionA.x;
-	int ecx = gMapSelectPositionA.y;
-	int edi = gMapSelectPositionB.x;
-	int ebp = gMapSelectPositionB.y;
-	int clear = (gClearSmallScenery << 0) | (gClearLargeScenery << 1) | (gClearFootpath << 2);
+	sint32 eax = gMapSelectPositionA.x;
+	sint32 ecx = gMapSelectPositionA.y;
+	sint32 edi = gMapSelectPositionB.x;
+	sint32 ebp = gMapSelectPositionB.y;
+	sint32 clear = (gClearSmallScenery << 0) | (gClearLargeScenery << 1) | (gClearFootpath << 2);
 	money32 cost = game_do_command(eax, 0, ecx, clear, GAME_COMMAND_CLEAR_SCENERY, edi, ebp);
 
 	if (gClearSceneryCost != cost) {
@@ -1820,7 +1820,7 @@ static void top_toolbar_tool_update_land(sint16 x, sint16 y){
 
 	gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
 	if (tool_size == 1){
-		int direction;
+		sint32 direction;
 		screen_pos_to_map_pos(&mapTile.x, &mapTile.y, &direction);
 
 		if (mapTile.x == MAP_LOCATION_NULL) {
@@ -1998,7 +1998,7 @@ static void top_toolbar_tool_update_water(sint16 x, sint16 y){
 	gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
 
 	rct_xy16 mapTile = { 0 };
-	int interaction_type = 0;
+	sint32 interaction_type = 0;
 	get_map_coordinates_from_pos(
 		x,
 		y,
@@ -2528,7 +2528,7 @@ static void top_toolbar_tool_update_scenery(sint16 x, sint16 y){
  *
  *  rct2: 0x0066CB25
  */
-static void window_top_toolbar_tool_update(rct_window* w, int widgetIndex, int x, int y)
+static void window_top_toolbar_tool_update(rct_window* w, sint32 widgetIndex, sint32 x, sint32 y)
 {
 	switch (widgetIndex) {
 	case WIDX_CLEAR_SCENERY:
@@ -2553,7 +2553,7 @@ static void window_top_toolbar_tool_update(rct_window* w, int widgetIndex, int x
  *
  *  rct2: 0x0066CB73
  */
-static void window_top_toolbar_tool_down(rct_window* w, int widgetIndex, int x, int y)
+static void window_top_toolbar_tool_down(rct_window* w, sint32 widgetIndex, sint32 x, sint32 y)
 {
 	switch (widgetIndex){
 	case WIDX_CLEAR_SCENERY:
@@ -2605,8 +2605,8 @@ static void window_top_toolbar_tool_down(rct_window* w, int widgetIndex, int x, 
 */
 money32 selection_raise_land(uint8 flags)
 {
-	int centreX = (gMapSelectPositionA.x + gMapSelectPositionB.x) / 2;
-	int centreY = (gMapSelectPositionA.y + gMapSelectPositionB.y) / 2;
+	sint32 centreX = (gMapSelectPositionA.x + gMapSelectPositionB.x) / 2;
+	sint32 centreY = (gMapSelectPositionA.y + gMapSelectPositionB.y) / 2;
 	centreX += 16;
 	centreY += 16;
 
@@ -2627,8 +2627,8 @@ money32 selection_raise_land(uint8 flags)
 */
 money32 selection_lower_land(uint8 flags)
 {
-	int centreX = (gMapSelectPositionA.x + gMapSelectPositionB.x) / 2;
-	int centreY = (gMapSelectPositionA.y + gMapSelectPositionB.y) / 2;
+	sint32 centreX = (gMapSelectPositionA.x + gMapSelectPositionB.x) / 2;
+	sint32 centreY = (gMapSelectPositionA.y + gMapSelectPositionB.y) / 2;
 	centreX += 16;
 	centreY += 16;
 
@@ -2647,12 +2647,12 @@ money32 selection_lower_land(uint8 flags)
 *  part of window_top_toolbar_tool_drag(0x0066CB4E)
 *  rct2: 0x00664454
 */
-static void window_top_toolbar_land_tool_drag(short x, short y)
+static void window_top_toolbar_land_tool_drag(sint16 x, sint16 y)
 {
 	rct_window *window = window_find_from_point(x, y);
 	if (!window)
 		return;
-	int widget_index = window_find_widget_from_point(window, x, y);
+	sint32 widget_index = window_find_widget_from_point(window, x, y);
 	if (widget_index == 0xFFFF)
 		return;
 	rct_widget *widget = &window->widgets[widget_index];
@@ -2664,7 +2664,7 @@ static void window_top_toolbar_land_tool_drag(short x, short y)
 
 	sint16 tile_height = -16 / (1 << viewport->zoom);
 
-	int y_diff = y - gInputDragLastY;
+	sint32 y_diff = y - gInputDragLastY;
 	if (y_diff <= tile_height) {
 		gInputDragLastY += tile_height;
 
@@ -2686,12 +2686,12 @@ static void window_top_toolbar_land_tool_drag(short x, short y)
 *  part of window_top_toolbar_tool_drag(0x0066CB4E)
 *  rct2: 0x006E6D4B
 */
-static void window_top_toolbar_water_tool_drag(short x, short y)
+static void window_top_toolbar_water_tool_drag(sint16 x, sint16 y)
 {
 	rct_window *window = window_find_from_point(x, y);
 	if (!window)
 		return;
-	int widget_index = window_find_widget_from_point(window, x, y);
+	sint32 widget_index = window_find_widget_from_point(window, x, y);
 	if (widget_index == 0xFFFF)
 		return;
 	rct_widget *widget = &window->widgets[widget_index];
@@ -2753,7 +2753,7 @@ static void window_top_toolbar_water_tool_drag(short x, short y)
  *
  *  rct2: 0x0066CB4E
  */
-static void window_top_toolbar_tool_drag(rct_window* w, int widgetIndex, int x, int y)
+static void window_top_toolbar_tool_drag(rct_window* w, sint32 widgetIndex, sint32 x, sint32 y)
 {
 	switch (widgetIndex){
 	case WIDX_CLEAR_SCENERY:
@@ -2811,7 +2811,7 @@ static void window_top_toolbar_tool_drag(rct_window* w, int widgetIndex, int x, 
  *
  *  rct2: 0x0066CC5B
  */
-static void window_top_toolbar_tool_up(rct_window* w, int widgetIndex, int x, int y)
+static void window_top_toolbar_tool_up(rct_window* w, sint32 widgetIndex, sint32 x, sint32 y)
 {
 	switch (widgetIndex) {
 	case WIDX_LAND:
@@ -2836,7 +2836,7 @@ static void window_top_toolbar_tool_up(rct_window* w, int widgetIndex, int x, in
  *
  *  rct2: 0x0066CA58
  */
-static void window_top_toolbar_tool_abort(rct_window *w, int widgetIndex)
+static void window_top_toolbar_tool_abort(rct_window *w, sint32 widgetIndex)
 {
 	switch (widgetIndex) {
 	case WIDX_LAND:
@@ -2848,7 +2848,7 @@ static void window_top_toolbar_tool_abort(rct_window *w, int widgetIndex)
 }
 
 void top_toolbar_init_fastforward_menu(rct_window* w, rct_widget* widget) {
-	int num_items = 4;
+	sint32 num_items = 4;
 	gDropdownItemsFormat[0] = STR_TOGGLE_OPTION;
 	gDropdownItemsFormat[1] = STR_TOGGLE_OPTION;
 	gDropdownItemsFormat[2] = STR_TOGGLE_OPTION;
@@ -2893,7 +2893,7 @@ void top_toolbar_init_fastforward_menu(rct_window* w, rct_widget* widget) {
 	}
 }
 
-void top_toolbar_fastforward_menu_dropdown(short dropdownIndex)
+void top_toolbar_fastforward_menu_dropdown(sint16 dropdownIndex)
 {
 	rct_window* w = window_get_main();
 	if (w) {
@@ -2923,7 +2923,7 @@ void top_toolbar_init_rotate_menu(rct_window* w, rct_widget* widget)
 	gDropdownDefaultIndex = DDIDX_ROTATE_CLOCKWISE;
 }
 
-void top_toolbar_rotate_menu_dropdown(short dropdownIndex)
+void top_toolbar_rotate_menu_dropdown(sint16 dropdownIndex)
 {
 	rct_window* w = window_get_main();
 	if (w) {
@@ -2982,7 +2982,7 @@ void top_toolbar_init_network_menu(rct_window* w, rct_widget* widget)
 	gDropdownDefaultIndex = DDIDX_MULTIPLAYER;
 }
 
-void top_toolbar_debug_menu_dropdown(short dropdownIndex)
+void top_toolbar_debug_menu_dropdown(sint16 dropdownIndex)
 {
 	rct_window* w = window_get_main();
 	if (w) {
@@ -3014,7 +3014,7 @@ void top_toolbar_debug_menu_dropdown(short dropdownIndex)
 	}
 }
 
-void top_toolbar_network_menu_dropdown(short dropdownIndex)
+void top_toolbar_network_menu_dropdown(sint16 dropdownIndex)
 {
 	rct_window* w = window_get_main();
 	if (w) {
@@ -3098,7 +3098,7 @@ void top_toolbar_init_view_menu(rct_window* w, rct_widget* widget) {
  *
  *  rct2: 0x0066CF8A
  */
-void top_toolbar_view_menu_dropdown(short dropdownIndex)
+void top_toolbar_view_menu_dropdown(sint16 dropdownIndex)
 {
 	rct_window* w = window_get_main();
 	if (w) {
@@ -3161,7 +3161,7 @@ void toggle_footpath_window()
  *
  *  rct2: 0x0066CD54
  */
-void toggle_land_window(rct_window *topToolbar, int widgetIndex)
+void toggle_land_window(rct_window *topToolbar, sint32 widgetIndex)
 {
 	if ((gInputFlags & INPUT_FLAG_TOOL_ACTIVE) && gCurrentToolWidget.window_classification == WC_TOP_TOOLBAR && gCurrentToolWidget.widget_index == 7) {
 		tool_cancel();
@@ -3178,7 +3178,7 @@ void toggle_land_window(rct_window *topToolbar, int widgetIndex)
  *
  *  rct2: 0x0066CD0C
  */
-void toggle_clear_scenery_window(rct_window *topToolbar, int widgetIndex)
+void toggle_clear_scenery_window(rct_window *topToolbar, sint32 widgetIndex)
 {
 	if ((gInputFlags & INPUT_FLAG_TOOL_ACTIVE) && gCurrentToolWidget.window_classification == WC_TOP_TOOLBAR && gCurrentToolWidget.widget_index == 16) {
 		tool_cancel();
@@ -3195,7 +3195,7 @@ void toggle_clear_scenery_window(rct_window *topToolbar, int widgetIndex)
  *
  *  rct2: 0x0066CD9C
  */
-void toggle_water_window(rct_window *topToolbar, int widgetIndex)
+void toggle_water_window(rct_window *topToolbar, sint32 widgetIndex)
 {
 	if ((gInputFlags & INPUT_FLAG_TOOL_ACTIVE) && gCurrentToolWidget.window_classification == WC_TOP_TOOLBAR && gCurrentToolWidget.widget_index == 8) {
 		tool_cancel();

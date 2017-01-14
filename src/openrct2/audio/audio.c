@@ -26,13 +26,13 @@
 
 typedef struct rct_audio_params {
 	bool in_range;
-	int volume;
-	int pan;
+	sint32 volume;
+	sint32 pan;
 } rct_audio_params;
 
 audio_device *gAudioDevices = NULL;
-int gAudioDeviceCount;
-int gAudioCurrentDevice = -1;
+sint32 gAudioDeviceCount;
+sint32 gAudioCurrentDevice = -1;
 void *gCrowdSoundChannel = 0;
 bool gGameSoundsOff = false;
 void *gRainSoundChannel = 0;
@@ -43,9 +43,9 @@ void *gTitleMusicChannel = 0;
 rct_vehicle_sound gVehicleSoundList[AUDIO_MAX_VEHICLE_SOUNDS];
 rct_vehicle_sound_params gVehicleSoundParamsList[AUDIO_MAX_VEHICLE_SOUNDS];
 rct_vehicle_sound_params *gVehicleSoundParamsListEnd;
-int gVolumeAdjustZoom = 0;
+sint32 gVolumeAdjustZoom = 0;
 
-int _volumeAdjust[SOUND_MAXID] = {
+sint32 _volumeAdjust[SOUND_MAXID] = {
 	0,		// SOUND_LIFT_1
 	0,		// SOUND_TRACK_FRICTION_1
 	0,		// SOUND_LIFT_2
@@ -111,12 +111,12 @@ int _volumeAdjust[SOUND_MAXID] = {
 	-700	// SOUND_62
 };
 
-rct_audio_params audio_get_params_from_location(int soundId, const rct_xyz16 *location);
+rct_audio_params audio_get_params_from_location(sint32 soundId, const rct_xyz16 *location);
 void audio_stop_channel(void **channel);
 
 void audio_init()
 {
-	int result = SDL_Init(SDL_INIT_AUDIO);
+	sint32 result = SDL_Init(SDL_INIT_AUDIO);
 	if (result < 0) {
 		log_error("SDL_Init %s", SDL_GetError());
 		return;
@@ -127,7 +127,7 @@ void audio_init()
 		gAudioCurrentDevice = 0;
 	} else {
 		Mixer_Init(gConfigSound.device);
-		for (int i = 0; i < gAudioDeviceCount; i++) {
+		for (sint32 i = 0; i < gAudioDeviceCount; i++) {
 			if (strcmp(gAudioDevices[i].name, gConfigSound.device) == 0) {
 				gAudioCurrentDevice = i;
 			}
@@ -150,7 +150,7 @@ void audio_populate_devices()
 		return;
 
 	audio_device *systemAudioDevices = malloc(gAudioDeviceCount * sizeof(audio_device));
-	for (int i = 0; i < gAudioDeviceCount; i++) {
+	for (sint32 i = 0; i < gAudioDeviceCount; i++) {
 		const char *utf8Name = SDL_GetAudioDeviceName(i, SDL_FALSE);
 		if (utf8Name == NULL)
 			utf8Name = language_get_string(STR_OPTIONS_SOUND_VALUE_UNKNOWN);
@@ -170,7 +170,7 @@ void audio_populate_devices()
 	free(systemAudioDevices);
 }
 
-int audio_play_sound_panned(int soundId, int pan, sint16 x, sint16 y, sint16 z)
+sint32 audio_play_sound_panned(sint32 soundId, sint32 pan, sint16 x, sint16 y, sint16 z)
 {
 	if (pan == AUDIO_PLAY_AT_LOCATION)
 		return audio_play_sound_at_location(soundId, x, y, z);
@@ -178,7 +178,7 @@ int audio_play_sound_panned(int soundId, int pan, sint16 x, sint16 y, sint16 z)
 	return audio_play_sound(soundId, 0, pan);
 }
 
-int audio_play_sound_at_location(int soundId, sint16 x, sint16 y, sint16 z)
+sint32 audio_play_sound_at_location(sint32 soundId, sint16 x, sint16 y, sint16 z)
 {
 	if (gGameSoundsOff)
 		return 0;
@@ -201,9 +201,9 @@ int audio_play_sound_at_location(int soundId, sint16 x, sint16 y, sint16 z)
 * @param location The location at which the sound effect is to be played.
 * @return The audio parameters to be used when playing this sound effect.
 */
-rct_audio_params audio_get_params_from_location(int soundId, const rct_xyz16 *location)
+rct_audio_params audio_get_params_from_location(sint32 soundId, const rct_xyz16 *location)
 {
-	int volumeDown = 0;
+	sint32 volumeDown = 0;
 	rct_audio_params params;
 	params.in_range = true;
 	params.volume = 0;
@@ -239,14 +239,14 @@ rct_audio_params audio_get_params_from_location(int soundId, const rct_xyz16 *lo
 	return params;
 }
 
-int audio_play_sound(int soundId, int volume, int pan)
+sint32 audio_play_sound(sint32 soundId, sint32 volume, sint32 pan)
 {
 	if (gGameSoundsOff)
 		return 0;
 
-	int mixerPan = 0;
+	sint32 mixerPan = 0;
 	if (pan != AUDIO_PLAY_AT_CENTRE) {
-		int x2 = pan << 16;
+		sint32 x2 = pan << 16;
 		uint16 screenWidth = max(64, gScreenWidth);
 		mixerPan = ((x2 / screenWidth) - 0x8000) >> 4;
 			}
@@ -265,7 +265,7 @@ void audio_start_title_music()
 	if (gTitleMusicChannel)
 		return;
 
-	int pathId;
+	sint32 pathId;
 	switch (gConfigSound.title_music) {
 	case 1:
 		pathId = PATH_ID_CSS50;
@@ -291,7 +291,7 @@ void audio_start_title_music()
 
 void audio_stop_ride_music()
 {
-	for (int i = 0; i < AUDIO_MAX_RIDE_MUSIC; i++) {
+	for (sint32 i = 0; i < AUDIO_MAX_RIDE_MUSIC; i++) {
 		rct_ride_music *rideMusic = &gRideMusicList[i];
 		if (rideMusic->ride_id == (uint8)-1)
 			continue;
@@ -342,10 +342,10 @@ void audio_stop_channel(void **channel)
 
 void audio_init_ride_sounds_and_info()
 {
-	int deviceNum = 0;
+	sint32 deviceNum = 0;
 	audio_init_ride_sounds(deviceNum);
 
-	for (int m = 0; m < countof(gRideMusicInfoList); m++) {
+	for (sint32 m = 0; m < countof(gRideMusicInfoList); m++) {
 		rct_ride_music_info *rideMusicInfo = gRideMusicInfoList[m];
 		const utf8 *path = get_file_path(rideMusicInfo->path_id);
 		SDL_RWops *file = SDL_RWFromFile(path, "rb");
@@ -360,17 +360,17 @@ void audio_init_ride_sounds_and_info()
 	}
 }
 
-void audio_init_ride_sounds(int device)
+void audio_init_ride_sounds(sint32 device)
 {
 	audio_close();
-	for (int i = 0; i < AUDIO_MAX_VEHICLE_SOUNDS; i++) {
+	for (sint32 i = 0; i < AUDIO_MAX_VEHICLE_SOUNDS; i++) {
 		rct_vehicle_sound *vehicleSound = &gVehicleSoundList[i];
 		vehicleSound->id = -1;
 	}
 
 	gAudioCurrentDevice = device;
 	config_save_default();
-	for (int i = 0; i < AUDIO_MAX_RIDE_MUSIC; i++) {
+	for (sint32 i = 0; i < AUDIO_MAX_RIDE_MUSIC; i++) {
 		rct_ride_music *rideMusic = &gRideMusicList[i];
 		rideMusic->ride_id = -1;
 	}
@@ -414,7 +414,7 @@ void audio_stop_vehicle_sounds()
 	if (gOpenRCT2Headless || gAudioCurrentDevice == -1)
 		return;
 
-	for (int i = 0; i < countof(gVehicleSoundList); i++) {
+	for (sint32 i = 0; i < countof(gVehicleSoundList); i++) {
 		rct_vehicle_sound *vehicleSound = &gVehicleSoundList[i];
 		if (vehicleSound->id == 0xFFFF)
 			continue;

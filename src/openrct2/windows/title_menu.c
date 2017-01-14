@@ -43,10 +43,10 @@ static rct_widget window_title_menu_widgets[] = {
 	{ WIDGETS_END },
 };
 
-static void window_title_menu_mouseup(rct_window *w, int widgetIndex);
-static void window_title_menu_mousedown(int widgetIndex, rct_window*w, rct_widget* widget);
-static void window_title_menu_dropdown(rct_window *w, int widgetIndex, int dropdownIndex);
-static void window_title_menu_cursor(rct_window *w, int widgetIndex, int x, int y, int *cursorId);
+static void window_title_menu_mouseup(rct_window *w, sint32 widgetIndex);
+static void window_title_menu_mousedown(sint32 widgetIndex, rct_window*w, rct_widget* widget);
+static void window_title_menu_dropdown(rct_window *w, sint32 widgetIndex, sint32 dropdownIndex);
+static void window_title_menu_cursor(rct_window *w, sint32 widgetIndex, sint32 x, sint32 y, sint32 *cursorId);
 static void window_title_menu_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_title_menu_invalidate(rct_window *w);
 
@@ -108,8 +108,8 @@ void window_title_menu_open()
 		(1 << WIDX_GAME_TOOLS)
 	);
 
-	int i = 0;
-	int x = 0;
+	sint32 i = 0;
+	sint32 x = 0;
 	for (rct_widget *widget = window->widgets; widget->type != WWT_LAST; widget++) {
 		if (widget_is_enabled(window, i)) {
 			widget->left = x;
@@ -134,7 +134,7 @@ static void window_title_menu_scenarioselect_callback(const utf8 *path)
 	}
 }
 
-static void window_title_menu_mouseup(rct_window *w, int widgetIndex)
+static void window_title_menu_mouseup(rct_window *w, sint32 widgetIndex)
 {
 	switch (widgetIndex) {
 	case WIDX_START_NEW_GAME:
@@ -149,7 +149,7 @@ static void window_title_menu_mouseup(rct_window *w, int widgetIndex)
 	}
 }
 
-static void window_title_menu_mousedown(int widgetIndex, rct_window*w, rct_widget* widget)
+static void window_title_menu_mousedown(sint32 widgetIndex, rct_window*w, rct_widget* widget)
 {
 	if (widgetIndex == WIDX_GAME_TOOLS) {
 		gDropdownItemsFormat[0] = STR_SCENARIO_EDITOR;
@@ -167,7 +167,7 @@ static void window_title_menu_mousedown(int widgetIndex, rct_window*w, rct_widge
 	}
 }
 
-static void window_title_menu_dropdown(rct_window *w, int widgetIndex, int dropdownIndex)
+static void window_title_menu_dropdown(rct_window *w, sint32 widgetIndex, sint32 dropdownIndex)
 {
 	if (widgetIndex == WIDX_GAME_TOOLS) {
 		switch (dropdownIndex) {
@@ -187,7 +187,7 @@ static void window_title_menu_dropdown(rct_window *w, int widgetIndex, int dropd
 	}
 }
 
-static void window_title_menu_cursor(rct_window *w, int widgetIndex, int x, int y, int *cursorId)
+static void window_title_menu_cursor(rct_window *w, sint32 widgetIndex, sint32 x, sint32 y, sint32 *cursorId)
 {
 	gTooltipTimeout = 2000;
 }

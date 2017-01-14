@@ -71,10 +71,10 @@ static const rct_string_id window_save_prompt_labels[][2] = {
 
 
 static void window_save_prompt_close(rct_window *w);
-static void window_save_prompt_mouseup(rct_window *w, int widgetIndex);
+static void window_save_prompt_mouseup(rct_window *w, sint32 widgetIndex);
 static void window_save_prompt_invalidate(rct_window *w);
 static void window_save_prompt_paint(rct_window *w, rct_drawpixelinfo *dpi);
-static void window_save_prompt_callback(int result, const utf8 * path);
+static void window_save_prompt_callback(sint32 result, const utf8 * path);
 
 static rct_window_event_list window_save_prompt_events = {
 	window_save_prompt_close,
@@ -113,7 +113,7 @@ static rct_window_event_list window_save_prompt_events = {
  */
 void window_save_prompt_open()
 {
-	int width, height;
+	sint32 width, height;
 	rct_string_id stringId;
 	rct_window* window;
 	uint8 prompt_mode;
@@ -214,7 +214,7 @@ static void window_save_prompt_close(rct_window *w)
  *
  *  rct2: 0x0066DDF2
  */
-static void window_save_prompt_mouseup(rct_window *w, int widgetIndex)
+static void window_save_prompt_mouseup(rct_window *w, sint32 widgetIndex)
 {
 	if (gScreenFlags & (SCREEN_FLAGS_TITLE_DEMO | SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)) {
 		switch (widgetIndex) {
@@ -259,7 +259,7 @@ static void window_save_prompt_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	window_draw_widgets(w, dpi);
 }
 
-static void window_save_prompt_callback(int result, const utf8 * path)
+static void window_save_prompt_callback(sint32 result, const utf8 * path)
 {
 	if (result == MODAL_RESULT_OK) {
 		game_load_or_quit_no_save_prompt();

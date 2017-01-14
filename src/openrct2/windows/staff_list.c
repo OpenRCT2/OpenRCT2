@@ -42,20 +42,20 @@ enum {
 bool _quick_fire_mode = false;
 
 static void window_staff_list_close(rct_window *w);
-static void window_staff_list_mouseup(rct_window *w, int widgetIndex);
+static void window_staff_list_mouseup(rct_window *w, sint32 widgetIndex);
 static void window_staff_list_resize(rct_window *w);
-static void window_staff_list_mousedown(int widgetIndex, rct_window*w, rct_widget* widget);
-static void window_staff_list_dropdown(rct_window *w, int widgetIndex, int dropdownIndex);
+static void window_staff_list_mousedown(sint32 widgetIndex, rct_window*w, rct_widget* widget);
+static void window_staff_list_dropdown(rct_window *w, sint32 widgetIndex, sint32 dropdownIndex);
 static void window_staff_list_update(rct_window *w);
-static void window_staff_list_tooldown(rct_window *w, int widgetIndex, int x, int y);
-static void window_staff_list_toolabort(rct_window *w, int widgetIndex);
-static void window_staff_list_scrollgetsize(rct_window *w, int scrollIndex, int *width, int *height);
-static void window_staff_list_scrollmousedown(rct_window *w, int scrollIndex, int x, int y);
-static void window_staff_list_scrollmouseover(rct_window *w, int scrollIndex, int x, int y);
-static void window_staff_list_tooltip(rct_window* w, int widgetIndex, rct_string_id *stringId);
+static void window_staff_list_tooldown(rct_window *w, sint32 widgetIndex, sint32 x, sint32 y);
+static void window_staff_list_toolabort(rct_window *w, sint32 widgetIndex);
+static void window_staff_list_scrollgetsize(rct_window *w, sint32 scrollIndex, sint32 *width, sint32 *height);
+static void window_staff_list_scrollmousedown(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y);
+static void window_staff_list_scrollmouseover(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y);
+static void window_staff_list_tooltip(rct_window* w, sint32 widgetIndex, rct_string_id *stringId);
 static void window_staff_list_invalidate(rct_window *w);
 static void window_staff_list_paint(rct_window *w, rct_drawpixelinfo *dpi);
-static void window_staff_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scrollIndex);
+static void window_staff_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 scrollIndex);
 
 static rct_window_event_list window_staff_list_events = {
 	window_staff_list_close,
@@ -129,8 +129,8 @@ static rct_widget window_staff_list_widgets[] = {
 };
 
 static uint16 _window_staff_list_selected_type_count = 0;
-static int _windowStaffListHighlightedIndex;
-static int _windowStaffListSelectedTab;
+static sint32 _windowStaffListHighlightedIndex;
+static sint32 _windowStaffListSelectedTab;
 
 typedef struct staff_naming_convention
 {
@@ -210,7 +210,7 @@ void window_staff_list_close(rct_window *w)
 *
 *  rct2: 0x006BD94C
 */
-static void window_staff_list_mouseup(rct_window *w, int widgetIndex)
+static void window_staff_list_mouseup(rct_window *w, sint32 widgetIndex)
 {
 	switch (widgetIndex) {
 	case WIDX_STAFF_LIST_CLOSE:
@@ -259,9 +259,9 @@ static void window_staff_list_resize(rct_window *w)
 *
 *  rct2: 0x006BD971
 */
-static void window_staff_list_mousedown(int widgetIndex, rct_window* w, rct_widget* widget)
+static void window_staff_list_mousedown(sint32 widgetIndex, rct_window* w, rct_widget* widget)
 {
-	short newSelectedTab;
+	sint16 newSelectedTab;
 
 	switch (widgetIndex) {
 	case WIDX_STAFF_LIST_HANDYMEN_TAB:
@@ -288,7 +288,7 @@ static void window_staff_list_mousedown(int widgetIndex, rct_window* w, rct_widg
 *
 *  rct2: 0x006BD9A6
 */
-static void window_staff_list_dropdown(rct_window *w, int widgetIndex, int dropdownIndex)
+static void window_staff_list_dropdown(rct_window *w, sint32 widgetIndex, sint32 dropdownIndex)
 {
 	if (widgetIndex == WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER && dropdownIndex != -1) {
 		update_staff_colour(_windowStaffListSelectedTab, dropdownIndex);
@@ -305,7 +305,7 @@ void window_staff_list_update(rct_window *w)
 	if (w->list_information_type >= 24) {
 		w->list_information_type = 0;
 	} else {
-		int spriteIndex;
+		sint32 spriteIndex;
 		rct_peep *peep;
 		widget_invalidate(w, WIDX_STAFF_LIST_HANDYMEN_TAB + _windowStaffListSelectedTab);
 		gWindowMapFlashingFlags |= (1 << 2);
@@ -323,12 +323,12 @@ void window_staff_list_update(rct_window *w)
  *
  *  rct2: 0x006BD990
  */
-static void window_staff_list_tooldown(rct_window *w, int widgetIndex, int x, int y)
+static void window_staff_list_tooldown(rct_window *w, sint32 widgetIndex, sint32 x, sint32 y)
 {
 	if (widgetIndex == WIDX_STAFF_LIST_SHOW_PATROL_AREA_BUTTON) {
-		int selectedPeepType = _windowStaffListSelectedTab;
+		sint32 selectedPeepType = _windowStaffListSelectedTab;
 
-		int direction;
+		sint32 direction;
 		rct_map_element *mapElement;
 		footpath_get_coordinates_from_pos(x, y, &x, &y, &direction, &mapElement);
 		if (x == 0x8000)
@@ -338,7 +338,7 @@ static void window_staff_list_tooldown(rct_window *w, int widgetIndex, int x, in
 
 		uint16 spriteIndex;
 		rct_peep *peep, *closestPeep = NULL;
-		int closestPeepDistance = INT_MAX;
+		sint32 closestPeepDistance = INT_MAX;
 		FOR_ALL_STAFF(spriteIndex, peep) {
 			if (peep->staff_type != selectedPeepType)
 				continue;
@@ -356,7 +356,7 @@ static void window_staff_list_tooldown(rct_window *w, int widgetIndex, int x, in
 				continue;
 			}
 
-			int distance = abs(x - peep->x) + abs(y - peep->y);
+			sint32 distance = abs(x - peep->x) + abs(y - peep->y);
 			if (distance < closestPeepDistance) {
 				closestPeepDistance = distance;
 				closestPeep = peep;
@@ -378,7 +378,7 @@ static void window_staff_list_tooldown(rct_window *w, int widgetIndex, int x, in
 *
 *  rct2: 0x006BD99B
 */
-void window_staff_list_toolabort(rct_window *w, int widgetIndex)
+void window_staff_list_toolabort(rct_window *w, sint32 widgetIndex)
 {
 	if (widgetIndex == WIDX_STAFF_LIST_SHOW_PATROL_AREA_BUTTON) {
 		hide_gridlines();
@@ -392,9 +392,9 @@ void window_staff_list_toolabort(rct_window *w, int widgetIndex)
 *
 *  rct2: 0x006BDBE6
 */
-void window_staff_list_scrollgetsize(rct_window *w, int scrollIndex, int *width, int *height)
+void window_staff_list_scrollgetsize(rct_window *w, sint32 scrollIndex, sint32 *width, sint32 *height)
 {
-	int i, spriteIndex;
+	sint32 i, spriteIndex;
 	rct_peep *peep;
 
 	uint16 staffCount = 0;
@@ -426,9 +426,9 @@ void window_staff_list_scrollgetsize(rct_window *w, int scrollIndex, int *width,
 *
 *  rct2: 0x006BDC9A
 */
-void window_staff_list_scrollmousedown(rct_window *w, int scrollIndex, int x, int y)
+void window_staff_list_scrollmousedown(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y)
 {
-	int i, spriteIndex;
+	sint32 i, spriteIndex;
 	rct_peep *peep;
 
 	i = y / 10;
@@ -452,9 +452,9 @@ void window_staff_list_scrollmousedown(rct_window *w, int scrollIndex, int x, in
 *
 *  rct2: 0x006BDC6B
 */
-void window_staff_list_scrollmouseover(rct_window *w, int scrollIndex, int x, int y)
+void window_staff_list_scrollmouseover(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y)
 {
-	int i;
+	sint32 i;
 
 	i = y / 10;
 	if (i != _windowStaffListHighlightedIndex) {
@@ -467,7 +467,7 @@ void window_staff_list_scrollmouseover(rct_window *w, int scrollIndex, int x, in
 *
 *  rct2: 0x006BDC90
 */
-void window_staff_list_tooltip(rct_window* w, int widgetIndex, rct_string_id *stringId)
+void window_staff_list_tooltip(rct_window* w, sint32 widgetIndex, rct_string_id *stringId)
 {
 	set_format_arg(0, rct_string_id, STR_LIST);
 }
@@ -480,7 +480,7 @@ void window_staff_list_invalidate(rct_window *w)
 {
 	colour_scheme_update(w);
 
-	int pressed_widgets = w->pressed_widgets & 0xFFFFFF0F;
+	sint32 pressed_widgets = w->pressed_widgets & 0xFFFFFF0F;
 	uint8 tabIndex = _windowStaffListSelectedTab;
 	uint8 widgetIndex = tabIndex + 4;
 
@@ -523,7 +523,7 @@ void window_staff_list_invalidate(rct_window *w)
 */
 void window_staff_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
-	int i;
+	sint32 i;
 	uint8 selectedTab;
 
 	// Widgets
@@ -591,7 +591,7 @@ void window_staff_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		gfx_draw_string_left(dpi, STR_UNIFORM_COLOUR, w, COLOUR_BLACK, w->x + 6, window_staff_list_widgets[WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER].top + w->y + 1);
 	}
 
-	int staffTypeStringId = StaffNamingConvention[selectedTab].plural;
+	sint32 staffTypeStringId = StaffNamingConvention[selectedTab].plural;
 	// If the number of staff for a given type is 1, we use the singular forms of the names
 	if (_window_staff_list_selected_type_count == 1) {
 		staffTypeStringId = StaffNamingConvention[selectedTab].singular;
@@ -629,9 +629,9 @@ static const uint32 staffCostumeSprites[] = {
 *
 *  rct2: 0x006BD785
 */
-void window_staff_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scrollIndex)
+void window_staff_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 scrollIndex)
 {
-	int spriteIndex, y, i, staffOrderIcon_x, staffOrders, staffOrderSprite;
+	sint32 spriteIndex, y, i, staffOrderIcon_x, staffOrders, staffOrderSprite;
 	uint32 argument_1, argument_2;
 	uint8 selectedTab;
 	rct_peep *peep;
@@ -648,7 +648,7 @@ void window_staff_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int sc
 			}
 
 			if (y + 11 >= dpi->y) {
-				int format = (_quick_fire_mode ? STR_RED_STRINGID : STR_BLACK_STRING);
+				sint32 format = (_quick_fire_mode ? STR_RED_STRINGID : STR_BLACK_STRING);
 
 				if (i == _windowStaffListHighlightedIndex) {
 					gfx_filter_rect(dpi, 0, y, 800, y + 9, PALETTE_DARKEN_1);

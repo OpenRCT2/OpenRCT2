@@ -51,14 +51,14 @@ static rct_widget window_land_rights_widgets[] = {
 	{ WIDGETS_END },
 };
 
-static int window_land_rights_should_close();
+static sint32 window_land_rights_should_close();
 
 static void window_land_rights_close(rct_window *w);
-static void window_land_rights_mouseup(rct_window *w, int widgetIndex);
+static void window_land_rights_mouseup(rct_window *w, sint32 widgetIndex);
 static void window_land_rights_update(rct_window *w);
 static void window_land_rights_invalidate(rct_window *w);
 static void window_land_rights_paint(rct_window *w, rct_drawpixelinfo *dpi);
-static void window_land_rights_textinput(rct_window *w, int widgetIndex, char *text);
+static void window_land_rights_textinput(rct_window *w, sint32 widgetIndex, char *text);
 static void window_land_rights_inputsize(rct_window *w);
 
 static rct_window_event_list window_land_rights_events = {
@@ -123,7 +123,7 @@ static void window_land_rights_close(rct_window *w)
 		tool_cancel();
 }
 
-static void window_land_rights_mouseup(rct_window *w, int widgetIndex)
+static void window_land_rights_mouseup(rct_window *w, sint32 widgetIndex)
 {
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
@@ -165,9 +165,9 @@ static void window_land_rights_mouseup(rct_window *w, int widgetIndex)
 	}
 }
 
-static void window_land_rights_textinput(rct_window *w, int widgetIndex, char *text)
+static void window_land_rights_textinput(rct_window *w, sint32 widgetIndex, char *text)
 {
-	int size;
+	sint32 size;
 	char* end;
 
 	if (widgetIndex != WIDX_PREVIEW || text == NULL)
@@ -230,7 +230,7 @@ static void window_land_rights_invalidate(rct_window *w)
 
 static void window_land_rights_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
-	int x, y;
+	sint32 x, y;
 
 	x = w->x + (window_land_rights_widgets[WIDX_PREVIEW].left + window_land_rights_widgets[WIDX_PREVIEW].right) / 2;
 	y = w->y + (window_land_rights_widgets[WIDX_PREVIEW].top + window_land_rights_widgets[WIDX_PREVIEW].bottom) / 2;
@@ -251,7 +251,7 @@ static void window_land_rights_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	}
 }
 
-static int window_land_rights_should_close()
+static sint32 window_land_rights_should_close()
 {
 	if (!(gInputFlags & INPUT_FLAG_TOOL_ACTIVE))
 		return 1;

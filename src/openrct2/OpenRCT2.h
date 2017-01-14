@@ -57,9 +57,9 @@ extern "C"
 #endif
 
     /** The exit code for OpenRCT2 when it exits. */
-    extern int gExitCode;
+    extern sint32 gExitCode;
 
-    extern int gOpenRCT2StartupAction;
+    extern sint32 gOpenRCT2StartupAction;
     extern utf8 gOpenRCT2StartupActionPath[512];
     extern utf8 gExePath[MAX_PATH];
     extern utf8 gCustomUserDataPath[MAX_PATH];
@@ -74,9 +74,9 @@ extern "C"
 #endif // DISABLE_NETWORK
 
 #ifndef DISABLE_NETWORK
-    extern int gNetworkStart;
+    extern sint32 gNetworkStart;
     extern char gNetworkStartHost[128];
-    extern int gNetworkStartPort;
+    extern sint32 gNetworkStartPort;
 #endif
 
     void openrct2_write_full_version_info(utf8 * buffer, size_t bufferSize);
@@ -85,7 +85,7 @@ extern "C"
     void openrct2_dispose();
     void openrct2_finish();
 
-    int cmdline_run(const char * * argv, int argc);
+    sint32 cmdline_run(const char * * argv, sint32 argc);
 
 #ifdef __WINDOWS__
     int RunOpenRCT2(int argc, char * * argv);

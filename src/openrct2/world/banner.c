@@ -28,7 +28,7 @@ rct_banner gBanners[MAX_BANNERS];
  */
 void banner_init()
 {
-	for (int i = 0; i < MAX_BANNERS; i++) {
+	for (sint32 i = 0; i < MAX_BANNERS; i++) {
 		gBanners[i].type = BANNER_NULL;
 	}
 }
@@ -41,9 +41,9 @@ void banner_init()
  *
  *  rct2: 0x006BA278
  */
-int create_new_banner(uint8 flags)
+sint32 create_new_banner(uint8 flags)
 {
-	int banner_index = 0;
+	sint32 banner_index = 0;
 	for (; banner_index < MAX_BANNERS; banner_index++){
 		if (gBanners[banner_index].type == BANNER_NULL){
 			break;
@@ -67,7 +67,7 @@ int create_new_banner(uint8 flags)
 	return banner_index;
 }
 
-rct_map_element *banner_get_map_element(int bannerIndex)
+rct_map_element *banner_get_map_element(sint32 bannerIndex)
 {
 	rct_banner *banner = &gBanners[bannerIndex];
 	rct_map_element *mapElement = map_get_first_element_at(banner->x, banner->y);
@@ -83,11 +83,11 @@ rct_map_element *banner_get_map_element(int bannerIndex)
  *
  *  rct2: 0x006B7EAB
  */
-static int banner_get_ride_index_at(int x, int y, int z)
+static sint32 banner_get_ride_index_at(sint32 x, sint32 y, sint32 z)
 {
 	rct_map_element *mapElement;
 	rct_ride *ride;
-	int rideIndex, resultRideIndex;
+	sint32 rideIndex, resultRideIndex;
 
 	resultRideIndex = -1;
 	mapElement = map_get_first_element_at(x >> 5, y >> 5);
@@ -113,9 +113,9 @@ static int banner_get_ride_index_at(int x, int y, int z)
  *
  *  rct2: 0x006B7D86
  */
-int banner_get_closest_ride_index(int x, int y, int z)
+sint32 banner_get_closest_ride_index(sint32 x, sint32 y, sint32 z)
 {
-	int i, rideIndex;
+	sint32 i, rideIndex;
 	rct_ride *ride;
 
 	static const rct_xy16 NeighbourCheckOrder[] = {
@@ -138,7 +138,7 @@ int banner_get_closest_ride_index(int x, int y, int z)
 	}
 
 	rideIndex = -1;
-	int resultDistance = INT_MAX;
+	sint32 resultDistance = INT_MAX;
 	FOR_ALL_RIDES(i, ride) {
 		if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_SHOP))
 			continue;
@@ -147,9 +147,9 @@ int banner_get_closest_ride_index(int x, int y, int z)
 		if (xy == 0xFFFF)
 			continue;
 
-		int rideX = (xy & 0xFF) * 32;
-		int rideY = (xy >> 8) * 32;
-		int distance = abs(x - rideX) + abs(y - rideY);
+		sint32 rideX = (xy & 0xFF) * 32;
+		sint32 rideY = (xy >> 8) * 32;
+		sint32 distance = abs(x - rideX) + abs(y - rideY);
 		if (distance < resultDistance) {
 			resultDistance = distance;
 			rideIndex = i;
@@ -161,7 +161,7 @@ int banner_get_closest_ride_index(int x, int y, int z)
 
 void fix_banner_count()
 {
-	for (int banner_index = 0; banner_index < MAX_BANNERS; banner_index++){
+	for (sint32 banner_index = 0; banner_index < MAX_BANNERS; banner_index++){
 		rct_map_element *map_element = banner_get_map_element(banner_index);
 		if(map_element==NULL)
 			gBanners[banner_index].type = BANNER_NULL;

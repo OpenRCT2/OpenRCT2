@@ -41,7 +41,7 @@ typedef struct http_request_t {
 
 typedef struct http_response_t {
 	void *tag;
-	int status_code;
+	sint32 status_code;
 	http_data_type type;
 	size_t size;
 	union {

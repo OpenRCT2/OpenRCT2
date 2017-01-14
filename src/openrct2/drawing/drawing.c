@@ -24,8 +24,8 @@
 #include "drawing.h"
 
 // HACK These were originally passed back through registers
-int gLastDrawStringX;
-int gLastDrawStringY;
+sint32 gLastDrawStringX;
+sint32 gLastDrawStringY;
 
 sint16 gCurrentFontSpriteBase;
 uint16 gCurrentFontFlags;
@@ -475,12 +475,12 @@ const translucent_window_palette TranslucentWindowPalettes[COLOUR_COUNT] = {
 	{PALETTE_TRANSLUCENT_LIGHT_PINK,		PALETTE_TRANSLUCENT_LIGHT_PINK_HIGHLIGHT,		PALETTE_TRANSLUCENT_LIGHT_PINK_SHADOW},
 };
 
-void gfx_draw_pixel(rct_drawpixelinfo *dpi, int x, int y, int colour)
+void gfx_draw_pixel(rct_drawpixelinfo *dpi, sint32 x, sint32 y, sint32 colour)
 {
 	gfx_fill_rect(dpi, x, y, x, y, colour);
 }
 
-void gfx_filter_pixel(rct_drawpixelinfo *dpi, int x, int y, FILTER_PALETTE_ID palette)
+void gfx_filter_pixel(rct_drawpixelinfo *dpi, sint32 x, sint32 y, FILTER_PALETTE_ID palette)
 {
 	gfx_filter_rect(dpi, x, y, x, y, palette);
 }
@@ -491,11 +491,11 @@ void gfx_filter_pixel(rct_drawpixelinfo *dpi, int x, int y, FILTER_PALETTE_ID pa
  * a1 (ebx)
  * product (cl)
  */
-void gfx_transpose_palette(int pal, unsigned char product)
+void gfx_transpose_palette(sint32 pal, uint8 product)
 {
 	rct_g1_element g1 = g1Elements[pal];
-	int width = g1.width;
-	int x = g1.x_offset;
+	sint32 width = g1.width;
+	sint32 x = g1.x_offset;
 	uint8* dest_pointer = &gGamePalette[x * 4];
 	uint8* source_pointer = g1.offset;
 
@@ -523,8 +523,8 @@ void load_palette(){
 	}
 
 	rct_g1_element g1 = g1Elements[palette];
-	int width = g1.width;
-	int x = g1.x_offset;
+	sint32 width = g1.width;
+	sint32 x = g1.x_offset;
 	uint8* dest_pointer = &gGamePalette[x * 4];
 	uint8* source_pointer = g1.offset;
 
@@ -555,7 +555,7 @@ void gfx_invalidate_screen()
  * right (dx)
  * bottom (bp)
  */
-void window_draw_all(rct_drawpixelinfo *dpi, short left, short top, short right, short bottom)
+void window_draw_all(rct_drawpixelinfo *dpi, sint16 left, sint16 top, sint16 right, sint16 bottom)
 {
 	rct_drawpixelinfo windowDPI;
 	windowDPI.bits = dpi->bits + left + ((dpi->width + dpi->pitch) * top);
@@ -584,10 +584,10 @@ void window_draw_all(rct_drawpixelinfo *dpi, short left, short top, short right,
 * height (dx)
 * drawpixelinfo (edi)
 */
-bool clip_drawpixelinfo(rct_drawpixelinfo *dst, rct_drawpixelinfo *src, int x, int y, int width, int height)
+bool clip_drawpixelinfo(rct_drawpixelinfo *dst, rct_drawpixelinfo *src, sint32 x, sint32 y, sint32 width, sint32 height)
 {
-	int right = x + width;
-	int bottom = y + height;
+	sint32 right = x + width;
+	sint32 bottom = y + height;
 
 	dst->bits = src->bits;
 	dst->x = src->x;
@@ -605,7 +605,7 @@ bool clip_drawpixelinfo(rct_drawpixelinfo *dst, rct_drawpixelinfo *src, int x, i
 		dst->bits += clippedFromLeft;
 	}
 
-	int stickOutWidth = dst->x + dst->width - right;
+	sint32 stickOutWidth = dst->x + dst->width - right;
 	if (stickOutWidth > 0) {
 		dst->width -= stickOutWidth;
 		dst->pitch += stickOutWidth;
@@ -619,7 +619,7 @@ bool clip_drawpixelinfo(rct_drawpixelinfo *dst, rct_drawpixelinfo *src, int x, i
 		dst->bits += bitsPlus;
 	}
 
-	int bp = dst->y + dst->height - bottom;
+	sint32 bp = dst->y + dst->height - bottom;
 	if (bp > 0) {
 		dst->height -= bp;
 	}

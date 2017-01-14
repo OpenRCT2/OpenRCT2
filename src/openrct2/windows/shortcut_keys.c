@@ -43,14 +43,14 @@ static rct_widget window_shortcut_widgets[] = {
 	{ WIDGETS_END }
 };
 
-static void window_shortcut_mouseup(rct_window *w, int widgetIndex);
+static void window_shortcut_mouseup(rct_window *w, sint32 widgetIndex);
 static void window_shortcut_invalidate(rct_window *w);
 static void window_shortcut_paint(rct_window *w, rct_drawpixelinfo *dpi);
-static void window_shortcut_tooltip(rct_window* w, int widgetIndex, rct_string_id *stringId);
-static void window_shortcut_scrollgetsize(rct_window *w, int scrollIndex, int *width, int *height);
-static void window_shortcut_scrollmousedown(rct_window *w, int scrollIndex, int x, int y);
-static void window_shortcut_scrollmouseover(rct_window *w, int scrollIndex, int x, int y);
-static void window_shortcut_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scrollIndex);
+static void window_shortcut_tooltip(rct_window* w, sint32 widgetIndex, rct_string_id *stringId);
+static void window_shortcut_scrollgetsize(rct_window *w, sint32 scrollIndex, sint32 *width, sint32 *height);
+static void window_shortcut_scrollmousedown(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y);
+static void window_shortcut_scrollmouseover(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y);
+static void window_shortcut_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 scrollIndex);
 
 static rct_window_event_list window_shortcut_events = {
 	NULL,
@@ -162,7 +162,7 @@ void window_shortcut_keys_open()
 *
 *  rct2: 0x006E39E4
 */
-static void window_shortcut_mouseup(rct_window *w, int widgetIndex)
+static void window_shortcut_mouseup(rct_window *w, sint32 widgetIndex)
 {
 	switch (widgetIndex){
 	case WIDX_CLOSE:
@@ -194,7 +194,7 @@ static void window_shortcut_paint(rct_window *w, rct_drawpixelinfo *dpi)
 *
 *  rct2: 0x006E3A0C
 */
-static void window_shortcut_tooltip(rct_window* w, int widgetIndex, rct_string_id *stringId)
+static void window_shortcut_tooltip(rct_window* w, sint32 widgetIndex, rct_string_id *stringId)
 {
 	set_format_arg(0, rct_string_id, STR_LIST);
 }
@@ -203,7 +203,7 @@ static void window_shortcut_tooltip(rct_window* w, int widgetIndex, rct_string_i
 *
 *  rct2: 0x006E3A07
 */
-static void window_shortcut_scrollgetsize(rct_window *w, int scrollIndex, int *width, int *height)
+static void window_shortcut_scrollgetsize(rct_window *w, sint32 scrollIndex, sint32 *width, sint32 *height)
 {
 	*height = w->no_list_items * 10;
 }
@@ -212,9 +212,9 @@ static void window_shortcut_scrollgetsize(rct_window *w, int scrollIndex, int *w
 *
 *  rct2: 0x006E3A3E
 */
-static void window_shortcut_scrollmousedown(rct_window *w, int scrollIndex, int x, int y)
+static void window_shortcut_scrollmousedown(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y)
 {
-	int selected_item = y / 10;
+	sint32 selected_item = y / 10;
 	if (selected_item >= w->no_list_items)
 		return;
 
@@ -225,9 +225,9 @@ static void window_shortcut_scrollmousedown(rct_window *w, int scrollIndex, int 
 *
 *  rct2: 0x006E3A16
 */
-static void window_shortcut_scrollmouseover(rct_window *w, int scrollIndex, int x, int y)
+static void window_shortcut_scrollmouseover(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y)
 {
-	int selected_item = y / 10;
+	sint32 selected_item = y / 10;
 	if (selected_item >= w->no_list_items)
 		return;
 
@@ -240,17 +240,17 @@ static void window_shortcut_scrollmouseover(rct_window *w, int scrollIndex, int 
  *
  *  rct2: 0x006E38E6
  */
-static void window_shortcut_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scrollIndex)
+static void window_shortcut_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 scrollIndex)
 {
 	gfx_fill_rect(dpi, dpi->x, dpi->y, dpi->x + dpi->width - 1, dpi->y + dpi->height - 1, ColourMapA[w->colours[1]].mid_light);
 
-	for (int i = 0; i < w->no_list_items; ++i) {
-		int y = i * 10;
+	for (sint32 i = 0; i < w->no_list_items; ++i) {
+		sint32 y = i * 10;
 		if (y > dpi->y + dpi->height)
 			break;
 
 		if (y + 10 < dpi->y)continue;
-		int format = STR_BLACK_STRING;
+		sint32 format = STR_BLACK_STRING;
 		if (i == w->selected_list_item) {
 			format = STR_WINDOW_COLOUR_2_STRINGID;
 			gfx_filter_rect(dpi, 0, y, 800, y + 9, PALETTE_DARKEN_1);

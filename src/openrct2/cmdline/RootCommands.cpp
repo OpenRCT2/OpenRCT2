@@ -40,9 +40,9 @@ extern "C"
 #endif // USE_BREAKPAD
 
 #ifndef DISABLE_NETWORK
-int  gNetworkStart = NETWORK_MODE_NONE;
+sint32  gNetworkStart = NETWORK_MODE_NONE;
 char gNetworkStartHost[128];
-int  gNetworkStartPort = NETWORK_DEFAULT_PORT;
+sint32  gNetworkStartPort = NETWORK_DEFAULT_PORT;
 
 static uint32 _port            = 0;
 #endif
@@ -163,7 +163,7 @@ exitcode_t CommandLine::HandleCommandDefault()
     {
         if (_verbose)
         {
-            _log_levels[DIAGNOSTIC_LEVEL_VERBOSE] = 1;
+            _log_levels[DIAGNOSTIC_LEVEL_VERBOSE] = true;
             PrintLaunchInformation();
         }
 

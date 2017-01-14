@@ -110,7 +110,7 @@ public:
         want.format = AUDIO_S16SYS;
         want.channels = 2;
         want.samples = 1024;
-        want.callback = [](void * arg, uint8 * dst, int length) -> void
+        want.callback = [](void * arg, uint8 * dst, sint32 length) -> void
         {
             auto mixer = static_cast<AudioMixer *>(arg);
             mixer->GetNextAudioChunk(dst, (size_t)length);
@@ -173,7 +173,7 @@ public:
         SDL_UnlockAudioDevice(_deviceId);
     }
 
-    IAudioChannel * Play(IAudioSource * source, int loop, bool deleteondone, bool deletesourceondone) override
+    IAudioChannel * Play(IAudioSource * source, sint32 loop, bool deleteondone, bool deletesourceondone) override
     {
         Lock();
         IAudioChannel * channel = AudioChannel::Create();
@@ -203,7 +203,7 @@ public:
             IAudioSource * source = _musicSources[pathId];
             if (source == nullptr)
             {
-                const utf8 * path = get_file_path((int)pathId);
+                const utf8 * path = get_file_path((sint32)pathId);
                 source = AudioSource::CreateMemoryFromWAV(path, &_format);
                 if (source == nullptr)
                 {
@@ -221,12 +221,12 @@ public:
         _volume = volume;
     }
 
-    IAudioSource * GetSoundSource(int id) override
+    IAudioSource * GetSoundSource(sint32 id) override
     {
         return _css1Sources[id];
     }
 
-    IAudioSource * GetMusicSource(int id) override
+    IAudioSource * GetMusicSource(sint32 id) override
     {
         return _musicSources[id];
     }
@@ -259,7 +259,7 @@ private:
         {
             IAudioChannel * channel = *it;
 
-            int group = channel->GetGroup();
+            sint32 group = channel->GetGroup();
             if (group != MIXER_GROUP_SOUND || gConfigSound.sound_enabled)
             {
                 MixChannel(channel, dst, length);
@@ -293,8 +293,8 @@ private:
 
     void MixChannel(IAudioChannel * channel, uint8 * data, size_t length)
     {
-        int byteRate = _format.GetByteRate();
-        int numSamples = (int)(length / byteRate);
+        sint32 byteRate = _format.GetByteRate();
+        sint32 numSamples = (sint32)(length / byteRate);
         double rate = 1;
         if (_format.format == AUDIO_S16SYS)
         {
@@ -316,7 +316,7 @@ private:
         }
 
         // Read raw PCM from channel
-        int readSamples = (int)(numSamples * rate);
+        sint32 readSamples = (sint32)(numSamples * rate);
         size_t readLength = (size_t)(readSamples / cvt.len_ratio) * byteRate;
         _channelBuffer.EnsureCapacity(readLength);
         size_t bytesRead = channel->Read(_channelBuffer.GetData(), readLength);
@@ -345,15 +345,15 @@ private:
         // Apply effects
         if (rate != 1)
         {
-            int srcSamples = (int)(bufferLen / byteRate);
-            int dstSamples = numSamples;
+            sint32 srcSamples = (sint32)(bufferLen / byteRate);
+            sint32 dstSamples = numSamples;
             bufferLen = ApplyResample(channel, buffer, srcSamples, dstSamples);
             buffer = _effectBuffer.GetData();
         }
 
         // Apply panning and volume
         ApplyPan(channel, buffer, bufferLen, byteRate);
-        int mixVolume = ApplyVolume(channel, buffer, bufferLen);
+        sint32 mixVolume = ApplyVolume(channel, buffer, bufferLen);
 
         // Finally mix on to destination buffer
         size_t dstLength = Math::Min(length, bufferLen);
@@ -366,9 +366,9 @@ private:
      * Resample the given buffer into _effectBuffer.
      * Assumes that srcBuffer is the same format as _format.
      */
-    size_t ApplyResample(IAudioChannel * channel, const void * srcBuffer, int srcSamples, int dstSamples)
+    size_t ApplyResample(IAudioChannel * channel, const void * srcBuffer, sint32 srcSamples, sint32 dstSamples)
     {
-        int byteRate = _format.GetByteRate();
+        sint32 byteRate = _format.GetByteRate();
 
         // Create resampler
         SpeexResamplerState * resampler = channel->GetResampler();
@@ -401,16 +401,16 @@ private:
         {
             switch (_format.format) {
             case AUDIO_S16SYS:
-                EffectPanS16(channel, (sint16 *)buffer, (int)(len / sampleSize));
+                EffectPanS16(channel, (sint16 *)buffer, (sint32)(len / sampleSize));
                 break;
             case AUDIO_U8:
-                EffectPanU8(channel, (uint8 *)buffer, (int)(len / sampleSize));
+                EffectPanU8(channel, (uint8 *)buffer, (sint32)(len / sampleSize));
                 break;
             }
         }
     }
 
-    int ApplyVolume(const IAudioChannel * channel, void * buffer, size_t len)
+    sint32 ApplyVolume(const IAudioChannel * channel, void * buffer, size_t len)
     {
         float volumeAdjust = _volume;
         volumeAdjust *= (gConfigSound.master_volume / 100.0f);
@@ -429,21 +429,21 @@ private:
             break;
         }
 
-        int startVolume = (int)(channel->GetOldVolume() * volumeAdjust);
-        int endVolume = (int)(channel->GetVolume() * volumeAdjust);
+        sint32 startVolume = (sint32)(channel->GetOldVolume() * volumeAdjust);
+        sint32 endVolume = (sint32)(channel->GetVolume() * volumeAdjust);
         if (channel->IsStopping())
         {
             endVolume = 0;
         }
 
-        int mixVolume = (int)(channel->GetVolume() * volumeAdjust);
+        sint32 mixVolume = (sint32)(channel->GetVolume() * volumeAdjust);
         if (startVolume != endVolume)
         {
             // Set to max since we are adjusting the volume ourselves
             mixVolume = SDL_MIX_MAXVOLUME;
 
             // Fade between volume levels to smooth out sound and minimize clicks from sudden volume changes
-            int fadeLength = (int)len / _format.BytesPerSample();
+            sint32 fadeLength = (sint32)len / _format.BytesPerSample();
             switch (_format.format) {
             case AUDIO_S16SYS:
                 EffectFadeS16((sint16 *)buffer, fadeLength, startVolume, endVolume);
@@ -456,7 +456,7 @@ private:
         return mixVolume;
     }
 
-    static void EffectPanS16(const IAudioChannel * channel, sint16 * data, int length)
+    static void EffectPanS16(const IAudioChannel * channel, sint16 * data, sint32 length)
     {
         const float dt = 1.0f / (length * 2);
         float volumeL = channel->GetOldVolumeL();
@@ -464,7 +464,7 @@ private:
         const float d_left = dt * (channel->GetVolumeL() - channel->GetOldVolumeL());
         const float d_right = dt * (channel->GetVolumeR() - channel->GetOldVolumeR());
 
-        for (int i = 0; i < length * 2; i += 2)
+        for (sint32 i = 0; i < length * 2; i += 2)
         {
             data[i] = (sint16)(data[i] * volumeL);
             data[i + 1] = (sint16)(data[i + 1] * volumeR);
@@ -473,14 +473,14 @@ private:
         }
     }
 
-    static void EffectPanU8(const IAudioChannel * channel, uint8 * data, int length)
+    static void EffectPanU8(const IAudioChannel * channel, uint8 * data, sint32 length)
     {
         float volumeL = channel->GetVolumeL();
         float volumeR = channel->GetVolumeR();
         float oldVolumeL = channel->GetOldVolumeL();
         float oldVolumeR = channel->GetOldVolumeR();
 
-        for (int i = 0; i < length * 2; i += 2)
+        for (sint32 i = 0; i < length * 2; i += 2)
         {
             float t = (float)i / (length * 2);
             data[i] = (uint8)(data[i] * ((1.0 - t) * oldVolumeL + t * volumeL));
@@ -488,22 +488,22 @@ private:
         }
     }
 
-    static void EffectFadeS16(sint16 * data, int length, int startvolume, int endvolume)
+    static void EffectFadeS16(sint16 * data, sint32 length, sint32 startvolume, sint32 endvolume)
     {
         float startvolume_f = (float)startvolume / SDL_MIX_MAXVOLUME;
         float endvolume_f = (float)endvolume / SDL_MIX_MAXVOLUME;
-        for (int i = 0; i < length; i++)
+        for (sint32 i = 0; i < length; i++)
         {
             float t = (float)i / length;
             data[i] = (sint16)(data[i] * ((1 - t) * startvolume_f + t * endvolume_f));
         }
     }
 
-    static void EffectFadeU8(uint8* data, int length, int startvolume, int endvolume)
+    static void EffectFadeU8(uint8* data, sint32 length, sint32 startvolume, sint32 endvolume)
     {
         float startvolume_f = (float)startvolume / SDL_MIX_MAXVOLUME;
         float endvolume_f = (float)endvolume / SDL_MIX_MAXVOLUME;
-        for (int i = 0; i < length; i++)
+        for (sint32 i = 0; i < length; i++)
         {
             float t = (float)i / length;
             data[i] = (uint8)(data[i] * ((1 - t) * startvolume_f + t * endvolume_f));
@@ -520,7 +520,7 @@ private:
             _convertBuffer.EnsureCapacity(reqConvertBufferCapacity);
             Memory::Copy(_convertBuffer.GetData(), src, len);
 
-            cvt->len = (int)len;
+            cvt->len = (sint32)len;
             cvt->buf = (uint8 *)_convertBuffer.GetData();
             if (SDL_ConvertAudio(cvt) >= 0)
             {
@@ -540,7 +540,7 @@ void Mixer_Init(const char * device)
     }
 }
 
-void * Mixer_Play_Effect(size_t id, int loop, int volume, float pan, double rate, int deleteondone)
+void * Mixer_Play_Effect(size_t id, sint32 loop, sint32 volume, float pan, double rate, sint32 deleteondone)
 {
     IAudioChannel * channel = nullptr;
     if (!gOpenRCT2Headless && gConfigSound.sound_enabled)
@@ -553,7 +553,7 @@ void * Mixer_Play_Effect(size_t id, int loop, int volume, float pan, double rate
         {
             IAudioMixer * mixer = gMixer;
             mixer->Lock();
-            IAudioSource * source = mixer->GetSoundSource((int)id);
+            IAudioSource * source = mixer->GetSoundSource((sint32)id);
             channel = mixer->Play(source, loop, deleteondone != 0, false);
             if (channel != nullptr)
             {
@@ -575,7 +575,7 @@ void Mixer_Stop_Channel(void * channel)
     }
 }
 
-void Mixer_Channel_Volume(void * channel, int volume)
+void Mixer_Channel_Volume(void * channel, sint32 volume)
 {
     if (!gOpenRCT2Headless)
     {
@@ -605,7 +605,7 @@ void Mixer_Channel_Rate(void* channel, double rate)
     }
 }
 
-int Mixer_Channel_IsPlaying(void * channel)
+sint32 Mixer_Channel_IsPlaying(void * channel)
 {
     bool isPlaying = false;
     if (!gOpenRCT2Headless)
@@ -625,9 +625,9 @@ uint64 Mixer_Channel_GetOffset(void * channel)
     return offset;
 }
 
-int Mixer_Channel_SetOffset(void * channel, uint64 offset)
+sint32 Mixer_Channel_SetOffset(void * channel, uint64 offset)
 {
-    int result = 0;
+    sint32 result = 0;
     if (!gOpenRCT2Headless)
     {
         result = static_cast<IAudioChannel*>(channel)->SetOffset(offset);
@@ -635,7 +635,7 @@ int Mixer_Channel_SetOffset(void * channel, uint64 offset)
     return result;
 }
 
-void Mixer_Channel_SetGroup(void * channel, int group)
+void Mixer_Channel_SetGroup(void * channel, sint32 group)
 {
     if (!gOpenRCT2Headless)
     {
@@ -643,7 +643,7 @@ void Mixer_Channel_SetGroup(void * channel, int group)
     }
 }
 
-void * Mixer_Play_Music(int pathId, int loop, int streaming)
+void * Mixer_Play_Music(sint32 pathId, sint32 loop, sint32 streaming)
 {
     IAudioChannel * channel = nullptr;
     if (!gOpenRCT2Headless)

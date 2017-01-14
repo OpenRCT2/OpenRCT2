@@ -38,11 +38,11 @@ public:
     uint8       Group               = 0;
     money32     MoneySpent          = MONEY(0, 0);
     uint32      CommandsRan         = 0;
-    int         LastAction          = -999;
+	sint32      LastAction          = -999;
     uint32      LastActionTime      = 0;
     rct_xyz16   LastActionCoord     = { 0 };
     rct_peep*   PickupPeep          = 0;
-    int         PickupPeepOldX      = SPRITE_LOCATION_NULL;
+	sint32      PickupPeepOldX      = SPRITE_LOCATION_NULL;
     std::string KeyHash;
 
     NetworkPlayer() = default;

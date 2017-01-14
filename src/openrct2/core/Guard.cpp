@@ -83,7 +83,7 @@ namespace Guard
         abort();
 #else
         // Show message box if we are not building for testing
-        int result = MessageBoxA(nullptr, buffer, OPENRCT2_NAME, MB_ABORTRETRYIGNORE | MB_ICONEXCLAMATION);
+        sint32 result = MessageBoxA(nullptr, buffer, OPENRCT2_NAME, MB_ABORTRETRYIGNORE | MB_ICONEXCLAMATION);
         if (result == IDABORT)
         {
 #ifdef USE_BREAKPAD

@@ -42,8 +42,8 @@ bool editor_load_landscape(const utf8 *path);
 void editor_open_windows_for_current_step();
 
 bool editor_check_park();
-int editor_check_object_selection();
+sint32 editor_check_object_selection();
 
-bool editor_check_object_group_at_least_one_selected(int objectType);
+bool editor_check_object_group_at_least_one_selected(sint32 objectType);
 
 #endif

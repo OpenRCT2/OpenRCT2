@@ -17,14 +17,16 @@
 #ifndef _DIAGNOSTIC_H_
 #define _DIAGNOSTIC_H_
 
-enum {
+#include "common.h"
+
+typedef enum {
 	DIAGNOSTIC_LEVEL_FATAL,
 	DIAGNOSTIC_LEVEL_ERROR,
 	DIAGNOSTIC_LEVEL_WARNING,
 	DIAGNOSTIC_LEVEL_VERBOSE,
 	DIAGNOSTIC_LEVEL_INFORMATION,
 	DIAGNOSTIC_LEVEL_COUNT
-};
+} DiagnosticLevel;
 
 /**
  * Compile-time debug levels.
@@ -73,39 +75,29 @@ enum {
 	#define DEBUG_LEVEL_1 0
 #endif // defined(DEBUG)
 
-extern int _log_levels[DIAGNOSTIC_LEVEL_COUNT];
+extern bool _log_levels[DIAGNOSTIC_LEVEL_COUNT];
 
 #ifdef __cplusplus
 extern "C" {
 #endif // __cplusplus
 
-void diagnostic_log(int diagnosticLevel, const char *format, ...);
-void diagnostic_log_with_location(int diagnosticLevel, const char *file, const char *function, int line, const char *format, ...);
+void diagnostic_log(DiagnosticLevel diagnosticLevel, const char *format, ...);
+void diagnostic_log_with_location(DiagnosticLevel diagnosticLevel, const char *file, const char *function, sint32 line, const char *format, ...);
 
 #ifdef __cplusplus
 }
 #endif // __cplusplus
 
 #ifdef _MSC_VER
-
-#define diagnostic_log_macro(level, format, ...)	diagnostic_log_with_location(level, __FILE__, __FUNCTION__, __LINE__, format, __VA_ARGS__)
-
-#define log_fatal(format, ...)		diagnostic_log_macro(DIAGNOSTIC_LEVEL_FATAL, format, __VA_ARGS__)
-#define log_error(format, ...)		diagnostic_log_macro(DIAGNOSTIC_LEVEL_ERROR, format, __VA_ARGS__)
-#define log_warning(format, ...)	diagnostic_log_macro(DIAGNOSTIC_LEVEL_WARNING, format, __VA_ARGS__)
-#define log_verbose(format, ...)	diagnostic_log(DIAGNOSTIC_LEVEL_VERBOSE, format, __VA_ARGS__)
-#define log_info(format, ...)		diagnostic_log_macro(DIAGNOSTIC_LEVEL_INFORMATION, format, __VA_ARGS__)
-
+#define diagnostic_log_macro(level, format, ...)	diagnostic_log_with_location(level, __FILE__, __FUNCTION__, __LINE__, format, ## __VA_ARGS__)
 #else
-
-#define diagnostic_log_macro(level, format, ...)	diagnostic_log_with_location(level, __FILE__, __func__, __LINE__, format, ## __VA_ARGS__)
+	#define diagnostic_log_macro(level, format, ...)	diagnostic_log_with_location(level, __FILE__, __func__, __LINE__, format, ## __VA_ARGS__)
+#endif // _MSC_VER
 
 #define log_fatal(format, ...)		diagnostic_log_macro(DIAGNOSTIC_LEVEL_FATAL, format, ## __VA_ARGS__)
 #define log_error(format, ...)		diagnostic_log_macro(DIAGNOSTIC_LEVEL_ERROR, format, ## __VA_ARGS__)
 #define log_warning(format, ...)	diagnostic_log_macro(DIAGNOSTIC_LEVEL_WARNING, format, ## __VA_ARGS__)
 #define log_verbose(format, ...)	diagnostic_log(DIAGNOSTIC_LEVEL_VERBOSE, format, ## __VA_ARGS__)
 #define log_info(format, ...)		diagnostic_log_macro(DIAGNOSTIC_LEVEL_INFORMATION, format, ## __VA_ARGS__)
-
-#endif
 
 #endif

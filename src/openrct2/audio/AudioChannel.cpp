@@ -26,17 +26,17 @@ private:
     IAudioSource * _source = nullptr;
     SpeexResamplerState * _resampler = nullptr;
 
-    int _group = MIXER_GROUP_SOUND;
+    sint32 _group = MIXER_GROUP_SOUND;
     double _rate = 0;
     uint64 _offset = 0;
-    int _loop = 0;
+    sint32 _loop = 0;
 
-    int     _volume = 1;
+    sint32  _volume = 1;
     float   _volume_l = 0.f;
     float   _volume_r = 0.f;
     float   _oldvolume_l = 0.f;
     float   _oldvolume_r = 0.f;
-    int     _oldvolume = 0;
+    sint32  _oldvolume = 0;
     float   _pan = 0;
 
     bool    _stopping = false;
@@ -80,12 +80,12 @@ public:
         _resampler = value;
     }
 
-    int GetGroup() const override
+    sint32 GetGroup() const override
     {
         return _group;
     }
 
-    void SetGroup(int group) override
+    void SetGroup(sint32 group) override
     {
         _group = group;
     }
@@ -110,24 +110,24 @@ public:
         if (_source != nullptr && offset < _source->GetLength())
         {
             AudioFormat format = _source->GetFormat();
-            int samplesize = format.channels * format.BytesPerSample();
+            sint32 samplesize = format.channels * format.BytesPerSample();
             _offset = (offset / samplesize) * samplesize;
             return true;
         }
         return false;
     }
 
-    virtual int GetLoop() const override
+    virtual sint32 GetLoop() const override
     {
         return _loop;
     }
 
-    virtual void SetLoop(int value) override
+    virtual void SetLoop(sint32 value) override
     {
         _loop = value;
     }
 
-    int GetVolume() const override
+    sint32 GetVolume() const override
     {
         return _volume;
     }
@@ -152,12 +152,12 @@ public:
         return _oldvolume_r;
     }
 
-    int GetOldVolume() const override
+    sint32 GetOldVolume() const override
     {
         return _oldvolume;
     }
 
-    void SetVolume(int volume) override
+    void SetVolume(sint32 volume) override
     {
         _volume = Math::Clamp(0, volume, SDL_MIX_MAXVOLUME);
     }
@@ -224,7 +224,7 @@ public:
         return !_done;
     }
 
-    void Play(IAudioSource * source, int loop) override
+    void Play(IAudioSource * source, sint32 loop) override
     {
         _source = source;
         _loop = loop;

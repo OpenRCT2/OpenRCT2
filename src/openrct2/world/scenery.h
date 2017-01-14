@@ -252,17 +252,17 @@ extern sint16 window_scenery_tab_entries[20][SCENERY_ENTRIES_BY_TAB + 1];
 extern money32 gClearSceneryCost;
 
 void init_scenery();
-void scenery_update_tile(int x, int y);
-void scenery_update_age(int x, int y, rct_map_element *mapElement);
+void scenery_update_tile(sint32 x, sint32 y);
+void scenery_update_age(sint32 x, sint32 y, rct_map_element *mapElement);
 void scenery_set_default_placement_configuration();
 void scenery_remove_ghost_tool_placement();
 
-rct_scenery_entry *get_small_scenery_entry(int entryIndex);
-rct_scenery_entry *get_large_scenery_entry(int entryIndex);
-rct_scenery_entry *get_wall_entry(int entryIndex);
-rct_scenery_entry *get_banner_entry(int entryIndex);
-rct_scenery_entry *get_footpath_item_entry(int entryIndex);
-rct_scenery_set_entry *get_scenery_group_entry(int entryIndex);
+rct_scenery_entry *get_small_scenery_entry(sint32 entryIndex);
+rct_scenery_entry *get_large_scenery_entry(sint32 entryIndex);
+rct_scenery_entry *get_wall_entry(sint32 entryIndex);
+rct_scenery_entry *get_banner_entry(sint32 entryIndex);
+rct_scenery_entry *get_footpath_item_entry(sint32 entryIndex);
+rct_scenery_set_entry *get_scenery_group_entry(sint32 entryIndex);
 
 
 #endif

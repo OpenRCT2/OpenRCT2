@@ -51,7 +51,7 @@ NetworkGroup NetworkGroup::FromJson(const json_t * json)
         if (perm_name == nullptr) {
             continue;
         }
-        int action_id = NetworkActions::FindCommandByPermissionName(perm_name);
+        sint32 action_id = NetworkActions::FindCommandByPermissionName(perm_name);
         if (action_id != -1) {
             group.ToggleActionPermission(action_id);
         }
@@ -129,9 +129,9 @@ bool NetworkGroup::CanPerformAction(size_t index) const
     return (ActionsAllowed[byte] & (1 << bit)) ? true : false;
 }
 
-bool NetworkGroup::CanPerformCommand(int command) const
+bool NetworkGroup::CanPerformCommand(sint32 command) const
 {
-    int action = NetworkActions::FindCommand(command);
+    sint32 action = NetworkActions::FindCommand(command);
     if (action != -1)
     {
         return CanPerformAction(action);

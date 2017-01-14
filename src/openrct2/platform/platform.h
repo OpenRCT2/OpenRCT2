@@ -64,7 +64,7 @@
 #endif
 
 typedef struct resolution {
-	int width, height;
+	sint32 width, height;
 } resolution_t;
 
 typedef struct file_info {
@@ -87,12 +87,12 @@ typedef struct rct2_time {
 } rct2_time;
 
 typedef struct openrct2_cursor {
-	int x, y;
-	unsigned char left, middle, right, any;
-	int wheel;
-	int old;
+	sint32 x, y;
+	uint8 left, middle, right, any;
+	sint32 wheel;
+	sint32 old;
 	bool touch, touchIsDouble;
-	unsigned int touchDownTimestamp;
+	uint32 touchDownTimestamp;
 } openrct2_cursor;
 
 enum {
@@ -117,18 +117,18 @@ typedef struct file_dialog_desc {
 } file_dialog_desc;
 
 extern openrct2_cursor gCursorState;
-extern const unsigned char *gKeysState;
-extern unsigned char *gKeysPressed;
-extern unsigned int gLastKeyPressed;
+extern const uint8 *gKeysState;
+extern uint8 *gKeysPressed;
+extern uint32 gLastKeyPressed;
 
 extern textinputbuffer gTextInput;
 extern bool gTextInputCompositionActive;
 extern utf8 gTextInputComposition[32];
-extern int gTextInputCompositionStart;
-extern int gTextInputCompositionLength;
+extern sint32 gTextInputCompositionStart;
+extern sint32 gTextInputCompositionLength;
 
-extern int gResolutionsAllowAnyAspectRatio;
-extern int gNumResolutions;
+extern sint32 gResolutionsAllowAnyAspectRatio;
+extern sint32 gNumResolutions;
 extern resolution_t *gResolutions;
 extern SDL_Window *gWindow;
 
@@ -138,20 +138,20 @@ extern bool gSteamOverlayActive;
 
 // Platform shared definitions
 void platform_update_fullscreen_resolutions();
-void platform_get_closest_resolution(int inWidth, int inHeight, int *outWidth, int *outHeight);
+void platform_get_closest_resolution(sint32 inWidth, sint32 inHeight, sint32 *outWidth, sint32 *outHeight);
 void platform_init();
 void platform_draw();
 void platform_draw_require_end();
 void platform_free();
 void platform_trigger_resize();
-void platform_update_palette(const uint8 *colours, int start_index, int num_colours);
-void platform_set_fullscreen_mode(int mode);
+void platform_update_palette(const uint8 *colours, sint32 start_index, sint32 num_colours);
+void platform_set_fullscreen_mode(sint32 mode);
 void platform_toggle_windowed_mode();
 void platform_set_cursor(uint8 cursor);
 void platform_refresh_video();
 void platform_process_messages();
-int platform_scancode_to_rct_keycode(int sdl_key);
-void platform_start_text_input(utf8 *buffer, int max_length);
+sint32 platform_scancode_to_rct_keycode(sint32 sdl_key);
+void platform_start_text_input(utf8 *buffer, sint32 max_length);
 void platform_stop_text_input();
 bool platform_is_input_active();
 void platform_get_date_utc(rct2_date *out_date);
@@ -168,26 +168,26 @@ time_t platform_file_get_modified_time(const utf8* path);
 bool platform_ensure_directory_exists(const utf8 *path);
 bool platform_directory_delete(const utf8 *path);
 bool platform_lock_single_instance();
-int platform_enumerate_files_begin(const utf8 *pattern);
-bool platform_enumerate_files_next(int handle, file_info *outFileInfo);
-void platform_enumerate_files_end(int handle);
-int platform_enumerate_directories_begin(const utf8 *directory);
-bool platform_enumerate_directories_next(int handle, utf8 *path);
-void platform_enumerate_directories_end(int handle);
+sint32 platform_enumerate_files_begin(const utf8 *pattern);
+bool platform_enumerate_files_next(sint32 handle, file_info *outFileInfo);
+void platform_enumerate_files_end(sint32 handle);
+sint32 platform_enumerate_directories_begin(const utf8 *directory);
+bool platform_enumerate_directories_next(sint32 handle, utf8 *path);
+void platform_enumerate_directories_end(sint32 handle);
 void platform_init_window_icon();
 
 // Returns the bitmask of the GetLogicalDrives function for windows, 0 for other systems
-int platform_get_drives();
+sint32 platform_get_drives();
 
 bool platform_file_copy(const utf8 *srcPath, const utf8 *dstPath, bool overwrite);
 bool platform_file_move(const utf8 *srcPath, const utf8 *dstPath);
 bool platform_file_delete(const utf8 *path);
 void platform_hide_cursor();
 void platform_show_cursor();
-void platform_get_cursor_position(int *x, int *y);
-void platform_get_cursor_position_scaled(int *x, int *y);
-void platform_set_cursor_position(int x, int y);
-unsigned int platform_get_ticks();
+void platform_get_cursor_position(sint32 *x, sint32 *y);
+void platform_get_cursor_position_scaled(sint32 *x, sint32 *y);
+void platform_set_cursor_position(sint32 x, sint32 y);
+uint32 platform_get_ticks();
 void platform_resolve_user_data_path();
 void platform_resolve_openrct_data_path();
 void platform_get_openrct_data_path(utf8 *outPath, size_t outSize);
@@ -220,13 +220,13 @@ void core_init();
 	#include <windows.h>
 	#undef GetMessage
 
-	int windows_get_registry_install_info(rct2_install_info *installInfo, char *source, char *font, uint8 charset);
+	sint32 windows_get_registry_install_info(rct2_install_info *installInfo, char *source, char *font, uint8 charset);
 	HWND windows_get_window_handle();
 	void platform_setup_file_associations();
 	void platform_remove_file_associations();
 	// This function cannot be marked as 'static', even though it may seem to be,
 	// as it requires external linkage, which 'static' prevents
-	__declspec(dllexport) int StartOpenRCT(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow);
+	__declspec(dllexport) sint32 StartOpenRCT(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, sint32 nCmdShow);
 #endif // __WINDOWS__
 
 #if defined(__LINUX__) || defined(__MACOSX__) || defined(__FREEBSD__)

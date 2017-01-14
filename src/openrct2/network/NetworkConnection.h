@@ -45,7 +45,7 @@ public:
     NetworkConnection();
     ~NetworkConnection();
 
-    int  ReadPacket();
+    sint32  ReadPacket();
     void QueuePacket(std::unique_ptr<NetworkPacket> packet, bool front = false);
     void SendQueuedPackets();
     void ResetLastPacketTime();

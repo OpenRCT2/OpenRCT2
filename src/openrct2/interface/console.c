@@ -51,20 +51,20 @@
 bool gConsoleOpen = false;
 
 static bool _consoleInitialised = false;
-static int _consoleLeft, _consoleTop, _consoleRight, _consoleBottom;
-static int _lastMainViewportX, _lastMainViewportY;
+static sint32 _consoleLeft, _consoleTop, _consoleRight, _consoleBottom;
+static sint32 _lastMainViewportX, _lastMainViewportY;
 static utf8 _consoleBuffer[CONSOLE_BUFFER_SIZE] = { 0 };
 static utf8 *_consoleBufferPointer = _consoleBuffer;
 static utf8 *_consoleViewBufferStart = _consoleBuffer;
 static utf8 _consoleCurrentLine[CONSOLE_INPUT_SIZE];
-static int _consoleCaretTicks;
+static sint32 _consoleCaretTicks;
 static utf8 _consolePrintfBuffer[CONSOLE_BUFFER_2_SIZE];
 static utf8 _consoleErrorBuffer[CONSOLE_BUFFER_2_SIZE];
-static int _consoleScrollPos = 0;
+static sint32 _consoleScrollPos = 0;
 
 static utf8 _consoleHistory[CONSOLE_HISTORY_SIZE][CONSOLE_INPUT_SIZE];
-static int _consoleHistoryIndex = 0;
-static int _consoleHistoryCount = 0;
+static sint32 _consoleHistoryIndex = 0;
+static sint32 _consoleHistoryCount = 0;
 
 static void console_invalidate();
 static void console_write_prompt();
@@ -72,12 +72,12 @@ static void console_update_scroll();
 static void console_clear_input();
 static void console_history_add(const utf8 *src);
 static void console_write_all_commands();
-static int console_parse_int(const utf8 *src, bool *valid);
+static sint32 console_parse_int(const utf8 *src, bool *valid);
 static double console_parse_double(const utf8 *src, bool *valid);
 
-static int cc_variables(const utf8 **argv, int argc);
-static int cc_windows(const utf8 **argv, int argc);
-static int cc_help(const utf8 **argv, int argc);
+static sint32 cc_variables(const utf8 **argv, sint32 argc);
+static sint32 cc_windows(const utf8 **argv, sint32 argc);
+static sint32 cc_help(const utf8 **argv, sint32 argc);
 
 static bool invalidArguments(bool *invalid, bool arguments);
 
@@ -157,10 +157,10 @@ void console_draw(rct_drawpixelinfo *dpi)
 	// Set font
 	gCurrentFontSpriteBase = (gConfigInterface.console_small_font ? FONT_SPRITE_BASE_SMALL : FONT_SPRITE_BASE_MEDIUM);
 	gCurrentFontFlags = 0;
-	int lineHeight = font_get_line_height(gCurrentFontSpriteBase);
+	sint32 lineHeight = font_get_line_height(gCurrentFontSpriteBase);
 
-	int lines = 0;
-	int maxLines = ((_consoleBottom - 22 - _consoleTop) / lineHeight) - 1;
+	sint32 lines = 0;
+	sint32 maxLines = ((_consoleBottom - 22 - _consoleTop) / lineHeight) - 1;
 	utf8 *ch = strchr(_consoleBuffer, 0);
 	while (ch > _consoleBuffer) {
 		ch--;
@@ -172,14 +172,14 @@ void console_draw(rct_drawpixelinfo *dpi)
 	console_invalidate();
 	gfx_filter_rect(dpi, _consoleLeft, _consoleTop, _consoleRight, _consoleBottom, PALETTE_TRANSLUCENT_LIGHT_BLUE_HIGHLIGHT);
 
-	int x = _consoleLeft + 4;
-	int y = _consoleTop + 4;
+	sint32 x = _consoleLeft + 4;
+	sint32 y = _consoleTop + 4;
 
 	// Draw previous lines
 	utf8 lineBuffer[2 + 256], *lineCh;
 	ch = _consoleViewBufferStart;
-	int currentLine = 0;
-	int drawLines = 0;
+	sint32 currentLine = 0;
+	sint32 drawLines = 0;
 	while (*ch != 0) {
 		// Find line break or null terminator
 		utf8 *nextLine = ch;
@@ -235,8 +235,8 @@ void console_draw(rct_drawpixelinfo *dpi)
 	if (_consoleCaretTicks < 15) {
 		memcpy(lineBuffer, _consoleCurrentLine, gTextInput.selection_offset);
 		lineBuffer[gTextInput.selection_offset] = 0;
-		int caretX = x + gfx_get_string_width(lineBuffer);
-		int caretY = y + lineHeight;
+		sint32 caretX = x + gfx_get_string_width(lineBuffer);
+		sint32 caretY = y + lineHeight;
 
 		gfx_fill_rect(dpi, caretX, caretY, caretX + 6, caretY + 1, FORMAT_WHITE);
 	}
@@ -247,7 +247,7 @@ void console_draw(rct_drawpixelinfo *dpi)
 	gfx_fill_rect(dpi, _consoleLeft, _consoleBottom - 0, _consoleRight, _consoleBottom - 0, 12);
 }
 
-void console_input(int c)
+void console_input(sint32 c)
 {
 	switch (c) {
 	case SDL_SCANCODE_ESCAPE:
@@ -339,9 +339,9 @@ void console_printf(const utf8 *format, ...)
 	console_writeline(_consolePrintfBuffer);
 }
 
-int console_parse_int(const utf8 *src, bool *valid) {
+sint32 console_parse_int(const utf8 *src, bool *valid) {
 	utf8 *end;
-	int value;
+	sint32 value;
 	value = strtol(src, &end, 10); *valid = (*end == '\0');
 	return value;
 }
@@ -355,8 +355,8 @@ double console_parse_double(const utf8 *src, bool *valid) {
 
 static void console_update_scroll()
 {
-	/*int lines = 0;
-	int maxLines = ((_consoleBottom - 22 - _consoleTop) / 10) - 1;
+	/*sint32 lines = 0;
+	sint32 maxLines = ((_consoleBottom - 22 - _consoleTop) / 10) - 1;
 	char *ch = strchr(_consoleBuffer, 0);
 	while (ch > _consoleBuffer && lines < maxLines) {
 		ch--;
@@ -369,11 +369,11 @@ static void console_update_scroll()
 	_consoleViewBufferStart = ch;*/
 }
 
-void console_scroll(int delta)
+void console_scroll(sint32 delta)
 {
-	int speed = 3;
-	int lines = 0;
-	int maxLines = ((_consoleBottom - 22 - _consoleTop) / 10) - 1;
+	sint32 speed = 3;
+	sint32 lines = 0;
+	sint32 maxLines = ((_consoleBottom - 22 - _consoleTop) / 10) - 1;
 	utf8 *ch = strchr(_consoleBuffer, 0);
 	while (ch > _consoleBuffer) {
 		ch--;
@@ -417,7 +417,7 @@ static void console_clear_input()
 static void console_history_add(const utf8 *src)
 {
 	if (_consoleHistoryCount >= CONSOLE_HISTORY_SIZE) {
-		for (int i = 0; i < _consoleHistoryCount - 1; i++)
+		for (sint32 i = 0; i < _consoleHistoryCount - 1; i++)
 			memcpy(_consoleHistory[i], _consoleHistory[i + 1], CONSOLE_INPUT_SIZE);
 		_consoleHistoryCount--;
 	}
@@ -425,31 +425,31 @@ static void console_history_add(const utf8 *src)
 	_consoleHistoryIndex = _consoleHistoryCount;
 }
 
-static int cc_clear(const utf8 **argv, int argc)
+static sint32 cc_clear(const utf8 **argv, sint32 argc)
 {
 	console_clear();
 	return 0;
 }
 
-static int cc_hide(const utf8 **argv, int argc)
+static sint32 cc_hide(const utf8 **argv, sint32 argc)
 {
 	console_close();
 	return 0;
 }
 
-static int cc_echo(const utf8 **argv, int argc)
+static sint32 cc_echo(const utf8 **argv, sint32 argc)
 {
 	if (argc > 0)
 		console_writeline(argv[0]);
 	return 0;
 }
 
-static int cc_rides(const utf8 **argv, int argc)
+static sint32 cc_rides(const utf8 **argv, sint32 argc)
 {
 	if (argc > 0) {
 		if (strcmp(argv[0], "list") == 0) {
 			rct_ride *ride;
-			int i;
+			sint32 i;
 			FOR_ALL_RIDES(i, ride) {
 				char name[128];
 				format_string(name, 128, ride->name, &ride->name_arguments);
@@ -463,23 +463,23 @@ static int cc_rides(const utf8 **argv, int argc)
 			}
 			if (strcmp(argv[1], "type") == 0) {
 				bool int_valid[3] = { 0 };
-				int ride_index = console_parse_int(argv[2], &int_valid[0]);
-				int type = console_parse_int(argv[3], &int_valid[1]);
+				sint32 ride_index = console_parse_int(argv[2], &int_valid[0]);
+				sint32 type = console_parse_int(argv[3], &int_valid[1]);
 				if (!int_valid[0] || !int_valid[1]) {
 					console_printf("This command expects integer arguments");
 				} else if (ride_index < 0) {
 					console_printf("Ride index must not be negative");
 				} else {
 					gGameCommandErrorTitle = STR_CANT_CHANGE_OPERATING_MODE;
-					int res = game_do_command(0, (type << 8) | 1, 0, (RIDE_SETTING_RIDE_TYPE << 8) | ride_index, GAME_COMMAND_SET_RIDE_SETTING, 0, 0);
+					sint32 res = game_do_command(0, (type << 8) | 1, 0, (RIDE_SETTING_RIDE_TYPE << 8) | ride_index, GAME_COMMAND_SET_RIDE_SETTING, 0, 0);
 					if (res == MONEY32_UNDEFINED) {
 						console_printf("That didn't work");
 					}
 				}
 			} else if (strcmp(argv[1], "friction") == 0) {
 				bool int_valid[2] = { 0 };
-				int ride_index = console_parse_int(argv[2], &int_valid[0]);
-				int friction = console_parse_int(argv[3], &int_valid[1]);
+				sint32 ride_index = console_parse_int(argv[2], &int_valid[0]);
+				sint32 friction = console_parse_int(argv[3], &int_valid[1]);
 
 				if (ride_index < 0) {
 					console_printf("Ride index must not be negative");
@@ -492,7 +492,7 @@ static int cc_rides(const utf8 **argv, int argc)
 					} else if (ride->type == RIDE_TYPE_NULL) {
 						console_printf("No ride found with index %d",ride_index);
 					} else {
-						for (int i = 0; i < ride->num_vehicles; i++) {
+						for (sint32 i = 0; i < ride->num_vehicles; i++) {
 							uint16 vehicle_index = ride->vehicles[i];
  							while (vehicle_index != SPRITE_INDEX_NULL) {
 								rct_vehicle *vehicle=GET_VEHICLE(vehicle_index);
@@ -510,12 +510,12 @@ static int cc_rides(const utf8 **argv, int argc)
 	return 0;
 }
 
-static int cc_staff(const utf8 **argv, int argc)
+static sint32 cc_staff(const utf8 **argv, sint32 argc)
 {
 	if (argc > 0) {
 		if (strcmp(argv[0], "list") == 0) {
 			rct_peep *peep;
-			int i;
+			sint32 i;
 			FOR_ALL_STAFF(i, peep) {
 				char name[128];
 				format_string(name, 128, peep->name_string_idx, &peep->id);
@@ -525,7 +525,7 @@ static int cc_staff(const utf8 **argv, int argc)
 			if (argc < 4) {
 				console_printf("staff set energy <staff id> <value 0-255>");
 				console_printf("staff set costume <staff id> <costume id>");
-				for (int i = 0; i < ENTERTAINER_COSTUME_COUNT; i++) {
+				for (sint32 i = 0; i < ENTERTAINER_COSTUME_COUNT; i++) {
 					char costume_name[128] = { 0 };
 					rct_string_id costume = STR_STAFF_OPTION_COSTUME_PANDA + i;
 					format_string(costume_name, 128, STR_DROPDOWN_MENU_LABEL, &costume);
@@ -536,7 +536,7 @@ static int cc_staff(const utf8 **argv, int argc)
 				return 0;
 			}
 			if (strcmp(argv[1], "energy") == 0) {
-				int int_val[3];
+				sint32 int_val[3];
 				bool int_valid[3] = { 0 };
 				int_val[0] = console_parse_int(argv[2], &int_valid[0]);
 				int_val[1] = console_parse_int(argv[3], &int_valid[1]);
@@ -548,7 +548,7 @@ static int cc_staff(const utf8 **argv, int argc)
 					peep->energy_growth_rate = int_val[1];
 				}
 			} else if (strcmp(argv[1], "costume") == 0) {
-				int int_val[2];
+				sint32 int_val[2];
 				bool int_valid[2] = { 0 };
 				int_val[0] = console_parse_int(argv[2], &int_valid[0]);
 				int_val[1] = console_parse_int(argv[3], &int_valid[1]);
@@ -568,7 +568,7 @@ static int cc_staff(const utf8 **argv, int argc)
 					return 1;
 				}
 
-				int costume = int_val[1] | 0x80;
+				sint32 costume = int_val[1] | 0x80;
 				game_do_command(peep->x, (costume << 8) | 1, peep->y, int_val[0], GAME_COMMAND_SET_STAFF_ORDER, 0, 0);
 			}
 		}
@@ -578,7 +578,7 @@ static int cc_staff(const utf8 **argv, int argc)
 	return 0;
 }
 
-static int cc_get(const utf8 **argv, int argc)
+static sint32 cc_get(const utf8 **argv, sint32 argc)
 {
 	if (argc > 0) {
 		if (strcmp(argv[0], "park_rating") == 0) {
@@ -601,7 +601,7 @@ static int cc_get(const utf8 **argv, int argc)
 		}
 		else if (strcmp(argv[0], "guest_initial_happiness") == 0) {
 			uint32 current_happiness = gGuestInitialHappiness;
-			for (int i = 15; i <= 99; i++) {
+			for (sint32 i = 15; i <= 99; i++) {
 				if (i == 99) {
 					console_printf("guest_initial_happiness %d%%  (%d)", 15, gGuestInitialHappiness);
 				}
@@ -675,7 +675,7 @@ static int cc_get(const utf8 **argv, int argc)
 		else if (strcmp(argv[0], "location") == 0) {
 			rct_window *w = window_get_main();
 			if (w != NULL) {
-				int interactionType;
+				sint32 interactionType;
 				rct_map_element *mapElement;
 				rct_xy16 mapCoord = { 0 };
 				get_map_coordinates_from_pos(w->viewport->view_width / 2, w->viewport->view_height / 2, VIEWPORT_INTERACTION_MASK_TERRAIN, &mapCoord.x, &mapCoord.y, &interactionType, &mapElement, NULL);
@@ -715,11 +715,11 @@ static int cc_get(const utf8 **argv, int argc)
 	}
 	return 0;
 }
-static int cc_set(const utf8 **argv, int argc)
+static sint32 cc_set(const utf8 **argv, sint32 argc)
 {
-	int i;
+	sint32 i;
 	if (argc > 1) {
-		int int_val[4];
+		sint32 int_val[4];
 		bool int_valid[4];
 		double double_val[4];
 		bool double_valid[4];
@@ -737,7 +737,7 @@ static int cc_set(const utf8 **argv, int argc)
 		}
 
 		if (strcmp(argv[0], "money") == 0 && invalidArguments(&invalidArgs, double_valid[0])) {
-			money32 money = MONEY((int)double_val[0], ((int)(double_val[0] * 100)) % 100);
+			money32 money = MONEY((sint32)double_val[0], ((sint32)(double_val[0] * 100)) % 100);
 			bool run_get_money = true;
 			if (gCashEncrypted != ENCRYPT_MONEY(money)) {
 				if (game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_SETMONEY, money, GAME_COMMAND_CHEAT, 0, 0) != MONEY32_UNDEFINED) {
@@ -769,7 +769,7 @@ static int cc_set(const utf8 **argv, int argc)
 			console_execute_silent("get max_loan");
 		}
 		else if (strcmp(argv[0], "guest_initial_cash") == 0 && invalidArguments(&invalidArgs, double_valid[0])) {
-			gGuestInitialCash = clamp(MONEY((int)double_val[0], ((int)(double_val[0] * 100)) % 100), MONEY(0, 0), MONEY(1000, 0));
+			gGuestInitialCash = clamp(MONEY((sint32)double_val[0], ((sint32)(double_val[0] * 100)) % 100), MONEY(0, 0), MONEY(1000, 0));
 			console_execute_silent("get guest_initial_cash");
 		}
 		else if (strcmp(argv[0], "guest_initial_happiness") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
@@ -829,11 +829,11 @@ static int cc_set(const utf8 **argv, int argc)
 			console_execute_silent("get park_open");
 		}
 		else if (strcmp(argv[0], "land_rights_cost") == 0 && invalidArguments(&invalidArgs, double_valid[0])) {
-			gLandPrice = clamp(MONEY((int)double_val[0], ((int)(double_val[0] * 100)) % 100), MONEY(0, 0), MONEY(200, 0));
+			gLandPrice = clamp(MONEY((sint32)double_val[0], ((sint32)(double_val[0] * 100)) % 100), MONEY(0, 0), MONEY(200, 0));
 			console_execute_silent("get land_rights_cost");
 		}
 		else if (strcmp(argv[0], "construction_rights_cost") == 0 && invalidArguments(&invalidArgs, double_valid[0])) {
-			gConstructionRightsPrice = clamp(MONEY((int)double_val[0], ((int)(double_val[0] * 100)) % 100), MONEY(0, 0), MONEY(200, 0));
+			gConstructionRightsPrice = clamp(MONEY((sint32)double_val[0], ((sint32)(double_val[0] * 100)) % 100), MONEY(0, 0), MONEY(200, 0));
 			console_execute_silent("get construction_rights_cost");
 		}
 		else if (strcmp(argv[0], "climate") == 0) {
@@ -876,9 +876,9 @@ static int cc_set(const utf8 **argv, int argc)
 		else if (strcmp(argv[0], "location") == 0 && invalidArguments(&invalidArgs, int_valid[0] && int_valid[1])) {
 			rct_window *w = window_get_main();
 			if (w != NULL) {
-				int x = (sint16)(int_val[0] * 32 + 16);
-				int y = (sint16)(int_val[1] * 32 + 16);
-				int z = map_element_height(x, y);
+				sint32 x = (sint16)(int_val[0] * 32 + 16);
+				sint32 y = (sint16)(int_val[1] * 32 + 16);
+				sint32 z = map_element_height(x, y);
 				window_scroll_to_location(w, x, y, z);
 				w->flags &= ~WF_SCROLLING_TO_LOCATION;
 				viewport_update_position(w);
@@ -960,7 +960,7 @@ static int cc_set(const utf8 **argv, int argc)
 	}
 	return 0;
 }
-static int cc_twitch(const utf8 **argv, int argc)
+static sint32 cc_twitch(const utf8 **argv, sint32 argc)
 {
 #ifdef DISABLE_TWITCH
 	console_writeline_error("OpenRCT2 build not compiled with Twitch integeration.");
@@ -970,11 +970,11 @@ static int cc_twitch(const utf8 **argv, int argc)
 	return 0;
 }
 
-static int cc_load_object(const utf8 **argv, int argc) {
+static sint32 cc_load_object(const utf8 **argv, sint32 argc) {
 	if (argc > 0) {
 		char name[9] = { 0 };
 		memset(name, ' ', 8);
-		int i = 0;
+		sint32 i = 0;
 		for (const char * ch = argv[0]; *ch != '\0' && i < 8; ch++) {
 			name[i++] = *ch;
 		}
@@ -997,17 +997,17 @@ static int cc_load_object(const utf8 **argv, int argc) {
 			console_writeline_error("Unable to load object.");
 			return 1;
 		}
-		int groupIndex = object_manager_get_loaded_object_entry_index(loadedObject);
+		sint32 groupIndex = object_manager_get_loaded_object_entry_index(loadedObject);
 
 		uint8 objectType = entry->flags & 0x0F;
 		if (objectType == OBJECT_TYPE_RIDE) {
 			// Automatically research the ride so it's supported by the game.
 			rct_ride_entry *rideEntry;
-			int rideType;
+			sint32 rideType;
 
 			rideEntry = get_ride_entry(groupIndex);
 
-			for (int j = 0; j < 3; j++) {
+			for (sint32 j = 0; j < 3; j++) {
 				rideType = rideEntry->ride_type[j];
 				if (rideType != 255)
 					research_insert(true, 0x10000 | (rideType << 8) | groupIndex, rideEntry->category[0]);
@@ -1035,11 +1035,11 @@ static int cc_load_object(const utf8 **argv, int argc) {
 	return 0;
 }
 
-static int cc_object_count(const utf8 **argv, int argc) {
+static sint32 cc_object_count(const utf8 **argv, sint32 argc) {
 	const utf8* object_type_names[] = { "Rides", "Small scenery", "Large scenery", "Walls", "Banners", "Paths", "Path Additions", "Scenery groups", "Park entrances", "Water" };
-	for (int i = 0; i < 10; i++) {
+	for (sint32 i = 0; i < 10; i++) {
 
-		int entryGroupIndex = 0;
+		sint32 entryGroupIndex = 0;
 		for (; entryGroupIndex < object_entry_group_counts[i]; entryGroupIndex++){
 			if (object_entry_groups[i].chunks[entryGroupIndex] == (uint8*)-1){
 				break;
@@ -1051,19 +1051,19 @@ static int cc_object_count(const utf8 **argv, int argc) {
 	return 0;
 }
 
-static int cc_reset_user_strings(const utf8 **argv, int argc)
+static sint32 cc_reset_user_strings(const utf8 **argv, sint32 argc)
 {
 	reset_user_strings();
 	return 0;
 }
 
-static int cc_fix_banner_count(const utf8 **argv, int argc)
+static sint32 cc_fix_banner_count(const utf8 **argv, sint32 argc)
 {
 	fix_banner_count();
 	return 0;
 }
 
-static int cc_open(const utf8 **argv, int argc) {
+static sint32 cc_open(const utf8 **argv, sint32 argc) {
 	if (argc > 0) {
 		bool title = (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) != 0;
 		bool invalidTitle = false;
@@ -1091,7 +1091,7 @@ static int cc_open(const utf8 **argv, int argc) {
 }
 
 
-typedef int (*console_command_func)(const utf8 **argv, int argc);
+typedef sint32 (*console_command_func)(const utf8 **argv, sint32 argc);
 typedef struct console_command {
 	utf8 *command;
 	console_command_func func;
@@ -1167,22 +1167,22 @@ console_command console_command_table[] = {
 	{ "staff", cc_staff, "Staff management.", "staff <subcommand>"},
 };
 
-static int cc_windows(const utf8 **argv, int argc) {
-	for (int i = 0; i < countof(console_window_table); i++)
+static sint32 cc_windows(const utf8 **argv, sint32 argc) {
+	for (sint32 i = 0; i < countof(console_window_table); i++)
 		console_writeline(console_window_table[i]);
 	return 0;
 }
-static int cc_variables(const utf8 **argv, int argc)
+static sint32 cc_variables(const utf8 **argv, sint32 argc)
 {
-	for (int i = 0; i < countof(console_variable_table); i++)
+	for (sint32 i = 0; i < countof(console_variable_table); i++)
 		console_writeline(console_variable_table[i]);
 	return 0;
 }
 
-static int cc_help(const utf8 **argv, int argc)
+static sint32 cc_help(const utf8 **argv, sint32 argc)
 {
 	if (argc > 0) {
-		for (int i = 0; i < countof(console_command_table); i++) {
+		for (sint32 i = 0; i < countof(console_command_table); i++) {
 			if (strcmp(console_command_table[i].command, argv[0]) == 0) {
 				console_writeline(console_command_table[i].help);
 				console_printf("\nUsage:   %s", console_command_table[i].usage);
@@ -1197,7 +1197,7 @@ static int cc_help(const utf8 **argv, int argc)
 
 static void console_write_all_commands()
 {
-	for (int i = 0; i < countof(console_command_table); i++)
+	for (sint32 i = 0; i < countof(console_command_table); i++)
 		console_writeline(console_command_table[i].command);
 }
 
@@ -1210,8 +1210,8 @@ void console_execute(const utf8 *src)
 
 void console_execute_silent(const utf8 *src)
 {
-	int argc = 0;
-	int argvCapacity = 8;
+	sint32 argc = 0;
+	sint32 argvCapacity = 8;
 	utf8 **argv = malloc(argvCapacity * sizeof(utf8*));
 	const utf8 *start = src;
 	const utf8 *end;
@@ -1264,7 +1264,7 @@ void console_execute_silent(const utf8 *src)
 	}
 
 	bool validCommand = false;
-	for (int i = 0; i < countof(console_command_table); i++) {
+	for (sint32 i = 0; i < countof(console_command_table); i++) {
 		if (strcmp(argv[0], console_command_table[i].command) == 0) {
 			console_command_table[i].func((const utf8 **)(argv + 1), argc - 1);
 			validCommand = true;
@@ -1272,7 +1272,7 @@ void console_execute_silent(const utf8 *src)
 		}
 	}
 
-	for (int i = 0; i < argc; i++)
+	for (sint32 i = 0; i < argc; i++)
 		free(argv[i]);
 	free(argv);
 

@@ -28,8 +28,8 @@
 #include "hook.h"
 
 void* _hookTableAddress = 0;
-int _hookTableOffset = 0;
-int _maxHooks = 1000;
+sint32 _hookTableOffset = 0;
+sint32 _maxHooks = 1000;
 #define HOOK_BYTE_COUNT (140)
 
 registers gHookRegisters = {0};
@@ -42,9 +42,9 @@ registers gHookRegisters = {0};
 	*(data + 2) = ((addr) & 0x00ff0000) >> 16; \
 	*(data + 3) = ((addr) & 0xff000000) >> 24;
 
-static void hookfunc(uintptr_t address, uintptr_t hookAddress, int stacksize)
+static void hookfunc(uintptr_t address, uintptr_t hookAddress, sint32 stacksize)
 {
-	int i = 0;
+	sint32 i = 0;
 	uint8 data[HOOK_BYTE_COUNT] = {0};
 
 	uintptr_t registerAddress = (uintptr_t) &gHookRegisters;
@@ -180,9 +180,9 @@ void addhook(uintptr_t address, hook_function *function)
 	if (_hookTableOffset > _maxHooks) {
 		return;
 	}
-	unsigned int hookaddress = (unsigned int)_hookTableAddress + (_hookTableOffset * HOOK_BYTE_COUNT);
+	uint32 hookaddress = (uint32)_hookTableAddress + (_hookTableOffset * HOOK_BYTE_COUNT);
 	uint8 data[9];
-	int i = 0;
+	sint32 i = 0;
 	data[i++] = 0xE9; // jmp
 
 	write_address_strictalias(&data[i], hookaddress - address - i - 4);
@@ -193,7 +193,7 @@ void addhook(uintptr_t address, hook_function *function)
 	WriteProcessMemory(GetCurrentProcess(), (LPVOID)address, data, i, 0);
 #else
 	// We own the pages with PROT_WRITE | PROT_EXEC, we can simply just memcpy the data
-	int err = mprotect((void *)0x401000, 0x8a4000 - 0x401000, PROT_READ | PROT_WRITE);
+	sint32 err = mprotect((void *)0x401000, 0x8a4000 - 0x401000, PROT_READ | PROT_WRITE);
 	if (err != 0)
 	{
 		perror("mprotect");

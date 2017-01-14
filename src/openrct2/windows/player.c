@@ -92,10 +92,10 @@ rct_widget *window_player_page_widgets[] = {
 #pragma region Events
 
 void window_player_overview_close(rct_window *w);
-void window_player_overview_mouse_up(rct_window *w, int widgetIndex);
+void window_player_overview_mouse_up(rct_window *w, sint32 widgetIndex);
 void window_player_overview_resize(rct_window *w);
-void window_player_overview_mouse_down(int widgetIndex, rct_window *w, rct_widget *widget);
-void window_player_overview_dropdown(rct_window *w, int widgetIndex, int dropdownIndex);
+void window_player_overview_mouse_down(sint32 widgetIndex, rct_window *w, rct_widget *widget);
+void window_player_overview_dropdown(rct_window *w, sint32 widgetIndex, sint32 dropdownIndex);
 void window_player_overview_update(rct_window* w);
 void window_player_overview_invalidate(rct_window *w);
 void window_player_overview_paint(rct_window *w, rct_drawpixelinfo *dpi);
@@ -132,7 +132,7 @@ static rct_window_event_list window_player_overview_events = {
 };
 
 void window_player_statistics_close(rct_window *w);
-void window_player_statistics_mouse_up(rct_window *w, int widgetIndex);
+void window_player_statistics_mouse_up(rct_window *w, sint32 widgetIndex);
 void window_player_statistics_resize(rct_window *w);
 void window_player_statistics_update(rct_window* w);
 void window_player_statistics_invalidate(rct_window *w);
@@ -176,7 +176,7 @@ static rct_window_event_list *window_player_page_events[] = {
 
 #pragma endregion
 
-static void window_player_set_page(rct_window* w, int page);
+static void window_player_set_page(rct_window* w, sint32 page);
 static void window_player_draw_tab_images(rct_drawpixelinfo *dpi, rct_window *w);
 static void window_player_update_viewport(rct_window *w, bool scroll);
 static void window_player_update_title(rct_window* w);
@@ -235,8 +235,8 @@ void window_player_open(uint8 id)
 static void window_player_overview_show_group_dropdown(rct_window *w, rct_widget *widget)
 {
 	rct_widget *dropdownWidget;
-	int numItems, i;
-	int player = network_get_player_index((uint8)w->number);
+	sint32 numItems, i;
+	sint32 player = network_get_player_index((uint8)w->number);
 	if (player == -1) {
 		return;
 	}
@@ -268,7 +268,7 @@ void window_player_overview_close(rct_window *w)
 
 }
 
-void window_player_overview_mouse_up(rct_window *w, int widgetIndex)
+void window_player_overview_mouse_up(rct_window *w, sint32 widgetIndex)
 {
 	switch(widgetIndex){
 	case WIDX_CLOSE:
@@ -281,7 +281,7 @@ void window_player_overview_mouse_up(rct_window *w, int widgetIndex)
 	case WIDX_LOCATE:{
 		rct_window* mainWindow = window_get_main();
 		if (mainWindow != NULL) {
-			int player = network_get_player_index((uint8)w->number);
+			sint32 player = network_get_player_index((uint8)w->number);
 			if (player == -1) {
 				return;
 			}
@@ -297,7 +297,7 @@ void window_player_overview_mouse_up(rct_window *w, int widgetIndex)
 	}
 }
 
-void window_player_overview_mouse_down(int widgetIndex, rct_window *w, rct_widget *widget)
+void window_player_overview_mouse_down(sint32 widgetIndex, rct_window *w, rct_widget *widget)
 {
 	switch(widgetIndex){
 	case WIDX_GROUP_DROPDOWN:
@@ -306,16 +306,16 @@ void window_player_overview_mouse_down(int widgetIndex, rct_window *w, rct_widge
 	}
 }
 
-void window_player_overview_dropdown(rct_window *w, int widgetIndex, int dropdownIndex)
+void window_player_overview_dropdown(rct_window *w, sint32 widgetIndex, sint32 dropdownIndex)
 {
-	int player = network_get_player_index((uint8)w->number);
+	sint32 player = network_get_player_index((uint8)w->number);
 	if (player == -1) {
 		return;
 	}
 	if (dropdownIndex == -1) {
 		return;
 	}
-	int group = network_get_group_id(dropdownIndex);
+	sint32 group = network_get_group_id(dropdownIndex);
 	game_do_command(0, GAME_COMMAND_FLAG_APPLY, w->number, group, GAME_COMMAND_SET_PLAYER_GROUP, 0, 0);
 	window_invalidate(w);
 }
@@ -351,13 +351,13 @@ void window_player_overview_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	window_draw_widgets(w, dpi);
 	window_player_draw_tab_images(dpi, w);
 
-	int player = network_get_player_index((uint8)w->number);
+	sint32 player = network_get_player_index((uint8)w->number);
 	if (player == -1) {
 		return;
 	}
 
 	// Draw current group
-	int groupindex = network_get_group_index(network_get_player_group(player));
+	sint32 groupindex = network_get_group_index(network_get_player_group(player));
 	if (groupindex != -1) {
 		rct_widget* widget = &window_player_overview_widgets[WIDX_GROUP];
 		char buffer[300];
@@ -379,8 +379,8 @@ void window_player_overview_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	}
 
 	// Draw ping
-	int x = w->x + 90;
-	int y = w->y + 24;
+	sint32 x = w->x + 90;
+	sint32 y = w->y + 24;
 
 	set_format_arg(0, rct_string_id, STR_PING);
 	gfx_draw_string_left(dpi, STR_WINDOW_COLOUR_2_STRINGID, gCommonFormatArgs, 0, x, y);
@@ -391,8 +391,8 @@ void window_player_overview_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	// Draw last action
 	x = w->x + (w->width / 2);
 	y = w->y + w->height - 13;
-	int width = w->width - 8;
-	int lastaction = network_get_player_last_action(player, 0);
+	sint32 width = w->width - 8;
+	sint32 lastaction = network_get_player_last_action(player, 0);
 	set_format_arg(0, rct_string_id, STR_ACTION_NA);
 	if (lastaction != -999) {
 		set_format_arg(0, rct_string_id, network_get_action_name_string_id(lastaction));
@@ -433,7 +433,7 @@ void window_player_overview_invalidate(rct_window *w)
 	w->widgets[WIDX_VIEWPORT].right = w->width - 26;
 	w->widgets[WIDX_VIEWPORT].bottom = w->height - 14;
 
-	int groupDropdownWidth = w->widgets[WIDX_GROUP].right - w->widgets[WIDX_GROUP].left;
+	sint32 groupDropdownWidth = w->widgets[WIDX_GROUP].right - w->widgets[WIDX_GROUP].left;
 	w->widgets[WIDX_GROUP].left = (w->width - groupDropdownWidth) / 2;
 	w->widgets[WIDX_GROUP].right = w->widgets[WIDX_GROUP].left + groupDropdownWidth;
 	w->widgets[WIDX_GROUP_DROPDOWN].left = w->widgets[WIDX_GROUP].right - 10;
@@ -462,7 +462,7 @@ void window_player_statistics_close(rct_window *w)
 	}
 }
 
-void window_player_statistics_mouse_up(rct_window *w, int widgetIndex)
+void window_player_statistics_mouse_up(rct_window *w, sint32 widgetIndex)
 {
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
@@ -521,13 +521,13 @@ void window_player_statistics_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	window_draw_widgets(w, dpi);
 	window_player_draw_tab_images(dpi, w);
 
-	int player = network_get_player_index((uint8)w->number);
+	sint32 player = network_get_player_index((uint8)w->number);
 	if (player == -1) {
 		return;
 	}
 
-	int x = w->x + window_player_overview_widgets[WIDX_PAGE_BACKGROUND].left + 4;
-	int y = w->y + window_player_overview_widgets[WIDX_PAGE_BACKGROUND].top + 4;
+	sint32 x = w->x + window_player_overview_widgets[WIDX_PAGE_BACKGROUND].left + 4;
+	sint32 y = w->y + window_player_overview_widgets[WIDX_PAGE_BACKGROUND].top + 4;
 
 	set_format_arg(0, uint32, network_get_player_commands_ran(player));
 	gfx_draw_string_left(dpi, STR_COMMANDS_RAN, gCommonFormatArgs, COLOUR_BLACK, x, y);
@@ -538,9 +538,9 @@ void window_player_statistics_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	gfx_draw_string_left(dpi, STR_MONEY_SPENT, gCommonFormatArgs, COLOUR_BLACK, x, y);
 }
 
-static void window_player_set_page(rct_window* w, int page)
+static void window_player_set_page(rct_window* w, sint32 page)
 {
-	int originalPage = w->page;
+	sint32 originalPage = w->page;
 
 	w->page = page;
 	w->frame_no = 0;
@@ -579,7 +579,7 @@ static void window_player_set_page(rct_window* w, int page)
 static void window_player_draw_tab_images(rct_drawpixelinfo *dpi, rct_window *w)
 {
 	rct_widget *widget;
-	int x, y, imageId;
+	sint32 x, y, imageId;
 
 	// Tab 1
 	if (!widget_is_disabled(w, WIDX_TAB_1)) {
@@ -607,7 +607,7 @@ static void window_player_draw_tab_images(rct_drawpixelinfo *dpi, rct_window *w)
 
 static void window_player_update_viewport(rct_window *w, bool scroll)
 {
-	int playerIndex = network_get_player_index((uint8)w->number);
+	sint32 playerIndex = network_get_player_index((uint8)w->number);
 	if (playerIndex == -1) {
 		return;
 	}
@@ -616,7 +616,7 @@ static void window_player_update_viewport(rct_window *w, bool scroll)
 	if (viewport != NULL) {
 		rct_xyz16 coord = network_get_player_last_action_coord(playerIndex);
 		if (coord.x != 0 || coord.y != 0 || coord.z != 0) {
-			int viewX, viewY;
+			sint32 viewX, viewY;
 			center_2d_coordinates(coord.x, coord.y, coord.z, &viewX, &viewY, viewport);
 
 			// Don't scroll if the view was originally undefined
@@ -646,7 +646,7 @@ static void window_player_update_viewport(rct_window *w, bool scroll)
 
 static void window_player_update_title(rct_window* w)
 {
-	int player = network_get_player_index((uint8)w->number);
+	sint32 player = network_get_player_index((uint8)w->number);
 	if (player != -1) {
 		set_format_arg(0, const char *, network_get_player_name(player)); // set title caption to player name
 	} else {

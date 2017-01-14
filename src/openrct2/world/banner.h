@@ -45,10 +45,10 @@ enum{
 extern rct_banner gBanners[MAX_BANNERS];
 
 void banner_init();
-int create_new_banner(uint8 flags);
-rct_map_element *banner_get_map_element(int bannerIndex);
-int banner_get_closest_ride_index(int x, int y, int z);
+sint32 create_new_banner(uint8 flags);
+rct_map_element *banner_get_map_element(sint32 bannerIndex);
+sint32 banner_get_closest_ride_index(sint32 x, sint32 y, sint32 z);
 void fix_banner_count();
-void game_command_callback_place_banner(int eax, int ebx, int ecx, int edx, int esi, int edi, int ebp);
+void game_command_callback_place_banner(sint32 eax, sint32 ebx, sint32 ecx, sint32 edx, sint32 esi, sint32 edi, sint32 ebp);
 
 #endif

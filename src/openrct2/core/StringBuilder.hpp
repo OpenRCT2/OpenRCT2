@@ -40,7 +40,7 @@ public:
         Memory::Free(_buffer);
     }
 
-    void Append(int codepoint)
+    void Append(sint32 codepoint)
     {
         Append((codepoint_t)codepoint);
     }

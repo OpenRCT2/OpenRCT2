@@ -76,8 +76,8 @@ void window_title_logo_open()
 */
 static void window_title_logo_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
-	int x = 2;
-	int y = 2;
+	sint32 x = 2;
+	sint32 y = 2;
 	gfx_draw_sprite(dpi, SPR_G2_LOGO, w->x + x, w->y + y, 0);
 	gfx_draw_sprite(dpi, SPR_G2_TITLE, w->x + x + 104, w->y + y + 18, 0);
 }

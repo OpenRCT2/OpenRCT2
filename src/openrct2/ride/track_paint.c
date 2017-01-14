@@ -229,7 +229,7 @@ bool track_paint_util_has_fence(enum edge_t edge, rct_xy16 position, rct_map_ele
 		((position.x / 32) + offset.x) |
 		(((position.y / 32) + offset.y) * (1 << 8));
 
-	int entranceId = map_get_station(mapElement);
+	sint32 entranceId = map_get_station(mapElement);
 
 	return (ride->entrances[entranceId] != entranceLoc && ride->exits[entranceId] != entranceLoc);
 }
@@ -285,14 +285,14 @@ bool track_paint_util_should_paint_supports(rct_xy16 position)
 	return false;
 }
 
-void track_paint_util_draw_station_impl(uint8 rideIndex, uint8 trackSequence, uint8 direction, uint16 height, uint16 coverHeight, rct_map_element * mapElement, int fenceOffsetA, int fenceOffsetB);
+void track_paint_util_draw_station_impl(uint8 rideIndex, uint8 trackSequence, uint8 direction, uint16 height, uint16 coverHeight, rct_map_element * mapElement, sint32 fenceOffsetA, sint32 fenceOffsetB);
 
 void track_paint_util_draw_station(uint8 rideIndex, uint8 trackSequence, uint8 direction, uint16 height, rct_map_element * mapElement)
 {
 	track_paint_util_draw_station_impl(rideIndex, trackSequence, direction, height, height, mapElement, 5, 7);
 }
 
-void track_paint_util_draw_station_2(uint8 rideIndex, uint8 trackSequence, uint8 direction, uint16 height, rct_map_element * mapElement, int fenceOffsetA, int fenceOffsetB)
+void track_paint_util_draw_station_2(uint8 rideIndex, uint8 trackSequence, uint8 direction, uint16 height, rct_map_element * mapElement, sint32 fenceOffsetA, sint32 fenceOffsetB)
 {
 	track_paint_util_draw_station_impl(rideIndex, trackSequence, direction, height, height, mapElement, fenceOffsetA, fenceOffsetB);
 }
@@ -302,7 +302,7 @@ void track_paint_util_draw_station_3(uint8 rideIndex, uint8 trackSequence, uint8
 	track_paint_util_draw_station_impl(rideIndex, trackSequence, direction, height, coverHeight, mapElement, 5, 7);
 }
 
-void track_paint_util_draw_station_impl(uint8 rideIndex, uint8 trackSequence, uint8 direction, uint16 height, uint16 coverHeight, rct_map_element * mapElement, int fenceOffsetA, int fenceOffsetB)
+void track_paint_util_draw_station_impl(uint8 rideIndex, uint8 trackSequence, uint8 direction, uint16 height, uint16 coverHeight, rct_map_element * mapElement, sint32 fenceOffsetA, sint32 fenceOffsetB)
 {
 	rct_xy16 position = {gPaintMapPosition.x, gPaintMapPosition.y};
 	rct_ride * ride = get_ride(rideIndex);
@@ -436,7 +436,7 @@ void track_paint_util_draw_station_impl(uint8 rideIndex, uint8 trackSequence, ui
 	}
 }
 
-void track_paint_util_draw_station_inverted(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement, uint8 stationVariant)
+void track_paint_util_draw_station_inverted(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement, uint8 stationVariant)
 {
 	rct_xy16 position = {gPaintMapPosition.x, gPaintMapPosition.y};
 	rct_ride * ride = get_ride(rideIndex);
@@ -589,7 +589,7 @@ bool track_paint_util_draw_station_covers_2(enum edge_t edge, bool hasFence, con
 
 	uint32 imageId;
 	uint32 baseImageId = entranceStyle->base_image_id;
-	int imageOffset = 0;
+	sint32 imageOffset = 0;
 	rct_xyz16 offset, bounds = { 0, 0, 0 }, boundsOffset = { 0, 0, 0 };
 
 	offset = (rct_xyz16) {0, 0, height};
@@ -645,7 +645,7 @@ bool track_paint_util_draw_station_covers_2(enum edge_t edge, bool hasFence, con
 	return true;
 }
 
-void track_paint_util_draw_station_platform(rct_ride *ride, uint8 direction, int height, int zOffset, rct_map_element * mapElement)
+void track_paint_util_draw_station_platform(rct_ride *ride, uint8 direction, sint32 height, sint32 zOffset, rct_map_element * mapElement)
 {
 	rct_xy16 position = {gPaintMapPosition.x, gPaintMapPosition.y};
 	const rct_ride_entrance_definition * entranceStyle = &RideEntranceDefinitions[ride->entrance_style];
@@ -682,7 +682,7 @@ void track_paint_util_draw_station_platform(rct_ride *ride, uint8 direction, int
 	}
 }
 
-void track_paint_util_draw_pier(rct_ride * ride, const rct_ride_entrance_definition * entranceStyle, rct_xy16 position, uint8 direction, int height, rct_map_element * mapElement, uint8 rotation)
+void track_paint_util_draw_pier(rct_ride * ride, const rct_ride_entrance_definition * entranceStyle, rct_xy16 position, uint8 direction, sint32 height, rct_map_element * mapElement, uint8 rotation)
 {
 	bool hasFence;
 	uint32 imageId;
@@ -784,9 +784,9 @@ const rct_xyz16 defaultRightHelixUpSmallQuarterBoundOffsets[4][3][2] = {
 
 static const sint8 right_helix_up_small_quarter_tiles_sprite_map[] = {0, -1, 1, 2};
 
-void track_paint_util_right_helix_up_small_quarter_tiles_paint(const sint8 thickness[2], sint16 height, int direction, uint8 trackSequence, uint32 colourFlags, const uint32 sprites[4][3][2], const rct_xy16 offsets[4][3][2], const rct_xy16 boundsLengths[4][3][2], const rct_xyz16 boundsOffsets[4][3][2], uint8 rotation)
+void track_paint_util_right_helix_up_small_quarter_tiles_paint(const sint8 thickness[2], sint16 height, sint32 direction, uint8 trackSequence, uint32 colourFlags, const uint32 sprites[4][3][2], const rct_xy16 offsets[4][3][2], const rct_xy16 boundsLengths[4][3][2], const rct_xyz16 boundsOffsets[4][3][2], uint8 rotation)
 {
-	int index = right_helix_up_small_quarter_tiles_sprite_map[trackSequence];
+	sint32 index = right_helix_up_small_quarter_tiles_sprite_map[trackSequence];
 	if (index < 0) {
 		return;
 	}
@@ -872,9 +872,9 @@ const rct_xy16 defaultRightHelixUpLargeQuarterBoundLengths[4][5][2] = {
 };
 
 static const sint8 right_helix_up_large_quarter_sprite_map[] = {0, -1, 1, 2, -1, 3, 4};
-void track_paint_util_right_helix_up_large_quarter_tiles_paint(const sint8 thickness[2], sint16 height, int direction, uint8 trackSequence, uint32 colourFlags, const uint32 sprites[4][5][2], const rct_xy16 offsets[4][5][2], const rct_xy16 boundsLengths[4][5][2], const rct_xyz16 boundsOffsets[4][5][2], uint8 rotation)
+void track_paint_util_right_helix_up_large_quarter_tiles_paint(const sint8 thickness[2], sint16 height, sint32 direction, uint8 trackSequence, uint32 colourFlags, const uint32 sprites[4][5][2], const rct_xy16 offsets[4][5][2], const rct_xy16 boundsLengths[4][5][2], const rct_xyz16 boundsOffsets[4][5][2], uint8 rotation)
 {
-	int index = right_helix_up_large_quarter_sprite_map[trackSequence];
+	sint32 index = right_helix_up_large_quarter_sprite_map[trackSequence];
 	if (index < 0) {
 		return;
 	}
@@ -1035,9 +1035,9 @@ const sint8 defaultEighthToDiagThickness[4][4] = {
 const uint8 mapLeftEighthTurnToOrthogonal[] = { 4, 2, 3, 1, 0 };
 
 static const sint8 eighth_to_diag_sprite_map[] = {0, 1, 2, -1, 3};
-void track_paint_util_eighth_to_diag_tiles_paint(const sint8 thickness[4][4], sint16 height, int direction, uint8 trackSequence, uint32 colourFlags, const uint32 sprites[4][4], const rct_xy16 offsets[4][4], const rct_xy16 boundsLengths[4][4], const rct_xyz16 boundsOffsets[4][4], uint8 rotation)
+void track_paint_util_eighth_to_diag_tiles_paint(const sint8 thickness[4][4], sint16 height, sint32 direction, uint8 trackSequence, uint32 colourFlags, const uint32 sprites[4][4], const rct_xy16 offsets[4][4], const rct_xy16 boundsLengths[4][4], const rct_xyz16 boundsOffsets[4][4], uint8 rotation)
 {
-	int index = eighth_to_diag_sprite_map[trackSequence];
+	sint32 index = eighth_to_diag_sprite_map[trackSequence];
 	if (index < 0) {
 		return;
 	}
@@ -1071,9 +1071,9 @@ static const sint8 diag_sprite_map[4][4] = {
 	{0,  -1, -1, -1},
 };
 
-void track_paint_util_diag_tiles_paint(sint8 thickness, sint16 height, int direction, uint8 trackSequence, uint32 colourFlags, const uint32 sprites[4], const rct_xy16 offsets[4], const rct_xy16 boundsLengths[4], const rct_xyz16 boundsOffsets[4], uint8 rotation)
+void track_paint_util_diag_tiles_paint(sint8 thickness, sint16 height, sint32 direction, uint8 trackSequence, uint32 colourFlags, const uint32 sprites[4], const rct_xy16 offsets[4], const rct_xy16 boundsLengths[4], const rct_xyz16 boundsOffsets[4], uint8 rotation)
 {
-	int index = diag_sprite_map[direction][trackSequence];
+	sint32 index = diag_sprite_map[direction][trackSequence];
 	if (index < 0) {
 		return;
 	}
@@ -1182,9 +1182,9 @@ const rct_xy16 defaultRightQuarterTurn5TilesBoundLengths[4][5] = {
 };
 
 static const sint8 right_quarter_turn_5_tiles_sprite_map[] = {0, -1, 1, 2, -1, 3, 4};
-void track_paint_util_right_quarter_turn_5_tiles_paint(sint8 thickness, sint16 height, int direction, uint8 trackSequence, uint32 colourFlags, const uint32 sprites[4][5], const rct_xy16 offsets[4][5], const rct_xy16 boundsLengths[4][5], const rct_xyz16 boundsOffsets[4][5], uint8 rotation)
+void track_paint_util_right_quarter_turn_5_tiles_paint(sint8 thickness, sint16 height, sint32 direction, uint8 trackSequence, uint32 colourFlags, const uint32 sprites[4][5], const rct_xy16 offsets[4][5], const rct_xy16 boundsLengths[4][5], const rct_xyz16 boundsOffsets[4][5], uint8 rotation)
 {
-	int index = right_quarter_turn_5_tiles_sprite_map[trackSequence];
+	sint32 index = right_quarter_turn_5_tiles_sprite_map[trackSequence];
 	if (index < 0) {
 		return;
 	}
@@ -1197,7 +1197,7 @@ void track_paint_util_right_quarter_turn_5_tiles_paint(sint8 thickness, sint16 h
 	sub_98197C(imageId, (sint8) offset.x, (sint8) offset.y, boundsLength.x, boundsLength.y, thickness, height, boundsOffset.x, boundsOffset.y, height + boundsOffset.z, rotation);
 }
 
-void track_paint_util_right_quarter_turn_5_tiles_paint_2(sint16 height, int direction, uint8 rotation, uint8 trackSequence, uint32 colourFlags, const sprite_bb sprites[][5])
+void track_paint_util_right_quarter_turn_5_tiles_paint_2(sint16 height, sint32 direction, uint8 rotation, uint8 trackSequence, uint32 colourFlags, const sprite_bb sprites[][5])
 {
 	sint8 sprite = right_quarter_turn_5_tiles_sprite_map[trackSequence];
 	if (sprite < 0) {
@@ -1214,7 +1214,7 @@ void track_paint_util_right_quarter_turn_5_tiles_paint_2(sint16 height, int dire
 				rotation);
 }
 
-void track_paint_util_right_quarter_turn_5_tiles_paint_3(sint16 height, int direction, uint8 rotation, uint8 trackSequence, uint32 colourFlags, const sprite_bb sprites[][5])
+void track_paint_util_right_quarter_turn_5_tiles_paint_3(sint16 height, sint32 direction, uint8 rotation, uint8 trackSequence, uint32 colourFlags, const sprite_bb sprites[][5])
 {
 	sint8 sprite = right_quarter_turn_5_tiles_sprite_map[trackSequence];
 	if (sprite < 0) {
@@ -1332,9 +1332,9 @@ const rct_xy16 defaultRightQuarterTurn3TilesBoundLengths[4][3] = {
 };
 
 static const sint8 right_quarter_turn_3_tiles_sprite_map[] = {0, -1, 1, 2};
-void track_paint_util_right_quarter_turn_3_tiles_paint(sint8 thickness, sint16 height, int direction, uint8 trackSequence, uint32 colourFlags, const uint32 sprites[4][3], const rct_xy16 offsets[4][3], const rct_xy16 boundsLengths[4][3], const rct_xyz16 boundsOffsets[4][3], uint8 rotation)
+void track_paint_util_right_quarter_turn_3_tiles_paint(sint8 thickness, sint16 height, sint32 direction, uint8 trackSequence, uint32 colourFlags, const uint32 sprites[4][3], const rct_xy16 offsets[4][3], const rct_xy16 boundsLengths[4][3], const rct_xyz16 boundsOffsets[4][3], uint8 rotation)
 {
-	int index = right_quarter_turn_3_tiles_sprite_map[trackSequence];
+	sint32 index = right_quarter_turn_3_tiles_sprite_map[trackSequence];
 	if (index < 0) {
 		return;
 	}
@@ -1347,12 +1347,12 @@ void track_paint_util_right_quarter_turn_3_tiles_paint(sint8 thickness, sint16 h
 	sub_98197C(imageId, (sint8) offset.x, (sint8) offset.y, boundsLength.x, boundsLength.y, thickness, height, boundsOffset.x, boundsOffset.y, height + boundsOffset.z, rotation);
 }
 
-void track_paint_util_right_quarter_turn_3_tiles_paint_2(sint8 thickness, sint16 height, int direction, uint8 trackSequence, uint32 colourFlags, const uint32 sprites[4][3], uint8 rotation)
+void track_paint_util_right_quarter_turn_3_tiles_paint_2(sint8 thickness, sint16 height, sint32 direction, uint8 trackSequence, uint32 colourFlags, const uint32 sprites[4][3], uint8 rotation)
 {
 	track_paint_util_right_quarter_turn_3_tiles_paint_2_with_height_offset(thickness, height, direction, trackSequence, colourFlags, sprites, rotation, 0);
 }
 
-void track_paint_util_right_quarter_turn_3_tiles_paint_2_with_height_offset(sint8 thickness, sint16 height, int direction, uint8 trackSequence, uint32 colourFlags, const uint32 sprites[4][3], uint8 rotation, sint32 heightOffset)
+void track_paint_util_right_quarter_turn_3_tiles_paint_2_with_height_offset(sint8 thickness, sint16 height, sint32 direction, uint8 trackSequence, uint32 colourFlags, const uint32 sprites[4][3], uint8 rotation, sint32 heightOffset)
 {
 	sint8 sprite = right_quarter_turn_3_tiles_sprite_map[trackSequence];
 	if (sprite < 0) {
@@ -1396,7 +1396,7 @@ void track_paint_util_right_quarter_turn_3_tiles_paint_2_with_height_offset(sint
 	}
 }
 
-void track_paint_util_right_quarter_turn_3_tiles_paint_3(sint16 height, int direction, uint8 rotation, uint8 trackSequence, uint32 colourFlags, const sprite_bb sprites[4][3])
+void track_paint_util_right_quarter_turn_3_tiles_paint_3(sint16 height, sint32 direction, uint8 rotation, uint8 trackSequence, uint32 colourFlags, const sprite_bb sprites[4][3])
 {
 	sint8 sprite = right_quarter_turn_3_tiles_sprite_map[trackSequence];
 	if (sprite < 0) {
@@ -1406,7 +1406,7 @@ void track_paint_util_right_quarter_turn_3_tiles_paint_3(sint16 height, int dire
 	sub_98197C(spriteBB->sprite_id | colourFlags, (sint8)spriteBB->offset.x, (sint8)spriteBB->offset.y, spriteBB->bb_size.x, spriteBB->bb_size.y, (sint8)spriteBB->bb_size.z, spriteBB->offset.z + height, spriteBB->bb_offset.x, spriteBB->bb_offset.y, height + spriteBB->bb_offset.z, rotation);
 }
 
-void track_paint_util_right_quarter_turn_3_tiles_paint_4(sint16 height, int direction, uint8 rotation, uint8 trackSequence, uint32 colourFlags, const sprite_bb sprites[4][3])
+void track_paint_util_right_quarter_turn_3_tiles_paint_4(sint16 height, sint32 direction, uint8 rotation, uint8 trackSequence, uint32 colourFlags, const sprite_bb sprites[4][3])
 {
 	sint8 sprite = right_quarter_turn_3_tiles_sprite_map[trackSequence];
 	if (sprite < 0) {
@@ -1476,12 +1476,12 @@ void track_paint_util_right_quarter_turn_3_tiles_25_deg_down_tunnel(sint16 heigh
 }
 
 static const sint8 left_quarter_turn_3_tiles_sprite_map[] = {2, -1, 1, 0};
-void track_paint_util_left_quarter_turn_3_tiles_paint(sint8 thickness, sint16 height, int direction, uint8 trackSequence, uint32 colourFlags, const uint32 sprites[4][3], uint8 rotation)
+void track_paint_util_left_quarter_turn_3_tiles_paint(sint8 thickness, sint16 height, sint32 direction, uint8 trackSequence, uint32 colourFlags, const uint32 sprites[4][3], uint8 rotation)
 {
 	track_paint_util_left_quarter_turn_3_tiles_paint_with_height_offset(thickness, height, direction, trackSequence, colourFlags, sprites, rotation, 0);
 }
 
-void track_paint_util_left_quarter_turn_3_tiles_paint_with_height_offset(sint8 thickness, sint16 height, int direction, uint8 trackSequence, uint32 colourFlags, const uint32 sprites[4][3], uint8 rotation, sint32 heightOffset)
+void track_paint_util_left_quarter_turn_3_tiles_paint_with_height_offset(sint8 thickness, sint16 height, sint32 direction, uint8 trackSequence, uint32 colourFlags, const uint32 sprites[4][3], uint8 rotation, sint32 heightOffset)
 {
 	sint8 sprite = left_quarter_turn_3_tiles_sprite_map[trackSequence];
 	if (sprite < 0) {
@@ -1525,7 +1525,7 @@ void track_paint_util_left_quarter_turn_3_tiles_paint_with_height_offset(sint8 t
 	}
 }
 
-// void track_paint_util_left_quarter_turn_3_tiles_paint_2(sint16 height, int direction, uint8 rotation, uint8 trackSequence, uint32 colourFlags, const sprite_bb sprites[][5])
+// void track_paint_util_left_quarter_turn_3_tiles_paint_2(sint16 height, sint32 direction, uint8 rotation, uint8 trackSequence, uint32 colourFlags, const sprite_bb sprites[][5])
 // {
 // 	sint8 sprite = right_quarter_turn_5_tiles_sprite_map[trackSequence];
 // 	if (sprite < 0) {
@@ -1564,7 +1564,7 @@ void track_paint_util_left_quarter_turn_3_tiles_tunnel(sint16 height, uint8 tunn
 }
 
 
-void track_paint_util_left_quarter_turn_1_tile_paint(sint8 thickness, sint16 height, sint16 boundBoxZOffset, int direction, uint32 colourFlags, const uint32 * sprites, uint8 rotation)
+void track_paint_util_left_quarter_turn_1_tile_paint(sint8 thickness, sint16 height, sint16 boundBoxZOffset, sint32 direction, uint32 colourFlags, const uint32 * sprites, uint8 rotation)
 {
 	uint32 imageId = sprites[direction] | colourFlags;
 
@@ -1601,7 +1601,7 @@ void track_paint_util_left_quarter_turn_1_tile_tunnel(uint8 direction, uint16 ba
 void track_paint_util_spinning_tunnel_paint(sint8 thickness, sint16 height, uint8 direction, uint8 rotation)
 {
 
-	int frame = gScenarioTicks >> 2 & 3;
+	sint32 frame = gScenarioTicks >> 2 & 3;
 	uint32 colourFlags = gTrackColours[SCHEME_SUPPORTS];
 
 	uint32 colourFlags2 = gTrackColours[SCHEME_TRACK];
@@ -1737,9 +1737,9 @@ void track_paint_util_left_corkscrew_up_supports(uint8 direction, uint16 height)
  *
  *  rct2: 0x006C4794
  */
-void track_paint(uint8 direction, int height, rct_map_element *mapElement)
+void track_paint(uint8 direction, sint32 height, rct_map_element *mapElement)
 {
-	int rideIndex = mapElement->properties.track.ride_index;
+	sint32 rideIndex = mapElement->properties.track.ride_index;
 	rct_ride *ride = get_ride(rideIndex);
 	if (ride->type == RIDE_TYPE_NULL) {
 		log_error("Attempted to paint invalid ride: %d", rideIndex);
@@ -1756,9 +1756,9 @@ void track_paint(uint8 direction, int height, rct_map_element *mapElement)
 	rct_drawpixelinfo *dpi = unk_140E9A8;
 
 	if (!gTrackDesignSaveMode || rideIndex == gTrackDesignSaveRideIndex) {
-		int trackType = mapElement->properties.track.type;
-		int trackSequence = mapElement->properties.track.sequence & 0x0F;
-		int trackColourScheme = mapElement->properties.track.colour & 3;
+		sint32 trackType = mapElement->properties.track.type;
+		sint32 trackSequence = mapElement->properties.track.sequence & 0x0F;
+		sint32 trackColourScheme = mapElement->properties.track.colour & 3;
 
 		if ((gCurrentViewportFlags & VIEWPORT_FLAG_TRACK_HEIGHTS) && dpi->zoom_level == 0) {
 			gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
@@ -1811,10 +1811,10 @@ void track_paint(uint8 direction, int height, rct_map_element *mapElement)
 				RCT2_CALLPROC_X(
 					0x006C4934,
 					ride->type,
-					(int)trackDirectionList,
+					(sint32)trackDirectionList,
 					direction,
 					height,
-					(int)mapElement,
+					(sint32)mapElement,
 					rideIndex * sizeof(rct_ride),
 					trackSequence
 				);

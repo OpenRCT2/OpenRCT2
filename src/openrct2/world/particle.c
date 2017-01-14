@@ -23,7 +23,7 @@
  *
  *  rct2: 0x006735A1
  */
-void crashed_vehicle_particle_create(rct_vehicle_colour colours, int x, int y, int z)
+void crashed_vehicle_particle_create(rct_vehicle_colour colours, sint32 x, sint32 y, sint32 z)
 {
 	rct_crashed_vehicle_particle *sprite = (rct_crashed_vehicle_particle*)create_sprite(2);
 	if (sprite != NULL) {
@@ -113,7 +113,7 @@ void crashed_vehicle_particle_update(rct_crashed_vehicle_particle *particle)
  *
  *  rct2: 0x00673699
  */
-void crash_splash_create(int x, int y, int z)
+void crash_splash_create(sint32 x, sint32 y, sint32 z)
 {
 	rct_unk_sprite *sprite = (rct_unk_sprite*)create_sprite(2);
 	if (sprite != NULL) {

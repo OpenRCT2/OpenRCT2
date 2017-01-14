@@ -95,11 +95,11 @@ static bool TryClassifyAsS4(IStream * stream, ClassifiedFile * result)
     size_t dataLength = (size_t)stream->GetLength();
     uint8 * data = stream->ReadArray<uint8>(dataLength);
     stream->SetPosition(originalPosition);
-    int fileTypeVersion = sawyercoding_detect_file_type(data, dataLength);
+    sint32 fileTypeVersion = sawyercoding_detect_file_type(data, dataLength);
     Memory::Free(data);
 
-    int type = fileTypeVersion & FILE_TYPE_MASK;
-    int version = fileTypeVersion & FILE_VERSION_MASK;
+    sint32 type = fileTypeVersion & FILE_TYPE_MASK;
+    sint32 version = fileTypeVersion & FILE_VERSION_MASK;
 
     if (type == FILE_TYPE_SV4)
     {

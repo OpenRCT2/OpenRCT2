@@ -93,7 +93,7 @@ bool gfx_load_g1()
 			SDL_RWclose(file);
 
 			// Fix entry data offsets
-			for (unsigned int i = 0; i < header.num_entries; i++)
+			for (uint32 i = 0; i < header.num_entries; i++)
 				g1Elements[i].offset += (uintptr_t)_g1Buffer;
 
 			return true;
@@ -144,7 +144,7 @@ bool gfx_load_g2()
 			SDL_RWclose(file);
 
 			// Fix entry data offsets
-			for (unsigned int i = 0; i < g2.header.num_entries; i++)
+			for (uint32 i = 0; i < g2.header.num_entries; i++)
 				g2.elements[i].offset += (uintptr_t)g2.data;
 
 			return true;
@@ -165,7 +165,7 @@ bool gfx_load_g2()
  */
 void sub_68371D()
 {
-	for (int i = 0; i < countof(fadeSprites); i++) {
+	for (sint32 i = 0; i < countof(fadeSprites); i++) {
 		const uint32 spriteId = fadeSprites[i];
 		if (spriteId == SPR_NONE) {
 			unk_9E3CE4[i] = NULL;
@@ -180,7 +180,7 @@ void sub_68371D()
  * image.
  *  rct2: 0x0067A690
  */
-static void FASTCALL gfx_bmp_sprite_to_buffer(uint8* palette_pointer, uint8* unknown_pointer, uint8* source_pointer, uint8* dest_pointer, rct_g1_element* source_image, rct_drawpixelinfo *dest_dpi, int height, int width, int image_type){
+static void FASTCALL gfx_bmp_sprite_to_buffer(uint8* palette_pointer, uint8* unknown_pointer, uint8* source_pointer, uint8* dest_pointer, rct_g1_element* source_image, rct_drawpixelinfo *dest_dpi, sint32 height, sint32 width, sint32 image_type){
 	uint16 zoom_level = dest_dpi->zoom_level;
 	uint8 zoom_amount = 1 << zoom_level;
 	uint32 dest_line_width = (dest_dpi->width / zoom_amount) + dest_dpi->pitch;
@@ -194,7 +194,7 @@ static void FASTCALL gfx_bmp_sprite_to_buffer(uint8* palette_pointer, uint8* unk
 		for (; height > 0; height -= zoom_amount){
 			uint8* next_source_pointer = source_pointer + source_line_width;
 			uint8* next_dest_pointer = dest_pointer + dest_line_width;
-			for (int no_pixels = width; no_pixels > 0; no_pixels -= zoom_amount, source_pointer += zoom_amount, dest_pointer++){
+			for (sint32 no_pixels = width; no_pixels > 0; no_pixels -= zoom_amount, source_pointer += zoom_amount, dest_pointer++){
 				uint8 pixel = *source_pointer;
 				pixel = palette_pointer[pixel];
 				if (pixel){
@@ -217,7 +217,7 @@ static void FASTCALL gfx_bmp_sprite_to_buffer(uint8* palette_pointer, uint8* unk
 			uint8* next_source_pointer = source_pointer + source_line_width;
 			uint8* next_dest_pointer = dest_pointer + dest_line_width;
 
-			for (int no_pixels = width; no_pixels > 0; no_pixels -= zoom_amount, source_pointer += zoom_amount, dest_pointer++){
+			for (sint32 no_pixels = width; no_pixels > 0; no_pixels -= zoom_amount, source_pointer += zoom_amount, dest_pointer++){
 				uint8 pixel = *source_pointer;
 				if (pixel){
 					pixel = *dest_pointer;
@@ -238,7 +238,7 @@ static void FASTCALL gfx_bmp_sprite_to_buffer(uint8* palette_pointer, uint8* unk
 			uint8* next_source_pointer = source_pointer + source_line_width;
 			uint8* next_dest_pointer = dest_pointer + dest_line_width;
 
-			for (int no_pixels = width; no_pixels > 0; no_pixels -= zoom_amount, dest_pointer++, source_pointer += zoom_amount){
+			for (sint32 no_pixels = width; no_pixels > 0; no_pixels -= zoom_amount, dest_pointer++, source_pointer += zoom_amount){
 				*dest_pointer = *source_pointer;
 			}
 
@@ -253,7 +253,7 @@ static void FASTCALL gfx_bmp_sprite_to_buffer(uint8* palette_pointer, uint8* unk
 		uint8* next_source_pointer = source_pointer + source_line_width;
 		uint8* next_dest_pointer = dest_pointer + dest_line_width;
 
-		for (int no_pixels = width; no_pixels > 0; no_pixels -= zoom_amount, dest_pointer++, source_pointer += zoom_amount){
+		for (sint32 no_pixels = width; no_pixels > 0; no_pixels -= zoom_amount, dest_pointer++, source_pointer += zoom_amount){
 			uint8 pixel = *source_pointer;
 			if (pixel){
 				*dest_pointer = pixel;
@@ -265,8 +265,8 @@ static void FASTCALL gfx_bmp_sprite_to_buffer(uint8* palette_pointer, uint8* unk
 	return;
 }
 
-uint8* FASTCALL gfx_draw_sprite_get_palette(int image_id, uint32 tertiary_colour) {
-	int image_type = (image_id & 0xE0000000);
+uint8* FASTCALL gfx_draw_sprite_get_palette(sint32 image_id, uint32 tertiary_colour) {
+	sint32 image_type = (image_id & 0xE0000000);
 	if (image_type == 0)
 		return NULL;
 
@@ -320,7 +320,7 @@ uint8* FASTCALL gfx_draw_sprite_get_palette(int image_id, uint32 tertiary_colour
  * dpi (esi)
  * tertiary_colour (ebp)
  */
-void FASTCALL gfx_draw_sprite_software(rct_drawpixelinfo *dpi, int image_id, int x, int y, uint32 tertiary_colour)
+void FASTCALL gfx_draw_sprite_software(rct_drawpixelinfo *dpi, sint32 image_id, sint32 x, sint32 y, uint32 tertiary_colour)
 {
 	uint8* palette_pointer = gfx_draw_sprite_get_palette(image_id, tertiary_colour);
 	if (image_id & IMAGE_TYPE_REMAP_2_PLUS) {
@@ -340,10 +340,10 @@ void FASTCALL gfx_draw_sprite_software(rct_drawpixelinfo *dpi, int image_id, int
 * x (cx)
 * y (dx)
 */
-void FASTCALL gfx_draw_sprite_palette_set_software(rct_drawpixelinfo *dpi, int image_id, int x, int y, uint8* palette_pointer, uint8* unknown_pointer)
+void FASTCALL gfx_draw_sprite_palette_set_software(rct_drawpixelinfo *dpi, sint32 image_id, sint32 x, sint32 y, uint8* palette_pointer, uint8* unknown_pointer)
 {
-	int image_element = image_id & 0x7FFFF;
-	int image_type = image_id & 0xE0000000;
+	sint32 image_element = image_id & 0x7FFFF;
+	sint32 image_type = image_id & 0xE0000000;
 
 	rct_g1_element *g1_source = gfx_get_g1_element(image_element);
 
@@ -366,8 +366,8 @@ void FASTCALL gfx_draw_sprite_palette_set_software(rct_drawpixelinfo *dpi, int i
 	}
 
 	//Its used super often so we will define it to a separate variable.
-	int zoom_level = dpi->zoom_level;
-	int zoom_mask = 0xFFFFFFFF << zoom_level;
+	sint32 zoom_level = dpi->zoom_level;
+	sint32 zoom_mask = 0xFFFFFFFF << zoom_level;
 
 	if (zoom_level && g1_source->flags & G1_FLAG_RLE_COMPRESSION){
 		x -= ~zoom_mask;
@@ -375,7 +375,7 @@ void FASTCALL gfx_draw_sprite_palette_set_software(rct_drawpixelinfo *dpi, int i
 	}
 
 	//This will be the height of the drawn image
-	int height = g1_source->height;
+	sint32 height = g1_source->height;
 	//This is the start y coordinate on the destination
 	sint16 dest_start_y = y + g1_source->y_offset;
 
@@ -388,7 +388,7 @@ void FASTCALL gfx_draw_sprite_palette_set_software(rct_drawpixelinfo *dpi, int i
 		dest_start_y = (dest_start_y&zoom_mask) - dpi->y;
 	}
 	//This is the start y coordinate on the source
-	int source_start_y = 0;
+	sint32 source_start_y = 0;
 
 	if (dest_start_y < 0){
 		//If the destination y is negative reduce the height of the
@@ -410,7 +410,7 @@ void FASTCALL gfx_draw_sprite_palette_set_software(rct_drawpixelinfo *dpi, int i
 		}
 	}
 
-	int dest_end_y = dest_start_y + height;
+	sint32 dest_end_y = dest_start_y + height;
 
 	if (dest_end_y > dpi->height){
 		//If the destination y is outside of the drawing
@@ -423,9 +423,9 @@ void FASTCALL gfx_draw_sprite_palette_set_software(rct_drawpixelinfo *dpi, int i
 	dest_start_y >>= zoom_level;
 
 	//This will be the width of the drawn image
-	int width = g1_source->width;
+	sint32 width = g1_source->width;
 	//This is the source start x coordinate
-	int source_start_x = 0;
+	sint32 source_start_x = 0;
 	//This is the destination start x coordinate
 	sint16 dest_start_x = ((x + g1_source->x_offset + ~zoom_mask)&zoom_mask) - dpi->x;
 
@@ -448,7 +448,7 @@ void FASTCALL gfx_draw_sprite_palette_set_software(rct_drawpixelinfo *dpi, int i
 		}
 	}
 
-	int dest_end_x = dest_start_x + width;
+	sint32 dest_end_x = dest_start_x + width;
 
 	if (dest_end_x > dpi->width){
 		//If the destination x is outside of the drawing area
@@ -486,9 +486,9 @@ void FASTCALL gfx_draw_sprite_palette_set_software(rct_drawpixelinfo *dpi, int i
  *
  *  rct2: 0x00681DE2
  */
-void FASTCALL gfx_draw_sprite_raw_masked_software(rct_drawpixelinfo *dpi, int x, int y, int maskImage, int colourImage)
+void FASTCALL gfx_draw_sprite_raw_masked_software(rct_drawpixelinfo *dpi, sint32 x, sint32 y, sint32 maskImage, sint32 colourImage)
 {
-	int left, top, right, bottom, width, height;
+	sint32 left, top, right, bottom, width, height;
 	rct_g1_element *imgMask = &g1Elements[maskImage & 0x7FFFF];
 	rct_g1_element *imgColour = &g1Elements[colourImage & 0x7FFFF];
 
@@ -517,18 +517,18 @@ void FASTCALL gfx_draw_sprite_raw_masked_software(rct_drawpixelinfo *dpi, int x,
 	if (width < 0 || height < 0)
 		return;
 
-	int skipX = left - x;
-	int skipY = top - y;
+	sint32 skipX = left - x;
+	sint32 skipY = top - y;
 
 	uint8 *maskSrc = imgMask->offset + (skipY * imgMask->width) + skipX;
 	uint8 *colourSrc = imgColour->offset + (skipY * imgColour->width) + skipX;
 	uint8 *dst = dpi->bits + (left - dpi->x) + ((top - dpi->y) * (dpi->width + dpi->pitch));
 
-	int maskWrap = imgMask->width - width;
-	int colourWrap = imgColour->width - width;
-	int dstWrap = ((dpi->width + dpi->pitch) - width);
-	for (int yy = top; yy < bottom; yy++) {
-		for (int xx = left; xx < right; xx++) {
+	sint32 maskWrap = imgMask->width - width;
+	sint32 colourWrap = imgColour->width - width;
+	sint32 dstWrap = ((dpi->width + dpi->pitch) - width);
+	for (sint32 yy = top; yy < bottom; yy++) {
+		for (sint32 xx = left; xx < right; xx++) {
 			uint8 colour = (*colourSrc) & (*maskSrc);
 			if (colour != 0) {
 				*dst = colour;
@@ -544,7 +544,7 @@ void FASTCALL gfx_draw_sprite_raw_masked_software(rct_drawpixelinfo *dpi, int x,
 	}
 }
 
-rct_g1_element *gfx_get_g1_element(int image_id) {
+rct_g1_element *gfx_get_g1_element(sint32 image_id) {
 	if (image_id < SPR_G2_BEGIN) {
 		return &g1Elements[image_id];
 	}

@@ -79,7 +79,7 @@ static uint16 _window_error_num_lines;
 void window_error_open(rct_string_id title, rct_string_id message)
 {
 	utf8 *dst;
-	int numLines, fontHeight, x, y, width, height, maxY;
+	sint32 numLines, fontHeight, x, y, width, height, maxY;
 	rct_window *w;
 
 	window_close_by_class(WC_ERROR);
@@ -155,7 +155,7 @@ static void window_error_unknown5(rct_window *w)
  */
 static void window_error_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
-	int t, l, r, b;
+	sint32 t, l, r, b;
 
 	l = w->x;
 	t = w->y;

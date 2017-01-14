@@ -28,7 +28,7 @@ static rct_widget window_title_options_widgets[] = {
 	{ WIDGETS_END },
 };
 
-static void window_title_options_mouseup(rct_window *w, int widgetIndex);
+static void window_title_options_mouseup(rct_window *w, sint32 widgetIndex);
 static void window_title_options_invalidate(rct_window *w);
 static void window_title_options_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
@@ -82,7 +82,7 @@ void window_title_options_open()
 	window_init_scroll_widgets(window);
 }
 
-static void window_title_options_mouseup(rct_window *w, int widgetIndex)
+static void window_title_options_mouseup(rct_window *w, sint32 widgetIndex)
 {
 	if (gIntroState != INTRO_STATE_NONE)
 		return;

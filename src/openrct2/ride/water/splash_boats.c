@@ -230,7 +230,7 @@ uint32 SplashBoats25DegDownToFlatFrontImageId[4] =
 	SPR_SPLASH_BOATS_FLAT_TO_25_DEG_UP_FRONT_NW_SE,
 };
 
-static void paint_splash_boats_track_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element *mapElement)
+static void paint_splash_boats_track_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element *mapElement)
 {
 	uint32 imageId = SplashBoats25DegUpImageId[direction] | gTrackColours[SCHEME_TRACK];
 	uint32 frontImageId = SplashBoats25DegUpFrontImageId[direction] | gTrackColours[SCHEME_TRACK];
@@ -249,7 +249,7 @@ static void paint_splash_boats_track_25_deg_up(uint8 rideIndex, uint8 trackSeque
 	paint_util_set_general_support_height(height + 56, 0x20);
 }
 
-static void paint_splash_boats_track_60_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element *mapElement)
+static void paint_splash_boats_track_60_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element *mapElement)
 {
 	uint32 imageId = SplashBoats60DegUpImageId[direction] | gTrackColours[SCHEME_TRACK];
 	uint32 frontImageId = SplashBoats60DegUpFrontImageId[direction] | gTrackColours[SCHEME_TRACK];
@@ -268,7 +268,7 @@ static void paint_splash_boats_track_60_deg_up(uint8 rideIndex, uint8 trackSeque
 	paint_util_set_general_support_height(height + 104, 0x20);
 }
 
-static void paint_splash_boats_track_flat_to_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element *mapElement)
+static void paint_splash_boats_track_flat_to_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element *mapElement)
 {
 	uint32 imageId = SplashBoatsFlatTo25DegUpImageId[direction] | gTrackColours[SCHEME_TRACK];
 	uint32 frontImageId = SplashBoatsFlatTo25DegUpFrontImageId[direction] | gTrackColours[SCHEME_TRACK];
@@ -287,7 +287,7 @@ static void paint_splash_boats_track_flat_to_25_deg_up(uint8 rideIndex, uint8 tr
 	paint_util_set_general_support_height(height + 48, 0x20);
 }
 
-static void paint_splash_boats_track_25_deg_up_to_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element *mapElement)
+static void paint_splash_boats_track_25_deg_up_to_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element *mapElement)
 {
 	uint32 imageId = SplashBoats25DegUpToFlatImageId[direction] | gTrackColours[SCHEME_TRACK];
 	uint32 frontImageId = SplashBoats25DegUpToFlatFrontImageId[direction] | gTrackColours[SCHEME_TRACK];
@@ -306,7 +306,7 @@ static void paint_splash_boats_track_25_deg_up_to_flat(uint8 rideIndex, uint8 tr
 	paint_util_set_general_support_height(height + 40, 0x20);
 }
 
-static void paint_splash_boats_track_25_deg_up_to_60_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element *mapElement)
+static void paint_splash_boats_track_25_deg_up_to_60_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element *mapElement)
 {
 	uint32 imageId = SplashBoats25DegUpTo60DegUpImageId[direction] | gTrackColours[SCHEME_TRACK];
 	uint32 frontImageId = SplashBoats25DegUpTo60DegUpFrontImageId[direction] | gTrackColours[SCHEME_TRACK];
@@ -325,7 +325,7 @@ static void paint_splash_boats_track_25_deg_up_to_60_deg_up(uint8 rideIndex, uin
 	paint_util_set_general_support_height(height + 72, 0x20);
 }
 
-static void paint_splash_boats_track_60_deg_up_to_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element *mapElement)
+static void paint_splash_boats_track_60_deg_up_to_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element *mapElement)
 {
 	uint32 imageId = SplashBoats60DegUpTo25DegUpImageId[direction] | gTrackColours[SCHEME_TRACK];
 	uint32 frontImageId = SplashBoats60DegUpTo25DegUpFrontImageId[direction] | gTrackColours[SCHEME_TRACK];
@@ -344,7 +344,7 @@ static void paint_splash_boats_track_60_deg_up_to_25_deg_up(uint8 rideIndex, uin
 	paint_util_set_general_support_height(height + 72, 0x20);
 }
 
-static void paint_splash_boats_track_25_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element *mapElement)
+static void paint_splash_boats_track_25_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element *mapElement)
 {
 	uint32 imageId = SplashBoats25DegDownImageId[direction] | gTrackColours[SCHEME_TRACK];
 	uint32 frontImageId = SplashBoats25DegDownFrontImageId[direction] | gTrackColours[SCHEME_TRACK];
@@ -364,12 +364,12 @@ static void paint_splash_boats_track_25_deg_down(uint8 rideIndex, uint8 trackSeq
 	paint_util_set_general_support_height(height + 56, 0x20);
 }
 
-static void paint_splash_boats_track_60_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element *mapElement)
+static void paint_splash_boats_track_60_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element *mapElement)
 {
 	paint_splash_boats_track_60_deg_up(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
 }
 
-static void paint_splash_boats_track_flat_to_25_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element *mapElement)
+static void paint_splash_boats_track_flat_to_25_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element *mapElement)
 {
 	uint32 imageId = SplashBoatsFlatTo25DegDownImageId[direction] | gTrackColours[SCHEME_TRACK];
 	uint32 frontImageId = SplashBoatsFlatTo25DegDownFrontImageId[direction] | gTrackColours[SCHEME_TRACK];
@@ -389,17 +389,17 @@ static void paint_splash_boats_track_flat_to_25_deg_down(uint8 rideIndex, uint8 
 	paint_util_set_general_support_height(height + 40, 0x20);
 }
 
-static void paint_splash_boats_track_25_deg_down_to_60_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element *mapElement)
+static void paint_splash_boats_track_25_deg_down_to_60_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element *mapElement)
 {
 	paint_splash_boats_track_60_deg_up_to_25_deg_up(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
 }
 
-static void paint_splash_boats_track_60_deg_down_to_25_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element *mapElement)
+static void paint_splash_boats_track_60_deg_down_to_25_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element *mapElement)
 {
 	paint_splash_boats_track_25_deg_up_to_60_deg_up(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
 }
 
-static void paint_splash_boats_track_25_deg_down_to_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element *mapElement)
+static void paint_splash_boats_track_25_deg_down_to_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element *mapElement)
 {
 	uint32 imageId = SplashBoats25DegDownToFlatImageId[direction] | gTrackColours[SCHEME_TRACK];
 	uint32 frontImageId = SplashBoats25DegDownToFlatFrontImageId[direction] | gTrackColours[SCHEME_TRACK];
@@ -419,7 +419,7 @@ static void paint_splash_boats_track_25_deg_down_to_flat(uint8 rideIndex, uint8 
 	paint_util_set_general_support_height(height + 48, 0x20);
 }
 
-TRACK_PAINT_FUNCTION get_track_paint_function_splash_boats(int trackType, int direction)
+TRACK_PAINT_FUNCTION get_track_paint_function_splash_boats(sint32 trackType, sint32 direction)
 {
 	switch (trackType) {
 	case TRACK_ELEM_25_DEG_UP:
@@ -469,7 +469,7 @@ TRACK_PAINT_FUNCTION get_track_paint_function_splash_boats(int trackType, int di
  *
  *  rct2: 0x006D4295
  */
-void vehicle_visual_splash_boats_or_water_coaster(int x, int imageDirection, int y, int z, rct_vehicle *vehicle, const rct_ride_entry_vehicle *vehicleEntry)
+void vehicle_visual_splash_boats_or_water_coaster(sint32 x, sint32 imageDirection, sint32 y, sint32 z, rct_vehicle *vehicle, const rct_ride_entry_vehicle *vehicleEntry)
 {
 	if (vehicle->is_child) {
 		vehicle = GET_VEHICLE(vehicle->prev_vehicle_on_ride);

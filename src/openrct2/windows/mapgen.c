@@ -169,8 +169,8 @@ static rct_widget window_mapgen_simplex_widgets[] = {
 	{ WIDGETS_END },
 };
 
-const int window_mapgen_tab_animation_divisor[] = { 1, 1, 1 };
-const int window_mapgen_tab_animation_frames[] = { 1, 1, 1 };
+const sint32 window_mapgen_tab_animation_divisor[] = { 1, 1, 1 };
+const sint32 window_mapgen_tab_animation_frames[] = { 1, 1, 1 };
 
 
 static rct_widget *window_mapgen_page_widgets[] = {
@@ -183,23 +183,23 @@ static rct_widget *window_mapgen_page_widgets[] = {
 
 #pragma region Events
 
-static void window_mapgen_base_mouseup(rct_window *w, int widgetIndex);
-static void window_mapgen_base_mousedown(int widgetIndex, rct_window *w, rct_widget* widget);
-static void window_mapgen_base_dropdown(rct_window *w, int widgetIndex, int dropdownIndex);
+static void window_mapgen_base_mouseup(rct_window *w, sint32 widgetIndex);
+static void window_mapgen_base_mousedown(sint32 widgetIndex, rct_window *w, rct_widget* widget);
+static void window_mapgen_base_dropdown(rct_window *w, sint32 widgetIndex, sint32 dropdownIndex);
 static void window_mapgen_base_update(rct_window *w);
-static void window_mapgen_textinput(rct_window *w, int widgetIndex, char *text);
+static void window_mapgen_textinput(rct_window *w, sint32 widgetIndex, char *text);
 static void window_mapgen_base_invalidate(rct_window *w);
 static void window_mapgen_base_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
-static void window_mapgen_random_mouseup(rct_window *w, int widgetIndex);
-static void window_mapgen_random_mousedown(int widgetIndex, rct_window*w, rct_widget* widget);
+static void window_mapgen_random_mouseup(rct_window *w, sint32 widgetIndex);
+static void window_mapgen_random_mousedown(sint32 widgetIndex, rct_window*w, rct_widget* widget);
 static void window_mapgen_random_update(rct_window *w);
 static void window_mapgen_random_invalidate(rct_window *w);
 static void window_mapgen_random_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
-static void window_mapgen_simplex_mouseup(rct_window *w, int widgetIndex);
-static void window_mapgen_simplex_mousedown(int widgetIndex, rct_window *w, rct_widget* widget);
-static void window_mapgen_simplex_dropdown(rct_window *w, int widgetIndex, int dropdownIndex);
+static void window_mapgen_simplex_mouseup(rct_window *w, sint32 widgetIndex);
+static void window_mapgen_simplex_mousedown(sint32 widgetIndex, rct_window *w, rct_widget* widget);
+static void window_mapgen_simplex_dropdown(rct_window *w, sint32 widgetIndex, sint32 dropdownIndex);
 static void window_mapgen_simplex_update(rct_window *w);
 static void window_mapgen_simplex_invalidate(rct_window *w);
 static void window_mapgen_simplex_paint(rct_window *w, rct_drawpixelinfo *dpi);
@@ -387,7 +387,7 @@ static uint32 window_mapgen_page_hold_down_widgets[] = {
 
 #pragma endregion
 
-const int window_mapgen_tab_animation_loops[] = { 16, 16, 16 };
+const sint32 window_mapgen_tab_animation_loops[] = { 16, 16, 16 };
 
 #define MINIMUM_MAP_SIZE_TECHNICAL 15
 #define MAXIMUM_MAP_SIZE_TECHNICAL 256
@@ -398,7 +398,7 @@ const int window_mapgen_tab_animation_loops[] = { 16, 16, 16 };
 #define WATERLEVEL_MIN 0
 #define WATERLEVEL_MAX 54
 
-static void window_mapgen_set_page(rct_window *w, int page);
+static void window_mapgen_set_page(rct_window *w, sint32 page);
 static void window_mapgen_set_pressed_tab(rct_window *w);
 static void window_mapgen_anchor_border_widgets(rct_window *w);
 static void window_mapgen_draw_tab_images(rct_drawpixelinfo *dpi, rct_window *w);
@@ -415,18 +415,18 @@ static char window_land_wall_texture_order[] = {
 	0, 0
 };
 
-static int _mapSize = 150;
-static int _baseHeight = 12;
-static int _waterLevel = 16;
-static int _floorTexture = TERRAIN_GRASS;
-static int _wallTexture = TERRAIN_EDGE_ROCK;
-static int _randomTerrrain = 1;
-static int _placeTrees = 1;
+static sint32 _mapSize = 150;
+static sint32 _baseHeight = 12;
+static sint32 _waterLevel = 16;
+static sint32 _floorTexture = TERRAIN_GRASS;
+static sint32 _wallTexture = TERRAIN_EDGE_ROCK;
+static sint32 _randomTerrrain = 1;
+static sint32 _placeTrees = 1;
 
-static int	 _simplex_low = 6;
-static int	 _simplex_high = 10;
+static sint32	 _simplex_low = 6;
+static sint32	 _simplex_high = 10;
 static sint32 _simplex_base_freq = 60;
-static int	 _simplex_octaves = 4;
+static sint32	 _simplex_octaves = 4;
 
 rct_window *window_mapgen_open()
 {
@@ -460,7 +460,7 @@ rct_window *window_mapgen_open()
 
 #pragma region Base page
 
-static void window_mapgen_base_mouseup(rct_window *w, int widgetIndex)
+static void window_mapgen_base_mouseup(rct_window *w, sint32 widgetIndex)
 {
 	mapgen_settings mapgenSettings;
 
@@ -502,10 +502,10 @@ static void window_mapgen_base_mouseup(rct_window *w, int widgetIndex)
 	}
 }
 
-static void window_mapgen_base_mousedown(int widgetIndex, rct_window *w, rct_widget* widget)
+static void window_mapgen_base_mousedown(sint32 widgetIndex, rct_window *w, rct_widget* widget)
 {
-	int i;
-	int defaultIndex = -1;
+	sint32 i;
+	sint32 defaultIndex = -1;
 	switch (widgetIndex) {
 	case WIDX_MAP_SIZE_UP:
 		_mapSize = min(_mapSize + 1, MAXIMUM_MAP_SIZE_TECHNICAL);
@@ -570,9 +570,9 @@ static void window_mapgen_base_mousedown(int widgetIndex, rct_window *w, rct_wid
 	}
 }
 
-static void window_mapgen_base_dropdown(rct_window *w, int widgetIndex, int dropdownIndex)
+static void window_mapgen_base_dropdown(rct_window *w, sint32 widgetIndex, sint32 dropdownIndex)
 {
-	int type;
+	sint32 type;
 
 	switch (widgetIndex) {
 	case WIDX_FLOOR_TEXTURE:
@@ -618,9 +618,9 @@ static void window_mapgen_base_update(rct_window *w)
 	widget_invalidate(w, WIDX_TAB_1);
 }
 
-static void window_mapgen_textinput(rct_window *w, int widgetIndex, char *text)
+static void window_mapgen_textinput(rct_window *w, sint32 widgetIndex, char *text)
 {
-	int value;
+	sint32 value;
 	char* end;
 
 	if (text == NULL)
@@ -694,7 +694,7 @@ static void window_mapgen_base_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 #pragma region Random page
 
-static void window_mapgen_random_mouseup(rct_window *w, int widgetIndex)
+static void window_mapgen_random_mouseup(rct_window *w, sint32 widgetIndex)
 {
 	mapgen_settings mapgenSettings;
 
@@ -732,7 +732,7 @@ static void window_mapgen_random_mouseup(rct_window *w, int widgetIndex)
 	}
 }
 
-static void window_mapgen_random_mousedown(int widgetIndex, rct_window *w, rct_widget* widget)
+static void window_mapgen_random_mousedown(sint32 widgetIndex, rct_window *w, rct_widget* widget)
 {
 
 }
@@ -774,7 +774,7 @@ static void window_mapgen_random_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 #pragma region Simplex page
 
-static void window_mapgen_simplex_mouseup(rct_window *w, int widgetIndex)
+static void window_mapgen_simplex_mouseup(rct_window *w, sint32 widgetIndex)
 {
 	mapgen_settings mapgenSettings;
 
@@ -813,10 +813,10 @@ static void window_mapgen_simplex_mouseup(rct_window *w, int widgetIndex)
 	}
 }
 
-static void window_mapgen_simplex_mousedown(int widgetIndex, rct_window *w, rct_widget* widget)
+static void window_mapgen_simplex_mousedown(sint32 widgetIndex, rct_window *w, rct_widget* widget)
 {
-	int i;
-	int defaultIndex = -1;
+	sint32 i;
+	sint32 defaultIndex = -1;
 	switch (widgetIndex) {
 	case WIDX_SIMPLEX_LOW_UP:
 		_simplex_low = min(_simplex_low + 1, 24);
@@ -905,9 +905,9 @@ static void window_mapgen_simplex_mousedown(int widgetIndex, rct_window *w, rct_
 	}
 }
 
-static void window_mapgen_simplex_dropdown(rct_window *w, int widgetIndex, int dropdownIndex)
+static void window_mapgen_simplex_dropdown(rct_window *w, sint32 widgetIndex, sint32 dropdownIndex)
 {
-	int type;
+	sint32 type;
 
 	switch (widgetIndex) {
 	case WIDX_SIMPLEX_FLOOR_TEXTURE:
@@ -1002,7 +1002,7 @@ static void window_mapgen_simplex_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 #pragma region Common
 
-static void window_mapgen_set_page(rct_window *w, int page)
+static void window_mapgen_set_page(rct_window *w, sint32 page)
 {
 	w->page = page;
 	w->frame_no = 0;
@@ -1024,7 +1024,7 @@ static void window_mapgen_set_page(rct_window *w, int page)
 
 static void window_mapgen_set_pressed_tab(rct_window *w)
 {
-	int i;
+	sint32 i;
 	for (i = 0; i < WINDOW_MAPGEN_PAGE_COUNT; i++)
 		w->pressed_widgets &= ~(1 << (WIDX_TAB_1 + i));
 	w->pressed_widgets |= 1LL << (WIDX_TAB_1 + w->page);
@@ -1032,8 +1032,8 @@ static void window_mapgen_set_pressed_tab(rct_window *w)
 
 static void window_mapgen_anchor_border_widgets(rct_window *w)
 {
-	int width = w->widgets[WIDX_GENERATE].right - w->widgets[WIDX_GENERATE].left;
-	int height = w->widgets[WIDX_GENERATE].bottom - w->widgets[WIDX_GENERATE].top;
+	sint32 width = w->widgets[WIDX_GENERATE].right - w->widgets[WIDX_GENERATE].left;
+	sint32 height = w->widgets[WIDX_GENERATE].bottom - w->widgets[WIDX_GENERATE].top;
 
 	w->widgets[WIDX_GENERATE].left = w->width - 3 - width;
 	w->widgets[WIDX_GENERATE].right = w->width - 3;
@@ -1049,13 +1049,13 @@ static void window_mapgen_anchor_border_widgets(rct_window *w)
 	w->widgets[WIDX_CLOSE].right = w->width - 3;
 }
 
-static void window_mapgen_draw_tab_image(rct_drawpixelinfo *dpi, rct_window *w, int page, int spriteIndex)
+static void window_mapgen_draw_tab_image(rct_drawpixelinfo *dpi, rct_window *w, sint32 page, sint32 spriteIndex)
 {
-	int widgetIndex = WIDX_TAB_1 + page;
+	sint32 widgetIndex = WIDX_TAB_1 + page;
 
 	if (!(w->disabled_widgets & (1LL << widgetIndex))) {
 		if (w->page == page) {
-			int frame = w->frame_no / window_mapgen_tab_animation_divisor[w->page];
+			sint32 frame = w->frame_no / window_mapgen_tab_animation_divisor[w->page];
 			spriteIndex += (frame % window_mapgen_tab_animation_frames[w->page]);
 		}
 

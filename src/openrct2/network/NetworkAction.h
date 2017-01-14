@@ -25,7 +25,7 @@ class NetworkAction final
 public:
     rct_string_id       Name;
     std::string         PermissionName;
-    std::vector<int>    Commands;
+    std::vector<sint32> Commands;
 };
 
 class NetworkActions final
@@ -33,6 +33,6 @@ class NetworkActions final
 public:
     static const std::vector<NetworkAction> Actions;
 
-    static int FindCommand(int command);
-    static int FindCommandByPermissionName(const std::string &permission_name);
+    static sint32 FindCommand(sint32 command);
+    static sint32 FindCommandByPermissionName(const std::string &permission_name);
 };

@@ -60,7 +60,7 @@ typedef struct language_descriptor {
 
 extern const language_descriptor LanguagesDescriptors[LANGUAGE_COUNT];
 
-extern int gCurrentLanguage;
+extern sint32 gCurrentLanguage;
 extern bool gUseTrueTypeFont;
 
 extern const utf8 BlackUpArrowString[];
@@ -70,20 +70,20 @@ extern const utf8 BlackRightArrowString[];
 extern const utf8 CheckBoxMarkString[];
 
 const char *language_get_string(rct_string_id id);
-bool language_open(int id);
+bool language_open(sint32 id);
 void language_close_all();
 
 uint32 utf8_get_next(const utf8 *char_ptr, const utf8 **nextchar_ptr);
 utf8 *utf8_write_codepoint(utf8 *dst, uint32 codepoint);
-int utf8_insert_codepoint(utf8 *dst, uint32 codepoint);
+sint32 utf8_insert_codepoint(utf8 *dst, uint32 codepoint);
 bool utf8_is_codepoint_start(const utf8 *text);
 void utf8_remove_format_codes(utf8 *text, bool allowcolours);
-int utf8_get_codepoint_length(int codepoint);
-int utf8_length(const utf8 *text);
+sint32 utf8_get_codepoint_length(sint32 codepoint);
+sint32 utf8_length(const utf8 *text);
 wchar_t *utf8_to_widechar(const utf8 *src);
 utf8 *widechar_to_utf8(const wchar_t *src);
 
-utf8 *rct2_language_string_to_utf8(const char *src, size_t srcSize, int languageId);
+utf8 *rct2_language_string_to_utf8(const char *src, size_t srcSize, sint32 languageId);
 bool language_get_localised_scenario_strings(const utf8 *scenarioFilename, rct_string_id *outStringIds);
 rct_string_id language_allocate_object_string(const utf8 * target);
 void language_free_object_string(rct_string_id stringId);

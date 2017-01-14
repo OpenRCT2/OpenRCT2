@@ -129,24 +129,24 @@ static rct_widget *window_editor_objective_options_widgets[] = {
 
 #pragma region Events
 
-static void window_editor_objective_options_main_mouseup(rct_window *w, int widgetIndex);
+static void window_editor_objective_options_main_mouseup(rct_window *w, sint32 widgetIndex);
 static void window_editor_objective_options_main_resize(rct_window *w);
-static void window_editor_objective_options_main_mousedown(int widgetIndex, rct_window*w, rct_widget* widget);
-static void window_editor_objective_options_main_dropdown(rct_window *w, int widgetIndex, int dropdownIndex);
+static void window_editor_objective_options_main_mousedown(sint32 widgetIndex, rct_window*w, rct_widget* widget);
+static void window_editor_objective_options_main_dropdown(rct_window *w, sint32 widgetIndex, sint32 dropdownIndex);
 static void window_editor_objective_options_main_update(rct_window *w);
-static void window_editor_objective_options_main_textinput(rct_window *w, int widgetIndex, char *text);
+static void window_editor_objective_options_main_textinput(rct_window *w, sint32 widgetIndex, char *text);
 static void window_editor_objective_options_main_invalidate(rct_window *w);
 static void window_editor_objective_options_main_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
-static void window_editor_objective_options_rides_mouseup(rct_window *w, int widgetIndex);
+static void window_editor_objective_options_rides_mouseup(rct_window *w, sint32 widgetIndex);
 static void window_editor_objective_options_rides_resize(rct_window *w);
 static void window_editor_objective_options_rides_update(rct_window *w);
-static void window_editor_objective_options_rides_scrollgetheight(rct_window *w, int scrollIndex, int *width, int *height);
-static void window_editor_objective_options_rides_scrollmousedown(rct_window *w, int scrollIndex, int x, int y);
-static void window_editor_objective_options_rides_scrollmouseover(rct_window *w, int scrollIndex, int x, int y);
+static void window_editor_objective_options_rides_scrollgetheight(rct_window *w, sint32 scrollIndex, sint32 *width, sint32 *height);
+static void window_editor_objective_options_rides_scrollmousedown(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y);
+static void window_editor_objective_options_rides_scrollmouseover(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y);
 static void window_editor_objective_options_rides_invalidate(rct_window *w);
 static void window_editor_objective_options_rides_paint(rct_window *w, rct_drawpixelinfo *dpi);
-static void window_editor_objective_options_rides_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scrollIndex);
+static void window_editor_objective_options_rides_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 scrollIndex);
 
 // 0x009A9DF4
 static rct_window_event_list window_objective_options_main_events = {
@@ -290,7 +290,7 @@ void window_editor_objective_options_open()
 
 static void window_editor_objective_options_set_pressed_tab(rct_window *w)
 {
-	int i;
+	sint32 i;
 	for (i = 0; i < 2; i++)
 		w->pressed_widgets &= ~(1 << (WIDX_TAB_1 + i));
 	w->pressed_widgets |= 1LL << (WIDX_TAB_1 + w->page);
@@ -310,7 +310,7 @@ static void window_editor_objective_options_anchor_border_widgets(rct_window *w)
 static void window_editor_objective_options_draw_tab_images(rct_window *w, rct_drawpixelinfo *dpi)
 {
 	rct_widget *widget;
-	int spriteIndex;
+	sint32 spriteIndex;
 
 	// Tab 1
 	widget = &w->widgets[WIDX_TAB_1];
@@ -336,7 +336,7 @@ static void window_editor_objective_options_draw_tab_images(rct_window *w, rct_d
  *
  *  rct2: 0x00668496
  */
-static void window_editor_objective_options_set_page(rct_window *w, int page)
+static void window_editor_objective_options_set_page(rct_window *w, sint32 page)
 {
 	if (w->page == page)
 		return;
@@ -362,7 +362,7 @@ static void window_editor_objective_options_set_page(rct_window *w, int page)
  *
  *  rct2: 0x0067201D
  */
-static void window_editor_objective_options_set_objective(rct_window *w, int objective)
+static void window_editor_objective_options_set_objective(rct_window *w, sint32 objective)
 {
 	gScenarioObjectiveType = objective;
 	window_invalidate(w);
@@ -407,7 +407,7 @@ static void window_editor_objective_options_set_objective(rct_window *w, int obj
  *
  *  rct2: 0x006719CA
  */
-static void window_editor_objective_options_main_mouseup(rct_window *w, int widgetIndex)
+static void window_editor_objective_options_main_mouseup(rct_window *w, sint32 widgetIndex)
 {
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
@@ -441,7 +441,7 @@ static void window_editor_objective_options_main_resize(rct_window *w)
 
 static void window_editor_objective_options_show_objective_dropdown(rct_window *w)
 {
-	int i, numItems, objectiveType;
+	sint32 i, numItems, objectiveType;
 	rct_widget *dropdownWidget;
 	uint32 parkFlags;
 
@@ -519,7 +519,7 @@ static void window_editor_objective_options_show_objective_dropdown(rct_window *
 
 static void window_editor_objective_options_show_climate_dropdown(rct_window *w)
 {
-	int i;
+	sint32 i;
 	rct_widget *dropdownWidget;
 
 	dropdownWidget = &w->widgets[WIDX_CLIMATE];
@@ -542,7 +542,7 @@ static void window_editor_objective_options_show_climate_dropdown(rct_window *w)
 
 static void window_editor_objective_options_show_category_dropdown(rct_window *w)
 {
-	int i;
+	sint32 i;
 	rct_widget *dropdownWidget;
 
 	dropdownWidget = &w->widgets[WIDX_CATEGORY];
@@ -683,7 +683,7 @@ static void window_editor_objective_options_arg_2_decrease(rct_window *w)
  *
  *  rct2: 0x00671A0D
  */
-static void window_editor_objective_options_main_mousedown(int widgetIndex, rct_window *w, rct_widget* widget)
+static void window_editor_objective_options_main_mousedown(sint32 widgetIndex, rct_window *w, rct_widget* widget)
 {
 	switch (widgetIndex) {
 	case WIDX_OBJECTIVE_DROPDOWN:
@@ -714,7 +714,7 @@ static void window_editor_objective_options_main_mousedown(int widgetIndex, rct_
  *
  *  rct2: 0x00671A54
  */
-static void window_editor_objective_options_main_dropdown(rct_window *w, int widgetIndex, int dropdownIndex)
+static void window_editor_objective_options_main_dropdown(rct_window *w, sint32 widgetIndex, sint32 dropdownIndex)
 {
 	uint8 newObjectiveType;
 
@@ -783,7 +783,7 @@ static void window_editor_objective_options_main_update(rct_window *w)
  *
  *  rct2: 0x00671A73
  */
-static void window_editor_objective_options_main_textinput(rct_window *w, int widgetIndex, char *text)
+static void window_editor_objective_options_main_textinput(rct_window *w, sint32 widgetIndex, char *text)
 {
 	if (text == NULL)
 		return;
@@ -890,7 +890,7 @@ static void window_editor_objective_options_main_invalidate(rct_window *w)
 static void window_editor_objective_options_main_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
 	rct_stex_entry *stex;
-	int x, y, width;
+	sint32 x, y, width;
 	rct_string_id stringId;
 	uint32 arg;
 
@@ -1055,7 +1055,7 @@ static void window_editor_objective_options_main_paint(rct_window *w, rct_drawpi
  *
  *  rct2: 0x006724A4
  */
-static void window_editor_objective_options_rides_mouseup(rct_window *w, int widgetIndex)
+static void window_editor_objective_options_rides_mouseup(rct_window *w, sint32 widgetIndex)
 {
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
@@ -1083,7 +1083,7 @@ static void window_editor_objective_options_rides_resize(rct_window *w)
  */
 static void window_editor_objective_options_rides_update(rct_window *w)
 {
-	int i, numItems;
+	sint32 i, numItems;
 	rct_ride *ride;
 
 	w->frame_no++;
@@ -1109,7 +1109,7 @@ static void window_editor_objective_options_rides_update(rct_window *w)
  *
  *  rct2: 0x006724BF
  */
-static void window_editor_objective_options_rides_scrollgetheight(rct_window *w, int scrollIndex, int *width, int *height)
+static void window_editor_objective_options_rides_scrollgetheight(rct_window *w, sint32 scrollIndex, sint32 *width, sint32 *height)
 {
 	*height = w->no_list_items * 12;
 }
@@ -1118,10 +1118,10 @@ static void window_editor_objective_options_rides_scrollgetheight(rct_window *w,
  *
  *  rct2: 0x006724FC
  */
-static void window_editor_objective_options_rides_scrollmousedown(rct_window *w, int scrollIndex, int x, int y)
+static void window_editor_objective_options_rides_scrollmousedown(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y)
 {
 	rct_ride *ride;
-	int i;
+	sint32 i;
 
 	i = y / 12;
 	if (i < 0 || i >= w->no_list_items)
@@ -1136,9 +1136,9 @@ static void window_editor_objective_options_rides_scrollmousedown(rct_window *w,
  *
  *  rct2: 0x006724CC
  */
-static void window_editor_objective_options_rides_scrollmouseover(rct_window *w, int scrollIndex, int x, int y)
+static void window_editor_objective_options_rides_scrollmouseover(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y)
 {
-	int i;
+	sint32 i;
 
 	i = y / 12;
 	if (i < 0 || i >= w->no_list_items)
@@ -1189,16 +1189,16 @@ static void window_editor_objective_options_rides_paint(rct_window *w, rct_drawp
  *
  *  rct2: 0x0067236F
  */
-static void window_editor_objective_options_rides_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scrollIndex)
+static void window_editor_objective_options_rides_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 scrollIndex)
 {
 	rct_string_id stringId;
 	rct_ride *ride;
 
-	int colour = ColourMapA[w->colours[1]].mid_light;
+	sint32 colour = ColourMapA[w->colours[1]].mid_light;
 	gfx_fill_rect(dpi, dpi->x, dpi->y, dpi->x + dpi->width - 1, dpi->y + dpi->height - 1, colour);
 
-	for (int i = 0; i < w->no_list_items; i++) {
-		int y = i * 12;
+	for (sint32 i = 0; i < w->no_list_items; i++) {
+		sint32 y = i * 12;
 
 		if (y + 12 < dpi->y || y >= dpi->y + dpi->height)
 			continue;
@@ -1233,7 +1233,7 @@ static void window_editor_objective_options_rides_scrollpaint(rct_window *w, rct
 static void window_editor_objective_options_update_disabled_widgets(rct_window *w)
 {
 	rct_ride *ride;
-	int i, numRides;
+	sint32 i, numRides;
 
 	// Check if there are any rides (not shops or facilities)
 	numRides = 0;

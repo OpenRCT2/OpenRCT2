@@ -121,14 +121,14 @@ static void paint_pirate_ship_structure(rct_ride * ride, uint8 direction, sint8 
 	if (dpi->zoom_level <= 1
 	    && ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK
 	    && vehicle != NULL) {
-		int peep = 0;
-		int offset = 1;
+		sint32 peep = 0;
+		sint32 offset = 1;
 		while (peep < 16) {
 			if (vehicle->num_peeps <= peep) {
 				break;
 			}
 
-			int frameNum = offset + (direction >> 1);
+			sint32 frameNum = offset + (direction >> 1);
 			imageColourFlags = vehicle->peep_tshirt_colours[peep] << 19 | vehicle->peep_tshirt_colours[peep + 1] << 24 | 0xA0000000;
 			imageId = (baseImageId + frameNum) | imageColourFlags;
 			sub_98199C(imageId, xOffset, yOffset, bounds.length_x, bounds.length_y, 80, height, bounds.offset_x, bounds.offset_y, height, get_current_rotation());
@@ -157,7 +157,7 @@ static void paint_pirate_ship_structure(rct_ride * ride, uint8 direction, sint8 
 }
 
 /** rct2: 0x008A85C4 */
-static void paint_pirate_ship(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+static void paint_pirate_ship(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
 	uint8 relativeTrackSequence = track_map_1x5[direction][trackSequence];
 	rct_ride * ride = get_ride(rideIndex);
@@ -260,7 +260,7 @@ static void paint_pirate_ship(uint8 rideIndex, uint8 trackSequence, uint8 direct
 /**
  * rct2: 0x008A83E0
  */
-TRACK_PAINT_FUNCTION get_track_paint_function_pirate_ship(int trackType, int direction)
+TRACK_PAINT_FUNCTION get_track_paint_function_pirate_ship(sint32 trackType, sint32 direction)
 {
 	if (trackType != FLAT_TRACK_ELEM_1_X_5) {
 		return NULL;

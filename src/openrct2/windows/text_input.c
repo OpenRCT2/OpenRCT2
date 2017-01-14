@@ -50,9 +50,9 @@ static rct_widget window_text_input_widgets[] = {
 };
 
 static void window_text_input_close(rct_window *w);
-static void window_text_input_mouseup(rct_window *w, int widgetIndex);
+static void window_text_input_mouseup(rct_window *w, sint32 widgetIndex);
 static void window_text_input_update7(rct_window *w);
-static void window_text_input_text(int key, rct_window* w);
+static void window_text_input_text(sint32 key, rct_window* w);
 static void window_text_input_invalidate(rct_window *w);
 static void window_text_input_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void draw_ime_composition(rct_drawpixelinfo * dpi, int cursorX, int cursorY);
@@ -93,10 +93,10 @@ rct_string_id input_text_description;
 char text_input[512] = { 0 };
 rct_windowclass calling_class = 0;
 rct_windownumber calling_number = 0;
-int calling_widget = 0;
-int _maxInputLength;
+sint32 calling_widget = 0;
+sint32 _maxInputLength;
 
-void window_text_input_open(rct_window* call_w, int call_widget, rct_string_id title, rct_string_id description, rct_string_id existing_text, uintptr_t existing_args, int maxLength)
+void window_text_input_open(rct_window* call_w, sint32 call_widget, rct_string_id title, rct_string_id description, rct_string_id existing_text, uintptr_t existing_args, sint32 maxLength)
 {
 	_maxInputLength = maxLength;
 
@@ -119,13 +119,13 @@ void window_text_input_open(rct_window* call_w, int call_widget, rct_string_id t
 	char wrapped_string[512];
 	safe_strcpy(wrapped_string, text_input, 512);
 
-	int no_lines = 0, font_height = 0;
+	sint32 no_lines = 0, font_height = 0;
 
 	// String length needs to add 12 either side of box
 	// +13 for cursor when max length.
 	gfx_wrap_string(wrapped_string, WW - (24 + 13), &no_lines, &font_height);
 
-	int height = no_lines * 10 + WH;
+	sint32 height = no_lines * 10 + WH;
 
 	// Window will be in the center of the screen
 	rct_window* w = window_create_centred(
@@ -155,7 +155,7 @@ void window_text_input_open(rct_window* call_w, int call_widget, rct_string_id t
 	w->colours[2] = call_w->colours[2];
 }
 
-void window_text_input_raw_open(rct_window* call_w, int call_widget, rct_string_id title, rct_string_id description, utf8string existing_text, int maxLength)
+void window_text_input_raw_open(rct_window* call_w, sint32 call_widget, rct_string_id title, rct_string_id description, utf8string existing_text, sint32 maxLength)
 {
 	_maxInputLength = maxLength;
 
@@ -180,13 +180,13 @@ void window_text_input_raw_open(rct_window* call_w, int call_widget, rct_string_
 	char wrapped_string[512];
 	safe_strcpy(wrapped_string, text_input, 512);
 
-	int no_lines = 0, font_height = 0;
+	sint32 no_lines = 0, font_height = 0;
 
 	// String length needs to add 12 either side of box
 	// +13 for cursor when max length.
 	gfx_wrap_string(wrapped_string, WW - (24 + 13), &no_lines, &font_height);
 
-	int height = no_lines * 10 + WH;
+	sint32 height = no_lines * 10 + WH;
 
 	// Window will be in the center of the screen
 	rct_window* w = window_create_centred(
@@ -219,7 +219,7 @@ void window_text_input_raw_open(rct_window* call_w, int call_widget, rct_string_
 /**
 *
 */
-static void window_text_input_mouseup(rct_window *w, int widgetIndex)
+static void window_text_input_mouseup(rct_window *w, sint32 widgetIndex)
 {
 	rct_window *calling_w;
 
@@ -251,10 +251,10 @@ static void window_text_input_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
 	window_draw_widgets(w, dpi);
 
-	int y = w->y + 25;
+	sint32 y = w->y + 25;
 
-	int no_lines = 0;
-	int font_height = 0;
+	sint32 no_lines = 0;
+	sint32 font_height = 0;
 
 
 	gfx_draw_string_centred(dpi, input_text_description, w->x + WW / 2, y, w->colours[1], &TextInputDescriptionArgs);
@@ -279,8 +279,8 @@ static void window_text_input_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	size_t char_count = 0;
 	uint8 cur_drawn = 0;
 
-	int cursorX = 0, cursorY = 0;
-	for (int line = 0; line <= no_lines; line++) {
+	sint32 cursorX = 0, cursorY = 0;
+	for (sint32 line = 0; line <= no_lines; line++) {
 		gfx_draw_string(dpi, wrap_pointer, w->colours[1], w->x + 12, y);
 
 		size_t string_length = get_string_size(wrap_pointer) - 1;
@@ -292,7 +292,7 @@ static void window_text_input_paint(rct_window *w, rct_drawpixelinfo *dpi)
 			cursorX = w->x + 13 + gfx_get_string_width(temp_string);
 			cursorY = y;
 
-			int width = 6;
+			sint32 width = 6;
 			if (gTextInput.selection_offset < strlen(text_input)){
 				// Make a 1 utf8-character wide string for measuring the width
 				// of the currently selected character.
@@ -329,7 +329,7 @@ static void window_text_input_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	}
 }
 
-void window_text_input_key(rct_window* w, int key)
+void window_text_input_key(rct_window* w, sint32 key)
 {
 	char new_char = platform_scancode_to_rct_keycode(0xFF&key);
 
@@ -375,13 +375,13 @@ static void window_text_input_invalidate(rct_window *w)
 	char wrapped_string[512];
 	safe_strcpy(wrapped_string, text_input, 512);
 
-	int no_lines = 0, font_height = 0;
+	sint32 no_lines = 0, font_height = 0;
 
 	// String length needs to add 12 either side of box
 	// +13 for cursor when max length.
 	gfx_wrap_string(wrapped_string, WW - (24 + 13), &no_lines, &font_height);
 
-	int height = no_lines * 10 + WH;
+	sint32 height = no_lines * 10 + WH;
 
 	// Change window size if required.
 	if (height != w->height) {

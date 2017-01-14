@@ -37,7 +37,7 @@ const uint32 dodgems_fence_sprites[] = {
 	SPR_DODGEMS_FENCE_TOP_LEFT
 };
 
-static void paint_dodgems_roof(int height, int offset)
+static void paint_dodgems_roof(sint32 height, sint32 offset)
 {
 	uint32 image_id = (SPR_DODGEMS_ROOF_FRAME + offset) | gTrackColours[SCHEME_TRACK];
 	sub_98196C(image_id, 0, 0, 32, 32, 2, height, get_current_rotation());
@@ -46,11 +46,11 @@ static void paint_dodgems_roof(int height, int offset)
 	paint_attach_to_previous_ps(image_id, 0, 0);
 }
 
-static void paint_dodgems(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+static void paint_dodgems(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
 	uint8 relativeTrackSequence = track_map_4x4[direction][trackSequence];
 
-	int edges = edges_4x4[relativeTrackSequence];
+	sint32 edges = edges_4x4[relativeTrackSequence];
 	rct_ride * ride = get_ride(rideIndex);
 	rct_xy16 position = {gPaintMapPosition.x, gPaintMapPosition.y};
 
@@ -92,7 +92,7 @@ static void paint_dodgems(uint8 rideIndex, uint8 trackSequence, uint8 direction,
 /**
  * rct2:
  */
-TRACK_PAINT_FUNCTION get_track_paint_function_dodgems(int trackType, int direction) {
+TRACK_PAINT_FUNCTION get_track_paint_function_dodgems(sint32 trackType, sint32 direction) {
 	if (trackType != FLAT_TRACK_ELEM_4_X_4) {
 		return NULL;
 	}

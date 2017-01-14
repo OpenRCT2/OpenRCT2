@@ -626,7 +626,7 @@
  * P = Parity flag
  * All other bits are undefined.
  */
-int RCT2_CALLPROC_X(int address, int _eax, int _ebx, int _ecx, int _edx, int _esi, int _edi, int _ebp);
+sint32 RCT2_CALLPROC_X(sint32 address, sint32 _eax, sint32 _ebx, sint32 _ecx, sint32 _edx, sint32 _esi, sint32 _edi, sint32 _ebp);
 
 /**
  * Returns the flags register
@@ -640,7 +640,7 @@ int RCT2_CALLPROC_X(int address, int _eax, int _ebx, int _ecx, int _edx, int _es
  * P = Parity flag
  * All other bits are undefined.
  */
-int RCT2_CALLFUNC_X(int address, int *_eax, int *_ebx, int *_ecx, int *_edx, int *_esi, int *_edi, int *_ebp);
+sint32 RCT2_CALLFUNC_X(sint32 address, sint32 *_eax, sint32 *_ebx, sint32 *_ecx, sint32 *_edx, sint32 *_esi, sint32 *_edi, sint32 *_ebp);
 
 #endif
 

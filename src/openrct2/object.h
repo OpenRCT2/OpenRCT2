@@ -79,8 +79,8 @@ typedef struct rct_object_entry_extended {
 } rct_object_entry_extended;
 assert_struct_size(rct_object_entry_extended, 0x14);
 
-extern int object_entry_group_counts[];
-extern int object_entry_group_encoding[];
+extern sint32 object_entry_group_counts[];
+extern sint32 object_entry_group_encoding[];
 
 typedef struct rct_object_entry_group {
 	void **chunks;
@@ -109,13 +109,13 @@ extern const rct_object_entry_group object_entry_groups[];
 void object_list_load();
 bool object_read_and_load_entries(SDL_RWops* rw);
 bool object_load_entries(rct_object_entry* entries);
-int object_load_packed(SDL_RWops* rw);
+sint32 object_load_packed(SDL_RWops* rw);
 bool object_saved_packed(SDL_RWops* rw, const rct_object_entry * entry);
 
 bool object_entry_is_empty(const rct_object_entry *entry);
 bool object_entry_compare(const rct_object_entry *a, const rct_object_entry *b);
-int object_calculate_checksum(const rct_object_entry * entry, const void * data, size_t dataLength);
-int find_object_in_entry_group(const rct_object_entry* entry, uint8* entry_type, uint8* entry_index);
+sint32 object_calculate_checksum(const rct_object_entry * entry, const void * data, size_t dataLength);
+sint32 find_object_in_entry_group(const rct_object_entry* entry, uint8* entry_type, uint8* entry_index);
 void object_create_identifier_name(char* string_buffer, size_t size, const rct_object_entry* object);
 
 rct_object_entry *object_list_find_by_name(const char *name);

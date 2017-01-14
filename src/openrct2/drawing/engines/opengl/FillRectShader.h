@@ -46,7 +46,7 @@ public:
     void SetClip(sint32 left, sint32 top, sint32 right, sint32 bottom);
     void SetBounds(sint32 left, sint32 top, sint32 right, sint32 bottom);
     void SetFlags(uint32 flags);
-    void SetColour(int index, vec4f colour);
+    void SetColour(sint32 index, vec4f colour);
     void SetSourceFramebuffer(GLuint texture);
 
     void Draw(sint32 left, sint32 top, sint32 right, sint32 bottom);

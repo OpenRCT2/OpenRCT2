@@ -55,7 +55,7 @@ typedef enum {
 typedef struct currency_descriptor {
 	char isoCode[4];
 	// Rate is relative to 0.10 GBP
-	int rate;
+	sint32 rate;
 	uint8 affix_unicode;
 	utf8 symbol_unicode[CURRENCY_SYMBOL_MAX_SIZE];
 	uint8 affix_ascii;

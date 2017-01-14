@@ -189,13 +189,13 @@ static const uint32 river_rapids_track_pieces_25_deg_down_to_flat[][2] = {
  *
  *  rct2: 0x006D5889
  */
-void vehicle_visual_river_rapids(int x, int imageDirection, int y, int z, rct_vehicle *vehicle, const rct_ride_entry_vehicle *vehicleEntry)
+void vehicle_visual_river_rapids(sint32 x, sint32 imageDirection, sint32 y, sint32 z, rct_vehicle *vehicle, const rct_ride_entry_vehicle *vehicleEntry)
 {
-	int image_id;
-	int baseImage_id = imageDirection;
+	sint32 image_id;
+	sint32 baseImage_id = imageDirection;
 	uint32 rotation = get_current_rotation();
-	int ecx = ((vehicle->var_BA / 8) + (rotation * 8)) & 31;
-	int j = 0;
+	sint32 ecx = ((vehicle->var_BA / 8) + (rotation * 8)) & 31;
+	sint32 j = 0;
 	if (vehicle->vehicle_sprite_type == 0) {
 		baseImage_id = ecx & 7;
 	} else {
@@ -228,7 +228,7 @@ void vehicle_visual_river_rapids(int x, int imageDirection, int y, int z, rct_ve
 
 	if (unk_140E9A8->zoom_level < 2 && vehicle->num_peeps > 0) {
 		// Draw peeps: (this particular vehicle doesn't sort them back to front like others so the back ones sometimes clip, but thats how the original does it...)
-		int peeps = ((ecx / 8) + 0) & 3;
+		sint32 peeps = ((ecx / 8) + 0) & 3;
 		image_id = (baseImage_id + ((peeps + 1) * 72)) | (vehicle->peep_tshirt_colours[0] << 19) | (vehicle->peep_tshirt_colours[1] << 24) | 0xA0000000;
 		sub_98199C(image_id, 0, 0, bb->length_x, bb->length_y, bb->length_z, z, bb->offset_x, bb->offset_y, bb->offset_z + z, rotation);
 		if (vehicle->num_peeps > 2) {
@@ -253,7 +253,7 @@ void vehicle_visual_river_rapids(int x, int imageDirection, int y, int z, rct_ve
 #endif
 
 /** rct2: 0x00757650 */
-static void paint_river_rapids_track_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+static void paint_river_rapids_track_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
 	uint32 imageId;
 
@@ -284,7 +284,7 @@ static void paint_river_rapids_track_flat(uint8 rideIndex, uint8 trackSequence, 
 }
 
 /** rct2: 0x007576C0 */
-static void paint_river_rapids_station(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+static void paint_river_rapids_station(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
 	rct_ride *ride = get_ride(rideIndex);
 
@@ -293,7 +293,7 @@ static void paint_river_rapids_station(uint8 rideIndex, uint8 trackSequence, uin
 	paint_util_set_general_support_height(height + 32, 0x20);
 }
 
-static void paint_river_rapids_track_25_deg(uint8 direction, int height, const uint32 sprites[4][2])
+static void paint_river_rapids_track_25_deg(uint8 direction, sint32 height, const uint32 sprites[4][2])
 {
 	uint32 imageId;
 	paint_struct * ps;
@@ -350,7 +350,7 @@ static void paint_river_rapids_track_25_deg(uint8 direction, int height, const u
 	paint_util_set_general_support_height(height + 56, 0x20);
 }
 
-static void paint_river_rapids_track_25_deg_to_flat_a(uint8 direction, int height, const uint32 sprites[4][2])
+static void paint_river_rapids_track_25_deg_to_flat_a(uint8 direction, sint32 height, const uint32 sprites[4][2])
 {
 	uint32 imageId;
 	paint_struct * ps;
@@ -407,7 +407,7 @@ static void paint_river_rapids_track_25_deg_to_flat_a(uint8 direction, int heigh
 	paint_util_set_general_support_height(height + 40, 0x20);
 }
 
-static void paint_river_rapids_track_25_deg_to_flat_b(uint8 direction, int height, const uint32 sprites[4][2])
+static void paint_river_rapids_track_25_deg_to_flat_b(uint8 direction, sint32 height, const uint32 sprites[4][2])
 {
 	uint32 imageId;
 	paint_struct * ps;
@@ -465,43 +465,43 @@ static void paint_river_rapids_track_25_deg_to_flat_b(uint8 direction, int heigh
 }
 
 /** rct2: 0x00757660 */
-static void paint_river_rapids_track_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+static void paint_river_rapids_track_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
 	paint_river_rapids_track_25_deg(direction, height, river_rapids_track_pieces_25_deg_up);
 }
 
 /** rct2: 0x00757670 */
-static void paint_river_rapids_track_flat_to_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+static void paint_river_rapids_track_flat_to_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
 	paint_river_rapids_track_25_deg_to_flat_b(direction, height, river_rapids_track_pieces_flat_to_25_deg_up);
 }
 
 /** rct2: 0x00757680 */
-static void paint_river_rapids_track_25_deg_up_to_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+static void paint_river_rapids_track_25_deg_up_to_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
 	paint_river_rapids_track_25_deg_to_flat_a(direction, height, river_rapids_track_pieces_25_deg_up_to_flat);
 }
 
 /** rct2: 0x00757690 */
-static void paint_river_rapids_track_25_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+static void paint_river_rapids_track_25_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
 	paint_river_rapids_track_25_deg((direction + 2) % 4, height, river_rapids_track_pieces_25_deg_down);
 }
 
 /** rct2: 0x007576A0 */
-static void paint_river_rapids_track_flat_to_25_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+static void paint_river_rapids_track_flat_to_25_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
 	paint_river_rapids_track_25_deg_to_flat_a((direction + 2) % 4, height, river_rapids_track_pieces_flat_to_25_deg_down);
 }
 
 /** rct2: 0x007576B0 */
-static void paint_river_rapids_track_25_deg_down_to_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+static void paint_river_rapids_track_25_deg_down_to_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
 	paint_river_rapids_track_25_deg_to_flat_b((direction + 2) % 4, height, river_rapids_track_pieces_25_deg_down_to_flat);
 }
 
 /** rct2: 0x007576F0 */
-static void paint_river_rapids_track_left_quarter_turn_1_tile(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+static void paint_river_rapids_track_left_quarter_turn_1_tile(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
 	uint32 imageId;
 	switch (direction) {
@@ -554,7 +554,7 @@ static void paint_river_rapids_track_left_quarter_turn_1_tile(uint8 rideIndex, u
 }
 
 /** rct2: 0x00757700 */
-static void paint_river_rapids_track_right_quarter_turn_1_tile(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+static void paint_river_rapids_track_right_quarter_turn_1_tile(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
 	uint32 imageId;
 
@@ -608,7 +608,7 @@ static void paint_river_rapids_track_right_quarter_turn_1_tile(uint8 rideIndex, 
 }
 
 /** rct2: 0x00757710 */
-static void paint_river_rapids_track_waterfall(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+static void paint_river_rapids_track_waterfall(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
 	uint32 imageId;
 
@@ -659,7 +659,7 @@ static void paint_river_rapids_track_waterfall(uint8 rideIndex, uint8 trackSeque
 }
 
 /** rct2: 0x00757720 */
-static void paint_river_rapids_track_rapids(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+static void paint_river_rapids_track_rapids(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
 	uint32 imageId;
 
@@ -692,7 +692,7 @@ static void paint_river_rapids_track_rapids(uint8 rideIndex, uint8 trackSequence
 }
 
 /** rct2: 0x00757740 */
-static void paint_river_rapids_track_on_ride_photo(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+static void paint_river_rapids_track_on_ride_photo(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
 	paint_river_rapids_track_flat(rideIndex, trackSequence, direction, height, mapElement);
 	track_paint_util_onride_photo_paint(direction, height + 13, mapElement);
@@ -700,7 +700,7 @@ static void paint_river_rapids_track_on_ride_photo(uint8 rideIndex, uint8 trackS
 }
 
 /** rct2: 0x */
-static void paint_river_rapids_track_whirlpool(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+static void paint_river_rapids_track_whirlpool(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
 	uint32 imageId;
 
@@ -741,7 +741,7 @@ static void paint_river_rapids_track_whirlpool(uint8 rideIndex, uint8 trackSeque
 /**
  * rct2: 0x0075745C
  **/
-TRACK_PAINT_FUNCTION get_track_paint_function_river_rapids(int trackType, int direction)
+TRACK_PAINT_FUNCTION get_track_paint_function_river_rapids(sint32 trackType, sint32 direction)
 {
 	switch (trackType) {
 		case TRACK_ELEM_FLAT:

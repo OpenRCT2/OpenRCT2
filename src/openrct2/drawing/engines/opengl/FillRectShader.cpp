@@ -80,7 +80,7 @@ void FillRectShader::SetFlags(uint32 flags)
     glUniform1i(uFlags, flags);
 }
 
-void FillRectShader::SetColour(int index, vec4f colour)
+void FillRectShader::SetColour(sint32 index, vec4f colour)
 {
     glUniform4f(uColour[index], colour.r, colour.g, colour.b, colour.a);
 }

@@ -28,10 +28,10 @@ extern "C"
     void title_load();
     void title_create_windows();
     void title_update();
-    void DrawOpenRCT2(rct_drawpixelinfo *dpi, int x, int y);
+    void DrawOpenRCT2(rct_drawpixelinfo *dpi, sint32 x, sint32 y);
 
     void * title_get_sequence_player();
-    void title_sequence_change_preset(int preset);
+    void title_sequence_change_preset(sint32 preset);
 #ifdef __cplusplus
 }
 #endif

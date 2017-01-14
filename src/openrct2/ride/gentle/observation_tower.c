@@ -34,10 +34,10 @@ enum
  *
  *  rct2: 0x006D6258
  */
-void vehicle_visual_observation_tower(int x, int imageDirection, int y, int z, rct_vehicle *vehicle, const rct_ride_entry_vehicle *vehicleEntry)
+void vehicle_visual_observation_tower(sint32 x, sint32 imageDirection, sint32 y, sint32 z, rct_vehicle *vehicle, const rct_ride_entry_vehicle *vehicleEntry)
 {
-	int image_id;
-	int baseImage_id = (vehicle->restraints_position / 64);
+	sint32 image_id;
+	sint32 baseImage_id = (vehicle->restraints_position / 64);
 	if (vehicle->restraints_position >= 64) {
 		if ((imageDirection / 8) && (imageDirection / 8) != 3) {
 			baseImage_id *= 2;
@@ -69,11 +69,11 @@ void vehicle_visual_observation_tower(int x, int imageDirection, int y, int z, r
 }
 
 /** rct2: 0x0070DD6C */
-static void paint_observation_tower_base(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+static void paint_observation_tower_base(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
 	trackSequence = track_map_3x3[direction][trackSequence];
 
-	int edges = edges_3x3[trackSequence];
+	sint32 edges = edges_3x3[trackSequence];
 	rct_ride * ride = get_ride(rideIndex);
 	rct_xy16 position = {gPaintMapPosition.x, gPaintMapPosition.y};
 
@@ -105,7 +105,7 @@ static void paint_observation_tower_base(uint8 rideIndex, uint8 trackSequence, u
         return;
 	}
 
-	int blockedSegments = 0;
+	sint32 blockedSegments = 0;
 	switch (trackSequence) {
 		case 0: blockedSegments = SEGMENTS_ALL; break;
 		case 1: blockedSegments = SEGMENT_B8 | SEGMENT_C8 | SEGMENT_B4 | SEGMENT_CC | SEGMENT_BC; break;
@@ -123,7 +123,7 @@ static void paint_observation_tower_base(uint8 rideIndex, uint8 trackSequence, u
 }
 
 /** rct2: 0x0070DD7C */
-static void paint_observation_tower_section(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+static void paint_observation_tower_section(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
 	if (trackSequence == 1) {
 		return;
@@ -147,7 +147,7 @@ static void paint_observation_tower_section(uint8 rideIndex, uint8 trackSequence
 /**
  * rct2: 0x0070DC5C
  */
-TRACK_PAINT_FUNCTION get_track_paint_function_observation_tower(int trackType, int direction)
+TRACK_PAINT_FUNCTION get_track_paint_function_observation_tower(sint32 trackType, sint32 direction)
 {
 	switch (trackType) {
 		case TRACK_ELEM_TOWER_BASE:

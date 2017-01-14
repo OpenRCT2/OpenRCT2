@@ -537,7 +537,7 @@ namespace ThemeManager
         GetThemePath(themesPattern, sizeof(themesPattern));
         Path::Append(themesPattern, sizeof(themesPattern), "*.json");
 
-        int handle = platform_enumerate_files_begin(themesPattern);
+        sint32 handle = platform_enumerate_files_begin(themesPattern);
         if (handle != INVALID_HANDLE)
         {
             file_info fileInfo;
@@ -872,7 +872,7 @@ extern "C"
             windowTheme = &desc->DefaultTheme;
         }
 
-        for (int i = 0; i < 6; i++) {
+        for (sint32 i = 0; i < 6; i++) {
             window->colours[i] = windowTheme->Colours[i];
         }
         // Some windows need to be transparent even if the colours aren't.

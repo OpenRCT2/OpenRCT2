@@ -76,10 +76,10 @@ rct_widget window_banner_widgets[] = {
 	{ WIDGETS_END },
 };
 
-static void window_banner_mouseup(rct_window *w, int widgetIndex);
-static void window_banner_mousedown(int widgetIndex, rct_window*w, rct_widget* widget);
-static void window_banner_dropdown(rct_window *w, int widgetIndex, int dropdownIndex);
-static void window_banner_textinput(rct_window *w, int widgetIndex, char *text);
+static void window_banner_mouseup(rct_window *w, sint32 widgetIndex);
+static void window_banner_mousedown(sint32 widgetIndex, rct_window*w, rct_widget* widget);
+static void window_banner_dropdown(rct_window *w, sint32 widgetIndex, sint32 dropdownIndex);
+static void window_banner_textinput(rct_window *w, sint32 widgetIndex, char *text);
 static void window_banner_unknown_14(rct_window *w);
 static void window_banner_invalidate(rct_window *w);
 static void window_banner_paint(rct_window *w, rct_drawpixelinfo *dpi);
@@ -144,8 +144,8 @@ void window_banner_open(rct_windownumber number)
 	w->number = number;
 	window_init_scroll_widgets(w);
 
-	int view_x = gBanners[w->number].x << 5;
-	int view_y = gBanners[w->number].y << 5;
+	sint32 view_x = gBanners[w->number].x << 5;
+	sint32 view_y = gBanners[w->number].y << 5;
 
 	rct_map_element* map_element = map_get_first_element_at(view_x / 32, view_y / 32);
 	while(1) {
@@ -159,7 +159,7 @@ void window_banner_open(rct_windownumber number)
 		map_element++;
 	}
 
-	int view_z = map_element->base_height<<3;
+	sint32 view_z = map_element->base_height<<3;
 	w->frame_no = view_z;
 
 	view_x += 16;
@@ -189,11 +189,11 @@ void window_banner_open(rct_windownumber number)
  *
  *  rct2: 0x6ba4d6
  */
-static void window_banner_mouseup(rct_window *w, int widgetIndex)
+static void window_banner_mouseup(rct_window *w, sint32 widgetIndex)
 {
 	rct_banner* banner = &gBanners[w->number];
-	int x = banner->x << 5;
-	int y = banner->y << 5;
+	sint32 x = banner->x << 5;
+	sint32 y = banner->y << 5;
 
 	rct_map_element* map_element = map_get_first_element_at(x / 32, y / 32);
 
@@ -224,7 +224,7 @@ static void window_banner_mouseup(rct_window *w, int widgetIndex)
  *
  *  rct2: 0x6ba4ff
  */
-static void window_banner_mousedown(int widgetIndex, rct_window*w, rct_widget* widget)
+static void window_banner_mousedown(sint32 widgetIndex, rct_window*w, rct_widget* widget)
 {
 	rct_banner* banner = &gBanners[w->number];
 
@@ -234,7 +234,7 @@ static void window_banner_mousedown(int widgetIndex, rct_window*w, rct_widget* w
 		break;
 	case WIDX_TEXT_COLOUR_DROPDOWN_BUTTON:
 
-		for( int i = 0; i < 13; ++i){
+		for( sint32 i = 0; i < 13; ++i){
 			gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
 			gDropdownItemsArgs[i] = BannerColouredTextFormats[i + 1];
 		}
@@ -260,7 +260,7 @@ static void window_banner_mousedown(int widgetIndex, rct_window*w, rct_widget* w
  *
  *  rct2: 0x6ba517
  */
-static void window_banner_dropdown(rct_window *w, int widgetIndex, int dropdownIndex)
+static void window_banner_dropdown(rct_window *w, sint32 widgetIndex, sint32 dropdownIndex)
 {
 	rct_banner* banner = &gBanners[w->number];
 
@@ -284,12 +284,12 @@ static void window_banner_dropdown(rct_window *w, int widgetIndex, int dropdownI
  *
  *  rct2: 0x6ba50c
  */
-static void window_banner_textinput(rct_window *w, int widgetIndex, char *text)
+static void window_banner_textinput(rct_window *w, sint32 widgetIndex, char *text)
 {
 	if (widgetIndex == WIDX_BANNER_TEXT && text != NULL) {
-		game_do_command(1, GAME_COMMAND_FLAG_APPLY, w->number, *((int*)(text + 0)), GAME_COMMAND_SET_BANNER_NAME, *((int*)(text + 8)), *((int*)(text + 4)));
-		game_do_command(2, GAME_COMMAND_FLAG_APPLY, w->number, *((int*)(text + 12)), GAME_COMMAND_SET_BANNER_NAME, *((int*)(text + 20)), *((int*)(text + 16)));
-		game_do_command(0, GAME_COMMAND_FLAG_APPLY, w->number, *((int*)(text + 24)), GAME_COMMAND_SET_BANNER_NAME, *((int*)(text + 32)), *((int*)(text + 28)));
+		game_do_command(1, GAME_COMMAND_FLAG_APPLY, w->number, *((sint32*)(text + 0)), GAME_COMMAND_SET_BANNER_NAME, *((sint32*)(text + 8)), *((sint32*)(text + 4)));
+		game_do_command(2, GAME_COMMAND_FLAG_APPLY, w->number, *((sint32*)(text + 12)), GAME_COMMAND_SET_BANNER_NAME, *((sint32*)(text + 20)), *((sint32*)(text + 16)));
+		game_do_command(0, GAME_COMMAND_FLAG_APPLY, w->number, *((sint32*)(text + 24)), GAME_COMMAND_SET_BANNER_NAME, *((sint32*)(text + 32)), *((sint32*)(text + 28)));
 	}
 }
 
@@ -355,9 +355,9 @@ static void window_banner_unknown_14(rct_window *w)
 
 	rct_banner* banner = &gBanners[w->number];
 
-	int view_x = (banner->x << 5) + 16;
-	int view_y = (banner->y << 5) + 16;
-	int view_z = w->frame_no;
+	sint32 view_x = (banner->x << 5) + 16;
+	sint32 view_y = (banner->y << 5) + 16;
+	sint32 view_z = w->frame_no;
 
 	// Create viewport
 	rct_widget* viewportWidget = &window_banner_widgets[WIDX_VIEWPORT];

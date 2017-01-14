@@ -78,7 +78,7 @@ static void paint_merry_go_round_structure(uint8 rideIndex, uint8 direction, sin
 	    && ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK
 	    && vehicle != NULL) {
 
-		for (int peep = 0; peep <= 14; peep += 2) {
+		for (sint32 peep = 0; peep <= 14; peep += 2) {
 			if (vehicle->num_peeps <= peep) {
 				break;
 			}
@@ -103,11 +103,11 @@ static void paint_merry_go_round_structure(uint8 rideIndex, uint8 direction, sin
 /**
  * rct2: 0x00761B0C
  */
-static void paint_merry_go_round(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+static void paint_merry_go_round(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
 	trackSequence = track_map_3x3[direction][trackSequence];
 
-	int edges = edges_3x3[trackSequence];
+	sint32 edges = edges_3x3[trackSequence];
 	rct_ride * ride = get_ride(rideIndex);
 	rct_xy16 position = {gPaintMapPosition.x, gPaintMapPosition.y};
 
@@ -126,7 +126,7 @@ static void paint_merry_go_round(uint8 rideIndex, uint8 trackSequence, uint8 dir
 		case 8: paint_merry_go_round_structure(rideIndex, direction, -32, 0, height); break;
 	}
 
-	int cornerSegments = 0;
+	sint32 cornerSegments = 0;
 	switch (trackSequence) {
 		case 1:
 			// top
@@ -154,7 +154,7 @@ static void paint_merry_go_round(uint8 rideIndex, uint8 trackSequence, uint8 dir
 /**
  * rct2: 0x0076190C
  */
-TRACK_PAINT_FUNCTION get_track_paint_function_merry_go_round(int trackType, int direction)
+TRACK_PAINT_FUNCTION get_track_paint_function_merry_go_round(sint32 trackType, sint32 direction)
 {
 	if (trackType != FLAT_TRACK_ELEM_3_X_3) {
 		return NULL;

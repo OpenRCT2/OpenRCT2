@@ -37,7 +37,7 @@ uint8 gScreenshotCountdown = 0;
  */
 void screenshot_check()
 {
-	int screenshotIndex;
+	sint32 screenshotIndex;
 
 	if (gScreenshotCountdown != 0) {
 		gScreenshotCountdown--;
@@ -57,7 +57,7 @@ void screenshot_check()
 }
 
 static void screenshot_get_rendered_palette(rct_palette* palette) {
-	for (int i = 0; i < 256; i++) {
+	for (sint32 i = 0; i < 256; i++) {
 		const SDL_Color *renderedEntry = &gPalette[i];
 		rct_palette_entry *entry = &palette->entries[i];
 
@@ -68,7 +68,7 @@ static void screenshot_get_rendered_palette(rct_palette* palette) {
 	}
 }
 
-static int screenshot_get_next_path(char *path, size_t size)
+static sint32 screenshot_get_next_path(char *path, size_t size)
 {
 	char screenshotPath[MAX_PATH];
 
@@ -98,9 +98,9 @@ static int screenshot_get_next_path(char *path, size_t size)
 	// might be possible when switching timezones
 	// in the unlikely case that this does happen,
 	// append (%d) to the filename and increment
-	// this int until it doesn't overwrite any
+	// this sint32 until it doesn't overwrite any
 	// other file in the directory.
-	int i;
+	sint32 i;
 	for (i = 1; i < 1000; i++) {
 		// Glue together path and filename
 		snprintf(path, size, "%s%s %d-%02d-%02d %02d-%02d-%02d (%d).png", screenshotPath, park_name, currentDate.year, currentDate.month, currentDate.day, currentTime.hour, currentTime.minute, currentTime.second, i);
@@ -114,10 +114,10 @@ static int screenshot_get_next_path(char *path, size_t size)
 	return -1;
 }
 
-int screenshot_dump_png(rct_drawpixelinfo *dpi)
+sint32 screenshot_dump_png(rct_drawpixelinfo *dpi)
 {
 	// Get a free screenshot path
-	int index;
+	sint32 index;
 	char path[MAX_PATH] = "";
 	if ((index = screenshot_get_next_path(path, MAX_PATH)) == -1) {
 		return -1;
@@ -133,10 +133,10 @@ int screenshot_dump_png(rct_drawpixelinfo *dpi)
 	}
 }
 
-int screenshot_dump_png_32bpp(sint32 width, sint32 height, const void *pixels)
+sint32 screenshot_dump_png_32bpp(sint32 width, sint32 height, const void *pixels)
 {
 	// Get a free screenshot path
-	int index;
+	sint32 index;
 	char path[MAX_PATH] = "";
 	if ((index = screenshot_get_next_path(path, MAX_PATH)) == -1) {
 		return -1;
@@ -151,18 +151,18 @@ int screenshot_dump_png_32bpp(sint32 width, sint32 height, const void *pixels)
 
 void screenshot_giant()
 {
-	int originalRotation = get_current_rotation();
-	int originalZoom = 0;
+	sint32 originalRotation = get_current_rotation();
+	sint32 originalZoom = 0;
 
 	rct_window *mainWindow = window_get_main();
 	if (mainWindow != NULL && mainWindow->viewport != NULL)
 		originalZoom = mainWindow->viewport->zoom;
 
-	int rotation = originalRotation;
-	int zoom = originalZoom;
-	int mapSize = gMapSize;
-	int resolutionWidth = (mapSize * 32 * 2) >> zoom;
-	int resolutionHeight = (mapSize * 32 * 1) >> zoom;
+	sint32 rotation = originalRotation;
+	sint32 zoom = originalZoom;
+	sint32 mapSize = gMapSize;
+	sint32 resolutionWidth = (mapSize * 32 * 2) >> zoom;
+	sint32 resolutionHeight = (mapSize * 32 * 1) >> zoom;
 
 	resolutionWidth += 8;
 	resolutionHeight += 128;
@@ -177,11 +177,11 @@ void screenshot_giant()
 	viewport.var_11 = 0;
 	viewport.flags = 0;
 
-	int centreX = (mapSize / 2) * 32 + 16;
-	int centreY = (mapSize / 2) * 32 + 16;
+	sint32 centreX = (mapSize / 2) * 32 + 16;
+	sint32 centreY = (mapSize / 2) * 32 + 16;
 
-	int x = 0, y = 0;
-	int z = map_element_height(centreX, centreY) & 0xFFFF;
+	sint32 x = 0, y = 0;
+	sint32 z = map_element_height(centreX, centreY) & 0xFFFF;
 	switch (rotation) {
 	case 0:
 		x = centreY - centreX;
@@ -222,7 +222,7 @@ void screenshot_giant()
 
 	// Get a free screenshot path
 	char path[MAX_PATH];
-	int index;
+	sint32 index;
 	if ((index = screenshot_get_next_path(path, MAX_PATH)) == -1) {
 		log_error("Giant screenshot failed, unable to find a suitable destination path.");
 		window_error_open(STR_SCREENSHOT_FAILED, STR_NONE);
@@ -242,7 +242,7 @@ void screenshot_giant()
 	window_error_open(STR_SCREENSHOT_SAVED_AS, STR_NONE);
 }
 
-int cmdline_for_screenshot(const char **argv, int argc)
+sint32 cmdline_for_screenshot(const char **argv, sint32 argc)
 {
 	bool giantScreenshot = argc == 5 && _stricmp(argv[2], "giant") == 0;
 	if (argc != 4 && argc != 8 && !giantScreenshot) {
@@ -254,7 +254,7 @@ int cmdline_for_screenshot(const char **argv, int argc)
 	bool customLocation = false;
 	bool centreMapX = false;
 	bool centreMapY = false;
-	int resolutionWidth, resolutionHeight, customX = 0, customY = 0, customZoom, customRotation = 0;
+	sint32 resolutionWidth, resolutionHeight, customX = 0, customY = 0, customZoom, customRotation = 0;
 
 	const char *inputPath = argv[0];
 	const char *outputPath = argv[1];
@@ -295,7 +295,7 @@ int cmdline_for_screenshot(const char **argv, int argc)
 		gIntroState = INTRO_STATE_NONE;
 		gScreenFlags = SCREEN_FLAGS_PLAYING;
 
-		int mapSize = gMapSize;
+		sint32 mapSize = gMapSize;
 		if (resolutionWidth == 0 || resolutionHeight == 0) {
 			resolutionWidth = (mapSize * 32 * 2) >> customZoom;
 			resolutionHeight = (mapSize * 32 * 1) >> customZoom;
@@ -320,8 +320,8 @@ int cmdline_for_screenshot(const char **argv, int argc)
 			if (centreMapY)
 				customY = (mapSize / 2) * 32 + 16;
 
-			int x = 0, y = 0;
-			int z = map_element_height(customX, customY) & 0xFFFF;
+			sint32 x = 0, y = 0;
+			sint32 z = map_element_height(customX, customY) & 0xFFFF;
 			switch (customRotation) {
 			case 0:
 				x = customY - customX;

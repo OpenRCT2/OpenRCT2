@@ -58,13 +58,13 @@ static rct_widget window_land_widgets[] = {
 };
 
 static void window_land_close(rct_window *w);
-static void window_land_mouseup(rct_window *w, int widgetIndex);
-static void window_land_mousedown(int widgetIndex, rct_window*w, rct_widget* widget);
-static void window_land_dropdown(rct_window *w, int widgetIndex, int dropdownIndex);
+static void window_land_mouseup(rct_window *w, sint32 widgetIndex);
+static void window_land_mousedown(sint32 widgetIndex, rct_window*w, rct_widget* widget);
+static void window_land_dropdown(rct_window *w, sint32 widgetIndex, sint32 dropdownIndex);
 static void window_land_update(rct_window *w);
 static void window_land_invalidate(rct_window *w);
 static void window_land_paint(rct_window *w, rct_drawpixelinfo *dpi);
-static void window_land_textinput(rct_window *w, int widgetIndex, char *text);
+static void window_land_textinput(rct_window *w, sint32 widgetIndex, char *text);
 static void window_land_inputsize(rct_window *w);
 
 static rct_window_event_list window_land_events = {
@@ -110,8 +110,8 @@ static char window_land_wall_texture_order[] = {
 	0, 0
 };
 
-int _selectedFloorTexture;
-int _selectedWallTexture;
+sint32 _selectedFloorTexture;
+sint32 _selectedWallTexture;
 
 /**
  *
@@ -164,7 +164,7 @@ static void window_land_close(rct_window *w)
  *
  *  rct2: 0x00664064
  */
-static void window_land_mouseup(rct_window *w, int widgetIndex)
+static void window_land_mouseup(rct_window *w, sint32 widgetIndex)
 {
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
@@ -204,10 +204,10 @@ static void window_land_mouseup(rct_window *w, int widgetIndex)
  *
  *  rct2: 0x0066407B
  */
-static void window_land_mousedown(int widgetIndex, rct_window*w, rct_widget* widget)
+static void window_land_mousedown(sint32 widgetIndex, rct_window*w, rct_widget* widget)
 {
-	int i;
-	int defaultIndex = -1;
+	sint32 i;
+	sint32 defaultIndex = -1;
 	switch (widgetIndex) {
 	case WIDX_FLOOR:
 		for (i = 0; i < 14; i++) {
@@ -255,9 +255,9 @@ static void window_land_mousedown(int widgetIndex, rct_window*w, rct_widget* wid
  *
  *  rct2: 0x00664090
  */
-static void window_land_dropdown(rct_window *w, int widgetIndex, int dropdownIndex)
+static void window_land_dropdown(rct_window *w, sint32 widgetIndex, sint32 dropdownIndex)
 {
-	int type;
+	sint32 type;
 
 	switch (widgetIndex) {
 	case WIDX_FLOOR:
@@ -295,9 +295,9 @@ static void window_land_dropdown(rct_window *w, int widgetIndex, int dropdownInd
 	}
 }
 
-static void window_land_textinput(rct_window *w, int widgetIndex, char *text)
+static void window_land_textinput(rct_window *w, sint32 widgetIndex, char *text)
 {
-	int size;
+	sint32 size;
 	char* end;
 
 	if (widgetIndex != WIDX_PREVIEW || text == NULL)
@@ -362,7 +362,7 @@ static void window_land_invalidate(rct_window *w)
  */
 static void window_land_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
-	int x, y, numTiles;
+	sint32 x, y, numTiles;
 	money32 price;
 	rct_widget *previewWidget = &window_land_widgets[WIDX_PREVIEW];
 

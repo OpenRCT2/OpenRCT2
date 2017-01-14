@@ -58,7 +58,7 @@ public:
     uint64  GetLength()                               const override;
     uint64  GetPosition()                             const override;
     void    SetPosition(uint64 position)                    override;
-    void    Seek(sint64 offset, int origin)                 override;
+    void    Seek(sint64 offset, sint32 origin)                 override;
 
     void    Read(void * buffer, uint64 length)              override;
     void    Write(const void * buffer, uint64 length)       override;

@@ -35,7 +35,7 @@ enum {
  *
  *  rct2: 0x0076522A
  */
-static void paint_motionsimulator_vehicle(sint8 offsetX, sint8 offsetY, uint8 direction, int height, rct_map_element* mapElement)
+static void paint_motionsimulator_vehicle(sint8 offsetX, sint8 offsetY, uint8 direction, sint32 height, rct_map_element* mapElement)
 {
 	rct_ride *ride = get_ride(mapElement->properties.track.ride_index);
 	rct_ride_entry *rideEntry = get_ride_entry_by_ride(ride);
@@ -124,11 +124,11 @@ static void paint_motionsimulator_vehicle(sint8 offsetX, sint8 offsetY, uint8 di
 }
 
 /** rct2: 0x008A85C4 */
-static void paint_motionsimulator(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+static void paint_motionsimulator(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
 	trackSequence = track_map_2x2[direction][trackSequence];
 
-	int edges = edges_2x2[trackSequence];
+	sint32 edges = edges_2x2[trackSequence];
 	rct_ride *ride = get_ride(rideIndex);
 	rct_xy16 position = { gPaintMapPosition.x, gPaintMapPosition.y };
 
@@ -150,7 +150,7 @@ static void paint_motionsimulator(uint8 rideIndex, uint8 trackSequence, uint8 di
  *
  *  rct2: 0x00763520
  */
-TRACK_PAINT_FUNCTION get_track_paint_function_motionsimulator(int trackType, int direction)
+TRACK_PAINT_FUNCTION get_track_paint_function_motionsimulator(sint32 trackType, sint32 direction)
 {
 	switch (trackType) {
 	case FLAT_TRACK_ELEM_2_X_2: return paint_motionsimulator;

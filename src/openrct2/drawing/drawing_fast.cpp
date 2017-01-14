@@ -26,30 +26,30 @@ extern "C"
 //     sar eax, 0x1f (arithmetic shift right by 31)
 #define less_or_equal_zero_mask(val) (((val - 1) >> (sizeof(val) * 8 - 1)))
 
-template<int image_type, int zoom_level>
+template<sint32 image_type, sint32 zoom_level>
 static void FASTCALL DrawRLESprite2(const uint8* RESTRICT source_bits_pointer,
                                       uint8* RESTRICT dest_bits_pointer,
                                       const uint8* RESTRICT palette_pointer,
                                       const rct_drawpixelinfo *RESTRICT dpi,
-                                      int source_y_start,
-                                      int height,
-                                      int source_x_start,
-                                      int width)
+                                      sint32 source_y_start,
+                                      sint32 height,
+                                      sint32 source_x_start,
+                                      sint32 width)
 {
-    int zoom_amount = 1 << zoom_level;
-    int zoom_mask = 0xFFFFFFFF << zoom_level;
+    sint32 zoom_amount = 1 << zoom_level;
+    sint32 zoom_mask = 0xFFFFFFFF << zoom_level;
     uint8* next_dest_pointer = dest_bits_pointer;
 
-    int line_width = (dpi->width >> zoom_level) + dpi->pitch;
+    sint32 line_width = (dpi->width >> zoom_level) + dpi->pitch;
 
-    const int source_y_start_mask = less_or_equal_zero_mask(source_y_start + 1);
+    const sint32 source_y_start_mask = less_or_equal_zero_mask(source_y_start + 1);
     source_y_start += zoom_amount & source_y_start_mask;
     next_dest_pointer += line_width & source_y_start_mask;
     height -= zoom_amount & source_y_start_mask;
 
     //For every line in the image
-    for (int i = 0; i < height; i += zoom_amount) {
-        int y = source_y_start + i;
+    for (sint32 i = 0; i < height; i += zoom_amount) {
+        sint32 y = source_y_start + i;
         uint8 i2 = i >> zoom_level;
 
         //The first part of the source pointer is a list of offsets to different lines
@@ -64,7 +64,7 @@ static void FASTCALL DrawRLESprite2(const uint8* RESTRICT source_bits_pointer,
             const uint8* source_pointer = next_source_pointer;
             uint8* dest_pointer = loop_dest_pointer;
 
-            int no_pixels = *source_pointer++;
+            sint32 no_pixels = *source_pointer++;
             //gap_size is the number of non drawn pixels you require to
             //jump over on your destination
             uint8 gap_size = *source_pointer++;
@@ -76,16 +76,16 @@ static void FASTCALL DrawRLESprite2(const uint8* RESTRICT source_bits_pointer,
             next_source_pointer = source_pointer + no_pixels;
 
             //Calculates the start point of the image
-            int x_start = gap_size - source_x_start;
-            const int x_diff = x_start & ~zoom_mask;
-            const int x_mask = ~less_or_equal_zero_mask(x_diff);
+            sint32 x_start = gap_size - source_x_start;
+            const sint32 x_diff = x_start & ~zoom_mask;
+            const sint32 x_mask = ~less_or_equal_zero_mask(x_diff);
 
             no_pixels -= x_diff;
             x_start += ~zoom_mask & x_mask;
             source_pointer += (x_start&~zoom_mask) & x_mask;
 
             // This will have -1 (0xffffffff) for (x_start <= 0), 0 otherwise
-            int sign = less_or_equal_zero_mask(x_start);
+            sint32 sign = less_or_equal_zero_mask(x_start);
 
             dest_pointer += (x_start >> zoom_level) & ~sign;
 
@@ -97,10 +97,10 @@ static void FASTCALL DrawRLESprite2(const uint8* RESTRICT source_bits_pointer,
             //Reset the start position to zero as we have taken into account all moves
             x_start &= ~sign;
 
-            int x_end = x_start + no_pixels;
+            sint32 x_end = x_start + no_pixels;
             //If the end position is further out than the whole image
             //end position then we need to shorten the line again
-            const int pixels_till_end = x_end - width;
+            const sint32 pixels_till_end = x_end - width;
             //Shorten the line
             no_pixels -= pixels_till_end & ~(less_or_equal_zero_mask(pixels_till_end));
 
@@ -143,17 +143,17 @@ static void FASTCALL DrawRLESprite2(const uint8* RESTRICT source_bits_pointer,
 #define DrawRLESpriteHelper2(image_type, zoom_level) \
     DrawRLESprite2<image_type, zoom_level>(source_bits_pointer, dest_bits_pointer, palette_pointer, dpi, source_y_start, height, source_x_start, width)
 
-template<int image_type>
+template<sint32 image_type>
 static void FASTCALL DrawRLESprite1(const uint8* source_bits_pointer,
                                       uint8* dest_bits_pointer,
                                       const uint8* palette_pointer,
                                       const rct_drawpixelinfo *dpi,
-                                      int source_y_start,
-                                      int height,
-                                      int source_x_start,
-                                      int width)
+                                      sint32 source_y_start,
+                                      sint32 height,
+                                      sint32 source_x_start,
+                                      sint32 width)
 {
-    int zoom_level = dpi->zoom_level;
+    sint32 zoom_level = dpi->zoom_level;
     switch (zoom_level) {
     case 0: DrawRLESpriteHelper2(image_type, 0); break;
     case 1: DrawRLESpriteHelper2(image_type, 1); break;
@@ -177,11 +177,11 @@ extern "C"
                                              uint8* RESTRICT dest_bits_pointer,
                                              const uint8* RESTRICT palette_pointer,
                                              const rct_drawpixelinfo * RESTRICT dpi,
-                                             int image_type,
-                                             int source_y_start,
-                                             int height,
-                                             int source_x_start,
-                                             int width)
+                                             sint32 image_type,
+                                             sint32 source_y_start,
+                                             sint32 height,
+                                             sint32 source_x_start,
+                                             sint32 width)
     {
         if (image_type & IMAGE_TYPE_REMAP)
         {

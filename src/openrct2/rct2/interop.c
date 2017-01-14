@@ -38,7 +38,7 @@
 #include "interop.h"
 
 #if defined(USE_MMAP) && (defined(__unix__) || defined(__MACOSX__)) && !defined(NO_RCT2)
-	static int fdData = -1;
+	static sint32 fdData = -1;
 #endif
 #if !defined(NO_RCT2)
 	static char * segments = (char *)(GOOD_PLACE_FOR_DATA_SEGMENT);
@@ -58,8 +58,8 @@ bool rct2_interop_setup_segment()
 {
 	// OpenRCT2 on Linux and macOS is wired to have the original Windows PE sections loaded
 	// necessary. Windows does not need to do this as OpenRCT2 runs as a DLL loaded from the Windows PE.
-	int len = 0x01429000 - 0x8a4000; // 0xB85000, 12079104 bytes or around 11.5MB
-	int err = 0;
+	sint32 len = 0x01429000 - 0x8a4000; // 0xB85000, 12079104 bytes or around 11.5MB
+	sint32 err = 0;
 	// in some configurations err and len may be unused
 	UNUSED(err);
 	UNUSED(len);
@@ -117,9 +117,9 @@ bool rct2_interop_setup_segment()
 #endif // defined(USE_MMAP) && (defined(__unix__) || defined(__MACOSX__))
 
 #if defined(__unix__) && !defined(NO_RCT2)
-	int pageSize = getpagesize();
-	int numPages = (len + pageSize - 1) / pageSize;
-	unsigned char *dummy = malloc(numPages);
+	sint32 pageSize = getpagesize();
+	sint32 numPages = (len + pageSize - 1) / pageSize;
+	uint8 *dummy = malloc(numPages);
 
 	err = mincore((void *)segments, len, dummy);
 	bool pagesMissing = false;
@@ -138,7 +138,7 @@ bool rct2_interop_setup_segment()
 		perror("mincore");
 #endif // __LINUX__
 	} else {
-		for (int i = 0; i < numPages; i++)
+		for (sint32 i = 0; i < numPages; i++)
 		{
 			if (dummy[i] != 1)
 			{

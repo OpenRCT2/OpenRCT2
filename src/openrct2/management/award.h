@@ -52,7 +52,7 @@ enum {
 
 extern rct_award gCurrentAwards[MAX_AWARDS];
 
-bool award_is_positive(int type);
+bool award_is_positive(sint32 type);
 void award_reset();
 void award_update_all();
 

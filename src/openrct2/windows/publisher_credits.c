@@ -33,10 +33,10 @@ rct_widget window_publisher_credits_widgets[] = {
 	{ WIDGETS_END },
 };
 
-static void window_publisher_credits_mouseup(rct_window *w, int widgetIndex);
-static void window_publisher_credits_scrollgetsize(rct_window *w, int scrollIndex, int *width, int *height);
+static void window_publisher_credits_mouseup(rct_window *w, sint32 widgetIndex);
+static void window_publisher_credits_scrollgetsize(rct_window *w, sint32 scrollIndex, sint32 *width, sint32 *height);
 static void window_publisher_credits_paint(rct_window *w, rct_drawpixelinfo *dpi);
-static void window_publisher_credits_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scrollIndex);
+static void window_publisher_credits_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 scrollIndex);
 
 static rct_window_event_list window_publisher_credits_events = {
 	NULL,
@@ -104,7 +104,7 @@ void window_publisher_credits_open()
 *
 *  rct2: 0x0066D7A8
 */
-static void window_publisher_credits_mouseup(rct_window *w, int widgetIndex)
+static void window_publisher_credits_mouseup(rct_window *w, sint32 widgetIndex)
 {
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
@@ -117,7 +117,7 @@ static void window_publisher_credits_mouseup(rct_window *w, int widgetIndex)
 *
 *  rct2: 0x0066D7B3
 */
-static void window_publisher_credits_scrollgetsize(rct_window *w, int scrollIndex, int *width, int *height)
+static void window_publisher_credits_scrollgetsize(rct_window *w, sint32 scrollIndex, sint32 *width, sint32 *height)
 {
 	*height = 820;
 }
@@ -131,7 +131,7 @@ static void window_publisher_credits_paint(rct_window *w, rct_drawpixelinfo *dpi
 	window_draw_widgets(w, dpi);
 }
 
-int credits_order[] = {
+sint32 credits_order[] = {
 	STR_CREDITS_PUBLISHER_LINE_0,
 	STR_CREDITS_PUBLISHER_LINE_1,
 	STR_CREDITS_PUBLISHER_LINE_2,
@@ -160,10 +160,10 @@ int credits_order[] = {
 *
 *  rct2: 0x0066D5D1
 */
-static void window_publisher_credits_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scrollIndex)
+static void window_publisher_credits_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 scrollIndex)
 {
-	int x = 200;
-	int y = 2;
+	sint32 x = 200;
+	sint32 y = 2;
 
 	gfx_draw_sprite(dpi, SPR_CREDITS_INFOGRAMES, x - 49, y, 0);
 
@@ -173,7 +173,7 @@ static void window_publisher_credits_scrollpaint(rct_window *w, rct_drawpixelinf
 
 	y += 14;
 
-	for (int i = 0; i < sizeof(credits_order)/sizeof(int); i++) {
+	for (sint32 i = 0; i < sizeof(credits_order)/sizeof(sint32); i++) {
 		gfx_draw_string_centred(dpi, credits_order[i], x, y, COLOUR_BLACK, NULL);
 		y += 11;
 	}
