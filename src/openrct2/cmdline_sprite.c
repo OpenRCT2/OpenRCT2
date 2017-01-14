@@ -744,7 +744,7 @@ sint32 cmdline_for_sprite(const char **argv, sint32 argc)
 
 				if (!sprite_file_open(spriteFilePath)) {
 					fprintf(stderr, "Unable to open sprite file: %s\nCanceling\n", spriteFilePath);
-./					json_decref(sprite_list);
+					json_decref(sprite_list);
 					return -1;
 				}
 
