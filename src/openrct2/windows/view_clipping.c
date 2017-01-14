@@ -256,10 +256,11 @@ static void window_view_clipping_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 	fixed32_2dp clipHeightValueInMeters;
 	fixed16_1dp clipHeightValueInFeet;
+	sint32 clipHeightRawValue = (sint32)gClipHeight;
 	switch (gClipHeightDisplayType) {
 	case DISPLAY_RAW:
 	default:
-		gfx_draw_string_left(dpi, STR_FORMAT_INTEGER, &gClipHeight, w->colours[0], x, y); //Printing the raw value.
+		gfx_draw_string_left(dpi, STR_FORMAT_INTEGER, &clipHeightRawValue, w->colours[0], x, y); //Printing the raw value.
 		break;
 
 	case DISPLAY_UNITS:

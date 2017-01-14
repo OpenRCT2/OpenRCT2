@@ -4314,10 +4314,10 @@ STR_6002    :{SMALLFONT}{BLACK}Lamps and rides will be lit up at night.{NEWLINE}
 STR_6003    :Cut-away View
 STR_6004    :Cut-away View
 STR_6005    :Enable cut-away view
-STR_6006    :Cut-away view only displays map elements at or below the cut height
+STR_6006    :{SMALLFONT}{BLACK}Cut-away view only displays map elements at or below the cut height
 STR_6007    :Cut height
-STR_6008    :Click to toggle raw value<->value in measurement units
-STR_6009    :Select cut height
+STR_6008    :{SMALLFONT}{BLACK}Click to toggle raw value<->value in measurement units
+STR_6009    :{SMALLFONT}{BLACK}Select cut height
 STR_6010    :{COMMA2DP32}m
 STR_6011    :{COMMA1DP16}ft
 
