@@ -58,7 +58,7 @@ static void vehicle_update_top_spin_operating(rct_vehicle* vehicle);
 static void vehicle_update_crash(rct_vehicle *vehicle);
 static void vehicle_update_travelling_boat(rct_vehicle* vehicle);
 static void vehicle_update_motion_boat_hire(rct_vehicle *vehicle);
-static void sub_6DA280(rct_vehicle *vehicle);
+static void vehicle_update_boat_location(rct_vehicle *vehicle);
 static bool vehicle_is_boat_on_water(rct_vehicle *vehicle, int x, int y);
 static void vehicle_update_arriving(rct_vehicle* vehicle);
 static void vehicle_update_unloading_passengers(rct_vehicle* vehicle);
@@ -2709,7 +2709,7 @@ static void vehicle_update_departing(rct_vehicle* vehicle) {
 		vehicle->sub_state = 1;
 		vehicle_peep_easteregg_here_we_are(vehicle);
 
-		if (rideEntry->flags & RIDE_ENTRY_FLAG_3) {
+		if (rideEntry->flags & RIDE_ENTRY_FLAG_PLAY_DEPART_SOUND) {
 			uint8 soundId = (rideEntry->vehicles[0].sound_range == 4) ?
 				SOUND_TRAM :
 				SOUND_TRAIN_CHUGGING;
@@ -3832,7 +3832,7 @@ static void vehicle_update_motion_boat_hire(rct_vehicle *vehicle)
 			vehicle->var_34 = bl;
 			x += y;
 			if (x <= 12) {
-				sub_6DA280(vehicle);
+				vehicle_update_boat_location(vehicle);
 			}
 
 			if (!(vehicle->var_35 & (1 << 0))) {
@@ -3863,7 +3863,7 @@ static void vehicle_update_motion_boat_hire(rct_vehicle *vehicle)
 				vehicle->remaining_distance = 0;
 				if (vehicle->sprite_direction == vehicle->var_34) {
 					vehicle->sprite_direction ^= (1 << 4);
-					sub_6DA280(vehicle);
+					vehicle_update_boat_location(vehicle);
 					vehicle->sprite_direction ^= (1 << 4);
 				}
 				break;
@@ -3881,7 +3881,7 @@ static void vehicle_update_motion_boat_hire(rct_vehicle *vehicle)
 						do_loc_6DAA97 = true;
 					} else {
 						uint16 xy = (((dx >> 5) << 8) | (bx >> 5));
-						if (xy != ride->boat_hire_return_position) {
+						if (xy != ride->boat_hire_return_position.xy) {
 							do_loc_6DAA97 = true;
 						}
 					}
@@ -3890,7 +3890,7 @@ static void vehicle_update_motion_boat_hire(rct_vehicle *vehicle)
 					if (do_loc_6DAA97) {
 						vehicle->remaining_distance = 0;
 						if (vehicle->sprite_direction == vehicle->var_34) {
-							sub_6DA280(vehicle);
+							vehicle_update_boat_location(vehicle);
 						}
 						break;
 					}
@@ -3988,16 +3988,18 @@ static void vehicle_update_motion_boat_hire(rct_vehicle *vehicle)
   *
   *  rct2: 0x006DA280
   */
-static void sub_6DA280(rct_vehicle *vehicle)
+static void vehicle_update_boat_location(rct_vehicle *vehicle)
 {
-	rct_ride* ride = get_ride(vehicle->ride);
+	rct_ride *ride = get_ride(vehicle->ride);
+	rct_xy8 returnPosition = ride->boat_hire_return_position;
+	uint8 returnDirection = ride->boat_hire_return_direction & 3;
 
 	rct_xy8 location = {
-		.x = (vehicle->x + TileDirectionDelta[ride->boat_hire_return_direction & 3].x) / 32,
-		.y = (vehicle->y + TileDirectionDelta[ride->boat_hire_return_direction & 3].y) / 32
+		.x = (vehicle->x + TileDirectionDelta[returnDirection].x) / 32,
+		.y = (vehicle->y + TileDirectionDelta[returnDirection].y) / 32
 	};
 
-	if (*((uint16*)&location) == ride->boat_hire_return_position) {
+	if (location.xy == returnPosition.xy) {
 		vehicle->sub_state = 1;
 		vehicle->boat_location = location;
 		return;
@@ -4007,21 +4009,22 @@ static void sub_6DA280(rct_vehicle *vehicle)
 	uint8 curDirection = ((vehicle->sprite_direction + 19) >> 3) & 3;
 	uint8 randDirection = scenario_rand() & 3;
 
-	rct_ride_entry* rideEntry = get_ride_entry(vehicle->ride_subtype);
-	if (scenario_rand() & 1 && (!(rideEntry->flags & RIDE_ENTRY_FLAG_7) || vehicle->lost_time_out > 1920)) {
-		location = *((rct_xy8*)&ride->boat_hire_return_position);
-		rct_xy16 destLocation = {
-			.x = location.x * 32 - TileDirectionDelta[ride->boat_hire_return_direction & 3].x + 16,
-			.y = location.y * 32 - TileDirectionDelta[ride->boat_hire_return_direction & 3].y + 16
-		};
+	rct_ride_entry *rideEntry = get_ride_entry(vehicle->ride_subtype);
+	if (!(rideEntry->flags & RIDE_ENTRY_FLAG_7) || vehicle->lost_time_out > 1920) {
+		if (scenario_rand() & 1) {
+			rct_xy16 destLocation = {
+				.x = returnPosition.x * 32 - TileDirectionDelta[returnDirection].x + 16,
+				.y = returnPosition.y * 32 - TileDirectionDelta[returnDirection].y + 16
+			};
 
-		destLocation.x -= vehicle->x;
-		destLocation.y -= vehicle->y;
+			destLocation.x -= vehicle->x;
+			destLocation.y -= vehicle->y;
 
-		if (abs(destLocation.x) <= abs(destLocation.y)) {
-			randDirection = destLocation.y < 0 ? 3 : 1;
-		} else {
-			randDirection = destLocation.x < 0 ? 0 : 2;
+			if (abs(destLocation.x) <= abs(destLocation.y)) {
+				randDirection = destLocation.y < 0 ? 3 : 1;
+			} else {
+				randDirection = destLocation.x < 0 ? 0 : 2;
+			}
 		}
 	}
 
@@ -6965,8 +6968,8 @@ static void vehicle_update_handle_water_splash(rct_vehicle *vehicle)
 	rct_ride_entry *rideEntry = get_ride_entry(vehicle->ride_subtype);
 	int trackType = vehicle->track_type >> 2;
 
-	if (!(rideEntry->flags & RIDE_ENTRY_FLAG_8)) {
-		if (rideEntry->flags & RIDE_ENTRY_FLAG_9) {
+	if (!(rideEntry->flags & RIDE_ENTRY_FLAG_PLAY_SPLASH_SOUND)) {
+		if (rideEntry->flags & RIDE_ENTRY_FLAG_PLAY_SPLASH_SOUND_SLIDE) {
 			if (!vehicle->is_child) {
 				if (track_element_is_covered(trackType)) {
 					rct_vehicle *nextVehicle = GET_VEHICLE(vehicle->next_vehicle_on_ride);
@@ -8896,7 +8899,7 @@ loc_6DC316:
 		}
 	}
 
-	if (rideEntry->flags & RIDE_ENTRY_FLAG_9) {
+	if (rideEntry->flags & RIDE_ENTRY_FLAG_PLAY_SPLASH_SOUND_SLIDE) {
 		if (!vehicle->is_child) {
 			regs.bx = vehicle->track_type >> 2;
 			if (track_element_is_covered(regs.bx)) {

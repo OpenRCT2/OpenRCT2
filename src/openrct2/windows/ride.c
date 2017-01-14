@@ -1350,7 +1350,7 @@ static void window_ride_draw_tab_vehicle(rct_drawpixelinfo *dpi, rct_window *w)
 		rct_ride *ride = get_ride(w->number);
 
 		rct_ride_entry *rideEntry = get_ride_entry_by_ride(ride);
-		if (rideEntry->flags & RIDE_ENTRY_FLAG_0) {
+		if (rideEntry->flags & RIDE_ENTRY_FLAG_VEHICLE_TAB_SCALE_HALF) {
 			clipDPI.zoom_level = 1;
 			clipDPI.width *= 2;
 			clipDPI.height *= 2;
@@ -1468,7 +1468,7 @@ static void window_ride_disable_tabs(rct_window *w)
 	if (type == NULL) {
 		disabled_tabs |= 1 << WIDX_TAB_2 | 1 << WIDX_TAB_3 | 1 << WIDX_TAB_4 | 1 << WIDX_TAB_5 | 1 << WIDX_TAB_6
 					   | 1 << WIDX_TAB_7 | 1 << WIDX_TAB_8 | 1 << WIDX_TAB_9 | 1 << WIDX_TAB_10;
-	} else if ((type->flags & RIDE_ENTRY_FLAG_19) != 0)
+	} else if ((type->flags & RIDE_ENTRY_FLAG_DISABLE_COLOUR_TAB) != 0)
 		disabled_tabs |= (1 << WIDX_TAB_5); // 0x100
 
 	w->disabled_widgets = disabled_tabs;
