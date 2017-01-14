@@ -455,6 +455,7 @@ void duck_remove_all();
 ///////////////////////////////////////////////////////////////
 // Money effect
 ///////////////////////////////////////////////////////////////
+void money_effect_create_at(money32 value, int x, int y, int z);
 void money_effect_create(money32 value);
 void money_effect_update(rct_money_effect *moneyEffect);
 
