@@ -569,10 +569,10 @@ extern "C"
 
         const CommandLineCommand * command = CommandLine::FindCommandFor(CommandLine::RootCommands, &argEnumerator);
 
-	if (command == nullptr)
-	{
-	return EXITCODE_FAIL;
-	}
+        if (command == nullptr)
+        {
+        return EXITCODE_FAIL;
+        }
 
         if (command->Options != nullptr)
         {
