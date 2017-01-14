@@ -1350,7 +1350,7 @@ static void window_ride_draw_tab_vehicle(rct_drawpixelinfo *dpi, rct_window *w)
 		rct_ride *ride = get_ride(w->number);
 
 		rct_ride_entry *rideEntry = get_ride_entry_by_ride(ride);
-		if (rideEntry->flags & RIDE_ENTRY_FLAG_0) {
+		if (rideEntry->flags & RIDE_ENTRY_FLAG_VEHICLE_TAB_SCALE_HALF) {
 			clipDPI.zoom_level = 1;
 			clipDPI.width *= 2;
 			clipDPI.height *= 2;

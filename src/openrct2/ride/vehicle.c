@@ -2709,7 +2709,7 @@ static void vehicle_update_departing(rct_vehicle* vehicle) {
 		vehicle->sub_state = 1;
 		vehicle_peep_easteregg_here_we_are(vehicle);
 
-		if (rideEntry->flags & RIDE_ENTRY_FLAG_3) {
+		if (rideEntry->flags & RIDE_ENTRY_FLAG_PLAY_DEPART_SOUND) {
 			uint8 soundId = (rideEntry->vehicles[0].sound_range == 4) ?
 				SOUND_TRAM :
 				SOUND_TRAIN_CHUGGING;
