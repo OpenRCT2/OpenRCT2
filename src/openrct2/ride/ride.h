@@ -437,17 +437,6 @@ enum {
 	RIDE_ENTRY_FLAG_DISABLE_COLOUR_TAB				= 1 << 19,
 	// Must be set with swing mode 1 as well.
 	RIDE_ENTRY_FLAG_ALTERNATIVE_SWING_MODE_2		= 1 << 20,
-	RIDE_ENTRY_FLAG_21								= 1 << 21,
-	RIDE_ENTRY_FLAG_22								= 1 << 22,
-	RIDE_ENTRY_FLAG_23								= 1 << 23,
-	RIDE_ENTRY_FLAG_24								= 1 << 24,
-	RIDE_ENTRY_FLAG_25								= 1 << 25,
-	RIDE_ENTRY_FLAG_26								= 1 << 26,
-	RIDE_ENTRY_FLAG_27								= 1 << 27,
-	RIDE_ENTRY_FLAG_28								= 1 << 28,
-	RIDE_ENTRY_FLAG_29								= 1 << 29,
-	RIDE_ENTRY_FLAG_30								= 1 << 30,
-	RIDE_ENTRY_FLAG_31								= 1u << 31,
 };
 
 enum{
