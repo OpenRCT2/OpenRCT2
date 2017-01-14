@@ -291,7 +291,7 @@ static sint32 get_palette_index(sint16 *colour)
 }
 
 
-static bool sprite_file_import(const char *path, int x_offset, int y_offset, rct_g1_element *outElement, uint8 **outBuffer, int *outBufferLength, sint32 mode)
+static bool sprite_file_import(const char *path, sint16 x_offset, sint16 y_offset, rct_g1_element *outElement, uint8 **outBuffer, int *outBufferLength, sint32 mode)
 {
 	uint8 *pixels;
 	uint32 width, height;
@@ -605,8 +605,8 @@ sint32 cmdline_for_sprite(const char **argv, sint32 argc)
 
 		const char *spriteFilePath = argv[1];
 		const char *imagePath = argv[2];
-		int x_offset=0;
-		int y_offset=0;
+		sint16 x_offset=0;
+		sint16 y_offset=0;
 
 			if(argc == 5) {
 			char* endptr;
@@ -682,30 +682,6 @@ sint32 cmdline_for_sprite(const char **argv, sint32 argc)
 		sprite_file_save(spriteFilePath);
 
 		fprintf(stdout, "Building: %s\n", spriteFilePath);
-<<<<<<< HEAD
-		sint32 i = 0;
-		do {
-			// Create image path
-			safe_strcpy(imagePath, resourcePath, MAX_PATH);
-			if (resourcePath[resourceLength - 1] == '/' || resourcePath[resourceLength - 1] == '\\')
-				imagePath[resourceLength - 1] = 0;
-			char filename[16];
-			snprintf(filename, 16, "%d.png", i);
-			safe_strcat_path(imagePath, filename, MAX_PATH);
-
-			file = SDL_RWFromFile(imagePath, "r");
-			if (file != NULL) {
-				SDL_RWclose(file);
-				rct_g1_element spriteElement;
-				uint8 *buffer;
-<<<<<<< HEAD
-				sint32 bufferLength;
-				if (!sprite_file_import(imagePath, &spriteElement, &buffer, &bufferLength, gSpriteMode)) {
-=======
-				int bufferLength;
-				if (!sprite_file_import(imagePath, 0, 0, &spriteElement, &buffer, &bufferLength, gSpriteMode)) {
->>>>>>> Add support for x/y offsets to append command
-=======
 
 		size_t i;
 		json_t* sprite_description;
@@ -735,7 +711,6 @@ sint32 cmdline_for_sprite(const char **argv, sint32 argc)
 			uint8 *buffer;
 			int bufferLength;
 				if (!sprite_file_import(imagePath, x_offset==NULL ? 0 : json_integer_value(x_offset), y_offset==NULL ? 0 : json_integer_value(y_offset), &spriteElement, &buffer, &bufferLength, gSpriteMode)) {
->>>>>>> Load sprite information from JSON file
 					fprintf(stderr, "Could not import image file: %s\nCanceling\n", imagePath);
 					json_decref(sprite_list);
 					return -1;
@@ -772,7 +747,7 @@ sint32 cmdline_for_sprite(const char **argv, sint32 argc)
 				sprite_file_close();
 
 
-				}
+			}
 		json_decref(sprite_list);
 
 		fprintf(stdout, "Finished\n");
