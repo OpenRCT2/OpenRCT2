@@ -29,7 +29,7 @@ namespace String
     bool   IsNullOrEmpty(const utf8 * str);
     sint32 Compare(const std::string &a, const std::string &b, bool ignoreCase = false);
     sint32 Compare(const utf8 * a, const utf8 * b, bool ignoreCase = false);
-    bool Equals(const std::string &a, const std::string &b, bool ignoreCase = false);
+    bool   Equals(const std::string &a, const std::string &b, bool ignoreCase = false);
     bool   Equals(const utf8 * a, const utf8 * b, bool ignoreCase = false);
     bool   StartsWith(const utf8 * str, const utf8 * match, bool ignoreCase = false);
     size_t LastIndexOf(const utf8 * str, utf8 match);

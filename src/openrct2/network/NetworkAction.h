@@ -25,7 +25,7 @@ class NetworkAction final
 public:
     rct_string_id       Name;
     std::string         PermissionName;
-    std::vector<sint32>    Commands;
+    std::vector<sint32> Commands;
 };
 
 class NetworkActions final

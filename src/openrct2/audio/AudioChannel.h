@@ -36,7 +36,7 @@ interface IAudioChannel
     virtual SpeexResamplerState * GetResampler() const abstract;
     virtual void SetResampler(SpeexResamplerState * value) abstract;
 
-    virtual sint32     GetGroup() const abstract;
+    virtual sint32  GetGroup() const abstract;
     virtual void    SetGroup(sint32 group) abstract;
 
     virtual double  GetRate() const abstract;
@@ -45,15 +45,15 @@ interface IAudioChannel
     virtual uint64  GetOffset() const abstract;
     virtual bool    SetOffset(uint64 offset) abstract;
 
-    virtual sint32     GetLoop() const abstract;
+    virtual sint32  GetLoop() const abstract;
     virtual void    SetLoop(sint32 value) abstract;
 
-    virtual sint32     GetVolume() const abstract;
+    virtual sint32  GetVolume() const abstract;
     virtual float   GetVolumeL() const abstract;
     virtual float   GetVolumeR() const abstract;
     virtual float   GetOldVolumeL() const abstract;
     virtual float   GetOldVolumeR() const abstract;
-    virtual sint32     GetOldVolume() const abstract;
+    virtual sint32  GetOldVolume() const abstract;
     virtual void    SetVolume(sint32 volume) abstract;
 
     virtual float   GetPan() const abstract;

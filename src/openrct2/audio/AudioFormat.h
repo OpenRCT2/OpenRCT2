@@ -25,9 +25,9 @@
  */
 struct AudioFormat
 {
-    sint32             freq;
+    sint32          freq;
     SDL_AudioFormat format;
-    sint32             channels;
+    sint32          channels;
 
     sint32 BytesPerSample() const
     {

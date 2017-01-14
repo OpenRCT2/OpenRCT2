@@ -31,12 +31,12 @@ private:
     uint64 _offset = 0;
     sint32 _loop = 0;
 
-    sint32     _volume = 1;
+    sint32  _volume = 1;
     float   _volume_l = 0.f;
     float   _volume_r = 0.f;
     float   _oldvolume_l = 0.f;
     float   _oldvolume_r = 0.f;
-    sint32     _oldvolume = 0;
+    sint32  _oldvolume = 0;
     float   _pan = 0;
 
     bool    _stopping = false;
