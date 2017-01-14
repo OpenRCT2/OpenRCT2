@@ -1909,12 +1909,12 @@ static void window_park_awards_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	sint32 y = w->y + window_park_awards_widgets[WIDX_PAGE_BACKGROUND].top + 4;
 	sint32 count = 0;
 	for (sint32 i = 0; i < MAX_AWARDS; i++) {
-		rct_award *award = &gCurrentAwards[i];
-		if (award->time == 0)
+		Award *award = &gCurrentAwards[i];
+		if (award->Time == 0)
 			continue;
 
-		gfx_draw_sprite(dpi, ParkAwards[award->type].sprite, x, y, 0);
-		gfx_draw_string_left_wrapped(dpi, NULL, x + 34, y + 6, 180, ParkAwards[award->type].text, COLOUR_BLACK);
+		gfx_draw_sprite(dpi, ParkAwards[award->Type].sprite, x, y, 0);
+		gfx_draw_string_left_wrapped(dpi, NULL, x + 34, y + 6, 180, ParkAwards[award->Type].text, COLOUR_BLACK);
 
 		y += 32;
 		count++;

@@ -17,8 +17,9 @@
 #include "../core/Exception.hpp"
 #include "../core/IStream.hpp"
 #include "../core/String.hpp"
-#include "../object/ObjectRepository.h"
+#include "../management/award.h"
 #include "../object/Object.h"
+#include "../object/ObjectRepository.h"
 #include "S6Exporter.h"
 
 extern "C"
@@ -348,7 +349,16 @@ void S6Exporter::Export()
     _s6.income_from_admissions = gTotalIncomeFromAdmissions;
     _s6.company_value = gCompanyValue;
     memcpy(_s6.peep_warning_throttle, gPeepWarningThrottle, sizeof(_s6.peep_warning_throttle));
-    memcpy(_s6.awards, gCurrentAwards, sizeof(_s6.awards));
+
+    // Awards
+    for (int i = 0; i < RCT2_MAX_AWARDS; i++)
+    {
+        Award * src = &gCurrentAwards[i];
+        rct2_award * dst = &_s6.awards[i];
+        dst->time = src->Time;
+        dst->type = src->Type;
+    }
+
     _s6.land_price = gLandPrice;
     _s6.construction_rights_price = gConstructionRightsPrice;
     // unk_01358774
