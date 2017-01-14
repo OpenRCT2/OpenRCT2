@@ -42,7 +42,7 @@ static void suspended_monorail_track_flat(uint8 rideIndex, uint8 trackSequence, 
 
 	paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
 	if (track_paint_util_should_paint_supports(gPaintMapPosition)) {
-		metal_a_supports_paint_setup(3, 4, 0, height + 42, gTrackColours[SCHEME_SUPPORTS]);
+		metal_a_supports_paint_setup(METAL_SUPPORTS_BOXED, 4, 0, height + 42, gTrackColours[SCHEME_SUPPORTS]);
 	}
 
 	paint_util_push_tunnel_rotated(direction, height, TUNNEL_9);
@@ -91,16 +91,16 @@ static void suspended_monorail_track_25_deg_up(uint8 rideIndex, uint8 trackSeque
 	if (track_paint_util_should_paint_supports(gPaintMapPosition)) {
 		switch (direction) {
 		case 0:
-			metal_a_supports_paint_setup(3, 6, 0, height + 60, gTrackColours[SCHEME_SUPPORTS]);
+			metal_a_supports_paint_setup(METAL_SUPPORTS_BOXED, 6, 0, height + 60, gTrackColours[SCHEME_SUPPORTS]);
 			break;
 		case 1:
-			metal_a_supports_paint_setup(3, 8, 0, height + 60, gTrackColours[SCHEME_SUPPORTS]);
+			metal_a_supports_paint_setup(METAL_SUPPORTS_BOXED, 8, 0, height + 60, gTrackColours[SCHEME_SUPPORTS]);
 			break;
 		case 2:
-			metal_a_supports_paint_setup(3, 7, 0, height + 60, gTrackColours[SCHEME_SUPPORTS]);
+			metal_a_supports_paint_setup(METAL_SUPPORTS_BOXED, 7, 0, height + 60, gTrackColours[SCHEME_SUPPORTS]);
 			break;
 		case 3:
-			metal_a_supports_paint_setup(3, 5, 0, height + 60, gTrackColours[SCHEME_SUPPORTS]);
+			metal_a_supports_paint_setup(METAL_SUPPORTS_BOXED, 5, 0, height + 60, gTrackColours[SCHEME_SUPPORTS]);
 			break;
 		}
 	}
@@ -135,16 +135,16 @@ static void suspended_monorail_track_flat_to_25_deg_up(uint8 rideIndex, uint8 tr
 	if (track_paint_util_should_paint_supports(gPaintMapPosition)) {
 		switch (direction) {
 		case 0:
-			metal_a_supports_paint_setup(3, 6, 0, height + 52, gTrackColours[SCHEME_SUPPORTS]);
+			metal_a_supports_paint_setup(METAL_SUPPORTS_BOXED, 6, 0, height + 52, gTrackColours[SCHEME_SUPPORTS]);
 			break;
 		case 1:
-			metal_a_supports_paint_setup(3, 8, 0, height + 52, gTrackColours[SCHEME_SUPPORTS]);
+			metal_a_supports_paint_setup(METAL_SUPPORTS_BOXED, 8, 0, height + 52, gTrackColours[SCHEME_SUPPORTS]);
 			break;
 		case 2:
-			metal_a_supports_paint_setup(3, 7, 0, height + 52, gTrackColours[SCHEME_SUPPORTS]);
+			metal_a_supports_paint_setup(METAL_SUPPORTS_BOXED, 7, 0, height + 52, gTrackColours[SCHEME_SUPPORTS]);
 			break;
 		case 3:
-			metal_a_supports_paint_setup(3, 5, 0, height + 52, gTrackColours[SCHEME_SUPPORTS]);
+			metal_a_supports_paint_setup(METAL_SUPPORTS_BOXED, 5, 0, height + 52, gTrackColours[SCHEME_SUPPORTS]);
 			break;
 		}
 	}
@@ -179,16 +179,16 @@ static void suspended_monorail_track_25_deg_up_to_flat(uint8 rideIndex, uint8 tr
 	if (track_paint_util_should_paint_supports(gPaintMapPosition)) {
 		switch (direction) {
 		case 0:
-			metal_a_supports_paint_setup(3, 6, 0, height + 50, gTrackColours[SCHEME_SUPPORTS]);
+			metal_a_supports_paint_setup(METAL_SUPPORTS_BOXED, 6, 0, height + 50, gTrackColours[SCHEME_SUPPORTS]);
 			break;
 		case 1:
-			metal_a_supports_paint_setup(3, 8, 0, height + 50, gTrackColours[SCHEME_SUPPORTS]);
+			metal_a_supports_paint_setup(METAL_SUPPORTS_BOXED, 8, 0, height + 50, gTrackColours[SCHEME_SUPPORTS]);
 			break;
 		case 2:
-			metal_a_supports_paint_setup(3, 7, 0, height + 50, gTrackColours[SCHEME_SUPPORTS]);
+			metal_a_supports_paint_setup(METAL_SUPPORTS_BOXED, 7, 0, height + 50, gTrackColours[SCHEME_SUPPORTS]);
 			break;
 		case 3:
-			metal_a_supports_paint_setup(3, 5, 0, height + 50, gTrackColours[SCHEME_SUPPORTS]);
+			metal_a_supports_paint_setup(METAL_SUPPORTS_BOXED, 5, 0, height + 50, gTrackColours[SCHEME_SUPPORTS]);
 			break;
 		}
 	}
@@ -240,7 +240,7 @@ static void suspended_monorail_track_left_quarter_turn_5(uint8 rideIndex, uint8 
 		}
 
 		paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
-		metal_a_supports_paint_setup(3, 4, 0, height + 42, gTrackColours[SCHEME_SUPPORTS]);
+		metal_a_supports_paint_setup(METAL_SUPPORTS_BOXED, 4, 0, height + 42, gTrackColours[SCHEME_SUPPORTS]);
 
 		if (direction == 0 || direction == 3) {
 			paint_util_push_tunnel_rotated(direction, height, TUNNEL_9);
@@ -324,7 +324,7 @@ static void suspended_monorail_track_left_quarter_turn_5(uint8 rideIndex, uint8 
 		}
 
 		paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
-		metal_a_supports_paint_setup(3, 4, 0, height + 42, gTrackColours[SCHEME_SUPPORTS]);
+		metal_a_supports_paint_setup(METAL_SUPPORTS_BOXED, 4, 0, height + 42, gTrackColours[SCHEME_SUPPORTS]);
 
 		switch (direction) {
 		case 2:
@@ -367,7 +367,7 @@ static void suspended_monorail_track_s_bend_left(uint8 rideIndex, uint8 trackSeq
 		}
 
 		paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-		metal_a_supports_paint_setup(3, 4, 0, height + 42, gTrackColours[SCHEME_SUPPORTS]);
+		metal_a_supports_paint_setup(METAL_SUPPORTS_BOXED, 4, 0, height + 42, gTrackColours[SCHEME_SUPPORTS]);
 
 		if (direction == 0 || direction == 3) {
 			paint_util_push_tunnel_rotated(direction, height, TUNNEL_9);
@@ -393,10 +393,10 @@ static void suspended_monorail_track_s_bend_left(uint8 rideIndex, uint8 trackSeq
 		paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
 		switch (direction) {
 		case 0:
-			metal_a_supports_paint_setup(3, 5, 0, height + 42, gTrackColours[SCHEME_SUPPORTS]);
+			metal_a_supports_paint_setup(METAL_SUPPORTS_BOXED, 5, 0, height + 42, gTrackColours[SCHEME_SUPPORTS]);
 			break;
 		case 1:
-			metal_a_supports_paint_setup(3, 6, 0, height + 42, gTrackColours[SCHEME_SUPPORTS]);
+			metal_a_supports_paint_setup(METAL_SUPPORTS_BOXED, 6, 0, height + 42, gTrackColours[SCHEME_SUPPORTS]);
 			break;
 		}
 
@@ -421,10 +421,10 @@ static void suspended_monorail_track_s_bend_left(uint8 rideIndex, uint8 trackSeq
 		paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
 		switch (direction) {
 		case 2:
-			metal_a_supports_paint_setup(3, 5, 0, height + 42, gTrackColours[SCHEME_SUPPORTS]);
+			metal_a_supports_paint_setup(METAL_SUPPORTS_BOXED, 5, 0, height + 42, gTrackColours[SCHEME_SUPPORTS]);
 			break;
 		case 3:
-			metal_a_supports_paint_setup(3, 6, 0, height + 42, gTrackColours[SCHEME_SUPPORTS]);
+			metal_a_supports_paint_setup(METAL_SUPPORTS_BOXED, 6, 0, height + 42, gTrackColours[SCHEME_SUPPORTS]);
 			break;
 		}
 
@@ -447,7 +447,7 @@ static void suspended_monorail_track_s_bend_left(uint8 rideIndex, uint8 trackSeq
 		}
 
 		paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-		metal_a_supports_paint_setup(3, 4, 0, height + 42, gTrackColours[SCHEME_SUPPORTS]);
+		metal_a_supports_paint_setup(METAL_SUPPORTS_BOXED, 4, 0, height + 42, gTrackColours[SCHEME_SUPPORTS]);
 
 		switch (direction) {
 		case 1:
@@ -483,7 +483,7 @@ static void suspended_monorail_track_s_bend_right(uint8 rideIndex, uint8 trackSe
 		}
 
 		paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-		metal_a_supports_paint_setup(3, 4, 0, height + 42, gTrackColours[SCHEME_SUPPORTS]);
+		metal_a_supports_paint_setup(METAL_SUPPORTS_BOXED, 4, 0, height + 42, gTrackColours[SCHEME_SUPPORTS]);
 
 		if (direction == 0 || direction == 3) {
 			paint_util_push_tunnel_rotated(direction, height, TUNNEL_9);
@@ -509,10 +509,10 @@ static void suspended_monorail_track_s_bend_right(uint8 rideIndex, uint8 trackSe
 		paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
 		switch (direction) {
 		case 0:
-			metal_a_supports_paint_setup(3, 8, 0, height + 42, gTrackColours[SCHEME_SUPPORTS]);
+			metal_a_supports_paint_setup(METAL_SUPPORTS_BOXED, 8, 0, height + 42, gTrackColours[SCHEME_SUPPORTS]);
 			break;
 		case 1:
-			metal_a_supports_paint_setup(3, 7, 0, height + 42, gTrackColours[SCHEME_SUPPORTS]);
+			metal_a_supports_paint_setup(METAL_SUPPORTS_BOXED, 7, 0, height + 42, gTrackColours[SCHEME_SUPPORTS]);
 			break;
 		}
 
@@ -537,10 +537,10 @@ static void suspended_monorail_track_s_bend_right(uint8 rideIndex, uint8 trackSe
 		paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
 		switch (direction) {
 		case 2:
-			metal_a_supports_paint_setup(3, 8, 0, height + 42, gTrackColours[SCHEME_SUPPORTS]);
+			metal_a_supports_paint_setup(METAL_SUPPORTS_BOXED, 8, 0, height + 42, gTrackColours[SCHEME_SUPPORTS]);
 			break;
 		case 3:
-			metal_a_supports_paint_setup(3, 7, 0, height + 42, gTrackColours[SCHEME_SUPPORTS]);
+			metal_a_supports_paint_setup(METAL_SUPPORTS_BOXED, 7, 0, height + 42, gTrackColours[SCHEME_SUPPORTS]);
 			break;
 		}
 
@@ -563,7 +563,7 @@ static void suspended_monorail_track_s_bend_right(uint8 rideIndex, uint8 trackSe
 		}
 
 		paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-		metal_a_supports_paint_setup(3, 4, 0, height + 42, gTrackColours[SCHEME_SUPPORTS]);
+		metal_a_supports_paint_setup(METAL_SUPPORTS_BOXED, 4, 0, height + 42, gTrackColours[SCHEME_SUPPORTS]);
 
 		switch (direction) {
 		case 1:
@@ -599,7 +599,7 @@ static void suspended_monorail_track_left_quarter_turn_3(uint8 rideIndex, uint8 
 		}
 
 		paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
-		metal_a_supports_paint_setup(3, 4, 0, height + 42, gTrackColours[SCHEME_SUPPORTS]);
+		metal_a_supports_paint_setup(METAL_SUPPORTS_BOXED, 4, 0, height + 42, gTrackColours[SCHEME_SUPPORTS]);
 
 		if (direction == 0 || direction == 3) {
 			paint_util_push_tunnel_rotated(direction, height, TUNNEL_9);
@@ -644,7 +644,7 @@ static void suspended_monorail_track_left_quarter_turn_3(uint8 rideIndex, uint8 
 		}
 
 		paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
-		metal_a_supports_paint_setup(3, 4, 0, height + 42, gTrackColours[SCHEME_SUPPORTS]);
+		metal_a_supports_paint_setup(METAL_SUPPORTS_BOXED, 4, 0, height + 42, gTrackColours[SCHEME_SUPPORTS]);
 
 		switch (direction) {
 		case 2:
@@ -687,7 +687,7 @@ static void suspended_monorail_track_left_eighth_to_diag(uint8 rideIndex, uint8 
 		}
 
 		paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-		metal_a_supports_paint_setup(3, 4, 0, height + 42, gTrackColours[SCHEME_SUPPORTS]);
+		metal_a_supports_paint_setup(METAL_SUPPORTS_BOXED, 4, 0, height + 42, gTrackColours[SCHEME_SUPPORTS]);
 
 		if (direction == 0 || direction == 3) {
 			paint_util_push_tunnel_rotated(direction, height, TUNNEL_9);
@@ -753,16 +753,16 @@ static void suspended_monorail_track_left_eighth_to_diag(uint8 rideIndex, uint8 
 		paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
 		switch (direction) {
 		case 0:
-			metal_a_supports_paint_setup(3, 3, 0, height + 42, gTrackColours[SCHEME_SUPPORTS]);
+			metal_a_supports_paint_setup(METAL_SUPPORTS_BOXED, 3, 0, height + 42, gTrackColours[SCHEME_SUPPORTS]);
 			break;
 		case 1:
-			metal_a_supports_paint_setup(3, 1, 0, height + 42, gTrackColours[SCHEME_SUPPORTS]);
+			metal_a_supports_paint_setup(METAL_SUPPORTS_BOXED, 1, 0, height + 42, gTrackColours[SCHEME_SUPPORTS]);
 			break;
 		case 2:
-			metal_a_supports_paint_setup(3, 0, 0, height + 42, gTrackColours[SCHEME_SUPPORTS]);
+			metal_a_supports_paint_setup(METAL_SUPPORTS_BOXED, 0, 0, height + 42, gTrackColours[SCHEME_SUPPORTS]);
 			break;
 		case 3:
-			metal_a_supports_paint_setup(3, 2, 0, height + 42, gTrackColours[SCHEME_SUPPORTS]);
+			metal_a_supports_paint_setup(METAL_SUPPORTS_BOXED, 2, 0, height + 42, gTrackColours[SCHEME_SUPPORTS]);
 			break;
 		}
 
@@ -792,7 +792,7 @@ static void suspended_monorail_track_right_eighth_to_diag(uint8 rideIndex, uint8
 		}
 
 		paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-		metal_a_supports_paint_setup(3, 4, 0, height + 42, gTrackColours[SCHEME_SUPPORTS]);
+		metal_a_supports_paint_setup(METAL_SUPPORTS_BOXED, 4, 0, height + 42, gTrackColours[SCHEME_SUPPORTS]);
 
 		if (direction == 0 || direction == 3) {
 			paint_util_push_tunnel_rotated(direction, height, TUNNEL_9);
@@ -858,16 +858,16 @@ static void suspended_monorail_track_right_eighth_to_diag(uint8 rideIndex, uint8
 		paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
 		switch (direction) {
 		case 0:
-			metal_a_supports_paint_setup(3, 1, 0, height + 42, gTrackColours[SCHEME_SUPPORTS]);
+			metal_a_supports_paint_setup(METAL_SUPPORTS_BOXED, 1, 0, height + 42, gTrackColours[SCHEME_SUPPORTS]);
 			break;
 		case 1:
-			metal_a_supports_paint_setup(3, 0, 0, height + 42, gTrackColours[SCHEME_SUPPORTS]);
+			metal_a_supports_paint_setup(METAL_SUPPORTS_BOXED, 0, 0, height + 42, gTrackColours[SCHEME_SUPPORTS]);
 			break;
 		case 2:
-			metal_a_supports_paint_setup(3, 2, 0, height + 42, gTrackColours[SCHEME_SUPPORTS]);
+			metal_a_supports_paint_setup(METAL_SUPPORTS_BOXED, 2, 0, height + 42, gTrackColours[SCHEME_SUPPORTS]);
 			break;
 		case 3:
-			metal_a_supports_paint_setup(3, 3, 0, height + 42, gTrackColours[SCHEME_SUPPORTS]);
+			metal_a_supports_paint_setup(METAL_SUPPORTS_BOXED, 3, 0, height + 42, gTrackColours[SCHEME_SUPPORTS]);
 			break;
 		}
 
@@ -931,16 +931,16 @@ static void suspended_monorail_track_diag_flat(uint8 rideIndex, uint8 trackSeque
 		paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
 		switch (direction) {
 		case 0:
-			metal_a_supports_paint_setup(3, 1, 0, height + 42, gTrackColours[SCHEME_SUPPORTS]);
+			metal_a_supports_paint_setup(METAL_SUPPORTS_BOXED, 1, 0, height + 42, gTrackColours[SCHEME_SUPPORTS]);
 			break;
 		case 1:
-			metal_a_supports_paint_setup(3, 0, 0, height + 42, gTrackColours[SCHEME_SUPPORTS]);
+			metal_a_supports_paint_setup(METAL_SUPPORTS_BOXED, 0, 0, height + 42, gTrackColours[SCHEME_SUPPORTS]);
 			break;
 		case 2:
-			metal_a_supports_paint_setup(3, 2, 0, height + 42, gTrackColours[SCHEME_SUPPORTS]);
+			metal_a_supports_paint_setup(METAL_SUPPORTS_BOXED, 2, 0, height + 42, gTrackColours[SCHEME_SUPPORTS]);
 			break;
 		case 3:
-			metal_a_supports_paint_setup(3, 3, 0, height + 42, gTrackColours[SCHEME_SUPPORTS]);
+			metal_a_supports_paint_setup(METAL_SUPPORTS_BOXED, 3, 0, height + 42, gTrackColours[SCHEME_SUPPORTS]);
 			break;
 		}
 
@@ -990,16 +990,16 @@ static void suspended_monorail_track_diag_25_deg_up(uint8 rideIndex, uint8 track
 		paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
 		switch (direction) {
 		case 0:
-			metal_a_supports_paint_setup(3, 1, 0, height + 55, gTrackColours[SCHEME_SUPPORTS]);
+			metal_a_supports_paint_setup(METAL_SUPPORTS_BOXED, 1, 0, height + 55, gTrackColours[SCHEME_SUPPORTS]);
 			break;
 		case 1:
-			metal_a_supports_paint_setup(3, 0, 0, height + 55, gTrackColours[SCHEME_SUPPORTS]);
+			metal_a_supports_paint_setup(METAL_SUPPORTS_BOXED, 0, 0, height + 55, gTrackColours[SCHEME_SUPPORTS]);
 			break;
 		case 2:
-			metal_a_supports_paint_setup(3, 2, 0, height + 55, gTrackColours[SCHEME_SUPPORTS]);
+			metal_a_supports_paint_setup(METAL_SUPPORTS_BOXED, 2, 0, height + 55, gTrackColours[SCHEME_SUPPORTS]);
 			break;
 		case 3:
-			metal_a_supports_paint_setup(3, 3, 0, height + 57, gTrackColours[SCHEME_SUPPORTS]);
+			metal_a_supports_paint_setup(METAL_SUPPORTS_BOXED, 3, 0, height + 57, gTrackColours[SCHEME_SUPPORTS]);
 			break;
 		}
 
@@ -1049,16 +1049,16 @@ static void suspended_monorail_track_diag_flat_to_25_deg_up(uint8 rideIndex, uin
 		paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
 		switch (direction) {
 		case 0:
-			metal_a_supports_paint_setup(3, 1, 0, height + 48, gTrackColours[SCHEME_SUPPORTS]);
+			metal_a_supports_paint_setup(METAL_SUPPORTS_BOXED, 1, 0, height + 48, gTrackColours[SCHEME_SUPPORTS]);
 			break;
 		case 1:
-			metal_a_supports_paint_setup(3, 0, 0, height + 48, gTrackColours[SCHEME_SUPPORTS]);
+			metal_a_supports_paint_setup(METAL_SUPPORTS_BOXED, 0, 0, height + 48, gTrackColours[SCHEME_SUPPORTS]);
 			break;
 		case 2:
-			metal_a_supports_paint_setup(3, 2, 0, height + 48, gTrackColours[SCHEME_SUPPORTS]);
+			metal_a_supports_paint_setup(METAL_SUPPORTS_BOXED, 2, 0, height + 48, gTrackColours[SCHEME_SUPPORTS]);
 			break;
 		case 3:
-			metal_a_supports_paint_setup(3, 3, 0, height + 50, gTrackColours[SCHEME_SUPPORTS]);
+			metal_a_supports_paint_setup(METAL_SUPPORTS_BOXED, 3, 0, height + 50, gTrackColours[SCHEME_SUPPORTS]);
 			break;
 		}
 
@@ -1108,16 +1108,16 @@ static void suspended_monorail_track_diag_25_deg_up_to_flat(uint8 rideIndex, uin
 		paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
 		switch (direction) {
 		case 0:
-			metal_a_supports_paint_setup(3, 1, 0, height + 51, gTrackColours[SCHEME_SUPPORTS]);
+			metal_a_supports_paint_setup(METAL_SUPPORTS_BOXED, 1, 0, height + 51, gTrackColours[SCHEME_SUPPORTS]);
 			break;
 		case 1:
-			metal_a_supports_paint_setup(3, 0, 0, height + 51, gTrackColours[SCHEME_SUPPORTS]);
+			metal_a_supports_paint_setup(METAL_SUPPORTS_BOXED, 0, 0, height + 51, gTrackColours[SCHEME_SUPPORTS]);
 			break;
 		case 2:
-			metal_a_supports_paint_setup(3, 2, 0, height + 51, gTrackColours[SCHEME_SUPPORTS]);
+			metal_a_supports_paint_setup(METAL_SUPPORTS_BOXED, 2, 0, height + 51, gTrackColours[SCHEME_SUPPORTS]);
 			break;
 		case 3:
-			metal_a_supports_paint_setup(3, 3, 0, height + 51, gTrackColours[SCHEME_SUPPORTS]);
+			metal_a_supports_paint_setup(METAL_SUPPORTS_BOXED, 3, 0, height + 51, gTrackColours[SCHEME_SUPPORTS]);
 			break;
 		}
 
@@ -1167,16 +1167,16 @@ static void suspended_monorail_track_diag_25_deg_down(uint8 rideIndex, uint8 tra
 		paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
 		switch (direction) {
 		case 0:
-			metal_a_supports_paint_setup(3, 1, 0, height + 54, gTrackColours[SCHEME_SUPPORTS]);
+			metal_a_supports_paint_setup(METAL_SUPPORTS_BOXED, 1, 0, height + 54, gTrackColours[SCHEME_SUPPORTS]);
 			break;
 		case 1:
-			metal_a_supports_paint_setup(3, 0, 0, height + 54, gTrackColours[SCHEME_SUPPORTS]);
+			metal_a_supports_paint_setup(METAL_SUPPORTS_BOXED, 0, 0, height + 54, gTrackColours[SCHEME_SUPPORTS]);
 			break;
 		case 2:
-			metal_a_supports_paint_setup(3, 2, 0, height + 51, gTrackColours[SCHEME_SUPPORTS]);
+			metal_a_supports_paint_setup(METAL_SUPPORTS_BOXED, 2, 0, height + 51, gTrackColours[SCHEME_SUPPORTS]);
 			break;
 		case 3:
-			metal_a_supports_paint_setup(3, 3, 0, height + 58, gTrackColours[SCHEME_SUPPORTS]);
+			metal_a_supports_paint_setup(METAL_SUPPORTS_BOXED, 3, 0, height + 58, gTrackColours[SCHEME_SUPPORTS]);
 			break;
 		}
 
@@ -1223,16 +1223,16 @@ static void suspended_monorail_track_diag_flat_to_25_deg_down(uint8 rideIndex, u
 		paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
 		switch (direction) {
 		case 0:
-			metal_a_supports_paint_setup(3, 1, 0, height + 48, gTrackColours[SCHEME_SUPPORTS]);
+			metal_a_supports_paint_setup(METAL_SUPPORTS_BOXED, 1, 0, height + 48, gTrackColours[SCHEME_SUPPORTS]);
 			break;
 		case 1:
-			metal_a_supports_paint_setup(3, 0, 0, height + 48, gTrackColours[SCHEME_SUPPORTS]);
+			metal_a_supports_paint_setup(METAL_SUPPORTS_BOXED, 0, 0, height + 48, gTrackColours[SCHEME_SUPPORTS]);
 			break;
 		case 2:
-			metal_a_supports_paint_setup(3, 2, 0, height + 48, gTrackColours[SCHEME_SUPPORTS]);
+			metal_a_supports_paint_setup(METAL_SUPPORTS_BOXED, 2, 0, height + 48, gTrackColours[SCHEME_SUPPORTS]);
 			break;
 		case 3:
-			metal_a_supports_paint_setup(3, 3, 0, height + 48, gTrackColours[SCHEME_SUPPORTS]);
+			metal_a_supports_paint_setup(METAL_SUPPORTS_BOXED, 3, 0, height + 48, gTrackColours[SCHEME_SUPPORTS]);
 			break;
 		}
 		break;
@@ -1282,16 +1282,16 @@ static void suspended_monorail_track_diag_25_deg_down_to_flat(uint8 rideIndex, u
 		paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
 		switch (direction) {
 		case 0:
-			metal_a_supports_paint_setup(3, 1, 0, height + 46, gTrackColours[SCHEME_SUPPORTS]);
+			metal_a_supports_paint_setup(METAL_SUPPORTS_BOXED, 1, 0, height + 46, gTrackColours[SCHEME_SUPPORTS]);
 			break;
 		case 1:
-			metal_a_supports_paint_setup(3, 0, 0, height + 46, gTrackColours[SCHEME_SUPPORTS]);
+			metal_a_supports_paint_setup(METAL_SUPPORTS_BOXED, 0, 0, height + 46, gTrackColours[SCHEME_SUPPORTS]);
 			break;
 		case 2:
-			metal_a_supports_paint_setup(3, 2, 0, height + 46, gTrackColours[SCHEME_SUPPORTS]);
+			metal_a_supports_paint_setup(METAL_SUPPORTS_BOXED, 2, 0, height + 46, gTrackColours[SCHEME_SUPPORTS]);
 			break;
 		case 3:
-			metal_a_supports_paint_setup(3, 3, 0, height + 46, gTrackColours[SCHEME_SUPPORTS]);
+			metal_a_supports_paint_setup(METAL_SUPPORTS_BOXED, 3, 0, height + 46, gTrackColours[SCHEME_SUPPORTS]);
 			break;
 		}
 

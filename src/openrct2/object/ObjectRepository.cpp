@@ -92,7 +92,7 @@ using ObjectEntryMap = std::unordered_map<rct_object_entry, size_t, ObjectEntryH
 
 static void ReportMissingObject(const rct_object_entry * entry);
 
-class ObjectRepository : public IObjectRepository
+class ObjectRepository final : public IObjectRepository
 {
     IPlatformEnvironment *              _env = nullptr;
     std::vector<ObjectRepositoryItem>   _items;
@@ -107,7 +107,7 @@ public:
         _env = env;
     }
 
-    ~ObjectRepository()
+    ~ObjectRepository() final
     {
         ClearItems();
     }
@@ -160,7 +160,7 @@ public:
         return nullptr;
     }
 
-    const ObjectRepositoryItem * FindObject(const rct_object_entry * objectEntry) const override
+    const ObjectRepositoryItem * FindObject(const rct_object_entry * objectEntry) const override final
     {
         auto kvp = _itemMap.find(*objectEntry);
         if (kvp != _itemMap.end())
@@ -644,17 +644,6 @@ IObjectRepository * GetObjectRepository()
     return _objectRepository.get();
 }
 
-static int GetObjectEntryIndex(uint8 objectType, uint8 entryIndex)
-{
-    int result = 0;
-    for (uint8 i = 0; i < objectType; i++)
-    {
-        result += object_entry_group_counts[i];
-    }
-    result += entryIndex;
-    return result;
-}
-
 extern "C"
 {
     rct_object_entry * object_list_find(rct_object_entry * entry)
@@ -961,11 +950,4 @@ extern "C"
 
         return (int)checksum;
     }
-}
-
-static void ReportMissingObject(const rct_object_entry * entry)
-{
-    utf8 objName[9] = { 0 };
-    Memory::Copy(objName, entry->name, 8);
-    Console::Error::WriteLine("[%s] Object not found.", objName);
 }

@@ -352,7 +352,7 @@ static void window_staff_list_tooldown(rct_window *w, int widgetIndex, int x, in
 				}
 			}
 
-			if (peep->x == (sint16)0x8000) {
+			if (peep->x == MAP_LOCATION_NULL) {
 				continue;
 			}
 

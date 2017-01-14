@@ -141,7 +141,7 @@ static int _window_guest_list_highlighted_index; // 0x00F1EE10
 static int _window_guest_list_selected_tab;      // 0x00F1EE12
 static int _window_guest_list_selected_filter;   // 0x00F1EE06
 static int _window_guest_list_selected_page;     // 0x00F1EE07
-static int _window_guest_list_selected_view;     // 0x00F1EE13
+static uint32 _window_guest_list_selected_view;  // 0x00F1EE13
 static int _window_guest_list_num_pages;         // 0x00F1EE08
 static int _window_guest_list_num_groups;        // 0x00F1AF22
 static bool _window_guest_list_tracking_only;
@@ -889,7 +889,7 @@ static void window_guest_list_find_groups()
 	int spriteIndex, spriteIndex2, groupIndex, faceIndex;
 	rct_peep *peep, *peep2;
 
-	int tick256 = floor2(gScenarioTicks, 256);
+	uint32 tick256 = floor2(gScenarioTicks, 256);
 	if (_window_guest_list_selected_view == _window_guest_list_last_find_groups_selected_view) {
 		if (_window_guest_list_last_find_groups_wait != 0 ||
 			_window_guest_list_last_find_groups_tick == tick256

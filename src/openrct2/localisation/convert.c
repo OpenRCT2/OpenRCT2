@@ -32,7 +32,7 @@ int rct2_to_utf8(utf8 *dst, const char *src)
 	utf8 *start = dst;
 	const char *ch = src;
 	while (*ch != 0) {
-		if (*ch == (char)0xFF) {
+		if (*ch == (char)(uint8)0xFF) {
 			ch++;
 
 			// Read wide char
@@ -60,7 +60,7 @@ int utf8_to_rct2(char *dst, const utf8 *src)
 		if (codepoint < 256) {
 			*dst++ = (char)codepoint;
 		} else if (codepoint <= 0xFFFF) {
-			*dst++ = (char)0xFF;
+			*dst++ = (char)(uint8)0xFF;
 			*dst++ = (codepoint >> 8) & 0xFF;
 			*dst++ = codepoint & 0xFF;
 		}

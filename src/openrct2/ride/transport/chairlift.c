@@ -91,7 +91,7 @@ static void chairlift_paint_util_draw_supports(int segments, uint16 height)
 			continue;
 		}
 
-		if (metal_a_supports_paint_setup(10, s, 0, height, gTrackColours[SCHEME_SUPPORTS])) {
+		if (metal_a_supports_paint_setup(METAL_SUPPORTS_TRUSS, s, 0, height, gTrackColours[SCHEME_SUPPORTS])) {
 			success = true;
 		}
 	}
@@ -106,7 +106,7 @@ static void chairlift_paint_util_draw_supports(int segments, uint16 height)
 		}
 		uint16 temp = gSupportSegments[s].height;
 		gSupportSegments[s].height = gSupport.height;
-		metal_a_supports_paint_setup(10, s, 0, height, gTrackColours[SCHEME_SUPPORTS]);
+		metal_a_supports_paint_setup(METAL_SUPPORTS_TRUSS, s, 0, height, gTrackColours[SCHEME_SUPPORTS]);
 		gSupportSegments[s].height = temp;
 	}
 }

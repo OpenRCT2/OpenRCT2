@@ -14,6 +14,8 @@
  *****************************************************************************/
 #pragma endregion
 
+#pragma warning(disable : 4611) // interaction between '_setjmp' and C++ object destruction is non-portable
+
 #include <png.h>
 #include "core/Exception.hpp"
 #include "core/FileStream.hpp"

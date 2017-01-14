@@ -35,7 +35,7 @@ extern "C"
     #include "../world/scenery.h"
 }
 
-class TitleSequencePlayer : public ITitleSequencePlayer
+class TitleSequencePlayer final : public ITitleSequencePlayer
 {
 private:
     uint32          _sequenceId = 0;
@@ -314,7 +314,7 @@ private:
         rct_window * w = window_get_main();
         if (w != nullptr && w->viewport != nullptr)
         {
-            window_zoom_set(w, zoom);
+            window_zoom_set(w, zoom, false);
         }
     }
 

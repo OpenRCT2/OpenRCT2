@@ -1507,8 +1507,9 @@ static void miniature_railway_track_diag_flat(uint8 rideIndex, uint8 trackSequen
 	bool isSupported = false;
 	sint16 supportType = monorail_diag_support_types[direction][trackSequence];
 
-	uint32 floorImage;
-	rct_xy16 floorBoundSize, floorBoundOffset = {0, 0};
+	uint32 floorImage = 0;
+	rct_xy16 floorBoundSize = { 0 };
+	rct_xy16 floorBoundOffset = { 0 };
 
 	if (supportType != -1) {
 		floorImage = floors[supportType].image_id;
@@ -1580,8 +1581,9 @@ static void miniature_railway_track_diag_25_deg_up(uint8 rideIndex, uint8 trackS
 
 	bool hasSupports = false;
 
-	uint32 floorImage;
-	rct_xy16 floorBoundSize, floorBoundOffset = {0, 0};
+	uint32 floorImage = 0;
+	rct_xy16 floorBoundSize = { 0 };
+	rct_xy16 floorBoundOffset = { 0 };
 
 	if (supportType != -1) {
 		floorImage = floors[supportType].image_id;
@@ -1630,8 +1632,9 @@ static void miniature_railway_track_diag_flat_to_25_deg_up(uint8 rideIndex, uint
 {
 	bool hasSupports = false;
 
-	uint32 floorImage;
-	rct_xy16 floorBoundSize, floorBoundOffset = {0, 0};
+	uint32 floorImage = 0;
+	rct_xy16 floorBoundSize = { 0 };
+	rct_xy16 floorBoundOffset = { 0 };
 
 	sint16 supportType = monorail_diag_support_types[direction][trackSequence];
 	if (supportType != -1) {
@@ -1685,8 +1688,9 @@ static void miniature_railway_track_diag_25_deg_up_to_flat(uint8 rideIndex, uint
 	bool hasSupports = false;
 	sint16 supportType = monorail_diag_support_types[direction][trackSequence];
 
-	uint32 floorImage;
-	rct_xy16 floorBoundSize, floorBoundOffset = {0, 0};
+	uint32 floorImage = 0;
+	rct_xy16 floorBoundSize = { 0 };
+	rct_xy16 floorBoundOffset = { 0 };
 
 	if (supportType != -1) {
 		floorImage = floors[supportType].image_id;
@@ -1748,8 +1752,9 @@ static void miniature_railway_track_diag_25_deg_down(uint8 rideIndex, uint8 trac
 
 	bool hasSupports = false;
 
-	uint32 floorImage;
-	rct_xy16 floorBoundSize, floorBoundOffset = {0, 0};
+	uint32 floorImage = 0;
+	rct_xy16 floorBoundSize = { 0 };
+	rct_xy16 floorBoundOffset = { 0 };
 	sint16 supportType = monorail_diag_support_types[direction][trackSequence];
 
 	if (supportType != -1) {
@@ -1810,8 +1815,9 @@ static void miniature_railway_track_diag_flat_to_25_deg_down(uint8 rideIndex, ui
 	}
 
 	bool hasSupports = false;
-	uint32 floorImage;
-	rct_xy16 floorBoundSize, floorBoundOffset = {0, 0};
+	uint32 floorImage = 0;
+	rct_xy16 floorBoundSize = { 0 };
+	rct_xy16 floorBoundOffset = { 0 };
 	sint16 supportType = monorail_diag_support_types[direction][trackSequence];
 
 	if (supportType != -1) {
@@ -1859,8 +1865,9 @@ static void miniature_railway_track_diag_flat_to_25_deg_down(uint8 rideIndex, ui
 static void miniature_railway_track_diag_25_deg_down_to_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	bool hasSupports = false;
-	uint32 floorImage;
-	rct_xy16 floorBoundSize, floorBoundOffset = {0, 0};
+	uint32 floorImage = 0;
+	rct_xy16 floorBoundSize = { 0 };
+	rct_xy16 floorBoundOffset = { 0 };
 	sint16 supportType = monorail_diag_support_types[direction][trackSequence];
 
 	if (supportType != -1) {

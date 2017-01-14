@@ -985,7 +985,8 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 	uint32 num_elements = 0;
 	// First check if any of the track pieces are outside the park
 	for (; trackBlock->index != 0xFF; trackBlock++) {
-		int x, y, z, offsetX, offsetY;
+		sint32 offsetX = 0;
+		sint32 offsetY = 0;
 
 		switch (direction) {
 		case 0:
@@ -1006,9 +1007,9 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 			break;
 		}
 
-		x = originX + offsetX;
-		y = originY + offsetY;
-		z = originZ + trackBlock->z;
+		sint32 x = originX + offsetX;
+		sint32 y = originY + offsetY;
+		sint32 z = originZ + trackBlock->z;
 
 		if (!map_is_location_owned(x, y, z) && !gCheatsSandboxMode) {
 			gGameCommandErrorText = STR_LAND_NOT_OWNED_BY_PARK;
@@ -1039,7 +1040,8 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 	trackBlock = get_track_def_from_ride(ride, type);
 
 	for (int blockIndex = 0; trackBlock->index != 0xFF; trackBlock++, blockIndex++) {
-		int x, y, z, offsetX, offsetY;
+		sint32 offsetX = 0;
+		sint32 offsetY = 0;
 		int bl = trackBlock->var_08;
 		int bh;
 		switch (direction) {
@@ -1078,9 +1080,9 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 			bl |= bh;
 			break;
 		}
-		x = originX + offsetX;
-		y = originY + offsetY;
-		z = originZ + trackBlock->z;
+		sint32 x = originX + offsetX;
+		sint32 y = originY + offsetY;
+		sint32 z = originZ + trackBlock->z;
 
 		trackpieceZ = z;
 
@@ -1118,7 +1120,7 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 
 		if ((flags & GAME_COMMAND_FLAG_APPLY) && !(flags & GAME_COMMAND_FLAG_GHOST)) {
 			footpath_remove_litter(x, y, z);
-			if (rideTypeFlags & RIDE_TYPE_FLAG_18) {
+			if (rideTypeFlags & RIDE_TYPE_FLAG_TRACK_NO_WALLS) {
 				map_remove_walls_at(x, y, baseZ * 8, clearanceZ * 8);
 			} else {
 				// Remove walls in the directions this track intersects
@@ -1178,7 +1180,7 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 			return MONEY32_UNDEFINED;
 		}
 
-		if ((rideTypeFlags & RIDE_TYPE_FLAG_6) && !byte_9D8150) {
+		if ((rideTypeFlags & RIDE_TYPE_FLAG_TRACK_MUST_BE_ON_WATER) && !byte_9D8150) {
 			mapElement = map_get_surface_element_at(x / 32, y / 32);
 
 			uint8 water_height = 2 * (mapElement->properties.surface.terrain & MAP_ELEMENT_WATER_HEIGHT_MASK);
@@ -1248,12 +1250,12 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 			}
 		}
 
-		int support_height = baseZ - mapElement->base_height;
-		if (support_height < 0) {
-			support_height = 10;
+		int _support_height = baseZ - mapElement->base_height;
+		if (_support_height < 0) {
+			_support_height = 10;
 		}
 
-		cost += ((support_height / 2) * RideTrackCosts[ride->type].support_price) * 5;
+		cost += ((_support_height / 2) * RideTrackCosts[ride->type].support_price) * 5;
 
 		//6c56d3
 
@@ -1373,7 +1375,7 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 			ride_update_max_vehicles(rideIndex);
 		}
 
-		if (rideTypeFlags & RIDE_TYPE_FLAG_6){
+		if (rideTypeFlags & RIDE_TYPE_FLAG_TRACK_MUST_BE_ON_WATER){
 			rct_map_element* surfaceElement = map_get_surface_element_at(x / 32, y / 32);
 			surfaceElement->type |= (1 << 6);
 			mapElement = surfaceElement;
@@ -1602,12 +1604,12 @@ static money32 track_remove(uint8 type, uint8 sequence, sint16 originX, sint16 o
 			return MONEY32_UNDEFINED;
 		}
 
-		sint8 support_height = mapElement->base_height - surfaceElement->base_height;
-		if (support_height < 0){
-			support_height = 10;
+		sint8 _support_height = mapElement->base_height - surfaceElement->base_height;
+		if (_support_height < 0){
+			_support_height = 10;
 		}
 
-		cost += (support_height / 2) * RideTrackCosts[ride->type].support_price;
+		cost += (_support_height / 2) * RideTrackCosts[ride->type].support_price;
 
 		if (!(flags & GAME_COMMAND_FLAG_APPLY))
 			continue;
@@ -1618,7 +1620,7 @@ static money32 track_remove(uint8 type, uint8 sequence, sint16 originX, sint16 o
 			}
 		}
 
-		if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_6)){
+		if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_TRACK_MUST_BE_ON_WATER)){
 			surfaceElement->type &= ~(1 << 6);
 		}
 
@@ -1642,7 +1644,7 @@ static money32 track_remove(uint8 type, uint8 sequence, sint16 originX, sint16 o
 		case TRACK_ELEM_CABLE_LIFT_HILL:
 			ride->lifecycle_flags &= ~RIDE_LIFECYCLE_CABLE_LIFT_HILL_COMPONENT_USED;
 			break;
-		case 216:
+		case TRACK_ELEM_BLOCK_BRAKES:
 			ride->num_block_brakes--;
 			if (ride->num_block_brakes == 0){
 				ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_OPERATING;
@@ -2136,7 +2138,7 @@ bool track_element_is_block_start(rct_map_element *trackElement)
 	switch (trackElement->properties.track.type) {
 	case TRACK_ELEM_END_STATION:
 	case TRACK_ELEM_CABLE_LIFT_HILL:
-	case 216:
+	case TRACK_ELEM_BLOCK_BRAKES:
 		return true;
 	case TRACK_ELEM_25_DEG_UP_TO_FLAT:
 	case TRACK_ELEM_60_DEG_UP_TO_FLAT:

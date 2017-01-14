@@ -149,7 +149,7 @@ static void paint_roto_drop_tower_section(uint8 rideIndex, uint8 trackSequence, 
 
 	rct_map_element * nextMapElement = mapElement + 1;
 	if (map_element_is_last_for_tile(mapElement) || mapElement->clearance_height != nextMapElement->base_height) {
-		uint32 imageId = SPR_ROTO_DROP_TOWER_SEGMENT_TOP | gTrackColours[SCHEME_TRACK];
+		imageId = SPR_ROTO_DROP_TOWER_SEGMENT_TOP | gTrackColours[SCHEME_TRACK];
 		sub_98199C(imageId, 0, 0, 2, 2, 30, height, 8, 8, height, get_current_rotation());
 	}
 

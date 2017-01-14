@@ -183,63 +183,69 @@ void research_finish_item(sint32 entryIndex)
 		int base_ride_type = (entryIndex >> 8) & 0xFF;
 		int rideEntryIndex = entryIndex & 0xFF;
 		rct_ride_entry *rideEntry = get_ride_entry(rideEntryIndex);
-		ride_type_set_invented(base_ride_type);
-		gResearchedTrackTypesA[base_ride_type] = (RideTypePossibleTrackConfigurations[base_ride_type]         ) & 0xFFFFFFFFULL;
-		gResearchedTrackTypesB[base_ride_type] = (RideTypePossibleTrackConfigurations[base_ride_type] >> 32ULL) & 0xFFFFFFFFULL;
+		if (rideEntry != NULL && rideEntry != (rct_ride_entry *)-1)
+		{
+			ride_type_set_invented(base_ride_type);
+			gResearchedTrackTypesA[base_ride_type] = (RideTypePossibleTrackConfigurations[base_ride_type]) & 0xFFFFFFFFULL;
+			gResearchedTrackTypesB[base_ride_type] = (RideTypePossibleTrackConfigurations[base_ride_type] >> 32ULL) & 0xFFFFFFFFULL;
 
-		if (RideData4[base_ride_type].flags & RIDE_TYPE_FLAG4_3) {
-			int ebx = RideData4[base_ride_type].alternate_type;
-			gResearchedTrackTypesA[ebx] = (RideTypePossibleTrackConfigurations[ebx]         ) & 0xFFFFFFFFULL;
-			gResearchedTrackTypesB[ebx] = (RideTypePossibleTrackConfigurations[ebx] >> 32ULL) & 0xFFFFFFFFULL;
-		}
+			if (RideData4[base_ride_type].flags & RIDE_TYPE_FLAG4_3) {
+				int ebx = RideData4[base_ride_type].alternate_type;
+				gResearchedTrackTypesA[ebx] = (RideTypePossibleTrackConfigurations[ebx]) & 0xFFFFFFFFULL;
+				gResearchedTrackTypesB[ebx] = (RideTypePossibleTrackConfigurations[ebx] >> 32ULL) & 0xFFFFFFFFULL;
+			}
 
-		ride_entry_set_invented(rideEntryIndex);
+			ride_entry_set_invented(rideEntryIndex);
 
-		if (!(rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE)) {
-			for (int i = 0; i < 128; i++) {
-				rct_ride_entry *rideEntry2 = get_ride_entry(i);
-				if (rideEntry2 == (rct_ride_entry*)-1)
-					continue;
-				if ((rideEntry2->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE))
-					continue;
+			if (!(rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE)) {
+				for (int i = 0; i < 128; i++) {
+					rct_ride_entry *rideEntry2 = get_ride_entry(i);
+					if (rideEntry2 == (rct_ride_entry*)-1)
+						continue;
+					if ((rideEntry2->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE))
+						continue;
 
-				if (rideEntry2->ride_type[0] == base_ride_type ||
-					rideEntry2->ride_type[1] == base_ride_type ||
-					rideEntry2->ride_type[2] == base_ride_type
-				) {
-					ride_entry_set_invented(i);
+					if (rideEntry2->ride_type[0] == base_ride_type ||
+						rideEntry2->ride_type[1] == base_ride_type ||
+						rideEntry2->ride_type[2] == base_ride_type
+						) {
+						ride_entry_set_invented(i);
+					}
 				}
 			}
-		}
 
-		set_format_arg(0, rct_string_id, ((rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME)) ?
-			rideEntry->name : RideNaming[base_ride_type].name);
+			set_format_arg(0, rct_string_id, ((rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME)) ?
+				rideEntry->name : RideNaming[base_ride_type].name);
 
-		if (!gSilentResearch) {
-			if (gConfigNotifications.ride_researched) {
-				news_item_add_to_queue(NEWS_ITEM_RESEARCH, STR_NEWS_ITEM_RESEARCH_NEW_RIDE_AVAILABLE, entryIndex);
+			if (!gSilentResearch) {
+				if (gConfigNotifications.ride_researched) {
+					news_item_add_to_queue(NEWS_ITEM_RESEARCH, STR_NEWS_ITEM_RESEARCH_NEW_RIDE_AVAILABLE, entryIndex);
+				}
 			}
-		}
 
-		research_invalidate_related_windows();
+			research_invalidate_related_windows();
+		}
 	} else {
 		// Scenery
 		rct_scenery_set_entry *scenerySetEntry = get_scenery_group_entry(entryIndex & 0xFFFF);
-		for (int i = 0; i < scenerySetEntry->entry_count; i++) {
-			int subSceneryEntryIndex = scenerySetEntry->scenery_entries[i];
-			gResearchedSceneryItems[subSceneryEntryIndex >> 5] |= 1UL << (subSceneryEntryIndex & 0x1F);
-		}
-
-		set_format_arg(0, rct_string_id, scenerySetEntry->name);
-
-		if (!gSilentResearch) {
-			if (gConfigNotifications.ride_researched) {
-				news_item_add_to_queue(NEWS_ITEM_RESEARCH, STR_NEWS_ITEM_RESEARCH_NEW_SCENERY_SET_AVAILABLE, entryIndex);
+		if (scenerySetEntry != NULL && scenerySetEntry != (rct_scenery_set_entry *)-1)
+		{
+			for (int i = 0; i < scenerySetEntry->entry_count; i++) {
+				int subSceneryEntryIndex = scenerySetEntry->scenery_entries[i];
+				gResearchedSceneryItems[subSceneryEntryIndex >> 5] |= 1UL << (subSceneryEntryIndex & 0x1F);
 			}
-		}
 
-		research_invalidate_related_windows();
-		init_scenery();
+			set_format_arg(0, rct_string_id, scenerySetEntry->name);
+
+			if (!gSilentResearch) {
+				if (gConfigNotifications.ride_researched) {
+					news_item_add_to_queue(NEWS_ITEM_RESEARCH, STR_NEWS_ITEM_RESEARCH_NEW_SCENERY_SET_AVAILABLE, entryIndex);
+				}
+			}
+
+			research_invalidate_related_windows();
+			init_scenery();
+		}
 	}
 }
 

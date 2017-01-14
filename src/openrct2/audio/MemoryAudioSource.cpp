@@ -37,7 +37,7 @@
  * An audio source where raw PCM data is initially loaded into RAM from
  * a file and then streamed.
  */
-class MemoryAudioSource : public IAudioSource
+class MemoryAudioSource final : public IAudioSource
 {
 private:
     AudioFormat _format = { 0 };

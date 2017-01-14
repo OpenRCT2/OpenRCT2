@@ -195,9 +195,9 @@ static void cheat_reset_crash_status()
 	FOR_ALL_RIDES(i, ride){
 		//reset crash status
 		if (ride->lifecycle_flags & RIDE_LIFECYCLE_CRASHED)
-			ride->lifecycle_flags&=~RIDE_LIFECYCLE_CRASHED;
+			ride->lifecycle_flags &= ~RIDE_LIFECYCLE_CRASHED;
 		//reset crash history
-		ride->last_crash_type=RIDE_CRASH_TYPE_NONE;
+		ride->last_crash_type = RIDE_CRASH_TYPE_NONE;
 	}
 	window_invalidate_by_class(WC_RIDE);
 }
@@ -214,15 +214,50 @@ static void cheat_10_minute_inspections()
 	window_invalidate_by_class(WC_RIDE);
 }
 
-static void cheat_increase_money(money32 amount)
+static void cheat_no_money(bool enabled)
 {
-	money32 currentMoney;
+	if (enabled) {
+		gParkFlags |= PARK_FLAGS_NO_MONEY;	
+	}
+	else {
+		gParkFlags &= ~PARK_FLAGS_NO_MONEY;
+	}
+	// Invalidate all windows that have anything to do with finance
+	window_invalidate_by_class(WC_RIDE);
+	window_invalidate_by_class(WC_PEEP);
+	window_invalidate_by_class(WC_PARK_INFORMATION);
+	window_invalidate_by_class(WC_FINANCES);
+	window_invalidate_by_class(WC_BOTTOM_TOOLBAR);
+	window_invalidate_by_class(WC_TOP_TOOLBAR);
+	window_invalidate_by_class(WC_CHEATS);
+}
 
-	currentMoney = DECRYPT_MONEY(gCashEncrypted);
-	if (currentMoney < INT_MAX - amount)
-		currentMoney += amount;
-	else
-		currentMoney = INT_MAX;
+static void cheat_set_money(money32 amount)
+{
+	money32 money = clamp(INT_MIN, amount, INT_MAX);
+	gCashEncrypted = ENCRYPT_MONEY(money);
+
+	window_invalidate_by_class(WC_FINANCES);
+	window_invalidate_by_class(WC_BOTTOM_TOOLBAR);
+}
+
+static void cheat_add_money(money32 amount)
+{
+	money32 currentMoney = DECRYPT_MONEY(gCashEncrypted);
+	if (amount >= 0) {
+		if (currentMoney < INT_MAX - amount)
+			currentMoney += amount;
+		else
+			currentMoney = INT_MAX;
+	}
+	else {
+		money32 absAmount = amount * -1;
+		if (currentMoney > INT_MIN + absAmount)
+			currentMoney -= absAmount;
+		else
+			currentMoney = INT_MIN;
+	}
+
 	gCashEncrypted = ENCRYPT_MONEY(currentMoney);
 
 	window_invalidate_by_class(WC_FINANCES);
@@ -232,7 +267,7 @@ static void cheat_increase_money(money32 amount)
 static void cheat_clear_loan()
 {
 	// First give money
-	game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_INCREASEMONEY, gBankLoan, GAME_COMMAND_CHEAT, 0, 0);
+	cheat_add_money(gBankLoan);
 
 	// Then pay the loan
 	money32 newLoan;
@@ -309,12 +344,12 @@ static void cheat_give_all_guests(int object)
 				break;
 			case OBJECT_BALLOON:
 				peep->item_standard_flags |= PEEP_ITEM_BALLOON;
-				peep->balloon_colour=scenario_rand_max(31);
+				peep->balloon_colour = scenario_rand_max(COLOUR_COUNT - 1);
 				peep_update_sprite_type(peep);
 				break;
 			case OBJECT_UMBRELLA:
 				peep->item_standard_flags |= PEEP_ITEM_UMBRELLA;
-				peep->umbrella_colour=scenario_rand_max(31);
+				peep->umbrella_colour = scenario_rand_max(COLOUR_COUNT - 1);
 				peep_update_sprite_type(peep);
 				break;
 		}
@@ -343,9 +378,9 @@ static void cheat_remove_all_guests()
 		ride_clear_for_construction(i);
 		ride_set_status(i, RIDE_STATUS_CLOSED);
 
-		for(int i=0;i<4;i++) {
-			ride->queue_length[i] = 0;
-			ride->last_peep_in_queue[i] = SPRITE_INDEX_NULL;
+		for(int j = 0; j < 4; j++) {
+			ride->queue_length[j] = 0;
+			ride->last_peep_in_queue[j] = SPRITE_INDEX_NULL;
 		}
 	}
 	window_invalidate_by_class(WC_RIDE);
@@ -407,7 +442,9 @@ void game_command_cheat(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* e
 			case CHEAT_IGNORERIDEINTENSITY: gCheatsIgnoreRideIntensity = *edx != 0; break;
 			case CHEAT_DISABLEVANDALISM: gCheatsDisableVandalism = *edx != 0; break;
 			case CHEAT_DISABLELITTERING: gCheatsDisableLittering = *edx != 0; break;
-			case CHEAT_INCREASEMONEY: cheat_increase_money(*edx); break;
+			case CHEAT_NOMONEY: cheat_no_money(*edx != 0); break;
+			case CHEAT_ADDMONEY: cheat_add_money(*edx); break;
+			case CHEAT_SETMONEY: cheat_set_money(*edx); break;
 			case CHEAT_CLEARLOAN: cheat_clear_loan(); break;
 			case CHEAT_SETGUESTPARAMETER: cheat_set_guest_parameter(*edx, *edi); break;
 			case CHEAT_GENERATEGUESTS: cheat_generate_guests(*edx); break;

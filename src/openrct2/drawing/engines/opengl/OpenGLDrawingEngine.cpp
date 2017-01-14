@@ -172,7 +172,7 @@ static const vec3f TransparentColourTable[144 - 44] =
 
 class OpenGLDrawingEngine;
 
-class OpenGLDrawingContext : public IDrawingContext
+class OpenGLDrawingContext final : public IDrawingContext
 {
 private:
     OpenGLDrawingEngine *   _engine;

@@ -20,8 +20,8 @@
 #include "../common.h"
 #include "map.h"
 
-#define DECRYPT_MONEY(money) rol32((money) ^ 0xF4EC9621, 13)
-#define ENCRYPT_MONEY(money) (ror32((money), 13) ^ 0xF4EC9621)
+#define DECRYPT_MONEY(money) ((money32)rol32((money) ^ 0xF4EC9621, 13))
+#define ENCRYPT_MONEY(money) ((money32)(ror32((money), 13) ^ 0xF4EC9621))
 
 enum {
 	PARK_FLAGS_PARK_OPEN = (1 << 0),
@@ -107,8 +107,6 @@ void game_command_set_park_open(int *eax, int *ebx, int *ecx, int *edx, int *esi
 void game_command_remove_park_entrance(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
 void game_command_set_park_name(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
 void game_command_buy_land_rights(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
-
-void map_invalidate_tile(int x, int y, int z0, int z1);
 
 void park_remove_ghost_entrance();
 money32 park_place_ghost_entrance(int x, int y, int z, int direction);

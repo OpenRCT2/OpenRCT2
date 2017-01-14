@@ -308,11 +308,11 @@ static void window_top_toolbar_mouseup(rct_window *w, int widgetIndex)
 		break;
 	case WIDX_ZOOM_OUT:
 		if ((mainWindow = window_get_main()) != NULL)
-			window_zoom_out(mainWindow);
+			window_zoom_out(mainWindow, false);
 		break;
 	case WIDX_ZOOM_IN:
 		if ((mainWindow = window_get_main()) != NULL)
-			window_zoom_in(mainWindow);
+			window_zoom_in(mainWindow, false);
 		break;
 	case WIDX_CLEAR_SCENERY:
 		toggle_clear_scenery_window(w, WIDX_CLEAR_SCENERY);
@@ -630,7 +630,7 @@ static void window_top_toolbar_dropdown(rct_window *w, int widgetIndex, int drop
  */
 static void window_top_toolbar_invalidate(rct_window *w)
 {
-	int i, x, enabledWidgets, widgetIndex, widgetWidth, firstAlignment;
+	int x, enabledWidgets, widgetIndex, widgetWidth, firstAlignment;
 	rct_widget *widget;
 
 	colour_scheme_update(w);
@@ -721,7 +721,7 @@ static void window_top_toolbar_invalidate(rct_window *w)
 	}
 
 	enabledWidgets = 0;
-	for (i = WIDX_PAUSE; i <= WIDX_NETWORK; i++)
+	for (int i = WIDX_PAUSE; i <= WIDX_NETWORK; i++)
 		if (window_top_toolbar_widgets[i].type != WWT_EMPTY)
 			enabledWidgets |= (1 << i);
 	w->enabled_widgets = enabledWidgets;
@@ -1096,7 +1096,7 @@ static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid
 			if (!gSceneryCtrlPressed) {
 				screen_get_map_xy_quadrant(x, y, grid_x, grid_y, &cl);
 
-				if (*grid_x == (sint16)0x8000)
+				if (*grid_x == MAP_LOCATION_NULL)
 					return;
 
 				gSceneryPlaceZ = 0;
@@ -1138,7 +1138,7 @@ static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid
 				gSceneryPlaceZ = z;
 			}
 
-			if (*grid_x == (sint16)0x8000)
+			if (*grid_x == MAP_LOCATION_NULL)
 				return;
 
 			uint8 rotation = gWindowSceneryRotation;
@@ -1181,7 +1181,7 @@ static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid
 
 			// If SHIFT pressed
 			if (gSceneryShiftPressed) {
-				rct_map_element* map_element = map_get_surface_element_at(*grid_x / 32, *grid_y / 32);
+				map_element = map_get_surface_element_at(*grid_x / 32, *grid_y / 32);
 
 				if (map_element == NULL){
 					*grid_x = 0x8000;
@@ -1214,7 +1214,7 @@ static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid
 			gSceneryPlaceZ = z;
 		}
 
-		if (*grid_x == (sint16)0x8000)
+		if (*grid_x == MAP_LOCATION_NULL)
 			return;
 
 		*grid_x &= 0xFFE0;
@@ -1267,7 +1267,7 @@ static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid
 		if (!gSceneryCtrlPressed) {
 			screen_get_map_xy_side(x, y, grid_x, grid_y, &cl);
 
-			if (*grid_x == (sint16)0x8000)
+			if (*grid_x == MAP_LOCATION_NULL)
 				return;
 
 			gSceneryPlaceZ = 0;
@@ -1307,7 +1307,7 @@ static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid
 			gSceneryPlaceZ = z;
 		}
 
-		if (*grid_x == (sint16)0x8000)
+		if (*grid_x == MAP_LOCATION_NULL)
 			return;
 
 		_unkF64F15 = gWindowScenerySecondaryColour | (gWindowSceneryTertiaryColour << 8);
@@ -1325,7 +1325,7 @@ static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid
 		if (!gSceneryCtrlPressed) {
 			sub_68A15E(x, y, grid_x, grid_y, NULL, NULL);
 
-			if (*grid_x == (sint16)0x8000)
+			if (*grid_x == MAP_LOCATION_NULL)
 				return;
 
 			gSceneryPlaceZ = 0;
@@ -1365,7 +1365,7 @@ static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid
 			gSceneryPlaceZ = z;
 		}
 
-		if (*grid_x == (sint16)0x8000)
+		if (*grid_x == MAP_LOCATION_NULL)
 			return;
 
 		*grid_x &= 0xFFE0;
@@ -1452,7 +1452,7 @@ static void window_top_toolbar_scenery_tool_down(short x, short y, rct_window *w
 
 	sub_6E1F34(x, y, selectedTab, &gridX, &gridY, &parameter_1, &parameter_2, &parameter_3);
 
-	if (gridX == (sint16)0x8000) return;
+	if (gridX == MAP_LOCATION_NULL) return;
 
 	switch (sceneryType){
 	case SCENERY_TYPE_SMALL:
@@ -1651,7 +1651,7 @@ static void top_toolbar_tool_update_scenery_clear(sint16 x, sint16 y){
 	rct_xy16 mapTile = { 0 };
 	screen_get_map_xy(x, y, &mapTile.x, &mapTile.y, NULL);
 
-	if (mapTile.x == (sint16)0x8000){
+	if (mapTile.x == MAP_LOCATION_NULL) {
 		if (gClearSceneryCost != MONEY32_UNDEFINED) {
 			gClearSceneryCost = MONEY32_UNDEFINED;
 			window_invalidate_by_class(WC_CLEAR_SCENERY);
@@ -1731,7 +1731,7 @@ static void top_toolbar_tool_update_land_paint(sint16 x, sint16 y){
 	rct_xy16 mapTile = { 0 };
 	screen_get_map_xy(x, y, &mapTile.x, &mapTile.y, NULL);
 
-	if (mapTile.x == (sint16)0x8000){
+	if (mapTile.x == MAP_LOCATION_NULL) {
 		if (gClearSceneryCost != MONEY32_UNDEFINED) {
 			gClearSceneryCost = MONEY32_UNDEFINED;
 			window_invalidate_by_class(WC_CLEAR_SCENERY);
@@ -1822,7 +1822,7 @@ static void top_toolbar_tool_update_land(sint16 x, sint16 y){
 		int direction;
 		screen_pos_to_map_pos(&mapTile.x, &mapTile.y, &direction);
 
-		if (mapTile.x == (sint16)0x8000){
+		if (mapTile.x == MAP_LOCATION_NULL) {
 			money32 lower_cost = MONEY32_UNDEFINED;
 			money32 raise_cost = MONEY32_UNDEFINED;
 
@@ -1886,7 +1886,7 @@ static void top_toolbar_tool_update_land(sint16 x, sint16 y){
 
 	screen_get_map_xy(x, y, &mapTile.x, &mapTile.y, NULL);
 
-	if (mapTile.x == (sint16)0x8000){
+	if (mapTile.x == MAP_LOCATION_NULL) {
 		money32 lower_cost = MONEY32_UNDEFINED;
 		money32 raise_cost = MONEY32_UNDEFINED;
 
@@ -2281,14 +2281,14 @@ static void top_toolbar_tool_update_scenery(sint16 x, sint16 y){
 
 	sub_6E1F34(x, y, selected_tab, &mapTile.x, &mapTile.y, &parameter1, &parameter2, &parameter3);
 
-	if (mapTile.x == (sint16)0x8000){
+	if (mapTile.x == MAP_LOCATION_NULL) {
 		scenery_remove_ghost_tool_placement();
 		return;
 	}
 
 	rct_scenery_entry* scenery;
 	uint8 bl;
-	money32 cost;
+	money32 cost = 0;
 
 	switch (scenery_type){
 	case 0:
@@ -2366,7 +2366,7 @@ static void top_toolbar_tool_update_scenery(sint16 x, sint16 y){
 		if ((gSceneryGhostType & (1 << 1)) &&
 			mapTile.x == gSceneryGhostPosition.x &&
 			mapTile.y == gSceneryGhostPosition.y &&
-			(parameter2 & 0xFF) == gSceneryGhostPosition.z){
+			(sint16)(parameter2 & 0xFF) == gSceneryGhostPosition.z){
 			return;
 		}
 
@@ -2433,7 +2433,7 @@ static void top_toolbar_tool_update_scenery(sint16 x, sint16 y){
 		scenery = get_large_scenery_entry(selected_scenery);
 		rct_xy16* selectedTile = gMapSelectionTiles;
 
-		for (rct_large_scenery_tile* tile = scenery->large_scenery.tiles; tile->x_offset != (sint16)0xFFFF; tile++){
+		for (rct_large_scenery_tile* tile = scenery->large_scenery.tiles; tile->x_offset != (sint16)(uint16)0xFFFF; tile++){
 			rct_xy16 tileLocation = {
 				.x = tile->x_offset,
 				.y = tile->y_offset
@@ -2458,7 +2458,7 @@ static void top_toolbar_tool_update_scenery(sint16 x, sint16 y){
 			mapTile.x == gSceneryGhostPosition.x &&
 			mapTile.y == gSceneryGhostPosition.y &&
 			gSceneryPlaceZ == _unkF64F0A &&
-			(parameter3 & 0xFFFF) == gSceneryPlaceObject
+			(sint16)(parameter3 & 0xFFFF) == gSceneryPlaceObject
 		) {
 			return;
 		}
@@ -2503,7 +2503,7 @@ static void top_toolbar_tool_update_scenery(sint16 x, sint16 y){
 		if ((gSceneryGhostType & (1 << 4)) &&
 			mapTile.x == gSceneryGhostPosition.x &&
 			mapTile.y == gSceneryGhostPosition.y &&
-			(parameter2 & 0xFF) == gSceneryGhostPosition.z &&
+			(sint16)(parameter2 & 0xFF) == gSceneryGhostPosition.z &&
 			((parameter2 >> 8) & 0xFF) == gSceneryPlaceRotation
 		) {
 			return;

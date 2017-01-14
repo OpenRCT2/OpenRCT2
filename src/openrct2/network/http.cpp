@@ -62,22 +62,6 @@ void http_dispose()
     curl_global_cleanup();
 }
 
-static size_t http_request_read_func(void *ptr, size_t size, size_t nmemb, void *userdata)
-{
-    read_buffer *readBuffer = (read_buffer*)userdata;
-
-    size_t remainingBytes = readBuffer->length - readBuffer->position;
-    size_t readBytes = size * nmemb;
-    if (readBytes > remainingBytes) {
-        readBytes = remainingBytes;
-    }
-
-    memcpy(ptr, readBuffer->ptr + readBuffer->position, readBytes);
-
-    readBuffer->position += readBytes;
-    return readBytes;
-}
-
 static size_t http_request_write_func(void *ptr, size_t size, size_t nmemb, void *userdata)
 {
     write_buffer *writeBuffer = (write_buffer*)userdata;
@@ -234,20 +218,20 @@ void http_request_async(const http_request_t *request, void (*callback)(http_res
     args->callback = callback;
 
     SDL_Thread *thread = SDL_CreateThread([](void *ptr) -> int {
-        TempThreadArgs *args = (TempThreadArgs*)ptr;
+        TempThreadArgs *args2 = (TempThreadArgs*)ptr;
 
-        http_response_t *response = http_request(&args->request);
-        args->callback(response);
+        http_response_t *response = http_request(&args2->request);
+        args2->callback(response);
 
-        free((char*)args->request.url);
+        free((char*)args2->request.url);
 
-        if (args->request.type == HTTP_DATA_JSON) {
-            json_decref((json_t*) args->request.root);
+        if (args2->request.type == HTTP_DATA_JSON) {
+            json_decref((json_t*) args2->request.root);
         } else {
-            free(args->request.body);
+            free(args2->request.body);
         }
 
-        free(args);
+        free(args2);
         return 0;
     }, NULL, args);
 

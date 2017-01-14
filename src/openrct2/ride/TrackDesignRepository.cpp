@@ -63,7 +63,7 @@ enum TRACK_REPO_ITEM_FLAGS
     TRIF_READ_ONLY = (1 << 0),
 };
 
-class TrackDesignRepository : public ITrackDesignRepository
+class TrackDesignRepository final : public ITrackDesignRepository
 {
 private:
     static constexpr const utf8 * TD_FILE_PATTERN = "*.td4;*.td6";
@@ -81,7 +81,7 @@ public:
         _env = env;
     }
 
-    virtual ~TrackDesignRepository()
+    virtual ~TrackDesignRepository() final
     {
     }
 

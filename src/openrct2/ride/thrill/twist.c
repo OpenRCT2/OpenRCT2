@@ -67,7 +67,7 @@ static void paint_twist_structure(rct_ride * ride, uint8 direction, sint8 xOffse
 			imageColourFlags = vehicle->peep_tshirt_colours[i] << 19 | vehicle->peep_tshirt_colours[i + 1] << 24 | 0xA0000000;
 
 			uint32 peepFrameNum = (frameNum + i * 12) % 216;
-			uint32 imageId = (baseImageId + 24 + peepFrameNum) | imageColourFlags;
+			imageId = (baseImageId + 24 + peepFrameNum) | imageColourFlags;
 			sub_98199C(imageId, xOffset, yOffset, 24, 24, 48, height, xOffset + 16, yOffset + 16, height, get_current_rotation());
 		}
 	}

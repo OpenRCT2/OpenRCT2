@@ -27,7 +27,6 @@
 bool utf8_is_format_code(int codepoint);
 bool utf8_is_colour_code(int codepoint);
 bool utf8_should_use_sprite_for_codepoint(int codepoint);
-int font_sprite_get_codepoint_offset(int codepoint);
 int utf8_get_format_code_arg_length(int codepoint);
 void utf8_remove_formatting(utf8* string, bool allowColours);
 
@@ -38,6 +37,9 @@ void generate_string_file();
 utf8 *get_string_end(const utf8 *text);
 size_t get_string_size(const utf8 *text);
 int get_string_length(const utf8 *text);
+
+money32 string_to_money(char * string_to_monetise);
+void money_to_string(money32 amount, char * buffer_to_put_value_to, size_t buffer_len);
 
 void user_string_clear_all();
 rct_string_id user_string_allocate(int base, const utf8 *text);

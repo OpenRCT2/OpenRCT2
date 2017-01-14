@@ -81,7 +81,7 @@ public:
         _screenDPI = dpi;
     }
 
-    void Draw(sint32 x, sint32 y, sint32 width, sint32 height, sint32 xStart, sint32 yStart)
+    void Draw(sint32 x, sint32 y, sint32 width, sint32 height, sint32 xStart, sint32 yStart) override
     {
         static const uint8 RainPattern[] =
         {

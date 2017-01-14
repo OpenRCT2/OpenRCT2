@@ -600,9 +600,10 @@ void window_scroll_to_location(rct_window *w, int x, int y, int z);
 void window_rotate_camera(rct_window *w, int direction);
 void window_viewport_get_map_coords_by_cursor(rct_window *w, sint16 *map_x, sint16 *map_y, sint16 *offset_x, sint16 *offset_y);
 void window_viewport_centre_tile_around_cursor(rct_window *w, sint16 map_x, sint16 map_y, sint16 offset_x, sint16 offset_y);
-void window_zoom_set(rct_window *w, int zoomLevel);
-void window_zoom_in(rct_window *w);
-void window_zoom_out(rct_window *w);
+void window_zoom_set(rct_window *w, int zoomLevel, bool atCursor);
+void window_zoom_in(rct_window *w, bool atCursor);
+void window_zoom_out(rct_window *w, bool atCursor);
+void main_window_zoom(bool zoomIn, bool atCursor);
 
 void window_show_textinput(rct_window *w, int widgetIndex, uint16 title, uint16 text, int value);
 void window_text_input_key(rct_window* w, int key);

@@ -14,6 +14,8 @@
  *****************************************************************************/
 #pragma endregion
 
+#pragma warning(disable : 4295) // 'identifier': array is too small to include a terminating null character
+
 #include "../audio/audio.h"
 #include "../config.h"
 #include "../game.h"
@@ -315,7 +317,7 @@ typedef struct list_item {
 
 static rct_string_id get_ride_type_string_id(const ObjectRepositoryItem * item);
 
-typedef int (*sortFunc)(const void *, const void *);
+typedef int (*sortFunc_t)(const void *, const void *);
 
 static int _numListItems = 0;
 static list_item *_listItems = NULL;
@@ -388,37 +390,42 @@ static void visible_list_refresh(rct_window *w)
 		}
 	}
 
-	void *new_memory = realloc(_listItems, _numListItems * sizeof(list_item));
-	if (new_memory == NULL) {
-		log_error("Unable to reallocate list items");
-		return;
-	}
-	_listItems = (list_item*)new_memory;
-
-	sortFunc sortFunc = NULL;
-	switch (_listSortType) {
-	case RIDE_SORT_TYPE:
-		sortFunc = visible_list_sort_ride_type;
-		break;
-	case RIDE_SORT_RIDE:
-		sortFunc = visible_list_sort_ride_name;
-		break;
-	default:
-		log_warning("Wrong sort type %d, leaving list as-is.", _listSortType);
+	if (_numListItems == 0)
+	{
+		visible_list_dispose();
 		window_invalidate(w);
 		return;
 	}
-	qsort(_listItems, _numListItems, sizeof(list_item), sortFunc);
 
-	if (_listSortDescending) {
-		for (int i = 0; i < _numListItems / 2; i++) {
-			int ri = _numListItems - i - 1;
-			list_item temp = _listItems[i];
-			_listItems[i] = _listItems[ri];
-			_listItems[ri] = temp;
+	_listItems = realloc(_listItems, _numListItems * sizeof(list_item));
+	if (_listItems == NULL) {
+		_numListItems = 0;
+		log_error("Unable to reallocate list items");
+	} else {
+		sortFunc_t sortFunc = NULL;
+		switch (_listSortType) {
+		case RIDE_SORT_TYPE:
+			sortFunc = visible_list_sort_ride_type;
+			break;
+		case RIDE_SORT_RIDE:
+			sortFunc = visible_list_sort_ride_name;
+			break;
+		default:
+			log_warning("Wrong sort type %d, leaving list as-is.", _listSortType);
+			window_invalidate(w);
+			return;
+		}
+		qsort(_listItems, _numListItems, sizeof(list_item), sortFunc);
+
+		if (_listSortDescending) {
+			for (int i = 0; i < _numListItems / 2; i++) {
+				int ri = _numListItems - i - 1;
+				list_item temp = _listItems[i];
+				_listItems[i] = _listItems[ri];
+				_listItems[ri] = temp;
+			}
 		}
 	}
-
 	window_invalidate(w);
 }
 
@@ -1332,7 +1339,7 @@ static void window_editor_object_selection_paint(rct_window *w, rct_drawpixelinf
 		rct_drawpixelinfo clipDPI;
 		x = w->x + widget->left + 1;
 		y = w->y + widget->top + 1;
-		int width = widget->right - widget->left - 1;
+		width = widget->right - widget->left - 1;
 		int height = widget->bottom - widget->top - 1;
 		if (clip_drawpixelinfo(&clipDPI, dpi, x, y, width, height)) {
 			object_draw_preview(_loadedObject, &clipDPI, width, height);
@@ -1355,7 +1362,7 @@ static void window_editor_object_selection_paint(rct_window *w, rct_drawpixelinf
 
 		x = w->x + w->widgets[WIDX_LIST].right + 4;
 		y += 15;
-		int width = w->x + w->width - x - 4;
+		width = w->x + w->width - x - 4;
 		if (type == OBJECT_TYPE_SCENARIO_TEXT) {
 			gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, x, y, width, STR_OBJECT_SELECTION_DESCRIPTION_SCENARIO_TEXT, COLOUR_BLACK);
 		} else {

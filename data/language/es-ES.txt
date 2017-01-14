@@ -4265,6 +4265,10 @@ STR_5993    :{SMALLFONT}{BLACK}Copiar elemento seleccionado
 STR_5994    :{SMALLFONT}{BLACK}Pegar elemento copiado
 STR_5995    :Acelerador
 STR_5996    :Velocidad de Acelerador
+STR_5997    :Añadir/Establecer dinero
+STR_5998    :Añadir dinero
+STR_5999    :Establecer dinero
+STR_6000    :Ingresa un nuevo valor
 
 ##############
 # Escenarios #

@@ -997,6 +997,8 @@ namespace RCT1
         return map[sceneryGroupType];
     }
 
+#pragma warning(push)
+#pragma warning(disable : 4505) // 'identifier' unreferenced local function has been removed
     static const char * GetWaterObject(uint8 waterType)
     {
         static const char * map[] =
@@ -1006,6 +1008,7 @@ namespace RCT1
         };
         return map[waterType];
     }
+#pragma warning(pop)
 
     const std::vector<const char *> GetPreferedRideEntryOrder(uint8 rideType)
     {

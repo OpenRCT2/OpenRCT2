@@ -73,7 +73,7 @@ void money_effect_create(money32 value)
 		.z = gCommandPosition.z
 	};
 
-	if (mapPosition.x == (sint16)0x8000) {
+	if (mapPosition.x == MAP_LOCATION_NULL) {
 		rct_window *mainWindow = window_get_main();
 		if (mainWindow == NULL)
 			return;
@@ -86,7 +86,7 @@ void money_effect_create(money32 value)
 			&mapPosition.y,
 			NULL
 		);
-		if (mapPosition.x == (sint16)0x8000)
+		if (mapPosition.x == MAP_LOCATION_NULL)
 			return;
 
 		mapPosition.z = map_element_height(mapPosition.x, mapPosition.y) & 0xFFFF;

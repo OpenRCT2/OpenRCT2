@@ -14,6 +14,8 @@
  *****************************************************************************/
 #pragma endregion
 
+#pragma warning(disable : 4706) // assignment within conditional expression
+
 #include <vector>
 #include <jansson.h>
 
@@ -151,7 +153,7 @@ WindowThemeDesc WindowThemeDescriptors[] =
     { THEME_WC(WC_TRACK_DELETE_PROMPT),            STR_THEMES_WINDOW_TRACK_DELETE_PROMPT,       COLOURS_3(COLOUR_BORDEAUX_RED,             COLOUR_BORDEAUX_RED,             COLOUR_BORDEAUX_RED                                ) },
     { THEME_WC(WC_INSTALL_TRACK),                  STR_THEMES_WINDOW_INSTALL_TRACK,       COLOURS_3(COLOUR_BORDEAUX_RED,             COLOUR_BORDEAUX_RED,             COLOUR_BORDEAUX_RED                                ) },
     { THEME_WC(WC_CLEAR_SCENERY),                  STR_THEMES_WINDOW_CLEAR_SCENERY,       COLOURS_3(COLOUR_DARK_BROWN,               COLOUR_DARK_BROWN,               COLOUR_DARK_BROWN                                  ) },
-    { THEME_WC(WC_CHEATS),                         STR_CHEAT_TITLE,       COLOURS_3(COLOUR_GREY,                     COLOUR_DARK_YELLOW,              COLOUR_DARK_YELLOW                                 ) },
+    { THEME_WC(WC_CHEATS),                         STR_CHEAT_TITLE,       COLOURS_2(COLOUR_GREY,                     COLOUR_DARK_YELLOW                                                                   ) },
     { THEME_WC(WC_RESEARCH),                       STR_THEMES_WINDOW_RESEARCH,       COLOURS_3(COLOUR_GREY,                     COLOUR_DARK_YELLOW,              COLOUR_DARK_YELLOW                                 ) },
     { THEME_WC(WC_VIEWPORT),                       STR_THEMES_WINDOW_VIEWPORT,       COLOURS_3(COLOUR_DARK_BROWN,               COLOUR_DARK_BROWN,               COLOUR_DARK_BROWN                                  ) },
     { THEME_WC(WC_MAPGEN),                         STR_THEMES_WINDOW_MAPGEN,       COLOURS_3(COLOUR_DARK_GREEN,               COLOUR_DARK_BROWN,               COLOUR_DARK_BROWN                                  ) },
@@ -255,6 +257,10 @@ static void ThrowThemeLoadException()
 json_t * UIThemeWindowEntry::ToJson() const
 {
     const WindowThemeDesc * wtDesc = GetWindowThemeDescriptor(WindowClass);
+    if (wtDesc == nullptr)
+    {
+        return nullptr;
+    }
 
     json_t * jsonColours = json_array();
     for (uint8 i = 0; i < wtDesc->NumColours; i++) {
@@ -368,6 +374,10 @@ json_t * UITheme::ToJson() const
     for (const UIThemeWindowEntry & entry : Entries)
     {
         const WindowThemeDesc * wtDesc = GetWindowThemeDescriptor(entry.WindowClass);
+        if (wtDesc == nullptr)
+        {
+            return nullptr;
+        }
         json_object_set_new(jsonEntries, wtDesc->WindowClassSZ, entry.ToJson());
     }
 
@@ -702,6 +712,10 @@ extern "C"
         if (entry == nullptr)
         {
             const WindowThemeDesc * desc = GetWindowThemeDescriptor(wc);
+            if (desc == nullptr)
+            {
+                return 0;
+            }
             return desc->DefaultTheme.Colours[index];
         }
         else
@@ -723,6 +737,10 @@ extern "C"
         else
         {
             const WindowThemeDesc * desc = GetWindowThemeDescriptor(wc);
+            if (desc == nullptr)
+            {
+                return;
+            }
             entry.Theme = desc->DefaultTheme;
         }
 
@@ -818,12 +836,20 @@ extern "C"
     uint8 theme_desc_get_num_colours(rct_windowclass wc)
     {
         const WindowThemeDesc * desc = GetWindowThemeDescriptor(wc);
+        if (desc == nullptr)
+        {
+            return 0;
+        }
         return desc->NumColours;
     }
 
     rct_string_id theme_desc_get_name(rct_windowclass wc)
     {
         const WindowThemeDesc * desc = GetWindowThemeDescriptor(wc);
+        if (desc == nullptr)
+        {
+            return STR_EMPTY;
+        }
         return desc->WindowName;
     }
 

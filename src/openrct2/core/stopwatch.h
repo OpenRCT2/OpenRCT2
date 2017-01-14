@@ -23,18 +23,18 @@
 // C wrapper for Stopwatch //
 /////////////////////////////
 
-typedef struct stopwatch {
+typedef struct stopwatch_t {
 	void *context;
-} stopwatch;
+} stopwatch_t;
 
-void stopwatch_create(stopwatch *stopwatch);
-void stopwatch_dispose(stopwatch *stopwatch);
+void stopwatch_create(stopwatch_t *stopwatch);
+void stopwatch_dispose(stopwatch_t *stopwatch);
 
-uint64 stopwatch_GetElapsedTicks(stopwatch *stopwatch);
-uint64 stopwatch_GetElapsedMilliseconds(stopwatch *stopwatch);
-void stopwatch_Reset(stopwatch *stopwatch);
-void stopwatch_Start(stopwatch *stopwatch);
-void stopwatch_Restart(stopwatch *stopwatch);
-void stopwatch_Stop(stopwatch *stopwatch);
+uint64 stopwatch_GetElapsedTicks(stopwatch_t *stopwatch);
+uint64 stopwatch_GetElapsedMilliseconds(stopwatch_t *stopwatch);
+void stopwatch_Reset(stopwatch_t *stopwatch);
+void stopwatch_Start(stopwatch_t *stopwatch);
+void stopwatch_Restart(stopwatch_t *stopwatch);
+void stopwatch_Stop(stopwatch_t *stopwatch);
 
 #endif

@@ -85,8 +85,6 @@ bool fence_in_the_way(int x, int y, int z0, int z1, int direction);
 void footpath_chain_ride_queue(int rideIndex, int entranceIndex, int x, int y, rct_map_element *mapElement, int direction);
 void footpath_update_path_wide_flags(int x, int y);
 
-void footpath_bridge_get_info_from_pos(int screenX, int screenY, int *x, int *y, int *direction, rct_map_element **mapElement);
-
 int footpath_is_connected_to_map_edge(int x, int y, int z, int direction, int flags);
 bool footpath_element_is_sloped(rct_map_element *mapElement);
 uint8 footpath_element_get_slope_direction(rct_map_element *mapElement);

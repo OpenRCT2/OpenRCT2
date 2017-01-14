@@ -87,7 +87,7 @@ public:
     }
 };
 
-class S4Importer : public IS4Importer
+class S4Importer final : public IS4Importer
 {
 private:
     const utf8 * _s4Path;
@@ -118,7 +118,7 @@ private:
     uint8 _researchRideTypeUsed[128];
 
 public:
-    void LoadSavedGame(const utf8 * path)
+    void LoadSavedGame(const utf8 * path) override
     {
         if (!rct1_read_sv4(path, &_s4))
         {
@@ -127,7 +127,7 @@ public:
         _s4Path = path;
     }
 
-    void LoadScenario(const utf8 * path)
+    void LoadScenario(const utf8 * path) override
     {
         if (!rct1_read_sc4(path, &_s4))
         {
@@ -136,7 +136,7 @@ public:
         _s4Path = path;
     }
 
-    void Import()
+    void Import() override
     {
         Initialise();
 
@@ -666,6 +666,12 @@ private:
             dst->track_colour_main[0] = RCT1::GetColour(src->track_primary_colour);
             dst->track_colour_additional[0] = RCT1::GetColour(src->track_secondary_colour);
             dst->track_colour_supports[0] = RCT1::GetColour(src->track_support_colour);
+
+            // Balloons were always blue in the original RCT.
+            if (src->type == RCT1_RIDE_TYPE_BALLOON_STALL)
+            {
+                dst->track_colour_main[0] = COLOUR_LIGHT_BLUE;
+            }
         }
         else
         {
@@ -809,7 +815,7 @@ private:
             if (_s4.sprites[i].unknown.sprite_identifier == SPRITE_IDENTIFIER_PEEP)
             {
                 rct1_peep *srcPeep = &_s4.sprites[i].peep;
-                if (srcPeep->x != (sint16)0x8000 || srcPeep->state == PEEP_STATE_ON_RIDE)
+                if (srcPeep->x != MAP_LOCATION_NULL || srcPeep->state == PEEP_STATE_ON_RIDE)
                 {
                     rct_peep *peep = (rct_peep*)create_sprite(SPRITE_IDENTIFIER_PEEP);
                     move_sprite_to_list((rct_sprite*)peep, SPRITE_LIST_PEEP * 2);
@@ -1716,7 +1722,7 @@ private:
                 if (additionType != RCT1_PATH_ADDITION_NONE)
                 {
                     uint8 normalisedType = RCT1::NormalisePathAddition(additionType);
-                    uint8 entryIndex = _pathAdditionTypeToEntryMap[normalisedType];
+                    entryIndex = _pathAdditionTypeToEntryMap[normalisedType];
                     if (additionType != normalisedType)
                     {
                         mapElement->flags |= MAP_ELEMENT_FLAG_BROKEN;
@@ -1882,7 +1888,7 @@ private:
     {
         for (int i = 0; i < 4; i++)
         {
-            gParkEntranceX[i] = (sint16)0x8000;
+            gParkEntranceX[i] = MAP_LOCATION_NULL;
         }
 
         uint8 entranceIndex = 0;

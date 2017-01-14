@@ -233,7 +233,7 @@ void scenery_multiple_paint(uint8 direction, uint16 height, rct_map_element *map
 		return;
 	}
 	if (entry->large_scenery.flags & 0x4) {
-		if (entry->large_scenery.tiles[1].x_offset != (sint16)0xFFFF) {
+		if (entry->large_scenery.tiles[1].x_offset != (sint16)(uint16)0xFFFF) {
 			int al = ((mapElement->properties.surface.terrain >> 2) - 1) & 3;
 			if (al != direction) {
 				scenery_multiple_paint_supports(direction, height, mapElement, dword_F4387C, tile);
@@ -272,12 +272,12 @@ void scenery_multiple_paint(uint8 direction, uint16 height, rct_map_element *map
 			utf8 fitStr[32];
 			const utf8 *fitStrPtr = fitStr;
 			safe_strcpy(fitStr, scenery_multiple_sign_fit_text(signString, text, true), sizeof(fitStr));
-			int height = scenery_multiple_sign_text_height(fitStr, text);
+			int height2 = scenery_multiple_sign_text_height(fitStr, text);
 			uint32 codepoint;
 			while ((codepoint = utf8_get_next(fitStrPtr, &fitStrPtr)) != 0) {
 				utf8 str[5] = {0};
 				utf8_write_codepoint(str, codepoint);
-				scenery_multiple_sign_paint_line(str, entry->large_scenery.text, entry->large_scenery.text_image, textColour, direction, y_offset - height);
+				scenery_multiple_sign_paint_line(str, entry->large_scenery.text, entry->large_scenery.text_image, textColour, direction, y_offset - height2);
 				y_offset += scenery_multiple_sign_get_glyph(text, codepoint)->height * 2;
 			}
 		} else {
@@ -302,7 +302,7 @@ void scenery_multiple_paint(uint8 direction, uint16 height, rct_map_element *map
 								spacesrc = src;
 								spacedst = dst;
 							}
-						} while(w <= text->max_width && (dst = utf8_write_codepoint(dst, codepoint)) && (srcold = src) && (codepoint = utf8_get_next(src, (const utf8**)&src)));
+						} while(w <= text->max_width && (dst = utf8_write_codepoint(dst, codepoint)) != NULL && (srcold = src) != NULL && (codepoint = utf8_get_next(src, (const utf8**)&src)) != '\0');
 						src = srcold;
 						if (spacesrc && codepoint) {
 							*spacedst = 0;

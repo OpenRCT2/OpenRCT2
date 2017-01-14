@@ -19,6 +19,7 @@
 #include "../config.h"
 #include "../drawing/drawing.h"
 #include "../drawing/lightfx.h"
+#include "../editor.h"
 #include "../game.h"
 #include "../input.h"
 #include "../interface/console.h"
@@ -48,7 +49,7 @@ int gTextInputCompositionStart;
 int gTextInputCompositionLength;
 
 int gNumResolutions = 0;
-resolution *gResolutions = NULL;
+resolution_t *gResolutions = NULL;
 int gResolutionsAllowAnyAspectRatio = 0;
 
 SDL_Window *gWindow = NULL;
@@ -68,8 +69,8 @@ static void platform_create_window();
 
 static int resolution_sort_func(const void *pa, const void *pb)
 {
-	const resolution *a = (resolution*)pa;
-	const resolution *b = (resolution*)pb;
+	const resolution_t *a = (resolution_t*)pa;
+	const resolution_t *b = (resolution_t*)pb;
 
 	int areaA = a->width * a->height;
 	int areaB = b->width * b->height;
@@ -94,7 +95,7 @@ void platform_update_fullscreen_resolutions()
 
 	// Get resolutions
 	gNumResolutions = numDisplayModes;
-	gResolutions = malloc(gNumResolutions * sizeof(resolution));
+	gResolutions = malloc(gNumResolutions * sizeof(resolution_t));
 	gNumResolutions = 0;
 
 	float desktopAspectRatio = (float)mode.w / mode.h;
@@ -110,12 +111,12 @@ void platform_update_fullscreen_resolutions()
 	}
 
 	// Sort by area
-	qsort(gResolutions, gNumResolutions, sizeof(resolution), resolution_sort_func);
+	qsort(gResolutions, gNumResolutions, sizeof(resolution_t), resolution_sort_func);
 
 	// Remove duplicates
-	resolution *resPlace = &gResolutions[0];
+	resolution_t *resPlace = &gResolutions[0];
 	for (int i = 1; i < gNumResolutions; i++) {
-		resolution *resLook = &gResolutions[i];
+		resolution_t *resLook = &gResolutions[i];
 		if (resLook->width != resPlace->width || resLook->height != resPlace->height)
 			*++resPlace = *resLook;
 	}
@@ -507,12 +508,9 @@ void platform_process_messages()
 				// Zoom gesture
 				const int tolerance = 128;
 				int gesturePixels = (int)(_gestureRadius * gScreenWidth);
-				if (gesturePixels > tolerance) {
+				if (abs(gesturePixels) > tolerance) {
 					_gestureRadius = 0;
-					keyboard_shortcut_handle_command(SHORTCUT_ZOOM_VIEW_IN);
-				} else if (gesturePixels < -tolerance) {
-					_gestureRadius = 0;
-					keyboard_shortcut_handle_command(SHORTCUT_ZOOM_VIEW_OUT);
+					main_window_zoom(gesturePixels > 0, true);
 				}
 			}
 			break;
@@ -643,10 +641,6 @@ void platform_free()
 
 	platform_close_window();
 	SDL_Quit();
-
-#ifdef __WINDOWS__
-	platform_windows_close_console();
-#endif
 }
 
 void platform_start_text_input(utf8* buffer, int max_length)
@@ -719,14 +713,11 @@ void platform_set_cursor(uint8 cursor)
 
 void platform_refresh_video()
 {
-	int width = gScreenWidth;
-	int height = gScreenHeight;
-
 	SDL_SetHint(SDL_HINT_VIDEO_MINIMIZE_ON_FOCUS_LOSS, gConfigGeneral.minimize_fullscreen_focus_loss ? "1" : "0");
 
 	drawing_engine_dispose();
 	drawing_engine_init();
-	drawing_engine_resize(width, height);
+	drawing_engine_resize();
 	drawing_engine_set_palette(gPalette);
 	gfx_invalidate_screen();
 }

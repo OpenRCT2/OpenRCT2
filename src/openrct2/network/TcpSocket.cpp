@@ -81,7 +81,7 @@ struct ConnectRequest
     uint16      Port;
 };
 
-class TcpSocket : public ITcpSocket
+class TcpSocket final : public ITcpSocket
 {
 private:
     SOCKET_STATUS   _status         = SOCKET_STATUS_CLOSED;
@@ -294,7 +294,7 @@ public:
                 if (select((int)(_socket + 1), nullptr, &writeFD, nullptr, &timeout) > 0)
                 {
                     error = 0;
-                    socklen_t len = sizeof(error);
+                    len = sizeof(error);
                     if (getsockopt(_socket, SOL_SOCKET, SO_ERROR, (char*)&error, &len) != 0)
                     {
                         throw SocketException("getsockopt failed with error: " + std::to_string(LAST_SOCKET_ERROR()));
@@ -333,18 +333,18 @@ public:
             req->Port = port;
             SDL_CreateThread([](void * pointer) -> int
             {
-                auto req = static_cast<ConnectRequest *>(pointer);
+                auto req2 = static_cast<ConnectRequest *>(pointer);
                 try
                 {
-                    req->Socket->Connect(req->Address.c_str(), req->Port);
+                    req2->Socket->Connect(req2->Address.c_str(), req2->Port);
                 }
                 catch (const Exception & ex)
                 {
-                    req->Socket->_error = std::string(ex.GetMessage());
+                    req2->Socket->_error = std::string(ex.GetMessage());
                 }
 
-                SDL_UnlockMutex(req->Socket->_connectMutex);
-                delete req;
+                SDL_UnlockMutex(req2->Socket->_connectMutex);
+                delete req2;
                 return 0;
             }, 0, req);
         }

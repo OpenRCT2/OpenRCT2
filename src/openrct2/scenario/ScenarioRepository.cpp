@@ -444,9 +444,9 @@ private:
                 if (scBasic.flags & SCENARIO_FLAGS_COMPLETED)
                 {
                     bool notFound = true;
-                    for (size_t i = 0; i < _highscores.size(); i++)
+                    for (size_t j = 0; j < _highscores.size(); j++)
                     {
-                        scenario_highscore_entry * highscore = _highscores[i];
+                        scenario_highscore_entry * highscore = _highscores[j];
                         if (String::Equals(scBasic.path, highscore->fileName, true))
                         {
                             notFound = false;

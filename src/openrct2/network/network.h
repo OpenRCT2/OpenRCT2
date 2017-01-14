@@ -43,7 +43,6 @@ extern "C" {
 #include "../game.h"
 #include "../platform/platform.h"
 #include "../localisation/string_ids.h"
-#include <openssl/evp.h>
 #ifdef __cplusplus
 }
 #endif // __cplusplus
@@ -55,7 +54,7 @@ extern "C" {
 // This define specifies which version of network stream current build uses.
 // It is used for making sure only compatible builds get connected, even within
 // single OpenRCT2 version.
-#define NETWORK_STREAM_VERSION "27"
+#define NETWORK_STREAM_VERSION "28"
 #define NETWORK_STREAM_ID OPENRCT2_VERSION "-" NETWORK_STREAM_VERSION
 
 #ifdef __cplusplus
@@ -67,6 +66,7 @@ extern "C" {
 #include <string>
 #include <vector>
 #include <map>
+#include <openssl/evp.h>
 #include <SDL.h>
 #include "../core/Json.hpp"
 #include "../core/Nullable.hpp"
@@ -78,6 +78,7 @@ extern "C" {
 #include "NetworkServerAdvertiser.h"
 #include "NetworkUser.h"
 #include "TcpSocket.h"
+
 
 enum {
 	NETWORK_TICK_FLAG_CHECKSUMS = 1 << 0,
@@ -149,8 +150,8 @@ public:
 
 	std::vector<std::unique_ptr<NetworkPlayer>> player_list;
 	std::vector<std::unique_ptr<NetworkGroup>> group_list;
-	NetworkKey key;
-	std::vector<uint8> challenge;
+	NetworkKey _key;
+	std::vector<uint8> _challenge;
 	NetworkUserManager _userManager;
 
 	std::string ServerName;
@@ -205,7 +206,7 @@ private:
 	std::list<std::unique_ptr<NetworkConnection>> client_connection_list;
 	std::multiset<GameCommand> game_command_queue;
 	std::vector<uint8> chunk_buffer;
-	std::string password;
+	std::string _password;
 	bool _desynchronised = false;
 	INetworkServerAdvertiser * _advertiser = nullptr;
 	uint32 server_connect_time = 0;

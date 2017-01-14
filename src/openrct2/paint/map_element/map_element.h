@@ -21,7 +21,7 @@
 #include "../../common.h"
 #include "../../world/map.h"
 
-typedef enum edge
+typedef enum edge_t
 {
 	EDGE_NE = (1 << 0),
 	EDGE_SE = (1 << 1),
@@ -31,7 +31,7 @@ typedef enum edge
 	EDGE_BOTTOMRIGHT = EDGE_SE,
 	EDGE_TOPLEFT = EDGE_NW,
 	EDGE_TOPRIGHT = EDGE_NE
-} edge;
+} edge_t;
 
 enum
 {

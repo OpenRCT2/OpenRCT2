@@ -680,7 +680,7 @@ static void utf8_to_rct2_self(char *buffer, size_t length)
 	const char *src = tempBuffer;
 	char *dst = buffer;
 	while (*src != 0 && i < length - 1) {
-		if (*src == (char)0xFF) {
+		if (*src == (char)(uint8)0xFF) {
 			if (i < length - 3) {
 				*dst++ = *src++;
 				*dst++ = *src++;

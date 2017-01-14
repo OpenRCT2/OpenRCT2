@@ -174,34 +174,12 @@ static void shortcut_pause_game()
 
 static void shortcut_zoom_view_out()
 {
-	if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
-		return;
-
-	if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gS6Info.editor_step == EDITOR_STEP_LANDSCAPE_EDITOR) {
-		if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)) {
-			rct_window *window = window_find_by_class(WC_TOP_TOOLBAR);
-			if (window != NULL) {
-				window_invalidate(window);
-				window_event_mouse_up_call(window, 2);
-			}
-		}
-	}
+	main_window_zoom(false, false);
 }
 
 static void shortcut_zoom_view_in()
 {
-	if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
-		return;
-
-	if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gS6Info.editor_step == EDITOR_STEP_LANDSCAPE_EDITOR) {
-		if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)) {
-			rct_window *window = window_find_by_class(WC_TOP_TOOLBAR);
-			if (window != NULL) {
-				window_invalidate(window);
-				window_event_mouse_up_call(window, 3);
-			}
-		}
-	}
+	main_window_zoom(true, false);
 }
 
 static void shortcut_rotate_view_clockwise()

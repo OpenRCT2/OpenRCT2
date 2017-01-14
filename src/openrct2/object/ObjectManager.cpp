@@ -33,7 +33,7 @@ extern "C"
     #include "../object_list.h"
 }
 
-class ObjectManager : public IObjectManager
+class ObjectManager final : public IObjectManager
 {
 private:
     IObjectRepository * _objectRepository;

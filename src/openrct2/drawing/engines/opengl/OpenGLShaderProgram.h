@@ -19,7 +19,7 @@
 #include "../../../common.h"
 #include "OpenGLAPI.h"
 
-class OpenGLShader
+class OpenGLShader final
 {
 private:
     static constexpr uint64 MaxSourceSize = 8 * 1024 * 1024; // 8 MiB
@@ -29,7 +29,7 @@ private:
 
 public:
     OpenGLShader(const char * name, GLenum type);
-    virtual ~OpenGLShader();
+    ~OpenGLShader();
 
     GLuint GetShaderId();
 

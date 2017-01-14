@@ -65,7 +65,7 @@
 
 typedef struct resolution {
 	int width, height;
-} resolution;
+} resolution_t;
 
 typedef struct file_info {
 	const char *path;
@@ -129,7 +129,7 @@ extern int gTextInputCompositionLength;
 
 extern int gResolutionsAllowAnyAspectRatio;
 extern int gNumResolutions;
-extern resolution *gResolutions;
+extern resolution_t *gResolutions;
 extern SDL_Window *gWindow;
 
 extern SDL_Color gPalette[256];
@@ -220,8 +220,6 @@ void core_init();
 	#include <windows.h>
 	#undef GetMessage
 
-	void platform_windows_open_console();
-	void platform_windows_close_console();
 	int windows_get_registry_install_info(rct2_install_info *installInfo, char *source, char *font, uint8 charset);
 	HWND windows_get_window_handle();
 	void platform_setup_file_associations();

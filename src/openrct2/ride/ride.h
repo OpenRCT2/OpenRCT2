@@ -27,6 +27,7 @@ typedef fixed16_2dp ride_rating;
 // Convenience function for writing ride ratings. The result is a 16 bit signed
 // integer. To create the ride rating 3.65 type RIDE_RATING(3,65)
 #define RIDE_RATING(whole, fraction)	FIXED_2DP(whole, fraction)
+#define RIDE_RATING_UNDEFINED			(ride_rating)(uint16)0xFFFF
 
 #pragma pack(push, 1)
 
@@ -182,8 +183,9 @@ typedef struct rct_ride {
 		uint8 speed;				// 0x0D0
 		uint8 rotations;			// 0x0D0
 	};
+	
 	uint8 boat_hire_return_direction;	// 0x0D1
-	uint16 boat_hire_return_position;	// 0x0D2
+	rct_xy8 boat_hire_return_position;	// 0x0D2
 	uint8 measurement_index;		// 0x0D4
     // bits 0 through 4 are the number of helix sections
     // bit 5: spinning tunnel, water splash, or rapids
@@ -411,41 +413,30 @@ enum {
 
 // Constants used by the ride_type->flags property at 0x008
 enum {
-	RIDE_ENTRY_FLAG_0 = 1 << 0, // 0x1
-	RIDE_ENTRY_FLAG_NO_INVERSIONS = 1 << 1, // 0x2
-	RIDE_ENTRY_FLAG_NO_BANKED_TRACK = 1 << 2, // 0x4
-	RIDE_ENTRY_FLAG_3 = 1 << 3, // 0x8
-	RIDE_ENTRY_FLAG_ALTERNATIVE_SWING_MODE_1 = 1 << 4, // 0x10
+	RIDE_ENTRY_FLAG_VEHICLE_TAB_SCALE_HALF			= 1 << 0,
+	RIDE_ENTRY_FLAG_NO_INVERSIONS					= 1 << 1,
+	RIDE_ENTRY_FLAG_NO_BANKED_TRACK					= 1 << 2,
+	RIDE_ENTRY_FLAG_PLAY_DEPART_SOUND				= 1 << 3,
+	RIDE_ENTRY_FLAG_ALTERNATIVE_SWING_MODE_1		= 1 << 4,
 	// Twist type rotation ride
-	RIDE_ENTRY_FLAG_ALTERNATIVE_ROTATION_MODE_1 = 1 << 5, // 0x20
+	RIDE_ENTRY_FLAG_ALTERNATIVE_ROTATION_MODE_1		= 1 << 5,
 	// Lifting arm rotation ride (enterprise)
-	RIDE_ENTRY_FLAG_ALTERNATIVE_ROTATION_MODE_2 = 1 << 6, // 0x40
-	RIDE_ENTRY_FLAG_7 = 1 << 7, // 0x80
-	RIDE_ENTRY_FLAG_8 = 1 << 8, // 0x100
-	RIDE_ENTRY_FLAG_9 = 1 << 9, // 0x200
-	RIDE_ENTRY_FLAG_COVERED_RIDE = 1 << 10, // 0x400
-	RIDE_ENTRY_FLAG_11 = 1 << 11, // 0x800
-	RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME = 1 << 12, // 0x1000
-	RIDE_ENTRY_FLAG_SEPARATE_RIDE = 1 << 13, // 0x2000
-	RIDE_ENTRY_FLAG_CANNOT_BREAK_DOWN = 1 << 14, // 0x4000
-	RIDE_ENTRY_DISABLE_LAST_OPERATING_MODE = 1 << 15, // 0x8000
-	RIDE_ENTRY_FLAG_16 = 1 << 16, // 0x10000
-	RIDE_ENTRY_DISABLE_FIRST_TWO_OPERATING_MODES = 1 << 17, // 0x20000
-	RIDE_ENTRY_FLAG_18 = 1 << 18, // 0x40000
-	RIDE_ENTRY_FLAG_19 = 1 << 19, // 0x80000
+	RIDE_ENTRY_FLAG_ALTERNATIVE_ROTATION_MODE_2		= 1 << 6,
+	RIDE_ENTRY_FLAG_7								= 1 << 7,
+	RIDE_ENTRY_FLAG_PLAY_SPLASH_SOUND				= 1 << 8,
+	RIDE_ENTRY_FLAG_PLAY_SPLASH_SOUND_SLIDE			= 1 << 9,
+	RIDE_ENTRY_FLAG_COVERED_RIDE					= 1 << 10,
+	RIDE_ENTRY_FLAG_LIMIT_AIRTIME_BONUS				= 1 << 11,
+	RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME				= 1 << 12,
+	RIDE_ENTRY_FLAG_SEPARATE_RIDE					= 1 << 13,
+	RIDE_ENTRY_FLAG_CANNOT_BREAK_DOWN				= 1 << 14,
+	RIDE_ENTRY_DISABLE_LAST_OPERATING_MODE			= 1 << 15,
+	RIDE_ENTRY_FLAG_16								= 1 << 16,
+	RIDE_ENTRY_DISABLE_FIRST_TWO_OPERATING_MODES	= 1 << 17,
+	RIDE_ENTRY_FLAG_18								= 1 << 18,
+	RIDE_ENTRY_FLAG_DISABLE_COLOUR_TAB				= 1 << 19,
 	// Must be set with swing mode 1 as well.
-	RIDE_ENTRY_FLAG_ALTERNATIVE_SWING_MODE_2 = 1 << 20, // 0x100000
-	RIDE_ENTRY_FLAG_21 = 1 << 21, // 0x200000
-	RIDE_ENTRY_FLAG_22 = 1 << 22, // 0x400000
-	RIDE_ENTRY_FLAG_23 = 1 << 23, // 0x800000
-	RIDE_ENTRY_FLAG_24 = 1 << 24, // 0x1000000
-	RIDE_ENTRY_FLAG_25 = 1 << 25, // 0x2000000
-	RIDE_ENTRY_FLAG_26 = 1 << 26, // 0x4000000
-	RIDE_ENTRY_FLAG_27 = 1 << 27, // 0x8000000
-	RIDE_ENTRY_FLAG_28 = 1 << 28, // 0x10000000
-	RIDE_ENTRY_FLAG_29 = 1 << 29, // 0x20000000
-	RIDE_ENTRY_FLAG_30 = 1 << 30, // 0x40000000
-	RIDE_ENTRY_FLAG_31 = 1u << 31, // 0x80000000
+	RIDE_ENTRY_FLAG_ALTERNATIVE_SWING_MODE_2		= 1 << 20,
 };
 
 enum{
@@ -762,31 +753,31 @@ enum {
 	RIDE_TYPE_FLAG_3 = 1 << 3,
 	RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION = 1 << 4,
 	RIDE_TYPE_FLAG_CAN_SYNCHRONISE_ADJACENT_STATIONS = 1 << 5,
-	RIDE_TYPE_FLAG_6 = 1 << 6,									// used only by boat ride and submarine ride
+	RIDE_TYPE_FLAG_TRACK_MUST_BE_ON_WATER = 1 << 6,				// used only by boat ride and submarine ride
 	RIDE_TYPE_FLAG_HAS_G_FORCES = 1 << 7,
 	RIDE_TYPE_FLAG_CANNOT_HAVE_GAPS = 1 << 8,					// used by rides that can't have gaps, like those with a vertical tower, such as the observation tower
 	RIDE_TYPE_FLAG_HAS_DATA_LOGGING = 1 << 9,
 	RIDE_TYPE_FLAG_HAS_DROPS = 1 << 10,
 	RIDE_TYPE_FLAG_NO_TEST_MODE = 1 << 11,
 	RIDE_TYPE_FLAG_TRACK_ELEMENTS_HAVE_TWO_VARIETIES = 1 << 12,	// used by rides with two variaties, like the u and o shapes of the dinghy slide and the dry and submerged track of the water coaster
-	RIDE_TYPE_FLAG_13 = 1 << 13,								// used only by maze, spiral slide and shops
+	RIDE_TYPE_FLAG_NO_VEHICLES = 1 << 13,						// used only by maze, spiral slide and shops
 	RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS = 1 << 14,
 	RIDE_TYPE_FLAG_HAS_NO_TRACK = 1 << 15,
 	RIDE_TYPE_FLAG_16 = 1 << 16,								// something to do with vehicle colour scheme
 	RIDE_TYPE_FLAG_IS_SHOP = 1 << 17,
-	RIDE_TYPE_FLAG_18 = 1 << 18,
+	RIDE_TYPE_FLAG_TRACK_NO_WALLS = 1 << 18,					// if set, wall scenery can not share a tile with the ride's track
 	RIDE_TYPE_FLAG_FLAT_RIDE = 1 << 19,
-	RIDE_TYPE_FLAG_20 = 1 << 20,
+	RIDE_TYPE_FLAG_PEEP_WILL_RIDE_AGAIN = 1 << 20,				// whether or not guests will go on the ride again if they liked it (this is usually applied to everything apart from transport rides)
 	RIDE_TYPE_FLAG_PEEP_SHOULD_GO_INSIDE_FACILITY = 1 << 21,	// used by toilets and first aid to mark that peep should go inside the building (rather than 'buying' at the counter)
 	RIDE_TYPE_FLAG_IN_RIDE = 1 << 22,							// peeps are "IN" (ride) rather than "ON" (ride)
 	RIDE_TYPE_FLAG_SELLS_FOOD = 1 << 23,
 	RIDE_TYPE_FLAG_SELLS_DRINKS = 1 << 24,
 	RIDE_TYPE_FLAG_IS_BATHROOM = 1 << 25,
-	RIDE_TYPE_FLAG_26 = 1 << 26,								// something to do with vehicle colours
+	RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS = 1 << 26,				// whether or not vehicle colours can be set
 	RIDE_TYPE_FLAG_CHECK_FOR_STALLING = 1 << 27,
 	RIDE_TYPE_FLAG_HAS_TRACK = 1 << 28,
 	RIDE_TYPE_FLAG_29 = 1 << 29,								// used only by lift
-	RIDE_TYPE_FLAG_30 = 1 << 30,
+	RIDE_TYPE_FLAG_HAS_LARGE_CURVES = 1 << 30,					// whether the ride supports large (45 degree turn) curves
 	RIDE_TYPE_FLAG_SUPPORTS_MULTIPLE_TRACK_COLOUR = 1u << 31,
 };
 
@@ -1166,5 +1157,6 @@ money16 ride_get_price(rct_ride * ride);
 
 rct_map_element *get_station_platform(int x, int y, int z, int z_tolerance);
 bool ride_has_adjacent_station(rct_ride *ride);
+bool ride_has_ratings(const rct_ride * ride);
 
 #endif

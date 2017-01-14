@@ -222,7 +222,7 @@ namespace String
         {
             // Try again with bigger buffer
             buffer = Memory::Reallocate<utf8>(buffer, bufferSize);
-            int len = vsnprintf(buffer, bufferSize, format, args);
+            len = vsnprintf(buffer, bufferSize, format, args);
             if (len < 0)
             {
                 Memory::Free(buffer);

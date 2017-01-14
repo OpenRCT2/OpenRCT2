@@ -798,7 +798,7 @@ static void window_editor_inventions_list_paint(rct_window *w, rct_drawpixelinfo
 		rct_drawpixelinfo clipDPI;
 		x = w->x + widget->left + 1;
 		y = w->y + widget->top + 1;
-		int width = widget->right - widget->left - 1;
+		width = widget->right - widget->left - 1;
 		int height = widget->bottom - widget->top - 1;
 		if (clip_drawpixelinfo(&clipDPI, dpi, x, y, width, height)) {
 			object_draw_preview(object, &clipDPI, width, height);

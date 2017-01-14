@@ -50,7 +50,6 @@ static uint8 _trackSaveDirection;
 
 static bool track_design_save_should_select_scenery_around(int rideIndex, rct_map_element *mapElement);
 static void track_design_save_select_nearby_scenery_for_tile(int rideIndex, int cx, int cy);
-bool track_design_save_contains_map_element(rct_map_element *mapElement);
 static bool track_design_save_add_map_element(int interactionType, int x, int y, rct_map_element *mapElement);
 static void track_design_save_remove_map_element(int interactionType, int x, int y, rct_map_element *mapElement);
 static bool track_design_save_copy_scenery_to_td6(rct_track_td6 *td6);
@@ -148,7 +147,7 @@ bool track_design_save(uint8 rideIndex)
 		return false;
 	}
 
-	if (ride->ratings.excitement == (ride_rating)0xFFFF){
+	if (!ride_has_ratings(ride)) {
 		window_error_open(STR_CANT_SAVE_TRACK_DESIGN, gGameCommandErrorText);
 		return false;
 	}
@@ -211,7 +210,7 @@ static int map_element_get_total_element_count(rct_map_element *mapElement)
 		do {
 			tile++;
 			elementCount++;
-		} while (tile->x_offset != (sint16)0xFFFF);
+		} while (tile->x_offset != (sint16)(uint16)0xFFFF);
 		return elementCount;
 
 	default:
@@ -798,7 +797,8 @@ static bool track_design_save_to_td6_for_maze(uint8 rideIndex, rct_track_td6 *td
 {
 	rct_map_element *mapElement = NULL;
 	bool mapFound = false;
-	sint16 startX, startY;
+	sint16 startX = 0;
+	sint16 startY = 0;
 	for (startY = 0; startY < 8192; startY += 32) {
 		for (startX = 0; startX < 8192; startX += 32) {
 			mapElement = map_get_first_element_at(startX >> 5, startY >> 5);

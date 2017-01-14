@@ -951,7 +951,7 @@ static void window_footpath_set_selection_start_bridge_at_point(int screenX, int
 	gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
 
 	footpath_bridge_get_info_from_pos(screenX, screenY, &x, &y, &direction, &mapElement);
-	if (x == (sint16)0x8000)
+	if (x == MAP_LOCATION_NULL)
 		return;
 
 	gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
@@ -1035,7 +1035,7 @@ static void window_footpath_start_bridge_at_point(int screenX, int screenY)
 	rct_map_element *mapElement;
 
 	footpath_bridge_get_info_from_pos(screenX, screenY, &x, &y, &direction, &mapElement);
-	if (x == (sint16)0x8000)
+	if (x == MAP_LOCATION_NULL)
 		return;
 
 	if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_SURFACE) {

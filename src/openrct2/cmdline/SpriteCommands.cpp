@@ -25,8 +25,6 @@
 extern "C"
 {
     int gSpriteMode = 0;
-
-    int cmdline_for_sprite(const char **argv, int argc);
 }
 
 static const char * _mode;

@@ -821,7 +821,7 @@ static void window_title_editor_scrollpaint_saves(rct_window *w, rct_drawpixelin
 			format_string(buffer, 256, STR_STRING, gCommonFormatArgs);
 		} else {
 			format_string(buffer + 1, 255, STR_STRING, gCommonFormatArgs);
-			buffer[0] = (utf8)FORMAT_BLACK;
+			buffer[0] = (utf8)(uint8)FORMAT_BLACK;
 		}
 		set_format_arg(0, uintptr_t, &buffer);
 		gfx_draw_string_left(dpi, STR_STRING, gCommonFormatArgs, w->colours[1], x + 5, y);

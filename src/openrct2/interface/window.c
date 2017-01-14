@@ -244,9 +244,9 @@ static void window_viewport_wheel_input(rct_window *w, int wheel)
 		return;
 
 	if (wheel < 0)
-		window_zoom_in(w);
+		window_zoom_in(w, true);
 	else if (wheel > 0)
-		window_zoom_out(w);
+		window_zoom_out(w, true);
 }
 
 static bool window_other_wheel_input(rct_window *w, int widgetIndex, int wheel)
@@ -601,8 +601,8 @@ rct_window *window_create_auto_pos(int width, int height, rct_window_event_list 
 		if (w->flags & WF_STICK_TO_BACK)
 			continue;
 
-		int x = w->x + w->width + 2;
-		int y = w->y;
+		x = w->x + w->width + 2;
+		y = w->y;
 		if (sub_6EA934(x, y, width, height)) goto foundSpace;
 
 		x = w->x - w->width - 2;
@@ -639,8 +639,8 @@ rct_window *window_create_auto_pos(int width, int height, rct_window_event_list 
 		if (w->flags & WF_STICK_TO_BACK)
 			continue;
 
-		int x = w->x + w->width + 2;
-		int y = w->y;
+		x = w->x + w->width + 2;
+		y = w->y;
 		if (sub_6EA8EC(x, y, width, height)) goto foundSpace;
 
 		x = w->x - w->width - 2;
@@ -1490,7 +1490,7 @@ void window_viewport_centre_tile_around_cursor(rct_window *w, sint16 map_x, sint
 	w->saved_view_y = dest_y + rebased_y + (offset_y / (1 << w->viewport->zoom));
 }
 
-void window_zoom_set(rct_window *w, int zoomLevel)
+void window_zoom_set(rct_window *w, int zoomLevel, bool atCursor)
 {
 	rct_viewport* v = w->viewport;
 
@@ -1499,8 +1499,11 @@ void window_zoom_set(rct_window *w, int zoomLevel)
 		return;
 
 	// Zooming to cursor? Remember where we're pointing at the moment.
-	sint16 saved_map_x, saved_map_y, offset_x, offset_y;
-	if (gConfigGeneral.zoom_to_cursor) {
+	sint16 saved_map_x = 0;
+	sint16 saved_map_y = 0;
+	sint16 offset_x = 0;
+	sint16 offset_y = 0;
+	if (gConfigGeneral.zoom_to_cursor && atCursor) {
 		window_viewport_get_map_coords_by_cursor(w, &saved_map_x, &saved_map_y, &offset_x, &offset_y);
 	}
 
@@ -1523,7 +1526,7 @@ void window_zoom_set(rct_window *w, int zoomLevel)
 	}
 
 	// Zooming to cursor? Centre around the tile we were hovering over just now.
-	if (gConfigGeneral.zoom_to_cursor) {
+	if (gConfigGeneral.zoom_to_cursor && atCursor) {
 		window_viewport_centre_tile_around_cursor(w, saved_map_x, saved_map_y, offset_x, offset_y);
 	}
 
@@ -1537,18 +1540,30 @@ void window_zoom_set(rct_window *w, int zoomLevel)
  *
  *  rct2: 0x006887A6
  */
-void window_zoom_in(rct_window *w)
+void window_zoom_in(rct_window *w, bool atCursor)
 {
-	window_zoom_set(w, w->viewport->zoom - 1);
+	window_zoom_set(w, w->viewport->zoom - 1, atCursor);
 }
 
 /**
  *
  *  rct2: 0x006887E0
  */
-void window_zoom_out(rct_window *w)
+void window_zoom_out(rct_window *w, bool atCursor)
 {
-	window_zoom_set(w, w->viewport->zoom + 1);
+	window_zoom_set(w, w->viewport->zoom + 1, atCursor);
+}
+
+void main_window_zoom(bool zoomIn, bool atCursor) {
+	if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
+		return;
+	if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gS6Info.editor_step == EDITOR_STEP_LANDSCAPE_EDITOR) {
+		if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)) {
+			rct_window *mainWindow = window_get_main();
+			if (mainWindow != NULL)
+				window_zoom_set(mainWindow, mainWindow->viewport->zoom + (zoomIn ? -1 : 1), atCursor);
+		}
+	}
 }
 
 /**

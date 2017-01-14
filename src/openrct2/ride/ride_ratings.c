@@ -610,8 +610,9 @@ static void ride_ratings_calculate(rct_ride *ride)
 
 static void ride_ratings_calculate_value(rct_ride *ride)
 {
-	if (ride->excitement == (ride_rating)0xFFFF)
+	if (!ride_has_ratings(ride)) {
 		return;
+	}
 
 	int value =
 		(((ride->excitement * RideRatings[ride->type].excitement) * 32) >> 15) +
@@ -753,7 +754,7 @@ static void ride_ratings_apply_adjustments(rct_ride *ride, rating_tuple *ratings
 #ifdef ORIGINAL_RATINGS
 	if (RideData4[ride->type].flags & RIDE_TYPE_FLAG4_HAS_AIR_TIME) {
 		uint16 totalAirTime = ride->total_air_time;
-		if (rideEntry->flags & RIDE_ENTRY_FLAG_11) {
+		if (rideEntry->flags & RIDE_ENTRY_FLAG_LIMIT_AIRTIME_BONUS) {
 			if (totalAirTime >= 96) {
 				totalAirTime -= 96;
 				ratings->excitement -= totalAirTime / 8;
@@ -766,7 +767,7 @@ static void ride_ratings_apply_adjustments(rct_ride *ride, rating_tuple *ratings
 	}
 #else
 	if (RideData4[ride->type].flags & RIDE_TYPE_FLAG4_HAS_AIR_TIME) {
-		if (rideEntry->flags & RIDE_ENTRY_FLAG_11) {
+		if (rideEntry->flags & RIDE_ENTRY_FLAG_LIMIT_AIRTIME_BONUS) {
 			// Limit airtime bonus for heartline twister coaster (see issues #2031 and #2064)
 			ratings->excitement += min(ride->total_air_time, 96) / 8;
 		} else {
