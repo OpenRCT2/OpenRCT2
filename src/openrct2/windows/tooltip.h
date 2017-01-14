@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -21,7 +21,7 @@
 
 void window_tooltip_reset(int x, int y);
 void window_tooltip_show(rct_string_id id, int x, int y);
-void window_tooltip_open(rct_window *widgetWindow, int widgetIndex, int x, int y);
+void window_tooltip_open(rct_window * widgetWindow, int widgetIndex, int x, int y);
 void window_tooltip_close();
 
 #endif

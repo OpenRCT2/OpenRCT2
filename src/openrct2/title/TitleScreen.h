@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -19,19 +19,18 @@
 #include "../drawing/drawing.h"
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
-    extern bool gTitleHideVersionInfo;
-    extern uint16 gTitleCurrentSequence;
+extern bool   gTitleHideVersionInfo;
+extern uint16 gTitleCurrentSequence;
 
-    void title_load();
-    void title_create_windows();
-    void title_update();
-    void DrawOpenRCT2(rct_drawpixelinfo *dpi, int x, int y);
+void title_load();
+void title_create_windows();
+void title_update();
+void DrawOpenRCT2(rct_drawpixelinfo * dpi, int x, int y);
 
-    void * title_get_sequence_player();
-    void title_sequence_change_preset(int preset);
+void * title_get_sequence_player();
+void title_sequence_change_preset(int preset);
 #ifdef __cplusplus
 }
 #endif

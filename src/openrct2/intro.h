@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -19,24 +19,25 @@
 
 #include "drawing/drawing.h"
 
-enum INTRO_STATE {
-	INTRO_STATE_NONE,
-	INTRO_STATE_PUBLISHER_BEGIN,
-	INTRO_STATE_PUBLISHER_SCROLL,
-	INTRO_STATE_DEVELOPER_BEGIN,
-	INTRO_STATE_DEVELOPER_SCROLL,
-	INTRO_STATE_LOGO_FADE_IN,
-	INTRO_STATE_LOGO_WAIT,
-	INTRO_STATE_LOGO_FADE_OUT,
-	INTRO_STATE_DISCLAIMER_1,
-	INTRO_STATE_DISCLAIMER_2,
-	INTRO_STATE_CLEAR				= 254,
-	INTRO_STATE_FINISH				= 255,
+enum INTRO_STATE
+{
+    INTRO_STATE_NONE,
+    INTRO_STATE_PUBLISHER_BEGIN,
+    INTRO_STATE_PUBLISHER_SCROLL,
+    INTRO_STATE_DEVELOPER_BEGIN,
+    INTRO_STATE_DEVELOPER_SCROLL,
+    INTRO_STATE_LOGO_FADE_IN,
+    INTRO_STATE_LOGO_WAIT,
+    INTRO_STATE_LOGO_FADE_OUT,
+    INTRO_STATE_DISCLAIMER_1,
+    INTRO_STATE_DISCLAIMER_2,
+    INTRO_STATE_CLEAR  = 254,
+    INTRO_STATE_FINISH = 255,
 };
 
 extern uint8 gIntroState;
 
 void intro_update();
-void intro_draw(rct_drawpixelinfo *dpi);
+void intro_draw(rct_drawpixelinfo * dpi);
 
 #endif

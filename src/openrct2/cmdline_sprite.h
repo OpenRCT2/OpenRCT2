@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -18,11 +18,10 @@
 #define _CMDLINE_SPRITE_H_
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
-int cmdline_for_sprite(const char **argv, int argc);
+int cmdline_for_sprite(const char ** argv, int argc);
 
 #ifdef __cplusplus
 }

@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -40,14 +40,12 @@ struct AudioFormat
     }
 };
 
-inline bool operator ==(const AudioFormat& lhs, const AudioFormat& rhs)
+inline bool operator==(const AudioFormat & lhs, const AudioFormat & rhs)
 {
-    return lhs.freq == rhs.freq &&
-            lhs.format == rhs.format &&
-            lhs.channels == rhs.channels;
+    return lhs.freq == rhs.freq && lhs.format == rhs.format && lhs.channels == rhs.channels;
 }
 
-inline bool operator !=(const AudioFormat& lhs, const AudioFormat& rhs)
+inline bool operator!=(const AudioFormat & lhs, const AudioFormat & rhs)
 {
     return !(lhs == rhs);
 }

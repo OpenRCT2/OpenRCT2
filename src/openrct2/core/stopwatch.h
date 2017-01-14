@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -23,18 +23,19 @@
 // C wrapper for Stopwatch //
 /////////////////////////////
 
-typedef struct stopwatch_t {
-	void *context;
+typedef struct stopwatch_t
+{
+    void * context;
 } stopwatch_t;
 
-void stopwatch_create(stopwatch_t *stopwatch);
-void stopwatch_dispose(stopwatch_t *stopwatch);
+void stopwatch_create(stopwatch_t * stopwatch);
+void stopwatch_dispose(stopwatch_t * stopwatch);
 
-uint64 stopwatch_GetElapsedTicks(stopwatch_t *stopwatch);
-uint64 stopwatch_GetElapsedMilliseconds(stopwatch_t *stopwatch);
-void stopwatch_Reset(stopwatch_t *stopwatch);
-void stopwatch_Start(stopwatch_t *stopwatch);
-void stopwatch_Restart(stopwatch_t *stopwatch);
-void stopwatch_Stop(stopwatch_t *stopwatch);
+uint64 stopwatch_GetElapsedTicks(stopwatch_t * stopwatch);
+uint64 stopwatch_GetElapsedMilliseconds(stopwatch_t * stopwatch);
+void stopwatch_Reset(stopwatch_t * stopwatch);
+void stopwatch_Start(stopwatch_t * stopwatch);
+void stopwatch_Restart(stopwatch_t * stopwatch);
+void stopwatch_Stop(stopwatch_t * stopwatch);
 
 #endif

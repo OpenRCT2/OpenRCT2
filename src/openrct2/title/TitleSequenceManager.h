@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -32,7 +32,7 @@ struct TitleSequenceManagerItem
 
 namespace TitleSequenceManager
 {
-    size_t GetCount();
+    size_t                           GetCount();
     const TitleSequenceManagerItem * GetItem(size_t i);
     void DeleteItem(size_t i);
     size_t RenameItem(size_t i, const utf8 * name);
@@ -46,18 +46,18 @@ constexpr uint16 PREDEFINED_INDEX_CUSTOM = UINT16_MAX;
 extern "C" {
 #endif
 
-    size_t title_sequence_manager_get_count();
-    const utf8 * title_sequence_manager_get_name(size_t index);
-    const utf8 * title_sequence_manager_get_path(size_t index);
-    const utf8 * title_sequence_manager_get_config_id(size_t index);
-    uint16 title_sequence_manager_get_predefined_index(size_t index);
-    size_t title_sequence_manager_get_index_for_config_id(const utf8 * configId);
-    size_t title_sequence_manager_get_index_for_name(const utf8 * name);
-    void title_sequence_manager_scan();
-    void title_sequence_manager_delete(size_t i);
-    size_t title_sequence_manager_rename(size_t i, const utf8 * name);
-    size_t title_sequence_manager_duplicate(size_t i, const utf8 * name);
-    size_t title_sequence_manager_create(const utf8 * name);
+size_t       title_sequence_manager_get_count();
+const utf8 * title_sequence_manager_get_name(size_t index);
+const utf8 * title_sequence_manager_get_path(size_t index);
+const utf8 * title_sequence_manager_get_config_id(size_t index);
+uint16 title_sequence_manager_get_predefined_index(size_t index);
+size_t title_sequence_manager_get_index_for_config_id(const utf8 * configId);
+size_t title_sequence_manager_get_index_for_name(const utf8 * name);
+void title_sequence_manager_scan();
+void title_sequence_manager_delete(size_t i);
+size_t title_sequence_manager_rename(size_t i, const utf8 * name);
+size_t title_sequence_manager_duplicate(size_t i, const utf8 * name);
+size_t title_sequence_manager_create(const utf8 * name);
 
 #ifdef __cplusplus
 }

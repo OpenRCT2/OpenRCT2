@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -16,12 +16,11 @@
 
 #pragma once
 
-#include <vector>
 #include "../common.h"
+#include <vector>
 
-extern "C"
-{
-    #include "../drawing/drawing.h"
+extern "C" {
+#include "../drawing/drawing.h"
 }
 
 interface IReadObjectContext;
@@ -31,13 +30,19 @@ class ImageTable
 {
 private:
     std::vector<rct_g1_element> _entries;
-    void *                      _data       = nullptr;
-    size_t                      _dataSize   = 0;
+    void *                      _data     = nullptr;
+    size_t                      _dataSize = 0;
 
 public:
     ~ImageTable();
 
-    void                    Read(IReadObjectContext * context, IStream * stream);
-    const rct_g1_element *  GetImages() const { return _entries.data(); }
-    uint32                  GetCount() const { return (uint32)_entries.size(); }
+    void Read(IReadObjectContext * context, IStream * stream);
+    const rct_g1_element * GetImages() const
+    {
+        return _entries.data();
+    }
+    uint32 GetCount() const
+    {
+        return (uint32)_entries.size();
+    }
 };

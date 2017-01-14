@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -19,11 +19,11 @@
 #include "addresses.h"
 
 #if defined(__GNUC__)
-	#ifdef __clang__
-		#define DISABLE_OPT __attribute__((noinline,optnone))
-	#else
-		#define DISABLE_OPT __attribute__((noinline,optimize("O0")))
-	#endif // __clang__
+#ifdef __clang__
+#define DISABLE_OPT __attribute__((noinline, optnone))
+#else
+#define DISABLE_OPT __attribute__((noinline, optimize("O0")))
+#endif // __clang__
 #else
 #define DISABLE_OPT
 #endif // defined(__GNUC__)
@@ -34,11 +34,11 @@ volatile int _originalAddress = 0;
 
 int DISABLE_OPT RCT2_CALLPROC_X(int address, int _eax, int _ebx, int _ecx, int _edx, int _esi, int _edi, int _ebp)
 {
-	int result = 0;
-	_originalAddress = address;
+    int result       = 0;
+    _originalAddress = address;
 #if defined(PLATFORM_X86) && !defined(NO_RCT2)
-	#ifdef _MSC_VER
-	__asm {
+#ifdef _MSC_VER
+    __asm {
 		push ebp
 		push address
 		mov eax, _eax
@@ -52,11 +52,11 @@ int DISABLE_OPT RCT2_CALLPROC_X(int address, int _eax, int _ebx, int _ecx, int _
 		lahf
 		pop ebp
 		pop ebp
-		/* Load result with flags */
+        /* Load result with flags */
 		mov result, eax
-	}
-	#else
-	__asm__ volatile ( "\
+    }
+#else
+    __asm__ volatile("\
 		\n\
 		push %%ebx \n\
 		push %%ebp \n\
@@ -75,31 +75,32 @@ int DISABLE_OPT RCT2_CALLPROC_X(int address, int _eax, int _ebx, int _ecx, int _
 		pop %%ebx \n\
 		/* Load result with flags */ \n\
 		mov %%eax, %[result] \n\
-		" : [address] "+m" (address), [eax] "+m" (_eax), [ebx] "+m" (_ebx), [ecx] "+m" (_ecx), [edx] "+m" (_edx), [esi] "+m" (_esi), [edi] "+m" (_edi), [ebp] "+m" (_ebp), [result] "+m" (result)
-		:
-		: "eax","ecx","edx","esi","edi","memory"
-	);
-	#endif
+		"
+                     : [address] "+m"(address), [eax] "+m"(_eax), [ebx] "+m"(_ebx), [ecx] "+m"(_ecx), [edx] "+m"(_edx),
+                       [esi] "+m"(_esi), [edi] "+m"(_edi), [ebp] "+m"(_ebp), [result] "+m"(result)
+                     :
+                     : "eax", "ecx", "edx", "esi", "edi", "memory");
+#endif
 #endif // PLATFORM_X86
-	_originalAddress = 0;
-	// lahf only modifies ah, zero out the rest
-	return result & 0xFF00;
+    _originalAddress = 0;
+    // lahf only modifies ah, zero out the rest
+    return result & 0xFF00;
 }
 
-int DISABLE_OPT RCT2_CALLFUNC_X(int address, int *_eax, int *_ebx, int *_ecx, int *_edx, int *_esi, int *_edi, int *_ebp)
+int DISABLE_OPT RCT2_CALLFUNC_X(int address, int * _eax, int * _ebx, int * _ecx, int * _edx, int * _esi, int * _edi, int * _ebp)
 {
-	int result = 0;
-	_originalAddress = address;
+    int result       = 0;
+    _originalAddress = address;
 #if defined(PLATFORM_X86) && !defined(NO_RCT2)
-	#ifdef _MSC_VER
-	__asm {
-		// Store C's base pointer
+#ifdef _MSC_VER
+    __asm {
+        // Store C's base pointer
 		push ebp
 		push ebx
-		// Store address to call
+        // Store address to call
 		push address
 
-		// Set all registers to the input values
+        // Set all registers to the input values
 		mov eax, [_eax]
 		mov eax, [eax]
 		mov ebx, [_ebx]
@@ -115,17 +116,17 @@ int DISABLE_OPT RCT2_CALLFUNC_X(int address, int *_eax, int *_ebx, int *_ecx, in
 		mov ebp, [_ebp]
 		mov ebp, [ebp]
 
-		// Call function
+        // Call function
 		call [esp]
 
-		// Store output eax
+        // Store output eax
 		push eax
 		push ebp
 		push ebx
 		mov ebp, [esp + 20]
 		mov ebx, [esp + 16]
 
-		// Get resulting ecx, edx, esi, edi registers
+        // Get resulting ecx, edx, esi, edi registers
 
 		mov eax, [_edi]
 		mov [eax], edi
@@ -136,33 +137,33 @@ int DISABLE_OPT RCT2_CALLFUNC_X(int address, int *_eax, int *_ebx, int *_ecx, in
 		mov eax, [_ecx]
 		mov [eax], ecx
 
-		// Pop ebx reg into ecx
+        // Pop ebx reg into ecx
 		pop ecx
 		mov eax, [_ebx]
 		mov[eax], ecx
 
-		// Pop ebp reg into ecx
+        // Pop ebp reg into ecx
 		pop ecx
 		mov eax, [_ebp]
 		mov[eax], ecx
 
 		pop eax
-		// Get resulting eax register
+        // Get resulting eax register
 		mov ecx, [_eax]
 		mov [ecx], eax
 
-		// Save flags as return in eax
+        // Save flags as return in eax
 		lahf
-		// Pop address
+        // Pop address
 		pop ebp
 
 		pop ebx
 		pop ebp
-		/* Load result with flags */
+        /* Load result with flags */
 		mov result, eax
-	}
-	#else
-	__asm__ volatile ( "\
+    }
+#else
+    __asm__ volatile("\
 		\n\
 		/* Store C's base pointer*/     \n\
 		push %%ebp        \n\
@@ -229,16 +230,17 @@ int DISABLE_OPT RCT2_CALLFUNC_X(int address, int *_eax, int *_ebx, int *_ecx, in
 		pop %%ebp \n\
 		/* Load result with flags */ \n\
 		mov %%eax, %[result] \n\
-		" : [address] "+m" (address), [_eax] "+m" (_eax), [_ebx] "+m" (_ebx), [_ecx] "+m" (_ecx), [_edx] "+m" (_edx), [_esi] "+m" (_esi), [_edi] "+m" (_edi), [_ebp] "+m" (_ebp), [result] "+m" (result)
+		"
+                     : [address] "+m"(address), [_eax] "+m"(_eax), [_ebx] "+m"(_ebx), [_ecx] "+m"(_ecx), [_edx] "+m"(_edx),
+                       [_esi] "+m"(_esi), [_edi] "+m"(_edi), [_ebp] "+m"(_ebp), [result] "+m"(result)
 
-		:
-		: "eax","ecx","edx","esi","edi","memory"
-	);
-	#endif
+                     :
+                     : "eax", "ecx", "edx", "esi", "edi", "memory");
+#endif
 #endif // PLATFORM_X86
-	_originalAddress = 0;
-	// lahf only modifies ah, zero out the rest
-	return result & 0xFF00;
+    _originalAddress = 0;
+    // lahf only modifies ah, zero out the rest
+    return result & 0xFF00;
 }
 
 #endif // NO_RCT2

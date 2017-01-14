@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -24,16 +24,16 @@ typedef struct TitleCommand
 {
     uint8 Type;
     union {
-        uint8 SaveIndex;    // LOAD (this index is internal only)
-        struct              // LOCATION
+        uint8 SaveIndex; // LOAD (this index is internal only)
+        struct           // LOCATION
         {
             uint8 X;
             uint8 Y;
         };
-        uint8 Rotations;    // ROTATE (counter-clockwise)
-        uint8 Zoom;         // ZOOM
-        uint8 Speed;        // SPEED
-        uint8 Seconds;      // WAIT
+        uint8 Rotations; // ROTATE (counter-clockwise)
+        uint8 Zoom;      // ZOOM
+        uint8 Speed;     // SPEED
+        uint8 Seconds;   // WAIT
     };
 } TitleCommand;
 
@@ -45,24 +45,24 @@ typedef struct TitleSequence
     size_t         NumCommands;
     TitleCommand * Commands;
 
-    size_t   NumSaves;
-    utf8 * * Saves;
+    size_t  NumSaves;
+    utf8 ** Saves;
 
     bool IsZip;
 } TitleSequence;
 
 typedef struct TitleSequenceParkHandle
 {
-    size_t DataSize;
-    void * Data;
+    size_t             DataSize;
+    void *             Data;
     struct SDL_RWops * RWOps;
-    bool IsScenario;
+    bool               IsScenario;
 } TitleSequenceParkHandle;
 
 enum TITLE_SCRIPT
 {
     TITLE_SCRIPT_UNDEFINED = 0xFF,
-    TITLE_SCRIPT_WAIT = 0,
+    TITLE_SCRIPT_WAIT      = 0,
     TITLE_SCRIPT_LOADMM,
     TITLE_SCRIPT_LOCATION,
     TITLE_SCRIPT_ROTATE,
@@ -77,28 +77,27 @@ enum TITLE_SCRIPT
 };
 
 #ifdef __cplusplus
-    constexpr const utf8 *  TITLE_SEQUENCE_EXTENSION = ".parkseq";
-    constexpr uint8         SAVE_INDEX_INVALID = UINT8_MAX;
+constexpr const utf8 * TITLE_SEQUENCE_EXTENSION = ".parkseq";
+constexpr uint8        SAVE_INDEX_INVALID       = UINT8_MAX;
 #else
-    #define                 SAVE_INDEX_INVALID   UINT8_MAX
+#define SAVE_INDEX_INVALID UINT8_MAX
 #endif
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
-    TitleSequence * CreateTitleSequence();
-    TitleSequence * LoadTitleSequence(const utf8 * path);
-    void FreeTitleSequence(TitleSequence * seq);
+TitleSequence * CreateTitleSequence();
+TitleSequence * LoadTitleSequence(const utf8 * path);
+void FreeTitleSequence(TitleSequence * seq);
 
-    TitleSequenceParkHandle * TitleSequenceGetParkHandle(TitleSequence * seq, size_t index);
-    void TitleSequenceCloseParkHandle(TitleSequenceParkHandle * handle);
-    bool TileSequenceSave(TitleSequence * seq);
-    bool TileSequenceAddPark(TitleSequence * seq, const utf8 * path, const utf8 * name);
-    bool TileSequenceRenamePark(TitleSequence * seq, size_t index, const utf8 * name);
-    bool TitleSequenceRemovePark(TitleSequence * seq, size_t index);
+TitleSequenceParkHandle * TitleSequenceGetParkHandle(TitleSequence * seq, size_t index);
+void TitleSequenceCloseParkHandle(TitleSequenceParkHandle * handle);
+bool TileSequenceSave(TitleSequence * seq);
+bool TileSequenceAddPark(TitleSequence * seq, const utf8 * path, const utf8 * name);
+bool TileSequenceRenamePark(TitleSequence * seq, size_t index, const utf8 * name);
+bool TitleSequenceRemovePark(TitleSequence * seq, size_t index);
 
-    bool TitleSequenceIsLoadCommand(const TitleCommand * command);
+bool TitleSequenceIsLoadCommand(const TitleCommand * command);
 #ifdef __cplusplus
 }
 #endif

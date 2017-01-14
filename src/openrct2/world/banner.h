@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -24,29 +24,31 @@
 #define MAX_BANNERS 250
 
 #pragma pack(push, 1)
-typedef struct rct_banner {
-	uint8 type;
-	uint8 flags; //0x01 bit 0 is no entry
-	rct_string_id string_idx; //0x02
-	uint8 colour; //0x04
-	uint8 text_colour; //0x05
-	uint8 x; //0x06
-	uint8 y; //0x07
+typedef struct rct_banner
+{
+    uint8         type;
+    uint8         flags;       // 0x01 bit 0 is no entry
+    rct_string_id string_idx;  // 0x02
+    uint8         colour;      // 0x04
+    uint8         text_colour; // 0x05
+    uint8         x;           // 0x06
+    uint8         y;           // 0x07
 } rct_banner;
 assert_struct_size(rct_banner, 8);
 #pragma pack(pop)
 
-enum{
-	BANNER_FLAG_NO_ENTRY = (1 << 0),
-	BANNER_FLAG_1 = (1 << 1),
-	BANNER_FLAG_2 = (1 << 2)
+enum
+{
+    BANNER_FLAG_NO_ENTRY = (1 << 0),
+    BANNER_FLAG_1        = (1 << 1),
+    BANNER_FLAG_2        = (1 << 2)
 };
 
 extern rct_banner gBanners[MAX_BANNERS];
 
 void banner_init();
 int create_new_banner(uint8 flags);
-rct_map_element *banner_get_map_element(int bannerIndex);
+rct_map_element * banner_get_map_element(int bannerIndex);
 int banner_get_closest_ride_index(int x, int y, int z);
 void fix_banner_count();
 void game_command_callback_place_banner(int eax, int ebx, int ecx, int edx, int esi, int edi, int ebp);

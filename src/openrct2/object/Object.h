@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -20,28 +20,29 @@
 #include "ImageTable.h"
 #include "StringTable.h"
 
-extern "C"
-{
-    #include "../object.h"
+extern "C" {
+#include "../object.h"
 }
 
 enum OBJ_STRING_ID
 {
     OBJ_STRING_ID_NAME,
     OBJ_STRING_ID_DESCRIPTION,
-    OBJ_STRING_ID_SCENARIO_NAME = 0,
-    OBJ_STRING_ID_PARK_NAME = 1,
+    OBJ_STRING_ID_SCENARIO_NAME    = 0,
+    OBJ_STRING_ID_PARK_NAME        = 1,
     OBJ_STRING_ID_SCENARIO_DETAILS = 2,
-    OBJ_STRING_ID_CAPACITY = 2,
+    OBJ_STRING_ID_CAPACITY         = 2,
 };
 
 interface IStream;
-struct    ObjectRepositoryItem;
-struct    rct_drawpixelinfo;
+struct ObjectRepositoryItem;
+struct rct_drawpixelinfo;
 
 interface IReadObjectContext
 {
-    virtual ~IReadObjectContext() { }
+    virtual ~IReadObjectContext()
+    {
+    }
 
     virtual void LogWarning(uint32 code, const utf8 * text) abstract;
     virtual void LogError(uint32 code, const utf8 * text) abstract;
@@ -50,38 +51,60 @@ interface IReadObjectContext
 class Object
 {
 private:
-    char *              _identifier;
-    rct_object_entry    _objectEntry;
-    StringTable         _stringTable;
-    ImageTable          _imageTable;
+    char *           _identifier;
+    rct_object_entry _objectEntry;
+    StringTable      _stringTable;
+    ImageTable       _imageTable;
 
 protected:
-    StringTable *       GetStringTable() { return &_stringTable; }
-    const StringTable * GetStringTable() const { return &_stringTable; }
-    ImageTable  *       GetImageTable() { return &_imageTable; }
+    StringTable * GetStringTable()
+    {
+        return &_stringTable;
+    }
+    const StringTable * GetStringTable() const
+    {
+        return &_stringTable;
+    }
+    ImageTable * GetImageTable()
+    {
+        return &_imageTable;
+    }
 
-    const utf8 *        GetOverrideString(uint8 index) const;
-    const utf8 *        GetString(uint8 index) const;
+    const utf8 * GetOverrideString(uint8 index) const;
+    const utf8 * GetString(uint8 index) const;
 
 public:
-    explicit Object(const rct_object_entry &entry);
+    explicit Object(const rct_object_entry & entry);
     virtual ~Object();
 
     // Legacy data structures
-    const char *                GetIdentifier() const { return _identifier; }
-    const rct_object_entry *    GetObjectEntry() const { return &_objectEntry; }
-    virtual void *              GetLegacyData() abstract;
+    const char * GetIdentifier() const
+    {
+        return _identifier;
+    }
+    const rct_object_entry * GetObjectEntry() const
+    {
+        return &_objectEntry;
+    }
+    virtual void * GetLegacyData() abstract;
 
     virtual void ReadLegacy(IReadObjectContext * context, IStream * stream) abstract;
     virtual void Load() abstract;
     virtual void Unload() abstract;
 
-    virtual void DrawPreview(rct_drawpixelinfo * dpi, sint32 width, sint32 height) const { }
+    virtual void DrawPreview(rct_drawpixelinfo * dpi, sint32 width, sint32 height) const
+    {
+    }
 
-    virtual uint8           GetObjectType() const final { return _objectEntry.flags & 0x0F; }
-    virtual const utf8 *    GetName() const;
+    virtual uint8 GetObjectType() const final
+    {
+        return _objectEntry.flags & 0x0F;
+    }
+    virtual const utf8 * GetName() const;
 
-    virtual void SetRepositoryItem(ObjectRepositoryItem * item) const { }
+    virtual void SetRepositoryItem(ObjectRepositoryItem * item) const
+    {
+    }
 };
 
 enum OBJECT_ERROR : uint32
