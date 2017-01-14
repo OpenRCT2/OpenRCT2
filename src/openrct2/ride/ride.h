@@ -183,8 +183,9 @@ typedef struct rct_ride {
 		uint8 speed;				// 0x0D0
 		uint8 rotations;			// 0x0D0
 	};
+	
 	uint8 boat_hire_return_direction;	// 0x0D1
-	uint16 boat_hire_return_position;	// 0x0D2
+	rct_xy8 boat_hire_return_position;	// 0x0D2
 	uint8 measurement_index;		// 0x0D4
     // bits 0 through 4 are the number of helix sections
     // bit 5: spinning tunnel, water splash, or rapids
