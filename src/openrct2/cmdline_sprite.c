@@ -598,7 +598,7 @@ sint32 cmdline_for_sprite(const char **argv, sint32 argc)
 		return 1;
 	} else if (_strcmpi(argv[0], "append") == 0) {
 		if (argc != 3 && argc != 5) {
-			fprintf(stderr, "usage: sprite append <spritefile> <input> [x_offset y_offset]\n");
+			fprintf(stderr, "usage: sprite append <spritefile> <input> [<x offset> <y offset>]\n");
 			return -1;
 		}
 
