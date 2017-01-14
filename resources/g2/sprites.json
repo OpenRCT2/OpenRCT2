@@ -1,90 +1,90 @@
 [
     {
-        "path": "0.png"
+        "path": "logo.png"
     },
     {
-        "path": "1.png"
+        "path": "logo_text.png"
     },
     {
-        "path": "2.png"
+        "path": "icons/fast_forward.png"
     },
     {
-        "path": "3.png"
+        "path": "icons/game_speed_indicator.png"
     },
     {
-        "path": "4.png"
+        "path": "icons/game_speed_indicator_double.png"
     },
     {
-        "path": "5.png"
+        "path": "icons/twitch.png"
     },
     {
-        "path": "6.png"
+        "path": "icons/map_gen_land.png"
     },
     {
         "path": "7.png"
     },
     {
-        "path": "8.png"
+        "path": "icons/zoom_in.png"
     },
     {
-        "path": "9.png"
+        "path": "icons/zoom_in_background.png"
     },
     {
-        "path": "10.png"
+        "path": "icons/zoom_out.png"
     },
     {
-        "path": "11.png"
+        "path": "icons/zoom_out_background.png"
     },
     {
-        "path": "12.png"
+        "path": "icons/map_gen_trees.png"
     },
     {
-        "path": "13.png"
+        "path": "icons/map_gen_noise.png"
     },
     {
-        "path": "14.png"
+        "path": "icons/large_scenery.png"
     },
     {
-        "path": "15.png"
+        "path": "icons/small_scenery.png"
     },
     {
-        "path": "16.png"
+        "path": "icons/paths.png"
     },
     {
-        "path": "17.png"
+        "path": "icons/rct1_close_off.png"
     },
     {
-        "path": "18.png"
+        "path": "icons/rct1_close_off_pressed.png"
     },
     {
-        "path": "19.png"
+        "path": "icons/rct1_close_on.png"
     },
     {
-        "path": "20.png"
+        "path": "icons/rct1_close_off_pressed.png"
     },
     {
-        "path": "21.png"
+        "path": "icons/rct1_test_off.png"
     },
     {
-        "path": "22.png"
+        "path": "icons/rct1_test_off_pressed.png"
     },
     {
-        "path": "23.png"
+        "path": "icons/rct1_test_on.png"
     },
     {
-        "path": "24.png"
+        "path": "icons/rct1_test_on_pressed.png"
     },
     {
-        "path": "25.png"
+        "path": "icons/rct1_open_off.png"
     },
     {
-        "path": "26.png"
+        "path": "icons/rct1_open_off_pressed.png"
     },
     {
-        "path": "27.png"
+        "path": "icons/rct1_open_on.png"
     },
     {
-        "path": "28.png"
+        "path": "icons/rct1_open_on_pressed.png"
     },
     {
         "path": "29.png"
@@ -99,144 +99,141 @@
         "path": "32.png"
     },
     {
-        "path": "33.png"
+        "path": "icons/cheats.png"
     },
     {
-        "path": "34.png"
+        "path": "track/junior/flat_to_steep_1.png"
     },
     {
-        "path": "35.png"
+        "path": "track/junior/flat_to_steep_2_1.png"
     },
     {
-        "path": "36.png"
+        "path": "track/junior/flat_to_steep_3_1.png"
     },
     {
-        "path": "37.png"
+        "path": "track/junior/flat_to_steep_4.png"
     },
     {
-        "path": "38.png"
+        "path": "track/junior/flat_to_steep_2_2.png"
     },
     {
-        "path": "39.png"
+        "path": "track/junior/flat_to_steep_3_2.png"
     },
     {
-        "path": "40.png"
+        "path": "track/junior/steep_to_flat_1.png"
     },
     {
-        "path": "41.png"
+        "path": "track/junior/steep_to_flat_2_1.png"
     },
     {
-        "path": "42.png"
+        "path": "track/junior/steep_to_flat_3_1.png"
     },
     {
-        "path": "43.png"
+        "path": "track/junior/steep_to_flat_4.png"
     },
     {
-        "path": "44.png"
+        "path": "track/junior/steep_to_flat_2_2.png"
     },
     {
-        "path": "45.png"
+        "path": "track/junior/steep_to_flat_3_2.png"
     },
     {
-        "path": "46.png"
+        "path": "track/junior/flat_to_steep_lift_1.png"
     },
     {
-        "path": "47.png"
+        "path": "track/junior/flat_to_steep_lift_2_1.png"
     },
     {
-        "path": "48.png"
+        "path": "track/junior/flat_to_steep_lift_3_1.png"
     },
     {
-        "path": "49.png"
+        "path": "track/junior/flat_to_steep_lift_4.png"
     },
     {
-        "path": "50.png"
+        "path": "track/junior/flat_to_steep_lift_2_2.png"
     },
     {
-        "path": "51.png"
+        "path": "track/junior/flat_to_steep_lift_3_2.png"
     },
     {
-        "path": "52.png"
+        "path": "track/junior/steep_to_flat_lift_1.png"
     },
     {
-        "path": "53.png"
+        "path": "track/junior/steep_to_flat_lift_2_1.png"
     },
     {
-        "path": "54.png"
+        "path": "track/junior/steep_to_flat_lift_3_1.png"
     },
     {
-        "path": "55.png"
+        "path": "track/junior/steep_to_flat_lift_4.png"
     },
     {
-        "path": "56.png"
+        "path": "track/junior/steep_to_flat_lift_2_2.png"
     },
     {
-        "path": "57.png"
+        "path": "track/junior/steep_to_flat_lift_3_2.png"
     },
     {
-        "path": "58.png"
+        "path": "icons/server_password.png"
     },
     {
-        "path": "59.png"
+        "path": "icons/multiplayer.png"
     },
     {
-        "path": "60.png"
+        "path": "track/junior/flat_to_steep_diagonal_1.png"
     },
     {
-        "path": "61.png"
+        "path": "track/junior/flat_to_steep_diagonal_2.png"
     },
     {
-        "path": "62.png"
+        "path": "track/junior/flat_to_steep_diagonal_3.png"
     },
     {
-        "path": "63.png"
+        "path": "track/junior/flat_to_steep_diagonal_4.png"
     },
     {
-        "path": "64.png"
+        "path": "track/junior/steep_to_flat_diagonal_1.png"
     },
     {
-        "path": "65.png"
+        "path": "track/junior/steep_to_flat_diagonal_2.png"
     },
     {
-        "path": "66.png"
+        "path": "track/junior/steep_to_flat_diagonal_3.png"
     },
     {
-        "path": "67.png"
+        "path": "track/junior/steep_to_flat_diagonal_4.png"
     },
     {
-        "path": "68.png"
+        "path": "track/junior/flat_to_steep_diagonal_lift_1.png"
     },
     {
-        "path": "69.png"
+        "path": "track/junior/flat_to_steep_diagonal_lift_2.png"
     },
     {
-        "path": "70.png"
+        "path": "track/junior/flat_to_steep_diagonal_lift_3.png"
     },
     {
-        "path": "71.png"
+        "path": "track/junior/flat_to_steep_diagonal_lift_4.png"
     },
     {
-        "path": "72.png"
+        "path": "track/junior/steep_to_flat_diagonal_lift_1.png"
     },
     {
-        "path": "73.png"
+        "path": "track/junior/steep_to_flat_diagonal_lift_2.png"
     },
     {
-        "path": "74.png"
+        "path": "track/junior/steep_to_flat_diagonal_lift_3.png"
     },
     {
-        "path": "75.png"
+        "path": "track/junior/steep_to_flat_diagonal_lift_4.png"
     },
     {
-        "path": "76.png"
+        "path": "icons/sort.png"
     },
     {
-        "path": "77.png"
+        "path": "icons/copy.png"
     },
     {
-        "path": "78.png"
-    },
-    {
-        "path": "79.png"
+        "path": "icons/paste.png"
     }
 ]
