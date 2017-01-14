@@ -1,4 +1,4 @@
-﻿#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+﻿#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -14,7 +14,6 @@
  *****************************************************************************/
 #pragma endregion
 
-#include <stack>
 #include "../core/Console.hpp"
 #include "../core/Memory.hpp"
 #include "../core/Path.hpp"
@@ -23,28 +22,33 @@
 #include "../interface/Fonts.h"
 #include "../object/ObjectManager.h"
 #include "LanguagePack.h"
+#include <stack>
 
 extern "C" {
 
 #include "localisation.h"
 
-int gCurrentLanguage = LANGUAGE_UNDEFINED;
+int  gCurrentLanguage = LANGUAGE_UNDEFINED;
 bool gUseTrueTypeFont = false;
 
 static ILanguagePack * _languageFallback = nullptr;
-static ILanguagePack * _languageCurrent = nullptr;
+static ILanguagePack * _languageCurrent  = nullptr;
 
-const utf8 BlackUpArrowString[] =       { (utf8)(uint8)0xC2, (utf8)(uint8)0x8E, (utf8)(uint8)0xE2, (utf8)(uint8)0x96, (utf8)(uint8)0xB2, (utf8)(uint8)0x00 };
-const utf8 BlackDownArrowString[] =     { (utf8)(uint8)0xC2, (utf8)(uint8)0x8E, (utf8)(uint8)0xE2, (utf8)(uint8)0x96, (utf8)(uint8)0xBC, (utf8)(uint8)0x00 };
-const utf8 BlackLeftArrowString[] =     { (utf8)(uint8)0xC2, (utf8)(uint8)0x8E, (utf8)(uint8)0xE2, (utf8)(uint8)0x97, (utf8)(uint8)0x80, (utf8)(uint8)0x00 };
-const utf8 BlackRightArrowString[] =    { (utf8)(uint8)0xC2, (utf8)(uint8)0x8E, (utf8)(uint8)0xE2, (utf8)(uint8)0x96, (utf8)(uint8)0xB6, (utf8)(uint8)0x00 };
-const utf8 CheckBoxMarkString[] =       { (utf8)(uint8)0xE2, (utf8)(uint8)0x9C, (utf8)(uint8)0x93, (utf8)(uint8)0x00 };
+const utf8 BlackUpArrowString[] = { (utf8)(uint8)0xC2, (utf8)(uint8)0x8E, (utf8)(uint8)0xE2,
+                                    (utf8)(uint8)0x96, (utf8)(uint8)0xB2, (utf8)(uint8)0x00 };
+const utf8 BlackDownArrowString[] = { (utf8)(uint8)0xC2, (utf8)(uint8)0x8E, (utf8)(uint8)0xE2,
+                                      (utf8)(uint8)0x96, (utf8)(uint8)0xBC, (utf8)(uint8)0x00 };
+const utf8 BlackLeftArrowString[] = { (utf8)(uint8)0xC2, (utf8)(uint8)0x8E, (utf8)(uint8)0xE2,
+                                      (utf8)(uint8)0x97, (utf8)(uint8)0x80, (utf8)(uint8)0x00 };
+const utf8 BlackRightArrowString[] = { (utf8)(uint8)0xC2, (utf8)(uint8)0x8E, (utf8)(uint8)0xE2,
+                                       (utf8)(uint8)0x96, (utf8)(uint8)0xB6, (utf8)(uint8)0x00 };
+const utf8 CheckBoxMarkString[] = { (utf8)(uint8)0xE2, (utf8)(uint8)0x9C, (utf8)(uint8)0x93, (utf8)(uint8)0x00 };
 
 void utf8_remove_format_codes(utf8 * text, bool allowcolours)
 {
-    const utf8 * ch = text;
-    utf8 * dstCh = text;
-    int codepoint;
+    const utf8 * ch    = text;
+    utf8 *       dstCh = text;
+    int          codepoint;
     while ((codepoint = String::GetNextCodepoint(ch, &ch)) != 0)
     {
         if (!utf8_is_format_code(codepoint) || (allowcolours && utf8_is_colour_code(codepoint)))
@@ -125,12 +129,13 @@ void language_close_all()
     gCurrentLanguage = LANGUAGE_UNDEFINED;
 }
 
-constexpr rct_string_id NONSTEX_BASE_STRING_ID = 3463;
+constexpr rct_string_id NONSTEX_BASE_STRING_ID    = 3463;
 constexpr uint16        MAX_OBJECT_CACHED_STRINGS = 2048;
 
 static wchar_t convert_specific_language_character_to_unicode(int languageId, wchar_t codepoint)
 {
-    switch (languageId) {
+    switch (languageId)
+    {
     case RCT2_LANGUAGE_ID_KOREAN:
         return codepoint;
     case RCT2_LANGUAGE_ID_CHINESE_TRADITIONAL:
@@ -157,7 +162,7 @@ static utf8 * convert_multibyte_charset(const char * src, size_t srcMaxSize, int
                 uint8 a = *ch++;
                 if (a != '\0')
                 {
-                    uint8 b = *ch++;
+                    uint8   b           = *ch++;
                     wchar_t codepoint16 = (wchar_t)((a << 8) | b);
 
                     codepoint16 = convert_specific_language_character_to_unicode(languageId, codepoint16);
@@ -176,7 +181,8 @@ static utf8 * convert_multibyte_charset(const char * src, size_t srcMaxSize, int
 
 static bool rct2_language_is_multibyte_charset(int languageId)
 {
-    switch (languageId) {
+    switch (languageId)
+    {
     case RCT2_LANGUAGE_ID_KOREAN:
     case RCT2_LANGUAGE_ID_CHINESE_TRADITIONAL:
     case RCT2_LANGUAGE_ID_CHINESE_SIMPLIFIED:
@@ -187,7 +193,7 @@ static bool rct2_language_is_multibyte_charset(int languageId)
     }
 }
 
-utf8 *rct2_language_string_to_utf8(const char *src, size_t srcSize, int languageId)
+utf8 * rct2_language_string_to_utf8(const char * src, size_t srcSize, int languageId)
 {
     if (rct2_language_is_multibyte_charset(languageId))
     {
@@ -199,26 +205,24 @@ utf8 *rct2_language_string_to_utf8(const char *src, size_t srcSize, int language
     }
 }
 
-bool language_get_localised_scenario_strings(const utf8 *scenarioFilename, rct_string_id *outStringIds)
+bool language_get_localised_scenario_strings(const utf8 * scenarioFilename, rct_string_id * outStringIds)
 {
     outStringIds[0] = _languageCurrent->GetScenarioOverrideStringId(scenarioFilename, 0);
     outStringIds[1] = _languageCurrent->GetScenarioOverrideStringId(scenarioFilename, 1);
     outStringIds[2] = _languageCurrent->GetScenarioOverrideStringId(scenarioFilename, 2);
-    return
-        outStringIds[0] != STR_NONE ||
-        outStringIds[1] != STR_NONE ||
-        outStringIds[2] != STR_NONE;
+    return outStringIds[0] != STR_NONE || outStringIds[1] != STR_NONE || outStringIds[2] != STR_NONE;
 }
 
-static bool                         _availableObjectStringIdsInitialised = false;
-static std::stack<rct_string_id>    _availableObjectStringIds;
+static bool                      _availableObjectStringIdsInitialised = false;
+static std::stack<rct_string_id> _availableObjectStringIds;
 
 rct_string_id language_allocate_object_string(const utf8 * target)
 {
     if (!_availableObjectStringIdsInitialised)
     {
         _availableObjectStringIdsInitialised = true;
-        for (rct_string_id stringId = NONSTEX_BASE_STRING_ID + MAX_OBJECT_CACHED_STRINGS; stringId >= NONSTEX_BASE_STRING_ID; stringId--)
+        for (rct_string_id stringId = NONSTEX_BASE_STRING_ID + MAX_OBJECT_CACHED_STRINGS; stringId >= NONSTEX_BASE_STRING_ID;
+             stringId--)
         {
             _availableObjectStringIds.push(stringId);
         }
@@ -250,5 +254,4 @@ rct_string_id language_get_object_override_string_id(const char * identifier, ui
     }
     return _languageCurrent->GetObjectOverrideStringId(identifier, index);
 }
-
 }

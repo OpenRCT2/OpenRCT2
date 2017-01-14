@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -14,16 +14,15 @@
  *****************************************************************************/
 #pragma endregion
 
+#include "Object.h"
 #include "../core/Memory.hpp"
 #include "../core/String.hpp"
-#include "Object.h"
 
-extern "C"
-{
-    #include "../localisation/localisation.h"
+extern "C" {
+#include "../localisation/localisation.h"
 }
 
-Object::Object(const rct_object_entry &entry)
+Object::Object(const rct_object_entry & entry)
 {
     _objectEntry = entry;
 
@@ -39,8 +38,8 @@ Object::~Object()
 
 const utf8 * Object::GetOverrideString(uint8 index) const
 {
-    const char * identifier = GetIdentifier();
-    rct_string_id stringId = language_get_object_override_string_id(identifier, index);
+    const char *  identifier = GetIdentifier();
+    rct_string_id stringId   = language_get_object_override_string_id(identifier, index);
 
     const utf8 * result = nullptr;
     if (stringId != STR_NONE)

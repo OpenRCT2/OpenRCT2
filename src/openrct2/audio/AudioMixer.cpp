@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -14,23 +14,22 @@
  *****************************************************************************/
 #pragma endregion
 
-#include <list>
+#include "AudioMixer.h"
 #include "../core/Guard.hpp"
 #include "../core/Math.hpp"
 #include "../core/Memory.hpp"
 #include "../core/Util.hpp"
 #include "AudioChannel.h"
-#include "AudioMixer.h"
 #include "AudioSource.h"
+#include <list>
 
-extern "C"
-{
-    #include "../config.h"
-    #include "../localisation/localisation.h"
-    #include "../OpenRCT2.h"
-    #include "../platform/platform.h"
-    #include "../rct2.h"
-    #include "audio.h"
+extern "C" {
+#include "../OpenRCT2.h"
+#include "../config.h"
+#include "../localisation/localisation.h"
+#include "../platform/platform.h"
+#include "../rct2.h"
+#include "audio.h"
 }
 
 IAudioMixer * gMixer;
@@ -38,13 +37,22 @@ IAudioMixer * gMixer;
 struct Buffer
 {
 private:
-    void * _data = nullptr;
+    void * _data     = nullptr;
     size_t _capacity = 0;
 
 public:
-    void * GetData() const { return _data; }
-    void * GetData() { return _data; }
-    size_t GetCapacity() const { return _capacity; }
+    void * GetData() const
+    {
+        return _data;
+    }
+    void * GetData()
+    {
+        return _data;
+    }
+    size_t GetCapacity() const
+    {
+        return _capacity;
+    }
 
     ~Buffer()
     {
@@ -54,7 +62,7 @@ public:
     void Free()
     {
         Memory::Free(_data);
-        _data = nullptr;
+        _data     = nullptr;
         _capacity = 0;
     }
 
@@ -63,7 +71,7 @@ public:
         if (_capacity < capacity)
         {
             _capacity = capacity;
-            _data = Memory::Reallocate(_data, capacity);
+            _data     = Memory::Reallocate(_data, capacity);
         }
     }
 };
@@ -73,16 +81,16 @@ class AudioMixer final : public IAudioMixer
 private:
     IAudioSource * _nullSource = nullptr;
 
-    SDL_AudioDeviceID _deviceId = 0;
-    AudioFormat _format = { 0 };
+    SDL_AudioDeviceID          _deviceId = 0;
+    AudioFormat                _format   = { 0 };
     std::list<IAudioChannel *> _channels;
-    float _volume = 1.0f;
-    float _adjustSoundVolume = 0.0f;
-    float _adjustMusicVolume = 0.0f;
-    uint8 _settingSoundVolume = 0xFF;
-    uint8 _settingMusicVolume = 0xFF;
+    float                      _volume             = 1.0f;
+    float                      _adjustSoundVolume  = 0.0f;
+    float                      _adjustMusicVolume  = 0.0f;
+    uint8                      _settingSoundVolume = 0xFF;
+    uint8                      _settingMusicVolume = 0xFF;
 
-    IAudioSource * _css1Sources[SOUND_MAXID] = { nullptr };
+    IAudioSource * _css1Sources[SOUND_MAXID]  = { nullptr };
     IAudioSource * _musicSources[PATH_ID_END] = { nullptr };
 
     Buffer _channelBuffer;
@@ -101,27 +109,26 @@ public:
         delete _nullSource;
     }
 
-    void Init(const char* device) override
+    void Init(const char * device) override
     {
         Close();
 
         SDL_AudioSpec want = { 0 };
-        want.freq = 44100;
-        want.format = AUDIO_S16SYS;
-        want.channels = 2;
-        want.samples = 1024;
-        want.callback = [](void * arg, uint8 * dst, int length) -> void
-        {
+        want.freq          = 44100;
+        want.format        = AUDIO_S16SYS;
+        want.channels      = 2;
+        want.samples       = 1024;
+        want.callback      = [](void * arg, uint8 * dst, int length) -> void {
             auto mixer = static_cast<AudioMixer *>(arg);
             mixer->GetNextAudioChunk(dst, (size_t)length);
         };
         want.userdata = this;
 
         SDL_AudioSpec have;
-        _deviceId = SDL_OpenAudioDevice(device, 0, &want, &have, 0);
-        _format.format = have.format;
+        _deviceId        = SDL_OpenAudioDevice(device, 0, &want, &have, 0);
+        _format.format   = have.format;
         _format.channels = have.channels;
-        _format.freq = have.freq;
+        _format.freq     = have.freq;
 
         LoadAllSounds();
 
@@ -204,7 +211,7 @@ public:
             if (source == nullptr)
             {
                 const utf8 * path = get_file_path((int)pathId);
-                source = AudioSource::CreateMemoryFromWAV(path, &_format);
+                source            = AudioSource::CreateMemoryFromWAV(path, &_format);
                 if (source == nullptr)
                 {
                     source = _nullSource;
@@ -282,32 +289,33 @@ private:
         if (_settingSoundVolume != gConfigSound.sound_volume)
         {
             _settingSoundVolume = gConfigSound.sound_volume;
-            _adjustSoundVolume = powf(_settingSoundVolume / 100.f, 10.f / 6.f);
+            _adjustSoundVolume  = powf(_settingSoundVolume / 100.f, 10.f / 6.f);
         }
         if (_settingMusicVolume != gConfigSound.ride_music_volume)
         {
             _settingMusicVolume = gConfigSound.ride_music_volume;
-            _adjustMusicVolume = powf(_settingMusicVolume / 100.f, 10.f / 6.f);
+            _adjustMusicVolume  = powf(_settingMusicVolume / 100.f, 10.f / 6.f);
         }
     }
 
     void MixChannel(IAudioChannel * channel, uint8 * data, size_t length)
     {
-        int byteRate = _format.GetByteRate();
-        int numSamples = (int)(length / byteRate);
-        double rate = 1;
+        int    byteRate   = _format.GetByteRate();
+        int    numSamples = (int)(length / byteRate);
+        double rate       = 1;
         if (_format.format == AUDIO_S16SYS)
         {
             rate = channel->GetRate();
         }
 
-        bool mustConvert = false;
+        bool         mustConvert = false;
         SDL_AudioCVT cvt;
-        cvt.len_ratio = 1;
+        cvt.len_ratio            = 1;
         AudioFormat streamformat = channel->GetFormat();
         if (streamformat != _format)
         {
-            if (SDL_BuildAudioCVT(&cvt, streamformat.format, streamformat.channels, streamformat.freq, _format.format, _format.channels, _format.freq) == -1)
+            if (SDL_BuildAudioCVT(&cvt, streamformat.format, streamformat.channels, streamformat.freq, _format.format,
+                                  _format.channels, _format.freq) == -1)
             {
                 // Unable to convert channel data
                 return;
@@ -316,19 +324,19 @@ private:
         }
 
         // Read raw PCM from channel
-        int readSamples = (int)(numSamples * rate);
-        size_t readLength = (size_t)(readSamples / cvt.len_ratio) * byteRate;
+        int    readSamples = (int)(numSamples * rate);
+        size_t readLength  = (size_t)(readSamples / cvt.len_ratio) * byteRate;
         _channelBuffer.EnsureCapacity(readLength);
         size_t bytesRead = channel->Read(_channelBuffer.GetData(), readLength);
 
         // Convert data to required format if necessary
-        void * buffer = nullptr;
+        void * buffer    = nullptr;
         size_t bufferLen = 0;
         if (mustConvert)
         {
             if (Convert(&cvt, _channelBuffer.GetData(), bytesRead))
             {
-                buffer = cvt.buf;
+                buffer    = cvt.buf;
                 bufferLen = cvt.len_cvt;
             }
             else
@@ -338,7 +346,7 @@ private:
         }
         else
         {
-            buffer = _channelBuffer.GetData();
+            buffer    = _channelBuffer.GetData();
             bufferLen = bytesRead;
         }
 
@@ -347,8 +355,8 @@ private:
         {
             int srcSamples = (int)(bufferLen / byteRate);
             int dstSamples = numSamples;
-            bufferLen = ApplyResample(channel, buffer, srcSamples, dstSamples);
-            buffer = _effectBuffer.GetData();
+            bufferLen      = ApplyResample(channel, buffer, srcSamples, dstSamples);
+            buffer         = _effectBuffer.GetData();
         }
 
         // Apply panning and volume
@@ -380,17 +388,13 @@ private:
         speex_resampler_set_rate(resampler, srcSamples, dstSamples);
 
         // Ensure destination buffer is large enough
-        size_t effectBufferReqLen  = dstSamples * byteRate;
+        size_t effectBufferReqLen = dstSamples * byteRate;
         _effectBuffer.EnsureCapacity(effectBufferReqLen);
 
-        uint32 inLen = srcSamples;
+        uint32 inLen  = srcSamples;
         uint32 outLen = dstSamples;
-        speex_resampler_process_interleaved_int(
-            resampler,
-            (const spx_int16_t *)srcBuffer,
-            &inLen,
-            (spx_int16_t *)_effectBuffer.GetData(),
-            &outLen);
+        speex_resampler_process_interleaved_int(resampler, (const spx_int16_t *)srcBuffer, &inLen,
+                                                (spx_int16_t *)_effectBuffer.GetData(), &outLen);
 
         return outLen * byteRate;
     }
@@ -399,7 +403,8 @@ private:
     {
         if (channel->GetPan() != 0.5f && _format.channels == 2)
         {
-            switch (_format.format) {
+            switch (_format.format)
+            {
             case AUDIO_S16SYS:
                 EffectPanS16(channel, (sint16 *)buffer, (int)(len / sampleSize));
                 break;
@@ -414,7 +419,8 @@ private:
     {
         float volumeAdjust = _volume;
         volumeAdjust *= (gConfigSound.master_volume / 100.0f);
-        switch (channel->GetGroup()) {
+        switch (channel->GetGroup())
+        {
         case MIXER_GROUP_SOUND:
             volumeAdjust *= _adjustSoundVolume;
 
@@ -430,7 +436,7 @@ private:
         }
 
         int startVolume = (int)(channel->GetOldVolume() * volumeAdjust);
-        int endVolume = (int)(channel->GetVolume() * volumeAdjust);
+        int endVolume   = (int)(channel->GetVolume() * volumeAdjust);
         if (channel->IsStopping())
         {
             endVolume = 0;
@@ -444,7 +450,8 @@ private:
 
             // Fade between volume levels to smooth out sound and minimize clicks from sudden volume changes
             int fadeLength = (int)len / _format.BytesPerSample();
-            switch (_format.format) {
+            switch (_format.format)
+            {
             case AUDIO_S16SYS:
                 EffectFadeS16((sint16 *)buffer, fadeLength, startVolume, endVolume);
                 break;
@@ -458,15 +465,15 @@ private:
 
     static void EffectPanS16(const IAudioChannel * channel, sint16 * data, int length)
     {
-        const float dt = 1.0f / (length * 2);
-        float volumeL = channel->GetOldVolumeL();
-        float volumeR = channel->GetOldVolumeR();
-        const float d_left = dt * (channel->GetVolumeL() - channel->GetOldVolumeL());
+        const float dt      = 1.0f / (length * 2);
+        float       volumeL = channel->GetOldVolumeL();
+        float       volumeR = channel->GetOldVolumeR();
+        const float d_left  = dt * (channel->GetVolumeL() - channel->GetOldVolumeL());
         const float d_right = dt * (channel->GetVolumeR() - channel->GetOldVolumeR());
 
         for (int i = 0; i < length * 2; i += 2)
         {
-            data[i] = (sint16)(data[i] * volumeL);
+            data[i]     = (sint16)(data[i] * volumeL);
             data[i + 1] = (sint16)(data[i + 1] * volumeR);
             volumeL += d_left;
             volumeR += d_right;
@@ -475,15 +482,15 @@ private:
 
     static void EffectPanU8(const IAudioChannel * channel, uint8 * data, int length)
     {
-        float volumeL = channel->GetVolumeL();
-        float volumeR = channel->GetVolumeR();
+        float volumeL    = channel->GetVolumeL();
+        float volumeR    = channel->GetVolumeR();
         float oldVolumeL = channel->GetOldVolumeL();
         float oldVolumeR = channel->GetOldVolumeR();
 
         for (int i = 0; i < length * 2; i += 2)
         {
-            float t = (float)i / (length * 2);
-            data[i] = (uint8)(data[i] * ((1.0 - t) * oldVolumeL + t * volumeL));
+            float t     = (float)i / (length * 2);
+            data[i]     = (uint8)(data[i] * ((1.0 - t) * oldVolumeL + t * volumeL));
             data[i + 1] = (uint8)(data[i + 1] * ((1.0 - t) * oldVolumeR + t * volumeR));
         }
     }
@@ -491,7 +498,7 @@ private:
     static void EffectFadeS16(sint16 * data, int length, int startvolume, int endvolume)
     {
         float startvolume_f = (float)startvolume / SDL_MIX_MAXVOLUME;
-        float endvolume_f = (float)endvolume / SDL_MIX_MAXVOLUME;
+        float endvolume_f   = (float)endvolume / SDL_MIX_MAXVOLUME;
         for (int i = 0; i < length; i++)
         {
             float t = (float)i / length;
@@ -499,10 +506,10 @@ private:
         }
     }
 
-    static void EffectFadeU8(uint8* data, int length, int startvolume, int endvolume)
+    static void EffectFadeU8(uint8 * data, int length, int startvolume, int endvolume)
     {
         float startvolume_f = (float)startvolume / SDL_MIX_MAXVOLUME;
-        float endvolume_f = (float)endvolume / SDL_MIX_MAXVOLUME;
+        float endvolume_f   = (float)endvolume / SDL_MIX_MAXVOLUME;
         for (int i = 0; i < length; i++)
         {
             float t = (float)i / length;
@@ -512,7 +519,8 @@ private:
 
     bool Convert(SDL_AudioCVT * cvt, const void * src, size_t len)
     {
-        // tofix: there seems to be an issue with converting audio using SDL_ConvertAudio in the callback vs preconverted, can cause pops and static depending on sample rate and channels
+        // tofix: there seems to be an issue with converting audio using SDL_ConvertAudio in the callback vs preconverted, can
+        // cause pops and static depending on sample rate and channels
         bool result = false;
         if (len != 0 && cvt->len_mult != 0)
         {
@@ -554,7 +562,7 @@ void * Mixer_Play_Effect(size_t id, int loop, int volume, float pan, double rate
             IAudioMixer * mixer = gMixer;
             mixer->Lock();
             IAudioSource * source = mixer->GetSoundSource((int)id);
-            channel = mixer->Play(source, loop, deleteondone != 0, false);
+            channel               = mixer->Play(source, loop, deleteondone != 0, false);
             if (channel != nullptr)
             {
                 channel->SetVolume(volume);
@@ -571,7 +579,7 @@ void Mixer_Stop_Channel(void * channel)
 {
     if (!gOpenRCT2Headless)
     {
-        gMixer->Stop(static_cast<IAudioChannel*>(channel));
+        gMixer->Stop(static_cast<IAudioChannel *>(channel));
     }
 }
 
@@ -580,7 +588,7 @@ void Mixer_Channel_Volume(void * channel, int volume)
     if (!gOpenRCT2Headless)
     {
         gMixer->Lock();
-        static_cast<IAudioChannel*>(channel)->SetVolume(volume);
+        static_cast<IAudioChannel *>(channel)->SetVolume(volume);
         gMixer->Unlock();
     }
 }
@@ -590,17 +598,17 @@ void Mixer_Channel_Pan(void * channel, float pan)
     if (!gOpenRCT2Headless)
     {
         gMixer->Lock();
-        static_cast<IAudioChannel*>(channel)->SetPan(pan);
+        static_cast<IAudioChannel *>(channel)->SetPan(pan);
         gMixer->Unlock();
     }
 }
 
-void Mixer_Channel_Rate(void* channel, double rate)
+void Mixer_Channel_Rate(void * channel, double rate)
 {
     if (!gOpenRCT2Headless)
     {
         gMixer->Lock();
-        static_cast<IAudioChannel*>(channel)->SetRate(rate);
+        static_cast<IAudioChannel *>(channel)->SetRate(rate);
         gMixer->Unlock();
     }
 }
@@ -610,7 +618,7 @@ int Mixer_Channel_IsPlaying(void * channel)
     bool isPlaying = false;
     if (!gOpenRCT2Headless)
     {
-        isPlaying = static_cast<IAudioChannel*>(channel)->IsPlaying();
+        isPlaying = static_cast<IAudioChannel *>(channel)->IsPlaying();
     }
     return isPlaying;
 }
@@ -620,7 +628,7 @@ uint64 Mixer_Channel_GetOffset(void * channel)
     uint64 offset = 0;
     if (!gOpenRCT2Headless)
     {
-        offset = static_cast<IAudioChannel*>(channel)->GetOffset();
+        offset = static_cast<IAudioChannel *>(channel)->GetOffset();
     }
     return offset;
 }
@@ -630,7 +638,7 @@ int Mixer_Channel_SetOffset(void * channel, uint64 offset)
     int result = 0;
     if (!gOpenRCT2Headless)
     {
-        result = static_cast<IAudioChannel*>(channel)->SetOffset(offset);
+        result = static_cast<IAudioChannel *>(channel)->SetOffset(offset);
     }
     return result;
 }
@@ -653,7 +661,7 @@ void * Mixer_Play_Music(int pathId, int loop, int streaming)
         {
             const utf8 * filename = get_file_path(pathId);
 
-            SDL_RWops* rw = SDL_RWFromFile(filename, "rb");
+            SDL_RWops * rw = SDL_RWFromFile(filename, "rb");
             if (rw != nullptr)
             {
                 auto source = AudioSource::CreateStreamFromWAV(rw);
@@ -672,7 +680,7 @@ void * Mixer_Play_Music(int pathId, int loop, int streaming)
             if (mixer->LoadMusic(pathId))
             {
                 IAudioSource * source = mixer->GetMusicSource(pathId);
-                channel = mixer->Play(source, MIXER_LOOP_INFINITE, false, false);
+                channel               = mixer->Play(source, MIXER_LOOP_INFINITE, false, false);
             }
         }
         if (channel != nullptr)

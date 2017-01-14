@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -16,11 +16,11 @@
 
 #pragma warning(disable : 4611) // interaction between '_setjmp' and C++ object destruction is non-portable
 
-#include <png.h>
 #include "core/Exception.hpp"
 #include "core/FileStream.hpp"
 #include "core/Guard.hpp"
 #include "core/Memory.hpp"
+#include <png.h>
 
 #include "Imaging.h"
 
@@ -32,10 +32,10 @@ namespace Imaging
     static void PngWarning(png_structp png_ptr, const char * b);
     static void PngError(png_structp png_ptr, const char * b);
 
-    bool PngRead(uint8 * * pixels, uint32 * width, uint32 * height, const utf8 * path)
+    bool PngRead(uint8 ** pixels, uint32 * width, uint32 * height, const utf8 * path)
     {
-        png_structp png_ptr;
-        png_infop info_ptr;
+        png_structp  png_ptr;
+        png_infop    info_ptr;
         unsigned int sig_read = 0;
 
         // Setup PNG structures
@@ -73,14 +73,14 @@ namespace Imaging
 
             // Read header
             png_uint_32 pngWidth, pngHeight;
-            int bitDepth, colourType, interlaceType;
+            int         bitDepth, colourType, interlaceType;
             png_get_IHDR(png_ptr, info_ptr, &pngWidth, &pngHeight, &bitDepth, &colourType, &interlaceType, nullptr, nullptr);
 
             // Read pixels as 32bpp RGBA data
-            png_size_t rowBytes = png_get_rowbytes(png_ptr, info_ptr);
+            png_size_t rowBytes    = png_get_rowbytes(png_ptr, info_ptr);
             png_bytepp rowPointers = png_get_rows(png_ptr, info_ptr);
-            uint8 * pngPixels = Memory::Allocate<uint8>(pngWidth * pngHeight * 4);
-            uint8 * dst = pngPixels;
+            uint8 *    pngPixels   = Memory::Allocate<uint8>(pngWidth * pngHeight * 4);
+            uint8 *    dst         = pngPixels;
             if (colourType == PNG_COLOR_TYPE_RGB)
             {
                 // 24-bit PNG (no alpha)
@@ -112,17 +112,21 @@ namespace Imaging
             png_destroy_read_struct(&png_ptr, &info_ptr, nullptr);
 
             // Return the output data
-            *pixels = (uint8*)pngPixels;
-            if (width != nullptr) *width = pngWidth;
-            if (height != nullptr) *height = pngHeight;
+            *pixels = (uint8 *)pngPixels;
+            if (width != nullptr)
+                *width = pngWidth;
+            if (height != nullptr)
+                *height = pngHeight;
 
             return true;
         }
         catch (Exception)
         {
             *pixels = nullptr;
-            if (width != nullptr) *width = 0;
-            if (height != nullptr) *height = 0;
+            if (width != nullptr)
+                *width = 0;
+            if (height != nullptr)
+                *height = 0;
             return false;
         }
     }
@@ -144,17 +148,17 @@ namespace Imaging
         png_infop info_ptr = png_create_info_struct(png_ptr);
         if (info_ptr == nullptr)
         {
-            png_destroy_write_struct(&png_ptr, (png_infopp)nullptr);
+            png_destroy_write_struct(&png_ptr, (png_infopp) nullptr);
             return false;
         }
 
         png_colorp png_palette = (png_colorp)png_malloc(png_ptr, PNG_MAX_PALETTE_LENGTH * sizeof(png_color));
         for (int i = 0; i < 256; i++)
         {
-            const rct_palette_entry *entry = &palette->entries[i];
-            png_palette[i].blue = entry->blue;
-            png_palette[i].green = entry->green;
-            png_palette[i].red = entry->red;
+            const rct_palette_entry * entry = &palette->entries[i];
+            png_palette[i].blue             = entry->blue;
+            png_palette[i].green            = entry->green;
+            png_palette[i].red              = entry->red;
         }
 
         png_set_PLTE(png_ptr, info_ptr, png_palette, PNG_MAX_PALETTE_LENGTH);
@@ -172,10 +176,8 @@ namespace Imaging
             }
 
             // Write header
-            png_set_IHDR(
-                png_ptr, info_ptr, dpi->width, dpi->height, 8,
-                PNG_COLOR_TYPE_PALETTE, PNG_INTERLACE_NONE, PNG_COMPRESSION_TYPE_DEFAULT, PNG_FILTER_TYPE_DEFAULT
-            );
+            png_set_IHDR(png_ptr, info_ptr, dpi->width, dpi->height, 8, PNG_COLOR_TYPE_PALETTE, PNG_INTERLACE_NONE,
+                         PNG_COMPRESSION_TYPE_DEFAULT, PNG_FILTER_TYPE_DEFAULT);
             png_byte transparentIndex = 0;
             png_set_tRNS(png_ptr, info_ptr, &transparentIndex, 1, nullptr);
             png_write_info(png_ptr, info_ptr);
@@ -197,7 +199,7 @@ namespace Imaging
         }
 
         png_free(png_ptr, png_palette);
-        png_destroy_write_struct(&png_ptr, (png_infopp)nullptr);
+        png_destroy_write_struct(&png_ptr, (png_infopp) nullptr);
         return result;
     }
 
@@ -215,7 +217,7 @@ namespace Imaging
         png_infop info_ptr = png_create_info_struct(png_ptr);
         if (info_ptr == nullptr)
         {
-            png_destroy_write_struct(&png_ptr, (png_infopp)nullptr);
+            png_destroy_write_struct(&png_ptr, (png_infopp) nullptr);
             return false;
         }
 
@@ -232,10 +234,8 @@ namespace Imaging
             }
 
             // Write header
-            png_set_IHDR(
-                png_ptr, info_ptr, width, height, 8,
-                PNG_COLOR_TYPE_RGB_ALPHA, PNG_INTERLACE_NONE, PNG_COMPRESSION_TYPE_DEFAULT, PNG_FILTER_TYPE_DEFAULT
-            );
+            png_set_IHDR(png_ptr, info_ptr, width, height, 8, PNG_COLOR_TYPE_RGB_ALPHA, PNG_INTERLACE_NONE,
+                         PNG_COMPRESSION_TYPE_DEFAULT, PNG_FILTER_TYPE_DEFAULT);
             png_write_info(png_ptr, info_ptr);
 
             // Write pixels
@@ -285,20 +285,19 @@ namespace Imaging
     }
 }
 
-extern "C"
+extern "C" {
+bool image_io_png_read(uint8 ** pixels, uint32 * width, uint32 * height, const utf8 * path)
 {
-    bool image_io_png_read(uint8 * * pixels, uint32 * width, uint32 * height, const utf8 * path)
-    {
-        return Imaging::PngRead(pixels, width, height, path);
-    }
+    return Imaging::PngRead(pixels, width, height, path);
+}
 
-    bool image_io_png_write(const rct_drawpixelinfo * dpi, const rct_palette * palette, const utf8 * path)
-    {
-        return Imaging::PngWrite(dpi, palette, path);
-    }
+bool image_io_png_write(const rct_drawpixelinfo * dpi, const rct_palette * palette, const utf8 * path)
+{
+    return Imaging::PngWrite(dpi, palette, path);
+}
 
-    bool image_io_png_write_32bpp(sint32 width, sint32 height, const void * pixels, const utf8 * path)
-    {
-        return Imaging::PngWrite32bpp(width, height, pixels, path);
-    }
+bool image_io_png_write_32bpp(sint32 width, sint32 height, const void * pixels, const utf8 * path)
+{
+    return Imaging::PngWrite32bpp(width, height, pixels, path);
+}
 }

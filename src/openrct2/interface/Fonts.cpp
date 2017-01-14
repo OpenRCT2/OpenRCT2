@@ -14,11 +14,11 @@
  *****************************************************************************/
 #pragma endregion
 
+#include "Fonts.h"
 #include "../common.h"
 #include "../core/Console.hpp"
 #include "../core/String.hpp"
 #include "../localisation/LanguagePack.h"
-#include "Fonts.h"
 
 extern "C" {
 #include "../config.h"
@@ -74,7 +74,7 @@ const language_descriptor LanguagesDescriptors[LANGUAGE_COUNT] = {
     { "nl-NL", "Dutch", "Nederlands", FONT_OPENRCT2_SPRITE, RCT2_LANGUAGE_ID_DUTCH },               // LANGUAGE_DUTCH
     { "fr-FR", "French", u8"Français", FONT_OPENRCT2_SPRITE, RCT2_LANGUAGE_ID_FRENCH },             // LANGUAGE_FRENCH
     { "hu-HU", "Hungarian", "Magyar", FONT_OPENRCT2_SPRITE, RCT2_LANGUAGE_ID_ENGLISH_UK },          // LANGUAGE_HUNGARIAN
-    { "pl-PL", "Polish", "Polski", FONT(&TTFFontArial), RCT2_LANGUAGE_ID_ENGLISH_UK },                    // LANGUAGE_POLISH
+    { "pl-PL", "Polish", "Polski", FONT(&TTFFontArial), RCT2_LANGUAGE_ID_ENGLISH_UK },              // LANGUAGE_POLISH
     { "es-ES", "Spanish", u8"Español", FONT_OPENRCT2_SPRITE, RCT2_LANGUAGE_ID_SPANISH },            // LANGUAGE_SPANISH
     { "sv-SE", "Swedish", "Svenska", FONT_OPENRCT2_SPRITE, RCT2_LANGUAGE_ID_SWEDISH },              // LANGUAGE_SWEDISH
     { "it-IT", "Italian", "Italiano", FONT_OPENRCT2_SPRITE, RCT2_LANGUAGE_ID_ITALIAN },             // LANGUAGE_ITALIAN
@@ -83,8 +83,8 @@ const language_descriptor LanguagesDescriptors[LANGUAGE_COUNT] = {
     { "zh-TW", "Chinese (Traditional)", "Chinese (Traditional)", FONT(&TTFFontMingLiu),
       RCT2_LANGUAGE_ID_CHINESE_TRADITIONAL }, // LANGUAGE_CHINESE_TRADITIONAL
     { "zh-CN", "Chinese (Simplified)", "Chinese (Simplified)", FONT(&TTFFontSimSun),
-      RCT2_LANGUAGE_ID_CHINESE_SIMPLIFIED },                                            // LANGUAGE_CHINESE_SIMPLIFIED
-    { "fi-FI", "Finnish", "Suomi", FONT_OPENRCT2_SPRITE, RCT2_LANGUAGE_ID_ENGLISH_UK }, // LANGUAGE_FINNISH
+      RCT2_LANGUAGE_ID_CHINESE_SIMPLIFIED },                                                  // LANGUAGE_CHINESE_SIMPLIFIED
+    { "fi-FI", "Finnish", "Suomi", FONT_OPENRCT2_SPRITE, RCT2_LANGUAGE_ID_ENGLISH_UK },       // LANGUAGE_FINNISH
     { "ko-KR", "Korean", "Korean", FONT(&TTFFontGulim), RCT2_LANGUAGE_ID_KOREAN },            // LANGUAGE_KOREAN
     { "ru-RU", "Russian", "Russian", FONT(&TTFFontArial), RCT2_LANGUAGE_ID_ENGLISH_UK },      // LANGUAGE_RUSSIAN
     { "cs-CZ", "Czech", "Czech", FONT(&TTFFontArial), RCT2_LANGUAGE_ID_ENGLISH_UK },          // LANGUAGE_CZECH
@@ -97,7 +97,7 @@ const language_descriptor LanguagesDescriptors[LANGUAGE_COUNT] = {
 static void LoadSpriteFont()
 {
     ttf_dispose();
-    gUseTrueTypeFont   = false;
+    gUseTrueTypeFont = false;
 #ifndef NO_TTF
     gCurrentTTFFontSet = nullptr;
 #endif // NO_TTF

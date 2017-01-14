@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -24,14 +24,28 @@
 class Exception : public std::exception
 {
 public:
-    Exception() : Exception("") { }
-    explicit Exception(const char * message) : Exception(std::string(message)) { }
-    explicit Exception(const std::string &message) : std::exception(), _message(message) { }
+    Exception() : Exception("")
+    {
+    }
+    explicit Exception(const char * message) : Exception(std::string(message))
+    {
+    }
+    explicit Exception(const std::string & message) : std::exception(), _message(message)
+    {
+    }
 
-    virtual ~Exception() { }
+    virtual ~Exception()
+    {
+    }
 
-    const char * what()       const throw() override { return _message.c_str(); }
-    const char * GetMessage() const                  { return _message.c_str(); }
+    const char * what() const throw() override
+    {
+        return _message.c_str();
+    }
+    const char * GetMessage() const
+    {
+        return _message.c_str();
+    }
 
 private:
     std::string _message;

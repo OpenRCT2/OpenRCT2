@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -18,16 +18,16 @@
 #include "AudioSource.h"
 
 #pragma pack(push, 1)
-    struct WaveFormat
-    {
-        uint16 encoding;
-        uint16 channels;
-        uint32 frequency;
-        uint32 byterate;
-        uint16 blockalign;
-        uint16 bitspersample;
-    };
-    assert_struct_size(WaveFormat, 16);
+struct WaveFormat
+{
+    uint16 encoding;
+    uint16 channels;
+    uint32 frequency;
+    uint32 byterate;
+    uint16 blockalign;
+    uint16 bitspersample;
+};
+assert_struct_size(WaveFormat, 16);
 #pragma pack(pop)
 
 /**
@@ -37,9 +37,9 @@
 class FileAudioSource final : public IAudioSource
 {
 private:
-    AudioFormat _format = { 0 };
-    SDL_RWops * _rw = nullptr;
-    uint64      _dataBegin = 0;
+    AudioFormat _format     = { 0 };
+    SDL_RWops * _rw         = nullptr;
+    uint64      _dataBegin  = 0;
     uint64      _dataLength = 0;
 
 public:
@@ -60,12 +60,12 @@ public:
 
     size_t Read(void * dst, uint64 offset, size_t len) override
     {
-        size_t bytesRead = 0;
+        size_t bytesRead       = 0;
         sint64 currentPosition = SDL_RWtell(_rw);
         if (currentPosition != -1)
         {
             size_t bytesToRead = (size_t)Math::Min<uint64>(len, _dataLength - offset);
-            sint64 dataOffset = _dataBegin + offset;
+            sint64 dataOffset  = _dataBegin + offset;
             if (currentPosition != dataOffset)
             {
                 sint64 newPosition = SDL_RWseek(_rw, dataOffset, SEEK_SET);
@@ -81,10 +81,10 @@ public:
 
     bool LoadWAV(SDL_RWops * rw)
     {
-        const uint32 DATA = 0x61746164;
-        const uint32 FMT  = 0x20746D66;
-        const uint32 RIFF = 0x46464952;
-        const uint32 WAVE = 0x45564157;
+        const uint32 DATA      = 0x61746164;
+        const uint32 FMT       = 0x20746D66;
+        const uint32 RIFF      = 0x46464952;
+        const uint32 WAVE      = 0x45564157;
         const uint16 pcmformat = 0x0001;
 
         Unload();
@@ -123,13 +123,15 @@ public:
         WaveFormat waveFormat;
         SDL_RWread(rw, &waveFormat, sizeof(waveFormat), 1);
         SDL_RWseek(rw, chunkStart + fmtChunkSize, RW_SEEK_SET);
-        if (waveFormat.encoding != pcmformat) {
+        if (waveFormat.encoding != pcmformat)
+        {
             log_verbose("Not in proper format");
             return false;
         }
 
         _format.freq = waveFormat.frequency;
-        switch (waveFormat.bitspersample) {
+        switch (waveFormat.bitspersample)
+        {
         case 8:
             _format.format = AUDIO_U8;
             break;
@@ -151,14 +153,14 @@ public:
         }
 
         _dataLength = dataChunkSize;
-        _dataBegin = SDL_RWtell(rw);
+        _dataBegin  = SDL_RWtell(rw);
         return true;
     }
 
 private:
     uint32 FindChunk(SDL_RWops * rw, uint32 wantedId)
     {
-        uint32 subchunkId = SDL_ReadLE32(rw);
+        uint32 subchunkId   = SDL_ReadLE32(rw);
         uint32 subchunkSize = SDL_ReadLE32(rw);
         if (subchunkId == wantedId)
         {
@@ -171,7 +173,7 @@ private:
         while (subchunkId == FACT || subchunkId == LIST || subchunkId == BEXT || subchunkId == JUNK)
         {
             SDL_RWseek(rw, subchunkSize, RW_SEEK_CUR);
-            subchunkId = SDL_ReadLE32(rw);
+            subchunkId   = SDL_ReadLE32(rw);
             subchunkSize = SDL_ReadLE32(rw);
             if (subchunkId == wantedId)
             {
@@ -188,7 +190,7 @@ private:
             SDL_RWclose(_rw);
             _rw = nullptr;
         }
-        _dataBegin = 0;
+        _dataBegin  = 0;
         _dataLength = 0;
     }
 };

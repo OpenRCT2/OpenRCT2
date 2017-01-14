@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -28,18 +28,16 @@
 #include "Diagnostics.hpp"
 #include "Guard.hpp"
 
-extern "C"
+extern "C" {
+#include "../OpenRCT2.h"
+
+void openrct2_assert(bool expression, const char * message, ...)
 {
-    #include "../OpenRCT2.h"
-
-    void openrct2_assert(bool expression, const char * message, ...)
-    {
-        va_list args;
-        va_start(args, message);
-        Guard::Assert_VA(expression, message, args);
-        va_end(args);
-    }
-
+    va_list args;
+    va_start(args, message);
+    Guard::Assert_VA(expression, message, args);
+    va_end(args);
+}
 }
 
 namespace Guard
@@ -54,7 +52,8 @@ namespace Guard
 
     void Assert_VA(bool expression, const char * message, va_list args)
     {
-        if (expression) return;
+        if (expression)
+            return;
 
         if (message != nullptr)
         {
@@ -75,7 +74,7 @@ namespace Guard
         if (message != nullptr)
         {
             strcat(buffer, "\r\n");
-            char *bufend = (char *)strchr(buffer, 0);
+            char * bufend = (char *)strchr(buffer, 0);
             vsnprintf(bufend, sizeof(buffer) - (bufend - buffer), message, args);
         }
 #ifdef __TEST__
@@ -88,7 +87,7 @@ namespace Guard
         {
 #ifdef USE_BREAKPAD
             // Force a crash that breakpad will handle allowing us to get a dump
-            *((void**)0) = 0;
+            *((void **)0) = 0;
 #else
             assert(false);
 #endif

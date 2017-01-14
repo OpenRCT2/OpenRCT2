@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -20,8 +20,8 @@
 #include "../diagnostic.h"
 
 #include <openssl/evp.h>
-#include <openssl/rsa.h>
 #include <openssl/pem.h>
+#include <openssl/rsa.h>
 #include <vector>
 
 #define KEY_TYPE EVP_PKEY_RSA
@@ -70,7 +70,7 @@ bool NetworkKey::Generate()
         return false;
     }
 #else
-    #error Only RSA is supported!
+#error Only RSA is supported!
 #endif
     if (EVP_PKEY_keygen_init(_ctx) <= 0)
     {
@@ -110,7 +110,7 @@ bool NetworkKey::LoadPrivate(SDL_RWops * file)
     if (bio == nullptr)
     {
         log_error("Failed to initialise OpenSSL's BIO!");
-        delete [] priv_key;
+        delete[] priv_key;
         return false;
     }
     RSA * rsa;
@@ -119,7 +119,7 @@ bool NetworkKey::LoadPrivate(SDL_RWops * file)
     {
         log_error("Loaded RSA key is invalid");
         BIO_free_all(bio);
-        delete [] priv_key;
+        delete[] priv_key;
         return false;
     }
     if (_key != nullptr)
@@ -130,7 +130,7 @@ bool NetworkKey::LoadPrivate(SDL_RWops * file)
     EVP_PKEY_set1_RSA(_key, rsa);
     BIO_free_all(bio);
     RSA_free(rsa);
-    delete [] priv_key;
+    delete[] priv_key;
     return true;
 }
 
@@ -154,7 +154,7 @@ bool NetworkKey::LoadPublic(SDL_RWops * file)
     if (bio == nullptr)
     {
         log_error("Failed to initialise OpenSSL's BIO!");
-        delete [] pub_key;
+        delete[] pub_key;
         return false;
     }
     RSA * rsa;
@@ -167,11 +167,11 @@ bool NetworkKey::LoadPublic(SDL_RWops * file)
     EVP_PKEY_set1_RSA(_key, rsa);
     BIO_free_all(bio);
     RSA_free(rsa);
-    delete [] pub_key;
+    delete[] pub_key;
     return true;
 }
 
-bool NetworkKey::SavePrivate(SDL_RWops *file)
+bool NetworkKey::SavePrivate(SDL_RWops * file)
 {
     if (_key == nullptr)
     {
@@ -205,21 +205,21 @@ bool NetworkKey::SavePrivate(SDL_RWops *file)
     }
     RSA_free(rsa);
 
-    int keylen = BIO_pending(bio);
+    int    keylen  = BIO_pending(bio);
     char * pem_key = new char[keylen];
     BIO_read(bio, pem_key, keylen);
     file->write(file, pem_key, keylen, 1);
     log_verbose("saving key of length %u", keylen);
     BIO_free_all(bio);
-    delete [] pem_key;
+    delete[] pem_key;
 #else
-    #error Only RSA is supported!
+#error Only RSA is supported!
 #endif
 
     return true;
 }
 
-bool NetworkKey::SavePublic(SDL_RWops *file)
+bool NetworkKey::SavePublic(SDL_RWops * file)
 {
     if (_key == nullptr)
     {
@@ -247,12 +247,12 @@ bool NetworkKey::SavePublic(SDL_RWops *file)
     }
     RSA_free(rsa);
 
-    int keylen = BIO_pending(bio);
+    int    keylen  = BIO_pending(bio);
     char * pem_key = new char[keylen];
     BIO_read(bio, pem_key, keylen);
     file->write(file, pem_key, keylen, 1);
     BIO_free_all(bio);
-    delete [] pem_key;
+    delete[] pem_key;
 
     return true;
 }
@@ -285,13 +285,13 @@ std::string NetworkKey::PublicKeyString()
     }
     RSA_free(rsa);
 
-    int keylen = BIO_pending(bio);
+    int    keylen  = BIO_pending(bio);
     char * pem_key = new char[keylen + 1];
     BIO_read(bio, pem_key, keylen);
     BIO_free_all(bio);
     pem_key[keylen] = '\0';
     std::string pem_key_out(pem_key);
-    delete [] pem_key;
+    delete[] pem_key;
 
     return pem_key_out;
 }
@@ -328,7 +328,7 @@ std::string NetworkKey::PublicKeyHash()
         EVP_MD_CTX_destroy(ctx);
         return nullptr;
     }
-    unsigned int digest_size = EVP_MAX_MD_SIZE;
+    unsigned int               digest_size = EVP_MAX_MD_SIZE;
     std::vector<unsigned char> digest(EVP_MAX_MD_SIZE);
     // Cleans up `ctx` automatically.
     EVP_DigestFinal(ctx, digest.data(), &digest_size);
@@ -382,14 +382,15 @@ bool NetworkKey::Sign(const uint8 * md, const size_t len, char ** signature, siz
 
     unsigned char * sig;
     /* Allocate memory for the signature based on size in slen */
-    if ((sig = (unsigned char*)OPENSSL_malloc((int)(sizeof(unsigned char) * (*out_size)))) == NULL)
+    if ((sig = (unsigned char *)OPENSSL_malloc((int)(sizeof(unsigned char) * (*out_size)))) == NULL)
     {
         log_error("Failed to crypto-allocate space fo signature");
         EVP_MD_CTX_destroy(mdctx);
         return false;
     }
     /* Obtain the signature */
-    if (1 != EVP_DigestSignFinal(mdctx, sig, out_size)) {
+    if (1 != EVP_DigestSignFinal(mdctx, sig, out_size))
+    {
         log_error("Failed to finalise signature");
         EVP_MD_CTX_destroy(mdctx);
         OPENSSL_free(sig);

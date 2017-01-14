@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -14,12 +14,11 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../core/IStream.hpp"
 #include "StexObject.h"
+#include "../core/IStream.hpp"
 
-extern "C"
-{
-    #include "../localisation/localisation.h"
+extern "C" {
+#include "../localisation/localisation.h"
 }
 
 void StexObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
@@ -37,8 +36,8 @@ void StexObject::Load()
 {
     GetStringTable()->Sort();
     _legacyType.scenario_name = language_allocate_object_string(GetScenarioName());
-    _legacyType.park_name = language_allocate_object_string(GetParkName());
-    _legacyType.details = language_allocate_object_string(GetScenarioDetails());
+    _legacyType.park_name     = language_allocate_object_string(GetParkName());
+    _legacyType.details       = language_allocate_object_string(GetScenarioDetails());
 }
 
 void StexObject::Unload()
@@ -48,8 +47,8 @@ void StexObject::Unload()
     language_free_object_string(_legacyType.details);
 
     _legacyType.scenario_name = 0;
-    _legacyType.park_name = 0;
-    _legacyType.details = 0;
+    _legacyType.park_name     = 0;
+    _legacyType.details       = 0;
 }
 
 void StexObject::DrawPreview(rct_drawpixelinfo * dpi, sint32 width, sint32 height) const

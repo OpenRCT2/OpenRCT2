@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -16,12 +16,13 @@
 
 #pragma once
 
-#include <string>
 #include "../common.h"
 #include "Exception.hpp"
 #include "Memory.hpp"
+#include <string>
 
-enum {
+enum
+{
     STREAM_SEEK_BEGIN,
     STREAM_SEEK_CURRENT,
     STREAM_SEEK_END
@@ -35,20 +36,22 @@ interface IStream
     ///////////////////////////////////////////////////////////////////////////
     // Interface methods
     ///////////////////////////////////////////////////////////////////////////
-    virtual ~IStream() { }
+    virtual ~IStream()
+    {
+    }
 
-    virtual bool    CanRead()                                 const abstract;
-    virtual bool    CanWrite()                                const abstract;
+    virtual bool CanRead() const abstract;
+    virtual bool CanWrite() const abstract;
 
-    virtual uint64  GetLength()                               const abstract;
-    virtual uint64  GetPosition()                             const abstract;
-    virtual void    SetPosition(uint64 position)                    abstract;
-    virtual void    Seek(sint64 offset, int origin)                 abstract;
+    virtual uint64 GetLength() const abstract;
+    virtual uint64 GetPosition() const abstract;
+    virtual void SetPosition(uint64 position) abstract;
+    virtual void Seek(sint64 offset, int origin) abstract;
 
-    virtual void    Read(void * buffer, uint64 length)              abstract;
-    virtual void    Write(const void * buffer, uint64 length)       abstract;
+    virtual void Read(void * buffer, uint64 length) abstract;
+    virtual void Write(const void * buffer, uint64 length) abstract;
 
-    virtual uint64  TryRead(void * buffer, uint64 length)           abstract;
+    virtual uint64 TryRead(void * buffer, uint64 length) abstract;
 
     ///////////////////////////////////////////////////////////////////////////
     // Helper methods
@@ -57,8 +60,7 @@ interface IStream
     /**
      * Reads the size of the given type from the stream directly into the given address.
      */
-    template<typename T>
-    void Read(T * value)
+    template <typename T> void Read(T * value)
     {
         Read(value, sizeof(T));
     }
@@ -66,8 +68,7 @@ interface IStream
     /**
      * Writes the size of the given type to the stream directly from the given address.
      */
-    template<typename T>
-    void Write(const T * value)
+    template <typename T> void Write(const T * value)
     {
         Write(value, sizeof(T));
     }
@@ -75,8 +76,7 @@ interface IStream
     /**
      * Reads the given type from the stream. Use this only for small types (e.g. sint8, sint64, double)
      */
-    template<typename T>
-    T ReadValue()
+    template <typename T> T ReadValue()
     {
         T buffer;
         Read(&buffer);
@@ -86,35 +86,36 @@ interface IStream
     /**
      * Writes the given type to the stream. Use this only for small types (e.g. sint8, sint64, double)
      */
-    template<typename T>
-    void WriteValue(const T value)
+    template <typename T> void WriteValue(const T value)
     {
         Write(&value);
     }
 
-    template<typename T>
-    T * ReadArray(size_t count)
+    template <typename T> T * ReadArray(size_t count)
     {
         T * buffer = Memory::AllocateArray<T>(count);
         Read(buffer, sizeof(T) * count);
         return buffer;
     }
 
-    template<typename T>
-    void WriteArray(T * buffer, size_t count)
+    template <typename T> void WriteArray(T * buffer, size_t count)
     {
         Write(buffer, sizeof(T) * count);
     }
 
-    utf8 * ReadString();
+    utf8 *      ReadString();
     std::string ReadStdString();
     void WriteString(const utf8 * str);
-    void WriteString(const std::string &string);
+    void WriteString(const std::string & string);
 };
 
 class IOException : public Exception
 {
 public:
-    explicit IOException(const char * message) : Exception(message) { }
-    explicit IOException(const std::string &message) : Exception(message) { }
+    explicit IOException(const char * message) : Exception(message)
+    {
+    }
+    explicit IOException(const std::string & message) : Exception(message)
+    {
+    }
 };

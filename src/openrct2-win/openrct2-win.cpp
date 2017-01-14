@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -19,15 +19,17 @@
 #include <windows.h>
 
 // Enable visual styles
-#pragma comment(linker, "\"/manifestdependency:type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
+#pragma comment(                                                                                                               \
+    linker,                                                                                                                    \
+    "\"/manifestdependency:type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
 
 #define DLLIMPORT extern "C"
-DLLIMPORT int LaunchOpenRCT2(int argc, wchar_t * * argv);
+DLLIMPORT int LaunchOpenRCT2(int argc, wchar_t ** argv);
 
 /**
  * Windows entry point to OpenRCT2 with a console window using a traditional C main function.
  */
-int wmain(int argc, wchar_t * * argvW, wchar_t * envp)
+int wmain(int argc, wchar_t ** argvW, wchar_t * envp)
 {
     return LaunchOpenRCT2(argc, argvW);
 }

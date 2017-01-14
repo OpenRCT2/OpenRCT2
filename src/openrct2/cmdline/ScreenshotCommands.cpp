@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -14,29 +14,27 @@
  *****************************************************************************/
 #pragma endregion
 
-extern "C"
-{
-    #include "../interface/screenshot.h"
+extern "C" {
+#include "../interface/screenshot.h"
 }
 
 #include "CommandLine.hpp"
 
-static exitcode_t HandleScreenshot(CommandLineArgEnumerator *argEnumerator);
+static exitcode_t HandleScreenshot(CommandLineArgEnumerator * argEnumerator);
 
-const CommandLineCommand CommandLine::ScreenshotCommands[]
-{
+const CommandLineCommand CommandLine::ScreenshotCommands[]{
     // Main commands
     DefineCommand("", "<file> <output_image> <width> <height> [<x> <y> <zoom> <rotation>]", nullptr, HandleScreenshot),
-    DefineCommand("", "<file> <output_image> giant <zoom> <rotation>",                      nullptr, HandleScreenshot),
-    CommandTableEnd
+    DefineCommand("", "<file> <output_image> giant <zoom> <rotation>", nullptr, HandleScreenshot), CommandTableEnd
 };
 
-static exitcode_t HandleScreenshot(CommandLineArgEnumerator *argEnumerator)
+static exitcode_t HandleScreenshot(CommandLineArgEnumerator * argEnumerator)
 {
-    const char * * argv = (const char * *)argEnumerator->GetArguments() + argEnumerator->GetIndex();
-    int argc = argEnumerator->GetCount() - argEnumerator->GetIndex();
-    int result = cmdline_for_screenshot(argv, argc);
-    if (result < 0) {
+    const char ** argv   = (const char **)argEnumerator->GetArguments() + argEnumerator->GetIndex();
+    int           argc   = argEnumerator->GetCount() - argEnumerator->GetIndex();
+    int           result = cmdline_for_screenshot(argv, argc);
+    if (result < 0)
+    {
         return EXITCODE_FAIL;
     }
     return EXITCODE_OK;

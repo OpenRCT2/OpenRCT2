@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -16,18 +16,18 @@
 
 #ifndef DISABLE_OPENGL
 
+#include "SwapFramebuffer.h"
 #include "CopyFramebufferShader.h"
 #include "OpenGLFramebuffer.h"
-#include "SwapFramebuffer.h"
 
 SwapFramebuffer::SwapFramebuffer(sint32 width, sint32 height)
 {
-    _width = width;
-    _height = height;
+    _width                  = width;
+    _height                 = height;
     _targetFramebufferIndex = 0;
-    _framebuffer[0] = new OpenGLFramebuffer(width, height);
-    _framebuffer[1] = new OpenGLFramebuffer(width, height);
-    _targetFramebuffer = _framebuffer[0];
+    _framebuffer[0]         = new OpenGLFramebuffer(width, height);
+    _framebuffer[1]         = new OpenGLFramebuffer(width, height);
+    _targetFramebuffer      = _framebuffer[0];
 
     _copyFramebufferShader = new CopyFramebufferShader();
     _copyFramebufferShader->Use();
@@ -50,9 +50,9 @@ GLuint SwapFramebuffer::GetSourceTexture() const
 
 void SwapFramebuffer::SwapCopy()
 {
-    _sourceFramebuffer = _targetFramebuffer;
+    _sourceFramebuffer      = _targetFramebuffer;
     _targetFramebufferIndex = (_targetFramebufferIndex + 1) & 1;
-    _targetFramebuffer = _framebuffer[_targetFramebufferIndex];
+    _targetFramebuffer      = _framebuffer[_targetFramebufferIndex];
     _targetFramebuffer->Bind();
 
     _copyFramebufferShader->Use();

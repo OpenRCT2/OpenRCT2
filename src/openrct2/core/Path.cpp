@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -14,11 +14,10 @@
  *****************************************************************************/
 #pragma endregion
 
-extern "C"
-{
-    #include "../platform/platform.h"
-    #include "../localisation/localisation.h"
-    #include "../util/util.h"
+extern "C" {
+#include "../localisation/localisation.h"
+#include "../platform/platform.h"
+#include "../util/util.h"
 }
 
 #include "Math.hpp"
@@ -34,7 +33,7 @@ namespace Path
         return safe_strcat_path(buffer, src, bufferSize);
     }
 
-    std::string Combine(const std::string &a, const std::string &b)
+    std::string Combine(const std::string & a, const std::string & b)
     {
         utf8 buffer[MAX_PATH];
         String::Set(buffer, sizeof(buffer), a.c_str());
@@ -42,7 +41,7 @@ namespace Path
         return std::string(buffer);
     }
 
-    std::string GetDirectory(const std::string &path)
+    std::string GetDirectory(const std::string & path)
     {
         return GetDirectory(path.c_str());
     }
@@ -50,10 +49,10 @@ namespace Path
     utf8 * GetDirectory(const utf8 * path)
     {
         size_t maxSize = String::SizeOf(path) + 1;
-        utf8 * result = Memory::Allocate<utf8>(maxSize);
+        utf8 * result  = Memory::Allocate<utf8>(maxSize);
         GetDirectory(result, maxSize, path);
         size_t reducedSize = String::SizeOf(path) + 1;
-        result = Memory::Reallocate(result, reducedSize);
+        result             = Memory::Reallocate(result, reducedSize);
         return result;
     }
 
@@ -71,7 +70,7 @@ namespace Path
         return buffer;
     }
 
-    std::string GetFileName(const std::string &path)
+    std::string GetFileName(const std::string & path)
     {
         return GetFileName(path.c_str());
     }
@@ -94,14 +93,12 @@ namespace Path
 #endif
         }
 
-        return lastPathSeperator == nullptr ?
-            path :
-            lastPathSeperator + 1;
+        return lastPathSeperator == nullptr ? path : lastPathSeperator + 1;
     }
 
-    std::string GetFileNameWithoutExtension(const std::string &path)
+    std::string GetFileNameWithoutExtension(const std::string & path)
     {
-        utf8 * cstr = GetFileNameWithoutExtension(path.c_str());
+        utf8 *      cstr   = GetFileNameWithoutExtension(path.c_str());
         std::string result = String::ToStd(cstr);
         Memory::Free(cstr);
         return result;
@@ -110,10 +107,10 @@ namespace Path
     utf8 * GetFileNameWithoutExtension(const utf8 * path)
     {
         size_t maxSize = String::SizeOf(path) + 1;
-        utf8 * result = Memory::Allocate<utf8>(maxSize);
+        utf8 * result  = Memory::Allocate<utf8>(maxSize);
         GetFileNameWithoutExtension(result, maxSize, path);
         size_t reducedSize = String::SizeOf(path) + 1;
-        result = Memory::Reallocate(result, reducedSize);
+        result             = Memory::Reallocate(result, reducedSize);
         return result;
     }
 
@@ -122,7 +119,7 @@ namespace Path
         path = GetFileName(path);
 
         const utf8 * lastDot = nullptr;
-        const utf8 * ch = path;
+        const utf8 * ch      = path;
         for (; *ch != '\0'; ch++)
         {
             if (*ch == '.')
@@ -142,7 +139,7 @@ namespace Path
         return buffer;
     }
 
-    const std::string GetExtension(const std::string &path)
+    const std::string GetExtension(const std::string & path)
     {
         return GetExtension(path.c_str());
     }
@@ -150,7 +147,7 @@ namespace Path
     const utf8 * GetExtension(const utf8 * path)
     {
         const utf8 * lastDot = nullptr;
-        const utf8 * ch = path;
+        const utf8 * ch      = path;
         for (; *ch != '\0'; ch++)
         {
             if (*ch == '.')
@@ -169,12 +166,12 @@ namespace Path
         return lastDot;
     }
 
-    utf8 * GetAbsolute(utf8 *buffer, size_t bufferSize, const utf8 * relativePath)
+    utf8 * GetAbsolute(utf8 * buffer, size_t bufferSize, const utf8 * relativePath)
     {
 #ifdef __WINDOWS__
         wchar_t * relativePathW = utf8_to_widechar(relativePath);
         wchar_t   absolutePathW[MAX_PATH];
-        DWORD length = GetFullPathNameW(relativePathW, (DWORD)Util::CountOf(absolutePathW), absolutePathW, NULL);
+        DWORD     length = GetFullPathNameW(relativePathW, (DWORD)Util::CountOf(absolutePathW), absolutePathW, NULL);
         Memory::Free(relativePathW);
         if (length == 0)
         {
@@ -202,7 +199,7 @@ namespace Path
 #endif
     }
 
-    bool Equals(const std::string &a, const std::string &b)
+    bool Equals(const std::string & a, const std::string & b)
     {
         return String::Equals(a.c_str(), b.c_str());
     }

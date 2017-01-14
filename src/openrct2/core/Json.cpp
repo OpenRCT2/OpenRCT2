@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -14,8 +14,8 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "FileStream.hpp"
 #include "Json.hpp"
+#include "FileStream.hpp"
 #include "Memory.hpp"
 #include "String.hpp"
 
@@ -23,8 +23,8 @@ namespace Json
 {
     json_t * ReadFromFile(const utf8 * path, size_t maxSize)
     {
-        json_t  * json = nullptr;
-        auto fs = FileStream(path, FILE_MODE_OPEN);
+        json_t * json = nullptr;
+        auto     fs   = FileStream(path, FILE_MODE_OPEN);
 
         size_t fileLength = (size_t)fs.GetLength();
         if (fileLength > maxSize)
@@ -54,7 +54,7 @@ namespace Json
         const char * jsonOutput = json_dumps(json, flags);
 
         // Write to file
-        auto fs = FileStream(path, FILE_MODE_WRITE);
+        auto   fs             = FileStream(path, FILE_MODE_WRITE);
         size_t jsonOutputSize = String::SizeOf(jsonOutput);
         fs.Write(jsonOutput, jsonOutputSize);
     }

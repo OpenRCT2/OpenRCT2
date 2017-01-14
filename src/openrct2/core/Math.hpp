@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -23,29 +23,27 @@
  */
 namespace Math
 {
-    template<typename T>
-    static T Min(T a, T b)
+    template <typename T> static T Min(T a, T b)
     {
         return (std::min)(a, b);
     }
 
-    template<typename T>
-    static T Max(T a, T b)
+    template <typename T> static T Max(T a, T b)
     {
         return (std::max)(a, b);
     }
 
-    template<typename T>
-    static T Clamp(T low, T x, T high)
+    template <typename T> static T Clamp(T low, T x, T high)
     {
         return (std::min)((std::max)(low, x), high);
     }
 
-    template<typename T>
-    static T Sign(T x)
+    template <typename T> static T Sign(T x)
     {
-        if (x < 0) return -1;
-        if (x > 0) return 1;
+        if (x < 0)
+            return -1;
+        if (x > 0)
+            return 1;
         return 0;
     }
 }

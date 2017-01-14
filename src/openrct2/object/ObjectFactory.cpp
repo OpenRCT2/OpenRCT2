@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -14,19 +14,19 @@
  *****************************************************************************/
 #pragma endregion
 
+#include "ObjectFactory.h"
 #include "../core/Console.hpp"
 #include "../core/FileStream.hpp"
 #include "../core/Memory.hpp"
 #include "../core/MemoryStream.h"
-#include "../core/String.hpp"
 #include "../core/Path.hpp"
+#include "../core/String.hpp"
 #include "BannerObject.h"
 #include "EntranceObject.h"
 #include "FootpathItemObject.h"
 #include "FootpathObject.h"
 #include "LargeSceneryObject.h"
 #include "Object.h"
-#include "ObjectFactory.h"
 #include "RideObject.h"
 #include "SceneryGroupObject.h"
 #include "SmallSceneryObject.h"
@@ -34,22 +34,27 @@
 #include "WallObject.h"
 #include "WaterObject.h"
 
-extern "C"
-{
-    #include "../object.h"
-    #include "../util/sawyercoding.h"
+extern "C" {
+#include "../object.h"
+#include "../util/sawyercoding.h"
 }
 
 class ReadObjectContext : public IReadObjectContext
 {
 private:
-    utf8 *  _objectName;
-    bool    _wasWarning = false;
-    bool    _wasError = false;
+    utf8 * _objectName;
+    bool   _wasWarning = false;
+    bool   _wasError   = false;
 
 public:
-    bool WasWarning() const { return _wasWarning; }
-    bool WasError() const { return _wasError; }
+    bool WasWarning() const
+    {
+        return _wasWarning;
+    }
+    bool WasError() const
+    {
+        return _wasError;
+    }
 
     explicit ReadObjectContext(const utf8 * objectFileName)
     {
@@ -105,7 +110,7 @@ namespace ObjectFactory
     static MemoryStream * GetDecodedChunkStream(IReadObjectContext * context, SDL_RWops * file)
     {
         size_t bufferSize = 0x600000;
-        void * buffer = Memory::Allocate<void>(bufferSize);
+        void * buffer     = Memory::Allocate<void>(bufferSize);
         if (buffer == nullptr)
         {
             log_error("Unable to allocate data buffer.");
@@ -188,12 +193,13 @@ namespace ObjectFactory
         return result;
     }
 
-    Object * CreateObject(const rct_object_entry &entry)
+    Object * CreateObject(const rct_object_entry & entry)
     {
         Object * result = nullptr;
 
         uint8 objectType = entry.flags & 0x0F;
-        switch (objectType) {
+        switch (objectType)
+        {
         case OBJECT_TYPE_RIDE:
             result = new RideObject(entry);
             break;

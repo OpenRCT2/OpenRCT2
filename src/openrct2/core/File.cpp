@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -14,39 +14,38 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "Console.hpp"
 #include "File.h"
+#include "Console.hpp"
 #include "FileStream.hpp"
 #include "String.hpp"
 
-extern "C"
-{
-    #include "../platform/platform.h"
+extern "C" {
+#include "../platform/platform.h"
 }
 
 namespace File
 {
-    bool Copy(const std::string &srcPath, const std::string &dstPath, bool overwrite)
+    bool Copy(const std::string & srcPath, const std::string & dstPath, bool overwrite)
     {
         return platform_file_copy(srcPath.c_str(), dstPath.c_str(), overwrite);
     }
 
-    bool Delete(const std::string &path)
+    bool Delete(const std::string & path)
     {
         return platform_file_delete(path.c_str());
     }
 
-    bool Move(const std::string &srcPath, const std::string &dstPath)
+    bool Move(const std::string & srcPath, const std::string & dstPath)
     {
         return platform_file_move(srcPath.c_str(), dstPath.c_str());
     }
 
-    void * ReadAllBytes(const std::string &path, size_t * length)
+    void * ReadAllBytes(const std::string & path, size_t * length)
     {
         void * result = nullptr;
 
-        FileStream fs = FileStream(path, FILE_MODE_OPEN);
-        uint64 fsize = fs.GetLength();
+        FileStream fs    = FileStream(path, FILE_MODE_OPEN);
+        uint64     fsize = fs.GetLength();
         if (fsize > SIZE_MAX)
         {
             std::string message = String::StdFormat("'%s' exceeds maximum length of %lld bytes.", SIZE_MAX);

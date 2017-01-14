@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -16,21 +16,21 @@
 
 #pragma once
 
-#include <initializer_list>
 #include "../common.h"
 #include "Memory.hpp"
 #include "String.hpp"
+#include <initializer_list>
 
 namespace Collections
 {
-    template<typename TCollection, typename TItem>
-    static void AddRange(TCollection &collection, std::initializer_list<TItem> initializerList)
+    template <typename TCollection, typename TItem>
+    static void AddRange(TCollection & collection, std::initializer_list<TItem> initializerList)
     {
         collection.insert(collection.end(), initializerList.begin(), initializerList.end());
     }
 
-    template<typename TCollection, typename TItem, typename TComparer>
-    static bool Contains(TCollection &collection, TItem needle, TComparer comparer)
+    template <typename TCollection, typename TItem, typename TComparer>
+    static bool Contains(TCollection & collection, TItem needle, TComparer comparer)
     {
         for (TItem item : collection)
         {
@@ -42,8 +42,8 @@ namespace Collections
         return false;
     }
 
-    template<typename TCollection, typename TItem, typename TComparer>
-    static size_t IndexOf(TCollection &collection, TItem needle, TComparer comparer)
+    template <typename TCollection, typename TItem, typename TComparer>
+    static size_t IndexOf(TCollection & collection, TItem needle, TComparer comparer)
     {
         size_t index = 0;
         for (TItem item : collection)
@@ -57,8 +57,7 @@ namespace Collections
         return SIZE_MAX;
     }
 
-    template<typename TCollection, typename TPred>
-    static size_t IndexOf(TCollection &collection, TPred predicate)
+    template <typename TCollection, typename TPred> static size_t IndexOf(TCollection & collection, TPred predicate)
     {
         size_t index = 0;
         for (auto item : collection)
@@ -72,52 +71,33 @@ namespace Collections
         return SIZE_MAX;
     }
 
-    #pragma region String helpers
+#pragma region String helpers
 
-    template<typename TCollection>
-    static bool Contains(TCollection &collection, const char * item, bool ignoreCase = false)
+    template <typename TCollection> static bool Contains(TCollection & collection, const char * item, bool ignoreCase = false)
     {
         if (ignoreCase)
         {
-            return Contains(collection, item,
-                [](const char * a, const char * b)
-                {
-                    return String::Equals(a, b, true);
-                });
+            return Contains(collection, item, [](const char * a, const char * b) { return String::Equals(a, b, true); });
         }
         else
         {
-            return Contains(collection, item,
-                [](const char * a, const char * b)
-                {
-                    return String::Equals(a, b, false);
-                });
+            return Contains(collection, item, [](const char * a, const char * b) { return String::Equals(a, b, false); });
         }
     }
 
-    template<typename TCollection>
-    static size_t IndexOf(TCollection &collection, const char * item, bool ignoreCase = false)
+    template <typename TCollection> static size_t IndexOf(TCollection & collection, const char * item, bool ignoreCase = false)
     {
         if (ignoreCase)
         {
-            return IndexOf(collection, item,
-                [](const char * a, const char * b)
-                {
-                    return String::Equals(a, b, true);
-                });
+            return IndexOf(collection, item, [](const char * a, const char * b) { return String::Equals(a, b, true); });
         }
         else
         {
-            return IndexOf(collection, item,
-                [](const char * a, const char * b)
-                {
-                    return String::Equals(a, b, false);
-                });
+            return IndexOf(collection, item, [](const char * a, const char * b) { return String::Equals(a, b, false); });
         }
     }
 
-    template<typename TCollection>
-    static typename TCollection::value_type * ToArray(const TCollection &collection)
+    template <typename TCollection> static typename TCollection::value_type * ToArray(const TCollection & collection)
     {
         size_t count = collection.size();
         if (count == 0)
@@ -126,8 +106,8 @@ namespace Collections
         }
 
         auto * items = Memory::AllocateArray<typename TCollection::value_type>(count);
-        size_t i = 0;
-        for (const auto &item : collection)
+        size_t i     = 0;
+        for (const auto & item : collection)
         {
             items[i] = item;
             i++;
@@ -135,5 +115,5 @@ namespace Collections
         return items;
     }
 
-    #pragma endregion
+#pragma endregion
 }

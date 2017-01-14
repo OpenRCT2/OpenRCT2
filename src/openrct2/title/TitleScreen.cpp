@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -14,38 +14,36 @@
  *****************************************************************************/
 #pragma endregion
 
+#include "TitleScreen.h"
+#include "../OpenRCT2.h"
 #include "../core/Console.hpp"
 #include "../network/network.h"
-#include "../OpenRCT2.h"
-#include "TitleScreen.h"
 #include "TitleSequence.h"
 #include "TitleSequenceManager.h"
 #include "TitleSequencePlayer.h"
 
-extern "C"
-{
-    #include "../audio/audio.h"
-    #include "../config.h"
-    #include "../drawing/drawing.h"
-    #include "../game.h"
-    #include "../input.h"
-    #include "../interface/screenshot.h"
-    #include "../interface/viewport.h"
-    #include "../interface/window.h"
-    #include "../localisation/localisation.h"
-    #include "../peep/staff.h"
-    #include "../world/climate.h"
-    #include "../world/scenery.h"
+extern "C" {
+#include "../audio/audio.h"
+#include "../config.h"
+#include "../drawing/drawing.h"
+#include "../game.h"
+#include "../input.h"
+#include "../interface/screenshot.h"
+#include "../interface/viewport.h"
+#include "../interface/window.h"
+#include "../localisation/localisation.h"
+#include "../peep/staff.h"
+#include "../world/climate.h"
+#include "../world/scenery.h"
 }
 
-extern "C"
-{
-    bool gTitleHideVersionInfo = false;
-    uint16 gTitleCurrentSequence;
+extern "C" {
+bool   gTitleHideVersionInfo = false;
+uint16 gTitleCurrentSequence;
 }
 
-static uint16                   _loadedTitleSequenceId = UINT16_MAX;
-static ITitleSequencePlayer *   _sequencePlayer = nullptr;
+static uint16                 _loadedTitleSequenceId = UINT16_MAX;
+static ITitleSequencePlayer * _sequencePlayer        = nullptr;
 
 static void TitleInitialise();
 static void TryLoadSequence();
@@ -86,166 +84,167 @@ static void TryLoadSequence()
                 if (_sequencePlayer->Begin(targetSequence) && _sequencePlayer->Update())
                 {
                     _loadedTitleSequenceId = targetSequence;
-                    gTitleCurrentSequence = targetSequence;
+                    gTitleCurrentSequence  = targetSequence;
                     gfx_invalidate_screen();
                     return;
                 }
                 targetSequence = (targetSequence + 1) % numSequences;
-            }
-            while (targetSequence != gTitleCurrentSequence);
+            } while (targetSequence != gTitleCurrentSequence);
         }
         Console::Error::WriteLine("Unable to play any title sequences.");
         _sequencePlayer->Eject();
-        gTitleCurrentSequence = UINT16_MAX;
+        gTitleCurrentSequence  = UINT16_MAX;
         _loadedTitleSequenceId = UINT16_MAX;
     }
 }
 
-extern "C"
+extern "C" {
+/**
+ *
+ *  rct2: 0x0068E8DA
+ */
+void title_load()
 {
-    /**
-     *
-     *  rct2: 0x0068E8DA
-     */
-    void title_load()
-    {
-        log_verbose("loading title");
+    log_verbose("loading title");
 
-        if (gGamePaused & GAME_PAUSED_NORMAL)
-            pause_toggle();
+    if (gGamePaused & GAME_PAUSED_NORMAL)
+        pause_toggle();
 
-        gScreenFlags = SCREEN_FLAGS_TITLE_DEMO;
+    gScreenFlags = SCREEN_FLAGS_TITLE_DEMO;
 
 #ifndef DISABLE_NETWORK
-        network_close();
+    network_close();
 #endif
-        reset_park_entrances();
-        user_string_clear_all();
-        reset_sprite_list();
-        ride_init_all();
-        window_guest_list_init_vars_a();
-        staff_reset_modes();
-        map_init(150);
-        park_init();
-        date_reset();
-        climate_reset(CLIMATE_COOL_AND_WET);
-        scenery_set_default_placement_configuration();
-        window_new_ride_init_vars();
-        window_guest_list_init_vars_b();
-        window_staff_list_init_vars();
-        map_update_tile_pointers();
-        reset_sprite_spatial_index();
-        audio_stop_all_music_and_sounds();
-        viewport_init_all();
-        news_item_init_queue();
-        window_main_open();
-        title_create_windows();
-        TitleInitialise();
-        gfx_invalidate_screen();
-        audio_start_title_music();
-        gScreenAge = 0;
+    reset_park_entrances();
+    user_string_clear_all();
+    reset_sprite_list();
+    ride_init_all();
+    window_guest_list_init_vars_a();
+    staff_reset_modes();
+    map_init(150);
+    park_init();
+    date_reset();
+    climate_reset(CLIMATE_COOL_AND_WET);
+    scenery_set_default_placement_configuration();
+    window_new_ride_init_vars();
+    window_guest_list_init_vars_b();
+    window_staff_list_init_vars();
+    map_update_tile_pointers();
+    reset_sprite_spatial_index();
+    audio_stop_all_music_and_sounds();
+    viewport_init_all();
+    news_item_init_queue();
+    window_main_open();
+    title_create_windows();
+    TitleInitialise();
+    gfx_invalidate_screen();
+    audio_start_title_music();
+    gScreenAge = 0;
 
-        if (gOpenRCT2ShowChangelog) {
-            gOpenRCT2ShowChangelog = false;
-            window_changelog_open();
-        }
+    if (gOpenRCT2ShowChangelog)
+    {
+        gOpenRCT2ShowChangelog = false;
+        window_changelog_open();
+    }
 
-        if (_sequencePlayer != nullptr)
+    if (_sequencePlayer != nullptr)
+    {
+        _sequencePlayer->Reset();
+
+        // Force the title sequence to load / update so we
+        // don't see a blank screen for a split second.
+        TryLoadSequence();
+        _sequencePlayer->Update();
+    }
+
+    log_verbose("loading title finished");
+}
+
+/**
+ * Creates the windows shown on the title screen; New game, load game,
+ * tutorial, toolbox and exit.
+ *  rct2: 0x0066B5C0 (part of 0x0066B3E8)
+ */
+void title_create_windows()
+{
+    window_title_menu_open();
+    window_title_exit_open();
+    window_title_options_open();
+    window_title_logo_open();
+    window_resize_gui(gScreenWidth, gScreenHeight);
+    gTitleHideVersionInfo = false;
+}
+
+void title_update()
+{
+    screenshot_check();
+    title_handle_keyboard_input();
+
+    if (game_is_not_paused())
+    {
+        TryLoadSequence();
+        _sequencePlayer->Update();
+
+        sint32 numUpdates = 1;
+        if (gGameSpeed > 1)
         {
-            _sequencePlayer->Reset();
-
-            // Force the title sequence to load / update so we
-            // don't see a blank screen for a split second.
-            TryLoadSequence();
-            _sequencePlayer->Update();
+            numUpdates = 1 << (gGameSpeed - 1);
         }
-
-        log_verbose("loading title finished");
-    }
-
-    /**
-     * Creates the windows shown on the title screen; New game, load game,
-     * tutorial, toolbox and exit.
-     *  rct2: 0x0066B5C0 (part of 0x0066B3E8)
-     */
-    void title_create_windows()
-    {
-        window_title_menu_open();
-        window_title_exit_open();
-        window_title_options_open();
-        window_title_logo_open();
-        window_resize_gui(gScreenWidth, gScreenHeight);
-        gTitleHideVersionInfo = false;
-    }
-
-    void title_update()
-    {
-        screenshot_check();
-        title_handle_keyboard_input();
-
-        if (game_is_not_paused())
+        for (sint32 i = 0; i < numUpdates; i++)
         {
-            TryLoadSequence();
-            _sequencePlayer->Update();
-
-            sint32 numUpdates = 1;
-            if (gGameSpeed > 1) {
-                numUpdates = 1 << (gGameSpeed - 1);
-            }
-            for (sint32 i = 0; i < numUpdates; i++)
-            {
-                game_logic_update();
-            }
-            update_palette_effects();
-            // update_rain_animation();
+            game_logic_update();
         }
-
-        gInputFlags &= ~INPUT_FLAG_VIEWPORT_SCROLLING;
-
-        window_map_tooltip_update_visibility();
-        window_dispatch_update_all();
-
-        gSavedAge++;
-
-        game_handle_input();
+        update_palette_effects();
+        // update_rain_animation();
     }
 
-    void DrawOpenRCT2(rct_drawpixelinfo * dpi, int x, int y)
+    gInputFlags &= ~INPUT_FLAG_VIEWPORT_SCROLLING;
+
+    window_map_tooltip_update_visibility();
+    window_dispatch_update_all();
+
+    gSavedAge++;
+
+    game_handle_input();
+}
+
+void DrawOpenRCT2(rct_drawpixelinfo * dpi, int x, int y)
+{
+    utf8 buffer[256];
+
+    // Write format codes
+    utf8 * ch = buffer;
+    ch        = utf8_write_codepoint(ch, FORMAT_MEDIUMFONT);
+    ch        = utf8_write_codepoint(ch, FORMAT_OUTLINE);
+    ch        = utf8_write_codepoint(ch, FORMAT_WHITE);
+
+    // Write name and version information
+    openrct2_write_full_version_info(ch, sizeof(buffer) - (ch - buffer));
+    gfx_draw_string(dpi, buffer, COLOUR_BLACK, x + 5, y + 5 - 13);
+
+    // Write platform information
+    snprintf(ch, 256 - (ch - buffer), "%s (%s)", OPENRCT2_PLATFORM, OPENRCT2_ARCHITECTURE);
+    gfx_draw_string(dpi, buffer, COLOUR_BLACK, x + 5, y + 5);
+}
+
+void * title_get_sequence_player()
+{
+    return _sequencePlayer;
+}
+
+void title_sequence_change_preset(int preset)
+{
+    int count = (int)title_sequence_manager_get_count();
+    if (preset < 0 || preset >= count)
     {
-        utf8 buffer[256];
-
-        // Write format codes
-        utf8 *ch = buffer;
-        ch = utf8_write_codepoint(ch, FORMAT_MEDIUMFONT);
-        ch = utf8_write_codepoint(ch, FORMAT_OUTLINE);
-        ch = utf8_write_codepoint(ch, FORMAT_WHITE);
-
-        // Write name and version information
-        openrct2_write_full_version_info(ch, sizeof(buffer) - (ch - buffer));
-        gfx_draw_string(dpi, buffer, COLOUR_BLACK, x + 5, y + 5 - 13);
-
-        // Write platform information
-        snprintf(ch, 256 - (ch - buffer), "%s (%s)", OPENRCT2_PLATFORM, OPENRCT2_ARCHITECTURE);
-        gfx_draw_string(dpi, buffer, COLOUR_BLACK, x + 5, y + 5);
+        return;
     }
 
-    void * title_get_sequence_player()
-    {
-        return _sequencePlayer;
-    }
+    const utf8 * configId = title_sequence_manager_get_config_id(preset);
+    SafeFree(gConfigInterface.current_title_sequence_preset);
+    gConfigInterface.current_title_sequence_preset = _strdup(configId);
 
-    void title_sequence_change_preset(int preset)
-    {
-        int count = (int)title_sequence_manager_get_count();
-        if (preset < 0 || preset >= count) {
-            return;
-        }
-
-        const utf8 * configId = title_sequence_manager_get_config_id(preset);
-        SafeFree(gConfigInterface.current_title_sequence_preset);
-        gConfigInterface.current_title_sequence_preset = _strdup(configId);
-
-        gTitleCurrentSequence = preset;
-        window_invalidate_all();
-    }
+    gTitleCurrentSequence = preset;
+    window_invalidate_all();
+}
 }
