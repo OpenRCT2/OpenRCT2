@@ -665,8 +665,8 @@ sint32 cmdline_for_sprite(const char **argv, sint32 argc)
 		json_t* sprite_list=json_load_file(spriteDescriptionPath, JSON_REJECT_DUPLICATES, &error);
 		
 			if(sprite_list == NULL) {
-			fprintf(stderr,"Error parsing sprite description file: %s at line %d column %d\n",error.text,error.line,error.column);
-			return -1;
+				fprintf(stderr,"Error parsing sprite description file: %s at line %d column %d\n",error.text,error.line,error.column);
+				return -1;
 			}
 
 			if(!json_is_array(sprite_list)) {
