@@ -8,7 +8,7 @@ BreakBeforeBraces: Allman
 ColumnLimit: '128'
 Cpp11BracedListStyle: 'false'
 IncludeCategories:
-  - Regex:           '^"(\./)*common\.h"$'
+  - Regex:           '^"(\.{1,2}/)*common\.h"$'
     Priority:        -1
   - Regex:           '^<.*>$'
     Priority:        1
