@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -27,7 +27,7 @@ interface IAudioSource
 {
     virtual ~IAudioSource() = default;
 
-    virtual uint64 GetLength() abstract;
+    virtual uint64      GetLength() abstract;
     virtual AudioFormat GetFormat() abstract;
     virtual size_t Read(void * dst, uint64 offset, size_t len) abstract;
 };

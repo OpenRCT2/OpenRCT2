@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -16,24 +16,24 @@
 
 #pragma once
 
-#include <string>
 #include "../common.h"
+#include <string>
 
 namespace Path
 {
     utf8 * Append(utf8 * buffer, size_t bufferSize, const utf8 * src);
-    std::string Combine(const std::string &a, const std::string &b);
-    std::string GetDirectory(const std::string &path);
+    std::string Combine(const std::string & a, const std::string & b);
+    std::string GetDirectory(const std::string & path);
     utf8 * GetDirectory(const utf8 * path);
     utf8 * GetDirectory(utf8 * buffer, size_t bufferSize, const utf8 * path);
-    std::string GetFileName(const std::string &path);
+    std::string GetFileName(const std::string & path);
     const utf8 * GetFileName(const utf8 * path);
-    std::string GetFileNameWithoutExtension(const std::string &path);
+    std::string GetFileNameWithoutExtension(const std::string & path);
     utf8 * GetFileNameWithoutExtension(const utf8 * path);
     utf8 * GetFileNameWithoutExtension(utf8 * buffer, size_t bufferSize, const utf8 * path);
-    const std::string GetExtension(const std::string &path);
+    const std::string GetExtension(const std::string & path);
     const utf8 * GetExtension(const utf8 * path);
     utf8 * GetAbsolute(utf8 * buffer, size_t bufferSize, const utf8 * relativePath);
-    bool Equals(const std::string &a, const std::string &b);
+    bool Equals(const std::string & a, const std::string & b);
     bool Equals(const utf8 * a, const utf8 * b);
 }

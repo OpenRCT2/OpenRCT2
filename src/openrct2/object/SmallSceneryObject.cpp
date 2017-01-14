@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -14,15 +14,14 @@
  *****************************************************************************/
 #pragma endregion
 
+#include "SmallSceneryObject.h"
 #include "../core/IStream.hpp"
 #include "../core/Math.hpp"
 #include "../core/Memory.hpp"
-#include "SmallSceneryObject.h"
 
-extern "C"
-{
-    #include "../drawing/drawing.h"
-    #include "../localisation/localisation.h"
+extern "C" {
+#include "../drawing/drawing.h"
+#include "../localisation/localisation.h"
 }
 
 SmallSceneryObject::~SmallSceneryObject()
@@ -33,15 +32,15 @@ SmallSceneryObject::~SmallSceneryObject()
 void SmallSceneryObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
 {
     stream->Seek(6, STREAM_SEEK_CURRENT);
-    _legacyType.small_scenery.flags = stream->ReadValue<uint32>();
-    _legacyType.small_scenery.height = stream->ReadValue<uint8>();
-    _legacyType.small_scenery.tool_id = stream->ReadValue<uint8>();
-    _legacyType.small_scenery.price = stream->ReadValue<sint16>();
+    _legacyType.small_scenery.flags         = stream->ReadValue<uint32>();
+    _legacyType.small_scenery.height        = stream->ReadValue<uint8>();
+    _legacyType.small_scenery.tool_id       = stream->ReadValue<uint8>();
+    _legacyType.small_scenery.price         = stream->ReadValue<sint16>();
     _legacyType.small_scenery.removal_price = stream->ReadValue<sint16>();
     stream->Seek(4, STREAM_SEEK_CURRENT);
-    _legacyType.small_scenery.var_14 = stream->ReadValue<uint16>();
-    _legacyType.small_scenery.var_16 = stream->ReadValue<uint16>();
-    _legacyType.small_scenery.var_18 = stream->ReadValue<uint16>();
+    _legacyType.small_scenery.var_14         = stream->ReadValue<uint16>();
+    _legacyType.small_scenery.var_16         = stream->ReadValue<uint16>();
+    _legacyType.small_scenery.var_18         = stream->ReadValue<uint16>();
     _legacyType.small_scenery.scenery_tab_id = 0xFF;
 
     GetStringTable()->Read(context, stream, OBJ_STRING_ID_NAME);
@@ -75,7 +74,7 @@ void SmallSceneryObject::ReadLegacy(IReadObjectContext * context, IStream * stre
 void SmallSceneryObject::Load()
 {
     GetStringTable()->Sort();
-    _legacyType.name = language_allocate_object_string(GetName());
+    _legacyType.name  = language_allocate_object_string(GetName());
     _legacyType.image = gfx_object_allocate_images(GetImageTable()->GetImages(), GetImageTable()->GetCount());
 
     _legacyType.small_scenery.scenery_tab_id = 0xFF;
@@ -91,13 +90,13 @@ void SmallSceneryObject::Unload()
     language_free_object_string(_legacyType.name);
     gfx_object_free_images(_legacyType.image, GetImageTable()->GetCount());
 
-    _legacyType.name = 0;
+    _legacyType.name  = 0;
     _legacyType.image = 0;
 }
 
 void SmallSceneryObject::DrawPreview(rct_drawpixelinfo * dpi, sint32 width, sint32 height) const
 {
-    uint32 flags = _legacyType.small_scenery.flags;
+    uint32 flags   = _legacyType.small_scenery.flags;
     uint32 imageId = _legacyType.image;
     if (flags & SMALL_SCENERY_FLAG_HAS_PRIMARY_COLOUR)
     {
@@ -110,10 +109,9 @@ void SmallSceneryObject::DrawPreview(rct_drawpixelinfo * dpi, sint32 width, sint
 
     sint32 x = width / 2;
     sint32 y = (height / 2) + (_legacyType.small_scenery.height / 2);
-    y = Math::Min(y, height - 16);
+    y        = Math::Min(y, height - 16);
 
-    if ((flags & SMALL_SCENERY_FLAG_FULL_TILE) &&
-        (flags & SMALL_SCENERY_FLAG_VOFFSET_CENTRE))
+    if ((flags & SMALL_SCENERY_FLAG_FULL_TILE) && (flags & SMALL_SCENERY_FLAG_VOFFSET_CENTRE))
     {
         y -= 12;
     }
@@ -144,7 +142,7 @@ void SmallSceneryObject::DrawPreview(rct_drawpixelinfo * dpi, sint32 width, sint
 uint8 * SmallSceneryObject::ReadVar10(IStream * stream)
 {
     uint8 b;
-    auto data = std::vector<uint8>();
+    auto  data = std::vector<uint8>();
     data.push_back(stream->ReadValue<uint8>());
     while ((b = stream->ReadValue<uint8>()) != 0xFF)
     {

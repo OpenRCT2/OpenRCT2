@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -21,14 +21,14 @@
 #include "rct2.h"
 
 typedef enum {
-	EDITOR_STEP_OBJECT_SELECTION,			// 0
-	EDITOR_STEP_LANDSCAPE_EDITOR,			// 1
-	EDITOR_STEP_INVENTIONS_LIST_SET_UP,		// 2
-	EDITOR_STEP_OPTIONS_SELECTION,			// 3
-	EDITOR_STEP_OBJECTIVE_SELECTION,		// 4
-	EDITOR_STEP_SAVE_SCENARIO,				// 5
-	EDITOR_STEP_ROLLERCOASTER_DESIGNER,		// 6
-	EDITOR_STEP_TRACK_DESIGNS_MANAGER		// 7
+    EDITOR_STEP_OBJECT_SELECTION,       // 0
+    EDITOR_STEP_LANDSCAPE_EDITOR,       // 1
+    EDITOR_STEP_INVENTIONS_LIST_SET_UP, // 2
+    EDITOR_STEP_OPTIONS_SELECTION,      // 3
+    EDITOR_STEP_OBJECTIVE_SELECTION,    // 4
+    EDITOR_STEP_SAVE_SCENARIO,          // 5
+    EDITOR_STEP_ROLLERCOASTER_DESIGNER, // 6
+    EDITOR_STEP_TRACK_DESIGNS_MANAGER   // 7
 } RCT2_EDITOR_STEP;
 
 extern uint8 * gEditorSelectedObjects[OBJECT_ENTRY_GROUP_COUNT];
@@ -37,12 +37,12 @@ void editor_load();
 void editor_convert_save_to_scenario();
 void trackdesigner_load();
 void trackmanager_load();
-bool editor_load_landscape(const utf8 *path);
+bool editor_load_landscape(const utf8 * path);
 
 void editor_open_windows_for_current_step();
 
 bool editor_check_park();
-int editor_check_object_selection();
+int  editor_check_object_selection();
 
 bool editor_check_object_group_at_least_one_selected(int objectType);
 

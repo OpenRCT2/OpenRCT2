@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -37,8 +37,7 @@ namespace Guard
     void Fail(const char * message = nullptr, ...);
     void Fail_VA(const char * message, va_list args);
 
-    template<typename T>
-    static void ArgumentNotNull(T * argument, const char * message = nullptr, ...)
+    template <typename T> static void ArgumentNotNull(T * argument, const char * message = nullptr, ...)
     {
         va_list args;
         va_start(args, message);
@@ -46,8 +45,7 @@ namespace Guard
         va_end(args);
     }
 
-    template<typename T>
-    static void ArgumentInRange(T argument, T min, T max, const char * message = nullptr, ...)
+    template <typename T> static void ArgumentInRange(T argument, T min, T max, const char * message = nullptr, ...)
     {
         va_list args;
         va_start(args, message);

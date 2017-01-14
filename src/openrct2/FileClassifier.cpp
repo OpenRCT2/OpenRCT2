@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -14,13 +14,12 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "core/FileStream.hpp"
 #include "FileClassifier.h"
+#include "core/FileStream.hpp"
 
-extern "C"
-{
-    #include "scenario/scenario.h"
-    #include "util/sawyercoding.h"
+extern "C" {
+#include "scenario/scenario.h"
+#include "util/sawyercoding.h"
 }
 
 static bool TryClassifyAsS6(IStream * stream, ClassifiedFile * result);
@@ -28,7 +27,7 @@ static bool TryClassifyAsS4(IStream * stream, ClassifiedFile * result);
 static bool TryClassifyAsTD4_TD6(IStream * stream, ClassifiedFile * result);
 static bool sawyercoding_try_read_chunk(void * dst, size_t expectedSize, IStream * stream);
 
-bool TryClassifyFile(const std::string &path, ClassifiedFile * result)
+bool TryClassifyFile(const std::string & path, ClassifiedFile * result)
 {
     try
     {
@@ -91,52 +90,52 @@ static bool TryClassifyAsS6(IStream * stream, ClassifiedFile * result)
 
 static bool TryClassifyAsS4(IStream * stream, ClassifiedFile * result)
 {
-    uint64 originalPosition = stream->GetPosition();
-    size_t dataLength = (size_t)stream->GetLength();
-    uint8 * data = stream->ReadArray<uint8>(dataLength);
+    uint64  originalPosition = stream->GetPosition();
+    size_t  dataLength       = (size_t)stream->GetLength();
+    uint8 * data             = stream->ReadArray<uint8>(dataLength);
     stream->SetPosition(originalPosition);
     int fileTypeVersion = sawyercoding_detect_file_type(data, dataLength);
     Memory::Free(data);
 
-    int type = fileTypeVersion & FILE_TYPE_MASK;
+    int type    = fileTypeVersion & FILE_TYPE_MASK;
     int version = fileTypeVersion & FILE_VERSION_MASK;
 
     if (type == FILE_TYPE_SV4)
     {
-        result->Type = FILE_TYPE::SAVED_GAME;
+        result->Type    = FILE_TYPE::SAVED_GAME;
         result->Version = version;
         return true;
     }
     else if (type == FILE_TYPE_SC4)
     {
-        result->Type = FILE_TYPE::SCENARIO;
+        result->Type    = FILE_TYPE::SCENARIO;
         result->Version = version;
         return true;
     }
-    
+
     return false;
 }
 
 static bool TryClassifyAsTD4_TD6(IStream * stream, ClassifiedFile * result)
 {
-    bool success = false;
-    uint64 originalPosition = stream->GetPosition();
-    size_t dataLength = (size_t)stream->GetLength();
-    uint8 * data = stream->ReadArray<uint8>(dataLength);
+    bool    success          = false;
+    uint64  originalPosition = stream->GetPosition();
+    size_t  dataLength       = (size_t)stream->GetLength();
+    uint8 * data             = stream->ReadArray<uint8>(dataLength);
     stream->SetPosition(originalPosition);
 
     if (sawyercoding_validate_track_checksum(data, dataLength))
     {
         uint8 * td6data = Memory::Allocate<uint8>(0x10000);
-        size_t td6len = sawyercoding_decode_td6(data, td6data, dataLength);
+        size_t  td6len  = sawyercoding_decode_td6(data, td6data, dataLength);
         if (td6data != nullptr && td6len >= 8)
         {
             uint8 version = (td6data[7] >> 2) & 3;
             if (version <= 2)
             {
-                result->Type = FILE_TYPE::TRACK_DESIGN;
+                result->Type    = FILE_TYPE::TRACK_DESIGN;
                 result->Version = version;
-                success = true;
+                success         = true;
             }
         }
         Memory::Free(td6data);
@@ -151,8 +150,9 @@ static bool sawyercoding_try_read_chunk(void * dst, size_t expectedSize, IStream
     uint64 originalPosition = stream->GetPosition();
 
     bool success = false;
-    auto header = stream->ReadValue<sawyercoding_chunk_header>();
-    switch (header.encoding) {
+    auto header  = stream->ReadValue<sawyercoding_chunk_header>();
+    switch (header.encoding)
+    {
     case CHUNK_ENCODING_NONE:
     case CHUNK_ENCODING_RLE:
     case CHUNK_ENCODING_RLECOMPRESSED:

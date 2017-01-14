@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -14,35 +14,35 @@
  *****************************************************************************/
 #pragma endregion
 
+#include "AudioChannel.h"
+#include "../core/Math.hpp"
+#include "AudioSource.h"
 #include <cmath>
 #include <speex/speex_resampler.h>
-#include "../core/Math.hpp"
-#include "AudioChannel.h"
-#include "AudioSource.h"
 
 class AudioChannelImpl : public IAudioChannel
 {
 private:
-    IAudioSource * _source = nullptr;
+    IAudioSource *        _source    = nullptr;
     SpeexResamplerState * _resampler = nullptr;
 
-    int _group = MIXER_GROUP_SOUND;
-    double _rate = 0;
+    int    _group  = MIXER_GROUP_SOUND;
+    double _rate   = 0;
     uint64 _offset = 0;
-    int _loop = 0;
+    int    _loop   = 0;
 
-    int     _volume = 1;
-    float   _volume_l = 0.f;
-    float   _volume_r = 0.f;
-    float   _oldvolume_l = 0.f;
-    float   _oldvolume_r = 0.f;
-    int     _oldvolume = 0;
-    float   _pan = 0;
+    int   _volume      = 1;
+    float _volume_l    = 0.f;
+    float _volume_r    = 0.f;
+    float _oldvolume_l = 0.f;
+    float _oldvolume_r = 0.f;
+    int   _oldvolume   = 0;
+    float _pan         = 0;
 
-    bool    _stopping = false;
-    bool    _done = true;
-    bool    _deleteondone = false;
-    bool    _deletesourceondone = false;
+    bool _stopping           = false;
+    bool _done               = true;
+    bool _deleteondone       = false;
+    bool _deletesourceondone = false;
 
 public:
     AudioChannelImpl()
@@ -109,9 +109,9 @@ public:
     {
         if (_source != nullptr && offset < _source->GetLength())
         {
-            AudioFormat format = _source->GetFormat();
-            int samplesize = format.channels * format.BytesPerSample();
-            _offset = (offset / samplesize) * samplesize;
+            AudioFormat format     = _source->GetFormat();
+            int         samplesize = format.channels * format.BytesPerSample();
+            _offset                = (offset / samplesize) * samplesize;
             return true;
         }
         return false;
@@ -169,8 +169,8 @@ public:
 
     void SetPan(float pan) override
     {
-        _pan = Math::Clamp(0.0f, pan, 1.0f);
-        double decibels = (std::abs(_pan - 0.5) * 2.0) * 100.0;
+        _pan               = Math::Clamp(0.0f, pan, 1.0f);
+        double decibels    = (std::abs(_pan - 0.5) * 2.0) * 100.0;
         double attenuation = pow(10, decibels / 20.0);
         if (_pan <= 0.5)
         {
@@ -227,14 +227,14 @@ public:
     void Play(IAudioSource * source, int loop) override
     {
         _source = source;
-        _loop = loop;
+        _loop   = loop;
         _offset = 0;
-        _done = false;
+        _done   = false;
     }
 
     void UpdateOldVolume() override
     {
-        _oldvolume = _volume;
+        _oldvolume   = _volume;
         _oldvolume_l = _volume_l;
         _oldvolume_r = _volume_r;
     }
@@ -251,7 +251,7 @@ public:
 
     size_t Read(void * dst, size_t len) override
     {
-        size_t bytesRead = 0;
+        size_t bytesRead   = 0;
         size_t bytesToRead = len;
         while (bytesToRead > 0 && !_done)
         {

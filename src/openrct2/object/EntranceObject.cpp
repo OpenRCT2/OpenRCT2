@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -14,20 +14,19 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../core/IStream.hpp"
 #include "EntranceObject.h"
+#include "../core/IStream.hpp"
 
-extern "C"
-{
-    #include "../drawing/drawing.h"
-    #include "../localisation/localisation.h"
+extern "C" {
+#include "../drawing/drawing.h"
+#include "../localisation/localisation.h"
 }
 
 void EntranceObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
 {
     stream->Seek(6, STREAM_SEEK_CURRENT);
     _legacyType.scrolling_mode = stream->ReadValue<uint8>();
-    _legacyType.text_height = stream->ReadValue<uint8>();
+    _legacyType.text_height    = stream->ReadValue<uint8>();
 
     GetStringTable()->Read(context, stream, OBJ_STRING_ID_NAME);
     GetImageTable()->Read(context, stream);
@@ -37,7 +36,7 @@ void EntranceObject::Load()
 {
     GetStringTable()->Sort();
     _legacyType.string_idx = language_allocate_object_string(GetName());
-    _legacyType.image_id = gfx_object_allocate_images(GetImageTable()->GetImages(), GetImageTable()->GetCount());
+    _legacyType.image_id   = gfx_object_allocate_images(GetImageTable()->GetImages(), GetImageTable()->GetCount());
 }
 
 void EntranceObject::Unload()
@@ -46,7 +45,7 @@ void EntranceObject::Unload()
     gfx_object_free_images(_legacyType.image_id, GetImageTable()->GetCount());
 
     _legacyType.string_idx = 0;
-    _legacyType.image_id = 0;
+    _legacyType.image_id   = 0;
 }
 
 void EntranceObject::DrawPreview(rct_drawpixelinfo * dpi, sint32 width, sint32 height) const
@@ -56,6 +55,6 @@ void EntranceObject::DrawPreview(rct_drawpixelinfo * dpi, sint32 width, sint32 h
 
     uint32 imageId = _legacyType.image_id;
     gfx_draw_sprite(dpi, imageId + 1, x - 32, y + 14, 0);
-    gfx_draw_sprite(dpi, imageId + 0, x +  0, y + 28, 0);
+    gfx_draw_sprite(dpi, imageId + 0, x + 0, y + 28, 0);
     gfx_draw_sprite(dpi, imageId + 2, x + 32, y + 44, 0);
 }

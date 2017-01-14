@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -14,24 +14,24 @@
  *****************************************************************************/
 #pragma endregion
 
-#include <SDL_platform.h>
 #include "crash.h"
+#include <SDL_platform.h>
 
 #ifdef USE_BREAKPAD
 #include <stdio.h>
 
 #if defined(__WINDOWS__)
-    #include <breakpad/client/windows/handler/exception_handler.h>
-    #include <string>
-    #include <ShlObj.h>
+#include <ShlObj.h>
+#include <breakpad/client/windows/handler/exception_handler.h>
+#include <string>
 #else
-    #error Breakpad support not implemented yet for this platform
+#error Breakpad support not implemented yet for this platform
 #endif
 
 extern "C" {
-    #include "../localisation/language.h"
-    #include "../scenario/scenario.h"
-    #include "platform.h"
+#include "../localisation/language.h"
+#include "../scenario/scenario.h"
+#include "platform.h"
 }
 
 #include "../core/Console.hpp"
@@ -39,24 +39,22 @@ extern "C" {
 #define WSZ(x) L"" x
 
 #ifdef OPENRCT2_COMMIT_SHA1_SHORT
-    const wchar_t *_wszCommitSha1Short = WSZ(OPENRCT2_COMMIT_SHA1_SHORT);
+const wchar_t * _wszCommitSha1Short = WSZ(OPENRCT2_COMMIT_SHA1_SHORT);
 #else
-    const wchar_t *_wszCommitSha1Short = WSZ("");
+const wchar_t * _wszCommitSha1Short = WSZ("");
 #endif
 
 // OPENRCT2_ARCHITECTURE is required to be defined in version.h
-const wchar_t *_wszArchitecture = WSZ(OPENRCT2_ARCHITECTURE);
+const wchar_t * _wszArchitecture = WSZ(OPENRCT2_ARCHITECTURE);
 
-static bool OnCrash(const wchar_t * dumpPath,
-                    const wchar_t * miniDumpId,
-                    void * context,
-                    EXCEPTION_POINTERS * exinfo,
-                    MDRawAssertionInfo * assertion,
-                    bool succeeded)
+static bool OnCrash(const wchar_t * dumpPath, const wchar_t * miniDumpId, void * context, EXCEPTION_POINTERS * exinfo,
+                    MDRawAssertionInfo * assertion, bool succeeded)
 {
     if (!succeeded)
     {
-        constexpr const char * DumpFailedMessage = "Failed to create the dump. Please file an issue with OpenRCT2 on GitHub and provide latest save, and provide information about what you did before the crash occured.";
+        constexpr const char * DumpFailedMessage = "Failed to create the dump. Please file an issue with OpenRCT2 on GitHub "
+                                                   "and provide latest save, and provide information about what you did before "
+                                                   "the crash occured.";
         printf("%s\n", DumpFailedMessage);
         if (!gOpenRCT2SilentBreakpad)
         {
@@ -73,7 +71,8 @@ static bool OnCrash(const wchar_t * dumpPath,
 
     // Try to rename the files
     wchar_t dumpFilePathNew[MAX_PATH];
-    swprintf_s(dumpFilePathNew, sizeof(dumpFilePathNew), L"%s%s(%s_%s).dmp", dumpPath, miniDumpId, _wszCommitSha1Short, _wszArchitecture);
+    swprintf_s(dumpFilePathNew, sizeof(dumpFilePathNew), L"%s%s(%s_%s).dmp", dumpPath, miniDumpId, _wszCommitSha1Short,
+               _wszArchitecture);
     if (_wrename(dumpFilePath, dumpFilePathNew) == 0)
     {
         std::wcscpy(dumpFilePath, dumpFilePathNew);
@@ -86,12 +85,13 @@ static bool OnCrash(const wchar_t * dumpPath,
     wprintf(L"Version: %s\n", WSZ(OPENRCT2_VERSION));
     wprintf(L"Commit: %s\n", _wszCommitSha1Short);
 
-    utf8 * saveFilePathUTF8 = widechar_to_utf8(saveFilePath);
-    SDL_RWops * rw = SDL_RWFromFile(saveFilePathUTF8, "wb+");
+    utf8 *      saveFilePathUTF8 = widechar_to_utf8(saveFilePath);
+    SDL_RWops * rw               = SDL_RWFromFile(saveFilePathUTF8, "wb+");
     free(saveFilePathUTF8);
 
     bool savedGameDumped = false;
-    if (rw != NULL) {
+    if (rw != NULL)
+    {
         scenario_save(rw, 0x80000000);
         savedGameDumped = true;
         SDL_RWclose(rw);
@@ -101,13 +101,11 @@ static bool OnCrash(const wchar_t * dumpPath,
     {
         return succeeded;
     }
-    constexpr const wchar_t * MessageFormat = L"A crash has occurred and a dump was created at\n%s.\n\nPlease file an issue with OpenRCT2 on GitHub, and provide the dump and saved game there.\n\nVersion: %s\nCommit: %s";
+    constexpr const wchar_t * MessageFormat = L"A crash has occurred and a dump was created at\n%s.\n\nPlease file an issue "
+                                              L"with OpenRCT2 on GitHub, and provide the dump and saved game "
+                                              L"there.\n\nVersion: %s\nCommit: %s";
     wchar_t message[MAX_PATH * 2];
-    swprintf_s(message,
-               MessageFormat,
-               dumpFilePath,
-               WSZ(OPENRCT2_VERSION),
-               _wszCommitSha1Short);
+    swprintf_s(message, MessageFormat, dumpFilePath, WSZ(OPENRCT2_VERSION), _wszCommitSha1Short);
 
     // Cannot use platform_show_messagebox here, it tries to set parent window already dead.
     MessageBoxW(NULL, message, WSZ(OPENRCT2_NAME), MB_OK | MB_ICONERROR);
@@ -116,14 +114,15 @@ static bool OnCrash(const wchar_t * dumpPath,
     {
         LPITEMIDLIST pidl = ILCreateFromPathW(dumpPath);
         LPITEMIDLIST files[2];
-        uint32 numFiles = 0;
+        uint32       numFiles = 0;
 
         files[numFiles++] = ILCreateFromPathW(dumpFilePath);
         if (savedGameDumped)
         {
             files[numFiles++] = ILCreateFromPathW(saveFilePath);
         }
-        if (pidl != nullptr) {
+        if (pidl != nullptr)
+        {
             SHOpenFolderAndSelectItems(pidl, numFiles, (LPCITEMIDLIST *)files, 0);
             ILFree(pidl);
             for (uint32 i = 0; i < numFiles; i++)
@@ -144,7 +143,7 @@ static std::wstring GetDumpDirectory()
     platform_get_user_directory(userDirectory, NULL, sizeof(userDirectory));
 
     wchar_t * userDirectoryW = utf8_to_widechar(userDirectory);
-    auto result = std::wstring(userDirectoryW);
+    auto      result         = std::wstring(userDirectoryW);
     free(userDirectoryW);
 
     return result;
@@ -160,16 +159,9 @@ extern "C" CExceptionHandler crash_init()
 #ifdef USE_BREAKPAD
     // Path must exist and be RW!
     auto exHandler = new google_breakpad::ExceptionHandler(
-        GetDumpDirectory(),
-        0,
-        OnCrash,
-        0,
-        google_breakpad::ExceptionHandler::HANDLER_ALL,
-        MiniDumpWithDataSegs,
-        PipeName,
-        0);
+        GetDumpDirectory(), 0, OnCrash, 0, google_breakpad::ExceptionHandler::HANDLER_ALL, MiniDumpWithDataSegs, PipeName, 0);
     return reinterpret_cast<CExceptionHandler>(exHandler);
-#else // USE_BREAKPAD
+#else  // USE_BREAKPAD
     return nullptr;
 #endif // USE_BREAKPAD
 }

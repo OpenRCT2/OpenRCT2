@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -14,75 +14,75 @@
  *****************************************************************************/
 #pragma endregion
 
-#include <string>
+#include "OpenRCT2.h"
+#include "FileClassifier.h"
+#include "PlatformEnvironment.h"
 #include "core/Console.hpp"
 #include "core/Guard.hpp"
 #include "core/String.hpp"
-#include "FileClassifier.h"
 #include "network/network.h"
 #include "object/ObjectRepository.h"
-#include "OpenRCT2.h"
 #include "platform/crash.h"
-#include "PlatformEnvironment.h"
 #include "ride/TrackDesignRepository.h"
 #include "scenario/ScenarioRepository.h"
 #include "title/TitleScreen.h"
 #include "title/TitleSequenceManager.h"
+#include <string>
 
-extern "C"
-{
-    #include "audio/audio.h"
-    #include "config.h"
-    #include "editor.h"
-    #include "game.h"
-    #include "interface/chat.h"
-    #include "interface/themes.h"
-    #include "intro.h"
-    #include "localisation/localisation.h"
-    #include "network/http.h"
-    #include "object_list.h"
-    #include "platform/platform.h"
-    #include "rct1.h"
-    #include "rct2/interop.h"
-    #include "version.h"
+extern "C" {
+#include "audio/audio.h"
+#include "config.h"
+#include "editor.h"
+#include "game.h"
+#include "interface/chat.h"
+#include "interface/themes.h"
+#include "intro.h"
+#include "localisation/localisation.h"
+#include "network/http.h"
+#include "object_list.h"
+#include "platform/platform.h"
+#include "rct1.h"
+#include "rct2/interop.h"
+#include "version.h"
 }
 
 // The game update inverval in milliseconds, (1000 / 40fps) = 25ms
 constexpr uint32 UPDATE_TIME_MS = 25;
 
-extern "C"
-{
-    int gExitCode;
-    int gOpenRCT2StartupAction = STARTUP_ACTION_TITLE;
-    utf8 gOpenRCT2StartupActionPath[512] = { 0 };
-    utf8 gExePath[MAX_PATH];
-    utf8 gCustomUserDataPath[MAX_PATH] = { 0 };
-    utf8 gCustomOpenrctDataPath[MAX_PATH] = { 0 };
-    utf8 gCustomRCT2DataPath[MAX_PATH] = { 0 };
-    utf8 gCustomPassword[MAX_PATH] = { 0 };
+extern "C" {
+int  gExitCode;
+int  gOpenRCT2StartupAction          = STARTUP_ACTION_TITLE;
+utf8 gOpenRCT2StartupActionPath[512] = { 0 };
+utf8 gExePath[MAX_PATH];
+utf8 gCustomUserDataPath[MAX_PATH]    = { 0 };
+utf8 gCustomOpenrctDataPath[MAX_PATH] = { 0 };
+utf8 gCustomRCT2DataPath[MAX_PATH]    = { 0 };
+utf8 gCustomPassword[MAX_PATH]        = { 0 };
 
-    // This should probably be changed later and allow a custom selection of things to initialise like SDL_INIT
-    bool gOpenRCT2Headless = false;
+// This should probably be changed later and allow a custom selection of things to initialise like SDL_INIT
+bool gOpenRCT2Headless = false;
 
-    bool gOpenRCT2ShowChangelog;
-    bool gOpenRCT2SilentBreakpad;
+bool gOpenRCT2ShowChangelog;
+bool gOpenRCT2SilentBreakpad;
 
 #ifndef DISABLE_NETWORK
-    // OpenSSL's message digest context used for calculating sprite checksums
-    EVP_MD_CTX * gHashCTX = nullptr;
+// OpenSSL's message digest context used for calculating sprite checksums
+EVP_MD_CTX * gHashCTX = nullptr;
 #endif // DISABLE_NETWORK
 }
 
 namespace OpenRCT2
 {
     static IPlatformEnvironment * _env = nullptr;
-    static std::string _versionInfo;
-    static bool _isWindowMinimised;
-    static uint32 _isWindowMinimisedLastCheckTick;
-    static uint32 _lastTick;
-    static uint32 _uncapTick;
+    static std::string            _versionInfo;
+    static bool                   _isWindowMinimised;
+    static uint32                 _isWindowMinimisedLastCheckTick;
+    static uint32                 _lastTick;
+    static uint32                 _uncapTick;
 
-    /** If set, will end the OpenRCT2 game loop. Intentially private to this module so that the flag can not be set back to false. */
+    /** If set, will end the OpenRCT2 game loop. Intentially private to this module so that the flag can not be set back to
+     * false.
+     */
     static bool _finished;
 
     static void SetVersionInfoString();
@@ -94,237 +94,237 @@ namespace OpenRCT2
     static bool OpenParkAutoDetectFormat(const utf8 * path);
 }
 
-extern "C"
+extern "C" {
+void openrct2_write_full_version_info(utf8 * buffer, size_t bufferSize)
 {
-    void openrct2_write_full_version_info(utf8 * buffer, size_t bufferSize)
+    if (OpenRCT2::_versionInfo.empty())
     {
-        if (OpenRCT2::_versionInfo.empty())
-        {
-            OpenRCT2::SetVersionInfoString();
-        }
-        String::Set(buffer, bufferSize, OpenRCT2::_versionInfo.c_str());
+        OpenRCT2::SetVersionInfoString();
     }
+    String::Set(buffer, bufferSize, OpenRCT2::_versionInfo.c_str());
+}
 
-    static void openrct2_set_exe_path()
-    {
-        platform_get_exe_path(gExePath, sizeof(gExePath));
-        log_verbose("Setting exe path to %s", gExePath);
-    }
+static void openrct2_set_exe_path()
+{
+    platform_get_exe_path(gExePath, sizeof(gExePath));
+    log_verbose("Setting exe path to %s", gExePath);
+}
 
-    bool openrct2_initialise()
-    {
+bool openrct2_initialise()
+{
 #ifndef DISABLE_NETWORK
-        gHashCTX = EVP_MD_CTX_create();
-        Guard::Assert(gHashCTX != nullptr, "EVP_MD_CTX_create failed");
+    gHashCTX = EVP_MD_CTX_create();
+    Guard::Assert(gHashCTX != nullptr, "EVP_MD_CTX_create failed");
 #endif // DISABLE_NETWORK
 
-        crash_init();
+    crash_init();
 
-        // Sets up the environment OpenRCT2 is running in, e.g. directory paths
-        OpenRCT2::_env = OpenRCT2::SetupEnvironment();
-        if (OpenRCT2::_env == nullptr)
-        {
-            return false;
-        }
-
-        if (!rct2_interop_setup_segment())
-        {
-            log_fatal("Unable to load RCT2 data sector");
-            return false;
-        }
-
-        if (gConfigGeneral.last_run_version != nullptr && String::Equals(gConfigGeneral.last_run_version, OPENRCT2_VERSION))
-        {
-            gOpenRCT2ShowChangelog = false;
-        }
-        else
-        {
-            gOpenRCT2ShowChangelog = true;
-            gConfigGeneral.last_run_version = String::Duplicate(OPENRCT2_VERSION);
-            config_save_default();
-        }
-
-        // TODO add configuration option to allow multiple instances
-        // if (!gOpenRCT2Headless && !platform_lock_single_instance()) {
-        // 	log_fatal("OpenRCT2 is already running.");
-        // 	return false;
-        // }
-
-        IObjectRepository * objRepo = CreateObjectRepository(OpenRCT2::_env);
-        ITrackDesignRepository * tdRepo = CreateTrackDesignRepository(OpenRCT2::_env);
-        CreateScenarioRepository(OpenRCT2::_env);
-
-        if (!language_open(gConfigGeneral.language))
-        {
-            log_error("Failed to open configured language...");
-            if (!language_open(LANGUAGE_ENGLISH_UK))
-            {
-                log_fatal("Failed to open fallback language...");
-                return false;
-            }
-        }
-
-        // TODO Ideally we want to delay this until we show the title so that we can
-        //      still open the game window and draw a progress screen for the creation
-        //      of the object cache.
-        objRepo->LoadOrConstruct();
-
-        // TODO Like objects, this can take a while if there are a lot of track designs
-        //      its also really something really we might want to do in the background
-        //      as its not required until the player wants to place a new ride.
-        tdRepo->Scan();
-
-        TitleSequenceManager::Scan();
-
-        if (!gOpenRCT2Headless)
-        {
-            audio_init();
-            audio_populate_devices();
-        }
-
-        http_init();
-        theme_manager_initialise();
-
-        rct2_interop_setup_hooks();
-
-        if (!rct2_init())
-        {
-            return false;
-        }
-
-        chat_init();
-
-        rct2_copy_original_user_files_over();
-        return true;
+    // Sets up the environment OpenRCT2 is running in, e.g. directory paths
+    OpenRCT2::_env = OpenRCT2::SetupEnvironment();
+    if (OpenRCT2::_env == nullptr)
+    {
+        return false;
     }
 
-    /**
-     * Launches the game, after command line arguments have been parsed and processed.
-     */
-    void openrct2_launch()
+    if (!rct2_interop_setup_segment())
     {
-        if (openrct2_initialise())
+        log_fatal("Unable to load RCT2 data sector");
+        return false;
+    }
+
+    if (gConfigGeneral.last_run_version != nullptr && String::Equals(gConfigGeneral.last_run_version, OPENRCT2_VERSION))
+    {
+        gOpenRCT2ShowChangelog = false;
+    }
+    else
+    {
+        gOpenRCT2ShowChangelog          = true;
+        gConfigGeneral.last_run_version = String::Duplicate(OPENRCT2_VERSION);
+        config_save_default();
+    }
+
+    // TODO add configuration option to allow multiple instances
+    // if (!gOpenRCT2Headless && !platform_lock_single_instance()) {
+    // 	log_fatal("OpenRCT2 is already running.");
+    // 	return false;
+    // }
+
+    IObjectRepository *      objRepo = CreateObjectRepository(OpenRCT2::_env);
+    ITrackDesignRepository * tdRepo  = CreateTrackDesignRepository(OpenRCT2::_env);
+    CreateScenarioRepository(OpenRCT2::_env);
+
+    if (!language_open(gConfigGeneral.language))
+    {
+        log_error("Failed to open configured language...");
+        if (!language_open(LANGUAGE_ENGLISH_UK))
         {
-            gIntroState = INTRO_STATE_NONE;
-            if ((gOpenRCT2StartupAction == STARTUP_ACTION_TITLE) && gConfigGeneral.play_intro)
-            {
-                gOpenRCT2StartupAction = STARTUP_ACTION_INTRO;
-            }
+            log_fatal("Failed to open fallback language...");
+            return false;
+        }
+    }
 
-            switch (gOpenRCT2StartupAction) {
-            case STARTUP_ACTION_INTRO:
-                gIntroState = INTRO_STATE_PUBLISHER_BEGIN;
-                title_load();
-                break;
-            case STARTUP_ACTION_TITLE:
-                title_load();
-                break;
-            case STARTUP_ACTION_OPEN:
+    // TODO Ideally we want to delay this until we show the title so that we can
+    //      still open the game window and draw a progress screen for the creation
+    //      of the object cache.
+    objRepo->LoadOrConstruct();
+
+    // TODO Like objects, this can take a while if there are a lot of track designs
+    //      its also really something really we might want to do in the background
+    //      as its not required until the player wants to place a new ride.
+    tdRepo->Scan();
+
+    TitleSequenceManager::Scan();
+
+    if (!gOpenRCT2Headless)
+    {
+        audio_init();
+        audio_populate_devices();
+    }
+
+    http_init();
+    theme_manager_initialise();
+
+    rct2_interop_setup_hooks();
+
+    if (!rct2_init())
+    {
+        return false;
+    }
+
+    chat_init();
+
+    rct2_copy_original_user_files_over();
+    return true;
+}
+
+/**
+ * Launches the game, after command line arguments have been parsed and processed.
+ */
+void openrct2_launch()
+{
+    if (openrct2_initialise())
+    {
+        gIntroState = INTRO_STATE_NONE;
+        if ((gOpenRCT2StartupAction == STARTUP_ACTION_TITLE) && gConfigGeneral.play_intro)
+        {
+            gOpenRCT2StartupAction = STARTUP_ACTION_INTRO;
+        }
+
+        switch (gOpenRCT2StartupAction)
+        {
+        case STARTUP_ACTION_INTRO:
+            gIntroState = INTRO_STATE_PUBLISHER_BEGIN;
+            title_load();
+            break;
+        case STARTUP_ACTION_TITLE:
+            title_load();
+            break;
+        case STARTUP_ACTION_OPEN:
+        {
+            bool parkLoaded = false;
+            // A path that includes "://" is illegal with all common filesystems, so it is almost certainly a URL
+            // This way all cURL supported protocols, like http, ftp, scp and smb are automatically handled
+            if (strstr(gOpenRCT2StartupActionPath, "://") != nullptr)
             {
-                bool parkLoaded = false;
-                // A path that includes "://" is illegal with all common filesystems, so it is almost certainly a URL
-                // This way all cURL supported protocols, like http, ftp, scp and smb are automatically handled
-                if (strstr(gOpenRCT2StartupActionPath, "://") != nullptr)
-                {
 #ifndef DISABLE_HTTP
-                    // Download park and open it using its temporary filename
-                    char tmpPath[MAX_PATH];
-                    if (!http_download_park(gOpenRCT2StartupActionPath, tmpPath))
-                    {
-                        title_load();
-                        break;
-                    }
-
-                    parkLoaded = OpenRCT2::OpenParkAutoDetectFormat(tmpPath);
-#endif
-                }
-                else
+                // Download park and open it using its temporary filename
+                char tmpPath[MAX_PATH];
+                if (!http_download_park(gOpenRCT2StartupActionPath, tmpPath))
                 {
-                    parkLoaded = rct2_open_file(gOpenRCT2StartupActionPath);
-                }
-
-                if (!parkLoaded)
-                {
-                    Console::Error::WriteLine("Failed to load '%s'", gOpenRCT2StartupActionPath);
                     title_load();
                     break;
                 }
 
-                gScreenFlags = SCREEN_FLAGS_PLAYING;
-
-#ifndef DISABLE_NETWORK
-                if (gNetworkStart == NETWORK_MODE_SERVER)
-                {
-                    if (gNetworkStartPort == 0)
-                    {
-                        gNetworkStartPort = gConfigNetwork.default_port;
-                    }
-
-                    if (String::IsNullOrEmpty(gCustomPassword))
-                    {
-                        network_set_password(gConfigNetwork.default_password);
-                    }
-                    else
-                    {
-                        network_set_password(gCustomPassword);
-                    }
-                    network_begin_server(gNetworkStartPort);
-                }
-#endif // DISABLE_NETWORK
-                break;
+                parkLoaded = OpenRCT2::OpenParkAutoDetectFormat(tmpPath);
+#endif
             }
-            case STARTUP_ACTION_EDIT:
-                if (String::SizeOf(gOpenRCT2StartupActionPath) == 0)
-                {
-                    editor_load();
-                }
-                else if (!editor_load_landscape(gOpenRCT2StartupActionPath))
-                {
-                    title_load();
-                }
+            else
+            {
+                parkLoaded = rct2_open_file(gOpenRCT2StartupActionPath);
+            }
+
+            if (!parkLoaded)
+            {
+                Console::Error::WriteLine("Failed to load '%s'", gOpenRCT2StartupActionPath);
+                title_load();
                 break;
             }
 
+            gScreenFlags = SCREEN_FLAGS_PLAYING;
+
 #ifndef DISABLE_NETWORK
-            if (gNetworkStart == NETWORK_MODE_CLIENT)
+            if (gNetworkStart == NETWORK_MODE_SERVER)
             {
                 if (gNetworkStartPort == 0)
                 {
                     gNetworkStartPort = gConfigNetwork.default_port;
                 }
-                network_begin_client(gNetworkStartHost, gNetworkStartPort);
+
+                if (String::IsNullOrEmpty(gCustomPassword))
+                {
+                    network_set_password(gConfigNetwork.default_password);
+                }
+                else
+                {
+                    network_set_password(gCustomPassword);
+                }
+                network_begin_server(gNetworkStartPort);
             }
 #endif // DISABLE_NETWORK
-
-            OpenRCT2::RunGameLoop();
+            break;
         }
-        openrct2_dispose();
+        case STARTUP_ACTION_EDIT:
+            if (String::SizeOf(gOpenRCT2StartupActionPath) == 0)
+            {
+                editor_load();
+            }
+            else if (!editor_load_landscape(gOpenRCT2StartupActionPath))
+            {
+                title_load();
+            }
+            break;
+        }
 
-        // HACK Some threads are still running which causes the game to not terminate. Investigation required!
-        exit(gExitCode);
-    }
-
-    void openrct2_dispose()
-    {
-        network_close();
-        http_dispose();
-        language_close_all();
-        rct2_dispose();
-        config_release();
 #ifndef DISABLE_NETWORK
-        EVP_MD_CTX_destroy(gHashCTX);
+        if (gNetworkStart == NETWORK_MODE_CLIENT)
+        {
+            if (gNetworkStartPort == 0)
+            {
+                gNetworkStartPort = gConfigNetwork.default_port;
+            }
+            network_begin_client(gNetworkStartHost, gNetworkStartPort);
+        }
 #endif // DISABLE_NETWORK
-        rct2_interop_dispose();
-        platform_free();
-    }
 
-    /**
-     * Causes the OpenRCT2 game loop to finish.
-     */
-    void openrct2_finish()
-    {
-        OpenRCT2::_finished = true;
+        OpenRCT2::RunGameLoop();
     }
+    openrct2_dispose();
+
+    // HACK Some threads are still running which causes the game to not terminate. Investigation required!
+    exit(gExitCode);
+}
+
+void openrct2_dispose()
+{
+    network_close();
+    http_dispose();
+    language_close_all();
+    rct2_dispose();
+    config_release();
+#ifndef DISABLE_NETWORK
+    EVP_MD_CTX_destroy(gHashCTX);
+#endif // DISABLE_NETWORK
+    rct2_interop_dispose();
+    platform_free();
+}
+
+/**
+ * Causes the OpenRCT2 game loop to finish.
+ */
+void openrct2_finish()
+{
+    OpenRCT2::_finished = true;
+}
 }
 
 namespace OpenRCT2
@@ -351,7 +351,8 @@ namespace OpenRCT2
                 config_save_default();
                 utf8 path[MAX_PATH];
                 config_get_default_path(path, sizeof(path));
-                Console::Error::WriteLine("An RCT2 install directory must be specified! Please edit \"game_path\" in %s.", path);
+                Console::Error::WriteLine("An RCT2 install directory must be specified! Please edit \"game_path\" in %s.",
+                                          path);
                 return nullptr;
             }
             config_save_default();
@@ -366,7 +367,7 @@ namespace OpenRCT2
             return nullptr;
         }
 
-        utf8 path[260];
+        utf8        path[260];
         std::string basePaths[4];
         basePaths[(size_t)DIRBASE::RCT1] = String::ToStd(gConfigGeneral.rct1_path);
         basePaths[(size_t)DIRBASE::RCT2] = String::ToStd(gConfigGeneral.rct2_path);
@@ -381,7 +382,7 @@ namespace OpenRCT2
 
     static void SetVersionInfoString()
     {
-        utf8 buffer[256];
+        utf8   buffer[256];
         size_t bufferSize = sizeof(buffer);
         String::Set(buffer, bufferSize, OPENRCT2_NAME ", v" OPENRCT2_VERSION);
         if (!String::IsNullOrEmpty(gGitBranch))
@@ -396,9 +397,9 @@ namespace OpenRCT2
         {
             String::AppendFormat(buffer, bufferSize, " provided by %s", gBuildServer);
         }
-    #if DEBUG
+#if DEBUG
         String::AppendFormat(buffer, bufferSize, " (DEBUG)", gBuildServer);
-    #endif
+#endif
         _versionInfo = buffer;
     }
 
@@ -419,8 +420,7 @@ namespace OpenRCT2
             {
                 RunFixedFrame();
             }
-        }
-        while (!_finished);
+        } while (!_finished);
         log_verbose("finish openrct2 loop");
     }
 
@@ -430,25 +430,28 @@ namespace OpenRCT2
         if (_lastTick > _isWindowMinimisedLastCheckTick + 1000)
         {
             uint32 windowFlags = SDL_GetWindowFlags(gWindow);
-            _isWindowMinimised = (windowFlags & SDL_WINDOW_MINIMIZED) ||
-                                 (windowFlags & SDL_WINDOW_HIDDEN);
+            _isWindowMinimised = (windowFlags & SDL_WINDOW_MINIMIZED) || (windowFlags & SDL_WINDOW_HIDDEN);
         }
         return _isWindowMinimised;
     }
 
     static bool ShouldRunVariableFrame()
     {
-        if (!gConfigGeneral.uncap_fps) return false;
-        if (gGameSpeed > 4) return false;
-        if (gOpenRCT2Headless) return false;
-        if (IsMinimised()) return false;
+        if (!gConfigGeneral.uncap_fps)
+            return false;
+        if (gGameSpeed > 4)
+            return false;
+        if (gOpenRCT2Headless)
+            return false;
+        if (IsMinimised())
+            return false;
         return true;
     }
 
     static void RunFixedFrame()
     {
-        _uncapTick = 0;
-        uint32 currentTick = SDL_GetTicks();
+        _uncapTick          = 0;
+        uint32 currentTick  = SDL_GetTicks();
         uint32 ticksElapsed = currentTick - _lastTick;
         if (ticksElapsed < UPDATE_TIME_MS)
         {

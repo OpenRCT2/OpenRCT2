@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -21,17 +21,16 @@
 #include "../IDrawingEngine.h"
 #include "../Rain.h"
 
-extern "C"
-{
-    #include "../../config.h"
-    #include "../../game.h"
-    #include "../../interface/screenshot.h"
-    #include "../../interface/viewport.h"
-    #include "../../interface/window.h"
-    #include "../../intro.h"
-    #include "../../rct2.h"
-    #include "../drawing.h"
-    #include "../lightfx.h"
+extern "C" {
+#include "../../config.h"
+#include "../../game.h"
+#include "../../interface/screenshot.h"
+#include "../../interface/viewport.h"
+#include "../../interface/window.h"
+#include "../../intro.h"
+#include "../../rct2.h"
+#include "../drawing.h"
+#include "../lightfx.h"
 }
 
 class SoftwareDrawingEngine;
@@ -67,13 +66,13 @@ public:
     RainDrawer()
     {
         _rainPixelsCapacity = MaxRainPixels;
-        _rainPixelsCount = 0;
-        _rainPixels = new RainPixel[_rainPixelsCapacity];
+        _rainPixelsCount    = 0;
+        _rainPixels         = new RainPixel[_rainPixelsCapacity];
     }
 
     ~RainDrawer()
     {
-        delete [] _rainPixels;
+        delete[] _rainPixels;
     }
 
     void SetDPI(rct_drawpixelinfo * dpi)
@@ -83,27 +82,24 @@ public:
 
     void Draw(sint32 x, sint32 y, sint32 width, sint32 height, sint32 xStart, sint32 yStart) override
     {
-        static const uint8 RainPattern[] =
-        {
-            32, 32, 0, 12, 0, 14, 0, 16, 255, 0, 255, 0, 255, 0, 255, 0, 255,
-            0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0,
-            255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255,
-            0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 0, 0
-        };
+        static const uint8 RainPattern[] = { 32,  32, 0,   12, 0,   14, 0,   16, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0,
+                                             255, 0,  255, 0,  255, 0,  255, 0,  255, 0, 255, 0, 255, 0, 255, 0, 255, 0,
+                                             255, 0,  255, 0,  255, 0,  255, 0,  255, 0, 255, 0, 255, 0, 255, 0, 255, 0,
+                                             255, 0,  255, 0,  255, 0,  255, 0,  255, 0, 255, 0, 0,   0 };
 
-        const uint8 * pattern = RainPattern;
-        uint8 patternXSpace = *pattern++;
-        uint8 patternYSpace = *pattern++;
+        const uint8 * pattern       = RainPattern;
+        uint8         patternXSpace = *pattern++;
+        uint8         patternYSpace = *pattern++;
 
         uint8 patternStartXOffset = xStart % patternXSpace;
         uint8 patternStartYOffset = yStart % patternYSpace;
 
         uint32 pixelOffset = (_screenDPI->pitch + _screenDPI->width) * y + x;
-        uint8 patternYPos = patternStartYOffset % patternYSpace;
+        uint8  patternYPos = patternStartYOffset % patternYSpace;
 
         uint8 * screenBits = _screenDPI->bits;
 
-        //Stores the colours of changed pixels
+        // Stores the colours of changed pixels
         RainPixel * newPixels = &_rainPixels[_rainPixelsCount];
         for (; height != 0; height--)
         {
@@ -120,7 +116,7 @@ public:
                     uint8 patternPixel = pattern[patternYPos * 2 + 1];
                     for (; xPixelOffset < finalPixelOffset; xPixelOffset += patternXSpace)
                     {
-                        uint8 current_pixel = screenBits[xPixelOffset];
+                        uint8 current_pixel      = screenBits[xPixelOffset];
                         screenBits[xPixelOffset] = patternPixel;
                         _rainPixelsCount++;
 
@@ -141,7 +137,7 @@ public:
         if (_rainPixelsCount > 0)
         {
             uint32  numPixels = (_screenDPI->width + _screenDPI->pitch) * _screenDPI->height;
-            uint8 * bits = _screenDPI->bits;
+            uint8 * bits      = _screenDPI->bits;
             for (uint32 i = 0; i < _rainPixelsCount; i++)
             {
                 RainPixel rainPixel = _rainPixels[i];
@@ -187,51 +183,51 @@ class SoftwareDrawingEngine final : public IDrawingEngine
 private:
     bool _hardwareDisplay;
 
-    SDL_Window *    _window         = nullptr;
-    SDL_Surface *   _surface        = nullptr;
-    SDL_Surface *   _RGBASurface    = nullptr;
-    SDL_Palette *   _palette        = nullptr;
+    SDL_Window *  _window      = nullptr;
+    SDL_Surface * _surface     = nullptr;
+    SDL_Surface * _RGBASurface = nullptr;
+    SDL_Palette * _palette     = nullptr;
 
     // For hardware display only
-    SDL_Renderer *      _sdlRenderer            = nullptr;
-    SDL_Texture *       _screenTexture          = nullptr;
-    SDL_PixelFormat *   _screenTextureFormat    = nullptr;
-    uint32              _paletteHWMapped[256] = { 0 };
+    SDL_Renderer *    _sdlRenderer          = nullptr;
+    SDL_Texture *     _screenTexture        = nullptr;
+    SDL_PixelFormat * _screenTextureFormat  = nullptr;
+    uint32            _paletteHWMapped[256] = { 0 };
 #ifdef __ENABLE_LIGHTFX__
-    uint32              _lightPaletteHWMapped[256] = { 0 };
+    uint32 _lightPaletteHWMapped[256] = { 0 };
 #endif
 
     // Steam overlay checking
-    uint32  _pixelBeforeOverlay     = 0;
-    uint32  _pixelAfterOverlay      = 0;
-    bool    _overlayActive          = false;
-    bool    _pausedBeforeOverlay    = false;
+    uint32 _pixelBeforeOverlay  = 0;
+    uint32 _pixelAfterOverlay   = 0;
+    bool   _overlayActive       = false;
+    bool   _pausedBeforeOverlay = false;
 
-    uint32  _width      = 0;
-    uint32  _height     = 0;
-    uint32  _pitch      = 0;
-    size_t  _bitsSize   = 0;
-    uint8 * _bits       = nullptr;
+    uint32  _width    = 0;
+    uint32  _height   = 0;
+    uint32  _pitch    = 0;
+    size_t  _bitsSize = 0;
+    uint8 * _bits     = nullptr;
 
-    DirtyGrid   _dirtyGrid  = { 0 };
+    DirtyGrid _dirtyGrid = { 0 };
 
-    rct_drawpixelinfo _bitsDPI  = { 0 };
+    rct_drawpixelinfo _bitsDPI = { 0 };
 
-    RainDrawer                  _rainDrawer;
-    SoftwareDrawingContext *    _drawingContext;
+    RainDrawer               _rainDrawer;
+    SoftwareDrawingContext * _drawingContext;
 
 public:
     explicit SoftwareDrawingEngine(bool hardwareDisplay)
     {
         _hardwareDisplay = hardwareDisplay;
-        _drawingContext = new SoftwareDrawingContext(this);
+        _drawingContext  = new SoftwareDrawingContext(this);
     }
 
     ~SoftwareDrawingEngine() override
     {
         delete _drawingContext;
-        delete [] _dirtyGrid.Blocks;
-        delete [] _bits;
+        delete[] _dirtyGrid.Blocks;
+        delete[] _bits;
         SDL_FreeSurface(_surface);
         SDL_FreeSurface(_RGBASurface);
         SDL_FreePalette(_palette);
@@ -265,8 +261,7 @@ public:
             for (uint32 i = 0; i < rendererInfo.num_texture_formats; i++)
             {
                 uint32 format = rendererInfo.texture_formats[i];
-                if (!SDL_ISPIXELFORMAT_FOURCC(format) &&
-                    !SDL_ISPIXELFORMAT_INDEXED(format) &&
+                if (!SDL_ISPIXELFORMAT_FOURCC(format) && !SDL_ISPIXELFORMAT_INDEXED(format) &&
                     (pixelFormat == SDL_PIXELFORMAT_UNKNOWN || SDL_BYTESPERPIXEL(format) < SDL_BYTESPERPIXEL(pixelFormat)))
                 {
                     pixelFormat = format;
@@ -283,14 +278,12 @@ public:
         }
         else
         {
-            _surface = SDL_CreateRGBSurface(0, width, height, 8, 0, 0, 0, 0);
+            _surface     = SDL_CreateRGBSurface(0, width, height, 8, 0, 0, 0, 0);
             _RGBASurface = SDL_CreateRGBSurface(0, width, height, 32, 0, 0, 0, 0);
             SDL_SetSurfaceBlendMode(_RGBASurface, SDL_BLENDMODE_NONE);
             _palette = SDL_AllocPalette(256);
 
-            if (_surface == nullptr ||
-                _palette == nullptr ||
-                _RGBASurface == nullptr)
+            if (_surface == nullptr || _palette == nullptr || _RGBASurface == nullptr)
             {
                 log_fatal("%p || %p || %p == NULL %s", _surface, _palette, _RGBASurface, SDL_GetError());
                 exit(-1);
@@ -319,7 +312,8 @@ public:
                 {
                     _paletteHWMapped[i] = SDL_MapRGB(_screenTextureFormat, palette[i].r, palette[i].g, palette[i].b);
 #ifdef __ENABLE_LIGHTFX__
-                    _lightPaletteHWMapped[i] = SDL_MapRGBA(_screenTextureFormat, lightPalette[i].r, lightPalette[i].g, lightPalette[i].b, lightPalette[i].a);
+                    _lightPaletteHWMapped[i] = SDL_MapRGBA(_screenTextureFormat, lightPalette[i].r, lightPalette[i].g,
+                                                           lightPalette[i].b, lightPalette[i].a);
 #endif
                 }
             }
@@ -348,13 +342,15 @@ public:
 
     void Invalidate(sint32 left, sint32 top, sint32 right, sint32 bottom) override
     {
-        left = Math::Max(left, 0);
-        top = Math::Max(top, 0);
-        right = Math::Min(right, (sint32)_width);
+        left   = Math::Max(left, 0);
+        top    = Math::Max(top, 0);
+        right  = Math::Min(right, (sint32)_width);
         bottom = Math::Min(bottom, (sint32)_height);
 
-        if (left >= right) return;
-        if (top >= bottom) return;
+        if (left >= right)
+            return;
+        if (top >= bottom)
+            return;
 
         right--;
         bottom--;
@@ -364,7 +360,7 @@ public:
         top >>= _dirtyGrid.BlockShiftY;
         bottom >>= _dirtyGrid.BlockShiftY;
 
-        uint32 dirtyBlockColumns = _dirtyGrid.BlockColumns;
+        uint32  dirtyBlockColumns = _dirtyGrid.BlockColumns;
         uint8 * screenDirtyBlocks = _dirtyGrid.Blocks;
         for (sint16 y = top; y <= bottom; y++)
         {
@@ -378,9 +374,12 @@ public:
 
     void Draw() override
     {
-        if (gIntroState != INTRO_STATE_NONE) {
+        if (gIntroState != INTRO_STATE_NONE)
+        {
             intro_draw(&_bitsDPI);
-        } else {
+        }
+        else
+        {
             _rainDrawer.SetDPI(&_bitsDPI);
             _rainDrawer.Restore();
 
@@ -414,7 +413,8 @@ public:
 
     void CopyRect(sint32 x, sint32 y, sint32 width, sint32 height, sint32 dx, sint32 dy) override
     {
-        if (dx == 0 && dy == 0) return;
+        if (dx == 0 && dy == 0)
+            return;
 
         // Originally 0x00683359
         // Adjust for move off screen
@@ -431,8 +431,8 @@ public:
         height += tmargin + bmargin;
 
         sint32  stride = _bitsDPI.width + _bitsDPI.pitch;
-        uint8 * to = _bitsDPI.bits + y * stride + x;
-        uint8 * from = _bitsDPI.bits + (y - dy) * stride + x - dx;
+        uint8 * to     = _bitsDPI.bits + y * stride + x;
+        uint8 * from   = _bitsDPI.bits + (y - dy) * stride + x - dx;
 
         if (dy > 0)
         {
@@ -483,11 +483,10 @@ public:
     }
 
 private:
-
     void ConfigureBits(uint32 width, uint32 height, uint32 pitch)
     {
         size_t  newBitsSize = pitch * height;
-        uint8 * newBits = new uint8[newBitsSize];
+        uint8 * newBits     = new uint8[newBitsSize];
         if (_bits == nullptr)
         {
             Memory::Set(newBits, 0, newBitsSize);
@@ -503,7 +502,7 @@ private:
                 uint8 * src = _bits;
                 uint8 * dst = newBits;
 
-                uint32 minWidth = Math::Min(_width, width);
+                uint32 minWidth  = Math::Min(_width, width);
                 uint32 minHeight = Math::Min(_height, height);
                 for (uint32 y = 0; y < minHeight; y++)
                 {
@@ -516,22 +515,22 @@ private:
                     dst += pitch;
                 }
             }
-            delete [] _bits;
+            delete[] _bits;
         }
 
-        _bits = newBits;
+        _bits     = newBits;
         _bitsSize = newBitsSize;
-        _width = width;
-        _height = height;
-        _pitch = pitch;
+        _width    = width;
+        _height   = height;
+        _pitch    = pitch;
 
         rct_drawpixelinfo * dpi = &_bitsDPI;
-        dpi->bits = _bits;
-        dpi->x = 0;
-        dpi->y = 0;
-        dpi->width = width;
-        dpi->height = height;
-        dpi->pitch = _pitch - width;
+        dpi->bits               = _bits;
+        dpi->x                  = 0;
+        dpi->y                  = 0;
+        dpi->width              = width;
+        dpi->height             = height;
+        dpi->pitch              = _pitch - width;
 
         ConfigureDirtyGrid();
 
@@ -542,32 +541,33 @@ private:
 
     void ConfigureDirtyGrid()
     {
-        _dirtyGrid.BlockShiftX = 7;
-        _dirtyGrid.BlockShiftY = 6;
-        _dirtyGrid.BlockWidth = 1 << _dirtyGrid.BlockShiftX;
-        _dirtyGrid.BlockHeight = 1 << _dirtyGrid.BlockShiftY;
+        _dirtyGrid.BlockShiftX  = 7;
+        _dirtyGrid.BlockShiftY  = 6;
+        _dirtyGrid.BlockWidth   = 1 << _dirtyGrid.BlockShiftX;
+        _dirtyGrid.BlockHeight  = 1 << _dirtyGrid.BlockShiftY;
         _dirtyGrid.BlockColumns = (_width >> _dirtyGrid.BlockShiftX) + 1;
-        _dirtyGrid.BlockRows = (_height >> _dirtyGrid.BlockShiftY) + 1;
+        _dirtyGrid.BlockRows    = (_height >> _dirtyGrid.BlockShiftY) + 1;
 
-        delete [] _dirtyGrid.Blocks;
+        delete[] _dirtyGrid.Blocks;
         _dirtyGrid.Blocks = new uint8[_dirtyGrid.BlockColumns * _dirtyGrid.BlockRows];
     }
 
     static void ResetWindowVisbilities()
     {
         // reset window visibilty status to unknown
-        for (rct_window *w = g_window_list; w < gWindowNextSlot; w++)
+        for (rct_window * w = g_window_list; w < gWindowNextSlot; w++)
         {
             w->visibility = VC_UNKNOWN;
-            if (w->viewport != NULL) w->viewport->visibility = VC_UNKNOWN;
+            if (w->viewport != NULL)
+                w->viewport->visibility = VC_UNKNOWN;
         }
     }
 
     void DrawAllDirtyBlocks()
     {
         uint32  dirtyBlockColumns = _dirtyGrid.BlockColumns;
-        uint32  dirtyBlockRows = _dirtyGrid.BlockRows;
-        uint8 * dirtyBlocks = _dirtyGrid.Blocks;
+        uint32  dirtyBlockRows    = _dirtyGrid.BlockRows;
+        uint8 * dirtyBlocks       = _dirtyGrid.Blocks;
 
         for (uint32 x = 0; x < dirtyBlockColumns; x++)
         {
@@ -627,9 +627,9 @@ private:
         }
 
         // Determine region in pixels
-        uint32 left = Math::Max<uint32>(0, x * _dirtyGrid.BlockWidth);
-        uint32 top = Math::Max<uint32>(0, y * _dirtyGrid.BlockHeight);
-        uint32 right = Math::Min((uint32)gScreenWidth, left + (columns * _dirtyGrid.BlockWidth));
+        uint32 left   = Math::Max<uint32>(0, x * _dirtyGrid.BlockWidth);
+        uint32 top    = Math::Max<uint32>(0, y * _dirtyGrid.BlockHeight);
+        uint32 right  = Math::Min((uint32)gScreenWidth, left + (columns * _dirtyGrid.BlockWidth));
         uint32 bottom = Math::Min((uint32)gScreenHeight, top + (rows * _dirtyGrid.BlockHeight));
         if (right <= left || bottom <= top)
         {
@@ -719,8 +719,8 @@ private:
 
     void CopyBitsToTexture(SDL_Texture * texture, uint8 * src, sint32 width, sint32 height, uint32 * palette)
     {
-        void *  pixels;
-        int     pitch;
+        void * pixels;
+        int    pitch;
         if (SDL_LockTexture(texture, nullptr, &pixels, &pitch) == 0)
         {
             sint32 padding = pitch - (width * 4);
@@ -743,9 +743,9 @@ private:
                         {
                             const uint8 lower = *(uint8 *)(&palette[*src++]);
                             const uint8 upper = *(uint8 *)(&palette[*src++]);
-                            *dst++ = (lower << 8) | upper;
+                            *dst++            = (lower << 8) | upper;
                         }
-                        dst = (uint16*)(((uint8 *)dst) + padding);
+                        dst = (uint16 *)(((uint8 *)dst) + padding);
                     }
                 }
                 else if (pitch == width + padding)
@@ -821,7 +821,6 @@ SoftwareDrawingContext::SoftwareDrawingContext(SoftwareDrawingEngine * engine)
 
 SoftwareDrawingContext::~SoftwareDrawingContext()
 {
-
 }
 
 IDrawingEngine * SoftwareDrawingContext::GetEngine()
@@ -833,8 +832,8 @@ void SoftwareDrawingContext::Clear(uint8 paletteIndex)
 {
     rct_drawpixelinfo * dpi = _dpi;
 
-    int w = dpi->width >> dpi->zoom_level;
-    int h = dpi->height >> dpi->zoom_level;
+    int     w   = dpi->width >> dpi->zoom_level;
+    int     h   = dpi->height >> dpi->zoom_level;
     uint8 * ptr = dpi->bits;
 
     for (int y = 0; y < h; y++)
@@ -846,60 +845,36 @@ void SoftwareDrawingContext::Clear(uint8 paletteIndex)
 
 /** rct2: 0x0097FF04 */
 static const uint16 Pattern[] = {
-    0b0111111110000000,
-    0b0011111111000000,
-    0b0001111111100000,
-    0b0000111111110000,
-    0b0000011111111000,
-    0b0000001111111100,
-    0b0000000111111110,
-    0b0000000011111111,
-    0b1000000001111111,
-    0b1100000000111111,
-    0b1110000000011111,
-    0b1111000000001111,
-    0b1111100000000111,
-    0b1111110000000011,
-    0b1111111000000001,
-    0b1111111100000000,
+    0b0111111110000000, 0b0011111111000000, 0b0001111111100000, 0b0000111111110000, 0b0000011111111000, 0b0000001111111100,
+    0b0000000111111110, 0b0000000011111111, 0b1000000001111111, 0b1100000000111111, 0b1110000000011111, 0b1111000000001111,
+    0b1111100000000111, 0b1111110000000011, 0b1111111000000001, 0b1111111100000000,
 };
 
 /** rct2: 0x0097FF14 */
-static const uint16 PatternInverse[] = {
-    0b1000000001111111,
-    0b1100000000111111,
-    0b1110000000011111,
-    0b1111000000001111,
-    0b1111100000000111,
-    0b1111110000000011,
-    0b1111111000000001,
-    0b1111111100000000,
-    0b0111111110000000,
-    0b0011111111000000,
-    0b0001111111100000,
-    0b0000111111110000,
-    0b0000011111111000,
-    0b0000001111111100,
-    0b0000000111111110,
-    0b0000000011111111
-};
+static const uint16 PatternInverse[] = { 0b1000000001111111, 0b1100000000111111, 0b1110000000011111, 0b1111000000001111,
+                                         0b1111100000000111, 0b1111110000000011, 0b1111111000000001, 0b1111111100000000,
+                                         0b0111111110000000, 0b0011111111000000, 0b0001111111100000, 0b0000111111110000,
+                                         0b0000011111111000, 0b0000001111111100, 0b0000000111111110, 0b0000000011111111 };
 
 /** rct2: 0x0097FEFC */
-static const uint16 * Patterns[] = {
-    Pattern,
-    PatternInverse
-};
+static const uint16 * Patterns[] = { Pattern, PatternInverse };
 
 void SoftwareDrawingContext::FillRect(uint32 colour, sint32 left, sint32 top, sint32 right, sint32 bottom)
 {
     rct_drawpixelinfo * dpi = _dpi;
 
-    if (left > right) return;
-    if (top > bottom) return;
-    if (dpi->x > right) return;
-    if (left >= dpi->x + dpi->width) return;
-    if (bottom < dpi->y) return;
-    if (top >= dpi->y + dpi->height) return;
+    if (left > right)
+        return;
+    if (top > bottom)
+        return;
+    if (dpi->x > right)
+        return;
+    if (left >= dpi->x + dpi->width)
+        return;
+    if (bottom < dpi->y)
+        return;
+    if (top >= dpi->y + dpi->height)
+        return;
 
     uint16 crossPattern = 0;
 
@@ -929,7 +904,7 @@ void SoftwareDrawingContext::FillRect(uint32 colour, sint32 left, sint32 top, si
         endY = dpi->height;
     }
 
-    int width = endX - startX;
+    int width  = endX - startX;
     int height = endY - startY;
 
     if (colour & 0x1000000)
@@ -939,8 +914,8 @@ void SoftwareDrawingContext::FillRect(uint32 colour, sint32 left, sint32 top, si
         for (int i = 0; i < height; i++)
         {
             uint8 * nextdst = dst + dpi->width + dpi->pitch;
-            uint32  p = ror32(crossPattern, 1);
-            p = (p & 0xFFFF0000) | width;
+            uint32  p       = ror32(crossPattern, 1);
+            p               = (p & 0xFFFF0000) | width;
 
             // Fill every other pixel with the colour
             for (; (p & 0xFFFF) != 0; p--)
@@ -971,7 +946,7 @@ void SoftwareDrawingContext::FillRect(uint32 colour, sint32 left, sint32 top, si
         // The pattern loops every 15 pixels this is which
         // part the pattern is on.
         int startPatternX = (startX + dpi->x) % 16;
-        int patternX = startPatternX;
+        int patternX      = startPatternX;
 
         const uint16 * patternsrc = Patterns[colour >> 28]; // or possibly uint8)[esi*4] ?
 
@@ -991,7 +966,7 @@ void SoftwareDrawingContext::FillRect(uint32 colour, sint32 left, sint32 top, si
             }
             patternX = startPatternX;
             patternY = (patternY + 1) % 16;
-            dst = nextdst;
+            dst      = nextdst;
         }
     }
     else
@@ -1009,12 +984,18 @@ void SoftwareDrawingContext::FilterRect(FILTER_PALETTE_ID palette, sint32 left, 
 {
     rct_drawpixelinfo * dpi = _dpi;
 
-    if (left > right) return;
-    if (top > bottom) return;
-    if (dpi->x > right) return;
-    if (left >= dpi->x + dpi->width) return;
-    if (bottom < dpi->y) return;
-    if (top >= dpi->y + dpi->height) return;
+    if (left > right)
+        return;
+    if (top > bottom)
+        return;
+    if (dpi->x > right)
+        return;
+    if (left >= dpi->x + dpi->width)
+        return;
+    if (bottom < dpi->y)
+        return;
+    if (top >= dpi->y + dpi->height)
+        return;
 
     int startX = left - dpi->x;
     if (startX < 0)
@@ -1040,22 +1021,22 @@ void SoftwareDrawingContext::FilterRect(FILTER_PALETTE_ID palette, sint32 left, 
         endY = dpi->height;
     }
 
-    int width = endX - startX;
+    int width  = endX - startX;
     int height = endY - startY;
 
-
-    //0x2000000
+    // 0x2000000
     // 00678B7E   00678C83
     // Location in screen buffer?
-    uint8 * dst = dpi->bits + (uint32)((startY >> (dpi->zoom_level)) * ((dpi->width >> dpi->zoom_level) + dpi->pitch) + (startX >> dpi->zoom_level));
+    uint8 * dst = dpi->bits + (uint32)((startY >> (dpi->zoom_level)) * ((dpi->width >> dpi->zoom_level) + dpi->pitch) +
+                                       (startX >> dpi->zoom_level));
 
     // Find colour in colour table?
-    uint16           g1Index = palette_to_g1_offset[palette];
+    uint16           g1Index   = palette_to_g1_offset[palette];
     rct_g1_element * g1Element = &g1Elements[g1Index];
-    uint8 *          g1Bits = g1Element->offset;
+    uint8 *          g1Bits    = g1Element->offset;
 
     // Fill the rectangle with the colours from the colour table
-    for (int i = 0; i < height >> dpi->zoom_level; i++)
+    for (int i = 0; i<height>> dpi->zoom_level; i++)
     {
         uint8 * nextdst = dst + (dpi->width >> dpi->zoom_level) + dpi->pitch;
         for (int j = 0; j < (width >> dpi->zoom_level); j++)

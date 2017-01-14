@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -49,15 +49,15 @@ FillRectShader::~FillRectShader()
 
 void FillRectShader::GetLocations()
 {
-    uScreenSize         = GetUniformLocation("uScreenSize");
-    uClip               = GetUniformLocation("uClip");
-    uBounds             = GetUniformLocation("uBounds");
-    uFlags              = GetUniformLocation("uFlags");
-    uColour[0]          = GetUniformLocation("uColour[0]");
-    uColour[1]          = GetUniformLocation("uColour[1]");
-    uSourceFramebuffer  = GetUniformLocation("uSourceFramebuffer");
+    uScreenSize        = GetUniformLocation("uScreenSize");
+    uClip              = GetUniformLocation("uClip");
+    uBounds            = GetUniformLocation("uBounds");
+    uFlags             = GetUniformLocation("uFlags");
+    uColour[0]         = GetUniformLocation("uColour[0]");
+    uColour[1]         = GetUniformLocation("uColour[1]");
+    uSourceFramebuffer = GetUniformLocation("uSourceFramebuffer");
 
-    vIndex              = GetAttributeLocation("vIndex");
+    vIndex = GetAttributeLocation("vIndex");
 }
 
 void FillRectShader::SetScreenSize(sint32 width, sint32 height)
@@ -87,7 +87,7 @@ void FillRectShader::SetColour(int index, vec4f colour)
 
 void FillRectShader::SetSourceFramebuffer(GLuint texture)
 {
-	_sourceFramebuffer = texture;
+    _sourceFramebuffer = texture;
     OpenGLAPI::SetTexture(0, GL_TEXTURE_2D, texture);
 }
 
@@ -99,8 +99,9 @@ void FillRectShader::Draw(sint32 left, sint32 top, sint32 right, sint32 bottom)
     glDrawArrays(GL_TRIANGLES, 0, 6);
 }
 
-GLuint FillRectShader::GetSourceFramebuffer() const {
-	return _sourceFramebuffer;
+GLuint FillRectShader::GetSourceFramebuffer() const
+{
+    return _sourceFramebuffer;
 }
 
 #endif /* DISABLE_OPENGL */

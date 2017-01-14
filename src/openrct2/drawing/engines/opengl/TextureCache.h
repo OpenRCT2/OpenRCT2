@@ -1,4 +1,4 @@
-﻿#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+﻿#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -16,13 +16,13 @@
 
 #pragma once
 
+#include "../../../common.h"
+#include "GLSLTypes.h"
+#include "OpenGLAPI.h"
+#include <SDL_pixels.h>
 #include <algorithm>
 #include <unordered_map>
 #include <vector>
-#include <SDL_pixels.h>
-#include "../../../common.h"
-#include "OpenGLAPI.h"
-#include "GLSLTypes.h"
 
 struct rct_drawpixelinfo;
 
@@ -33,7 +33,7 @@ struct GlyphId
 
     struct Hash
     {
-        size_t operator()(const GlyphId &k) const
+        size_t operator()(const GlyphId & k) const
         {
             size_t hash = k.Image * 7;
             hash += (k.Palette & 0xFFFFFFFF) * 13;
@@ -44,10 +44,9 @@ struct GlyphId
 
     struct Equal
     {
-        bool operator()(const GlyphId &lhs, const GlyphId &rhs) const
+        bool operator()(const GlyphId & lhs, const GlyphId & rhs) const
         {
-           return lhs.Image == rhs.Image &&
-                  lhs.Palette == rhs.Palette;
+            return lhs.Image == rhs.Image && lhs.Palette == rhs.Palette;
         }
     };
 };
@@ -65,8 +64,8 @@ struct CachedTextureInfo
 {
     GLuint index;
     GLuint slot;
-    vec4i bounds;
-    vec4f normalizedBounds;
+    vec4i  bounds;
+    vec4f  normalizedBounds;
 };
 
 // Represents a texture atlas that images of a given maximum size can be allocated from
@@ -75,9 +74,9 @@ struct CachedTextureInfo
 class Atlas final
 {
 private:
-    GLuint _index;
-    int _imageSize;
-    int _atlasWidth, _atlasHeight;
+    GLuint              _index;
+    int                 _imageSize;
+    int                 _atlasWidth, _atlasHeight;
     std::vector<GLuint> _freeSlots;
 
     int _cols, _rows;
@@ -85,13 +84,13 @@ private:
 public:
     Atlas(GLuint index, int imageSize)
     {
-        _index = index;
+        _index     = index;
         _imageSize = imageSize;
     }
 
     void Initialise(int atlasWidth, int atlasHeight)
     {
-        _atlasWidth = atlasWidth;
+        _atlasWidth  = atlasWidth;
         _atlasHeight = atlasHeight;
 
         _cols = _atlasWidth / _imageSize;
@@ -113,16 +112,10 @@ public:
 
         auto bounds = GetSlotCoordinates(slot, actualWidth, actualHeight);
 
-        return
-        {
-            _index,
-            slot,
-            bounds,
-            NormalizeCoordinates(bounds)
-        };
+        return { _index, slot, bounds, NormalizeCoordinates(bounds) };
     }
 
-    void Free(const CachedTextureInfo& info)
+    void Free(const CachedTextureInfo & info)
     {
         assert(_index == info.index);
 
@@ -134,25 +127,26 @@ public:
     bool IsImageSuitable(int actualWidth, int actualHeight) const
     {
         int imageOrder = CalculateImageSizeOrder(actualWidth, actualHeight);
-        int atlasOrder = (int) log2(_imageSize);
+        int atlasOrder = (int)log2(_imageSize);
 
         return imageOrder == atlasOrder;
     }
 
     int GetFreeSlots() const
     {
-        return (int) _freeSlots.size();
+        return (int)_freeSlots.size();
     }
 
     static int CalculateImageSizeOrder(int actualWidth, int actualHeight)
     {
         int actualSize = std::max(actualWidth, actualHeight);
 
-        if (actualSize < TEXTURE_CACHE_SMALLEST_SLOT) {
+        if (actualSize < TEXTURE_CACHE_SMALLEST_SLOT)
+        {
             actualSize = TEXTURE_CACHE_SMALLEST_SLOT;
         }
 
-        return (int) ceil(log2f((float) actualSize));
+        return (int)ceil(log2f((float)actualSize));
     }
 
 private:
@@ -161,24 +155,15 @@ private:
         int row = slot / _cols;
         int col = slot % _cols;
 
-        return vec4i
-        {
-            _imageSize * col,
-            _imageSize * row,
-            _imageSize * col + actualWidth,
-            _imageSize * row + actualHeight,
+        return vec4i{
+            _imageSize * col, _imageSize * row, _imageSize * col + actualWidth, _imageSize * row + actualHeight,
         };
     }
 
-    vec4f NormalizeCoordinates(const vec4i& coords) const
+    vec4f NormalizeCoordinates(const vec4i & coords) const
     {
-        return vec4f
-        {
-            coords.x / (float) _atlasWidth,
-            coords.y / (float) _atlasHeight,
-            coords.z / (float) _atlasWidth,
-            coords.w / (float) _atlasHeight
-        };
+        return vec4f{ coords.x / (float)_atlasWidth, coords.y / (float)_atlasHeight, coords.z / (float)_atlasWidth,
+                      coords.w / (float)_atlasHeight };
     }
 };
 
@@ -187,10 +172,10 @@ class TextureCache final
 private:
     bool _atlasesTextureInitialised = false;
 
-    GLuint _atlasesTexture;
-    GLint _atlasesTextureDimensions;
-    GLuint _atlasesTextureIndices;
-    GLint _atlasesTextureIndicesLimit;
+    GLuint             _atlasesTexture;
+    GLint              _atlasesTextureDimensions;
+    GLuint             _atlasesTextureIndices;
+    GLint              _atlasesTextureIndicesLimit;
     std::vector<Atlas> _atlases;
 
     std::unordered_map<uint32, CachedTextureInfo> _imageTextureMap;

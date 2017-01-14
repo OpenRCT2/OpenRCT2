@@ -8,6 +8,7 @@ BreakBeforeBraces: Allman
 ColumnLimit: '128'
 Cpp11BracedListStyle: 'false'
 IndentWidth: '4'
+NamespaceIndentation: All
 PointerAlignment: Middle
 SortIncludes: 'true'
 Standard: Cpp11

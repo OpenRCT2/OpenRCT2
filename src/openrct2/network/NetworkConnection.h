@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -22,9 +22,9 @@
 
 #include "../common.h"
 
-#include "NetworkTypes.h"
 #include "NetworkKey.h"
 #include "NetworkPacket.h"
+#include "NetworkTypes.h"
 #include "TcpSocket.h"
 
 class NetworkPlayer;
@@ -33,14 +33,14 @@ struct ObjectRepositoryItem;
 class NetworkConnection final
 {
 public:
-    ITcpSocket *                                Socket          = nullptr;
-    NetworkPacket                               InboundPacket;
-    NETWORK_AUTH                                AuthStatus      = NETWORK_AUTH_NONE;
-    NetworkPlayer *                             Player          = nullptr;
-    uint32                                      PingTime        = 0;
-    NetworkKey                                  Key;
-    std::vector<uint8>                          Challenge;
-    std::vector<const ObjectRepositoryItem *>   RequestedObjects;
+    ITcpSocket *                              Socket = nullptr;
+    NetworkPacket                             InboundPacket;
+    NETWORK_AUTH                              AuthStatus = NETWORK_AUTH_NONE;
+    NetworkPlayer *                           Player     = nullptr;
+    uint32                                    PingTime   = 0;
+    NetworkKey                                Key;
+    std::vector<uint8>                        Challenge;
+    std::vector<const ObjectRepositoryItem *> RequestedObjects;
 
     NetworkConnection();
     ~NetworkConnection();
@@ -56,9 +56,9 @@ public:
     void SetLastDisconnectReason(const rct_string_id string_id, void * args = nullptr);
 
 private:
-    std::list<std::unique_ptr<NetworkPacket>>   _outboundPackets;
-    uint32                                      _lastPacketTime;
-    utf8 *                                      _lastDisconnectReason   = nullptr;
+    std::list<std::unique_ptr<NetworkPacket>> _outboundPackets;
+    uint32                                    _lastPacketTime;
+    utf8 *                                    _lastDisconnectReason = nullptr;
 
-    bool SendPacket(NetworkPacket &packet);
+    bool SendPacket(NetworkPacket & packet);
 };

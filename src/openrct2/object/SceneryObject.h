@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -21,14 +21,24 @@
 class SceneryObject : public Object
 {
 private:
-    rct_object_entry    _primarySceneryGroupEntry = { 0 };
+    rct_object_entry _primarySceneryGroupEntry = { 0 };
 
 public:
-    explicit SceneryObject(const rct_object_entry &entry) : Object(entry) { }
-    virtual ~SceneryObject() { }
+    explicit SceneryObject(const rct_object_entry & entry) : Object(entry)
+    {
+    }
+    virtual ~SceneryObject()
+    {
+    }
 
-    const rct_object_entry * GetPrimarySceneryGroup() { return &_primarySceneryGroupEntry; }
+    const rct_object_entry * GetPrimarySceneryGroup()
+    {
+        return &_primarySceneryGroupEntry;
+    }
 
 protected:
-    void SetPrimarySceneryGroup(const rct_object_entry * entry) { _primarySceneryGroupEntry = *entry; }
+    void SetPrimarySceneryGroup(const rct_object_entry * entry)
+    {
+        _primarySceneryGroupEntry = *entry;
+    }
 };

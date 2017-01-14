@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -14,15 +14,15 @@
  *****************************************************************************/
 #pragma endregion
 
-#include <zip.h>
-#include "IStream.hpp"
 #include "Zip.h"
+#include "IStream.hpp"
+#include <zip.h>
 
 class ZipArchive final : public IZipArchive
 {
 private:
-    zip_t *     _zip;
-    ZIP_ACCESS  _access;
+    zip_t *    _zip;
+    ZIP_ACCESS _access;
 
 public:
     ZipArchive(const utf8 * path, ZIP_ACCESS access)
@@ -76,33 +76,34 @@ public:
     {
         void * data = nullptr;
 
-        size_t index = (size_t)zip_name_locate(_zip, path, 0);
+        size_t index    = (size_t)zip_name_locate(_zip, path, 0);
         uint64 dataSize = GetFileSize(index);
         if (dataSize > 0 && dataSize < SIZE_MAX)
         {
             zip_file_t * zipFile = zip_fopen(_zip, path, 0);
             if (zipFile != nullptr)
             {
-                data = Memory::Allocate<void>((size_t)dataSize);
+                data             = Memory::Allocate<void>((size_t)dataSize);
                 uint64 readBytes = zip_fread(zipFile, data, dataSize);
                 if (readBytes != dataSize)
                 {
                     Memory::Free(data);
-                    data = nullptr;
+                    data     = nullptr;
                     dataSize = 0;
                 }
                 zip_fclose(zipFile);
             }
         }
 
-        if (outSize != nullptr) *outSize = (size_t)dataSize;
+        if (outSize != nullptr)
+            *outSize = (size_t)dataSize;
         return data;
     }
 
     void SetFileData(const utf8 * path, void * data, size_t dataSize) override
     {
         zip_source_t * source = zip_source_buffer(_zip, data, dataSize, 0);
-        sint64 index = zip_name_locate(_zip, path, 0);
+        sint64         index  = zip_name_locate(_zip, path, 0);
         if (index == -1)
         {
             zip_add(_zip, path, source);

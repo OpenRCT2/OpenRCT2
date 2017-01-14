@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -35,7 +35,7 @@ enum
     RCT2_LANGUAGE_ID_12,
     RCT2_LANGUAGE_ID_PORTUGUESE,
     RCT2_LANGUAGE_ID_BLANK = 254,
-    RCT2_LANGUAGE_ID_END = 255
+    RCT2_LANGUAGE_ID_END   = 255
 };
 
 interface ILanguagePack
@@ -45,10 +45,10 @@ interface ILanguagePack
     virtual uint16 GetId() const abstract;
     virtual uint32 GetCount() const abstract;
 
-    virtual void            SetString(rct_string_id stringId, const utf8 * str) abstract;
-    virtual const utf8 *    GetString(rct_string_id stringId) const abstract;
-    virtual rct_string_id   GetObjectOverrideStringId(const char * objectIdentifier, uint8 index) abstract;
-    virtual rct_string_id   GetScenarioOverrideStringId(const utf8 * scenarioFilename, uint8 index) abstract;
+    virtual void SetString(rct_string_id stringId, const utf8 * str) abstract;
+    virtual const utf8 * GetString(rct_string_id stringId) const abstract;
+    virtual rct_string_id GetObjectOverrideStringId(const char * objectIdentifier, uint8 index) abstract;
+    virtual rct_string_id GetScenarioOverrideStringId(const utf8 * scenarioFilename, uint8 index) abstract;
 };
 
 namespace LanguagePackFactory

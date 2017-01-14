@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -23,12 +23,14 @@
  */
 interface IZipArchive
 {
-    virtual ~IZipArchive() { }
+    virtual ~IZipArchive()
+    {
+    }
 
-    virtual size_t          GetNumFiles() const abstract;
-    virtual const utf8 *    GetFileName(size_t index) const abstract;
-    virtual uint64          GetFileSize(size_t index) const abstract;
-    virtual void *          GetFileData(const utf8 * path, size_t * outSize) const abstract;
+    virtual size_t       GetNumFiles() const abstract;
+    virtual const utf8 * GetFileName(size_t index) const abstract;
+    virtual uint64 GetFileSize(size_t index) const abstract;
+    virtual void * GetFileData(const utf8 * path, size_t * outSize) const abstract;
 
     /**
      * Creates or overwrites a file within the zip archive to the given data buffer.

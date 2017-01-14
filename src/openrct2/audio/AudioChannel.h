@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -16,10 +16,10 @@
 
 #pragma once
 
-#include <speex/speex_resampler.h>
 #include "../common.h"
 #include "AudioFormat.h"
 #include "AudioMixer.h"
+#include <speex/speex_resampler.h>
 
 interface IAudioSource;
 
@@ -34,30 +34,30 @@ interface IAudioChannel
     virtual IAudioSource * GetSource() const abstract;
 
     virtual SpeexResamplerState * GetResampler() const abstract;
-    virtual void SetResampler(SpeexResamplerState * value) abstract;
+    virtual void                  SetResampler(SpeexResamplerState * value) abstract;
 
-    virtual int     GetGroup() const abstract;
-    virtual void    SetGroup(int group) abstract;
+    virtual int  GetGroup() const abstract;
+    virtual void SetGroup(int group) abstract;
 
-    virtual double  GetRate() const abstract;
-    virtual void    SetRate(double rate) abstract;
+    virtual double GetRate() const abstract;
+    virtual void SetRate(double rate) abstract;
 
-    virtual uint64  GetOffset() const abstract;
-    virtual bool    SetOffset(uint64 offset) abstract;
+    virtual uint64 GetOffset() const abstract;
+    virtual bool SetOffset(uint64 offset) abstract;
 
-    virtual int     GetLoop() const abstract;
-    virtual void    SetLoop(int value) abstract;
+    virtual int  GetLoop() const abstract;
+    virtual void SetLoop(int value) abstract;
 
-    virtual int     GetVolume() const abstract;
-    virtual float   GetVolumeL() const abstract;
-    virtual float   GetVolumeR() const abstract;
-    virtual float   GetOldVolumeL() const abstract;
-    virtual float   GetOldVolumeR() const abstract;
-    virtual int     GetOldVolume() const abstract;
-    virtual void    SetVolume(int volume) abstract;
+    virtual int   GetVolume() const abstract;
+    virtual float GetVolumeL() const abstract;
+    virtual float GetVolumeR() const abstract;
+    virtual float GetOldVolumeL() const abstract;
+    virtual float GetOldVolumeR() const abstract;
+    virtual int   GetOldVolume() const abstract;
+    virtual void SetVolume(int volume) abstract;
 
-    virtual float   GetPan() const abstract;
-    virtual void    SetPan(float pan) abstract;
+    virtual float GetPan() const abstract;
+    virtual void SetPan(float pan) abstract;
 
     virtual bool IsStopping() const abstract;
     virtual void SetStopping(bool value) abstract;

@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -14,28 +14,23 @@
  *****************************************************************************/
 #pragma endregion
 
-#include <SDL_mouse.h>
-#include "../core/Guard.hpp"
 #include "Cursors.h"
+#include "../core/Guard.hpp"
+#include <SDL_mouse.h>
 
 namespace Cursors
 {
-    constexpr sint32 CURSOR_WIDTH = 32;
+    constexpr sint32 CURSOR_WIDTH  = 32;
     constexpr sint32 CURSOR_HEIGHT = 32;
 
     static SDL_Cursor * _loadedCursors[CURSOR_COUNT];
-    static bool         _initialised = false;
+    static bool         _initialised   = false;
     static CURSOR_ID    _currentCursor = CURSOR_UNDEFINED;
 
     static SDL_Cursor * Create(const CursorData * cursorInfo)
     {
-        SDL_Cursor * cursor = SDL_CreateCursor(
-            cursorInfo->Data,
-            cursorInfo->Mask,
-            CURSOR_WIDTH,
-            CURSOR_HEIGHT,
-            cursorInfo->HotSpot.X,
-            cursorInfo->HotSpot.Y);
+        SDL_Cursor * cursor = SDL_CreateCursor(cursorInfo->Data, cursorInfo->Mask, CURSOR_WIDTH, CURSOR_HEIGHT,
+                                               cursorInfo->HotSpot.X, cursorInfo->HotSpot.Y);
         return cursor;
     }
 
@@ -45,7 +40,7 @@ namespace Cursors
         _initialised = true;
 
         // Using system cursors
-        _loadedCursors[CURSOR_ARROW] = SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_ARROW);
+        _loadedCursors[CURSOR_ARROW]      = SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_ARROW);
         _loadedCursors[CURSOR_HAND_POINT] = SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_HAND);
 
         // Using custom cursors
@@ -72,7 +67,7 @@ namespace Cursors
                 _loadedCursors[i] = nullptr;
             }
             _currentCursor = CURSOR_UNDEFINED;
-            _initialised = false;
+            _initialised   = false;
         }
     }
 
@@ -92,25 +87,24 @@ namespace Cursors
     }
 }
 
-extern "C"
+extern "C" {
+void cursors_initialise()
 {
-    void cursors_initialise()
-    {
-        Cursors::Initialise();
-    }
+    Cursors::Initialise();
+}
 
-    void cursors_dispose()
-    {
-        Cursors::Dispose();
-    }
+void cursors_dispose()
+{
+    Cursors::Dispose();
+}
 
-    int cursors_getcurrentcursor()
-    {
-        return Cursors::GetCurrentCursor();
-    }
+int cursors_getcurrentcursor()
+{
+    return Cursors::GetCurrentCursor();
+}
 
-    void cursors_setcurrentcursor(int cursorId)
-    {
-        Cursors::SetCurrentCursor((CURSOR_ID)cursorId);
-    }
+void cursors_setcurrentcursor(int cursorId)
+{
+    Cursors::SetCurrentCursor((CURSOR_ID)cursorId);
+}
 }

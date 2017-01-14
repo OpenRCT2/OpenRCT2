@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -39,13 +39,12 @@ namespace ScenarioSources
 #endif
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
-    bool scenario_get_source_desc(const utf8 *name, source_desc *outDesc);
-    bool scenario_get_source_desc_by_id(uint8 id, source_desc *outDesc);
-    void scenario_normalise_name(utf8 *buffer, size_t bufferSize, utf8 *name);
+bool scenario_get_source_desc(const utf8 * name, source_desc * outDesc);
+bool scenario_get_source_desc_by_id(uint8 id, source_desc * outDesc);
+void scenario_normalise_name(utf8 * buffer, size_t bufferSize, utf8 * name);
 
 #ifdef __cplusplus
 }

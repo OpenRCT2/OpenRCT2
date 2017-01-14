@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -21,13 +21,14 @@
 #include "map.h"
 #include "sprite.h"
 
-enum {
-	JUMPING_FOUNTAIN_TYPE_WATER,
-	JUMPING_FOUNTAIN_TYPE_SNOW
+enum
+{
+    JUMPING_FOUNTAIN_TYPE_WATER,
+    JUMPING_FOUNTAIN_TYPE_SNOW
 };
 
-void jumping_fountain_begin(int type, int x, int y, rct_map_element *mapElement);
+void jumping_fountain_begin(int type, int x, int y, rct_map_element * mapElement);
 void jumping_fountain_create(int type, int x, int y, int z, int direction, int flags, int iteration);
-void jumping_fountain_update(rct_jumping_fountain *jumpingFountain);
+void jumping_fountain_update(rct_jumping_fountain * jumpingFountain);
 
 #endif

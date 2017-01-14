@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -16,14 +16,14 @@
 
 #ifndef DISABLE_NETWORK
 
-#include "NetworkTypes.h"
-#include "NetworkAction.h"
 #include "NetworkGroup.h"
 #include "../core/Exception.hpp"
+#include "NetworkAction.h"
+#include "NetworkTypes.h"
 
 NetworkGroup::NetworkGroup()
 {
-	ActionsAllowed = { 0 };
+    ActionsAllowed = { 0 };
 }
 
 NetworkGroup::~NetworkGroup()
@@ -33,26 +33,30 @@ NetworkGroup::~NetworkGroup()
 NetworkGroup NetworkGroup::FromJson(const json_t * json)
 {
     NetworkGroup group;
-    json_t * jsonId = json_object_get(json, "id");
-    json_t * jsonName = json_object_get(json, "name");
-    json_t * jsonPermissions = json_object_get(json, "permissions");
+    json_t *     jsonId          = json_object_get(json, "id");
+    json_t *     jsonName        = json_object_get(json, "name");
+    json_t *     jsonPermissions = json_object_get(json, "permissions");
     if (jsonId == nullptr || jsonName == nullptr || jsonPermissions == nullptr)
     {
         throw Exception("Missing group data");
     }
-    group.Id = (uint8)json_integer_value(jsonId);
+    group.Id    = (uint8)json_integer_value(jsonId);
     group._name = std::string(json_string_value(jsonName));
-    for (size_t i = 0; i < group.ActionsAllowed.size(); i++) {
+    for (size_t i = 0; i < group.ActionsAllowed.size(); i++)
+    {
         group.ActionsAllowed[i] = 0;
     }
-    for (size_t i = 0; i < json_array_size(jsonPermissions); i++) {
-        json_t * jsonPermissionValue = json_array_get(jsonPermissions, i);
-        const char * perm_name = json_string_value(jsonPermissionValue);
-        if (perm_name == nullptr) {
+    for (size_t i = 0; i < json_array_size(jsonPermissions); i++)
+    {
+        json_t *     jsonPermissionValue = json_array_get(jsonPermissions, i);
+        const char * perm_name           = json_string_value(jsonPermissionValue);
+        if (perm_name == nullptr)
+        {
             continue;
         }
         int action_id = NetworkActions::FindCommandByPermissionName(perm_name);
-        if (action_id != -1) {
+        if (action_id != -1)
+        {
             group.ToggleActionPermission(action_id);
         }
     }
@@ -87,7 +91,7 @@ void NetworkGroup::SetName(std::string name)
     _name = name;
 }
 
-void NetworkGroup::Read(NetworkPacket &packet)
+void NetworkGroup::Read(NetworkPacket & packet)
 {
     packet >> Id;
     SetName(packet.ReadString());
@@ -97,7 +101,7 @@ void NetworkGroup::Read(NetworkPacket &packet)
     }
 }
 
-void NetworkGroup::Write(NetworkPacket &packet)
+void NetworkGroup::Write(NetworkPacket & packet)
 {
     packet << Id;
     packet.WriteString(GetName().c_str());
@@ -110,7 +114,7 @@ void NetworkGroup::Write(NetworkPacket &packet)
 void NetworkGroup::ToggleActionPermission(size_t index)
 {
     size_t byte = index / 8;
-    size_t bit = index % 8;
+    size_t bit  = index % 8;
     if (byte >= ActionsAllowed.size())
     {
         return;
@@ -121,7 +125,7 @@ void NetworkGroup::ToggleActionPermission(size_t index)
 bool NetworkGroup::CanPerformAction(size_t index) const
 {
     size_t byte = index / 8;
-    size_t bit = index % 8;
+    size_t bit  = index % 8;
     if (byte >= ActionsAllowed.size())
     {
         return false;

@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -14,16 +14,15 @@
  *****************************************************************************/
 #pragma endregion
 
+#include "SceneryGroupObject.h"
 #include "../core/IStream.hpp"
 #include "../core/Memory.hpp"
 #include "ObjectManager.h"
 #include "ObjectRepository.h"
-#include "SceneryGroupObject.h"
 
-extern "C"
-{
-    #include "../drawing/drawing.h"
-    #include "../localisation/localisation.h"
+extern "C" {
+#include "../drawing/drawing.h"
+#include "../localisation/localisation.h"
 }
 
 SceneryGroupObject::~SceneryGroupObject()
@@ -35,10 +34,10 @@ void SceneryGroupObject::ReadLegacy(IReadObjectContext * context, IStream * stre
 {
     stream->Seek(6, STREAM_SEEK_CURRENT);
     stream->Seek(0x80 * 2, STREAM_SEEK_CURRENT);
-    _legacyType.entry_count = stream->ReadValue<uint8>();
-    _legacyType.var_107 = stream->ReadValue<uint8>();
-    _legacyType.var_108 = stream->ReadValue<uint8>();
-    _legacyType.pad_109 = stream->ReadValue<uint8>();
+    _legacyType.entry_count          = stream->ReadValue<uint8>();
+    _legacyType.var_107              = stream->ReadValue<uint8>();
+    _legacyType.var_108              = stream->ReadValue<uint8>();
+    _legacyType.pad_109              = stream->ReadValue<uint8>();
     _legacyType.entertainer_costumes = stream->ReadValue<uint32>();
 
     GetStringTable()->Read(context, stream, OBJ_STRING_ID_NAME);
@@ -51,8 +50,8 @@ void SceneryGroupObject::ReadLegacy(IReadObjectContext * context, IStream * stre
 void SceneryGroupObject::Load()
 {
     GetStringTable()->Sort();
-    _legacyType.name = language_allocate_object_string(GetName());
-    _legacyType.image = gfx_object_allocate_images(GetImageTable()->GetImages(), GetImageTable()->GetCount());
+    _legacyType.name        = language_allocate_object_string(GetName());
+    _legacyType.image       = gfx_object_allocate_images(GetImageTable()->GetImages(), GetImageTable()->GetCount());
     _legacyType.entry_count = 0;
 }
 
@@ -61,7 +60,7 @@ void SceneryGroupObject::Unload()
     language_free_object_string(_legacyType.name);
     gfx_object_free_images(_legacyType.image, GetImageTable()->GetCount());
 
-    _legacyType.name = 0;
+    _legacyType.name  = 0;
     _legacyType.image = 0;
 }
 
@@ -77,7 +76,7 @@ void SceneryGroupObject::DrawPreview(rct_drawpixelinfo * dpi, sint32 width, sint
 void SceneryGroupObject::UpdateEntryIndexes()
 {
     IObjectRepository * objectRepository = GetObjectRepository();
-    IObjectManager * objectManager = GetObjectManager();
+    IObjectManager *    objectManager    = GetObjectManager();
 
     _legacyType.entry_count = 0;
     for (uint32 i = 0; i < _numItems; i++)
@@ -85,19 +84,31 @@ void SceneryGroupObject::UpdateEntryIndexes()
         const rct_object_entry * objectEntry = &_items[i];
 
         const ObjectRepositoryItem * ori = objectRepository->FindObject(objectEntry);
-        if (ori == nullptr) continue;
-        if (ori->LoadedObject == nullptr) continue;
+        if (ori == nullptr)
+            continue;
+        if (ori->LoadedObject == nullptr)
+            continue;
 
         uint16 sceneryEntry = objectManager->GetLoadedObjectEntryIndex(ori->LoadedObject);
         Guard::Assert(sceneryEntry != UINT8_MAX, GUARD_LINE);
 
         uint8 objectType = objectEntry->flags & 0x0F;
-        switch (objectType) {
-        case OBJECT_TYPE_SMALL_SCENERY:                        break;
-        case OBJECT_TYPE_LARGE_SCENERY: sceneryEntry |= 0x300; break;
-        case OBJECT_TYPE_WALLS:         sceneryEntry |= 0x200; break;
-        case OBJECT_TYPE_PATH_BITS:     sceneryEntry |= 0x100; break;
-        default:                        sceneryEntry |= 0x400; break;
+        switch (objectType)
+        {
+        case OBJECT_TYPE_SMALL_SCENERY:
+            break;
+        case OBJECT_TYPE_LARGE_SCENERY:
+            sceneryEntry |= 0x300;
+            break;
+        case OBJECT_TYPE_WALLS:
+            sceneryEntry |= 0x200;
+            break;
+        case OBJECT_TYPE_PATH_BITS:
+            sceneryEntry |= 0x100;
+            break;
+        default:
+            sceneryEntry |= 0x400;
+            break;
         }
 
         _legacyType.scenery_entries[_legacyType.entry_count] = sceneryEntry;
@@ -110,7 +121,7 @@ void SceneryGroupObject::SetRepositoryItem(ObjectRepositoryItem * item) const
     Memory::Free(item->ThemeObjects);
 
     item->NumThemeObjects = _numItems;
-    item->ThemeObjects = Memory::AllocateArray<rct_object_entry>(_numItems);
+    item->ThemeObjects    = Memory::AllocateArray<rct_object_entry>(_numItems);
     for (uint32 i = 0; i < _numItems; i++)
     {
         item->ThemeObjects[i] = _items[i];
@@ -130,5 +141,5 @@ void SceneryGroupObject::ReadItems(IStream * stream)
     }
 
     _numItems = (uint32)items.size();
-    _items = Memory::DuplicateArray(items.data(), items.size());
+    _items    = Memory::DuplicateArray(items.data(), items.size());
 }

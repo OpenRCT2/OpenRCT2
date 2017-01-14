@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -16,16 +16,16 @@
 
 #pragma once
 
-#include <vector>
-#include <string>
 #include "../common.h"
+#include <string>
+#include <vector>
 
 class NetworkAction final
 {
 public:
-    rct_string_id       Name;
-    std::string         PermissionName;
-    std::vector<int>    Commands;
+    rct_string_id    Name;
+    std::string      PermissionName;
+    std::vector<int> Commands;
 };
 
 class NetworkActions final
@@ -34,5 +34,5 @@ public:
     static const std::vector<NetworkAction> Actions;
 
     static int FindCommand(int command);
-    static int FindCommandByPermissionName(const std::string &permission_name);
+    static int FindCommandByPermissionName(const std::string & permission_name);
 };

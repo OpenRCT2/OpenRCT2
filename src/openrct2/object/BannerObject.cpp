@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -14,22 +14,21 @@
  *****************************************************************************/
 #pragma endregion
 
+#include "BannerObject.h"
 #include "../core/IStream.hpp"
 #include "../core/Memory.hpp"
-#include "BannerObject.h"
 
-extern "C"
-{
-    #include "../drawing/drawing.h"
-    #include "../localisation/localisation.h"
+extern "C" {
+#include "../drawing/drawing.h"
+#include "../localisation/localisation.h"
 }
 
 void BannerObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
 {
     stream->Seek(6, STREAM_SEEK_CURRENT);
     _legacyType.banner.scrolling_mode = stream->ReadValue<uint8>();
-    _legacyType.banner.flags = stream->ReadValue<uint8>();
-    _legacyType.banner.price = stream->ReadValue<sint16>();
+    _legacyType.banner.flags          = stream->ReadValue<uint8>();
+    _legacyType.banner.price          = stream->ReadValue<sint16>();
     _legacyType.banner.scenery_tab_id = stream->ReadValue<uint8>();
 
     GetStringTable()->Read(context, stream, OBJ_STRING_ID_NAME);
@@ -49,7 +48,7 @@ void BannerObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
 void BannerObject::Load()
 {
     GetStringTable()->Sort();
-    _legacyType.name = language_allocate_object_string(GetName());
+    _legacyType.name  = language_allocate_object_string(GetName());
     _legacyType.image = gfx_object_allocate_images(GetImageTable()->GetImages(), GetImageTable()->GetCount());
 }
 
@@ -58,7 +57,7 @@ void BannerObject::Unload()
     language_free_object_string(_legacyType.name);
     gfx_object_free_images(_legacyType.image, GetImageTable()->GetCount());
 
-    _legacyType.name = 0;
+    _legacyType.name  = 0;
     _legacyType.image = 0;
 }
 

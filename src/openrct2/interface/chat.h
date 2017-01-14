@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -35,10 +35,10 @@ void chat_init();
 void chat_update();
 void chat_draw(rct_drawpixelinfo * dpi);
 
-void chat_history_add(const char *src);
+void chat_history_add(const char * src);
 void chat_input(int c);
 
-int chat_string_wrapped_get_height(void *args, int width);
-int chat_history_draw_string(rct_drawpixelinfo *dpi, void *args, int x, int y, int width);
+int chat_string_wrapped_get_height(void * args, int width);
+int chat_history_draw_string(rct_drawpixelinfo * dpi, void * args, int x, int y, int width);
 
 #endif

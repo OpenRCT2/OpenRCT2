@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -23,6 +23,6 @@
 
 #define MAX_STATIONS 4
 
-void ride_update_station(rct_ride *ride, int stationIndex);
+void ride_update_station(rct_ride * ride, int stationIndex);
 
 #endif

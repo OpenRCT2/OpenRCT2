@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -14,13 +14,13 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../../paint/supports.h"
 #include "../../interface/viewport.h"
 #include "../../paint/paint.h"
+#include "../../paint/supports.h"
 #include "../../sprites.h"
 #include "../../world/map.h"
-#include "../track_paint.h"
 #include "../track.h"
+#include "../track_paint.h"
 
 /**
  *
@@ -29,50 +29,62 @@
  *  rct2: 0x00762F50
  *  rct2: 0x007630DE
  */
-static void facility_paint_setup(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element* mapElement)
+static void facility_paint_setup(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height,
+                                 rct_map_element * mapElement)
 {
-	bool hasSupports = wooden_a_supports_paint_setup(direction & 1, 0, height, gTrackColours[SCHEME_3], NULL);
+    bool hasSupports = wooden_a_supports_paint_setup(direction & 1, 0, height, gTrackColours[SCHEME_3], NULL);
 
-	rct_ride *ride = get_ride(rideIndex);
-	rct_ride_entry *rideEntry = get_ride_entry(ride->subtype);
-	rct_ride_entry_vehicle *firstVehicleEntry = &rideEntry->vehicles[0];
+    rct_ride *               ride              = get_ride(rideIndex);
+    rct_ride_entry *         rideEntry         = get_ride_entry(ride->subtype);
+    rct_ride_entry_vehicle * firstVehicleEntry = &rideEntry->vehicles[0];
 
-	uint32 imageId = gTrackColours[SCHEME_TRACK];
-	imageId |= firstVehicleEntry->base_image_id;
-	imageId += (direction + 2) & 3;
+    uint32 imageId = gTrackColours[SCHEME_TRACK];
+    imageId |= firstVehicleEntry->base_image_id;
+    imageId += (direction + 2) & 3;
 
-	int rotation = get_current_rotation();
-	int lengthX = (direction & 1) == 0 ? 28 : 2;
-	int lengthY = (direction & 1) == 0 ? 2 : 28;
-	if (hasSupports) {
-		uint32 foundationImageId = ((direction & 1) ? SPR_FLOOR_PLANKS_90_DEG : SPR_FLOOR_PLANKS) | gTrackColours[SCHEME_3];
-		sub_98197C(foundationImageId, 0, 0, lengthX, lengthY, 29, height, direction == 3 ? 28 : 2, direction == 0 ? 28 : 2, height, rotation);
+    int rotation = get_current_rotation();
+    int lengthX  = (direction & 1) == 0 ? 28 : 2;
+    int lengthY  = (direction & 1) == 0 ? 2 : 28;
+    if (hasSupports)
+    {
+        uint32 foundationImageId = ((direction & 1) ? SPR_FLOOR_PLANKS_90_DEG : SPR_FLOOR_PLANKS) | gTrackColours[SCHEME_3];
+        sub_98197C(foundationImageId, 0, 0, lengthX, lengthY, 29, height, direction == 3 ? 28 : 2, direction == 0 ? 28 : 2,
+                   height, rotation);
 
-		// Door image or base
-		sub_98199C(imageId, 0, 0, lengthX, lengthY, 29, height, direction == 3 ? 28 : 2, direction == 0 ? 28 : 2, height, rotation);
-	} else {
-		// Door image or base
-		sub_98197C(imageId, 0, 0, lengthX, lengthY, 29, height, direction == 3 ? 28 : 2, direction == 0 ? 28 : 2, height, rotation);
-	}
+        // Door image or base
+        sub_98199C(imageId, 0, 0, lengthX, lengthY, 29, height, direction == 3 ? 28 : 2, direction == 0 ? 28 : 2, height,
+                   rotation);
+    }
+    else
+    {
+        // Door image or base
+        sub_98197C(imageId, 0, 0, lengthX, lengthY, 29, height, direction == 3 ? 28 : 2, direction == 0 ? 28 : 2, height,
+                   rotation);
+    }
 
-	// Base image if door was drawn
-	if (direction == 1) {
-		imageId += 2;
-		sub_98197C(imageId, 0, 0, 2, 28, 29, height, 28, 2, height, rotation);
-	} else if (direction == 2) {
-		imageId += 4;
-		sub_98197C(imageId, 0, 0, 28, 2, 29, height, 2, 28, height, rotation);
-	}
+    // Base image if door was drawn
+    if (direction == 1)
+    {
+        imageId += 2;
+        sub_98197C(imageId, 0, 0, 2, 28, 29, height, 28, 2, height, rotation);
+    }
+    else if (direction == 2)
+    {
+        imageId += 4;
+        sub_98197C(imageId, 0, 0, 28, 2, 29, height, 2, 28, height, rotation);
+    }
 
-	paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
-	paint_util_set_general_support_height(height + 32, 0x20);
+    paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
+    paint_util_set_general_support_height(height + 32, 0x20);
 }
 
 /* 0x00762D44 */
 TRACK_PAINT_FUNCTION get_track_paint_function_facility(int trackType, int direction)
 {
-	switch (trackType) {
-	case FLAT_TRACK_ELEM_1_X_1_A: return facility_paint_setup;
-	}
-	return NULL;
+    switch (trackType)
+    {
+    case FLAT_TRACK_ELEM_1_X_1_A:
+        return facility_paint_setup;
+    }
+    return NULL;
 }

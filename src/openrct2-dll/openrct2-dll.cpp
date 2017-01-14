@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -16,21 +16,21 @@
 
 #define WIN32_LEAN_AND_MEAN
 
+#include <openrct2/OpenRCT2.h>
+#include <shellapi.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <windows.h>
-#include <shellapi.h>
-#include <openrct2/OpenRCT2.h>
 
 #define DLLEXPORT extern "C" __declspec(dllexport)
 
-static char * * GetCommandLineArgs(int argc, wchar_t * * argvW);
-static void FreeCommandLineArgs(int argc, char * * argv);
+static char ** GetCommandLineArgs(int argc, wchar_t ** argvW);
+static void FreeCommandLineArgs(int argc, char ** argv);
 static char * ConvertUTF16toUTF8(const wchar_t * src);
 
-DLLEXPORT int LaunchOpenRCT2(int argc, wchar_t * * argvW)
+DLLEXPORT int LaunchOpenRCT2(int argc, wchar_t ** argvW)
 {
-    char * * argv = GetCommandLineArgs(argc, argvW);
+    char ** argv = GetCommandLineArgs(argc, argvW);
     if (argv == nullptr)
     {
         puts("Unable to fetch command line arguments.");
@@ -42,10 +42,10 @@ DLLEXPORT int LaunchOpenRCT2(int argc, wchar_t * * argvW)
     return exitCode;
 }
 
-static char * * GetCommandLineArgs(int argc, wchar_t * * argvW)
+static char ** GetCommandLineArgs(int argc, wchar_t ** argvW)
 {
     // Allocate UTF-8 strings
-    char * * argv = (char * *)malloc(argc * sizeof(char *));
+    char ** argv = (char **)malloc(argc * sizeof(char *));
     if (argv == nullptr)
     {
         return false;
@@ -60,7 +60,7 @@ static char * * GetCommandLineArgs(int argc, wchar_t * * argvW)
     return argv;
 }
 
-static void FreeCommandLineArgs(int argc, char * * argv)
+static void FreeCommandLineArgs(int argc, char ** argv)
 {
     // Free argv
     for (int i = 0; i < argc; i++)
@@ -72,9 +72,9 @@ static void FreeCommandLineArgs(int argc, char * * argv)
 
 static char * ConvertUTF16toUTF8(const wchar_t * src)
 {
-    int srcLen = lstrlenW(src);
-    int sizeReq = WideCharToMultiByte(CP_UTF8, 0, src, srcLen, nullptr, 0, nullptr, nullptr);
-    char * result = (char *)calloc(1, sizeReq + 1);
+    int    srcLen  = lstrlenW(src);
+    int    sizeReq = WideCharToMultiByte(CP_UTF8, 0, src, srcLen, nullptr, 0, nullptr, nullptr);
+    char * result  = (char *)calloc(1, sizeReq + 1);
     WideCharToMultiByte(CP_UTF8, 0, src, srcLen, result, sizeReq, nullptr, nullptr);
     return result;
 }

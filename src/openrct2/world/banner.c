@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -14,10 +14,10 @@
  *****************************************************************************/
 #pragma endregion
 
+#include "banner.h"
 #include "../game.h"
 #include "../localisation/localisation.h"
 #include "../ride/ride.h"
-#include "banner.h"
 #include "map.h"
 
 rct_banner gBanners[MAX_BANNERS];
@@ -28,9 +28,10 @@ rct_banner gBanners[MAX_BANNERS];
  */
 void banner_init()
 {
-	for (int i = 0; i < MAX_BANNERS; i++) {
-		gBanners[i].type = BANNER_NULL;
-	}
+    for (int i = 0; i < MAX_BANNERS; i++)
+    {
+        gBanners[i].type = BANNER_NULL;
+    }
 }
 
 /**
@@ -43,40 +44,46 @@ void banner_init()
  */
 int create_new_banner(uint8 flags)
 {
-	int banner_index = 0;
-	for (; banner_index < MAX_BANNERS; banner_index++){
-		if (gBanners[banner_index].type == BANNER_NULL){
-			break;
-		}
-	}
+    int banner_index = 0;
+    for (; banner_index < MAX_BANNERS; banner_index++)
+    {
+        if (gBanners[banner_index].type == BANNER_NULL)
+        {
+            break;
+        }
+    }
 
-	if (banner_index == MAX_BANNERS){
-		gGameCommandErrorText = STR_TOO_MANY_BANNERS_IN_GAME;
-		return BANNER_NULL;
-	}
+    if (banner_index == MAX_BANNERS)
+    {
+        gGameCommandErrorText = STR_TOO_MANY_BANNERS_IN_GAME;
+        return BANNER_NULL;
+    }
 
-	if (flags & GAME_COMMAND_FLAG_APPLY){
-		rct_banner* banner = &gBanners[banner_index];
+    if (flags & GAME_COMMAND_FLAG_APPLY)
+    {
+        rct_banner * banner = &gBanners[banner_index];
 
-		banner->flags = 0;
-		banner->type = 0;
-		banner->string_idx = STR_DEFAULT_SIGN;
-		banner->colour = 2;
-		banner->text_colour = 2;
-	}
-	return banner_index;
+        banner->flags       = 0;
+        banner->type        = 0;
+        banner->string_idx  = STR_DEFAULT_SIGN;
+        banner->colour      = 2;
+        banner->text_colour = 2;
+    }
+    return banner_index;
 }
 
-rct_map_element *banner_get_map_element(int bannerIndex)
+rct_map_element * banner_get_map_element(int bannerIndex)
 {
-	rct_banner *banner = &gBanners[bannerIndex];
-	rct_map_element *mapElement = map_get_first_element_at(banner->x, banner->y);
-	do {
-		if (map_element_get_banner_index(mapElement) == bannerIndex) {
-			return mapElement;
-		}
-	} while (!map_element_is_last_for_tile(mapElement++));
-	return NULL;
+    rct_banner *      banner     = &gBanners[bannerIndex];
+    rct_map_element * mapElement = map_get_first_element_at(banner->x, banner->y);
+    do
+    {
+        if (map_element_get_banner_index(mapElement) == bannerIndex)
+        {
+            return mapElement;
+        }
+    } while (!map_element_is_last_for_tile(mapElement++));
+    return NULL;
 }
 
 /**
@@ -85,28 +92,29 @@ rct_map_element *banner_get_map_element(int bannerIndex)
  */
 static int banner_get_ride_index_at(int x, int y, int z)
 {
-	rct_map_element *mapElement;
-	rct_ride *ride;
-	int rideIndex, resultRideIndex;
+    rct_map_element * mapElement;
+    rct_ride *        ride;
+    int               rideIndex, resultRideIndex;
 
-	resultRideIndex = -1;
-	mapElement = map_get_first_element_at(x >> 5, y >> 5);
-	do {
-		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_TRACK)
-			continue;
+    resultRideIndex = -1;
+    mapElement      = map_get_first_element_at(x >> 5, y >> 5);
+    do
+    {
+        if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_TRACK)
+            continue;
 
-		rideIndex = mapElement->properties.track.ride_index;
-		ride = get_ride(rideIndex);
-		if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_SHOP))
-			continue;
+        rideIndex = mapElement->properties.track.ride_index;
+        ride      = get_ride(rideIndex);
+        if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_SHOP))
+            continue;
 
-		if ((mapElement->clearance_height * 8) + 32 <= z)
-			continue;
+        if ((mapElement->clearance_height * 8) + 32 <= z)
+            continue;
 
-		resultRideIndex = rideIndex;
-	} while (!map_element_is_last_for_tile(mapElement++));
+        resultRideIndex = rideIndex;
+    } while (!map_element_is_last_for_tile(mapElement++));
 
-	return resultRideIndex;
+    return resultRideIndex;
 }
 
 /**
@@ -115,55 +123,51 @@ static int banner_get_ride_index_at(int x, int y, int z)
  */
 int banner_get_closest_ride_index(int x, int y, int z)
 {
-	int i, rideIndex;
-	rct_ride *ride;
+    int        i, rideIndex;
+    rct_ride * ride;
 
-	static const rct_xy16 NeighbourCheckOrder[] = {
-		{  32,   0 },
-		{ -32,   0 },
-		{   0,  32 },
-		{   0, -32 },
-		{ -32, +32 },
-		{ +32, -32 },
-		{ +32, +32 },
-		{ -32, +32 },
-		{   0,   0 }
-	};
+    static const rct_xy16 NeighbourCheckOrder[] = { { 32, 0 },    { -32, 0 },   { 0, 32 },    { 0, -32 }, { -32, +32 },
+                                                    { +32, -32 }, { +32, +32 }, { -32, +32 }, { 0, 0 } };
 
-	for (i = 0; i < countof(NeighbourCheckOrder); i++) {
-		rideIndex = banner_get_ride_index_at(x + NeighbourCheckOrder[i].x, y + NeighbourCheckOrder[i].y, z);
-		if (rideIndex != -1) {
-			return rideIndex;
-		}
-	}
+    for (i = 0; i < countof(NeighbourCheckOrder); i++)
+    {
+        rideIndex = banner_get_ride_index_at(x + NeighbourCheckOrder[i].x, y + NeighbourCheckOrder[i].y, z);
+        if (rideIndex != -1)
+        {
+            return rideIndex;
+        }
+    }
 
-	rideIndex = -1;
-	int resultDistance = INT_MAX;
-	FOR_ALL_RIDES(i, ride) {
-		if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_SHOP))
-			continue;
+    rideIndex          = -1;
+    int resultDistance = INT_MAX;
+    FOR_ALL_RIDES(i, ride)
+    {
+        if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_SHOP))
+            continue;
 
-		uint16 xy = ride->overall_view;
-		if (xy == 0xFFFF)
-			continue;
+        uint16 xy = ride->overall_view;
+        if (xy == 0xFFFF)
+            continue;
 
-		int rideX = (xy & 0xFF) * 32;
-		int rideY = (xy >> 8) * 32;
-		int distance = abs(x - rideX) + abs(y - rideY);
-		if (distance < resultDistance) {
-			resultDistance = distance;
-			rideIndex = i;
-		}
-	}
+        int rideX    = (xy & 0xFF) * 32;
+        int rideY    = (xy >> 8) * 32;
+        int distance = abs(x - rideX) + abs(y - rideY);
+        if (distance < resultDistance)
+        {
+            resultDistance = distance;
+            rideIndex      = i;
+        }
+    }
 
-	return rideIndex;
+    return rideIndex;
 }
 
 void fix_banner_count()
 {
-	for (int banner_index = 0; banner_index < MAX_BANNERS; banner_index++){
-		rct_map_element *map_element = banner_get_map_element(banner_index);
-		if(map_element==NULL)
-			gBanners[banner_index].type = BANNER_NULL;
-	}
+    for (int banner_index = 0; banner_index < MAX_BANNERS; banner_index++)
+    {
+        rct_map_element * map_element = banner_get_map_element(banner_index);
+        if (map_element == NULL)
+            gBanners[banner_index].type = BANNER_NULL;
+    }
 }

@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -22,18 +22,19 @@
 #include <vector>
 
 // Per-instance data for images
-struct DrawImageInstance {
+struct DrawImageInstance
+{
     vec4i clip;
-    int texColourAtlas;
+    int   texColourAtlas;
     vec4f texColourBounds;
-    int texMaskAtlas;
+    int   texMaskAtlas;
     vec4f texMaskBounds;
-    int texPaletteAtlas;
+    int   texPaletteAtlas;
     vec4f texPaletteBounds;
-    int flags;
+    int   flags;
     vec4f colour;
     vec4i bounds;
-    int mask;
+    int   mask;
 };
 
 class DrawImageShader final : public OpenGLShaderProgram
@@ -65,8 +66,8 @@ public:
     ~DrawImageShader() override;
 
     void SetScreenSize(sint32 width, sint32 height);
-    void SetPalette(const vec4f *glPalette);
-    void DrawInstances(const std::vector<DrawImageInstance>& instances);
+    void SetPalette(const vec4f * glPalette);
+    void DrawInstances(const std::vector<DrawImageInstance> & instances);
 
 private:
     void GetLocations();

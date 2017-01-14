@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -16,23 +16,23 @@
 
 #pragma once
 
-#include <string>
 #include "../common.h"
+#include <string>
 
 struct FileInfo
 {
-    const utf8 *    Name;
-    uint64          Size;
-    uint64          LastModified;
+    const utf8 * Name;
+    uint64       Size;
+    uint64       LastModified;
 };
 
 interface IFileScanner
 {
     virtual ~IFileScanner() = default;
 
-    virtual const FileInfo *    GetFileInfo() const abstract;
-    virtual const utf8 *        GetPath() const abstract;
-    virtual const utf8 *        GetPathRelative() const abstract;
+    virtual const FileInfo * GetFileInfo() const abstract;
+    virtual const utf8 *     GetPath() const abstract;
+    virtual const utf8 *     GetPathRelative() const abstract;
 
     virtual void Reset() abstract;
     virtual bool Next() abstract;
@@ -55,7 +55,7 @@ namespace Path
      * @param recurse Whether to scan sub directories or not.
      * @returns A new FileScanner, this must be deleted when no longer needed.
      */
-    IFileScanner * ScanDirectory(const std::string &pattern, bool recurse);
+    IFileScanner * ScanDirectory(const std::string & pattern, bool recurse);
 
     /**
      * Scans a directory and all sub directories
@@ -63,5 +63,5 @@ namespace Path
      * @param pattern The path followed by a semi-colon delimited list of wildcard patterns.
      * @returns An aggregated result of all scanned files.
      */
-    void QueryDirectory(QueryDirectoryResult * result, const std::string &pattern);
+    void QueryDirectory(QueryDirectoryResult * result, const std::string & pattern);
 }

@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -16,8 +16,8 @@
 
 #pragma once
 
-#include <string>
 #include "common.h"
+#include <string>
 
 interface IStream;
 
@@ -36,5 +36,5 @@ struct ClassifiedFile
     uint32    Version;
 };
 
-bool TryClassifyFile(const std::string &path, ClassifiedFile * result);
+bool TryClassifyFile(const std::string & path, ClassifiedFile * result);
 bool TryClassifyFile(IStream * stream, ClassifiedFile * result);

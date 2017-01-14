@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -14,14 +14,13 @@
  *****************************************************************************/
 #pragma endregion
 
+#include "LargeSceneryObject.h"
 #include "../core/IStream.hpp"
 #include "../core/Memory.hpp"
-#include "LargeSceneryObject.h"
 
-extern "C"
-{
-    #include "../drawing/drawing.h"
-    #include "../localisation/localisation.h"
+extern "C" {
+#include "../drawing/drawing.h"
+#include "../localisation/localisation.h"
 }
 
 LargeSceneryObject::~LargeSceneryObject()
@@ -33,13 +32,13 @@ LargeSceneryObject::~LargeSceneryObject()
 void LargeSceneryObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
 {
     stream->Seek(6, STREAM_SEEK_CURRENT);
-    _legacyType.large_scenery.tool_id = stream->ReadValue<uint8>();
-    _legacyType.large_scenery.flags = stream->ReadValue<uint8>();
-    _legacyType.large_scenery.price = stream->ReadValue<sint16>();
+    _legacyType.large_scenery.tool_id       = stream->ReadValue<uint8>();
+    _legacyType.large_scenery.flags         = stream->ReadValue<uint8>();
+    _legacyType.large_scenery.price         = stream->ReadValue<sint16>();
     _legacyType.large_scenery.removal_price = stream->ReadValue<sint16>();
     stream->Seek(5, STREAM_SEEK_CURRENT);
     _legacyType.large_scenery.scenery_tab_id = 0xFF;
-    _legacyType.large_scenery.var_11 = stream->ReadValue<uint8>();
+    _legacyType.large_scenery.var_11         = stream->ReadValue<uint8>();
     stream->Seek(4, STREAM_SEEK_CURRENT);
 
     GetStringTable()->Read(context, stream, OBJ_STRING_ID_NAME);
@@ -77,8 +76,8 @@ void LargeSceneryObject::ReadLegacy(IReadObjectContext * context, IStream * stre
 void LargeSceneryObject::Load()
 {
     GetStringTable()->Sort();
-    _legacyType.name = language_allocate_object_string(GetName());
-    _baseImageId = gfx_object_allocate_images(GetImageTable()->GetImages(), GetImageTable()->GetCount());
+    _legacyType.name  = language_allocate_object_string(GetName());
+    _baseImageId      = gfx_object_allocate_images(GetImageTable()->GetImages(), GetImageTable()->GetCount());
     _legacyType.image = _baseImageId;
 
     _legacyType.large_scenery.tiles = _tiles;
@@ -102,7 +101,7 @@ void LargeSceneryObject::Unload()
     language_free_object_string(_legacyType.name);
     gfx_object_free_images(_baseImageId, GetImageTable()->GetCount());
 
-    _legacyType.name = 0;
+    _legacyType.name  = 0;
     _legacyType.image = 0;
 }
 

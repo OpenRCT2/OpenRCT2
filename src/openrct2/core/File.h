@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -16,13 +16,13 @@
 
 #pragma once
 
-#include <string>
 #include "../common.h"
+#include <string>
 
 namespace File
 {
-    bool Copy(const std::string &srcPath, const std::string &dstPath, bool overwrite);
-    bool Delete(const std::string &path);
-    bool Move(const std::string &srcPath, const std::string &dstPath);
-    void * ReadAllBytes(const std::string &path, size_t * length);
+    bool Copy(const std::string & srcPath, const std::string & dstPath, bool overwrite);
+    bool Delete(const std::string & path);
+    bool Move(const std::string & srcPath, const std::string & dstPath);
+    void * ReadAllBytes(const std::string & path, size_t * length);
 }

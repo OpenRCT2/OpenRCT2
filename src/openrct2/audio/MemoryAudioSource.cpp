@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -20,17 +20,17 @@
 #include "AudioSource.h"
 
 #pragma pack(push, 1)
-    struct WaveFormatEx
-    {
-        uint16 encoding;
-        uint16 channels;
-        uint32 frequency;
-        uint32 byterate;
-        uint16 blockalign;
-        uint16 bitspersample;
-        uint16 extrasize;
-    };
-    assert_struct_size(WaveFormatEx, 18);
+struct WaveFormatEx
+{
+    uint16 encoding;
+    uint16 channels;
+    uint32 frequency;
+    uint32 byterate;
+    uint16 blockalign;
+    uint16 bitspersample;
+    uint16 extrasize;
+};
+assert_struct_size(WaveFormatEx, 18);
 #pragma pack(pop)
 
 /**
@@ -40,9 +40,9 @@
 class MemoryAudioSource final : public IAudioSource
 {
 private:
-    AudioFormat _format = { 0 };
-    uint8 *     _data = nullptr;
-    size_t      _length = 0;
+    AudioFormat _format   = { 0 };
+    uint8 *     _data     = nullptr;
+    size_t      _length   = 0;
     bool        _isSDLWav = false;
 
 public:
@@ -78,21 +78,21 @@ public:
 
         Unload();
 
-        bool result = false;
-        SDL_RWops * rw = SDL_RWFromFile(path, "rb");
+        bool        result = false;
+        SDL_RWops * rw     = SDL_RWFromFile(path, "rb");
         if (rw != nullptr)
         {
-            SDL_AudioSpec audiospec = { 0 };
-            uint32 audioLen;
+            SDL_AudioSpec   audiospec = { 0 };
+            uint32          audioLen;
             SDL_AudioSpec * spec = SDL_LoadWAV_RW(rw, false, &audiospec, &_data, &audioLen);
             if (spec != nullptr)
             {
-                _format.freq = spec->freq;
-                _format.format = spec->format;
+                _format.freq     = spec->freq;
+                _format.format   = spec->format;
                 _format.channels = spec->channels;
-                _length = audioLen;
-                _isSDLWav = true;
-                result = true;
+                _length          = audioLen;
+                _isSDLWav        = true;
+                result           = true;
             }
             else
             {
@@ -113,8 +113,8 @@ public:
 
         Unload();
 
-        bool result = false;
-        SDL_RWops * rw = SDL_RWFromFile(path, "rb");
+        bool        result = false;
+        SDL_RWops * rw     = SDL_RWFromFile(path, "rb");
         if (rw != nullptr)
         {
             uint32 numSounds;
@@ -133,8 +133,8 @@ public:
 
                 WaveFormatEx waveFormat;
                 SDL_RWread(rw, &waveFormat, sizeof(waveFormat), 1);
-                _format.freq = waveFormat.frequency;
-                _format.format = AUDIO_S16LSB;
+                _format.freq     = waveFormat.frequency;
+                _format.format   = AUDIO_S16LSB;
                 _format.channels = waveFormat.channels;
 
                 _data = new (std::nothrow) uint8[_length];
@@ -162,7 +162,8 @@ public:
         if (*format != _format)
         {
             SDL_AudioCVT cvt;
-            if (SDL_BuildAudioCVT(&cvt, _format.format, _format.channels, _format.freq, format->format, format->channels, format->freq) >= 0)
+            if (SDL_BuildAudioCVT(&cvt, _format.format, _format.channels, _format.freq, format->format, format->channels,
+                                  format->freq) >= 0)
             {
                 cvt.len = (int)_length;
                 cvt.buf = new uint8[cvt.len * cvt.len_mult];
@@ -170,7 +171,7 @@ public:
                 if (SDL_ConvertAudio(&cvt) >= 0)
                 {
                     Unload();
-                    _data = cvt.buf;
+                    _data   = cvt.buf;
                     _length = cvt.len_cvt;
                     _format = *format;
                     return true;
@@ -200,7 +201,7 @@ private:
             _data = nullptr;
         }
         _isSDLWav = false;
-        _length = 0;
+        _length   = 0;
     }
 };
 

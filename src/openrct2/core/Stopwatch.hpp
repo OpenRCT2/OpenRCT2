@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -16,9 +16,8 @@
 
 #pragma once
 
-extern "C"
-{
-    #include "../common.h"
+extern "C" {
+#include "../common.h"
 }
 
 /**
@@ -38,11 +37,14 @@ private:
     static uint64 QueryCurrentTicks();
 
 public:
-    bool IsRunning() const { return _isRunning; }
+    bool IsRunning() const
+    {
+        return _isRunning;
+    }
 
     Stopwatch();
 
-    uint64 GetElapsedTicks()        const;
+    uint64 GetElapsedTicks() const;
     uint64 GetElapsedMilliseconds() const;
 
     void Reset();

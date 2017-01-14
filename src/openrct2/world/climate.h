@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -20,49 +20,52 @@
 #include "../common.h"
 #include "../drawing/drawing.h"
 
-enum {
-	CLIMATE_COOL_AND_WET,
-	CLIMATE_WARM,
-	CLIMATE_HOT_AND_DRY,
-	CLIMATE_COLD
+enum
+{
+    CLIMATE_COOL_AND_WET,
+    CLIMATE_WARM,
+    CLIMATE_HOT_AND_DRY,
+    CLIMATE_COLD
 };
 
-enum{
-	WEATHER_SUNNY,
-	WEATHER_PARTIALLY_CLOUDY,
-	WEATHER_CLOUDY,
-	WEATHER_RAIN,
-	WEATHER_HEAVY_RAIN,
-	WEATHER_THUNDER
+enum
+{
+    WEATHER_SUNNY,
+    WEATHER_PARTIALLY_CLOUDY,
+    WEATHER_CLOUDY,
+    WEATHER_RAIN,
+    WEATHER_HEAVY_RAIN,
+    WEATHER_THUNDER
 };
 
 #pragma pack(push, 1)
-typedef struct rct_weather {
-	sint8 temp_delta;
-	sint8 effect_level;
-	sint8 gloom_level;
-	sint8 rain_level;
-	uint32 sprite_id;
+typedef struct rct_weather
+{
+    sint8  temp_delta;
+    sint8  effect_level;
+    sint8  gloom_level;
+    sint8  rain_level;
+    uint32 sprite_id;
 } rct_weather;
 assert_struct_size(rct_weather, 8);
 #pragma pack(pop)
 
-extern uint8 gClimate;
-extern uint8 gClimateCurrentWeather;
-extern sint8 gClimateCurrentTemperature;
-extern uint8 gClimateCurrentWeatherEffect;
-extern uint8 gClimateCurrentWeatherGloom;
-extern uint8 gClimateCurrentRainLevel;
-extern uint8 gClimateNextWeather;
-extern sint8 gClimateNextTemperature;
-extern uint8 gClimateNextWeatherEffect;
-extern uint8 gClimateNextWeatherGloom;
-extern uint8 gClimateNextRainLevel;
+extern uint8  gClimate;
+extern uint8  gClimateCurrentWeather;
+extern sint8  gClimateCurrentTemperature;
+extern uint8  gClimateCurrentWeatherEffect;
+extern uint8  gClimateCurrentWeatherGloom;
+extern uint8  gClimateCurrentRainLevel;
+extern uint8  gClimateNextWeather;
+extern sint8  gClimateNextTemperature;
+extern uint8  gClimateNextWeatherEffect;
+extern uint8  gClimateNextWeatherGloom;
+extern uint8  gClimateNextRainLevel;
 extern uint16 gClimateUpdateTimer;
 
 extern uint16 gClimateLightningFlash;
 
-extern const rct_weather climate_weather_data[6];
+extern const rct_weather       climate_weather_data[6];
 extern const FILTER_PALETTE_ID ClimateWeatherGloomColours[4];
 
 int climate_celsius_to_fahrenheit(int celsius);

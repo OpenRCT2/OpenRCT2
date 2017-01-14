@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -14,19 +14,18 @@
  *****************************************************************************/
 #pragma endregion
 
-#include <algorithm>
-#include <list>
 #include "../core/Console.hpp"
 #include "../core/Guard.hpp"
 #include "../core/Memory.hpp"
+#include <algorithm>
+#include <list>
 
-extern "C"
-{
-    #include "drawing.h"
+extern "C" {
+#include "drawing.h"
 }
 
-constexpr uint32 BASE_IMAGE_ID = 29294;
-constexpr uint32 MAX_IMAGES = 262144;
+constexpr uint32 BASE_IMAGE_ID    = 29294;
+constexpr uint32 MAX_IMAGES       = 262144;
 constexpr uint32 INVALID_IMAGE_ID = UINT32_MAX;
 
 struct ImageList
@@ -47,11 +46,8 @@ static std::list<ImageList> _allocatedLists;
 
 static bool AllocatedListContains(uint32 baseImageId, uint32 count)
 {
-    bool contains = std::any_of(
-        _allocatedLists.begin(),
-        _allocatedLists.end(),
-        [baseImageId, count](const ImageList &imageList) -> bool
-        {
+    bool contains =
+        std::any_of(_allocatedLists.begin(), _allocatedLists.end(), [baseImageId, count](const ImageList & imageList) -> bool {
             return imageList.BaseId == baseImageId && imageList.Count == count;
         });
     return contains;
@@ -61,11 +57,8 @@ static bool AllocatedListContains(uint32 baseImageId, uint32 count)
 
 static bool AllocatedListRemove(uint32 baseImageId, uint32 count)
 {
-    auto foundItem = std::find_if(
-        _allocatedLists.begin(),
-        _allocatedLists.end(),
-        [baseImageId, count](const ImageList &imageList) -> bool
-        {
+    auto foundItem =
+        std::find_if(_allocatedLists.begin(), _allocatedLists.end(), [baseImageId, count](const ImageList & imageList) -> bool {
             return imageList.BaseId == baseImageId && imageList.Count == count;
         });
     if (foundItem != _allocatedLists.end())
@@ -92,7 +85,7 @@ static void InitialiseImageList()
     _allocatedLists.clear();
 #endif
     _allocatedImageCount = 0;
-    _initialised = true;
+    _initialised         = true;
 }
 
 /**
@@ -100,18 +93,14 @@ static void InitialiseImageList()
  */
 static void MergeFreeLists()
 {
-    _freeLists.sort(
-        [](const ImageList &a, const ImageList &b) -> bool
-        {
-            return a.BaseId < b.BaseId;
-        });
+    _freeLists.sort([](const ImageList & a, const ImageList & b) -> bool { return a.BaseId < b.BaseId; });
     for (auto it = _freeLists.begin(); it != _freeLists.end(); it++)
     {
         bool mergeHappened;
         do
         {
             mergeHappened = false;
-            auto nextIt = std::next(it);
+            auto nextIt   = std::next(it);
             if (nextIt != _freeLists.end())
             {
                 if (it->BaseId + it->Count == nextIt->BaseId)
@@ -136,8 +125,7 @@ static uint32 TryAllocateImageList(uint32 count)
             _freeLists.erase(it);
             if (imageList.Count > count)
             {
-                ImageList remainder = { imageList.BaseId + count,
-                                        imageList.Count - count };
+                ImageList remainder = { imageList.BaseId + count, imageList.Count - count };
                 _freeLists.push_back(remainder);
             }
 
@@ -160,7 +148,7 @@ static uint32 AllocateImageList(uint32 count)
         InitialiseImageList();
     }
 
-    uint32 baseImageId = INVALID_IMAGE_ID;
+    uint32 baseImageId         = INVALID_IMAGE_ID;
     uint32 freeImagesRemaining = GetNumFreeImagesRemaining();
     if (freeImagesRemaining >= count)
     {
@@ -204,59 +192,58 @@ static void FreeImageList(uint32 baseImageId, uint32 count)
     _freeLists.push_back({ baseImageId, count });
 }
 
-extern "C"
+extern "C" {
+uint32 gfx_object_allocate_images(const rct_g1_element * images, uint32 count)
 {
-    uint32 gfx_object_allocate_images(const rct_g1_element * images, uint32 count)
+    if (count == 0)
     {
-        if (count == 0)
-        {
-            return INVALID_IMAGE_ID;
-        }
+        return INVALID_IMAGE_ID;
+    }
 
-        uint32 baseImageId = AllocateImageList(count);
-        if (baseImageId == INVALID_IMAGE_ID)
-        {
-            log_error("Reached maximum image limit.");
-            return INVALID_IMAGE_ID;
-        }
+    uint32 baseImageId = AllocateImageList(count);
+    if (baseImageId == INVALID_IMAGE_ID)
+    {
+        log_error("Reached maximum image limit.");
+        return INVALID_IMAGE_ID;
+    }
 
-        uint32 imageId = baseImageId;
+    uint32 imageId = baseImageId;
+    for (uint32 i = 0; i < count; i++)
+    {
+        g1Elements[imageId] = images[i];
+        drawing_engine_invalidate_image(imageId);
+        imageId++;
+    }
+
+    return baseImageId;
+}
+
+void gfx_object_free_images(uint32 baseImageId, uint32 count)
+{
+    if (baseImageId != 0 && baseImageId != INVALID_IMAGE_ID)
+    {
+        // Zero the G1 elements so we don't have invalid pointers
+        // and data lying about
         for (uint32 i = 0; i < count; i++)
         {
-            g1Elements[imageId] = images[i];
+            uint32 imageId      = baseImageId + i;
+            g1Elements[imageId] = { 0 };
             drawing_engine_invalidate_image(imageId);
-            imageId++;
         }
 
-        return baseImageId;
+        FreeImageList(baseImageId, count);
     }
+}
 
-    void gfx_object_free_images(uint32 baseImageId, uint32 count)
+void gfx_object_check_all_images_freed()
+{
+    if (_allocatedImageCount != 0)
     {
-        if (baseImageId != 0 && baseImageId != INVALID_IMAGE_ID)
-        {
-            // Zero the G1 elements so we don't have invalid pointers
-            // and data lying about
-            for (uint32 i = 0; i < count; i++)
-            {
-                uint32 imageId = baseImageId + i;
-                g1Elements[imageId] = { 0 };
-                drawing_engine_invalidate_image(imageId);
-            }
-
-            FreeImageList(baseImageId, count);
-        }
-    }
-
-    void gfx_object_check_all_images_freed()
-    {
-        if (_allocatedImageCount != 0)
-        {
 #if DEBUG
-            Guard::Assert(_allocatedImageCount == 0, "%u images were not freed", _allocatedImageCount);
+        Guard::Assert(_allocatedImageCount == 0, "%u images were not freed", _allocatedImageCount);
 #else
-            Console::Error::WriteLine("%u images were not freed", _allocatedImageCount);
+        Console::Error::WriteLine("%u images were not freed", _allocatedImageCount);
 #endif
-        }
     }
+}
 }

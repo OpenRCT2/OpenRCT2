@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -18,9 +18,8 @@
 
 #include "../common.h"
 
-extern "C"
-{
-    #include "../scenario/scenario.h"
+extern "C" {
+#include "../scenario/scenario.h"
 }
 
 /**
@@ -34,9 +33,9 @@ public:
     S6Importer();
 
     void LoadSavedGame(const utf8 * path);
-    void LoadSavedGame(SDL_RWops *rw);
+    void LoadSavedGame(SDL_RWops * rw);
     void LoadScenario(const utf8 * path);
-    void LoadScenario(SDL_RWops *rw);
+    void LoadScenario(SDL_RWops * rw);
     void Import();
 
 private:

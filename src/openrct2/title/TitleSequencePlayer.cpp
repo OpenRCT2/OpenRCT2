@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -14,8 +14,8 @@
  *****************************************************************************/
 #pragma endregion
 
+#include "TitleSequencePlayer.h"
 #include "../common.h"
-#include <SDL.h>
 #include "../core/Console.hpp"
 #include "../core/Exception.hpp"
 #include "../core/Math.hpp"
@@ -25,27 +25,26 @@
 #include "../scenario/ScenarioSources.h"
 #include "TitleSequence.h"
 #include "TitleSequenceManager.h"
-#include "TitleSequencePlayer.h"
+#include <SDL.h>
 
-extern "C"
-{
-    #include "../game.h"
-    #include "../interface/viewport.h"
-    #include "../interface/window.h"
-    #include "../world/scenery.h"
+extern "C" {
+#include "../game.h"
+#include "../interface/viewport.h"
+#include "../interface/window.h"
+#include "../world/scenery.h"
 }
 
 class TitleSequencePlayer final : public ITitleSequencePlayer
 {
 private:
-    uint32          _sequenceId = 0;
-    TitleSequence * _sequence = nullptr;
-    sint32          _position = 0;
+    uint32          _sequenceId  = 0;
+    TitleSequence * _sequence    = nullptr;
+    sint32          _position    = 0;
     sint32          _waitCounter = 0;
 
-    sint32          _lastScreenWidth = 0;
-    sint32          _lastScreenHeight = 0;
-    rct_xy32        _viewCentreLocation = { 0 };
+    sint32   _lastScreenWidth    = 0;
+    sint32   _lastScreenHeight   = 0;
+    rct_xy32 _viewCentreLocation = { 0 };
 
 public:
     ~TitleSequencePlayer() override
@@ -72,7 +71,7 @@ public:
             return false;
         }
 
-        auto seqItem = TitleSequenceManager::GetItem(titleSequenceId);
+        auto seqItem  = TitleSequenceManager::GetItem(titleSequenceId);
         auto sequence = LoadTitleSequence(seqItem->Path.c_str());
         if (sequence == nullptr)
         {
@@ -80,7 +79,7 @@ public:
         }
 
         Eject();
-        _sequence = sequence;
+        _sequence   = sequence;
         _sequenceId = titleSequenceId;
 
         Reset();
@@ -156,7 +155,7 @@ public:
 
     void Reset() override
     {
-        _position = 0;
+        _position    = 0;
         _waitCounter = 0;
     }
 
@@ -215,13 +214,13 @@ private:
         {
             IncrementPosition();
             command = &_sequence->Commands[_position];
-        }
-        while (!TitleSequenceIsLoadCommand(command));
+        } while (!TitleSequenceIsLoadCommand(command));
     }
 
     bool ExecuteCommand(const TitleCommand * command)
     {
-        switch (command->Type) {
+        switch (command->Type)
+        {
         case TITLE_SCRIPT_END:
             _waitCounter = 1;
             break;
@@ -259,9 +258,9 @@ private:
             break;
         case TITLE_SCRIPT_LOAD:
         {
-            bool loadSuccess = false;
-            uint8 saveIndex = command->SaveIndex;
-            TitleSequenceParkHandle * parkHandle = TitleSequenceGetParkHandle(_sequence, saveIndex);
+            bool                      loadSuccess = false;
+            uint8                     saveIndex   = command->SaveIndex;
+            TitleSequenceParkHandle * parkHandle  = TitleSequenceGetParkHandle(_sequence, saveIndex);
             if (parkHandle != nullptr)
             {
                 loadSuccess = LoadParkFromRW(parkHandle->RWOps, parkHandle->IsScenario);
@@ -287,9 +286,9 @@ private:
                 return false;
             }
 
-            const utf8 * path = nullptr;
+            const utf8 *          path         = nullptr;
             IScenarioRepository * scenarioRepo = GetScenarioRepository();
-            size_t numScenarios =  scenarioRepo->GetCount();
+            size_t                numScenarios = scenarioRepo->GetCount();
             for (size_t i = 0; i < numScenarios; i++)
             {
                 const scenario_index_entry * scenario = scenarioRepo->GetByIndex(i);
@@ -309,7 +308,7 @@ private:
         return true;
     }
 
-    void SetViewZoom(const uint32 &zoom)
+    void SetViewZoom(const uint32 & zoom)
     {
         rct_window * w = window_get_main();
         if (w != nullptr && w->viewport != nullptr)
@@ -332,9 +331,9 @@ private:
 
     bool LoadParkFromFile(const utf8 * path)
     {
-        bool success = false;
-        bool isScenario = String::Equals(Path::GetExtension(path), ".sc6", true);
-        SDL_RWops * rw = SDL_RWFromFile(path, "rb");
+        bool        success    = false;
+        bool        isScenario = String::Equals(Path::GetExtension(path), ".sc6", true);
+        SDL_RWops * rw         = SDL_RWFromFile(path, "rb");
         if (rw != nullptr)
         {
             success = LoadParkFromRW(rw, isScenario);
@@ -345,21 +344,20 @@ private:
 
     bool LoadParkFromRW(SDL_RWops * rw, bool isScenario)
     {
-        bool successfulLoad = isScenario ? scenario_load_rw(rw) :
-                                           game_load_sv6(rw);
+        bool successfulLoad = isScenario ? scenario_load_rw(rw) : game_load_sv6(rw);
         if (!successfulLoad)
         {
             return false;
         }
 
-        rct_window * w = window_get_main();
+        rct_window * w            = window_get_main();
         w->viewport_target_sprite = -1;
-        w->saved_view_x = gSavedViewX;
-        w->saved_view_y = gSavedViewY;
+        w->saved_view_x           = gSavedViewX;
+        w->saved_view_y           = gSavedViewY;
 
         char zoomDifference = gSavedViewZoom - w->viewport->zoom;
-        w->viewport->zoom = gSavedViewZoom;
-        gCurrentRotation = gSavedViewRotation;
+        w->viewport->zoom   = gSavedViewZoom;
+        gCurrentRotation    = gSavedViewRotation;
         if (zoomDifference != 0)
         {
             if (zoomDifference < 0)
@@ -412,8 +410,8 @@ private:
         }
 
         // Save known tile position in case of window resize
-        _lastScreenWidth = gScreenWidth;
-        _lastScreenHeight = gScreenHeight;
+        _lastScreenWidth      = gScreenWidth;
+        _lastScreenHeight     = gScreenHeight;
         _viewCentreLocation.x = x;
         _viewCentreLocation.y = y;
     }
@@ -423,8 +421,7 @@ private:
      */
     void FixViewLocation()
     {
-        if (gScreenWidth != _lastScreenWidth ||
-            gScreenHeight != _lastScreenHeight)
+        if (gScreenWidth != _lastScreenWidth || gScreenHeight != _lastScreenHeight)
         {
             SetViewLocation(_viewCentreLocation.x, _viewCentreLocation.y);
         }
@@ -436,30 +433,29 @@ ITitleSequencePlayer * CreateTitleSequencePlayer()
     return new TitleSequencePlayer();
 }
 
-extern "C"
+extern "C" {
+sint32 title_sequence_player_get_current_position(ITitleSequencePlayer * player)
 {
-    sint32 title_sequence_player_get_current_position(ITitleSequencePlayer * player)
-    {
-        return player->GetCurrentPosition();
-    }
+    return player->GetCurrentPosition();
+}
 
-    bool title_sequence_player_begin(ITitleSequencePlayer * player, uint32 titleSequenceId)
-    {
-        return player->Begin(titleSequenceId);
-    }
+bool title_sequence_player_begin(ITitleSequencePlayer * player, uint32 titleSequenceId)
+{
+    return player->Begin(titleSequenceId);
+}
 
-    void title_sequence_player_reset(ITitleSequencePlayer * player)
-    {
-        player->Reset();
-    }
+void title_sequence_player_reset(ITitleSequencePlayer * player)
+{
+    player->Reset();
+}
 
-    bool title_sequence_player_update(ITitleSequencePlayer * player)
-    {
-        return player->Update();
-    }
+bool title_sequence_player_update(ITitleSequencePlayer * player)
+{
+    return player->Update();
+}
 
-    void title_sequence_player_seek(ITitleSequencePlayer * player, uint32 position)
-    {
-        player->Seek(position);
-    }
+void title_sequence_player_seek(ITitleSequencePlayer * player, uint32 position)
+{
+    player->Seek(position);
+}
 }

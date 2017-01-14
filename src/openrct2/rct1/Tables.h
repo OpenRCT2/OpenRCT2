@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -51,9 +51,9 @@ namespace RCT1
 extern "C" {
 #endif
 
-    uint8 rct1_get_ride_type(uint8 rideType);
-    const char * rct1_get_ride_type_object(uint8 rideType);
-    const char * rct1_get_vehicle_object(uint8 vehicleType);
+uint8 rct1_get_ride_type(uint8 rideType);
+const char * rct1_get_ride_type_object(uint8 rideType);
+const char * rct1_get_vehicle_object(uint8 vehicleType);
 
 #ifdef __cplusplus
 }

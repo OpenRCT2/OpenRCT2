@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -14,15 +14,14 @@
  *****************************************************************************/
 #pragma endregion
 
+#include "PlatformEnvironment.h"
 #include "core/Exception.hpp"
 #include "core/Guard.hpp"
 #include "core/Path.hpp"
 #include "core/String.hpp"
-#include "PlatformEnvironment.h"
 
-extern "C"
-{
-    #include "platform/platform.h"
+extern "C" {
+#include "platform/platform.h"
 }
 
 class PlatformEnvironment : public IPlatformEnvironment
@@ -43,7 +42,8 @@ public:
     {
         const utf8 * basePath = _basePath[(size_t)base].c_str();
         const utf8 * directoryName;
-        switch (base) {
+        switch (base)
+        {
         default:
         case DIRBASE::RCT1:
         case DIRBASE::RCT2:
@@ -87,52 +87,49 @@ IPlatformEnvironment * CreatePlatformEnvironment(DIRBASE_VALUES basePaths)
     return new PlatformEnvironment(basePaths);
 }
 
-const char * PlatformEnvironment::DirectoryNamesRCT2[] =
-{
-    "Data",                 // DATA
-    "Landscapes",           // LANDSCAPE
-    nullptr,                // LANGUAGE
-    nullptr,                // LOG_CHAT
-    nullptr,                // LOG_SERVER
-    nullptr,                // NETWORK_KEY
-    "ObjData",              // OBJECT
-    "Saved Games",          // SAVE
-    "Scenarios",            // SCENARIO
-    nullptr,                // SCREENSHOT
-    nullptr,                // SEQUENCE
-    nullptr,                // SHADER
-    nullptr,                // THEME
-    "Tracks",               // TRACK
+const char * PlatformEnvironment::DirectoryNamesRCT2[] = {
+    "Data",        // DATA
+    "Landscapes",  // LANDSCAPE
+    nullptr,       // LANGUAGE
+    nullptr,       // LOG_CHAT
+    nullptr,       // LOG_SERVER
+    nullptr,       // NETWORK_KEY
+    "ObjData",     // OBJECT
+    "Saved Games", // SAVE
+    "Scenarios",   // SCENARIO
+    nullptr,       // SCREENSHOT
+    nullptr,       // SEQUENCE
+    nullptr,       // SHADER
+    nullptr,       // THEME
+    "Tracks",      // TRACK
 };
 
-const char * PlatformEnvironment::DirectoryNamesOpenRCT2[] =
-{
-    "data",                 // DATA
-    "landscape",            // LANDSCAPE
-    "language",             // LANGUAGE
-    "chatlogs",             // LOG_CHAT
-    "serverlogs",           // LOG_SERVER
-    "keys",                 // NETWORK_KEY
-    "object",               // OBJECT
-    "save",                 // SAVE
-    "scenario",             // SCENARIO
-    "screenshot",           // SCREENSHOT
-    "sequence",             // SEQUENCE
-    "shader",               // SHADER
-    "themes",               // THEME
-    "track",                // TRACK
+const char * PlatformEnvironment::DirectoryNamesOpenRCT2[] = {
+    "data",       // DATA
+    "landscape",  // LANDSCAPE
+    "language",   // LANGUAGE
+    "chatlogs",   // LOG_CHAT
+    "serverlogs", // LOG_SERVER
+    "keys",       // NETWORK_KEY
+    "object",     // OBJECT
+    "save",       // SAVE
+    "scenario",   // SCENARIO
+    "screenshot", // SCREENSHOT
+    "sequence",   // SEQUENCE
+    "shader",     // SHADER
+    "themes",     // THEME
+    "track",      // TRACK
 };
 
-const char * PlatformEnvironment::FileNames[] =
-{
-    "config.ini",           // CONFIG
-    "hotkeys.dat",          // CONFIG_KEYBOARD
-    "objects.idx",          // CACHE_OBJECTS
-    "tracks.idx",           // CACHE_TRACKS
-    "groups.json",          // NETWORK_GROUPS
-    "servers.cfg",          // NETWORK_SERVERS
-    "users.json",           // NETWORK_USERS
-    "highscores.dat",       // SCORES
-    "scores.dat",           // SCORES (LEGACY)
-    "Saved Games" PATH_SEPARATOR "scores.dat",  // SCORES (RCT2)
+const char * PlatformEnvironment::FileNames[] = {
+    "config.ini",                              // CONFIG
+    "hotkeys.dat",                             // CONFIG_KEYBOARD
+    "objects.idx",                             // CACHE_OBJECTS
+    "tracks.idx",                              // CACHE_TRACKS
+    "groups.json",                             // NETWORK_GROUPS
+    "servers.cfg",                             // NETWORK_SERVERS
+    "users.json",                              // NETWORK_USERS
+    "highscores.dat",                          // SCORES
+    "scores.dat",                              // SCORES (LEGACY)
+    "Saved Games" PATH_SEPARATOR "scores.dat", // SCORES (RCT2)
 };

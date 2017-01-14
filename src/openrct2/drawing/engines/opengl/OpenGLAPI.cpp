@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -25,8 +25,7 @@
 
 #include "../../../core/Console.hpp"
 
-template <typename T>
-static inline bool SetProc(T * func, const char * name)
+template <typename T> static inline bool SetProc(T * func, const char * name)
 {
     T address = (T)SDL_GL_GetProcAddress(name);
     if (address == nullptr)
@@ -38,12 +37,12 @@ static inline bool SetProc(T * func, const char * name)
     return true;
 }
 
-#define SetupOpenGLFunction(func)           \
-    {                                       \
-        if (!SetProc(&func, "" #func ""))   \
-        {                                   \
-            return "" #func "";             \
-        }                                   \
+#define SetupOpenGLFunction(func)                                                                                              \
+    {                                                                                                                          \
+        if (!SetProc(&func, "" #func ""))                                                                                      \
+        {                                                                                                                      \
+            return "" #func "";                                                                                                \
+        }                                                                                                                      \
     }
 
 static const char * TryLoadAllProcAddresses()
@@ -63,7 +62,7 @@ static const char * TryLoadAllProcAddresses()
     SetupOpenGLFunction(glEnd);
     SetupOpenGLFunction(glGenTextures);
     SetupOpenGLFunction(glGetError);
-	SetupOpenGLFunction(glPixelStorei);
+    SetupOpenGLFunction(glPixelStorei);
     SetupOpenGLFunction(glReadPixels);
     SetupOpenGLFunction(glTexImage2D);
     SetupOpenGLFunction(glTexParameteri);
@@ -121,7 +120,7 @@ static const char * TryLoadAllProcAddresses()
 
 namespace OpenGLState
 {
-    uint16 ActiveTexture = UINT16_MAX;
+    uint16 ActiveTexture  = UINT16_MAX;
     GLuint CurrentProgram = UINT32_MAX;
 }
 

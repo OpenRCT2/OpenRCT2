@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -16,8 +16,8 @@
 
 #pragma once
 
-#include <string>
 #include "../common.h"
+#include <string>
 
 namespace String
 {
@@ -26,12 +26,12 @@ namespace String
     std::string ToStd(const utf8 * str);
     std::string StdFormat(const utf8 * format, ...);
 
-    bool   IsNullOrEmpty(const utf8 * str);
-    sint32 Compare(const std::string &a, const std::string &b, bool ignoreCase = false);
+    bool IsNullOrEmpty(const utf8 * str);
+    sint32 Compare(const std::string & a, const std::string & b, bool ignoreCase = false);
     sint32 Compare(const utf8 * a, const utf8 * b, bool ignoreCase = false);
-    bool Equals(const std::string &a, const std::string &b, bool ignoreCase = false);
-    bool   Equals(const utf8 * a, const utf8 * b, bool ignoreCase = false);
-    bool   StartsWith(const utf8 * str, const utf8 * match, bool ignoreCase = false);
+    bool Equals(const std::string & a, const std::string & b, bool ignoreCase = false);
+    bool Equals(const utf8 * a, const utf8 * b, bool ignoreCase = false);
+    bool StartsWith(const utf8 * str, const utf8 * match, bool ignoreCase = false);
     size_t LastIndexOf(const utf8 * str, utf8 match);
 
     /**
@@ -51,28 +51,28 @@ namespace String
     utf8 * Format(const utf8 * format, ...);
     utf8 * Format_VA(const utf8 * format, va_list args);
     utf8 * AppendFormat(utf8 * buffer, size_t bufferSize, const utf8 * format, ...);
-    utf8 * Duplicate(const std::string &src);
+    utf8 * Duplicate(const std::string & src);
     utf8 * Duplicate(const utf8 * src);
 
     /**
      * Helper method to free the string a string pointer points to and set it to a replacement string.
      */
-    utf8 * DiscardUse(utf8 * * ptr, utf8 * replacement);
+    utf8 * DiscardUse(utf8 ** ptr, utf8 * replacement);
 
     /**
      * Helper method to free the string a string pointer points to and set it to a copy of a replacement string.
      */
-    utf8 * DiscardDuplicate(utf8 * * ptr, const utf8 * replacement);
+    utf8 * DiscardDuplicate(utf8 ** ptr, const utf8 * replacement);
 
-    utf8 *       SkipBOM(utf8 * buffer);
+    utf8 * SkipBOM(utf8 * buffer);
     const utf8 * SkipBOM(const utf8 * buffer);
 
-    size_t      GetCodepointLength(codepoint_t codepoint);
-    codepoint_t GetNextCodepoint(utf8 * ptr, utf8 * * nextPtr = nullptr);
-    codepoint_t GetNextCodepoint(const utf8 * ptr, const utf8 * * nextPtr = nullptr);
-    utf8 *      WriteCodepoint(utf8 * dst, codepoint_t codepoint);
+    size_t GetCodepointLength(codepoint_t codepoint);
+    codepoint_t GetNextCodepoint(utf8 * ptr, utf8 ** nextPtr = nullptr);
+    codepoint_t GetNextCodepoint(const utf8 * ptr, const utf8 ** nextPtr = nullptr);
+    utf8 * WriteCodepoint(utf8 * dst, codepoint_t codepoint);
 
-    utf8 *          Trim(utf8 * str);
-    const utf8 *    TrimStart(const utf8 * str);
-    utf8 *          TrimStart(utf8 * buffer, size_t bufferSize, const utf8 * src);
+    utf8 * Trim(utf8 * str);
+    const utf8 * TrimStart(const utf8 * str);
+    utf8 * TrimStart(utf8 * buffer, size_t bufferSize, const utf8 * src);
 }

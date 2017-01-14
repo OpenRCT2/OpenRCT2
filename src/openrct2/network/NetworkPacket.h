@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -16,21 +16,21 @@
 
 #pragma once
 
+#include "../common.h"
+#include "NetworkTypes.h"
 #include <memory>
 #include <vector>
-#include "NetworkTypes.h"
-#include "../common.h"
 
 class NetworkPacket final
 {
 public:
-    uint16                              Size = 0;
-    std::shared_ptr<std::vector<uint8>> Data = std::make_shared<std::vector<uint8>>();
+    uint16                              Size             = 0;
+    std::shared_ptr<std::vector<uint8>> Data             = std::make_shared<std::vector<uint8>>();
     size_t                              BytesTransferred = 0;
-    size_t                              BytesRead = 0;
+    size_t                              BytesRead        = 0;
 
     static std::unique_ptr<NetworkPacket> Allocate();
-    static std::unique_ptr<NetworkPacket> Duplicate(NetworkPacket& packet);
+    static std::unique_ptr<NetworkPacket> Duplicate(NetworkPacket & packet);
 
     uint8 * GetData();
     uint32  GetCommand();
@@ -39,13 +39,12 @@ public:
     bool CommandRequiresAuth();
 
     const uint8 * Read(size_t size);
-    const utf8 *  ReadString();
+    const utf8 * ReadString();
 
     void Write(const uint8 * bytes, size_t size);
     void WriteString(const utf8 * string);
 
-    template <typename T>
-    NetworkPacket & operator >>(T &value)
+    template <typename T> NetworkPacket & operator>>(T & value)
     {
         if (BytesRead + sizeof(value) > Size)
         {
@@ -59,10 +58,10 @@ public:
         return *this;
     }
 
-    template <typename T>
-    NetworkPacket & operator <<(T value) {
-        T swapped = ByteSwapBE(value);
-        uint8 * bytes = (uint8 *)&swapped;
+    template <typename T> NetworkPacket & operator<<(T value)
+    {
+        T       swapped = ByteSwapBE(value);
+        uint8 * bytes   = (uint8 *)&swapped;
         Data->insert(Data->end(), bytes, bytes + sizeof(value));
         return *this;
     }

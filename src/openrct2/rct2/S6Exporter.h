@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -21,16 +21,15 @@
 
 #include "../common.h"
 
-extern "C"
-{
-    #include "../scenario/scenario.h"
-    #include "../object_list.h"
+extern "C" {
+#include "../object_list.h"
+#include "../scenario/scenario.h"
 }
 
 struct ObjectRepositoryItem;
 
-int scenario_save_network(SDL_RWops* rw, const std::vector<const ObjectRepositoryItem *> &objects);
-int scenario_write_packed_objects(SDL_RWops* rw, std::vector<const ObjectRepositoryItem *> &objects);
+int scenario_save_network(SDL_RWops * rw, const std::vector<const ObjectRepositoryItem *> & objects);
+int scenario_write_packed_objects(SDL_RWops * rw, std::vector<const ObjectRepositoryItem *> & objects);
 std::vector<const ObjectRepositoryItem *> scenario_get_packable_objects();
 
 /**
@@ -39,20 +38,20 @@ std::vector<const ObjectRepositoryItem *> scenario_get_packable_objects();
 class S6Exporter final
 {
 public:
-    bool RemoveTracklessRides;
+    bool                                      RemoveTracklessRides;
     std::vector<const ObjectRepositoryItem *> ExportObjectsList;
 
     S6Exporter();
 
     void SaveGame(const utf8 * path);
-    void SaveGame(SDL_RWops *rw);
+    void SaveGame(SDL_RWops * rw);
     void SaveScenario(const utf8 * path);
-    void SaveScenario(SDL_RWops *rw);
+    void SaveScenario(SDL_RWops * rw);
     void Export();
 
 private:
     rct_s6_data _s6;
 
-    void Save(SDL_RWops *rw, bool isScenario);
+    void Save(SDL_RWops * rw, bool isScenario);
     static uint32 GetLoanHash(money32 initialCash, money32 bankLoan, uint32 maxBankLoan);
 };

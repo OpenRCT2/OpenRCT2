@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -31,7 +31,8 @@ uint64 Stopwatch::GetElapsedTicks() const
     if (_isRunning)
     {
         uint64 ticks = QueryCurrentTicks();
-        if (ticks != 0) {
+        if (ticks != 0)
+        {
             result += QueryCurrentTicks() - _last;
         }
     }
@@ -56,18 +57,19 @@ uint64 Stopwatch::GetElapsedMilliseconds() const
 void Stopwatch::Reset()
 {
     _isRunning = false;
-    _total = 0;
-    _last = 0;
+    _total     = 0;
+    _last      = 0;
 }
 
 void Stopwatch::Start()
 {
-    if (_isRunning) return;
+    if (_isRunning)
+        return;
 
     uint64 ticks = QueryCurrentTicks();
     if (ticks != 0)
     {
-        _last = ticks;
+        _last      = ticks;
         _isRunning = true;
     }
 }
@@ -98,53 +100,52 @@ uint64 Stopwatch::QueryCurrentTicks()
     return SDL_GetPerformanceCounter();
 }
 
-extern "C"
+extern "C" {
+#include "stopwatch.h"
+
+void stopwatch_create(stopwatch_t * stopwatch)
 {
-    #include "stopwatch.h"
+    stopwatch->context = new Stopwatch();
+}
 
-    void stopwatch_create(stopwatch_t * stopwatch)
-    {
-        stopwatch->context = new Stopwatch();
-    }
+void stopwatch_dispose(stopwatch_t * stopwatch)
+{
+    delete static_cast<Stopwatch *>(stopwatch->context);
+}
 
-    void stopwatch_dispose(stopwatch_t * stopwatch)
-    {
-        delete static_cast<Stopwatch *>(stopwatch->context);
-    }
+uint64 stopwatch_GetElapsedTicks(stopwatch_t * stopwatch)
+{
+    Stopwatch * ctx = static_cast<Stopwatch *>(stopwatch->context);
+    return ctx->GetElapsedTicks();
+}
 
-    uint64 stopwatch_GetElapsedTicks(stopwatch_t * stopwatch)
-    {
-        Stopwatch * ctx = static_cast<Stopwatch *>(stopwatch->context);
-        return ctx->GetElapsedTicks();
-    }
+uint64 stopwatch_GetElapsedMilliseconds(stopwatch_t * stopwatch)
+{
+    Stopwatch * ctx = static_cast<Stopwatch *>(stopwatch->context);
+    return ctx->GetElapsedMilliseconds();
+}
 
-    uint64 stopwatch_GetElapsedMilliseconds(stopwatch_t * stopwatch)
-    {
-        Stopwatch * ctx = static_cast<Stopwatch *>(stopwatch->context);
-        return ctx->GetElapsedMilliseconds();
-    }
+void stopwatch_Reset(stopwatch_t * stopwatch)
+{
+    Stopwatch * ctx = static_cast<Stopwatch *>(stopwatch->context);
+    return ctx->Reset();
+}
 
-    void stopwatch_Reset(stopwatch_t * stopwatch)
-    {
-        Stopwatch * ctx = static_cast<Stopwatch *>(stopwatch->context);
-        return ctx->Reset();
-    }
+void stopwatch_Start(stopwatch_t * stopwatch)
+{
+    Stopwatch * ctx = static_cast<Stopwatch *>(stopwatch->context);
+    return ctx->Start();
+}
 
-    void stopwatch_Start(stopwatch_t * stopwatch)
-    {
-        Stopwatch * ctx = static_cast<Stopwatch *>(stopwatch->context);
-        return ctx->Start();
-    }
+void stopwatch_Restart(stopwatch_t * stopwatch)
+{
+    Stopwatch * ctx = static_cast<Stopwatch *>(stopwatch->context);
+    return ctx->Restart();
+}
 
-    void stopwatch_Restart(stopwatch_t * stopwatch)
-    {
-        Stopwatch * ctx = static_cast<Stopwatch *>(stopwatch->context);
-        return ctx->Restart();
-    }
-
-    void stopwatch_Stop(stopwatch_t * stopwatch)
-    {
-        Stopwatch * ctx = static_cast<Stopwatch *>(stopwatch->context);
-        return ctx->Stop();
-    }
+void stopwatch_Stop(stopwatch_t * stopwatch)
+{
+    Stopwatch * ctx = static_cast<Stopwatch *>(stopwatch->context);
+    return ctx->Stop();
+}
 }

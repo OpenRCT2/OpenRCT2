@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -18,51 +18,49 @@
 #define _HTTP_H_
 
 #ifndef DISABLE_HTTP
-#include <jansson.h>
 #include "../common.h"
+#include <jansson.h>
 
-typedef enum http_data_type_T {
-	HTTP_DATA_NONE,
-	HTTP_DATA_RAW,
-	HTTP_DATA_JSON
-} http_data_type;
+typedef enum http_data_type_T { HTTP_DATA_NONE, HTTP_DATA_RAW, HTTP_DATA_JSON } http_data_type;
 
-typedef struct http_request_t {
-	void *tag;
-	const char *method;
-	const char *url;
-	http_data_type type;
-	size_t size;
-	union {
-		const json_t *root;
-		char* body;
-	};
+typedef struct http_request_t
+{
+    void *         tag;
+    const char *   method;
+    const char *   url;
+    http_data_type type;
+    size_t         size;
+    union {
+        const json_t * root;
+        char *         body;
+    };
 } http_request_t;
 
-typedef struct http_response_t {
-	void *tag;
-	int status_code;
-	http_data_type type;
-	size_t size;
-	union {
-		json_t *root;
-		char* body;
-	};
+typedef struct http_response_t
+{
+    void *         tag;
+    int            status_code;
+    http_data_type type;
+    size_t         size;
+    union {
+        json_t * root;
+        char *   body;
+    };
 } http_response_t;
 
-#define HTTP_METHOD_GET		"GET"
-#define HTTP_METHOD_POST	"POST"
-#define HTTP_METHOD_PUT		"PUT"
-#define HTTP_METHOD_DELETE	"DELETE"
+#define HTTP_METHOD_GET "GET"
+#define HTTP_METHOD_POST "POST"
+#define HTTP_METHOD_PUT "PUT"
+#define HTTP_METHOD_DELETE "DELETE"
 
-http_response_t *http_request(const http_request_t *request);
-void http_request_async(const http_request_t *request, void (*callback)(http_response_t*));
-void http_request_dispose(http_response_t *response);
+http_response_t * http_request(const http_request_t * request);
+void http_request_async(const http_request_t * request, void (*callback)(http_response_t *));
+void http_request_dispose(http_response_t * response);
 
-const char *http_get_extension_from_url(const char *url, const char *fallback);
+const char * http_get_extension_from_url(const char * url, const char * fallback);
 
 // Padding for extension that is appended to temporary file name
-bool http_download_park(const char *url, char tmpPath[L_tmpnam + 10]);
+bool http_download_park(const char * url, char tmpPath[L_tmpnam + 10]);
 #endif // DISABLE_HTTP
 
 // These callbacks are defined anyway, but are dummy if HTTP is disabled

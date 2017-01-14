@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -14,9 +14,9 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../../paint/supports.h"
 #include "../../interface/viewport.h"
 #include "../../paint/paint.h"
+#include "../../paint/supports.h"
 #include "../../sprites.h"
 #include "../../world/map.h"
 #include "../track_paint.h"

@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -16,10 +16,9 @@
 
 #include <cwctype>
 
-extern "C"
-{
-    #include "../localisation/localisation.h"
-    #include "../util/util.h"
+extern "C" {
+#include "../localisation/localisation.h"
+#include "../util/util.h"
 }
 
 #include "Math.hpp"
@@ -30,8 +29,10 @@ namespace String
 {
     std::string ToStd(const utf8 * str)
     {
-        if (str == nullptr) return std::string();
-        else return std::string(str);
+        if (str == nullptr)
+            return std::string();
+        else
+            return std::string(str);
     }
 
     std::string StdFormat(const utf8 * format, ...)
@@ -50,15 +51,17 @@ namespace String
         return str == nullptr || str[0] == '\0';
     }
 
-    sint32 Compare(const std::string &a, const std::string &b, bool ignoreCase)
+    sint32 Compare(const std::string & a, const std::string & b, bool ignoreCase)
     {
         return Compare(a.c_str(), b.c_str(), ignoreCase);
     }
 
     sint32 Compare(const utf8 * a, const utf8 * b, bool ignoreCase)
     {
-        if (a == b) return true;
-        if (a == nullptr || b == nullptr) return false;
+        if (a == b)
+            return true;
+        if (a == nullptr || b == nullptr)
+            return false;
 
         if (ignoreCase)
         {
@@ -70,15 +73,17 @@ namespace String
         }
     }
 
-    bool Equals(const std::string &a, const std::string &b, bool ignoreCase)
+    bool Equals(const std::string & a, const std::string & b, bool ignoreCase)
     {
         return Equals(a.c_str(), b.c_str(), ignoreCase);
     }
 
     bool Equals(const utf8 * a, const utf8 * b, bool ignoreCase)
     {
-        if (a == b) return true;
-        if (a == nullptr || b == nullptr) return false;
+        if (a == b)
+            return true;
+        if (a == nullptr || b == nullptr)
+            return false;
 
         if (ignoreCase)
         {
@@ -119,7 +124,7 @@ namespace String
     size_t LastIndexOf(const utf8 * str, utf8 match)
     {
         const utf8 * lastOccurance = nullptr;
-        const utf8 * ch = str;
+        const utf8 * ch            = str;
         for (; *ch != '\0'; ch++)
         {
             if (*ch == match)
@@ -155,12 +160,13 @@ namespace String
 
     utf8 * Set(utf8 * buffer, size_t bufferSize, const utf8 * src, size_t srcSize)
     {
-        utf8 * dst = buffer;
+        utf8 * dst     = buffer;
         size_t minSize = Math::Min(bufferSize - 1, srcSize);
         for (size_t i = 0; i < minSize; i++)
         {
             *dst++ = *src;
-            if (*src == '\0') break;
+            if (*src == '\0')
+                break;
             src++;
         }
         *dst = '\0';
@@ -203,7 +209,7 @@ namespace String
 
         // Try to format to a initial buffer, enlarge if not big enough
         size_t bufferSize = 4096;
-        utf8 * buffer = Memory::Allocate<utf8>(bufferSize);
+        utf8 * buffer     = Memory::Allocate<utf8>(bufferSize);
 
         // Start with initial buffer
         int len = vsnprintf(buffer, bufferSize, format, args);
@@ -222,7 +228,7 @@ namespace String
         {
             // Try again with bigger buffer
             buffer = Memory::Reallocate<utf8>(buffer, bufferSize);
-            len = vsnprintf(buffer, bufferSize, format, args);
+            len    = vsnprintf(buffer, bufferSize, format, args);
             if (len < 0)
             {
                 Memory::Free(buffer);
@@ -237,7 +243,7 @@ namespace String
         {
             // Reduce buffer size to only what was required
             bufferSize = requiredSize;
-            buffer = Memory::Reallocate<utf8>(buffer, bufferSize);
+            buffer     = Memory::Reallocate<utf8>(buffer, bufferSize);
         }
 
         // Ensure buffer is terminated
@@ -254,7 +260,8 @@ namespace String
         size_t i;
         for (i = 0; i < bufferSize; i++)
         {
-            if (*dst == '\0') break;
+            if (*dst == '\0')
+                break;
             dst++;
         }
 
@@ -272,7 +279,7 @@ namespace String
         return buffer;
     }
 
-    utf8 * Duplicate(const std::string &src)
+    utf8 * Duplicate(const std::string & src)
     {
         return String::Duplicate(src.c_str());
     }
@@ -283,26 +290,26 @@ namespace String
         if (src != nullptr)
         {
             size_t srcSize = SizeOf(src);
-            result = Memory::DuplicateArray(src, srcSize + 1);
+            result         = Memory::DuplicateArray(src, srcSize + 1);
         }
         return result;
     }
 
-    utf8 * DiscardUse(utf8 * * ptr, utf8 * replacement)
+    utf8 * DiscardUse(utf8 ** ptr, utf8 * replacement)
     {
         Memory::Free(*ptr);
         *ptr = replacement;
         return replacement;
     }
 
-    utf8 * DiscardDuplicate(utf8 * * ptr, const utf8 * replacement)
+    utf8 * DiscardDuplicate(utf8 ** ptr, const utf8 * replacement)
     {
         return DiscardUse(ptr, String::Duplicate(replacement));
     }
 
     utf8 * SkipBOM(utf8 * buffer)
     {
-        return (utf8*)SkipBOM((const utf8 *)buffer);
+        return (utf8 *)SkipBOM((const utf8 *)buffer);
     }
 
     const utf8 * SkipBOM(const utf8 * buffer)
@@ -319,12 +326,12 @@ namespace String
         return utf8_get_codepoint_length(codepoint);
     }
 
-    codepoint_t GetNextCodepoint(utf8 * ptr, utf8 * * nextPtr)
+    codepoint_t GetNextCodepoint(utf8 * ptr, utf8 ** nextPtr)
     {
-        return GetNextCodepoint((const utf8 *)ptr, (const utf8 * *)nextPtr);
+        return GetNextCodepoint((const utf8 *)ptr, (const utf8 **)nextPtr);
     }
 
-    codepoint_t GetNextCodepoint(const utf8 * ptr, const utf8 * * nextPtr)
+    codepoint_t GetNextCodepoint(const utf8 * ptr, const utf8 ** nextPtr)
     {
         return utf8_get_next(ptr, nextPtr);
     }
@@ -339,8 +346,8 @@ namespace String
         utf8 * firstNonWhitespace = nullptr;
 
         codepoint_t codepoint;
-        utf8 * ch = str;
-        utf8 * nextCh;
+        utf8 *      ch = str;
+        utf8 *      nextCh;
         while ((codepoint = GetNextCodepoint(ch, &nextCh)) != '\0')
         {
             if (codepoint <= WCHAR_MAX && !iswspace((wchar_t)codepoint))
@@ -353,8 +360,7 @@ namespace String
             ch = nextCh;
         }
 
-        if (firstNonWhitespace != nullptr &&
-            firstNonWhitespace != str)
+        if (firstNonWhitespace != nullptr && firstNonWhitespace != str)
         {
             size_t newStringSize = ch - firstNonWhitespace;
 #if DEBUG
@@ -375,7 +381,7 @@ namespace String
 
     const utf8 * TrimStart(const utf8 * str)
     {
-        codepoint_t codepoint;
+        codepoint_t  codepoint;
         const utf8 * ch = str;
         const utf8 * nextCh;
         while ((codepoint = GetNextCodepoint(ch, &nextCh)) != '\0')

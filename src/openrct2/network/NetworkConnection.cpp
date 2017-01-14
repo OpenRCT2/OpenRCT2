@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -16,14 +16,13 @@
 
 #ifndef DISABLE_NETWORK
 
-#include "network.h"
 #include "NetworkConnection.h"
 #include "../core/String.hpp"
+#include "network.h"
 #include <SDL.h>
 
-extern "C"
-{
-    #include "../localisation/localisation.h"
+extern "C" {
+#include "../localisation/localisation.h"
 }
 
 constexpr size_t NETWORK_DISCONNECT_REASON_BUFFER_SIZE = 256;
@@ -47,9 +46,9 @@ int NetworkConnection::ReadPacket()
     if (InboundPacket.BytesTransferred < sizeof(InboundPacket.Size))
     {
         // read packet size
-        void * buffer = &((char*)&InboundPacket.Size)[InboundPacket.BytesTransferred];
-        size_t bufferLength = sizeof(InboundPacket.Size) - InboundPacket.BytesTransferred;
-        size_t readBytes;
+        void *             buffer       = &((char *)&InboundPacket.Size)[InboundPacket.BytesTransferred];
+        size_t             bufferLength = sizeof(InboundPacket.Size) - InboundPacket.BytesTransferred;
+        size_t             readBytes;
         NETWORK_READPACKET status = Socket->ReceiveData(buffer, bufferLength, &readBytes);
         if (status != NETWORK_READPACKET_SUCCESS)
         {
@@ -72,9 +71,9 @@ int NetworkConnection::ReadPacket()
         // read packet data
         if (InboundPacket.Data->capacity() > 0)
         {
-            void * buffer = &InboundPacket.GetData()[InboundPacket.BytesTransferred - sizeof(InboundPacket.Size)];
-            size_t bufferLength = sizeof(InboundPacket.Size) + InboundPacket.Size - InboundPacket.BytesTransferred;
-            size_t readBytes;
+            void *             buffer = &InboundPacket.GetData()[InboundPacket.BytesTransferred - sizeof(InboundPacket.Size)];
+            size_t             bufferLength = sizeof(InboundPacket.Size) + InboundPacket.Size - InboundPacket.BytesTransferred;
+            size_t             readBytes;
             NETWORK_READPACKET status = Socket->ReceiveData(buffer, bufferLength, &readBytes);
             if (status != NETWORK_READPACKET_SUCCESS)
             {
@@ -92,17 +91,17 @@ int NetworkConnection::ReadPacket()
     return NETWORK_READPACKET_MORE_DATA;
 }
 
-bool NetworkConnection::SendPacket(NetworkPacket& packet)
+bool NetworkConnection::SendPacket(NetworkPacket & packet)
 {
-    uint16 sizen = Convert::HostToNetwork(packet.Size);
+    uint16             sizen = Convert::HostToNetwork(packet.Size);
     std::vector<uint8> tosend;
     tosend.reserve(sizeof(sizen) + packet.Size);
-    tosend.insert(tosend.end(), (uint8*)&sizen, (uint8*)&sizen + sizeof(sizen));
+    tosend.insert(tosend.end(), (uint8 *)&sizen, (uint8 *)&sizen + sizeof(sizen));
     tosend.insert(tosend.end(), packet.Data->begin(), packet.Data->end());
 
-    const void * buffer = &tosend[packet.BytesTransferred];
-    size_t bufferSize = tosend.size() - packet.BytesTransferred;
-    size_t sent = Socket->SendData(buffer, bufferSize);
+    const void * buffer     = &tosend[packet.BytesTransferred];
+    size_t       bufferSize = tosend.size() - packet.BytesTransferred;
+    size_t       sent       = Socket->SendData(buffer, bufferSize);
     if (sent > 0)
     {
         packet.BytesTransferred += sent;
@@ -188,7 +187,7 @@ void NetworkConnection::SetLastDisconnectReason(const utf8 * src)
     String::Set(_lastDisconnectReason, NETWORK_DISCONNECT_REASON_BUFFER_SIZE, src);
 }
 
-void NetworkConnection::SetLastDisconnectReason(const rct_string_id string_id, void *args)
+void NetworkConnection::SetLastDisconnectReason(const rct_string_id string_id, void * args)
 {
     char buffer[NETWORK_DISCONNECT_REASON_BUFFER_SIZE];
     format_string(buffer, NETWORK_DISCONNECT_REASON_BUFFER_SIZE, string_id, args);

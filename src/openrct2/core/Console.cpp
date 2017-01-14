@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -14,9 +14,8 @@
  *****************************************************************************/
 #pragma endregion
 
-extern "C"
-{
-    #include "../platform/platform.h"
+extern "C" {
+#include "../platform/platform.h"
 }
 
 #include "Console.hpp"

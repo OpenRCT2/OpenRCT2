@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -26,10 +26,10 @@
 class NetworkUser final
 {
 public:
-    std::string         Hash;
-    std::string         Name;
-    Nullable<uint8>     GroupId;
-    bool                Remove;
+    std::string     Hash;
+    std::string     Name;
+    Nullable<uint8> GroupId;
+    bool            Remove;
 
     static NetworkUser * FromJson(json_t * json);
 
@@ -53,16 +53,16 @@ public:
     void Save();
 
     void UnsetUsersOfGroup(uint8 groupId);
-    void RemoveUser(const std::string &hash);
+    void RemoveUser(const std::string & hash);
 
-    NetworkUser * GetUserByHash(const std::string &hash);
-    const NetworkUser * GetUserByHash(const std::string &hash) const;
-    const NetworkUser * GetUserByName(const std::string &name) const;
-    NetworkUser * GetOrAddUser(const std::string &hash);
+    NetworkUser * GetUserByHash(const std::string & hash);
+    const NetworkUser * GetUserByHash(const std::string & hash) const;
+    const NetworkUser * GetUserByName(const std::string & name) const;
+    NetworkUser * GetOrAddUser(const std::string & hash);
 
 private:
-    std::map<std::string, NetworkUser*> _usersByHash;
+    std::map<std::string, NetworkUser *> _usersByHash;
 
-    void DisposeUsers();
+    void        DisposeUsers();
     static void GetStorePath(utf8 * buffer, size_t bufferSize);
 };
