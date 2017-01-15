@@ -922,6 +922,7 @@ private:
         dst->sprite_width = src->sprite_width; //vehicleEntry->sprite_width;
         dst->sprite_height_negative = src->sprite_height_negative; //vehicleEntry->sprite_height_negative;
         dst->sprite_height_positive = src->sprite_height_positive; //vehicleEntry->sprite_height_positive;
+        dst->sprite_direction = src->sprite_direction;
 
         dst->sprite_left = src->sprite_left;
         dst->sprite_top = src->sprite_top;
