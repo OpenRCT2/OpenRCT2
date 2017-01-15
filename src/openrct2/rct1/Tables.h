@@ -48,6 +48,7 @@ namespace RCT1
     const char * GetPathObject(uint8 pathType);
     const char * GetPathAddtionObject(uint8 pathAdditionType);
     const char * GetSceneryGroupObject(uint8 sceneryGroupType);
+    const char * GetWaterObject(uint8 waterType);
 
     const std::vector<const char *> GetSceneryObjects(uint8 sceneryType);
 

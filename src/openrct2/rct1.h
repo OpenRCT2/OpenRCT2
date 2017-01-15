@@ -1158,6 +1158,11 @@ enum {
 	COPY_COLOUR_2 = -2,
 };
 
+enum {
+	RCT1_WATER_CYAN,
+	RCT1_WATER_ORANGE
+};
+
 #define RCT1_MAX_STATIONS 4
 
 extern const uint8 gRideCategories[0x60];

@@ -102,6 +102,7 @@ private:
     EntryList _pathEntries;
     EntryList _pathAdditionEntries;
     EntryList _sceneryGroupEntries;
+    EntryList _waterEntry;
 
     // Lookup tables for converting from RCT1 hard coded types to the new dynamic object entries
     uint8 _rideTypeToRideEntryMap[96];
@@ -198,6 +199,7 @@ private:
         AddAvailableEntriesFromMap();
         AddAvailableEntriesFromRides();
         AddAvailableEntriesFromSceneryGroups();
+        AddEntryForWater();
     }
 
     void AddDefaultEntries()
@@ -379,6 +381,22 @@ private:
                 }
             }
         }
+    }
+
+    void AddEntryForWater()
+    {
+        const char * entryName;
+
+        if (_s4.game_version < FILE_VERSION_RCT1_LL)
+        {
+            entryName = RCT1::GetWaterObject(RCT1_WATER_CYAN);
+        }
+        else
+        {
+            entryName = RCT1::GetWaterObject(_s4.water_colour);
+        }
+
+        _waterEntry.GetOrAddEntry(entryName);
     }
 
     void AddEntryForRideType(uint8 rideType)
@@ -1510,7 +1528,7 @@ private:
             "BN9     "
         }));
         LoadObjects(OBJECT_TYPE_PARK_ENTRANCE, std::vector<const char *>({ "PKENT1  " }));
-        LoadObjects(OBJECT_TYPE_WATER, std::vector<const char *>({ "WTRCYAN " }));
+        LoadObjects(OBJECT_TYPE_WATER, _waterEntry);
     }
 
     void LoadObjects(uint8 objectType, const EntryList &entries)
@@ -2261,6 +2279,7 @@ private:
         case OBJECT_TYPE_PATHS:         return &_pathEntries;
         case OBJECT_TYPE_PATH_BITS:     return &_pathAdditionEntries;
         case OBJECT_TYPE_SCENERY_SETS:  return &_sceneryGroupEntries;
+        case OBJECT_TYPE_WATER:         return &_waterEntry;
         }
         return nullptr;
     }

@@ -1362,7 +1362,7 @@ namespace RCT1
 
 #pragma warning(push)
 #pragma warning(disable : 4505) // 'identifier' unreferenced local function has been removed
-    static const char * GetWaterObject(uint8 waterType)
+    const char * GetWaterObject(uint8 waterType)
     {
         static const char * map[] =
         {
