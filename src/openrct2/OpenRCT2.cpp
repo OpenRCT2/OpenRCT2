@@ -228,14 +228,27 @@ extern "C"
                 {
 #ifndef DISABLE_HTTP
                     // Download park and open it using its temporary filename
-                    char tmpPath[MAX_PATH];
-                    if (!http_download_park(gOpenRCT2StartupActionPath, tmpPath))
+                    http_response_t *response = http_download_park(gOpenRCT2StartupActionPath);
+                    if (response == NULL)
                     {
                         title_load();
                         break;
                     }
 
-                    parkLoaded = OpenRCT2::OpenParkAutoDetectFormat(tmpPath);
+					SDL_RWops *rw = SDL_RWFromConstMem(response->body, response->size - 1);
+					if (rw == NULL) {
+						title_load();
+                        break;
+					}
+					
+					if (game_load_sv6(rw)) {
+						game_load_init();
+						parkLoaded = true;
+						gFirstTimeSave = 1;
+					}
+					
+					SDL_RWclose(rw);
+					http_request_dispose(response);
 #endif
                 }
                 else

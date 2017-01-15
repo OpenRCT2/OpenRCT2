@@ -62,7 +62,7 @@ void http_request_dispose(http_response_t *response);
 const char *http_get_extension_from_url(const char *url, const char *fallback);
 
 // Padding for extension that is appended to temporary file name
-bool http_download_park(const char *url, char tmpPath[L_tmpnam + 10]);
+http_response_t *http_download_park(const char *url);
 #endif // DISABLE_HTTP
 
 // These callbacks are defined anyway, but are dummy if HTTP is disabled
