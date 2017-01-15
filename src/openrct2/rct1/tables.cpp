@@ -67,7 +67,11 @@ namespace RCT1
             COLOUR_BRIGHT_YELLOW,
             COLOUR_ICY_BLUE
         };
-        Guard::ArgumentInRange<size_t>(colour, 0, Util::CountOf(map), "Unsupported RCT1 colour.");
+        if (colour < 0 || colour >= Util::CountOf(map))
+        {
+            log_warning("Unsupported RCT1 colour.");
+            return COLOUR_BLACK;
+        }
         return map[colour];
     }
 
@@ -107,7 +111,11 @@ namespace RCT1
             PEEP_SPRITE_TYPE_TENTACLE,
             PEEP_SPRITE_TYPE_TOFFEE_APPLE
         };
-        Guard::ArgumentInRange<size_t>(rct1SpriteType, 0, Util::CountOf(map), "Unsupported RCT1 sprite type.");
+        if (rct1SpriteType < 0 || rct1SpriteType > Util::CountOf(map))
+        {
+            log_warning("Unsupported RCT1 sprite type.");
+            return PEEP_SPRITE_TYPE_NORMAL;
+        }
         return map[rct1SpriteType];
     }
 
