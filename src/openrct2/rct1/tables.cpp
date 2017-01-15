@@ -506,8 +506,8 @@ namespace RCT1
             0,
             0, // REVERSER_RC_CAR
             2, // REVERSER_RC_BOGIE
-            0,
-            0,
+            1, // MINIGOLF_PLAYER
+            0, // MINIGOLF_BALL
             0,
             0,
             0,
