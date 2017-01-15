@@ -39,6 +39,7 @@
 #include "map_animation.h"
 #include "park.h"
 #include "scenery.h"
+#include "tile_inspector.h"
 
 /**
  * Replaces 0x00993CCC, 0x00993CCE
@@ -5599,6 +5600,43 @@ void game_command_set_sign_style(sint32* eax, sint32* ebx, sint32* ecx, sint32* 
 	rct_window* w = window_bring_to_front_by_number(WC_BANNER, *ecx);
 	if (w) {
 		window_invalidate(w);
+	}
+
+	*ebx = 0;
+}
+
+void game_command_modify_tile(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp)
+{
+	sint32 flags = *ebx;
+	const tile_inspector_element_type action_type = *eax;
+	switch (action_type)
+	{
+	case TILE_INSPECTOR_ELEMENT_ANY:
+	case TILE_INSPECTOR_ELEMENT_SURFACE:
+	case TILE_INSPECTOR_ELEMENT_PATH:
+	case TILE_INSPECTOR_ELEMENT_TRACK:
+	case TILE_INSPECTOR_ELEMENT_SCENERY:
+	case TILE_INSPECTOR_ELEMENT_ENTRANCE:
+	case TILE_INSPECTOR_ELEMENT_FENCE:
+	case TILE_INSPECTOR_ELEMENT_SCENERYMULTIPLE:
+	case TILE_INSPECTOR_ELEMENT_BANNER:
+		return;
+	case TILE_INSPECTOR_ELEMENT_CORRUPT:
+	{
+		const sint32 x = *ecx & 0xFF;
+		const sint32 y = (*ecx >> 8) & 0xFF;
+		const sint16 index = *edx;
+		*ebx = tile_inspector_insert_corrupt_at(x, y, index, flags);
+		return;
+	}
+	}
+}
+
+void game_command_modify_element(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp)
+{
+	log_info("Modifying element");
+	if (*ebx & GAME_COMMAND_FLAG_APPLY) {
+		puts("Yeah baby");
 	}
 
 	*ebx = 0;

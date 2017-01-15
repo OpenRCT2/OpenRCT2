@@ -16,6 +16,8 @@
 
 #include "dropdown.h"
 #include "error.h"
+#include "tile_inspector.h"
+#include "../game.h"
 #include "../input.h"
 #include "../interface/themes.h"
 #include "../interface/viewport.h"
@@ -28,6 +30,7 @@
 #include "../world/footpath.h"
 #include "../world/map.h"
 #include "../world/scenery.h"
+#include "../world/tile_inspector.h"
 
 static const rct_string_id terrainTypeStringIds[] = {
 	STR_TILE_INSPECTOR_TERRAIN_GRASS,
@@ -72,19 +75,6 @@ static const rct_string_id fenceSlopeStringIds[] = {
 	STR_TILE_INSPECTOR_FENCE_FLAT,
 	STR_TILE_INSPECTOR_FENCE_SLOPED_LEFT,
 	STR_TILE_INSPECTOR_FENCE_SLOPED_RIGHT
-};
-
-enum WINDOW_TILE_INSPECTOR_PAGES {
-	PAGE_DEFAULT,
-	PAGE_SURFACE,
-	PAGE_PATH,
-	PAGE_TRACK,
-	PAGE_SCENERY,
-	PAGE_ENTRANCE,
-	PAGE_FENCE,
-	PAGE_LARGE_SCENERY,
-	PAGE_BANNER,
-	PAGE_CORRUPT
 };
 
 enum WINDOW_TILE_INSPECTOR_WIDGET_IDX {
@@ -460,7 +450,7 @@ static sint32 windowTileInspectorToolMouseX = 0;
 static sint32 windowTileInspectorToolMouseY = 0;
 static sint32 windowTileInspectorToolMapX = 0;
 static sint32 windowTileInspectorToolMapY = 0;
-static sint32 windowTileInspectorElementCount = 0;
+sint32 windowTileInspectorElementCount = 0;
 static bool windowTileInspectorApplyToAll = false;
 static bool windowTileInspectorElementCopied = false;
 static rct_map_element tileInspectorCopiedElement;
@@ -494,8 +484,6 @@ static void window_tile_inspector_scrollmouseover(rct_window *w, sint32 scrollIn
 static void window_tile_inspector_invalidate(rct_window *w);
 static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_tile_inspector_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 scrollIndex);
-static void window_tile_inspector_set_page(rct_window *w, const sint32 page);
-static void window_tile_inspector_auto_set_buttons(rct_window *w);
 
 static rct_window_event_list windowTileInspectorEvents = {
 	NULL,
@@ -621,23 +609,15 @@ static void window_tile_inspector_load_tile(rct_window* w)
 
 static void window_tile_inspector_insert_corrupt_element(rct_window *w)
 {
-	// Create new corrupt element
-	rct_map_element *curruptElement = map_element_insert(windowTileInspectorTileX, windowTileInspectorTileY, -1, 0); // Ugly hack: -1 guarantees this to be placed first
-	windowTileInspectorElementCount++;
-	assert(curruptElement != NULL);
-	curruptElement->type = MAP_ELEMENT_TYPE_CORRUPT;
-
-	// Set the base height to be the same as the selected element
-	rct_map_element *const selectedElement = window_tile_inspector_get_selected_element(w);
-	curruptElement->base_height = curruptElement->clearance_height = selectedElement->base_height;
-
-	// Move the corrupt element up until the selected list item is reached
-	// this way it's placed under the selected element, even when there are multiple elements with the same base height
-	for (sint32 i = 0; i < w->selected_list_item; i++) {
-		window_tile_inspector_swap_elements(i, i + 1);
-	}
-
-	map_invalidate_tile_full(windowTileInspectorTileX << 5, windowTileInspectorTileY << 5);
+	game_do_command(
+		TILE_INSPECTOR_ELEMENT_CORRUPT,
+		GAME_COMMAND_FLAG_APPLY,
+		windowTileInspectorTileX | (windowTileInspectorTileY << 8),
+		w->selected_list_item,
+		GAME_COMMAND_MODIFY_TILE,
+		0,
+		0
+	);
 }
 
 static void window_tile_inspector_remove_element(sint32 index)
@@ -1049,9 +1029,6 @@ static void window_tile_inspector_mouseup(rct_window *w, sint32 widgetIndex)
 		break;
 	case WIDX_BUTTON_CORRUPT:
 		window_tile_inspector_insert_corrupt_element(w);
-		window_tile_inspector_set_page(w, PAGE_CORRUPT);
-		window_tile_inspector_auto_set_buttons(w);
-		window_invalidate(w);
 		break;
 	case WIDX_BUTTON_REMOVE:
 		window_tile_inspector_remove_element(w->selected_list_item);
@@ -1518,7 +1495,7 @@ static void window_tile_inspector_scrollgetsize(rct_window *w, sint32 scrollInde
 	*height = windowTileInspectorElementCount * LIST_ITEM_HEIGHT;
 }
 
-static void window_tile_inspector_set_page(rct_window *w, const sint32 page)
+void window_tile_inspector_set_page(rct_window *w, const tile_inspector_page page)
 {
 	w->page = page;
 	w->widgets = tileInspectorWidgets[page];
@@ -1526,7 +1503,7 @@ static void window_tile_inspector_set_page(rct_window *w, const sint32 page)
 	w->disabled_widgets = windowTileInspectorDisabledWidgets[page];
 }
 
-static void window_tile_inspector_auto_set_buttons(rct_window *w)
+void window_tile_inspector_auto_set_buttons(rct_window *w)
 {
 	// X and Y spinners
 	widget_set_enabled(w, WIDX_SPINNER_X_INCREASE, (windowTileInspectorTileSelected && (windowTileInspectorTileX < 255)));

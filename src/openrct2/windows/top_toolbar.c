@@ -719,7 +719,6 @@ static void window_top_toolbar_invalidate(rct_window *w)
 		// Fall-through
 		case NETWORK_MODE_SERVER:
 			window_top_toolbar_widgets[WIDX_FASTFORWARD].type = WWT_EMPTY;
-			window_top_toolbar_widgets[WIDX_DEBUG].type = WWT_EMPTY;
 			break;
 		}
 	}
