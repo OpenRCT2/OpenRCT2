@@ -891,7 +891,7 @@ static void window_footpath_construct()
 	gGameCommandErrorTitle = STR_CANT_BUILD_FOOTPATH_HERE;
 	money32 cost = footpath_place(type, x, y, z, slope, 0);
 
-	if (cost != MONEY32_UNDEFINED) {
+	if (cost != MONEY32_UNDEFINED && !gCheatsDisableClearanceChecks) {
 		// It is possible, let's remove walls between the old and new piece of path
 		uint8 direction = gFootpathConstructDirection;
 		map_remove_intersecting_walls(x, y, z, z + 4 + ((slope & 0xf) ? 2 : 0), direction ^ 2);
