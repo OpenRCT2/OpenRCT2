@@ -17,16 +17,17 @@
 #ifndef _SCENARIO_H_
 #define _SCENARIO_H_
 
-#include "../rct2/addresses.h"
 #include "../common.h"
-#include "../management/award.h"
 #include "../management/finance.h"
 #include "../management/news_item.h"
 #include "../management/research.h"
-#include "../ride/ride.h"
-#include "../ride/ride_ratings.h"
 #include "../object.h"
 #include "../platform/platform.h"
+#include "../rct12.h"
+#include "../rct2.h"
+#include "../rct2/addresses.h"
+#include "../ride/ride.h"
+#include "../ride/ride_ratings.h"
 #include "../world/banner.h"
 #include "../world/map.h"
 #include "../world/map_animation.h"
@@ -245,7 +246,7 @@ typedef struct rct_s6_data {
 	money32 income_from_admissions;
 	money32 company_value;
 	uint8 peep_warning_throttle[16];
-	rct_award awards[MAX_AWARDS];
+	rct12_award awards[RCT12_MAX_AWARDS];
 	money16 land_price;
 	money16 construction_rights_price;
 	uint16 word_01358774;

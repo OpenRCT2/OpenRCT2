@@ -67,7 +67,7 @@ static const rct_string_id AwardNewsStrings[] = {
 	STR_NEWS_ITEM_BEST_GENTLE_RIDES,
 };
 
-rct_award gCurrentAwards[MAX_AWARDS];
+Award gCurrentAwards[MAX_AWARDS];
 
 bool award_is_positive(sint32 type)
 {
@@ -614,9 +614,10 @@ static sint32 award_is_deserved(sint32 awardType, sint32 activeAwardTypes)
 
 void award_reset()
 {
-	sint32 i;
-	for (i = 0; i < MAX_AWARDS; i++)
-		gCurrentAwards[i].time = 0;
+	for (sint32 i = 0; i < MAX_AWARDS; i++) {
+		gCurrentAwards[i].Time = 0;
+		gCurrentAwards[i].Type = 0;
+	}
 }
 
 /**
@@ -631,8 +632,8 @@ void award_update_all()
 		sint32 activeAwardTypes = 0;
 		sint32 freeAwardEntryIndex = -1;
 		for (sint32 i = 0; i < MAX_AWARDS; i++) {
-			if (gCurrentAwards[i].time != 0)
-				activeAwardTypes |= (1 << gCurrentAwards[i].type);
+			if (gCurrentAwards[i].Time != 0)
+				activeAwardTypes |= (1 << gCurrentAwards[i].Type);
 			else if (freeAwardEntryIndex == -1)
 				freeAwardEntryIndex = i;
 		}
@@ -648,8 +649,8 @@ void award_update_all()
 			// Check if award is deserved
 			if (award_is_deserved(awardType, activeAwardTypes)) {
 				// Add award
-				gCurrentAwards[freeAwardEntryIndex].type = awardType;
-				gCurrentAwards[freeAwardEntryIndex].time = 5;
+				gCurrentAwards[freeAwardEntryIndex].Type = awardType;
+				gCurrentAwards[freeAwardEntryIndex].Time = 5;
 				if (gConfigNotifications.park_award) {
 					news_item_add_to_queue(NEWS_ITEM_AWARD, AwardNewsStrings[awardType], 0);
 				}
@@ -660,7 +661,7 @@ void award_update_all()
 
 	// Decrease award times
 	for (sint32 i = 0; i < MAX_AWARDS; i++)
-		if (gCurrentAwards[i].time != 0)
-			if (--gCurrentAwards[i].time == 0)
+		if (gCurrentAwards[i].Time != 0)
+			if (--gCurrentAwards[i].Time == 0)
 				window_invalidate_by_class(WC_PARK_INFORMATION);
 }

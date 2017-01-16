@@ -463,12 +463,12 @@ static sint32 park_calculate_guest_generation_probability()
 
 	// Reward or penalties for park awards
 	for (i = 0; i < MAX_AWARDS; i++) {
-		rct_award *award = &gCurrentAwards[i];
-		if (award->time == 0)
+		Award *award = &gCurrentAwards[i];
+		if (award->Time == 0)
 			continue;
 
 		// +/- 0.25% of the probability
-		if (award_is_positive(award->type))
+		if (award_is_positive(award->Type))
 			probability += probability / 4;
 		else
 			probability -= probability / 4;

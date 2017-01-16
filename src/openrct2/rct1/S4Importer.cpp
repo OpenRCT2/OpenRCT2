@@ -1438,9 +1438,13 @@ private:
         }
 
         // Awards
-        for (size_t i = 0; i < MAX_AWARDS; i++)
+        award_reset();
+        for (sint32 i = 0; i < RCT12_MAX_AWARDS; i++)
         {
-            gCurrentAwards[i] = _s4.awards[i];
+            rct12_award * src = &_s4.awards[i];
+            Award * dst = &gCurrentAwards[i];
+            dst->Time = src->time;
+            dst->Type = src->type;
         }
 
         // Number of guests history

@@ -16,6 +16,7 @@
 
 #include "../core/Exception.hpp"
 #include "../core/IStream.hpp"
+#include "../management/award.h"
 #include "../network/network.h"
 #include "S6Importer.h"
 
@@ -264,7 +265,17 @@ void S6Importer::Import()
     gTotalIncomeFromAdmissions = _s6.income_from_admissions;
     gCompanyValue = _s6.company_value;
     memcpy(gPeepWarningThrottle, _s6.peep_warning_throttle, sizeof(_s6.peep_warning_throttle));
-    memcpy(gCurrentAwards, _s6.awards, sizeof(_s6.awards));
+
+    // Awards
+    award_reset();
+    for (sint32 i = 0; i < RCT12_MAX_AWARDS; i++)
+    {
+        rct12_award * src = &_s6.awards[i];
+        Award * dst = &gCurrentAwards[i];
+        dst->Time = src->time;
+        dst->Type = src->type;
+    }
+
     gLandPrice = _s6.land_price;
     gConstructionRightsPrice = _s6.construction_rights_price;
     // unk_01358774

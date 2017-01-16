@@ -20,6 +20,7 @@
 #include "management/award.h"
 #include "management/news_item.h"
 #include "management/research.h"
+#include "rct12.h"
 #include "rct2.h"
 #include "ride/ride.h"
 #include "world/banner.h"
@@ -520,7 +521,7 @@ typedef struct rct1_s4 {
 	money32 admission_total_income;
 	money32 company_value;
 	uint8 thought_timer[16];
-	rct_award awards[4];
+	rct12_award awards[RCT12_MAX_AWARDS];
 	money16 land_price;
 	money16 construction_rights_price;
 	uint16 unk_199BCC;

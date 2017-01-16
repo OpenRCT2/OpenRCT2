@@ -411,6 +411,7 @@
     <ClInclude Include="audio\AudioMixer.h" />
     <ClInclude Include="audio\AudioSource.h" />
     <ClInclude Include="FileClassifier.h" />
+    <ClInclude Include="rct12.h" />
     <ClInclude Include="rct2\addresses.h" />
     <ClInclude Include="audio\audio.h" />
     <ClInclude Include="cheats.h" />

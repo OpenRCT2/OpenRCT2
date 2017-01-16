@@ -19,41 +19,47 @@
 
 #include "../common.h"
 
-#pragma pack(push, 1)
-typedef struct rct_award {
-	uint16 time;
-	uint16 type;
-} rct_award;
-assert_struct_size(rct_award, 4);
-#pragma pack(pop)
+typedef struct Award
+{
+    uint16 Time;
+    uint16 Type;
+} Award;
 
-enum {
-	PARK_AWARD_MOST_UNTIDY,
-	PARK_AWARD_MOST_TIDY,
-	PARK_AWARD_BEST_ROLLERCOASTERS,
-	PARK_AWARD_BEST_VALUE,
-	PARK_AWARD_MOST_BEAUTIFUL,
-	PARK_AWARD_WORST_VALUE,
-	PARK_AWARD_SAFEST,
-	PARK_AWARD_BEST_STAFF,
-	PARK_AWARD_BEST_FOOD,
-	PARK_AWARD_WORST_FOOD,
-	PARK_AWARD_BEST_RESTROOMS,
-	PARK_AWARD_MOST_DISAPPOINTING,
-	PARK_AWARD_BEST_WATER_RIDES,
-	PARK_AWARD_BEST_CUSTOM_DESIGNED_RIDES,
-	PARK_AWARD_MOST_DAZZLING_RIDE_COLOURS,
-	PARK_AWARD_MOST_CONFUSING_LAYOUT,
-	PARK_AWARD_BEST_GENTLE_RIDES,
-	PARK_AWARD_COUNT
+enum PARK_AWARD
+{
+    PARK_AWARD_MOST_UNTIDY,
+    PARK_AWARD_MOST_TIDY,
+    PARK_AWARD_BEST_ROLLERCOASTERS,
+    PARK_AWARD_BEST_VALUE,
+    PARK_AWARD_MOST_BEAUTIFUL,
+    PARK_AWARD_WORST_VALUE,
+    PARK_AWARD_SAFEST,
+    PARK_AWARD_BEST_STAFF,
+    PARK_AWARD_BEST_FOOD,
+    PARK_AWARD_WORST_FOOD,
+    PARK_AWARD_BEST_RESTROOMS,
+    PARK_AWARD_MOST_DISAPPOINTING,
+    PARK_AWARD_BEST_WATER_RIDES,
+    PARK_AWARD_BEST_CUSTOM_DESIGNED_RIDES,
+    PARK_AWARD_MOST_DAZZLING_RIDE_COLOURS,
+    PARK_AWARD_MOST_CONFUSING_LAYOUT,
+    PARK_AWARD_BEST_GENTLE_RIDES,
+    PARK_AWARD_COUNT
 };
 
 #define MAX_AWARDS 4
 
-extern rct_award gCurrentAwards[MAX_AWARDS];
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+    extern Award gCurrentAwards[MAX_AWARDS];
 
-bool award_is_positive(sint32 type);
-void award_reset();
-void award_update_all();
+    bool award_is_positive(sint32 type);
+    void award_reset();
+    void award_update_all();
+#ifdef __cplusplus
+}
+#endif
 
 #endif
