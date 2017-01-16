@@ -67,7 +67,7 @@ const std::vector<NetworkAction> NetworkActions::Actions =
     {
         STR_ACTION_CHAT, "PERMISSION_CHAT",
         {
-            -1
+            MISC_COMMAND_CHAT
         }
     }, {
         STR_ACTION_TERRAFORM, "PERMISSION_TERRAFORM",
@@ -214,12 +214,12 @@ const std::vector<NetworkAction> NetworkActions::Actions =
     }, {
         STR_ACTION_TOGGLE_SCENERY_CLUSTER, "PERMISSION_TOGGLE_SCENERY_CLUSTER",
         {
-            -2
+            MISC_COMMAND_TOGGLE_SCENERY_CLUSTER
         }
     }, {
         STR_ACTION_PASSWORDLESS_LOGIN, "PERMISSION_PASSWORDLESS_LOGIN",
         {
-            -3
+            MISC_COMMAND_PASSWORDLESS_LOGIN
         }
     },
 };
