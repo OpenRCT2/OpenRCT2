@@ -151,7 +151,7 @@ http_response_t *http_request(const http_request_t *request)
         return NULL;
     }
 
-    sint32 httpStatusCode;
+    long httpStatusCode;
     curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &httpStatusCode);
 
     char* contentType;
