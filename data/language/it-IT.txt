@@ -4307,6 +4307,12 @@ STR_5991    :Impossibile incollare l'elemento
 STR_5992    :È stato raggiunto il numero massimo di elementi della mappa
 STR_5993    :{SMALLFONT}{BLACK}Copia elemento selezionato
 STR_5994    :{SMALLFONT}{BLACK}Incolla elemento copiato
+STR_5995    :Acceleratore
+STR_5996    :Velocità acceleratore
+STR_5997    :Aggiungi/imposta denaro
+STR_5998    :Aggiungi denaro
+STR_5999    :Imposta denaro
+STR_6000    :Inserire il nuovo valore
 
 
 #############
