@@ -201,14 +201,14 @@
   <Target Name="g2" DependsOnTargets="Build" AfterTargets="Build" Inputs="@(g2Inputs)" Outputs="$(g2Output)"
           Condition="'$(TestConfig)'!='true'">
     <Message Text="Building g2.dat..." />
-    <Exec Command="$(OutputExe) sprite build $(g2Output) $(RootDir)resources\g2"
+    <Exec Command="&quot;$(OutputExe)&quot; sprite build &quot;$(g2Output)&quot; &quot;$(RootDir)resources\g2&quot;"
           StandardOutputImportance="low" />
   </Target>
 
   <!-- Target to create openrct2.exe (windows) and openrct2.com (console) -->
   <Target Name="CreateGUI" DependsOnTargets="Build" AfterTargets="Build" Inputs="$(OutputExe)" Outputs="$(OutputCom)">
     <Copy SourceFiles="$(OutputExe)" DestinationFiles="$(OutputCom)" />
-    <Exec Command="editbin /subsystem:windows $(OutputExe)" />
+    <Exec Command="editbin /subsystem:windows &quot;$(OutputExe)&quot;" />
   </Target>
 
   <!-- Target to download the title sequences -->
