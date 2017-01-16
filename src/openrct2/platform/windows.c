@@ -1057,6 +1057,26 @@ bool platform_get_font_path(TTFFontDescriptor *font, utf8 *buffer, size_t size)
 #endif
 }
 
+char * platform_get_absolute_path(const utf8 * relativePath, const utf8 * basePath)
+{
+	utf8 path[MAX_PATH];
+	safe_strcpy(path, basePath, sizeof(path));
+	safe_strcat_path(path, relativePath, sizeof(path));
+
+	wchar_t * pathW = utf8_to_widechar(path);
+	wchar_t fullPathW[MAX_PATH];
+	DWORD fullPathLen = GetFullPathNameW(pathW, countof(fullPathW), fullPathW, NULL);
+
+	free(pathW);
+
+	if (fullPathLen == 0)
+	{
+		return NULL;
+	}
+
+	return widechar_to_utf8(fullPathW);
+}
+
 datetime64 platform_get_datetime_now_utc()
 {
 	// Get file time
