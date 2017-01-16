@@ -351,10 +351,10 @@ void S6Exporter::Export()
     memcpy(_s6.peep_warning_throttle, gPeepWarningThrottle, sizeof(_s6.peep_warning_throttle));
 
     // Awards
-    for (int i = 0; i < RCT2_MAX_AWARDS; i++)
+    for (sint32 i = 0; i < RCT12_MAX_AWARDS; i++)
     {
         Award * src = &gCurrentAwards[i];
-        rct2_award * dst = &_s6.awards[i];
+        rct12_award * dst = &_s6.awards[i];
         dst->time = src->Time;
         dst->type = src->Type;
     }

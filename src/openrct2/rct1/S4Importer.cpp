@@ -1439,9 +1439,9 @@ private:
 
         // Awards
         award_reset();
-        for (sint32 i = 0; i < RCT1_MAX_AWARDS; i++)
+        for (sint32 i = 0; i < RCT12_MAX_AWARDS; i++)
         {
-            rct1_award * src = &_s4.awards[i];
+            rct12_award * src = &_s4.awards[i];
             Award * dst = &gCurrentAwards[i];
             dst->Time = src->time;
             dst->Type = src->type;

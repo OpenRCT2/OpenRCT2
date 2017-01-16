@@ -23,6 +23,7 @@
 #include "../management/research.h"
 #include "../object.h"
 #include "../platform/platform.h"
+#include "../rct12.h"
 #include "../rct2.h"
 #include "../rct2/addresses.h"
 #include "../ride/ride.h"
@@ -31,8 +32,6 @@
 #include "../world/map.h"
 #include "../world/map_animation.h"
 #include "../world/sprite.h"
-
-#define RCT2_MAX_AWARDS			4
 
 #pragma pack(push, 1)
 /**
@@ -247,7 +246,7 @@ typedef struct rct_s6_data {
 	money32 income_from_admissions;
 	money32 company_value;
 	uint8 peep_warning_throttle[16];
-	rct2_award awards[RCT2_MAX_AWARDS];
+	rct12_award awards[RCT12_MAX_AWARDS];
 	money16 land_price;
 	money16 construction_rights_price;
 	uint16 word_01358774;

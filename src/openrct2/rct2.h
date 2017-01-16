@@ -29,14 +29,6 @@ typedef struct rct2_install_info {
 	uint32 activeExpansionPacks;		//0xB10
 } rct2_install_info;
 
-#pragma pack(push, 1)
-typedef struct rct2_award {
-	uint16 time;
-	uint16 type;
-} rct2_award;
-assert_struct_size(rct2_award, 4);
-#pragma pack(pop)
-
 enum {
 	// Although this is labeled a flag it actually means when
 	// zero the screen is in playing mode.

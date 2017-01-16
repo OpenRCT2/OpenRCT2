@@ -268,9 +268,9 @@ void S6Importer::Import()
 
     // Awards
     award_reset();
-    for (int i = 0; i < RCT2_MAX_AWARDS; i++)
+    for (sint32 i = 0; i < RCT12_MAX_AWARDS; i++)
     {
-        rct2_award * src = &_s6.awards[i];
+        rct12_award * src = &_s6.awards[i];
         Award * dst = &gCurrentAwards[i];
         dst->Time = src->time;
         dst->Type = src->type;

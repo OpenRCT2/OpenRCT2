@@ -20,6 +20,7 @@
 #include "management/award.h"
 #include "management/news_item.h"
 #include "management/research.h"
+#include "rct12.h"
 #include "rct2.h"
 #include "ride/ride.h"
 #include "world/banner.h"
@@ -28,7 +29,6 @@
 
 #define RCT1_MAX_MAP_ELEMENTS   0xC000
 #define RCT1_MAX_SPRITES        5000
-#define RCT1_MAX_AWARDS         4
 
 #pragma pack(push, 1)
 typedef struct rct1_entrance {
@@ -426,14 +426,6 @@ typedef struct rct1_research_item {
 } rct1_research_item;
 assert_struct_size(rct1_research_item, 5);
 
-#pragma pack(push, 1)
-typedef struct rct1_award {
-	uint16 time;
-	uint16 type;
-} rct1_award;
-assert_struct_size(rct1_award, 4);
-#pragma pack(pop)
-
 /**
  * RCT1,AA,LL scenario / saved game structure.
  * size: 0x1F850C
@@ -529,7 +521,7 @@ typedef struct rct1_s4 {
 	money32 admission_total_income;
 	money32 company_value;
 	uint8 thought_timer[16];
-	rct1_award awards[RCT1_MAX_AWARDS];
+	rct12_award awards[RCT12_MAX_AWARDS];
 	money16 land_price;
 	money16 construction_rights_price;
 	uint16 unk_199BCC;
