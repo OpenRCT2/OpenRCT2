@@ -434,29 +434,29 @@ private:
             }
 
             // Load header
-            auto header = fs.ReadValue<rct_scenario_scores_header>();
-            for (uint32 i = 0; i < header.scenario_count; i++)
+            auto header = fs.ReadValue<rct_scores_header>();
+            for (uint32 i = 0; i < header.ScenarioCount; i++)
             {
                 // Read legacy entry
-                auto scBasic = fs.ReadValue<rct_scenario_basic>();
+                auto scBasic = fs.ReadValue<rct_scores_entry>();
 
                 // Ignore non-completed scenarios
-                if (scBasic.flags & SCENARIO_FLAGS_COMPLETED)
+                if (scBasic.Flags & SCENARIO_FLAGS_COMPLETED)
                 {
                     bool notFound = true;
                     for (size_t j = 0; j < _highscores.size(); j++)
                     {
                         scenario_highscore_entry * highscore = _highscores[j];
-                        if (String::Equals(scBasic.path, highscore->fileName, true))
+                        if (String::Equals(scBasic.Path, highscore->fileName, true))
                         {
                             notFound = false;
 
                             // Check if legacy highscore is better
-                            if (scBasic.company_value > highscore->company_value)
+                            if (scBasic.CompanyValue > highscore->company_value)
                             {
                                 SafeFree(highscore->name);
-                                highscore->name = win1252_to_utf8_alloc(scBasic.completed_by, Util::CountOf(scBasic.completed_by));
-                                highscore->company_value = scBasic.company_value;
+                                highscore->name = win1252_to_utf8_alloc(scBasic.CompletedBy, Util::CountOf(scBasic.CompletedBy));
+                                highscore->company_value = scBasic.CompanyValue;
                                 highscore->timestamp = DATETIME64_MIN;
                                 break;
                             }
@@ -465,9 +465,9 @@ private:
                     if (notFound)
                     {
                         scenario_highscore_entry * highscore = InsertHighscore();
-                        highscore->fileName = String::Duplicate(scBasic.path);
-                        highscore->name = win1252_to_utf8_alloc(scBasic.completed_by, Util::CountOf(scBasic.completed_by));
-                        highscore->company_value = scBasic.company_value;
+                        highscore->fileName = String::Duplicate(scBasic.Path);
+                        highscore->name = win1252_to_utf8_alloc(scBasic.CompletedBy, Util::CountOf(scBasic.CompletedBy));
+                        highscore->company_value = scBasic.CompanyValue;
                         highscore->timestamp = DATETIME64_MIN;
                     }
                 }

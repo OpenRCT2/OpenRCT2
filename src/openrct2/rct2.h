@@ -29,6 +29,44 @@ typedef struct rct2_install_info {
     uint32 activeExpansionPacks;        //0xB10
 } rct2_install_info;
 
+#pragma pack(push, 1)
+
+/**
+ * scores.dat file header.
+ * size: 0x10
+ */
+struct rct_scores_header
+{
+    uint32 var_0;
+    uint32 var_4;
+    uint32 var_8;
+    uint32 ScenarioCount;
+};
+assert_struct_size(rct_scores_header, 0x10);
+
+/**
+ * An entry of scores.dat
+ * size: 0x02B0
+ */
+struct rct_scores_entry
+{
+    char    Path[256];
+    uint8   Category;
+    uint8   pad_0101[0x1F];
+    sint8   ObjectiveType;
+    sint8   ObjectiveArg1;
+    sint32  objectiveArg2;
+    sint16  objectiveArg3;
+    char    Name[64];
+    char    Details[256];
+    sint32  Flags;
+    money32 CompanyValue;
+    char    CompletedBy[64];
+};
+assert_struct_size(rct_scores_entry, 0x02B0);
+
+#pragma pack(pop)
+
 enum {
     // Although this is labeled a flag it actually means when
     // zero the screen is in playing mode.

@@ -66,18 +66,6 @@ typedef struct rct_s6_info {
 } rct_s6_info;
 assert_struct_size(rct_s6_info, 0x198);
 
-/**
- * Scenario scores file header.
- * size: 0x10
- */
-typedef struct rct_scenario_scores_header {
-	uint32 var_0;
-	uint32 var_4;
-	uint32 var_8;
-	uint32 scenario_count;		// 0x0C
-} rct_scenario_scores_header;
-assert_struct_size(rct_scenario_scores_header, 16);
-
 typedef enum scenario_source {
 	SCENARIO_SOURCE_RCT1,
 	SCENARIO_SOURCE_RCT1_AA,
@@ -88,28 +76,6 @@ typedef enum scenario_source {
 	SCENARIO_SOURCE_REAL,
 	SCENARIO_SOURCE_OTHER
 } scenario_source;
-
-/**
- * Scenario basic structure, mainly for scenario select
- * size: 0x02B0
- */
-typedef struct rct_scenario_basic {
-	char path[256];				// 0x0000
-	uint8 category;				// 0x0100
-	uint8 pad_0101[0x1F];
-	sint8 objective_type;		// 0x0120
-	sint8 objective_arg_1;		// 0x0121
-	sint32 objective_arg_2;		// 0x0122
-	sint16 objective_arg_3;		// 0x0126
-	char name[64];				// 0x0128
-	char details[256];			// 0x0168
-	sint32 flags;				// 0x0268
-	money32 company_value;		// 0x026C
-	char completed_by[64];		// 0x0270
-	// uint8 source_game;			// new in OpenRCT2
-	// sint16 source_index;		// new in OpenRCT2
-} rct_scenario_basic;
-assert_struct_size(rct_scenario_basic, 0x02B0);
 
 typedef struct rct_stex_entry {
 	rct_string_id scenario_name;	// 0x00
