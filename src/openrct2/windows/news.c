@@ -295,12 +295,8 @@ static void window_news_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint3
 		gfx_draw_string_left(dpi, STR_NEWS_DATE_FORMAT, gCommonFormatArgs, COLOUR_WHITE, 4, y);
 
 		// Item text
-		utf8 buffer[400];
-		utf8 *ch = buffer;
-		ch = utf8_write_codepoint(ch, FORMAT_SMALLFONT);
-		memcpy(ch, newsItem->Text, 256);
-		ch = buffer;
-		gfx_draw_string_left_wrapped(dpi, &ch, 2, y + 10, 325, STR_STRING, COLOUR_BRIGHT_GREEN);
+		utf8 *text = newsItem->Text;
+		gfx_draw_string_left_wrapped(dpi, &text, 2, y + 10, 325, STR_BOTTOM_TOOLBAR_NEWS_TEXT, COLOUR_BRIGHT_GREEN);
 
 		// Subject button
 		if ((news_type_properties[newsItem->Type] & NEWS_TYPE_HAS_SUBJECT) && !(newsItem->Flags & 1)) {

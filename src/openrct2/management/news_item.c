@@ -305,13 +305,12 @@ void news_item_add_to_queue_raw(uint8 type, const utf8 *text, uint32 assoc)
 	newsItem->Ticks = 0;
 	newsItem->MonthYear = gDateMonthsElapsed;
 	newsItem->Day = ((days_in_month[(newsItem->MonthYear & 7)] * gDateMonthTicks) >> 16) + 1;
-	safe_strcpy(newsItem->Text, text, 255);
-	newsItem->Text[254] = 0;
+	safe_strcpy(newsItem->Text, text, sizeof(newsItem->Text));
 
 	// blatant disregard for what happens on the last element.
 	// Change this when we implement the queue ourselves.
 	newsItem++;
-	newsItem->Type = 0;
+	newsItem->Type = NEWS_ITEM_NULL;
 }
 
 /**
@@ -428,5 +427,5 @@ void news_item_add_to_queue_custom(NewsItem *newNewsItem)
 
 	*newsItem = *newNewsItem;
 	newsItem++;
-	newsItem->Type = 0;
+	newsItem->Type = NEWS_ITEM_NULL;
 }

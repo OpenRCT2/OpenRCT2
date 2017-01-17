@@ -734,7 +734,7 @@ void game_convert_strings_to_utf8()
 		NewsItem *newsItem = news_item_get(i);
 
 		if (!str_is_null_or_empty(newsItem->Text)) {
-			rct2_to_utf8_self(newsItem->Text, 256);
+			rct2_to_utf8_self(newsItem->Text, sizeof(newsItem->Text));
 		}
 	}
 }
@@ -763,7 +763,7 @@ void game_convert_strings_to_rct2(rct_s6_data *s6)
 		rct12_news_item *newsItem = &s6->news_items[i];
 
 		if (!str_is_null_or_empty(newsItem->Text)) {
-			utf8_to_rct2_self(newsItem->Text, 256);
+			utf8_to_rct2_self(newsItem->Text, sizeof(newsItem->Text));
 		}
 	}
 }
