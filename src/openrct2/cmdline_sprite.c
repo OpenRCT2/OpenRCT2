@@ -662,7 +662,7 @@ sint32 cmdline_for_sprite(const char **argv, sint32 argc)
 
 		const char *spriteFilePath = argv[1];
 		const char *spriteDescriptionPath = argv[2];
-		const char* directoryPath = path_get_directory(argv[1]);
+		char* directoryPath = path_get_directory(argv[1]);
 
 		json_error_t error;
 		json_t* sprite_list=json_load_file(spriteDescriptionPath, JSON_REJECT_DUPLICATES, &error);
