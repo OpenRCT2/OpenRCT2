@@ -265,12 +265,12 @@ bool platform_directory_delete(const utf8 *path)
 char* platform_get_absolute_path(const char* relative_path,const char* base_path)
 {
 	char path[MAX_PATH];
-
-	//This is to get around the fact that dirname() doesn't take a const char*
-	char base_path_copy[MAX_PATH];
-	safe_strcpy(base_path_copy,base_path,MAX_PATH);
-
-	snprintf(path,MAX_PATH,"%s/%s",dirname(base_path_copy),relative_path);
+	
+		if(base_path!=NULL) {
+			snprintf(path,MAX_PATH,"%s/%s",base_path,relative_path);
+		} else {
+			safe_strcpy(path,base_path,MAX_PATH);
+		}
 	return realpath(path,NULL);
 }
 

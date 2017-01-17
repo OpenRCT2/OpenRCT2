@@ -662,6 +662,7 @@ sint32 cmdline_for_sprite(const char **argv, sint32 argc)
 
 		const char *spriteFilePath = argv[1];
 		const char *spriteDescriptionPath = argv[2];
+		const char* directoryPath = path_get_directory(argv[1]);
 
 		json_error_t error;
 		json_t* sprite_list=json_load_file(spriteDescriptionPath, JSON_REJECT_DUPLICATES, &error);
@@ -707,7 +708,7 @@ sint32 cmdline_for_sprite(const char **argv, sint32 argc)
 
 			
 			//Resolve absolute sprite path
-			char* imagePath=platform_get_absolute_path(json_string_value(path),spriteDescriptionPath);
+			char* imagePath=platform_get_absolute_path(json_string_value(path),directoryPath);
 
 			rct_g1_element spriteElement;
 			uint8 *buffer;
@@ -717,7 +718,7 @@ sint32 cmdline_for_sprite(const char **argv, sint32 argc)
 					json_decref(sprite_list);
 					return -1;
 				}
-
+			free(imagePath);
 
 				if (!sprite_file_open(spriteFilePath)) {
 					fprintf(stderr, "Unable to open sprite file: %s\nCanceling\n", spriteFilePath);
@@ -751,7 +752,8 @@ sint32 cmdline_for_sprite(const char **argv, sint32 argc)
 
 			}
 		json_decref(sprite_list);
-
+		free(directoryPath);
+		
 		fprintf(stdout, "Finished\n");
 		return 1;
 	} else {
