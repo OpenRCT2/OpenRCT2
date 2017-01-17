@@ -390,7 +390,7 @@ void news_item_disable_news(uint8 type, uint32 assoc)
 		if (!news_item_is_empty(i)) {
 			NewsItem * const newsItem = news_item_get(i);
 			if (type == newsItem->Type && assoc == newsItem->Assoc) {
-				newsItem->Flags |= 0x1;
+				newsItem->Flags |= NEWS_FLAG_HAS_BUTTON;
 				if (i == 0) {
 					window_game_bottom_toolbar_invalidate_news_item();
 				}
@@ -404,7 +404,7 @@ void news_item_disable_news(uint8 type, uint32 assoc)
 		if (!news_item_is_empty(i)) {
 			NewsItem * const newsItem = news_item_get(i);
 			if (type == newsItem->Type && assoc == newsItem->Assoc) {
-				newsItem->Flags |= 0x1;
+				newsItem->Flags |= NEWS_FLAG_HAS_BUTTON;
 				window_invalidate_by_class(WC_RECENT_NEWS);
 			}
 		} else {

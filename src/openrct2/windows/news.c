@@ -157,7 +157,7 @@ static void window_news_update(rct_window *w)
 
 		if (j == 0) {
 			NewsItem * const newsItem = news_item_get(i);
-			if (newsItem->Flags & 1)
+			if (newsItem->Flags & NEWS_FLAG_HAS_BUTTON)
 				return;
 			if (w->news.var_482 == 1) {
 				news_item_open_subject(newsItem->Type, newsItem->Assoc);
@@ -207,7 +207,7 @@ static void window_news_scrollmousedown(rct_window *w, sint32 scrollIndex, sint3
 
 		if (y < 42) {
 			NewsItem * const newsItem = news_item_get(i);
-			if (newsItem->Flags & 1) {
+			if (newsItem->Flags & NEWS_FLAG_HAS_BUTTON) {
 				buttonIndex = 0;
 				break;
 			} else if (y < 14) {
@@ -299,7 +299,7 @@ static void window_news_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint3
 		gfx_draw_string_left_wrapped(dpi, &text, 2, y + 10, 325, STR_BOTTOM_TOOLBAR_NEWS_TEXT, COLOUR_BRIGHT_GREEN);
 
 		// Subject button
-		if ((news_type_properties[newsItem->Type] & NEWS_TYPE_HAS_SUBJECT) && !(newsItem->Flags & 1)) {
+		if ((news_type_properties[newsItem->Type] & NEWS_TYPE_HAS_SUBJECT) && !(newsItem->Flags & NEWS_FLAG_HAS_BUTTON)) {
 			x = 328;
 			yy = y + 14;
 
@@ -363,7 +363,7 @@ static void window_news_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint3
 		}
 
 		// Location button
-		if ((news_type_properties[newsItem->Type] & NEWS_TYPE_HAS_LOCATION) && !(newsItem->Flags & 1)) {
+		if ((news_type_properties[newsItem->Type] & NEWS_TYPE_HAS_LOCATION) && !(newsItem->Flags & NEWS_FLAG_HAS_BUTTON)) {
 			x = 352;
 			yy = y + 14;
 

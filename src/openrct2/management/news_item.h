@@ -37,6 +37,10 @@ enum {
 	NEWS_TYPE_HAS_SUBJECT = 2,
 };
 
+enum {
+	NEWS_FLAG_HAS_BUTTON = 1 << 0,
+};
+
 extern const uint8 news_type_properties[10];
 
 /**
