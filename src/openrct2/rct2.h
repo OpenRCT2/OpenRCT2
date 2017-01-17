@@ -31,6 +31,8 @@ typedef struct rct2_install_info {
 
 #pragma pack(push, 1)
 
+#ifdef __cplusplus
+
 /**
  * scores.dat file header.
  * size: 0x10
@@ -64,6 +66,8 @@ struct rct_scores_entry
     char    CompletedBy[64];
 };
 assert_struct_size(rct_scores_entry, 0x02B0);
+
+#endif // __cplusplus
 
 #pragma pack(pop)
 
