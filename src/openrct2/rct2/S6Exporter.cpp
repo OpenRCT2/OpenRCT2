@@ -435,7 +435,22 @@ void S6Exporter::Export()
     _s6.next_weather_gloom = gClimateNextWeatherGloom;
     _s6.current_rain_level = gClimateCurrentRainLevel;
     _s6.next_rain_level = gClimateNextRainLevel;
-    memcpy(_s6.news_items, gNewsItems, sizeof(_s6.news_items));
+
+    // News items
+    for (size_t i = 0; i < RCT12_MAX_NEWS_ITEMS; i++)
+    {
+        const NewsItem * src = &gNewsItems[i];
+        rct12_news_item * dst = &_s6.news_items[i];
+
+        dst->Type = src->Type;
+        dst->Flags = src->Flags;
+        dst->Assoc = src->Assoc;
+        dst->Ticks = src->Ticks;
+        dst->MonthYear = src->MonthYear;
+        dst->Day = src->Day;
+        memcpy(dst->Text, src->Text, sizeof(dst->Text));
+    }
+
     // pad_13CE730
     // rct1_scenario_flags
     _s6.wide_path_tile_loop_x = gWidePathTileLoopX;

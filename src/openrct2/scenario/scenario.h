@@ -19,7 +19,6 @@
 
 #include "../common.h"
 #include "../management/finance.h"
-#include "../management/news_item.h"
 #include "../management/research.h"
 #include "../object.h"
 #include "../platform/platform.h"
@@ -290,7 +289,7 @@ typedef struct rct_s6_data {
 	uint8 next_weather_gloom;
 	uint8 current_rain_level;
 	uint8 next_rain_level;
-	rct_news_item news_items[MAX_NEWS_ITEMS];
+	rct12_news_item news_items[RCT12_MAX_NEWS_ITEMS];
 	uint8 pad_13CE730[64];
 	uint32 rct1_scenario_flags;
 	uint16 wide_path_tile_loop_x;

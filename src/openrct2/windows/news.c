@@ -156,15 +156,15 @@ static void window_news_update(rct_window *w)
 			return;
 
 		if (j == 0) {
-			rct_news_item * const newsItem = news_item_get(i);
-			if (newsItem->flags & 1)
+			NewsItem * const newsItem = news_item_get(i);
+			if (newsItem->Flags & 1)
 				return;
 			if (w->news.var_482 == 1) {
-				news_item_open_subject(newsItem->type, newsItem->assoc);
+				news_item_open_subject(newsItem->Type, newsItem->Assoc);
 				return;
 			}
 			else if (w->news.var_482 > 1) {
-				news_item_get_subject_location(newsItem->type, newsItem->assoc, &x, &y, &z);
+				news_item_get_subject_location(newsItem->Type, newsItem->Assoc, &x, &y, &z);
 				if (x != SPRITE_LOCATION_NULL)
 					if ((w = window_get_main()) != NULL)
 						window_scroll_to_location(w, x, y, z);
@@ -206,8 +206,8 @@ static void window_news_scrollmousedown(rct_window *w, sint32 scrollIndex, sint3
 			break;
 
 		if (y < 42) {
-			rct_news_item * const newsItem = news_item_get(i);
-			if (newsItem->flags & 1) {
+			NewsItem * const newsItem = news_item_get(i);
+			if (newsItem->Flags & 1) {
 				buttonIndex = 0;
 				break;
 			} else if (y < 14) {
@@ -220,12 +220,12 @@ static void window_news_scrollmousedown(rct_window *w, sint32 scrollIndex, sint3
 				buttonIndex = 0;
 				break;
 			} else if (x < 351) {
-				if (news_type_properties[newsItem->type] & NEWS_TYPE_HAS_SUBJECT) {
+				if (news_type_properties[newsItem->Type] & NEWS_TYPE_HAS_SUBJECT) {
 					buttonIndex = 1;
 					break;
 				}
 			} else if (x < 376) {
-				if (news_type_properties[newsItem->type] & NEWS_TYPE_HAS_LOCATION) {
+				if (news_type_properties[newsItem->Type] & NEWS_TYPE_HAS_LOCATION) {
 					buttonIndex = 2;
 					break;
 				}
@@ -276,7 +276,7 @@ static void window_news_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint3
 
 	y = 0;
 	for (i = 11; i < 61; i++) {
-		rct_news_item * const newsItem = news_item_get(i);
+		NewsItem * const newsItem = news_item_get(i);
 		if (news_item_is_empty(i))
 			break;
 		if (y >= dpi->y + dpi->height)
@@ -290,20 +290,20 @@ static void window_news_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint3
 		gfx_fill_rect_inset(dpi, -1, y, 383, y + 41, w->colours[1], (INSET_RECT_FLAG_BORDER_INSET | INSET_RECT_FLAG_FILL_GREY));
 
 		// Date text
-		set_format_arg(0, rct_string_id, DateDayNames[newsItem->day - 1]);
-		set_format_arg(2, rct_string_id, DateGameMonthNames[(newsItem->month_year % 8)]);
+		set_format_arg(0, rct_string_id, DateDayNames[newsItem->Day - 1]);
+		set_format_arg(2, rct_string_id, DateGameMonthNames[(newsItem->MonthYear % 8)]);
 		gfx_draw_string_left(dpi, STR_NEWS_DATE_FORMAT, gCommonFormatArgs, COLOUR_WHITE, 4, y);
 
 		// Item text
 		utf8 buffer[400];
 		utf8 *ch = buffer;
 		ch = utf8_write_codepoint(ch, FORMAT_SMALLFONT);
-		memcpy(ch, newsItem->text, 256);
+		memcpy(ch, newsItem->Text, 256);
 		ch = buffer;
 		gfx_draw_string_left_wrapped(dpi, &ch, 2, y + 10, 325, STR_STRING, COLOUR_BRIGHT_GREEN);
 
 		// Subject button
-		if ((news_type_properties[newsItem->type] & NEWS_TYPE_HAS_SUBJECT) && !(newsItem->flags & 1)) {
+		if ((news_type_properties[newsItem->Type] & NEWS_TYPE_HAS_SUBJECT) && !(newsItem->Flags & 1)) {
 			x = 328;
 			yy = y + 14;
 
@@ -316,7 +316,7 @@ static void window_news_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint3
 			}
 			gfx_fill_rect_inset(dpi, x, yy, x + 23, yy + 23, w->colours[2], press);
 
-			switch (newsItem->type) {
+			switch (newsItem->Type) {
 			case NEWS_ITEM_RIDE:
 				gfx_draw_sprite(dpi, SPR_RIDE, x, yy, 0);
 				break;
@@ -328,7 +328,7 @@ static void window_news_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint3
 					break;
 				}
 
-				rct_peep* peep = GET_PEEP(newsItem->assoc);
+				rct_peep* peep = GET_PEEP(newsItem->Assoc);
 				sint32 clip_x = 10, clip_y = 19;
 
 				// If normal peep set sprite to normal (no food)
@@ -352,7 +352,7 @@ static void window_news_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint3
 				gfx_draw_sprite(dpi, SPR_FINANCE, x, yy, 0);
 				break;
 			case NEWS_ITEM_RESEARCH:
-				gfx_draw_sprite(dpi, newsItem->assoc < 0x10000 ? SPR_NEW_SCENERY : SPR_NEW_RIDE, x, yy, 0);
+				gfx_draw_sprite(dpi, newsItem->Assoc < 0x10000 ? SPR_NEW_SCENERY : SPR_NEW_RIDE, x, yy, 0);
 				break;
 			case NEWS_ITEM_PEEPS:
 				gfx_draw_sprite(dpi, SPR_GUESTS, x, yy, 0);
@@ -367,7 +367,7 @@ static void window_news_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint3
 		}
 
 		// Location button
-		if ((news_type_properties[newsItem->type] & NEWS_TYPE_HAS_LOCATION) && !(newsItem->flags & 1)) {
+		if ((news_type_properties[newsItem->Type] & NEWS_TYPE_HAS_LOCATION) && !(newsItem->Flags & 1)) {
 			x = 352;
 			yy = y + 14;
 

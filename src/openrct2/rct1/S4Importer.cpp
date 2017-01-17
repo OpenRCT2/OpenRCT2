@@ -1454,10 +1454,18 @@ private:
         }
 
         // News items
-        rct_news_item *newsItems = gNewsItems;
-        for (size_t i = 0; i < MAX_NEWS_ITEMS; i++)
+        for (size_t i = 0; i < RCT12_MAX_NEWS_ITEMS; i++)
         {
-            newsItems[i] = _s4.messages[i];
+            const rct12_news_item * src = &_s4.messages[i];
+            NewsItem * dst = &gNewsItems[i];
+
+            dst->Type = src->Type;
+            dst->Flags = src->Flags;
+            dst->Assoc = src->Assoc;
+            dst->Ticks = src->Ticks;
+            dst->MonthYear = src->MonthYear;
+            dst->Day = src->Day;
+            memcpy(dst->Text, src->Text, sizeof(src->Text));
         }
 
         // Initial guest status

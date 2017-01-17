@@ -164,7 +164,7 @@ void window_game_bottom_toolbar_open()
  */
 static void window_game_bottom_toolbar_mouseup(rct_window *w, sint32 widgetIndex)
 {
-	rct_news_item *newsItem;
+	NewsItem *newsItem;
 
 	switch (widgetIndex) {
 	case WIDX_LEFT_OUTSET:
@@ -183,7 +183,7 @@ static void window_game_bottom_toolbar_mouseup(rct_window *w, sint32 widgetIndex
 		break;
 	case WIDX_NEWS_SUBJECT:
 		newsItem = news_item_get(0);
-		news_item_open_subject(newsItem->type, newsItem->assoc);
+		news_item_open_subject(newsItem->Type, newsItem->Assoc);
 		break;
 	case WIDX_NEWS_LOCATE:
 		if (news_item_is_queue_empty())
@@ -192,9 +192,9 @@ static void window_game_bottom_toolbar_mouseup(rct_window *w, sint32 widgetIndex
 		{
 			newsItem = news_item_get(0);
 			sint32 x, y, z;
-			sint32 subject = newsItem->assoc;
+			sint32 subject = newsItem->Assoc;
 
-			news_item_get_subject_location(newsItem->type, subject, &x, &y, &z);
+			news_item_get_subject_location(newsItem->Type, subject, &x, &y, &z);
 
 			if (x == SPRITE_LOCATION_NULL)
 				break;
@@ -240,7 +240,7 @@ static void window_game_bottom_toolbar_tooltip(rct_window* w, sint32 widgetIndex
 static void window_game_bottom_toolbar_invalidate(rct_window *w)
 {
 	sint32 x;
-	rct_news_item *newsItem;
+	NewsItem *newsItem;
 
 	colour_scheme_update(w);
 
@@ -285,18 +285,18 @@ static void window_game_bottom_toolbar_invalidate(rct_window *w)
 
 		// Find out if the news item is no longer valid
 		sint32 y, z;
-		sint32 subject = newsItem->assoc;
-		news_item_get_subject_location(newsItem->type, subject, &x, &y, &z);
+		sint32 subject = newsItem->Assoc;
+		news_item_get_subject_location(newsItem->Type, subject, &x, &y, &z);
 
 		if (x == SPRITE_LOCATION_NULL)
 			w->disabled_widgets |= (1 << WIDX_NEWS_LOCATE);
 
-		if (!(news_type_properties[newsItem->type] & NEWS_TYPE_HAS_SUBJECT)) {
+		if (!(news_type_properties[newsItem->Type] & NEWS_TYPE_HAS_SUBJECT)) {
 			w->disabled_widgets |= (1 << WIDX_NEWS_SUBJECT);
 			window_game_bottom_toolbar_widgets[WIDX_NEWS_SUBJECT].type = WWT_EMPTY;
 		}
 
-		if (newsItem->flags & 1) {
+		if (newsItem->Flags & 1) {
 			w->disabled_widgets |= (1 << WIDX_NEWS_SUBJECT);
 			w->disabled_widgets |= (1 << WIDX_NEWS_LOCATE);
 		}
@@ -508,7 +508,7 @@ static void window_game_bottom_toolbar_draw_right_panel(rct_drawpixelinfo *dpi, 
 static void window_game_bottom_toolbar_draw_news_item(rct_drawpixelinfo *dpi, rct_window *w)
 {
 	sint32 x, y, width;
-	rct_news_item *newsItem;
+	NewsItem *newsItem;
 	rct_widget *middleOutsetWidget;
 
 	middleOutsetWidget = &window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET];
@@ -526,21 +526,21 @@ static void window_game_bottom_toolbar_draw_news_item(rct_drawpixelinfo *dpi, rc
 	);
 
 	// Text
-	utf8 *newsItemText = newsItem->text;
+	utf8 *newsItemText = newsItem->Text;
 	x = w->x + (middleOutsetWidget->left + middleOutsetWidget->right) / 2;
 	y = w->y + middleOutsetWidget->top + 11;
 	width = middleOutsetWidget->right - middleOutsetWidget->left - 62;
-	gfx_draw_string_centred_wrapped_partial(dpi, x, y, width, COLOUR_BRIGHT_GREEN, STR_BOTTOM_TOOLBAR_NEWS_TEXT, &newsItemText, newsItem->ticks);
+	gfx_draw_string_centred_wrapped_partial(dpi, x, y, width, COLOUR_BRIGHT_GREEN, STR_BOTTOM_TOOLBAR_NEWS_TEXT, &newsItemText, newsItem->Ticks);
 
 	x = w->x + window_game_bottom_toolbar_widgets[WIDX_NEWS_SUBJECT].left;
 	y = w->y + window_game_bottom_toolbar_widgets[WIDX_NEWS_SUBJECT].top;
-	switch (newsItem->type) {
+	switch (newsItem->Type) {
 	case NEWS_ITEM_RIDE:
 		gfx_draw_sprite(dpi, SPR_RIDE, x, y, 0);
 		break;
 	case NEWS_ITEM_PEEP_ON_RIDE:
 	case NEWS_ITEM_PEEP:
-		if (newsItem->flags & 1)
+		if (newsItem->Flags & 1)
 			break;
 
 		rct_drawpixelinfo cliped_dpi;
@@ -548,7 +548,7 @@ static void window_game_bottom_toolbar_draw_news_item(rct_drawpixelinfo *dpi, rc
 			break;
 		}
 
-		rct_peep* peep = GET_PEEP(newsItem->assoc);
+		rct_peep* peep = GET_PEEP(newsItem->Assoc);
 		sint32 clip_x = 10, clip_y = 19;
 
 		if (peep->type == PEEP_TYPE_STAFF){
@@ -589,7 +589,7 @@ static void window_game_bottom_toolbar_draw_news_item(rct_drawpixelinfo *dpi, rc
 		gfx_draw_sprite(dpi, SPR_FINANCE, x, y, 0);
 		break;
 	case NEWS_ITEM_RESEARCH:
-		gfx_draw_sprite(dpi, (newsItem->assoc < 0x10000 ? SPR_NEW_SCENERY : SPR_NEW_RIDE), x, y, 0);
+		gfx_draw_sprite(dpi, (newsItem->Assoc < 0x10000 ? SPR_NEW_SCENERY : SPR_NEW_RIDE), x, y, 0);
 		break;
 	case NEWS_ITEM_PEEPS:
 		gfx_draw_sprite(dpi, SPR_GUESTS, x, y, 0);

@@ -352,7 +352,22 @@ void S6Importer::Import()
     gClimateNextWeatherGloom = _s6.next_weather_gloom;
     gClimateCurrentRainLevel = _s6.current_rain_level;
     gClimateNextRainLevel = _s6.next_rain_level;
-    memcpy(gNewsItems, _s6.news_items, sizeof(_s6.news_items));
+
+    // News items
+    for (size_t i = 0; i < RCT12_MAX_NEWS_ITEMS; i++)
+    {
+        const rct12_news_item * src = &_s6.news_items[i];
+        NewsItem * dst = &gNewsItems[i];
+
+        dst->Type = src->Type;
+        dst->Flags = src->Flags;
+        dst->Assoc = src->Assoc;
+        dst->Ticks = src->Ticks;
+        dst->MonthYear = src->MonthYear;
+        dst->Day = src->Day;
+        memcpy(dst->Text, src->Text, sizeof(src->Text));
+    }
+
     // pad_13CE730
     // rct1_scenario_flags
     gWidePathTileLoopX = _s6.wide_path_tile_loop_x;
