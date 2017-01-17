@@ -56,4 +56,12 @@ uint32 util_rand();
 uint8 *util_zlib_deflate(const uint8 *data, size_t data_in_size, size_t *data_out_size);
 uint8 *util_zlib_inflate(uint8 *data, size_t data_in_size, size_t *data_out_size);
 
+#define add_clamp(value, value_to_add, min_cap, max_cap) \
+	if ((max_cap - abs(value_to_add)) < abs(value) && (value < 0) == (value_to_add < 0)) { \
+		value = (value < 0) ? min_cap : max_cap; \
+	} \
+	else { \
+		value += value_to_add; \
+	}
+
 #endif
