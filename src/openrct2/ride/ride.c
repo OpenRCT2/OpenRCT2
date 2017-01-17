@@ -1489,7 +1489,7 @@ static void ride_construction_reset_current_piece()
 		_currentTrackBankEnd = 0;
 		_currentTrackLiftHill = 0;
 		_currentTrackCovered = 0;
-		if (RideData4[ride->type].flags & RIDE_TYPE_FLAG4_15) {
+		if (RideData4[ride->type].flags & RIDE_TYPE_FLAG4_FLYING_RC) {
 			_currentTrackCovered |= 2;
 		}
 		_previousTrackSlopeEnd = 0;
@@ -1946,7 +1946,7 @@ sint32 sub_6CC3FB(sint32 rideIndex)
 	_currentTrackLiftHill = 0;
 	_currentTrackCovered = 0;
 
-	if (RideData4[ride->type].flags & RIDE_TYPE_FLAG4_15)
+	if (RideData4[ride->type].flags & RIDE_TYPE_FLAG4_FLYING_RC)
 		_currentTrackCovered |= 2;
 
 	_previousTrackBankEnd = 0;
