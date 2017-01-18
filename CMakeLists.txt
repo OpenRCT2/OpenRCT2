@@ -406,7 +406,7 @@ else (WIN32)
     endif (NOT DISABLE_RCT2)
     add_custom_command(
         OUTPUT g2.dat
-        COMMAND ./openrct2 --verbose sprite build ${CMAKE_BINARY_DIR}/g2.dat ${CMAKE_CURRENT_SOURCE_DIR}/resources/g2/sprites.json
+        COMMAND ./openrct2 sprite build ${CMAKE_BINARY_DIR}/g2.dat ${CMAKE_CURRENT_SOURCE_DIR}/resources/g2/sprites.json
         WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
         )
     add_custom_target(g2 DEPENDS ${PROJECT} g2.dat)
