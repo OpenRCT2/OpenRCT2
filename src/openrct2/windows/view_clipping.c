@@ -268,12 +268,12 @@ static void window_view_clipping_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		switch (gConfigGeneral.measurement_format) {
 		case MEASUREMENT_FORMAT_METRIC:
 		case MEASUREMENT_FORMAT_SI:
-			clipHeightValueInMeters = (fixed32_2dp)(FIXED_2DP(gClipHeight, 0) / 2 * 1.5 - FIXED_2DP(10, 50));
+			clipHeightValueInMeters = (fixed32_2dp)(FIXED_2DP(gClipHeight, 0) / 2 * 1.5f - FIXED_2DP(10, 50));
 			gfx_draw_string_left(dpi, STR_UNIT2DP_SUFFIX_METRES, &clipHeightValueInMeters, w->colours[0], x, y);
 			break;
 		case MEASUREMENT_FORMAT_IMPERIAL:
 		default:
-			clipHeightValueInFeet = (fixed16_1dp)(FIXED_1DP(gClipHeight, 0) / 2.0 * 5 - FIXED_1DP(35, 0));
+			clipHeightValueInFeet = (fixed16_1dp)(FIXED_1DP(gClipHeight, 0) / 2.0f * 5 - FIXED_1DP(35, 0));
 			gfx_draw_string_left(dpi, STR_UNIT1DP_SUFFIX_FEET, &clipHeightValueInFeet, w->colours[0], x, y);
 			break;
 		}
