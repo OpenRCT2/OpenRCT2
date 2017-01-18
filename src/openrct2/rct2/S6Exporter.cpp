@@ -125,7 +125,7 @@ void S6Exporter::Save(SDL_RWops * rw, bool isScenario)
         SDL_RWwrite(rw, buffer, encodedLength, 1);
     }
 
-    log_warning("exporting %u objects", _s6.header.num_packed_objects);
+    log_verbose("exporting %u objects", _s6.header.num_packed_objects);
     // 2: Write packed objects
     if (_s6.header.num_packed_objects > 0)
     {
