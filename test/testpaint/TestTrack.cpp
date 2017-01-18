@@ -30,6 +30,7 @@
 #include "VerticalTunnelCall.hpp"
 
 extern "C" {
+#include <openrct2/paint/map_element/map_element.h>
 #include <openrct2/paint/supports.h>
 #include <openrct2/ride/ride.h>
 #include <openrct2/ride/track.h>
@@ -700,15 +701,21 @@ static uint8 TestTrackElementVerticalTunnels(uint8 rideType, uint8 trackType, ui
     TestPaint::ResetEnvironment();
     TestPaint::ResetTunnels();
 
-    uint8 verticalTunnelHeight[4];
+    uint16 verticalTunnelHeights[4];
 
     for (int direction = 0; direction < 4; direction++) {
-        gVerticalTunnelHeight = 0;
-        CallOriginal(rideType, trackType, direction, trackSequence, height, &mapElement);
-        verticalTunnelHeight[direction] = gVerticalTunnelHeight;
+        uint8 tunnelHeights[3] = {0};
+
+        for (uint8 i = 0; i < 3; i++) {
+            gVerticalTunnelHeight = 0;
+            CallOriginal(rideType, trackType, direction, trackSequence, height - 8 + i * 8, &mapElement);
+            tunnelHeights[i] = gVerticalTunnelHeight;
+        }
+
+        verticalTunnelHeights[direction] = VerticalTunnelCall::GetTunnelHeight(height, tunnelHeights);
     }
 
-    if (!VerticalTunnelCall::HeightIsConsistent(verticalTunnelHeight)) {
+    if (!VerticalTunnelCall::HeightIsConsistent(verticalTunnelHeights)) {
         *error += String::Format(
             "Original vertical tunnel height is inconsistent, skipping test. [trackSequence:%d]\n",
             trackSequence
@@ -716,30 +723,33 @@ static uint8 TestTrackElementVerticalTunnels(uint8 rideType, uint8 trackType, ui
         return TEST_SUCCESS;
     }
 
-    uint8 referenceHeight = verticalTunnelHeight[0];
+    uint16 referenceHeight = verticalTunnelHeights[0];
 
     for (int direction = 0; direction < 4; direction++) {
-        gVerticalTunnelHeight = 0;
 
         testpaint_clear_ignore();
-        CallOriginal(rideType, trackType, direction, trackSequence, height, &mapElement);
+
+        testPaintVerticalTunnelHeight = 0;
+        CallNew(rideType, trackType, direction, trackSequence, height, &mapElement);
+
         if (testpaint_is_ignored(direction, trackSequence)) {
             continue;
         }
 
-        if (gVerticalTunnelHeight != referenceHeight) {
-            if (gVerticalTunnelHeight == 0) {
+        if (testPaintVerticalTunnelHeight != referenceHeight) {
+            if (referenceHeight == 0) {
                 *error += String::Format(
-                    "Expected no tunnel. Actual: %d [trackSequence:%d]\n",
-                    gVerticalTunnelHeight, trackSequence
+                    "Expected no tunnel. Actual: %s [trackSequence:%d]\n",
+                    Printer::PrintHeightOffset(testPaintVerticalTunnelHeight, height).c_str(),
+                    trackSequence
                 );
                 return TEST_FAILED;
             }
 
             *error += String::Format(
                 "Expected vertical tunnel height to be `%s`, was `%s`. [trackSequence:%d direction:%d]\n",
-                Printer::PrintHeightOffset((referenceHeight * 16), height).c_str(),
-                Printer::PrintHeightOffset((gVerticalTunnelHeight * 16), height).c_str(),
+                Printer::PrintHeightOffset(referenceHeight, height).c_str(),
+                Printer::PrintHeightOffset(testPaintVerticalTunnelHeight, height).c_str(),
                 trackSequence,
                 direction
             );

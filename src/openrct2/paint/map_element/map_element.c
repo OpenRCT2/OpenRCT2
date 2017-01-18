@@ -45,6 +45,10 @@ uint8 gRightTunnelCount;
 uint8 gVerticalTunnelHeight;
 #endif
 
+#ifdef __TESTPAINT__
+uint16 testPaintVerticalTunnelHeight;
+#endif
+
 static void blank_tiles_paint(sint32 x, sint32 y);
 static void sub_68B3FB(sint32 x, sint32 y);
 
@@ -333,6 +337,9 @@ void paint_util_push_tunnel_right(uint16 height, uint8 type)
 
 void paint_util_set_vertical_tunnel(uint16 height)
 {
+#ifdef __TESTPAINT__
+	testPaintVerticalTunnelHeight = height;
+#endif
 	gVerticalTunnelHeight = height / 16;
 }
 

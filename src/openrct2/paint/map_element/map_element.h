@@ -106,6 +106,10 @@ extern uint8 gVerticalTunnelHeight;
 #define gVerticalTunnelHeight		RCT2_GLOBAL(0x009E323C, uint8)
 #endif
 
+#ifdef __TESTPAINT__
+extern uint16 testPaintVerticalTunnelHeight;
+#endif
+
 extern bool gShowSupportSegmentHeights;
 
 extern const rct_xy16 BannerBoundBoxes[][2];
