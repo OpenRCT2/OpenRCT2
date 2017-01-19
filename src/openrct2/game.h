@@ -96,12 +96,6 @@ enum GAME_COMMAND {
 	GAME_COMMAND_COUNT
 };
 
-enum MISC_COMMAND {
-	MISC_COMMAND_CHAT = -1,
-	MISC_COMMAND_TOGGLE_SCENERY_CLUSTER = -2,
-	MISC_COMMAND_PASSWORDLESS_LOGIN = -3,
-};
-
 enum {
 	GAME_COMMAND_FLAG_APPLY = (1 << 0), // If this flag is set, the command is applied, otherwise only the cost is retrieved
 	GAME_COMMAND_FLAG_2 = (1 << 2),

@@ -20,6 +20,13 @@
 #include <string>
 #include "../common.h"
 
+enum MISC_COMMAND
+{
+    MISC_COMMAND_CHAT = -1,
+    MISC_COMMAND_TOGGLE_SCENERY_CLUSTER = -2,
+    MISC_COMMAND_PASSWORDLESS_LOGIN = -3,
+};
+
 class NetworkAction final
 {
 public:
