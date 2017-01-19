@@ -1244,7 +1244,7 @@ static void vehicle_update_measurements(rct_vehicle *vehicle)
 		}
 
 		if (ride->average_speed_test_timeout == 0 && velocity > 0x8000){
-			ride->average_speed += velocity;
+			add_clamp(ride->average_speed, velocity, INT32_MIN, INT32_MAX);
 			ride->time[test_segment]++;
 		}
 
