@@ -33,9 +33,6 @@ extern "C" {
 
 #include "network.h"
 
-extern "C" {
-}
-
 rct_peep* _pickup_peep = 0;
 sint32 _pickup_peep_old_x = SPRITE_LOCATION_NULL;
 
