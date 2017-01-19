@@ -752,8 +752,10 @@ enum {
 	SPR_G2_COPY = SPR_G2_BEGIN + 78,
 	SPR_G2_PASTE = SPR_G2_BEGIN + 79,
 
+	// 0x60000, chosen because it's a round hex number
+	// of the last possible range of image ID values that is large enough to fit all csg1 sprites.
 	SPR_CSG_BEGIN = 393216,
-
+	
 	SPR_CSG_EDGE_BRICK_BASE = SPR_CSG_BEGIN + 40506,
 	SPR_CSG_EDGE_IRON_BASE = SPR_CSG_BEGIN + 40590,
 	SPR_CSG_EDGE_RED_BASE = SPR_CSG_BEGIN + 40926,
