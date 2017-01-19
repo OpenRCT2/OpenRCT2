@@ -47,21 +47,19 @@ utf8 _userDataDirectoryPath[MAX_PATH] = { 0 };
 utf8 _openrctDataDirectoryPath[MAX_PATH] = { 0 };
 
 /**
- * The function that is called directly from the host application (rct2.exe)'s WinMain.
- * This will be removed when OpenRCT2 can be built as a stand alone application.
+ * The main entry point for non-Windows platforms.
  */
 sint32 main(sint32 argc, const char **argv)
 {
 	core_init();
 
-	sint32 run_game = cmdline_run(argv, argc);
-	if (run_game == 1)
-	{
+	sint32 exitCode = cmdline_run(argv, argc);
+	if (exitCode == 1) {
 		openrct2_launch();
+		exitCode = gExitCode;
 	}
 
-	exit(gExitCode);
-	return gExitCode;
+	return exitCode;
 }
 
 void platform_get_date_utc(rct2_date *out_date)
