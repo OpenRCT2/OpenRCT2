@@ -313,8 +313,10 @@ void gfx_filter_rect(rct_drawpixelinfo *dpi, sint32 left, sint32 top, sint32 rig
 // sprite
 bool gfx_load_g1();
 bool gfx_load_g2();
+bool gfx_load_csg();
 void gfx_unload_g1();
 void gfx_unload_g2();
+void gfx_unload_csg();
 rct_g1_element* gfx_get_g1_element(sint32 image_id);
 uint32 gfx_object_allocate_images(const rct_g1_element * images, uint32 count);
 void gfx_object_free_images(uint32 baseImageId, uint32 count);

@@ -14,9 +14,10 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../rct2/addresses.h"
 #include "../common.h"
+#include "../config.h"
 #include "../OpenRCT2.h"
+#include "../rct2/addresses.h"
 #include "../sprites.h"
 #include "../util/util.h"
 #include "drawing.h"
@@ -24,6 +25,7 @@
 void *_g1Buffer = NULL;
 
 rct_gx g2;
+rct_gx csg;
 
 #ifdef NO_RCT2
 	rct_g1_element *g1Elements = NULL;
@@ -121,6 +123,11 @@ void gfx_unload_g2()
 	SafeFree(g2.elements);
 }
 
+void gfx_unload_csg()
+{
+	SafeFree(csg.elements);
+}
+
 bool gfx_load_g2()
 {
 	log_verbose("loading g2 graphics");
@@ -157,6 +164,69 @@ bool gfx_load_g2()
 		platform_show_messagebox("Unable to load g2.dat");
 	}
 	return false;
+}
+
+bool gfx_load_csg()
+{
+	if (str_is_null_or_empty(gConfigGeneral.rct1_path)) {
+		return false;
+	}
+
+	bool success = false;
+	log_verbose("loading csg graphics");
+
+	char pathHeader[MAX_PATH];
+	safe_strcpy(pathHeader, gConfigGeneral.rct1_path, sizeof(pathHeader));
+	safe_strcat_path(pathHeader, "Data", sizeof(pathHeader));
+	safe_strcat_path(pathHeader, "csg1i.dat", sizeof(pathHeader));
+
+	char pathData[MAX_PATH];
+	safe_strcpy(pathData, gConfigGeneral.rct1_path, sizeof(pathData));
+	safe_strcat_path(pathData, "Data", sizeof(pathData));
+	safe_strcat_path(pathData, "csg1.1", sizeof(pathData));
+
+	SDL_RWops * fileHeader = SDL_RWFromFile(pathHeader, "rb");
+	SDL_RWops * fileData = SDL_RWFromFile(pathData, "rb");
+	if (fileHeader != NULL && fileData != NULL) {
+		SDL_RWseek(fileHeader, 0, RW_SEEK_END);
+		SDL_RWseek(fileData, 0, RW_SEEK_END);
+		size_t fileHeaderSize = SDL_RWtell(fileHeader);
+		size_t fileDataSize = SDL_RWtell(fileData);
+		SDL_RWseek(fileHeader, 0, RW_SEEK_SET);
+		SDL_RWseek(fileData, 0, RW_SEEK_SET);
+
+		csg.header.num_entries = (uint32)(fileHeaderSize / sizeof(rct_g1_element_32bit));
+		csg.header.total_size = (uint32)fileDataSize;
+
+		// Read element headers
+		csg.elements = malloc(csg.header.num_entries * sizeof(rct_g1_element));
+		read_and_convert_gxdat(fileHeader, csg.header.num_entries, csg.elements);
+
+		// Read element data
+		csg.data = malloc(csg.header.total_size);
+		SDL_RWread(fileData, csg.data, csg.header.total_size, 1);
+
+		// Fix entry data offsets
+		for (uint32 i = 0; i < csg.header.num_entries; i++) {
+			csg.elements[i].offset += (uintptr_t)csg.data;
+		}
+
+		success = true;
+	}
+
+	if (fileHeader != NULL) {
+		SDL_RWclose(fileHeader);
+	}
+	if (fileData != NULL) {
+		SDL_RWclose(fileData);
+	}
+
+	if (success) {
+		return true;
+	} else {
+		log_error("Unable to load csg graphics");
+		return false;
+	}
 }
 
 /**
@@ -548,6 +618,8 @@ rct_g1_element *gfx_get_g1_element(sint32 image_id) {
 	if (image_id < SPR_G2_BEGIN) {
 		return &g1Elements[image_id];
 	}
-
-	return &g2.elements[image_id - SPR_G2_BEGIN];
+	if (image_id < SPR_CSG_BEGIN) {
+		return &g2.elements[image_id - SPR_G2_BEGIN];
+	}
+	return &csg.elements[image_id - SPR_CSG_BEGIN];
 }
