@@ -673,9 +673,9 @@ sint32 cmdline_for_sprite(const char **argv, sint32 argc)
 			}
 
 			if(!json_is_array(sprite_list)) {
-			fprintf(stderr,"Error: expected array\n");
-			json_decref(sprite_list);
-			return -1;
+				fprintf(stderr,"Error: expected array\n");
+				json_decref(sprite_list);
+				return -1;
 			}
 
 		bool silent = (argc >= 4 && strcmp(argv[3], "silent") == 0);
@@ -691,16 +691,16 @@ sint32 cmdline_for_sprite(const char **argv, sint32 argc)
 
 		json_array_foreach(sprite_list,i,sprite_description) {
 				if(!json_is_object(sprite_description)) {
-				fprintf(stderr,"Error: expected object for sprite %lu\n",(unsigned long)i);
-				json_decref(sprite_list);
-				return -1;
+					fprintf(stderr,"Error: expected object for sprite %lu\n",(unsigned long)i);
+					json_decref(sprite_list);
+					return -1;
 				}
 			
 			json_t* path=json_object_get(sprite_description,"path");
 				if(!path || !json_is_string(path)) {
-				fprintf(stderr,"Error: no path provided for sprite %lu\n",(unsigned long)i);
-				json_decref(sprite_list);
-				return -1;			
+					fprintf(stderr,"Error: no path provided for sprite %lu\n",(unsigned long)i);
+					json_decref(sprite_list);
+					return -1;			
 				}
 			//Get x and y offsets, if present
 			json_t* x_offset=json_object_get(sprite_description,"x_offset");
