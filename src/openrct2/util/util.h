@@ -57,11 +57,14 @@ uint8 *util_zlib_deflate(const uint8 *data, size_t data_in_size, size_t *data_ou
 uint8 *util_zlib_inflate(uint8 *data, size_t data_in_size, size_t *data_out_size);
 
 #define add_clamp(value, value_to_add, min_cap, max_cap) \
-	if ((max_cap - abs(value_to_add)) < abs(value) && (value < 0) == (value_to_add < 0)) { \
-		value = (value < 0) ? min_cap : max_cap; \
-	} \
-	else { \
-		value += value_to_add; \
-	}
+    if ((value_to_add > 0) && (value > (max_cap - value_to_add))) { \
+        value = max_cap; \
+    } \
+    else if ((value_to_add < 0) && (value < (min_cap - value_to_add))) { \
+        value = min_cap; \
+    } \
+    else { \
+       value += value_to_add; \
+    }
 
 #endif
