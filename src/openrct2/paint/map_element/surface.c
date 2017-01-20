@@ -1106,8 +1106,7 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
 				image_id = dword_97B750[ebp][showGridlines ? 1 : 0] + image_offset;
 
 				if (gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)) {
-					// TODO: SPR_TERRAIN_TRACK_DESIGNER ???
-					image_id = 2623;
+					image_id = SPR_TERRAIN_TRACK_DESIGNER;
 				}
 
 				if (gCurrentViewportFlags & (VIEWPORT_FLAG_UNDERGROUND_INSIDE | VIEWPORT_FLAG_HIDE_BASE)) {
