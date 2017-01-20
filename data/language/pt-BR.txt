@@ -4305,6 +4305,10 @@ STR_5993    :{SMALLFONT}{BLACK}Copiar elemento selecionado
 STR_5994    :{SMALLFONT}{BLACK}Colar elemento selecionado
 STR_5995    :Lançador
 STR_5996    :Velocidade do lançador
+STR_5997    :Adicionar/definir dinheiro
+STR_5998    :Adicionar dinheiro
+STR_5999    :Definir dinheiro
+STR_6000    :Inserir novo valor
 
 #############
 # Scenarios #
