@@ -1567,8 +1567,7 @@ void Network::Server_Handle_AUTH(NetworkConnection& connection, NetworkPacket& p
 		bool passwordless = false;
 		if (connection.AuthStatus == NETWORK_AUTH_VERIFIED) {
 			const NetworkGroup * group = GetGroupByID(GetGroupIDByHash(connection.Key.PublicKeyHash()));
-			size_t actionIndex = NetworkActions::FindCommandByPermissionName("PERMISSION_PASSWORDLESS_LOGIN");
-			passwordless = group->CanPerformAction(actionIndex);
+			passwordless = group->CanPerformCommand(MISC_COMMAND_PASSWORDLESS_LOGIN);
 		}
 		if (!gameversion || strcmp(gameversion, NETWORK_STREAM_ID) != 0) {
 			connection.AuthStatus = NETWORK_AUTH_BADVERSION;
@@ -1677,7 +1676,7 @@ void Network::Server_Handle_CHAT(NetworkConnection& connection, NetworkPacket& p
 {
 	if (connection.Player) {
 		NetworkGroup* group = GetGroupByID(connection.Player->Group);
-		if (!group || (group && !group->CanPerformCommand(-1))) {
+		if (!group || (group && !group->CanPerformCommand(MISC_COMMAND_CHAT))) {
 			return;
 		}
 	}
@@ -1731,7 +1730,7 @@ void Network::Server_Handle_GAMECMD(NetworkConnection& connection, NetworkPacket
 	// cluster mode is a for loop that runs the place_scenery code multiple times.
 	if (commandCommand == GAME_COMMAND_PLACE_SCENERY) {
 		if ((ticks - connection.Player->LastActionTime) < 20) {
-			if (!(group->CanPerformCommand(-2))) {
+			if (!(group->CanPerformCommand(MISC_COMMAND_TOGGLE_SCENERY_CLUSTER))) {
 				Server_Send_SHOWERROR(connection, STR_CANT_DO_THIS, STR_CANT_DO_THIS);
 				return;
 			}
