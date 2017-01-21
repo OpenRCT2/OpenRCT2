@@ -209,6 +209,8 @@ bool gfx_load_csg()
 		// Fix entry data offsets
 		for (uint32 i = 0; i < csg.header.num_entries; i++) {
 			csg.elements[i].offset += (uintptr_t)csg.data;
+			// RCT1 used zoomed offsets that counted from the beginning of the file, rather than from the current sprite.
+			csg.elements[i].zoomed_offset = i - (SPR_CSG_BEGIN + csg.elements[i].zoomed_offset);
 		}
 
 		success = true;
