@@ -44,25 +44,25 @@ enum LIGHTFX_LIGHT_QUALIFIER {
 	LIGHTFX_LIGHT_QUALIFIER_MAP			= 0x2
 };
 
-extern void lightfx_init();
+void lightfx_init();
 
-extern void lightfx_update_buffers(rct_drawpixelinfo*);
+void lightfx_update_buffers(rct_drawpixelinfo*);
 
-extern void lightfx_prepare_light_list();
-extern void lightfx_swap_buffers();
-extern void lightfx_render_lights_to_frontbuffer();
-extern void lightfx_update_viewport_settings();
+void lightfx_prepare_light_list();
+void lightfx_swap_buffers();
+void lightfx_render_lights_to_frontbuffer();
+void lightfx_update_viewport_settings();
 
-extern void* lightfx_get_front_buffer();
+void* lightfx_get_front_buffer();
 const SDL_Color * lightfx_get_palette();
 
-extern void lightfx_add_3d_light(uint32 lightID, uint16 lightIDqualifier, sint16 x, sint16 y, uint16 z, uint8 lightType);
+void lightfx_add_3d_light(uint32 lightID, uint16 lightIDqualifier, sint16 x, sint16 y, uint16 z, uint8 lightType);
 
-extern void lightfx_add_3d_light_magic_from_drawing_tile(sint16 offsetX, sint16 offsetY, sint16 offsetZ, uint8 lightType);
+void lightfx_add_3d_light_magic_from_drawing_tile(sint16 offsetX, sint16 offsetY, sint16 offsetZ, uint8 lightType);
 
-extern void lightfx_add_lights_magic_vehicles();
+void lightfx_add_lights_magic_vehicles();
 
-extern uint32 lightfx_get_light_polution();
+uint32 lightfx_get_light_polution();
 
 void lightfx_apply_palette_filter(uint8 i, uint8 *r, uint8 *g, uint8 *b);
 void lightfx_render_to_texture(
