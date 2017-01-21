@@ -1,7 +1,7 @@
 # Version numbers to update
 !define /ifndef APPV_MAJOR 0
 !define /ifndef APPV_MINOR 0
-!define /ifndef APPV_MAINT 5
+!define /ifndef APPV_MAINT 6
 !define /ifndef APPV_BUILD 0
 
 !define APPNAME             "OpenRCT2"
