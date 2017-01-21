@@ -430,6 +430,23 @@ void map_count_remaining_land_rights()
 }
 
 /**
+ * This is meant to strip MAP_ELEMENT_FLAG_GHOST flag from all elements when
+ * importing a park.
+ *
+ * This can only exist in hacked parks, as we remove ghost elements while saving.
+ *
+ * This is less invasive than removing ghost elements themselves, as they can
+ * contain valid data.
+ */
+void map_strip_ghost_flag_from_elements()
+{
+	rct_map_element *mapElement = gMapElements;
+	do {
+		mapElement->flags &= ~MAP_ELEMENT_FLAG_GHOST;
+	} while (++mapElement < gMapElements + 0x30000);
+}
+
+/**
  *
  *  rct2: 0x0068AFFD
  */

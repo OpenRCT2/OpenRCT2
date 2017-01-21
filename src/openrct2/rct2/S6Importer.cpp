@@ -364,6 +364,7 @@ void S6Importer::Import()
     {
         throw ObjectLoadException();
     }
+    map_strip_ghost_flag_from_elements();
     map_update_tile_pointers();
     game_convert_strings_to_utf8();
     map_count_remaining_land_rights();
