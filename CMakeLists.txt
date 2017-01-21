@@ -113,6 +113,7 @@ option(DISABLE_RCT2 "Build a standalone version, without using code and data seg
 option(USE_MMAP "Use mmap to try loading rct2's data segment into memory.")
 option(WITH_TESTS "Build tests")
 option(DISABLE_TTF "Disable support for TTF provided by SDL2_ttf.")
+option(ENABLE_LIGHTFX "Enable lighting effects." ON)
 
 set(COMMON_COMPILE_OPTIONS "${COMMON_COMPILE_OPTIONS} -fstrict-aliasing -Werror -Wundef -Wmissing-declarations -Winit-self -Wall -Wno-unknown-pragmas -Wno-unused-function -Wno-missing-braces ")
 set(COMMON_COMPILE_OPTIONS "${COMMON_COMPILE_OPTIONS} -Wno-comment -Wshadow  -Wmissing-declarations -Wnonnull")
@@ -134,6 +135,10 @@ endif (DISABLE_HTTP_TWITCH)
 if (DISABLE_TTF)
     add_definitions(-DNO_TTF)
 endif (DISABLE_TTF)
+
+if (ENABLE_LIGHTFX)
+    add_definitions(-D__ENABLE_LIGHTFX__)
+endif (ENABLE_LIGHTFX)
 
 # Launchpad turns on -Wdate-time for compilers that support it, this shouldn't break our build
 ADD_CHECK_C_COMPILER_FLAG(CMAKE_C_FLAGS C_WARN_WRITE_STRINGS -Wno-error=date-time)
