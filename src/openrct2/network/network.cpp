@@ -1570,8 +1570,7 @@ void Network::Server_Handle_AUTH(NetworkConnection& connection, NetworkPacket& p
 		bool passwordless = false;
 		if (connection.AuthStatus == NETWORK_AUTH_VERIFIED) {
 			const NetworkGroup * group = GetGroupByID(GetGroupIDByHash(connection.Key.PublicKeyHash()));
-			size_t actionIndex = NetworkActions::FindCommand(MISC_COMMAND_PASSWORDLESS_LOGIN);
-			passwordless = group->CanPerformAction(actionIndex);
+			passwordless = group->CanPerformCommand(MISC_COMMAND_PASSWORDLESS_LOGIN);
 		}
 		if (!gameversion || strcmp(gameversion, NETWORK_STREAM_ID) != 0) {
 			connection.AuthStatus = NETWORK_AUTH_BADVERSION;
