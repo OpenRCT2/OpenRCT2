@@ -37,8 +37,8 @@ static uint8 _bakedLightTexture_spot_2[128 * 128];
 static uint8 _bakedLightTexture_spot_3[256 * 256];
 static rct_drawpixelinfo	_pixelInfo;
 
-static void* _light_rendered_buffer_back = 0;
-static void* _light_rendered_buffer_front = 0;
+static void* _light_rendered_buffer_back = NULL;
+static void* _light_rendered_buffer_front = NULL;
 
 static uint32	_lightPolution_back = 0;
 static uint32	_lightPolution_front = 0;
@@ -258,7 +258,7 @@ void lightfx_prepare_light_list()
 		if (true) {
 			sint32 totalSamplePoints = 5;
 			sint32 startSamplePoint = 1;
-			sint32 lastSampleCount = 0;
+			// sint32 lastSampleCount = 0;
 
 			if ((entry->lightIDqualifier & 0xF) == LIGHTFX_LIGHT_QUALIFIER_MAP) {
 				startSamplePoint = 0;
@@ -370,18 +370,18 @@ void lightfx_prepare_light_list()
 						break;
 					if (lightIntensityOccluded == 0 || lightIntensityOccluded == 500)
 						break;
-					lastSampleCount = lightIntensityOccluded / 500;
+					// lastSampleCount = lightIntensityOccluded / 500;
 				//	break;
 					totalSamplePoints += 4;
 				}
 				else if (pat == 8) {
 					break;
-					if (_current_view_zoom_front > 0)
-						break;
-					sint32 newSampleCount = lightIntensityOccluded / 900;
-					if (abs(newSampleCount - lastSampleCount) < 10)
-						break;
-					totalSamplePoints += 4;
+					// if (_current_view_zoom_front > 0)
+					// 	break;
+					// sint32 newSampleCount = lightIntensityOccluded / 900;
+					// if (abs(newSampleCount - lastSampleCount) < 10)
+					// 	break;
+					// totalSamplePoints += 4;
 				}
 			}
 
@@ -454,6 +454,10 @@ void lightfx_update_viewport_settings()
 
 void lightfx_render_lights_to_frontbuffer()
 {
+	if (_light_rendered_buffer_front == NULL) {
+		return;
+	}
+
 	memset(_light_rendered_buffer_front, 0, _pixelInfo.width * _pixelInfo.height);
 
 	_lightPolution_back = 0;
@@ -688,7 +692,7 @@ uint32 lightfx_get_light_polution()
 
 void lightfx_add_lights_magic_vehicles()
 {
-	uint16 spriteIndex = gSpriteListHead[SPRITE_LIST_VEHICLE];
+	uint16 spriteIndex = gSpriteListHead[SPRITE_LIST_TRAIN];
 	while (spriteIndex != SPRITE_INDEX_NULL) {
 		rct_vehicle * vehicle = &(get_sprite(spriteIndex)->vehicle);
 		uint16 vehicleID = spriteIndex;
@@ -701,7 +705,7 @@ void lightfx_add_lights_magic_vehicles()
 		}
 
 		for (uint16 q = vehicleID; q != SPRITE_INDEX_NULL; ) {
-			rct_vehicle *vehicle = GET_VEHICLE(q);
+			vehicle = GET_VEHICLE(q);
 
 			vehicleID = q;
 			if (vehicle->next_vehicle_on_train == q)
@@ -1005,6 +1009,9 @@ void lightfx_render_to_texture(
 	lightfx_render_lights_to_frontbuffer();
 
 	uint8 * lightBits = (uint8 *)lightfx_get_front_buffer();
+	if (lightBits == NULL) {
+		return;
+	}
 
 	void * pixels;
 	sint32 pitch;

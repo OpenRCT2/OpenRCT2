@@ -257,15 +257,20 @@ void platform_update_palette(const uint8* colours, sint32 start_index, sint32 nu
 		uint8 b = colours[0];
 
 #ifdef __ENABLE_LIGHTFX__
-		lightfx_apply_palette_filter(i, &r, &g, &b);
-#else
-		float night = gDayNightCycle;
-		if (night >= 0 && gClimateLightningFlash == 0) {
-			r = lerp(r, soft_light(r, 8), night);
-			g = lerp(g, soft_light(g, 8), night);
-			b = lerp(b, soft_light(b, 128), night);
+		if (gConfigGeneral.enable_light_fx)
+		{
+			lightfx_apply_palette_filter(i, &r, &g, &b);
 		}
+		else
 #endif
+		{
+			float night = gDayNightCycle;
+			if (night >= 0 && gClimateLightningFlash == 0) {
+				r = lerp(r, soft_light(r, 8), night);
+				g = lerp(g, soft_light(g, 8), night);
+				b = lerp(b, soft_light(b, 128), night);
+			}
+		}
 
 		gPalette[i].r = r;
 		gPalette[i].g = g;

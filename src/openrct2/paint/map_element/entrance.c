@@ -43,12 +43,12 @@ static void ride_entrance_exit_paint(uint8 direction, sint32 height, rct_map_ele
 	}
 
 #ifdef __ENABLE_LIGHTFX__
+	if (gConfigGeneral.enable_light_fx) {
+		if (!is_exit) {
+			lightfx_add_3d_light_magic_from_drawing_tile(0, 0, height + 45, LIGHTFX_LIGHT_TYPE_LANTERN_3);
+		}
 
-	if (!is_exit) {
-		lightfx_add_3d_light_magic_from_drawing_tile(0, 0, height + 45, LIGHTFX_LIGHT_TYPE_LANTERN_3);
-	}
-
-	switch (map_element->type & MAP_ELEMENT_DIRECTION_MASK) {
+		switch (map_element->type & MAP_ELEMENT_DIRECTION_MASK) {
 		case 0:
 			lightfx_add_3d_light_magic_from_drawing_tile(16, 0, height + 16, LIGHTFX_LIGHT_TYPE_LANTERN_2);
 			break;
@@ -61,8 +61,8 @@ static void ride_entrance_exit_paint(uint8 direction, sint32 height, rct_map_ele
 		case 3:
 			lightfx_add_3d_light_magic_from_drawing_tile(0, 16, height + 16, LIGHTFX_LIGHT_TYPE_LANTERN_2);
 			break;
-	};
-
+		};
+	}
 #endif
 
 	rct_ride* ride = get_ride(map_element->properties.entrance.ride_index);
@@ -190,9 +190,9 @@ static void park_entrance_paint(uint8 direction, sint32 height, rct_map_element*
 		return;
 
 #ifdef __ENABLE_LIGHTFX__
-
-	lightfx_add_3d_light_magic_from_drawing_tile(0, 0, 155, LIGHTFX_LIGHT_TYPE_LANTERN_3);
-
+	if (gConfigGeneral.enable_light_fx) {
+		lightfx_add_3d_light_magic_from_drawing_tile(0, 0, 155, LIGHTFX_LIGHT_TYPE_LANTERN_3);
+	}
 #endif
 
 	gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_PARK;
