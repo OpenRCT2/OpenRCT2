@@ -731,10 +731,10 @@ void game_convert_strings_to_utf8()
 
 	// News items
 	for (sint32 i = 0; i < MAX_NEWS_ITEMS; i++) {
-		rct_news_item *newsItem = news_item_get(i);
+		NewsItem *newsItem = news_item_get(i);
 
-		if (!str_is_null_or_empty(newsItem->text)) {
-			rct2_to_utf8_self(newsItem->text, 256);
+		if (!str_is_null_or_empty(newsItem->Text)) {
+			rct2_to_utf8_self(newsItem->Text, sizeof(newsItem->Text));
 		}
 	}
 }
@@ -760,10 +760,10 @@ void game_convert_strings_to_rct2(rct_s6_data *s6)
 
 	// News items
 	for (sint32 i = 0; i < MAX_NEWS_ITEMS; i++) {
-		rct_news_item *newsItem = &s6->news_items[i];
+		rct12_news_item *newsItem = &s6->news_items[i];
 
-		if (!str_is_null_or_empty(newsItem->text)) {
-			utf8_to_rct2_self(newsItem->text, 256);
+		if (!str_is_null_or_empty(newsItem->Text)) {
+			utf8_to_rct2_self(newsItem->Text, sizeof(newsItem->Text));
 		}
 	}
 }

@@ -355,9 +355,7 @@ bool rct2_open_file(const char *path)
 		}
 	} else if (_stricmp(extension, "sc6") == 0) {
 		// TODO scenario install
-		rct_scenario_basic scenarioBasic;
-		safe_strcpy(scenarioBasic.path, path, sizeof(scenarioBasic.path));
-		if (scenario_load_and_play_from_path(scenarioBasic.path)) {
+		if (scenario_load_and_play_from_path(path)) {
 			return true;
 		}
 	} else if (_stricmp(extension, "td6") == 0 || _stricmp(extension, "td4") == 0) {

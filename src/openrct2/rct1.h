@@ -590,7 +590,7 @@ typedef struct rct1_s4 {
 	uint8 target_weather_gloom;
 	uint8 rain;
 	uint8 target_rain;
-	rct_news_item messages[61];
+	rct12_news_item messages[RCT12_MAX_NEWS_ITEMS];
 	char scenario_name[62];
 	uint16 scenario_slot_index;
 	uint32 scenario_flags;

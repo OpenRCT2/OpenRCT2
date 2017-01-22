@@ -21,6 +21,7 @@
 #include "common.h"
 
 #define RCT12_MAX_AWARDS        4
+#define RCT12_MAX_NEWS_ITEMS    61
 
 #pragma pack(push, 1)
 
@@ -30,5 +31,22 @@ typedef struct rct12_award
     uint16 type;
 } rct12_award;
 assert_struct_size(rct12_award, 4);
+
+/**
+ * A single news item / message.
+ * size: 0x10C
+ */
+typedef struct rct12_news_item
+{
+    uint8   Type;
+    uint8   Flags;
+    uint32  Assoc;
+    uint16  Ticks;
+    uint16  MonthYear;
+    uint8   Day;
+    uint8   pad_0B;
+    char    Text[256];
+} rct12_news_item;
+assert_struct_size(rct12_news_item, 0x10C);
 
 #pragma pack(pop)

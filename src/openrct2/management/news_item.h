@@ -37,29 +37,28 @@ enum {
 	NEWS_TYPE_HAS_SUBJECT = 2,
 };
 
+enum {
+	NEWS_FLAG_HAS_BUTTON = 1 << 0,
+};
+
 extern const uint8 news_type_properties[10];
 
-#pragma pack(push, 1)
 /**
- * News item structure.
- * size: 0x10C
+ * A single news item / message.
  */
-typedef struct rct_news_item {
-	uint8 type;					// 0x00
-	uint8 flags;				// 0x01
-	uint32 assoc;				// 0x02
-	uint16 ticks;				// 0x06
-	uint16 month_year;			// 0x08
-	uint8 day;					// 0x0A
-	uint8 pad_0B;				// 0x0B
-	utf8 text[256];				// 0x0C
-} rct_news_item;
-assert_struct_size(rct_news_item, 12 + 256);
-#pragma pack(pop)
+typedef struct NewsItem {
+	uint8   Type;
+	uint8   Flags;
+	uint32  Assoc;
+	uint16  Ticks;
+	uint16  MonthYear;
+	uint8   Day;
+	utf8    Text[256];
+} NewsItem;
 
 #define MAX_NEWS_ITEMS 61
 
-extern rct_news_item gNewsItems[MAX_NEWS_ITEMS];
+extern NewsItem gNewsItems[MAX_NEWS_ITEMS];
 
 void news_item_init_queue();
 void news_item_update_current();
@@ -69,11 +68,11 @@ void news_item_add_to_queue(uint8 type, rct_string_id string_id, uint32 assoc);
 void news_item_add_to_queue_raw(uint8 type, const utf8 *text, uint32 assoc);
 void news_item_open_subject(sint32 type, sint32 subject);
 void news_item_disable_news(uint8 type, uint32 assoc);
-rct_news_item *news_item_get(sint32 index);
+NewsItem *news_item_get(sint32 index);
 bool news_item_is_empty(sint32 index);
 bool news_item_is_queue_empty();
 bool news_item_is_valid_idx(sint32 index);
 
-void news_item_add_to_queue_custom(rct_news_item *newNewsItem);
+void news_item_add_to_queue_custom(NewsItem *newNewsItem);
 
 #endif

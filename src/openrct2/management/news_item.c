@@ -25,7 +25,7 @@
 #include "../world/sprite.h"
 #include "news_item.h"
 
-rct_news_item gNewsItems[MAX_NEWS_ITEMS];
+NewsItem gNewsItems[MAX_NEWS_ITEMS];
 
 /** rct2: 0x0097BE7C */
 const uint8 news_type_properties[] =	{
@@ -52,7 +52,7 @@ bool news_item_is_valid_idx(sint32 index)
 	return true;
 }
 
-rct_news_item *news_item_get(sint32 index)
+NewsItem *news_item_get(sint32 index)
 {
 	if (news_item_is_valid_idx(index)) {
 		return &gNewsItems[index];
@@ -63,7 +63,7 @@ rct_news_item *news_item_get(sint32 index)
 
 bool news_item_is_empty(sint32 index)
 {
-	return news_item_get(index)->type == NEWS_ITEM_NULL;
+	return news_item_get(index)->Type == NEWS_ITEM_NULL;
 }
 
 bool news_item_is_queue_empty()
@@ -79,8 +79,8 @@ void news_item_init_queue()
 {
 	sint32 i;
 
-	news_item_get(0)->type = NEWS_ITEM_NULL;
-	news_item_get(11)->type = NEWS_ITEM_NULL;
+	news_item_get(0)->Type = NEWS_ITEM_NULL;
+	news_item_get(11)->Type = NEWS_ITEM_NULL;
 
 	// Throttles for warning types (PEEP_*_WARNING)
 	for (i = 0; i < 16; i++) {
@@ -93,7 +93,7 @@ void news_item_init_queue()
 static void news_item_tick_current()
 {
 	sint32 ticks;
-	ticks = ++news_item_get(0)->ticks;
+	ticks = ++news_item_get(0)->Ticks;
 	// Only play news item sound when in normal playing mode
 	if (ticks == 1 && (gScreenFlags == SCREEN_FLAGS_PLAYING)) {
 		// Play sound
@@ -110,7 +110,7 @@ static bool news_item_is_current_old()
 		!news_item_is_empty(2))
 		remove_time = 256;
 
-	if (news_item_get(0)->ticks >= remove_time)
+	if (news_item_get(0)->Ticks >= remove_time)
 		return true;
 
 	return false;
@@ -143,7 +143,7 @@ void news_item_update_current()
 void news_item_close_current()
 {
 	sint32 i;
-	rct_news_item *newsItems = gNewsItems;
+	NewsItem *newsItems = gNewsItems;
 
 	// Check if there is a current message
 	if (news_item_is_queue_empty())
@@ -157,7 +157,7 @@ void news_item_close_current()
 
 	// Set the end of the end of the history list
 	if (i < MAX_NEWS_ITEMS - 1)
-		newsItems[i + 1].type = NEWS_ITEM_NULL;
+		newsItems[i + 1].Type = NEWS_ITEM_NULL;
 
 	// Invalidate the news window
 	window_invalidate_by_class(WC_RECENT_NEWS);
@@ -165,7 +165,7 @@ void news_item_close_current()
 	// Dequeue the current news item, shift news up
 	for (i = 0; i < 10; i++)
 		newsItems[i] = newsItems[i + 1];
-	newsItems[10].type = NEWS_ITEM_NULL;
+	newsItems[10].Type = NEWS_ITEM_NULL;
 
 	// Invalidate current news item bar
 	window_game_bottom_toolbar_invalidate_news_item();
@@ -174,8 +174,8 @@ void news_item_close_current()
 static void news_item_shift_history_up()
 {
 	const sint32 history_idx = 11;
-	rct_news_item *history_start = news_item_get(history_idx);
-	const size_t count = sizeof(rct_news_item) * (MAX_NEWS_ITEMS - 1 - history_idx);
+	NewsItem *history_start = news_item_get(history_idx);
+	const size_t count = sizeof(NewsItem) * (MAX_NEWS_ITEMS - 1 - history_idx);
 	memmove(history_start, history_start + 1, count);
 }
 
@@ -288,10 +288,10 @@ void news_item_add_to_queue(uint8 type, rct_string_id string_id, uint32 assoc)
 
 void news_item_add_to_queue_raw(uint8 type, const utf8 *text, uint32 assoc)
 {
-	rct_news_item *newsItem = gNewsItems;
+	NewsItem *newsItem = gNewsItems;
 
 	// find first open slot
-	while (newsItem->type != NEWS_ITEM_NULL) {
+	while (newsItem->Type != NEWS_ITEM_NULL) {
 		if (newsItem + 1 >= &gNewsItems[10]) // &news_list[10]
 			news_item_close_current();
 		else
@@ -299,19 +299,18 @@ void news_item_add_to_queue_raw(uint8 type, const utf8 *text, uint32 assoc)
 	}
 
 	//now we have found an item slot to place the new news in
-	newsItem->type = type;
-	newsItem->flags = 0;
-	newsItem->assoc = assoc;
-	newsItem->ticks = 0;
-	newsItem->month_year = gDateMonthsElapsed;
-	newsItem->day = ((days_in_month[(newsItem->month_year & 7)] * gDateMonthTicks) >> 16) + 1;
-	safe_strcpy(newsItem->text, text, 255);
-	newsItem->text[254] = 0;
+	newsItem->Type = type;
+	newsItem->Flags = 0;
+	newsItem->Assoc = assoc;
+	newsItem->Ticks = 0;
+	newsItem->MonthYear = gDateMonthsElapsed;
+	newsItem->Day = ((days_in_month[(newsItem->MonthYear & 7)] * gDateMonthTicks) >> 16) + 1;
+	safe_strcpy(newsItem->Text, text, sizeof(newsItem->Text));
 
 	// blatant disregard for what happens on the last element.
 	// Change this when we implement the queue ourselves.
 	newsItem++;
-	newsItem->type = 0;
+	newsItem->Type = NEWS_ITEM_NULL;
 }
 
 /**
@@ -389,9 +388,9 @@ void news_item_disable_news(uint8 type, uint32 assoc)
 	// TODO: write test invalidating windows
 	for (sint32 i = 0; i < 11; i++) {
 		if (!news_item_is_empty(i)) {
-			rct_news_item * const newsItem = news_item_get(i);
-			if (type == newsItem->type && assoc == newsItem->assoc) {
-				newsItem->flags |= 0x1;
+			NewsItem * const newsItem = news_item_get(i);
+			if (type == newsItem->Type && assoc == newsItem->Assoc) {
+				newsItem->Flags |= NEWS_FLAG_HAS_BUTTON;
 				if (i == 0) {
 					window_game_bottom_toolbar_invalidate_news_item();
 				}
@@ -403,9 +402,9 @@ void news_item_disable_news(uint8 type, uint32 assoc)
 
 	for (sint32 i = 11; i < MAX_NEWS_ITEMS; i++) {
 		if (!news_item_is_empty(i)) {
-			rct_news_item * const newsItem = news_item_get(i);
-			if (type == newsItem->type && assoc == newsItem->assoc) {
-				newsItem->flags |= 0x1;
+			NewsItem * const newsItem = news_item_get(i);
+			if (type == newsItem->Type && assoc == newsItem->Assoc) {
+				newsItem->Flags |= NEWS_FLAG_HAS_BUTTON;
 				window_invalidate_by_class(WC_RECENT_NEWS);
 			}
 		} else {
@@ -414,12 +413,12 @@ void news_item_disable_news(uint8 type, uint32 assoc)
 	}
 }
 
-void news_item_add_to_queue_custom(rct_news_item *newNewsItem)
+void news_item_add_to_queue_custom(NewsItem *newNewsItem)
 {
-	rct_news_item *newsItem = gNewsItems;
+	NewsItem *newsItem = gNewsItems;
 
 	// Find first open slot
-	while (newsItem->type != NEWS_ITEM_NULL) {
+	while (newsItem->Type != NEWS_ITEM_NULL) {
 		if (newsItem + 1 >= &gNewsItems[10])
 			news_item_close_current();
 		else
@@ -428,5 +427,5 @@ void news_item_add_to_queue_custom(rct_news_item *newNewsItem)
 
 	*newsItem = *newNewsItem;
 	newsItem++;
-	newsItem->type = 0;
+	newsItem->Type = NEWS_ITEM_NULL;
 }

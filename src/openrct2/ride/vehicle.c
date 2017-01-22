@@ -21,6 +21,7 @@
 #include "../game.h"
 #include "../interface/viewport.h"
 #include "../localisation/localisation.h"
+#include "../management/news_item.h"
 #include "../OpenRCT2.h"
 #include "../rct2/hook.h"
 #include "../scenario/scenario.h"
