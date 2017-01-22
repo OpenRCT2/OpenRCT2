@@ -686,7 +686,6 @@ static void input_scroll_continue(rct_window *w, sint32 widgetIndex, sint32 stat
 	case SCROLL_PART_HSCROLLBAR_RIGHT:
 		input_scroll_part_update_hright(w, widgetIndex, scroll_id);
 		break;
-	case SCROLL_PART_HSCROLLBAR_THUMB:
 	case SCROLL_PART_VSCROLLBAR_TOP:
 		input_scroll_part_update_vtop(w, widgetIndex, scroll_id);
 		break;
