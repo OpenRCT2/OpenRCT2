@@ -49,24 +49,41 @@ extern "C"
         return _drawingEngineType;
     }
 
+    bool drawing_engine_requires_restart(sint32 srcEngine, sint32 dstEngine)
+    {
+        // Linux requires a restart. This could be improved in the future by recreating the window,
+        // https://github.com/OpenRCT2/OpenRCT2/issues/2015
+        bool requiresRestart = true;
+#ifdef __WINDOWS__
+        if (dstEngine != DRAWING_ENGINE_OPENGL)
+        {
+            // Windows is apparently able to switch to hardware rendering on the fly although
+            // using the same window in an unaccelerated and accelerated context is unsupported by SDL2
+            requiresRestart = false;
+        }
+#endif
+        return requiresRestart;
+    }
+
     void drawing_engine_init()
     {
         assert(_drawingEngine == nullptr);
 
+        IDrawingEngine * drawingEngine = nullptr;
         _drawingEngineType = gConfigGeneral.drawing_engine;
         switch (_drawingEngineType) {
         case DRAWING_ENGINE_SOFTWARE:
-            _drawingEngine = DrawingEngineFactory::CreateSoftware();
+            drawingEngine = DrawingEngineFactory::CreateSoftware();
             break;
         case DRAWING_ENGINE_SOFTWARE_WITH_HARDWARE_DISPLAY:
-            _drawingEngine = DrawingEngineFactory::CreateSoftwareWithHardwareDisplay();
+            drawingEngine = DrawingEngineFactory::CreateSoftwareWithHardwareDisplay();
             break;
         case DRAWING_ENGINE_OPENGL:
-            _drawingEngine = DrawingEngineFactory::CreateOpenGL();
+            drawingEngine = DrawingEngineFactory::CreateOpenGL();
             break;
         }
 
-        if (_drawingEngine == nullptr)
+        if (drawingEngine == nullptr)
         {
             if (_drawingEngineType == DRAWING_ENGINE_SOFTWARE)
             {
@@ -88,13 +105,14 @@ extern "C"
         {
             try
             {
-                _drawingEngine->Initialise(gWindow);
-                _drawingEngine->SetUncappedFrameRate(gConfigGeneral.uncap_fps == 1);
+                drawingEngine->Initialise(gWindow);
+                drawingEngine->SetUncappedFrameRate(gConfigGeneral.uncap_fps == 1);
+                _drawingEngine = drawingEngine;
             }
             catch (const Exception &ex)
             {
-                delete _drawingEngine;
-                _drawingEngine = nullptr;
+                delete drawingEngine;
+                drawingEngine = nullptr;
                 if (_drawingEngineType == DRAWING_ENGINE_SOFTWARE)
                 {
                     _drawingEngineType = DRAWING_ENGINE_NONE;
@@ -127,12 +145,18 @@ extern "C"
 
     void drawing_engine_set_palette(SDL_Color * colours)
     {
-        _drawingEngine->SetPalette(colours);
+        if (_drawingEngine != nullptr)
+        {
+            _drawingEngine->SetPalette(colours);
+        }
     }
 
     void drawing_engine_draw()
     {
-        _drawingEngine->Draw();
+        if (_drawingEngine != nullptr)
+        {
+            _drawingEngine->Draw();
+        }
     }
 
     void drawing_engine_copy_rect(sint32 x, sint32 y, sint32 width, sint32 height, sint32 dx, sint32 dy)

@@ -581,8 +581,6 @@ void platform_init()
 
 static void platform_create_window()
 {
-	sint32 width, height;
-
 	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
 		log_fatal("SDL_Init %s", SDL_GetError());
 		exit(-1);
@@ -597,16 +595,18 @@ static void platform_create_window()
 	sub_68371D();
 
 	// Get window size
-	width = gConfigGeneral.window_width;
-	height = gConfigGeneral.window_height;
+	sint32 width = gConfigGeneral.window_width;
+	sint32 height = gConfigGeneral.window_height;
 	if (width == -1) width = 640;
 	if (height == -1) height = 480;
 
 	// Create window in window first rather than fullscreen so we have the display the window is on first
-	gWindow = SDL_CreateWindow(
-		"OpenRCT2", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL
-	);
+	uint32 flags = SDL_WINDOW_RESIZABLE;
+	if (gConfigGeneral.drawing_engine == DRAWING_ENGINE_OPENGL) {
+		flags |= SDL_WINDOW_OPENGL;
+	}
 
+	gWindow = SDL_CreateWindow(OPENRCT2_NAME, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, flags);
 	if (!gWindow) {
 		log_fatal("SDL_CreateWindow failed %s", SDL_GetError());
 		exit(-1);
