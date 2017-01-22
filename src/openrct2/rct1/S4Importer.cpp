@@ -381,7 +381,6 @@ private:
                     case OBJECT_TYPE_WALLS:
                     case OBJECT_TYPE_PATHS:
                     case OBJECT_TYPE_PATH_BITS:
-                    {
                         EntryList * entries = GetEntryList(objectType);
 
                         // Check if there are spare entries available
@@ -391,7 +390,6 @@ private:
                             entries->GetOrAddEntry(objectName);
                         }
                         break;
-                    }
                     }
                 }
             }
@@ -849,7 +847,20 @@ private:
 
         dst->sprite_direction = src->sprite_direction;
 
+        // Peep name
         dst->name_string_idx = src->name_string_idx;
+        if (is_user_string_id(src->name_string_idx))
+        {
+            const char * peepName = GetUserString(src->name_string_idx);
+            if (peepName[0] != 0)
+            {
+                rct_string_id peepNameStringId = user_string_allocate(4, peepName);
+                if (peepNameStringId != 0)
+                {
+                    dst->name_string_idx = peepNameStringId;
+                }
+            }
+        }
 
         dst->outside_of_park = src->outside_of_park;
 
