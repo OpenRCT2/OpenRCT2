@@ -45,6 +45,13 @@ void sprite_paint_setup(const uint16 eax, const uint16 ecx) {
 
 	for (rct_sprite* spr = get_sprite(sprite_idx); sprite_idx != SPRITE_INDEX_NULL; sprite_idx = spr->unknown.next_in_quadrant) {
 		spr = get_sprite(sprite_idx);
+
+		// Only paint sprites that are below the clip height.
+		// Here converting from land/path/etc height scale to pixel height scale.
+		// Note: peeps/scenery on slopes will be above the base
+		// height of the slope element, and consequently clipped.
+		if ((gCurrentViewportFlags & VIEWPORT_FLAG_PAINT_CLIP_TO_HEIGHT) && (spr->unknown.z > (gClipHeight * 8) )) continue;
+
 		dpi = unk_140E9A8;
 
 		if (dpi->y + dpi->height <= spr->unknown.sprite_top) continue;

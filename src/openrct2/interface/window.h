@@ -471,6 +471,7 @@ enum {
 	WC_SERVER_START = 128,
 	WC_CUSTOM_CURRENCY_CONFIG = 129,
 	WC_DEBUG_PAINT = 130,
+	WC_VIEW_CLIPPING = 131,
 
 	// Only used for colour schemes
 	WC_STAFF = 220,
@@ -725,6 +726,9 @@ void window_editor_object_selection_open();
 void window_editor_inventions_list_open();
 void window_editor_scenario_options_open();
 void window_editor_objective_options_open();
+
+void window_view_clipping_open();
+void window_view_clipping_close();
 
 void window_guest_list_init_vars_a();
 void window_guest_list_init_vars_b();

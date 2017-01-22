@@ -23,6 +23,10 @@
 #include "../interface/colour.h"
 #include "../drawing/drawing.h"
 
+// Global for paint clipping height.
+extern uint8 gClipHeight;
+
+
 typedef struct attached_paint_struct attached_paint_struct;
 typedef struct paint_struct paint_struct;
 typedef union paint_entry paint_entry;

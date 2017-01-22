@@ -37,6 +37,7 @@
 		C606CCD51DB4DD6C00FE4015 /* VerticalTunnelCall.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C606CCD31DB4DD6C00FE4015 /* VerticalTunnelCall.cpp */; };
 		C606CD261DB5120C00FE4015 /* TestPaint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C606CD231DB5120900FE4015 /* TestPaint.cpp */; };
 		C612A8991D64825300B634CA /* vehicle_data.c in Sources */ = {isa = PBXBuildFile; fileRef = C612A8971D64825300B634CA /* vehicle_data.c */; };
+		C6136C551E21893500F3ED2B /* view_clipping.c in Sources */ = {isa = PBXBuildFile; fileRef = C6136C541E21893500F3ED2B /* view_clipping.c */; };
 		C61FB7241CF86356004CE991 /* NetworkUser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C61FB7221CF86356004CE991 /* NetworkUser.cpp */; };
 		C647C6911E1D0CA000C7FB21 /* AudioMixer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C647C68F1E1D0CA000C7FB21 /* AudioMixer.cpp */; };
 		C649B3D41DF04ED2008AC826 /* format_codes.c in Sources */ = {isa = PBXBuildFile; fileRef = C649B3D31DF04ED2008AC826 /* format_codes.c */; };
@@ -550,6 +551,7 @@
 		C606CD241DB5120900FE4015 /* TestPaint.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = TestPaint.hpp; sourceTree = "<group>"; };
 		C612A8971D64825300B634CA /* vehicle_data.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = vehicle_data.c; sourceTree = "<group>"; };
 		C612A8981D64825300B634CA /* vehicle_data.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = vehicle_data.h; sourceTree = "<group>"; };
+		C6136C541E21893500F3ED2B /* view_clipping.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = view_clipping.c; sourceTree = "<group>"; };
 		C61FB7221CF86356004CE991 /* NetworkUser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NetworkUser.cpp; sourceTree = "<group>"; usesTabs = 0; };
 		C61FB7231CF86356004CE991 /* NetworkUser.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; path = NetworkUser.h; sourceTree = "<group>"; usesTabs = 0; };
 		C647C68F1E1D0CA000C7FB21 /* AudioMixer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AudioMixer.cpp; sourceTree = "<group>"; };
@@ -1955,6 +1957,7 @@
 				D44271D31CC81B3200D84D28 /* track_list.c */,
 				D44271D41CC81B3200D84D28 /* track_manage.c */,
 				D44271D51CC81B3200D84D28 /* track_place.c */,
+				C6136C541E21893500F3ED2B /* view_clipping.c */,
 				D44271D61CC81B3200D84D28 /* viewport.c */,
 				D44271D71CC81B3200D84D28 /* water.c */,
 			);
@@ -2719,6 +2722,7 @@
 				C61FB7241CF86356004CE991 /* NetworkUser.cpp in Sources */,
 				D44272191CC81B3200D84D28 /* colour.c in Sources */,
 				D442724C1CC81B3200D84D28 /* vehicle.c in Sources */,
+				C6136C551E21893500F3ED2B /* view_clipping.c in Sources */,
 				D464FEED1D31A6AA00CBABAC /* ObjectManager.cpp in Sources */,
 				D44272261CC81B3200D84D28 /* currency.c in Sources */,
 				C65A88931E1B1148000368D7 /* FileAudioSource.cpp in Sources */,

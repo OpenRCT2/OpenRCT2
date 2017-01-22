@@ -36,6 +36,7 @@ sint16 gMapSizeUnits;
 sint16 gMapBaseZ;
 bool gTrackDesignSaveMode = false;
 uint8 gTrackDesignSaveRideIndex = 255;
+uint8 gClipHeight = 255;
 
 const rct_xy16 TileDirectionDelta[] = {
 	{-32, 0},
