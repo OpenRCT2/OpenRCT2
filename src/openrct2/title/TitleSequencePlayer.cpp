@@ -39,6 +39,8 @@ extern "C"
 class TitleSequencePlayer final : public ITitleSequencePlayer
 {
 private:
+    static constexpr const char * SFMM_FILENAME = "Six Flags Magic Mountain.SC6";
+
     uint32          _sequenceId = 0;
     TitleSequence * _sequence = nullptr;
     sint32          _position = 0;
@@ -231,7 +233,15 @@ private:
             break;
         case TITLE_SCRIPT_LOADMM:
         {
-            const utf8 * path = get_file_path(PATH_ID_SIXFLAGS_MAGICMOUNTAIN);
+            IScenarioRepository * scenarioRepo = GetScenarioRepository();
+            const scenario_index_entry * entry = scenarioRepo->GetByFilename(SFMM_FILENAME);
+            if (entry == nullptr)
+            {
+                Console::Error::WriteLine("%s not found.", SFMM_FILENAME);
+                return false;
+            }
+
+            const utf8 * path = entry->path;
             if (!LoadParkFromFile(path))
             {
                 Console::Error::WriteLine("Failed to load: \"%s\" for the title sequence.", path);

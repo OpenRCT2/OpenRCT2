@@ -152,7 +152,7 @@ extern "C"
 
         IObjectRepository * objRepo = CreateObjectRepository(OpenRCT2::_env);
         ITrackDesignRepository * tdRepo = CreateTrackDesignRepository(OpenRCT2::_env);
-        CreateScenarioRepository(OpenRCT2::_env);
+        IScenarioRepository * scenarioRepo = CreateScenarioRepository(OpenRCT2::_env);
 
         if (!language_open(gConfigGeneral.language))
         {
@@ -174,6 +174,7 @@ extern "C"
         //      as its not required until the player wants to place a new ride.
         tdRepo->Scan();
 
+        scenarioRepo->Scan();
         TitleSequenceManager::Scan();
 
         if (!gOpenRCT2Headless)
