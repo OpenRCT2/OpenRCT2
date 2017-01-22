@@ -367,6 +367,9 @@ static void window_map_mouseup(rct_window *w, sint32 widgetIndex)
 	case WIDX_MAP_SIZE_SPINNER:
 		window_map_inputsize_map(w);
 		break;
+	case WIDX_MAP_GENERATOR:
+		window_mapgen_open();
+		break;
 	default:
 		if (widgetIndex >= WIDX_PEOPLE_TAB && widgetIndex <= WIDX_RIDES_TAB) {
 			widgetIndex -= WIDX_PEOPLE_TAB;
@@ -375,14 +378,7 @@ static void window_map_mouseup(rct_window *w, sint32 widgetIndex)
 
  			w->selected_tab = widgetIndex;
  			w->list_information_type = 0;
-			break;
-
-	case WIDX_MAP_GENERATOR:
-			window_mapgen_open();
-			break;
  		}
-
- 		break;
  	}
  }
 
