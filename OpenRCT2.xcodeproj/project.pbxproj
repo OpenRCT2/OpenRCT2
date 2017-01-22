@@ -459,6 +459,7 @@
 		D49766891D03BABB002222CD /* rain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D49766871D03BABB002222CD /* rain.cpp */; };
 		D4A8B4B41DB41873007A2F29 /* libpng16.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D4A8B4B31DB41873007A2F29 /* libpng16.dylib */; };
 		D4A8B4B51DB4188D007A2F29 /* libpng16.dylib in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D4A8B4B31DB41873007A2F29 /* libpng16.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		D4B21B6F1E343AF1004982C7 /* lightfx.c in Sources */ = {isa = PBXBuildFile; fileRef = D4B21B6D1E343AF1004982C7 /* lightfx.c */; };
 		D4CA88661D4E64C800060C11 /* version.c in Sources */ = {isa = PBXBuildFile; fileRef = D4CA88651D4E64C800060C11 /* version.c */; };
 		D4EC48E61C2637710024B507 /* g2.dat in Resources */ = {isa = PBXBuildFile; fileRef = D4EC48E31C2637710024B507 /* g2.dat */; };
 		D4EC48E71C2637710024B507 /* language in Resources */ = {isa = PBXBuildFile; fileRef = D4EC48E41C2637710024B507 /* language */; };
@@ -1193,6 +1194,8 @@
 		D497668B1D03BAC8002222CD /* IDrawingEngine.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; path = IDrawingEngine.h; sourceTree = "<group>"; usesTabs = 0; };
 		D497D0781C20FD52002BF46A /* OpenRCT2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OpenRCT2.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D4A8B4B31DB41873007A2F29 /* libpng16.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libpng16.dylib; sourceTree = "<group>"; };
+		D4B21B6D1E343AF1004982C7 /* lightfx.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = lightfx.c; sourceTree = "<group>"; };
+		D4B21B6E1E343AF1004982C7 /* lightfx.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lightfx.h; sourceTree = "<group>"; };
 		D4CA88651D4E64C800060C11 /* version.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = version.c; sourceTree = "<group>"; };
 		D4EC48E31C2637710024B507 /* g2.dat */ = {isa = PBXFileReference; lastKnownFileType = file; name = g2.dat; path = data/g2.dat; sourceTree = SOURCE_ROOT; };
 		D4EC48E41C2637710024B507 /* language */ = {isa = PBXFileReference; lastKnownFileType = folder; name = language; path = data/language; sourceTree = SOURCE_ROOT; };
@@ -1675,6 +1678,8 @@
 				D497668A1D03BAC8002222CD /* IDrawingContext.h */,
 				D497668B1D03BAC8002222CD /* IDrawingEngine.h */,
 				D464FEBF1D31A68800CBABAC /* Image.cpp */,
+				D4B21B6D1E343AF1004982C7 /* lightfx.c */,
+				D4B21B6E1E343AF1004982C7 /* lightfx.h */,
 				D44271061CC81B3200D84D28 /* line.c */,
 				D49766841D03BAA5002222CD /* NewDrawing.cpp */,
 				D49766851D03BAA5002222CD /* NewDrawing.h */,
@@ -2893,6 +2898,7 @@
 				C65A88941E1B1148000368D7 /* MemoryAudioSource.cpp in Sources */,
 				D464FEE61D31A6AA00CBABAC /* EntranceObject.cpp in Sources */,
 				D43407DE1D0E14BE00C2B3D4 /* OpenGLShaderProgram.cpp in Sources */,
+				D4B21B6F1E343AF1004982C7 /* lightfx.c in Sources */,
 				D43407DC1D0E14BE00C2B3D4 /* OpenGLDrawingEngine.cpp in Sources */,
 				D44272761CC81B3200D84D28 /* options.c in Sources */,
 				C686F93D1CDBC3B7009F9BFC /* shop.c in Sources */,
