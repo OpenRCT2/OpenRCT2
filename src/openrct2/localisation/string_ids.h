@@ -3651,6 +3651,9 @@ enum {
 	STR_SET_MONEY = 5999,
 	STR_ENTER_NEW_VALUE = 6000,
 
+	STR_ENABLE_LIGHTING_EFFECTS = 6001,
+	STR_ENABLE_LIGHTING_EFFECTS_TIP = 6002,
+
 	// Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
 	STR_COUNT = 32768
 };

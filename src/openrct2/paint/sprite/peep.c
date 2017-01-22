@@ -14,12 +14,13 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../../world/sprite.h"
+#include "../../config.h"
+#include "../../drawing/lightfx.h"
 #include "../../interface/viewport.h"
 #include "../../paint/sprite/sprite.h"
 #include "../../peep/peep.h"
+#include "../../world/sprite.h"
 #include "../paint.h"
-#include "../../drawing/lightfx.h"
 
 /**
  *
@@ -28,15 +29,15 @@
 void peep_paint(rct_peep * peep, sint32 imageDirection)
 {
 #ifdef __ENABLE_LIGHTFX__
+	if (gConfigGeneral.enable_light_fx) {
+		if (peep->type == PEEP_TYPE_STAFF) {
+			sint16 peep_x, peep_y, peep_z;
 
-	if (peep->type == PEEP_TYPE_STAFF){
-		sint16 peep_x, peep_y, peep_z;
+			peep_x = peep->x;
+			peep_y = peep->y;
+			peep_z = peep->z;
 
-		peep_x = peep->x;
-		peep_y = peep->y;
-		peep_z = peep->z;
-
-		switch (peep->sprite_direction) {
+			switch (peep->sprite_direction) {
 			case 0:
 				peep_x -= 10;
 				break;
@@ -51,11 +52,11 @@ void peep_paint(rct_peep * peep, sint32 imageDirection)
 				break;
 			default:
 				return;
-		};
+			};
 
-		lightfx_add_3d_light(peep->sprite_index, 0x0000 | LIGHTFX_LIGHT_QUALIFIER_SPRITE, peep_x, peep_y, peep_z, LIGHTFX_LIGHT_TYPE_SPOT_1);
+			lightfx_add_3d_light(peep->sprite_index, 0x0000 | LIGHTFX_LIGHT_QUALIFIER_SPRITE, peep_x, peep_y, peep_z, LIGHTFX_LIGHT_TYPE_SPOT_1);
+		}
 	}
-
 #endif
 
 	rct_drawpixelinfo * dpi = unk_140E9A8;

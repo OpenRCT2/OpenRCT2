@@ -21,6 +21,7 @@
 #include "audio/AudioMixer.h"
 #include "config.h"
 #include "drawing/drawing.h"
+#include "drawing/lightfx.h"
 #include "editor.h"
 #include "game.h"
 #include "input.h"
@@ -51,12 +52,6 @@
 #include "world/park.h"
 #include "world/scenery.h"
 #include "world/sprite.h"
-
-#ifdef __ENABLE_LIGHTFX__
-
-#include "drawing/lightfx.h"
-
-#endif
 
 // rct2: 0x0097F67C
 const char * const RCT2FilePaths[PATH_ID_END] = {
@@ -194,13 +189,9 @@ bool rct2_init()
 	window_staff_list_init_vars();
 	load_palette();
 
-
 #ifdef __ENABLE_LIGHTFX__
-
 	lightfx_init();
-
 #endif
-
 
 	log_verbose("initialising game finished");
 	return true;

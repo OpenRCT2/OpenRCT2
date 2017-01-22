@@ -774,20 +774,22 @@ void path_paint(uint8 direction, uint16 height, rct_map_element * map_element)
 	}
 
 #ifdef __ENABLE_LIGHTFX__
-	if (footpath_element_has_path_scenery(map_element) && !(map_element->flags & MAP_ELEMENT_FLAG_BROKEN)) {
-		rct_scenery_entry *sceneryEntry = get_footpath_item_entry(footpath_element_get_path_scenery_index(map_element));
-		if (sceneryEntry->path_bit.flags & PATH_BIT_FLAG_LAMP) {
-			if (!(map_element->properties.path.edges & (1 << 0))) {
-				lightfx_add_3d_light_magic_from_drawing_tile(-16, 0, height + 23, LIGHTFX_LIGHT_TYPE_LANTERN_3);
-			}
-			if (!(map_element->properties.path.edges & (1 << 1))) {
-				lightfx_add_3d_light_magic_from_drawing_tile(0, 16, height + 23, LIGHTFX_LIGHT_TYPE_LANTERN_3);
-			}
-			if (!(map_element->properties.path.edges & (1 << 2))) {
-				lightfx_add_3d_light_magic_from_drawing_tile(16, 0, height + 23, LIGHTFX_LIGHT_TYPE_LANTERN_3);
-			}
-			if (!(map_element->properties.path.edges & (1 << 3))) {
-				lightfx_add_3d_light_magic_from_drawing_tile(0, -16, height + 23, LIGHTFX_LIGHT_TYPE_LANTERN_3);
+	if (gConfigGeneral.enable_light_fx) {
+		if (footpath_element_has_path_scenery(map_element) && !(map_element->flags & MAP_ELEMENT_FLAG_BROKEN)) {
+			rct_scenery_entry *sceneryEntry = get_footpath_item_entry(footpath_element_get_path_scenery_index(map_element));
+			if (sceneryEntry->path_bit.flags & PATH_BIT_FLAG_LAMP) {
+				if (!(map_element->properties.path.edges & (1 << 0))) {
+					lightfx_add_3d_light_magic_from_drawing_tile(-16, 0, height + 23, LIGHTFX_LIGHT_TYPE_LANTERN_3);
+				}
+				if (!(map_element->properties.path.edges & (1 << 1))) {
+					lightfx_add_3d_light_magic_from_drawing_tile(0, 16, height + 23, LIGHTFX_LIGHT_TYPE_LANTERN_3);
+				}
+				if (!(map_element->properties.path.edges & (1 << 2))) {
+					lightfx_add_3d_light_magic_from_drawing_tile(16, 0, height + 23, LIGHTFX_LIGHT_TYPE_LANTERN_3);
+				}
+				if (!(map_element->properties.path.edges & (1 << 3))) {
+					lightfx_add_3d_light_magic_from_drawing_tile(0, -16, height + 23, LIGHTFX_LIGHT_TYPE_LANTERN_3);
+				}
 			}
 		}
 	}
