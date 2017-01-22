@@ -18,6 +18,7 @@
 #include <SDL.h>
 #include "../core/Console.hpp"
 #include "../core/Exception.hpp"
+#include "../core/Guard.hpp"
 #include "../core/Math.hpp"
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
@@ -41,6 +42,8 @@ class TitleSequencePlayer final : public ITitleSequencePlayer
 private:
     static constexpr const char * SFMM_FILENAME = "Six Flags Magic Mountain.SC6";
 
+    IScenarioRepository * _scenarioRepository = nullptr;
+
     uint32          _sequenceId = 0;
     TitleSequence * _sequence = nullptr;
     sint32          _position = 0;
@@ -51,6 +54,13 @@ private:
     rct_xy32        _viewCentreLocation = { 0 };
 
 public:
+    TitleSequencePlayer(IScenarioRepository * scenarioRepository)
+    {
+        Guard::ArgumentNotNull(scenarioRepository);
+
+        _scenarioRepository = scenarioRepository;
+    }
+
     ~TitleSequencePlayer() override
     {
         Eject();
@@ -233,8 +243,7 @@ private:
             break;
         case TITLE_SCRIPT_LOADMM:
         {
-            IScenarioRepository * scenarioRepo = GetScenarioRepository();
-            const scenario_index_entry * entry = scenarioRepo->GetByFilename(SFMM_FILENAME);
+            const scenario_index_entry * entry = _scenarioRepository->GetByFilename(SFMM_FILENAME);
             if (entry == nullptr)
             {
                 Console::Error::WriteLine("%s not found.", SFMM_FILENAME);
@@ -299,11 +308,10 @@ private:
             }
 
             const utf8 * path = nullptr;
-            IScenarioRepository * scenarioRepo = GetScenarioRepository();
-            size_t numScenarios =  scenarioRepo->GetCount();
+            size_t numScenarios =  _scenarioRepository->GetCount();
             for (size_t i = 0; i < numScenarios; i++)
             {
-                const scenario_index_entry * scenario = scenarioRepo->GetByIndex(i);
+                const scenario_index_entry * scenario = _scenarioRepository->GetByIndex(i);
                 if (scenario->source_index == sourceDesc.index)
                 {
                     path = scenario->path;
@@ -442,9 +450,9 @@ private:
     }
 };
 
-ITitleSequencePlayer * CreateTitleSequencePlayer()
+ITitleSequencePlayer * CreateTitleSequencePlayer(IScenarioRepository * scenarioRepository)
 {
-    return new TitleSequencePlayer();
+    return new TitleSequencePlayer(scenarioRepository);
 }
 
 extern "C"

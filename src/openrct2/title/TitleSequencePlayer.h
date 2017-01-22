@@ -20,6 +20,8 @@
 
 #ifdef __cplusplus
 
+interface IScenarioRepository;
+
 interface ITitleSequencePlayer
 {
     virtual ~ITitleSequencePlayer() = default;
@@ -33,7 +35,7 @@ interface ITitleSequencePlayer
     virtual void Eject() abstract;
 };
 
-ITitleSequencePlayer * CreateTitleSequencePlayer();
+ITitleSequencePlayer * CreateTitleSequencePlayer(IScenarioRepository * scenarioRepository);
 
 #else
 
