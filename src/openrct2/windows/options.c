@@ -1222,16 +1222,15 @@ static void window_options_dropdown(rct_window *w, sint32 widgetIndex, sint32 dr
 			break;
 		case WIDX_DRAWING_ENGINE_DROPDOWN:
 			if (dropdownIndex != gConfigGeneral.drawing_engine) {
-				gConfigGeneral.drawing_engine = (uint8)dropdownIndex;
-#ifdef __WINDOWS__
-				// Windows is apparently able to switch to hardware rendering on the fly although
-				// using the same window in an unaccelerated and accelerated context is unsupported by SDL2
-				platform_refresh_video();
-#else
-				// Linux requires a restart. This could be improved in the future by recreating the window,
-				// https://github.com/OpenRCT2/OpenRCT2/issues/2015
-				window_error_open(STR_RESTART_REQUIRED, STR_NONE);
-#endif
+				sint32 srcEngine = drawing_engine_get_type();
+				sint32 dstEngine = dropdownIndex;
+
+				gConfigGeneral.drawing_engine = (uint8)dstEngine;
+				if (drawing_engine_requires_restart(srcEngine, dstEngine)) {
+					window_error_open(STR_RESTART_REQUIRED, STR_NONE);
+				} else {
+					platform_refresh_video();
+				}
 				config_save_default();
 				window_invalidate(w);
 			}
