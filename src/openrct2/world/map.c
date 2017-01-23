@@ -330,6 +330,8 @@ rct_map_element* map_get_path_element_at(sint32 x, sint32 y, sint32 z){
 
 	// Find the path element at known z
 	do {
+		if (mapElement->flags & MAP_ELEMENT_FLAG_GHOST)
+			continue;
 		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_PATH)
 			continue;
 		if (mapElement->base_height != z)

@@ -5399,7 +5399,7 @@ static sint32 peep_update_walking_find_bench(rct_peep* peep){
 	rct_map_element* map_element = map_get_first_element_at(peep->next_x / 32, peep->next_y / 32);
 
 	for (;; map_element++){
-		if (!(map_element->flags & MAP_ELEMENT_FLAG_GHOST) && (map_element_get_type(map_element) == MAP_ELEMENT_TYPE_PATH)) {
+		if (map_element_get_type(map_element) == MAP_ELEMENT_TYPE_PATH) {
 			if (peep->next_z == map_element->base_height)break;
 		}
 		if (map_element_is_last_for_tile(map_element)){
@@ -10109,7 +10109,7 @@ static sint32 guest_path_finding(rct_peep* peep)
 	z = peep->next_z;
 
 	rct_map_element *mapElement = map_get_path_element_at(x / 32, y / 32, z);
-	if (mapElement == NULL || (mapElement->flags & MAP_ELEMENT_FLAG_GHOST)) {
+	if (mapElement == NULL) {
 		return 1;
 	}
 
@@ -10420,7 +10420,7 @@ static sint32 sub_693C9E(rct_peep *peep)
 			continue;
 		if (top_z < mapElement->base_height)
 			continue;
-		if ((mapElement->flags & MAP_ELEMENT_FLAG_GHOST))
+		if (mapElement->flags & MAP_ELEMENT_FLAG_GHOST)
 			continue;
 
 		if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_PATH){
