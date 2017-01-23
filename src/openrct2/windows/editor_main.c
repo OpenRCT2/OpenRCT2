@@ -63,13 +63,11 @@ static rct_widget window_editor_main_widgets[] = {
 * Creates the main editor window that holds the main viewport.
 *  rct2: 0x0066EF38
 */
-void window_editor_main_open()
+rct_window * window_editor_main_open()
 {
-	rct_window* window;
-
 	window_editor_main_widgets[0].right = gScreenWidth;
 	window_editor_main_widgets[0].bottom = gScreenHeight;
-	window = window_create(0, 0, window_editor_main_widgets[0].right, window_editor_main_widgets[0].bottom,
+	rct_window *window = window_create(0, 0, window_editor_main_widgets[0].right, window_editor_main_widgets[0].bottom,
 		&window_editor_main_events, WC_MAIN_WINDOW, WF_STICK_TO_BACK);
 	window->widgets = window_editor_main_widgets;
 
@@ -84,6 +82,8 @@ void window_editor_main_open()
 
 	window_top_toolbar_open();
 	window_editor_bottom_toolbar_open();
+
+	return window_get_main();
 }
 
 /**

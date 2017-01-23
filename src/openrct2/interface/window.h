@@ -721,7 +721,7 @@ rct_window *window_loadsave_open(sint32 type, char *defaultName);
 rct_window *window_changelog_open();
 void window_debug_paint_open();
 
-void window_editor_main_open();
+rct_window * window_editor_main_open();
 void window_editor_bottom_toolbar_open();
 void window_editor_object_selection_open();
 void window_editor_inventions_list_open();

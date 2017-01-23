@@ -82,8 +82,6 @@ static void editor_clear_map_for_editing(bool fromSave);
  */
 void editor_load()
 {
-	rct_window *mainWindow;
-
 	audio_stop_all_music_and_sounds();
 	object_manager_unload_all_objects();
 	object_list_load();
@@ -93,12 +91,10 @@ void editor_load()
 	gParkFlags |= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
 	gS6Info.category = SCENARIO_CATEGORY_OTHER;
 	viewport_init_all();
-	window_editor_main_open();
-	mainWindow = window_get_main();
+	rct_window *mainWindow = window_editor_main_open();
 	window_set_location(mainWindow, 2400, 2400, 112);
 	load_palette();
 	gfx_invalidate_screen();
-	window_tile_inspector_clear_clipboard();
 	gScreenAge = 0;
 
 	safe_strcpy(gScenarioName, language_get_string(STR_MY_NEW_SCENARIO), 64);
@@ -165,12 +161,10 @@ void trackdesigner_load()
 	set_all_land_owned();
 	gS6Info.editor_step = EDITOR_STEP_OBJECT_SELECTION;
 	viewport_init_all();
-	window_editor_main_open();
-	rct_window * mainWindow = window_get_main();
+	rct_window * mainWindow = window_editor_main_open();
 	window_set_location(mainWindow, 2400, 2400, 112);
 	load_palette();
 	gfx_invalidate_screen();
-	window_tile_inspector_clear_clipboard();
 }
 
 /**
@@ -189,12 +183,10 @@ void trackmanager_load()
 	set_all_land_owned();
 	gS6Info.editor_step = EDITOR_STEP_OBJECT_SELECTION;
 	viewport_init_all();
-	window_editor_main_open();
-	rct_window * mainWindow = window_get_main();
+	rct_window *mainWindow = window_editor_main_open();
 	window_set_location(mainWindow, 2400, 2400, 112);
 	load_palette();
 	gfx_invalidate_screen();
-	window_tile_inspector_clear_clipboard();
 }
 
 /**

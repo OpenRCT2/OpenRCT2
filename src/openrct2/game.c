@@ -1184,6 +1184,7 @@ void game_init_all(sint32 mapSize)
 	window_guest_list_init_vars_b();
 	window_staff_list_init_vars();
 	scenery_set_default_placement_configuration();
+	window_tile_inspector_clear_clipboard();
 }
 
 GAME_COMMAND_POINTER* new_game_command_table[GAME_COMMAND_COUNT] = {
