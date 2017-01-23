@@ -694,23 +694,16 @@ static void window_tile_inspector_copy_element(rct_window *w)
 static void window_tile_inspector_paste_element(rct_window *w)
 {
 	// Construct the data to send using the surface's properties
-	sint32 bytes[2] = { 0 };
-	bytes[0] |= tileInspectorCopiedElement.type << 24;
-	bytes[0] |= tileInspectorCopiedElement.flags << 16;
-	bytes[0] |= tileInspectorCopiedElement.base_height << 8;
-	bytes[0] |= tileInspectorCopiedElement.clearance_height;
-	bytes[1] |= tileInspectorCopiedElement.properties.surface.slope << 24;
-	bytes[1] |= tileInspectorCopiedElement.properties.surface.terrain << 16;
-	bytes[1] |= tileInspectorCopiedElement.properties.surface.grass_length << 8;
-	bytes[1] |= tileInspectorCopiedElement.properties.surface.ownership;
+	sint32 data[2];
+	memcpy(&data[0], &tileInspectorCopiedElement, 8);
 
 	game_do_command(
 		TILE_INSPECTOR_ANY_PASTE,
 		GAME_COMMAND_FLAG_APPLY,
 		windowTileInspectorTileX | (windowTileInspectorTileY << 8),
-		bytes[0],
+		data[0],
 		GAME_COMMAND_MODIFY_TILE,
-		bytes[1],
+		data[1],
 		0
 	);
 }

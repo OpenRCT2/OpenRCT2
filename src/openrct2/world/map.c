@@ -5642,14 +5642,8 @@ void game_command_modify_tile(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx
 	case TILE_INSPECTOR_ANY_PASTE:
 	{
 		rct_map_element element_to_paste;
-		element_to_paste.type = *edx >> 24;
-		element_to_paste.flags = *edx >> 16;
-		element_to_paste.base_height = *edx >> 8;
-		element_to_paste.clearance_height = *edx;
-		element_to_paste.properties.surface.slope = *edi >> 24;
-		element_to_paste.properties.surface.terrain = *edi >> 16;
-		element_to_paste.properties.surface.grass_length = *edi >> 8;
-		element_to_paste.properties.surface.ownership = *edi;
+		sint32 data[] = { *edx, *edi };
+		memcpy(&element_to_paste, data, 8);
 		*ebx = tile_inspector_paste_element_at(x, y, element_to_paste, flags);
 		return;
 	}
