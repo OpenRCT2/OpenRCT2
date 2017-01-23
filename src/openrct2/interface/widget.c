@@ -941,23 +941,24 @@ void widget_scroll_get_part(rct_window *w, rct_widget *widget, sint32 x, sint32 
 
 	if ((w->scrolls[*scroll_id].flags & HSCROLLBAR_VISIBLE) && y >= (w->y + widget->bottom - 11))
 	{
-		//horizon scrollbar
+		// horizontal scrollbar
 		sint32 rightOffset = 0;
 		sint32 iteratorLeft = widget->left + w->x + 10;
 		sint32 iteratorRight = widget->right + w->x - 10;
-		if (w->scrolls[*scroll_id].flags & VSCROLLBAR_VISIBLE)
+		if (!(w->scrolls[*scroll_id].flags & VSCROLLBAR_VISIBLE))
 		{
 			rightOffset = 11;
 		}
+
 		if (x <= iteratorLeft)
 		{
 			*output_scroll_area = SCROLL_PART_HSCROLLBAR_LEFT;
 		}
-		else if (x >= (iteratorRight -= rightOffset))
+		else if (x >= iteratorRight + rightOffset)
 		{
 			*output_scroll_area = SCROLL_PART_NONE;
 		}
-		else if (x >= iteratorRight)
+		else if (x >= iteratorRight + rightOffset - 10)
 		{
 			*output_scroll_area = SCROLL_PART_HSCROLLBAR_RIGHT;
 		}
@@ -976,7 +977,7 @@ void widget_scroll_get_part(rct_window *w, rct_widget *widget, sint32 x, sint32 
 	}
 	else if ((w->scrolls[*scroll_id].flags & VSCROLLBAR_VISIBLE) && (x >= w->x + widget->right - 11))
 	{
-		//vertical scrollbar
+		// vertical scrollbar
 		sint32 bottomOffset = 0;
 		sint32 iteratorTop = widget->top + w->y + 10;
 		sint32 iteratorBottom = widget->bottom + w->y;
@@ -984,6 +985,7 @@ void widget_scroll_get_part(rct_window *w, rct_widget *widget, sint32 x, sint32 
 		{
 			bottomOffset = 11;
 		}
+
 		if (y <= iteratorTop)
 		{
 			*output_scroll_area = SCROLL_PART_VSCROLLBAR_TOP;
@@ -992,7 +994,7 @@ void widget_scroll_get_part(rct_window *w, rct_widget *widget, sint32 x, sint32 
 		{
 			*output_scroll_area = SCROLL_PART_NONE;
 		}
-		else if (y >= (iteratorBottom - 10))
+		else if (y >= (iteratorBottom - bottomOffset - 10))
 		{
 			*output_scroll_area = SCROLL_PART_VSCROLLBAR_BOTTOM;
 		}
