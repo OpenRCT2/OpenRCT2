@@ -114,6 +114,11 @@ sint32 tile_inspector_insert_corrupt_at(sint32 x, sint32 y, sint16 element_index
 	return 0;
 }
 
+/**
+* Forcefully removes an element for a given tile
+* @param x, y: The coordinates of the tile
+* @param element_index: The nth element on this tile
+*/
 sint32 tile_inspector_remove_element_at(sint32 x, sint32 y, sint16 element_index, sint32 flags)
 {
 	if (flags & GAME_COMMAND_FLAG_APPLY)
