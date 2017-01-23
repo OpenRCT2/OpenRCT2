@@ -90,7 +90,7 @@ sint32 tile_inspector_insert_corrupt_at(sint32 x, sint32 y, sint16 element_index
 
 		// Update the tile inspector's list for everyone who has the tile selected
 		rct_window *const tile_inspector_window = window_find_by_class(WC_TILE_INSPECTOR);
-		if (tile_inspector_window != NULL)
+		if (tile_inspector_window != NULL && (uint32)x == windowTileInspectorTileX && (uint32)y == windowTileInspectorTileY)
 		{
 			windowTileInspectorElementCount++;
 
@@ -121,13 +121,14 @@ sint32 tile_inspector_remove_element_at(sint32 x, sint32 y, sint16 element_index
 		// Forcefully the element
 		rct_map_element *const mapElement = map_get_first_element_at(x, y) + element_index;
 		map_element_remove(mapElement);
-		windowTileInspectorElementCount--;
 		map_invalidate_tile_full(x << 5, y << 5);
 
 		// Update the window
 		rct_window *const tile_inspector_window = window_find_by_class(WC_TILE_INSPECTOR);
-		if (tile_inspector_window != NULL)
+		if (tile_inspector_window != NULL && (uint32)x == windowTileInspectorTileX && (uint32)y == windowTileInspectorTileY)
 		{
+			windowTileInspectorElementCount--;
+
 			if (tile_inspector_window->selected_list_item > element_index)
 			{
 				tile_inspector_window->selected_list_item--;

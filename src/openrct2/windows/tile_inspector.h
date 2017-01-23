@@ -33,6 +33,8 @@ typedef enum tile_inspector_page
 	PAGE_CORRUPT
 } tile_inspector_page;
 
+extern uint32 windowTileInspectorTileX;
+extern uint32 windowTileInspectorTileY;
 extern sint32 windowTileInspectorElementCount;
 
 void window_tile_inspector_set_page(rct_window *w, const tile_inspector_page page);

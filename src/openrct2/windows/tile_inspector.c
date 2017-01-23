@@ -442,15 +442,15 @@ static struct {
 	{ COR_GBDT, COR_GBDB, COR_GBPT, COR_GBPB, STR_TILE_INSPECTOR_GROUPBOX_CORRUPT_INFO }
 };
 
+uint32 windowTileInspectorTileX;
+uint32 windowTileInspectorTileY;
+sint32 windowTileInspectorElementCount = 0;
 static sint16 windowTileInspectorHighlightedIndex = -1;
-static uint32 windowTileInspectorTileX;
-static uint32 windowTileInspectorTileY;
 static bool windowTileInspectorTileSelected = false;
 static sint32 windowTileInspectorToolMouseX = 0;
 static sint32 windowTileInspectorToolMouseY = 0;
 static sint32 windowTileInspectorToolMapX = 0;
 static sint32 windowTileInspectorToolMapY = 0;
-sint32 windowTileInspectorElementCount = 0;
 static bool windowTileInspectorApplyToAll = false;
 static bool windowTileInspectorElementCopied = false;
 static rct_map_element tileInspectorCopiedElement;
@@ -459,7 +459,7 @@ static rct_map_element* window_tile_inspector_get_selected_element(rct_window *w
 static void window_tile_inspector_load_tile(rct_window* w);
 static void window_tile_inspector_insert_corrupt_element(sint32 element_index);
 static void window_tile_inspector_swap_elements(sint16 first, sint16 second);
-static void window_tile_inspector_remove_element(sint32 index);
+static void window_tile_inspector_remove_element(sint32 element_index);
 static void window_tile_inspector_rotate_element(sint32 index);
 static void window_tile_inspector_sort_elements(rct_window *w);
 static void window_tile_inspector_copy_element(rct_window *w);
@@ -621,13 +621,14 @@ static void window_tile_inspector_insert_corrupt_element(sint32 element_index)
 	);
 }
 
-static void window_tile_inspector_remove_element(sint32 index)
+static void window_tile_inspector_remove_element(sint32 element_index)
 {
+	assert(element_index < windowTileInspectorElementCount);
 	game_do_command(
 		TILE_INSPECTOR_ELEMENT_ANY,
 		GAME_COMMAND_FLAG_APPLY,
 		windowTileInspectorTileX | (windowTileInspectorTileY << 8),
-		index,
+		element_index,
 		GAME_COMMAND_MODIFY_TILE,
 		0,
 		0
