@@ -17,6 +17,7 @@
 #include "../core/Console.hpp"
 #include "../network/network.h"
 #include "../OpenRCT2.h"
+#include "../scenario/ScenarioRepository.h"
 #include "TitleScreen.h"
 #include "TitleSequence.h"
 #include "TitleSequenceManager.h"
@@ -59,7 +60,8 @@ static void TitleInitialise()
 {
     if (_sequencePlayer == nullptr)
     {
-        _sequencePlayer = CreateTitleSequencePlayer();
+        IScenarioRepository * scenarioRepository = GetScenarioRepository();
+        _sequencePlayer = CreateTitleSequencePlayer(scenarioRepository);
     }
     size_t seqId = title_sequence_manager_get_index_for_config_id(gConfigInterface.current_title_sequence_preset);
     if (seqId == SIZE_MAX)
