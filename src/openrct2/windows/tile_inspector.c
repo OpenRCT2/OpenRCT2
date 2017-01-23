@@ -457,7 +457,7 @@ static rct_map_element tileInspectorCopiedElement;
 
 static rct_map_element* window_tile_inspector_get_selected_element(rct_window *w);
 static void window_tile_inspector_load_tile(rct_window* w);
-static void window_tile_inspector_insert_corrupt_element(rct_window *w);
+static void window_tile_inspector_insert_corrupt_element(sint32 element_index);
 static void window_tile_inspector_swap_elements(sint16 first, sint16 second);
 static void window_tile_inspector_remove_element(sint32 index);
 static void window_tile_inspector_rotate_element(sint32 index);
@@ -607,13 +607,14 @@ static void window_tile_inspector_load_tile(rct_window* w)
 	window_invalidate(w);
 }
 
-static void window_tile_inspector_insert_corrupt_element(rct_window *w)
+static void window_tile_inspector_insert_corrupt_element(sint32 element_index)
 {
+	assert(element_index < windowTileInspectorElementCount);
 	game_do_command(
 		TILE_INSPECTOR_ELEMENT_CORRUPT,
 		GAME_COMMAND_FLAG_APPLY,
 		windowTileInspectorTileX | (windowTileInspectorTileY << 8),
-		w->selected_list_item,
+		element_index,
 		GAME_COMMAND_MODIFY_TILE,
 		0,
 		0
@@ -622,11 +623,15 @@ static void window_tile_inspector_insert_corrupt_element(rct_window *w)
 
 static void window_tile_inspector_remove_element(sint32 index)
 {
-	assert(index < windowTileInspectorElementCount);
-	rct_map_element *const mapElement = map_get_first_element_at(windowTileInspectorTileX, windowTileInspectorTileY) + index;
-	map_element_remove(mapElement);
-	windowTileInspectorElementCount--;
-	map_invalidate_tile_full(windowTileInspectorTileX << 5, windowTileInspectorTileY << 5);
+	game_do_command(
+		TILE_INSPECTOR_ELEMENT_ANY,
+		GAME_COMMAND_FLAG_APPLY,
+		windowTileInspectorTileX | (windowTileInspectorTileY << 8),
+		index,
+		GAME_COMMAND_MODIFY_TILE,
+		0,
+		0
+	);
 }
 
 static void window_tile_inspector_rotate_element(sint32 index)
@@ -1028,14 +1033,10 @@ static void window_tile_inspector_mouseup(rct_window *w, sint32 widgetIndex)
 		window_tile_inspector_auto_set_buttons(w);
 		break;
 	case WIDX_BUTTON_CORRUPT:
-		window_tile_inspector_insert_corrupt_element(w);
+		window_tile_inspector_insert_corrupt_element(w->selected_list_item);
 		break;
 	case WIDX_BUTTON_REMOVE:
 		window_tile_inspector_remove_element(w->selected_list_item);
-		w->selected_list_item = -1;
-		window_tile_inspector_set_page(w, PAGE_DEFAULT);
-		window_tile_inspector_auto_set_buttons(w);
-		window_invalidate(w);
 		break;
 	case WIDX_BUTTON_ROTATE:
 		window_tile_inspector_rotate_element(w->selected_list_item);

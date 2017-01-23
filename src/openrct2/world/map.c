@@ -5607,11 +5607,19 @@ void game_command_set_sign_style(sint32* eax, sint32* ebx, sint32* ecx, sint32* 
 
 void game_command_modify_tile(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp)
 {
-	sint32 flags = *ebx;
+	const sint32 flags = *ebx;
+	const sint32 x = *ecx & 0xFF;
+	const sint32 y = (*ecx >> 8) & 0xFF;
 	const tile_inspector_element_type action_type = *eax;
+
 	switch (action_type)
 	{
 	case TILE_INSPECTOR_ELEMENT_ANY:
+	{
+		const sint16 index = *edx;
+		*ebx = tile_inspector_remove_element_at(x, y, index, flags);
+		return;
+	}
 	case TILE_INSPECTOR_ELEMENT_SURFACE:
 	case TILE_INSPECTOR_ELEMENT_PATH:
 	case TILE_INSPECTOR_ELEMENT_TRACK:
@@ -5623,8 +5631,6 @@ void game_command_modify_tile(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx
 		return;
 	case TILE_INSPECTOR_ELEMENT_CORRUPT:
 	{
-		const sint32 x = *ecx & 0xFF;
-		const sint32 y = (*ecx >> 8) & 0xFF;
 		const sint16 index = *edx;
 		*ebx = tile_inspector_insert_corrupt_at(x, y, index, flags);
 		return;

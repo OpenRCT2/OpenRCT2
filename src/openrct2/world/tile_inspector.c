@@ -89,7 +89,7 @@ sint32 tile_inspector_insert_corrupt_at(sint32 x, sint32 y, sint16 element_index
 		map_invalidate_tile_full(x << 5, y << 5);
 
 		// Update the tile inspector's list for everyone who has the tile selected
-		rct_window *tile_inspector_window = window_find_by_class(WC_TILE_INSPECTOR);
+		rct_window *const tile_inspector_window = window_find_by_class(WC_TILE_INSPECTOR);
 		if (tile_inspector_window != NULL)
 		{
 			windowTileInspectorElementCount++;
@@ -111,5 +111,37 @@ sint32 tile_inspector_insert_corrupt_at(sint32 x, sint32 y, sint16 element_index
 	}
 
 	// Nothing went wrong
+	return 0;
+}
+
+sint32 tile_inspector_remove_element_at(sint32 x, sint32 y, sint16 element_index, sint32 flags)
+{
+	if (flags & GAME_COMMAND_FLAG_APPLY)
+	{
+		// Forcefully the element
+		rct_map_element *const mapElement = map_get_first_element_at(x, y) + element_index;
+		map_element_remove(mapElement);
+		windowTileInspectorElementCount--;
+		map_invalidate_tile_full(x << 5, y << 5);
+
+		// Update the window
+		rct_window *const tile_inspector_window = window_find_by_class(WC_TILE_INSPECTOR);
+		if (tile_inspector_window != NULL)
+		{
+			if (tile_inspector_window->selected_list_item > element_index)
+			{
+				tile_inspector_window->selected_list_item--;
+			}
+			else if (tile_inspector_window->selected_list_item == element_index)
+			{
+				tile_inspector_window->selected_list_item = -1;
+				window_tile_inspector_set_page(tile_inspector_window, PAGE_DEFAULT);
+			}
+
+			window_tile_inspector_auto_set_buttons(tile_inspector_window);
+			window_invalidate(tile_inspector_window);
+		}
+	}
+
 	return 0;
 }

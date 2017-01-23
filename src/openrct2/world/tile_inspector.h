@@ -32,3 +32,4 @@ typedef enum {
 } tile_inspector_element_type;
 
 sint32 tile_inspector_insert_corrupt_at(sint32 x, sint32 y, sint16 element_index, sint32 flags);
+sint32 tile_inspector_remove_element_at(sint32 x, sint32 y, sint16 element_index, sint32 flags);
