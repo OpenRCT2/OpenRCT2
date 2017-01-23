@@ -425,8 +425,7 @@ private:
         if (w != nullptr)
         {
             sint32 z = map_element_height(x, y);
-            window_scroll_to_location(w, x, y, z);
-            w->flags &= ~WF_SCROLLING_TO_LOCATION;
+            window_set_location(w, x, y, z);
             viewport_update_position(w);
         }
 

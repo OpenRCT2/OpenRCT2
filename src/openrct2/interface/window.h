@@ -596,6 +596,7 @@ void window_push_others_below(rct_window *w1);
 
 rct_window *window_get_main();
 
+void window_set_location(rct_window *w, sint32 x, sint32 y, sint32 z);
 void window_scroll_to_viewport(rct_window *w);
 void window_scroll_to_location(rct_window *w, sint32 x, sint32 y, sint32 z);
 void window_rotate_camera(rct_window *w, sint32 direction);

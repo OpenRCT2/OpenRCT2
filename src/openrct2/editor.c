@@ -95,8 +95,7 @@ void editor_load()
 	viewport_init_all();
 	window_editor_main_open();
 	mainWindow = window_get_main();
-	window_scroll_to_location(mainWindow, 2400, 2400, 112);
-	mainWindow->flags &= ~WF_SCROLLING_TO_LOCATION;
+	window_set_location(mainWindow, 2400, 2400, 112);
 	load_palette();
 	gfx_invalidate_screen();
 	window_tile_inspector_clear_clipboard();
@@ -168,8 +167,7 @@ void trackdesigner_load()
 	viewport_init_all();
 	window_editor_main_open();
 	rct_window * mainWindow = window_get_main();
-	window_scroll_to_location(mainWindow, 2400, 2400, 112);
-	mainWindow->flags &= ~WF_SCROLLING_TO_LOCATION;
+	window_set_location(mainWindow, 2400, 2400, 112);
 	load_palette();
 	gfx_invalidate_screen();
 	window_tile_inspector_clear_clipboard();
@@ -193,8 +191,7 @@ void trackmanager_load()
 	viewport_init_all();
 	window_editor_main_open();
 	rct_window * mainWindow = window_get_main();
-	window_scroll_to_location(mainWindow, 2400, 2400, 112);
-	mainWindow->flags &= ~WF_SCROLLING_TO_LOCATION;
+	window_set_location(mainWindow, 2400, 2400, 112);
 	load_palette();
 	gfx_invalidate_screen();
 	window_tile_inspector_clear_clipboard();

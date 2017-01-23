@@ -1312,6 +1312,12 @@ void window_scroll_to_viewport(rct_window *w)
 		window_scroll_to_location(mainWindow, x, y, z);
 }
 
+void window_set_location(rct_window *w, sint32 x, sint32 y, sint32 z)
+{
+	window_scroll_to_location(w, x, y, z);
+	w->flags &= ~WF_SCROLLING_TO_LOCATION;
+}
+
 /**
 *
 *  rct2: 0x006E7C9C
