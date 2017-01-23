@@ -122,25 +122,9 @@ extern "C"
 #ifndef DISABLE_NETWORK
         network_close();
 #endif
-        reset_park_entrances();
-        user_string_clear_all();
-        reset_sprite_list();
-        ride_init_all();
-        window_guest_list_init_vars_a();
-        staff_reset_modes();
-        map_init(150);
-        park_init();
-        date_reset();
-        climate_reset(CLIMATE_COOL_AND_WET);
-        scenery_set_default_placement_configuration();
-        window_new_ride_init_vars();
-        window_guest_list_init_vars_b();
-        window_staff_list_init_vars();
-        map_update_tile_pointers();
-        reset_sprite_spatial_index();
         audio_stop_all_music_and_sounds();
+        game_init_all(150);
         viewport_init_all();
-        news_item_init_queue();
         window_main_open();
         title_create_windows();
         TitleInitialise();

@@ -879,8 +879,7 @@ static sint32 cc_set(const utf8 **argv, sint32 argc)
 				sint32 x = (sint16)(int_val[0] * 32 + 16);
 				sint32 y = (sint16)(int_val[1] * 32 + 16);
 				sint32 z = map_element_height(x, y);
-				window_scroll_to_location(w, x, y, z);
-				w->flags &= ~WF_SCROLLING_TO_LOCATION;
+				window_set_location(w, x, y, z);
 				viewport_update_position(w);
 				console_execute_silent("get location");
 			}

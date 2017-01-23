@@ -184,5 +184,6 @@ void game_convert_strings_to_utf8();
 void game_convert_strings_to_rct2(rct_s6_data *s6);
 void game_fix_save_vars();
 bool game_load_save_or_scenario(const utf8 * path);
+void game_init_all(sint32 mapSize);
 
 #endif

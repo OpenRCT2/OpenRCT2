@@ -43,4 +43,6 @@ private:
     const utf8 * _s6Path = nullptr;
     rct_s6_data  _s6;
     uint8        _gameVersion = 0;
+
+    void Initialise();
 };

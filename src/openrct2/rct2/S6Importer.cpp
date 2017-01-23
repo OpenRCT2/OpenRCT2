@@ -161,6 +161,8 @@ void S6Importer::LoadScenario(SDL_RWops *rw)
 
 void S6Importer::Import()
 {
+    Initialise();
+
     // _s6.header
     gS6Info = _s6.info;
 
@@ -267,7 +269,6 @@ void S6Importer::Import()
     memcpy(gPeepWarningThrottle, _s6.peep_warning_throttle, sizeof(_s6.peep_warning_throttle));
 
     // Awards
-    award_reset();
     for (sint32 i = 0; i < RCT12_MAX_AWARDS; i++)
     {
         rct12_award * src = &_s6.awards[i];
@@ -387,6 +388,11 @@ void S6Importer::Import()
     {
         game_fix_save_vars();
     }
+}
+
+void S6Importer::Initialise()
+{
+    game_init_all(_s6.map_size);
 }
 
 extern "C"

@@ -368,7 +368,6 @@ rct_map_element* map_get_banner_element_at(sint32 x, sint32 y, sint32 z, uint8 p
  */
 void map_init(sint32 size)
 {
-	date_reset();
 	gNumMapAnimations = 0;
 	gNextFreeMapElementPointerIndex = 0;
 
@@ -397,7 +396,6 @@ void map_init(sint32 size)
 	gMapBaseZ = 7;
 	map_update_tile_pointers();
 	map_remove_out_of_range_elements();
-	climate_reset(CLIMATE_WARM);
 }
 
 /**

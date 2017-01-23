@@ -170,23 +170,10 @@ bool rct2_init()
 		audio_init_ride_sounds_and_info();
 	}
 	viewport_init_all();
-	news_item_init_queue();
-	reset_park_entrances();
-	user_string_clear_all();
-	reset_sprite_list();
-	ride_init_all();
-	window_guest_list_init_vars_a();
-	staff_reset_modes();
-	map_init(150);
-	park_init();
+
+	game_init_all(150);
 	if (!gOpenRCT2Headless)
 		window_title_menu_open();
-	date_reset();
-	climate_reset(CLIMATE_COOL_AND_WET);
-	scenery_set_default_placement_configuration();
-	window_new_ride_init_vars();
-	window_guest_list_init_vars_b();
-	window_staff_list_init_vars();
 	load_palette();
 
 #ifdef __ENABLE_LIGHTFX__
