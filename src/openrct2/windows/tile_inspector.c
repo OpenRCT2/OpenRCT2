@@ -693,24 +693,26 @@ static void window_tile_inspector_copy_element(rct_window *w)
 
 static void window_tile_inspector_paste_element(rct_window *w)
 {
-	rct_map_element *const pastedElement = map_element_insert(windowTileInspectorTileX, windowTileInspectorTileY, tileInspectorCopiedElement.base_height, 0);
-	if (pastedElement == NULL) {
-		// map_element_insert displays an error message on failure
-		window_error_open(STR_CANT_PASTE, STR_MAP_ELEMENT_LIMIT_REACHED);
-		return;
-	}
+	// Construct the data to send using the surface's properties
+	sint32 bytes[2] = { 0 };
+	bytes[0] |= tileInspectorCopiedElement.type << 24;
+	bytes[0] |= tileInspectorCopiedElement.flags << 16;
+	bytes[0] |= tileInspectorCopiedElement.base_height << 8;
+	bytes[0] |= tileInspectorCopiedElement.clearance_height;
+	bytes[1] |= tileInspectorCopiedElement.properties.surface.slope << 24;
+	bytes[1] |= tileInspectorCopiedElement.properties.surface.terrain << 16;
+	bytes[1] |= tileInspectorCopiedElement.properties.surface.grass_length << 8;
+	bytes[1] |= tileInspectorCopiedElement.properties.surface.ownership;
 
-	windowTileInspectorElementCount++;
-	bool lastForTile = map_element_is_last_for_tile(pastedElement);
-	*pastedElement = tileInspectorCopiedElement;
-	pastedElement->flags &= ~MAP_ELEMENT_FLAG_LAST_TILE;
-	if (lastForTile) {
-		pastedElement->flags |= MAP_ELEMENT_FLAG_LAST_TILE;
-	}
-
-	// Make pasted element selected
-	const rct_map_element *mapElement = map_get_first_element_at(windowTileInspectorTileX, windowTileInspectorTileY);
-	w->selected_list_item = (sint16)(pastedElement - mapElement);
+	game_do_command(
+		TILE_INSPECTOR_ANY_PASTE,
+		GAME_COMMAND_FLAG_APPLY,
+		windowTileInspectorTileX | (windowTileInspectorTileY << 8),
+		bytes[0],
+		GAME_COMMAND_MODIFY_TILE,
+		bytes[1],
+		0
+	);
 }
 
 static void window_tile_inspector_surface_toggle_corner(rct_map_element *mapElement, sint32 cornerIndex)
@@ -1018,8 +1020,6 @@ static void window_tile_inspector_mouseup(rct_window *w, sint32 widgetIndex)
 		break;
 	case WIDX_BUTTON_PASTE:
 		window_tile_inspector_paste_element(w);
-		map_invalidate_tile_full(windowTileInspectorTileX << 5, windowTileInspectorTileY << 5);
-		widget_invalidate(w, WIDX_LIST);
 		break;
 	case WIDX_BUTTON_MOVE_DOWN:
 		window_tile_inspector_swap_elements(w->selected_list_item, w->selected_list_item + 1);

@@ -217,7 +217,53 @@ sint32 tile_inspector_rotate_element_at(sint32 x, sint32 y, sint32 element_index
 		}
 
 		map_invalidate_tile_full(x << 5, y << 5);
-		window_invalidate_by_class(WC_TILE_INSPECTOR);
+
+		if ((uint32)x == windowTileInspectorTileX && (uint32)y == windowTileInspectorTileY)
+		{
+			window_invalidate_by_class(WC_TILE_INSPECTOR);
+		}
+	}
+
+	return 0;
+}
+
+sint32 tile_inspector_paste_element_at(sint32 x, sint32 y, rct_map_element element, sint32 flags)
+{
+	// Make sure there is enough space for the new element
+	if (!map_check_free_elements_and_reorganise(1))
+	{
+		return MONEY32_UNDEFINED;
+	}
+
+	if (flags & GAME_COMMAND_FLAG_APPLY)
+	{
+		rct_map_element *const pastedElement = map_element_insert(x, y, element.base_height, 0);
+
+		bool lastForTile = map_element_is_last_for_tile(pastedElement);
+		*pastedElement = element;
+		pastedElement->flags &= ~MAP_ELEMENT_FLAG_LAST_TILE;
+		if (lastForTile)
+		{
+			pastedElement->flags |= MAP_ELEMENT_FLAG_LAST_TILE;
+		}
+
+		map_invalidate_tile_full(x << 5, y << 5);
+
+		rct_window *const tile_inspector_window = window_find_by_class(WC_TILE_INSPECTOR);
+		if (tile_inspector_window != NULL && (uint32)x == windowTileInspectorTileX && (uint32)y == windowTileInspectorTileY)
+		{
+			windowTileInspectorElementCount++;
+
+			// Select new element if there was none selected already
+			sint16 new_index = (sint16)(pastedElement - map_get_first_element_at(x, y));
+			if (tile_inspector_window->selected_list_item == -1)
+				tile_inspector_window->selected_list_item = new_index;
+			else if (tile_inspector_window->selected_list_item >= new_index)
+				tile_inspector_window->selected_list_item++;
+
+			window_tile_inspector_auto_set_buttons(tile_inspector_window);
+			window_invalidate(tile_inspector_window);
+		}
 	}
 
 	return 0;
