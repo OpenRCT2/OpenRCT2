@@ -151,3 +151,28 @@ sint32 tile_inspector_remove_element_at(sint32 x, sint32 y, sint16 element_index
 
 	return 0;
 }
+
+sint32 tile_inspector_swap_elements(sint32 x, sint32 y, sint16 first, sint16 second, sint32 flags)
+{
+	if (flags & GAME_COMMAND_FLAG_APPLY)
+	{
+		map_swap_elements_at(x, y, first, second);
+		map_invalidate_tile_full(x << 5, y << 5);
+
+		// Update the window
+		rct_window *const tile_inspector_window = window_find_by_class(WC_TILE_INSPECTOR);
+		if (tile_inspector_window != NULL && (uint32)x == windowTileInspectorTileX && (uint32)y == windowTileInspectorTileY)
+		{
+			// If one of them was selected, update selected list item
+			if (tile_inspector_window->selected_list_item == first)
+				tile_inspector_window->selected_list_item = second;
+			else if (tile_inspector_window->selected_list_item == second)
+				tile_inspector_window->selected_list_item = first;
+
+			window_tile_inspector_auto_set_buttons(tile_inspector_window);
+			window_invalidate(tile_inspector_window);
+		}
+	}
+
+	return 0;
+}

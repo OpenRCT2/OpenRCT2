@@ -5610,31 +5610,33 @@ void game_command_modify_tile(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx
 	const sint32 flags = *ebx;
 	const sint32 x = *ecx & 0xFF;
 	const sint32 y = (*ecx >> 8) & 0xFF;
-	const tile_inspector_element_type action_type = *eax;
+	const tile_inspector_instruction instruction = *eax;
 
-	switch (action_type)
+	switch (instruction)
 	{
-	case TILE_INSPECTOR_ELEMENT_ANY:
+	case TILE_INSPECTOR_ANY_REMOVE:
 	{
 		const sint16 index = *edx;
 		*ebx = tile_inspector_remove_element_at(x, y, index, flags);
 		return;
 	}
-	case TILE_INSPECTOR_ELEMENT_SURFACE:
-	case TILE_INSPECTOR_ELEMENT_PATH:
-	case TILE_INSPECTOR_ELEMENT_TRACK:
-	case TILE_INSPECTOR_ELEMENT_SCENERY:
-	case TILE_INSPECTOR_ELEMENT_ENTRANCE:
-	case TILE_INSPECTOR_ELEMENT_FENCE:
-	case TILE_INSPECTOR_ELEMENT_SCENERYMULTIPLE:
-	case TILE_INSPECTOR_ELEMENT_BANNER:
+	case TILE_INSPECTOR_ANY_SWAP:
+	{
+		const sint32 first_index = *edx;
+		const sint32 second_index = *edi;
+		*ebx = tile_inspector_swap_elements(x, y, first_index, second_index, flags);
 		return;
-	case TILE_INSPECTOR_ELEMENT_CORRUPT:
+	}
+	case TILE_INSPECTOR_ANY_INSERT_CORRUPT:
 	{
 		const sint16 index = *edx;
 		*ebx = tile_inspector_insert_corrupt_at(x, y, index, flags);
 		return;
 	}
+	default:
+		log_error("invalid instruction");
+		*ebx = MONEY32_UNDEFINED;
+		return;
 	}
 }
 

@@ -611,7 +611,7 @@ static void window_tile_inspector_insert_corrupt_element(sint32 element_index)
 {
 	assert(element_index < windowTileInspectorElementCount);
 	game_do_command(
-		TILE_INSPECTOR_ELEMENT_CORRUPT,
+		TILE_INSPECTOR_ANY_INSERT_CORRUPT,
 		GAME_COMMAND_FLAG_APPLY,
 		windowTileInspectorTileX | (windowTileInspectorTileY << 8),
 		element_index,
@@ -625,7 +625,7 @@ static void window_tile_inspector_remove_element(sint32 element_index)
 {
 	assert(element_index < windowTileInspectorElementCount);
 	game_do_command(
-		TILE_INSPECTOR_ELEMENT_ANY,
+		TILE_INSPECTOR_ANY_REMOVE,
 		GAME_COMMAND_FLAG_APPLY,
 		windowTileInspectorTileX | (windowTileInspectorTileY << 8),
 		element_index,
@@ -676,31 +676,16 @@ static void window_tile_inspector_rotate_element(sint32 index)
 // Swap element with its parent
 static void window_tile_inspector_swap_elements(sint16 first, sint16 second)
 {
-	rct_map_element *mapElement = map_get_first_element_at(windowTileInspectorTileX, windowTileInspectorTileY);
-	rct_map_element *const firstElement = mapElement + first;
-	rct_map_element *const secondElement = mapElement + second;
-
-	// swap_elements shouldn't be called when there is only one element on the tile
-	assert(!map_element_is_last_for_tile(mapElement));
-
-	// Make sure both elements are actually on the current tile
-	sint16 elementCount = 0;
-	do {
-		elementCount++;
-	} while (!map_element_is_last_for_tile(mapElement++));
-	assert(elementCount > max(first, second));
-
-	// Swap their memory
-	rct_map_element temp = *firstElement;
-	*firstElement = *secondElement;
-	*secondElement = temp;
-
-	// Swap the 'last map element for tile' flag if either one of them was last
-	if (map_element_is_last_for_tile(firstElement) || map_element_is_last_for_tile(secondElement)) {
-		firstElement->flags ^= MAP_ELEMENT_FLAG_LAST_TILE;
-		secondElement->flags ^= MAP_ELEMENT_FLAG_LAST_TILE;
-	}
-	map_invalidate_tile_full(windowTileInspectorTileX << 5, windowTileInspectorTileY << 5);
+	assert(first < windowTileInspectorElementCount && second < windowTileInspectorElementCount);
+	game_do_command(
+		TILE_INSPECTOR_ANY_SWAP,
+		GAME_COMMAND_FLAG_APPLY,
+		windowTileInspectorTileX | (windowTileInspectorTileY << 8),
+		first,
+		GAME_COMMAND_MODIFY_TILE,
+		second,
+		0
+	);
 }
 
 static void window_tile_inspector_sort_elements(rct_window *w)
@@ -1063,15 +1048,9 @@ static void window_tile_inspector_mouseup(rct_window *w, sint32 widgetIndex)
 		break;
 	case WIDX_BUTTON_MOVE_DOWN:
 		window_tile_inspector_swap_elements(w->selected_list_item, w->selected_list_item + 1);
-		w->selected_list_item++;
-		window_tile_inspector_auto_set_buttons(w);
-		widget_invalidate(w, WIDX_LIST);
 		break;
 	case WIDX_BUTTON_MOVE_UP:
 		window_tile_inspector_swap_elements(w->selected_list_item - 1, w->selected_list_item);
-		w->selected_list_item--;
-		window_tile_inspector_auto_set_buttons(w);
-		widget_invalidate(w, WIDX_LIST);
 		break;
 	}
 
