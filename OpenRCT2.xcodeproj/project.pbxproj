@@ -246,6 +246,7 @@
 		D433A5001E4A861F00D9A6DF /* SawyerChunk.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D433A4FA1E4A861F00D9A6DF /* SawyerChunk.cpp */; };
 		D433A5011E4A861F00D9A6DF /* SawyerChunkReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D433A4FC1E4A861F00D9A6DF /* SawyerChunkReader.cpp */; };
 		D433A5021E4A861F00D9A6DF /* SawyerChunkWriter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D433A4FE1E4A861F00D9A6DF /* SawyerChunkWriter.cpp */; };
+		D429FF421E36ABCD009342A6 /* tile_inspector.c in Sources */ = {isa = PBXBuildFile; fileRef = D429FF401E36ABCD009342A6 /* tile_inspector.c */; };
 		D43407D61D0E14BE00C2B3D4 /* CopyFramebufferShader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D43407C01D0E14BE00C2B3D4 /* CopyFramebufferShader.cpp */; };
 		D43407D81D0E14BE00C2B3D4 /* DrawImageShader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D43407C41D0E14BE00C2B3D4 /* DrawImageShader.cpp */; };
 		D43407D91D0E14BE00C2B3D4 /* DrawLineShader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D43407C61D0E14BE00C2B3D4 /* DrawLineShader.cpp */; };
@@ -722,6 +723,9 @@
 		D433A4FE1E4A861F00D9A6DF /* SawyerChunkWriter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SawyerChunkWriter.cpp; path = rct12/SawyerChunkWriter.cpp; sourceTree = "<group>"; };
 		D433A4FF1E4A861F00D9A6DF /* SawyerChunkWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SawyerChunkWriter.h; path = rct12/SawyerChunkWriter.h; sourceTree = "<group>"; };
 		D433A5031E4A862F00D9A6DF /* rct12.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = rct12.h; sourceTree = "<group>"; };
+		D429FF3F1E36ABB3009342A6 /* tile_inspector.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = tile_inspector.h; sourceTree = "<group>"; };
+		D429FF401E36ABCD009342A6 /* tile_inspector.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = tile_inspector.c; sourceTree = "<group>"; };
+		D429FF411E36ABCD009342A6 /* tile_inspector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tile_inspector.h; sourceTree = "<group>"; };
 		D43407C01D0E14BE00C2B3D4 /* CopyFramebufferShader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CopyFramebufferShader.cpp; sourceTree = "<group>"; };
 		D43407C11D0E14BE00C2B3D4 /* CopyFramebufferShader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CopyFramebufferShader.h; sourceTree = "<group>"; };
 		D43407C41D0E14BE00C2B3D4 /* DrawImageShader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DrawImageShader.cpp; sourceTree = "<group>"; };
@@ -1980,6 +1984,7 @@
 				D44271C61CC81B3200D84D28 /* text_input.c */,
 				D44271C71CC81B3200D84D28 /* themes.c */,
 				D44271C81CC81B3200D84D28 /* tile_inspector.c */,
+				D429FF3F1E36ABB3009342A6 /* tile_inspector.h */,
 				D44271C91CC81B3200D84D28 /* title_command_editor.c */,
 				D44271CA1CC81B3200D84D28 /* title_editor.c */,
 				D44271CB1CC81B3200D84D28 /* title_exit.c */,
@@ -2030,6 +2035,8 @@
 				D44271F11CC81B3200D84D28 /* scenery.h */,
 				D44271F21CC81B3200D84D28 /* sprite.c */,
 				D44271F31CC81B3200D84D28 /* sprite.h */,
+				D429FF401E36ABCD009342A6 /* tile_inspector.c */,
+				D429FF411E36ABCD009342A6 /* tile_inspector.h */,
 				D44271F41CC81B3200D84D28 /* water.h */,
 			);
 			path = world;
@@ -2786,6 +2793,7 @@
 				C686F9241CDBC3B7009F9BFC /* suspended_swinging_coaster.c in Sources */,
 				C686F92D1CDBC3B7009F9BFC /* crooked_house.c in Sources */,
 				D442727F1CC81B3200D84D28 /* scenery.c in Sources */,
+				D429FF421E36ABCD009342A6 /* tile_inspector.c in Sources */,
 				D460DFD11E01239D007BA2FE /* OpenRCT2.cpp in Sources */,
 				C686F93C1CDBC3B7009F9BFC /* misc.c in Sources */,
 				D442723A1CC81B3200D84D28 /* staff.c in Sources */,
