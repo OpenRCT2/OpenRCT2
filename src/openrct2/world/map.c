@@ -5633,6 +5633,12 @@ void game_command_modify_tile(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx
 		*ebx = tile_inspector_insert_corrupt_at(x, y, index, flags);
 		return;
 	}
+	case TILE_INSPECTOR_ANY_ROTATE:
+	{
+		const sint16 index = *edx;
+		*ebx = tile_inspector_rotate_element_at(x, y, index, flags);
+		return;
+	}
 	default:
 		log_error("invalid instruction");
 		*ebx = MONEY32_UNDEFINED;

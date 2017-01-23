@@ -17,6 +17,7 @@
 #include "../game.h"
 #include "../interface/window.h"
 #include "../windows/tile_inspector.h"
+#include "footpath.h"
 #include "map.h"
 #include "tile_inspector.h"
 
@@ -172,6 +173,51 @@ sint32 tile_inspector_swap_elements(sint32 x, sint32 y, sint16 first, sint16 sec
 			window_tile_inspector_auto_set_buttons(tile_inspector_window);
 			window_invalidate(tile_inspector_window);
 		}
+	}
+
+	return 0;
+}
+
+sint32 tile_inspector_rotate_element_at(sint32 x, sint32 y, sint32 element_index, sint32 flags)
+{
+	if (flags & GAME_COMMAND_FLAG_APPLY)
+	{
+		uint8 newRotation, pathEdges, pathCorners;
+
+		rct_map_element *const mapElement = map_get_first_element_at(x, y) + element_index;
+		switch (map_element_get_type(mapElement))
+		{
+		case MAP_ELEMENT_TYPE_PATH:
+			if (footpath_element_is_sloped(mapElement))
+			{
+				newRotation = (footpath_element_get_slope_direction(mapElement) + 1) & MAP_ELEMENT_DIRECTION_MASK;
+				mapElement->properties.path.type &= ~MAP_ELEMENT_DIRECTION_MASK;
+				mapElement->properties.path.type |= newRotation;
+			}
+			pathEdges = mapElement->properties.path.edges & 0x0F;
+			pathCorners = mapElement->properties.path.edges & 0xF0;
+			mapElement->properties.path.edges = 0;
+			mapElement->properties.path.edges |= ((pathEdges << 1) | (pathEdges >> 3)) & 0x0F;
+			mapElement->properties.path.edges |= ((pathCorners << 1) | (pathCorners >> 3)) & 0xF0;
+			break;
+		case MAP_ELEMENT_TYPE_TRACK:
+		case MAP_ELEMENT_TYPE_SCENERY:
+		case MAP_ELEMENT_TYPE_ENTRANCE:
+		case MAP_ELEMENT_TYPE_FENCE:
+			newRotation = (mapElement->type + 1) & MAP_ELEMENT_DIRECTION_MASK;
+			mapElement->type &= ~MAP_ELEMENT_DIRECTION_MASK;
+			mapElement->type |= newRotation;
+			break;
+		case MAP_ELEMENT_TYPE_BANNER:
+			mapElement->properties.banner.flags ^= 1 << mapElement->properties.banner.position;
+			mapElement->properties.banner.position++;
+			mapElement->properties.banner.position &= 3;
+			mapElement->properties.banner.flags ^= 1 << mapElement->properties.banner.position;
+			break;
+		}
+
+		map_invalidate_tile_full(x << 5, y << 5);
+		window_invalidate_by_class(WC_TILE_INSPECTOR);
 	}
 
 	return 0;

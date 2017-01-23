@@ -460,7 +460,7 @@ static void window_tile_inspector_load_tile(rct_window* w);
 static void window_tile_inspector_insert_corrupt_element(sint32 element_index);
 static void window_tile_inspector_swap_elements(sint16 first, sint16 second);
 static void window_tile_inspector_remove_element(sint32 element_index);
-static void window_tile_inspector_rotate_element(sint32 index);
+static void window_tile_inspector_rotate_element(sint32 element_index);
 static void window_tile_inspector_sort_elements(rct_window *w);
 static void window_tile_inspector_copy_element(rct_window *w);
 static void window_tile_inspector_paste_element(rct_window *w);
@@ -635,42 +635,18 @@ static void window_tile_inspector_remove_element(sint32 element_index)
 	);
 }
 
-static void window_tile_inspector_rotate_element(sint32 index)
+static void window_tile_inspector_rotate_element(sint32 element_index)
 {
-	uint8 newRotation, pathEdges, pathCorners;
-
-	assert(index < windowTileInspectorElementCount);
-	rct_map_element *const mapElement = map_get_first_element_at(windowTileInspectorTileX, windowTileInspectorTileY) + index;
-	switch (map_element_get_type(mapElement)) {
-	case MAP_ELEMENT_TYPE_PATH:
-		if (footpath_element_is_sloped(mapElement)) {
-			newRotation = (footpath_element_get_slope_direction(mapElement) + 1) & MAP_ELEMENT_DIRECTION_MASK;
-			mapElement->properties.path.type &= ~MAP_ELEMENT_DIRECTION_MASK;
-			mapElement->properties.path.type |= newRotation;
-		}
-		pathEdges = mapElement->properties.path.edges & 0x0F;
-		pathCorners = mapElement->properties.path.edges & 0xF0;
-		mapElement->properties.path.edges = 0;
-		mapElement->properties.path.edges |= ((pathEdges << 1) | (pathEdges >> 3)) & 0x0F;
-		mapElement->properties.path.edges |= ((pathCorners << 1) | (pathCorners >> 3)) & 0xF0;
-		break;
-	case MAP_ELEMENT_TYPE_TRACK:
-	case MAP_ELEMENT_TYPE_SCENERY:
-	case MAP_ELEMENT_TYPE_ENTRANCE:
-	case MAP_ELEMENT_TYPE_FENCE:
-		newRotation = (mapElement->type + 1) & MAP_ELEMENT_DIRECTION_MASK;
-		mapElement->type &= ~MAP_ELEMENT_DIRECTION_MASK;
-		mapElement->type |= newRotation;
-		break;
-	case MAP_ELEMENT_TYPE_BANNER:
-		mapElement->properties.banner.flags ^= 1 << mapElement->properties.banner.position;
-		mapElement->properties.banner.position++;
-		mapElement->properties.banner.position &= 3;
-		mapElement->properties.banner.flags ^= 1 << mapElement->properties.banner.position;
-		break;
-	}
-
-	map_invalidate_tile_full(windowTileInspectorTileX << 5, windowTileInspectorTileY << 5);
+	assert(element_index < windowTileInspectorElementCount);
+	game_do_command(
+		TILE_INSPECTOR_ANY_ROTATE,
+		GAME_COMMAND_FLAG_APPLY,
+		windowTileInspectorTileX | (windowTileInspectorTileY << 8),
+		element_index,
+		GAME_COMMAND_MODIFY_TILE,
+		0,
+		0
+	);
 }
 
 // Swap element with its parent
@@ -1026,7 +1002,6 @@ static void window_tile_inspector_mouseup(rct_window *w, sint32 widgetIndex)
 		break;
 	case WIDX_BUTTON_ROTATE:
 		window_tile_inspector_rotate_element(w->selected_list_item);
-		window_invalidate(w);
 		break;
 	case WIDX_BUTTON_SORT:
 		window_tile_inspector_sort_elements(w);
