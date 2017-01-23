@@ -179,27 +179,12 @@ private:
         uint16 mapSize = _s4.map_size == 0 ? 128 : _s4.map_size;
 
         // Do map initialisation, same kind of stuff done when loading scenario editor
-        audio_pause_sounds();
-        audio_unpause_sounds();
+        audio_stop_all_music_and_sounds();
         GetObjectManager()->UnloadAll();
-        map_init(mapSize);
-        banner_init();
-        reset_park_entrances();
-        user_string_clear_all();
-        reset_sprite_list();
-        ride_init_all();
-        window_guest_list_init_vars_a();
-        staff_reset_modes();
-        park_init();
-        finance_init();
-        date_reset();
-        window_guest_list_init_vars_b();
-        window_staff_list_init_vars();
+        game_init_all(mapSize);
         gS6Info.editor_step = EDITOR_STEP_OBJECT_SELECTION;
         gParkFlags |= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
-        window_new_ride_init_vars();
         gS6Info.category = SCENARIO_CATEGORY_OTHER;
-        news_item_init_queue();
     }
 
     /**
