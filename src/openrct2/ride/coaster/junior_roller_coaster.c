@@ -5043,14 +5043,14 @@ TRACK_PAINT_FUNCTION get_track_paint_function_junior_rc(sint32 trackType, sint32
 	case TRACK_ELEM_BOOSTER:
 		return junior_rc_brake_paint_setup;
 
-		case TRACK_ELEM_DIAG_60_DEG_DOWN_TO_FLAT:
-			return junior_rc_diag_60_deg_down_to_flat_paint_setup;
-		case TRACK_ELEM_DIAG_60_DEG_UP_TO_FLAT:
-			return junior_rc_diag_60_deg_up_to_flat_paint_setup;
-		case TRACK_ELEM_DIAG_FLAT_TO_60_DEG_UP:
-			return junior_rc_diag_flat_to_60_deg_up_paint_setup;
-		case TRACK_ELEM_DIAG_FLAT_TO_60_DEG_DOWN:
-			return junior_rc_diag_flat_to_60_deg_down_paint_setup;
+	case TRACK_ELEM_DIAG_60_DEG_DOWN_TO_FLAT:
+		return junior_rc_diag_60_deg_down_to_flat_paint_setup;
+	case TRACK_ELEM_DIAG_60_DEG_UP_TO_FLAT:
+		return junior_rc_diag_60_deg_up_to_flat_paint_setup;
+	case TRACK_ELEM_DIAG_FLAT_TO_60_DEG_UP:
+		return junior_rc_diag_flat_to_60_deg_up_paint_setup;
+	case TRACK_ELEM_DIAG_FLAT_TO_60_DEG_DOWN:
+		return junior_rc_diag_flat_to_60_deg_down_paint_setup;
 	}
 	return NULL;
 }
