@@ -221,7 +221,7 @@ static void window_staff_list_mouseup(rct_window *w, sint32 widgetIndex)
 		break;
 	case WIDX_STAFF_LIST_HIRE_BUTTON:
 	{
-		int staffType = _windowStaffListSelectedTab;
+		sint32 staffType = _windowStaffListSelectedTab;
 		if (staffType == STAFF_TYPE_ENTERTAINER)
 		{
 			uint8 costume = window_staff_list_get_random_entertainer_costume();
