@@ -1437,7 +1437,7 @@ uint32 staff_get_available_entertainer_costumes()
 	}
 
 	// For some reason the flags are +4 from the actual costume IDs
-	entertainerCostumes <<= 4;
+	entertainerCostumes >>= 4;
 
 	return entertainerCostumes;
 }

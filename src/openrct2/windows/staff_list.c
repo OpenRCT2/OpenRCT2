@@ -227,7 +227,7 @@ static void window_staff_list_mouseup(rct_window *w, sint32 widgetIndex)
 			uint8 costume = window_staff_list_get_random_entertainer_costume();
 			staffType += costume;
 		}
-		hire_new_staff_member(_windowStaffListSelectedTab);
+		hire_new_staff_member(staffType);
 		break;
 	}
 	case WIDX_STAFF_LIST_SHOW_PATROL_AREA_BUTTON:
@@ -712,7 +712,8 @@ static uint8 window_staff_list_get_random_entertainer_costume()
 	sint32 numCostumes = staff_get_available_entertainer_costume_list(costumeList);
 	if (numCostumes > 0)
 	{
-		result = util_rand() % numCostumes;
+		sint32 index = util_rand() % numCostumes;
+		result = costumeList[index];
 	}
 	return result;
 }
