@@ -675,6 +675,13 @@ private:
         dst->reliability = src->reliability;
         dst->unreliability_factor = src->unreliability_factor;
         dst->breakdown_reason = src->breakdown_reason;
+        dst->mechanic_status = src->mechanic_status;
+        dst->mechanic = src->mechanic;
+        dst->breakdown_reason = src->breakdown_reason;
+        dst->breakdown_reason_pending = src->breakdown_reason_pending;
+        dst->inspection_station = src->inspection_station;
+        //dst->broken_car?
+        //dst->broken_vehicle?
 
         // Measurement data
         dst->excitement = src->excitement;
@@ -714,6 +721,11 @@ private:
         dst->current_test_segment = src->current_test_segment;
         dst->current_test_station = 0xFF;
         dst->average_speed_test_timeout = src->average_speed_test_timeout;
+        dst->slide_in_use = src->slide_in_use;
+        dst->slide_peep_t_shirt_colour = RCT1::GetColour(src->slide_peep_t_shirt_colour);
+        dst->spiral_slide_progress = src->spiral_slide_progress;
+        // Doubles as slide_peep
+        dst->maze_tiles = src->maze_tiles;
 
         // Finance / customers
         dst->upkeep_cost = src->upkeep_cost;
@@ -1311,12 +1323,29 @@ private:
 
     void FixRidePeepLinks(rct_ride * ride, const uint16 * spriteIndexMap)
     {
+        uint16 originalSpriteIndex;
+
         for (int i = 0; i < RCT1_MAX_STATIONS; i++)
         {
-            uint16 originalSpriteIndex = ride->last_peep_in_queue[i];
+            originalSpriteIndex = ride->last_peep_in_queue[i];
             if (originalSpriteIndex != SPRITE_INDEX_NULL)
             {
                 ride->last_peep_in_queue[i] = spriteIndexMap[originalSpriteIndex];
+            }
+        }
+
+        originalSpriteIndex = ride->mechanic;
+        if (originalSpriteIndex != SPRITE_INDEX_NULL)
+        {
+            ride->mechanic = spriteIndexMap[originalSpriteIndex];
+        }
+
+        if (ride->type == RIDE_TYPE_SPIRAL_SLIDE)
+        {
+            originalSpriteIndex = ride->slide_peep;
+            if (originalSpriteIndex != SPRITE_INDEX_NULL && spriteIndexMap[originalSpriteIndex] < RCT1_MAX_SPRITES)
+            {
+                ride->slide_peep = spriteIndexMap[originalSpriteIndex];
             }
         }
     }

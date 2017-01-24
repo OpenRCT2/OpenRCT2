@@ -4650,7 +4650,7 @@ static bool peep_update_fixing_sub_state_11(bool firstRun, rct_peep *peep, rct_r
 
 	peep_update_action(&tmp_x, &tmp_y, &tmp_xy_distance, peep);
 	if (peep->action_frame == 0x28) {
-		ride->mechanic_status = 4;
+		ride->mechanic_status = RIDE_MECHANIC_STATUS_HAS_FIXED_STATION_BRAKES;
 		ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAINTENANCE;
 	}
 

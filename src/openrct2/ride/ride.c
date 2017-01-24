@@ -2498,7 +2498,7 @@ static void ride_breakdown_status_update(sint32 rideIndex)
 		if (
 			!(ride->not_fixed_timeout & 15) &&
 			ride->mechanic_status != RIDE_MECHANIC_STATUS_FIXING &&
-			ride->mechanic_status != RIDE_MECHANIC_STATUS_4
+			ride->mechanic_status != RIDE_MECHANIC_STATUS_HAS_FIXED_STATION_BRAKES
 		) {
 			set_format_arg(0, rct_string_id, ride->name);
 			set_format_arg(2, uint32, ride->name_arguments);
@@ -2702,8 +2702,8 @@ rct_peep *ride_get_assigned_mechanic(rct_ride *ride)
 	if (ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN) {
 		if (
 			ride->mechanic_status == RIDE_MECHANIC_STATUS_HEADING ||
-			ride->mechanic_status == 3 ||
-			ride->mechanic_status == 4
+			ride->mechanic_status == RIDE_MECHANIC_STATUS_FIXING ||
+			ride->mechanic_status == RIDE_MECHANIC_STATUS_HAS_FIXED_STATION_BRAKES
 		) {
 			rct_peep *peep = &(get_sprite(ride->mechanic)->peep);
 			if (peep_is_mechanic(peep))

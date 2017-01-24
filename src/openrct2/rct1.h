@@ -157,11 +157,29 @@ typedef struct rct1_ride {
 	uint8 popularity_time_out;
 	uint8 popularity_next;
 	uint8 num_riders;
-	uint8 unk_10C[36];
-	sint16 build_date;
-	money16 upkeep_cost;
-	uint8 unk_134[15];
-	uint8 breakdown_reason;
+	uint8 music_tune_id;			// 0x10C
+	uint8 slide_in_use;				// 0x10D
+	union {
+		uint16 slide_peep;			// 0x10E
+		uint16 maze_tiles;			// 0x10E
+	};
+	uint8 pad_110[0xE];
+	uint8 slide_peep_t_shirt_colour;// 0x11E
+	uint8 pad_11F[0x7];
+	uint8 spiral_slide_progress;	// 0x126
+	uint8 pad_127[0x9];
+	sint16 build_date;				// 0x130
+	money16 upkeep_cost;			// 0x131
+	uint16 race_winner;				// 0x132
+	uint8 unk_134[2];
+	uint32 music_position;			// 0x138
+	uint8 breakdown_reason_pending;	// 0x13C
+	uint8 mechanic_status;			// 0x13D
+	uint16 mechanic;				// 0x13E
+	uint8 inspection_station;		// 0x140
+	uint8 broken_vehicle;			// 0x141
+	uint8 broken_car;				// 0x142
+	uint8 breakdown_reason;			// 0x143
 	uint8 unk_144[2];
 	uint16 reliability;
 	uint8 unreliability_factor;
