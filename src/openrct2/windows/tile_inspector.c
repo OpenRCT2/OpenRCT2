@@ -696,6 +696,7 @@ static void window_tile_inspector_paste_element(rct_window *w)
 	// Construct the data to send using the surface's properties
 	sint32 data[2];
 	memcpy(&data[0], &tileInspectorCopiedElement, 8);
+	static_assert(sizeof(data) == sizeof(tileInspectorCopiedElement), "Sizes do not match");
 
 	game_do_command(
 		TILE_INSPECTOR_ANY_PASTE,
