@@ -1090,7 +1090,12 @@ private:
         for (int i = 0; i < 32; i++)
         {
             uint16 originalSpriteIndex = vehicle->peep[i];
-            if (originalSpriteIndex != SPRITE_INDEX_NULL)
+            if (originalSpriteIndex >= RCT1_MAX_SPRITES)
+            {
+                vehicle->peep[i] = SPRITE_INDEX_NULL;
+                log_warning("Incorrect sprite index: %d", originalSpriteIndex);
+            }
+            else if (originalSpriteIndex != SPRITE_INDEX_NULL)
             {
                 vehicle->peep[i] = spriteIndexMap[originalSpriteIndex];
             }
