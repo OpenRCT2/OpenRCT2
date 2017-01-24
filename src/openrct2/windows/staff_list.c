@@ -132,6 +132,8 @@ static uint16 _window_staff_list_selected_type_count = 0;
 static sint32 _windowStaffListHighlightedIndex;
 static sint32 _windowStaffListSelectedTab;
 
+static uint8 window_staff_list_get_random_entertainer_costume();
+
 typedef struct staff_naming_convention
 {
 	rct_string_id plural;
@@ -217,8 +219,16 @@ static void window_staff_list_mouseup(rct_window *w, sint32 widgetIndex)
 		window_close(w);
 		break;
 	case WIDX_STAFF_LIST_HIRE_BUTTON:
+	{
+		int staffType = _windowStaffListSelectedTab;
+		if (staffType == STAFF_TYPE_ENTERTAINER)
+		{
+			uint8 costume = window_staff_list_get_random_entertainer_costume();
+			staffType += costume;
+		}
 		hire_new_staff_member(_windowStaffListSelectedTab);
 		break;
+	}
 	case WIDX_STAFF_LIST_SHOW_PATROL_AREA_BUTTON:
 		if (!tool_set(w, WIDX_STAFF_LIST_SHOW_PATROL_AREA_BUTTON, 12)) {
 			show_gridlines();
@@ -692,4 +702,9 @@ void window_staff_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32
 			i++;
 		}
 	}
+}
+
+static uint8 window_staff_list_get_random_entertainer_costume()
+{
+	return ENTERTAINER_COSTUME_PANDA;
 }

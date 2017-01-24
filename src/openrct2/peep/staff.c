@@ -163,12 +163,18 @@ static money32 staff_hire_new_staff_member(uint8 staff_type, uint8 flags, sint16
 		return MONEY32_UNDEFINED;
 	}
 
-	if (staff_type != STAFF_TYPE_HANDYMAN &&
-		staff_type != STAFF_TYPE_MECHANIC &&
-		staff_type != STAFF_TYPE_SECURITY &&
-		staff_type != STAFF_TYPE_ENTERTAINER)
+	// Staff type matches STAFF_TYPE enum, but ENTERTAINER onwards will match
+	// the ENTERTAINER_COSTUME enum
+	uint8 entertainerType = ENTERTAINER_COSTUME_PANDA;
+	if (staff_type >= STAFF_TYPE_ENTERTAINER)
 	{
-		return MONEY32_UNDEFINED;
+		entertainerType = staff_type - STAFF_TYPE_ENTERTAINER;
+		if (entertainerType >= ENTERTAINER_COSTUME_COUNT)
+		{
+			// Invalid entertainer costume
+			return MONEY32_UNDEFINED;
+		}
+		staff_type = STAFF_TYPE_ENTERTAINER;
 	}
 
 	sint32 i;
@@ -264,6 +270,10 @@ static money32 staff_hire_new_staff_member(uint8 staff_type, uint8 flags, sint16
 		};
 
 		uint8 sprite_type = spriteTypes[staff_type];
+		if (staff_type == STAFF_TYPE_ENTERTAINER)
+		{
+			sprite_type = PEEP_SPRITE_TYPE_ENTERTAINER_PANDA + entertainerType;
+		}
 		newPeep->name_string_idx = staffNames[staff_type];
 		newPeep->sprite_type = sprite_type;
 
