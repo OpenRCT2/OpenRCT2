@@ -569,20 +569,15 @@ private:
         dst->status = src->status;
 
         // Flags
-        if (src->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK)             dst->lifecycle_flags |= RIDE_LIFECYCLE_ON_TRACK;
-        if (src->lifecycle_flags & RIDE_LIFECYCLE_ON_RIDE_PHOTO)        dst->lifecycle_flags |= RIDE_LIFECYCLE_ON_RIDE_PHOTO;
-        if (src->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE)       dst->lifecycle_flags |= RIDE_LIFECYCLE_INDESTRUCTIBLE;
-        if (src->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK) dst->lifecycle_flags |= RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK;
-        if (src->lifecycle_flags & RIDE_LIFECYCLE_EVER_BEEN_OPENED)     dst->lifecycle_flags |= RIDE_LIFECYCLE_EVER_BEEN_OPENED;
-        if (src->lifecycle_flags & RIDE_LIFECYCLE_TEST_IN_PROGRESS)     dst->lifecycle_flags |= RIDE_LIFECYCLE_TEST_IN_PROGRESS;
-        if (src->lifecycle_flags & RIDE_LIFECYCLE_CRASHED)              dst->lifecycle_flags |= RIDE_LIFECYCLE_CRASHED;
-        if (src->lifecycle_flags & RIDE_LIFECYCLE_TESTED)               dst->lifecycle_flags |= RIDE_LIFECYCLE_TESTED;
-        if (_gameVersion >= FILE_VERSION_RCT1_AA)
+        dst->lifecycle_flags = src->lifecycle_flags;
+        // These flags were not in the base game
+        if (_gameVersion == FILE_VERSION_RCT1)
         {
-            if (src->lifecycle_flags & RIDE_LIFECYCLE_MUSIC)            dst->lifecycle_flags |= RIDE_LIFECYCLE_MUSIC;
+            dst->lifecycle_flags &= ~RIDE_LIFECYCLE_MUSIC;
+            dst->lifecycle_flags &= ~RIDE_LIFECYCLE_INDESTRUCTIBLE;
+            dst->lifecycle_flags &= ~RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK;
         }
 
-        //dst->lifecycle_flags = src->lifecycle_flags;
 
         // Station
         dst->overall_view = src->overall_view;
@@ -593,7 +588,6 @@ private:
             dst->station_length[i] = src->station_length[i];
             dst->station_depart[i] = src->station_light[i];
 
-            // Use src->station_depart[i] when we import with guests and vehicles intact
             dst->train_at_station[i] = src->station_depart[i];
 
             dst->entrances[i] = src->entrance[i];
