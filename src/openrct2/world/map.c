@@ -5643,8 +5643,8 @@ void game_command_modify_tile(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx
 	{
 		rct_map_element element_to_paste;
 		sint32 data[] = { *edx, *edi };
+		assert_struct_size(data, sizeof(element_to_paste));
 		memcpy(&element_to_paste, data, 8);
-		static_assert(sizeof(data) == sizeof(element_to_paste), "Sizes do not match");
 		*ebx = tile_inspector_paste_element_at(x, y, element_to_paste, flags);
 		return;
 	}
