@@ -448,6 +448,15 @@ enum {
 	SPR_JUNIOR_RC_DIAG_60_DEG_UP_E_W = 28223,
 	SPR_JUNIOR_RC_DIAG_60_DEG_UP_S_N = 28224,
 
+	SPR_JUNIOR_RC_DIAG_FLAT_TO_60_DEG_UP_W_E = 28225,
+	SPR_JUNIOR_RC_DIAG_FLAT_TO_60_DEG_UP_N_S = 28226,
+	SPR_JUNIOR_RC_DIAG_FLAT_TO_60_DEG_UP_E_W = 28227,
+	SPR_JUNIOR_RC_DIAG_FLAT_TO_60_DEG_UP_S_N = 28228,
+	SPR_JUNIOR_RC_DIAG_60_DEG_UP_TO_FLAT_W_E = 28229,
+	SPR_JUNIOR_RC_DIAG_60_DEG_UP_TO_FLAT_N_S = 28230,
+	SPR_JUNIOR_RC_DIAG_60_DEG_UP_TO_FLAT_E_W = 28231,
+	SPR_JUNIOR_RC_DIAG_60_DEG_UP_TO_FLAT_S_N = 28232,
+
 	SPR_JUNIOR_RC_DIAG_FLAT_CHAIN_W_E = 28233,
 	SPR_JUNIOR_RC_DIAG_FLAT_CHAIN_N_S = 28234,
 	SPR_JUNIOR_RC_DIAG_FLAT_CHAIN_E_W = 28235,
@@ -476,6 +485,15 @@ enum {
 	SPR_JUNIOR_RC_DIAG_60_DEG_UP_CHAIN_N_S = 28258,
 	SPR_JUNIOR_RC_DIAG_60_DEG_UP_CHAIN_E_W = 28259,
 	SPR_JUNIOR_RC_DIAG_60_DEG_UP_CHAIN_S_N = 28260,
+
+	SPR_JUNIOR_RC_DIAG_FLAT_TO_60_DEG_UP_CHAIN_W_E = 28261,
+	SPR_JUNIOR_RC_DIAG_FLAT_TO_60_DEG_UP_CHAIN_N_S = 28262,
+	SPR_JUNIOR_RC_DIAG_FLAT_TO_60_DEG_UP_CHAIN_E_W = 28263,
+	SPR_JUNIOR_RC_DIAG_FLAT_TO_60_DEG_UP_CHAIN_S_N = 28264,
+	SPR_JUNIOR_RC_DIAG_60_DEG_UP_TO_FLAT_CHAIN_W_E = 28265,
+	SPR_JUNIOR_RC_DIAG_60_DEG_UP_TO_FLAT_CHAIN_N_S = 28266,
+	SPR_JUNIOR_RC_DIAG_60_DEG_UP_TO_FLAT_CHAIN_E_W = 28267,
+	SPR_JUNIOR_RC_DIAG_60_DEG_UP_TO_FLAT_CHAIN_S_N = 28268,
 
 	SPR_WATER_RC_DIAG_FLAT_CHAIN_W_E = 28269,
 	SPR_WATER_RC_DIAG_FLAT_CHAIN_N_S = 28270,
@@ -1443,6 +1461,21 @@ static const uint32 junior_rc_track_pieces_diag_flat_to_25_deg_up[3][4] = {
 	},
 };
 
+static const uint32 junior_rc_track_pieces_diag_flat_to_60_deg_up[2][4] = {
+	{
+		SPR_JUNIOR_RC_DIAG_FLAT_TO_60_DEG_UP_W_E,
+		SPR_JUNIOR_RC_DIAG_FLAT_TO_60_DEG_UP_N_S,
+		SPR_JUNIOR_RC_DIAG_FLAT_TO_60_DEG_UP_E_W,
+		SPR_JUNIOR_RC_DIAG_FLAT_TO_60_DEG_UP_S_N
+	},
+	{
+		SPR_JUNIOR_RC_DIAG_FLAT_TO_60_DEG_UP_CHAIN_W_E,
+		SPR_JUNIOR_RC_DIAG_FLAT_TO_60_DEG_UP_CHAIN_N_S,
+		SPR_JUNIOR_RC_DIAG_FLAT_TO_60_DEG_UP_CHAIN_E_W,
+		SPR_JUNIOR_RC_DIAG_FLAT_TO_60_DEG_UP_CHAIN_S_N
+	},
+};
+
 static const uint32 junior_rc_track_pieces_diag_25_deg_up_to_flat[3][4] = {
 	{
 		SPR_JUNIOR_RC_DIAG_25_DEG_UP_TO_FLAT_W_E,
@@ -1461,6 +1494,21 @@ static const uint32 junior_rc_track_pieces_diag_25_deg_up_to_flat[3][4] = {
 		SPR_WATER_RC_DIAG_25_DEG_UP_TO_FLAT_CHAIN_N_S,
 		SPR_WATER_RC_DIAG_25_DEG_UP_TO_FLAT_CHAIN_E_W,
 		SPR_WATER_RC_DIAG_25_DEG_UP_TO_FLAT_CHAIN_S_N
+	},
+};
+
+static const uint32 junior_rc_track_pieces_diag_60_deg_up_to_flat[2][4] = {
+	{
+		SPR_JUNIOR_RC_DIAG_60_DEG_UP_TO_FLAT_W_E,
+		SPR_JUNIOR_RC_DIAG_60_DEG_UP_TO_FLAT_N_S,
+		SPR_JUNIOR_RC_DIAG_60_DEG_UP_TO_FLAT_E_W,
+		SPR_JUNIOR_RC_DIAG_60_DEG_UP_TO_FLAT_S_N
+	},
+	{
+		SPR_JUNIOR_RC_DIAG_60_DEG_UP_TO_FLAT_CHAIN_W_E,
+		SPR_JUNIOR_RC_DIAG_60_DEG_UP_TO_FLAT_CHAIN_N_S,
+		SPR_JUNIOR_RC_DIAG_60_DEG_UP_TO_FLAT_CHAIN_E_W,
+		SPR_JUNIOR_RC_DIAG_60_DEG_UP_TO_FLAT_CHAIN_S_N
 	},
 };
 
@@ -1506,6 +1554,21 @@ static const uint32 junior_rc_track_pieces_diag_flat_to_25_deg_down[3][4] = {
 	},
 };
 
+static const uint32 junior_rc_track_pieces_diag_flat_to_60_deg_down[2][4] = {
+	{
+		SPR_JUNIOR_RC_DIAG_60_DEG_UP_TO_FLAT_E_W,
+		SPR_JUNIOR_RC_DIAG_60_DEG_UP_TO_FLAT_S_N,
+		SPR_JUNIOR_RC_DIAG_60_DEG_UP_TO_FLAT_W_E,
+		SPR_JUNIOR_RC_DIAG_60_DEG_UP_TO_FLAT_N_S,
+	},
+	{
+		SPR_JUNIOR_RC_DIAG_60_DEG_UP_TO_FLAT_CHAIN_E_W,
+		SPR_JUNIOR_RC_DIAG_60_DEG_UP_TO_FLAT_CHAIN_S_N,
+		SPR_JUNIOR_RC_DIAG_60_DEG_UP_TO_FLAT_CHAIN_W_E,
+		SPR_JUNIOR_RC_DIAG_60_DEG_UP_TO_FLAT_CHAIN_N_S,
+	},
+};
+
 static const uint32 junior_rc_track_pieces_diag_25_deg_down_to_flat[3][4] = {
 	{
 		SPR_JUNIOR_RC_DIAG_FLAT_TO_25_DEG_UP_E_W,
@@ -1524,6 +1587,21 @@ static const uint32 junior_rc_track_pieces_diag_25_deg_down_to_flat[3][4] = {
 		SPR_WATER_RC_DIAG_FLAT_TO_25_DEG_UP_CHAIN_S_N,
 		SPR_WATER_RC_DIAG_FLAT_TO_25_DEG_UP_CHAIN_W_E,
 		SPR_WATER_RC_DIAG_FLAT_TO_25_DEG_UP_CHAIN_N_S,
+	},
+};
+
+static const uint32 junior_rc_track_pieces_diag_60_deg_down_to_flat[2][4] = {
+	{
+		SPR_JUNIOR_RC_DIAG_FLAT_TO_60_DEG_UP_E_W,
+		SPR_JUNIOR_RC_DIAG_FLAT_TO_60_DEG_UP_S_N,
+		SPR_JUNIOR_RC_DIAG_FLAT_TO_60_DEG_UP_W_E,
+		SPR_JUNIOR_RC_DIAG_FLAT_TO_60_DEG_UP_N_S,
+	},
+	{
+		SPR_JUNIOR_RC_DIAG_FLAT_TO_60_DEG_UP_CHAIN_E_W,
+		SPR_JUNIOR_RC_DIAG_FLAT_TO_60_DEG_UP_CHAIN_S_N,
+		SPR_JUNIOR_RC_DIAG_FLAT_TO_60_DEG_UP_CHAIN_W_E,
+		SPR_JUNIOR_RC_DIAG_FLAT_TO_60_DEG_UP_CHAIN_N_S,
 	},
 };
 
@@ -3692,6 +3770,22 @@ void junior_rc_paint_track_diag_flat_to_25_deg_up(uint8 rideIndex, uint8 trackSe
 	paint_util_set_general_support_height(height + 48, 0x20);
 }
 
+void junior_rc_paint_track_diag_flat_to_60_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, uint16 height, rct_map_element* mapElement, JUNIOR_RC_CHAINTYPE chainType)
+{
+	// There is no specific chain for the Water Coaster, use the Junior RC chain instead
+	chainType = min(1, chainType);
+
+	track_paint_util_diag_tiles_paint(1, height, direction, trackSequence, gTrackColours[SCHEME_TRACK], junior_rc_track_pieces_diag_flat_to_60_deg_up[chainType], defaultDiagTileOffsets, defaultDiagBoundLengths, 0, get_current_rotation());
+
+	if (trackSequence == 3) {
+		metal_b_supports_paint_setup((direction & 1) ? 2 : 1, junior_rc_diag_support_segment[direction], 0, height + 6, gTrackColours[SCHEME_SUPPORTS]);
+	}
+
+	sint32 blockedSegments = junior_rc_diag_blocked_segments[trackSequence];
+	paint_util_set_segment_support_height(paint_util_rotate_segments(blockedSegments, direction), 0xFFFF, 0);
+	paint_util_set_general_support_height(height + 64, 0x20);
+}
+
 void junior_rc_paint_track_diag_25_deg_up_to_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, uint16 height, rct_map_element* mapElement, JUNIOR_RC_CHAINTYPE chainType)
 {
 	track_paint_util_diag_tiles_paint(1, height, direction, trackSequence, gTrackColours[SCHEME_TRACK], junior_rc_track_pieces_diag_25_deg_up_to_flat[chainType], defaultDiagTileOffsets, defaultDiagBoundLengths, 0, get_current_rotation());
@@ -3703,6 +3797,22 @@ void junior_rc_paint_track_diag_25_deg_up_to_flat(uint8 rideIndex, uint8 trackSe
 	sint32 blockedSegments = junior_rc_diag_blocked_segments[trackSequence];
 	paint_util_set_segment_support_height(paint_util_rotate_segments(blockedSegments, direction), 0xFFFF, 0);
 	paint_util_set_general_support_height(height + 56, 0x20);
+}
+
+void junior_rc_paint_track_diag_60_deg_up_to_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, uint16 height, rct_map_element* mapElement, JUNIOR_RC_CHAINTYPE chainType)
+{
+	// There is no specific chain for the Water Coaster, use the Junior RC chain instead
+	chainType = min(1, chainType);
+
+	track_paint_util_diag_tiles_paint(1, height, direction, trackSequence, gTrackColours[SCHEME_TRACK], junior_rc_track_pieces_diag_60_deg_up_to_flat[chainType], defaultDiagTileOffsets, defaultDiagBoundLengths, 0, get_current_rotation());
+
+	if (trackSequence == 3) {
+		metal_b_supports_paint_setup((direction & 1) ? 2 : 1, junior_rc_diag_support_segment[direction], 4, height + 13, gTrackColours[SCHEME_SUPPORTS]);
+	}
+
+	sint32 blockedSegments = junior_rc_diag_blocked_segments[trackSequence];
+	paint_util_set_segment_support_height(paint_util_rotate_segments(blockedSegments, direction), 0xFFFF, 0);
+	paint_util_set_general_support_height(height + 64, 0x20);
 }
 
 void junior_rc_paint_track_diag_25_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, uint16 height, rct_map_element* mapElement, JUNIOR_RC_CHAINTYPE chainType)
@@ -3732,6 +3842,22 @@ void junior_rc_paint_track_diag_flat_to_25_deg_down(uint8 rideIndex, uint8 track
 	paint_util_set_general_support_height(height + 56, 0x20);
 }
 
+void junior_rc_paint_track_diag_flat_to_60_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, uint16 height, rct_map_element* mapElement, JUNIOR_RC_CHAINTYPE chainType)
+{
+	// There is no specific chain for the Water Coaster, use the Junior RC chain instead
+	chainType = min(1, chainType);
+
+	track_paint_util_diag_tiles_paint(1, height, direction, trackSequence, gTrackColours[SCHEME_TRACK], junior_rc_track_pieces_diag_flat_to_60_deg_down[chainType], defaultDiagTileOffsets, defaultDiagBoundLengths, 0, get_current_rotation());
+
+	if (trackSequence == 3) {
+		metal_b_supports_paint_setup((direction & 1) ? 2 : 1, junior_rc_diag_support_segment[direction], 4, height + 7, gTrackColours[SCHEME_SUPPORTS]);
+	}
+
+	sint32 blockedSegments = junior_rc_diag_blocked_segments[trackSequence];
+	paint_util_set_segment_support_height(paint_util_rotate_segments(blockedSegments, direction), 0xFFFF, 0);
+	paint_util_set_general_support_height(height + 48, 0x20);
+}
+
 void junior_rc_paint_track_diag_25_deg_down_to_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, uint16 height, rct_map_element* mapElement, JUNIOR_RC_CHAINTYPE chainType)
 {
 	track_paint_util_diag_tiles_paint(1, height, direction, trackSequence, gTrackColours[SCHEME_TRACK], junior_rc_track_pieces_diag_25_deg_down_to_flat[chainType], defaultDiagTileOffsets, defaultDiagBoundLengths, 0, get_current_rotation());
@@ -3743,6 +3869,22 @@ void junior_rc_paint_track_diag_25_deg_down_to_flat(uint8 rideIndex, uint8 track
 	sint32 blockedSegments = junior_rc_diag_blocked_segments[trackSequence];
 	paint_util_set_segment_support_height(paint_util_rotate_segments(blockedSegments, direction), 0xFFFF, 0);
 	paint_util_set_general_support_height(height + 48, 0x20);
+}
+
+void junior_rc_paint_track_diag_60_deg_down_to_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, uint16 height, rct_map_element* mapElement, JUNIOR_RC_CHAINTYPE chainType)
+{
+	// There is no specific chain for the Water Coaster, use the Junior RC chain instead
+	chainType = min(1, chainType);
+
+	track_paint_util_diag_tiles_paint(1, height, direction, trackSequence, gTrackColours[SCHEME_TRACK], junior_rc_track_pieces_diag_60_deg_down_to_flat[chainType], defaultDiagTileOffsets, defaultDiagBoundLengths, 0, get_current_rotation());
+
+	if (trackSequence == 3) {
+		metal_b_supports_paint_setup((direction & 1) ? 2 : 1, junior_rc_diag_support_segment[direction], 0, height, gTrackColours[SCHEME_SUPPORTS]);
+	}
+
+	sint32 blockedSegments = junior_rc_diag_blocked_segments[trackSequence];
+	paint_util_set_segment_support_height(paint_util_rotate_segments(blockedSegments, direction), 0xFFFF, 0);
+	paint_util_set_general_support_height(height + 56, 0x20);
 }
 
 /** rct2: 0x008AAF10 */
@@ -3766,11 +3908,23 @@ static void junior_rc_diag_flat_to_25_deg_up_paint_setup(uint8 rideIndex, uint8 
 	junior_rc_paint_track_diag_flat_to_25_deg_up(rideIndex, trackSequence, direction, height, mapElement, isChained ? JUNIOR_RC_CHAIN_FRICTION_WHEELS : JUNIOR_RC_CHAIN_NONE);
 }
 
+static void junior_rc_diag_flat_to_60_deg_up_paint_setup(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+{
+	bool isChained = track_element_is_lift_hill(mapElement);
+	junior_rc_paint_track_diag_flat_to_60_deg_up(rideIndex, trackSequence, direction, height, mapElement, isChained ? JUNIOR_RC_CHAIN_FRICTION_WHEELS : JUNIOR_RC_CHAIN_NONE);
+}
+
 /** rct2: 0x008AAF30 */
 static void junior_rc_diag_25_deg_up_to_flat_paint_setup(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
 	bool isChained = track_element_is_lift_hill(mapElement);
 	junior_rc_paint_track_diag_25_deg_up_to_flat(rideIndex, trackSequence, direction, height, mapElement, isChained ? JUNIOR_RC_CHAIN_FRICTION_WHEELS : JUNIOR_RC_CHAIN_NONE);
+}
+
+static void junior_rc_diag_60_deg_up_to_flat_paint_setup(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+{
+	bool isChained = track_element_is_lift_hill(mapElement);
+	junior_rc_paint_track_diag_60_deg_up_to_flat(rideIndex, trackSequence, direction, height, mapElement, isChained ? JUNIOR_RC_CHAIN_FRICTION_WHEELS : JUNIOR_RC_CHAIN_NONE);
 }
 
 /** rct2: 0x008AAF70 */
@@ -3787,11 +3941,23 @@ static void junior_rc_diag_flat_to_25_deg_down_paint_setup(uint8 rideIndex, uint
 	junior_rc_paint_track_diag_flat_to_25_deg_down(rideIndex, trackSequence, direction, height, mapElement, isChained ? JUNIOR_RC_CHAIN_FRICTION_WHEELS : JUNIOR_RC_CHAIN_NONE);
 }
 
+static void junior_rc_diag_flat_to_60_deg_down_paint_setup(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+{
+	bool isChained = track_element_is_lift_hill(mapElement);
+	junior_rc_paint_track_diag_flat_to_60_deg_down(rideIndex, trackSequence, direction, height, mapElement, isChained ? JUNIOR_RC_CHAIN_FRICTION_WHEELS : JUNIOR_RC_CHAIN_NONE);
+}
+
 /** rct2: 0x008AAF60 */
 static void junior_rc_diag_25_deg_down_to_flat_paint_setup(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
 	bool isChained = track_element_is_lift_hill(mapElement);
 	junior_rc_paint_track_diag_25_deg_down_to_flat(rideIndex, trackSequence, direction, height, mapElement, isChained ? JUNIOR_RC_CHAIN_FRICTION_WHEELS : JUNIOR_RC_CHAIN_NONE);
+}
+
+static void junior_rc_diag_60_deg_down_to_flat_paint_setup(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+{
+	bool isChained = track_element_is_lift_hill(mapElement);
+	junior_rc_paint_track_diag_60_deg_down_to_flat(rideIndex, trackSequence, direction, height, mapElement, isChained ? JUNIOR_RC_CHAIN_FRICTION_WHEELS : JUNIOR_RC_CHAIN_NONE);
 }
 
 /** rct2: 0x008AB1C0 */
@@ -4876,6 +5042,15 @@ TRACK_PAINT_FUNCTION get_track_paint_function_junior_rc(sint32 trackType, sint32
 
 	case TRACK_ELEM_BOOSTER:
 		return junior_rc_brake_paint_setup;
+
+	case TRACK_ELEM_DIAG_60_DEG_DOWN_TO_FLAT:
+		return junior_rc_diag_60_deg_down_to_flat_paint_setup;
+	case TRACK_ELEM_DIAG_60_DEG_UP_TO_FLAT:
+		return junior_rc_diag_60_deg_up_to_flat_paint_setup;
+	case TRACK_ELEM_DIAG_FLAT_TO_60_DEG_UP:
+		return junior_rc_diag_flat_to_60_deg_up_paint_setup;
+	case TRACK_ELEM_DIAG_FLAT_TO_60_DEG_DOWN:
+		return junior_rc_diag_flat_to_60_deg_down_paint_setup;
 	}
 	return NULL;
 }
