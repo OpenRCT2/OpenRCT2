@@ -254,6 +254,7 @@ static void window_view_clipping_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	x = w->x + w->widgets[WIDX_CLIP_HEIGHT_VALUE].left + 1;
 	y = w->y + w->widgets[WIDX_CLIP_HEIGHT_VALUE].top;
 
+	fixed16_1dp clipHeightValueInUnits;
 	fixed32_2dp clipHeightValueInMeters;
 	fixed16_1dp clipHeightValueInFeet;
 	sint32 clipHeightRawValue = (sint32)gClipHeight;
@@ -264,18 +265,27 @@ static void window_view_clipping_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		break;
 
 	case DISPLAY_UNITS:
-		// Print the value in the configured measurement units.
-		switch (gConfigGeneral.measurement_format) {
-		case MEASUREMENT_FORMAT_METRIC:
-		case MEASUREMENT_FORMAT_SI:
-			clipHeightValueInMeters = (fixed32_2dp)(FIXED_2DP(gClipHeight, 0) / 2 * 1.5f - FIXED_2DP(10, 50));
-			gfx_draw_string_left(dpi, STR_UNIT2DP_SUFFIX_METRES, &clipHeightValueInMeters, w->colours[0], x, y);
-			break;
-		case MEASUREMENT_FORMAT_IMPERIAL:
-		default:
-			clipHeightValueInFeet = (fixed16_1dp)(FIXED_1DP(gClipHeight, 0) / 2.0f * 5 - FIXED_1DP(35, 0));
-			gfx_draw_string_left(dpi, STR_UNIT1DP_SUFFIX_FEET, &clipHeightValueInFeet, w->colours[0], x, y);
-			break;
+		// Print the value in the configured height label type:
+		if (gConfigGeneral.show_height_as_units == 1) {
+			// Height label is Units.
+			clipHeightValueInUnits = (fixed16_1dp)(FIXED_1DP(gClipHeight, 0) / 2 - FIXED_1DP(7, 0));
+			gfx_draw_string_left(dpi, STR_UNIT1DP_NO_SUFFIX, &clipHeightValueInUnits, w->colours[0], x, y); // Printing the value in Height Units.
+		}
+		else {
+			// Height label is Real Values.
+			// Print the value in the configured measurement units.
+			switch (gConfigGeneral.measurement_format) {
+			case MEASUREMENT_FORMAT_METRIC:
+			case MEASUREMENT_FORMAT_SI:
+				clipHeightValueInMeters = (fixed32_2dp)(FIXED_2DP(gClipHeight, 0) / 2 * 1.5f - FIXED_2DP(10, 50));
+				gfx_draw_string_left(dpi, STR_UNIT2DP_SUFFIX_METRES, &clipHeightValueInMeters, w->colours[0], x, y);
+				break;
+			case MEASUREMENT_FORMAT_IMPERIAL:
+			default:
+				clipHeightValueInFeet = (fixed16_1dp)(FIXED_1DP(gClipHeight, 0) / 2.0f * 5 - FIXED_1DP(35, 0));
+				gfx_draw_string_left(dpi, STR_UNIT1DP_SUFFIX_FEET, &clipHeightValueInFeet, w->colours[0], x, y);
+				break;
+			}
 		}
 	}
 }
