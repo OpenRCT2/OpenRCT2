@@ -15,8 +15,8 @@
 #pragma endregion
 
 #include "../config.h"
-#include "../game.h"
 #include "../drawing/drawing.h"
+#include "../game.h"
 #include "../input.h"
 #include "../interface/themes.h"
 #include "../interface/viewport.h"
@@ -27,6 +27,7 @@
 #include "../peep/staff.h"
 #include "../rct2.h"
 #include "../sprites.h"
+#include "../util/util.h"
 #include "../world/footpath.h"
 #include "../world/sprite.h"
 #include "dropdown.h"
@@ -706,5 +707,12 @@ void window_staff_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32
 
 static uint8 window_staff_list_get_random_entertainer_costume()
 {
-	return ENTERTAINER_COSTUME_PANDA;
+	uint8 result = ENTERTAINER_COSTUME_PANDA;
+	uint8 costumeList[ENTERTAINER_COSTUME_COUNT];
+	sint32 numCostumes = staff_get_available_entertainer_costume_list(costumeList);
+	if (numCostumes > 0)
+	{
+		result = util_rand() % numCostumes;
+	}
+	return result;
 }

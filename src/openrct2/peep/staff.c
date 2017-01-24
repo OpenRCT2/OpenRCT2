@@ -16,16 +16,17 @@
 
 #include "../config.h"
 #include "../game.h"
-#include "../scenario/scenario.h"
 #include "../interface/viewport.h"
 #include "../localisation/date.h"
-#include "../localisation/string_ids.h"
 #include "../localisation/localisation.h"
+#include "../localisation/string_ids.h"
 #include "../management/finance.h"
 #include "../network/network.h"
+#include "../scenario/scenario.h"
 #include "../util/util.h"
-#include "../world/sprite.h"
 #include "../world/footpath.h"
+#include "../world/scenery.h"
+#include "../world/sprite.h"
 #include "peep.h"
 #include "staff.h"
 
@@ -174,6 +175,14 @@ static money32 staff_hire_new_staff_member(uint8 staff_type, uint8 flags, sint16
 			// Invalid entertainer costume
 			return MONEY32_UNDEFINED;
 		}
+
+		uint32 availableCostumes = staff_get_available_entertainer_costumes();
+		if (!(availableCostumes & (1 << entertainerType)))
+		{
+			// Entertainer costume unavailable
+			return MONEY32_UNDEFINED;
+		}
+
 		staff_type = STAFF_TYPE_ENTERTAINER;
 	}
 
@@ -1413,4 +1422,34 @@ bool staff_set_colour(uint8 staffType, colour_t value)
 		return false;
 	}
 	return true;
+}
+
+uint32 staff_get_available_entertainer_costumes()
+{
+	init_scenery();
+
+	uint32 entertainerCostumes = 0;
+	for (sint32 i = 0; i < 19; i++) {
+		if (window_scenery_tab_entries[i][0] != -1) {
+			rct_scenery_set_entry* scenery_entry = get_scenery_group_entry(i);
+			entertainerCostumes |= scenery_entry->entertainer_costumes;
+		}
+	}
+
+	// For some reason the flags are +4 from the actual costume IDs
+	entertainerCostumes <<= 4;
+
+	return entertainerCostumes;
+}
+
+sint32 staff_get_available_entertainer_costume_list(uint8 * costumeList)
+{
+	uint32 availableCostumes = staff_get_available_entertainer_costumes();
+	sint32 numCostumes = 0;
+	for (uint8 i = 0; i < ENTERTAINER_COSTUME_COUNT; i++) {
+		if (availableCostumes & (1 << i)) {
+			costumeList[numCostumes++] = i;
+		}
+	}
+	return numCostumes;
 }
