@@ -5399,7 +5399,7 @@ static sint32 peep_update_walking_find_bench(rct_peep* peep){
 	rct_map_element* map_element = map_get_first_element_at(peep->next_x / 32, peep->next_y / 32);
 
 	for (;; map_element++){
-		if (map_element_get_type(map_element) == MAP_ELEMENT_TYPE_PATH){
+		if (map_element_get_type(map_element) == MAP_ELEMENT_TYPE_PATH) {
 			if (peep->next_z == map_element->base_height)break;
 		}
 		if (map_element_is_last_for_tile(map_element)){
@@ -8699,6 +8699,7 @@ static uint8 footpath_element_next_in_direction(sint16 x, sint16 y, sint16 z, rc
 	y += TileDirectionDelta[chosenDirection].y;
 	nextMapElement = map_get_first_element_at(x / 32, y / 32);
 	do {
+		if (nextMapElement->flags & MAP_ELEMENT_FLAG_GHOST) continue;
 		if (map_element_get_type(nextMapElement) != MAP_ELEMENT_TYPE_PATH) continue;
 		if (!is_valid_path_z_and_direction(nextMapElement, z, chosenDirection)) continue;
 		if (footpath_element_is_wide(nextMapElement)) return PATH_SEARCH_WIDE;
@@ -10419,10 +10420,10 @@ static sint32 sub_693C9E(rct_peep *peep)
 			continue;
 		if (top_z < mapElement->base_height)
 			continue;
+		if (mapElement->flags & MAP_ELEMENT_FLAG_GHOST)
+			continue;
 
 		if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_PATH){
-			if ((mapElement->flags & MAP_ELEMENT_FLAG_GHOST))
-				continue;
 			if (peep_interact_with_path(peep, x, y, mapElement))
 				return 1;
 		}
