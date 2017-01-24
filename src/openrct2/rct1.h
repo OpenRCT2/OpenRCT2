@@ -1166,6 +1166,7 @@ enum {
 };
 
 #define RCT1_MAX_STATIONS 4
+#define RCT1_MAX_TRAINS_PER_RIDE 12
 
 extern const uint8 gRideCategories[0x60];
 

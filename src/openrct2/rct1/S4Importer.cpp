@@ -776,7 +776,7 @@ private:
         }
         else
         {
-            for (int i = 0; i < 12; i++)
+            for (int i = 0; i < RCT1_MAX_TRAINS_PER_RIDE; i++)
             {
                 // RCT1 had no third colour
                 RCT1::RCT1VehicleColourSchemeCopyDescriptor colourSchemeCopyDescriptor = RCT1::GetColourSchemeCopyDescriptor(src->vehicle_type);
@@ -892,7 +892,7 @@ private:
             if (_s4.sprites[i].unknown.sprite_identifier == SPRITE_IDENTIFIER_VEHICLE)
             {
                 rct1_vehicle * srcVehicle = &_s4.sprites[i].vehicle;
-                if (srcVehicle->x != (sint16)0x8000)
+                if (srcVehicle->x != SPRITE_LOCATION_NULL)
                 {
                     rct_vehicle * vehicle = (rct_vehicle *)create_sprite(SPRITE_IDENTIFIER_VEHICLE);
                     spriteIndexMap[i] = vehicle->sprite_index;
