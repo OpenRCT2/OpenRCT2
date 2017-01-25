@@ -552,10 +552,10 @@ private:
         dst->name = 0;
         if (is_user_string_id(src->name))
         {
-            const char * rideName = GetUserString(src->name);
-            if (rideName[0] != 0)
+            std::string rideName = GetUserString(src->name);
+            if (!rideName.empty())
             {
-                rct_string_id rideNameStringId = user_string_allocate(4, rideName);
+                rct_string_id rideNameStringId = user_string_allocate(4, rideName.c_str());
                 if (rideNameStringId != 0)
                 {
                     dst->name = rideNameStringId;
@@ -1172,10 +1172,10 @@ private:
         dst->name_string_idx = src->name_string_idx;
         if (is_user_string_id(src->name_string_idx))
         {
-            const char * peepName = GetUserString(src->name_string_idx);
-            if (peepName[0] != 0)
+            std::string peepName = GetUserString(src->name_string_idx);
+            if (!peepName.empty())
             {
-                rct_string_id peepNameStringId = user_string_allocate(4, peepName);
+                rct_string_id peepNameStringId = user_string_allocate(4, peepName.c_str());
                 if (peepNameStringId != 0)
                 {
                     dst->name_string_idx = peepNameStringId;
@@ -1748,17 +1748,17 @@ private:
 
     void ImportParkName()
     {
-        const char * parkName = _s4.scenario_name;
+        std::string parkName = std::string(_s4.scenario_name);
         if (is_user_string_id((rct_string_id)_s4.park_name_string_index))
         {
-            const char * userString = GetUserString(_s4.park_name_string_index);
-            if (userString[0] != '\0')
+            std::string userString = GetUserString(_s4.park_name_string_index);
+            if (!userString.empty())
             {
                 parkName = userString;
             }
         }
 
-        rct_string_id stringId = user_string_allocate(4, parkName);
+        rct_string_id stringId = user_string_allocate(4, parkName.c_str());
         if (stringId != 0)
         {
             gParkName = stringId;
@@ -2213,10 +2213,10 @@ private:
         dst->string_idx = STR_DEFAULT_SIGN;
         if (is_user_string_id(src->string_idx))
         {
-            const char * bannerText = GetUserString(src->string_idx);
-            if (!String::IsNullOrEmpty(bannerText))
+            std::string bannerText = GetUserString(src->string_idx);
+            if (!bannerText.empty())
             {
-                rct_string_id bannerTextStringId = user_string_allocate(128, bannerText);
+                rct_string_id bannerTextStringId = user_string_allocate(128, bannerText.c_str());
                 if (bannerTextStringId != 0)
                 {
                     dst->string_idx = bannerTextStringId;
@@ -2349,9 +2349,12 @@ private:
         }
     }
 
-    const char * GetUserString(rct_string_id stringId)
+    std::string GetUserString(rct_string_id stringId)
     {
-        return _s4.string_table[(stringId - 0x8000) % 1024];
+        utf8 buffer[128] = { 0 };
+        const char * originalString = _s4.string_table[(stringId - 0x8000) % 1024];
+        rct2_to_utf8(buffer, originalString);
+        return std::string(buffer);
     }
 };
 
