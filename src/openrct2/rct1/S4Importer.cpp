@@ -1871,7 +1871,7 @@ private:
         String::Set(gS6Info.name, sizeof(gS6Info.name), _s4.scenario_name);
         String::Set(gS6Info.details, sizeof(gS6Info.details), "");
 
-        sint32 scNumber = GetSCNumber();
+        sint32 scNumber = _s4.scenario_slot_index;
         if (scNumber != -1)
         {
             source_desc sourceDesc;
@@ -2332,36 +2332,6 @@ private:
         }
     }
 
-    sint32 GetSCNumber()
-    {
-        const utf8 * fileName = Path::GetFileName(_s4Path);
-        if (tolower(fileName[0]) == 's' && tolower(fileName[1]) == 'c') {
-            constexpr size_t maxDigits = 7;
-            utf8 digitBuffer[maxDigits + 1];
-            utf8 * dst = digitBuffer;
-            const utf8 * src = fileName + 2;
-            for (size_t i = 0; i < maxDigits && *src != '.'; i++)
-            {
-                *dst++ = *src++;
-            }
-            *dst++ = 0;
-
-            if (digitBuffer[0] == '0' && digitBuffer[1] == '\0')
-            {
-                return 0;
-            }
-            else
-            {
-                sint32 digits = atoi(digitBuffer);
-                return digits == 0 ? -1 : digits;
-            }
-        }
-        else
-        {
-            return -1;
-        }
-    }
-
     std::string GetUserString(rct_string_id stringId)
     {
         utf8 buffer[128] = { 0 };
@@ -2372,10 +2342,9 @@ private:
 
     void FixLandOwnership()
     {
-        sint32 scNumber = GetSCNumber();
         rct_map_element * currentElement;
 
-        switch(scNumber)
+        switch(_s4.scenario_slot_index)
         {
         case SC_KATIES_DREAMLAND:
             currentElement = map_get_surface_element_at(74, 70);
