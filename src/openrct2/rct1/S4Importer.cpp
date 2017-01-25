@@ -928,9 +928,9 @@ private:
 
     void ImportVehicle(rct_vehicle * dst, rct1_vehicle * src)
     {
-        char buf[64];
-        sprintf(buf, "%d", src->vehicle_type);
-        log_error(buf);
+        // char buf[64];
+        // sprintf(buf, "%d", src->vehicle_type);
+        // log_error(buf);
 
         uint8 vehicleEntryIndex = RCT1::GetVehicleSubEntryIndex(src->vehicle_type);
 
@@ -1371,13 +1371,12 @@ private:
                 dst->sprite_identifier = src->sprite_identifier;
                 dst->misc_identifier = src->misc_identifier;
                 dst->flags = src->flags;
-                dst->x = src->x;
-                dst->y = src->y;
-                dst->z = src->z;
                 dst->sprite_direction = src->sprite_direction;
                 dst->sprite_width = src->sprite_width;
                 dst->sprite_height_negative = src->sprite_height_negative;
                 dst->sprite_height_positive = src->sprite_height_positive;
+
+                sprite_move(src->x, src->y, src->z, (rct_sprite*)dst);
 
                 switch (src->misc_identifier) {
                 case SPRITE_MISC_STEAM_PARTICLE:
