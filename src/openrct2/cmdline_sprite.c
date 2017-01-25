@@ -607,22 +607,27 @@ sint32 cmdline_for_sprite(const char **argv, sint32 argc)
 
 		const char *spriteFilePath = argv[1];
 		const char *imagePath = argv[2];
-		sint16 x_offset=0;
-		sint16 y_offset=0;
+		sint16 x_offset = 0;
+		sint16 y_offset = 0;
 
-			if(argc == 5) {
+		if(argc == 5)
+		{
 			char* endptr;
-			x_offset=strtol(argv[3],&endptr,0);
-				if(*endptr!=0) {
+
+			x_offset = strtol(argv[3], &endptr, 0);
+			if (*endptr != 0)
+			{
 				fprintf(stderr, "X offset must be an integer\n");
 				return -1;
-				}
-			y_offset=strtol(argv[4],&endptr,0);
-				if(*endptr!=0) {
+			}
+
+			y_offset = strtol(argv[4], &endptr, 0);
+			if (*endptr != 0)
+			{
 				fprintf(stderr, "Y offset must be an integer\n");
 				return -1;
-				}
 			}
+		}
 
 		rct_g1_element spriteElement;
 		uint8 *buffer;
@@ -667,16 +672,18 @@ sint32 cmdline_for_sprite(const char **argv, sint32 argc)
 		json_error_t error;
 		json_t* sprite_list=json_load_file(spriteDescriptionPath, JSON_REJECT_DUPLICATES, &error);
 		
-			if(sprite_list == NULL) {
-				fprintf(stderr,"Error parsing sprite description file: %s at line %d column %d\n",error.text,error.line,error.column);
-				return -1;
-			}
+		if (sprite_list == NULL)
+		{
+			fprintf(stderr, "Error parsing sprite description file: %s at line %d column %d\n", error.text, error.line, error.column);
+			return -1;
+		}
 
-			if(!json_is_array(sprite_list)) {
-				fprintf(stderr,"Error: expected array\n");
-				json_decref(sprite_list);
-				return -1;
-			}
+		if (!json_is_array(sprite_list))
+		{
+			fprintf(stderr, "Error: expected array\n");
+			json_decref(sprite_list);
+			return -1;
+		}
 
 		bool silent = (argc >= 4 && strcmp(argv[3], "silent") == 0);
 
@@ -689,68 +696,78 @@ sint32 cmdline_for_sprite(const char **argv, sint32 argc)
 		size_t i;
 		json_t* sprite_description;
 
-		json_array_foreach(sprite_list,i,sprite_description) {
-				if(!json_is_object(sprite_description)) {
-					fprintf(stderr,"Error: expected object for sprite %lu\n",(unsigned long)i);
-					json_decref(sprite_list);
-					return -1;
-				}
+		json_array_foreach(sprite_list, i, sprite_description)
+		{
+			if(!json_is_object(sprite_description))
+			{
+				fprintf(stderr, "Error: expected object for sprite %lu\n", (unsigned long)i);
+				json_decref(sprite_list);
+				return -1;
+			}
 			
-			json_t* path=json_object_get(sprite_description,"path");
-				if(!path || !json_is_string(path)) {
-					fprintf(stderr,"Error: no path provided for sprite %lu\n",(unsigned long)i);
-					json_decref(sprite_list);
-					return -1;			
-				}
+			json_t* path = json_object_get(sprite_description,"path");
+			if(!path || !json_is_string(path))
+			{
+				fprintf(stderr, "Error: no path provided for sprite %lu\n", (unsigned long)i);
+				json_decref(sprite_list);
+				return -1;
+			}
 			//Get x and y offsets, if present
-			json_t* x_offset=json_object_get(sprite_description,"x_offset");
-			json_t* y_offset=json_object_get(sprite_description,"y_offset");
+			json_t* x_offset = json_object_get(sprite_description, "x_offset");
+			json_t* y_offset = json_object_get(sprite_description, "y_offset");
 
 			
 			//Resolve absolute sprite path
-			char* imagePath=platform_get_absolute_path(json_string_value(path),directoryPath);
+			char* imagePath = platform_get_absolute_path(json_string_value(path), directoryPath);
 
 			rct_g1_element spriteElement;
 			uint8 *buffer;
 			int bufferLength;
-				if (!sprite_file_import(imagePath, x_offset==NULL ? 0 : json_integer_value(x_offset), y_offset==NULL ? 0 : json_integer_value(y_offset), &spriteElement, &buffer, &bufferLength, gSpriteMode)) {
-					fprintf(stderr, "Could not import image file: %s\nCanceling\n", imagePath);
-					json_decref(sprite_list);
-					return -1;
-				}
+
+			if (!sprite_file_import(imagePath, x_offset==NULL ? 0 : json_integer_value(x_offset), y_offset==NULL ? 0 : json_integer_value(y_offset), &spriteElement, &buffer, &bufferLength, gSpriteMode))
+			{
+				fprintf(stderr, "Could not import image file: %s\nCanceling\n", imagePath);
+				json_decref(sprite_list);
+				return -1;
+			}
+
 			free(imagePath);
 
-				if (!sprite_file_open(spriteFilePath)) {
-					fprintf(stderr, "Unable to open sprite file: %s\nCanceling\n", spriteFilePath);
-					json_decref(sprite_list);
-					return -1;
-				}
-
-				spriteFileHeader.num_entries++;
-				spriteFileHeader.total_size += bufferLength;
-				spriteFileEntries = realloc(spriteFileEntries, spriteFileHeader.num_entries * sizeof(rct_g1_element));
-
-				sprite_entries_make_relative();
-				spriteFileData = realloc(spriteFileData, spriteFileHeader.total_size);
-				sprite_entries_make_absolute();
-
-				spriteFileEntries[spriteFileHeader.num_entries - 1] = spriteElement;
-				memcpy(spriteFileData + (spriteFileHeader.total_size - bufferLength), buffer, bufferLength);
-				spriteFileEntries[spriteFileHeader.num_entries - 1].offset = spriteFileData + (spriteFileHeader.total_size - bufferLength);
-
-				free(buffer);
-
-				if (!sprite_file_save(spriteFilePath)) {
-					fprintf(stderr, "Could not save sprite file: %s\nCanceling\n", imagePath);
-					json_decref(sprite_list);
-					return -1;
-				}
-				if (!silent)
-					fprintf(stdout, "Added: %s\n", imagePath);
-				sprite_file_close();
-
-
+			if (!sprite_file_open(spriteFilePath))
+			{
+				fprintf(stderr, "Unable to open sprite file: %s\nCanceling\n", spriteFilePath);
+				json_decref(sprite_list);
+				return -1;
 			}
+
+			spriteFileHeader.num_entries++;
+			spriteFileHeader.total_size += bufferLength;
+			spriteFileEntries = realloc(spriteFileEntries, spriteFileHeader.num_entries * sizeof(rct_g1_element));
+
+			sprite_entries_make_relative();
+			spriteFileData = realloc(spriteFileData, spriteFileHeader.total_size);
+			sprite_entries_make_absolute();
+
+			spriteFileEntries[spriteFileHeader.num_entries - 1] = spriteElement;
+			memcpy(spriteFileData + (spriteFileHeader.total_size - bufferLength), buffer, bufferLength);
+			spriteFileEntries[spriteFileHeader.num_entries - 1].offset = spriteFileData + (spriteFileHeader.total_size - bufferLength);
+
+			free(buffer);
+
+			if (!sprite_file_save(spriteFilePath))
+			{
+				fprintf(stderr, "Could not save sprite file: %s\nCanceling\n", imagePath);
+				json_decref(sprite_list);
+				return -1;
+			}
+
+			if (!silent)
+				fprintf(stdout, "Added: %s\n", imagePath);
+
+			sprite_file_close();
+
+		}
+
 		json_decref(sprite_list);
 		free(directoryPath);
 		

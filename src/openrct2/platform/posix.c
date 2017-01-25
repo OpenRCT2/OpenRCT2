@@ -54,7 +54,8 @@ sint32 main(sint32 argc, const char **argv)
 	core_init();
 
 	sint32 exitCode = cmdline_run(argv, argc);
-	if (exitCode == 1) {
+	if (exitCode == 1)
+	{
 		openrct2_launch();
 		exitCode = gExitCode;
 	}
@@ -264,11 +265,14 @@ char* platform_get_absolute_path(const char* relative_path,const char* base_path
 {
 	char path[MAX_PATH];
 	
-		if(base_path!=NULL) {
-			snprintf(path,MAX_PATH,"%s/%s",base_path,relative_path);
-		} else {
-			safe_strcpy(path,base_path,MAX_PATH);
-		}
+	if (base_path != NULL)
+	{
+		snprintf(path, MAX_PATH, "%s/%s", base_path, relative_path);
+	}
+	else
+	{
+		safe_strcpy(path, base_path, MAX_PATH);
+	}
 	return realpath(path,NULL);
 }
 

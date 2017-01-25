@@ -167,7 +167,7 @@ bool platform_original_game_data_exists(const utf8 *path);
 time_t platform_file_get_modified_time(const utf8* path);
 bool platform_ensure_directory_exists(const utf8 *path);
 bool platform_directory_delete(const utf8 *path);
-char* platform_get_absolute_path(const char* relative_path,const char* base_path);
+char* platform_get_absolute_path(const char* relative_path, const char* base_path);
 bool platform_lock_single_instance();
 sint32 platform_enumerate_files_begin(const utf8 *pattern);
 bool platform_enumerate_files_next(sint32 handle, file_info *outFileInfo);

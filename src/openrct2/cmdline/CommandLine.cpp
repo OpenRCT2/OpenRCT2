@@ -571,7 +571,7 @@ extern "C"
 
         if (command == nullptr)
         {
-        return EXITCODE_FAIL;
+            return EXITCODE_FAIL;
         }
 
         if (command->Options != nullptr)
