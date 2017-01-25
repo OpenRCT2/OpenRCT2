@@ -1275,7 +1275,7 @@ static money32 track_place(sint32 rideIndex, sint32 type, sint32 originX, sint32
 			ride->cable_lift_y = y;
 			ride->cable_lift_z = baseZ;
 			break;
-		case 0xD8:
+		case TRACK_ELEM_BLOCK_BRAKES:
 			ride->num_block_brakes++;
 			ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_OPERATING;
 			ride->mode = RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED;

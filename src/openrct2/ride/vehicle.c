@@ -5987,7 +5987,7 @@ static void update_velocity(rct_vehicle *vehicle)
 	_vehicleVelocityF64E0C = (nextVelocity >> 10) * 42;
 }
 
-static void vehicle_update_block_breaks_open_previous_section(rct_vehicle *vehicle, rct_map_element *mapElement)
+static void vehicle_update_block_brakes_open_previous_section(rct_vehicle *vehicle, rct_map_element *mapElement)
 {
 	sint32 x = vehicle->track_x;
 	sint32 y = vehicle->track_y;
@@ -7325,7 +7325,7 @@ static bool vehicle_update_track_motion_forwards_get_new_track(rct_vehicle *vehi
 				}
 			}
 			map_invalidate_element(vehicle->track_x, vehicle->track_z, mapElement);
-			vehicle_update_block_breaks_open_previous_section(vehicle, mapElement);
+			vehicle_update_block_brakes_open_previous_section(vehicle, mapElement);
 		}
 	}
 
