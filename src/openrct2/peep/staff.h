@@ -88,5 +88,7 @@ void staff_set_patrol_area(sint32 staffIndex, sint32 x, sint32 y, bool value);
 void staff_toggle_patrol_area(sint32 staffIndex, sint32 x, sint32 y);
 colour_t staff_get_colour(uint8 staffType);
 bool staff_set_colour(uint8 staffType, colour_t value);
+uint32 staff_get_available_entertainer_costumes();
+sint32 staff_get_available_entertainer_costume_list(uint8 * costumeList);
 
 #endif

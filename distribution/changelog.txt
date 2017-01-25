@@ -1,12 +1,13 @@
 0.0.6 (in development)
 ------------------------------------------------------------------------
-- Feature: Allow entertainers' costume changes even in absence of required scenery
-- Feature: FreeBSD support
-- Feature: Allow loading of parks from URLs
-- Feature: Add boosters (from RCT1 and RCTC) [#4963]
-- Feature: Add paint Z clipping [#4673]
-- Improved: Checksum calculations speeded up
-- Improved: Pathfinding [#4847]
+- Feature: [#3355] Allow loading of parks from URLs.
+- Feature: [#4673] Add paint Z clipping.
+- Feature: [#4901] Allow entertainers' costume changes even in absence of required scenery.
+- Feature: [#4916] FreeBSD support.
+- Feature: [#4963] Add boosters (from RCT1 and RCTC).
+- Feature: [#5113] Entertainers are now hired with a random costume.
+- Improved: [#4847] Guest / staff pathfinding.
+- Improved: [#4938] Checksum calculations speeded up.
 - Improved: Guests and staff are now imported when loading SC4 / SV4 parks.
 - Fix: [#4571] Only start autosave timer after update or game command.
 - Fix: [#4584] Junior Coaster diagonal flat-to-steep slopes not drawn.
@@ -15,6 +16,7 @@
 - Fix: [#4951] Scenarios are not recorded as completed from a saved game.
 - Fix: [#4968] Completing a scenario does not save the name that is entered.
 - Fix: [#4996] Objects unloaded after loading landscape.
+- Fix: [#5114] Some entertainer costumes never select-able.
 
 0.0.5 (2016-12-27)
 ------------------------------------------------------------------------

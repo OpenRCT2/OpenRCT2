@@ -15,8 +15,8 @@
 #pragma endregion
 
 #include "../config.h"
-#include "../game.h"
 #include "../drawing/drawing.h"
+#include "../game.h"
 #include "../input.h"
 #include "../interface/themes.h"
 #include "../interface/viewport.h"
@@ -27,6 +27,7 @@
 #include "../peep/staff.h"
 #include "../rct2.h"
 #include "../sprites.h"
+#include "../util/util.h"
 #include "../world/footpath.h"
 #include "../world/sprite.h"
 #include "dropdown.h"
@@ -132,6 +133,8 @@ static uint16 _window_staff_list_selected_type_count = 0;
 static sint32 _windowStaffListHighlightedIndex;
 static sint32 _windowStaffListSelectedTab;
 
+static uint8 window_staff_list_get_random_entertainer_costume();
+
 typedef struct staff_naming_convention
 {
 	rct_string_id plural;
@@ -217,8 +220,16 @@ static void window_staff_list_mouseup(rct_window *w, sint32 widgetIndex)
 		window_close(w);
 		break;
 	case WIDX_STAFF_LIST_HIRE_BUTTON:
-		hire_new_staff_member(_windowStaffListSelectedTab);
+	{
+		sint32 staffType = _windowStaffListSelectedTab;
+		if (staffType == STAFF_TYPE_ENTERTAINER)
+		{
+			uint8 costume = window_staff_list_get_random_entertainer_costume();
+			staffType += costume;
+		}
+		hire_new_staff_member(staffType);
 		break;
+	}
 	case WIDX_STAFF_LIST_SHOW_PATROL_AREA_BUTTON:
 		if (!tool_set(w, WIDX_STAFF_LIST_SHOW_PATROL_AREA_BUTTON, 12)) {
 			show_gridlines();
@@ -692,4 +703,17 @@ void window_staff_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32
 			i++;
 		}
 	}
+}
+
+static uint8 window_staff_list_get_random_entertainer_costume()
+{
+	uint8 result = ENTERTAINER_COSTUME_PANDA;
+	uint8 costumeList[ENTERTAINER_COSTUME_COUNT];
+	sint32 numCostumes = staff_get_available_entertainer_costume_list(costumeList);
+	if (numCostumes > 0)
+	{
+		sint32 index = util_rand() % numCostumes;
+		result = costumeList[index];
+	}
+	return result;
 }

@@ -1296,32 +1296,13 @@ void window_staff_options_mousedown(sint32 widgetIndex, rct_window* w, rct_widge
 		return;
 	}
 
-	init_scenery();
-
-	uint32 entertainerCostumes = 0;
-	for (sint32 i = 0; i < 19; i++) {
-		if (window_scenery_tab_entries[i][0] != -1) {
-			rct_scenery_set_entry* scenery_entry = get_scenery_group_entry(i);
-			entertainerCostumes |= scenery_entry->entertainer_costumes;
-		}
-	}
-
-	uint8 *costumep = _availableCostumes;
-	uint16 numCostumes = 0;
-	for (uint8 i = 0; i < ENTERTAINER_COSTUME_COUNT; i++) {
-		if (entertainerCostumes & (1 << i)) {
-			// For some reason the flags are +4 from the actual costume IDs
-			*costumep++ = (i - 4);
-			numCostumes++;
-		}
-	}
-
 	rct_peep* peep = GET_PEEP(w->number);
 	sint32 itemsChecked = 0;
 	//This will be moved below where Items Checked is when all
 	//of dropdown related functions are finished. This prevents
 	//the dropdown from not working on first click.
-	for (sint32 i = 0; i < numCostumes; ++i){
+	sint32 numCostumes = staff_get_available_entertainer_costume_list(_availableCostumes);
+	for (sint32 i = 0; i < numCostumes; i++) {
 		uint8 costume = _availableCostumes[i];
 		if (costume == peep->sprite_type) {
 			itemsChecked = 1 << i;
