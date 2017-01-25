@@ -541,7 +541,12 @@ private:
         }
 
         rct_ride_entry * rideEntry = get_ride_entry(dst->subtype);
-        Guard::Assert(rideEntry != nullptr && rideEntry != (rct_ride_entry*)-1);
+        // This can happen with hacked parks
+        if (rideEntry == nullptr || rideEntry == (rct_ride_entry*)-1)
+        {
+            dst = nullptr;
+            return;
+        }
 
         // Ride name
         dst->name = 0;
