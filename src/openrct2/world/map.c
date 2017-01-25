@@ -5616,8 +5616,8 @@ void game_command_modify_tile(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx
 	{
 	case TILE_INSPECTOR_ANY_REMOVE:
 	{
-		const sint16 index = *edx;
-		*ebx = tile_inspector_remove_element_at(x, y, index, flags);
+		const sint16 element_index = *edx;
+		*ebx = tile_inspector_remove_element_at(x, y, element_index, flags);
 		return;
 	}
 	case TILE_INSPECTOR_ANY_SWAP:
@@ -5629,14 +5629,14 @@ void game_command_modify_tile(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx
 	}
 	case TILE_INSPECTOR_ANY_INSERT_CORRUPT:
 	{
-		const sint16 index = *edx;
-		*ebx = tile_inspector_insert_corrupt_at(x, y, index, flags);
+		const sint16 element_index = *edx;
+		*ebx = tile_inspector_insert_corrupt_at(x, y, element_index, flags);
 		return;
 	}
 	case TILE_INSPECTOR_ANY_ROTATE:
 	{
-		const sint16 index = *edx;
-		*ebx = tile_inspector_rotate_element_at(x, y, index, flags);
+		const sint16 element_index = *edx;
+		*ebx = tile_inspector_rotate_element_at(x, y, element_index, flags);
 		return;
 	}
 	case TILE_INSPECTOR_ANY_PASTE:
@@ -5651,6 +5651,13 @@ void game_command_modify_tile(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx
 	case TILE_INSPECTOR_ANY_SORT:
 	{
 		*ebx = tile_inspector_sort_elements_at(x, y, flags);
+		return;
+	}
+	case TILE_INSPECTOR_ANY_BASE_HEIGHT_OFFSET:
+	{
+		const sint16 element_index = *edx;
+		const sint8 height_offset = *edi;
+		*ebx = tile_inspector_change_base_height_at(x, y, element_index, height_offset, flags);
 		return;
 	}
 	default:

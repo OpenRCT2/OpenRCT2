@@ -315,3 +315,25 @@ sint32 tile_inspector_sort_elements_at(sint32 x, sint32 y, sint32 flags)
 
 	return 0;
 }
+
+sint32 tile_inspector_change_base_height_at(sint32 x, sint32 y, sint16 element_index, sint8 height_offset, sint32 flags)
+{
+	rct_map_element *const map_element = map_get_first_element_at(x, y) + element_index;
+	sint16 new_base_height = (sint16)map_element->base_height + height_offset;
+	sint16 new_clearance_height = (sint16)map_element->clearance_height + height_offset;
+	if (new_base_height < 0 || new_base_height > 0xff || new_clearance_height < 0 || new_clearance_height > 0xff)
+	{
+		return MONEY32_UNDEFINED;
+	}
+
+	if (flags & GAME_COMMAND_FLAG_APPLY)
+	{
+		map_element->base_height += height_offset;
+		map_element->clearance_height += height_offset;
+
+		map_invalidate_tile_full(x << 5, y << 5);
+		window_invalidate_by_class(WC_TILE_INSPECTOR);
+	}
+
+	return 0;
+}

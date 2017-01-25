@@ -703,6 +703,19 @@ static void window_tile_inspector_paste_element(rct_window *w)
 	);
 }
 
+static void window_tile_inspector_base_height_offset(sint16 element_index, sint8 offset)
+{
+	game_do_command(
+		TILE_INSPECTOR_ANY_BASE_HEIGHT_OFFSET,
+		GAME_COMMAND_FLAG_APPLY,
+		windowTileInspectorTileX | (windowTileInspectorTileY << 8),
+		element_index,
+		GAME_COMMAND_MODIFY_TILE,
+		offset,
+		0
+	);
+}
+
 static void window_tile_inspector_surface_toggle_corner(rct_map_element *mapElement, sint32 cornerIndex)
 {
 	const uint8 originalSlope = mapElement->properties.surface.slope;
@@ -1025,16 +1038,10 @@ static void window_tile_inspector_mouseup(rct_window *w, sint32 widgetIndex)
 	case PAGE_SURFACE:
 		switch (widgetIndex) {
 		case WIDX_SURFACE_SPINNER_HEIGHT_INCREASE:
-			mapElement->base_height++;
-			mapElement->clearance_height++;
-			map_invalidate_tile_full(windowTileInspectorTileX << 5, windowTileInspectorTileY << 5);
-			widget_invalidate(w, WIDX_PATH_SPINNER_HEIGHT);
+			window_tile_inspector_base_height_offset(w->selected_list_item, 1);
 			break;
 		case WIDX_SURFACE_SPINNER_HEIGHT_DECREASE:
-			mapElement->base_height--;
-			mapElement->clearance_height--;
-			map_invalidate_tile_full(windowTileInspectorTileX << 5, windowTileInspectorTileY << 5);
-			widget_invalidate(w, WIDX_PATH_SPINNER_HEIGHT);
+			window_tile_inspector_base_height_offset(w->selected_list_item, -1);
 			break;
 		case WIDX_SURFACE_BUTTON_REMOVE_FENCES:
 			mapElement->properties.surface.ownership &= ~0x0F;
@@ -1073,16 +1080,10 @@ static void window_tile_inspector_mouseup(rct_window *w, sint32 widgetIndex)
 	case PAGE_PATH:
 		switch (widgetIndex) {
 		case WIDX_PATH_SPINNER_HEIGHT_INCREASE:
-			mapElement->base_height++;
-			mapElement->clearance_height++;
-			map_invalidate_tile_full(windowTileInspectorTileX << 5, windowTileInspectorTileY << 5);
-			widget_invalidate(w, WIDX_PATH_SPINNER_HEIGHT);
+			window_tile_inspector_base_height_offset(w->selected_list_item, 1);
 			break;
 		case WIDX_PATH_SPINNER_HEIGHT_DECREASE:
-			mapElement->base_height--;
-			mapElement->clearance_height--;
-			map_invalidate_tile_full(windowTileInspectorTileX << 5, windowTileInspectorTileY << 5);
-			widget_invalidate(w, WIDX_PATH_SPINNER_HEIGHT);
+			window_tile_inspector_base_height_offset(w->selected_list_item, -1);
 			break;
 		case WIDX_PATH_CHECK_EDGE_E:
 		case WIDX_PATH_CHECK_EDGE_S:
@@ -1114,9 +1115,7 @@ static void window_tile_inspector_mouseup(rct_window *w, sint32 widgetIndex)
 				window_tile_inspector_track_block_height_offset(mapElement, 1);
 			}
 			else {
-				mapElement->base_height++;
-				mapElement->clearance_height++;
-				map_invalidate_tile_full(windowTileInspectorTileX << 5, windowTileInspectorTileY << 5);
+				window_tile_inspector_base_height_offset(w->selected_list_item, 1);
 			}
 			widget_invalidate(w, WIDX_TRACK_SPINNER_HEIGHT);
 			break;
@@ -1125,9 +1124,7 @@ static void window_tile_inspector_mouseup(rct_window *w, sint32 widgetIndex)
 				window_tile_inspector_track_block_height_offset(mapElement, -1);
 			}
 			else {
-				mapElement->base_height--;
-				mapElement->clearance_height--;
-				map_invalidate_tile_full(windowTileInspectorTileX << 5, windowTileInspectorTileY << 5);
+				window_tile_inspector_base_height_offset(w->selected_list_item, -1);
 			}
 			widget_invalidate(w, WIDX_TRACK_SPINNER_HEIGHT);
 			break;
@@ -1148,16 +1145,10 @@ static void window_tile_inspector_mouseup(rct_window *w, sint32 widgetIndex)
 	case PAGE_SCENERY:
 		switch (widgetIndex) {
 		case WIDX_SCENERY_SPINNER_HEIGHT_INCREASE:
-			mapElement->base_height++;
-			mapElement->clearance_height++;
-			map_invalidate_tile_full(windowTileInspectorTileX << 5, windowTileInspectorTileY << 5);
-			widget_invalidate(w, WIDX_SCENERY_SPINNER_HEIGHT);
+			window_tile_inspector_base_height_offset(w->selected_list_item, 1);
 			break;
 		case WIDX_SCENERY_SPINNER_HEIGHT_DECREASE:
-			mapElement->base_height--;
-			mapElement->clearance_height--;
-			map_invalidate_tile_full(windowTileInspectorTileX << 5, windowTileInspectorTileY << 5);
-			widget_invalidate(w, WIDX_SCENERY_SPINNER_HEIGHT);
+			window_tile_inspector_base_height_offset(w->selected_list_item, -1);
 			break;
 		case WIDX_SCENERY_CHECK_QUARTER_N:
 		case WIDX_SCENERY_CHECK_QUARTER_E:
@@ -1179,16 +1170,10 @@ static void window_tile_inspector_mouseup(rct_window *w, sint32 widgetIndex)
 	case PAGE_ENTRANCE:
 		switch (widgetIndex) {
 		case WIDX_ENTRANCE_SPINNER_HEIGHT_INCREASE:
-			mapElement->base_height++;
-			mapElement->clearance_height++;
-			map_invalidate_tile_full(windowTileInspectorTileX << 5, windowTileInspectorTileY << 5);
-			widget_invalidate(w, WIDX_FENCE_SPINNER_HEIGHT);
+			window_tile_inspector_base_height_offset(w->selected_list_item, 1);
 			break;
 		case WIDX_ENTRANCE_SPINNER_HEIGHT_DECREASE:
-			mapElement->base_height--;
-			mapElement->clearance_height--;
-			map_invalidate_tile_full(windowTileInspectorTileX << 5, windowTileInspectorTileY << 5);
-			widget_invalidate(w, WIDX_FENCE_SPINNER_HEIGHT);
+			window_tile_inspector_base_height_offset(w->selected_list_item, -1);
 			break;
 		} // switch widget index
 		break;
@@ -1196,16 +1181,10 @@ static void window_tile_inspector_mouseup(rct_window *w, sint32 widgetIndex)
 	case PAGE_FENCE:
 		switch (widgetIndex) {
 		case WIDX_FENCE_SPINNER_HEIGHT_INCREASE:
-			mapElement->base_height++;
-			mapElement->clearance_height++;
-			map_invalidate_tile_full(windowTileInspectorTileX << 5, windowTileInspectorTileY << 5);
-			widget_invalidate(w, WIDX_FENCE_SPINNER_HEIGHT);
+			window_tile_inspector_base_height_offset(w->selected_list_item, 1);
 			break;
 		case WIDX_FENCE_SPINNER_HEIGHT_DECREASE:
-			mapElement->base_height--;
-			mapElement->clearance_height--;
-			map_invalidate_tile_full(windowTileInspectorTileX << 5, windowTileInspectorTileY << 5);
-			widget_invalidate(w, WIDX_FENCE_SPINNER_HEIGHT);
+			window_tile_inspector_base_height_offset(w->selected_list_item, -1);
 			break;
 		} // switch widget index
 		break;
@@ -1213,16 +1192,10 @@ static void window_tile_inspector_mouseup(rct_window *w, sint32 widgetIndex)
 	case PAGE_LARGE_SCENERY:
 		switch (widgetIndex) {
 		case WIDX_LARGE_SCENERY_SPINNER_HEIGHT_INCREASE:
-			mapElement->base_height++;
-			mapElement->clearance_height++;
-			map_invalidate_tile_full(windowTileInspectorTileX << 5, windowTileInspectorTileY << 5);
-			widget_invalidate(w, WIDX_FENCE_SPINNER_HEIGHT);
+			window_tile_inspector_base_height_offset(w->selected_list_item, 1);
 			break;
 		case WIDX_LARGE_SCENERY_SPINNER_HEIGHT_DECREASE:
-			mapElement->base_height--;
-			mapElement->clearance_height--;
-			map_invalidate_tile_full(windowTileInspectorTileX << 5, windowTileInspectorTileY << 5);
-			widget_invalidate(w, WIDX_FENCE_SPINNER_HEIGHT);
+			window_tile_inspector_base_height_offset(w->selected_list_item, -1);
 			break;
 		} // switch widget index
 		break;
@@ -1230,16 +1203,10 @@ static void window_tile_inspector_mouseup(rct_window *w, sint32 widgetIndex)
 	case PAGE_BANNER:
 		switch (widgetIndex) {
 		case WIDX_BANNER_SPINNER_HEIGHT_INCREASE:
-			mapElement->base_height++;
-			mapElement->clearance_height++;
-			map_invalidate_tile_full(windowTileInspectorTileX << 5, windowTileInspectorTileY << 5);
-			widget_invalidate(w, WIDX_FENCE_SPINNER_HEIGHT);
+			window_tile_inspector_base_height_offset(w->selected_list_item, 1);
 			break;
 		case WIDX_BANNER_SPINNER_HEIGHT_DECREASE:
-			mapElement->base_height--;
-			mapElement->clearance_height--;
-			map_invalidate_tile_full(windowTileInspectorTileX << 5, windowTileInspectorTileY << 5);
-			widget_invalidate(w, WIDX_FENCE_SPINNER_HEIGHT);
+			window_tile_inspector_base_height_offset(w->selected_list_item, -1);
 			break;
 		case WIDX_BANNER_CHECK_BLOCK_NE:
 		case WIDX_BANNER_CHECK_BLOCK_SE:
@@ -1255,16 +1222,10 @@ static void window_tile_inspector_mouseup(rct_window *w, sint32 widgetIndex)
 	case PAGE_CORRUPT:
 		switch (widgetIndex) {
 		case WIDX_CORRUPT_SPINNER_HEIGHT_INCREASE:
-			mapElement->base_height++;
-			mapElement->clearance_height++;
-			map_invalidate_tile_full(windowTileInspectorTileX << 5, windowTileInspectorTileY << 5);
-			widget_invalidate(w, WIDX_FENCE_SPINNER_HEIGHT);
+			window_tile_inspector_base_height_offset(w->selected_list_item, 1);
 			break;
 		case WIDX_CORRUPT_SPINNER_HEIGHT_DECREASE:
-			mapElement->base_height--;
-			mapElement->clearance_height--;
-			map_invalidate_tile_full(windowTileInspectorTileX << 5, windowTileInspectorTileY << 5);
-			widget_invalidate(w, WIDX_FENCE_SPINNER_HEIGHT);
+			window_tile_inspector_base_height_offset(w->selected_list_item, -1);
 			break;
 		case WIDX_CORRUPT_BUTTON_CLAMP:
 			if (!map_element_is_last_for_tile(mapElement)) {

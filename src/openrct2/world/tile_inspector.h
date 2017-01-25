@@ -38,6 +38,7 @@ typedef enum {
 	TILE_INSPECTOR_ANY_ROTATE,
 	TILE_INSPECTOR_ANY_PASTE,
 	TILE_INSPECTOR_ANY_SORT,
+	TILE_INSPECTOR_ANY_BASE_HEIGHT_OFFSET,
 } tile_inspector_instruction;
 
 sint32 tile_inspector_insert_corrupt_at(sint32 x, sint32 y, sint16 element_index, sint32 flags);
@@ -46,3 +47,4 @@ sint32 tile_inspector_swap_elements_at(sint32 x, sint32 y, sint16 first, sint16 
 sint32 tile_inspector_rotate_element_at(sint32 x, sint32 y, sint32 element_index, sint32 flags);
 sint32 tile_inspector_paste_element_at(sint32 x, sint32 y, rct_map_element element, sint32 flags);
 sint32 tile_inspector_sort_elements_at(sint32 x, sint32 y, sint32 flags);
+sint32 tile_inspector_change_base_height_at(sint32 x, sint32 y, sint16 element_index, sint8 height_offset, sint32 flags);
