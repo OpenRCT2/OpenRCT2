@@ -378,10 +378,10 @@ static struct {
 	{ PEEP_ACTION_NONE_2, 1 },
 };
 
-static uint8 PeepSpecialSpriteToSpriteTypeMap[] = { 
-	PEEP_ACTION_SPRITE_TYPE_NONE, 
-	PEEP_ACTION_SPRITE_TYPE_HOLD_MAT, 
-	PEEP_ACTION_SPRITE_TYPE_STAFF_MOWER 
+static uint8 PeepSpecialSpriteToSpriteTypeMap[] = {
+	PEEP_ACTION_SPRITE_TYPE_NONE,
+	PEEP_ACTION_SPRITE_TYPE_HOLD_MAT,
+	PEEP_ACTION_SPRITE_TYPE_STAFF_MOWER
 };
 
 static uint8 PeepActionToSpriteTypeMap[] = {

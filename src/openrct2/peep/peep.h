@@ -773,7 +773,7 @@ extern bool gPathFindDebug; // Use to guard calls to log messages
 extern utf8 gPathFindDebugPeepName[256]; // Use to put the peep name in the log message
 
 // The following calls set the above two variables for a peep.
-// ... when PATHFIND_DEBUG is 1 (non zero) 
+// ... when PATHFIND_DEBUG is 1 (non zero)
 void pathfind_logging_enable(rct_peep* peep);
 void pathfind_logging_disable();
 #endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
