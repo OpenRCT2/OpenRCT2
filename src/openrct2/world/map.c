@@ -5648,6 +5648,11 @@ void game_command_modify_tile(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx
 		*ebx = tile_inspector_paste_element_at(x, y, element_to_paste, flags);
 		return;
 	}
+	case TILE_INSPECTOR_ANY_SORT:
+	{
+		*ebx = tile_inspector_sort(x, y, flags);
+		return;
+	}
 	default:
 		log_error("invalid instruction");
 		*ebx = MONEY32_UNDEFINED;

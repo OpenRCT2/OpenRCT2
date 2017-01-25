@@ -666,22 +666,16 @@ static void window_tile_inspector_swap_elements(sint16 first, sint16 second)
 
 static void window_tile_inspector_sort_elements(rct_window *w)
 {
-	const rct_map_element *const firstElement = map_get_first_element_at(windowTileInspectorTileX, windowTileInspectorTileY);
-
-	// Bubble sort
-	for (sint32 loopStart = 1; loopStart < windowTileInspectorElementCount; loopStart++) {
-		sint32 currentId = loopStart;
-		const rct_map_element *currentElement = firstElement + currentId;
-		const rct_map_element *otherElement = currentElement - 1;
-
-		// While current element's base height is lower, or (when their baseheight is the same) the other map element's clearance height is lower...
-		while (currentId > 0 && (otherElement->base_height > currentElement->base_height || (otherElement->base_height == currentElement->base_height && otherElement->clearance_height > currentElement->clearance_height))) {
-			window_tile_inspector_swap_elements(currentId - 1, currentId);
-			currentId--;
-			currentElement--;
-			otherElement--;
-		}
-	}
+	assert(windowTileInspectorTileSelected == true);
+	game_do_command(
+		TILE_INSPECTOR_ANY_SORT,
+		GAME_COMMAND_FLAG_APPLY,
+		windowTileInspectorTileX | (windowTileInspectorTileY << 8),
+		0,
+		GAME_COMMAND_MODIFY_TILE,
+		0,
+		0
+	);
 }
 
 static void window_tile_inspector_copy_element(rct_window *w)
@@ -1001,14 +995,9 @@ static void window_tile_inspector_mouseup(rct_window *w, sint32 widgetIndex)
 		break;
 	case WIDX_BUTTON_SORT:
 		window_tile_inspector_sort_elements(w);
-		w->selected_list_item = -1;
-		window_tile_inspector_set_page(w, PAGE_DEFAULT);
-		window_tile_inspector_auto_set_buttons(w);
-		window_invalidate(w);
 		break;
 	case WIDX_BUTTON_COPY:
 		window_tile_inspector_copy_element(w);
-		map_invalidate_tile_full(windowTileInspectorTileX << 5, windowTileInspectorTileY << 5);
 		window_tile_inspector_auto_set_buttons(w);
 		window_invalidate(w);
 		break;

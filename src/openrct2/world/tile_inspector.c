@@ -268,3 +268,50 @@ sint32 tile_inspector_paste_element_at(sint32 x, sint32 y, rct_map_element eleme
 
 	return 0;
 }
+
+sint32 tile_inspector_sort(sint32 x, sint32 y, sint32 flags)
+{
+	if (flags & GAME_COMMAND_FLAG_APPLY)
+	{
+		const rct_map_element *const first_element = map_get_first_element_at(x, y);
+
+		// Count elements on tile
+		sint32 num_element = 0;
+		const rct_map_element *element_iterator = first_element;
+		do
+		{
+			num_element++;
+		} while (!map_element_is_last_for_tile(element_iterator++));
+
+		// Bubble sort
+		for (sint32 loopStart = 1; loopStart < num_element; loopStart++)
+		{
+			sint32 currentId = loopStart;
+			const rct_map_element *currentElement = first_element + currentId;
+			const rct_map_element *otherElement = currentElement - 1;
+
+			// While current element's base height is lower, or (when their baseheight is the same) the other map element's clearance height is lower...
+			while (currentId > 0 && (otherElement->base_height > currentElement->base_height || (otherElement->base_height == currentElement->base_height && otherElement->clearance_height > currentElement->clearance_height)))
+			{
+				map_swap_elements_at(x, y, currentId - 1, currentId);
+				currentId--;
+				currentElement--;
+				otherElement--;
+			}
+		}
+
+		map_invalidate_tile_full(x << 5, y << 5);
+
+		// Deselect tile for clients who had it selected
+		rct_window *const tile_inspector_window = window_find_by_class(WC_TILE_INSPECTOR);
+		if (tile_inspector_window != NULL && (uint32)x == windowTileInspectorTileX && (uint32)y == windowTileInspectorTileY)
+		{
+			window_tile_inspector_set_page(tile_inspector_window, PAGE_DEFAULT);
+			tile_inspector_window->selected_list_item = -1;
+			window_tile_inspector_auto_set_buttons(tile_inspector_window);
+			window_invalidate(tile_inspector_window);
+		}
+	}
+
+	return 0;
+}
