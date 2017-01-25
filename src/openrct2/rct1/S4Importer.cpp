@@ -1100,16 +1100,7 @@ private:
     {
         for (int i = 0; i < 32; i++)
         {
-            uint16 originalSpriteIndex = vehicle->peep[i];
-            if (originalSpriteIndex >= RCT1_MAX_SPRITES)
-            {
-                vehicle->peep[i] = SPRITE_INDEX_NULL;
-                log_warning("Incorrect sprite index: %d", originalSpriteIndex);
-            }
-            else if (originalSpriteIndex != SPRITE_INDEX_NULL)
-            {
-                vehicle->peep[i] = spriteIndexMap[originalSpriteIndex];
-            }
+            vehicle->peep[i] = MapSpriteIndex(vehicle->peep[i], spriteIndexMap);
         }
     }
 
@@ -1322,40 +1313,20 @@ private:
 
     void FixRidePeepLinks(rct_ride * ride, const uint16 * spriteIndexMap)
     {
-        uint16 originalSpriteIndex;
-
-        for (int i = 0; i < RCT1_MAX_STATIONS; i++)
+        for (sint32 i = 0; i < RCT1_MAX_STATIONS; i++)
         {
-            originalSpriteIndex = ride->last_peep_in_queue[i];
-            if (originalSpriteIndex != SPRITE_INDEX_NULL)
-            {
-                ride->last_peep_in_queue[i] = spriteIndexMap[originalSpriteIndex];
-            }
+            ride->last_peep_in_queue[i] = MapSpriteIndex(ride->last_peep_in_queue[i], spriteIndexMap);
         }
-
-        originalSpriteIndex = ride->mechanic;
-        if (originalSpriteIndex != SPRITE_INDEX_NULL)
-        {
-            ride->mechanic = spriteIndexMap[originalSpriteIndex];
-        }
-
+        ride->mechanic = MapSpriteIndex(ride->mechanic, spriteIndexMap);
         if (ride->type == RIDE_TYPE_SPIRAL_SLIDE)
         {
-            originalSpriteIndex = ride->slide_peep;
-            if (originalSpriteIndex != SPRITE_INDEX_NULL && spriteIndexMap[originalSpriteIndex] < RCT1_MAX_SPRITES)
-            {
-                ride->slide_peep = spriteIndexMap[originalSpriteIndex];
-            }
+            ride->slide_peep = MapSpriteIndex(ride->slide_peep, spriteIndexMap);
         }
     }
 
     void FixPeepNextInQueue(rct_peep * peep, const uint16 * spriteIndexMap)
     {
-        uint16 originalSpriteIndex = peep->next_in_queue;
-        if (originalSpriteIndex != SPRITE_INDEX_NULL)
-        {
-            peep->next_in_queue = spriteIndexMap[originalSpriteIndex];
-        }
+        peep->next_in_queue = MapSpriteIndex(peep->next_in_queue, spriteIndexMap);
     }
 
     void ImportLitter()
@@ -1479,6 +1450,23 @@ private:
     {
         dst->frame = src->frame;
         dst->state = src->state;
+    }
+
+    uint16 MapSpriteIndex(uint16 originalSpriteIndex, const uint16 * spriteIndexMap)
+    {
+        uint16 newSpriteIndex = SPRITE_INDEX_NULL;
+        if (originalSpriteIndex != SPRITE_INDEX_NULL)
+        {
+            if (originalSpriteIndex >= RCT1_MAX_SPRITES)
+            {
+                log_warning("Incorrect sprite index: %d", originalSpriteIndex);
+            }
+            else
+            {
+                newSpriteIndex = spriteIndexMap[originalSpriteIndex];
+            }
+        }
+        return newSpriteIndex;
     }
 
     void ImportPeepSpawns()
