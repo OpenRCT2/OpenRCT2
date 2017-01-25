@@ -531,7 +531,17 @@ private:
     {
         memset(dst, 0, sizeof(rct_ride));
 
-        dst->type = RCT1::GetRideType(src->type);
+        // This is a pecularity of this exact version number, which only Heide-Park seems to use.
+        if (_s4.game_version == 110018 && src->type == RCT1_RIDE_TYPE_INVERTED_ROLLER_COASTER)
+        {
+            dst->type = RIDE_TYPE_COMPACT_INVERTED_COASTER;
+        }
+        else
+        {
+            dst->type = RCT1::GetRideType(src->type);
+        }
+
+
         if (RCT1::RideTypeUsesVehicles(src->type))
         {
             dst->subtype = _vehicleTypeToRideEntryMap[src->vehicle_type];

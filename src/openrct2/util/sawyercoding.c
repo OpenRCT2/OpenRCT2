@@ -553,7 +553,7 @@ sint32 sawyercoding_detect_file_type(const uint8 *src, size_t length)
 sint32 sawyercoding_detect_rct1_version(sint32 gameVersion)
 {
 	sint32 fileType = (gameVersion) > 0 ? FILE_TYPE_SV4 : FILE_TYPE_SC4;
-	gameVersion=abs(gameVersion);
+	gameVersion = abs(gameVersion);
 
 	if (gameVersion >= 108000 && gameVersion < 110000)
 		return (FILE_VERSION_RCT1 | fileType);
