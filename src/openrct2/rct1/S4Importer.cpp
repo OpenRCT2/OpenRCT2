@@ -158,6 +158,7 @@ public:
         ImportScenarioNameDetails();
         ImportScenarioObjective();
         ImportSavedView();
+        FixLandOwnership();
 
         // Importing the strings is done later on, although that approach needs looking at.
         //game_convert_strings_to_utf8();
@@ -2367,6 +2368,28 @@ private:
         const char * originalString = _s4.string_table[(stringId - 0x8000) % 1024];
         rct2_to_utf8(buffer, originalString);
         return std::string(buffer);
+    }
+
+    void FixLandOwnership()
+    {
+        sint32 scNumber = GetSCNumber();
+        rct_map_element * currentElement;
+
+        switch(scNumber)
+        {
+        case SC_KATIES_DREAMLAND:
+            currentElement = map_get_surface_element_at(74, 70);
+            currentElement->properties.surface.ownership |= OWNERSHIP_AVAILABLE;
+            currentElement = map_get_surface_element_at(75, 70);
+            currentElement->properties.surface.ownership |= OWNERSHIP_AVAILABLE;
+            currentElement = map_get_surface_element_at(76, 70);
+            currentElement->properties.surface.ownership |= OWNERSHIP_AVAILABLE;
+            currentElement = map_get_surface_element_at(77, 73);
+            currentElement->properties.surface.ownership |= OWNERSHIP_AVAILABLE;
+            currentElement = map_get_surface_element_at(80, 77);
+            currentElement->properties.surface.ownership |= OWNERSHIP_AVAILABLE;
+            break;
+        }
     }
 };
 
