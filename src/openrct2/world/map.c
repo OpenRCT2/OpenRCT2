@@ -5624,7 +5624,7 @@ void game_command_modify_tile(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx
 	{
 		const sint32 first_index = *edx;
 		const sint32 second_index = *edi;
-		*ebx = tile_inspector_swap_elements(x, y, first_index, second_index, flags);
+		*ebx = tile_inspector_swap_elements_at(x, y, first_index, second_index, flags);
 		return;
 	}
 	case TILE_INSPECTOR_ANY_INSERT_CORRUPT:
@@ -5650,7 +5650,7 @@ void game_command_modify_tile(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx
 	}
 	case TILE_INSPECTOR_ANY_SORT:
 	{
-		*ebx = tile_inspector_sort(x, y, flags);
+		*ebx = tile_inspector_sort_elements_at(x, y, flags);
 		return;
 	}
 	default:

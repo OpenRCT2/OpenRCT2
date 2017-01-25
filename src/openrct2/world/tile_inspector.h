@@ -42,7 +42,7 @@ typedef enum {
 
 sint32 tile_inspector_insert_corrupt_at(sint32 x, sint32 y, sint16 element_index, sint32 flags);
 sint32 tile_inspector_remove_element_at(sint32 x, sint32 y, sint16 element_index, sint32 flags);
-sint32 tile_inspector_swap_elements(sint32 x, sint32 y, sint16 first, sint16 second, sint32 flags);
+sint32 tile_inspector_swap_elements_at(sint32 x, sint32 y, sint16 first, sint16 second, sint32 flags);
 sint32 tile_inspector_rotate_element_at(sint32 x, sint32 y, sint32 element_index, sint32 flags);
 sint32 tile_inspector_paste_element_at(sint32 x, sint32 y, rct_map_element element, sint32 flags);
-sint32 tile_inspector_sort(sint32 x, sint32 y, sint32 flags);
+sint32 tile_inspector_sort_elements_at(sint32 x, sint32 y, sint32 flags);
