@@ -2680,7 +2680,7 @@ static void peep_update_ride_sub_state_1(rct_peep* peep){
 		x *= 32;
 		y *= 32;
 
-        assert(ride->type == RIDE_TYPE_SPIRAL_SLIDE);
+		assert(ride->type == RIDE_TYPE_SPIRAL_SLIDE);
 		const rct_xy16 slidePlatformDestination  = SpiralSlideWalkingPath[peep->var_37];
 
 		x += slidePlatformDestination.x;
@@ -3587,7 +3587,7 @@ static void peep_update_ride_sub_state_14(rct_peep* peep){
 
 			x *= 32;
 			y *= 32;
-            assert(ride->type == RIDE_TYPE_SPIRAL_SLIDE);
+			assert(ride->type == RIDE_TYPE_SPIRAL_SLIDE);
 			const rct_xy16 slidePlatformDestination  = SpiralSlideWalkingPath[peep->var_37];
 
 			x += slidePlatformDestination.x;

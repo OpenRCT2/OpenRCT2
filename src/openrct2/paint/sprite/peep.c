@@ -77,7 +77,7 @@ void peep_paint(rct_peep * peep, sint32 imageDirection)
 		spriteType = peep->next_action_sprite_type;
 		imageOffset = 0;
 	}
-	
+
 	uint32 baseImageId = (imageDirection >> 3) + sprite.sprite_animation[spriteType].base_image + imageOffset * 4;
 	uint32 imageId = baseImageId | peep->tshirt_colour << 19 | peep->trousers_colour << 24 | 0xA0000000;
 	sub_98197C(imageId, 0, 0, 1, 1, 11, peep->z, 0, 0, peep->z + 3, get_current_rotation());
