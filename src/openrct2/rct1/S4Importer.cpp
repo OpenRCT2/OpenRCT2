@@ -943,15 +943,8 @@ private:
 
     void ImportVehicle(rct_vehicle * dst, rct1_vehicle * src)
     {
-        // char buf[64];
-        // sprintf(buf, "%d", src->vehicle_type);
-        // log_error(buf);
-
-        uint8 vehicleEntryIndex = RCT1::GetVehicleSubEntryIndex(src->vehicle_type);
-
         rct_ride * ride = get_ride(src->ride);
-        //rct_ride_entry * rideEntry = get_ride_entry_by_ride(ride);
-        //rct_ride_entry_vehicle * vehicleEntry = &rideEntry->vehicles[vehicleEntryIndex];
+        uint8 vehicleEntryIndex = RCT1::GetVehicleSubEntryIndex(src->vehicle_type);
 
         dst->sprite_identifier = SPRITE_IDENTIFIER_VEHICLE;
         dst->ride = src->ride;
@@ -959,13 +952,13 @@ private:
 
         dst->vehicle_type = vehicleEntryIndex;
         dst->is_child = src->is_child;
-        dst->var_44 = src->var_44; //ror32(vehicleEntry->spacing, 10) & 0xFFFF;
+        dst->var_44 = src->var_44;
         dst->remaining_distance = src->remaining_distance;
 
         // Properties from vehicle entry
-        dst->sprite_width = src->sprite_width; //vehicleEntry->sprite_width;
-        dst->sprite_height_negative = src->sprite_height_negative; //vehicleEntry->sprite_height_negative;
-        dst->sprite_height_positive = src->sprite_height_positive; //vehicleEntry->sprite_height_positive;
+        dst->sprite_width = src->sprite_width;
+        dst->sprite_height_negative = src->sprite_height_negative;
+        dst->sprite_height_positive = src->sprite_height_positive;
         dst->sprite_direction = src->sprite_direction;
 
         dst->sprite_left = src->sprite_left;
@@ -973,11 +966,10 @@ private:
         dst->sprite_right = src->sprite_right;
         dst->sprite_bottom = src->sprite_bottom;
 
-
-        dst->friction = src->friction; //vehicleEntry->car_friction;
-        dst->num_seats = src->num_seats; //vehicleEntry->num_seats;
-        dst->speed = src->speed; //vehicleEntry->powered_max_speed;
-        dst->powered_acceleration = src->powered_acceleration; //vehicleEntry->powered_acceleration;
+        dst->friction = src->friction;
+        dst->num_seats = src->num_seats;
+        dst->speed = src->speed;
+        dst->powered_acceleration = src->powered_acceleration;
         dst->brake_speed = src->brake_speed;
 
         dst->velocity = src->velocity;
@@ -1979,32 +1971,6 @@ private:
     void FixColours()
     {
         colour_t colour;
-
-        // The following code would be worth doing if we were able to import sprites
-        // for (size_t i = 0; i < MAX_SPRITES; i++)
-        // {
-        //     rct_unk_sprite * sprite = &(g_sprite_list[i].unknown);
-        //     switch (sprite->sprite_identifier) {
-        //     case SPRITE_IDENTIFIER_PEEP:
-        //     {
-        //         rct_peep * peep = (rct_peep*)sprite;
-        //         peep->tshirt_colour = RCT1ColourConversionTable[peep->tshirt_colour];
-        //         peep->trousers_colour = RCT1ColourConversionTable[peep->trousers_colour];
-        //         peep->balloon_colour = RCT1ColourConversionTable[peep->balloon_colour];
-        //         peep->umbrella_colour = RCT1ColourConversionTable[peep->umbrella_colour];
-        //         peep->hat_colour = RCT1ColourConversionTable[peep->hat_colour];
-        //         break;
-        //     }
-        //     case SPRITE_IDENTIFIER_MISC:
-        //     {
-        //         rct_balloon * balloon = (rct_balloon*)sprite;
-        //         balloon->colour = RCT1ColourConversionTable[balloon->colour];
-        //         balloon->var_2D = RCT1ColourConversionTable[balloon->var_2D];
-        //         break;
-        //     }
-        //     }
-        // }
-
         rct_map_element * mapElement = gMapElements;
         while (mapElement < gNextFreeMapElement)
         {
