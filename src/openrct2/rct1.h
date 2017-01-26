@@ -35,6 +35,7 @@
 #define RCT1_MAX_MAP_SIZE           128
 #define RCT1_MAX_RIDES_IN_PARK      128
 #define RCT1_MAX_PEEP_SPAWNS        2
+#define RCT1_MAX_PARK_ENTRANCES     4
 
 #pragma pack(push, 1)
 typedef struct rct1_entrance {

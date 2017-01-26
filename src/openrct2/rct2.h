@@ -153,8 +153,9 @@ enum {
 extern "C" {
 #endif
 
-#define RCT2_MAX_STATIONS    4
-#define RCT2_MAX_PEEP_SPAWNS 2
+#define RCT2_MAX_STATIONS       4
+#define RCT2_MAX_PEEP_SPAWNS    2
+#define RCT2_MAX_PARK_ENTRANCES 4
 
 extern const char * const RCT2FilePaths[PATH_ID_END];
 
