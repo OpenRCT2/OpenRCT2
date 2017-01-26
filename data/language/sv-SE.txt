@@ -4296,6 +4296,8 @@ STR_5998    :Lägg till summa pengar
 STR_5999    :Välj summa pengar
 STR_6000    :Skriv in nytt värde
 
+STR_6012    :{COMMA1DP16}
+
 #############
 # Scenarion #
 ################
