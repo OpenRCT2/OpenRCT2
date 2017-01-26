@@ -102,7 +102,7 @@ sint32 tile_inspector_insert_corrupt_at(sint32 x, sint32 y, sint16 element_index
 
 			if (tile_inspector_window->selected_list_item == element_index)
 			{
-				window_tile_inspector_set_page(tile_inspector_window, PAGE_CORRUPT);
+				window_tile_inspector_set_page(tile_inspector_window, TILE_INSPECTOR_PAGE_CORRUPT);
 			}
 
 			window_tile_inspector_auto_set_buttons(tile_inspector_window);
@@ -123,7 +123,7 @@ sint32 tile_inspector_remove_element_at(sint32 x, sint32 y, sint16 element_index
 {
 	if (flags & GAME_COMMAND_FLAG_APPLY)
 	{
-		// Forcefully the element
+		// Forcefully remove the element
 		rct_map_element *const mapElement = map_get_first_element_at(x, y) + element_index;
 		map_element_remove(mapElement);
 		map_invalidate_tile_full(x << 5, y << 5);
@@ -141,7 +141,7 @@ sint32 tile_inspector_remove_element_at(sint32 x, sint32 y, sint16 element_index
 			else if (tile_inspector_window->selected_list_item == element_index)
 			{
 				tile_inspector_window->selected_list_item = -1;
-				window_tile_inspector_set_page(tile_inspector_window, PAGE_DEFAULT);
+				window_tile_inspector_set_page(tile_inspector_window, TILE_INSPECTOR_PAGE_DEFAULT);
 			}
 
 			window_tile_inspector_auto_set_buttons(tile_inspector_window);
@@ -290,7 +290,9 @@ sint32 tile_inspector_sort_elements_at(sint32 x, sint32 y, sint32 flags)
 			const rct_map_element *otherElement = currentElement - 1;
 
 			// While current element's base height is lower, or (when their baseheight is the same) the other map element's clearance height is lower...
-			while (currentId > 0 && (otherElement->base_height > currentElement->base_height || (otherElement->base_height == currentElement->base_height && otherElement->clearance_height > currentElement->clearance_height)))
+			while (currentId > 0 &&
+				(otherElement->base_height > currentElement->base_height ||
+				(otherElement->base_height == currentElement->base_height && otherElement->clearance_height > currentElement->clearance_height)))
 			{
 				map_swap_elements_at(x, y, currentId - 1, currentId);
 				currentId--;
@@ -305,7 +307,7 @@ sint32 tile_inspector_sort_elements_at(sint32 x, sint32 y, sint32 flags)
 		rct_window *const tile_inspector_window = window_find_by_class(WC_TILE_INSPECTOR);
 		if (tile_inspector_window != NULL && (uint32)x == windowTileInspectorTileX && (uint32)y == windowTileInspectorTileY)
 		{
-			window_tile_inspector_set_page(tile_inspector_window, PAGE_DEFAULT);
+			window_tile_inspector_set_page(tile_inspector_window, TILE_INSPECTOR_PAGE_DEFAULT);
 			tile_inspector_window->selected_list_item = -1;
 			window_tile_inspector_auto_set_buttons(tile_inspector_window);
 			window_invalidate(tile_inspector_window);

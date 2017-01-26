@@ -560,7 +560,7 @@ void window_tile_inspector_open()
 		WC_TILE_INSPECTOR,
 		WF_RESIZABLE
 	);
-	window_tile_inspector_set_page(window, PAGE_DEFAULT);
+	window_tile_inspector_set_page(window, TILE_INSPECTOR_PAGE_DEFAULT);
 
 	window_init_scroll_widgets(window);
 	window->min_width = MIN_WW;
@@ -597,7 +597,7 @@ static void window_tile_inspector_load_tile(rct_window* w)
 	windowTileInspectorElementCount = numItems;
 
 	// Set default page
-	window_tile_inspector_set_page(w, PAGE_DEFAULT);
+	window_tile_inspector_set_page(w, TILE_INSPECTOR_PAGE_DEFAULT);
 
 	// undo selection and buttons affecting it
 	w->selected_list_item = -1;
@@ -1026,7 +1026,7 @@ static void window_tile_inspector_mouseup(rct_window *w, sint32 widgetIndex)
 	}
 
 	// Only element-specific widgets from now on
-	if (w->page == PAGE_DEFAULT) {
+	if (w->page == TILE_INSPECTOR_PAGE_DEFAULT) {
 		return;
 	}
 
@@ -1035,7 +1035,7 @@ static void window_tile_inspector_mouseup(rct_window *w, sint32 widgetIndex)
 
 	// Page widgets
 	switch (w->page) {
-	case PAGE_SURFACE:
+	case TILE_INSPECTOR_PAGE_SURFACE:
 		switch (widgetIndex) {
 		case WIDX_SURFACE_SPINNER_HEIGHT_INCREASE:
 			window_tile_inspector_base_height_offset(w->selected_list_item, 1);
@@ -1077,7 +1077,7 @@ static void window_tile_inspector_mouseup(rct_window *w, sint32 widgetIndex)
 		} // switch widgetindex
 		break;
 
-	case PAGE_PATH:
+	case TILE_INSPECTOR_PAGE_PATH:
 		switch (widgetIndex) {
 		case WIDX_PATH_SPINNER_HEIGHT_INCREASE:
 			window_tile_inspector_base_height_offset(w->selected_list_item, 1);
@@ -1104,7 +1104,7 @@ static void window_tile_inspector_mouseup(rct_window *w, sint32 widgetIndex)
 		} // switch widget index
 		break;
 
-	case PAGE_TRACK:
+	case TILE_INSPECTOR_PAGE_TRACK:
 		switch (widgetIndex) {
 		case WIDX_TRACK_CHECK_APPLY_TO_ALL:
 			windowTileInspectorApplyToAll ^= 1;
@@ -1142,7 +1142,7 @@ static void window_tile_inspector_mouseup(rct_window *w, sint32 widgetIndex)
 		} // switch widget index
 		break;
 
-	case PAGE_SCENERY:
+	case TILE_INSPECTOR_PAGE_SCENERY:
 		switch (widgetIndex) {
 		case WIDX_SCENERY_SPINNER_HEIGHT_INCREASE:
 			window_tile_inspector_base_height_offset(w->selected_list_item, 1);
@@ -1167,7 +1167,7 @@ static void window_tile_inspector_mouseup(rct_window *w, sint32 widgetIndex)
 		} // switch widget index
 		break;
 
-	case PAGE_ENTRANCE:
+	case TILE_INSPECTOR_PAGE_ENTRANCE:
 		switch (widgetIndex) {
 		case WIDX_ENTRANCE_SPINNER_HEIGHT_INCREASE:
 			window_tile_inspector_base_height_offset(w->selected_list_item, 1);
@@ -1178,7 +1178,7 @@ static void window_tile_inspector_mouseup(rct_window *w, sint32 widgetIndex)
 		} // switch widget index
 		break;
 
-	case PAGE_FENCE:
+	case TILE_INSPECTOR_PAGE_FENCE:
 		switch (widgetIndex) {
 		case WIDX_FENCE_SPINNER_HEIGHT_INCREASE:
 			window_tile_inspector_base_height_offset(w->selected_list_item, 1);
@@ -1189,7 +1189,7 @@ static void window_tile_inspector_mouseup(rct_window *w, sint32 widgetIndex)
 		} // switch widget index
 		break;
 
-	case PAGE_LARGE_SCENERY:
+	case TILE_INSPECTOR_PAGE_LARGE_SCENERY:
 		switch (widgetIndex) {
 		case WIDX_LARGE_SCENERY_SPINNER_HEIGHT_INCREASE:
 			window_tile_inspector_base_height_offset(w->selected_list_item, 1);
@@ -1200,7 +1200,7 @@ static void window_tile_inspector_mouseup(rct_window *w, sint32 widgetIndex)
 		} // switch widget index
 		break;
 
-	case PAGE_BANNER:
+	case TILE_INSPECTOR_PAGE_BANNER:
 		switch (widgetIndex) {
 		case WIDX_BANNER_SPINNER_HEIGHT_INCREASE:
 			window_tile_inspector_base_height_offset(w->selected_list_item, 1);
@@ -1219,7 +1219,7 @@ static void window_tile_inspector_mouseup(rct_window *w, sint32 widgetIndex)
 		} // switch widget index
 		break;
 
-	case PAGE_CORRUPT:
+	case TILE_INSPECTOR_PAGE_CORRUPT:
 		switch (widgetIndex) {
 		case WIDX_CORRUPT_SPINNER_HEIGHT_INCREASE:
 			window_tile_inspector_base_height_offset(w->selected_list_item, 1);
@@ -1254,7 +1254,7 @@ static void window_tile_inspector_resize(rct_window *w)
 static void window_tile_inspector_mousedown(sint32 widgetIndex, rct_window *w, rct_widget* widget)
 {
 	switch (w->page) {
-	case PAGE_FENCE:
+	case TILE_INSPECTOR_PAGE_FENCE:
 		switch (widgetIndex) {
 		case WIDX_FENCE_DROPDOWN_SLOPE_BUTTON:
 			// Use dropdown instead of dropdown button
@@ -1432,7 +1432,7 @@ void window_tile_inspector_auto_set_buttons(rct_window *w)
 
 	// Page widgets
 	switch (w->page) {
-	case PAGE_FENCE: {
+	case TILE_INSPECTOR_PAGE_FENCE: {
 		const rct_map_element *const mapElement = window_tile_inspector_get_selected_element(w);
 		const uint8 fenceType = mapElement->properties.fence.type;
 		const rct_wall_scenery_entry wallEntry = get_wall_entry(fenceType)->wall;
@@ -1488,7 +1488,7 @@ static void window_tile_inspector_invalidate(rct_window *w)
 
 	w->widgets[WIDX_BACKGROUND].bottom = w->height - 1;
 
-	if (w->page == PAGE_DEFAULT) {
+	if (w->page == TILE_INSPECTOR_PAGE_DEFAULT) {
 		w->widgets[WIDX_GROUPBOX_DETAILS].type = WWT_EMPTY;
 		w->widgets[WIDX_GROUPBOX_PROPERTIES].type = WWT_EMPTY;
 		w->widgets[WIDX_LIST].bottom = w->height - PADDING_BOTTOM;
@@ -1505,7 +1505,7 @@ static void window_tile_inspector_invalidate(rct_window *w)
 	}
 
 	// Only page-specific widgets related to the map element will be
-	if (w->page == PAGE_DEFAULT) {
+	if (w->page == TILE_INSPECTOR_PAGE_DEFAULT) {
 		return;
 	}
 
@@ -1515,7 +1515,7 @@ static void window_tile_inspector_invalidate(rct_window *w)
 	rct_map_element *const mapElement = window_tile_inspector_get_selected_element(w);
 
 	switch (w->page) {
-	case PAGE_SURFACE:
+	case TILE_INSPECTOR_PAGE_SURFACE:
 		w->widgets[WIDX_SURFACE_SPINNER_HEIGHT].top = GBBT(propertiesAnchor, 0) + 3;
 		w->widgets[WIDX_SURFACE_SPINNER_HEIGHT].bottom = GBBB(propertiesAnchor, 0) - 3;
 		w->widgets[WIDX_SURFACE_SPINNER_HEIGHT_INCREASE].top = GBBT(propertiesAnchor, 0) + 4;
@@ -1542,7 +1542,7 @@ static void window_tile_inspector_invalidate(rct_window *w)
 		widget_set_checkbox_value(w, WIDX_SURFACE_CHECK_CORNER_W, mapElement->properties.surface.slope & (1 << ((1 - get_current_rotation()) & 3)));
 		widget_set_checkbox_value(w, WIDX_SURFACE_CHECK_DIAGONAL, mapElement->properties.surface.slope & 0x10);
 		break;
-	case PAGE_PATH:
+	case TILE_INSPECTOR_PAGE_PATH:
 		w->widgets[WIDX_PATH_SPINNER_HEIGHT].top = GBBT(propertiesAnchor, 0) + 3;
 		w->widgets[WIDX_PATH_SPINNER_HEIGHT].bottom = GBBB(propertiesAnchor, 0) - 3;
 		w->widgets[WIDX_PATH_SPINNER_HEIGHT_INCREASE].top = GBBT(propertiesAnchor, 0) + 4;
@@ -1574,7 +1574,7 @@ static void window_tile_inspector_invalidate(rct_window *w)
 		widget_set_checkbox_value(w, WIDX_PATH_CHECK_EDGE_W, mapElement->properties.path.edges & (1 << (4 + ((2 - get_current_rotation()) & 3))));
 		widget_set_checkbox_value(w, WIDX_PATH_CHECK_EDGE_N, mapElement->properties.path.edges & (1 << (4 + ((3 - get_current_rotation()) & 3))));
 		break;
-	case PAGE_TRACK:
+	case TILE_INSPECTOR_PAGE_TRACK:
 		w->widgets[WIDX_TRACK_CHECK_APPLY_TO_ALL].top = GBBT(propertiesAnchor, 0);
 		w->widgets[WIDX_TRACK_CHECK_APPLY_TO_ALL].bottom = GBBB(propertiesAnchor, 0);
 		w->widgets[WIDX_TRACK_SPINNER_HEIGHT].top = GBBT(propertiesAnchor, 1) + 3;
@@ -1588,7 +1588,7 @@ static void window_tile_inspector_invalidate(rct_window *w)
 		widget_set_checkbox_value(w, WIDX_TRACK_CHECK_APPLY_TO_ALL, windowTileInspectorApplyToAll);
 		widget_set_checkbox_value(w, WIDX_TRACK_CHECK_CHAIN_LIFT, track_element_is_lift_hill(mapElement));
 		break;
-	case PAGE_SCENERY: {
+	case TILE_INSPECTOR_PAGE_SCENERY: {
 		// Raise / Lower
 		w->widgets[WIDX_SCENERY_SPINNER_HEIGHT].top = GBBT(propertiesAnchor, 0) + 3;
 		w->widgets[WIDX_SCENERY_SPINNER_HEIGHT].bottom = GBBB(propertiesAnchor, 0) - 3;
@@ -1635,7 +1635,7 @@ static void window_tile_inspector_invalidate(rct_window *w)
 		widget_set_checkbox_value(w, WIDX_SCENERY_CHECK_COLLISION_W, W);
 		break;
 	}
-	case PAGE_ENTRANCE:
+	case TILE_INSPECTOR_PAGE_ENTRANCE:
 		w->widgets[WIDX_ENTRANCE_SPINNER_HEIGHT].top = GBBT(propertiesAnchor, 0) + 3;
 		w->widgets[WIDX_ENTRANCE_SPINNER_HEIGHT].bottom = GBBB(propertiesAnchor, 0) - 3;
 		w->widgets[WIDX_ENTRANCE_SPINNER_HEIGHT_INCREASE].top = GBBT(propertiesAnchor, 0) + 4;
@@ -1643,7 +1643,7 @@ static void window_tile_inspector_invalidate(rct_window *w)
 		w->widgets[WIDX_ENTRANCE_SPINNER_HEIGHT_DECREASE].top = GBBB(propertiesAnchor, 0) - 8;
 		w->widgets[WIDX_ENTRANCE_SPINNER_HEIGHT_DECREASE].bottom = GBBB(propertiesAnchor, 0) - 4;
 		break;
-	case PAGE_FENCE:
+	case TILE_INSPECTOR_PAGE_FENCE:
 		w->widgets[WIDX_FENCE_SPINNER_HEIGHT].top = GBBT(propertiesAnchor, 0) + 3;
 		w->widgets[WIDX_FENCE_SPINNER_HEIGHT].bottom = GBBB(propertiesAnchor, 0) - 3;
 		w->widgets[WIDX_FENCE_SPINNER_HEIGHT_INCREASE].top = GBBT(propertiesAnchor, 0) + 4;
@@ -1656,7 +1656,7 @@ static void window_tile_inspector_invalidate(rct_window *w)
 		w->widgets[WIDX_FENCE_DROPDOWN_SLOPE_BUTTON].top = GBBT(propertiesAnchor, 1) + 4;
 		w->widgets[WIDX_FENCE_DROPDOWN_SLOPE_BUTTON].bottom = GBBB(propertiesAnchor, 1) - 4;
 		break;
-	case PAGE_LARGE_SCENERY:
+	case TILE_INSPECTOR_PAGE_LARGE_SCENERY:
 		w->widgets[WIDX_LARGE_SCENERY_SPINNER_HEIGHT].top = GBBT(propertiesAnchor, 0) + 3;
 		w->widgets[WIDX_LARGE_SCENERY_SPINNER_HEIGHT].bottom = GBBB(propertiesAnchor, 0) - 3;
 		w->widgets[WIDX_LARGE_SCENERY_SPINNER_HEIGHT_INCREASE].top = GBBT(propertiesAnchor, 0) + 4;
@@ -1664,7 +1664,7 @@ static void window_tile_inspector_invalidate(rct_window *w)
 		w->widgets[WIDX_LARGE_SCENERY_SPINNER_HEIGHT_DECREASE].top = GBBB(propertiesAnchor, 0) - 8;
 		w->widgets[WIDX_LARGE_SCENERY_SPINNER_HEIGHT_DECREASE].bottom = GBBB(propertiesAnchor, 0) - 4;
 		break;
-	case PAGE_BANNER:
+	case TILE_INSPECTOR_PAGE_BANNER:
 		w->widgets[WIDX_BANNER_SPINNER_HEIGHT].top = GBBT(propertiesAnchor, 0) + 3;
 		w->widgets[WIDX_BANNER_SPINNER_HEIGHT].bottom = GBBB(propertiesAnchor, 0) - 3;
 		w->widgets[WIDX_BANNER_SPINNER_HEIGHT_INCREASE].top = GBBT(propertiesAnchor, 0) + 4;
@@ -1676,7 +1676,7 @@ static void window_tile_inspector_invalidate(rct_window *w)
 		widget_set_checkbox_value(w, WIDX_BANNER_CHECK_BLOCK_SW, !(mapElement->properties.banner.flags & (1 << ((2 - get_current_rotation()) & 3))));
 		widget_set_checkbox_value(w, WIDX_BANNER_CHECK_BLOCK_NW, !(mapElement->properties.banner.flags & (1 << ((3 - get_current_rotation()) & 3))));
 		break;
-	case PAGE_CORRUPT:
+	case TILE_INSPECTOR_PAGE_CORRUPT:
 		w->widgets[WIDX_CORRUPT_SPINNER_HEIGHT].top = GBBT(propertiesAnchor, 0) + 3;
 		w->widgets[WIDX_CORRUPT_SPINNER_HEIGHT].bottom = GBBB(propertiesAnchor, 0) - 3;
 		w->widgets[WIDX_CORRUPT_SPINNER_HEIGHT_INCREASE].top = GBBT(propertiesAnchor, 0) + 4;
@@ -1738,7 +1738,7 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		rct_map_element *const mapElement = window_tile_inspector_get_selected_element(w);
 
 		switch (w->page) {
-		case PAGE_SURFACE: {
+		case TILE_INSPECTOR_PAGE_SURFACE: {
 			// Details
 			// Terrain texture name
 			rct_string_id terrainNameId = terrainTypeStringIds[map_element_get_terrain(mapElement)];
@@ -1781,7 +1781,7 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi)
 			break;
 		}
 
-		case PAGE_PATH: {
+		case TILE_INSPECTOR_PAGE_PATH: {
 			// Details
 			// Path name
 			rct_string_id pathNameId = get_footpath_entry(footpath_element_get_type(mapElement))->string_idx;
@@ -1814,7 +1814,7 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi)
 			break;
 		}
 
-		case PAGE_TRACK: {
+		case TILE_INSPECTOR_PAGE_TRACK: {
 			// Details
 			// Ride
 			sint16 rideId = mapElement->properties.track.ride_index;
@@ -1843,7 +1843,7 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi)
 			break;
 		}
 
-		case PAGE_SCENERY: {
+		case TILE_INSPECTOR_PAGE_SCENERY: {
 			// Details
 			// Age
 			sint16 age = mapElement->properties.scenery.age;
@@ -1886,7 +1886,7 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi)
 			break;
 		}
 
-		case PAGE_ENTRANCE: {
+		case TILE_INSPECTOR_PAGE_ENTRANCE: {
 			// Details
 			// Entrance type
 			rct_string_id entranceType = entranceTypeStringIds[mapElement->properties.entrance.type];
@@ -1935,7 +1935,7 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi)
 			break;
 		}
 
-		case PAGE_FENCE: {
+		case TILE_INSPECTOR_PAGE_FENCE: {
 			// Details
 			// Type
 			sint16 fenceType = mapElement->properties.fence.type;
@@ -1967,7 +1967,7 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi)
 			break;
 		}
 
-		case PAGE_LARGE_SCENERY:
+		case TILE_INSPECTOR_PAGE_LARGE_SCENERY:
 		{
 			// Details
 			// Type
@@ -2003,7 +2003,7 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi)
 			break;
 		}
 
-		case PAGE_BANNER:
+		case TILE_INSPECTOR_PAGE_BANNER:
 		{
 			// Details
 			// Banner info
@@ -2033,7 +2033,7 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi)
 			break;
 		}
 
-		case PAGE_CORRUPT:
+		case TILE_INSPECTOR_PAGE_CORRUPT:
 		{
 			// Properties
 			// Raise / lower label
