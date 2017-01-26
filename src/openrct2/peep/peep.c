@@ -8998,6 +8998,10 @@ static void peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_peep
 
 		if (mapElement->flags & MAP_ELEMENT_FLAG_GHOST) continue;
 
+		if (test_edge == -1) {
+			continue;
+		}
+
 		uint8 rideIndex = 0xFF;
 		switch (map_element_get_type(mapElement)) {
 		case MAP_ELEMENT_TYPE_TRACK:
