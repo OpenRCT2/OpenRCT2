@@ -73,10 +73,10 @@ uint8 gCommandExpenditureType;
 void finance_payment(money32 amount, rct_expenditure_type type)
 {
 	money32 cur_money = DECRYPT_MONEY(gCashEncrypted);
-	money32 new_money = cur_money;
+	money32 new_money;
 
 	//overflow check
-	add_clamp(new_money, -amount, INT_MIN, INT_MAX);
+	new_money = add_clamp_money32(cur_money, -amount, INT_MIN, INT_MAX);
 
 	gCashEncrypted = ENCRYPT_MONEY(new_money);
 	gExpenditureTable[type] -= amount;
