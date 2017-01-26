@@ -8371,6 +8371,11 @@ static money32 remove_ride_entrance_or_exit(sint16 x, sint16 y, uint8 rideIndex,
 		return MONEY32_UNDEFINED;
 	}
 
+	if (ride->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK) {
+		gGameCommandErrorText = STR_NOT_ALLOWED_TO_MODIFY_STATION;
+		return MONEY32_UNDEFINED;
+	}
+
 	if (flags & GAME_COMMAND_FLAG_APPLY){
 		ride_clear_for_construction(rideIndex);
 		ride_remove_peeps(rideIndex);
