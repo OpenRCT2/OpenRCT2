@@ -337,7 +337,7 @@ static void window_news_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint3
 					}
 				}
 
-				uint32 image_id = g_sprite_entries[sprite_type].sprite_image->base_image;
+				uint32 image_id = g_peep_animation_entries[sprite_type].sprite_animation->base_image;
 				image_id += 0xA0000001;
 				image_id |= (peep->tshirt_colour << 19) | (peep->trousers_colour << 24);
 
