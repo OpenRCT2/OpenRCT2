@@ -1588,10 +1588,10 @@ private:
 
     void ImportMapElements()
     {
-        memcpy(gMapElements, _s4.map_elements, RCT1_MAX_MAP_ELEMENTS * sizeof(rct_map_element));
+        Memory::Copy(gMapElements, _s4.map_elements, RCT1_MAX_MAP_ELEMENTS * sizeof(rct_map_element));
         ClearExtraTileEntries();
-        FixColours();
-        FixZ();
+        FixSceneryColours();
+        FixMapElementZ();
         FixPaths();
         FixWalls();
         FixBanners();
@@ -1816,7 +1816,7 @@ private:
             dst->Ticks = src->Ticks;
             dst->MonthYear = src->MonthYear;
             dst->Day = src->Day;
-            memcpy(dst->Text, src->Text, sizeof(src->Text));
+            Memory::Copy(dst->Text, src->Text, sizeof(src->Text));
         }
 
         // Initial guest status
@@ -1968,7 +1968,7 @@ private:
         gNextFreeMapElement = nextFreeMapElement;
     }
 
-    void FixColours()
+    void FixSceneryColours()
     {
         colour_t colour;
         rct_map_element * mapElement = gMapElements;
@@ -2018,7 +2018,7 @@ private:
         }
     }
 
-    void FixZ()
+    void FixMapElementZ()
     {
         rct_map_element * mapElement = gMapElements;
         while (mapElement < gNextFreeMapElement)
