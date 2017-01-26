@@ -1477,7 +1477,7 @@ private:
 
     void ImportPeepSpawns()
     {
-        for (size_t i = 0; i < 2; i++)
+        for (size_t i = 0; i < RCT1_MAX_PEEP_SPAWNS; i++)
         {
             gPeepSpawns[i] = _s4.peep_spawn[i];
         }
