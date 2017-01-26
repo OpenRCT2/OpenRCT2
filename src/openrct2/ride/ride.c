@@ -2546,8 +2546,11 @@ static void ride_mechanic_status_update(sint32 rideIndex, sint32 mechanicStatus)
 		ride_call_closest_mechanic(rideIndex);
 		break;
 	case RIDE_MECHANIC_STATUS_HEADING:
-		mechanic = &(get_sprite(ride->mechanic)->peep);
-		if (
+		mechanic = NULL;
+		if (ride->mechanic != SPRITE_INDEX_NULL) {
+			mechanic = &(get_sprite(ride->mechanic)->peep);
+		}
+		if (mechanic == NULL ||
 			!peep_is_mechanic(mechanic) ||
 			(mechanic->state != PEEP_STATE_HEADING_TO_INSPECTION && mechanic->state != PEEP_STATE_ANSWERING) ||
 			mechanic->current_ride != rideIndex
@@ -2558,8 +2561,11 @@ static void ride_mechanic_status_update(sint32 rideIndex, sint32 mechanicStatus)
 		}
 		break;
 	case RIDE_MECHANIC_STATUS_FIXING:
-		mechanic = &(get_sprite(ride->mechanic)->peep);
-		if (
+		mechanic = NULL;
+		if (ride->mechanic != SPRITE_INDEX_NULL) {
+			mechanic = &(get_sprite(ride->mechanic)->peep);
+		}
+		if (mechanic == NULL ||
 			!peep_is_mechanic(mechanic) ||
 			(
 				mechanic->state != PEEP_STATE_HEADING_TO_INSPECTION &&
