@@ -8055,7 +8055,7 @@ static sint32 peep_interact_with_entrance(rct_peep* peep, sint16 x, sint16 y, rc
 		}
 
 		uint8 entranceIndex = 0;
-		for (entranceIndex = 0; entranceIndex < 4; entranceIndex++) {
+		for (entranceIndex = 0; entranceIndex < MAX_PARK_ENTRANCES; entranceIndex++) {
 			if (gParkEntranceX[entranceIndex] == (x & 0xFFE0) &&
 				gParkEntranceY[entranceIndex] == (y & 0xFFE0))
 				break;
@@ -9782,7 +9782,7 @@ sint32 peep_pathfind_choose_direction(sint16 x, sint16 y, uint8 z, rct_peep *pee
 static sint32 guest_path_find_entering_park(rct_peep *peep, rct_map_element *map_element, uint8 edges){
 	uint8 chosenEntrance = 0xFF;
 	uint16 nearestDist = 0xFFFF;
-	for (uint8 entranceNum = 0; entranceNum < 4; ++entranceNum){
+	for (uint8 entranceNum = 0; entranceNum < MAX_PARK_ENTRANCES; ++entranceNum){
 		if (gParkEntranceX[entranceNum] == MAP_LOCATION_NULL)
 			continue;
 
@@ -9863,7 +9863,7 @@ static sint32 guest_path_find_park_entrance(rct_peep* peep, rct_map_element *map
 	if (!(peep->peep_flags & PEEP_FLAGS_PARK_ENTRANCE_CHOSEN)){
 		uint8 chosenEntrance = 0xFF;
 		uint16 nearestDist = 0xFFFF;
-		for (entranceNum = 0; entranceNum < 4; ++entranceNum){
+		for (entranceNum = 0; entranceNum < MAX_PARK_ENTRANCES; ++entranceNum){
 			if (gParkEntranceX[entranceNum] == MAP_LOCATION_NULL)
 				continue;
 
@@ -12677,14 +12677,14 @@ void peep_autoposition(rct_peep *newPeep)
         // No walking guests; pick random park entrance
         count = 0;
         uint8 i;
-        for (i = 0; i < 4; ++i) {
+        for (i = 0; i < MAX_PARK_ENTRANCES; ++i) {
             if (gParkEntranceX[i] != SPRITE_LOCATION_NULL)
                 ++count;
         }
 
         if (count > 0) {
             uint32 rand = scenario_rand_max(count);
-            for (i = 0; i < 4; ++i) {
+            for (i = 0; i < MAX_PARK_ENTRANCES; ++i) {
                 if (gParkEntranceX[i] != SPRITE_LOCATION_NULL) {
                     if (rand == 0)
                         break;

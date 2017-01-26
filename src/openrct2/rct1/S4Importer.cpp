@@ -2228,7 +2228,7 @@ private:
 
     void FixEntrancePositions()
     {
-        for (sint32 i = 0; i < 4; i++)
+        for (sint32 i = 0; i < MAX_PARK_ENTRANCES; i++)
         {
             gParkEntranceX[i] = MAP_LOCATION_NULL;
         }

@@ -487,17 +487,17 @@ bool editor_check_park()
 		return false;
 	}
 
-	for (sint32 i = 0; i < 4; i++) {
+	for (sint32 i = 0; i < MAX_PARK_ENTRANCES; i++) {
 		if (gParkEntranceX[i] != MAP_LOCATION_NULL)
 			break;
 
-		if (i == 3) {
+		if (i == MAX_PARK_ENTRANCES - 1) {
 			gGameCommandErrorText = STR_NO_PARK_ENTRANCES;
 			return false;
 		}
 	}
 
-	for (sint32 i = 0; i < 4; i++) {
+	for (sint32 i = 0; i < MAX_PARK_ENTRANCES; i++) {
 		if (gParkEntranceX[i] == MAP_LOCATION_NULL)
 			continue;
 

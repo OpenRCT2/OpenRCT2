@@ -5223,7 +5223,7 @@ static money32 place_park_entrance(sint32 flags, sint16 x, sint16 y, sint16 z, u
 	}
 
 	sint8 entranceNum = -1;
-	for (uint8 i = 0; i < 4; ++i) {
+	for (uint8 i = 0; i < MAX_PARK_ENTRANCES; ++i) {
 		if (gParkEntranceX[i] == MAP_LOCATION_NULL) {
 			entranceNum = i;
 			break;

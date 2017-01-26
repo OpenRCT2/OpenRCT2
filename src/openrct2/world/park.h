@@ -65,10 +65,11 @@ extern uint8 gGuestsInParkHistory[32];
 extern sint32 _guestGenerationProbability;
 extern sint32 _suggestedGuestMaximum;
 
-extern sint16 gParkEntranceX[4];
-extern sint16 gParkEntranceY[4];
-extern sint16 gParkEntranceZ[4];
-extern uint8 gParkEntranceDirection[4];
+#define MAX_PARK_ENTRANCES 4
+extern sint16 gParkEntranceX[MAX_PARK_ENTRANCES];
+extern sint16 gParkEntranceY[MAX_PARK_ENTRANCES];
+extern sint16 gParkEntranceZ[MAX_PARK_ENTRANCES];
+extern uint8 gParkEntranceDirection[MAX_PARK_ENTRANCES];
 
 extern bool gParkEntranceGhostExists;
 extern rct_xyz16 gParkEntranceGhostPosition;

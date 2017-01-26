@@ -70,10 +70,10 @@ sint32 _suggestedGuestMaximum;
  */
 sint32 _guestGenerationProbability;
 
-sint16 gParkEntranceX[4];
-sint16 gParkEntranceY[4];
-sint16 gParkEntranceZ[4];
-uint8 gParkEntranceDirection[4];
+sint16 gParkEntranceX[MAX_PARK_ENTRANCES];
+sint16 gParkEntranceY[MAX_PARK_ENTRANCES];
+sint16 gParkEntranceZ[MAX_PARK_ENTRANCES];
+uint8 gParkEntranceDirection[MAX_PARK_ENTRANCES];
 
 bool gParkEntranceGhostExists;
 rct_xyz16 gParkEntranceGhostPosition;
@@ -360,7 +360,7 @@ money32 calculate_company_value()
 void reset_park_entrances()
 {
 	gParkName = 0;
-	for (sint32 i = 0; i < 4; i++) {
+	for (sint32 i = 0; i < MAX_PARK_ENTRANCES; i++) {
 		gParkEntranceX[i] = 0x8000;
 	}
 	for (sint32 i = 0; i < MAX_PEEP_SPAWNS; i++) {
@@ -722,7 +722,7 @@ sint32 park_get_entrance_index(sint32 x, sint32 y, sint32 z)
 {
 	sint32 i;
 
-	for (i = 0; i < 4; i++) {
+	for (i = 0; i < MAX_PARK_ENTRANCES; i++) {
 		if (
 			x == gParkEntranceX[i] &&
 			y == gParkEntranceY[i] &&
