@@ -361,7 +361,7 @@ void reset_park_entrances()
 {
 	gParkName = 0;
 	for (sint32 i = 0; i < MAX_PARK_ENTRANCES; i++) {
-		gParkEntranceX[i] = 0x8000;
+		gParkEntranceX[i] = MAP_LOCATION_NULL;
 	}
 	for (sint32 i = 0; i < MAX_PEEP_SPAWNS; i++) {
 		gPeepSpawns[i].x = UINT16_MAX;
@@ -852,7 +852,7 @@ void game_command_remove_park_entrance(sint32 *eax, sint32 *ebx, sint32 *ecx, si
 		return;
 	}
 
-	gParkEntranceX[entranceIndex] = 0x8000;
+	gParkEntranceX[entranceIndex] = MAP_LOCATION_NULL;
 	direction = (gParkEntranceDirection[entranceIndex] - 1) & 3;
 	z = (*edx & 0xFF) * 2;
 
