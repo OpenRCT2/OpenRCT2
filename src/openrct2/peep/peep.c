@@ -9215,11 +9215,12 @@ static void peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_peep
 
 		/* Remove the reverse edge (i.e. the edge back to the previous map element.) */
 		edges &= ~(1 << (test_edge ^ 2));
-		test_edge = bitscanforward(edges);
+
+		sint32 next_test_edge = bitscanforward(edges);
 
 		/* If there are no other edges the current search ends here.
 		 * Continue to the next map element without updating the parameters (best result so far). */
-		if (test_edge == -1) {
+		if (next_test_edge == -1) {
 			#if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
 			if (gPathFindDebug) {
 				log_info("[%03d] Search path ends at %d,%d,%d; No more edges/dead end", counter, x >> 5, y >> 5, z);
@@ -9372,41 +9373,41 @@ static void peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_peep
 		/* Continue searching down each remaining edge of the path
 		 * (recursive call). */
 		do {
-			edges &= ~(1 << test_edge);
+			edges &= ~(1 << next_test_edge);
 			uint8 savedNumJunctions = _peepPathFindNumJunctions;
 
 			uint8 height = z;
 			if (footpath_element_is_sloped(mapElement) &&
-				footpath_element_get_slope_direction(mapElement) == test_edge) {
+				footpath_element_get_slope_direction(mapElement) == next_test_edge) {
 				height += 2;
 			}
 			#if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
 			if (gPathFindDebug) {
 				if (searchResult == PATH_SEARCH_JUNCTION) {
 					if (thin_junction)
-						log_info("[%03d] Recurse from %d,%d,%d edge: %d; Thin-Junction", counter, x >> 5, y >> 5, z, test_edge);
+						log_info("[%03d] Recurse from %d,%d,%d edge: %d; Thin-Junction", counter, x >> 5, y >> 5, z, next_test_edge);
 					else
-						log_info("[%03d] Recurse from %d,%d,%d edge: %d; Wide-Junction", counter, x >> 5, y >> 5, z, test_edge);
+						log_info("[%03d] Recurse from %d,%d,%d edge: %d; Wide-Junction", counter, x >> 5, y >> 5, z, next_test_edge);
 				} else {
-					log_info("[%03d] Recurse from %d,%d,%d edge: %d; Segment", counter, x >> 5, y >> 5, z, test_edge);
+					log_info("[%03d] Recurse from %d,%d,%d edge: %d; Segment", counter, x >> 5, y >> 5, z, next_test_edge);
 				}
 			}
 			#endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
 
 			if (thin_junction) {
 				/* Add the current test_edge to the history. */
-				_peepPathFindHistory[_peepPathFindNumJunctions + 1].direction = test_edge;
+				_peepPathFindHistory[_peepPathFindNumJunctions + 1].direction = next_test_edge;
 			}
 
-			peep_pathfind_heuristic_search(x, y, height, peep, mapElement, nextInPatrolArea, counter, endScore, test_edge, endJunctions, junctionList, directionList, endXYZ, endSteps);
+			peep_pathfind_heuristic_search(x, y, height, peep, mapElement, nextInPatrolArea, counter, endScore, next_test_edge, endJunctions, junctionList, directionList, endXYZ, endSteps);
 			_peepPathFindNumJunctions = savedNumJunctions;
 
 			#if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
 			if (gPathFindDebug) {
-				log_info("[%03d] Returned to %d,%d,%d edge: %d; Score: %d", counter, x >> 5, y >> 5, z, test_edge, *endScore);
+				log_info("[%03d] Returned to %d,%d,%d edge: %d; Score: %d", counter, x >> 5, y >> 5, z, next_test_edge, *endScore);
 			}
 			#endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
-		} while ((test_edge = bitscanforward(edges)) != -1);
+		} while ((next_test_edge = bitscanforward(edges)) != -1);
 
 	} while (!map_element_is_last_for_tile(mapElement++));
 
