@@ -23,8 +23,8 @@
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
 #include "../core/Util.hpp"
-#include "../scenario/ScenarioSources.h"
 #include "../object/ObjectManager.h"
+#include "../scenario/ScenarioSources.h"
 #include "S4Importer.h"
 #include "Tables.h"
 
@@ -44,6 +44,7 @@ extern "C"
     #include "../peep/peep.h"
     #include "../peep/staff.h"
     #include "../rct1.h"
+    #include "../ride/ride_data.h"
     #include "../ride/track.h"
     #include "../util/sawyercoding.h"
     #include "../util/util.h"
@@ -52,7 +53,6 @@ extern "C"
     #include "../world/map_animation.h"
     #include "../world/park.h"
     #include "../world/scenery.h"
-    #include "../ride/ride_data.h"
 }
 
 class EntryList
