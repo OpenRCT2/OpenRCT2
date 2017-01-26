@@ -1031,7 +1031,6 @@ private:
         dst->track_type = src->track_type;
         dst->track_progress = src->track_progress;
         dst->vertical_drop_countdown = src->vertical_drop_countdown;
-        dst->lost_time_out = src->lost_time_out;
         dst->status = src->status;
         dst->sub_state = src->sub_state;
         dst->update_flags = src->update_flags;
