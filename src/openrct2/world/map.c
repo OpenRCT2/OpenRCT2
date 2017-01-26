@@ -99,7 +99,7 @@ rct_map_element *gMapElements = RCT2_ADDRESS(RCT2_ADDRESS_MAP_ELEMENTS, rct_map_
 rct_map_element **gMapElementTilePointers = RCT2_ADDRESS(RCT2_ADDRESS_TILE_MAP_ELEMENT_POINTERS, rct_map_element*);
 #endif
 rct_xy16 gMapSelectionTiles[300];
-rct2_peep_spawn gPeepSpawns[2];
+rct2_peep_spawn gPeepSpawns[MAX_PEEP_SPAWNS];
 
 rct_map_element *gNextFreeMapElement;
 uint32 gNextFreeMapElementPointerIndex;
@@ -4777,7 +4777,7 @@ static void clear_element_at(sint32 x, sint32 y, rct_map_element **elementPtr)
 static void clear_elements_at(sint32 x, sint32 y)
 {
 	// Remove the spawn point (if there is one in the current tile)
-	for (sint32 i = 0; i < 2; i++) {
+	for (sint32 i = 0; i < MAX_PEEP_SPAWNS; i++) {
 		rct2_peep_spawn *peepSpawn = &gPeepSpawns[i];
 		if (floor2(peepSpawn->x, 32) == x && floor2(peepSpawn->y, 32) == y) {
 			peepSpawn->x = UINT16_MAX;

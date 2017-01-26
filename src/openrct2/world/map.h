@@ -238,6 +238,7 @@ enum {
 
 #define MAX_MAP_ELEMENTS 196096
 #define MAX_TILE_MAP_ELEMENT_POINTERS (256 * 256)
+#define MAX_PEEP_SPAWNS 2
 
 #define MAP_ELEMENT_LARGE_TYPE_MASK 0x3FF
 
@@ -360,7 +361,7 @@ extern rct_map_element **gMapElementTilePointers;
 #endif
 
 extern rct_xy16 gMapSelectionTiles[300];
-extern rct2_peep_spawn gPeepSpawns[2];
+extern rct2_peep_spawn gPeepSpawns[MAX_PEEP_SPAWNS];
 
 extern rct_map_element *gNextFreeMapElement;
 extern uint32 gNextFreeMapElementPointerIndex;

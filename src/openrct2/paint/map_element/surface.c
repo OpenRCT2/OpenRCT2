@@ -1172,7 +1172,7 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
 		gCurrentViewportFlags & VIEWPORT_FLAG_LAND_OWNERSHIP
 	) {
 		rct_xy16 pos = {gPaintMapPosition.x, gPaintMapPosition.y};
-		for (sint32 i = 0; i < 2; ++i) {
+		for (sint32 i = 0; i < MAX_PEEP_SPAWNS; ++i) {
 			rct2_peep_spawn * spawn = &gPeepSpawns[i];
 
 			if ((spawn->x & 0xFFE0) == pos.x && (spawn->y & 0xFFE0) == pos.y) {
