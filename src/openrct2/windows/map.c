@@ -1357,7 +1357,7 @@ static void window_map_set_peep_spawn_tool_down(sint32 x, sint32 y)
 	mapZ = mapElement->base_height / 2;
 
 	sint32 peepSpawnIndex = 0;
-	if (gLandToolSize != 1 && gPeepSpawns[0].x != 0xFFFF)
+	if (gLandToolSize != 1 && gPeepSpawns[0].x != UINT16_MAX)
 		peepSpawnIndex = 1;
 
 	gPeepSpawns[peepSpawnIndex].x = mapX;

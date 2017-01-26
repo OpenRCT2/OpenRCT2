@@ -9823,7 +9823,7 @@ static sint32 guest_path_find_leaving_park(rct_peep *peep, rct_map_element *map_
 	rct2_peep_spawn* peepSpawn = &gPeepSpawns[0];
 	// Peeps for whatever reason return to their original spawn point
 	// this in future should look for the nearest.
-	if (peep->sprite_index & 1 && gPeepSpawns[1].x != 0xFFFF){
+	if (peep->sprite_index & 1 && gPeepSpawns[1].x != UINT16_MAX){
 		peepSpawn++;
 	}
 

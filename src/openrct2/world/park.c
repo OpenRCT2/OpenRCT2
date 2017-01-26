@@ -1053,7 +1053,7 @@ static money32 map_buy_land_rights_for_tile(sint32 x, sint32 y, sint32 setting, 
 			for (uint8 i = 0; i < MAX_PEEP_SPAWNS; ++i) {
 				if (x == (peepSpawns[i].x & 0xFFE0)) {
 					if (y == (peepSpawns[i].y & 0xFFE0)) {
-						peepSpawns[i].x = 0xFFFF;
+						peepSpawns[i].x = UINT16_MAX;
 					}
 				}
 			}
