@@ -175,8 +175,8 @@ class OpenGLDrawingEngine;
 class OpenGLDrawingContext final : public IDrawingContext
 {
 private:
-    OpenGLDrawingEngine *   _engine;
-    rct_drawpixelinfo *     _dpi;
+    OpenGLDrawingEngine *   _engine = nullptr;
+    rct_drawpixelinfo *     _dpi    = nullptr;
 
     DrawImageShader *       _drawImageShader        = nullptr;
     DrawLineShader *        _drawLineShader         = nullptr;
@@ -184,12 +184,12 @@ private:
 
     TextureCache * _textureCache = nullptr;
 
-    sint32 _offsetX;
-    sint32 _offsetY;
-    sint32 _clipLeft;
-    sint32 _clipTop;
-    sint32 _clipRight;
-    sint32 _clipBottom;
+    sint32 _offsetX    = 0;
+    sint32 _offsetY    = 0;
+    sint32 _clipLeft   = 0;
+    sint32 _clipTop    = 0;
+    sint32 _clipRight  = 0;
+    sint32 _clipBottom = 0;
 
     struct {
         std::vector<DrawRectCommand> rectangles;
@@ -230,7 +230,7 @@ class OpenGLDrawingEngine : public IDrawingEngine
 {
 private:
     SDL_Window *    _window         = nullptr;
-    SDL_GLContext   _context;
+    SDL_GLContext   _context        = nullptr;
 
     uint32  _width      = 0;
     uint32  _height     = 0;

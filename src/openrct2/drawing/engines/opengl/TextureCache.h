@@ -75,12 +75,14 @@ struct CachedTextureInfo
 class Atlas final
 {
 private:
-    GLuint _index;
-    sint32 _imageSize;
-    sint32 _atlasWidth, _atlasHeight;
+    GLuint _index       = 0;
+    sint32 _imageSize   = 0;
+    sint32 _atlasWidth  = 0;
+    sint32 _atlasHeight = 0;
     std::vector<GLuint> _freeSlots;
 
-    sint32 _cols, _rows;
+    sint32 _cols = 0;
+    sint32 _rows = 0;
 
 public:
     Atlas(GLuint index, sint32 imageSize)
@@ -187,10 +189,10 @@ class TextureCache final
 private:
     bool _atlasesTextureInitialised = false;
 
-    GLuint _atlasesTexture;
-    GLint _atlasesTextureDimensions;
-    GLuint _atlasesTextureIndices;
-    GLint _atlasesTextureIndicesLimit;
+    GLuint _atlasesTexture            = 0;
+    GLint _atlasesTextureDimensions   = 0;
+    GLuint _atlasesTextureIndices     = 0;
+    GLint _atlasesTextureIndicesLimit = 0;
     std::vector<Atlas> _atlases;
 
     std::unordered_map<uint32, CachedTextureInfo> _imageTextureMap;
@@ -200,7 +202,7 @@ private:
     SDL_Color _palette[256];
 
 public:
-    TextureCache();
+    TextureCache() = default;
     ~TextureCache();
     void SetPalette(const SDL_Color * palette);
     void InvalidateImage(uint32 image);

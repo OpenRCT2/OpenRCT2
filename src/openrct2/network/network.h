@@ -195,7 +195,7 @@ private:
 	ITcpSocket * listening_socket = nullptr;
 	uint16 listening_port = 0;
 	NetworkConnection server_connection;
-	SOCKET_STATUS _lastConnectStatus;
+	SOCKET_STATUS _lastConnectStatus = SOCKET_STATUS_CLOSED;
 	uint32 last_tick_sent_time = 0;
 	uint32 last_ping_sent_time = 0;
 	uint32 server_tick = 0;
@@ -211,7 +211,7 @@ private:
 	INetworkServerAdvertiser * _advertiser = nullptr;
 	uint32 server_connect_time = 0;
 	uint8 default_group = 0;
-	SDL_RWops *_chatLogStream;
+	SDL_RWops *_chatLogStream = nullptr;
 	std::string _chatLogPath;
 
 	void UpdateServer();
