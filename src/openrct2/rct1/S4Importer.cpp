@@ -2351,8 +2351,7 @@ private:
     {
         rct_map_element * currentElement;
 
-        switch(_s4.scenario_slot_index)
-        {
+        switch(_s4.scenario_slot_index) {
         case SC_KATIES_DREAMLAND:
             currentElement = map_get_surface_element_at(74, 70);
             currentElement->properties.surface.ownership |= OWNERSHIP_AVAILABLE;
@@ -2388,9 +2387,7 @@ private:
                             continue;
 
                         uint8 trackType = mapElement->properties.track.type;
-
-                        switch (trackType)
-                        {
+                        switch (trackType) {
                         case TRACK_ELEM_25_DEG_UP_TO_FLAT:
                         case TRACK_ELEM_60_DEG_UP_TO_FLAT:
                         case TRACK_ELEM_DIAG_25_DEG_UP_TO_FLAT:
