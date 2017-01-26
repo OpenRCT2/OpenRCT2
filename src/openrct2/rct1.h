@@ -1185,6 +1185,8 @@ enum {
 
 #define RCT1_MAX_STATIONS 4
 #define RCT1_MAX_TRAINS_PER_RIDE 12
+#define RCT1_MAX_MAP_SIZE 128
+#define RCT1_MAX_RIDES_IN_PARK 128
 
 extern const uint8 gRideCategories[0x60];
 

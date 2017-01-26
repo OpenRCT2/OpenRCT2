@@ -44,6 +44,7 @@ extern "C"
     #include "../peep/peep.h"
     #include "../peep/staff.h"
     #include "../rct1.h"
+    #include "../ride/track.h"
     #include "../util/sawyercoding.h"
     #include "../util/util.h"
     #include "../world/climate.h"
@@ -159,6 +160,7 @@ public:
         ImportScenarioObjective();
         ImportSavedView();
         FixLandOwnership();
+        CountBlockSections();
 
         // Importing the strings is done later on, although that approach needs looking at.
         //game_convert_strings_to_utf8();
@@ -1928,17 +1930,17 @@ private:
         rct_map_element * * tilePointer = gMapElementTilePointers;
 
         // 128 rows of map data from RCT1 map
-        for (sint32 x = 0; x < 128; x++)
+        for (sint32 x = 0; x < RCT1_MAX_MAP_SIZE; x++)
         {
             // Assign the first half of this row
-            for (sint32 y = 0; y < 128; y++)
+            for (sint32 y = 0; y < RCT1_MAX_MAP_SIZE; y++)
             {
                 *tilePointer++ = mapElement;
                 do { } while (!map_element_is_last_for_tile(mapElement++));
             }
 
             // Fill the rest of the row with blank tiles
-            for (sint32 y = 0; y < 128; y++)
+            for (sint32 y = 0; y < RCT1_MAX_MAP_SIZE; y++)
             {
                 nextFreeMapElement->type = MAP_ELEMENT_TYPE_SURFACE;
                 nextFreeMapElement->flags = MAP_ELEMENT_FLAG_LAST_TILE;
@@ -2119,9 +2121,9 @@ private:
 
     void FixWalls()
     {
-        for (sint32 x = 0; x < 128; x++)
+        for (sint32 x = 0; x < RCT1_MAX_MAP_SIZE; x++)
         {
-            for (sint32 y = 0; y < 128; y++)
+            for (sint32 y = 0; y < RCT1_MAX_MAP_SIZE; y++)
             {
                 rct_map_element * mapElement = map_get_first_element_at(x, y);
                 do
@@ -2198,9 +2200,9 @@ private:
 
     void FixBanners()
     {
-        for (sint32 x = 0; x < 128; x++)
+        for (sint32 x = 0; x < RCT1_MAX_MAP_SIZE; x++)
         {
-            for (sint32 y = 0; y < 128; y++)
+            for (sint32 y = 0; y < RCT1_MAX_MAP_SIZE; y++)
             {
                 rct_map_element * mapElement = map_get_first_element_at(x, y);
                 do
@@ -2358,6 +2360,48 @@ private:
             currentElement = map_get_surface_element_at(80, 77);
             currentElement->properties.surface.ownership |= OWNERSHIP_AVAILABLE;
             break;
+        }
+    }
+
+    /**
+     * Counts the block sections. The reason this iterates over the map is to avoid getting into infinite loops,
+     * which can happen with hacked parks.
+     */
+    void CountBlockSections()
+    {
+        for (sint32 x = 0; x < RCT1_MAX_MAP_SIZE; x++)
+        {
+            for (sint32 y = 0; y < RCT1_MAX_MAP_SIZE; y++)
+            {
+                rct_map_element * mapElement = map_get_first_element_at(x, y);
+                do
+                {
+                    if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_TRACK)
+                    {
+                        // Lift hill tops are the only pieces present in RCT1 that can count as a block brake.
+                        if (!track_element_is_lift_hill(mapElement))
+                            continue;
+
+                        uint8 trackType = mapElement->properties.track.type;
+
+                        switch (trackType)
+                        {
+                        case TRACK_ELEM_25_DEG_UP_TO_FLAT:
+                        case TRACK_ELEM_60_DEG_UP_TO_FLAT:
+                        case TRACK_ELEM_DIAG_25_DEG_UP_TO_FLAT:
+                        case TRACK_ELEM_DIAG_60_DEG_UP_TO_FLAT:
+                            break;
+                        default:
+                            continue;
+                        }
+
+                        uint8 rideIndex = mapElement->properties.track.ride_index;
+                        rct_ride * ride = get_ride(rideIndex);
+                        ride->num_block_brakes++;
+                    }
+                }
+                while (!map_element_is_last_for_tile(mapElement++));
+            }
         }
     }
 };
