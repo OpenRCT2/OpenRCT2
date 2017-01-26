@@ -286,7 +286,7 @@ static money32 staff_hire_new_staff_member(uint8 staff_type, uint8 flags, sint16
 		newPeep->name_string_idx = staffNames[staff_type];
 		newPeep->sprite_type = sprite_type;
 
-		spriteBounds = g_sprite_entries[sprite_type].sprite_bounds;
+		spriteBounds = g_peep_animation_entries[sprite_type].sprite_bounds;
 		newPeep->sprite_width = spriteBounds->sprite_width;
 		newPeep->sprite_height_negative = spriteBounds->sprite_height_negative;
 		newPeep->sprite_height_positive = spriteBounds->sprite_height_positive;

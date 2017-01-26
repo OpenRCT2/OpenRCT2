@@ -1010,7 +1010,7 @@ void window_staff_overview_tab_paint(rct_window* w, rct_drawpixelinfo* dpi)
 	if (peep->type == PEEP_TYPE_STAFF && peep->staff_type == STAFF_TYPE_ENTERTAINER)
 		y++;
 
-	sint32 ebx = g_sprite_entries[peep->sprite_type].sprite_image->base_image + 1;
+	sint32 ebx = g_peep_animation_entries[peep->sprite_type].sprite_animation->base_image + 1;
 
 	sint32 eax = 0;
 
@@ -1144,7 +1144,7 @@ void window_staff_overview_tool_update(rct_window* w, sint32 widgetIndex, sint32
 	rct_peep* peep;
 	peep = GET_PEEP(w->number);
 
-	uint32 imageId = g_sprite_entries[peep->sprite_type].sprite_image[11].base_image;
+	uint32 imageId = g_peep_animation_entries[peep->sprite_type].sprite_animation[PEEP_ACTION_SPRITE_TYPE_UI].base_image;
 	imageId += w->picked_peep_frame >> 2;
 
 	imageId |= (peep->tshirt_colour << 19) | (peep->trousers_colour << 24) | 0xA0000000;

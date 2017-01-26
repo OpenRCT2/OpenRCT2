@@ -83,7 +83,6 @@ static struct {
 } _peepPathFindHistory[16];
 
 static uint8 _unk_F1AEF0;
-static uint8 _unk_F1AEF1;
 static uint16 _unk_F1EE18;
 static rct_map_element * _peepRideEntranceExitElement;
 static uint32 _peepRideConsideration[8];
@@ -234,7 +233,7 @@ static struct {
 	{ PEEP_ACTION_NONE_2, 1 },
 	{ PEEP_ACTION_NONE_2, 1 },
 	{ PEEP_ACTION_NONE_2, 1 },
-	{ PEEP_ACTION_27, 0 },
+	{ PEEP_ACTION_DISGUST, 0 },
 	{ PEEP_ACTION_NONE_2, 0 },
 	{ PEEP_ACTION_NONE_2, 0 },
 	{ PEEP_ACTION_NONE_2, 0 },
@@ -274,7 +273,7 @@ static struct {
 	{ PEEP_ACTION_NONE_2, 1 },
 	{ PEEP_ACTION_NONE_2, 1 },
 	{ PEEP_ACTION_NONE_2, 0 },
-	{ PEEP_ACTION_29, 0 },
+	{ PEEP_ACTION_BEING_WATCHED, 0 },
 	{ PEEP_ACTION_NONE_2, 1 },
 	{ PEEP_ACTION_NONE_2, 1 },
 	{ PEEP_ACTION_NONE_2, 1 },
@@ -379,11 +378,44 @@ static struct {
 	{ PEEP_ACTION_NONE_2, 1 },
 };
 
-static uint8 unk_981D8C[] = { 0, 6, 12 };
-static uint8 unk_981D8F[] = {
-	1, 3, 4, 5, 8, 9, 10, 13, 14, 15, 16, 17, 18, 19, 20,
-	21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33,
-	34, 35, 36, 0, 0
+static uint8 PeepSpecialSpriteToSpriteTypeMap[] = {
+	PEEP_ACTION_SPRITE_TYPE_NONE,
+	PEEP_ACTION_SPRITE_TYPE_HOLD_MAT,
+	PEEP_ACTION_SPRITE_TYPE_STAFF_MOWER
+};
+
+static uint8 PeepActionToSpriteTypeMap[] = {
+	PEEP_ACTION_SPRITE_TYPE_CHECK_TIME,
+	PEEP_ACTION_SPRITE_TYPE_EAT_FOOD,
+	PEEP_ACTION_SPRITE_TYPE_SHAKE_HEAD,
+	PEEP_ACTION_SPRITE_TYPE_EMPTY_POCKETS,
+	PEEP_ACTION_SPRITE_TYPE_SITTING_EAT_FOOD,
+	PEEP_ACTION_SPRITE_TYPE_SITTING_LOOK_AROUND_LEFT,
+	PEEP_ACTION_SPRITE_TYPE_SITTING_LOOK_AROUND_RIGHT,
+	PEEP_ACTION_SPRITE_TYPE_WOW,
+	PEEP_ACTION_SPRITE_TYPE_THROW_UP,
+	PEEP_ACTION_SPRITE_TYPE_JUMP,
+	PEEP_ACTION_SPRITE_TYPE_STAFF_SWEEP,
+	PEEP_ACTION_SPRITE_TYPE_DROWNING,
+	PEEP_ACTION_SPRITE_TYPE_STAFF_ANSWER_CALL,
+	PEEP_ACTION_SPRITE_TYPE_STAFF_ANSWER_CALL_2,
+	PEEP_ACTION_SPRITE_TYPE_STAFF_CHECKBOARD,
+	PEEP_ACTION_SPRITE_TYPE_STAFF_FIX,
+	PEEP_ACTION_SPRITE_TYPE_STAFF_FIX_2,
+	PEEP_ACTION_SPRITE_TYPE_STAFF_FIX_GROUND,
+	PEEP_ACTION_SPRITE_TYPE_STAFF_FIX_3,
+	PEEP_ACTION_SPRITE_TYPE_STAFF_WATERING,
+	PEEP_ACTION_SPRITE_TYPE_JOY,
+	PEEP_ACTION_SPRITE_TYPE_READ_MAP,
+	PEEP_ACTION_SPRITE_TYPE_WAVE,
+	PEEP_ACTION_SPRITE_TYPE_STAFF_EMPTY_BIN,
+	PEEP_ACTION_SPRITE_TYPE_WAVE_2,
+	PEEP_ACTION_SPRITE_TYPE_TAKE_PHOTO,
+	PEEP_ACTION_SPRITE_TYPE_CLAP,
+	PEEP_ACTION_SPRITE_TYPE_DISGUST,
+	PEEP_ACTION_SPRITE_TYPE_DRAW_PICTURE,
+	PEEP_ACTION_SPRITE_TYPE_BEING_WATCHED,
+	PEEP_ACTION_SPRITE_TYPE_WITHDRAW_MONEY
 };
 
 static const bool SpriteTypeToSlowWalkMap[] = {
@@ -404,8 +436,10 @@ static const ride_rating NauseaMaximumThresholds[] = {
 	300, 600, 800, 1000
 };
 
-// Has to use signed types
-static const rct_xy16 _97e1bc_21[64] = {
+// Locations of the spiral slide platform that a peep walks from the entrance of the ride to the
+// entrance of the slide. Up to 4 locations for each 4 sides that an ride entrance can be located
+// and 4 different rotations of the ride. 4 * 4 * 4 = 64 locations.
+static const rct_xy16 SpiralSlideWalkingPath[64] = {
 	{  56,   8 },
 	{   8,   8 },
 	{   8,  32 },
@@ -470,100 +504,6 @@ static const rct_xy16 _97e1bc_21[64] = {
 	{ -24,   8 },
 	{   0,   8 },
 	{   0,  32 },
-};
-
-static const rct_xy16 * _97e1bc[RIDE_TYPE_COUNT] = {
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	_97e1bc_21, // RIDE_TYPE_SPIRAL_SLIDE
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
 };
 
 sint32 peep_get_staff_count()
@@ -1437,20 +1377,20 @@ static sint32 checkForPath(rct_peep *peep){
 
 void sub_693B58(rct_peep* peep){
 	uint8 action_sprite_type;
-	if (peep->sprite_type >= countof(g_sprite_entries)) {
+	if (peep->sprite_type >= countof(g_peep_animation_entries)) {
 		return;
 	}
 	if (peep->action >= PEEP_ACTION_NONE_1){ // PEEP_ACTION_NONE_1 or PEEP_ACTION_NONE_2
-		action_sprite_type = unk_981D8C[peep->special_sprite];
+		action_sprite_type = PeepSpecialSpriteToSpriteTypeMap[peep->special_sprite];
 	} else {
-		action_sprite_type = unk_981D8F[peep->action];
+		action_sprite_type = PeepActionToSpriteTypeMap[peep->action];
 	}
 	if (action_sprite_type == peep->action_sprite_type)return;
 
 	invalidate_sprite_2((rct_sprite*)peep);
 	peep->action_sprite_type = action_sprite_type;
 
-	const rct_sprite_bounds* spriteBounds = g_sprite_entries[peep->sprite_type].sprite_bounds;
+	const rct_sprite_bounds* spriteBounds = g_peep_animation_entries[peep->sprite_type].sprite_bounds;
 	peep->sprite_width = spriteBounds[action_sprite_type].sprite_width;
 	peep->sprite_height_negative =  spriteBounds[action_sprite_type].sprite_height_negative;
 	peep->sprite_height_positive =  spriteBounds[action_sprite_type].sprite_height_positive;
@@ -1619,22 +1559,20 @@ static sint32 peep_update_action(sint16* x, sint16* y, sint16* xy_distance, rct_
 		*x = peep->x + word_981D7C[direction / 8].x;
 		*y = peep->y + word_981D7C[direction / 8].y;
 		peep->no_action_frame_no++;
-		const rct_sprite_image * edi = g_sprite_entries[peep->sprite_type].sprite_image;
-		const uint8* _edi = (edi[peep->action_sprite_type]).unkn_04;
-		if (peep->no_action_frame_no >= *_edi){
+		const rct_peep_animation * peepAnimation = g_peep_animation_entries[peep->sprite_type].sprite_animation;
+		const uint8* imageOffset = peepAnimation[peep->action_sprite_type].frame_offsets;
+		if (peep->no_action_frame_no >= peepAnimation[peep->action_sprite_type].num_frames){
 			peep->no_action_frame_no = 0;
 		}
-		peep->action_sprite_image_offset = _edi[peep->no_action_frame_no + 1];
+		peep->action_sprite_image_offset = imageOffset[peep->no_action_frame_no];
 		return 1;
 	}
 
-	const rct_sprite_image * edi = g_sprite_entries[peep->sprite_type].sprite_image;
-	const uint8* _edi = (edi[peep->action_sprite_type]).unkn_04;
+	const rct_peep_animation * peepAnimation = g_peep_animation_entries[peep->sprite_type].sprite_animation;
 	peep->action_frame++;
-	sint32 ebx = _edi[peep->action_frame + 1];
 
 	// If last frame of action
-	if (ebx == 0xFF){
+	if (peep->action_frame >= peepAnimation[peep->action_sprite_type].num_frames){
 		peep->action_sprite_image_offset = 0;
 		peep->action = 0xFF;
 		sub_693B58(peep);
@@ -1643,7 +1581,7 @@ static sint32 peep_update_action(sint16* x, sint16* y, sint16* xy_distance, rct_
 		*y = peep->y;
 		return 1;
 	}
-	peep->action_sprite_image_offset = ebx;
+	peep->action_sprite_image_offset = peepAnimation[peep->action_sprite_type].frame_offsets[peep->action_frame];
 
 	// If not throwing up and not at the frame where sick appears.
 	if (peep->action != PEEP_ACTION_THROW_UP || peep->action_frame != 15){
@@ -1729,37 +1667,37 @@ typedef struct item_pref_t {
 } item_pref_t;
 
 item_pref_t item_order_preference[] = {
-		{ 0, PEEP_ITEM_ICE_CREAM, 15 },
-		{ 0, PEEP_ITEM_FRIES, 16},
-		{ 0, PEEP_ITEM_PIZZA, 22 },
-		{ 0, PEEP_ITEM_BURGER, 17 },
-		{ 0, PEEP_ITEM_DRINK, 18 },
-		{ 0, PEEP_ITEM_COFFEE, 35 },
-		{ 0, PEEP_ITEM_CHICKEN, 34 },
-		{ 0, PEEP_ITEM_LEMONADE, 37 },
-		{ 0, PEEP_ITEM_COTTON_CANDY, 20 },
-		{ 0, PEEP_ITEM_POPCORN, 22 },
-		{ 0, PEEP_ITEM_HOT_DOG, 31 },
-		{ 0, PEEP_ITEM_TENTACLE, 32 },
-		{ 0, PEEP_ITEM_CANDY_APPLE, 33 },
-		{ 0, PEEP_ITEM_DONUT, 34 },
-		{ 1, PEEP_ITEM_PRETZEL, 39 },
-		{ 1, PEEP_ITEM_COOKIE, 39 },
-		{ 1, PEEP_ITEM_CHOCOLATE, 35 },
-		{ 1, PEEP_ITEM_ICED_TEA, 35 },
-		{ 1, PEEP_ITEM_FUNNEL_CAKE, 43 },
-		{ 1, PEEP_ITEM_BEEF_NOODLES, 44 },
-		{ 1, PEEP_ITEM_FRIED_RICE_NOODLES, 44 },
-		{ 1, PEEP_ITEM_WONTON_SOUP, 46 },
-		{ 1, PEEP_ITEM_MEATBALL_SOUP, 46 },
-		{ 1, PEEP_ITEM_FRUIT_JUICE, 43 },
-		{ 1, PEEP_ITEM_SOYBEAN_MILK, 41 },
-		{ 1, PEEP_ITEM_SU_JONGKWA, 41 },
-		{ 1, PEEP_ITEM_SUB_SANDWICH, 47 },
-		{ 1, PEEP_ITEM_ROAST_SAUSAGE, 45 },
-		{ 0, PEEP_ITEM_BALLOON, 19 },
-		{ 0, PEEP_ITEM_HAT, 30},
-		{ 1, PEEP_ITEM_SUNGLASSES, 40},
+		{ 0, PEEP_ITEM_ICE_CREAM, PEEP_SPRITE_TYPE_ICE_CREAM },
+		{ 0, PEEP_ITEM_FRIES, PEEP_SPRITE_TYPE_FRIES },
+		{ 0, PEEP_ITEM_PIZZA, PEEP_SPRITE_TYPE_PIZZA },
+		{ 0, PEEP_ITEM_BURGER, PEEP_SPRITE_TYPE_BURGER },
+		{ 0, PEEP_ITEM_DRINK, PEEP_SPRITE_TYPE_DRINK },
+		{ 0, PEEP_ITEM_COFFEE, PEEP_SPRITE_TYPE_COFFEE },
+		{ 0, PEEP_ITEM_CHICKEN, PEEP_SPRITE_TYPE_CHICKEN },
+		{ 0, PEEP_ITEM_LEMONADE, PEEP_SPRITE_TYPE_LEMONADE },
+		{ 0, PEEP_ITEM_COTTON_CANDY, PEEP_SPRITE_TYPE_CANDYFLOSS },
+		{ 0, PEEP_ITEM_POPCORN, PEEP_SPRITE_TYPE_PIZZA },
+		{ 0, PEEP_ITEM_HOT_DOG, PEEP_SPRITE_TYPE_HOT_DOG  },
+		{ 0, PEEP_ITEM_TENTACLE, PEEP_SPRITE_TYPE_TENTACLE },
+		{ 0, PEEP_ITEM_CANDY_APPLE, PEEP_SPRITE_TYPE_TOFFEE_APPLE },
+		{ 0, PEEP_ITEM_DONUT, PEEP_SPRITE_TYPE_DONUT },
+		{ 1, PEEP_ITEM_PRETZEL, PEEP_SPRITE_TYPE_PRETZEL },
+		{ 1, PEEP_ITEM_COOKIE, PEEP_SPRITE_TYPE_PRETZEL },
+		{ 1, PEEP_ITEM_CHOCOLATE, PEEP_SPRITE_TYPE_COFFEE },
+		{ 1, PEEP_ITEM_ICED_TEA, PEEP_SPRITE_TYPE_COFFEE },
+		{ 1, PEEP_ITEM_FUNNEL_CAKE, PEEP_SPRITE_TYPE_FUNNEL_CAKE },
+		{ 1, PEEP_ITEM_BEEF_NOODLES, PEEP_SPRITE_TYPE_NOODLES },
+		{ 1, PEEP_ITEM_FRIED_RICE_NOODLES, PEEP_SPRITE_TYPE_NOODLES },
+		{ 1, PEEP_ITEM_WONTON_SOUP, PEEP_SPRITE_TYPE_SOUP },
+		{ 1, PEEP_ITEM_MEATBALL_SOUP, PEEP_SPRITE_TYPE_SOUP },
+		{ 1, PEEP_ITEM_FRUIT_JUICE, PEEP_SPRITE_TYPE_JUICE },
+		{ 1, PEEP_ITEM_SOYBEAN_MILK, PEEP_SPRITE_TYPE_SU_JONGKWA },
+		{ 1, PEEP_ITEM_SU_JONGKWA, PEEP_SPRITE_TYPE_SU_JONGKWA },
+		{ 1, PEEP_ITEM_SUB_SANDWICH, PEEP_SPRITE_TYPE_SANDWICH },
+		{ 1, PEEP_ITEM_ROAST_SAUSAGE, PEEP_SPRITE_TYPE_SAUSAGE },
+		{ 0, PEEP_ITEM_BALLOON, PEEP_SPRITE_TYPE_BALLOON },
+		{ 0, PEEP_ITEM_HAT, PEEP_SPRITE_TYPE_HAT },
+		{ 1, PEEP_ITEM_SUNGLASSES, PEEP_SPRITE_TYPE_SUNGLASSES },
 		{ 0xFF, 0xFFFFFFFF, 0xFF}
 };
 
@@ -2742,10 +2680,11 @@ static void peep_update_ride_sub_state_1(rct_peep* peep){
 		x *= 32;
 		y *= 32;
 
-		const rct_xy16 edx  = _97e1bc[ride->type][peep->var_37];
+		assert(ride->type == RIDE_TYPE_SPIRAL_SLIDE);
+		const rct_xy16 slidePlatformDestination  = SpiralSlideWalkingPath[peep->var_37];
 
-		x += edx.x;
-		y += edx.y;
+		x += slidePlatformDestination.x;
+		y += slidePlatformDestination.y;
 
 		peep->destination_x = x;
 		peep->destination_y = y;
@@ -3648,10 +3587,11 @@ static void peep_update_ride_sub_state_14(rct_peep* peep){
 
 			x *= 32;
 			y *= 32;
+			assert(ride->type == RIDE_TYPE_SPIRAL_SLIDE);
+			const rct_xy16 slidePlatformDestination  = SpiralSlideWalkingPath[peep->var_37];
 
-			const rct_xy16 edx  = _97e1bc[ride->type][peep->var_37];
-			x += edx.x;
-			y += edx.y;
+			x += slidePlatformDestination.x;
+			y += slidePlatformDestination.y;
 
 			peep->destination_x = x;
 			peep->destination_y = y;
@@ -3667,9 +3607,11 @@ static void peep_update_ride_sub_state_14(rct_peep* peep){
 	x *= 32;
 	y *= 32;
 
-	const rct_xy16 edx  = _97e1bc[ride->type][peep->var_37];
-	x += edx.x;
-	y += edx.y;
+	assert(ride->type == RIDE_TYPE_SPIRAL_SLIDE);
+	const rct_xy16 slidePlatformDestination  = SpiralSlideWalkingPath[peep->var_37];
+
+	x += slidePlatformDestination.x;
+	y += slidePlatformDestination.y;
 
 	peep->destination_x = x;
 	peep->destination_y = y;
@@ -3769,9 +3711,11 @@ static void peep_update_ride_sub_state_15(rct_peep* peep){
 	x *= 32;
 	y *= 32;
 
-	const rct_xy16 edx  = _97e1bc[ride->type][peep->var_37];
-	x += edx.x;
-	y += edx.y;
+	assert(ride->type == RIDE_TYPE_SPIRAL_SLIDE);
+	const rct_xy16 slidePlatformDestination  = SpiralSlideWalkingPath[peep->var_37];
+
+	x += slidePlatformDestination.x;
+	y += slidePlatformDestination.y;
 
 	peep->destination_x = x;
 	peep->destination_y = y;
@@ -3807,9 +3751,11 @@ static void peep_update_ride_sub_state_16(rct_peep* peep){
 		x *= 32;
 		y *= 32;
 
-		const rct_xy16 edx  = _97e1bc[ride->type][peep->var_37];
-		x += edx.x;
-		y += edx.y;
+		assert(ride->type == RIDE_TYPE_SPIRAL_SLIDE);
+		const rct_xy16 slidePlatformDestination  = SpiralSlideWalkingPath[peep->var_37];
+
+		x += slidePlatformDestination.x;
+		y += slidePlatformDestination.y;
 
 		peep->destination_x = x;
 		peep->destination_y = y;
@@ -4937,30 +4883,30 @@ static void peep_update_queuing(rct_peep* peep){
 	}
 	else{
 		if (!(peep->time_in_queue & 0x3F) && peep->action == 0xFE && peep->next_action_sprite_type == 2){
-			switch (peep->sprite_type){
-			case 0xF:
-			case 0x10:
-			case 0x11:
-			case 0x12:
-			case 0x14:
-			case 0x16:
-			case 0x18:
-			case 0x1F:
-			case 0x20:
-			case 0x21:
-			case 0x22:
-			case 0x23:
-			case 0x24:
-			case 0x25:
-			case 0x27:
-			case 0x29:
-			case 0x2A:
-			case 0x2B:
-			case 0x2C:
-			case 0x2D:
-			case 0x2E:
-			case 0x2F:
-				// Eat food/Look at watch
+			switch (peep->sprite_type) {
+			case PEEP_SPRITE_TYPE_ICE_CREAM:
+			case PEEP_SPRITE_TYPE_FRIES:
+			case PEEP_SPRITE_TYPE_BURGER:
+			case PEEP_SPRITE_TYPE_DRINK:
+			case PEEP_SPRITE_TYPE_CANDYFLOSS:
+			case PEEP_SPRITE_TYPE_PIZZA:
+			case PEEP_SPRITE_TYPE_POPCORN:
+			case PEEP_SPRITE_TYPE_HOT_DOG:
+			case PEEP_SPRITE_TYPE_TENTACLE:
+			case PEEP_SPRITE_TYPE_TOFFEE_APPLE:
+			case PEEP_SPRITE_TYPE_DONUT:
+			case PEEP_SPRITE_TYPE_COFFEE:
+			case PEEP_SPRITE_TYPE_CHICKEN:
+			case PEEP_SPRITE_TYPE_LEMONADE:
+			case PEEP_SPRITE_TYPE_PRETZEL:
+			case PEEP_SPRITE_TYPE_SU_JONGKWA:
+			case PEEP_SPRITE_TYPE_JUICE:
+			case PEEP_SPRITE_TYPE_FUNNEL_CAKE:
+			case PEEP_SPRITE_TYPE_NOODLES:
+			case PEEP_SPRITE_TYPE_SAUSAGE:
+			case PEEP_SPRITE_TYPE_SOUP:
+			case PEEP_SPRITE_TYPE_SANDWICH:
+				// Eat food
 				peep->action = PEEP_ACTION_EAT_FOOD;
 				peep->action_frame = 0;
 				peep->action_sprite_image_offset = 0;
@@ -7171,7 +7117,7 @@ rct_peep *peep_generate(sint32 x, sint32 y, sint32 z)
 	peep->favourite_ride = 0xFF;
 	peep->favourite_ride_rating = 0;
 
-	const rct_sprite_bounds* spriteBounds = g_sprite_entries[peep->sprite_type].sprite_bounds;
+	const rct_sprite_bounds* spriteBounds = g_peep_animation_entries[peep->sprite_type].sprite_bounds;
 	peep->sprite_width = spriteBounds[peep->action_sprite_type].sprite_width;
 	peep->sprite_height_negative = spriteBounds[peep->action_sprite_type].sprite_height_negative;
 	peep->sprite_height_positive = spriteBounds[peep->action_sprite_type].sprite_height_positive;
@@ -7889,7 +7835,7 @@ void sub_693BAB(rct_peep* peep) {
 	if (nextActionSpriteType != peep->action_sprite_type) {
 		invalidate_sprite_2((rct_sprite*)peep);
 		peep->action_sprite_type = nextActionSpriteType;
-		const rct_sprite_bounds* spriteBounds = g_sprite_entries[peep->sprite_type].sprite_bounds;
+		const rct_sprite_bounds* spriteBounds = g_peep_animation_entries[peep->sprite_type].sprite_bounds;
 		peep->sprite_width = spriteBounds[nextActionSpriteType].sprite_width;
 		peep->sprite_height_negative = spriteBounds[nextActionSpriteType].sprite_height_negative;
 		peep->sprite_height_positive = spriteBounds[nextActionSpriteType].sprite_height_positive;
@@ -7901,7 +7847,7 @@ void sub_693BAB(rct_peep* peep) {
  *
  *  rct2: 0x00693CBB
  */
-static sint32 peep_update_queue_position(rct_peep* peep){
+static sint32 peep_update_queue_position(rct_peep* peep, uint8 previous_action){
 	peep->time_in_queue++;
 	if (peep->next_in_queue == SPRITE_INDEX_NULL)
 		return 0;
@@ -7961,7 +7907,7 @@ static sint32 peep_update_queue_position(rct_peep* peep){
 
 	peep->action = PEEP_ACTION_NONE_1;
 	peep->next_action_sprite_type = 2;
-	if (_unk_F1AEF1 != PEEP_ACTION_NONE_1)
+	if (previous_action != PEEP_ACTION_NONE_1)
 		invalidate_sprite_2((rct_sprite*)peep);
 	return 1;
 }
@@ -10369,13 +10315,13 @@ static sint32 guest_path_finding(rct_peep* peep)
 static sint32 sub_693C9E(rct_peep *peep)
 {
 	_unk_F1EE18 = 0;
-	_unk_F1AEF1 = peep->action;
+	uint8 previousAction = peep->action;
 
 	if (peep->action == PEEP_ACTION_NONE_1)
 		peep->action = PEEP_ACTION_NONE_2;
 
 	if (peep->state == PEEP_STATE_QUEUING){
-		if (peep_update_queue_position(peep))
+		if (peep_update_queue_position(peep, previousAction))
 			return 1;
 	}
 
