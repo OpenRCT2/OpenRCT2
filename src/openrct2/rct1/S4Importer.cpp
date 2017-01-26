@@ -1871,8 +1871,8 @@ private:
 
     void ImportScenarioNameDetails()
     {
-        String::Set(gS6Info.name, sizeof(gS6Info.name), _s4.scenario_name);
-        String::Set(gS6Info.details, sizeof(gS6Info.details), "");
+        std::string name = String::ToStd(_s4.scenario_name);
+        std::string details;
 
         sint32 scNumber = _s4.scenario_slot_index;
         if (scNumber != -1)
@@ -1885,15 +1885,20 @@ private:
                 {
                     if (localisedStringIds[0] != STR_NONE)
                     {
-                        String::Set(gS6Info.name, sizeof(gS6Info.name), language_get_string(localisedStringIds[0]));
+                        name = String::ToStd(language_get_string(localisedStringIds[0]));
                     }
                     if (localisedStringIds[2] != STR_NONE)
                     {
-                        String::Set(gS6Info.details, sizeof(gS6Info.details), language_get_string(localisedStringIds[2]));
+                        details = String::ToStd(language_get_string(localisedStringIds[2]));
                     }
                 }
             }
         }
+
+        String::Set(gS6Info.name, sizeof(gS6Info.name), name.c_str());
+        String::Set(gS6Info.details, sizeof(gS6Info.details), details.c_str());
+        String::Set(gScenarioName, sizeof(gScenarioName), name.c_str());
+        String::Set(gScenarioDetails, sizeof(gScenarioDetails), details.c_str());
     }
 
     void ImportScenarioObjective()
