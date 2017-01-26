@@ -164,6 +164,7 @@ public:
 
         // Importing the strings is done later on, although that approach needs looking at.
         //game_convert_strings_to_utf8();
+        game_convert_news_items_to_utf8();
         map_count_remaining_land_rights();
     }
 

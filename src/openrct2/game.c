@@ -729,14 +729,20 @@ void game_convert_strings_to_utf8()
 		}
 	}
 
-	// News items
-	for (sint32 i = 0; i < MAX_NEWS_ITEMS; i++) {
-		NewsItem *newsItem = news_item_get(i);
+    // News items
+    game_convert_news_items_to_utf8();
 
-		if (!str_is_null_or_empty(newsItem->Text)) {
-			rct2_to_utf8_self(newsItem->Text, sizeof(newsItem->Text));
-		}
-	}
+}
+
+void game_convert_news_items_to_utf8()
+{
+    for (sint32 i = 0; i < MAX_NEWS_ITEMS; i++) {
+        NewsItem *newsItem = news_item_get(i);
+
+        if (!str_is_null_or_empty(newsItem->Text)) {
+            rct2_to_utf8_self(newsItem->Text, sizeof(newsItem->Text));
+        }
+    }
 }
 
 /**
