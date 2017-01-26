@@ -379,7 +379,7 @@ static void window_close_surplus(sint32 cap, sint8 avoid_classification)
 void window_set_window_limit(sint32 value)
 {
 	sint32 prev = gConfigGeneral.window_limit;
-	sint32 val = clamp(value, WINDOW_LIMIT_MIN, WINDOW_LIMIT_MAX);
+	sint32 val = clamp(WINDOW_LIMIT_MIN, value, WINDOW_LIMIT_MAX);
 	gConfigGeneral.window_limit = val;
 	config_save_default();
 	// Checks if value decreases and then closes surplus
@@ -403,6 +403,16 @@ void window_set_window_limit(sint32 value)
  */
 rct_window *window_create(sint32 x, sint32 y, sint32 width, sint32 height, rct_window_event_list *event_handlers, rct_windowclass cls, uint16 flags)
 {
+	//Number must always be kept within valid range.
+	if (gConfigGeneral.window_limit < WINDOW_LIMIT_MIN) {
+		gConfigGeneral.window_limit = WINDOW_LIMIT_MIN;
+		config_save_default();
+	}
+	if (gConfigGeneral.window_limit > WINDOW_LIMIT_MAX) {
+		gConfigGeneral.window_limit = WINDOW_LIMIT_MAX;
+		config_save_default();
+	}
+
 	// Check if there are any window slots left
 	// include WINDOW_LIMIT_RESERVED for items such as the main viewport and toolbars to not appear to be counted.
 	if (RCT2_NEW_WINDOW >= &(g_window_list[gConfigGeneral.window_limit + WINDOW_LIMIT_RESERVED])) {
