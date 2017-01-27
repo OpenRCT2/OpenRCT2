@@ -632,14 +632,14 @@ static void ride_type_set_invented(sint32 rideType)
 {
 	sint32 quadIndex = rideType >> 5;
 	sint32 bitIndex = rideType & 0x1F;
-	gResearchedRideTypes[quadIndex] |= 1 << bitIndex;
+	gResearchedRideTypes[quadIndex] |= (uint32)1 << bitIndex;
 }
 
 static void ride_entry_set_invented(sint32 rideEntryIndex)
 {
 	sint32 quadIndex = rideEntryIndex >> 5;
 	sint32 bitIndex = rideEntryIndex & 0x1F;
-	gResearchedRideEntries[quadIndex] |= 1 << bitIndex;
+	gResearchedRideEntries[quadIndex] |= (uint32)1 << bitIndex;
 }
 
 bool scenery_is_invented(uint16 sceneryItem)
