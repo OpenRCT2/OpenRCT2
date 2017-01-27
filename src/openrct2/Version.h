@@ -28,9 +28,17 @@
 #elif defined(__aarch64__)
     #define OPENRCT2_ARCHITECTURE       "AArch64"
 #elif defined(__arm__) || defined(_M_ARM)
-    #define OPENRCT2_ARCHITECTURE       "ARMv7"
+    #if defined(__ARM_ARCH_7A__)
+        #define OPENRCT2_ARCHITECTURE       "arm-v7a"
+    #else
+        #define OPENRCT2_ARCHITECTURE       "arm"
+    #endif
 #elif defined(__powerpc__) || defined(_M_PPC)
     #define OPENRCT2_ARCHITECTURE       "PowerPC"
+#elif defined(__mips64)
+    #define OPENRCT2_ARCHITECTURE       "mips64"
+#elif defined(__mips__)
+    #define OPENRCT2_ARCHITECTURE       "mips"
 #endif
 
 #ifndef OPENRCT2_ARCHITECTURE

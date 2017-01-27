@@ -36,7 +36,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DDEBUG=${DEBUG_LEVEL}")
 
 include(ExternalProject)
 ExternalProject_Add(libs
-    URL https://github.com/marijnvdwerf/openrct2-dependencies-android/releases/download/v0.2/openrct2-libs-android.zip
+    URL https://github.com/marijnvdwerf/openrct2-dependencies-android/releases/download/v0.3/openrct2-libs-android-${ANDROID_ABI}.zip
 
     SOURCE_DIR "${CMAKE_BINARY_DIR}/libs"
 
@@ -45,12 +45,12 @@ ExternalProject_Add(libs
     INSTALL_COMMAND ""
 
     BUILD_BYPRODUCTS
-        ${CMAKE_BINARY_DIR}/libs/${ANDROID_ABI}/lib/${CMAKE_SHARED_LIBRARY_PREFIX}freetype${CMAKE_SHARED_LIBRARY_SUFFIX}
-        ${CMAKE_BINARY_DIR}/libs/${ANDROID_ABI}/lib/${CMAKE_SHARED_LIBRARY_PREFIX}jansson${CMAKE_SHARED_LIBRARY_SUFFIX}
-        ${CMAKE_BINARY_DIR}/libs/${ANDROID_ABI}/lib/${CMAKE_SHARED_LIBRARY_PREFIX}png16${CMAKE_SHARED_LIBRARY_SUFFIX}
-        ${CMAKE_BINARY_DIR}/libs/${ANDROID_ABI}/lib/${CMAKE_SHARED_LIBRARY_PREFIX}SDL2-2.0${CMAKE_SHARED_LIBRARY_SUFFIX}
-        ${CMAKE_BINARY_DIR}/libs/${ANDROID_ABI}/lib/${CMAKE_STATIC_LIBRARY_PREFIX}SDL2main${CMAKE_STATIC_LIBRARY_SUFFIX}
-        ${CMAKE_BINARY_DIR}/libs/${ANDROID_ABI}/lib/${CMAKE_SHARED_LIBRARY_PREFIX}speexdsp${CMAKE_SHARED_LIBRARY_SUFFIX}
+        ${CMAKE_BINARY_DIR}/libs/lib/${CMAKE_SHARED_LIBRARY_PREFIX}freetype${CMAKE_SHARED_LIBRARY_SUFFIX}
+        ${CMAKE_BINARY_DIR}/libs/lib/${CMAKE_SHARED_LIBRARY_PREFIX}jansson${CMAKE_SHARED_LIBRARY_SUFFIX}
+        ${CMAKE_BINARY_DIR}/libs/lib/${CMAKE_SHARED_LIBRARY_PREFIX}png16${CMAKE_SHARED_LIBRARY_SUFFIX}
+        ${CMAKE_BINARY_DIR}/libs/lib/${CMAKE_SHARED_LIBRARY_PREFIX}SDL2-2.0${CMAKE_SHARED_LIBRARY_SUFFIX}
+        ${CMAKE_BINARY_DIR}/libs/lib/${CMAKE_STATIC_LIBRARY_PREFIX}SDL2main${CMAKE_STATIC_LIBRARY_SUFFIX}
+        ${CMAKE_BINARY_DIR}/libs/lib/${CMAKE_SHARED_LIBRARY_PREFIX}speexdsp${CMAKE_SHARED_LIBRARY_SUFFIX}
 
     LOG_DOWNLOAD 1
     LOG_UPDATE 1
@@ -62,50 +62,49 @@ ExternalProject_Add(libs
 
 add_custom_command(TARGET libs POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}
-    COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_BINARY_DIR}/libs/${ANDROID_ABI}/lib/*.so" ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}
-#    COMMAND ${CMAKE_COMMAND} -E copy "/Users/marijn/deps/dist/armeabi-v7a/lib/libspeexdsp.so" ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}
+    COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_BINARY_DIR}/libs/lib/*.so" ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}
 )
 
 add_library(freetype SHARED IMPORTED)
 set_target_properties(freetype PROPERTIES IMPORTED_LOCATION
-    ${CMAKE_BINARY_DIR}/libs/${ANDROID_ABI}/lib/${CMAKE_SHARED_LIBRARY_PREFIX}freetype${CMAKE_SHARED_LIBRARY_SUFFIX}
+    ${CMAKE_BINARY_DIR}/libs/lib/${CMAKE_SHARED_LIBRARY_PREFIX}freetype${CMAKE_SHARED_LIBRARY_SUFFIX}
 )
 add_dependencies(freetype libs)
 
 add_library(jansson SHARED IMPORTED)
 set_target_properties(jansson PROPERTIES IMPORTED_LOCATION
-    ${CMAKE_BINARY_DIR}/libs/${ANDROID_ABI}/lib/${CMAKE_SHARED_LIBRARY_PREFIX}jansson${CMAKE_SHARED_LIBRARY_SUFFIX}
+    ${CMAKE_BINARY_DIR}/libs/lib/${CMAKE_SHARED_LIBRARY_PREFIX}jansson${CMAKE_SHARED_LIBRARY_SUFFIX}
 )
 add_dependencies(jansson libs)
 
 add_library(png SHARED IMPORTED)
 set_target_properties(png PROPERTIES IMPORTED_LOCATION
-    ${CMAKE_BINARY_DIR}/libs/${ANDROID_ABI}/lib/${CMAKE_SHARED_LIBRARY_PREFIX}png16${CMAKE_SHARED_LIBRARY_SUFFIX}
+    ${CMAKE_BINARY_DIR}/libs/lib/${CMAKE_SHARED_LIBRARY_PREFIX}png16${CMAKE_SHARED_LIBRARY_SUFFIX}
 )
 add_dependencies(png libs)
 
 add_library(SDL2 SHARED IMPORTED)
 set_target_properties(SDL2 PROPERTIES IMPORTED_LOCATION
-    ${CMAKE_BINARY_DIR}/libs/${ANDROID_ABI}/lib/${CMAKE_SHARED_LIBRARY_PREFIX}SDL2-2.0${CMAKE_SHARED_LIBRARY_SUFFIX}
+    ${CMAKE_BINARY_DIR}/libs/lib/${CMAKE_SHARED_LIBRARY_PREFIX}SDL2-2.0${CMAKE_SHARED_LIBRARY_SUFFIX}
 )
 add_dependencies(SDL2 libs)
 
 add_library(SDL2main STATIC IMPORTED)
 set_target_properties(SDL2main PROPERTIES IMPORTED_LOCATION
-    ${CMAKE_BINARY_DIR}/libs/${ANDROID_ABI}/lib/${CMAKE_STATIC_LIBRARY_PREFIX}SDL2main${CMAKE_STATIC_LIBRARY_SUFFIX}
+    ${CMAKE_BINARY_DIR}/libs/lib/${CMAKE_STATIC_LIBRARY_PREFIX}SDL2main${CMAKE_STATIC_LIBRARY_SUFFIX}
 )
 add_dependencies(SDL2main libs)
 
 add_library(speexdsp SHARED IMPORTED)
 set_target_properties(speexdsp PROPERTIES IMPORTED_LOCATION
-    ${CMAKE_BINARY_DIR}/libs/${ANDROID_ABI}/lib/${CMAKE_SHARED_LIBRARY_PREFIX}speexdsp${CMAKE_SHARED_LIBRARY_SUFFIX}
+    ${CMAKE_BINARY_DIR}/libs/lib/${CMAKE_SHARED_LIBRARY_PREFIX}speexdsp${CMAKE_SHARED_LIBRARY_SUFFIX}
 )
 add_dependencies(speexdsp libs)
 
 
-include_directories("${CMAKE_BINARY_DIR}/libs/${ANDROID_ABI}/include")
-include_directories("${CMAKE_BINARY_DIR}/libs/${ANDROID_ABI}/include/freetype2")
-include_directories("${CMAKE_BINARY_DIR}/libs/${ANDROID_ABI}/include/SDL2")
+include_directories("${CMAKE_BINARY_DIR}/libs/include")
+include_directories("${CMAKE_BINARY_DIR}/libs/include/freetype2")
+include_directories("${CMAKE_BINARY_DIR}/libs/include/SDL2")
 
 # SDL-ttf
 include_directories(${lib_src_DIR}/sdl-ttf)

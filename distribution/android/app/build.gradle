@@ -9,9 +9,14 @@ android {
         minSdkVersion 16
         targetSdkVersion 25
 
+        versionCode 2
+        versionName "0.0.5"
+
         externalNativeBuild {
             cmake {
-                arguments '-DANDROID_STL=c++_static', '-DDEBUG_LEVEL=3'
+                arguments '-DDEBUG_LEVEL=3'//, '-DCMAKE_BUILD_TYPE=RELWITHDEBINFO'
+                //abiFilters 'x86', 'x86_64'
+                // abiFilters 'armeabi-v7a', 'arm64-v8a'
                 abiFilters 'armeabi-v7a'
                 targets 'openrct2'
             }
@@ -72,7 +77,7 @@ task downloadLibraries {
 
 dependencies {
     compile 'commons-io:commons-io:2.5'
-    compile 'com.android.support:appcompat-v7:24.0.0'
+    compile 'com.android.support:appcompat-v7:25.0.0'
     compile 'com.google.android.gms:play-services-analytics:9.8.0'
 }
 
