@@ -115,7 +115,7 @@ namespace RCT1
             PEEP_SPRITE_TYPE_CHICKEN, // 0x21
             PEEP_SPRITE_TYPE_LEMONADE, // 0x22
         };
-        if (rct1SpriteType < 0 || rct1SpriteType > Util::CountOf(map))
+        if (rct1SpriteType < 0 || rct1SpriteType >= Util::CountOf(map))
         {
             log_warning("Unsupported RCT1 peep sprite type: %d.", rct1SpriteType);
             return PEEP_SPRITE_TYPE_NORMAL;

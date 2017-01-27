@@ -1422,7 +1422,7 @@ private:
         dst->move_delay = src->move_delay;
         dst->num_movements = src->num_movements;
         dst->value = src->value;
-        dst->offset_x = dst->offset_x;
+        dst->offset_x = src->offset_x;
         dst->wiggle = src->wiggle;
     }
 
