@@ -619,11 +619,11 @@ private:
         dst->num_stations = src->num_stations;
 
         // Vehicle links (indexes converted later)
-        for (sint32 i = 0; i < RCT1_MAX_VEHICLES_PER_RIDE; i++)
+        for (sint32 i = 0; i < RCT1_MAX_TRAINS_PER_RIDE; i++)
         {
             dst->vehicles[i] = src->vehicles[i];
         }
-        for (sint32 i = RCT1_MAX_VEHICLES_PER_RIDE; i < 32; i++)
+        for (sint32 i = RCT1_MAX_TRAINS_PER_RIDE; i < 32; i++)
         {
             dst->vehicles[i] = SPRITE_INDEX_NULL;
         }

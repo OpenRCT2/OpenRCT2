@@ -29,7 +29,6 @@
 
 #define RCT1_MAX_MAP_ELEMENTS       0xC000
 #define RCT1_MAX_SPRITES            5000
-#define RCT1_MAX_VEHICLES_PER_RIDE  12
 #define RCT1_MAX_STATIONS           4
 #define RCT1_MAX_TRAINS_PER_RIDE    12
 #define RCT1_MAX_MAP_SIZE           128
@@ -59,7 +58,7 @@ typedef struct rct1_ride {
 	struct {
 		colour_t body;
 		colour_t trim;
-	} vehicle_colours[RCT1_MAX_VEHICLES_PER_RIDE];
+	} vehicle_colours[RCT1_MAX_TRAINS_PER_RIDE];
 	colour_t track_primary_colour;
 	colour_t track_secondary_colour;
 	colour_t track_support_colour;
@@ -77,7 +76,7 @@ typedef struct rct1_ride {
 	uint16 exit[RCT1_MAX_STATIONS];
 	uint16 last_peep_in_queue[RCT1_MAX_STATIONS];
 	uint8 num_peeps_in_queue[RCT1_MAX_STATIONS];
-	uint16 vehicles[RCT1_MAX_VEHICLES_PER_RIDE];
+	uint16 vehicles[RCT1_MAX_TRAINS_PER_RIDE];
 	uint8 depart_flags;
 	uint8 num_stations;
 	uint8 num_trains;
@@ -751,7 +750,7 @@ typedef struct rct_track_td4 {
 	uint32 flags;									// 0x02
 	uint8 mode;										// 0x06
 	uint8 version_and_colour_scheme;				// 0x07 0b0000_VVCC
-	rct_vehicle_colour vehicle_colours[12];			// 0x08
+	rct_vehicle_colour vehicle_colours[RCT1_MAX_TRAINS_PER_RIDE]; // 0x08
 	uint8 track_spine_colour_v0;					// 0x20
 	uint8 track_rail_colour_v0;						// 0x21
 	uint8 track_support_colour_v0;					// 0x22
