@@ -610,9 +610,9 @@ sint32 cmdline_for_sprite(const char **argv, sint32 argc)
 		sint16 x_offset = 0;
 		sint16 y_offset = 0;
 
-		if(argc == 5)
+		if (argc == 5)
 		{
-			char* endptr;
+			char *endptr;
 
 			x_offset = strtol(argv[3], &endptr, 0);
 			if (*endptr != 0)
@@ -718,7 +718,7 @@ sint32 cmdline_for_sprite(const char **argv, sint32 argc)
 
 			
 			//Resolve absolute sprite path
-			char* imagePath = platform_get_absolute_path(json_string_value(path), directoryPath);
+			char *imagePath = platform_get_absolute_path(json_string_value(path), directoryPath);
 
 			rct_g1_element spriteElement;
 			uint8 *buffer;

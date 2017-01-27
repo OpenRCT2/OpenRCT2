@@ -261,7 +261,7 @@ bool platform_directory_delete(const utf8 *path)
 	return true;
 }
 
-char* platform_get_absolute_path(const char* relative_path,const char* base_path)
+char* platform_get_absolute_path(const char * relative_path,const char * base_path)
 {
 	char path[MAX_PATH];
 	
