@@ -1,4 +1,4 @@
-# STR_XXXX part is read and XXXX becomes the string id number.
+﻿# STR_XXXX part is read and XXXX becomes the string id number.
 # Everything after the colon and before the new line will be saved as the string.
 # Use # at the beginning of a line to leave a comment.
 STR_0000    :
@@ -4228,6 +4228,8 @@ STR_5916    :{COMMA16} spiller
 STR_5917    :{COMMA16} spillere
 STR_5918    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_5919    :{COMMA16}
+
+STR_6012    :{COMMA1DP16}
 
 #############
 # Scenarios #

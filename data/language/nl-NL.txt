@@ -1,4 +1,4 @@
-STR_0000    :
+﻿STR_0000    :
 STR_0001    :{STRINGID} {COMMA16}
 STR_0002    :Spiraalachtbaan
 STR_0003    :Staande achtbaan
@@ -4302,6 +4302,8 @@ STR_5997    :Geld toevoegen/instellen
 STR_5998    :Toevoegen
 STR_5999    :Instellen
 STR_6000    :Voer een bedrag in
+
+STR_6012    :{COMMA1DP16}
 
 #############
 # Scenarios #

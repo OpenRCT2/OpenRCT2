@@ -4318,6 +4318,7 @@ STR_6008    :{SMALLFONT}{BLACK}클릭하면 높이 단위를 실제 높이<->유
 STR_6009    :{SMALLFONT}{BLACK}절단할 높이를 선택하세요.
 STR_6010    :{COMMA2DP32}m
 STR_6011    :{COMMA1DP16}ft
+STR_6012    :{COMMA1DP16}
 
 #############
 # Scenarios #
