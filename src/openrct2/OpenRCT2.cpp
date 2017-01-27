@@ -144,6 +144,18 @@ extern "C"
             config_save_default();
         }
 
+        // Window limit must be kept within valid range.
+        if (gConfigGeneral.window_limit < WINDOW_LIMIT_MIN)
+        {
+            gConfigGeneral.window_limit = WINDOW_LIMIT_MIN;
+            config_save_default();
+        }
+        else if (gConfigGeneral.window_limit > WINDOW_LIMIT_MAX)
+        {
+            gConfigGeneral.window_limit = WINDOW_LIMIT_MAX;
+            config_save_default();
+        }
+
         // TODO add configuration option to allow multiple instances
         // if (!gOpenRCT2Headless && !platform_lock_single_instance()) {
         // 	log_fatal("OpenRCT2 is already running.");
