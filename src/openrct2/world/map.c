@@ -5672,6 +5672,11 @@ void game_command_modify_tile(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx
 		*ebx = tile_inspector_surface_toggle_corner(x, y, corner_index, flags);
 		return;
 	}
+	case TILE_INSPECTOR_SURFACE_TOGGLE_DIAGONAL:
+	{
+		*ebx = tile_inspector_surface_toggle_diagonal(x, y, flags);
+		return;
+	}
 	default:
 		log_error("invalid instruction");
 		*ebx = MONEY32_UNDEFINED;

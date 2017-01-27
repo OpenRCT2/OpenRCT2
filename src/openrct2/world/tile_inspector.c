@@ -335,7 +335,12 @@ sint32 tile_inspector_change_base_height_at(sint32 x, sint32 y, sint16 element_i
 		map_element->clearance_height += height_offset;
 
 		map_invalidate_tile_full(x << 5, y << 5);
-		window_invalidate_by_class(WC_TILE_INSPECTOR);
+
+		rct_window *const tile_inspector_window = window_find_by_class(WC_TILE_INSPECTOR);
+		if (tile_inspector_window != NULL && (uint32)x == windowTileInspectorTileX && (uint32)y == windowTileInspectorTileY)
+		{
+			window_invalidate(tile_inspector_window);
+		}
 	}
 
 	return 0;
@@ -357,6 +362,12 @@ sint32 tile_inspector_surface_show_park_fences(sint32 x, sint32 y, bool show_fen
 			update_park_fences(x << 5, y << 5);
 
 		map_invalidate_tile_full(x << 5, y << 5);
+
+		rct_window *const tile_inspector_window = window_find_by_class(WC_TILE_INSPECTOR);
+		if (tile_inspector_window != NULL && (uint32)x == windowTileInspectorTileX && (uint32)y == windowTileInspectorTileY)
+		{
+			window_invalidate(tile_inspector_window);
+		}
 	}
 
 	return 0;
@@ -407,7 +418,48 @@ sint32 tile_inspector_surface_toggle_corner(sint32 x, sint32 y, sint32 corner_in
 		}
 
 		map_invalidate_tile_full(x << 5, y << 5);
-		window_invalidate_by_class(WC_TILE_INSPECTOR);
+
+		rct_window *const tile_inspector_window = window_find_by_class(WC_TILE_INSPECTOR);
+		if (tile_inspector_window != NULL && (uint32)x == windowTileInspectorTileX && (uint32)y == windowTileInspectorTileY)
+		{
+			window_invalidate(tile_inspector_window);
+		}
+	}
+
+	return 0;
+}
+
+sint32 tile_inspector_surface_toggle_diagonal(sint32 x, sint32 y, sint32 flags)
+{
+	rct_map_element *const surface = map_get_surface_element_at(x, y);
+
+	// No surface element on tile
+	if (surface == NULL)
+		return MONEY32_UNDEFINED;
+
+	if (flags & GAME_COMMAND_FLAG_APPLY)
+	{
+		surface->properties.surface.slope ^= 0x10;
+		if (surface->properties.surface.slope & 0x10)
+		{
+			surface->clearance_height = surface->base_height + 4;
+		}
+		else if (surface->properties.surface.slope & 0x0F)
+		{
+			surface->clearance_height = surface->base_height + 2;
+		}
+		else
+		{
+			surface->clearance_height = surface->base_height;
+		}
+
+		map_invalidate_tile_full(x << 5, y << 5);
+
+		rct_window *const tile_inspector_window = window_find_by_class(WC_TILE_INSPECTOR);
+		if (tile_inspector_window != NULL && (uint32)x == windowTileInspectorTileX && (uint32)y == windowTileInspectorTileY)
+		{
+			window_invalidate(tile_inspector_window);
+		}
 	}
 
 	return 0;

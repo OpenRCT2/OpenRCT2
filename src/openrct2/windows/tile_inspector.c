@@ -742,6 +742,19 @@ static void window_tile_inspector_surface_toggle_corner(sint32 cornerIndex)
 	);
 }
 
+static void window_tile_inspector_surface_toggle_diagonal()
+{
+	game_do_command(
+		TILE_INSPECTOR_SURFACE_TOGGLE_DIAGONAL,
+		GAME_COMMAND_FLAG_APPLY,
+		windowTileInspectorTileX | (windowTileInspectorTileY << 8),
+		0,
+		GAME_COMMAND_MODIFY_TILE,
+		0,
+		0
+	);
+}
+
 // Copied from track.c (track_remove), and modified for raising/lowering
 // Not sure if this should be in this file, track.c, or maybe another one
 static void window_tile_inspector_track_block_height_offset(rct_map_element *mapElement, uint8 offset)
@@ -1050,19 +1063,7 @@ static void window_tile_inspector_mouseup(rct_window *w, sint32 widgetIndex)
 			window_tile_inspector_surface_toggle_corner(((widgetIndex - WIDX_SURFACE_CHECK_CORNER_N) + 2 - get_current_rotation()) & 3);
 			break;
 		case WIDX_SURFACE_CHECK_DIAGONAL:
-			mapElement->properties.surface.slope ^= 0x10;
-			if (mapElement->properties.surface.slope & 0x10) {
-				mapElement->clearance_height = mapElement->base_height + 4;
-			}
-			else if (mapElement->properties.surface.slope & 0x0F) {
-				mapElement->clearance_height = mapElement->base_height + 2;
-			}
-			else {
-				mapElement->clearance_height = mapElement->base_height;
-			}
-
-			map_invalidate_tile_full(windowTileInspectorTileX << 5, windowTileInspectorTileY << 5);
-			widget_invalidate(w, widgetIndex);
+			window_tile_inspector_surface_toggle_diagonal();
 			break;
 		} // switch widgetindex
 		break;
