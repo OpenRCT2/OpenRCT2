@@ -32,7 +32,6 @@
 #define RCT1_MAX_TRAINS_PER_RIDE    12
 #define RCT1_MAX_MAP_SIZE           128
 #define RCT1_MAX_RIDES_IN_PARK      128
-#define RCT1_MAX_PEEP_SPAWNS        2
 #define RCT1_MAX_PARK_ENTRANCES     4
 
 #pragma pack(push, 1)
@@ -599,7 +598,7 @@ typedef struct rct1_s4 {
 	money16 park_entrance_fee;
 	rct1_entrance park_entrance;
 	uint8 unk_198849;
-	rct2_peep_spawn peep_spawn[RCT1_MAX_PEEP_SPAWNS];
+	rct2_peep_spawn peep_spawn[RCT12_MAX_PEEP_SPAWNS];
 	uint8 unk_198856;
 	uint8 research_level;
 	uint32 unk_198858;
