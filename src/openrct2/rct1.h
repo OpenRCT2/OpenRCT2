@@ -29,7 +29,6 @@
 
 #define RCT1_MAX_MAP_ELEMENTS       0xC000
 #define RCT1_MAX_SPRITES            5000
-#define RCT1_MAX_STATIONS           4
 #define RCT1_MAX_TRAINS_PER_RIDE    12
 #define RCT1_MAX_MAP_SIZE           128
 #define RCT1_MAX_RIDES_IN_PARK      128
@@ -67,15 +66,15 @@ typedef struct rct1_ride {
 	uint16 name_argument_ride;
 	uint16 name_argument_number;
 	uint16 overall_view;
-	uint16 station_starts[RCT1_MAX_STATIONS];
-	uint8 station_height[RCT1_MAX_STATIONS];
-	uint8 station_length[RCT1_MAX_STATIONS];
-	uint8 station_light[RCT1_MAX_STATIONS];
-	uint8 station_depart[RCT1_MAX_STATIONS];
-	uint16 entrance[RCT1_MAX_STATIONS];
-	uint16 exit[RCT1_MAX_STATIONS];
-	uint16 last_peep_in_queue[RCT1_MAX_STATIONS];
-	uint8 num_peeps_in_queue[RCT1_MAX_STATIONS];
+	uint16 station_starts[RCT12_MAX_STATIONS_PER_RIDE];
+	uint8 station_height[RCT12_MAX_STATIONS_PER_RIDE];
+	uint8 station_length[RCT12_MAX_STATIONS_PER_RIDE];
+	uint8 station_light[RCT12_MAX_STATIONS_PER_RIDE];
+	uint8 station_depart[RCT12_MAX_STATIONS_PER_RIDE];
+	uint16 entrance[RCT12_MAX_STATIONS_PER_RIDE];
+	uint16 exit[RCT12_MAX_STATIONS_PER_RIDE];
+	uint16 last_peep_in_queue[RCT12_MAX_STATIONS_PER_RIDE];
+	uint8 num_peeps_in_queue[RCT12_MAX_STATIONS_PER_RIDE];
 	uint16 vehicles[RCT1_MAX_TRAINS_PER_RIDE];
 	uint8 depart_flags;
 	uint8 num_stations;
@@ -98,8 +97,8 @@ typedef struct rct1_ride {
 	uint8 current_test_segment;		// 0x90
 	uint8 average_speed_test_timeout; // 0x91
 	uint8 pad_0E2[0x2]; // 0x92
-	sint32 length[RCT1_MAX_STATIONS];
-	uint16 time[RCT1_MAX_STATIONS];
+	sint32 length[RCT12_MAX_STATIONS_PER_RIDE];
+	uint16 time[RCT12_MAX_STATIONS_PER_RIDE];
 	fixed16_2dp max_positive_vertical_g;
 	fixed16_2dp max_negative_vertical_g;
 	fixed16_2dp max_lateral_g;
@@ -194,7 +193,7 @@ typedef struct rct1_ride {
 	uint8 unk_14C[20];
 	money32 income_per_hour;
 	money32 profit;
-	uint8 queue_time[RCT1_MAX_STATIONS];
+	uint8 queue_time[RCT12_MAX_STATIONS_PER_RIDE];
 	colour_t track_colour_main[4];
 	colour_t track_colour_additional[4];
 	colour_t track_colour_supports[4];

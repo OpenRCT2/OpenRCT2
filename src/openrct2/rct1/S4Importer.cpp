@@ -601,7 +601,7 @@ private:
 
         // Station
         dst->overall_view = src->overall_view;
-        for (sint32 i = 0; i < RCT1_MAX_STATIONS; i++)
+        for (sint32 i = 0; i < RCT12_MAX_STATIONS_PER_RIDE; i++)
         {
             dst->station_starts[i] = src->station_starts[i];
             dst->station_heights[i] = src->station_height[i] / 2;
@@ -704,7 +704,7 @@ private:
 
         dst->max_speed = src->max_speed;
         dst->average_speed = src->average_speed;
-        for (sint32 i = 0; i < RCT1_MAX_STATIONS; i++) {
+        for (sint32 i = 0; i < RCT12_MAX_STATIONS_PER_RIDE; i++) {
             dst->time[i] = src->time[i];
             dst->length[i] = src->length[i];
         }
@@ -871,7 +871,7 @@ private:
         rct_ride *ride;
         FOR_ALL_RIDES(i, ride)
         {
-            for (sint32 stationIndex = 0; stationIndex < RCT1_MAX_STATIONS; stationIndex++)
+            for (sint32 stationIndex = 0; stationIndex < RCT12_MAX_STATIONS_PER_RIDE; stationIndex++)
             {
                 ride->queue_length[stationIndex] = 0;
             }
@@ -1320,7 +1320,7 @@ private:
 
     void FixRidePeepLinks(rct_ride * ride, const uint16 * spriteIndexMap)
     {
-        for (sint32 i = 0; i < RCT1_MAX_STATIONS; i++)
+        for (sint32 i = 0; i < RCT12_MAX_STATIONS_PER_RIDE; i++)
         {
             ride->last_peep_in_queue[i] = MapSpriteIndex(ride->last_peep_in_queue[i], spriteIndexMap);
         }
