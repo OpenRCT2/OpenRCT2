@@ -33,12 +33,12 @@ class OpenGLFramebuffer;
 class SwapFramebuffer final
 {
 private:
-    sint32              _width;
-    sint32              _height;
-    uint8               _targetFramebufferIndex;
-    OpenGLFramebuffer * _targetFramebuffer;
-    OpenGLFramebuffer * _sourceFramebuffer;
-    OpenGLFramebuffer * _framebuffer[2];
+    sint32              _width                  = 0;
+    sint32              _height                 = 0;
+    uint8               _targetFramebufferIndex = 0;
+    OpenGLFramebuffer * _targetFramebuffer      = nullptr;
+    OpenGLFramebuffer * _sourceFramebuffer      = nullptr;
+    OpenGLFramebuffer * _framebuffer[2]         = { 0 };
 
     CopyFramebufferShader * _copyFramebufferShader = nullptr;
 

@@ -58,16 +58,14 @@ private:
 
     static constexpr uint32 MaxRainPixels = 0xFFFE;
 
-    size_t              _rainPixelsCapacity;
-    uint32              _rainPixelsCount;
-    RainPixel *         _rainPixels;
-    rct_drawpixelinfo * _screenDPI;
+    size_t              _rainPixelsCapacity = MaxRainPixels;
+    uint32              _rainPixelsCount    = 0;
+    RainPixel *         _rainPixels         = nullptr;
+    rct_drawpixelinfo * _screenDPI          = nullptr;
 
 public:
     RainDrawer()
     {
-        _rainPixelsCapacity = MaxRainPixels;
-        _rainPixelsCount = 0;
         _rainPixels = new RainPixel[_rainPixelsCapacity];
     }
 
@@ -161,8 +159,8 @@ public:
 class SoftwareDrawingContext final : public IDrawingContext
 {
 private:
-    SoftwareDrawingEngine * _engine;
-    rct_drawpixelinfo *     _dpi;
+    SoftwareDrawingEngine * _engine = nullptr;
+    rct_drawpixelinfo *     _dpi    = nullptr;
 
 public:
     explicit SoftwareDrawingContext(SoftwareDrawingEngine * engine);

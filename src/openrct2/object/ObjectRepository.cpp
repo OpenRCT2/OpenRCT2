@@ -94,17 +94,16 @@ static void ReportMissingObject(const rct_object_entry * entry);
 
 class ObjectRepository final : public IObjectRepository
 {
-    IPlatformEnvironment *              _env = nullptr;
+    const IPlatformEnvironment *        _env = nullptr;
     std::vector<ObjectRepositoryItem>   _items;
     QueryDirectoryResult                _queryDirectoryResult = { 0 };
     ObjectEntryMap                      _itemMap;
-    uint16                              _languageId = 0;
-    sint32                                 _numConflicts;
+    uint16                              _languageId   = 0;
+    sint32                              _numConflicts = 0;
 
 public:
-    ObjectRepository(IPlatformEnvironment * env)
+    ObjectRepository(IPlatformEnvironment * env) : _env(env)
     {
-        _env = env;
     }
 
     ~ObjectRepository() final

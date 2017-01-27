@@ -2203,7 +2203,7 @@ void game_command_modify_groups(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *e
 	uint8 groupid = (uint8)(*eax >> 8);
 	uint8 nameChunkIndex = (uint8)(*eax >> 16);
 
-	char oldName[128];
+	char oldName[128] = { 0 };
 	static char newName[128];
 
 	switch (action)

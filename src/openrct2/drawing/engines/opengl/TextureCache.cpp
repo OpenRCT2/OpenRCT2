@@ -26,10 +26,6 @@ extern "C"
     #include "../../drawing.h"
 }
 
-TextureCache::TextureCache()
-{
-}
-
 TextureCache::~TextureCache()
 {
     FreeTextures();

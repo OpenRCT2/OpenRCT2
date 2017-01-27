@@ -58,8 +58,8 @@ struct DirectoryChild
     std::string Name;
 
     // Files only
-    uint64 Size;
-    uint64 LastModified;
+    uint64 Size         = 0;
+    uint64 LastModified = 0;
 };
 
 static uint32 GetPathChecksum(const utf8 * path);
@@ -302,7 +302,7 @@ protected:
     void GetDirectoryChildren(std::vector<DirectoryChild> &children, const std::string &path) override
     {
         struct dirent * * namelist;
-		sint32 count = scandir(path.c_str(), &namelist, FilterFunc, alphasort);
+        sint32 count = scandir(path.c_str(), &namelist, FilterFunc, alphasort);
         if (count > 0)
         {
             for (sint32 i = 0; i < count; i++)

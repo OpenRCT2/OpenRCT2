@@ -100,7 +100,7 @@ private:
         _lastAdvertiseTime = SDL_GetTicks();
 
         // Send the registration request
-        http_request_t request;
+        http_request_t request = { 0 };
         request.tag = this;
         request.url = GetMasterServerUrl();
         request.method = HTTP_METHOD_POST;
@@ -130,7 +130,7 @@ private:
 
     void SendHeartbeat()
     {
-        http_request_t request;
+        http_request_t request = { 0 };
         request.tag = this;
         request.url = GetMasterServerUrl();
         request.method = HTTP_METHOD_PUT;
