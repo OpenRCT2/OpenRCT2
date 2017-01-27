@@ -18,6 +18,8 @@
 
 #ifdef __WINDOWS__
 #include <windows.h>
+#elif __ANDROID__
+#include <jni.h>
 #else
 #include <iconv.h>
 #include <errno.h>
@@ -1343,6 +1345,27 @@ sint32 win1252_to_utf8(utf8string dst, const char *src, size_t srcLength, size_t
 	sint32 result = WideCharToMultiByte(CP_UTF8, 0, intermediateBuffer, -1, dst, (sint32)maxBufferLength, NULL, NULL);
 
 	free(heapBuffer);
+#elif __ANDROID__
+    JNIEnv *env = SDL_AndroidGetJNIEnv();
+
+    jclass *localisation = (*env)->FindClass(env, "org/openrct/android/Localisation");
+    jmethodID win1252ToUtf8 = (*env)->GetStaticMethodID(env, localisation, "win1252ToUtf8", "([B)Ljava/lang/String;");
+
+	jbyteArray *bytes = (*env)->NewByteArray(env, srcLength);
+	(*env)->SetByteArrayRegion(env, bytes, 0, srcLength, (jbyte *) src);
+
+    jstring * jstring1 = (*env)->CallStaticObjectMethod(env, localisation, win1252ToUtf8, bytes);
+
+	char* utf = (*env)->GetStringUTFChars(env, jstring1, NULL);
+	strcpy(dst, utf);
+	(*env)->ReleaseStringUTFChars(env, jstring1, utf);
+	(*env)->DeleteLocalRef(env, localisation);
+	(*env)->DeleteLocalRef(env, bytes);
+	(*env)->DeleteLocalRef(env, jstring1);
+
+	printf("Final copied string : %s\n", dst);
+
+	int result = strlen(dst);
 #else
 	//log_warning("converting %s of size %d", src, srcLength);
 	char *buffer_conv = strndup(src, srcLength);

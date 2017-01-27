@@ -1,0 +1,30 @@
+apply plugin: "com.android.model.native"
+
+model {
+  android {
+    compileSdkVersion 23
+    ndk {
+      moduleName "SDL2_ttf"
+      abiFilters.addAll(["armeabi", "armeabi-v7a", "x86"])
+      platformVersion 16
+    }
+    sources {
+      main {
+        jni {
+          exportedHeaders {
+            srcDir "external"
+          }
+
+          source {
+            srcDir "external"
+          }
+
+          dependencies {
+            project ":sdl"
+            project ":freetype"
+          }
+        }
+      }
+    }
+  }
+}

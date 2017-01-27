@@ -1,0 +1,29 @@
+apply plugin: "com.android.model.native"
+
+model {
+  android {
+    compileSdkVersion 23
+    ndk {
+      moduleName "libpng"
+      abiFilters.addAll(["armeabi", "armeabi-v7a", "x86"])
+      ldLibs.addAll(["z"])
+      platformVersion 16
+    }
+    sources {
+      main {
+        jni {
+          exportedHeaders {
+            srcDirs = ["external", "src/main/include"]
+          }
+
+          source {
+            srcDir "external"
+            exclude "contrib/**/*.c"
+            exclude "example.c"
+            exclude "pngtest.c"
+          }
+        }
+      }
+    }
+  }
+}

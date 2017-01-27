@@ -1,0 +1,65 @@
+apply plugin: 'com.android.model.application'
+
+model {
+  android {
+    compileSdkVersion 23
+    buildToolsVersion "23.0.3"
+    ndk {
+      moduleName "main"
+      CFlags.addAll("-DGL_GLEXT_PROTOTYPES", "-std=gnu99", "-fno-omit-frame-pointer", "-fno-pie", "-fstrict-aliasing", "-Werror=strict-aliasing", "-DDISABLE_HTTP", "-DDISABLE_NETWORK", "-DDISABLE_TWITCH", "-fPIC")
+      cppFlags.addAll("-std=gnu++11", "-fno-omit-frame-pointer", "-fno-pie", "-fstrict-aliasing", "-Werror=strict-aliasing", "-DDISABLE_HTTP", "-DDISABLE_NETWORK", "-DDISABLE_OPENGL", "-fexceptions", "-DDISABLE_TWITCH", "-fPIC")
+      ldLibs.addAll(["dl", "GLESv1_CM", "GLESv2", "log", "android", "z"])
+      cppFlags.add("-DDEBUG=0")
+      CFlags.add("-DDEBUG=0")
+      stl 'c++_shared'
+      abiFilters.addAll(["armeabi", "armeabi-v7a", "x86"])
+      platformVersion 16
+    }
+
+    defaultConfig {
+      applicationId "org.openrct.android"
+      minSdkVersion.apiLevel 16
+      targetSdkVersion.apiLevel 23
+      versionCode 1
+      versionName "1.0"
+
+      buildConfigFields {
+        create() {
+          type "int"
+          name "VALUE"
+          value "1"
+        }
+      }
+    }
+    buildTypes {
+      release {
+        minifyEnabled false
+        //proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+      }
+    }
+  }
+
+  android.sources {
+    main {
+      jni {
+        source {
+          srcDir "../../../src"
+          //exclude "platform/posix.c"
+        }
+        dependencies {
+          project ":sdl"
+          project ":sdl-ttf"
+          project ":libjansson"
+          project ":libpng"
+          project ":libspeexdsp"
+        }
+      }
+    }
+  }
+}
+
+dependencies {
+  compile fileTree(dir: 'libs', include: ['*.jar'])
+  testCompile 'junit:junit:4.12'
+  compile 'com.android.support:appcompat-v7:23.3.0'
+}

@@ -19,6 +19,7 @@
     extern "C"
     {
         #include "twitch.h"
+        bool gTwitchEnable = false;
     }
 
     void twitch_update() { }
