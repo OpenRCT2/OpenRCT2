@@ -134,7 +134,10 @@ void fence_paint(uint8 direction, sint32 height, rct_map_element * map_element)
 {
     gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_WALL;
 
-	rct_scenery_entry * sceneryEntry = get_wall_entry(map_element->properties.fence.type);
+    rct_scenery_entry * sceneryEntry = get_wall_entry(map_element->properties.fence.type);
+    if (sceneryEntry == NULL) {
+        return;
+    }
     uint32 frameNum = 0;
 
     if (sceneryEntry->wall.flags2 & WALL_SCENERY_2_FLAG5) {
