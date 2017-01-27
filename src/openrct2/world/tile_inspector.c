@@ -14,6 +14,7 @@
 *****************************************************************************/
 #pragma endregion
 
+#include "../common.h"
 #include "../game.h"
 #include "../interface/window.h"
 #include "../windows/tile_inspector.h"
@@ -340,7 +341,7 @@ sint32 tile_inspector_change_base_height_at(sint32 x, sint32 y, sint16 element_i
 	return 0;
 }
 
-sint32 tile_inspector_show_park_fences(sint32 x, sint32 y, bool show_fences, sint32 flags)
+sint32 tile_inspector_surface_show_park_fences(sint32 x, sint32 y, bool show_fences, sint32 flags)
 {
 	rct_map_element *const surface = map_get_surface_element_at(x, y);
 
@@ -356,6 +357,57 @@ sint32 tile_inspector_show_park_fences(sint32 x, sint32 y, bool show_fences, sin
 			update_park_fences(x << 5, y << 5);
 
 		map_invalidate_tile_full(x << 5, y << 5);
+	}
+
+	return 0;
+}
+
+sint32 tile_inspector_surface_toggle_corner(sint32 x, sint32 y, sint32 corner_index, sint32 flags)
+{
+	rct_map_element *const surface = map_get_surface_element_at(x, y);
+
+	// No surface element on tile
+	if (surface == NULL)
+		return MONEY32_UNDEFINED;
+
+	if (flags & GAME_COMMAND_FLAG_APPLY)
+	{
+		const uint8 originalSlope = surface->properties.surface.slope;
+		const bool diagonal = (originalSlope & 0x10) >> 4;
+
+		surface->properties.surface.slope ^= 1 << corner_index;
+		if (surface->properties.surface.slope & 0x0F)
+		{
+			surface->clearance_height = surface->base_height + 2;
+		}
+		else
+		{
+			surface->clearance_height = surface->base_height;
+		}
+
+		// All corners are raised
+		if ((surface->properties.surface.slope & 0x0F) == 0x0F)
+		{
+			surface->properties.surface.slope &= ~0x1F;
+
+			if (diagonal)
+			{
+				switch (originalSlope & 0x0F)
+				{
+				case 0b1011: surface->properties.surface.slope |= (1 << 0); break;
+				case 0b0111: surface->properties.surface.slope |= (1 << 1); break;
+				case 0b1110: surface->properties.surface.slope |= (1 << 2); break;
+				case 0b1101: surface->properties.surface.slope |= (1 << 3); break;
+				}
+			}
+
+			// Update base and clearance heights
+			surface->base_height += 2;
+			surface->clearance_height = surface->base_height + (diagonal ? 2 : 0);
+		}
+
+		map_invalidate_tile_full(x << 5, y << 5);
+		window_invalidate_by_class(WC_TILE_INSPECTOR);
 	}
 
 	return 0;

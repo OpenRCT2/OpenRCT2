@@ -5663,7 +5663,13 @@ void game_command_modify_tile(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx
 	case TILE_INSPECTOR_SURFACE_SHOW_PARK_FENCES:
 	{
 		const bool show_fences = *edx;
-		*ebx = tile_inspector_show_park_fences(x, y, show_fences, flags);
+		*ebx = tile_inspector_surface_show_park_fences(x, y, show_fences, flags);
+		return;
+	}
+	case TILE_INSPECTOR_SURFACE_TOGGLE_CORNER:
+	{
+		const sint32 corner_index = *edx;
+		*ebx = tile_inspector_surface_toggle_corner(x, y, corner_index, flags);
 		return;
 	}
 	default:

@@ -464,7 +464,7 @@ static void window_tile_inspector_rotate_element(sint32 element_index);
 static void window_tile_inspector_sort_elements(rct_window *w);
 static void window_tile_inspector_copy_element(rct_window *w);
 static void window_tile_inspector_paste_element(rct_window *w);
-static void window_tile_inspector_surface_toggle_corner(rct_map_element *mapElement, sint32 cornerIndex);
+static void window_tile_inspector_surface_toggle_corner(sint32 cornerIndex);
 static void window_tile_inspector_track_block_height_offset(rct_map_element *mapElement, uint8 offset);
 static void window_tile_inspector_track_block_set_lift(rct_map_element *mapElement, bool chain);
 static void window_tile_inspector_quarter_tile_set(rct_map_element *const mapElement, const sint32 index);
@@ -729,36 +729,17 @@ static void window_tile_inspector_surface_show_park_fences(bool show_fences)
 	);
 }
 
-static void window_tile_inspector_surface_toggle_corner(rct_map_element *mapElement, sint32 cornerIndex)
+static void window_tile_inspector_surface_toggle_corner(sint32 cornerIndex)
 {
-	const uint8 originalSlope = mapElement->properties.surface.slope;
-	const bool diagonal = (originalSlope & 0x10) >> 4;
-
-	mapElement->properties.surface.slope ^= 1 << cornerIndex;
-	if (mapElement->properties.surface.slope & 0x0F) {
-		mapElement->clearance_height = mapElement->base_height + 2;
-	}
-	else {
-		mapElement->clearance_height = mapElement->base_height;
-	}
-
-	// All corners are raised
-	if ((mapElement->properties.surface.slope & 0x0F) == 0x0F) {
-		mapElement->properties.surface.slope &= ~0x1F;
-
-		if (diagonal) {
-			switch (originalSlope & 0x0F) {
-			case 0b1011: mapElement->properties.surface.slope |= (1 << 0); break;
-			case 0b0111: mapElement->properties.surface.slope |= (1 << 1); break;
-			case 0b1110: mapElement->properties.surface.slope |= (1 << 2); break;
-			case 0b1101: mapElement->properties.surface.slope |= (1 << 3); break;
-			}
-		}
-
-		// Update base and clearance heights
-		mapElement->base_height += 2;
-		mapElement->clearance_height = mapElement->base_height + (diagonal ? 2 : 0);
-	}
+	game_do_command(
+		TILE_INSPECTOR_SURFACE_TOGGLE_CORNER,
+		GAME_COMMAND_FLAG_APPLY,
+		windowTileInspectorTileX | (windowTileInspectorTileY << 8),
+		cornerIndex,
+		GAME_COMMAND_MODIFY_TILE,
+		0,
+		0
+	);
 }
 
 // Copied from track.c (track_remove), and modified for raising/lowering
@@ -1066,9 +1047,7 @@ static void window_tile_inspector_mouseup(rct_window *w, sint32 widgetIndex)
 		case WIDX_SURFACE_CHECK_CORNER_E:
 		case WIDX_SURFACE_CHECK_CORNER_S:
 		case WIDX_SURFACE_CHECK_CORNER_W:
-			window_tile_inspector_surface_toggle_corner(mapElement, ((widgetIndex - WIDX_SURFACE_CHECK_CORNER_N) + 2 - get_current_rotation()) & 3);
-			map_invalidate_tile_full(windowTileInspectorTileX << 5, windowTileInspectorTileY << 5);
-			window_invalidate(w);
+			window_tile_inspector_surface_toggle_corner(((widgetIndex - WIDX_SURFACE_CHECK_CORNER_N) + 2 - get_current_rotation()) & 3);
 			break;
 		case WIDX_SURFACE_CHECK_DIAGONAL:
 			mapElement->properties.surface.slope ^= 0x10;
