@@ -5642,7 +5642,7 @@ void game_command_modify_tile(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx
 	case TILE_INSPECTOR_ANY_PASTE:
 	{
 		rct_map_element element_to_paste;
-		sint32 data[] = { *edx, *edi };
+		const sint32 data[] = { *edx, *edi };
 		assert_struct_size(data, sizeof(element_to_paste));
 		memcpy(&element_to_paste, data, 8);
 		*ebx = tile_inspector_paste_element_at(x, y, element_to_paste, flags);
@@ -5660,21 +5660,17 @@ void game_command_modify_tile(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx
 		*ebx = tile_inspector_change_base_height_at(x, y, element_index, height_offset, flags);
 		return;
 	}
+	case TILE_INSPECTOR_SURFACE_SHOW_PARK_FENCES:
+	{
+		const bool show_fences = *edx;
+		*ebx = tile_inspector_show_park_fences(x, y, show_fences, flags);
+		return;
+	}
 	default:
 		log_error("invalid instruction");
 		*ebx = MONEY32_UNDEFINED;
 		return;
 	}
-}
-
-void game_command_modify_element(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp)
-{
-	log_info("Modifying element");
-	if (*ebx & GAME_COMMAND_FLAG_APPLY) {
-		puts("Yeah baby");
-	}
-
-	*ebx = 0;
 }
 
 /**

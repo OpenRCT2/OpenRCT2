@@ -18,6 +18,7 @@
 #include "../interface/window.h"
 #include "../windows/tile_inspector.h"
 #include "footpath.h"
+#include "map.h"
 #include "tile_inspector.h"
 
 static void map_swap_elements_at(sint32 x, sint32 y, sint16 first, sint16 second)
@@ -334,6 +335,27 @@ sint32 tile_inspector_change_base_height_at(sint32 x, sint32 y, sint16 element_i
 
 		map_invalidate_tile_full(x << 5, y << 5);
 		window_invalidate_by_class(WC_TILE_INSPECTOR);
+	}
+
+	return 0;
+}
+
+sint32 tile_inspector_show_park_fences(sint32 x, sint32 y, bool show_fences, sint32 flags)
+{
+	rct_map_element *const surface = map_get_surface_element_at(x, y);
+
+	// No surface element on tile
+	if (surface == NULL)
+		return MONEY32_UNDEFINED;
+
+	if (flags & GAME_COMMAND_FLAG_APPLY)
+	{
+		if (!show_fences)
+			surface->properties.surface.ownership &= ~0x0F;
+		else
+			update_park_fences(x << 5, y << 5);
+
+		map_invalidate_tile_full(x << 5, y << 5);
 	}
 
 	return 0;

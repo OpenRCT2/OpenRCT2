@@ -716,6 +716,19 @@ static void window_tile_inspector_base_height_offset(sint16 element_index, sint8
 	);
 }
 
+static void window_tile_inspector_surface_show_park_fences(bool show_fences)
+{
+	game_do_command(
+		TILE_INSPECTOR_SURFACE_SHOW_PARK_FENCES,
+		GAME_COMMAND_FLAG_APPLY,
+		windowTileInspectorTileX | (windowTileInspectorTileY << 8),
+		show_fences,
+		GAME_COMMAND_MODIFY_TILE,
+		0,
+		0
+	);
+}
+
 static void window_tile_inspector_surface_toggle_corner(rct_map_element *mapElement, sint32 cornerIndex)
 {
 	const uint8 originalSlope = mapElement->properties.surface.slope;
@@ -1044,12 +1057,10 @@ static void window_tile_inspector_mouseup(rct_window *w, sint32 widgetIndex)
 			window_tile_inspector_base_height_offset(w->selected_list_item, -1);
 			break;
 		case WIDX_SURFACE_BUTTON_REMOVE_FENCES:
-			mapElement->properties.surface.ownership &= ~0x0F;
-			map_invalidate_tile_full(windowTileInspectorTileX << 5, windowTileInspectorTileY << 5);
+			window_tile_inspector_surface_show_park_fences(false);
 			break;
 		case WIDX_SURFACE_BUTTON_RESTORE_FENCES:
-			update_park_fences(windowTileInspectorTileX << 5, windowTileInspectorTileY << 5);
-			map_invalidate_tile_full(windowTileInspectorTileX << 5, windowTileInspectorTileY << 5);
+			window_tile_inspector_surface_show_park_fences(true);
 			break;
 		case WIDX_SURFACE_CHECK_CORNER_N:
 		case WIDX_SURFACE_CHECK_CORNER_E:
