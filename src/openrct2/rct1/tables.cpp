@@ -67,7 +67,11 @@ namespace RCT1
             COLOUR_BRIGHT_YELLOW,
             COLOUR_ICY_BLUE
         };
-        Guard::ArgumentInRange<size_t>(colour, 0, Util::CountOf(map), "Unsupported RCT1 colour.");
+        if (colour < 0 || colour >= Util::CountOf(map))
+        {
+            log_warning("Unsupported RCT1 colour.");
+            return COLOUR_BLACK;
+        }
         return map[colour];
     }
 
@@ -75,39 +79,47 @@ namespace RCT1
     {
         static const uint8 map[] =
         {
-            PEEP_SPRITE_TYPE_NORMAL,
-            PEEP_SPRITE_TYPE_HANDYMAN,
-            PEEP_SPRITE_TYPE_MECHANIC,
-            PEEP_SPRITE_TYPE_SECURITY,
-            PEEP_SPRITE_TYPE_ENTERTAINER_PANDA,
-            PEEP_SPRITE_TYPE_ENTERTAINER_TIGER,
-            PEEP_SPRITE_TYPE_ENTERTAINER_ELEPHANT,
-            PEEP_SPRITE_TYPE_ENTERTAINER_ROMAN,
-            PEEP_SPRITE_TYPE_ENTERTAINER_GORILLA,
-            PEEP_SPRITE_TYPE_ENTERTAINER_SNOWMAN,
-            PEEP_SPRITE_TYPE_ENTERTAINER_KNIGHT,
-            PEEP_SPRITE_TYPE_ENTERTAINER_ASTRONAUT,
-            PEEP_SPRITE_TYPE_NORMAL, // Not used
-            PEEP_SPRITE_TYPE_NORMAL, // Not used
-            PEEP_SPRITE_TYPE_NORMAL, // Not used
-            PEEP_SPRITE_TYPE_NORMAL, // Not used
-            PEEP_SPRITE_TYPE_BALLOON,
-            PEEP_SPRITE_TYPE_CANDYFLOSS,
-            PEEP_SPRITE_TYPE_UMBRELLA,
-            PEEP_SPRITE_TYPE_PIZZA,
-            PEEP_SPRITE_TYPE_SECURITY_ALT,
-            PEEP_SPRITE_TYPE_POPCORN,
-            PEEP_SPRITE_TYPE_ARMS_CROSSED,
-            PEEP_SPRITE_TYPE_HEAD_DOWN,
-            PEEP_SPRITE_TYPE_NAUSEOUS,
-            PEEP_SPRITE_TYPE_VERY_NAUSEOUS,
-            PEEP_SPRITE_TYPE_REQUIRE_BATHROOM,
-            PEEP_SPRITE_TYPE_HAT,
-            PEEP_SPRITE_TYPE_BURGER,
-            PEEP_SPRITE_TYPE_TENTACLE,
-            PEEP_SPRITE_TYPE_TOFFEE_APPLE
+            PEEP_SPRITE_TYPE_NORMAL, // 0x00
+            PEEP_SPRITE_TYPE_HANDYMAN, // 0x01
+            PEEP_SPRITE_TYPE_MECHANIC, // 0x02
+            PEEP_SPRITE_TYPE_SECURITY, // 0x03
+            PEEP_SPRITE_TYPE_ENTERTAINER_PANDA, // 0x04
+            PEEP_SPRITE_TYPE_ENTERTAINER_TIGER, // 0x05
+            PEEP_SPRITE_TYPE_ENTERTAINER_ELEPHANT, // 0x06
+            PEEP_SPRITE_TYPE_ENTERTAINER_ROMAN, // 0x07
+            PEEP_SPRITE_TYPE_ENTERTAINER_GORILLA, // 0x08
+            PEEP_SPRITE_TYPE_ENTERTAINER_SNOWMAN, // 0x09
+            PEEP_SPRITE_TYPE_ENTERTAINER_KNIGHT, // 0x0A
+            PEEP_SPRITE_TYPE_ENTERTAINER_ASTRONAUT, // 0x0B
+            PEEP_SPRITE_TYPE_ICE_CREAM, // 0x0C
+            PEEP_SPRITE_TYPE_FRIES, // 0x0D
+            PEEP_SPRITE_TYPE_BURGER, // 0x0E
+            PEEP_SPRITE_TYPE_DRINK, // 0x0F
+            PEEP_SPRITE_TYPE_BALLOON, // 0x10
+            PEEP_SPRITE_TYPE_CANDYFLOSS, // 0x11
+            PEEP_SPRITE_TYPE_UMBRELLA, // 0x12
+            PEEP_SPRITE_TYPE_PIZZA, // 0x13
+            PEEP_SPRITE_TYPE_SECURITY_ALT, // 0x14
+            PEEP_SPRITE_TYPE_POPCORN, // 0x15
+            PEEP_SPRITE_TYPE_ARMS_CROSSED, // 0x16
+            PEEP_SPRITE_TYPE_HEAD_DOWN, // 0x17
+            PEEP_SPRITE_TYPE_NAUSEOUS, // 0x18
+            PEEP_SPRITE_TYPE_VERY_NAUSEOUS, // 0x19
+            PEEP_SPRITE_TYPE_REQUIRE_BATHROOM, // 0x1A
+            PEEP_SPRITE_TYPE_HAT, // 0x1B
+            PEEP_SPRITE_TYPE_HOT_DOG, // 0x1C
+            PEEP_SPRITE_TYPE_TENTACLE, // 0x1D
+            PEEP_SPRITE_TYPE_TOFFEE_APPLE, // 0x1E
+            PEEP_SPRITE_TYPE_DONUT, // 0x1F
+            PEEP_SPRITE_TYPE_COFFEE, // 0x20
+            PEEP_SPRITE_TYPE_CHICKEN, // 0x21
+            PEEP_SPRITE_TYPE_LEMONADE, // 0x22
         };
-        Guard::ArgumentInRange<size_t>(rct1SpriteType, 0, Util::CountOf(map), "Unsupported RCT1 sprite type.");
+        if (rct1SpriteType < 0 || rct1SpriteType > Util::CountOf(map))
+        {
+            log_warning("Unsupported RCT1 peep sprite type: %d.", rct1SpriteType);
+            return PEEP_SPRITE_TYPE_NORMAL;
+        }
         return map[rct1SpriteType];
     }
 
@@ -256,6 +268,105 @@ namespace RCT1
         return map[rideType];
     }
 
+    RCT1VehicleColourSchemeCopyDescriptor GetColourSchemeCopyDescriptor(uint8 vehicleType)
+    {
+        static RCT1VehicleColourSchemeCopyDescriptor map[89] =
+        {
+            { COPY_COLOUR_1, COPY_COLOUR_2, COLOUR_BLACK }, // RCT1_VEHICLE_TYPE_STEEL_ROLLER_COASTER_TRAIN = 0,
+            { COPY_COLOUR_1, COPY_COLOUR_2, COLOUR_BLACK }, // RCT1_VEHICLE_TYPE_STEEL_ROLLER_COASTER_TRAIN_BACKWARDS,
+            { COPY_COLOUR_1, COPY_COLOUR_2, COLOUR_BLACK }, // RCT1_VEHICLE_TYPE_WOODEN_ROLLER_COASTER_TRAIN,
+            { COPY_COLOUR_1, COPY_COLOUR_2, COLOUR_BLACK }, // RCT1_VEHICLE_TYPE_INVERTED_COASTER_TRAIN, // Not in RCT2
+            { COPY_COLOUR_1, COPY_COLOUR_2, COPY_COLOUR_2 }, // RCT1_VEHICLE_TYPE_SUSPENDED_SWINGING_CARS,
+            { COPY_COLOUR_1, COPY_COLOUR_2, COLOUR_BLACK }, // RCT1_VEHICLE_TYPE_LADYBIRD_CARS,
+            { COPY_COLOUR_1, COPY_COLOUR_1, COPY_COLOUR_2 }, // RCT1_VEHICLE_TYPE_STANDUP_ROLLER_COASTER_CARS,
+            { COPY_COLOUR_1, COPY_COLOUR_2, COLOUR_BLACK }, // RCT1_VEHICLE_TYPE_SPINNING_CARS,
+            { COPY_COLOUR_1, COPY_COLOUR_2, COLOUR_BLACK }, // RCT1_VEHICLE_TYPE_SINGLE_PERSON_SWINGING_CHAIRS,
+            { COPY_COLOUR_1, COPY_COLOUR_2, COLOUR_BLACK }, // RCT1_VEHICLE_TYPE_SWANS_PEDAL_BOATS,
+            { COPY_COLOUR_1, COPY_COLOUR_2, COLOUR_DARK_BLUE }, // RCT1_VEHICLE_TYPE_LARGE_MONORAIL_TRAIN,
+            { COPY_COLOUR_1, COPY_COLOUR_2, COLOUR_BLACK }, // RCT1_VEHICLE_TYPE_CANOES,
+            { COPY_COLOUR_1, COPY_COLOUR_2, COLOUR_BLACK }, // RCT1_VEHICLE_TYPE_ROWING_BOATS,
+            { COPY_COLOUR_1, COPY_COLOUR_2, COLOUR_BLACK }, // RCT1_VEHICLE_TYPE_STEAM_TRAIN,
+            { COPY_COLOUR_1, COPY_COLOUR_2, COPY_COLOUR_2 }, // RCT1_VEHICLE_TYPE_WOODEN_MOUSE_CARS,
+            { COPY_COLOUR_1, COPY_COLOUR_2, COLOUR_BLACK }, // RCT1_VEHICLE_TYPE_BUMPER_BOATS,
+            { COPY_COLOUR_1, COPY_COLOUR_2, COLOUR_BLACK }, // RCT1_VEHICLE_TYPE_WOODEN_ROLLER_COASTER_TRAIN_BACKWARDS,
+            { COPY_COLOUR_1, COPY_COLOUR_2, COLOUR_BLACK }, // RCT1_VEHICLE_TYPE_ROCKET_CARS,
+            { COPY_COLOUR_1, COPY_COLOUR_2, COLOUR_BLACK }, // RCT1_VEHICLE_TYPE_HORSES, // Steeplechase
+            { COPY_COLOUR_1, COPY_COLOUR_2, COLOUR_BLACK }, // RCT1_VEHICLE_TYPE_SPORTSCARS,
+            { COPY_COLOUR_1, COPY_COLOUR_2, COLOUR_BLACK }, // RCT1_VEHICLE_TYPE_LYING_DOWN_SWINGING_CARS, // Inverted single-rail
+            { COPY_COLOUR_1, COPY_COLOUR_2, COLOUR_BLACK }, // RCT1_VEHICLE_TYPE_WOODEN_MINE_CARS,
+            { COPY_COLOUR_1, COPY_COLOUR_2, COLOUR_BLACK }, // RCT1_VEHICLE_TYPE_SUSPENDED_SWINGING_AIRPLANE_CARS,
+            { COPY_COLOUR_1, COPY_COLOUR_2, COLOUR_BLACK }, // RCT1_VEHICLE_TYPE_SMALL_MONORAIL_CARS,
+            { COPY_COLOUR_1, COPY_COLOUR_2, COLOUR_BLACK }, // RCT1_VEHICLE_TYPE_WATER_TRICYCLES,
+            { COPY_COLOUR_1, COPY_COLOUR_2, COLOUR_BLACK }, // RCT1_VEHICLE_TYPE_LAUNCHED_FREEFALL_CAR,
+            { COPY_COLOUR_1, COPY_COLOUR_2, COLOUR_BLACK }, // RCT1_VEHICLE_TYPE_BOBSLEIGH_CARS,
+            { COPY_COLOUR_1, COPY_COLOUR_2, COLOUR_BLACK }, // RCT1_VEHICLE_TYPE_DINGHIES,
+            { COPY_COLOUR_1, COPY_COLOUR_2, COLOUR_BLACK }, // RCT1_VEHICLE_TYPE_ROTATING_CABIN,
+            { COPY_COLOUR_1, COPY_COLOUR_2, COLOUR_BLACK }, // RCT1_VEHICLE_TYPE_MINE_TRAIN,
+            { COPY_COLOUR_1, COPY_COLOUR_2, COLOUR_BLACK }, // RCT1_VEHICLE_TYPE_CHAIRLIFT_CARS,
+            { COPY_COLOUR_1, COPY_COLOUR_2, COLOUR_BLACK }, // RCT1_VEHICLE_TYPE_CORKSCREW_ROLLER_COASTER_TRAIN,
+            { COPY_COLOUR_1, COPY_COLOUR_2, COLOUR_BLACK }, // RCT1_VEHICLE_TYPE_MOTORBIKES,
+            { COPY_COLOUR_1, COPY_COLOUR_2, COLOUR_BLACK }, // RCT1_VEHICLE_TYPE_RACING_CARS,
+            { COPY_COLOUR_1, COPY_COLOUR_2, COLOUR_BLACK }, // RCT1_VEHICLE_TYPE_TRUCKS,
+            { COPY_COLOUR_1, COPY_COLOUR_2, COLOUR_BLACK }, // RCT1_VEHICLE_TYPE_GO_KARTS,
+            { COPY_COLOUR_1, COLOUR_BLACK, COLOUR_BLACK }, // RCT1_VEHICLE_TYPE_RAPIDS_BOATS,
+            { COPY_COLOUR_1, COPY_COLOUR_2, COLOUR_BLACK }, // RCT1_VEHICLE_TYPE_LOG_FLUME_BOATS,
+            { COPY_COLOUR_1, COPY_COLOUR_2, COLOUR_BLACK }, // RCT1_VEHICLE_TYPE_DODGEMS,
+            { COPY_COLOUR_1, COPY_COLOUR_2, COLOUR_BLACK }, // RCT1_VEHICLE_TYPE_SWINGING_SHIP,
+            { COPY_COLOUR_1, COPY_COLOUR_2, COLOUR_BLACK }, // RCT1_VEHICLE_TYPE_SWINGING_INVERTER_SHIP,
+            { COPY_COLOUR_1, COPY_COLOUR_2, COLOUR_BLACK }, // RCT1_VEHICLE_TYPE_MERRY_GO_ROUND,
+            { COPY_COLOUR_1, COPY_COLOUR_2, COLOUR_BLACK }, // RCT1_VEHICLE_TYPE_FERRIS_WHEEL,
+            { COPY_COLOUR_1, COPY_COLOUR_2, COLOUR_BLACK }, // RCT1_VEHICLE_TYPE_SIMULATOR_POD,
+            { COPY_COLOUR_1, COPY_COLOUR_2, COLOUR_BLACK }, // RCT1_VEHICLE_TYPE_CINEMA_BUILDING,
+            { COPY_COLOUR_1, COPY_COLOUR_2, COLOUR_BLACK }, // RCT1_VEHICLE_TYPE_TOPSPIN_CAR,
+            { COPY_COLOUR_1, COPY_COLOUR_2, COLOUR_BLACK }, // RCT1_VEHICLE_TYPE_SPACE_RINGS,
+            { COPY_COLOUR_1, COPY_COLOUR_2, COLOUR_BLACK }, // RCT1_VEHICLE_TYPE_REVERSE_FREEFALL_ROLLER_COASTER_CAR,
+            { COPY_COLOUR_1, COPY_COLOUR_2, COLOUR_BLACK }, // RCT1_VEHICLE_TYPE_VERTICAL_ROLLER_COASTER_CARS,
+            { COPY_COLOUR_1, COPY_COLOUR_2, COLOUR_BLACK }, // RCT1_VEHICLE_TYPE_CAT_CARS,
+            { COPY_COLOUR_1, COPY_COLOUR_2, COLOUR_BLACK }, // RCT1_VEHICLE_TYPE_TWIST_ARMS_AND_CARS,
+            { COPY_COLOUR_1, COPY_COLOUR_2, COLOUR_BLACK }, // RCT1_VEHICLE_TYPE_HAUNTED_HOUSE_BUILDING,
+            { COPY_COLOUR_1, COPY_COLOUR_2, COLOUR_BLACK }, // RCT1_VEHICLE_TYPE_LOG_CARS,
+            { COPY_COLOUR_1, COPY_COLOUR_2, COLOUR_BLACK }, // RCT1_VEHICLE_TYPE_CIRCUS_TENT,
+            { COPY_COLOUR_1, COPY_COLOUR_2, COLOUR_BLACK }, // RCT1_VEHICLE_TYPE_GHOST_TRAIN_CARS,
+            { COPY_COLOUR_1, COPY_COLOUR_2, COLOUR_BLACK }, // RCT1_VEHICLE_TYPE_STEEL_TWISTER_ROLLER_COASTER_TRAIN,
+            { COPY_COLOUR_1, COPY_COLOUR_2, COLOUR_BLACK }, // RCT1_VEHICLE_TYPE_WOODEN_TWISTER_ROLLER_COASTER_TRAIN,
+            { COPY_COLOUR_1, COPY_COLOUR_2, COLOUR_BLACK }, // RCT1_VEHICLE_TYPE_WOODEN_SIDE_FRICTION_CARS,
+            { COPY_COLOUR_1, COPY_COLOUR_2, COLOUR_BLACK }, // RCT1_VEHICLE_TYPE_VINTAGE_CARS,
+            { COPY_COLOUR_1, COPY_COLOUR_2, COLOUR_BLACK }, // RCT1_VEHICLE_TYPE_STEAM_TRAIN_COVERED_CARS,
+            { COPY_COLOUR_1, COLOUR_BLACK, COPY_COLOUR_2 }, // RCT1_VEHICLE_TYPE_STAND_UP_STEEL_TWISTER_ROLLER_COASTER_TRAIN,
+            { COPY_COLOUR_1, COPY_COLOUR_2, COLOUR_BLACK }, // RCT1_VEHICLE_TYPE_FLOORLESS_STEEL_TWISTER_ROLLER_COASTER_TRAIN,
+            { COPY_COLOUR_1, COPY_COLOUR_2, COLOUR_BLACK }, // RCT1_VEHICLE_TYPE_STEEL_MOUSE_CARS,
+            { COPY_COLOUR_1, COPY_COLOUR_2, COLOUR_BLACK }, // RCT1_VEHICLE_TYPE_CHAIRLIFT_CARS_ALTERNATIVE,
+            { COPY_COLOUR_1, COPY_COLOUR_2, COLOUR_BLACK }, // RCT1_VEHICLE_TYPE_SUSPENDED_MONORAIL_TRAIN,
+            { COPY_COLOUR_1, COPY_COLOUR_2, COLOUR_BLACK }, // RCT1_VEHICLE_TYPE_HELICOPTER_CARS,
+            { COPY_COLOUR_1, COPY_COLOUR_2, COLOUR_BLACK }, // RCT1_VEHICLE_TYPE_VIRGINIA_REEL_TUBS,
+            { COPY_COLOUR_1, COPY_COLOUR_2, COLOUR_BLACK }, // RCT1_VEHICLE_TYPE_REVERSER_CARS,
+            { COPY_COLOUR_1, COPY_COLOUR_2, COLOUR_BLACK }, // RCT1_VEHICLE_TYPE_GOLFERS,
+            { COPY_COLOUR_1, COPY_COLOUR_2, COLOUR_BLACK }, // RCT1_VEHICLE_TYPE_RIVER_RIDE_BOATS,
+            { COPY_COLOUR_1, COPY_COLOUR_2, COLOUR_BLACK }, // RCT1_VEHICLE_TYPE_FLYING_ROLLER_COASTER_TRAIN,
+            { COPY_COLOUR_1, COPY_COLOUR_2, COLOUR_BLACK }, // RCT1_VEHICLE_TYPE_NON_LOOPING_STEEL_TWISTER_ROLLER_COASTER_TRAIN,
+            { COPY_COLOUR_1, COPY_COLOUR_2, COLOUR_BLACK }, // RCT1_VEHICLE_TYPE_HEARTLINE_TWISTER_CARS,
+            { COPY_COLOUR_1, COPY_COLOUR_2, COLOUR_BLACK }, // RCT1_VEHICLE_TYPE_HEARTLINE_TWISTER_CARS_REVERSED,
+            { COPY_COLOUR_1, COPY_COLOUR_2, COLOUR_BLACK }, // RCT1_VEHICLE_TYPE_RESERVED,
+            { COPY_COLOUR_1, COPY_COLOUR_2, COLOUR_BLACK }, // RCT1_VEHICLE_TYPE_ROTODROP_CAR,
+            { COPY_COLOUR_1, COPY_COLOUR_2, COLOUR_BLACK }, // RCT1_VEHICLE_TYPE_FLYING_SAUCERS,
+            { COPY_COLOUR_1, COPY_COLOUR_2, COLOUR_BLACK }, // RCT1_VEHICLE_TYPE_CROOKED_HOUSE_BUILDING,
+            { COPY_COLOUR_1, COPY_COLOUR_2, COLOUR_BLACK }, // RCT1_VEHICLE_TYPE_BICYCLES,
+            { COPY_COLOUR_1, COPY_COLOUR_2, COLOUR_BLACK }, // RCT1_VEHICLE_TYPE_HYPERCOASTER_TRAIN,
+            { COPY_COLOUR_1, COPY_COLOUR_2, COLOUR_BLACK }, // RCT1_VEHICLE_TYPE_4_ACROSS_INVERTED_COASTER_TRAIN,
+            { COPY_COLOUR_1, COPY_COLOUR_2, COLOUR_BLACK }, // RCT1_VEHICLE_TYPE_WATER_COASTER_BOATS,
+            { COPY_COLOUR_1, COPY_COLOUR_2, COLOUR_BLACK }, // RCT1_VEHICLE_TYPE_FACEOFF_CARS,
+            { COPY_COLOUR_1, COPY_COLOUR_2, COLOUR_BLACK }, // RCT1_VEHICLE_TYPE_JET_SKIS,
+            { COPY_COLOUR_1, COPY_COLOUR_2, COLOUR_BLACK }, // RCT1_VEHICLE_TYPE_RAFT_BOATS,
+            { COPY_COLOUR_1, COPY_COLOUR_2, COLOUR_BLACK }, // RCT1_VEHICLE_TYPE_AMERICAN_STYLE_STEAM_TRAIN,
+            { COPY_COLOUR_1, COPY_COLOUR_2, COLOUR_BLACK }, // RCT1_VEHICLE_TYPE_AIR_POWERED_COASTER_TRAIN,
+            { COPY_COLOUR_1, COPY_COLOUR_2, COLOUR_BLACK }, // RCT1_VEHICLE_TYPE_SUSPENDED_WILD_MOUSE_CARS, // Inverted Hairpin in RCT2
+            { COPY_COLOUR_1, COPY_COLOUR_2, COLOUR_BLACK }, // RCT1_VEHICLE_TYPE_ENTERPRISE_WHEEL
+        };
+
+        Guard::ArgumentInRange<size_t>(vehicleType, 0, Util::CountOf(map), "Unsupported RCT1 vehicle type.");
+        return map[vehicleType];
+    }
+
     bool RideTypeUsesVehicles(uint8 rideType)
     {
         switch (rideType) {
@@ -312,6 +423,270 @@ namespace RCT1
         case RCT1_PATH_ADDITION_BROKEN_LAMP_4: return RCT1_PATH_ADDITION_LAMP_4;
         }
         return pathAdditionType;
+    }
+
+    uint8 GetVehicleSubEntryIndex(uint8 vehicleSubEntry)
+    {
+        static const uint8 map[] =
+        {
+            0, // STEEL_RC_FRONT
+            1, // STEEL_RC_CARRIAGE
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0, // MONORAIL_CARRIAGE
+            1, // MONORAIL_FRONT
+            2, // MONORAIL_BACK
+            0,
+            0,
+            1, // MINIATURE_RAILWAY_TENDER
+            0, // MINIATURE_RAILWAY_LOCOMOTIVE
+            2, // MINIATURE_RAILWAY_CARRIAGE
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0, // MINE_TRAIN_FRONT
+            1, // MINE_TRAIN_CARRIAGE
+            0,
+            0, // CORKSCREW_RC_FRONT
+            1, // CORKSCREW_RC_CARRIAGE
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0, // GHOST_TRAIN_CAR
+            1, // TWISTER_RC_SPOILER
+            0, // TWISTER_RC_CARRIAGE
+            1, // GHOST_TRAIN_INVISIBLE
+            0, // ARTICULATED_RC_FRONT
+            1, // ARTICULATED_RC_CARRIAGE
+            0,
+            0,
+            2, // MINIATURE_RAILWAY_CARRIAGE_COVERED
+            0, // STANDUP_TWISTER_RC_CARRIAGE
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0, // REVERSER_RC_CAR
+            2, // REVERSER_RC_BOGIE
+            1, // MINIGOLF_PLAYER
+            0, // MINIGOLF_BALL
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0, // HYPERCOASTER_FRONT
+            1, // HYPERCOASTER_CARRIAGE
+            0, // INVERTED_4_ACROSS_CARRIAGE
+            0, // WATER_COASTER_BOAT
+            0,
+            1, // WATER_COASTER_INVISIBLE
+            0,
+            0, // RIVER_RAFT
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+        };
+        return map[vehicleSubEntry];
     }
 
     const char * GetRideTypeObject(uint8 rideType)
@@ -997,9 +1372,7 @@ namespace RCT1
         return map[sceneryGroupType];
     }
 
-#pragma warning(push)
-#pragma warning(disable : 4505) // 'identifier' unreferenced local function has been removed
-    static const char * GetWaterObject(uint8 waterType)
+    const char * GetWaterObject(uint8 waterType)
     {
         static const char * map[] =
         {
@@ -1008,7 +1381,6 @@ namespace RCT1
         };
         return map[waterType];
     }
-#pragma warning(pop)
 
     const std::vector<const char *> GetPreferedRideEntryOrder(uint8 rideType)
     {

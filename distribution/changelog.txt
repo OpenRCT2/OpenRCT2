@@ -8,6 +8,7 @@
 - Feature: [#5113] Entertainers are now hired with a random costume.
 - Improved: [#4847] Guest / staff pathfinding.
 - Improved: [#4938] Checksum calculations speeded up.
+- Improved: [#5007] Vehicles and functioning rides are now imported when loading SC4 / SV4 parks.
 - Improved: Guests and staff are now imported when loading SC4 / SV4 parks.
 - Fix: [#4571] Only start autosave timer after update or game command.
 - Fix: [#4584] Junior Coaster diagonal flat-to-steep slopes not drawn.

@@ -37,6 +37,12 @@ static void shop_paint_setup(uint8 rideIndex, uint8 trackSequence, uint8 directi
 	rct_ride_entry *rideEntry = get_ride_entry(ride->subtype);
 	rct_ride_entry_vehicle *firstVehicleEntry = &rideEntry->vehicles[0];
 
+	if (rideEntry == NULL || firstVehicleEntry == NULL)
+	{
+		log_error("Error drawing shop, rideEntry or firstVehicleEntry is NULL.");
+		return;
+	}
+
 	uint32 imageId = gTrackColours[SCHEME_TRACK];
 	if (imageId & 0x80000000) {
 		imageId &= 0x60FFFFFF;

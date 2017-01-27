@@ -37,6 +37,12 @@ static void facility_paint_setup(uint8 rideIndex, uint8 trackSequence, uint8 dir
 	rct_ride_entry *rideEntry = get_ride_entry(ride->subtype);
 	rct_ride_entry_vehicle *firstVehicleEntry = &rideEntry->vehicles[0];
 
+	if (rideEntry == NULL || firstVehicleEntry == NULL)
+	{
+		log_error("Error drawing facility, rideEntry or firstVehicleEntry is NULL.");
+		return;
+	}
+
 	uint32 imageId = gTrackColours[SCHEME_TRACK];
 	imageId |= firstVehicleEntry->base_image_id;
 	imageId += (direction + 2) & 3;

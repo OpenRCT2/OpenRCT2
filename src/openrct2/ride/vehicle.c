@@ -3344,7 +3344,7 @@ static void vehicle_update_arriving(rct_vehicle* vehicle)
 	if (ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN &&
 		ride->breakdown_reason_pending == BREAKDOWN_BRAKES_FAILURE &&
 		ride->inspection_station == vehicle->current_station &&
-		ride->mechanic_status != RIDE_MECHANIC_STATUS_4
+		ride->mechanic_status != RIDE_MECHANIC_STATUS_HAS_FIXED_STATION_BRAKES
 	) {
 		unkF64E35 = 0;
 	}
@@ -7492,7 +7492,7 @@ loc_6DAEB9:
 		if (!(
 			ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN &&
 			ride->breakdown_reason_pending == BREAKDOWN_BRAKES_FAILURE &&
-			ride->mechanic_status == RIDE_MECHANIC_STATUS_4
+			ride->mechanic_status == RIDE_MECHANIC_STATUS_HAS_FIXED_STATION_BRAKES
 			)) {
 			regs.eax = vehicle->brake_speed << 16;
 			if (regs.eax < _vehicleVelocityF64E08) {
@@ -7507,15 +7507,9 @@ loc_6DAEB9:
 		}
 	}
 	else if (trackType == TRACK_ELEM_BOOSTER && ride->type != RIDE_TYPE_WILD_MOUSE) {
-		if (!(
-				ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN &&
-				ride->breakdown_reason_pending == BREAKDOWN_BRAKES_FAILURE &&
-				ride->mechanic_status == RIDE_MECHANIC_STATUS_4
-		)) {
-			regs.eax = (vehicle->brake_speed << 16);
-			if (regs.eax > _vehicleVelocityF64E08) {
-				vehicle->acceleration = RideProperties[ride->type].acceleration << 16; //_vehicleVelocityF64E08 * 1.2;
-			}
+		regs.eax = (vehicle->brake_speed << 16);
+		if (regs.eax > _vehicleVelocityF64E08) {
+			vehicle->acceleration = RideProperties[ride->type].acceleration << 16; //_vehicleVelocityF64E08 * 1.2;
 		}
 	}
 
