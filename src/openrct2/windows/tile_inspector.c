@@ -755,6 +755,20 @@ static void window_tile_inspector_surface_toggle_diagonal()
 	);
 }
 
+static void window_tile_inspector_path_toggle_edge(sint32 element_index, sint32 corner_index)
+{
+	assert(corner_index >= 0 && corner_index < 8);
+	game_do_command(
+		TILE_INSPECTOR_PATH_TOGGLE_EDGE,
+		GAME_COMMAND_FLAG_APPLY,
+		windowTileInspectorTileX | (windowTileInspectorTileY << 8),
+		element_index,
+		GAME_COMMAND_MODIFY_TILE,
+		corner_index,
+		0
+	);
+}
+
 // Copied from track.c (track_remove), and modified for raising/lowering
 // Not sure if this should be in this file, track.c, or maybe another one
 static void window_tile_inspector_track_block_height_offset(rct_map_element *mapElement, uint8 offset)
@@ -1080,18 +1094,26 @@ static void window_tile_inspector_mouseup(rct_window *w, sint32 widgetIndex)
 		case WIDX_PATH_CHECK_EDGE_S:
 		case WIDX_PATH_CHECK_EDGE_W:
 		case WIDX_PATH_CHECK_EDGE_N:
-			widget_set_checkbox_value(w, widgetIndex, !widget_is_pressed(w, widgetIndex));
-			mapElement->properties.path.edges ^= (1 << (4 + (((widgetIndex - WIDX_PATH_CHECK_EDGE_E) / 2 - get_current_rotation()) & 3))) & 0xF0;
-			map_invalidate_tile_full(windowTileInspectorTileX << 5, windowTileInspectorTileY << 5);
+		{
+			// 0 = east/right, 1 = south/bottom, 2 = west/left, 3 = north/top
+			const sint32 eswn = (widgetIndex - WIDX_PATH_CHECK_EDGE_E) / 2;
+			// Transform to world orientation
+			const sint32 index = (4 + eswn - get_current_rotation()) & 3;
+			window_tile_inspector_path_toggle_edge(w->selected_list_item, index + 4);  // The corners are stored in the 4 most significant bits, hence the + 4
 			break;
+		}
 		case WIDX_PATH_CHECK_EDGE_NE:
 		case WIDX_PATH_CHECK_EDGE_SE:
 		case WIDX_PATH_CHECK_EDGE_SW:
 		case WIDX_PATH_CHECK_EDGE_NW:
-			widget_set_checkbox_value(w, widgetIndex, !widget_is_pressed(w, widgetIndex));
-			mapElement->properties.path.edges ^= (1 << (((widgetIndex - WIDX_PATH_CHECK_EDGE_NE) / 2 - get_current_rotation()) & 3)) & 0x0F;
-			map_invalidate_tile_full(windowTileInspectorTileX << 5, windowTileInspectorTileY << 5);
+		{
+			// 0 = NE, 1 = SE, 2 = SW, 3 = NW
+			const sint32 neseswnw = (widgetIndex - WIDX_PATH_CHECK_EDGE_NE) / 2;
+			// Transform to world orientation
+			const sint32 index = (4 + neseswnw - get_current_rotation()) & 3;
+			window_tile_inspector_path_toggle_edge(w->selected_list_item, index);
 			break;
+		}
 		} // switch widget index
 		break;
 

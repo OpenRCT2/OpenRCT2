@@ -43,6 +43,7 @@ typedef enum {
 	TILE_INSPECTOR_SURFACE_SHOW_PARK_FENCES,
 	TILE_INSPECTOR_SURFACE_TOGGLE_CORNER,
 	TILE_INSPECTOR_SURFACE_TOGGLE_DIAGONAL,
+	TILE_INSPECTOR_PATH_TOGGLE_EDGE,
 } tile_inspector_instruction;
 
 sint32 tile_inspector_insert_corrupt_at(sint32 x, sint32 y, sint16 element_index, sint32 flags);
@@ -55,3 +56,4 @@ sint32 tile_inspector_change_base_height_at(sint32 x, sint32 y, sint16 element_i
 sint32 tile_inspector_surface_show_park_fences(sint32 x, sint32 y, bool enabled, sint32 flags);
 sint32 tile_inspector_surface_toggle_corner(sint32 x, sint32 y, sint32 corner_index, sint32 flags);
 sint32 tile_inspector_surface_toggle_diagonal(sint32 x, sint32 y, sint32 flags);
+sint32 tile_inspector_path_toggle_edge(sint32 x, sint32 y, sint32 element_index, sint32 corner_index, sint32 flags);
