@@ -2237,7 +2237,7 @@ private:
 
         map_element_iterator it;
         map_element_iterator_begin(&it);
-        while (map_element_iterator_next(&it) && entranceIndex < RCT1_MAX_PARK_ENTRANCES)
+        while (map_element_iterator_next(&it) && entranceIndex < RCT12_MAX_PARK_ENTRANCES)
         {
             rct_map_element * element = it.element;
 
