@@ -237,7 +237,7 @@ static void window_install_track_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 	// Warnings
 	rct_track_td6 *td6 = _trackDesign;
-	if (td6->track_flags & 1) {
+	if (td6->track_flags & TRACK_DESIGN_FLAG_SCENERY_UNAVAILABLE) {
 		if (!gTrackDesignSceneryToggle) {
 			// Scenery not available
 			gfx_draw_string_centred_clipped(dpi, STR_DESIGN_INCLUDES_SCENERY_WHICH_IS_UNAVAILABLE, NULL, COLOUR_BLACK, x, y, 368);

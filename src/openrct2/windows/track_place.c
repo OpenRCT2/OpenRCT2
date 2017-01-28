@@ -331,7 +331,7 @@ static void window_track_place_tooldown(rct_window* w, sint32 widgetIndex, sint3
 			audio_play_sound_at_location(SOUND_PLACE_ITEM, mapX, mapY, mapZ);
 
 			_currentRideIndex = rideIndex;
-			if (byte_F4414E & 1) {
+			if (byte_F4414E & BYTE_F4414E_ENTRANCE_EXIT_PLACED) {
 				window_ride_main_open(rideIndex);
 				window_close(w);
 			} else {

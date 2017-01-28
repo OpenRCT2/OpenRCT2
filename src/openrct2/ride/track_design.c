@@ -55,7 +55,7 @@ rct_xyz16 gTrackPreviewOrigin;
 uint8 byte_F4414E;
 bool byte_9D8150;
 static uint8 _trackDesignPlaceOperation;
-static uint8 byte_F44150;
+static bool _trackDesignDontPlaceScenery;
 static money32 _trackDesignPlaceCost;
 static sint16 _trackDesignPlaceZ;
 static sint16 word_F44129;
@@ -567,10 +567,10 @@ static sint32 track_design_place_scenery(rct_td6_scenery_element *scenery_start,
 {
 	for (uint8 mode = 0; mode <= 1; mode++) {
 		if ((scenery_start->scenery_object.flags & 0xFF) != 0xFF) {
-			byte_F4414E |= 1 << 2;
+			byte_F4414E |= BYTE_F4414E_HAS_SCENERY;
 		}
 
-		if (byte_F4414E & (1 << 7)) {
+		if (byte_F4414E & BYTE_F4414E_DONT_PLACE_SCENERY) {
 			continue;
 		}
 
@@ -964,7 +964,7 @@ static sint32 track_design_place_maze(rct_track_td6 *td6, sint16 x, sint16 y, si
 					cost = game_do_command(mapCoord.x, bl | rotation << 8, mapCoord.y, rideIndex, GAME_COMMAND_PLACE_RIDE_ENTRANCE_OR_EXIT, 0, 0);
 				}
 				if (cost != MONEY32_UNDEFINED){
-					byte_F4414E |= (1 << 0);
+					byte_F4414E |= BYTE_F4414E_ENTRANCE_EXIT_PLACED;
 				}
 				break;
 			case 0x80:
@@ -983,7 +983,7 @@ static sint32 track_design_place_maze(rct_track_td6 *td6, sint16 x, sint16 y, si
 					cost = game_do_command(mapCoord.x, bl | rotation << 8, mapCoord.y, rideIndex | (1 << 8), GAME_COMMAND_PLACE_RIDE_ENTRANCE_OR_EXIT, 0, 0);
 				}
 				if (cost != MONEY32_UNDEFINED){
-					byte_F4414E |= (1 << 0);
+					byte_F4414E |= BYTE_F4414E_ENTRANCE_EXIT_PLACED;
 				}
 				break;
 			default:
@@ -1239,7 +1239,7 @@ static bool track_design_place_ride(rct_track_td6 *td6, sint16 x, sint16 y, sint
 						_trackDesignPlaceCost = cost;
 						return 0;
 					}
-					byte_F4414E |= (1 << 0);
+					byte_F4414E |= BYTE_F4414E_ENTRANCE_EXIT_PLACED;
 					break;
 				} while (!map_element_is_last_for_tile(map_element++));
 			} else {
@@ -1255,7 +1255,7 @@ static bool track_design_place_ride(rct_track_td6 *td6, sint16 x, sint16 y, sint
 					return 0;
 				} else {
 					_trackDesignPlaceCost += cost;
-					byte_F4414E |= (1 << 0);
+					byte_F4414E |= BYTE_F4414E_ENTRANCE_EXIT_PLACED;
 				}
 			}
 			break;
@@ -1285,10 +1285,10 @@ static bool track_design_place_ride(rct_track_td6 *td6, sint16 x, sint16 y, sint
 */
 sint32 sub_6D01B3(rct_track_td6 *td6, uint8 bl, uint8 rideIndex, sint32 x, sint32 y, sint32 z)
 {
-	byte_F4414E = bl & 0x80;
+	byte_F4414E = (bl & PTD_OPERATION_DONT_PLACE_SCENERY) ? BYTE_F4414E_DONT_PLACE_SCENERY : 0;
 	_trackDesignPlaceOperation = bl & 0x7F;
 	if (gTrackDesignSceneryToggle) {
-		byte_F4414E |= 0x80;
+		byte_F4414E |= BYTE_F4414E_DONT_PLACE_SCENERY;
 	}
 	_currentRideIndex = rideIndex;
 
@@ -1378,15 +1378,15 @@ static bool sub_6D2189(rct_track_td6 *td6, money32 *cost, uint8 *rideId, uint8 *
 	_currentTrackPieceDirection = 0;
 	sint32 z = sub_6D01B3(td6, PTD_OPERATION_GET_PLACE_Z, 0, mapSize, mapSize, 16);
 
-	if (byte_F4414E & 4) {
-		*flags |= 2;
+	if (byte_F4414E & BYTE_F4414E_HAS_SCENERY) {
+		*flags |= TRACK_DESIGN_FLAG_HAS_SCENERY;
 	}
 
 	z += 16 - word_F44129;
 
 	sint32 operation = PTD_OPERATION_GET_COST;
 	if (byte_F4414E & BYTE_F4414E_SCENERY_UNAVAILABLE) {
-		operation |= 0x80;
+		operation |= PTD_OPERATION_DONT_PLACE_SCENERY;
 		*flags |= TRACK_DESIGN_FLAG_SCENERY_UNAVAILABLE;
 	}
 
@@ -1455,11 +1455,11 @@ static money32 place_track_design(sint16 x, sint16 y, sint16 z, uint8 flags, uin
 
 	money32 cost = 0;
 	if (!(flags & GAME_COMMAND_FLAG_APPLY)) {
-		byte_F44150 = 0;
+		_trackDesignDontPlaceScenery = false;
 		cost = sub_6D01B3(td6, PTD_OPERATION_1, rideIndex, x, y, z);
 		if (byte_F4414E & BYTE_F4414E_SCENERY_UNAVAILABLE) {
-			byte_F44150 |= 1 << 7;
-			cost = sub_6D01B3(td6, 0x80 | PTD_OPERATION_1, rideIndex, x, y, z);
+			_trackDesignDontPlaceScenery = true;
+			cost = sub_6D01B3(td6, PTD_OPERATION_DONT_PLACE_SCENERY | PTD_OPERATION_1, rideIndex, x, y, z);
 		}
 	} else {
 		uint8 operation;
@@ -1468,7 +1468,9 @@ static money32 place_track_design(sint16 x, sint16 y, sint16 z, uint8 flags, uin
 		} else {
 			operation = PTD_OPERATION_2;
 		}
-		operation |= byte_F44150;
+		
+		if (_trackDesignDontPlaceScenery) 
+			operation |= PTD_OPERATION_DONT_PLACE_SCENERY;
 		cost = sub_6D01B3(td6, operation, rideIndex, x, y, z);
 	}
 
