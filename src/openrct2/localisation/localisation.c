@@ -18,7 +18,7 @@
 
 #ifdef __WINDOWS__
 #include <windows.h>
-#elif __ANDROID__
+#elif defined(__ANDROID__)
 #include <jni.h>
 #else
 #include <iconv.h>
@@ -1345,7 +1345,7 @@ sint32 win1252_to_utf8(utf8string dst, const char *src, size_t srcLength, size_t
 	sint32 result = WideCharToMultiByte(CP_UTF8, 0, intermediateBuffer, -1, dst, (sint32)maxBufferLength, NULL, NULL);
 
 	free(heapBuffer);
-#elif __ANDROID__
+#elif defined(__ANDROID__)
     JNIEnv *env = SDL_AndroidGetJNIEnv();
 
     jclass *localisation = (*env)->FindClass(env, "org/openrct2/android/Localisation");
