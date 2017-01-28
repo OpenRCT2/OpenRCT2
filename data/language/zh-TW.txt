@@ -4310,7 +4310,17 @@ STR_5997    :增加/設定金錢數目
 STR_5998    :增加金錢數目
 STR_5999    :設定金錢數目
 STR_6000    :請輸入新數目
-
+STR_6001    :啟用燈光效果 (實驗性質)
+STR_6002    :{SMALLFONT}{BLACK}夜晚的時候, 路燈及遊樂設施將會有燈光.{NEWLINE}此功能需要先啟用硬體渲染.
+STR_6003    :切入檢視
+STR_6004    :切入檢視
+STR_6005    :啟用切入檢視
+STR_6006    :{SMALLFONT}{BLACK}切入檢視只顯示低於或等於切入高度的地圖元素
+STR_6007    :切入高度
+STR_6008    :{SMALLFONT}{BLACK}點撃來切換原生值或量度單位值
+STR_6009    :{SMALLFONT}{BLACK}選擇切入高度
+STR_6010    :{COMMA2DP32}米
+STR_6011    :{COMMA1DP16}公尺
 STR_6012    :{COMMA1DP16}
 
 #############

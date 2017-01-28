@@ -4300,7 +4300,17 @@ STR_5997    :Geld hinzufügen/festlegen
 STR_5998    :Geld hinzufügen
 STR_5999    :Geld festlegen
 STR_6000    :Neuen Wert eingeben:
-
+STR_6001    :Beleuchtungseffekte aktivieren (experimentell)
+STR_6002    :{SMALLFONT}{BLACK}Lampen und Bahnen werden nachts beleuchtet.{NEWLINE}Die Grafikschnittstelle muss hierfür auf "Anzeige durch Hardware" eingestellt sein.
+STR_6003    :Schnittansicht
+STR_6004    :Schnittansicht
+STR_6005    :Schnittansicht aktivieren
+STR_6006    :{SMALLFONT}{BLACK}Die Schnittansicht zeigt nur Kartenelemente auf oder unterhalb der Schnitthöhe.
+STR_6007    :Schnitthöhe:
+STR_6008    :{SMALLFONT}{BLACK}Zum Umschalten zwischen Rohwert<->Maßeinheit klicken.
+STR_6009    :{SMALLFONT}{BLACK}Schnitthöhe auswählen
+STR_6010    :{COMMA2DP32}m
+STR_6011    :{COMMA1DP16}ft
 STR_6012    :{COMMA1DP16}
 
 #############
