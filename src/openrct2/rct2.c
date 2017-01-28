@@ -194,7 +194,7 @@ sint32 rct2_init_directories()
 
 	if (str_is_null_or_empty(gCustomRCT2DataPath)) {
 		// check install directory
-		if (!platform_original_game_data_exists(gConfigGeneral.rct2_path)) {
+		if (gConfigGeneral.rct2_path == NULL || !platform_original_game_data_exists(gConfigGeneral.rct2_path)) {
 			log_verbose("install directory does not exist or invalid directory selected, %s", gConfigGeneral.rct2_path);
 			if (!config_find_or_browse_install_directory()) {
 				utf8 path[MAX_PATH];
