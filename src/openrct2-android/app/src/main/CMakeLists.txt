@@ -106,21 +106,20 @@ include_directories("${CMAKE_BINARY_DIR}/libs/include")
 include_directories("${CMAKE_BINARY_DIR}/libs/include/freetype2")
 include_directories("${CMAKE_BINARY_DIR}/libs/include/SDL2")
 
-# SDL-ttf
-include_directories(${lib_src_DIR}/sdl-ttf)
-SET(SDL2_ttf_LIB_SRCS "${lib_src_DIR}/sdl-ttf/SDL_ttf.c")
-add_library(SDL2_ttf SHARED ${SDL2_ttf_LIB_SRCS})
-target_link_libraries(SDL2_ttf SDL2 freetype)
-
-
 # now build app's shared lib
 include_directories(./ndk_helper
                     ${ANDROID_NDK}/sources/android/cpufeatures)
-add_definitions(-DDISABLE_HTTP -DDISABLE_TWITCH -DDISABLE_NETWORK -DDISABLE_OPENGL -DGL_GLEXT_PROTOTYPES -D__STDC_LIMIT_MACROS -DNO_RCT2)
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=gnu99 -Wno-unknown-pragmas -fno-omit-frame-pointer -fno-pie -fstrict-aliasing -Werror=strict-aliasing -fPIC")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wall -fexceptions -fno-rtti -Wno-unknown-pragmas -fno-omit-frame-pointer -fno-pie -fstrict-aliasing -Werror=strict-aliasing -fexceptions -fPIC")
+message("CMAKE_C_FLAGS: ${CMAKE_C_FLAGS}")
+message("CMAKE_CXX_FLAGS: ${CMAKE_CXX_FLAGS}")
+add_definitions(-DDISABLE_HTTP -DDISABLE_TWITCH -DDISABLE_NETWORK -DDISABLE_OPENGL -DGL_GLEXT_PROTOTYPES -D__STDC_LIMIT_MACROS -DNO_RCT2 -DNO_TTF)
+
+set(COMMON_COMPILE_OPTIONS "${COMMON_COMPILE_OPTIONS} -fstrict-aliasing -Werror -Wundef -Wmissing-declarations -Winit-self -Wall -Wno-unknown-pragmas -Wno-unused-function -Wno-missing-braces ")
+set(COMMON_COMPILE_OPTIONS "${COMMON_COMPILE_OPTIONS} -Wno-comment -Wshadow  -Wmissing-declarations -Wnonnull")
+set(COMMON_COMPILE_OPTIONS "${COMMON_COMPILE_OPTIONS} -fPIC")
+
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=gnu99 ${COMMON_COMPILE_OPTIONS} -Wimplicit")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 ${COMMON_COMPILE_OPTIONS} -Wnon-virtual-dtor")
 get_filename_component(ORCT2_ROOT "${CMAKE_SOURCE_DIR}/../../../../../" REALPATH)
-message(FATAL "Path: ${ORCT2_ROOT}")
 file(GLOB_RECURSE ORCT2_SOURCES "${ORCT2_ROOT}/src/openrct2/*.c" "${ORCT2_ROOT}/src/openrct2/*.cpp" "${ORCT2_ROOT}/src/openrct2/*.h" "${ORCT2_ROOT}/src/openrct2/*.hpp")
 
 add_library(openrct2 SHARED ${ORCT2_SOURCES})
@@ -128,5 +127,5 @@ add_library(openrct2 SHARED ${ORCT2_SOURCES})
 # add lib dependencies
 target_link_libraries(openrct2
                         android log dl GLESv1_CM GLESv2 z
-                        SDL2 SDL2_ttf png jansson speexdsp
+                        SDL2 png jansson speexdsp
                       )

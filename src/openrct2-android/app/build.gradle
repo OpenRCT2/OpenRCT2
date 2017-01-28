@@ -68,7 +68,6 @@ def downloadLibrarySources(name, url, md5, archiveRoot) {
 }
 
 task downloadLibraries {
-    downloadLibrarySources('sdl-ttf','http://www.libsdl.org/projects/SDL_ttf/release/SDL2_ttf-2.0.14.tar.gz' ,'34c5fdc8508c7e14356579477f9ca2b0d6c06ffc','SDL2_ttf-2.0.14')
 
     dependsOn {
         tasks.findAll { task -> task.name.startsWith('downloadLibraries:') }

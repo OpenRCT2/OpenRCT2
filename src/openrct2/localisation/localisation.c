@@ -1356,7 +1356,7 @@ sint32 win1252_to_utf8(utf8string dst, const char *src, size_t srcLength, size_t
 
     jstring * jstring1 = (*env)->CallStaticObjectMethod(env, localisation, win1252ToUtf8, bytes);
 
-	char* utf = (*env)->GetStringUTFChars(env, jstring1, NULL);
+	const char* utf = (*env)->GetStringUTFChars(env, jstring1, NULL);
 	strcpy(dst, utf);
 	(*env)->ReleaseStringUTFChars(env, jstring1, utf);
 	(*env)->DeleteLocalRef(env, localisation);
