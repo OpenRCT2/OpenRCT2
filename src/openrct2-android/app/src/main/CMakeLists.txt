@@ -120,7 +120,8 @@ add_definitions(-DDISABLE_HTTP -DDISABLE_TWITCH -DDISABLE_NETWORK -DDISABLE_OPEN
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=gnu99 -Wno-unknown-pragmas -fno-omit-frame-pointer -fno-pie -fstrict-aliasing -Werror=strict-aliasing -fPIC")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wall -fexceptions -fno-rtti -Wno-unknown-pragmas -fno-omit-frame-pointer -fno-pie -fstrict-aliasing -Werror=strict-aliasing -fexceptions -fPIC")
 get_filename_component(ORCT2_ROOT "${CMAKE_SOURCE_DIR}/../../../../../" REALPATH)
-file(GLOB_RECURSE ORCT2_SOURCES "${ORCT2_ROOT}/src/*.c" "${ORCT2_ROOT}/src/*.cpp" "${ORCT2_ROOT}/src/*.h" "${ORCT2_ROOT}/src/*.hpp")
+message(FATAL "Path: ${ORCT2_ROOT}")
+file(GLOB_RECURSE ORCT2_SOURCES "${ORCT2_ROOT}/src/openrct2/*.c" "${ORCT2_ROOT}/src/openrct2/*.cpp" "${ORCT2_ROOT}/src/openrct2/*.h" "${ORCT2_ROOT}/src/openrct2/*.hpp")
 
 add_library(openrct2 SHARED ${ORCT2_SOURCES})
 

@@ -95,9 +95,9 @@ matrix:
           android:
             components:
               - tools # to get the new `repository-11.xml`
-              - tools # to install latest Android SDK tools (currently at 25.2.2)
+              - tools # to install latest Android SDK tools (currently at 25.2.5)
               - platform-tools
-              - build-tools-25.0.0
+              - build-tools-25.0.2
               - android-25
               - extra-android-m2repository
           jdk: oraclejdk8
@@ -105,8 +105,8 @@ matrix:
             # Dependencies in https://dl.google.com/android/repository/repository2-1.xml
             # Install the NDK.
             - pushd ~
-            - wget http://dl.google.com/android/repository/android-ndk-r13-linux-x86_64.zip
-            - unzip -qo android-ndk-r13-linux-x86_64.zip
+            - wget http://dl.google.com/android/repository/android-ndk-r13b-linux-x86_64.zip
+            - unzip -qo android-ndk-r13b-linux-x86_64.zip
             - export ANDROID_NDK_HOME="$HOME/android-ndk-r13"
             - popd
 
@@ -118,7 +118,7 @@ matrix:
             - unzip -qo cmake-3.6.3155560-linux-x86_64.zip
             - popd
 
-            - 'cd distribution/android'
+            - 'cd src/openrct2-android'
           env:
             - TERM=dumb # Makes Gradle use 'boring' output
           script:
