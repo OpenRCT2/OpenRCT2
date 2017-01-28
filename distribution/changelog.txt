@@ -18,6 +18,7 @@
 - Fix: [#4968] Completing a scenario does not save the name that is entered.
 - Fix: [#4996] Objects unloaded after loading landscape.
 - Fix: [#5003] Able to remove entrance/exit of unedittable rides (such as in Volcania).
+- Fix: [#5096] Failure to open parks with out of bounds sprite coordinates.
 - Fix: [#5114] Some entertainer costumes never select-able.
 
 0.0.5 (2016-12-27)

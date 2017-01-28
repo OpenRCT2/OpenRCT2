@@ -14,7 +14,6 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../rct2/addresses.h"
 #include "../audio/audio.h"
 #include "../cheats.h"
 #include "../game.h"
@@ -22,6 +21,7 @@
 #include "../localisation/date.h"
 #include "../localisation/localisation.h"
 #include "../OpenRCT2.h"
+#include "../rct2/addresses.h"
 #include "../scenario/scenario.h"
 #include "fountain.h"
 #include "sprite.h"
@@ -36,10 +36,14 @@ uint16 *gSpriteListCount = RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LISTS_COUNT, uint16)
 static rct_sprite *_spriteList = RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite);
 #endif
 
+#define SPATIAL_INDEX_LOCATION_NULL 0x10000
+
 uint16 gSpriteSpatialIndex[0x10001];
 
 static rct_xyz16 _spritelocations1[MAX_SPRITES];
 static rct_xyz16 _spritelocations2[MAX_SPRITES];
+
+static size_t GetSpatialIndexOffset(sint32 x, sint32 y);
 
 rct_sprite *get_sprite(size_t sprite_idx)
 {
@@ -148,23 +152,32 @@ void reset_sprite_list()
  */
 void reset_sprite_spatial_index()
 {
-	memset(gSpriteSpatialIndex, -1, 0x10001 * sizeof(uint16));
+	memset(gSpriteSpatialIndex, -1, sizeof(gSpriteSpatialIndex));
 	for (size_t i = 0; i < MAX_SPRITES; i++) {
 		rct_sprite *spr = get_sprite(i);
 		if (spr->unknown.sprite_identifier != SPRITE_IDENTIFIER_NULL) {
-			uint32 index;
-			if (spr->unknown.x == SPRITE_LOCATION_NULL) {
-				index = 0x10000;
-			} else {
-				sint16 x = floor2(spr->unknown.x, 32);
-				uint8 tileY = spr->unknown.y >> 5;
-				index = (x << 3) | tileY;
-			}
+			size_t index = GetSpatialIndexOffset(spr->unknown.x, spr->unknown.y);
 			uint16 nextSpriteId = gSpriteSpatialIndex[index];
 			gSpriteSpatialIndex[index] = spr->unknown.sprite_index;
 			spr->unknown.next_in_quadrant = nextSpriteId;
 		}
 	}
+}
+
+static size_t GetSpatialIndexOffset(sint32 x, sint32 y)
+{
+	size_t index = SPATIAL_INDEX_LOCATION_NULL;
+	if (x != SPRITE_LOCATION_NULL) {
+		x = clamp(0, x, 0xFFFF);
+		y = clamp(0, y, 0xFFFF);
+
+		sint16 flooredX = floor2(x, 32);
+		uint8 tileY = y >> 5;
+		index = (flooredX << 3) | tileY;
+	}
+
+	openrct2_assert(index < sizeof(gSpriteSpatialIndex), "GetSpatialIndexOffset out of range");
+	return index;
 }
 
 #ifndef DISABLE_NETWORK
@@ -289,8 +302,8 @@ rct_sprite *create_sprite(uint8 bl)
 	sprite->flags = 0;
 	sprite->sprite_left = SPRITE_LOCATION_NULL;
 
-	sprite->next_in_quadrant = gSpriteSpatialIndex[0x10000];
-	gSpriteSpatialIndex[0x10000] = sprite->sprite_index;
+	sprite->next_in_quadrant = gSpriteSpatialIndex[SPATIAL_INDEX_LOCATION_NULL];
+	gSpriteSpatialIndex[SPATIAL_INDEX_LOCATION_NULL] = sprite->sprite_index;
 
 	return (rct_sprite*)sprite;
 }
@@ -495,46 +508,36 @@ void sprite_misc_update_all()
  * @param z (dx)
  * @param sprite (esi)
  */
-void sprite_move(sint16 x, sint16 y, sint16 z, rct_sprite* sprite){
-	if (x < 0 || y < 0 || x > 0x1FFF || y > 0x1FFF)
+void sprite_move(sint16 x, sint16 y, sint16 z, rct_sprite *sprite)
+{
+	if (x < 0 || y < 0 || x > 0x1FFF || y > 0x1FFF) {
 		x = SPRITE_LOCATION_NULL;
-
-	sint32 new_position = x;
-	if (x == SPRITE_LOCATION_NULL)new_position = 0x10000;
-	else{
-		new_position &= 0x1FE0;
-		new_position = (y >> 5) | (new_position << 3);
 	}
 
-	sint32 current_position = sprite->unknown.x;
-	if (sprite->unknown.x == SPRITE_LOCATION_NULL)current_position = 0x10000;
-	else{
-		current_position &= 0x1FE0;
-		current_position = (sprite->unknown.y >> 5) | (current_position << 3);
-	}
-
-	if (new_position != current_position){
-		uint16* sprite_idx = &gSpriteSpatialIndex[current_position];
-		rct_sprite* sprite2 = get_sprite(*sprite_idx);
-		while (sprite != sprite2){
-			sprite_idx = &sprite2->unknown.next_in_quadrant;
-			sprite2 = get_sprite(*sprite_idx);
+	size_t newIndex = GetSpatialIndexOffset(x, y);
+	size_t currentIndex = GetSpatialIndexOffset(sprite->unknown.x, sprite->unknown.y);
+	if (newIndex != currentIndex) {
+		uint16 *spriteIndex = &gSpriteSpatialIndex[currentIndex];
+		rct_sprite *sprite2 = get_sprite(*spriteIndex);
+		while (sprite != sprite2) {
+			spriteIndex = &sprite2->unknown.next_in_quadrant;
+			sprite2 = get_sprite(*spriteIndex);
 		}
-		*sprite_idx = sprite->unknown.next_in_quadrant;
+		*spriteIndex = sprite->unknown.next_in_quadrant;
 
-		sint32 temp_sprite_idx = gSpriteSpatialIndex[new_position];
-		gSpriteSpatialIndex[new_position] = sprite->unknown.sprite_index;
-		sprite->unknown.next_in_quadrant = temp_sprite_idx;
+		sint32 tempSpriteIndex = gSpriteSpatialIndex[newIndex];
+		gSpriteSpatialIndex[newIndex] = sprite->unknown.sprite_index;
+		sprite->unknown.next_in_quadrant = tempSpriteIndex;
 	}
 
-	if (x == SPRITE_LOCATION_NULL){
+	if (x == SPRITE_LOCATION_NULL) {
 		sprite->unknown.sprite_left = SPRITE_LOCATION_NULL;
 		sprite->unknown.x = x;
 		sprite->unknown.y = y;
 		sprite->unknown.z = z;
-		return;
+	} else {
+		sprite_set_coordinates(x, y, z, sprite);
 	}
-	sprite_set_coordinates(x, y, z, sprite);
 }
 
 void sprite_set_coordinates(sint16 x, sint16 y, sint16 z, rct_sprite *sprite){
@@ -577,13 +580,7 @@ void sprite_remove(rct_sprite *sprite)
 	user_string_free(sprite->unknown.name_string_idx);
 	sprite->unknown.sprite_identifier = SPRITE_IDENTIFIER_NULL;
 
-	uint32 quadrantIndex = sprite->unknown.x;
-	if (sprite->unknown.x == SPRITE_LOCATION_NULL) {
-		quadrantIndex = 0x10000;
-	} else {
-		quadrantIndex = (floor2(sprite->unknown.x, 32) << 3) | (sprite->unknown.y >> 5);
-	}
-
+	size_t quadrantIndex = GetSpatialIndexOffset(sprite->unknown.x, sprite->unknown.y);
 	uint16 *spriteIndex = &gSpriteSpatialIndex[quadrantIndex];
 	rct_sprite *quadrantSprite;
 	while ((quadrantSprite = get_sprite(*spriteIndex)) != sprite) {
