@@ -4368,6 +4368,8 @@ STR_6056    :{SMALLFONT}{BLACK}Mute
 STR_6057    :{SMALLFONT}{BLACK}Show a separate button for the Mute Option in the toolbar
 STR_6058    :Mute
 STR_6059    :{RIGHTGUILLEMET}
+STR_6060    :Show guest purchases as animation
+STR_6061    :{SMALLFONT}{BLACK}Show animated money effect{NEWLINE}when guests make purchases.
 
 #############
 # Scenarios #

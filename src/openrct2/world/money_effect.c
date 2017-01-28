@@ -30,7 +30,7 @@ static const rct_xy16 _moneyEffectMoveOffset[] = {
  *
  *  rct2: 0x0067351F
  */
-static void money_effect_create_at(money32 value, sint32 x, sint32 y, sint32 z)
+void money_effect_create_at(money32 value, sint32 x, sint32 y, sint32 z, bool vertical)
 {
 	rct_money_effect *moneyEffect;
 	rct_string_id stringId;
@@ -41,6 +41,7 @@ static void money_effect_create_at(money32 value, sint32 x, sint32 y, sint32 z)
 		return;
 
 	moneyEffect->value = value;
+	moneyEffect->vertical = vertical;
 	moneyEffect->var_14 = 64;
 	moneyEffect->var_09 = 20;
 	moneyEffect->var_15 = 30;
@@ -92,7 +93,7 @@ void money_effect_create(money32 value)
 		mapPosition.z = map_element_height(mapPosition.x, mapPosition.y) & 0xFFFF;
 	}
 	mapPosition.z += 10;
-	money_effect_create_at(-value, mapPosition.x, mapPosition.y, mapPosition.z);
+	money_effect_create_at(-value, mapPosition.x, mapPosition.y, mapPosition.z, false);
 }
 
 /**
@@ -110,10 +111,17 @@ void money_effect_update(rct_money_effect *moneyEffect)
 	if (moneyEffect->move_delay < 2)
 		return;
 
-	moneyEffect->move_delay = 0;
-	sint32 x = moneyEffect->x + _moneyEffectMoveOffset[get_current_rotation()].x;
-	sint32 y = moneyEffect->y + _moneyEffectMoveOffset[get_current_rotation()].y;
+	sint32 x = moneyEffect->x;
+	sint32 y = moneyEffect->y;
 	sint32 z = moneyEffect->z;
+	moneyEffect->move_delay = 0;
+
+	if (moneyEffect->vertical) {
+		z += 1;
+	}
+	y += _moneyEffectMoveOffset[get_current_rotation()].y;
+	x += _moneyEffectMoveOffset[get_current_rotation()].x;
+
 	sprite_move(x, y, z, (rct_sprite*)moneyEffect);
 
 	moneyEffect->num_movements++;

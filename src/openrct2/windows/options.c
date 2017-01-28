@@ -104,6 +104,7 @@ enum WINDOW_OPTIONS_WIDGET_IDX {
 	WIDX_UPPER_CASE_BANNERS_CHECKBOX,
 	WIDX_RENDER_WEATHER_EFFECTS_CHECKBOX,
 	WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX,
+	WIDX_SHOW_GUEST_PURCHASES_CHECKBOX,
 
 	// Culture / Units
 	WIDX_LANGUAGE = WIDX_PAGE_START,
@@ -243,7 +244,7 @@ static rct_widget window_options_display_widgets[] = {
 static rct_widget window_options_rendering_widgets[] = {
 	MAIN_OPTIONS_WIDGETS,
 #define FRAME_RENDERING_START 53
-	{ WWT_GROUPBOX,			1,	5,      304,	FRAME_RENDERING_START + 0,		FRAME_RENDERING_START + 136,	STR_RENDERING_GROUP,			STR_NONE },								// Rendering group
+	{ WWT_GROUPBOX,			1,	5,      304,	FRAME_RENDERING_START + 0,		FRAME_RENDERING_START + 151,	STR_RENDERING_GROUP,			STR_NONE },								// Rendering group
 	{ WWT_CHECKBOX,			1,	10,		290,	FRAME_RENDERING_START + 15,		FRAME_RENDERING_START + 26,		STR_TILE_SMOOTHING, 			STR_TILE_SMOOTHING_TIP },				// Landscape smoothing
 	{ WWT_CHECKBOX,			1,	10,		290,	FRAME_RENDERING_START + 30,		FRAME_RENDERING_START + 41,		STR_GRIDLINES,					STR_GRIDLINES_TIP },					// Gridlines
 	{ WWT_DROPDOWN,			1,	155,	299,	FRAME_RENDERING_START + 45,		FRAME_RENDERING_START + 55,		STR_NONE,						STR_NONE },								// Construction marker
@@ -253,6 +254,7 @@ static rct_widget window_options_rendering_widgets[] = {
 	{ WWT_CHECKBOX,			1,	10,		290,	FRAME_RENDERING_START + 90,		FRAME_RENDERING_START + 101,	STR_UPPERCASE_BANNERS,			STR_UPPERCASE_BANNERS_TIP },			// Uppercase banners
 	{ WWT_CHECKBOX,			1,	10,		290,	FRAME_RENDERING_START + 105,	FRAME_RENDERING_START + 116,	STR_RENDER_WEATHER_EFFECTS,		STR_RENDER_WEATHER_EFFECTS_TIP },		// Render weather effects
 	{ WWT_CHECKBOX,			1,	31,		290,	FRAME_RENDERING_START + 120,	FRAME_RENDERING_START + 131,	STR_DISABLE_LIGHTNING_EFFECT,	STR_DISABLE_LIGHTNING_EFFECT_TIP },		// Disable lightning effect
+	{ WWT_CHECKBOX,			1,	10,		290,	FRAME_RENDERING_START + 135,	FRAME_RENDERING_START + 146,	STR_SHOW_GUEST_PURCHASES, STR_SHOW_GUEST_PURCHASES_TIP },
 #undef FRAME_RENDERING_START
 	{ WIDGETS_END },
 };
@@ -489,7 +491,8 @@ static uint64 window_options_page_enabled_widgets[] = {
 	(1 << WIDX_ENABLE_LIGHT_FX_CHECKBOX) |
 	(1 << WIDX_UPPER_CASE_BANNERS_CHECKBOX) |
 	(1 << WIDX_RENDER_WEATHER_EFFECTS_CHECKBOX) |
-	(1 << WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX),
+	(1 << WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX) |
+	(1 << WIDX_SHOW_GUEST_PURCHASES_CHECKBOX),
 
 	MAIN_OPTIONS_ENABLED_WIDGETS |
 	(1 << WIDX_LANGUAGE) |
@@ -697,6 +700,11 @@ static void window_options_mouseup(rct_window *w, rct_widgetindex widgetIndex)
 			config_save_default();
 			window_invalidate(w);
 			gfx_invalidate_screen();
+			break;
+		case WIDX_SHOW_GUEST_PURCHASES_CHECKBOX:
+			gConfigGeneral.show_guest_purchases ^= 1;
+			config_save_default();
+			window_invalidate(w);
 			break;
 		}
 		break;
@@ -1578,6 +1586,7 @@ static void window_options_invalidate(rct_window *w)
 			w->enabled_widgets |= (1 << WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX);
 			w->disabled_widgets &= ~(1 << WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX);
 		}
+		widget_set_checkbox_value(w, WIDX_SHOW_GUEST_PURCHASES_CHECKBOX, gConfigGeneral.show_guest_purchases);
 		// construction marker: white/translucent
 		static const rct_string_id construction_marker_colours[] = {
 			STR_CONSTRUCTION_MARKER_COLOUR_WHITE,
@@ -1594,6 +1603,7 @@ static void window_options_invalidate(rct_window *w)
 		window_options_rendering_widgets[WIDX_UPPER_CASE_BANNERS_CHECKBOX].type = WWT_CHECKBOX;
 		window_options_rendering_widgets[WIDX_RENDER_WEATHER_EFFECTS_CHECKBOX].type = WWT_CHECKBOX;
 		window_options_rendering_widgets[WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX].type = WWT_CHECKBOX;
+		window_options_rendering_widgets[WIDX_SHOW_GUEST_PURCHASES_CHECKBOX].type = WWT_CHECKBOX;
 		break;
 
 	case WINDOW_OPTIONS_PAGE_CULTURE:
