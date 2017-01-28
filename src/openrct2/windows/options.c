@@ -431,6 +431,12 @@ static rct_window_event_list window_options_events = {
 
 #pragma region Enabled Widgets
 
+#ifdef DISABLE_TWITCH
+	#define TWITCH_TAB_ENABLED 0
+#else
+	#define TWITCH_TAB_ENABLED (1 << WIDX_TAB_7)
+#endif
+
 #define MAIN_OPTIONS_ENABLED_WIDGETS \
 	(1 << WIDX_CLOSE) | \
 	(1 << WIDX_TAB_1) | \
@@ -439,7 +445,7 @@ static rct_window_event_list window_options_events = {
 	(1 << WIDX_TAB_4) | \
 	(1 << WIDX_TAB_5) | \
 	(1 << WIDX_TAB_6) | \
-	(1 << WIDX_TAB_7)
+	TWITCH_TAB_ENABLED
 
 static uint32 window_options_page_enabled_widgets[] = {
 	MAIN_OPTIONS_ENABLED_WIDGETS |
@@ -1944,6 +1950,7 @@ static void window_options_set_page(rct_window *w, sint32 page)
 	w->page = page;
 	w->frame_no = 0;
 	w->enabled_widgets = window_options_page_enabled_widgets[page];
+	w->disabled_widgets = ~window_options_page_enabled_widgets[page];
 	w->pressed_widgets = 0;
 	w->widgets = window_options_page_widgets[page];
 
