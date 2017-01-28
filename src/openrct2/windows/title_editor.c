@@ -313,7 +313,7 @@ static void window_title_editor_mouseup(rct_window *w, sint32 widgetIndex)
 		}
 		break;
 	case WIDX_TITLE_EDITOR_DUPLICATE_BUTTON:
-		if (!commandEditorOpen) {
+		if (!commandEditorOpen && _editingTitleSequence != NULL) {
 			window_text_input_open(w, widgetIndex, STR_TITLE_EDITOR_ACTION_DUPLICATE, STR_TITLE_EDITOR_ENTER_NAME_FOR_SEQUENCE, STR_STRING, (uintptr_t)_editingTitleSequence->Name, 64);
 		}
 		break;
@@ -324,7 +324,7 @@ static void window_title_editor_mouseup(rct_window *w, sint32 widgetIndex)
 		}
 		break;
 	case WIDX_TITLE_EDITOR_RENAME_SAVE_BUTTON:
-		if (window_title_editor_check_can_edit()) {
+		if (window_title_editor_check_can_edit() && _editingTitleSequence != NULL) {
 			window_text_input_open(w, widgetIndex, STR_TRACK_MANAGE_RENAME, STR_TITLE_EDITOR_ENTER_NAME_FOR_SEQUENCE, STR_STRING, (uintptr_t)_editingTitleSequence->Name, 64);
 		}
 		break;
@@ -802,6 +802,9 @@ static void window_title_editor_scrollpaint_saves(rct_window *w, rct_drawpixelin
 
 	sint32 x = 0;
 	sint32 y = 0;
+	if (_editingTitleSequence == NULL) {
+		return;
+	}
 	for (sint32 i = 0; i < (sint32)_editingTitleSequence->NumSaves; i++, y += ROW_HEIGHT) {
 		bool selected = false;
 		bool hover = false;

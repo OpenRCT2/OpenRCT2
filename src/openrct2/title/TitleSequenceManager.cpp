@@ -82,6 +82,10 @@ namespace TitleSequenceManager
     void DeleteItem(size_t i)
     {
         auto item = GetItem(i);
+        if (item == nullptr)
+        {
+            return;
+        }
         const utf8 * path = item->Path.c_str();
         if (item->IsZip)
         {
@@ -295,6 +299,10 @@ extern "C"
     const utf8 * title_sequence_manager_get_name(size_t index)
     {
         auto item = TitleSequenceManager::GetItem(index);
+        if (item == nullptr)
+        {
+            return nullptr;
+        }
         const utf8 * name = item->Name.c_str();
         return name;
     }
