@@ -207,7 +207,7 @@ static void window_track_list_select(rct_window *w, sint32 index)
 	if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER) {
 		window_track_manage_open(tdRef);
 	} else {
-		if (_loadedTrackDesignIndex != TRACK_DESIGN_INDEX_UNLOADED && (_loadedTrackDesign->track_flags & 4)) {
+		if (_loadedTrackDesignIndex != TRACK_DESIGN_INDEX_UNLOADED && (_loadedTrackDesign->track_flags & TRACK_DESIGN_FLAG_VEHICLE_UNAVAILABLE)) {
 			window_error_open(STR_THIS_DESIGN_WILL_BE_BUILT_WITH_AN_ALTERNATIVE_VEHICLE_TYPE, STR_NONE);
 		}
 
