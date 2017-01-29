@@ -264,7 +264,7 @@ void scenario_begin()
 		gParkEntranceFee = 0;
 	}
 
-	gParkFlags |= PARK_FLAGS_18;
+	gParkFlags |= PARK_FLAGS_SPRITES_INITIALISED;
 
 	load_palette();
 	gfx_invalidate_screen();

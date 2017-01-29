@@ -333,7 +333,7 @@ static void editor_clear_map_for_editing(bool fromSave)
 		else
 			gParkFlags &= ~PARK_FLAGS_PARK_FREE_ENTRY;
 
-		gParkFlags &= ~PARK_FLAGS_18;
+		gParkFlags &= ~PARK_FLAGS_SPRITES_INITIALISED;
 
 		gGuestInitialCash = clamp(MONEY(10,00), gGuestInitialCash, MONEY(100,00));
 

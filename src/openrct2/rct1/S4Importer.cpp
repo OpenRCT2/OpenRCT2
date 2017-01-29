@@ -1877,7 +1877,7 @@ private:
         {
             gCheatsUnlockAllPrices = true;
         }
-        // RCT2 uses two flags for no money (for cheat detection). RCT1 used only one.
+        // RCT2 uses two flags for no money (due to the scenario editor). RCT1 used only one.
         // Copy its value to make no money scenarios such as Arid Heights work properly.
         if (_s4.park_flags & RCT1_PARK_FLAGS_NO_MONEY)
         {

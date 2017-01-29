@@ -785,7 +785,7 @@ static void window_loadsave_select(rct_window *w, const char *path)
 	{
 		save_path(&gConfigGeneral.last_save_scenario_directory, path);
 		sint32 parkFlagsBackup = gParkFlags;
-		gParkFlags &= ~PARK_FLAGS_18;
+		gParkFlags &= ~PARK_FLAGS_SPRITES_INITIALISED;
 		gS6Info.editor_step = 255;
 		rw = SDL_RWFromFile(path, "wb+");
 		sint32 success = 0;
