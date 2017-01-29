@@ -1,4 +1,4 @@
-0.0.6 (in development)
+0.0.6 (2017-01-29)
 ------------------------------------------------------------------------
 - Feature: [#3355] Allow loading of parks from URLs.
 - Feature: [#4673] Add paint Z clipping.
