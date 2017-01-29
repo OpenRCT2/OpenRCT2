@@ -379,7 +379,7 @@ static void window_close_surplus(sint32 cap, sint8 avoid_classification)
 void window_set_window_limit(sint32 value)
 {
 	sint32 prev = gConfigGeneral.window_limit;
-	sint32 val = clamp(value, WINDOW_LIMIT_MIN, WINDOW_LIMIT_MAX);
+	sint32 val = clamp(WINDOW_LIMIT_MIN, value, WINDOW_LIMIT_MAX);
 	gConfigGeneral.window_limit = val;
 	config_save_default();
 	// Checks if value decreases and then closes surplus
