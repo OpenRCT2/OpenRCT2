@@ -639,7 +639,7 @@ static sint32 track_design_place_scenery(rct_td6_scenery_element *scenery_start,
 						if (path == (rct_footpath_entry*)-1) {
 							continue;
 						}
-						if (path->flags & (1 << 2)) {
+						if (path->flags & FOOTPATH_ENTRY_FLAG_SHOW_ONLY_IN_SCENARIO_EDITOR) {
 							continue;
 						}
 					}

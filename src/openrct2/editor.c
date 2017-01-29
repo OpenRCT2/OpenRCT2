@@ -291,7 +291,7 @@ static void editor_clear_map_for_editing(bool fromSave)
 	//
 	for (sint32 i = 0; i < MAX_BANNERS; i++) {
 		if (gBanners[i].type == 255) {
-			gBanners[i].flags &= ~BANNER_FLAG_2;
+			gBanners[i].flags &= ~BANNER_FLAG_LINKED_TO_RIDE;
 		}
 	}
 

@@ -1275,7 +1275,7 @@ bool path_b_supports_paint_setup(sint32 segment, sint32 special, sint32 height, 
 
 	if ((gSupportSegments[segment].slope & 0x20)
 		|| (height - gSupportSegments[segment].height < 6)
-		|| !(pathEntry->flags & FOOTPATH_ENTRY_FLAG_1)) {
+		|| !(pathEntry->flags & FOOTPATH_ENTRY_FLAG_HAS_SUPPORT_BASE_SPRITE)) {
 		baseHeight = gSupportSegments[segment].height;
 	} else {
 		uint8 imageOffset = metal_supports_slope_image_map[gSupportSegments[segment].slope & 0x1F];

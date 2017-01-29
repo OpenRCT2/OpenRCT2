@@ -32,7 +32,7 @@ typedef struct rct_footpath_entry {
 	rct_string_id string_idx;	// 0x00
 	uint32 image;				// 0x02
 	uint32 bridge_image;		// 0x06
-	uint8 var_0A;
+	uint8 support_type;			// 0x0A
 	uint8 flags;				// 0x0B
 	uint8 scrolling_mode;		// 0x0C
 } rct_footpath_entry;
@@ -40,7 +40,14 @@ assert_struct_size(rct_footpath_entry, 13);
 #pragma pack(pop)
 
 enum {
-	FOOTPATH_ENTRY_FLAG_1 = (1 << 0),
+	FOOTPATH_ENTRY_SUPPORT_TYPE_POLE = 0,
+	FOOTPATH_ENTRY_SUPPORT_TYPE_BOX = 1,
+	FOOTPATH_ENTRY_SUPPORT_TYPE_COUNT
+};
+
+enum {
+	FOOTPATH_ENTRY_FLAG_HAS_SUPPORT_BASE_SPRITE = (1 << 0),
+	FOOTPATH_ENTRY_FLAG_HAS_PATH_BASE_SPRITE = (1 << 1), //When elevated
 	FOOTPATH_ENTRY_FLAG_SHOW_ONLY_IN_SCENARIO_EDITOR = (1 << 2),
 };
 

@@ -6368,7 +6368,7 @@ void game_command_demolish_ride(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *e
 
 			for(sint32 i = 0; i < MAX_BANNERS; i++){
 				rct_banner *banner = &gBanners[i];
-				if(banner->type != BANNER_NULL && banner->flags & BANNER_FLAG_2 && banner->colour == ride_id){
+				if(banner->type != BANNER_NULL && banner->flags & BANNER_FLAG_LINKED_TO_RIDE && banner->colour == ride_id){
 					banner->flags &= 0xFB;
 					banner->string_idx = STR_DEFAULT_SIGN;
 				}

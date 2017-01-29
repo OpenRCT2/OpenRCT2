@@ -27,7 +27,7 @@ extern "C"
 void FootpathObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
 {
     stream->Seek(10, STREAM_SEEK_CURRENT);
-    _legacyType.var_0A = stream->ReadValue<uint8>();
+    _legacyType.support_type = stream->ReadValue<uint8>();
     _legacyType.flags = stream->ReadValue<uint8>();
     _legacyType.scrolling_mode = stream->ReadValue<uint8>();
     stream->Seek(1, STREAM_SEEK_CURRENT);
@@ -36,9 +36,9 @@ void FootpathObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
     GetImageTable()->Read(context, stream);
 
     // Validate properties
-    if (_legacyType.var_0A > 1)
+    if (_legacyType.support_type >= FOOTPATH_ENTRY_SUPPORT_TYPE_COUNT)
     {
-        context->LogError(OBJECT_ERROR_INVALID_PROPERTY, "VAR_0A can not be greater than 1.");
+        context->LogError(OBJECT_ERROR_INVALID_PROPERTY, "SUPPORT_TYPE not supported.");
     }
 }
 
