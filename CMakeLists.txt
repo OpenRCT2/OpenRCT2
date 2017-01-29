@@ -58,7 +58,10 @@ execute_process(
     OUTPUT_STRIP_TRAILING_WHITESPACE
     ERROR_QUIET
 )
-add_definitions(-DOPENRCT2_COMMIT_SHA1_SHORT="${OPENRCT2_COMMIT_SHA1_SHORT}")
+# Tagged builds are not meant to display commit info
+if (NOT OPENRCT2_COMMIT_SHA1_SHORT STREQUAL "HEAD")
+    add_definitions(-DOPENRCT2_COMMIT_SHA1_SHORT="${OPENRCT2_COMMIT_SHA1_SHORT}")
+endif()
 
 # Convenience functions to set compiler flags only if available
 include(CheckCCompilerFlag)
