@@ -521,7 +521,7 @@ bool editor_check_park()
 		}
 	}
 
-	if (gPeepSpawns[0].x == UINT16_MAX && gPeepSpawns[1].x == UINT16_MAX) {
+	if (gPeepSpawns[0].x == PEEP_SPAWN_UNDEFINED && gPeepSpawns[1].x == PEEP_SPAWN_UNDEFINED) {
 		gGameCommandErrorText = STR_PEEP_SPAWNS_NOT_SET;
 		return false;
 	}

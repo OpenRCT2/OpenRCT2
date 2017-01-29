@@ -121,8 +121,8 @@ void park_init()
 	}
 
 	gParkEntranceFee = MONEY(10, 00);
-	gPeepSpawns[0].x = UINT16_MAX;
-	gPeepSpawns[1].x = UINT16_MAX;
+	gPeepSpawns[0].x = PEEP_SPAWN_UNDEFINED;
+	gPeepSpawns[1].x = PEEP_SPAWN_UNDEFINED;
 	gResearchPriorities =
 		(1 << RESEARCH_CATEGORY_TRANSPORT) |
 		(1 << RESEARCH_CATEGORY_GENTLE) |
@@ -364,7 +364,7 @@ void reset_park_entrances()
 		gParkEntranceX[i] = MAP_LOCATION_NULL;
 	}
 	for (sint32 i = 0; i < MAX_PEEP_SPAWNS; i++) {
-		gPeepSpawns[i].x = UINT16_MAX;
+		gPeepSpawns[i].x = PEEP_SPAWN_UNDEFINED;
 	}
 }
 
@@ -480,7 +480,7 @@ static sint32 park_calculate_guest_generation_probability()
 static void get_random_peep_spawn(rct2_peep_spawn *spawn)
 {
 	*spawn = gPeepSpawns[0];
-	if (gPeepSpawns[1].x != UINT16_MAX) {
+	if (gPeepSpawns[1].x != PEEP_SPAWN_UNDEFINED) {
 		if (scenario_rand() & 0x80000) {
 			*spawn = gPeepSpawns[1];
 		}
@@ -1053,7 +1053,7 @@ static money32 map_buy_land_rights_for_tile(sint32 x, sint32 y, sint32 setting, 
 			for (uint8 i = 0; i < MAX_PEEP_SPAWNS; ++i) {
 				if (x == (peepSpawns[i].x & 0xFFE0)) {
 					if (y == (peepSpawns[i].y & 0xFFE0)) {
-						peepSpawns[i].x = UINT16_MAX;
+						peepSpawns[i].x = PEEP_SPAWN_UNDEFINED;
 					}
 				}
 			}

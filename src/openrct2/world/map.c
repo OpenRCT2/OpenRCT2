@@ -4780,7 +4780,7 @@ static void clear_elements_at(sint32 x, sint32 y)
 	for (sint32 i = 0; i < MAX_PEEP_SPAWNS; i++) {
 		rct2_peep_spawn *peepSpawn = &gPeepSpawns[i];
 		if (floor2(peepSpawn->x, 32) == x && floor2(peepSpawn->y, 32) == y) {
-			peepSpawn->x = UINT16_MAX;
+			peepSpawn->x = PEEP_SPAWN_UNDEFINED;
 		}
 	}
 
