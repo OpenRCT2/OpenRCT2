@@ -23,6 +23,8 @@
 #define DECRYPT_MONEY(money) ((money32)rol32((money) ^ 0xF4EC9621, 13))
 #define ENCRYPT_MONEY(money) ((money32)(ror32((money), 13) ^ 0xF4EC9621))
 
+#define MAX_PARK_ENTRANCES 4
+
 enum {
 	PARK_FLAGS_PARK_OPEN = (1 << 0),
 	PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT = (1 << 1),
@@ -65,10 +67,10 @@ extern uint8 gGuestsInParkHistory[32];
 extern sint32 _guestGenerationProbability;
 extern sint32 _suggestedGuestMaximum;
 
-extern sint16 gParkEntranceX[4];
-extern sint16 gParkEntranceY[4];
-extern sint16 gParkEntranceZ[4];
-extern uint8 gParkEntranceDirection[4];
+extern sint16 gParkEntranceX[MAX_PARK_ENTRANCES];
+extern sint16 gParkEntranceY[MAX_PARK_ENTRANCES];
+extern sint16 gParkEntranceZ[MAX_PARK_ENTRANCES];
+extern uint8 gParkEntranceDirection[MAX_PARK_ENTRANCES];
 
 extern bool gParkEntranceGhostExists;
 extern rct_xyz16 gParkEntranceGhostPosition;

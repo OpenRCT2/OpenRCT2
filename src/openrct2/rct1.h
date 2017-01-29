@@ -29,7 +29,9 @@
 
 #define RCT1_MAX_MAP_ELEMENTS       0xC000
 #define RCT1_MAX_SPRITES            5000
-#define RCT1_MAX_VEHICLES_PER_RIDE  12
+#define RCT1_MAX_TRAINS_PER_RIDE    12
+#define RCT1_MAX_MAP_SIZE           128
+#define RCT1_MAX_RIDES_IN_PARK      128
 
 #pragma pack(push, 1)
 typedef struct rct1_entrance {
@@ -53,7 +55,7 @@ typedef struct rct1_ride {
 	struct {
 		colour_t body;
 		colour_t trim;
-	} vehicle_colours[RCT1_MAX_VEHICLES_PER_RIDE];
+	} vehicle_colours[RCT1_MAX_TRAINS_PER_RIDE];
 	colour_t track_primary_colour;
 	colour_t track_secondary_colour;
 	colour_t track_support_colour;
@@ -62,16 +64,16 @@ typedef struct rct1_ride {
 	uint16 name_argument_ride;
 	uint16 name_argument_number;
 	uint16 overall_view;
-	uint16 station_starts[4];
-	uint8 station_height[4];
-	uint8 station_length[4];
-	uint8 station_light[4];
-	uint8 station_depart[4];
-	uint16 entrance[4];
-	uint16 exit[4];
-	uint16 last_peep_in_queue[4];
-	uint8 num_peeps_in_queue[4];
-	uint16 vehicles[RCT1_MAX_VEHICLES_PER_RIDE];
+	uint16 station_starts[RCT12_MAX_STATIONS_PER_RIDE];
+	uint8 station_height[RCT12_MAX_STATIONS_PER_RIDE];
+	uint8 station_length[RCT12_MAX_STATIONS_PER_RIDE];
+	uint8 station_light[RCT12_MAX_STATIONS_PER_RIDE];
+	uint8 station_depart[RCT12_MAX_STATIONS_PER_RIDE];
+	uint16 entrance[RCT12_MAX_STATIONS_PER_RIDE];
+	uint16 exit[RCT12_MAX_STATIONS_PER_RIDE];
+	uint16 last_peep_in_queue[RCT12_MAX_STATIONS_PER_RIDE];
+	uint8 num_peeps_in_queue[RCT12_MAX_STATIONS_PER_RIDE];
+	uint16 vehicles[RCT1_MAX_TRAINS_PER_RIDE];
 	uint8 depart_flags;
 	uint8 num_stations;
 	uint8 num_trains;
@@ -93,8 +95,8 @@ typedef struct rct1_ride {
 	uint8 current_test_segment;		// 0x90
 	uint8 average_speed_test_timeout; // 0x91
 	uint8 pad_0E2[0x2]; // 0x92
-	sint32 length[4];
-	uint16 time[4];
+	sint32 length[RCT12_MAX_STATIONS_PER_RIDE];
+	uint16 time[RCT12_MAX_STATIONS_PER_RIDE];
 	fixed16_2dp max_positive_vertical_g;
 	fixed16_2dp max_negative_vertical_g;
 	fixed16_2dp max_lateral_g;
@@ -189,7 +191,7 @@ typedef struct rct1_ride {
 	uint8 unk_14C[20];
 	money32 income_per_hour;
 	money32 profit;
-	uint8 queue_time[4];
+	uint8 queue_time[RCT12_MAX_STATIONS_PER_RIDE];
 	colour_t track_colour_main[4];
 	colour_t track_colour_additional[4];
 	colour_t track_colour_supports[4];
@@ -595,7 +597,7 @@ typedef struct rct1_s4 {
 	money16 park_entrance_fee;
 	rct1_entrance park_entrance;
 	uint8 unk_198849;
-	rct2_peep_spawn peep_spawn[2];
+	rct2_peep_spawn peep_spawn[RCT12_MAX_PEEP_SPAWNS];
 	uint8 unk_198856;
 	uint8 research_level;
 	uint32 unk_198858;
@@ -745,7 +747,7 @@ typedef struct rct_track_td4 {
 	uint32 flags;									// 0x02
 	uint8 mode;										// 0x06
 	uint8 version_and_colour_scheme;				// 0x07 0b0000_VVCC
-	rct_vehicle_colour vehicle_colours[12];			// 0x08
+	rct_vehicle_colour vehicle_colours[RCT1_MAX_TRAINS_PER_RIDE]; // 0x08
 	uint8 track_spine_colour_v0;					// 0x20
 	uint8 track_rail_colour_v0;						// 0x21
 	uint8 track_support_colour_v0;					// 0x22
@@ -1182,11 +1184,6 @@ enum {
 	RCT1_WATER_CYAN,
 	RCT1_WATER_ORANGE
 };
-
-#define RCT1_MAX_STATIONS 4
-#define RCT1_MAX_TRAINS_PER_RIDE 12
-#define RCT1_MAX_MAP_SIZE 128
-#define RCT1_MAX_RIDES_IN_PARK 128
 
 extern const uint8 gRideCategories[0x60];
 

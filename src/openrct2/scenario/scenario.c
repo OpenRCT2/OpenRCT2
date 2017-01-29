@@ -382,7 +382,7 @@ static void scenario_entrance_fee_too_high_check()
 	money16 max_fee = totalRideValue + (totalRideValue / 2);
 
 	if ((gParkFlags & PARK_FLAGS_PARK_OPEN) && park_get_entrance_fee() > max_fee) {
-		for (sint32 i = 0; gParkEntranceX[i] != SPRITE_LOCATION_NULL; i++) {
+		for (sint32 i = 0; i < MAX_PARK_ENTRANCES && gParkEntranceX[i] != SPRITE_LOCATION_NULL; i++) {
 			x = gParkEntranceX[i] + 16;
 			y = gParkEntranceY[i] + 16;
 		}

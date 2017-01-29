@@ -601,7 +601,7 @@ private:
 
         // Station
         dst->overall_view = src->overall_view;
-        for (sint32 i = 0; i < RCT1_MAX_STATIONS; i++)
+        for (sint32 i = 0; i < RCT12_MAX_STATIONS_PER_RIDE; i++)
         {
             dst->station_starts[i] = src->station_starts[i];
             dst->station_heights[i] = src->station_height[i] / 2;
@@ -619,11 +619,11 @@ private:
         dst->num_stations = src->num_stations;
 
         // Vehicle links (indexes converted later)
-        for (sint32 i = 0; i < RCT1_MAX_VEHICLES_PER_RIDE; i++)
+        for (sint32 i = 0; i < RCT1_MAX_TRAINS_PER_RIDE; i++)
         {
             dst->vehicles[i] = src->vehicles[i];
         }
-        for (sint32 i = RCT1_MAX_VEHICLES_PER_RIDE; i < 32; i++)
+        for (sint32 i = RCT1_MAX_TRAINS_PER_RIDE; i < 32; i++)
         {
             dst->vehicles[i] = SPRITE_INDEX_NULL;
         }
@@ -704,7 +704,7 @@ private:
 
         dst->max_speed = src->max_speed;
         dst->average_speed = src->average_speed;
-        for (sint32 i = 0; i < RCT1_MAX_STATIONS; i++) {
+        for (sint32 i = 0; i < RCT12_MAX_STATIONS_PER_RIDE; i++) {
             dst->time[i] = src->time[i];
             dst->length[i] = src->length[i];
         }
@@ -871,7 +871,7 @@ private:
         rct_ride *ride;
         FOR_ALL_RIDES(i, ride)
         {
-            for (sint32 stationIndex = 0; stationIndex < RCT1_MAX_STATIONS; stationIndex++)
+            for (sint32 stationIndex = 0; stationIndex < RCT12_MAX_STATIONS_PER_RIDE; stationIndex++)
             {
                 ride->queue_length[stationIndex] = 0;
             }
@@ -1320,7 +1320,7 @@ private:
 
     void FixRidePeepLinks(rct_ride * ride, const uint16 * spriteIndexMap)
     {
-        for (sint32 i = 0; i < RCT1_MAX_STATIONS; i++)
+        for (sint32 i = 0; i < RCT12_MAX_STATIONS_PER_RIDE; i++)
         {
             ride->last_peep_in_queue[i] = MapSpriteIndex(ride->last_peep_in_queue[i], spriteIndexMap);
         }
@@ -1477,7 +1477,7 @@ private:
 
     void ImportPeepSpawns()
     {
-        for (size_t i = 0; i < 2; i++)
+        for (size_t i = 0; i < RCT12_MAX_PEEP_SPAWNS; i++)
         {
             gPeepSpawns[i] = _s4.peep_spawn[i];
         }
@@ -2228,7 +2228,7 @@ private:
 
     void FixEntrancePositions()
     {
-        for (sint32 i = 0; i < 4; i++)
+        for (sint32 i = 0; i < MAX_PARK_ENTRANCES; i++)
         {
             gParkEntranceX[i] = MAP_LOCATION_NULL;
         }
@@ -2237,7 +2237,7 @@ private:
 
         map_element_iterator it;
         map_element_iterator_begin(&it);
-        while (map_element_iterator_next(&it) && entranceIndex < 4)
+        while (map_element_iterator_next(&it) && entranceIndex < RCT12_MAX_PARK_ENTRANCES)
         {
             rct_map_element * element = it.element;
 

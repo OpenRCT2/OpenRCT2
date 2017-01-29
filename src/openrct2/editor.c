@@ -487,17 +487,17 @@ bool editor_check_park()
 		return false;
 	}
 
-	for (sint32 i = 0; i < 4; i++) {
+	for (sint32 i = 0; i < MAX_PARK_ENTRANCES; i++) {
 		if (gParkEntranceX[i] != MAP_LOCATION_NULL)
 			break;
 
-		if (i == 3) {
+		if (i == MAX_PARK_ENTRANCES - 1) {
 			gGameCommandErrorText = STR_NO_PARK_ENTRANCES;
 			return false;
 		}
 	}
 
-	for (sint32 i = 0; i < 4; i++) {
+	for (sint32 i = 0; i < MAX_PARK_ENTRANCES; i++) {
 		if (gParkEntranceX[i] == MAP_LOCATION_NULL)
 			continue;
 
@@ -521,7 +521,7 @@ bool editor_check_park()
 		}
 	}
 
-	if (gPeepSpawns[0].x == 0xFFFF && gPeepSpawns[1].x == 0xFFFF) {
+	if (gPeepSpawns[0].x == PEEP_SPAWN_UNDEFINED && gPeepSpawns[1].x == PEEP_SPAWN_UNDEFINED) {
 		gGameCommandErrorText = STR_PEEP_SPAWNS_NOT_SET;
 		return false;
 	}

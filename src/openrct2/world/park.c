@@ -70,10 +70,10 @@ sint32 _suggestedGuestMaximum;
  */
 sint32 _guestGenerationProbability;
 
-sint16 gParkEntranceX[4];
-sint16 gParkEntranceY[4];
-sint16 gParkEntranceZ[4];
-uint8 gParkEntranceDirection[4];
+sint16 gParkEntranceX[MAX_PARK_ENTRANCES];
+sint16 gParkEntranceY[MAX_PARK_ENTRANCES];
+sint16 gParkEntranceZ[MAX_PARK_ENTRANCES];
+uint8 gParkEntranceDirection[MAX_PARK_ENTRANCES];
 
 bool gParkEntranceGhostExists;
 rct_xyz16 gParkEntranceGhostPosition;
@@ -121,8 +121,8 @@ void park_init()
 	}
 
 	gParkEntranceFee = MONEY(10, 00);
-	gPeepSpawns[0].x = UINT16_MAX;
-	gPeepSpawns[1].x = UINT16_MAX;
+	gPeepSpawns[0].x = PEEP_SPAWN_UNDEFINED;
+	gPeepSpawns[1].x = PEEP_SPAWN_UNDEFINED;
 	gResearchPriorities =
 		(1 << RESEARCH_CATEGORY_TRANSPORT) |
 		(1 << RESEARCH_CATEGORY_GENTLE) |
@@ -360,11 +360,11 @@ money32 calculate_company_value()
 void reset_park_entrances()
 {
 	gParkName = 0;
-	for (sint32 i = 0; i < 4; i++) {
-		gParkEntranceX[i] = 0x8000;
+	for (sint32 i = 0; i < MAX_PARK_ENTRANCES; i++) {
+		gParkEntranceX[i] = MAP_LOCATION_NULL;
 	}
-	for (sint32 i = 0; i < 2; i++) {
-		gPeepSpawns[i].x = UINT16_MAX;
+	for (sint32 i = 0; i < MAX_PEEP_SPAWNS; i++) {
+		gPeepSpawns[i].x = PEEP_SPAWN_UNDEFINED;
 	}
 }
 
@@ -480,7 +480,7 @@ static sint32 park_calculate_guest_generation_probability()
 static void get_random_peep_spawn(rct2_peep_spawn *spawn)
 {
 	*spawn = gPeepSpawns[0];
-	if (gPeepSpawns[1].x != UINT16_MAX) {
+	if (gPeepSpawns[1].x != PEEP_SPAWN_UNDEFINED) {
 		if (scenario_rand() & 0x80000) {
 			*spawn = gPeepSpawns[1];
 		}
@@ -722,7 +722,7 @@ sint32 park_get_entrance_index(sint32 x, sint32 y, sint32 z)
 {
 	sint32 i;
 
-	for (i = 0; i < 4; i++) {
+	for (i = 0; i < MAX_PARK_ENTRANCES; i++) {
 		if (
 			x == gParkEntranceX[i] &&
 			y == gParkEntranceY[i] &&
@@ -852,7 +852,7 @@ void game_command_remove_park_entrance(sint32 *eax, sint32 *ebx, sint32 *ecx, si
 		return;
 	}
 
-	gParkEntranceX[entranceIndex] = 0x8000;
+	gParkEntranceX[entranceIndex] = MAP_LOCATION_NULL;
 	direction = (gParkEntranceDirection[entranceIndex] - 1) & 3;
 	z = (*edx & 0xFF) * 2;
 
@@ -1050,10 +1050,10 @@ static money32 map_buy_land_rights_for_tile(sint32 x, sint32 y, sint32 setting, 
 		if ((newOwnership & 0xF0) != 0) {
 			rct2_peep_spawn *peepSpawns = gPeepSpawns;
 
-			for (uint8 i = 0; i < 2; ++i) {
+			for (uint8 i = 0; i < MAX_PEEP_SPAWNS; ++i) {
 				if (x == (peepSpawns[i].x & 0xFFE0)) {
 					if (y == (peepSpawns[i].y & 0xFFE0)) {
-						peepSpawns[i].x = 0xFFFF;
+						peepSpawns[i].x = PEEP_SPAWN_UNDEFINED;
 					}
 				}
 			}

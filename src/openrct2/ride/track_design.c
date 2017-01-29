@@ -188,7 +188,7 @@ static rct_track_td6 * track_design_open_from_td4(uint8 *src, size_t srcLength)
 	td6->version_and_colour_scheme = td4->version_and_colour_scheme;
 
 	// Vehicle colours
-	for (sint32 i = 0; i < RCT1_MAX_VEHICLES_PER_RIDE; i++) {
+	for (sint32 i = 0; i < RCT1_MAX_TRAINS_PER_RIDE; i++) {
 		td6->vehicle_colours[i].body_colour = rct1_get_colour(td4->vehicle_colours[i].body_colour);
 		td6->vehicle_colours[i].trim_colour = rct1_get_colour(td4->vehicle_colours[i].trim_colour);
 
@@ -198,7 +198,7 @@ static rct_track_td6 * track_design_open_from_td4(uint8 *src, size_t srcLength)
 		}
 	}
 	// Set remaining vehicles to same colour as first vehicle
-	for (sint32 i = RCT1_MAX_VEHICLES_PER_RIDE; i < 32; i++) {
+	for (sint32 i = RCT1_MAX_TRAINS_PER_RIDE; i < 32; i++) {
 		td6->vehicle_colours[i] = td6->vehicle_colours[0];
 	}
 	// Set additional colour to trim colour for all vehicles

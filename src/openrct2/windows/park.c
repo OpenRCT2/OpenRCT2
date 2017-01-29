@@ -1091,7 +1091,7 @@ static void window_park_init_viewport(rct_window *w)
 	if (w->page != WINDOW_PARK_PAGE_ENTRANCE)
 		return;
 
-	for (i = 0; i < 4; i++) {
+	for (i = 0; i < MAX_PARK_ENTRANCES; i++) {
 		if (gParkEntranceX[i] != SPRITE_LOCATION_NULL) {
 			x = gParkEntranceX[i] + 16;
 			y = gParkEntranceY[i] + 16;

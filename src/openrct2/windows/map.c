@@ -351,8 +351,8 @@ static void window_map_mouseup(rct_window *w, sint32 widgetIndex)
 			break;
 
 		gLandToolSize = 0;
-		if (gPeepSpawns[0].x != UINT16_MAX &&
-			gPeepSpawns[1].x != UINT16_MAX
+		if (gPeepSpawns[0].x != PEEP_SPAWN_UNDEFINED &&
+			gPeepSpawns[1].x != PEEP_SPAWN_UNDEFINED
 		) {
 			gLandToolSize = 1;
 		}
@@ -1357,7 +1357,7 @@ static void window_map_set_peep_spawn_tool_down(sint32 x, sint32 y)
 	mapZ = mapElement->base_height / 2;
 
 	sint32 peepSpawnIndex = 0;
-	if (gLandToolSize != 1 && gPeepSpawns[0].x != 0xFFFF)
+	if (gLandToolSize != 1 && gPeepSpawns[0].x != PEEP_SPAWN_UNDEFINED)
 		peepSpawnIndex = 1;
 
 	gPeepSpawns[peepSpawnIndex].x = mapX;
