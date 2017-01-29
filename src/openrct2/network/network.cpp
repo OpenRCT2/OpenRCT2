@@ -1051,7 +1051,7 @@ void Network::Server_Send_CHAT(const char* text)
 
 void Network::Client_Send_KICK(uint8 playerid, uint32 kickReasonId, const char* reason)
 {
-	std::unique_ptr<NetworkPacket> packet = std::move(NetworkPacket::Allocate());
+	std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
 	*packet << (uint32)NETWORK_COMMAND_KICK << playerid << kickReasonId;
 	packet->WriteString(reason);
 	server_connection.QueuePacket(std::move(packet));
