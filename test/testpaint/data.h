@@ -17,13 +17,15 @@
 #ifndef _TEST_PAINT_DATA_H_
 #define _TEST_PAINT_DATA_H_
 
-#include "../../src/common.h"
+#include <openrct2/common.h>
+#include <openrct2/ride/ride.h>
 
-extern const utf8string RideNames[91];
+
+extern const utf8string RideNames[RIDE_TYPE_COUNT];
 extern const utf8string TrackNames[256];
 extern const utf8string FlatTrackNames[256];
 extern const utf8string TrackElemNames[256];
-extern const utf8string RideCodeNames[91];
+extern const utf8string RideCodeNames[RIDE_TYPE_COUNT];
 extern const utf8string TrackCodeNames[256];
 
 #endif // #endif _TEST_PAINT_DATA_H_

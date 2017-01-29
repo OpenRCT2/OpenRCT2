@@ -18,10 +18,10 @@
 
 #include <vector>
 
-#include "../../src/common.h"
+#include <openrct2/common.h>
 
 extern "C" {
-    #include "../../src/paint/paint.h"
+    #include <openrct2/paint/paint.h>
 }
 
 struct SegmentSupportCall

@@ -14,9 +14,10 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../../src/common.h"
+#include <openrct2/common.h>
+#include <openrct2/ride/ride.h>
 
-const utf8string RideNames[91] = {
+const utf8string RideNames[RIDE_TYPE_COUNT] = {
 	"SpiralRollerCoaster",
 	"StandUpRollerCoaster",
 	"SuspendedSwingingCoaster",
@@ -887,7 +888,7 @@ const utf8string TrackElemNames[] = {
 	"TRACK_ELEM_255",
 };
 
-const utf8string RideCodeNames[91] = {
+const utf8string RideCodeNames[RIDE_TYPE_COUNT] = {
 	"spiral_rc",
 	"stand_up_rc",
 	"suspended_swinging_rc",

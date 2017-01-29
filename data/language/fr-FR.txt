@@ -1,4 +1,4 @@
-# STR_XXXX part is read and XXXX becomes the string id number.
+﻿# STR_XXXX part is read and XXXX becomes the string id number.
 # Everything after the colon and before the new line will be saved as the string.
 # Use # at the beginning of a line to leave a comment.
 STR_0000    :
@@ -4188,7 +4188,7 @@ STR_5875    :Moteur de dessin :
 STR_5876    :{SMALLFONT}{BLACK}Sélectionne le moteur à utiliser pour dessiner le jeu
 STR_5877    :Logiciel
 STR_5878    :Logiciel (aff. matériel)
-STR_5879    :OpenGL
+STR_5879    :OpenGL (expérimental)
 STR_5880    :Sélectionnés
 STR_5881    :Non-sélectionnés
 STR_5882    :Devise personnalisée...
@@ -4300,6 +4300,8 @@ STR_5987    :Impossible de créer le dossier
 STR_5988    :{SMALLFONT}{BLACK}Plus de terrain à vendre
 STR_5989    :{SMALLFONT}{BLACK}Plus de droits de construction à vendre
 STR_5990    :{SMALLFONT}{BLACK}Plus de terrain ou de droits de construction à vendre
+
+STR_6012    :{COMMA1DP16}
 
 #############
 # Scenarios #

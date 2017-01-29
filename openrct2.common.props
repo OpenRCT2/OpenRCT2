@@ -29,12 +29,23 @@
 
   <ItemDefinitionGroup>
     <ClCompile>
-      <DisableSpecificWarnings>4091;%(DisableSpecificWarnings)</DisableSpecificWarnings>
-      <WarningLevel>Level3</WarningLevel>
+      <DisableSpecificWarnings>4091;4100;4132;4200;4201;4204;4206;4221;4244;4245;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <!-- Warnings:
+             C4091: 'keyword': ignored on left of 'type' when no variable is declared
+             C4100: 'identifier': unreferenced formal parameter
+             C4132: 'identifier': const object should be initialized
+             C4200: nonstandard extension used: zero-sized array in struct/union
+             C4201: nonstandard extension used: nameless struct/union
+             C4204: nonstandard extension used: non-constant aggregate initializer
+             C4206: nonstandard extension used: translation unit is empty
+             C4221: nonstandard extension used: 'identifier': cannot be initialized using address of automatic variable 'identifier'
+             C4244: 'conversion_type': conversion from 'type1' to 'type2', possible loss of data
+             C4245: 'conversion_type': conversion from 'type1' to 'type2', signed/unsigned mismatch
+      -->
+      <WarningLevel>Level4</WarningLevel>
       <PreprocessorDefinitions>OPENGL_NO_LINK;_CRT_SECURE_NO_WARNINGS;_USE_MATH_DEFINES;CURL_STATICLIB;SDL_MAIN_HANDLED;_WINSOCK_DEPRECATED_NO_WARNINGS;ZIP_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <TreatSpecificWarningsAsErrors>4013</TreatSpecificWarningsAsErrors>
       <TreatWarningAsError>true</TreatWarningAsError>
       <AdditionalOptions>/utf-8 /std:c++latest</AdditionalOptions>
     </ClCompile>
@@ -95,7 +106,7 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
 
   <PropertyGroup>
-    <IncludePath>$(SolutionDir)lib\include;$(SolutionDir)lib\include\breakpad;$(SolutionDir)lib\include\libspeex;$(SolutionDir)lib\include\sdl;$(SolutionDir)lib\include\jansson;$(SolutionDir)lib\include\sdl_ttf;$(SolutionDir)lib\include\libpng;$(SolutionDir)lib\include\zlib;$(SolutionDir)lib\include\libzip;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)src;$(SolutionDir)lib\include;$(SolutionDir)lib\include\breakpad;$(SolutionDir)lib\include\libspeex;$(SolutionDir)lib\include\sdl;$(SolutionDir)lib\include\jansson;$(SolutionDir)lib\include\sdl_ttf;$(SolutionDir)lib\include\libpng;$(SolutionDir)lib\include\zlib;$(SolutionDir)lib\include\libzip;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)lib;$(LibraryPath)</LibraryPath>
     <LinkIncremental />
   </PropertyGroup>

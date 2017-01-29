@@ -1,7 +1,7 @@
 # Version numbers to update
 !define /ifndef APPV_MAJOR 0
 !define /ifndef APPV_MINOR 0
-!define /ifndef APPV_MAINT 5
+!define /ifndef APPV_MAINT 6
 !define /ifndef APPV_BUILD 0
 
 !define APPNAME             "OpenRCT2"
@@ -152,6 +152,8 @@ Section "!OpenRCT2" Section1
 
     ; Copy executable
     File /oname=${OPENRCT2_EXE} ${BINARY_DIR}\${OPENRCT2_EXE}
+    File /oname=openrct2.com ${BINARY_DIR}\openrct2.com
+    File /oname=openrct2.dll ${BINARY_DIR}\openrct2.dll
 
     ; Create the Registry Entries
     WriteRegStr HKEY_LOCAL_MACHINE "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\OpenRCT2" "Comments" "Visit ${APPURLLINK}"
@@ -218,6 +220,8 @@ Section "Uninstall"
     Delete "$INSTDIR\readme.txt"
     Delete "$INSTDIR\contributors.md"
     Delete "$INSTDIR\${OPENRCT2_EXE}"
+    Delete "$INSTDIR\openrct2.com"
+    Delete "$INSTDIR\openrct2.dll"
     Delete "$INSTDIR\INSTALL.LOG"
 
     ; Data files

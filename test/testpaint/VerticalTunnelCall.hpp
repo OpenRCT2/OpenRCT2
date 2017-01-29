@@ -16,8 +16,9 @@
 
 #pragma once
 
-#include "../../src/common.h"
+#include <openrct2/common.h>
 
 namespace VerticalTunnelCall {
-    bool HeightIsConsistent(uint8 heights[4]);
+    uint16 GetTunnelHeight(uint16 baseHeight, uint8 *calls);
+    bool HeightIsConsistent(uint16 *heights);
 };

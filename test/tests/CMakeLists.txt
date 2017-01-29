@@ -23,6 +23,8 @@ ExternalProject_Add(
 		DOWNLOAD_COMMAND ""
 		SOURCE_DIR "${GOOGLETEST_DISTRIB_SOURCE_DIR}/googletest"
 		CMAKE_ARGS "-DCMAKE_CXX_FLAGS=${TARGET_M}"
+		BUILD_BYPRODUCTS "googletest-prefix/src/googletest-build/${CMAKE_STATIC_LIBRARY_PREFIX}gtest${CMAKE_STATIC_LIBRARY_SUFFIX}"
+		BUILD_BYPRODUCTS "googletest-prefix/src/googletest-build/${CMAKE_STATIC_LIBRARY_PREFIX}gtest_main${CMAKE_STATIC_LIBRARY_SUFFIX}"
 		# Disable install step
 		INSTALL_COMMAND ""
 		# Wrap download, configure and build steps in a script to log output
@@ -57,7 +59,12 @@ set(GTEST_LIBRARIES gtest gtest_main pthread)
 
 # sawyercoding test
 
-set(SAWYERCODING_TEST_SOURCES "sawyercoding_test.cpp" "../../src/diagnostic.c" "../../src/util/sawyercoding.c" "../../src/localisation/utf8.c")
+set(SAWYERCODING_TEST_SOURCES
+		"sawyercoding_test.cpp"
+		"../../src/openrct2/diagnostic.c"
+		"../../src/openrct2/util/sawyercoding.c"
+		"../../src/openrct2/localisation/utf8.c"
+		)
 add_executable(test_sawyercoding ${SAWYERCODING_TEST_SOURCES})
 target_link_libraries(test_sawyercoding ${GTEST_LIBRARIES})
 add_test(NAME sawyercoding COMMAND test_sawyercoding)
@@ -65,15 +72,15 @@ add_test(NAME sawyercoding COMMAND test_sawyercoding)
 # LanguagePack test
 set(LANGUAGEPACK_TEST_SOURCES
 		"LanguagePackTest.cpp"
-		"../../src/localisation/LanguagePack.cpp"
-		"../../src/core/Console.cpp"
-		"../../src/core/Diagnostics.cpp"
-		"../../src/core/Guard.cpp"
-		"../../src/core/String.cpp"
-		"../../src/diagnostic.c"
-		"../../src/localisation/format_codes.c"
-		"../../src/localisation/utf8.c"
-		"../../src/util/util.c"
+		"../../src/openrct2/localisation/LanguagePack.cpp"
+		"../../src/openrct2/core/Console.cpp"
+		"../../src/openrct2/core/Diagnostics.cpp"
+		"../../src/openrct2/core/Guard.cpp"
+		"../../src/openrct2/core/String.cpp"
+		"../../src/openrct2/diagnostic.c"
+		"../../src/openrct2/localisation/format_codes.c"
+		"../../src/openrct2/localisation/utf8.c"
+		"../../src/openrct2/util/util.c"
 		)
 add_executable(test_languagepack ${LANGUAGEPACK_TEST_SOURCES})
 target_link_libraries(test_languagepack ${GTEST_LIBRARIES} dl z SDL2 SDL2_ttf ssl crypto)

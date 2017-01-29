@@ -1,3 +1,26 @@
+0.0.6 (in development)
+------------------------------------------------------------------------
+- Feature: [#3355] Allow loading of parks from URLs.
+- Feature: [#4673] Add paint Z clipping.
+- Feature: [#4901] Allow entertainers' costume changes even in absence of required scenery.
+- Feature: [#4916] FreeBSD support.
+- Feature: [#4963] Add boosters (from RCT1 and RCTC).
+- Feature: [#5113] Entertainers are now hired with a random costume.
+- Improved: [#4847] Guest / staff pathfinding.
+- Improved: [#4938] Checksum calculations speeded up.
+- Improved: [#5007] Vehicles and functioning rides are now imported when loading SC4 / SV4 parks.
+- Improved: Guests and staff are now imported when loading SC4 / SV4 parks.
+- Fix: [#4571] Only start autosave timer after update or game command.
+- Fix: [#4584] Junior Coaster diagonal flat-to-steep slopes not drawn.
+- Fix: [#4929] Changing TTF language crashes game.
+- Fix: [#4944] Game crashes upon selecting objects in scenario editor.
+- Fix: [#4951] Scenarios are not recorded as completed from a saved game.
+- Fix: [#4968] Completing a scenario does not save the name that is entered.
+- Fix: [#4996] Objects unloaded after loading landscape.
+- Fix: [#5003] Able to remove entrance/exit of unedittable rides (such as in Volcania).
+- Fix: [#5096] Failure to open parks with out of bounds sprite coordinates.
+- Fix: [#5114] Some entertainer costumes never select-able.
+
 0.0.5 (2016-12-27)
 ------------------------------------------------------------------------
 This is the first fully implemented version of OpenRCT2. RCT2.EXE is no longer required.

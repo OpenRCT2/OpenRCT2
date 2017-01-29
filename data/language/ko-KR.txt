@@ -2429,12 +2429,12 @@ STR_2420    :{STRINGID} 반값 할인권
 STR_2421    :{STRINGID} 무료 이용권
 STR_2422    :{STRINGID} 광고
 STR_2423    :{STRINGID} 광고
-STR_2424    :{WINDOW_COLOUR_2}공원 무료 입장 쿠폰입니다
-STR_2425    :{WINDOW_COLOUR_2}특정 놀이기구의 무료 탑승 쿠폰입니다
-STR_2426    :{WINDOW_COLOUR_2}공원 입장료 반값 할인 쿠폰입니다
-STR_2427    :{WINDOW_COLOUR_2}음식이나 음료수 무료 이용 쿠폰입니다
-STR_2428    :{WINDOW_COLOUR_2}공원을 광고합니다
-STR_2429    :{WINDOW_COLOUR_2}특정 놀이기구를 광고합니다
+STR_2424    :{WINDOW_COLOUR_2}공원 무료 입장 쿠폰
+STR_2425    :{WINDOW_COLOUR_2}특정 놀이기구의 무료 탑승 쿠폰
+STR_2426    :{WINDOW_COLOUR_2}공원 입장료 반값 할인 쿠폰
+STR_2427    :{WINDOW_COLOUR_2}음식이나 음료수 무료 이용 쿠폰
+STR_2428    :{WINDOW_COLOUR_2}공원 광고
+STR_2429    :{WINDOW_COLOUR_2}특정 놀이기구 광고
 STR_2430    :{BLACK}{STRINGID} 무료 입장권
 STR_2431    :{BLACK}{STRINGID} 무료 탑승 쿠폰
 STR_2432    :{BLACK}{STRINGID} 반값 할인 쿠폰
@@ -3246,8 +3246,8 @@ STR_3234    :설정 - 공원
 STR_3235    :{SMALLFONT}{BLACK}재정 관련 설정을 보여줍니다
 STR_3236    :{SMALLFONT}{BLACK}손님 관련 설정을 보여줍니다
 STR_3237    :{SMALLFONT}{BLACK}공원 관련 설정을 보여줍니다
-STR_3238    :돈 무제한
-STR_3239    :{SMALLFONT}{BLACK}재정적 제한이 없도록 이 공원의 돈을 '무제한'으로 만듭니다
+STR_3238    :재정 무제한
+STR_3239    :{SMALLFONT}{BLACK}재정적 제한이 없도록 이 공원의 재정을 '무제한'으로 만듭니다
 STR_3240    :{WINDOW_COLOUR_2}초기 재정:
 STR_3241    :{WINDOW_COLOUR_2}초기 대출:
 STR_3242    :{WINDOW_COLOUR_2}최대 대출금:
@@ -3707,7 +3707,7 @@ STR_5366    :보통
 STR_5367    :빠름
 STR_5368    :충돌 이력 제거
 STR_5369    :공원 설정...
-STR_5370    :{SMALLFONT}{BLACK}제한, 손님 생성, 돈 등의 공원과 관련된 설정을 수정하려면 이 버튼을 클릭하세요.
+STR_5370    :{SMALLFONT}{BLACK}제한, 손님 생성, 재정 등의 공원과 관련된 설정을 수정하려면 이 버튼을 클릭하세요.
 STR_5371    :오브젝트 선택
 STR_5372    :마우스 오른쪽 드래그시 좌우 반전
 STR_5373    :이름 {STRINGID}
@@ -4301,6 +4301,24 @@ STR_5991    :붙여넣을 수 없습니다...
 STR_5992    :맵 요소 제한 개수를 초과했습니다
 STR_5993    :{SMALLFONT}{BLACK}선택한 요소를 복사합니다.
 STR_5994    :{SMALLFONT}{BLACK}복사했던 요소를 붙여넣습니다.
+STR_5995    :부스터
+STR_5996    :부스터 속력
+STR_5997    :재정 추가/설정
+STR_5998    :돈 추가
+STR_5999    :이 값으로 돈 지정
+STR_6000    :새로운 값을 입력하세요
+STR_6001    :가로등 효과 (실험적 기능)
+STR_6002    :{SMALLFONT}{BLACK}가로등과 놀이기구가 밤에 불이 켜지도록 합니다.{NEWLINE}드로잉 엔진 설정을 하드웨어 디스플레이로 설정해야 합니다.
+STR_6003    :특정 높이 잘라 보기
+STR_6004    :특정 높이 잘라 보기
+STR_6005    :잘라 보기 활성화
+STR_6006    :{SMALLFONT}{BLACK}절단할 높이 이하의 지도 요소만 표시하여 내부를 볼 수 있게 만듭니다.
+STR_6007    :절단할 높이
+STR_6008    :{SMALLFONT}{BLACK}클릭하면 높이 단위를 실제 높이<->유닛 단위로 변경할 수 있습니다.
+STR_6009    :{SMALLFONT}{BLACK}절단할 높이를 선택하세요.
+STR_6010    :{COMMA2DP32}m
+STR_6011    :{COMMA1DP16}ft
+STR_6012    :{COMMA1DP16}
 
 #############
 # Scenarios #

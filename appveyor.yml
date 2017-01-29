@@ -1,7 +1,7 @@
-version: 0.0.5.{build}
+version: 0.0.6.{build}
 image:
   - Visual Studio 2015
-  - Visual Studio 2017 RC
+#  - Visual Studio 2017 RC
 cache:
 - C:\ProgramData\chocolatey\bin -> scripts\ps\appveyor_install.ps1
 - C:\ProgramData\chocolatey\lib -> scripts\ps\appveyor_install.ps1
@@ -14,7 +14,7 @@ environment:
   OPENRCT2_ORG_TOKEN:
     secure: leQX3xCQpmBLGuMqrxjFlzexDt96ypNRMM5TTRVHbGE8PwVg9crgeykLc2BIZU6HDHveJCHqh2cGMdHtHYJYcw==
   BUILD_SERVER: AppVeyor
-  PATH: $(PATH);C:\Program Files (x86)\Windows Kits\10\bin\x86
+  PATH: $(PATH);C:\Program Files (x86)\Windows Kits\10\bin\x86;C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin
 install:
 - ps: >-
     .\scripts\ps\appveyor_install.ps1

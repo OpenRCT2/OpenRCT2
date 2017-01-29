@@ -30,10 +30,11 @@
 #include "VerticalTunnelCall.hpp"
 
 extern "C" {
-#include "../../src/paint/supports.h"
-#include "../../src/ride/ride.h"
-#include "../../src/ride/track.h"
-#include "../../src/ride/track_data.h"
+#include <openrct2/paint/map_element/map_element.h>
+#include <openrct2/paint/supports.h>
+#include <openrct2/ride/ride.h>
+#include <openrct2/ride/track.h>
+#include <openrct2/ride/track_data.h>
 }
 
 interface ITestTrackFilter {
@@ -54,22 +55,22 @@ public:
 
 class CableLiftFilter : public ITestTrackFilter {
 public:
-    bool AppliesTo(uint8 rideType, uint8 trackType) {
+    bool AppliesTo(uint8 rideType, uint8 trackType) override {
         return rideType == RIDE_TYPE_GIGA_COASTER;
     }
 
-    int Variations(uint8 rideType, uint8 trackType) {
+    int Variations(uint8 rideType, uint8 trackType) override {
         return 2;
     }
 
-    std::string VariantName(uint8 rideType, uint8 trackType, int variant) {
+    std::string VariantName(uint8 rideType, uint8 trackType, int variant) override {
         return String::Format("cableLift:%d", variant);
     }
 
     virtual void ApplyTo(uint8 rideType, uint8 trackType, int variant,
                          rct_map_element *mapElement, rct_map_element *surfaceElement,
                          rct_ride *ride, rct_ride_entry *rideEntry
-    ) {
+    ) override {
         if (variant == 0) {
             mapElement->properties.track.colour &= ~TRACK_ELEMENT_COLOUR_FLAG_CABLE_LIFT;
         } else {
@@ -80,22 +81,22 @@ public:
 
 class ChainLiftFilter : public ITestTrackFilter {
 public:
-    bool AppliesTo(uint8 rideType, uint8 trackType) {
+    bool AppliesTo(uint8 rideType, uint8 trackType) override {
         return !ride_type_has_flag(rideType, RIDE_TYPE_FLAG_FLAT_RIDE);
     }
 
-    int Variations(uint8 rideType, uint8 trackType) {
+    int Variations(uint8 rideType, uint8 trackType) override {
         return 2;
     }
 
-    std::string VariantName(uint8 rideType, uint8 trackType, int variant) {
+    std::string VariantName(uint8 rideType, uint8 trackType, int variant) override {
         return String::Format("chainLift:%d", variant);
     }
 
     virtual void ApplyTo(uint8 rideType, uint8 trackType, int variant,
                          rct_map_element *mapElement, rct_map_element *surfaceElement,
                          rct_ride *ride, rct_ride_entry *rideEntry
-    ) {
+    ) override {
         if (variant == 0) {
             mapElement->type &= ~TRACK_ELEMENT_FLAG_CHAIN_LIFT;
         } else {
@@ -106,7 +107,7 @@ public:
 
 class InvertedFilter : public ITestTrackFilter {
 public:
-    bool AppliesTo(uint8 rideType, uint8 trackType) {
+    bool AppliesTo(uint8 rideType, uint8 trackType) override {
         if (rideType == RIDE_TYPE_MULTI_DIMENSION_ROLLER_COASTER ||
             rideType == RIDE_TYPE_FLYING_ROLLER_COASTER ||
             rideType == RIDE_TYPE_LAY_DOWN_ROLLER_COASTER) {
@@ -116,18 +117,18 @@ public:
         return false;
     }
 
-    int Variations(uint8 rideType, uint8 trackType) {
+    int Variations(uint8 rideType, uint8 trackType) override {
         return 2;
     }
 
-    std::string VariantName(uint8 rideType, uint8 trackType, int variant) {
+    std::string VariantName(uint8 rideType, uint8 trackType, int variant) override {
         return String::Format("inverted:%d", variant);
     }
 
     virtual void ApplyTo(uint8 rideType, uint8 trackType, int variant,
                          rct_map_element *mapElement, rct_map_element *surfaceElement,
                          rct_ride *ride, rct_ride_entry *rideEntry
-    ) {
+    ) override {
         if (variant == 0) {
             mapElement->properties.track.colour &= ~TRACK_ELEMENT_COLOUR_FLAG_INVERTED;
         } else {
@@ -138,7 +139,7 @@ public:
 
 class EntranceStyleFilter : public ITestTrackFilter {
 public:
-    bool AppliesTo(uint8 rideType, uint8 trackType) {
+    bool AppliesTo(uint8 rideType, uint8 trackType) override {
         if (trackType == TRACK_ELEM_BEGIN_STATION ||
             trackType == TRACK_ELEM_MIDDLE_STATION ||
             trackType == TRACK_ELEM_END_STATION) {
@@ -148,18 +149,18 @@ public:
         return false;
     }
 
-    int Variations(uint8 rideType, uint8 trackType) {
+    int Variations(uint8 rideType, uint8 trackType) override {
         return RIDE_ENTRANCE_STYLE_COUNT - 1;
     }
 
-    std::string VariantName(uint8 rideType, uint8 trackType, int variant) {
+    std::string VariantName(uint8 rideType, uint8 trackType, int variant) override {
         return String::Format("entranceStyle:%d", variant);
     }
 
     virtual void ApplyTo(uint8 rideType, uint8 trackType, int variant,
                          rct_map_element *mapElement, rct_map_element *surfaceElement,
                          rct_ride *ride, rct_ride_entry *rideEntry
-    ) {
+    ) override {
         ride->entrance_style = variant;
     }
 };
@@ -257,7 +258,6 @@ uint8 TestTrack::TestPaintTrackElement(uint8 rideType, uint8 trackType, std::str
 }
 
 static uint8 TestTrackElementPaintCalls(uint8 rideType, uint8 trackType, uint8 trackSequence, std::string *error) {
-    uint8 rideIndex = 0;
     uint16 height = 3 * 16;
 
     rct_map_element mapElement = {0};
@@ -400,7 +400,6 @@ static uint8 TestTrackElementPaintCalls(uint8 rideType, uint8 trackType, uint8 t
 }
 
 static uint8 TestTrackElementSegmentSupportHeight(uint8 rideType, uint8 trackType, uint8 trackSequence, std::string *error) {
-    uint8 rideIndex = 0;
     uint16 height = 3 * 16;
 
     rct_map_element mapElement = {0};
@@ -477,7 +476,6 @@ static uint8 TestTrackElementSegmentSupportHeight(uint8 rideType, uint8 trackTyp
 }
 
 static uint8 TestTrackElementGeneralSupportHeight(uint8 rideType, uint8 trackType, uint8 trackSequence, std::string *error) {
-    uint8 rideIndex = 0;
     uint16 height = 3 * 16;
 
     rct_map_element mapElement = {0};
@@ -570,7 +568,6 @@ static uint8 TestTrackElementGeneralSupportHeight(uint8 rideType, uint8 trackTyp
 }
 
 static uint8 TestTrackElementSideTunnels(uint8 rideType, uint8 trackType, uint8 trackSequence, std::string *error) {
-    uint8 rideIndex = 0;
     uint16 height = 3 * 16;
 
     rct_map_element mapElement = {0};
@@ -687,7 +684,6 @@ static uint8 TestTrackElementSideTunnels(uint8 rideType, uint8 trackType, uint8 
 }
 
 static uint8 TestTrackElementVerticalTunnels(uint8 rideType, uint8 trackType, uint8 trackSequence, std::string *error) {
-    uint8 rideIndex = 0;
     uint16 height = 3 * 16;
 
     rct_map_element mapElement = {0};
@@ -705,15 +701,21 @@ static uint8 TestTrackElementVerticalTunnels(uint8 rideType, uint8 trackType, ui
     TestPaint::ResetEnvironment();
     TestPaint::ResetTunnels();
 
-    uint8 verticalTunnelHeight[4];
+    uint16 verticalTunnelHeights[4];
 
     for (int direction = 0; direction < 4; direction++) {
-        gVerticalTunnelHeight = 0;
-        CallOriginal(rideType, trackType, direction, trackSequence, height, &mapElement);
-        verticalTunnelHeight[direction] = gVerticalTunnelHeight;
+        uint8 tunnelHeights[3] = {0};
+
+        for (uint8 i = 0; i < 3; i++) {
+            gVerticalTunnelHeight = 0;
+            CallOriginal(rideType, trackType, direction, trackSequence, height - 8 + i * 8, &mapElement);
+            tunnelHeights[i] = gVerticalTunnelHeight;
+        }
+
+        verticalTunnelHeights[direction] = VerticalTunnelCall::GetTunnelHeight(height, tunnelHeights);
     }
 
-    if (!VerticalTunnelCall::HeightIsConsistent(verticalTunnelHeight)) {
+    if (!VerticalTunnelCall::HeightIsConsistent(verticalTunnelHeights)) {
         *error += String::Format(
             "Original vertical tunnel height is inconsistent, skipping test. [trackSequence:%d]\n",
             trackSequence
@@ -721,30 +723,33 @@ static uint8 TestTrackElementVerticalTunnels(uint8 rideType, uint8 trackType, ui
         return TEST_SUCCESS;
     }
 
-    uint8 referenceHeight = verticalTunnelHeight[0];
+    uint16 referenceHeight = verticalTunnelHeights[0];
 
     for (int direction = 0; direction < 4; direction++) {
-        gVerticalTunnelHeight = 0;
 
         testpaint_clear_ignore();
-        CallOriginal(rideType, trackType, direction, trackSequence, height, &mapElement);
+
+        testPaintVerticalTunnelHeight = 0;
+        CallNew(rideType, trackType, direction, trackSequence, height, &mapElement);
+
         if (testpaint_is_ignored(direction, trackSequence)) {
             continue;
         }
 
-        if (gVerticalTunnelHeight != referenceHeight) {
-            if (gVerticalTunnelHeight == 0) {
+        if (testPaintVerticalTunnelHeight != referenceHeight) {
+            if (referenceHeight == 0) {
                 *error += String::Format(
-                    "Expected no tunnel. Actual: %d [trackSequence:%d]\n",
-                    gVerticalTunnelHeight, trackSequence
+                    "Expected no tunnel. Actual: %s [trackSequence:%d]\n",
+                    Printer::PrintHeightOffset(testPaintVerticalTunnelHeight, height).c_str(),
+                    trackSequence
                 );
                 return TEST_FAILED;
             }
 
             *error += String::Format(
                 "Expected vertical tunnel height to be `%s`, was `%s`. [trackSequence:%d direction:%d]\n",
-                Printer::PrintHeightOffset((referenceHeight * 16), height).c_str(),
-                Printer::PrintHeightOffset((gVerticalTunnelHeight * 16), height).c_str(),
+                Printer::PrintHeightOffset(referenceHeight, height).c_str(),
+                Printer::PrintHeightOffset(testPaintVerticalTunnelHeight, height).c_str(),
                 trackSequence,
                 direction
             );

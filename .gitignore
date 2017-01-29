@@ -5,9 +5,6 @@ sdl
 # Compiled dll
 openrct2.dll
 
-# Compiled linux executable
-openrct2
-
 # Distribution
 distribution/windows/*.exe
 
@@ -22,6 +19,7 @@ libversion
 
 #sequences
 data/title
+sequencesversion
 
 #################
 ## Eclipse

@@ -5,20 +5,20 @@
     <GtestDir Condition="'$(GtestDir)'==''">$(SolutionDir)lib\googletest\googletest</GtestDir>
   </PropertyGroup>
   <ItemGroup Label="ProjectConfigurations">
-    <ProjectConfiguration Include="DebugTests|Win32">
-      <Configuration>DebugTests</Configuration>
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
       <Platform>Win32</Platform>
     </ProjectConfiguration>
-    <ProjectConfiguration Include="ReleaseTests|Win32">
-      <Configuration>ReleaseTests</Configuration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
       <Platform>Win32</Platform>
     </ProjectConfiguration>
-    <ProjectConfiguration Include="DebugTests|x64">
-      <Configuration>DebugTests</Configuration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
-    <ProjectConfiguration Include="ReleaseTests|x64">
-      <Configuration>ReleaseTests</Configuration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
@@ -33,7 +33,7 @@
   <Import Project="..\..\openrct2.common.props" />
   <PropertyGroup>
     <OutDir>$(SolutionDir)bin\tests\</OutDir>
-    <IncludePath>$(GtestDir);$(GtestDir)\include;$(SolutionDir)src;$(IncludePath)</IncludePath>
+    <IncludePath>$(GtestDir);$(GtestDir)\include;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)bin;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup>
@@ -41,7 +41,7 @@
       <PreprocessorDefinitions>GTEST_LANG_CXX11;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>openrct2.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libopenrct2.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Console</SubSystem>
     </Link>
   </ItemDefinitionGroup>

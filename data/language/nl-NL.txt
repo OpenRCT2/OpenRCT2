@@ -1,4 +1,4 @@
-STR_0000    :
+﻿STR_0000    :
 STR_0001    :{STRINGID} {COMMA16}
 STR_0002    :Spiraalachtbaan
 STR_0003    :Staande achtbaan
@@ -4161,6 +4161,7 @@ STR_5856    :{SMALLFONT}{BLACK}Stelt de gebruikte schermresolutie bij volledig s
 STR_5857    :{SMALLFONT}{BLACK}Spelopties
 STR_5858    :{SMALLFONT}{BLACK}Leidt de grafische uitvoer door de GPU. Dit verbetert de compatibiliteit met schermopnamesoftware, maar kan de prestaties iets verminderen.
 STR_5859    :{SMALLFONT}{BLACK}Frame tweening gebruiken om de weergave vloeiender te maken. Als dit is uitgeschakeld zal het spel draaien op 40 FPS.
+STR_5860    :Wisselen tussen orginele en gedecompileerde baantekencode
 STR_5861    :Kon de sleutel niet verifiëren.
 STR_5862    :Onbekende spelers blokkeren
 STR_5863    :{SMALLFONT}{BLACK}Alleen spelers met bekende sleutels toelaten.
@@ -4295,6 +4296,14 @@ STR_5991    :Kan element niet plakken
 STR_5992    :De limiet voor kaartelementen is bereikt
 STR_5993    :{SMALLFONT}{BLACK}Geselecteerd element kopiëren
 STR_5994    :{SMALLFONT}{BLACK}Gekopieerd element plakken
+STR_5995    :Turbo
+STR_5996    :Turbosnelheid
+STR_5997    :Geld toevoegen/instellen
+STR_5998    :Toevoegen
+STR_5999    :Instellen
+STR_6000    :Voer een bedrag in
+
+STR_6012    :{COMMA1DP16}
 
 #############
 # Scenarios #
@@ -4657,7 +4666,7 @@ STR_DTLS    :Het fundament van dit themapark wordt gevormd door twee enorme rots
 <Octagon Park>
 STR_SCNR    :Octagon Park
 STR_PARK    :Octagon Park
-STR_DTLS    :In dit grote moet je tien grote achtbanen ontwerpen en bouwen.
+STR_DTLS    :In dit grote park moet je tien grote achtbanen ontwerpen en bouwen.
 
 <Pleasure Island>
 STR_SCNR    :Pleasure Island

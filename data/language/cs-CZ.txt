@@ -1,4 +1,4 @@
-# STR_XXXX part is read and XXXX becomes the string id number.
+﻿# STR_XXXX part is read and XXXX becomes the string id number.
 # Everything after the colon and before the new line will be saved as the string.
 # Use # at the beginning of a line to leave a comment.
 STR_0000    :
@@ -3491,7 +3491,7 @@ STR_5147    :Cheaty
 STR_5148    :{SMALLFONT}{BLACK}Změnit rychlost hry
 STR_5149    :{SMALLFONT}{BLACK}Zobrazit možnosti cheatů
 STR_5150    :Zapnout debug nástroje
-STR_5151    :
+STR_5151    : 
 STR_5152    :,
 STR_5153    :Upravit motivy...
 STR_5154    :Hardwarové zobrazování
@@ -4303,6 +4303,8 @@ STR_5991    :Nelze vložit prvek...
 STR_5992    :Dosažen limit prvků mapy
 STR_5993    :{SMALLFONT}{BLACK}Kopírovat prvek
 STR_5994    :{SMALLFONT}{BLACK}Vložit prvek
+
+STR_6012    :{COMMA1DP16}
 
 ###############################################################################
 ## RCT2 Objects

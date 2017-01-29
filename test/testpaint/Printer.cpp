@@ -16,11 +16,11 @@
 
 #include "Printer.hpp"
 #include "String.hpp"
-#include "../../src/core/Util.hpp"
+#include <openrct2/core/Util.hpp>
 #include "FunctionCall.hpp"
 
 extern "C" {
-#include "../../src/sprites.h"
+#include <openrct2/sprites.h>
 }
 
 namespace Printer {

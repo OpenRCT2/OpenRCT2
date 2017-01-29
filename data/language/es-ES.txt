@@ -4263,6 +4263,24 @@ STR_5991    :No se puede pegar el elemento...
 STR_5992    :El limite de elementos del mapa ha sido alcanzado
 STR_5993    :{SMALLFONT}{BLACK}Copiar elemento seleccionado
 STR_5994    :{SMALLFONT}{BLACK}Pegar elemento copiado
+STR_5995    :Acelerador
+STR_5996    :Velocidad de Acelerador
+STR_5997    :Añadir/Establecer dinero
+STR_5998    :Añadir dinero
+STR_5999    :Establecer dinero
+STR_6000    :Ingresa un nuevo valor
+STR_6001    :Efectos de iluminación (experimental)
+STR_6002    :{SMALLFONT}{BLACK}Las lámparas y atracciones se iluminarán por las noches.{NEWLINE}Requiere que el motor de renderizado sea establecido en el modo 'vía hardware'.
+STR_6003    :Vista recortada
+STR_6004    :Vista recortada
+STR_6005    :Habilitar vista recortada
+STR_6006    :{SMALLFONT}{BLACK}La vista recortada sólo mostrará los elementos del mapa que estén en o por debajo de la altura de corte.
+STR_6007    :Altura de corte
+STR_6008    :{SMALLFONT}{BLACK}Da clic para alternar entre el valor sin formato y el valor en unidades de medida.
+STR_6009    :{SMALLFONT}{BLACK}Selecciona la altura de corte
+STR_6010    :{COMMA2DP32}m
+STR_6011    :{COMMA1DP16}ft
+STR_6012    :{COMMA1DP16}
 
 ##############
 # Escenarios #

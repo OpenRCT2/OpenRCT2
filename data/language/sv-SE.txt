@@ -3666,8 +3666,8 @@ STR_5337    :Parkentré
 STR_5338    :Ämnestyp
 STR_5339    :{SMALLFONT}{BLACK}Bashöjd
 STR_5340    :{SMALLFONT}{BLACK}Frihöjd
-STR_5341    :Flaggor
-STR_5342    :Välj en ruta
+STR_5341    :<removed string - do not use>
+STR_5342    :<removed string - do not use>
 STR_5343    :Placera personal automatiskt
 STR_5344    :Logg över Förändringar
 STR_5345    :Finansfusk
@@ -4218,7 +4218,67 @@ STR_5920    :Visa väder effekter
 STR_5921    :{SMALLFONT}{BLACK}Om aktiverad, regn och mörkare färger kommer att visas när det stormar.
 STR_5922    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{SMALLFONT}{BLACK}Max {STRINGID}
 STR_5923    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{SMALLFONT}{BLACK}Max {COMMA16} {STRINGID} per tåg
-
+STR_5924    :Terräng info
+STR_5925    :Gång-info
+STR_5926    :Spår-info
+STR_5927    :Dekoration-info
+STR_5928    :Entré-info
+STR_5929    :Stängsel-info
+STR_5930    :Stora dekorationer-info
+STR_5931    :Banderoll-info
+STR_5932    :Korrupt ämne-info
+STR_5933    :Egenskaper
+STR_5934    :{WINDOW_COLOUR_2}Terräng-textur: {BLACK}{STRINGID}
+STR_5935    :{WINDOW_COLOUR_2}Terräng-kant: {BLACK}{STRINGID}
+STR_5936    :{WINDOW_COLOUR_2}Ägd mark: {BLACK}{STRINGID}
+STR_5937    :Inte ägd och inte till salu
+STR_5938    :{WINDOW_COLOUR_2}Vattennivå: {BLACK}{COMMA16}
+STR_5939    :Ta bort park stängsel
+STR_5940    :Återställ park stängsel
+STR_5941    :{WINDOW_COLOUR_2}Bashöjd:
+STR_5942    :{WINDOW_COLOUR_2}Gång-namn: {BLACK}{STRINGID}
+STR_5943    :{WINDOW_COLOUR_2}Tillägg: {BLACK}{STRINGID}
+STR_5944    :{WINDOW_COLOUR_2}Tillägg: {BLACK}Ingen
+STR_5945    :{WINDOW_COLOUR_2}Anslutna kanter:
+STR_5946    :{WINDOW_COLOUR_2}Åktur typ: {BLACK}{STRINGID}
+STR_5947    :{WINDOW_COLOUR_2}Åktur identifikation: {BLACK}{COMMA16}
+STR_5948    :{WINDOW_COLOUR_2}Åktur namn: {BLACK}{STRINGID}
+STR_5949    :{WINDOW_COLOUR_2}Kjedjelyft
+STR_5950    :{WINDOW_COLOUR_2}Verkställ ändringar till hela spåret
+STR_5951    :{WINDOW_COLOUR_2}Spårdelens-ID: {BLACK}{COMMA16}
+STR_5952    :{WINDOW_COLOUR_2}Sekvensnummer: {BLACK}{COMMA16}
+STR_5953    :{SMALLFONT}{BLACK}Sortera ämnen på den valda rutan baserat på deras höjd.
+STR_5954    :{WINDOW_COLOUR_2}Dekorationens ålder: {BLACK}{COMMA16}
+STR_5955    :{WINDOW_COLOUR_2}Quadrant placement: {BLACK}{STRINGID}
+STR_5956    :Sydväst
+STR_5957    :Nordväst
+STR_5958    :Nordost
+STR_5959    :Sydost
+STR_5960    :{WINDOW_COLOUR_2}Quadrant placement:
+STR_5961    :{WINDOW_COLOUR_2}Entry index: {BLACK}{COMMA16}
+STR_5962    :{WINDOW_COLOUR_2}Kollision detection:
+STR_5963    :{WINDOW_COLOUR_2}Höjda Hörn:
+STR_5964    :{WINDOW_COLOUR_2}Diagonal
+STR_5965    :{WINDOW_COLOUR_2}Entré typ: {BLACK}{STRINGID}
+STR_5966    :{WINDOW_COLOUR_2}Park-entré del: {BLACK}{STRINGID}
+STR_5967    :Mitten
+STR_5968    :Vänster
+STR_5969    :Höger
+STR_5970    :{WINDOW_COLOUR_2}Entré ID: {BLACK}{COMMA16}
+STR_5971    :{WINDOW_COLOUR_2}Utgång ID: {BLACK}{COMMA16}
+STR_5972    :{WINDOW_COLOUR_2}Åktur ID: {BLACK}{COMMA16}
+STR_5973    :Fäst till nästa
+STR_5974    :{SMALLFONT}{BLACK}Ändra bas- och klarhöjd så det är samma som nästa ämne på den valda rutan. Genom att göra detta blir det lättare bygga på denna ruta.
+STR_5975    :Backe:
+STR_5976    :Plan
+STR_5977    :Höger sida upp
+STR_5978    :Vänster sida upp
+STR_5979    :{WINDOW_COLOUR_2}Stängsel typ: {BLACK}{COMMA16}
+STR_5980    :{WINDOW_COLOUR_2}Banderoll text: {BLACK}{STRINGID}
+STR_5981    :{WINDOW_COLOUR_2}Inte en banderoll
+STR_5982    :{WINDOW_COLOUR_2}Stor dekoration typ: {BLACK}{COMMA16}
+STR_5983    :{WINDOW_COLOUR_2}Stor dekortaion del ID: {BLACK}{COMMA16}
+STR_5984    :Blockerade gångar:
 STR_5985    :Ny mapp
 STR_5986    :Skriv in namnet på den nya mappen.
 STR_5987    :Kan inte skapa mappen
@@ -4229,6 +4289,14 @@ STR_5991    :Kan inte klistra in ämnet...
 STR_5992    :Kartan har nått sin gräns
 STR_5993    :{SMALLFONT}{BLACK}Kopiera valda ämne
 STR_5994    :{SMALLFONT}{BLACK}Klistra in kopierat ämne
+STR_5995    :Booster
+STR_5996    :Booster hastighet
+STR_5997    :Lägg till/Välj summa pengar
+STR_5998    :Lägg till summa pengar
+STR_5999    :Välj summa pengar
+STR_6000    :Skriv in nytt värde
+
+STR_6012    :{COMMA1DP16}
 
 #############
 # Scenarion #

@@ -1,4 +1,4 @@
-# STR_XXXX part is read and XXXX becomes the string id number.
+﻿# STR_XXXX part is read and XXXX becomes the string id number.
 # Everything after the colon and before the new line will be saved as the string.
 # Use # at the beginning of a line to leave a comment.
 STR_0000    :
@@ -4304,6 +4304,24 @@ STR_5991    :無法貼上元素...
 STR_5992    :此地圖元素的數量已達上限
 STR_5993    :{SMALLFONT}{BLACK}複製所選元素
 STR_5994    :{SMALLFONT}{BLACK}貼上所選元素
+STR_5995    :加速裝置
+STR_5996    :加速速度
+STR_5997    :增加/設定金錢數目
+STR_5998    :增加金錢數目
+STR_5999    :設定金錢數目
+STR_6000    :請輸入新數目
+STR_6001    :啟用燈光效果 (實驗性質)
+STR_6002    :{SMALLFONT}{BLACK}夜晚的時候, 路燈及遊樂設施將會有燈光.{NEWLINE}此功能需要先啟用硬體渲染.
+STR_6003    :切入檢視
+STR_6004    :切入檢視
+STR_6005    :啟用切入檢視
+STR_6006    :{SMALLFONT}{BLACK}切入檢視只顯示低於或等於切入高度的地圖元素
+STR_6007    :切入高度
+STR_6008    :{SMALLFONT}{BLACK}點撃來切換原生值或量度單位值
+STR_6009    :{SMALLFONT}{BLACK}選擇切入高度
+STR_6010    :{COMMA2DP32}米
+STR_6011    :{COMMA1DP16}公尺
+STR_6012    :{COMMA1DP16}
 
 #############
 # Scenarios #
@@ -4434,87 +4452,87 @@ STR_DTLS    :此發展中的大型樂園中部有三座互相競賽的鐵架旋�
 <Canary Mines>
 STR_SCNR    :Canary Mines
 STR_PARK    :Canary Mines
-STR_DTLS    :This abandoned mine already has the makings of a tourist attraction with its minature railway and a pair of vertical drop roller coasters
+STR_DTLS    :因為擁有一條觀光鐵路及兩座垂直雲霄飛車, 這個已荒廢的礦場具有成為旅遊景點的潛力
 
 <Barony Bridge>
 STR_SCNR    :Barony Bridge
 STR_PARK    :Barony Bridge
-STR_DTLS    :An old redundant bridge is yours to develop into an amusement park
+STR_DTLS    :一條古舊並多餘的橋現可由你任意發展成一個樂園
 
 <Funtopia>
 STR_SCNR    :Funtopia
 STR_PARK    :Funtopia
-STR_DTLS    :Covering land both sides of a highway, this park has several rides already operating
+STR_DTLS    :這個被一條高速公路所分開的樂園已擁有幾個已在運行的遊樂設施
 
 <Haunted Harbor>
 STR_SCNR    :Haunted Harbor
 STR_PARK    :Haunted Harbor
-STR_DTLS    :The local authority has agreed to sell nearby land cheaply to this small seaside park, on the condition that certain rides are preserved
+STR_DTLS    :當地政府已同意將鄰近的土地以低廉的價格販賣給這個小型海邊樂園, 但條件是要保留某些遊樂設施
 
 <Fun Fortress>
 STR_SCNR    :Fun Fortress
 STR_PARK    :Fun Fortress
-STR_DTLS    :This castle is all yours to turn into a theme park
+STR_DTLS    :這個城堡現可由你任意發展成一個樂園
 
 <Future World>
 STR_SCNR    :Future World
 STR_PARK    :Future World
-STR_DTLS    :This futuristic park has plenty of space for new rides on its alien landscape
+STR_DTLS    :這個於外星土地上, 並富有未來感的樂園擁有很多建造遊樂設施的空間
 
 <Gentle Glen>
 STR_SCNR    :Gentle Glen
 STR_PARK    :Gentle Glen
-STR_DTLS    :The local population prefer gentle and relaxing rides, so it is your job to expand this park to suit their tastes
+STR_DTLS    :當地居民比較喜愛溫和及令人放鬆的遊樂設施, 所以你的任務便是要將這個樂園以他們的口味擴建
 
 <Jolly Jungle>
 STR_SCNR    :Jolly Jungle
 STR_PARK    :Jolly Jungle
-STR_DTLS    :Deep in the jungle lies a large area of land ready to be turned into a theme park
+STR_DTLS    :埋藏在森林深處的一塊巨型土地現已準備改造為一個主題樂園
 
 <Hydro Hills>
 STR_SCNR    :Hydro Hills
 STR_PARK    :Hydro Hills
-STR_DTLS    :A series of stepped lakes form the basis for this new park
+STR_DTLS    :一連串的梯間湖是這個全新樂園的根基
 
 <Sprightly Park>
 STR_SCNR    :Sprightly Park
 STR_PARK    :Sprightly Park
-STR_DTLS    :This elderly park has many historical rides but is badly in debt
+STR_DTLS    :這個古舊的樂園擁有很多具歷史性的遊樂設施, 但它欠債纍纍
 
 <Magic Quarters>
 STR_SCNR    :Magic Quarters
 STR_PARK    :Magic Quarters
-STR_DTLS    :A large area of land has been cleared and partially themed ready for you to develop into a landscaped theme park
+STR_DTLS    :一塊巨型的土地現已清空並部份裝飾好, 可供你發展成一個有特色的主題樂園
 
 <Fruit Farm>
 STR_SCNR    :Fruit Farm
 STR_PARK    :Fruit Farm
-STR_DTLS    :A thriving fruit farm has built a railroad to boost its income, your job is to develop it into a full-blown amusement park
+STR_DTLS    :一個壯大中的果園已建造一條鐵路來增加收入, 你的任務要將它發展成一個完善的主題樂園
 
 <Butterfly Dam>
 STR_SCNR    :Butterfly Dam
 STR_PARK    :Butterfly Dam
-STR_DTLS    :The area around a dam is available for you to develop into an amusement park
+STR_DTLS    :這個圍繞水霸的地方現可由你任意發展成一個樂園
 
 <Coaster Canyon>
 STR_SCNR    :Coaster Canyon
 STR_PARK    :Coaster Canyon
-STR_DTLS    :A vast canyon is yours to turn into a theme park
+STR_DTLS    :這個巨大的峽谷現可由你任意發展成一個樂園
 
 <Thunderstorm Park>
 STR_SCNR    :Thunderstorm Park
 STR_PARK    :Thunderstorm Park
-STR_DTLS    :The weather is so wet here that a giant pyramid has been built to allow some rides to be built under cover
+STR_DTLS    :這裡的天氣實在太多雨, 因此一座巨型金字塔的存在可供一些遊樂設施建造於其之中
 
 <Harmonic Hills>
 STR_SCNR    :Harmonic Hills
 STR_PARK    :Harmonic Hills
-STR_DTLS    :The local authority won't allow you to build above tree height in this park
+STR_DTLS    :當地政府不會容許你於這個樂園內建造高於樹木的高度
 
 <Roman Village>
 STR_SCNR    :Roman Village
 STR_PARK    :Roman Village
-STR_DTLS    :Develop this Roman-themed park by adding rides and roller coasters
+STR_DTLS    :以添加遊樂設施及雲霄飛車發展這個羅馬主題的樂園
 
 <Swamp Cove>
 STR_SCNR    :Swamp Cove
@@ -4569,7 +4587,7 @@ STR_DTLS    :A tiny park has done a deal with the nearby town to allow expansion
 <Geoffrey Gardens>
 STR_SCNR    :Geoffrey Gardens
 STR_PARK    :Geoffrey Gardens
-STR_DTLS    :A large garden park needs turning into a thriving theme park
+STR_DTLS    :一個大型的賞花公園需要改造為一個壯大的主題樂園
 
 
 ## Loopy Landscapes

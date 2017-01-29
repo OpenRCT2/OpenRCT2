@@ -4,8 +4,8 @@ An open-source re-implementation of RollerCoaster Tycoon 2. A construction and m
 ### Build Status
 |             | Windows | Linux / Mac | Download |
 |-------------|---------|-------------|----------|
-| **master**  | [![AppVeyor](https://ci.appveyor.com/api/projects/status/7efnemxhon6i5n34/branch/master?svg=true)](https://ci.appveyor.com/project/IntelOrca/openrct2-ject9) | [![Travis CI](https://travis-ci.org/OpenRCT2/OpenRCT2.svg?branch=master)](https://travis-ci.org/OpenRCT2/OpenRCT2) | [![OpenRCT2.org](https://img.shields.io/badge/stable-v0.0.4-green.svg)](https://openrct2.org/downloads/master/latest) |
-| **develop** | [![AppVeyor](https://ci.appveyor.com/api/projects/status/7efnemxhon6i5n34/branch/develop?svg=true)](https://ci.appveyor.com/project/IntelOrca/openrct2-ject9) | [![Travis CI](https://travis-ci.org/OpenRCT2/OpenRCT2.svg?branch=develop)](https://travis-ci.org/OpenRCT2/OpenRCT2) | [![OpenRCT2.org](https://img.shields.io/badge/develop-v0.0.5-blue.svg)](https://openrct2.org/downloads/develop/latest) |
+| **master**  | [![AppVeyor](https://ci.appveyor.com/api/projects/status/7efnemxhon6i5n34/branch/master?svg=true)](https://ci.appveyor.com/project/IntelOrca/openrct2-ject9) | [![Travis CI](https://travis-ci.org/OpenRCT2/OpenRCT2.svg?branch=master)](https://travis-ci.org/OpenRCT2/OpenRCT2) | [![OpenRCT2.org](https://img.shields.io/badge/stable-v0.0.5-green.svg)](https://openrct2.org/downloads/master/latest) |
+| **develop** | [![AppVeyor](https://ci.appveyor.com/api/projects/status/7efnemxhon6i5n34/branch/develop?svg=true)](https://ci.appveyor.com/project/IntelOrca/openrct2-ject9) | [![Travis CI](https://travis-ci.org/OpenRCT2/OpenRCT2.svg?branch=develop)](https://travis-ci.org/OpenRCT2/OpenRCT2) | [![OpenRCT2.org](https://img.shields.io/badge/develop-v0.0.6-blue.svg)](https://openrct2.org/downloads/develop/latest) |
 
 ### Chat
 English:<br />
@@ -42,7 +42,7 @@ OpenRCT2 requires original files of RollerCoaster Tycoon 2 to play. It can be bo
 Some Linux distributions offer native packages already. These packages are usually third-party, but we're trying to resolve issues they are facing.
 * ArchLinux AUR: [openrct2-git](https://aur.archlinux.org/packages/openrct2-git) and [openrct2](https://aur.archlinux.org/packages/openrct2)
 * Ubuntu PPA: [`master` branch](https://launchpad.net/~openrct2/+archive/ubuntu/master) and [`develop` branch](https://launchpad.net/~openrct2/+archive/ubuntu/nightly) (`develop` branch builds are temporarily on hold due to [missing functionality in bzr](https://bugs.launchpad.net/ubuntu/+source/bzr-git/+bug/1084403))
-* OpenSUSE OBS: [games/openrct2](https://build.opensuse.org/package/view_file/games/openrct2/openrct2.spec)
+* openSUSE OBS: [games/openrct2](https://software.opensuse.org/download.html?project=games&package=openrct2)
 
 # 3 Building the game
 
@@ -51,8 +51,8 @@ Some Linux distributions offer native packages already. These packages are usual
 OpenRCT2 requires original files of RollerCoaster Tycoon 2 to play. It can be bought at either [Steam](http://store.steampowered.com/app/285330/) or [GOG.com](http://www.gog.com/game/rollercoaster_tycoon_2).
 
 ### Windows:
-- Vista / 7 / 8 / 10
-- Visual Studio 2015 Update 2+ (Enterprise / Professional / [Community (Free)](https://www.visualstudio.com/products/visual-studio-community-vs))
+- 7 / 8 / 10
+- Visual Studio 2015 Update 3 or 2017 RC (Enterprise / Professional / [Community (Free)](https://www.visualstudio.com/products/visual-studio-community-vs))
 - [7-Zip](http://www.7-zip.org/) (for deployment only)
 - [NSIS](http://nsis.sourceforge.net/) (for deployment only)
 
@@ -67,13 +67,18 @@ The program can also be built as a command line program using CMake. This type o
 
 ### Linux:
 - sdl2
-- sdl2-ttf
+- sdl2-ttf (can be disabled)
+- fontconfig (can be disabled)
+- libzip (>= 1.0)
+- libpng (>= 1.2)
 - speexdsp
-- curl (only if building with network support)
-- jansson (only if building with network support)
+- curl (only if building with http support)
+- jansson (>= 2.5)
+- openssl (>= 1.0; only if building with multiplayer support)
 - iconv (part of glibc on Linux)
+- zlib
+- gl (commonly provided by Mesa or GPU vendors; can be disabled)
 - cmake
-All libs listed here (bar cmake) required in 32 bit variants.
 
 ## 3.2 Compiling and running
 ### Windows:
@@ -100,7 +105,7 @@ The recommended way of building OpenRCT2 for macOS is with Xcode. The Xcode buil
 #### CMake:
 A command line version of OpenRCT2 can be built using CMake. This type of build requires you to provide the dependencies yourself. The supported method of doing this is with [Homebrew](http://brew.sh). Once you have Homebrew installed, you can download all the required libraries with this command:
 ```
-brew install cmake openssl jansson libpng sdl2 sdl2_ttf speex libzip
+brew install cmake openssl jansson libpng sdl2 sdl2_ttf speexdsp libzip
 ```
 
 Once you have the dependencies installed, you can build the project using CMake using the following commands:

@@ -1,4 +1,4 @@
-# STR_XXXX part is read and XXXX becomes the string id number.
+﻿# STR_XXXX part is read and XXXX becomes the string id number.
 # Everything after the colon and before the new line will be saved as the string.
 # Use # at the beginning of a line to leave a comment.
 STR_0000    :
@@ -4294,6 +4294,24 @@ STR_5991    :Kann Element nicht einfügen...
 STR_5992    :Das Limit der Kartenelemente wurde erreicht
 STR_5993    :{SMALLFONT}{BLACK}Ausgewähltes Element kopieren
 STR_5994    :{SMALLFONT}{BLACK}Kopiertes Element einfügen
+STR_5995    :Zusatzantrieb
+STR_5996    :Antriebsgeschwindigkeit
+STR_5997    :Geld hinzufügen/festlegen
+STR_5998    :Geld hinzufügen
+STR_5999    :Geld festlegen
+STR_6000    :Neuen Wert eingeben:
+STR_6001    :Beleuchtungseffekte aktivieren (experimentell)
+STR_6002    :{SMALLFONT}{BLACK}Lampen und Bahnen werden nachts beleuchtet.{NEWLINE}Die Grafikschnittstelle muss hierfür auf "Anzeige durch Hardware" eingestellt sein.
+STR_6003    :Schnittansicht
+STR_6004    :Schnittansicht
+STR_6005    :Schnittansicht aktivieren
+STR_6006    :{SMALLFONT}{BLACK}Die Schnittansicht zeigt nur Kartenelemente auf oder unterhalb der Schnitthöhe.
+STR_6007    :Schnitthöhe:
+STR_6008    :{SMALLFONT}{BLACK}Zum Umschalten zwischen Rohwert<->Maßeinheit klicken.
+STR_6009    :{SMALLFONT}{BLACK}Schnitthöhe auswählen
+STR_6010    :{COMMA2DP32}m
+STR_6011    :{COMMA1DP16}ft
+STR_6012    :{COMMA1DP16}
 
 #############
 # Scenarios #

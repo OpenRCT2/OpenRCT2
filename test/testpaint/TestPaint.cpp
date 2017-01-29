@@ -14,21 +14,21 @@
  *****************************************************************************/
 #pragma endregion
 
-#include <vector>
 #include <algorithm>
+#include <vector>
 
-#include "TestPaint.hpp"
 #include "GeneralSupportHeightCall.hpp"
 #include "Printer.hpp"
 #include "SegmentSupportHeightCall.hpp"
+#include "TestPaint.hpp"
 #include "Utils.hpp"
 
 extern "C" {
-    #include "../../src/paint/paint.h"
-    #include "../../src/paint/supports.h"
-    #include "../../src/ride/track_data.h"
-    #include "../../src/interface/viewport.h"
-    #include "../../src/rct2/hook.h"
+    #include <openrct2/paint/paint.h>
+    #include <openrct2/paint/supports.h>
+    #include <openrct2/ride/track_data.h>
+    #include <openrct2/interface/viewport.h>
+    #include <openrct2/rct2/hook.h>
 }
 
 namespace TestPaint
@@ -147,5 +147,4 @@ extern "C"
     {
         return TestPaint::testIsIgnored(direction, trackSequence);
     }
-
 }

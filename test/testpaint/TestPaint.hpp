@@ -18,13 +18,13 @@
 
 #include <vector>
 
-#include "../../src/common.h"
+#include <openrct2/common.h>
 
 extern "C"
 {
-    #include "../../src/interface/colour.h"
-    #include "../../src/paint/paint.h"
-    #include "../../src/paint/map_element/map_element.h"
+    #include <openrct2/interface/colour.h>
+    #include <openrct2/paint/paint.h>
+    #include <openrct2/paint/map_element/map_element.h>
 }
 
 #define gRideEntries            RCT2_ADDRESS(RCT2_ADDRESS_RIDE_ENTRIES, rct_ride_entry*)
