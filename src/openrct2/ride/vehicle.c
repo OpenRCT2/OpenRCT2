@@ -28,6 +28,7 @@
 #include "../world/map_animation.h"
 #include "../world/scenery.h"
 #include "../world/sprite.h"
+#include "../util/util.h"
 #include "cable_lift.h"
 #include "ride.h"
 #include "ride_data.h"
