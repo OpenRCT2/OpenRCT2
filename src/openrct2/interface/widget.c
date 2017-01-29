@@ -293,12 +293,14 @@ static void widget_tab_draw(rct_drawpixelinfo *dpi, rct_window *w, sint32 widget
 	if (widget->image == -1)
 		return;
 
-	// Check if tab is disabled
-	if (!widget_is_disabled(w, widgetIndex)) {
-		widget_draw_image(dpi, w, widgetIndex);
-		return;
-	}
+	// Draw outline.
+	widget_draw_image(dpi, w, widgetIndex);
 
+	// Check if tab is disabled
+	if (!widget_is_disabled(w, widgetIndex))
+		return;
+
+	// ??? Seems superfluous, as this function is only used to draw tabs.
 	if (widget->type == WWT_TAB)
 		return;
 
