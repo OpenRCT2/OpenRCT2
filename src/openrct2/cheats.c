@@ -395,7 +395,7 @@ static void cheat_remove_all_guests()
 				vehicle->num_peeps = 0;
 				vehicle->next_free_seat = 0;
 
-				for (int peepInTrainIndex = 0; peepInTrainIndex < 32; peepInTrainIndex++)
+				for (size_t peepInTrainIndex = 0; peepInTrainIndex < 32; peepInTrainIndex++)
 				{
 					vehicle->peep[peepInTrainIndex] = SPRITE_INDEX_NULL;
 				}
