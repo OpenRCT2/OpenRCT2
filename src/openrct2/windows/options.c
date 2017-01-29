@@ -1434,7 +1434,12 @@ static void window_options_invalidate(rct_window *w)
 		window_init_scroll_widgets(w);
 	}
 	window_options_set_pressed_tab(w);
+
+#ifdef DISABLE_TWITCH
+	w->disabled_widgets = (1 << WIDX_TAB_7);
+#else
 	w->disabled_widgets = 0;
+#endif
 
 	switch (w->page) {
 	case WINDOW_OPTIONS_PAGE_DISPLAY:
@@ -1950,7 +1955,6 @@ static void window_options_set_page(rct_window *w, sint32 page)
 	w->page = page;
 	w->frame_no = 0;
 	w->enabled_widgets = window_options_page_enabled_widgets[page];
-	w->disabled_widgets = ~window_options_page_enabled_widgets[page];
 	w->pressed_widgets = 0;
 	w->widgets = window_options_page_widgets[page];
 
@@ -1972,6 +1976,10 @@ static void window_options_set_pressed_tab(rct_window *w)
 static void window_options_draw_tab_image(rct_drawpixelinfo *dpi, rct_window *w, sint32 page, sint32 spriteIndex)
 {
 	sint32 widgetIndex = WIDX_TAB_1 + page;
+	rct_widget *widget = &w->widgets[widgetIndex];
+
+	sint16 l = w->x + widget->left;
+	sint16 t = w->y + widget->top;
 
 	if (!(w->disabled_widgets & (1LL << widgetIndex))) {
 		if (w->page == page) {
@@ -1979,7 +1987,21 @@ static void window_options_draw_tab_image(rct_drawpixelinfo *dpi, rct_window *w,
 			spriteIndex += (frame % window_options_tab_animation_frames[w->page]);
 		}
 
-		gfx_draw_sprite(dpi, spriteIndex, w->x + w->widgets[widgetIndex].left, w->y + w->widgets[widgetIndex].top, 0);
+		// Draw normal, enabled sprite.
+		gfx_draw_sprite(dpi, spriteIndex, l, t, 0);
+	} else {
+		// Get the colour
+		uint8 colour = NOT_TRANSLUCENT(w->colours[widget->colour]);
+
+		// Draw greyed out (light border bottom right shadow)
+		colour = w->colours[widget->colour];
+		colour = ColourMapA[NOT_TRANSLUCENT(colour)].lighter;
+		gfx_draw_sprite_solid(dpi, spriteIndex, l + 1, t + 1, colour);
+
+		// Draw greyed out (dark)
+		colour = w->colours[widget->colour];
+		colour = ColourMapA[NOT_TRANSLUCENT(colour)].mid_light;
+		gfx_draw_sprite_solid(dpi, spriteIndex, l, t, colour);
 	}
 }
 
