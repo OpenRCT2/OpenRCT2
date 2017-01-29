@@ -296,9 +296,9 @@ void lightfx_prepare_light_list()
 
 				//	log_warning("[%i, %i]", dpi->x, dpi->y);
 
-					mapCoord.x = _unk9AC14C + tileOffsetX;
-					mapCoord.y = _unk9AC14E + tileOffsetY;
-					interactionType = _unk9AC148;
+					mapCoord.x = _interactionMapX + tileOffsetX;
+					mapCoord.y = _interactionMapY + tileOffsetY;
+					interactionType = _interactionSpriteType;
 					mapElement = RCT2_GLOBAL(0x9AC150, rct_map_element*);
 #endif //LIGHTFX_UNKNOWN_PART_1
 
