@@ -52,10 +52,9 @@ else
     ${env:NO_NSIS} = "true"
 }
 
-$env:GIT_TAG            = $env:APPVEYOR_REPO_TAG_NAME
-$env:GIT_BRANCH         = $env:APPVEYOR_REPO_BRANCH
-if (${env:APPVEYOR_REPO_TAG} -eq "true")
+$env:GIT_TAG = $env:APPVEYOR_REPO_TAG_NAME
+if (${env:APPVEYOR_REPO_TAG} -ne "true")
 {
-    $env:GIT_BRANCH = $env:GIT_TAG
+    $env:GIT_BRANCH = $env:APPVEYOR_REPO_BRANCH
 }
-$env:GIT_COMMIT_SHA1    = $env:APPVEYOR_REPO_COMMIT
+$env:GIT_COMMIT_SHA1 = $env:APPVEYOR_REPO_COMMIT

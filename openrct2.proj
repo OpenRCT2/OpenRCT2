@@ -288,17 +288,18 @@
     <PropertyGroup>
       <UploadLink>https://openrct2.org/altapi/?command=push-build</UploadLink>
       <UploadFileNameShort>%(UploadArtifacts.Filename)%(UploadArtifacts.Extension)</UploadFileNameShort>
+      <UploadGitBranch>master</UploadGitBranch>
+      <UploadGitBranch Condition="'$(GIT_BRANCH)'!=''">$(GIT_BRANCH)</UploadGitBranch>
     </PropertyGroup>
     <Message Text="Uploading $(UploadFileNameShort)" Importance="high" />
     <Error Condition="'$(OPENRCT2_ORG_TOKEN)'==''" Text="OPENRCT2_ORG_TOKEN not set." />
     <Error Condition="'$(GIT_COMMIT_SHA1)'==''" Text="GIT_COMMIT_SHA1 not set." />
-    <Error Condition="'$(GIT_BRANCH)'==''" Text="GIT_BRANCH not set." />
     <Exec EchoOff="true" Command="curl.exe -s -o - ^
          --form &quot;key=$(OPENRCT2_ORG_TOKEN)&quot; ^
          --form &quot;fileName=%(UploadArtifacts.Name)&quot; ^
          --form &quot;version=$(Version)&quot; ^
          --form &quot;gitHash=$(GIT_COMMIT_SHA1)&quot; ^
-         --form &quot;gitBranch=$(GIT_BRANCH)&quot; ^
+         --form &quot;gitBranch=$(UploadGitBranch)&quot; ^
          --form &quot;flavourId=%(UploadArtifacts.FlavourId)&quot; ^
          --form &quot;file=@%(UploadArtifacts.Identity)&quot; ^
          &quot;$(UploadLink)&quot;"
