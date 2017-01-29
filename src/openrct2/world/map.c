@@ -3635,7 +3635,7 @@ void game_command_place_fence(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx
 			sint32 rideIndex = banner_get_closest_ride_index(position.x, position.y, position.z);
 			if (rideIndex != -1) {
 				banner->colour = rideIndex & 0xFF;
-				banner->flags |= BANNER_FLAG_2;
+				banner->flags |= BANNER_FLAG_LINKED_TO_RIDE;
 			}
 		}
 	}
@@ -3782,7 +3782,7 @@ void game_command_place_large_scenery(sint32* eax, sint32* ebx, sint32* ecx, sin
 
 		if (flags & GAME_COMMAND_FLAG_APPLY) {
 			rct_banner* banner = &gBanners[banner_id];
-			banner->flags |= BANNER_FLAG_1;
+			banner->flags |= BANNER_FLAG_IS_LARGE_SCENERY;
 			banner->type = 0;
 			banner->x = x / 32;
 			banner->y = y / 32;
@@ -3790,7 +3790,7 @@ void game_command_place_large_scenery(sint32* eax, sint32* ebx, sint32* ecx, sin
 			sint32 rideIndex = banner_get_closest_ride_index(x, y, z);
 			if (rideIndex != -1) {
 				banner->colour = rideIndex;
-				banner->flags |= BANNER_FLAG_2;
+				banner->flags |= BANNER_FLAG_LINKED_TO_RIDE;
 			}
 		}
 	}
@@ -5418,7 +5418,7 @@ void game_command_set_sign_name(sint32* eax, sint32* ebx, sint32* ecx, sint32* e
 			banner->string_idx = string_id;
 			user_string_free(prev_string_id);
 
-			banner->flags &= ~(BANNER_FLAG_2);
+			banner->flags &= ~(BANNER_FLAG_LINKED_TO_RIDE);
 			gfx_invalidate_screen();
 		} else {
 			gGameCommandErrorText = STR_ERR_CANT_SET_BANNER_TEXT;
@@ -5434,7 +5434,7 @@ void game_command_set_sign_name(sint32* eax, sint32* ebx, sint32* ecx, sint32* e
 		}
 
 		banner->colour = rideIndex;
-		banner->flags |= BANNER_FLAG_2;
+		banner->flags |= BANNER_FLAG_LINKED_TO_RIDE;
 
 		rct_string_id prev_string_id = banner->string_idx;
 		banner->string_idx = STR_DEFAULT_SIGN;

@@ -429,7 +429,7 @@ static void sub_6A4101(rct_map_element * map_element, uint16 height, uint32 ebp,
 
 	// save ecx, ebp, esi
 	uint32 dword_F3EF80 = ebp;
-	if (!(footpathEntry->flags & 2)) {
+	if (!(footpathEntry->flags & FOOTPATH_ENTRY_FLAG_2)) {
 		dword_F3EF80 &= 0x0F;
 	}
 
@@ -842,7 +842,7 @@ void loc_6A37C9(rct_map_element * mapElement, sint32 height, rct_footpath_entry 
 
 		sub_98197C(image_id | imageFlags, 0, 0, boundBoxSize.x, boundBoxSize.y, 0, height, boundBoxOffset.x, boundBoxOffset.y, height + 1, get_current_rotation());
 
-		if (!(mapElement->type & 1) && !(footpathEntry->flags & 2)) {
+		if (!(mapElement->type & 1) && !(footpathEntry->flags & FOOTPATH_ENTRY_FLAG_2)) {
 			// don't draw
 		} else {
 			sub_98199C(imageId | imageFlags, 0, 0, boundBoxSize.x, boundBoxSize.y, 0, height, boundBoxOffset.x, boundBoxOffset.y, height + 1, get_current_rotation());
@@ -959,7 +959,7 @@ void loc_6A3B57(rct_map_element* mapElement, sint16 height, rct_footpath_entry* 
 
 		sub_98197C(bridgeImage | imageFlags, 0, 0, boundBoxSize.x, boundBoxSize.y, 0, height, boundBoxOffset.x, boundBoxOffset.y, height + 1, get_current_rotation());
 
-		if ((mapElement->type & 1) || (footpathEntry->flags & 2)) {
+		if ((mapElement->type & 1) || (footpathEntry->flags & FOOTPATH_ENTRY_FLAG_2)) {
 			sub_98199C(imageId | imageFlags, 0, 0, boundBoxSize.x, boundBoxSize.y, 0, height, boundBoxOffset.x, boundBoxOffset.y, height + 1, get_current_rotation());
 		}
 	}

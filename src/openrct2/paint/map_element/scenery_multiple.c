@@ -257,7 +257,7 @@ void scenery_multiple_paint(uint8 direction, uint16 height, rct_map_element *map
 		uint32 bannerIndex = (mapElement->type & 0xC0) | ((mapElement->properties.scenerymultiple.colour[0] & 0xE0) >> 2) | ((mapElement->properties.scenerymultiple.colour[1] & 0xE0) >> 5);
 		rct_banner *banner = &gBanners[bannerIndex];
 		rct_string_id stringId = banner->string_idx;
-		if (banner->flags & BANNER_FLAG_2) {
+		if (banner->flags & BANNER_FLAG_LINKED_TO_RIDE) {
 			rct_ride * ride = get_ride(banner->colour);
 			stringId = ride->name;
 			set_format_arg(0, uint32, ride->name_arguments);
@@ -347,7 +347,7 @@ void scenery_multiple_paint(uint8 direction, uint16 height, rct_map_element *map
 	uint16 scrollMode = entry->large_scenery.var_11 + ((direction + 1) & 0x3);
 	rct_banner *banner = &gBanners[bannerIndex];
 	set_format_arg(0, rct_string_id, banner->string_idx);
-	if (banner->flags & BANNER_FLAG_2) {
+	if (banner->flags & BANNER_FLAG_LINKED_TO_RIDE) {
 		rct_ride * ride = get_ride(banner->colour);
 		set_format_arg(0, rct_string_id, ride->name);
 		set_format_arg(2, uint32, ride->name_arguments);

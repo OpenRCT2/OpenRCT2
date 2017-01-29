@@ -250,7 +250,7 @@ void window_footpath_open()
 
 	// If a restricted path was selected when the game is no longer in Sandbox mode, reset it
 	rct_footpath_entry *pathEntry = get_footpath_entry(gFootpathSelectedId);
-	if (pathEntry != (rct_footpath_entry*)-1 && (pathEntry->flags & 4) && !gCheatsSandboxMode) {
+	if (pathEntry != (rct_footpath_entry*)-1 && (pathEntry->flags & FOOTPATH_ENTRY_FLAG_SHOW_ONLY_IN_SCENARIO_EDITOR) && !gCheatsSandboxMode) {
 		pathEntry = (rct_footpath_entry*)-1;
 	}
 
@@ -397,7 +397,7 @@ static void window_footpath_dropdown(rct_window *w, sint32 widgetIndex, sint32 d
 			if (pathType->flags & flags)
 				continue;
 			// Skip queue lines of scenario editor-only paths (only applicable when the game is in sandbox mode)
-			if(widgetIndex == WIDX_QUEUELINE_TYPE && (pathType->flags & 4))
+			if(widgetIndex == WIDX_QUEUELINE_TYPE && (pathType->flags & FOOTPATH_ENTRY_FLAG_SHOW_ONLY_IN_SCENARIO_EDITOR))
 				continue;
 
 			if (j == pathId)
@@ -568,7 +568,7 @@ static void window_footpath_invalidate(rct_window *w)
 	window_footpath_widgets[WIDX_FOOTPATH_TYPE].image = pathImage;
 
 	// Disable queue line button when the path is scenario editor-only (and therefore usually shouldn't have one)
-	if(!(pathType->flags & 4)) {
+	if(!(pathType->flags & FOOTPATH_ENTRY_FLAG_SHOW_ONLY_IN_SCENARIO_EDITOR)) {
 		window_footpath_widgets[WIDX_QUEUELINE_TYPE].image = pathImage + 1;
 		window_footpath_widgets[WIDX_QUEUELINE_TYPE].type = WWT_FLATBTN;
 	} else {
@@ -1150,7 +1150,7 @@ static void footpath_select_default()
 			gFootpathSelectedId = i;
 
 			// Prioritise non-restricted path
-			if (!(pathEntry->flags & 4)) {
+			if (!(pathEntry->flags & FOOTPATH_ENTRY_FLAG_SHOW_ONLY_IN_SCENARIO_EDITOR)) {
 				break;
 			}
 		}
