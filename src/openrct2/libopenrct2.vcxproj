@@ -73,6 +73,7 @@
     <ClCompile Include="audio\MemoryAudioSource.cpp" />
     <ClCompile Include="audio\NullAudioSource.cpp" />
     <ClCompile Include="FileClassifier.cpp" />
+    <ClCompile Include="rct12\SawyerEncoding.cpp" />
     <ClCompile Include="rct2\addresses.c" />
     <ClCompile Include="audio\audio.c" />
     <ClCompile Include="cheats.c" />
@@ -414,6 +415,7 @@
     <ClInclude Include="audio\AudioSource.h" />
     <ClInclude Include="FileClassifier.h" />
     <ClInclude Include="rct12.h" />
+    <ClInclude Include="rct12\SawyerEncoding.h" />
     <ClInclude Include="rct2\addresses.h" />
     <ClInclude Include="audio\audio.h" />
     <ClInclude Include="cheats.h" />

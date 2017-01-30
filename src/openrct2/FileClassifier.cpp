@@ -16,6 +16,7 @@
 
 #include "core/FileStream.hpp"
 #include "FileClassifier.h"
+#include "rct12/SawyerEncoding.h"
 
 extern "C"
 {
@@ -26,7 +27,6 @@ extern "C"
 static bool TryClassifyAsS6(IStream * stream, ClassifiedFile * result);
 static bool TryClassifyAsS4(IStream * stream, ClassifiedFile * result);
 static bool TryClassifyAsTD4_TD6(IStream * stream, ClassifiedFile * result);
-static bool sawyercoding_try_read_chunk(void * dst, size_t expectedSize, IStream * stream);
 
 bool TryClassifyFile(const std::string &path, ClassifiedFile * result)
 {
@@ -72,7 +72,7 @@ bool TryClassifyFile(IStream * stream, ClassifiedFile * result)
 static bool TryClassifyAsS6(IStream * stream, ClassifiedFile * result)
 {
     rct_s6_header s6Header;
-    if (sawyercoding_try_read_chunk(&s6Header, sizeof(rct_s6_header), stream))
+    if (SawyerEncoding::TryReadChunk(&s6Header, stream))
     {
         if (s6Header.type == S6_TYPE_SAVEDGAME)
         {
@@ -143,33 +143,5 @@ static bool TryClassifyAsTD4_TD6(IStream * stream, ClassifiedFile * result)
     }
     Memory::Free(data);
 
-    return success;
-}
-
-static bool sawyercoding_try_read_chunk(void * dst, size_t expectedSize, IStream * stream)
-{
-    uint64 originalPosition = stream->GetPosition();
-
-    bool success = false;
-    auto header = stream->ReadValue<sawyercoding_chunk_header>();
-    switch (header.encoding) {
-    case CHUNK_ENCODING_NONE:
-    case CHUNK_ENCODING_RLE:
-    case CHUNK_ENCODING_RLECOMPRESSED:
-    case CHUNK_ENCODING_ROTATE:
-        uint8 * compressedData = Memory::Allocate<uint8>(header.length);
-        if (stream->TryRead(compressedData, header.length) == header.length)
-        {
-            size_t uncompressedLength = sawyercoding_read_chunk_buffer((uint8 *)dst, compressedData, header, expectedSize);
-            if (uncompressedLength == expectedSize)
-            {
-                success = true;
-            }
-        }
-        Memory::Free(compressedData);
-        break;
-    }
-
-    stream->SetPosition(originalPosition);
     return success;
 }
