@@ -14,11 +14,14 @@
  *****************************************************************************/
 #pragma endregion
 
+#include <memory>
 #include <vector>
 #include "../core/Collections.hpp"
 #include "../core/Console.hpp"
 #include "../core/Exception.hpp"
+#include "../core/FileStream.hpp"
 #include "../core/Guard.hpp"
+#include "../core/IStream.hpp"
 #include "../core/Memory.hpp"
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
@@ -91,9 +94,9 @@ public:
 class S4Importer final : public IS4Importer
 {
 private:
-    const utf8 * _s4Path;
-    rct1_s4      _s4;
-    uint8        _gameVersion;
+    const utf8 * _s4Path = nullptr;
+    rct1_s4      _s4 = { 0 };
+    uint8        _gameVersion = 0;
 
     // Lists of dynamic object entries
     EntryList _rideEntries;
@@ -120,24 +123,6 @@ private:
     uint8 _researchRideTypeUsed[128];
 
 public:
-    void LoadSavedGame(const utf8 * path) override
-    {
-        if (!rct1_read_sv4(path, &_s4))
-        {
-            throw Exception("Unable to load SV4.");
-        }
-        _s4Path = path;
-    }
-
-    void LoadScenario(const utf8 * path) override
-    {
-        if (!rct1_read_sc4(path, &_s4))
-        {
-            throw Exception("Unable to load SC4.");
-        }
-        _s4Path = path;
-    }
-
     void Load(const utf8 * path) override
     {
         const utf8 * extension = Path::GetExtension(path);
@@ -152,6 +137,47 @@ public:
         else
         {
             throw Exception("Invalid RCT1 park extension.");
+        }
+    }
+
+    void LoadSavedGame(const utf8 * path) override
+    {
+        auto fs = FileStream(path, FILE_MODE_OPEN);
+        LoadFromStream(&fs, false);
+        _s4Path = path;
+    }
+
+    void LoadScenario(const utf8 * path) override
+    {
+        auto fs = FileStream(path, FILE_MODE_OPEN);
+        LoadFromStream(&fs, true);
+        _s4Path = path;
+    }
+
+    void LoadFromStream(IStream * stream, bool isScenario) override
+    {
+        size_t dataSize = stream->GetLength() - stream->GetPosition();
+        std::unique_ptr<uint8> data = std::unique_ptr<uint8>(stream->ReadArray<uint8>(dataSize));
+        std::unique_ptr<uint8> decodedData = std::unique_ptr<uint8>(Memory::Allocate<uint8>(sizeof(rct1_s4)));
+
+        size_t decodedSize;
+        if (isScenario)
+        {
+            decodedSize = sawyercoding_decode_sc4(data.get(), decodedData.get(), dataSize, sizeof(rct1_s4));
+        }
+        else
+        {
+            decodedSize = sawyercoding_decode_sv4(data.get(), decodedData.get(), dataSize, sizeof(rct1_s4));
+        }
+
+        if (decodedSize == sizeof(rct1_s4))
+        {
+            Memory::Copy<void>(&_s4, decodedData.get(), sizeof(rct1_s4));
+            _s4Path = "";
+        }
+        else
+        {
+            throw Exception("Unable to decode park.");
         }
     }
 

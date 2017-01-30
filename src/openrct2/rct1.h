@@ -1189,10 +1189,6 @@ enum {
 
 extern const uint8 gRideCategories[0x60];
 
-bool rct1_read_sc4(const char *path, rct1_s4 *s4);
-bool rct1_read_sv4(const char *path, rct1_s4 *s4);
-void rct1_import_s4(rct1_s4 *s4);
-void rct1_fix_landscape();
 sint32 vehicle_preference_compare(uint8 rideType, const char * a, const char * b);
 bool rideTypeShouldLoseSeparateFlag(const rct_ride_entry *rideEntry);
 

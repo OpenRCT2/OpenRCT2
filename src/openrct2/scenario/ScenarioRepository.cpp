@@ -317,12 +317,18 @@ private:
                 // RCT1 scenario
                 bool result = false;
                 IS4Importer * s4Importer = CreateS4Importer();
-                s4Importer->LoadScenario(path.c_str());
-                if (s4Importer->GetDetails(entry))
+                try
                 {
-                    String::Set(entry->path, sizeof(entry->path), path.c_str());
-                    entry->timestamp = timestamp;
-                    result = true;
+                    s4Importer->LoadScenario(path.c_str());
+                    if (s4Importer->GetDetails(entry))
+                    {
+                        String::Set(entry->path, sizeof(entry->path), path.c_str());
+                        entry->timestamp = timestamp;
+                        result = true;
+                    }
+                }
+                catch (Exception)
+                {
                 }
                 delete s4Importer;
                 return result;

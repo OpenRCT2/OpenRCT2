@@ -19,16 +19,19 @@
 #include "../common.h"
 #include "../scenario/ScenarioRepository.h"
 
+interface IStream;
+
 /**
  * Interface to import RollerCoaster Tycoon 1 scenarios (*.SC4) and saved games (*.SV4).
  */
 interface IS4Importer
 {
 public:
-    virtual ~IS4Importer() { }
+    virtual ~IS4Importer() = default;
+    virtual void Load(const utf8 * path) abstract;
     virtual void LoadSavedGame(const utf8 * path) abstract;
     virtual void LoadScenario(const utf8 * path) abstract;
-    virtual void Load(const utf8 * path) abstract;
+    virtual void LoadFromStream(IStream * stream, bool isScenario) abstract;
     virtual void Import() abstract;
     virtual bool GetDetails(scenario_index_entry * dst) abstract;
 };
