@@ -48,7 +48,7 @@ Includes all git commit authors. Aliases are GitHub user names.
 * Robert Jordan (trigger-death) - UI theming, title sequence editor, misc.
 * Aaron van Geffen (AaronVanGeffen) - scenario select screen, font detection, misc.
 * Michał Janiszewski (janisozaur) - Linux port, crash handling, security, misc.
-* Kelson Blakewood (spacek531) - title sequence for 0.0.4
+* Kelson Blakewood (spacek531) - title sequence for 0.0.4 and 0.0.5/0.0.6
 * Hugo Wallenburg (Goddesen) - Misc.
 * Matte Andersson (Nubbie) - Misc, UX
 * Daniel Trujillo Viedma (gDanix) - Custom currency.
