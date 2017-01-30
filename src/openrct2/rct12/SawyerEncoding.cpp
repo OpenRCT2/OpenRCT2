@@ -14,7 +14,9 @@
  *****************************************************************************/
 #pragma endregion
 
+#include <memory>
 #include "../core/IStream.hpp"
+#include "../core/Math.hpp"
 #include "SawyerEncoding.h"
 
 extern "C"
@@ -24,6 +26,47 @@ extern "C"
 
 namespace SawyerEncoding
 {
+    void ReadChunk(void * dst, size_t expectedSize, IStream * stream)
+    {
+        if (!TryReadChunk(dst, expectedSize, stream))
+        {
+            throw IOException("Invalid or incorrect chunk size.");
+        }
+    }
+
+    void ReadChunkTolerant(void * dst, size_t expectedSize, IStream * stream)
+    {
+        uint64 originalPosition = stream->GetPosition();
+
+        auto header = stream->ReadValue<sawyercoding_chunk_header>();
+        switch (header.encoding) {
+        case CHUNK_ENCODING_NONE:
+        case CHUNK_ENCODING_RLE:
+        case CHUNK_ENCODING_RLECOMPRESSED:
+        case CHUNK_ENCODING_ROTATE:
+        {
+            std::unique_ptr<uint8> compressedData = std::unique_ptr<uint8>(Memory::Allocate<uint8>(header.length));
+            if (stream->TryRead(compressedData.get(), header.length) != header.length)
+            {
+                throw IOException("Corrupt chunk size.");
+            }
+
+            // Allow 16MiB for chunk data
+            size_t bufferSize = 16 * 1024 * 1024;
+            std::unique_ptr<uint8> buffer = std::unique_ptr<uint8>(Memory::Allocate<uint8>(bufferSize));
+            size_t uncompressedLength = sawyercoding_read_chunk_buffer(buffer.get(), compressedData.get(), header, bufferSize);
+            size_t copyLength = Math::Min(uncompressedLength, expectedSize);
+
+            Memory::Set(dst, 0, expectedSize);
+            Memory::Copy<void>(dst, buffer.get(), copyLength);
+            break;
+        }
+        default:
+            stream->SetPosition(originalPosition);
+            throw IOException("Invalid chunk encoding.");
+        }
+    }
+
     bool TryReadChunk(void * dst, size_t expectedSize, IStream * stream)
     {
         uint64 originalPosition = stream->GetPosition();

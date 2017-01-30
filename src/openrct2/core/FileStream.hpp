@@ -73,6 +73,26 @@ public:
         _fileSize = SDL_RWsize(_file);
     }
 
+    FileStream(SDL_RWops * ops, sint32 fileMode)
+    {
+        _file = ops;
+        switch (fileMode) {
+        case FILE_MODE_OPEN:
+            _canRead = true;
+            _canWrite = false;
+            break;
+        case FILE_MODE_WRITE:
+            _canRead = false;
+            _canWrite = true;
+            break;
+        default:
+            throw;
+        }
+
+        _disposed = false;
+        _fileSize = SDL_RWsize(_file);
+    }
+
     ~FileStream()
     {
         if (!_disposed)

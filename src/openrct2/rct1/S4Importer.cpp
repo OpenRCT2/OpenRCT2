@@ -161,7 +161,8 @@ public:
         std::unique_ptr<uint8> decodedData = std::unique_ptr<uint8>(Memory::Allocate<uint8>(sizeof(rct1_s4)));
 
         size_t decodedSize;
-        if (isScenario)
+        sint32 fileType = sawyercoding_detect_file_type(data.get(), dataSize);
+        if (isScenario && (fileType & FILE_VERSION_MASK) != FILE_VERSION_RCT1)
         {
             decodedSize = sawyercoding_decode_sc4(data.get(), decodedData.get(), dataSize, sizeof(rct1_s4));
         }

@@ -547,7 +547,6 @@
     <ClInclude Include="rct2.h" />
     <ClInclude Include="rct2\interop.h" />
     <ClInclude Include="rct2\S6Exporter.h" />
-    <ClInclude Include="rct2\S6Importer.h" />
     <ClInclude Include="ride\cable_lift.h" />
     <ClInclude Include="ride\coaster\bolliger_mabillard_track.h" />
     <ClInclude Include="ride\coaster\junior_roller_coaster.h" />
