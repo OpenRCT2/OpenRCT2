@@ -16,18 +16,18 @@
 
 #pragma once
 
-#include "../common.h"
-#include "../scenario/ScenarioRepository.h"
+#include "common.h"
+#include "scenario/ScenarioRepository.h"
 
 interface IStream;
 
 /**
- * Interface to import RollerCoaster Tycoon 1 scenarios (*.SC4) and saved games (*.SV4).
+ * Interface to import scenarios and saved games.
  */
-interface IS4Importer
+interface IParkImporter
 {
 public:
-    virtual ~IS4Importer() = default;
+    virtual ~IParkImporter() = default;
     virtual void Load(const utf8 * path) abstract;
     virtual void LoadSavedGame(const utf8 * path) abstract;
     virtual void LoadScenario(const utf8 * path) abstract;
@@ -36,4 +36,5 @@ public:
     virtual bool GetDetails(scenario_index_entry * dst) abstract;
 };
 
-IS4Importer * CreateS4Importer();
+IParkImporter * CreateS4Importer();
+IParkImporter * CreateS6Importer();

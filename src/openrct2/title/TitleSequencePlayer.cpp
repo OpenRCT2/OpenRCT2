@@ -22,7 +22,7 @@
 #include "../core/Math.hpp"
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
-#include "../rct1/S4Importer.h"
+#include "../ParkImporter.h"
 #include "../scenario/ScenarioRepository.h"
 #include "../scenario/ScenarioSources.h"
 #include "TitleSequence.h"
@@ -360,7 +360,7 @@ private:
             try
             {
                 bool isScenario = String::Equals(extension, ".sc4", true);
-                IS4Importer * s4Importer = CreateS4Importer();
+                IParkImporter * s4Importer = CreateS4Importer();
                 s4Importer->Load(path);
                 s4Importer->Import();
                 PrepareParkForPlayback(isScenario);

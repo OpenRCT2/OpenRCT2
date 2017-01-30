@@ -27,8 +27,8 @@
 #include "../core/String.hpp"
 #include "../core/Util.hpp"
 #include "../object/ObjectManager.h"
+#include "../ParkImporter.h"
 #include "../scenario/ScenarioSources.h"
-#include "S4Importer.h"
 #include "Tables.h"
 
 extern "C"
@@ -91,7 +91,7 @@ public:
     }
 };
 
-class S4Importer final : public IS4Importer
+class S4Importer final : public IParkImporter
 {
 private:
     const utf8 * _s4Path = nullptr;
@@ -126,11 +126,11 @@ public:
     void Load(const utf8 * path) override
     {
         const utf8 * extension = Path::GetExtension(path);
-        if (String::Equals(extension, ".sc4"))
+        if (String::Equals(extension, ".sc4", true))
         {
             LoadScenario(path);
         }
-        else if (String::Equals(extension, ".sv4"))
+        else if (String::Equals(extension, ".sv4", true))
         {
             LoadSavedGame(path);
         }
@@ -2479,7 +2479,7 @@ private:
     }
 };
 
-IS4Importer * CreateS4Importer()
+IParkImporter * CreateS4Importer()
 {
     return new S4Importer();
 }

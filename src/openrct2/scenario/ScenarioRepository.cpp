@@ -24,8 +24,8 @@
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
 #include "../core/Util.hpp"
+#include "../ParkImporter.h"
 #include "../PlatformEnvironment.h"
-#include "../rct1/S4Importer.h"
 #include "../rct12/SawyerEncoding.h"
 #include "ScenarioRepository.h"
 #include "ScenarioSources.h"
@@ -316,7 +316,7 @@ private:
             {
                 // RCT1 scenario
                 bool result = false;
-                IS4Importer * s4Importer = CreateS4Importer();
+                IParkImporter * s4Importer = CreateS4Importer();
                 try
                 {
                     s4Importer->LoadScenario(path.c_str());
