@@ -168,6 +168,48 @@ public:
         map_count_remaining_land_rights();
     }
 
+    bool GetDetails(scenario_index_entry * dst) override
+    {
+        bool result = false;
+        Memory::Set(dst, 0, sizeof(scenario_index_entry));
+
+        source_desc desc;
+        if (ScenarioSources::TryGetById(_s4.scenario_slot_index, &desc))
+        {
+            dst->category = desc.category;
+            dst->source_game = desc.source;
+            dst->source_index = desc.index;
+            dst->sc_id = desc.id;
+
+            dst->objective_type = _s4.scenario_objective_type;
+            dst->objective_arg_1 = _s4.scenario_objective_years;
+            dst->objective_arg_2 = _s4.scenario_objective_currency;
+            dst->objective_arg_3 = _s4.scenario_objective_num_guests;
+
+            std::string name = std::string(_s4.scenario_name, sizeof(_s4.scenario_name));
+            std::string details;
+            rct_string_id localisedStringIds[3];
+            if (language_get_localised_scenario_strings(desc.title, localisedStringIds))
+            {
+                if (localisedStringIds[0] != STR_NONE)
+                {
+                    name = String::ToStd(language_get_string(localisedStringIds[0]));
+                }
+                if (localisedStringIds[2] != STR_NONE)
+                {
+                    details = String::ToStd(language_get_string(localisedStringIds[2]));
+                }
+            }
+
+            String::Set(dst->name, sizeof(dst->name), name.c_str());
+            String::Set(dst->details, sizeof(dst->details), details.c_str());
+
+            result = true;
+        }
+
+        return result;
+    }
+
 private:
     void Initialise()
     {

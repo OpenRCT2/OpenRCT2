@@ -25,6 +25,7 @@
 #include "../core/String.hpp"
 #include "../core/Util.hpp"
 #include "../PlatformEnvironment.h"
+#include "../rct1/S4Importer.h"
 #include "../rct12/SawyerEncoding.h"
 #include "ScenarioRepository.h"
 #include "ScenarioSources.h"
@@ -270,8 +271,8 @@ private:
 
     void AddScenario(const std::string &path, uint64 timestamp)
     {
-        rct_s6_info s6Info;
-        if (!GetScenarioInfo(path, &s6Info))
+        scenario_index_entry entry;
+        if (!GetScenarioInfo(path, timestamp, &entry))
         {
             return;
         }
@@ -287,7 +288,7 @@ private:
                 conflictPath = String::ToStd(existingEntry->path);
 
                 // Overwrite existing entry with this one
-                *existingEntry = CreateNewScenarioEntry(path.c_str(), timestamp, &s6Info);
+                *existingEntry = entry;
             }
             else
             {
@@ -298,7 +299,6 @@ private:
         }
         else
         {
-            scenario_index_entry entry = CreateNewScenarioEntry(path.c_str(), timestamp, &s6Info);
             _scenarios.push_back(entry);
         }
     }
@@ -306,29 +306,40 @@ private:
     /**
      * Reads basic information from a scenario file.
      */
-    bool GetScenarioInfo(const std::string &path, rct_s6_info * info)
+    bool GetScenarioInfo(const std::string &path, uint64 timestamp, scenario_index_entry * entry)
     {
         log_verbose("GetScenarioInfo(%s, ...)", path);
         try
         {
-            auto fs = FileStream(path, FILE_MODE_OPEN);
-
             std::string extension = Path::GetExtension(path);
             if (String::Equals(extension, ".sc4", true))
             {
                 // RCT1 scenario
-                log_verbose("%s is an RCT1 scenario, not yet supported", path);
+                bool result = false;
+                IS4Importer * s4Importer = CreateS4Importer();
+                s4Importer->LoadScenario(path.c_str());
+                if (s4Importer->GetDetails(entry))
+                {
+                    String::Set(entry->path, sizeof(entry->path), path.c_str());
+                    entry->timestamp = timestamp;
+                    result = true;
+                }
+                delete s4Importer;
+                return result;
             }
             else
             {
                 // RCT2 scenario
+                auto fs = FileStream(path, FILE_MODE_OPEN);
                 rct_s6_header header;
                 if (SawyerEncoding::TryReadChunk(&header, &fs))
                 {
                     if (header.type == S6_TYPE_SCENARIO)
                     {
-                        if (SawyerEncoding::TryReadChunk(info, &fs))
+                        rct_s6_info info;
+                        if (SawyerEncoding::TryReadChunk(&info, &fs))
                         {
+                            *entry = CreateNewScenarioEntry(path, timestamp, &info);
                             return true;
                         }
                         else
@@ -350,12 +361,12 @@ private:
         return false;
     }
 
-    scenario_index_entry CreateNewScenarioEntry(const utf8 * path, uint64 timestamp, rct_s6_info * s6Info)
+    scenario_index_entry CreateNewScenarioEntry(const std::string &path, uint64 timestamp, rct_s6_info * s6Info)
     {
         scenario_index_entry entry = { 0 };
 
         // Set new entry
-        String::Set(entry.path, sizeof(entry.path), path);
+        String::Set(entry.path, sizeof(entry.path), path.c_str());
         entry.timestamp = timestamp;
         entry.category = s6Info->category;
         entry.objective_type = s6Info->objective_type;

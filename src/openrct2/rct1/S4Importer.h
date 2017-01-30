@@ -17,6 +17,7 @@
 #pragma once
 
 #include "../common.h"
+#include "../scenario/ScenarioRepository.h"
 
 /**
  * Interface to import RollerCoaster Tycoon 1 scenarios (*.SC4) and saved games (*.SV4).
@@ -28,6 +29,7 @@ public:
     virtual void LoadSavedGame(const utf8 * path) abstract;
     virtual void LoadScenario(const utf8 * path) abstract;
     virtual void Import() abstract;
+    virtual bool GetDetails(scenario_index_entry * dst) abstract;
 };
 
 IS4Importer * CreateS4Importer();
