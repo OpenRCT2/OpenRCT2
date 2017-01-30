@@ -28,6 +28,7 @@ public:
     virtual ~IS4Importer() { }
     virtual void LoadSavedGame(const utf8 * path) abstract;
     virtual void LoadScenario(const utf8 * path) abstract;
+    virtual void Load(const utf8 * path) abstract;
     virtual void Import() abstract;
     virtual bool GetDetails(scenario_index_entry * dst) abstract;
 };

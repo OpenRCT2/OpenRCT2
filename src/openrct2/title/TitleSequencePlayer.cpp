@@ -361,16 +361,8 @@ private:
             {
                 bool isScenario = String::Equals(extension, ".sc4", true);
                 IS4Importer * s4Importer = CreateS4Importer();
-                if (isScenario)
-                {
-                    s4Importer->LoadScenario(path);
-                    s4Importer->Import();
-                }
-                else
-                {
-                    s4Importer->LoadSavedGame(path);
-                    s4Importer->Import();
-                }
+                s4Importer->Load(path);
+                s4Importer->Import();
                 PrepareParkForPlayback(isScenario);
                 success = true;
             }

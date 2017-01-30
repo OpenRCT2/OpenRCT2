@@ -138,6 +138,23 @@ public:
         _s4Path = path;
     }
 
+    void Load(const utf8 * path) override
+    {
+        const utf8 * extension = Path::GetExtension(path);
+        if (String::Equals(extension, ".sc4"))
+        {
+            LoadScenario(path);
+        }
+        else if (String::Equals(extension, ".sv4"))
+        {
+            LoadSavedGame(path);
+        }
+        else
+        {
+            throw Exception("Invalid RCT1 park extension.");
+        }
+    }
+
     void Import() override
     {
         Initialise();
