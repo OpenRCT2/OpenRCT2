@@ -379,7 +379,7 @@ static void cheat_remove_all_guests()
 	{
 		ride->num_riders = 0;
 
-		for (size_t stationIndex = 0; stationIndex < 4; stationIndex++)
+		for (size_t stationIndex = 0; stationIndex < RCT12_MAX_STATIONS_PER_RIDE; stationIndex++)
 		{
 			ride->queue_length[stationIndex] = 0;
 			ride->last_peep_in_queue[stationIndex] = SPRITE_INDEX_NULL;
