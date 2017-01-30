@@ -24,6 +24,7 @@
 #include "world/climate.h"
 #include "world/footpath.h"
 #include "world/scenery.h"
+#include "world/sprite.h"
 
 bool gCheatsSandboxMode = false;
 bool gCheatsDisableClearanceChecks = false;
@@ -360,6 +361,7 @@ static void cheat_give_all_guests(sint32 object)
 static void cheat_remove_all_guests()
 {
 	rct_peep *peep;
+	rct_vehicle *vehicle;
 	uint16 spriteIndex, nextSpriteIndex;
 
 	for (spriteIndex = gSpriteListHead[SPRITE_LIST_PEEP]; spriteIndex != SPRITE_INDEX_NULL; spriteIndex = nextSpriteIndex) {
@@ -370,19 +372,39 @@ static void cheat_remove_all_guests()
 		}
 	}
 
-	sint32 i;
+	sint32 rideIndex;
 	rct_ride *ride;
 
-	FOR_ALL_RIDES(i, ride)
+	FOR_ALL_RIDES(rideIndex, ride)
 	{
-		ride_clear_for_construction(i);
-		ride_set_status(i, RIDE_STATUS_CLOSED);
+		ride->num_riders = 0;
 
-		for (size_t j = 0; j < 4; j++) {
-			ride->queue_length[j] = 0;
-			ride->last_peep_in_queue[j] = SPRITE_INDEX_NULL;
+		for (size_t stationIndex = 0; stationIndex < RCT12_MAX_STATIONS_PER_RIDE; stationIndex++)
+		{
+			ride->queue_length[stationIndex] = 0;
+			ride->last_peep_in_queue[stationIndex] = SPRITE_INDEX_NULL;
+		}
+
+		for (size_t trainIndex = 0; trainIndex < 32; trainIndex++)
+		{
+			spriteIndex = ride->vehicles[trainIndex];
+			while (spriteIndex != SPRITE_INDEX_NULL)
+			{
+				vehicle = GET_VEHICLE(spriteIndex);
+
+				vehicle->num_peeps = 0;
+				vehicle->next_free_seat = 0;
+
+				for (size_t peepInTrainIndex = 0; peepInTrainIndex < 32; peepInTrainIndex++)
+				{
+					vehicle->peep[peepInTrainIndex] = SPRITE_INDEX_NULL;
+				}
+
+				spriteIndex = vehicle->next_vehicle_on_train;
+			}
 		}
 	}
+
 	window_invalidate_by_class(WC_RIDE);
 	gfx_invalidate_screen();
 }
