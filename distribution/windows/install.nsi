@@ -137,9 +137,6 @@ Section "!OpenRCT2" Section1
     File ..\changelog.txt
     Push "$INSTDIR\changelog.txt"
     Call unix2dos
-    File ..\known_issues.txt
-    Push "$INSTDIR\known_issues.txt"
-    Call unix2dos
     File ..\..\licence.txt
     Push "$INSTDIR\licence.txt"
     Call unix2dos
@@ -215,7 +212,6 @@ Section "Uninstall"
 
     ; Clean up OpenRCT2 dir
     Delete "$INSTDIR\changelog.txt"
-    Delete "$INSTDIR\known_issues.txt"
     Delete "$INSTDIR\licence.txt"
     Delete "$INSTDIR\readme.txt"
     Delete "$INSTDIR\contributors.md"

@@ -94,7 +94,6 @@
     <PublishItems Include="$(OutputDll)" />
     <PublishItems Include="$(TargetDir)data" />
     <PublishItems Include="$(DistDir)changelog.txt" />
-    <PublishItems Include="$(DistDir)known_issues.txt" />
     <PublishItems Include="$(DistDir)readme.txt" />
     <PublishItems Include="$(RootDir)contributors.md" />
     <PublishItems Include="$(RootDir)licence.txt" />
