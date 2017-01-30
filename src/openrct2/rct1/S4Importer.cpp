@@ -227,7 +227,6 @@ private:
         uint16 mapSize = _s4.map_size == 0 ? 128 : _s4.map_size;
 
         // Do map initialisation, same kind of stuff done when loading scenario editor
-        audio_stop_all_music_and_sounds();
         GetObjectManager()->UnloadAll();
         game_init_all(mapSize);
         gS6Info.editor_step = EDITOR_STEP_OBJECT_SELECTION;
