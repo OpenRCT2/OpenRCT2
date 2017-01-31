@@ -308,7 +308,7 @@ private:
      */
     bool GetScenarioInfo(const std::string &path, uint64 timestamp, scenario_index_entry * entry)
     {
-        log_verbose("GetScenarioInfo(%s, ...)", path);
+        log_verbose("GetScenarioInfo(%s, ...)", path.c_str());
         try
         {
             std::string extension = Path::GetExtension(path);
@@ -349,14 +349,14 @@ private:
                     }
                     else
                     {
-                        log_verbose("%s is not a scenario", path);
+                        log_verbose("%s is not a scenario", path.c_str());
                     }
                 }
             }
         }
         catch (Exception)
         {
-            Console::Error::WriteLine("Unable to read scenario: '%s'", path);
+            Console::Error::WriteLine("Unable to read scenario: '%s'", path.c_str());
         }
         return false;
     }
