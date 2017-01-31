@@ -97,4 +97,41 @@ namespace SawyerEncoding
         }
         return success;
     }
+
+    bool ValidateChecksum(IStream * stream)
+    {
+        // Get data size
+        uint64 initialPosition = stream->GetPosition();
+        uint64 dataSize = stream->GetLength() - initialPosition;
+        if (dataSize < 8)
+        {
+            return false;
+        }
+        dataSize -= 4;
+
+        // Calculate checksum
+        uint32 checksum = 0;
+        do
+        {
+            uint8 buffer[4096];
+            uint64 bufferSize = Math::Min(dataSize, sizeof(buffer));
+            stream->Read(buffer, bufferSize);
+
+            for (uint64 i = 0; i < bufferSize; i++)
+            {
+                checksum += buffer[i];
+            }
+
+            dataSize -= bufferSize;
+        }
+        while (dataSize != 0);
+
+        // Read file checksum
+        uint32 fileChecksum = stream->ReadValue<uint32>();
+
+        // Rewind
+        stream->SetPosition(initialPosition);
+
+        return checksum == fileChecksum;
+    }
 }

@@ -31,4 +31,6 @@ namespace SawyerEncoding
     {
         return TryReadChunk(dst, sizeof(T), stream);
     }
+
+    bool ValidateChecksum(IStream * stream);
 }

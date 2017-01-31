@@ -85,15 +85,6 @@ public:
 
     void LoadSavedGame(const utf8 * path) override
     {
-        // if (!sawyercoding_validate_checksum(rw))
-        // {
-        //     gErrorType = ERROR_TYPE_FILE_LOAD;
-        //     gGameCommandErrorTitle = STR_FILE_CONTAINS_INVALID_DATA;
-        // 
-        //     log_error("failed to load saved game, invalid checksum");
-        //     throw IOException("Invalid SV6 checksum.");
-        // }
-
         auto fs = FileStream(path, FILE_MODE_OPEN);
         LoadFromStream(&fs, false);
         _s6Path = path;
@@ -101,17 +92,6 @@ public:
 
     void LoadScenario(const utf8 * path) override
     {
-        // if (!gConfigGeneral.allow_loading_with_incorrect_checksum && !sawyercoding_validate_checksum(rw))
-        // {
-        //     SDL_RWclose(rw);
-        // 
-        //     gErrorType = ERROR_TYPE_FILE_LOAD;
-        //     gErrorStringId = STR_FILE_CONTAINS_INVALID_DATA;
-        // 
-        //     log_error("failed to load scenario, invalid checksum");
-        //     throw IOException("Invalid SC6 checksum.");
-        // }
-
         auto fs = FileStream(path, FILE_MODE_OPEN);
         LoadFromStream(&fs, true);
         _s6Path = path;
@@ -119,6 +99,11 @@ public:
 
     void LoadFromStream(IStream * stream, bool isScenario)
     {
+        if (!gConfigGeneral.allow_loading_with_incorrect_checksum && !SawyerEncoding::ValidateChecksum(stream))
+        {
+            throw IOException("Invalid checksum.");
+        }
+
         SawyerEncoding::ReadChunkTolerant(&_s6.header, sizeof(_s6.header), stream);
 
         log_verbose("saved game classic_flag = 0x%02x\n", _s6.header.classic_flag);
