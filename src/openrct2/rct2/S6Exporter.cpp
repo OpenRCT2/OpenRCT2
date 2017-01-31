@@ -308,10 +308,13 @@ void S6Exporter::Export()
     _s6.current_interest_rate = gBankLoanInterestRate;
     // pad_0135934B
     _s6.same_price_throughout_extended = gSamePriceThroughoutParkB;
-    memcpy(_s6.park_entrance_x, gParkEntranceX, sizeof(_s6.park_entrance_x));
-    memcpy(_s6.park_entrance_y, gParkEntranceY, sizeof(_s6.park_entrance_y));
-    memcpy(_s6.park_entrance_z, gParkEntranceZ, sizeof(_s6.park_entrance_z));
-    memcpy(_s6.park_entrance_direction, gParkEntranceDirection, sizeof(_s6.park_entrance_direction));
+    for (uint8 i = 0; i < RCT12_MAX_PARK_ENTRANCES; i++)
+    {
+        _s6.park_entrance_x[i] = gParkEntrance[i].x;
+        _s6.park_entrance_y[i] = gParkEntrance[i].y;
+        _s6.park_entrance_z[i] = gParkEntrance[i].z;
+        _s6.park_entrance_direction[i] = gParkEntrance[i].direction;
+    }
     safe_strcpy(_s6.scenario_filename, _scenarioFileName, sizeof(_s6.scenario_filename));
     memcpy(_s6.saved_expansion_pack_names, gScenarioExpansionPacks, sizeof(_s6.saved_expansion_pack_names));
     memcpy(_s6.banners, gBanners, sizeof(_s6.banners));

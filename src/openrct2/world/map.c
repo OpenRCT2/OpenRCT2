@@ -5227,7 +5227,7 @@ static money32 place_park_entrance(sint32 flags, sint16 x, sint16 y, sint16 z, u
 
 	sint8 entranceNum = -1;
 	for (uint8 i = 0; i < MAX_PARK_ENTRANCES; ++i) {
-		if (gParkEntranceX[i] == MAP_LOCATION_NULL) {
+		if (gParkEntrance[i].x == MAP_LOCATION_NULL) {
 			entranceNum = i;
 			break;
 		}
@@ -5239,10 +5239,10 @@ static money32 place_park_entrance(sint32 flags, sint16 x, sint16 y, sint16 z, u
 	}
 
 	if (flags & GAME_COMMAND_FLAG_APPLY) {
-		gParkEntranceX[entranceNum] = x;
-		gParkEntranceY[entranceNum] = y;
-		gParkEntranceZ[entranceNum] = (z & 0xFF) << 4;
-		gParkEntranceDirection[entranceNum] = direction;
+		gParkEntrance[entranceNum].x = x;
+		gParkEntrance[entranceNum].y = y;
+		gParkEntrance[entranceNum].z = (z & 0xFF) << 4;
+		gParkEntrance[entranceNum].direction = direction;
 	}
 
 	sint8 zLow = (z & 0xFF) * 2;
