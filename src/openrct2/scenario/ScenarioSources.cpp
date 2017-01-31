@@ -218,7 +218,7 @@ namespace ScenarioSources
     // Real parks
     static const ScenarioTitleDescriptor ScenarioTitlesRealParks[] =
     {
-        { ALTON_TOWERS,                 "Alton Towers",                                     SCENARIO_CATEGORY_REAL  },
+        { SC_ALTON_TOWERS,              "Alton Towers",                                     SCENARIO_CATEGORY_REAL  },
         { SC_HEIDE_PARK,                "Heide-Park",                                       SCENARIO_CATEGORY_REAL  },
         { SC_BLACKPOOL_PLEASURE_BEACH,  "Blackpool Pleasure Beach",                         SCENARIO_CATEGORY_REAL  },
         { SC_UNIDENTIFIED,              "Six Flags Belgium",                                SCENARIO_CATEGORY_REAL  },
@@ -231,7 +231,7 @@ namespace ScenarioSources
     // Other parks
     static const ScenarioTitleDescriptor ScenarioTitlesOtherParks[] =
     {
-        { FORT_ANACHRONISM,             "Fort Anachronism",                                 SCENARIO_CATEGORY_DLC               },
+        { SC_FORT_ANACHRONISM,          "Fort Anachronism",                                 SCENARIO_CATEGORY_DLC               },
         { SC_PCPLAYER,                  "PC Player",                                        SCENARIO_CATEGORY_DLC               },
         { SC_PCGW,                      "PC Gaming World",                                  SCENARIO_CATEGORY_DLC               },
         { SC_GAMEPLAY,                  "gameplay",                                         SCENARIO_CATEGORY_DLC               },
