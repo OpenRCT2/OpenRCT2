@@ -14,22 +14,66 @@
  *****************************************************************************/
 #pragma endregion
 
+#include <memory>
 #include "core/Path.hpp"
 #include "core/String.hpp"
 #include "ParkImporter.h"
 
-IParkImporter * CreateParkImporterForPath(const std::string &path)
+namespace ParkImporter
 {
-    IParkImporter * parkImporter = nullptr;
-    std::string extension = Path::GetExtension(path);
-    if (String::Equals(extension, ".sc4", true) ||
-        String::Equals(extension, ".sv4", true))
+    IParkImporter * Create(const std::string &hintPath)
     {
-        parkImporter = CreateS4Importer();
+        IParkImporter * parkImporter = nullptr;
+        std::string extension = Path::GetExtension(hintPath);
+        if (ExtensionIsRCT1(extension))
+        {
+            parkImporter = CreateS4();
+        }
+        else
+        {
+            parkImporter = CreateS6();
+        }
+        return parkImporter;
     }
-    else
+
+    bool ExtensionIsRCT1(const std::string &extension)
     {
-        parkImporter = CreateS6Importer();
+        if (String::Equals(extension, ".sc4", true) ||
+            String::Equals(extension, ".sv4", true))
+        {
+            return true;
+        }
+        return false;
     }
-    return parkImporter;
+
+    bool ExtensionIsScenario(const std::string &extension)
+    {
+        if (String::Equals(extension, ".sc4", true) ||
+            String::Equals(extension, ".sc6", true))
+        {
+            return true;
+        }
+        return false;
+    }
+}
+
+extern "C"
+{
+    void park_importer_load_from_stream(void * stream_c, const utf8 * hintPath_c)
+    {
+        IStream * stream = (IStream *)stream_c;
+        std::string hintPath = String::ToStd(hintPath_c);
+
+        std::string extension = Path::GetExtension(hintPath);
+        bool isScenario = ParkImporter::ExtensionIsScenario(hintPath);
+
+        auto parkImporter = std::unique_ptr<IParkImporter>(ParkImporter::Create(hintPath));
+        parkImporter->LoadFromStream((IStream *)stream, isScenario);
+        parkImporter->Import();
+    }
+
+    bool park_importer_extension_is_scenario(const utf8 * extension)
+    {
+        return ParkImporter::ExtensionIsScenario(String::ToStd(extension));
+    }
 }

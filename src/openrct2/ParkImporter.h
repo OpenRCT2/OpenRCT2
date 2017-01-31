@@ -16,8 +16,11 @@
 
 #pragma once
 
-#include <string>
 #include "common.h"
+
+#ifdef __cplusplus
+
+#include <string>
 #include "scenario/ScenarioRepository.h"
 
 interface IStream;
@@ -37,6 +40,25 @@ public:
     virtual bool GetDetails(scenario_index_entry * dst) abstract;
 };
 
-IParkImporter * CreateS4Importer();
-IParkImporter * CreateS6Importer();
-IParkImporter * CreateParkImporterForPath(const std::string &path);
+namespace ParkImporter
+{
+    IParkImporter * Create(const std::string &hintPath);
+    IParkImporter * CreateS4();
+    IParkImporter * CreateS6();
+
+    bool ExtensionIsRCT1(const std::string &extension);
+    bool ExtensionIsScenario(const std::string &extension);
+}
+
+#endif
+
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+    void park_importer_load_from_stream(void * stream, const utf8 * hintPath);
+    bool park_importer_extension_is_scenario(const utf8 * extension);
+
+#ifdef __cplusplus
+}
+#endif

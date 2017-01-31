@@ -14,6 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
+#include <memory>
 #include "../common.h"
 #include "../core/Console.hpp"
 #include "../core/Exception.hpp"
@@ -109,9 +110,9 @@ exitcode_t CommandLine::HandleCommandConvert(CommandLineArgEnumerator * enumerat
     if (sourceFileType == FILE_EXTENSION_SV4 ||
         sourceFileType == FILE_EXTENSION_SC4)
     {
-        auto s4Importer = CreateS4Importer();
         try
         {
+            auto s4Importer = std::unique_ptr<IParkImporter>(ParkImporter::CreateS4());
             if (sourceFileType == FILE_EXTENSION_SC4)
             {
                 s4Importer->LoadScenario(sourcePath);

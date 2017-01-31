@@ -16,8 +16,6 @@
 
 #pragma once
 
-#include <SDL.h>
-
 #ifdef __cplusplus
 
 interface IScenarioRepository;

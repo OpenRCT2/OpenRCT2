@@ -308,7 +308,7 @@ private:
      */
     bool GetScenarioInfo(const std::string &path, uint64 timestamp, scenario_index_entry * entry)
     {
-        log_verbose("GetScenarioInfo(%s, ...)", path.c_str());
+        log_verbose("GetScenarioInfo(%s, %d, ...)", path.c_str(), timestamp);
         try
         {
             std::string extension = Path::GetExtension(path);
@@ -316,9 +316,9 @@ private:
             {
                 // RCT1 scenario
                 bool result = false;
-                IParkImporter * s4Importer = CreateS4Importer();
                 try
                 {
+                    auto s4Importer = std::unique_ptr<IParkImporter>(ParkImporter::CreateS4());
                     s4Importer->LoadScenario(path.c_str());
                     if (s4Importer->GetDetails(entry))
                     {
@@ -330,7 +330,6 @@ private:
                 catch (Exception)
                 {
                 }
-                delete s4Importer;
                 return result;
             }
             else

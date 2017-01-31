@@ -16,7 +16,6 @@
 
 #include <memory>
 #include "../common.h"
-#include <SDL.h>
 #include "../core/Console.hpp"
 #include "../core/Exception.hpp"
 #include "../core/Guard.hpp"
@@ -286,7 +285,7 @@ private:
             TitleSequenceParkHandle * parkHandle = TitleSequenceGetParkHandle(_sequence, saveIndex);
             if (parkHandle != nullptr)
             {
-                loadSuccess = LoadParkFromRW(parkHandle->RWOps, parkHandle->IsScenario);
+                loadSuccess = LoadParkFromStream((IStream *)parkHandle->Stream, parkHandle->HintPath);
                 TitleSequenceCloseParkHandle(parkHandle);
             }
             if (!loadSuccess)
@@ -357,7 +356,7 @@ private:
         bool success = false;
         try
         {
-            auto parkImporter = std::unique_ptr<IParkImporter>(CreateParkImporterForPath(path));
+            auto parkImporter = std::unique_ptr<IParkImporter>(ParkImporter::Create(path));
             parkImporter->Load(path);
             parkImporter->Import();
             PrepareParkForPlayback();
@@ -370,15 +369,29 @@ private:
         return success;
     }
 
-    bool LoadParkFromRW(SDL_RWops * rw, bool isScenario)
+    /**
+     * @param stream The stream to read the park data from.
+     * @param pathHint Hint path, the extension is grabbed to determine what importer to use.
+     */
+    bool LoadParkFromStream(IStream * stream, const std::string &hintPath)
     {
-        bool successfulLoad = isScenario ? scenario_load_rw(rw) :
-                                           game_load_sv6(rw);
-        if (successfulLoad)
+        log_verbose("TitleSequencePlayer::LoadParkFromStream(%s)", hintPath);
+        bool success = false;
+        try
         {
+            std::string extension = Path::GetExtension(hintPath);
+            bool isScenario = ParkImporter::ExtensionIsScenario(hintPath);
+            auto parkImporter = std::unique_ptr<IParkImporter>(ParkImporter::Create(hintPath));
+            parkImporter->LoadFromStream(stream, isScenario);
+            parkImporter->Import();
             PrepareParkForPlayback();
+            success = true;
         }
-        return successfulLoad;
+        catch (Exception)
+        {
+            Console::Error::WriteLine("Unable to load park: %s", hintPath.c_str());
+        }
+        return success;
     }
 
     void PrepareParkForPlayback()

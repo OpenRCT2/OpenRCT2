@@ -407,7 +407,7 @@ public:
     }
 };
 
-IParkImporter * CreateS6Importer()
+IParkImporter * ParkImporter::CreateS6()
 {
     return new S6Importer();
 }
