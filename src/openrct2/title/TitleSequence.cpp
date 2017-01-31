@@ -165,7 +165,7 @@ extern "C"
         if (handle != nullptr)
         {
             Memory::Free(handle->HintPath);
-            delete handle->Stream;
+            delete ((IStream *)handle->Stream);
         }
     }
 

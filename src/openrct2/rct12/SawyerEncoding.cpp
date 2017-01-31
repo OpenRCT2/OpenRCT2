@@ -114,7 +114,7 @@ namespace SawyerEncoding
         do
         {
             uint8 buffer[4096];
-            uint64 bufferSize = Math::Min(dataSize, sizeof(buffer));
+            uint64 bufferSize = Math::Min<uint64>(dataSize, sizeof(buffer));
             stream->Read(buffer, bufferSize);
 
             for (uint64 i = 0; i < bufferSize; i++)

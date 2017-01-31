@@ -375,7 +375,7 @@ private:
      */
     bool LoadParkFromStream(IStream * stream, const std::string &hintPath)
     {
-        log_verbose("TitleSequencePlayer::LoadParkFromStream(%s)", hintPath);
+        log_verbose("TitleSequencePlayer::LoadParkFromStream(%s)", hintPath.c_str());
         bool success = false;
         try
         {

@@ -62,10 +62,15 @@ class S6Importer final : public IParkImporter
 {
 private:
     const utf8 *    _s6Path = nullptr;
-    rct_s6_data     _s6 = { 0 };
+    rct_s6_data     _s6;
     uint8           _gameVersion = 0;
 
 public:
+    S6Importer()
+    {
+        Memory::Set(&_s6, 0, sizeof(_s6));
+    }
+
     void Load(const utf8 * path) override
     {
         const utf8 * extension = Path::GetExtension(path);
@@ -97,7 +102,7 @@ public:
         _s6Path = path;
     }
 
-    void LoadFromStream(IStream * stream, bool isScenario)
+    void LoadFromStream(IStream * stream, bool isScenario) override
     {
         if (!gConfigGeneral.allow_loading_with_incorrect_checksum && !SawyerEncoding::ValidateChecksum(stream))
         {
@@ -159,7 +164,7 @@ public:
         return false;
     }
 
-    void Import()
+    void Import() override
     {
         Initialise();
 
