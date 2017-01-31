@@ -431,12 +431,6 @@ static rct_window_event_list window_options_events = {
 
 #pragma region Enabled Widgets
 
-#ifdef DISABLE_TWITCH
-	#define TWITCH_TAB_ENABLED 0
-#else
-	#define TWITCH_TAB_ENABLED (1 << WIDX_TAB_7)
-#endif
-
 #define MAIN_OPTIONS_ENABLED_WIDGETS \
 	(1 << WIDX_CLOSE) | \
 	(1 << WIDX_TAB_1) | \
@@ -445,7 +439,7 @@ static rct_window_event_list window_options_events = {
 	(1 << WIDX_TAB_4) | \
 	(1 << WIDX_TAB_5) | \
 	(1 << WIDX_TAB_6) | \
-	TWITCH_TAB_ENABLED
+	(1 << WIDX_TAB_7)
 
 static uint32 window_options_page_enabled_widgets[] = {
 	MAIN_OPTIONS_ENABLED_WIDGETS |
