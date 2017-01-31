@@ -14,6 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
+#include "../core/Console.hpp"
 #include "../core/Exception.hpp"
 #include "../core/FileStream.hpp"
 #include "../core/IStream.hpp"
@@ -127,6 +128,7 @@ public:
             {
                 throw Exception("Park is not a scenario.");
             }
+            SawyerEncoding::ReadChunkTolerant(&_s6.info, sizeof(_s6.info), stream);
         }
         else
         {
@@ -135,8 +137,6 @@ public:
                 throw Exception("Park is not a saved game.");
             }
         }
-
-        SawyerEncoding::ReadChunkTolerant(&_s6.info, sizeof(_s6.info), stream);
 
         // Read packed objects
         // TODO try to contain this more and not store objects until later
@@ -407,6 +407,11 @@ public:
     }
 };
 
+IParkImporter * CreateS6Importer()
+{
+    return new S6Importer();
+}
+
 extern "C"
 {
     /**
@@ -436,11 +441,13 @@ extern "C"
             sprite_position_tween_reset();
             result = true;
         }
-        catch (const ObjectLoadException &)
+        catch (const ObjectLoadException &ex)
         {
+            Console::Error::WriteLine(ex.GetMessage());
         }
-        catch (const Exception &)
+        catch (const Exception &ex)
         {
+            Console::Error::WriteLine(ex.GetMessage());
         }
         delete s6Importer;
 

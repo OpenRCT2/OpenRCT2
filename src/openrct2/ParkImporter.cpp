@@ -14,29 +14,22 @@
  *****************************************************************************/
 #pragma endregion
 
-#pragma once
+#include "core/Path.hpp"
+#include "core/String.hpp"
+#include "ParkImporter.h"
 
-#include <string>
-#include "common.h"
-#include "scenario/ScenarioRepository.h"
-
-interface IStream;
-
-/**
- * Interface to import scenarios and saved games.
- */
-interface IParkImporter
+IParkImporter * CreateParkImporterForPath(const std::string &path)
 {
-public:
-    virtual ~IParkImporter() = default;
-    virtual void Load(const utf8 * path) abstract;
-    virtual void LoadSavedGame(const utf8 * path) abstract;
-    virtual void LoadScenario(const utf8 * path) abstract;
-    virtual void LoadFromStream(IStream * stream, bool isScenario) abstract;
-    virtual void Import() abstract;
-    virtual bool GetDetails(scenario_index_entry * dst) abstract;
-};
-
-IParkImporter * CreateS4Importer();
-IParkImporter * CreateS6Importer();
-IParkImporter * CreateParkImporterForPath(const std::string &path);
+    IParkImporter * parkImporter = nullptr;
+    std::string extension = Path::GetExtension(path);
+    if (String::Equals(extension, ".sc4", true) ||
+        String::Equals(extension, ".sv4", true))
+    {
+        parkImporter = CreateS4Importer();
+    }
+    else
+    {
+        parkImporter = CreateS6Importer();
+    }
+    return parkImporter;
+}

@@ -14,6 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
+#include <memory>
 #include "../common.h"
 #include <SDL.h>
 #include "../core/Console.hpp"
@@ -352,33 +353,19 @@ private:
 
     bool LoadParkFromFile(const utf8 * path)
     {
+        log_verbose("TitleSequencePlayer::LoadParkFromFile(%s)", path);
         bool success = false;
-        const utf8 * extension = Path::GetExtension(path);
-        if (String::Equals(extension, ".sc4", true) ||
-            String::Equals(extension, ".sv4", true))
+        try
         {
-            try
-            {
-                bool isScenario = String::Equals(extension, ".sc4", true);
-                IParkImporter * s4Importer = CreateS4Importer();
-                s4Importer->Load(path);
-                s4Importer->Import();
-                PrepareParkForPlayback(isScenario);
-                success = true;
-            }
-            catch (Exception)
-            {
-            }
+            auto parkImporter = std::unique_ptr<IParkImporter>(CreateParkImporterForPath(path));
+            parkImporter->Load(path);
+            parkImporter->Import();
+            PrepareParkForPlayback();
+            success = true;
         }
-        else
+        catch (Exception)
         {
-            bool isScenario = String::Equals(extension, ".sc6", true);
-            SDL_RWops * rw = SDL_RWFromFile(path, "rb");
-            if (rw != nullptr)
-            {
-                success = LoadParkFromRW(rw, isScenario);
-                SDL_RWclose(rw);
-            }
+            Console::Error::WriteLine("Unable to load park: %s", path);
         }
         return success;
     }
@@ -389,12 +376,12 @@ private:
                                            game_load_sv6(rw);
         if (successfulLoad)
         {
-            PrepareParkForPlayback(isScenario);
+            PrepareParkForPlayback();
         }
         return successfulLoad;
     }
 
-    void PrepareParkForPlayback(bool isScenario)
+    void PrepareParkForPlayback()
     {
         rct_window * w = window_get_main();
         w->viewport_target_sprite = -1;
@@ -425,10 +412,6 @@ private:
         reset_sprite_spatial_index();
         reset_all_sprite_quadrant_placements();
         window_new_ride_init_vars();
-        if (!isScenario)
-        {
-            sub_684AC3();
-        }
         scenery_set_default_placement_configuration();
         news_item_init_queue();
         load_palette();

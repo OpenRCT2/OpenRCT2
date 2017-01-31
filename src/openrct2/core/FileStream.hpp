@@ -33,11 +33,12 @@ enum
 class FileStream final : public IStream
 {
 private:
-    SDL_RWops * _file;
-    bool        _canRead;
-    bool        _canWrite;
-    bool        _disposed;
-    uint64      _fileSize;
+    SDL_RWops * _file           = 0;
+    bool        _ownsFilePtr    = false;
+    bool        _canRead        = false;
+    bool        _canWrite       = false;
+    bool        _disposed       = false;
+    uint64      _fileSize       = 0;
 
 public:
     FileStream(const std::string &path, sint32 fileMode) :
@@ -68,9 +69,8 @@ public:
         {
             throw IOException(SDL_GetError());
         }
-
-        _disposed = false;
         _fileSize = SDL_RWsize(_file);
+        _ownsFilePtr = true;
     }
 
     FileStream(SDL_RWops * ops, sint32 fileMode)
@@ -88,8 +88,6 @@ public:
         default:
             throw;
         }
-
-        _disposed = false;
         _fileSize = SDL_RWsize(_file);
     }
 
@@ -98,7 +96,10 @@ public:
         if (!_disposed)
         {
             _disposed = true;
-            SDL_RWclose(_file);
+            if (_ownsFilePtr)
+            {
+                SDL_RWclose(_file);
+            }
         }
     }
 

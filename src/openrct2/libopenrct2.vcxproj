@@ -73,6 +73,7 @@
     <ClCompile Include="audio\MemoryAudioSource.cpp" />
     <ClCompile Include="audio\NullAudioSource.cpp" />
     <ClCompile Include="FileClassifier.cpp" />
+    <ClCompile Include="ParkImporter.cpp" />
     <ClCompile Include="rct12\SawyerEncoding.cpp" />
     <ClCompile Include="rct2\addresses.c" />
     <ClCompile Include="audio\audio.c" />
