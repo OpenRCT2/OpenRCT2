@@ -171,6 +171,8 @@ static uint32 _currentLine;
 /** rct2: 0x00F1AD68 */
 static uint8 (*_mapImageData)[512][512];
 
+static sint32 _nextPeepSpawnIndex = 0;
+
 static void window_map_init_map();
 static void window_map_center_on_view_point();
 static void window_map_show_default_scenario_editor_buttons(rct_window *w);
@@ -363,13 +365,6 @@ static void window_map_mouseup(rct_window *w, sint32 widgetIndex)
 	case WIDX_PEOPLE_STARTING_POSITION:
 		if (tool_set(w, widgetIndex, 2))
 			break;
-
-		gLandToolSize = 0;
-		if (gPeepSpawns[0].x != PEEP_SPAWN_UNDEFINED &&
-			gPeepSpawns[1].x != PEEP_SPAWN_UNDEFINED
-		) {
-			gLandToolSize = 1;
-		}
 
 		show_gridlines();
 		show_land_rights();
@@ -1370,16 +1365,22 @@ static void window_map_set_peep_spawn_tool_down(sint32 x, sint32 y)
 	mapY = mapY + 16 + (word_981D6C[direction].y * 15);
 	mapZ = mapElement->base_height / 2;
 
-	sint32 peepSpawnIndex = 0;
-	if (gLandToolSize != 1 && gPeepSpawns[0].x != PEEP_SPAWN_UNDEFINED)
-		peepSpawnIndex = 1;
-
+	sint32 peepSpawnIndex = -1;
+	for (sint32 i = 0; i < MAX_PEEP_SPAWNS; i++) {
+		if (gPeepSpawns[i].x == PEEP_SPAWN_UNDEFINED) {
+			peepSpawnIndex = i;
+			break;
+		}
+	}
+	if (peepSpawnIndex == -1) {
+		peepSpawnIndex = _nextPeepSpawnIndex;
+		_nextPeepSpawnIndex = (peepSpawnIndex + 1) % MAX_PEEP_SPAWNS;
+	}
 	gPeepSpawns[peepSpawnIndex].x = mapX;
 	gPeepSpawns[peepSpawnIndex].y = mapY;
 	gPeepSpawns[peepSpawnIndex].z = mapZ;
 	gPeepSpawns[peepSpawnIndex].direction = direction;
 	gfx_invalidate_screen();
-	gLandToolSize = peepSpawnIndex;
 }
 
 /**
