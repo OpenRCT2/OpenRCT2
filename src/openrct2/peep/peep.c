@@ -10364,7 +10364,7 @@ static sint32 sub_693C9E(rct_peep *peep)
 			if (
 				peep->direction % 4 == gPeepSpawns[i].direction % 4 &&
 				x > gPeepSpawns[i].x - 4 && x < gPeepSpawns[i].x + 4 &&
-				y > gPeepSpawns[i].y - 4 && y < gPeepSpawns[i].y - 4
+				y > gPeepSpawns[i].y - 4 && y < gPeepSpawns[i].y + 4
 			) {
 				_unk_F1EE18 |= F1EE18_OUTSIDE_PARK;
 				return peep_return_to_center_of_tile(peep);
