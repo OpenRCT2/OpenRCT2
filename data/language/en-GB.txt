@@ -4339,6 +4339,8 @@ STR_6027    :Ride construction - Next track
 STR_6028    :Ride construction - Build current
 STR_6029    :Ride construction - Demolish current
 STR_6030    :{SMALLFONT}{BLACK}Scenery picker. Click any scenery on the map to select the same piece for construction.
+STR_6031    :Server Description:
+STR_6032    :Server Greeting:
 
 #############
 # Scenarios #
