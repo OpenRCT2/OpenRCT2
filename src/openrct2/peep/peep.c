@@ -9784,26 +9784,40 @@ sint32 peep_pathfind_choose_direction(sint16 x, sint16 y, uint8 z, rct_peep *pee
 }
 
 /**
- *
- *  rct2: 0x006952C0
+ * Gets the nearest park entrance relative to point, by using manhatten distance.
+ * @param x x coordinate of location
+ * @param y y coordinate of location
+ * @return Index of gParkEntrance (or 0xFF if no park entrances exist).
  */
-static sint32 guest_path_find_entering_park(rct_peep *peep, rct_map_element *map_element, uint8 edges){
+static uint8 get_nearest_park_entrance_index(uint16 x, uint16 y)
+{
 	uint8 chosenEntrance = 0xFF;
 	uint16 nearestDist = 0xFFFF;
-	for (uint8 entranceNum = 0; entranceNum < MAX_PARK_ENTRANCES; ++entranceNum){
-		if (gParkEntrances[entranceNum].x == MAP_LOCATION_NULL)
+	for (uint8 i = 0; i < MAX_PARK_ENTRANCES; i++) {
+		if (gParkEntrances[i].x == MAP_LOCATION_NULL)
 			continue;
 
-		uint16 dist = abs(gParkEntrances[entranceNum].x - peep->next_x) +
-					abs(gParkEntrances[entranceNum].y - peep->next_y);
+		uint16 dist = abs(gParkEntrances[i].x - x) + abs(gParkEntrances[i].y - y);
 
 		if (dist >= nearestDist)
 			continue;
 
 		nearestDist = dist;
-		chosenEntrance = entranceNum;
+		chosenEntrance = i;
 	}
+	return chosenEntrance;
+}
 
+/**
+ *
+ *  rct2: 0x006952C0
+ */
+static sint32 guest_path_find_entering_park(rct_peep *peep, rct_map_element *map_element, uint8 edges)
+{
+	// Send peeps to the nearest park entrance.
+	uint8 chosenEntrance = get_nearest_park_entrance_index(peep->next_x, peep->next_y);
+	
+	// If no defined park entrances are found, walk aimlessly.
 	if (chosenEntrance == 0xFF)
 		return guest_path_find_aimless(peep, edges);
 
@@ -9824,20 +9838,43 @@ static sint32 guest_path_find_entering_park(rct_peep *peep, rct_map_element *map
 }
 
 /**
+ * Gets the nearest park entrance relative to point, by using manhatten distance.
+ * @param x x coordinate of location
+ * @param y y coordinate of location
+ * @return Index of gPeepSpawns (or 0xFF if no park entrances exist).
+ */
+static uint8 get_nearest_spawn_point_index(uint16 x, uint16 y)
+{
+	uint8 chosenSpawn = 0xFF;
+	uint16 nearestDist = 0xFFFF;
+	for (uint8 i = 0; i < MAX_PEEP_SPAWNS; ++i) {
+		if (gPeepSpawns[i].x == PEEP_SPAWN_UNDEFINED)
+			continue;
+
+		uint16 dist = abs(gPeepSpawns[i].x - x) + abs(gPeepSpawns[i].y - y);
+
+		if (dist >= nearestDist)
+			continue;
+
+		nearestDist = dist;
+		chosenSpawn = i;
+	}
+	return chosenSpawn;
+}
+
+/**
  *
  *  rct2: 0x0069536C
  */
 static sint32 guest_path_find_leaving_park(rct_peep *peep, rct_map_element *map_element, uint8 edges){
-	rct2_peep_spawn* peepSpawn = &gPeepSpawns[0];
-	// Peeps for whatever reason return to their original spawn point
-	// this in future should look for the nearest.
-	if (peep->sprite_index & 1) {
-		for (sint32 i = 0; i < MAX_PEEP_SPAWNS; i++) {
-			if (gPeepSpawns[i].x == PEEP_SPAWN_UNDEFINED)
-				break;
-			peepSpawn++;
-		}
-	}
+	// Send peeps to the nearest spawn point.
+	uint8 chosenSpawn = get_nearest_spawn_point_index(peep->next_x, peep->next_y);
+
+	// If no defined spawns were found, walk aimlessly.
+	if (chosenSpawn == 0xFF)
+		return guest_path_find_aimless(peep, edges);
+	
+	rct2_peep_spawn* peepSpawn = &gPeepSpawns[chosenSpawn];
 
 	sint16 x = peepSpawn->x & 0xFFE0;
 	sint16 y = peepSpawn->y & 0xFFE0;
