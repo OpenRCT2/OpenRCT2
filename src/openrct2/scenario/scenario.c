@@ -88,43 +88,6 @@ money32 gScenarioCompanyValueRecord;
 static sint32 scenario_create_ducks();
 static void scenario_objective_check();
 
-/**
- * Loads only the basic information from a scenario.
- *  rct2: 0x006761D6
- */
-bool scenario_load_basic(const char *path, rct_s6_header *header, rct_s6_info *info)
-{
-	log_verbose("loading scenario details, %s", path);
-
-	SDL_RWops* rw = SDL_RWFromFile(path, "rb");
-	if (rw != NULL) {
-		// Read first chunk
-		size_t loaded_size = sawyercoding_read_chunk_with_size(rw, (uint8*)header, sizeof(rct_s6_header));
-		if (loaded_size != sizeof(rct_s6_header)) {
-			log_error("Failed to read header from scenario %s", path);
-			SDL_RWclose(rw);
-			return false;
-		}
-		if (header->type == S6_TYPE_SCENARIO) {
-			// Read second chunk
-			loaded_size = sawyercoding_read_chunk_with_size(rw, (uint8*)info, sizeof(rct_s6_info));
-			SDL_RWclose(rw);
-			if (loaded_size != sizeof(rct_s6_info)) {
-				log_error("Failed to read info from scenario %s", path);
-				return false;
-			}
-			return true;
-		} else {
-			log_error("invalid scenario, %s", path);
-			SDL_RWclose(rw);
-			return false;
-		}
-	}
-
-	log_error("unable to open scenario, %s", path);
-	return false;
-}
-
 sint32 scenario_load_and_play_from_path(const char *path)
 {
 	window_close_construction_windows();

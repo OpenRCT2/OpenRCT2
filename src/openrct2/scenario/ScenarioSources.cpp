@@ -218,32 +218,32 @@ namespace ScenarioSources
     // Real parks
     static const ScenarioTitleDescriptor ScenarioTitlesRealParks[] =
     {
-        { SC_UNIDENTIFIED,  "Alton Towers",                             SCENARIO_CATEGORY_REAL  },
-        { SC_UNIDENTIFIED,  "Heide-Park",                               SCENARIO_CATEGORY_REAL  },
-        { SC_UNIDENTIFIED,  "Blackpool Pleasure Beach",                 SCENARIO_CATEGORY_REAL  },
-        { SC_UNIDENTIFIED,  "Six Flags Belgium",                        SCENARIO_CATEGORY_REAL  },
-        { SC_UNIDENTIFIED,  "Six Flags Great Adventure",                SCENARIO_CATEGORY_REAL  },
-        { SC_UNIDENTIFIED,  "Six Flags Holland",                        SCENARIO_CATEGORY_REAL  },
-        { SC_UNIDENTIFIED,  "Six Flags Magic Mountain",                 SCENARIO_CATEGORY_REAL  },
-        { SC_UNIDENTIFIED,  "Six Flags over Texas",                     SCENARIO_CATEGORY_REAL  },
+        { SC_ALTON_TOWERS,              "Alton Towers",                                     SCENARIO_CATEGORY_REAL  },
+        { SC_HEIDE_PARK,                "Heide-Park",                                       SCENARIO_CATEGORY_REAL  },
+        { SC_BLACKPOOL_PLEASURE_BEACH,  "Blackpool Pleasure Beach",                         SCENARIO_CATEGORY_REAL  },
+        { SC_UNIDENTIFIED,              "Six Flags Belgium",                                SCENARIO_CATEGORY_REAL  },
+        { SC_UNIDENTIFIED,              "Six Flags Great Adventure",                        SCENARIO_CATEGORY_REAL  },
+        { SC_UNIDENTIFIED,              "Six Flags Holland",                                SCENARIO_CATEGORY_REAL  },
+        { SC_UNIDENTIFIED,              "Six Flags Magic Mountain",                         SCENARIO_CATEGORY_REAL  },
+        { SC_UNIDENTIFIED,              "Six Flags over Texas",                             SCENARIO_CATEGORY_REAL  },
     };
 
     // Other parks
     static const ScenarioTitleDescriptor ScenarioTitlesOtherParks[] =
     {
-        { SC_UNIDENTIFIED,  "Fort Anachronism",                             SCENARIO_CATEGORY_DLC               },
-        { SC_UNIDENTIFIED,  "PC Player",                                    SCENARIO_CATEGORY_DLC               },
-        { SC_UNIDENTIFIED,  "PC Gaming World",                              SCENARIO_CATEGORY_DLC               },
-        { SC_UNIDENTIFIED,  "gameplay",                                     SCENARIO_CATEGORY_DLC               },
-        { SC_UNIDENTIFIED,  "Panda World",                                  SCENARIO_CATEGORY_DLC               },
-        { SC_UNIDENTIFIED,  "Competition Land 1",                           SCENARIO_CATEGORY_DLC               },
-        { SC_UNIDENTIFIED,  "Competition Land 2",                           SCENARIO_CATEGORY_DLC               },
-        { SC_UNIDENTIFIED,  "Build your own Six Flags Belgium",             SCENARIO_CATEGORY_BUILD_YOUR_OWN    },
-        { SC_UNIDENTIFIED,  "Build your own Six Flags Great Adventure",     SCENARIO_CATEGORY_BUILD_YOUR_OWN    },
-        { SC_UNIDENTIFIED,  "Build your own Six Flags Holland",             SCENARIO_CATEGORY_BUILD_YOUR_OWN    },
-        { SC_UNIDENTIFIED,  "Build your own Six Flags Magic Mountain",      SCENARIO_CATEGORY_BUILD_YOUR_OWN    },
-        { SC_UNIDENTIFIED,  "Build your own Six Flags Park",                SCENARIO_CATEGORY_BUILD_YOUR_OWN    },
-        { SC_UNIDENTIFIED,  "Build your own Six Flags over Texas",          SCENARIO_CATEGORY_BUILD_YOUR_OWN    },
+        { SC_FORT_ANACHRONISM,          "Fort Anachronism",                                 SCENARIO_CATEGORY_DLC               },
+        { SC_PCPLAYER,                  "PC Player",                                        SCENARIO_CATEGORY_DLC               },
+        { SC_PCGW,                      "PC Gaming World",                                  SCENARIO_CATEGORY_DLC               },
+        { SC_GAMEPLAY,                  "gameplay",                                         SCENARIO_CATEGORY_DLC               },
+        { SC_UNIDENTIFIED,              "Panda World",                                      SCENARIO_CATEGORY_DLC               },
+        { SC_UNIDENTIFIED,              "Competition Land 1",                               SCENARIO_CATEGORY_DLC               },
+        { SC_UNIDENTIFIED,              "Competition Land 2",                               SCENARIO_CATEGORY_DLC               },
+        { SC_UNIDENTIFIED,              "Build your own Six Flags Belgium",                 SCENARIO_CATEGORY_BUILD_YOUR_OWN    },
+        { SC_UNIDENTIFIED,              "Build your own Six Flags Great Adventure",         SCENARIO_CATEGORY_BUILD_YOUR_OWN    },
+        { SC_UNIDENTIFIED,              "Build your own Six Flags Holland",                 SCENARIO_CATEGORY_BUILD_YOUR_OWN    },
+        { SC_UNIDENTIFIED,              "Build your own Six Flags Magic Mountain",          SCENARIO_CATEGORY_BUILD_YOUR_OWN    },
+        { SC_UNIDENTIFIED,              "Build your own Six Flags Park",                    SCENARIO_CATEGORY_BUILD_YOUR_OWN    },
+        { SC_UNIDENTIFIED,              "Build your own Six Flags over Texas",              SCENARIO_CATEGORY_BUILD_YOUR_OWN    },
     };
 
     #define DEFINE_SCENARIO_TITLE_DESC_GROUP(x) { Util::CountOf(x), x }

@@ -17,19 +17,16 @@
 #pragma once
 
 #include "../common.h"
-#include "../scenario/ScenarioRepository.h"
 
-/**
- * Interface to import RollerCoaster Tycoon 1 scenarios (*.SC4) and saved games (*.SV4).
- */
-interface IS4Importer
+interface IStream;
+
+namespace SawyerEncoding
 {
-public:
-    virtual ~IS4Importer() { }
-    virtual void LoadSavedGame(const utf8 * path) abstract;
-    virtual void LoadScenario(const utf8 * path) abstract;
-    virtual void Import() abstract;
-    virtual bool GetDetails(scenario_index_entry * dst) abstract;
-};
+    bool TryReadChunk(void * dst, size_t expectedSize, IStream * stream);
 
-IS4Importer * CreateS4Importer();
+    template<typename T>
+    bool TryReadChunk(T * dst, IStream * stream)
+    {
+        return TryReadChunk(dst, sizeof(T), stream);
+    }
+}

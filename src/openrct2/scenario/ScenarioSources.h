@@ -93,8 +93,8 @@ enum
     SC_WACKY_WARREN,
 
     // Special
-    ALTON_TOWERS,
-    FORT_ANACHRONISM,
+    SC_ALTON_TOWERS,
+    SC_FORT_ANACHRONISM,
 
     // Added Attractions
     SC_WHISPERING_CLIFFS = 40,

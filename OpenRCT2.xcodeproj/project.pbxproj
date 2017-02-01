@@ -16,6 +16,7 @@
 		008BF72C1CDAA5C30019A2AD /* track_design.c in Sources */ = {isa = PBXBuildFile; fileRef = 008BF7281CDAA5C30019A2AD /* track_design.c */; };
 		00EFEE721CF1D80B0035213B /* NetworkKey.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00EFEE701CF1D80B0035213B /* NetworkKey.cpp */; };
 		652076321E22EFE7000D0C04 /* Imaging.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 652076301E22EFE7000D0C04 /* Imaging.cpp */; };
+		652747EC1E41CE1B000F36FD /* SawyerEncoding.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 652747EA1E41CE1B000F36FD /* SawyerEncoding.cpp */; };
 		791166FB1D7486EF005912EA /* NetworkServerAdvertiser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 791166F91D7486EF005912EA /* NetworkServerAdvertiser.cpp */; };
 		85060FD31D8C17CC00DFA2B3 /* track_data_old.c in Sources */ = {isa = PBXBuildFile; fileRef = 8594C05F1D885CF600235E93 /* track_data_old.c */; };
 		8594C0601D885CF600235E93 /* track_data_old.c in Sources */ = {isa = PBXBuildFile; fileRef = 8594C05F1D885CF600235E93 /* track_data_old.c */; };
@@ -518,6 +519,8 @@
 		00EFEE711CF1D80B0035213B /* NetworkKey.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; path = NetworkKey.h; sourceTree = "<group>"; usesTabs = 0; };
 		652076301E22EFE7000D0C04 /* Imaging.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Imaging.cpp; sourceTree = "<group>"; };
 		652076311E22EFE7000D0C04 /* Imaging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Imaging.h; sourceTree = "<group>"; };
+		652747EA1E41CE1B000F36FD /* SawyerEncoding.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SawyerEncoding.cpp; path = rct12/SawyerEncoding.cpp; sourceTree = "<group>"; };
+		652747EB1E41CE1B000F36FD /* SawyerEncoding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SawyerEncoding.h; path = rct12/SawyerEncoding.h; sourceTree = "<group>"; };
 		791166F91D7486EF005912EA /* NetworkServerAdvertiser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NetworkServerAdvertiser.cpp; sourceTree = "<group>"; };
 		791166FA1D7486EF005912EA /* NetworkServerAdvertiser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetworkServerAdvertiser.h; sourceTree = "<group>"; };
 		8594C05F1D885CF600235E93 /* track_data_old.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = track_data_old.c; sourceTree = "<group>"; };
@@ -1235,6 +1238,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		652747E91E41CDFE000F36FD /* rct12 */ = {
+			isa = PBXGroup;
+			children = (
+				652747EA1E41CE1B000F36FD /* SawyerEncoding.cpp */,
+				652747EB1E41CE1B000F36FD /* SawyerEncoding.h */,
+			);
+			name = rct12;
+			sourceTree = "<group>";
+		};
 		8546F74A1D7E1D220004004C /* Tests */ = {
 			isa = PBXGroup;
 			children = (
@@ -1513,6 +1525,7 @@
 				D442715B1CC81B3200D84D28 /* peep */,
 				D44271601CC81B3200D84D28 /* platform */,
 				C650B2141CCABBDD00B4D91C /* rct1 */,
+				652747E91E41CDFE000F36FD /* rct12 */,
 				C6B5A7CF1CDFE4CB00C9C006 /* rct2 */,
 				D442716E1CC81B3200D84D28 /* ride */,
 				C6E96E1C1E04070E0076A04F /* scenario */,
@@ -2766,6 +2779,7 @@
 				D44272891CC81B3200D84D28 /* themes.c in Sources */,
 				C686F9531CDBC3B7009F9BFC /* splash_boats.c in Sources */,
 				C686F9441CDBC3B7009F9BFC /* pirate_ship.c in Sources */,
+				652747EC1E41CE1B000F36FD /* SawyerEncoding.cpp in Sources */,
 				D44272791CC81B3200D84D28 /* publisher_credits.c in Sources */,
 				C686F91E1CDBC3B7009F9BFC /* reverse_freefall_coaster.c in Sources */,
 				D442723B1CC81B3200D84D28 /* crash.cpp in Sources */,

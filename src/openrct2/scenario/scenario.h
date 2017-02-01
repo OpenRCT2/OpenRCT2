@@ -376,7 +376,6 @@ extern uint32 gLastAutoSaveUpdate;
 
 extern const char *_scenarioFileName;
 
-bool scenario_load_basic(const char *path, rct_s6_header *header, rct_s6_info *info);
 bool scenario_load_rw(SDL_RWops * rw);
 sint32 scenario_load(const char *path);
 sint32 scenario_load_and_play_from_path(const char *path);
