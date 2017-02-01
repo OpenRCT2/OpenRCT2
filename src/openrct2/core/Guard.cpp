@@ -44,6 +44,8 @@ extern "C"
 
 namespace Guard
 {
+    constexpr const utf8 * ASSERTION_MESSAGE = "An assertion failed, please report this to the OpenRCT2 developers.";
+
     // The default behaviour when an assertion is raised.
     static ASSERT_BEHAVIOUR _assertBehaviour =
 #ifdef __WINDOWS__
@@ -82,7 +84,7 @@ namespace Guard
 
         char version[128];
         openrct2_write_full_version_info(version, sizeof(version));
-        Console::Error::WriteLine("An assertion failed, please report this to the OpenRCT2 developers.");
+        Console::Error::WriteLine(ASSERTION_MESSAGE);
         Console::Error::WriteLine("Version: %s", version);
 
         // This is never freed, but acceptable considering we are about to crash out
@@ -141,7 +143,9 @@ namespace Guard
         char version[128];
         openrct2_write_full_version_info(version, sizeof(version));
 
-        String::Set(buffer, bufferSize, "An assertion failed, please report this to the OpenRCT2 developers.\r\n\r\nVersion: ");
+        String::Set(buffer, bufferSize, ASSERTION_MESSAGE);
+        String::Append(buffer, bufferSize, "\r\n\r\n");
+        String::Append(buffer, bufferSize, "Version: ");
         String::Append(buffer, bufferSize, version);
         if (formattedMessage != nullptr)
         {
