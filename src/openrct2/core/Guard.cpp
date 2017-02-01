@@ -24,14 +24,14 @@
 #undef GetMessage
 #endif
 
+#include "../OpenRCT2.h"
 #include "Console.hpp"
 #include "Diagnostics.hpp"
 #include "Guard.hpp"
+#include "String.hpp"
 
 extern "C"
 {
-    #include "../OpenRCT2.h"
-
     void openrct2_assert(bool expression, const char * message, ...)
     {
         va_list args;
@@ -44,6 +44,30 @@ extern "C"
 
 namespace Guard
 {
+    // The default behaviour when an assertion is raised.
+    static ASSERT_BEHAVIOUR _assertBehaviour =
+#ifdef __WINDOWS__
+        ASSERT_BEHAVIOUR::MESSAGE_BOX
+#else
+        ASSERT_BEHAVIOUR::CASSERT
+#endif
+        ;
+
+#ifdef __WINDOWS__
+    static void GetAssertMessage(char * buffer, size_t bufferSize, const char * formattedMessage);
+    static void ForceCrash();
+#endif
+
+    ASSERT_BEHAVIOUR GetAssertBehaviour()
+    {
+        return _assertBehaviour;
+    }
+
+    void SetAssertBehaviour(ASSERT_BEHAVIOUR behaviour)
+    {
+        _assertBehaviour = behaviour;
+    }
+
     void Assert(bool expression, const char * message, ...)
     {
         va_list args;
@@ -56,47 +80,46 @@ namespace Guard
     {
         if (expression) return;
 
+        char version[128];
+        openrct2_write_full_version_info(version, sizeof(version));
+        Console::Error::WriteLine("An assertion failed, please report this to the OpenRCT2 developers.");
+        Console::Error::WriteLine("Version: %s", version);
+
+        // This is never freed, but acceptable considering we are about to crash out
+        utf8 * formattedMessage = nullptr;
         if (message != nullptr)
         {
-            Console::Error::WriteLine("Assertion failed:");
-            Console::Error::WriteLine_VA(message, args);
+            formattedMessage = String::Format_VA(message, args);
+            Console::Error::WriteLine(formattedMessage);
         }
 
 #ifdef DEBUG
         Debug::Break();
 #endif
-#ifdef __WINDOWS__
-        char version[128];
-        openrct2_write_full_version_info(version, sizeof(version));
 
-        char buffer[512];
-        strcpy(buffer, "An assertion failed, please report this to the OpenRCT2 developers.\r\n\r\nVersion: ");
-        strcat(buffer, version);
-        if (message != nullptr)
-        {
-            strcat(buffer, "\r\n");
-            char *bufend = (char *)strchr(buffer, 0);
-            vsnprintf(bufend, sizeof(buffer) - (bufend - buffer), message, args);
-        }
-#ifdef __TEST__
-        // Abort if we are building for testing
-        abort();
-#else
-        // Show message box if we are not building for testing
-        sint32 result = MessageBoxA(nullptr, buffer, OPENRCT2_NAME, MB_ABORTRETRYIGNORE | MB_ICONEXCLAMATION);
-        if (result == IDABORT)
-        {
-#ifdef USE_BREAKPAD
-            // Force a crash that breakpad will handle allowing us to get a dump
-            *((void**)0) = 0;
-#else
+        switch (_assertBehaviour) {
+        case ASSERT_BEHAVIOUR::ABORT:
+            abort();
+            break;
+        default:
+        case ASSERT_BEHAVIOUR::CASSERT:
             assert(false);
-#endif
+            break;
+#ifdef __WINDOWS__
+        case ASSERT_BEHAVIOUR::MESSAGE_BOX:
+        {
+            // Show message box if we are not building for testing
+            char buffer[512];
+            GetAssertMessage(buffer, sizeof(buffer), formattedMessage);
+            sint32 result = MessageBoxA(nullptr, buffer, OPENRCT2_NAME, MB_ABORTRETRYIGNORE | MB_ICONEXCLAMATION);
+            if (result == IDABORT)
+            {
+                ForceCrash();
+            }
+            break;
         }
 #endif
-#else
-        assert(false);
-#endif
+        }
     }
 
     void Fail(const char * message, ...)
@@ -111,4 +134,30 @@ namespace Guard
     {
         Assert_VA(false, message, args);
     }
+
+#ifdef __WINDOWS__
+    static void GetAssertMessage(char * buffer, size_t bufferSize, const char * formattedMessage)
+    {
+        char version[128];
+        openrct2_write_full_version_info(version, sizeof(version));
+
+        String::Set(buffer, bufferSize, "An assertion failed, please report this to the OpenRCT2 developers.\r\n\r\nVersion: ");
+        String::Append(buffer, bufferSize, version);
+        if (formattedMessage != nullptr)
+        {
+            String::Append(buffer, bufferSize, "\r\n");
+            String::Append(buffer, bufferSize, formattedMessage);
+        }
+    }
+
+    static void ForceCrash()
+    {
+#ifdef USE_BREAKPAD
+        // Force a crash that breakpad will handle allowing us to get a dump
+        *((void**)0) = 0;
+#else
+        assert(false);
+#endif
+    }
+#endif
 }
