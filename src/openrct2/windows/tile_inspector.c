@@ -769,6 +769,22 @@ static void window_tile_inspector_path_toggle_edge(sint32 element_index, sint32 
 	);
 }
 
+static void window_tile_inspector_fence_set_slope(sint32 element_index, sint32 slope_value)
+{
+	// Make sure only the correct bits are set
+	assert((slope_value & 0xC0) == slope_value);
+
+	game_do_command(
+		TILE_INSPECTOR_FENCE_SET_SLOPE,
+		GAME_COMMAND_FLAG_APPLY,
+		windowTileInspectorTileX | (windowTileInspectorTileY << 8),
+		element_index,
+		GAME_COMMAND_MODIFY_TILE,
+		slope_value,
+		0
+	);
+}
+
 // Copied from track.c (track_remove), and modified for raising/lowering
 // Not sure if this should be in this file, track.c, or maybe another one
 static void window_tile_inspector_track_block_height_offset(rct_map_element *mapElement, uint8 offset)
@@ -1326,8 +1342,7 @@ static void window_tile_inspector_dropdown(rct_window *w, sint32 widgetIndex, si
 
 		switch (widgetIndex) {
 		case WIDX_FENCE_DROPDOWN_SLOPE_BUTTON:
-			mapElement->type &= ~0xC0;
-			mapElement->type |= dropdownIndex << 6;
+			window_tile_inspector_fence_set_slope(w->selected_list_item, dropdownIndex << 6);
 			break;
 		}
 		break;

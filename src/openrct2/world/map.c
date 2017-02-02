@@ -5684,6 +5684,13 @@ void game_command_modify_tile(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx
 		*ebx = tile_inspector_path_toggle_edge(x, y, element_index, edge_index, flags);
 		return;
 	}
+	case TILE_INSPECTOR_FENCE_SET_SLOPE:
+	{
+		const sint32 element_index = *edx;
+		const sint32 slope_value = *edi;
+		*ebx = tile_inspector_fence_set_slope(x, y, element_index, slope_value, flags);
+		return;
+	}
 	default:
 		log_error("invalid instruction");
 		*ebx = MONEY32_UNDEFINED;
