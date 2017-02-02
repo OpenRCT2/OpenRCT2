@@ -2356,21 +2356,42 @@ private:
 
     void FixLandOwnership()
     {
-        rct_map_element * currentElement;
-
-        switch(_s4.scenario_slot_index) {
-        case SC_KATIES_DREAMLAND:
-            currentElement = map_get_surface_element_at(74, 70);
-            currentElement->properties.surface.ownership |= OWNERSHIP_AVAILABLE;
-            currentElement = map_get_surface_element_at(75, 70);
-            currentElement->properties.surface.ownership |= OWNERSHIP_AVAILABLE;
-            currentElement = map_get_surface_element_at(76, 70);
-            currentElement->properties.surface.ownership |= OWNERSHIP_AVAILABLE;
-            currentElement = map_get_surface_element_at(77, 73);
-            currentElement->properties.surface.ownership |= OWNERSHIP_AVAILABLE;
-            currentElement = map_get_surface_element_at(80, 77);
-            currentElement->properties.surface.ownership |= OWNERSHIP_AVAILABLE;
+        switch (_s4.scenario_slot_index) {
+        case SC_DYNAMITE_DUNES:
+            FixLandOwnershipTiles({ {97, 18}, {99, 19}, {83, 34} });
             break;
+        case SC_LEAFY_LAKE:
+            FixLandOwnershipTiles({ {49, 66} });
+            break;
+        case SC_KATIES_DREAMLAND:
+            FixLandOwnershipTiles({ {74, 70}, {75, 70}, {76, 70}, {77, 73}, {80, 77} });
+            break;
+        case SC_POKEY_PARK:
+            FixLandOwnershipTiles({ {64, 102} });
+            break;
+        case SC_MYSTIC_MOUNTAIN:
+            FixLandOwnershipTiles({ {98, 69}, {98, 70}, {103, 64}, {53, 79}, {86, 93}, {87, 93} });
+            break;
+        case SC_PACIFIC_PYRAMIDS:
+            FixLandOwnershipTiles({ {93, 105}, {63, 34}, {76, 25}, {85, 31}, {96, 47}, {96, 48} });
+            break;
+        case SC_UTOPIA:
+            FixLandOwnershipTiles({ {85, 73} });
+            break;
+        case SC_URBAN_PARK:
+            FixLandOwnershipTiles({ {64, 77}, {61, 66}, {61, 67}, {39, 20} });
+            break;
+        }
+    }
+
+    void FixLandOwnershipTiles(std::initializer_list<rct_xy8> tiles)
+    {
+
+        rct_map_element * currentElement;
+        for (const rct_xy8 * tile = tiles.begin(); tile != tiles.end(); ++tile)
+        {
+            currentElement = map_get_surface_element_at((*tile).x, (*tile).y);
+            currentElement->properties.surface.ownership |= OWNERSHIP_AVAILABLE;
         }
     }
 
