@@ -33,7 +33,7 @@ void WallObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
     _legacyType.wall.flags2 = stream->ReadValue<uint8>();
     _legacyType.wall.price = stream->ReadValue<uint16>();
     _legacyType.wall.scenery_tab_id = stream->ReadValue<uint8>();
-    _legacyType.wall.var_0D = stream->ReadValue<uint8>();
+    _legacyType.wall.scrolling_mode = stream->ReadValue<uint8>();
 
     GetStringTable()->Read(context, stream, OBJ_STRING_ID_NAME);
 
@@ -81,7 +81,7 @@ void WallObject::DrawPreview(rct_drawpixelinfo * dpi, sint32 width, sint32 heigh
 
     gfx_draw_sprite(dpi, imageId, x, y, 0);
 
-    if (_legacyType.wall.flags & WALL_SCENERY_FLAG2)
+    if (_legacyType.wall.flags & WALL_SCENERY_HAS_GLASS)
     {
         imageId = _legacyType.image + 0x44500006;
         gfx_draw_sprite(dpi, imageId, x, y, 0);

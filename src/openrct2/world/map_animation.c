@@ -520,7 +520,7 @@ static bool map_animation_invalidate_wall(sint32 x, sint32 y, sint32 baseZ)
 			continue;
 
 		sceneryEntry = get_wall_entry(mapElement->properties.scenery.type);
-		if (!(sceneryEntry->wall.flags2 & (1 << 4)) && sceneryEntry->wall.var_0D == 255)
+		if (!(sceneryEntry->wall.flags2 & WALL_SCENERY_2_FLAG5) && sceneryEntry->wall.scrolling_mode == 255)
 			continue;
 
 		sint32 z = mapElement->base_height * 8;
