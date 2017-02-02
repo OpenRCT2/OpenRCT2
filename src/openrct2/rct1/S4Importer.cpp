@@ -2356,8 +2356,7 @@ private:
 
     void FixLandOwnership()
     {
-        switch (_s4.scenario_slot_index)
-        {
+        switch (_s4.scenario_slot_index) {
         case SC_DYNAMITE_DUNES:
             FixLandOwnershipTiles({ {97, 18}, {99, 19}, {83, 34} });
             break;
