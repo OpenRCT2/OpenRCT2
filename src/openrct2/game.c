@@ -199,24 +199,24 @@ void update_palette_effects()
 		}
 
 		// animate the water/lava/chain movement palette
-		sint32 q = 0;
+		uint32 shade = 0;
 		if (gConfigGeneral.render_weather_gloom) {
 			uint8 gloom = gClimateCurrentWeatherGloom;
 			if (gloom != 0) {
 				FILTER_PALETTE_ID weatherColour = ClimateWeatherGloomColours[gloom];
-				q = 1;
+				shade = 1;
 				if (weatherColour != PALETTE_DARKEN_1) {
-					q = 2;
+					shade = 2;
 				}
 			}
 		}
 		uint32 j = gPaletteEffectFrame;
 		j = (((uint16)((~j / 2) * 128) * 15) >> 16);
-		sint32 p = SPR_GAME_PALETTE_WATER;
+		uint32 waterId = SPR_GAME_PALETTE_WATER;
 		if ((intptr_t)water_type != -1) {
-			p = water_type->var_06;
+			waterId = water_type->palette_index_1;
 		}
-		rct_g1_element g1_element = g1Elements[q + p];
+		rct_g1_element g1_element = g1Elements[shade + waterId];
 		uint8* vs = &g1_element.offset[j * 3];
 		uint8* vd = &gGamePalette[230 * 4];
 		sint32 n = 5;
@@ -231,11 +231,11 @@ void update_palette_effects()
 			vd += 4;
 		}
 
-		p = SPR_GAME_PALETTE_3;
+		waterId = SPR_GAME_PALETTE_3;
 		if ((intptr_t)water_type != -1) {
-			p = water_type->var_0A;
+			waterId = water_type->palette_index_2;
 		}
-		g1_element = g1Elements[q + p];
+		g1_element = g1Elements[shade + waterId];
 		vs = &g1_element.offset[j * 3];
 		n = 5;
 		for (sint32 i = 0; i < n; i++) {
@@ -250,8 +250,8 @@ void update_palette_effects()
 		}
 
 		j = ((uint16)(gPaletteEffectFrame * -960) * 3) >> 16;
-		p = SPR_GAME_PALETTE_4;
-		g1_element = g1Elements[q + p];
+		waterId = SPR_GAME_PALETTE_4;
+		g1_element = g1Elements[shade + waterId];
 		vs = &g1_element.offset[j * 3];
 		vd += 12;
 		n = 3;

@@ -25,9 +25,9 @@ extern "C"
 void WaterObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
 {
     stream->Seek(6, STREAM_SEEK_CURRENT);
-    _legacyType.var_06 = stream->ReadValue<uint32>();
-    _legacyType.var_0A = stream->ReadValue<uint32>();
-    _legacyType.var_0E = stream->ReadValue<uint16>();
+    _legacyType.palette_index_1 = stream->ReadValue<uint32>();
+    _legacyType.palette_index_2 = stream->ReadValue<uint32>();
+    _legacyType.flags = stream->ReadValue<uint16>();
 
     GetStringTable()->Read(context, stream, OBJ_STRING_ID_NAME);
     GetImageTable()->Read(context, stream);
@@ -38,8 +38,8 @@ void WaterObject::Load()
     GetStringTable()->Sort();
     _legacyType.string_idx = language_allocate_object_string(GetName());
     _legacyType.image_id = gfx_object_allocate_images(GetImageTable()->GetImages(), GetImageTable()->GetCount());
-    _legacyType.var_06 = _legacyType.image_id + 1;
-    _legacyType.var_0A = _legacyType.image_id + 4;
+    _legacyType.palette_index_1 = _legacyType.image_id + 1;
+    _legacyType.palette_index_2 = _legacyType.image_id + 4;
 
     load_palette();
     gfx_invalidate_screen();
