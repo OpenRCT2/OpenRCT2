@@ -62,7 +62,7 @@ namespace ScenarioSources
     {
         { SC_FOREST_FRONTIERS,          "Forest Frontiers",     SCENARIO_CATEGORY_BEGINNER      },
         { SC_DYNAMITE_DUNES,            "Dynamite Dunes",       SCENARIO_CATEGORY_BEGINNER      },
-        { SC_LEAFY_LAKES,               "Leafy Lake",           SCENARIO_CATEGORY_BEGINNER      },
+        { SC_LEAFY_LAKE,                "Leafy Lake",           SCENARIO_CATEGORY_BEGINNER      },
         { SC_DIAMOND_HEIGHTS,           "Diamond Heights",      SCENARIO_CATEGORY_BEGINNER      },
         { SC_EVERGREEN_GARDENS,         "Evergreen Gardens",    SCENARIO_CATEGORY_BEGINNER      },
         { SC_BUMBLY_BEACH,              "Bumbly Beach",         SCENARIO_CATEGORY_BEGINNER      },

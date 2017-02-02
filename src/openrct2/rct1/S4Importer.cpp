@@ -2356,21 +2356,55 @@ private:
 
     void FixLandOwnership()
     {
-        rct_map_element * currentElement;
+        if (_s4.scenario_slot_index == SC_DYNAMITE_DUNES)
+        {
+            rct_xy8 tiles[] = { {97, 18}, {99, 19}, {83, 34} };
+            FixLandOwnershipTiles(tiles, Util::CountOf(tiles));
+        }
+        else if (_s4.scenario_slot_index == SC_LEAFY_LAKE)
+        {
+            rct_xy8 tiles[] = { {49, 66} };
+            FixLandOwnershipTiles(tiles, Util::CountOf(tiles));
+        }
+        else if (_s4.scenario_slot_index == SC_KATIES_DREAMLAND)
+        {
+            rct_xy8 tiles[] = { {74, 70}, {75, 70}, {76, 70}, {77, 73}, {80, 77} };
+            FixLandOwnershipTiles(tiles, Util::CountOf(tiles));
+        }
+        else if (_s4.scenario_slot_index == SC_POKEY_PARK)
+        {
+            rct_xy8 tiles[] = { {64, 102} };
+            FixLandOwnershipTiles(tiles, Util::CountOf(tiles));
+        }
+        else if (_s4.scenario_slot_index == SC_MYSTIC_MOUNTAIN)
+        {
+            rct_xy8 tiles[] = { {98, 69}, {98, 70}, {103, 64}, {53, 79}, {86, 93}, {87, 93} };
+            FixLandOwnershipTiles(tiles, Util::CountOf(tiles));
+        }
+        else if (_s4.scenario_slot_index == SC_PACIFIC_PYRAMIDS)
+        {
+            rct_xy8 tiles[] = { {93, 105}, {63, 34}, {76, 25}, {85, 31}, {96, 47}, {96, 48} };
+            FixLandOwnershipTiles(tiles, Util::CountOf(tiles));
+        }
+        else if (_s4.scenario_slot_index == SC_UTOPIA)
+        {
+            rct_xy8 tiles[] = { {85, 73} };
+            FixLandOwnershipTiles(tiles, Util::CountOf(tiles));
+        }
+        else if (_s4.scenario_slot_index == SC_URBAN_PARK)
+        {
+            rct_xy8 tiles[] = { {64, 77}, {61, 66}, {61, 67}, {39, 20} };
+            FixLandOwnershipTiles(tiles, Util::CountOf(tiles));
+        }
+    }
 
-        switch(_s4.scenario_slot_index) {
-        case SC_KATIES_DREAMLAND:
-            currentElement = map_get_surface_element_at(74, 70);
+    void FixLandOwnershipTiles(rct_xy8 tiles[], size_t numberOfTiles)
+    {
+        rct_map_element * currentElement;
+        for (size_t i = 0; i < numberOfTiles; i++)
+        {
+            currentElement = map_get_surface_element_at(tiles[i].x, tiles[i].y);
             currentElement->properties.surface.ownership |= OWNERSHIP_AVAILABLE;
-            currentElement = map_get_surface_element_at(75, 70);
-            currentElement->properties.surface.ownership |= OWNERSHIP_AVAILABLE;
-            currentElement = map_get_surface_element_at(76, 70);
-            currentElement->properties.surface.ownership |= OWNERSHIP_AVAILABLE;
-            currentElement = map_get_surface_element_at(77, 73);
-            currentElement->properties.surface.ownership |= OWNERSHIP_AVAILABLE;
-            currentElement = map_get_surface_element_at(80, 77);
-            currentElement->properties.surface.ownership |= OWNERSHIP_AVAILABLE;
-            break;
         }
     }
 
