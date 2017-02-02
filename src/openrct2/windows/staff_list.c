@@ -316,15 +316,21 @@ void window_staff_list_update(rct_window *w)
 	if (w->list_information_type >= 24) {
 		w->list_information_type = 0;
 	} else {
-		sint32 spriteIndex;
-		rct_peep *peep;
 		widget_invalidate(w, WIDX_STAFF_LIST_HANDYMEN_TAB + _windowStaffListSelectedTab);
-		gWindowMapFlashingFlags |= (1 << 2);
-		FOR_ALL_STAFF(spriteIndex, peep) {
-			peep->flags &= ~(SPRITE_FLAGS_PEEP_FLASHING);
 
-			if (peep->staff_type == _windowStaffListSelectedTab) {
-				peep->flags |= SPRITE_FLAGS_PEEP_FLASHING;
+		// Enable highlighting of these staff members in map window
+		if (window_find_by_class(WC_MAP) != NULL) {
+			sint32 spriteIndex;
+			rct_peep * peep;
+			gWindowMapFlashingFlags |= (1 << 2);
+			FOR_ALL_STAFF(spriteIndex, peep) {
+				// TODO When possible, do not modify the peep state as it shows up as a
+				//      multiplayer desynchronisation
+				peep->flags &= ~(SPRITE_FLAGS_PEEP_FLASHING);
+
+				if (peep->staff_type == _windowStaffListSelectedTab) {
+					peep->flags |= SPRITE_FLAGS_PEEP_FLASHING;
+				}
 			}
 		}
 	}
