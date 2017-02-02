@@ -512,8 +512,8 @@ namespace RCT1
             2, // REVERSER_RC_BOGIE
             1, // MINIGOLF_PLAYER
             0, // MINIGOLF_BALL
-            0,
-            0,
+            0, // SPLASH_BOAT
+            1, // SPLASH_BOAT_INVISIBLE
             0,
             0,
             0,
