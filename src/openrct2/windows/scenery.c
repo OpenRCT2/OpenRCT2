@@ -969,13 +969,13 @@ void window_scenery_invalidate(rct_window *w)
 				window_scenery_widgets[WIDX_SCENERY_SECONDARY_COLOUR_BUTTON].type = WWT_COLOURBTN;
 		} else if (tabSelectedSceneryId >= 0x200) {
 			sceneryEntry = get_wall_entry(tabSelectedSceneryId - 0x200);
-			if (sceneryEntry->wall.flags & (WALL_SCENERY_FLAG1 | WALL_SCENERY_FLAG2)) {
+			if (sceneryEntry->wall.flags & (WALL_SCENERY_HAS_PRIMARY_COLOUR | WALL_SCENERY_HAS_GLASS)) {
 				window_scenery_widgets[WIDX_SCENERY_PRIMARY_COLOUR_BUTTON].type = WWT_COLOURBTN;
 
 				if (sceneryEntry->wall.flags & WALL_SCENERY_HAS_SECONDARY_COLOUR) {
 					window_scenery_widgets[WIDX_SCENERY_SECONDARY_COLOUR_BUTTON].type = WWT_COLOURBTN;
 
-					if (sceneryEntry->wall.flags2 & WALL_SCENERY_FLAG1)
+					if (sceneryEntry->wall.flags2 & WALL_SCENERY_2_NO_SELECT_PRIMARY_COLOUR)
 						window_scenery_widgets[WIDX_SCENERY_PRIMARY_COLOUR_BUTTON].type = WWT_EMPTY;
 					if (sceneryEntry->wall.flags & WALL_SCENERY_HAS_TERNARY_COLOUR)
 						window_scenery_widgets[WIDX_SCENERY_TERTIARY_COLOUR_BUTTON].type = WWT_COLOURBTN;
@@ -1142,7 +1142,7 @@ void window_scenery_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 sc
 				uint8 tertiaryColour = w->colours[1];
 				uint16 spriteTop = (sceneryEntry->wall.height * 2) + 0x32;
 
-				if (sceneryEntry->wall.flags & WALL_SCENERY_FLAG2) {
+				if (sceneryEntry->wall.flags & WALL_SCENERY_HAS_GLASS) {
 					imageId |= (gWindowSceneryPrimaryColour << 19) | 0x20000000;
 
 					if (sceneryEntry->wall.flags & WALL_SCENERY_HAS_SECONDARY_COLOUR) {

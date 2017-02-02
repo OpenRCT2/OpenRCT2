@@ -940,8 +940,8 @@ static void repaint_scenery_tool_down(sint16 x, sint16 y, sint16 widgetIndex){
 
 		// If can't repaint
 		if (!(scenery_entry->wall.flags &
-			(WALL_SCENERY_FLAG1 |
-			WALL_SCENERY_FLAG2)))
+			(WALL_SCENERY_HAS_PRIMARY_COLOUR |
+			WALL_SCENERY_HAS_GLASS)))
 			return;
 
 		gGameCommandErrorTitle = STR_CANT_REPAINT_THIS;

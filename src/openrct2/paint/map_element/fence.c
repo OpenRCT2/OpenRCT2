@@ -54,7 +54,7 @@ static void fence_paint_door(uint32 imageId,
                       rct_xyz16 boundsR2, rct_xyz16 boundsR2_,
                       rct_xyz16 boundsL1, rct_xyz16 boundsL1_)
 {
-    if (sceneryEntry->wall.flags & WALL_SCENERY_FLAG1) {
+    if (sceneryEntry->wall.flags & WALL_SCENERY_HAS_PRIMARY_COLOUR) {
         imageId |= imageColourFlags;
     }
 
@@ -95,8 +95,8 @@ static void fence_paint_wall(uint32 frameNum, const rct_scenery_entry * sceneryE
     uint32 imageId = baseImageId;
 
 
-    if (sceneryEntry->wall.flags & WALL_SCENERY_FLAG2) {
-        if (sceneryEntry->wall.flags & WALL_SCENERY_FLAG1) {
+    if (sceneryEntry->wall.flags & WALL_SCENERY_HAS_GLASS) {
+        if (sceneryEntry->wall.flags & WALL_SCENERY_HAS_PRIMARY_COLOUR) {
             imageId |= imageColourFlags;
         }
 
@@ -110,7 +110,7 @@ static void fence_paint_wall(uint32 frameNum, const rct_scenery_entry * sceneryE
             sub_98199C(imageId, (sint8)offset.x, (sint8)offset.y, bounds.x, bounds.y, (sint8)bounds.z, offset.z, boundsOffset.x, boundsOffset.y, boundsOffset.z, get_current_rotation());
         }
     } else {
-        if (sceneryEntry->wall.flags & WALL_SCENERY_FLAG1) {
+        if (sceneryEntry->wall.flags & WALL_SCENERY_HAS_PRIMARY_COLOUR) {
             imageId |= imageColourFlags;
         }
 
@@ -281,7 +281,7 @@ void fence_paint(uint8 direction, sint32 height, rct_map_element * map_element)
                 imageOffset = 0;
             }
 
-            if (sceneryEntry->wall.flags & WALL_SCENERY_FLAG2) {
+            if (sceneryEntry->wall.flags & WALL_SCENERY_HAS_GLASS) {
                 if (sceneryEntry->wall.flags & WALL_SCENERY_IS_BANNER) {
                     imageOffset += 12;
                 }
@@ -332,7 +332,7 @@ void fence_paint(uint8 direction, sint32 height, rct_map_element * map_element)
     fence_paint_wall(frameNum, sceneryEntry, dword_141F710, imageColourFlags, dword_141F718, tertiaryColour, imageOffset, offset, bounds, boundsOffset);
 
 
-    if (sceneryEntry->wall.var_0D == 0xFF) {
+    if (sceneryEntry->wall.scrolling_mode == 0xFF) {
         return;
     }
 
@@ -355,7 +355,7 @@ void fence_paint(uint8 direction, sint32 height, rct_map_element * map_element)
 
     set_format_arg(7, uint8, al_2);
 
-    uint16 scrollingMode = sceneryEntry->wall.var_0D + ((direction + 1) & 0x3);
+    uint16 scrollingMode = sceneryEntry->wall.scrolling_mode + ((direction + 1) & 0x3);
 
     uint8 bannerIndex = map_element->properties.fence.item[0];
     rct_banner * banner = &gBanners[bannerIndex];

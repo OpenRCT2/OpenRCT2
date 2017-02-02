@@ -256,7 +256,7 @@ sint32 viewport_interaction_get_item_right(sint32 x, sint32 y, viewport_interact
 
 	case VIEWPORT_INTERACTION_ITEM_WALL:
 		sceneryEntry = get_wall_entry(mapElement->properties.scenery.type);
-		if (sceneryEntry->wall.var_0D != 255) {
+		if (sceneryEntry->wall.scrolling_mode != 255) {
 			set_map_tooltip_format_arg(0, rct_string_id, STR_MAP_TOOLTIP_STRINGID_CLICK_TO_MODIFY);
 			set_map_tooltip_format_arg(2, rct_string_id, sceneryEntry->name);
 			return info->type;
@@ -491,7 +491,7 @@ void viewport_interaction_remove_park_entrance(rct_map_element *mapElement, sint
 static void viewport_interaction_remove_park_wall(rct_map_element *mapElement, sint32 x, sint32 y)
 {
 	rct_scenery_entry *sceneryEntry = get_wall_entry(mapElement->properties.fence.type);
-	if (sceneryEntry->wall.var_0D != 0xFF){
+	if (sceneryEntry->wall.scrolling_mode != 0xFF){
 		window_sign_small_open(mapElement->properties.fence.item[0]);
 	} else {
 		gGameCommandErrorTitle = STR_CANT_REMOVE_THIS;

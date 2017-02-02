@@ -3617,8 +3617,8 @@ void game_command_place_fence(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx
 		*ebx = MONEY32_UNDEFINED;
 		return;
 	}
-	if (fence->wall.var_0D != 0xFF){
-		banner_index = create_new_banner(fence->wall.var_0D);
+	if (fence->wall.scrolling_mode != 0xFF){
+		banner_index = create_new_banner(flags);
 
 		if (banner_index == 0xFF){
 			*ebx = MONEY32_UNDEFINED;
@@ -4581,7 +4581,7 @@ sint32 map_element_get_banner_index(rct_map_element *mapElement)
 			((mapElement->properties.scenerymultiple.colour[1] & 0xE0) >> 5);
 	case MAP_ELEMENT_TYPE_FENCE:
 		sceneryEntry = get_wall_entry(mapElement->properties.fence.type);
-		if (sceneryEntry->wall.var_0D == 0xFF)
+		if (sceneryEntry->wall.scrolling_mode == 0xFF)
 			return -1;
 
 		return mapElement->properties.fence.item[0];
@@ -5539,7 +5539,7 @@ void game_command_set_sign_style(sint32* eax, sint32* ebx, sint32* ecx, sint32* 
 				continue;
 
 			rct_scenery_entry* scenery_entry = get_wall_entry(map_element->properties.fence.type);
-			if (scenery_entry->wall.var_0D == 0xFF)
+			if (scenery_entry->wall.scrolling_mode == 0xFF)
 				continue;
 			if (map_element->properties.fence.item[0] != bannerId)
 				continue;

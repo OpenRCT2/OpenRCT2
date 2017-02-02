@@ -264,7 +264,7 @@ void scenario_begin()
 		gParkEntranceFee = 0;
 	}
 
-	gParkFlags |= PARK_FLAGS_18;
+	gParkFlags |= PARK_FLAGS_SPRITES_INITIALISED;
 
 	load_palette();
 	gfx_invalidate_screen();
@@ -424,7 +424,7 @@ static void scenario_week_update()
 
 	rct_water_type* water_type = (rct_water_type*)object_entry_groups[OBJECT_TYPE_WATER].chunks[0];
 
-	if (month <= MONTH_APRIL && (intptr_t)water_type != -1 && water_type->var_0E & 1) {
+	if (month <= MONTH_APRIL && (intptr_t)water_type != -1 && water_type->flags & WATER_FLAGS_ALLOW_DUCKS) {
 		// 100 attempts at finding some water to create a few ducks at
 		for (sint32 i = 0; i < 100; i++) {
 			if (scenario_create_ducks())

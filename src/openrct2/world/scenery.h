@@ -117,13 +117,13 @@ typedef struct rct_wall_scenery_entry {
 	uint8 flags2;			// 0x09
 	sint16 price;			// 0x0A
 	uint8 scenery_tab_id;	// 0x0C
-	uint8 var_0D;
+	uint8 scrolling_mode;   // 0x0D 0xFF if no scrolling
 } rct_wall_scenery_entry;
 assert_struct_size(rct_wall_scenery_entry, 8);
 
 typedef enum {
-	WALL_SCENERY_FLAG1 = (1 << 0),		// 0x1
-	WALL_SCENERY_FLAG2 = (1 << 1),		// 0x2
+	WALL_SCENERY_HAS_PRIMARY_COLOUR = (1 << 0),		// 0x1
+	WALL_SCENERY_HAS_GLASS = (1 << 1),		// 0x2
 	WALL_SCENERY_CANT_BUILD_ON_SLOPE = (1 << 2),		// 0x4
 	WALL_SCENERY_IS_BANNER = (1 << 3),		// 0x8  // Probably indicates translucency
 	WALL_SCENERY_IS_DOOR = (1 << 4),		// 0x10
@@ -133,6 +133,8 @@ typedef enum {
 } WALL_SCENERY_FLAGS;
 
 typedef enum {
+	WALL_SCENERY_2_NO_SELECT_PRIMARY_COLOUR = (1 << 0),		// 0x1
+	// Flags 2 and 3 are the door sound type
 	WALL_SCENERY_2_FLAG4 = (1 << 3),		// 0x8
 	WALL_SCENERY_2_FLAG5 = (1 << 4),		// 0x10
 } WALL_SCENERY_2_FLAGS;
