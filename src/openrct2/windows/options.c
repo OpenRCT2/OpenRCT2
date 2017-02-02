@@ -1984,18 +1984,14 @@ static void window_options_draw_tab_image(rct_drawpixelinfo *dpi, rct_window *w,
 		// Draw normal, enabled sprite.
 		gfx_draw_sprite(dpi, spriteIndex, l, t, 0);
 	} else {
-		// Get the colour
-		uint8 colour = NOT_TRANSLUCENT(w->colours[widget->colour]);
+		// Get the window background colour
+		uint8 window_colour = NOT_TRANSLUCENT(w->colours[widget->colour]);
 
 		// Draw greyed out (light border bottom right shadow)
-		colour = w->colours[widget->colour];
-		colour = ColourMapA[NOT_TRANSLUCENT(colour)].lighter;
-		gfx_draw_sprite_solid(dpi, spriteIndex, l + 1, t + 1, colour);
+		gfx_draw_sprite_solid(dpi, spriteIndex, l + 1, t + 1, ColourMapA[window_colour].lighter);
 
 		// Draw greyed out (dark)
-		colour = w->colours[widget->colour];
-		colour = ColourMapA[NOT_TRANSLUCENT(colour)].mid_light;
-		gfx_draw_sprite_solid(dpi, spriteIndex, l, t, colour);
+		gfx_draw_sprite_solid(dpi, spriteIndex, l, t, ColourMapA[window_colour].mid_light);
 	}
 }
 
