@@ -27,9 +27,9 @@ enum {
 typedef struct rct_water_type {
 	rct_string_id string_idx;	// 0x00
 	uint32 image_id;			// 0x02
-	uint32 palette_index_1;
-	uint32 palette_index_2;
-	uint16 flags;
+	uint32 palette_index_1;		// 0x06
+	uint32 palette_index_2;		// 0x0A
+	uint16 flags;				// 0x0E
 } rct_water_type;
 assert_struct_size(rct_water_type, 16);
 #pragma pack(pop)

@@ -24,9 +24,7 @@ extern "C"
 
 void WaterObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
 {
-    stream->Seek(6, STREAM_SEEK_CURRENT);
-    _legacyType.palette_index_1 = stream->ReadValue<uint32>();
-    _legacyType.palette_index_2 = stream->ReadValue<uint32>();
+    stream->Seek(14, STREAM_SEEK_CURRENT);
     _legacyType.flags = stream->ReadValue<uint16>();
 
     GetStringTable()->Read(context, stream, OBJ_STRING_ID_NAME);
