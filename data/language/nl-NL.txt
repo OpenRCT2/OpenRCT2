@@ -4302,7 +4302,17 @@ STR_5997    :Geld toevoegen/instellen
 STR_5998    :Toevoegen
 STR_5999    :Instellen
 STR_6000    :Voer een bedrag in
-
+STR_6001    :Belichtingeffecten inschakelen (experimenteel)
+STR_6002    :{SMALLFONT}{BLACK}Lampen zullen 's nachts aangaan en attracties verlicht worden.{NEWLINE}Hiervoor moet weergave via hardware ingeschakeld zijn.
+STR_6003    :Opengewerkte weergave
+STR_6004    :Opengewerkte weergave
+STR_6005    :Opengewerkte weergave inschakelen
+STR_6006    :{SMALLFONT}{BLACK}Hiermee worden alleen elementen onder een bepaalde hoogte getoond,{NEWLINE}zodat de binnenkant van gebouwen zichtbaar wordt.
+STR_6007    :Snijhoogte
+STR_6008    :{SMALLFONT}{BLACK}Klik hierop om te wisselen tussen interne waardes en toegankelijke waardes (zoals meters).
+STR_6009    :{SMALLFONT}{BLACK}Selecteer een hoogte waarboven kaartelementen niet meer moeten worden getekend.
+STR_6010    :{COMMA2DP32}m
+STR_6011    :{COMMA1DP16}ft
 STR_6012    :{COMMA1DP16}
 
 #############
