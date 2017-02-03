@@ -17,6 +17,7 @@
 		00EFEE721CF1D80B0035213B /* NetworkKey.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00EFEE701CF1D80B0035213B /* NetworkKey.cpp */; };
 		652076321E22EFE7000D0C04 /* Imaging.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 652076301E22EFE7000D0C04 /* Imaging.cpp */; };
 		652747EC1E41CE1B000F36FD /* SawyerEncoding.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 652747EA1E41CE1B000F36FD /* SawyerEncoding.cpp */; };
+		658F3D911E44A6C200388550 /* ParkImporter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 658F3D8F1E44A6C200388550 /* ParkImporter.cpp */; };
 		791166FB1D7486EF005912EA /* NetworkServerAdvertiser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 791166F91D7486EF005912EA /* NetworkServerAdvertiser.cpp */; };
 		85060FD31D8C17CC00DFA2B3 /* track_data_old.c in Sources */ = {isa = PBXBuildFile; fileRef = 8594C05F1D885CF600235E93 /* track_data_old.c */; };
 		8594C0601D885CF600235E93 /* track_data_old.c in Sources */ = {isa = PBXBuildFile; fileRef = 8594C05F1D885CF600235E93 /* track_data_old.c */; };
@@ -521,6 +522,8 @@
 		652076311E22EFE7000D0C04 /* Imaging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Imaging.h; sourceTree = "<group>"; };
 		652747EA1E41CE1B000F36FD /* SawyerEncoding.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SawyerEncoding.cpp; path = rct12/SawyerEncoding.cpp; sourceTree = "<group>"; };
 		652747EB1E41CE1B000F36FD /* SawyerEncoding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SawyerEncoding.h; path = rct12/SawyerEncoding.h; sourceTree = "<group>"; };
+		658F3D8F1E44A6C200388550 /* ParkImporter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ParkImporter.cpp; sourceTree = "<group>"; };
+		658F3D901E44A6C200388550 /* ParkImporter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ParkImporter.h; sourceTree = "<group>"; };
 		791166F91D7486EF005912EA /* NetworkServerAdvertiser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NetworkServerAdvertiser.cpp; sourceTree = "<group>"; };
 		791166FA1D7486EF005912EA /* NetworkServerAdvertiser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetworkServerAdvertiser.h; sourceTree = "<group>"; };
 		8594C05F1D885CF600235E93 /* track_data_old.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = track_data_old.c; sourceTree = "<group>"; };
@@ -562,7 +565,6 @@
 		C649B3D31DF04ED2008AC826 /* format_codes.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = format_codes.c; sourceTree = "<group>"; };
 		C64FDA5D1D6D99F400F259B9 /* PaintTest */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = PaintTest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C650B2151CCABBDD00B4D91C /* S4Importer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = S4Importer.cpp; sourceTree = "<group>"; usesTabs = 0; };
-		C650B2161CCABBDD00B4D91C /* S4Importer.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; path = S4Importer.h; sourceTree = "<group>"; usesTabs = 0; };
 		C650B2171CCABBDD00B4D91C /* tables.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tables.cpp; sourceTree = "<group>"; usesTabs = 0; };
 		C650B2181CCABBDD00B4D91C /* Tables.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; path = Tables.h; sourceTree = "<group>"; usesTabs = 0; };
 		C650B21B1CCABC4400B4D91C /* ConvertCommand.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ConvertCommand.cpp; sourceTree = "<group>"; usesTabs = 0; };
@@ -676,7 +678,6 @@
 		C6B5A7D01CDFE4CB00C9C006 /* S6Exporter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = S6Exporter.cpp; sourceTree = "<group>"; };
 		C6B5A7D11CDFE4CB00C9C006 /* S6Exporter.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; path = S6Exporter.h; sourceTree = "<group>"; };
 		C6B5A7D21CDFE4CB00C9C006 /* S6Importer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = S6Importer.cpp; sourceTree = "<group>"; };
-		C6B5A7D31CDFE4CB00C9C006 /* S6Importer.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; path = S6Importer.h; sourceTree = "<group>"; };
 		C6CABA801E1466D600D33A6B /* FileClassifier.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FileClassifier.cpp; sourceTree = "<group>"; };
 		C6CABA811E1466D600D33A6B /* FileClassifier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileClassifier.h; sourceTree = "<group>"; };
 		C6E96E101E04067A0076A04F /* File.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = File.cpp; sourceTree = "<group>"; };
@@ -1294,7 +1295,6 @@
 			isa = PBXGroup;
 			children = (
 				C650B2151CCABBDD00B4D91C /* S4Importer.cpp */,
-				C650B2161CCABBDD00B4D91C /* S4Importer.h */,
 				C650B2171CCABBDD00B4D91C /* tables.cpp */,
 				C650B2181CCABBDD00B4D91C /* Tables.h */,
 			);
@@ -1475,7 +1475,6 @@
 				C6B5A7D01CDFE4CB00C9C006 /* S6Exporter.cpp */,
 				C6B5A7D11CDFE4CB00C9C006 /* S6Exporter.h */,
 				C6B5A7D21CDFE4CB00C9C006 /* S6Importer.cpp */,
-				C6B5A7D31CDFE4CB00C9C006 /* S6Importer.h */,
 			);
 			path = rct2;
 			sourceTree = "<group>";
@@ -1557,6 +1556,8 @@
 				D44271581CC81B3200D84D28 /* object.h */,
 				D460DFD01E01239D007BA2FE /* OpenRCT2.cpp */,
 				D460DFD21E0123B5007BA2FE /* OpenRCT2.h */,
+				658F3D8F1E44A6C200388550 /* ParkImporter.cpp */,
+				658F3D901E44A6C200388550 /* ParkImporter.h */,
 				D460DFD31E0123D1007BA2FE /* PlatformEnvironment.cpp */,
 				D460DFD51E0123DB007BA2FE /* PlatformEnvironment.h */,
 				D44271691CC81B3200D84D28 /* rct1.c */,
@@ -2661,6 +2662,7 @@
 				D44272211CC81B3200D84D28 /* viewport_interaction.c in Sources */,
 				D442721B1CC81B3200D84D28 /* graph.c in Sources */,
 				C686F9581CDBC4C7009F9BFC /* vehicle_paint.c in Sources */,
+				658F3D911E44A6C200388550 /* ParkImporter.cpp in Sources */,
 				007A05D11CFB2C8B00F419C3 /* NetworkPacket.cpp in Sources */,
 				D44272101CC81B3200D84D28 /* sprite.c in Sources */,
 				007A05CD1CFB2C8B00F419C3 /* NetworkAction.cpp in Sources */,

@@ -22,6 +22,8 @@ interface IStream;
 
 namespace SawyerEncoding
 {
+    void ReadChunk(void * dst, size_t expectedSize, IStream * stream);
+    void ReadChunkTolerant(void * dst, size_t expectedSize, IStream * stream);
     bool TryReadChunk(void * dst, size_t expectedSize, IStream * stream);
 
     template<typename T>
@@ -29,4 +31,6 @@ namespace SawyerEncoding
     {
         return TryReadChunk(dst, sizeof(T), stream);
     }
+
+    bool ValidateChecksum(IStream * stream);
 }

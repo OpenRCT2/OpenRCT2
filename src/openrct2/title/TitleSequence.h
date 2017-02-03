@@ -53,10 +53,8 @@ typedef struct TitleSequence
 
 typedef struct TitleSequenceParkHandle
 {
-    size_t DataSize;
-    void * Data;
-    struct SDL_RWops * RWOps;
-    bool IsScenario;
+    const utf8 *    HintPath;
+    void *          Stream;
 } TitleSequenceParkHandle;
 
 enum TITLE_SCRIPT

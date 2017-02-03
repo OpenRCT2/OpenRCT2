@@ -23,6 +23,7 @@
 #include "../interface/widget.h"
 #include "../interface/window.h"
 #include "../localisation/localisation.h"
+#include "../ParkImporter.h"
 #include "../peep/peep.h"
 #include "../peep/staff.h"
 #include "../scenario/scenario.h"
@@ -358,11 +359,12 @@ static void window_title_editor_mouseup(rct_window *w, sint32 widgetIndex)
 	case WIDX_TITLE_EDITOR_LOAD_SAVE:
 		if (w->selected_list_item >= 0 && w->selected_list_item < (sint16)_editingTitleSequence->NumSaves) {
 			TitleSequenceParkHandle * handle = TitleSequenceGetParkHandle(_editingTitleSequence, w->selected_list_item);
-			if (handle->IsScenario) {
-				scenario_load_rw(handle->RWOps);
+			const utf8 * extension = path_get_extension(handle->HintPath);
+			bool isScenario = park_importer_extension_is_scenario(extension);
+			park_importer_load_from_stream(handle->Stream, handle->HintPath);
+			if (isScenario) {
 				scenario_begin();
 			} else {
-				game_load_sv6(handle->RWOps);
 				game_load_init();
 			}
 			TitleSequenceCloseParkHandle(handle);

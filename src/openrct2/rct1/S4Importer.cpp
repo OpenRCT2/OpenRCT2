@@ -14,18 +14,21 @@
  *****************************************************************************/
 #pragma endregion
 
+#include <memory>
 #include <vector>
 #include "../core/Collections.hpp"
 #include "../core/Console.hpp"
 #include "../core/Exception.hpp"
+#include "../core/FileStream.hpp"
 #include "../core/Guard.hpp"
+#include "../core/IStream.hpp"
 #include "../core/Memory.hpp"
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
 #include "../core/Util.hpp"
 #include "../object/ObjectManager.h"
+#include "../ParkImporter.h"
 #include "../scenario/ScenarioSources.h"
-#include "S4Importer.h"
 #include "Tables.h"
 
 extern "C"
@@ -88,12 +91,12 @@ public:
     }
 };
 
-class S4Importer final : public IS4Importer
+class S4Importer final : public IParkImporter
 {
 private:
-    const utf8 * _s4Path;
-    rct1_s4      _s4;
-    uint8        _gameVersion;
+    const utf8 * _s4Path = nullptr;
+    rct1_s4      _s4 = { 0 };
+    uint8        _gameVersion = 0;
 
     // Lists of dynamic object entries
     EntryList _rideEntries;
@@ -120,22 +123,63 @@ private:
     uint8 _researchRideTypeUsed[128];
 
 public:
+    void Load(const utf8 * path) override
+    {
+        const utf8 * extension = Path::GetExtension(path);
+        if (String::Equals(extension, ".sc4", true))
+        {
+            LoadScenario(path);
+        }
+        else if (String::Equals(extension, ".sv4", true))
+        {
+            LoadSavedGame(path);
+        }
+        else
+        {
+            throw Exception("Invalid RCT1 park extension.");
+        }
+    }
+
     void LoadSavedGame(const utf8 * path) override
     {
-        if (!rct1_read_sv4(path, &_s4))
-        {
-            throw Exception("Unable to load SV4.");
-        }
+        auto fs = FileStream(path, FILE_MODE_OPEN);
+        LoadFromStream(&fs, false);
         _s4Path = path;
     }
 
     void LoadScenario(const utf8 * path) override
     {
-        if (!rct1_read_sc4(path, &_s4))
-        {
-            throw Exception("Unable to load SC4.");
-        }
+        auto fs = FileStream(path, FILE_MODE_OPEN);
+        LoadFromStream(&fs, true);
         _s4Path = path;
+    }
+
+    void LoadFromStream(IStream * stream, bool isScenario) override
+    {
+        size_t dataSize = stream->GetLength() - stream->GetPosition();
+        std::unique_ptr<uint8> data = std::unique_ptr<uint8>(stream->ReadArray<uint8>(dataSize));
+        std::unique_ptr<uint8> decodedData = std::unique_ptr<uint8>(Memory::Allocate<uint8>(sizeof(rct1_s4)));
+
+        size_t decodedSize;
+        sint32 fileType = sawyercoding_detect_file_type(data.get(), dataSize);
+        if (isScenario && (fileType & FILE_VERSION_MASK) != FILE_VERSION_RCT1)
+        {
+            decodedSize = sawyercoding_decode_sc4(data.get(), decodedData.get(), dataSize, sizeof(rct1_s4));
+        }
+        else
+        {
+            decodedSize = sawyercoding_decode_sv4(data.get(), decodedData.get(), dataSize, sizeof(rct1_s4));
+        }
+
+        if (decodedSize == sizeof(rct1_s4))
+        {
+            Memory::Copy<void>(&_s4, decodedData.get(), sizeof(rct1_s4));
+            _s4Path = "";
+        }
+        else
+        {
+            throw Exception("Unable to decode park.");
+        }
     }
 
     void Import() override
@@ -2436,7 +2480,7 @@ private:
     }
 };
 
-IS4Importer * CreateS4Importer()
+IParkImporter * ParkImporter::CreateS4()
 {
     return new S4Importer();
 }

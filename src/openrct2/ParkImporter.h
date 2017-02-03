@@ -16,20 +16,49 @@
 
 #pragma once
 
-#include "../common.h"
-#include "../scenario/ScenarioRepository.h"
+#include "common.h"
+
+#ifdef __cplusplus
+
+#include <string>
+#include "scenario/ScenarioRepository.h"
+
+interface IStream;
 
 /**
- * Interface to import RollerCoaster Tycoon 1 scenarios (*.SC4) and saved games (*.SV4).
+ * Interface to import scenarios and saved games.
  */
-interface IS4Importer
+interface IParkImporter
 {
 public:
-    virtual ~IS4Importer() { }
+    virtual ~IParkImporter() = default;
+    virtual void Load(const utf8 * path) abstract;
     virtual void LoadSavedGame(const utf8 * path) abstract;
     virtual void LoadScenario(const utf8 * path) abstract;
+    virtual void LoadFromStream(IStream * stream, bool isScenario) abstract;
     virtual void Import() abstract;
     virtual bool GetDetails(scenario_index_entry * dst) abstract;
 };
 
-IS4Importer * CreateS4Importer();
+namespace ParkImporter
+{
+    IParkImporter * Create(const std::string &hintPath);
+    IParkImporter * CreateS4();
+    IParkImporter * CreateS6();
+
+    bool ExtensionIsRCT1(const std::string &extension);
+    bool ExtensionIsScenario(const std::string &extension);
+}
+
+#endif
+
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+    void park_importer_load_from_stream(void * stream, const utf8 * hintPath);
+    bool park_importer_extension_is_scenario(const utf8 * extension);
+
+#ifdef __cplusplus
+}
+#endif

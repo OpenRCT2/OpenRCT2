@@ -24,8 +24,8 @@
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
 #include "../core/Util.hpp"
+#include "../ParkImporter.h"
 #include "../PlatformEnvironment.h"
-#include "../rct1/S4Importer.h"
 #include "../rct12/SawyerEncoding.h"
 #include "ScenarioRepository.h"
 #include "ScenarioSources.h"
@@ -308,7 +308,7 @@ private:
      */
     bool GetScenarioInfo(const std::string &path, uint64 timestamp, scenario_index_entry * entry)
     {
-        log_verbose("GetScenarioInfo(%s, ...)", path.c_str());
+        log_verbose("GetScenarioInfo(%s, %d, ...)", path.c_str(), timestamp);
         try
         {
             std::string extension = Path::GetExtension(path);
@@ -316,15 +316,20 @@ private:
             {
                 // RCT1 scenario
                 bool result = false;
-                IS4Importer * s4Importer = CreateS4Importer();
-                s4Importer->LoadScenario(path.c_str());
-                if (s4Importer->GetDetails(entry))
+                try
                 {
-                    String::Set(entry->path, sizeof(entry->path), path.c_str());
-                    entry->timestamp = timestamp;
-                    result = true;
+                    auto s4Importer = std::unique_ptr<IParkImporter>(ParkImporter::CreateS4());
+                    s4Importer->LoadScenario(path.c_str());
+                    if (s4Importer->GetDetails(entry))
+                    {
+                        String::Set(entry->path, sizeof(entry->path), path.c_str());
+                        entry->timestamp = timestamp;
+                        result = true;
+                    }
                 }
-                delete s4Importer;
+                catch (Exception)
+                {
+                }
                 return result;
             }
             else

@@ -73,6 +73,7 @@
     <ClCompile Include="audio\MemoryAudioSource.cpp" />
     <ClCompile Include="audio\NullAudioSource.cpp" />
     <ClCompile Include="FileClassifier.cpp" />
+    <ClCompile Include="ParkImporter.cpp" />
     <ClCompile Include="rct12\SawyerEncoding.cpp" />
     <ClCompile Include="rct2\addresses.c" />
     <ClCompile Include="audio\audio.c" />
@@ -415,6 +416,7 @@
     <ClInclude Include="audio\AudioSource.h" />
     <ClInclude Include="FileClassifier.h" />
     <ClInclude Include="rct12.h" />
+    <ClInclude Include="ParkImporter.h" />
     <ClInclude Include="rct12\SawyerEncoding.h" />
     <ClInclude Include="rct2\addresses.h" />
     <ClInclude Include="audio\audio.h" />
@@ -543,11 +545,9 @@
     <ClInclude Include="platform\platform.h" />
     <ClInclude Include="rct1.h" />
     <ClInclude Include="rct1\Tables.h" />
-    <ClInclude Include="rct1\S4Importer.h" />
     <ClInclude Include="rct2.h" />
     <ClInclude Include="rct2\interop.h" />
     <ClInclude Include="rct2\S6Exporter.h" />
-    <ClInclude Include="rct2\S6Importer.h" />
     <ClInclude Include="ride\cable_lift.h" />
     <ClInclude Include="ride\coaster\bolliger_mabillard_track.h" />
     <ClInclude Include="ride\coaster\junior_roller_coaster.h" />
