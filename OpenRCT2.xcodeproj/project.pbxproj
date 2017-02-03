@@ -466,7 +466,7 @@
 		D4A8B4B41DB41873007A2F29 /* libpng16.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D4A8B4B31DB41873007A2F29 /* libpng16.dylib */; };
 		D4A8B4B51DB4188D007A2F29 /* libpng16.dylib in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D4A8B4B31DB41873007A2F29 /* libpng16.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		D4B21B6F1E343AF1004982C7 /* lightfx.c in Sources */ = {isa = PBXBuildFile; fileRef = D4B21B6D1E343AF1004982C7 /* lightfx.c */; };
-		D4CA88661D4E64C800060C11 /* version.c in Sources */ = {isa = PBXBuildFile; fileRef = D4CA88651D4E64C800060C11 /* version.c */; };
+		D4CA88661D4E64C800060C11 /* Version.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D4CA88651D4E64C800060C11 /* Version.cpp */; };
 		D4EC48E61C2637710024B507 /* g2.dat in Resources */ = {isa = PBXBuildFile; fileRef = D4EC48E31C2637710024B507 /* g2.dat */; };
 		D4EC48E71C2637710024B507 /* language in Resources */ = {isa = PBXBuildFile; fileRef = D4EC48E41C2637710024B507 /* language */; };
 		D4EC48E81C2637710024B507 /* title in Resources */ = {isa = PBXBuildFile; fileRef = D4EC48E51C2637710024B507 /* title */; };
@@ -897,7 +897,7 @@
 		D442718A1CC81B3200D84D28 /* sawyercoding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sawyercoding.h; sourceTree = "<group>"; };
 		D442718B1CC81B3200D84D28 /* util.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = util.c; sourceTree = "<group>"; };
 		D442718C1CC81B3200D84D28 /* util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = util.h; sourceTree = "<group>"; };
-		D442718D1CC81B3200D84D28 /* version.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = version.h; sourceTree = "<group>"; };
+		D442718D1CC81B3200D84D28 /* Version.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Version.h; sourceTree = "<group>"; };
 		D442718F1CC81B3200D84D28 /* about.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = about.c; sourceTree = "<group>"; };
 		D44271901CC81B3200D84D28 /* banner.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = banner.c; sourceTree = "<group>"; };
 		D44271911CC81B3200D84D28 /* changelog.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = changelog.c; sourceTree = "<group>"; };
@@ -1212,7 +1212,7 @@
 		D4A8B4B31DB41873007A2F29 /* libpng16.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libpng16.dylib; sourceTree = "<group>"; };
 		D4B21B6D1E343AF1004982C7 /* lightfx.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = lightfx.c; sourceTree = "<group>"; };
 		D4B21B6E1E343AF1004982C7 /* lightfx.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lightfx.h; sourceTree = "<group>"; };
-		D4CA88651D4E64C800060C11 /* version.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = version.c; sourceTree = "<group>"; };
+		D4CA88651D4E64C800060C11 /* Version.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Version.cpp; sourceTree = "<group>"; };
 		D4EC48E31C2637710024B507 /* g2.dat */ = {isa = PBXFileReference; lastKnownFileType = file; name = g2.dat; path = data/g2.dat; sourceTree = SOURCE_ROOT; };
 		D4EC48E41C2637710024B507 /* language */ = {isa = PBXFileReference; lastKnownFileType = folder; name = language; path = data/language; sourceTree = SOURCE_ROOT; };
 		D4EC48E51C2637710024B507 /* title */ = {isa = PBXFileReference; lastKnownFileType = folder; name = title; path = data/title; sourceTree = SOURCE_ROOT; };
@@ -1582,8 +1582,8 @@
 				D442716C1CC81B3200D84D28 /* rct2.h */,
 				D433A5031E4A862F00D9A6DF /* rct12.h */,
 				D44271851CC81B3200D84D28 /* sprites.h */,
-				D4CA88651D4E64C800060C11 /* version.c */,
-				D442718D1CC81B3200D84D28 /* version.h */,
+				D4CA88651D4E64C800060C11 /* Version.cpp */,
+				D442718D1CC81B3200D84D28 /* Version.h */,
 			);
 			name = Sources;
 			path = src/openrct2;
@@ -2787,7 +2787,7 @@
 				D44272931CC81B3200D84D28 /* top_toolbar.c in Sources */,
 				D43407DA1D0E14BE00C2B3D4 /* FillRectShader.cpp in Sources */,
 				D464FEBE1D31A66E00CBABAC /* MemoryStream.cpp in Sources */,
-				D4CA88661D4E64C800060C11 /* version.c in Sources */,
+				D4CA88661D4E64C800060C11 /* Version.cpp in Sources */,
 				D44271F61CC81B3200D84D28 /* audio.c in Sources */,
 				D442728A1CC81B3200D84D28 /* tile_inspector.c in Sources */,
 				D43407D91D0E14BE00C2B3D4 /* DrawLineShader.cpp in Sources */,

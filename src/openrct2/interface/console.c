@@ -35,6 +35,7 @@
 #include "../rct2.h"
 #include "../util/sawyercoding.h"
 #include "../util/util.h"
+#include "../Version.h"
 #include "../world/banner.h"
 #include "../world/climate.h"
 #include "../world/park.h"

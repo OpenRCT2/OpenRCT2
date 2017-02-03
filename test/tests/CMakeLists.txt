@@ -81,6 +81,7 @@ set(LANGUAGEPACK_TEST_SOURCES
 		"../../src/openrct2/localisation/format_codes.c"
 		"../../src/openrct2/localisation/utf8.c"
 		"../../src/openrct2/util/util.c"
+		"../../src/openrct2/Version.cpp"
 		)
 add_executable(test_languagepack ${LANGUAGEPACK_TEST_SOURCES})
 target_link_libraries(test_languagepack ${GTEST_LIBRARIES} dl z SDL2 SDL2_ttf ssl crypto)

@@ -39,6 +39,7 @@ extern "C"
 #include "../core/Console.hpp"
 #include "../core/Exception.hpp"
 #include "../rct2/S6Exporter.h"
+#include "../Version.h"
 
 #define WSZ(x) L"" x
 

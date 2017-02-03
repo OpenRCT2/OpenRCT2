@@ -18,13 +18,15 @@
 #include <stdarg.h>
 #include <stdio.h>
 
+#include "../common.h"
+
 #ifdef __WINDOWS__
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 #undef GetMessage
 #endif
 
-#include "../OpenRCT2.h"
+#include "../Version.h"
 #include "Console.hpp"
 #include "Diagnostics.hpp"
 #include "Guard.hpp"
@@ -82,10 +84,8 @@ namespace Guard
     {
         if (expression) return;
 
-        char version[128];
-        openrct2_write_full_version_info(version, sizeof(version));
         Console::Error::WriteLine(ASSERTION_MESSAGE);
-        Console::Error::WriteLine("Version: %s", version);
+        Console::Error::WriteLine("Version: %s", Version::GetInfo().c_str());
 
         // This is never freed, but acceptable considering we are about to crash out
         utf8 * formattedMessage = nullptr;
@@ -140,13 +140,10 @@ namespace Guard
 #ifdef __WINDOWS__
     static void GetAssertMessage(char * buffer, size_t bufferSize, const char * formattedMessage)
     {
-        char version[128];
-        openrct2_write_full_version_info(version, sizeof(version));
-
         String::Set(buffer, bufferSize, ASSERTION_MESSAGE);
         String::Append(buffer, bufferSize, "\r\n\r\n");
         String::Append(buffer, bufferSize, "Version: ");
-        String::Append(buffer, bufferSize, version);
+        String::Append(buffer, bufferSize, Version::GetInfo().c_str());
         if (formattedMessage != nullptr)
         {
             String::Append(buffer, bufferSize, "\r\n");

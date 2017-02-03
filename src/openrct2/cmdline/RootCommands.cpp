@@ -31,6 +31,7 @@ extern "C"
 #include "../network/network.h"
 #include "../object/ObjectRepository.h"
 #include "../OpenRCT2.h"
+#include "../Version.h"
 #include "CommandLine.hpp"
 
 #ifdef USE_BREAKPAD
