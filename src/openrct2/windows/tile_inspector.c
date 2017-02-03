@@ -1055,7 +1055,6 @@ static void window_tile_inspector_mouseup(rct_window *w, sint32 widgetIndex)
 		break;
 	case WIDX_BUTTON_REMOVE:
 		window_tile_inspector_remove_element(w->selected_list_item);
-		window_tile_inspector_set_page(w, PAGE_DEFAULT);
 		w->selected_list_item = -1;
 		window_tile_inspector_set_page(w, PAGE_DEFAULT);
 		window_tile_inspector_auto_set_buttons(w);
@@ -1067,8 +1066,9 @@ static void window_tile_inspector_mouseup(rct_window *w, sint32 widgetIndex)
 		break;
 	case WIDX_BUTTON_SORT:
 		window_tile_inspector_sort_elements(w);
-		window_tile_inspector_set_page(w, PAGE_DEFAULT);
 		w->selected_list_item = -1;
+		window_tile_inspector_set_page(w, PAGE_DEFAULT);
+		window_tile_inspector_auto_set_buttons(w);
 		window_invalidate(w);
 		break;
 	case WIDX_BUTTON_COPY:
