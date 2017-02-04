@@ -528,7 +528,7 @@ void peep_update_all()
 	uint16 spriteIndex;
 	rct_peep* peep;
 
-	if (gScreenFlags & 0x0E)
+	if (gScreenFlags & (SCREEN_FLAGS_SCENARIO_EDITOR | SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER))
 		return;
 
 	spriteIndex = gSpriteListHead[SPRITE_LIST_PEEP];
@@ -6903,7 +6903,7 @@ void peep_update_crowd_noise()
 	if (!gConfigSound.sound_enabled)
 		return;
 
-	if (gScreenFlags & 2)
+	if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
 		return;
 
 	viewport = g_music_tracking_viewport;
@@ -11308,7 +11308,7 @@ static bool peep_find_ride_to_look_at(rct_peep *peep, uint8 edge, uint8 *rideToV
 		}
 
 		if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_SCENERY_MULTIPLE) {
-			if (!(get_large_scenery_entry(mapElement->properties.scenerymultiple.type & 0x3FF)->large_scenery.flags & 0x10)) {
+			if (!(get_large_scenery_entry(mapElement->properties.scenerymultiple.type & 0x3FF)->large_scenery.flags & LARGE_SCENERY_FLAG5)) {
 				continue;
 			}
 
@@ -11377,7 +11377,7 @@ static bool peep_find_ride_to_look_at(rct_peep *peep, uint8 edge, uint8 *rideToV
 		}
 
 		if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_SCENERY_MULTIPLE) {
-			if (!(get_large_scenery_entry(mapElement->properties.scenerymultiple.type & 0x3FF)->large_scenery.flags & 0x10)) {
+			if (!(get_large_scenery_entry(mapElement->properties.scenerymultiple.type & 0x3FF)->large_scenery.flags & LARGE_SCENERY_FLAG5)) {
 				continue;
 			}
 
@@ -11445,7 +11445,7 @@ static bool peep_find_ride_to_look_at(rct_peep *peep, uint8 edge, uint8 *rideToV
 		}
 
 		if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_SCENERY_MULTIPLE) {
-			if (!(get_large_scenery_entry(mapElement->properties.scenerymultiple.type & 0x3FF)->large_scenery.flags & 0x10)) {
+			if (!(get_large_scenery_entry(mapElement->properties.scenerymultiple.type & 0x3FF)->large_scenery.flags & LARGE_SCENERY_FLAG5)) {
 				continue;
 			}
 

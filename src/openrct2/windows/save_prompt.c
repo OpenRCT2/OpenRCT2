@@ -190,9 +190,9 @@ void window_save_prompt_open()
 	window_invalidate_by_class(WC_TOP_TOOLBAR);
 
 	stringId = window_save_prompt_labels[prompt_mode][0];
-	if (stringId == STR_LOAD_GAME_PROMPT_TITLE && gScreenFlags & 2)
+	if (stringId == STR_LOAD_GAME_PROMPT_TITLE && gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
 		stringId = STR_LOAD_LANDSCAPE_PROMPT_TITLE;
-	if (stringId == STR_QUIT_GAME_PROMPT_TITLE && gScreenFlags & 2)
+	if (stringId == STR_QUIT_GAME_PROMPT_TITLE && gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
 		stringId = STR_QUIT_SCENARIO_EDITOR;
 	window_save_prompt_widgets[WIDX_TITLE].text = stringId;
 	window_save_prompt_widgets[WIDX_LABEL].text = window_save_prompt_labels[prompt_mode][1];

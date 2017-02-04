@@ -304,7 +304,7 @@ sint32 viewport_interaction_get_item_right(sint32 x, sint32 y, viewport_interact
 	case VIEWPORT_INTERACTION_ITEM_FOOTPATH_ITEM:
 		sceneryEntry = get_footpath_item_entry(footpath_element_get_path_scenery_index(mapElement));
 		set_map_tooltip_format_arg(0, rct_string_id, STR_MAP_TOOLTIP_STRINGID_CLICK_TO_REMOVE);
-		if (mapElement->flags & 0x20) {
+		if (mapElement->flags & MAP_ELEMENT_FLAG_BROKEN) {
 			set_map_tooltip_format_arg(2, rct_string_id, STR_BROKEN);
 			set_map_tooltip_format_arg(4, rct_string_id, sceneryEntry->name);
 		} else {

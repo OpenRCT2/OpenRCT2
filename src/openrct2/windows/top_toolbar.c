@@ -961,7 +961,7 @@ static void repaint_scenery_tool_down(sint16 x, sint16 y, sint16 widgetIndex){
 
 		// If can't repaint
 		if (!(scenery_entry->large_scenery.flags &
-			(1 << 0)))
+			LARGE_SCENERY_FLAG_HAS_PRIMARY_COLOUR))
 			return;
 
 		gGameCommandErrorTitle = STR_CANT_REPAINT_THIS;
@@ -2032,8 +2032,8 @@ static void top_toolbar_tool_update_water(sint16 x, sint16 y){
 		state_changed++;
 	}
 
-	if (gMapSelectType != MAP_SELECT_TYPE_5) {
-		gMapSelectType = MAP_SELECT_TYPE_5;
+	if (gMapSelectType != MAP_SELECT_TYPE_FULL_WATER) {
+		gMapSelectType = MAP_SELECT_TYPE_FULL_WATER;
 		state_changed++;
 	}
 

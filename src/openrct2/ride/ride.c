@@ -3655,9 +3655,9 @@ void ride_music_update_final()
 {
 	rct_ride_music_params* edi = NULL;
 	sint32 ebx = 0;
-	if (!(gScreenFlags & 2)) {
+	if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)) {
 		// TODO Allow circus music (CSS24) to play if ride music is disabled (that should be sound)
-		if (!gGameSoundsOff && gConfigSound.ride_music_enabled && !(gScreenFlags & 1)) {
+		if (!gGameSoundsOff && gConfigSound.ride_music_enabled && !(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)) {
 			while (1) {
 				sint32 v8 = 0;
 				sint32 v9 = 1;

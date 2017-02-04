@@ -89,11 +89,17 @@ assert_struct_size(rct_large_scenery_text_glyph, 4);
 typedef struct rct_large_scenery_text {
 	rct_xy16 offset[2];		// 0x0
 	uint16 max_width;		// 0x8
-	uint16 var_A;			// 0xA
-	uint16 var_C;			// 0xC
+	uint16 pad_A;			// 0xA
+	uint8 flags;			// 0xC
+	uint8 var_D;			// 0xD
 	rct_large_scenery_text_glyph glyphs[256]; // 0xE
 } rct_large_scenery_text;
 assert_struct_size(rct_large_scenery_text, 14 + 4 * 256);
+
+typedef enum {
+	LARGE_SCENERY_TEXT_FLAG_VERTICAL = (1 << 0),	// 0x1
+	LARGE_SCENERY_TEXT_FLAG_TWO_LINE = (1 << 1),	// 0x2
+} LARGE_SCENERY_TEXT_FLAGS;
 
 typedef struct rct_large_scenery_entry {
 	uint8 tool_id;			// 0x06
@@ -109,6 +115,14 @@ typedef struct rct_large_scenery_entry {
 #ifdef PLATFORM_32BIT
 assert_struct_size(rct_large_scenery_entry, 20);
 #endif
+
+typedef enum {
+	LARGE_SCENERY_FLAG_HAS_PRIMARY_COLOUR = (1 << 0),			// 0x1
+	LARGE_SCENERY_FLAG_HAS_SECONDARY_COLOUR = (1 << 1),			// 0x2
+	LARGE_SCENERY_FLAG_3D_TEXT = (1 << 2),			// 0x4
+	LARGE_SCENERY_FLAG_ANIMATED = (1 << 3),			// 0x8
+	LARGE_SCENERY_FLAG5 = (1 << 4),			// 0x10
+} LARGE_SCENERY_FLAGS;
 
 typedef struct rct_wall_scenery_entry {
 	uint8 tool_id;			// 0x06
