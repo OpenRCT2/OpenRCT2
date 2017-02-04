@@ -1,6 +1,7 @@
 0.0.7 (in development)
 ------------------------------------------------------------------------
 - Improved: [#5137]: Removing all guests no longer closes the rides and removes the vehicles.
+- Fix: [#4689] Object selection tabs sometimes flicker.
 - Fix: [#5150] --openrct-data-path sets user data path instead of OpenRCT2 data path.
 
 0.0.6 (2017-01-29)

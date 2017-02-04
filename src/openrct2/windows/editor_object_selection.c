@@ -837,6 +837,7 @@ static void window_editor_object_selection_mouseup(rct_window *w, sint32 widgetI
 		w->selected_list_item = -1;
 		w->object_entry = (rct_object_entry *)-1;
 		w->scrolls[0].v_top = 0;
+		w->frame_no = 0;
 		window_invalidate(w);
 		break;
 
