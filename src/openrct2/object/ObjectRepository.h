@@ -29,6 +29,7 @@ extern "C"
 
 #ifdef __cplusplus
     interface   IPlatformEnvironment;
+    interface   IStream;
     class       Object;
 #else
     typedef struct Object Object;
@@ -77,6 +78,8 @@ interface IObjectRepository
     virtual void                            AddObject(const rct_object_entry * objectEntry,
                                                       const void * data,
                                                       size_t dataSize) abstract;
+
+    virtual bool                            TryExportPackedObject(IStream * stream) abstract;
 };
 
 IObjectRepository * CreateObjectRepository(IPlatformEnvironment * env);

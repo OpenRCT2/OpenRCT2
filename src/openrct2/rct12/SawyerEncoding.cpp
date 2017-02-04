@@ -26,6 +26,53 @@ extern "C"
 
 namespace SawyerEncoding
 {
+    void SkipChunk(IStream * stream)
+    {
+        auto header = stream->ReadValue<sawyercoding_chunk_header>();
+        stream->Seek(header.length, STREAM_SEEK_CURRENT);
+    }
+
+    void * ReadChunk(IStream * stream, size_t * outSize)
+    {
+        uint64 originalPosition = stream->GetPosition();
+
+        auto header = stream->ReadValue<sawyercoding_chunk_header>();
+        switch (header.encoding) {
+        case CHUNK_ENCODING_NONE:
+        case CHUNK_ENCODING_RLE:
+        case CHUNK_ENCODING_RLECOMPRESSED:
+        case CHUNK_ENCODING_ROTATE:
+        {
+            std::unique_ptr<uint8> compressedData = std::unique_ptr<uint8>(Memory::Allocate<uint8>(header.length));
+            if (stream->TryRead(compressedData.get(), header.length) != header.length)
+            {
+                throw IOException("Corrupt chunk size.");
+            }
+
+            // Allow 16MiB for chunk data
+            size_t bufferSize = 16 * 1024 * 1024;
+            uint8 * buffer = Memory::Allocate<uint8>(bufferSize);
+            if (buffer == nullptr)
+            {
+                throw Exception("Unable to allocate buffer.");
+            }
+
+            size_t uncompressedLength = sawyercoding_read_chunk_buffer(buffer, compressedData.get(), header, bufferSize);
+            buffer = Memory::Reallocate(buffer, uncompressedLength);
+            if (buffer == nullptr)
+            {
+                throw Exception("Unable to reallocate buffer.");
+            }
+
+            if (outSize != nullptr) *outSize = uncompressedLength;
+            return buffer;
+        }
+        default:
+            stream->SetPosition(originalPosition);
+            throw IOException("Invalid chunk encoding.");
+        }
+    }
+
     void ReadChunk(void * dst, size_t expectedSize, IStream * stream)
     {
         if (!TryReadChunk(dst, expectedSize, stream))

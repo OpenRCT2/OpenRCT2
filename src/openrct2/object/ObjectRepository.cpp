@@ -31,6 +31,7 @@
 #include "../core/Stopwatch.hpp"
 #include "../core/String.hpp"
 #include "../PlatformEnvironment.h"
+#include "../rct12/SawyerEncoding.h"
 #include "../scenario/ScenarioRepository.h"
 #include "Object.h"
 #include "ObjectFactory.h"
@@ -221,6 +222,31 @@ public:
                 Console::Error::WriteLine("Failed saving object: [%s] to '%s'.", objectName, path);
             }
         }
+    }
+
+    bool TryExportPackedObject(IStream * stream) override
+    {
+        // Check if we already have this object
+        rct_object_entry entry = stream->ReadValue<rct_object_entry>();
+        if (FindObject(&entry) != nullptr)
+        {
+            SawyerEncoding::SkipChunk(stream);
+        }
+        else
+        {
+            // Read object and save to new file
+            size_t chunkSize;
+            void * chunk = SawyerEncoding::ReadChunk(stream, &chunkSize);
+            if (chunk == nullptr)
+            {
+                log_error("Failed to reallocate buffer for packed object.");
+                return false;
+            }
+
+            AddObject(&entry, chunk, chunkSize);
+            Memory::Free(chunk);
+        }
+        return true;
     }
 
 private:
@@ -733,43 +759,6 @@ extern "C"
                 }
             }
         }
-    }
-
-    sint32 object_load_packed(SDL_RWops * rw)
-    {
-        IObjectRepository * objRepo = GetObjectRepository();
-
-        rct_object_entry entry;
-        SDL_RWread(rw, &entry, 16, 1);
-
-        // Check if we already have this object
-        if (objRepo->FindObject(&entry) != nullptr)
-        {
-            sawyercoding_skip_chunk(rw);
-        }
-        else
-        {
-            // Read object and save to new file
-            uint8 * chunk = Memory::Allocate<uint8>(0x600000);
-            if (chunk == nullptr)
-            {
-                log_error("Failed to allocate buffer for packed object.");
-                return 0;
-            }
-
-            size_t chunkSize = sawyercoding_read_chunk_with_size(rw, chunk, 0x600000);
-            chunk = Memory::Reallocate(chunk, chunkSize);
-            if (chunk == nullptr)
-            {
-                log_error("Failed to reallocate buffer for packed object.");
-                return 0;
-            }
-
-            objRepo->AddObject(&entry, chunk, chunkSize);
-
-            Memory::Free(chunk);
-        }
-        return 1;
     }
 
     bool object_saved_packed(SDL_RWops * rw, const rct_object_entry * entry)

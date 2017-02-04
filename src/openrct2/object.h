@@ -109,7 +109,6 @@ extern const rct_object_entry_group object_entry_groups[];
 void object_list_load();
 bool object_read_and_load_entries(SDL_RWops* rw);
 bool object_load_entries(rct_object_entry* entries);
-sint32 object_load_packed(SDL_RWops* rw);
 bool object_saved_packed(SDL_RWops* rw, const rct_object_entry * entry);
 
 bool object_entry_is_empty(const rct_object_entry *entry);

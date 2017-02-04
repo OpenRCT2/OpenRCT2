@@ -22,6 +22,7 @@
 #include "../core/String.hpp"
 #include "../management/award.h"
 #include "../network/network.h"
+#include "../object/ObjectRepository.h"
 #include "../ParkImporter.h"
 #include "../rct12/SawyerEncoding.h"
 
@@ -130,9 +131,10 @@ public:
 
         // Read packed objects
         // TODO try to contain this more and not store objects until later
+        IObjectRepository * objectRepo = GetObjectRepository();
         for (uint16 i = 0; i < _s6.header.num_packed_objects; i++)
         {
-            // object_load_packed(rw);
+            objectRepo->TryExportPackedObject(stream);
         }
 
         if (isScenario)
