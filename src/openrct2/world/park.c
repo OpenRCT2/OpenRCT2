@@ -554,7 +554,7 @@ static void park_generate_new_guests()
  */
 void park_update()
 {
-	if (gScreenFlags & 0x0E)
+	if (gScreenFlags & (SCREEN_FLAGS_SCENARIO_EDITOR | SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER))
 		return;
 
 	// Every 5 seconds approximately

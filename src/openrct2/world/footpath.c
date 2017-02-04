@@ -220,10 +220,10 @@ static money32 footpath_element_insert(sint32 type, sint32 x, sint32 y, sint32 z
 
 		footpath_queue_chain_reset();
 
-		if (!(flags & (1 << 7)))
+		if (!(flags & GAME_COMMAND_FLAG_7))
 			footpath_remove_edges_at(x, y, mapElement);
 
-		if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !(flags & (1 << 6)))
+		if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !(flags & GAME_COMMAND_FLAG_GHOST))
 			automatically_set_peep_spawn(x, y, mapElement->base_height / 2);
 
 		loc_6A6620(flags, x, y, mapElement);

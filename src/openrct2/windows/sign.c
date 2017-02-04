@@ -335,10 +335,10 @@ static void window_sign_invalidate(rct_window *w)
 	main_colour_btn->type = WWT_EMPTY;
 	text_colour_btn->type = WWT_EMPTY;
 
-	if (scenery_entry->large_scenery.flags&(1 << 0)){
+	if (scenery_entry->large_scenery.flags & LARGE_SCENERY_FLAG_HAS_PRIMARY_COLOUR){
 		main_colour_btn->type = WWT_COLOURBTN;
 	}
-	if (scenery_entry->large_scenery.flags&(1 << 1)) {
+	if (scenery_entry->large_scenery.flags & LARGE_SCENERY_FLAG_HAS_SECONDARY_COLOUR) {
 		text_colour_btn->type = WWT_COLOURBTN;
 	}
 
