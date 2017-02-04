@@ -105,7 +105,7 @@ public:
 
     void LoadFromStream(IStream * stream, bool isScenario) override
     {
-        if (!gConfigGeneral.allow_loading_with_incorrect_checksum && !SawyerEncoding::ValidateChecksum(stream))
+        if (isScenario && !gConfigGeneral.allow_loading_with_incorrect_checksum && !SawyerEncoding::ValidateChecksum(stream))
         {
             throw IOException("Invalid checksum.");
         }
