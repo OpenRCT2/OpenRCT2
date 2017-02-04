@@ -1092,6 +1092,10 @@ void game_command_remove_banner(sint32* eax, sint32* ebx, sint32* ecx, sint32* e
 
 	rct_banner *banner = &gBanners[map_element->properties.banner.index];
 	rct_scenery_entry *scenery_entry = get_banner_entry(banner->type);
+	money32 refund = 0;
+	if (scenery_entry != NULL || scenery_entry != (rct_scenery_entry *)-1) {
+		refund = -((scenery_entry->banner.price * 3) / 4);
+	}
 
 	if (flags & GAME_COMMAND_FLAG_APPLY) {
 		if (gGameCommandNestLevel == 1 && !(*ebx & GAME_COMMAND_FLAG_GHOST)) {
@@ -1107,9 +1111,8 @@ void game_command_remove_banner(sint32* eax, sint32* ebx, sint32* ecx, sint32* e
 		map_element_remove(map_element);
 	}
 
-	*ebx = (scenery_entry->banner.price * -3) / 4;
-
-	if(gParkFlags & PARK_FLAGS_NO_MONEY){
+	*ebx = refund;
+	if (gParkFlags & PARK_FLAGS_NO_MONEY) {
 		*ebx = 0;
 	}
 }
