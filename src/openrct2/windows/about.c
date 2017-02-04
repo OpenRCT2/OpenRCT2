@@ -269,24 +269,23 @@ static void window_about_rct2_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	x = w->x + 200;
 	y = w->y + w->widgets[WIDX_PAGE_BACKGROUND].top + 10;
 	
-	sint32 col = 0; //my fork is 0, but upstream is COLOUR_BLACK.. see if COLOUR_BLACK works enough..
 	// Version
-	gfx_draw_string_centred(dpi, STR_VERSION_X, x, y, col, NULL);
+	gfx_draw_string_centred(dpi, STR_VERSION_X, x, y, COLOUR_BLACK, NULL);
 	y += 10;
 
 	// Credits
-	gfx_draw_string_centred(dpi, STR_COPYRIGHT_CS, x, y, col, NULL);
-	y += 14; //mine is 14, but target is 10
+	gfx_draw_string_centred(dpi, STR_COPYRIGHT_CS, x, y, COLOUR_BLACK, NULL);
+	y += 14;
 	gfx_draw_sprite(dpi, SPR_CREDITS_CHRIS_SAWYER_SMALL, w->x + 92, y, 0);
-	y += 65; //mine is 65 but target is 79
-	gfx_draw_string_centred(dpi, STR_DESIGNED_AND_PROGRAMMED_BY_CS, x, y, col, NULL);
+	y += 65;
+	gfx_draw_string_centred(dpi, STR_DESIGNED_AND_PROGRAMMED_BY_CS, x, y, COLOUR_BLACK, NULL);
 	y += 10;
 	gfx_draw_string_centred(dpi, STR_GRAPHICS_BY_SF, x, y, COLOUR_BLACK, NULL);
 	y += 10;
 	gfx_draw_string_centred(dpi, STR_SOUND_AND_MUSIC_BY_AB, x, y, COLOUR_BLACK, NULL);
 	y += 10;
 	gfx_draw_string_centred(dpi, STR_ADDITIONAL_SOUNDS_RECORDED_BY_DE, x, y, COLOUR_BLACK, NULL);
-	y += 13;
+	y += 10;
 	gfx_draw_string_centred(dpi, STR_REPRESENTATION_BY_JL, x, y, COLOUR_BLACK, NULL);
 	y += 25;
 	gfx_draw_string_centred(dpi, STR_THANKS_TO, x, y, COLOUR_BLACK, NULL);
