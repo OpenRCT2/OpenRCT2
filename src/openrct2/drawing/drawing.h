@@ -329,6 +329,7 @@ void FASTCALL gfx_draw_sprite_raw_masked(rct_drawpixelinfo *dpi, sint32 x, sint3
 void FASTCALL gfx_draw_sprite_solid(rct_drawpixelinfo * dpi, sint32 image, sint32 x, sint32 y, uint8 colour);
 
 void FASTCALL gfx_draw_sprite_software(rct_drawpixelinfo *dpi, sint32 image_id, sint32 x, sint32 y, uint32 tertiary_colour);
+void FASTCALL gfx_get_sprite_size(sint32 image_id, sint32* width, sint32* height);
 uint8* FASTCALL gfx_draw_sprite_get_palette(sint32 image_id, uint32 tertiary_colour);
 void FASTCALL gfx_draw_sprite_palette_set_software(rct_drawpixelinfo *dpi, sint32 image_id, sint32 x, sint32 y, uint8* palette_pointer, uint8* unknown_pointer);
 void FASTCALL gfx_draw_sprite_raw_masked_software(rct_drawpixelinfo *dpi, sint32 x, sint32 y, sint32 maskImage, sint32 colourImage);

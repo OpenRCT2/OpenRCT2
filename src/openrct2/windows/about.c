@@ -20,7 +20,7 @@
 #include "../interface/window.h"
 #include "../interface/themes.h"
 #include "../util/util.h"
-#include "../openrct2.h"
+#include "../OpenRCT2.h"
 
 #define WW 400
 #define WH 350
@@ -222,6 +222,7 @@ static void window_about_openrct2_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	width = w->width - 20;
 	utf8 buffer[256];
 	utf8 *ch = buffer;
+	
 	openrct2_write_full_version_info(ch, sizeof(buffer) - (ch - buffer));
 	y += gfx_draw_string_centred_wrapped(dpi, &ch, x, y, width, STR_STRING, w->colours[2]) + 11;
 	y += gfx_draw_string_centred_wrapped(dpi, NULL, x, y, width, STR_ABOUT_OPENRCT2_DESCRIPTION, w->colours[2]) + 2;
@@ -268,17 +269,17 @@ static void window_about_rct2_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	x = w->x + 200;
 	y = w->y + w->widgets[WIDX_PAGE_BACKGROUND].top + 10;
 	
-	int col = 0; //my fork is 0, but upstream is COLOUR_BLACK.. see if COLOUR_BLACK works enough..
+	sint32 col = 0; //my fork is 0, but upstream is COLOUR_BLACK.. see if COLOUR_BLACK works enough..
 	// Version
-	gfx_draw_string_centred(dpi, STR_VERSION_X, x, y, 0, NULL);
+	gfx_draw_string_centred(dpi, STR_VERSION_X, x, y, col, NULL);
 	y += 10;
 
 	// Credits
-	gfx_draw_string_centred(dpi, STR_COPYRIGHT_CS, x, y, 0, NULL);
+	gfx_draw_string_centred(dpi, STR_COPYRIGHT_CS, x, y, col, NULL);
 	y += 14; //mine is 14, but target is 10
 	gfx_draw_sprite(dpi, SPR_CREDITS_CHRIS_SAWYER_SMALL, w->x + 92, y, 0);
 	y += 65; //mine is 65 but target is 79
-	gfx_draw_string_centred(dpi, STR_DESIGNED_AND_PROGRAMMED_BY_CS, x, y, 0, NULL);
+	gfx_draw_string_centred(dpi, STR_DESIGNED_AND_PROGRAMMED_BY_CS, x, y, col, NULL);
 	y += 10;
 	gfx_draw_string_centred(dpi, STR_GRAPHICS_BY_SF, x, y, COLOUR_BLACK, NULL);
 	y += 10;

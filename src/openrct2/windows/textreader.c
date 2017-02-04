@@ -14,13 +14,12 @@
 *****************************************************************************/
 #pragma endregion
 
-#include "../addresses.h"
 #include "../localisation/localisation.h"
 #include "../interface/themes.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
 #include "../interface/viewport.h"
-#include "../openrct2.h"
+#include "../OpenRCT2.h"
 #include "../platform/platform.h"
 #include "../util/util.h"
 #include "../world/footpath.h"
@@ -51,12 +50,12 @@ rct_widget window_textreader_widgets[] = {
 };
 
 static void window_textreader_close(rct_window *w);
-static void window_textreader_mouseup(rct_window *w, int widgetIndex);
+static void window_textreader_mouseup(rct_window *w, sint32 widgetIndex);
 static void window_textreader_resize(rct_window *w);
-static void window_textreader_scrollgetsize(rct_window *w, int scrollIndex, int *width, int *height);
+static void window_textreader_scrollgetsize(rct_window *w, sint32 scrollIndex, sint32 *width, sint32 *height);
 static void window_textreader_invalidate(rct_window *w);
 static void window_textreader_paint(rct_window *w, rct_drawpixelinfo *dpi);
-static void window_textreader_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scrollIndex);
+static void window_textreader_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 scrollIndex);
 
 static rct_window_event_list window_textreader_events = {
 	window_textreader_close,
@@ -96,8 +95,8 @@ static char *_textreaderFilePath = NULL;
 static char *_textreaderText = NULL;
 static size_t _textreaderTextSize = 0;
 static char **_textreaderLines = NULL;
-static int _textreaderNumLines = 0;
-static int _textreaderLongestLineWidth = 0;
+static sint32 _textreaderNumLines = 0;
+static sint32 _textreaderLongestLineWidth = 0;
 
 rct_window *window_textreader_open(const char * file_path)
 {
@@ -111,12 +110,9 @@ rct_window *window_textreader_open(const char * file_path)
 	if (!window_textreader_read_file())
 		return NULL;
 
-	int screenWidth = gScreenWidth;
-	int screenHeight = gScreenHeight;
-
 	window = window_create_centred(
-		screenWidth * 4 / 5,
-		screenHeight * 4 / 5,
+		(gScreenWidth * 4) / 5,
+		(gScreenHeight * 4) / 5,
 		&window_textreader_events,
 		WC_TEXTREADER,
 		WF_RESIZABLE
@@ -148,25 +144,10 @@ static void window_textreader_mouseup(rct_window *w, int widgetIndex)
 
 static void window_textreader_resize(rct_window *w)
 {
-	int screenWidth = gScreenWidth;
-	int screenHeight = gScreenHeight;
-
-	w->max_width = (screenWidth * 4) / 5;
-	w->max_height = (screenHeight * 4) / 5;
-
-	w->min_width = MIN_WW;
-	w->min_height = MIN_WH;
-	if (w->width < w->min_width) {
-		window_invalidate(w);
-		w->width = w->min_width;
-	}
-	if (w->height < w->min_height) {
-		window_invalidate(w);
-		w->height = w->min_height;
-	}
+	window_set_resize(w, MIN_WW, MIN_WH, (gScreenWidth * 4) / 5, (gScreenHeight * 4) / 5);
 }
 
-static void window_textreader_scrollgetsize(rct_window *w, int scrollIndex, int *width, int *height)
+static void window_textreader_scrollgetsize(rct_window *w, sint32 scrollIndex, sint32 *width, sint32 *height)
 {
 	*width = _textreaderLongestLineWidth + 4;
 	*height = _textreaderNumLines * 11;
@@ -194,14 +175,13 @@ static void window_textreader_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	window_draw_widgets(w, dpi);
 }
 
-static void window_textreader_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scrollIndex)
+static void window_textreader_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 scrollIndex)
 {
 	gCurrentFontFlags = 0;
 	gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
 	
-	int x = 3;
-	int y = 3;
-	for (int i = 0; i < _textreaderNumLines; i++) {
+	sint32 x = 3, y = 3;
+	for (sint32 i = 0; i < _textreaderNumLines; i++) {
 		gfx_draw_string(dpi, _textreaderLines[i], w->colours[0], x, y);
 		y += 11;
 	}
@@ -224,7 +204,7 @@ static bool window_textreader_read_file()
 	if (_textreaderTextSize >= 3 && utf8_is_bom(_textreaderText))
 		start += 3;
 
-	int textreaderLinesCapacity = 8;
+	sint32 textreaderLinesCapacity = 8;
 	_textreaderLines = malloc(textreaderLinesCapacity * sizeof(char*));
 	_textreaderLines[0] = start;
 	_textreaderNumLines = 1;
@@ -253,7 +233,7 @@ static bool window_textreader_read_file()
 	_textreaderLines = realloc(_textreaderLines, _textreaderNumLines * sizeof(char*));
 	gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
 	_textreaderLongestLineWidth = 0;
-	for (int i = 0; i < _textreaderNumLines; i++) {
+	for (sint32 i = 0; i < _textreaderNumLines; i++) {
 		int width = gfx_get_string_width(_textreaderLines[i]);
 		_textreaderLongestLineWidth = max(width, _textreaderLongestLineWidth);
 	}

@@ -44,7 +44,7 @@ static rct_widget window_open_link_prompt_widgets[] = {
 	{ WIDGETS_END }
 };
 
-static void window_open_link_prompt_mouseup(rct_window *w, int widgetIndex);
+static void window_open_link_prompt_mouseup(rct_window *w, sint32 widgetIndex);
 static void window_open_link_prompt_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
 static rct_window_event_list window_open_link_prompt_events = {
@@ -78,7 +78,7 @@ static rct_window_event_list window_open_link_prompt_events = {
 	NULL
 };
 
-void window_open_link_prompt_open(const char* url) 
+void window_open_link_prompt_open(const char * url) 
 {
 	safe_strcpy(open_link_prompt_url, url, sizeof(open_link_prompt_url));
 
@@ -95,18 +95,18 @@ void window_open_link_prompt_open(const char* url)
 	w->colours[0] = COLOUR_LIGHT_BLUE;
 	w->colours[1] = COLOUR_LIGHT_BLUE;
 	w->colours[2] = COLOUR_LIGHT_BLUE;
-	
 }
 
-static void window_open_link_prompt_mouseup(rct_window *w, int widgetIndex) 
+static void window_open_link_prompt_mouseup(rct_window *w, sint32 widgetIndex) 
 {
-	switch (widgetIndex) {
-		case WIDX_OPEN:
-			platform_open_browser(open_link_prompt_url);
-		case WIDX_CANCEL:
-		case WIDX_CLOSE:
-			window_close(w);
-			break;
+	switch (widgetIndex)
+	{
+	case WIDX_OPEN:
+		platform_open_browser(open_link_prompt_url);
+	case WIDX_CANCEL:
+	case WIDX_CLOSE:
+		window_close(w);
+		break;
 	}
 }
 
@@ -114,11 +114,9 @@ static void window_open_link_prompt_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
 	window_draw_widgets(w, dpi);
 
-	
-	int x = w->x + WW / 2;
-	int y = w->y + (WH / 2) - 8;
+	sint32 x = w->x + WW / 2;
+	sint32 y = w->y + (WH / 2) - 8;
 
 	set_format_arg(0, const char *, open_link_prompt_url);
-
 	gfx_draw_string_centred_wrapped(dpi, gCommonFormatArgs, x, y, WW - 4, STR_OPEN_LINK_PROMPT_DESCRIPTION, w->colours[2]);
 }
