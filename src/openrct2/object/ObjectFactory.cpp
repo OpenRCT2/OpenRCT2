@@ -122,7 +122,7 @@ namespace ObjectFactory
         else
         {
             buffer = Memory::Reallocate(buffer, bufferSize);
-            return new MemoryStream(buffer, bufferSize, MEMORY_ACCESS_READ | MEMORY_ACCESS_OWNER);
+            return new MemoryStream(buffer, bufferSize, MEMORY_ACCESS::READ | MEMORY_ACCESS::OWNER);
         }
     }
 

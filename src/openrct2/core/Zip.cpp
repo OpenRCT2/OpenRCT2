@@ -107,7 +107,7 @@ public:
         void * data = GetFileData(path, &dataSize);
         if (data != nullptr)
         {
-            stream = new MemoryStream(data, dataSize, MEMORY_ACCESS_READ | MEMORY_ACCESS_OWNER);
+            stream = new MemoryStream(data, dataSize, MEMORY_ACCESS::READ | MEMORY_ACCESS::OWNER);
         }
         return stream;
     }

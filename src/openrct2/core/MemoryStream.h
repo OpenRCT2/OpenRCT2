@@ -19,30 +19,30 @@
 #include "../common.h"
 #include "IStream.hpp"
 
-enum MEMORY_ACCESS
+namespace MEMORY_ACCESS
 {
-    MEMORY_ACCESS_READ      = 1 << 0,
-    MEMORY_ACCESS_WRITE     = 1 << 1,
-    MEMORY_ACCESS_OWNER     = 1 << 2,
+    constexpr uint8 READ    = 1 << 0;
+    constexpr uint8 WRITE   = 1 << 1;
+    constexpr uint8 OWNER   = 1 << 2;
 };
 
 /**
- * A stream for reading and writing to files. Wraps an SDL_RWops, SDL2's cross platform file stream.
+ * A stream for reading and writing to a buffer in memory. By default this buffer can grow.
  */
 class MemoryStream final : public IStream
 {
 private:
-    uint16 _access       = MEMORY_ACCESS_READ | MEMORY_ACCESS_WRITE | MEMORY_ACCESS_OWNER;
+    uint8  _access       = MEMORY_ACCESS::READ | MEMORY_ACCESS::WRITE | MEMORY_ACCESS::OWNER;
     size_t _dataCapacity = 0;
     size_t _dataSize     = 0;
     void * _data         = nullptr;
     void * _position     = nullptr;
 
 public:
-    MemoryStream();
+    MemoryStream() = default;
     MemoryStream(const MemoryStream & copy);
     explicit MemoryStream(size_t capacity);
-    MemoryStream(void * data, size_t dataSize, uint32 access = MEMORY_ACCESS_READ);
+    MemoryStream(void * data, size_t dataSize, uint8 access = MEMORY_ACCESS::READ);
     MemoryStream(const void * data, size_t dataSize);
     virtual ~MemoryStream();
 

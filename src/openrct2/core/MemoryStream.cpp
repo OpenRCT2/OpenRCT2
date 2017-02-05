@@ -24,7 +24,7 @@ MemoryStream::MemoryStream(const MemoryStream &copy)
     _dataCapacity = copy._dataCapacity;
     _dataSize = copy._dataSize;
 
-    if (_access == MEMORY_ACCESS_OWNER)
+    if (_access == MEMORY_ACCESS::OWNER)
     {
         _data = Memory::Duplicate(copy._data, _dataCapacity);
         _position = (void*)((uintptr_t)_data + copy.GetPosition());
@@ -38,7 +38,7 @@ MemoryStream::MemoryStream(size_t capacity)
     _position = _data;
 }
 
-MemoryStream::MemoryStream(void * data, size_t dataSize, uint32 access)
+MemoryStream::MemoryStream(void * data, size_t dataSize, uint8 access)
 {
     _access = access;
     _dataCapacity = dataSize;
@@ -48,13 +48,13 @@ MemoryStream::MemoryStream(void * data, size_t dataSize, uint32 access)
 }
 
 MemoryStream::MemoryStream(const void * data, size_t dataSize)
-    : MemoryStream((void *)data, dataSize, MEMORY_ACCESS_READ)
+    : MemoryStream((void *)data, dataSize, MEMORY_ACCESS::READ)
 {
 }
 
 MemoryStream::~MemoryStream()
 {
-    if (_access & MEMORY_ACCESS_OWNER)
+    if (_access & MEMORY_ACCESS::OWNER)
     {
         Memory::Free(_data);
     }
@@ -70,18 +70,18 @@ void * MemoryStream::GetData() const
 
 void * MemoryStream::TakeData()
 {
-    _access &= ~MEMORY_ACCESS_OWNER;
+    _access &= ~MEMORY_ACCESS::OWNER;
     return _data;
 }
 
 bool MemoryStream::CanRead() const
 {
-    return (_access & MEMORY_ACCESS_READ) != 0;
+    return (_access & MEMORY_ACCESS::READ) != 0;
 }
 
 bool MemoryStream::CanWrite() const
 {
-    return (_access & MEMORY_ACCESS_WRITE) != 0;
+    return (_access & MEMORY_ACCESS::WRITE) != 0;
 }
 
 uint64 MemoryStream::GetLength() const
@@ -148,7 +148,7 @@ void MemoryStream::Write(const void * buffer, uint64 length)
     uint64 nextPosition = position + length;
     if (nextPosition > _dataCapacity)
     {
-        if (_access & MEMORY_ACCESS_OWNER)
+        if (_access & MEMORY_ACCESS::OWNER)
         {
             EnsureCapacity((size_t)nextPosition);
         }
