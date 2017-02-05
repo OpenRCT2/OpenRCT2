@@ -22,17 +22,5 @@ interface IStream;
 
 namespace SawyerEncoding
 {
-    void SkipChunk(IStream * stream);
-    void * ReadChunk(IStream * stream, size_t * outSize);
-    void ReadChunk(void * dst, size_t expectedSize, IStream * stream);
-    void ReadChunkTolerant(void * dst, size_t expectedSize, IStream * stream);
-    bool TryReadChunk(void * dst, size_t expectedSize, IStream * stream);
-
-    template<typename T>
-    bool TryReadChunk(T * dst, IStream * stream)
-    {
-        return TryReadChunk(dst, sizeof(T), stream);
-    }
-
     bool ValidateChecksum(IStream * stream);
 }
