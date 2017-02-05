@@ -123,6 +123,7 @@ enum WINDOW_TILE_INSPECTOR_WIDGET_IDX {
 	WIDX_PATH_SPINNER_HEIGHT = PAGE_WIDGETS,
 	WIDX_PATH_SPINNER_HEIGHT_INCREASE,
 	WIDX_PATH_SPINNER_HEIGHT_DECREASE,
+	WIDX_PATH_CHECK_SLOPED,
 	WIDX_PATH_CHECK_EDGE_NE, // Note: This is NOT named after the world orientation, but after the way
 	WIDX_PATH_CHECK_EDGE_E,  // it looks in the window (top corner is north). Their order is important,
 	WIDX_PATH_CHECK_EDGE_SE, // as this is the same order paths use for their corners / edges.
@@ -290,7 +291,7 @@ static rct_widget windowTileInspectorWidgetsSurface[] = {
 };
 
 #define PAT_GBPB PADDING_BOTTOM					// Path group box properties bottom
-#define PAT_GBPT (PAT_GBPB + 16 + 3 * 21)		// Path group box properties top
+#define PAT_GBPT (PAT_GBPB + 16 + 4 * 21)		// Path group box properties top
 #define PAT_GBDB (PAT_GBPT + GROUPBOX_PADDING)	// Path group box info bottom
 #define PAT_GBDT (PAT_GBDB + 20 + 2 * 11)		// Path group box info top
 static rct_widget windowTileInspectorWidgetsPath[] = {
@@ -298,14 +299,15 @@ static rct_widget windowTileInspectorWidgetsPath[] = {
 	{ WWT_SPINNER,			1,	GBS(WH - PAT_GBPT, 1, 0),				STR_NONE,					STR_NONE }, // WIDX_PATH_SPINNER_HEIGHT
 	{ WWT_DROPDOWN_BUTTON,  1,	GBSI(WH - PAT_GBPT, 1, 0),				STR_NUMERIC_UP,				STR_NONE }, // WIDX_PATH_SPINNER_HEIGHT_INCREASE
 	{ WWT_DROPDOWN_BUTTON,  1,	GBSD(WH - PAT_GBPT, 1, 0),				STR_NUMERIC_DOWN,			STR_NONE }, // WIDX_PATH_SPINNER_HEIGHT_DECREASE
-	{ WWT_CHECKBOX,			1,	CHK(GBBL(1) + 14 * 3, GBBT(WH - PAT_GBPT, 1) + 7 * 1),	STR_NONE,	STR_NONE }, // WIDX_PATH_CHECK_EDGE_NE
-	{ WWT_CHECKBOX,			1,	CHK(GBBL(1) + 14 * 4, GBBT(WH - PAT_GBPT, 1) + 7 * 2),	STR_NONE,	STR_NONE }, // WIDX_PATH_CHECK_EDGE_E
-	{ WWT_CHECKBOX,			1,	CHK(GBBL(1) + 14 * 3, GBBT(WH - PAT_GBPT, 1) + 7 * 3),	STR_NONE,	STR_NONE }, // WIDX_PATH_CHECK_EDGE_SE
-	{ WWT_CHECKBOX,			1,	CHK(GBBL(1) + 14 * 2, GBBT(WH - PAT_GBPT, 1) + 7 * 4),	STR_NONE,	STR_NONE }, // WIDX_PATH_CHECK_EDGE_S
-	{ WWT_CHECKBOX,			1,	CHK(GBBL(1) + 14 * 1, GBBT(WH - PAT_GBPT, 1) + 7 * 3),	STR_NONE,	STR_NONE }, // WIDX_PATH_CHECK_EDGE_SW
-	{ WWT_CHECKBOX,			1,	CHK(GBBL(1) + 14 * 0, GBBT(WH - PAT_GBPT, 1) + 7 * 2),	STR_NONE,	STR_NONE }, // WIDX_PATH_CHECK_EDGE_W
-	{ WWT_CHECKBOX,			1,	CHK(GBBL(1) + 14 * 1, GBBT(WH - PAT_GBPT, 1) + 7 * 1),	STR_NONE,	STR_NONE }, // WIDX_PATH_CHECK_EDGE_NW
-	{ WWT_CHECKBOX,			1,	CHK(GBBL(1) + 14 * 2, GBBT(WH - PAT_GBPT, 1) + 7 * 0),	STR_NONE,	STR_NONE }, // WIDX_PATH_CHECK_EDGE_N
+	{ WWT_CHECKBOX,			1,	GBBF(WH - PAT_GBPT, 0, 1),				STR_TILE_INSPECTOR_PATH_SLOPED, STR_NONE }, // WIDX_PATH_CHECK_SLOPED
+	{ WWT_CHECKBOX,			1,	CHK(GBBL(1) + 14 * 3, GBBT(WH - PAT_GBPT, 2) + 7 * 1),	STR_NONE,	STR_NONE }, // WIDX_PATH_CHECK_EDGE_NE
+	{ WWT_CHECKBOX,			1,	CHK(GBBL(1) + 14 * 4, GBBT(WH - PAT_GBPT, 2) + 7 * 2),	STR_NONE,	STR_NONE }, // WIDX_PATH_CHECK_EDGE_E
+	{ WWT_CHECKBOX,			1,	CHK(GBBL(1) + 14 * 3, GBBT(WH - PAT_GBPT, 2) + 7 * 3),	STR_NONE,	STR_NONE }, // WIDX_PATH_CHECK_EDGE_SE
+	{ WWT_CHECKBOX,			1,	CHK(GBBL(1) + 14 * 2, GBBT(WH - PAT_GBPT, 2) + 7 * 4),	STR_NONE,	STR_NONE }, // WIDX_PATH_CHECK_EDGE_S
+	{ WWT_CHECKBOX,			1,	CHK(GBBL(1) + 14 * 1, GBBT(WH - PAT_GBPT, 2) + 7 * 3),	STR_NONE,	STR_NONE }, // WIDX_PATH_CHECK_EDGE_SW
+	{ WWT_CHECKBOX,			1,	CHK(GBBL(1) + 14 * 0, GBBT(WH - PAT_GBPT, 2) + 7 * 2),	STR_NONE,	STR_NONE }, // WIDX_PATH_CHECK_EDGE_W
+	{ WWT_CHECKBOX,			1,	CHK(GBBL(1) + 14 * 1, GBBT(WH - PAT_GBPT, 2) + 7 * 1),	STR_NONE,	STR_NONE }, // WIDX_PATH_CHECK_EDGE_NW
+	{ WWT_CHECKBOX,			1,	CHK(GBBL(1) + 14 * 2, GBBT(WH - PAT_GBPT, 2) + 7 * 0),	STR_NONE,	STR_NONE }, // WIDX_PATH_CHECK_EDGE_N
 	{ WIDGETS_END },
 };
 
@@ -519,7 +521,7 @@ static rct_window_event_list windowTileInspectorEvents = {
 static uint64 windowTileInspectorEnabledWidgets[] = {
 	(1ULL << WIDX_CLOSE) | (1ULL << WIDX_BUTTON_CORRUPT),
 	(1ULL << WIDX_CLOSE) | (1ULL << WIDX_BUTTON_CORRUPT) | (1ULL << WIDX_BUTTON_REMOVE) | (1ULL << WIDX_BUTTON_ROTATE) | (1ULL << WIDX_BUTTON_COPY) | (1ULL << WIDX_SURFACE_SPINNER_HEIGHT_INCREASE) | (1ULL << WIDX_SURFACE_SPINNER_HEIGHT_DECREASE) | (1ULL << WIDX_SURFACE_BUTTON_REMOVE_FENCES) | (1ULL << WIDX_SURFACE_BUTTON_RESTORE_FENCES) | (1ULL << WIDX_SURFACE_CHECK_CORNER_N) | (1ULL << WIDX_SURFACE_CHECK_CORNER_E) | (1ULL << WIDX_SURFACE_CHECK_CORNER_S) | (1ULL << WIDX_SURFACE_CHECK_CORNER_W) | (1ULL << WIDX_SURFACE_CHECK_DIAGONAL),
-	(1ULL << WIDX_CLOSE) | (1ULL << WIDX_BUTTON_CORRUPT) | (1ULL << WIDX_BUTTON_REMOVE) | (1ULL << WIDX_BUTTON_ROTATE) | (1ULL << WIDX_BUTTON_COPY) | (1ULL << WIDX_PATH_SPINNER_HEIGHT_INCREASE) | (1ULL << WIDX_PATH_SPINNER_HEIGHT_DECREASE) | (1ULL << WIDX_PATH_CHECK_EDGE_N) | (1ULL << WIDX_PATH_CHECK_EDGE_NE) | (1ULL << WIDX_PATH_CHECK_EDGE_E) | (1ULL << WIDX_PATH_CHECK_EDGE_SE) | (1ULL << WIDX_PATH_CHECK_EDGE_S) | (1ULL << WIDX_PATH_CHECK_EDGE_SW) | (1ULL << WIDX_PATH_CHECK_EDGE_W) | (1ULL << WIDX_PATH_CHECK_EDGE_NW),
+	(1ULL << WIDX_CLOSE) | (1ULL << WIDX_BUTTON_CORRUPT) | (1ULL << WIDX_BUTTON_REMOVE) | (1ULL << WIDX_BUTTON_ROTATE) | (1ULL << WIDX_BUTTON_COPY) | (1ULL << WIDX_PATH_SPINNER_HEIGHT_INCREASE) | (1ULL << WIDX_PATH_SPINNER_HEIGHT_DECREASE) | (1ULL << WIDX_PATH_CHECK_SLOPED) | (1ULL << WIDX_PATH_CHECK_EDGE_N) | (1ULL << WIDX_PATH_CHECK_EDGE_NE) | (1ULL << WIDX_PATH_CHECK_EDGE_E) | (1ULL << WIDX_PATH_CHECK_EDGE_SE) | (1ULL << WIDX_PATH_CHECK_EDGE_S) | (1ULL << WIDX_PATH_CHECK_EDGE_SW) | (1ULL << WIDX_PATH_CHECK_EDGE_W) | (1ULL << WIDX_PATH_CHECK_EDGE_NW),
 	(1ULL << WIDX_CLOSE) | (1ULL << WIDX_BUTTON_CORRUPT) | (1ULL << WIDX_BUTTON_REMOVE) | (1ULL << WIDX_BUTTON_ROTATE) | (1ULL << WIDX_BUTTON_COPY) | (1ULL << WIDX_TRACK_CHECK_APPLY_TO_ALL) | (1ULL << WIDX_TRACK_SPINNER_HEIGHT_INCREASE) | (1ULL << WIDX_TRACK_SPINNER_HEIGHT_DECREASE) | (1ULL << WIDX_TRACK_CHECK_CHAIN_LIFT),
 	(1ULL << WIDX_CLOSE) | (1ULL << WIDX_BUTTON_CORRUPT) | (1ULL << WIDX_BUTTON_REMOVE) | (1ULL << WIDX_BUTTON_ROTATE) | (1ULL << WIDX_BUTTON_COPY) | (1ULL << WIDX_SCENERY_SPINNER_HEIGHT_INCREASE) | (1ULL << WIDX_SCENERY_SPINNER_HEIGHT_DECREASE) | (1ULL << WIDX_SCENERY_CHECK_QUARTER_N) | (1ULL << WIDX_SCENERY_CHECK_QUARTER_E) | (1ULL << WIDX_SCENERY_CHECK_QUARTER_S) | (1ULL << WIDX_SCENERY_CHECK_QUARTER_W) | (1ULL << WIDX_SCENERY_CHECK_COLLISION_N) | (1ULL << WIDX_SCENERY_CHECK_COLLISION_E) | (1ULL << WIDX_SCENERY_CHECK_COLLISION_S) | (1ULL << WIDX_SCENERY_CHECK_COLLISION_W),
 	(1ULL << WIDX_CLOSE) | (1ULL << WIDX_BUTTON_CORRUPT) | (1ULL << WIDX_BUTTON_REMOVE) | (1ULL << WIDX_BUTTON_ROTATE) | (1ULL << WIDX_BUTTON_COPY) | (1ULL << WIDX_ENTRANCE_SPINNER_HEIGHT_INCREASE) | (1ULL << WIDX_ENTRANCE_SPINNER_HEIGHT_DECREASE),
@@ -1106,6 +1108,11 @@ static void window_tile_inspector_mouseup(rct_window *w, sint32 widgetIndex)
 		case WIDX_PATH_SPINNER_HEIGHT_DECREASE:
 			window_tile_inspector_base_height_offset(w->selected_list_item, -1);
 			break;
+		case WIDX_PATH_CHECK_SLOPED:
+			mapElement->properties.path.type ^= 1 << 2;
+			map_invalidate_tile_full(windowTileInspectorTileX << 5, windowTileInspectorTileY << 5);
+			widget_invalidate(w, WIDX_PATH_CHECK_SLOPED);
+			break;
 		case WIDX_PATH_CHECK_EDGE_E:
 		case WIDX_PATH_CHECK_EDGE_S:
 		case WIDX_PATH_CHECK_EDGE_W:
@@ -1577,22 +1584,25 @@ static void window_tile_inspector_invalidate(rct_window *w)
 		w->widgets[WIDX_PATH_SPINNER_HEIGHT_INCREASE].bottom = GBBT(propertiesAnchor, 0) + 8;
 		w->widgets[WIDX_PATH_SPINNER_HEIGHT_DECREASE].top = GBBB(propertiesAnchor, 0) - 8;
 		w->widgets[WIDX_PATH_SPINNER_HEIGHT_DECREASE].bottom = GBBB(propertiesAnchor, 0) - 4;
-		w->widgets[WIDX_PATH_CHECK_EDGE_N].top = GBBT(propertiesAnchor, 1) + 7 * 0;
+		w->widgets[WIDX_PATH_CHECK_SLOPED].top = GBBT(propertiesAnchor, 1) + 2;
+		w->widgets[WIDX_PATH_CHECK_SLOPED].bottom = GBBT(propertiesAnchor, 1) + 15;
+		w->widgets[WIDX_PATH_CHECK_EDGE_N].top = GBBT(propertiesAnchor, 2) + 7 * 0;
 		w->widgets[WIDX_PATH_CHECK_EDGE_N].bottom = w->widgets[WIDX_PATH_CHECK_EDGE_N].top + 13;
-		w->widgets[WIDX_PATH_CHECK_EDGE_NE].top = GBBT(propertiesAnchor, 1) + 7 * 1;
+		w->widgets[WIDX_PATH_CHECK_EDGE_NE].top = GBBT(propertiesAnchor, 2) + 7 * 1;
 		w->widgets[WIDX_PATH_CHECK_EDGE_NE].bottom = w->widgets[WIDX_PATH_CHECK_EDGE_NE].top + 13;
-		w->widgets[WIDX_PATH_CHECK_EDGE_E].top = GBBT(propertiesAnchor, 1) + 7 * 2;
+		w->widgets[WIDX_PATH_CHECK_EDGE_E].top = GBBT(propertiesAnchor, 2) + 7 * 2;
 		w->widgets[WIDX_PATH_CHECK_EDGE_E].bottom = w->widgets[WIDX_PATH_CHECK_EDGE_E].top + 13;
-		w->widgets[WIDX_PATH_CHECK_EDGE_SE].top = GBBT(propertiesAnchor, 1) + 7 * 3;
+		w->widgets[WIDX_PATH_CHECK_EDGE_SE].top = GBBT(propertiesAnchor, 2) + 7 * 3;
 		w->widgets[WIDX_PATH_CHECK_EDGE_SE].bottom = w->widgets[WIDX_PATH_CHECK_EDGE_SE].top + 13;
-		w->widgets[WIDX_PATH_CHECK_EDGE_S].top = GBBT(propertiesAnchor, 1) + 7 * 4;
+		w->widgets[WIDX_PATH_CHECK_EDGE_S].top = GBBT(propertiesAnchor, 2) + 7 * 4;
 		w->widgets[WIDX_PATH_CHECK_EDGE_S].bottom = w->widgets[WIDX_PATH_CHECK_EDGE_S].top + 13;
-		w->widgets[WIDX_PATH_CHECK_EDGE_SW].top = GBBT(propertiesAnchor, 1) + 7 * 3;
+		w->widgets[WIDX_PATH_CHECK_EDGE_SW].top = GBBT(propertiesAnchor, 2) + 7 * 3;
 		w->widgets[WIDX_PATH_CHECK_EDGE_SW].bottom = w->widgets[WIDX_PATH_CHECK_EDGE_SW].top + 13;
-		w->widgets[WIDX_PATH_CHECK_EDGE_W].top = GBBT(propertiesAnchor, 1) + 7 * 2;
+		w->widgets[WIDX_PATH_CHECK_EDGE_W].top = GBBT(propertiesAnchor, 2) + 7 * 2;
 		w->widgets[WIDX_PATH_CHECK_EDGE_W].bottom = w->widgets[WIDX_PATH_CHECK_EDGE_W].top + 13;
-		w->widgets[WIDX_PATH_CHECK_EDGE_NW].top = GBBT(propertiesAnchor, 1) + 7 * 1;
+		w->widgets[WIDX_PATH_CHECK_EDGE_NW].top = GBBT(propertiesAnchor, 2) + 7 * 1;
 		w->widgets[WIDX_PATH_CHECK_EDGE_NW].bottom = w->widgets[WIDX_PATH_CHECK_EDGE_NW].top + 13;
+		widget_set_checkbox_value(w, WIDX_PATH_CHECK_SLOPED, footpath_element_is_sloped(mapElement));
 		widget_set_checkbox_value(w, WIDX_PATH_CHECK_EDGE_NE, mapElement->properties.path.edges & (1 << ((0 - get_current_rotation()) & 3)));
 		widget_set_checkbox_value(w, WIDX_PATH_CHECK_EDGE_SE, mapElement->properties.path.edges & (1 << ((1 - get_current_rotation()) & 3)));
 		widget_set_checkbox_value(w, WIDX_PATH_CHECK_EDGE_SW, mapElement->properties.path.edges & (1 << ((2 - get_current_rotation()) & 3)));
