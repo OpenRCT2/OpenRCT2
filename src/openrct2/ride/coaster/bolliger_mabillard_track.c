@@ -4943,7 +4943,7 @@ void bolliger_mabillard_track_diag_flat_to_60_deg_down(uint8 rideIndex, uint8 tr
 				}
 			}
 			paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
-			paint_util_set_general_support_height(height + 64, 0x20);
+			paint_util_set_general_support_height(height + 72, 0x20);
 			break;
 		case 1:
 			if (track_element_is_lift_hill(mapElement)) {
