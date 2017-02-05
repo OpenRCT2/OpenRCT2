@@ -307,6 +307,14 @@ bool Network::BeginServer(uint16 port, const char* address)
 	player->Group = 0;
 	player_id = player->Id;
 
+	if (network_get_mode() == NETWORK_MODE_SERVER) {
+		// Add SERVER to users.json and save.
+		NetworkUser *networkUser = _userManager.GetOrAddUser(player->KeyHash);
+		networkUser->GroupId = player->Group;
+		networkUser->Name = player->Name;
+		_userManager.Save();
+	}
+
 	printf("Ready for clients...\n");
 	network_chat_show_connected_message();
 	network_chat_show_server_greeting();
