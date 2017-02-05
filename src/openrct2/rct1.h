@@ -27,11 +27,12 @@
 #include "world/map.h"
 #include "world/sprite.h"
 
-#define RCT1_MAX_MAP_ELEMENTS       0xC000
-#define RCT1_MAX_SPRITES            5000
-#define RCT1_MAX_TRAINS_PER_RIDE    12
-#define RCT1_MAX_MAP_SIZE           128
-#define RCT1_MAX_RIDES_IN_PARK      128
+#define RCT1_MAX_MAP_ELEMENTS         0xC000
+#define RCT1_MAX_SPRITES              5000
+#define RCT1_MAX_TRAINS_PER_RIDE      12
+#define RCT1_MAX_MAP_SIZE             128
+#define RCT1_MAX_RIDES_IN_PARK        128
+#define RCT1_RESEARCH_FLAGS_SEPARATOR 0xFF
 
 #pragma pack(push, 1)
 typedef struct rct1_entrance {

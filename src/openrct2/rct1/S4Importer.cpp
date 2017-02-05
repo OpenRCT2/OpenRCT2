@@ -325,7 +325,7 @@ private:
         {
             const rct1_research_item * researchItem = &researchList[i];
 
-            if (researchItem->flags == 0xFF)
+            if (researchItem->flags == RCT1_RESEARCH_FLAGS_SEPARATOR)
             {
                 if (researchItem->item == RCT1_RESEARCH_END)
                 {
@@ -350,7 +350,7 @@ private:
                 for (size_t j = 0; j < researchListCount; j++)
                 {
                     const rct1_research_item *researchItem2 = &researchList[j];
-                    if (researchItem2->flags == 0xFF)
+                    if (researchItem2->flags == RCT1_RESEARCH_FLAGS_SEPARATOR)
                     {
                         if (researchItem2->item == RCT1_RESEARCH_END_RESEARCHABLE ||
                             researchItem2->item == RCT1_RESEARCH_END_AVAILABLE)
@@ -1719,7 +1719,7 @@ private:
         for (size_t i = 0; i < researchListCount; i++)
         {
             const rct1_research_item * researchItem = &researchList[i];
-            if (researchItem->flags == 0xFF)
+            if (researchItem->flags == RCT1_RESEARCH_FLAGS_SEPARATOR)
             {
                 if (researchItem->item == RCT1_RESEARCH_END_AVAILABLE)
                 {
@@ -1758,10 +1758,10 @@ private:
                 for (size_t j = 0; j < researchListCount; j++)
                 {
                     const rct1_research_item *researchItem2 = &researchList[j];
-                    if (researchItem2->flags == 0xFF &&
+                    if (researchItem2->flags == RCT1_RESEARCH_FLAGS_SEPARATOR &&
                         (researchItem2->item == RCT1_RESEARCH_END_RESEARCHABLE ||
-                        researchItem2->item == RCT1_RESEARCH_END_AVAILABLE)
-                    ) {
+                        researchItem2->item == RCT1_RESEARCH_END_AVAILABLE))
+                    {
                         continue;
                     }
 
