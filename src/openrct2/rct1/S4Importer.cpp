@@ -324,14 +324,17 @@ private:
         for (size_t i = 0; i < researchListCount; i++)
         {
             const rct1_research_item * researchItem = &researchList[i];
-            if (researchItem->item == RCT1_RESEARCH_END_RESEARCHABLE ||
-                researchItem->item == RCT1_RESEARCH_END)
+
+            if (researchItem->flags == RCT1_RESEARCH_FLAGS_SEPARATOR)
             {
-                break;
-            }
-            if (researchItem->item == RCT1_RESEARCH_END_AVAILABLE)
-            {
-                continue;
+                if (researchItem->item == RCT1_RESEARCH_END)
+                {
+                    break;
+                }
+                if (researchItem->item == RCT1_RESEARCH_END_AVAILABLE || researchItem->item == RCT1_RESEARCH_END_RESEARCHABLE)
+                {
+                    continue;
+                }
             }
 
             switch (researchItem->category) {
@@ -347,10 +350,17 @@ private:
                 for (size_t j = 0; j < researchListCount; j++)
                 {
                     const rct1_research_item *researchItem2 = &researchList[j];
-                    if (researchItem2->item == RCT1_RESEARCH_END_RESEARCHABLE ||
-                        researchItem2->item == RCT1_RESEARCH_END_AVAILABLE)
+                    if (researchItem2->flags == RCT1_RESEARCH_FLAGS_SEPARATOR)
                     {
-                        break;
+                        if (researchItem2->item == RCT1_RESEARCH_END_RESEARCHABLE ||
+                            researchItem2->item == RCT1_RESEARCH_END_AVAILABLE)
+                        {
+                            continue;
+                        }
+                        else if (researchItem2->item == RCT1_RESEARCH_END)
+                        {
+                            break;
+                        }
                     }
 
                     if (researchItem2->category == RCT1_RESEARCH_CATEGORY_VEHICLE &&
@@ -1709,14 +1719,21 @@ private:
         for (size_t i = 0; i < researchListCount; i++)
         {
             const rct1_research_item * researchItem = &researchList[i];
-            if (researchItem->item == RCT1_RESEARCH_END_AVAILABLE)
+            if (researchItem->flags == RCT1_RESEARCH_FLAGS_SEPARATOR)
             {
-                researched = false;
-            }
-            else if (researchItem->item == RCT1_RESEARCH_END_RESEARCHABLE ||
-                     researchItem->item == RCT1_RESEARCH_END)
-            {
-                break;
+                if (researchItem->item == RCT1_RESEARCH_END_AVAILABLE)
+                {
+                    researched = false;
+                    continue;
+                }
+                else if (researchItem->item == RCT1_RESEARCH_END_RESEARCHABLE)
+                {
+                    continue;
+                }
+                else if (researchItem->item == RCT1_RESEARCH_END)
+                {
+                    break;
+                }
             }
 
             switch (researchItem->category) {
@@ -1734,16 +1751,18 @@ private:
             case RCT1_RESEARCH_CATEGORY_RIDE:
             {
                 uint8 rct1RideType = researchItem->item;
+                _researchRideTypeUsed[rct1RideType] = true;
 
                 // Add all vehicles for this ride type that are researched or before this research item
                 uint32 numVehicles = 0;
                 for (size_t j = 0; j < researchListCount; j++)
                 {
                     const rct1_research_item *researchItem2 = &researchList[j];
-                    if (researchItem2->item == RCT1_RESEARCH_END_RESEARCHABLE ||
-                        researchItem2->item == RCT1_RESEARCH_END_AVAILABLE)
+                    if (researchItem2->flags == RCT1_RESEARCH_FLAGS_SEPARATOR &&
+                        (researchItem2->item == RCT1_RESEARCH_END_RESEARCHABLE ||
+                        researchItem2->item == RCT1_RESEARCH_END_AVAILABLE))
                     {
-                        break;
+                        continue;
                     }
 
                     if (researchItem2->category == RCT1_RESEARCH_CATEGORY_VEHICLE &&
@@ -1764,13 +1783,14 @@ private:
                     // No vehicles found so just add the default for this ride
                     uint8 rideEntryIndex = _rideTypeToRideEntryMap[rct1RideType];
                     Guard::Assert(rideEntryIndex != 255, "rideEntryIndex was 255");
-
                     if (!_researchRideEntryUsed[rideEntryIndex])
                     {
                         _researchRideEntryUsed[rideEntryIndex] = true;
                         research_insert_ride_entry(rideEntryIndex, researched);
                     }
+
                 }
+
                 break;
             }
             case RCT1_RESEARCH_CATEGORY_VEHICLE:
@@ -1780,6 +1800,7 @@ private:
                 {
                     InsertResearchVehicle(researchItem, researched);
                 }
+
                 break;
             case RCT1_RESEARCH_CATEGORY_SPECIAL:
                 // Not supported
@@ -1788,8 +1809,6 @@ private:
         }
 
         research_remove_non_separate_vehicle_types();
-        // Fixes availability of rides
-        sub_684AC3();
 
         // Research funding / priority
         uint8 activeResearchTypes = 0;
@@ -1831,6 +1850,7 @@ private:
     {
         uint8 vehicle = researchItem->item;
         uint8 rideEntryIndex = _vehicleTypeToRideEntryMap[vehicle];
+
         if (!_researchRideEntryUsed[rideEntryIndex])
         {
             _researchRideEntryUsed[rideEntryIndex] = true;
