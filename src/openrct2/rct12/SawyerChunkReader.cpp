@@ -18,7 +18,6 @@
 #include "../core/IStream.hpp"
 #include "../core/Math.hpp"
 #include "SawyerChunkReader.h"
-#include "SawyerEncoding.h"
 
 extern "C"
 {

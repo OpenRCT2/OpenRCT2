@@ -83,4 +83,17 @@ public:
      * @param length The size of the destination buffer.
      */
     void ReadChunk(void * dst, size_t length);
+
+    /**
+     * Reads the next chunk from the stream into a buffer returned as the
+     * specified type. If the chunk is smaller than the size of the type
+     * then the remaining space is padded with zero.
+     */
+    template<typename T>
+    T ReadChunkAs()
+    {
+        T result;
+        ReadChunk(&result, sizeof(result));
+        return result;
+    }
 };
