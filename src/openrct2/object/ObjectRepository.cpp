@@ -350,7 +350,7 @@ private:
                 // Buffer the rest of file into memory to speed up item reading
                 size_t dataSize = (size_t)(fs.GetLength() - fs.GetPosition());
                 void * data = fs.ReadArray<uint8>(dataSize);
-                auto ms = MemoryStream(data, dataSize, MEMORY_ACCESS_READ | MEMORY_ACCESS_OWNER);
+                auto ms = MemoryStream(data, dataSize, MEMORY_ACCESS::READ | MEMORY_ACCESS::OWNER);
 
                 // Read items
                 for (uint32 i = 0; i < header.NumItems; i++)
