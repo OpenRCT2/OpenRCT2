@@ -34,18 +34,6 @@ public:
     explicit SawyerChunkException(const std::string &message) : IOException(message) { }
 };
 
-SawyerChunk::SawyerChunk(SAWYER_ENCODING encoding, void * data, size_t length)
-{
-    _encoding = encoding;
-    _data = data;
-    _length = length;
-}
-
-SawyerChunk::~SawyerChunk()
-{
-    Memory::Free(_data);
-}
-
 SawyerChunkReader::SawyerChunkReader(IStream * stream)
     : _stream(stream)
 {

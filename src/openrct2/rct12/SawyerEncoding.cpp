@@ -28,6 +28,7 @@ namespace SawyerEncoding
         {
             return false;
         }
+        dataSize -= 4;
 
         try
         {

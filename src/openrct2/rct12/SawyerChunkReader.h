@@ -18,38 +18,9 @@
 
 #include <memory>
 #include "../common.h"
+#include "SawyerChunk.h"
 
 interface IStream;
-
-/**
- * The type of encoding / compression for a sawyer encoded chunk.
- */
-enum class SAWYER_ENCODING : uint8
-{
-    NONE,
-    RLE,
-    RLECOMPRESSED,
-    ROTATE,
-};
-
-/**
- * Represents a sawyer encoded chunk.
- */
-class SawyerChunk final
-{
-private:
-    void *          _data       = nullptr;
-    size_t          _length     = 0;
-    SAWYER_ENCODING _encoding   = SAWYER_ENCODING::NONE;
-
-public:
-    const void *    GetData() { return _data; }
-    size_t          GetLength() { return _length; }
-    SAWYER_ENCODING GetEncoding() { return _encoding; }
-
-    SawyerChunk(SAWYER_ENCODING encoding, void * data, size_t length);
-    ~SawyerChunk();
-};
 
 /**
  * Reads sawyer encoding chunks from a data stream. This can be used to read

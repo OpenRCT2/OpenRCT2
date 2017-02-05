@@ -16,6 +16,10 @@
 
 #pragma once
 
+#ifdef __cplusplus
+    #include <vector>
+#endif
+
 #include "../common.h"
 
 #ifdef __cplusplus
@@ -79,11 +83,14 @@ interface IObjectRepository
                                                       const void * data,
                                                       size_t dataSize) abstract;
 
-    virtual bool                            TryExportPackedObject(IStream * stream) abstract;
+    virtual void                            ExportPackedObject(IStream * stream) abstract;
+    virtual void                            WritePackedObjects(IStream * stream, std::vector<const ObjectRepositoryItem *> &objects) abstract;
 };
 
 IObjectRepository * CreateObjectRepository(IPlatformEnvironment * env);
 IObjectRepository * GetObjectRepository();
+
+bool IsObjectCustom(const ObjectRepositoryItem * object);
 
 #endif
 

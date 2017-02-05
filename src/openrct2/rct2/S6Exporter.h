@@ -27,11 +27,10 @@ extern "C"
     #include "../object_list.h"
 }
 
-struct ObjectRepositoryItem;
+interface   IStream;
+struct      ObjectRepositoryItem;
 
 sint32 scenario_save_network(SDL_RWops* rw, const std::vector<const ObjectRepositoryItem *> &objects);
-sint32 scenario_write_packed_objects(SDL_RWops* rw, std::vector<const ObjectRepositoryItem *> &objects);
-std::vector<const ObjectRepositoryItem *> scenario_get_packable_objects();
 
 /**
  * Class to export RollerCoaster Tycoon 2 scenarios (*.SC6) and saved games (*.SV6).
@@ -45,14 +44,14 @@ public:
     S6Exporter();
 
     void SaveGame(const utf8 * path);
-    void SaveGame(SDL_RWops *rw);
+    void SaveGame(IStream * stream);
     void SaveScenario(const utf8 * path);
-    void SaveScenario(SDL_RWops *rw);
+    void SaveScenario(IStream * stream);
     void Export();
 
 private:
     rct_s6_data _s6;
 
-    void Save(SDL_RWops *rw, bool isScenario);
+    void Save(IStream * stream, bool isScenario);
     static uint32 GetLoanHash(money32 initialCash, money32 bankLoan, uint32 maxBankLoan);
 };

@@ -136,7 +136,7 @@ public:
         IObjectRepository * objectRepo = GetObjectRepository();
         for (uint16 i = 0; i < _s6.header.num_packed_objects; i++)
         {
-            objectRepo->TryExportPackedObject(stream);
+            objectRepo->ExportPackedObject(stream);
         }
 
         if (isScenario)
