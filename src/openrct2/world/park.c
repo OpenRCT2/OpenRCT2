@@ -474,15 +474,16 @@ static sint32 park_calculate_guest_generation_probability()
 	return probability;
 }
 
+/**
+ * Choose a random peep spawn and iterates through until defined spawn is found.
+ */
 static void get_random_peep_spawn(rct2_peep_spawn *spawn)
 {
-	// call scenario_rand only once, and iterate until defined spawn is found.
-	// In the event all spawns are undefined, a for loop is used instead of a while loop.
 	sint32 i = scenario_rand() % MAX_PEEP_SPAWNS;
-	for (sint32 tries = 0; tries < MAX_PEEP_SPAWNS; tries++) {
-		if (gPeepSpawns[i].x == PEEP_SPAWN_UNDEFINED) {
-			i = (i + 1) % MAX_PEEP_SPAWNS;
-		}
+	for (uint8 tries = 0; tries < MAX_PEEP_SPAWNS; tries++) {
+		if (gPeepSpawns[i].x != PEEP_SPAWN_UNDEFINED)
+			break;
+		i = (i + 1) % MAX_PEEP_SPAWNS;
 	}
 	*spawn = gPeepSpawns[i];
 }
