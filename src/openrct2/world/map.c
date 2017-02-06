@@ -5677,6 +5677,13 @@ void game_command_modify_tile(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx
 		*ebx = tile_inspector_surface_toggle_diagonal(x, y, flags);
 		return;
 	}
+	case TILE_INSPECTOR_PATH_SET_SLOPE:
+	{
+		const sint32 element_index = *edx;
+		const bool sloped = *edi;
+		*ebx = tile_inspector_path_set_sloped(x, y, element_index, sloped, flags);
+		return;
+	}
 	case TILE_INSPECTOR_PATH_TOGGLE_EDGE:
 	{
 		const sint32 element_index = *edx;

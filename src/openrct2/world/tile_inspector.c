@@ -465,6 +465,35 @@ sint32 tile_inspector_surface_toggle_diagonal(sint32 x, sint32 y, sint32 flags)
 	return 0;
 }
 
+sint32 tile_inspector_path_set_sloped(sint32 x, sint32 y, sint32 element_index, bool sloped, sint32 flags)
+{
+	rct_map_element *const path_element = map_get_first_element_at(x, y) + element_index;
+
+	if (!path_element || map_element_get_type(path_element) != MAP_ELEMENT_TYPE_PATH)
+	{
+		return MONEY32_UNDEFINED;
+	}
+
+	if (flags & GAME_COMMAND_FLAG_APPLY)
+	{
+		path_element->properties.path.type &= ~(1 << 2);
+		if (sloped)
+		{
+			path_element->properties.path.type |= (1 << 2);
+		}
+
+		map_invalidate_tile_full(x << 5, y << 5);
+
+		rct_window *const tile_inspector_window = window_find_by_class(WC_TILE_INSPECTOR);
+		if (tile_inspector_window != NULL && (uint32)x == windowTileInspectorTileX && (uint32)y == windowTileInspectorTileY)
+		{
+			window_invalidate(tile_inspector_window);
+		}
+	}
+
+	return 0;
+}
+
 sint32 tile_inspector_path_toggle_edge(sint32 x, sint32 y, sint32 element_index, sint32 edge_index, sint32 flags)
 {
 	rct_map_element *const path_element = map_get_first_element_at(x, y) + element_index;

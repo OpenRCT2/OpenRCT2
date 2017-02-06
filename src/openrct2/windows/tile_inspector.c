@@ -757,6 +757,19 @@ static void window_tile_inspector_surface_toggle_diagonal()
 	);
 }
 
+static void window_tile_inspector_path_set_sloped(sint32 element_index, bool sloped)
+{
+	game_do_command(
+		TILE_INSPECTOR_PATH_SET_SLOPE,
+		GAME_COMMAND_FLAG_APPLY,
+		windowTileInspectorTileX | (windowTileInspectorTileY << 8),
+		element_index,
+		GAME_COMMAND_MODIFY_TILE,
+		sloped,
+		0
+	);
+}
+
 static void window_tile_inspector_path_toggle_edge(sint32 element_index, sint32 corner_index)
 {
 	assert(corner_index >= 0 && corner_index < 8);
@@ -1109,9 +1122,7 @@ static void window_tile_inspector_mouseup(rct_window *w, sint32 widgetIndex)
 			window_tile_inspector_base_height_offset(w->selected_list_item, -1);
 			break;
 		case WIDX_PATH_CHECK_SLOPED:
-			mapElement->properties.path.type ^= 1 << 2;
-			map_invalidate_tile_full(windowTileInspectorTileX << 5, windowTileInspectorTileY << 5);
-			widget_invalidate(w, WIDX_PATH_CHECK_SLOPED);
+			window_tile_inspector_path_set_sloped(w->selected_list_item, !footpath_element_is_sloped(mapElement));
 			break;
 		case WIDX_PATH_CHECK_EDGE_E:
 		case WIDX_PATH_CHECK_EDGE_S:
