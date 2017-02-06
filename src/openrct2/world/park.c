@@ -487,7 +487,7 @@ static void get_random_peep_spawn(rct2_peep_spawn *spawn)
 	}
 }
 
-static rct_peep *park_generate_new_guest()
+rct_peep *park_generate_new_guest()
 {
 	rct_peep *peep = NULL;
 	rct2_peep_spawn spawn;
@@ -512,12 +512,6 @@ static rct_peep *park_generate_new_guest()
 	}
 
 	return peep;
-}
-
-//This is called via the cheat window.
-void generate_new_guest()
-{
-	park_generate_new_guest();
 }
 
 static rct_peep *park_generate_new_guest_due_to_campaign(sint32 campaign)

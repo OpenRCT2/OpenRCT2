@@ -278,10 +278,8 @@ static void cheat_clear_loan()
 
 static void cheat_generate_guests(sint32 count)
 {
-	sint32 i;
-
-	for (i = 0; i < count; i++)
-		generate_new_guest();
+	for (sint32 i = 0; i < count; i++)
+		park_generate_new_guest();
 
 	window_invalidate_by_class(WC_BOTTOM_TOOLBAR);
 }
