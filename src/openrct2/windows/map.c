@@ -1374,7 +1374,7 @@ static void window_map_set_peep_spawn_tool_down(sint32 x, sint32 y)
 	}
 	if (peepSpawnIndex == -1) {
 		peepSpawnIndex = _nextPeepSpawnIndex;
-		_nextPeepSpawnIndex = (peepSpawnIndex + 1) % MAX_PEEP_SPAWNS;
+		_nextPeepSpawnIndex = (peepSpawnIndex + 1) % (MAX_PEEP_SPAWNS + 1);
 	}
 	gPeepSpawns[peepSpawnIndex].x = mapX;
 	gPeepSpawns[peepSpawnIndex].y = mapY;

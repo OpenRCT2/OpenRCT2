@@ -9838,12 +9838,12 @@ static sint32 guest_path_find_entering_park(rct_peep *peep, rct_map_element *map
 }
 
 /**
- * Gets the nearest park entrance relative to point, by using manhatten distance.
+ * Gets the nearest peep spawn relative to point, by using manhatten distance.
  * @param x x coordinate of location
  * @param y y coordinate of location
- * @return Index of gPeepSpawns (or 0xFF if no park entrances exist).
+ * @return Index of gPeepSpawns (or 0xFF if no peep spawns exist).
  */
-static uint8 get_nearest_spawn_point_index(uint16 x, uint16 y)
+static uint8 get_nearest_peep_spawn_index(uint16 x, uint16 y)
 {
 	uint8 chosenSpawn = 0xFF;
 	uint16 nearestDist = 0xFFFF;
@@ -9868,7 +9868,7 @@ static uint8 get_nearest_spawn_point_index(uint16 x, uint16 y)
  */
 static sint32 guest_path_find_leaving_park(rct_peep *peep, rct_map_element *map_element, uint8 edges){
 	// Send peeps to the nearest spawn point.
-	uint8 chosenSpawn = get_nearest_spawn_point_index(peep->next_x, peep->next_y);
+	uint8 chosenSpawn = get_nearest_peep_spawn_index(peep->next_x, peep->next_y);
 
 	// If no defined spawns were found, walk aimlessly.
 	if (chosenSpawn == 0xFF)
