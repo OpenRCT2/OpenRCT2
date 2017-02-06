@@ -246,7 +246,7 @@ static void cheat_set_money(money32 amount)
 static void cheat_add_money(money32 amount)
 {
 	money32 currentMoney = DECRYPT_MONEY(gCashEncrypted);
-	currentMoney = add_clamp_money32(currentMoney, amount, INT_MIN, INT_MAX);
+	currentMoney = add_clamp_money32(currentMoney, amount);
 
 	gCashEncrypted = ENCRYPT_MONEY(currentMoney);
 
