@@ -14,9 +14,9 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "dropdown.h"
-#include "error.h"
-#include "tile_inspector.h"
+#include "../common.h"
+#include "../OpenRCT2.h"
+#include "../core/Guard.hpp"
 #include "../game.h"
 #include "../input.h"
 #include "../interface/themes.h"
@@ -24,13 +24,15 @@
 #include "../interface/widget.h"
 #include "../interface/window.h"
 #include "../localisation/localisation.h"
-#include "../OpenRCT2.h"
 #include "../ride/track.h"
 #include "../sprites.h"
 #include "../world/footpath.h"
 #include "../world/map.h"
 #include "../world/scenery.h"
 #include "../world/tile_inspector.h"
+#include "dropdown.h"
+#include "error.h"
+#include "tile_inspector.h"
 
 static const rct_string_id terrainTypeStringIds[] = {
 	STR_TILE_INSPECTOR_TERRAIN_GRASS,
@@ -584,7 +586,8 @@ void window_tile_inspector_clear_clipboard()
 
 static rct_map_element* window_tile_inspector_get_selected_element(rct_window *w)
 {
-	assert(w->selected_list_item >= 0 && w->selected_list_item < windowTileInspectorElementCount);
+	openrct2_assert(w->selected_list_item >= 0 && w->selected_list_item < windowTileInspectorElementCount,
+					"Selected list item out of range");
 	return map_get_first_element_at(windowTileInspectorTileX, windowTileInspectorTileY) + w->selected_list_item;
 }
 
@@ -611,7 +614,8 @@ static void window_tile_inspector_load_tile(rct_window* w)
 
 static void window_tile_inspector_insert_corrupt_element(sint32 element_index)
 {
-	assert(element_index < windowTileInspectorElementCount);
+	openrct2_assert(element_index > 0 && element_index < windowTileInspectorElementCount,
+					"element_index out of range");
 	game_do_command(
 		TILE_INSPECTOR_ANY_INSERT_CORRUPT,
 		GAME_COMMAND_FLAG_APPLY,
@@ -625,7 +629,8 @@ static void window_tile_inspector_insert_corrupt_element(sint32 element_index)
 
 static void window_tile_inspector_remove_element(sint32 element_index)
 {
-	assert(element_index < windowTileInspectorElementCount);
+	openrct2_assert(element_index > 0 && element_index < windowTileInspectorElementCount,
+		"element_index out of range");
 	game_do_command(
 		TILE_INSPECTOR_ANY_REMOVE,
 		GAME_COMMAND_FLAG_APPLY,
@@ -639,7 +644,8 @@ static void window_tile_inspector_remove_element(sint32 element_index)
 
 static void window_tile_inspector_rotate_element(sint32 element_index)
 {
-	assert(element_index < windowTileInspectorElementCount);
+	openrct2_assert(element_index > 0 && element_index < windowTileInspectorElementCount,
+		"element_index out of range");
 	game_do_command(
 		TILE_INSPECTOR_ANY_ROTATE,
 		GAME_COMMAND_FLAG_APPLY,
@@ -654,7 +660,10 @@ static void window_tile_inspector_rotate_element(sint32 element_index)
 // Swap element with its parent
 static void window_tile_inspector_swap_elements(sint16 first, sint16 second)
 {
-	assert(first < windowTileInspectorElementCount && second < windowTileInspectorElementCount);
+	openrct2_assert(first > 0 && first < windowTileInspectorElementCount,
+					"first out of range");
+	openrct2_assert(second > 0 && second < windowTileInspectorElementCount,
+					"second out of range");
 	game_do_command(
 		TILE_INSPECTOR_ANY_SWAP,
 		GAME_COMMAND_FLAG_APPLY,
@@ -668,7 +677,7 @@ static void window_tile_inspector_swap_elements(sint16 first, sint16 second)
 
 static void window_tile_inspector_sort_elements(rct_window *w)
 {
-	assert(windowTileInspectorTileSelected == true);
+	openrct2_assert(windowTileInspectorTileSelected, "No tile selected");
 	game_do_command(
 		TILE_INSPECTOR_ANY_SORT,
 		GAME_COMMAND_FLAG_APPLY,
@@ -772,7 +781,9 @@ static void window_tile_inspector_path_set_sloped(sint32 element_index, bool slo
 
 static void window_tile_inspector_path_toggle_edge(sint32 element_index, sint32 corner_index)
 {
-	assert(corner_index >= 0 && corner_index < 8);
+	openrct2_assert(element_index > 0 && element_index < windowTileInspectorElementCount,
+		"element_index out of range");
+	openrct2_assert(corner_index >= 0 && corner_index < 8, "corner_index out of range");
 	game_do_command(
 		TILE_INSPECTOR_PATH_TOGGLE_EDGE,
 		GAME_COMMAND_FLAG_APPLY,
@@ -787,7 +798,7 @@ static void window_tile_inspector_path_toggle_edge(sint32 element_index, sint32 
 static void window_tile_inspector_fence_set_slope(sint32 element_index, sint32 slope_value)
 {
 	// Make sure only the correct bits are set
-	assert((slope_value & 0xC0) == slope_value);
+	openrct2_assert((slope_value & 0xC0) == slope_value, "slope_value doesn't match its mask");
 
 	game_do_command(
 		TILE_INSPECTOR_FENCE_SET_SLOPE,
@@ -892,7 +903,7 @@ static void window_tile_inspector_track_block_height_offset(rct_map_element *map
 		}
 
 		// track_remove returns here on failure, not sure when this would ever be hit. Only thing I can think of is for when you decrease the map size.
-		assert(map_get_surface_element_at(x >> 5, y >> 5) != NULL);
+		openrct2_assert(map_get_surface_element_at(x >> 5, y >> 5) != NULL, "No surface at %d,%d", x >> 5, y >> 5);
 
 		// Keep?
 		//invalidate_test_results(ride_index);
@@ -993,7 +1004,7 @@ static void window_tile_inspector_track_block_set_lift(rct_map_element *mapEleme
 		}
 
 		// track_remove returns here on failure, not sure when this would ever be hit. Only thing I can think of is for when you decrease the map size.
-		assert(map_get_surface_element_at(x >> 5, y >> 5) != NULL);
+		openrct2_assert(map_get_surface_element_at(x >> 5, y >> 5) != NULL, "No surface at %d,%d", x >> 5, y >> 5);
 
 		// Keep?
 		//invalidate_test_results(ride_index);
@@ -1007,7 +1018,7 @@ static void window_tile_inspector_track_block_set_lift(rct_map_element *mapEleme
 static void window_tile_inspector_quarter_tile_set(rct_map_element *const mapElement, const sint32 index)
 {
 	// index is widget index relative to WIDX_SCENERY_CHECK_QUARTER_N, so a value from 0-3
-	assert(index >= 0 && index < 4);
+	openrct2_assert(index >= 0 && index < 4, "index out of range");
 
 	const sint32 clickedDirection = (index - get_current_rotation()) & 3;
 
@@ -1355,8 +1366,8 @@ static void window_tile_inspector_dropdown(rct_window *w, sint32 widgetIndex, si
 	rct_map_element *const mapElement = window_tile_inspector_get_selected_element(w);
 
 	switch (w->page) {
-	case PAGE_FENCE:
-		assert(map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_FENCE);
+	case TILE_INSPECTOR_PAGE_FENCE:
+		openrct2_assert(map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_FENCE, "Element is not a fence");
 
 		switch (widgetIndex) {
 		case WIDX_FENCE_DROPDOWN_SLOPE_BUTTON:

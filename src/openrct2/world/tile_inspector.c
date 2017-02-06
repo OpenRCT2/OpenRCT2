@@ -15,6 +15,7 @@
 #pragma endregion
 
 #include "../common.h"
+#include "../core/Guard.hpp"
 #include "../game.h"
 #include "../interface/window.h"
 #include "../windows/tile_inspector.h"
@@ -29,7 +30,7 @@ static void map_swap_elements_at(sint32 x, sint32 y, sint16 first, sint16 second
 	rct_map_element *const secondElement = mapElement + second;
 
 	// swap_elements shouldn't be called when there is only one element on the tile
-	assert(!map_element_is_last_for_tile(mapElement));
+	openrct2_assert(!map_element_is_last_for_tile(mapElement), "Can't swap, there is only one element on the tile");
 
 	// Make sure both elements are actually on the current tile
 	sint16 elementCount = 0;
@@ -37,7 +38,7 @@ static void map_swap_elements_at(sint32 x, sint32 y, sint16 first, sint16 second
 	{
 		elementCount++;
 	} while (!map_element_is_last_for_tile(mapElement++));
-	assert(elementCount > max(first, second));
+	openrct2_assert(elementCount > max(first, second), "first or second is out of range");
 
 	// Swap their memory
 	rct_map_element temp = *firstElement;
