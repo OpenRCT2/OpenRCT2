@@ -479,13 +479,13 @@ static sint32 park_calculate_guest_generation_probability()
  */
 static void get_random_peep_spawn(rct2_peep_spawn *spawn)
 {
-	sint32 i = scenario_rand() % (MAX_PEEP_SPAWNS + 1);
-	for (uint8 tries = 0; tries < MAX_PEEP_SPAWNS; tries++) {
-		if (gPeepSpawns[i].x != PEEP_SPAWN_UNDEFINED)
-			break;
-		i = (i + 1) % (MAX_PEEP_SPAWNS + 1);
+	*spawn = gPeepSpawns[0];
+	rct2_peep_spawn spawnList[MAX_PEEP_SPAWNS];
+	uint32 numSpawns = map_get_available_peep_spawn_list(spawnList);
+	if (numSpawns > 0) {
+		uint32 index = scenario_rand() % numSpawns;
+		*spawn = spawnList[index];
 	}
-	*spawn = gPeepSpawns[i];
 }
 
 rct_peep *park_generate_new_guest()
