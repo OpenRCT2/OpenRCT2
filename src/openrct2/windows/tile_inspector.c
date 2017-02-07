@@ -823,22 +823,20 @@ static void window_tile_inspector_track_block_set_lift(sint32 element_index, boo
 	);
 }
 
-static void window_tile_inspector_quarter_tile_set(rct_map_element *const mapElement, const sint32 index)
+static void window_tile_inspector_quarter_tile_set(sint32 element_index, const sint32 quarter_index)
 {
-	// index is widget index relative to WIDX_SCENERY_CHECK_QUARTER_N, so a value from 0-3
-	openrct2_assert(index >= 0 && index < 4, "index out of range");
+	// quarter_index is widget index relative to WIDX_SCENERY_CHECK_QUARTER_N, so a value from 0-3
+	openrct2_assert(quarter_index >= 0 && quarter_index < 4, "quarter_index out of range");
 
-	const sint32 clickedDirection = (index - get_current_rotation()) & 3;
-
-	// Set quadrant index
-	mapElement->type &= ~MAP_ELEMENT_QUADRANT_MASK;
-	mapElement->type |= clickedDirection << 6;
-
-	// Update collision
-	mapElement->flags &= 0xF0;
-	mapElement->flags |= 1 << ((index + 6 - get_current_rotation()) & 3);
-
-	map_invalidate_tile_full(windowTileInspectorTileX << 5, windowTileInspectorTileY << 5);
+	game_do_command(
+		TILE_INSPECTOR_SCENERY_SET_QUARTER_LOCATION,
+		GAME_COMMAND_FLAG_APPLY,
+		windowTileInspectorTileX | (windowTileInspectorTileY << 8),
+		element_index,
+		GAME_COMMAND_MODIFY_TILE,
+		quarter_index - get_current_rotation() & 3,
+		0
+	);
 }
 
 static void window_tile_inspector_mouseup(rct_window *w, sint32 widgetIndex)
@@ -1014,7 +1012,7 @@ static void window_tile_inspector_mouseup(rct_window *w, sint32 widgetIndex)
 		case WIDX_SCENERY_CHECK_QUARTER_E:
 		case WIDX_SCENERY_CHECK_QUARTER_S:
 		case WIDX_SCENERY_CHECK_QUARTER_W:
-			window_tile_inspector_quarter_tile_set(mapElement, widgetIndex - WIDX_SCENERY_CHECK_QUARTER_N);
+			window_tile_inspector_quarter_tile_set(w->selected_list_item, widgetIndex - WIDX_SCENERY_CHECK_QUARTER_N);
 			window_invalidate(w);
 			break;
 		case WIDX_SCENERY_CHECK_COLLISION_N:

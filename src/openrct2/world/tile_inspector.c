@@ -802,3 +802,32 @@ sint32 tile_inspector_track_set_chain(sint32 x, sint32 y, sint32 element_index, 
 
 	return 0;
 }
+
+sint32 tile_inspector_scenery_set_quarter_location(sint32 x, sint32 y, sint32 element_index, sint32 quarter_index, sint32 flags)
+{
+	rct_map_element *mapElement = map_get_first_element_at(x, y) + element_index;
+
+	if (!mapElement || map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_SCENERY)
+	{
+		return MONEY32_UNDEFINED;
+	}
+
+	if (flags & GAME_COMMAND_FLAG_APPLY)
+	{
+		// Set quadrant index
+		mapElement->type &= ~MAP_ELEMENT_QUADRANT_MASK;
+		mapElement->type |= quarter_index << 6;
+
+		// Update collision
+		mapElement->flags &= 0xF0;
+		mapElement->flags |= 1 << ((quarter_index + 2) & 3);
+
+		map_invalidate_tile_full(x << 5, y << 5);
+		if ((uint32)x == windowTileInspectorTileX && (uint32)y == windowTileInspectorTileY)
+		{
+			window_invalidate_by_class(WC_TILE_INSPECTOR);
+		}
+	}
+
+	return 0;
+}
