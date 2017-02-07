@@ -976,7 +976,7 @@ void widget_invalidate(rct_window *w, sint32 widgetIndex)
 	rct_widget* widget;
 
 	assert(w != NULL);
-#if DEBUG
+#ifdef DEBUG
 	for (sint32 i = 0; i <= widgetIndex; i++) {
 		assert(w->widgets[i].type != WWT_LAST);
 	}

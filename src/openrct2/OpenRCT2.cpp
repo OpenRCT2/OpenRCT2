@@ -397,7 +397,7 @@ namespace OpenRCT2
         {
             String::AppendFormat(buffer, bufferSize, " provided by %s", gBuildServer);
         }
-    #if DEBUG
+    #ifdef DEBUG
         String::AppendFormat(buffer, bufferSize, " (DEBUG)", gBuildServer);
     #endif
         _versionInfo = buffer;
