@@ -49,6 +49,7 @@ typedef enum {
 	TILE_INSPECTOR_TRACK_BASE_HEIGHT_OFFSET,
 	TILE_INSPECTOR_TRACK_SET_CHAIN,
 	TILE_INSPECTOR_SCENERY_SET_QUARTER_LOCATION,
+	TILE_INSPECTOR_SCENERY_SET_QUARTER_COLLISION
 } tile_inspector_instruction;
 
 sint32 tile_inspector_insert_corrupt_at(sint32 x, sint32 y, sint16 element_index, sint32 flags);
@@ -67,3 +68,4 @@ sint32 tile_inspector_fence_set_slope(sint32 x, sint32 y, sint32 element_index, 
 sint32 tile_inspector_track_base_height_offset(sint32 x, sint32 y, sint32 element_index, sint8 offset, sint32 flags);
 sint32 tile_inspector_track_set_chain(sint32 x, sint32 y, sint32 element_index, bool entire_track_block, bool set_chain, sint32 flags);
 sint32 tile_inspector_scenery_set_quarter_location(sint32 x, sint32 y, sint32 element_index, sint32 quarter_index, sint32 flags);
+sint32 tile_inspector_scenery_set_quarter_collision(sint32 x, sint32 y, sint32 element_index, sint32 quarter_index, sint32 flags);

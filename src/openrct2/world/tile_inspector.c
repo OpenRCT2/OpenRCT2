@@ -831,3 +831,26 @@ sint32 tile_inspector_scenery_set_quarter_location(sint32 x, sint32 y, sint32 el
 
 	return 0;
 }
+
+sint32 tile_inspector_scenery_set_quarter_collision(sint32 x, sint32 y, sint32 element_index, sint32 quarter_index, sint32 flags)
+{
+	rct_map_element *mapElement = map_get_first_element_at(x, y) + element_index;
+
+	if (!mapElement || map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_SCENERY)
+	{
+		return MONEY32_UNDEFINED;
+	}
+
+	if (flags & GAME_COMMAND_FLAG_APPLY)
+	{
+		mapElement->flags ^= 1 << quarter_index;
+
+		map_invalidate_tile_full(x << 5, y << 5);
+		if ((uint32)x == windowTileInspectorTileX && (uint32)y == windowTileInspectorTileY)
+		{
+			window_invalidate_by_class(WC_TILE_INSPECTOR);
+		}
+	}
+
+	return 0;
+}

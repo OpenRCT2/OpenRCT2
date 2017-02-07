@@ -839,6 +839,19 @@ static void window_tile_inspector_quarter_tile_set(sint32 element_index, const s
 	);
 }
 
+static void window_tile_inspector_toggle_quadrant_collosion(sint32 element_index, const sint32 quadrant_index)
+{
+	game_do_command(
+		TILE_INSPECTOR_SCENERY_SET_QUARTER_COLLISION,
+		GAME_COMMAND_FLAG_APPLY,
+		windowTileInspectorTileX | (windowTileInspectorTileY << 8),
+		element_index,
+		GAME_COMMAND_MODIFY_TILE,
+		(quadrant_index + 2 - get_current_rotation()) & 3,
+		0
+	);
+}
+
 static void window_tile_inspector_mouseup(rct_window *w, sint32 widgetIndex)
 {
 	switch (widgetIndex) {
@@ -1013,14 +1026,12 @@ static void window_tile_inspector_mouseup(rct_window *w, sint32 widgetIndex)
 		case WIDX_SCENERY_CHECK_QUARTER_S:
 		case WIDX_SCENERY_CHECK_QUARTER_W:
 			window_tile_inspector_quarter_tile_set(w->selected_list_item, widgetIndex - WIDX_SCENERY_CHECK_QUARTER_N);
-			window_invalidate(w);
 			break;
 		case WIDX_SCENERY_CHECK_COLLISION_N:
 		case WIDX_SCENERY_CHECK_COLLISION_E:
 		case WIDX_SCENERY_CHECK_COLLISION_S:
 		case WIDX_SCENERY_CHECK_COLLISION_W:
-			mapElement->flags ^= 1 << (((widgetIndex - WIDX_SCENERY_CHECK_COLLISION_N) + 2 - get_current_rotation()) & 3);
-			window_invalidate(w);
+			window_tile_inspector_toggle_quadrant_collosion(w->selected_list_item, widgetIndex - WIDX_SCENERY_CHECK_COLLISION_N);
 			break;
 		} // switch widget index
 		break;

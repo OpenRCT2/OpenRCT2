@@ -5720,6 +5720,13 @@ void game_command_modify_tile(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx
 		*ebx = tile_inspector_scenery_set_quarter_location(x, y, element_index, quarter_index, flags);
 		break;
 	}
+	case TILE_INSPECTOR_SCENERY_SET_QUARTER_COLLISION:
+	{
+		const sint32 element_index = *edx;
+		const sint32 quarter_index = *edi;
+		*ebx = tile_inspector_scenery_set_quarter_collision(x, y, element_index, quarter_index, flags);
+		break;
+	}
 	default:
 		log_error("invalid instruction");
 		*ebx = MONEY32_UNDEFINED;
