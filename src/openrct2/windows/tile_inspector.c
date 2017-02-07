@@ -459,20 +459,6 @@ static bool windowTileInspectorApplyToAll = false;
 static bool windowTileInspectorElementCopied = false;
 static rct_map_element tileInspectorCopiedElement;
 
-static rct_map_element* window_tile_inspector_get_selected_element(rct_window *w);
-static void window_tile_inspector_load_tile(rct_window* w);
-static void window_tile_inspector_insert_corrupt_element(sint32 element_index);
-static void window_tile_inspector_swap_elements(sint16 first, sint16 second);
-static void window_tile_inspector_remove_element(sint32 element_index);
-static void window_tile_inspector_rotate_element(sint32 element_index);
-static void window_tile_inspector_sort_elements(rct_window *w);
-static void window_tile_inspector_copy_element(rct_window *w);
-static void window_tile_inspector_paste_element(rct_window *w);
-static void window_tile_inspector_surface_toggle_corner(sint32 cornerIndex);
-static void window_tile_inspector_track_block_height_offset(sint32 element_index, sint8 height_offset);
-static void window_tile_inspector_track_block_set_lift(sint32 element_index, bool entire_track_block, bool chain);
-static void window_tile_inspector_quarter_tile_set(rct_map_element *const mapElement, const sint32 index);
-
 static void window_tile_inspector_mouseup(rct_window *w, sint32 widgetIndex);
 static void window_tile_inspector_resize(rct_window *w);
 static void window_tile_inspector_mousedown(sint32 widgetIndex, rct_window *w, rct_widget* widget);
