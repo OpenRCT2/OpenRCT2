@@ -57,7 +57,7 @@ public:
             _canWrite = false;
             break;
         case FILE_MODE_WRITE:
-            mode = "wb";
+            mode = "w+b";
             _canRead = true;
             _canWrite = true;
             break;
