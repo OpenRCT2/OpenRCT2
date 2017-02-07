@@ -562,8 +562,8 @@ sint32 tile_inspector_track_base_height_offset(sint32 x, sint32 y, sint32 elemen
 	if (flags & GAME_COMMAND_FLAG_APPLY)
 	{
 		uint8 type = track_element->properties.track.type;
-		sint16 originX = windowTileInspectorTileX << 5;
-		sint16 originY = windowTileInspectorTileY << 5;
+		sint16 originX = x << 5;
+		sint16 originY = y << 5;
 		sint16 originZ = track_element->base_height * 8;
 		uint8 rotation = map_element_get_direction(track_element);
 		uint8 rideIndex = track_element->properties.track.ride_index;
@@ -671,9 +671,9 @@ sint32 tile_inspector_track_base_height_offset(sint32 x, sint32 y, sint32 elemen
 
 // Sets chainlift, optionally for an entire track block
 // Broxzier: Basically a copy of the above function, with just two different lines... should probably be combined somehow
-sint32 tile_inspector_track_set_chain(sint32 xx, sint32 yy, sint32 element_index, bool entire_track_block, bool set_chain, sint32 flags)
+sint32 tile_inspector_track_set_chain(sint32 x, sint32 y, sint32 element_index, bool entire_track_block, bool set_chain, sint32 flags)
 {
-	rct_map_element *const track_element = map_get_first_element_at(xx, yy) + element_index;
+	rct_map_element *const track_element = map_get_first_element_at(x, y) + element_index;
 
 	if (!track_element || map_element_get_type(track_element) != MAP_ELEMENT_TYPE_TRACK)
 	{
@@ -694,8 +694,8 @@ sint32 tile_inspector_track_set_chain(sint32 xx, sint32 yy, sint32 element_index
 		}
 
 		uint8 type = track_element->properties.track.type;
-		sint16 originX = windowTileInspectorTileX << 5;
-		sint16 originY = windowTileInspectorTileY << 5;
+		sint16 originX = x << 5;
+		sint16 originY = y << 5;
 		sint16 originZ = track_element->base_height * 8;
 		uint8 rotation = map_element_get_direction(track_element);
 		uint8 rideIndex = track_element->properties.track.ride_index;
