@@ -213,6 +213,7 @@ private:
 	uint8 default_group = 0;
 	SDL_RWops *_chatLogStream = nullptr;
 	std::string _chatLogPath;
+	uint32 game_commands_processed_this_tick = 0;
 
 	void UpdateServer();
 	void UpdateClient();
