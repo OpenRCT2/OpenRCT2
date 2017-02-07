@@ -834,7 +834,7 @@ static void window_tile_inspector_quarter_tile_set(sint32 element_index, const s
 		windowTileInspectorTileX | (windowTileInspectorTileY << 8),
 		element_index,
 		GAME_COMMAND_MODIFY_TILE,
-		quarter_index - get_current_rotation() & 3,
+		(quarter_index - get_current_rotation()) & 3,
 		0
 	);
 }
