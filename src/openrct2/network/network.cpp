@@ -472,7 +472,6 @@ void Network::UpdateClient()
 			}
 			Close();
 		}
-		ProcessGameCommandQueue();
 
 		// Check synchronisation
 		if (!_desynchronised && !CheckSRAND(gCurrentTicks, gScenarioSrand0)) {
@@ -484,6 +483,8 @@ void Network::UpdateClient()
 				Close();
 			}
 		}
+
+		ProcessGameCommandQueue();
 		break;
 	}
 	}
@@ -559,6 +560,11 @@ bool Network::CheckSRAND(uint32 tick, uint32 srand0)
 
 	if (tick > server_srand0_tick) {
 		server_srand0_tick = 0;
+		return true;
+	}
+
+	if (game_commands_processed_this_tick != 0) {
+		// SRAND/sprite hash is only updated once at beginning of tick so it is invalid otherwise
 		return true;
 	}
 
@@ -1231,6 +1237,7 @@ void Network::ProcessGameCommandQueue()
 		sint32 command = gc.esi;
 		money32 cost = game_do_command_p(command, (sint32*)&gc.eax, (sint32*)&gc.ebx, (sint32*)&gc.ecx, (sint32*)&gc.edx, (sint32*)&gc.esi, (sint32*)&gc.edi, (sint32*)&gc.ebp);
 		if (cost != MONEY32_UNDEFINED) {
+			game_commands_processed_this_tick++;
 			NetworkPlayer* player = GetPlayerByID(gc.playerid);
 			if (player) {
 				player->LastAction = NetworkActions::FindCommand(command);
@@ -1778,6 +1785,7 @@ void Network::Client_Handle_TICK(NetworkConnection& connection, NetworkPacket& p
 			}
 		}
 	}
+	game_commands_processed_this_tick = 0;
 }
 
 void Network::Client_Handle_PLAYERLIST(NetworkConnection& connection, NetworkPacket& packet)
