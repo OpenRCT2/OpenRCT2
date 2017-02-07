@@ -111,7 +111,7 @@ exitcode_t CommandLine::HandleCommandConvert(CommandLineArgEnumerator * enumerat
 
     try
     {
-        auto importer = std::unique_ptr<IParkImporter>(ParkImporter::Create(destinationPath));
+        auto importer = std::unique_ptr<IParkImporter>(ParkImporter::Create(sourcePath));
         importer->Load(sourcePath);
         importer->Import();
     }
@@ -136,6 +136,7 @@ exitcode_t CommandLine::HandleCommandConvert(CommandLineArgEnumerator * enumerat
         //      correct initial view
         window_close_by_class(WC_MAIN_WINDOW);
 
+        exporter->Export();
         if (destinationFileType == FILE_EXTENSION_SC6)
         {
             exporter->SaveScenario(destinationPath);
