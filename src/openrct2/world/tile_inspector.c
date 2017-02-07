@@ -855,6 +855,28 @@ sint32 tile_inspector_scenery_set_quarter_collision(sint32 x, sint32 y, sint32 e
 	return 0;
 }
 
+sint32 tile_inspector_banner_toggle_blocking_edge(sint32 x, sint32 y, sint32 element_index, sint32 edge_index, sint32 flags)
+{
+	rct_map_element *const bannerElement = map_get_first_element_at(x, y) + element_index;
+
+	if (!bannerElement || map_element_get_type(bannerElement) != MAP_ELEMENT_TYPE_BANNER)
+	{
+		return MONEY32_UNDEFINED;
+	}
+
+	if (flags & GAME_COMMAND_FLAG_APPLY)
+	{
+		bannerElement->properties.banner.flags ^= 1 << edge_index;
+
+		if ((uint32)x == windowTileInspectorTileX && (uint32)y == windowTileInspectorTileY)
+		{
+			window_invalidate_by_class(WC_TILE_INSPECTOR);
+		}
+	}
+
+	return 0;
+}
+
 sint32 tile_inspector_corrupt_clamp(sint32 x, sint32 y, sint32 element_index, sint32 flags)
 {
 	rct_map_element *const corruptElement = map_get_first_element_at(x, y) + element_index;

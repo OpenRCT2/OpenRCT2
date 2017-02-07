@@ -852,6 +852,24 @@ static void window_tile_inspector_toggle_quadrant_collosion(sint32 element_index
 	);
 }
 
+static void window_tile_inspector_banner_toggle_block(sint32 element_index, sint32 edge_index)
+{
+	openrct2_assert(edge_index >= 0 && edge_index < 4, "edge_index out of range");
+
+	// Make edge_index abstract
+	edge_index = (edge_index - get_current_rotation()) & 3;
+
+	game_do_command(
+		TILE_INSPECTOR_BANNER_TOGGLE_BLOCKING_EDGE,
+		GAME_COMMAND_FLAG_APPLY,
+		windowTileInspectorTileX | (windowTileInspectorTileY << 8),
+		element_index,
+		GAME_COMMAND_MODIFY_TILE,
+		edge_index,
+		0
+	);
+}
+
 static void window_tile_inspector_clamp_corrupt(sint32 element_index)
 {
 	game_do_command(
@@ -1094,9 +1112,7 @@ static void window_tile_inspector_mouseup(rct_window *w, sint32 widgetIndex)
 		case WIDX_BANNER_CHECK_BLOCK_SE:
 		case WIDX_BANNER_CHECK_BLOCK_SW:
 		case WIDX_BANNER_CHECK_BLOCK_NW:
-			mapElement->properties.banner.flags ^= 1 << ((widgetIndex - WIDX_BANNER_CHECK_BLOCK_NE - get_current_rotation()) & 3);
-			map_invalidate_tile_full(windowTileInspectorTileX << 5, windowTileInspectorTileY << 5);
-			widget_invalidate(w, widgetIndex);
+			window_tile_inspector_banner_toggle_block(w->selected_list_item, widgetIndex - WIDX_BANNER_CHECK_BLOCK_NE);
 			break;
 		} // switch widget index
 		break;

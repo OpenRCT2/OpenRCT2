@@ -5727,6 +5727,13 @@ void game_command_modify_tile(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx
 		*ebx = tile_inspector_scenery_set_quarter_collision(x, y, element_index, quarter_index, flags);
 		break;
 	}
+	case TILE_INSPECTOR_BANNER_TOGGLE_BLOCKING_EDGE:
+	{
+		const sint32 element_index = *edx;
+		const sint32 edge_index = *edi;
+		*ebx = tile_inspector_banner_toggle_blocking_edge(x, y, element_index, edge_index, flags);
+		break;
+	}
 	case TILE_INSPECTOR_CORRUPT_CLAMP:
 	{
 		const sint32 element_index = *edx;
