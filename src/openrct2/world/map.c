@@ -5616,36 +5616,36 @@ void game_command_modify_tile(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx
 	{
 	case TILE_INSPECTOR_ANY_REMOVE:
 	{
-		const sint16 element_index = *edx;
-		*ebx = tile_inspector_remove_element_at(x, y, element_index, flags);
+		const sint16 elementIndex = *edx;
+		*ebx = tile_inspector_remove_element_at(x, y, elementIndex, flags);
 		break;
 	}
 	case TILE_INSPECTOR_ANY_SWAP:
 	{
-		const sint32 first_index = *edx;
-		const sint32 second_index = *edi;
-		*ebx = tile_inspector_swap_elements_at(x, y, first_index, second_index, flags);
+		const sint32 firstIndex = *edx;
+		const sint32 secondIndex = *edi;
+		*ebx = tile_inspector_swap_elements_at(x, y, firstIndex, secondIndex, flags);
 		break;
 	}
 	case TILE_INSPECTOR_ANY_INSERT_CORRUPT:
 	{
-		const sint16 element_index = *edx;
-		*ebx = tile_inspector_insert_corrupt_at(x, y, element_index, flags);
+		const sint16 elementIndex = *edx;
+		*ebx = tile_inspector_insert_corrupt_at(x, y, elementIndex, flags);
 		break;
 	}
 	case TILE_INSPECTOR_ANY_ROTATE:
 	{
-		const sint16 element_index = *edx;
-		*ebx = tile_inspector_rotate_element_at(x, y, element_index, flags);
+		const sint16 elementIndex = *edx;
+		*ebx = tile_inspector_rotate_element_at(x, y, elementIndex, flags);
 		break;
 	}
 	case TILE_INSPECTOR_ANY_PASTE:
 	{
-		rct_map_element element_to_paste;
+		rct_map_element elementToPaste;
 		const sint32 data[] = { *edx, *edi };
-		assert_struct_size(data, sizeof(element_to_paste));
-		memcpy(&element_to_paste, data, 8);
-		*ebx = tile_inspector_paste_element_at(x, y, element_to_paste, flags);
+		assert_struct_size(data, sizeof(elementToPaste));
+		memcpy(&elementToPaste, data, 8);
+		*ebx = tile_inspector_paste_element_at(x, y, elementToPaste, flags);
 		break;
 	}
 	case TILE_INSPECTOR_ANY_SORT:
@@ -5655,21 +5655,21 @@ void game_command_modify_tile(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx
 	}
 	case TILE_INSPECTOR_ANY_BASE_HEIGHT_OFFSET:
 	{
-		const sint16 element_index = *edx;
-		const sint8 height_offset = *edi;
-		*ebx = tile_inspector_any_base_height_offset(x, y, element_index, height_offset, flags);
+		const sint16 elementIndex = *edx;
+		const sint8 heightOffset = *edi;
+		*ebx = tile_inspector_any_base_height_offset(x, y, elementIndex, heightOffset, flags);
 		break;
 	}
 	case TILE_INSPECTOR_SURFACE_SHOW_PARK_FENCES:
 	{
-		const bool show_fences = *edx;
-		*ebx = tile_inspector_surface_show_park_fences(x, y, show_fences, flags);
+		const bool showFences = *edx;
+		*ebx = tile_inspector_surface_show_park_fences(x, y, showFences, flags);
 		break;
 	}
 	case TILE_INSPECTOR_SURFACE_TOGGLE_CORNER:
 	{
-		const sint32 corner_index = *edx;
-		*ebx = tile_inspector_surface_toggle_corner(x, y, corner_index, flags);
+		const sint32 cornerIndex = *edx;
+		*ebx = tile_inspector_surface_toggle_corner(x, y, cornerIndex, flags);
 		break;
 	}
 	case TILE_INSPECTOR_SURFACE_TOGGLE_DIAGONAL:
@@ -5679,65 +5679,65 @@ void game_command_modify_tile(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx
 	}
 	case TILE_INSPECTOR_PATH_SET_SLOPE:
 	{
-		const sint32 element_index = *edx;
+		const sint32 elementIndex = *edx;
 		const bool sloped = *edi;
-		*ebx = tile_inspector_path_set_sloped(x, y, element_index, sloped, flags);
+		*ebx = tile_inspector_path_set_sloped(x, y, elementIndex, sloped, flags);
 		break;
 	}
 	case TILE_INSPECTOR_PATH_TOGGLE_EDGE:
 	{
-		const sint32 element_index = *edx;
-		const sint32 edge_index = *edi;
-		*ebx = tile_inspector_path_toggle_edge(x, y, element_index, edge_index, flags);
+		const sint32 elementIndex = *edx;
+		const sint32 edgeIndex = *edi;
+		*ebx = tile_inspector_path_toggle_edge(x, y, elementIndex, edgeIndex, flags);
 		break;
 	}
 	case TILE_INSPECTOR_FENCE_SET_SLOPE:
 	{
-		const sint32 element_index = *edx;
-		const sint32 slope_value = *edi;
-		*ebx = tile_inspector_fence_set_slope(x, y, element_index, slope_value, flags);
+		const sint32 elementIndex = *edx;
+		const sint32 slopeValue = *edi;
+		*ebx = tile_inspector_fence_set_slope(x, y, elementIndex, slopeValue, flags);
 		break;
 	}
 	case TILE_INSPECTOR_TRACK_BASE_HEIGHT_OFFSET:
 	{
-		const sint32 element_index = *edx;
-		const sint8 height_offset = *edi;
-		*ebx = tile_inspector_track_base_height_offset(x, y, element_index, height_offset, flags);
+		const sint32 elementIndex = *edx;
+		const sint8 heightOffset = *edi;
+		*ebx = tile_inspector_track_base_height_offset(x, y, elementIndex, heightOffset, flags);
 		break;
 	}
 	case TILE_INSPECTOR_TRACK_SET_CHAIN:
 	{
-		const sint32 element_index = *edx;
-		const bool entire_track_block = *edi;
-		const bool set_chain = *ebp;
-		*ebx = tile_inspector_track_set_chain(x, y, element_index, entire_track_block, set_chain, flags);
+		const sint32 elementIndex = *edx;
+		const bool entireTrackBlock = *edi;
+		const bool setChain = *ebp;
+		*ebx = tile_inspector_track_set_chain(x, y, elementIndex, entireTrackBlock, setChain, flags);
 		break;
 	}
 	case TILE_INSPECTOR_SCENERY_SET_QUARTER_LOCATION:
 	{
-		const sint32 element_index = *edx;
-		const sint32 quarter_index = *edi;
-		*ebx = tile_inspector_scenery_set_quarter_location(x, y, element_index, quarter_index, flags);
+		const sint32 elementIndex = *edx;
+		const sint32 quarterIndex = *edi;
+		*ebx = tile_inspector_scenery_set_quarter_location(x, y, elementIndex, quarterIndex, flags);
 		break;
 	}
 	case TILE_INSPECTOR_SCENERY_SET_QUARTER_COLLISION:
 	{
-		const sint32 element_index = *edx;
-		const sint32 quarter_index = *edi;
-		*ebx = tile_inspector_scenery_set_quarter_collision(x, y, element_index, quarter_index, flags);
+		const sint32 elementIndex = *edx;
+		const sint32 quarterIndex = *edi;
+		*ebx = tile_inspector_scenery_set_quarter_collision(x, y, elementIndex, quarterIndex, flags);
 		break;
 	}
 	case TILE_INSPECTOR_BANNER_TOGGLE_BLOCKING_EDGE:
 	{
-		const sint32 element_index = *edx;
-		const sint32 edge_index = *edi;
-		*ebx = tile_inspector_banner_toggle_blocking_edge(x, y, element_index, edge_index, flags);
+		const sint32 elementIndex = *edx;
+		const sint32 edgeIndex = *edi;
+		*ebx = tile_inspector_banner_toggle_blocking_edge(x, y, elementIndex, edgeIndex, flags);
 		break;
 	}
 	case TILE_INSPECTOR_CORRUPT_CLAMP:
 	{
-		const sint32 element_index = *edx;
-		*ebx = tile_inspector_corrupt_clamp(x, y, element_index, flags);
+		const sint32 elementIndex = *edx;
+		*ebx = tile_inspector_corrupt_clamp(x, y, elementIndex, flags);
 		break;
 	}
 	default:
