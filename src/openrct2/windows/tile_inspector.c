@@ -852,6 +852,19 @@ static void window_tile_inspector_toggle_quadrant_collosion(sint32 element_index
 	);
 }
 
+static void window_tile_inspector_clamp_corrupt(sint32 element_index)
+{
+	game_do_command(
+		TILE_INSPECTOR_CORRUPT_CLAMP,
+		GAME_COMMAND_FLAG_APPLY,
+		windowTileInspectorTileX | (windowTileInspectorTileY << 8),
+		element_index,
+		GAME_COMMAND_MODIFY_TILE,
+		0,
+		0
+	);
+}
+
 static void window_tile_inspector_mouseup(rct_window *w, sint32 widgetIndex)
 {
 	switch (widgetIndex) {
@@ -1097,9 +1110,7 @@ static void window_tile_inspector_mouseup(rct_window *w, sint32 widgetIndex)
 			window_tile_inspector_base_height_offset(w->selected_list_item, -1);
 			break;
 		case WIDX_CORRUPT_BUTTON_CLAMP:
-			if (!map_element_is_last_for_tile(mapElement)) {
-				mapElement->base_height = mapElement->clearance_height = (mapElement + 1)->base_height;
-			}
+			window_tile_inspector_clamp_corrupt(w->selected_list_item);
 			break;
 		} // switch widget index
 		break;

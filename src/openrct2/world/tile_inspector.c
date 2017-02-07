@@ -834,7 +834,7 @@ sint32 tile_inspector_scenery_set_quarter_location(sint32 x, sint32 y, sint32 el
 
 sint32 tile_inspector_scenery_set_quarter_collision(sint32 x, sint32 y, sint32 element_index, sint32 quarter_index, sint32 flags)
 {
-	rct_map_element *mapElement = map_get_first_element_at(x, y) + element_index;
+	rct_map_element *const mapElement = map_get_first_element_at(x, y) + element_index;
 
 	if (!mapElement || map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_SCENERY)
 	{
@@ -846,6 +846,34 @@ sint32 tile_inspector_scenery_set_quarter_collision(sint32 x, sint32 y, sint32 e
 		mapElement->flags ^= 1 << quarter_index;
 
 		map_invalidate_tile_full(x << 5, y << 5);
+		if ((uint32)x == windowTileInspectorTileX && (uint32)y == windowTileInspectorTileY)
+		{
+			window_invalidate_by_class(WC_TILE_INSPECTOR);
+		}
+	}
+
+	return 0;
+}
+
+sint32 tile_inspector_corrupt_clamp(sint32 x, sint32 y, sint32 element_index, sint32 flags)
+{
+	rct_map_element *const corruptElement = map_get_first_element_at(x, y) + element_index;
+
+	if (!corruptElement || map_element_get_type(corruptElement) != MAP_ELEMENT_TYPE_CORRUPT)
+	{
+		return MONEY32_UNDEFINED;
+	}
+
+	if (map_element_is_last_for_tile(corruptElement))
+	{
+		return MONEY32_UNDEFINED;
+	}
+
+	if (flags & GAME_COMMAND_FLAG_APPLY)
+	{
+		rct_map_element *const nextElement = corruptElement + 1;
+		corruptElement->base_height = corruptElement->clearance_height = nextElement->base_height;
+
 		if ((uint32)x == windowTileInspectorTileX && (uint32)y == windowTileInspectorTileY)
 		{
 			window_invalidate_by_class(WC_TILE_INSPECTOR);
