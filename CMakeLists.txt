@@ -12,6 +12,7 @@ set(TITLE_SEQUENCE_SHA1 "79ffb2585d12abcbfce205d7696e3472a504b005")
 option(FORCE32 "Force 32-bit build. It will add `-m32` to compiler flags.")
 option(WITH_TESTS "Build tests")
 option(PORTABLE "Create a portable build (-rpath=$ORIGIN)" OFF)
+option(DOWNLOAD_TITLE_SEQUENCES "Download title sequences during installation." ON)
 
 # Define current git branch
 execute_process(
@@ -78,9 +79,11 @@ list(APPEND DOC_FILES "${ROOT_DIR}/contributors.md"
 # CMake does not allow specifying a dependency chain which includes built-in
 # targets, like `install`, so we have to trick it and execute dependency ourselves.
 install(CODE "execute_process(COMMAND \"${CMAKE_COMMAND}\" --build \"${CMAKE_CURRENT_BINARY_DIR}\" --target g2)")
-install(CODE "file(DOWNLOAD ${TITLE_SEQUENCE_URL} \$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/share/${PROJECT}/title/title-sequences.zip EXPECTED_HASH SHA1=${TITLE_SEQUENCE_SHA1} SHOW_PROGRESS)")
-install(CODE "execute_process(COMMAND \"${CMAKE_COMMAND}\" -E chdir \$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/share/${PROJECT}/title/ \"${CMAKE_COMMAND}\" -E tar xvf title-sequences.zip)")
-install(CODE "file(REMOVE \$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/share/${PROJECT}/title/title-sequences.zip)")
+IF (DOWNLOAD_TITLE_SEQUENCES)
+    install(CODE "file(DOWNLOAD ${TITLE_SEQUENCE_URL} \$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/share/${PROJECT}/title/title-sequences.zip EXPECTED_HASH SHA1=${TITLE_SEQUENCE_SHA1} SHOW_PROGRESS)")
+    install(CODE "execute_process(COMMAND \"${CMAKE_COMMAND}\" -E chdir \$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/share/${PROJECT}/title/ \"${CMAKE_COMMAND}\" -E tar xvf title-sequences.zip)")
+    install(CODE "file(REMOVE \$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/share/${PROJECT}/title/title-sequences.zip)")
+endif ()
 if (WIN32)
     install(TARGETS "libopenrct2" RUNTIME DESTINATION "bin")
 else ()
