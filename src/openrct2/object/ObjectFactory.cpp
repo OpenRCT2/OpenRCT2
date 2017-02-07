@@ -18,8 +18,9 @@
 #include "../core/FileStream.hpp"
 #include "../core/Memory.hpp"
 #include "../core/MemoryStream.h"
-#include "../core/String.hpp"
 #include "../core/Path.hpp"
+#include "../core/String.hpp"
+#include "../rct12/SawyerChunkReader.h"
 #include "BannerObject.h"
 #include "EntranceObject.h"
 #include "FootpathItemObject.h"
@@ -102,64 +103,40 @@ namespace ObjectFactory
         }
     }
 
-    static MemoryStream * GetDecodedChunkStream(IReadObjectContext * context, SDL_RWops * file)
-    {
-        size_t bufferSize = 0x600000;
-        void * buffer = Memory::Allocate<void>(bufferSize);
-        if (buffer == nullptr)
-        {
-            log_error("Unable to allocate data buffer.");
-            return nullptr;
-        }
-
-        bufferSize = sawyercoding_read_chunk_with_size(file, (uint8 *)buffer, bufferSize);
-        if (bufferSize == SIZE_MAX)
-        {
-            context->LogError(OBJECT_ERROR_BAD_ENCODING, "Unable to decode chunk.");
-            Memory::Free(buffer);
-            return nullptr;
-        }
-        else
-        {
-            buffer = Memory::Reallocate(buffer, bufferSize);
-            return new MemoryStream(buffer, bufferSize, MEMORY_ACCESS::READ | MEMORY_ACCESS::OWNER);
-        }
-    }
-
     Object * CreateObjectFromLegacyFile(const utf8 * path)
     {
+        log_verbose("CreateObjectFromLegacyFile(\"%s\")", path);
+
         Object * result = nullptr;
-
-        SDL_RWops * file = SDL_RWFromFile(path, "rb");
-        if (file != nullptr)
+        try
         {
-            rct_object_entry entry;
-            if (SDL_RWread(file, &entry, sizeof(entry), 1) == 1)
+            auto fs = FileStream(path, FILE_MODE_OPEN);
+            auto chunkReader = SawyerChunkReader(&fs);
+
+            rct_object_entry entry = fs.ReadValue<rct_object_entry>();
+            result = CreateObject(entry);
+
+            utf8 objectName[9] = { 0 };
+            object_entry_get_name_fixed(objectName, sizeof(objectName), &entry);
+            log_verbose("  entry: { 0x%08X, \"%s\", 0x%08X }", entry.flags, objectName, entry.checksum);
+
+            auto chunk = chunkReader.ReadChunk();
+            log_verbose("  size: %zu", chunk->GetLength());
+
+            auto chunkStream = MemoryStream(chunk->GetData(), chunk->GetLength());
+            auto readContext = ReadObjectContext(objectName);
+            ReadObjectLegacy(result, &readContext, &chunkStream);
+            if (readContext.WasError())
             {
-                result = CreateObject(entry);
-                if (result != nullptr)
-                {
-                    utf8 objectName[9] = { 0 };
-                    Memory::Copy(objectName, entry.name, 8);
-
-                    auto readContext = ReadObjectContext(objectName);
-                    auto chunkStream = GetDecodedChunkStream(&readContext, file);
-                    if (chunkStream != nullptr)
-                    {
-                        ReadObjectLegacy(result, &readContext, chunkStream);
-                        delete chunkStream;
-                    }
-
-                    if (readContext.WasError())
-                    {
-                        Console::Error::WriteLine("Error reading object: '%s'", path);
-
-                        delete result;
-                        result = nullptr;
-                    }
-                }
+                throw Exception("Object has errors");
             }
-            SDL_RWclose(file);
+        }
+        catch (Exception)
+        {
+            Console::Error::WriteLine("Unable to open or read '%s'", path);
+
+            delete result;
+            result = nullptr;
         }
         return result;
     }
@@ -190,8 +167,7 @@ namespace ObjectFactory
 
     Object * CreateObject(const rct_object_entry &entry)
     {
-        Object * result = nullptr;
-
+        Object * result;
         uint8 objectType = entry.flags & 0x0F;
         switch (objectType) {
         case OBJECT_TYPE_RIDE:
@@ -227,8 +203,9 @@ namespace ObjectFactory
         case OBJECT_TYPE_SCENARIO_TEXT:
             result = new StexObject(entry);
             break;
+        default:
+            throw Exception("Invalid object type");
         }
-
         return result;
     }
 }
