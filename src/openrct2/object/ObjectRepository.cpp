@@ -31,7 +31,7 @@
 #include "../core/Stopwatch.hpp"
 #include "../core/String.hpp"
 #include "../PlatformEnvironment.h"
-#include "../rct12/SawyerEncoding.h"
+#include "../rct12/SawyerChunkReader.h"
 #include "../scenario/ScenarioRepository.h"
 #include "Object.h"
 #include "ObjectFactory.h"
@@ -226,25 +226,19 @@ public:
 
     bool TryExportPackedObject(IStream * stream) override
     {
+        auto chunkReader = SawyerChunkReader(stream);
+
         // Check if we already have this object
         rct_object_entry entry = stream->ReadValue<rct_object_entry>();
         if (FindObject(&entry) != nullptr)
         {
-            SawyerEncoding::SkipChunk(stream);
+            chunkReader.SkipChunk();
         }
         else
         {
             // Read object and save to new file
-            size_t chunkSize;
-            void * chunk = SawyerEncoding::ReadChunk(stream, &chunkSize);
-            if (chunk == nullptr)
-            {
-                log_error("Failed to reallocate buffer for packed object.");
-                return false;
-            }
-
-            AddObject(&entry, chunk, chunkSize);
-            Memory::Free(chunk);
+            std::shared_ptr<SawyerChunk> chunk = chunkReader.ReadChunk();
+            AddObject(&entry, chunk->GetData(), chunk->GetLength());
         }
         return true;
     }

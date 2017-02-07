@@ -26,7 +26,7 @@
 #include "../core/Util.hpp"
 #include "../ParkImporter.h"
 #include "../PlatformEnvironment.h"
-#include "../rct12/SawyerEncoding.h"
+#include "../rct12/SawyerChunkReader.h"
 #include "ScenarioRepository.h"
 #include "ScenarioSources.h"
 
@@ -336,26 +336,18 @@ private:
             {
                 // RCT2 scenario
                 auto fs = FileStream(path, FILE_MODE_OPEN);
-                rct_s6_header header;
-                if (SawyerEncoding::TryReadChunk(&header, &fs))
+                auto chunkReader = SawyerChunkReader(&fs);
+
+                rct_s6_header header = chunkReader.ReadChunkAs<rct_s6_header>();
+                if (header.type == S6_TYPE_SCENARIO)
                 {
-                    if (header.type == S6_TYPE_SCENARIO)
-                    {
-                        rct_s6_info info;
-                        if (SawyerEncoding::TryReadChunk(&info, &fs))
-                        {
-                            *entry = CreateNewScenarioEntry(path, timestamp, &info);
-                            return true;
-                        }
-                        else
-                        {
-                            throw new IOException("Unable to read S6_INFO chunk.");
-                        }
-                    }
-                    else
-                    {
-                        log_verbose("%s is not a scenario", path.c_str());
-                    }
+                    rct_s6_info info = chunkReader.ReadChunkAs<rct_s6_info>();
+                    *entry = CreateNewScenarioEntry(path, timestamp, &info);
+                    return true;
+                }
+                else
+                {
+                    log_verbose("%s is not a scenario", path.c_str());
                 }
             }
         }
