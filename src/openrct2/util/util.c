@@ -551,8 +551,9 @@ sint32 add_clamp_sint32(sint32 value, sint32 value_to_add)
 
 money32 add_clamp_money32(money32 value, money32 value_to_add)
 {
-	add_clamp_body(value, value_to_add, INT_MIN, INT_MAX);
-	return value;
+	// This function is intended only for clarity, but money32 is the technically 
+	// the same as sint32
+	return add_clamp_sint32(value, value_to_add);
 }
 
 #undef add_clamp_body
