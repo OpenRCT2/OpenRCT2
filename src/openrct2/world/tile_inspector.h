@@ -54,22 +54,22 @@ typedef enum {
 	TILE_INSPECTOR_CORRUPT_CLAMP,
 } tile_inspector_instruction;
 
-sint32 tile_inspector_insert_corrupt_at(sint32 x, sint32 y, sint16 element_index, sint32 flags);
-sint32 tile_inspector_remove_element_at(sint32 x, sint32 y, sint16 element_index, sint32 flags);
+sint32 tile_inspector_insert_corrupt_at(sint32 x, sint32 y, sint16 elementIndex, sint32 flags);
+sint32 tile_inspector_remove_element_at(sint32 x, sint32 y, sint16 elementIndex, sint32 flags);
 sint32 tile_inspector_swap_elements_at(sint32 x, sint32 y, sint16 first, sint16 second, sint32 flags);
-sint32 tile_inspector_rotate_element_at(sint32 x, sint32 y, sint32 element_index, sint32 flags);
+sint32 tile_inspector_rotate_element_at(sint32 x, sint32 y, sint32 elementIndex, sint32 flags);
 sint32 tile_inspector_paste_element_at(sint32 x, sint32 y, rct_map_element element, sint32 flags);
 sint32 tile_inspector_sort_elements_at(sint32 x, sint32 y, sint32 flags);
-sint32 tile_inspector_any_base_height_offset(sint32 x, sint32 y, sint16 element_index, sint8 height_offset, sint32 flags);
+sint32 tile_inspector_any_base_height_offset(sint32 x, sint32 y, sint16 elementIndex, sint8 heightOffset, sint32 flags);
 sint32 tile_inspector_surface_show_park_fences(sint32 x, sint32 y, bool enabled, sint32 flags);
-sint32 tile_inspector_surface_toggle_corner(sint32 x, sint32 y, sint32 corner_index, sint32 flags);
+sint32 tile_inspector_surface_toggle_corner(sint32 x, sint32 y, sint32 cornerIndex, sint32 flags);
 sint32 tile_inspector_surface_toggle_diagonal(sint32 x, sint32 y, sint32 flags);
-sint32 tile_inspector_path_set_sloped(sint32 x, sint32 y, sint32 element_index, bool sloped, sint32 flags);
-sint32 tile_inspector_path_toggle_edge(sint32 x, sint32 y, sint32 element_index, sint32 corner_index, sint32 flags);
-sint32 tile_inspector_fence_set_slope(sint32 x, sint32 y, sint32 element_index, sint32 slope_value, sint32 flags);
-sint32 tile_inspector_track_base_height_offset(sint32 x, sint32 y, sint32 element_index, sint8 offset, sint32 flags);
-sint32 tile_inspector_track_set_chain(sint32 x, sint32 y, sint32 element_index, bool entire_track_block, bool set_chain, sint32 flags);
-sint32 tile_inspector_scenery_set_quarter_location(sint32 x, sint32 y, sint32 element_index, sint32 quarter_index, sint32 flags);
-sint32 tile_inspector_scenery_set_quarter_collision(sint32 x, sint32 y, sint32 element_index, sint32 quarter_index, sint32 flags);
-sint32 tile_inspector_banner_toggle_blocking_edge(sint32 x, sint32 y, sint32 element_index, sint32 edge_index, sint32 flags);
-sint32 tile_inspector_corrupt_clamp(sint32 x, sint32 y, sint32 element_index, sint32 flags);
+sint32 tile_inspector_path_set_sloped(sint32 x, sint32 y, sint32 elementIndex, bool sloped, sint32 flags);
+sint32 tile_inspector_path_toggle_edge(sint32 x, sint32 y, sint32 elementIndex, sint32 cornerIndex, sint32 flags);
+sint32 tile_inspector_fence_set_slope(sint32 x, sint32 y, sint32 elementIndex, sint32 slopeValue, sint32 flags);
+sint32 tile_inspector_track_base_height_offset(sint32 x, sint32 y, sint32 elementIndex, sint8 offset, sint32 flags);
+sint32 tile_inspector_track_set_chain(sint32 x, sint32 y, sint32 elementIndex, bool entireTrackBlock, bool setChain, sint32 flags);
+sint32 tile_inspector_scenery_set_quarter_location(sint32 x, sint32 y, sint32 elementIndex, sint32 quarterIndex, sint32 flags);
+sint32 tile_inspector_scenery_set_quarter_collision(sint32 x, sint32 y, sint32 elementIndex, sint32 quarterIndex, sint32 flags);
+sint32 tile_inspector_banner_toggle_blocking_edge(sint32 x, sint32 y, sint32 elementIndex, sint32 edgeIndex, sint32 flags);
+sint32 tile_inspector_corrupt_clamp(sint32 x, sint32 y, sint32 elementIndex, sint32 flags);

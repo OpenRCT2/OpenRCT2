@@ -15,12 +15,10 @@
 #pragma endregion
 
 #include "../common.h"
-#include "../OpenRCT2.h"
 #include "../core/Guard.hpp"
 #include "../game.h"
 #include "../input.h"
 #include "../interface/themes.h"
-#include "../interface/viewport.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
 #include "../localisation/localisation.h"
@@ -31,10 +29,9 @@
 #include "../world/scenery.h"
 #include "../world/tile_inspector.h"
 #include "dropdown.h"
-#include "error.h"
 #include "tile_inspector.h"
 
-static const rct_string_id terrainTypeStringIds[] = {
+static const rct_string_id TerrainTypeStringIds[] = {
 	STR_TILE_INSPECTOR_TERRAIN_GRASS,
 	STR_TILE_INSPECTOR_TERRAIN_SAND,
 	STR_TILE_INSPECTOR_TERRAIN_DIRT,
@@ -53,7 +50,7 @@ static const rct_string_id terrainTypeStringIds[] = {
 	STR_TILE_INSPECTOR_TERRAIN_UNDERGROUND_VIEW,
 };
 
-static const rct_string_id terrainEdgeTypeStringIds[] = {
+static const rct_string_id TerrainEdgeTypeStringIds[] = {
 	STR_TILE_INSPECTOR_TERRAIN_EDGE_ROCK,
 	STR_TILE_INSPECTOR_TERRAIN_EDGE_WOOD_RED,
 	STR_TILE_INSPECTOR_TERRAIN_EDGE_WOOD_BLACK,
@@ -61,19 +58,19 @@ static const rct_string_id terrainEdgeTypeStringIds[] = {
 
 };
 
-static const rct_string_id entranceTypeStringIds[] = {
+static const rct_string_id EntranceTypeStringIds[] = {
 	STR_TILE_INSPECTOR_ENTRANCE_TYPE_RIDE_ENTRANCE,
 	STR_TILE_INSPECTOR_ENTRANCE_TYPE_RIDE_EXIT,
 	STR_TILE_INSPECTOR_ENTRANCE_TYPE_PARK_ENTRANC,
 };
 
-static const rct_string_id parkEntrancePartStringIds[] = {
+static const rct_string_id ParkEntrancePartStringIds[] = {
 	STR_TILE_INSPECTOR_ENTRANCE_MIDDLE,
 	STR_TILE_INSPECTOR_ENTRANCE_LEFT,
 	STR_TILE_INSPECTOR_ENTRANCE_RIGHT
 };
 
-static const rct_string_id fenceSlopeStringIds[] = {
+static const rct_string_id FenceSlopeStringIds[] = {
 	STR_TILE_INSPECTOR_FENCE_FLAT,
 	STR_TILE_INSPECTOR_FENCE_SLOPED_LEFT,
 	STR_TILE_INSPECTOR_FENCE_SLOPED_RIGHT
@@ -267,7 +264,7 @@ enum WINDOW_TILE_INSPECTOR_WIDGET_IDX {
 	{ WWT_GROUPBOX,		1, 6,			WW - 6,			-1,		-1,			STR_NONE,									STR_NONE },					/* Details group box */		\
 	{ WWT_GROUPBOX,		1, 6,			WW - 6,			-1,		-1,			STR_TILE_INSPECTOR_GROUPBOX_PROPERTIES,		STR_NONE }					/* Properties group box */
 
-static rct_widget windowTileInspectorWidgets[] = {
+static rct_widget DefaultWidgets[] = {
 	MAIN_TILE_INSPECTOR_WIDGETS,
 	{ WIDGETS_END },
 };
@@ -277,7 +274,7 @@ static rct_widget windowTileInspectorWidgets[] = {
 #define SUR_GBPT (SUR_GBPB + 16 + 4 * 21)		// Surface group box properties top
 #define SUR_GBDB (SUR_GBPT + GROUPBOX_PADDING)	// Surface group box details bottom
 #define SUR_GBDT (SUR_GBDB + 20 + 4 * 11)		// Surface group box details top
-static rct_widget windowTileInspectorWidgetsSurface[] = {
+static rct_widget SurfaceWidgets[] = {
 	MAIN_TILE_INSPECTOR_WIDGETS,
 	{ WWT_SPINNER,			1,	GBS(WH - SUR_GBPT, 1, 0),				STR_NONE,					STR_NONE }, // WIDX_SURFACE_SPINNER_HEIGHT
 	{ WWT_DROPDOWN_BUTTON,  1,	GBSI(WH - SUR_GBPT, 1, 0),				STR_NUMERIC_UP,				STR_NONE }, // WIDX_SURFACE_SPINNER_HEIGHT_INCREASE
@@ -296,7 +293,7 @@ static rct_widget windowTileInspectorWidgetsSurface[] = {
 #define PAT_GBPT (PAT_GBPB + 16 + 4 * 21)		// Path group box properties top
 #define PAT_GBDB (PAT_GBPT + GROUPBOX_PADDING)	// Path group box info bottom
 #define PAT_GBDT (PAT_GBDB + 20 + 2 * 11)		// Path group box info top
-static rct_widget windowTileInspectorWidgetsPath[] = {
+static rct_widget PathWidgets[] = {
 	MAIN_TILE_INSPECTOR_WIDGETS,
 	{ WWT_SPINNER,			1,	GBS(WH - PAT_GBPT, 1, 0),				STR_NONE,					STR_NONE }, // WIDX_PATH_SPINNER_HEIGHT
 	{ WWT_DROPDOWN_BUTTON,  1,	GBSI(WH - PAT_GBPT, 1, 0),				STR_NUMERIC_UP,				STR_NONE }, // WIDX_PATH_SPINNER_HEIGHT_INCREASE
@@ -317,7 +314,7 @@ static rct_widget windowTileInspectorWidgetsPath[] = {
 #define TRA_GBPT (TRA_GBPB + 16 + 3 * 21)		// Track group box properties top
 #define TRA_GBDB (TRA_GBPT + GROUPBOX_PADDING)	// Track group box info bottom
 #define TRA_GBDT (TRA_GBDB + 20 + 5 * 11)		// Track group box info top
-static rct_widget windowTileInspectorWidgetsTrack[] = {
+static rct_widget TrackWidgets[] = {
 	MAIN_TILE_INSPECTOR_WIDGETS,
 	{ WWT_CHECKBOX,			1,	GBBF(WH - TRA_GBPT, 0, 0),	STR_TILE_INSPECTOR_TRACK_ENTIRE_TRACK_PIECE,	STR_NONE }, // WIDX_TRACK_CHECK_APPLY_TO_ALL
 	{ WWT_SPINNER,			1,	GBS(WH - TRA_GBPT, 1, 1),	STR_NONE,										STR_NONE }, // WIDX_TRACK_SPINNER_HEIGHT
@@ -331,7 +328,7 @@ static rct_widget windowTileInspectorWidgetsTrack[] = {
 #define SCE_GBPT (SCE_GBPB + 16 + 4 * 21)		// Scenery group box properties top
 #define SCE_GBDB (SCE_GBPT + GROUPBOX_PADDING)	// Scenery group box info bottom
 #define SCE_GBDT (SCE_GBDB + 20 + 3 * 11)		// Scenery group box info top
-static rct_widget windowTileInspectorWidgetsScenery[] = {
+static rct_widget SceneryWidgets[] = {
 	MAIN_TILE_INSPECTOR_WIDGETS,
 	{ WWT_SPINNER,			1,	GBS(WH - SCE_GBPT, 1, 0),				STR_NONE,					STR_NONE }, // WIDX_SCENERY_SPINNER_HEIGHT
 	{ WWT_DROPDOWN_BUTTON,  1,	GBSI(WH - SCE_GBPT, 1, 0),				STR_NUMERIC_UP,				STR_NONE }, // WIDX_SCENERY_SPINNER_HEIGHT_INCREASE
@@ -351,7 +348,7 @@ static rct_widget windowTileInspectorWidgetsScenery[] = {
 #define ENT_GBPT (ENT_GBPB + 16 + 1 * 21)		// Entrance group box properties top
 #define ENT_GBDB (ENT_GBPT + GROUPBOX_PADDING)	// Entrance group box info bottom
 #define ENT_GBDT (ENT_GBDB + 20 + 3 * 11)		// Entrance group box info top
-static rct_widget windowTileInspectorWidgetsEntrance[] = {
+static rct_widget EntranceWidgets[] = {
 	MAIN_TILE_INSPECTOR_WIDGETS,
 	{ WWT_SPINNER,			1,	GBS(WH - ENT_GBPT, 1, 0),	STR_NONE,										STR_NONE }, // WIDX_ENTRANCE_SPINNER_HEIGHT
 	{ WWT_DROPDOWN_BUTTON,  1,	GBSI(WH - ENT_GBPT, 1, 0),	STR_NUMERIC_UP,									STR_NONE }, // WIDX_ENTRANCE_SPINNER_HEIGHT_INCREASE
@@ -363,7 +360,7 @@ static rct_widget windowTileInspectorWidgetsEntrance[] = {
 #define FEN_GBPT (FEN_GBPB + 16 + 2 * 21)		// Fence group box properties top
 #define FEN_GBDB (FEN_GBPT + GROUPBOX_PADDING)	// Fence group box info bottom
 #define FEN_GBDT (FEN_GBDB + 20 + 2 * 11)		// Fence group box info top
-static rct_widget windowTileInspectorWidgetsFence[] = {
+static rct_widget FenceWidgets[] = {
 	MAIN_TILE_INSPECTOR_WIDGETS,
 	{ WWT_SPINNER,			1,	GBS(WH - FEN_GBPT, 1, 0),	STR_NONE,										STR_NONE }, // WIDX_FENCE_SPINNER_HEIGHT
 	{ WWT_DROPDOWN_BUTTON,	1,	GBSI(WH - FEN_GBPT, 1, 0),	STR_NUMERIC_UP,									STR_NONE }, // WIDX_FENCE_SPINNER_HEIGHT_INCREASE
@@ -377,7 +374,7 @@ static rct_widget windowTileInspectorWidgetsFence[] = {
 #define LAR_GBPT (LAR_GBPB + 16 + 1 * 21)		// Large scenery group box properties top
 #define LAR_GBDB (LAR_GBPT + GROUPBOX_PADDING)	// Large scenery group box info bottom
 #define LAR_GBDT (LAR_GBDB + 20 + 3 * 11)		// Large scenery group box info top
-static rct_widget windowTileInspectorWidgetsLargeScenery[] = {
+static rct_widget LargeSceneryWidgets[] = {
 	MAIN_TILE_INSPECTOR_WIDGETS,
 	{ WWT_SPINNER,			1,	GBS(WH - LAR_GBPT, 1, 0),	STR_NONE,										STR_NONE }, // WIDX_LARGE_SCENERY_SPINNER_HEIGHT
 	{ WWT_DROPDOWN_BUTTON,  1,	GBSI(WH - LAR_GBPT, 1, 0),	STR_NUMERIC_UP,									STR_NONE }, // WIDX_LARGE_SCENERY_SPINNER_HEIGHT_INCREASE
@@ -389,7 +386,7 @@ static rct_widget windowTileInspectorWidgetsLargeScenery[] = {
 #define BAN_GBPT (BAN_GBPB + 16 + 3 * 21)		// Banner group box properties top
 #define BAN_GBDB (BAN_GBPT + GROUPBOX_PADDING)	// Banner group box info bottom
 #define BAN_GBDT (BAN_GBDB + 20 + 1 * 11)		// Banner group box info top
-static rct_widget windowTileInspectorWidgetsBanner[] = {
+static rct_widget BannerWidgets[] = {
 	MAIN_TILE_INSPECTOR_WIDGETS,
 	{ WWT_SPINNER,			1,	GBS(WH - BAN_GBPT, 1, 0),	STR_NONE,										STR_NONE }, // WIDX_BANNER_SPINNER_HEIGHT
 	{ WWT_DROPDOWN_BUTTON,  1,	GBSI(WH - BAN_GBPT, 1, 0),	STR_NUMERIC_UP,									STR_NONE }, // WIDX_BANNER_SPINNER_HEIGHT_INCREASE
@@ -406,7 +403,7 @@ static rct_widget windowTileInspectorWidgetsBanner[] = {
 #define COR_GBPT (COR_GBPB + 16 + 2 * 21)		// Corrupt element group box properties top
 #define COR_GBDB (COR_GBPT + GROUPBOX_PADDING)	// Corrupt element group box info bottom
 #define COR_GBDT (COR_GBDB + 20 + 0 * 11)		// Corrupt element group box info top
-static rct_widget windowTileInspectorWidgetsCorrupt[] = {
+static rct_widget CorruptWidgets[] = {
 	MAIN_TILE_INSPECTOR_WIDGETS,
 	{ WWT_SPINNER,			1,	GBS(WH - COR_GBPT, 1, 0),	STR_NONE,										STR_NONE }, // WIDX_CORRUPT_SPINNER_HEIGHT
 	{ WWT_DROPDOWN_BUTTON,  1,	GBSI(WH - COR_GBPT, 1, 0),	STR_NUMERIC_UP,									STR_NONE }, // WIDX_CORRUPT_SPINNER_HEIGHT_INCREASE
@@ -415,26 +412,26 @@ static rct_widget windowTileInspectorWidgetsCorrupt[] = {
 	{ WIDGETS_END },
 };
 
-static rct_widget *tileInspectorWidgets[] = {
-	windowTileInspectorWidgets,
-	windowTileInspectorWidgetsSurface,
-	windowTileInspectorWidgetsPath,
-	windowTileInspectorWidgetsTrack,
-	windowTileInspectorWidgetsScenery,
-	windowTileInspectorWidgetsEntrance,
-	windowTileInspectorWidgetsFence,
-	windowTileInspectorWidgetsLargeScenery,
-	windowTileInspectorWidgetsBanner,
-	windowTileInspectorWidgetsCorrupt,
+static rct_widget *PageWidgets[] = {
+	DefaultWidgets,
+	SurfaceWidgets,
+	PathWidgets,
+	TrackWidgets,
+	SceneryWidgets,
+	EntranceWidgets,
+	FenceWidgets,
+	LargeSceneryWidgets,
+	BannerWidgets,
+	CorruptWidgets,
 };
 
 static struct {
 	// Offsets from the bottom of the window
-	sint16 detailsTopOffset, detailsBottomOffset;
+	sint16 details_top_offset, details_bottom_offset;
 	sint16 properties_top_offset, properties_bottom_offset;
 	// String to be displayed in the details groupbox
-	rct_string_id string_idx;
-} pageGroupBoxSettings[] = {
+	rct_string_id string_id;
+} PageGroupBoxSettings[] = {
 	{ SUR_GBDT, SUR_GBDB, SUR_GBPT, SUR_GBPB, STR_TILE_INSPECTOR_GROUPBOX_SURFACE_INFO },
 	{ PAT_GBDT, PAT_GBDB, PAT_GBPT, PAT_GBPB, STR_TILE_INSPECTOR_GROUPBOX_PATH_INFO },
 	{ TRA_GBDT, TRA_GBDB, TRA_GBPT, TRA_GBPB, STR_TILE_INSPECTOR_GROUPBOX_TRACK_INFO },
@@ -475,7 +472,7 @@ static void window_tile_inspector_invalidate(rct_window *w);
 static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_tile_inspector_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 scrollIndex);
 
-static rct_window_event_list windowTileInspectorEvents = {
+static rct_window_event_list TileInspectorWindowEvents = {
 	NULL,
 	window_tile_inspector_mouseup,
 	window_tile_inspector_resize,
@@ -506,7 +503,7 @@ static rct_window_event_list windowTileInspectorEvents = {
 	window_tile_inspector_scrollpaint
 };
 
-static uint64 windowTileInspectorEnabledWidgets[] = {
+static uint64 PageEnabledWidgets[] = {
 	(1ULL << WIDX_CLOSE) | (1ULL << WIDX_BUTTON_CORRUPT),
 	(1ULL << WIDX_CLOSE) | (1ULL << WIDX_BUTTON_CORRUPT) | (1ULL << WIDX_BUTTON_REMOVE) | (1ULL << WIDX_BUTTON_ROTATE) | (1ULL << WIDX_BUTTON_COPY) | (1ULL << WIDX_SURFACE_SPINNER_HEIGHT_INCREASE) | (1ULL << WIDX_SURFACE_SPINNER_HEIGHT_DECREASE) | (1ULL << WIDX_SURFACE_BUTTON_REMOVE_FENCES) | (1ULL << WIDX_SURFACE_BUTTON_RESTORE_FENCES) | (1ULL << WIDX_SURFACE_CHECK_CORNER_N) | (1ULL << WIDX_SURFACE_CHECK_CORNER_E) | (1ULL << WIDX_SURFACE_CHECK_CORNER_S) | (1ULL << WIDX_SURFACE_CHECK_CORNER_W) | (1ULL << WIDX_SURFACE_CHECK_DIAGONAL),
 	(1ULL << WIDX_CLOSE) | (1ULL << WIDX_BUTTON_CORRUPT) | (1ULL << WIDX_BUTTON_REMOVE) | (1ULL << WIDX_BUTTON_ROTATE) | (1ULL << WIDX_BUTTON_COPY) | (1ULL << WIDX_PATH_SPINNER_HEIGHT_INCREASE) | (1ULL << WIDX_PATH_SPINNER_HEIGHT_DECREASE) | (1ULL << WIDX_PATH_CHECK_SLOPED) | (1ULL << WIDX_PATH_CHECK_EDGE_N) | (1ULL << WIDX_PATH_CHECK_EDGE_NE) | (1ULL << WIDX_PATH_CHECK_EDGE_E) | (1ULL << WIDX_PATH_CHECK_EDGE_SE) | (1ULL << WIDX_PATH_CHECK_EDGE_S) | (1ULL << WIDX_PATH_CHECK_EDGE_SW) | (1ULL << WIDX_PATH_CHECK_EDGE_W) | (1ULL << WIDX_PATH_CHECK_EDGE_NW),
@@ -519,7 +516,7 @@ static uint64 windowTileInspectorEnabledWidgets[] = {
 	(1ULL << WIDX_CLOSE) | (1ULL << WIDX_BUTTON_CORRUPT) | (1ULL << WIDX_BUTTON_REMOVE) | (1ULL << WIDX_BUTTON_COPY) | (1ULL << WIDX_CORRUPT_SPINNER_HEIGHT) | (1ULL << WIDX_CORRUPT_SPINNER_HEIGHT_INCREASE) | (1ULL << WIDX_CORRUPT_SPINNER_HEIGHT_DECREASE) | (1ULL << WIDX_CORRUPT_BUTTON_CLAMP),
 };
 
-static uint64 windowTileInspectorDisabledWidgets[] = {
+static uint64 PageDisabledWidgets[] = {
 	(1ULL << WIDX_BUTTON_CORRUPT) | (1ULL << WIDX_BUTTON_MOVE_UP) | (1ULL << WIDX_BUTTON_MOVE_DOWN) | (1ULL << WIDX_BUTTON_REMOVE) | (1ULL << WIDX_BUTTON_ROTATE) | (1ULL << WIDX_BUTTON_COPY),
 	0,
 	0,
@@ -546,7 +543,7 @@ void window_tile_inspector_open()
 		29,
 		WW,
 		WH,
-		&windowTileInspectorEvents,
+		&TileInspectorWindowEvents,
 		WC_TILE_INSPECTOR,
 		WF_RESIZABLE
 	);
@@ -598,45 +595,45 @@ static void window_tile_inspector_load_tile(rct_window* w)
 	window_invalidate(w);
 }
 
-static void window_tile_inspector_insert_corrupt_element(sint32 element_index)
+static void window_tile_inspector_insert_corrupt_element(sint32 elementIndex)
 {
-	openrct2_assert(element_index > 0 && element_index < windowTileInspectorElementCount,
-					"element_index out of range");
+	openrct2_assert(elementIndex > 0 && elementIndex < windowTileInspectorElementCount,
+					"elementIndex out of range");
 	game_do_command(
 		TILE_INSPECTOR_ANY_INSERT_CORRUPT,
 		GAME_COMMAND_FLAG_APPLY,
 		windowTileInspectorTileX | (windowTileInspectorTileY << 8),
-		element_index,
+		elementIndex,
 		GAME_COMMAND_MODIFY_TILE,
 		0,
 		0
 	);
 }
 
-static void window_tile_inspector_remove_element(sint32 element_index)
+static void window_tile_inspector_remove_element(sint32 elementIndex)
 {
-	openrct2_assert(element_index > 0 && element_index < windowTileInspectorElementCount,
-		"element_index out of range");
+	openrct2_assert(elementIndex > 0 && elementIndex < windowTileInspectorElementCount,
+		"elementIndex out of range");
 	game_do_command(
 		TILE_INSPECTOR_ANY_REMOVE,
 		GAME_COMMAND_FLAG_APPLY,
 		windowTileInspectorTileX | (windowTileInspectorTileY << 8),
-		element_index,
+		elementIndex,
 		GAME_COMMAND_MODIFY_TILE,
 		0,
 		0
 	);
 }
 
-static void window_tile_inspector_rotate_element(sint32 element_index)
+static void window_tile_inspector_rotate_element(sint32 elementIndex)
 {
-	openrct2_assert(element_index > 0 && element_index < windowTileInspectorElementCount,
-		"element_index out of range");
+	openrct2_assert(elementIndex > 0 && elementIndex < windowTileInspectorElementCount,
+		"elementIndex out of range");
 	game_do_command(
 		TILE_INSPECTOR_ANY_ROTATE,
 		GAME_COMMAND_FLAG_APPLY,
 		windowTileInspectorTileX | (windowTileInspectorTileY << 8),
-		element_index,
+		elementIndex,
 		GAME_COMMAND_MODIFY_TILE,
 		0,
 		0
@@ -661,7 +658,7 @@ static void window_tile_inspector_swap_elements(sint16 first, sint16 second)
 	);
 }
 
-static void window_tile_inspector_sort_elements(rct_window *w)
+static void window_tile_inspector_sort_elements()
 {
 	openrct2_assert(windowTileInspectorTileSelected, "No tile selected");
 	game_do_command(
@@ -700,26 +697,26 @@ static void window_tile_inspector_paste_element(rct_window *w)
 	);
 }
 
-static void window_tile_inspector_base_height_offset(sint16 element_index, sint8 height_offset)
+static void window_tile_inspector_base_height_offset(sint16 elementIndex, sint8 heightOffset)
 {
 	game_do_command(
 		TILE_INSPECTOR_ANY_BASE_HEIGHT_OFFSET,
 		GAME_COMMAND_FLAG_APPLY,
 		windowTileInspectorTileX | (windowTileInspectorTileY << 8),
-		element_index,
+		elementIndex,
 		GAME_COMMAND_MODIFY_TILE,
-		height_offset,
+		heightOffset,
 		0
 	);
 }
 
-static void window_tile_inspector_surface_show_park_fences(bool show_fences)
+static void window_tile_inspector_surface_show_park_fences(bool showFences)
 {
 	game_do_command(
 		TILE_INSPECTOR_SURFACE_SHOW_PARK_FENCES,
 		GAME_COMMAND_FLAG_APPLY,
 		windowTileInspectorTileX | (windowTileInspectorTileY << 8),
-		show_fences,
+		showFences,
 		GAME_COMMAND_MODIFY_TILE,
 		0,
 		0
@@ -752,131 +749,131 @@ static void window_tile_inspector_surface_toggle_diagonal()
 	);
 }
 
-static void window_tile_inspector_path_set_sloped(sint32 element_index, bool sloped)
+static void window_tile_inspector_path_set_sloped(sint32 elementIndex, bool sloped)
 {
 	game_do_command(
 		TILE_INSPECTOR_PATH_SET_SLOPE,
 		GAME_COMMAND_FLAG_APPLY,
 		windowTileInspectorTileX | (windowTileInspectorTileY << 8),
-		element_index,
+		elementIndex,
 		GAME_COMMAND_MODIFY_TILE,
 		sloped,
 		0
 	);
 }
 
-static void window_tile_inspector_path_toggle_edge(sint32 element_index, sint32 corner_index)
+static void window_tile_inspector_path_toggle_edge(sint32 elementIndex, sint32 cornerIndex)
 {
-	openrct2_assert(element_index > 0 && element_index < windowTileInspectorElementCount,
-		"element_index out of range");
-	openrct2_assert(corner_index >= 0 && corner_index < 8, "corner_index out of range");
+	openrct2_assert(elementIndex > 0 && elementIndex < windowTileInspectorElementCount,
+		"elementIndex out of range");
+	openrct2_assert(cornerIndex >= 0 && cornerIndex < 8, "cornerIndex out of range");
 	game_do_command(
 		TILE_INSPECTOR_PATH_TOGGLE_EDGE,
 		GAME_COMMAND_FLAG_APPLY,
 		windowTileInspectorTileX | (windowTileInspectorTileY << 8),
-		element_index,
+		elementIndex,
 		GAME_COMMAND_MODIFY_TILE,
-		corner_index,
+		cornerIndex,
 		0
 	);
 }
 
-static void window_tile_inspector_fence_set_slope(sint32 element_index, sint32 slope_value)
+static void window_tile_inspector_fence_set_slope(sint32 elementIndex, sint32 slopeValue)
 {
 	// Make sure only the correct bits are set
-	openrct2_assert((slope_value & 0xC0) == slope_value, "slope_value doesn't match its mask");
+	openrct2_assert((slopeValue & 0xC0) == slopeValue, "slopeValue doesn't match its mask");
 
 	game_do_command(
 		TILE_INSPECTOR_FENCE_SET_SLOPE,
 		GAME_COMMAND_FLAG_APPLY,
 		windowTileInspectorTileX | (windowTileInspectorTileY << 8),
-		element_index,
+		elementIndex,
 		GAME_COMMAND_MODIFY_TILE,
-		slope_value,
+		slopeValue,
 		0
 	);
 }
 
-static void window_tile_inspector_track_block_height_offset(sint32 element_index, sint8 height_offset)
+static void window_tile_inspector_track_block_height_offset(sint32 elementIndex, sint8 heightOffset)
 {
 	game_do_command(
 		TILE_INSPECTOR_TRACK_BASE_HEIGHT_OFFSET,
 		GAME_COMMAND_FLAG_APPLY,
 		windowTileInspectorTileX | (windowTileInspectorTileY << 8),
-		element_index,
+		elementIndex,
 		GAME_COMMAND_MODIFY_TILE,
-		height_offset,
+		heightOffset,
 		0
 	);
 }
 
-static void window_tile_inspector_track_block_set_lift(sint32 element_index, bool entire_track_block, bool chain)
+static void window_tile_inspector_track_block_set_lift(sint32 elementIndex, bool entireTrackBlock, bool chain)
 {
 	game_do_command(
 		TILE_INSPECTOR_TRACK_SET_CHAIN,
 		GAME_COMMAND_FLAG_APPLY,
 		windowTileInspectorTileX | (windowTileInspectorTileY << 8),
-		element_index,
+		elementIndex,
 		GAME_COMMAND_MODIFY_TILE,
-		entire_track_block,
+		entireTrackBlock,
 		chain
 	);
 }
 
-static void window_tile_inspector_quarter_tile_set(sint32 element_index, const sint32 quarter_index)
+static void window_tile_inspector_quarter_tile_set(sint32 elementIndex, const sint32 quarterIndex)
 {
-	// quarter_index is widget index relative to WIDX_SCENERY_CHECK_QUARTER_N, so a value from 0-3
-	openrct2_assert(quarter_index >= 0 && quarter_index < 4, "quarter_index out of range");
+	// quarterIndex is widget index relative to WIDX_SCENERY_CHECK_QUARTER_N, so a value from 0-3
+	openrct2_assert(quarterIndex >= 0 && quarterIndex < 4, "quarterIndex out of range");
 
 	game_do_command(
 		TILE_INSPECTOR_SCENERY_SET_QUARTER_LOCATION,
 		GAME_COMMAND_FLAG_APPLY,
 		windowTileInspectorTileX | (windowTileInspectorTileY << 8),
-		element_index,
+		elementIndex,
 		GAME_COMMAND_MODIFY_TILE,
-		(quarter_index - get_current_rotation()) & 3,
+		(quarterIndex - get_current_rotation()) & 3,
 		0
 	);
 }
 
-static void window_tile_inspector_toggle_quadrant_collosion(sint32 element_index, const sint32 quadrant_index)
+static void window_tile_inspector_toggle_quadrant_collosion(sint32 elementIndex, const sint32 quadrantIndex)
 {
 	game_do_command(
 		TILE_INSPECTOR_SCENERY_SET_QUARTER_COLLISION,
 		GAME_COMMAND_FLAG_APPLY,
 		windowTileInspectorTileX | (windowTileInspectorTileY << 8),
-		element_index,
+		elementIndex,
 		GAME_COMMAND_MODIFY_TILE,
-		(quadrant_index + 2 - get_current_rotation()) & 3,
+		(quadrantIndex + 2 - get_current_rotation()) & 3,
 		0
 	);
 }
 
-static void window_tile_inspector_banner_toggle_block(sint32 element_index, sint32 edge_index)
+static void window_tile_inspector_banner_toggle_block(sint32 elementIndex, sint32 edgeIndex)
 {
-	openrct2_assert(edge_index >= 0 && edge_index < 4, "edge_index out of range");
+	openrct2_assert(edgeIndex >= 0 && edgeIndex < 4, "edgeIndex out of range");
 
-	// Make edge_index abstract
-	edge_index = (edge_index - get_current_rotation()) & 3;
+	// Make edgeIndex abstract
+	edgeIndex = (edgeIndex - get_current_rotation()) & 3;
 
 	game_do_command(
 		TILE_INSPECTOR_BANNER_TOGGLE_BLOCKING_EDGE,
 		GAME_COMMAND_FLAG_APPLY,
 		windowTileInspectorTileX | (windowTileInspectorTileY << 8),
-		element_index,
+		elementIndex,
 		GAME_COMMAND_MODIFY_TILE,
-		edge_index,
+		edgeIndex,
 		0
 	);
 }
 
-static void window_tile_inspector_clamp_corrupt(sint32 element_index)
+static void window_tile_inspector_clamp_corrupt(sint32 elementIndex)
 {
 	game_do_command(
 		TILE_INSPECTOR_CORRUPT_CLAMP,
 		GAME_COMMAND_FLAG_APPLY,
 		windowTileInspectorTileX | (windowTileInspectorTileY << 8),
-		element_index,
+		elementIndex,
 		GAME_COMMAND_MODIFY_TILE,
 		0,
 		0
@@ -920,7 +917,7 @@ static void window_tile_inspector_mouseup(rct_window *w, sint32 widgetIndex)
 		window_tile_inspector_rotate_element(w->selected_list_item);
 		break;
 	case WIDX_BUTTON_SORT:
-		window_tile_inspector_sort_elements(w);
+		window_tile_inspector_sort_elements();
 		break;
 	case WIDX_BUTTON_COPY:
 		window_tile_inspector_copy_element(w);
@@ -1036,9 +1033,9 @@ static void window_tile_inspector_mouseup(rct_window *w, sint32 widgetIndex)
 			break;
 		case WIDX_TRACK_CHECK_CHAIN_LIFT:
 		{
-			bool entire_track_block = widget_is_pressed(w, WIDX_TRACK_CHECK_APPLY_TO_ALL);
-			bool new_lift = !track_element_is_lift_hill(mapElement);
-			window_tile_inspector_track_block_set_lift(w->selected_list_item, entire_track_block, new_lift);
+			bool entireTrackBlock = widget_is_pressed(w, WIDX_TRACK_CHECK_APPLY_TO_ALL);
+			bool newLift = !track_element_is_lift_hill(mapElement);
+			window_tile_inspector_track_block_set_lift(w->selected_list_item, entireTrackBlock, newLift);
 			break;
 		}
 		} // switch widget index
@@ -1293,9 +1290,9 @@ static void window_tile_inspector_scrollgetsize(rct_window *w, sint32 scrollInde
 void window_tile_inspector_set_page(rct_window *w, const tile_inspector_page page)
 {
 	w->page = page;
-	w->widgets = tileInspectorWidgets[page];
-	w->enabled_widgets = windowTileInspectorEnabledWidgets[page];
-	w->disabled_widgets = windowTileInspectorDisabledWidgets[page];
+	w->widgets = PageWidgets[page];
+	w->enabled_widgets = PageEnabledWidgets[page];
+	w->disabled_widgets = PageDisabledWidgets[page];
 }
 
 void window_tile_inspector_auto_set_buttons(rct_window *w)
@@ -1391,11 +1388,11 @@ static void window_tile_inspector_invalidate(rct_window *w)
 	else {
 		w->widgets[WIDX_GROUPBOX_DETAILS].type = WWT_GROUPBOX;
 		w->widgets[WIDX_GROUPBOX_PROPERTIES].type = WWT_GROUPBOX;
-		w->widgets[WIDX_GROUPBOX_DETAILS].image = pageGroupBoxSettings[w->page - 1].string_idx;
-		w->widgets[WIDX_GROUPBOX_DETAILS].top = w->height - pageGroupBoxSettings[w->page - 1].detailsTopOffset;
-		w->widgets[WIDX_GROUPBOX_DETAILS].bottom = w->height - pageGroupBoxSettings[w->page - 1].detailsBottomOffset;
-		w->widgets[WIDX_GROUPBOX_PROPERTIES].top = w->height - pageGroupBoxSettings[w->page - 1].properties_top_offset;
-		w->widgets[WIDX_GROUPBOX_PROPERTIES].bottom = w->height - pageGroupBoxSettings[w->page - 1].properties_bottom_offset;
+		w->widgets[WIDX_GROUPBOX_DETAILS].image = PageGroupBoxSettings[w->page - 1].string_id;
+		w->widgets[WIDX_GROUPBOX_DETAILS].top = w->height - PageGroupBoxSettings[w->page - 1].details_top_offset;
+		w->widgets[WIDX_GROUPBOX_DETAILS].bottom = w->height - PageGroupBoxSettings[w->page - 1].details_bottom_offset;
+		w->widgets[WIDX_GROUPBOX_PROPERTIES].top = w->height - PageGroupBoxSettings[w->page - 1].properties_top_offset;
+		w->widgets[WIDX_GROUPBOX_PROPERTIES].bottom = w->height - PageGroupBoxSettings[w->page - 1].properties_bottom_offset;
 		w->widgets[WIDX_LIST].bottom = w->widgets[WIDX_GROUPBOX_DETAILS].top - GROUPBOX_PADDING;
 	}
 
@@ -1550,7 +1547,7 @@ static void window_tile_inspector_invalidate(rct_window *w)
 		w->widgets[WIDX_FENCE_SPINNER_HEIGHT_DECREASE].bottom = GBBB(propertiesAnchor, 0) - 4;
 		w->widgets[WIDX_FENCE_DROPDOWN_SLOPE].top = GBBT(propertiesAnchor, 1) + 3;
 		w->widgets[WIDX_FENCE_DROPDOWN_SLOPE].bottom = GBBB(propertiesAnchor, 1) - 3;
-		w->widgets[WIDX_FENCE_DROPDOWN_SLOPE].text = fenceSlopeStringIds[(mapElement->type & 0xC0) >> 6];
+		w->widgets[WIDX_FENCE_DROPDOWN_SLOPE].text = FenceSlopeStringIds[(mapElement->type & 0xC0) >> 6];
 		w->widgets[WIDX_FENCE_DROPDOWN_SLOPE_BUTTON].top = GBBT(propertiesAnchor, 1) + 4;
 		w->widgets[WIDX_FENCE_DROPDOWN_SLOPE_BUTTON].bottom = GBBB(propertiesAnchor, 1) - 4;
 		break;
@@ -1639,13 +1636,13 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		case TILE_INSPECTOR_PAGE_SURFACE: {
 			// Details
 			// Terrain texture name
-			rct_string_id terrainNameId = terrainTypeStringIds[map_element_get_terrain(mapElement)];
+			rct_string_id terrainNameId = TerrainTypeStringIds[map_element_get_terrain(mapElement)];
 			gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_SURFACE_TERAIN, &terrainNameId, COLOUR_DARK_GREEN, x, y);
 
 			// Edge texture name
 			sint32 idx = map_element_get_terrain_edge(mapElement);
-			openrct2_assert(idx < countof(terrainEdgeTypeStringIds), "Tried accessing invalid entry %d in terrainEdgeTypeStringIds", idx);
-			rct_string_id terrainEdgeNameId = terrainEdgeTypeStringIds[map_element_get_terrain_edge(mapElement)];
+			openrct2_assert(idx < countof(TerrainEdgeTypeStringIds), "Tried accessing invalid entry %d in terrainEdgeTypeStringIds", idx);
+			rct_string_id terrainEdgeNameId = TerrainEdgeTypeStringIds[map_element_get_terrain_edge(mapElement)];
 			gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_SURFACE_EDGE, &terrainEdgeNameId, COLOUR_DARK_GREEN, x, y + 11);
 
 			// Land ownership
@@ -1787,7 +1784,7 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		case TILE_INSPECTOR_PAGE_ENTRANCE: {
 			// Details
 			// Entrance type
-			rct_string_id entranceType = entranceTypeStringIds[mapElement->properties.entrance.type];
+			rct_string_id entranceType = EntranceTypeStringIds[mapElement->properties.entrance.type];
 			gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_ENTRANCE_TYPE, &entranceType, COLOUR_DARK_GREEN, x, y);
 
 			if (mapElement->properties.entrance.type == ENTRANCE_TYPE_PARK_ENTRANCE) {
@@ -1812,7 +1809,7 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 			if (mapElement->properties.entrance.type == ENTRANCE_TYPE_PARK_ENTRANCE) {
 				// Entrance part
-				rct_string_id entrancePart = parkEntrancePartStringIds[mapElement->properties.entrance.index & 0x0F];
+				rct_string_id entrancePart = ParkEntrancePartStringIds[mapElement->properties.entrance.index & 0x0F];
 				gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_ENTRANCE_PART, &entrancePart, COLOUR_DARK_GREEN, x, y + 22);
 			}
 			else {
