@@ -18,6 +18,7 @@
 #include "../core/Guard.hpp"
 #include "../game.h"
 #include "../interface/window.h"
+#include "../ride/track.h"
 #include "../windows/tile_inspector.h"
 #include "footpath.h"
 #include "map.h"
@@ -320,7 +321,7 @@ sint32 tile_inspector_sort_elements_at(sint32 x, sint32 y, sint32 flags)
 	return 0;
 }
 
-sint32 tile_inspector_change_base_height_at(sint32 x, sint32 y, sint16 element_index, sint8 height_offset, sint32 flags)
+sint32 tile_inspector_any_base_height_offset(sint32 x, sint32 y, sint16 element_index, sint8 height_offset, sint32 flags)
 {
 	rct_map_element *const map_element = map_get_first_element_at(x, y) + element_index;
 	sint16 new_base_height = (sint16)map_element->base_height + height_offset;
@@ -538,6 +539,266 @@ sint32 tile_inspector_fence_set_slope(sint32 x, sint32 y, sint32 element_index, 
 			window_invalidate(tile_inspector_window);
 		}
 	}
+
+	return 0;
+}
+
+// Changes the height of all track elements that belong to the same track piece
+// Broxzier: Copied from track_remove and stripped of unneeded code, but I think this should be smaller
+sint32 tile_inspector_track_base_height_offset(sint32 x, sint32 y, sint32 element_index, sint8 offset, sint32 flags)
+{
+	rct_map_element *const track_element = map_get_first_element_at(x, y) + element_index;
+
+	if (offset == 0)
+	{
+		return MONEY32_UNDEFINED;
+	}
+
+	if (!track_element || map_element_get_type(track_element) != MAP_ELEMENT_TYPE_TRACK)
+	{
+		return MONEY32_UNDEFINED;
+	}
+
+	if (flags & GAME_COMMAND_FLAG_APPLY)
+	{
+		uint8 type = track_element->properties.track.type;
+		sint16 originX = windowTileInspectorTileX << 5;
+		sint16 originY = windowTileInspectorTileY << 5;
+		sint16 originZ = track_element->base_height * 8;
+		uint8 rotation = map_element_get_direction(track_element);
+		uint8 rideIndex = track_element->properties.track.ride_index;
+		rct_ride* ride = get_ride(rideIndex);
+		const rct_preview_track* trackBlock = get_track_def_from_ride(ride, type);
+		trackBlock += track_element->properties.track.sequence & 0x0F;
+
+		uint8 originDirection = map_element_get_direction(track_element);
+		switch (originDirection)
+		{
+		case 0:
+			originX -= trackBlock->x;
+			originY -= trackBlock->y;
+			break;
+		case 1:
+			originX -= trackBlock->y;
+			originY += trackBlock->x;
+			break;
+		case 2:
+			originX += trackBlock->x;
+			originY += trackBlock->y;
+			break;
+		case 3:
+			originX += trackBlock->y;
+			originY -= trackBlock->x;
+			break;
+		}
+
+		originZ -= trackBlock->z;
+
+		trackBlock = get_track_def_from_ride(ride, type);
+		for (; trackBlock->index != 255; trackBlock++)
+		{
+			sint16 elem_x = originX, elem_y = originY, elem_z = originZ;
+
+			switch (originDirection)
+			{
+			case 0:
+				elem_x += trackBlock->x;
+				elem_y += trackBlock->y;
+				break;
+			case 1:
+				elem_x += trackBlock->y;
+				elem_y -= trackBlock->x;
+				break;
+			case 2:
+				elem_x -= trackBlock->x;
+				elem_y -= trackBlock->y;
+				break;
+			case 3:
+				elem_x -= trackBlock->y;
+				elem_y += trackBlock->x;
+				break;
+			}
+
+			elem_z += trackBlock->z;
+
+			map_invalidate_tile_full(elem_x, elem_y);
+
+			bool found = false;
+			rct_map_element *map_element = map_get_first_element_at(elem_x >> 5, elem_y >> 5);
+			do
+			{
+				if (map_element->base_height != elem_z / 8)
+					continue;
+
+				if (map_element_get_type(map_element) != MAP_ELEMENT_TYPE_TRACK)
+					continue;
+
+				if ((map_element->type & MAP_ELEMENT_DIRECTION_MASK) != rotation)
+					continue;
+
+				if ((map_element->properties.track.sequence & 0x0F) != trackBlock->index)
+					continue;
+
+				if (map_element->properties.track.type != type)
+					continue;
+
+				found = true;
+				break;
+			} while (!map_element_is_last_for_tile(map_element++));
+
+			if (!found)
+			{
+				log_error("Track map element part not found!");
+				return MONEY32_UNDEFINED;
+			}
+
+			// track_remove returns here on failure, not sure when this would ever be hit. Only thing I can think of is for when you decrease the map size.
+			openrct2_assert(map_get_surface_element_at(elem_x >> 5, elem_y >> 5) != NULL, "No surface at %d,%d", elem_x >> 5, elem_y >> 5);
+
+			// Keep?
+			//invalidate_test_results(ride_index);
+
+			map_element->base_height += offset;
+			map_element->clearance_height += offset;
+		}
+	}
+
+	// TODO: Only invalidate when one of the affacted tiles is selected
+	window_invalidate_by_class(WC_TILE_INSPECTOR);
+
+	return 0;
+}
+
+// Sets chainlift, optionally for an entire track block
+// Broxzier: Basically a copy of the above function, with just two different lines... should probably be combined somehow
+sint32 tile_inspector_track_set_chain(sint32 xx, sint32 yy, sint32 element_index, bool entire_track_block, bool set_chain, sint32 flags)
+{
+	rct_map_element *const track_element = map_get_first_element_at(xx, yy) + element_index;
+
+	if (!track_element || map_element_get_type(track_element) != MAP_ELEMENT_TYPE_TRACK)
+	{
+		return MONEY32_UNDEFINED;
+	}
+
+	if (flags & GAME_COMMAND_FLAG_APPLY)
+	{
+		if (!entire_track_block)
+		{
+			// Set chain for only the selected piece
+			if (track_element_is_lift_hill(track_element) != set_chain)
+			{
+				track_element->type ^= TRACK_ELEMENT_FLAG_CHAIN_LIFT;
+			}
+
+			return 0;
+		}
+
+		uint8 type = track_element->properties.track.type;
+		sint16 originX = windowTileInspectorTileX << 5;
+		sint16 originY = windowTileInspectorTileY << 5;
+		sint16 originZ = track_element->base_height * 8;
+		uint8 rotation = map_element_get_direction(track_element);
+		uint8 rideIndex = track_element->properties.track.ride_index;
+		rct_ride* ride = get_ride(rideIndex);
+		const rct_preview_track* trackBlock = get_track_def_from_ride(ride, type);
+		trackBlock += track_element->properties.track.sequence & 0x0F;
+
+		uint8 originDirection = map_element_get_direction(track_element);
+		switch (originDirection)
+		{
+		case 0:
+			originX -= trackBlock->x;
+			originY -= trackBlock->y;
+			break;
+		case 1:
+			originX -= trackBlock->y;
+			originY += trackBlock->x;
+			break;
+		case 2:
+			originX += trackBlock->x;
+			originY += trackBlock->y;
+			break;
+		case 3:
+			originX += trackBlock->y;
+			originY -= trackBlock->x;
+			break;
+		}
+
+		originZ -= trackBlock->z;
+
+		trackBlock = get_track_def_from_ride(ride, type);
+		for (; trackBlock->index != 255; trackBlock++)
+		{
+			sint16 elem_x = originX, elem_y = originY, elem_z = originZ;
+
+			switch (originDirection)
+			{
+			case 0:
+				elem_x += trackBlock->x;
+				elem_y += trackBlock->y;
+				break;
+			case 1:
+				elem_x += trackBlock->y;
+				elem_y -= trackBlock->x;
+				break;
+			case 2:
+				elem_x -= trackBlock->x;
+				elem_y -= trackBlock->y;
+				break;
+			case 3:
+				elem_x -= trackBlock->y;
+				elem_y += trackBlock->x;
+				break;
+			}
+
+			elem_z += trackBlock->z;
+
+			map_invalidate_tile_full(elem_x, elem_y);
+
+			bool found = false;
+			rct_map_element *map_element = map_get_first_element_at(elem_x >> 5, elem_y >> 5);
+			do
+			{
+				if (map_element->base_height != elem_z / 8)
+					continue;
+
+				if (map_element_get_type(map_element) != MAP_ELEMENT_TYPE_TRACK)
+					continue;
+
+				if ((map_element->type & MAP_ELEMENT_DIRECTION_MASK) != rotation)
+					continue;
+
+				if ((map_element->properties.track.sequence & 0x0F) != trackBlock->index)
+					continue;
+
+				if (map_element->properties.track.type != type)
+					continue;
+
+				found = true;
+				break;
+			} while (!map_element_is_last_for_tile(map_element++));
+
+			if (!found)
+			{
+				log_error("Track map element part not found!");
+				return MONEY32_UNDEFINED;
+			}
+
+			// track_remove returns here on failure, not sure when this would ever be hit. Only thing I can think of is for when you decrease the map size.
+			openrct2_assert(map_get_surface_element_at(elem_x >> 5, elem_y >> 5) != NULL, "No surface at %d,%d", elem_x >> 5, elem_y >> 5);
+
+			// Keep?
+			//invalidate_test_results(ride_index);
+
+			if (track_element_is_lift_hill(map_element) != set_chain)
+			{
+				map_element->type ^= TRACK_ELEMENT_FLAG_CHAIN_LIFT;
+			}
+		}
+	}
+
+	// TODO: Only invalidate when one of the affacted tiles is selected
+	window_invalidate_by_class(WC_TILE_INSPECTOR);
 
 	return 0;
 }

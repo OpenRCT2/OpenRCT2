@@ -469,8 +469,8 @@ static void window_tile_inspector_sort_elements(rct_window *w);
 static void window_tile_inspector_copy_element(rct_window *w);
 static void window_tile_inspector_paste_element(rct_window *w);
 static void window_tile_inspector_surface_toggle_corner(sint32 cornerIndex);
-static void window_tile_inspector_track_block_height_offset(rct_map_element *mapElement, uint8 offset);
-static void window_tile_inspector_track_block_set_lift(rct_map_element *mapElement, bool chain);
+static void window_tile_inspector_track_block_height_offset(sint32 element_index, sint8 height_offset);
+static void window_tile_inspector_track_block_set_lift(sint32 element_index, bool entire_track_block, bool chain);
 static void window_tile_inspector_quarter_tile_set(rct_map_element *const mapElement, const sint32 index);
 
 static void window_tile_inspector_mouseup(rct_window *w, sint32 widgetIndex);
@@ -714,7 +714,7 @@ static void window_tile_inspector_paste_element(rct_window *w)
 	);
 }
 
-static void window_tile_inspector_base_height_offset(sint16 element_index, sint8 offset)
+static void window_tile_inspector_base_height_offset(sint16 element_index, sint8 height_offset)
 {
 	game_do_command(
 		TILE_INSPECTOR_ANY_BASE_HEIGHT_OFFSET,
@@ -722,7 +722,7 @@ static void window_tile_inspector_base_height_offset(sint16 element_index, sint8
 		windowTileInspectorTileX | (windowTileInspectorTileY << 8),
 		element_index,
 		GAME_COMMAND_MODIFY_TILE,
-		offset,
+		height_offset,
 		0
 	);
 }
@@ -811,208 +811,30 @@ static void window_tile_inspector_fence_set_slope(sint32 element_index, sint32 s
 	);
 }
 
-// Copied from track.c (track_remove), and modified for raising/lowering
-// Not sure if this should be in this file, track.c, or maybe another one
-static void window_tile_inspector_track_block_height_offset(rct_map_element *mapElement, uint8 offset)
+static void window_tile_inspector_track_block_height_offset(sint32 element_index, sint8 height_offset)
 {
-	uint8 type = mapElement->properties.track.type;
-	sint16 originX = windowTileInspectorTileX << 5;
-	sint16 originY = windowTileInspectorTileY << 5;
-	sint16 originZ = mapElement->base_height * 8;
-	uint8 rotation = map_element_get_direction(mapElement);
-	uint8 rideIndex = mapElement->properties.track.ride_index;
-
-	rct_ride* ride = get_ride(rideIndex);
-	const rct_preview_track* trackBlock = get_track_def_from_ride(ride, type);
-	trackBlock += mapElement->properties.track.sequence & 0x0F;
-
-	uint8 originDirection = map_element_get_direction(mapElement);
-	switch (originDirection) {
-	case 0:
-		originX -= trackBlock->x;
-		originY -= trackBlock->y;
-		break;
-	case 1:
-		originX -= trackBlock->y;
-		originY += trackBlock->x;
-		break;
-	case 2:
-		originX += trackBlock->x;
-		originY += trackBlock->y;
-		break;
-	case 3:
-		originX += trackBlock->y;
-		originY -= trackBlock->x;
-		break;
-	}
-
-	originZ -= trackBlock->z;
-
-	trackBlock = get_track_def_from_ride(ride, type);
-	for (; trackBlock->index != 255; trackBlock++) {
-		sint16 x = originX, y = originY, z = originZ;
-
-		switch (originDirection) {
-		case 0:
-			x += trackBlock->x;
-			y += trackBlock->y;
-			break;
-		case 1:
-			x += trackBlock->y;
-			y -= trackBlock->x;
-			break;
-		case 2:
-			x -= trackBlock->x;
-			y -= trackBlock->y;
-			break;
-		case 3:
-			x -= trackBlock->y;
-			y += trackBlock->x;
-			break;
-		}
-
-		z += trackBlock->z;
-
-		map_invalidate_tile_full(x, y);
-
-		bool found = false;
-		mapElement = map_get_first_element_at(x >> 5, y >> 5);
-		do {
-			if (mapElement->base_height != z / 8)
-				continue;
-
-			if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_TRACK)
-				continue;
-
-			if ((mapElement->type & MAP_ELEMENT_DIRECTION_MASK) != rotation)
-				continue;
-
-			if ((mapElement->properties.track.sequence & 0x0F) != trackBlock->index)
-				continue;
-
-			if (mapElement->properties.track.type != type)
-				continue;
-
-			found = true;
-			break;
-		} while (!map_element_is_last_for_tile(mapElement++));
-
-		if (!found) {
-			log_error("Track map element part not found!");
-			return;
-		}
-
-		// track_remove returns here on failure, not sure when this would ever be hit. Only thing I can think of is for when you decrease the map size.
-		openrct2_assert(map_get_surface_element_at(x >> 5, y >> 5) != NULL, "No surface at %d,%d", x >> 5, y >> 5);
-
-		// Keep?
-		//invalidate_test_results(ride_index);
-
-		mapElement->base_height += offset;
-		mapElement->clearance_height += offset;
-	}
+	game_do_command(
+		TILE_INSPECTOR_TRACK_BASE_HEIGHT_OFFSET,
+		GAME_COMMAND_FLAG_APPLY,
+		windowTileInspectorTileX | (windowTileInspectorTileY << 8),
+		element_index,
+		GAME_COMMAND_MODIFY_TILE,
+		height_offset,
+		0
+	);
 }
 
-// Sets chainlift for entire block
-// Basically a copy of the above function, with just two different lines... should probably be combined somehow
-static void window_tile_inspector_track_block_set_lift(rct_map_element *mapElement, bool chain)
+static void window_tile_inspector_track_block_set_lift(sint32 element_index, bool entire_track_block, bool chain)
 {
-	uint8 type = mapElement->properties.track.type;
-	sint16 originX = windowTileInspectorTileX << 5;
-	sint16 originY = windowTileInspectorTileY << 5;
-	sint16 originZ = mapElement->base_height * 8;
-	uint8 rotation = map_element_get_direction(mapElement);
-	uint8 rideIndex = mapElement->properties.track.ride_index;
-	rct_ride* ride = get_ride(rideIndex);
-	const rct_preview_track* trackBlock = get_track_def_from_ride(ride, type);
-	trackBlock += mapElement->properties.track.sequence & 0x0F;
-
-	uint8 originDirection = map_element_get_direction(mapElement);
-	switch (originDirection) {
-	case 0:
-		originX -= trackBlock->x;
-		originY -= trackBlock->y;
-		break;
-	case 1:
-		originX -= trackBlock->y;
-		originY += trackBlock->x;
-		break;
-	case 2:
-		originX += trackBlock->x;
-		originY += trackBlock->y;
-		break;
-	case 3:
-		originX += trackBlock->y;
-		originY -= trackBlock->x;
-		break;
-	}
-
-	originZ -= trackBlock->z;
-
-	trackBlock = get_track_def_from_ride(ride, type);
-	for (; trackBlock->index != 255; trackBlock++) {
-		sint16 x = originX, y = originY, z = originZ;
-
-		switch (originDirection) {
-		case 0:
-			x += trackBlock->x;
-			y += trackBlock->y;
-			break;
-		case 1:
-			x += trackBlock->y;
-			y -= trackBlock->x;
-			break;
-		case 2:
-			x -= trackBlock->x;
-			y -= trackBlock->y;
-			break;
-		case 3:
-			x -= trackBlock->y;
-			y += trackBlock->x;
-			break;
-		}
-
-		z += trackBlock->z;
-
-		map_invalidate_tile_full(x, y);
-
-		bool found = false;
-		mapElement = map_get_first_element_at(x >> 5, y >> 5);
-		do {
-			if (mapElement->base_height != z / 8)
-				continue;
-
-			if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_TRACK)
-				continue;
-
-			if ((mapElement->type & MAP_ELEMENT_DIRECTION_MASK) != rotation)
-				continue;
-
-			if ((mapElement->properties.track.sequence & 0x0F) != trackBlock->index)
-				continue;
-
-			if (mapElement->properties.track.type != type)
-				continue;
-
-			found = true;
-			break;
-		} while (!map_element_is_last_for_tile(mapElement++));
-
-		if (!found) {
-			log_error("Track map element part not found!");
-			return;
-		}
-
-		// track_remove returns here on failure, not sure when this would ever be hit. Only thing I can think of is for when you decrease the map size.
-		openrct2_assert(map_get_surface_element_at(x >> 5, y >> 5) != NULL, "No surface at %d,%d", x >> 5, y >> 5);
-
-		// Keep?
-		//invalidate_test_results(ride_index);
-
-		if (track_element_is_lift_hill(mapElement) != chain) {
-			mapElement->type ^= TRACK_ELEMENT_FLAG_CHAIN_LIFT;
-		}
-	}
+	game_do_command(
+		TILE_INSPECTOR_TRACK_SET_CHAIN,
+		GAME_COMMAND_FLAG_APPLY,
+		windowTileInspectorTileX | (windowTileInspectorTileY << 8),
+		element_index,
+		GAME_COMMAND_MODIFY_TILE,
+		entire_track_block,
+		chain
+	);
 }
 
 static void window_tile_inspector_quarter_tile_set(rct_map_element *const mapElement, const sint32 index)
@@ -1170,33 +992,27 @@ static void window_tile_inspector_mouseup(rct_window *w, sint32 widgetIndex)
 			break;
 		case WIDX_TRACK_SPINNER_HEIGHT_INCREASE:
 			if (widget_is_pressed(w, WIDX_TRACK_CHECK_APPLY_TO_ALL)) {
-				window_tile_inspector_track_block_height_offset(mapElement, 1);
+				window_tile_inspector_track_block_height_offset(w->selected_list_item, 1);
 			}
 			else {
 				window_tile_inspector_base_height_offset(w->selected_list_item, 1);
 			}
-			widget_invalidate(w, WIDX_TRACK_SPINNER_HEIGHT);
 			break;
 		case WIDX_TRACK_SPINNER_HEIGHT_DECREASE:
 			if (widget_is_pressed(w, WIDX_TRACK_CHECK_APPLY_TO_ALL)) {
-				window_tile_inspector_track_block_height_offset(mapElement, -1);
+				window_tile_inspector_track_block_height_offset(w->selected_list_item, -1);
 			}
 			else {
 				window_tile_inspector_base_height_offset(w->selected_list_item, -1);
 			}
-			widget_invalidate(w, WIDX_TRACK_SPINNER_HEIGHT);
 			break;
 		case WIDX_TRACK_CHECK_CHAIN_LIFT:
-			if (widget_is_pressed(w, WIDX_TRACK_CHECK_APPLY_TO_ALL)) {
-				bool new_lift = !track_element_is_lift_hill(mapElement);
-				window_tile_inspector_track_block_set_lift(mapElement, new_lift);
-			}
-			else {
-				mapElement->type ^= TRACK_ELEMENT_FLAG_CHAIN_LIFT;
-				map_invalidate_tile_full(windowTileInspectorTileX << 5, windowTileInspectorTileY << 5);
-			}
-			widget_invalidate(w, widgetIndex);
+		{
+			bool entire_track_block = widget_is_pressed(w, WIDX_TRACK_CHECK_APPLY_TO_ALL);
+			bool new_lift = !track_element_is_lift_hill(mapElement);
+			window_tile_inspector_track_block_set_lift(w->selected_list_item, entire_track_block, new_lift);
 			break;
+		}
 		} // switch widget index
 		break;
 

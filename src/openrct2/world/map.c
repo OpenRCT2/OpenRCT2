@@ -5657,7 +5657,7 @@ void game_command_modify_tile(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx
 	{
 		const sint16 element_index = *edx;
 		const sint8 height_offset = *edi;
-		*ebx = tile_inspector_change_base_height_at(x, y, element_index, height_offset, flags);
+		*ebx = tile_inspector_any_base_height_offset(x, y, element_index, height_offset, flags);
 		return;
 	}
 	case TILE_INSPECTOR_SURFACE_SHOW_PARK_FENCES:
@@ -5696,6 +5696,21 @@ void game_command_modify_tile(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx
 		const sint32 element_index = *edx;
 		const sint32 slope_value = *edi;
 		*ebx = tile_inspector_fence_set_slope(x, y, element_index, slope_value, flags);
+		return;
+	}
+	case TILE_INSPECTOR_TRACK_BASE_HEIGHT_OFFSET:
+	{
+		const sint32 element_index = *edx;
+		const sint8 height_offset = *edi;
+		*ebx = tile_inspector_track_base_height_offset(x, y, element_index, height_offset, flags);
+		return;
+	}
+	case TILE_INSPECTOR_TRACK_SET_CHAIN:
+	{
+		const sint32 element_index = *edx;
+		const bool entire_track_block = *edi;
+		const bool set_chain = *ebp;
+		*ebx = tile_inspector_track_set_chain(x, y, element_index, entire_track_block, set_chain, flags);
 		return;
 	}
 	default:
