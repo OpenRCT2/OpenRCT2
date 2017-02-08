@@ -486,42 +486,6 @@ extern "C"
         return result;
     }
 
-    bool scenario_load_rw(SDL_RWops * rw)
-    {
-        bool result = false;
-        auto stream = FileStream(rw, FILE_MODE_OPEN);
-        auto s6Importer = new S6Importer();
-        try
-        {
-            s6Importer->LoadFromStream(&stream, true);
-            s6Importer->Import();
-
-            game_fix_save_vars();
-            sprite_position_tween_reset();
-            result = true;
-        }
-        catch (ObjectLoadException)
-        {
-            gErrorType = ERROR_TYPE_FILE_LOAD;
-            gErrorStringId = STR_GAME_SAVE_FAILED;
-        }
-        catch (IOException)
-        {
-            gErrorType = ERROR_TYPE_FILE_LOAD;
-            gErrorStringId = STR_GAME_SAVE_FAILED;
-        }
-        catch (Exception)
-        {
-            gErrorType = ERROR_TYPE_FILE_LOAD;
-            gErrorStringId = STR_FILE_CONTAINS_INVALID_DATA;
-        }
-        delete s6Importer;
-
-        gScreenAge = 0;
-        gLastAutoSaveUpdate = AUTOSAVE_PAUSE;
-        return result;
-    }
-
     /**
      *
      *  rct2: 0x00676053
