@@ -396,61 +396,6 @@ uint32 S6Exporter::GetLoanHash(money32 initialCash, money32 bankLoan, uint32 max
     return value;
 }
 
-// Save game state without modifying any of the state for multiplayer
-sint32 scenario_save_network(SDL_RWops * rw, const std::vector<const ObjectRepositoryItem *> &objects)
-{
-    viewport_set_saved_view();
-
-    bool result = false;
-    auto s6exporter = new S6Exporter();
-    try
-    {
-        auto rwStream = FileStream(rw, FILE_MODE_WRITE);
-
-        s6exporter->ExportObjectsList = objects;
-        s6exporter->Export();
-        s6exporter->SaveGame(&rwStream);
-        result = true;
-    }
-    catch (const Exception &)
-    {
-    }
-    delete s6exporter;
-
-    if (!result)
-    {
-        return 0;
-    }
-
-    // Write other data not in normal save files
-    SDL_RWwrite(rw, gSpriteSpatialIndex, 0x10001 * sizeof(uint16), 1);
-    SDL_WriteLE32(rw, gGamePaused);
-    SDL_WriteLE32(rw, _guestGenerationProbability);
-    SDL_WriteLE32(rw, _suggestedGuestMaximum);
-    SDL_WriteU8(rw, gCheatsSandboxMode);
-    SDL_WriteU8(rw, gCheatsDisableClearanceChecks);
-    SDL_WriteU8(rw, gCheatsDisableSupportLimits);
-    SDL_WriteU8(rw, gCheatsDisableTrainLengthLimit);
-    SDL_WriteU8(rw, gCheatsEnableChainLiftOnAllTrack);
-    SDL_WriteU8(rw, gCheatsShowAllOperatingModes);
-    SDL_WriteU8(rw, gCheatsShowVehiclesFromOtherTrackTypes);
-    SDL_WriteU8(rw, gCheatsFastLiftHill);
-    SDL_WriteU8(rw, gCheatsDisableBrakesFailure);
-    SDL_WriteU8(rw, gCheatsDisableAllBreakdowns);
-    SDL_WriteU8(rw, gCheatsUnlockAllPrices);
-    SDL_WriteU8(rw, gCheatsBuildInPauseMode);
-    SDL_WriteU8(rw, gCheatsIgnoreRideIntensity);
-    SDL_WriteU8(rw, gCheatsDisableVandalism);
-    SDL_WriteU8(rw, gCheatsDisableLittering);
-    SDL_WriteU8(rw, gCheatsNeverendingMarketing);
-    SDL_WriteU8(rw, gCheatsFreezeClimate);
-    SDL_WriteU8(rw, gCheatsDisablePlantAging);
-    SDL_WriteU8(rw, gCheatsAllowArbitraryRideTypeChanges);
-
-    gfx_invalidate_screen();
-    return 1;
-}
-
 extern "C"
 {
     enum {

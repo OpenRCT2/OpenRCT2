@@ -174,6 +174,9 @@ private:
 	std::string GenerateAdvertiseKey();
 	void SetupDefaultGroups();
 
+	bool LoadMap(IStream * stream);
+	bool SaveMap(IStream * stream, const std::vector<const ObjectRepositoryItem *> &objects) const;
+
 	struct GameCommand
 	{
 		GameCommand(uint32 t, uint32* args, uint8 p, uint8 cb) {
@@ -245,7 +248,7 @@ private:
 	void Client_Handle_OBJECTS(NetworkConnection& connection, NetworkPacket& packet);
 	void Server_Handle_OBJECTS(NetworkConnection& connection, NetworkPacket& packet);
 
-	uint8 * save_for_network(SDL_RWops *buffer, size_t &out_size, const std::vector<const ObjectRepositoryItem *> &objects) const;
+	uint8 * save_for_network(size_t &out_size, const std::vector<const ObjectRepositoryItem *> &objects) const;
 };
 
 namespace Convert

@@ -47,6 +47,7 @@ sint32 _pickup_peep_old_x = SPRITE_LOCATION_NULL;
 #include "../core/Util.hpp"
 #include "../object/ObjectManager.h"
 #include "../object/ObjectRepository.h"
+#include "../ParkImporter.h"
 #include "../rct2/S6Exporter.h"
 
 extern "C" {
@@ -909,14 +910,6 @@ void Network::Server_Send_AUTH(NetworkConnection& connection)
 
 void Network::Server_Send_MAP(NetworkConnection* connection)
 {
-	FILE* temp = tmpfile();
-	if (!temp) {
-		log_warning("Failed to create temporary file to save map.");
-		return;
-	}
-	SDL_RWops* rw = SDL_RWFromFP(temp, SDL_TRUE);
-	size_t out_size;
-	uint8 *header;
 	std::vector<const ObjectRepositoryItem *> objects;
 	if (connection) {
 		objects = connection->RequestedObjects;
@@ -926,8 +919,9 @@ void Network::Server_Send_MAP(NetworkConnection* connection)
 		IObjectManager * objManager = GetObjectManager();
 		objects = objManager->GetPackableObjects();
 	}
-	header = save_for_network(rw, out_size, objects);
-	SDL_RWclose(rw);
+
+	size_t out_size;
+	uint8 * header = save_for_network(out_size, objects);
 	if (header == nullptr) {
 		if (connection) {
 			connection->SetLastDisconnectReason(STR_MULTIPLAYER_CONNECTION_CLOSED);
@@ -950,22 +944,24 @@ void Network::Server_Send_MAP(NetworkConnection* connection)
 	free(header);
 }
 
-uint8 * Network::save_for_network(SDL_RWops *rw_buffer, size_t &out_size, const std::vector<const ObjectRepositoryItem *> &objects) const
+uint8 * Network::save_for_network(size_t &out_size, const std::vector<const ObjectRepositoryItem *> &objects) const
 {
 	uint8 * header = nullptr;
 	out_size = 0;
 	bool RLEState = gUseRLE;
 	gUseRLE = false;
-	scenario_save_network(rw_buffer, objects);
-	gUseRLE = RLEState;
-	sint32 size = (sint32)SDL_RWtell(rw_buffer);
-	std::vector<uint8> buffer(size);
-	SDL_RWseek(rw_buffer, 0, RW_SEEK_SET);
-	if (SDL_RWread(rw_buffer, &buffer[0], size, 1) == 0) {
-		log_warning("Failed to read temporary map file into memory.");
+
+	auto ms = MemoryStream();
+	if (!SaveMap(&ms, objects)) {
+		log_warning("Failed to export map.");
 		return nullptr;
 	}
-	uint8 *compressed = util_zlib_deflate(&buffer[0], size, &out_size);
+	gUseRLE = RLEState;
+	
+	const void * data = ms.GetData();
+	sint32 size = ms.GetLength();
+
+	uint8 *compressed = util_zlib_deflate((const uint8 *)data, size, &out_size);
 	if (compressed != NULL)
 	{
 		header = (uint8 *)_strdup("open2_sv6_zlib");
@@ -986,7 +982,7 @@ uint8 * Network::save_for_network(SDL_RWops *rw_buffer, size_t &out_size, const 
 			log_error("Failed to allocate %u bytes.", size);
 		} else {
 			out_size = size;
-			memcpy(header, &buffer[0], size);
+			memcpy(header, data, size);
 		}
 	}
 	return header;
@@ -1669,8 +1665,10 @@ void Network::Client_Handle_MAP(NetworkConnection& connection, NetworkPacket& pa
 		} else {
 			log_verbose("Assuming received map is in plain sv6 format");
 		}
-		SDL_RWops* rw = SDL_RWFromMem(data, (sint32)data_size);
-		if (game_load_network(rw)) {
+
+		auto ms = MemoryStream(data, data_size);
+		if (LoadMap(&ms))
+		{
 			game_load_init();
 			game_command_queue.clear();
 			server_tick = gCurrentTicks;
@@ -1687,12 +1685,104 @@ void Network::Client_Handle_MAP(NetworkConnection& connection, NetworkPacket& pa
 			//Something went wrong, game is not loaded. Return to main screen.
 			game_do_command(0, GAME_COMMAND_FLAG_APPLY, 0, 0, GAME_COMMAND_LOAD_OR_QUIT, 1, 0);
 		}
-		SDL_RWclose(rw);
 		if (has_to_free)
 		{
 			free(data);
 		}
 	}
+}
+
+bool Network::LoadMap(IStream * stream)
+{
+	bool result = false;
+	try
+	{
+		auto importer = std::unique_ptr<IParkImporter>(ParkImporter::CreateS6());
+		importer->LoadFromStream(stream, false);
+		importer->Import();
+
+		sprite_position_tween_reset();
+
+		// Read checksum
+		uint32 checksum = stream->ReadValue<uint32>();
+		UNUSED(checksum);
+
+		// Read other data not in normal save files
+		stream->Read(gSpriteSpatialIndex, 0x10001 * sizeof(uint16));
+		gGamePaused = stream->ReadValue<uint32>();
+		_guestGenerationProbability = stream->ReadValue<uint32>();
+		_suggestedGuestMaximum = stream->ReadValue<uint32>();
+		gCheatsSandboxMode = stream->ReadValue<uint8>() != 0;
+		gCheatsDisableClearanceChecks = stream->ReadValue<uint8>() != 0;
+		gCheatsDisableSupportLimits = stream->ReadValue<uint8>() != 0;
+		gCheatsDisableTrainLengthLimit = stream->ReadValue<uint8>() != 0;
+		gCheatsEnableChainLiftOnAllTrack = stream->ReadValue<uint8>() != 0;
+		gCheatsShowAllOperatingModes = stream->ReadValue<uint8>() != 0;
+		gCheatsShowVehiclesFromOtherTrackTypes = stream->ReadValue<uint8>() != 0;
+		gCheatsFastLiftHill = stream->ReadValue<uint8>() != 0;
+		gCheatsDisableBrakesFailure = stream->ReadValue<uint8>() != 0;
+		gCheatsDisableAllBreakdowns = stream->ReadValue<uint8>() != 0;
+		gCheatsUnlockAllPrices = stream->ReadValue<uint8>() != 0;
+		gCheatsBuildInPauseMode = stream->ReadValue<uint8>() != 0;
+		gCheatsIgnoreRideIntensity = stream->ReadValue<uint8>() != 0;
+		gCheatsDisableVandalism = stream->ReadValue<uint8>() != 0;
+		gCheatsDisableLittering = stream->ReadValue<uint8>() != 0;
+		gCheatsNeverendingMarketing = stream->ReadValue<uint8>() != 0;
+		gCheatsFreezeClimate = stream->ReadValue<uint8>() != 0;
+		gCheatsDisablePlantAging = stream->ReadValue<uint8>() != 0;
+		gCheatsAllowArbitraryRideTypeChanges = stream->ReadValue<uint8>() != 0;
+
+		gLastAutoSaveUpdate = AUTOSAVE_PAUSE;
+		result = true;
+	}
+	catch (const Exception &)
+	{
+	}
+	return result;
+}
+
+bool Network::SaveMap(IStream * stream, const std::vector<const ObjectRepositoryItem *> &objects) const
+{
+	bool result = false;
+	viewport_set_saved_view();
+	try
+	{
+		auto s6exporter = std::make_unique<S6Exporter>();
+		s6exporter->ExportObjectsList = objects;
+		s6exporter->Export();
+		s6exporter->SaveGame(stream);
+
+		// Write other data not in normal save files
+		stream->Write(gSpriteSpatialIndex, 0x10001 * sizeof(uint16));
+		stream->WriteValue<uint32>(gGamePaused);
+		stream->WriteValue<uint32>(_guestGenerationProbability);
+		stream->WriteValue<uint32>(_suggestedGuestMaximum);
+		stream->WriteValue<uint8>(gCheatsSandboxMode);
+		stream->WriteValue<uint8>(gCheatsDisableClearanceChecks);
+		stream->WriteValue<uint8>(gCheatsDisableSupportLimits);
+		stream->WriteValue<uint8>(gCheatsDisableTrainLengthLimit);
+		stream->WriteValue<uint8>(gCheatsEnableChainLiftOnAllTrack);
+		stream->WriteValue<uint8>(gCheatsShowAllOperatingModes);
+		stream->WriteValue<uint8>(gCheatsShowVehiclesFromOtherTrackTypes);
+		stream->WriteValue<uint8>(gCheatsFastLiftHill);
+		stream->WriteValue<uint8>(gCheatsDisableBrakesFailure);
+		stream->WriteValue<uint8>(gCheatsDisableAllBreakdowns);
+		stream->WriteValue<uint8>(gCheatsUnlockAllPrices);
+		stream->WriteValue<uint8>(gCheatsBuildInPauseMode);
+		stream->WriteValue<uint8>(gCheatsIgnoreRideIntensity);
+		stream->WriteValue<uint8>(gCheatsDisableVandalism);
+		stream->WriteValue<uint8>(gCheatsDisableLittering);
+		stream->WriteValue<uint8>(gCheatsNeverendingMarketing);
+		stream->WriteValue<uint8>(gCheatsFreezeClimate);
+		stream->WriteValue<uint8>(gCheatsDisablePlantAging);
+		stream->WriteValue<uint8>(gCheatsAllowArbitraryRideTypeChanges);
+
+		result = true;
+	}
+	catch (const Exception &)
+	{
+	}
+	return result;
 }
 
 void Network::Client_Handle_CHAT(NetworkConnection& connection, NetworkPacket& packet)

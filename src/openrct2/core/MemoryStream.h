@@ -46,7 +46,8 @@ public:
     MemoryStream(const void * data, size_t dataSize);
     virtual ~MemoryStream();
 
-    void * GetData() const;
+    const void * GetData() const;
+    void * GetDataCopy() const;
     void * TakeData();
 
     ///////////////////////////////////////////////////////////////////////////

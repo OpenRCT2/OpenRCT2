@@ -63,7 +63,12 @@ MemoryStream::~MemoryStream()
     _data = nullptr;
 }
 
-void * MemoryStream::GetData() const
+const void * MemoryStream::GetData() const
+{
+    return _data;
+}
+
+void * MemoryStream::GetDataCopy() const
 {
     return Memory::Duplicate(_data, _dataSize);
 }
