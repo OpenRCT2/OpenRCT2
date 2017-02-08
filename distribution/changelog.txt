@@ -1,6 +1,8 @@
 0.0.7 (in development)
 ------------------------------------------------------------------------
+- Feature: [#5110] The tile inspector can now be used in multiplayer.
 - Improved: [#5137]: Removing all guests no longer closes the rides and removes the vehicles.
+- Improved: [#5163]: Minor tile inspector improvements and fixes.
 - Fix: [#4689] Object selection tabs sometimes flicker.
 - Fix: [#5150] --openrct-data-path sets user data path instead of OpenRCT2 data path.
 - Fix: [#5188] Clicking on a Magic Carpet doesn't open the ride window.
