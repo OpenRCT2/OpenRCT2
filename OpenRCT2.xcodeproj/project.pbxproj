@@ -242,6 +242,9 @@
 		D41B73EF1C2101890080A7B9 /* libcurl.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D41B73EE1C2101890080A7B9 /* libcurl.tbd */; };
 		D41B741D1C210A7A0080A7B9 /* libiconv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D41B741C1C210A7A0080A7B9 /* libiconv.tbd */; };
 		D41B74731C2125E50080A7B9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D41B74721C2125E50080A7B9 /* Assets.xcassets */; };
+		D433A5001E4A861F00D9A6DF /* SawyerChunk.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D433A4FA1E4A861F00D9A6DF /* SawyerChunk.cpp */; };
+		D433A5011E4A861F00D9A6DF /* SawyerChunkReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D433A4FC1E4A861F00D9A6DF /* SawyerChunkReader.cpp */; };
+		D433A5021E4A861F00D9A6DF /* SawyerChunkWriter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D433A4FE1E4A861F00D9A6DF /* SawyerChunkWriter.cpp */; };
 		D43407D61D0E14BE00C2B3D4 /* CopyFramebufferShader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D43407C01D0E14BE00C2B3D4 /* CopyFramebufferShader.cpp */; };
 		D43407D81D0E14BE00C2B3D4 /* DrawImageShader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D43407C41D0E14BE00C2B3D4 /* DrawImageShader.cpp */; };
 		D43407D91D0E14BE00C2B3D4 /* DrawLineShader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D43407C61D0E14BE00C2B3D4 /* DrawLineShader.cpp */; };
@@ -709,6 +712,13 @@
 		D41B73EE1C2101890080A7B9 /* libcurl.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libcurl.tbd; path = usr/lib/libcurl.tbd; sourceTree = SDKROOT; };
 		D41B741C1C210A7A0080A7B9 /* libiconv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.tbd; path = usr/lib/libiconv.tbd; sourceTree = SDKROOT; };
 		D41B74721C2125E50080A7B9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = distribution/macos/Assets.xcassets; sourceTree = SOURCE_ROOT; };
+		D433A4FA1E4A861F00D9A6DF /* SawyerChunk.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SawyerChunk.cpp; path = rct12/SawyerChunk.cpp; sourceTree = "<group>"; };
+		D433A4FB1E4A861F00D9A6DF /* SawyerChunk.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SawyerChunk.h; path = rct12/SawyerChunk.h; sourceTree = "<group>"; };
+		D433A4FC1E4A861F00D9A6DF /* SawyerChunkReader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SawyerChunkReader.cpp; path = rct12/SawyerChunkReader.cpp; sourceTree = "<group>"; };
+		D433A4FD1E4A861F00D9A6DF /* SawyerChunkReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SawyerChunkReader.h; path = rct12/SawyerChunkReader.h; sourceTree = "<group>"; };
+		D433A4FE1E4A861F00D9A6DF /* SawyerChunkWriter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SawyerChunkWriter.cpp; path = rct12/SawyerChunkWriter.cpp; sourceTree = "<group>"; };
+		D433A4FF1E4A861F00D9A6DF /* SawyerChunkWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SawyerChunkWriter.h; path = rct12/SawyerChunkWriter.h; sourceTree = "<group>"; };
+		D433A5031E4A862F00D9A6DF /* rct12.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = rct12.h; sourceTree = "<group>"; };
 		D43407C01D0E14BE00C2B3D4 /* CopyFramebufferShader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CopyFramebufferShader.cpp; sourceTree = "<group>"; };
 		D43407C11D0E14BE00C2B3D4 /* CopyFramebufferShader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CopyFramebufferShader.h; sourceTree = "<group>"; };
 		D43407C41D0E14BE00C2B3D4 /* DrawImageShader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DrawImageShader.cpp; sourceTree = "<group>"; };
@@ -1242,6 +1252,12 @@
 		652747E91E41CDFE000F36FD /* rct12 */ = {
 			isa = PBXGroup;
 			children = (
+				D433A4FA1E4A861F00D9A6DF /* SawyerChunk.cpp */,
+				D433A4FB1E4A861F00D9A6DF /* SawyerChunk.h */,
+				D433A4FC1E4A861F00D9A6DF /* SawyerChunkReader.cpp */,
+				D433A4FD1E4A861F00D9A6DF /* SawyerChunkReader.h */,
+				D433A4FE1E4A861F00D9A6DF /* SawyerChunkWriter.cpp */,
+				D433A4FF1E4A861F00D9A6DF /* SawyerChunkWriter.h */,
 				652747EA1E41CE1B000F36FD /* SawyerEncoding.cpp */,
 				652747EB1E41CE1B000F36FD /* SawyerEncoding.h */,
 			);
@@ -1524,8 +1540,8 @@
 				D442715B1CC81B3200D84D28 /* peep */,
 				D44271601CC81B3200D84D28 /* platform */,
 				C650B2141CCABBDD00B4D91C /* rct1 */,
-				652747E91E41CDFE000F36FD /* rct12 */,
 				C6B5A7CF1CDFE4CB00C9C006 /* rct2 */,
+				652747E91E41CDFE000F36FD /* rct12 */,
 				D442716E1CC81B3200D84D28 /* ride */,
 				C6E96E1C1E04070E0076A04F /* scenario */,
 				C6E96E261E04072F0076A04F /* title */,
@@ -1564,6 +1580,7 @@
 				D442716A1CC81B3200D84D28 /* rct1.h */,
 				D442716B1CC81B3200D84D28 /* rct2.c */,
 				D442716C1CC81B3200D84D28 /* rct2.h */,
+				D433A5031E4A862F00D9A6DF /* rct12.h */,
 				D44271851CC81B3200D84D28 /* sprites.h */,
 				D4CA88651D4E64C800060C11 /* version.c */,
 				D442718D1CC81B3200D84D28 /* version.h */,
@@ -2896,6 +2913,7 @@
 				C6E96E2F1E04072F0076A04F /* TitleScreen.cpp in Sources */,
 				D442728E1CC81B3200D84D28 /* title_logo.c in Sources */,
 				C686F8B21CDBC37E009F9BFC /* scenery_multiple.c in Sources */,
+				D433A5011E4A861F00D9A6DF /* SawyerChunkReader.cpp in Sources */,
 				D442725E1CC81B3200D84D28 /* editor_objective_options.c in Sources */,
 				D44272531CC81B3200D84D28 /* about.c in Sources */,
 				C686F9311CDBC3B7009F9BFC /* ghost_train.c in Sources */,
@@ -2923,6 +2941,7 @@
 				D44272761CC81B3200D84D28 /* options.c in Sources */,
 				C686F93D1CDBC3B7009F9BFC /* shop.c in Sources */,
 				C686F8AD1CDBC37E009F9BFC /* entrance.c in Sources */,
+				D433A5001E4A861F00D9A6DF /* SawyerChunk.cpp in Sources */,
 				D44272111CC81B3200D84D28 /* string.c in Sources */,
 				C686F93E1CDBC3B7009F9BFC /* 3d_cinema.c in Sources */,
 				D44272771CC81B3200D84D28 /* park.c in Sources */,
@@ -2968,6 +2987,7 @@
 				D442726C1CC81B3200D84D28 /* map_tooltip.c in Sources */,
 				C686F9281CDBC3B7009F9BFC /* wild_mouse.c in Sources */,
 				D44272701CC81B3200D84D28 /* music_credits.c in Sources */,
+				D433A5021E4A861F00D9A6DF /* SawyerChunkWriter.cpp in Sources */,
 				C686F9511CDBC3B7009F9BFC /* river_rafts.c in Sources */,
 				C686F90E1CDBC3B7009F9BFC /* corkscrew_roller_coaster.c in Sources */,
 				D44272A61CC81B3200D84D28 /* scenery.c in Sources */,
@@ -3084,7 +3104,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = NO;
@@ -3132,7 +3152,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = NO;

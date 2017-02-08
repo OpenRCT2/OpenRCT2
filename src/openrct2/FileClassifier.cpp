@@ -16,7 +16,7 @@
 
 #include "core/FileStream.hpp"
 #include "FileClassifier.h"
-#include "rct12/SawyerEncoding.h"
+#include "rct12/SawyerChunkReader.h"
 
 extern "C"
 {
@@ -71,9 +71,10 @@ bool TryClassifyFile(IStream * stream, ClassifiedFile * result)
 
 static bool TryClassifyAsS6(IStream * stream, ClassifiedFile * result)
 {
-    rct_s6_header s6Header;
-    if (SawyerEncoding::TryReadChunk(&s6Header, stream))
+    try
     {
+        auto chunkReader = SawyerChunkReader(stream);
+        auto s6Header = chunkReader.ReadChunkAs<rct_s6_header>();
         if (s6Header.type == S6_TYPE_SAVEDGAME)
         {
             result->Type = FILE_TYPE::SAVED_GAME;
@@ -85,7 +86,9 @@ static bool TryClassifyAsS6(IStream * stream, ClassifiedFile * result)
         result->Version = s6Header.version;
         return true;
     }
-
+    catch (Exception)
+    {
+    }
     return false;
 }
 

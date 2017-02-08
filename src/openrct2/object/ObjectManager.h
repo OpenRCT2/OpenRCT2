@@ -16,6 +16,10 @@
 
 #pragma once
 
+#ifdef __cplusplus
+    #include <vector>
+#endif
+
 #include "../common.h"
 
 #ifdef __cplusplus
@@ -29,7 +33,8 @@ extern "C"
 
 #ifdef __cplusplus
 
-class Object;
+class   Object;
+struct  ObjectRepositoryItem;
 
 interface IObjectManager
 {
@@ -45,6 +50,8 @@ interface IObjectManager
     virtual void        UnloadAll() abstract;
 
     virtual void ResetObjects() abstract;
+
+    virtual std::vector<const ObjectRepositoryItem *> GetPackableObjects() abstract;
 };
 
 IObjectManager * GetObjectManager();

@@ -15,11 +15,14 @@
 #pragma endregion
 
 #include "../core/Exception.hpp"
+#include "../core/FileStream.hpp"
 #include "../core/IStream.hpp"
 #include "../core/String.hpp"
 #include "../management/award.h"
 #include "../object/Object.h"
+#include "../object/ObjectManager.h"
 #include "../object/ObjectRepository.h"
+#include "../rct12/SawyerChunkWriter.h"
 #include "S6Exporter.h"
 
 extern "C"
@@ -56,178 +59,91 @@ S6Exporter::S6Exporter()
 
 void S6Exporter::SaveGame(const utf8 * path)
 {
-    SDL_RWops * rw = SDL_RWFromFile(path, "rb");
-    if (rw == nullptr)
-    {
-        throw IOException("Unable to write to destination file.");
-    }
-
-    SaveGame(rw);
-
-    SDL_RWclose(rw);
+    auto fs = FileStream(path, FILE_MODE_WRITE);
+    SaveGame(&fs);
 }
 
-void S6Exporter::SaveGame(SDL_RWops *rw)
+void S6Exporter::SaveGame(IStream * stream)
 {
-    Save(rw, false);
+    Save(stream, false);
 }
 
 void S6Exporter::SaveScenario(const utf8 * path)
 {
-    SDL_RWops * rw = SDL_RWFromFile(path, "rb");
-    if (rw == nullptr)
-    {
-        throw IOException("Unable to write to destination file.");
-    }
-
-    SaveGame(rw);
-
-    SDL_RWclose(rw);
+    auto fs = FileStream(path, FILE_MODE_WRITE);
+    SaveScenario(&fs);
 }
 
-void S6Exporter::SaveScenario(SDL_RWops *rw)
+void S6Exporter::SaveScenario(IStream * stream)
 {
-    Save(rw, true);
+    Save(stream, true);
 }
 
-void S6Exporter::Save(SDL_RWops * rw, bool isScenario)
+void S6Exporter::Save(IStream * stream, bool isScenario)
 {
     _s6.header.type = isScenario ? S6_TYPE_SCENARIO : S6_TYPE_SAVEDGAME;
     _s6.header.classic_flag = 0;
     _s6.header.num_packed_objects = uint16(ExportObjectsList.size());
     _s6.header.version = S6_RCT2_VERSION;
     _s6.header.magic_number = S6_MAGIC_NUMBER;
-
     _s6.game_version_number = 201028;
 
-    uint8 * buffer = (uint8 *)malloc(0x600000);
-    if (buffer == NULL)
-    {
-        log_error("Unable to allocate enough space for a write buffer.");
-        throw Exception("Unable to allocate memory.");
-    }
-
-    sawyercoding_chunk_header chunkHeader;
-    size_t encodedLength;
+    auto chunkWriter = SawyerChunkWriter(stream);
 
     // 0: Write header chunk
-    chunkHeader.encoding = CHUNK_ENCODING_ROTATE;
-    chunkHeader.length = sizeof(rct_s6_header);
-    encodedLength = sawyercoding_write_chunk_buffer(buffer, (uint8*)&_s6.header, chunkHeader);
-    SDL_RWwrite(rw, buffer, encodedLength, 1);
+    chunkWriter.WriteChunk(&_s6.header, SAWYER_ENCODING::ROTATE);
 
     // 1: Write scenario info chunk
     if (_s6.header.type == S6_TYPE_SCENARIO)
     {
-        chunkHeader.encoding = CHUNK_ENCODING_ROTATE;
-        chunkHeader.length = sizeof(rct_s6_info);
-        encodedLength = sawyercoding_write_chunk_buffer(buffer, (uint8*)&_s6.info, chunkHeader);
-        SDL_RWwrite(rw, buffer, encodedLength, 1);
+        chunkWriter.WriteChunk(&_s6.info, SAWYER_ENCODING::ROTATE);
     }
 
-    log_verbose("exporting %u objects", _s6.header.num_packed_objects);
     // 2: Write packed objects
     if (_s6.header.num_packed_objects > 0)
     {
-        if (!scenario_write_packed_objects(rw, ExportObjectsList))
-        {
-            free(buffer);
-            throw Exception("Unable to pack objects.");
-        }
+        IObjectRepository * objRepo = GetObjectRepository();
+        objRepo->WritePackedObjects(stream, ExportObjectsList);
     }
 
     // 3: Write available objects chunk
-    chunkHeader.encoding = CHUNK_ENCODING_ROTATE;
-    chunkHeader.length = OBJECT_ENTRY_COUNT * sizeof(rct_object_entry);
-    encodedLength = sawyercoding_write_chunk_buffer(buffer, (uint8*)_s6.objects, chunkHeader);
-    SDL_RWwrite(rw, buffer, encodedLength, 1);
+    chunkWriter.WriteChunk(_s6.objects, sizeof(_s6.objects), SAWYER_ENCODING::ROTATE);
 
     // 4: Misc fields (data, rand...) chunk
-    chunkHeader.encoding = CHUNK_ENCODING_RLECOMPRESSED;
-    chunkHeader.length = 16;
-    encodedLength = sawyercoding_write_chunk_buffer(buffer, (uint8*)&_s6.elapsed_months, chunkHeader);
-    SDL_RWwrite(rw, buffer, encodedLength, 1);
+    chunkWriter.WriteChunk(&_s6.elapsed_months, 16, SAWYER_ENCODING::RLECOMPRESSED);
 
     // 5: Map elements + sprites and other fields chunk
-    chunkHeader.encoding = CHUNK_ENCODING_RLECOMPRESSED;
-    chunkHeader.length = 0x180000;
-    encodedLength = sawyercoding_write_chunk_buffer(buffer, (uint8*)_s6.map_elements, chunkHeader);
-    SDL_RWwrite(rw, buffer, encodedLength, 1);
+    chunkWriter.WriteChunk(&_s6.map_elements, 0x180000, SAWYER_ENCODING::RLECOMPRESSED);
 
     if (_s6.header.type == S6_TYPE_SCENARIO)
     {
-        // 6:
-        chunkHeader.encoding = CHUNK_ENCODING_RLECOMPRESSED;
-        chunkHeader.length = 0x27104C;
-        encodedLength = sawyercoding_write_chunk_buffer(buffer, (uint8*)&_s6.next_free_map_element_pointer_index, chunkHeader);
-        SDL_RWwrite(rw, buffer, encodedLength, 1);
-
-        // 7:
-        chunkHeader.encoding = CHUNK_ENCODING_RLECOMPRESSED;
-        chunkHeader.length = 4;
-        encodedLength = sawyercoding_write_chunk_buffer(buffer, (uint8*)&_s6.guests_in_park, chunkHeader);
-        SDL_RWwrite(rw, buffer, encodedLength, 1);
-
-        // 8:
-        chunkHeader.encoding = CHUNK_ENCODING_RLECOMPRESSED;
-        chunkHeader.length = 8;
-        encodedLength = sawyercoding_write_chunk_buffer(buffer, (uint8*)&_s6.last_guests_in_park, chunkHeader);
-        SDL_RWwrite(rw, buffer, encodedLength, 1);
-
-        // 9:
-        chunkHeader.encoding = CHUNK_ENCODING_RLECOMPRESSED;
-        chunkHeader.length = 2;
-        encodedLength = sawyercoding_write_chunk_buffer(buffer, (uint8*)&_s6.park_rating, chunkHeader);
-        SDL_RWwrite(rw, buffer, encodedLength, 1);
-
-        // 10:
-        chunkHeader.encoding = CHUNK_ENCODING_RLECOMPRESSED;
-        chunkHeader.length = 1082;
-        encodedLength = sawyercoding_write_chunk_buffer(buffer, (uint8*)&_s6.active_research_types, chunkHeader);
-        SDL_RWwrite(rw, buffer, encodedLength, 1);
-
-        // 11:
-        chunkHeader.encoding = CHUNK_ENCODING_RLECOMPRESSED;
-        chunkHeader.length = 16;
-        encodedLength = sawyercoding_write_chunk_buffer(buffer, (uint8*)&_s6.current_expenditure, chunkHeader);
-        SDL_RWwrite(rw, buffer, encodedLength, 1);
-
-        // 12:
-        chunkHeader.encoding = CHUNK_ENCODING_RLECOMPRESSED;
-        chunkHeader.length = 4;
-        encodedLength = sawyercoding_write_chunk_buffer(buffer, (uint8*)&_s6.park_value, chunkHeader);
-        SDL_RWwrite(rw, buffer, encodedLength, 1);
-
-        // 13:
-        chunkHeader.encoding = CHUNK_ENCODING_RLECOMPRESSED;
-        chunkHeader.length = 0x761E8;
-        encodedLength = sawyercoding_write_chunk_buffer(buffer, (uint8*)&_s6.completed_company_value, chunkHeader);
-        SDL_RWwrite(rw, buffer, encodedLength, 1);
+        // 6 to 13:
+        chunkWriter.WriteChunk(&_s6.next_free_map_element_pointer_index, 0x27104C, SAWYER_ENCODING::RLECOMPRESSED);
+        chunkWriter.WriteChunk(&_s6.guests_in_park, 4, SAWYER_ENCODING::RLECOMPRESSED);
+        chunkWriter.WriteChunk(&_s6.last_guests_in_park, 8, SAWYER_ENCODING::RLECOMPRESSED);
+        chunkWriter.WriteChunk(&_s6.park_rating, 2, SAWYER_ENCODING::RLECOMPRESSED);
+        chunkWriter.WriteChunk(&_s6.active_research_types, 1082, SAWYER_ENCODING::RLECOMPRESSED);
+        chunkWriter.WriteChunk(&_s6.current_expenditure, 16, SAWYER_ENCODING::RLECOMPRESSED);
+        chunkWriter.WriteChunk(&_s6.park_value, 4, SAWYER_ENCODING::RLECOMPRESSED);
+        chunkWriter.WriteChunk(&_s6.completed_company_value, 0x761E8, SAWYER_ENCODING::RLECOMPRESSED);
     }
     else
     {
         // 6: Everything else...
-        chunkHeader.encoding = CHUNK_ENCODING_RLECOMPRESSED;
-        chunkHeader.length = 0x2E8570;
-        encodedLength = sawyercoding_write_chunk_buffer(buffer, (uint8*)&_s6.next_free_map_element_pointer_index, chunkHeader);
-        SDL_RWwrite(rw, buffer, encodedLength, 1);
+        chunkWriter.WriteChunk(&_s6.next_free_map_element_pointer_index, 0x2E8570, SAWYER_ENCODING::RLECOMPRESSED);
     }
 
-    free(buffer);
-
     // Determine number of bytes written
-    size_t fileSize = (size_t)SDL_RWtell(rw);
-    SDL_RWseek(rw, 0, RW_SEEK_SET);
+    size_t fileSize = stream->GetLength();
 
     // Read all written bytes back into a single buffer
-    buffer = (uint8 *)malloc(fileSize);
-    SDL_RWread(rw, buffer, fileSize, 1);
-    uint32 checksum = sawyercoding_calculate_checksum(buffer, fileSize);
-    free(buffer);
+    stream->SetPosition(0);
+    auto data = std::unique_ptr<uint8>(stream->ReadArray<uint8>(fileSize));
+    uint32 checksum = sawyercoding_calculate_checksum(data.get(), fileSize);
 
-    // Append the checksum
-    SDL_RWseek(rw, fileSize, RW_SEEK_SET);
-    SDL_RWwrite(rw, &checksum, sizeof(uint32), 1);
+    // Write the checksum on the end
+    stream->SetPosition(fileSize);
+    stream->WriteValue(checksum);
 }
 
 void S6Exporter::Export()
@@ -480,7 +396,6 @@ uint32 S6Exporter::GetLoanHash(money32 initialCash, money32 bankLoan, uint32 max
     return value;
 }
 
-
 // Save game state without modifying any of the state for multiplayer
 sint32 scenario_save_network(SDL_RWops * rw, const std::vector<const ObjectRepositoryItem *> &objects)
 {
@@ -490,9 +405,11 @@ sint32 scenario_save_network(SDL_RWops * rw, const std::vector<const ObjectRepos
     auto s6exporter = new S6Exporter();
     try
     {
+        auto rwStream = FileStream(rw, FILE_MODE_WRITE);
+
         s6exporter->ExportObjectsList = objects;
         s6exporter->Export();
-        s6exporter->SaveGame(rw);
+        s6exporter->SaveGame(&rwStream);
         result = true;
     }
     catch (const Exception &)
@@ -534,58 +451,6 @@ sint32 scenario_save_network(SDL_RWops * rw, const std::vector<const ObjectRepos
     return 1;
 }
 
-static bool object_is_custom(const ObjectRepositoryItem * object)
-{
-    Guard::ArgumentNotNull(object);
-
-    // Validate the object is not one from base game or expansion pack
-    return (object->LoadedObject != nullptr &&
-            object->LoadedObject->GetLegacyData() != nullptr
-            && !(object->ObjectEntry.flags & 0xF0));
-}
-
-sint32 scenario_write_packed_objects(SDL_RWops* rw, std::vector<const ObjectRepositoryItem *> &objects)
-{
-    log_verbose("exporting packed objects");
-    for (const auto &object : objects)
-    {
-        Guard::ArgumentNotNull(object);
-        log_verbose("exporting object %.8s", object->ObjectEntry.name);
-        if (object_is_custom(object))
-        {
-            if (!object_saved_packed(rw, &object->ObjectEntry))
-            {
-                return 0;
-            }
-        }
-        else
-        {
-            log_warning("Refusing to pack vanilla/expansion object \"%s\"", object->ObjectEntry.name);
-        }
-    }
-    return 1;
-}
-
-/**
- *
- *  rct2: 0x006AA244
- */
-std::vector<const ObjectRepositoryItem *> scenario_get_packable_objects()
-{
-    std::vector<const ObjectRepositoryItem *> objects;
-    IObjectRepository * repo = GetObjectRepository();
-    for (size_t i = 0; i < repo->GetNumObjects(); i++)
-    {
-        const ObjectRepositoryItem *item = &repo->GetObjects()[i];
-        // Validate the object is not one from base game or expansion pack
-        if (object_is_custom(item))
-        {
-            objects.push_back(item);
-        }
-    }
-    return objects;
-}
-
 extern "C"
 {
     enum {
@@ -624,18 +489,22 @@ extern "C"
         auto s6exporter = new S6Exporter();
         try
         {
-            if (flags & S6_SAVE_FLAG_EXPORT) {
-                s6exporter->ExportObjectsList = scenario_get_packable_objects();
+            auto rwStream = FileStream(rw, FILE_MODE_WRITE);
+
+            if (flags & S6_SAVE_FLAG_EXPORT)
+            {
+                IObjectManager * objManager = GetObjectManager();
+                s6exporter->ExportObjectsList = objManager->GetPackableObjects();
             }
             s6exporter->RemoveTracklessRides = true;
             s6exporter->Export();
             if (flags & S6_SAVE_FLAG_SCENARIO)
             {
-                s6exporter->SaveScenario(rw);
+                s6exporter->SaveScenario(&rwStream);
             }
             else
             {
-                s6exporter->SaveGame(rw);
+                s6exporter->SaveGame(&rwStream);
             }
             result = true;
         }

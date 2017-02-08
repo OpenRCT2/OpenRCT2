@@ -14,13 +14,17 @@
  *****************************************************************************/
 #pragma endregion
 
-#pragma once
+#include "../core/Memory.hpp"
+#include "SawyerChunk.h"
 
-#include "../common.h"
-
-interface IStream;
-
-namespace SawyerEncoding
+SawyerChunk::SawyerChunk(SAWYER_ENCODING encoding, void * data, size_t length)
 {
-    bool ValidateChecksum(IStream * stream);
+    _encoding = encoding;
+    _data = data;
+    _length = length;
+}
+
+SawyerChunk::~SawyerChunk()
+{
+    Memory::Free(_data);
 }

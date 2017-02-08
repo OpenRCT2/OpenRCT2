@@ -25,6 +25,7 @@
 #include "../object/ObjectRepository.h"
 #include "../ParkImporter.h"
 #include "../rct12/SawyerEncoding.h"
+#include "../rct12/SawyerChunkReader.h"
 
 extern "C"
 {
@@ -110,7 +111,8 @@ public:
             throw IOException("Invalid checksum.");
         }
 
-        SawyerEncoding::ReadChunkTolerant(&_s6.header, sizeof(_s6.header), stream);
+        auto chunkReader = SawyerChunkReader(stream);
+        chunkReader.ReadChunk(&_s6.header, sizeof(_s6.header));
 
         log_verbose("saved game classic_flag = 0x%02x\n", _s6.header.classic_flag);
         if (isScenario)
@@ -119,7 +121,7 @@ public:
             {
                 throw Exception("Park is not a scenario.");
             }
-            SawyerEncoding::ReadChunkTolerant(&_s6.info, sizeof(_s6.info), stream);
+            chunkReader.ReadChunk(&_s6.info, sizeof(_s6.info));
         }
         else
         {
@@ -134,29 +136,29 @@ public:
         IObjectRepository * objectRepo = GetObjectRepository();
         for (uint16 i = 0; i < _s6.header.num_packed_objects; i++)
         {
-            objectRepo->TryExportPackedObject(stream);
+            objectRepo->ExportPackedObject(stream);
         }
 
         if (isScenario)
         {
-            SawyerEncoding::ReadChunkTolerant(&_s6.objects, sizeof(_s6.objects), stream);
-            SawyerEncoding::ReadChunkTolerant(&_s6.elapsed_months, 16, stream);
-            SawyerEncoding::ReadChunkTolerant(&_s6.map_elements, sizeof(_s6.map_elements), stream);
-            SawyerEncoding::ReadChunkTolerant(&_s6.next_free_map_element_pointer_index, 2560076, stream);
-            SawyerEncoding::ReadChunkTolerant(&_s6.guests_in_park, 4, stream);
-            SawyerEncoding::ReadChunkTolerant(&_s6.last_guests_in_park, 8, stream);
-            SawyerEncoding::ReadChunkTolerant(&_s6.park_rating, 2, stream);
-            SawyerEncoding::ReadChunkTolerant(&_s6.active_research_types, 1082, stream);
-            SawyerEncoding::ReadChunkTolerant(&_s6.current_expenditure, 16, stream);
-            SawyerEncoding::ReadChunkTolerant(&_s6.park_value, 4, stream);
-            SawyerEncoding::ReadChunkTolerant(&_s6.completed_company_value, 483816, stream);
+            chunkReader.ReadChunk(&_s6.objects, sizeof(_s6.objects));
+            chunkReader.ReadChunk(&_s6.elapsed_months, 16);
+            chunkReader.ReadChunk(&_s6.map_elements, sizeof(_s6.map_elements));
+            chunkReader.ReadChunk(&_s6.next_free_map_element_pointer_index, 2560076);
+            chunkReader.ReadChunk(&_s6.guests_in_park, 4);
+            chunkReader.ReadChunk(&_s6.last_guests_in_park, 8);
+            chunkReader.ReadChunk(&_s6.park_rating, 2);
+            chunkReader.ReadChunk(&_s6.active_research_types, 1082);
+            chunkReader.ReadChunk(&_s6.current_expenditure, 16);
+            chunkReader.ReadChunk(&_s6.park_value, 4);
+            chunkReader.ReadChunk(&_s6.completed_company_value, 483816);
         }
         else
         {
-            SawyerEncoding::ReadChunkTolerant(&_s6.objects, sizeof(_s6.objects), stream);
-            SawyerEncoding::ReadChunkTolerant(&_s6.elapsed_months, 16, stream);
-            SawyerEncoding::ReadChunkTolerant(&_s6.map_elements, sizeof(_s6.map_elements), stream);
-            SawyerEncoding::ReadChunkTolerant(&_s6.next_free_map_element_pointer_index, 3048816, stream);
+            chunkReader.ReadChunk(&_s6.objects, sizeof(_s6.objects));
+            chunkReader.ReadChunk(&_s6.elapsed_months, 16);
+            chunkReader.ReadChunk(&_s6.map_elements, sizeof(_s6.map_elements));
+            chunkReader.ReadChunk(&_s6.next_free_map_element_pointer_index, 3048816);
         }
     }
 

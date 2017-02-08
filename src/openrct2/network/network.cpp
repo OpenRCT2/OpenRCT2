@@ -50,6 +50,7 @@ sint32 _pickup_peep_old_x = SPRITE_LOCATION_NULL;
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
 #include "../core/Util.hpp"
+#include "../object/ObjectManager.h"
 #include "../object/ObjectRepository.h"
 #include "../rct2/S6Exporter.h"
 
@@ -929,7 +930,8 @@ void Network::Server_Send_MAP(NetworkConnection* connection)
 	} else {
 		// This will send all custom objects to connected clients
 		// TODO: fix it so custom objects negotiation is performed even in this case.
-		objects = scenario_get_packable_objects();
+		IObjectManager * objManager = GetObjectManager();
+		objects = objManager->GetPackableObjects();
 	}
 	header = save_for_network(rw, out_size, objects);
 	SDL_RWclose(rw);
@@ -1465,7 +1467,9 @@ void Network::Server_Client_Joined(const char* name, const std::string &keyhash,
 		const char * player_name = (const char *) player->Name.c_str();
 		format_string(text, 256, STR_MULTIPLAYER_PLAYER_HAS_JOINED_THE_GAME, &player_name);
 		chat_history_add(text);
-		std::vector<const ObjectRepositoryItem *> objects = scenario_get_packable_objects();
+
+		IObjectManager * objManager = GetObjectManager();
+		auto objects = objManager->GetPackableObjects();
 		Server_Send_OBJECTS(connection, objects);
 	}
 }

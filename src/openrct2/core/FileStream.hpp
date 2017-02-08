@@ -20,6 +20,7 @@
 
 #include <SDL.h>
 #include "IStream.hpp"
+#include "Math.hpp"
 
 enum
 {
@@ -56,8 +57,8 @@ public:
             _canWrite = false;
             break;
         case FILE_MODE_WRITE:
-            mode = "wb";
-            _canRead = false;
+            mode = "w+b";
+            _canRead = true;
             _canWrite = true;
             break;
         default:
@@ -82,7 +83,7 @@ public:
             _canWrite = false;
             break;
         case FILE_MODE_WRITE:
-            _canRead = false;
+            _canRead = true;
             _canWrite = true;
             break;
         default:
@@ -148,6 +149,9 @@ public:
         {
             throw IOException("Unable to write to file.");
         }
+
+        uint64 position = GetPosition();
+        _fileSize = Math::Max(_fileSize, position);
     }
 
     uint64 TryRead(void * buffer, uint64 length) override
