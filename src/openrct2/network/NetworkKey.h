@@ -21,11 +21,12 @@
 
 #include "../common.h"
 
-#include <SDL_rwops.h>
 #include <string>
 
 typedef struct evp_pkey_st EVP_PKEY;
 typedef struct evp_pkey_ctx_st EVP_PKEY_CTX;
+
+interface IStream;
 
 class NetworkKey final
 {
@@ -33,10 +34,10 @@ public:
     NetworkKey();
     ~NetworkKey();
     bool Generate();
-    bool LoadPrivate(SDL_RWops * file);
-    bool LoadPublic(SDL_RWops * file);
-    bool SavePrivate(SDL_RWops * file);
-    bool SavePublic(SDL_RWops * file);
+    bool LoadPrivate(IStream * stream);
+    bool LoadPublic(IStream * stream);
+    bool SavePrivate(IStream * stream);
+    bool SavePublic(IStream * stream);
     std::string PublicKeyString();
     std::string PublicKeyHash();
     void Unload();

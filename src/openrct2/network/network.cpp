@@ -16,19 +16,12 @@
 
 #include <SDL_platform.h>
 
-#ifdef __WINDOWS__
-	// winsock2 must be included before windows.h
-	#include <winsock2.h>
-#else
-	#include <arpa/inet.h>
-#endif
-
 #include "../core/Guard.hpp"
+#include "../OpenRCT2.h"
 
 extern "C" {
-#include "../OpenRCT2.h"
-#include "../platform/platform.h"
-#include "../util/sawyercoding.h"
+	#include "../platform/platform.h"
+	#include "../util/sawyercoding.h"
 }
 
 #include "network.h"
@@ -45,8 +38,10 @@ sint32 _pickup_peep_old_x = SPRITE_LOCATION_NULL;
 #include <string>
 
 #include "../core/Console.hpp"
+#include "../core/FileStream.hpp"
 #include "../core/Json.hpp"
 #include "../core/Math.hpp"
+#include "../core/MemoryStream.h"
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
 #include "../core/Util.hpp"
@@ -130,17 +125,9 @@ Network::~Network()
 
 bool Network::Init()
 {
-#ifdef __WINDOWS__
-	if (!wsa_initialized) {
-		log_verbose("Initialising WSA");
-		WSADATA wsa_data;
-		if (WSAStartup(MAKEWORD(2, 2), &wsa_data) != 0) {
-			log_error("Unable to initialise winsock.");
-			return false;
-		}
-		wsa_initialized = true;
+	if (!InitialiseWSA()) {
+		return false;
 	}
-#endif
 
 	status = NETWORK_STATUS_READY;
 
@@ -183,12 +170,7 @@ void Network::Close()
 	player_list.clear();
 	group_list.clear();
 
-#ifdef __WINDOWS__
-	if (wsa_initialized) {
-		WSACleanup();
-		wsa_initialized = false;
-	}
-#endif
+	DisposeWSA();
 
 	CloseChatLog();
 	gfx_invalidate_screen();
@@ -229,36 +211,47 @@ bool Network::BeginClient(const char* host, uint16 port)
 			return false;
 		}
 
-		SDL_RWops *privkey = SDL_RWFromFile(keyPath, "wb+");
-		if (privkey == nullptr) {
+		try
+		{
+			auto fs = FileStream(keyPath, FILE_MODE_WRITE);
+			_key.SavePrivate(&fs);
+		}
+		catch (Exception)
+		{
 			log_error("Unable to save private key at %s.", keyPath);
 			return false;
 		}
-		_key.SavePrivate(privkey);
-		SDL_RWclose(privkey);
 
 		const std::string hash = _key.PublicKeyHash();
 		const utf8 *publicKeyHash = hash.c_str();
 		network_get_public_key_path(keyPath, sizeof(keyPath), gConfigNetwork.player_name, publicKeyHash);
 		Console::WriteLine("Key generated, saving public bits as %s", keyPath);
-		SDL_RWops *pubkey = SDL_RWFromFile(keyPath, "wb+");
-		if (pubkey == nullptr) {
+
+		try
+		{
+			auto fs = FileStream(keyPath, FILE_MODE_WRITE);
+			_key.SavePublic(&fs);
+		}
+		catch (Exception)
+		{
 			log_error("Unable to save public key at %s.", keyPath);
 			return false;
 		}
-		_key.SavePublic(pubkey);
-		SDL_RWclose(pubkey);
 	} else {
-		log_verbose("Loading key from %s", keyPath);
-		SDL_RWops *privkey = SDL_RWFromFile(keyPath, "rb");
-		if (privkey == nullptr) {
+		// LoadPrivate returns validity of loaded key
+		bool ok = false;
+		try
+		{
+			log_verbose("Loading key from %s", keyPath);
+			auto fs = FileStream(keyPath, FILE_MODE_OPEN);
+			ok = _key.LoadPrivate(&fs);
+		}
+		catch (Exception)
+		{
 			log_error("Unable to read private key from %s.", keyPath);
 			return false;
 		}
 
-		// LoadPrivate returns validity of loaded key
-		bool ok = _key.LoadPrivate(privkey);
-		SDL_RWclose(privkey);
 		// Don't store private key in memory when it's not in use.
 		_key.Unload();
 		return ok;
@@ -1381,15 +1374,23 @@ void Network::Client_Handle_TOKEN(NetworkConnection& connection, NetworkPacket& 
 		log_error("Key file (%s) was not found. Restart client to re-generate it.", keyPath);
 		return;
 	}
-	SDL_RWops *privkey = SDL_RWFromFile(keyPath, "rb");
-	bool ok = _key.LoadPrivate(privkey);
-	SDL_RWclose(privkey);
-	if (!ok) {
+
+	try
+	{
+		auto fs = FileStream(keyPath, FILE_MODE_OPEN);
+		if (!_key.LoadPrivate(&fs))
+		{
+			throw Exception();
+		}
+	}
+	catch (Exception)
+	{
 		log_error("Failed to load key %s", keyPath);
 		connection.SetLastDisconnectReason(STR_MULTIPLAYER_VERIFICATION_FAILURE);
 		connection.Socket->Disconnect();
 		return;
 	}
+
 	uint32 challenge_size;
 	packet >> challenge_size;
 	const char *challenge = (const char *)packet.Read(challenge_size);
@@ -1398,7 +1399,7 @@ void Network::Client_Handle_TOKEN(NetworkConnection& connection, NetworkPacket& 
 	const std::string pubkey = _key.PublicKeyString();
 	_challenge.resize(challenge_size);
 	memcpy(_challenge.data(), challenge, challenge_size);
-	ok = _key.Sign(_challenge.data(), _challenge.size(), &signature, &sigsize);
+	bool ok = _key.Sign(_challenge.data(), _challenge.size(), &signature, &sigsize);
 	if (!ok) {
 		log_error("Failed to sign server's challenge.");
 		connection.SetLastDisconnectReason(STR_MULTIPLAYER_VERIFICATION_FAILURE);
@@ -1552,26 +1553,45 @@ void Network::Server_Handle_AUTH(NetworkConnection& connection, NetworkPacket& p
 		if (pubkey == nullptr) {
 			connection.AuthStatus = NETWORK_AUTH_VERIFICATIONFAILURE;
 		} else {
-			const char *signature = (const char *)packet.Read(sigsize);
-			SDL_RWops *pubkey_rw = SDL_RWFromConstMem(pubkey, (sint32)strlen(pubkey));
-			if (signature == nullptr || pubkey_rw == nullptr) {
-				connection.AuthStatus = NETWORK_AUTH_VERIFICATIONFAILURE;
-				log_verbose("Signature verification failed, invalid data!");
-			} else {
-				connection.Key.LoadPublic(pubkey_rw);
-				SDL_RWclose(pubkey_rw);
+			try
+			{
+				const char *signature = (const char *)packet.Read(sigsize);
+				if (signature == nullptr)
+				{
+					throw Exception();
+				}
+
+				auto ms = MemoryStream(pubkey, strlen(pubkey));
+				if (!connection.Key.LoadPublic(&ms))
+				{
+					throw Exception();
+				}
+
 				bool verified = connection.Key.Verify(connection.Challenge.data(), connection.Challenge.size(), signature, sigsize);
 				const std::string hash = connection.Key.PublicKeyHash();
-				if (verified) {
-					connection.AuthStatus = NETWORK_AUTH_VERIFIED;
+				if (verified)
+				{
 					log_verbose("Signature verification ok. Hash %s", hash.c_str());
-				} else {
+					if (gConfigNetwork.known_keys_only && _userManager.GetUserByHash(hash) == nullptr)
+					{
+						log_verbose("Hash %s, not known", hash.c_str());
+						connection.AuthStatus = NETWORK_AUTH_UNKNOWN_KEY_DISALLOWED;
+					}
+					else
+					{
+						connection.AuthStatus = NETWORK_AUTH_VERIFIED;
+					}
+				}
+				else
+				{
 					connection.AuthStatus = NETWORK_AUTH_VERIFICATIONFAILURE;
 					log_verbose("Signature verification failed!");
 				}
-				if (gConfigNetwork.known_keys_only && _userManager.GetUserByHash(hash) == nullptr) {
-					connection.AuthStatus = NETWORK_AUTH_UNKNOWN_KEY_DISALLOWED;
-				}
+			}
+			catch (Exception)
+			{
+				connection.AuthStatus = NETWORK_AUTH_VERIFICATIONFAILURE;
+				log_verbose("Signature verification failed, invalid data!");
 			}
 		}
 
@@ -1953,19 +1973,6 @@ void Network::Client_Handle_GAMEINFO(NetworkConnection& connection, NetworkPacke
 	json_decref(root);
 
 	network_chat_show_server_greeting();
-}
-
-namespace Convert
-{
-	uint16 HostToNetwork(uint16 value)
-	{
-		return htons(value);
-	}
-
-	uint16 NetworkToHost(uint16 value)
-	{
-		return ntohs(value);
-	}
 }
 
 sint32 network_init()
@@ -2456,8 +2463,16 @@ void network_send_password(const char* password)
 		log_error("Private key %s missing! Restart the game to generate it.", keyPath);
 		return;
 	}
-	SDL_RWops *privkey = SDL_RWFromFile(keyPath, "rb");
-	gNetwork._key.LoadPrivate(privkey);
+	try
+	{
+		auto fs = FileStream(keyPath, FILE_MODE_OPEN);
+		gNetwork._key.LoadPrivate(&fs);
+	}
+	catch (Exception)
+	{
+		log_error("Error reading private key from %s.", keyPath);
+		return;
+	}
 	const std::string pubkey = gNetwork._key.PublicKeyString();
 	size_t sigsize;
 	char *signature;

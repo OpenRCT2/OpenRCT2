@@ -62,3 +62,6 @@ public:
 };
 
 ITcpSocket * CreateTcpSocket();
+
+bool InitialiseWSA();
+void DisposeWSA();
