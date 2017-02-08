@@ -89,7 +89,7 @@ sint32 calculate_park_rating();
 money32 calculate_park_value();
 money32 calculate_company_value();
 void reset_park_entrances();
-void generate_new_guest();
+rct_peep * park_generate_new_guest();
 
 void park_update();
 void park_update_histories();
