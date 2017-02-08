@@ -1055,7 +1055,6 @@ static void window_tile_inspector_mouseup(rct_window *w, sint32 widgetIndex)
 		break;
 	case WIDX_BUTTON_REMOVE:
 		window_tile_inspector_remove_element(w->selected_list_item);
-		window_tile_inspector_set_page(w, PAGE_DEFAULT);
 		w->selected_list_item = -1;
 		window_tile_inspector_set_page(w, PAGE_DEFAULT);
 		window_tile_inspector_auto_set_buttons(w);
@@ -1067,8 +1066,9 @@ static void window_tile_inspector_mouseup(rct_window *w, sint32 widgetIndex)
 		break;
 	case WIDX_BUTTON_SORT:
 		window_tile_inspector_sort_elements(w);
-		window_tile_inspector_set_page(w, PAGE_DEFAULT);
 		w->selected_list_item = -1;
+		window_tile_inspector_set_page(w, PAGE_DEFAULT);
+		window_tile_inspector_auto_set_buttons(w);
 		window_invalidate(w);
 		break;
 	case WIDX_BUTTON_COPY:
@@ -1431,12 +1431,6 @@ static void window_tile_inspector_dropdown(rct_window *w, sint32 widgetIndex, si
 	rct_map_element *const mapElement = window_tile_inspector_get_selected_element(w);
 
 	switch (w->page) {
-	case PAGE_SCENERY:
-		assert(map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_SCENERY);
-
-		// TODO: Small scenery quarter position
-		break;
-
 	case PAGE_FENCE:
 		assert(map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_FENCE);
 
@@ -1478,7 +1472,7 @@ static void window_tile_inspector_tool_update(rct_window* w, sint32 widgetIndex,
 
 static void window_tile_inspector_update_selected_tile(rct_window *w, sint32 x, sint32 y)
 {
-	//if call matches previous mouse coordinates, do not continue.
+	// Mouse hasn't moved
 	if (x == windowTileInspectorToolMouseX && y == windowTileInspectorToolMouseY) {
 		return;
 	}
@@ -1492,15 +1486,15 @@ static void window_tile_inspector_update_selected_tile(rct_window *w, sint32 x, 
 	if (mapX == MAP_LOCATION_NULL) {
 		return;
 	}
-	//if call matches previously selected item, do not continue.
-	if (mapX == windowTileInspectorToolMapX && mapY == windowTileInspectorToolMapY) {
+
+	// Tile is already selected
+	if (windowTileInspectorTileSelected && mapX == windowTileInspectorToolMapX && mapY == windowTileInspectorToolMapY) {
 		return;
 	}
-	windowTileInspectorToolMapX = mapX;
-	windowTileInspectorToolMapY = mapY;
 
 	windowTileInspectorTileSelected = true;
-
+	windowTileInspectorToolMapX = mapX;
+	windowTileInspectorToolMapY = mapY;
 	windowTileInspectorTileX = mapX >> 5;
 	windowTileInspectorTileY = mapY >> 5;
 
@@ -1854,7 +1848,8 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		gfx_draw_string_right(dpi, STR_FORMAT_INTEGER, &windowTileInspectorTileY, COLOUR_DARK_GREEN, w->x + 105, w->y + 24);
 	}
 	else {
-		// TODO: Draw -- or something similar
+		gfx_draw_string(dpi, "-", COLOUR_DARK_GREEN, w->x + 48 - 7, w->y + 24);
+		gfx_draw_string(dpi, "-", COLOUR_DARK_GREEN, w->x + 105 - 7, w->y + 24);
 	}
 
 	if (w->selected_list_item != -1) {
