@@ -25,7 +25,8 @@
 enum
 {
     FILE_MODE_OPEN,
-    FILE_MODE_WRITE
+    FILE_MODE_WRITE,
+    FILE_MODE_APPEND,
 };
 
 /**
@@ -59,6 +60,11 @@ public:
         case FILE_MODE_WRITE:
             mode = "w+b";
             _canRead = true;
+            _canWrite = true;
+            break;
+        case FILE_MODE_APPEND:
+            mode = "a";
+            _canRead = false;
             _canWrite = true;
             break;
         default:

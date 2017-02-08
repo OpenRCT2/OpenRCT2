@@ -807,10 +807,11 @@ void Network::AppendChatLog(const utf8 *text)
 	utf8 directory[MAX_PATH];
 	Path::GetDirectory(directory, sizeof(directory), chatLogPath);
 	if (platform_ensure_directory_exists(directory)) {
-		_chatLogStream = SDL_RWFromFile(chatLogPath, "a");
-		if (_chatLogStream != nullptr) {
-			utf8 buffer[256];
+		try
+		{
+			_chatLogStream = new FileStream(chatLogPath, FILE_MODE_APPEND);
 
+			utf8 buffer[256];
 			time_t timer;
 			struct tm * tmInfo;
 			time(&timer);
@@ -821,8 +822,12 @@ void Network::AppendChatLog(const utf8 *text)
 			utf8_remove_formatting(buffer, false);
 			String::Append(buffer, sizeof(buffer), PLATFORM_NEWLINE);
 
-			SDL_RWwrite(_chatLogStream, buffer, strlen(buffer), 1);
-			SDL_RWclose(_chatLogStream);
+			_chatLogStream->Write(buffer, strlen(buffer));
+			delete _chatLogStream;
+			_chatLogStream = nullptr;
+		}
+		catch (const Exception &)
+		{
 		}
 	}
 }

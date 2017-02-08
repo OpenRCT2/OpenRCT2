@@ -67,7 +67,6 @@ extern "C" {
 #include <vector>
 #include <map>
 #include <openssl/evp.h>
-#include <SDL.h>
 #include "../core/Json.hpp"
 #include "../core/Nullable.hpp"
 #include "NetworkConnection.h"
@@ -214,7 +213,7 @@ private:
 	INetworkServerAdvertiser * _advertiser = nullptr;
 	uint32 server_connect_time = 0;
 	uint8 default_group = 0;
-	SDL_RWops *_chatLogStream = nullptr;
+	IStream * _chatLogStream = nullptr;
 	std::string _chatLogPath;
 	uint32 game_commands_processed_this_tick = 0;
 
