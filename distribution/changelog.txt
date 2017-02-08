@@ -3,6 +3,7 @@
 - Improved: [#5137]: Removing all guests no longer closes the rides and removes the vehicles.
 - Fix: [#4689] Object selection tabs sometimes flicker.
 - Fix: [#5150] --openrct-data-path sets user data path instead of OpenRCT2 data path.
+- Fix: [#5188] Clicking on a Magic Carpet doesn't open the ride window.
 
 0.0.6 (2017-01-29)
 ------------------------------------------------------------------------
