@@ -2965,6 +2965,13 @@ void top_toolbar_init_debug_menu(rct_window* w, rct_widget* widget)
 		TOP_TOOLBAR_DEBUG_COUNT
 	);
 
+	// Disable items that are not yet available in multiplayer
+	if (network_get_mode() != NETWORK_MODE_NONE) {
+		dropdown_set_disabled(DDIDX_OBJECT_SELECTION, true);
+		dropdown_set_disabled(DDIDX_INVENTIONS_LIST, true);
+		dropdown_set_disabled(DDIDX_SCENARIO_OPTIONS, true);
+	}
+
 	dropdown_set_checked(DDIDX_DEBUG_PAINT, window_find_by_class(WC_DEBUG_PAINT) != NULL);
 	gDropdownDefaultIndex = DDIDX_CONSOLE;
 }
