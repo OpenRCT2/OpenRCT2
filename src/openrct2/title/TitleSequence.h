@@ -18,8 +18,6 @@
 
 #include "../common.h"
 
-struct SDL_RWops;
-
 typedef struct TitleCommand
 {
     uint8 Type;
