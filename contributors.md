@@ -72,6 +72,7 @@ Includes all git commit authors. Aliases are GitHub user names.
 * Sven Slootweg (joepie91)
 * Daniel Trujillo Viedma (gDanix)
 * Jonathan Haas (HaasJona)
+* Jake Breen (Haekb)
 
 ## Toolchain
 * (Balletie) - macOS
