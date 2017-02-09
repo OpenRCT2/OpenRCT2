@@ -495,7 +495,7 @@ uint8 *util_zlib_inflate(uint8 *data, size_t data_in_size, size_t *data_out_size
  * @return Returns a pointer to memory holding compressed data or NULL on failure.
  * @note It is caller's responsibility to free() the returned pointer once done with it.
  */
-uint8 *util_zlib_deflate(uint8 *data, size_t data_in_size, size_t *data_out_size)
+uint8 *util_zlib_deflate(const uint8 *data, size_t data_in_size, size_t *data_out_size)
 {
 	sint32 ret = Z_OK;
 	uLongf out_size = (uLongf)*data_out_size;

@@ -63,7 +63,12 @@ MemoryStream::~MemoryStream()
     _data = nullptr;
 }
 
-void * MemoryStream::GetData() const
+const void * MemoryStream::GetData() const
+{
+    return _data;
+}
+
+void * MemoryStream::GetDataCopy() const
 {
     return Memory::Duplicate(_data, _dataSize);
 }
@@ -173,7 +178,9 @@ void MemoryStream::EnsureCapacity(size_t capacity)
             newCapacity *= 2;
         }
 
+        uint64 position = GetPosition();
         _dataCapacity = newCapacity;
-        Memory::Reallocate(_data, _dataCapacity);
+        _data = Memory::Reallocate(_data, _dataCapacity);
+        _position = (void *)((uintptr_t)_data + (uintptr_t)position);
     }
 }

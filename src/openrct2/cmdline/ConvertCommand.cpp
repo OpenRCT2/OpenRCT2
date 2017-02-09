@@ -21,6 +21,7 @@
 #include "../core/Guard.hpp"
 #include "../core/Path.hpp"
 #include "../ParkImporter.h"
+#include "../rct2/S6Exporter.h"
 #include "CommandLine.hpp"
 
 extern "C"
@@ -102,74 +103,56 @@ exitcode_t CommandLine::HandleCommandConvert(CommandLineArgEnumerator * enumerat
     WriteConvertFromAndToMessage(sourceFileType, destinationFileType);
 
     gOpenRCT2Headless = true;
-    if (!openrct2_initialise()) {
+    if (!openrct2_initialise())
+    {
         Console::Error::WriteLine("Error while initialising OpenRCT2.");
         return EXITCODE_FAIL;
     }
 
-    if (sourceFileType == FILE_EXTENSION_SV4 ||
-        sourceFileType == FILE_EXTENSION_SC4)
+    try
     {
-        try
-        {
-            auto s4Importer = std::unique_ptr<IParkImporter>(ParkImporter::CreateS4());
-            if (sourceFileType == FILE_EXTENSION_SC4)
-            {
-                s4Importer->LoadScenario(sourcePath);
-            }
-            if (sourceFileType == FILE_EXTENSION_SV4)
-            {
-                s4Importer->LoadSavedGame(sourcePath);
-            }
-
-            s4Importer->Import();
-
-            if (sourceFileType == FILE_EXTENSION_SC4)
-            {
-                // We are converting a scenario, so reset the park
-                scenario_begin();
-            }
-        }
-        catch (const Exception &ex)
-        {
-            Console::Error::WriteLine(ex.GetMessage());
-            return EXITCODE_FAIL;
-        }
+        auto importer = std::unique_ptr<IParkImporter>(ParkImporter::Create(sourcePath));
+        importer->Load(sourcePath);
+        importer->Import();
     }
-    else
+    catch (const Exception &ex)
     {
-        if (sourceFileType == FILE_EXTENSION_SC6)
-        {
-            scenario_load_and_play_from_path(sourcePath);
-        }
-        if (sourceFileType == FILE_EXTENSION_SV6)
-        {
-            game_load_save(sourcePath);
-        }
+        Console::Error::WriteLine(ex.GetMessage());
+        return EXITCODE_FAIL;
     }
 
-    SDL_RWops* rw = SDL_RWFromFile(destinationPath, "wb+");
-    if (rw != NULL) {
+    if (sourceFileType == FILE_EXTENSION_SC4 ||
+        sourceFileType == FILE_EXTENSION_SC6)
+    {
+        // We are converting a scenario, so reset the park
+        scenario_begin();
+    }
+
+    try
+    {
+        auto exporter = std::make_unique<S6Exporter>();
+
         // HACK remove the main window so it saves the park with the
         //      correct initial view
         window_close_by_class(WC_MAIN_WINDOW);
 
+        exporter->Export();
         if (destinationFileType == FILE_EXTENSION_SC6)
         {
-            scenario_save(rw, 0x80000002);
+            exporter->SaveScenario(destinationPath);
         }
         else
         {
-            scenario_save(rw, 0x80000001);
+            exporter->SaveGame(destinationPath);
         }
-        SDL_RWclose(rw);
-        Console::WriteLine("Conversion successful!");
     }
-    else
+    catch (const Exception &ex)
     {
-        Console::Error::WriteLine("Unable to write destination file.");
+        Console::Error::WriteLine(ex.GetMessage());
         return EXITCODE_FAIL;
     }
+
+    Console::WriteLine("Conversion successful!");
     return EXITCODE_OK;
 }
 

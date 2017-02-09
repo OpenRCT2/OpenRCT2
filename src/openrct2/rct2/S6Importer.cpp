@@ -486,42 +486,6 @@ extern "C"
         return result;
     }
 
-    bool scenario_load_rw(SDL_RWops * rw)
-    {
-        bool result = false;
-        auto stream = FileStream(rw, FILE_MODE_OPEN);
-        auto s6Importer = new S6Importer();
-        try
-        {
-            s6Importer->LoadFromStream(&stream, true);
-            s6Importer->Import();
-
-            game_fix_save_vars();
-            sprite_position_tween_reset();
-            result = true;
-        }
-        catch (ObjectLoadException)
-        {
-            gErrorType = ERROR_TYPE_FILE_LOAD;
-            gErrorStringId = STR_GAME_SAVE_FAILED;
-        }
-        catch (IOException)
-        {
-            gErrorType = ERROR_TYPE_FILE_LOAD;
-            gErrorStringId = STR_GAME_SAVE_FAILED;
-        }
-        catch (Exception)
-        {
-            gErrorType = ERROR_TYPE_FILE_LOAD;
-            gErrorStringId = STR_FILE_CONTAINS_INVALID_DATA;
-        }
-        delete s6Importer;
-
-        gScreenAge = 0;
-        gLastAutoSaveUpdate = AUTOSAVE_PAUSE;
-        return result;
-    }
-
     /**
      *
      *  rct2: 0x00676053
@@ -560,64 +524,5 @@ extern "C"
         gScreenAge = 0;
         gLastAutoSaveUpdate = AUTOSAVE_PAUSE;
         return result;
-    }
-
-    sint32 game_load_network(SDL_RWops* rw)
-    {
-        bool result = false;
-        auto stream = FileStream(rw, FILE_MODE_OPEN);
-        auto s6Importer = new S6Importer();
-        try
-        {
-            s6Importer->LoadFromStream(&stream, false);
-            s6Importer->Import();
-
-            sprite_position_tween_reset();
-            result = true;
-        }
-        catch (const ObjectLoadException &)
-        {
-        }
-        catch (const Exception &)
-        {
-        }
-        delete s6Importer;
-
-        if (!result)
-        {
-            return 0;
-        }
-
-        // Read checksum
-        uint32 checksum;
-        SDL_RWread(rw, &checksum, sizeof(uint32), 1);
-
-        // Read other data not in normal save files
-        SDL_RWread(rw, gSpriteSpatialIndex, 0x10001 * sizeof(uint16), 1);
-        gGamePaused = SDL_ReadLE32(rw);
-        _guestGenerationProbability = SDL_ReadLE32(rw);
-        _suggestedGuestMaximum = SDL_ReadLE32(rw);
-        gCheatsSandboxMode = SDL_ReadU8(rw) != 0;
-        gCheatsDisableClearanceChecks = SDL_ReadU8(rw) != 0;
-        gCheatsDisableSupportLimits = SDL_ReadU8(rw) != 0;
-        gCheatsDisableTrainLengthLimit = SDL_ReadU8(rw) != 0;
-        gCheatsEnableChainLiftOnAllTrack = SDL_ReadU8(rw) != 0;
-        gCheatsShowAllOperatingModes = SDL_ReadU8(rw) != 0;
-        gCheatsShowVehiclesFromOtherTrackTypes = SDL_ReadU8(rw) != 0;
-        gCheatsFastLiftHill = SDL_ReadU8(rw) != 0;
-        gCheatsDisableBrakesFailure = SDL_ReadU8(rw) != 0;
-        gCheatsDisableAllBreakdowns = SDL_ReadU8(rw) != 0;
-        gCheatsUnlockAllPrices = SDL_ReadU8(rw) != 0;
-        gCheatsBuildInPauseMode = SDL_ReadU8(rw) != 0;
-        gCheatsIgnoreRideIntensity = SDL_ReadU8(rw) != 0;
-        gCheatsDisableVandalism = SDL_ReadU8(rw) != 0;
-        gCheatsDisableLittering = SDL_ReadU8(rw) != 0;
-        gCheatsNeverendingMarketing = SDL_ReadU8(rw) != 0;
-        gCheatsFreezeClimate = SDL_ReadU8(rw) != 0;
-        gCheatsDisablePlantAging = SDL_ReadU8(rw) != 0;
-        gCheatsAllowArbitraryRideTypeChanges = SDL_ReadU8(rw) != 0;
-
-        gLastAutoSaveUpdate = AUTOSAVE_PAUSE;
-        return 1;
     }
 }

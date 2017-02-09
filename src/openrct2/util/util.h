@@ -53,7 +53,7 @@ bool str_is_null_or_empty(const char *str);
 void util_srand(sint32 source);
 uint32 util_rand();
 
-uint8 *util_zlib_deflate(uint8 *data, size_t data_in_size, size_t *data_out_size);
+uint8 *util_zlib_deflate(const uint8 *data, size_t data_in_size, size_t *data_out_size);
 uint8 *util_zlib_inflate(uint8 *data, size_t data_in_size, size_t *data_out_size);
 
 #endif

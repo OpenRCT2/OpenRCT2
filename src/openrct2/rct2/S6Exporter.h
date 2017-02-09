@@ -30,8 +30,6 @@ extern "C"
 interface   IStream;
 struct      ObjectRepositoryItem;
 
-sint32 scenario_save_network(SDL_RWops* rw, const std::vector<const ObjectRepositoryItem *> &objects);
-
 /**
  * Class to export RollerCoaster Tycoon 2 scenarios (*.SC6) and saved games (*.SV6).
  */

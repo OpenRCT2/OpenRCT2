@@ -16,19 +16,12 @@
 
 #include <SDL_platform.h>
 
-#ifdef __WINDOWS__
-	// winsock2 must be included before windows.h
-	#include <winsock2.h>
-#else
-	#include <arpa/inet.h>
-#endif
-
 #include "../core/Guard.hpp"
+#include "../OpenRCT2.h"
 
 extern "C" {
-#include "../OpenRCT2.h"
-#include "../platform/platform.h"
-#include "../util/sawyercoding.h"
+	#include "../platform/platform.h"
+	#include "../util/sawyercoding.h"
 }
 
 #include "network.h"
@@ -45,13 +38,16 @@ sint32 _pickup_peep_old_x = SPRITE_LOCATION_NULL;
 #include <string>
 
 #include "../core/Console.hpp"
+#include "../core/FileStream.hpp"
 #include "../core/Json.hpp"
 #include "../core/Math.hpp"
+#include "../core/MemoryStream.h"
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
 #include "../core/Util.hpp"
 #include "../object/ObjectManager.h"
 #include "../object/ObjectRepository.h"
+#include "../ParkImporter.h"
 #include "../rct2/S6Exporter.h"
 
 extern "C" {
@@ -130,17 +126,9 @@ Network::~Network()
 
 bool Network::Init()
 {
-#ifdef __WINDOWS__
-	if (!wsa_initialized) {
-		log_verbose("Initialising WSA");
-		WSADATA wsa_data;
-		if (WSAStartup(MAKEWORD(2, 2), &wsa_data) != 0) {
-			log_error("Unable to initialise winsock.");
-			return false;
-		}
-		wsa_initialized = true;
+	if (!InitialiseWSA()) {
+		return false;
 	}
-#endif
 
 	status = NETWORK_STATUS_READY;
 
@@ -183,12 +171,7 @@ void Network::Close()
 	player_list.clear();
 	group_list.clear();
 
-#ifdef __WINDOWS__
-	if (wsa_initialized) {
-		WSACleanup();
-		wsa_initialized = false;
-	}
-#endif
+	DisposeWSA();
 
 	CloseChatLog();
 	gfx_invalidate_screen();
@@ -229,36 +212,47 @@ bool Network::BeginClient(const char* host, uint16 port)
 			return false;
 		}
 
-		SDL_RWops *privkey = SDL_RWFromFile(keyPath, "wb+");
-		if (privkey == nullptr) {
+		try
+		{
+			auto fs = FileStream(keyPath, FILE_MODE_WRITE);
+			_key.SavePrivate(&fs);
+		}
+		catch (Exception)
+		{
 			log_error("Unable to save private key at %s.", keyPath);
 			return false;
 		}
-		_key.SavePrivate(privkey);
-		SDL_RWclose(privkey);
 
 		const std::string hash = _key.PublicKeyHash();
 		const utf8 *publicKeyHash = hash.c_str();
 		network_get_public_key_path(keyPath, sizeof(keyPath), gConfigNetwork.player_name, publicKeyHash);
 		Console::WriteLine("Key generated, saving public bits as %s", keyPath);
-		SDL_RWops *pubkey = SDL_RWFromFile(keyPath, "wb+");
-		if (pubkey == nullptr) {
+
+		try
+		{
+			auto fs = FileStream(keyPath, FILE_MODE_WRITE);
+			_key.SavePublic(&fs);
+		}
+		catch (Exception)
+		{
 			log_error("Unable to save public key at %s.", keyPath);
 			return false;
 		}
-		_key.SavePublic(pubkey);
-		SDL_RWclose(pubkey);
 	} else {
-		log_verbose("Loading key from %s", keyPath);
-		SDL_RWops *privkey = SDL_RWFromFile(keyPath, "rb");
-		if (privkey == nullptr) {
+		// LoadPrivate returns validity of loaded key
+		bool ok = false;
+		try
+		{
+			log_verbose("Loading key from %s", keyPath);
+			auto fs = FileStream(keyPath, FILE_MODE_OPEN);
+			ok = _key.LoadPrivate(&fs);
+		}
+		catch (Exception)
+		{
 			log_error("Unable to read private key from %s.", keyPath);
 			return false;
 		}
 
-		// LoadPrivate returns validity of loaded key
-		bool ok = _key.LoadPrivate(privkey);
-		SDL_RWclose(privkey);
 		// Don't store private key in memory when it's not in use.
 		_key.Unload();
 		return ok;
@@ -813,10 +807,11 @@ void Network::AppendChatLog(const utf8 *text)
 	utf8 directory[MAX_PATH];
 	Path::GetDirectory(directory, sizeof(directory), chatLogPath);
 	if (platform_ensure_directory_exists(directory)) {
-		_chatLogStream = SDL_RWFromFile(chatLogPath, "a");
-		if (_chatLogStream != nullptr) {
-			utf8 buffer[256];
+		try
+		{
+			_chatLogStream = new FileStream(chatLogPath, FILE_MODE_APPEND);
 
+			utf8 buffer[256];
 			time_t timer;
 			struct tm * tmInfo;
 			time(&timer);
@@ -827,8 +822,12 @@ void Network::AppendChatLog(const utf8 *text)
 			utf8_remove_formatting(buffer, false);
 			String::Append(buffer, sizeof(buffer), PLATFORM_NEWLINE);
 
-			SDL_RWwrite(_chatLogStream, buffer, strlen(buffer), 1);
-			SDL_RWclose(_chatLogStream);
+			_chatLogStream->Write(buffer, strlen(buffer));
+			delete _chatLogStream;
+			_chatLogStream = nullptr;
+		}
+		catch (const Exception &)
+		{
 		}
 	}
 }
@@ -916,14 +915,6 @@ void Network::Server_Send_AUTH(NetworkConnection& connection)
 
 void Network::Server_Send_MAP(NetworkConnection* connection)
 {
-	FILE* temp = tmpfile();
-	if (!temp) {
-		log_warning("Failed to create temporary file to save map.");
-		return;
-	}
-	SDL_RWops* rw = SDL_RWFromFP(temp, SDL_TRUE);
-	size_t out_size;
-	uint8 *header;
 	std::vector<const ObjectRepositoryItem *> objects;
 	if (connection) {
 		objects = connection->RequestedObjects;
@@ -933,8 +924,9 @@ void Network::Server_Send_MAP(NetworkConnection* connection)
 		IObjectManager * objManager = GetObjectManager();
 		objects = objManager->GetPackableObjects();
 	}
-	header = save_for_network(rw, out_size, objects);
-	SDL_RWclose(rw);
+
+	size_t out_size;
+	uint8 * header = save_for_network(out_size, objects);
 	if (header == nullptr) {
 		if (connection) {
 			connection->SetLastDisconnectReason(STR_MULTIPLAYER_CONNECTION_CLOSED);
@@ -957,22 +949,24 @@ void Network::Server_Send_MAP(NetworkConnection* connection)
 	free(header);
 }
 
-uint8 * Network::save_for_network(SDL_RWops *rw_buffer, size_t &out_size, const std::vector<const ObjectRepositoryItem *> &objects) const
+uint8 * Network::save_for_network(size_t &out_size, const std::vector<const ObjectRepositoryItem *> &objects) const
 {
 	uint8 * header = nullptr;
 	out_size = 0;
 	bool RLEState = gUseRLE;
 	gUseRLE = false;
-	scenario_save_network(rw_buffer, objects);
-	gUseRLE = RLEState;
-	sint32 size = (sint32)SDL_RWtell(rw_buffer);
-	std::vector<uint8> buffer(size);
-	SDL_RWseek(rw_buffer, 0, RW_SEEK_SET);
-	if (SDL_RWread(rw_buffer, &buffer[0], size, 1) == 0) {
-		log_warning("Failed to read temporary map file into memory.");
+
+	auto ms = MemoryStream();
+	if (!SaveMap(&ms, objects)) {
+		log_warning("Failed to export map.");
 		return nullptr;
 	}
-	uint8 *compressed = util_zlib_deflate(&buffer[0], size, &out_size);
+	gUseRLE = RLEState;
+	
+	const void * data = ms.GetData();
+	sint32 size = ms.GetLength();
+
+	uint8 *compressed = util_zlib_deflate((const uint8 *)data, size, &out_size);
 	if (compressed != NULL)
 	{
 		header = (uint8 *)_strdup("open2_sv6_zlib");
@@ -993,7 +987,7 @@ uint8 * Network::save_for_network(SDL_RWops *rw_buffer, size_t &out_size, const 
 			log_error("Failed to allocate %u bytes.", size);
 		} else {
 			out_size = size;
-			memcpy(header, &buffer[0], size);
+			memcpy(header, data, size);
 		}
 	}
 	return header;
@@ -1381,15 +1375,23 @@ void Network::Client_Handle_TOKEN(NetworkConnection& connection, NetworkPacket& 
 		log_error("Key file (%s) was not found. Restart client to re-generate it.", keyPath);
 		return;
 	}
-	SDL_RWops *privkey = SDL_RWFromFile(keyPath, "rb");
-	bool ok = _key.LoadPrivate(privkey);
-	SDL_RWclose(privkey);
-	if (!ok) {
+
+	try
+	{
+		auto fs = FileStream(keyPath, FILE_MODE_OPEN);
+		if (!_key.LoadPrivate(&fs))
+		{
+			throw Exception();
+		}
+	}
+	catch (Exception)
+	{
 		log_error("Failed to load key %s", keyPath);
 		connection.SetLastDisconnectReason(STR_MULTIPLAYER_VERIFICATION_FAILURE);
 		connection.Socket->Disconnect();
 		return;
 	}
+
 	uint32 challenge_size;
 	packet >> challenge_size;
 	const char *challenge = (const char *)packet.Read(challenge_size);
@@ -1398,7 +1400,7 @@ void Network::Client_Handle_TOKEN(NetworkConnection& connection, NetworkPacket& 
 	const std::string pubkey = _key.PublicKeyString();
 	_challenge.resize(challenge_size);
 	memcpy(_challenge.data(), challenge, challenge_size);
-	ok = _key.Sign(_challenge.data(), _challenge.size(), &signature, &sigsize);
+	bool ok = _key.Sign(_challenge.data(), _challenge.size(), &signature, &sigsize);
 	if (!ok) {
 		log_error("Failed to sign server's challenge.");
 		connection.SetLastDisconnectReason(STR_MULTIPLAYER_VERIFICATION_FAILURE);
@@ -1552,26 +1554,45 @@ void Network::Server_Handle_AUTH(NetworkConnection& connection, NetworkPacket& p
 		if (pubkey == nullptr) {
 			connection.AuthStatus = NETWORK_AUTH_VERIFICATIONFAILURE;
 		} else {
-			const char *signature = (const char *)packet.Read(sigsize);
-			SDL_RWops *pubkey_rw = SDL_RWFromConstMem(pubkey, (sint32)strlen(pubkey));
-			if (signature == nullptr || pubkey_rw == nullptr) {
-				connection.AuthStatus = NETWORK_AUTH_VERIFICATIONFAILURE;
-				log_verbose("Signature verification failed, invalid data!");
-			} else {
-				connection.Key.LoadPublic(pubkey_rw);
-				SDL_RWclose(pubkey_rw);
+			try
+			{
+				const char *signature = (const char *)packet.Read(sigsize);
+				if (signature == nullptr)
+				{
+					throw Exception();
+				}
+
+				auto ms = MemoryStream(pubkey, strlen(pubkey));
+				if (!connection.Key.LoadPublic(&ms))
+				{
+					throw Exception();
+				}
+
 				bool verified = connection.Key.Verify(connection.Challenge.data(), connection.Challenge.size(), signature, sigsize);
 				const std::string hash = connection.Key.PublicKeyHash();
-				if (verified) {
-					connection.AuthStatus = NETWORK_AUTH_VERIFIED;
+				if (verified)
+				{
 					log_verbose("Signature verification ok. Hash %s", hash.c_str());
-				} else {
+					if (gConfigNetwork.known_keys_only && _userManager.GetUserByHash(hash) == nullptr)
+					{
+						log_verbose("Hash %s, not known", hash.c_str());
+						connection.AuthStatus = NETWORK_AUTH_UNKNOWN_KEY_DISALLOWED;
+					}
+					else
+					{
+						connection.AuthStatus = NETWORK_AUTH_VERIFIED;
+					}
+				}
+				else
+				{
 					connection.AuthStatus = NETWORK_AUTH_VERIFICATIONFAILURE;
 					log_verbose("Signature verification failed!");
 				}
-				if (gConfigNetwork.known_keys_only && _userManager.GetUserByHash(hash) == nullptr) {
-					connection.AuthStatus = NETWORK_AUTH_UNKNOWN_KEY_DISALLOWED;
-				}
+			}
+			catch (Exception)
+			{
+				connection.AuthStatus = NETWORK_AUTH_VERIFICATIONFAILURE;
+				log_verbose("Signature verification failed, invalid data!");
 			}
 		}
 
@@ -1649,8 +1670,10 @@ void Network::Client_Handle_MAP(NetworkConnection& connection, NetworkPacket& pa
 		} else {
 			log_verbose("Assuming received map is in plain sv6 format");
 		}
-		SDL_RWops* rw = SDL_RWFromMem(data, (sint32)data_size);
-		if (game_load_network(rw)) {
+
+		auto ms = MemoryStream(data, data_size);
+		if (LoadMap(&ms))
+		{
 			game_load_init();
 			game_command_queue.clear();
 			server_tick = gCurrentTicks;
@@ -1667,12 +1690,104 @@ void Network::Client_Handle_MAP(NetworkConnection& connection, NetworkPacket& pa
 			//Something went wrong, game is not loaded. Return to main screen.
 			game_do_command(0, GAME_COMMAND_FLAG_APPLY, 0, 0, GAME_COMMAND_LOAD_OR_QUIT, 1, 0);
 		}
-		SDL_RWclose(rw);
 		if (has_to_free)
 		{
 			free(data);
 		}
 	}
+}
+
+bool Network::LoadMap(IStream * stream)
+{
+	bool result = false;
+	try
+	{
+		auto importer = std::unique_ptr<IParkImporter>(ParkImporter::CreateS6());
+		importer->LoadFromStream(stream, false);
+		importer->Import();
+
+		sprite_position_tween_reset();
+
+		// Read checksum
+		uint32 checksum = stream->ReadValue<uint32>();
+		UNUSED(checksum);
+
+		// Read other data not in normal save files
+		stream->Read(gSpriteSpatialIndex, 0x10001 * sizeof(uint16));
+		gGamePaused = stream->ReadValue<uint32>();
+		_guestGenerationProbability = stream->ReadValue<uint32>();
+		_suggestedGuestMaximum = stream->ReadValue<uint32>();
+		gCheatsSandboxMode = stream->ReadValue<uint8>() != 0;
+		gCheatsDisableClearanceChecks = stream->ReadValue<uint8>() != 0;
+		gCheatsDisableSupportLimits = stream->ReadValue<uint8>() != 0;
+		gCheatsDisableTrainLengthLimit = stream->ReadValue<uint8>() != 0;
+		gCheatsEnableChainLiftOnAllTrack = stream->ReadValue<uint8>() != 0;
+		gCheatsShowAllOperatingModes = stream->ReadValue<uint8>() != 0;
+		gCheatsShowVehiclesFromOtherTrackTypes = stream->ReadValue<uint8>() != 0;
+		gCheatsFastLiftHill = stream->ReadValue<uint8>() != 0;
+		gCheatsDisableBrakesFailure = stream->ReadValue<uint8>() != 0;
+		gCheatsDisableAllBreakdowns = stream->ReadValue<uint8>() != 0;
+		gCheatsUnlockAllPrices = stream->ReadValue<uint8>() != 0;
+		gCheatsBuildInPauseMode = stream->ReadValue<uint8>() != 0;
+		gCheatsIgnoreRideIntensity = stream->ReadValue<uint8>() != 0;
+		gCheatsDisableVandalism = stream->ReadValue<uint8>() != 0;
+		gCheatsDisableLittering = stream->ReadValue<uint8>() != 0;
+		gCheatsNeverendingMarketing = stream->ReadValue<uint8>() != 0;
+		gCheatsFreezeClimate = stream->ReadValue<uint8>() != 0;
+		gCheatsDisablePlantAging = stream->ReadValue<uint8>() != 0;
+		gCheatsAllowArbitraryRideTypeChanges = stream->ReadValue<uint8>() != 0;
+
+		gLastAutoSaveUpdate = AUTOSAVE_PAUSE;
+		result = true;
+	}
+	catch (const Exception &)
+	{
+	}
+	return result;
+}
+
+bool Network::SaveMap(IStream * stream, const std::vector<const ObjectRepositoryItem *> &objects) const
+{
+	bool result = false;
+	viewport_set_saved_view();
+	try
+	{
+		auto s6exporter = std::make_unique<S6Exporter>();
+		s6exporter->ExportObjectsList = objects;
+		s6exporter->Export();
+		s6exporter->SaveGame(stream);
+
+		// Write other data not in normal save files
+		stream->Write(gSpriteSpatialIndex, 0x10001 * sizeof(uint16));
+		stream->WriteValue<uint32>(gGamePaused);
+		stream->WriteValue<uint32>(_guestGenerationProbability);
+		stream->WriteValue<uint32>(_suggestedGuestMaximum);
+		stream->WriteValue<uint8>(gCheatsSandboxMode);
+		stream->WriteValue<uint8>(gCheatsDisableClearanceChecks);
+		stream->WriteValue<uint8>(gCheatsDisableSupportLimits);
+		stream->WriteValue<uint8>(gCheatsDisableTrainLengthLimit);
+		stream->WriteValue<uint8>(gCheatsEnableChainLiftOnAllTrack);
+		stream->WriteValue<uint8>(gCheatsShowAllOperatingModes);
+		stream->WriteValue<uint8>(gCheatsShowVehiclesFromOtherTrackTypes);
+		stream->WriteValue<uint8>(gCheatsFastLiftHill);
+		stream->WriteValue<uint8>(gCheatsDisableBrakesFailure);
+		stream->WriteValue<uint8>(gCheatsDisableAllBreakdowns);
+		stream->WriteValue<uint8>(gCheatsUnlockAllPrices);
+		stream->WriteValue<uint8>(gCheatsBuildInPauseMode);
+		stream->WriteValue<uint8>(gCheatsIgnoreRideIntensity);
+		stream->WriteValue<uint8>(gCheatsDisableVandalism);
+		stream->WriteValue<uint8>(gCheatsDisableLittering);
+		stream->WriteValue<uint8>(gCheatsNeverendingMarketing);
+		stream->WriteValue<uint8>(gCheatsFreezeClimate);
+		stream->WriteValue<uint8>(gCheatsDisablePlantAging);
+		stream->WriteValue<uint8>(gCheatsAllowArbitraryRideTypeChanges);
+
+		result = true;
+	}
+	catch (const Exception &)
+	{
+	}
+	return result;
 }
 
 void Network::Client_Handle_CHAT(NetworkConnection& connection, NetworkPacket& packet)
@@ -1953,19 +2068,6 @@ void Network::Client_Handle_GAMEINFO(NetworkConnection& connection, NetworkPacke
 	json_decref(root);
 
 	network_chat_show_server_greeting();
-}
-
-namespace Convert
-{
-	uint16 HostToNetwork(uint16 value)
-	{
-		return htons(value);
-	}
-
-	uint16 NetworkToHost(uint16 value)
-	{
-		return ntohs(value);
-	}
 }
 
 sint32 network_init()
@@ -2456,8 +2558,16 @@ void network_send_password(const char* password)
 		log_error("Private key %s missing! Restart the game to generate it.", keyPath);
 		return;
 	}
-	SDL_RWops *privkey = SDL_RWFromFile(keyPath, "rb");
-	gNetwork._key.LoadPrivate(privkey);
+	try
+	{
+		auto fs = FileStream(keyPath, FILE_MODE_OPEN);
+		gNetwork._key.LoadPrivate(&fs);
+	}
+	catch (Exception)
+	{
+		log_error("Error reading private key from %s.", keyPath);
+		return;
+	}
 	const std::string pubkey = gNetwork._key.PublicKeyString();
 	size_t sigsize;
 	char *signature;
