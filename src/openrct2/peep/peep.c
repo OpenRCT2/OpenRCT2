@@ -8056,13 +8056,13 @@ static sint32 peep_interact_with_entrance(rct_peep* peep, sint16 x, sint16 y, rc
 
 		uint8 entranceIndex = 0;
 		for (entranceIndex = 0; entranceIndex < MAX_PARK_ENTRANCES; entranceIndex++) {
-			if (gParkEntrance[entranceIndex].x == (x & 0xFFE0) &&
-				gParkEntrance[entranceIndex].y == (y & 0xFFE0))
+			if (gParkEntrances[entranceIndex].x == (x & 0xFFE0) &&
+				gParkEntrances[entranceIndex].y == (y & 0xFFE0))
 				break;
 		}
 
-		sint16 z = gParkEntrance[entranceIndex].z / 8;
-		entranceDirection = gParkEntrance[entranceIndex].direction;
+		sint16 z = gParkEntrances[entranceIndex].z / 8;
+		entranceDirection = gParkEntrances[entranceIndex].direction;
 
 		sint16 next_x = (x & 0xFFE0) + TileDirectionDelta[entranceDirection].x;
 		sint16 next_y = (y & 0xFFE0) + TileDirectionDelta[entranceDirection].y;
@@ -9783,11 +9783,11 @@ static sint32 guest_path_find_entering_park(rct_peep *peep, rct_map_element *map
 	uint8 chosenEntrance = 0xFF;
 	uint16 nearestDist = 0xFFFF;
 	for (uint8 entranceNum = 0; entranceNum < MAX_PARK_ENTRANCES; ++entranceNum){
-		if (gParkEntrance[entranceNum].x == MAP_LOCATION_NULL)
+		if (gParkEntrances[entranceNum].x == MAP_LOCATION_NULL)
 			continue;
 
-		uint16 dist = abs(gParkEntrance[entranceNum].x - peep->next_x) +
-					abs(gParkEntrance[entranceNum].y - peep->next_y);
+		uint16 dist = abs(gParkEntrances[entranceNum].x - peep->next_x) +
+					abs(gParkEntrances[entranceNum].y - peep->next_y);
 
 		if (dist >= nearestDist)
 			continue;
@@ -9799,9 +9799,9 @@ static sint32 guest_path_find_entering_park(rct_peep *peep, rct_map_element *map
 	if (chosenEntrance == 0xFF)
 		return guest_path_find_aimless(peep, edges);
 
-	sint16 x = gParkEntrance[chosenEntrance].x;
-	sint16 y = gParkEntrance[chosenEntrance].y;
-	sint16 z = gParkEntrance[chosenEntrance].z;
+	sint16 x = gParkEntrances[chosenEntrance].x;
+	sint16 y = gParkEntrances[chosenEntrance].y;
+	sint16 z = gParkEntrances[chosenEntrance].z;
 
 	gPeepPathFindGoalPosition = (rct_xyz16){ x, y, z >> 3 };
 	gPeepPathFindIgnoreForeignQueues = true;
@@ -9855,7 +9855,7 @@ static sint32 guest_path_find_park_entrance(rct_peep* peep, rct_map_element *map
 
 	// Resolves already-corrupt guests (e.g. loaded from save)
 	if (peep->peep_flags & PEEP_FLAGS_PARK_ENTRANCE_CHOSEN &&
-		(peep->current_ride >= 4 || gParkEntrance[peep->current_ride].x == MAP_LOCATION_NULL)
+		(peep->current_ride >= 4 || gParkEntrances[peep->current_ride].x == MAP_LOCATION_NULL)
 	) {
 		peep->peep_flags &= ~(PEEP_FLAGS_PARK_ENTRANCE_CHOSEN);
 	}
@@ -9864,11 +9864,11 @@ static sint32 guest_path_find_park_entrance(rct_peep* peep, rct_map_element *map
 		uint8 chosenEntrance = 0xFF;
 		uint16 nearestDist = 0xFFFF;
 		for (entranceNum = 0; entranceNum < MAX_PARK_ENTRANCES; ++entranceNum){
-			if (gParkEntrance[entranceNum].x == MAP_LOCATION_NULL)
+			if (gParkEntrances[entranceNum].x == MAP_LOCATION_NULL)
 				continue;
 
-			uint16 dist = abs(gParkEntrance[entranceNum].x - peep->next_x) +
-				abs(gParkEntrance[entranceNum].y - peep->next_y);
+			uint16 dist = abs(gParkEntrances[entranceNum].x - peep->next_x) +
+				abs(gParkEntrances[entranceNum].y - peep->next_y);
 
 			if (dist >= nearestDist)
 				continue;
@@ -9885,9 +9885,9 @@ static sint32 guest_path_find_park_entrance(rct_peep* peep, rct_map_element *map
 	}
 
 	entranceNum = peep->current_ride;
-	sint16 x = gParkEntrance[entranceNum].x;
-	sint16 y = gParkEntrance[entranceNum].y;
-	sint16 z = gParkEntrance[entranceNum].z;
+	sint16 x = gParkEntrances[entranceNum].x;
+	sint16 y = gParkEntrances[entranceNum].y;
+	sint16 z = gParkEntrances[entranceNum].z;
 
 	gPeepPathFindGoalPosition = (rct_xyz16) { x, y, z >> 3 };
 	gPeepPathFindIgnoreForeignQueues = true;
@@ -12678,24 +12678,24 @@ void peep_autoposition(rct_peep *newPeep)
         count = 0;
         uint8 i;
         for (i = 0; i < MAX_PARK_ENTRANCES; ++i) {
-            if (gParkEntrance[i].x != SPRITE_LOCATION_NULL)
+            if (gParkEntrances[i].x != SPRITE_LOCATION_NULL)
                 ++count;
         }
 
         if (count > 0) {
             uint32 rand = scenario_rand_max(count);
             for (i = 0; i < MAX_PARK_ENTRANCES; ++i) {
-                if (gParkEntrance[i].x != SPRITE_LOCATION_NULL) {
+                if (gParkEntrances[i].x != SPRITE_LOCATION_NULL) {
                     if (rand == 0)
                         break;
                     --rand;
                 }
             }
 
-            uint8 dir = gParkEntrance[i].direction;
-            x = gParkEntrance[i].x;
-            y = gParkEntrance[i].y;
-            z = gParkEntrance[i].z;
+            uint8 dir = gParkEntrances[i].direction;
+            x = gParkEntrances[i].x;
+            y = gParkEntrances[i].y;
+            z = gParkEntrances[i].z;
             x += 16 + ((dir & 1) == 0 ? ((dir & 2) ? 32 : -32) : 0);
             y += 16 + ((dir & 1) == 1 ? ((dir & 2) ? -32 : 32) : 0);
         } else {

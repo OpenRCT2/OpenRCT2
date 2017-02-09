@@ -2333,9 +2333,9 @@ private:
 
     void FixEntrancePositions()
     {
-        for (uint8 i = 0; i < MAX_PARK_ENTRANCES; i++)
+        for (size_t i = 0; i < Util::CountOf(gParkEntrances); i++)
         {
-            gParkEntrance[i].x = MAP_LOCATION_NULL;
+            gParkEntrances[i].x = MAP_LOCATION_NULL;
         }
 
         uint8 entranceIndex = 0;
@@ -2350,10 +2350,10 @@ private:
             if (element->properties.entrance.type != ENTRANCE_TYPE_PARK_ENTRANCE) continue;
             if ((element->properties.entrance.index & 0x0F) != 0) continue;
 
-            gParkEntrance[entranceIndex].x = it.x * 32;
-            gParkEntrance[entranceIndex].y = it.y * 32;
-            gParkEntrance[entranceIndex].z = element->base_height * 8;
-            gParkEntrance[entranceIndex].direction = element->type & 3;
+            gParkEntrances[entranceIndex].x = it.x * 32;
+            gParkEntrances[entranceIndex].y = it.y * 32;
+            gParkEntrances[entranceIndex].z = element->base_height * 8;
+            gParkEntrances[entranceIndex].direction = element->type & 3;
             entranceIndex++;
         }
     }

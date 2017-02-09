@@ -67,7 +67,7 @@ extern uint8 gGuestsInParkHistory[32];
 extern sint32 _guestGenerationProbability;
 extern sint32 _suggestedGuestMaximum;
 
-extern rct_xyzd16 gParkEntrance[MAX_PARK_ENTRANCES];
+extern rct_xyzd16 gParkEntrances[MAX_PARK_ENTRANCES];
 
 extern bool gParkEntranceGhostExists;
 extern rct_xyz16 gParkEntranceGhostPosition;
