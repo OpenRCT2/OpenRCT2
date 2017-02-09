@@ -252,6 +252,20 @@ void window_map_open()
 	gLandToolSize = 1;
 }
 
+void window_map_reset()
+{
+	rct_window *w;
+
+	// Check if window is even opened
+	w = window_bring_to_front_by_class(WC_MAP);
+	if (w == NULL) {
+		return;
+	}
+
+	window_map_init_map();
+	window_map_center_on_view_point();
+}
+
 /**
 *
 *  rct2: 0x0068D0F1

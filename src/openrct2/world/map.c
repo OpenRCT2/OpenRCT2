@@ -398,6 +398,8 @@ void map_init(sint32 size)
 	gMapBaseZ = 7;
 	map_update_tile_pointers();
 	map_remove_out_of_range_elements();
+
+	window_map_reset();
 }
 
 /**
