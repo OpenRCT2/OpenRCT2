@@ -49,6 +49,7 @@ bool gCheatsDisableTrainLengthLimit = false;
 bool gCheatsDisablePlantAging = false;
 bool gCheatsEnableChainLiftOnAllTrack = false;
 bool gCheatsAllowArbitraryRideTypeChanges = false;
+bool gCheatsDisableRideValueAging = false;
 
 sint32 park_rating_spinner_value;
 
@@ -539,6 +540,7 @@ void game_command_cheat(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint
             case CHEAT_RESETDATE: date_reset(); window_invalidate_by_class(WC_BOTTOM_TOOLBAR); break;
             case CHEAT_ALLOW_ARBITRARY_RIDE_TYPE_CHANGES: gCheatsAllowArbitraryRideTypeChanges = *edx != 0; window_invalidate_by_class(WC_RIDE); break;
             case CHEAT_OWNALLLAND: cheat_own_all_land(); break;
+            case CHEAT_DISABLERIDEVALUEAGING: gCheatsDisableRideValueAging = *edx != 0; break;
         }
         if (network_get_mode() == NETWORK_MODE_NONE) {
             config_save_default();

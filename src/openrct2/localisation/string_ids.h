@@ -3764,6 +3764,8 @@ enum {
     STR_LOG_REMOVE_TRACK = 6098,
     STR_LOG_CLIENT_STARTED = 6099,
     STR_LOG_CLIENT_STOPPED = 6100,
+    STR_CHEAT_DISABLE_RIDE_VALUE_AGING = 6101,
+    STR_CHEAT_DISABLE_RIDE_VALUE_AGING_TIP = 6102,
 
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     STR_COUNT = 32768

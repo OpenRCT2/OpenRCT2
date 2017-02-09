@@ -1833,6 +1833,7 @@ bool Network::LoadMap(IStream * stream)
         gCheatsFreezeClimate = stream->ReadValue<uint8>() != 0;
         gCheatsDisablePlantAging = stream->ReadValue<uint8>() != 0;
         gCheatsAllowArbitraryRideTypeChanges = stream->ReadValue<uint8>() != 0;
+        gCheatsDisableRideValueAging = stream->ReadValue<uint8>() != 0;
 
         gLastAutoSaveUpdate = AUTOSAVE_PAUSE;
         result = true;
@@ -1878,6 +1879,7 @@ bool Network::SaveMap(IStream * stream, const std::vector<const ObjectRepository
         stream->WriteValue<uint8>(gCheatsFreezeClimate);
         stream->WriteValue<uint8>(gCheatsDisablePlantAging);
         stream->WriteValue<uint8>(gCheatsAllowArbitraryRideTypeChanges);
+        stream->WriteValue<uint8>(gCheatsDisableRideValueAging);
 
         result = true;
     }

@@ -14,6 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
+#include "../cheats.h"
 #include "../interface/window.h"
 #include "../localisation/date.h"
 #include "../rct2.h"
@@ -680,7 +681,10 @@ static void ride_ratings_calculate_value(rct_ride *ride)
         (((ride->intensity  * RideRatings[ride->type].intensity) * 32) >> 15) +
         (((ride->nausea     * RideRatings[ride->type].nausea) * 32) >> 15);
 
-    sint32 monthsOld = gDateMonthsElapsed - ride->build_date;
+    sint32 monthsOld = 0;
+    if (!gCheatsDisableRideValueAging) {
+        monthsOld = gDateMonthsElapsed - ride->build_date;
+    }
 
     const row *age_table = age_table_new;
     sint32 table_size = countof(age_table_new);
