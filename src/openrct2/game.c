@@ -844,26 +844,15 @@ bool game_load_save(const utf8 *path)
 
 	safe_strcpy(gScenarioSavePath, path, MAX_PATH);
 
-	SDL_RWops* rw = SDL_RWFromFile(path, "rb");
-	if (rw == NULL) {
-		log_error("unable to open %s", path);
-		gErrorType = ERROR_TYPE_FILE_LOAD;
-		gGameCommandErrorTitle = STR_FILE_CONTAINS_INVALID_DATA;
-		return false;
-	}
-
 	uint32 extension_type = get_file_extension_type(path);
 	bool result = false;
-
 	if (extension_type == FILE_EXTENSION_SV6) {
-		result = game_load_sv6(rw);
+		result = game_load_sv6_path(path);
 	} else if (extension_type == FILE_EXTENSION_SV4) {
 		result = rct1_load_saved_game(path);
 		if (result)
 			gFirstTimeSave = 1;
 	}
-
-	SDL_RWclose(rw);
 
 	if (result) {
 		if (network_get_mode() == NETWORK_MODE_CLIENT) {

@@ -408,49 +408,6 @@ IParkImporter * ParkImporter::CreateS6()
 
 extern "C"
 {
-    /**
-     *
-     *  rct2: 0x00675E1B
-     */
-    bool game_load_sv6(SDL_RWops * rw)
-    {
-        if (!sawyercoding_validate_checksum(rw) && !gConfigGeneral.allow_loading_with_incorrect_checksum)
-        {
-            log_error("invalid checksum");
-
-            gErrorType = ERROR_TYPE_FILE_LOAD;
-            gGameCommandErrorTitle = STR_FILE_CONTAINS_INVALID_DATA;
-            return 0;
-        }
-
-        bool result = false;
-        auto stream = FileStream(rw, FILE_MODE_OPEN);
-        auto s6Importer = new S6Importer();
-        try
-        {
-            s6Importer->LoadFromStream(&stream, false);
-            s6Importer->Import();
-
-            game_fix_save_vars();
-            sprite_position_tween_reset();
-            result = true;
-        }
-        catch (const ObjectLoadException &ex)
-        {
-            Console::Error::WriteLine(ex.GetMessage());
-        }
-        catch (const Exception &ex)
-        {
-            Console::Error::WriteLine(ex.GetMessage());
-        }
-        delete s6Importer;
-
-        // #2407: Resetting screen time to not open a save prompt shortly after loading a park.
-        gScreenAge = 0;
-        gLastAutoSaveUpdate = AUTOSAVE_PAUSE;
-        return result;
-    }
-
     bool game_load_sv6_path(const char * path)
     {
         bool result = false;
