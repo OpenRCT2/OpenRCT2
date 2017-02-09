@@ -26,6 +26,7 @@
 
 extern "C" {
 
+#include "../platform/platform.h"
 #include "localisation.h"
 
 sint32 gCurrentLanguage = LANGUAGE_UNDEFINED;

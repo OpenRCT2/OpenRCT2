@@ -148,30 +148,6 @@ void path_end_with_separator(utf8 *path, size_t size) {
 		safe_strcat(path, PATH_SEPARATOR, size);
 }
 
-bool readentirefile(const utf8 *path, void **outBuffer, size_t *outLength)
-{
-	SDL_RWops *fp;
-	size_t fpLength;
-	void *fpBuffer;
-
-	// Open file
-	fp = SDL_RWFromFile(path, "rb");
-	if (fp == NULL)
-		return 0;
-
-	// Get length
-	fpLength = (size_t)SDL_RWsize(fp);
-
-	// Read whole file into a buffer
-	fpBuffer = malloc(fpLength);
-	SDL_RWread(fp, fpBuffer, fpLength, 1);
-	SDL_RWclose(fp);
-
-	*outBuffer = fpBuffer;
-	*outLength = fpLength;
-	return 1;
-}
-
 sint32 bitscanforward(sint32 source)
 {
 	#if defined(_MSC_VER) && (_MSC_VER >= 1400) // Visual Studio 2005

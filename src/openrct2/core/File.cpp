@@ -22,6 +22,7 @@
 extern "C"
 {
     #include "../platform/platform.h"
+    #include "../util/util.h"
 }
 
 namespace File
@@ -58,5 +59,14 @@ namespace File
         }
         *length = (size_t)fsize;
         return result;
+    }
+}
+
+extern "C"
+{
+    bool readentirefile(const utf8 * path, void * * outBuffer, size_t * outLength)
+    {
+        *outBuffer = File::ReadAllBytes(String::ToStd(path), outLength);
+        return (*outBuffer != nullptr);
     }
 }
