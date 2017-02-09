@@ -17,6 +17,8 @@
 #include <string>
 #include "core/Console.hpp"
 #include "core/Guard.hpp"
+#include "core/File.h"
+#include "core/FileStream.hpp"
 #include "core/String.hpp"
 #include "FileClassifier.h"
 #include "network/network.h"
@@ -44,6 +46,7 @@ extern "C"
     #include "object_list.h"
     #include "platform/platform.h"
     #include "rct1.h"
+    #include "rct2.h"
     #include "rct2/interop.h"
 }
 
@@ -319,6 +322,36 @@ extern "C"
     void openrct2_finish()
     {
         OpenRCT2::_finished = true;
+    }
+
+    bool check_file_path(sint32 pathId)
+    {
+        const utf8 * path = get_file_path(pathId);
+        switch (pathId) {
+        case PATH_ID_G1:
+            if (!File::Exists(path))
+            {
+                Console::Error::WriteLine("Unable to find '%s'", path);
+                return false;
+            }
+            break;
+        case PATH_ID_CUSTOM1:
+        case PATH_ID_CUSTOM2:
+            if (File::Exists(path))
+            {
+                try
+                {
+                    auto fs = FileStream(path, FILE_MODE_OPEN);
+                    sint32 index = 36 + (pathId - PATH_ID_CUSTOM1);
+                    gRideMusicInfoList[index]->length = fs.GetLength();
+                }
+                catch (const Exception &)
+                {
+                }
+            }
+            break;
+        }
+        return true;
     }
 }
 

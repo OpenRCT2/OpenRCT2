@@ -27,6 +27,11 @@ extern "C"
 
 namespace File
 {
+    bool Exists(const std::string &path)
+    {
+        return platform_file_exists(path.c_str());
+    }
+
     bool Copy(const std::string &srcPath, const std::string &dstPath, bool overwrite)
     {
         return platform_file_copy(srcPath.c_str(), dstPath.c_str(), overwrite);

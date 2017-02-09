@@ -21,6 +21,7 @@
 
 namespace File
 {
+    bool Exists(const std::string &path);
     bool Copy(const std::string &srcPath, const std::string &dstPath, bool overwrite);
     bool Delete(const std::string &path);
     bool Move(const std::string &srcPath, const std::string &dstPath);
