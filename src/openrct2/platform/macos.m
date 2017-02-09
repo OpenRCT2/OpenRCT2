@@ -94,7 +94,7 @@ void platform_posix_sub_resolve_openrct_data_path(utf8 *out, size_t size) {
 	}
 }
 
-void platform_show_messagebox(char *message)
+void platform_show_messagebox(const char * message)
 {
 	@autoreleasepool
 	{

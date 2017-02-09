@@ -495,7 +495,7 @@ utf8 *platform_open_directory_browser(utf8 *title) {
 	return return_value;
 }
 
-void platform_show_messagebox(char *message) {
+void platform_show_messagebox(const char * message) {
 	size_t size;
 	dialog_type dtype;
 	char cmd[MAX_PATH];
