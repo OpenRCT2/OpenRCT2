@@ -8,7 +8,7 @@ sudo: required
 dist: trusty
 env:
     global:
-        - OPENRCT2_VERSION="0.0.7.0"
+        - OPENRCT2_VERSION="0.0.7"
 
 matrix:
     include:
