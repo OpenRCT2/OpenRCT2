@@ -31,6 +31,7 @@ enum {
 	WINDOW_MAPGEN_PAGE_BASE,
 	WINDOW_MAPGEN_PAGE_RANDOM,
 	WINDOW_MAPGEN_PAGE_SIMPLEX,
+	WINDOW_MAPGEN_PAGE_HEIGHTMAP,
 	WINDOW_MAPGEN_PAGE_COUNT
 };
 
@@ -42,10 +43,13 @@ enum {
 	WIDX_TAB_1,
 	WIDX_TAB_2,
 	WIDX_TAB_3,
+	WIDX_TAB_4,
 
 	WIDX_GENERATE,
 
-	WIDX_MAP_SIZE = 8,
+	TAB_BEGIN,
+
+	WIDX_MAP_SIZE = TAB_BEGIN,
 	WIDX_MAP_SIZE_UP,
 	WIDX_MAP_SIZE_DOWN,
 	WIDX_BASE_HEIGHT,
@@ -57,10 +61,10 @@ enum {
 	WIDX_FLOOR_TEXTURE,
 	WIDX_WALL_TEXTURE,
 
-	WIDX_RANDOM_TERRAIN = 8,
+	WIDX_RANDOM_TERRAIN = TAB_BEGIN,
 	WIDX_PLACE_TREES,
 
-	WIDX_SIMPLEX_LABEL = 8,
+	WIDX_SIMPLEX_LABEL = TAB_BEGIN,
 	WIDX_SIMPLEX_LOW,
 	WIDX_SIMPLEX_LOW_UP,
 	WIDX_SIMPLEX_LOW_DOWN,
@@ -85,7 +89,7 @@ enum {
 
 #pragma region Widgets
 
-static rct_widget window_mapgen_base_widgets[] = {
+static rct_widget BaseWidgets[] = {
 	{ WWT_FRAME,			0,	0,		299,	0,		195,	0xFFFFFFFF,					STR_NONE },
 	{ WWT_CAPTION,			0,	1,		298,	1,		14,		STR_MAPGEN_WINDOW_TITLE,	STR_WINDOW_TITLE_TIP },
 	{ WWT_CLOSEBOX,			0,	287,	297,	2,		13,		STR_CLOSE_X,				STR_CLOSE_WINDOW_TIP },
@@ -93,6 +97,7 @@ static rct_widget window_mapgen_base_widgets[] = {
 	{ WWT_TAB,				1,	3,		33,		17,		43,		0x20000000 | SPR_TAB,		STR_NONE },
 	{ WWT_TAB,				1,	34,		64,		17,		43,		0x20000000 | SPR_TAB,		STR_NONE },
 	{ WWT_TAB,				1,	65,		95,		17,		43,		0x20000000 | SPR_TAB,		STR_NONE },
+	{ WWT_TAB,				1,	96,		126,	17,		43,		0x20000000 | SPR_TAB,		STR_NONE },
 
 	{ WWT_DROPDOWN_BUTTON,	1,	104,	198,	52,		63,		STR_MAPGEN_ACTION_GENERATE,	STR_NONE },
 
@@ -110,7 +115,7 @@ static rct_widget window_mapgen_base_widgets[] = {
 	{ WIDGETS_END },
 };
 
-static rct_widget window_mapgen_random_widgets[] = {
+static rct_widget RandomWidgets[] = {
 	{ WWT_FRAME,			0,	0,		299,	0,		195,	0xFFFFFFFF,							STR_NONE },
 	{ WWT_CAPTION,			0,	1,		298,	1,		14,		STR_MAPGEN_WINDOW_TITLE,			STR_WINDOW_TITLE_TIP },
 	{ WWT_CLOSEBOX,			0,	287,	297,	2,		13,		STR_CLOSE_X,						STR_CLOSE_WINDOW_TIP },
@@ -118,6 +123,7 @@ static rct_widget window_mapgen_random_widgets[] = {
 	{ WWT_TAB,				1,	3,		33,		17,		43,		0x20000000 | SPR_TAB,				STR_NONE },
 	{ WWT_TAB,				1,	34,		64,		17,		43,		0x20000000 | SPR_TAB,				STR_NONE },
 	{ WWT_TAB,				1,	65,		95,		17,		43,		0x20000000 | SPR_TAB,				STR_NONE },
+	{ WWT_TAB,				1,	96,		126,	17,		43,		0x20000000 | SPR_TAB,		STR_NONE },
 
 	{ WWT_DROPDOWN_BUTTON,	1,	104,	198,	52,		63,		STR_MAPGEN_ACTION_GENERATE,			STR_NONE },
 
@@ -126,7 +132,7 @@ static rct_widget window_mapgen_random_widgets[] = {
 	{ WIDGETS_END },
 };
 
-static rct_widget window_mapgen_simplex_widgets[] = {
+static rct_widget SimplexWidgets[] = {
 	{ WWT_FRAME,			0,	0,		299,	0,		195,	0xFFFFFFFF,					STR_NONE },
 	{ WWT_CAPTION,			0,	1,		298,	1,		14,		STR_MAPGEN_WINDOW_TITLE,	STR_WINDOW_TITLE_TIP },
 	{ WWT_CLOSEBOX,			0,	287,	297,	2,		13,		STR_CLOSE_X,				STR_CLOSE_WINDOW_TIP },
@@ -134,6 +140,7 @@ static rct_widget window_mapgen_simplex_widgets[] = {
 	{ WWT_TAB,				1,	3,		33,		17,		43,		0x20000000 | SPR_TAB,		STR_NONE },
 	{ WWT_TAB,				1,	34,		64,		17,		43,		0x20000000 | SPR_TAB,		STR_NONE },
 	{ WWT_TAB,				1,	65,		95,		17,		43,		0x20000000 | SPR_TAB,		STR_NONE },
+	{ WWT_TAB,				1,	96,		126,	17,		43,		0x20000000 | SPR_TAB,		STR_NONE },
 
 	{ WWT_DROPDOWN_BUTTON,	1,	104,	198,	52,		63,		STR_MAPGEN_ACTION_GENERATE,	STR_NONE },
 
@@ -169,14 +176,29 @@ static rct_widget window_mapgen_simplex_widgets[] = {
 	{ WIDGETS_END },
 };
 
-const sint32 window_mapgen_tab_animation_divisor[] = { 1, 1, 1 };
-const sint32 window_mapgen_tab_animation_frames[] = { 1, 1, 1 };
+static rct_widget HeightmapWidgets[] = {
+	{ WWT_FRAME,			0,	0,		299,	0,		195,	0xFFFFFFFF,							STR_NONE },
+	{ WWT_CAPTION,			0,	1,		298,	1,		14,		STR_MAPGEN_WINDOW_TITLE,			STR_WINDOW_TITLE_TIP },
+	{ WWT_CLOSEBOX,			0,	287,	297,	2,		13,		STR_CLOSE_X,						STR_CLOSE_WINDOW_TIP },
+	{ WWT_RESIZE,			1,	0,		299,	43,		195,	0xFFFFFFFF,							STR_NONE },
+	{ WWT_TAB,				1,	3,		33,		17,		43,		0x20000000 | SPR_TAB,				STR_NONE },
+	{ WWT_TAB,				1,	34,		64,		17,		43,		0x20000000 | SPR_TAB,				STR_NONE },
+	{ WWT_TAB,				1,	65,		95,		17,		43,		0x20000000 | SPR_TAB,				STR_NONE },
+	{ WWT_TAB,				1,	96,		126,	17,		43,		0x20000000 | SPR_TAB,		STR_NONE },
 
+	{ WWT_DROPDOWN_BUTTON,	1,	104,	198,	52,		63,		STR_MAPGEN_ACTION_GENERATE,			STR_NONE },
 
-static rct_widget *window_mapgen_page_widgets[] = {
-	window_mapgen_base_widgets,
-	window_mapgen_random_widgets,
-	window_mapgen_simplex_widgets
+	{ WIDGETS_END },
+};
+
+static const sint32 TabAnimationDivisor[] = { 1, 1, 1, 1 };
+static const sint32 TabAnimationFrames[] = { 1, 1, 1, 1 };
+
+static rct_widget *PageWidgets[] = {
+	BaseWidgets,
+	RandomWidgets,
+	SimplexWidgets,
+	HeightmapWidgets
 };
 
 #pragma endregion
@@ -204,7 +226,11 @@ static void window_mapgen_simplex_update(rct_window *w);
 static void window_mapgen_simplex_invalidate(rct_window *w);
 static void window_mapgen_simplex_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
-static rct_window_event_list window_mapgen_base_events = {
+static void window_mapgen_heightmap_mouseup(rct_window *w, sint32 widgetIndex);
+static void window_mapgen_heightmap_invalidate(rct_window *w);
+static void window_mapgen_heightmap_paint(rct_window *w, rct_drawpixelinfo *dpi);
+
+static rct_window_event_list BaseEvents = {
 	NULL,
 	window_mapgen_base_mouseup,
 	NULL,
@@ -235,7 +261,7 @@ static rct_window_event_list window_mapgen_base_events = {
 	NULL
 };
 
-static rct_window_event_list window_mapgen_random_events = {
+static rct_window_event_list RandomEvents = {
 	NULL,
 	window_mapgen_random_mouseup,
 	NULL,
@@ -266,7 +292,7 @@ static rct_window_event_list window_mapgen_random_events = {
 	NULL
 };
 
-static rct_window_event_list window_mapgen_simplex_events = {
+static rct_window_event_list SimplexEvents = {
 	NULL,
 	window_mapgen_simplex_mouseup,
 	NULL,
@@ -297,68 +323,110 @@ static rct_window_event_list window_mapgen_simplex_events = {
 	NULL
 };
 
-static rct_window_event_list *window_mapgen_page_events[] = {
-	&window_mapgen_base_events,
-	&window_mapgen_random_events,
-	&window_mapgen_simplex_events
+static rct_window_event_list HeightmapEvents = {
+	NULL,
+	window_mapgen_heightmap_mouseup,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	window_mapgen_heightmap_invalidate,
+	window_mapgen_heightmap_paint,
+	NULL
+};
+
+static rct_window_event_list *PageEvents[] = {
+	&BaseEvents,
+	&RandomEvents,
+	&SimplexEvents,
+	&HeightmapEvents
 };
 
 #pragma endregion
 
 #pragma region Enabled widgets
 
-static uint32 window_mapgen_page_enabled_widgets[] = {
-	(1 << WIDX_CLOSE) |
-	(1 << WIDX_TAB_1) |
-	(1 << WIDX_TAB_2) |
-	(1 << WIDX_TAB_3) |
-	(1 << WIDX_GENERATE) |
-	(1 << WIDX_MAP_SIZE) |
-	(1 << WIDX_MAP_SIZE_UP) |
-	(1 << WIDX_MAP_SIZE_DOWN) |
-	(1 << WIDX_BASE_HEIGHT) |
-	(1 << WIDX_BASE_HEIGHT_UP) |
-	(1 << WIDX_BASE_HEIGHT_DOWN) |
-	(1 << WIDX_WATER_LEVEL) |
-	(1 << WIDX_WATER_LEVEL_UP) |
-	(1 << WIDX_WATER_LEVEL_DOWN) |
-	(1 << WIDX_FLOOR_TEXTURE) |
-	(1 << WIDX_WALL_TEXTURE),
+static uint32 PageEnabledWidgets[] = {
+	(1ULL << WIDX_CLOSE) |
+	(1ULL << WIDX_TAB_1) |
+	(1ULL << WIDX_TAB_2) |
+	(1ULL << WIDX_TAB_3) |
+	(1ULL << WIDX_TAB_4) |
+	(1ULL << WIDX_GENERATE) |
+	(1ULL << WIDX_MAP_SIZE) |
+	(1ULL << WIDX_MAP_SIZE_UP) |
+	(1ULL << WIDX_MAP_SIZE_DOWN) |
+	(1ULL << WIDX_BASE_HEIGHT) |
+	(1ULL << WIDX_BASE_HEIGHT_UP) |
+	(1ULL << WIDX_BASE_HEIGHT_DOWN) |
+	(1ULL << WIDX_WATER_LEVEL) |
+	(1ULL << WIDX_WATER_LEVEL_UP) |
+	(1ULL << WIDX_WATER_LEVEL_DOWN) |
+	(1ULL << WIDX_FLOOR_TEXTURE) |
+	(1ULL << WIDX_WALL_TEXTURE),
 
-	(1 << WIDX_CLOSE) |
-	(1 << WIDX_TAB_1) |
-	(1 << WIDX_TAB_2) |
-	(1 << WIDX_TAB_3) |
-	(1 << WIDX_GENERATE) |
-	(1 << WIDX_RANDOM_TERRAIN) |
-	(1 << WIDX_PLACE_TREES),
+	(1ULL << WIDX_CLOSE) |
+	(1ULL << WIDX_TAB_1) |
+	(1ULL << WIDX_TAB_2) |
+	(1ULL << WIDX_TAB_3) |
+	(1ULL << WIDX_TAB_4) |
+	(1ULL << WIDX_GENERATE) |
+	(1ULL << WIDX_RANDOM_TERRAIN) |
+	(1ULL << WIDX_PLACE_TREES),
 
-	(1 << WIDX_CLOSE) |
-	(1 << WIDX_TAB_1) |
-	(1 << WIDX_TAB_2) |
-	(1 << WIDX_TAB_3) |
-	(1 << WIDX_GENERATE) |
-	(1 << WIDX_SIMPLEX_LABEL) |
-	(1 << WIDX_SIMPLEX_LOW) |
-	(1 << WIDX_SIMPLEX_LOW_UP) |
-	(1 << WIDX_SIMPLEX_LOW_DOWN) |
-	(1 << WIDX_SIMPLEX_HIGH) |
-	(1 << WIDX_SIMPLEX_HIGH_UP) |
-	(1 << WIDX_SIMPLEX_HIGH_DOWN) |
-	(1 << WIDX_SIMPLEX_BASE_FREQ) |
-	(1 << WIDX_SIMPLEX_BASE_FREQ_UP) |
-	(1 << WIDX_SIMPLEX_BASE_FREQ_DOWN) |
-	(1 << WIDX_SIMPLEX_OCTAVES) |
-	(1 << WIDX_SIMPLEX_OCTAVES_UP) |
-	(1 << WIDX_SIMPLEX_OCTAVES_DOWN) |
-	(1 << WIDX_SIMPLEX_MAP_SIZE) |
-	(1 << WIDX_SIMPLEX_MAP_SIZE_UP) |
-	(1 << WIDX_SIMPLEX_MAP_SIZE_DOWN) |
-	(1 << WIDX_SIMPLEX_WATER_LEVEL) |
-	(1 << WIDX_SIMPLEX_WATER_LEVEL_UP) |
-	(1 << WIDX_SIMPLEX_WATER_LEVEL_DOWN) |
-	(1 << WIDX_SIMPLEX_FLOOR_TEXTURE) |
-	(1 << WIDX_SIMPLEX_WALL_TEXTURE)
+	(1ULL << WIDX_CLOSE) |
+	(1ULL << WIDX_TAB_1) |
+	(1ULL << WIDX_TAB_2) |
+	(1ULL << WIDX_TAB_3) |
+	(1ULL << WIDX_TAB_4) |
+	(1ULL << WIDX_GENERATE) |
+	(1ULL << WIDX_SIMPLEX_LABEL) |
+	(1ULL << WIDX_SIMPLEX_LOW) |
+	(1ULL << WIDX_SIMPLEX_LOW_UP) |
+	(1ULL << WIDX_SIMPLEX_LOW_DOWN) |
+	(1ULL << WIDX_SIMPLEX_HIGH) |
+	(1ULL << WIDX_SIMPLEX_HIGH_UP) |
+	(1ULL << WIDX_SIMPLEX_HIGH_DOWN) |
+	(1ULL << WIDX_SIMPLEX_BASE_FREQ) |
+	(1ULL << WIDX_SIMPLEX_BASE_FREQ_UP) |
+	(1ULL << WIDX_SIMPLEX_BASE_FREQ_DOWN) |
+	(1ULL << WIDX_SIMPLEX_OCTAVES) |
+	(1ULL << WIDX_SIMPLEX_OCTAVES_UP) |
+	(1ULL << WIDX_SIMPLEX_OCTAVES_DOWN) |
+	(1ULL << WIDX_SIMPLEX_MAP_SIZE) |
+	(1ULL << WIDX_SIMPLEX_MAP_SIZE_UP) |
+	(1ULL << WIDX_SIMPLEX_MAP_SIZE_DOWN) |
+	(1ULL << WIDX_SIMPLEX_WATER_LEVEL) |
+	(1ULL << WIDX_SIMPLEX_WATER_LEVEL_UP) |
+	(1ULL << WIDX_SIMPLEX_WATER_LEVEL_DOWN) |
+	(1ULL << WIDX_SIMPLEX_FLOOR_TEXTURE) |
+	(1ULL << WIDX_SIMPLEX_WALL_TEXTURE),
+
+	(1ULL << WIDX_CLOSE) |
+	(1ULL << WIDX_TAB_1) |
+	(1ULL << WIDX_TAB_2) |
+	(1ULL << WIDX_TAB_3) |
+	(1ULL << WIDX_TAB_4) |
+	(1ULL << WIDX_GENERATE)
 };
 
 static uint32 window_mapgen_page_hold_down_widgets[] = {
@@ -437,7 +505,7 @@ rct_window *window_mapgen_open()
 		w = window_create_centred(
 			300,
 			200,
-			window_mapgen_page_events[0],
+			PageEvents[0],
 			WC_MAPGEN,
 			WF_10
 		);
@@ -447,10 +515,10 @@ rct_window *window_mapgen_open()
 
 	w->page = WINDOW_MAPGEN_PAGE_BASE;
 	window_invalidate(w);
-	w->widgets = window_mapgen_page_widgets[WINDOW_MAPGEN_PAGE_BASE];
-	w->enabled_widgets = window_mapgen_page_enabled_widgets[WINDOW_MAPGEN_PAGE_BASE];
+	w->widgets = PageWidgets[WINDOW_MAPGEN_PAGE_BASE];
+	w->enabled_widgets = PageEnabledWidgets[WINDOW_MAPGEN_PAGE_BASE];
 	w->hold_down_widgets = window_mapgen_page_hold_down_widgets[WINDOW_MAPGEN_PAGE_BASE];
-	w->event_handlers = window_mapgen_page_events[WINDOW_MAPGEN_PAGE_BASE];
+	w->event_handlers = PageEvents[WINDOW_MAPGEN_PAGE_BASE];
 	w->pressed_widgets = 0;
 	w->disabled_widgets = 0;
 	window_init_scroll_widgets(w);
@@ -471,6 +539,7 @@ static void window_mapgen_base_mouseup(rct_window *w, sint32 widgetIndex)
 	case WIDX_TAB_1:
 	case WIDX_TAB_2:
 	case WIDX_TAB_3:
+	case WIDX_TAB_4:
 		window_mapgen_set_page(w, widgetIndex - WIDX_TAB_1);
 		break;
 	case WIDX_GENERATE:
@@ -655,8 +724,8 @@ static void window_mapgen_base_invalidate(rct_window *w)
 {
 	colour_scheme_update(w);
 
-	if (w->widgets != window_mapgen_page_widgets[WINDOW_MAPGEN_PAGE_BASE]) {
-		w->widgets = window_mapgen_page_widgets[WINDOW_MAPGEN_PAGE_BASE];
+	if (w->widgets != PageWidgets[WINDOW_MAPGEN_PAGE_BASE]) {
+		w->widgets = PageWidgets[WINDOW_MAPGEN_PAGE_BASE];
 		window_init_scroll_widgets(w);
 	}
 
@@ -705,6 +774,7 @@ static void window_mapgen_random_mouseup(rct_window *w, sint32 widgetIndex)
 	case WIDX_TAB_1:
 	case WIDX_TAB_2:
 	case WIDX_TAB_3:
+	case WIDX_TAB_4:
 		window_mapgen_set_page(w, widgetIndex - WIDX_TAB_1);
 		break;
 	case WIDX_GENERATE:
@@ -749,8 +819,8 @@ static void window_mapgen_random_invalidate(rct_window *w)
 {
 	colour_scheme_update(w);
 
-	if (w->widgets != window_mapgen_page_widgets[WINDOW_MAPGEN_PAGE_RANDOM]) {
-		w->widgets = window_mapgen_page_widgets[WINDOW_MAPGEN_PAGE_RANDOM];
+	if (w->widgets != PageWidgets[WINDOW_MAPGEN_PAGE_RANDOM]) {
+		w->widgets = PageWidgets[WINDOW_MAPGEN_PAGE_RANDOM];
 		window_init_scroll_widgets(w);
 	}
 
@@ -785,6 +855,7 @@ static void window_mapgen_simplex_mouseup(rct_window *w, sint32 widgetIndex)
 	case WIDX_TAB_1:
 	case WIDX_TAB_2:
 	case WIDX_TAB_3:
+	case WIDX_TAB_4:
 		window_mapgen_set_page(w, widgetIndex - WIDX_TAB_1);
 		break;
 	case WIDX_SIMPLEX_MAP_SIZE:
@@ -959,8 +1030,8 @@ static void window_mapgen_simplex_invalidate(rct_window *w)
 {
 	colour_scheme_update(w);
 
-	if (w->widgets != window_mapgen_page_widgets[WINDOW_MAPGEN_PAGE_SIMPLEX]) {
-		w->widgets = window_mapgen_page_widgets[WINDOW_MAPGEN_PAGE_SIMPLEX];
+	if (w->widgets != PageWidgets[WINDOW_MAPGEN_PAGE_SIMPLEX]) {
+		w->widgets = PageWidgets[WINDOW_MAPGEN_PAGE_SIMPLEX];
 		window_init_scroll_widgets(w);
 	}
 
@@ -1000,6 +1071,50 @@ static void window_mapgen_simplex_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 #pragma endregion
 
+#pragma region Heightmap page
+
+static void window_mapgen_heightmap_mouseup(rct_window *w, sint32 widgetIndex)
+{
+	switch (widgetIndex)
+	{
+	case WIDX_CLOSE:
+		window_close(w);
+		break;
+	case WIDX_TAB_1:
+	case WIDX_TAB_2:
+	case WIDX_TAB_3:
+	case WIDX_TAB_4:
+		window_mapgen_set_page(w, widgetIndex - WIDX_TAB_1);
+		break;
+	case WIDX_GENERATE:
+		mapgen_generate_from_heightmap();
+		gfx_invalidate_screen();
+		break;
+	}
+}
+
+static void window_mapgen_heightmap_invalidate(rct_window *w)
+{
+	colour_scheme_update(w);
+
+	if (w->widgets != PageWidgets[WINDOW_MAPGEN_PAGE_HEIGHTMAP])
+	{
+		w->widgets = PageWidgets[WINDOW_MAPGEN_PAGE_HEIGHTMAP];
+		window_init_scroll_widgets(w);
+	}
+
+	window_mapgen_set_pressed_tab(w);
+	window_mapgen_anchor_border_widgets(w);
+}
+
+static void window_mapgen_heightmap_paint(rct_window *w, rct_drawpixelinfo *dpi)
+{
+	window_draw_widgets(w, dpi);
+	window_mapgen_draw_tab_images(dpi, w);
+}
+
+#pragma endregion
+
 #pragma region Common
 
 static void window_mapgen_set_page(rct_window *w, sint32 page)
@@ -1011,10 +1126,10 @@ static void window_mapgen_set_page(rct_window *w, sint32 page)
 		w->viewport = NULL;
 	}
 
-	w->enabled_widgets = window_mapgen_page_enabled_widgets[page];
+	w->enabled_widgets = PageEnabledWidgets[page];
 	w->hold_down_widgets = window_mapgen_page_hold_down_widgets[page];
-	w->event_handlers = window_mapgen_page_events[page];
-	w->widgets = window_mapgen_page_widgets[page];
+	w->event_handlers = PageEvents[page];
+	w->widgets = PageWidgets[page];
 	w->disabled_widgets = 0;
 	w->pressed_widgets = 0;
 
@@ -1055,8 +1170,8 @@ static void window_mapgen_draw_tab_image(rct_drawpixelinfo *dpi, rct_window *w, 
 
 	if (!(w->disabled_widgets & (1LL << widgetIndex))) {
 		if (w->page == page) {
-			sint32 frame = w->frame_no / window_mapgen_tab_animation_divisor[w->page];
-			spriteIndex += (frame % window_mapgen_tab_animation_frames[w->page]);
+			sint32 frame = w->frame_no / TabAnimationDivisor[w->page];
+			spriteIndex += (frame % TabAnimationFrames[w->page]);
 		}
 
 		gfx_draw_sprite(dpi, spriteIndex, w->x + w->widgets[widgetIndex].left, w->y + w->widgets[widgetIndex].top, 0);
@@ -1068,6 +1183,7 @@ static void window_mapgen_draw_tab_images(rct_drawpixelinfo *dpi, rct_window *w)
 	window_mapgen_draw_tab_image(dpi, w, WINDOW_MAPGEN_PAGE_BASE, SPR_G2_TAB_LAND);
 	window_mapgen_draw_tab_image(dpi, w, WINDOW_MAPGEN_PAGE_RANDOM, SPR_G2_TAB_TREE);
 	window_mapgen_draw_tab_image(dpi, w, WINDOW_MAPGEN_PAGE_SIMPLEX, SPR_G2_TAB_PENCIL);
+	window_mapgen_draw_tab_image(dpi, w, WINDOW_MAPGEN_PAGE_SIMPLEX, SPR_G2_TAB_NEWS);
 }
 
 #pragma endregion
