@@ -250,12 +250,6 @@ private:
 	uint8 * save_for_network(size_t &out_size, const std::vector<const ObjectRepositoryItem *> &objects) const;
 };
 
-namespace Convert
-{
-	uint16 HostToNetwork(uint16 value);
-	uint16 NetworkToHost(uint16 value);
-}
-
 #endif // __cplusplus
 #else /* DISABLE_NETWORK */
 #define NETWORK_STREAM_ID "Multiplayer disabled"

@@ -65,3 +65,9 @@ ITcpSocket * CreateTcpSocket();
 
 bool InitialiseWSA();
 void DisposeWSA();
+
+namespace Convert
+{
+    uint16 HostToNetwork(uint16 value);
+    uint16 NetworkToHost(uint16 value);
+}

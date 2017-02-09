@@ -511,6 +511,8 @@ bool InitialiseWSA()
         _wsaInitialised = true;
     }
     return _wsaInitialised;
+#else
+    return true;
 #endif
 }
 
