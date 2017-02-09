@@ -85,6 +85,18 @@ namespace KeyboardShortcuts
         SHORTCUT_UNDEFINED,                         // SHORTCUT_PAINT_ORIGINAL_TOGGLE
         SHORTCUT_UNDEFINED,                         // SHORTCUT_DEBUG_PAINT_TOGGLE
         SHORTCUT_UNDEFINED,                         // SHORTCUT_SEE_THROUGH_PATHS_TOGGLE
+        SDL_SCANCODE_KP_4,                          // SHORTCUT_RIDE_CONSTRUCTION_TURN_LEFT
+        SDL_SCANCODE_KP_6,                          // SHORTCUT_RIDE_CONSTRUCTION_TURN_RIGHT
+        SDL_SCANCODE_KP_5,                          // SHORTCUT_RIDE_CONSTRUCTION_USE_TRACK_DEFAULT
+        SDL_SCANCODE_KP_2,                          // SHORTCUT_RIDE_CONSTRUCTION_SLOPE_DOWN
+        SDL_SCANCODE_KP_8,                          // SHORTCUT_RIDE_CONSTRUCTION_SLOPE_UP
+        SDL_SCANCODE_KP_PLUS,                       // SHORTCUT_RIDE_CONSTRUCTION_CHAIN_LIFT_TOGGLE
+        SDL_SCANCODE_KP_1,                          // SHORTCUT_RIDE_CONSTRUCTION_BANK_LEFT
+        SDL_SCANCODE_KP_3,                          // SHORTCUT_RIDE_CONSTRUCTION_BANK_RIGHT
+        SDL_SCANCODE_KP_7,                          // SHORTCUT_RIDE_CONSTRUCTION_PREVIOUS_TRACK
+        SDL_SCANCODE_KP_9,                          // SHORTCUT_RIDE_CONSTRUCTION_NEXT_TRACK
+        SDL_SCANCODE_KP_0,                          // SHORTCUT_RIDE_CONSTRUCTION_BUILD_CURRENT
+        SDL_SCANCODE_KP_MINUS,                      // SHORTCUT_RIDE_CONSTRUCTION_DEMOLISH_CURRENT
     };
 
     constexpr sint32 CURRENT_FILE_VERSION = 1;
