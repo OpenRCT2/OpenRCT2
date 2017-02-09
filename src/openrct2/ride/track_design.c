@@ -74,7 +74,7 @@ rct_track_td6 *track_design_open(const utf8 *path)
 
 	uint8 *buffer;
 	size_t bufferLength;
-	if (readentirefile(path, &buffer, &bufferLength)) {
+	if (readentirefile(path, (void * *)&buffer, &bufferLength)) {
 		if (!sawyercoding_validate_track_checksum(buffer, bufferLength)) {
 			log_error("Track checksum failed. %s", path);
 			free(buffer);

@@ -60,13 +60,39 @@ namespace File
         *length = (size_t)fsize;
         return result;
     }
+
+    void WriteAllBytes(const std::string &path, const void * buffer, size_t length)
+    {
+        auto fs = FileStream(path, FILE_MODE_WRITE);
+        fs.Write(buffer, length);
+    }
 }
 
 extern "C"
 {
     bool readentirefile(const utf8 * path, void * * outBuffer, size_t * outLength)
     {
-        *outBuffer = File::ReadAllBytes(String::ToStd(path), outLength);
-        return (*outBuffer != nullptr);
+        try
+        {
+            *outBuffer = File::ReadAllBytes(String::ToStd(path), outLength);
+            return true;
+        }
+        catch (const Exception &)
+        {
+            return false;
+        }
+    }
+
+    bool writeentirefile(const utf8 * path, const void * buffer, size_t length)
+    {
+        try
+        {
+            File::WriteAllBytes(String::ToStd(path), buffer, length);
+            return true;
+        }
+        catch (const Exception &)
+        {
+            return false;
+        }
     }
 }

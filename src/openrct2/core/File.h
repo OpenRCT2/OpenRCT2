@@ -25,4 +25,5 @@ namespace File
     bool Delete(const std::string &path);
     bool Move(const std::string &srcPath, const std::string &dstPath);
     void * ReadAllBytes(const std::string &path, size_t * length);
+    void WriteAllBytes(const std::string &path, const void * buffer, size_t length);
 }
