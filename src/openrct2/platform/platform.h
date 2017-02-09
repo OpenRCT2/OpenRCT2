@@ -212,6 +212,8 @@ datetime64 platform_get_datetime_now_utc();
 // Called very early in the program before parsing commandline arguments.
 void core_init();
 
+void platform_open_browser(const char* url);
+
 // Windows specific definitions
 #ifdef __WINDOWS__
 	#ifndef WIN32_LEAN_AND_MEAN

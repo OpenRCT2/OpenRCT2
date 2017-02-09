@@ -319,13 +319,14 @@
     <ClCompile Include="title\TitleSequence.cpp" />
     <ClCompile Include="title\TitleSequenceManager.cpp" />
     <ClCompile Include="title\TitleSequencePlayer.cpp" />
-    <ClCompile Include="windows\changelog.c" />
     <ClCompile Include="windows\multiplayer.c" />
     <ClCompile Include="windows\network_status.c" />
     <ClCompile Include="windows\news_options.c" />
+    <ClCompile Include="windows\open_link_prompt.c" />
     <ClCompile Include="windows\player.c" />
     <ClCompile Include="windows\server_list.c" />
     <ClCompile Include="windows\server_start.c" />
+    <ClCompile Include="windows\textreader.c" />
     <ClCompile Include="windows\themes.c" />
     <ClCompile Include="windows\title_command_editor.c" />
     <ClCompile Include="windows\title_editor.c" />
