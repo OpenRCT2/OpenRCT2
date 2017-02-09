@@ -764,3 +764,49 @@ static void mapgen_simplex(mapgen_settings *settings)
 }
 
 #pragma endregion
+
+#pragma region Heightmap
+
+#pragma optimize("", off)
+void mapgen_generate_from_heightmap()
+{
+	SDL_Surface *bitmap = SDL_LoadBMP("test.bmp");
+	if (bitmap == NULL)
+	{
+		printf("Failed to load bitmap: %s\n", SDL_GetError());
+		return;
+	}
+
+	uint32 width = bitmap->w;
+	uint32 height = bitmap->h;
+	uint8 numChannels = bitmap->format->BytesPerPixel;
+
+	map_init(width + 2); // + 2 for the black tiles around the map
+
+	SDL_LockSurface(bitmap);
+	uint8 *src = (uint8*)bitmap->pixels;
+	for (uint32 y = 0; y < height; y++)
+	{
+		for (uint32 x = 0; x < width; x++)
+		{
+			// The x and y axis are flipped in the world, so this uses y for x and x for y.
+			rct_map_element *const surfaceElement = map_get_surface_element_at(y + 1, x + 1);
+			surfaceElement->base_height = src[x * numChannels + y * bitmap->pitch] / 3 + 2;
+			surfaceElement->base_height /= 2;
+			surfaceElement->base_height *= 2;
+			surfaceElement->clearance_height = surfaceElement->base_height;
+
+			const sint32 water_level = 24; // TODO: Get as setting
+			if (surfaceElement->base_height < water_level)
+			{
+				surfaceElement->properties.surface.terrain |= water_level / 2;
+			}
+		}
+	}
+
+	SDL_UnlockSurface(bitmap);
+	SDL_FreeSurface(bitmap);
+}
+#pragma optimize("", on)
+
+#pragma endregion
