@@ -948,12 +948,8 @@ void save_game()
 {
 	if (!gFirstTimeSave) {
 		log_verbose("Saving to %s", gScenarioSavePath);
-
-		SDL_RWops* rw = SDL_RWFromFile(gScenarioSavePath, "wb+");
-		if (rw != NULL) {
-			scenario_save(rw, 0x80000000 | (gConfigGeneral.save_plugin_data ? 1 : 0));
+		if (scenario_save(gScenarioSavePath, 0x80000000 | (gConfigGeneral.save_plugin_data ? 1 : 0))) {
 			log_verbose("Saved to %s", gScenarioSavePath);
-			SDL_RWclose(rw);
 
 			// Setting screen age to zero, so no prompt will pop up when closing the
 			// game shortly after saving.
@@ -1077,11 +1073,7 @@ void game_autosave()
 		platform_file_copy(path, backupPath, true);
 	}
 
-	SDL_RWops* rw = SDL_RWFromFile(path, "wb+");
-	if (rw != NULL) {
-		scenario_save(rw, saveFlags);
-		SDL_RWclose(rw);
-	}
+	scenario_save(path, saveFlags);
 }
 
 /**
