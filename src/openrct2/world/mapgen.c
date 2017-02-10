@@ -116,7 +116,7 @@ void mapgen_generate_blank(mapgen_settings *settings)
 		}
 	}
 
-	mapgen_set_water_level(settings->waterLevel);
+	mapgen_set_water_level(settings->water_level);
 }
 
 void mapgen_generate(mapgen_settings *settings)
@@ -129,7 +129,7 @@ void mapgen_generate(mapgen_settings *settings)
 	mapSize = settings->mapSize;
 	floorTexture = settings->floor;
 	wallTexture = settings->wall;
-	waterLevel = settings->waterLevel;
+	waterLevel = settings->water_level;
 
 	if (floorTexture == -1)
 		floorTexture = BaseTerrain[util_rand() % countof(BaseTerrain)];
@@ -767,7 +767,7 @@ static void mapgen_simplex(mapgen_settings *settings)
 
 #pragma region Heightmap
 
-void mapgen_generate_from_heightmap()
+void mapgen_generate_from_heightmap(mapgen_settings *settings)
 {
 	SDL_Surface *bitmap = SDL_LoadBMP("test_blurry.bmp");
 	if (bitmap == NULL)
@@ -795,20 +795,38 @@ void mapgen_generate_from_heightmap()
 			surfaceElement->base_height *= 2;
 			surfaceElement->clearance_height = surfaceElement->base_height;
 
-			const sint32 water_level = 24; // TODO: Get as setting
-			if (surfaceElement->base_height < water_level)
+			// Set water level
+			if (surfaceElement->base_height < settings->water_level)
 			{
-				surfaceElement->properties.surface.terrain |= water_level / 2;
+				surfaceElement->properties.surface.terrain |= settings->water_level / 2;
 			}
 		}
 	}
 
-	// smooth the entire map
-	for (uint32 y = 1; y <= height; y++)
+	// Smooth map
+	if (settings->smooth)
 	{
-		for (uint32 x = 1; x <= width; x++)
+		if (settings->strong_smooth)
 		{
-			tile_smooth(x, y);
+			map_smooth(1, 1, width, height);
+		}
+		else
+		{
+			// Keep smoothing the entire map until no tiles are changed anymore
+			while (true)
+			{
+				sint32 numTilesChanged = 0;
+				for (uint32 y = 1; y <= height; y++)
+				{
+					for (uint32 x = 1; x <= width; x++)
+					{
+						numTilesChanged += tile_smooth(x, y);
+					}
+				}
+
+				if (numTilesChanged == 0)
+					break;
+			}
 		}
 	}
 

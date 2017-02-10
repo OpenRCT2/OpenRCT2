@@ -373,10 +373,10 @@ sint32 tile_smooth(sint32 x, sint32 y)
 	sint8 thresholdSW = clamp(neighbourHeightOffset.S, 0, 1) + clamp(neighbourHeightOffset.SW, 0, 1) + clamp(neighbourHeightOffset.W, 0, 1);
 
 	uint8 slope = 0;
-	slope |= (thresholdNW >= 1) << 1;
-	slope |= (thresholdNE >= 1) << 2;
-	slope |= (thresholdSE >= 1) << 3;
-	slope |= (thresholdSW >= 1) << 0;
+	slope |= (thresholdNW >= 1) ? (1 << 1) : 0;
+	slope |= (thresholdNE >= 1) ? (1 << 2) : 0;
+	slope |= (thresholdSE >= 1) ? (1 << 3) : 0;
+	slope |= (thresholdSW >= 1) ? (1 << 0) : 0;
 
 	// Set diagonal when three corners have been raised, and the middle one can be raised one more
 	if ((slope == 0b0111 && neighbourHeightOffset.NW >= 4) || (slope == 0b1011 && neighbourHeightOffset.SW >= 4) ||

@@ -98,13 +98,13 @@ static rct_window_event_list window_land_events = {
 	NULL
 };
 
-static char window_land_floor_texture_order[] = {
+static char FloorTextureOrder[] = {
 	TERRAIN_SAND_DARK, TERRAIN_SAND_LIGHT,  TERRAIN_DIRT,      TERRAIN_GRASS_CLUMPS, TERRAIN_GRASS,
 	TERRAIN_ROCK,      TERRAIN_SAND,        TERRAIN_MARTIAN,   TERRAIN_CHECKERBOARD, TERRAIN_ICE,
 	TERRAIN_GRID_RED,  TERRAIN_GRID_YELLOW, TERRAIN_GRID_BLUE, TERRAIN_GRID_GREEN
 };
 
-static char window_land_wall_texture_order[] = {
+static char WallTextureOrder[] = {
 	TERRAIN_EDGE_ROCK,       TERRAIN_EDGE_WOOD_RED,
 	TERRAIN_EDGE_WOOD_BLACK, TERRAIN_EDGE_ICE,
 	0, 0
@@ -212,8 +212,8 @@ static void window_land_mousedown(sint32 widgetIndex, rct_window*w, rct_widget* 
 	case WIDX_FLOOR:
 		for (i = 0; i < 14; i++) {
 			gDropdownItemsFormat[i] = -1;
-			gDropdownItemsArgs[i] = SPR_FLOOR_TEXTURE_GRASS + window_land_floor_texture_order[i];
-			if (window_land_floor_texture_order[i] == _selectedFloorTexture)
+			gDropdownItemsArgs[i] = SPR_FLOOR_TEXTURE_GRASS + FloorTextureOrder[i];
+			if (FloorTextureOrder[i] == _selectedFloorTexture)
 				defaultIndex = i;
 		}
 		window_dropdown_show_image(
@@ -230,8 +230,8 @@ static void window_land_mousedown(sint32 widgetIndex, rct_window*w, rct_widget* 
 	case WIDX_WALL:
 		for (i = 0; i < 4; i++) {
 			gDropdownItemsFormat[i] = -1;
-			gDropdownItemsArgs[i] = SPR_WALL_TEXTURE_ROCK + window_land_wall_texture_order[i];
-			if (window_land_wall_texture_order[i] == _selectedWallTexture)
+			gDropdownItemsArgs[i] = SPR_WALL_TEXTURE_ROCK + WallTextureOrder[i];
+			if (WallTextureOrder[i] == _selectedWallTexture)
 				defaultIndex = i;
 		}
 		window_dropdown_show_image(
