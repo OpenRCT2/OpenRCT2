@@ -1869,9 +1869,17 @@ void Network::Server_Handle_GAMECMD(NetworkConnection& connection, NetworkPacket
 	if (commandCommand == GAME_COMMAND_PLACE_SCENERY) {
 		if ((ticks - connection.Player->LastActionTime) < 20) {
 			if (!(group->CanPerformCommand(MISC_COMMAND_TOGGLE_SCENERY_CLUSTER))) {
-				Server_Send_SHOWERROR(connection, STR_CANT_DO_THIS, STR_CANT_DO_THIS);
+				Server_Send_SHOWERROR(connection, STR_CANT_DO_THIS, STR_NETWORK_ACTION_RATE_LIMIT_MESSAGE);
 				return;
 			}
+		}
+	}
+	// This is to prevent abuse of demolishing rides. Anyone that is not the server
+	// host will have to wait 1 second in between deleting rides.
+	if (commandCommand == GAME_COMMAND_DEMOLISH_RIDE) {
+		if ((ticks - connection.Player->LastActionTime) < 1000) {
+			Server_Send_SHOWERROR(connection, STR_CANT_DO_THIS, STR_NETWORK_ACTION_RATE_LIMIT_MESSAGE);
+			return;
 		}
 	}
 	// Don't let clients send pause or quit

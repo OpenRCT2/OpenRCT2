@@ -3668,6 +3668,7 @@ enum {
 	STR_ADMISSION_PRICE_PAY_PER_RIDE_TIP = 6014,
 	STR_TILE_INSPECTOR_PATH_SLOPED = 6015,
 	STR_ACTION_MODIFY_TILE = 6016,
+	STR_NETWORK_ACTION_RATE_LIMIT_MESSAGE = 6017,
 
 	// Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
 	STR_COUNT = 32768
