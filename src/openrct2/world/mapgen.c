@@ -767,10 +767,9 @@ static void mapgen_simplex(mapgen_settings *settings)
 
 #pragma region Heightmap
 
-#pragma optimize("", off)
 void mapgen_generate_from_heightmap()
 {
-	SDL_Surface *bitmap = SDL_LoadBMP("test.bmp");
+	SDL_Surface *bitmap = SDL_LoadBMP("test_blurry.bmp");
 	if (bitmap == NULL)
 	{
 		printf("Failed to load bitmap: %s\n", SDL_GetError());
@@ -804,9 +803,17 @@ void mapgen_generate_from_heightmap()
 		}
 	}
 
+	// smooth the entire map
+	for (uint32 y = 1; y <= height; y++)
+	{
+		for (uint32 x = 1; x <= width; x++)
+		{
+			tile_smooth(x, y);
+		}
+	}
+
 	SDL_UnlockSurface(bitmap);
 	SDL_FreeSurface(bitmap);
 }
-#pragma optimize("", on)
 
 #pragma endregion

@@ -320,3 +320,96 @@ static sint32 map_smooth_wavy(sint32 l, sint32 t, sint32 r, sint32 b)
 
 	return raisedLand;
 }
+
+/**
+ * Raises the corners based on the height offset of neightbour tiles.
+ * This does not change the base height, unless all corners have been raised.
+ * @returns 0 if no edits were made, 1 otherwise
+ */
+sint32 tile_smooth(sint32 x, sint32 y)
+{
+	rct_map_element *const surfaceElement = map_get_surface_element_at(x, y);
+
+	// +-----+-----+-----+
+	// | NW  |  N  | NE  |
+	// |  2  |  1  |  0  |
+	// +-----+-----+-----+
+	// |  W  |  _  |  E  |
+	// |  4  |     |  3  |
+	// +-----+-----+-----+
+	// | SW  |  S  | SE  |
+	// |  7  |  6  |  5  |
+	// +-----+-----+-----+
+	union
+	{
+		sint32 baseheight[8];
+		struct { sint32 NE, N, NW, E, W, SE, S, SW; };
+	} neighbourHeightOffset = { 0 };
+
+	// Find the neighbour base heights
+	for (sint32 index = 0, y_offset = -1; y_offset <= 1; y_offset++)
+	{
+		for (sint32 x_offset = -1; x_offset <= 1; x_offset++)
+		{
+			// Skip self
+			if (y_offset == 0 && x_offset == 0)
+				continue;
+
+			// Get neightbour height. If the element is not valid (outside of map) assume the same height
+			rct_map_element *neightbour_element = map_get_surface_element_at(x + x_offset, y + y_offset);
+			neighbourHeightOffset.baseheight[index] = neightbour_element ? neightbour_element->base_height : surfaceElement->base_height;
+
+			// Make the height relative to the current surface element
+			neighbourHeightOffset.baseheight[index] -= surfaceElement->base_height;
+
+			index++;
+		}
+	}
+
+	// Count number from the three tiles that is currently higher
+	sint8 thresholdNW = clamp(neighbourHeightOffset.W, 0, 1) + clamp(neighbourHeightOffset.NW, 0, 1) + clamp(neighbourHeightOffset.N, 0, 1);
+	sint8 thresholdNE = clamp(neighbourHeightOffset.N, 0, 1) + clamp(neighbourHeightOffset.NE, 0, 1) + clamp(neighbourHeightOffset.E, 0, 1);
+	sint8 thresholdSE = clamp(neighbourHeightOffset.E, 0, 1) + clamp(neighbourHeightOffset.SE, 0, 1) + clamp(neighbourHeightOffset.S, 0, 1);
+	sint8 thresholdSW = clamp(neighbourHeightOffset.S, 0, 1) + clamp(neighbourHeightOffset.SW, 0, 1) + clamp(neighbourHeightOffset.W, 0, 1);
+
+	uint8 slope = 0;
+	slope |= (thresholdNW >= 1) << 1;
+	slope |= (thresholdNE >= 1) << 2;
+	slope |= (thresholdSE >= 1) << 3;
+	slope |= (thresholdSW >= 1) << 0;
+
+	// Set diagonal when three corners have been raised, and the middle one can be raised one more
+	if ((slope == 0b0111 && neighbourHeightOffset.NW >= 4) || (slope == 0b1011 && neighbourHeightOffset.SW >= 4) ||
+		(slope == 0b1101 && neighbourHeightOffset.SE >= 4) || (slope == 0b1110 && neighbourHeightOffset.NE >= 4))
+	{
+		slope |= 1 << 4;
+	}
+
+	// Check if the calculated slope is the same already
+	uint8 currentSlope = surfaceElement->properties.surface.slope & 0x1F;
+	if (currentSlope == slope)
+	{
+		return 0;
+	}
+
+	// Remove old slope value
+	surfaceElement->properties.surface.slope &= ~0x1F;
+	if ((slope & 0xF) == 0xF)
+	{
+		// All corners are raised, raise the entire tile instead.
+		surfaceElement->base_height = (surfaceElement->clearance_height += 2);
+	}
+	else
+	{
+		// Apply the slope to this tile
+		surfaceElement->properties.surface.slope |= slope;
+
+		// Set correct clearance height
+		if (slope & 0x10)
+			surfaceElement->clearance_height = surfaceElement->base_height + 4;
+		else if (slope & 0x0F)
+			surfaceElement->clearance_height = surfaceElement->base_height + 2;
+	}
+
+	return 1;
+}
