@@ -1487,6 +1487,13 @@ static void window_park_price_invalidate(rct_window *w)
 	window_park_set_pressed_tab(w);
 	window_park_prepare_window_title_text();
 
+	// Show a tooltip if the park is pay per ride.
+	window_park_price_widgets[WIDX_PRICE].tooltip = STR_NONE;
+	if ((gParkFlags & PARK_FLAGS_PARK_FREE_ENTRY) && !gCheatsUnlockAllPrices)
+	{
+		window_park_price_widgets[WIDX_PRICE].tooltip = STR_ADMISSION_PRICE_PAY_PER_RIDE_TIP;
+	}
+
 	// If the entry price is locked at free, disable the widget, unless the unlock_all_prices cheat is active.
 	if ((gParkFlags & PARK_FLAGS_NO_MONEY) ||
 		((gParkFlags & PARK_FLAGS_PARK_FREE_ENTRY) && !gCheatsUnlockAllPrices)
