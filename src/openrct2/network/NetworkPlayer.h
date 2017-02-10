@@ -44,6 +44,7 @@ public:
     rct_peep*   PickupPeep          = 0;
 	sint32      PickupPeepOldX      = SPRITE_LOCATION_NULL;
     std::string KeyHash;
+    uint32      LastDemolishTime    = 0;
 
     NetworkPlayer() = default;
 

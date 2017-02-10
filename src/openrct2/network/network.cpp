@@ -1863,6 +1863,7 @@ void Network::Server_Handle_GAMECMD(NetworkConnection& connection, NetworkPacket
 		Server_Send_SHOWERROR(connection, STR_CANT_DO_THIS, STR_PERMISSION_DENIED);
 		return;
 	}
+
 	// In case someone modifies the code / memory to enable cluster build,
 	// require a small delay in between placing scenery to provide some security, as
 	// cluster mode is a for loop that runs the place_scenery code multiple times.
@@ -1875,9 +1876,9 @@ void Network::Server_Handle_GAMECMD(NetworkConnection& connection, NetworkPacket
 		}
 	}
 	// This is to prevent abuse of demolishing rides. Anyone that is not the server
-	// host will have to wait 1 second in between deleting rides.
+	// host will have to wait a specified amount of ticks in between deleting rides.
 	if (commandCommand == GAME_COMMAND_DEMOLISH_RIDE) {
-		if ((ticks - connection.Player->LastActionTime) < 1000) {
+		if ((ticks - connection.Player->LastDemolishTime) < 1000) {
 			Server_Send_SHOWERROR(connection, STR_CANT_DO_THIS, STR_NETWORK_ACTION_RATE_LIMIT_MESSAGE);
 			return;
 		}
@@ -1900,6 +1901,11 @@ void Network::Server_Handle_GAMECMD(NetworkConnection& connection, NetworkPacket
 	connection.Player->LastAction = NetworkActions::FindCommand(commandCommand);
 	connection.Player->LastActionTime = SDL_GetTicks();
 	connection.Player->AddMoneySpent(cost);
+
+	if (commandCommand == GAME_COMMAND_DEMOLISH_RIDE) {
+		connection.Player->LastDemolishTime = connection.Player->LastActionTime;
+	}
+
 	Server_Send_GAMECMD(args[0], args[1], args[2], args[3], args[4], args[5], args[6], playerid, callback);
 }
 
