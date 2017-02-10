@@ -181,6 +181,14 @@ enum WINDOW_OPTIONS_WIDGET_IDX {
 #define WW 			310
 #define WH 			332
 
+#ifndef DISABLE_TWITCH
+	#define TWITCH_TAB_SPRITE	0x20000000 | SPR_TAB
+	#define TWITCH_TAB_COLOUR	1
+#else
+	#define TWITCH_TAB_SPRITE	0x20000000 | SPR_G2_TAB_DISABLED
+	#define TWITCH_TAB_COLOUR	0
+#endif
+
 #define MAIN_OPTIONS_WIDGETS \
 	{ WWT_FRAME,			0,	0,		WW-1,	0,		WH-1,	STR_NONE,				STR_NONE }, \
 	{ WWT_CAPTION,			0,	1,		WW-2,	1,		14,		STR_OPTIONS_TITLE,		STR_WINDOW_TITLE_TIP }, \
@@ -192,7 +200,7 @@ enum WINDOW_OPTIONS_WIDGET_IDX {
 	{ WWT_TAB,				1,	96,		126,	17,		43,		0x20000000 | SPR_TAB,	STR_OPTIONS_AUDIO_TIP }, \
 	{ WWT_TAB,				1,	127,	157,	17,		43,		0x20000000 | SPR_TAB,	STR_OPTIONS_CONTROLS_AND_INTERFACE_TIP }, \
 	{ WWT_TAB,				1,	158,	188,	17,		43,		0x20000000 | SPR_TAB,	STR_OPTIONS_MISCELLANEOUS_TIP }, \
-	{ WWT_TAB,				1,	189,	219,	17,		43,		0x20000000 | SPR_TAB,	STR_OPTIONS_TWITCH_TIP }
+	{ WWT_TAB,				TWITCH_TAB_COLOUR,	189,	219,	17,		43,		TWITCH_TAB_SPRITE,		STR_OPTIONS_TWITCH_TIP }
 
 static rct_widget window_options_display_widgets[] = {
 	MAIN_OPTIONS_WIDGETS,
@@ -1428,7 +1436,12 @@ static void window_options_invalidate(rct_window *w)
 		window_init_scroll_widgets(w);
 	}
 	window_options_set_pressed_tab(w);
+
+#ifdef DISABLE_TWITCH
+	w->disabled_widgets = (1 << WIDX_TAB_7);
+#else
 	w->disabled_widgets = 0;
+#endif
 
 	switch (w->page) {
 	case WINDOW_OPTIONS_PAGE_DISPLAY:
@@ -1965,6 +1978,10 @@ static void window_options_set_pressed_tab(rct_window *w)
 static void window_options_draw_tab_image(rct_drawpixelinfo *dpi, rct_window *w, sint32 page, sint32 spriteIndex)
 {
 	sint32 widgetIndex = WIDX_TAB_1 + page;
+	rct_widget *widget = &w->widgets[widgetIndex];
+
+	sint16 l = w->x + widget->left;
+	sint16 t = w->y + widget->top;
 
 	if (!(w->disabled_widgets & (1LL << widgetIndex))) {
 		if (w->page == page) {
@@ -1972,7 +1989,17 @@ static void window_options_draw_tab_image(rct_drawpixelinfo *dpi, rct_window *w,
 			spriteIndex += (frame % window_options_tab_animation_frames[w->page]);
 		}
 
-		gfx_draw_sprite(dpi, spriteIndex, w->x + w->widgets[widgetIndex].left, w->y + w->widgets[widgetIndex].top, 0);
+		// Draw normal, enabled sprite.
+		gfx_draw_sprite(dpi, spriteIndex, l, t, 0);
+	} else {
+		// Get the window background colour
+		uint8 window_colour = NOT_TRANSLUCENT(w->colours[widget->colour]);
+
+		// Draw greyed out (light border bottom right shadow)
+		gfx_draw_sprite_solid(dpi, spriteIndex, l + 1, t + 1, ColourMapA[window_colour].lighter);
+
+		// Draw greyed out (dark)
+		gfx_draw_sprite_solid(dpi, spriteIndex, l, t, ColourMapA[window_colour].mid_light);
 	}
 }
 

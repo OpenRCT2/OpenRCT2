@@ -289,20 +289,11 @@ static void widget_tab_draw(rct_drawpixelinfo *dpi, rct_window *w, sint32 widget
 	// Get the widget
 	rct_widget *widget = &w->widgets[widgetIndex];
 
-	//
 	if (widget->image == -1)
 		return;
 
-	// Check if tab is disabled
-	if (!widget_is_disabled(w, widgetIndex)) {
-		widget_draw_image(dpi, w, widgetIndex);
-		return;
-	}
-
-	if (widget->type == WWT_TAB)
-		return;
-
-	if (widget->type != WWT_TRNBTN) {
+	if (widget_is_enabled(w, widgetIndex) || widget->type == WWT_TAB || widget->type != WWT_TRNBTN)
+	{
 		widget_draw_image(dpi, w, widgetIndex);
 		return;
 	}
