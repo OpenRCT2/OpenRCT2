@@ -336,7 +336,7 @@
     <ClCompile Include="world\particle.c" />
     <ClCompile Include="util\sawyercoding.c" />
     <ClCompile Include="util\util.c" />
-    <ClCompile Include="version.c" />
+    <ClCompile Include="Version.cpp" />
     <ClCompile Include="windows\about.c" />
     <ClCompile Include="windows\banner.c" />
     <ClCompile Include="windows\cheats.c" />

@@ -28,6 +28,7 @@
 #include "scenario/ScenarioRepository.h"
 #include "title/TitleScreen.h"
 #include "title/TitleSequenceManager.h"
+#include "Version.h"
 
 extern "C"
 {
@@ -44,7 +45,6 @@ extern "C"
     #include "platform/platform.h"
     #include "rct1.h"
     #include "rct2/interop.h"
-    #include "version.h"
 }
 
 // The game update inverval in milliseconds, (1000 / 40fps) = 25ms
@@ -76,7 +76,6 @@ extern "C"
 namespace OpenRCT2
 {
     static IPlatformEnvironment * _env = nullptr;
-    static std::string _versionInfo;
     static bool _isWindowMinimised;
     static uint32 _isWindowMinimisedLastCheckTick;
     static uint32 _lastTick;
@@ -85,7 +84,6 @@ namespace OpenRCT2
     /** If set, will end the OpenRCT2 game loop. Intentially private to this module so that the flag can not be set back to false. */
     static bool _finished;
 
-    static void SetVersionInfoString();
     static bool ShouldRunVariableFrame();
     static void RunGameLoop();
     static void RunFixedFrame();
@@ -98,11 +96,7 @@ extern "C"
 {
     void openrct2_write_full_version_info(utf8 * buffer, size_t bufferSize)
     {
-        if (OpenRCT2::_versionInfo.empty())
-        {
-            OpenRCT2::SetVersionInfoString();
-        }
-        String::Set(buffer, bufferSize, OpenRCT2::_versionInfo.c_str());
+        String::Set(buffer, bufferSize, Version::GetInfo().c_str());
     }
 
     static void openrct2_set_exe_path()
@@ -378,29 +372,6 @@ namespace OpenRCT2
 
         IPlatformEnvironment * env = CreatePlatformEnvironment(basePaths);
         return env;
-    }
-
-    static void SetVersionInfoString()
-    {
-        utf8 buffer[256];
-        size_t bufferSize = sizeof(buffer);
-        String::Set(buffer, bufferSize, OPENRCT2_NAME ", v" OPENRCT2_VERSION);
-        if (!String::IsNullOrEmpty(gGitBranch))
-        {
-            String::AppendFormat(buffer, bufferSize, "-%s", gGitBranch);
-        }
-        if (!String::IsNullOrEmpty(gCommitSha1Short))
-        {
-            String::AppendFormat(buffer, bufferSize, " build %s", gCommitSha1Short);
-        }
-        if (!String::IsNullOrEmpty(gBuildServer))
-        {
-            String::AppendFormat(buffer, bufferSize, " provided by %s", gBuildServer);
-        }
-    #ifdef DEBUG
-        String::AppendFormat(buffer, bufferSize, " (DEBUG)", gBuildServer);
-    #endif
-        _versionInfo = buffer;
     }
 
     /**

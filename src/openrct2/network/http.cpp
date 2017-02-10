@@ -26,10 +26,11 @@ void http_dispose() { }
 
 #else
 
+#include "../core/Console.hpp"
 #include "../core/Math.hpp"
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
-#include "../core/Console.hpp"
+#include "../Version.h"
 
 #ifdef __WINDOWS__
     // cURL includes windows.h, but we don't need all of it.

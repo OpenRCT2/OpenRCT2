@@ -30,10 +30,12 @@
 #include <shlobj.h>
 #include <SDL_syswm.h>
 #include <sys/stat.h>
-#include "../OpenRCT2.h"
-#include "../localisation/language.h"
-#include "../util/util.h"
+
 #include "../config.h"
+#include "../localisation/language.h"
+#include "../OpenRCT2.h"
+#include "../util/util.h"
+#include "../Version.h"
 #include "platform.h"
 
 // Native resource IDs

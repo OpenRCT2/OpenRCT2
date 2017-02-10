@@ -47,6 +47,7 @@ extern "C" {
 }
 #endif // __cplusplus
 
+#include "../Version.h"
 #include "NetworkTypes.h"
 
 #ifndef DISABLE_NETWORK
