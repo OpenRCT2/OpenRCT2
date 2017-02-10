@@ -552,6 +552,6 @@ void wall_element_set_animation_frame(rct_map_element * wallElement, uint8 frame
 uint8 wall_element_get_secondary_colour(rct_map_element * wallElement);
 void wall_element_set_secondary_colour(rct_map_element * wallElement, uint8 secondaryColour);
 
-uint32 map_get_available_peep_spawn_list(rct2_peep_spawn* peepSpawnList);
+uint32 map_get_available_peep_spawn_index_list(uint32* peepSpawnIndexList);
 
 #endif
