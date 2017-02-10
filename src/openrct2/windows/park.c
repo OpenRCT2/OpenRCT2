@@ -70,7 +70,7 @@ enum WINDOW_PARK_WIDGET_IDX {
 	WIDX_CLOSE_LIGHT,
 	WIDX_OPEN_LIGHT,
 
-	WIDX__ = 11,
+	WIDX_PRICE_LABEL = 11,
 	WIDX_PRICE,
 	WIDX_INCREASE_PRICE,
 	WIDX_DECREASE_PRICE,
@@ -1488,9 +1488,12 @@ static void window_park_price_invalidate(rct_window *w)
 	window_park_prepare_window_title_text();
 
 	// Show a tooltip if the park is pay per ride.
+	window_park_price_widgets[WIDX_PRICE_LABEL].tooltip = STR_NONE;
 	window_park_price_widgets[WIDX_PRICE].tooltip = STR_NONE;
+
 	if ((gParkFlags & PARK_FLAGS_PARK_FREE_ENTRY) && !gCheatsUnlockAllPrices)
 	{
+		window_park_price_widgets[WIDX_PRICE_LABEL].tooltip = STR_ADMISSION_PRICE_PAY_PER_RIDE_TIP;
 		window_park_price_widgets[WIDX_PRICE].tooltip = STR_ADMISSION_PRICE_PAY_PER_RIDE_TIP;
 	}
 

@@ -6009,13 +6009,15 @@ static void window_ride_income_invalidate(rct_window *w)
 	w->pressed_widgets &= ~(1 << WIDX_PRIMARY_PRICE_SAME_THROUGHOUT_PARK);
 	w->disabled_widgets &= ~(1 << WIDX_PRIMARY_PRICE);
 
+	window_ride_income_widgets[WIDX_PRIMARY_PRICE_LABEL].tooltip = STR_NONE;
 	window_ride_income_widgets[WIDX_PRIMARY_PRICE].tooltip = STR_NONE;
 
-	//If the park doesn't have free entry, lock the admission price, unless the cheat to unlock all prices is activated.
+	// If the park doesn't have free entry, lock the admission price, unless the cheat to unlock all prices is activated.
 	if ((!(gParkFlags & PARK_FLAGS_PARK_FREE_ENTRY) && rideEntry->shop_item == SHOP_ITEM_NONE && ride->type != RIDE_TYPE_TOILETS)
 		&& (!gCheatsUnlockAllPrices))
 	{
 		w->disabled_widgets |= (1 << WIDX_PRIMARY_PRICE);
+		window_ride_income_widgets[WIDX_PRIMARY_PRICE_LABEL].tooltip = STR_RIDE_INCOME_ADMISSION_PAY_FOR_ENTRY_TIP;
 		window_ride_income_widgets[WIDX_PRIMARY_PRICE].tooltip = STR_RIDE_INCOME_ADMISSION_PAY_FOR_ENTRY_TIP;
 	}
 
