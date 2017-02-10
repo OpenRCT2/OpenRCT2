@@ -21,7 +21,7 @@ typedef struct mapgen_settings {
 	// Base
 	sint32 mapSize;
 	sint32 height;
-	sint32 waterLevel;
+	sint32 water_level;
 	sint32 floor;
 	sint32 wall;
 
@@ -33,11 +33,15 @@ typedef struct mapgen_settings {
 	sint32 simplex_high;
 	float simplex_base_freq;
 	sint32 simplex_octaves;
+
+	// Height map settings
+	bool smooth;
+	bool strong_smooth;
 } mapgen_settings;
 
 void mapgen_generate_blank(mapgen_settings *settings);
 void mapgen_generate(mapgen_settings *settings);
 void mapgen_generate_custom_simplex(mapgen_settings *settings);
-void mapgen_generate_from_heightmap();
+void mapgen_generate_from_heightmap(mapgen_settings *settings);
 
 #endif
