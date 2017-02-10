@@ -125,7 +125,7 @@
     <ClCompile Include="drawing\Rain.cpp" />
     <ClCompile Include="drawing\rect.c" />
     <ClCompile Include="drawing\scrolling_text.c" />
-    <ClCompile Include="drawing\sprite.c" />
+    <ClCompile Include="drawing\sprite.cpp" />
     <ClCompile Include="drawing\string.c" />
     <ClCompile Include="editor.c" />
     <ClCompile Include="game.c" />

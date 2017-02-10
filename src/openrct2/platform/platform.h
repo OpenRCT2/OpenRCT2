@@ -193,7 +193,7 @@ void platform_resolve_openrct_data_path();
 void platform_get_openrct_data_path(utf8 *outPath, size_t outSize);
 void platform_get_user_directory(utf8 *outPath, const utf8 *subDirectory, size_t outSize);
 utf8* platform_get_username();
-void platform_show_messagebox(utf8 *message);
+void platform_show_messagebox(const utf8 * message);
 bool platform_open_common_file_dialog(utf8 *outFilename, file_dialog_desc *desc, size_t outSize);
 utf8 *platform_open_directory_browser(utf8 *title);
 uint8 platform_get_locale_currency();
