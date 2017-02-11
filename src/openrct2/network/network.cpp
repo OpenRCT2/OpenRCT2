@@ -26,6 +26,18 @@ extern "C" {
 
 #include "network.h"
 
+extern "C" {
+	const rct_string_id KICK_REASON_STRING_IDS[] = {
+		STR_KICK_REASON_NO_REASON,
+		STR_KICK_REASON_VANDALISM,
+		STR_KICK_REASON_SPAM,
+		STR_KICK_REASON_HARASSMENT,
+		STR_KICK_REASON_INAPPROPRIATE_CONTENT,
+		STR_KICK_REASON_BREAKING_SERVER_RULES,
+		STR_KICK_REASON_OTHER_REASON,
+	};
+}
+
 rct_peep* _pickup_peep = 0;
 sint32 _pickup_peep_old_x = SPRITE_LOCATION_NULL;
 
@@ -116,6 +128,7 @@ Network::Network()
 	server_command_handlers[NETWORK_COMMAND_GAMEINFO] = &Network::Server_Handle_GAMEINFO;
 	server_command_handlers[NETWORK_COMMAND_TOKEN] = &Network::Server_Handle_TOKEN;
 	server_command_handlers[NETWORK_COMMAND_OBJECTS] = &Network::Server_Handle_OBJECTS;
+	server_command_handlers[NETWORK_COMMAND_KICK] = &Network::Server_Handle_KICK;
 	OpenSSL_add_all_algorithms();
 }
 
@@ -583,19 +596,48 @@ bool Network::CheckSRAND(uint32 tick, uint32 srand0)
 	return true;
 }
 
-void Network::KickPlayer(sint32 playerId)
+bool Network::KickPlayer(sint32 playerId, uint32 kickReasonId, const char* reason, const char* kickedBy)
 {
 	for(auto it = client_connection_list.begin(); it != client_connection_list.end(); it++) {
 		if ((*it)->Player->Id == playerId) {
-			// Disconnect the client gracefully
-			(*it)->SetLastDisconnectReason(STR_MULTIPLAYER_KICKED);
-			char str_disconnect_msg[256];
-			format_string(str_disconnect_msg, 256, STR_MULTIPLAYER_KICKED_REASON, NULL);
+			//This should never happen (as host does not have a connection var), but just to be safe..
+			if ((*it)->Player->Flags & NETWORK_PLAYER_FLAG_ISSERVER) {
+				gGameCommandErrorTitle = STR_CANT_DO_THIS;
+				gGameCommandErrorText = STR_CANT_KICK_THE_HOST;
+				return false;
+			}
+
+			// Prepare the kick message
+			char str_disconnect_msg[NETWORK_DISCONNECT_REASON_BUFFER_SIZE];
+			if (kickReasonId == KICK_REASON_CUSTOM) {
+				if (reason && strcmp(reason, "") != 0) {
+					const char* args[] = { reason, kickedBy };
+					format_string(str_disconnect_msg, sizeof(str_disconnect_msg), STR_KICK_REASON_FORMAT_STRING, args);
+				} else {
+					kickReasonId = KICK_REASON_DEFAULT;
+				}
+			}
+			if (kickReasonId != KICK_REASON_CUSTOM) {
+				rct_string_id kickReasonStrId = KICK_REASON_STRING_IDS[kickReasonId < KICK_REASON_IDS_COUNT ? kickReasonId : KICK_REASON_DEFAULT];
+				set_format_arg(0, rct_string_id, kickReasonStrId);
+				set_format_arg(2, const char*, kickedBy);
+				format_string(str_disconnect_msg, sizeof(str_disconnect_msg), STR_KICK_REASON_FORMAT_STRINGID, gCommonFormatArgs);
+			}
+
+			//Message shown in notification
+			(*it)->SetLastDisconnectReason(str_disconnect_msg);
+			//Message shown in chats
 			Server_Send_SETDISCONNECTMSG(*(*it), str_disconnect_msg);
+
+			// Disconnect the client gracefully
+			(*it)->SendQueuedPackets();
 			(*it)->Socket->Disconnect();
-			break;
+			return true;
 		}
 	}
+	gGameCommandErrorTitle = STR_CANT_DO_THIS;
+	gGameCommandErrorText = STR_PLAYER_NOT_FOUND;
+	return false;
 }
 
 void Network::SetPassword(const char* password)
@@ -1015,6 +1057,43 @@ void Network::Server_Send_CHAT(const char* text)
 	*packet << (uint32)NETWORK_COMMAND_CHAT;
 	packet->WriteString(text);
 	SendPacketToClients(*packet);
+}
+
+void Network::Client_Send_KICK(uint8 playerid, uint32 kickReasonId, const char* reason)
+{
+	std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
+	*packet << (uint32)NETWORK_COMMAND_KICK << playerid << kickReasonId;
+	packet->WriteString(reason);
+	server_connection.QueuePacket(std::move(packet));
+}
+
+bool Network::Server_Send_KICK(NetworkPlayer* fromPlayer, uint8 playerid, uint32 kickReasonId, const char* reason)
+{
+	if (!fromPlayer) return false;
+	NetworkPlayer* player = gNetwork.GetPlayerByID(playerid);
+	if (player && player->Flags & NETWORK_PLAYER_FLAG_ISSERVER) {
+		gGameCommandErrorTitle = STR_CANT_DO_THIS;
+		gGameCommandErrorText = STR_CANT_KICK_THE_HOST;
+		return false;
+	}
+	if (fromPlayer->Id == playerid) {
+		gGameCommandErrorTitle = STR_CANT_DO_THIS;
+		gGameCommandErrorText = STR_CANT_KICK_YOURSELF;
+		return false;
+	}
+	const char *name = fromPlayer->Name.c_str();
+	if (!gNetwork.KickPlayer(playerid, kickReasonId, reason, name)) {
+		return false;
+	}
+
+	fromPlayer->LastAction = NetworkActions::FindCommand(-4);
+	fromPlayer->LastActionTime = SDL_GetTicks();
+
+	NetworkUserManager * networkUserManager = &gNetwork._userManager;
+	networkUserManager->Load();
+	networkUserManager->RemoveUser(player->KeyHash);
+	networkUserManager->Save();
+	return true;
 }
 
 void Network::Client_Send_GAMECMD(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uint32 esi, uint32 edi, uint32 ebp, uint8 callback)
@@ -1822,6 +1901,30 @@ void Network::Server_Handle_CHAT(NetworkConnection& connection, NetworkPacket& p
 	}
 }
 
+void Network::Server_Handle_KICK(NetworkConnection& connection, NetworkPacket& packet)
+{
+	if (connection.Player) {
+		NetworkGroup* group = GetGroupByID(connection.Player->Group);
+		if (!group || (group && !group->CanPerformCommand(-4))) {
+			Server_Send_SHOWERROR(connection, STR_CANT_DO_THIS, STR_PERMISSION_DENIED);
+			return;
+		}
+	}
+	uint8 playerId;
+	uint32 kickReasonId;
+	packet >> playerId >> kickReasonId;
+	const char* reason = packet.ReadString();
+	if (!connection.Player) {
+		return;
+	}
+	if (!reason) {
+		reason = language_get_string(STR_MULTIPLAYER_KICKED_REASON);
+	}
+	if (!Server_Send_KICK(connection.Player, playerId, kickReasonId, reason)) {
+		Server_Send_SHOWERROR(connection, gGameCommandErrorTitle, gGameCommandErrorText);
+	}
+}
+
 void Network::Client_Handle_GAMECMD(NetworkConnection& connection, NetworkPacket& packet)
 {
 	uint32 tick;
@@ -2450,27 +2553,17 @@ void game_command_modify_groups(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *e
 	*ebx = 0;
 }
 
-void game_command_kick_player(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *edx, sint32 *esi, sint32 *edi, sint32 *ebp)
-{
-	uint8 playerid = (uint8)*eax;
-	NetworkPlayer* player = gNetwork.GetPlayerByID(playerid);
-	if (player && player->Flags & NETWORK_PLAYER_FLAG_ISSERVER) {
-		gGameCommandErrorTitle = STR_CANT_KICK_THE_HOST;
-		gGameCommandErrorText = STR_NONE;
-		*ebx = MONEY32_UNDEFINED;
-		return;
-	}
-	if (*ebx & GAME_COMMAND_FLAG_APPLY) {
-		if (gNetwork.GetMode() == NETWORK_MODE_SERVER) {
-			gNetwork.KickPlayer(playerid);
+void network_kick_player(uint8 playerid, uint32 kickReasonId, const char* reason) {
 
-			NetworkUserManager * networkUserManager = &gNetwork._userManager;
-			networkUserManager->Load();
-			networkUserManager->RemoveUser(player->KeyHash);
-			networkUserManager->Save();
+	if (gNetwork.GetMode() == NETWORK_MODE_CLIENT) {
+		gNetwork.Client_Send_KICK(playerid, kickReasonId, reason);
+	}
+	else if (gNetwork.GetMode() == NETWORK_MODE_SERVER) {
+		NetworkPlayer* player = gNetwork.GetPlayerByID(gNetwork.GetPlayerID());
+		if (!gNetwork.Server_Send_KICK(player, playerid, kickReasonId, reason)) {
+			window_error_open(gGameCommandErrorTitle, gGameCommandErrorText);
 		}
 	}
-	*ebx = 0;
 }
 
 uint8 network_get_default_group()
@@ -2656,7 +2749,7 @@ sint32 network_get_num_groups() { return 0; }
 const char* network_get_group_name(uint32 index) { return ""; };
 void game_command_set_player_group(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp) { }
 void game_command_modify_groups(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp) { }
-void game_command_kick_player(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp) { }
+void network_kick_player(uint8 playerid, uint32 kickReasonId, const char* reason) { }
 uint8 network_get_default_group() { return 0; }
 sint32 network_get_num_actions() { return 0; }
 rct_string_id network_get_action_name_string_id(uint32 index) { return -1; }

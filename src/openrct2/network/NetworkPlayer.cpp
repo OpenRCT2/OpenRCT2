@@ -18,6 +18,7 @@
 
 #include "NetworkPacket.h"
 #include "NetworkPlayer.h"
+#include "network.h"
 
 extern "C"
 {
@@ -28,7 +29,13 @@ extern "C"
 void NetworkPlayer::SetName(const std::string &name)
 {
     // 36 == 31 + strlen(" #255");
-    Name = name.substr(0, 36);
+	//From rebase (origin)
+	/*
+    NetworkPlayer::name = name.substr(0, NETWORK_USERNAME_MAX_SIZE);
+    utf8_remove_format_codes((utf8 *)NetworkPlayer::name.data(), false);
+	*/
+	//Rebase note: changed "36" to "NETWORK_USERNAME_MAX_SIZE"
+    Name = name.substr(0, NETWORK_USERNAME_MAX_SIZE);
     utf8_remove_format_codes((utf8 *)Name.data(), false);
 }
 

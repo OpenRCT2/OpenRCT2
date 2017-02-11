@@ -50,13 +50,41 @@ extern "C" {
 #include "../Version.h"
 #include "NetworkTypes.h"
 
-#ifndef DISABLE_NETWORK
+#pragma region KICK_REASON_CONTENT
+
+#define NETWORK_DISCONNECT_KICK_REASON_MAX_SIZE 128
+enum KICK_REASON_IDS
+{
+	KICK_REASON_DEFAULT,
+	KICK_REASON_VANDALISM,
+	KICK_REASON_SPAM,
+	KICK_REASON_HARASSMENT,
+	KICK_REASON_INAPPROPRIATE_CONTENT,
+	KICK_REASON_BREAKING_SERVER_RULES,
+	KICK_REASON_CUSTOM,
+};
+#define KICK_REASON_IDS_COUNT (KICK_REASON_CUSTOM + 1)
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+	const extern rct_string_id KICK_REASON_STRING_IDS[];
+#ifdef __cplusplus
+}
+#endif
+
+#pragma endregion
+
+#ifndef	DISABLE_NETWORK
 
 // This define specifies which version of network stream current build uses.
 // It is used for making sure only compatible builds get connected, even within
 // single OpenRCT2 version.
 #define NETWORK_STREAM_VERSION "2"
 #define NETWORK_STREAM_ID OPENRCT2_VERSION "-" NETWORK_STREAM_VERSION
+
+#define NETWORK_DISCONNECT_REASON_BUFFER_SIZE 256
+#define NETWORK_USERNAME_MAX_SIZE 36
 
 #ifdef __cplusplus
 
@@ -108,7 +136,9 @@ public:
 	static const char* FormatChat(NetworkPlayer* fromplayer, const char* text);
 	void SendPacketToClients(NetworkPacket& packet, bool front = false);
 	bool CheckSRAND(uint32 tick, uint32 srand0);
-	void KickPlayer(sint32 playerId);
+	//From rebase (upstream)
+	//void KickPlayer(sint32 playerId);
+	bool KickPlayer(sint32 playerId, uint32 kickReasonId, const char* reason, const char* kickedBy);
 	void SetPassword(const char* password);
 	void ShutdownClient();
 	NetworkGroup* AddGroup();
@@ -131,6 +161,8 @@ public:
 	void Server_Send_MAP(NetworkConnection* connection = nullptr);
 	void Client_Send_CHAT(const char* text);
 	void Server_Send_CHAT(const char* text);
+	void Client_Send_KICK(uint8 playerid, uint32 kickReasonId, const char* reason);
+	bool Server_Send_KICK(NetworkPlayer* fromPlayer, uint8 playerId, uint32 kickReasonId, const char* reason);
 	void Client_Send_GAMECMD(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uint32 esi, uint32 edi, uint32 ebp, uint8 callback);
 	void Server_Send_GAMECMD(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uint32 esi, uint32 edi, uint32 ebp, uint8 playerid, uint8 callback);
 	void Server_Send_TICK();
@@ -230,6 +262,7 @@ private:
 	void Client_Handle_MAP(NetworkConnection& connection, NetworkPacket& packet);
 	void Client_Handle_CHAT(NetworkConnection& connection, NetworkPacket& packet);
 	void Server_Handle_CHAT(NetworkConnection& connection, NetworkPacket& packet);
+	void Server_Handle_KICK(NetworkConnection& connection, NetworkPacket& packet);
 	void Client_Handle_GAMECMD(NetworkConnection& connection, NetworkPacket& packet);
 	void Server_Handle_GAMECMD(NetworkConnection& connection, NetworkPacket& packet);
 	void Client_Handle_TICK(NetworkConnection& connection, NetworkPacket& packet);
@@ -293,7 +326,9 @@ sint32 network_get_num_groups();
 const char* network_get_group_name(uint32 index);
 void game_command_set_player_group(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp);
 void game_command_modify_groups(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *edx, sint32 *esi, sint32 *edi, sint32 *ebp);
-void game_command_kick_player(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *edx, sint32 *esi, sint32 *edi, sint32 *ebp);
+//From rebase (upstream):
+//void game_command_kick_player(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *edx, sint32 *esi, sint32 *edi, sint32 *ebp);
+void network_kick_player(uint8 playerid, uint32 kickReasonId, const char* reason);
 uint8 network_get_default_group();
 sint32 network_get_num_actions();
 rct_string_id network_get_action_name_string_id(uint32 index);
