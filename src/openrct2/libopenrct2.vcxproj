@@ -73,6 +73,7 @@
     <ClCompile Include="audio\MemoryAudioSource.cpp" />
     <ClCompile Include="audio\NullAudioSource.cpp" />
     <ClCompile Include="FileClassifier.cpp" />
+    <ClCompile Include="network\ServerList.cpp" />
     <ClCompile Include="ParkImporter.cpp" />
     <ClCompile Include="rct12\SawyerChunk.cpp" />
     <ClCompile Include="rct12\SawyerChunkReader.cpp" />
@@ -418,6 +419,7 @@
     <ClInclude Include="audio\AudioMixer.h" />
     <ClInclude Include="audio\AudioSource.h" />
     <ClInclude Include="FileClassifier.h" />
+    <ClInclude Include="network\ServerList.h" />
     <ClInclude Include="rct12.h" />
     <ClInclude Include="ParkImporter.h" />
     <ClInclude Include="rct12\SawyerChunk.h" />
