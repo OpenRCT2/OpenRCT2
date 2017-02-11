@@ -443,10 +443,10 @@ static rct_widget window_ride_graphs_widgets[] = {
 
 // 0x009AE844
 static rct_widget window_ride_income_widgets[] = {
-	{ WWT_FRAME,			0,	0,		315,	0,		206,	0xFFFFFFFF,					STR_NONE													},
-	{ WWT_CAPTION,			0,	1,		314,	1,		14,		STR_RIDE_WINDOW_TITLE,							STR_WINDOW_TITLE_TIP										},
-	{ WWT_CLOSEBOX,			0,	303,	313,	2,		13,		STR_CLOSE_X,					STR_CLOSE_WINDOW_TIP										},
-	{ WWT_RESIZE,			1,	0,		315,	43,		179,	0xFFFFFFFF,					STR_NONE													},
+	{ WWT_FRAME,			0,	0,		315,	0,		206,	0xFFFFFFFF,									STR_NONE													},
+	{ WWT_CAPTION,			0,	1,		314,	1,		14,		STR_RIDE_WINDOW_TITLE,						STR_WINDOW_TITLE_TIP										},
+	{ WWT_CLOSEBOX,			0,	303,	313,	2,		13,		STR_CLOSE_X,								STR_CLOSE_WINDOW_TIP										},
+	{ WWT_RESIZE,			1,	0,		315,	43,		179,	0xFFFFFFFF,									STR_NONE													},
 	{ WWT_TAB,				1,	3,		33,		17,		43,		0x20000000 | SPR_TAB,						STR_VIEW_OF_RIDE_ATTRACTION_TIP								},
 	{ WWT_TAB,				1,	34,		64,		17,		46,		0x20000000 | SPR_TAB,						STR_VEHICLE_DETAILS_AND_OPTIONS_TIP							},
 	{ WWT_TAB,				1,	65,		95,		17,		43,		0x20000000 | SPR_TAB,						STR_OPERATING_OPTIONS_TIP									},
@@ -459,7 +459,7 @@ static rct_widget window_ride_income_widgets[] = {
 	{ WWT_TAB,				1,	282,	312,	17,		43,		0x20000000 | SPR_TAB,						STR_CUSTOMER_INFORMATION_TIP								},
 
 	{ WWT_24,				1,	5,		144,	50,		61,		0xFFFFFFFF,									STR_NONE													},
-	{ WWT_SPINNER,			1,	147,	308,	50,		61,		STR_ARG_6_CURRENCY2DP,		STR_NONE													},
+	{ WWT_SPINNER,			1,	147,	308,	50,		61,		STR_ARG_6_CURRENCY2DP,						STR_NONE													},
 	{ WWT_DROPDOWN_BUTTON,	1,	297,	307,	51,		55,		STR_NUMERIC_UP,								STR_NONE													},
 	{ WWT_DROPDOWN_BUTTON,	1,	297,	307,	56,		60,		STR_NUMERIC_DOWN,							STR_NONE													},
 	{ WWT_CHECKBOX,			1,	5,		310,	61,		72,		STR_SAME_PRICE_THROUGHOUT_PARK,				STR_SAME_PRICE_THROUGHOUT_PARK_TIP							},
@@ -6009,11 +6009,16 @@ static void window_ride_income_invalidate(rct_window *w)
 	w->pressed_widgets &= ~(1 << WIDX_PRIMARY_PRICE_SAME_THROUGHOUT_PARK);
 	w->disabled_widgets &= ~(1 << WIDX_PRIMARY_PRICE);
 
-	//If the park doesn't have free entry, lock the admission price, unless the cheat to unlock all prices is activated.
+	window_ride_income_widgets[WIDX_PRIMARY_PRICE_LABEL].tooltip = STR_NONE;
+	window_ride_income_widgets[WIDX_PRIMARY_PRICE].tooltip = STR_NONE;
+
+	// If the park doesn't have free entry, lock the admission price, unless the cheat to unlock all prices is activated.
 	if ((!(gParkFlags & PARK_FLAGS_PARK_FREE_ENTRY) && rideEntry->shop_item == SHOP_ITEM_NONE && ride->type != RIDE_TYPE_TOILETS)
 		&& (!gCheatsUnlockAllPrices))
 	{
 		w->disabled_widgets |= (1 << WIDX_PRIMARY_PRICE);
+		window_ride_income_widgets[WIDX_PRIMARY_PRICE_LABEL].tooltip = STR_RIDE_INCOME_ADMISSION_PAY_FOR_ENTRY_TIP;
+		window_ride_income_widgets[WIDX_PRIMARY_PRICE].tooltip = STR_RIDE_INCOME_ADMISSION_PAY_FOR_ENTRY_TIP;
 	}
 
 	window_ride_income_widgets[WIDX_PRIMARY_PRICE_LABEL].text = STR_RIDE_INCOME_ADMISSION_PRICE;
