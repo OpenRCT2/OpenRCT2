@@ -292,8 +292,17 @@ static void widget_tab_draw(rct_drawpixelinfo *dpi, rct_window *w, sint32 widget
 	if (widget->image == -1)
 		return;
 
-	if (widget_is_enabled(w, widgetIndex) || widget->type == WWT_TAB || widget->type != WWT_TRNBTN)
-	{
+	// Draw widgets that aren't explicitly disabled.
+	if (!widget_is_disabled(w, widgetIndex)) {
+		widget_draw_image(dpi, w, widgetIndex);
+		return;
+	}
+
+	// Do not draw hidden tabs, unless given a sprite.
+	if (widget->type == WWT_TAB && widget->image != (0x20000000 | SPR_G2_TAB_DISABLED))
+		return;
+
+	if (widget->type != WWT_TRNBTN) {
 		widget_draw_image(dpi, w, widgetIndex);
 		return;
 	}
