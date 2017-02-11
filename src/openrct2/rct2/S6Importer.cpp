@@ -319,6 +319,7 @@ public:
         gBankLoanInterestRate = _s6.current_interest_rate;
         // pad_0135934B
         gSamePriceThroughoutParkB = _s6.same_price_throughout_extended;
+        // Preserve compatibility with vanilla RCT2's save format.
         for (uint8 i = 0; i < RCT12_MAX_PARK_ENTRANCES; i++)
         {
             gParkEntrances[i].x = _s6.park_entrance_x[i];

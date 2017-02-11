@@ -308,6 +308,7 @@ void S6Exporter::Export()
     _s6.current_interest_rate = gBankLoanInterestRate;
     // pad_0135934B
     _s6.same_price_throughout_extended = gSamePriceThroughoutParkB;
+    // Preserve compatibility with vanilla RCT2's save format.
     for (uint8 i = 0; i < RCT12_MAX_PARK_ENTRANCES; i++)
     {
         _s6.park_entrance_x[i] = gParkEntrances[i].x;
