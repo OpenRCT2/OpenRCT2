@@ -80,7 +80,7 @@
     <ClCompile Include="rct12\SawyerChunkWriter.cpp" />
     <ClCompile Include="rct12\SawyerEncoding.cpp" />
     <ClCompile Include="rct2\addresses.c" />
-    <ClCompile Include="audio\audio.c" />
+    <ClCompile Include="audio\audio.cpp" />
     <ClCompile Include="cheats.c" />
     <ClCompile Include="cmdline\CommandLine.cpp" />
     <ClCompile Include="cmdline\ConvertCommand.cpp" />
