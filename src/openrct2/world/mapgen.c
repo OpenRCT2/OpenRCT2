@@ -15,8 +15,7 @@
 #pragma endregion
 
 #include "../common.h"
-#include <SDL.h>
-
+#include "../core/Guard.hpp"
 #include "../object.h"
 #include "../util/util.h"
 #include "map.h"
@@ -767,8 +766,11 @@ static void mapgen_simplex(mapgen_settings *settings)
 
 #pragma region Heightmap
 
+#pragma optimize("", off)
 void mapgen_generate_from_heightmap(mapgen_settings *settings)
 {
+	openrct2_assert(settings->simplex_high != settings->simplex_low, "Low and high setting cannot be the same");
+
 	SDL_Surface *bitmap = SDL_LoadBMP("test_blurry.bmp");
 	if (bitmap == NULL)
 	{
@@ -782,15 +784,53 @@ void mapgen_generate_from_heightmap(mapgen_settings *settings)
 
 	map_init(width + 2); // + 2 for the black tiles around the map
 
+	uint8 maxValue = 255;
+	uint8 minValue = 0;
+
 	SDL_LockSurface(bitmap);
 	uint8 *src = (uint8*)bitmap->pixels;
+	if (settings->normalize_height)
+	{
+		// Get highest and lowest pixel value
+		maxValue = 0;
+		minValue = 0xff;
+		for (uint32 y = 0; y < height; y++)
+		{
+			for (uint32 x = 0; x < width; x++)
+			{
+				uint8 value = src[x * numChannels + y * bitmap->pitch];
+				maxValue = max(maxValue, value);
+				minValue = min(minValue, value);
+			}
+		}
+
+		if (minValue == maxValue)
+		{
+			// TODO: Show warning about the height map being flat
+			log_warning("The height map cannot be normalized, it is flat.");
+			return;
+		}
+	}
+
+	openrct2_assert(maxValue > minValue, "Input range is invalid");
+	openrct2_assert(settings->simplex_high > settings->simplex_low, "Output range is invalid");
+
+	const uint8 rangeIn = maxValue - minValue;
+	const uint8 rangeOut = settings->simplex_high - settings->simplex_low;
+
 	for (uint32 y = 0; y < height; y++)
 	{
 		for (uint32 x = 0; x < width; x++)
 		{
 			// The x and y axis are flipped in the world, so this uses y for x and x for y.
 			rct_map_element *const surfaceElement = map_get_surface_element_at(y + 1, x + 1);
-			surfaceElement->base_height = src[x * numChannels + y * bitmap->pitch] / 3 + 2;
+
+			// Read value from bitmap, and convert its range
+			uint8 value = src[x * numChannels + y * bitmap->pitch];
+			value = (uint8)((float)(value - minValue) / rangeIn * rangeOut) + settings->simplex_low;
+			surfaceElement->base_height = value;
+
+			// Floor to even number
 			surfaceElement->base_height /= 2;
 			surfaceElement->base_height *= 2;
 			surfaceElement->clearance_height = surfaceElement->base_height;
@@ -833,5 +873,6 @@ void mapgen_generate_from_heightmap(mapgen_settings *settings)
 	SDL_UnlockSurface(bitmap);
 	SDL_FreeSurface(bitmap);
 }
+#pragma optimize("", on)
 
 #pragma endregion
