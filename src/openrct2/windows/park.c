@@ -1092,10 +1092,10 @@ static void window_park_init_viewport(rct_window *w)
 		return;
 
 	for (i = 0; i < MAX_PARK_ENTRANCES; i++) {
-		if (gParkEntranceX[i] != SPRITE_LOCATION_NULL) {
-			x = gParkEntranceX[i] + 16;
-			y = gParkEntranceY[i] + 16;
-			z = gParkEntranceZ[i] + 32;
+		if (gParkEntrances[i].x != SPRITE_LOCATION_NULL) {
+			x = gParkEntrances[i].x + 16;
+			y = gParkEntrances[i].y + 16;
+			z = gParkEntrances[i].z + 32;
 			r = get_current_rotation();
 
 			xy = 0x40000000 | (y << 16) | x;

@@ -70,10 +70,7 @@ sint32 _suggestedGuestMaximum;
  */
 sint32 _guestGenerationProbability;
 
-sint16 gParkEntranceX[MAX_PARK_ENTRANCES];
-sint16 gParkEntranceY[MAX_PARK_ENTRANCES];
-sint16 gParkEntranceZ[MAX_PARK_ENTRANCES];
-uint8 gParkEntranceDirection[MAX_PARK_ENTRANCES];
+rct_xyzd16 gParkEntrances[MAX_PARK_ENTRANCES];
 
 bool gParkEntranceGhostExists;
 rct_xyz16 gParkEntranceGhostPosition;
@@ -361,7 +358,7 @@ void reset_park_entrances()
 {
 	gParkName = 0;
 	for (sint32 i = 0; i < MAX_PARK_ENTRANCES; i++) {
-		gParkEntranceX[i] = MAP_LOCATION_NULL;
+		gParkEntrances[i].x = MAP_LOCATION_NULL;
 	}
 	for (sint32 i = 0; i < MAX_PEEP_SPAWNS; i++) {
 		gPeepSpawns[i].x = PEEP_SPAWN_UNDEFINED;
@@ -718,9 +715,9 @@ sint32 park_get_entrance_index(sint32 x, sint32 y, sint32 z)
 
 	for (i = 0; i < MAX_PARK_ENTRANCES; i++) {
 		if (
-			x == gParkEntranceX[i] &&
-			y == gParkEntranceY[i] &&
-			z == gParkEntranceZ[i]
+			x == gParkEntrances[i].x &&
+			y == gParkEntrances[i].y &&
+			z == gParkEntrances[i].z
 		) {
 			return i;
 		}
@@ -846,8 +843,8 @@ void game_command_remove_park_entrance(sint32 *eax, sint32 *ebx, sint32 *ecx, si
 		return;
 	}
 
-	gParkEntranceX[entranceIndex] = MAP_LOCATION_NULL;
-	direction = (gParkEntranceDirection[entranceIndex] - 1) & 3;
+	gParkEntrances[entranceIndex].x = MAP_LOCATION_NULL;
+	direction = (gParkEntrances[entranceIndex].direction - 1) & 3;
 	z = (*edx & 0xFF) * 2;
 
 	// Centre (sign)

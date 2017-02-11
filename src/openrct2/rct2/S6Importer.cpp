@@ -319,10 +319,14 @@ public:
         gBankLoanInterestRate = _s6.current_interest_rate;
         // pad_0135934B
         gSamePriceThroughoutParkB = _s6.same_price_throughout_extended;
-        memcpy(gParkEntranceX, _s6.park_entrance_x, sizeof(_s6.park_entrance_x));
-        memcpy(gParkEntranceY, _s6.park_entrance_y, sizeof(_s6.park_entrance_y));
-        memcpy(gParkEntranceZ, _s6.park_entrance_z, sizeof(_s6.park_entrance_z));
-        memcpy(gParkEntranceDirection, _s6.park_entrance_direction, sizeof(_s6.park_entrance_direction));
+        // Preserve compatibility with vanilla RCT2's save format.
+        for (uint8 i = 0; i < RCT12_MAX_PARK_ENTRANCES; i++)
+        {
+            gParkEntrances[i].x = _s6.park_entrance_x[i];
+            gParkEntrances[i].y = _s6.park_entrance_y[i];
+            gParkEntrances[i].z = _s6.park_entrance_z[i];
+            gParkEntrances[i].direction = _s6.park_entrance_direction[i];
+        }
         scenario_set_filename(_s6.scenario_filename);
         memcpy(gScenarioExpansionPacks, _s6.saved_expansion_pack_names, sizeof(_s6.saved_expansion_pack_names));
         memcpy(gBanners, _s6.banners, sizeof(_s6.banners));

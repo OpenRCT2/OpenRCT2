@@ -118,25 +118,25 @@ static inline void staff_autoposition_new_staff_member(rct_peep *newPeep)
 		// No walking guests; pick random park entrance
 		count = 0;
 		uint8 i;
-		for (i = 0; i < 4; ++i) {
-			if (gParkEntranceX[i] != SPRITE_LOCATION_NULL)
+		for (i = 0; i < MAX_PARK_ENTRANCES; ++i) {
+			if (gParkEntrances[i].x != SPRITE_LOCATION_NULL)
 				++count;
 		}
 
 		if (count > 0) {
 			uint32 rand = scenario_rand_max(count);
-			for (i = 0; i < 4; ++i) {
-				if (gParkEntranceX[i] != SPRITE_LOCATION_NULL) {
+			for (i = 0; i < MAX_PARK_ENTRANCES; ++i) {
+				if (gParkEntrances[i].x != SPRITE_LOCATION_NULL) {
 					if (rand == 0)
 						break;
 					--rand;
 				}
 			}
 
-			uint8 dir = gParkEntranceDirection[i];
-			x = gParkEntranceX[i];
-			y = gParkEntranceY[i];
-			z = gParkEntranceZ[i];
+			uint8 dir = gParkEntrances[i].direction;
+			x = gParkEntrances[i].x;
+			y = gParkEntrances[i].y;
+			z = gParkEntrances[i].z;
 			x += 16 + ((dir & 1) == 0 ? ((dir & 2) ? 32 : -32) : 0);
 			y += 16 + ((dir & 1) == 1 ? ((dir & 2) ? -32 : 32) : 0);
 		} else {

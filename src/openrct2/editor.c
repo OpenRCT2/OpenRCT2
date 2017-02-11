@@ -488,7 +488,7 @@ bool editor_check_park()
 	}
 
 	for (sint32 i = 0; i < MAX_PARK_ENTRANCES; i++) {
-		if (gParkEntranceX[i] != MAP_LOCATION_NULL)
+		if (gParkEntrances[i].x != MAP_LOCATION_NULL)
 			break;
 
 		if (i == MAX_PARK_ENTRANCES - 1) {
@@ -498,13 +498,13 @@ bool editor_check_park()
 	}
 
 	for (sint32 i = 0; i < MAX_PARK_ENTRANCES; i++) {
-		if (gParkEntranceX[i] == MAP_LOCATION_NULL)
+		if (gParkEntrances[i].x == MAP_LOCATION_NULL)
 			continue;
 
-		sint32 x = gParkEntranceX[i];
-		sint32 y = gParkEntranceY[i];
-		sint32 z = gParkEntranceZ[i] / 8;
-		sint32 direction = gParkEntranceDirection[i] ^ 2;
+		sint32 x = gParkEntrances[i].x;
+		sint32 y = gParkEntrances[i].y;
+		sint32 z = gParkEntrances[i].z / 8;
+		sint32 direction = gParkEntrances[i].direction ^ 2;
 
 		switch (footpath_is_connected_to_map_edge(x, y, z, direction, 0)) {
 		case FOOTPATH_SEARCH_NOT_FOUND:
