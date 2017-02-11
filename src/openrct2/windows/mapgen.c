@@ -86,8 +86,8 @@ enum {
 	WIDX_SIMPLEX_FLOOR_TEXTURE,
 	WIDX_SIMPLEX_WALL_TEXTURE,
 
-	WIDX_HEIGHTMAP_SMOOTH = TAB_BEGIN,
-	WIDX_HEIGHTMAP_STRONG,
+	WIDX_HEIGHTMAP_SMOOTH_HEIGHTMAP = TAB_BEGIN,
+	WIDX_HEIGHTMAP_SMOOTH_TILES,
 	WIDX_HEIGHTMAP_NORMALIZE,
 	WIDX_HEIGHTMAP_LOW,
 	WIDX_HEIGHTMAP_LOW_UP,
@@ -201,10 +201,10 @@ static rct_widget HeightmapWidgets[] = {
 
 	{ WWT_DROPDOWN_BUTTON,	1,	104,	198,	52,		63,		STR_MAPGEN_ACTION_GENERATE,	STR_NONE }, // WIDX_GENERATE
 
-	{ WWT_CHECKBOX,			1,	4,		103,	52,		63,		STR_MAPGEN_SMOOTH_TILE,		STR_NONE }, // WIDX_HEIGHTMAP_SMOOTH
-	{ WWT_CHECKBOX,			1,	4,		103,	70,		81,		STR_MAPGEN_SMOOTH_STRONG,	STR_NONE }, // WIDX_HEIGHTMAP_STRONG
+	{ WWT_CHECKBOX,			1,	4,		103,	52,		63,		STR_MAPGEN_SMOOTH_HEIGHTMAP,STR_NONE }, // WIDX_HEIGHTMAP_SMOOTH_HEIGHTMAP
+	{ WWT_CHECKBOX,			1,	4,		103,	70,		81,		STR_MAPGEN_SMOOTH_TILE,		STR_NONE }, // WIDX_HEIGHTMAP_SMOOTH_TILES
 
-	{ WWT_CHECKBOX,			1,	4,		103,	88,		99,		STR_MAPGEN_NORMALIZE,	STR_NONE }, // WIDX_HEIGHTMAP_NORMALIZE
+	{ WWT_CHECKBOX,			1,	4,		103,	88,		99,		STR_MAPGEN_NORMALIZE,		STR_NONE }, // WIDX_HEIGHTMAP_NORMALIZE
 
 	{ WWT_SPINNER,			1,	104,	198,	106,	117,	STR_NONE,					STR_NONE }, // WIDX_HEIGHTMAP_LOW
 	{ WWT_DROPDOWN_BUTTON,	1,	187,	197,	107,	111,	STR_NUMERIC_UP,				STR_NONE }, // WIDX_HEIGHTMAP_LOW_UP
@@ -235,7 +235,7 @@ static uint64 PressedWidgets[] = {
 	0,
 	0,
 	0,
-	(1ULL << WIDX_HEIGHTMAP_SMOOTH)
+	(1ULL << WIDX_HEIGHTMAP_SMOOTH_TILES)
 };
 
 #pragma endregion
@@ -464,8 +464,8 @@ static uint32 PageEnabledWidgets[] = {
 	(1ULL << WIDX_TAB_3) |
 	(1ULL << WIDX_TAB_4) |
 	(1ULL << WIDX_GENERATE) |
-	(1ULL << WIDX_HEIGHTMAP_SMOOTH) |
-	(1ULL << WIDX_HEIGHTMAP_STRONG) |
+	(1ULL << WIDX_HEIGHTMAP_SMOOTH_HEIGHTMAP) |
+	(1ULL << WIDX_HEIGHTMAP_SMOOTH_TILES) |
 	(1ULL << WIDX_HEIGHTMAP_NORMALIZE) |
 	(1ULL << WIDX_HEIGHTMAP_LOW) |
 	(1ULL << WIDX_HEIGHTMAP_LOW_UP) |
@@ -551,7 +551,7 @@ static sint32 _simplex_octaves = 4;
 
 static bool _heightmapNormalize = true;
 static sint32 _heightmapLow = 10;
-static sint32 _heightmapHigh = 14;
+static sint32 _heightmapHigh = 40;
 
 rct_window *window_mapgen_open()
 {
@@ -1147,22 +1147,21 @@ static void window_mapgen_heightmap_mouseup(rct_window *w, sint32 widgetIndex)
 		break;
 	case WIDX_GENERATE:
 		mapgenSettings.water_level = _waterLevel;
-		mapgenSettings.smooth = widget_is_pressed(w, WIDX_HEIGHTMAP_SMOOTH);
-		mapgenSettings.strong_smooth = widget_is_pressed(w, WIDX_HEIGHTMAP_STRONG);
+		mapgenSettings.smooth = widget_is_pressed(w, WIDX_HEIGHTMAP_SMOOTH_TILES);
+		mapgenSettings.smooth_height_map = widget_is_pressed(w, WIDX_HEIGHTMAP_SMOOTH_HEIGHTMAP);
 		mapgenSettings.normalize_height = _heightmapNormalize;
 		mapgenSettings.simplex_low = _heightmapLow;
 		mapgenSettings.simplex_high = _heightmapHigh;
 		mapgen_generate_from_heightmap(&mapgenSettings);
 		gfx_invalidate_screen();
 		break;
-	case WIDX_HEIGHTMAP_SMOOTH:
-		widget_set_checkbox_value(w, WIDX_HEIGHTMAP_SMOOTH, !widget_is_pressed(w, WIDX_HEIGHTMAP_SMOOTH));
-		widget_set_enabled(w, WIDX_HEIGHTMAP_STRONG, widget_is_pressed(w, WIDX_HEIGHTMAP_SMOOTH));
-		widget_invalidate(w, WIDX_HEIGHTMAP_SMOOTH);
-		widget_invalidate(w, WIDX_HEIGHTMAP_STRONG);
+	case WIDX_HEIGHTMAP_SMOOTH_HEIGHTMAP:
+		widget_set_checkbox_value(w, WIDX_HEIGHTMAP_SMOOTH_HEIGHTMAP, !widget_is_pressed(w, WIDX_HEIGHTMAP_SMOOTH_HEIGHTMAP));
+		widget_invalidate(w, WIDX_HEIGHTMAP_SMOOTH_HEIGHTMAP);
 		break;
-	case WIDX_HEIGHTMAP_STRONG:
-		widget_set_checkbox_value(w, WIDX_HEIGHTMAP_STRONG, !widget_is_pressed(w, WIDX_HEIGHTMAP_STRONG));
+	case WIDX_HEIGHTMAP_SMOOTH_TILES:
+		widget_set_checkbox_value(w, WIDX_HEIGHTMAP_SMOOTH_TILES, !widget_is_pressed(w, WIDX_HEIGHTMAP_SMOOTH_TILES));
+		widget_invalidate(w, WIDX_HEIGHTMAP_SMOOTH_TILES);
 		break;
 	case WIDX_HEIGHTMAP_NORMALIZE:
 		_heightmapNormalize = !_heightmapNormalize;
