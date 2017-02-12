@@ -11,12 +11,39 @@ class ConfigEnum
 
 };
 
+struct Span
+{
+    size_t Start    = 0;
+    size_t Length   = 0;
+
+    Span() = default;
+    Span(size_t start, size_t length)
+        : Start(start),
+          Length(length)
+    {
+    }
+};
+
+struct LineRange
+{
+    size_t Start    = 0;
+    size_t End      = 0;
+
+    LineRange() = default;
+    LineRange(size_t start, size_t end)
+        : Start(start),
+          End(end)
+    {
+    }
+};
+
 class IniReader
 {
 private:
-    std::vector<uint8>                      _buffer;
-    std::vector<std::tuple<size_t, size_t>> _lines;
-    std::unordered_map<std::string, size_t> _sections;
+    std::vector<uint8>                              _buffer;
+    std::vector<Span>                               _lines;
+    std::unordered_map<std::string, LineRange>      _sections;
+    std::unordered_map<std::string, std::string>    _values;
 
 public:
     IniReader(const std::string &path)
@@ -47,24 +74,43 @@ public:
             return false;
         }
 
-        size_t startLine = it->second;
-        UNUSED(startLine);
+        ParseValues(it->second);
         return true;
     }
 
     bool GetBoolean(const std::string &name, bool defaultValue)
     {
+        auto it = _values.find(name);
+        if (it == _values.end())
+        {
+            return defaultValue;
+        }
 
+        std::string value = it->second;
+        return String::Equals(value, "true", true);
     }
 
     sint32 GetSint32(const std::string &name, sint32 defaultValue, const ConfigEnum * configEnum = nullptr)
     {
+        auto it = _values.find(name);
+        if (it == _values.end())
+        {
+            return defaultValue;
+        }
 
+        std::string value = it->second;
+        return std::stoi(value);
     }
 
     std::string GetString(const std::string &name, const std::string &defaultValue)
     {
+        auto it = _values.find(name);
+        if (it == _values.end())
+        {
+            return defaultValue;
+        }
 
+        return it->second;
     }
 
 private:
@@ -105,6 +151,9 @@ private:
 
     void ParseSections()
     {
+        std::string sectionName;
+        LineRange lineRange;
+
         for (size_t i = 0; i < _lines.size(); i++)
         {
             std::string line = GetLine(i);
@@ -112,29 +161,92 @@ private:
             if (line.size() > 3 && line[0] == '[')
             {
                 size_t endIndex = line.find_first_of(']');
-                std::string sectionName = line.substr(1, endIndex - 1);
-                _sections[sectionName] = i;
+                if (endIndex != std::string::npos)
+                {
+                    // Add last section
+                    if (!sectionName.empty())
+                    {
+                        lineRange.End = i - 1;
+                        _sections[sectionName] = lineRange;
+                    }
+
+                    // Set up new section
+                    sectionName = line.substr(1, endIndex - 1);
+                    lineRange.Start = i;
+                }
             }
         }
+
+        // Add final section
+        if (!sectionName.empty())
+        {
+            lineRange.End = _lines.size() - 1;
+            _sections[sectionName] = lineRange;
+        }
+    }
+
+    void ParseValues(LineRange range)
+    {
+        for (size_t i = range.Start + 1; i <= range.End; i++)
+        {
+            ParseValue(i);
+        }
+    }
+
+    void ParseValue(size_t lineIndex)
+    {
+        std::string line = GetLine(lineIndex);
+
+        // Chop off comment
+        size_t hashIndex = line.find_first_of('#');
+        if (hashIndex != std::string::npos)
+        {
+            line = line.substr(0, hashIndex);
+        }
+
+        // Find assignment character
+        size_t equalsIndex = line.find_first_of('=');
+        if (equalsIndex == std::string::npos)
+        {
+            return;
+        }
+
+        // Get the key and value
+        std::string key = String::Trim(line.substr(0, equalsIndex));
+        std::string value = String::Trim(line.substr(equalsIndex + 1));
+
+        _values[key] = value;
     }
 
     std::string GetLine(size_t index)
     {
         utf8 * szBuffer = (utf8 *)_buffer.data();
         auto span = _lines[index];
-        auto line = std::string(szBuffer + std::get<0>(span), std::get<1>(span));
+        auto line = std::string(szBuffer + span.Start, span.Length);
         return line;
     }
 };
 
 extern "C"
 {
+    #include "../config.h"
+
     bool config_open(const utf8 * path)
     {
-        auto iniReader = IniReader(path);
-        bool b = iniReader.ReadSection("general");
-        UNUSED(b);
-
-        return false;
+        try
+        {
+            auto iniReader = IniReader(path);
+            if (iniReader.ReadSection("general"))
+            {
+                gConfigGeneral.always_show_gridlines = iniReader.GetBoolean("always_show_gridlines", false);
+                gConfigGeneral.window_width = iniReader.GetSint32("window_width", -1);
+                gConfigGeneral.window_height = iniReader.GetSint32("window_height", -1);
+            }
+            return true;
+        }
+        catch (const Exception &)
+        {
+            return false;
+        }
     }
 }
