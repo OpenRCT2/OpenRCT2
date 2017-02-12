@@ -22,10 +22,16 @@
 extern "C"
 {
     #include "../platform/platform.h"
+    #include "../util/util.h"
 }
 
 namespace File
 {
+    bool Exists(const std::string &path)
+    {
+        return platform_file_exists(path.c_str());
+    }
+
     bool Copy(const std::string &srcPath, const std::string &dstPath, bool overwrite)
     {
         return platform_file_copy(srcPath.c_str(), dstPath.c_str(), overwrite);
@@ -58,5 +64,40 @@ namespace File
         }
         *length = (size_t)fsize;
         return result;
+    }
+
+    void WriteAllBytes(const std::string &path, const void * buffer, size_t length)
+    {
+        auto fs = FileStream(path, FILE_MODE_WRITE);
+        fs.Write(buffer, length);
+    }
+}
+
+extern "C"
+{
+    bool readentirefile(const utf8 * path, void * * outBuffer, size_t * outLength)
+    {
+        try
+        {
+            *outBuffer = File::ReadAllBytes(String::ToStd(path), outLength);
+            return true;
+        }
+        catch (const Exception &)
+        {
+            return false;
+        }
+    }
+
+    bool writeentirefile(const utf8 * path, const void * buffer, size_t length)
+    {
+        try
+        {
+            File::WriteAllBytes(String::ToStd(path), buffer, length);
+            return true;
+        }
+        catch (const Exception &)
+        {
+            return false;
+        }
     }
 }

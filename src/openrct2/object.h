@@ -19,7 +19,6 @@
 
 #include "common.h"
 #include "drawing/drawing.h"
-#include "platform/platform.h"
 
 // First 0xF of rct_object_entry->flags
 typedef enum{
@@ -108,7 +107,6 @@ extern const rct_object_entry_group object_entry_groups[];
 
 void object_list_load();
 bool object_load_entries(rct_object_entry* entries);
-bool object_saved_packed(SDL_RWops* rw, const rct_object_entry * entry);
 
 bool object_entry_is_empty(const rct_object_entry *entry);
 bool object_entry_compare(const rct_object_entry *a, const rct_object_entry *b);

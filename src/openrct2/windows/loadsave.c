@@ -718,7 +718,6 @@ static void window_loadsave_select(rct_window *w, const char *path)
 		return;
 	}
 
-	SDL_RWops* rw;
 	switch (_type & 0x0F) {
 	case (LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME) :
 		save_path(&gConfigGeneral.last_save_game_directory, path);
@@ -729,22 +728,14 @@ static void window_loadsave_select(rct_window *w, const char *path)
 		break;
 	case (LOADSAVETYPE_SAVE | LOADSAVETYPE_GAME) :
 		save_path(&gConfigGeneral.last_save_game_directory, path);
-		rw = SDL_RWFromFile(path, "wb+");
-		if (rw != NULL) {
-			sint32 success = scenario_save(rw, gConfigGeneral.save_plugin_data ? 1 : 0);
-			SDL_RWclose(rw);
-			if (success) {
-				safe_strcpy(gScenarioSavePath, path, MAX_PATH);
-				gFirstTimeSave = 0;
+		if (scenario_save(path, gConfigGeneral.save_plugin_data ? 1 : 0)) {
+			safe_strcpy(gScenarioSavePath, path, MAX_PATH);
+			gFirstTimeSave = 0;
 
-				window_close_by_class(WC_LOADSAVE);
-				gfx_invalidate_screen();
+			window_close_by_class(WC_LOADSAVE);
+			gfx_invalidate_screen();
 
-				window_loadsave_invoke_callback(MODAL_RESULT_OK, path);
-			} else {
-				window_error_open(STR_SAVE_GAME, STR_GAME_SAVE_FAILED);
-				window_loadsave_invoke_callback(MODAL_RESULT_FAIL, path);
-			}
+			window_loadsave_invoke_callback(MODAL_RESULT_OK, path);
 		} else {
 			window_error_open(STR_SAVE_GAME, STR_GAME_SAVE_FAILED);
 			window_loadsave_invoke_callback(MODAL_RESULT_FAIL, path);
@@ -763,19 +754,11 @@ static void window_loadsave_select(rct_window *w, const char *path)
 		break;
 	case (LOADSAVETYPE_SAVE | LOADSAVETYPE_LANDSCAPE) :
 		save_path(&gConfigGeneral.last_save_landscape_directory, path);
-		rw = SDL_RWFromFile(path, "wb+");
-		if (rw != NULL) {
-			scenario_set_filename(path);
-			sint32 success = scenario_save(rw, gConfigGeneral.save_plugin_data ? 3 : 2);
-			SDL_RWclose(rw);
-			if (success) {
-				window_close_by_class(WC_LOADSAVE);
-				gfx_invalidate_screen();
-				window_loadsave_invoke_callback(MODAL_RESULT_OK, path);
-			} else {
-				window_error_open(STR_SAVE_LANDSCAPE, STR_LANDSCAPE_SAVE_FAILED);
-				window_loadsave_invoke_callback(MODAL_RESULT_FAIL, path);
-			}
+		scenario_set_filename(path);
+		if (scenario_save(path, gConfigGeneral.save_plugin_data ? 3 : 2)) {
+			window_close_by_class(WC_LOADSAVE);
+			gfx_invalidate_screen();
+			window_loadsave_invoke_callback(MODAL_RESULT_OK, path);
 		} else {
 			window_error_open(STR_SAVE_LANDSCAPE, STR_LANDSCAPE_SAVE_FAILED);
 			window_loadsave_invoke_callback(MODAL_RESULT_FAIL, path);
@@ -787,13 +770,8 @@ static void window_loadsave_select(rct_window *w, const char *path)
 		sint32 parkFlagsBackup = gParkFlags;
 		gParkFlags &= ~PARK_FLAGS_SPRITES_INITIALISED;
 		gS6Info.editor_step = 255;
-		rw = SDL_RWFromFile(path, "wb+");
-		sint32 success = 0;
-		if (rw != NULL) {
-			scenario_set_filename(path);
-			success = scenario_save(rw, gConfigGeneral.save_plugin_data ? 3 : 2);
-			SDL_RWclose(rw);
-		}
+		scenario_set_filename(path);
+		sint32 success = scenario_save(path, gConfigGeneral.save_plugin_data ? 3 : 2);
 		gParkFlags = parkFlagsBackup;
 
 		if (success) {

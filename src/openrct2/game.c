@@ -844,26 +844,15 @@ bool game_load_save(const utf8 *path)
 
 	safe_strcpy(gScenarioSavePath, path, MAX_PATH);
 
-	SDL_RWops* rw = SDL_RWFromFile(path, "rb");
-	if (rw == NULL) {
-		log_error("unable to open %s", path);
-		gErrorType = ERROR_TYPE_FILE_LOAD;
-		gGameCommandErrorTitle = STR_FILE_CONTAINS_INVALID_DATA;
-		return false;
-	}
-
 	uint32 extension_type = get_file_extension_type(path);
 	bool result = false;
-
 	if (extension_type == FILE_EXTENSION_SV6) {
-		result = game_load_sv6(rw);
+		result = game_load_sv6_path(path);
 	} else if (extension_type == FILE_EXTENSION_SV4) {
 		result = rct1_load_saved_game(path);
 		if (result)
 			gFirstTimeSave = 1;
 	}
-
-	SDL_RWclose(rw);
 
 	if (result) {
 		if (network_get_mode() == NETWORK_MODE_CLIENT) {
@@ -948,12 +937,8 @@ void save_game()
 {
 	if (!gFirstTimeSave) {
 		log_verbose("Saving to %s", gScenarioSavePath);
-
-		SDL_RWops* rw = SDL_RWFromFile(gScenarioSavePath, "wb+");
-		if (rw != NULL) {
-			scenario_save(rw, 0x80000000 | (gConfigGeneral.save_plugin_data ? 1 : 0));
+		if (scenario_save(gScenarioSavePath, 0x80000000 | (gConfigGeneral.save_plugin_data ? 1 : 0))) {
 			log_verbose("Saved to %s", gScenarioSavePath);
-			SDL_RWclose(rw);
 
 			// Setting screen age to zero, so no prompt will pop up when closing the
 			// game shortly after saving.
@@ -1077,11 +1062,7 @@ void game_autosave()
 		platform_file_copy(path, backupPath, true);
 	}
 
-	SDL_RWops* rw = SDL_RWFromFile(path, "wb+");
-	if (rw != NULL) {
-		scenario_save(rw, saveFlags);
-		SDL_RWclose(rw);
-	}
+	scenario_save(path, saveFlags);
 }
 
 /**

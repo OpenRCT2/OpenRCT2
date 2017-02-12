@@ -67,29 +67,14 @@ static void track_design_preview_clear_map();
 
 static void td6_reset_trailing_elements(rct_track_td6 * td6);
 static void td6_set_element_helper_pointers(rct_track_td6 * td6);
-static bool td4_track_has_boosters(rct_track_td4 * td4);
 
 rct_track_td6 *track_design_open(const utf8 *path)
 {
-	SDL_RWops *file = SDL_RWFromFile(path, "rb");
-	if (file != NULL) {
-		// Read whole file into a buffer
-		size_t bufferLength = (size_t)SDL_RWsize(file);
-		if (bufferLength < 4) {
-			log_error("Invalid track file: %s.", path);
-			SDL_RWclose(file);
-			return NULL;
-		}
+	log_verbose("track_design_open(\"%s\")", path);
 
-		uint8 *buffer = (uint8*)malloc(bufferLength);
-		if (buffer == NULL) {
-			log_error("Unable to allocate memory for track design file.");
-			SDL_RWclose(file);
-			return NULL;
-		}
-		SDL_RWread(file, buffer, bufferLength, 1);
-		SDL_RWclose(file);
-
+	uint8 *buffer;
+	size_t bufferLength;
+	if (readentirefile(path, (void * *)&buffer, &bufferLength)) {
 		if (!sawyercoding_validate_track_checksum(buffer, bufferLength)) {
 			log_error("Track checksum failed. %s", path);
 			free(buffer);

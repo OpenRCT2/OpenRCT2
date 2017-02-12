@@ -377,45 +377,6 @@ sint32 check_file_paths()
 	return 1;
 }
 
-/**
- *
- *  rct2: 0x00674CA5
- */
-sint32 check_file_path(sint32 pathId)
-{
-	const utf8* path = get_file_path(pathId);
-	SDL_RWops *file = SDL_RWFromFile(path, "rb");
-
-	switch (pathId) {
-	case PATH_ID_G1:
-		if (file == NULL) {
-			log_fatal("Could not find file %s", path);
-			return 0;
-		}
-		break;
-
-	case PATH_ID_CUSTOM1:
-		if (file != NULL) {
-			// Store file size in music_custom1_size @ 0x009AF164
-			gRideMusicInfoList[36]->length = (uint32)SDL_RWsize(file);
-		}
-		break;
-
-	case PATH_ID_CUSTOM2:
-		if (file != NULL) {
-			// Store file size in music_custom2_size @ 0x009AF16E
-			gRideMusicInfoList[37]->length = (uint32)SDL_RWsize(file);
-		}
-		break;
-	}
-
-	if (file != NULL) {
-		SDL_RWclose(file);
-	}
-
-	return 1;
-}
-
 void rct2_update()
 {
 	sint32 tickCount = SDL_GetTicks();

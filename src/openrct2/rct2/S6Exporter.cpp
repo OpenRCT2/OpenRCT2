@@ -413,7 +413,7 @@ extern "C"
      *  rct2: 0x006754F5
      * @param flags bit 0: pack objects, 1: save as scenario
      */
-    sint32 scenario_save(SDL_RWops* rw, sint32 flags)
+    sint32 scenario_save(const utf8 * path, sint32 flags)
     {
         if (flags & S6_SAVE_FLAG_SCENARIO)
         {
@@ -438,8 +438,6 @@ extern "C"
         auto s6exporter = new S6Exporter();
         try
         {
-            auto rwStream = FileStream(rw, FILE_MODE_WRITE);
-
             if (flags & S6_SAVE_FLAG_EXPORT)
             {
                 IObjectManager * objManager = GetObjectManager();
@@ -449,11 +447,11 @@ extern "C"
             s6exporter->Export();
             if (flags & S6_SAVE_FLAG_SCENARIO)
             {
-                s6exporter->SaveScenario(&rwStream);
+                s6exporter->SaveScenario(path);
             }
             else
             {
-                s6exporter->SaveGame(&rwStream);
+                s6exporter->SaveGame(path);
             }
             result = true;
         }
