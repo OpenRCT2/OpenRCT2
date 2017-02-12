@@ -1,3 +1,4 @@
+#include <initializer_list>
 #include <string>
 #include <tuple>
 #include <unordered_map>
@@ -7,9 +8,54 @@
 #include "../core/String.hpp"
 #include "../core/StringBuilder.hpp"
 
+template<typename T>
+struct ConfigEnumEntry
+{
+    std::string Key;
+    T           Value;
+
+    ConfigEnumEntry(const std::string &key, T value)
+        : Key(key),
+          Value(value)
+    {
+    }
+};
+
+template<typename T>
 class ConfigEnum
 {
+private:
+    std::vector<ConfigEnumEntry<T>> _entries;
 
+public:
+    ConfigEnum(std::initializer_list<ConfigEnumEntry<T>> entries)
+    {
+        _entries = entries;
+    }
+
+    std::string GetName(T value)
+    {
+        for (const auto &entry : _entries) const
+        {
+            if (entry.Value == value)
+            {
+                return entry.Key;
+            }
+        }
+        return std::string();
+    }
+
+    T GetValue(const std::string &key, T defaultValue) const
+    {
+        for (const auto &entry : _entries)
+        {
+            if (String::Equals(entry.Key, key, true))
+            {
+                return entry.Value;
+            }
+        }
+        return defaultValue;
+    }
 };
 
 struct Span
@@ -91,7 +137,7 @@ public:
         return String::Equals(value, "true", true);
     }
 
-    sint32 GetSint32(const std::string &name, sint32 defaultValue, const ConfigEnum * configEnum = nullptr)
+    sint32 GetSint32(const std::string &name, sint32 defaultValue)
     {
         auto it = _values.find(name);
         if (it == _values.end())
@@ -101,6 +147,18 @@ public:
 
         std::string value = it->second;
         return std::stoi(value);
+    }
+
+    template<typename T>
+    T GetEnum(const std::string &name, T defaultValue, const ConfigEnum<T> &configEnum)
+    {
+        auto it = _values.find(name);
+        if (it == _values.end())
+        {
+            return defaultValue;
+        }
+
+        return configEnum.GetValue(it->second, defaultValue);
     }
 
     std::string GetString(const std::string &name, const std::string &defaultValue)
@@ -290,6 +348,13 @@ extern "C"
 {
     #include "../config.h"
 
+    auto Enum_MeasurementFormat = ConfigEnum<sint8>(
+    {
+        ConfigEnumEntry<sint8>("IMPERIAL", MEASUREMENT_FORMAT_IMPERIAL),
+        ConfigEnumEntry<sint8>("METRIC", MEASUREMENT_FORMAT_METRIC),
+        ConfigEnumEntry<sint8>("SI", MEASUREMENT_FORMAT_SI),
+    });
+
     bool config_open(const utf8 * path)
     {
         try
@@ -300,6 +365,7 @@ extern "C"
                 gConfigGeneral.always_show_gridlines = iniReader.GetBoolean("always_show_gridlines", false);
                 gConfigGeneral.window_width = iniReader.GetSint32("window_width", -1);
                 gConfigGeneral.window_height = iniReader.GetSint32("window_height", -1);
+                gConfigGeneral.measurement_format = iniReader.GetEnum<sint8>("measurement_format", MEASUREMENT_FORMAT_METRIC, Enum_MeasurementFormat);
             }
             return true;
         }
