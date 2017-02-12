@@ -37,6 +37,7 @@ typedef struct mapgen_settings {
 	// Height map settings
 	bool smooth;
 	bool smooth_height_map;
+	uint32 smooth_strength;
 	bool normalize_height;
 } mapgen_settings;
 
