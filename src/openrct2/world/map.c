@@ -2760,6 +2760,10 @@ void game_command_place_scenery(sint32* eax, sint32* ebx, sint32* ecx, sint32* e
 	}
 
 	rct_scenery_entry* scenery_entry = get_small_scenery_entry(scenery_type);
+	if (scenery_entry == NULL) {
+		*ebx = MONEY32_UNDEFINED;
+		return;
+	}
 
 	if(scenery_entry->small_scenery.flags & SMALL_SCENERY_FLAG_FULL_TILE || !(scenery_entry->small_scenery.flags & SMALL_SCENERY_FLAG9)){
 		if(scenery_entry->small_scenery.flags & (SMALL_SCENERY_FLAG9 | SMALL_SCENERY_FLAG24 | SMALL_SCENERY_FLAG25)){
