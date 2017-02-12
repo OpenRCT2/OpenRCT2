@@ -14,6 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
+#include "../core/File.h"
 #include "../core/FileStream.hpp"
 #include "../core/Memory.hpp"
 #include "../core/Util.hpp"
@@ -355,16 +356,19 @@ void audio_init_ride_sounds_and_info()
 	for (size_t m = 0; m < Util::CountOf(gRideMusicInfoList); m++) {
 		rct_ride_music_info *rideMusicInfo = gRideMusicInfoList[m];
 		const utf8 *path = get_file_path(rideMusicInfo->path_id);
-		try
+		if (File::Exists(path))
 		{
-			auto fs = FileStream(path, FILE_MODE_OPEN);
-			uint32 head = fs.ReadValue<uint32>();
-			if (head == 0x78787878) {
-				rideMusicInfo->length = 0;
+			try
+			{
+				auto fs = FileStream(path, FILE_MODE_OPEN);
+				uint32 head = fs.ReadValue<uint32>();
+				if (head == 0x78787878) {
+					rideMusicInfo->length = 0;
+				}
 			}
-		}
-		catch (const Exception &)
-		{
+			catch (const Exception &)
+			{
+			}
 		}
 	}
 }
