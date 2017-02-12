@@ -767,53 +767,55 @@ static void mapgen_simplex(mapgen_settings *settings)
 #pragma region Heightmap
 
 /**
- * Applies box Gaussian blur to the surface
+ * Applies box blur to the surface N times
  */
-void mapgen_smooth_heightmap(SDL_Surface *surface)
+void mapgen_smooth_heightmap(SDL_Surface *surface, sint32 strength)
 {
 	SDL_LockSurface(surface);
 
-	// Apply box Gaussian blur
-	const uint32 width = surface->w;
-	const uint32 height = surface->h;
-	const uint32 numChannels = surface->format->BytesPerPixel;
+	const sint32 width = surface->w;
+	const sint32 height = surface->h;
+	const sint32 numChannels = surface->format->BytesPerPixel;
 	const size_t pitch = surface->pitch;
 
 	// Create buffer to store one channel
 	uint8 *dest = (uint8*)malloc(width * height);
 	uint8 *src = surface->pixels;
 
-	// Calculate box Gaussian blur value to all pixels of the surface
-	for (uint32 y = 0; y < height; y++)
+	for (sint32 i = 0; i < strength; i++)
 	{
-		for (uint32 x = 0; x < width; x++)
+		// Calculate box blur value to all pixels of the surface
+		for (sint32 y = 0; y < height; y++)
 		{
-			uint32 sum = 0;
-
-			// Loop over neightbour pixels, all of them have the same weight
-			for (sint8 offsetX = -1; offsetX <= 1; offsetX++)
+			for (sint32 x = 0; x < width; x++)
 			{
-				for (sint8 offsetY = -1; offsetY <= 1; offsetY++)
+				uint32 heightSum = 0;
+
+				// Loop over neightbour pixels, all of them have the same weight
+				for (sint8 offsetX = -1; offsetX <= 1; offsetX++)
 				{
-					// Clamp x and y so they stay within the image
-					// This assumes the height map is not tiled, and increases the weight of the edges
-					const sint32 readX = clamp(x + offsetX, 0, width - 1);
-					const sint32 readY = clamp(y + offsetY, 0, height - 1);
-					sum += src[readX * numChannels + readY * pitch];
+					for (sint8 offsetY = -1; offsetY <= 1; offsetY++)
+					{
+						// Clamp x and y so they stay within the image
+						// This assumes the height map is not tiled, and increases the weight of the edges
+						const sint32 readX = clamp(x + offsetX, 0, width - 1);
+						const sint32 readY = clamp(y + offsetY, 0, height - 1);
+						heightSum += src[readX * numChannels + readY * pitch];
+					}
 				}
+
+				// Take average
+				dest[x + y * width] = heightSum / 9;
 			}
-
-			// Take average
-			dest[x + y * width] = sum / 9;
 		}
-	}
 
-	// Now apply the Gaussian blur to the real pixels
-	for (uint32 y = 0; y < height; y++)
-	{
-		for (uint32 x = 0; x < width; x++)
+		// Now apply the blur to the source pixels
+		for (sint32 y = 0; y < height; y++)
 		{
-			src[x * numChannels + y * pitch] = dest[x + y * width];
+			for (sint32 x = 0; x < width; x++)
+			{
+				src[x * numChannels + y * pitch] = dest[x + y * width];
+			}
 		}
 	}
 
@@ -832,8 +834,8 @@ void mapgen_generate_from_heightmap(mapgen_settings *settings)
 		return;
 	}
 
-	const uint32 width = bitmap->w;
-	const uint32 height = bitmap->h;
+	const sint32 width = bitmap->w;
+	const sint32 height = bitmap->h;
 	const uint8 numChannels = bitmap->format->BytesPerPixel;
 
 	map_init(width + 2); // + 2 for the black tiles around the map
@@ -844,7 +846,7 @@ void mapgen_generate_from_heightmap(mapgen_settings *settings)
 	if (settings->smooth_height_map)
 	{
 		// Smooth height map
-		mapgen_smooth_heightmap(bitmap);
+		mapgen_smooth_heightmap(bitmap, settings->smooth_strength);
 	}
 
 	SDL_LockSurface(bitmap);
@@ -854,9 +856,9 @@ void mapgen_generate_from_heightmap(mapgen_settings *settings)
 		// Get highest and lowest pixel value
 		maxValue = 0;
 		minValue = 0xff;
-		for (uint32 y = 0; y < height; y++)
+		for (sint32 y = 0; y < height; y++)
 		{
-			for (uint32 x = 0; x < width; x++)
+			for (sint32 x = 0; x < width; x++)
 			{
 				uint8 value = src[x * numChannels + y * bitmap->pitch];
 				maxValue = max(maxValue, value);
@@ -878,9 +880,9 @@ void mapgen_generate_from_heightmap(mapgen_settings *settings)
 	const uint8 rangeIn = maxValue - minValue;
 	const uint8 rangeOut = settings->simplex_high - settings->simplex_low;
 
-	for (uint32 y = 0; y < height; y++)
+	for (sint32 y = 0; y < height; y++)
 	{
-		for (uint32 x = 0; x < width; x++)
+		for (sint32 x = 0; x < width; x++)
 		{
 			// The x and y axis are flipped in the world, so this uses y for x and x for y.
 			rct_map_element *const surfaceElement = map_get_surface_element_at(y + 1, x + 1);
@@ -910,9 +912,9 @@ void mapgen_generate_from_heightmap(mapgen_settings *settings)
 		while (true)
 		{
 			sint32 numTilesChanged = 0;
-			for (uint32 y = 1; y <= height; y++)
+			for (sint32 y = 1; y <= height; y++)
 			{
-				for (uint32 x = 1; x <= width; x++)
+				for (sint32 x = 1; x <= width; x++)
 				{
 					numTilesChanged += tile_smooth(x, y);
 				}
