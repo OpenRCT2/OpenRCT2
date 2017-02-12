@@ -5,6 +5,7 @@
 #include "../common.h"
 #include "../core/FileStream.hpp"
 #include "../core/String.hpp"
+#include "../core/StringBuilder.hpp"
 
 class ConfigEnum
 {
@@ -74,7 +75,7 @@ public:
             return false;
         }
 
-        ParseValues(it->second);
+        ParseSectionValues(it->second);
         return true;
     }
 
@@ -185,7 +186,7 @@ private:
         }
     }
 
-    void ParseValues(LineRange range)
+    void ParseSectionValues(LineRange range)
     {
         for (size_t i = range.Start + 1; i <= range.End; i++)
         {
@@ -196,13 +197,7 @@ private:
     void ParseValue(size_t lineIndex)
     {
         std::string line = GetLine(lineIndex);
-
-        // Chop off comment
-        size_t hashIndex = line.find_first_of('#');
-        if (hashIndex != std::string::npos)
-        {
-            line = line.substr(0, hashIndex);
-        }
+        line = TrimComment(line);
 
         // Find assignment character
         size_t equalsIndex = line.find_first_of('=');
@@ -215,7 +210,71 @@ private:
         std::string key = String::Trim(line.substr(0, equalsIndex));
         std::string value = String::Trim(line.substr(equalsIndex + 1));
 
+        value = UnquoteValue(value);
+        value = UnescapeValue(value);
         _values[key] = value;
+    }
+
+    std::string TrimComment(const std::string &s)
+    {
+        char inQuotes = 0;
+        bool escaped = false;
+        for (size_t i = 0; i < s.size(); i++)
+        {
+            char c = s[i];
+            if (inQuotes == 0 && c == '#' && !escaped)
+            {
+                return s.substr(0, i);
+            }
+            else if (c == inQuotes && !escaped)
+            {
+                inQuotes = 0;
+            }
+            else if (c == '\'' || c == '"' && !escaped)
+            {
+                inQuotes = c;
+            }
+            escaped = (c == '\\' && !escaped);
+        }
+        return s;
+    }
+
+    std::string UnquoteValue(const std::string &s)
+    {
+        std::string result = s;
+        size_t length = s.size();
+        if (length >= 2)
+        {
+            if ((s[0] == '"' || s[0] == '\'') && s[0] == s[length - 1])
+            {
+                result = s.substr(1, length - 2);
+            }
+        }
+        return result;
+    }
+
+    std::string UnescapeValue(const std::string &s)
+    {
+        if (s.find_first_of('\\') == std::string::npos)
+        {
+            return s;
+        }
+
+        bool escaped = false;
+        auto sb = StringBuilder();
+        for (char c : s)
+        {
+            if (c == '\\' && !escaped)
+            {
+                escaped = true;
+            }
+            else
+            {
+                escaped = false;
+                sb.Append(&c, 1);
+            }
+        }
+        return std::string(sb.GetString());
     }
 
     std::string GetLine(size_t index)
