@@ -338,7 +338,7 @@ network_configuration gConfigNetwork;
 notification_configuration gConfigNotifications;
 font_configuration gConfigFonts;
 
-static bool config_open(const utf8string path);
+bool config_open(const utf8string path);
 static bool config_save(const utf8string path);
 static void config_read_properties(config_section_definition **currentSection, const_utf8string line);
 static void config_save_property_value(SDL_RWops *file, uint8 type, value_union *value);
@@ -500,7 +500,7 @@ bool config_save_default()
 	return false;
 }
 
-bool config_open(const utf8string path)
+bool config_open_2(const utf8string path)
 {
 	SDL_RWops *file;
 	utf8string lineBuffer;

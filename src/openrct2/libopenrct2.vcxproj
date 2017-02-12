@@ -72,6 +72,7 @@
     <ClCompile Include="audio\FileAudioSource.cpp" />
     <ClCompile Include="audio\MemoryAudioSource.cpp" />
     <ClCompile Include="audio\NullAudioSource.cpp" />
+    <ClCompile Include="config\IniReader.cpp" />
     <ClCompile Include="FileClassifier.cpp" />
     <ClCompile Include="network\ServerList.cpp" />
     <ClCompile Include="ParkImporter.cpp" />
@@ -419,6 +420,7 @@
     <ClInclude Include="audio\AudioFormat.h" />
     <ClInclude Include="audio\AudioMixer.h" />
     <ClInclude Include="audio\AudioSource.h" />
+    <ClInclude Include="config\IniReader.h" />
     <ClInclude Include="FileClassifier.h" />
     <ClInclude Include="network\ServerList.h" />
     <ClInclude Include="rct12.h" />

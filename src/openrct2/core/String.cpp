@@ -393,4 +393,44 @@ namespace String
     {
         return String::Set(buffer, bufferSize, TrimStart(src));
     }
+
+    std::string Trim(const std::string &s)
+    {
+        const utf8 * firstNonWhitespace = nullptr;
+
+        codepoint_t codepoint;
+        const utf8 * ch = s.c_str();
+        const utf8 * nextCh;
+        while ((codepoint = GetNextCodepoint(ch, &nextCh)) != '\0')
+        {
+            bool isWhiteSpace = codepoint <= WCHAR_MAX && iswspace((wchar_t)codepoint);
+            if (isWhiteSpace)
+            {
+                if (firstNonWhitespace != nullptr)
+                {
+                    break;
+                }
+            }
+            else
+            {
+                if (firstNonWhitespace == nullptr)
+                {
+                    firstNonWhitespace = ch;
+                }
+            }
+            ch = nextCh;
+        }
+
+        if (firstNonWhitespace != nullptr &&
+            firstNonWhitespace != s.c_str())
+        {
+            size_t newStringSize = ch - firstNonWhitespace;
+            return std::string(firstNonWhitespace, newStringSize);
+        }
+        else
+        {
+            size_t newStringSize = ch - s.c_str();
+            return std::string(s.c_str(), newStringSize);
+        }
+    }
 }
