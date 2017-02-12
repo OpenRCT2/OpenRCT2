@@ -5202,8 +5202,12 @@ static const rct_preview_track FlatRideTrackBlocks254[] = {
 	TRACK_BLOCK_END
 };
 
+static const rct_preview_track FlatRideTrackBlocks255[] = {
+	TRACK_BLOCK_END
+};
+
 // rct2: 0x00994A38
-const rct_preview_track *FlatRideTrackBlocks[255] = {
+const rct_preview_track *FlatRideTrackBlocks[256] = {
 	FlatRideTrackBlocks000,
 	FlatRideTrackBlocks001,
 	FlatRideTrackBlocks002,
@@ -5458,7 +5462,8 @@ const rct_preview_track *FlatRideTrackBlocks[255] = {
 	FlatRideTrackBlocks251,
 	FlatRideTrackBlocks252,
 	FlatRideTrackBlocks253,
-	FlatRideTrackBlocks254
+	FlatRideTrackBlocks254,
+	FlatRideTrackBlocks255
 };
 
 const uint8 TrackPieceLengths[256] = {
