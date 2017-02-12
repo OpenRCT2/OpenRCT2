@@ -29,8 +29,10 @@ static void map_swap_elements_at(sint32 x, sint32 y, sint16 first, sint16 second
 	rct_map_element *mapElement = map_get_first_element_at(x, y);
 	rct_map_element *const firstElement = mapElement + first;
 	rct_map_element *const secondElement = mapElement + second;
+	bool isValid = map_element_check_address(firstElement) && map_element_check_address(secondElement);
 
 	openrct2_assert(mapElement != NULL, "Tried swapping elements on a null tile");
+	openrct2_assert(isValid, "Tried swapping elements outside of range");
 	// swap_elements shouldn't be called when there is only one element on the tile
 	openrct2_assert(!map_element_is_last_for_tile(mapElement), "Can't swap, there is only one element on the tile");
 
@@ -83,7 +85,8 @@ sint32 tile_inspector_insert_corrupt_at(sint32 x, sint32 y, sint16 elementIndex,
 		// Set the base height to be the same as the selected element
 		rct_map_element *const baseSelectedElement = map_get_first_element_at(x, y);
 		rct_map_element *const selectedElement = baseSelectedElement + elementIndex;
-		if (!baseSelectedElement) {
+		bool isValid = map_element_check_address(selectedElement);
+		if (!baseSelectedElement || !isValid) {
 			return MONEY32_UNDEFINED;
 		}
 		curruptElement->base_height = curruptElement->clearance_height = selectedElement->base_height;
@@ -135,7 +138,8 @@ sint32 tile_inspector_remove_element_at(sint32 x, sint32 y, sint16 elementIndex,
 		// Forcefully remove the element
 		rct_map_element *const baseMapElement = map_get_first_element_at(x, y);
 		rct_map_element *const mapElement = baseMapElement + elementIndex;
-		if (!baseMapElement) {
+		bool isValid = map_element_check_address(mapElement);
+		if (!baseMapElement || !isValid) {
 			return MONEY32_UNDEFINED;
 		}
 		map_element_remove(mapElement);
@@ -198,7 +202,8 @@ sint32 tile_inspector_rotate_element_at(sint32 x, sint32 y, sint32 elementIndex,
 
 		rct_map_element *const baseMapElement = map_get_first_element_at(x, y);
 		rct_map_element *const mapElement = baseMapElement + elementIndex;
-		if (!baseMapElement) {
+		bool isValid = map_element_check_address(mapElement);
+		if (!baseMapElement || !isValid) {
 			return MONEY32_UNDEFINED;
 		}
 		switch (map_element_get_type(mapElement))
@@ -337,8 +342,9 @@ sint32 tile_inspector_sort_elements_at(sint32 x, sint32 y, sint32 flags)
 sint32 tile_inspector_any_base_height_offset(sint32 x, sint32 y, sint16 elementIndex, sint8 heightOffset, sint32 flags)
 {
 	rct_map_element *const baseMapElement = map_get_first_element_at(x, y);
-	rct_map_element *const mapElement = baseMapElement+ elementIndex;
-	if (!baseMapElement) {
+	rct_map_element *const mapElement = baseMapElement + elementIndex;
+	bool isValid = map_element_check_address(mapElement);
+	if (!baseMapElement || !isValid) {
 		return MONEY32_UNDEFINED;
 	}
 	sint16 newBaseHeight = (sint16)mapElement->base_height + heightOffset;
@@ -487,9 +493,10 @@ sint32 tile_inspector_surface_toggle_diagonal(sint32 x, sint32 y, sint32 flags)
 sint32 tile_inspector_path_set_sloped(sint32 x, sint32 y, sint32 elementIndex, bool sloped, sint32 flags)
 {
 	rct_map_element *const basePathElement = map_get_first_element_at(x, y);
-	rct_map_element *const pathElement = basePathElement+ elementIndex;
+	rct_map_element *const pathElement = basePathElement + elementIndex;
+	bool isValid = map_element_check_address(pathElement);
 
-	if (!basePathElement || map_element_get_type(pathElement) != MAP_ELEMENT_TYPE_PATH)
+	if (!isValid || !basePathElement || map_element_get_type(pathElement) != MAP_ELEMENT_TYPE_PATH)
 	{
 		return MONEY32_UNDEFINED;
 	}
@@ -517,9 +524,10 @@ sint32 tile_inspector_path_set_sloped(sint32 x, sint32 y, sint32 elementIndex, b
 sint32 tile_inspector_path_toggle_edge(sint32 x, sint32 y, sint32 elementIndex, sint32 edgeIndex, sint32 flags)
 {
 	rct_map_element *const basePathElement = map_get_first_element_at(x, y);
-	rct_map_element *const pathElement = basePathElement+ elementIndex;
+	rct_map_element *const pathElement = basePathElement + elementIndex;
+	bool isValid = map_element_check_address(pathElement);
 
-	if (!basePathElement || map_element_get_type(pathElement) != MAP_ELEMENT_TYPE_PATH)
+	if (!isValid || !basePathElement || map_element_get_type(pathElement) != MAP_ELEMENT_TYPE_PATH)
 	{
 		return MONEY32_UNDEFINED;
 	}
@@ -543,9 +551,10 @@ sint32 tile_inspector_path_toggle_edge(sint32 x, sint32 y, sint32 elementIndex, 
 sint32 tile_inspector_fence_set_slope(sint32 x, sint32 y, sint32 elementIndex, sint32 slopeValue, sint32 flags)
 {
 	rct_map_element *const baseFenceElement = map_get_first_element_at(x, y);
-	rct_map_element *const fenceElement = baseFenceElement+ elementIndex;
+	rct_map_element *const fenceElement = baseFenceElement + elementIndex;
+	bool isValid = map_element_check_address(fenceElement);
 
-	if (!baseFenceElement || map_element_get_type(fenceElement) != MAP_ELEMENT_TYPE_FENCE)
+	if (!isValid || !baseFenceElement || map_element_get_type(fenceElement) != MAP_ELEMENT_TYPE_FENCE)
 	{
 		return MONEY32_UNDEFINED;
 	}
@@ -573,14 +582,15 @@ sint32 tile_inspector_fence_set_slope(sint32 x, sint32 y, sint32 elementIndex, s
 sint32 tile_inspector_track_base_height_offset(sint32 x, sint32 y, sint32 elementIndex, sint8 offset, sint32 flags)
 {
 	rct_map_element *const baseTrackElement = map_get_first_element_at(x, y);
-	rct_map_element *const trackElement = baseTrackElement+ elementIndex;
+	rct_map_element *const trackElement = baseTrackElement + elementIndex;
+	bool isValid = map_element_check_address(trackElement);
 
 	if (offset == 0)
 	{
 		return MONEY32_UNDEFINED;
 	}
 
-	if (!baseTrackElement || map_element_get_type(trackElement) != MAP_ELEMENT_TYPE_TRACK)
+	if (!isValid || !baseTrackElement || map_element_get_type(trackElement) != MAP_ELEMENT_TYPE_TRACK)
 	{
 		return MONEY32_UNDEFINED;
 	}
@@ -700,9 +710,10 @@ sint32 tile_inspector_track_base_height_offset(sint32 x, sint32 y, sint32 elemen
 sint32 tile_inspector_track_set_chain(sint32 x, sint32 y, sint32 elementIndex, bool entireTrackBlock, bool setChain, sint32 flags)
 {
 	rct_map_element *const baseTrackElement = map_get_first_element_at(x, y);
-	rct_map_element *const trackElement = baseTrackElement+ elementIndex;
+	rct_map_element *const trackElement = baseTrackElement + elementIndex;
+	bool isValid = map_element_check_address(trackElement);
 
-	if (!baseTrackElement || map_element_get_type(trackElement) != MAP_ELEMENT_TYPE_TRACK)
+	if (!isValid || !baseTrackElement || map_element_get_type(trackElement) != MAP_ELEMENT_TYPE_TRACK)
 	{
 		return MONEY32_UNDEFINED;
 	}
@@ -833,9 +844,10 @@ sint32 tile_inspector_track_set_chain(sint32 x, sint32 y, sint32 elementIndex, b
 sint32 tile_inspector_scenery_set_quarter_location(sint32 x, sint32 y, sint32 elementIndex, sint32 quarterIndex, sint32 flags)
 {
 	rct_map_element *const baseMapElement = map_get_first_element_at(x, y);
-	rct_map_element *const mapElement = baseMapElement+ elementIndex;
+	rct_map_element *const mapElement = baseMapElement + elementIndex;
+	bool isValid = map_element_check_address(mapElement);
 
-	if (!baseMapElement || map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_SCENERY)
+	if (!isValid || !baseMapElement || map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_SCENERY)
 	{
 		return MONEY32_UNDEFINED;
 	}
@@ -864,8 +876,9 @@ sint32 tile_inspector_scenery_set_quarter_collision(sint32 x, sint32 y, sint32 e
 {
 	rct_map_element *const baseMapElement = map_get_first_element_at(x, y);
 	rct_map_element *const mapElement = baseMapElement + elementIndex;
+	bool isValid = map_element_check_address(mapElement);
 
-	if (!baseMapElement || map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_SCENERY)
+	if (!isValid || !baseMapElement || map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_SCENERY)
 	{
 		return MONEY32_UNDEFINED;
 	}
@@ -888,8 +901,9 @@ sint32 tile_inspector_banner_toggle_blocking_edge(sint32 x, sint32 y, sint32 ele
 {
 	rct_map_element *const baseBannerElement = map_get_first_element_at(x, y);
 	rct_map_element *const bannerElement = baseBannerElement + elementIndex;
+	bool isValid = map_element_check_address(bannerElement);
 
-	if (!baseBannerElement || map_element_get_type(bannerElement) != MAP_ELEMENT_TYPE_BANNER)
+	if (!isValid || !baseBannerElement || map_element_get_type(bannerElement) != MAP_ELEMENT_TYPE_BANNER)
 	{
 		return MONEY32_UNDEFINED;
 	}
@@ -911,8 +925,9 @@ sint32 tile_inspector_corrupt_clamp(sint32 x, sint32 y, sint32 elementIndex, sin
 {
 	rct_map_element *const baseCorruptElement = map_get_first_element_at(x, y);
 	rct_map_element *const corruptElement = baseCorruptElement + elementIndex;
+	bool isValid = map_element_check_address(corruptElement);
 
-	if (!baseCorruptElement || map_element_get_type(corruptElement) != MAP_ELEMENT_TYPE_CORRUPT)
+	if (!isValid || !baseCorruptElement || map_element_get_type(corruptElement) != MAP_ELEMENT_TYPE_CORRUPT)
 	{
 		return MONEY32_UNDEFINED;
 	}

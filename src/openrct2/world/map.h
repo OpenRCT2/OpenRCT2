@@ -434,6 +434,7 @@ void map_invalidate_selection_rect();
 void map_reorganise_elements();
 bool map_check_free_elements_and_reorganise(sint32 num_elements);
 rct_map_element *map_element_insert(sint32 x, sint32 y, sint32 z, sint32 flags);
+bool map_element_check_address(const rct_map_element * const element);
 
 typedef sint32 (CLEAR_FUNC)(rct_map_element** map_element, sint32 x, sint32 y, uint8 flags, money32* price);
 sint32 map_place_non_scenery_clear_func(rct_map_element** map_element, sint32 x, sint32 y, uint8 flags, money32* price);
