@@ -376,7 +376,7 @@ bool platform_open_common_file_dialog(utf8 *outFilename, file_dialog_desc *desc,
 				}
 			}
 
-			snprintf(cmd, MAX_PATH, "%s --title \"%s\" %s ~ \"%s\"", executable, desc->title, action, filter);
+			snprintf(cmd, MAX_PATH, "%s --title \"%s\" %s '%s/' ~ \"%s\"", executable, desc->title, action, desc->initial_directory, filter);
 			break;
 		case DT_ZENITY:
 			action = "--file-selection";
@@ -420,7 +420,7 @@ bool platform_open_common_file_dialog(utf8 *outFilename, file_dialog_desc *desc,
 			snprintf(filterTemp, countof(filterTemp), " --file-filter=\"%s | *\"", (char *)language_get_string(STR_ALL_FILES));
 			safe_strcat(filter, filterTemp, countof(filter));
 
-			snprintf(cmd, MAX_PATH, "%s %s %s --title=\"%s\" / %s", executable, action, flags, desc->title, filter);
+			snprintf(cmd, MAX_PATH, "%s %s --filename='%s/' %s --title=\"%s\" / %s", executable, action, desc->initial_directory, flags, desc->title, filter);
 			break;
 		default: return 0;
 	}
