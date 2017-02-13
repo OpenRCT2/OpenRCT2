@@ -399,6 +399,7 @@ void map_count_remaining_land_rights();
 void map_strip_ghost_flag_from_elements();
 void map_update_tile_pointers();
 rct_map_element *map_get_first_element_at(sint32 x, sint32 y);
+rct_map_element *map_get_nth_element_at(sint32 x, sint32 y, sint32 n);
 void map_set_tile_elements(sint32 x, sint32 y, rct_map_element *elements);
 sint32 map_element_is_last_for_tile(const rct_map_element *element);
 uint8 map_element_get_scenery_quadrant(const rct_map_element *element);

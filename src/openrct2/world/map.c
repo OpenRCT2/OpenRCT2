@@ -234,6 +234,29 @@ rct_map_element *map_get_first_element_at(sint32 x, sint32 y)
 	return gMapElementTilePointers[x + y * 256];
 }
 
+rct_map_element *map_get_nth_element_at(sint32 x, sint32 y, sint32 n)
+{
+	rct_map_element * mapElement = map_get_first_element_at(x, y);
+	if (mapElement == NULL) {
+		return NULL;
+	}
+	// Iterate through elements on this tile. This has to be walked, rather than
+	// jumped directly to, because n may exceed element count for given tile,
+	// and the order of tiles (unlike elements) is not synced over multiplayer.
+	while (n >= 0) {
+		if (n == 0) {
+			return mapElement;
+		}
+		if (!map_element_is_last_for_tile(mapElement)) {
+			break;
+		}
+		mapElement++;
+		n--;
+	}
+	// The element sought for is not within given tile.
+	return NULL;
+}
+
 void map_set_tile_elements(sint32 x, sint32 y, rct_map_element *elements)
 {
 	if (x < 0 || y < 0 || x > 255 || y > 255) {
