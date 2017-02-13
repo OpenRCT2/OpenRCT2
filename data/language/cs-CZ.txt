@@ -4322,6 +4322,8 @@ STR_6009    :{SMALLFONT}{BLACK}Zvolit výšku řezu
 STR_6010    :{COMMA2DP32}m
 STR_6011    :{COMMA1DP16}ft
 STR_6012    :{COMMA1DP16}
+STR_6013    :{SMALLFONT}{BLACK}Návštěvníci platí pouze za vstup do parku a služby. Atrakce jsou zdrarma.
+STR_6014    :{SMALLFONT}{BLACK}Návštěvníci platí pouze za služby a atrakce. Vstup do parku je zdarma.
 
 ###############################################################################
 ## RCT2 Objects
