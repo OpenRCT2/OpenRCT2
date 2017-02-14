@@ -247,7 +247,7 @@ rct_map_element *map_get_nth_element_at(sint32 x, sint32 y, sint32 n)
 		if (n == 0) {
 			return mapElement;
 		}
-		if (!map_element_is_last_for_tile(mapElement)) {
+		if (map_element_is_last_for_tile(mapElement)) {
 			break;
 		}
 		mapElement++;

@@ -597,7 +597,7 @@ static void window_tile_inspector_load_tile(rct_window* w)
 
 static void window_tile_inspector_insert_corrupt_element(sint32 elementIndex)
 {
-	openrct2_assert(elementIndex > 0 && elementIndex < windowTileInspectorElementCount,
+	openrct2_assert(elementIndex >= 0 && elementIndex < windowTileInspectorElementCount,
 					"elementIndex out of range");
 	game_do_command(
 		TILE_INSPECTOR_ANY_INSERT_CORRUPT,
@@ -612,7 +612,7 @@ static void window_tile_inspector_insert_corrupt_element(sint32 elementIndex)
 
 static void window_tile_inspector_remove_element(sint32 elementIndex)
 {
-	openrct2_assert(elementIndex > 0 && elementIndex < windowTileInspectorElementCount,
+	openrct2_assert(elementIndex >= 0 && elementIndex < windowTileInspectorElementCount,
 		"elementIndex out of range");
 	game_do_command(
 		TILE_INSPECTOR_ANY_REMOVE,
@@ -627,7 +627,7 @@ static void window_tile_inspector_remove_element(sint32 elementIndex)
 
 static void window_tile_inspector_rotate_element(sint32 elementIndex)
 {
-	openrct2_assert(elementIndex > 0 && elementIndex < windowTileInspectorElementCount,
+	openrct2_assert(elementIndex >= 0 && elementIndex < windowTileInspectorElementCount,
 		"elementIndex out of range");
 	game_do_command(
 		TILE_INSPECTOR_ANY_ROTATE,
@@ -643,9 +643,9 @@ static void window_tile_inspector_rotate_element(sint32 elementIndex)
 // Swap element with its parent
 static void window_tile_inspector_swap_elements(sint16 first, sint16 second)
 {
-	openrct2_assert(first > 0 && first < windowTileInspectorElementCount,
+	openrct2_assert(first >= 0 && first < windowTileInspectorElementCount,
 					"first out of range");
-	openrct2_assert(second > 0 && second < windowTileInspectorElementCount,
+	openrct2_assert(second >= 0 && second < windowTileInspectorElementCount,
 					"second out of range");
 	game_do_command(
 		TILE_INSPECTOR_ANY_SWAP,
@@ -764,7 +764,7 @@ static void window_tile_inspector_path_set_sloped(sint32 elementIndex, bool slop
 
 static void window_tile_inspector_path_toggle_edge(sint32 elementIndex, sint32 cornerIndex)
 {
-	openrct2_assert(elementIndex > 0 && elementIndex < windowTileInspectorElementCount,
+	openrct2_assert(elementIndex >= 0 && elementIndex < windowTileInspectorElementCount,
 		"elementIndex out of range");
 	openrct2_assert(cornerIndex >= 0 && cornerIndex < 8, "cornerIndex out of range");
 	game_do_command(
