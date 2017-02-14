@@ -74,20 +74,20 @@ sint32 tile_inspector_insert_corrupt_at(sint32 x, sint32 y, sint16 elementIndex,
 	if (flags & GAME_COMMAND_FLAG_APPLY)
 	{
 		// Create new corrupt element
-		rct_map_element *curruptElement = map_element_insert(x, y, -1, 0); // Ugly hack: -1 guarantees this to be placed first
-		if (curruptElement == NULL)
+		rct_map_element *corruptElement = map_element_insert(x, y, -1, 0); // Ugly hack: -1 guarantees this to be placed first
+		if (corruptElement == NULL)
 		{
 			log_warning("Failed to insert corrupt element.");
 			return MONEY32_UNDEFINED;
 		}
-		curruptElement->type = MAP_ELEMENT_TYPE_CORRUPT;
+		corruptElement->type = MAP_ELEMENT_TYPE_CORRUPT;
 
 		// Set the base height to be the same as the selected element
 		rct_map_element *const selectedElement = map_get_nth_element_at(x, y, elementIndex);
 		if (!selectedElement) {
 			return MONEY32_UNDEFINED;
 		}
-		curruptElement->base_height = curruptElement->clearance_height = selectedElement->base_height;
+		corruptElement->base_height = corruptElement->clearance_height = selectedElement->base_height;
 
 		// Move the corrupt element up until the selected list item is reached
 		// this way it's placed under the selected element, even when there are multiple elements with the same base height
