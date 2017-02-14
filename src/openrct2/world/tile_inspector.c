@@ -24,14 +24,23 @@
 #include "map.h"
 #include "tile_inspector.h"
 
-static void map_swap_elements_at(sint32 x, sint32 y, sint16 first, sint16 second)
+static bool map_swap_elements_at(sint32 x, sint32 y, sint16 first, sint16 second)
 {
 	rct_map_element *const firstElement = map_get_nth_element_at(x, y, first);
 	rct_map_element *const secondElement = map_get_nth_element_at(x, y, second);
 
-	openrct2_assert(firstElement  != NULL, "First element is out of range for the tile");
-	openrct2_assert(secondElement != NULL, "Second element is out of range for the tile");
-	openrct2_assert(firstElement != secondElement, "Can't swap the element with itself");
+	if (firstElement == NULL) {
+		log_error("First element is out of range for the tile");
+		return false;
+	}
+	if (secondElement == NULL) {
+		log_error("Second element is out of range for the tile");
+		return false;
+	}
+	if (firstElement == secondElement) {
+		log_error("Can't swap the element with itself");
+		return false;
+	}
 
 	// Swap their memory
 	rct_map_element temp = *firstElement;
@@ -44,6 +53,8 @@ static void map_swap_elements_at(sint32 x, sint32 y, sint16 first, sint16 second
 		firstElement->flags ^= MAP_ELEMENT_FLAG_LAST_TILE;
 		secondElement->flags ^= MAP_ELEMENT_FLAG_LAST_TILE;
 	}
+
+	return true;
 }
 
 /**
@@ -82,7 +93,12 @@ sint32 tile_inspector_insert_corrupt_at(sint32 x, sint32 y, sint16 elementIndex,
 		// this way it's placed under the selected element, even when there are multiple elements with the same base height
 		for (sint16 i = 0; i < elementIndex; i++)
 		{
-			map_swap_elements_at(x, y, i, i + 1);
+			if (!map_swap_elements_at(x, y, i, i + 1)) {
+				// don't return error here, we've already inserted an element
+				// and moved it as far as we could, the only sensible thing left
+				// to do is to invalidate the window.
+				break;
+			}
 		}
 
 		map_invalidate_tile_full(x << 5, y << 5);
@@ -158,7 +174,9 @@ sint32 tile_inspector_swap_elements_at(sint32 x, sint32 y, sint16 first, sint16 
 {
 	if (flags & GAME_COMMAND_FLAG_APPLY)
 	{
-		map_swap_elements_at(x, y, first, second);
+		if (!map_swap_elements_at(x, y, first, second)) {
+			return MONEY32_UNDEFINED;
+		}
 		map_invalidate_tile_full(x << 5, y << 5);
 
 		// Update the window
@@ -299,7 +317,13 @@ sint32 tile_inspector_sort_elements_at(sint32 x, sint32 y, sint32 flags)
 				(otherElement->base_height > currentElement->base_height ||
 				(otherElement->base_height == currentElement->base_height && otherElement->clearance_height > currentElement->clearance_height)))
 			{
-				map_swap_elements_at(x, y, currentId - 1, currentId);
+				if (!map_swap_elements_at(x, y, currentId - 1, currentId)) {
+					// don't return error here, we've already ran some actions
+					// and moved things as far as we could, the only sensible
+					// thing left to do is to invalidate the window.
+					loopStart = numElement;
+					break;
+				}
 				currentId--;
 				currentElement--;
 				otherElement--;
