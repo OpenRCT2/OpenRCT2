@@ -17,6 +17,7 @@
 // Include common.h before SDL, otherwise M_PI gets redefined
 #include "../common.h"
 
+#include <assert.h>
 #include <SDL.h>
 #include "../core/Guard.hpp"
 #include "../localisation/localisation.h"
@@ -551,8 +552,9 @@ sint32 add_clamp_sint32(sint32 value, sint32 value_to_add)
 
 money32 add_clamp_money32(money32 value, money32 value_to_add)
 {
-	// This function is intended only for clarity, but money32 is the technically 
-	// the same as sint32
+	// This function is intended only for clarity, but money32
+	// is technically the same as sint32
+	static_assert(sizeof(money32) == sizeof(sint32), "money32 is not the same as sint32");
 	return add_clamp_sint32(value, value_to_add);
 }
 
