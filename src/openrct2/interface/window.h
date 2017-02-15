@@ -693,6 +693,7 @@ void window_sign_small_open(rct_windownumber number);
 void window_news_options_open();
 void window_cheats_open();
 void window_multiplayer_open();
+void window_multiplayer_close();
 void window_player_open(uint8 id);
 void window_network_status_open(const char* text, close_callback onClose);
 void window_network_status_close();

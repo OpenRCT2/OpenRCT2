@@ -448,6 +448,7 @@ void Network::UpdateClient()
 			}
 
 			Close();
+			window_multiplayer_close();
 			window_network_status_close();
 			window_error_open(STR_UNABLE_TO_CONNECT_TO_SERVER, STR_NONE);
 			break;
@@ -1662,6 +1663,7 @@ void Network::Client_Handle_MAP(NetworkConnection& connection, NetworkPacket& pa
 	});
 	memcpy(&chunk_buffer[offset], (void*)packet.Read(chunksize), chunksize);
 	if (offset + chunksize == size) {
+		window_multiplayer_close();
 		window_network_status_close();
 		bool has_to_free = false;
 		uint8 *data = &chunk_buffer[0];
