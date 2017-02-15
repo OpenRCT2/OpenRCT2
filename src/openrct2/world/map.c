@@ -519,6 +519,10 @@ sint32 map_element_height(sint32 x, sint32 y)
 	// Get the surface element for the tile
 	mapElement = map_get_surface_element_at(x_tile / 32, y_tile / 32);
 
+	if (mapElement == NULL) {
+		return 16;
+	}
+
 	uint32 height =
 		((mapElement->properties.surface.terrain & MAP_ELEMENT_WATER_HEIGHT_MASK) << 20) |
 		(mapElement->base_height << 3);
