@@ -16,6 +16,7 @@
 
 #include <memory>
 #include "../core/Exception.hpp"
+#include "../network/network.h"
 #include "IniReader.h"
 
 extern "C"
@@ -59,6 +60,68 @@ namespace Config
         }
     }
 
+    static void ReadNetwork(IIniReader * reader)
+    {
+        if (reader->ReadSection("network"))
+        {
+            auto model = &gConfigNetwork;
+            model->player_name = reader->GetCString("player_name", "Player");
+            model->default_port = reader->GetSint32("default_port", NETWORK_DEFAULT_PORT);
+            model->default_password = reader->GetCString("default_password", nullptr);
+            model->stay_connected = reader->GetBoolean("stay_connected", true);
+            model->advertise = reader->GetBoolean("advertise", true);
+            model->maxplayers = reader->GetSint32("maxplayers", 16);
+            model->server_name = reader->GetCString("server_name", "Server");
+            model->server_description = reader->GetCString("server_description", nullptr);
+            model->server_greeting = reader->GetCString("server_greeting", nullptr);
+            model->master_server_url = reader->GetCString("master_server_url", nullptr);
+            model->provider_name = reader->GetCString("provider_name", nullptr);
+            model->provider_email = reader->GetCString("provider_email", nullptr);
+            model->provider_website = reader->GetCString("provider_website", nullptr);
+            model->known_keys_only = reader->GetBoolean("known_keys_only", false);
+            model->log_chat = reader->GetBoolean("log_chat", false);
+        }
+    }
+
+    static void ReadNotifications(IIniReader * reader)
+    {
+        if (reader->ReadSection("notifications"))
+        {
+            auto model = &gConfigNotifications;
+            model->park_award = reader->GetBoolean("park_award", true);
+            model->park_marketing_campaign_finished = reader->GetBoolean("park_marketing_campaign_finished", true);
+            model->park_warnings = reader->GetBoolean("park_warnings", true);
+            model->park_rating_warnings = reader->GetBoolean("park_rating_warnings", true);
+            model->ride_broken_down = reader->GetBoolean("ride_broken_down", true);
+            model->ride_crashed = reader->GetBoolean("ride_crashed", true);
+            model->ride_warnings = reader->GetBoolean("ride_warnings", true);
+            model->ride_researched = reader->GetBoolean("ride_researched", true);
+            model->guest_warnings = reader->GetBoolean("guest_warnings", true);
+            model->guest_lost = reader->GetBoolean("guest_lost", false);
+            model->guest_left_park = reader->GetBoolean("guest_entered_left_park", true);
+            model->guest_queuing_for_ride = reader->GetBoolean("guest_queuing_for_ride", true);
+            model->guest_on_ride = reader->GetBoolean("guest_on_ride", true);
+            model->guest_left_ride = reader->GetBoolean("guest_left_ride", true);
+            model->guest_bought_item = reader->GetBoolean("guest_bought_item", true);
+            model->guest_used_facility = reader->GetBoolean("guest_used_facility", true);
+            model->guest_died = reader->GetBoolean("guest_died", true);
+        }
+    }
+
+    static void ReadTwitch(IIniReader * reader)
+    {
+        if (reader->ReadSection("sound"))
+        {
+            auto model = &gConfigTwitch;
+            model->channel = reader->GetCString("channel", nullptr);
+            model->enable_follower_peep_names = reader->GetBoolean("follower_peep_names", true);
+            model->enable_follower_peep_tracking = reader->GetBoolean("follower_peep_tracking", false);
+            model->enable_chat_peep_names = reader->GetBoolean("chat_peep_names", true);
+            model->enable_chat_peep_tracking = reader->GetBoolean("chat_peep_tracking", true);
+            model->enable_news = reader->GetBoolean("news", false);
+        }
+    }
+
     static bool ReadFile(const std::string &path)
     {
         try
@@ -66,6 +129,9 @@ namespace Config
             auto reader = std::unique_ptr<IIniReader>(CreateIniReader(path));
             ReadGeneral(reader.get());
             ReadSound(reader.get());
+            ReadNetwork(reader.get());
+            ReadNotifications(reader.get());
+            ReadTwitch(reader.get());
             return true;
         }
         catch (const Exception &)
