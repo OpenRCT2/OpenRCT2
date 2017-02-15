@@ -1,3 +1,19 @@
+#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+/*****************************************************************************
+ * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
+ *
+ * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
+ * For more information, visit https://github.com/OpenRCT2/OpenRCT2
+ *
+ * OpenRCT2 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * A full copy of the GNU General Public License can be found in licence.txt
+ *****************************************************************************/
+#pragma endregion
+
 #include <initializer_list>
 #include <string>
 #include <tuple>
@@ -7,56 +23,7 @@
 #include "../core/FileStream.hpp"
 #include "../core/String.hpp"
 #include "../core/StringBuilder.hpp"
-
-template<typename T>
-struct ConfigEnumEntry
-{
-    std::string Key;
-    T           Value;
-
-    ConfigEnumEntry(const std::string &key, T value)
-        : Key(key),
-          Value(value)
-    {
-    }
-};
-
-template<typename T>
-class ConfigEnum
-{
-private:
-    std::vector<ConfigEnumEntry<T>> _entries;
-
-public:
-    ConfigEnum(std::initializer_list<ConfigEnumEntry<T>> entries)
-    {
-        _entries = entries;
-    }
-
-    std::string GetName(T value)
-    {
-        for (const auto &entry : _entries) const
-        {
-            if (entry.Value == value)
-            {
-                return entry.Key;
-            }
-        }
-        return std::string();
-    }
-
-    T GetValue(const std::string &key, T defaultValue) const
-    {
-        for (const auto &entry : _entries)
-        {
-            if (String::Equals(entry.Key, key, true))
-            {
-                return entry.Value;
-            }
-        }
-        return defaultValue;
-    }
-};
+#include "IniReader.h"
 
 struct Span
 {
@@ -84,7 +51,7 @@ struct LineRange
     }
 };
 
-class IniReader
+class IniReader final : public IIniReader
 {
 private:
     std::vector<uint8>                              _buffer;
@@ -113,7 +80,7 @@ public:
         ParseSections();
     }
 
-    bool ReadSection(const std::string &name)
+    bool ReadSection(const std::string &name) override
     {
         auto it = _sections.find(name);
         if (it == _sections.end())
@@ -125,7 +92,7 @@ public:
         return true;
     }
 
-    bool GetBoolean(const std::string &name, bool defaultValue)
+    bool GetBoolean(const std::string &name, bool defaultValue) const override
     {
         auto it = _values.find(name);
         if (it == _values.end())
@@ -137,7 +104,7 @@ public:
         return String::Equals(value, "true", true);
     }
 
-    sint32 GetSint32(const std::string &name, sint32 defaultValue)
+    sint32 GetSint32(const std::string &name, sint32 defaultValue) const override
     {
         auto it = _values.find(name);
         if (it == _values.end())
@@ -149,19 +116,7 @@ public:
         return std::stoi(value);
     }
 
-    template<typename T>
-    T GetEnum(const std::string &name, T defaultValue, const ConfigEnum<T> &configEnum)
-    {
-        auto it = _values.find(name);
-        if (it == _values.end())
-        {
-            return defaultValue;
-        }
-
-        return configEnum.GetValue(it->second, defaultValue);
-    }
-
-    std::string GetString(const std::string &name, const std::string &defaultValue)
+    std::string GetString(const std::string &name, const std::string &defaultValue) const override
     {
         auto it = _values.find(name);
         if (it == _values.end())
@@ -170,6 +125,18 @@ public:
         }
 
         return it->second;
+    }
+
+    bool TryGetString(const std::string &name, std::string * outValue) const override
+    {
+        auto it = _values.find(name);
+        if (it == _values.end())
+        {
+            return false;
+        }
+
+        *outValue = it->second;
+        return true;
     }
 
 private:
@@ -344,34 +311,18 @@ private:
     }
 };
 
-extern "C"
+utf8 * IIniReader::GetCString(const std::string &name, const utf8 * defaultValue) const
 {
-    #include "../config.h"
-
-    auto Enum_MeasurementFormat = ConfigEnum<sint8>(
+    std::string szValue;
+    if (!TryGetString(name, &szValue))
     {
-        ConfigEnumEntry<sint8>("IMPERIAL", MEASUREMENT_FORMAT_IMPERIAL),
-        ConfigEnumEntry<sint8>("METRIC", MEASUREMENT_FORMAT_METRIC),
-        ConfigEnumEntry<sint8>("SI", MEASUREMENT_FORMAT_SI),
-    });
-
-    bool config_open(const utf8 * path)
-    {
-        try
-        {
-            auto iniReader = IniReader(path);
-            if (iniReader.ReadSection("general"))
-            {
-                gConfigGeneral.always_show_gridlines = iniReader.GetBoolean("always_show_gridlines", false);
-                gConfigGeneral.window_width = iniReader.GetSint32("window_width", -1);
-                gConfigGeneral.window_height = iniReader.GetSint32("window_height", -1);
-                gConfigGeneral.measurement_format = iniReader.GetEnum<sint8>("measurement_format", MEASUREMENT_FORMAT_METRIC, Enum_MeasurementFormat);
-            }
-            return true;
-        }
-        catch (const Exception &)
-        {
-            return false;
-        }
+        return String::Duplicate(defaultValue);
     }
+
+    return String::Duplicate(szValue.c_str());
+}
+
+IIniReader * CreateIniReader(const std::string &path)
+{
+    return new IniReader(path);
 }
