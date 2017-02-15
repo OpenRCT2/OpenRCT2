@@ -829,6 +829,9 @@ bool map_is_location_owned_or_has_rights(sint32 x, sint32 y)
 {
 	if (map_is_location_valid(x, y)) {
 		rct_map_element *mapElement = map_get_surface_element_at(x / 32, y / 32);
+		if (mapElement == NULL) {
+			return false;
+		}
 		if (mapElement->properties.surface.ownership & OWNERSHIP_OWNED) return true;
 		if (mapElement->properties.surface.ownership & OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED) return true;
 	}
