@@ -895,10 +895,10 @@ static void vehicle_sprite_paint(rct_vehicle *vehicle, sint32 ebx, sint32 ecx, s
 
 	sint32 baseImage_id = ebx;
 	vehicle_boundbox bb = VehicleBoundboxes[vehicleEntry->draw_order][ecx];
-	if (vehicleEntry->flags_a & 0x4000) {
+	if (vehicleEntry->flags_a & VEHICLE_ENTRY_FLAG_A_14) {
 		baseImage_id += (vehicle->var_BA / 8) & 31;
 	}
-	if (vehicleEntry->flags_b & 0x80) {
+	if (vehicleEntry->flags_b & VEHICLE_ENTRY_FLAG_A_7) {
 		baseImage_id += vehicle->var_C5;
 	}
 	uint32 rotation = get_current_rotation();
@@ -913,7 +913,7 @@ static void vehicle_sprite_paint(rct_vehicle *vehicle, sint32 ebx, sint32 ecx, s
 		for (sint32 i = 0; i < 8; i++){
 			if (vehicle->num_peeps > (i * 2) && vehicleEntry->no_seating_rows > i) {
 				image_id = baseImage_id | (vehicle->peep_tshirt_colours[i * 2] << 19) | (vehicle->peep_tshirt_colours[(i * 2) + 1] << 24) | 0xA0000000;
-				if (i == 0 && vehicleEntry->flags_b & 0x100) {
+				if (i == 0 && vehicleEntry->flags_b & VEHICLE_ENTRY_FLAG_A_8) {
 					image_id += (vehicleEntry->no_vehicle_images * vehicle->var_C5);
 				}
 				sub_98199C(image_id, 0, 0,  bb.length_x, bb.length_y, bb.length_z, z, bb.offset_x, bb.offset_y, bb.offset_z + z, rotation);
@@ -934,7 +934,7 @@ static void vehicle_sprite_paint_6D520E(rct_vehicle *vehicle, sint32 ebx, sint32
 static void vehicle_sprite_paint_6D51EB(rct_vehicle *vehicle, sint32 ebx, sint32 z, const rct_ride_entry_vehicle *vehicleEntry)
 {
 	sint32 ecx = ebx / 2;
-	if (vehicleEntry->flags_a & 0x800) {
+	if (vehicleEntry->flags_a & VEHICLE_ENTRY_FLAG_A_11) {
 		ebx = ebx / 2;
 	}
  	if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_15) {
@@ -1343,7 +1343,7 @@ static void vehicle_sprite_1(rct_vehicle *vehicle, sint32 imageDirection, sint32
 static void vehicle_sprite_2_0(rct_vehicle *vehicle, sint32 imageDirection, sint32 z, const rct_ride_entry_vehicle *vehicleEntry)
 {
 	if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_GENTLE_SLOPES) {
-		if (vehicleEntry->flags_a & 0x4000) {
+		if (vehicleEntry->flags_a & VEHICLE_ENTRY_FLAG_A_14) {
 			sint32 ecx = (imageDirection / 2) + 16;
 			sint32 ebx = (((imageDirection / 8) + 8) * vehicleEntry->var_16) + vehicleEntry->var_20;
 			vehicle_sprite_paint_6D520E(vehicle, ebx, ecx, z, vehicleEntry);
@@ -1563,7 +1563,7 @@ static void vehicle_sprite_5(rct_vehicle *vehicle, sint32 imageDirection, sint32
 static void vehicle_sprite_6_0(rct_vehicle *vehicle, sint32 imageDirection, sint32 z, const rct_ride_entry_vehicle *vehicleEntry)
 {
 	if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_GENTLE_SLOPES) {
-		if (vehicleEntry->flags_a & 0x4000) {
+		if (vehicleEntry->flags_a & VEHICLE_ENTRY_FLAG_A_14) {
 			sint32 ecx = ((imageDirection / 2) ^ 8) + 16;
 			sint32 ebx = (((imageDirection / 8) + 12) * vehicleEntry->var_16) + vehicleEntry->var_20;
 			vehicle_sprite_paint_6D520E(vehicle, ebx, ecx, z, vehicleEntry);
