@@ -1245,4 +1245,5 @@ GAME_COMMAND_POINTER* new_game_command_table[GAME_COMMAND_COUNT] = {
 	game_command_pickup_guest,
 	game_command_pickup_staff,
 	game_command_balloon_press,
+	game_command_modify_tile,
 };

@@ -411,6 +411,7 @@
     <ClCompile Include="world\park.c" />
     <ClCompile Include="world\scenery.c" />
     <ClCompile Include="world\sprite.c" />
+    <ClCompile Include="world\tile_inspector.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\resources\resource.h" />
@@ -584,6 +585,7 @@
     <ClInclude Include="util\util.h" />
     <ClInclude Include="windows\dropdown.h" />
     <ClInclude Include="windows\error.h" />
+    <ClInclude Include="windows\tile_inspector.h" />
     <ClInclude Include="windows\tooltip.h" />
     <ClInclude Include="world\banner.h" />
     <ClInclude Include="world\climate.h" />
@@ -597,6 +599,7 @@
     <ClInclude Include="world\park.h" />
     <ClInclude Include="world\scenery.h" />
     <ClInclude Include="world\sprite.h" />
+    <ClInclude Include="world\tile_inspector.h" />
     <ClInclude Include="world\water.h" />
   </ItemGroup>
   <ItemGroup>

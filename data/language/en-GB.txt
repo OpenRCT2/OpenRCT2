@@ -4323,6 +4323,8 @@ STR_6011    :{COMMA1DP16}ft
 STR_6012    :{COMMA1DP16}
 STR_6013    :{SMALLFONT}{BLACK}Guests will only pay the ticket to enter the park and services.{NEWLINE}Ride entry is free.
 STR_6014    :{SMALLFONT}{BLACK}Guests will only pay entrance tickets for rides and services.{NEWLINE}They won't pay anything to enter the park.
+STR_6015    :Sloped
+STR_6016    :Modify Tile
 
 #############
 # Scenarios #

@@ -221,7 +221,12 @@ const std::vector<NetworkAction> NetworkActions::Actions =
         {
             MISC_COMMAND_PASSWORDLESS_LOGIN
         }
-    },
+    }, {
+        STR_ACTION_MODIFY_TILE, "PERMISSION_MODIFY_TILE",
+        {
+            GAME_COMMAND_MODIFY_TILE
+        }
+    }
 };
 
 #endif

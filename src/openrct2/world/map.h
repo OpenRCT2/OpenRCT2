@@ -399,6 +399,7 @@ void map_count_remaining_land_rights();
 void map_strip_ghost_flag_from_elements();
 void map_update_tile_pointers();
 rct_map_element *map_get_first_element_at(sint32 x, sint32 y);
+rct_map_element *map_get_nth_element_at(sint32 x, sint32 y, sint32 n);
 void map_set_tile_elements(sint32 x, sint32 y, rct_map_element *elements);
 sint32 map_element_is_last_for_tile(const rct_map_element *element);
 uint8 map_element_get_scenery_quadrant(const rct_map_element *element);
@@ -434,6 +435,7 @@ void map_invalidate_selection_rect();
 void map_reorganise_elements();
 bool map_check_free_elements_and_reorganise(sint32 num_elements);
 rct_map_element *map_element_insert(sint32 x, sint32 y, sint32 z, sint32 flags);
+bool map_element_check_address(const rct_map_element * const element);
 
 typedef sint32 (CLEAR_FUNC)(rct_map_element** map_element, sint32 x, sint32 y, uint8 flags, money32* price);
 sint32 map_place_non_scenery_clear_func(rct_map_element** map_element, sint32 x, sint32 y, uint8 flags, money32* price);
@@ -473,6 +475,7 @@ void game_command_set_banner_name(sint32* eax, sint32* ebx, sint32* ecx, sint32*
 void game_command_set_sign_name(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp);
 void game_command_set_banner_style(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp);
 void game_command_set_sign_style(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp);
+void game_command_modify_tile(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp);
 
 typedef struct map_element_iterator {
 	sint32 x;
