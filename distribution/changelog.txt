@@ -1,4 +1,4 @@
-0.0.7 (in development)
+﻿0.0.7 (in development)
 ------------------------------------------------------------------------
 - Improved: [#5137]: Removing all guests no longer closes the rides and removes the vehicles.
 - Fix: [#4689] Object selection tabs sometimes flicker.
@@ -13,6 +13,7 @@
 - Feature: [#4916] FreeBSD support.
 - Feature: [#4963] Add boosters (from RCT1 and RCTC).
 - Feature: [#5113] Entertainers are now hired with a random costume.
+- Improved: Peeps can now leave map at spawn points.
 - Improved: [#4847] Guest / staff pathfinding.
 - Improved: [#4938] Checksum calculations speeded up.
 - Improved: [#5007] Vehicles and functioning rides are now imported when loading SC4 / SV4 parks.

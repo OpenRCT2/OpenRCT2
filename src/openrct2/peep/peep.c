@@ -10357,6 +10357,20 @@ static sint32 sub_693C9E(rct_peep *peep)
 		}
 		return peep_return_to_center_of_tile(peep);
 	}
+	
+	if (peep->outside_of_park == 1) {
+		for (sint32 i = 0; i < MAX_PEEP_SPAWNS; i++) {
+			if (gPeepSpawns[i].x == PEEP_SPAWN_UNDEFINED) continue;
+			if (
+				peep->direction % 4 == gPeepSpawns[i].direction % 4 &&
+				x > gPeepSpawns[i].x - 8 && x < gPeepSpawns[i].x + 8 &&
+				y > gPeepSpawns[i].y - 8 && y < gPeepSpawns[i].y + 8
+			) {
+				_unk_F1EE18 |= F1EE18_OUTSIDE_PARK;
+				return peep_return_to_center_of_tile(peep);
+			}
+		}
+	}
 
 	rct_map_element* mapElement = map_get_first_element_at(x / 32, y / 32);
 	sint16 base_z = max(0, (peep->z / 8) - 2);
