@@ -5785,6 +5785,15 @@ void game_command_modify_tile(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx
 		*ebx = MONEY32_UNDEFINED;
 		break;
 	}
+
+	if (flags & GAME_COMMAND_FLAG_APPLY && gGameCommandNestLevel == 1 && !(flags & GAME_COMMAND_FLAG_GHOST))
+	{
+		rct_xyz16 coord;
+		coord.x = (x << 5) + 16;
+		coord.y = (y << 5) + 16;
+		coord.z = map_element_height(coord.x, coord.y);
+		network_set_player_last_action_coord(network_get_player_index(game_command_playerid), coord);
+	}
 }
 
 /**
