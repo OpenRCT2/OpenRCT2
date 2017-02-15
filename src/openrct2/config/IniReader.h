@@ -26,6 +26,7 @@ interface IIniReader
 
     virtual bool GetBoolean(const std::string &name, bool defaultValue) const abstract;
     virtual sint32 GetSint32(const std::string &name, sint32 defaultValue) const abstract;
+    virtual float GetFloat(const std::string &name, float defaultValue) const abstract;
     virtual std::string GetString(const std::string &name, const std::string &defaultValue) const abstract;
     virtual bool TryGetString(const std::string &name, std::string * outValue) const abstract;
 

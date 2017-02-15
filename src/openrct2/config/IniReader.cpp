@@ -116,6 +116,18 @@ public:
         return std::stoi(value);
     }
 
+    float GetFloat(const std::string &name, float defaultValue) const override
+    {
+        auto it = _values.find(name);
+        if (it == _values.end())
+        {
+            return defaultValue;
+        }
+
+        std::string value = it->second;
+        return std::stof(value);
+    }
+
     std::string GetString(const std::string &name, const std::string &defaultValue) const override
     {
         auto it = _values.find(name);
