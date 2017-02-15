@@ -5789,7 +5789,10 @@ void game_command_modify_tile(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx
 		break;
 	}
 
-	if (flags & GAME_COMMAND_FLAG_APPLY && gGameCommandNestLevel == 1 && !(flags & GAME_COMMAND_FLAG_GHOST))
+	if (flags & GAME_COMMAND_FLAG_APPLY &&
+			gGameCommandNestLevel == 1 &&
+			!(flags & GAME_COMMAND_FLAG_GHOST) &&
+			*ebx != MONEY32_UNDEFINED)
 	{
 		rct_xyz16 coord;
 		coord.x = (x << 5) + 16;
