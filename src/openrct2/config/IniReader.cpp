@@ -267,7 +267,7 @@ private:
             {
                 inQuotes = 0;
             }
-            else if (c == '\'' || c == '"' && !escaped)
+            else if ((c == '\'' || c == '"') && !escaped)
             {
                 inQuotes = c;
             }

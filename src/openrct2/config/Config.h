@@ -15,3 +15,10 @@
 #pragma endregion
 
 #pragma once
+
+#include "../common.h"
+
+extern "C"
+{
+    bool config_open(const utf8 * path);
+}

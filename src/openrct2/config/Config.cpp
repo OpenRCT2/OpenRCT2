@@ -18,6 +18,7 @@
 #include "../core/Exception.hpp"
 #include "../interface/window.h"
 #include "../network/network.h"
+#include "Config.h"
 #include "IniReader.h"
 
 extern "C"
