@@ -34,9 +34,9 @@ interface IIniWriter
     void WriteEnum(const std::string &name, T value, const IConfigEnum<T> &configEnum)
     {
         std::string key = configEnum.GetName(value);
-        if (key.empty)
+        if (key.empty())
         {
-            WriteSint32(value);
+            WriteSint32(name, value);
         }
         else
         {
