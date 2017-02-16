@@ -1165,6 +1165,7 @@ static void window_tile_inspector_mousedown(sint32 widgetIndex, rct_window *w, r
 				w->y + widget->top,
 				widget->bottom - widget->top + 1,
 				w->colours[1],
+				0,
 				DROPDOWN_FLAG_STAY_OPEN,
 				3,
 				widget->right - widget->left - 3

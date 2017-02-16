@@ -353,6 +353,7 @@ static void window_multiplayer_groups_show_group_dropdown(rct_window *w, rct_wid
 		dropdownWidget->bottom - dropdownWidget->top + 1,
 		w->colours[1],
 		0,
+		0,
 		numItems,
 		widget->right - dropdownWidget->left
 	);

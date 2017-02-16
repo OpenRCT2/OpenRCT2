@@ -32,17 +32,17 @@ void vehicle_visual_submarine(sint32 x, sint32 imageDirection, sint32 y, sint32 
 	sint32 baseImage_id = imageDirection;
 	sint32 image_id;
 	if (vehicle->restraints_position >= 64) {
-		if ((vehicleEntry->sprite_flags & 0x2000) && !(imageDirection & 3)) {
+		if ((vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_RESTRAINT_ANIMATION) && !(imageDirection & 3)) {
 			baseImage_id /= 8;
 			baseImage_id += ((vehicle->restraints_position - 64) / 64) * 4;
 			baseImage_id *= vehicleEntry->var_16;
 			baseImage_id += vehicleEntry->var_1C;
 		}
 	} else {
-		if (vehicleEntry->flags_a & 0x800) {
+		if (vehicleEntry->flags_a & VEHICLE_ENTRY_FLAG_A_11) {
 			baseImage_id /= 2;
 		}
-		if (vehicleEntry->sprite_flags & 0x8000) {
+		if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_15) {
 			baseImage_id /= 8;
 		}
 		baseImage_id *= vehicleEntry->var_16;

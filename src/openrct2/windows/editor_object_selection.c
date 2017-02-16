@@ -58,7 +58,8 @@ enum {
 	FILTER_SELECTED = (1 << 12),
 	FILTER_NONSELECTED = (1 << 13),
 
-	FILTER_ALL = 0x7EF,
+	FILTER_RIDES = FILTER_RIDE_TRANSPORT | FILTER_RIDE_GENTLE | FILTER_RIDE_COASTER | FILTER_RIDE_THRILL | FILTER_RIDE_WATER | FILTER_RIDE_STALL,
+	FILTER_ALL = FILTER_RIDES | FILTER_RCT2 | FILTER_WW | FILTER_TT | FILTER_CUSTOM | FILTER_SELECTED | FILTER_NONSELECTED,
 } FILTER_FLAGS;
 
 uint32 _filter_flags;
@@ -808,7 +809,7 @@ static void window_editor_object_selection_mouseup(rct_window *w, sint32 widgetI
 		window_editor_object_set_page(w, widgetIndex - WIDX_TAB_1);
 		break;
 	case WIDX_FILTER_RIDE_TAB_ALL:
-		_filter_flags |= 0x7E0;
+		_filter_flags |= FILTER_RIDES;
 		gConfigInterface.object_selection_filter_flags = _filter_flags;
 		config_save_default();
 
@@ -826,7 +827,7 @@ static void window_editor_object_selection_mouseup(rct_window *w, sint32 widgetI
 	case WIDX_FILTER_RIDE_TAB_THRILL:
 	case WIDX_FILTER_RIDE_TAB_WATER:
 	case WIDX_FILTER_RIDE_TAB_STALL:
-		_filter_flags &= ~0x7E0;
+		_filter_flags &= ~FILTER_RIDES;
 		_filter_flags |= (1 << (widgetIndex - WIDX_FILTER_RIDE_TAB_TRANSPORT + 5));
 		gConfigInterface.object_selection_filter_flags = _filter_flags;
 		config_save_default();
@@ -1194,7 +1195,7 @@ static void window_editor_object_selection_invalidate(rct_window *w)
 			(1 << WIDX_FILTER_RIDE_TAB_WATER) | (1 << WIDX_FILTER_RIDE_TAB_STALL);
 		for (sint32 i = 0; i < 7; i++)
 			w->pressed_widgets &= ~(1 << (WIDX_FILTER_RIDE_TAB_ALL + i));
-		if ((_filter_flags & 0x7E0) == 0x7E0)
+		if ((_filter_flags & FILTER_RIDES) == FILTER_RIDES)
 			w->pressed_widgets |= (1 << WIDX_FILTER_RIDE_TAB_ALL);
 		else {
 			for (sint32 i = 0; i < 6; i++) {

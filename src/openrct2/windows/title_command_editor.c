@@ -319,6 +319,7 @@ static void window_title_command_editor_mousedown(sint32 widgetIndex, rct_window
 			w->y + widget->top,
 			widget->bottom - widget->top + 1,
 			w->colours[1],
+			0,
 			DROPDOWN_FLAG_STAY_OPEN,
 			numItems,
 			widget->right - widget->left - 3);
@@ -339,6 +340,7 @@ static void window_title_command_editor_mousedown(sint32 widgetIndex, rct_window
 				w->y + widget->top,
 				widget->bottom - widget->top + 1,
 				w->colours[1],
+				0,
 				DROPDOWN_FLAG_STAY_OPEN,
 				numItems,
 				widget->right - widget->left - 3);
@@ -356,6 +358,7 @@ static void window_title_command_editor_mousedown(sint32 widgetIndex, rct_window
 				w->y + widget->top,
 				widget->bottom - widget->top + 1,
 				w->colours[1],
+				0,
 				DROPDOWN_FLAG_STAY_OPEN,
 				numItems,
 				widget->right - widget->left - 3);

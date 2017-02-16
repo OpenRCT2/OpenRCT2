@@ -6621,7 +6621,7 @@ void game_command_set_ride_price(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *
 	*ebx = 0; // for cost check - changing ride price does not cost anything
 
 	gCommandExpenditureType = RCT_EXPENDITURE_TYPE_PARK_RIDE_TICKETS;
-	if (flags & 0x1) {
+	if (flags & GAME_COMMAND_FLAG_APPLY) {
 		uint32 shop_item;
 
 		if (ride->overall_view != (uint16)-1) {
