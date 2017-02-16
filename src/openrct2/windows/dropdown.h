@@ -24,6 +24,7 @@
 
 enum
 {
+	DROPDOWN_FLAG_CUSTOM_HEIGHT = (1 << 6),
 	DROPDOWN_FLAG_STAY_OPEN = (1 << 7)
 };
 
@@ -45,7 +46,7 @@ void dropdown_set_checked(sint32 index, bool value);
 void dropdown_set_disabled(sint32 index, bool value);
 
 void window_dropdown_show_text(sint32 x, sint32 y, sint32 extray, uint8 colour, uint8 flags, size_t num_items);
-void window_dropdown_show_text_custom_width(sint32 x, sint32 y, sint32 extray, uint8 colour, uint8 flags, size_t num_items, sint32 width);
+void window_dropdown_show_text_custom_width(sint32 x, sint32 y, sint32 extray, uint8 colour, uint8 custom_height, uint8 flags, size_t num_items, sint32 width);
 void window_dropdown_show_image(sint32 x, sint32 y, sint32 extray, uint8 colour, uint8 flags, sint32 numItems, sint32 itemWidth, sint32 itemHeight, sint32 numColumns);
 void window_dropdown_close();
 sint32 dropdown_index_from_point(sint32 x, sint32 y, rct_window* w);

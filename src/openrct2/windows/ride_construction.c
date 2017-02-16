@@ -3524,6 +3524,7 @@ static void window_ride_construction_show_special_track_dropdown(rct_window *w, 
 		widget->bottom - widget->top + 1,
 		w->colours[1],
 		0,
+		0,
 		_numCurrentPossibleRideConfigurations,
 		widget->right - widget->left
 	);
