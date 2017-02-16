@@ -36,7 +36,7 @@
 #endif
 
 #ifndef MAX_COMMAND_LENGTH
-#define MAX_COMMAND_LENGTH 512
+#define MAX_COMMAND_LENGTH 520
 #endif
 
 #ifdef __MACOSX__
