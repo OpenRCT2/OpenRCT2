@@ -500,7 +500,7 @@ bool config_save_default()
 	return false;
 }
 
-bool config_open_2(const utf8string path)
+static bool config_open_2(const utf8string path)
 {
 	SDL_RWops *file;
 	utf8string lineBuffer;

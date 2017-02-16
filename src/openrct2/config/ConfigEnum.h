@@ -21,7 +21,7 @@
 #include "../core/String.hpp"
 
 template<typename T>
-struct ConfigEnumEntry
+struct ConfigEnumEntry final
 {
     std::string Key;
     T           Value;
@@ -34,7 +34,15 @@ struct ConfigEnumEntry
 };
 
 template<typename T>
-class ConfigEnum
+interface IConfigEnum
+{
+    virtual ~IConfigEnum() = default;
+    virtual std::string GetName(T value) const abstract;
+    virtual T GetValue(const std::string &key, T defaultValue) const abstract;
+};
+
+template<typename T>
+class ConfigEnum final : public IConfigEnum<T>
 {
 private:
     std::vector<ConfigEnumEntry<T>> _entries;
@@ -45,9 +53,9 @@ public:
         _entries = entries;
     }
 
-    std::string GetName(T value)
+    std::string GetName(T value) const override
     {
-        for (const auto &entry : _entries) const
+        for (const auto &entry : _entries)
         {
             if (entry.Value == value)
             {
@@ -57,7 +65,7 @@ public:
         return std::string();
     }
 
-    T GetValue(const std::string &key, T defaultValue) const
+    T GetValue(const std::string &key, T defaultValue) const override
     {
         for (const auto &entry : _entries)
         {

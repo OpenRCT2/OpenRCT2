@@ -31,7 +31,7 @@ interface IIniReader
     virtual bool TryGetString(const std::string &name, std::string * outValue) const abstract;
 
     template<typename T>
-    T GetEnum(const std::string &name, T defaultValue, const ConfigEnum<T> &configEnum) const
+    T GetEnum(const std::string &name, T defaultValue, const IConfigEnum<T> &configEnum) const
     {
         std::string szValue;
         if (!TryGetString(name, &szValue))

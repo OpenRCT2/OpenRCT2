@@ -17,17 +17,19 @@
 #include <memory>
 #include "../core/Exception.hpp"
 #include "../interface/window.h"
-#include "../localisation/language.h"
 #include "../network/network.h"
 #include "IniReader.h"
 
 extern "C"
 {
     #include "../config.h"
+    #include "../localisation/language.h"
 }
 
 namespace Config
 {
+    #pragma region Enums
+
     static auto Enum_MeasurementFormat = ConfigEnum<sint32>(
     {
         ConfigEnumEntry<sint32>("IMPERIAL", MEASUREMENT_FORMAT_IMPERIAL),
@@ -64,12 +66,6 @@ namespace Config
         ConfigEnumEntry<sint32>("SUFFIX", CURRENCY_SUFFIX),
     });
 
-    static auto Enum_CurrencySymbolAffix = ConfigEnum<sint32>(
-    {
-        ConfigEnumEntry<sint32>("PREFIX", CURRENCY_PREFIX),
-        ConfigEnumEntry<sint32>("SUFFIX", CURRENCY_SUFFIX),
-    });
-
     static auto Enum_DateFormat = ConfigEnum<sint32>(
     {
         ConfigEnumEntry<sint32>("DD/MM/YY", DATE_FORMAT_DMY),
@@ -91,9 +87,33 @@ namespace Config
         ConfigEnumEntry<sint32>("FAHRENHEIT", TEMPERATURE_FORMAT_F),
     });
 
-    static auto Enum_LanguageEnum = ConfigEnum<sint32>(
+    /**
+     * Config enum wrapping LanguagesDescriptors.
+     */
+    static class LanguageConfigEnum final : public IConfigEnum<sint32>
     {
-    });
+    public:
+        std::string GetName(sint32 value) const override
+        {
+            return LanguagesDescriptors[value].locale;
+        }
+
+        sint32 GetValue(const std::string &key, sint32 defaultValue) const override
+        {
+            sint32 i = 0;
+            for (const auto &langDesc : LanguagesDescriptors)
+            {
+                if (String::Equals(key.c_str(), langDesc.locale))
+                {
+                    return i;
+                }
+                i++;
+            }
+            return defaultValue;
+        }
+    } Enum_LanguageEnum;
+
+    #pragma endregion
 
     static void ReadGeneral(IIniReader * reader)
     {
@@ -162,7 +182,7 @@ namespace Config
             model->last_save_landscape_directory = reader->GetCString("last_landscape_directory", nullptr);
             model->last_save_scenario_directory = reader->GetCString("last_scenario_directory", nullptr);
             model->last_save_track_directory = reader->GetCString("last_track_directory", nullptr);
-            model->window_limit = reader->GetBoolean("window_limit", WINDOW_LIMIT_MAX);
+            model->window_limit = reader->GetSint32("window_limit", WINDOW_LIMIT_MAX);
             model->zoom_to_cursor = reader->GetBoolean("zoom_to_cursor", true);
             model->render_weather_effects = reader->GetBoolean("render_weather_effects", true);
             model->render_weather_gloom = reader->GetBoolean("render_weather_gloom", true);
