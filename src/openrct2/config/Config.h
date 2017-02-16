@@ -21,4 +21,5 @@
 extern "C"
 {
     bool config_open(const utf8 * path);
+    bool config_save(const utf8 * path);
 }

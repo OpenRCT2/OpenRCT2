@@ -74,6 +74,7 @@
     <ClCompile Include="audio\NullAudioSource.cpp" />
     <ClCompile Include="config\Config.cpp" />
     <ClCompile Include="config\IniReader.cpp" />
+    <ClCompile Include="config\IniWriter.cpp" />
     <ClCompile Include="FileClassifier.cpp" />
     <ClCompile Include="network\ServerList.cpp" />
     <ClCompile Include="ParkImporter.cpp" />
@@ -424,6 +425,7 @@
     <ClInclude Include="config\Config.h" />
     <ClInclude Include="config\ConfigEnum.h" />
     <ClInclude Include="config\IniReader.h" />
+    <ClInclude Include="config\IniWriter.h" />
     <ClInclude Include="FileClassifier.h" />
     <ClInclude Include="network\ServerList.h" />
     <ClInclude Include="rct12.h" />

@@ -339,7 +339,7 @@ notification_configuration gConfigNotifications;
 font_configuration gConfigFonts;
 
 bool config_open(const utf8string path);
-static bool config_save(const utf8string path);
+bool config_save(const utf8string path);
 static void config_read_properties(config_section_definition **currentSection, const_utf8string line);
 static void config_save_property_value(SDL_RWops *file, uint8 type, value_union *value);
 static bool config_read_enum(void *dest, sint32 destSize, const utf8 *key, sint32 keySize, config_enum_definition *enumDefinitions);
@@ -557,7 +557,7 @@ static bool config_open_2(const utf8string path)
 	return true;
 }
 
-bool config_save(const utf8string path)
+static bool config_save_2(const utf8string path)
 {
 	SDL_RWops *file;
 	sint32 i, j;

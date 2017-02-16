@@ -20,6 +20,7 @@
 #include "../network/network.h"
 #include "Config.h"
 #include "IniReader.h"
+#include "IniWriter.h"
 
 extern "C"
 {
@@ -190,6 +191,10 @@ namespace Config
         }
     }
 
+    static void WriteGeneral(IIniWriter * writer)
+    {
+    }
+
     static void ReadInterface(IIniReader * reader)
     {
         if (reader->ReadSection("interface"))
@@ -207,6 +212,10 @@ namespace Config
         }
     }
 
+    static void WriteInterface(IIniWriter * writer)
+    {
+    }
+
     static void ReadSound(IIniReader * reader)
     {
         if (reader->ReadSection("sound"))
@@ -221,6 +230,10 @@ namespace Config
             model->audio_focus = reader->GetBoolean("audio_focus", false);
             model->device = reader->GetCString("audio_device", nullptr);
         }
+    }
+
+    static void WriteSound(IIniWriter * writer)
+    {
     }
 
     static void ReadNetwork(IIniReader * reader)
@@ -244,6 +257,10 @@ namespace Config
             model->known_keys_only = reader->GetBoolean("known_keys_only", false);
             model->log_chat = reader->GetBoolean("log_chat", false);
         }
+    }
+
+    static void WriteNetwork(IIniWriter * writer)
+    {
     }
 
     static void ReadNotifications(IIniReader * reader)
@@ -271,6 +288,10 @@ namespace Config
         }
     }
 
+    static void WriteNotifications(IIniWriter * writer)
+    {
+    }
+
     static void ReadTwitch(IIniReader * reader)
     {
         if (reader->ReadSection("sound"))
@@ -283,6 +304,10 @@ namespace Config
             model->enable_chat_peep_tracking = reader->GetBoolean("chat_peep_tracking", true);
             model->enable_news = reader->GetBoolean("news", false);
         }
+    }
+
+    static void WriteTwitch(IIniWriter * writer)
+    {
     }
 
     static void ReadFont(IIniReader * reader)
@@ -305,6 +330,10 @@ namespace Config
         }
     }
 
+    static void WriteFont(IIniWriter * writer)
+    {
+    }
+
     static bool ReadFile(const std::string &path)
     {
         try
@@ -324,6 +353,26 @@ namespace Config
             return false;
         }
     }
+
+    static bool WriteFile(const std::string &path)
+    {
+        try
+        {
+            auto writer = std::unique_ptr<IIniWriter>(CreateIniWriter(path));
+            WriteGeneral(writer.get());
+            WriteInterface(writer.get());
+            WriteSound(writer.get());
+            WriteNetwork(writer.get());
+            WriteNotifications(writer.get());
+            WriteTwitch(writer.get());
+            WriteFont(writer.get());
+            return true;
+        }
+        catch (const Exception &)
+        {
+            return false;
+        }
+    }
 }
 
 extern "C"
@@ -331,5 +380,10 @@ extern "C"
     bool config_open(const utf8 * path)
     {
         return Config::ReadFile(path);
+    }
+
+    bool config_save(const utf8 * path)
+    {
+        return Config::WriteFile(path);
     }
 }
