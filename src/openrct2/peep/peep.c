@@ -2930,10 +2930,29 @@ static void peep_update_ride_sub_state_2_rejoin_queue(rct_peep* peep, rct_ride* 
 		return;
 	}
 
+	uint16 slow = current_last;
+	bool increment = true;
 	rct_peep* queue_peep;
 	for (queue_peep = GET_PEEP(current_last);
 		queue_peep->next_in_queue != SPRITE_INDEX_NULL;
-		queue_peep = GET_PEEP(queue_peep->next_in_queue));
+		queue_peep = GET_PEEP(queue_peep->next_in_queue))
+	{
+		// Sometimes queuing peeps will form a loop, effectively making this `for`
+		// spin infinitely. Following code will break out of such loop.
+		increment = !increment;
+		if (increment) {
+			slow = queue_peep->next_in_queue;
+		}
+		if (queue_peep->next_in_queue == slow) {
+			char peep_buffer[256] = { 0 };
+			char ride_buffer[256] = { 0 };
+			format_string(peep_buffer, 256, peep->name_string_idx, &peep->id);
+			format_string(ride_buffer, 256, ride->name, &ride->name_arguments);
+			log_warning("Queueing peeps form a loop. Breaking out of the loop. Peep = \"%s\", ride = \"%s\"",
+						peep_buffer, ride_buffer);
+			break;
+		}
+	}
 
 	queue_peep->next_in_queue = peep->sprite_index;
 }
