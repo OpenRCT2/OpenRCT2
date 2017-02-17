@@ -15,6 +15,7 @@
 - Feature: [#4916] FreeBSD support.
 - Feature: [#4963] Add boosters (from RCT1 and RCTC).
 - Feature: [#5113] Entertainers are now hired with a random costume.
+- Feature: [#5222] Added Catalan translation.
 - Improved: [#4847] Guest / staff pathfinding.
 - Improved: [#4938] Checksum calculations speeded up.
 - Improved: [#5007] Vehicles and functioning rides are now imported when loading SC4 / SV4 parks.
