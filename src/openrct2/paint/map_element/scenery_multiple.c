@@ -115,7 +115,7 @@ static void scenery_multiple_sign_paint_line(const utf8 *str, rct_large_scenery_
 	sint32 width = scenery_multiple_sign_text_width(fitStr, text);
 	sint32 x_offset = text->offset[(direction & 1)].x;
 	sint32 acc = y_offset * ((direction & 1) ? -1 : 1);
-	if (!(text->var_C & 0x1)) {
+	if (!(text->flags & LARGE_SCENERY_TEXT_FLAG_VERTICAL)) {
 		// sign is horizontal, center text:
 		x_offset -= (width / 2);
 		acc -= (width / 2);
@@ -124,7 +124,7 @@ static void scenery_multiple_sign_paint_line(const utf8 *str, rct_large_scenery_
 	while ((codepoint = utf8_get_next(fitStr, &fitStr)) != 0) {
 		sint32 glyph_offset = scenery_multiple_sign_get_glyph(text, codepoint)->image_offset;
 		uint8 glyph_type = direction & 1;
-		if (text->var_C & 0x1) { // vertical sign
+		if (text->flags & LARGE_SCENERY_TEXT_FLAG_VERTICAL) { // vertical sign
 			glyph_offset *= 2;
 		} else {
 			glyph_offset *= 4;
@@ -143,7 +143,7 @@ static void scenery_multiple_sign_paint_line(const utf8 *str, rct_large_scenery_
 		if (direction == 3) {
 			paint_attach_to_previous_ps(image_id, x_offset, -div_to_minus_infinity(acc, 2));
 		} else {
-			if (text->var_C & 0x1) {
+			if (text->flags & LARGE_SCENERY_TEXT_FLAG_VERTICAL) {
 				paint_attach_to_previous_ps(image_id, x_offset, div_to_minus_infinity(acc, 2));
 			} else {
 				paint_attach_to_previous_attach(image_id, x_offset, div_to_minus_infinity(acc, 2));
@@ -232,7 +232,7 @@ void scenery_multiple_paint(uint8 direction, uint16 height, rct_map_element *map
 		scenery_multiple_paint_supports(direction, height, mapElement, dword_F4387C, tile);
 		return;
 	}
-	if (entry->large_scenery.flags & 0x4) {
+	if (entry->large_scenery.flags & LARGE_SCENERY_FLAG_3D_TEXT) {
 		if (entry->large_scenery.tiles[1].x_offset != (sint16)(uint16)0xFFFF) {
 			sint32 al = ((mapElement->properties.surface.terrain >> 2) - 1) & 3;
 			if (al != direction) {
@@ -266,7 +266,7 @@ void scenery_multiple_paint(uint8 direction, uint16 height, rct_map_element *map
 		format_string(signString, MAX_PATH, stringId, gCommonFormatArgs);
 		rct_large_scenery_text *text = entry->large_scenery.text;
 		sint32 y_offset = (text->offset[(direction & 1)].y * 2);
-		if (text->var_C & 0x1) {
+		if (text->flags & LARGE_SCENERY_TEXT_FLAG_VERTICAL) {
 			// Draw vertical sign:
 			y_offset += 1;
 			utf8 fitStr[32];
@@ -282,7 +282,7 @@ void scenery_multiple_paint(uint8 direction, uint16 height, rct_map_element *map
 			}
 		} else {
 			y_offset -= (direction & 1);
-			if (text->var_C & 0x2) {
+			if (text->flags & LARGE_SCENERY_TEXT_FLAG_TWO_LINE) {
 				// Draw two-line sign:
 				sint32 width = scenery_multiple_sign_text_width(signString, text);
 				if (width > text->max_width) {

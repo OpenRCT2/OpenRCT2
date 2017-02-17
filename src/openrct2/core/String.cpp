@@ -357,7 +357,7 @@ namespace String
             firstNonWhitespace != str)
         {
             size_t newStringSize = ch - firstNonWhitespace;
-#if DEBUG
+#ifdef DEBUG
             size_t currentStringSize = String::SizeOf(str);
             Guard::Assert(newStringSize < currentStringSize, GUARD_LINE);
 #endif

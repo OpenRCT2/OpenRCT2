@@ -18,31 +18,24 @@
 
 #include "../common.h"
 
+typedef struct server_entry
+{
+    char *  address;
+    utf8 *  name;
+    bool    requiresPassword;
+    utf8 *  description;
+    char *  version;
+    bool    favourite;
+    uint8   players;
+    uint8   maxplayers;
+} server_entry;
+
+#ifdef __cplusplus
 extern "C"
 {
-    #include "../scenario/scenario.h"
+#endif
+    bool server_list_read(uint32 * outNumEntries, server_entry * * outEntries);
+    bool server_list_write(uint32 numEntries, server_entry * entries);
+#ifdef __cplusplus
 }
-
-/**
- * Class to import RollerCoaster Tycoon 2 scenarios (*.SC6) and saved games (*.SV6).
- */
-class S6Importer final
-{
-public:
-    bool FixIssues;
-
-    S6Importer();
-
-    void LoadSavedGame(const utf8 * path);
-    void LoadSavedGame(SDL_RWops *rw);
-    void LoadScenario(const utf8 * path);
-    void LoadScenario(SDL_RWops *rw);
-    void Import();
-
-private:
-    const utf8 * _s6Path = nullptr;
-    rct_s6_data  _s6;
-    uint8        _gameVersion = 0;
-
-    void Initialise();
-};
+#endif

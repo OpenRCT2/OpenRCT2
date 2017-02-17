@@ -941,7 +941,7 @@ STR_0935    :Utgang i veien
 STR_0936    :Parkinngang i veien
 STR_0937    :{SMALLFONT}{BLACK}Innstillinger
 STR_0938    :{SMALLFONT}{BLACK}Endre bakkehøyde og helning
-STR_0939    :Undergrunns-/innendørssyn
+STR_0939    :Undergrunns-/innendørskamera
 STR_0940    :Skjul bakken
 STR_0941    :Skjul vertikale flater
 STR_0942    :Gjennomsiktige attraksjoner
@@ -1157,7 +1157,7 @@ STR_1151    :Fullt
 STR_1152    :Minst én person
 STR_1153    :Høydemerker på attraksjonsspor
 STR_1154    :Høydemerker på land
-STR_1155    :Høydemerker på gangveier
+STR_1155    :Høydemerker på gangstier
 STR_1156    :{MOVE_X}{SMALLFONT}{STRINGID}
 STR_1157    :{TICK}{MOVE_X}{SMALLFONT}{STRINGID}
 STR_1158    :Kan ikke fjerne denne...
@@ -1175,15 +1175,15 @@ STR_1169    :(Ingenting)
 STR_1170    :{STRING}
 STR_1171    :{RED}Stengt - - 
 STR_1172    :{YELLOW}{STRINGID} - - 
-STR_1173    :{SMALLFONT}{BLACK}Bygg gangveier og køer
+STR_1173    :{SMALLFONT}{BLACK}Bygg gangstier og køer
 STR_1174    :Skilt i veien
-STR_1175    :Kan ikke bygges på hellende gangvei
-STR_1176    :Kan ikke bygge gangvei her...
-STR_1177    :Kan ikke fjerne gangvei herfra...
+STR_1175    :Kan ikke bygges på hellende gangsti
+STR_1176    :Kan ikke bygge gangsti her...
+STR_1177    :Kan ikke fjerne gangsti herfra...
 STR_1178    :Upassende bakkehelning
-STR_1179    :Gangvei i veien
+STR_1179    :Gangsti i veien
 STR_1180    :Kan ikke bygges under vann!
-STR_1181    :Gangveier
+STR_1181    :Gangstier
 STR_1182    :Type
 STR_1183    :Retning
 STR_1184    :Helning
@@ -1191,8 +1191,8 @@ STR_1185    :{SMALLFONT}{BLACK}Retning
 STR_1186    :{SMALLFONT}{BLACK}Helning nedover
 STR_1187    :{SMALLFONT}{BLACK}Nivå
 STR_1188    :{SMALLFONT}{BLACK}Helning oppover
-STR_1189    :{SMALLFONT}{BLACK}Bygg valgt gangveisseksjon
-STR_1190    :{SMALLFONT}{BLACK}Fjern forrige gangveisseksjon
+STR_1189    :{SMALLFONT}{BLACK}Bygg valgt gangstiseksjon
+STR_1190    :{SMALLFONT}{BLACK}Fjern forrige gangstiseksjon
 STR_1191    :{BLACK}{STRINGID}
 STR_1192    :{OUTLINE}{RED}{STRINGID}
 STR_1193    :{WINDOW_COLOUR_2}{STRINGID}
@@ -3679,8 +3679,8 @@ STR_5337    :Park entrance
 STR_5338    :Element type
 STR_5339    :{SMALLFONT}{BLACK}Base height
 STR_5340    :{SMALLFONT}{BLACK}Clearance height
-STR_5341    :Flags
-STR_5342    :Choose a map tile
+STR_5341    :<removed string - do not use>
+STR_5342    :<removed string - do not use>
 STR_5343    :Automatically place staff
 STR_5344    :Changelog
 STR_5345    :Financial cheats
@@ -4116,8 +4116,8 @@ STR_5806    :Toggle windowed mode
 STR_5807    :{WINDOW_COLOUR_2}Number of rides: {BLACK}{COMMA16}
 STR_5808    :{WINDOW_COLOUR_2}Number of shops and stalls: {BLACK}{COMMA16}
 STR_5809    :{WINDOW_COLOUR_2}Number of information kiosks and other facilities: {BLACK}{COMMA16}
-STR_5810    :Disable train length limit
-STR_5811    :{SMALLFONT}{BLACK}If checked, you can have up to{NEWLINE}255 cars per train
+STR_5810    :Skru av vognbegrensninger
+STR_5811    :{SMALLFONT}{BLACK}Hvis merket kan du ha opp til {NEWLINE}255 vogner per tog, og 31{NEWLINE}tog per attraksjon
 STR_5812    :Show multiplayer window
 STR_5813    :{OPENQUOTES}{STRING}{ENDQUOTES}
 STR_5814    :{WINDOW_COLOUR_1}{OPENQUOTES}{STRING}{ENDQUOTES}
@@ -4168,7 +4168,7 @@ STR_5856    :{SMALLFONT}{BLACK}Set game resolution when in fullscreen mode
 STR_5857    :{SMALLFONT}{BLACK}Game options
 STR_5858    :{SMALLFONT}{BLACK}Use GPU for displaying instead of CPU. Improves compatibility with screen capture software. May slightly decrease performance.
 STR_5859    :{SMALLFONT}{BLACK}Enables frame tweening for visually{NEWLINE}smoother gameplay. When disabled,{NEWLINE}the game will run at 40 FPS.
-STR_5860    :Toggle original/decompiled track drawing
+STR_5860    :Original/dekompilert banetegning
 STR_5861    :Key verification failure.
 STR_5862    :Block unknown players.
 STR_5863    :{SMALLFONT}{BLACK}Only allow players with known keys to join.
@@ -4187,7 +4187,7 @@ STR_5875    :Grafikkmotor
 STR_5876    :{SMALLFONT}{BLACK}Motoren som bruker for å tegne spillgrafikk
 STR_5877    :Software
 STR_5878    :Software (hardware rendering)
-STR_5879    :OpenGL (eksperimentell)
+STR_5879    :OpenGL (eksperimentelt)
 STR_5880    :Valgte objekter
 STR_5881    :Ikke valgte objekter
 STR_5882    :Egendefinert valuta
@@ -4228,7 +4228,98 @@ STR_5916    :{COMMA16} spiller
 STR_5917    :{COMMA16} spillere
 STR_5918    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_5919    :{COMMA16}
-
+STR_5920    :Vis væreffekter
+STR_5921    :{SMALLFONT}{BLACK}Skrur på regn og dystre fargeeffekter i storm.
+STR_5922    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{SMALLFONT}{BLACK}Maks {STRINGID}
+STR_5923    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{SMALLFONT}{BLACK}Maks {COMMA16} {STRINGID} per tog
+STR_5924    :Overflatedetaljer
+STR_5925    :Veidetaljer
+STR_5926    :Banedetaljer
+STR_5927    :Pynt-detaljer
+STR_5928    :Inngangsdetaljer
+STR_5929    :Gjerdedetaljer
+STR_5930    :Stor pynt-detaljer
+STR_5931    :Bannerdetaljer
+STR_5932    :Korrupt element-detaljer
+STR_5933    :Egenskaper
+STR_5934    :{WINDOW_COLOUR_2}Terrengtekstur: {BLACK}{STRINGID}
+STR_5935    :{WINDOW_COLOUR_2}Terrengkant: {BLACK}{STRINGID}
+STR_5936    :{WINDOW_COLOUR_2}Landeierskap: {BLACK}{STRINGID}
+STR_5937    :Ikke eid og ikke til salgs
+STR_5938    :{WINDOW_COLOUR_2}Vannivå: {BLACK}{COMMA16}
+STR_5939    :Fjern parkgjerder
+STR_5940    :Gjenopprett parkgjerder
+STR_5941    :{WINDOW_COLOUR_2}Grunnhøyde:
+STR_5942    :{WINDOW_COLOUR_2}Navn på gangsti: {BLACK}{STRINGID}
+STR_5943    :{WINDOW_COLOUR_2}Tillegg: {BLACK}{STRINGID}
+STR_5944    :{WINDOW_COLOUR_2}Tillegg: {BLACK}Ingen
+STR_5945    :{WINDOW_COLOUR_2}Tilliggende kanter:
+STR_5946    :{WINDOW_COLOUR_2}Attraksjonstype: {BLACK}{STRINGID}
+STR_5947    :{WINDOW_COLOUR_2}Attraksjons-ID: {BLACK}{COMMA16}
+STR_5948    :{WINDOW_COLOUR_2}Attraksonsnavn: {BLACK}{STRINGID}
+STR_5949    :{WINDOW_COLOUR_2}Trekk
+STR_5950    :{WINDOW_COLOUR_2}Påfør endringer på banedel
+STR_5951    :{WINDOW_COLOUR_2}Baneeleent-ID: {BLACK}{COMMA16}
+STR_5952    :{WINDOW_COLOUR_2}Sekvensnummer: {BLACK}{COMMA16}
+STR_5953    :{SMALLFONT}{BLACK}Sorter elementer på denne ruten basert på grunnhøyde.
+STR_5954    :{WINDOW_COLOUR_2}Pyntalder: {BLACK}{COMMA16}
+STR_5955    :{WINDOW_COLOUR_2}Kvadrantposisjon: {BLACK}{STRINGID}
+STR_5956    :Sørvest
+STR_5957    :Nordvest
+STR_5958    :Nordøst
+STR_5959    :Sørøst
+STR_5960    :{WINDOW_COLOUR_2}Kvadrantposisjon:
+STR_5961    :{WINDOW_COLOUR_2}Oppføringsindeks: {BLACK}{COMMA16}
+STR_5962    :{WINDOW_COLOUR_2}Kollisjonsdeteksjon:
+STR_5963    :{WINDOW_COLOUR_2}Opphøyde hjørner:
+STR_5964    :{WINDOW_COLOUR_2}Diagonal
+STR_5965    :{WINDOW_COLOUR_2}Inngangstype: {BLACK}{STRINGID}
+STR_5966    :{WINDOW_COLOUR_2}Parkinngangsdel: {BLACK}{STRINGID}
+STR_5967    :Midten
+STR_5968    :Venstre
+STR_5969    :Høyre
+STR_5970    :{WINDOW_COLOUR_2}Inngangs-ID: {BLACK}{COMMA16}
+STR_5971    :{WINDOW_COLOUR_2}Utgangs-ID: {BLACK}{COMMA16}
+STR_5972    :{WINDOW_COLOUR_2}Attraksjons-ID: {BLACK}{COMMA16}
+STR_5973    :Fest til neste
+STR_5974    :{SMALLFONT}{BLACK}Endrer grunn- og klareringshøyden til å være lik neste element på denne ruten. Dette gjør det enklere å bygge på ruten.
+STR_5975    :Helning:
+STR_5976    :Vannrett
+STR_5977    :Høyre side opp
+STR_5978    :Venstre side opp
+STR_5979    :{WINDOW_COLOUR_2}Gjerdetype: {BLACK}{COMMA16}
+STR_5980    :{WINDOW_COLOUR_2}Bannertekst: {BLACK}{STRINGID}
+STR_5981    :{WINDOW_COLOUR_2}Ikke et banner
+STR_5982    :{WINDOW_COLOUR_2}Stor pynt-type: {BLACK}{COMMA16}
+STR_5983    :{WINDOW_COLOUR_2}Stor pynt-element-ID: {BLACK}{COMMA16}
+STR_5984    :Blokkerte gangstier:
+STR_5985    :Ny mappe
+STR_5986    :Skriv inn navnet på den nye mappen.
+STR_5987    :Kunne ikke opprette mappe
+STR_5988    :{SMALLFONT}{BLACK}Ingen gjenværende landrettigheter til salgs
+STR_5989    :{SMALLFONT}{BLACK}Ingen gjenværende byggerettigheter til salgs
+STR_5990    :{SMALLFONT}{BLACK}Ingen gjenværende landrettigheter eller byggerettigheter til salgs
+STR_5991    :Kunne ikke lime inn element...
+STR_5992    :Grensen for antall elementer har blitt nådd
+STR_5993    :{SMALLFONT}{BLACK}Kopier valgt element
+STR_5994    :{SMALLFONT}{BLACK}Lim inn valgt element
+STR_5995    :Booster
+STR_5996    :Boosterfart
+STR_5997    :Legg til/sett penger
+STR_5998    :Legg til penger
+STR_5999    :Sett penger
+STR_6000    :Skriv inn ny verdi
+STR_6001    :Skru på lyseffekter (eksperimentelt)
+STR_6002    :{SMALLFONT}{BLACK}Lamper og attraksjoner vil bli opplyst om natten.{NEWLINE}Krever at grafikkmotoren er satt tilhardware display.
+STR_6003    :Kutt-bortkamera
+STR_6004    :Kutt-bortkamera
+STR_6005    :Skru på kutt-bortkamera
+STR_6006    :{SMALLFONT}{BLACK}Kutt-bortkamera viser kun elementer på eller under kutthøyden
+STR_6007    :Kutthøyde
+STR_6008    :{SMALLFONT}{BLACK}Skru på rå verdi<->verdi i måleenheter
+STR_6009    :{SMALLFONT}{BLACK}Velg kutthøyde
+STR_6010    :{COMMA2DP32}m
+STR_6011    :{COMMA1DP16}ft
 STR_6012    :{COMMA1DP16}
 
 #############

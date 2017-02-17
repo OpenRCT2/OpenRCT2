@@ -73,7 +73,7 @@ static void paint_mini_helicopters_track_flat(uint8 rideIndex, uint8 trackSequen
 	}
 
 	if (track_paint_util_should_paint_supports(position)) {
-		metal_a_supports_paint_setup((direction & 1) ? 5 : 4, 4, -1, height, gTrackColours[SCHEME_SUPPORTS]);
+		metal_a_supports_paint_setup((direction & 1) ? METAL_SUPPORTS_STICK_ALT : METAL_SUPPORTS_STICK, 4, -1, height, gTrackColours[SCHEME_SUPPORTS]);
 	}
 
 	paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction), 0xFFFF, 0);

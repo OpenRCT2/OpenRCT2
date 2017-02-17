@@ -14,15 +14,23 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../config.h"
-#include "../interface/viewport.h"
-#include "../intro.h"
-#include "../localisation/language.h"
+#include "../core/File.h"
+#include "../core/FileStream.hpp"
+#include "../core/Memory.hpp"
+#include "../core/Util.hpp"
 #include "../localisation/string_ids.h"
 #include "../OpenRCT2.h"
-#include "../util/util.h"
-#include "audio.h"
 #include "AudioMixer.h"
+
+extern "C"
+{
+	#include "../config.h"
+	#include "../interface/viewport.h"
+	#include "../intro.h"
+	#include "../localisation/language.h"
+	#include "../util/util.h"
+	#include "audio.h"
+}
 
 typedef struct rct_audio_params {
 	bool in_range;
@@ -149,7 +157,7 @@ void audio_populate_devices()
 	if (gAudioDeviceCount <= 0)
 		return;
 
-	audio_device *systemAudioDevices = malloc(gAudioDeviceCount * sizeof(audio_device));
+	audio_device * systemAudioDevices = Memory::AllocateArray<audio_device>(gAudioDeviceCount);
 	for (sint32 i = 0; i < gAudioDeviceCount; i++) {
 		const char *utf8Name = SDL_GetAudioDeviceName(i, SDL_FALSE);
 		if (utf8Name == NULL)
@@ -159,12 +167,12 @@ void audio_populate_devices()
 	}
 #ifndef __LINUX__
 	gAudioDeviceCount++;
-	gAudioDevices = malloc(gAudioDeviceCount * sizeof(audio_device));
+	gAudioDevices = Memory::AllocateArray<audio_device>(gAudioDeviceCount);
 	safe_strcpy(gAudioDevices[0].name, language_get_string(STR_OPTIONS_SOUND_VALUE_DEFAULT), AUDIO_DEVICE_NAME_SIZE);
-	memcpy(&gAudioDevices[1], systemAudioDevices, (gAudioDeviceCount - 1) * sizeof(audio_device));
+	Memory::CopyArray(&gAudioDevices[1], systemAudioDevices, gAudioDeviceCount - 1);
 #else
-	gAudioDevices = malloc(gAudioDeviceCount * sizeof(audio_device));
-	memcpy(gAudioDevices, systemAudioDevices, gAudioDeviceCount * sizeof(audio_device));
+	gAudioDevices = Memory::AllocateArray<audio_device>(gAudioDeviceCount);
+	Memory::CopyArray(gAudioDevices, systemAudioDevices, gAudioDeviceCount);
 #endif // __LINUX__
 
 	free(systemAudioDevices);
@@ -247,7 +255,7 @@ sint32 audio_play_sound(sint32 soundId, sint32 volume, sint32 pan)
 	sint32 mixerPan = 0;
 	if (pan != AUDIO_PLAY_AT_CENTRE) {
 		sint32 x2 = pan << 16;
-		uint16 screenWidth = max(64, gScreenWidth);
+		uint16 screenWidth = Math::Max(64, gScreenWidth);
 		mixerPan = ((x2 / screenWidth) - 0x8000) >> 4;
 			}
 
@@ -345,18 +353,23 @@ void audio_init_ride_sounds_and_info()
 	sint32 deviceNum = 0;
 	audio_init_ride_sounds(deviceNum);
 
-	for (sint32 m = 0; m < countof(gRideMusicInfoList); m++) {
+	for (size_t m = 0; m < Util::CountOf(gRideMusicInfoList); m++) {
 		rct_ride_music_info *rideMusicInfo = gRideMusicInfoList[m];
 		const utf8 *path = get_file_path(rideMusicInfo->path_id);
-		SDL_RWops *file = SDL_RWFromFile(path, "rb");
-		if (file == NULL)
-			continue;
-
-		uint32 head;
-		SDL_RWread(file, &head, sizeof(head), 1);
-		SDL_RWclose(file);
-		if (head == 0x78787878)
-			rideMusicInfo->length = 0;
+		if (File::Exists(path))
+		{
+			try
+			{
+				auto fs = FileStream(path, FILE_MODE_OPEN);
+				uint32 head = fs.ReadValue<uint32>();
+				if (head == 0x78787878) {
+					rideMusicInfo->length = 0;
+				}
+			}
+			catch (const Exception &)
+			{
+			}
+		}
 	}
 }
 
@@ -414,7 +427,7 @@ void audio_stop_vehicle_sounds()
 	if (gOpenRCT2Headless || gAudioCurrentDevice == -1)
 		return;
 
-	for (sint32 i = 0; i < countof(gVehicleSoundList); i++) {
+	for (size_t i = 0; i < Util::CountOf(gVehicleSoundList); i++) {
 		rct_vehicle_sound *vehicleSound = &gVehicleSoundList[i];
 		if (vehicleSound->id == 0xFFFF)
 			continue;

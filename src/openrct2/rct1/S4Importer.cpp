@@ -14,18 +14,21 @@
  *****************************************************************************/
 #pragma endregion
 
+#include <memory>
 #include <vector>
 #include "../core/Collections.hpp"
 #include "../core/Console.hpp"
 #include "../core/Exception.hpp"
+#include "../core/FileStream.hpp"
 #include "../core/Guard.hpp"
+#include "../core/IStream.hpp"
 #include "../core/Memory.hpp"
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
 #include "../core/Util.hpp"
 #include "../object/ObjectManager.h"
+#include "../ParkImporter.h"
 #include "../scenario/ScenarioSources.h"
-#include "S4Importer.h"
 #include "Tables.h"
 
 extern "C"
@@ -88,12 +91,12 @@ public:
     }
 };
 
-class S4Importer final : public IS4Importer
+class S4Importer final : public IParkImporter
 {
 private:
-    const utf8 * _s4Path;
-    rct1_s4      _s4;
-    uint8        _gameVersion;
+    const utf8 * _s4Path = nullptr;
+    rct1_s4      _s4 = { 0 };
+    uint8        _gameVersion = 0;
 
     // Lists of dynamic object entries
     EntryList _rideEntries;
@@ -120,22 +123,63 @@ private:
     uint8 _researchRideTypeUsed[128];
 
 public:
+    void Load(const utf8 * path) override
+    {
+        const utf8 * extension = Path::GetExtension(path);
+        if (String::Equals(extension, ".sc4", true))
+        {
+            LoadScenario(path);
+        }
+        else if (String::Equals(extension, ".sv4", true))
+        {
+            LoadSavedGame(path);
+        }
+        else
+        {
+            throw Exception("Invalid RCT1 park extension.");
+        }
+    }
+
     void LoadSavedGame(const utf8 * path) override
     {
-        if (!rct1_read_sv4(path, &_s4))
-        {
-            throw Exception("Unable to load SV4.");
-        }
+        auto fs = FileStream(path, FILE_MODE_OPEN);
+        LoadFromStream(&fs, false);
         _s4Path = path;
     }
 
     void LoadScenario(const utf8 * path) override
     {
-        if (!rct1_read_sc4(path, &_s4))
-        {
-            throw Exception("Unable to load SC4.");
-        }
+        auto fs = FileStream(path, FILE_MODE_OPEN);
+        LoadFromStream(&fs, true);
         _s4Path = path;
+    }
+
+    void LoadFromStream(IStream * stream, bool isScenario) override
+    {
+        size_t dataSize = stream->GetLength() - stream->GetPosition();
+        std::unique_ptr<uint8> data = std::unique_ptr<uint8>(stream->ReadArray<uint8>(dataSize));
+        std::unique_ptr<uint8> decodedData = std::unique_ptr<uint8>(Memory::Allocate<uint8>(sizeof(rct1_s4)));
+
+        size_t decodedSize;
+        sint32 fileType = sawyercoding_detect_file_type(data.get(), dataSize);
+        if (isScenario && (fileType & FILE_VERSION_MASK) != FILE_VERSION_RCT1)
+        {
+            decodedSize = sawyercoding_decode_sc4(data.get(), decodedData.get(), dataSize, sizeof(rct1_s4));
+        }
+        else
+        {
+            decodedSize = sawyercoding_decode_sv4(data.get(), decodedData.get(), dataSize, sizeof(rct1_s4));
+        }
+
+        if (decodedSize == sizeof(rct1_s4))
+        {
+            Memory::Copy<void>(&_s4, decodedData.get(), sizeof(rct1_s4));
+            _s4Path = "";
+        }
+        else
+        {
+            throw Exception("Unable to decode park.");
+        }
     }
 
     void Import() override
@@ -168,6 +212,48 @@ public:
         map_count_remaining_land_rights();
     }
 
+    bool GetDetails(scenario_index_entry * dst) override
+    {
+        bool result = false;
+        Memory::Set(dst, 0, sizeof(scenario_index_entry));
+
+        source_desc desc;
+        if (ScenarioSources::TryGetById(_s4.scenario_slot_index, &desc))
+        {
+            dst->category = desc.category;
+            dst->source_game = desc.source;
+            dst->source_index = desc.index;
+            dst->sc_id = desc.id;
+
+            dst->objective_type = _s4.scenario_objective_type;
+            dst->objective_arg_1 = _s4.scenario_objective_years;
+            dst->objective_arg_2 = _s4.scenario_objective_currency;
+            dst->objective_arg_3 = _s4.scenario_objective_num_guests;
+
+            std::string name = std::string(_s4.scenario_name, sizeof(_s4.scenario_name));
+            std::string details;
+            rct_string_id localisedStringIds[3];
+            if (language_get_localised_scenario_strings(desc.title, localisedStringIds))
+            {
+                if (localisedStringIds[0] != STR_NONE)
+                {
+                    name = String::ToStd(language_get_string(localisedStringIds[0]));
+                }
+                if (localisedStringIds[2] != STR_NONE)
+                {
+                    details = String::ToStd(language_get_string(localisedStringIds[2]));
+                }
+            }
+
+            String::Set(dst->name, sizeof(dst->name), name.c_str());
+            String::Set(dst->details, sizeof(dst->details), details.c_str());
+
+            result = true;
+        }
+
+        return result;
+    }
+
 private:
     void Initialise()
     {
@@ -185,7 +271,6 @@ private:
         uint16 mapSize = _s4.map_size == 0 ? 128 : _s4.map_size;
 
         // Do map initialisation, same kind of stuff done when loading scenario editor
-        audio_stop_all_music_and_sounds();
         GetObjectManager()->UnloadAll();
         game_init_all(mapSize);
         gS6Info.editor_step = EDITOR_STEP_OBJECT_SELECTION;
@@ -239,14 +324,17 @@ private:
         for (size_t i = 0; i < researchListCount; i++)
         {
             const rct1_research_item * researchItem = &researchList[i];
-            if (researchItem->item == RCT1_RESEARCH_END_RESEARCHABLE ||
-                researchItem->item == RCT1_RESEARCH_END)
+
+            if (researchItem->flags == RCT1_RESEARCH_FLAGS_SEPARATOR)
             {
-                break;
-            }
-            if (researchItem->item == RCT1_RESEARCH_END_AVAILABLE)
-            {
-                continue;
+                if (researchItem->item == RCT1_RESEARCH_END)
+                {
+                    break;
+                }
+                if (researchItem->item == RCT1_RESEARCH_END_AVAILABLE || researchItem->item == RCT1_RESEARCH_END_RESEARCHABLE)
+                {
+                    continue;
+                }
             }
 
             switch (researchItem->category) {
@@ -262,10 +350,17 @@ private:
                 for (size_t j = 0; j < researchListCount; j++)
                 {
                     const rct1_research_item *researchItem2 = &researchList[j];
-                    if (researchItem2->item == RCT1_RESEARCH_END_RESEARCHABLE ||
-                        researchItem2->item == RCT1_RESEARCH_END_AVAILABLE)
+                    if (researchItem2->flags == RCT1_RESEARCH_FLAGS_SEPARATOR)
                     {
-                        break;
+                        if (researchItem2->item == RCT1_RESEARCH_END_RESEARCHABLE ||
+                            researchItem2->item == RCT1_RESEARCH_END_AVAILABLE)
+                        {
+                            continue;
+                        }
+                        else if (researchItem2->item == RCT1_RESEARCH_END)
+                        {
+                            break;
+                        }
                     }
 
                     if (researchItem2->category == RCT1_RESEARCH_CATEGORY_VEHICLE &&
@@ -1624,14 +1719,21 @@ private:
         for (size_t i = 0; i < researchListCount; i++)
         {
             const rct1_research_item * researchItem = &researchList[i];
-            if (researchItem->item == RCT1_RESEARCH_END_AVAILABLE)
+            if (researchItem->flags == RCT1_RESEARCH_FLAGS_SEPARATOR)
             {
-                researched = false;
-            }
-            else if (researchItem->item == RCT1_RESEARCH_END_RESEARCHABLE ||
-                     researchItem->item == RCT1_RESEARCH_END)
-            {
-                break;
+                if (researchItem->item == RCT1_RESEARCH_END_AVAILABLE)
+                {
+                    researched = false;
+                    continue;
+                }
+                else if (researchItem->item == RCT1_RESEARCH_END_RESEARCHABLE)
+                {
+                    continue;
+                }
+                else if (researchItem->item == RCT1_RESEARCH_END)
+                {
+                    break;
+                }
             }
 
             switch (researchItem->category) {
@@ -1649,16 +1751,18 @@ private:
             case RCT1_RESEARCH_CATEGORY_RIDE:
             {
                 uint8 rct1RideType = researchItem->item;
+                _researchRideTypeUsed[rct1RideType] = true;
 
                 // Add all vehicles for this ride type that are researched or before this research item
                 uint32 numVehicles = 0;
                 for (size_t j = 0; j < researchListCount; j++)
                 {
                     const rct1_research_item *researchItem2 = &researchList[j];
-                    if (researchItem2->item == RCT1_RESEARCH_END_RESEARCHABLE ||
-                        researchItem2->item == RCT1_RESEARCH_END_AVAILABLE)
+                    if (researchItem2->flags == RCT1_RESEARCH_FLAGS_SEPARATOR &&
+                        (researchItem2->item == RCT1_RESEARCH_END_RESEARCHABLE ||
+                        researchItem2->item == RCT1_RESEARCH_END_AVAILABLE))
                     {
-                        break;
+                        continue;
                     }
 
                     if (researchItem2->category == RCT1_RESEARCH_CATEGORY_VEHICLE &&
@@ -1679,13 +1783,14 @@ private:
                     // No vehicles found so just add the default for this ride
                     uint8 rideEntryIndex = _rideTypeToRideEntryMap[rct1RideType];
                     Guard::Assert(rideEntryIndex != 255, "rideEntryIndex was 255");
-
                     if (!_researchRideEntryUsed[rideEntryIndex])
                     {
                         _researchRideEntryUsed[rideEntryIndex] = true;
                         research_insert_ride_entry(rideEntryIndex, researched);
                     }
+
                 }
+
                 break;
             }
             case RCT1_RESEARCH_CATEGORY_VEHICLE:
@@ -1695,6 +1800,7 @@ private:
                 {
                     InsertResearchVehicle(researchItem, researched);
                 }
+
                 break;
             case RCT1_RESEARCH_CATEGORY_SPECIAL:
                 // Not supported
@@ -1703,8 +1809,6 @@ private:
         }
 
         research_remove_non_separate_vehicle_types();
-        // Fixes availability of rides
-        sub_684AC3();
 
         // Research funding / priority
         uint8 activeResearchTypes = 0;
@@ -1746,6 +1850,7 @@ private:
     {
         uint8 vehicle = researchItem->item;
         uint8 rideEntryIndex = _vehicleTypeToRideEntryMap[vehicle];
+
         if (!_researchRideEntryUsed[rideEntryIndex])
         {
             _researchRideEntryUsed[rideEntryIndex] = true;
@@ -1836,7 +1941,7 @@ private:
         {
             gCheatsUnlockAllPrices = true;
         }
-        // RCT2 uses two flags for no money (for cheat detection). RCT1 used only one.
+        // RCT2 uses two flags for no money (due to the scenario editor). RCT1 used only one.
         // Copy its value to make no money scenarios such as Arid Heights work properly.
         if (_s4.park_flags & RCT1_PARK_FLAGS_NO_MONEY)
         {
@@ -2228,9 +2333,9 @@ private:
 
     void FixEntrancePositions()
     {
-        for (sint32 i = 0; i < MAX_PARK_ENTRANCES; i++)
+        for (size_t i = 0; i < Util::CountOf(gParkEntrances); i++)
         {
-            gParkEntranceX[i] = MAP_LOCATION_NULL;
+            gParkEntrances[i].x = MAP_LOCATION_NULL;
         }
 
         uint8 entranceIndex = 0;
@@ -2245,10 +2350,10 @@ private:
             if (element->properties.entrance.type != ENTRANCE_TYPE_PARK_ENTRANCE) continue;
             if ((element->properties.entrance.index & 0x0F) != 0) continue;
 
-            gParkEntranceX[entranceIndex] = it.x * 32;
-            gParkEntranceY[entranceIndex] = it.y * 32;
-            gParkEntranceZ[entranceIndex] = element->base_height * 8;
-            gParkEntranceDirection[entranceIndex] = element->type & 3;
+            gParkEntrances[entranceIndex].x = it.x * 32;
+            gParkEntrances[entranceIndex].y = it.y * 32;
+            gParkEntrances[entranceIndex].z = element->base_height * 8;
+            gParkEntrances[entranceIndex].direction = element->type & 3;
             entranceIndex++;
         }
     }
@@ -2315,21 +2420,42 @@ private:
 
     void FixLandOwnership()
     {
-        rct_map_element * currentElement;
-
-        switch(_s4.scenario_slot_index) {
-        case SC_KATIES_DREAMLAND:
-            currentElement = map_get_surface_element_at(74, 70);
-            currentElement->properties.surface.ownership |= OWNERSHIP_AVAILABLE;
-            currentElement = map_get_surface_element_at(75, 70);
-            currentElement->properties.surface.ownership |= OWNERSHIP_AVAILABLE;
-            currentElement = map_get_surface_element_at(76, 70);
-            currentElement->properties.surface.ownership |= OWNERSHIP_AVAILABLE;
-            currentElement = map_get_surface_element_at(77, 73);
-            currentElement->properties.surface.ownership |= OWNERSHIP_AVAILABLE;
-            currentElement = map_get_surface_element_at(80, 77);
-            currentElement->properties.surface.ownership |= OWNERSHIP_AVAILABLE;
+        switch (_s4.scenario_slot_index) {
+        case SC_DYNAMITE_DUNES:
+            FixLandOwnershipTiles({ {97, 18}, {99, 19}, {83, 34} });
             break;
+        case SC_LEAFY_LAKE:
+            FixLandOwnershipTiles({ {49, 66} });
+            break;
+        case SC_KATIES_DREAMLAND:
+            FixLandOwnershipTiles({ {74, 70}, {75, 70}, {76, 70}, {77, 73}, {80, 77} });
+            break;
+        case SC_POKEY_PARK:
+            FixLandOwnershipTiles({ {64, 102} });
+            break;
+        case SC_MYSTIC_MOUNTAIN:
+            FixLandOwnershipTiles({ {98, 69}, {98, 70}, {103, 64}, {53, 79}, {86, 93}, {87, 93} });
+            break;
+        case SC_PACIFIC_PYRAMIDS:
+            FixLandOwnershipTiles({ {93, 105}, {63, 34}, {76, 25}, {85, 31}, {96, 47}, {96, 48} });
+            break;
+        case SC_UTOPIA:
+            FixLandOwnershipTiles({ {85, 73} });
+            break;
+        case SC_URBAN_PARK:
+            FixLandOwnershipTiles({ {64, 77}, {61, 66}, {61, 67}, {39, 20} });
+            break;
+        }
+    }
+
+    void FixLandOwnershipTiles(std::initializer_list<rct_xy8> tiles)
+    {
+
+        rct_map_element * currentElement;
+        for (const rct_xy8 * tile = tiles.begin(); tile != tiles.end(); ++tile)
+        {
+            currentElement = map_get_surface_element_at((*tile).x, (*tile).y);
+            currentElement->properties.surface.ownership |= OWNERSHIP_AVAILABLE;
         }
     }
 
@@ -2374,7 +2500,7 @@ private:
     }
 };
 
-IS4Importer * CreateS4Importer()
+IParkImporter * ParkImporter::CreateS4()
 {
     return new S4Importer();
 }

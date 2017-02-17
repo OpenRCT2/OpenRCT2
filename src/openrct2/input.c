@@ -1085,7 +1085,7 @@ void process_mouse_over(sint32 x, sint32 y)
 
 			case WWT_FRAME:
 			case WWT_RESIZE:
-				if (!(window->flags & 0x100))
+				if (!(window->flags & WF_RESIZABLE))
 					break;
 
 				if (window->min_width == window->max_width && window->min_height == window->max_height)
@@ -1605,7 +1605,7 @@ void game_handle_edge_scroll()
 	mainWindow = window_get_main();
 	if (mainWindow == NULL)
 		return;
-	if ((mainWindow->flags & WF_NO_SCROLLING) || (gScreenFlags & 9))
+	if ((mainWindow->flags & WF_NO_SCROLLING) || (gScreenFlags & (SCREEN_FLAGS_TRACK_MANAGER | SCREEN_FLAGS_TITLE_DEMO)))
 		return;
 	if (mainWindow->viewport == NULL)
 		return;
@@ -1648,7 +1648,7 @@ void game_handle_key_scroll()
 	mainWindow = window_get_main();
 	if (mainWindow == NULL)
 		return;
-	if ((mainWindow->flags & WF_NO_SCROLLING) || (gScreenFlags & 9))
+	if ((mainWindow->flags & WF_NO_SCROLLING) || (gScreenFlags & (SCREEN_FLAGS_TRACK_MANAGER | SCREEN_FLAGS_TITLE_DEMO)))
 		return;
 	if (mainWindow->viewport == NULL)
 		return;

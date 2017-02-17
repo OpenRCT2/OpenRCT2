@@ -1,31 +1,24 @@
-# Version numbers to update
-!define /ifndef APPV_MAJOR 0
-!define /ifndef APPV_MINOR 0
-!define /ifndef APPV_MAINT 6
-!define /ifndef APPV_BUILD 0
-
 !define APPNAME             "OpenRCT2"
-!define APPVERSION          "${APPV_MAJOR}.${APPV_MINOR}.${APPV_MAINT}${APPV_EXTRA}"
-!define APPVERSIONINTERNAL  "${APPV_MAJOR}.${APPV_MINOR}.${APPV_MAINT}.${APPV_BUILD}"
-
-!define /ifndef APPURLLINK "https://github.com/OpenRCT2/OpenRCT2"
-!define APPNAMEANDVERSION "${APPNAME} ${APPVERSION}"
+!define APPVERSION          "${APPV_MAIN}${APPV_EXTRA}"
+!define APPVERSIONINTERNAL  "${APPV_MAIN}.0"
+!define APPNAMEANDVERSION   "${APPNAME} ${APPVERSION}"
+!define APPURLLINK          "https://github.com/OpenRCT2/OpenRCT2"
 
 !if "${PLATFORM}" == "Win32"
-    !define OPENRCT2_EXE "openrct2.exe"
-    !define APPBITS      32
-    !define APPARCH      "win32"
+    !define OPENRCT2_EXE    "openrct2.exe"
+    !define APPBITS         32
+    !define APPARCH         "win32"
 
     InstallDir "$PROGRAMFILES32\OpenRCT2\"
 !else
-    !define OPENRCT2_EXE            "openrct2.exe"
-    !define APPBITS                 64
-    !define APPARCH                 "win64"
+    !define OPENRCT2_EXE    "openrct2.exe"
+    !define APPBITS         64
+    !define APPARCH         "win64"
 
     InstallDir "$PROGRAMFILES64\OpenRCT2\"
 !endif
 
-!define SUPPORTED_OS    "Windows Vista, 7, 8.1 and 10"
+!define SUPPORTED_OS        "Windows Vista, 7, 8.1 and 10"
 
 ; Define root variable relative to installer
 !define PATH_ROOT "..\..\"
@@ -137,9 +130,6 @@ Section "!OpenRCT2" Section1
     File ..\changelog.txt
     Push "$INSTDIR\changelog.txt"
     Call unix2dos
-    File ..\known_issues.txt
-    Push "$INSTDIR\known_issues.txt"
-    Call unix2dos
     File ..\..\licence.txt
     Push "$INSTDIR\licence.txt"
     Call unix2dos
@@ -215,7 +205,6 @@ Section "Uninstall"
 
     ; Clean up OpenRCT2 dir
     Delete "$INSTDIR\changelog.txt"
-    Delete "$INSTDIR\known_issues.txt"
     Delete "$INSTDIR\licence.txt"
     Delete "$INSTDIR\readme.txt"
     Delete "$INSTDIR\contributors.md"

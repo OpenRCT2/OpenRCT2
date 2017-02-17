@@ -18,6 +18,7 @@
 #include "crash.h"
 
 #ifdef USE_BREAKPAD
+#include <memory>
 #include <stdio.h>
 
 #if defined(__WINDOWS__)
@@ -28,13 +29,17 @@
     #error Breakpad support not implemented yet for this platform
 #endif
 
-extern "C" {
+extern "C"
+{
     #include "../localisation/language.h"
     #include "../scenario/scenario.h"
     #include "platform.h"
 }
 
 #include "../core/Console.hpp"
+#include "../core/Exception.hpp"
+#include "../rct2/S6Exporter.h"
+#include "../Version.h"
 
 #define WSZ(x) L"" x
 
@@ -86,21 +91,25 @@ static bool OnCrash(const wchar_t * dumpPath,
     wprintf(L"Version: %s\n", WSZ(OPENRCT2_VERSION));
     wprintf(L"Commit: %s\n", _wszCommitSha1Short);
 
-    utf8 * saveFilePathUTF8 = widechar_to_utf8(saveFilePath);
-    SDL_RWops * rw = SDL_RWFromFile(saveFilePathUTF8, "wb+");
-    free(saveFilePathUTF8);
-
     bool savedGameDumped = false;
-    if (rw != NULL) {
-        scenario_save(rw, 0x80000000);
+    utf8 * saveFilePathUTF8 = widechar_to_utf8(saveFilePath);
+    try
+    {
+        auto exporter = std::make_unique<S6Exporter>();
+        exporter->Export();
+        exporter->SaveGame(saveFilePathUTF8);
         savedGameDumped = true;
-        SDL_RWclose(rw);
     }
+    catch (const Exception &)
+    {
+    }
+    free(saveFilePathUTF8);
 
     if (gOpenRCT2SilentBreakpad)
     {
         return succeeded;
     }
+
     constexpr const wchar_t * MessageFormat = L"A crash has occurred and a dump was created at\n%s.\n\nPlease file an issue with OpenRCT2 on GitHub, and provide the dump and saved game there.\n\nVersion: %s\nCommit: %s";
     wchar_t message[MAX_PATH * 2];
     swprintf_s(message,

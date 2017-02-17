@@ -4173,6 +4173,7 @@ STR_5856    :{SMALLFONT}{BLACK}全屏模式时设置游戏分辨率
 STR_5857    :{SMALLFONT}{BLACK}游戏选项
 STR_5858    :{SMALLFONT}{BLACK}使用GPU代替CPU渲染画面. 提高截屏软件的兼容性. 可能会轻微降低游戏性能.
 STR_5859    :{SMALLFONT}{BLACK}启用补帧从而平滑游戏表现. {NEWLINE}当禁用时,{NEWLINE}游戏帧数会稳定在40 FPS.
+STR_5860    :开启原版/反编译版本的轨道绘图模式
 STR_5861    :密码验证失败.
 STR_5862    :阻止未知玩家进入.
 STR_5863    :{SMALLFONT}{BLACK}只允许拥有已知密码的用户加入.
@@ -4314,7 +4315,17 @@ STR_5997    :增加/设置金钱
 STR_5998    :增加金钱
 STR_5999    :设置金钱
 STR_6000    :请输入一个新的值
-
+STR_6001    :启用光照效果(实验性质)
+STR_6002    :{SMALLFONT}{BLACK}夜晚时路灯和游乐设施将会被点亮.{NEWLINE}此功能需要先开启硬件渲染.
+STR_6003    :剖视图
+STR_6004    :剖视图
+STR_6005    :启用剖视图
+STR_6006    :{SMALLFONT}{BLACK}剖视图只显示小于等于切割高度的地图元素
+STR_6007    :切割高度
+STR_6008    :{SMALLFONT}{BLACK}单击在原始值或度量单位值之间切换
+STR_6009    :{SMALLFONT}{BLACK}选择切割高度
+STR_6010    :{COMMA2DP32}米
+STR_6011    :{COMMA1DP16}英尺
 STR_6012    :{COMMA1DP16}
 
 

@@ -1055,7 +1055,7 @@ static bool track_design_save_to_td6_for_tracked_ride(uint8 rideIndex, rct_track
 		}
 
 		uint8 bh;
-		if (track->type == TRACK_ELEM_BRAKES) {
+		if (track->type == TRACK_ELEM_BRAKES || track->type == TRACK_ELEM_BOOSTER) {
 			bh = trackElement.element->properties.track.sequence >> 4;
 		} else {
 			bh = trackElement.element->properties.track.colour >> 4;
@@ -1275,14 +1275,9 @@ bool track_design_save_to_file(const utf8 *path)
 	// Save encoded TD6 data to file
 	bool result;
 	log_verbose("saving track %s", path);
-	SDL_RWops *file = SDL_RWFromFile(path, "wb");
-	if (file != NULL) {
-		SDL_RWwrite(file, encodedData, encodedDataLength, 1);
-		SDL_RWclose(file);
-		result = true;
-	} else {
+	result = writeentirefile(path, encodedData, encodedDataLength);
+	if (!result) {
 		log_error("Failed to save %s", path);
-		result = false;
 	}
 
 	free(encodedData);

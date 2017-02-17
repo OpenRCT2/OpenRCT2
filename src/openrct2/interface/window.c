@@ -240,7 +240,7 @@ static sint32 window_wheel_input(rct_window *w, sint32 wheel)
  */
 static void window_viewport_wheel_input(rct_window *w, sint32 wheel)
 {
-	if (gScreenFlags & 9)
+	if (gScreenFlags & (SCREEN_FLAGS_TRACK_MANAGER | SCREEN_FLAGS_TITLE_DEMO))
 		return;
 
 	if (wheel < 0)
@@ -807,7 +807,7 @@ void window_close_top()
 
 	window_close_by_class(WC_DROPDOWN);
 
-	if (gScreenFlags & 2)
+	if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
 		if (gS6Info.editor_step != EDITOR_STEP_LANDSCAPE_EDITOR)
 			return;
 
@@ -976,7 +976,7 @@ void widget_invalidate(rct_window *w, sint32 widgetIndex)
 	rct_widget* widget;
 
 	assert(w != NULL);
-#if DEBUG
+#ifdef DEBUG
 	for (sint32 i = 0; i <= widgetIndex; i++) {
 		assert(w->widgets[i].type != WWT_LAST);
 	}
@@ -2115,7 +2115,7 @@ void window_relocate_windows(sint32 width, sint32 height){
 */
 void window_resize_gui(sint32 width, sint32 height)
 {
-	if (gScreenFlags & 0xE){
+	if (gScreenFlags & (SCREEN_FLAGS_SCENARIO_EDITOR | SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)){
 		window_resize_gui_scenario_editor(width, height);
 		return;
 	}

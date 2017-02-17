@@ -335,10 +335,10 @@ static void window_sign_invalidate(rct_window *w)
 	main_colour_btn->type = WWT_EMPTY;
 	text_colour_btn->type = WWT_EMPTY;
 
-	if (scenery_entry->large_scenery.flags&(1 << 0)){
+	if (scenery_entry->large_scenery.flags & LARGE_SCENERY_FLAG_HAS_PRIMARY_COLOUR){
 		main_colour_btn->type = WWT_COLOURBTN;
 	}
-	if (scenery_entry->large_scenery.flags&(1 << 1)) {
+	if (scenery_entry->large_scenery.flags & LARGE_SCENERY_FLAG_HAS_SECONDARY_COLOUR) {
 		text_colour_btn->type = WWT_COLOURBTN;
 	}
 
@@ -436,7 +436,7 @@ void window_sign_small_open(rct_windownumber number){
 	while (1){
 		if (map_element_get_type(map_element) == MAP_ELEMENT_TYPE_FENCE) {
 			rct_scenery_entry* scenery_entry = get_wall_entry(map_element->properties.fence.type);
-			if (scenery_entry->wall.var_0D != 0xFF){
+			if (scenery_entry->wall.scrolling_mode != 0xFF){
 				if (map_element->properties.fence.item[0] == w->number)
 					break;
 			}
@@ -498,7 +498,7 @@ static void window_sign_small_mouseup(rct_window *w, sint32 widgetIndex)
 		while (1){
 			if (map_element_get_type(map_element) == MAP_ELEMENT_TYPE_FENCE) {
 				rct_scenery_entry* scenery_entry = get_wall_entry(map_element->properties.fence.type);
-				if (scenery_entry->wall.var_0D != 0xFF){
+				if (scenery_entry->wall.scrolling_mode != 0xFF){
 					if (map_element->properties.fence.item[0] == w->number)
 						break;
 				}
@@ -570,7 +570,7 @@ static void window_sign_small_invalidate(rct_window *w)
 	main_colour_btn->type = WWT_EMPTY;
 	text_colour_btn->type = WWT_EMPTY;
 
-	if (scenery_entry->wall.flags & WALL_SCENERY_FLAG1) {
+	if (scenery_entry->wall.flags & WALL_SCENERY_HAS_PRIMARY_COLOUR) {
 		main_colour_btn->type = WWT_COLOURBTN;
 	}
 	if (scenery_entry->wall.flags & WALL_SCENERY_HAS_SECONDARY_COLOUR) {

@@ -20,11 +20,13 @@
 
 #include <SDL.h>
 #include "IStream.hpp"
+#include "Math.hpp"
 
 enum
 {
     FILE_MODE_OPEN,
-    FILE_MODE_WRITE
+    FILE_MODE_WRITE,
+    FILE_MODE_APPEND,
 };
 
 /**
@@ -33,11 +35,12 @@ enum
 class FileStream final : public IStream
 {
 private:
-    SDL_RWops * _file;
-    bool        _canRead;
-    bool        _canWrite;
-    bool        _disposed;
-    uint64      _fileSize;
+    SDL_RWops * _file           = 0;
+    bool        _ownsFilePtr    = false;
+    bool        _canRead        = false;
+    bool        _canWrite       = false;
+    bool        _disposed       = false;
+    uint64      _fileSize       = 0;
 
 public:
     FileStream(const std::string &path, sint32 fileMode) :
@@ -55,7 +58,12 @@ public:
             _canWrite = false;
             break;
         case FILE_MODE_WRITE:
-            mode = "wb";
+            mode = "w+b";
+            _canRead = true;
+            _canWrite = true;
+            break;
+        case FILE_MODE_APPEND:
+            mode = "a";
             _canRead = false;
             _canWrite = true;
             break;
@@ -68,8 +76,25 @@ public:
         {
             throw IOException(SDL_GetError());
         }
+        _fileSize = SDL_RWsize(_file);
+        _ownsFilePtr = true;
+    }
 
-        _disposed = false;
+    FileStream(SDL_RWops * ops, sint32 fileMode)
+    {
+        _file = ops;
+        switch (fileMode) {
+        case FILE_MODE_OPEN:
+            _canRead = true;
+            _canWrite = false;
+            break;
+        case FILE_MODE_WRITE:
+            _canRead = true;
+            _canWrite = true;
+            break;
+        default:
+            throw;
+        }
         _fileSize = SDL_RWsize(_file);
     }
 
@@ -78,7 +103,10 @@ public:
         if (!_disposed)
         {
             _disposed = true;
-            SDL_RWclose(_file);
+            if (_ownsFilePtr)
+            {
+                SDL_RWclose(_file);
+            }
         }
     }
 
@@ -127,6 +155,9 @@ public:
         {
             throw IOException("Unable to write to file.");
         }
+
+        uint64 position = GetPosition();
+        _fileSize = Math::Max(_fileSize, position);
     }
 
     uint64 TryRead(void * buffer, uint64 length) override

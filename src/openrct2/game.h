@@ -93,6 +93,7 @@ enum GAME_COMMAND {
 	GAME_COMMAND_PICKUP_GUEST,
 	GAME_COMMAND_PICKUP_STAFF,
 	GAME_COMMAND_BALLOON_PRESS,
+	GAME_COMMAND_MODIFY_TILE,
 	GAME_COMMAND_COUNT
 };
 
@@ -167,8 +168,6 @@ sint32 game_do_command_p(sint32 command, sint32 *eax, sint32 *ebx, sint32 *ecx, 
 
 void game_load_or_quit_no_save_prompt();
 bool game_load_sv6_path(const char * path);
-bool game_load_sv6(SDL_RWops* rw);
-sint32 game_load_network(SDL_RWops* rw);
 bool game_load_save(const utf8 *path);
 void game_load_init();
 void game_pause_toggle(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *edx, sint32 *esi, sint32 *edi, sint32 *ebp);

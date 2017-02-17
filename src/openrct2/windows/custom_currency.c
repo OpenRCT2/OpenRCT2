@@ -163,6 +163,7 @@ static void custom_currency_window_mousedown(sint32 widgetIndex, rct_window *w, 
 			w->y + widget->top,
 			widget->bottom - widget->top + 1,
 			w->colours[1],
+			0,
 			DROPDOWN_FLAG_STAY_OPEN,
 			2,
 			widget->right - widget->left - 3

@@ -42,7 +42,7 @@ enum {
 	PARK_FLAGS_DIFFICULT_PARK_RATING = (1 << 14),
 	PARK_FLAGS_LOCK_REAL_NAMES_OPTION = (1 << 15),
 	PARK_FLAGS_NO_MONEY_SCENARIO = (1 << 17),  // equivalent to PARK_FLAGS_NO_MONEY, but used in scenario editor
-	PARK_FLAGS_18 = (1 << 18),
+	PARK_FLAGS_SPRITES_INITIALISED = (1 << 18), // After a scenario is loaded this prevents edits in the scenario editor
 	PARK_FLAGS_SIX_FLAGS_DEPRECATED = (1 << 19) // Not used anymore
 };
 
@@ -67,10 +67,7 @@ extern uint8 gGuestsInParkHistory[32];
 extern sint32 _guestGenerationProbability;
 extern sint32 _suggestedGuestMaximum;
 
-extern sint16 gParkEntranceX[MAX_PARK_ENTRANCES];
-extern sint16 gParkEntranceY[MAX_PARK_ENTRANCES];
-extern sint16 gParkEntranceZ[MAX_PARK_ENTRANCES];
-extern uint8 gParkEntranceDirection[MAX_PARK_ENTRANCES];
+extern rct_xyzd16 gParkEntrances[MAX_PARK_ENTRANCES];
 
 extern bool gParkEntranceGhostExists;
 extern rct_xyz16 gParkEntranceGhostPosition;
@@ -89,7 +86,7 @@ sint32 calculate_park_rating();
 money32 calculate_park_value();
 money32 calculate_company_value();
 void reset_park_entrances();
-void generate_new_guest();
+rct_peep * park_generate_new_guest();
 
 void park_update();
 void park_update_histories();

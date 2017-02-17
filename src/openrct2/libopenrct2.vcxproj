@@ -73,8 +73,14 @@
     <ClCompile Include="audio\MemoryAudioSource.cpp" />
     <ClCompile Include="audio\NullAudioSource.cpp" />
     <ClCompile Include="FileClassifier.cpp" />
+    <ClCompile Include="network\ServerList.cpp" />
+    <ClCompile Include="ParkImporter.cpp" />
+    <ClCompile Include="rct12\SawyerChunk.cpp" />
+    <ClCompile Include="rct12\SawyerChunkReader.cpp" />
+    <ClCompile Include="rct12\SawyerChunkWriter.cpp" />
+    <ClCompile Include="rct12\SawyerEncoding.cpp" />
     <ClCompile Include="rct2\addresses.c" />
-    <ClCompile Include="audio\audio.c" />
+    <ClCompile Include="audio\audio.cpp" />
     <ClCompile Include="cheats.c" />
     <ClCompile Include="cmdline\CommandLine.cpp" />
     <ClCompile Include="cmdline\ConvertCommand.cpp" />
@@ -120,7 +126,7 @@
     <ClCompile Include="drawing\Rain.cpp" />
     <ClCompile Include="drawing\rect.c" />
     <ClCompile Include="drawing\scrolling_text.c" />
-    <ClCompile Include="drawing\sprite.c" />
+    <ClCompile Include="drawing\sprite.cpp" />
     <ClCompile Include="drawing\string.c" />
     <ClCompile Include="editor.c" />
     <ClCompile Include="game.c" />
@@ -331,7 +337,7 @@
     <ClCompile Include="world\particle.c" />
     <ClCompile Include="util\sawyercoding.c" />
     <ClCompile Include="util\util.c" />
-    <ClCompile Include="version.c" />
+    <ClCompile Include="Version.cpp" />
     <ClCompile Include="windows\about.c" />
     <ClCompile Include="windows\banner.c" />
     <ClCompile Include="windows\cheats.c" />
@@ -405,6 +411,7 @@
     <ClCompile Include="world\park.c" />
     <ClCompile Include="world\scenery.c" />
     <ClCompile Include="world\sprite.c" />
+    <ClCompile Include="world\tile_inspector.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\resources\resource.h" />
@@ -413,7 +420,13 @@
     <ClInclude Include="audio\AudioMixer.h" />
     <ClInclude Include="audio\AudioSource.h" />
     <ClInclude Include="FileClassifier.h" />
+    <ClInclude Include="network\ServerList.h" />
     <ClInclude Include="rct12.h" />
+    <ClInclude Include="ParkImporter.h" />
+    <ClInclude Include="rct12\SawyerChunk.h" />
+    <ClInclude Include="rct12\SawyerChunkReader.h" />
+    <ClInclude Include="rct12\SawyerChunkWriter.h" />
+    <ClInclude Include="rct12\SawyerEncoding.h" />
     <ClInclude Include="rct2\addresses.h" />
     <ClInclude Include="audio\audio.h" />
     <ClInclude Include="cheats.h" />
@@ -541,11 +554,9 @@
     <ClInclude Include="platform\platform.h" />
     <ClInclude Include="rct1.h" />
     <ClInclude Include="rct1\Tables.h" />
-    <ClInclude Include="rct1\S4Importer.h" />
     <ClInclude Include="rct2.h" />
     <ClInclude Include="rct2\interop.h" />
     <ClInclude Include="rct2\S6Exporter.h" />
-    <ClInclude Include="rct2\S6Importer.h" />
     <ClInclude Include="ride\cable_lift.h" />
     <ClInclude Include="ride\coaster\bolliger_mabillard_track.h" />
     <ClInclude Include="ride\coaster\junior_roller_coaster.h" />
@@ -574,6 +585,7 @@
     <ClInclude Include="util\util.h" />
     <ClInclude Include="windows\dropdown.h" />
     <ClInclude Include="windows\error.h" />
+    <ClInclude Include="windows\tile_inspector.h" />
     <ClInclude Include="windows\tooltip.h" />
     <ClInclude Include="world\banner.h" />
     <ClInclude Include="world\climate.h" />
@@ -587,6 +599,7 @@
     <ClInclude Include="world\park.h" />
     <ClInclude Include="world\scenery.h" />
     <ClInclude Include="world\sprite.h" />
+    <ClInclude Include="world\tile_inspector.h" />
     <ClInclude Include="world\water.h" />
   </ItemGroup>
   <ItemGroup>

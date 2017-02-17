@@ -148,30 +148,6 @@ void path_end_with_separator(utf8 *path, size_t size) {
 		safe_strcat(path, PATH_SEPARATOR, size);
 }
 
-bool readentirefile(const utf8 *path, void **outBuffer, size_t *outLength)
-{
-	SDL_RWops *fp;
-	size_t fpLength;
-	void *fpBuffer;
-
-	// Open file
-	fp = SDL_RWFromFile(path, "rb");
-	if (fp == NULL)
-		return 0;
-
-	// Get length
-	fpLength = (size_t)SDL_RWsize(fp);
-
-	// Read whole file into a buffer
-	fpBuffer = malloc(fpLength);
-	SDL_RWread(fp, fpBuffer, fpLength, 1);
-	SDL_RWclose(fp);
-
-	*outBuffer = fpBuffer;
-	*outLength = fpLength;
-	return 1;
-}
-
 sint32 bitscanforward(sint32 source)
 {
 	#if defined(_MSC_VER) && (_MSC_VER >= 1400) // Visual Studio 2005
@@ -495,7 +471,7 @@ uint8 *util_zlib_inflate(uint8 *data, size_t data_in_size, size_t *data_out_size
  * @return Returns a pointer to memory holding compressed data or NULL on failure.
  * @note It is caller's responsibility to free() the returned pointer once done with it.
  */
-uint8 *util_zlib_deflate(uint8 *data, size_t data_in_size, size_t *data_out_size)
+uint8 *util_zlib_deflate(const uint8 *data, size_t data_in_size, size_t *data_out_size)
 {
 	sint32 ret = Z_OK;
 	uLongf out_size = (uLongf)*data_out_size;

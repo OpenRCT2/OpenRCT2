@@ -184,7 +184,7 @@ static bool map_animation_invalidate_small_scenery(sint32 x, sint32 y, sint32 ba
 			continue;
 
 		sceneryEntry = get_small_scenery_entry(mapElement->properties.scenery.type);
-		if (sceneryEntry->small_scenery.flags & 0xD800) {
+		if (sceneryEntry->small_scenery.flags & (SMALL_SCENERY_FLAG12 | SMALL_SCENERY_FLAG13 | SMALL_SCENERY_FLAG15 | SMALL_SCENERY_FLAG16)) {
 			map_invalidate_tile_zoom1(x, y, mapElement->base_height * 8, mapElement->clearance_height * 8);
 			return false;
 		}
@@ -434,7 +434,7 @@ static bool map_animation_invalidate_large_scenery(sint32 x, sint32 y, sint32 ba
 			continue;
 
 		sceneryEntry = get_large_scenery_entry(mapElement->properties.scenery.type & 0x3FF);
-		if (sceneryEntry->large_scenery.flags & (1 << 3)) {
+		if (sceneryEntry->large_scenery.flags & LARGE_SCENERY_FLAG_ANIMATED) {
 			sint32 z = mapElement->base_height * 8;
 			map_invalidate_tile_zoom1(x, y, z, z + 16);
 			wasInvalidated = true;
@@ -520,7 +520,7 @@ static bool map_animation_invalidate_wall(sint32 x, sint32 y, sint32 baseZ)
 			continue;
 
 		sceneryEntry = get_wall_entry(mapElement->properties.scenery.type);
-		if (!(sceneryEntry->wall.flags2 & (1 << 4)) && sceneryEntry->wall.var_0D == 255)
+		if (!(sceneryEntry->wall.flags2 & WALL_SCENERY_2_FLAG5) && sceneryEntry->wall.scrolling_mode == 255)
 			continue;
 
 		sint32 z = mapElement->base_height * 8;

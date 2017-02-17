@@ -1656,7 +1656,7 @@ STR_1650    :{SMALLFONT}{OPENQUOTES}와우! 새 놀이기구가 지어지고 있
 # Two removed inside jokes about Intamin and Phoenix
 STR_1651    :<removed string - do not use>
 STR_1652    :<removed string - do not use>
-STR_1653    :{SMALLFONT}{OPENQUOTES}...그리고 드디어 {STRINGID}에 왔어요!{ENDQUOTES}
+STR_1653    :{SMALLFONT}{OPENQUOTES}...마침내 {STRINGID}에 탔어요!{ENDQUOTES}
 STR_1654    :{WINDOW_COLOUR_2}최근 생각:
 STR_1655    :{SMALLFONT}{BLACK}땅 위에 보도 건설
 STR_1656    :{SMALLFONT}{BLACK}다리나 터널 보도를 건설
@@ -4319,6 +4319,8 @@ STR_6009    :{SMALLFONT}{BLACK}절단할 높이를 선택하세요.
 STR_6010    :{COMMA2DP32}m
 STR_6011    :{COMMA1DP16}ft
 STR_6012    :{COMMA1DP16}
+STR_6013    :{SMALLFONT}{BLACK}손님들이 공원 입장료와 상점/매점에만 돈을 지불합니다.{NEWLINE}놀이기구 탑승료는 무료로 고정됩니다.
+STR_6014    :{SMALLFONT}{BLACK}손님들이 놀이기구 탑승료와 상점/매점에만 돈을 지불합니다.{NEWLINE}공원 입장료로 돈을 지불하지는 않습니다.
 
 #############
 # Scenarios #
@@ -4752,7 +4754,7 @@ STR_DTLS    :
 
 <Blackpool Pleasure Beach>
 STR_SCNR    :Blackpool Pleasure Beach
-STR_PARK    :블랙풀 플레져 비치
+STR_PARK    :블랙풀 플레저 비치
 STR_DTLS    :
 
 ## Misc parks from RCT1

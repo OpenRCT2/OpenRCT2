@@ -195,7 +195,7 @@ static void paint_monorail_cycles_track_flat(uint8 rideIndex, uint8 trackSequenc
 		paint_util_push_tunnel_left(height, TUNNEL_0);
 	}
 
-	metal_a_supports_paint_setup((direction & 1) ? 5 : 4, 4, -1, height, gTrackColours[SCHEME_SUPPORTS]);
+	metal_a_supports_paint_setup((direction & 1) ? METAL_SUPPORTS_STICK_ALT : METAL_SUPPORTS_STICK, 4, -1, height, gTrackColours[SCHEME_SUPPORTS]);
 
 	paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction), 0xFFFF, 0);
 	paint_util_set_general_support_height(height + 32, 0x20);
@@ -289,22 +289,22 @@ static void paint_monorail_cycles_track_right_quarter_turn_5_tiles(uint8 rideInd
 	sint32 supportSpecial = monorail_cycles_track_right_quarter_turn_5_tiles_support_special[direction][trackSequence];
 	switch (trackSequence) {
 		case 0:
-			metal_a_supports_paint_setup((direction & 1) ? 5 : 4, 4, supportSpecial, supportHeight, gTrackColours[SCHEME_SUPPORTS]);
+			metal_a_supports_paint_setup((direction & 1) ? METAL_SUPPORTS_STICK_ALT : METAL_SUPPORTS_STICK, 4, supportSpecial, supportHeight, gTrackColours[SCHEME_SUPPORTS]);
 			break;
 		case 2:
-			if (direction == 0) metal_a_supports_paint_setup((direction & 1) ? 5 : 4, 8, supportSpecial, supportHeight, gTrackColours[SCHEME_SUPPORTS]);
-			if (direction == 1) metal_a_supports_paint_setup((direction & 1) ? 5 : 4, 7, supportSpecial, supportHeight, gTrackColours[SCHEME_SUPPORTS]);
-			if (direction == 2) metal_a_supports_paint_setup((direction & 1) ? 5 : 4, 5, supportSpecial, supportHeight, gTrackColours[SCHEME_SUPPORTS]);
-			if (direction == 3) metal_a_supports_paint_setup((direction & 1) ? 5 : 4, 6, supportSpecial, supportHeight, gTrackColours[SCHEME_SUPPORTS]);
+			if (direction == 0) metal_a_supports_paint_setup((direction & 1) ? METAL_SUPPORTS_STICK_ALT : METAL_SUPPORTS_STICK, 8, supportSpecial, supportHeight, gTrackColours[SCHEME_SUPPORTS]);
+			if (direction == 1) metal_a_supports_paint_setup((direction & 1) ? METAL_SUPPORTS_STICK_ALT : METAL_SUPPORTS_STICK, 7, supportSpecial, supportHeight, gTrackColours[SCHEME_SUPPORTS]);
+			if (direction == 2) metal_a_supports_paint_setup((direction & 1) ? METAL_SUPPORTS_STICK_ALT : METAL_SUPPORTS_STICK, 5, supportSpecial, supportHeight, gTrackColours[SCHEME_SUPPORTS]);
+			if (direction == 3) metal_a_supports_paint_setup((direction & 1) ? METAL_SUPPORTS_STICK_ALT : METAL_SUPPORTS_STICK, 6, supportSpecial, supportHeight, gTrackColours[SCHEME_SUPPORTS]);
 			break;
 		case 5:
-			if (direction == 0) metal_a_supports_paint_setup((direction & 1) ? 4 : 5, 7, supportSpecial, supportHeight, gTrackColours[SCHEME_SUPPORTS]);
-			if (direction == 1) metal_a_supports_paint_setup((direction & 1) ? 4 : 5, 5, supportSpecial, supportHeight, gTrackColours[SCHEME_SUPPORTS]);
-			if (direction == 2) metal_a_supports_paint_setup((direction & 1) ? 4 : 5, 6, supportSpecial, supportHeight, gTrackColours[SCHEME_SUPPORTS]);
-			if (direction == 3) metal_a_supports_paint_setup((direction & 1) ? 4 : 5, 8, supportSpecial, supportHeight, gTrackColours[SCHEME_SUPPORTS]);
+			if (direction == 0) metal_a_supports_paint_setup((direction & 1) ? METAL_SUPPORTS_STICK : METAL_SUPPORTS_STICK_ALT, 7, supportSpecial, supportHeight, gTrackColours[SCHEME_SUPPORTS]);
+			if (direction == 1) metal_a_supports_paint_setup((direction & 1) ? METAL_SUPPORTS_STICK : METAL_SUPPORTS_STICK_ALT, 5, supportSpecial, supportHeight, gTrackColours[SCHEME_SUPPORTS]);
+			if (direction == 2) metal_a_supports_paint_setup((direction & 1) ? METAL_SUPPORTS_STICK : METAL_SUPPORTS_STICK_ALT, 6, supportSpecial, supportHeight, gTrackColours[SCHEME_SUPPORTS]);
+			if (direction == 3) metal_a_supports_paint_setup((direction & 1) ? METAL_SUPPORTS_STICK : METAL_SUPPORTS_STICK_ALT, 8, supportSpecial, supportHeight, gTrackColours[SCHEME_SUPPORTS]);
 			break;
 		case 6:
-			metal_a_supports_paint_setup((direction & 1) ? 4 : 5, 4, supportSpecial, supportHeight, gTrackColours[SCHEME_SUPPORTS]);
+			metal_a_supports_paint_setup((direction & 1) ? METAL_SUPPORTS_STICK : METAL_SUPPORTS_STICK_ALT, 4, supportSpecial, supportHeight, gTrackColours[SCHEME_SUPPORTS]);
 			break;
 	}
 

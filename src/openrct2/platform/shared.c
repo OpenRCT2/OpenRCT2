@@ -32,6 +32,7 @@
 #include "../rct2.h"
 #include "../title/TitleScreen.h"
 #include "../util/util.h"
+#include "../Version.h"
 #include "../world/climate.h"
 #include "platform.h"
 

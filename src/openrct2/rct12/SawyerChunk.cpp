@@ -14,20 +14,17 @@
  *****************************************************************************/
 #pragma endregion
 
-#pragma once
+#include "../core/Memory.hpp"
+#include "SawyerChunk.h"
 
-#include "../common.h"
-
-/**
- * Interface to import RollerCoaster Tycoon 1 scenarios (*.SC4) and saved games (*.SV4).
- */
-interface IS4Importer
+SawyerChunk::SawyerChunk(SAWYER_ENCODING encoding, void * data, size_t length)
 {
-public:
-    virtual ~IS4Importer() { }
-    virtual void LoadSavedGame(const utf8 * path) abstract;
-    virtual void LoadScenario(const utf8 * path) abstract;
-    virtual void Import() abstract;
-};
+    _encoding = encoding;
+    _data = data;
+    _length = length;
+}
 
-IS4Importer * CreateS4Importer();
+SawyerChunk::~SawyerChunk()
+{
+    Memory::Free(_data);
+}

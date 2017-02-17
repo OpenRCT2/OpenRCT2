@@ -24,7 +24,9 @@
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
 #include "../core/Util.hpp"
+#include "../ParkImporter.h"
 #include "../PlatformEnvironment.h"
+#include "../rct12/SawyerChunkReader.h"
 #include "ScenarioRepository.h"
 #include "ScenarioSources.h"
 
@@ -142,8 +144,10 @@ public:
         _scenarios.clear();
 
         // Scan RCT2 directory
+        std::string rct1dir = _env->GetDirectoryPath(DIRBASE::RCT1, DIRID::SCENARIO);
         std::string rct2dir = _env->GetDirectoryPath(DIRBASE::RCT2, DIRID::SCENARIO);
         std::string openrct2dir = _env->GetDirectoryPath(DIRBASE::USER, DIRID::SCENARIO);
+        Scan(rct1dir);
         Scan(rct2dir);
         Scan(openrct2dir);
 
@@ -253,7 +257,7 @@ private:
     {
         utf8 pattern[MAX_PATH];
         String::Set(pattern, sizeof(pattern), directory.c_str());
-        Path::Append(pattern, sizeof(pattern), "*.sc6");
+        Path::Append(pattern, sizeof(pattern), "*.sc4;*.sc6");
 
         IFileScanner * scanner = Path::ScanDirectory(pattern, true);
         while (scanner->Next())
@@ -265,49 +269,101 @@ private:
         delete scanner;
     }
 
-    void AddScenario(const utf8 * path, uint64 timestamp)
+    void AddScenario(const std::string &path, uint64 timestamp)
     {
-        rct_s6_header s6Header;
-        rct_s6_info s6Info;
-        if (!scenario_load_basic(path, &s6Header, &s6Info))
+        scenario_index_entry entry;
+        if (!GetScenarioInfo(path, timestamp, &entry))
         {
-            Console::Error::WriteLine("Unable to read scenario: '%s'", path);
             return;
         }
 
-        const utf8 * filename = Path::GetFileName(path);
-        scenario_index_entry * existingEntry = GetByFilename(filename);
+        const std::string filename = Path::GetFileName(path);
+        scenario_index_entry * existingEntry = GetByFilename(filename.c_str());
         if (existingEntry != nullptr)
         {
-            const utf8 * conflictPath;
+            std::string conflictPath;
             if (existingEntry->timestamp > timestamp)
             {
                 // Existing entry is more recent
-                conflictPath = existingEntry->path;
+                conflictPath = String::ToStd(existingEntry->path);
 
                 // Overwrite existing entry with this one
-                *existingEntry = CreateNewScenarioEntry(path, timestamp, &s6Info);
+                *existingEntry = entry;
             }
             else
             {
                 // This entry is more recent
                 conflictPath = path;
             }
-            Console::WriteLine("Scenario conflict: '%s' ignored because it is newer.", conflictPath);
+            Console::WriteLine("Scenario conflict: '%s' ignored because it is newer.", conflictPath.c_str());
         }
         else
         {
-            scenario_index_entry entry = CreateNewScenarioEntry(path, timestamp, &s6Info);
             _scenarios.push_back(entry);
         }
     }
 
-    scenario_index_entry CreateNewScenarioEntry(const utf8 * path, uint64 timestamp, rct_s6_info * s6Info)
+    /**
+     * Reads basic information from a scenario file.
+     */
+    bool GetScenarioInfo(const std::string &path, uint64 timestamp, scenario_index_entry * entry)
+    {
+        log_verbose("GetScenarioInfo(%s, %d, ...)", path.c_str(), timestamp);
+        try
+        {
+            std::string extension = Path::GetExtension(path);
+            if (String::Equals(extension, ".sc4", true))
+            {
+                // RCT1 scenario
+                bool result = false;
+                try
+                {
+                    auto s4Importer = std::unique_ptr<IParkImporter>(ParkImporter::CreateS4());
+                    s4Importer->LoadScenario(path.c_str());
+                    if (s4Importer->GetDetails(entry))
+                    {
+                        String::Set(entry->path, sizeof(entry->path), path.c_str());
+                        entry->timestamp = timestamp;
+                        result = true;
+                    }
+                }
+                catch (Exception)
+                {
+                }
+                return result;
+            }
+            else
+            {
+                // RCT2 scenario
+                auto fs = FileStream(path, FILE_MODE_OPEN);
+                auto chunkReader = SawyerChunkReader(&fs);
+
+                rct_s6_header header = chunkReader.ReadChunkAs<rct_s6_header>();
+                if (header.type == S6_TYPE_SCENARIO)
+                {
+                    rct_s6_info info = chunkReader.ReadChunkAs<rct_s6_info>();
+                    *entry = CreateNewScenarioEntry(path, timestamp, &info);
+                    return true;
+                }
+                else
+                {
+                    log_verbose("%s is not a scenario", path.c_str());
+                }
+            }
+        }
+        catch (Exception)
+        {
+            Console::Error::WriteLine("Unable to read scenario: '%s'", path.c_str());
+        }
+        return false;
+    }
+
+    scenario_index_entry CreateNewScenarioEntry(const std::string &path, uint64 timestamp, rct_s6_info * s6Info)
     {
         scenario_index_entry entry = { 0 };
 
         // Set new entry
-        String::Set(entry.path, sizeof(entry.path), path);
+        String::Set(entry.path, sizeof(entry.path), path.c_str());
         entry.timestamp = timestamp;
         entry.category = s6Info->category;
         entry.objective_type = s6Info->objective_type;

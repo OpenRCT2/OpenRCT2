@@ -155,12 +155,14 @@ static void paint_magic_carpet_vehicle(rct_ride *ride, uint8 direction, uint32 s
 /** rct2: 0x00899104 */
 static void paint_magic_carpet_structure(rct_ride *ride, uint8 direction, sint8 axisOffset, uint16 height)
 {
+	rct_map_element * savedMapElement = g_currently_drawn_item;
 	rct_vehicle *vehicle = get_first_vehicle(ride);
 
 	uint32 swingImageId = 0;
 	if (vehicle != NULL) {
 		swingImageId = vehicle->vehicle_sprite_type;
 		gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_SPRITE;
+		g_currently_drawn_item = vehicle;
 	}
 
 	bound_box bb = MagicCarpetBounds[direction];
@@ -182,6 +184,7 @@ static void paint_magic_carpet_structure(rct_ride *ride, uint8 direction, sint8 
 	paint_magic_carpet_frame(PLANE_FRONT, direction, offset, bbOffset, bbSize);
 
 	gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
+	g_currently_drawn_item = savedMapElement;
 }
 
 /** rct2: 0x00898514 */

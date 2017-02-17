@@ -719,7 +719,6 @@ static void window_top_toolbar_invalidate(rct_window *w)
 		// Fall-through
 		case NETWORK_MODE_SERVER:
 			window_top_toolbar_widgets[WIDX_FASTFORWARD].type = WWT_EMPTY;
-			window_top_toolbar_widgets[WIDX_DEBUG].type = WWT_EMPTY;
 			break;
 		}
 	}
@@ -940,8 +939,8 @@ static void repaint_scenery_tool_down(sint16 x, sint16 y, sint16 widgetIndex){
 
 		// If can't repaint
 		if (!(scenery_entry->wall.flags &
-			(WALL_SCENERY_FLAG1 |
-			WALL_SCENERY_FLAG2)))
+			(WALL_SCENERY_HAS_PRIMARY_COLOUR |
+			WALL_SCENERY_HAS_GLASS)))
 			return;
 
 		gGameCommandErrorTitle = STR_CANT_REPAINT_THIS;
@@ -961,7 +960,7 @@ static void repaint_scenery_tool_down(sint16 x, sint16 y, sint16 widgetIndex){
 
 		// If can't repaint
 		if (!(scenery_entry->large_scenery.flags &
-			(1 << 0)))
+			LARGE_SCENERY_FLAG_HAS_PRIMARY_COLOUR))
 			return;
 
 		gGameCommandErrorTitle = STR_CANT_REPAINT_THIS;
@@ -2032,8 +2031,8 @@ static void top_toolbar_tool_update_water(sint16 x, sint16 y){
 		state_changed++;
 	}
 
-	if (gMapSelectType != MAP_SELECT_TYPE_5) {
-		gMapSelectType = MAP_SELECT_TYPE_5;
+	if (gMapSelectType != MAP_SELECT_TYPE_FULL_WATER) {
+		gMapSelectType = MAP_SELECT_TYPE_FULL_WATER;
 		state_changed++;
 	}
 
@@ -2965,6 +2964,13 @@ void top_toolbar_init_debug_menu(rct_window* w, rct_widget* widget)
 		DROPDOWN_FLAG_STAY_OPEN,
 		TOP_TOOLBAR_DEBUG_COUNT
 	);
+
+	// Disable items that are not yet available in multiplayer
+	if (network_get_mode() != NETWORK_MODE_NONE) {
+		dropdown_set_disabled(DDIDX_OBJECT_SELECTION, true);
+		dropdown_set_disabled(DDIDX_INVENTIONS_LIST, true);
+		dropdown_set_disabled(DDIDX_SCENARIO_OPTIONS, true);
+	}
 
 	dropdown_set_checked(DDIDX_DEBUG_PAINT, window_find_by_class(WC_DEBUG_PAINT) != NULL);
 	gDropdownDefaultIndex = DDIDX_CONSOLE;

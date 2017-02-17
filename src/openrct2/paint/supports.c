@@ -100,20 +100,20 @@ const rct_xy8 _97B062[] = {
 };
 
 /** rct2: 0x0097B072 */
-const uint32 _97B072[][8] = {
-	{ 3370, 3371, 3370, 3371, 3372, 3373, 3372, 3373 },
-	{ 3374, 3375, 3374, 3375, 3376, 3377, 3376, 3377 },
-	{ 3374, 3375, 3374, 3375, 3376, 3377, 3376, 3377 },
-	{ 3370, 3371, 3370, 3371, 3372, 3373, 3372, 3373 },
-	{ 3374, 3375, 3374, 3375, 3376, 3377, 3376, 3377 },
-	{ 3374, 3375, 3374, 3375, 3376, 3377, 3376, 3377 },
-	{ 3378, 3383, 3378, 3383, 3380, 3385, 3380, 3385 },
-	{ 3378, 3383, 3378, 3383, 3380, 3385, 3380, 3385 },
-	{ 3382, 3379, 3382, 3379, 3384, 3381, 3384, 3381 },
-	{ 3382, 3379, 3382, 3379, 3384, 3381, 3384, 3381 },
-	{ 3378, 3379, 3378, 3379, 3380, 3381, 3380, 3381 },
-	{ 3386, 3387, 3386, 3387, 3388, 3389, 3388, 3389 },
-	{ 3370, 3371, 3370, 3371, 3372, 3373, 3372, 3373 },
+const uint32 _metalSupportTypeToCrossbeamImages[][8] = {
+	{ 3370, 3371, 3370, 3371, 3372, 3373, 3372, 3373 }, // METAL_SUPPORTS_TUBES
+	{ 3374, 3375, 3374, 3375, 3376, 3377, 3376, 3377 }, // METAL_SUPPORTS_FORK
+	{ 3374, 3375, 3374, 3375, 3376, 3377, 3376, 3377 }, // METAL_SUPPORTS_FORK_ALT
+	{ 3370, 3371, 3370, 3371, 3372, 3373, 3372, 3373 }, // METAL_SUPPORTS_BOXED
+	{ 3374, 3375, 3374, 3375, 3376, 3377, 3376, 3377 }, // METAL_SUPPORTS_STICK
+	{ 3374, 3375, 3374, 3375, 3376, 3377, 3376, 3377 }, // METAL_SUPPORTS_STICK_ALT
+	{ 3378, 3383, 3378, 3383, 3380, 3385, 3380, 3385 }, // METAL_SUPPORTS_THICK_CENTRED
+	{ 3378, 3383, 3378, 3383, 3380, 3385, 3380, 3385 }, // METAL_SUPPORTS_THICK
+	{ 3382, 3379, 3382, 3379, 3384, 3381, 3384, 3381 }, // METAL_SUPPORTS_THICK_ALT
+	{ 3382, 3379, 3382, 3379, 3384, 3381, 3384, 3381 }, // METAL_SUPPORTS_THICK_ALT_CENTRED
+	{ 3378, 3379, 3378, 3379, 3380, 3381, 3380, 3381 }, // METAL_SUPPORTS_TRUSS
+	{ 3386, 3387, 3386, 3387, 3388, 3389, 3388, 3389 }, // METAL_SUPPORTS_TUBES_INVERTED
+	{ 3370, 3371, 3370, 3371, 3372, 3373, 3372, 3373 }, // METAL_SUPPORTS_BOXED_COATED
 };
 
 /** rct2: 0x0097B142 */
@@ -738,7 +738,7 @@ bool metal_a_supports_paint_setup(uint8 supportType, uint8 segment, sint32 speci
 		sint16 boundBoxLengthX = _97B062[ebp].x;
 		sint16 boundBoxLengthY = _97B062[ebp].y;
 
-		uint32 image_id = _97B072[supportType][ebp];
+		uint32 image_id = _metalSupportTypeToCrossbeamImages[supportType][ebp];
 		image_id |= imageColourFlags;
 		sub_98196C(image_id, xOffset, yOffset, boundBoxLengthX, boundBoxLengthY, 1, height, rotation);
 
@@ -937,7 +937,7 @@ bool metal_b_supports_paint_setup(uint8 supportType, uint8 segment, sint32 speci
 		}
 
 		sub_98196C(
-			_97B072[supportType][ebp] | imageColourFlags,
+			_metalSupportTypeToCrossbeamImages[supportType][ebp] | imageColourFlags,
 			loc_97AF20[originalSegment].x + loc_97B052[ebp].x, loc_97AF20[originalSegment].y + loc_97B052[ebp].y,
 			_97B062[ebp].x, _97B062[ebp].y, 1,
 			baseHeight,

@@ -751,6 +751,7 @@ enum {
 	SPR_G2_SORT = SPR_G2_BEGIN + 77,
 	SPR_G2_COPY = SPR_G2_BEGIN + 78,
 	SPR_G2_PASTE = SPR_G2_BEGIN + 79,
+	SPR_G2_TAB_DISABLED = SPR_G2_BEGIN + 80,
 
 	// 0x60000, chosen because it's a round hex number
 	// of the last possible range of image ID values that is large enough to fit all csg1 sprites.

@@ -47,6 +47,7 @@ extern "C" {
 }
 #endif // __cplusplus
 
+#include "../Version.h"
 #include "NetworkTypes.h"
 
 #ifndef DISABLE_NETWORK
@@ -54,7 +55,7 @@ extern "C" {
 // This define specifies which version of network stream current build uses.
 // It is used for making sure only compatible builds get connected, even within
 // single OpenRCT2 version.
-#define NETWORK_STREAM_VERSION "33"
+#define NETWORK_STREAM_VERSION "3"
 #define NETWORK_STREAM_ID OPENRCT2_VERSION "-" NETWORK_STREAM_VERSION
 
 #ifdef __cplusplus
@@ -67,7 +68,6 @@ extern "C" {
 #include <vector>
 #include <map>
 #include <openssl/evp.h>
-#include <SDL.h>
 #include "../core/Json.hpp"
 #include "../core/Nullable.hpp"
 #include "NetworkConnection.h"
@@ -174,6 +174,9 @@ private:
 	std::string GenerateAdvertiseKey();
 	void SetupDefaultGroups();
 
+	bool LoadMap(IStream * stream);
+	bool SaveMap(IStream * stream, const std::vector<const ObjectRepositoryItem *> &objects) const;
+
 	struct GameCommand
 	{
 		GameCommand(uint32 t, uint32* args, uint8 p, uint8 cb) {
@@ -211,8 +214,9 @@ private:
 	INetworkServerAdvertiser * _advertiser = nullptr;
 	uint32 server_connect_time = 0;
 	uint8 default_group = 0;
-	SDL_RWops *_chatLogStream = nullptr;
+	IStream * _chatLogStream = nullptr;
 	std::string _chatLogPath;
+	uint32 game_commands_processed_this_tick = 0;
 
 	void UpdateServer();
 	void UpdateClient();
@@ -244,14 +248,8 @@ private:
 	void Client_Handle_OBJECTS(NetworkConnection& connection, NetworkPacket& packet);
 	void Server_Handle_OBJECTS(NetworkConnection& connection, NetworkPacket& packet);
 
-	uint8 * save_for_network(SDL_RWops *buffer, size_t &out_size, const std::vector<const ObjectRepositoryItem *> &objects) const;
+	uint8 * save_for_network(size_t &out_size, const std::vector<const ObjectRepositoryItem *> &objects) const;
 };
-
-namespace Convert
-{
-	uint16 HostToNetwork(uint16 value);
-	uint16 NetworkToHost(uint16 value);
-}
 
 #endif // __cplusplus
 #else /* DISABLE_NETWORK */

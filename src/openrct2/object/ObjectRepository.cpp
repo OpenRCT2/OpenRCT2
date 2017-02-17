@@ -31,6 +31,8 @@
 #include "../core/Stopwatch.hpp"
 #include "../core/String.hpp"
 #include "../PlatformEnvironment.h"
+#include "../rct12/SawyerChunkReader.h"
+#include "../rct12/SawyerChunkWriter.h"
 #include "../scenario/ScenarioRepository.h"
 #include "Object.h"
 #include "ObjectFactory.h"
@@ -223,6 +225,43 @@ public:
         }
     }
 
+    void ExportPackedObject(IStream * stream) override
+    {
+        auto chunkReader = SawyerChunkReader(stream);
+
+        // Check if we already have this object
+        rct_object_entry entry = stream->ReadValue<rct_object_entry>();
+        if (FindObject(&entry) != nullptr)
+        {
+            chunkReader.SkipChunk();
+        }
+        else
+        {
+            // Read object and save to new file
+            std::shared_ptr<SawyerChunk> chunk = chunkReader.ReadChunk();
+            AddObject(&entry, chunk->GetData(), chunk->GetLength());
+        }
+    }
+
+    void WritePackedObjects(IStream * stream, std::vector<const ObjectRepositoryItem *> &objects) override
+    {
+        log_verbose("packing %u objects", objects.size());
+        for (const auto &object : objects)
+        {
+            Guard::ArgumentNotNull(object);
+
+            log_verbose("exporting object %.8s", object->ObjectEntry.name);
+            if (IsObjectCustom(object))
+            {
+                WritePackedObject(stream, &object->ObjectEntry);
+            }
+            else
+            {
+                log_warning("Refusing to pack vanilla/expansion object \"%s\"", object->ObjectEntry.name);
+            }
+        }
+    }
+
 private:
     void ClearItems()
     {
@@ -324,7 +363,7 @@ private:
                 // Buffer the rest of file into memory to speed up item reading
                 size_t dataSize = (size_t)(fs.GetLength() - fs.GetPosition());
                 void * data = fs.ReadArray<uint8>(dataSize);
-                auto ms = MemoryStream(data, dataSize, MEMORY_ACCESS_READ | MEMORY_ACCESS_OWNER);
+                auto ms = MemoryStream(data, dataSize, MEMORY_ACCESS::READ | MEMORY_ACCESS::OWNER);
 
                 // Read items
                 for (uint32 i = 0; i < header.NumItems; i++)
@@ -628,6 +667,30 @@ private:
             String::Append(buffer, bufferSize, ".DAT");
         }
     }
+
+    void WritePackedObject(IStream * stream, const rct_object_entry * entry)
+    {
+        const ObjectRepositoryItem * item = FindObject(entry);
+        if (item == nullptr)
+        {
+            throw Exception(String::StdFormat("Unable to find object '%.8s'", entry->name));
+        }
+
+        // Read object data from file
+        auto fs = FileStream(item->Path, FILE_MODE_OPEN);
+        auto fileEntry = fs.ReadValue<rct_object_entry>();
+        if (!object_entry_compare(entry, &fileEntry))
+        {
+            throw Exception("Header found in object file does not match object to pack.");
+        }
+        auto chunkReader = SawyerChunkReader(&fs);
+        auto chunk = chunkReader.ReadChunk();
+
+        // Write object data to stream
+        auto chunkWriter = SawyerChunkWriter(stream);
+        stream->WriteValue(*entry);
+        chunkWriter.WriteChunk(chunk.get());
+    }
 };
 
 static std::unique_ptr<ObjectRepository> _objectRepository;
@@ -641,6 +704,14 @@ IObjectRepository * CreateObjectRepository(IPlatformEnvironment * env)
 IObjectRepository * GetObjectRepository()
 {
     return _objectRepository.get();
+}
+
+bool IsObjectCustom(const ObjectRepositoryItem * object)
+{
+    Guard::ArgumentNotNull(object);
+
+    // Validate the object is not one from base game or expansion pack
+    return !(object->ObjectEntry.flags & 0xF0);
 }
 
 extern "C"
@@ -733,82 +804,6 @@ extern "C"
                 }
             }
         }
-    }
-
-    sint32 object_load_packed(SDL_RWops * rw)
-    {
-        IObjectRepository * objRepo = GetObjectRepository();
-
-        rct_object_entry entry;
-        SDL_RWread(rw, &entry, 16, 1);
-
-        // Check if we already have this object
-        if (objRepo->FindObject(&entry) != nullptr)
-        {
-            sawyercoding_skip_chunk(rw);
-        }
-        else
-        {
-            // Read object and save to new file
-            uint8 * chunk = Memory::Allocate<uint8>(0x600000);
-            if (chunk == nullptr)
-            {
-                log_error("Failed to allocate buffer for packed object.");
-                return 0;
-            }
-
-            size_t chunkSize = sawyercoding_read_chunk_with_size(rw, chunk, 0x600000);
-            chunk = Memory::Reallocate(chunk, chunkSize);
-            if (chunk == nullptr)
-            {
-                log_error("Failed to reallocate buffer for packed object.");
-                return 0;
-            }
-
-            objRepo->AddObject(&entry, chunk, chunkSize);
-
-            Memory::Free(chunk);
-        }
-        return 1;
-    }
-
-    bool object_saved_packed(SDL_RWops * rw, const rct_object_entry * entry)
-    {
-        IObjectRepository * objectRepository = GetObjectRepository();
-        const ObjectRepositoryItem * item = objectRepository->FindObject(entry);
-        if (item == nullptr)
-        {
-            return false;
-        }
-
-        auto fs = FileStream(item->Path, FILE_MODE_OPEN);
-        rct_object_entry fileEntry = fs.ReadValue<rct_object_entry>();
-        if (!object_entry_compare(entry, &fileEntry))
-        {
-            return false;
-        }
-
-        sawyercoding_chunk_header chunkHeader = fs.ReadValue<sawyercoding_chunk_header>();
-        uint8 * chunkData = fs.ReadArray<uint8>(chunkHeader.length);
-
-        if (SDL_RWwrite(rw, entry, sizeof(rct_object_entry), 1) != 1)
-        {
-            Memory::Free(chunkData);
-            return false;
-        }
-        if (SDL_RWwrite(rw, &chunkHeader, sizeof(sawyercoding_chunk_header), 1) != 1)
-        {
-            Memory::Free(chunkData);
-            return false;
-        }
-        if (SDL_RWwrite(rw, chunkData, chunkHeader.length, 1) != 1)
-        {
-            Memory::Free(chunkData);
-            return false;
-        }
-        Memory::Free(chunkData);
-
-        return true;
     }
 
     size_t object_repository_get_items_count()

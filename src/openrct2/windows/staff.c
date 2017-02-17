@@ -1318,7 +1318,7 @@ void window_staff_options_mousedown(sint32 widgetIndex, rct_window* w, rct_widge
 	sint32 y = widget->top + w->y;
 	sint32 extray = widget->bottom - widget->top + 1;
 	sint32 width = widget->right - widget->left - 3;
-	window_dropdown_show_text_custom_width(x, y, extray, w->colours[1], DROPDOWN_FLAG_STAY_OPEN, numCostumes, width);
+	window_dropdown_show_text_custom_width(x, y, extray, w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, numCostumes, width);
 
 	// See above note.
 	gDropdownItemsChecked = itemsChecked;

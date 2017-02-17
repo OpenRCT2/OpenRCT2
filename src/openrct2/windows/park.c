@@ -70,7 +70,7 @@ enum WINDOW_PARK_WIDGET_IDX {
 	WIDX_CLOSE_LIGHT,
 	WIDX_OPEN_LIGHT,
 
-	WIDX__ = 11,
+	WIDX_PRICE_LABEL = 11,
 	WIDX_PRICE,
 	WIDX_INCREASE_PRICE,
 	WIDX_DECREASE_PRICE,
@@ -1092,10 +1092,10 @@ static void window_park_init_viewport(rct_window *w)
 		return;
 
 	for (i = 0; i < MAX_PARK_ENTRANCES; i++) {
-		if (gParkEntranceX[i] != SPRITE_LOCATION_NULL) {
-			x = gParkEntranceX[i] + 16;
-			y = gParkEntranceY[i] + 16;
-			z = gParkEntranceZ[i] + 32;
+		if (gParkEntrances[i].x != SPRITE_LOCATION_NULL) {
+			x = gParkEntrances[i].x + 16;
+			y = gParkEntrances[i].y + 16;
+			z = gParkEntrances[i].z + 32;
 			r = get_current_rotation();
 
 			xy = 0x40000000 | (y << 16) | x;
@@ -1486,6 +1486,16 @@ static void window_park_price_invalidate(rct_window *w)
 
 	window_park_set_pressed_tab(w);
 	window_park_prepare_window_title_text();
+
+	// Show a tooltip if the park is pay per ride.
+	window_park_price_widgets[WIDX_PRICE_LABEL].tooltip = STR_NONE;
+	window_park_price_widgets[WIDX_PRICE].tooltip = STR_NONE;
+
+	if ((gParkFlags & PARK_FLAGS_PARK_FREE_ENTRY) && !gCheatsUnlockAllPrices)
+	{
+		window_park_price_widgets[WIDX_PRICE_LABEL].tooltip = STR_ADMISSION_PRICE_PAY_PER_RIDE_TIP;
+		window_park_price_widgets[WIDX_PRICE].tooltip = STR_ADMISSION_PRICE_PAY_PER_RIDE_TIP;
+	}
 
 	// If the entry price is locked at free, disable the widget, unless the unlock_all_prices cheat is active.
 	if ((gParkFlags & PARK_FLAGS_NO_MONEY) ||

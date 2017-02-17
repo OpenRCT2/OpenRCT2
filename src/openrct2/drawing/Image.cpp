@@ -252,7 +252,7 @@ extern "C"
     {
         if (_allocatedImageCount != 0)
         {
-#if DEBUG
+#ifdef DEBUG
             Guard::Assert(_allocatedImageCount == 0, "%u images were not freed", _allocatedImageCount);
 #else
             Console::Error::WriteLine("%u images were not freed", _allocatedImageCount);

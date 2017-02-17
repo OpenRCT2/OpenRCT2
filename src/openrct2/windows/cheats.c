@@ -538,6 +538,7 @@ static void window_cheats_misc_mousedown(int widgetIndex, rct_window *w, rct_wid
 			w->y + dropdownWidget->top,
 			dropdownWidget->bottom - dropdownWidget->top + 1,
 			w->colours[1],
+			0,
 			DROPDOWN_FLAG_STAY_OPEN,
 			6,
 			dropdownWidget->right - dropdownWidget->left - 3

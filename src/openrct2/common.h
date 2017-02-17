@@ -142,8 +142,6 @@ char *strndup(const char *src, size_t size);
 #define MAP_ANONYMOUS MAP_ANON
 #endif
 
-#include "version.h"
-
 #define OPENRCT2_MASTER_SERVER_URL	"https://servers.openrct2.website"
 
 // Time (represented as number of 100-nanosecond intervals since 0001-01-01T00:00:00Z)

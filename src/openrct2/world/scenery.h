@@ -89,11 +89,17 @@ assert_struct_size(rct_large_scenery_text_glyph, 4);
 typedef struct rct_large_scenery_text {
 	rct_xy16 offset[2];		// 0x0
 	uint16 max_width;		// 0x8
-	uint16 var_A;			// 0xA
-	uint16 var_C;			// 0xC
+	uint16 pad_A;			// 0xA
+	uint8 flags;			// 0xC
+	uint8 var_D;			// 0xD
 	rct_large_scenery_text_glyph glyphs[256]; // 0xE
 } rct_large_scenery_text;
 assert_struct_size(rct_large_scenery_text, 14 + 4 * 256);
+
+typedef enum {
+	LARGE_SCENERY_TEXT_FLAG_VERTICAL = (1 << 0),	// 0x1
+	LARGE_SCENERY_TEXT_FLAG_TWO_LINE = (1 << 1),	// 0x2
+} LARGE_SCENERY_TEXT_FLAGS;
 
 typedef struct rct_large_scenery_entry {
 	uint8 tool_id;			// 0x06
@@ -110,6 +116,14 @@ typedef struct rct_large_scenery_entry {
 assert_struct_size(rct_large_scenery_entry, 20);
 #endif
 
+typedef enum {
+	LARGE_SCENERY_FLAG_HAS_PRIMARY_COLOUR = (1 << 0),			// 0x1
+	LARGE_SCENERY_FLAG_HAS_SECONDARY_COLOUR = (1 << 1),			// 0x2
+	LARGE_SCENERY_FLAG_3D_TEXT = (1 << 2),			// 0x4
+	LARGE_SCENERY_FLAG_ANIMATED = (1 << 3),			// 0x8
+	LARGE_SCENERY_FLAG5 = (1 << 4),			// 0x10
+} LARGE_SCENERY_FLAGS;
+
 typedef struct rct_wall_scenery_entry {
 	uint8 tool_id;			// 0x06
 	uint8 flags;			// 0x07
@@ -117,13 +131,13 @@ typedef struct rct_wall_scenery_entry {
 	uint8 flags2;			// 0x09
 	sint16 price;			// 0x0A
 	uint8 scenery_tab_id;	// 0x0C
-	uint8 var_0D;
+	uint8 scrolling_mode;   // 0x0D 0xFF if no scrolling
 } rct_wall_scenery_entry;
 assert_struct_size(rct_wall_scenery_entry, 8);
 
 typedef enum {
-	WALL_SCENERY_FLAG1 = (1 << 0),		// 0x1
-	WALL_SCENERY_FLAG2 = (1 << 1),		// 0x2
+	WALL_SCENERY_HAS_PRIMARY_COLOUR = (1 << 0),		// 0x1
+	WALL_SCENERY_HAS_GLASS = (1 << 1),		// 0x2
 	WALL_SCENERY_CANT_BUILD_ON_SLOPE = (1 << 2),		// 0x4
 	WALL_SCENERY_IS_BANNER = (1 << 3),		// 0x8  // Probably indicates translucency
 	WALL_SCENERY_IS_DOOR = (1 << 4),		// 0x10
@@ -133,6 +147,8 @@ typedef enum {
 } WALL_SCENERY_FLAGS;
 
 typedef enum {
+	WALL_SCENERY_2_NO_SELECT_PRIMARY_COLOUR = (1 << 0),		// 0x1
+	// Flags 2 and 3 are the door sound type
 	WALL_SCENERY_2_FLAG4 = (1 << 3),		// 0x8
 	WALL_SCENERY_2_FLAG5 = (1 << 4),		// 0x10
 } WALL_SCENERY_2_FLAGS;

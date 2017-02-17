@@ -1076,7 +1076,7 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
 		if ((mapElement->properties.surface.terrain & 0xE0) == 0) {
 			if ((mapElement->type & 0x3) == 0) {
 				if (zoomLevel == 0) {
-					if ((gCurrentViewportFlags & 0x1001) == 0) {
+					if ((gCurrentViewportFlags & (VIEWPORT_FLAG_HIDE_BASE | VIEWPORT_FLAG_UNDERGROUND_INSIDE)) == 0) {
 						branch = mapElement->properties.surface.grass_length & 0x7;
 					}
 				}

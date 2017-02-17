@@ -19,7 +19,7 @@
     <TestConfig Condition="'$(Configuration)'=='DebugTests' OR '$(Configuration)'=='ReleaseTests'">true</TestConfig>
     <GIT_COMMIT_SHA1_SHORT Condition="'$(GIT_COMMIT_SHA1)'!=''">$(GIT_COMMIT_SHA1.Substring(0, 7))</GIT_COMMIT_SHA1_SHORT>
 
-    <Version>0.0.6.0</Version>
+    <Version>0.0.7</Version>
     <VersionExtra Condition="'$(GIT_BRANCH)'!=''">-$(GIT_BRANCH)-$(GIT_COMMIT_SHA1_SHORT)</VersionExtra>
     <VersionExtra Condition="'$(GIT_TAG)'!=''"></VersionExtra>
     <TargetLibsVersion>11</TargetLibsVersion>
@@ -94,7 +94,6 @@
     <PublishItems Include="$(OutputDll)" />
     <PublishItems Include="$(TargetDir)data" />
     <PublishItems Include="$(DistDir)changelog.txt" />
-    <PublishItems Include="$(DistDir)known_issues.txt" />
     <PublishItems Include="$(DistDir)readme.txt" />
     <PublishItems Include="$(RootDir)contributors.md" />
     <PublishItems Include="$(RootDir)licence.txt" />
@@ -265,6 +264,7 @@
     <!-- Create the installer -->
     <Message Text="Building Windows Installer (NSIS script)" Importance="high" />
     <Exec Command="makensis /DOUTFILE=$(PublishInstallerExe) ^
+         /DAPPV_MAIN=$(Version) ^
          /DAPPV_EXTRA=$(VersionExtra) ^
          /DPLATFORM=$(Platform) ^
          $(NsisScript)"

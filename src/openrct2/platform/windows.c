@@ -30,10 +30,12 @@
 #include <shlobj.h>
 #include <SDL_syswm.h>
 #include <sys/stat.h>
-#include "../OpenRCT2.h"
-#include "../localisation/language.h"
-#include "../util/util.h"
+
 #include "../config.h"
+#include "../localisation/language.h"
+#include "../OpenRCT2.h"
+#include "../util/util.h"
+#include "../Version.h"
 #include "platform.h"
 
 // Native resource IDs
@@ -510,17 +512,17 @@ void platform_resolve_openrct_data_path()
 	wchar_t wOutPath[MAX_PATH];
 
 	if (gCustomOpenrctDataPath[0] != 0) {
-		wchar_t *customUserDataPathW = utf8_to_widechar(gCustomOpenrctDataPath);
-		if (GetFullPathNameW(customUserDataPathW, countof(wOutPath), wOutPath, NULL) == 0) {
+		wchar_t *customOpenrctDataPathW = utf8_to_widechar(gCustomOpenrctDataPath);
+		if (GetFullPathNameW(customOpenrctDataPathW, countof(wOutPath), wOutPath, NULL) == 0) {
 			log_fatal("Unable to resolve path '%s'.", gCustomOpenrctDataPath);
 			exit(-1);
 		}
 		utf8 *outPathTemp = widechar_to_utf8(wOutPath);
-		safe_strcpy(_userDataDirectoryPath, outPathTemp, sizeof(_userDataDirectoryPath));
+		safe_strcpy(_openrctDataDirectoryPath, outPathTemp, sizeof(_openrctDataDirectoryPath));
 		free(outPathTemp);
-		free(customUserDataPathW);
+		free(customOpenrctDataPathW);
 
-		path_end_with_separator(_userDataDirectoryPath, sizeof(_userDataDirectoryPath));
+		path_end_with_separator(_openrctDataDirectoryPath, sizeof(_openrctDataDirectoryPath));
 		return;
 	}
 	char buffer[MAX_PATH];
@@ -590,7 +592,7 @@ void platform_get_user_directory(utf8 *outPath, const utf8 *subDirectory, size_t
 	}
 }
 
-void platform_show_messagebox(utf8 *message)
+void platform_show_messagebox(const utf8 * message)
 {
 	MessageBoxA(windows_get_window_handle(), message, "OpenRCT2", MB_OK);
 }

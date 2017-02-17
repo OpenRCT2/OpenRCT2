@@ -47,7 +47,7 @@ void LargeSceneryObject::ReadLegacy(IReadObjectContext * context, IStream * stre
     rct_object_entry sgEntry = stream->ReadValue<rct_object_entry>();
     SetPrimarySceneryGroup(&sgEntry);
 
-    if (_legacyType.large_scenery.flags & (1 << 2))
+    if (_legacyType.large_scenery.flags & LARGE_SCENERY_FLAG_3D_TEXT)
     {
         _3dFont = Memory::Allocate<rct_large_scenery_text>();
         stream->Read(_3dFont);
@@ -83,16 +83,16 @@ void LargeSceneryObject::Load()
 
     _legacyType.large_scenery.tiles = _tiles;
 
-    if (_legacyType.large_scenery.flags & (1 << 2))
+    if (_legacyType.large_scenery.flags & LARGE_SCENERY_FLAG_3D_TEXT)
     {
         _legacyType.large_scenery.text_image = _legacyType.image;
-        if (_3dFont->var_C & (1 << 0))
+        if (_3dFont->flags & LARGE_SCENERY_TEXT_FLAG_VERTICAL)
         {
-            _legacyType.image += (_3dFont->var_C >> 8) * 2;
+            _legacyType.image += _3dFont->var_D * 2;
         }
         else
         {
-            _legacyType.image += (_3dFont->var_C >> 8) * 4;
+            _legacyType.image += _3dFont->var_D * 4;
         }
     }
 }

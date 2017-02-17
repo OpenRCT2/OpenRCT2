@@ -22,10 +22,11 @@
 #include "../localisation/localisation.h"
 #include "../network/http.h"
 #include "../network/network.h"
+#include "../network/ServerList.h"
 #include "../sprites.h"
+#include "../util/util.h"
 #include "../windows/dropdown.h"
 #include "../windows/tooltip.h"
-#include "../util/util.h"
 #include "error.h"
 
 #define WWIDTH_MIN 500
@@ -33,17 +34,6 @@
 #define WWIDTH_MAX 1200
 #define WHEIGHT_MAX 800
 #define ITEM_HEIGHT (3 + 9 + 3)
-
-typedef struct server_entry {
-	char *address;
-	utf8 *name;
-	bool requiresPassword;
-	utf8 *description;
-	char *version;
-	bool favourite;
-	uint8 players;
-	uint8 maxplayers;
-} server_entry;
 
 static char _playerName[32 + 1];
 static server_entry *_serverEntries = NULL;
@@ -492,95 +482,29 @@ static void server_list_get_item_button(sint32 buttonIndex, sint32 x, sint32 y, 
 	*outY = y + 2;
 }
 
-static char *freadstralloc(SDL_RWops *file)
-{
-	sint32 capacity = 64;
-	char *buffer = malloc(capacity);
-
-	sint32 length = 0;
-	sint32 c;
-	for (;;) {
-		c = 0;
-		if (SDL_RWread(file, &c, 1, 1) != 1) break;
-		if (c == 0) break;
-
-		if (length >= capacity) {
-			capacity *= 2;
-			void *new_memory = realloc(buffer, capacity);
-			if (new_memory == NULL) {
-				log_error("Failed to reallocate memory for file buffer");
-				return NULL;
-			}
-			buffer = (char*)new_memory;
-		}
-		buffer[length] = c;
-		length++;
-	}
-
-	void *new_memory = realloc(buffer, length + 1);
-	if (new_memory == NULL) {
-		log_error("Failed to reallocate memory for file buffer");
-		return NULL;
-	}
-	buffer = (char*)new_memory;
-	buffer[length] = 0;
-	return buffer;
-}
-
 static void server_list_load_server_entries()
 {
-	utf8 path[MAX_PATH];
-	SDL_RWops *file;
-
-	platform_get_user_directory(path, NULL, sizeof(path));
-	safe_strcat_path(path, "servers.cfg", sizeof(path));
-
-	file = SDL_RWFromFile(path, "rb");
-	if (file == NULL) {
-		return;
-	}
-
 	SDL_LockMutex(_mutex);
-	dispose_server_entry_list();
 
-	// Read number of server entries
-	SDL_RWread(file, &_numServerEntries, sizeof(uint32), 1);
-	_serverEntries = malloc(_numServerEntries * sizeof(server_entry));
+	uint32 numEntries;
+	server_entry * entries;
+	if (server_list_read(&numEntries, &entries)) {
+		dispose_server_entry_list();
 
-	// Load each server entry
-	for (sint32 i = 0; i < _numServerEntries; i++) {
-		server_entry *serverInfo = &_serverEntries[i];
+		_numServerEntries = numEntries;
+		_serverEntries = entries;
 
-		serverInfo->address = freadstralloc(file);
-		serverInfo->name = freadstralloc(file);
-		serverInfo->requiresPassword = false;
-		serverInfo->description = freadstralloc(file);
-		serverInfo->version = _strdup("");
-		serverInfo->favourite = true;
-		serverInfo->players = 0;
-		serverInfo->maxplayers = 0;
+		sort_servers();
 	}
-	SDL_RWclose(file);
 
-	sort_servers();
 	SDL_UnlockMutex(_mutex);
 }
 
 static void server_list_save_server_entries()
 {
-	utf8 path[MAX_PATH];
-	SDL_RWops *file;
-
-	platform_get_user_directory(path, NULL, sizeof(path));
-	safe_strcat_path(path, "servers.cfg", sizeof(path));
-
-	file = SDL_RWFromFile(path, "wb");
-	if (file == NULL) {
-		log_error("Unable to save servers.");
-		return;
-	}
-
 	SDL_LockMutex(_mutex);
+
+	// Get total number of favourite servers
 	sint32 count = 0;
 	for (sint32 i = 0; i < _numServerEntries; i++) {
 		server_entry *serverInfo = &_serverEntries[i];
@@ -588,20 +512,23 @@ static void server_list_save_server_entries()
 			count++;
 		}
 	}
-	// Write number of server entries
-	SDL_RWwrite(file, &count, sizeof(uint32), 1);
 
-	// Write each server entry
+	// Create temporary list of just favourite servers
+	server_entry * entries = calloc(count, sizeof(server_entry));
+	sint32 eindex = 0;
 	for (sint32 i = 0; i < _numServerEntries; i++) {
 		server_entry *serverInfo = &_serverEntries[i];
 		if (serverInfo->favourite) {
-			SDL_RWwrite(file, serverInfo->address, strlen(serverInfo->address) + 1, 1);
-			SDL_RWwrite(file, serverInfo->name, strlen(serverInfo->name) + 1, 1);
-			SDL_RWwrite(file, serverInfo->description, strlen(serverInfo->description) + 1, 1);
+			entries[eindex++] = *serverInfo;
 		}
 	}
 
-	SDL_RWclose(file);
+	// Save servers
+	server_list_write(count, entries);
+
+	// Free temporary list
+	free(entries);
+
 	SDL_UnlockMutex(_mutex);
 }
 
