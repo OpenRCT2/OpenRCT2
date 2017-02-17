@@ -3040,7 +3040,7 @@ STR_3060    :Ice blocks
 STR_3061    :Wooden fences
 STR_3062    :{SMALLFONT}{BLACK}Standard roller coaster track
 STR_3063    :{SMALLFONT}{BLACK}Water channel (track submerged)
-STR_3064    :Beginner Parks
+STR_3064    :Russian Hackers
 STR_3065    :Challenging Parks
 STR_3066    :Expert Parks
 STR_3067    :{OPENQUOTES}Real{ENDQUOTES} Parks
