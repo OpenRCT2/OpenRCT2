@@ -1375,16 +1375,24 @@ static sint32 checkForPath(rct_peep *peep){
 	return 0;
 }
 
+static uint8 peep_get_action_sprite_type(rct_peep* peep)
+{
+	if (peep->action >= PEEP_ACTION_NONE_1){ // PEEP_ACTION_NONE_1 or PEEP_ACTION_NONE_2
+		return PeepSpecialSpriteToSpriteTypeMap[peep->special_sprite];
+	} else if (peep->action < countof(PeepActionToSpriteTypeMap)) {
+		return PeepActionToSpriteTypeMap[peep->action];
+	} else {
+		openrct2_assert(peep->action >= countof(PeepActionToSpriteTypeMap) && peep->action < PEEP_ACTION_NONE_1,
+						"Invalid peep action %u", peep->action);
+		return 0;
+	}
+}
+
 void sub_693B58(rct_peep* peep){
-	uint8 action_sprite_type;
 	if (peep->sprite_type >= countof(g_peep_animation_entries)) {
 		return;
 	}
-	if (peep->action >= PEEP_ACTION_NONE_1){ // PEEP_ACTION_NONE_1 or PEEP_ACTION_NONE_2
-		action_sprite_type = PeepSpecialSpriteToSpriteTypeMap[peep->special_sprite];
-	} else {
-		action_sprite_type = PeepActionToSpriteTypeMap[peep->action];
-	}
+	uint8 action_sprite_type = peep_get_action_sprite_type(peep);
 	if (action_sprite_type == peep->action_sprite_type)return;
 
 	invalidate_sprite_2((rct_sprite*)peep);
@@ -9913,10 +9921,17 @@ static sint32 guest_path_find_park_entrance(rct_peep* peep, rct_map_element *map
  *
  *  rct2: 0x006A72C5
  *  param dist is not used.
+ *
+ * In case where the map element at (x, y) is invalid or there is no entrance
+ * or queue leading to it the function will not update its arguments.
  */
 static void get_ride_queue_end(sint16 *x, sint16 *y, sint16 *z){
 	rct_xy16 result = { 0, 0 };
 	rct_map_element *mapElement = map_get_first_element_at(*x / 32, *y / 32);
+
+	if (mapElement == NULL) {
+		return;
+	}
 
 	bool found = false;
 	do{

@@ -28,6 +28,7 @@
 #include "../world/map_animation.h"
 #include "../world/scenery.h"
 #include "../world/sprite.h"
+#include "../util/util.h"
 #include "cable_lift.h"
 #include "ride.h"
 #include "ride_data.h"
@@ -1244,7 +1245,7 @@ static void vehicle_update_measurements(rct_vehicle *vehicle)
 		}
 
 		if (ride->average_speed_test_timeout == 0 && velocity > 0x8000){
-			ride->average_speed += velocity;
+			ride->average_speed = add_clamp_sint32(ride->average_speed, velocity);
 			ride->time[test_segment]++;
 		}
 

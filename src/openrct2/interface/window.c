@@ -15,6 +15,7 @@
 #pragma endregion
 
 #include "../audio/audio.h"
+#include "../core/Guard.hpp"
 #include "../drawing/drawing.h"
 #include "../editor.h"
 #include "../game.h"
@@ -1274,12 +1275,13 @@ void window_push_others_below(rct_window *w1)
  */
 rct_window *window_get_main()
 {
-	rct_window* w;
+	rct_window* w = NULL;
 
 	for (w = g_window_list; w < RCT2_NEW_WINDOW; w++)
 		if (w->classification == WC_MAIN_WINDOW)
 			return w;
 
+	openrct2_assert(w != NULL, "Failed to get main window");
 	return NULL;
 }
 

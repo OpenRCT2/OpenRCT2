@@ -21,6 +21,7 @@
 #include "localisation/date.h"
 #include "management/finance.h"
 #include "network/network.h"
+#include "util/util.h"
 #include "world/climate.h"
 #include "world/footpath.h"
 #include "world/scenery.h"
@@ -235,8 +236,7 @@ static void cheat_no_money(bool enabled)
 
 static void cheat_set_money(money32 amount)
 {
-	money32 money = clamp(INT_MIN, amount, INT_MAX);
-	gCashEncrypted = ENCRYPT_MONEY(money);
+	gCashEncrypted = ENCRYPT_MONEY(amount);
 
 	window_invalidate_by_class(WC_FINANCES);
 	window_invalidate_by_class(WC_BOTTOM_TOOLBAR);
@@ -245,19 +245,7 @@ static void cheat_set_money(money32 amount)
 static void cheat_add_money(money32 amount)
 {
 	money32 currentMoney = DECRYPT_MONEY(gCashEncrypted);
-	if (amount >= 0) {
-		if (currentMoney < INT_MAX - amount)
-			currentMoney += amount;
-		else
-			currentMoney = INT_MAX;
-	}
-	else {
-		money32 absAmount = amount * -1;
-		if (currentMoney > INT_MIN + absAmount)
-			currentMoney -= absAmount;
-		else
-			currentMoney = INT_MIN;
-	}
+	currentMoney = add_clamp_money32(currentMoney, amount);
 
 	gCashEncrypted = ENCRYPT_MONEY(currentMoney);
 

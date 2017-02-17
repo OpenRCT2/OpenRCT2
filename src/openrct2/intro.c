@@ -75,8 +75,6 @@ void intro_update()
 
 		break;
 	case INTRO_STATE_DEVELOPER_BEGIN:
-		_introStateCounter += 5;
-
 		// Set the Y for the Chris Sawyer logo
 		_introStateCounter = -116;
 
