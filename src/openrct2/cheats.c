@@ -235,8 +235,7 @@ static void cheat_no_money(bool enabled)
 
 static void cheat_set_money(money32 amount)
 {
-	money32 money = clamp(INT_MIN, amount, INT_MAX);
-	gCashEncrypted = ENCRYPT_MONEY(money);
+	gCashEncrypted = ENCRYPT_MONEY(amount);
 
 	window_invalidate_by_class(WC_FINANCES);
 	window_invalidate_by_class(WC_BOTTOM_TOOLBAR);
