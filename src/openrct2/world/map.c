@@ -1126,7 +1126,7 @@ void game_command_remove_banner(sint32* eax, sint32* ebx, sint32* ecx, sint32* e
 	rct_banner *banner = &gBanners[map_element->properties.banner.index];
 	rct_scenery_entry *scenery_entry = get_banner_entry(banner->type);
 	money32 refund = 0;
-	if (scenery_entry != NULL || scenery_entry != (rct_scenery_entry *)-1) {
+	if (scenery_entry != NULL && scenery_entry != (rct_scenery_entry *)-1) {
 		refund = -((scenery_entry->banner.price * 3) / 4);
 	}
 
