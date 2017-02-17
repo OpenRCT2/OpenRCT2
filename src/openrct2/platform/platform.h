@@ -35,10 +35,6 @@
 #define MAX_PATH 260
 #endif
 
-#ifndef MAX_COMMAND_LENGTH
-#define MAX_COMMAND_LENGTH 2 * MAX_PATH
-#endif
-
 #ifdef __MACOSX__
 #define KEYBOARD_PRIMARY_MODIFIER KMOD_GUI
 #else
