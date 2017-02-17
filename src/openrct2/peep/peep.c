@@ -1382,8 +1382,11 @@ void sub_693B58(rct_peep* peep){
 	}
 	if (peep->action >= PEEP_ACTION_NONE_1){ // PEEP_ACTION_NONE_1 or PEEP_ACTION_NONE_2
 		action_sprite_type = PeepSpecialSpriteToSpriteTypeMap[peep->special_sprite];
-	} else {
+	} else if (peep->action < countof(PeepActionToSpriteTypeMap)) {
 		action_sprite_type = PeepActionToSpriteTypeMap[peep->action];
+	} else {
+		openrct2_assert(peep->action >= countof(PeepActionToSpriteTypeMap) && peep->action < PEEP_ACTION_NONE_1,
+						"Invalid peep action %u", peep->action);
 	}
 	if (action_sprite_type == peep->action_sprite_type)return;
 
