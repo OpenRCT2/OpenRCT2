@@ -9921,6 +9921,10 @@ static void get_ride_queue_end(sint16 *x, sint16 *y, sint16 *z){
 	rct_xy16 result = { 0, 0 };
 	rct_map_element *mapElement = map_get_first_element_at(*x / 32, *y / 32);
 
+	if (mapElement == NULL) {
+		return;
+	}
+
 	bool found = false;
 	do{
 		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_ENTRANCE)
