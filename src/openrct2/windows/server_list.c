@@ -702,7 +702,7 @@ static void fetch_servers()
 	sort_servers();
 	SDL_UnlockMutex(_mutex);
 
-	http_request_t request;
+	http_request_t request = { 0 };
 	request.url = masterServerUrl;
 	request.method = HTTP_METHOD_GET;
 	request.body = NULL;
