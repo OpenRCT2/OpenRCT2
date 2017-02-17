@@ -9921,6 +9921,9 @@ static sint32 guest_path_find_park_entrance(rct_peep* peep, rct_map_element *map
  *
  *  rct2: 0x006A72C5
  *  param dist is not used.
+ *
+ * In case where the map element at (x, y) is invalid or there is no entrance
+ * or queue leading to it the function will not update its arguments.
  */
 static void get_ride_queue_end(sint16 *x, sint16 *y, sint16 *z){
 	rct_xy16 result = { 0, 0 };
