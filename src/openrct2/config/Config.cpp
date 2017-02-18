@@ -17,6 +17,7 @@
 #include <memory>
 #include "../core/Console.hpp"
 #include "../core/Exception.hpp"
+#include "../drawing/IDrawingEngine.h"
 #include "../interface/window.h"
 #include "../network/network.h"
 #include "Config.h"
@@ -25,7 +26,7 @@
 
 extern "C"
 {
-    #include "../config.h"
+    #include "../localisation/currency.h"
     #include "../localisation/language.h"
 }
 
@@ -196,66 +197,66 @@ namespace Config
     {
         auto model = &gConfigGeneral;
         writer->WriteSection("general");
-        writer->WriteBoolean("always_show_gridlines", model->always_show_gridlines != 0);
+        writer->WriteBoolean("always_show_gridlines", model->always_show_gridlines);
         writer->WriteSint32("autosave", model->autosave_frequency);
-        writer->WriteBoolean("confirmation_prompt", model->confirmation_prompt != 0);
-        writer->WriteBoolean("construction_marker_colour", model->construction_marker_colour != 0);
+        writer->WriteBoolean("confirmation_prompt", model->confirmation_prompt);
+        writer->WriteBoolean("construction_marker_colour", model->construction_marker_colour);
         writer->WriteEnum<sint32>("currency_format", model->currency_format, Enum_Currency);
-        writer->WriteSint32("custom_currency_rate", model->custom_currency_rate != 0);
+        writer->WriteSint32("custom_currency_rate", model->custom_currency_rate);
         writer->WriteEnum<sint32>("custom_currency_affix", model->custom_currency_affix, Enum_CurrencySymbolAffix);
         writer->WriteString("custom_currency_symbol", model->custom_currency_symbol);
-        writer->WriteBoolean("edge_scrolling", model->edge_scrolling != 0);
+        writer->WriteBoolean("edge_scrolling", model->edge_scrolling);
         writer->WriteSint32("fullscreen_mode", model->fullscreen_mode);
         writer->WriteSint32("fullscreen_height", model->fullscreen_height);
         writer->WriteSint32("fullscreen_width", model->fullscreen_width);
         writer->WriteString("rct1_path", model->rct1_path);
         writer->WriteString("game_path", model->rct2_path);
-        writer->WriteBoolean("landscape_smoothing", model->landscape_smoothing != 0);
+        writer->WriteBoolean("landscape_smoothing", model->landscape_smoothing);
         writer->WriteEnum<sint32>("language", model->language, Enum_LanguageEnum);
         writer->WriteEnum<sint32>("measurement_format", model->measurement_format, Enum_MeasurementFormat);
-        writer->WriteBoolean("play_intro", model->play_intro != 0);
-        writer->WriteBoolean("save_plugin_data", model->save_plugin_data != 0);
-        writer->WriteBoolean("debugging_tools", model->debugging_tools != 0);
-        writer->WriteBoolean("show_height_as_units", model->show_height_as_units != 0);
+        writer->WriteBoolean("play_intro", model->play_intro);
+        writer->WriteBoolean("save_plugin_data", model->save_plugin_data);
+        writer->WriteBoolean("debugging_tools", model->debugging_tools);
+        writer->WriteBoolean("show_height_as_units", model->show_height_as_units);
         writer->WriteEnum<sint32>("temperature_format", model->temperature_format, Enum_Temperature);
         writer->WriteSint32("window_height", model->window_height);
         writer->WriteSint32("window_snap_proximity", model->window_snap_proximity);
         writer->WriteSint32("window_width", model->window_width);
         writer->WriteEnum<sint32>("drawing_engine", model->drawing_engine, Enum_DrawingEngine);
-        writer->WriteBoolean("uncap_fps", model->uncap_fps != 0);
-        writer->WriteBoolean("test_unfinished_tracks", model->test_unfinished_tracks != 0);
-        writer->WriteBoolean("no_test_crashes", model->no_test_crashes != 0);
+        writer->WriteBoolean("uncap_fps", model->uncap_fps);
+        writer->WriteBoolean("test_unfinished_tracks", model->test_unfinished_tracks);
+        writer->WriteBoolean("no_test_crashes", model->no_test_crashes);
         writer->WriteEnum<sint32>("date_format", model->date_format, Enum_DateFormat);
-        writer->WriteBoolean("auto_staff", model->auto_staff_placement != 0);
-        writer->WriteBoolean("handymen_mow_default", model->handymen_mow_default != 0);
+        writer->WriteBoolean("auto_staff", model->auto_staff_placement);
+        writer->WriteBoolean("handymen_mow_default", model->handymen_mow_default);
         writer->WriteSint32("default_inspection_interval", model->default_inspection_interval);
         writer->WriteString("last_run_version", model->last_run_version);
-        writer->WriteBoolean("invert_viewport_drag", model->invert_viewport_drag != 0);
+        writer->WriteBoolean("invert_viewport_drag", model->invert_viewport_drag);
         writer->WriteSint32("load_save_sort", model->load_save_sort);
-        writer->WriteBoolean("minimize_fullscreen_focus_loss", model->minimize_fullscreen_focus_loss != 0);
-        writer->WriteBoolean("day_night_cycle", model->day_night_cycle != 0);
-        writer->WriteBoolean("enable_light_fx", model->enable_light_fx != 0);
-        writer->WriteBoolean("upper_case_banners", model->upper_case_banners != 0);
-        writer->WriteBoolean("disable_lightning_effect", model->disable_lightning_effect != 0);
-        writer->WriteBoolean("allow_loading_with_incorrect_checksum", model->allow_loading_with_incorrect_checksum != 0);
-        writer->WriteBoolean("steam_overlay_pause", model->steam_overlay_pause != 0);
+        writer->WriteBoolean("minimize_fullscreen_focus_loss", model->minimize_fullscreen_focus_loss);
+        writer->WriteBoolean("day_night_cycle", model->day_night_cycle);
+        writer->WriteBoolean("enable_light_fx", model->enable_light_fx);
+        writer->WriteBoolean("upper_case_banners", model->upper_case_banners);
+        writer->WriteBoolean("disable_lightning_effect", model->disable_lightning_effect);
+        writer->WriteBoolean("allow_loading_with_incorrect_checksum", model->allow_loading_with_incorrect_checksum);
+        writer->WriteBoolean("steam_overlay_pause", model->steam_overlay_pause);
         writer->WriteFloat("window_scale", model->window_scale);
         writer->WriteSint32("scale_quality", model->scale_quality);
-        writer->WriteBoolean("use_nn_at_integer_scales", model->use_nn_at_integer_scales != 0);
-        writer->WriteBoolean("show_fps", model->show_fps != 0);
-        writer->WriteBoolean("trap_cursor", model->trap_cursor != 0);
-        writer->WriteBoolean("auto_open_shops", model->auto_open_shops != 0);
+        writer->WriteBoolean("use_nn_at_integer_scales", model->use_nn_at_integer_scales);
+        writer->WriteBoolean("show_fps", model->show_fps);
+        writer->WriteBoolean("trap_cursor", model->trap_cursor);
+        writer->WriteBoolean("auto_open_shops", model->auto_open_shops);
         writer->WriteSint32("scenario_select_mode", model->scenario_select_mode);
-        writer->WriteBoolean("scenario_unlocking_enabled", model->scenario_unlocking_enabled != 0);
-        writer->WriteBoolean("scenario_hide_mega_park", model->scenario_hide_mega_park != 0);
+        writer->WriteBoolean("scenario_unlocking_enabled", model->scenario_unlocking_enabled);
+        writer->WriteBoolean("scenario_hide_mega_park", model->scenario_hide_mega_park);
         writer->WriteString("last_game_directory", model->last_save_game_directory);
         writer->WriteString("last_landscape_directory", model->last_save_landscape_directory);
         writer->WriteString("last_scenario_directory", model->last_save_scenario_directory);
         writer->WriteString("last_track_directory", model->last_save_track_directory);
         writer->WriteSint32("window_limit", model->window_limit);
-        writer->WriteBoolean("zoom_to_cursor", model->zoom_to_cursor != 0);
-        writer->WriteBoolean("render_weather_effects", model->render_weather_effects != 0);
-        writer->WriteBoolean("render_weather_gloom", model->render_weather_gloom != 0);
+        writer->WriteBoolean("zoom_to_cursor", model->zoom_to_cursor);
+        writer->WriteBoolean("render_weather_effects", model->render_weather_effects);
+        writer->WriteBoolean("render_weather_gloom", model->render_weather_gloom);
     }
 
     static void ReadInterface(IIniReader * reader)
@@ -279,12 +280,12 @@ namespace Config
     {
         auto model = &gConfigInterface;
         writer->WriteSection("interface");
-        writer->WriteBoolean("toolbar_show_finances", model->toolbar_show_finances != 0);
-        writer->WriteBoolean("toolbar_show_research", model->toolbar_show_research != 0);
-        writer->WriteBoolean("toolbar_show_cheats", model->toolbar_show_cheats != 0);
-        writer->WriteBoolean("toolbar_show_news", model->toolbar_show_news != 0);
-        writer->WriteBoolean("select_by_track_type", model->select_by_track_type != 0);
-        writer->WriteBoolean("console_small_font", model->console_small_font != 0);
+        writer->WriteBoolean("toolbar_show_finances", model->toolbar_show_finances);
+        writer->WriteBoolean("toolbar_show_research", model->toolbar_show_research);
+        writer->WriteBoolean("toolbar_show_cheats", model->toolbar_show_cheats);
+        writer->WriteBoolean("toolbar_show_news", model->toolbar_show_news);
+        writer->WriteBoolean("select_by_track_type", model->select_by_track_type);
+        writer->WriteBoolean("console_small_font", model->console_small_font);
         writer->WriteString("current_theme", model->current_theme_preset);
         writer->WriteString("current_title_sequence", model->current_title_sequence_preset);
         writer->WriteSint32("object_selection_filter_flags", model->object_selection_filter_flags);
@@ -312,11 +313,11 @@ namespace Config
         writer->WriteSection("sound");
         writer->WriteSint32("master_volume", model->master_volume);
         writer->WriteSint32("title_music", model->title_music);
-        writer->WriteBoolean("sound", model->sound_enabled != 0);
+        writer->WriteBoolean("sound", model->sound_enabled);
         writer->WriteSint32("sound_volume", model->sound_volume);
-        writer->WriteBoolean("ride_music", model->ride_music_enabled != 0);
+        writer->WriteBoolean("ride_music", model->ride_music_enabled);
         writer->WriteSint32("ride_music_volume", model->ride_music_volume);
-        writer->WriteBoolean("audio_focus", model->audio_focus != 0);
+        writer->WriteBoolean("audio_focus", model->audio_focus);
         writer->WriteString("audio_device", model->device);
     }
 
@@ -350,8 +351,8 @@ namespace Config
         writer->WriteString("player_name", model->player_name);
         writer->WriteSint32("default_port", model->default_port);
         writer->WriteString("default_password", model->default_password);
-        writer->WriteBoolean("stay_connected", model->stay_connected != 0);
-        writer->WriteBoolean("advertise", model->advertise != 0);
+        writer->WriteBoolean("stay_connected", model->stay_connected);
+        writer->WriteBoolean("advertise", model->advertise);
         writer->WriteSint32("maxplayers", model->maxplayers);
         writer->WriteString("server_name", model->server_name);
         writer->WriteString("server_description", model->server_description);
@@ -360,8 +361,8 @@ namespace Config
         writer->WriteString("provider_name", model->provider_name);
         writer->WriteString("provider_email", model->provider_email);
         writer->WriteString("provider_website", model->provider_website);
-        writer->WriteBoolean("known_keys_only", model->known_keys_only != 0);
-        writer->WriteBoolean("log_chat", model->log_chat != 0);
+        writer->WriteBoolean("known_keys_only", model->known_keys_only);
+        writer->WriteBoolean("log_chat", model->log_chat);
     }
 
     static void ReadNotifications(IIniReader * reader)
@@ -393,23 +394,23 @@ namespace Config
     {
         auto model = &gConfigNotifications;
         writer->WriteSection("notifications");
-        writer->WriteBoolean("park_award", model->park_award != 0);
-        writer->WriteBoolean("park_marketing_campaign_finished", model->park_marketing_campaign_finished != 0);
-        writer->WriteBoolean("park_warnings", model->park_warnings != 0);
-        writer->WriteBoolean("park_rating_warnings", model->park_rating_warnings != 0);
-        writer->WriteBoolean("ride_broken_down", model->ride_broken_down != 0);
-        writer->WriteBoolean("ride_crashed", model->ride_crashed != 0);
-        writer->WriteBoolean("ride_warnings", model->ride_warnings != 0);
-        writer->WriteBoolean("ride_researched", model->ride_researched != 0);
-        writer->WriteBoolean("guest_warnings", model->guest_warnings != 0);
-        writer->WriteBoolean("guest_lost", model->guest_lost != 0);
-        writer->WriteBoolean("guest_left_park", model->guest_left_park != 0);
-        writer->WriteBoolean("guest_queuing_for_ride", model->guest_queuing_for_ride != 0);
-        writer->WriteBoolean("guest_on_ride", model->guest_on_ride != 0);
-        writer->WriteBoolean("guest_left_ride", model->guest_left_ride != 0);
-        writer->WriteBoolean("guest_bought_item", model->guest_bought_item != 0);
-        writer->WriteBoolean("guest_used_facility", model->guest_used_facility != 0);
-        writer->WriteBoolean("guest_died", model->guest_died != 0);
+        writer->WriteBoolean("park_award", model->park_award);
+        writer->WriteBoolean("park_marketing_campaign_finished", model->park_marketing_campaign_finished);
+        writer->WriteBoolean("park_warnings", model->park_warnings);
+        writer->WriteBoolean("park_rating_warnings", model->park_rating_warnings);
+        writer->WriteBoolean("ride_broken_down", model->ride_broken_down);
+        writer->WriteBoolean("ride_crashed", model->ride_crashed);
+        writer->WriteBoolean("ride_warnings", model->ride_warnings);
+        writer->WriteBoolean("ride_researched", model->ride_researched);
+        writer->WriteBoolean("guest_warnings", model->guest_warnings);
+        writer->WriteBoolean("guest_lost", model->guest_lost);
+        writer->WriteBoolean("guest_left_park", model->guest_left_park);
+        writer->WriteBoolean("guest_queuing_for_ride", model->guest_queuing_for_ride);
+        writer->WriteBoolean("guest_on_ride", model->guest_on_ride);
+        writer->WriteBoolean("guest_left_ride", model->guest_left_ride);
+        writer->WriteBoolean("guest_bought_item", model->guest_bought_item);
+        writer->WriteBoolean("guest_used_facility", model->guest_used_facility);
+        writer->WriteBoolean("guest_died", model->guest_died);
     }
 
     static void ReadTwitch(IIniReader * reader)
@@ -431,11 +432,11 @@ namespace Config
         auto model = &gConfigTwitch;
         writer->WriteSection("twitch");
         writer->WriteString("channel", model->channel);
-        writer->WriteBoolean("follower_peep_names", model->enable_follower_peep_names != 0);
-        writer->WriteBoolean("follower_peep_tracking", model->enable_follower_peep_tracking != 0);
-        writer->WriteBoolean("chat_peep_names", model->enable_chat_peep_names != 0);
-        writer->WriteBoolean("chat_peep_tracking", model->enable_chat_peep_tracking != 0);
-        writer->WriteBoolean("news", model->enable_news != 0);
+        writer->WriteBoolean("follower_peep_names", model->enable_follower_peep_names);
+        writer->WriteBoolean("follower_peep_tracking", model->enable_follower_peep_tracking);
+        writer->WriteBoolean("chat_peep_names", model->enable_chat_peep_names);
+        writer->WriteBoolean("chat_peep_tracking", model->enable_chat_peep_tracking);
+        writer->WriteBoolean("news", model->enable_news);
     }
 
     static void ReadFont(IIniReader * reader)

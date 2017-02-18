@@ -23,6 +23,14 @@
 struct rct_drawpixelinfo;
 interface IDrawingContext;
 
+enum DRAWING_ENGINE
+{
+    DRAWING_ENGINE_NONE = -1,
+    DRAWING_ENGINE_SOFTWARE,
+    DRAWING_ENGINE_SOFTWARE_WITH_HARDWARE_DISPLAY,
+    DRAWING_ENGINE_OPENGL,
+};
+
 enum DRAWING_ENGINE_FLAGS
 {
     DEF_NONE = 0,
