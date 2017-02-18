@@ -20,7 +20,7 @@
 #include "../../world/scenery.h"
 #include "../../game.h"
 #include "../../ride/track.h"
-#include "../../config.h"
+#include "../../config/Config.h"
 #include "../../localisation/localisation.h"
 #include "../../interface/colour.h"
 #include "../../interface/viewport.h"

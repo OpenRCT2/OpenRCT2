@@ -21,7 +21,6 @@
 #include "../management/finance.h"
 #include "../management/research.h"
 #include "../object.h"
-#include "../platform/platform.h"
 #include "../rct12.h"
 #include "../rct2.h"
 #include "../rct2/addresses.h"
@@ -382,7 +381,7 @@ extern rct_s6_info gS6Info;
 extern char gScenarioName[64];
 extern char gScenarioDetails[256];
 extern char gScenarioCompletedBy[32];
-extern char gScenarioSavePath[MAX_PATH];
+extern char gScenarioSavePath[260];
 extern char gScenarioExpansionPacks[3256];
 extern sint32 gFirstTimeSave;
 extern uint16 gSavedAge;

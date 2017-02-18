@@ -20,10 +20,10 @@
 #include "../core/Memory.hpp"
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
-#include "../interface/keyboard_shortcut.h"
 
 extern "C"
 {
+    #include "../interface/keyboard_shortcut.h"
     #include "../platform/platform.h"
 }
 

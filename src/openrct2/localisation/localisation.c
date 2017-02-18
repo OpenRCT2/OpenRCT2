@@ -23,7 +23,7 @@
 #include <errno.h>
 #endif // __WINDOWS__
 
-#include "../config.h"
+#include "../config/Config.h"
 #include "../game.h"
 #include "../util/util.h"
 #include "date.h"

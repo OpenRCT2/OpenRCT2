@@ -38,8 +38,6 @@ typedef struct shortcut_entry {
 	uint8 modifier;
 } shortcut_entry;
 
-extern uint16 gShortcutKeys[SHORTCUT_COUNT];
-
 enum {
 	SHORTCUT_CLOSE_TOP_MOST_WINDOW,
 	SHORTCUT_CLOSE_ALL_FLOATING_WINDOWS,
@@ -96,5 +94,7 @@ enum {
 
 	SHORTCUT_COUNT
 };
+
+extern uint16 gShortcutKeys[SHORTCUT_COUNT];
 
 #endif

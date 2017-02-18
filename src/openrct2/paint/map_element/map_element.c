@@ -21,7 +21,7 @@
 #include "../../ride/ride_data.h"
 #include "../../ride/track_data.h"
 #include "../../ride/track_paint.h"
-#include "../../config.h"
+#include "../../config/Config.h"
 #include "../../world/sprite.h"
 #include "../../world/banner.h"
 #include "../../world/entrance.h"

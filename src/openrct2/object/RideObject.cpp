@@ -23,7 +23,7 @@
 
 extern "C"
 {
-    #include "../config.h"
+    #include "../config/Config.h"
     #include "../drawing/drawing.h"
     #include "../localisation/localisation.h"
     #include "../rct1.h"

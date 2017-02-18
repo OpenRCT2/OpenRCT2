@@ -15,7 +15,8 @@
 #pragma endregion
 
 #include "../audio/audio.h"
-#include "../config.h"
+#include "../config/Config.h"
+#include "../drawing/IDrawingEngine.h"
 #include "../editor.h"
 #include "../interface/themes.h"
 #include "../interface/widget.h"

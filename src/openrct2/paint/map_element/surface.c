@@ -15,7 +15,7 @@
 #pragma endregion
 
 #include "../../cheats.h"
-#include "../../config.h"
+#include "../../config/Config.h"
 #include "../../interface/viewport.h"
 #include "../../peep/staff.h"
 #include "../../rct2.h"

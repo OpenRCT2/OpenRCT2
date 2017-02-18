@@ -17,7 +17,7 @@
 #include "../rct2/addresses.h"
 #include "../audio/audio.h"
 #include "../cheats.h"
-#include "../config.h"
+#include "../config/Config.h"
 #include "../game.h"
 #include "../interface/Cursors.h"
 #include "../interface/window.h"

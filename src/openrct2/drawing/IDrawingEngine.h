@@ -20,9 +20,6 @@
 
 #include <SDL_video.h>
 
-struct rct_drawpixelinfo;
-interface IDrawingContext;
-
 enum DRAWING_ENGINE
 {
     DRAWING_ENGINE_NONE = -1,
@@ -40,6 +37,11 @@ enum DRAWING_ENGINE_FLAGS
      */
     DEF_DIRTY_OPTIMISATIONS = 1 << 0,
 };
+
+#ifdef __cplusplus
+
+struct rct_drawpixelinfo;
+interface IDrawingContext;
 
 interface IDrawingEngine
 {
@@ -81,3 +83,5 @@ interface IRainDrawer
                       sint32 xStart,
                       sint32 yStart) abstract;
 };
+
+#endif

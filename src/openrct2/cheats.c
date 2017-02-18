@@ -15,7 +15,7 @@
 #pragma endregion
 
 #include "cheats.h"
-#include "config.h"
+#include "config/Config.h"
 #include "game.h"
 #include "interface/window.h"
 #include "localisation/date.h"

@@ -23,7 +23,7 @@
 
 extern "C"
 {
-    #include "../../config.h"
+    #include "../../config/Config.h"
     #include "../../game.h"
     #include "../../interface/screenshot.h"
     #include "../../interface/viewport.h"

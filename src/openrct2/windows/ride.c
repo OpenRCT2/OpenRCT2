@@ -16,7 +16,7 @@
 
 #include "../audio/audio.h"
 #include "../cheats.h"
-#include "../config.h"
+#include "../config/Config.h"
 #include "../game.h"
 #include "../input.h"
 #include "../interface/themes.h"

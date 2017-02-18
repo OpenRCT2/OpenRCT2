@@ -33,6 +33,7 @@ extern "C"
     #include "../localisation/currency.h"
     #include "../localisation/date.h"
     #include "../localisation/language.h"
+    #include "../platform/platform.h"
     #include "../scenario/scenario.h"
 }
 
@@ -587,6 +588,14 @@ namespace Config
 
 extern "C"
 {
+    GeneralConfiguration         gConfigGeneral;
+    InterfaceConfiguration       gConfigInterface;
+    SoundConfiguration           gConfigSound;
+    TwitchConfiguration          gConfigTwitch;
+    NetworkConfiguration         gConfigNetwork;
+    NotificationConfiguration    gConfigNotifications;
+    FontConfiguration            gConfigFonts;
+
     void config_set_defaults()
     {
         Config::SetDefaults();

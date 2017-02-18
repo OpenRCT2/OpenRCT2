@@ -24,7 +24,7 @@
 
 extern "C"
 {
-    #include "../config.h"
+    #include "../config/Config.h"
     #include "../rct2/addresses.h"
     #include "../util/util.h"
     #include "drawing.h"

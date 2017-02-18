@@ -33,7 +33,7 @@
 #include <fnmatch.h>
 #include <locale.h>
 
-#include "../config.h"
+#include "../config/Config.h"
 #include "../localisation/language.h"
 #include "../localisation/string_ids.h"
 #include "../util/util.h"
