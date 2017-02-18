@@ -22,13 +22,6 @@
 #include "platform/platform.h"
 
 enum {
-	CONFIG_FLAG_ALWAYS_SHOW_GRIDLINES = (1 << 0),
-	CONFIG_FLAG_SHOW_HEIGHT_AS_UNITS = (1 << 1),
-	CONFIG_FLAG_DISABLE_SMOOTH_LANDSCAPE = (1 << 2),
-	CONFIG_FLAG_SAVE_PLUGIN_DATA = (1 << 3)
-};
-
-enum {
 	SHORTCUT_CLOSE_TOP_MOST_WINDOW,
 	SHORTCUT_CLOSE_ALL_FLOATING_WINDOWS,
 	SHORTCUT_CANCEL_CONSTRUCTION_MODE,
@@ -98,15 +91,10 @@ void config_release();
 bool config_open_default();
 bool config_save_default();
 
-uint16 getLanguage();
-
 void config_reset_shortcut_keys();
 bool config_shortcut_keys_load();
 bool config_shortcut_keys_save();
 
 bool config_find_or_browse_install_directory();
-
-void title_sequences_set_default();
-void title_sequences_load_presets();
 
 #endif

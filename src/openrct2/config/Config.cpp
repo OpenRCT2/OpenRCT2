@@ -27,7 +27,9 @@
 extern "C"
 {
     #include "../localisation/currency.h"
+    #include "../localisation/date.h"
     #include "../localisation/language.h"
+    #include "../scenario/scenario.h"
 }
 
 namespace Config
@@ -72,10 +74,10 @@ namespace Config
 
     static auto Enum_DateFormat = ConfigEnum<sint32>(
     {
-        ConfigEnumEntry<sint32>("DD/MM/YY", DATE_FORMAT_DMY),
-        ConfigEnumEntry<sint32>("MM/DD/YY", DATE_FORMAT_MDY),
-        ConfigEnumEntry<sint32>("YY/MM/DD", DATE_FORMAT_YMD),
-        ConfigEnumEntry<sint32>("YY/DD/MM", DATE_FORMAT_YDM),
+        ConfigEnumEntry<sint32>("DD/MM/YY", DATE_FORMAT_DAY_MONTH_YEAR),
+        ConfigEnumEntry<sint32>("MM/DD/YY", DATE_FORMAT_MONTH_DAY_YEAR),
+        ConfigEnumEntry<sint32>("YY/MM/DD", DATE_FORMAT_YEAR_MONTH_DAY),
+        ConfigEnumEntry<sint32>("YY/DD/MM", DATE_FORMAT_YEAR_DAY_MONTH),
     });
 
     static auto Enum_DrawingEngine = ConfigEnum<sint32>(
@@ -156,7 +158,7 @@ namespace Config
             model->test_unfinished_tracks = reader->GetBoolean("test_unfinished_tracks", false);
 
             model->no_test_crashes = reader->GetBoolean("no_test_crashes", false);
-            model->date_format = reader->GetEnum<sint32>("date_format", DATE_FORMAT_DMY, Enum_DateFormat);
+            model->date_format = reader->GetEnum<sint32>("date_format", DATE_FORMAT_DAY_MONTH_YEAR, Enum_DateFormat);
             model->auto_staff_placement = reader->GetBoolean("auto_staff", true);
             model->handymen_mow_default = reader->GetBoolean("handymen_mow_default", false);
             model->default_inspection_interval = reader->GetSint32("default_inspection_interval", 2);
