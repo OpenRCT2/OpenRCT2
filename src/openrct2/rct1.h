@@ -33,7 +33,6 @@
 #define RCT1_MAX_MAP_SIZE             128
 #define RCT1_MAX_RIDES_IN_PARK        128
 #define RCT1_RESEARCH_FLAGS_SEPARATOR 0xFF
-#define RCT1_PARK_VALUE_MULTIPLIER    10
 
 #pragma pack(push, 1)
 typedef struct rct1_entrance {
