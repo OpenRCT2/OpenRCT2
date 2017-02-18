@@ -26,6 +26,9 @@ extern "C" {
 
 #include "network.h"
 
+#define ACTION_COOLDOWN_TIME_PLACE_SCENERY	20
+#define ACTION_COOLDOWN_TIME_DEMOLISH_RIDE	1000
+
 rct_peep* _pickup_peep = 0;
 sint32 _pickup_peep_old_x = SPRITE_LOCATION_NULL;
 
@@ -1868,7 +1871,7 @@ void Network::Server_Handle_GAMECMD(NetworkConnection& connection, NetworkPacket
 	// require a small delay in between placing scenery to provide some security, as
 	// cluster mode is a for loop that runs the place_scenery code multiple times.
 	if (commandCommand == GAME_COMMAND_PLACE_SCENERY) {
-		if ((ticks - connection.Player->LastActionTime) < 20) {
+		if ((ticks - connection.Player->LastActionTime) < ACTION_COOLDOWN_TIME_PLACE_SCENERY) {
 			if (!(group->CanPerformCommand(MISC_COMMAND_TOGGLE_SCENERY_CLUSTER))) {
 				Server_Send_SHOWERROR(connection, STR_CANT_DO_THIS, STR_NETWORK_ACTION_RATE_LIMIT_MESSAGE);
 				return;
@@ -1876,9 +1879,9 @@ void Network::Server_Handle_GAMECMD(NetworkConnection& connection, NetworkPacket
 		}
 	}
 	// This is to prevent abuse of demolishing rides. Anyone that is not the server
-	// host will have to wait a specified amount of ticks in between deleting rides.
+	// host will have to wait a small amount of time in between deleting rides.
 	if (commandCommand == GAME_COMMAND_DEMOLISH_RIDE) {
-		if ((ticks - connection.Player->LastDemolishTime) < 1000) {
+		if ((ticks - connection.Player->LastDemolishTime) < ACTION_COOLDOWN_TIME_DEMOLISH_RIDE) {
 			Server_Send_SHOWERROR(connection, STR_CANT_DO_THIS, STR_NETWORK_ACTION_RATE_LIMIT_MESSAGE);
 			return;
 		}
