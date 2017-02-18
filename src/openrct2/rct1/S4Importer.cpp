@@ -227,7 +227,11 @@ public:
 
             dst->objective_type = _s4.scenario_objective_type;
             dst->objective_arg_1 = _s4.scenario_objective_years;
-            dst->objective_arg_2 = _s4.scenario_objective_currency;
+            // RCT1 used another way of calculating park value.
+            if (_s4.scenario_objective_type == OBJECTIVE_PARK_VALUE_BY)
+                dst->objective_arg_2 = CorrectRCT1ParkValue(_s4.scenario_objective_currency);
+            else
+                dst->objective_arg_2 = _s4.scenario_objective_currency;
             dst->objective_arg_3 = _s4.scenario_objective_num_guests;
 
             std::string name = std::string(_s4.scenario_name, sizeof(_s4.scenario_name));
@@ -252,6 +256,11 @@ public:
         }
 
         return result;
+    }
+
+    sint32 CorrectRCT1ParkValue(sint32 oldParkValue)
+    {
+        return oldParkValue * 10;
     }
 
 private:
@@ -1602,7 +1611,7 @@ private:
         gInitialCash = _s4.cash;
 
         gCompanyValue = _s4.company_value;
-        gParkValue = _s4.park_value;
+        gParkValue = CorrectRCT1ParkValue(_s4.park_value);
         gCurrentProfit = _s4.profit;
 
         for (size_t i = 0; i < 128; i++)
@@ -2001,8 +2010,15 @@ private:
     {
         gScenarioObjectiveType = _s4.scenario_objective_type;
         gScenarioObjectiveYear = _s4.scenario_objective_years;
-        gScenarioObjectiveCurrency = _s4.scenario_objective_currency;
         gScenarioObjectiveNumGuests = _s4.scenario_objective_num_guests;
+        // RCT1 used a different way of calculating the park value.
+        // This is corrected here, but since scenario_objective_currency doubles as minimum excitement rating,
+        // we need to check the goal to avoid affecting scenarios like Volcania.
+        if (_s4.scenario_objective_type == OBJECTIVE_PARK_VALUE_BY)
+            gScenarioObjectiveCurrency = CorrectRCT1ParkValue(_s4.scenario_objective_currency);
+        else
+            gScenarioObjectiveCurrency = _s4.scenario_objective_currency;
+
     }
 
     void ImportSavedView()
