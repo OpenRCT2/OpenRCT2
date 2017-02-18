@@ -46,3 +46,4 @@ interface IIniReader
 };
 
 IIniReader * CreateIniReader(const std::string &path);
+IIniReader * CreateDefaultIniReader();

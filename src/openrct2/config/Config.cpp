@@ -17,9 +17,13 @@
 #include <memory>
 #include "../core/Console.hpp"
 #include "../core/Exception.hpp"
+#include "../core/Memory.hpp"
+#include "../core/Path.hpp"
+#include "../core/String.hpp"
 #include "../drawing/IDrawingEngine.h"
 #include "../interface/window.h"
 #include "../network/network.h"
+#include "../OpenRCT2.h"
 #include "Config.h"
 #include "IniReader.h"
 #include "IniWriter.h"
@@ -479,6 +483,26 @@ namespace Config
         writer->WriteSint32("height_big", model->height_big);
     }
 
+    static bool SetDefaults()
+    {
+        try
+        {
+            auto reader = std::unique_ptr<IIniReader>(CreateDefaultIniReader());
+            ReadGeneral(reader.get());
+            ReadInterface(reader.get());
+            ReadSound(reader.get());
+            ReadNetwork(reader.get());
+            ReadNotifications(reader.get());
+            ReadTwitch(reader.get());
+            ReadFont(reader.get());
+            return true;
+        }
+        catch (const Exception &)
+        {
+            return false;
+        }
+    }
+
     static bool ReadFile(const std::string &path)
     {
         try
@@ -520,10 +544,54 @@ namespace Config
             return false;
         }
     }
+
+    /**
+     * Attempts to find the RCT2 installation directory.
+     * This should be created from some other resource when OpenRCT2 grows.
+     * @param resultPath Pointer to where the absolute path of the RCT2 installation directory will be copied to.
+     * @returns 1 if successful, otherwise 0.
+     */
+    static std::string FindRCT2Path()
+    {
+        log_verbose("config_find_rct2_path(...)");
+
+        static const utf8 * searchLocations[] =
+        {
+            "C:\\GOG Games\\RollerCoaster Tycoon 2 Triple Thrill Pack",
+            "C:\\Program Files\\Atari\\RollerCoaster Tycoon 2",
+            "C:\\Program Files\\GalaxyClient\\Games\\RollerCoaster Tycoon 2 Triple Thrill Pack",
+            "C:\\Program Files\\Infogrames\\RollerCoaster Tycoon 2",
+            "C:\\Program Files\\Infogrames Interactive\\RollerCoaster Tycoon 2",
+            "C:\\Program Files\\Steam\\steamapps\\common\\Rollercoaster Tycoon 2",
+            "C:\\Program Files (x86)\\Atari\\RollerCoaster Tycoon 2",
+            "C:\\Program Files (x86)\\GalaxyClient\\Games\\RollerCoaster Tycoon 2 Triple Thrill Pack",
+            "C:\\Program Files (x86)\\Infogrames\\RollerCoaster Tycoon 2",
+            "C:\\Program Files (x86)\\Infogrames Interactive\\RollerCoaster Tycoon 2",
+            "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Rollercoaster Tycoon 2"
+        };
+
+        for (const utf8 * location : searchLocations)
+        {
+            if (platform_original_game_data_exists(location))
+            {
+                return location;
+            }
+        }
+        if (platform_original_game_data_exists(gExePath))
+        {
+            return gExePath;
+        }
+        return std::string();
+    }
 }
 
 extern "C"
 {
+    void config_set_defaults()
+    {
+        Config::SetDefaults();
+    }
+
     bool config_open(const utf8 * path)
     {
         return Config::ReadFile(path);
@@ -532,5 +600,100 @@ extern "C"
     bool config_save(const utf8 * path)
     {
         return Config::WriteFile(path);
+    }
+
+    void config_release()
+    {
+        SafeFree(gConfigGeneral.rct1_path);
+        SafeFree(gConfigGeneral.rct2_path);
+        SafeFree(gConfigGeneral.custom_currency_symbol);
+        SafeFree(gConfigGeneral.last_save_game_directory);
+        SafeFree(gConfigGeneral.last_save_landscape_directory);
+        SafeFree(gConfigGeneral.last_save_scenario_directory);
+        SafeFree(gConfigGeneral.last_save_track_directory);
+        SafeFree(gConfigGeneral.last_run_version);
+        SafeFree(gConfigInterface.current_theme_preset);
+        SafeFree(gConfigInterface.current_title_sequence_preset);
+        SafeFree(gConfigSound.device);
+        SafeFree(gConfigTwitch.channel);
+        SafeFree(gConfigNetwork.player_name);
+        SafeFree(gConfigNetwork.default_password);
+        SafeFree(gConfigNetwork.server_name);
+        SafeFree(gConfigNetwork.server_description);
+        SafeFree(gConfigNetwork.server_greeting);
+        SafeFree(gConfigNetwork.master_server_url);
+        SafeFree(gConfigNetwork.provider_name);
+        SafeFree(gConfigNetwork.provider_email);
+        SafeFree(gConfigNetwork.provider_website);
+        SafeFree(gConfigFonts.file_name);
+        SafeFree(gConfigFonts.font_name);
+    }
+
+    void config_get_default_path(utf8 * outPath, size_t size)
+    {
+        platform_get_user_directory(outPath, nullptr, size);
+        Path::Append(outPath, size, "config.ini");
+    }
+
+    bool config_open_default()
+    {
+        utf8 path[MAX_PATH];
+        config_get_default_path(path, sizeof(path));
+        if (config_open(path))
+        {
+            currency_load_custom_currency_config();
+            return true;
+        }
+        return false;
+    }
+
+    bool config_save_default()
+    {
+        utf8 path[MAX_PATH];
+        config_get_default_path(path, sizeof(path));
+        if (config_save(path))
+        {
+            return true;
+        }
+        return false;
+    }
+
+    bool config_find_or_browse_install_directory()
+    {
+        std::string path = Config::FindRCT2Path();
+        if (!path.empty())
+        {
+            Memory::Free(gConfigGeneral.rct2_path);
+            gConfigGeneral.rct2_path = String::Duplicate(path.c_str());
+        }
+        else
+        {
+            if (gOpenRCT2Headless)
+            {
+                return false;
+            }
+            while (1)
+            {
+                platform_show_messagebox("OpenRCT2 needs files from the original RollerCoaster Tycoon 2 in order to work. Please select the directory where you installed RollerCoaster Tycoon 2.");
+                utf8 * installPath = platform_open_directory_browser("Please select your RCT2 directory");
+                if (installPath == nullptr)
+                {
+                    return false;
+                }
+
+                Memory::Free(gConfigGeneral.rct2_path);
+                gConfigGeneral.rct2_path = installPath;
+
+                if (platform_original_game_data_exists(installPath))
+                {
+                    return true;
+                }
+
+                utf8 message[MAX_PATH];
+                snprintf(message, MAX_PATH, "Could not find %s" PATH_SEPARATOR "Data" PATH_SEPARATOR "g1.dat at this path", installPath);
+                platform_show_messagebox(message);
+            }
+        }
+        return true;
     }
 }

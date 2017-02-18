@@ -323,6 +323,40 @@ private:
     }
 };
 
+class DefaultIniReader final : public IIniReader
+{
+public:
+    bool ReadSection(const std::string &name) override
+    {
+        return true;
+    }
+
+    bool GetBoolean(const std::string &name, bool defaultValue) const override
+    {
+        return defaultValue;
+    }
+
+    sint32 GetSint32(const std::string &name, sint32 defaultValue) const override
+    {
+        return defaultValue;
+    }
+
+    float GetFloat(const std::string &name, float defaultValue) const override
+    {
+        return defaultValue;
+    }
+
+    std::string GetString(const std::string &name, const std::string &defaultValue) const override
+    {
+        return defaultValue;
+    }
+
+    bool TryGetString(const std::string &name, std::string * outValue) const override
+    {
+        return false;
+    }
+};
+
 utf8 * IIniReader::GetCString(const std::string &name, const utf8 * defaultValue) const
 {
     std::string szValue;
@@ -337,4 +371,9 @@ utf8 * IIniReader::GetCString(const std::string &name, const utf8 * defaultValue
 IIniReader * CreateIniReader(const std::string &path)
 {
     return new IniReader(path);
+}
+
+IIniReader * CreateDefaultIniReader()
+{
+    return new DefaultIniReader();
 }
