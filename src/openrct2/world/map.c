@@ -3237,7 +3237,7 @@ void game_command_place_scenery(sint32* eax, sint32* ebx, sint32* ecx, sint32* e
 		return;
 	}
 
-	gSceneryGroundFlags = gMapGroundFlags & (ELEMENT_IS_1 | ELEMENT_IS_UNDERGROUND);
+	gSceneryGroundFlags = gMapGroundFlags & (ELEMENT_IS_ABOVE_GROUND | ELEMENT_IS_UNDERGROUND);
 		
 	*ebx = (scenery_entry->small_scenery.price * 10) + clearCost;
 	if(gParkFlags & PARK_FLAGS_NO_MONEY){
@@ -3394,7 +3394,7 @@ static bool map_place_fence_check_obstruction(rct_scenery_entry *wall, sint32 x,
 	rct_large_scenery_tile *tile;
 
 	_unk141F725 = 0;
-	gMapGroundFlags = ELEMENT_IS_1;
+	gMapGroundFlags = ELEMENT_IS_ABOVE_GROUND;
 	if (map_is_location_at_edge(x, y)) {
 		gGameCommandErrorText = STR_OFF_EDGE_OF_MAP;
 		return false;
@@ -3915,7 +3915,7 @@ void game_command_place_large_scenery(sint32* eax, sint32* ebx, sint32* ecx, sin
 			return;
 		}
 
-		sint32 b = gMapGroundFlags & (ELEMENT_IS_1 | ELEMENT_IS_UNDERGROUND);
+		sint32 b = gMapGroundFlags & (ELEMENT_IS_ABOVE_GROUND | ELEMENT_IS_UNDERGROUND);
 		if (!gCheatsDisableClearanceChecks) {
 			if (gSceneryGroundFlags && !(gSceneryGroundFlags & b)) {
 				gGameCommandErrorText = STR_CANT_BUILD_PARTLY_ABOVE_AND_PARTLY_BELOW_GROUND;
@@ -4342,7 +4342,7 @@ static void map_obstruction_set_error_text(rct_map_element *mapElement)
  */
 sint32 map_can_construct_with_clear_at(sint32 x, sint32 y, sint32 zLow, sint32 zHigh, CLEAR_FUNC *clearFunc, uint8 bl, uint8 flags, money32 *price)
 {
-	gMapGroundFlags = ELEMENT_IS_1;
+	gMapGroundFlags = ELEMENT_IS_ABOVE_GROUND;
 	if (x >= gMapSizeUnits || y >= gMapSizeUnits || x < 32 || y < 32) {
 		gGameCommandErrorText = STR_OFF_EDGE_OF_MAP;
 		return false;
@@ -4378,7 +4378,7 @@ sint32 map_can_construct_with_clear_at(sint32 x, sint32 y, sint32 zLow, sint32 z
 			if (map_element->base_height >= zHigh) {
 				// loc_68BA81
 				gMapGroundFlags |= ELEMENT_IS_UNDERGROUND;
-				gMapGroundFlags &= ~ELEMENT_IS_1;
+				gMapGroundFlags &= ~ELEMENT_IS_ABOVE_GROUND;
 			} else {
 				sint32 al = map_element->base_height;
 				sint32 ah = al;

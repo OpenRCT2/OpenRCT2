@@ -217,7 +217,7 @@ enum {
 };
 
 enum {
-	ELEMENT_IS_1 = 1 << 0,
+	ELEMENT_IS_ABOVE_GROUND = 1 << 0,
 	ELEMENT_IS_UNDERGROUND = 1 << 1,
 	ELEMENT_IS_UNDERWATER = 1 << 2,
 };
@@ -532,5 +532,7 @@ rct_map_element *map_get_track_element_at_of_type_seq(sint32 x, sint32 y, sint32
 rct_map_element *map_get_track_element_at_of_type_from_ride(sint32 x, sint32 y, sint32 z, sint32 trackType, sint32 rideIndex);
 rct_map_element *map_get_track_element_at_from_ride(sint32 x, sint32 y, sint32 z, sint32 rideIndex);
 rct_map_element *map_get_track_element_at_with_direction_from_ride(sint32 x, sint32 y, sint32 z, sint32 direction, sint32 rideIndex);
+
+uint8 fence_get_animation_frame(rct_map_element *fenceElement);
 
 #endif

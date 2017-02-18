@@ -1134,7 +1134,7 @@ static money32 track_place(sint32 rideIndex, sint32 type, sint32 originX, sint32
 			}
 		}
 
-		bh = gMapGroundFlags & (ELEMENT_IS_1 | ELEMENT_IS_UNDERGROUND);
+		bh = gMapGroundFlags & (ELEMENT_IS_ABOVE_GROUND | ELEMENT_IS_UNDERGROUND);
 		if (gTrackGroundFlags != 0 && (gTrackGroundFlags & bh) == 0) {
 			gGameCommandErrorText = STR_CANT_BUILD_PARTLY_ABOVE_AND_PARTLY_BELOW_GROUND;
 			return MONEY32_UNDEFINED;

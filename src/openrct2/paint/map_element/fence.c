@@ -182,7 +182,9 @@ void fence_paint(uint8 direction, sint32 height, rct_map_element * map_element)
     if (sceneryEntry->wall.flags & WALL_SCENERY_IS_DOOR) {
         rct_xyz16 offset;
         rct_xyz16 boundsR1, boundsR1_, boundsR2, boundsR2_, boundsL1, boundsL1_;
-        uint8 animationFrame = (map_element->properties.fence.item[2] >> 3) & 0x1F;
+		uint8 animationFrame = fence_get_animation_frame(map_element);
+		// Add the direction as well
+		animationFrame |= (map_element->properties.fence.item[2] & 0x80) >> 3;
         uint32 imageId;
         switch (direction) {
             case 0:
@@ -381,4 +383,8 @@ void fence_paint(uint8 direction, sint32 height, rct_map_element * map_element)
     uint16 scroll = (gCurrentTicks / 2) % string_width;
 
     sub_98199C(scrolling_text_setup(stringId, scroll, scrollingMode), 0, 0, 1, 1, 13, height + 8, boundsOffset.x, boundsOffset.y, boundsOffset.z, get_current_rotation());
+}
+
+uint8 fence_get_animation_frame(rct_map_element *fenceElement) {
+	return (fenceElement->properties.fence.item[2] >> 3) & 0xF;
 }
