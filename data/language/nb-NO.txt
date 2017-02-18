@@ -4321,6 +4321,10 @@ STR_6009    :{SMALLFONT}{BLACK}Velg kutthøyde
 STR_6010    :{COMMA2DP32}m
 STR_6011    :{COMMA1DP16}ft
 STR_6012    :{COMMA1DP16}
+STR_6013    :{SMALLFONT}{BLACK}Gjester betaler kun for inngang, tjenester og kioskvarer.{NEWLINE}De betaler ikke for attraksjoner.
+STR_6014    :{SMALLFONT}{BLACK}Gjester betaler kun for attraksjoner, tjenester og kioskvarer.{NEWLINE}De betaler ikke for inngang.
+STR_6015    :Helning
+STR_6016    :Endre rute
 
 #############
 # Scenarios #

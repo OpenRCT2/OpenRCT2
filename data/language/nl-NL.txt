@@ -4311,9 +4311,13 @@ STR_6006    :{SMALLFONT}{BLACK}Hiermee worden alleen elementen onder een bepaald
 STR_6007    :Snijhoogte
 STR_6008    :{SMALLFONT}{BLACK}Klik hierop om te wisselen tussen interne waardes en toegankelijke waardes (zoals meters).
 STR_6009    :{SMALLFONT}{BLACK}Selecteer een hoogte waarboven kaartelementen niet meer moeten worden getekend.
-STR_6010    :{COMMA2DP32}m
-STR_6011    :{COMMA1DP16}ft
+STR_6010    :{COMMA2DP32} m
+STR_6011    :{COMMA1DP16} ft
 STR_6012    :{COMMA1DP16}
+STR_6013    :{SMALLFONT}{BLACK}Bezoekers betalen om het park te betreden en voor faciliteiten.{NEWLINE}Attracties zijn gratis.
+STR_6014    :{SMALLFONT}{BLACK}Bezoekers betalen om in attracties te gaan en voor faciliteiten{NEWLINE}Het park betreden is gratis.
+STR_6015    :Helling
+STR_6016    :Vakje aanpassen
 
 #############
 # Scenarios #
