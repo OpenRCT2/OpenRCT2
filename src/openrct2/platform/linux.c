@@ -461,7 +461,7 @@ bool platform_open_common_file_dialog(utf8 *outFilename, file_dialog_desc *desc,
 	return 1;
 }
 
-utf8 *platform_open_directory_browser(utf8 *title) {
+utf8 *platform_open_directory_browser(const utf8 *title) {
 	size_t size;
 	dialog_type dtype;
 	sint32 exit_value;

@@ -1628,7 +1628,7 @@ void Network::Server_Handle_AUTH(NetworkConnection& connection, NetworkPacket& p
 			}
 		}
 
-		if (gConfigNetwork.maxplayers <= player_list.size()) {
+		if ((size_t)gConfigNetwork.maxplayers <= player_list.size()) {
 			connection.AuthStatus = NETWORK_AUTH_FULL;
 		} else
 		if (connection.AuthStatus == NETWORK_AUTH_VERIFIED) {

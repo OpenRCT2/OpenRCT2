@@ -42,7 +42,7 @@ public:
         WriteLine("[" + name + "]");
     }
 
-    void WriteBoolean(const std::string &name, bool value)
+    void WriteBoolean(const std::string &name, bool value) override
     {
         WriteProperty(name, value ? "true" : "false");
     }
