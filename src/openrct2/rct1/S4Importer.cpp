@@ -411,9 +411,9 @@ private:
                 break;
             case MAP_ELEMENT_TYPE_FENCE:
             {
-                uint8  var_05 = mapElement->properties.fence.item[0];
-                uint16 var_06 = mapElement->properties.fence.item[1] |
-                               (mapElement->properties.fence.item[2] << 8);
+                uint8  var_05 = mapElement->properties.fence.colour_3;
+                uint16 var_06 = mapElement->properties.fence.colour_1 |
+                               (mapElement->properties.fence.animation << 8);
 
                 for (sint32 edge = 0; edge < 4; edge++)
                 {
@@ -2209,9 +2209,9 @@ private:
                         rct_map_element originalMapElement = *mapElement;
                         map_element_remove(mapElement);
 
-                        uint8 var_05 = originalMapElement.properties.fence.item[0];
-                        uint16 var_06 = originalMapElement.properties.fence.item[1] |
-                                       (originalMapElement.properties.fence.item[2] << 8);
+                        uint8 var_05 = originalMapElement.properties.fence.colour_3;
+                        uint16 var_06 = originalMapElement.properties.fence.colour_1 |
+                                       (originalMapElement.properties.fence.animation << 8);
 
                         for (sint32 edge = 0; edge < 4; edge++)
                         {

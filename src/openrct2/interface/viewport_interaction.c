@@ -492,7 +492,7 @@ static void viewport_interaction_remove_park_wall(rct_map_element *mapElement, s
 {
 	rct_scenery_entry *sceneryEntry = get_wall_entry(mapElement->properties.fence.type);
 	if (sceneryEntry->wall.scrolling_mode != 0xFF){
-		window_sign_small_open(mapElement->properties.fence.item[0]);
+		window_sign_small_open(mapElement->properties.fence.banner_index);
 	} else {
 		gGameCommandErrorTitle = STR_CANT_REMOVE_THIS;
 		game_do_command(

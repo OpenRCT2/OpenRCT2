@@ -337,10 +337,10 @@ static void track_design_save_add_wall(sint32 x, sint32 y, rct_map_element *mapE
 
 	uint8 flags = 0;
 	flags |= mapElement->type & 3;
-	flags |= mapElement->properties.fence.item[0] << 2;
+	flags |= mapElement->properties.fence.colour_3 << 2;
 
-	uint8 secondaryColour = ((mapElement->flags & 0x60) >> 2) | (mapElement->properties.fence.item[1] >> 5);
-	uint8 primaryColour = mapElement->properties.fence.item[1] & 0x1F;
+	uint8 secondaryColour = ((mapElement->flags & 0x60) >> 2) | (mapElement->properties.fence.colour_1 >> 5);
+	uint8 primaryColour = mapElement->properties.fence.colour_1 & 0x1F;
 
 	track_design_save_push_map_element(x, y, mapElement);
 	track_design_save_push_map_element_desc(entry, x, y, mapElement->base_height, flags, primaryColour, secondaryColour);
@@ -520,10 +520,10 @@ static void track_design_save_remove_wall(sint32 x, sint32 y, rct_map_element *m
 
 	uint8 flags = 0;
 	flags |= mapElement->type & 3;
-	flags |= mapElement->properties.fence.item[0] << 2;
+	flags |= mapElement->properties.fence.colour_3 << 2;
 
-	uint8 secondaryColour = ((mapElement->flags & 0x60) >> 2) | (mapElement->properties.fence.item[1] >> 5);
-	uint8 primaryColour = mapElement->properties.fence.item[1] & 0x1F;
+	uint8 secondaryColour = ((mapElement->flags & 0x60) >> 2) | (mapElement->properties.fence.colour_1 >> 5);
+	uint8 primaryColour = mapElement->properties.fence.colour_1 & 0x1F;
 
 	track_design_save_pop_map_element(x, y, mapElement);
 	track_design_save_pop_map_element_desc(entry, x, y, mapElement->base_height, flags, primaryColour, secondaryColour);

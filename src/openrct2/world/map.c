@@ -128,7 +128,7 @@ rct_xyz16 gCommandPosition;
 
 uint8 gUnk9E2E28;
 
-static uint8 _unk141F725;
+static bool gWallAcrossTrack;
 
 static void map_update_grass_length(sint32 x, sint32 y, rct_map_element *mapElement);
 static void map_set_grass_length(sint32 x, sint32 y, rct_map_element *mapElement, sint32 length);
@@ -1244,15 +1244,15 @@ void game_command_set_fence_colour(sint32* eax, sint32* ebx, sint32* ecx, sint32
 
 	if(flags & GAME_COMMAND_FLAG_APPLY){
 		rct_scenery_entry* scenery_entry = get_wall_entry(map_element->properties.fence.type);
-		map_element->properties.fence.item[1] &= 0xE0;
-		map_element->properties.fence.item[1] |= colour1;
-		map_element->properties.fence.item[1] &= 0x1F;
+		map_element->properties.fence.colour_1 &= 0xE0;
+		map_element->properties.fence.colour_1 |= colour1;
+		map_element->properties.fence.colour_1 &= 0x1F;
 		map_element->flags &= 0x9F;
-		map_element->properties.fence.item[1] |= (colour2 & 0x7) * 32;
+		map_element->properties.fence.colour_1 |= (colour2 & 0x7) * 32;
 		map_element->flags |= (colour2 & 0x18) * 4;
 
 		if(scenery_entry->wall.flags & WALL_SCENERY_HAS_TERNARY_COLOUR){
-			map_element->properties.fence.item[0] = colour3;
+			map_element->properties.fence.colour_3 = colour3;
 		}
 		map_invalidate_tile_zoom1(x, y, z, z + 72);
 	}
@@ -3329,7 +3329,7 @@ static bool map_place_fence_check_obstruction_with_track(rct_scenery_entry *wall
 		return false;
 	}
 
-	_unk141F725 |= 1;
+	gWallAcrossTrack = true;
 	if (z0 & 1) {
 		return false;
 	}
@@ -3393,7 +3393,7 @@ static bool map_place_fence_check_obstruction(rct_scenery_entry *wall, sint32 x,
 	rct_scenery_entry *entry;
 	rct_large_scenery_tile *tile;
 
-	_unk141F725 = 0;
+	gWallAcrossTrack = false;
 	gMapGroundFlags = ELEMENT_IS_ABOVE_GROUND;
 	if (map_is_location_at_edge(x, y)) {
 		gGameCommandErrorText = STR_OFF_EDGE_OF_MAP;
@@ -3717,21 +3717,21 @@ void game_command_place_fence(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx
 
 		map_element->type = bp | edge | MAP_ELEMENT_TYPE_FENCE;
 
-		map_element->properties.fence.item[1] = primary_colour;
-		map_element->properties.fence.item[1] |= (secondary_colour & 7) << 5;
+		map_element->properties.fence.colour_1 = primary_colour;
+		map_element->properties.fence.colour_1 |= (secondary_colour & 7) << 5;
 		map_element->flags |= (secondary_colour & 0x18) << 2;
 
-		if (_unk141F725 & 1) {
-			map_element->properties.fence.item[2] |= (1 << 2);
+		if (gWallAcrossTrack) {
+			map_element->properties.fence.animation |= (1 << 2);
 		}
 
 		map_element->properties.fence.type = fence_type;
 		if (banner_index != 0xFF){
-			map_element->properties.fence.item[0] = banner_index;
+			map_element->properties.fence.banner_index = banner_index;
 		}
 
 		if (fence->wall.flags & WALL_SCENERY_HAS_TERNARY_COLOUR){
-			map_element->properties.fence.item[0] = tertiary_colour;
+			map_element->properties.fence.colour_3 = tertiary_colour;
 		}
 
 		if (flags & (1 << 6)){
@@ -4637,7 +4637,7 @@ sint32 map_element_get_banner_index(rct_map_element *mapElement)
 		if (sceneryEntry->wall.scrolling_mode == 0xFF)
 			return -1;
 
-		return mapElement->properties.fence.item[0];
+		return mapElement->properties.fence.banner_index;
 	case MAP_ELEMENT_TYPE_BANNER:
 		return mapElement->properties.banner.index;
 	default:
@@ -5594,7 +5594,7 @@ void game_command_set_sign_style(sint32* eax, sint32* ebx, sint32* ecx, sint32* 
 			rct_scenery_entry* scenery_entry = get_wall_entry(map_element->properties.fence.type);
 			if (scenery_entry->wall.scrolling_mode == 0xFF)
 				continue;
-			if (map_element->properties.fence.item[0] != bannerId)
+			if (map_element->properties.fence.banner_index != bannerId)
 				continue;
 			fence_found = true;
 			break;
@@ -5611,7 +5611,7 @@ void game_command_set_sign_style(sint32* eax, sint32* ebx, sint32* ecx, sint32* 
 		}
 
 		map_element->flags &= 0x9F;
-		map_element->properties.fence.item[1] =
+		map_element->properties.fence.colour_1 =
 			mainColour |
 			((textColour & 0x7) << 5);
 		map_element->flags |= ((textColour & 0x18) << 2);

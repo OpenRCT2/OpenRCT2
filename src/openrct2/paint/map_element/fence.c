@@ -145,18 +145,18 @@ void fence_paint(uint8 direction, sint32 height, rct_map_element * map_element)
     }
 
 
-    sint32 primaryColour = map_element->properties.fence.item[1] & 0x1F;
+    sint32 primaryColour = map_element->properties.fence.colour_1 & 0x1F;
     uint32 imageColourFlags = primaryColour << 19 | 0x20000000;
     uint32 dword_141F718 = imageColourFlags + 0x23800006;
 
     if (sceneryEntry->wall.flags & WALL_SCENERY_HAS_SECONDARY_COLOUR) {
-        uint8 secondaryColour = (map_element->properties.fence.item[1] >> 5) | ((map_element->flags & 0x60) >> 2);
+        uint8 secondaryColour = (map_element->properties.fence.colour_1 >> 5) | ((map_element->flags & 0x60) >> 2);
         imageColourFlags |= secondaryColour << 24 | 0x80000000;
     }
 
     uint32 tertiaryColour = 0;
     if (sceneryEntry->wall.flags & WALL_SCENERY_HAS_TERNARY_COLOUR) {
-        tertiaryColour = map_element->properties.fence.item[0];
+        tertiaryColour = map_element->properties.fence.colour_3;
         imageColourFlags &= 0x0DFFFFFFF;
     }
 
@@ -184,7 +184,7 @@ void fence_paint(uint8 direction, sint32 height, rct_map_element * map_element)
         rct_xyz16 boundsR1, boundsR1_, boundsR2, boundsR2_, boundsL1, boundsL1_;
 		uint8 animationFrame = fence_get_animation_frame(map_element);
 		// Add the direction as well
-		animationFrame |= (map_element->properties.fence.item[2] & 0x80) >> 3;
+		animationFrame |= (map_element->properties.fence.animation & 0x80) >> 3;
         uint32 imageId;
         switch (direction) {
             case 0:
@@ -345,21 +345,21 @@ void fence_paint(uint8 direction, sint32 height, rct_map_element * map_element)
     set_format_arg(0, uint32, 0);
     set_format_arg(4, uint32, 0);
 
-    uint8 al_2 = map_element->properties.fence.item[1] >> 5 | (map_element->flags & 0x60) >> 2;
+    uint8 secondaryColour = map_element->properties.fence.colour_1 >> 5 | (map_element->flags & 0x60) >> 2;
 
     if (dword_141F710 != 0) {
-        al_2 = COLOUR_GREY;
+        secondaryColour = COLOUR_GREY;
     }
 
     if (direction == 0) {
-        al_2 |= 0x80;
+        secondaryColour |= 0x80;
     }
 
-    set_format_arg(7, uint8, al_2);
+    set_format_arg(7, uint8, secondaryColour);
 
     uint16 scrollingMode = sceneryEntry->wall.scrolling_mode + ((direction + 1) & 0x3);
 
-    uint8 bannerIndex = map_element->properties.fence.item[0];
+    uint8 bannerIndex = map_element->properties.fence.banner_index;
     rct_banner * banner = &gBanners[bannerIndex];
 
     set_format_arg(0, rct_string_id, banner->string_idx);
@@ -386,5 +386,5 @@ void fence_paint(uint8 direction, sint32 height, rct_map_element * map_element)
 }
 
 uint8 fence_get_animation_frame(rct_map_element *fenceElement) {
-	return (fenceElement->properties.fence.item[2] >> 3) & 0xF;
+	return (fenceElement->properties.fence.animation >> 3) & 0xF;
 }

@@ -1840,7 +1840,7 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi)
 			// Banner info
 			rct_wall_scenery_entry fenceEntry = get_wall_entry(fenceType)->wall;
 			if (fenceEntry.flags & WALL_SCENERY_IS_BANNER) {
-				gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_ENTRY_BANNER_TEXT, &gBanners[mapElement->properties.fence.item[0]].string_idx, COLOUR_DARK_GREEN, x, y + 11);
+				gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_ENTRY_BANNER_TEXT, &gBanners[mapElement->properties.fence.banner_index].string_idx, COLOUR_DARK_GREEN, x, y + 11);
 			}
 			else {
 				gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_ENTRY_BANNER_NONE, NULL, COLOUR_DARK_GREEN, x, y + 11);

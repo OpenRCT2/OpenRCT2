@@ -437,7 +437,7 @@ void window_sign_small_open(rct_windownumber number){
 		if (map_element_get_type(map_element) == MAP_ELEMENT_TYPE_FENCE) {
 			rct_scenery_entry* scenery_entry = get_wall_entry(map_element->properties.fence.type);
 			if (scenery_entry->wall.scrolling_mode != 0xFF){
-				if (map_element->properties.fence.item[0] == w->number)
+				if (map_element->properties.fence.banner_index == w->number)
 					break;
 			}
 		}
@@ -447,9 +447,9 @@ void window_sign_small_open(rct_windownumber number){
 	sint32 view_z = map_element->base_height << 3;
 	w->frame_no = view_z;
 
-	w->list_information_type = map_element->properties.fence.item[1] & 0x1F;
+	w->list_information_type = map_element->properties.fence.colour_1 & 0x1F;
 	w->var_492 =
-		((map_element->properties.fence.item[1] >> 5) | ((map_element->flags & 0x60) >> 2));
+		((map_element->properties.fence.colour_1 >> 5) | ((map_element->flags & 0x60) >> 2));
 	w->var_48C = map_element->properties.fence.type;
 
 	view_x += 16;
@@ -499,7 +499,7 @@ static void window_sign_small_mouseup(rct_window *w, sint32 widgetIndex)
 			if (map_element_get_type(map_element) == MAP_ELEMENT_TYPE_FENCE) {
 				rct_scenery_entry* scenery_entry = get_wall_entry(map_element->properties.fence.type);
 				if (scenery_entry->wall.scrolling_mode != 0xFF){
-					if (map_element->properties.fence.item[0] == w->number)
+					if (map_element->properties.fence.banner_index == w->number)
 						break;
 				}
 			}

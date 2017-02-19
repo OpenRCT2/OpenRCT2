@@ -70,7 +70,12 @@ assert_struct_size(rct_map_element_entrance_properties, 4);
 
 typedef struct rct_map_element_fence_properties {
 	uint8 type; //4
-	uint8 item[3]; //5
+	union {
+		uint8 colour_3; //5
+		uint8 banner_index; //5
+	};
+	uint8 colour_1; //6 0b_2221_1111 2 = colour_2 (uses flags for rest of colour2), 1 = colour_1
+	uint8 animation; //7 0b_dfff_ft00 d = direction, f = frame num, t = across track flag (not used)
 } rct_map_element_fence_properties;
 assert_struct_size(rct_map_element_fence_properties, 4);
 
