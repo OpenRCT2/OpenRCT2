@@ -22,7 +22,8 @@
 class IniWriter final : public IIniWriter
 {
 private:
-    FileStream _fs;
+    FileStream  _fs;
+    bool        _firstSection = false;
 
 public:
     IniWriter(const std::string &path)
@@ -32,6 +33,12 @@ public:
 
     void WriteSection(const std::string &name) override
     {
+        if (!_firstSection)
+        {
+            WriteLine();
+        }
+        _firstSection = false;
+
         WriteLine("[" + name + "]");
     }
 
@@ -78,10 +85,15 @@ private:
         WriteLine(name + " = " + value);
     }
 
+    void WriteLine()
+    {
+        _fs.Write(PLATFORM_NEWLINE, String::SizeOf(PLATFORM_NEWLINE));
+    }
+
     void WriteLine(const std::string &line)
     {
         _fs.Write(line.c_str(), line.size());
-        _fs.Write(PLATFORM_NEWLINE, String::SizeOf(PLATFORM_NEWLINE));
+        WriteLine();
     }
 };
 
