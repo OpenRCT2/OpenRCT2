@@ -396,27 +396,21 @@ namespace String
 
     std::string Trim(const std::string &s)
     {
-        const utf8 * firstNonWhitespace = nullptr;
-
         codepoint_t codepoint;
         const utf8 * ch = s.c_str();
         const utf8 * nextCh;
+        const utf8 * firstNonWhitespace = nullptr;
+        const utf8 * lastNonWhitespace = nullptr;
         while ((codepoint = GetNextCodepoint(ch, &nextCh)) != '\0')
         {
             bool isWhiteSpace = codepoint <= WCHAR_MAX && iswspace((wchar_t)codepoint);
-            if (isWhiteSpace)
-            {
-                if (firstNonWhitespace != nullptr)
-                {
-                    break;
-                }
-            }
-            else
+            if (!isWhiteSpace)
             {
                 if (firstNonWhitespace == nullptr)
                 {
                     firstNonWhitespace = ch;
                 }
+                lastNonWhitespace = ch;
             }
             ch = nextCh;
         }
@@ -427,10 +421,14 @@ namespace String
             size_t newStringSize = ch - firstNonWhitespace;
             return std::string(firstNonWhitespace, newStringSize);
         }
+        else if (lastNonWhitespace != nullptr)
+        {
+            size_t newStringSize = lastNonWhitespace - s.c_str() + 1;
+            return std::string(s.c_str(), newStringSize);
+        }
         else
         {
-            size_t newStringSize = ch - s.c_str();
-            return std::string(s.c_str(), newStringSize);
+            return std::string();
         }
     }
 }
