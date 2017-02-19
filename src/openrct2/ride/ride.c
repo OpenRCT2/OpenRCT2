@@ -6097,7 +6097,7 @@ foundRideEntry:
 		ride->price_secondary = RideData4[ride->type].price_secondary;
 
 		if (rideEntry->shop_item == SHOP_ITEM_NONE) {
-			if (!(gParkFlags & PARK_FLAGS_PARK_FREE_ENTRY)) {
+			if (!(gParkFlags & PARK_FLAGS_PARK_FREE_ENTRY) && !gCheatsUnlockAllPrices) {
 				ride->price = 0;
 			}
 		} else {
