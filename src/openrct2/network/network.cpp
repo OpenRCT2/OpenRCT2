@@ -745,6 +745,7 @@ void Network::SetupDefaultGroups()
 	user->ToggleActionPermission(16); // Modify Groups
 	user->ToggleActionPermission(17); // Set Player Group
 	user->ToggleActionPermission(18); // Cheat
+	user->ToggleActionPermission(20); // Passwordless login
 	user->ToggleActionPermission(21); // Modify Tile
 	user->Id = 2;
 	group_list.push_back(std::move(user));
