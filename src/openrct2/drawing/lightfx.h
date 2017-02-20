@@ -19,6 +19,7 @@
 
 #ifdef __ENABLE_LIGHTFX__
 
+#include <SDL.h>
 #include "../common.h"
 #include "drawing.h"
 

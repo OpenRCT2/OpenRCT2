@@ -14,7 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
-#include <openrct2/config.h>
+#include <openrct2/config/Config.h>
 #include <openrct2/object.h>
 #include <openrct2/interface/colour.h>
 #include <openrct2/interface/viewport.h>
