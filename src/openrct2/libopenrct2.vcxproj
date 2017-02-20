@@ -333,7 +333,6 @@
     <ClCompile Include="windows\maze_construction.c" />
     <ClCompile Include="world\balloon.c" />
     <ClCompile Include="world\duck.c" />
-    <ClCompile Include="world\fence.cpp" />
     <ClCompile Include="world\money_effect.c" />
     <ClCompile Include="world\particle.c" />
     <ClCompile Include="util\sawyercoding.c" />
@@ -413,6 +412,7 @@
     <ClCompile Include="world\scenery.c" />
     <ClCompile Include="world\sprite.c" />
     <ClCompile Include="world\tile_inspector.c" />
+    <ClCompile Include="world\wall.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\resources\resource.h" />
