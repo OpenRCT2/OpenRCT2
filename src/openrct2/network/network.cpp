@@ -1858,7 +1858,7 @@ void Network::Server_Handle_GAMECMD(NetworkConnection& connection, NetworkPacket
 
 	sint32 commandCommand = args[4];
 
-	sint32 ticks = SDL_GetTicks(); //tick count is different by time last_action_time is set, keep same value.
+	uint32 ticks = SDL_GetTicks(); //tick count is different by time last_action_time is set, keep same value.
 
 	// Check if player's group permission allows command to run
 	NetworkGroup* group = GetGroupByID(connection.Player->Group);
