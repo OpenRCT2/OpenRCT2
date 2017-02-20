@@ -538,6 +538,8 @@ rct_map_element *map_get_track_element_at_of_type_from_ride(sint32 x, sint32 y, 
 rct_map_element *map_get_track_element_at_from_ride(sint32 x, sint32 y, sint32 z, sint32 rideIndex);
 rct_map_element *map_get_track_element_at_with_direction_from_ride(sint32 x, sint32 y, sint32 z, sint32 direction, sint32 rideIndex);
 
+bool map_is_location_at_edge(sint32 x, sint32 y);
+void map_obstruction_set_error_text(rct_map_element *mapElement);
 uint8 fence_get_animation_frame(rct_map_element *fenceElement);
 
 #endif
