@@ -42,6 +42,7 @@
 #include "world/park.h"
 #include "world/scenery.h"
 #include "world/sprite.h"
+#include "network/network.h"
 
 uint8 _editorSelectedRides[128];
 uint8 _editorSelectedSmallScenery[252];
@@ -533,4 +534,77 @@ bool editor_check_park()
 	}
 
 	return true;
+}
+
+void game_command_edit_scenario_options(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp)
+{
+	if (*ebx & GAME_COMMAND_FLAG_APPLY) {
+		switch (*ecx) {
+		case EDIT_SCENARIOOPTIONS_SETNOMONEY:
+			
+			break;
+		case EDIT_SCENARIOOPTIONS_SETINITIALCASH:
+			
+			break;
+		case EDIT_SCENARIOOPTIONS_SETINITIALLOAN:
+			
+			break;
+		case EDIT_SCENARIOOPTIONS_SETMAXIMUMLOANSIZE:
+			
+			break;
+		case EDIT_SCENARIOOPTIONS_SETANNUALINTERESTRATE:
+			
+			break;
+		case EDIT_SCENARIOOPTIONS_SETFORBIDMARKETINGCAMPAIGNS:
+			
+			break;
+		case EDIT_SCENARIOOPTIONS_SETAVERAGECASHPERGUEST:
+			
+			break;
+		case EDIT_SCENARIOOPTIONS_SETGUESTINITIALHAPPINESS:
+			
+			break;
+		case EDIT_SCENARIOOPTIONS_SETGUESTINITIALHUNGER:
+			
+			break;
+		case EDIT_SCENARIOOPTIONS_SETGUESTINITIALTHIRST:
+			
+			break;
+		case EDIT_SCENARIOOPTIONS_SETGUESTSPREFERLESSINTENSERIDES:
+			
+			break;
+		case EDIT_SCENARIOOPTIONS_SETGUESTSPREFERMOREINTENSERIDES:
+			
+			break;
+		case EDIT_SCENARIOOPTIONS_SETCOSTTOBUYLAND:
+			
+			break;
+		case EDIT_SCENARIOOPTIONS_SETCOSTTOBUYCONSTRUCTIONRIGHTS:
+			
+			break;
+		case EDIT_SCENARIOOPTIONS_SETPARKCHARGEMETHOD:
+			
+			break;
+		case EDIT_SCENARIOOPTIONS_SETPARKCHARGEENTRYFEE:
+			
+			break;
+		case EDIT_SCENARIOOPTIONS_SETFORBIDTREEREMOVAL:
+			
+			break;
+		case EDIT_SCENARIOOPTIONS_SETFORBIDLANDSCAPECHANGES:
+			
+			break;
+		case EDIT_SCENARIOOPTIONS_SETFORBIDHIGHCONSTRUCTION:
+			
+			break;
+		case EDIT_SCENARIOOPTIONS_SETPARKRATINGHIGHERDIFFICULTLEVEL:
+			
+			break;
+		case EDIT_SCENARIOOPTIONS_SETGUESTGENERATIONHIGHERDIFFICULTLEVEL:
+			
+			break;
+		}
+		window_invalidate_by_class(WC_EDITOR_SCENARIO_OPTIONS);
+	}
+	*ebx = 0;
 }

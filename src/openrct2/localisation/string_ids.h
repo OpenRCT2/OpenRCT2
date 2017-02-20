@@ -3696,6 +3696,8 @@ enum {
 
 	STR_QUICK_DEMOLISH_RIDE = 6039,
 
+	STR_ACTION_EDIT_SCENARIO_OPTIONS = 6040,
+
 	// Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
 	STR_COUNT = 32768
 };

@@ -14,6 +14,8 @@
  *****************************************************************************/
 #pragma endregion
 
+#include "../editor.h"
+#include "../game.h"
 #include "../interface/themes.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
