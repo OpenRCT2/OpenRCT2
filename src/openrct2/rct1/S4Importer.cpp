@@ -411,9 +411,9 @@ private:
                 break;
             case MAP_ELEMENT_TYPE_WALL:
             {
-                uint8  var_05 = mapElement->properties.fence.colour_3;
-                uint16 var_06 = mapElement->properties.fence.colour_1 |
-                               (mapElement->properties.fence.animation << 8);
+                uint8  var_05 = mapElement->properties.wall.colour_3;
+                uint16 var_06 = mapElement->properties.wall.colour_1 |
+                               (mapElement->properties.wall.animation << 8);
 
                 for (sint32 edge = 0; edge < 4; edge++)
                 {
@@ -2100,13 +2100,13 @@ private:
                     break;
                 case MAP_ELEMENT_TYPE_WALL:
                     colour = ((mapElement->type & 0xC0) >> 3) |
-                             ((mapElement->properties.fence.type & 0xE0) >> 5);
+                             ((mapElement->properties.wall.type & 0xE0) >> 5);
                     colour = RCT1::GetColour(colour);
 
                     mapElement->type &= 0x3F;
-                    mapElement->properties.fence.type &= 0x1F;
+                    mapElement->properties.wall.type &= 0x1F;
                     mapElement->type |= (colour & 0x18) << 3;
-                    mapElement->properties.fence.type |= (colour & 7) << 5;
+                    mapElement->properties.wall.type |= (colour & 7) << 5;
                     break;
                 case MAP_ELEMENT_TYPE_SCENERY_MULTIPLE:
                     colour = RCT1::GetColour(mapElement->properties.scenerymultiple.colour[0] & 0x1F);
@@ -2209,9 +2209,9 @@ private:
                         rct_map_element originalMapElement = *mapElement;
                         map_element_remove(mapElement);
 
-                        uint8 var_05 = originalMapElement.properties.fence.colour_3;
-                        uint16 var_06 = originalMapElement.properties.fence.colour_1 |
-                                       (originalMapElement.properties.fence.animation << 8);
+                        uint8 var_05 = originalMapElement.properties.wall.colour_3;
+                        uint16 var_06 = originalMapElement.properties.wall.colour_1 |
+                                       (originalMapElement.properties.wall.animation << 8);
 
                         for (sint32 edge = 0; edge < 4; edge++)
                         {
@@ -2221,7 +2221,7 @@ private:
                             {
                                 sint32 type = typeA | (typeB << 2);
                                 sint32 colourA = ((originalMapElement.type & 0xC0) >> 3) |
-                                               (originalMapElement.properties.fence.type >> 5);
+                                               (originalMapElement.properties.wall.type >> 5);
                                 sint32 colourB = 0;
                                 sint32 colourC = 0;
                                 ConvertWall(&type, &colourA, &colourB, &colourC);

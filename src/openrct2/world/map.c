@@ -4006,11 +4006,11 @@ sint32 map_element_get_banner_index(rct_map_element *mapElement)
 			((mapElement->properties.scenerymultiple.colour[0] & 0xE0) >> 2) |
 			((mapElement->properties.scenerymultiple.colour[1] & 0xE0) >> 5);
 	case MAP_ELEMENT_TYPE_WALL:
-		sceneryEntry = get_wall_entry(mapElement->properties.fence.type);
+		sceneryEntry = get_wall_entry(mapElement->properties.wall.type);
 		if (sceneryEntry->wall.scrolling_mode == 0xFF)
 			return -1;
 
-		return mapElement->properties.fence.banner_index;
+		return mapElement->properties.wall.banner_index;
 	case MAP_ELEMENT_TYPE_BANNER:
 		return mapElement->properties.banner.index;
 	default:
@@ -4912,10 +4912,10 @@ void game_command_set_sign_style(sint32* eax, sint32* ebx, sint32* ecx, sint32* 
 			if (map_element_get_type(map_element) != MAP_ELEMENT_TYPE_WALL)
 				continue;
 
-			rct_scenery_entry* scenery_entry = get_wall_entry(map_element->properties.fence.type);
+			rct_scenery_entry* scenery_entry = get_wall_entry(map_element->properties.wall.type);
 			if (scenery_entry->wall.scrolling_mode == 0xFF)
 				continue;
-			if (map_element->properties.fence.banner_index != bannerId)
+			if (map_element->properties.wall.banner_index != bannerId)
 				continue;
 			fence_found = true;
 			break;
@@ -4932,7 +4932,7 @@ void game_command_set_sign_style(sint32* eax, sint32* ebx, sint32* ecx, sint32* 
 		}
 
 		map_element->flags &= 0x9F;
-		map_element->properties.fence.colour_1 =
+		map_element->properties.wall.colour_1 =
 			mainColour |
 			((textColour & 0x7) << 5);
 		map_element->flags |= ((textColour & 0x18) << 2);

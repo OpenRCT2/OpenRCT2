@@ -6804,7 +6804,7 @@ static void sub_6D63D4(rct_vehicle *vehicle)
  */
 static void vehicle_play_scenery_door_open_sound(rct_vehicle *vehicle, rct_map_element *mapElement)
 {
-	rct_scenery_entry *wallEntry = get_wall_entry(mapElement->properties.fence.type);
+	rct_scenery_entry *wallEntry = get_wall_entry(mapElement->properties.wall.type);
 	sint32 doorSoundType = (wallEntry->wall.flags2 >> 1) & 3;
 	if (doorSoundType != 0) {
 		sint32 soundId = DoorOpenSoundIds[doorSoundType - 1];
@@ -6820,7 +6820,7 @@ static void vehicle_play_scenery_door_open_sound(rct_vehicle *vehicle, rct_map_e
  */
 static void vehicle_play_scenery_door_close_sound(rct_vehicle *vehicle, rct_map_element *mapElement)
 {
-	rct_scenery_entry *wallEntry = get_wall_entry(mapElement->properties.fence.type);
+	rct_scenery_entry *wallEntry = get_wall_entry(mapElement->properties.wall.type);
 	sint32 doorSoundType = (wallEntry->wall.flags2 >> 1) & 3;
 	if (doorSoundType != 0) {
 		sint32 soundId = DoorCloseSoundIds[doorSoundType - 1];
@@ -6853,13 +6853,13 @@ static void vehicle_update_scenery_door(rct_vehicle *vehicle)
 	}
 
 	if (vehicle->next_vehicle_on_train != SPRITE_INDEX_NULL) {
-		mapElement->properties.fence.animation &= 7;
-		mapElement->properties.fence.animation |= 8;
+		mapElement->properties.wall.animation &= 7;
+		mapElement->properties.wall.animation |= 8;
 		map_animation_create(MAP_ANIMATION_TYPE_WALL_DOOR, x, y, z);
 		vehicle_play_scenery_door_open_sound(vehicle, mapElement);
 	} else {
-		mapElement->properties.fence.animation &= 7;
-		mapElement->properties.fence.animation |= 0x30;
+		mapElement->properties.wall.animation &= 7;
+		mapElement->properties.wall.animation |= 0x30;
 		vehicle_play_scenery_door_close_sound(vehicle, mapElement);
 	}
 }
@@ -6936,13 +6936,13 @@ static void sub_6DEDE8(rct_vehicle *vehicle)
 	}
 
 	if (vehicle->next_vehicle_on_train != SPRITE_INDEX_NULL) {
-		mapElement->properties.fence.animation &= 7;
-		mapElement->properties.fence.animation |= 0x88;
+		mapElement->properties.wall.animation &= 7;
+		mapElement->properties.wall.animation |= 0x88;
 		map_animation_create(MAP_ANIMATION_TYPE_WALL_DOOR, x, y, z);
 		vehicle_play_scenery_door_open_sound(vehicle, mapElement);
 	} else {
-		mapElement->properties.fence.animation &= 7;
-		mapElement->properties.fence.animation |= 0xB0;
+		mapElement->properties.wall.animation &= 7;
+		mapElement->properties.wall.animation |= 0xB0;
 		vehicle_play_scenery_door_close_sound(vehicle, mapElement);
 	}
 }

@@ -436,21 +436,21 @@ money32 WallPlace(uint8 wall_type, sint16 x, sint16 y, sint16 z, uint8 edge, uin
 
 		map_element->type = bp | edge | MAP_ELEMENT_TYPE_WALL;
 
-		map_element->properties.fence.colour_1 = primary_colour;
-		map_element->properties.fence.colour_1 |= (secondary_colour & 7) << 5;
+		map_element->properties.wall.colour_1 = primary_colour;
+		map_element->properties.wall.colour_1 |= (secondary_colour & 7) << 5;
 		map_element->flags |= (secondary_colour & 0x18) << 2;
 
 		if (gWallAcrossTrack) {
-			map_element->properties.fence.animation |= (1 << 2);
+			map_element->properties.wall.animation |= (1 << 2);
 		}
 
-		map_element->properties.fence.type = wall_type;
+		map_element->properties.wall.type = wall_type;
 		if (banner_index != 0xFF){
-			map_element->properties.fence.banner_index = banner_index;
+			map_element->properties.wall.banner_index = banner_index;
 		}
 
 		if (wall_entry->wall.flags & WALL_SCENERY_HAS_TERNARY_COLOUR){
-			map_element->properties.fence.colour_3 = tertiary_colour;
+			map_element->properties.wall.colour_3 = tertiary_colour;
 		}
 
 		if (flags & (1 << 6)){
@@ -545,16 +545,16 @@ money32 WallSetColour(sint16 x, sint16 y, uint8 base_height, uint8 direction, ui
 	}
 
 	if(flags & GAME_COMMAND_FLAG_APPLY){
-		rct_scenery_entry* scenery_entry = get_wall_entry(map_element->properties.fence.type);
-		map_element->properties.fence.colour_1 &= 0xE0;
-		map_element->properties.fence.colour_1 |= primaryColour;
-		map_element->properties.fence.colour_1 &= 0x1F;
+		rct_scenery_entry* scenery_entry = get_wall_entry(map_element->properties.wall.type);
+		map_element->properties.wall.colour_1 &= 0xE0;
+		map_element->properties.wall.colour_1 |= primaryColour;
+		map_element->properties.wall.colour_1 &= 0x1F;
 		map_element->flags &= 0x9F;
-		map_element->properties.fence.colour_1 |= (secondaryColour & 0x7) * 32;
+		map_element->properties.wall.colour_1 |= (secondaryColour & 0x7) * 32;
 		map_element->flags |= (secondaryColour & 0x18) * 4;
 
 		if(scenery_entry->wall.flags & WALL_SCENERY_HAS_TERNARY_COLOUR){
-			map_element->properties.fence.colour_3 = tertiaryColour;
+			map_element->properties.wall.colour_3 = tertiaryColour;
 		}
 		map_invalidate_tile_zoom1(x, y, z, z + 72);
 	}
@@ -565,7 +565,7 @@ money32 WallSetColour(sint16 x, sint16 y, uint8 base_height, uint8 direction, ui
 extern "C"
 {
 	uint8 wall_get_animation_frame(rct_map_element *wallElement) {
-		return (wallElement->properties.fence.animation >> 3) & 0xF;
+		return (wallElement->properties.wall.animation >> 3) & 0xF;
 	}
 	
 	/**

@@ -935,7 +935,7 @@ static void repaint_scenery_tool_down(sint16 x, sint16 y, sint16 widgetIndex){
 	}
 	case VIEWPORT_INTERACTION_ITEM_WALL:
 	{
-		rct_scenery_entry* scenery_entry = get_wall_entry(map_element->properties.fence.type);
+		rct_scenery_entry* scenery_entry = get_wall_entry(map_element->properties.wall.type);
 
 		// If can't repaint
 		if (!(scenery_entry->wall.flags &

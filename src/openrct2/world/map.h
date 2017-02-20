@@ -68,7 +68,7 @@ typedef struct rct_map_element_entrance_properties {
 } rct_map_element_entrance_properties;
 assert_struct_size(rct_map_element_entrance_properties, 4);
 
-typedef struct rct_map_element_fence_properties {
+typedef struct rct_map_element_wall_properties {
 	uint8 type; //4
 	union {
 		uint8 colour_3; //5
@@ -76,8 +76,8 @@ typedef struct rct_map_element_fence_properties {
 	};
 	uint8 colour_1; //6 0b_2221_1111 2 = colour_2 (uses flags for rest of colour2), 1 = colour_1
 	uint8 animation; //7 0b_dfff_ft00 d = direction, f = frame num, t = across track flag (not used)
-} rct_map_element_fence_properties;
-assert_struct_size(rct_map_element_fence_properties, 4);
+} rct_map_element_wall_properties;
+assert_struct_size(rct_map_element_wall_properties, 4);
 
 typedef struct rct_map_element_scenerymultiple_properties {
 	uint16 type; //4
@@ -99,7 +99,7 @@ typedef union {
 	rct_map_element_track_properties track;
 	rct_map_element_scenery_properties scenery;
 	rct_map_element_entrance_properties entrance;
-	rct_map_element_fence_properties fence;
+	rct_map_element_wall_properties wall;
 	rct_map_element_scenerymultiple_properties scenerymultiple;
 	rct_map_element_banner_properties banner;
 } rct_map_element_properties;

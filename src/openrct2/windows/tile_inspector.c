@@ -1327,7 +1327,7 @@ void window_tile_inspector_auto_set_buttons(rct_window *w)
 	switch (w->page) {
 	case TILE_INSPECTOR_PAGE_FENCE: {
 		const rct_map_element *const mapElement = window_tile_inspector_get_selected_element(w);
-		const uint8 fenceType = mapElement->properties.fence.type;
+		const uint8 fenceType = mapElement->properties.wall.type;
 		const rct_wall_scenery_entry wallEntry = get_wall_entry(fenceType)->wall;
 		const bool canBeSloped = !(wallEntry.flags & WALL_SCENERY_CANT_BUILD_ON_SLOPE);
 		// Fence slope dropdown
@@ -1834,13 +1834,13 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		case TILE_INSPECTOR_PAGE_FENCE: {
 			// Details
 			// Type
-			sint16 fenceType = mapElement->properties.fence.type;
+			sint16 fenceType = mapElement->properties.wall.type;
 			gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_FENCE_TYPE, &fenceType, COLOUR_DARK_GREEN, x, y);
 
 			// Banner info
 			rct_wall_scenery_entry fenceEntry = get_wall_entry(fenceType)->wall;
 			if (fenceEntry.flags & WALL_SCENERY_IS_BANNER) {
-				gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_ENTRY_BANNER_TEXT, &gBanners[mapElement->properties.fence.banner_index].string_idx, COLOUR_DARK_GREEN, x, y + 11);
+				gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_ENTRY_BANNER_TEXT, &gBanners[mapElement->properties.wall.banner_index].string_idx, COLOUR_DARK_GREEN, x, y + 11);
 			}
 			else {
 				gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_ENTRY_BANNER_NONE, NULL, COLOUR_DARK_GREEN, x, y + 11);
