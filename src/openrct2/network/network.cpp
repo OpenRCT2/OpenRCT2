@@ -1871,7 +1871,10 @@ void Network::Server_Handle_GAMECMD(NetworkConnection& connection, NetworkPacket
 	// require a small delay in between placing scenery to provide some security, as
 	// cluster mode is a for loop that runs the place_scenery code multiple times.
 	if (commandCommand == GAME_COMMAND_PLACE_SCENERY) {
-		if ((ticks - connection.Player->LastPlaceSceneryTime) < ACTION_COOLDOWN_TIME_PLACE_SCENERY) {
+		if (
+			ticks - connection.Player->LastPlaceSceneryTime < ACTION_COOLDOWN_TIME_PLACE_SCENERY &&
+			ticks > connection.Player->LastPlaceSceneryTime
+		) {
 			if (!(group->CanPerformCommand(MISC_COMMAND_TOGGLE_SCENERY_CLUSTER))) {
 				Server_Send_SHOWERROR(connection, STR_CANT_DO_THIS, STR_NETWORK_ACTION_RATE_LIMIT_MESSAGE);
 				return;
@@ -1881,7 +1884,10 @@ void Network::Server_Handle_GAMECMD(NetworkConnection& connection, NetworkPacket
 	// This is to prevent abuse of demolishing rides. Anyone that is not the server
 	// host will have to wait a small amount of time in between deleting rides.
 	else if (commandCommand == GAME_COMMAND_DEMOLISH_RIDE) {
-		if ((ticks - connection.Player->LastDemolishRideTime) < ACTION_COOLDOWN_TIME_DEMOLISH_RIDE) {
+		if (
+			ticks - connection.Player->LastDemolishRideTime < ACTION_COOLDOWN_TIME_DEMOLISH_RIDE &&
+			ticks > connection.Player->LastDemolishRideTime
+		) {
 			Server_Send_SHOWERROR(connection, STR_CANT_DO_THIS, STR_NETWORK_ACTION_RATE_LIMIT_MESSAGE);
 			return;
 		}
