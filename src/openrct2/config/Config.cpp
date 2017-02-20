@@ -50,9 +50,6 @@ namespace Config
 
     static auto Enum_Currency = ConfigEnum<sint32>(
     {
-        ConfigEnumEntry<sint32>("IMPERIAL", MEASUREMENT_FORMAT_IMPERIAL),
-        ConfigEnumEntry<sint32>("METRIC", MEASUREMENT_FORMAT_METRIC),
-        ConfigEnumEntry<sint32>("SI", MEASUREMENT_FORMAT_SI),
         ConfigEnumEntry<sint32>("GBP", CURRENCY_POUNDS),
         ConfigEnumEntry<sint32>("USD", CURRENCY_DOLLARS),
         ConfigEnumEntry<sint32>("FRF", CURRENCY_FRANC),
