@@ -1871,7 +1871,7 @@ void Network::Server_Handle_GAMECMD(NetworkConnection& connection, NetworkPacket
 	// require a small delay in between placing scenery to provide some security, as
 	// cluster mode is a for loop that runs the place_scenery code multiple times.
 	if (commandCommand == GAME_COMMAND_PLACE_SCENERY) {
-		if ((ticks - connection.Player->LastActionTime) < ACTION_COOLDOWN_TIME_PLACE_SCENERY) {
+		if ((ticks - connection.Player->LastPlaceSceneryTime) < ACTION_COOLDOWN_TIME_PLACE_SCENERY) {
 			if (!(group->CanPerformCommand(MISC_COMMAND_TOGGLE_SCENERY_CLUSTER))) {
 				Server_Send_SHOWERROR(connection, STR_CANT_DO_THIS, STR_NETWORK_ACTION_RATE_LIMIT_MESSAGE);
 				return;
@@ -1880,14 +1880,14 @@ void Network::Server_Handle_GAMECMD(NetworkConnection& connection, NetworkPacket
 	}
 	// This is to prevent abuse of demolishing rides. Anyone that is not the server
 	// host will have to wait a small amount of time in between deleting rides.
-	if (commandCommand == GAME_COMMAND_DEMOLISH_RIDE) {
-		if ((ticks - connection.Player->LastDemolishTime) < ACTION_COOLDOWN_TIME_DEMOLISH_RIDE) {
+	else if (commandCommand == GAME_COMMAND_DEMOLISH_RIDE) {
+		if ((ticks - connection.Player->LastDemolishRideTime) < ACTION_COOLDOWN_TIME_DEMOLISH_RIDE) {
 			Server_Send_SHOWERROR(connection, STR_CANT_DO_THIS, STR_NETWORK_ACTION_RATE_LIMIT_MESSAGE);
 			return;
 		}
 	}
 	// Don't let clients send pause or quit
-	if (commandCommand == GAME_COMMAND_TOGGLE_PAUSE ||
+	else if (commandCommand == GAME_COMMAND_TOGGLE_PAUSE ||
 		commandCommand == GAME_COMMAND_LOAD_OR_QUIT
 	) {
 		return;
@@ -1905,8 +1905,11 @@ void Network::Server_Handle_GAMECMD(NetworkConnection& connection, NetworkPacket
 	connection.Player->LastActionTime = SDL_GetTicks();
 	connection.Player->AddMoneySpent(cost);
 
-	if (commandCommand == GAME_COMMAND_DEMOLISH_RIDE) {
-		connection.Player->LastDemolishTime = connection.Player->LastActionTime;
+	if (commandCommand == GAME_COMMAND_PLACE_SCENERY) {
+		connection.Player->LastPlaceSceneryTime = connection.Player->LastActionTime;
+	}
+	else if (commandCommand == GAME_COMMAND_DEMOLISH_RIDE) {
+		connection.Player->LastDemolishRideTime = connection.Player->LastActionTime;
 	}
 
 	Server_Send_GAMECMD(args[0], args[1], args[2], args[3], args[4], args[5], args[6], playerid, callback);
