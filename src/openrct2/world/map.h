@@ -132,7 +132,7 @@ enum {
 	MAP_ELEMENT_TYPE_TRACK = (2 << 2),
 	MAP_ELEMENT_TYPE_SCENERY = (3 << 2),
 	MAP_ELEMENT_TYPE_ENTRANCE = (4 << 2),
-	MAP_ELEMENT_TYPE_FENCE = (5 << 2),
+	MAP_ELEMENT_TYPE_WALL = (5 << 2),
 	MAP_ELEMENT_TYPE_SCENERY_MULTIPLE = (6 << 2),
 	MAP_ELEMENT_TYPE_BANNER = (7 << 2),
 	// The corrupt element type is used for skipping drawing other following
@@ -418,7 +418,7 @@ sint32 map_height_from_slope(sint32 x, sint32 y, sint32 slope);
 rct_map_element* map_get_banner_element_at(sint32 x, sint32 y, sint32 z, uint8 direction);
 rct_map_element *map_get_surface_element_at(sint32 x, sint32 y);
 rct_map_element* map_get_path_element_at(sint32 x, sint32 y, sint32 z);
-rct_map_element *map_get_fence_element_at(sint32 x, sint32 y, sint32 z, sint32 direction);
+rct_map_element *map_get_wall_element_at(sint32 x, sint32 y, sint32 z, sint32 direction);
 rct_map_element *map_get_small_scenery_element_at(sint32 x, sint32 y, sint32 z, sint32 type, uint8 quadrant);
 rct_map_element *map_get_park_entrance_element_at(sint32 x, sint32 y, sint32 z, bool ghost);
 sint32 map_element_height(sint32 x, sint32 y);
@@ -451,7 +451,7 @@ rct_xy16 coordinate_3d_to_2d(const rct_xyz16* coordinate_3d, sint32 rotation);
 money32 map_clear_scenery(sint32 x0, sint32 y0, sint32 x1, sint32 y1, sint32 clear, sint32 flags);
 money32 lower_water(sint16 x0, sint16 y0, sint16 x1, sint16 y1, uint8 flags);
 money32 raise_water(sint16 x0, sint16 y0, sint16 x1, sint16 y1, uint8 flags);
-money32 map_place_fence(sint32 type, sint32 x, sint32 y, sint32 z, sint32 edge, sint32 primaryColour, sint32 secondaryColour, sint32 tertiaryColour, sint32 flags);
+money32 wall_place(sint32 type, sint32 x, sint32 y, sint32 z, sint32 edge, sint32 primaryColour, sint32 secondaryColour, sint32 tertiaryColour, sint32 flags);
 
 void game_command_set_land_height(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *edx, sint32 *esi, sint32 *edi, sint32 *ebp);
 void game_command_set_land_ownership(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *edx, sint32 *esi, sint32 *edi, sint32 *ebp);
@@ -459,7 +459,7 @@ void game_command_remove_scenery(sint32* eax, sint32* ebx, sint32* ecx, sint32* 
 void game_command_remove_large_scenery(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp);
 void game_command_remove_banner(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp);
 void game_command_set_scenery_colour(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp);
-void game_command_set_fence_colour(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp);
+void game_command_set_wall_colour(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp);
 void game_command_set_large_scenery_colour(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp);
 void game_command_set_banner_colour(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp);
 void game_command_clear_scenery(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp);
@@ -470,10 +470,10 @@ void game_command_smooth_land(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx
 void game_command_raise_water(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp);
 void game_command_lower_water(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp);
 void game_command_set_water_height(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp);
-void game_command_remove_fence(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp);
+void game_command_remove_wall(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp);
 void game_command_place_banner(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp);
 void game_command_place_scenery(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp);
-void game_command_place_fence(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp);
+void game_command_place_wall(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp);
 void game_command_place_large_scenery(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp);
 void game_command_place_park_entrance(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp);
 void game_command_set_banner_name(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp);
@@ -495,7 +495,7 @@ void map_element_iterator_begin(map_element_iterator *it);
 sint32 map_element_iterator_next(map_element_iterator *it);
 void map_element_iterator_restart_for_tile(map_element_iterator *it);
 
-void map_remove_intersecting_walls(sint32 x, sint32 y, sint32 z0, sint32 z1, sint32 direction);
+void wall_remove_intersecting_walls(sint32 x, sint32 y, sint32 z0, sint32 z1, sint32 direction);
 void map_update_tiles();
 sint32 map_get_highest_z(sint32 tileX, sint32 tileY);
 
@@ -508,8 +508,8 @@ void map_remove_out_of_range_elements();
 void map_extend_boundary_surface();
 
 bool sign_set_colour(sint32 x, sint32 y, sint32 z, sint32 direction, sint32 sequence, uint8 mainColour, uint8 textColour);
-void map_remove_walls_at(sint32 x, sint32 y, sint32 z0, sint32 z1);
-void map_remove_walls_at_z(sint32 x, sint32 y, sint32 z);
+void wall_remove_at(sint32 x, sint32 y, sint32 z0, sint32 z1);
+void wall_remove_at_z(sint32 x, sint32 y, sint32 z);
 
 void map_invalidate_tile(sint32 x, sint32 y, sint32 z0, sint32 z1);
 void map_invalidate_tile_zoom1(sint32 x, sint32 y, sint32 z0, sint32 z1);
@@ -540,6 +540,6 @@ rct_map_element *map_get_track_element_at_with_direction_from_ride(sint32 x, sin
 
 bool map_is_location_at_edge(sint32 x, sint32 y);
 void map_obstruction_set_error_text(rct_map_element *mapElement);
-uint8 fence_get_animation_frame(rct_map_element *fenceElement);
+uint8 wall_get_animation_frame(rct_map_element *fenceElement);
 
 #endif

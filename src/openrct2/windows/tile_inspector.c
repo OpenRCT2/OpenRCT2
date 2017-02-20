@@ -1203,7 +1203,7 @@ static void window_tile_inspector_dropdown(rct_window *w, sint32 widgetIndex, si
 
 	switch (w->page) {
 	case TILE_INSPECTOR_PAGE_FENCE:
-		openrct2_assert(map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_FENCE, "Element is not a fence");
+		openrct2_assert(map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_WALL, "Element is not a fence");
 
 		switch (widgetIndex) {
 		case WIDX_FENCE_DROPDOWN_SLOPE_BUTTON:
@@ -1994,7 +1994,7 @@ static void window_tile_inspector_scrollpaint(rct_window *w, rct_drawpixelinfo *
 		case MAP_ELEMENT_TYPE_ENTRANCE:
 			typeName = "Entrance";
 			break;
-		case MAP_ELEMENT_TYPE_FENCE:
+		case MAP_ELEMENT_TYPE_WALL:
 			snprintf(
 				buffer, sizeof(buffer),
 				"Fence (%s)",

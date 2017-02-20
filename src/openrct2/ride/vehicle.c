@@ -6847,7 +6847,7 @@ static void vehicle_update_scenery_door(rct_vehicle *vehicle)
 	sint32 z = (vehicle->track_z - trackBlock->z + trackCoordinates->z_end) >> 3;
 	sint32 direction = (vehicle->track_direction + trackCoordinates->rotation_end) & 3;
 
-	rct_map_element *mapElement = map_get_fence_element_at(x, y, z, direction);
+	rct_map_element *mapElement = map_get_wall_element_at(x, y, z, direction);
 	if (mapElement == NULL) {
 		return;
 	}
@@ -6930,7 +6930,7 @@ static void sub_6DEDE8(rct_vehicle *vehicle)
 	sint32 direction = (vehicle->track_direction + trackCoordinates->rotation_begin) & 3;
 	direction ^= 2;
 
-	rct_map_element *mapElement = map_get_fence_element_at(x, y, z, direction);
+	rct_map_element *mapElement = map_get_wall_element_at(x, y, z, direction);
 	if (mapElement == NULL) {
 		return;
 	}

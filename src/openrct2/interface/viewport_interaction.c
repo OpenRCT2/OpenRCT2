@@ -500,7 +500,7 @@ static void viewport_interaction_remove_park_wall(rct_map_element *mapElement, s
 			GAME_COMMAND_FLAG_APPLY,
 			y,
 			(mapElement->type & 0x3) | (mapElement->base_height << 8),
-			GAME_COMMAND_REMOVE_FENCE,
+			GAME_COMMAND_REMOVE_WALL,
 			0,
 			0
 		);

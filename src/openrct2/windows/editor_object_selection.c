@@ -596,7 +596,7 @@ static void setup_in_use_selection_flags()
 			assert(type < object_entry_group_counts[OBJECT_TYPE_PATHS]);
 			gEditorSelectedObjects[OBJECT_TYPE_PATHS][type] |= (1 << 0);
 			break;
-		case MAP_ELEMENT_TYPE_FENCE:
+		case MAP_ELEMENT_TYPE_WALL:
 			type = iter.element->properties.fence.type;
 			assert(type < object_entry_group_counts[OBJECT_TYPE_WALLS]);
 			gEditorSelectedObjects[OBJECT_TYPE_WALLS][type] |= (1 << 0);

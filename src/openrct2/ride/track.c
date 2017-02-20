@@ -1121,14 +1121,14 @@ static money32 track_place(sint32 rideIndex, sint32 type, sint32 originX, sint32
 		if ((flags & GAME_COMMAND_FLAG_APPLY) && !(flags & GAME_COMMAND_FLAG_GHOST) && !gCheatsDisableClearanceChecks) {
 			footpath_remove_litter(x, y, z);
 			if (rideTypeFlags & RIDE_TYPE_FLAG_TRACK_NO_WALLS) {
-				map_remove_walls_at(x, y, baseZ * 8, clearanceZ * 8);
+				wall_remove_at(x, y, baseZ * 8, clearanceZ * 8);
 			} else {
 				// Remove walls in the directions this track intersects
 				uint8 intersectingDirections = (*wallEdges)[blockIndex];
 				intersectingDirections ^= 0x0F;
 				for (sint32 i = 0; i < 4; i++) {
 					if (intersectingDirections & (1 << i)) {
-						map_remove_intersecting_walls(x, y, baseZ, clearanceZ, i);
+						wall_remove_intersecting_walls(x, y, baseZ, clearanceZ, i);
 					}
 				}
 			}
@@ -1228,7 +1228,7 @@ static money32 track_place(sint32 rideIndex, sint32 type, sint32 originX, sint32
 						temp_x += TileDirectionDelta[temp_direction].x;
 						temp_y += TileDirectionDelta[temp_direction].y;
 						temp_direction ^= (1 << 1);
-						map_remove_intersecting_walls(temp_x, temp_y, baseZ, clearanceZ, temp_direction & 3);
+						wall_remove_intersecting_walls(temp_x, temp_y, baseZ, clearanceZ, temp_direction & 3);
 					}
 				}
 			}
@@ -1779,7 +1779,7 @@ static money32 set_maze_track(uint16 x, uint8 flags, uint8 direction, uint16 y, 
 	if ((flags & GAME_COMMAND_FLAG_APPLY) != 0) {
 		if (!(flags & GAME_COMMAND_FLAG_GHOST) && !(flags & GAME_COMMAND_FLAG_2)) {
 			footpath_remove_litter(x, y, z);
-			map_remove_walls_at(floor2(x, 32), floor2(y, 32), z, z + 32);
+			wall_remove_at(floor2(x, 32), floor2(y, 32), z, z + 32);
 		}
 	}
 

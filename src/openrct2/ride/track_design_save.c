@@ -200,7 +200,7 @@ static sint32 map_element_get_total_element_count(rct_map_element *mapElement)
 	switch (map_element_get_type(mapElement)) {
 	case MAP_ELEMENT_TYPE_PATH:
 	case MAP_ELEMENT_TYPE_SCENERY:
-	case MAP_ELEMENT_TYPE_FENCE:
+	case MAP_ELEMENT_TYPE_WALL:
 		return 1;
 
 	case MAP_ELEMENT_TYPE_SCENERY_MULTIPLE:
@@ -608,7 +608,7 @@ static void track_design_save_select_nearby_scenery_for_tile(sint32 rideIndex, s
 				case MAP_ELEMENT_TYPE_SCENERY:
 					interactionType = VIEWPORT_INTERACTION_ITEM_SCENERY;
 					break;
-				case MAP_ELEMENT_TYPE_FENCE:
+				case MAP_ELEMENT_TYPE_WALL:
 					interactionType = VIEWPORT_INTERACTION_ITEM_WALL;
 					break;
 				case MAP_ELEMENT_TYPE_SCENERY_MULTIPLE:

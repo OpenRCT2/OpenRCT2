@@ -461,7 +461,7 @@ static bool map_animation_invalidate_wall_door(sint32 x, sint32 y, sint32 baseZ)
 	do {
 		if (mapElement->base_height != baseZ)
 			continue;
-		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_FENCE)
+		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_WALL)
 			continue;
 
 		sceneryEntry = get_wall_entry(mapElement->properties.scenery.type);
@@ -474,7 +474,7 @@ static bool map_animation_invalidate_wall_door(sint32 x, sint32 y, sint32 baseZ)
 
 		bool invalidate = false;
 		uint8 bl = mapElement->properties.fence.animation & 0x87;
-		uint8 currentFrame = fence_get_animation_frame(mapElement);
+		uint8 currentFrame = wall_get_animation_frame(mapElement);
 		if (currentFrame != 0) {
 			if (currentFrame == 15) {
 				currentFrame = 0;
@@ -515,7 +515,7 @@ static bool map_animation_invalidate_wall(sint32 x, sint32 y, sint32 baseZ)
 	do {
 		if (mapElement->base_height != baseZ)
 			continue;
-		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_FENCE)
+		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_WALL)
 			continue;
 
 		sceneryEntry = get_wall_entry(mapElement->properties.scenery.type);

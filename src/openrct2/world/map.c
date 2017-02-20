@@ -1391,14 +1391,14 @@ restart_from_beginning:
 					goto restart_from_beginning;
 
 			} break;
-		case MAP_ELEMENT_TYPE_FENCE:
+		case MAP_ELEMENT_TYPE_WALL:
 			if (clear & (1 << 0)) {
 				sint32 eax = x * 32;
 				sint32 ebx = flags;
 				sint32 ecx = y * 32;
 				sint32 edx = (mapElement->base_height << 8) | (mapElement->type & MAP_ELEMENT_DIRECTION_MASK);
 				sint32 edi = 0, ebp = 0;
-				cost = game_do_command(eax, ebx, ecx, edx, GAME_COMMAND_REMOVE_FENCE, edi, ebp);
+				cost = game_do_command(eax, ebx, ecx, edx, GAME_COMMAND_REMOVE_WALL, edi, ebp);
 
 				if (cost == MONEY32_UNDEFINED)
 					return MONEY32_UNDEFINED;
@@ -1742,7 +1742,7 @@ static money32 map_set_land_height(sint32 flags, sint32 x, sint32 y, sint32 heig
 	{
 		footpath_remove_litter(x, y, map_element_height(x, y));
 		if(!gCheatsDisableClearanceChecks)
-			map_remove_walls_at(x, y, height * 8 - 16, height * 8 + 32);
+			wall_remove_at(x, y, height * 8 - 16, height * 8 + 32);
 	}
 	cost += MONEY(20, 0);
 
@@ -1833,7 +1833,7 @@ static money32 map_set_land_height(sint32 flags, sint32 x, sint32 y, sint32 heig
 		do {
 			sint32 elementType = map_element_get_type(mapElement);
 
-			if (elementType == MAP_ELEMENT_TYPE_FENCE)
+			if (elementType == MAP_ELEMENT_TYPE_WALL)
 				continue;
 			if (elementType == MAP_ELEMENT_TYPE_SCENERY)
 				continue;
@@ -2703,7 +2703,7 @@ void game_command_set_water_height(sint32* eax, sint32* ebx, sint32* ecx, sint32
 		sint32 element_height = map_element_height(x, y);
 		footpath_remove_litter(x, y, element_height);
 		if(!gCheatsDisableClearanceChecks)
-			map_remove_walls_at_z(x, y, element_height);
+			wall_remove_at_z(x, y, element_height);
 	}
 
 	rct_map_element* map_element = map_get_surface_element_at(x / 32, y / 32);
@@ -3023,7 +3023,7 @@ void game_command_place_scenery(sint32* eax, sint32* ebx, sint32* ecx, sint32* e
 	if(flags & GAME_COMMAND_FLAG_APPLY && !(flags & GAME_COMMAND_FLAG_GHOST)){
 		footpath_remove_litter(x, y, targetHeight);
 		if(!gCheatsDisableClearanceChecks && (scenery_entry->small_scenery.flags & SMALL_SCENERY_FLAG_ALLOW_WALLS)) {
-			map_remove_walls_at(x, y, targetHeight, targetHeight + scenery_entry->small_scenery.height);
+			wall_remove_at(x, y, targetHeight, targetHeight + scenery_entry->small_scenery.height);
 		}
 	}
 
@@ -3341,7 +3341,7 @@ void game_command_place_large_scenery(sint32* eax, sint32* ebx, sint32* ecx, sin
 			if (!(flags & GAME_COMMAND_FLAG_GHOST)) {
 				footpath_remove_litter(curTile.x, curTile.y, zLow * 8);
 				if (!gCheatsDisableClearanceChecks) {
-					map_remove_walls_at(curTile.x, curTile.y, zLow * 8, zHigh * 8);
+					wall_remove_at(curTile.x, curTile.y, zLow * 8, zHigh * 8);
 				}
 			}
 			if (gGameCommandNestLevel == 1 && !(*ebx & GAME_COMMAND_FLAG_GHOST)) {
@@ -3714,7 +3714,7 @@ void map_obstruction_set_error_text(rct_map_element *mapElement)
 			break;
 		}
 		break;
-	case MAP_ELEMENT_TYPE_FENCE:
+	case MAP_ELEMENT_TYPE_WALL:
 		sceneryEntry = get_wall_entry(mapElement->properties.scenery.type);
 		errorStringId = STR_X_IN_THE_WAY;
 		set_format_arg(0, rct_string_id, sceneryEntry->name);
@@ -3935,7 +3935,7 @@ static void map_update_grass_length(sint32 x, sint32 y, rct_map_element *mapElem
 			}
 		} else {
 			mapElementAbove++;
-			if (map_element_get_type(mapElementAbove) == MAP_ELEMENT_TYPE_FENCE)
+			if (map_element_get_type(mapElementAbove) == MAP_ELEMENT_TYPE_WALL)
 				continue;
 			if (z0 >= mapElementAbove->clearance_height)
 				continue;
@@ -4005,7 +4005,7 @@ sint32 map_element_get_banner_index(rct_map_element *mapElement)
 			(mapElement->type & MAP_ELEMENT_QUADRANT_MASK) |
 			((mapElement->properties.scenerymultiple.colour[0] & 0xE0) >> 2) |
 			((mapElement->properties.scenerymultiple.colour[1] & 0xE0) >> 5);
-	case MAP_ELEMENT_TYPE_FENCE:
+	case MAP_ELEMENT_TYPE_WALL:
 		sceneryEntry = get_wall_entry(mapElement->properties.fence.type);
 		if (sceneryEntry->wall.scrolling_mode == 0xFF)
 			return -1;
@@ -4154,14 +4154,14 @@ static void clear_element_at(sint32 x, sint32 y, rct_map_element **elementPtr)
 	case MAP_ELEMENT_TYPE_ENTRANCE:
 		viewport_interaction_remove_park_entrance(element, x, y);
 		break;
-	case MAP_ELEMENT_TYPE_FENCE:
+	case MAP_ELEMENT_TYPE_WALL:
 		gGameCommandErrorTitle = STR_CANT_REMOVE_THIS;
 		game_do_command(
 				x,
 				GAME_COMMAND_FLAG_APPLY,
 				y,
 				(element->type & MAP_ELEMENT_DIRECTION_MASK) | (element->base_height << 8),
-				GAME_COMMAND_REMOVE_FENCE,
+				GAME_COMMAND_REMOVE_WALL,
 				0,
 				0
 		);
@@ -4552,7 +4552,7 @@ bool map_surface_is_blocked(sint16 x, sint16 y){
 			continue;
 
 		if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_PATH ||
-			map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_FENCE)
+			map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_WALL)
 			continue;
 
 		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_SCENERY)
@@ -4909,7 +4909,7 @@ void game_command_set_sign_style(sint32* eax, sint32* ebx, sint32* ecx, sint32* 
 		rct_map_element* map_element = map_get_first_element_at(x / 32, y / 32);
 		bool fence_found = false;
 		do{
-			if (map_element_get_type(map_element) != MAP_ELEMENT_TYPE_FENCE)
+			if (map_element_get_type(map_element) != MAP_ELEMENT_TYPE_WALL)
 				continue;
 
 			rct_scenery_entry* scenery_entry = get_wall_entry(map_element->properties.fence.type);
@@ -5276,4 +5276,20 @@ void map_offset_with_rotation(sint16 *x, sint16 *y, sint16 offsetX, sint16 offse
 		*y += offsetX;
 		break;
 	}
+}
+
+rct_map_element *map_get_wall_element_at(sint32 x, sint32 y, sint32 z, sint32 direction)
+{
+	rct_map_element *mapElement = map_get_first_element_at(x >> 5, y >> 5);
+	do {
+		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_WALL)
+			continue;
+		if (mapElement->base_height != z)
+			continue;
+		if (map_element_get_direction(mapElement) != direction)
+			continue;
+
+		return mapElement;
+	} while (!map_element_is_last_for_tile(mapElement++));
+	return NULL;
 }

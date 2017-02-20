@@ -894,8 +894,8 @@ static void window_footpath_construct()
 	if (cost != MONEY32_UNDEFINED && !gCheatsDisableClearanceChecks) {
 		// It is possible, let's remove walls between the old and new piece of path
 		uint8 direction = gFootpathConstructDirection;
-		map_remove_intersecting_walls(x, y, z, z + 4 + ((slope & 0xf) ? 2 : 0), direction ^ 2);
-		map_remove_intersecting_walls(
+		wall_remove_intersecting_walls(x, y, z, z + 4 + ((slope & 0xf) ? 2 : 0), direction ^ 2);
+		wall_remove_intersecting_walls(
 			x - TileDirectionDelta[direction].x,
 			y - TileDirectionDelta[direction].y,
 			z, z + 4, direction

@@ -8268,7 +8268,7 @@ static money32 place_ride_entrance_or_exit(sint16 x, sint16 y, sint16 z, uint8 d
 			!(flags & GAME_COMMAND_FLAG_GHOST)
 		) {
 			footpath_remove_litter(x, y, z);
-			map_remove_walls_at_z(x, y, z);
+			wall_remove_at_z(x, y, z);
 		}
 
 		if (!gCheatsSandboxMode && !map_is_location_owned(x, y, z)) {

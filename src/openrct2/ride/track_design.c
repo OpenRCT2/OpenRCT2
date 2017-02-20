@@ -682,7 +682,7 @@ static sint32 track_design_place_scenery(rct_td6_scenery_element *scenery_start,
 						0x69,
 						mapCoord.y,
 						(z << 8) | ((rotation + scenery->flags) & 0x3),
-						GAME_COMMAND_REMOVE_FENCE,
+						GAME_COMMAND_REMOVE_WALL,
 						0,
 						0);
 					break;
@@ -819,7 +819,7 @@ static sint32 track_design_place_scenery(rct_td6_scenery_element *scenery_start,
 						bl | (entry_index << 8),
 						mapCoord.y,
 						rotation | (scenery->primary_colour << 8),
-						GAME_COMMAND_PLACE_FENCE,
+						GAME_COMMAND_PLACE_WALL,
 						z,
 						scenery->secondary_colour | ((scenery->flags & 0xFC) << 6)
 						);
@@ -1536,7 +1536,7 @@ static money32 place_maze_design(uint8 flags, uint8 rideIndex, uint16 mazeEntry,
 	if (flags & GAME_COMMAND_FLAG_APPLY) {
 		if (!(flags & GAME_COMMAND_FLAG_GHOST)) {
 			footpath_remove_litter(x, y, z);
-			map_remove_walls_at(floor2(x, 32), floor2(y, 32), z, z + 32);
+			wall_remove_at(floor2(x, 32), floor2(y, 32), z, z + 32);
 		}
 	}
 

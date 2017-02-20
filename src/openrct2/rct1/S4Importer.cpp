@@ -409,7 +409,7 @@ private:
             case MAP_ELEMENT_TYPE_SCENERY_MULTIPLE:
                 AddEntryForLargeScenery(mapElement->properties.scenerymultiple.type & MAP_ELEMENT_LARGE_TYPE_MASK);
                 break;
-            case MAP_ELEMENT_TYPE_FENCE:
+            case MAP_ELEMENT_TYPE_WALL:
             {
                 uint8  var_05 = mapElement->properties.fence.colour_3;
                 uint16 var_06 = mapElement->properties.fence.colour_1 |
@@ -2098,7 +2098,7 @@ private:
                         break;
                     }
                     break;
-                case MAP_ELEMENT_TYPE_FENCE:
+                case MAP_ELEMENT_TYPE_WALL:
                     colour = ((mapElement->type & 0xC0) >> 3) |
                              ((mapElement->properties.fence.type & 0xE0) >> 5);
                     colour = RCT1::GetColour(colour);
@@ -2204,7 +2204,7 @@ private:
                 rct_map_element * mapElement = map_get_first_element_at(x, y);
                 do
                 {
-                    if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_FENCE)
+                    if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_WALL)
                     {
                         rct_map_element originalMapElement = *mapElement;
                         map_element_remove(mapElement);
@@ -2227,7 +2227,7 @@ private:
                                 ConvertWall(&type, &colourA, &colourB, &colourC);
 
                                 type = _wallTypeToEntryMap[type];
-                                map_place_fence(type, x * 32, y * 32, 0, edge, colourA, colourB, colourC, 169);
+                                wall_place(type, x * 32, y * 32, 0, edge, colourA, colourB, colourC, 169);
                             }
                         }
                         break;

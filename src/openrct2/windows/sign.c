@@ -434,7 +434,7 @@ void window_sign_small_open(rct_windownumber number){
 	rct_map_element* map_element = map_get_first_element_at(view_x / 32, view_y / 32);
 
 	while (1){
-		if (map_element_get_type(map_element) == MAP_ELEMENT_TYPE_FENCE) {
+		if (map_element_get_type(map_element) == MAP_ELEMENT_TYPE_WALL) {
 			rct_scenery_entry* scenery_entry = get_wall_entry(map_element->properties.fence.type);
 			if (scenery_entry->wall.scrolling_mode != 0xFF){
 				if (map_element->properties.fence.banner_index == w->number)
@@ -496,7 +496,7 @@ static void window_sign_small_mouseup(rct_window *w, sint32 widgetIndex)
 		break;
 	case WIDX_SIGN_DEMOLISH:
 		while (1){
-			if (map_element_get_type(map_element) == MAP_ELEMENT_TYPE_FENCE) {
+			if (map_element_get_type(map_element) == MAP_ELEMENT_TYPE_WALL) {
 				rct_scenery_entry* scenery_entry = get_wall_entry(map_element->properties.fence.type);
 				if (scenery_entry->wall.scrolling_mode != 0xFF){
 					if (map_element->properties.fence.banner_index == w->number)
@@ -511,7 +511,7 @@ static void window_sign_small_mouseup(rct_window *w, sint32 widgetIndex)
 			1 | ((map_element->type & 0x3) << 8),
 			y,
 			(map_element->base_height << 8) | (map_element->type & 0x3),
-			GAME_COMMAND_REMOVE_FENCE,
+			GAME_COMMAND_REMOVE_WALL,
 			0,
 			0);
 		break;
