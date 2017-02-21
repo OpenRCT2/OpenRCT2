@@ -800,7 +800,10 @@ void mapgen_smooth_heightmap(SDL_Surface *surface, sint32 strength)
 						// This assumes the height map is not tiled, and increases the weight of the edges
 						const sint32 readX = clamp(x + offsetX, 0, width - 1);
 						const sint32 readY = clamp(y + offsetY, 0, height - 1);
-						heightSum += src[readX * numChannels + readY * pitch];
+						const uint8 red = src[readX * numChannels + readY * pitch];
+						const uint8 green = src[readX * numChannels + readY * pitch + 1];
+						const uint8 blue = src[readX * numChannels + readY * pitch + 2];
+						heightSum += (red + green + blue) / 3;
 					}
 				}
 
