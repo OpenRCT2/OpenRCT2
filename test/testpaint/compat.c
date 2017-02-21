@@ -72,8 +72,7 @@ int object_entry_group_counts[] = {
 	1        // scenario text
 };
 
-
-general_configuration gConfigGeneral;
+GeneralConfiguration gConfigGeneral;
 uint16 gMapSelectFlags;
 uint16 gMapSelectType;
 rct_xy16 gMapSelectPositionA;
