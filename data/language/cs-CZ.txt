@@ -4324,6 +4324,8 @@ STR_6011    :{COMMA1DP16}ft
 STR_6012    :{COMMA1DP16}
 STR_6013    :{SMALLFONT}{BLACK}Návštěvníci platí pouze za vstup do parku a služby. Atrakce jsou zdrarma.
 STR_6014    :{SMALLFONT}{BLACK}Návštěvníci platí pouze za služby a atrakce. Vstup do parku je zdarma.
+STR_6015    :Nakloněný
+STR_6016    :Upravit dlaždici
 
 ###############################################################################
 ## RCT2 Objects
