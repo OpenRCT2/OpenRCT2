@@ -5059,11 +5059,11 @@ void game_command_modify_tile(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx
 		*ebx = tile_inspector_path_toggle_edge(x, y, elementIndex, edgeIndex, flags);
 		break;
 	}
-	case TILE_INSPECTOR_FENCE_SET_SLOPE:
+	case TILE_INSPECTOR_WALL_SET_SLOPE:
 	{
 		const sint32 elementIndex = *edx;
 		const sint32 slopeValue = *edi;
-		*ebx = tile_inspector_fence_set_slope(x, y, elementIndex, slopeValue, flags);
+		*ebx = tile_inspector_wall_set_slope(x, y, elementIndex, slopeValue, flags);
 		break;
 	}
 	case TILE_INSPECTOR_TRACK_BASE_HEIGHT_OFFSET:
