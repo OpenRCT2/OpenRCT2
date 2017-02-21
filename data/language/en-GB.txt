@@ -4237,7 +4237,7 @@ STR_5925    :Path details
 STR_5926    :Track details
 STR_5927    :Scenery details
 STR_5928    :Entrance details
-STR_5929    :Fence details
+STR_5929    :Wall details
 STR_5930    :Large scenery details
 STR_5931    :Banner details
 STR_5932    :Corrupt element details
@@ -4287,7 +4287,7 @@ STR_5975    :Slope:
 STR_5976    :Flat
 STR_5977    :Right side up
 STR_5978    :Left side up
-STR_5979    :{WINDOW_COLOUR_2}Fence type: {BLACK}{COMMA16}
+STR_5979    :{WINDOW_COLOUR_2}Wall type: {BLACK}{COMMA16}
 STR_5980    :{WINDOW_COLOUR_2}Banner text: {BLACK}{STRINGID}
 STR_5981    :{WINDOW_COLOUR_2}Not a banner
 STR_5982    :{WINDOW_COLOUR_2}Large scenery type: {BLACK}{COMMA16}

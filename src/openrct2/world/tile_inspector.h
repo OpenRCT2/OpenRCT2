@@ -26,7 +26,7 @@ typedef enum {
 	TILE_INSPECTOR_ELEMENT_TRACK,
 	TILE_INSPECTOR_ELEMENT_SCENERY,
 	TILE_INSPECTOR_ELEMENT_ENTRANCE,
-	TILE_INSPECTOR_ELEMENT_FENCE,
+	TILE_INSPECTOR_ELEMENT_WALL,
 	TILE_INSPECTOR_ELEMENT_SCENERYMULTIPLE,
 	TILE_INSPECTOR_ELEMENT_BANNER,
 	TILE_INSPECTOR_ELEMENT_CORRUPT,
@@ -45,7 +45,7 @@ typedef enum {
 	TILE_INSPECTOR_SURFACE_TOGGLE_DIAGONAL,
 	TILE_INSPECTOR_PATH_SET_SLOPE,
 	TILE_INSPECTOR_PATH_TOGGLE_EDGE,
-	TILE_INSPECTOR_FENCE_SET_SLOPE,
+	TILE_INSPECTOR_WALL_SET_SLOPE,
 	TILE_INSPECTOR_TRACK_BASE_HEIGHT_OFFSET,
 	TILE_INSPECTOR_TRACK_SET_CHAIN,
 	TILE_INSPECTOR_SCENERY_SET_QUARTER_LOCATION,
@@ -66,7 +66,7 @@ sint32 tile_inspector_surface_toggle_corner(sint32 x, sint32 y, sint32 cornerInd
 sint32 tile_inspector_surface_toggle_diagonal(sint32 x, sint32 y, sint32 flags);
 sint32 tile_inspector_path_set_sloped(sint32 x, sint32 y, sint32 elementIndex, bool sloped, sint32 flags);
 sint32 tile_inspector_path_toggle_edge(sint32 x, sint32 y, sint32 elementIndex, sint32 cornerIndex, sint32 flags);
-sint32 tile_inspector_fence_set_slope(sint32 x, sint32 y, sint32 elementIndex, sint32 slopeValue, sint32 flags);
+sint32 tile_inspector_wall_set_slope(sint32 x, sint32 y, sint32 elementIndex, sint32 slopeValue, sint32 flags);
 sint32 tile_inspector_track_base_height_offset(sint32 x, sint32 y, sint32 elementIndex, sint8 offset, sint32 flags);
 sint32 tile_inspector_track_set_chain(sint32 x, sint32 y, sint32 elementIndex, bool entireTrackBlock, bool setChain, sint32 flags);
 sint32 tile_inspector_scenery_set_quarter_location(sint32 x, sint32 y, sint32 elementIndex, sint32 quarterIndex, sint32 flags);
