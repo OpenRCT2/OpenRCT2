@@ -22,12 +22,12 @@
 class IniWriter final : public IIniWriter
 {
 private:
-    FileStream  _fs;
+    IStream *   _stream;
     bool        _firstSection = false;
 
 public:
-    IniWriter(const std::string &path)
-        : _fs(path, FILE_MODE_WRITE)
+    IniWriter(IStream * stream)
+        : _stream(stream)
     {
     }
 
@@ -87,12 +87,12 @@ private:
 
     void WriteLine()
     {
-        _fs.Write(PLATFORM_NEWLINE, String::SizeOf(PLATFORM_NEWLINE));
+        _stream->Write(PLATFORM_NEWLINE, String::SizeOf(PLATFORM_NEWLINE));
     }
 
     void WriteLine(const std::string &line)
     {
-        _fs.Write(line.c_str(), line.size());
+        _stream->Write(line.c_str(), line.size());
         WriteLine();
     }
 };
@@ -102,7 +102,7 @@ void IIniWriter::WriteString(const std::string &name, const utf8 * value)
     WriteString(name, String::ToStd(value));
 }
 
-IIniWriter * CreateIniWriter(const std::string &path)
+IIniWriter * CreateIniWriter(IStream * stream)
 {
-    return new IniWriter(path);
+    return new IniWriter(stream);
 }

@@ -17,6 +17,7 @@
 #include <memory>
 #include "../core/Console.hpp"
 #include "../core/Exception.hpp"
+#include "../core/FileStream.hpp"
 #include "../core/Memory.hpp"
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
@@ -505,7 +506,8 @@ namespace Config
     {
         try
         {
-            auto reader = std::unique_ptr<IIniReader>(CreateIniReader(path));
+            auto fs = FileStream(path, FILE_MODE_OPEN);
+            auto reader = std::unique_ptr<IIniReader>(CreateIniReader(&fs));
             ReadGeneral(reader.get());
             ReadInterface(reader.get());
             ReadSound(reader.get());
@@ -525,7 +527,8 @@ namespace Config
     {
         try
         {
-            auto writer = std::unique_ptr<IIniWriter>(CreateIniWriter(path));
+            auto fs = FileStream(path, FILE_MODE_WRITE);
+            auto writer = std::unique_ptr<IIniWriter>(CreateIniWriter(&fs));
             WriteGeneral(writer.get());
             WriteInterface(writer.get());
             WriteSound(writer.get());

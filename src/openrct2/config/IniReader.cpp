@@ -60,12 +60,11 @@ private:
     std::unordered_map<std::string, std::string>    _values;
 
 public:
-    IniReader(const std::string &path)
+    IniReader(IStream * stream)
     {
-        auto fs = FileStream(path, FILE_MODE_OPEN);
-        uint64 length = fs.GetLength();
+        uint64 length = stream->GetLength() - stream->GetPosition();
         _buffer.resize(length);
-        fs.Read(_buffer.data(), length);
+        stream->Read(_buffer.data(), length);
 
         RemoveBOM();
 
@@ -368,9 +367,9 @@ utf8 * IIniReader::GetCString(const std::string &name, const utf8 * defaultValue
     return String::Duplicate(szValue.c_str());
 }
 
-IIniReader * CreateIniReader(const std::string &path)
+IIniReader * CreateIniReader(IStream * stream)
 {
-    return new IniReader(path);
+    return new IniReader(stream);
 }
 
 IIniReader * CreateDefaultIniReader()

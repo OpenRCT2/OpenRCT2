@@ -18,6 +18,8 @@
 #include "../common.h"
 #include "ConfigEnum.hpp"
 
+interface IStream;
+
 interface IIniWriter
 {
     virtual ~IIniWriter() = default;
@@ -47,4 +49,4 @@ interface IIniWriter
     void WriteString(const std::string &name, const utf8 * value);
 };
 
-IIniWriter * CreateIniWriter(const std::string &path);
+IIniWriter * CreateIniWriter(IStream * stream);

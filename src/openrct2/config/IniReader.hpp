@@ -18,6 +18,8 @@
 #include "../common.h"
 #include "ConfigEnum.hpp"
 
+interface IStream;
+
 interface IIniReader
 {
     virtual ~IIniReader() = default;
@@ -45,5 +47,5 @@ interface IIniReader
     utf8 * GetCString(const std::string &name, const utf8 * defaultValue) const;
 };
 
-IIniReader * CreateIniReader(const std::string &path);
+IIniReader * CreateIniReader(IStream * stream);
 IIniReader * CreateDefaultIniReader();
