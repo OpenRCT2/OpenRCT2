@@ -21,7 +21,7 @@
 #include "../core/String.hpp"
 
 template<typename T>
-struct ConfigEnumEntry final
+struct ConfigEnumEntry
 {
     std::string Key;
     T           Value;
