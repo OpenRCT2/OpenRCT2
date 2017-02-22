@@ -25,6 +25,9 @@
 #include "../core/StringBuilder.hpp"
 #include "IniReader.hpp"
 
+/**
+ * Simple tuple (start, length) representing a text span in a buffer.
+ */
 struct Span
 {
     size_t Start    = 0;
@@ -38,6 +41,9 @@ struct Span
     }
 };
 
+/**
+ * Simple tuple (start, end) inclusive representing a range of lines.
+ */
 struct LineRange
 {
     size_t Start    = 0;
