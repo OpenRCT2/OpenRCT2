@@ -93,49 +93,45 @@ public:
 
     bool GetBoolean(const std::string &name, bool defaultValue) const override
     {
-        auto it = _values.find(name);
-        if (it == _values.end())
+        bool result = defaultValue;
+        std::string value;
+        if (TryGetString(name, &value))
         {
-            return defaultValue;
+            result = String::Equals(value, "true", true);
         }
-
-        std::string value = it->second;
-        return String::Equals(value, "true", true);
+        return result;
     }
 
     sint32 GetSint32(const std::string &name, sint32 defaultValue) const override
     {
-        auto it = _values.find(name);
-        if (it == _values.end())
+        sint32 result = defaultValue;
+        std::string value;
+        if (TryGetString(name, &value))
         {
-            return defaultValue;
+            result = std::stoi(value);
         }
-
-        std::string value = it->second;
-        return std::stoi(value);
+        return result;
     }
 
     float GetFloat(const std::string &name, float defaultValue) const override
     {
-        auto it = _values.find(name);
-        if (it == _values.end())
+        float result = defaultValue;
+        std::string value;
+        if (TryGetString(name, &value))
         {
-            return defaultValue;
+            result = std::stof(value);
         }
-
-        std::string value = it->second;
-        return std::stof(value);
+        return result;
     }
 
     std::string GetString(const std::string &name, const std::string &defaultValue) const override
     {
-        auto it = _values.find(name);
-        if (it == _values.end())
+        std::string result;
+        if (TryGetString(name, &result))
         {
-            return defaultValue;
+            result = defaultValue;
         }
-
-        return it->second;
+        return result;
     }
 
     bool TryGetString(const std::string &name, std::string * outValue) const override
