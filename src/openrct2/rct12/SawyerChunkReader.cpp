@@ -57,6 +57,7 @@ void SawyerChunkReader::SkipChunk()
 
 std::shared_ptr<SawyerChunk> SawyerChunkReader::ReadChunk()
 {
+    Guard::Assert(false, "Test");
     uint64 originalPosition = _stream->GetPosition();
     try
     {
