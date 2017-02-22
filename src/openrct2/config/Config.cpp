@@ -25,8 +25,8 @@
 #include "../network/network.h"
 #include "../OpenRCT2.h"
 #include "Config.h"
-#include "IniReader.h"
-#include "IniWriter.h"
+#include "IniReader.hpp"
+#include "IniWriter.hpp"
 
 extern "C"
 {

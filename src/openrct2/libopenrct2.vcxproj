@@ -423,9 +423,9 @@
     <ClInclude Include="audio\AudioMixer.h" />
     <ClInclude Include="audio\AudioSource.h" />
     <ClInclude Include="config\Config.h" />
-    <ClInclude Include="config\ConfigEnum.h" />
-    <ClInclude Include="config\IniReader.h" />
-    <ClInclude Include="config\IniWriter.h" />
+    <ClInclude Include="config\ConfigEnum.hpp" />
+    <ClInclude Include="config\IniReader.hpp" />
+    <ClInclude Include="config\IniWriter.hpp" />
     <ClInclude Include="FileClassifier.h" />
     <ClInclude Include="network\ServerList.h" />
     <ClInclude Include="rct12.h" />

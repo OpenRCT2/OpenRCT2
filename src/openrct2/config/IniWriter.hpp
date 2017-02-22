@@ -16,7 +16,7 @@
 
 #include <string>
 #include "../common.h"
-#include "ConfigEnum.h"
+#include "ConfigEnum.hpp"
 
 interface IIniWriter
 {

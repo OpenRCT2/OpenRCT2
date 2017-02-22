@@ -23,7 +23,7 @@
 #include "../core/FileStream.hpp"
 #include "../core/String.hpp"
 #include "../core/StringBuilder.hpp"
-#include "IniReader.h"
+#include "IniReader.hpp"
 
 struct Span
 {
