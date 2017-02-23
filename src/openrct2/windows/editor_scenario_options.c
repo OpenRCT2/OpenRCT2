@@ -959,7 +959,15 @@ static void window_editor_scenario_options_guests_mousedown(sint32 widgetIndex, 
 		break;
 	case WIDX_GUEST_INITIAL_THIRST_INCREASE:
 		if (gGuestInitialThirst > 40) {
-			gGuestInitialThirst -= 4;
+			game_do_command(
+				0,
+				GAME_COMMAND_FLAG_APPLY,
+				EDIT_SCENARIOOPTIONS_SETGUESTINITIALTHIRST,
+				gGuestInitialThirst - 4,
+				GAME_COMMAND_EDIT_SCENARIO_OPTIONS,
+				0,
+				0
+			);
 		} else {
 			window_error_open(STR_CANT_INCREASE_FURTHER, STR_NONE);
 		}
@@ -967,7 +975,15 @@ static void window_editor_scenario_options_guests_mousedown(sint32 widgetIndex, 
 		break;
 	case WIDX_GUEST_INITIAL_THIRST_DECREASE:
 		if (gGuestInitialThirst < 250) {
-			gGuestInitialThirst += 4;
+			game_do_command(
+				0,
+				GAME_COMMAND_FLAG_APPLY,
+				EDIT_SCENARIOOPTIONS_SETGUESTINITIALTHIRST,
+				gGuestInitialThirst + 4,
+				GAME_COMMAND_EDIT_SCENARIO_OPTIONS,
+				0,
+				0
+			);
 		} else {
 			window_error_open(STR_CANT_REDUCE_FURTHER, STR_NONE);
 		}
