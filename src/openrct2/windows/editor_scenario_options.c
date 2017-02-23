@@ -500,18 +500,15 @@ static void window_editor_scenario_options_financial_mouseup(rct_window *w, sint
 		window_editor_scenario_options_set_page(w, widgetIndex - WIDX_TAB_1);
 		break;
 	case WIDX_NO_MONEY:
-		if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) {
-			gParkFlags ^= PARK_FLAGS_NO_MONEY_SCENARIO;
-		} else {
-			gParkFlags ^= PARK_FLAGS_NO_MONEY;
-			// Invalidate all windows that have anything to do with finance
-			window_invalidate_by_class(WC_RIDE);
-			window_invalidate_by_class(WC_PEEP);
-			window_invalidate_by_class(WC_PARK_INFORMATION);
-			window_invalidate_by_class(WC_FINANCES);
-			window_invalidate_by_class(WC_BOTTOM_TOOLBAR);
-			window_invalidate_by_class(WC_TOP_TOOLBAR);
-		}
+		game_do_command(
+			0, 
+			GAME_COMMAND_FLAG_APPLY,
+			EDIT_SCENARIOOPTIONS_SETNOMONEY,
+			gParkFlags & PARK_FLAGS_NO_MONEY ? FALSE : TRUE,
+			GAME_COMMAND_EDIT_SCENARIO_OPTIONS,
+			0,
+			0
+		);
 		window_invalidate(w);
 		break;
 	case WIDX_FORBID_MARKETING:

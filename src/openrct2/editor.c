@@ -541,7 +541,29 @@ void game_command_edit_scenario_options(sint32* eax, sint32* ebx, sint32* ecx, s
 	if (*ebx & GAME_COMMAND_FLAG_APPLY) {
 		switch (*ecx) {
 		case EDIT_SCENARIOOPTIONS_SETNOMONEY:
-			
+			if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) {
+				if (*edx != FALSE) {
+					gParkFlags |= PARK_FLAGS_NO_MONEY_SCENARIO;
+				}
+				else {
+					gParkFlags &= PARK_FLAGS_NO_MONEY_SCENARIO;
+				}
+			}
+			else {
+				if (*edx != FALSE) {
+					gParkFlags |= PARK_FLAGS_NO_MONEY;
+				}
+				else {
+					gParkFlags &= ~PARK_FLAGS_NO_MONEY;
+				}
+				// Invalidate all windows that have anything to do with finance
+				window_invalidate_by_class(WC_RIDE);
+				window_invalidate_by_class(WC_PEEP);
+				window_invalidate_by_class(WC_PARK_INFORMATION);
+				window_invalidate_by_class(WC_FINANCES);
+				window_invalidate_by_class(WC_BOTTOM_TOOLBAR);
+				window_invalidate_by_class(WC_TOP_TOOLBAR);
+			}
 			break;
 		case EDIT_SCENARIOOPTIONS_SETINITIALCASH:
 			
