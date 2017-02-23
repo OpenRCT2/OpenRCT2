@@ -895,7 +895,15 @@ static void window_editor_scenario_options_guests_mousedown(sint32 widgetIndex, 
 		break;
 	case WIDX_GUEST_INITIAL_HAPPINESS_INCREASE:
 		if (gGuestInitialHappiness < 250) {
-			gGuestInitialHappiness += 4;
+			game_do_command(
+				0,
+				GAME_COMMAND_FLAG_APPLY,
+				EDIT_SCENARIOOPTIONS_SETGUESTINITIALHAPPINESS,
+				gGuestInitialHappiness + 4,
+				GAME_COMMAND_EDIT_SCENARIO_OPTIONS,
+				0,
+				0
+			);
 		} else {
 			window_error_open(STR_CANT_INCREASE_FURTHER, STR_NONE);
 		}
@@ -903,7 +911,15 @@ static void window_editor_scenario_options_guests_mousedown(sint32 widgetIndex, 
 		break;
 	case WIDX_GUEST_INITIAL_HAPPINESS_DECREASE:
 		if (gGuestInitialHappiness > 40) {
-			gGuestInitialHappiness -= 4;
+			game_do_command(
+				0,
+				GAME_COMMAND_FLAG_APPLY,
+				EDIT_SCENARIOOPTIONS_SETGUESTINITIALHAPPINESS,
+				gGuestInitialHappiness - 4,
+				GAME_COMMAND_EDIT_SCENARIO_OPTIONS,
+				0,
+				0
+			);
 		} else {
 			window_error_open(STR_CANT_REDUCE_FURTHER, STR_NONE);
 		}

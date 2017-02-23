@@ -597,7 +597,7 @@ void game_command_edit_scenario_options(sint32* eax, sint32* ebx, sint32* ecx, s
 			gGuestInitialCash = max(MONEY(0, 00), min(MONEY(1000, 00), *edx));
 			break;
 		case EDIT_SCENARIOOPTIONS_SETGUESTINITIALHAPPINESS:
-			
+			gGuestInitialHappiness = max(40, min(250, *edx));
 			break;
 		case EDIT_SCENARIOOPTIONS_SETGUESTINITIALHUNGER:
 			
