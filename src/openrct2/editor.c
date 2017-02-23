@@ -606,10 +606,20 @@ void game_command_edit_scenario_options(sint32* eax, sint32* ebx, sint32* ecx, s
 			gGuestInitialThirst = max(40, min(250, *edx));
 			break;
 		case EDIT_SCENARIOOPTIONS_SETGUESTSPREFERLESSINTENSERIDES:
-			
+			if (*edx != FALSE) {
+				gParkFlags |= PARK_FLAGS_PREF_LESS_INTENSE_RIDES;
+			}
+			else {
+				gParkFlags &= ~PARK_FLAGS_PREF_LESS_INTENSE_RIDES;
+			}
 			break;
 		case EDIT_SCENARIOOPTIONS_SETGUESTSPREFERMOREINTENSERIDES:
-			
+			if (*edx != FALSE) {
+				gParkFlags |= PARK_FLAGS_PREF_MORE_INTENSE_RIDES;
+			}
+			else {
+				gParkFlags &= ~PARK_FLAGS_PREF_MORE_INTENSE_RIDES;
+			}
 			break;
 		case EDIT_SCENARIOOPTIONS_SETCOSTTOBUYLAND:
 			

@@ -835,11 +835,27 @@ static void window_editor_scenario_options_guests_mouseup(rct_window *w, sint32 
 		window_editor_scenario_options_set_page(w, widgetIndex - WIDX_TAB_1);
 		break;
 	case WIDX_GUEST_PREFER_LESS_INTENSE_RIDES:
-		gParkFlags ^= PARK_FLAGS_PREF_LESS_INTENSE_RIDES;
+		game_do_command(
+			0,
+			GAME_COMMAND_FLAG_APPLY,
+			EDIT_SCENARIOOPTIONS_SETGUESTSPREFERLESSINTENSERIDES,
+			gParkFlags & PARK_FLAGS_PREF_LESS_INTENSE_RIDES ? FALSE : TRUE,
+			GAME_COMMAND_EDIT_SCENARIO_OPTIONS,
+			0,
+			0
+		);
 		window_invalidate(w);
 		break;
 	case WIDX_GUEST_PREFER_MORE_INTENSE_RIDES:
-		gParkFlags ^= PARK_FLAGS_PREF_MORE_INTENSE_RIDES;
+		game_do_command(
+			0,
+			GAME_COMMAND_FLAG_APPLY,
+			EDIT_SCENARIOOPTIONS_SETGUESTSPREFERMOREINTENSERIDES,
+			gParkFlags & PARK_FLAGS_PREF_MORE_INTENSE_RIDES ? FALSE : TRUE,
+			GAME_COMMAND_EDIT_SCENARIO_OPTIONS,
+			0,
+			0
+		);
 		window_invalidate(w);
 		break;
 	}
