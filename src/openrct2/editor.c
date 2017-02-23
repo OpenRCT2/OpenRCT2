@@ -670,7 +670,12 @@ void game_command_edit_scenario_options(sint32* eax, sint32* ebx, sint32* ecx, s
 			}
 			break;
 		case EDIT_SCENARIOOPTIONS_SETFORBIDLANDSCAPECHANGES:
-			
+			if (*edx != FALSE) {
+				gParkFlags |= PARK_FLAGS_FORBID_LANDSCAPE_CHANGES;
+			}
+			else {
+				gParkFlags &= ~PARK_FLAGS_FORBID_LANDSCAPE_CHANGES;
+			}
 			break;
 		case EDIT_SCENARIOOPTIONS_SETFORBIDHIGHCONSTRUCTION:
 			
