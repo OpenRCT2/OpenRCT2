@@ -243,6 +243,7 @@
 		D41B73EF1C2101890080A7B9 /* libcurl.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D41B73EE1C2101890080A7B9 /* libcurl.tbd */; };
 		D41B741D1C210A7A0080A7B9 /* libiconv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D41B741C1C210A7A0080A7B9 /* libiconv.tbd */; };
 		D41B74731C2125E50080A7B9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D41B74721C2125E50080A7B9 /* Assets.xcassets */; };
+		D41FA8641E5EA1E200215624 /* wall.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D41FA8631E5EA1E200215624 /* wall.cpp */; };
 		D429FF421E36ABCD009342A6 /* tile_inspector.c in Sources */ = {isa = PBXBuildFile; fileRef = D429FF401E36ABCD009342A6 /* tile_inspector.c */; };
 		D433A5001E4A861F00D9A6DF /* SawyerChunk.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D433A4FA1E4A861F00D9A6DF /* SawyerChunk.cpp */; };
 		D433A5011E4A861F00D9A6DF /* SawyerChunkReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D433A4FC1E4A861F00D9A6DF /* SawyerChunkReader.cpp */; };
@@ -716,6 +717,7 @@
 		D41B73EE1C2101890080A7B9 /* libcurl.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libcurl.tbd; path = usr/lib/libcurl.tbd; sourceTree = SDKROOT; };
 		D41B741C1C210A7A0080A7B9 /* libiconv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.tbd; path = usr/lib/libiconv.tbd; sourceTree = SDKROOT; };
 		D41B74721C2125E50080A7B9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = distribution/macos/Assets.xcassets; sourceTree = SOURCE_ROOT; };
+		D41FA8631E5EA1E200215624 /* wall.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = wall.cpp; sourceTree = "<group>"; };
 		D429FF3F1E36ABB3009342A6 /* tile_inspector.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = tile_inspector.h; sourceTree = "<group>"; };
 		D429FF401E36ABCD009342A6 /* tile_inspector.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = tile_inspector.c; sourceTree = "<group>"; };
 		D429FF411E36ABCD009342A6 /* tile_inspector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tile_inspector.h; sourceTree = "<group>"; };
@@ -2037,6 +2039,7 @@
 				D44271F31CC81B3200D84D28 /* sprite.h */,
 				D429FF401E36ABCD009342A6 /* tile_inspector.c */,
 				D429FF411E36ABCD009342A6 /* tile_inspector.h */,
+				D41FA8631E5EA1E200215624 /* wall.cpp */,
 				D44271F41CC81B3200D84D28 /* water.h */,
 			);
 			path = world;
@@ -2916,6 +2919,7 @@
 				C686F9491CDBC3B7009F9BFC /* chairlift.c in Sources */,
 				C686F9501CDBC3B7009F9BFC /* log_flume.c in Sources */,
 				D464FEE81D31A6AA00CBABAC /* FootpathObject.cpp in Sources */,
+				D41FA8641E5EA1E200215624 /* wall.cpp in Sources */,
 				D43407D61D0E14BE00C2B3D4 /* CopyFramebufferShader.cpp in Sources */,
 				C6E96E231E04070E0076A04F /* scenario.c in Sources */,
 				D44272241CC81B3200D84D28 /* intro.c in Sources */,
