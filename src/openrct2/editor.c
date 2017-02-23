@@ -662,7 +662,12 @@ void game_command_edit_scenario_options(sint32* eax, sint32* ebx, sint32* ecx, s
 			window_invalidate_by_class(WC_PARK_INFORMATION);
 			break;
 		case EDIT_SCENARIOOPTIONS_SETFORBIDTREEREMOVAL:
-			
+			if (*edx != FALSE) {
+				gParkFlags |= PARK_FLAGS_FORBID_TREE_REMOVAL;
+			}
+			else {
+				gParkFlags &= ~PARK_FLAGS_FORBID_TREE_REMOVAL;
+			}
 			break;
 		case EDIT_SCENARIOOPTIONS_SETFORBIDLANDSCAPECHANGES:
 			

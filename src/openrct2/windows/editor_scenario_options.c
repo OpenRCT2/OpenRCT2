@@ -1143,7 +1143,15 @@ static void window_editor_scenario_options_park_mouseup(rct_window *w, sint32 wi
 		window_editor_scenario_options_set_page(w, widgetIndex - WIDX_TAB_1);
 		break;
 	case WIDX_FORBID_TREE_REMOVAL:
-		gParkFlags ^= PARK_FLAGS_FORBID_TREE_REMOVAL;
+		game_do_command(
+			0,
+			GAME_COMMAND_FLAG_APPLY,
+			EDIT_SCENARIOOPTIONS_SETFORBIDTREEREMOVAL,
+			gParkFlags & PARK_FLAGS_FORBID_TREE_REMOVAL ? FALSE : TRUE,
+			GAME_COMMAND_EDIT_SCENARIO_OPTIONS,
+			0,
+			0
+		);
 		window_invalidate(w);
 		break;
 	case WIDX_FORBID_LANDSCAPE_CHANGES:
