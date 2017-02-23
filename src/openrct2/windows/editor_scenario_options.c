@@ -512,7 +512,15 @@ static void window_editor_scenario_options_financial_mouseup(rct_window *w, sint
 		window_invalidate(w);
 		break;
 	case WIDX_FORBID_MARKETING:
-		gParkFlags ^= PARK_FLAGS_FORBID_MARKETING_CAMPAIGN;
+		game_do_command(
+			0,
+			GAME_COMMAND_FLAG_APPLY,
+			EDIT_SCENARIOOPTIONS_SETFORBIDMARKETINGCAMPAIGNS,
+			gParkFlags & PARK_FLAGS_FORBID_MARKETING_CAMPAIGN ? FALSE : TRUE,
+			GAME_COMMAND_EDIT_SCENARIO_OPTIONS,
+			0,
+			0
+		);
 		window_invalidate(w);
 		break;
 	}
