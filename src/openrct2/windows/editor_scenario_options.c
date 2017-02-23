@@ -1249,7 +1249,15 @@ static void window_editor_scenario_options_park_mousedown(sint32 widgetIndex, rc
 		break;
 	case WIDX_ENTRY_PRICE_INCREASE:
 		if (gParkEntranceFee < MONEY(100,00)) {
-			gParkEntranceFee += MONEY(1,00);
+			game_do_command(
+				0,
+				GAME_COMMAND_FLAG_APPLY,
+				EDIT_SCENARIOOPTIONS_SETPARKCHARGEENTRYFEE,
+				gParkEntranceFee + MONEY(1,00),
+				GAME_COMMAND_EDIT_SCENARIO_OPTIONS,
+				0,
+				0
+			);
 		} else {
 			window_error_open(STR_CANT_INCREASE_FURTHER, STR_NONE);
 		}
@@ -1257,7 +1265,15 @@ static void window_editor_scenario_options_park_mousedown(sint32 widgetIndex, rc
 		break;
 	case WIDX_ENTRY_PRICE_DECREASE:
 		if (gParkEntranceFee > MONEY(0,00)) {
-			gParkEntranceFee -= MONEY(1,00);
+			game_do_command(
+				0,
+				GAME_COMMAND_FLAG_APPLY,
+				EDIT_SCENARIOOPTIONS_SETPARKCHARGEENTRYFEE,
+				gParkEntranceFee - MONEY(1,00),
+				GAME_COMMAND_EDIT_SCENARIO_OPTIONS,
+				0,
+				0
+			);
 		} else {
 			window_error_open(STR_CANT_REDUCE_FURTHER, STR_NONE);
 		}

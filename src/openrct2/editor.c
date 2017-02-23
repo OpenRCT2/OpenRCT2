@@ -631,7 +631,8 @@ void game_command_edit_scenario_options(sint32* eax, sint32* ebx, sint32* ecx, s
 			
 			break;
 		case EDIT_SCENARIOOPTIONS_SETPARKCHARGEENTRYFEE:
-			
+			gParkEntranceFee = max(MONEY(0, 00), min(MONEY(100, 00), *edx));
+			window_invalidate_by_class(WC_PARK_INFORMATION);
 			break;
 		case EDIT_SCENARIOOPTIONS_SETFORBIDTREEREMOVAL:
 			
