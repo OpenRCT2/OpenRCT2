@@ -76,7 +76,7 @@ public:
 
         // Ensure there is a null terminator on the end, this is
         // mainly for ParseLines's sake
-        if (_buffer[length - 1] != 0)
+        if (_buffer.empty() || _buffer[length - 1] != 0)
         {
             _buffer.push_back(0);
         }
@@ -155,6 +155,10 @@ public:
 private:
     void RemoveBOM()
     {
+        if (_buffer.size() < 3)
+        {
+            return;
+        }
         utf8 * file = (utf8 *)_buffer.data();
         utf8 * content = String::SkipBOM(file);
         if (file != content)
