@@ -566,7 +566,10 @@ void game_command_edit_scenario_options(sint32* eax, sint32* ebx, sint32* ecx, s
 			}
 			break;
 		case EDIT_SCENARIOOPTIONS_SETINITIALCASH:
-			
+			gInitialCash = max(MONEY(0,00), min(MONEY(1000000,00), *edx));
+			gCashEncrypted = ENCRYPT_MONEY(gInitialCash);
+			window_invalidate_by_class(WC_FINANCES);
+			window_invalidate_by_class(WC_BOTTOM_TOOLBAR);
 			break;
 		case EDIT_SCENARIOOPTIONS_SETINITIALLOAN:
 			

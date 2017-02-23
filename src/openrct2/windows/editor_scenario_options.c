@@ -536,8 +536,15 @@ static void window_editor_scenario_options_financial_mousedown(sint32 widgetInde
 	switch (widgetIndex) {
 	case WIDX_INITIAL_CASH_INCREASE:
 		if (gInitialCash < MONEY(1000000,00)) {
-			gInitialCash += MONEY(500,00);
-			gCashEncrypted = ENCRYPT_MONEY(gInitialCash);
+			game_do_command(
+				0,
+				GAME_COMMAND_FLAG_APPLY,
+				EDIT_SCENARIOOPTIONS_SETINITIALCASH,
+				gInitialCash + MONEY(500,00),
+				GAME_COMMAND_EDIT_SCENARIO_OPTIONS,
+				0,
+				0
+			);
 		} else {
 			window_error_open(STR_CANT_INCREASE_CASH, STR_NONE);
 		}
@@ -545,8 +552,15 @@ static void window_editor_scenario_options_financial_mousedown(sint32 widgetInde
 		break;
 	case WIDX_INITIAL_CASH_DECREASE:
 		if (gInitialCash > MONEY(0,00)) {
-			gInitialCash -= MONEY(500,00);
-			gCashEncrypted = ENCRYPT_MONEY(gInitialCash);
+			game_do_command(
+				0,
+				GAME_COMMAND_FLAG_APPLY,
+				EDIT_SCENARIOOPTIONS_SETINITIALCASH,
+				gInitialCash - MONEY(500,00),
+				GAME_COMMAND_EDIT_SCENARIO_OPTIONS,
+				0,
+				0
+			);
 		} else {
 			window_error_open(STR_CANT_REDUCE_CASH, STR_NONE);
 		}
