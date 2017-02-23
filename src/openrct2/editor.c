@@ -678,7 +678,12 @@ void game_command_edit_scenario_options(sint32* eax, sint32* ebx, sint32* ecx, s
 			}
 			break;
 		case EDIT_SCENARIOOPTIONS_SETFORBIDHIGHCONSTRUCTION:
-			
+			if (*edx != FALSE) {
+				gParkFlags |= PARK_FLAGS_FORBID_HIGH_CONSTRUCTION;
+			}
+			else {
+				gParkFlags &= ~PARK_FLAGS_FORBID_HIGH_CONSTRUCTION;
+			}
 			break;
 		case EDIT_SCENARIOOPTIONS_SETPARKRATINGHIGHERDIFFICULTLEVEL:
 			
