@@ -1310,32 +1310,15 @@ static void window_editor_scenario_options_park_mousedown(sint32 widgetIndex, rc
 static void window_editor_scenario_options_park_dropdown(rct_window *w, sint32 widgetIndex, sint32 dropdownIndex)
 {
 	if (widgetIndex == WIDX_PAY_FOR_PARK_OR_RIDES_DROPDOWN && dropdownIndex != -1) {
-		if(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) {
-			if (dropdownIndex == 0) {
-				if (!(gParkFlags & PARK_FLAGS_PARK_FREE_ENTRY)) {
-					gParkFlags |= PARK_FLAGS_PARK_FREE_ENTRY;
-					gParkEntranceFee = MONEY(0, 00);
-				}
-			} else {
-				if (gParkFlags & PARK_FLAGS_PARK_FREE_ENTRY) {
-					gParkFlags &= ~PARK_FLAGS_PARK_FREE_ENTRY;
-					gParkEntranceFee = MONEY(10, 00);
-				}
-			}
-		}
-		else {
-			if (dropdownIndex == 0) {
-				if (!(gParkFlags & PARK_FLAGS_PARK_FREE_ENTRY)) {
-					gParkFlags |= PARK_FLAGS_PARK_FREE_ENTRY;
-				}
-			} else {
-				if (gParkFlags & PARK_FLAGS_PARK_FREE_ENTRY) {
-					gParkFlags &= ~PARK_FLAGS_PARK_FREE_ENTRY;
-				}
-			}
-			window_invalidate_by_class(WC_PARK_INFORMATION);
-			window_invalidate_by_class(WC_RIDE);
-		}
+		game_do_command(
+			0,
+			GAME_COMMAND_FLAG_APPLY,
+			EDIT_SCENARIOOPTIONS_SETPARKCHARGEMETHOD,
+			dropdownIndex,
+			GAME_COMMAND_EDIT_SCENARIO_OPTIONS,
+			0,
+			0
+		);
 		window_invalidate(w);
 	}
 }

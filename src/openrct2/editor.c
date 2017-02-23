@@ -628,7 +628,34 @@ void game_command_edit_scenario_options(sint32* eax, sint32* ebx, sint32* ecx, s
 			gLandRightsCost = max(MONEY(5,00), min(MONEY(200,00), *edx));
 			break;
 		case EDIT_SCENARIOOPTIONS_SETPARKCHARGEMETHOD:
-			
+			if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) {
+				if (*edx == 0) {
+					if (!(gParkFlags & PARK_FLAGS_PARK_FREE_ENTRY)) {
+						gParkFlags |= PARK_FLAGS_PARK_FREE_ENTRY;
+						gParkEntranceFee = MONEY(0, 00);
+					}
+				}
+				else {
+					if (gParkFlags & PARK_FLAGS_PARK_FREE_ENTRY) {
+						gParkFlags &= ~PARK_FLAGS_PARK_FREE_ENTRY;
+						gParkEntranceFee = MONEY(10, 00);
+					}
+				}
+			}
+			else {
+				if (*edx == 0) {
+					if (!(gParkFlags & PARK_FLAGS_PARK_FREE_ENTRY)) {
+						gParkFlags |= PARK_FLAGS_PARK_FREE_ENTRY;
+					}
+				}
+				else {
+					if (gParkFlags & PARK_FLAGS_PARK_FREE_ENTRY) {
+						gParkFlags &= ~PARK_FLAGS_PARK_FREE_ENTRY;
+					}
+				}
+				window_invalidate_by_class(WC_PARK_INFORMATION);
+				window_invalidate_by_class(WC_RIDE);
+			}
 			break;
 		case EDIT_SCENARIOOPTIONS_SETPARKCHARGEENTRYFEE:
 			gParkEntranceFee = max(MONEY(0, 00), min(MONEY(100, 00), *edx));
