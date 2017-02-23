@@ -86,3 +86,26 @@ set(LANGUAGEPACK_TEST_SOURCES
 add_executable(test_languagepack ${LANGUAGEPACK_TEST_SOURCES})
 target_link_libraries(test_languagepack ${GTEST_LIBRARIES} dl z SDL2 SDL2_ttf ssl crypto)
 add_test(NAME languagepack COMMAND test_languagepack)
+
+
+# LanguagePack test
+set(INI_TEST_SOURCES
+		"IniWriterTest.cpp"
+		"IniReaderTest.cpp"
+		"../../src/openrct2/config/IniReader.cpp"
+		"../../src/openrct2/config/IniWriter.cpp"
+		"../../src/openrct2/core/Console.cpp"
+		"../../src/openrct2/core/Diagnostics.cpp"
+		"../../src/openrct2/core/Guard.cpp"
+		"../../src/openrct2/core/IStream.cpp"
+		"../../src/openrct2/core/MemoryStream.cpp"
+		"../../src/openrct2/core/String.cpp"
+		"../../src/openrct2/diagnostic.c"
+		"../../src/openrct2/localisation/format_codes.c"
+		"../../src/openrct2/localisation/utf8.c"
+		"../../src/openrct2/util/util.c"
+		"../../src/openrct2/Version.cpp"
+		)
+add_executable(test_ini ${INI_TEST_SOURCES})
+target_link_libraries(test_ini ${GTEST_LIBRARIES} dl z)
+add_test(NAME ini COMMAND test_ini)
