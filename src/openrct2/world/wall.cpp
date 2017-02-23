@@ -295,7 +295,7 @@ static const uint8 EdgeSlopes[][4] = {
 
 #pragma endregion
 
-money32 WallPlace(uint8 wallType, 
+static money32 WallPlace(uint8 wallType, 
                   sint16 x, 
                   sint16 y, 
                   sint16 z, 
@@ -578,7 +578,7 @@ money32 WallPlace(uint8 wallType,
     }
 }
 
-money32 WallRemove(sint16 x, sint16 y, uint8 baseHeight, uint8 direction, uint8 flags)
+static money32 WallRemove(sint16 x, sint16 y, uint8 baseHeight, uint8 direction, uint8 flags)
 {
     if (!map_is_location_valid(x, y)) 
     {
@@ -640,7 +640,7 @@ money32 WallRemove(sint16 x, sint16 y, uint8 baseHeight, uint8 direction, uint8 
     return 0;
 }
 
-money32 WallSetColour(sint16 x, 
+static money32 WallSetColour(sint16 x, 
                       sint16 y, 
                       uint8 baseHeight,
                       uint8 direction, 
