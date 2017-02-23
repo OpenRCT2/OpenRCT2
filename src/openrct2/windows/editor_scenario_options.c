@@ -633,9 +633,25 @@ static void window_editor_scenario_options_financial_mousedown(sint32 widgetInde
 	case WIDX_INTEREST_RATE_INCREASE:
 		if (gBankLoanInterestRate < 80) {
 			if (gBankLoanInterestRate < 0) {
-				gBankLoanInterestRate = 0;
+				game_do_command(
+					0,
+					GAME_COMMAND_FLAG_APPLY,
+					EDIT_SCENARIOOPTIONS_SETANNUALINTERESTRATE,
+					0,
+					GAME_COMMAND_EDIT_SCENARIO_OPTIONS,
+					0,
+					0
+				);
 			} else {
-				gBankLoanInterestRate++;
+				game_do_command(
+					0,
+					GAME_COMMAND_FLAG_APPLY,
+					EDIT_SCENARIOOPTIONS_SETANNUALINTERESTRATE,
+					gBankLoanInterestRate + 1,
+					GAME_COMMAND_EDIT_SCENARIO_OPTIONS,
+					0,
+					0
+				);
 			}
 		} else {
 			window_error_open(STR_CANT_INCREASE_INTEREST_RATE, STR_NONE);
@@ -645,9 +661,25 @@ static void window_editor_scenario_options_financial_mousedown(sint32 widgetInde
 	case WIDX_INTEREST_RATE_DECREASE:
 		if (gBankLoanInterestRate > 0) {
 			if (gBankLoanInterestRate > 80) {
-				gBankLoanInterestRate = 80;
+				game_do_command(
+					0,
+					GAME_COMMAND_FLAG_APPLY,
+					EDIT_SCENARIOOPTIONS_SETANNUALINTERESTRATE,
+					80,
+					GAME_COMMAND_EDIT_SCENARIO_OPTIONS,
+					0,
+					0
+				);
 			} else {
-				gBankLoanInterestRate--;
+				game_do_command(
+					0,
+					GAME_COMMAND_FLAG_APPLY,
+					EDIT_SCENARIOOPTIONS_SETANNUALINTERESTRATE,
+					gBankLoanInterestRate - 1,
+					GAME_COMMAND_EDIT_SCENARIO_OPTIONS,
+					0,
+					0
+				);
 			}
 		} else {
 			window_error_open(STR_CANT_REDUCE_INTEREST_RATE, STR_NONE);

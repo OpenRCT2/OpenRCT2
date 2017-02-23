@@ -582,7 +582,8 @@ void game_command_edit_scenario_options(sint32* eax, sint32* ebx, sint32* ecx, s
 			window_invalidate_by_class(WC_FINANCES);
 			break;
 		case EDIT_SCENARIOOPTIONS_SETANNUALINTERESTRATE:
-			
+			gBankLoanInterestRate = max(0, min(80, *edx));
+			window_invalidate_by_class(WC_FINANCES);
 			break;
 		case EDIT_SCENARIOOPTIONS_SETFORBIDMARKETINGCAMPAIGNS:
 			
