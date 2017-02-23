@@ -577,7 +577,9 @@ void game_command_edit_scenario_options(sint32* eax, sint32* ebx, sint32* ecx, s
 			window_invalidate_by_class(WC_FINANCES);
 			break;
 		case EDIT_SCENARIOOPTIONS_SETMAXIMUMLOANSIZE:
-			
+			gMaxBankLoan = max(MONEY(0,00), min(MONEY(5000000,00), *edx));
+			gBankLoan = min(gBankLoan, gMaxBankLoan);
+			window_invalidate_by_class(WC_FINANCES);
 			break;
 		case EDIT_SCENARIOOPTIONS_SETANNUALINTERESTRATE:
 			
