@@ -622,7 +622,7 @@ void game_command_edit_scenario_options(sint32* eax, sint32* ebx, sint32* ecx, s
 			}
 			break;
 		case EDIT_SCENARIOOPTIONS_SETCOSTTOBUYLAND:
-			
+			gLandPrice = max(MONEY(5, 00), min(MONEY(200, 00), *edx));
 			break;
 		case EDIT_SCENARIOOPTIONS_SETCOSTTOBUYCONSTRUCTIONRIGHTS:
 			
