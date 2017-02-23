@@ -1191,7 +1191,15 @@ static void window_editor_scenario_options_park_mouseup(rct_window *w, sint32 wi
 		window_invalidate(w);
 		break;
 	case WIDX_HARD_GUEST_GENERATION:
-		gParkFlags ^= PARK_FLAGS_DIFFICULT_GUEST_GENERATION;
+		game_do_command(
+			0,
+			GAME_COMMAND_FLAG_APPLY,
+			EDIT_SCENARIOOPTIONS_SETGUESTGENERATIONHIGHERDIFFICULTLEVEL,
+			gParkFlags & PARK_FLAGS_DIFFICULT_GUEST_GENERATION ? FALSE : TRUE,
+			GAME_COMMAND_EDIT_SCENARIO_OPTIONS,
+			0,
+			0
+		);
 		window_invalidate(w);
 		break;
 	}

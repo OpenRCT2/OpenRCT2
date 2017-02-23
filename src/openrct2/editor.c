@@ -694,7 +694,12 @@ void game_command_edit_scenario_options(sint32* eax, sint32* ebx, sint32* ecx, s
 			}
 			break;
 		case EDIT_SCENARIOOPTIONS_SETGUESTGENERATIONHIGHERDIFFICULTLEVEL:
-			
+			if (*edx != FALSE) {
+				gParkFlags |= PARK_FLAGS_DIFFICULT_GUEST_GENERATION;
+			}
+			else {
+				gParkFlags &= ~PARK_FLAGS_DIFFICULT_GUEST_GENERATION;
+			}
 			break;
 		}
 		window_invalidate_by_class(WC_EDITOR_SCENARIO_OPTIONS);
