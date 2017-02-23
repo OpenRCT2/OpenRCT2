@@ -594,7 +594,7 @@ void game_command_edit_scenario_options(sint32* eax, sint32* ebx, sint32* ecx, s
 			}
 			break;
 		case EDIT_SCENARIOOPTIONS_SETAVERAGECASHPERGUEST:
-			
+			gGuestInitialCash = max(MONEY(0, 00), min(MONEY(1000, 00), *edx));
 			break;
 		case EDIT_SCENARIOOPTIONS_SETGUESTINITIALHAPPINESS:
 			
