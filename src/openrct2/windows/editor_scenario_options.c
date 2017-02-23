@@ -568,8 +568,15 @@ static void window_editor_scenario_options_financial_mousedown(sint32 widgetInde
 		break;
 	case WIDX_INITIAL_LOAN_INCREASE:
 		if (gBankLoan < MONEY(5000000,00)) {
-			gBankLoan += MONEY(1000,00);
-			gMaxBankLoan = max(gBankLoan, gMaxBankLoan);
+			game_do_command(
+				0,
+				GAME_COMMAND_FLAG_APPLY,
+				EDIT_SCENARIOOPTIONS_SETINITIALLOAN,
+				gBankLoan + MONEY(1000,00),
+				GAME_COMMAND_EDIT_SCENARIO_OPTIONS,
+				0,
+				0
+			);
 		} else {
 			window_error_open(STR_CANT_INCREASE_INIT_LOAN, STR_NONE);
 		}
@@ -577,8 +584,15 @@ static void window_editor_scenario_options_financial_mousedown(sint32 widgetInde
 		break;
 	case WIDX_INITIAL_LOAN_DECREASE:
 		if (gBankLoan > MONEY(0,00)) {
-			gBankLoan -= MONEY(1000,00);
-			gMaxBankLoan = max(gBankLoan, gMaxBankLoan);
+			game_do_command(
+				0,
+				GAME_COMMAND_FLAG_APPLY,
+				EDIT_SCENARIOOPTIONS_SETINITIALLOAN,
+				gBankLoan - MONEY(1000,00),
+				GAME_COMMAND_EDIT_SCENARIO_OPTIONS,
+				0,
+				0
+			);
 		} else {
 			window_error_open(STR_CANT_REDUCE_INIT_LOAN, STR_NONE);
 		}
