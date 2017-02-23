@@ -686,7 +686,12 @@ void game_command_edit_scenario_options(sint32* eax, sint32* ebx, sint32* ecx, s
 			}
 			break;
 		case EDIT_SCENARIOOPTIONS_SETPARKRATINGHIGHERDIFFICULTLEVEL:
-			
+			if (*edx != FALSE) {
+				gParkFlags |= PARK_FLAGS_DIFFICULT_PARK_RATING;
+			}
+			else {
+				gParkFlags &= ~PARK_FLAGS_DIFFICULT_PARK_RATING;
+			}
 			break;
 		case EDIT_SCENARIOOPTIONS_SETGUESTGENERATIONHIGHERDIFFICULTLEVEL:
 			
