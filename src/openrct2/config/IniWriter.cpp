@@ -23,7 +23,7 @@ class IniWriter final : public IIniWriter
 {
 private:
     IStream *   _stream;
-    bool        _firstSection = false;
+    bool        _firstSection = true;
 
 public:
     IniWriter(IStream * stream)
