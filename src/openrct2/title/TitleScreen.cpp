@@ -134,7 +134,7 @@ extern "C"
 
         if (gOpenRCT2ShowChangelog) {
             gOpenRCT2ShowChangelog = false;
-            window_changelog_open();
+            window_textreader_open();
         }
 
         if (_sequencePlayer != nullptr)
