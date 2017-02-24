@@ -1081,6 +1081,8 @@ static sint32 cc_open(const utf8 **argv, sint32 argc) {
 			window_themes_open();
 		} else if (strcmp(argv[0], "title_sequences") == 0) {
 			window_title_editor_open(0);
+		} else if (strcmp(argv[0], "changelog") == 0) {
+			window_textreader_open("changelog.txt");
 		} else if (invalidTitle) {
 			console_writeline_error("Cannot open this window in the title screen.");
 		} else {
@@ -1142,7 +1144,8 @@ utf8* console_window_table[] = {
 	"scenario_options",
 	"options",
 	"themes",
-	"title_sequences"
+	"title_sequences",
+	"changelog"
 };
 
 console_command console_command_table[] = {
