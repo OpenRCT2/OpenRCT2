@@ -55,6 +55,22 @@ include_directories("../../src")
 
 set(GTEST_LIBRARIES gtest gtest_main pthread)
 
+# Some most common files required in tests
+set(COMMON_TEST_SOURCES
+	"../../src/openrct2/core/Console.cpp"
+	"../../src/openrct2/core/Diagnostics.cpp"
+	"../../src/openrct2/core/Guard.cpp"
+	"../../src/openrct2/core/String.cpp"
+	"../../src/openrct2/diagnostic.c"
+	"../../src/openrct2/localisation/format_codes.c"
+	"../../src/openrct2/localisation/utf8.c"
+	"../../src/openrct2/util/util.c"
+	"../../src/openrct2/Version.cpp"
+	)
+
+# Create a re-usable library to save some compilation time
+add_library(test-common STATIC ${COMMON_TEST_SOURCES})
+
 # Start of our tests
 
 # sawyercoding test
@@ -73,39 +89,20 @@ add_test(NAME sawyercoding COMMAND test_sawyercoding)
 set(LANGUAGEPACK_TEST_SOURCES
 		"LanguagePackTest.cpp"
 		"../../src/openrct2/localisation/LanguagePack.cpp"
-		"../../src/openrct2/core/Console.cpp"
-		"../../src/openrct2/core/Diagnostics.cpp"
-		"../../src/openrct2/core/Guard.cpp"
-		"../../src/openrct2/core/String.cpp"
-		"../../src/openrct2/diagnostic.c"
-		"../../src/openrct2/localisation/format_codes.c"
-		"../../src/openrct2/localisation/utf8.c"
-		"../../src/openrct2/util/util.c"
-		"../../src/openrct2/Version.cpp"
 		)
 add_executable(test_languagepack ${LANGUAGEPACK_TEST_SOURCES})
-target_link_libraries(test_languagepack ${GTEST_LIBRARIES} dl z SDL2 SDL2_ttf ssl crypto)
+target_link_libraries(test_languagepack ${GTEST_LIBRARIES} test-common dl z SDL2 SDL2_ttf ssl crypto)
 add_test(NAME languagepack COMMAND test_languagepack)
 
-
-# LanguagePack test
+# INI test
 set(INI_TEST_SOURCES
 		"IniWriterTest.cpp"
 		"IniReaderTest.cpp"
 		"../../src/openrct2/config/IniReader.cpp"
 		"../../src/openrct2/config/IniWriter.cpp"
-		"../../src/openrct2/core/Console.cpp"
-		"../../src/openrct2/core/Diagnostics.cpp"
-		"../../src/openrct2/core/Guard.cpp"
 		"../../src/openrct2/core/IStream.cpp"
 		"../../src/openrct2/core/MemoryStream.cpp"
-		"../../src/openrct2/core/String.cpp"
-		"../../src/openrct2/diagnostic.c"
-		"../../src/openrct2/localisation/format_codes.c"
-		"../../src/openrct2/localisation/utf8.c"
-		"../../src/openrct2/util/util.c"
-		"../../src/openrct2/Version.cpp"
 		)
 add_executable(test_ini ${INI_TEST_SOURCES})
-target_link_libraries(test_ini ${GTEST_LIBRARIES} dl z)
+target_link_libraries(test_ini ${GTEST_LIBRARIES} test-common dl z)
 add_test(NAME ini COMMAND test_ini)
