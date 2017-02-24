@@ -78,6 +78,7 @@ TEST_F(IniReaderTest, read_duplicate)
     ASSERT_EQ(ir->GetBoolean("one", false), false);
     ASSERT_EQ(ir->GetBoolean("two", false), false);
     ASSERT_EQ(ir->GetBoolean("three", false), true);
+    ASSERT_EQ(ir->GetSint32("fortytwo", 100), 42);
     ASSERT_EQ(ir->ReadSection("section"), true);
     // test 4 times, there are only 3 sections
     ASSERT_EQ(ir->ReadSection("section"), true);
@@ -87,4 +88,5 @@ TEST_F(IniReaderTest, read_duplicate)
 const utf8 IniReaderTest::predefined[] = "[bool]\nboolval = true\n\n[int]\none = 1\nzero = 0\n\n[string]\npath = "
                                          "\"C:'\\\\some/dir\\\\here/\xE7\xA5\x9E\xE9\xB7\xB9\xE6\x9A\xA2\xE9\x81\x8A\"\n";
 
-const utf8 IniReaderTest::duplicate[] = "[section]\none = true\n[section]\ntwo = true\n[section]\nthree = true\n";
+const utf8 IniReaderTest::duplicate[] =
+    "[section]\none = true\nfortytwo = 13\n[section]\ntwo = true\n[section]\nthree = true\nfortytwo = 42\nfortytwo = 41\n";
