@@ -10,6 +10,7 @@ class IniReaderTest : public testing::Test
 protected:
     static const utf8 predefined[];
     static const utf8 duplicate[];
+    static const utf8 untrimmed[];
 };
 
 static auto Enum_Currency = ConfigEnum<sint32>({});
@@ -85,8 +86,28 @@ TEST_F(IniReaderTest, read_duplicate)
     delete ir;
 }
 
+TEST_F(IniReaderTest, read_untrimmed)
+{
+    MemoryStream ms(untrimmed, 99);
+    ASSERT_EQ(ms.CanRead(), true);
+    ASSERT_EQ(ms.CanWrite(), false);
+    IIniReader * ir = CreateIniReader(&ms);
+    ASSERT_NE(ir, nullptr);
+    // there should only be data from the last section
+    ASSERT_EQ(ir->ReadSection("section"), true);
+    ASSERT_EQ(ir->GetBoolean("one", false), true);
+    const utf8 * str = ir->GetCString("str", nullptr);
+    ASSERT_STREQ(str, "  xxx ");
+    Memory::Free(str);
+    ASSERT_EQ(ir->GetString("str", "yyy"), "  xxx ");
+    ASSERT_EQ(ir->GetString("nosuchthing", "  yyy "), "  yyy ");
+    delete ir;
+}
+
 const utf8 IniReaderTest::predefined[] = "[bool]\nboolval = true\n\n[int]\none = 1\nzero = 0\n\n[string]\npath = "
                                          "\"C:'\\\\some/dir\\\\here/\xE7\xA5\x9E\xE9\xB7\xB9\xE6\x9A\xA2\xE9\x81\x8A\"\n";
 
 const utf8 IniReaderTest::duplicate[] =
     "[section]\none = true\nfortytwo = 13\n[section]\ntwo = true\n[section]\nthree = true\nfortytwo = 42\nfortytwo = 41\n";
+
+const utf8 IniReaderTest::untrimmed[] = "[section]\n      one =     true      \n    str =    \"  xxx \"";
