@@ -43,7 +43,7 @@ TEST_F(IniReaderTest, read_prepared)
     // value from different section
     ASSERT_EQ(ir->GetSint32("one", 42), 42);
     // existing value as different type
-    EXPECT_THROW(ir->GetSint32("boolval", 42), std::invalid_argument);
+    ASSERT_EQ(ir->GetSint32("boolval", 42), 42);
     ASSERT_EQ(ir->GetBoolean("boolval", false), true);
     // skip one section
     ASSERT_EQ(ir->ReadSection("string"), true);

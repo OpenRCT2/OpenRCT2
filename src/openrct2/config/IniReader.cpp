@@ -114,7 +114,13 @@ public:
         std::string value;
         if (TryGetString(name, &value))
         {
-            result = std::stoi(value);
+            try
+            {
+                result = std::stoi(value);
+            }
+            catch (std::exception)
+            {
+            }
         }
         return result;
     }
@@ -125,7 +131,13 @@ public:
         std::string value;
         if (TryGetString(name, &value))
         {
-            result = std::stof(value);
+            try
+            {
+                result = std::stof(value);
+            }
+            catch (std::exception)
+            {
+            }
         }
         return result;
     }
