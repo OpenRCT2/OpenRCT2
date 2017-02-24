@@ -101,7 +101,7 @@ rct_window *window_textreader_open()
 {
 	rct_window* window;
 
-	window = window_bring_to_front_by_class(WC_CHANGELOG);
+	window = window_bring_to_front_by_class(WC_TEXTREADER);
 	if (window != NULL)
 		return window;
 
@@ -115,7 +115,7 @@ rct_window *window_textreader_open()
 		screenWidth * 4 / 5,
 		screenHeight * 4 / 5,
 		&window_textreader_events,
-		WC_CHANGELOG,
+		WC_TEXTREADER,
 		WF_RESIZABLE
 	);
 	window->widgets = window_textreader_widgets;
