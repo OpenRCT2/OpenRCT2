@@ -15,11 +15,10 @@ static auto Enum_Currency = ConfigEnum<sint32>({});
 
 TEST_F(IniReaderTest, create_empty)
 {
-    MemoryStream * ms = new MemoryStream(0);
-    ASSERT_NE(ms, nullptr);
-    ASSERT_EQ(ms->CanRead(), true);
-    ASSERT_EQ(ms->CanWrite(), true);
-    IIniReader * ir = CreateIniReader(ms);
+    MemoryStream ms(0);
+    ASSERT_EQ(ms.CanRead(), true);
+    ASSERT_EQ(ms.CanWrite(), true);
+    IIniReader * ir = CreateIniReader(&ms);
     ASSERT_NE(ir, nullptr);
     ASSERT_EQ(ir->GetBoolean("nobody", true), true);
     ASSERT_EQ(ir->GetCString("expects", nullptr), nullptr);
@@ -27,16 +26,14 @@ TEST_F(IniReaderTest, create_empty)
     ASSERT_EQ(ir->GetFloat("inquisition", 1.234f), 1.234f);
     ASSERT_EQ(ir->GetSint32("universal_answer", 42), 42);
     delete ir;
-    delete ms;
 }
 
 TEST_F(IniReaderTest, read_prepared)
 {
-    MemoryStream * ms = new MemoryStream(predefined, 99);
-    ASSERT_NE(ms, nullptr);
-    ASSERT_EQ(ms->CanRead(), true);
-    ASSERT_EQ(ms->CanWrite(), false);
-    IIniReader * ir = CreateIniReader(ms);
+    MemoryStream ms(predefined, 99);
+    ASSERT_EQ(ms.CanRead(), true);
+    ASSERT_EQ(ms.CanWrite(), false);
+    IIniReader * ir = CreateIniReader(&ms);
     ASSERT_NE(ir, nullptr);
     ASSERT_EQ(ir->ReadSection("doesnt_exist"), false);
     ASSERT_EQ(ir->ReadSection("bool"), true);
@@ -59,7 +56,6 @@ TEST_F(IniReaderTest, read_prepared)
     ASSERT_EQ(ir->ReadSection("int"), true);
     ASSERT_EQ(ir->GetSint32("one", 42), 1);
     delete ir;
-    delete ms;
 }
 
 const utf8 IniReaderTest::predefined[] = "[bool]\nboolval = true\n\n[int]\none = 1\nzero = 0\n\n[string]\npath = "
