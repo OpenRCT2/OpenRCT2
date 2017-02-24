@@ -460,6 +460,9 @@ static sint32 cc_rides(const utf8 **argv, sint32 argc)
 			if (argc < 4) {
 				console_printf("rides set type <ride id> <ride type>");
 				console_printf("rides set friction <ride id> <friction value>");
+				console_printf("rides set excitement <ride id> <excitement value>");
+				console_printf("rides set intensity <ride id> <excitement value>");
+				console_printf("rides set nausea <ride id> <excitement value>");
 				return 0;
 			}
 			if (strcmp(argv[1], "type") == 0) {
@@ -477,30 +480,107 @@ static sint32 cc_rides(const utf8 **argv, sint32 argc)
 						console_printf("That didn't work");
 					}
 				}
-			} else if (strcmp(argv[1], "friction") == 0) {
+			}
+			else if (strcmp(argv[1], "friction") == 0) {
 				bool int_valid[2] = { 0 };
 				sint32 ride_index = console_parse_int(argv[2], &int_valid[0]);
 				sint32 friction = console_parse_int(argv[3], &int_valid[1]);
 
 				if (ride_index < 0) {
 					console_printf("Ride index must not be negative");
-				} else if (!int_valid[0] || !int_valid[1]) {
+				}
+				else if (!int_valid[0] || !int_valid[1]) {
 					console_printf("This command expects integer arguments");
-				} else {
+				}
+				else {
 					rct_ride *ride = get_ride(ride_index);
 					if (friction <= 0) {
 						console_printf("Friction value must be strictly positive");
-					} else if (ride->type == RIDE_TYPE_NULL) {
-						console_printf("No ride found with index %d",ride_index);
-					} else {
+					}
+					else if (ride->type == RIDE_TYPE_NULL) {
+						console_printf("No ride found with index %d", ride_index);
+					}
+					else {
 						for (sint32 i = 0; i < ride->num_vehicles; i++) {
 							uint16 vehicle_index = ride->vehicles[i];
- 							while (vehicle_index != SPRITE_INDEX_NULL) {
-								rct_vehicle *vehicle=GET_VEHICLE(vehicle_index);
-								vehicle->friction=friction;
-								vehicle_index=vehicle->next_vehicle_on_train;
+							while (vehicle_index != SPRITE_INDEX_NULL) {
+								rct_vehicle *vehicle = GET_VEHICLE(vehicle_index);
+								vehicle->friction = friction;
+								vehicle_index = vehicle->next_vehicle_on_train;
 							}
 						}
+					}
+				}
+			}
+			else if (strcmp(argv[1], "excitement") == 0) {
+				bool int_valid[2] = { 0 };
+				sint32 ride_index = console_parse_int(argv[2], &int_valid[0]);
+				ride_rating excitement = console_parse_int(argv[3], &int_valid[1]);
+
+				if (ride_index < 0) {
+					console_printf("Ride index must not be negative");
+				}
+				else if (!int_valid[0] || !int_valid[1]) {
+					console_printf("This command expects integer arguments");
+				}
+				else {
+					rct_ride *ride = get_ride(ride_index);
+					if (excitement <= 0) {
+						console_printf("Excitement value must be strictly positive");
+					}
+					else if (ride->type == RIDE_TYPE_NULL) {
+						console_printf("No ride found with index %d", ride_index);
+					}
+					else {
+						ride->excitement = excitement;
+					}
+				}
+			}
+			else if (strcmp(argv[1], "intensity") == 0) {
+				bool int_valid[2] = { 0 };
+				sint32 ride_index = console_parse_int(argv[2], &int_valid[0]);
+				ride_rating intensity = console_parse_int(argv[3], &int_valid[1]);
+
+				if (ride_index < 0) {
+					console_printf("Ride index must not be negative");
+				}
+				else if (!int_valid[0] || !int_valid[1]) {
+					console_printf("This command expects integer arguments");
+				}
+				else {
+					rct_ride *ride = get_ride(ride_index);
+					if (intensity <= 0) {
+						console_printf("Intensity value must be strictly positive");
+					}
+					else if (ride->type == RIDE_TYPE_NULL) {
+						console_printf("No ride found with index %d", ride_index);
+					}
+					else {
+						ride->intensity = intensity;
+					}
+				}
+			}
+			else if (strcmp(argv[1], "nausea") == 0) {
+				bool int_valid[2] = { 0 };
+				sint32 ride_index = console_parse_int(argv[2], &int_valid[0]);
+				ride_rating nausea = console_parse_int(argv[3], &int_valid[1]);
+
+				if (ride_index < 0) {
+					console_printf("Ride index must not be negative");
+				}
+				else if (!int_valid[0] || !int_valid[1]) {
+					console_printf("This command expects integer arguments");
+				}
+				else {
+					rct_ride *ride = get_ride(ride_index);
+					if (nausea <= 0) {
+						console_printf("Nausea value must be strictly positive");
+					}
+					else if (ride->type == RIDE_TYPE_NULL) {
+						console_printf("No ride found with index %d", ride_index);
+					}
+					else {
+						ride->nausea = nausea;
 					}
 				}
 			}
