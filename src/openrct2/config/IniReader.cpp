@@ -145,7 +145,7 @@ public:
     std::string GetString(const std::string &name, const std::string &defaultValue) const override
     {
         std::string result;
-        if (TryGetString(name, &result))
+        if (!TryGetString(name, &result))
         {
             result = defaultValue;
         }
