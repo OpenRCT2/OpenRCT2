@@ -91,7 +91,7 @@ set(LANGUAGEPACK_TEST_SOURCES
 		"../../src/openrct2/localisation/LanguagePack.cpp"
 		)
 add_executable(test_languagepack ${LANGUAGEPACK_TEST_SOURCES})
-target_link_libraries(test_languagepack ${GTEST_LIBRARIES} test-common dl z SDL2 SDL2_ttf ssl crypto)
+target_link_libraries(test_languagepack ${GTEST_LIBRARIES} test-common dl z SDL2)
 add_test(NAME languagepack COMMAND test_languagepack)
 
 # INI test
