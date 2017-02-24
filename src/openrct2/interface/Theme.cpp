@@ -168,7 +168,7 @@ WindowThemeDesc WindowThemeDescriptors[] =
     { THEME_WC(WC_TITLE_EDITOR),                   STR_TITLE_EDITOR_TITLE,       COLOURS_3(COLOUR_GREY,                     COLOUR_OLIVE_GREEN,              COLOUR_OLIVE_GREEN                                 ) },
     { THEME_WC(WC_TILE_INSPECTOR),                 STR_TILE_INSPECTOR_TITLE,       COLOURS_2(COLOUR_LIGHT_BLUE,               COLOUR_LIGHT_BLUE                                                                   ) },
     { THEME_WC(WC_VIEW_CLIPPING),                  STR_VIEW_CLIPPING_TITLE,       COLOURS_1(COLOUR_DARK_GREEN               ) },
-    { THEME_WC(WC_TEXTREADER),                     STR_CHANGELOG_TITLE,       COLOURS_2(COLOUR_LIGHT_BLUE,               COLOUR_LIGHT_BLUE                                                                   ) },
+    { THEME_WC(WC_TEXTREADER),                     STR_THEMES_WINDOW_TITLE_TEXTREADER,       COLOURS_2(COLOUR_LIGHT_BLUE,               COLOUR_LIGHT_BLUE                                                                   ) },
     { THEME_WC(WC_MULTIPLAYER),                    STR_MULTIPLAYER,       COLOURS_3(COLOUR_LIGHT_BLUE,               COLOUR_LIGHT_BLUE,               COLOUR_LIGHT_BLUE                                  ) },
     { THEME_WC(WC_PLAYER),                         STR_THEMES_WINDOW_PLAYER,       COLOURS_3(COLOUR_LIGHT_BLUE,               COLOUR_LIGHT_BLUE,               COLOUR_LIGHT_BLUE                                  ) },
     { THEME_WC(WC_NETWORK_STATUS),                 STR_THEMES_WINDOW_NETWORK_STATUS,       COLOURS_1(COLOUR_LIGHT_BLUE                                                                                                    ) },
