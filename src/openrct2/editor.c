@@ -538,171 +538,174 @@ bool editor_check_park()
 
 void game_command_edit_scenario_options(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp)
 {
-	if (*ebx & GAME_COMMAND_FLAG_APPLY) {
-		switch (*ecx) {
-		case EDIT_SCENARIOOPTIONS_SETNOMONEY:
-			if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) {
-				if (*edx != 0) {
-					gParkFlags |= PARK_FLAGS_NO_MONEY_SCENARIO;
-				}
-				else {
-					gParkFlags &= PARK_FLAGS_NO_MONEY_SCENARIO;
-				}
+	if (!(*ebx & GAME_COMMAND_FLAG_APPLY)) {
+		*ebx = 0;
+		return;
+	}
+
+	switch (*ecx) {
+	case EDIT_SCENARIOOPTIONS_SETNOMONEY:
+		if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) {
+			if (*edx != 0) {
+				gParkFlags |= PARK_FLAGS_NO_MONEY_SCENARIO;
 			}
 			else {
-				if (*edx != 0) {
-					gParkFlags |= PARK_FLAGS_NO_MONEY;
-				}
-				else {
-					gParkFlags &= ~PARK_FLAGS_NO_MONEY;
-				}
-				// Invalidate all windows that have anything to do with finance
-				window_invalidate_by_class(WC_RIDE);
-				window_invalidate_by_class(WC_PEEP);
-				window_invalidate_by_class(WC_PARK_INFORMATION);
-				window_invalidate_by_class(WC_FINANCES);
-				window_invalidate_by_class(WC_BOTTOM_TOOLBAR);
-				window_invalidate_by_class(WC_TOP_TOOLBAR);
+				gParkFlags &= PARK_FLAGS_NO_MONEY_SCENARIO;
 			}
-			break;
-		case EDIT_SCENARIOOPTIONS_SETINITIALCASH:
-			gInitialCash = max(MONEY(0,00), min(MONEY(1000000,00), *edx));
-			gCashEncrypted = ENCRYPT_MONEY(gInitialCash);
+		}
+		else {
+			if (*edx != 0) {
+				gParkFlags |= PARK_FLAGS_NO_MONEY;
+			}
+			else {
+				gParkFlags &= ~PARK_FLAGS_NO_MONEY;
+			}
+			// Invalidate all windows that have anything to do with finance
+			window_invalidate_by_class(WC_RIDE);
+			window_invalidate_by_class(WC_PEEP);
+			window_invalidate_by_class(WC_PARK_INFORMATION);
 			window_invalidate_by_class(WC_FINANCES);
 			window_invalidate_by_class(WC_BOTTOM_TOOLBAR);
-			break;
-		case EDIT_SCENARIOOPTIONS_SETINITIALLOAN:
-			gBankLoan = max(MONEY(0,00), min(MONEY(5000000,00), *edx));
-			gMaxBankLoan = max(gBankLoan, gMaxBankLoan);
-			window_invalidate_by_class(WC_FINANCES);
-			break;
-		case EDIT_SCENARIOOPTIONS_SETMAXIMUMLOANSIZE:
-			gMaxBankLoan = max(MONEY(0,00), min(MONEY(5000000,00), *edx));
-			gBankLoan = min(gBankLoan, gMaxBankLoan);
-			window_invalidate_by_class(WC_FINANCES);
-			break;
-		case EDIT_SCENARIOOPTIONS_SETANNUALINTERESTRATE:
-			gBankLoanInterestRate = max(0, min(80, *edx));
-			window_invalidate_by_class(WC_FINANCES);
-			break;
-		case EDIT_SCENARIOOPTIONS_SETFORBIDMARKETINGCAMPAIGNS:
-			if (*edx != 0) {
-				gParkFlags |= PARK_FLAGS_FORBID_MARKETING_CAMPAIGN;
-			}
-			else {
-				gParkFlags &= ~PARK_FLAGS_FORBID_MARKETING_CAMPAIGN;
-			}
-			break;
-		case EDIT_SCENARIOOPTIONS_SETAVERAGECASHPERGUEST:
-			gGuestInitialCash = max(MONEY(0, 00), min(MONEY(1000, 00), *edx));
-			break;
-		case EDIT_SCENARIOOPTIONS_SETGUESTINITIALHAPPINESS:
-			gGuestInitialHappiness = max(40, min(250, *edx));
-			break;
-		case EDIT_SCENARIOOPTIONS_SETGUESTINITIALHUNGER:
-			gGuestInitialHunger = max(40, min(250, *edx));
-			break;
-		case EDIT_SCENARIOOPTIONS_SETGUESTINITIALTHIRST:
-			gGuestInitialThirst = max(40, min(250, *edx));
-			break;
-		case EDIT_SCENARIOOPTIONS_SETGUESTSPREFERLESSINTENSERIDES:
-			if (*edx != 0) {
-				gParkFlags |= PARK_FLAGS_PREF_LESS_INTENSE_RIDES;
-			}
-			else {
-				gParkFlags &= ~PARK_FLAGS_PREF_LESS_INTENSE_RIDES;
-			}
-			break;
-		case EDIT_SCENARIOOPTIONS_SETGUESTSPREFERMOREINTENSERIDES:
-			if (*edx != 0) {
-				gParkFlags |= PARK_FLAGS_PREF_MORE_INTENSE_RIDES;
-			}
-			else {
-				gParkFlags &= ~PARK_FLAGS_PREF_MORE_INTENSE_RIDES;
-			}
-			break;
-		case EDIT_SCENARIOOPTIONS_SETCOSTTOBUYLAND:
-			gLandPrice = max(MONEY(5, 00), min(MONEY(200, 00), *edx));
-			break;
-		case EDIT_SCENARIOOPTIONS_SETCOSTTOBUYCONSTRUCTIONRIGHTS:
-			gLandRightsCost = max(MONEY(5,00), min(MONEY(200,00), *edx));
-			break;
-		case EDIT_SCENARIOOPTIONS_SETPARKCHARGEMETHOD:
-			if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) {
-				if (*edx == 0) {
-					if (!(gParkFlags & PARK_FLAGS_PARK_FREE_ENTRY)) {
-						gParkFlags |= PARK_FLAGS_PARK_FREE_ENTRY;
-						gParkEntranceFee = MONEY(0, 00);
-					}
-				}
-				else {
-					if (gParkFlags & PARK_FLAGS_PARK_FREE_ENTRY) {
-						gParkFlags &= ~PARK_FLAGS_PARK_FREE_ENTRY;
-						gParkEntranceFee = MONEY(10, 00);
-					}
-				}
-			}
-			else {
-				if (*edx == 0) {
-					if (!(gParkFlags & PARK_FLAGS_PARK_FREE_ENTRY)) {
-						gParkFlags |= PARK_FLAGS_PARK_FREE_ENTRY;
-					}
-				}
-				else {
-					if (gParkFlags & PARK_FLAGS_PARK_FREE_ENTRY) {
-						gParkFlags &= ~PARK_FLAGS_PARK_FREE_ENTRY;
-					}
-				}
-				window_invalidate_by_class(WC_PARK_INFORMATION);
-				window_invalidate_by_class(WC_RIDE);
-			}
-			break;
-		case EDIT_SCENARIOOPTIONS_SETPARKCHARGEENTRYFEE:
-			gParkEntranceFee = max(MONEY(0, 00), min(MONEY(100, 00), *edx));
-			window_invalidate_by_class(WC_PARK_INFORMATION);
-			break;
-		case EDIT_SCENARIOOPTIONS_SETFORBIDTREEREMOVAL:
-			if (*edx != 0) {
-				gParkFlags |= PARK_FLAGS_FORBID_TREE_REMOVAL;
-			}
-			else {
-				gParkFlags &= ~PARK_FLAGS_FORBID_TREE_REMOVAL;
-			}
-			break;
-		case EDIT_SCENARIOOPTIONS_SETFORBIDLANDSCAPECHANGES:
-			if (*edx != 0) {
-				gParkFlags |= PARK_FLAGS_FORBID_LANDSCAPE_CHANGES;
-			}
-			else {
-				gParkFlags &= ~PARK_FLAGS_FORBID_LANDSCAPE_CHANGES;
-			}
-			break;
-		case EDIT_SCENARIOOPTIONS_SETFORBIDHIGHCONSTRUCTION:
-			if (*edx != 0) {
-				gParkFlags |= PARK_FLAGS_FORBID_HIGH_CONSTRUCTION;
-			}
-			else {
-				gParkFlags &= ~PARK_FLAGS_FORBID_HIGH_CONSTRUCTION;
-			}
-			break;
-		case EDIT_SCENARIOOPTIONS_SETPARKRATINGHIGHERDIFFICULTLEVEL:
-			if (*edx != 0) {
-				gParkFlags |= PARK_FLAGS_DIFFICULT_PARK_RATING;
-			}
-			else {
-				gParkFlags &= ~PARK_FLAGS_DIFFICULT_PARK_RATING;
-			}
-			break;
-		case EDIT_SCENARIOOPTIONS_SETGUESTGENERATIONHIGHERDIFFICULTLEVEL:
-			if (*edx != 0) {
-				gParkFlags |= PARK_FLAGS_DIFFICULT_GUEST_GENERATION;
-			}
-			else {
-				gParkFlags &= ~PARK_FLAGS_DIFFICULT_GUEST_GENERATION;
-			}
-			break;
+			window_invalidate_by_class(WC_TOP_TOOLBAR);
 		}
-		window_invalidate_by_class(WC_EDITOR_SCENARIO_OPTIONS);
+		break;
+	case EDIT_SCENARIOOPTIONS_SETINITIALCASH:
+		gInitialCash = max(MONEY(0,00), min(MONEY(1000000,00), *edx));
+		gCashEncrypted = ENCRYPT_MONEY(gInitialCash);
+		window_invalidate_by_class(WC_FINANCES);
+		window_invalidate_by_class(WC_BOTTOM_TOOLBAR);
+		break;
+	case EDIT_SCENARIOOPTIONS_SETINITIALLOAN:
+		gBankLoan = max(MONEY(0,00), min(MONEY(5000000,00), *edx));
+		gMaxBankLoan = max(gBankLoan, gMaxBankLoan);
+		window_invalidate_by_class(WC_FINANCES);
+		break;
+	case EDIT_SCENARIOOPTIONS_SETMAXIMUMLOANSIZE:
+		gMaxBankLoan = max(MONEY(0,00), min(MONEY(5000000,00), *edx));
+		gBankLoan = min(gBankLoan, gMaxBankLoan);
+		window_invalidate_by_class(WC_FINANCES);
+		break;
+	case EDIT_SCENARIOOPTIONS_SETANNUALINTERESTRATE:
+		gBankLoanInterestRate = max(0, min(80, *edx));
+		window_invalidate_by_class(WC_FINANCES);
+		break;
+	case EDIT_SCENARIOOPTIONS_SETFORBIDMARKETINGCAMPAIGNS:
+		if (*edx != 0) {
+			gParkFlags |= PARK_FLAGS_FORBID_MARKETING_CAMPAIGN;
+		}
+		else {
+			gParkFlags &= ~PARK_FLAGS_FORBID_MARKETING_CAMPAIGN;
+		}
+		break;
+	case EDIT_SCENARIOOPTIONS_SETAVERAGECASHPERGUEST:
+		gGuestInitialCash = max(MONEY(0, 00), min(MONEY(1000, 00), *edx));
+		break;
+	case EDIT_SCENARIOOPTIONS_SETGUESTINITIALHAPPINESS:
+		gGuestInitialHappiness = max(40, min(250, *edx));
+		break;
+	case EDIT_SCENARIOOPTIONS_SETGUESTINITIALHUNGER:
+		gGuestInitialHunger = max(40, min(250, *edx));
+		break;
+	case EDIT_SCENARIOOPTIONS_SETGUESTINITIALTHIRST:
+		gGuestInitialThirst = max(40, min(250, *edx));
+		break;
+	case EDIT_SCENARIOOPTIONS_SETGUESTSPREFERLESSINTENSERIDES:
+		if (*edx != 0) {
+			gParkFlags |= PARK_FLAGS_PREF_LESS_INTENSE_RIDES;
+		}
+		else {
+			gParkFlags &= ~PARK_FLAGS_PREF_LESS_INTENSE_RIDES;
+		}
+		break;
+	case EDIT_SCENARIOOPTIONS_SETGUESTSPREFERMOREINTENSERIDES:
+		if (*edx != 0) {
+			gParkFlags |= PARK_FLAGS_PREF_MORE_INTENSE_RIDES;
+		}
+		else {
+			gParkFlags &= ~PARK_FLAGS_PREF_MORE_INTENSE_RIDES;
+		}
+		break;
+	case EDIT_SCENARIOOPTIONS_SETCOSTTOBUYLAND:
+		gLandPrice = max(MONEY(5, 00), min(MONEY(200, 00), *edx));
+		break;
+	case EDIT_SCENARIOOPTIONS_SETCOSTTOBUYCONSTRUCTIONRIGHTS:
+		gLandRightsCost = max(MONEY(5,00), min(MONEY(200,00), *edx));
+		break;
+	case EDIT_SCENARIOOPTIONS_SETPARKCHARGEMETHOD:
+		if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) {
+			if (*edx == 0) {
+				if (!(gParkFlags & PARK_FLAGS_PARK_FREE_ENTRY)) {
+					gParkFlags |= PARK_FLAGS_PARK_FREE_ENTRY;
+					gParkEntranceFee = MONEY(0, 00);
+				}
+			}
+			else {
+				if (gParkFlags & PARK_FLAGS_PARK_FREE_ENTRY) {
+					gParkFlags &= ~PARK_FLAGS_PARK_FREE_ENTRY;
+					gParkEntranceFee = MONEY(10, 00);
+				}
+			}
+		}
+		else {
+			if (*edx == 0) {
+				if (!(gParkFlags & PARK_FLAGS_PARK_FREE_ENTRY)) {
+					gParkFlags |= PARK_FLAGS_PARK_FREE_ENTRY;
+				}
+			}
+			else {
+				if (gParkFlags & PARK_FLAGS_PARK_FREE_ENTRY) {
+					gParkFlags &= ~PARK_FLAGS_PARK_FREE_ENTRY;
+				}
+			}
+			window_invalidate_by_class(WC_PARK_INFORMATION);
+			window_invalidate_by_class(WC_RIDE);
+		}
+		break;
+	case EDIT_SCENARIOOPTIONS_SETPARKCHARGEENTRYFEE:
+		gParkEntranceFee = max(MONEY(0, 00), min(MONEY(100, 00), *edx));
+		window_invalidate_by_class(WC_PARK_INFORMATION);
+		break;
+	case EDIT_SCENARIOOPTIONS_SETFORBIDTREEREMOVAL:
+		if (*edx != 0) {
+			gParkFlags |= PARK_FLAGS_FORBID_TREE_REMOVAL;
+		}
+		else {
+			gParkFlags &= ~PARK_FLAGS_FORBID_TREE_REMOVAL;
+		}
+		break;
+	case EDIT_SCENARIOOPTIONS_SETFORBIDLANDSCAPECHANGES:
+		if (*edx != 0) {
+			gParkFlags |= PARK_FLAGS_FORBID_LANDSCAPE_CHANGES;
+		}
+		else {
+			gParkFlags &= ~PARK_FLAGS_FORBID_LANDSCAPE_CHANGES;
+		}
+		break;
+	case EDIT_SCENARIOOPTIONS_SETFORBIDHIGHCONSTRUCTION:
+		if (*edx != 0) {
+			gParkFlags |= PARK_FLAGS_FORBID_HIGH_CONSTRUCTION;
+		}
+		else {
+			gParkFlags &= ~PARK_FLAGS_FORBID_HIGH_CONSTRUCTION;
+		}
+		break;
+	case EDIT_SCENARIOOPTIONS_SETPARKRATINGHIGHERDIFFICULTLEVEL:
+		if (*edx != 0) {
+			gParkFlags |= PARK_FLAGS_DIFFICULT_PARK_RATING;
+		}
+		else {
+			gParkFlags &= ~PARK_FLAGS_DIFFICULT_PARK_RATING;
+		}
+		break;
+	case EDIT_SCENARIOOPTIONS_SETGUESTGENERATIONHIGHERDIFFICULTLEVEL:
+		if (*edx != 0) {
+			gParkFlags |= PARK_FLAGS_DIFFICULT_GUEST_GENERATION;
+		}
+		else {
+			gParkFlags &= ~PARK_FLAGS_DIFFICULT_GUEST_GENERATION;
+		}
+		break;
 	}
+	window_invalidate_by_class(WC_EDITOR_SCENARIO_OPTIONS);
 	*ebx = 0;
 }
