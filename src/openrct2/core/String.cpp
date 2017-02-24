@@ -399,36 +399,29 @@ namespace String
         codepoint_t codepoint;
         const utf8 * ch = s.c_str();
         const utf8 * nextCh;
-        const utf8 * firstNonWhitespace = nullptr;
-        const utf8 * lastNonWhitespace = nullptr;
+        const utf8 * startSubstr = nullptr;
+        const utf8 * endSubstr = nullptr;
         while ((codepoint = GetNextCodepoint(ch, &nextCh)) != '\0')
         {
             bool isWhiteSpace = codepoint <= WCHAR_MAX && iswspace((wchar_t)codepoint);
             if (!isWhiteSpace)
             {
-                if (firstNonWhitespace == nullptr)
+                if (startSubstr == nullptr)
                 {
-                    firstNonWhitespace = ch;
+                    startSubstr = ch;
                 }
-                lastNonWhitespace = ch;
+                endSubstr = ch;
             }
             ch = nextCh;
         }
 
-        if (firstNonWhitespace != nullptr &&
-            firstNonWhitespace != s.c_str())
+        if (startSubstr == nullptr)
         {
-            size_t newStringSize = ch - firstNonWhitespace;
-            return std::string(firstNonWhitespace, newStringSize);
-        }
-        else if (lastNonWhitespace != nullptr)
-        {
-            size_t newStringSize = lastNonWhitespace - s.c_str() + 1;
-            return std::string(s.c_str(), newStringSize);
-        }
-        else
-        {
+            // String is all whitespace
             return std::string();
         }
+
+        size_t stringLength = endSubstr - startSubstr + 1;
+        return std::string(startSubstr, stringLength);
     }
 }

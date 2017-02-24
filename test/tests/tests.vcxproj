@@ -45,7 +45,6 @@
       <SubSystem>Console</SubSystem>
     </Link>
   </ItemDefinitionGroup>
-
   <!-- Files -->
   <ItemGroup>
   </ItemGroup>
@@ -56,7 +55,7 @@
     <ClCompile Include="sawyercoding_test.cpp" />
     <ClCompile Include="$(GtestDir)\src\gtest-all.cc" />
     <ClCompile Include="tests.cpp" />
+    <ClCompile Include="StringTest.cpp" />
   </ItemGroup>
-
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
 </Project>
