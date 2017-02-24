@@ -570,23 +570,23 @@ void game_command_edit_scenario_options(sint32* eax, sint32* ebx, sint32* ecx, s
 		}
 		break;
 	case EDIT_SCENARIOOPTIONS_SETINITIALCASH:
-		gInitialCash = max(MONEY(0,00), min(MONEY(1000000,00), *edx));
+		gInitialCash = clamp(MONEY(0, 00), *edx, MONEY(1000000, 00));
 		gCashEncrypted = ENCRYPT_MONEY(gInitialCash);
 		window_invalidate_by_class(WC_FINANCES);
 		window_invalidate_by_class(WC_BOTTOM_TOOLBAR);
 		break;
 	case EDIT_SCENARIOOPTIONS_SETINITIALLOAN:
-		gBankLoan = max(MONEY(0,00), min(MONEY(5000000,00), *edx));
+		gBankLoan = clamp(MONEY(0,00), *edx, MONEY(5000000,00));
 		gMaxBankLoan = max(gBankLoan, gMaxBankLoan);
 		window_invalidate_by_class(WC_FINANCES);
 		break;
 	case EDIT_SCENARIOOPTIONS_SETMAXIMUMLOANSIZE:
-		gMaxBankLoan = max(MONEY(0,00), min(MONEY(5000000,00), *edx));
+		gMaxBankLoan = clamp(MONEY(0,00), *edx, MONEY(5000000,00));
 		gBankLoan = min(gBankLoan, gMaxBankLoan);
 		window_invalidate_by_class(WC_FINANCES);
 		break;
 	case EDIT_SCENARIOOPTIONS_SETANNUALINTERESTRATE:
-		gBankLoanInterestRate = max(0, min(80, *edx));
+		gBankLoanInterestRate = clamp(0, *edx, 80);
 		window_invalidate_by_class(WC_FINANCES);
 		break;
 	case EDIT_SCENARIOOPTIONS_SETFORBIDMARKETINGCAMPAIGNS:
@@ -598,16 +598,16 @@ void game_command_edit_scenario_options(sint32* eax, sint32* ebx, sint32* ecx, s
 		}
 		break;
 	case EDIT_SCENARIOOPTIONS_SETAVERAGECASHPERGUEST:
-		gGuestInitialCash = max(MONEY(0, 00), min(MONEY(1000, 00), *edx));
+		gGuestInitialCash = clamp(MONEY(0, 00), *edx, MONEY(1000, 00));
 		break;
 	case EDIT_SCENARIOOPTIONS_SETGUESTINITIALHAPPINESS:
-		gGuestInitialHappiness = max(40, min(250, *edx));
+		gGuestInitialHappiness = clamp(40, *edx, 250);
 		break;
 	case EDIT_SCENARIOOPTIONS_SETGUESTINITIALHUNGER:
-		gGuestInitialHunger = max(40, min(250, *edx));
+		gGuestInitialHunger = clamp(40, *edx, 250);
 		break;
 	case EDIT_SCENARIOOPTIONS_SETGUESTINITIALTHIRST:
-		gGuestInitialThirst = max(40, min(250, *edx));
+		gGuestInitialThirst = clamp(40, *edx, 250);
 		break;
 	case EDIT_SCENARIOOPTIONS_SETGUESTSPREFERLESSINTENSERIDES:
 		if (*edx != 0) {
@@ -626,10 +626,10 @@ void game_command_edit_scenario_options(sint32* eax, sint32* ebx, sint32* ecx, s
 		}
 		break;
 	case EDIT_SCENARIOOPTIONS_SETCOSTTOBUYLAND:
-		gLandPrice = max(MONEY(5, 00), min(MONEY(200, 00), *edx));
+		gLandPrice = clamp(MONEY(5, 00), *edx, MONEY(200, 00));
 		break;
 	case EDIT_SCENARIOOPTIONS_SETCOSTTOBUYCONSTRUCTIONRIGHTS:
-		gLandRightsCost = max(MONEY(5,00), min(MONEY(200,00), *edx));
+		gLandRightsCost = clamp(MONEY(5,00), *edx, MONEY(200,00));
 		break;
 	case EDIT_SCENARIOOPTIONS_SETPARKCHARGEMETHOD:
 		if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) {
@@ -662,7 +662,7 @@ void game_command_edit_scenario_options(sint32* eax, sint32* ebx, sint32* ecx, s
 		}
 		break;
 	case EDIT_SCENARIOOPTIONS_SETPARKCHARGEENTRYFEE:
-		gParkEntranceFee = max(MONEY(0, 00), min(MONEY(100, 00), *edx));
+		gParkEntranceFee = clamp(MONEY(0, 00), *edx, MONEY(100, 00));
 		window_invalidate_by_class(WC_PARK_INFORMATION);
 		break;
 	case EDIT_SCENARIOOPTIONS_SETFORBIDTREEREMOVAL:
