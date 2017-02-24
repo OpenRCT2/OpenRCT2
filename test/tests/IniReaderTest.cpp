@@ -1,5 +1,6 @@
 #include <gtest/gtest.h>
 #include <limits>
+#include <string>
 #include "openrct2/config/ConfigEnum.hpp"
 #include "openrct2/config/IniReader.hpp"
 #include "openrct2/core/MemoryStream.h"
