@@ -29,7 +29,7 @@ TEST_F(IniWriterTest, create_one_section)
     IIniWriter * iw = CreateIniWriter(&ms);
     ASSERT_NE(iw, nullptr);
     iw->WriteSection("OpenRCT2");
-    int8_t null_terminator = 0;
+    uint8 null_terminator = 0;
     ms.Write(&null_terminator, 1);
     ASSERT_GE(ms.GetPosition(), 12);
     ASSERT_LE(ms.GetPosition(), 13); // Accomodate for varying-sized newline (Windows)
@@ -50,7 +50,7 @@ TEST_F(IniWriterTest, create_multiple_sections)
     iw->WriteSection("OpenRCT2");
     iw->WriteSection("OpenRCT3");
     iw->WriteSection("OpenRCT4");
-    int8_t null_terminator = 0;
+    uint8 null_terminator = 0;
     ms.Write(&null_terminator, 1);
     ASSERT_GE(ms.GetPosition(), 48);
     ASSERT_LE(ms.GetPosition(), 55); // Accomodate for varying-sized newline (Windows)
@@ -69,7 +69,7 @@ TEST_F(IniWriterTest, create_loose_bool_entry)
     IIniWriter * iw = CreateIniWriter(&ms);
     ASSERT_NE(iw, nullptr);
     iw->WriteBoolean("boolval", true);
-    int8_t null_terminator = 0;
+    uint8 null_terminator = 0;
     ms.Write(&null_terminator, 1);
     ASSERT_GE(ms.GetPosition(), 16);
     ASSERT_LE(ms.GetPosition(), 17); // Accomodate for varying-sized newline (Windows)
@@ -88,7 +88,7 @@ TEST_F(IniWriterTest, create_loose_enum_entry)
     ASSERT_NE(iw, nullptr);
     iw->WriteEnum("by_string", "stringval");
     iw->WriteEnum<sint32>("sint32", 0, Enum_Currency);
-    int8_t null_terminator = 0;
+    uint8 null_terminator = 0;
     ms.Write(&null_terminator, 1);
     ASSERT_GE(ms.GetPosition(), 34);
     ASSERT_LE(ms.GetPosition(), 36); // Accomodate for varying-sized newline (Windows)
@@ -106,7 +106,7 @@ TEST_F(IniWriterTest, create_loose_float_entry)
     IIniWriter * iw = CreateIniWriter(&ms);
     ASSERT_NE(iw, nullptr);
     iw->WriteFloat("one", 1.);
-    int8_t null_terminator = 0;
+    uint8 null_terminator = 0;
     ms.Write(&null_terminator, 1);
     ASSERT_GE(ms.GetPosition(), 16);
     ASSERT_LE(ms.GetPosition(), 17); // Accomodate for varying-sized newline (Windows)
@@ -129,7 +129,7 @@ TEST_F(IniWriterTest, create_loose_sint32_entry)
     iw->WriteSint32("minusone", -1);
     iw->WriteSint32("intmin", (std::numeric_limits<sint32>::min)());
     iw->WriteSint32("intmax", (std::numeric_limits<sint32>::max)());
-    int8_t null_terminator = 0;
+    uint8 null_terminator = 0;
     ms.Write(&null_terminator, 1);
     ASSERT_GE(ms.GetPosition(), 73);
     ASSERT_LE(ms.GetPosition(), 78); // Accomodate for varying-sized newline (Windows)
@@ -148,7 +148,7 @@ TEST_F(IniWriterTest, create_loose_string_entry)
     IIniWriter * iw = CreateIniWriter(&ms);
     ASSERT_NE(iw, nullptr);
     iw->WriteString("path", u8"C:'\\some/dir\\here/神鷹暢遊");
-    int8_t null_terminator = 0;
+    uint8 null_terminator = 0;
     ms.Write(&null_terminator, 1);
     ASSERT_GE(ms.GetPosition(), 43);
     ASSERT_LE(ms.GetPosition(), 44); // Accomodate for varying-sized newline (Windows)
@@ -172,7 +172,7 @@ TEST_F(IniWriterTest, create_multiple_section_with_values)
     iw->WriteSint32("zero", 0);
     iw->WriteSection("string");
     iw->WriteString("path", u8"C:'\\some/dir\\here/神鷹暢遊");
-    int8_t null_terminator = 0;
+    uint8 null_terminator = 0;
     ms.Write(&null_terminator, 1);
     ASSERT_GE(ms.GetPosition(), 99);
     ASSERT_LE(ms.GetPosition(), 108); // Accomodate for varying-sized newline (Windows)
@@ -195,7 +195,7 @@ TEST_F(IniWriterTest, create_duplicate_sections)
     iw->WriteSection("section");
     iw->WriteSection("section");
     iw->WriteSection("section");
-    int8_t null_terminator = 0;
+    uint8 null_terminator = 0;
     ms.Write(&null_terminator, 1);
     ASSERT_GE(ms.GetPosition(), 33);
     ASSERT_LE(ms.GetPosition(), 43); // Accomodate for varying-sized newline (Windows)
