@@ -542,7 +542,7 @@ void game_command_edit_scenario_options(sint32* eax, sint32* ebx, sint32* ecx, s
 		switch (*ecx) {
 		case EDIT_SCENARIOOPTIONS_SETNOMONEY:
 			if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) {
-				if (*edx != FALSE) {
+				if (*edx != 0) {
 					gParkFlags |= PARK_FLAGS_NO_MONEY_SCENARIO;
 				}
 				else {
@@ -550,7 +550,7 @@ void game_command_edit_scenario_options(sint32* eax, sint32* ebx, sint32* ecx, s
 				}
 			}
 			else {
-				if (*edx != FALSE) {
+				if (*edx != 0) {
 					gParkFlags |= PARK_FLAGS_NO_MONEY;
 				}
 				else {
@@ -586,7 +586,7 @@ void game_command_edit_scenario_options(sint32* eax, sint32* ebx, sint32* ecx, s
 			window_invalidate_by_class(WC_FINANCES);
 			break;
 		case EDIT_SCENARIOOPTIONS_SETFORBIDMARKETINGCAMPAIGNS:
-			if (*edx != FALSE) {
+			if (*edx != 0) {
 				gParkFlags |= PARK_FLAGS_FORBID_MARKETING_CAMPAIGN;
 			}
 			else {
@@ -606,7 +606,7 @@ void game_command_edit_scenario_options(sint32* eax, sint32* ebx, sint32* ecx, s
 			gGuestInitialThirst = max(40, min(250, *edx));
 			break;
 		case EDIT_SCENARIOOPTIONS_SETGUESTSPREFERLESSINTENSERIDES:
-			if (*edx != FALSE) {
+			if (*edx != 0) {
 				gParkFlags |= PARK_FLAGS_PREF_LESS_INTENSE_RIDES;
 			}
 			else {
@@ -614,7 +614,7 @@ void game_command_edit_scenario_options(sint32* eax, sint32* ebx, sint32* ecx, s
 			}
 			break;
 		case EDIT_SCENARIOOPTIONS_SETGUESTSPREFERMOREINTENSERIDES:
-			if (*edx != FALSE) {
+			if (*edx != 0) {
 				gParkFlags |= PARK_FLAGS_PREF_MORE_INTENSE_RIDES;
 			}
 			else {
@@ -662,7 +662,7 @@ void game_command_edit_scenario_options(sint32* eax, sint32* ebx, sint32* ecx, s
 			window_invalidate_by_class(WC_PARK_INFORMATION);
 			break;
 		case EDIT_SCENARIOOPTIONS_SETFORBIDTREEREMOVAL:
-			if (*edx != FALSE) {
+			if (*edx != 0) {
 				gParkFlags |= PARK_FLAGS_FORBID_TREE_REMOVAL;
 			}
 			else {
@@ -670,7 +670,7 @@ void game_command_edit_scenario_options(sint32* eax, sint32* ebx, sint32* ecx, s
 			}
 			break;
 		case EDIT_SCENARIOOPTIONS_SETFORBIDLANDSCAPECHANGES:
-			if (*edx != FALSE) {
+			if (*edx != 0) {
 				gParkFlags |= PARK_FLAGS_FORBID_LANDSCAPE_CHANGES;
 			}
 			else {
@@ -678,7 +678,7 @@ void game_command_edit_scenario_options(sint32* eax, sint32* ebx, sint32* ecx, s
 			}
 			break;
 		case EDIT_SCENARIOOPTIONS_SETFORBIDHIGHCONSTRUCTION:
-			if (*edx != FALSE) {
+			if (*edx != 0) {
 				gParkFlags |= PARK_FLAGS_FORBID_HIGH_CONSTRUCTION;
 			}
 			else {
@@ -686,7 +686,7 @@ void game_command_edit_scenario_options(sint32* eax, sint32* ebx, sint32* ecx, s
 			}
 			break;
 		case EDIT_SCENARIOOPTIONS_SETPARKRATINGHIGHERDIFFICULTLEVEL:
-			if (*edx != FALSE) {
+			if (*edx != 0) {
 				gParkFlags |= PARK_FLAGS_DIFFICULT_PARK_RATING;
 			}
 			else {
@@ -694,7 +694,7 @@ void game_command_edit_scenario_options(sint32* eax, sint32* ebx, sint32* ecx, s
 			}
 			break;
 		case EDIT_SCENARIOOPTIONS_SETGUESTGENERATIONHIGHERDIFFICULTLEVEL:
-			if (*edx != FALSE) {
+			if (*edx != 0) {
 				gParkFlags |= PARK_FLAGS_DIFFICULT_GUEST_GENERATION;
 			}
 			else {

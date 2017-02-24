@@ -504,7 +504,7 @@ static void window_editor_scenario_options_financial_mouseup(rct_window *w, sint
 			0, 
 			GAME_COMMAND_FLAG_APPLY,
 			EDIT_SCENARIOOPTIONS_SETNOMONEY,
-			gParkFlags & PARK_FLAGS_NO_MONEY ? FALSE : TRUE,
+			gParkFlags & PARK_FLAGS_NO_MONEY ? 0 : 1,
 			GAME_COMMAND_EDIT_SCENARIO_OPTIONS,
 			0,
 			0
@@ -516,7 +516,7 @@ static void window_editor_scenario_options_financial_mouseup(rct_window *w, sint
 			0,
 			GAME_COMMAND_FLAG_APPLY,
 			EDIT_SCENARIOOPTIONS_SETFORBIDMARKETINGCAMPAIGNS,
-			gParkFlags & PARK_FLAGS_FORBID_MARKETING_CAMPAIGN ? FALSE : TRUE,
+			gParkFlags & PARK_FLAGS_FORBID_MARKETING_CAMPAIGN ? 0 : 1,
 			GAME_COMMAND_EDIT_SCENARIO_OPTIONS,
 			0,
 			0
@@ -839,7 +839,7 @@ static void window_editor_scenario_options_guests_mouseup(rct_window *w, sint32 
 			0,
 			GAME_COMMAND_FLAG_APPLY,
 			EDIT_SCENARIOOPTIONS_SETGUESTSPREFERLESSINTENSERIDES,
-			gParkFlags & PARK_FLAGS_PREF_LESS_INTENSE_RIDES ? FALSE : TRUE,
+			gParkFlags & PARK_FLAGS_PREF_LESS_INTENSE_RIDES ? 0 : 1,
 			GAME_COMMAND_EDIT_SCENARIO_OPTIONS,
 			0,
 			0
@@ -851,7 +851,7 @@ static void window_editor_scenario_options_guests_mouseup(rct_window *w, sint32 
 			0,
 			GAME_COMMAND_FLAG_APPLY,
 			EDIT_SCENARIOOPTIONS_SETGUESTSPREFERMOREINTENSERIDES,
-			gParkFlags & PARK_FLAGS_PREF_MORE_INTENSE_RIDES ? FALSE : TRUE,
+			gParkFlags & PARK_FLAGS_PREF_MORE_INTENSE_RIDES ? 0 : 1,
 			GAME_COMMAND_EDIT_SCENARIO_OPTIONS,
 			0,
 			0
@@ -1147,7 +1147,7 @@ static void window_editor_scenario_options_park_mouseup(rct_window *w, sint32 wi
 			0,
 			GAME_COMMAND_FLAG_APPLY,
 			EDIT_SCENARIOOPTIONS_SETFORBIDTREEREMOVAL,
-			gParkFlags & PARK_FLAGS_FORBID_TREE_REMOVAL ? FALSE : TRUE,
+			gParkFlags & PARK_FLAGS_FORBID_TREE_REMOVAL ? 0 : 1,
 			GAME_COMMAND_EDIT_SCENARIO_OPTIONS,
 			0,
 			0
@@ -1159,7 +1159,7 @@ static void window_editor_scenario_options_park_mouseup(rct_window *w, sint32 wi
 			0,
 			GAME_COMMAND_FLAG_APPLY,
 			EDIT_SCENARIOOPTIONS_SETFORBIDLANDSCAPECHANGES,
-			gParkFlags & PARK_FLAGS_FORBID_LANDSCAPE_CHANGES ? FALSE : TRUE,
+			gParkFlags & PARK_FLAGS_FORBID_LANDSCAPE_CHANGES ? 0 : 1,
 			GAME_COMMAND_EDIT_SCENARIO_OPTIONS,
 			0,
 			0
@@ -1171,7 +1171,7 @@ static void window_editor_scenario_options_park_mouseup(rct_window *w, sint32 wi
 			0,
 			GAME_COMMAND_FLAG_APPLY,
 			EDIT_SCENARIOOPTIONS_SETFORBIDHIGHCONSTRUCTION,
-			gParkFlags & PARK_FLAGS_FORBID_HIGH_CONSTRUCTION ? FALSE : TRUE,
+			gParkFlags & PARK_FLAGS_FORBID_HIGH_CONSTRUCTION ? 0 : 1,
 			GAME_COMMAND_EDIT_SCENARIO_OPTIONS,
 			0,
 			0
@@ -1183,7 +1183,7 @@ static void window_editor_scenario_options_park_mouseup(rct_window *w, sint32 wi
 			0,
 			GAME_COMMAND_FLAG_APPLY,
 			EDIT_SCENARIOOPTIONS_SETPARKRATINGHIGHERDIFFICULTLEVEL,
-			gParkFlags & PARK_FLAGS_DIFFICULT_PARK_RATING ? FALSE : TRUE,
+			gParkFlags & PARK_FLAGS_DIFFICULT_PARK_RATING ? 0 : 1,
 			GAME_COMMAND_EDIT_SCENARIO_OPTIONS,
 			0,
 			0
@@ -1195,7 +1195,7 @@ static void window_editor_scenario_options_park_mouseup(rct_window *w, sint32 wi
 			0,
 			GAME_COMMAND_FLAG_APPLY,
 			EDIT_SCENARIOOPTIONS_SETGUESTGENERATIONHIGHERDIFFICULTLEVEL,
-			gParkFlags & PARK_FLAGS_DIFFICULT_GUEST_GENERATION ? FALSE : TRUE,
+			gParkFlags & PARK_FLAGS_DIFFICULT_GUEST_GENERATION ? 0 : 1,
 			GAME_COMMAND_EDIT_SCENARIO_OPTIONS,
 			0,
 			0
