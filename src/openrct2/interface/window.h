@@ -718,7 +718,7 @@ void window_text_input_open(rct_window* call_w, sint32 call_widget, rct_string_i
 void window_text_input_raw_open(rct_window* call_w, sint32 call_widget, rct_string_id title, rct_string_id description, utf8string existing_text, sint32 maxLength);
 rct_window *window_mapgen_open();
 rct_window *window_loadsave_open(sint32 type, char *defaultName);
-rct_window *window_textreader_open();
+rct_window *window_textreader_open(const char * file_path);
 void window_debug_paint_open();
 
 rct_window * window_editor_main_open();

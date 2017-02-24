@@ -96,14 +96,15 @@ static size_t _textreaderTextSize = 0;
 static char **_textreaderLines = NULL;
 static sint32 _textreaderNumLines = 0;
 static sint32 _textreaderLongestLineWidth = 0;
+char _textreaderFilePath[MAX_PATH];
 
-rct_window *window_textreader_open()
+rct_window *window_textreader_open(const char * file_path)
 {
 	rct_window* window;
 
-	window = window_bring_to_front_by_class(WC_TEXTREADER);
-	if (window != NULL)
-		return window;
+	window_close_by_class(WC_TEXTREADER);
+	
+	safe_strcpy(_textreaderFilePath, file_path, MAX_PATH);
 
 	if (!window_textreader_read_file())
 		return NULL;
@@ -182,6 +183,8 @@ static void window_textreader_invalidate(rct_window *w)
 	window_textreader_widgets[WIDX_CONTENT_PANEL].bottom = w->height - 1;
 	window_textreader_widgets[WIDX_SCROLL].right = w->width - 3;
 	window_textreader_widgets[WIDX_SCROLL].bottom = w->height - 15;
+
+	set_format_arg(0, const char *, _textreaderFilePath); // set title caption to file path name
 }
 
 static void window_textreader_paint(rct_window *w, rct_drawpixelinfo *dpi)
@@ -207,9 +210,9 @@ static bool window_textreader_read_file()
 	window_textreader_dispose_file();
 	utf8 path[MAX_PATH];
 	safe_strcpy(path, gExePath, MAX_PATH);
-	safe_strcat_path(path, "changelog.txt", MAX_PATH);
+	safe_strcat_path(path, _textreaderFilePath, MAX_PATH);
 	if (!readentirefile(path, (void**)&_textreaderText, &_textreaderTextSize)) {
-		log_error("Unable to read changelog.txt");
+		log_error("Unable to read file path: %s", path);
 		return false;
 	}
 	void* new_memory = realloc(_textreaderText, _textreaderTextSize + 1);
