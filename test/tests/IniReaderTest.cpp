@@ -9,6 +9,7 @@ class IniReaderTest : public testing::Test
 {
 protected:
     static const utf8 predefined[];
+    static const utf8 duplicate[];
 };
 
 static auto Enum_Currency = ConfigEnum<sint32>({});
@@ -52,11 +53,38 @@ TEST_F(IniReaderTest, read_prepared)
     const utf8 * str = ir->GetCString("path", nullptr);
     ASSERT_STREQ(str, u8"C:'\\some/dir\\here/神鷹暢遊");
     Memory::Free(str);
-    // go backa section
+    // go back a section
     ASSERT_EQ(ir->ReadSection("int"), true);
     ASSERT_EQ(ir->GetSint32("one", 42), 1);
     delete ir;
 }
 
+TEST_F(IniReaderTest, read_duplicate)
+{
+    MemoryStream ms(duplicate, 99);
+    ASSERT_EQ(ms.CanRead(), true);
+    ASSERT_EQ(ms.CanWrite(), false);
+    IIniReader * ir = CreateIniReader(&ms);
+    ASSERT_NE(ir, nullptr);
+    // there should only be data from the last section
+    ASSERT_EQ(ir->ReadSection("section"), true);
+    ASSERT_EQ(ir->GetBoolean("one", false), false);
+    ASSERT_EQ(ir->GetBoolean("two", false), false);
+    ASSERT_EQ(ir->GetBoolean("three", false), true);
+    ASSERT_EQ(ir->ReadSection("section"), true);
+    // try switching to another section
+    ASSERT_EQ(ir->ReadSection("doesnt_exist"), false);
+    // make sure we are still in the same section
+    ASSERT_EQ(ir->GetBoolean("one", false), false);
+    ASSERT_EQ(ir->GetBoolean("two", false), false);
+    ASSERT_EQ(ir->GetBoolean("three", false), true);
+    ASSERT_EQ(ir->ReadSection("section"), true);
+    // test 4 times, there are only 3 sections
+    ASSERT_EQ(ir->ReadSection("section"), true);
+    delete ir;
+}
+
 const utf8 IniReaderTest::predefined[] = "[bool]\nboolval = true\n\n[int]\none = 1\nzero = 0\n\n[string]\npath = "
                                          "\"C:'\\\\some/dir\\\\here/\xE7\xA5\x9E\xE9\xB7\xB9\xE6\x9A\xA2\xE9\x81\x8A\"\n";
+
+const utf8 IniReaderTest::duplicate[] = "[section]\none = true\n[section]\ntwo = true\n[section]\nthree = true\n";

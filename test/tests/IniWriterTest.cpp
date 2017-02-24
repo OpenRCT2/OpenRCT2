@@ -186,3 +186,24 @@ TEST_F(IniWriterTest, create_multiple_section_with_values)
     Memory::Free(ini);
     delete iw;
 }
+
+TEST_F(IniWriterTest, create_duplicate_sections)
+{
+    MemoryStream ms(1000);
+    IIniWriter * iw = CreateIniWriter(&ms);
+    ASSERT_NE(iw, nullptr);
+    iw->WriteSection("section");
+    iw->WriteSection("section");
+    iw->WriteSection("section");
+    int8_t null_terminator = 0;
+    ms.Write(&null_terminator, 1);
+    ASSERT_GE(ms.GetPosition(), 33);
+    ASSERT_LE(ms.GetPosition(), 43); // Accomodate for varying-sized newline (Windows)
+    ASSERT_EQ(ms.GetLength(), ms.GetPosition());
+    ms.SetPosition(0);
+    const char * ini = (const char *)ms.ReadString();
+    ASSERT_STREQ(ini, "[section]" PLATFORM_NEWLINE PLATFORM_NEWLINE "[section]" PLATFORM_NEWLINE PLATFORM_NEWLINE
+                      "[section]" PLATFORM_NEWLINE);
+    Memory::Free(ini);
+    delete iw;
+}
