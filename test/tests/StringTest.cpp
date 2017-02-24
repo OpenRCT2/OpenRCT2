@@ -15,7 +15,10 @@ INSTANTIATE_TEST_CASE_P(TrimData, StringTest, testing::Values(
     TCase("string  ", "string"),
     TCase("   some   string  ", "some   string"),
     TCase("      ", ""),
-    TCase("", "")
+    TCase("", ""),
+    TCase("\n", ""),
+    TCase("\n\n\n\r\n", ""),
+    TCase("\n\n\n\r\nstring\n\n", "string")
 ));
 TEST_P(StringTest, Trim)
 {
