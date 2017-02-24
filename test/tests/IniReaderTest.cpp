@@ -8,9 +8,9 @@
 class IniReaderTest : public testing::Test
 {
 protected:
-    static const utf8 predefined[];
-    static const utf8 duplicate[];
-    static const utf8 untrimmed[];
+    static const std::string predefined;
+    static const std::string duplicate;
+    static const std::string untrimmed;
 };
 
 static auto Enum_Currency = ConfigEnum<sint32>({});
@@ -32,7 +32,7 @@ TEST_F(IniReaderTest, create_empty)
 
 TEST_F(IniReaderTest, read_prepared)
 {
-    MemoryStream ms(predefined, 99);
+    MemoryStream ms(predefined.c_str(), predefined.size());
     ASSERT_EQ(ms.CanRead(), true);
     ASSERT_EQ(ms.CanWrite(), false);
     IIniReader * ir = CreateIniReader(&ms);
@@ -62,7 +62,7 @@ TEST_F(IniReaderTest, read_prepared)
 
 TEST_F(IniReaderTest, read_duplicate)
 {
-    MemoryStream ms(duplicate, 99);
+    MemoryStream ms(duplicate.c_str(), duplicate.size());
     ASSERT_EQ(ms.CanRead(), true);
     ASSERT_EQ(ms.CanWrite(), false);
     IIniReader * ir = CreateIniReader(&ms);
@@ -88,7 +88,7 @@ TEST_F(IniReaderTest, read_duplicate)
 
 TEST_F(IniReaderTest, read_untrimmed)
 {
-    MemoryStream ms(untrimmed, 99);
+    MemoryStream ms(untrimmed.c_str(), untrimmed.size());
     ASSERT_EQ(ms.CanRead(), true);
     ASSERT_EQ(ms.CanWrite(), false);
     IIniReader * ir = CreateIniReader(&ms);
@@ -104,10 +104,10 @@ TEST_F(IniReaderTest, read_untrimmed)
     delete ir;
 }
 
-const utf8 IniReaderTest::predefined[] = "[bool]\nboolval = true\n\n[int]\none = 1\nzero = 0\n\n[string]\npath = "
+const std::string IniReaderTest::predefined = "[bool]\nboolval = true\n\n[int]\none = 1\nzero = 0\n\n[string]\npath = "
                                          "\"C:'\\\\some/dir\\\\here/\xE7\xA5\x9E\xE9\xB7\xB9\xE6\x9A\xA2\xE9\x81\x8A\"\n";
 
-const utf8 IniReaderTest::duplicate[] =
+const std::string IniReaderTest::duplicate =
     "[section]\none = true\nfortytwo = 13\n[section]\ntwo = true\n[section]\nthree = true\nfortytwo = 42\nfortytwo = 41\n";
 
-const utf8 IniReaderTest::untrimmed[] = "[section]\n      one =     true      \n    str =    \"  xxx \"";
+const std::string IniReaderTest::untrimmed = "[section]\n      one =     true      \n    str =    \"  xxx \"";
