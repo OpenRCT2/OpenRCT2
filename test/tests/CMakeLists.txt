@@ -106,3 +106,11 @@ set(INI_TEST_SOURCES
 add_executable(test_ini ${INI_TEST_SOURCES})
 target_link_libraries(test_ini ${GTEST_LIBRARIES} test-common dl z)
 add_test(NAME ini COMMAND test_ini)
+
+# String test
+set(STRING_TEST_SOURCES
+		"StringTest.cpp"
+		)
+add_executable(test_string ${STRING_TEST_SOURCES})
+target_link_libraries(test_string ${GTEST_LIBRARIES} test-common dl z)
+add_test(NAME string COMMAND test_string)
