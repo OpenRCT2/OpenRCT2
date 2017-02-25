@@ -20,7 +20,7 @@
 
 extern "C"
 {
-    #include "../config.h"
+    #include "../config/Config.h"
     #include "../platform/crash.h"
 }
 

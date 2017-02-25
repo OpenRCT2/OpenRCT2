@@ -21,7 +21,6 @@
 #include "../management/finance.h"
 #include "../management/research.h"
 #include "../object.h"
-#include "../platform/platform.h"
 #include "../rct12.h"
 #include "../rct2.h"
 #include "../rct2/addresses.h"
@@ -343,6 +342,20 @@ enum {
 	OBJECTIVE_MONTHLY_FOOD_INCOME
 };
 
+enum {
+	SCENARIO_SELECT_MODE_DIFFICULTY,
+	SCENARIO_SELECT_MODE_ORIGIN,
+};
+
+enum {
+	AUTOSAVE_EVERY_MINUTE,
+	AUTOSAVE_EVERY_5MINUTES,
+	AUTOSAVE_EVERY_15MINUTES,
+	AUTOSAVE_EVERY_30MINUTES,
+	AUTOSAVE_EVERY_HOUR,
+	AUTOSAVE_NEVER
+};
+
 #define AUTOSAVE_PAUSE 0
 
 extern const rct_string_id ScenarioCategoryStringIds[SCENARIO_CATEGORY_COUNT];
@@ -368,7 +381,7 @@ extern rct_s6_info gS6Info;
 extern char gScenarioName[64];
 extern char gScenarioDetails[256];
 extern char gScenarioCompletedBy[32];
-extern char gScenarioSavePath[MAX_PATH];
+extern char gScenarioSavePath[260];
 extern char gScenarioExpansionPacks[3256];
 extern sint32 gFirstTimeSave;
 extern uint16 gSavedAge;

@@ -18,7 +18,7 @@
  * 'Custom currency configuration' window definition and logic.
  */
 
-#include "../config.h"
+#include "../config/Config.h"
 #include "../localisation/localisation.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"

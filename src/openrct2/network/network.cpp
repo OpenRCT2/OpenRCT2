@@ -51,7 +51,7 @@ sint32 _pickup_peep_old_x = SPRITE_LOCATION_NULL;
 #include "../rct2/S6Exporter.h"
 
 extern "C" {
-#include "../config.h"
+#include "../config/Config.h"
 #include "../game.h"
 #include "../interface/chat.h"
 #include "../interface/window.h"
@@ -1629,7 +1629,7 @@ void Network::Server_Handle_AUTH(NetworkConnection& connection, NetworkPacket& p
 			}
 		}
 
-		if (gConfigNetwork.maxplayers <= player_list.size()) {
+		if ((size_t)gConfigNetwork.maxplayers <= player_list.size()) {
 			connection.AuthStatus = NETWORK_AUTH_FULL;
 		} else
 		if (connection.AuthStatus == NETWORK_AUTH_VERIFIED) {

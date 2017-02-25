@@ -15,7 +15,7 @@
 #pragma endregion
 
 #include <time.h>
-#include "../config.h"
+#include "../config/Config.h"
 #include "../editor.h"
 #include "../game.h"
 #include "../interface/themes.h"

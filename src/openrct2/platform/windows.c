@@ -31,7 +31,7 @@
 #include <SDL_syswm.h>
 #include <sys/stat.h>
 
-#include "../config.h"
+#include "../config/Config.h"
 #include "../localisation/language.h"
 #include "../OpenRCT2.h"
 #include "../util/util.h"
@@ -694,7 +694,7 @@ bool platform_open_common_file_dialog(utf8 *outFilename, file_dialog_desc *desc,
 	return result;
 }
 
-utf8 *platform_open_directory_browser(utf8 *title)
+utf8 *platform_open_directory_browser(const utf8 *title)
 {
 	BROWSEINFOW bi;
 	wchar_t pszBuffer[MAX_PATH], wctitle[256];

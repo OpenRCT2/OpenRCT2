@@ -16,7 +16,7 @@
 
 #include "../audio/audio.h"
 #include "../audio/AudioMixer.h"
-#include "../config.h"
+#include "../config/Config.h"
 #include "../editor.h"
 #include "../game.h"
 #include "../interface/viewport.h"

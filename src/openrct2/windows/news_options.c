@@ -14,7 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../config.h"
+#include "../config/Config.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
 #include "../localisation/localisation.h"
@@ -33,23 +33,23 @@ typedef struct notification_def {
 } notification_def;
 
 static const notification_def NewsItemOptionDefinitions[] = {
-	{ NOTIFICATION_CATEGORY_PARK,	STR_NOTIFICATION_PARK_AWARD,						offsetof(notification_configuration, park_award)						},
-	{ NOTIFICATION_CATEGORY_PARK,	STR_NOTIFICATION_PARK_MARKETING_CAMPAIGN_FINISHED,	offsetof(notification_configuration, park_marketing_campaign_finished)	},
-	{ NOTIFICATION_CATEGORY_PARK,	STR_NOTIFICATION_PARK_WARNINGS,						offsetof(notification_configuration, park_warnings)						},
-	{ NOTIFICATION_CATEGORY_PARK,	STR_NOTIFICATION_PARK_RATING_WARNINGS,				offsetof(notification_configuration, park_rating_warnings)				},
-	{ NOTIFICATION_CATEGORY_RIDE,	STR_NOTIFICATION_RIDE_BROKEN_DOWN,					offsetof(notification_configuration, ride_broken_down)					},
-	{ NOTIFICATION_CATEGORY_RIDE,	STR_NOTIFICATION_RIDE_CRASHED,						offsetof(notification_configuration, ride_crashed)						},
-	{ NOTIFICATION_CATEGORY_RIDE,	STR_NOTIFICATION_RIDE_WARNINGS,						offsetof(notification_configuration, ride_warnings)						},
-	{ NOTIFICATION_CATEGORY_RIDE,	STR_NOTIFICATION_RIDE_RESEARCHED,					offsetof(notification_configuration, ride_researched)					},
-	{ NOTIFICATION_CATEGORY_GUEST,	STR_NOTIFICATION_GUEST_WARNINGS,					offsetof(notification_configuration, guest_warnings)					},
-	{ NOTIFICATION_CATEGORY_GUEST,	STR_NOTIFICATION_GUEST_LOST,						offsetof(notification_configuration, guest_lost)						},
-	{ NOTIFICATION_CATEGORY_GUEST,	STR_NOTIFICATION_GUEST_LEFT_PARK,					offsetof(notification_configuration, guest_left_park)					},
-	{ NOTIFICATION_CATEGORY_GUEST,	STR_NOTIFICATION_GUEST_QUEUING_FOR_RIDE,			offsetof(notification_configuration, guest_queuing_for_ride)			},
-	{ NOTIFICATION_CATEGORY_GUEST,	STR_NOTIFICATION_GUEST_ON_RIDE,						offsetof(notification_configuration, guest_on_ride)						},
-	{ NOTIFICATION_CATEGORY_GUEST,	STR_NOTIFICATION_GUEST_LEFT_RIDE,					offsetof(notification_configuration, guest_left_ride)					},
-	{ NOTIFICATION_CATEGORY_GUEST,	STR_NOTIFICATION_GUEST_BOUGHT_ITEM,					offsetof(notification_configuration, guest_bought_item)					},
-	{ NOTIFICATION_CATEGORY_GUEST,	STR_NOTIFICATION_GUEST_USED_FACILITY,				offsetof(notification_configuration, guest_used_facility)				},
-	{ NOTIFICATION_CATEGORY_GUEST,	STR_NOTIFICATION_GUEST_DIED,						offsetof(notification_configuration, guest_died)						},
+	{ NOTIFICATION_CATEGORY_PARK,	STR_NOTIFICATION_PARK_AWARD,						offsetof(NotificationConfiguration, park_award)						    },
+	{ NOTIFICATION_CATEGORY_PARK,	STR_NOTIFICATION_PARK_MARKETING_CAMPAIGN_FINISHED,	offsetof(NotificationConfiguration, park_marketing_campaign_finished)	},
+	{ NOTIFICATION_CATEGORY_PARK,	STR_NOTIFICATION_PARK_WARNINGS,						offsetof(NotificationConfiguration, park_warnings)						},
+	{ NOTIFICATION_CATEGORY_PARK,	STR_NOTIFICATION_PARK_RATING_WARNINGS,				offsetof(NotificationConfiguration, park_rating_warnings)				},
+	{ NOTIFICATION_CATEGORY_RIDE,	STR_NOTIFICATION_RIDE_BROKEN_DOWN,					offsetof(NotificationConfiguration, ride_broken_down)					},
+	{ NOTIFICATION_CATEGORY_RIDE,	STR_NOTIFICATION_RIDE_CRASHED,						offsetof(NotificationConfiguration, ride_crashed)						},
+	{ NOTIFICATION_CATEGORY_RIDE,	STR_NOTIFICATION_RIDE_WARNINGS,						offsetof(NotificationConfiguration, ride_warnings)						},
+	{ NOTIFICATION_CATEGORY_RIDE,	STR_NOTIFICATION_RIDE_RESEARCHED,					offsetof(NotificationConfiguration, ride_researched)					},
+	{ NOTIFICATION_CATEGORY_GUEST,	STR_NOTIFICATION_GUEST_WARNINGS,					offsetof(NotificationConfiguration, guest_warnings)					    },
+	{ NOTIFICATION_CATEGORY_GUEST,	STR_NOTIFICATION_GUEST_LOST,						offsetof(NotificationConfiguration, guest_lost)						    },
+	{ NOTIFICATION_CATEGORY_GUEST,	STR_NOTIFICATION_GUEST_LEFT_PARK,					offsetof(NotificationConfiguration, guest_left_park)					},
+	{ NOTIFICATION_CATEGORY_GUEST,	STR_NOTIFICATION_GUEST_QUEUING_FOR_RIDE,			offsetof(NotificationConfiguration, guest_queuing_for_ride)			    },
+	{ NOTIFICATION_CATEGORY_GUEST,	STR_NOTIFICATION_GUEST_ON_RIDE,						offsetof(NotificationConfiguration, guest_on_ride)						},
+	{ NOTIFICATION_CATEGORY_GUEST,	STR_NOTIFICATION_GUEST_LEFT_RIDE,					offsetof(NotificationConfiguration, guest_left_ride)					},
+	{ NOTIFICATION_CATEGORY_GUEST,	STR_NOTIFICATION_GUEST_BOUGHT_ITEM,					offsetof(NotificationConfiguration, guest_bought_item)					},
+	{ NOTIFICATION_CATEGORY_GUEST,	STR_NOTIFICATION_GUEST_USED_FACILITY,				offsetof(NotificationConfiguration, guest_used_facility)				},
+	{ NOTIFICATION_CATEGORY_GUEST,	STR_NOTIFICATION_GUEST_DIED,						offsetof(NotificationConfiguration, guest_died)						    },
 };
 
 enum WINDOW_NEWS_WIDGET_IDX {

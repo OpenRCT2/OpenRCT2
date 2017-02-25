@@ -18,7 +18,7 @@
 #include "../audio/AudioMixer.h"
 #include "../cheats.h"
 #include "../common.h"
-#include "../config.h"
+#include "../config/Config.h"
 #include "../editor.h"
 #include "../game.h"
 #include "../input.h"

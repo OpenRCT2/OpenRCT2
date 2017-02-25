@@ -195,7 +195,7 @@ void platform_get_user_directory(utf8 *outPath, const utf8 *subDirectory, size_t
 utf8* platform_get_username();
 void platform_show_messagebox(const utf8 * message);
 bool platform_open_common_file_dialog(utf8 *outFilename, file_dialog_desc *desc, size_t outSize);
-utf8 *platform_open_directory_browser(utf8 *title);
+utf8 *platform_open_directory_browser(const utf8 *title);
 uint8 platform_get_locale_currency();
 uint8 platform_get_currency_value(const char *currencyCode);
 uint16 platform_get_locale_language();

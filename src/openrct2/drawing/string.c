@@ -17,6 +17,7 @@
 #include "../interface/colour.h"
 #include "../interface/viewport.h"
 #include "../localisation/localisation.h"
+#include "../platform/platform.h"
 #include "../sprites.h"
 #include "../util/util.h"
 

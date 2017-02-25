@@ -24,7 +24,7 @@
 
 extern "C"
 {
-	#include "../config.h"
+	#include "../config/Config.h"
 	#include "../interface/viewport.h"
 	#include "../intro.h"
 	#include "../localisation/language.h"

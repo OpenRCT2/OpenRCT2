@@ -14,10 +14,11 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../localisation/localisation.h"
 #include "../input.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
+#include "../localisation/localisation.h"
+#include "../platform/platform.h"
 
 static rct_widget window_map_tooltip_widgets[] = {
 	{ WWT_IMGBTN, 0, 0, 199, 0, 29, 0xFFFFFFFF, STR_NONE },

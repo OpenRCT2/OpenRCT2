@@ -244,6 +244,10 @@
 		D41B741D1C210A7A0080A7B9 /* libiconv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D41B741C1C210A7A0080A7B9 /* libiconv.tbd */; };
 		D41B74731C2125E50080A7B9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D41B74721C2125E50080A7B9 /* Assets.xcassets */; };
 		D429FF421E36ABCD009342A6 /* tile_inspector.c in Sources */ = {isa = PBXBuildFile; fileRef = D429FF401E36ABCD009342A6 /* tile_inspector.c */; };
+		D42E337D1E5C27D600D630AF /* Config.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D42E33751E5C27D600D630AF /* Config.cpp */; };
+		D42E337E1E5C27D600D630AF /* IniReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D42E33781E5C27D600D630AF /* IniReader.cpp */; };
+		D42E337F1E5C27D600D630AF /* IniWriter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D42E337A1E5C27D600D630AF /* IniWriter.cpp */; };
+		D42E33801E5C27D600D630AF /* KeyboardShortcuts.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D42E337C1E5C27D600D630AF /* KeyboardShortcuts.cpp */; };
 		D433A5001E4A861F00D9A6DF /* SawyerChunk.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D433A4FA1E4A861F00D9A6DF /* SawyerChunk.cpp */; };
 		D433A5011E4A861F00D9A6DF /* SawyerChunkReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D433A4FC1E4A861F00D9A6DF /* SawyerChunkReader.cpp */; };
 		D433A5021E4A861F00D9A6DF /* SawyerChunkWriter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D433A4FE1E4A861F00D9A6DF /* SawyerChunkWriter.cpp */; };
@@ -266,7 +270,6 @@
 		D44271FB1CC81B3200D84D28 /* ScreenshotCommands.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D44270DA1CC81B3200D84D28 /* ScreenshotCommands.cpp */; };
 		D44271FC1CC81B3200D84D28 /* SpriteCommands.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D44270DB1CC81B3200D84D28 /* SpriteCommands.cpp */; };
 		D44271FD1CC81B3200D84D28 /* cmdline_sprite.c in Sources */ = {isa = PBXBuildFile; fileRef = D44270DC1CC81B3200D84D28 /* cmdline_sprite.c */; };
-		D44271FE1CC81B3200D84D28 /* config.c in Sources */ = {isa = PBXBuildFile; fileRef = D44270DE1CC81B3200D84D28 /* config.c */; };
 		D44271FF1CC81B3200D84D28 /* Console.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D44270E11CC81B3200D84D28 /* Console.cpp */; };
 		D44272001CC81B3200D84D28 /* Diagnostics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D44270E31CC81B3200D84D28 /* Diagnostics.cpp */; };
 		D44272011CC81B3200D84D28 /* Guard.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D44270E71CC81B3200D84D28 /* Guard.cpp */; };
@@ -719,6 +722,14 @@
 		D429FF3F1E36ABB3009342A6 /* tile_inspector.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = tile_inspector.h; sourceTree = "<group>"; };
 		D429FF401E36ABCD009342A6 /* tile_inspector.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = tile_inspector.c; sourceTree = "<group>"; };
 		D429FF411E36ABCD009342A6 /* tile_inspector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tile_inspector.h; sourceTree = "<group>"; };
+		D42E33751E5C27D600D630AF /* Config.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Config.cpp; sourceTree = "<group>"; };
+		D42E33761E5C27D600D630AF /* Config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Config.h; sourceTree = "<group>"; };
+		D42E33771E5C27D600D630AF /* ConfigEnum.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConfigEnum.h; sourceTree = "<group>"; };
+		D42E33781E5C27D600D630AF /* IniReader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = IniReader.cpp; sourceTree = "<group>"; };
+		D42E33791E5C27D600D630AF /* IniReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IniReader.h; sourceTree = "<group>"; };
+		D42E337A1E5C27D600D630AF /* IniWriter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = IniWriter.cpp; sourceTree = "<group>"; };
+		D42E337B1E5C27D600D630AF /* IniWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IniWriter.h; sourceTree = "<group>"; };
+		D42E337C1E5C27D600D630AF /* KeyboardShortcuts.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KeyboardShortcuts.cpp; sourceTree = "<group>"; };
 		D433A4FA1E4A861F00D9A6DF /* SawyerChunk.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SawyerChunk.cpp; path = rct12/SawyerChunk.cpp; sourceTree = "<group>"; };
 		D433A4FB1E4A861F00D9A6DF /* SawyerChunk.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SawyerChunk.h; path = rct12/SawyerChunk.h; sourceTree = "<group>"; };
 		D433A4FC1E4A861F00D9A6DF /* SawyerChunkReader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SawyerChunkReader.cpp; path = rct12/SawyerChunkReader.cpp; sourceTree = "<group>"; };
@@ -761,8 +772,6 @@
 		D44270DB1CC81B3200D84D28 /* SpriteCommands.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SpriteCommands.cpp; sourceTree = "<group>"; usesTabs = 0; };
 		D44270DC1CC81B3200D84D28 /* cmdline_sprite.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = cmdline_sprite.c; sourceTree = "<group>"; };
 		D44270DD1CC81B3200D84D28 /* common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = common.h; sourceTree = "<group>"; };
-		D44270DE1CC81B3200D84D28 /* config.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = config.c; sourceTree = "<group>"; };
-		D44270DF1CC81B3200D84D28 /* config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = config.h; sourceTree = "<group>"; };
 		D44270E11CC81B3200D84D28 /* Console.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Console.cpp; sourceTree = "<group>"; usesTabs = 0; };
 		D44270E21CC81B3200D84D28 /* Console.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Console.hpp; sourceTree = "<group>"; usesTabs = 0; };
 		D44270E31CC81B3200D84D28 /* Diagnostics.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Diagnostics.cpp; sourceTree = "<group>"; usesTabs = 0; };
@@ -1536,6 +1545,7 @@
 			children = (
 				D44270CF1CC81B3200D84D28 /* audio */,
 				D44270D61CC81B3200D84D28 /* cmdline */,
+				D42E33741E5C27D600D630AF /* config */,
 				D44270E01CC81B3200D84D28 /* core */,
 				D44271001CC81B3200D84D28 /* drawing */,
 				D44271181CC81B3200D84D28 /* interface */,
@@ -1559,8 +1569,6 @@
 				D44270D51CC81B3200D84D28 /* cheats.h */,
 				D44270DC1CC81B3200D84D28 /* cmdline_sprite.c */,
 				D44270DD1CC81B3200D84D28 /* common.h */,
-				D44270DE1CC81B3200D84D28 /* config.c */,
-				D44270DF1CC81B3200D84D28 /* config.h */,
 				D44270FE1CC81B3200D84D28 /* diagnostic.c */,
 				D44270FF1CC81B3200D84D28 /* diagnostic.h */,
 				D442710E1CC81B3200D84D28 /* editor.c */,
@@ -1605,6 +1613,21 @@
 			);
 			name = Libraries;
 			path = libxc;
+			sourceTree = "<group>";
+		};
+		D42E33741E5C27D600D630AF /* config */ = {
+			isa = PBXGroup;
+			children = (
+				D42E33751E5C27D600D630AF /* Config.cpp */,
+				D42E33761E5C27D600D630AF /* Config.h */,
+				D42E33771E5C27D600D630AF /* ConfigEnum.h */,
+				D42E33781E5C27D600D630AF /* IniReader.cpp */,
+				D42E33791E5C27D600D630AF /* IniReader.h */,
+				D42E337A1E5C27D600D630AF /* IniWriter.cpp */,
+				D42E337B1E5C27D600D630AF /* IniWriter.h */,
+				D42E337C1E5C27D600D630AF /* KeyboardShortcuts.cpp */,
+			);
+			path = config;
 			sourceTree = "<group>";
 		};
 		D43407BF1D0E14BE00C2B3D4 /* opengl */ = {
@@ -2723,6 +2746,7 @@
 				D44272001CC81B3200D84D28 /* Diagnostics.cpp in Sources */,
 				D464FEF11D31A6AA00CBABAC /* SmallSceneryObject.cpp in Sources */,
 				D44272471CC81B3200D84D28 /* ride_ratings.c in Sources */,
+				D42E337D1E5C27D600D630AF /* Config.cpp in Sources */,
 				D44272721CC81B3200D84D28 /* new_campaign.c in Sources */,
 				C686F93A1CDBC3B7009F9BFC /* spiral_slide.c in Sources */,
 				C686F9421CDBC3B7009F9BFC /* magic_carpet.c in Sources */,
@@ -2788,6 +2812,7 @@
 				D49766831D03B9FE002222CD /* SoftwareDrawingEngine.cpp in Sources */,
 				C6E96E121E04067A0076A04F /* File.cpp in Sources */,
 				D464FEF21D31A6AA00CBABAC /* StexObject.cpp in Sources */,
+				D42E33801E5C27D600D630AF /* KeyboardShortcuts.cpp in Sources */,
 				C6E96E311E04072F0076A04F /* TitleSequenceManager.cpp in Sources */,
 				C686F9331CDBC3B7009F9BFC /* maze.c in Sources */,
 				C686F9241CDBC3B7009F9BFC /* suspended_swinging_coaster.c in Sources */,
@@ -2806,12 +2831,14 @@
 				D44272571CC81B3200D84D28 /* clear_scenery.c in Sources */,
 				D442727D1CC81B3200D84D28 /* ride_list.c in Sources */,
 				C686F94E1CDBC3B7009F9BFC /* boat_ride.c in Sources */,
+				D42E337F1E5C27D600D630AF /* IniWriter.cpp in Sources */,
 				D44272891CC81B3200D84D28 /* themes.c in Sources */,
 				C686F9531CDBC3B7009F9BFC /* splash_boats.c in Sources */,
 				C686F9441CDBC3B7009F9BFC /* pirate_ship.c in Sources */,
 				652747EC1E41CE1B000F36FD /* SawyerEncoding.cpp in Sources */,
 				D44272791CC81B3200D84D28 /* publisher_credits.c in Sources */,
 				C686F91E1CDBC3B7009F9BFC /* reverse_freefall_coaster.c in Sources */,
+				D42E337E1E5C27D600D630AF /* IniReader.cpp in Sources */,
 				D442723B1CC81B3200D84D28 /* crash.cpp in Sources */,
 				C650B21A1CCABBDD00B4D91C /* tables.cpp in Sources */,
 				D44272291CC81B3200D84D28 /* LanguagePack.cpp in Sources */,
@@ -3008,7 +3035,6 @@
 				C686F9111CDBC3B7009F9BFC /* heartline_twister_coaster.c in Sources */,
 				C6834A111DFDE8E300CE933A /* interop.c in Sources */,
 				C686F9231CDBC3B7009F9BFC /* steeplechase.c in Sources */,
-				D44271FE1CC81B3200D84D28 /* config.c in Sources */,
 				D44272871CC81B3200D84D28 /* staff_list.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -19,7 +19,7 @@ extern "C"
     #include "../interface/window.h"
     #include "../world/climate.h"
     #include "drawing.h"
-    #include "../config.h"
+    #include "../config/Config.h"
 }
 
 #include "IDrawingEngine.h"

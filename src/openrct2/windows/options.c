@@ -24,8 +24,9 @@
 
 #include "../audio/audio.h"
 #include "../audio/AudioMixer.h"
-#include "../config.h"
+#include "../config/Config.h"
 #include "../drawing/drawing.h"
+#include "../drawing/IDrawingEngine.h"
 #include "../interface/themes.h"
 #include "../interface/viewport.h"
 #include "../interface/widget.h"

@@ -17,7 +17,7 @@
 #include "map_element.h"
 #include "../paint.h"
 #include "../supports.h"
-#include "../../config.h"
+#include "../../config/Config.h"
 #include "../../game.h"
 #include "../../interface/viewport.h"
 #include "../../localisation/localisation.h"

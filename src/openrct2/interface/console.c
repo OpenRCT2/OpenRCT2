@@ -17,7 +17,7 @@
 #include <stdarg.h>
 #include <SDL_scancode.h>
 
-#include "../config.h"
+#include "../config/Config.h"
 #include "../drawing/drawing.h"
 #include "../game.h"
 #include "../input.h"

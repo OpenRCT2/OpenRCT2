@@ -14,7 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../config.h"
+#include "../config/Config.h"
 #include "../interface/window.h"
 #include "../interface/widget.h"
 #include "../localisation/localisation.h"

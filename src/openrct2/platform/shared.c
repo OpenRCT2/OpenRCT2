@@ -16,8 +16,9 @@
 
 #include "../audio/audio.h"
 #include "../audio/AudioMixer.h"
-#include "../config.h"
+#include "../config/Config.h"
 #include "../drawing/drawing.h"
+#include "../drawing/IDrawingEngine.h"
 #include "../drawing/lightfx.h"
 #include "../editor.h"
 #include "../game.h"

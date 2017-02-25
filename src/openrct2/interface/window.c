@@ -29,7 +29,7 @@
 #include "viewport.h"
 #include "widget.h"
 #include "window.h"
-#include "../config.h"
+#include "../config/Config.h"
 
 #define RCT2_FIRST_WINDOW		(g_window_list)
 #define RCT2_LAST_WINDOW		(gWindowNextSlot - 1)

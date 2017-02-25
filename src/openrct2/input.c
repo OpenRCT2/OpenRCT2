@@ -16,7 +16,7 @@
 
 #include <SDL_keycode.h>
 #include "audio/audio.h"
-#include "config.h"
+#include "config/Config.h"
 #include "game.h"
 #include "input.h"
 #include "interface/chat.h"

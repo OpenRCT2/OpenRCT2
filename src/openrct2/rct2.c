@@ -19,7 +19,7 @@
 #include <time.h>
 #include "audio/audio.h"
 #include "audio/AudioMixer.h"
-#include "config.h"
+#include "config/Config.h"
 #include "drawing/drawing.h"
 #include "drawing/lightfx.h"
 #include "editor.h"
@@ -27,6 +27,7 @@
 #include "input.h"
 #include "interface/chat.h"
 #include "interface/console.h"
+#include "interface/keyboard_shortcut.h"
 #include "interface/viewport.h"
 #include "intro.h"
 #include "localisation/date.h"

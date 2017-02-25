@@ -14,7 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
-#include <openrct2/config.h>
+#include <openrct2/config/Config.h>
 #include <openrct2/object.h>
 #include <openrct2/interface/colour.h>
 #include <openrct2/interface/viewport.h>
@@ -72,8 +72,7 @@ int object_entry_group_counts[] = {
 	1        // scenario text
 };
 
-
-general_configuration gConfigGeneral;
+GeneralConfiguration gConfigGeneral;
 uint16 gMapSelectFlags;
 uint16 gMapSelectType;
 rct_xy16 gMapSelectPositionA;

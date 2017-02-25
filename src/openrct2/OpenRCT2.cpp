@@ -35,7 +35,7 @@
 extern "C"
 {
     #include "audio/audio.h"
-    #include "config.h"
+    #include "config/Config.h"
     #include "editor.h"
     #include "game.h"
     #include "interface/chat.h"

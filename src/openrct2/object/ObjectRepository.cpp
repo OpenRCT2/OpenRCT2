@@ -43,7 +43,7 @@
 
 extern "C"
 {
-    #include "../config.h"
+    #include "../config/Config.h"
     #include "../localisation/localisation.h"
     #include "../object.h"
     #include "../object_list.h"
