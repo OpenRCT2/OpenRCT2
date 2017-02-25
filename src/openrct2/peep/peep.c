@@ -35,6 +35,7 @@
 #include "../sprites.h"
 #include "../util/util.h"
 #include "../world/Climate.h"
+#include "../world/entrance.h"
 #include "../world/footpath.h"
 #include "../world/map.h"
 #include "../world/scenery.h"

@@ -29,4 +29,22 @@ typedef struct rct_entrance_type {
 assert_struct_size(rct_entrance_type, 8);
 #pragma pack(pop)
 
+void game_command_remove_park_entrance(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *edx, sint32 *esi, sint32 *edi, sint32 *ebp);
+
+typedef struct rct_xyz16;
+typedef struct rct_xyzd16;
+
+extern bool gParkEntranceGhostExists;
+extern rct_xyz16 gParkEntranceGhostPosition;
+extern uint8 gParkEntranceGhostDirection;
+extern money32 gParkEntranceGhostPrice;
+
+#define MAX_PARK_ENTRANCES 4
+
+extern rct_xyzd16 gParkEntrances[MAX_PARK_ENTRANCES];
+
+void park_entrance_ghost();
+money32 park_entrance_place_ghost(sint32 x, sint32 y, sint32 z, sint32 direction);
+void reset_park_entrance();
+
 #endif

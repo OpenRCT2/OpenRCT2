@@ -55,6 +55,7 @@ extern "C"
     #include "../world/footpath.h"
     #include "../world/map_animation.h"
     #include "../world/park.h"
+    #include "../world/entrance.h"
     #include "../world/scenery.h"
 }
 

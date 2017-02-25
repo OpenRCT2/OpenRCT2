@@ -24,6 +24,7 @@
 #include "../network/network.h"
 #include "../scenario/scenario.h"
 #include "../util/util.h"
+#include "../world/entrance.h"
 #include "../world/footpath.h"
 #include "../world/scenery.h"
 #include "../world/sprite.h"

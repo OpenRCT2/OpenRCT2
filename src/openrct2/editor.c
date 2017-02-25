@@ -37,6 +37,7 @@
 #include "world/banner.h"
 #include "world/Climate.h"
 #include "world/footpath.h"
+#include "world/entrance.h"
 #include "world/map.h"
 #include "world/park.h"
 #include "world/scenery.h"
