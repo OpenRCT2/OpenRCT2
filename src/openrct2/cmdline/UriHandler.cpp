@@ -18,14 +18,11 @@
 #include "../core/Memory.hpp"
 #include "../core/String.hpp"
 #include "../network/network.h"
+#include "../OpenRCT2.h"
 #include "CommandLine.hpp"
 
-extern "C"
-{
-    #include "../openrct2.h"
-}
-
-static exitcode_t HandleUri(const utf8 * uri);
+static exitcode_t HandleUri(const std::string &uri);
+static bool TryParseHostnamePort(const std::string &hostnamePort, std::string * outHostname, sint32 * outPort, sint32 defaultPort);
 
 exitcode_t CommandLine::HandleCommandUri(CommandLineArgEnumerator * enumerator)
 {
@@ -43,36 +40,22 @@ exitcode_t CommandLine::HandleCommandUri(CommandLineArgEnumerator * enumerator)
     return EXITCODE_FAIL;
 }
 
-static exitcode_t HandleUri(const utf8 * uri)
+static exitcode_t HandleUri(const std::string &uri)
 {
-    utf8 * * args;
-    size_t numArgs = String::Split(&args, uri, '/');
-    if (numArgs > 0)
+    auto args = String::Split(uri, "/");
+    if (args.size() > 0)
     {
-        utf8 * arg = args[0];
-        if (String::Equals(arg, "join"))
+        std::string arg = args[0];
+        if (arg == "join")
         {
-            if (numArgs > 1)
+            std::string hostname;
+            sint32 port;
+            if (args.size() > 1 && TryParseHostnamePort(args[1], &hostname, &port, NETWORK_DEFAULT_PORT))
             {
-                utf8 * hostnamePort = args[1];
-
-                // Argument is in hostname:port format, so we need to split
-                utf8 * hostname = String::Duplicate(hostnamePort);
-                sint32 port = NETWORK_DEFAULT_PORT;
-                size_t colonIndex = String::IndexOf(hostnamePort, ':');
-                if (colonIndex != SIZE_MAX)
-                {
-                    Memory::Free(hostname);
-                    hostname = String::Substring(hostnamePort, 0, colonIndex);
-                    port = atoi(hostnamePort + colonIndex + 1);
-                }
-
                 // Set the network start configuration
                 gNetworkStart = NETWORK_MODE_CLIENT;
-                String::Set(gNetworkStartHost, sizeof(gNetworkStartHost), hostname);
+                String::Set(gNetworkStartHost, sizeof(gNetworkStartHost), hostname.c_str());
                 gNetworkStartPort = port;
-
-                Memory::Free(hostname);
             }
             else
             {
@@ -81,13 +64,28 @@ static exitcode_t HandleUri(const utf8 * uri)
             }
         }
     }
-
-    // Clean up
-    for (size_t i = 0; i < numArgs; i++)
-    {
-        Memory::Free(args[i]);
-    }
-    Memory::FreeArray(args, numArgs);
-
     return EXITCODE_CONTINUE;
+}
+
+static bool TryParseHostnamePort(const std::string &hostnamePort, std::string * outHostname, sint32 * outPort, sint32 defaultPort)
+{
+    try
+    {
+        // Argument is in hostname:port format, so we need to split
+        std::string hostname = hostnamePort;
+        sint32 port = defaultPort;
+        size_t colonIndex = hostnamePort.find_first_of(':');
+        if (colonIndex != std::string::npos)
+        {
+            hostname = hostnamePort.substr(0, colonIndex);
+            port = std::stoi(hostnamePort.substr(colonIndex + 1));
+        }
+        *outPort = port;
+        *outHostname = hostname;
+        return true;
+    }
+    catch (const std::exception &)
+    {
+        return false;
+    }
 }

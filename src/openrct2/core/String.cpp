@@ -354,38 +354,28 @@ namespace String
         return result;
     }
 
-    size_t Split(utf8 * * * values, const utf8 * buffer, utf8 delimiter)
+    std::vector<std::string> Split(const std::string &s, const std::string &delimiter)
     {
-        std::vector<utf8 *> valuesList;
+        std::vector<std::string> results;
         size_t index = 0;
         size_t nextIndex;
         do
         {
-            nextIndex = String::IndexOf(buffer, '/', index);
-            utf8 * value;
-            if (nextIndex == SIZE_MAX)
+            nextIndex = s.find_first_of(delimiter, index);
+            std::string value;
+            if (nextIndex == std::string::npos)
             {
-                value = String::Substring(buffer, index);
+                value = s.substr(index);
             }
             else
             {
-                value = String::Substring(buffer, index, nextIndex - index);
+                value = s.substr(index, nextIndex - index);
             }
-            valuesList.push_back(value);
+            results.push_back(value);
             index = nextIndex + 1;
-        } while (nextIndex != SIZE_MAX);
-
-        *values = nullptr;
-        if (valuesList.size() > 0)
-        {
-            utf8 * * valuesArray = Memory::AllocateArray<utf8 *>(valuesList.size());
-            for (size_t i = 0; i < valuesList.size(); i++)
-            {
-                valuesArray[i] = valuesList[i];
-            }
-            *values = valuesArray;
         }
-        return valuesList.size();
+        while (nextIndex != SIZE_MAX);
+        return results;
     }
 
     utf8 * SkipBOM(utf8 * buffer)

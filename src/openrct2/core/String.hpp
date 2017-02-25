@@ -17,6 +17,7 @@
 #pragma once
 
 #include <string>
+#include <vector>
 #include "../common.h"
 
 namespace String
@@ -79,7 +80,7 @@ namespace String
      * Splits the given string by a delimiter and returns the values as a new string array.
      * @returns the number of values.
      */
-    size_t Split(utf8 * * * values, const utf8 * buffer, utf8 delimiter);
+    std::vector<std::string> Split(const std::string &s, const std::string &delimiter);
 
     utf8 *       SkipBOM(utf8 * buffer);
     const utf8 * SkipBOM(const utf8 * buffer);
