@@ -15,6 +15,7 @@
 #pragma endregion
 
 #include <cwctype>
+#include <stdexcept>
 #include <vector>
 
 extern "C"
@@ -356,25 +357,33 @@ namespace String
 
     std::vector<std::string> Split(const std::string &s, const std::string &delimiter)
     {
-        std::vector<std::string> results;
-        size_t index = 0;
-        size_t nextIndex;
-        do
+        if (delimiter.empty())
         {
-            nextIndex = s.find_first_of(delimiter, index);
-            std::string value;
-            if (nextIndex == std::string::npos)
-            {
-                value = s.substr(index);
-            }
-            else
-            {
-                value = s.substr(index, nextIndex - index);
-            }
-            results.push_back(value);
-            index = nextIndex + 1;
+            throw std::invalid_argument(nameof(delimiter) " can not be empty.");
         }
-        while (nextIndex != SIZE_MAX);
+
+        std::vector<std::string> results;
+        if (!s.empty())
+        {
+            size_t index = 0;
+            size_t nextIndex;
+            do
+            {
+                nextIndex = s.find(delimiter, index);
+                std::string value;
+                if (nextIndex == std::string::npos)
+                {
+                    value = s.substr(index);
+                }
+                else
+                {
+                    value = s.substr(index, nextIndex - index);
+                }
+                results.push_back(value);
+                index = nextIndex + delimiter.size();
+            }
+            while (nextIndex != SIZE_MAX);
+        }
         return results;
     }
 

@@ -47,6 +47,7 @@
   </ItemDefinitionGroup>
   <!-- Files -->
   <ItemGroup>
+    <ClInclude Include="AssertHelpers.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="LanguagePackTest.cpp" />
