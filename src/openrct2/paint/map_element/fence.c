@@ -184,7 +184,7 @@ void fence_paint(uint8 direction, sint32 height, rct_map_element * map_element)
         rct_xyz16 boundsR1, boundsR1_, boundsR2, boundsR2_, boundsL1, boundsL1_;
 		uint8 animationFrame = wall_element_get_animation_frame(map_element);
 		// Add the direction as well
-		animationFrame |= (map_element->properties.wall.animation & 0x80) >> 3;
+		animationFrame |= (map_element->properties.wall.animation & WALL_ANIMATION_FLAG_DIRECTION_BACKWARD) >> 3;
         uint32 imageId;
         switch (direction) {
             case 0:

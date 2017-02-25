@@ -473,7 +473,7 @@ static bool map_animation_invalidate_wall_door(sint32 x, sint32 y, sint32 baseZ)
 		}
 
 		bool invalidate = false;
-		uint8 bl = mapElement->properties.wall.animation & 0x87;
+
 		uint8 currentFrame = wall_element_get_animation_frame(mapElement);
 		if (currentFrame != 0) {
 			if (currentFrame == 15) {
@@ -489,9 +489,7 @@ static bool map_animation_invalidate_wall_door(sint32 x, sint32 y, sint32 baseZ)
 				}
 			}
 		}
-		bl |= currentFrame << 3;
-
-		mapElement->properties.wall.animation = bl;
+		wall_element_set_animation_frame(mapElement, currentFrame);
 		if (invalidate) {
 			sint32 z = mapElement->base_height * 8;
 			map_invalidate_tile_zoom1(x, y, z, z + 32);

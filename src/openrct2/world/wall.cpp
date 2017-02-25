@@ -544,7 +544,7 @@ static money32 WallPlace(uint8 wallType,
 
         if (wallAcrossTrack) 
         {
-            mapElement->properties.wall.animation |= (1 << 2);
+            mapElement->properties.wall.animation |= WALL_ANIMATION_FLAG_ACROSS_TRACK;
         }
 
         mapElement->properties.wall.type = wallType;
@@ -696,6 +696,12 @@ extern "C"
     uint8 wall_element_get_animation_frame(rct_map_element * wallElement)
     {
         return (wallElement->properties.wall.animation >> 3) & 0xF;
+    }
+
+    void wall_element_set_animation_frame(rct_map_element * wallElement, uint8 frameNum)
+    {
+        wallElement->properties.wall.animation &= WALL_ANIMATION_FLAG_ALL_FLAGS;
+        wallElement->properties.wall.animation |= (frameNum >> 3) & 0xF;
     }
 
     uint8 wall_element_get_secondary_colour(rct_map_element * wallElement)
