@@ -150,7 +150,7 @@ void fence_paint(uint8 direction, sint32 height, rct_map_element * map_element)
     uint32 dword_141F718 = imageColourFlags + 0x23800006;
 
     if (sceneryEntry->wall.flags & WALL_SCENERY_HAS_SECONDARY_COLOUR) {
-        uint8 secondaryColour = (map_element->properties.wall.colour_1 >> 5) | ((map_element->flags & 0x60) >> 2);
+        uint8 secondaryColour = wall_element_get_secondary_colour(map_element);
         imageColourFlags |= secondaryColour << 24 | 0x80000000;
     }
 
@@ -182,7 +182,7 @@ void fence_paint(uint8 direction, sint32 height, rct_map_element * map_element)
     if (sceneryEntry->wall.flags & WALL_SCENERY_IS_DOOR) {
         rct_xyz16 offset;
         rct_xyz16 boundsR1, boundsR1_, boundsR2, boundsR2_, boundsL1, boundsL1_;
-		uint8 animationFrame = wall_get_animation_frame(map_element);
+		uint8 animationFrame = wall_element_get_animation_frame(map_element);
 		// Add the direction as well
 		animationFrame |= (map_element->properties.wall.animation & 0x80) >> 3;
         uint32 imageId;
@@ -345,7 +345,7 @@ void fence_paint(uint8 direction, sint32 height, rct_map_element * map_element)
     set_format_arg(0, uint32, 0);
     set_format_arg(4, uint32, 0);
 
-    uint8 secondaryColour = map_element->properties.wall.colour_1 >> 5 | (map_element->flags & 0x60) >> 2;
+    uint8 secondaryColour = wall_element_get_secondary_colour(map_element);
 
     if (dword_141F710 != 0) {
         secondaryColour = COLOUR_GREY;

@@ -339,7 +339,7 @@ static void track_design_save_add_wall(sint32 x, sint32 y, rct_map_element *mapE
 	flags |= mapElement->type & 3;
 	flags |= mapElement->properties.wall.colour_3 << 2;
 
-	uint8 secondaryColour = ((mapElement->flags & 0x60) >> 2) | (mapElement->properties.wall.colour_1 >> 5);
+	uint8 secondaryColour = wall_element_get_secondary_colour(mapElement);
 	uint8 primaryColour = mapElement->properties.wall.colour_1 & 0x1F;
 
 	track_design_save_push_map_element(x, y, mapElement);
@@ -522,7 +522,7 @@ static void track_design_save_remove_wall(sint32 x, sint32 y, rct_map_element *m
 	flags |= mapElement->type & 3;
 	flags |= mapElement->properties.wall.colour_3 << 2;
 
-	uint8 secondaryColour = ((mapElement->flags & 0x60) >> 2) | (mapElement->properties.wall.colour_1 >> 5);
+	uint8 secondaryColour = wall_element_get_secondary_colour(mapElement);
 	uint8 primaryColour = mapElement->properties.wall.colour_1 & 0x1F;
 
 	track_design_save_pop_map_element(x, y, mapElement);

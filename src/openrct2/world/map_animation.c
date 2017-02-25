@@ -474,7 +474,7 @@ static bool map_animation_invalidate_wall_door(sint32 x, sint32 y, sint32 baseZ)
 
 		bool invalidate = false;
 		uint8 bl = mapElement->properties.wall.animation & 0x87;
-		uint8 currentFrame = wall_get_animation_frame(mapElement);
+		uint8 currentFrame = wall_element_get_animation_frame(mapElement);
 		if (currentFrame != 0) {
 			if (currentFrame == 15) {
 				currentFrame = 0;

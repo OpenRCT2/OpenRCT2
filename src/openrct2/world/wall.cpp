@@ -346,7 +346,7 @@ static money32 WallPlace(uint8 wallType,
         }
     }
 
-    uint8 bp = 0;
+    uint8 edgeSlope = 0;
     if (position.z == 0)
     {
         rct_map_element * surfaceElement = map_get_surface_element_at(position.x / 32, position.y / 32);
@@ -357,11 +357,11 @@ static money32 WallPlace(uint8 wallType,
         position.z = surfaceElement->base_height * 8;
 
         uint8 slope = surfaceElement->properties.surface.slope & MAP_ELEMENT_SLOPE_MASK;
-        bp = EdgeSlopes[slope][edge & 3];
-        if (bp & EDGE_SLOPE_ELEVATED) 
+        edgeSlope = EdgeSlopes[slope][edge & 3];
+        if (edgeSlope & EDGE_SLOPE_ELEVATED) 
         {
             position.z += 16;
-            bp &= ~(1 << 0);
+            edgeSlope &= ~EDGE_SLOPE_ELEVATED;
         }
     }
 
@@ -389,7 +389,7 @@ static money32 WallPlace(uint8 wallType,
         return MONEY32_UNDEFINED;
     }
 
-    if (!(bp & 0xC0))
+    if (!(edgeSlope & (EDGE_SLOPE_UPWARDS | EDGE_SLOPE_DOWNWARDS)))
     {
         uint8 newEdge = (edge + 2) & 3;
         uint8 newBaseHeight = surfaceElement->base_height;
@@ -473,7 +473,7 @@ static money32 WallPlace(uint8 wallType,
         rct_banner * banner = &gBanners[bannerIndex];
         if (flags & GAME_COMMAND_FLAG_APPLY)
         {
-            banner->flags |= (1 << 3);
+            banner->flags |= BANNER_FLAG_4;
             banner->type = 0;
             banner->x = position.x / 32;
             banner->y = position.y / 32;
@@ -488,7 +488,7 @@ static money32 WallPlace(uint8 wallType,
     }
 
     uint8 clearanceHeight = position.z / 8;
-    if (bp & (EDGE_SLOPE_UPWARDS | EDGE_SLOPE_DOWNWARDS))
+    if (edgeSlope & (EDGE_SLOPE_UPWARDS | EDGE_SLOPE_DOWNWARDS))
     {
         if (wallEntry->wall.flags & WALL_SCENERY_CANT_BUILD_ON_SLOPE)
         {
@@ -537,11 +537,10 @@ static money32 WallPlace(uint8 wallType,
 
         mapElement->clearance_height = clearanceHeight;
 
-        mapElement->type = bp | edge | MAP_ELEMENT_TYPE_WALL;
+        mapElement->type = edgeSlope | edge | MAP_ELEMENT_TYPE_WALL;
 
         mapElement->properties.wall.colour_1 = primaryColour;
-        mapElement->properties.wall.colour_1 |= (secondaryColour & 7) << 5;
-        mapElement->flags |= (secondaryColour & 0x18) << 2;
+        wall_element_set_secondary_colour(mapElement, secondaryColour);
 
         if (wallAcrossTrack) 
         {
@@ -559,7 +558,7 @@ static money32 WallPlace(uint8 wallType,
             mapElement->properties.wall.colour_3 = tertiaryColour;
         }
 
-        if (flags & (1 << 6))
+        if (flags & GAME_COMMAND_FLAG_GHOST)
         {
             mapElement->flags |= MAP_ELEMENT_FLAG_GHOST;
         }
@@ -679,12 +678,8 @@ static money32 WallSetColour(sint16 x,
     if(flags & GAME_COMMAND_FLAG_APPLY)
     {
         rct_scenery_entry * scenery_entry = get_wall_entry(wallElement->properties.wall.type);
-        wallElement->properties.wall.colour_1 &= 0xE0;
-        wallElement->properties.wall.colour_1 |= primaryColour;
-        wallElement->properties.wall.colour_1 &= 0x1F;
-        wallElement->flags &= 0x9F;
-        wallElement->properties.wall.colour_1 |= (secondaryColour & 0x7) * 32;
-        wallElement->flags |= (secondaryColour & 0x18) * 4;
+        wallElement->properties.wall.colour_1 = primaryColour;
+        wall_element_set_secondary_colour(wallElement, secondaryColour);
 
         if(scenery_entry->wall.flags & WALL_SCENERY_HAS_TERNARY_COLOUR)
         {
@@ -698,10 +693,26 @@ static money32 WallSetColour(sint16 x,
 
 extern "C"
 {
-    uint8 wall_get_animation_frame(rct_map_element * wallElement) {
+    uint8 wall_element_get_animation_frame(rct_map_element * wallElement)
+    {
         return (wallElement->properties.wall.animation >> 3) & 0xF;
     }
-    
+
+    uint8 wall_element_get_secondary_colour(rct_map_element * wallElement)
+    {
+        uint8 secondaryColour = (wallElement->properties.wall.colour_1 & 0xE0) >> 5;
+        secondaryColour |= (wallElement->flags & 0x60) >> 2;
+        return secondaryColour;
+    }
+
+    void wall_element_set_secondary_colour(rct_map_element * wallElement, uint8 secondaryColour)
+    {
+        wallElement->properties.wall.colour_1 &= 0x1F;
+        wallElement->properties.wall.colour_1 |= (secondaryColour & 0x7) << 5;
+        wallElement->flags &= 0x9F;
+        wallElement->flags |= (secondaryColour & 0x18) << 2;
+    }
+
     /**
      *
      *  rct2: 0x006E588E

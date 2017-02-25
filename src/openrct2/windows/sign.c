@@ -448,8 +448,7 @@ void window_sign_small_open(rct_windownumber number){
 	w->frame_no = view_z;
 
 	w->list_information_type = map_element->properties.wall.colour_1 & 0x1F;
-	w->var_492 =
-		((map_element->properties.wall.colour_1 >> 5) | ((map_element->flags & 0x60) >> 2));
+	w->var_492 = wall_element_get_secondary_colour(map_element);
 	w->var_48C = map_element->properties.wall.type;
 
 	view_x += 16;

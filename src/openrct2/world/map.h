@@ -540,6 +540,8 @@ rct_map_element *map_get_track_element_at_with_direction_from_ride(sint32 x, sin
 
 bool map_is_location_at_edge(sint32 x, sint32 y);
 void map_obstruction_set_error_text(rct_map_element *mapElement);
-uint8 wall_get_animation_frame(rct_map_element *fenceElement);
+uint8 wall_element_get_animation_frame(rct_map_element *fenceElement);
+uint8 wall_element_get_secondary_colour(rct_map_element * wallElement);
+void wall_element_set_secondary_colour(rct_map_element * wallElement, uint8 secondaryColour);
 
 #endif

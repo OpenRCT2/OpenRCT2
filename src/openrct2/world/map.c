@@ -4907,7 +4907,7 @@ void game_command_set_sign_style(sint32* eax, sint32* ebx, sint32* ecx, sint32* 
 	if (*ebp == 0) { // small sign
 
 		rct_map_element* map_element = map_get_first_element_at(x / 32, y / 32);
-		bool fence_found = false;
+		bool wall_found = false;
 		do{
 			if (map_element_get_type(map_element) != MAP_ELEMENT_TYPE_WALL)
 				continue;
@@ -4917,11 +4917,11 @@ void game_command_set_sign_style(sint32* eax, sint32* ebx, sint32* ecx, sint32* 
 				continue;
 			if (map_element->properties.wall.banner_index != bannerId)
 				continue;
-			fence_found = true;
+			wall_found = true;
 			break;
 		} while (!map_element_is_last_for_tile(map_element++));
 
-		if (fence_found == false) {
+		if (wall_found == false) {
 			*ebx = MONEY32_UNDEFINED;
 			return;
 		}
@@ -4930,13 +4930,9 @@ void game_command_set_sign_style(sint32* eax, sint32* ebx, sint32* ecx, sint32* 
 			*ebx = 0;
 			return;
 		}
-
-		map_element->flags &= 0x9F;
-		map_element->properties.wall.colour_1 =
-			mainColour |
-			((textColour & 0x7) << 5);
-		map_element->flags |= ((textColour & 0x18) << 2);
-
+		map_element->properties.wall.colour_1 = mainColour;
+		wall_element_set_secondary_colour(map_element, textColour);
+		
 		map_invalidate_tile(x, y, map_element->base_height * 8, map_element->clearance_height * 8);
 	} else { // large sign
 		rct_map_element *mapElement = banner_get_map_element(bannerId);
