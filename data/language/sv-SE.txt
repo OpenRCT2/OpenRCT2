@@ -4298,6 +4298,9 @@ STR_6000    :Skriv in nytt värde
 
 STR_6012    :{COMMA1DP16}
 
+STR_6015    :Lutande
+STR_6016    :Modifiera Ruta
+
 #############
 # Scenarion #
 ################

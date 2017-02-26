@@ -4300,8 +4300,32 @@ STR_5987    :Impossible de créer le dossier
 STR_5988    :{SMALLFONT}{BLACK}Plus de terrain à vendre
 STR_5989    :{SMALLFONT}{BLACK}Plus de droits de construction à vendre
 STR_5990    :{SMALLFONT}{BLACK}Plus de terrain ou de droits de construction à vendre
-
+STR_5991    :Impossible de coller cet (ces) élément(s)...
+STR_5992    :La limite des éléments de la carte a été atteinte
+STR_5993    :{SMALLFONT}{BLACK}Copier élément(s) sélectionné(s)
+STR_5994    :{SMALLFONT}{BLACK}Coller élément(s) copié(s)
+STR_5995    :Turbo
+STR_5996    :Vitesse du turbo
+STR_5997    :Ajouter/définir argent
+STR_5998    :Ajouter argent
+STR_5999    :Définir argent
+STR_6000    :Entrez une nouvelle valeur
+STR_6001    :Activer effets de lumières (expérimental)
+STR_6002    :{SMALLFONT}{BLACK}Les lampes et attractions seront éclairées durant la nuit.{NEWLINE}Nécessite l'utilisation du moteur de rendu matériel.
+STR_6003    :Vue en coupe
+STR_6004    :Vue en coupe
+STR_6005    :Active la vue en coupe
+STR_6006    :{SMALLFONT}{BLACK}La vue en coupe affiche les éléments de la carte qui sont à la hauteur de coupe et en dessous.
+STR_6007    :Hauteur de coupe
+STR_6008    :{SMALLFONT}{BLACK}Cliquez pour permutter entre valeur explicite<->valeur mesurée
+STR_6009    :{SMALLFONT}{BLACK}Sélectionnez hauteur de coupe
+STR_6010    :{COMMA2DP32}m
+STR_6011    :{COMMA1DP16}ft
 STR_6012    :{COMMA1DP16}
+STR_6013    :{SMALLFONT}{BLACK}Les visiteurs paieront que le ticket pour entrer dans le parc et les services.{NEWLINE}Les tickets pour les attractions sont gratuits.
+STR_6014    :{SMALLFONT}{BLACK}Les visiteurs paieront que les tickets pour entrer dans les attractions et les services.{NEWLINE}L'entrée du parc est gratuite.
+STR_6015    :Inclinée
+STR_6016    :Modifier carré
 
 #############
 # Scenarios #
