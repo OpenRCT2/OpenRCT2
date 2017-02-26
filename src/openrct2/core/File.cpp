@@ -14,6 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
+#include <boost/filesystem.hpp>
 #include "Console.hpp"
 #include "File.h"
 #include "FileStream.hpp"
@@ -29,7 +30,7 @@ namespace File
 {
     bool Exists(const std::string &path)
     {
-        return platform_file_exists(path.c_str());
+        return boost::filesystem::exists(path);
     }
 
     bool Copy(const std::string &srcPath, const std::string &dstPath, bool overwrite)

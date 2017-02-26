@@ -45,6 +45,7 @@
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <TreatWarningAsError>true</TreatWarningAsError>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
       <AdditionalOptions>/utf-8 /std:c++latest</AdditionalOptions>
     </ClCompile>
     <Link>
