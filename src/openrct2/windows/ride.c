@@ -1580,7 +1580,7 @@ rct_window *window_ride_main_open(sint32 rideIndex)
 		w->ride.var_482 = -1;
 	}
 
-	if (gInputFlags & INPUT_FLAG_TOOL_ACTIVE) {
+	if (input_test_flag(INPUT_FLAG_TOOL_ACTIVE)) {
 		if (w->classification == gCurrentToolWidget.window_classification &&
 			w->number == gCurrentToolWidget.window_number
 		) {
@@ -1619,7 +1619,7 @@ rct_window *window_ride_open_station(sint32 rideIndex, sint32 stationIndex)
 	}
 
 	if (
-		gInputFlags & INPUT_FLAG_TOOL_ACTIVE &&
+		input_test_flag(INPUT_FLAG_TOOL_ACTIVE) &&
 		gCurrentToolWidget.window_classification == w->classification &&
 		gCurrentToolWidget.window_number == w->number
 	) {
@@ -1693,7 +1693,7 @@ rct_window *window_ride_open_vehicle(rct_vehicle *vehicle)
 		window_invalidate(w);
 
 		if (
-			gInputFlags & INPUT_FLAG_TOOL_ACTIVE &&
+			input_test_flag(INPUT_FLAG_TOOL_ACTIVE) &&
 			gCurrentToolWidget.window_classification == w->classification &&
 			gCurrentToolWidget.window_number == w->number
 		) {
@@ -1759,7 +1759,7 @@ static void window_ride_set_page(rct_window *w, sint32 page)
 {
 	sint32 listen;
 
-	if (gInputFlags & INPUT_FLAG_TOOL_ACTIVE)
+	if (input_test_flag(INPUT_FLAG_TOOL_ACTIVE))
 		if (w->classification == gCurrentToolWidget.window_classification && w->number == gCurrentToolWidget.window_number)
 			tool_cancel();
 
@@ -4118,7 +4118,7 @@ static void window_ride_set_track_colour_scheme(rct_window *w, sint32 x, sint32 
  */
 static void window_ride_colour_close(rct_window *w)
 {
-	if (!(gInputFlags & INPUT_FLAG_TOOL_ACTIVE))
+	if (!(input_test_flag(INPUT_FLAG_TOOL_ACTIVE)))
 		return;
 
 	if (gCurrentToolWidget.window_classification != w->classification)

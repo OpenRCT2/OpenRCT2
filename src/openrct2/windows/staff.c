@@ -378,7 +378,7 @@ void window_staff_disable_widgets(rct_window* w)
  */
 void window_staff_overview_close(rct_window *w)
 {
-	if (gInputFlags & INPUT_FLAG_TOOL_ACTIVE){
+	if (input_test_flag(INPUT_FLAG_TOOL_ACTIVE)) {
 		if (w->classification == gCurrentToolWidget.window_classification &&
 			w->number == gCurrentToolWidget.window_number)
 			tool_cancel();
@@ -391,7 +391,7 @@ void window_staff_overview_close(rct_window *w)
  */
 void window_staff_set_page(rct_window* w, sint32 page)
 {
-	if (gInputFlags & INPUT_FLAG_TOOL_ACTIVE)
+	if (input_test_flag(INPUT_FLAG_TOOL_ACTIVE))
 	{
 		if(w->number == gCurrentToolWidget.window_number &&
 		   w->classification == gCurrentToolWidget.window_classification)

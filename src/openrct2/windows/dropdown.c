@@ -159,9 +159,9 @@ void window_dropdown_show_text_custom_width(sint32 x, sint32 y, sint32 extray, u
 {
 	rct_window* w;
 
-	gInputFlags &= ~(INPUT_FLAG_DROPDOWN_STAY_OPEN | INPUT_FLAG_DROPDOWN_MOUSE_UP);
+	input_set_flag(INPUT_FLAG_DROPDOWN_STAY_OPEN | INPUT_FLAG_DROPDOWN_MOUSE_UP, false);
 	if (flags & DROPDOWN_FLAG_STAY_OPEN)
-		gInputFlags |= INPUT_FLAG_DROPDOWN_STAY_OPEN;
+		input_set_flag(INPUT_FLAG_DROPDOWN_STAY_OPEN, true);
 
 	window_dropdown_close();
 	_dropdown_num_columns = 1;
@@ -204,7 +204,7 @@ void window_dropdown_show_text_custom_width(sint32 x, sint32 y, sint32 extray, u
 	gDropdownItemsChecked = 0;
 	gDropdownIsColour = false;
 	gDropdownDefaultIndex = -1;
-	gInputState = INPUT_STATE_DROPDOWN_ACTIVE;
+	input_set_state(INPUT_STATE_DROPDOWN_ACTIVE);
 }
 
 /**
@@ -226,9 +226,9 @@ void window_dropdown_show_image(sint32 x, sint32 y, sint32 extray, uint8 colour,
 	sint32 width, height;
 	rct_window* w;
 
-	gInputFlags &= ~(INPUT_FLAG_DROPDOWN_STAY_OPEN | INPUT_FLAG_DROPDOWN_MOUSE_UP);
+	input_set_flag(INPUT_FLAG_DROPDOWN_STAY_OPEN | INPUT_FLAG_DROPDOWN_MOUSE_UP, false);
 	if (flags & DROPDOWN_FLAG_STAY_OPEN)
-		gInputFlags |= INPUT_FLAG_DROPDOWN_STAY_OPEN;
+		input_set_flag(INPUT_FLAG_DROPDOWN_STAY_OPEN, true);
 
 	// Close existing dropdown
 	window_dropdown_close();
@@ -272,7 +272,7 @@ void window_dropdown_show_image(sint32 x, sint32 y, sint32 extray, uint8 colour,
 	gDropdownItemsChecked = 0;
 	gDropdownIsColour = false;
 	gDropdownDefaultIndex = -1;
-	gInputState = INPUT_STATE_DROPDOWN_ACTIVE;
+	input_set_state(INPUT_STATE_DROPDOWN_ACTIVE);
 }
 
 void window_dropdown_close()

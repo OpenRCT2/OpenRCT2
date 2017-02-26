@@ -884,8 +884,8 @@ sint32 widget_is_pressed(rct_window *w, sint32 widgetIndex)
 	if (w->pressed_widgets & (1LL << widgetIndex)) {
 		return 1;
 	}
-	if (gInputState == INPUT_STATE_WIDGET_PRESSED || gInputState == INPUT_STATE_DROPDOWN_ACTIVE) {
-		if (!(gInputFlags & INPUT_FLAG_WIDGET_PRESSED)) return 0;
+	if (input_get_state() == INPUT_STATE_WIDGET_PRESSED || input_get_state() == INPUT_STATE_DROPDOWN_ACTIVE) {
+		if (!(input_test_flag(INPUT_FLAG_WIDGET_PRESSED))) return 0;
 		if (gPressedWidget.window_classification != w->classification) return 0;
 		if (gPressedWidget.window_number != w->number) return 0;
 		if (gPressedWidget.widget_index != widgetIndex) return 0;
@@ -904,7 +904,7 @@ sint32 widget_is_highlighted(rct_window *w, sint32 widgetIndex)
 
 sint32 widget_is_active_tool(rct_window *w, sint32 widgetIndex)
 {
-	if (!(gInputFlags & INPUT_FLAG_TOOL_ACTIVE))
+	if (!(input_test_flag(INPUT_FLAG_TOOL_ACTIVE)))
 		return 0;
 	if (gCurrentToolWidget.window_classification != w->classification)
 		return 0;

@@ -487,7 +487,7 @@ static bool window_scenery_is_scenery_tool_active() {
 	sint32 toolWindowClassification = gCurrentToolWidget.window_classification;
 	sint32 toolWidgetIndex = gCurrentToolWidget.widget_index;
 
-	if (gInputFlags & INPUT_FLAG_TOOL_ACTIVE)
+	if (input_test_flag(INPUT_FLAG_TOOL_ACTIVE))
 		if (toolWindowClassification == WC_TOP_TOOLBAR && toolWidgetIndex == 9) // 9 is WIDX_SCENERY
 			return true;
 
@@ -739,7 +739,7 @@ static void window_scenery_update(rct_window *w)
 			if (widgetIndex >= WIDX_SCENERY_TAB_CONTENT_PANEL) {
 				w->scenery.hover_counter++;
 				if (w->scenery.hover_counter < 8) {
-					if (gInputState != INPUT_STATE_SCROLL_LEFT) {
+					if (input_get_state() != INPUT_STATE_SCROLL_LEFT) {
 						w->min_width = WINDOW_SCENERY_WIDTH;
 						w->max_width = WINDOW_SCENERY_WIDTH;
 						w->min_height = WINDOW_SCENERY_HEIGHT;
@@ -759,7 +759,7 @@ static void window_scenery_update(rct_window *w)
 		}
 	} else {
 		w->scenery.hover_counter = 0;
-		if (gInputState != INPUT_STATE_SCROLL_LEFT) {
+		if (input_get_state() != INPUT_STATE_SCROLL_LEFT) {
 			w->min_width = WINDOW_SCENERY_WIDTH;
 			w->max_width = WINDOW_SCENERY_WIDTH;
 			w->min_height = WINDOW_SCENERY_HEIGHT;

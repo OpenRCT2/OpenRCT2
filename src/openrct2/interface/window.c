@@ -312,7 +312,7 @@ static void window_all_wheel_input()
 		return;
 
 	// Check window cursor is over
-	if (!(gInputFlags & INPUT_FLAG_5)) {
+	if (!(input_test_flag(INPUT_FLAG_5))) {
 		rct_window *w = window_find_from_point(gCursorState.x, gCursorState.y);
 		if (w != NULL) {
 			// Check if main window
@@ -1837,7 +1837,7 @@ void window_set_resize(rct_window *w, sint32 minWidth, sint32 minHeight, sint32 
  */
 sint32 tool_set(rct_window *w, sint32 widgetIndex, sint32 tool)
 {
-	if (gInputFlags & INPUT_FLAG_TOOL_ACTIVE) {
+	if (input_test_flag(INPUT_FLAG_TOOL_ACTIVE)) {
 		if (
 			w->classification == gCurrentToolWidget.window_classification &&
 			w->number == gCurrentToolWidget.window_number &&
@@ -1850,8 +1850,8 @@ sint32 tool_set(rct_window *w, sint32 widgetIndex, sint32 tool)
 		}
 	}
 
-	gInputFlags |= INPUT_FLAG_TOOL_ACTIVE;
-	gInputFlags &= ~INPUT_FLAG_6;
+	input_set_flag(INPUT_FLAG_TOOL_ACTIVE, true);
+	input_set_flag(INPUT_FLAG_6, false);
 	gCurrentToolId = tool;
 	gCurrentToolWidget.window_classification = w->classification;
 	gCurrentToolWidget.window_number = w->number;
@@ -1865,8 +1865,8 @@ sint32 tool_set(rct_window *w, sint32 widgetIndex, sint32 tool)
  */
 void tool_cancel()
 {
-	if (gInputFlags & INPUT_FLAG_TOOL_ACTIVE) {
-		gInputFlags &= ~INPUT_FLAG_TOOL_ACTIVE;
+	if (input_test_flag(INPUT_FLAG_TOOL_ACTIVE)) {
+		input_set_flag(INPUT_FLAG_TOOL_ACTIVE, false);
 
 		map_invalidate_selection_rect();
 		map_invalidate_map_selection_tiles();

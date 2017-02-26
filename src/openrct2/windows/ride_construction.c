@@ -1931,7 +1931,7 @@ static void window_ride_construction_entrance_click(rct_window *w)
 		gRideEntranceExitPlaceType = ENTRANCE_TYPE_RIDE_ENTRANCE;
 		gRideEntranceExitPlaceRideIndex = w->number & 0xFF;
 		gRideEntranceExitPlaceStationIndex = 0;
-		gInputFlags |= INPUT_FLAG_6;
+		input_set_flag(INPUT_FLAG_6, true);
 		sub_6C9627();
 		if (_rideConstructionState != RIDE_CONSTRUCTION_STATE_ENTRANCE_EXIT) {
 			gRideEntranceExitPlacePreviousRideConstructionState = _rideConstructionState;
@@ -1955,7 +1955,7 @@ static void window_ride_construction_exit_click(rct_window *w)
 		gRideEntranceExitPlaceType = ENTRANCE_TYPE_RIDE_EXIT;
 		gRideEntranceExitPlaceRideIndex = w->number & 0xFF;
 		gRideEntranceExitPlaceStationIndex = 0;
-		gInputFlags |= INPUT_FLAG_6;
+		input_set_flag(INPUT_FLAG_6, true);
 		sub_6C9627();
 		if (_rideConstructionState != RIDE_CONSTRUCTION_STATE_ENTRANCE_EXIT) {
 			gRideEntranceExitPlacePreviousRideConstructionState = _rideConstructionState;
@@ -2008,7 +2008,7 @@ static void window_ride_construction_update(rct_window *w)
 	case RIDE_CONSTRUCTION_STATE_BACK:
 	case RIDE_CONSTRUCTION_STATE_SELECTED:
 		if (
-			(gInputFlags & INPUT_FLAG_TOOL_ACTIVE) &&
+			(input_test_flag(INPUT_FLAG_TOOL_ACTIVE)) &&
 			gCurrentToolWidget.window_classification == WC_RIDE_CONSTRUCTION
 		) {
 			tool_cancel();
@@ -3885,7 +3885,7 @@ void ride_construction_tooldown_construct(sint32 screenX, sint32 screenY)
 					w = window_find_by_class(WC_RIDE_CONSTRUCTION);
 					if (w != NULL){
 						tool_set(w, 23, 12);
-						gInputFlags |= INPUT_FLAG_6;
+						input_set_flag(INPUT_FLAG_6, true);
 						_trackPlaceCtrlState = false;
 						_trackPlaceShiftState = false;
 					}

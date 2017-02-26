@@ -356,7 +356,7 @@ void news_item_open_subject(sint32 type, sint32 subject)
 			if (window != NULL) {
 				window_invalidate(window);
 				if (!tool_set(window, 9, 0)) {
-					gInputFlags |= INPUT_FLAG_6;
+					input_set_flag(INPUT_FLAG_6, true);
 					window_scenery_open();
 				}
 			}

@@ -1961,7 +1961,7 @@ bool peep_pickup_command(uint32 peepnum, sint32 x, sint32 y, sint32 z, sint32 ac
 				}
 				if (game_command_playerid == network_get_current_player_id()) {
 					// prevent tool_cancel()
-					gInputFlags &= ~INPUT_FLAG_TOOL_ACTIVE;
+					input_set_flag(INPUT_FLAG_TOOL_ACTIVE, false);
 				}
 			}
 			if (apply) {

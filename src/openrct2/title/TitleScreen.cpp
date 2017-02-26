@@ -187,7 +187,7 @@ extern "C"
             // update_rain_animation();
         }
 
-        gInputFlags &= ~INPUT_FLAG_VIEWPORT_SCROLLING;
+        input_set_flag(INPUT_FLAG_VIEWPORT_SCROLLING, false);
 
         window_map_tooltip_update_visibility();
         window_dispatch_update_all();

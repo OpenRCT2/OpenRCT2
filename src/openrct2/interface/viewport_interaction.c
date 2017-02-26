@@ -281,7 +281,7 @@ sint32 viewport_interaction_get_item_right(sint32 x, sint32 y, viewport_interact
 		return info->type;
 	}
 
-	if (!(gInputFlags & INPUT_FLAG_6) || !(gInputFlags & INPUT_FLAG_TOOL_ACTIVE)) {
+	if (!(input_test_flag(INPUT_FLAG_6)) || !(input_test_flag(INPUT_FLAG_TOOL_ACTIVE))) {
 		if (window_find_by_class(WC_RIDE_CONSTRUCTION) == NULL && window_find_by_class(WC_FOOTPATH) == NULL) {
 			return info->type = VIEWPORT_INTERACTION_ITEM_NONE;
 		}

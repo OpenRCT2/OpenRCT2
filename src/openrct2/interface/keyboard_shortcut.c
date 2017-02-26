@@ -157,7 +157,7 @@ static void shortcut_cancel_construction_mode()
 	rct_window *window = window_find_by_class(WC_ERROR);
 	if (window != NULL)
 		window_close(window);
-	else if (gInputFlags & INPUT_FLAG_TOOL_ACTIVE)
+	else if (input_test_flag(INPUT_FLAG_TOOL_ACTIVE))
 		tool_cancel();
 }
 
