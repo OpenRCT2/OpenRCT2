@@ -1769,7 +1769,7 @@ static sint32 ride_modify_entrance_or_exit(rct_map_element *mapElement, sint32 x
 	sub_6C9627();
 	if (
 		_rideConstructionState != RIDE_CONSTRUCTION_STATE_ENTRANCE_EXIT ||
-		!(gInputFlags & INPUT_FLAG_TOOL_ACTIVE) ||
+		!(input_test_flag(INPUT_FLAG_TOOL_ACTIVE)) ||
 		gCurrentToolWidget.window_classification != WC_RIDE_CONSTRUCTION
 	) {
 		// Replace entrance / exit
@@ -1777,7 +1777,7 @@ static sint32 ride_modify_entrance_or_exit(rct_map_element *mapElement, sint32 x
 		gRideEntranceExitPlaceType = entranceType;
 		gRideEntranceExitPlaceRideIndex = rideIndex;
 		gRideEntranceExitPlaceStationIndex = bl;
-		gInputFlags |= INPUT_FLAG_6;
+		input_set_flag(INPUT_FLAG_6, true);
 		if (_rideConstructionState != RIDE_CONSTRUCTION_STATE_ENTRANCE_EXIT) {
 			gRideEntranceExitPlacePreviousRideConstructionState = _rideConstructionState;
 			_rideConstructionState = RIDE_CONSTRUCTION_STATE_ENTRANCE_EXIT;
@@ -1936,7 +1936,7 @@ sint32 sub_6CC3FB(sint32 rideIndex)
 	w = ride_create_or_find_construction_window(rideIndex);
 
 	tool_set(w, 23, 12);
-	gInputFlags |= INPUT_FLAG_6;
+	input_set_flag(INPUT_FLAG_6, true);
 
 	ride = get_ride(_currentRideIndex);
 
@@ -5333,7 +5333,7 @@ static sint32 ride_is_valid_for_open(sint32 rideIndex, sint32 goingToBeOpen, sin
 	// with auto open on.
 	if (WC_RIDE_CONSTRUCTION == gCurrentToolWidget.window_classification &&
 		rideIndex == gCurrentToolWidget.window_number &&
-		(gInputFlags & INPUT_FLAG_TOOL_ACTIVE))
+		(input_test_flag(INPUT_FLAG_TOOL_ACTIVE)))
 		window_close_by_number(WC_RIDE_CONSTRUCTION, rideIndex);
 
 	stationIndex = ride_mode_check_station_present(ride);

@@ -236,7 +236,7 @@ static void window_save_prompt_mouseup(rct_window *w, sint32 widgetIndex)
 				save_game_as();
 			}
 			window_close(w);
-			gLoadSaveCallback = window_save_prompt_callback;
+			window_loadsave_set_loadsave_callback(window_save_prompt_callback);
 			break;
 		case WIDX_DONT_SAVE:
 			game_load_or_quit_no_save_prompt();

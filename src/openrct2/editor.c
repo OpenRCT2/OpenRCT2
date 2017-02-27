@@ -108,7 +108,7 @@ void editor_convert_save_to_scenario()
 {
 	tool_cancel();
 	window_loadsave_open(LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME, NULL);
-	gLoadSaveCallback = editor_convert_save_to_scenario_callback;
+	window_loadsave_set_loadsave_callback(editor_convert_save_to_scenario_callback);
 }
 
 static void editor_convert_save_to_scenario_callback(sint32 result, const utf8 * path)

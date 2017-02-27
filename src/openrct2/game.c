@@ -311,11 +311,11 @@ void game_update()
 		if (gGameSpeed > 1)
 			continue;
 
-		if (gInputState == INPUT_STATE_RESET ||
-			gInputState == INPUT_STATE_NORMAL
+		if (input_get_state() == INPUT_STATE_RESET ||
+			input_get_state() == INPUT_STATE_NORMAL
 		) {
-			if (gInputFlags & INPUT_FLAG_VIEWPORT_SCROLLING) {
-				gInputFlags &= ~INPUT_FLAG_VIEWPORT_SCROLLING;
+			if (input_test_flag(INPUT_FLAG_VIEWPORT_SCROLLING)) {
+				input_set_flag(INPUT_FLAG_VIEWPORT_SCROLLING, false);
 				break;
 			}
 		} else {
@@ -335,7 +335,7 @@ void game_update()
 
 	gGameCommandNestLevel = 0;
 
-	gInputFlags &= ~INPUT_FLAG_VIEWPORT_SCROLLING;
+	input_set_flag(INPUT_FLAG_VIEWPORT_SCROLLING, false);
 
 	// the flickering frequency is reduced by 4, compared to the original
 	// it was done due to inability to reproduce original frequency
@@ -1129,14 +1129,14 @@ void game_load_or_quit_no_save_prompt()
 			load_landscape();
 		} else {
 			window_loadsave_open(LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME, NULL);
-			gLoadSaveCallback = game_load_or_quit_no_save_prompt_callback;
+			window_loadsave_set_loadsave_callback(game_load_or_quit_no_save_prompt_callback);
 		}
 		break;
 	case PM_SAVE_BEFORE_QUIT:
 		game_do_command(0, 1, 0, 1, GAME_COMMAND_LOAD_OR_QUIT, 0, 0);
 		tool_cancel();
-		if (gInputFlags & INPUT_FLAG_5) {
-			gInputFlags &= ~INPUT_FLAG_5;
+		if (input_test_flag(INPUT_FLAG_5)) {
+			input_set_flag(INPUT_FLAG_5, false);
 		}
 		gGameSpeed = 1;
 		gFirstTimeSave = 1;

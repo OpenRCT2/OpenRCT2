@@ -190,7 +190,7 @@ static void window_maze_construction_entrance_mouseup(rct_window *w, sint32 widg
 	gRideEntranceExitPlaceType = widgetIndex == WIDX_MAZE_ENTRANCE ? ENTRANCE_TYPE_RIDE_ENTRANCE : ENTRANCE_TYPE_RIDE_EXIT;
 	gRideEntranceExitPlaceRideIndex = (uint8)w->number;
 	gRideEntranceExitPlaceStationIndex = 0;
-	gInputFlags |= INPUT_FLAG_6;
+	input_set_flag(INPUT_FLAG_6, true);
 
 	sub_6C9627();
 
@@ -313,7 +313,7 @@ static void window_maze_construction_update(rct_window *w)
 	case RIDE_CONSTRUCTION_STATE_BACK:
 	case RIDE_CONSTRUCTION_STATE_SELECTED:
 		if (
-			(gInputFlags & INPUT_FLAG_TOOL_ACTIVE) &&
+			(input_test_flag(INPUT_FLAG_TOOL_ACTIVE)) &&
 			gCurrentToolWidget.window_classification == WC_RIDE_CONSTRUCTION
 		) {
 			tool_cancel();

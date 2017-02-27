@@ -206,7 +206,7 @@ static void window_server_start_mouseup(rct_window *w, sint32 widgetIndex)
 	case WIDX_LOAD_SERVER:
 		network_set_password(_password);
 		window_loadsave_open(LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME, NULL);
-		gLoadSaveCallback = window_server_start_loadsave_callback;
+		window_loadsave_set_loadsave_callback(window_server_start_loadsave_callback);
 		break;
 	}
 }

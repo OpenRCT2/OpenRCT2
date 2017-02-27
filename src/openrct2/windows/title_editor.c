@@ -336,7 +336,7 @@ static void window_title_editor_mouseup(rct_window *w, sint32 widgetIndex)
 	case WIDX_TITLE_EDITOR_ADD_SAVE:
 		if (!_isSequenceReadOnly && !_isSequencePlaying && !commandEditorOpen) {
 			window_loadsave_open(LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME, NULL);
-			gLoadSaveCallback = window_title_editor_add_park_callback;
+			window_loadsave_set_loadsave_callback(window_title_editor_add_park_callback);
 		}
 		break;
 	case WIDX_TITLE_EDITOR_REMOVE_SAVE:
