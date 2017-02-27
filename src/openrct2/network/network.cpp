@@ -1873,6 +1873,7 @@ void Network::Server_Handle_GAMECMD(NetworkConnection& connection, NetworkPacket
 	if (commandCommand == GAME_COMMAND_PLACE_SCENERY) {
 		if (
 			ticks - connection.Player->LastPlaceSceneryTime < ACTION_COOLDOWN_TIME_PLACE_SCENERY &&
+			// Incase SDL_GetTicks() wraps after ~49 days, ignore larger logged times.
 			ticks > connection.Player->LastPlaceSceneryTime
 		) {
 			if (!(group->CanPerformCommand(MISC_COMMAND_TOGGLE_SCENERY_CLUSTER))) {
@@ -1886,6 +1887,7 @@ void Network::Server_Handle_GAMECMD(NetworkConnection& connection, NetworkPacket
 	else if (commandCommand == GAME_COMMAND_DEMOLISH_RIDE) {
 		if (
 			ticks - connection.Player->LastDemolishRideTime < ACTION_COOLDOWN_TIME_DEMOLISH_RIDE &&
+			// Incase SDL_GetTicks() wraps after ~49 days, ignore larger logged times.
 			ticks > connection.Player->LastDemolishRideTime
 		) {
 			Server_Send_SHOWERROR(connection, STR_CANT_DO_THIS, STR_NETWORK_ACTION_RATE_LIMIT_MESSAGE);
