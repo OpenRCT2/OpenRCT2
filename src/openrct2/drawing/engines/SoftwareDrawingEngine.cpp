@@ -185,7 +185,6 @@ class SoftwareDrawingEngine final : public IDrawingEngine
 private:
     bool _hardwareDisplay;
 
-    SDL_Window *    _window         = nullptr;
     SDL_Surface *   _surface        = nullptr;
     SDL_Surface *   _RGBASurface    = nullptr;
     SDL_Palette *   _palette        = nullptr;
@@ -244,7 +243,11 @@ public:
 
     void Initialise(SDL_Window * window) override
     {
-        _window = window;
+        if (_hardwareDisplay)
+        {
+            // Try to create the accelerated renderer.
+            _sdlRenderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+        }
     }
 
     void Resize(uint32 width, uint32 height) override
@@ -254,15 +257,11 @@ public:
         SDL_FreePalette(_palette);
         SDL_DestroyTexture(_screenTexture);
         SDL_FreeFormat(_screenTextureFormat);
-        SDL_DestroyRenderer(_sdlRenderer);
 
-        if (_hardwareDisplay)
+        if (_sdlRenderer != nullptr)
         {
-            _sdlRenderer = SDL_CreateRenderer(_window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-
             SDL_RendererInfo rendererInfo;
             SDL_GetRendererInfo(_sdlRenderer, &rendererInfo);
-
             uint32 pixelFormat = SDL_PIXELFORMAT_UNKNOWN;
             for (uint32 i = 0; i < rendererInfo.num_texture_formats; i++)
             {
@@ -310,7 +309,7 @@ public:
 
     void SetPalette(SDL_Color * palette) override
     {
-        if (_hardwareDisplay)
+        if (_sdlRenderer != nullptr)
         {
             if (_screenTextureFormat != nullptr)
             {
@@ -416,7 +415,7 @@ public:
             rct2_draw(&_bitsDPI);
         }
 
-        if (_hardwareDisplay)
+        if (_sdlRenderer != nullptr)
         {
             DisplayViaTexture();
         }
