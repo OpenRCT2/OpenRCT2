@@ -935,7 +935,7 @@ static void repaint_scenery_tool_down(sint16 x, sint16 y, sint16 widgetIndex){
 	}
 	case VIEWPORT_INTERACTION_ITEM_WALL:
 	{
-		rct_scenery_entry* scenery_entry = get_wall_entry(map_element->properties.fence.type);
+		rct_scenery_entry* scenery_entry = get_wall_entry(map_element->properties.wall.type);
 
 		// If can't repaint
 		if (!(scenery_entry->wall.flags &
@@ -949,7 +949,7 @@ static void repaint_scenery_tool_down(sint16 x, sint16 y, sint16 widgetIndex){
 			1 | (gWindowSceneryPrimaryColour << 8),
 			grid_y,
 			(map_element->type & MAP_ELEMENT_DIRECTION_MASK) | (map_element->base_height << 8),
-			GAME_COMMAND_SET_FENCE_COLOUR,
+			GAME_COMMAND_SET_WALL_COLOUR,
 			0,
 			gWindowScenerySecondaryColour | (gWindowSceneryTertiaryColour << 8));
 		break;
@@ -1573,7 +1573,7 @@ static void window_top_toolbar_scenery_tool_down(sint16 x, sint16 y, rct_window 
 
 			gDisableErrorWindowSound = true;
 			gGameCommandErrorTitle = STR_CANT_BUILD_PARK_ENTRANCE_HERE;
-			sint32 cost = game_do_command(gridX, flags, gridY, parameter_2, GAME_COMMAND_PLACE_FENCE, gSceneryPlaceZ, _unkF64F15);
+			sint32 cost = game_do_command(gridX, flags, gridY, parameter_2, GAME_COMMAND_PLACE_WALL, gSceneryPlaceZ, _unkF64F15);
 			gDisableErrorWindowSound = false;
 
 			if (cost != MONEY32_UNDEFINED){
@@ -2182,7 +2182,7 @@ static money32 try_place_ghost_scenery(rct_xy16 map_tile, uint32 parameter_1, ui
 			parameter_1 | 0x69,
 			map_tile.y,
 			parameter_2,
-			GAME_COMMAND_PLACE_FENCE,
+			GAME_COMMAND_PLACE_WALL,
 			gSceneryPlaceZ,
 			_unkF64F15);
 

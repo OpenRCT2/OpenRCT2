@@ -415,6 +415,7 @@
     <ClCompile Include="world\scenery.c" />
     <ClCompile Include="world\sprite.c" />
     <ClCompile Include="world\tile_inspector.c" />
+    <ClCompile Include="world\wall.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\resources\resource.h" />

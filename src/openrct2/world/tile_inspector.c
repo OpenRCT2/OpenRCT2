@@ -225,7 +225,7 @@ sint32 tile_inspector_rotate_element_at(sint32 x, sint32 y, sint32 elementIndex,
 		case MAP_ELEMENT_TYPE_TRACK:
 		case MAP_ELEMENT_TYPE_SCENERY:
 		case MAP_ELEMENT_TYPE_ENTRANCE:
-		case MAP_ELEMENT_TYPE_FENCE:
+		case MAP_ELEMENT_TYPE_WALL:
 			newRotation = (mapElement->type + 1) & MAP_ELEMENT_DIRECTION_MASK;
 			mapElement->type &= ~MAP_ELEMENT_DIRECTION_MASK;
 			mapElement->type |= newRotation;
@@ -549,11 +549,11 @@ sint32 tile_inspector_path_toggle_edge(sint32 x, sint32 y, sint32 elementIndex, 
 	return 0;
 }
 
-sint32 tile_inspector_fence_set_slope(sint32 x, sint32 y, sint32 elementIndex, sint32 slopeValue, sint32 flags)
+sint32 tile_inspector_wall_set_slope(sint32 x, sint32 y, sint32 elementIndex, sint32 slopeValue, sint32 flags)
 {
-	rct_map_element *const fenceElement = map_get_nth_element_at(x, y, elementIndex);
+	rct_map_element *const wallElement = map_get_nth_element_at(x, y, elementIndex);
 
-	if (!fenceElement || map_element_get_type(fenceElement) != MAP_ELEMENT_TYPE_FENCE)
+	if (!wallElement || map_element_get_type(wallElement) != MAP_ELEMENT_TYPE_WALL)
 	{
 		return MONEY32_UNDEFINED;
 	}
@@ -561,8 +561,8 @@ sint32 tile_inspector_fence_set_slope(sint32 x, sint32 y, sint32 elementIndex, s
 	if (flags & GAME_COMMAND_FLAG_APPLY)
 	{
 		// Set new slope value
-		fenceElement->type &= ~0xC0;
-		fenceElement->type |= slopeValue;
+		wallElement->type &= ~0xC0;
+		wallElement->type |= slopeValue;
 
 		map_invalidate_tile_full(x << 5, y << 5);
 

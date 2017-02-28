@@ -490,9 +490,9 @@ void viewport_interaction_remove_park_entrance(rct_map_element *mapElement, sint
  */
 static void viewport_interaction_remove_park_wall(rct_map_element *mapElement, sint32 x, sint32 y)
 {
-	rct_scenery_entry *sceneryEntry = get_wall_entry(mapElement->properties.fence.type);
+	rct_scenery_entry *sceneryEntry = get_wall_entry(mapElement->properties.wall.type);
 	if (sceneryEntry->wall.scrolling_mode != 0xFF){
-		window_sign_small_open(mapElement->properties.fence.item[0]);
+		window_sign_small_open(mapElement->properties.wall.banner_index);
 	} else {
 		gGameCommandErrorTitle = STR_CANT_REMOVE_THIS;
 		game_do_command(
@@ -500,7 +500,7 @@ static void viewport_interaction_remove_park_wall(rct_map_element *mapElement, s
 			GAME_COMMAND_FLAG_APPLY,
 			y,
 			(mapElement->type & 0x3) | (mapElement->base_height << 8),
-			GAME_COMMAND_REMOVE_FENCE,
+			GAME_COMMAND_REMOVE_WALL,
 			0,
 			0
 		);

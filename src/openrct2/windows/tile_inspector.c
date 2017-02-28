@@ -70,10 +70,10 @@ static const rct_string_id ParkEntrancePartStringIds[] = {
 	STR_TILE_INSPECTOR_ENTRANCE_RIGHT
 };
 
-static const rct_string_id FenceSlopeStringIds[] = {
-	STR_TILE_INSPECTOR_FENCE_FLAT,
-	STR_TILE_INSPECTOR_FENCE_SLOPED_LEFT,
-	STR_TILE_INSPECTOR_FENCE_SLOPED_RIGHT
+static const rct_string_id WallSlopeStringIds[] = {
+	STR_TILE_INSPECTOR_WALL_FLAT,
+	STR_TILE_INSPECTOR_WALL_SLOPED_LEFT,
+	STR_TILE_INSPECTOR_WALL_SLOPED_RIGHT
 };
 
 enum WINDOW_TILE_INSPECTOR_WIDGET_IDX {
@@ -157,12 +157,12 @@ enum WINDOW_TILE_INSPECTOR_WIDGET_IDX {
 	WIDX_ENTRANCE_SPINNER_HEIGHT_INCREASE,
 	WIDX_ENTRANCE_SPINNER_HEIGHT_DECREASE,
 
-	// Fence
-	WIDX_FENCE_SPINNER_HEIGHT = PAGE_WIDGETS,
-	WIDX_FENCE_SPINNER_HEIGHT_INCREASE,
-	WIDX_FENCE_SPINNER_HEIGHT_DECREASE,
-	WIDX_FENCE_DROPDOWN_SLOPE,
-	WIDX_FENCE_DROPDOWN_SLOPE_BUTTON,
+	// Wall
+	WIDX_WALL_SPINNER_HEIGHT = PAGE_WIDGETS,
+	WIDX_WALL_SPINNER_HEIGHT_INCREASE,
+	WIDX_WALL_SPINNER_HEIGHT_DECREASE,
+	WIDX_WALL_DROPDOWN_SLOPE,
+	WIDX_WALL_DROPDOWN_SLOPE_BUTTON,
 
 	// Large
 	WIDX_LARGE_SCENERY_SPINNER_HEIGHT = PAGE_WIDGETS,
@@ -356,17 +356,17 @@ static rct_widget EntranceWidgets[] = {
 	{ WIDGETS_END },
 };
 
-#define FEN_GBPB PADDING_BOTTOM					// Fence group box properties bottom
-#define FEN_GBPT (FEN_GBPB + 16 + 2 * 21)		// Fence group box properties top
-#define FEN_GBDB (FEN_GBPT + GROUPBOX_PADDING)	// Fence group box info bottom
-#define FEN_GBDT (FEN_GBDB + 20 + 2 * 11)		// Fence group box info top
-static rct_widget FenceWidgets[] = {
+#define WALL_GBPB PADDING_BOTTOM					// Wall group box properties bottom
+#define WALL_GBPT (WALL_GBPB + 16 + 2 * 21)		// Wall group box properties top
+#define WALL_GBDB (WALL_GBPT + GROUPBOX_PADDING)	// Wall group box info bottom
+#define WALL_GBDT (WALL_GBDB + 20 + 2 * 11)		// Wall group box info top
+static rct_widget WallWidgets[] = {
 	MAIN_TILE_INSPECTOR_WIDGETS,
-	{ WWT_SPINNER,			1,	GBS(WH - FEN_GBPT, 1, 0),	STR_NONE,										STR_NONE }, // WIDX_FENCE_SPINNER_HEIGHT
-	{ WWT_DROPDOWN_BUTTON,	1,	GBSI(WH - FEN_GBPT, 1, 0),	STR_NUMERIC_UP,									STR_NONE }, // WIDX_FENCE_SPINNER_HEIGHT_INCREASE
-	{ WWT_DROPDOWN_BUTTON,	1,	GBSD(WH - FEN_GBPT, 1, 0),	STR_NUMERIC_DOWN,								STR_NONE }, // WIDX_FENCE_SPINNER_HEIGHT_DECREASE
-	{ WWT_DROPDOWN,			1,  GBS(WH - FEN_GBPT, 1, 1),	STR_NONE,										STR_NONE }, // WIDX_FENCE_DROPDOWN_SLOPE
-	{ WWT_DROPDOWN_BUTTON,	1,	GBDB(WH - FEN_GBPT, 1, 1),	STR_DROPDOWN_GLYPH,								STR_NONE }, // WIDX_FENCE_DROPDOWN_SLOPE_BUTTON
+	{ WWT_SPINNER,			1,	GBS(WH - WALL_GBPT, 1, 0),	STR_NONE,										STR_NONE }, // WIDX_WALL_SPINNER_HEIGHT
+	{ WWT_DROPDOWN_BUTTON,	1,	GBSI(WH - WALL_GBPT, 1, 0),	STR_NUMERIC_UP,									STR_NONE }, // WIDX_WALL_SPINNER_HEIGHT_INCREASE
+	{ WWT_DROPDOWN_BUTTON,	1,	GBSD(WH - WALL_GBPT, 1, 0),	STR_NUMERIC_DOWN,								STR_NONE }, // WIDX_WALL_SPINNER_HEIGHT_DECREASE
+	{ WWT_DROPDOWN,			1,  GBS(WH - WALL_GBPT, 1, 1),	STR_NONE,										STR_NONE }, // WIDX_WALL_DROPDOWN_SLOPE
+	{ WWT_DROPDOWN_BUTTON,	1,	GBDB(WH - WALL_GBPT, 1, 1),	STR_DROPDOWN_GLYPH,								STR_NONE }, // WIDX_WALL_DROPDOWN_SLOPE_BUTTON
 	{ WIDGETS_END },
 };
 
@@ -419,7 +419,7 @@ static rct_widget *PageWidgets[] = {
 	TrackWidgets,
 	SceneryWidgets,
 	EntranceWidgets,
-	FenceWidgets,
+	WallWidgets,
 	LargeSceneryWidgets,
 	BannerWidgets,
 	CorruptWidgets,
@@ -437,7 +437,7 @@ static struct {
 	{ TRA_GBDT, TRA_GBDB, TRA_GBPT, TRA_GBPB, STR_TILE_INSPECTOR_GROUPBOX_TRACK_INFO },
 	{ SCE_GBDT, SCE_GBDB, SCE_GBPT, SCE_GBPB, STR_TILE_INSPECTOR_GROUPBOX_SCENERY_INFO },
 	{ ENT_GBDT, ENT_GBDB, ENT_GBPT, ENT_GBPB, STR_TILE_INSPECTOR_GROUPBOX_ENTRANCE_INFO },
-	{ FEN_GBDT, FEN_GBDB, FEN_GBPT, FEN_GBPB, STR_TILE_INSPECTOR_GROUPBOX_FENCE_INFO },
+	{ WALL_GBDT, WALL_GBDB, WALL_GBPT, WALL_GBPB, STR_TILE_INSPECTOR_GROUPBOX_WALL_INFO },
 	{ LAR_GBDT, LAR_GBDB, LAR_GBPT, LAR_GBPB, STR_TILE_INSPECTOR_GROUPBOX_LARGE_SCENERY_INFO },
 	{ BAN_GBDT, BAN_GBDB, BAN_GBPT, BAN_GBPB, STR_TILE_INSPECTOR_GROUPBOX_BANNER_INFO },
 	{ COR_GBDT, COR_GBDB, COR_GBPT, COR_GBPB, STR_TILE_INSPECTOR_GROUPBOX_CORRUPT_INFO }
@@ -510,7 +510,7 @@ static uint64 PageEnabledWidgets[] = {
 	(1ULL << WIDX_CLOSE) | (1ULL << WIDX_BUTTON_CORRUPT) | (1ULL << WIDX_BUTTON_REMOVE) | (1ULL << WIDX_BUTTON_ROTATE) | (1ULL << WIDX_BUTTON_COPY) | (1ULL << WIDX_TRACK_CHECK_APPLY_TO_ALL) | (1ULL << WIDX_TRACK_SPINNER_HEIGHT_INCREASE) | (1ULL << WIDX_TRACK_SPINNER_HEIGHT_DECREASE) | (1ULL << WIDX_TRACK_CHECK_CHAIN_LIFT),
 	(1ULL << WIDX_CLOSE) | (1ULL << WIDX_BUTTON_CORRUPT) | (1ULL << WIDX_BUTTON_REMOVE) | (1ULL << WIDX_BUTTON_ROTATE) | (1ULL << WIDX_BUTTON_COPY) | (1ULL << WIDX_SCENERY_SPINNER_HEIGHT_INCREASE) | (1ULL << WIDX_SCENERY_SPINNER_HEIGHT_DECREASE) | (1ULL << WIDX_SCENERY_CHECK_QUARTER_N) | (1ULL << WIDX_SCENERY_CHECK_QUARTER_E) | (1ULL << WIDX_SCENERY_CHECK_QUARTER_S) | (1ULL << WIDX_SCENERY_CHECK_QUARTER_W) | (1ULL << WIDX_SCENERY_CHECK_COLLISION_N) | (1ULL << WIDX_SCENERY_CHECK_COLLISION_E) | (1ULL << WIDX_SCENERY_CHECK_COLLISION_S) | (1ULL << WIDX_SCENERY_CHECK_COLLISION_W),
 	(1ULL << WIDX_CLOSE) | (1ULL << WIDX_BUTTON_CORRUPT) | (1ULL << WIDX_BUTTON_REMOVE) | (1ULL << WIDX_BUTTON_ROTATE) | (1ULL << WIDX_BUTTON_COPY) | (1ULL << WIDX_ENTRANCE_SPINNER_HEIGHT_INCREASE) | (1ULL << WIDX_ENTRANCE_SPINNER_HEIGHT_DECREASE),
-	(1ULL << WIDX_CLOSE) | (1ULL << WIDX_BUTTON_CORRUPT) | (1ULL << WIDX_BUTTON_REMOVE) | (1ULL << WIDX_BUTTON_ROTATE) | (1ULL << WIDX_BUTTON_COPY) | (1ULL << WIDX_FENCE_SPINNER_HEIGHT_INCREASE) | (1ULL << WIDX_FENCE_SPINNER_HEIGHT_DECREASE) | (1ULL << WIDX_FENCE_DROPDOWN_SLOPE) | (1ULL << WIDX_FENCE_DROPDOWN_SLOPE_BUTTON),
+	(1ULL << WIDX_CLOSE) | (1ULL << WIDX_BUTTON_CORRUPT) | (1ULL << WIDX_BUTTON_REMOVE) | (1ULL << WIDX_BUTTON_ROTATE) | (1ULL << WIDX_BUTTON_COPY) | (1ULL << WIDX_WALL_SPINNER_HEIGHT_INCREASE) | (1ULL << WIDX_WALL_SPINNER_HEIGHT_DECREASE) | (1ULL << WIDX_WALL_DROPDOWN_SLOPE) | (1ULL << WIDX_WALL_DROPDOWN_SLOPE_BUTTON),
 	(1ULL << WIDX_CLOSE) | (1ULL << WIDX_BUTTON_CORRUPT) | (1ULL << WIDX_BUTTON_REMOVE) | (1ULL << WIDX_BUTTON_COPY) | (1ULL << WIDX_LARGE_SCENERY_SPINNER_HEIGHT) | (1ULL << WIDX_LARGE_SCENERY_SPINNER_HEIGHT_INCREASE) | (1ULL << WIDX_LARGE_SCENERY_SPINNER_HEIGHT_DECREASE),
 	(1ULL << WIDX_CLOSE) | (1ULL << WIDX_BUTTON_CORRUPT) | (1ULL << WIDX_BUTTON_REMOVE) | (1ULL << WIDX_BUTTON_ROTATE) | (1ULL << WIDX_BUTTON_COPY) | (1ULL << WIDX_BANNER_SPINNER_HEIGHT) | (1ULL << WIDX_BANNER_SPINNER_HEIGHT_INCREASE) | (1ULL << WIDX_BANNER_SPINNER_HEIGHT_DECREASE) | (1ULL << WIDX_BANNER_CHECK_BLOCK_NE) | (1ULL << WIDX_BANNER_CHECK_BLOCK_SE) | (1ULL << WIDX_BANNER_CHECK_BLOCK_SW) | (1ULL << WIDX_BANNER_CHECK_BLOCK_NW),
 	(1ULL << WIDX_CLOSE) | (1ULL << WIDX_BUTTON_CORRUPT) | (1ULL << WIDX_BUTTON_REMOVE) | (1ULL << WIDX_BUTTON_COPY) | (1ULL << WIDX_CORRUPT_SPINNER_HEIGHT) | (1ULL << WIDX_CORRUPT_SPINNER_HEIGHT_INCREASE) | (1ULL << WIDX_CORRUPT_SPINNER_HEIGHT_DECREASE) | (1ULL << WIDX_CORRUPT_BUTTON_CLAMP),
@@ -778,13 +778,13 @@ static void window_tile_inspector_path_toggle_edge(sint32 elementIndex, sint32 c
 	);
 }
 
-static void window_tile_inspector_fence_set_slope(sint32 elementIndex, sint32 slopeValue)
+static void window_tile_inspector_wall_set_slope(sint32 elementIndex, sint32 slopeValue)
 {
 	// Make sure only the correct bits are set
 	openrct2_assert((slopeValue & 0xC0) == slopeValue, "slopeValue doesn't match its mask");
 
 	game_do_command(
-		TILE_INSPECTOR_FENCE_SET_SLOPE,
+		TILE_INSPECTOR_WALL_SET_SLOPE,
 		GAME_COMMAND_FLAG_APPLY,
 		windowTileInspectorTileX | (windowTileInspectorTileY << 8),
 		elementIndex,
@@ -1075,12 +1075,12 @@ static void window_tile_inspector_mouseup(rct_window *w, sint32 widgetIndex)
 		} // switch widget index
 		break;
 
-	case TILE_INSPECTOR_PAGE_FENCE:
+	case TILE_INSPECTOR_PAGE_WALL:
 		switch (widgetIndex) {
-		case WIDX_FENCE_SPINNER_HEIGHT_INCREASE:
+		case WIDX_WALL_SPINNER_HEIGHT_INCREASE:
 			window_tile_inspector_base_height_offset(w->selected_list_item, 1);
 			break;
-		case WIDX_FENCE_SPINNER_HEIGHT_DECREASE:
+		case WIDX_WALL_SPINNER_HEIGHT_DECREASE:
 			window_tile_inspector_base_height_offset(w->selected_list_item, -1);
 			break;
 		} // switch widget index
@@ -1147,9 +1147,9 @@ static void window_tile_inspector_resize(rct_window *w)
 static void window_tile_inspector_mousedown(sint32 widgetIndex, rct_window *w, rct_widget* widget)
 {
 	switch (w->page) {
-	case TILE_INSPECTOR_PAGE_FENCE:
+	case TILE_INSPECTOR_PAGE_WALL:
 		switch (widgetIndex) {
-		case WIDX_FENCE_DROPDOWN_SLOPE_BUTTON:
+		case WIDX_WALL_DROPDOWN_SLOPE_BUTTON:
 			// Use dropdown instead of dropdown button
 			widget--;
 
@@ -1157,9 +1157,9 @@ static void window_tile_inspector_mousedown(sint32 widgetIndex, rct_window *w, r
 			gDropdownItemsFormat[0] = STR_DROPDOWN_MENU_LABEL;
 			gDropdownItemsFormat[1] = STR_DROPDOWN_MENU_LABEL;
 			gDropdownItemsFormat[2] = STR_DROPDOWN_MENU_LABEL;
-			gDropdownItemsArgs[0] = STR_TILE_INSPECTOR_FENCE_FLAT;
-			gDropdownItemsArgs[1] = STR_TILE_INSPECTOR_FENCE_SLOPED_LEFT;
-			gDropdownItemsArgs[2] = STR_TILE_INSPECTOR_FENCE_SLOPED_RIGHT;
+			gDropdownItemsArgs[0] = STR_TILE_INSPECTOR_WALL_FLAT;
+			gDropdownItemsArgs[1] = STR_TILE_INSPECTOR_WALL_SLOPED_LEFT;
+			gDropdownItemsArgs[2] = STR_TILE_INSPECTOR_WALL_SLOPED_RIGHT;
 			window_dropdown_show_text_custom_width(
 				w->x + widget->left,
 				w->y + widget->top,
@@ -1202,12 +1202,12 @@ static void window_tile_inspector_dropdown(rct_window *w, sint32 widgetIndex, si
 	rct_map_element *const mapElement = window_tile_inspector_get_selected_element(w);
 
 	switch (w->page) {
-	case TILE_INSPECTOR_PAGE_FENCE:
-		openrct2_assert(map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_FENCE, "Element is not a fence");
+	case TILE_INSPECTOR_PAGE_WALL:
+		openrct2_assert(map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_WALL, "Element is not a wall");
 
 		switch (widgetIndex) {
-		case WIDX_FENCE_DROPDOWN_SLOPE_BUTTON:
-			window_tile_inspector_fence_set_slope(w->selected_list_item, dropdownIndex << 6);
+		case WIDX_WALL_DROPDOWN_SLOPE_BUTTON:
+			window_tile_inspector_wall_set_slope(w->selected_list_item, dropdownIndex << 6);
 			break;
 		}
 		break;
@@ -1325,16 +1325,16 @@ void window_tile_inspector_auto_set_buttons(rct_window *w)
 
 	// Page widgets
 	switch (w->page) {
-	case TILE_INSPECTOR_PAGE_FENCE: {
+	case TILE_INSPECTOR_PAGE_WALL: {
 		const rct_map_element *const mapElement = window_tile_inspector_get_selected_element(w);
-		const uint8 fenceType = mapElement->properties.fence.type;
-		const rct_wall_scenery_entry wallEntry = get_wall_entry(fenceType)->wall;
+		const uint8 wallType = mapElement->properties.wall.type;
+		const rct_wall_scenery_entry wallEntry = get_wall_entry(wallType)->wall;
 		const bool canBeSloped = !(wallEntry.flags & WALL_SCENERY_CANT_BUILD_ON_SLOPE);
-		// Fence slope dropdown
-		widget_set_enabled(w, WIDX_FENCE_DROPDOWN_SLOPE, canBeSloped);
-		widget_invalidate(w, WIDX_FENCE_DROPDOWN_SLOPE);
-		widget_set_enabled(w, WIDX_FENCE_DROPDOWN_SLOPE_BUTTON, canBeSloped);
-		widget_invalidate(w, WIDX_FENCE_DROPDOWN_SLOPE_BUTTON);
+		// Wall slope dropdown
+		widget_set_enabled(w, WIDX_WALL_DROPDOWN_SLOPE, canBeSloped);
+		widget_invalidate(w, WIDX_WALL_DROPDOWN_SLOPE);
+		widget_set_enabled(w, WIDX_WALL_DROPDOWN_SLOPE_BUTTON, canBeSloped);
+		widget_invalidate(w, WIDX_WALL_DROPDOWN_SLOPE_BUTTON);
 		break;
 	}
 	} // switch page
@@ -1539,18 +1539,18 @@ static void window_tile_inspector_invalidate(rct_window *w)
 		w->widgets[WIDX_ENTRANCE_SPINNER_HEIGHT_DECREASE].top = GBBB(propertiesAnchor, 0) - 8;
 		w->widgets[WIDX_ENTRANCE_SPINNER_HEIGHT_DECREASE].bottom = GBBB(propertiesAnchor, 0) - 4;
 		break;
-	case TILE_INSPECTOR_PAGE_FENCE:
-		w->widgets[WIDX_FENCE_SPINNER_HEIGHT].top = GBBT(propertiesAnchor, 0) + 3;
-		w->widgets[WIDX_FENCE_SPINNER_HEIGHT].bottom = GBBB(propertiesAnchor, 0) - 3;
-		w->widgets[WIDX_FENCE_SPINNER_HEIGHT_INCREASE].top = GBBT(propertiesAnchor, 0) + 4;
-		w->widgets[WIDX_FENCE_SPINNER_HEIGHT_INCREASE].bottom = GBBT(propertiesAnchor, 0) + 8;
-		w->widgets[WIDX_FENCE_SPINNER_HEIGHT_DECREASE].top = GBBB(propertiesAnchor, 0) - 8;
-		w->widgets[WIDX_FENCE_SPINNER_HEIGHT_DECREASE].bottom = GBBB(propertiesAnchor, 0) - 4;
-		w->widgets[WIDX_FENCE_DROPDOWN_SLOPE].top = GBBT(propertiesAnchor, 1) + 3;
-		w->widgets[WIDX_FENCE_DROPDOWN_SLOPE].bottom = GBBB(propertiesAnchor, 1) - 3;
-		w->widgets[WIDX_FENCE_DROPDOWN_SLOPE].text = FenceSlopeStringIds[(mapElement->type & 0xC0) >> 6];
-		w->widgets[WIDX_FENCE_DROPDOWN_SLOPE_BUTTON].top = GBBT(propertiesAnchor, 1) + 4;
-		w->widgets[WIDX_FENCE_DROPDOWN_SLOPE_BUTTON].bottom = GBBB(propertiesAnchor, 1) - 4;
+	case TILE_INSPECTOR_PAGE_WALL:
+		w->widgets[WIDX_WALL_SPINNER_HEIGHT].top = GBBT(propertiesAnchor, 0) + 3;
+		w->widgets[WIDX_WALL_SPINNER_HEIGHT].bottom = GBBB(propertiesAnchor, 0) - 3;
+		w->widgets[WIDX_WALL_SPINNER_HEIGHT_INCREASE].top = GBBT(propertiesAnchor, 0) + 4;
+		w->widgets[WIDX_WALL_SPINNER_HEIGHT_INCREASE].bottom = GBBT(propertiesAnchor, 0) + 8;
+		w->widgets[WIDX_WALL_SPINNER_HEIGHT_DECREASE].top = GBBB(propertiesAnchor, 0) - 8;
+		w->widgets[WIDX_WALL_SPINNER_HEIGHT_DECREASE].bottom = GBBB(propertiesAnchor, 0) - 4;
+		w->widgets[WIDX_WALL_DROPDOWN_SLOPE].top = GBBT(propertiesAnchor, 1) + 3;
+		w->widgets[WIDX_WALL_DROPDOWN_SLOPE].bottom = GBBB(propertiesAnchor, 1) - 3;
+		w->widgets[WIDX_WALL_DROPDOWN_SLOPE].text = WallSlopeStringIds[(mapElement->type & 0xC0) >> 6];
+		w->widgets[WIDX_WALL_DROPDOWN_SLOPE_BUTTON].top = GBBT(propertiesAnchor, 1) + 4;
+		w->widgets[WIDX_WALL_DROPDOWN_SLOPE_BUTTON].bottom = GBBB(propertiesAnchor, 1) - 4;
 		break;
 	case TILE_INSPECTOR_PAGE_LARGE_SCENERY:
 		w->widgets[WIDX_LARGE_SCENERY_SPINNER_HEIGHT].top = GBBT(propertiesAnchor, 0) + 3;
@@ -1831,16 +1831,16 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi)
 			break;
 		}
 
-		case TILE_INSPECTOR_PAGE_FENCE: {
+		case TILE_INSPECTOR_PAGE_WALL: {
 			// Details
 			// Type
-			sint16 fenceType = mapElement->properties.fence.type;
-			gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_FENCE_TYPE, &fenceType, COLOUR_DARK_GREEN, x, y);
+			sint16 wallType = mapElement->properties.wall.type;
+			gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_WALL_TYPE, &wallType, COLOUR_DARK_GREEN, x, y);
 
 			// Banner info
-			rct_wall_scenery_entry fenceEntry = get_wall_entry(fenceType)->wall;
-			if (fenceEntry.flags & WALL_SCENERY_IS_BANNER) {
-				gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_ENTRY_BANNER_TEXT, &gBanners[mapElement->properties.fence.item[0]].string_idx, COLOUR_DARK_GREEN, x, y + 11);
+			rct_wall_scenery_entry wallEntry = get_wall_entry(wallType)->wall;
+			if (wallEntry.flags & WALL_SCENERY_IS_BANNER) {
+				gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_ENTRY_BANNER_TEXT, &gBanners[mapElement->properties.wall.banner_index].string_idx, COLOUR_DARK_GREEN, x, y + 11);
 			}
 			else {
 				gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_ENTRY_BANNER_NONE, NULL, COLOUR_DARK_GREEN, x, y + 11);
@@ -1848,18 +1848,18 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 			// Properties
 			// Raise / lower label
-			y = w->y + w->widgets[WIDX_FENCE_SPINNER_HEIGHT].top;
+			y = w->y + w->widgets[WIDX_WALL_SPINNER_HEIGHT].top;
 			gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_BASE_HEIGHT_FULL, NULL, COLOUR_DARK_GREEN, x, y);
 
 			// Current base height
-			x = w->x + w->widgets[WIDX_FENCE_SPINNER_HEIGHT].left + 3;
+			x = w->x + w->widgets[WIDX_WALL_SPINNER_HEIGHT].left + 3;
 			sint32 baseHeight = mapElement->base_height;
 			gfx_draw_string_left(dpi, STR_FORMAT_INTEGER, &baseHeight, COLOUR_DARK_GREEN, x, y);
 
 			// Slope label
 			x = w->x + w->widgets[WIDX_GROUPBOX_DETAILS].left + 7;
-			y = w->y + w->widgets[WIDX_FENCE_DROPDOWN_SLOPE].top;
-			gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_FENCE_SLOPE, NULL, COLOUR_DARK_GREEN, x, y);
+			y = w->y + w->widgets[WIDX_WALL_DROPDOWN_SLOPE].top;
+			gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_WALL_SLOPE, NULL, COLOUR_DARK_GREEN, x, y);
 			break;
 		}
 
@@ -1994,10 +1994,10 @@ static void window_tile_inspector_scrollpaint(rct_window *w, rct_drawpixelinfo *
 		case MAP_ELEMENT_TYPE_ENTRANCE:
 			typeName = "Entrance";
 			break;
-		case MAP_ELEMENT_TYPE_FENCE:
+		case MAP_ELEMENT_TYPE_WALL:
 			snprintf(
 				buffer, sizeof(buffer),
-				"Fence (%s)",
+				"Wall (%s)",
 				language_get_string(get_wall_entry(mapElement->properties.scenery.type)->name)
 			);
 			typeName = buffer;

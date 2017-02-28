@@ -494,7 +494,7 @@ sint32 game_do_command_p(sint32 command, sint32 *eax, sint32 *ebx, sint32 *ecx, 
 
 	// Remove ghost scenery so it doesn't interfere with incoming network command
 	if ((flags & GAME_COMMAND_FLAG_NETWORKED) && !(flags & GAME_COMMAND_FLAG_GHOST) &&
-		(command == GAME_COMMAND_PLACE_FENCE ||
+		(command == GAME_COMMAND_PLACE_WALL ||
 		command == GAME_COMMAND_PLACE_SCENERY ||
 		command == GAME_COMMAND_PLACE_LARGE_SCENERY ||
 		command == GAME_COMMAND_PLACE_BANNER ||
@@ -1217,8 +1217,8 @@ GAME_COMMAND_POINTER* new_game_command_table[GAME_COMMAND_COUNT] = {
 	game_command_set_maze_track,
 	game_command_set_park_entrance_fee,
 	game_command_update_staff_colour,
-	game_command_place_fence,
-	game_command_remove_fence,
+	game_command_place_wall,
+	game_command_remove_wall,
 	game_command_place_large_scenery,
 	game_command_remove_large_scenery,
 	game_command_set_current_loan,
@@ -1229,7 +1229,7 @@ GAME_COMMAND_POINTER* new_game_command_table[GAME_COMMAND_COUNT] = {
 	game_command_place_banner,
 	game_command_remove_banner,
 	game_command_set_scenery_colour,
-	game_command_set_fence_colour,
+	game_command_set_wall_colour,
 	game_command_set_large_scenery_colour,
 	game_command_set_banner_colour,
 	game_command_set_land_ownership,

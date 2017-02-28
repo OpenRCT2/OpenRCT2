@@ -210,7 +210,7 @@ void scenery_remove_ghost_tool_placement(){
 			105 | (gSceneryMapElementType << 8),
 			y,
 			gSceneryGhostWallRotation |(z << 8),
-			GAME_COMMAND_REMOVE_FENCE,
+			GAME_COMMAND_REMOVE_WALL,
 			0,
 			0);
 	}
