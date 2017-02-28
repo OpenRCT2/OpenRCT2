@@ -323,7 +323,7 @@
     <ClCompile Include="title\TitleSequence.cpp" />
     <ClCompile Include="title\TitleSequenceManager.cpp" />
     <ClCompile Include="title\TitleSequencePlayer.cpp" />
-    <ClCompile Include="windows\changelog.c" />
+    <ClCompile Include="windows\textreader.c" />
     <ClCompile Include="windows\multiplayer.c" />
     <ClCompile Include="windows\network_status.c" />
     <ClCompile Include="windows\news_options.c" />
