@@ -4325,6 +4325,7 @@ STR_6013    :{SMALLFONT}{BLACK}Guests will only pay the ticket to enter the park
 STR_6014    :{SMALLFONT}{BLACK}Guests will only pay entrance tickets for rides and services.{NEWLINE}They won't pay anything to enter the park.
 STR_6015    :Sloped
 STR_6016    :Modify Tile
+STR_6017    :Please slow down
 
 #############
 # Scenarios #

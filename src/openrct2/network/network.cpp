@@ -26,6 +26,9 @@ extern "C" {
 
 #include "network.h"
 
+#define ACTION_COOLDOWN_TIME_PLACE_SCENERY	20
+#define ACTION_COOLDOWN_TIME_DEMOLISH_RIDE	1000
+
 rct_peep* _pickup_peep = 0;
 sint32 _pickup_peep_old_x = SPRITE_LOCATION_NULL;
 
@@ -1856,7 +1859,7 @@ void Network::Server_Handle_GAMECMD(NetworkConnection& connection, NetworkPacket
 
 	sint32 commandCommand = args[4];
 
-	sint32 ticks = SDL_GetTicks(); //tick count is different by time last_action_time is set, keep same value.
+	uint32 ticks = SDL_GetTicks(); //tick count is different by time last_action_time is set, keep same value.
 
 	// Check if player's group permission allows command to run
 	NetworkGroup* group = GetGroupByID(connection.Player->Group);
@@ -1864,19 +1867,36 @@ void Network::Server_Handle_GAMECMD(NetworkConnection& connection, NetworkPacket
 		Server_Send_SHOWERROR(connection, STR_CANT_DO_THIS, STR_PERMISSION_DENIED);
 		return;
 	}
+
 	// In case someone modifies the code / memory to enable cluster build,
 	// require a small delay in between placing scenery to provide some security, as
 	// cluster mode is a for loop that runs the place_scenery code multiple times.
 	if (commandCommand == GAME_COMMAND_PLACE_SCENERY) {
-		if ((ticks - connection.Player->LastActionTime) < 20) {
+		if (
+			ticks - connection.Player->LastPlaceSceneryTime < ACTION_COOLDOWN_TIME_PLACE_SCENERY &&
+			// Incase SDL_GetTicks() wraps after ~49 days, ignore larger logged times.
+			ticks > connection.Player->LastPlaceSceneryTime
+		) {
 			if (!(group->CanPerformCommand(MISC_COMMAND_TOGGLE_SCENERY_CLUSTER))) {
-				Server_Send_SHOWERROR(connection, STR_CANT_DO_THIS, STR_CANT_DO_THIS);
+				Server_Send_SHOWERROR(connection, STR_CANT_DO_THIS, STR_NETWORK_ACTION_RATE_LIMIT_MESSAGE);
 				return;
 			}
 		}
 	}
+	// This is to prevent abuse of demolishing rides. Anyone that is not the server
+	// host will have to wait a small amount of time in between deleting rides.
+	else if (commandCommand == GAME_COMMAND_DEMOLISH_RIDE) {
+		if (
+			ticks - connection.Player->LastDemolishRideTime < ACTION_COOLDOWN_TIME_DEMOLISH_RIDE &&
+			// Incase SDL_GetTicks() wraps after ~49 days, ignore larger logged times.
+			ticks > connection.Player->LastDemolishRideTime
+		) {
+			Server_Send_SHOWERROR(connection, STR_CANT_DO_THIS, STR_NETWORK_ACTION_RATE_LIMIT_MESSAGE);
+			return;
+		}
+	}
 	// Don't let clients send pause or quit
-	if (commandCommand == GAME_COMMAND_TOGGLE_PAUSE ||
+	else if (commandCommand == GAME_COMMAND_TOGGLE_PAUSE ||
 		commandCommand == GAME_COMMAND_LOAD_OR_QUIT
 	) {
 		return;
@@ -1893,6 +1913,14 @@ void Network::Server_Handle_GAMECMD(NetworkConnection& connection, NetworkPacket
 	connection.Player->LastAction = NetworkActions::FindCommand(commandCommand);
 	connection.Player->LastActionTime = SDL_GetTicks();
 	connection.Player->AddMoneySpent(cost);
+
+	if (commandCommand == GAME_COMMAND_PLACE_SCENERY) {
+		connection.Player->LastPlaceSceneryTime = connection.Player->LastActionTime;
+	}
+	else if (commandCommand == GAME_COMMAND_DEMOLISH_RIDE) {
+		connection.Player->LastDemolishRideTime = connection.Player->LastActionTime;
+	}
+
 	Server_Send_GAMECMD(args[0], args[1], args[2], args[3], args[4], args[5], args[6], playerid, callback);
 }
 
