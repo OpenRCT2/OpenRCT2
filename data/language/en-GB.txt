@@ -556,7 +556,7 @@ STR_0551    :Cinema showing 3D films inside a geodesic sphere shaped building
 STR_0552    :Passengers ride in a gondola suspended by large rotating arms, rotating forwards and backwards head-over-heals
 STR_0553    :Concentric pivoting rings allowing the riders free rotation in all directions
 STR_0554    :The car is accelerated out of the station along a long level track using Linear Induction Motors, then heads straight up a vertical spike of track, freefalling back down to return to the station
-STR_0555    :Guests ride in an elevator up or down a vertical tower to get from one level to another
+STR_0555    :Guests ride in a lift up or down a vertical tower to get from one level to another
 STR_0556    :Extra-wide cars descend completely vertical sloped track for the ultimate freefall roller coaster experience
 STR_0557    :An A.T.M. (Cash Machine) for guests to use if they run low on funds
 STR_0558    :Riders ride in pairs of seats rotating around the ends of three long rotating arms
