@@ -66,7 +66,7 @@ void keyboard_shortcut_set(keypress key)
 static sint32 keyboard_shortcut_get_from_key(keypress key)
 {
 	for (sint32 i = 0; i < SHORTCUT_COUNT; i++) {
-		if (platform_compare_keypress(key, gShortcutKeys[i])) {
+		if (platform_keypress_equals(key, gShortcutKeys[i])) {
 			return i;
 		}
 	}
@@ -77,7 +77,7 @@ static sint32 keyboard_shortcut_get_from_key(keypress key)
  *
  *  rct2: 0x006E3E68
  */
-void keyboard_shortcut_handle(sint32 key)
+void keyboard_shortcut_handle(keypress key)
 {
 	sint32 shortcut = keyboard_shortcut_get_from_key(key);
 	if (shortcut != -1)
@@ -103,11 +103,11 @@ void keyboard_shortcut_format_string(char *buffer, size_t size, keypress shortcu
 	*buffer = 0;
 	if (platform_keypress_equals(shortcut_key, (keypress)SHORTCUT_UNDEFINED))
 		return;
-	if (shortcutKey & KMOD_SHIFt) {
+	if (shortcut_key.mod & KMOD_SHIFT) {
 		format_string(formatBuffer, 256, STR_SHIFT_PLUS, NULL);
 		safe_strcat(buffer, formatBuffer, size);
 	}
-	if (shortcutKey & KMOD_CTRL) {
+	if (shortcut_key.mod & KMOD_CTRL) {
 		format_string(formatBuffer, 256, STR_CTRL_PLUS, NULL);
 		safe_strcat(buffer, formatBuffer, size);
 	}
@@ -119,7 +119,7 @@ void keyboard_shortcut_format_string(char *buffer, size_t size, keypress shortcu
 #endif
 		safe_strcat(buffer, formatBuffer, size);
 	}
-	if (shortcutKey & KMOD_GUI) {
+	if (shortcut_key.mod & KMOD_GUI) {
 		format_string(formatBuffer, 256, STR_CMD_PLUS, NULL);
 		safe_strcat(buffer, formatBuffer, size);
 	}

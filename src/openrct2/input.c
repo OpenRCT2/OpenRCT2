@@ -60,7 +60,6 @@ static uint8 _currentScrollArea;
 
 static uint8 _inputState;
 static uint8 _inputFlags;
-uint8 gInputPlaceObjectModifier;
 
 sint32 gInputDragLastX;
 sint32 gInputDragLastY;
@@ -1689,14 +1688,4 @@ INPUT_STATE input_get_state()
 void reset_tooltip_not_shown()
 {
 	_tooltipNotShownTicks = 0;
-}
-
-void input_reset_place_obj_modifier()
-{
-	gInputPlaceObjectModifier = PLACE_OBJECT_MODIFIER_NONE;
-}
-
-bool input_test_place_object_modifier(PLACE_OBJECT_MODIFIER modifier)
-{
-	return gInputPlaceObjectModifier & modifier;
 }
