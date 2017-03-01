@@ -4318,6 +4318,7 @@ STR_6013    :{SMALLFONT}{BLACK}Bezoekers betalen om het park te betreden en voor
 STR_6014    :{SMALLFONT}{BLACK}Bezoekers betalen om in attracties te gaan en voor faciliteiten{NEWLINE}Het park betreden is gratis.
 STR_6015    :Helling
 STR_6016    :Vakje aanpassen
+STR_6017    :Ietsje langzamer alsjeblieft.
 
 #############
 # Scenarios #

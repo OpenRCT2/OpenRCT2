@@ -1067,7 +1067,7 @@ STR_1060    :Nom d'attraction invalide
 STR_1061    :Mode normal
 STR_1062    :Mode circuit continu
 STR_1063    :Mode navette départ marche arrière
-STR_1064    :Lancement à autopropulsion
+STR_1064    :Lancement à autopropulsion (sans arrêt en station)
 STR_1065    :Mode navette
 STR_1066    :Mode location bateaux
 STR_1067    :Lancement vers le haut
@@ -1099,7 +1099,7 @@ STR_1092    :Lancement vers le bas
 STR_1093    :Mode maison biscornue
 STR_1094    :Mode chute libre
 STR_1095    :Mode blocs de voie sur circuit continu
-STR_1096    :Lancement à autopropulsion
+STR_1096    :Lancement à autopropulsion (avec arrêt en station)
 STR_1097    :Mode blocs de voie avec lancement à autopropulsion
 STR_1098    :Se déplace au bout de {POP16}{STRINGID}
 STR_1099    :Attend des passagers à {POP16}{STRINGID}
@@ -4326,6 +4326,7 @@ STR_6013    :{SMALLFONT}{BLACK}Les visiteurs paieront que le ticket pour entrer 
 STR_6014    :{SMALLFONT}{BLACK}Les visiteurs paieront que les tickets pour entrer dans les attractions et les services.{NEWLINE}L'entrée du parc est gratuite.
 STR_6015    :Inclinée
 STR_6016    :Modifier carré
+STR_6017    :Merci de ralentir un peu
 
 #############
 # Scenarios #

@@ -4295,9 +4295,20 @@ STR_5997    :Lägg till/Välj summa pengar
 STR_5998    :Lägg till summa pengar
 STR_5999    :Välj summa pengar
 STR_6000    :Skriv in nytt värde
-
+STR_6001    :Aktivera ljuseffekter (experiment)
+STR_6002    :{SMALLFONT}{BLACK}Lampor och åkturer kommer lysa upp i natten.{NEWLINE}Kräver rendering-motorn vara satt på Hårdvaruhantering.
+STR_6003    :Avskärnings-vy
+STR_6004    :Avskärnings-vy
+STR_6005    :Aktivera Avskärnings-vy
+STR_6006    :{SMALLFONT}{BLACK}Avskärnings-vyn kommer endast visa element på eller under den avskurna höjden
+STR_6007    :Avskärnings-höjd
+STR_6008    :{SMALLFONT}{BLACK}Klicka för att växla råa-värden<->värden i måttenheter
+STR_6009    :{SMALLFONT}{BLACK}Välj avskärnings-höjd
+STR_6010    :{COMMA2DP32}m
+STR_6011    :{COMMA1DP16}ft
 STR_6012    :{COMMA1DP16}
-
+STR_6013    :{SMALLFONT}{BLACK}Gästerna kommer endast betala biljetterna för att komma in i parken och tjänster.{NEWLINE}Åktursbiljetterna kommer vara gratis.
+STR_6014    :{SMALLFONT}{BLACK}Gästerna kommer endast betala för åkturer och tjänster.{NEWLINE}Dem kommer inte betala något för inträde.
 STR_6015    :Lutande
 STR_6016    :Modifiera Ruta
 
