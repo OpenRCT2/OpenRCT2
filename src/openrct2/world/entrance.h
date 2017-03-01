@@ -43,7 +43,7 @@ extern money32 gParkEntranceGhostPrice;
 
 extern rct_xyzd16 gParkEntrances[MAX_PARK_ENTRANCES];
 
-void park_entrance_ghost();
+void park_entrance_remove_ghost();
 money32 park_entrance_place_ghost(sint32 x, sint32 y, sint32 z, sint32 direction);
 void reset_park_entrance();
 
