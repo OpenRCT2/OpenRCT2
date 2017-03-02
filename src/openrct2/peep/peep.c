@@ -9784,7 +9784,7 @@ sint32 peep_pathfind_choose_direction(sint16 x, sint16 y, uint8 z, rct_peep *pee
 }
 
 /**
- * Gets the nearest park entrance relative to point, by using manhatten distance.
+ * Gets the nearest park entrance relative to point, by using Manhatten distance.
  * @param x x coordinate of location
  * @param y y coordinate of location
  * @return Index of gParkEntrance (or 0xFF if no park entrances exist).
@@ -9838,7 +9838,7 @@ static sint32 guest_path_find_entering_park(rct_peep *peep, rct_map_element *map
 }
 
 /**
- * Gets the nearest peep spawn relative to point, by using manhatten distance.
+ * Gets the nearest peep spawn relative to point, by using Manhatten distance.
  * @param x x coordinate of location
  * @param y y coordinate of location
  * @return Index of gPeepSpawns (or 0xFF if no peep spawns exist).
