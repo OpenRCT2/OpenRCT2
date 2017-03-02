@@ -5289,3 +5289,14 @@ rct_map_element *map_get_wall_element_at(sint32 x, sint32 y, sint32 z, sint32 di
 	} while (!map_element_is_last_for_tile(mapElement++));
 	return NULL;
 }
+
+uint32 map_get_available_peep_spawn_index_list(uint32* peepSpawnIndexList)
+{
+	uint32 numSpawns = 0;
+	for (uint8 i = 0; i < MAX_PEEP_SPAWNS; i++) {
+		if (gPeepSpawns[i].x != PEEP_SPAWN_UNDEFINED) {
+			peepSpawnIndexList[numSpawns++] = i;
+		}
+	}
+	return numSpawns;
+}

@@ -474,21 +474,25 @@ static sint32 park_calculate_guest_generation_probability()
 	return probability;
 }
 
-static void get_random_peep_spawn(rct2_peep_spawn *spawn)
+/**
+ * Choose a random peep spawn and iterates through until defined spawn is found.
+ */
+static uint32 get_random_peep_spawn_index()
 {
-	*spawn = gPeepSpawns[0];
-	if (gPeepSpawns[1].x != PEEP_SPAWN_UNDEFINED) {
-		if (scenario_rand() & 0x80000) {
-			*spawn = gPeepSpawns[1];
-		}
+	uint32 spawnIndexList[MAX_PEEP_SPAWNS];
+	uint32 numSpawns = map_get_available_peep_spawn_index_list(spawnIndexList);
+	if (numSpawns > 0) {
+		return spawnIndexList[scenario_rand() % numSpawns];
+	}
+	else {
+		return 0;
 	}
 }
 
 rct_peep *park_generate_new_guest()
 {
 	rct_peep *peep = NULL;
-	rct2_peep_spawn spawn;
-	get_random_peep_spawn(&spawn);
+	rct2_peep_spawn spawn = gPeepSpawns[get_random_peep_spawn_index()];
 
 	if (spawn.x != 0xFFFF) {
 		spawn.direction ^= 2;
