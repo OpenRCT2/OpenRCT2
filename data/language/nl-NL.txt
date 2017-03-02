@@ -7002,6 +7002,10 @@ STR_NAME    :Wachtrij-tv
 [MEDBENCH]
 STR_NAME    :Krukjes
 
+#TT
+[1920SLMP]
+STR_NAME    :Antieke straatlantaarns
+
 #OCC
 [LITTERPA]
 STR_NAME    :Vuilnisbak in pandavorm

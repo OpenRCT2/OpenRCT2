@@ -4326,6 +4326,7 @@ STR_6013    :{SMALLFONT}{BLACK}Návštěvníci platí pouze za vstup do parku a 
 STR_6014    :{SMALLFONT}{BLACK}Návštěvníci platí pouze za služby a atrakce. Vstup do parku je zdarma.
 STR_6015    :Nakloněný
 STR_6016    :Upravit dlaždici
+STR_6017    :Zpomalte prosím
 
 ###############################################################################
 ## RCT2 Objects
