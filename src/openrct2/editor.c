@@ -521,9 +521,14 @@ bool editor_check_park()
 		}
 	}
 
-	if (gPeepSpawns[0].x == PEEP_SPAWN_UNDEFINED && gPeepSpawns[1].x == PEEP_SPAWN_UNDEFINED) {
-		gGameCommandErrorText = STR_PEEP_SPAWNS_NOT_SET;
-		return false;
+	for (sint32 i = 0; i < MAX_PEEP_SPAWNS; i++) {
+		if (gPeepSpawns[i].x != PEEP_SPAWN_UNDEFINED)
+			break;
+
+		if (i == MAX_PEEP_SPAWNS - 1) {
+			gGameCommandErrorText = STR_PEEP_SPAWNS_NOT_SET;
+			return false;
+		}
 	}
 
 	return true;
