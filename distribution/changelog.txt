@@ -1,5 +1,6 @@
 0.0.7 (in development)
 ------------------------------------------------------------------------
+- Feature: [#1730] Keyboard shortcuts for track construction.
 - Feature: [#5110] The tile inspector can now be used in multiplayer.
 - Improved: [#5137]: Removing all guests no longer closes the rides and removes the vehicles.
 - Improved: [#5163]: Minor tile inspector improvements and fixes.
