@@ -4329,7 +4329,8 @@ STR_6012    :{COMMA1DP16}
 STR_6013    :{SMALLFONT}{BLACK}游客仅需付费购买游乐园门票和服务.{NEWLINE}搭乘游乐设施免费.
 STR_6014    :{SMALLFONT}{BLACK}游客仅需付费购买游乐设施门票和服务.{NEWLINE}进入游乐园免费.
 STR_6015    :坡道
-STR_6016    :修改方格
+STR_6016    :修改网格
+STR_6017    :请调低速度
 
 
 #############
