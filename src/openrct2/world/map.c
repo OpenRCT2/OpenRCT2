@@ -268,6 +268,11 @@ sint32 map_element_is_last_for_tile(const rct_map_element *element)
 	return element->flags & MAP_ELEMENT_FLAG_LAST_TILE;
 }
 
+bool map_element_is_ghost(const rct_map_element *element)
+{
+	return element->flags & MAP_ELEMENT_FLAG_GHOST;
+}
+
 uint8 map_element_get_scenery_quadrant(const rct_map_element *element)
 {
 	return (element->type & MAP_ELEMENT_QUADRANT_MASK) >> 6;
