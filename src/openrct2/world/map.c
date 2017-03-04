@@ -3971,10 +3971,10 @@ void map_remove_provisional_elements()
 		footpath_provisional_remove();
 		gFootpathProvisionalFlags |= PROVISIONAL_PATH_FLAG_1;
 	}
-	if (window_find_by_class(WC_CONSTRUCT_RIDE) != NULL)
+	if (window_find_by_class(WC_RIDE_CONSTRUCTION ) != NULL)
 	{
 		ride_remove_provisional_track_piece();
-		ride_remove_provisional_entrance_or_exit();
+		ride_entrance_exit_remove_ghost();
 	}
 }
 
@@ -3989,10 +3989,10 @@ void map_restore_provisional_elements()
 				gFootpathProvisionalPosition.z,
 				gFootpathProvisionalSlope);
 	}
-	if (window_find_by_class(WC_CONSTRUCT_RIDE) != NULL)
+	if (window_find_by_class(WC_RIDE_CONSTRUCTION) != NULL)
 	{
 		ride_restore_provisional_track_piece();
-		ride_restore_provisional_entrance_or_exit();
+		ride_entrance_exit_place_provisional_ghost();
 	}
 }
 

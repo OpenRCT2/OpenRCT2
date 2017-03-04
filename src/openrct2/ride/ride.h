@@ -978,8 +978,7 @@ extern uint8 _currentBrakeSpeed2;
 extern uint8 _currentSeatRotationAngle;
 
 extern rct_xyz16 _unkF44188;
-extern rct_xyzd16 _unkF440BF;
-extern uint8 _unkF440C4;
+
 extern rct_xyzd16 _unkF440C5;
 
 extern uint8 gRideEntranceExitPlaceType;
@@ -1016,6 +1015,7 @@ sint32 ride_find_track_gap(rct_xy_element *input, rct_xy_element *output);
 void ride_construct_new(ride_list_item listItem);
 void ride_construct(sint32 rideIndex);
 sint32 ride_modify(rct_xy_element *input);
+void ride_remove_peeps(sint32 rideIndex);
 void ride_get_status(sint32 rideIndex, rct_string_id *formatSecondary, sint32 *argument);
 rct_peep *ride_get_assigned_mechanic(rct_ride *ride);
 sint32 ride_get_total_length(rct_ride *ride);
@@ -1059,8 +1059,8 @@ void game_command_set_ride_price(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *
 money32 ride_create_command(sint32 type, sint32 subType, sint32 flags, uint8 *outRideIndex, uint8 *outRideColour);
 
 void ride_clear_for_construction(sint32 rideIndex);
-void ride_restore_provisional_entrance_or_exit();
-void ride_remove_provisional_entrance_or_exit();
+void ride_entrance_exit_place_provisional_ghost();
+void ride_entrance_exit_remove_ghost();
 void ride_restore_provisional_track_piece();
 void ride_remove_provisional_track_piece();
 void set_vehicle_type_image_max_sizes(rct_ride_entry_vehicle* vehicle_type, sint32 num_images);
