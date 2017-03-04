@@ -1,4 +1,4 @@
-﻿# STR_XXXX part is read and XXXX becomes the string id number.
+# STR_XXXX part is read and XXXX becomes the string id number.
 # Everything after the colon and before the new line will be saved as the string.
 # Use # at the beginning of a line to leave a comment.
 STR_0000    :
@@ -4327,6 +4327,18 @@ STR_6014    :{SMALLFONT}{BLACK}Les visiteurs paieront que les tickets pour entre
 STR_6015    :Inclinée
 STR_6016    :Modifier carré
 STR_6017    :Merci de ralentir un peu
+STR_6018    :Construction de manège - Tourner à gauche
+STR_6019    :Construction de manège - Tourner à droite
+STR_6020    :Construction de manège - Utiliser la voie par défaut
+STR_6021    :Construction de manège - Pente descendante
+STR_6022    :Construction de manège - Pente ascendante
+STR_6023    :Construction de manège - Activer/Désactiver le mécanisme de remontée
+STR_6024    :Construction de manège - Bord gauche
+STR_6025    :Construction de manège - Bord droit
+STR_6026    :Construction de manège - Piste précédente
+STR_6027    :Construction de manège - Piste suivante
+STR_6028    :Construction de manège - Construire l’actuel
+STR_6029    :Construction de manège - Démolir l’actuel
 
 #############
 # Scenarios #
