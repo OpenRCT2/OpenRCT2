@@ -621,6 +621,59 @@ static void ride_ratings_calculate_value(rct_ride *ride)
 
 	sint32 monthsOld = gDateMonthsElapsed - ride->build_date;
 
+
+	if (monthsOld <= 4) 
+		value = (value * 3) /2;        // 3÷2 = 1.5
+
+	else if (monthsOld <= 8) 
+		value = (value * 77) /64;      // 77÷64 ~= 1.2
+
+	else if (monthsOld <= 16) 
+		value = value * 1;
+
+	else if (monthsOld <= 24) 
+		value = (value * 56) /64;      // 56÷64 = 0,875
+
+	else if (monthsOld <= 32) 
+		value = (value * 48) /64;      // 48÷64 = 0.75
+
+	else if (monthsOld <= 40) 
+		value = (value * 38) /64;      // 38÷64 ~= 0,59
+
+	else if (monthsOld <= 48) 
+		value = (value * 30) /64;      // 30÷64 ~= 0,47
+
+	else if (monthsOld >= 56) 
+		value = (value * 22) /64;      // 22÷64 ~= 0,34
+
+
+	// Other ride of same type penalty
+	sint32 otherRidesOfSameType = 0;
+	rct_ride *ride2;
+	sint32 i;
+	FOR_ALL_RIDES(i, ride2) {
+		if (ride2->type == ride->type  &&  ride2->status == RIDE_STATUS_OPEN) 
+			otherRidesOfSameType++;
+	}
+
+	// Every open ride of the same type attracts a penalty
+	for(i = 0; i < otherRidesOfSameType -1; i++) {
+		value -= value / 4;
+	}
+
+	// Added Scalar of 0.85x value
+	// Make sure a standard coaster with rating   9.50   9.00   6.00
+	// earns max charge ($20) when it's newly built and unique
+	value = (value * 109) /128;
+
+	ride->value = max(0, value);
+
+#ifdef ORIGINAL_RATINGS
+	value =
+		(((ride->excitement * RideRatings[ride->type].excitement) * 32) >> 15) +
+		(((ride->intensity  * RideRatings[ride->type].intensity) * 32) >> 15) +
+		(((ride->nausea     * RideRatings[ride->type].nausea) * 32) >> 15);
+	
 	// New ride reward
 	if (monthsOld <= 12) {
 		value += 10;
@@ -639,9 +692,8 @@ static void ride_ratings_calculate_value(rct_ride *ride)
 	}
 
 	// Other ride of same type penalty
-	sint32 otherRidesOfSameType = 0;
-	rct_ride *ride2;
-	sint32 i;
+	otherRidesOfSameType = 0;
+
 	FOR_ALL_RIDES(i, ride2) {
 		if (ride2->type == ride->type)
 			otherRidesOfSameType++;
@@ -650,6 +702,7 @@ static void ride_ratings_calculate_value(rct_ride *ride)
 		value -= value / 4;
 
 	ride->value = max(0, value);
+#endif
 }
 
 /**
