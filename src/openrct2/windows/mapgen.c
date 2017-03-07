@@ -565,8 +565,8 @@ static bool _heightmapSmoothMap = false;
 static sint32 _heightmapSmoothStrength = 1;
 static bool _heightmapNormalize = false;
 static bool _heightmapSmoothTiles = true;
-static sint32 _heightmapLow = 6;
-static sint32 _heightmapHigh = 40;
+static sint32 _heightmapLow = 2;
+static sint32 _heightmapHigh = 70;
 
 rct_window *window_mapgen_open()
 {
@@ -1258,6 +1258,7 @@ static void window_mapgen_heightmap_invalidate(rct_window *w)
 
 	widget_set_checkbox_value(w, WIDX_HEIGHTMAP_SMOOTH_HEIGHTMAP, _heightmapSmoothMap);
 	widget_set_checkbox_value(w, WIDX_HEIGHTMAP_NORMALIZE, _heightmapNormalize);
+	widget_set_checkbox_value(w, WIDX_HEIGHTMAP_SMOOTH_TILES, _heightmapSmoothTiles);
 
 	window_mapgen_set_pressed_tab(w);
 }
