@@ -978,7 +978,7 @@ uint8 * Network::save_for_network(size_t &out_size, const std::vector<const Obje
 		return nullptr;
 	}
 	gUseRLE = RLEState;
-	
+
 	const void * data = ms.GetData();
 	sint32 size = ms.GetLength();
 

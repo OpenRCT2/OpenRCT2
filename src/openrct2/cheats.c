@@ -219,7 +219,7 @@ static void cheat_10_minute_inspections()
 static void cheat_no_money(bool enabled)
 {
 	if (enabled) {
-		gParkFlags |= PARK_FLAGS_NO_MONEY;	
+		gParkFlags |= PARK_FLAGS_NO_MONEY;
 	}
 	else {
 		gParkFlags &= ~PARK_FLAGS_NO_MONEY;

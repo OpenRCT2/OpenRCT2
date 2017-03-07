@@ -1453,8 +1453,8 @@ static money32 place_track_design(sint16 x, sint16 y, sint16 z, uint8 flags, uin
 		} else {
 			operation = PTD_OPERATION_2;
 		}
-		
-		if (_trackDesignDontPlaceScenery) 
+
+		if (_trackDesignDontPlaceScenery)
 			operation |= PTD_OPERATION_DONT_PLACE_SCENERY;
 		cost = sub_6D01B3(td6, operation, rideIndex, x, y, z);
 	}

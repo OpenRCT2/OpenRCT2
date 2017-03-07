@@ -443,9 +443,9 @@ void map_count_remaining_land_rights()
 			rct_map_element *element = map_get_surface_element_at(x, y);
 			// Surface elements are sometimes hacked out to save some space for other map elements
 			if (element == NULL) {
-				continue;	
+				continue;
 			}
-			
+
 			uint8 flags = element->properties.surface.ownership;
 
 			if ((flags & OWNERSHIP_AVAILABLE) && (flags & OWNERSHIP_OWNED) == 0) {
@@ -3017,8 +3017,8 @@ void game_command_place_scenery(sint32* eax, sint32* ebx, sint32* ecx, sint32* e
 		targetHeight = base_height;
 	}
 
-	if(!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && 
-		!gCheatsSandboxMode && 
+	if(!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) &&
+		!gCheatsSandboxMode &&
 		!map_is_location_owned(x, y, targetHeight)){
 
 		*ebx = MONEY32_UNDEFINED;
@@ -3070,12 +3070,12 @@ void game_command_place_scenery(sint32* eax, sint32* ebx, sint32* ecx, sint32* e
 		return;
 	}
 
-	if (!gCheatsDisableSupportLimits && 
-		!(scenery_entry->small_scenery.flags & SMALL_SCENERY_FLAG18) && 
+	if (!gCheatsDisableSupportLimits &&
+		!(scenery_entry->small_scenery.flags & SMALL_SCENERY_FLAG18) &&
 		supportsRequired) {
 
 		if(!isOnWater){
-			if((surface_element->properties.surface.terrain & MAP_ELEMENT_WATER_HEIGHT_MASK) || 
+			if((surface_element->properties.surface.terrain & MAP_ELEMENT_WATER_HEIGHT_MASK) ||
 				(surface_element->base_height * 8) != targetHeight){
 
 				gGameCommandErrorText = STR_LEVEL_LAND_REQUIRED;
@@ -3119,7 +3119,7 @@ void game_command_place_scenery(sint32* eax, sint32* ebx, sint32* ecx, sint32* e
 	}
 
 	gSceneryGroundFlags = gMapGroundFlags & (ELEMENT_IS_ABOVE_GROUND | ELEMENT_IS_UNDERGROUND);
-		
+
 	*ebx = (scenery_entry->small_scenery.price * 10) + clearCost;
 	if(gParkFlags & PARK_FLAGS_NO_MONEY){
 		*ebx = 0;
@@ -3149,7 +3149,7 @@ void game_command_place_scenery(sint32* eax, sint32* ebx, sint32* ecx, sint32* e
 	new_map_element->properties.scenery.colour_1 = colour1;
 	new_map_element->properties.scenery.colour_2 = colour2;
 	new_map_element->clearance_height = new_map_element->base_height + ((scenery_entry->small_scenery.height + 7) / 8);
-	
+
 	if(supportsRequired){
 		new_map_element->properties.scenery.colour_1 |= 0x20;
 	}
@@ -3251,7 +3251,7 @@ void game_command_place_large_scenery(sint32* eax, sint32* ebx, sint32* ecx, sin
 
 		curTile.x += x;
 		curTile.y += y;
-		
+
 		if(curTile.x >= 0x1FFF || curTile.y >= 0x1FFF || curTile.x < 0 || curTile.y < 0){
 			continue;
 		}
@@ -3276,7 +3276,7 @@ void game_command_place_large_scenery(sint32* eax, sint32* ebx, sint32* ecx, sin
 	if(z != 0){
 		maxHeight = z;
 	}
-	
+
 	if (!map_check_free_elements_and_reorganise(num_elements)) {
 		*ebx = MONEY32_UNDEFINED;
 		return;
@@ -4937,7 +4937,7 @@ void game_command_set_sign_style(sint32* eax, sint32* ebx, sint32* ecx, sint32* 
 		}
 		map_element->properties.wall.colour_1 = mainColour;
 		wall_element_set_secondary_colour(map_element, textColour);
-		
+
 		map_invalidate_tile(x, y, map_element->base_height * 8, map_element->clearance_height * 8);
 	} else { // large sign
 		rct_map_element *mapElement = banner_get_map_element(bannerId);
