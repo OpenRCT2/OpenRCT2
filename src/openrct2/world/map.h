@@ -414,6 +414,7 @@ rct_map_element *map_get_first_element_at(sint32 x, sint32 y);
 rct_map_element *map_get_nth_element_at(sint32 x, sint32 y, sint32 n);
 void map_set_tile_elements(sint32 x, sint32 y, rct_map_element *elements);
 sint32 map_element_is_last_for_tile(const rct_map_element *element);
+bool map_element_is_ghost(const rct_map_element *element);
 uint8 map_element_get_scenery_quadrant(const rct_map_element *element);
 sint32 map_element_get_type(const rct_map_element *element);
 sint32 map_element_get_direction(const rct_map_element *element);
