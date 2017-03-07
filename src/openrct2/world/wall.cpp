@@ -702,7 +702,7 @@ extern "C"
     void wall_element_set_animation_frame(rct_map_element * wallElement, uint8 frameNum)
     {
         wallElement->properties.wall.animation &= WALL_ANIMATION_FLAG_ALL_FLAGS;
-        wallElement->properties.wall.animation |= (frameNum >> 3) & 0xF;
+        wallElement->properties.wall.animation |= (frameNum & 0xF) << 3;
     }
 
     uint8 wall_element_get_secondary_colour(rct_map_element * wallElement)
