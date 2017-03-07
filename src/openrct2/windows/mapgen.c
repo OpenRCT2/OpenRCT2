@@ -190,7 +190,7 @@ static rct_widget SimplexWidgets[] = {
 static rct_widget HeightmapWidgets[] = {
 	SHARED_WIDGETS,
 
-	{ WWT_DROPDOWN_BUTTON,	1, WW - 95, WW - 6, WH - 17, WH - 6, STR_MAPGEN_ACTION_GENERATE, STR_NONE }, // WIDX_HEIGHTMAP_SELECT
+	{ WWT_DROPDOWN_BUTTON,	1, WW - 155, WW - 6, WH - 17, WH - 6, STR_MAPGEN_SELECT_HEIGHTMAP, STR_NONE }, // WIDX_HEIGHTMAP_SELECT
 
 	{ WWT_CHECKBOX,			1,	4,		103,	52,		63,		STR_MAPGEN_SMOOTH_HEIGHTMAP,STR_NONE }, // WIDX_HEIGHTMAP_SMOOTH_HEIGHTMAP
 	{ WWT_SPINNER,			1,	104,	198,	70,		81,		STR_NONE,					STR_NONE }, // WIDX_HEIGHTMAP_STRENGTH
@@ -564,6 +564,7 @@ static sint32 _simplex_octaves = 4;
 static bool _heightmapSmoothMap = false;
 static sint32 _heightmapSmoothStrength = 1;
 static bool _heightmapNormalize = false;
+static bool _heightmapSmoothTiles = true;
 static sint32 _heightmapLow = 6;
 static sint32 _heightmapHigh = 40;
 
@@ -1177,6 +1178,31 @@ static void window_mapgen_heightmap_mousedown(sint32 widgetIndex, rct_window *w,
 	}
 }
 
+static void window_mapgen_heightmap_generate_map(rct_window *w)
+{
+	mapgen_settings mapgenSettings;
+	mapgenSettings.water_level = _waterLevel;
+	mapgenSettings.smooth = _heightmapSmoothTiles;
+	mapgenSettings.smooth_height_map = _heightmapSmoothMap;
+	mapgenSettings.smooth_strength = _heightmapSmoothStrength;
+	mapgenSettings.normalize_height = _heightmapNormalize;
+	mapgenSettings.simplex_low = _heightmapLow;
+	mapgenSettings.simplex_high = _heightmapHigh;
+	mapgen_generate_from_heightmap(&mapgenSettings);
+	gfx_invalidate_screen();
+}
+
+static void window_mapgen_heightmap_loadsave_callback(sint32 result, const utf8 *path)
+{
+	if (result == MODAL_RESULT_OK)
+	{
+		strcpy(heightmap_path, path);
+
+		rct_window *const w = window_find_by_class(WC_MAPGEN);
+		window_mapgen_heightmap_generate_map(w);
+	}
+}
+
 static void window_mapgen_heightmap_mouseup(rct_window *w, sint32 widgetIndex)
 {
 	window_mapgen_shared_mouseup(w, widgetIndex);
@@ -1188,12 +1214,13 @@ static void window_mapgen_heightmap_mouseup(rct_window *w, sint32 widgetIndex)
 	case WIDX_TAB_2:
 	case WIDX_TAB_3:
 	case WIDX_TAB_4:
-		return; // Don't generate map
+		return; // Only widgets that change a setting need to regenerate the map
 
 		// Page widgets
 	case WIDX_HEIGHTMAP_SELECT:
-		// TODO: Open image select window
-		break;
+		window_loadsave_open(LOADSAVETYPE_LOAD | LOADSAVETYPE_IMAGE, NULL);
+		window_loadsave_set_loadsave_callback(window_mapgen_heightmap_loadsave_callback);
+		return;
 	case WIDX_HEIGHTMAP_SMOOTH_HEIGHTMAP:
 		_heightmapSmoothMap = !_heightmapSmoothMap;
 		widget_set_checkbox_value(w, WIDX_HEIGHTMAP_SMOOTH_HEIGHTMAP, _heightmapSmoothMap);
@@ -1209,23 +1236,14 @@ static void window_mapgen_heightmap_mouseup(rct_window *w, sint32 widgetIndex)
 		widget_invalidate(w, WIDX_HEIGHTMAP_NORMALIZE);
 		break;
 	case WIDX_HEIGHTMAP_SMOOTH_TILES:
-		widget_set_checkbox_value(w, WIDX_HEIGHTMAP_SMOOTH_TILES, !widget_is_pressed(w, WIDX_HEIGHTMAP_SMOOTH_TILES));
+		_heightmapSmoothTiles = !_heightmapSmoothTiles;
+		widget_set_checkbox_value(w, _heightmapSmoothTiles, _heightmapSmoothTiles);
 		widget_invalidate(w, WIDX_HEIGHTMAP_SMOOTH_TILES);
 		break;
 	}
 
 	// Always regenerate the map after one of the page widgets has been changed
-	mapgen_settings mapgenSettings;
-	mapgenSettings.water_level = _waterLevel;
-	mapgenSettings.smooth = widget_is_pressed(w, WIDX_HEIGHTMAP_SMOOTH_TILES);
-	mapgenSettings.smooth_height_map = _heightmapSmoothMap;
-	mapgenSettings.smooth_strength = _heightmapSmoothStrength;
-	mapgenSettings.normalize_height = _heightmapNormalize;
-	mapgenSettings.simplex_low = _heightmapLow;
-	mapgenSettings.simplex_high = _heightmapHigh;
-	mapgen_generate_from_heightmap(&mapgenSettings);
-	gfx_invalidate_screen();
-
+	window_mapgen_heightmap_generate_map(w);
 }
 
 static void window_mapgen_heightmap_invalidate(rct_window *w)

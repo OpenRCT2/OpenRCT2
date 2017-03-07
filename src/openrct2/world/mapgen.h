@@ -41,6 +41,8 @@ typedef struct mapgen_settings {
 	bool normalize_height;
 } mapgen_settings;
 
+extern char heightmap_path[260];
+
 void mapgen_generate_blank(mapgen_settings *settings);
 void mapgen_generate(mapgen_settings *settings);
 void mapgen_generate_custom_simplex(mapgen_settings *settings);
