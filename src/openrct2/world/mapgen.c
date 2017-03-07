@@ -25,6 +25,8 @@
 
 #pragma region Random objects
 
+char heightmap_path[260] = "";
+
 const char *GrassTrees[] = {
 	// Dark
 	"TCF     ",		// Caucasian Fir Tree
@@ -830,7 +832,7 @@ void mapgen_generate_from_heightmap(mapgen_settings *settings)
 {
 	openrct2_assert(settings->simplex_high != settings->simplex_low, "Low and high setting cannot be the same");
 
-	SDL_Surface *bitmap = SDL_LoadBMP("test_blurry.bmp");
+	SDL_Surface *bitmap = SDL_LoadBMP(heightmap_path);
 	if (bitmap == NULL)
 	{
 		printf("Failed to load bitmap: %s\n", SDL_GetError());

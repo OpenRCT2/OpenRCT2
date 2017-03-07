@@ -16,6 +16,7 @@
 
 #include <time.h>
 #include "../config/Config.h"
+#include "../core/Guard.hpp"
 #include "../editor.h"
 #include "../game.h"
 #include "../interface/themes.h"
@@ -212,6 +213,14 @@ rct_window *window_loadsave_open(sint32 type, char *defaultName)
 		w->widgets[WIDX_TITLE].text = isSave ? STR_FILE_DIALOG_TITLE_SAVE_TRACK : STR_FILE_DIALOG_TITLE_INSTALL_NEW_TRACK_DESIGN;
 		if (window_loadsave_get_dir(gConfigGeneral.last_save_track_directory, path, "track", sizeof(path))) {
 			window_loadsave_populate_list(w, isSave, path, isSave ? ".td6" : ".td6;.td4");
+			success = true;
+		}
+		break;
+	case LOADSAVETYPE_IMAGE:
+		openrct2_assert(isSave == false, "Cannot save images through loadsave window");
+		w->widgets[WIDX_TITLE].text = STR_FILE_DIALOG_TITLE_LOAD_HEIGHTMAP;
+		if (window_loadsave_get_dir(gConfigGeneral.last_save_track_directory, path, "", sizeof(path))) {
+			window_loadsave_populate_list(w, false, path, ".bmp");
 			success = true;
 		}
 		break;
@@ -812,6 +821,10 @@ static void window_loadsave_select(rct_window *w, const char *path)
 			window_loadsave_invoke_callback(MODAL_RESULT_FAIL, path);
 		}
 	}
+	case (LOADSAVETYPE_LOAD | LOADSAVETYPE_IMAGE):
+		window_close_by_class(WC_LOADSAVE);
+		window_loadsave_invoke_callback(MODAL_RESULT_OK, path);
+		break;
 	}
 }
 
