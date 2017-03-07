@@ -726,11 +726,11 @@
 		D429FF411E36ABCD009342A6 /* tile_inspector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tile_inspector.h; sourceTree = "<group>"; };
 		D42E33751E5C27D600D630AF /* Config.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Config.cpp; sourceTree = "<group>"; };
 		D42E33761E5C27D600D630AF /* Config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Config.h; sourceTree = "<group>"; };
-		D42E33771E5C27D600D630AF /* ConfigEnum.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConfigEnum.h; sourceTree = "<group>"; };
+		D42E33771E5C27D600D630AF /* ConfigEnum.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ConfigEnum.hpp; sourceTree = "<group>"; };
 		D42E33781E5C27D600D630AF /* IniReader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = IniReader.cpp; sourceTree = "<group>"; };
-		D42E33791E5C27D600D630AF /* IniReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IniReader.h; sourceTree = "<group>"; };
+		D42E33791E5C27D600D630AF /* IniReader.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = IniReader.hpp; sourceTree = "<group>"; };
 		D42E337A1E5C27D600D630AF /* IniWriter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = IniWriter.cpp; sourceTree = "<group>"; };
-		D42E337B1E5C27D600D630AF /* IniWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IniWriter.h; sourceTree = "<group>"; };
+		D42E337B1E5C27D600D630AF /* IniWriter.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = IniWriter.hpp; sourceTree = "<group>"; };
 		D42E337C1E5C27D600D630AF /* KeyboardShortcuts.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KeyboardShortcuts.cpp; sourceTree = "<group>"; };
 		D433A4FA1E4A861F00D9A6DF /* SawyerChunk.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SawyerChunk.cpp; path = rct12/SawyerChunk.cpp; sourceTree = "<group>"; };
 		D433A4FB1E4A861F00D9A6DF /* SawyerChunk.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SawyerChunk.h; path = rct12/SawyerChunk.h; sourceTree = "<group>"; };
@@ -1622,11 +1622,11 @@
 			children = (
 				D42E33751E5C27D600D630AF /* Config.cpp */,
 				D42E33761E5C27D600D630AF /* Config.h */,
-				D42E33771E5C27D600D630AF /* ConfigEnum.h */,
+				D42E33771E5C27D600D630AF /* ConfigEnum.hpp */,
 				D42E33781E5C27D600D630AF /* IniReader.cpp */,
-				D42E33791E5C27D600D630AF /* IniReader.h */,
+				D42E33791E5C27D600D630AF /* IniReader.hpp */,
 				D42E337A1E5C27D600D630AF /* IniWriter.cpp */,
-				D42E337B1E5C27D600D630AF /* IniWriter.h */,
+				D42E337B1E5C27D600D630AF /* IniWriter.hpp */,
 				D42E337C1E5C27D600D630AF /* KeyboardShortcuts.cpp */,
 			);
 			path = config;
