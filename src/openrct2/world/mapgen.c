@@ -15,6 +15,7 @@
 #pragma endregion
 
 #include "../common.h"
+#include "../Imaging.h"
 #include "../core/Guard.hpp"
 #include "../object.h"
 #include "../util/util.h"
@@ -771,28 +772,20 @@ static void mapgen_simplex(mapgen_settings *settings)
 /**
  * Applies box blur to the surface N times
  */
-void mapgen_smooth_heightmap(SDL_Surface *surface, sint32 strength)
+void mapgen_smooth_heightmap(uint8 *pixels, const sint32 width, const sint32 height, const sint32 numChannels, const size_t pitch, sint32 strength)
 {
-	SDL_LockSurface(surface);
-
-	const sint32 width = surface->w;
-	const sint32 height = surface->h;
-	const sint32 numChannels = surface->format->BytesPerPixel;
-	const size_t pitch = surface->pitch;
-
 	// Create buffer to store one channel
 	uint8 *dest = (uint8*)malloc(width * height);
-	uint8 *src = surface->pixels;
 
 	// Overwrite the red channel with the average of the RGB channels
 	for (sint32 y = 0; y < height; y++)
 	{
 		for (sint32 x = 0; x < width; x++)
 		{
-			const uint8 red = src[x * numChannels + y * pitch];
-			const uint8 green = src[x * numChannels + y * pitch + 1];
-			const uint8 blue = src[x * numChannels + y * pitch + 2];
-			src[x * numChannels + y * pitch] = (red + green + blue) / 3;
+			const uint8 red = pixels[x * numChannels + y * pitch];
+			const uint8 green = pixels[x * numChannels + y * pitch + 1];
+			const uint8 blue = pixels[x * numChannels + y * pitch + 2];
+			pixels[x * numChannels + y * pitch] = (red + green + blue) / 3;
 		}
 	}
 
@@ -814,7 +807,7 @@ void mapgen_smooth_heightmap(SDL_Surface *surface, sint32 strength)
 						// This assumes the height map is not tiled, and increases the weight of the edges
 						const sint32 readX = clamp(x + offsetX, 0, width - 1);
 						const sint32 readY = clamp(y + offsetY, 0, height - 1);
-						heightSum += src[readX * numChannels + readY * pitch];
+						heightSum += pixels[readX * numChannels + readY * pitch];
 					}
 				}
 
@@ -828,29 +821,60 @@ void mapgen_smooth_heightmap(SDL_Surface *surface, sint32 strength)
 		{
 			for (sint32 x = 0; x < width; x++)
 			{
-				src[x * numChannels + y * pitch] = dest[x + y * width];
+				pixels[x * numChannels + y * pitch] = dest[x + y * width];
 			}
 		}
 	}
 
 	free(dest);
-	SDL_UnlockSurface(surface);
 }
 
 void mapgen_generate_from_heightmap(mapgen_settings *settings)
 {
 	openrct2_assert(settings->simplex_high != settings->simplex_low, "Low and high setting cannot be the same");
 
-	SDL_Surface *bitmap = SDL_LoadBMP(heightmap_path);
-	if (bitmap == NULL)
-	{
-		printf("Failed to load bitmap: %s\n", SDL_GetError());
+	// TODO: Move all loading to a callback
+	const char* extension = path_get_extension(heightmap_path);
+	sint32 width;
+	sint32 height;
+	uint8 numChannels;
+	uint8 *pixels;
+	size_t pitch;
+
+	if (strcicmp(extension, ".png") == 0) {
+		uint32 w, h;
+		if (!image_io_png_read(&pixels, &w, &h, heightmap_path)) {
+			printf("Error reading PNG\n");
+			return;
+		}
+
+		width = w;
+		height = h;
+		numChannels = 4;
+		pitch = width * numChannels;
+	} else if (strcicmp(extension, ".bmp") == 0) {
+		SDL_Surface *bitmap = SDL_LoadBMP(heightmap_path);
+		if (bitmap == NULL)
+		{
+			printf("Failed to load bitmap: %s\n", SDL_GetError());
+			return;
+		}
+
+		width = bitmap->w;
+		height = bitmap->h;
+		numChannels = bitmap->format->BytesPerPixel;
+		pitch = bitmap->pitch;
+
+		// Copy pixels over to our own array
+		SDL_LockSurface(bitmap);
+		pixels = malloc(height * bitmap->pitch);
+		memcpy(pixels, bitmap->pixels, width * height * numChannels);
+		SDL_UnlockSurface(bitmap);
+		SDL_FreeSurface(bitmap);
+	} else {
+		openrct2_assert(false, "A file with an invalid file extension was selected.");
 		return;
 	}
-
-	const sint32 width = bitmap->w;
-	const sint32 height = bitmap->h;
-	const uint8 numChannels = bitmap->format->BytesPerPixel;
 
 	map_init(width + 2); // + 2 for the black tiles around the map
 
@@ -860,11 +884,9 @@ void mapgen_generate_from_heightmap(mapgen_settings *settings)
 	if (settings->smooth_height_map)
 	{
 		// Smooth height map
-		mapgen_smooth_heightmap(bitmap, settings->smooth_strength);
+		mapgen_smooth_heightmap(pixels, width, height, numChannels, pitch, settings->smooth_strength);
 	}
 
-	SDL_LockSurface(bitmap);
-	uint8 *src = (uint8*)bitmap->pixels;
 	if (settings->normalize_height)
 	{
 		// Get highest and lowest pixel value
@@ -874,7 +896,7 @@ void mapgen_generate_from_heightmap(mapgen_settings *settings)
 		{
 			for (sint32 x = 0; x < width; x++)
 			{
-				uint8 value = src[x * numChannels + y * bitmap->pitch];
+				uint8 value = pixels[x * numChannels + y * pitch];
 				maxValue = max(maxValue, value);
 				minValue = min(minValue, value);
 			}
@@ -902,7 +924,7 @@ void mapgen_generate_from_heightmap(mapgen_settings *settings)
 			rct_map_element *const surfaceElement = map_get_surface_element_at(y + 1, x + 1);
 
 			// Read value from bitmap, and convert its range
-			uint8 value = src[x * numChannels + y * bitmap->pitch];
+			uint8 value = pixels[x * numChannels + y * pitch];
 			value = (uint8)((float)(value - minValue) / rangeIn * rangeOut) + settings->simplex_low;
 			surfaceElement->base_height = value;
 
@@ -939,8 +961,7 @@ void mapgen_generate_from_heightmap(mapgen_settings *settings)
 		}
 	}
 
-	SDL_UnlockSurface(bitmap);
-	SDL_FreeSurface(bitmap);
+	free(pixels);
 }
 
 #pragma endregion

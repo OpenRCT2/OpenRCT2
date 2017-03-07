@@ -220,7 +220,7 @@ rct_window *window_loadsave_open(sint32 type, char *defaultName)
 		openrct2_assert(isSave == false, "Cannot save images through loadsave window");
 		w->widgets[WIDX_TITLE].text = STR_FILE_DIALOG_TITLE_LOAD_HEIGHTMAP;
 		if (window_loadsave_get_dir(gConfigGeneral.last_save_track_directory, path, "", sizeof(path))) {
-			window_loadsave_populate_list(w, false, path, ".bmp");
+			window_loadsave_populate_list(w, false, path, ".bmp;.png");
 			success = true;
 		}
 		break;
