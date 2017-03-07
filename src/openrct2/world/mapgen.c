@@ -784,6 +784,18 @@ void mapgen_smooth_heightmap(SDL_Surface *surface, sint32 strength)
 	uint8 *dest = (uint8*)malloc(width * height);
 	uint8 *src = surface->pixels;
 
+	// Overwrite the red channel with the average of the RGB channels
+	for (sint32 y = 0; y < height; y++)
+	{
+		for (sint32 x = 0; x < width; x++)
+		{
+			const uint8 red = src[x * numChannels + y * pitch];
+			const uint8 green = src[x * numChannels + y * pitch + 1];
+			const uint8 blue = src[x * numChannels + y * pitch + 2];
+			src[x * numChannels + y * pitch] = (red + green + blue) / 3;
+		}
+	}
+
 	for (sint32 i = 0; i < strength; i++)
 	{
 		// Calculate box blur value to all pixels of the surface
@@ -802,10 +814,7 @@ void mapgen_smooth_heightmap(SDL_Surface *surface, sint32 strength)
 						// This assumes the height map is not tiled, and increases the weight of the edges
 						const sint32 readX = clamp(x + offsetX, 0, width - 1);
 						const sint32 readY = clamp(y + offsetY, 0, height - 1);
-						const uint8 red = src[readX * numChannels + readY * pitch];
-						const uint8 green = src[readX * numChannels + readY * pitch + 1];
-						const uint8 blue = src[readX * numChannels + readY * pitch + 2];
-						heightSum += (red + green + blue) / 3;
+						heightSum += src[readX * numChannels + readY * pitch];
 					}
 				}
 
