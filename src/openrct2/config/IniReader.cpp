@@ -84,7 +84,7 @@ struct StringICmp
         for (std::size_t i = a.size(); i > 0; --i, ++s1, ++s2)
         {
             const int c1 = std::toupper(Traits::to_int_type(*s1));
-            const int c2 = std::toupper(Traits::to_int_type(*s1));
+            const int c2 = std::toupper(Traits::to_int_type(*s2));
             if (c1 != c2) return false;
         }
         return true;
