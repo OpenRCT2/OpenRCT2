@@ -1,6 +1,7 @@
 0.0.7 (in development)
 ------------------------------------------------------------------------
 - Feature: [#1730] Keyboard shortcuts for track construction.
+- Feature: [#2060, #5282] Heightmap loader
 - Feature: [#5110] The tile inspector can now be used in multiplayer.
 - Feature: [#5305] Add scenery eye dropper tool.
 - Feature: [#5370] Ride operating mode can be set from the console.
