@@ -15,6 +15,8 @@
 #pragma endregion
 
 #include "../common.h"
+#include <math.h>
+#include <SDL.h>
 #include "../Imaging.h"
 #include "../core/Guard.hpp"
 #include "../object.h"
@@ -772,7 +774,7 @@ static void mapgen_simplex(mapgen_settings *settings)
 /**
  * Applies box blur to the surface N times
  */
-void mapgen_smooth_heightmap(uint8 *pixels, const sint32 width, const sint32 height, const sint32 numChannels, const size_t pitch, sint32 strength)
+static void mapgen_smooth_heightmap(uint8 *pixels, const sint32 width, const sint32 height, const sint32 numChannels, const size_t pitch, sint32 strength)
 {
 	// Create buffer to store one channel
 	uint8 *dest = (uint8*)malloc(width * height);
