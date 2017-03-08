@@ -54,7 +54,7 @@ Includes all git commit authors. Aliases are GitHub user names.
 * Daniel Trujillo Viedma (gDanix) - Custom currency.
 * Niels NTG Poldervaart (Niels-NTG) - Misc.
 * (zaxcav) - Improvements to original pathfinding algorithm.
-* Hielke Morsink (Broxzier) - Tile inspector, misc.
+* Hielke Morsink (Broxzier) - Tile inspector, heightmap loader, misc.
 * Joël Troch (JoelTroch) - Keyboard shortcuts for ride construction.
 * Thomas Delebo (delebota) - Misc.
 
