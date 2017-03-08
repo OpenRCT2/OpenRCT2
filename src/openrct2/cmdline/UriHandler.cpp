@@ -22,7 +22,11 @@
 #include "CommandLine.hpp"
 
 static exitcode_t HandleUri(const std::string &uri);
+
+#ifndef DISABLE_NETWORK
+static exitcode_t HandleUriJoin(const std::vector<std::string> &args);
 static bool TryParseHostnamePort(const std::string &hostnamePort, std::string * outHostname, sint32 * outPort, sint32 defaultPort);
+#endif
 
 exitcode_t CommandLine::HandleCommandUri(CommandLineArgEnumerator * enumerator)
 {
@@ -42,29 +46,40 @@ exitcode_t CommandLine::HandleCommandUri(CommandLineArgEnumerator * enumerator)
 
 static exitcode_t HandleUri(const std::string &uri)
 {
+    exitcode_t result = EXITCODE_CONTINUE;
     auto args = String::Split(uri, "/");
     if (args.size() > 0)
     {
+#ifndef DISABLE_NETWORK
         std::string arg = args[0];
         if (arg == "join")
         {
-            std::string hostname;
-            sint32 port;
-            if (args.size() > 1 && TryParseHostnamePort(args[1], &hostname, &port, NETWORK_DEFAULT_PORT))
-            {
-                // Set the network start configuration
-                gNetworkStart = NETWORK_MODE_CLIENT;
-                String::Set(gNetworkStartHost, sizeof(gNetworkStartHost), hostname.c_str());
-                gNetworkStartPort = port;
-            }
-            else
-            {
-                Console::Error::WriteLine("Expected hostname:port after join");
-                return EXITCODE_FAIL;
-            }
+            result = HandleUriJoin(args);
         }
+#endif
     }
-    return EXITCODE_CONTINUE;
+    return result;
+}
+
+#ifndef DISABLE_NETWORK
+
+static exitcode_t HandleUriJoin(const std::vector<std::string> &args)
+{
+    std::string hostname;
+    sint32 port;
+    if (args.size() > 1 && TryParseHostnamePort(args[1], &hostname, &port, NETWORK_DEFAULT_PORT))
+    {
+        // Set the network start configuration
+        gNetworkStart = NETWORK_MODE_CLIENT;
+        String::Set(gNetworkStartHost, sizeof(gNetworkStartHost), hostname.c_str());
+        gNetworkStartPort = port;
+        return EXITCODE_CONTINUE;
+    }
+    else
+    {
+        Console::Error::WriteLine("Expected hostname:port after join");
+        return EXITCODE_FAIL;
+    }
 }
 
 static bool TryParseHostnamePort(const std::string &hostnamePort, std::string * outHostname, sint32 * outPort, sint32 defaultPort)
@@ -89,3 +104,5 @@ static bool TryParseHostnamePort(const std::string &hostnamePort, std::string * 
         return false;
     }
 }
+
+#endif // DISABLE_NETWORK
