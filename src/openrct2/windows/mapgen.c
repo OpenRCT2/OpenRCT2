@@ -227,6 +227,7 @@ static rct_widget *PageWidgets[WINDOW_MAPGEN_PAGE_COUNT] = {
 
 #pragma region Events
 
+static void window_mapgen_shared_close(rct_window *w);
 static void window_mapgen_shared_mouseup(rct_window *w, sint32 widgetIndex);
 
 static void window_mapgen_base_mouseup(rct_window *w, sint32 widgetIndex);
@@ -256,7 +257,7 @@ static void window_mapgen_heightmap_invalidate(rct_window *w);
 static void window_mapgen_heightmap_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
 static rct_window_event_list BaseEvents = {
-	NULL,
+	window_mapgen_shared_close,
 	window_mapgen_base_mouseup,
 	NULL,
 	window_mapgen_base_mousedown,
@@ -287,7 +288,7 @@ static rct_window_event_list BaseEvents = {
 };
 
 static rct_window_event_list RandomEvents = {
-	NULL,
+	window_mapgen_shared_close,
 	window_mapgen_random_mouseup,
 	NULL,
 	window_mapgen_random_mousedown,
@@ -318,7 +319,7 @@ static rct_window_event_list RandomEvents = {
 };
 
 static rct_window_event_list SimplexEvents = {
-	NULL,
+	window_mapgen_shared_close,
 	window_mapgen_simplex_mouseup,
 	NULL,
 	window_mapgen_simplex_mousedown,
@@ -349,7 +350,7 @@ static rct_window_event_list SimplexEvents = {
 };
 
 static rct_window_event_list HeightmapEvents = {
-	NULL,
+	window_mapgen_shared_close,
 	window_mapgen_heightmap_mouseup,
 	NULL,
 	window_mapgen_heightmap_mousedown,
@@ -596,6 +597,11 @@ rct_window *window_mapgen_open()
 	window_init_scroll_widgets(w);
 
 	return w;
+}
+
+static void window_mapgen_shared_close(rct_window *w)
+{
+	mapgen_unload_heightmap();
 }
 
 static void window_mapgen_shared_mouseup(rct_window *w, sint32 widgetIndex)
@@ -1194,10 +1200,13 @@ static void window_mapgen_heightmap_generate_map(rct_window *w)
 
 static void window_mapgen_heightmap_loadsave_callback(sint32 result, const utf8 *path)
 {
-	if (result == MODAL_RESULT_OK)
-	{
-		strcpy(heightmap_path, path);
+	if (result == MODAL_RESULT_OK) {
+		if (!mapgen_load_heightmap(path)) {
+			// TODO: Display error popup
+			return;
+		}
 
+		// TODO #refactor: Window reference shouldn't be needed
 		rct_window *const w = window_find_by_class(WC_MAPGEN);
 		window_mapgen_heightmap_generate_map(w);
 	}
