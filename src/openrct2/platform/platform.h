@@ -234,4 +234,8 @@ void core_init();
 	void platform_posix_sub_resolve_openrct_data_path(utf8 *out, size_t size);
 #endif
 
+#ifdef __MACOSX__
+	void macos_disallow_automatic_window_tabbing();
+#endif
+
 #endif

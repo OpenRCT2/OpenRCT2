@@ -617,6 +617,9 @@ static void platform_create_window()
 	SDL_SetWindowGrab(gWindow, gConfigGeneral.trap_cursor ? SDL_TRUE : SDL_FALSE);
 	SDL_SetWindowMinimumSize(gWindow, 720, 480);
 	platform_init_window_icon();
+#ifdef __MACOSX__
+	macos_disallow_automatic_window_tabbing();
+#endif
 
 	// Initialise the surface, palette and draw buffer
 	platform_resize(width, height);
