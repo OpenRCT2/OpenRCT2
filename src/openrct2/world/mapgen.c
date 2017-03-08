@@ -26,9 +26,20 @@
 #include "mapgen.h"
 #include "scenery.h"
 
-#pragma region Random objects
+#pragma region Height map struct
 
-char heightmap_path[260] = "";
+static struct {
+	uint32 width, height;
+	uint8 *mono_bitmap;
+} _heightMapData = {
+	.width = 0,
+	.height = 0,
+	.mono_bitmap = NULL
+};
+
+#pragma endregion Height map struct
+
+#pragma region Random objects
 
 const char *GrassTrees[] = {
 	// Dark
@@ -771,32 +782,97 @@ static void mapgen_simplex(mapgen_settings *settings)
 
 #pragma region Heightmap
 
-/**
- * Applies box blur to the surface N times
- */
-static void mapgen_smooth_heightmap(uint8 *pixels, const sint32 width, const sint32 height, const sint32 numChannels, const size_t pitch, sint32 strength)
+bool mapgen_load_heightmap(const utf8 *path)
 {
-	// Create buffer to store one channel
-	uint8 *dest = (uint8*)malloc(width * height);
+	const char* extension = path_get_extension(path);
+	uint8 *pixels;
+	size_t pitch;
+	uint32 numChannels;
 
-	// Overwrite the red channel with the average of the RGB channels
-	for (sint32 y = 0; y < height; y++)
+	if (strcicmp(extension, ".png") == 0) {
+		if (!image_io_png_read(&pixels, &_heightMapData.width, &_heightMapData.height, path)) {
+			printf("Error reading PNG\n");
+			return false;
+		}
+
+		numChannels = 4;
+		pitch = _heightMapData.width * numChannels;
+	}
+	else if (strcicmp(extension, ".bmp") == 0) {
+		SDL_Surface *bitmap = SDL_LoadBMP(path);
+		if (bitmap == NULL) {
+			printf("Failed to load bitmap: %s\n", SDL_GetError());
+			return false;
+		}
+
+		_heightMapData.width = bitmap->w;
+		_heightMapData.height = bitmap->h;
+		numChannels = bitmap->format->BytesPerPixel;
+		pitch = bitmap->pitch;
+
+		// Copy pixels over, then discard the surface
+		SDL_LockSurface(bitmap);
+		pixels = malloc(_heightMapData.height * bitmap->pitch);
+		memcpy(pixels, bitmap->pixels, _heightMapData.height * bitmap->pitch);
+		SDL_UnlockSurface(bitmap);
+		SDL_FreeSurface(bitmap);
+	}
+	else
 	{
-		for (sint32 x = 0; x < width; x++)
+		openrct2_assert(false, "A file with an invalid file extension was selected.");
+		return false;
+	}
+
+	if (_heightMapData.width != _heightMapData.height) {
+		log_warning("Width and height need to be the same");
+		free(pixels);
+		return false;
+	}
+
+	// Allocate memory for the height map values, one byte pixel
+	_heightMapData.mono_bitmap = (uint8*)malloc(_heightMapData.width * _heightMapData.height);
+
+	// Copy average RGB value to mono bitmap
+	for (uint32 x = 0; x < _heightMapData.width; x++)
+	{
+		for (uint32 y = 0; y < _heightMapData.height; y++)
 		{
 			const uint8 red = pixels[x * numChannels + y * pitch];
 			const uint8 green = pixels[x * numChannels + y * pitch + 1];
 			const uint8 blue = pixels[x * numChannels + y * pitch + 2];
-			pixels[x * numChannels + y * pitch] = (red + green + blue) / 3;
+			_heightMapData.mono_bitmap[x + y * _heightMapData.width] = (red + green + blue) / 3;
 		}
 	}
+
+	free(pixels);
+	return true;
+}
+
+/**
+ * Frees the memory used to store the selected height map
+ */
+void mapgen_unload_heightmap()
+{
+	free(_heightMapData.mono_bitmap);
+	_heightMapData.mono_bitmap = NULL;
+	_heightMapData.width = 0;
+	_heightMapData.height = 0;
+}
+
+/**
+ * Applies box blur to the surface N times
+ */
+static void mapgen_smooth_heightmap(uint8 *src, sint32 strength)
+{
+	// Create buffer to store one channel
+	uint8 *dest = (uint8*)malloc(_heightMapData.width * _heightMapData.height);
 
 	for (sint32 i = 0; i < strength; i++)
 	{
 		// Calculate box blur value to all pixels of the surface
-		for (sint32 y = 0; y < height; y++)
+		for (uint32 y = 0; y < _heightMapData.height; y++)
 		{
-			for (sint32 x = 0; x < width; x++)
+			for (uint32 x = 0; x < _heightMapData.width; x++)
 			{
 				uint32 heightSum = 0;
 
@@ -807,23 +883,23 @@ static void mapgen_smooth_heightmap(uint8 *pixels, const sint32 width, const sin
 					{
 						// Clamp x and y so they stay within the image
 						// This assumes the height map is not tiled, and increases the weight of the edges
-						const sint32 readX = clamp(x + offsetX, 0, width - 1);
-						const sint32 readY = clamp(y + offsetY, 0, height - 1);
-						heightSum += pixels[readX * numChannels + readY * pitch];
+						const sint32 readX = clamp((sint32)x + offsetX, 0, (sint32)_heightMapData.width - 1);
+						const sint32 readY = clamp((sint32)y + offsetY, 0, (sint32)_heightMapData.height - 1);
+						heightSum += src[readX + readY * _heightMapData.width];
 					}
 				}
 
 				// Take average
-				dest[x + y * width] = heightSum / 9;
+				dest[x + y * _heightMapData.width] = heightSum / 9;
 			}
 		}
 
 		// Now apply the blur to the source pixels
-		for (sint32 y = 0; y < height; y++)
+		for (uint32 y = 0; y < _heightMapData.height; y++)
 		{
-			for (sint32 x = 0; x < width; x++)
+			for (uint32 x = 0; x < _heightMapData.width; x++)
 			{
-				pixels[x * numChannels + y * pitch] = dest[x + y * width];
+				src[x + y * _heightMapData.width] = dest[x + y * _heightMapData.width];
 			}
 		}
 	}
@@ -833,72 +909,34 @@ static void mapgen_smooth_heightmap(uint8 *pixels, const sint32 width, const sin
 
 void mapgen_generate_from_heightmap(mapgen_settings *settings)
 {
+	openrct2_assert(_heightMapData.width == _heightMapData.height, "Invallid height map size");
+	openrct2_assert(_heightMapData.mono_bitmap != NULL, "No heightmap loaded");
 	openrct2_assert(settings->simplex_high != settings->simplex_low, "Low and high setting cannot be the same");
 
-	// TODO: Move all loading to a callback
-	const char* extension = path_get_extension(heightmap_path);
-	sint32 width;
-	sint32 height;
-	uint8 numChannels;
-	uint8 *pixels;
-	size_t pitch;
+	// Make a copy of the original heightmap that we can edit
+	uint8 *dest = (uint8*)malloc(_heightMapData.width * _heightMapData.height);
+	memcpy(dest, _heightMapData.mono_bitmap, _heightMapData.width * _heightMapData.width);
 
-	if (strcicmp(extension, ".png") == 0) {
-		uint32 w, h;
-		if (!image_io_png_read(&pixels, &w, &h, heightmap_path)) {
-			printf("Error reading PNG\n");
-			return;
-		}
-
-		width = w;
-		height = h;
-		numChannels = 4;
-		pitch = width * numChannels;
-	} else if (strcicmp(extension, ".bmp") == 0) {
-		SDL_Surface *bitmap = SDL_LoadBMP(heightmap_path);
-		if (bitmap == NULL)
-		{
-			printf("Failed to load bitmap: %s\n", SDL_GetError());
-			return;
-		}
-
-		width = bitmap->w;
-		height = bitmap->h;
-		numChannels = bitmap->format->BytesPerPixel;
-		pitch = bitmap->pitch;
-
-		// Copy pixels over to our own array
-		SDL_LockSurface(bitmap);
-		pixels = malloc(height * bitmap->pitch);
-		memcpy(pixels, bitmap->pixels, width * height * numChannels);
-		SDL_UnlockSurface(bitmap);
-		SDL_FreeSurface(bitmap);
-	} else {
-		openrct2_assert(false, "A file with an invalid file extension was selected.");
-		return;
-	}
-
-	map_init(width + 2); // + 2 for the black tiles around the map
-
-	uint8 maxValue = 255;
-	uint8 minValue = 0;
+	map_init(_heightMapData.width + 2); // + 2 for the black tiles around the map
 
 	if (settings->smooth_height_map)
 	{
-		// Smooth height map
-		mapgen_smooth_heightmap(pixels, width, height, numChannels, pitch, settings->smooth_strength);
+		mapgen_smooth_heightmap(dest, settings->smooth_strength);
 	}
+
+	uint8 maxValue = 255;
+	uint8 minValue = 0;
 
 	if (settings->normalize_height)
 	{
 		// Get highest and lowest pixel value
 		maxValue = 0;
 		minValue = 0xff;
-		for (sint32 y = 0; y < height; y++)
+		for (uint32 y = 0; y < _heightMapData.height; y++)
 		{
-			for (sint32 x = 0; x < width; x++)
+			for (uint32 x = 0; x < _heightMapData.width; x++)
 			{
-				uint8 value = pixels[x * numChannels + y * pitch];
+				uint8 value = dest[x + y * _heightMapData.width];
 				maxValue = max(maxValue, value);
 				minValue = min(minValue, value);
 			}
@@ -918,15 +956,15 @@ void mapgen_generate_from_heightmap(mapgen_settings *settings)
 	const uint8 rangeIn = maxValue - minValue;
 	const uint8 rangeOut = settings->simplex_high - settings->simplex_low;
 
-	for (sint32 y = 0; y < height; y++)
+	for (uint32 y = 0; y < _heightMapData.height; y++)
 	{
-		for (sint32 x = 0; x < width; x++)
+		for (uint32 x = 0; x < _heightMapData.width; x++)
 		{
 			// The x and y axis are flipped in the world, so this uses y for x and x for y.
 			rct_map_element *const surfaceElement = map_get_surface_element_at(y + 1, x + 1);
 
 			// Read value from bitmap, and convert its range
-			uint8 value = pixels[x * numChannels + y * pitch];
+			uint8 value = dest[x + y * _heightMapData.width];
 			value = (uint8)((float)(value - minValue) / rangeIn * rangeOut) + settings->simplex_low;
 			surfaceElement->base_height = value;
 
@@ -949,10 +987,10 @@ void mapgen_generate_from_heightmap(mapgen_settings *settings)
 		// Keep smoothing the entire map until no tiles are changed anymore
 		while (true)
 		{
-			sint32 numTilesChanged = 0;
-			for (sint32 y = 1; y <= height; y++)
+			uint32 numTilesChanged = 0;
+			for (uint32 y = 1; y <= _heightMapData.height; y++)
 			{
-				for (sint32 x = 1; x <= width; x++)
+				for (uint32 x = 1; x <= _heightMapData.width; x++)
 				{
 					numTilesChanged += tile_smooth(x, y);
 				}
@@ -963,7 +1001,8 @@ void mapgen_generate_from_heightmap(mapgen_settings *settings)
 		}
 	}
 
-	free(pixels);
+	// Clean up
+	free(dest);
 }
 
 #pragma endregion
