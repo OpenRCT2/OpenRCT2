@@ -909,11 +909,11 @@ static void mapgen_smooth_heightmap(uint8 *src, sint32 strength)
 
 void mapgen_generate_from_heightmap(mapgen_settings *settings)
 {
-	openrct2_assert(_heightMapData.width == _heightMapData.height, "Invallid height map size");
-	openrct2_assert(_heightMapData.mono_bitmap != NULL, "No heightmap loaded");
+	openrct2_assert(_heightMapData.width == _heightMapData.height, "Invalid height map size");
+	openrct2_assert(_heightMapData.mono_bitmap != NULL, "No height map loaded");
 	openrct2_assert(settings->simplex_high != settings->simplex_low, "Low and high setting cannot be the same");
 
-	// Make a copy of the original heightmap that we can edit
+	// Make a copy of the original height map that we can edit
 	uint8 *dest = (uint8*)malloc(_heightMapData.width * _heightMapData.height);
 	memcpy(dest, _heightMapData.mono_bitmap, _heightMapData.width * _heightMapData.width);
 
