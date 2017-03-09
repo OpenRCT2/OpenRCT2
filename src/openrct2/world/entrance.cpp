@@ -199,7 +199,7 @@ static money32 ParkEntranceRemove(sint16 x, sint16 y, uint8 z, uint8 flags)
         return 0;
     }
 
-    entranceIndex = park_get_entrance_index(x, y, z * 16);
+    entranceIndex = park_entrance_get_index(x, y, z * 16);
     if (entranceIndex == -1) 
     {
         return 0;
@@ -228,7 +228,7 @@ static money32 ParkEntranceRemove(sint16 x, sint16 y, uint8 z, uint8 flags)
     return 0;
 }
 
-static money32 place_ride_entrance_or_exit(sint16 x, 
+static money32 RideEntranceExitPlace(sint16 x, 
     sint16 y, 
     sint16 z, 
     uint8 direction, 
@@ -282,7 +282,7 @@ static money32 place_ride_entrance_or_exit(sint16 x,
             return MONEY32_UNDEFINED;
         }
 
-        if (z > 1952)
+        if (z / 8 > 244)
         {
             gGameCommandErrorText = STR_TOO_HIGH;
             return MONEY32_UNDEFINED;
@@ -455,7 +455,7 @@ static money32 place_ride_entrance_or_exit(sint16 x,
     return cost;
 }
 
-static money32 remove_ride_entrance_or_exit(sint16 x, sint16 y, uint8 rideIndex, uint8 stationNum, uint8 flags)
+static money32 RideEntranceExitRemove(sint16 x, sint16 y, uint8 rideIndex, uint8 stationNum, uint8 flags)
 {
     if (rideIndex >= MAX_RIDES)
     {
@@ -515,7 +515,7 @@ static money32 remove_ride_entrance_or_exit(sint16 x, sint16 y, uint8 rideIndex,
             if (mapElement->base_height != ride->station_heights[stationNum])
                 continue;
 
-            if (flags & (1 << 5) && !(mapElement->flags & MAP_ELEMENT_FLAG_GHOST))
+            if (flags & GAME_COMMAND_FLAG_5 && !(mapElement->flags & MAP_ELEMENT_FLAG_GHOST))
                 continue;
 
             found = true;
@@ -560,7 +560,7 @@ static money32 remove_ride_entrance_or_exit(sint16 x, sint16 y, uint8 rideIndex,
     return 0;
 }
 
-money32 ride_entrance_exit_place_ghost(uint8 rideIndex, sint16 x, sint16 y, uint8 direction, uint8 placeType, uint8 stationNum)
+money32 RideEntranceExitPlaceGhost(uint8 rideIndex, sint16 x, sint16 y, uint8 direction, uint8 placeType, uint8 stationNum)
 {
     return game_do_command(
         x,
@@ -674,7 +674,7 @@ extern "C"
     }
 
     
-    sint32 park_get_entrance_index(sint32 x, sint32 y, sint32 z)
+    sint32 park_entrance_get_index(sint32 x, sint32 y, sint32 z)
     {
         sint32 i;
 
@@ -703,7 +703,7 @@ extern "C"
     void ride_entrance_exit_place_provisional_ghost()
     {
         if (_currentTrackSelectionFlags & TRACK_SELECTION_FLAG_ENTRANCE_OR_EXIT) {
-            ride_entrance_exit_place_ghost(_currentRideIndex, 
+            RideEntranceExitPlaceGhost(_currentRideIndex, 
                                            gRideEntranceExitGhostPosition.x, 
                                            gRideEntranceExitGhostPosition.y, 
                                            gRideEntranceExitGhostPosition.direction, 
@@ -732,7 +732,7 @@ extern "C"
      *
      *  rct2: 0x006CA28C
      */
-    money32 ride_get_entrance_or_exit_price(sint32 rideIndex, 
+    money32 ride_entrance_exit_place_ghost(sint32 rideIndex, 
                                             sint32 x, 
                                             sint32 y, 
                                             sint32 direction, 
@@ -740,7 +740,7 @@ extern "C"
                                             sint32 stationNum)
     {
         sub_6C96C0();
-        money32 result = ride_entrance_exit_place_ghost(rideIndex, x, y, direction, placeType, stationNum);
+        money32 result = RideEntranceExitPlaceGhost(rideIndex, x, y, direction, placeType, stationNum);
         
         if (result != MONEY32_UNDEFINED) 
         {
@@ -765,7 +765,7 @@ extern "C"
                                                   sint32 *edi,
                                                   sint32 *ebp)
     {
-        *ebx = place_ride_entrance_or_exit(
+        *ebx = RideEntranceExitPlace(
             *eax & 0xFFFF,
             *ecx & 0xFFFF,
             *edx & 0xFF,
@@ -789,7 +789,7 @@ extern "C"
                                                    sint32 *edi,
                                                    sint32 *ebp)
     {
-        *ebx = remove_ride_entrance_or_exit(
+        *ebx = RideEntranceExitRemove(
             *eax & 0xFFFF,
             *ecx & 0xFFFF,
             *edx & 0xFF,

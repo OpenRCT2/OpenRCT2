@@ -87,7 +87,7 @@ void update_park_fences(sint32 x, sint32 y);
 uint8 calculate_guest_initial_happiness(uint8 percentage);
 
 void park_set_open(sint32 open);
-sint32 park_get_entrance_index(sint32 x, sint32 y, sint32 z);
+sint32 park_entrance_get_index(sint32 x, sint32 y, sint32 z);
 void park_set_name(const char *name);
 void park_set_entrance_fee(money32 value);
 

@@ -3772,7 +3772,7 @@ void ride_construction_toolupdate_entrance_exit(sint32 screenX, sint32 screenY)
 		direction != gRideEntranceExitGhostPosition.direction ||
 		stationNum != gRideEntranceExitGhostStationIndex
 	) {
-		_currentTrackPrice = ride_get_entrance_or_exit_price(
+		_currentTrackPrice = ride_entrance_exit_place_ghost(
 			_currentRideIndex, x, y, direction, gRideEntranceExitPlaceType, stationNum
 		);
 		sub_6C84CE();
