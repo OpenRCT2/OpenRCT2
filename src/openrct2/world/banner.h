@@ -40,7 +40,7 @@ enum{
 	BANNER_FLAG_NO_ENTRY = (1 << 0),
 	BANNER_FLAG_IS_LARGE_SCENERY = (1 << 1),
 	BANNER_FLAG_LINKED_TO_RIDE = (1 << 2),
-	BANNER_FLAG_4 = (1 << 3)
+	BANNER_FLAG_IS_WALL = (1 << 3)
 };
 
 extern rct_banner gBanners[MAX_BANNERS];

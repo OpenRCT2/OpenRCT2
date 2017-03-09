@@ -476,7 +476,7 @@ static money32 WallPlace(uint8 wallType,
         rct_banner * banner = &gBanners[bannerIndex];
         if (flags & GAME_COMMAND_FLAG_APPLY)
         {
-            banner->flags |= BANNER_FLAG_4;
+            banner->flags |= BANNER_FLAG_IS_WALL;
             banner->type = 0;
             banner->x = position.x / 32;
             banner->y = position.y / 32;
