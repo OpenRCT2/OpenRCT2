@@ -788,15 +788,16 @@ bool mapgen_load_heightmap(const utf8 *path)
 	uint8 *pixels;
 	size_t pitch;
 	uint32 numChannels;
+	uint32 width, height;
 
 	if (strcicmp(extension, ".png") == 0) {
-		if (!image_io_png_read(&pixels, &_heightMapData.width, &_heightMapData.height, path)) {
+		if (!image_io_png_read(&pixels, &width, &height, path)) {
 			printf("Error reading PNG\n");
 			return false;
 		}
 
 		numChannels = 4;
-		pitch = _heightMapData.width * numChannels;
+		pitch = width * numChannels;
 	}
 	else if (strcicmp(extension, ".bmp") == 0) {
 		SDL_Surface *bitmap = SDL_LoadBMP(path);
@@ -805,15 +806,15 @@ bool mapgen_load_heightmap(const utf8 *path)
 			return false;
 		}
 
-		_heightMapData.width = bitmap->w;
-		_heightMapData.height = bitmap->h;
+		width = bitmap->w;
+		height = bitmap->h;
 		numChannels = bitmap->format->BytesPerPixel;
 		pitch = bitmap->pitch;
 
 		// Copy pixels over, then discard the surface
 		SDL_LockSurface(bitmap);
-		pixels = malloc(_heightMapData.height * bitmap->pitch);
-		memcpy(pixels, bitmap->pixels, _heightMapData.height * bitmap->pitch);
+		pixels = malloc(height * bitmap->pitch);
+		memcpy(pixels, bitmap->pixels, height * bitmap->pitch);
 		SDL_UnlockSurface(bitmap);
 		SDL_FreeSurface(bitmap);
 	}
@@ -823,14 +824,22 @@ bool mapgen_load_heightmap(const utf8 *path)
 		return false;
 	}
 
-	if (_heightMapData.width != _heightMapData.height) {
-		log_warning("Width and height need to be the same");
+	if (width != height) {
+		log_warning("Width and height need to be the same.");
 		free(pixels);
 		return false;
 	}
 
+	if (width > 254) {
+		log_warning("The image is too big, and will be cut off.");
+		width = height = min(height, 254);
+	}
+
 	// Allocate memory for the height map values, one byte pixel
-	_heightMapData.mono_bitmap = (uint8*)malloc(_heightMapData.width * _heightMapData.height);
+	free(_heightMapData.mono_bitmap);
+	_heightMapData.mono_bitmap = (uint8*)malloc(width * height);
+	_heightMapData.width = width;
+	_heightMapData.height = height;
 
 	// Copy average RGB value to mono bitmap
 	for (uint32 x = 0; x < _heightMapData.width; x++)
