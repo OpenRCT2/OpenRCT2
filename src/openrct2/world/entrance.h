@@ -31,9 +31,9 @@ assert_struct_size(rct_entrance_type, 8);
 
 void game_command_remove_park_entrance(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *edx, sint32 *esi, sint32 *edi, sint32 *ebp);
 
-typedef struct rct_xyz16;
-typedef struct rct_xyzd16;
-typedef struct rct_map_element;
+typedef struct rct_xyz16 rct_xyz16;
+typedef struct rct_xyzd16 rct_xyzd16;
+typedef struct rct_map_element rct_map_element;
 
 extern bool gParkEntranceGhostExists;
 extern rct_xyz16 gParkEntranceGhostPosition;

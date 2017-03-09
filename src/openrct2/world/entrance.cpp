@@ -560,7 +560,7 @@ static money32 RideEntranceExitRemove(sint16 x, sint16 y, uint8 rideIndex, uint8
     return 0;
 }
 
-money32 RideEntranceExitPlaceGhost(uint8 rideIndex, sint16 x, sint16 y, uint8 direction, uint8 placeType, uint8 stationNum)
+static money32 RideEntranceExitPlaceGhost(uint8 rideIndex, sint16 x, sint16 y, uint8 direction, uint8 placeType, uint8 stationNum)
 {
     return game_do_command(
         x,
@@ -773,7 +773,7 @@ extern "C"
             *ebx & 0xFF,
             *edx & 0xFF,
             *edi & 0xFF,
-            (*edx >> 8) & 0xFF
+            ((*edx >> 8) & 0xFF) != 0
             );
     }
 
