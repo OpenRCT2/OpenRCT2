@@ -1102,7 +1102,7 @@ bool track_block_get_previous_from_zero(sint16 x, sint16 y, sint16 z, uint8 ride
 
 void sub_6C84CE();
 void sub_6C96C0();
-money32 ride_get_entrance_or_exit_price(sint32 rideIndex, sint32 x, sint32 y, sint32 direction, sint32 dh, sint32 di);
+money32 ride_get_entrance_or_exit_price(sint32 rideIndex, sint32 x, sint32 y, sint32 direction, sint32 placeType, sint32 stationNum);
 void ride_get_entrance_or_exit_position_from_screen_position(sint32 x, sint32 y, sint32 *outX, sint32 *outY, sint32 *outDirection);
 
 bool ride_select_backwards_from_front();
