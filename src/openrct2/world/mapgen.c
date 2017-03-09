@@ -19,8 +19,11 @@
 #include <SDL.h>
 #include "../Imaging.h"
 #include "../core/Guard.hpp"
+#include "../game.h"
+#include "../localisation/string_ids.h"
 #include "../object.h"
 #include "../util/util.h"
+#include "../windows/error.h"
 #include "map.h"
 #include "map_helpers.h"
 #include "mapgen.h"
@@ -792,7 +795,8 @@ bool mapgen_load_heightmap(const utf8 *path)
 
 	if (strcicmp(extension, ".png") == 0) {
 		if (!image_io_png_read(&pixels, &width, &height, path)) {
-			printf("Error reading PNG\n");
+			log_warning("Error reading PNG");
+			window_error_open(STR_HEIGHT_MAP_ERROR, STR_ERROR_READING_PNG);
 			return false;
 		}
 
@@ -802,7 +806,8 @@ bool mapgen_load_heightmap(const utf8 *path)
 	else if (strcicmp(extension, ".bmp") == 0) {
 		SDL_Surface *bitmap = SDL_LoadBMP(path);
 		if (bitmap == NULL) {
-			printf("Failed to load bitmap: %s\n", SDL_GetError());
+			log_warning("Failed to load bitmap: %s", SDL_GetError());
+			window_error_open(STR_HEIGHT_MAP_ERROR, STR_ERROR_READING_BITMAP);
 			return false;
 		}
 
@@ -825,13 +830,13 @@ bool mapgen_load_heightmap(const utf8 *path)
 	}
 
 	if (width != height) {
-		log_warning("Width and height need to be the same.");
+		window_error_open(STR_HEIGHT_MAP_ERROR, STR_ERROR_WIDTH_AND_HEIGHT_DO_NOT_MATCH);
 		free(pixels);
 		return false;
 	}
 
 	if (width > 254) {
-		log_warning("The image is too big, and will be cut off.");
+		window_error_open(STR_HEIGHT_MAP_ERROR, STR_ERROR_HEIHGT_MAP_TOO_BIG);
 		width = height = min(height, 254);
 	}
 
@@ -953,8 +958,7 @@ void mapgen_generate_from_heightmap(mapgen_settings *settings)
 
 		if (minValue == maxValue)
 		{
-			// TODO: Show warning about the height map being flat
-			log_warning("The height map cannot be normalized, it is flat.");
+			window_error_open(STR_HEIGHT_MAP_ERROR, STR_ERROR_CANNOT_NORMALIZE);
 			return;
 		}
 	}
