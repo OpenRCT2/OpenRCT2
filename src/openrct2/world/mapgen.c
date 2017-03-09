@@ -304,7 +304,7 @@ static void mapgen_place_trees()
 
 	sint32 availablePositionsCount = 0;
 	struct { sint32 x; sint32 y; } tmp, *pos, *availablePositions;
-	availablePositions = malloc(256 * 256 * sizeof(tmp));
+	availablePositions = malloc(MAX_MAP_EDGE_SIZE * MAX_MAP_EDGE_SIZE * sizeof(tmp));
 
 	// Create list of available tiles
 	for (sint32 y = 1; y < gMapSize - 1; y++) {
