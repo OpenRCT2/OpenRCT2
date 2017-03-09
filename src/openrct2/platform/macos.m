@@ -27,8 +27,8 @@
 void macos_disallow_automatic_window_tabbing()
 {
 	@autoreleasepool {
-		if ([NSWindow respondsToSelector:@selector(allowsAutomaticWindowTabbing)]) {
-			NSWindow.allowsAutomaticWindowTabbing = NO;
+		if ([NSWindow respondsToSelector:@selector(setAllowsAutomaticWindowTabbing:)]) {
+			[NSWindow setAllowsAutomaticWindowTabbing:NO];
 		}
 	}
 }
