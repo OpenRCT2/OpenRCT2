@@ -127,6 +127,13 @@ typedef struct rct_balloon {
 	uint8 pad_28[4];
 	uint8 colour;					// 0x2C
 	uint8 var_2D;
+
+#ifdef __cplusplus
+	void Update();
+	void Pop();
+	void Press();
+#endif
+
 } rct_balloon;
 assert_struct_size(rct_balloon, 0x2e);
 
@@ -337,6 +344,12 @@ typedef union {
 	rct_crashed_vehicle_particle crashed_vehicle_particle;
 	rct_crash_splash crash_splash;
 	rct_steam_particle steam_particle;
+
+#ifdef __cplusplus
+	bool IsBalloon();
+	rct_balloon * AsBalloon();
+#endif
+
 } rct_sprite;
 assert_struct_size(rct_sprite, 0x100);
 

@@ -24,69 +24,77 @@ extern "C"
     #include "sprite.h"
 }
 
-static bool sprite_is_balloon(rct_sprite * sprite)
+bool rct_sprite::IsBalloon()
 {
-    return sprite != nullptr &&
-           sprite->balloon.sprite_identifier == SPRITE_IDENTIFIER_MISC &&
-           sprite->balloon.misc_identifier == SPRITE_MISC_BALLOON;
+    return this->balloon.sprite_identifier == SPRITE_IDENTIFIER_MISC &&
+           this->balloon.misc_identifier == SPRITE_MISC_BALLOON;
 }
 
-static void balloon_pop(rct_balloon * balloon)
+rct_balloon * rct_sprite::AsBalloon()
 {
-    balloon->popped = 1;
-    balloon->frame = 0;
-    audio_play_sound_at_location(SOUND_BALLOON_POP, balloon->x, balloon->y, balloon->z);
+    rct_balloon * result = nullptr;
+    if (IsBalloon())
+    {
+        result = (rct_balloon *)this;
+    }
+    return result;
 }
 
-/**
-*
-*  rct2: 0x006E88ED
-*/
-static void balloon_press(rct_balloon * balloon)
+void rct_balloon::Update()
 {
-    if (balloon->popped != 1)
+    invalidate_sprite_2((rct_sprite *)this);
+    if (popped == 1)
+    {
+        frame += 256;
+        if (frame >= 1280)
+        {
+            sprite_remove((rct_sprite *)this);
+        }
+    }
+    else
+    {
+        sint32 original_var26a = var_26a;
+        var_26a += 85;
+        if (original_var26a >= 255 - 85)
+        {
+            var_26b++;
+            sprite_move(x, y, z + 1, (rct_sprite*)this);
+
+            sint32 maxZ = 1967 - ((x ^ y) & 31);
+            if (z >= maxZ)
+            {
+                Pop();
+            }
+        }
+    }
+}
+
+void rct_balloon::Press()
+{
+    if (popped != 1)
     {
         uint32 random = scenario_rand();
-        if ((balloon->sprite_index & 7) || (random & 0xFFFF) < 0x2000)
+        if ((sprite_index & 7) || (random & 0xFFFF) < 0x2000)
         {
-            balloon_pop(balloon);
+            Pop();
         }
         else
         {
             sint16 shift = ((random & 0x80000000) ? -6 : 6);
-            sprite_move(balloon->x + shift,
-                        balloon->y,
-                        balloon->z,
-                        (rct_sprite *)balloon);
+            sprite_move(x + shift, y, z, (rct_sprite *)this);
         }
     }
 }
 
-static sint32 balloon_press(uint16 spriteIndex, uint8 flags)
+void rct_balloon::Pop()
 {
-    rct_sprite * sprite = try_get_sprite(spriteIndex);
-    if (!sprite_is_balloon(sprite))
-    {
-        log_error("Tried getting invalid sprite for balloon: %u", spriteIndex);
-        return MONEY32_UNDEFINED;
-    }
-
-    if (flags & GAME_COMMAND_FLAG_APPLY)
-    {
-        if (sprite_is_balloon(sprite))
-        {
-            balloon_press(&sprite->balloon);
-        }
-    }
-    return 0;
+    popped = 1;
+    frame = 0;
+    audio_play_sound_at_location(SOUND_BALLOON_POP, x, y, z);
 }
 
 extern "C"
 {
-    /**
-    *
-    *  rct2: 0x006736C7
-    */
     void create_balloon(sint32 x, sint32 y, sint32 z, sint32 colour, uint8 bl)
     {
         rct_sprite* sprite = create_sprite(2);
@@ -104,41 +112,30 @@ extern "C"
         }
     }
 
-    /**
-    *
-    *  rct2: 0x0067342C
-    */
     void balloon_update(rct_balloon * balloon)
     {
-        invalidate_sprite_2((rct_sprite *)balloon);
-        if (balloon->popped == 1)
-        {
-            balloon->frame += 256;
-            if (balloon->frame >= 1280)
-            {
-                sprite_remove((rct_sprite *)balloon);
-            }
-        }
-        else
-        {
-            sint32 original_var26a = balloon->var_26a;
-            balloon->var_26a += 85;
-            if (original_var26a >= 255 - 85)
-            {
-                balloon->var_26b++;
-                sprite_move(balloon->x, balloon->y, balloon->z + 1, (rct_sprite*)balloon);
-
-                sint32 maxZ = 1967 - ((balloon->x ^ balloon->y) & 31);
-                if (balloon->z >= maxZ)
-                {
-                    balloon_pop(balloon);
-                }
-            }
-        }
+        balloon->Update();
     }
 
     void game_command_balloon_press(sint32 * eax, sint32 * ebx, sint32 * ecx, sint32 * edx, sint32 * esi, sint32 * edi, sint32 * ebp)
     {
-        *ebx = balloon_press(*eax & 0xFFFF, *ebx);
+        uint16 spriteIndex = *eax & 0xFFFF;
+        uint8 flags = *ebx;
+
+        rct_sprite * sprite = try_get_sprite(spriteIndex);
+        if (sprite == nullptr || !sprite->IsBalloon())
+        {
+            log_error("Tried getting invalid sprite for balloon: %u", spriteIndex);
+            *ebx = MONEY32_UNDEFINED;
+        }
+        else
+        {
+            if (flags & GAME_COMMAND_FLAG_APPLY)
+            {
+                sprite->AsBalloon()
+                      ->Press();
+            }
+            *ebx = 0;
+        }
     }
 }
