@@ -1357,6 +1357,9 @@ static void window_map_set_peep_spawn_tool_down(sint32 x, sint32 y)
 		return;
 
 	surfaceMapElement = map_get_surface_element_at(mapX >> 5, mapY >> 5);
+	if (surfaceMapElement == NULL) {
+		return;
+	}
 	if (surfaceMapElement->properties.surface.ownership & 0xF0) {
 		return;
 	}
