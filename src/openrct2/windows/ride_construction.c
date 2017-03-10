@@ -4338,7 +4338,7 @@ void window_ride_construction_keyboard_shortcut_slope_down()
 	if (w == NULL || widget_is_disabled(w, WIDX_STRAIGHT) || w->widgets[WIDX_STRAIGHT].type == WWT_EMPTY) {
 		return;
 	}
-	
+
 	switch (_currentTrackSlopeEnd) {
 	case TRACK_SLOPE_DOWN_25:
 		if (!widget_is_disabled(w, WIDX_SLOPE_DOWN_STEEP) && w->widgets[WIDX_SLOPE_DOWN_STEEP].type != WWT_EMPTY) {
@@ -4389,7 +4389,7 @@ void window_ride_construction_keyboard_shortcut_slope_up()
 	if (w == NULL || widget_is_disabled(w, WIDX_STRAIGHT) || w->widgets[WIDX_STRAIGHT].type == WWT_EMPTY) {
 		return;
 	}
-	
+
 	switch (_currentTrackSlopeEnd) {
 	case TRACK_SLOPE_UP_25:
 		if (!widget_is_disabled(w, WIDX_SLOPE_UP_STEEP) && w->widgets[WIDX_SLOPE_UP_STEEP].type != WWT_EMPTY) {

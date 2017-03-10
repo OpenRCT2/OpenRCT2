@@ -655,7 +655,7 @@ static void window_loadsave_populate_list(rct_window *w, sint32 includeNewItem, 
 			safe_strcpy(filter, directory, sizeof(filter));
 			safe_strcat_path(filter, "*", sizeof(filter));
 			path_append_extension(filter, extToken, sizeof(filter));
-			
+
 			file_info fileInfo;
 			fileEnumHandle = platform_enumerate_files_begin(filter);
 			while (platform_enumerate_files_next(fileEnumHandle, &fileInfo)) {

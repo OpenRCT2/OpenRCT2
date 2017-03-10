@@ -240,6 +240,7 @@
 		C6E96E321E04072F0076A04F /* TitleSequencePlayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C6E96E2D1E04072F0076A04F /* TitleSequencePlayer.cpp */; };
 		C6E96E361E0408B40076A04F /* libzip.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C6E96E351E0408B40076A04F /* libzip.dylib */; };
 		C6E96E371E040E040076A04F /* libzip.dylib in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C6E96E351E0408B40076A04F /* libzip.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		C6EABCC41E719691008C09AB /* UriHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C6EABCC31E719691008C09AB /* UriHandler.cpp */; };
 		D41B73EF1C2101890080A7B9 /* libcurl.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D41B73EE1C2101890080A7B9 /* libcurl.tbd */; };
 		D41B741D1C210A7A0080A7B9 /* libiconv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D41B741C1C210A7A0080A7B9 /* libiconv.tbd */; };
 		D41B74731C2125E50080A7B9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D41B74721C2125E50080A7B9 /* Assets.xcassets */; };
@@ -716,6 +717,7 @@
 		C6E96E331E0408A80076A04F /* zip.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = zip.h; sourceTree = "<group>"; };
 		C6E96E341E0408A80076A04F /* zipconf.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = zipconf.h; sourceTree = "<group>"; };
 		C6E96E351E0408B40076A04F /* libzip.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libzip.dylib; sourceTree = "<group>"; };
+		C6EABCC31E719691008C09AB /* UriHandler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = UriHandler.cpp; sourceTree = "<group>"; };
 		C6FF1BAD1DBCE1A10078DCB5 /* junior_roller_coaster.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = junior_roller_coaster.h; sourceTree = "<group>"; };
 		D41B73EE1C2101890080A7B9 /* libcurl.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libcurl.tbd; path = usr/lib/libcurl.tbd; sourceTree = SDKROOT; };
 		D41B741C1C210A7A0080A7B9 /* libiconv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.tbd; path = usr/lib/libiconv.tbd; sourceTree = SDKROOT; };
@@ -726,11 +728,11 @@
 		D429FF411E36ABCD009342A6 /* tile_inspector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tile_inspector.h; sourceTree = "<group>"; };
 		D42E33751E5C27D600D630AF /* Config.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Config.cpp; sourceTree = "<group>"; };
 		D42E33761E5C27D600D630AF /* Config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Config.h; sourceTree = "<group>"; };
-		D42E33771E5C27D600D630AF /* ConfigEnum.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConfigEnum.h; sourceTree = "<group>"; };
+		D42E33771E5C27D600D630AF /* ConfigEnum.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ConfigEnum.hpp; sourceTree = "<group>"; };
 		D42E33781E5C27D600D630AF /* IniReader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = IniReader.cpp; sourceTree = "<group>"; };
-		D42E33791E5C27D600D630AF /* IniReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IniReader.h; sourceTree = "<group>"; };
+		D42E33791E5C27D600D630AF /* IniReader.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = IniReader.hpp; sourceTree = "<group>"; };
 		D42E337A1E5C27D600D630AF /* IniWriter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = IniWriter.cpp; sourceTree = "<group>"; };
-		D42E337B1E5C27D600D630AF /* IniWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IniWriter.h; sourceTree = "<group>"; };
+		D42E337B1E5C27D600D630AF /* IniWriter.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = IniWriter.hpp; sourceTree = "<group>"; };
 		D42E337C1E5C27D600D630AF /* KeyboardShortcuts.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KeyboardShortcuts.cpp; sourceTree = "<group>"; };
 		D433A4FA1E4A861F00D9A6DF /* SawyerChunk.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SawyerChunk.cpp; path = rct12/SawyerChunk.cpp; sourceTree = "<group>"; };
 		D433A4FB1E4A861F00D9A6DF /* SawyerChunk.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SawyerChunk.h; path = rct12/SawyerChunk.h; sourceTree = "<group>"; };
@@ -1622,11 +1624,11 @@
 			children = (
 				D42E33751E5C27D600D630AF /* Config.cpp */,
 				D42E33761E5C27D600D630AF /* Config.h */,
-				D42E33771E5C27D600D630AF /* ConfigEnum.h */,
+				D42E33771E5C27D600D630AF /* ConfigEnum.hpp */,
 				D42E33781E5C27D600D630AF /* IniReader.cpp */,
-				D42E33791E5C27D600D630AF /* IniReader.h */,
+				D42E33791E5C27D600D630AF /* IniReader.hpp */,
 				D42E337A1E5C27D600D630AF /* IniWriter.cpp */,
-				D42E337B1E5C27D600D630AF /* IniWriter.h */,
+				D42E337B1E5C27D600D630AF /* IniWriter.hpp */,
 				D42E337C1E5C27D600D630AF /* KeyboardShortcuts.cpp */,
 			);
 			path = config;
@@ -1686,6 +1688,7 @@
 				D44270D91CC81B3200D84D28 /* RootCommands.cpp */,
 				D44270DA1CC81B3200D84D28 /* ScreenshotCommands.cpp */,
 				D44270DB1CC81B3200D84D28 /* SpriteCommands.cpp */,
+				C6EABCC31E719691008C09AB /* UriHandler.cpp */,
 			);
 			path = cmdline;
 			sourceTree = "<group>";
@@ -2866,6 +2869,7 @@
 				C686F8B91CDBC37E009F9BFC /* supports.c in Sources */,
 				D442726E1CC81B3200D84D28 /* maze_construction.c in Sources */,
 				D44272751CC81B3200D84D28 /* news_options.c in Sources */,
+				C6EABCC41E719691008C09AB /* UriHandler.cpp in Sources */,
 				D44272551CC81B3200D84D28 /* changelog.c in Sources */,
 				C686F9471CDBC3B7009F9BFC /* top_spin.c in Sources */,
 				D442720E1CC81B3200D84D28 /* rect.c in Sources */,

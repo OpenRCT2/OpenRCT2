@@ -1222,7 +1222,7 @@ money32 string_to_money(char * string_to_monetise)
 		while (!(
 			(text_ptr[i] >= '0' && text_ptr[i] <= '9') ||
 			(text_ptr[i] == decimal_char[0]) ||
-			(text_ptr[i] == '-') || 
+			(text_ptr[i] == '-') ||
 			(text_ptr[i] == '\0')
 		)) {
 			//move everything over to the left by one

@@ -829,12 +829,12 @@ STR_0824    :{BLACK}{CROSS}
 STR_0825    :El nom ja està usant-se.
 STR_0826    :S'estan usant massa noms.
 STR_0827    :No hi ha prou diners - fan falta {CURRENCY2DP}.
-STR_0828    :{SMALLFONT}{BLACK}Tanca la finestra
+STR_0828    :{SMALLFONT}{BLACK}Tanca la finestra.
 STR_0829    :{SMALLFONT}{BLACK}Títol - Arrossegueu-lo per moure la finestra.
-STR_0830    :{SMALLFONT}{BLACK}Apropa la vista
-STR_0831    :{SMALLFONT}{BLACK}Allunya la vista
-STR_0832    :{SMALLFONT}{BLACK}Gira la càmera 90{DEGREE} en sentit horari
-STR_0833    :{SMALLFONT}{BLACK}Posa la partida en pausa
+STR_0830    :{SMALLFONT}{BLACK}Apropa la vista.
+STR_0831    :{SMALLFONT}{BLACK}Allunya la vista.
+STR_0832    :{SMALLFONT}{BLACK}Gira la càmera 90{DEGREE} en sentit horari.
+STR_0833    :{SMALLFONT}{BLACK}Posa la partida en pausa.
 STR_0834    :{SMALLFONT}{BLACK}Opcions del joc i de la partida
 STR_0835    :La inicialització del joc ha fallat.
 STR_0836    :No s'ha pogut iniciar el joc en estat minimitzat.
@@ -942,8 +942,8 @@ STR_0936    :L'entrada del parc està pel mig.
 STR_0937    :{SMALLFONT}{BLACK}Opcions de visualització
 STR_0938    :{SMALLFONT}{BLACK}Modifica l'altura i inclinació del terreny
 STR_0939    :Vista subterrània/interior
-STR_0940    :Amaga el terreny de base
-STR_0941    :Amaga les parets verticals
+STR_0940    :Oculta el terreny de base
+STR_0941    :Oculta les parets verticals
 STR_0942    :Veu a través de les atraccions
 STR_0943    :Veu a través de les decoracions
 STR_0944    :Desa
@@ -979,12 +979,12 @@ STR_0973    :D'acord
 STR_0974    :Atraccions
 STR_0975    :Botigues i estands
 STR_0976    :Lavabos i quioscos d'informació
-STR_0977    :Atraccions de transport noves
-STR_0978    :Atraccions suaus noves
-STR_0979    :Muntanyes russes noves
-STR_0980    :Atraccions intenses noves
-STR_0981    :Atraccions aquàtiques noves
-STR_0982    :Botigues i estands nous
+STR_0977    :Atraccions de transport
+STR_0978    :Atraccions suaus
+STR_0979    :Muntanyes russes
+STR_0980    :Atraccions intenses
+STR_0981    :Atraccions aquàtiques
+STR_0982    :Botigues i estands
 STR_0983    :Recerca i desenvolupament
 STR_0984    :{WINDOW_COLOUR_2}{UP}{BLACK}  {CURRENCY2DP}
 STR_0985    :{WINDOW_COLOUR_2}{DOWN}{BLACK}  {CURRENCY2DP}
@@ -1053,8 +1053,8 @@ STR_1047    :La desada de la partida ha fallat.
 STR_1048    :La desada de l'escenari ha fallat.
 STR_1049    :La desada del paisatge ha fallat.
 STR_1050    :S'ha produït un error al carregar...{NEWLINE}L'arxiu conté dades no vàlides.
-STR_1051    :Suports invisibles
-STR_1052    :Visitants invisibles
+STR_1051    :Oculta els suports
+STR_1052    :Oculta els visitants
 STR_1053    :{SMALLFONT}{BLACK}Atraccions del parc
 STR_1054    :{SMALLFONT}{BLACK}Escull el nom d'atracció
 STR_1055    :{SMALLFONT}{BLACK}Escull el nom de persona
@@ -1350,17 +1350,17 @@ STR_1344    :{WINDOW_COLOUR_2}Longitud del recorregut: {BLACK}{STRINGID}{STRINGI
 STR_1345    :{LENGTH}
 STR_1346    :{LENGTH} / 
 STR_1347    :{WINDOW_COLOUR_2}Velocitat mitjana: {BLACK}{VELOCITY}
-STR_1348    :{WINDOW_COLOUR_2}Acceleració màxima vertical positiva: {BLACK}{COMMA2DP32}g
-STR_1349    :{WINDOW_COLOUR_2}Acceleració màxima vertical positiva: {OUTLINE}{RED}{COMMA2DP32}g
-STR_1350    :{WINDOW_COLOUR_2}Acceleració màxima vertical negativa: {BLACK}{COMMA2DP32}g
-STR_1351    :{WINDOW_COLOUR_2}Acceleració màxima vertical negativa: {OUTLINE}{RED}{COMMA2DP32}g
+STR_1348    :{WINDOW_COLOUR_2}Acceleració màxima vertical positiva: {BLACK}{COMMA2DP32} g
+STR_1349    :{WINDOW_COLOUR_2}Acceleració màxima vertical positiva: {OUTLINE}{RED}{COMMA2DP32} g
+STR_1350    :{WINDOW_COLOUR_2}Acceleració màxima vertical negativa: {BLACK}{COMMA2DP32} g
+STR_1351    :{WINDOW_COLOUR_2}Acceleració màxima vertical negativa: {OUTLINE}{RED}{COMMA2DP32} g
 STR_1352    :{WINDOW_COLOUR_2}Acceleració màxima lateral: {BLACK}{COMMA2DP32}g
-STR_1353    :{WINDOW_COLOUR_2}Acceleració màxima lateral: {OUTLINE}{RED}{COMMA2DP32}g
+STR_1353    :{WINDOW_COLOUR_2}Acceleració màxima lateral: {OUTLINE}{RED}{COMMA2DP32} g
 STR_1354    :{WINDOW_COLOUR_2}Longitud de la caiguda més gran: {BLACK}{LENGTH}
 STR_1355    :{WINDOW_COLOUR_2}Caigudes: {BLACK}{COMMA16}
 STR_1356    :{WINDOW_COLOUR_2}Inversions: {BLACK}{COMMA16}
 STR_1357    :{WINDOW_COLOUR_2}Forats: {BLACK}{COMMA16}
-STR_1358    :{WINDOW_COLOUR_2}Temps total de «vol»: {BLACK}{COMMA2DP32}s
+STR_1358    :{WINDOW_COLOUR_2}Temps total de «vol»: {BLACK}{COMMA2DP32} s
 STR_1359    :{WINDOW_COLOUR_2}Temps d'espera: {BLACK}{COMMA16} min
 STR_1360    :{WINDOW_COLOUR_2}Temps d'espera: {BLACK}{COMMA16} min
 STR_1361    :La velocitat no es pot canviar...
@@ -2269,7 +2269,7 @@ STR_2261    :Finançament mínim
 STR_2262    :Finançament normal
 STR_2263    :Finançament màxim
 STR_2264    :Finançament de recerca
-STR_2265    :{WINDOW_COLOUR_2}Pressupost: {BLACK}{CURRENCY} per mes
+STR_2265    :{WINDOW_COLOUR_2}Pressupost: {BLACK}{CURRENCY} al mes
 STR_2266    :Preferències de recerca
 STR_2267    :Recerca actual
 STR_2268    :Últim desenvolupament
@@ -2281,18 +2281,18 @@ STR_2273    :{WINDOW_COLOUR_2}Decorats i tematització:{NEWLINE}{BLACK}{STRINGID
 STR_2274    :{SMALLFONT}{BLACK}Mostra els detalls d'aquest disseny o desenvolupament.
 STR_2275    :{SMALLFONT}{BLACK}Mostra les opcions, el desenvolupament i l'estat de les recerques.
 STR_2276    :{SMALLFONT}{BLACK}Mostra l'estat de les recerques i desenvolupaments.
-STR_2277    :Desenvolupament desconegut
-STR_2278    :Atracció de transport
-STR_2279    :Atracció suau
-STR_2280    :Muntanya russa
-STR_2281    :Atracció intensa
-STR_2282    :Atracció aquàtica
-STR_2283    :Estand o botiga
-STR_2284    :Decorat o tematització
-STR_2285    :S'està fent la recerca inicial
-STR_2286    :S'està dissenyant
-STR_2287    :S'està completant el disseny
-STR_2288    :Desconegut
+STR_2277    :desenvolupament desconegut
+STR_2278    :atracció de transport
+STR_2279    :atracció suau
+STR_2280    :muntanya russa
+STR_2281    :atracció intensa
+STR_2282    :atracció aquàtica
+STR_2283    :estand o botiga
+STR_2284    :decorat o tematització
+STR_2285    :s'està fent la recerca inicial.
+STR_2286    :s'està dissenyant.
+STR_2287    :s'està completant el disseny.
+STR_2288    :desconeguda
 STR_2289    :{STRINGID} {STRINGID}
 STR_2290    :<removed string - do not use>
 STR_2291    :Seleccioneu l'escenari per una nova partida.
@@ -2327,7 +2327,7 @@ STR_2319    :<removed string - do not use>
 STR_2320    :<removed string - do not use>
 STR_2321    :{WINDOW_COLOUR_2}Nombre d'atraccions: {BLACK}{COMMA16}
 STR_2322    :{WINDOW_COLOUR_2}Empleats: {BLACK}{COMMA16}
-STR_2323    :{WINDOW_COLOUR_2}Extensió del parc: {BLACK}{COMMA32}m{SQUARED}
+STR_2323    :{WINDOW_COLOUR_2}Extensió del parc: {BLACK}{COMMA32} m{SQUARED}
 STR_2324    :{WINDOW_COLOUR_2}Mida del parc: {BLACK}{COMMA32} ft{SQUARED}
 STR_2325    :{SMALLFONT}{BLACK}Compreu terreny per estendre el parc.
 STR_2326    :{SMALLFONT}{BLACK}Compreu drets de construcció per construir per dalt i per baix del terreny exterior del parc.
@@ -2456,13 +2456,13 @@ STR_2448    :{YELLOW}Ha acabat la campanya de màrqueting d'entrada al parc a me
 STR_2449    :{YELLOW}Ha acabat la campanya de màrqueting de {STRINGID} gratis.
 STR_2450    :{YELLOW}Ha acabat la campanya de màrqueting del parc.
 STR_2451    :{YELLOW}Ha acabat la campanya de màrqueting de {STRINGID}.
-STR_2452    :{WINDOW_COLOUR_2}Efectiu (restant préstec): {BLACK}{CURRENCY2DP}
-STR_2453    :{WINDOW_COLOUR_2}Efectiu (restant préstec): {RED}{CURRENCY2DP}
+STR_2452    :{WINDOW_COLOUR_2}Efectiu (excloent préstec): {BLACK}{CURRENCY2DP}
+STR_2453    :{WINDOW_COLOUR_2}Efectiu (excloent préstec): {RED}{CURRENCY2DP}
 STR_2454    :{SMALLFONT}{BLACK}{CURRENCY2DP} -
 STR_2455    :{SMALLFONT}{BLACK}+{CURRENCY2DP} -
 STR_2456    :{SMALLFONT}{BLACK}{CURRENCY2DP} -
 STR_2457    :{SMALLFONT}{BLACK}Mostra les finances
-STR_2458    :{SMALLFONT}{BLACK}Mostra el gràfic de l'efectiu disponible (restant el préstec) al llarg del temps.
+STR_2458    :{SMALLFONT}{BLACK}Mostra el gràfic de l'efectiu disponible (excloent el préstec) al llarg del temps.
 STR_2459    :{SMALLFONT}{BLACK}Mostra el gràfic de la valoració del parc al llarg del temps.
 STR_2460    :{SMALLFONT}{BLACK}Mostra el gràfic del benefici setmanal.
 STR_2461    :{SMALLFONT}{BLACK}Mostra les campanyes de màrqueting.
@@ -2491,7 +2491,7 @@ STR_2483    :{WINDOW_COLOUR_2}Benefici setmanal: {BLACK}+{CURRENCY2DP}
 STR_2484    :{WINDOW_COLOUR_2}Benefici setmanal: {RED}{CURRENCY2DP}
 STR_2485    :Controls
 STR_2486    :General
-STR_2487    :Mostra els noms «reals» dels visitants.
+STR_2487    :Mostra els noms «reals» dels visitants
 STR_2488    :{SMALLFONT}{BLACK}Alterna entre mostrar els noms «reals» dels visitants o el nombre que se li ha assignat.
 STR_2489    :Dreceres de teclat...
 STR_2490    :Dreceres de teclat
@@ -3346,8 +3346,8 @@ STR_3335    :Dissenyador de muntanyes russes - Seleccioneu els vehicles i tipus 
 STR_3336    :Gestor dels dissenys de vies - Seleccioneu el tipus d'atracció
 STR_3337    :<removed string - do not use>
 STR_3338    :{BLACK}Recorregut personalitzat
-STR_3339    :{BLACK}{COMMA16} disseny o recorregut personalitzat disponible
-STR_3340    :{BLACK}{COMMA16} dissenys o recorreguts personalitzats disponibles
+STR_3339    :{BLACK}{COMMA16} disseny disponible o bé recorregut personalitzat
+STR_3340    :{BLACK}{COMMA16} dissenys disponibles o recorreguts personalitzats
 STR_3341    :{SMALLFONT}{BLACK}Eines del joc
 STR_3342    :Editor d'escenaris
 STR_3343    :Conversió de partides a escenaris
@@ -3364,7 +3364,7 @@ STR_3353    :El nom conté caràcters no vàlids.
 STR_3354    :Ja existeix un fitxer amb aquest nom o bé no es pot modificar l'arxiu existent.
 STR_3355    :L'arxiu existent està bloquejat, protegit o no teniu permisos suficients per modificar-lo.
 STR_3356    :Esborra l'arxiu
-STR_3357    :{WINDOW_COLOUR_2}Esteu segur que voleu esborrar permanentment {STRING} ?
+STR_3357    :{WINDOW_COLOUR_2}Esteu segur que voleu esborrar permanentment {STRING}?
 STR_3358    :No es pot esborrar el disseny de via...
 STR_3359    :{BLACK}No hi ha dissenys de via d'aquest tipus.
 STR_3360    :Avís!
@@ -3373,14 +3373,14 @@ STR_3362    :<removed string - do not use>
 STR_3363    :<removed string - do not use>
 STR_3364    :Avançat
 STR_3365    :{SMALLFONT}{BLACK}Permet la selecció d'objectes de decoració d'un a un o bé en grup.
-STR_3366    :{BLACK}= Atracció
-STR_3367    :{BLACK}= Estand de menjar
-STR_3368    :{BLACK}= Estand de begudes
-STR_3369    :{BLACK}= Estand d'objectes de record
-STR_3370    :{BLACK}= Quiosc d'informació
-STR_3371    :{BLACK}= Primers auxilis
-STR_3372    :{BLACK}= Caixer automàtic
-STR_3373    :{BLACK}= Lavabos
+STR_3366    :{BLACK}Atraccions
+STR_3367    :{BLACK}Estands de menjar
+STR_3368    :{BLACK}Estands de begudes
+STR_3369    :{BLACK}Estands d'objectes de record
+STR_3370    :{BLACK}Quioscos d'informació
+STR_3371    :{BLACK}Primers auxilis
+STR_3372    :{BLACK}Caixers automàtics
+STR_3373    :{BLACK}Lavabos
 STR_3374    :Avís: S'han seleccionat massa objectes!
 STR_3375    :No s'han pogut seleccionar tots els objectes d'aquest grup de decoracions.
 STR_3376    :Instal·la un disseny de via nou...
@@ -3448,7 +3448,7 @@ STR_3436    :{SMALLFONT}{BLACK}Mentre esperem els primers passatgers, podem deco
 # End of tutorial strings
 STR_3437    :{SMALLFONT}{BLACK}Treu les decoracions d'una àrea del terreny.
 STR_3438    :No es poden treure totes les decoracions d'aquí...
-STR_3439    :Lleva les decoracions
+STR_3439    :Treu decoracions
 STR_3440    :Pàgina 1
 STR_3441    :Pàgina 2
 STR_3442    :Pàgina 3
@@ -3515,7 +3515,7 @@ STR_5173    :Mostra el xat com a notícies
 STR_5174    :{SMALLFONT}{BLACK}Mostra els missatges del xat del Twitch precedits per «!news» per rebre les notificacions durant la partida.
 STR_5175    :Escriu el nom del canal Twitch
 STR_5176    :Activa la integració del Twitch
-STR_5177    :Mode de pantall:
+STR_5177    :Mode de pantalla:
 STR_5178    :{SMALLFONT}{BLACK}Mostra les trampes financeres.
 STR_5179    :{SMALLFONT}{BLACK}Mostra les trampes per als visitants.
 STR_5180    :{SMALLFONT}{BLACK}Mostra les trampes per al parc.
@@ -3792,7 +3792,7 @@ STR_5450    :Augmenta la velocitat del joc
 STR_5451    :Obre la finestra de trampes
 STR_5452    :Mostra/Amaga les barres d'eines
 STR_5453    :Escull una altra atracció
-STR_5454    :No es limiten els FPS
+STR_5454    :Sense límit màxim de FPS
 STR_5455    :Activa el mode lliure (sandbox)
 STR_5456    :Desactiva els límits de funcionament autoritzats
 STR_5457    :Desactiva els límits dels suports
@@ -3895,7 +3895,7 @@ STR_5553    :Posa la partida en pausa quan s'obri l'Steam
 STR_5554    :{SMALLFONT}{BLACK}Activa l'eina muntanya
 STR_5555    :Mostra els vehicles d'altres tipus de via
 STR_5556    :{SMALLFONT}{BLACK}Expulsa al jugador
-STR_5557    :Mantén la connexió després de la dessincronització (multijugador).
+STR_5557    :Mantén la connexió després de la dessincronització (multijugador)
 STR_5558    :Cal reiniciar el joc perquè aquest canvi tingui efecte.
 STR_5559    :Revisions cada 10 min
 STR_5560    :{SMALLFONT}{BLACK}Estableix revisions cada 10 minuts per totes les atraccions.
@@ -3922,7 +3922,7 @@ STR_5580    :Corona txeca (Kc)
 STR_5581    :Mostra els FPS
 STR_5582    :Mantén el punter dins la finestra
 STR_5583    :{COMMA1DP16}ms{POWERNEGATIVEONE}
-STR_5584    :SI
+STR_5584    :Sistema internacional
 STR_5585    :{SMALLFONT}{BLACK}Desbloca els límits operatius de funcionament, permetent que les cadenes d'elevació puguin funcionar a {VELOCITY}.
 STR_5586    :Obre automàticament estands i botigues
 STR_5587    :{SMALLFONT}{BLACK}Els estands i botigues obriran automàticament després de construir-los.
@@ -4065,7 +4065,7 @@ STR_5755    :Versió de programari incorrecta (el servidor usa {STRING}).
 STR_5756    :Contrasenya no vàlida
 STR_5757    :Servidor ple
 STR_5758    :{OUTLINE}{GREEN}{STRING} s'ha unit a la partida.
-STR_5759    :S'està descarregant el mapa... ({INT32}/{INT32}) KiB
+STR_5759    :S'està descarregant el mapa... ({INT32}/{INT32} KiB)
 STR_5760    :Dòlars de Hong Kong(HK$)
 STR_5761    :Nou dòlar de Taiwan(NT$)
 STR_5762    :Iuan xinès (CN{YEN})
@@ -4074,12 +4074,12 @@ STR_5764    :Tipus d'atracció no vàlida
 STR_5765    :Per editar una atracció, cal que tingui un tipus vàlid.
 STR_5766    :<identificador de cadena disponible>
 STR_5767    :Ingressos
-STR_5768    :Total de clients
+STR_5768    :Clients en total
 STR_5769    :Benefici total
 STR_5770    :Clients per hora
 STR_5771    :Cost de funcionament
 STR_5772    :Edat
-STR_5773    :Total de clients: {COMMA32}
+STR_5773    :Clients en total: {COMMA32}
 STR_5774    :Benefici total: {CURRENCY2DP}
 STR_5775    :Clients: {COMMA32} per hora
 STR_5776    :Construït aquest any
@@ -4318,11 +4318,26 @@ STR_6006    :{SMALLFONT}{BLACK}La vista retallada només mostra els elements del
 STR_6007    :Alçada de tall
 STR_6008    :{SMALLFONT}{BLACK}Feu clic per alternar entre el valor sense format i el valor amb unitats de mesura.
 STR_6009    :{SMALLFONT}{BLACK}Escolliu l'alçada de tall
-STR_6010    :{COMMA2DP32}m
-STR_6011    :{COMMA1DP16}ft
+STR_6010    :{COMMA2DP32} m
+STR_6011    :{COMMA1DP16} ft
 STR_6012    :{COMMA1DP16}
 STR_6013    :{SMALLFONT}{BLACK}Els visitants només paguen l'entrada al parc i algunes instal·lacions.{NEWLINE}Les atraccions són gratuïtes.
 STR_6014    :{SMALLFONT}{BLACK}Els visitants només pagaran per pujar a les atraccions i per usar la resta d'instal·lacions.{NEWLINE}L'entrada al parc és gratuïta.
+STR_6015    :Inclinat
+STR_6016    :Modifica la casella
+STR_6017    :Si us plau, disminuïu la velocitat.
+STR_6018    :Construcció d'atraccions - Gira a l'esquerra
+STR_6019    :Construcció d'atraccions - Gira a la dreta
+STR_6020    :Construcció d'atraccions - Empra la via per defecte
+STR_6021    :Construcció d'atraccions - Inclinació cap avall
+STR_6022    :Construcció d'atraccions - Inclinació cap amunt
+STR_6023    :Construcció d'atraccions - Commuta cadena d'elevació
+STR_6024    :Construcció d'atraccions - Peralt a l'esquerra
+STR_6025    :Construcció d'atraccions - Peralt a la dreta
+STR_6026    :Construcció d'atraccions - Secció anterior
+STR_6027    :Construcció d'atraccions - Secció següent
+STR_6028    :Construcció d'atraccions - Construeix l'actual
+STR_6029    :Construcció d'atraccions - Elimina l'actual
 
 #############
 # Scenarios #
@@ -4773,4 +4788,10 @@ STR_DTLS    :
 [CONDORRD]
 STR_NAME    :El còndor
 STR_DESC    :Els passatgers, lligats amb subjeccions per baix de la via, experimenten la sensació de volar mentre cauen en picat per l'aire en vagons en forma de còndor.
+STR_CPTY    :4 passatgers per vagó
+
+#WW
+[CONGAEEL]
+STR_NAME    :El congre
+STR_DESC    :Una muntanya russa compacta de vies d'acer amb vagons en forma d'anguila que travessen tirabuixons i inversions.
 STR_CPTY    :4 passatgers per vagó

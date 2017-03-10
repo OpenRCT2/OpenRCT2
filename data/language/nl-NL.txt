@@ -4319,6 +4319,18 @@ STR_6014    :{SMALLFONT}{BLACK}Bezoekers betalen om in attracties te gaan en voo
 STR_6015    :Helling
 STR_6016    :Vakje aanpassen
 STR_6017    :Ietsje langzamer alsjeblieft.
+STR_6018    :Attractiebouw: bocht naar links
+STR_6019    :Attractiebouw: bocht naar rechts
+STR_6020    :Attractiebouw: standaardbaanstuk
+STR_6021    :Attractiebouw: helling naar beneden
+STR_6022    :Attractiebouw: helling naar boven
+STR_6023    :Attractiebouw: kettinglift aan/uit
+STR_6024    :Attractiebouw: banking (links)
+STR_6025    :Attractiebouw: banking (rechts)
+STR_6026    :Attractiebouw: vorig baanstuk
+STR_6027    :Attractiebouw: volgend baanstuk
+STR_6028    :Attractiebouw: onderdeel bouwen
+STR_6029    :Attractiebouw: onderdeel verwijderen
 
 #############
 # Scenarios #

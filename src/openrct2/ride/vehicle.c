@@ -6859,7 +6859,7 @@ static void vehicle_update_scenery_door(rct_vehicle *vehicle)
 		vehicle_play_scenery_door_open_sound(vehicle, mapElement);
 	} else {
 		mapElement->properties.wall.animation &= ~(WALL_ANIMATION_FLAG_DIRECTION_BACKWARD);
-        wall_element_set_animation_frame(mapElement, 12);
+        wall_element_set_animation_frame(mapElement, 6);
 		vehicle_play_scenery_door_close_sound(vehicle, mapElement);
 	}
 }
@@ -6942,7 +6942,7 @@ static void sub_6DEDE8(rct_vehicle *vehicle)
 		vehicle_play_scenery_door_open_sound(vehicle, mapElement);
 	} else {
 		mapElement->properties.wall.animation &= ~(WALL_ANIMATION_FLAG_DIRECTION_BACKWARD);
-		wall_element_set_animation_frame(mapElement, 12);
+		wall_element_set_animation_frame(mapElement, 6);
 		vehicle_play_scenery_door_close_sound(vehicle, mapElement);
 	}
 }

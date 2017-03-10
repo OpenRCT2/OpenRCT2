@@ -1144,7 +1144,7 @@ static void sub_68F41A(rct_peep *peep, sint32 index)
 						continue;
 
 					// Check if the footpath has a queue line TV monitor on it
-					if (footpath_element_has_path_scenery(mapElement) && footpath_element_path_scenery_is_ghost(mapElement)){
+					if (footpath_element_has_path_scenery(mapElement) && !footpath_element_path_scenery_is_ghost(mapElement)){
 						uint8 pathSceneryIndex = footpath_element_get_path_scenery_index(mapElement);
 						rct_scenery_entry *sceneryEntry = get_footpath_item_entry(pathSceneryIndex);
 						if (sceneryEntry->path_bit.flags & PATH_BIT_FLAG_IS_QUEUE_SCREEN){
@@ -9816,7 +9816,7 @@ static sint32 guest_path_find_entering_park(rct_peep *peep, rct_map_element *map
 {
 	// Send peeps to the nearest park entrance.
 	uint8 chosenEntrance = get_nearest_park_entrance_index(peep->next_x, peep->next_y);
-	
+
 	// If no defined park entrances are found, walk aimlessly.
 	if (chosenEntrance == 0xFF)
 		return guest_path_find_aimless(peep, edges);
@@ -9873,7 +9873,7 @@ static sint32 guest_path_find_leaving_park(rct_peep *peep, rct_map_element *map_
 	// If no defined spawns were found, walk aimlessly.
 	if (chosenSpawn == 0xFF)
 		return guest_path_find_aimless(peep, edges);
-	
+
 	rct2_peep_spawn* peepSpawn = &gPeepSpawns[chosenSpawn];
 
 	sint16 x = peepSpawn->x & 0xFFE0;

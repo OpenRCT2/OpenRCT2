@@ -12,6 +12,7 @@ protected:
     static const std::string predefined;
     static const std::string duplicate;
     static const std::string untrimmed;
+    static const std::string caseInsensitive;
 };
 
 static auto Enum_Currency = ConfigEnum<sint32>({});
@@ -105,6 +106,19 @@ TEST_F(IniReaderTest, read_untrimmed)
     delete ir;
 }
 
+TEST_F(IniReaderTest, read_case_insensitive)
+{
+    MemoryStream ms(caseInsensitive.c_str(), caseInsensitive.size());
+    ASSERT_EQ(ms.CanRead(), true);
+    ASSERT_EQ(ms.CanWrite(), false);
+    IIniReader * ir = CreateIniReader(&ms);
+    ASSERT_NE(ir, nullptr);
+    ASSERT_EQ(ir->ReadSection("section"), true);
+    ASSERT_EQ(ir->GetString("foo", "yyy"), "bar");
+    ASSERT_EQ(ir->ReadSection("SeCtIoN"), true);
+    delete ir;
+}
+
 const std::string IniReaderTest::predefined =
     "[bool]\n"
     "boolval = true\n\n"
@@ -130,3 +144,7 @@ const std::string IniReaderTest::untrimmed =
     "[section]\n"
     "one =     true      \n"
     "    str =    \"  xxx \"";
+
+const std::string IniReaderTest::caseInsensitive =
+    "[sEcTiOn]\n"
+    "foo = \"bar\"\n";

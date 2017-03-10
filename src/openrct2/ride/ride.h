@@ -183,7 +183,7 @@ typedef struct rct_ride {
 		uint8 speed;				// 0x0D0
 		uint8 rotations;			// 0x0D0
 	};
-	
+
 	uint8 boat_hire_return_direction;	// 0x0D1
 	rct_xy8 boat_hire_return_position;	// 0x0D2
 	uint8 measurement_index;		// 0x0D4

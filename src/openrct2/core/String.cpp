@@ -15,6 +15,8 @@
 #pragma endregion
 
 #include <cwctype>
+#include <stdexcept>
+#include <vector>
 
 extern "C"
 {
@@ -114,6 +116,19 @@ namespace String
             }
             return true;
         }
+    }
+
+    size_t IndexOf(const utf8 * str, utf8 match, size_t startIndex)
+    {
+        const utf8 * ch = str + startIndex;
+        for (; *ch != '\0'; ch++)
+        {
+            if (*ch == match)
+            {
+                return (size_t)(ch - str);
+            }
+        }
+        return SIZE_MAX;
     }
 
     size_t LastIndexOf(const utf8 * str, utf8 match)
@@ -298,6 +313,78 @@ namespace String
     utf8 * DiscardDuplicate(utf8 * * ptr, const utf8 * replacement)
     {
         return DiscardUse(ptr, String::Duplicate(replacement));
+    }
+
+    utf8 * Substring(const utf8 * buffer, size_t index)
+    {
+        size_t bufferSize = String::SizeOf(buffer);
+        bool goodSubstring = index <= bufferSize;
+        Guard::Assert(goodSubstring, "Substring past end of input string.");
+
+        // If assertion continues, return empty string to avoid crash
+        if (!goodSubstring)
+        {
+            return String::Duplicate("");
+        }
+
+        return String::Duplicate(buffer + index);
+    }
+
+    utf8 * Substring(const utf8 * buffer, size_t index, size_t size)
+    {
+        size_t bufferSize = String::SizeOf(buffer);
+        bool goodSubstring = index + size <= bufferSize;
+        Guard::Assert(goodSubstring, "Substring past end of input string.");
+
+        // If assertion continues, cap the substring to avoid crash
+        if (!goodSubstring)
+        {
+            if (index >= bufferSize)
+            {
+                size = 0;
+            }
+            else
+            {
+                size = bufferSize - index;
+            }
+        }
+
+        utf8 * result = Memory::Allocate<utf8>(size + 1);
+        Memory::Copy(result, buffer + index, size);
+        result[size] = '\0';
+        return result;
+    }
+
+    std::vector<std::string> Split(const std::string &s, const std::string &delimiter)
+    {
+        if (delimiter.empty())
+        {
+            throw std::invalid_argument(nameof(delimiter) " can not be empty.");
+        }
+
+        std::vector<std::string> results;
+        if (!s.empty())
+        {
+            size_t index = 0;
+            size_t nextIndex;
+            do
+            {
+                nextIndex = s.find(delimiter, index);
+                std::string value;
+                if (nextIndex == std::string::npos)
+                {
+                    value = s.substr(index);
+                }
+                else
+                {
+                    value = s.substr(index, nextIndex - index);
+                }
+                results.push_back(value);
+                index = nextIndex + delimiter.size();
+            }
+            while (nextIndex != SIZE_MAX);
+        }
+        return results;
     }
 
     utf8 * SkipBOM(utf8 * buffer)

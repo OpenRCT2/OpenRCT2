@@ -528,7 +528,7 @@ static void window_cheats_misc_mousedown(int widgetIndex, rct_window *w, rct_wid
 		int i, currentWeather;
 
 		dropdownWidget = widget - 1;
-			
+
 		for (i = 0; i < 6; i++) {
 			gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
 			gDropdownItemsArgs[i] = WeatherTypes[i];
@@ -572,7 +572,7 @@ static void window_cheats_money_mouseup(rct_window *w, sint32 widgetIndex)
 		window_cheats_set_page(w, widgetIndex - WIDX_TAB_1);
 		break;
 	case WIDX_NO_MONEY:
-		game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_NOMONEY, gParkFlags & PARK_FLAGS_NO_MONEY ? 0 : 1, GAME_COMMAND_CHEAT, 0, 0); 
+		game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_NOMONEY, gParkFlags & PARK_FLAGS_NO_MONEY ? 0 : 1, GAME_COMMAND_CHEAT, 0, 0);
 		break;
 	case WIDX_MONEY_SPINNER:
 		money_to_string(_moneySpinnerValue, _moneySpinnerText, MONEY_DIGITS);
@@ -868,8 +868,8 @@ static void window_cheats_invalidate(rct_window *w)
 
 	switch (w->page) {
 	case WINDOW_CHEATS_PAGE_MONEY:{
-		widget_set_checkbox_value(w, WIDX_NO_MONEY, gParkFlags & PARK_FLAGS_NO_MONEY); 
-		
+		widget_set_checkbox_value(w, WIDX_NO_MONEY, gParkFlags & PARK_FLAGS_NO_MONEY);
+
 		uint64 money_widgets = (1 << WIDX_ADD_SET_MONEY_GROUP) | (1 << WIDX_MONEY_SPINNER) | (1 << WIDX_MONEY_SPINNER_INCREMENT) |
 			(1 << WIDX_MONEY_SPINNER_DECREMENT) | (1 << WIDX_ADD_MONEY) | (1 << WIDX_SET_MONEY) | (1 << WIDX_CLEAR_LOAN);
 		if (gParkFlags & PARK_FLAGS_NO_MONEY) {

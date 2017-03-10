@@ -14,6 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
+#include <cctype>
 #include <initializer_list>
 #include <string>
 #include <tuple>
@@ -57,13 +58,46 @@ struct LineRange
     }
 };
 
+struct StringIHash
+{
+    std::size_t operator()(const std::string &s) const
+    {
+        typedef std::char_traits<char> Traits;
+        std::size_t seed = 0;
+        for (const char &c : s)
+        {
+            const Traits::int_type value = std::toupper(Traits::to_int_type(c));
+            // Simple Hash Combine as used by Boost.Functional/Hash
+            seed ^= value + 0x9e3779b9 + (seed<<6) + (seed>>2);
+        }
+        return seed;
+    }
+};
+
+struct StringICmp
+{
+    bool operator()(const std::string &a, const std::string &b) const
+    {
+        typedef std::char_traits<char> Traits;
+        if (a.size() != b.size()) return false;
+        const char *s1 = a.data(), *s2 = b.data();
+        for (std::size_t i = a.size(); i > 0; --i, ++s1, ++s2)
+        {
+            const int c1 = std::toupper(Traits::to_int_type(*s1));
+            const int c2 = std::toupper(Traits::to_int_type(*s2));
+            if (c1 != c2) return false;
+        }
+        return true;
+    }
+};
+
 class IniReader final : public IIniReader
 {
 private:
-    std::vector<uint8>                              _buffer;
-    std::vector<Span>                               _lines;
-    std::unordered_map<std::string, LineRange>      _sections;
-    std::unordered_map<std::string, std::string>    _values;
+    std::vector<uint8>                                                      _buffer;
+    std::vector<Span>                                                       _lines;
+    std::unordered_map<std::string, LineRange, StringIHash, StringICmp>     _sections;
+    std::unordered_map<std::string, std::string, StringIHash, StringICmp>   _values;
 
 public:
     IniReader(IStream * stream)
