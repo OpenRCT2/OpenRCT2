@@ -73,6 +73,8 @@ void rct_balloon::Press()
 {
     if (popped != 1)
     {
+        // There is a random chance that pressing the balloon will not pop it
+        // and instead shift it slightly
         uint32 random = scenario_rand();
         if ((sprite_index & 7) || (random & 0xFFFF) < 0x2000)
         {
