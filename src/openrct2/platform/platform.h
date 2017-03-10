@@ -224,6 +224,7 @@ void core_init();
 	HWND windows_get_window_handle();
 	void platform_setup_file_associations();
 	void platform_remove_file_associations();
+	bool platform_setup_uri_protocol();
 	// This function cannot be marked as 'static', even though it may seem to be,
 	// as it requires external linkage, which 'static' prevents
 	__declspec(dllexport) sint32 StartOpenRCT(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, sint32 nCmdShow);

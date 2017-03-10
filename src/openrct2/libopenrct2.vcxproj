@@ -72,6 +72,7 @@
     <ClCompile Include="audio\FileAudioSource.cpp" />
     <ClCompile Include="audio\MemoryAudioSource.cpp" />
     <ClCompile Include="audio\NullAudioSource.cpp" />
+    <ClCompile Include="cmdline\UriHandler.cpp" />
     <ClCompile Include="config\Config.cpp" />
     <ClCompile Include="config\IniReader.cpp" />
     <ClCompile Include="config\IniWriter.cpp" />

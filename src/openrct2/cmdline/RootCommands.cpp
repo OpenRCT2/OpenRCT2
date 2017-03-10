@@ -126,6 +126,7 @@ const CommandLineCommand CommandLine::RootCommands[]
     DefineCommand("set-rct2", "<path>",                 StandardOptions, HandleCommandSetRCT2),
     DefineCommand("convert",  "<source> <destination>", StandardOptions, CommandLine::HandleCommandConvert),
     DefineCommand("scan-objects", "<path>",             StandardOptions, HandleCommandScanObjects),
+    DefineCommand("handle-uri", "openrct2://.../",      StandardOptions, CommandLine::HandleCommandUri),
 
 #if defined(__WINDOWS__) && !defined(__MINGW32__)
     DefineCommand("register-shell", "", RegisterShellOptions, HandleCommandRegisterShell),
