@@ -376,6 +376,7 @@ enum {
 	LITTER_TYPE_EMPTY_BOWL_BLUE,
 };
 
+rct_sprite *try_get_sprite(size_t spriteIndex);
 rct_sprite *get_sprite(size_t sprite_idx);
 
 #ifdef NO_RCT2
