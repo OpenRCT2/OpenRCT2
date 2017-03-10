@@ -428,7 +428,7 @@ void sprite_position_tween_reset();
 ///////////////////////////////////////////////////////////////
 // Balloon
 ///////////////////////////////////////////////////////////////
-void create_balloon(sint32 x, sint32 y, sint32 z, sint32 colour, uint8 bl);
+void create_balloon(sint32 x, sint32 y, sint32 z, sint32 colour, bool isPopped);
 void balloon_update(rct_balloon *balloon);
 void game_command_balloon_press(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp);
 

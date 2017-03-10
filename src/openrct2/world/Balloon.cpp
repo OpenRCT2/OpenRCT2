@@ -95,7 +95,7 @@ void rct_balloon::Pop()
 
 extern "C"
 {
-    void create_balloon(sint32 x, sint32 y, sint32 z, sint32 colour, uint8 bl)
+    void create_balloon(sint32 x, sint32 y, sint32 z, sint32 colour, bool isPopped)
     {
         rct_sprite* sprite = create_sprite(2);
         if (sprite != nullptr)
@@ -108,7 +108,7 @@ extern "C"
             sprite->balloon.misc_identifier = SPRITE_MISC_BALLOON;
             sprite->balloon.frame = 0;
             sprite->balloon.colour = colour;
-            sprite->balloon.popped = bl;
+            sprite->balloon.popped = (isPopped ? 1 : 0);
         }
     }
 

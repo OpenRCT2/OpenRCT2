@@ -1719,23 +1719,15 @@ void peep_update_sprite_type(rct_peep* peep)
 		peep->sprite_type == PEEP_SPRITE_TYPE_BALLOON &&
 		(scenario_rand() & 0xFFFF) <= 327
 	) {
-		uint8 bl = 0;
-
-		if (
-			(scenario_rand() & 0xFFFF) <= 13107 &&
-			peep->x != SPRITE_LOCATION_NULL
-		) {
-
-			bl = 1;
-			audio_play_sound_at_location(SOUND_BALLOON_POP, peep->x, peep->y, peep->z);
-		}
-
+		bool isBalloonPopped = false;
 		if (peep->x != SPRITE_LOCATION_NULL) {
-			create_balloon(peep->x, peep->y, peep->z + 9, peep->balloon_colour, bl);
+			if ((scenario_rand() & 0xFFFF) <= 13107) {
+				isBalloonPopped = true;
+				audio_play_sound_at_location(SOUND_BALLOON_POP, peep->x, peep->y, peep->z);
+			}
+			create_balloon(peep->x, peep->y, peep->z + 9, peep->balloon_colour, isBalloonPopped);
 		}
-
 		peep->item_standard_flags &= ~PEEP_ITEM_BALLOON;
-
 		peep->window_invalidate_flags |= PEEP_INVALIDATE_PEEP_INVENTORY;
 	}
 
@@ -2105,7 +2097,7 @@ static void peep_update_falling(rct_peep* peep){
 							peep->item_standard_flags &= ~PEEP_ITEM_BALLOON;
 
 							if (peep->sprite_type == PEEP_SPRITE_TYPE_BALLOON && peep->x != MAP_LOCATION_NULL) {
-								create_balloon(peep->x, peep->y, height, peep->balloon_colour, 0);
+								create_balloon(peep->x, peep->y, height, peep->balloon_colour, false);
 								peep->window_invalidate_flags |= PEEP_INVALIDATE_PEEP_INVENTORY;
 								peep_update_sprite_type(peep);
 							}
@@ -6987,7 +6979,7 @@ void peep_applause()
 		if (peep->item_standard_flags & PEEP_ITEM_BALLOON) {
 			peep->item_standard_flags &= ~PEEP_ITEM_BALLOON;
 			if (peep->x != MAP_LOCATION_NULL) {
-				create_balloon(peep->x, peep->y, peep->z + 9, peep->balloon_colour, 0);
+				create_balloon(peep->x, peep->y, peep->z + 9, peep->balloon_colour, false);
 				peep->window_invalidate_flags |= PEEP_INVALIDATE_PEEP_INVENTORY;
 				peep_update_sprite_type(peep);
 			}
