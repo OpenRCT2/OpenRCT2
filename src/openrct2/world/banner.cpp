@@ -14,21 +14,22 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../core/Util.hpp"
 #include "../core/Math.hpp"
+#include "../core/Memory.hpp"
+#include "../core/Util.hpp"
+#include "../core/String.hpp"
 #include "../network/network.h"
 
 extern "C"
 {
-    #include "../game.h"
-    #include "../localisation/localisation.h"
-    #include "../ride/ride.h"
-    #include "../interface/window.h"
-    #include "../util/util.h"
-    #include "scenery.h"
     #include "banner.h"
     #include "map.h"
     #include "park.h"
+    #include "scenery.h"
+    #include "../game.h"
+    #include "../interface/window.h"
+    #include "../localisation/localisation.h"
+    #include "../ride/ride.h"
 }
 
 rct_banner gBanners[MAX_BANNERS];
@@ -161,7 +162,7 @@ static money32 BannerSetColour(sint16 x, sint16 y, uint8 baseHeight, uint8 direc
         }
 
         rct_window* window = window_find_by_number(WC_BANNER, mapElement->properties.banner.index);
-        if (window)
+        if (window != nullptr)
         {
             window_invalidate(window);
         }
@@ -309,9 +310,9 @@ static money32 BannerSetName(uint8 bannerIndex,
     }
 
     size_t nameChunkOffset = Math::Min<size_t>(indexToOffset[nameChunkIndex], Util::CountOf(newName) - 12);
-    memcpy((void*)((uintptr_t)newName + (uintptr_t)nameChunkOffset + 0), &nameChunk1, sizeof(uint32));
-    memcpy((void*)((uintptr_t)newName + (uintptr_t)nameChunkOffset + 4), &nameChunk2, sizeof(uint32));
-    memcpy((void*)((uintptr_t)newName + (uintptr_t)nameChunkOffset + 8), &nameChunk3, sizeof(uint32));
+    Memory::Copy<uint32>((uint32*)(&newName[0 + nameChunkOffset]), &nameChunk1, sizeof(uint32));
+    Memory::Copy<uint32>((uint32*)(&newName[4 + nameChunkOffset]), &nameChunk2, sizeof(uint32));
+    Memory::Copy<uint32>((uint32*)(&newName[8 + nameChunkOffset]), &nameChunk3, sizeof(uint32));
 
     if (nameChunkIndex != 0)
     {
@@ -326,16 +327,16 @@ static money32 BannerSetName(uint8 bannerIndex,
     utf8 *buffer = gCommonStringFormatBuffer;
     utf8 *dst = buffer;
     dst = utf8_write_codepoint(dst, FORMAT_COLOUR_CODE_START + banner->text_colour);
-    safe_strcpy(dst, newName, 32);
+    String::Set(dst, 256, newName, 32);
 
     rct_string_id stringId = user_string_allocate(128, buffer);
-    if (stringId)
+    if (stringId != 0)
     {
         rct_string_id prevStringId = banner->string_idx;
         banner->string_idx = stringId;
         user_string_free(prevStringId);
         rct_window* w = window_bring_to_front_by_number(WC_BANNER, bannerIndex);
-        if (w)
+        if (w != nullptr)
         {
             window_invalidate(w);
         }
@@ -402,7 +403,7 @@ static money32 BannerSetStyle(uint8 bannerIndex, uint8 colour, uint8 textColour,
         banner->string_idx = stringId;
         user_string_free(prevStringId);
         rct_window* w = window_bring_to_front_by_number(WC_BANNER, bannerIndex);
-        if (w)
+        if (w != nullptr)
         {
             window_invalidate(w);
         }
@@ -414,6 +415,18 @@ static money32 BannerSetStyle(uint8 bannerIndex, uint8 colour, uint8 textColour,
     }
 
     return 0;
+}
+
+static uint8 BannerGetNewIndex() {
+    uint8 bannerIndex = 0;
+    for (; bannerIndex < MAX_BANNERS; bannerIndex++)
+    {
+        if (gBanners[bannerIndex].type == BANNER_NULL)
+        {
+            return bannerIndex;
+        }
+    }
+    return BANNER_NULL;
 }
 
 extern "C" 
@@ -440,16 +453,9 @@ extern "C"
      */
     sint32 create_new_banner(uint8 flags)
     {
-        sint32 bannerIndex = 0;
-        for (; bannerIndex < MAX_BANNERS; bannerIndex++)
-        {
-            if (gBanners[bannerIndex].type == BANNER_NULL)
-            {
-                break;
-            }
-        }
+        uint8 bannerIndex = BannerGetNewIndex();
 
-        if (bannerIndex == MAX_BANNERS)
+        if (bannerIndex == BANNER_NULL)
         {
             gGameCommandErrorText = STR_TOO_MANY_BANNERS_IN_GAME;
             return BANNER_NULL;
@@ -537,7 +543,7 @@ extern "C"
         return rideIndex;
     }
 
-    void fix_banner_count()
+    void banner_reset_broken_index()
     {
         for (sint32 bannerIndex = 0; bannerIndex < MAX_BANNERS; bannerIndex++)
         {
