@@ -553,7 +553,37 @@ rct_window *window_ride_construction_open()
 	w = window_create(0, 29, 166, 394, &window_ride_construction_events, WC_RIDE_CONSTRUCTION, WF_NO_AUTO_CLOSE);
 
 	w->widgets = window_ride_construction_widgets;
-	w->enabled_widgets = 0x67EFFFFFC4;
+	w->enabled_widgets = (1ULL << WIDX_CLOSE) |
+		(1ULL << WIDX_LEFT_CURVE_VERY_SMALL) |
+		(1ULL << WIDX_LEFT_CURVE_SMALL) |
+		(1ULL << WIDX_LEFT_CURVE) |
+		(1ULL << WIDX_STRAIGHT) |
+		(1ULL << WIDX_RIGHT_CURVE) |
+		(1ULL << WIDX_RIGHT_CURVE_SMALL) |
+		(1ULL << WIDX_RIGHT_CURVE_VERY_SMALL) |
+		(1ULL << WIDX_SPECIAL_TRACK_DROPDOWN) |
+		(1ULL << WIDX_SLOPE_DOWN_STEEP) |
+		(1ULL << WIDX_SLOPE_DOWN) |
+		(1ULL << WIDX_LEVEL) |
+		(1ULL << WIDX_SLOPE_UP) |
+		(1ULL << WIDX_SLOPE_UP_STEEP) |
+		(1ULL << WIDX_CHAIN_LIFT) |
+		(1ULL << WIDX_BANK_LEFT) |
+		(1ULL << WIDX_BANK_STRAIGHT) |
+		(1ULL << WIDX_BANK_RIGHT) |
+		(1ULL << WIDX_CONSTRUCT) |
+		(1ULL << WIDX_DEMOLISH) |
+		(1ULL << WIDX_LEFT_CURVE_LARGE) |
+		(1ULL << WIDX_PREVIOUS_SECTION) |
+		(1ULL << WIDX_NEXT_SECTION) |
+		(1ULL << WIDX_ENTRANCE) |
+		(1ULL << WIDX_EXIT) |
+		(1ULL << WIDX_RIGHT_CURVE_LARGE) |
+		(1ULL << WIDX_ROTATE) |
+		(1ULL << WIDX_U_TRACK) |
+		(1ULL << WIDX_O_TRACK) |
+		(1ULL << WIDX_SEAT_ROTATION_ANGLE_SPINNER_UP) |
+		(1ULL << WIDX_SEAT_ROTATION_ANGLE_SPINNER_DOWN);
 
 	window_init_scroll_widgets(w);
 
