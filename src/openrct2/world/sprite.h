@@ -161,6 +161,18 @@ typedef struct rct_duck {
 	sint16 target_y;				// 0x32
 	uint8 pad_34[0x14];
 	uint8 state;					// 0x48
+
+#ifdef __cplusplus
+	void UpdateFlyToWater();
+	void UpdateSwim();
+	void UpdateDrink();
+	void UpdateDoubleDrink();
+	void UpdateFlyAway();
+	void Invalidate();
+	void Remove();
+	void MoveTo(sint16 x, sint16 y, sint16 z);
+#endif
+
 } rct_duck;
 assert_struct_size(rct_duck, 0x49);
 
@@ -347,7 +359,9 @@ typedef union {
 
 #ifdef __cplusplus
 	bool IsBalloon();
+	bool IsDuck();
 	rct_balloon * AsBalloon();
+	rct_duck * AsDuck();
 #endif
 
 } rct_sprite;

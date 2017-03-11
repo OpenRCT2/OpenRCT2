@@ -14,6 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
+#include "../core/Math.hpp"
 #include "../core/Util.hpp"
 
 extern "C"
@@ -33,12 +34,6 @@ enum DUCK_STATE
     DOUBLE_DRINK,
     FLY_AWAY
 };
-
-static void duck_update_fly_to_water(rct_duck * duck);
-static void duck_update_swim(rct_duck * duck);
-static void duck_update_drink(rct_duck * duck);
-static void duck_update_double_drink(rct_duck * duck);
-static void duck_update_fly_away(rct_duck * duck);
 
 static const rct_xy16 DuckMoveOffset[4] =
 {
@@ -83,98 +78,119 @@ static const uint8 * DuckAnimations[] =
     DuckAnimationFlyAway,       // FLY_AWAY
 };
 
-static void duck_invalidate(rct_duck *duck)
+bool rct_sprite::IsDuck()
 {
-    invalidate_sprite_0((rct_sprite *)duck);
+    return this->duck.sprite_identifier == SPRITE_IDENTIFIER_MISC &&
+           this->duck.misc_identifier == SPRITE_MISC_DUCK;
 }
 
-static void duck_update_fly_to_water(rct_duck *duck)
+rct_duck * rct_sprite::AsDuck()
+{
+    rct_duck * result = nullptr;
+    if (IsDuck())
+    {
+        return (rct_duck *)result;
+    }
+    return result;
+}
+
+void rct_duck::Invalidate()
+{
+    invalidate_sprite_0((rct_sprite *)this);
+}
+
+void rct_duck::Remove()
+{
+    sprite_remove((rct_sprite *)this);
+}
+
+void rct_duck::MoveTo(sint16 destX, sint16 destY, sint16 destZ)
+{
+    sprite_move(destX, destY, destZ, (rct_sprite *)this);
+}
+
+void rct_duck::UpdateFlyToWater()
 {
     if ((gCurrentTicks & 3) != 0) return;
 
-    duck->frame++;
-    if (duck->frame >= Util::CountOf(DuckAnimationFlyToWater))
+    frame++;
+    if (frame >= Util::CountOf(DuckAnimationFlyToWater))
     {
-        duck->frame = 0;
+        frame = 0;
     }
 
-    duck_invalidate(duck);
-    sint32 manhattanDistance = abs(duck->target_x - duck->x) + abs(duck->target_y - duck->y);
-    sint32 direction = duck->sprite_direction >> 3;
-    sint32 x = duck->x + DuckMoveOffset[direction].x;
-    sint32 y = duck->y + DuckMoveOffset[direction].y;
-    sint32 manhattanDistanceN = abs(duck->target_x - x) + abs(duck->target_y - y);
+    Invalidate();
+    sint32 manhattanDistance = abs(target_x - x) + abs(target_y - y);
+    sint32 direction = sprite_direction >> 3;
+    sint32 newX = x + DuckMoveOffset[direction].x;
+    sint32 newY = y + DuckMoveOffset[direction].y;
+    sint32 manhattanDistanceN = abs(target_x - newX) + abs(target_y - newY);
 
-    rct_map_element * mapElement = map_get_surface_element_at(duck->target_x >> 5, duck->target_y >> 5);
+    rct_map_element * mapElement = map_get_surface_element_at(target_x >> 5, target_y >> 5);
     sint32 waterHeight = mapElement->properties.surface.terrain & 0x1F;
     if (waterHeight == 0)
     {
-        duck->state = DUCK_STATE::FLY_AWAY;
-        duck_update_fly_away(duck);
+        state = DUCK_STATE::FLY_AWAY;
+        UpdateFlyAway();
     }
     else
     {
         waterHeight <<= 4;
-        sint32 z = abs(duck->z - waterHeight);
+        sint32 newZ = abs(z - waterHeight);
 
         if (manhattanDistanceN <= manhattanDistance)
         {
-            if (z > manhattanDistanceN)
+            if (newZ > manhattanDistanceN)
             {
-                z = duck->z - 2;
-                if (waterHeight >= duck->z)
+                newZ = z - 2;
+                if (waterHeight >= z)
                 {
-                    z += 4;
+                    newZ += 4;
                 }
-                duck->frame = 1;
+                frame = 1;
             }
             else
             {
-                z = duck->z;
+                newZ = z;
             }
-            sprite_move(x, y, z, (rct_sprite*)duck);
-            duck_invalidate(duck);
+            MoveTo(newX, newY, newZ);
+            Invalidate();
         }
         else
         {
-            if (z > 4)
+            if (newZ > 4)
             {
-                duck->state = DUCK_STATE::FLY_AWAY;
-                duck_update_fly_away(duck);
+                state = DUCK_STATE::FLY_AWAY;
+                UpdateFlyAway();
             }
             else
             {
-                duck->state = DUCK_STATE::SWIM;
-                duck->frame = 0;
-                duck_update_swim(duck);
+                state = DUCK_STATE::SWIM;
+                frame = 0;
+                UpdateSwim();
             }
         }
     }
 }
 
-/**
- *
- *  rct2: 0x00674282
- */
-static void duck_update_swim(rct_duck *duck)
+void rct_duck::UpdateSwim()
 {
-    if ((gCurrentTicks + duck->sprite_index) & 3)
-        return;
+    if (((gCurrentTicks + sprite_index) & 3) != 0) return;
 
     uint32 randomNumber = scenario_rand();
     if ((randomNumber & 0xFFFF) < 0x666)
     {
         if (randomNumber & 0x80000000)
         {
-            duck->state = DUCK_STATE::DOUBLE_DRINK;
-            duck->frame = -1;
-            duck_update_double_drink(duck);
+            state = DUCK_STATE::DOUBLE_DRINK;
+            frame = -1;
+            UpdateDoubleDrink();
         }
         else
         {
-            duck->state = DUCK_STATE::DRINK;
-            duck->frame = -1;
-            duck_update_drink(duck);
+            state = DUCK_STATE::DRINK;
+            frame = -1;
+            UpdateDrink();
         }
     }
     else
@@ -182,101 +198,102 @@ static void duck_update_swim(rct_duck *duck)
         sint32 currentMonth = date_get_month(gDateMonthsElapsed);
         if (currentMonth >= MONTH_SEPTEMBER && (randomNumber >> 16) < 218)
         {
-            duck->state = DUCK_STATE::FLY_AWAY;
-            duck_update_fly_away(duck);
+            state = DUCK_STATE::FLY_AWAY;
+            UpdateFlyAway();
         }
         else
         {
-            duck_invalidate(duck);
-            sint32 landZ = map_element_height(duck->x, duck->y);
+            Invalidate();
+            sint32 landZ = map_element_height(x, y);
             sint32 waterZ = (landZ >> 16) & 0xFFFF;
             landZ &= 0xFFFF;
 
-            if (duck->z < landZ || waterZ == 0)
+            if (z < landZ || waterZ == 0)
             {
-                duck->state = DUCK_STATE::FLY_AWAY;
-                duck_update_fly_away(duck);
+                state = DUCK_STATE::FLY_AWAY;
+                UpdateFlyAway();
             }
             else
             {
-                duck->z = waterZ;
+                z = waterZ;
                 randomNumber = scenario_rand();
                 if ((randomNumber & 0xFFFF) <= 0xAAA)
                 {
                     randomNumber >>= 16;
-                    duck->sprite_direction = randomNumber & 0x18;
+                    sprite_direction = randomNumber & 0x18;
                 }
 
-                sint32 direction = duck->sprite_direction >> 3;
-                sint32 x = duck->x + DuckMoveOffset[direction].x;
-                sint32 y = duck->y + DuckMoveOffset[direction].y;
-                landZ = map_element_height(x, y);
+                sint32 direction = sprite_direction >> 3;
+                sint32 newX = x + DuckMoveOffset[direction].x;
+                sint32 newY = y + DuckMoveOffset[direction].y;
+                landZ = map_element_height(newX, newY);
                 waterZ = (landZ >> 16) & 0xFFFF;
                 landZ &= 0xFFFF;
 
-                if (duck->z >= landZ && duck->z == waterZ)
+                if (z >= landZ && z == waterZ)
                 {
-                    sprite_move(x, y, waterZ, (rct_sprite*)duck);
-                    duck_invalidate(duck);
+                    MoveTo(newX, newY, waterZ);
+                    Invalidate();
                 }
             }
         }
     }
 }
 
-static void duck_update_drink(rct_duck * duck)
+void rct_duck::UpdateDrink()
 {
-    duck->frame++;
-    if (DuckAnimationDrink[duck->frame] == 0xFF)
+    frame++;
+    if (DuckAnimationDrink[frame] == 0xFF)
     {
-        duck->state = DUCK_STATE::SWIM;
-        duck->frame = 0;
-        duck_update_swim(duck);
+        state = DUCK_STATE::SWIM;
+        frame = 0;
+        UpdateSwim();
     }
     else
     {
-        duck_invalidate(duck);
+        Invalidate();
     }
 }
 
-static void duck_update_double_drink(rct_duck * duck)
+void rct_duck::UpdateDoubleDrink()
 {
-    duck->frame++;
-    if (DuckAnimationDoubleDrink[duck->frame] == 0xFF)
+    frame++;
+    if (DuckAnimationDoubleDrink[frame] == 0xFF)
     {
-        duck->state = DUCK_STATE::SWIM;
-        duck->frame = 0;
-        duck_update_swim(duck);
+        state = DUCK_STATE::SWIM;
+        frame = 0;
+        UpdateSwim();
     }
     else
     {
-        duck_invalidate(duck);
+        Invalidate();
     }
 }
 
-static void duck_update_fly_away(rct_duck * duck)
+void rct_duck::UpdateFlyAway()
 {
     if ((gCurrentTicks & 3) == 0)
     {
-        duck->frame++;
-        if (duck->frame >= Util::CountOf(DuckAnimationFlyAway))
+        frame++;
+        if (frame >= Util::CountOf(DuckAnimationFlyAway))
         {
-            duck->frame = 0;
+            frame = 0;
         }
 
-        duck_invalidate(duck);
-        sint32 direction = duck->sprite_direction >> 3;
-        sint32 x = duck->x + (DuckMoveOffset[direction].x * 2);
-        sint32 y = duck->y + (DuckMoveOffset[direction].y * 2);
-        if (map_is_location_valid(x, y))
+        Invalidate();
+
+        sint32 direction = sprite_direction >> 3;
+        sint32 newX = x + (DuckMoveOffset[direction].x * 2);
+        sint32 newY = y + (DuckMoveOffset[direction].y * 2);
+        sint32 newZ = Math::Min(z + 2, 496);
+        if (map_is_location_valid(newX, newY))
         {
-            sprite_remove((rct_sprite *)duck);
+            MoveTo(newX, newY, newZ);
+            Invalidate();
         }
         else
         {
-            sint32 z = min(duck->z + 2, 496);
-            sprite_move(x, y, z, (rct_sprite*)duck);
-            duck_invalidate(duck);
+            Remove();
         }
     }
 }
@@ -293,9 +310,9 @@ extern "C"
             sprite->duck.var_14 = 9;
             sprite->duck.var_09 = 0xC;
             sprite->duck.var_15 = 9;
-            sint32 offset_xy = scenario_rand() & 0x1E;
-            targetX += offset_xy;
-            targetY += offset_xy;
+            sint32 offsetXY = scenario_rand() & 0x1E;
+            targetX += offsetXY;
+            targetY += offsetXY;
             sprite->duck.target_x = targetX;
             sprite->duck.target_y = targetY;
             uint8 direction = scenario_rand() & 3;
@@ -324,19 +341,19 @@ extern "C"
     {
         switch ((DUCK_STATE)duck->state) {
         case DUCK_STATE::FLY_TO_WATER:
-            duck_update_fly_to_water(duck);
+            duck->UpdateFlyToWater();
             break;
         case DUCK_STATE::SWIM:
-            duck_update_swim(duck);
+            duck->UpdateSwim();
             break;
         case DUCK_STATE::DRINK:
-            duck_update_drink(duck);
+            duck->UpdateDrink();
             break;
         case DUCK_STATE::DOUBLE_DRINK:
-            duck_update_double_drink(duck);
+            duck->UpdateDoubleDrink();
             break;
         case DUCK_STATE::FLY_AWAY:
-            duck_update_fly_away(duck);
+            duck->UpdateFlyAway();
             break;
         }
     }
