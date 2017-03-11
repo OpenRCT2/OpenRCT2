@@ -490,13 +490,13 @@ static void window_game_bottom_toolbar_draw_right_panel(rct_drawpixelinfo *dpi, 
 	x += 30;
 
 	// Current weather
-	gfx_draw_sprite(dpi, climate_weather_data[gClimateCurrentWeather].sprite_id, x, y, 0);
+	gfx_draw_sprite(dpi, ClimateWeatherData[gClimateCurrentWeather].sprite_id, x, y, 0);
 
 	// Next weather
-	if (climate_weather_data[gClimateCurrentWeather].sprite_id != climate_weather_data[gClimateNextWeather].sprite_id) {
+	if (ClimateWeatherData[gClimateCurrentWeather].sprite_id != ClimateWeatherData[gClimateNextWeather].sprite_id) {
 		if (gClimateUpdateTimer < 960) {
 			gfx_draw_sprite(dpi, SPR_NEXT_WEATHER, x + 27, y + 5, 0);
-			gfx_draw_sprite(dpi, climate_weather_data[gClimateNextWeather].sprite_id, x + 40, y, 0);
+			gfx_draw_sprite(dpi, ClimateWeatherData[gClimateNextWeather].sprite_id, x + 40, y, 0);
 		}
 	}
 }
