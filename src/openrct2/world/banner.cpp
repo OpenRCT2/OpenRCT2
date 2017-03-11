@@ -32,6 +32,341 @@ extern "C"
 
 rct_banner gBanners[MAX_BANNERS];
 
+/**
+ *
+ *  rct2: 0x006B7EAB
+ */
+static sint32 banner_get_ride_index_at(sint32 x, sint32 y, sint32 z)
+{
+    rct_map_element *mapElement;
+    rct_ride *ride;
+    sint32 rideIndex, resultRideIndex;
+
+    resultRideIndex = -1;
+    mapElement = map_get_first_element_at(x >> 5, y >> 5);
+    do {
+        if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_TRACK)
+            continue;
+
+        rideIndex = mapElement->properties.track.ride_index;
+        ride = get_ride(rideIndex);
+        if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_SHOP))
+            continue;
+
+        if ((mapElement->clearance_height * 8) + 32 <= z)
+            continue;
+
+        resultRideIndex = rideIndex;
+    } while (!map_element_is_last_for_tile(mapElement++));
+
+    return resultRideIndex;
+}
+
+static money32 BannerRemove(sint16 x, sint16 y, uint8 baseHeight, uint8 direction, uint8 flags)
+{
+    sint32 z = baseHeight * 8;
+    gCommandExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
+    gCommandPosition.x = x + 16;
+    gCommandPosition.y = y + 16;
+    gCommandPosition.z = z;
+
+    if (!(flags & GAME_COMMAND_FLAG_GHOST) && game_is_paused() && !gCheatsBuildInPauseMode) {
+        gGameCommandErrorText = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
+        return MONEY32_UNDEFINED;
+    }
+
+    if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode && !map_is_location_owned(x, y, z - 16)) {
+        return MONEY32_UNDEFINED;
+    }
+
+    // Slight modification to the code so that it now checks height as well
+    // This was causing a bug with banners on two paths stacked.
+    rct_map_element* mapElement = map_get_banner_element_at(x / 32, y / 32, baseHeight, direction);
+    if (mapElement == NULL) {
+        return MONEY32_UNDEFINED;
+    }
+
+    rct_banner *banner = &gBanners[mapElement->properties.banner.index];
+    rct_scenery_entry *scenery_entry = get_banner_entry(banner->type);
+    money32 refund = 0;
+    if (scenery_entry != NULL && scenery_entry != (rct_scenery_entry *)-1) {
+        refund = -((scenery_entry->banner.price * 3) / 4);
+    }
+
+    if (flags & GAME_COMMAND_FLAG_APPLY) {
+        if (gGameCommandNestLevel == 1 && !(flags & GAME_COMMAND_FLAG_GHOST)) {
+            rct_xyz16 coord;
+            coord.x = x + 16;
+            coord.y = y + 16;
+            coord.z = map_element_height(coord.x, coord.y);
+            network_set_player_last_action_coord(network_get_player_index(game_command_playerid), coord);
+        }
+
+        map_element_remove_banner_entry(mapElement);
+        map_invalidate_tile_zoom1(x, y, z, z + 32);
+        map_element_remove(mapElement);
+    }
+
+    if (gParkFlags & PARK_FLAGS_NO_MONEY) {
+        refund = 0;
+    }
+    return refund;
+}
+
+static money32 BannerSetColour(sint16 x, sint16 y, uint8 baseHeight, uint8 direction, uint8 colour, uint8 flags)
+{
+    gCommandExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
+    sint32 z = (baseHeight * 8);
+    gCommandPosition.x = x + 16;
+    gCommandPosition.y = y + 16;
+    gCommandPosition.z = z;
+
+    if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode) {
+        if (!map_is_location_owned(x, y, z - 16)) {
+            return MONEY32_UNDEFINED;
+        }
+    }
+
+    if (flags & GAME_COMMAND_FLAG_APPLY) {
+        rct_map_element* mapElement = map_get_first_element_at(x / 32, y / 32);
+
+        bool found = false;
+        do {
+            if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_BANNER)
+                continue;
+
+            if (mapElement->properties.banner.position != direction)
+                continue;
+
+            found = true;
+            break;
+        } while (!map_element_is_last_for_tile(mapElement++));
+
+        if (found == false) {
+            return MONEY32_UNDEFINED;
+        }
+
+        rct_window* window = window_find_by_number(WC_BANNER, mapElement->properties.banner.index);
+        if (window) {
+            window_invalidate(window);
+        }
+        gBanners[mapElement->properties.banner.index].colour = colour;
+        map_invalidate_tile_zoom1(x, y, z, z + 32);
+    }
+
+    return 0;
+}
+
+money32 BannerPlace(sint16 x, sint16 y, uint8 pathBaseHeight, uint8 direction, uint8 colour, uint8 type, uint8 *bannerIndex, uint8 flags)
+{
+    gCommandPosition.x = x + 16;
+    gCommandPosition.y = y + 16;
+    gCommandPosition.z = pathBaseHeight * 16;
+    gCommandExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
+    if (game_is_paused() && !gCheatsBuildInPauseMode) {
+        gGameCommandErrorText = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
+        return MONEY32_UNDEFINED;
+    }
+
+    if (!map_check_free_elements_and_reorganise(1)) {
+        return MONEY32_UNDEFINED;
+    }
+
+    if (x >= 8192 || y >= 8192) {
+        return MONEY32_UNDEFINED;
+    }
+
+    rct_map_element* mapElement = map_get_first_element_at(x / 32, y / 32);
+
+    bool pathFound = false;
+    do {
+        if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_PATH)
+            continue;
+
+        if (mapElement->base_height != pathBaseHeight * 2 && mapElement->base_height != (pathBaseHeight - 1) * 2)
+            continue;
+
+        if (!(mapElement->properties.path.edges & (1 << direction)))
+            continue;
+
+        pathFound = true;
+        break;
+    } while (!map_element_is_last_for_tile(mapElement++));
+
+    if (pathFound == false) {
+        gGameCommandErrorText = STR_CAN_ONLY_BE_BUILT_ACROSS_PATHS;
+        return MONEY32_UNDEFINED;
+    }
+
+    if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode && !map_is_location_owned(x, y, pathBaseHeight * 16)) {
+        return MONEY32_UNDEFINED;
+    }
+
+    uint8 baseHeight = (pathBaseHeight + 1) * 2;
+    mapElement = map_get_banner_element_at(x / 32, y / 32, baseHeight, direction);// map_get_first_element_at(x / 32, y / 32);
+    if (mapElement != nullptr) {
+        gGameCommandErrorText = STR_BANNER_SIGN_IN_THE_WAY;
+        return MONEY32_UNDEFINED;
+    }
+
+    *bannerIndex = create_new_banner(flags);
+    if (*bannerIndex == BANNER_NULL) {
+        return MONEY32_UNDEFINED;
+    }
+
+    if (flags & GAME_COMMAND_FLAG_APPLY) {
+        if (gGameCommandNestLevel == 1 && !(flags & GAME_COMMAND_FLAG_GHOST)) {
+            rct_xyz16 coord;
+            coord.x = x + 16;
+            coord.y = y + 16;
+            coord.z = map_element_height(coord.x, coord.y);
+            network_set_player_last_action_coord(network_get_player_index(game_command_playerid), coord);
+        }
+
+        rct_map_element* new_map_element = map_element_insert(x / 32, y / 32, baseHeight, 0);
+        assert(new_map_element != NULL);
+        gBanners[*bannerIndex].type = type;
+        gBanners[*bannerIndex].colour = colour;
+        gBanners[*bannerIndex].x = x / 32;
+        gBanners[*bannerIndex].y = y / 32;
+        new_map_element->type = MAP_ELEMENT_TYPE_BANNER;
+        new_map_element->clearance_height = new_map_element->base_height + 2;
+        new_map_element->properties.banner.position = direction;
+        new_map_element->properties.banner.flags = 0xFF;
+        new_map_element->properties.banner.unused = 0;
+        new_map_element->properties.banner.index = *bannerIndex;
+        if (flags & GAME_COMMAND_FLAG_GHOST) {
+            new_map_element->flags |= MAP_ELEMENT_FLAG_GHOST;
+        }
+        map_invalidate_tile_full(x, y);
+        map_animation_create(0x0A, x, y, new_map_element->base_height);
+    }
+
+    rct_scenery_entry *scenery_entry = (rct_scenery_entry*)object_entry_groups[OBJECT_TYPE_BANNERS].chunks[type];
+    if (gParkFlags & PARK_FLAGS_NO_MONEY) {
+        return 0;
+    }
+    return scenery_entry->banner.price;
+}
+
+static money32 BannerSetName(uint8 bannerIndex, uint16 nameChunkIndex, uint32 nameChunk1, uint32 nameChunk2, uint32 nameChunk3, uint8 flags)
+{
+    static char newName[128];
+
+    if (bannerIndex >= MAX_BANNERS)
+    {
+        log_warning("Invalid game command for setting banner name, banner id = %d", bannerIndex);
+        return MONEY32_UNDEFINED;
+    }
+    rct_banner* banner = &gBanners[bannerIndex];
+
+    gCommandExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_RUNNING_COSTS;
+    uint32 indexToOffset[3] = {
+        24,
+        12,
+        0
+    };
+
+    if (nameChunkIndex > Util::CountOf(indexToOffset)) {
+        log_warning("Invalid chunk index for setting banner name, banner id = %d, index = %d", bannerIndex, nameChunkIndex);
+        return MONEY32_UNDEFINED;
+    }
+
+    uint32 nameChunkOffset = min(indexToOffset[nameChunkIndex], Util::CountOf(newName) - 12);
+    memcpy((void*)((uintptr_t)newName + (uintptr_t)nameChunkOffset + 0), &nameChunk1, sizeof(uint32));
+    memcpy((void*)((uintptr_t)newName + (uintptr_t)nameChunkOffset + 4), &nameChunk2, sizeof(uint32));
+    memcpy((void*)((uintptr_t)newName + (uintptr_t)nameChunkOffset + 8), &nameChunk3, sizeof(uint32));
+
+    if (nameChunkIndex != 0) {
+        return 0;
+    }
+
+    if (!(flags & GAME_COMMAND_FLAG_APPLY)) {
+        return 0;
+    }
+
+    utf8 *buffer = gCommonStringFormatBuffer;
+    utf8 *dst = buffer;
+    dst = utf8_write_codepoint(dst, FORMAT_COLOUR_CODE_START + banner->text_colour);
+    safe_strcpy(dst, newName, 32);
+
+    rct_string_id stringId = user_string_allocate(128, buffer);
+    if (stringId) {
+        rct_string_id prevStringId = banner->string_idx;
+        banner->string_idx = stringId;
+        user_string_free(prevStringId);
+        rct_window* w = window_bring_to_front_by_number(WC_BANNER, bannerIndex);
+        if (w) {
+            window_invalidate(w);
+        }
+    }
+    else {
+        gGameCommandErrorText = STR_ERR_CANT_SET_BANNER_TEXT;
+        return MONEY32_UNDEFINED;
+    }
+
+    return 0;
+}
+
+static money32 BannerSetStyle(uint8 bannerIndex, uint8 colour, uint8 textColour, uint8 bannerFlags, uint8 flags)
+{
+    if (bannerIndex >= MAX_BANNERS)
+    {
+        gGameCommandErrorText = STR_INVALID_SELECTION_OF_OBJECTS;
+        return MONEY32_UNDEFINED;
+    }
+
+    rct_banner* banner = &gBanners[bannerIndex];
+
+    rct_map_element* mapElement = banner_get_map_element(bannerIndex);
+
+    if (mapElement == nullptr) {
+        return MONEY32_UNDEFINED;
+    }
+
+    if (!(flags & GAME_COMMAND_FLAG_APPLY)) {
+        return 0;
+    }
+
+    banner->colour = colour;
+    banner->text_colour = textColour;
+    banner->flags = bannerFlags;
+
+    mapElement->properties.banner.flags = 0xFF;
+    if (banner->flags & BANNER_FLAG_NO_ENTRY) {
+        mapElement->properties.banner.flags &= ~(1 << mapElement->properties.banner.position);
+    }
+
+    sint32 colourCodepoint = FORMAT_COLOUR_CODE_START + banner->text_colour;
+
+    utf8 buffer[256];
+    format_string(buffer, 256, banner->string_idx, 0);
+    sint32 firstCodepoint = utf8_get_next(buffer, NULL);
+    if (firstCodepoint >= FORMAT_COLOUR_CODE_START && firstCodepoint <= FORMAT_COLOUR_CODE_END) {
+        utf8_write_codepoint(buffer, colourCodepoint);
+    }
+    else {
+        utf8_insert_codepoint(buffer, colourCodepoint);
+    }
+
+    rct_string_id stringId = user_string_allocate(128, buffer);
+    if (stringId != 0) {
+        rct_string_id prevStringId = banner->string_idx;
+        banner->string_idx = stringId;
+        user_string_free(prevStringId);
+        rct_window* w = window_bring_to_front_by_number(WC_BANNER, bannerIndex);
+        if (w) {
+            window_invalidate(w);
+        }
+    }
+    else {
+        gGameCommandErrorText = STR_ERR_CANT_SET_BANNER_TEXT;
+        return MONEY32_UNDEFINED;
+    }
+
+    return 0;
+}
+
 extern "C" 
 {
     /**
@@ -93,36 +428,6 @@ extern "C"
 
     /**
      *
-     *  rct2: 0x006B7EAB
-     */
-    static sint32 banner_get_ride_index_at(sint32 x, sint32 y, sint32 z)
-    {
-        rct_map_element *mapElement;
-        rct_ride *ride;
-        sint32 rideIndex, resultRideIndex;
-
-        resultRideIndex = -1;
-        mapElement = map_get_first_element_at(x >> 5, y >> 5);
-        do {
-            if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_TRACK)
-                continue;
-
-            rideIndex = mapElement->properties.track.ride_index;
-            ride = get_ride(rideIndex);
-            if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_SHOP))
-                continue;
-
-            if ((mapElement->clearance_height * 8) + 32 <= z)
-                continue;
-
-            resultRideIndex = rideIndex;
-        } while (!map_element_is_last_for_tile(mapElement++));
-
-        return resultRideIndex;
-    }
-
-    /**
-     *
      *  rct2: 0x006B7D86
      */
     sint32 banner_get_closest_ride_index(sint32 x, sint32 y, sint32 z)
@@ -174,12 +479,11 @@ extern "C"
     void fix_banner_count()
     {
         for (sint32 banner_index = 0; banner_index < MAX_BANNERS; banner_index++) {
-            rct_map_element *map_element = banner_get_map_element(banner_index);
-            if (map_element == NULL)
+            rct_map_element *mapElement = banner_get_map_element(banner_index);
+            if (mapElement == NULL)
                 gBanners[banner_index].type = BANNER_NULL;
         }
     }
-
 
     /**
     *
@@ -187,63 +491,14 @@ extern "C"
     */
     void game_command_remove_banner(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp)
     {
-        sint32 x = *eax;
-        sint32 y = *ecx;
-        uint8 base_height = *edx;
-        uint8 banner_position = *edx >> 8;
-        uint8 flags = *ebx & 0xFF;
-        sint32 z = base_height * 8;
-        gCommandExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
-        gCommandPosition.x = x + 16;
-        gCommandPosition.y = y + 16;
-        gCommandPosition.z = z;
-
-        if (!(flags & GAME_COMMAND_FLAG_GHOST) && game_is_paused() && !gCheatsBuildInPauseMode) {
-            gGameCommandErrorText = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
-            *ebx = MONEY32_UNDEFINED;
-            return;
-        }
-
-        if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode && !map_is_location_owned(x, y, z - 16)) {
-            *ebx = MONEY32_UNDEFINED;
-            return;
-        }
-
-        // Slight modification to the code so that it now checks height as well
-        // This was causing a bug with banners on two paths stacked.
-        rct_map_element* map_element = map_get_banner_element_at(x / 32, y / 32, base_height, banner_position);
-        if (map_element == NULL) {
-            *ebx = MONEY32_UNDEFINED;
-            return;
-        }
-
-        rct_banner *banner = &gBanners[map_element->properties.banner.index];
-        rct_scenery_entry *scenery_entry = get_banner_entry(banner->type);
-        money32 refund = 0;
-        if (scenery_entry != NULL && scenery_entry != (rct_scenery_entry *)-1) {
-            refund = -((scenery_entry->banner.price * 3) / 4);
-        }
-
-        if (flags & GAME_COMMAND_FLAG_APPLY) {
-            if (gGameCommandNestLevel == 1 && !(*ebx & GAME_COMMAND_FLAG_GHOST)) {
-                rct_xyz16 coord;
-                coord.x = x + 16;
-                coord.y = y + 16;
-                coord.z = map_element_height(coord.x, coord.y);
-                network_set_player_last_action_coord(network_get_player_index(game_command_playerid), coord);
-            }
-
-            map_element_remove_banner_entry(map_element);
-            map_invalidate_tile_zoom1(x, y, z, z + 32);
-            map_element_remove(map_element);
-        }
-
-        *ebx = refund;
-        if (gParkFlags & PARK_FLAGS_NO_MONEY) {
-            *ebx = 0;
-        }
+        *ebx = BannerRemove(
+            *eax & 0xFFFF,
+            *ecx & 0xFFFF,
+            *edx & 0xFF,
+            (*edx >> 8) & 0xFF,
+            *ebx & 0xFF
+        );
     }
-
 
     /**
     *
@@ -251,53 +506,14 @@ extern "C"
     */
     void game_command_set_banner_colour(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp)
     {
-        gCommandExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
-        sint32 x = *eax;
-        sint32 y = *ecx;
-        uint8 base_height = *edx;
-        uint8 banner_position = *edx >> 8;
-        uint8 colour = *ebp;
-        sint32 z = (base_height * 8);
-        gCommandPosition.x = x + 16;
-        gCommandPosition.y = y + 16;
-        gCommandPosition.z = z;
-
-        if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode) {
-            if (!map_is_location_owned(x, y, z - 16)) {
-                *ebx = MONEY32_UNDEFINED;
-                return;
-            }
-        }
-
-        if (*ebx & GAME_COMMAND_FLAG_APPLY) {
-            rct_map_element* map_element = map_get_first_element_at(x / 32, y / 32);
-
-            bool found = false;
-            do {
-                if (map_element_get_type(map_element) != MAP_ELEMENT_TYPE_BANNER)
-                    continue;
-
-                if (map_element->properties.banner.position != banner_position)
-                    continue;
-
-                found = true;
-                break;
-            } while (!map_element_is_last_for_tile(map_element++));
-
-            if (found == false) {
-                *ebx = MONEY32_UNDEFINED;
-                return;
-            }
-
-            rct_window* window = window_find_by_number(WC_BANNER, map_element->properties.banner.index);
-            if (window) {
-                window_invalidate(window);
-            }
-            gBanners[map_element->properties.banner.index].colour = colour;
-            map_invalidate_tile_zoom1(x, y, z, z + 32);
-        }
-
-        *ebx = 0;
+        *ebx = BannerSetColour(
+            *eax & 0xFFFF,
+            *ecx & 0xFFFF,
+            *edx & 0xFF,
+            (*edx >> 8) & 0xFF,
+            *ebp & 0xFF,
+            *ebx & 0xFF
+        );
     }
 
     /**
@@ -306,253 +522,36 @@ extern "C"
     */
     void game_command_place_banner(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp)
     {
-        sint32 x = (uint16)*eax;
-        sint32 y = (uint16)*ecx;
-        uint8 base_height = *edx;
-        uint8 edge = *edx >> 8;
-        uint8 colour = *edi;
-        uint8 type = *ebx >> 8;
-        gCommandPosition.x = x + 16;
-        gCommandPosition.y = y + 16;
-        gCommandPosition.z = base_height * 16;
-        gCommandExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
-        if (game_is_paused() && !gCheatsBuildInPauseMode) {
-            gGameCommandErrorText = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
-            *ebx = MONEY32_UNDEFINED;
-            return;
-        }
-
-        if (!map_check_free_elements_and_reorganise(1)) {
-            *ebx = MONEY32_UNDEFINED;
-            return;
-        }
-
-        if (x >= 8192 || y >= 8192) {
-            *ebx = MONEY32_UNDEFINED;
-            return;
-        }
-
-        rct_map_element* map_element = map_get_first_element_at(x / 32, y / 32);
-        sint32 dl = base_height * 2;
-        sint32 ch = (base_height - 1) * 2;
-
-        bool pathFound = false;
-        do {
-            if (map_element_get_type(map_element) != MAP_ELEMENT_TYPE_PATH)
-                continue;
-
-            if (map_element->base_height != dl && map_element->base_height != ch)
-                continue;
-
-            if (!(map_element->properties.path.edges & (1 << edge)))
-                continue;
-
-            pathFound = true;
-            break;
-        } while (!map_element_is_last_for_tile(map_element++));
-
-        if (pathFound == false) {
-            gGameCommandErrorText = STR_CAN_ONLY_BE_BUILT_ACROSS_PATHS;
-            *ebx = MONEY32_UNDEFINED;
-            return;
-        }
-
-        if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode && !map_is_location_owned(x, y, base_height * 16)) {
-            *ebx = MONEY32_UNDEFINED;
-            return;
-        }
-        map_element = map_get_first_element_at(x / 32, y / 32);
-        dl = (base_height + 1) * 2;
-
-        // Check to see if there is a banner in the way
-        do {
-            if (map_element_get_type(map_element) != MAP_ELEMENT_TYPE_BANNER)
-                continue;
-
-            if (map_element->base_height != dl)
-                continue;
-
-            if ((map_element->properties.banner.position & 0x3) != edge)
-                continue;
-
-            gGameCommandErrorText = STR_BANNER_SIGN_IN_THE_WAY;
-            *ebx = MONEY32_UNDEFINED;
-            return;
-        } while (!map_element_is_last_for_tile(map_element++));
-
-        sint32 banner_index = create_new_banner(*ebx);
-        if (banner_index == BANNER_NULL) {
-            *ebx = MONEY32_UNDEFINED;
-            return;
-        }
-        *edi = banner_index;
-        if (*ebx & GAME_COMMAND_FLAG_APPLY) {
-            if (gGameCommandNestLevel == 1 && !(*ebx & GAME_COMMAND_FLAG_GHOST)) {
-                rct_xyz16 coord;
-                coord.x = x + 16;
-                coord.y = y + 16;
-                coord.z = map_element_height(coord.x, coord.y);
-                network_set_player_last_action_coord(network_get_player_index(game_command_playerid), coord);
-            }
-
-            rct_map_element* new_map_element = map_element_insert(x / 32, y / 32, (base_height + 1) * 2, 0);
-            assert(new_map_element != NULL);
-            gBanners[banner_index].type = type;
-            gBanners[banner_index].colour = colour;
-            gBanners[banner_index].x = x / 32;
-            gBanners[banner_index].y = y / 32;
-            new_map_element->type = MAP_ELEMENT_TYPE_BANNER;
-            new_map_element->clearance_height = new_map_element->base_height + 2;
-            new_map_element->properties.banner.position = edge;
-            new_map_element->properties.banner.flags = 0xFF;
-            new_map_element->properties.banner.unused = 0;
-            new_map_element->properties.banner.index = banner_index;
-            if (*ebx & GAME_COMMAND_FLAG_GHOST) {
-                new_map_element->flags |= MAP_ELEMENT_FLAG_GHOST;
-            }
-            map_invalidate_tile_full(x, y);
-            map_animation_create(0x0A, x, y, new_map_element->base_height);
-        }
-        rct_scenery_entry *scenery_entry = (rct_scenery_entry*)object_entry_groups[OBJECT_TYPE_BANNERS].chunks[type];
-        *ebx = scenery_entry->banner.price;
-        if (gParkFlags & PARK_FLAGS_NO_MONEY) {
-            *ebx = 0;
-        }
+        *ebx = BannerPlace(
+            *eax & 0xFFFF,
+            *ecx & 0xFFFF,
+            *edx & 0xFF,
+            (*edx >> 8) & 0xFF,
+            *ebp & 0xFF,
+            (*ebx >> 8) & 0xFF,
+            (uint8 *)edi,
+            *ebx & 0xFF
+        );
     }
 
     void game_command_set_banner_name(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp) {
-        static char newName[128];
-
-        if ((*ecx >= MAX_BANNERS) || (*ecx < 0))
-        {
-            log_warning("Invalid game command for setting banner name, banner id = %d", *ecx);
-            *ebx = MONEY32_UNDEFINED;
-            return;
-        }
-        rct_banner* banner = &gBanners[*ecx];
-
-        sint32 nameChunkIndex = *eax & 0xFFFF;
-
-        gCommandExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_RUNNING_COSTS;
-        sint32 nameChunkOffset = nameChunkIndex - 1;
-        if (nameChunkOffset < 0)
-            nameChunkOffset = 2;
-        nameChunkOffset *= 12;
-        nameChunkOffset = min(nameChunkOffset, (sint32)Util::CountOf(newName) - 12);
-        memcpy((void*)((uintptr_t)newName + (uintptr_t)nameChunkOffset + 0), edx, sizeof(uint32));
-        memcpy((void*)((uintptr_t)newName + (uintptr_t)nameChunkOffset + 4), ebp, sizeof(uint32));
-        memcpy((void*)((uintptr_t)newName + (uintptr_t)nameChunkOffset + 8), edi, sizeof(uint32));
-
-        if (nameChunkIndex != 0) {
-            *ebx = 0;
-            return;
-        }
-
-        if (!(*ebx & GAME_COMMAND_FLAG_APPLY)) {
-            *ebx = 0;
-            return;
-        }
-
-        utf8 *buffer = gCommonStringFormatBuffer;
-        utf8 *dst = buffer;
-        dst = utf8_write_codepoint(dst, FORMAT_COLOUR_CODE_START + banner->text_colour);
-        safe_strcpy(dst, newName, 32);
-
-        rct_string_id stringId = user_string_allocate(128, buffer);
-        if (stringId) {
-            rct_string_id prev_string_id = banner->string_idx;
-            banner->string_idx = stringId;
-            user_string_free(prev_string_id);
-            rct_window* w = window_bring_to_front_by_number(WC_BANNER, *ecx);
-            if (w) {
-                window_invalidate(w);
-            }
-        }
-        else {
-            gGameCommandErrorText = STR_ERR_CANT_SET_BANNER_TEXT;
-            *ebx = MONEY32_UNDEFINED;
-            return;
-        }
-
-        *ebx = 0;
+        *ebx = BannerSetName(
+            *ecx & 0xFF,
+            *eax & 0xFFFF,
+            *edx,
+            *ebp,
+            *edi,
+            *ebx & 0xFF
+        );
     }
 
     void game_command_set_banner_style(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp) {
-        if ((*ecx >= MAX_BANNERS) || (*ecx < 0))
-        {
-            gGameCommandErrorText = STR_INVALID_SELECTION_OF_OBJECTS;
-            *ebx = MONEY32_UNDEFINED;
-            return;
-        }
-
-        if (!(*ebx & GAME_COMMAND_FLAG_APPLY)) {
-            *ebx = 0;
-            return;
-        }
-
-        rct_banner* banner = &gBanners[*ecx];
-
-        banner->colour = (uint8)*edx;
-        banner->text_colour = (uint8)*edi;
-        banner->flags = (uint8)*ebp;
-
-        uint8 bannerIndex = *ecx & 0xFF;
-
-        sint32 x = banner->x << 5;
-        sint32 y = banner->y << 5;
-
-        rct_map_element* map_element = map_get_first_element_at(x / 32, y / 32);
-        bool bannerFound = false;
-        do {
-            if (map_element_get_type(map_element) != MAP_ELEMENT_TYPE_BANNER)
-                continue;
-
-            if (map_element->properties.banner.index != bannerIndex)
-                continue;
-
-            bannerFound = true;
-            break;
-        } while (!map_element_is_last_for_tile(map_element++));
-
-        if (bannerFound == false) {
-            *ebx = MONEY32_UNDEFINED;
-            return;
-        }
-
-        map_element->properties.banner.flags = 0xFF;
-        if (banner->flags & BANNER_FLAG_NO_ENTRY) {
-            map_element->properties.banner.flags &= ~(1 << map_element->properties.banner.position);
-        }
-
-        sint32 colourCodepoint = FORMAT_COLOUR_CODE_START + banner->text_colour;
-
-        utf8 buffer[256];
-        format_string(buffer, 256, banner->string_idx, 0);
-        sint32 firstCodepoint = utf8_get_next(buffer, NULL);
-        if (firstCodepoint >= FORMAT_COLOUR_CODE_START && firstCodepoint <= FORMAT_COLOUR_CODE_END) {
-            utf8_write_codepoint(buffer, colourCodepoint);
-        }
-        else {
-            utf8_insert_codepoint(buffer, colourCodepoint);
-        }
-
-        rct_string_id stringId = user_string_allocate(128, buffer);
-        if (stringId != 0) {
-            rct_string_id prev_string_id = banner->string_idx;
-            banner->string_idx = stringId;
-            user_string_free(prev_string_id);
-            rct_window* w = window_bring_to_front_by_number(WC_BANNER, *ecx);
-            if (w) {
-                window_invalidate(w);
-            }
-        }
-        else {
-            gGameCommandErrorText = STR_ERR_CANT_SET_BANNER_TEXT;
-            *ebx = MONEY32_UNDEFINED;
-            return;
-        }
-
-        *ebx = 0;
+        *ebx = BannerSetStyle(
+            *ecx & 0xFF,
+            *edx & 0xFF,
+            *edi & 0xFF,
+            *ebp & 0xFF,
+            *ebx & 0xFF
+        );
     }
-
 }
