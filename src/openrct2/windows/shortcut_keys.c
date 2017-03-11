@@ -22,8 +22,11 @@
 #include "../interface/keyboard_shortcut.h"
 #include "../interface/themes.h"
 
-#define WW 340
-#define WH 240
+#define WW 420
+#define WH 280
+
+#define WW_SC_MAX 1200
+#define WH_SC_MAX 800
 
 enum WINDOW_SHORTCUT_WIDGET_IDX {
 	WIDX_BACKGROUND,
@@ -44,6 +47,7 @@ static rct_widget window_shortcut_widgets[] = {
 };
 
 static void window_shortcut_mouseup(rct_window *w, sint32 widgetIndex);
+static void window_shortcut_resize(rct_window *w);
 static void window_shortcut_invalidate(rct_window *w);
 static void window_shortcut_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_shortcut_tooltip(rct_window* w, sint32 widgetIndex, rct_string_id *stringId);
@@ -55,7 +59,7 @@ static void window_shortcut_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, s
 static rct_window_event_list window_shortcut_events = {
 	NULL,
 	window_shortcut_mouseup,
-	NULL,
+	window_shortcut_resize,
 	NULL,
 	NULL,
 	NULL,
@@ -160,7 +164,7 @@ void window_shortcut_keys_open()
 
 	if (w) return;
 
-	w = window_create_auto_pos(WW, WH, &window_shortcut_events, WC_KEYBOARD_SHORTCUT_LIST, 0);
+	w = window_create_auto_pos(WW, WH, &window_shortcut_events, WC_KEYBOARD_SHORTCUT_LIST, WF_RESIZABLE);
 
 	w->widgets = window_shortcut_widgets;
 	w->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_RESET);
@@ -168,6 +172,10 @@ void window_shortcut_keys_open()
 
 	w->no_list_items = SHORTCUT_COUNT;
 	w->selected_list_item = -1;
+	w->min_width = WW;
+	w->min_height = WH;
+	w->max_width = WW_SC_MAX;
+	w->max_height = WH_SC_MAX;
 }
 
 /**
@@ -188,9 +196,24 @@ static void window_shortcut_mouseup(rct_window *w, sint32 widgetIndex)
 	}
 }
 
+static void window_shortcut_resize(rct_window *w)
+{
+	window_set_resize(w, w->min_width, w->min_height, w->max_width, w->max_height);
+}
+
 static void window_shortcut_invalidate(rct_window *w)
 {
 	colour_scheme_update(w);
+
+	window_shortcut_widgets[WIDX_BACKGROUND].right = w->width - 1;
+	window_shortcut_widgets[WIDX_BACKGROUND].bottom = w->height - 1;
+	window_shortcut_widgets[WIDX_TITLE].right = w->width - 2;
+	window_shortcut_widgets[WIDX_CLOSE].right = w->width - 3;
+	window_shortcut_widgets[WIDX_CLOSE].left = w->width - 13;
+	window_shortcut_widgets[WIDX_SCROLL].right = w->width - 5;
+	window_shortcut_widgets[WIDX_SCROLL].bottom = w->height - 18;
+	window_shortcut_widgets[WIDX_RESET].top = w->height - 15;
+	window_shortcut_widgets[WIDX_RESET].bottom = w->height - 4;
 }
 
 /**
