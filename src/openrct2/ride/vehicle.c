@@ -685,7 +685,7 @@ static void vehicle_update_sound_params(rct_vehicle* vehicle)
 								gVehicleSoundParamsListEnd++;
 							}
 							rct_vehicle_sound_params* j = gVehicleSoundParamsListEnd - 1;
-							while (j >= i) {
+							while (j > i) {
 								j--;
 								*(j + 1) = *j;
 							}
