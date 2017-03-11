@@ -335,7 +335,7 @@
     <ClCompile Include="windows\title_command_editor.c" />
     <ClCompile Include="windows\title_editor.c" />
     <ClCompile Include="windows\maze_construction.c" />
-    <ClCompile Include="world\balloon.c" />
+    <ClCompile Include="world\Balloon.cpp" />
     <ClCompile Include="world\duck.c" />
     <ClCompile Include="world\money_effect.c" />
     <ClCompile Include="world\particle.c" />
