@@ -24,7 +24,7 @@
 #include "../ride/ride.h"
 #include "../scenario/scenario.h"
 #include "../sprites.h"
-#include "../world/climate.h"
+#include "../world/Climate.h"
 #include "../world/park.h"
 #include "../world/sprite.h"
 #include "../interface/themes.h"

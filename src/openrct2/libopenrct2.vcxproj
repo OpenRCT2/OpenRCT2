@@ -596,7 +596,7 @@
     <ClInclude Include="windows\tile_inspector.h" />
     <ClInclude Include="windows\tooltip.h" />
     <ClInclude Include="world\banner.h" />
-    <ClInclude Include="world\climate.h" />
+    <ClInclude Include="world\Climate.h" />
     <ClInclude Include="world\entrance.h" />
     <ClInclude Include="world\footpath.h" />
     <ClInclude Include="world\fountain.h" />

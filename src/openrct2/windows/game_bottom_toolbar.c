@@ -28,7 +28,7 @@
 #include "../peep/staff.h"
 #include "../rct2.h"
 #include "../sprites.h"
-#include "../world/climate.h"
+#include "../world/Climate.h"
 #include "../world/park.h"
 #include "../world/sprite.h"
 

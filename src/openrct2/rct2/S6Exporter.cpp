@@ -46,7 +46,7 @@ extern "C"
     #include "../scenario/scenario.h"
     #include "../util/sawyercoding.h"
     #include "../util/util.h"
-    #include "../world/climate.h"
+    #include "../world/Climate.h"
     #include "../world/map_animation.h"
     #include "../world/park.h"
 }

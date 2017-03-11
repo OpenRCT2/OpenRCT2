@@ -34,7 +34,7 @@
 #include "../title/TitleScreen.h"
 #include "../util/util.h"
 #include "../Version.h"
-#include "../world/climate.h"
+#include "../world/Climate.h"
 #include "platform.h"
 
 typedef void(*update_palette_func)(const uint8*, sint32, sint32);

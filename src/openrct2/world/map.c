@@ -33,7 +33,7 @@
 #include "../scenario/scenario.h"
 #include "../util/util.h"
 #include "banner.h"
-#include "climate.h"
+#include "Climate.h"
 #include "footpath.h"
 #include "map.h"
 #include "map_animation.h"

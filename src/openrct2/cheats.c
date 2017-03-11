@@ -22,7 +22,7 @@
 #include "management/finance.h"
 #include "network/network.h"
 #include "util/util.h"
-#include "world/climate.h"
+#include "world/Climate.h"
 #include "world/footpath.h"
 #include "world/scenery.h"
 #include "world/sprite.h"

@@ -20,7 +20,7 @@
 #include "../scenario/scenario.h"
 #include "../cheats.h"
 #include "../object_list.h"
-#include "climate.h"
+#include "Climate.h"
 #include "fountain.h"
 #include "map.h"
 #include "park.h"

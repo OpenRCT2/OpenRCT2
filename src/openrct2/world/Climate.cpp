@@ -16,7 +16,7 @@
 
 #include "../config/Config.h"
 #include "../core/Math.hpp"
-#include "climate.h"
+#include "Climate.h"
 
 extern "C"
 {

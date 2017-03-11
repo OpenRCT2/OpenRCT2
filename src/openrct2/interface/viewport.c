@@ -27,7 +27,7 @@
 #include "../ride/track_data.h"
 #include "../sprites.h"
 #include "../world/banner.h"
-#include "../world/climate.h"
+#include "../world/Climate.h"
 #include "../world/entrance.h"
 #include "../world/footpath.h"
 #include "../world/map.h"

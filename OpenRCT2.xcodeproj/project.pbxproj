@@ -994,7 +994,6 @@
 		D44271D71CC81B3200D84D28 /* water.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = water.c; sourceTree = "<group>"; };
 		D44271DA1CC81B3200D84D28 /* banner.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = banner.c; sourceTree = "<group>"; };
 		D44271DB1CC81B3200D84D28 /* banner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = banner.h; sourceTree = "<group>"; };
-		D44271DD1CC81B3200D84D28 /* climate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = climate.h; sourceTree = "<group>"; };
 		D44271DE1CC81B3200D84D28 /* duck.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = duck.c; sourceTree = "<group>"; };
 		D44271DF1CC81B3200D84D28 /* entrance.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = entrance.h; sourceTree = "<group>"; };
 		D44271E01CC81B3200D84D28 /* footpath.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = footpath.c; sourceTree = "<group>"; };
@@ -1241,6 +1240,7 @@
 		D4F5B5EC1DAD8A4300AB6075 /* CursorData.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CursorData.cpp; sourceTree = "<group>"; };
 		D4F5B5ED1DAD8A4300AB6075 /* Cursors.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Cursors.cpp; sourceTree = "<group>"; };
 		D4F5B5EE1DAD8A4300AB6075 /* Cursors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Cursors.h; sourceTree = "<group>"; };
+		EC3C3FED9FA55B65F65D706F /* Climate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Climate.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -2038,11 +2038,11 @@
 		D44271D81CC81B3200D84D28 /* world */ = {
 			isa = PBXGroup;
 			children = (
+				EC3C3FED9FA55B65F65D706F /* Climate.h */,
 				242F470FE91956ACA4078F6A /* Climate.cpp */,
 				437490DBD74ECF60C3363559 /* Balloon.cpp */,
 				D44271DA1CC81B3200D84D28 /* banner.c */,
 				D44271DB1CC81B3200D84D28 /* banner.h */,
-				D44271DD1CC81B3200D84D28 /* climate.h */,
 				D44271DE1CC81B3200D84D28 /* duck.c */,
 				D44271DF1CC81B3200D84D28 /* entrance.h */,
 				D44271E01CC81B3200D84D28 /* footpath.c */,

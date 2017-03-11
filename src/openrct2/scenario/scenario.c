@@ -36,7 +36,7 @@
 #include "../ride/ride.h"
 #include "../util/sawyercoding.h"
 #include "../util/util.h"
-#include "../world/climate.h"
+#include "../world/Climate.h"
 #include "../world/map.h"
 #include "../world/park.h"
 #include "../world/scenery.h"
