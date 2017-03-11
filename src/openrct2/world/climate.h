@@ -42,17 +42,17 @@ enum WEATHER
     WEATHER_CLOUDY,
     WEATHER_RAIN,
     WEATHER_HEAVY_RAIN,
-    WEATHER_THUNDER
+    WEATHER_THUNDER,
 };
 
-typedef struct rct_weather
+typedef struct WeatherState
 {
-    sint8 temp_delta;
-    sint8 effect_level;
-    sint8 gloom_level;
-    sint8 rain_level;
-    uint32 sprite_id;
-} rct_weather;
+    sint8   TemperatureDelta;
+    sint8   EffectLevel;
+    sint8   GloomLevel;
+    sint8   RainLevel;
+    uint32  SpriteId;
+} WeatherState;
 
 #ifdef __cplusplus
 extern "C"
@@ -72,7 +72,7 @@ extern "C"
     extern uint16   gClimateUpdateTimer;
     extern uint16   gClimateLightningFlash;
 
-    extern const rct_weather        ClimateWeatherData[6];
+    extern const WeatherState       ClimateWeatherData[6];
     extern const FILTER_PALETTE_ID  ClimateWeatherGloomColours[4];
 
     sint32 climate_celsius_to_fahrenheit(sint32 celsius);

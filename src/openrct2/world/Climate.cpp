@@ -95,17 +95,17 @@ extern "C"
      */
     void climate_reset(sint32 climate)
     {
-        sint8 weather = WEATHER_PARTIALLY_CLOUDY;
-        sint8 month = date_get_month(gDateMonthsElapsed);
+        uint8 weather = WEATHER_PARTIALLY_CLOUDY;
+        sint32 month = date_get_month(gDateMonthsElapsed);
         const WeatherTransition * transition = &ClimateTransitions[climate][month];
-        const rct_weather * climateData = &ClimateWeatherData[weather];
+        const WeatherState * weatherState = &ClimateWeatherData[weather];
 
         gClimate = climate;
         gClimateCurrentWeather = weather;
-        gClimateCurrentTemperature = transition->BaseTemperature + climateData->temp_delta;
-        gClimateCurrentWeatherEffect = climateData->effect_level;
-        gClimateCurrentWeatherGloom = climateData->gloom_level;
-        gClimateCurrentRainLevel = climateData->rain_level;
+        gClimateCurrentTemperature = transition->BaseTemperature + weatherState->TemperatureDelta;
+        gClimateCurrentWeatherEffect = weatherState->EffectLevel;
+        gClimateCurrentWeatherGloom = weatherState->GloomLevel;
+        gClimateCurrentRainLevel = weatherState->RainLevel;
 
         _lightningTimer = 0;
         _thunderTimer = 0;
@@ -193,11 +193,11 @@ extern "C"
 
     void climate_force_weather(uint8 weather)
     {
-        const auto climateData = &ClimateWeatherData[weather];
+        const auto weatherState = &ClimateWeatherData[weather];
         gClimateCurrentWeather = weather;
-        gClimateCurrentWeatherGloom = climateData->gloom_level;
-        gClimateCurrentRainLevel = climateData->rain_level;
-        gClimateCurrentWeatherEffect = climateData->effect_level;
+        gClimateCurrentWeatherGloom = weatherState->GloomLevel;
+        gClimateCurrentRainLevel = weatherState->RainLevel;
+        gClimateCurrentWeatherEffect = weatherState->EffectLevel;
         gClimateUpdateTimer = 1920;
 
         climate_update();
@@ -246,11 +246,11 @@ static void climate_determine_future_weather(sint32 randomDistribution)
     sint8 nextWeather = transition->Distribution[((randomDistribution & 0xFF) * transition->DistributionSize) >> 8];
     gClimateNextWeather = nextWeather;
 
-    const auto nextClimateData = &ClimateWeatherData[nextWeather];
-    gClimateNextTemperature = transition->BaseTemperature + nextClimateData->temp_delta;
-    gClimateNextWeatherEffect = nextClimateData->effect_level;
-    gClimateNextWeatherGloom = nextClimateData->gloom_level;
-    gClimateNextRainLevel = nextClimateData->rain_level;
+    const auto nextWeatherState = &ClimateWeatherData[nextWeather];
+    gClimateNextTemperature = transition->BaseTemperature + nextWeatherState->TemperatureDelta;
+    gClimateNextWeatherEffect = nextWeatherState->EffectLevel;
+    gClimateNextWeatherGloom = nextWeatherState->GloomLevel;
+    gClimateNextRainLevel = nextWeatherState->RainLevel;
 
     gClimateUpdateTimer = 1920;
 }
@@ -389,7 +389,7 @@ const FILTER_PALETTE_ID ClimateWeatherGloomColours[4] =
 };
 
 // There is actually a sprite at 0x5A9C for snow but only these weather types seem to be fully implemented
-const rct_weather ClimateWeatherData[6] =
+const WeatherState ClimateWeatherData[6] =
 {
     { 10, 0, 0, 0, SPR_WEATHER_SUN          }, // Sunny
     {  5, 0, 0, 0, SPR_WEATHER_SUN_CLOUD    }, // Partially Cloudy
