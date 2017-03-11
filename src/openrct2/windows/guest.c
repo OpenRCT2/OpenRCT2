@@ -1058,7 +1058,14 @@ void window_guest_overview_invalidate(rct_window *w)
 		window_init_scroll_widgets(w);
 	}
 
-	w->pressed_widgets &= ~(WIDX_TAB_1 | WIDX_TAB_2 |WIDX_TAB_3 |WIDX_TAB_4 |WIDX_TAB_5 |WIDX_TAB_6);
+	w->pressed_widgets &= ~(
+		(1ULL << WIDX_TAB_1) |
+		(1ULL << WIDX_TAB_2) |
+		(1ULL << WIDX_TAB_3) |
+		(1ULL << WIDX_TAB_4) |
+		(1ULL << WIDX_TAB_5) |
+		(1ULL << WIDX_TAB_6)
+		);
 	w->pressed_widgets |= 1ULL << (w->page + WIDX_TAB_1);
 
 	rct_peep* peep = GET_PEEP(w->number);
