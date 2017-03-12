@@ -16,6 +16,7 @@
 
 #include "../core/Math.hpp"
 #include "../core/Util.hpp"
+#include "../sprites.h"
 
 extern "C"
 {
@@ -32,10 +33,11 @@ enum DUCK_STATE
     SWIM,
     DRINK,
     DOUBLE_DRINK,
-    FLY_AWAY
+    FLY_AWAY,
 };
+constexpr sint32 DUCK_MAX_STATES = 5;
 
-static const rct_xy16 DuckMoveOffset[4] =
+static const rct_xy16 DuckMoveOffset[] =
 {
     { -1,  0 },
     {  0,  1 },
@@ -298,6 +300,18 @@ void rct_duck::UpdateFlyAway()
     }
 }
 
+uint32 rct_duck::GetFrameImage(sint32 direction) const
+{
+    uint32 imageId = 0;
+    if (state < DUCK_MAX_STATES)
+    {
+        // TODO check frame is in range
+        uint8 imageOffset = DuckAnimations[state][frame];
+        imageId = SPR_DUCK + (imageOffset * 4) + (direction / 8);
+    }
+    return imageId;
+}
+
 extern "C"
 {
     void create_duck(sint32 targetX, sint32 targetY)
@@ -375,5 +389,10 @@ extern "C"
                 sprite_remove((rct_sprite *)sprite);
             }
         }
+    }
+
+    uint32 duck_get_frame_image(const rct_duck * duck, sint32 direction)
+    {
+        return duck->GetFrameImage(direction);
     }
 }

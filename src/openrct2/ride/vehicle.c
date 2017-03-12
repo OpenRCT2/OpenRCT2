@@ -535,6 +535,13 @@ static const sint32 Unk9A39C4[] = {
 	1946281152,
 };
 
+static const rct_xy16 AvoidCollisionMoveOffset[] = {
+	{ -1,  0 },
+	{  0,  1 },
+	{  1,  0 },
+	{  0, -1 },
+};
+
 static bool vehicle_move_info_valid(sint32 cd, sint32 typeAndDirection, sint32 offset)
 {
 	if (cd >= countof(gTrackVehicleInfo)) {
@@ -7123,8 +7130,8 @@ static bool vehicle_update_motion_collision_detection(
 
 			uint32 offsetSpriteDirection = (vehicle->sprite_direction + 4) & 31;
 			uint32 offsetDirection = offsetSpriteDirection >> 3;
-			uint32 next_x_diff = abs(x + DuckMoveOffset[offsetDirection].x - collideVehicle->x);
-			uint32 next_y_diff = abs(y + DuckMoveOffset[offsetDirection].y - collideVehicle->y);
+			uint32 next_x_diff = abs(x + AvoidCollisionMoveOffset[offsetDirection].x - collideVehicle->x);
+			uint32 next_y_diff = abs(y + AvoidCollisionMoveOffset[offsetDirection].y - collideVehicle->y);
 
 			if (next_x_diff + next_y_diff < x_diff + y_diff){
 				mayCollide = true;

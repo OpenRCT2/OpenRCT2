@@ -168,6 +168,7 @@ typedef struct rct_duck {
 	void UpdateDrink();
 	void UpdateDoubleDrink();
 	void UpdateFlyAway();
+	uint32 GetFrameImage(sint32 direction) const;
 	void Invalidate();
 	void Remove();
 	void MoveTo(sint16 x, sint16 y, sint16 z);
@@ -453,6 +454,7 @@ void create_duck(sint32 targetX, sint32 targetY);
 void duck_update(rct_duck *duck);
 void duck_press(rct_duck *duck);
 void duck_remove_all();
+uint32 duck_get_frame_image(const rct_duck * duck, sint32 direction);
 
 ///////////////////////////////////////////////////////////////
 // Money effect
@@ -471,3 +473,4 @@ void crash_splash_update(rct_crash_splash *splash);
 const char *sprite_checksum();
 
 #endif
+
