@@ -70,7 +70,7 @@ static sint32           _rainVolume = 1;
 static uint32           _lightningTimer;
 static uint32           _thunderTimer;
 static void *           _thunderSoundChannels[MAX_THUNDER_INSTANCES];
-static THUNDER_STATUS   _thunderStatus[MAX_THUNDER_INSTANCES] = { THUNDER_STATUS::NONE, THUNDER_STATUS::PLAYING };
+static THUNDER_STATUS   _thunderStatus[MAX_THUNDER_INSTANCES] = { THUNDER_STATUS::NONE, THUNDER_STATUS::NONE };
 static uint32           _thunderSoundId;
 static sint32           _thunderVolume;
 static sint32           _thunderStereoEcho = 0;
