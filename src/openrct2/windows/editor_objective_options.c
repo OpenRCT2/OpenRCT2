@@ -24,7 +24,7 @@
 #include "../scenario/scenario.h"
 #include "../sprites.h"
 #include "../util/util.h"
-#include "../world/climate.h"
+#include "../world/Climate.h"
 #include "../world/park.h"
 #include "dropdown.h"
 #include "error.h"

@@ -37,7 +37,7 @@
 #include "../util/util.h"
 #include "../Version.h"
 #include "../world/banner.h"
-#include "../world/climate.h"
+#include "../world/Climate.h"
 #include "../world/park.h"
 #include "../world/scenery.h"
 #include "console.h"

@@ -36,7 +36,7 @@ extern "C"
     #include "../localisation/localisation.h"
     #include "../management/news_item.h"
     #include "../peep/staff.h"
-    #include "../world/climate.h"
+    #include "../world/Climate.h"
     #include "../world/scenery.h"
 }
 

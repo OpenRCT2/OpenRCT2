@@ -38,7 +38,7 @@
 #include "../util/util.h"
 #include "../windows/error.h"
 #include "../world/banner.h"
-#include "../world/climate.h"
+#include "../world/Climate.h"
 #include "../world/footpath.h"
 #include "../world/map.h"
 #include "../world/map_animation.h"

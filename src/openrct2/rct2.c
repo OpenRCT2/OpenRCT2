@@ -48,7 +48,7 @@
 #include "scenario/ScenarioRepository.h"
 #include "title/TitleScreen.h"
 #include "util/util.h"
-#include "world/climate.h"
+#include "world/Climate.h"
 #include "world/map.h"
 #include "world/park.h"
 #include "world/scenery.h"
