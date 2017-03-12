@@ -3524,7 +3524,7 @@ STR_5195    :Rensa Land
 STR_5196    :Landsrättigheter
 STR_5197    :Dekorationer
 STR_5198    :Gångväg
-STR_5199    :Åkturskonstruktion
+STR_5199    :Åkturkonstruktion
 STR_5200    :Spårdesignplacering
 STR_5201    :Ny åktur
 STR_5202    :Spårdesignval
@@ -4311,6 +4311,19 @@ STR_6013    :{SMALLFONT}{BLACK}Gästerna kommer endast betala biljetterna för a
 STR_6014    :{SMALLFONT}{BLACK}Gästerna kommer endast betala för åkturer och tjänster.{NEWLINE}Dem kommer inte betala något för inträde.
 STR_6015    :Lutande
 STR_6016    :Modifiera Ruta
+STR_6017    :Vänligen sakta ned
+STR_6018    :Åkturkonstruktion - Sväng vänster
+STR_6019    :Åkturkonstruktion - Sväng höger
+STR_6020    :Åkturkonstruktion - Rakt spår
+STR_6021    :Åkturkonstruktion - Lutning nedåt
+STR_6022    :Åkturkonstruktion - Lutning uppåt
+STR_6023    :Åkturkonstruktion - Växla kjedjelyft
+STR_6024    :Åkturkonstruktion - Lutning vänster
+STR_6025    :Åkturkonstruktion - Lutning höger
+STR_6026    :Åkturkonstruktion - Föregående spår
+STR_6027    :Åkturkonstruktion - Nästa spår
+STR_6028    :Åkturkonstruktion - Bygg valda spår
+STR_6029    :Åkturkonstruktion - Riv valda spår
 
 #############
 # Scenarion #
