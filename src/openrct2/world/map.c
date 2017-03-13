@@ -788,6 +788,17 @@ bool map_is_location_valid(sint32 x, sint32 y)
 	return false;
 }
 
+bool map_can_build_at(sint32 x, sint32 y, sint32 z)
+{
+	if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
+		return true;
+	if (gCheatsSandboxMode)
+		return true;
+	if (map_is_location_owned(x, y, z))
+		return true;
+	return false;
+}
+
 /**
  *
  *  rct2: 0x00664F72

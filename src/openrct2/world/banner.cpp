@@ -79,7 +79,7 @@ static money32 BannerRemove(sint16 x, sint16 y, uint8 baseHeight, uint8 directio
         return MONEY32_UNDEFINED;
     }
 
-    if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode && !map_is_location_owned(x, y, z - 16))
+    if (!map_can_build_at(x, y, z - 16))
     {
         return MONEY32_UNDEFINED;
     }
@@ -131,13 +131,11 @@ static money32 BannerSetColour(sint16 x, sint16 y, uint8 baseHeight, uint8 direc
     gCommandPosition.y = y + 16;
     gCommandPosition.z = z;
 
-    if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode)
+    if (!map_can_build_at(x, y, z - 16))
     {
-        if (!map_is_location_owned(x, y, z - 16))
-        {
-            return MONEY32_UNDEFINED;
-        }
+        return MONEY32_UNDEFINED;
     }
+    
 
     if (flags & GAME_COMMAND_FLAG_APPLY)
     {
@@ -190,7 +188,7 @@ static money32 BannerPlace(sint16 x, sint16 y, uint8 pathBaseHeight, uint8 direc
         return MONEY32_UNDEFINED;
     }
 
-    if (x >= 256 * 32 || y >= 256 * 32)
+    if (!map_is_location_valid(x, y))
     {
         return MONEY32_UNDEFINED;
     }
@@ -219,9 +217,7 @@ static money32 BannerPlace(sint16 x, sint16 y, uint8 pathBaseHeight, uint8 direc
         return MONEY32_UNDEFINED;
     }
 
-    if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) &&
-        !gCheatsSandboxMode &&
-        !map_is_location_owned(x, y, pathBaseHeight * 16))
+    if (!map_can_build_at(x, y, pathBaseHeight * 16))
     {
         return MONEY32_UNDEFINED;
     }

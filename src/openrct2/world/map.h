@@ -436,6 +436,7 @@ void map_remove_provisional_elements();
 void map_restore_provisional_elements();
 void map_update_path_wide_flags();
 bool map_is_location_valid(sint32 x, sint32 y);
+bool map_can_build_at(sint32 x, sint32 y, sint32 z);
 bool map_is_location_owned(sint32 x, sint32 y, sint32 z);
 bool map_is_location_in_park(sint32 x, sint32 y);
 bool map_is_location_owned_or_has_rights(sint32 x, sint32 y);
