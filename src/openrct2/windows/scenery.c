@@ -926,8 +926,8 @@ void window_scenery_invalidate(rct_window *w)
 
 	window_scenery_widgets[WIDX_SCENERY_TITLE].text = titleStringId;
 
-	w->pressed_widgets = (((uint32)w->pressed_widgets & 0xFF00000F) | (1 << (tabIndex + 4))) & 0xBBFFFFFF;
-
+	w->pressed_widgets = 0;
+	w->pressed_widgets |= 1ULL << (tabIndex + 4);
 	if (gWindowSceneryPaintEnabled == 1)
 		w->pressed_widgets |= (1 << WIDX_SCENERY_REPAINT_SCENERY_BUTTON);
 	if (gWindowSceneryEyedropperEnabled)
@@ -939,11 +939,14 @@ void window_scenery_invalidate(rct_window *w)
 	window_scenery_widgets[WIDX_SCENERY_EYEDROPPER_BUTTON].type = WWT_EMPTY;
 	window_scenery_widgets[WIDX_SCENERY_BUILD_CLUSTER_BUTTON].type = WWT_EMPTY;
 
+	if (!(gWindowSceneryPaintEnabled & 1)) {
+		window_scenery_widgets[WIDX_SCENERY_EYEDROPPER_BUTTON].type = WWT_FLATBTN;
+	}
+
 	sint16 tabSelectedSceneryId = gWindowSceneryTabSelections[tabIndex];
 	if (tabSelectedSceneryId != -1) {
 		if (tabSelectedSceneryId < 0x100) {
 			if (!(gWindowSceneryPaintEnabled & 1)) {
-				window_scenery_widgets[WIDX_SCENERY_EYEDROPPER_BUTTON].type = WWT_FLATBTN;
 				window_scenery_widgets[WIDX_SCENERY_BUILD_CLUSTER_BUTTON].type = WWT_FLATBTN;
 			}
 
@@ -1244,4 +1247,36 @@ void window_scenery_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 sc
 		}
 		sceneryTabItemIndex++;
 	}
+}
+
+static sint32 window_scenery_find_tab_with_scenery_id(sint32 sceneryId)
+{
+	for (sint32 i = 0; i < 20; i++) {
+		for (sint32 j = 0; j < SCENERY_ENTRIES_BY_TAB; j++) {
+			sint16 entry = window_scenery_tab_entries[i][j];
+			if (entry == -1) break;
+			if (entry == sceneryId) return i;
+		}
+	}
+	return -1;
+}
+
+bool window_scenery_set_selected_item(sint32 sceneryId)
+{
+	bool result = false;
+	rct_window * w = window_bring_to_front_by_class(WC_SCENERY);
+	if (w != NULL) {
+		sint32 tabIndex = window_scenery_find_tab_with_scenery_id(sceneryId);
+		if (tabIndex != -1) {
+			gWindowSceneryActiveTabIndex = tabIndex;
+			gWindowSceneryTabSelections[tabIndex] = sceneryId;
+
+			audio_play_sound_panned(4, (w->width >> 1) + w->x, 0, 0, 0);
+			w->scenery.hover_counter = -16;
+			gSceneryPlaceCost = MONEY32_UNDEFINED;
+			window_invalidate(w);
+			result = true;
+		}
+	}
+	return result;
 }

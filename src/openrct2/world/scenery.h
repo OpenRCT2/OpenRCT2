@@ -273,6 +273,7 @@ void scenery_update_tile(sint32 x, sint32 y);
 void scenery_update_age(sint32 x, sint32 y, rct_map_element *mapElement);
 void scenery_set_default_placement_configuration();
 void scenery_remove_ghost_tool_placement();
+bool window_scenery_set_selected_item(sint32 sceneryId);
 
 rct_scenery_entry *get_small_scenery_entry(sint32 entryIndex);
 rct_scenery_entry *get_large_scenery_entry(sint32 entryIndex);
@@ -281,5 +282,6 @@ rct_scenery_entry *get_banner_entry(sint32 entryIndex);
 rct_scenery_entry *get_footpath_item_entry(sint32 entryIndex);
 rct_scenery_set_entry *get_scenery_group_entry(sint32 entryIndex);
 
+sint32 get_scenery_id_from_entry_index(uint8 objectType, sint32 entryIndex);
 
 #endif
