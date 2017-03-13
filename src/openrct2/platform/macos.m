@@ -24,6 +24,15 @@
 #include "../localisation/language.h"
 #include "../config/Config.h"
 
+void macos_disallow_automatic_window_tabbing()
+{
+	@autoreleasepool {
+		if ([NSWindow respondsToSelector:@selector(setAllowsAutomaticWindowTabbing:)]) {
+			[NSWindow setAllowsAutomaticWindowTabbing:NO];
+		}
+	}
+}
+
 bool platform_check_steam_overlay_attached() {
 	STUB();
 	return false;
