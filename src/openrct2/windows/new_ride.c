@@ -439,8 +439,8 @@ rct_window *window_new_ride_open()
 		(1 << WIDX_TAB_5) |
 		(1 << WIDX_TAB_6) |
 		(1 << WIDX_TAB_7) |
-		(1 << 14) |
-		(1 << 15);
+		(1 << WIDX_LAST_DEVELOPMENT_BUTTON) |
+		(1 << WIDX_RESEARCH_FUNDING_BUTTON);
 	window_new_ride_populate_list();
 	window_init_scroll_widgets(w);
 

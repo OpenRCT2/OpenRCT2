@@ -23,6 +23,10 @@
 #include "../interface/themes.h"
 #include "../rct2.h"
 
+enum WINDOW_TITLE_OPTIONS_WIDGET_IDX {
+	WIDX_OPTIONS,
+};
+
 static rct_widget window_title_options_widgets[] = {
 	{ WWT_DROPDOWN_BUTTON, 2, 0, 79, 0, 11, STR_OPTIONS, STR_OPTIONS_TIP },
 	{ WIDGETS_END },
@@ -78,7 +82,7 @@ void window_title_options_open()
 		WF_STICK_TO_BACK | WF_TRANSPARENT
 	);
 	window->widgets = window_title_options_widgets;
-	window->enabled_widgets |= 1;
+	window->enabled_widgets |= (1ULL << WIDX_OPTIONS);
 	window_init_scroll_widgets(window);
 }
 
@@ -87,8 +91,11 @@ static void window_title_options_mouseup(rct_window *w, sint32 widgetIndex)
 	if (gIntroState != INTRO_STATE_NONE)
 		return;
 
-	if (widgetIndex == 0)
+	switch (widgetIndex) {
+	case WIDX_OPTIONS:
 		window_options_open();
+		break;
+	}
 }
 
 static void window_title_options_paint(rct_window *w, rct_drawpixelinfo *dpi)
