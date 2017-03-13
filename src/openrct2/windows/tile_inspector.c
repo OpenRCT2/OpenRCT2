@@ -1793,7 +1793,7 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi)
 				sint32 middleX = windowTileInspectorTileX << 5;
 				sint32 middleY = windowTileInspectorTileY << 5;
 				// TODO: Make this work with Left/Right park entrance parts
-				sint16 parkEntranceIndex = park_get_entrance_index(middleX, middleY, mapElement->base_height * 8);
+				sint16 parkEntranceIndex = park_entrance_get_index(middleX, middleY, mapElement->base_height * 8);
 				gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_ENTRANCE_ENTRANCE_ID, &parkEntranceIndex, COLOUR_DARK_GREEN, x, y + 11);
 			}
 			else {

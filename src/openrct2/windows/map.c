@@ -25,6 +25,7 @@
 #include "../localisation/localisation.h"
 #include "../rct2.h"
 #include "../sprites.h"
+#include "../world/entrance.h"
 #include "../world/footpath.h"
 #include "../world/scenery.h"
 #include "error.h"
@@ -526,7 +527,7 @@ static void window_map_toolabort(rct_window *w, sint32 widgetIndex)
 		hide_construction_rights();
 		break;
 	case WIDX_BUILD_PARK_ENTRANCE:
-		park_remove_ghost_entrance();
+		park_entrance_remove_ghost();
 		window_invalidate(w);
 		hide_gridlines();
 		hide_land_rights();
@@ -1243,7 +1244,7 @@ static void window_map_place_park_entrance_tool_update(sint32 x, sint32 y)
 	gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
 	sub_666EEF(x, y, &mapX, &mapY, &mapZ, &direction);
 	if (mapX == (sint16)-1) {
-		park_remove_ghost_entrance();
+		park_entrance_remove_ghost();
 		return;
 	}
 
@@ -1268,8 +1269,8 @@ static void window_map_place_park_entrance_tool_update(sint32 x, sint32 y)
 		return;
 	}
 
-	park_remove_ghost_entrance();
-	gParkEntranceGhostPrice = park_place_ghost_entrance(mapX, mapY, mapZ, direction);
+	park_entrance_remove_ghost();
+	gParkEntranceGhostPrice = park_entrance_place_ghost(mapX, mapY, mapZ, direction);
 }
 
 /**
@@ -1316,7 +1317,7 @@ static void window_map_set_peep_spawn_tool_update(sint32 x, sint32 y)
  */
 static void window_map_place_park_entrance_tool_down(sint32 x, sint32 y)
 {
-	park_remove_ghost_entrance();
+	park_entrance_remove_ghost();
 
 	sint16 mapX, mapY, mapZ;
 	sint32 direction;

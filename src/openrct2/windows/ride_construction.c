@@ -33,6 +33,7 @@
 #include "dropdown.h"
 #include "../sprites.h"
 #include "../world/map.h"
+#include "../world/entrance.h"
 
 /* move to ride.c */
 static void sub_6B2FA9(rct_windownumber number)
@@ -3737,7 +3738,7 @@ void ride_construction_toolupdate_construct(sint32 screenX, sint32 screenY)
 void ride_construction_toolupdate_entrance_exit(sint32 screenX, sint32 screenY)
 {
 	sint32 x, y, direction;
-	uint8 unk;
+	uint8 stationNum;
 
 	map_invalidate_selection_rect();
 	map_invalidate_map_selection_tiles();
@@ -3763,16 +3764,16 @@ void ride_construction_toolupdate_entrance_exit(sint32 screenX, sint32 screenY)
 	map_invalidate_selection_rect();
 
 	direction = gRideEntranceExitPlaceDirection ^ 2;
-	unk = gRideEntranceExitPlaceStationIndex;
+	stationNum = gRideEntranceExitPlaceStationIndex;
 	if (
 		!(_currentTrackSelectionFlags & TRACK_SELECTION_FLAG_ENTRANCE_OR_EXIT) ||
-		x != _unkF440BF.x ||
-		y != _unkF440BF.y ||
-		direction != _unkF440BF.direction ||
-		unk != _unkF440C4
+		x != gRideEntranceExitGhostPosition.x ||
+		y != gRideEntranceExitGhostPosition.y ||
+		direction != gRideEntranceExitGhostPosition.direction ||
+		stationNum != gRideEntranceExitGhostStationIndex
 	) {
-		_currentTrackPrice = ride_get_entrance_or_exit_price(
-			_currentRideIndex, x, y, direction, gRideEntranceExitPlaceType, unk
+		_currentTrackPrice = ride_entrance_exit_place_ghost(
+			_currentRideIndex, x, y, direction, gRideEntranceExitPlaceType, stationNum
 		);
 		sub_6C84CE();
 	}

@@ -30,6 +30,7 @@
 #include "../scenario/scenario.h"
 #include "../sprites.h"
 #include "../util/util.h"
+#include "../world/entrance.h"
 #include "../world/park.h"
 #include "../world/sprite.h"
 #include "../management/finance.h"

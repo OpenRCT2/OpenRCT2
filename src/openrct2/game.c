@@ -48,6 +48,7 @@
 #include "windows/error.h"
 #include "windows/tooltip.h"
 #include "world/Climate.h"
+#include "world/entrance.h"
 #include "world/footpath.h"
 #include "world/map_animation.h"
 #include "world/park.h"
@@ -1156,7 +1157,7 @@ void game_init_all(sint32 mapSize)
 	map_init(mapSize);
 	park_init();
 	finance_init();
-	reset_park_entrances();
+	reset_park_entry();
 	banner_init();
 	ride_init_all();
 	reset_sprite_list();

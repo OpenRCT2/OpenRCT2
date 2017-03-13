@@ -3971,10 +3971,10 @@ void map_remove_provisional_elements()
 		footpath_provisional_remove();
 		gFootpathProvisionalFlags |= PROVISIONAL_PATH_FLAG_1;
 	}
-	if (window_find_by_class(WC_CONSTRUCT_RIDE) != NULL)
+	if (window_find_by_class(WC_RIDE_CONSTRUCTION ) != NULL)
 	{
 		ride_remove_provisional_track_piece();
-		ride_remove_provisional_entrance_or_exit();
+		ride_entrance_exit_remove_ghost();
 	}
 }
 
@@ -3989,10 +3989,10 @@ void map_restore_provisional_elements()
 				gFootpathProvisionalPosition.z,
 				gFootpathProvisionalSlope);
 	}
-	if (window_find_by_class(WC_CONSTRUCT_RIDE) != NULL)
+	if (window_find_by_class(WC_RIDE_CONSTRUCTION) != NULL)
 	{
 		ride_restore_provisional_track_piece();
-		ride_restore_provisional_entrance_or_exit();
+		ride_entrance_exit_place_provisional_ghost();
 	}
 }
 
@@ -4578,125 +4578,6 @@ void map_clear_all_elements()
 			clear_elements_at(x, y);
 		}
 	}
-}
-
-static money32 place_park_entrance(sint32 flags, sint16 x, sint16 y, sint16 z, uint8 direction) {
-	if (!(gScreenFlags & SCREEN_FLAGS_EDITOR) && !gCheatsSandboxMode) {
-		return MONEY32_UNDEFINED;
-	}
-
-	gCommandExpenditureType = RCT_EXPENDITURE_TYPE_LAND_PURCHASE;
-
-	gCommandPosition.x = x;
-	gCommandPosition.y = y;
-	// ??
-	gCommandPosition.z = (z & 0xFF) << 4;
-
-	if (!map_check_free_elements_and_reorganise(3)) {
-		return MONEY32_UNDEFINED;
-	}
-
-	if (x <= 32 || y <= 32 || x >= (gMapSizeUnits - 32) || y >= (gMapSizeUnits - 32)) {
-		gGameCommandErrorText = STR_TOO_CLOSE_TO_EDGE_OF_MAP;
-		return MONEY32_UNDEFINED;
-	}
-
-	sint8 entranceNum = -1;
-	for (uint8 i = 0; i < MAX_PARK_ENTRANCES; ++i) {
-		if (gParkEntrances[i].x == MAP_LOCATION_NULL) {
-			entranceNum = i;
-			break;
-		}
-	}
-
-	if (entranceNum == -1) {
-		gGameCommandErrorText = STR_ERR_TOO_MANY_PARK_ENTRANCES;
-		return MONEY32_UNDEFINED;
-	}
-
-	if (flags & GAME_COMMAND_FLAG_APPLY) {
-		gParkEntrances[entranceNum].x = x;
-		gParkEntrances[entranceNum].y = y;
-		gParkEntrances[entranceNum].z = (z & 0xFF) << 4;
-		gParkEntrances[entranceNum].direction = direction;
-	}
-
-	sint8 zLow = (z & 0xFF) * 2;
-	sint8 zHigh = zLow + 12;
-
-	for (uint8 index = 0; index < 3; index++) {
-		if (index == 1) {
-			x += TileDirectionDelta[(direction - 1) & 0x3].x;
-			y += TileDirectionDelta[(direction - 1) & 0x3].y;
-		}
-		else if (index == 2) {
-			x += TileDirectionDelta[(direction + 1) & 0x3].x * 2;
-			y += TileDirectionDelta[(direction + 1) & 0x3].y * 2;
-		}
-
-		if (!gCheatsDisableClearanceChecks) {
-			if (!map_can_construct_at(x, y, zLow, zHigh, 0xF)) {
-				return MONEY32_UNDEFINED;
-			}
-		}
-
-		// Check that entrance element does not already exist at this location
-		rct_map_element* entranceElement = map_get_park_entrance_element_at(x, y, zLow, false);
-		if (entranceElement != NULL)
-			return MONEY32_UNDEFINED;
-
-		if (!(flags & GAME_COMMAND_FLAG_APPLY))
-			continue;
-
-		if (!(flags & GAME_COMMAND_FLAG_GHOST)) {
-			rct_map_element* surfaceElement = map_get_surface_element_at(x / 32, y / 32);
-			surfaceElement->properties.surface.ownership = 0;
-		}
-
-		rct_map_element* newElement = map_element_insert(x / 32, y / 32, zLow, 0xF);
-		assert(newElement != NULL);
-		newElement->clearance_height = zHigh;
-
-		if (flags & GAME_COMMAND_FLAG_GHOST) {
-			newElement->flags |= MAP_ELEMENT_FLAG_GHOST;
-		}
-
-		newElement->type = MAP_ELEMENT_TYPE_ENTRANCE;
-		newElement->type |= direction;
-		newElement->properties.entrance.index = index;
-		newElement->properties.entrance.type = ENTRANCE_TYPE_PARK_ENTRANCE;
-		newElement->properties.entrance.path_type = gFootpathSelectedId & 0xFF;
-
-		if (!(flags & GAME_COMMAND_FLAG_GHOST)) {
-			footpath_connect_edges(x, y, newElement, 1);
-		}
-
-		update_park_fences(x, y);
-		update_park_fences(x - 32, y);
-		update_park_fences(x + 32, y);
-		update_park_fences(x, y - 32);
-		update_park_fences(x, y + 32);
-
-		map_invalidate_tile(x, y, newElement->base_height * 8, newElement->clearance_height * 8);
-
-		if (index == 0) {
-			map_animation_create(MAP_ANIMATION_TYPE_PARK_ENTRANCE, x, y, zLow);
-		}
-	}
-	return 0;
-}
-
-/**
- *
- *  rct2: 0x006666E7
- */
-void game_command_place_park_entrance(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp) {
-	*ebx = place_park_entrance(
-		*ebx & 0xFF,
-		*eax & 0xFFFF,
-		*ecx & 0xFFFF,
-		*edx & 0xFFFF,
-		(*ebx >> 8) & 0xFF);
 }
 
 void game_command_set_banner_name(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp) {
