@@ -2,6 +2,7 @@
 ------------------------------------------------------------------------
 - Feature: [#1730] Keyboard shortcuts for track construction.
 - Feature: [#5110] The tile inspector can now be used in multiplayer.
+- Feature: [#5305] Add scenery eye dropper tool.
 - Improved: [#5137]: Removing all guests no longer closes the rides and removes the vehicles.
 - Improved: [#5163]: Minor tile inspector improvements and fixes.
 - Fix: [#4689] Object selection tabs sometimes flicker.
