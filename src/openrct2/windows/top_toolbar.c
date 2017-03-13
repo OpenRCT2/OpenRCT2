@@ -1000,6 +1000,11 @@ static void repaint_scenery_tool_down(sint16 x, sint16 y, sint16 widgetIndex){
 	}
 }
 
+static void scenery_eyedropper_tool_down(sint16 x, sint16 y, sint16 widgetIndex)
+{
+
+}
+
 /**
  *
  *  rct2: 0x006E1F34
@@ -1443,6 +1448,9 @@ static void window_top_toolbar_scenery_tool_down(sint16 x, sint16 y, rct_window 
 	scenery_remove_ghost_tool_placement();
 	if (gWindowSceneryPaintEnabled & 1) {
 		repaint_scenery_tool_down(x, y, widgetIndex);
+		return;
+	} else if (gWindowSceneryEyedropperEnabled) {
+		scenery_eyedropper_tool_down(x, y, widgetIndex);
 		return;
 	}
 
@@ -2270,6 +2278,8 @@ static void top_toolbar_tool_update_scenery(sint16 x, sint16 y){
 
 	if (gWindowSceneryPaintEnabled)
 		return;
+	if (gWindowSceneryEyedropperEnabled)
+		return;
 
 	sint16 selected_tab = gWindowSceneryTabSelections[gWindowSceneryActiveTabIndex];
 
@@ -2805,6 +2815,8 @@ static void window_top_toolbar_tool_drag(rct_window* w, sint32 widgetIndex, sint
 		break;
 	case WIDX_SCENERY:
 		if (gWindowSceneryPaintEnabled & 1)
+			window_top_toolbar_scenery_tool_down(x, y, w, widgetIndex);
+		if (gWindowSceneryEyedropperEnabled)
 			window_top_toolbar_scenery_tool_down(x, y, w, widgetIndex);
 		break;
 	}

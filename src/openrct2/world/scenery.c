@@ -35,6 +35,7 @@ uint8 gWindowSceneryRotation;
 colour_t gWindowSceneryPrimaryColour;
 colour_t gWindowScenerySecondaryColour;
 colour_t gWindowSceneryTertiaryColour;
+bool gWindowSceneryEyedropperEnabled;
 
 rct_map_element *gSceneryMapElement;
 uint8 gSceneryMapElementType;

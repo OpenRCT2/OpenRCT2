@@ -235,6 +235,7 @@ extern uint8 gWindowSceneryRotation;
 extern colour_t gWindowSceneryPrimaryColour;
 extern colour_t gWindowScenerySecondaryColour;
 extern colour_t gWindowSceneryTertiaryColour;
+extern bool gWindowSceneryEyedropperEnabled;
 
 extern rct_map_element *gSceneryMapElement;
 extern uint8 gSceneryMapElementType;
