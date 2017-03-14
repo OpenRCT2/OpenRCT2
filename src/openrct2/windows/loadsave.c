@@ -120,6 +120,7 @@ typedef struct loadsave_list_item {
 	char path[MAX_PATH];
 	time_t date_modified;
 	uint8 type;
+	bool loaded;
 } loadsave_list_item;
 
 static loadsave_callback _loadSaveCallback;
@@ -509,6 +510,7 @@ static void window_loadsave_paint(rct_window *w, rct_drawpixelinfo *dpi)
 static void window_loadsave_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 scrollIndex)
 {
 	gfx_fill_rect(dpi, dpi->x, dpi->y, dpi->x + dpi->width - 1, dpi->y + dpi->height - 1, ColourMapA[w->colours[1]].mid_light);
+	const sint32 listWidth = w->widgets[WIDX_SCROLL].right - w->widgets[WIDX_SCROLL].left;
 
 	for (sint32 i = 0; i < w->no_list_items; i++) {
 		sint32 y = i * 10;
@@ -519,14 +521,21 @@ static void window_loadsave_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, s
 			continue;
 
 		rct_string_id stringId = STR_BLACK_STRING;
+
+		// If hovering over item, change the color and fill the backdrop.
 		if (i == w->selected_list_item) {
 			stringId = STR_WINDOW_COLOUR_2_STRINGID;
-			gfx_filter_rect(dpi, 0, y, 800, y + 9, PALETTE_DARKEN_1);
+			gfx_filter_rect(dpi, 0, y, listWidth, y + 9, PALETTE_DARKEN_1);
+		}
+		// display a marker next to the currently loaded game file
+		if (_listItems[i].loaded) {
+			set_format_arg(0, rct_string_id, STR_RIGHTGUILLEMET);
+			gfx_draw_string_left(dpi, stringId, gCommonFormatArgs, COLOUR_BLACK, 0, y - 1);
 		}
 
 		set_format_arg(0, rct_string_id, STR_STRING);
 		set_format_arg(2, char*, _listItems[i].name);
-		gfx_draw_string_left(dpi, stringId, gCommonFormatArgs, COLOUR_BLACK, 0, y - 1);
+		gfx_draw_string_left(dpi, stringId, gCommonFormatArgs, COLOUR_BLACK, 10, y - 1);
 	}
 }
 
@@ -650,6 +659,7 @@ static void window_loadsave_populate_list(rct_window *w, sint32 includeNewItem, 
 			safe_strcat_path(listItem->path, subDir, sizeof(listItem->path));
 			safe_strcpy(listItem->name, subDir, sizeof(listItem->name));
 			listItem->type = TYPE_DIRECTORY;
+			listItem->loaded = false;
 
 			_listItemsCount++;
 		}
@@ -681,6 +691,8 @@ static void window_loadsave_populate_list(rct_window *w, sint32 includeNewItem, 
 				safe_strcat_path(listItem->path, fileInfo.path, sizeof(listItem->path));
 				listItem->type = TYPE_FILE;
 				listItem->date_modified = platform_file_get_modified_time(listItem->path);
+				// Mark if file is the currently loaded game
+				listItem->loaded = strcmp(listItem->path, gScenarioSavePath) == 0;
 
 				// Remove the extension (but only the first extension token)
 				safe_strcpy(listItem->name, fileInfo.path, sizeof(listItem->name));
