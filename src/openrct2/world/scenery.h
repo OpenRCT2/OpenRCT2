@@ -34,16 +34,16 @@
 
 #pragma pack(push, 1)
 typedef struct rct_small_scenery_entry {
-    uint32 flags;           // 0x06
-    uint8 height;           // 0x0A
-    uint8 tool_id;          // 0x0B
-    sint16 price;           // 0x0C
-    sint16 removal_price;   // 0x0E
-    uint8 *var_10;
-    uint16 var_14;
-    uint16 var_16;
-    uint16 var_18;
-    uint8 scenery_tab_id;   // 0x1A
+    uint32 flags;			// 0x06
+    uint8 height;			// 0x0A
+    uint8 tool_id;			// 0x0B
+    sint16 price;			// 0x0C
+    sint16 removal_price;	// 0x0E
+    uint8 *frame_offsets;
+    uint16 animation_delay;
+    uint16 animation_mask;
+    uint16 num_frames;
+    uint8 scenery_tab_id;	// 0x1A
 } rct_small_scenery_entry;
 #ifdef PLATFORM_32BIT
 assert_struct_size(rct_small_scenery_entry, 21);
@@ -55,17 +55,17 @@ typedef enum {
     SMALL_SCENERY_FLAG_REQUIRE_FLAT_SURFACE = (1 << 2),         // 0x4
     SMALL_SCENERY_FLAG_ROTATABLE = (1 << 3),                    // 0x8; when set, user can set rotation, otherwise rotation is automatic
     SMALL_SCENERY_FLAG_ANIMATED = (1 << 4),                     // 0x10
-    SMALL_SCENERY_FLAG6 = (1 << 5),                             // 0x20
+    SMALL_SCENERY_FLAG_CAN_WITHER = (1 << 5),                   // 0x20
     SMALL_SCENERY_FLAG_CAN_BE_WATERED = (1 << 6),               // 0x40
     SMALL_SCENERY_FLAG_ANIMATED_FG = (1 << 7),                  // 0x80
-    SMALL_SCENERY_FLAG9 = (1 << 8),                             // 0x100
+    SMALL_SCENERY_FLAG_DIAGONAL = (1 << 8),                     // 0x100
     SMALL_SCENERY_FLAG_HAS_GLASS = (1 << 9),                    // 0x200
     SMALL_SCENERY_FLAG_HAS_PRIMARY_COLOUR = (1 << 10),          // 0x400
-    SMALL_SCENERY_FLAG12 = (1 << 11),                           // 0x800
-    SMALL_SCENERY_FLAG13 = (1 << 12),                           // 0x1000
+    SMALL_SCENERY_FLAG_FOUNTAIN_SPRAY_1 = (1 << 11),            // 0x800
+    SMALL_SCENERY_FLAG_FOUNTAIN_SPRAY_4 = (1 << 12),            // 0x1000
     SMALL_SCENERY_FLAG_IS_CLOCK = (1 << 13),                    // 0x2000
-    SMALL_SCENERY_FLAG15 = (1 << 14),                           // 0x4000
-    SMALL_SCENERY_FLAG16 = (1 << 15),                           // 0x8000
+    SMALL_SCENERY_FLAG_SWAMP_GOO = (1 << 14),                   // 0x4000
+    SMALL_SCENERY_FLAG_HAS_FRAME_OFFSETS = (1 << 15),           // 0x8000
     SMALL_SCENERY_FLAG17 = (1 << 16),                           // 0x10000
     SMALL_SCENERY_FLAG_STACKABLE = (1 << 17),                   // 0x20000; means scenery item can be placed in the air and over water
     SMALL_SCENERY_FLAG_ALLOW_WALLS = (1 << 18),                 // 0x40000

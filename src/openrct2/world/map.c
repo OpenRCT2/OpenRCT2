@@ -2750,13 +2750,9 @@ void game_command_place_scenery(sint32* eax, sint32* ebx, sint32* ecx, sint32* e
     }
 
     rct_scenery_entry* scenery_entry = get_small_scenery_entry(scenery_type);
-    if (scenery_entry == NULL) {
-        *ebx = MONEY32_UNDEFINED;
-        return;
-    }
 
-    if(scenery_entry->small_scenery.flags & SMALL_SCENERY_FLAG_FULL_TILE || !(scenery_entry->small_scenery.flags & SMALL_SCENERY_FLAG9)){
-        if(scenery_entry->small_scenery.flags & (SMALL_SCENERY_FLAG9 | SMALL_SCENERY_FLAG24 | SMALL_SCENERY_FLAG25)){
+    if(scenery_entry->small_scenery.flags & SMALL_SCENERY_FLAG_FULL_TILE || !(scenery_entry->small_scenery.flags & SMALL_SCENERY_FLAG_DIAGONAL)){
+        if(scenery_entry->small_scenery.flags & (SMALL_SCENERY_FLAG_DIAGONAL | SMALL_SCENERY_FLAG24 | SMALL_SCENERY_FLAG25)){
             quadrant = 0;
         }
     }
@@ -2865,7 +2861,7 @@ void game_command_place_scenery(sint32* eax, sint32* ebx, sint32* ecx, sint32* e
         collisionQuadrants = 1 << (quadrant ^ 2);
     }
     if(!(scenery_entry->small_scenery.flags & SMALL_SCENERY_FLAG24)){
-        if(scenery_entry->small_scenery.flags & SMALL_SCENERY_FLAG9 && scenery_entry->small_scenery.flags & SMALL_SCENERY_FLAG_FULL_TILE){
+        if(scenery_entry->small_scenery.flags & SMALL_SCENERY_FLAG_DIAGONAL && scenery_entry->small_scenery.flags & SMALL_SCENERY_FLAG_FULL_TILE){
             if(scenery_entry->small_scenery.flags & SMALL_SCENERY_FLAG25){
                 collisionQuadrants = 0xF & rol8(0xBB, ((quadrant ^ 2) + rotation) & 3);
             }else{

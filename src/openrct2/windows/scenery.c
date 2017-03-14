@@ -905,6 +905,8 @@ void window_scenery_tooltip(rct_window* w, rct_widgetindex widgetIndex, rct_stri
  */
 void window_scenery_invalidate(rct_window *w)
 {
+    colour_scheme_update(w);
+
     uint16 tabIndex = gWindowSceneryActiveTabIndex;
     uint32 titleStringId = STR_MISCELLANEOUS;
     if (tabIndex < 19) {
@@ -916,29 +918,22 @@ void window_scenery_invalidate(rct_window *w)
 
     window_scenery_widgets[WIDX_SCENERY_TITLE].text = titleStringId;
 
-    w->pressed_widgets = 0;
-    w->pressed_widgets |= 1ULL << (tabIndex + WIDX_SCENERY_TAB_1);
+    w->pressed_widgets = (((uint32)w->pressed_widgets & 0xFF00000F) | (1 << (tabIndex + 4))) & 0xBBFFFFFF;
+
     if (gWindowSceneryPaintEnabled == 1)
         w->pressed_widgets |= (1 << WIDX_SCENERY_REPAINT_SCENERY_BUTTON);
-    if (gWindowSceneryEyedropperEnabled)
-        w->pressed_widgets |= (1 << WIDX_SCENERY_EYEDROPPER_BUTTON);
+
     if (gWindowSceneryClusterEnabled == 1)
         w->pressed_widgets |= (1 << WIDX_SCENERY_BUILD_CLUSTER_BUTTON);
 
     window_scenery_widgets[WIDX_SCENERY_ROTATE_OBJECTS_BUTTON].type = WWT_EMPTY;
-    window_scenery_widgets[WIDX_SCENERY_EYEDROPPER_BUTTON].type = WWT_EMPTY;
     window_scenery_widgets[WIDX_SCENERY_BUILD_CLUSTER_BUTTON].type = WWT_EMPTY;
-
-    if (!(gWindowSceneryPaintEnabled & 1)) {
-        window_scenery_widgets[WIDX_SCENERY_EYEDROPPER_BUTTON].type = WWT_FLATBTN;
-    }
 
     sint16 tabSelectedSceneryId = gWindowSceneryTabSelections[tabIndex];
     if (tabSelectedSceneryId != -1) {
         if (tabSelectedSceneryId < 0x100) {
-            if (!(gWindowSceneryPaintEnabled & 1)) {
+            if (!(gWindowSceneryPaintEnabled & 1))
                 window_scenery_widgets[WIDX_SCENERY_BUILD_CLUSTER_BUTTON].type = WWT_FLATBTN;
-            }
 
             rct_scenery_entry* sceneryEntry = get_small_scenery_entry(tabSelectedSceneryId);
             if (sceneryEntry->small_scenery.flags & SMALL_SCENERY_FLAG_ROTATABLE) {
@@ -1019,11 +1014,9 @@ void window_scenery_invalidate(rct_window *w)
 
     window_scenery_widgets[WIDX_SCENERY_ROTATE_OBJECTS_BUTTON].left = w->width - 25;
     window_scenery_widgets[WIDX_SCENERY_REPAINT_SCENERY_BUTTON].left = w->width - 25;
-    window_scenery_widgets[WIDX_SCENERY_EYEDROPPER_BUTTON].left = w->width - 25;
     window_scenery_widgets[WIDX_SCENERY_BUILD_CLUSTER_BUTTON].left = w->width - 25;
     window_scenery_widgets[WIDX_SCENERY_ROTATE_OBJECTS_BUTTON].right = w->width - 2;
     window_scenery_widgets[WIDX_SCENERY_REPAINT_SCENERY_BUTTON].right = w->width - 2;
-    window_scenery_widgets[WIDX_SCENERY_EYEDROPPER_BUTTON].right = w->width - 2;
     window_scenery_widgets[WIDX_SCENERY_BUILD_CLUSTER_BUTTON].right = w->width - 2;
 
     window_scenery_widgets[WIDX_SCENERY_PRIMARY_COLOUR_BUTTON].left = w->width - 19;

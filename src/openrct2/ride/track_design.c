@@ -416,7 +416,7 @@ static void track_design_mirror_scenery(rct_track_td6 *td6)
         case OBJECT_TYPE_SMALL_SCENERY:
             scenery->y = -scenery->y;
 
-            if (scenery_entry->small_scenery.flags & SMALL_SCENERY_FLAG9) {
+            if (scenery_entry->small_scenery.flags & SMALL_SCENERY_FLAG_DIAGONAL) {
                 scenery->flags ^= (1 << 0);
                 if (!(scenery_entry->small_scenery.flags & SMALL_SCENERY_FLAG_FULL_TILE)) {
                     scenery->flags ^= (1 << 2);
@@ -654,8 +654,8 @@ static sint32 track_design_place_scenery(rct_td6_scenery_element *scenery_start,
 
                     rct_scenery_entry* small_scenery = get_small_scenery_entry(entry_index);
                     if (!(!(small_scenery->small_scenery.flags & SMALL_SCENERY_FLAG_FULL_TILE) &&
-                        (small_scenery->small_scenery.flags & SMALL_SCENERY_FLAG9)) &&
-                        (small_scenery->small_scenery.flags & (SMALL_SCENERY_FLAG9 | SMALL_SCENERY_FLAG24 | SMALL_SCENERY_FLAG25)))
+                        (small_scenery->small_scenery.flags & SMALL_SCENERY_FLAG_DIAGONAL)) &&
+                        (small_scenery->small_scenery.flags & (SMALL_SCENERY_FLAG_DIAGONAL | SMALL_SCENERY_FLAG24 | SMALL_SCENERY_FLAG25)))
                     {
                         bh &= 0x3F;
                     }
@@ -879,7 +879,7 @@ static sint32 track_design_place_scenery(rct_td6_scenery_element *scenery_start,
                         if (_trackDesignPlaceOperation == PTD_OPERATION_4) bl = 105;
 
                         footpath_connect_edges(mapCoord.x, mapCoord.y, map_element, bl);
-                        footpath_update_queue_chains();
+                        sub_6A759F();
                         continue;
                     }
                     break;

@@ -184,7 +184,7 @@ static bool map_animation_invalidate_small_scenery(sint32 x, sint32 y, sint32 ba
             continue;
 
         sceneryEntry = get_small_scenery_entry(mapElement->properties.scenery.type);
-        if (sceneryEntry->small_scenery.flags & (SMALL_SCENERY_FLAG12 | SMALL_SCENERY_FLAG13 | SMALL_SCENERY_FLAG15 | SMALL_SCENERY_FLAG16)) {
+        if (sceneryEntry->small_scenery.flags & (SMALL_SCENERY_FLAG_FOUNTAIN_SPRAY_1 | SMALL_SCENERY_FLAG_FOUNTAIN_SPRAY_4 | SMALL_SCENERY_FLAG_SWAMP_GOO | SMALL_SCENERY_FLAG_HAS_FRAME_OFFSETS)) {
             map_invalidate_tile_zoom1(x, y, mapElement->base_height * 8, mapElement->clearance_height * 8);
             return false;
         }
@@ -213,7 +213,7 @@ static bool map_animation_invalidate_small_scenery(sint32 x, sint32 y, sint32 ba
                     peep->action = PEEP_ACTION_CHECK_TIME;
                     peep->action_frame = 0;
                     peep->action_sprite_image_offset = 0;
-                    peep_update_current_action_sprite_type(peep);
+                    sub_693B58(peep);
                     invalidate_sprite_1((rct_sprite*)peep);
                     break;
                 }

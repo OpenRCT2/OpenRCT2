@@ -27,7 +27,7 @@ extern "C"
 
 SmallSceneryObject::~SmallSceneryObject()
 {
-    Memory::Free(_var10data);
+    Memory::Free(_frameOffsets);
 }
 
 void SmallSceneryObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
@@ -39,9 +39,9 @@ void SmallSceneryObject::ReadLegacy(IReadObjectContext * context, IStream * stre
     _legacyType.small_scenery.price = stream->ReadValue<sint16>();
     _legacyType.small_scenery.removal_price = stream->ReadValue<sint16>();
     stream->Seek(4, STREAM_SEEK_CURRENT);
-    _legacyType.small_scenery.var_14 = stream->ReadValue<uint16>();
-    _legacyType.small_scenery.var_16 = stream->ReadValue<uint16>();
-    _legacyType.small_scenery.var_18 = stream->ReadValue<uint16>();
+    _legacyType.small_scenery.animation_delay = stream->ReadValue<uint16>();
+    _legacyType.small_scenery.animation_mask = stream->ReadValue<uint16>();
+    _legacyType.small_scenery.num_frames = stream->ReadValue<uint16>();
     _legacyType.small_scenery.scenery_tab_id = 0xFF;
 
     GetStringTable()->Read(context, stream, OBJ_STRING_ID_NAME);
@@ -49,9 +49,9 @@ void SmallSceneryObject::ReadLegacy(IReadObjectContext * context, IStream * stre
     rct_object_entry sgEntry = stream->ReadValue<rct_object_entry>();
     SetPrimarySceneryGroup(&sgEntry);
 
-    if (_legacyType.small_scenery.flags & SMALL_SCENERY_FLAG16)
+    if (_legacyType.small_scenery.flags & SMALL_SCENERY_FLAG_HAS_FRAME_OFFSETS)
     {
-        _var10data = ReadVar10(stream);
+        _frameOffsets = ReadFrameOffsets(stream);
     }
 
     GetImageTable()->Read(context, stream);
@@ -80,9 +80,9 @@ void SmallSceneryObject::Load()
 
     _legacyType.small_scenery.scenery_tab_id = 0xFF;
 
-    if (_legacyType.small_scenery.flags & SMALL_SCENERY_FLAG16)
+    if (_legacyType.small_scenery.flags & SMALL_SCENERY_FLAG_HAS_FRAME_OFFSETS)
     {
-        _legacyType.small_scenery.var_10 = _var10data;
+        _legacyType.small_scenery.frame_offsets = _frameOffsets;
     }
 }
 
@@ -141,15 +141,15 @@ void SmallSceneryObject::DrawPreview(rct_drawpixelinfo * dpi, sint32 width, sint
     }
 }
 
-uint8 * SmallSceneryObject::ReadVar10(IStream * stream)
+uint8 * SmallSceneryObject::ReadFrameOffsets(IStream * stream)
 {
-    uint8 b;
+    uint8 frameOffset;
     auto data = std::vector<uint8>();
     data.push_back(stream->ReadValue<uint8>());
-    while ((b = stream->ReadValue<uint8>()) != 0xFF)
+    while ((frameOffset = stream->ReadValue<uint8>()) != 0xFF)
     {
-        data.push_back(b);
+        data.push_back(frameOffset);
     }
-    data.push_back(b);
+    data.push_back(frameOffset);
     return Memory::Duplicate(data.data(), data.size());
 }

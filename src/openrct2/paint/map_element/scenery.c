@@ -109,7 +109,7 @@ void scenery_paint(uint8 direction, sint32 height, rct_map_element* mapElement) 
     if (boxlength.z > 128 || boxlength.z < 0) {
         boxlength.z = 128;
     }
-    if (entry->small_scenery.flags & SMALL_SCENERY_FLAG6) {
+    if (entry->small_scenery.flags & SMALL_SCENERY_FLAG_CAN_WITHER) {
         if (mapElement->properties.scenery.age >= 40) {
             baseImageid += 4;
         }
@@ -143,7 +143,7 @@ void scenery_paint(uint8 direction, sint32 height, rct_map_element* mapElement) 
         rct_drawpixelinfo* dpi = unk_140E9A8;
         if ( (entry->small_scenery.flags & SMALL_SCENERY_FLAG21) || (dpi->zoom_level <= 1) ) {
             // 6E01A9:
-            if (entry->small_scenery.flags & SMALL_SCENERY_FLAG12) {
+            if (entry->small_scenery.flags & SMALL_SCENERY_FLAG_FOUNTAIN_SPRAY_1) {
                 // 6E0512:
                 sint32 image_id = ((gCurrentTicks / 2) & 0xF) + entry->image + 4;
                 if (dword_F64EB0 != 0) {
@@ -151,7 +151,7 @@ void scenery_paint(uint8 direction, sint32 height, rct_map_element* mapElement) 
                 }
                 sub_98199C(image_id, x_offset, y_offset, boxlength.x, boxlength.y, boxlength.z - 1, height, boxoffset.x, boxoffset.y, boxoffset.z, rotation);
             } else
-            if (entry->small_scenery.flags & SMALL_SCENERY_FLAG13) {
+            if (entry->small_scenery.flags & SMALL_SCENERY_FLAG_FOUNTAIN_SPRAY_4) {
                 // 6E043B:
                 sint32 image_id = ((gCurrentTicks / 2) & 0xF) + entry->image + 8;
                 if (dword_F64EB0 != 0) {
@@ -203,7 +203,7 @@ void scenery_paint(uint8 direction, sint32 height, rct_map_element* mapElement) 
                 }
                 sub_98199C(image_id, x_offset, y_offset, boxlength.x, boxlength.y, boxlength.z - 1, height, boxoffset.x, boxoffset.y, boxoffset.z, rotation);
             } else
-            if (entry->small_scenery.flags & SMALL_SCENERY_FLAG15) {
+            if (entry->small_scenery.flags & SMALL_SCENERY_FLAG_SWAMP_GOO) {
                 // 6E02F6:
                 sint32 image_id = gCurrentTicks;
                 image_id += gUnk9DE568 / 4;
@@ -214,24 +214,21 @@ void scenery_paint(uint8 direction, sint32 height, rct_map_element* mapElement) 
                     image_id = (image_id & 0x7FFFF) | dword_F64EB0;
                 }
                 sub_98199C(image_id, x_offset, y_offset, boxlength.x, boxlength.y, boxlength.z - 1, height, boxoffset.x, boxoffset.y, boxoffset.z, rotation);
-            } else {
-                if (entry->small_scenery.flags & SMALL_SCENERY_FLAG16) {
-                    // nothing
-                }
-                sint32 esi = gCurrentTicks;
+            } else if (entry->small_scenery.flags & SMALL_SCENERY_FLAG_HAS_FRAME_OFFSETS)
+         {
+                sint32 frame = gCurrentTicks;
                 if (!(entry->small_scenery.flags & SMALL_SCENERY_FLAG22)) {
                     // 6E01F8:
-                    esi += ((gUnk9DE568 / 4) + (gUnk9DE56C / 4));
-                    esi += (mapElement->type & 0xC0) / 16;
+                    frame += ((gUnk9DE568 / 4) + (gUnk9DE56C / 4));
+                    frame += (mapElement->type & 0xC0) / 16;
                 }
                 // 6E0222:
-                uint16 cx = entry->small_scenery.var_14;
-                uint8 cl = cx & 0xFF;
-                esi >>= cl;
-                esi &= entry->small_scenery.var_16;
+                uint16 delay = entry->small_scenery.animation_delay & 0xFF;
+                frame >>= delay;
+                frame &= entry->small_scenery.animation_mask;
                 sint32 image_id = 0;
-                if (esi < entry->small_scenery.var_18) {
-                    image_id = entry->small_scenery.var_10[esi];
+                if (frame < entry->small_scenery.num_frames) {
+                    image_id = entry->small_scenery.frame_offsets[frame];
                 }
                 image_id = (image_id * 4) + direction + entry->image;
                 if (entry->small_scenery.flags & (SMALL_SCENERY_FLAG21 | SMALL_SCENERY_FLAG17)) {
