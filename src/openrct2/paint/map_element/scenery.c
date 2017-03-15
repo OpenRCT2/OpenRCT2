@@ -70,7 +70,7 @@ void scenery_paint(uint8 direction, sint32 height, rct_map_element* mapElement) 
     sint8 x_offset = 0;
     sint8 y_offset = 0;
     if (entry->small_scenery.flags & SMALL_SCENERY_FLAG_FULL_TILE) {
-        if (entry->small_scenery.flags & SMALL_SCENERY_FLAG24) {
+        if (entry->small_scenery.flags & SMALL_SCENERY_FLAG_HALF_SPACE) {
             // 6DFFE3:
             boxoffset.x = offsets[direction].x;
             boxoffset.y = offsets[direction].y;
@@ -126,7 +126,7 @@ void scenery_paint(uint8 direction, sint32 height, rct_map_element* mapElement) 
     if (dword_F64EB0 != 0) {
         baseImageid = (baseImageid & 0x7FFFF) | dword_F64EB0;
     }
-    if (!(entry->small_scenery.flags & SMALL_SCENERY_FLAG21)) {
+    if (!(entry->small_scenery.flags & SMALL_SCENERY_FLAG_VISIBLE_WHEN_ZOOMED)) {
         sub_98197C(baseImageid, x_offset, y_offset, boxlength.x, boxlength.y, boxlength.z - 1, height, boxoffset.x, boxoffset.y, boxoffset.z, rotation);
     }
 
@@ -141,7 +141,7 @@ void scenery_paint(uint8 direction, sint32 height, rct_map_element* mapElement) 
 
     if (entry->small_scenery.flags & SMALL_SCENERY_FLAG_ANIMATED) {
         rct_drawpixelinfo* dpi = unk_140E9A8;
-        if ( (entry->small_scenery.flags & SMALL_SCENERY_FLAG21) || (dpi->zoom_level <= 1) ) {
+        if ( (entry->small_scenery.flags & SMALL_SCENERY_FLAG_VISIBLE_WHEN_ZOOMED) || (dpi->zoom_level <= 1) ) {
             // 6E01A9:
             if (entry->small_scenery.flags & SMALL_SCENERY_FLAG_FOUNTAIN_SPRAY_1) {
                 // 6E0512:
@@ -217,7 +217,7 @@ void scenery_paint(uint8 direction, sint32 height, rct_map_element* mapElement) 
             } else if (entry->small_scenery.flags & SMALL_SCENERY_FLAG_HAS_FRAME_OFFSETS)
          {
                 sint32 frame = gCurrentTicks;
-                if (!(entry->small_scenery.flags & SMALL_SCENERY_FLAG22)) {
+                if (!(entry->small_scenery.flags & SMALL_SCENERY_FLAG_COG)) {
                     // 6E01F8:
                     frame += ((gUnk9DE568 / 4) + (gUnk9DE56C / 4));
                     frame += (mapElement->type & 0xC0) / 16;
@@ -231,7 +231,7 @@ void scenery_paint(uint8 direction, sint32 height, rct_map_element* mapElement) 
                     image_id = entry->small_scenery.frame_offsets[frame];
                 }
                 image_id = (image_id * 4) + direction + entry->image;
-                if (entry->small_scenery.flags & (SMALL_SCENERY_FLAG21 | SMALL_SCENERY_FLAG17)) {
+                if (entry->small_scenery.flags & (SMALL_SCENERY_FLAG_VISIBLE_WHEN_ZOOMED | SMALL_SCENERY_FLAG17)) {
                     image_id += 4;
                 }
                 if (entry->small_scenery.flags & SMALL_SCENERY_FLAG_HAS_PRIMARY_COLOUR) {
@@ -243,7 +243,7 @@ void scenery_paint(uint8 direction, sint32 height, rct_map_element* mapElement) 
                 if (dword_F64EB0 != 0) {
                     image_id = (image_id & 0x7FFFF) | dword_F64EB0;
                 }
-                if (entry->small_scenery.flags & SMALL_SCENERY_FLAG21) {
+                if (entry->small_scenery.flags & SMALL_SCENERY_FLAG_VISIBLE_WHEN_ZOOMED) {
                     sub_98197C(image_id, x_offset, y_offset, boxlength.x, boxlength.y, boxlength.z - 1, height, boxoffset.x, boxoffset.y, boxoffset.z, rotation);
                 } else {
                     sub_98199C(image_id, x_offset, y_offset, boxlength.x, boxlength.y, boxlength.z - 1, height, boxoffset.x, boxoffset.y, boxoffset.z, rotation);
@@ -276,13 +276,10 @@ void scenery_paint(uint8 direction, sint32 height, rct_map_element* mapElement) 
     }
     // 6E05D1:
     height += entry->small_scenery.height;
-    uint16 word_F64F2A = height;
-    height += 7;
-    height &= 0xFFF8;
-    paint_util_set_general_support_height(height, 0x20);
+
+    paint_util_set_general_support_height(ceil2(height, 8), 0x20);
     // 6E05FF:
-    if (entry->small_scenery.flags & SMALL_SCENERY_FLAG23) {
-        height = word_F64F2A;
+    if (entry->small_scenery.flags & SMALL_SCENERY_FLAG_BUILD_DIRECTLY_ONTOP) {
         if (entry->small_scenery.flags & SMALL_SCENERY_FLAG_FULL_TILE) {
             // 6E0825:
             paint_util_set_segment_support_height(SEGMENT_C4, height, 0x20);
