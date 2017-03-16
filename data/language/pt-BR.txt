@@ -4325,6 +4325,19 @@ STR_6013    :{SMALLFONT}{BLACK}Visitantes pagarão apenas o ingresso para entrar
 STR_6014    :{SMALLFONT}{BLACK}Visitantes pagarão apenas o ingresso para entrar nas atrações e serviços.{NEWLINE}Eles não pagarão nada para entrar no parque.
 STR_6015    :Inclinado
 STR_6016    :Modificar Azulejo
+STR_6017    :Por favor diminua a velocidade
+STR_6018    :Construção da atração - Virar à esquerda
+STR_6019    :Construção da atração - Virar à direita
+STR_6020    :Construção da atração - Usar pista padrão
+STR_6021    :Construção da atração - Inclinar para baixo
+STR_6022    :Construção da atração - Inclinar para cima
+STR_6023    :Construção da atração - Alternar corrente de elevação
+STR_6024    :Construção da atração - Torcer para a esquerda
+STR_6025    :Construção da atração - Torcer para a direita
+STR_6026    :Construção da atração - Peça anterior
+STR_6027    :Construção da atração - Próxima peça
+STR_6028    :Construção da atração - Construir atual
+STR_6029    :Construção da atração - Demolir atual
 
 #############
 # Scenarios #
