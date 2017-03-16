@@ -1139,7 +1139,7 @@ static sint32 cc_reset_user_strings(const utf8 **argv, sint32 argc)
 
 static sint32 cc_fix_banner_count(const utf8 **argv, sint32 argc)
 {
-	fix_banner_count();
+	banner_reset_broken_index();
 	return 0;
 }
 

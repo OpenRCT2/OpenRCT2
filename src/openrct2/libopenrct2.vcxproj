@@ -336,6 +336,7 @@
     <ClCompile Include="windows\title_editor.c" />
     <ClCompile Include="windows\maze_construction.c" />
     <ClCompile Include="world\Balloon.cpp" />
+    <ClCompile Include="world\banner.cpp" />
     <ClCompile Include="world\duck.c" />
     <ClCompile Include="world\entrance.cpp" />
     <ClCompile Include="world\money_effect.c" />
@@ -405,7 +406,6 @@
     <ClCompile Include="windows\view_clipping.c" />
     <ClCompile Include="windows\viewport.c" />
     <ClCompile Include="windows\water.c" />
-    <ClCompile Include="world\banner.c" />
     <ClCompile Include="world\Climate.cpp" />
     <ClCompile Include="world\footpath.c" />
     <ClCompile Include="world\fountain.c" />
