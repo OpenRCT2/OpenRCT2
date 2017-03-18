@@ -442,7 +442,7 @@ static void input_window_position_continue(rct_window *w, sint32 wdx, sint32 wdy
 {
 	sint32 snapProximity;
 
-	snapProximity = w->flags & WF_NO_SNAPPING ? 0 : gConfigGeneral.window_snap_proximity;
+	snapProximity = (w->flags & WF_NO_SNAPPING) ? 0 : gConfigGeneral.window_snap_proximity;
 	window_move_and_snap(w, x - wdx, y - wdy, snapProximity);
 }
 
@@ -468,9 +468,8 @@ static void input_window_resize_begin(rct_window *w, sint32 widgetIndex, sint32 
 
 static void input_window_resize_continue(rct_window *w, sint32 x, sint32 y)
 {
-	sint32 dx, dy, targetWidth, targetHeight;
-
 	if (y < (sint32)gScreenHeight - 2) {
+		sint32 dx, dy, targetWidth, targetHeight;
 		dx = x - gInputDragLastX;
 		dy = y - gInputDragLastY;
 		targetWidth = _originalWindowWidth + dx;
@@ -708,9 +707,9 @@ static void input_scroll_end()
 static void input_scroll_part_update_hthumb(rct_window *w, sint32 widgetIndex, sint32 x, sint32 scroll_id)
 {
 	rct_widget *widget = &w->widgets[widgetIndex];
-	sint32 newLeft;
 
 	if (window_find_by_number(w->classification, w->number)) {
+		sint32 newLeft;
 		newLeft = w->scrolls[scroll_id].h_right;
 		newLeft *= x;
 		x = widget->right - widget->left - 21;
@@ -746,9 +745,9 @@ static void input_scroll_part_update_vthumb(rct_window *w, sint32 widgetIndex, s
 {
 	assert(w != NULL);
 	rct_widget *widget = &w->widgets[widgetIndex];
-	sint32 newTop;
 
 	if (window_find_by_number(w->classification, w->number)) {
+		sint32 newTop;
 		newTop = w->scrolls[scroll_id].v_bottom;
 		newTop *= y;
 		y = widget->bottom - widget->top - 21;
@@ -1040,18 +1039,17 @@ static void input_widget_left(sint32 x, sint32 y, rct_window *w, sint32 widgetIn
 void process_mouse_over(sint32 x, sint32 y)
 {
 	rct_window* window;
-	rct_window* subWindow;
 
-	sint32 widgetId;
 	sint32 cursorId;
-	sint32 ebx, edi;
 
 	cursorId = CURSOR_ARROW;
 	set_map_tooltip_format_arg(0, rct_string_id, STR_NONE);
 	window = window_find_from_point(x, y);
 
 	if (window != NULL) {
-		widgetId = window_find_widget_from_point(window, x, y);
+		sint32 ebx, edi;
+		rct_window* subWindow;
+		sint32 widgetId = window_find_widget_from_point(window, x, y);
 		if (widgetId != -1) {
 			switch (window->widgets[widgetId].type){
 

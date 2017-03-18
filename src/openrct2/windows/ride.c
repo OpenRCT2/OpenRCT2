@@ -2195,7 +2195,7 @@ static void window_ride_main_mousedown(sint32 widgetIndex, rct_window *w, rct_wi
 		widget_invalidate(w, WIDX_RIDE_TYPE);
 		break;
 	case WIDX_RIDE_TYPE_APPLY:
-		if (_rideType >= 0 && _rideType <= 90) {
+		if (_rideType <= 90) {
 			set_operating_setting(w->number, RIDE_SETTING_RIDE_TYPE, _rideType);
 		}
 		window_invalidate_all();
@@ -3747,6 +3747,7 @@ static void window_ride_maintenance_mousedown(sint32 widgetIndex, rct_window *w,
 		gDropdownItemsFormat[0] = STR_DROPDOWN_MENU_LABEL;
 		gDropdownItemsArgs[0] = STR_DEBUG_FIX_RIDE;
 		for (sint32 i = 0; i < 8; i++) {
+			assert(j < countof(ride_type->ride_type));
 			if (RideAvailableBreakdowns[ride_type->ride_type[j]] & (uint8)(1 << i)) {
 				if (i == BREAKDOWN_BRAKES_FAILURE && (ride->mode == RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED || ride->mode == RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED)) {
 					if (ride->num_vehicles != 1)
@@ -3867,6 +3868,7 @@ static void window_ride_maintenance_dropdown(rct_window *w, sint32 widgetIndex, 
 			sint32 i;
 			sint32 num_items = 1;
 			for (i = 0; i < 8; i++) {
+				assert(j < countof(ride_type->ride_type));
 				if (RideAvailableBreakdowns[ride_type->ride_type[j]] & (uint8)(1 << i)) {
 					if (i == BREAKDOWN_BRAKES_FAILURE && (ride->mode == RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED || ride->mode == RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED)) {
 						if (ride->num_vehicles != 1)

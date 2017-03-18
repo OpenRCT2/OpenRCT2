@@ -64,7 +64,6 @@ extern "C"
         IStream * stream = (IStream *)stream_c;
         std::string hintPath = String::ToStd(hintPath_c);
 
-        std::string extension = Path::GetExtension(hintPath);
         bool isScenario = ParkImporter::ExtensionIsScenario(hintPath);
 
         auto parkImporter = std::unique_ptr<IParkImporter>(ParkImporter::Create(hintPath));
