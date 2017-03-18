@@ -36,7 +36,6 @@ namespace Imaging
     {
         png_structp png_ptr;
         png_infop info_ptr;
-        unsigned int sig_read = 0;
 
         // Setup PNG structures
         png_ptr = png_create_read_struct(PNG_LIBPNG_VER_STRING, nullptr, nullptr, nullptr);
@@ -55,6 +54,7 @@ namespace Imaging
         // Open PNG file
         try
         {
+            unsigned int sig_read = 0;
             auto fs = FileStream(path, FILE_MODE_OPEN);
 
             // Set error handling
