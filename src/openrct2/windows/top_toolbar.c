@@ -1258,7 +1258,7 @@ static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid
             rotation -= get_current_rotation();
             rotation &= 0x3;
 
-            // Also places it in lower but think thats for clobering
+            // Also places it in lower but think thats for clobbering
             *parameter_1 = (selected_scenery & 0xFF) << 8;
             *parameter_2 = (cl ^ (1 << 1)) | (gWindowSceneryPrimaryColour << 8);
             *parameter_3 = rotation | (gWindowScenerySecondaryColour << 16);
@@ -1331,7 +1331,7 @@ static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid
         rotation -= get_current_rotation();
         rotation &= 0x3;
 
-        // Also places it in lower but think thats for clobering
+        // Also places it in lower but think thats for clobbering
         *parameter_1 = (selected_scenery & 0xFF) << 8;
         *parameter_2 = 0 | (gWindowSceneryPrimaryColour << 8);
         *parameter_3 = rotation | (gWindowScenerySecondaryColour << 16);
@@ -1409,7 +1409,7 @@ static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid
             return;
 
         _unkF64F15 = gWindowScenerySecondaryColour | (gWindowSceneryTertiaryColour << 8);
-        // Also places it in lower but think thats for clobering
+        // Also places it in lower but think thats for clobbering
         *parameter_1 = (selected_scenery & 0xFF) << 8;
         *parameter_2 = cl | (gWindowSceneryPrimaryColour << 8);
         *parameter_3 = 0;
@@ -1503,7 +1503,7 @@ static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid
 
         z /= 2;
 
-        // Also places it in lower but think thats for clobering
+        // Also places it in lower but think thats for clobbering
         *parameter_1 = (selected_scenery & 0xFF) << 8;
         *parameter_2 = z | (rotation << 8);
         *parameter_3 = gWindowSceneryPrimaryColour;
@@ -1530,6 +1530,9 @@ static void window_top_toolbar_scenery_tool_down(sint16 x, sint16 y, rct_window 
     scenery_remove_ghost_tool_placement();
     if (gWindowSceneryPaintEnabled & 1) {
         repaint_scenery_tool_down(x, y, widgetIndex);
+        return;
+    } else if (gWindowSceneryEyedropperEnabled) {
+        scenery_eyedropper_tool_down(x, y, widgetIndex);
         return;
     }
 
@@ -1725,7 +1728,7 @@ static void window_top_toolbar_scenery_tool_down(sint16 x, sint16 y, rct_window 
 
         gGameCommandErrorTitle = STR_CANT_POSITION_THIS_HERE;
         game_command_callback = game_command_callback_place_banner;
-        game_do_command(gridX, flags, gridY, parameter_2, GAME_COMMAND_PLACE_BANNER, parameter_3, 0);
+        game_do_command(gridX, flags, gridY, parameter_2, GAME_COMMAND_PLACE_BANNER, parameter_3, gWindowSceneryPrimaryColour);
         break;
     }
     }

@@ -29,7 +29,7 @@ extern "C"
     #include "../ride/track_design.h"
 }
 
-money32 SmallSceneryRemove(sint16 x, sint16 y, sint8 baseHeight, uint8 quadrant, uint8 sceneryType, uint8 flags)
+static money32 SmallSceneryRemove(sint16 x, sint16 y, sint8 baseHeight, uint8 quadrant, uint8 sceneryType, uint8 flags)
 {
     if (!map_is_location_valid(x, y)) {
         return MONEY32_UNDEFINED;
@@ -105,7 +105,7 @@ money32 SmallSceneryRemove(sint16 x, sint16 y, sint8 baseHeight, uint8 quadrant,
     return (gParkFlags & PARK_FLAGS_NO_MONEY) ? 0 : cost;
 }
 
-money32 SmallScenerySetColour(sint16 x, sint16 y, sint8 baseHeight, uint8 quadrant, uint8 sceneryType, uint8 primaryColour, uint8 secondaryColour, uint8 flags)
+static money32 SmallScenerySetColour(sint16 x, sint16 y, sint8 baseHeight, uint8 quadrant, uint8 sceneryType, uint8 primaryColour, uint8 secondaryColour, uint8 flags)
 {
     gCommandExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
     sint32 z = baseHeight * 8;
@@ -140,7 +140,7 @@ money32 SmallScenerySetColour(sint16 x, sint16 y, sint8 baseHeight, uint8 quadra
     return 0;
 }
 
-money32 SmallSceneryPlace(sint16 x,
+static money32 SmallSceneryPlace(sint16 x,
     sint16 y,
     sint16 targetHeight,
     uint8 quadrant,
@@ -187,6 +187,9 @@ money32 SmallSceneryPlace(sint16 x,
     }
 
     rct_scenery_entry* scenery_entry = get_small_scenery_entry(sceneryType);
+    if (scenery_entry == NULL) {
+        return MONEY32_UNDEFINED;
+    }
 
     if (scenery_entry->small_scenery.flags & SMALL_SCENERY_FLAG_FULL_TILE || !(scenery_entry->small_scenery.flags & SMALL_SCENERY_FLAG_DIAGONAL)) {
         if (scenery_entry->small_scenery.flags & (SMALL_SCENERY_FLAG_DIAGONAL | SMALL_SCENERY_FLAG_HALF_SPACE | SMALL_SCENERY_FLAG_THREE_QUARTERS)) {

@@ -1721,7 +1721,7 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi)
             // Ride
             sint16 rideId = mapElement->properties.track.ride_index;
             rct_ride *ride = get_ride(rideId);
-            rct_string_id rideType = STR_RIDE_NAME_SPIRAL_ROLLER_COASTER + ride->type;
+            rct_string_id rideType = RideNaming[ride->type].name;
             gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_TRACK_RIDE_TYPE, &rideType, COLOUR_DARK_GREEN, x, y);
             gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_TRACK_RIDE_ID, &rideId, COLOUR_DARK_GREEN, x, y + 11);
             set_format_arg(0, rct_string_id, ride->name);
