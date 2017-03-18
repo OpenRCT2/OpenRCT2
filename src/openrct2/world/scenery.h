@@ -113,26 +113,26 @@ typedef enum {
 } LARGE_SCENERY_TEXT_FLAGS;
 
 typedef struct rct_large_scenery_entry {
-    uint8 tool_id;          // 0x06
-    uint8 flags;            // 0x07
-    sint16 price;           // 0x08
-    sint16 removal_price;   // 0x0A
+    uint8 tool_id;			// 0x06
+    uint8 flags;			// 0x07
+    sint16 price;			// 0x08
+    sint16 removal_price;	// 0x0A
     rct_large_scenery_tile* tiles; // 0x0C
-    uint8 scenery_tab_id;   // 0x10
-    uint8 var_11;
+    uint8 scenery_tab_id;	// 0x10
+    uint8 scrolling_mode;    // 0x11
     rct_large_scenery_text* text; // 0x12
-    uint32 text_image;  // 0x16
+    uint32 text_image;	// 0x16
 } rct_large_scenery_entry;
 #ifdef PLATFORM_32BIT
 assert_struct_size(rct_large_scenery_entry, 20);
 #endif
 
 typedef enum {
-    LARGE_SCENERY_FLAG_HAS_PRIMARY_COLOUR = (1 << 0),           // 0x1
-    LARGE_SCENERY_FLAG_HAS_SECONDARY_COLOUR = (1 << 1),         // 0x2
-    LARGE_SCENERY_FLAG_3D_TEXT = (1 << 2),          // 0x4
-    LARGE_SCENERY_FLAG_ANIMATED = (1 << 3),         // 0x8
-    LARGE_SCENERY_FLAG5 = (1 << 4),         // 0x10
+    LARGE_SCENERY_FLAG_HAS_PRIMARY_COLOUR = (1 << 0),			// 0x1
+    LARGE_SCENERY_FLAG_HAS_SECONDARY_COLOUR = (1 << 1),			// 0x2
+    LARGE_SCENERY_FLAG_3D_TEXT = (1 << 2),			// 0x4
+    LARGE_SCENERY_FLAG_ANIMATED = (1 << 3),			// 0x8
+    LARGE_SCENERY_FLAG_PHOTOGENIC = (1 << 4),			// 0x10
 } LARGE_SCENERY_FLAGS;
 
 typedef struct rct_wall_scenery_entry {

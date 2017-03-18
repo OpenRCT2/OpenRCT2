@@ -2975,7 +2975,7 @@ void game_command_place_large_scenery(sint32* eax, sint32* ebx, sint32* ecx, sin
         *ebx = MONEY32_UNDEFINED;
         return;
     }
-    if(scenery_entry->large_scenery.var_11 != 0xFF){
+    if(scenery_entry->large_scenery.scrolling_mode != 0xFF){
         banner_id = create_new_banner(flags);
 
         if (banner_id == MAX_BANNERS) {
@@ -3769,7 +3769,7 @@ sint32 map_element_get_banner_index(rct_map_element *mapElement)
     switch (map_element_get_type(mapElement)) {
     case MAP_ELEMENT_TYPE_SCENERY_MULTIPLE:
         sceneryEntry = get_large_scenery_entry(mapElement->properties.scenerymultiple.type & 0x3FF);
-        if (sceneryEntry->large_scenery.var_11 == 0xFF)
+        if (sceneryEntry->large_scenery.scrolling_mode == 0xFF)
             return -1;
 
         return

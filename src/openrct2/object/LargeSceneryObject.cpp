@@ -39,7 +39,7 @@ void LargeSceneryObject::ReadLegacy(IReadObjectContext * context, IStream * stre
     _legacyType.large_scenery.removal_price = stream->ReadValue<sint16>();
     stream->Seek(5, STREAM_SEEK_CURRENT);
     _legacyType.large_scenery.scenery_tab_id = 0xFF;
-    _legacyType.large_scenery.var_11 = stream->ReadValue<uint8>();
+    _legacyType.large_scenery.scrolling_mode = stream->ReadValue<uint8>();
     stream->Seek(4, STREAM_SEEK_CURRENT);
 
     GetStringTable()->Read(context, stream, OBJ_STRING_ID_NAME);

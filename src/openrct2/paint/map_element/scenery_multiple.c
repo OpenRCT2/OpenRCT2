@@ -231,7 +231,7 @@ void scenery_multiple_paint(uint8 direction, uint16 height, rct_map_element *map
     boxlength.y =  s98E3C4[esi].length.y;
     boxlength.z = ah;
     sub_98197C(image_id, 0, 0, boxlength.x, boxlength.y, ah, height, boxoffset.x, boxoffset.y, boxoffset.z, get_current_rotation());
-    if (entry->large_scenery.var_11 == 0xFF || direction == 1 || direction == 2) {
+    if (entry->large_scenery.scrolling_mode == 0xFF || direction == 1 || direction == 2) {
         scenery_multiple_paint_supports(direction, height, mapElement, dword_F4387C, tile);
         return;
     }
@@ -347,7 +347,7 @@ void scenery_multiple_paint(uint8 direction, uint16 height, rct_map_element *map
     // 6B809A:
     set_format_arg(7, uint8, textColour);
     uint32 bannerIndex = (mapElement->type & 0xC0) | ((mapElement->properties.scenerymultiple.colour[0] & 0xE0) >> 2) | ((mapElement->properties.scenerymultiple.colour[1] & 0xE0) >> 5);
-    uint16 scrollMode = entry->large_scenery.var_11 + ((direction + 1) & 0x3);
+    uint16 scrollMode = entry->large_scenery.scrolling_mode + ((direction + 1) & 0x3);
     rct_banner *banner = &gBanners[bannerIndex];
     set_format_arg(0, rct_string_id, banner->string_idx);
     if (banner->flags & BANNER_FLAG_LINKED_TO_RIDE) {
