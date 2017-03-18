@@ -442,7 +442,7 @@ static void input_window_position_continue(rct_window *w, sint32 wdx, sint32 wdy
 {
 	sint32 snapProximity;
 
-	snapProximity = w->flags & WF_NO_SNAPPING ? 0 : gConfigGeneral.window_snap_proximity;
+	snapProximity = (w->flags & WF_NO_SNAPPING) ? 0 : gConfigGeneral.window_snap_proximity;
 	window_move_and_snap(w, x - wdx, y - wdy, snapProximity);
 }
 
