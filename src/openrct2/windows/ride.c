@@ -2195,7 +2195,7 @@ static void window_ride_main_mousedown(sint32 widgetIndex, rct_window *w, rct_wi
 		widget_invalidate(w, WIDX_RIDE_TYPE);
 		break;
 	case WIDX_RIDE_TYPE_APPLY:
-		if (_rideType >= 0 && _rideType <= 90) {
+		if (_rideType <= 90) {
 			set_operating_setting(w->number, RIDE_SETTING_RIDE_TYPE, _rideType);
 		}
 		window_invalidate_all();
