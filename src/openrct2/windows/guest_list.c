@@ -14,7 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../config.h"
+#include "../config/Config.h"
 #include "../game.h"
 #include "../interface/themes.h"
 #include "../interface/widget.h"
@@ -378,6 +378,7 @@ static void window_guest_list_mousedown(sint32 widgetIndex, rct_window*w, rct_wi
 			w->y + widget->top,
 			widget->bottom - widget->top + 1,
 			w->colours[1],
+			0,
 			DROPDOWN_FLAG_STAY_OPEN,
 			_window_guest_list_num_pages,
 			widget->right - widget->left - 3
@@ -402,6 +403,7 @@ static void window_guest_list_mousedown(sint32 widgetIndex, rct_window*w, rct_wi
 			w->y + widget->top,
 			widget->bottom - widget->top + 1,
 			w->colours[1],
+			0,
 			DROPDOWN_FLAG_STAY_OPEN,
 			2,
 			widget->right - widget->left - 3

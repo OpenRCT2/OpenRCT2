@@ -116,7 +116,7 @@ static bool TryClassifyAsS4(IStream * stream, ClassifiedFile * result)
         result->Version = version;
         return true;
     }
-    
+
     return false;
 }
 

@@ -14,7 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../config.h"
+#include "../config/Config.h"
 #include "../game.h"
 #include "../interface/graph.h"
 #include "../interface/widget.h"
@@ -1298,6 +1298,7 @@ static void window_finances_research_mousedown(sint32 widgetIndex, rct_window *w
 		w->y + dropdownWidget->top,
 		dropdownWidget->bottom - dropdownWidget->top + 1,
 		w->colours[1],
+		0,
 		DROPDOWN_FLAG_STAY_OPEN,
 		4,
 		dropdownWidget->right - dropdownWidget->left - 3

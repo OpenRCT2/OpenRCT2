@@ -15,7 +15,7 @@
 #pragma endregion
 
 #include "../game.h"
-#include "../config.h"
+#include "../config/Config.h"
 #include "../localisation/localisation.h"
 #include "../interface/viewport.h"
 #include "../interface/widget.h"
@@ -434,10 +434,10 @@ void window_sign_small_open(rct_windownumber number){
 	rct_map_element* map_element = map_get_first_element_at(view_x / 32, view_y / 32);
 
 	while (1){
-		if (map_element_get_type(map_element) == MAP_ELEMENT_TYPE_FENCE) {
-			rct_scenery_entry* scenery_entry = get_wall_entry(map_element->properties.fence.type);
+		if (map_element_get_type(map_element) == MAP_ELEMENT_TYPE_WALL) {
+			rct_scenery_entry* scenery_entry = get_wall_entry(map_element->properties.wall.type);
 			if (scenery_entry->wall.scrolling_mode != 0xFF){
-				if (map_element->properties.fence.item[0] == w->number)
+				if (map_element->properties.wall.banner_index == w->number)
 					break;
 			}
 		}
@@ -447,10 +447,9 @@ void window_sign_small_open(rct_windownumber number){
 	sint32 view_z = map_element->base_height << 3;
 	w->frame_no = view_z;
 
-	w->list_information_type = map_element->properties.fence.item[1] & 0x1F;
-	w->var_492 =
-		((map_element->properties.fence.item[1] >> 5) | ((map_element->flags & 0x60) >> 2));
-	w->var_48C = map_element->properties.fence.type;
+	w->list_information_type = map_element->properties.wall.colour_1 & 0x1F;
+	w->var_492 = wall_element_get_secondary_colour(map_element);
+	w->var_48C = map_element->properties.wall.type;
 
 	view_x += 16;
 	view_y += 16;
@@ -496,10 +495,10 @@ static void window_sign_small_mouseup(rct_window *w, sint32 widgetIndex)
 		break;
 	case WIDX_SIGN_DEMOLISH:
 		while (1){
-			if (map_element_get_type(map_element) == MAP_ELEMENT_TYPE_FENCE) {
-				rct_scenery_entry* scenery_entry = get_wall_entry(map_element->properties.fence.type);
+			if (map_element_get_type(map_element) == MAP_ELEMENT_TYPE_WALL) {
+				rct_scenery_entry* scenery_entry = get_wall_entry(map_element->properties.wall.type);
 				if (scenery_entry->wall.scrolling_mode != 0xFF){
-					if (map_element->properties.fence.item[0] == w->number)
+					if (map_element->properties.wall.banner_index == w->number)
 						break;
 				}
 			}
@@ -511,7 +510,7 @@ static void window_sign_small_mouseup(rct_window *w, sint32 widgetIndex)
 			1 | ((map_element->type & 0x3) << 8),
 			y,
 			(map_element->base_height << 8) | (map_element->type & 0x3),
-			GAME_COMMAND_REMOVE_FENCE,
+			GAME_COMMAND_REMOVE_WALL,
 			0,
 			0);
 		break;

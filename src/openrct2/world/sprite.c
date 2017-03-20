@@ -45,6 +45,16 @@ static rct_xyz16 _spritelocations2[MAX_SPRITES];
 
 static size_t GetSpatialIndexOffset(sint32 x, sint32 y);
 
+rct_sprite *try_get_sprite(size_t spriteIndex)
+{
+	rct_sprite * sprite = NULL;
+	if (spriteIndex < MAX_SPRITES)
+	{
+		sprite = &_spriteList[spriteIndex];
+	}
+	return sprite;
+}
+
 rct_sprite *get_sprite(size_t sprite_idx)
 {
 	openrct2_assert(sprite_idx < MAX_SPRITES, "Tried getting sprite %u", sprite_idx);

@@ -531,8 +531,6 @@ typedef void (*modal_callback)(sint32 result);
 typedef void (*loadsave_callback)(sint32 result, const utf8 * path);
 typedef void (*scenarioselect_callback)(const utf8 *path);
 
-extern loadsave_callback gLoadSaveCallback;
-
 typedef void (*close_callback)();
 
 #define WINDOW_LIMIT_MIN 4
@@ -794,5 +792,20 @@ bool land_tool_is_active();
 
 //Cheat: in-game land ownership editor
 void toggle_ingame_land_ownership_editor();
+
+void window_loadsave_set_loadsave_callback(loadsave_callback cb);
+
+void window_ride_construction_keyboard_shortcut_turn_left();
+void window_ride_construction_keyboard_shortcut_turn_right();
+void window_ride_construction_keyboard_shortcut_use_track_default();
+void window_ride_construction_keyboard_shortcut_slope_down();
+void window_ride_construction_keyboard_shortcut_slope_up();
+void window_ride_construction_keyboard_shortcut_chain_lift_toggle();
+void window_ride_construction_keyboard_shortcut_bank_left();
+void window_ride_construction_keyboard_shortcut_bank_right();
+void window_ride_construction_keyboard_shortcut_previous_track();
+void window_ride_construction_keyboard_shortcut_next_track();
+void window_ride_construction_keyboard_shortcut_build_current();
+void window_ride_construction_keyboard_shortcut_demolish_current();
 
 #endif

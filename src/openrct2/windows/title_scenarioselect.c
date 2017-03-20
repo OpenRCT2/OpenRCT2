@@ -14,7 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../config.h"
+#include "../config/Config.h"
 #include "../audio/audio.h"
 #include "../localisation/date.h"
 #include "../localisation/localisation.h"

@@ -15,7 +15,7 @@
 #pragma endregion
 
 #include "../audio/audio.h"
-#include "../config.h"
+#include "../config/Config.h"
 #include "../editor.h"
 #include "../game.h"
 #include "../input.h"
@@ -24,6 +24,7 @@
 #include "../localisation/localisation.h"
 #include "../network/network.h"
 #include "../platform/platform.h"
+#include "../ride/track.h"
 #include "../ride/track_paint.h"
 #include "../title/TitleScreen.h"
 #include "../util/util.h"
@@ -157,7 +158,7 @@ static void shortcut_cancel_construction_mode()
 	rct_window *window = window_find_by_class(WC_ERROR);
 	if (window != NULL)
 		window_close(window);
-	else if (gInputFlags & INPUT_FLAG_TOOL_ACTIVE)
+	else if (input_test_flag(INPUT_FLAG_TOOL_ACTIVE))
 		tool_cancel();
 }
 
@@ -635,6 +636,102 @@ static void shortcut_debug_paint_toggle()
 	}
 }
 
+static void shortcut_ride_construction_turn_left()
+{
+	if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
+		return;
+
+	window_ride_construction_keyboard_shortcut_turn_left();
+}
+
+static void shortcut_ride_construction_turn_right()
+{
+	if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
+		return;
+
+	window_ride_construction_keyboard_shortcut_turn_right();
+}
+
+static void shortcut_ride_construction_use_track_default()
+{
+	if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
+		return;
+
+	window_ride_construction_keyboard_shortcut_use_track_default();
+}
+
+static void shortcut_ride_construction_slope_down()
+{
+	if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
+		return;
+
+	window_ride_construction_keyboard_shortcut_slope_down();
+}
+
+static void shortcut_ride_construction_slope_up()
+{
+	if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
+		return;
+
+	window_ride_construction_keyboard_shortcut_slope_up();
+}
+
+static void shortcut_ride_construction_chain_lift_toggle()
+{
+	if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
+		return;
+
+	window_ride_construction_keyboard_shortcut_chain_lift_toggle();
+}
+
+static void shortcut_ride_construction_bank_left()
+{
+	if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
+		return;
+
+	window_ride_construction_keyboard_shortcut_bank_left();
+}
+
+static void shortcut_ride_construction_bank_right()
+{
+	if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
+		return;
+
+	window_ride_construction_keyboard_shortcut_bank_right();
+}
+
+static void shortcut_ride_construction_previous_track()
+{
+	if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
+		return;
+
+	window_ride_construction_keyboard_shortcut_previous_track();
+}
+
+static void shortcut_ride_construction_next_track()
+{
+	if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
+		return;
+
+	window_ride_construction_keyboard_shortcut_next_track();
+}
+
+static void shortcut_ride_construction_build_current()
+{
+	if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
+		return;
+
+	window_ride_construction_keyboard_shortcut_build_current();
+}
+
+static void shortcut_ride_construction_demolish_current()
+{
+	if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
+		return;
+
+	window_ride_construction_keyboard_shortcut_demolish_current();
+}
+
 static const shortcut_action shortcut_table[SHORTCUT_COUNT] = {
 	shortcut_close_top_most_window,
 	shortcut_close_all_floating_windows,
@@ -688,6 +785,18 @@ static const shortcut_action shortcut_table[SHORTCUT_COUNT] = {
 	shortcut_orginal_painting_toggle,
 	shortcut_debug_paint_toggle,
 	shortcut_see_through_paths_toggle,
+	shortcut_ride_construction_turn_left,
+	shortcut_ride_construction_turn_right,
+	shortcut_ride_construction_use_track_default,
+	shortcut_ride_construction_slope_down,
+	shortcut_ride_construction_slope_up,
+	shortcut_ride_construction_chain_lift_toggle,
+	shortcut_ride_construction_bank_left,
+	shortcut_ride_construction_bank_right,
+	shortcut_ride_construction_previous_track,
+	shortcut_ride_construction_next_track,
+	shortcut_ride_construction_build_current,
+	shortcut_ride_construction_demolish_current,
 };
 
 #pragma endregion

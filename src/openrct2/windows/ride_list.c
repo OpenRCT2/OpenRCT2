@@ -14,7 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../config.h"
+#include "../config/Config.h"
 #include "../game.h"
 #include "../ride/ride.h"
 #include "../localisation/localisation.h"
@@ -325,6 +325,7 @@ static void window_ride_list_mousedown(sint32 widgetIndex, rct_window*w, rct_wid
 			w->y + widget->top,
 			widget->bottom - widget->top,
 			w->colours[1],
+			0,
 			DROPDOWN_FLAG_STAY_OPEN,
 			numItems,
 			widget->right - widget->left - 3

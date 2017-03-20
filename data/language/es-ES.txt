@@ -4281,6 +4281,23 @@ STR_6009    :{SMALLFONT}{BLACK}Selecciona la altura de corte
 STR_6010    :{COMMA2DP32}m
 STR_6011    :{COMMA1DP16}ft
 STR_6012    :{COMMA1DP16}
+STR_6013    :{SMALLFONT}{BLACK}Los visitantes sólo pagarán por la entrada del parque y los servicios.{NEWLINE}La entrada de la atracción es gratis.
+STR_6014    :{SMALLFONT}{BLACK}Los visitantes sólo pagarán por la entrada de atracciones y servicios.{NEWLINE}Los visitantes no pagan por entrar al parque.
+STR_6015    :Inclinado
+STR_6016    :Modificar Baldosa
+STR_6017    :Por favor más despacio
+STR_6018    :Construir Atrac. - Curva Izquierda
+STR_6019    :Construir Atrac. - Curva Derecha
+STR_6020    :Const. Atrac. - Usar vía por defecto
+STR_6021    :Construir Atrac. - Cuesta abajo
+STR_6022    :Construir Atrac. - Cuesta arriba
+STR_6023    :Construir Atrac. - Cadena Elevación
+STR_6024    :Construir Atrac. - Peralte Izquierdo
+STR_6025    :Construir Atrac. - Peralte Derecho
+STR_6026    :Construir Atrac. - Pieza Anterior
+STR_6027    :Construir Atrac. - Pieza Siguiente
+STR_6028    :Construir Atrac. - Construir Actual
+STR_6029    :Construir Atrac. - Demoler Actual
 
 ##############
 # Escenarios #

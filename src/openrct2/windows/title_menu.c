@@ -14,7 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../config.h"
+#include "../config/Config.h"
 #include "../editor.h"
 #include "../game.h"
 #include "../input.h"
@@ -136,15 +136,41 @@ static void window_title_menu_scenarioselect_callback(const utf8 *path)
 
 static void window_title_menu_mouseup(rct_window *w, sint32 widgetIndex)
 {
+	rct_window *windowToOpen = NULL;
+
 	switch (widgetIndex) {
 	case WIDX_START_NEW_GAME:
-		window_scenarioselect_open(window_title_menu_scenarioselect_callback);
+		windowToOpen = window_find_by_class(WC_SCENARIO_SELECT);
+		if (windowToOpen != NULL) {
+			window_bring_to_front(windowToOpen);
+		}
+		else {
+			window_close_by_class(WC_LOADSAVE);
+			window_close_by_class(WC_SERVER_LIST);
+			window_scenarioselect_open(window_title_menu_scenarioselect_callback);
+		}
 		break;
 	case WIDX_CONTINUE_SAVED_GAME:
-		game_do_command(0, 1, 0, 0, GAME_COMMAND_LOAD_OR_QUIT, 0, 0);
+		windowToOpen = window_find_by_class(WC_LOADSAVE);
+		if (windowToOpen != NULL) {
+			window_bring_to_front(windowToOpen);
+		}
+		else {
+			window_close_by_class(WC_SCENARIO_SELECT);
+			window_close_by_class(WC_SERVER_LIST);
+			game_do_command(0, 1, 0, 0, GAME_COMMAND_LOAD_OR_QUIT, 0, 0);
+		}
 		break;
 	case WIDX_MULTIPLAYER:
-		window_server_list_open();
+		windowToOpen = window_find_by_class(WC_SERVER_LIST);
+		if (windowToOpen != NULL) {
+			window_bring_to_front(windowToOpen);
+		}
+		else {
+			window_close_by_class(WC_SCENARIO_SELECT);
+			window_close_by_class(WC_LOADSAVE);
+			window_server_list_open();
+		}
 		break;
 	}
 }

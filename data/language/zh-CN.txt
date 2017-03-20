@@ -4275,8 +4275,7 @@ STR_5958    :东北
 STR_5959    :东南
 STR_5960    :{WINDOW_COLOUR_2}四角放置:
 STR_5961    :{WINDOW_COLOUR_2}入口编号:{BLACK}{COMMA16}
-#碰撞检测?
-STR_5962    :{WINDOW_COLOUR_2}冲突检测:
+STR_5962    :{WINDOW_COLOUR_2}碰撞检测:
 STR_5963    :{WINDOW_COLOUR_2}已升起的角:
 STR_5964    :{WINDOW_COLOUR_2}斜角
 STR_5965    :{WINDOW_COLOUR_2}入口类型:{BLACK}{STRINGID}
@@ -4327,6 +4326,23 @@ STR_6009    :{SMALLFONT}{BLACK}选择切割高度
 STR_6010    :{COMMA2DP32}米
 STR_6011    :{COMMA1DP16}英尺
 STR_6012    :{COMMA1DP16}
+STR_6013    :{SMALLFONT}{BLACK}游客仅需付费购买游乐园门票和服务.{NEWLINE}搭乘游乐设施免费.
+STR_6014    :{SMALLFONT}{BLACK}游客仅需付费购买游乐设施门票和服务.{NEWLINE}进入游乐园免费.
+STR_6015    :坡道
+STR_6016    :修改网格
+STR_6017    :请调低速度
+STR_6018    :游乐设施建造- 向左转
+STR_6019    :游乐设施建造- 向右转
+STR_6020    :游乐设施建造- 使用默认轨道
+STR_6021    :游乐设施建造- 降低坡度
+STR_6022    :游乐设施建造- 升高坡度
+STR_6023    :游乐设施建造- 牵引链条开关
+STR_6024    :游乐设施建造- 向左倾斜
+STR_6025    :游乐设施建造- 向右倾斜
+STR_6026    :游乐设施建造- 上一个轨道
+STR_6027    :游乐设施建造- 下一个轨道
+STR_6028    :游乐设施建造- 建造当前选中的
+STR_6029    :游乐设施建造- 拆除当前选中的
 
 
 #############

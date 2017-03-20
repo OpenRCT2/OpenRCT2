@@ -35,8 +35,9 @@
 #include "util/sawyercoding.h"
 #include "util/util.h"
 #include "world/banner.h"
-#include "world/climate.h"
+#include "world/Climate.h"
 #include "world/footpath.h"
+#include "world/entrance.h"
 #include "world/map.h"
 #include "world/park.h"
 #include "world/scenery.h"
@@ -108,7 +109,7 @@ void editor_convert_save_to_scenario()
 {
 	tool_cancel();
 	window_loadsave_open(LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME, NULL);
-	gLoadSaveCallback = editor_convert_save_to_scenario_callback;
+	window_loadsave_set_loadsave_callback(editor_convert_save_to_scenario_callback);
 }
 
 static void editor_convert_save_to_scenario_callback(sint32 result, const utf8 * path)
@@ -521,9 +522,14 @@ bool editor_check_park()
 		}
 	}
 
-	if (gPeepSpawns[0].x == PEEP_SPAWN_UNDEFINED && gPeepSpawns[1].x == PEEP_SPAWN_UNDEFINED) {
-		gGameCommandErrorText = STR_PEEP_SPAWNS_NOT_SET;
-		return false;
+	for (sint32 i = 0; i < MAX_PEEP_SPAWNS; i++) {
+		if (gPeepSpawns[i].x != PEEP_SPAWN_UNDEFINED)
+			break;
+
+		if (i == MAX_PEEP_SPAWNS - 1) {
+			gGameCommandErrorText = STR_PEEP_SPAWNS_NOT_SET;
+			return false;
+		}
 	}
 
 	return true;

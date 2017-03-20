@@ -17,7 +17,7 @@
 #include "paint.h"
 #include "../drawing/drawing.h"
 #include "../localisation/localisation.h"
-#include "../config.h"
+#include "../config/Config.h"
 #include "../interface/viewport.h"
 #include "map_element/map_element.h"
 #include "sprite/sprite.h"

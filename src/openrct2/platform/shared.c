@@ -16,8 +16,9 @@
 
 #include "../audio/audio.h"
 #include "../audio/AudioMixer.h"
-#include "../config.h"
+#include "../config/Config.h"
 #include "../drawing/drawing.h"
+#include "../drawing/IDrawingEngine.h"
 #include "../drawing/lightfx.h"
 #include "../editor.h"
 #include "../game.h"
@@ -33,7 +34,7 @@
 #include "../title/TitleScreen.h"
 #include "../util/util.h"
 #include "../Version.h"
-#include "../world/climate.h"
+#include "../world/Climate.h"
 #include "platform.h"
 
 typedef void(*update_palette_func)(const uint8*, sint32, sint32);
@@ -616,6 +617,9 @@ static void platform_create_window()
 	SDL_SetWindowGrab(gWindow, gConfigGeneral.trap_cursor ? SDL_TRUE : SDL_FALSE);
 	SDL_SetWindowMinimumSize(gWindow, 720, 480);
 	platform_init_window_icon();
+#ifdef __MACOSX__
+	macos_disallow_automatic_window_tabbing();
+#endif
 
 	// Initialise the surface, palette and draw buffer
 	platform_resize(width, height);

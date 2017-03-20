@@ -1,11 +1,14 @@
 0.0.7 (in development)
 ------------------------------------------------------------------------
+- Feature: [#1730] Keyboard shortcuts for track construction.
 - Feature: [#5110] The tile inspector can now be used in multiplayer.
 - Improved: [#5137]: Removing all guests no longer closes the rides and removes the vehicles.
 - Improved: [#5163]: Minor tile inspector improvements and fixes.
 - Fix: [#4689] Object selection tabs sometimes flicker.
 - Fix: [#5150] --openrct-data-path sets user data path instead of OpenRCT2 data path.
 - Fix: [#5188] Clicking on a Magic Carpet doesn't open the ride window.
+- Fix: [#5238] RCT1 import: Rides are initially free when placing them.
+- Fix: [#5299] Scenario editor crash when placing peep spawn
 
 0.0.6 (2017-01-29)
 ------------------------------------------------------------------------
@@ -15,6 +18,7 @@
 - Feature: [#4916] FreeBSD support.
 - Feature: [#4963] Add boosters (from RCT1 and RCTC).
 - Feature: [#5113] Entertainers are now hired with a random costume.
+- Feature: [#5222] Added Catalan translation.
 - Improved: [#4847] Guest / staff pathfinding.
 - Improved: [#4938] Checksum calculations speeded up.
 - Improved: [#5007] Vehicles and functioning rides are now imported when loading SC4 / SV4 parks.

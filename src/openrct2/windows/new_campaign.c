@@ -14,7 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../config.h"
+#include "../config/Config.h"
 #include "../game.h"
 #include "../localisation/localisation.h"
 #include "../interface/widget.h"
@@ -261,6 +261,7 @@ static void window_new_campaign_mousedown(sint32 widgetIndex, rct_window *w, rct
 					w->y + dropdownWidget->top,
 					dropdownWidget->bottom - dropdownWidget->top + 1,
 					w->colours[1],
+					0,
 					DROPDOWN_FLAG_STAY_OPEN,
 					numItems,
 					dropdownWidget->right - dropdownWidget->left - 3
@@ -283,6 +284,7 @@ static void window_new_campaign_mousedown(sint32 widgetIndex, rct_window *w, rct
 				w->y + dropdownWidget->top,
 				dropdownWidget->bottom - dropdownWidget->top + 1,
 				w->colours[1],
+				0,
 				DROPDOWN_FLAG_STAY_OPEN,
 				numItems,
 				dropdownWidget->right - dropdownWidget->left - 3

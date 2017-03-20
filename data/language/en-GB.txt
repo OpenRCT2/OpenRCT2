@@ -556,7 +556,7 @@ STR_0551    :Cinema showing 3D films inside a geodesic sphere shaped building
 STR_0552    :Passengers ride in a gondola suspended by large rotating arms, rotating forwards and backwards head-over-heals
 STR_0553    :Concentric pivoting rings allowing the riders free rotation in all directions
 STR_0554    :The car is accelerated out of the station along a long level track using Linear Induction Motors, then heads straight up a vertical spike of track, freefalling back down to return to the station
-STR_0555    :Guests ride in an elevator up or down a vertical tower to get from one level to another
+STR_0555    :Guests ride in a lift up or down a vertical tower to get from one level to another
 STR_0556    :Extra-wide cars descend completely vertical sloped track for the ultimate freefall roller coaster experience
 STR_0557    :An A.T.M. (Cash Machine) for guests to use if they run low on funds
 STR_0558    :Riders ride in pairs of seats rotating around the ends of three long rotating arms
@@ -2788,7 +2788,7 @@ STR_2778    :{RIGHTGUILLEMET}{MOVE_X}{SMALLFONT}{STRING}
 STR_2779    :Viewport #{COMMA16}
 STR_2780    :Extra viewport
 # End of new strings
-STR_2781    :{STRINGID}:{MOVE_X}{195}{STRINGID}
+STR_2781    :{STRINGID}:{MOVE_X}{255}{STRINGID}
 STR_2782    :SHIFT + 
 STR_2783    :CTRL + 
 STR_2784    :Change keyboard shortcut
@@ -4237,7 +4237,7 @@ STR_5925    :Path details
 STR_5926    :Track details
 STR_5927    :Scenery details
 STR_5928    :Entrance details
-STR_5929    :Fence details
+STR_5929    :Wall details
 STR_5930    :Large scenery details
 STR_5931    :Banner details
 STR_5932    :Corrupt element details
@@ -4287,7 +4287,7 @@ STR_5975    :Slope:
 STR_5976    :Flat
 STR_5977    :Right side up
 STR_5978    :Left side up
-STR_5979    :{WINDOW_COLOUR_2}Fence type: {BLACK}{COMMA16}
+STR_5979    :{WINDOW_COLOUR_2}Wall type: {BLACK}{COMMA16}
 STR_5980    :{WINDOW_COLOUR_2}Banner text: {BLACK}{STRINGID}
 STR_5981    :{WINDOW_COLOUR_2}Not a banner
 STR_5982    :{WINDOW_COLOUR_2}Large scenery type: {BLACK}{COMMA16}
@@ -4325,6 +4325,20 @@ STR_6013    :{SMALLFONT}{BLACK}Guests will only pay the ticket to enter the park
 STR_6014    :{SMALLFONT}{BLACK}Guests will only pay entrance tickets for rides and services.{NEWLINE}They won't pay anything to enter the park.
 STR_6015    :Sloped
 STR_6016    :Modify Tile
+STR_6017    :Please slow down
+STR_6018    :Ride construction - Turn left
+STR_6019    :Ride construction - Turn right
+STR_6020    :Ride construction - Use default track
+STR_6021    :Ride construction - Slope down
+STR_6022    :Ride construction - Slope up
+STR_6023    :Ride construction - Toggle chain lift
+STR_6024    :Ride construction - Bank left
+STR_6025    :Ride construction - Bank right
+STR_6026    :Ride construction - Previous track
+STR_6027    :Ride construction - Next track
+STR_6028    :Ride construction - Build current
+STR_6029    :Ride construction - Demolish current
+
 
 #############
 # Scenarios #
@@ -4776,4 +4790,10 @@ STR_DTLS    :
 [CONDORRD]
 STR_NAME    :Condor Ride
 STR_DESC    :Riding in special harnesses below the track, riders experience the feeling of flight as they swoop through the air in Condor-shaped trains
+STR_CPTY    :4 passengers per car
+
+#WW
+[CONGAEEL]
+STR_NAME    :Conger Eel Coaster
+STR_DESC    :A compact steel-tracked roller coaster where the Eel-shaped train travels through corkscrews and loops
 STR_CPTY    :4 passengers per car

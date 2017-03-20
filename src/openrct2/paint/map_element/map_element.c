@@ -21,7 +21,7 @@
 #include "../../ride/ride_data.h"
 #include "../../ride/track_data.h"
 #include "../../ride/track_paint.h"
-#include "../../config.h"
+#include "../../config/Config.h"
 #include "../../world/sprite.h"
 #include "../../world/banner.h"
 #include "../../world/entrance.h"
@@ -273,7 +273,7 @@ static void sub_68B3FB(sint32 x, sint32 y)
 		case MAP_ELEMENT_TYPE_ENTRANCE:
 			entrance_paint(direction, height, map_element);
 			break;
-		case MAP_ELEMENT_TYPE_FENCE:
+		case MAP_ELEMENT_TYPE_WALL:
 			fence_paint(direction, height, map_element);
 			break;
 		case MAP_ELEMENT_TYPE_SCENERY_MULTIPLE:

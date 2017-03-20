@@ -14,7 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../config.h"
+#include "../config/Config.h"
 #include "../drawing/drawing.h"
 #include "../paint/supports.h"
 #include "../interface/viewport.h"
@@ -1533,7 +1533,7 @@ void track_paint_util_left_quarter_turn_3_tiles_paint_with_height_offset(sint8 t
 // 	}
 //
 // 	const sprite_bb *spriteBB = &sprites[direction][sprite];
-// 	uint32 imageId = spriteBB->sprite_id | colourFlags;
+// 	uint32 imageId = spriteBB->SpriteId | colourFlags;
 // 	sub_98197C(imageId,
 // 				(sint8)spriteBB->offset.x, (sint8)spriteBB->offset.y,
 // 				spriteBB->bb_size.x, spriteBB->bb_size.y, (sint8)spriteBB->bb_size.z,

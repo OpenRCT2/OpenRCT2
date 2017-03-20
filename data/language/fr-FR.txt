@@ -1,4 +1,4 @@
-﻿# STR_XXXX part is read and XXXX becomes the string id number.
+# STR_XXXX part is read and XXXX becomes the string id number.
 # Everything after the colon and before the new line will be saved as the string.
 # Use # at the beginning of a line to leave a comment.
 STR_0000    :
@@ -1067,7 +1067,7 @@ STR_1060    :Nom d'attraction invalide
 STR_1061    :Mode normal
 STR_1062    :Mode circuit continu
 STR_1063    :Mode navette départ marche arrière
-STR_1064    :Lancement à autopropulsion
+STR_1064    :Lancement à autopropulsion (sans arrêt en station)
 STR_1065    :Mode navette
 STR_1066    :Mode location bateaux
 STR_1067    :Lancement vers le haut
@@ -1099,7 +1099,7 @@ STR_1092    :Lancement vers le bas
 STR_1093    :Mode maison biscornue
 STR_1094    :Mode chute libre
 STR_1095    :Mode blocs de voie sur circuit continu
-STR_1096    :Lancement à autopropulsion
+STR_1096    :Lancement à autopropulsion (avec arrêt en station)
 STR_1097    :Mode blocs de voie avec lancement à autopropulsion
 STR_1098    :Se déplace au bout de {POP16}{STRINGID}
 STR_1099    :Attend des passagers à {POP16}{STRINGID}
@@ -2789,7 +2789,7 @@ STR_2778    :{RIGHTGUILLEMET}{MOVE_X}{SMALLFONT}{STRING}
 # End of new strings
 STR_2779    :Vue #{COMMA16}
 STR_2780    :Vue supplémentaire
-STR_2781    :{STRINGID}:{MOVE_X}{195}{STRINGID}
+STR_2781    :{STRINGID}:{MOVE_X}{255}{STRINGID}
 STR_2782    :SHIFT + 
 STR_2783    :CTRL + 
 STR_2784    :Modifier raccourci clavier
@@ -4300,8 +4300,45 @@ STR_5987    :Impossible de créer le dossier
 STR_5988    :{SMALLFONT}{BLACK}Plus de terrain à vendre
 STR_5989    :{SMALLFONT}{BLACK}Plus de droits de construction à vendre
 STR_5990    :{SMALLFONT}{BLACK}Plus de terrain ou de droits de construction à vendre
-
+STR_5991    :Impossible de coller cet (ces) élément(s)...
+STR_5992    :La limite des éléments de la carte a été atteinte
+STR_5993    :{SMALLFONT}{BLACK}Copier élément(s) sélectionné(s)
+STR_5994    :{SMALLFONT}{BLACK}Coller élément(s) copié(s)
+STR_5995    :Turbo
+STR_5996    :Vitesse du turbo
+STR_5997    :Ajouter/définir argent
+STR_5998    :Ajouter argent
+STR_5999    :Définir argent
+STR_6000    :Entrez une nouvelle valeur
+STR_6001    :Activer effets de lumières (expérimental)
+STR_6002    :{SMALLFONT}{BLACK}Les lampes et attractions seront éclairées durant la nuit.{NEWLINE}Nécessite l'utilisation du moteur de rendu matériel.
+STR_6003    :Vue en coupe
+STR_6004    :Vue en coupe
+STR_6005    :Active la vue en coupe
+STR_6006    :{SMALLFONT}{BLACK}La vue en coupe affiche les éléments de la carte qui sont à la hauteur de coupe et en dessous.
+STR_6007    :Hauteur de coupe
+STR_6008    :{SMALLFONT}{BLACK}Cliquez pour permutter entre valeur explicite<->valeur mesurée
+STR_6009    :{SMALLFONT}{BLACK}Sélectionnez hauteur de coupe
+STR_6010    :{COMMA2DP32}m
+STR_6011    :{COMMA1DP16}ft
 STR_6012    :{COMMA1DP16}
+STR_6013    :{SMALLFONT}{BLACK}Les visiteurs paieront que le ticket pour entrer dans le parc et les services.{NEWLINE}Les tickets pour les attractions sont gratuits.
+STR_6014    :{SMALLFONT}{BLACK}Les visiteurs paieront que les tickets pour entrer dans les attractions et les services.{NEWLINE}L'entrée du parc est gratuite.
+STR_6015    :Inclinée
+STR_6016    :Modifier carré
+STR_6017    :Merci de ralentir un peu
+STR_6018    :Construction de manège - Tourner à gauche
+STR_6019    :Construction de manège - Tourner à droite
+STR_6020    :Construction de manège - Utiliser la voie par défaut
+STR_6021    :Construction de manège - Pente descendante
+STR_6022    :Construction de manège - Pente ascendante
+STR_6023    :Construction de manège - Activer/Désactiver le mécanisme de remontée
+STR_6024    :Construction de manège - Bord gauche
+STR_6025    :Construction de manège - Bord droit
+STR_6026    :Construction de manège - Piste précédente
+STR_6027    :Construction de manège - Piste suivante
+STR_6028    :Construction de manège - Construire l’actuel
+STR_6029    :Construction de manège - Démolir l’actuel
 
 #############
 # Scenarios #

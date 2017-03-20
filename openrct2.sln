@@ -3,18 +3,10 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libopenrct2", "src\openrct2\libopenrct2.vcxproj", "{D24D94F6-2A74-480C-B512-629C306CE92F}"
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "testpaint", "test\testpaint\testpaint.vcxproj", "{57E60BA1-FB76-4316-909E-C1449C142327}"
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tests", "test\tests\tests.vcxproj", "{62B020FA-E4FB-4C6E-B32A-DC999470F155}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "openrct2-dll", "src\openrct2-dll\openrct2-dll.vcxproj", "{7B8DB129-79EF-417E-B372-8A18E009D261}"
 	ProjectSection(ProjectDependencies) = postProject
 		{D24D94F6-2A74-480C-B512-629C306CE92F} = {D24D94F6-2A74-480C-B512-629C306CE92F}
 	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{2202A816-377D-4FA0-A7AF-7D4105F8A4FB}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{480B577D-4E4A-4757-9A42-28A9AD33E6B0}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "openrct2-win", "src\openrct2-win\openrct2-win.vcxproj", "{7A9A57D5-7006-4208-A290-5491BA3C8808}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -22,10 +14,18 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "openrct2-win", "src\openrct
 		{D24D94F6-2A74-480C-B512-629C306CE92F} = {D24D94F6-2A74-480C-B512-629C306CE92F}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "openrct2-dll", "src\openrct2-dll\openrct2-dll.vcxproj", "{7B8DB129-79EF-417E-B372-8A18E009D261}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libopenrct2", "src\openrct2\libopenrct2.vcxproj", "{D24D94F6-2A74-480C-B512-629C306CE92F}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tests", "test\tests\tests.vcxproj", "{62B020FA-E4FB-4C6E-B32A-DC999470F155}"
 	ProjectSection(ProjectDependencies) = postProject
 		{D24D94F6-2A74-480C-B512-629C306CE92F} = {D24D94F6-2A74-480C-B512-629C306CE92F}
 	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "testpaint", "test\testpaint\testpaint.vcxproj", "{57E60BA1-FB76-4316-909E-C1449C142327}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{2202A816-377D-4FA0-A7AF-7D4105F8A4FB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{480B577D-4E4A-4757-9A42-28A9AD33E6B0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

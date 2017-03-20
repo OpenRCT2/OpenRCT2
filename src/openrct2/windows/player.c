@@ -14,7 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../config.h"
+#include "../config/Config.h"
 #include "../game.h"
 #include "../input.h"
 #include "../management/marketing.h"
@@ -250,6 +250,7 @@ static void window_player_overview_show_group_dropdown(rct_window *w, rct_widget
 		w->y + dropdownWidget->top,
 		dropdownWidget->bottom - dropdownWidget->top + 1,
 		w->colours[1],
+		0,
 		0,
 		numItems,
 		widget->right - dropdownWidget->left

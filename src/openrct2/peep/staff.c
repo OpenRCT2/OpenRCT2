@@ -14,7 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../config.h"
+#include "../config/Config.h"
 #include "../game.h"
 #include "../interface/viewport.h"
 #include "../localisation/date.h"
@@ -24,6 +24,7 @@
 #include "../network/network.h"
 #include "../scenario/scenario.h"
 #include "../util/util.h"
+#include "../world/entrance.h"
 #include "../world/footpath.h"
 #include "../world/scenery.h"
 #include "../world/sprite.h"
@@ -406,7 +407,7 @@ void game_command_set_staff_order(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 
 		if(order_id & 0x80){ // change costume
 			uint8 sprite_type = order_id & ~0x80;
 			sprite_type += 4;
-			if (sprite_type > countof(peep_slow_walking_types)) {
+			if (sprite_type >= countof(peep_slow_walking_types)) {
 				log_error("Invalid change costume order for sprite_type %u", sprite_type);
 				*ebx = MONEY32_UNDEFINED;
 				return;

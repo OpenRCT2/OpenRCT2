@@ -22,7 +22,8 @@
 extern "C"
 {
     #include "../common.h"
-    #include "../config.h"
+    #include "../config/Config.h"
+    #include "../platform/platform.h"
     #include "themes.h"
     #include "window.h"
 }

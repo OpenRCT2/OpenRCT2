@@ -4322,6 +4322,10 @@ STR_6009    :{SMALLFONT}{BLACK}選擇切入高度
 STR_6010    :{COMMA2DP32}米
 STR_6011    :{COMMA1DP16}公尺
 STR_6012    :{COMMA1DP16}
+STR_6013    :{SMALLFONT}{BLACK}遊客只會付費購買樂園入場卷及物品.{NEWLINE}他們能免費乘搭遊樂設施.
+STR_6014    :{SMALLFONT}{BLACK}遊客只會付費乘搭遊樂設施及物品.{NEWLINE}他們不會乘搭付費購買樂園入場卷.
+STR_6015    :斜道
+STR_6016    :更改方格
 
 #############
 # Scenarios #

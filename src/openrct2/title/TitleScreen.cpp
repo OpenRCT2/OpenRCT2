@@ -26,7 +26,7 @@
 extern "C"
 {
     #include "../audio/audio.h"
-    #include "../config.h"
+    #include "../config/Config.h"
     #include "../drawing/drawing.h"
     #include "../game.h"
     #include "../input.h"
@@ -36,7 +36,7 @@ extern "C"
     #include "../localisation/localisation.h"
     #include "../management/news_item.h"
     #include "../peep/staff.h"
-    #include "../world/climate.h"
+    #include "../world/Climate.h"
     #include "../world/scenery.h"
 }
 
@@ -187,7 +187,7 @@ extern "C"
             // update_rain_animation();
         }
 
-        gInputFlags &= ~INPUT_FLAG_VIEWPORT_SCROLLING;
+        input_set_flag(INPUT_FLAG_VIEWPORT_SCROLLING, false);
 
         window_map_tooltip_update_visibility();
         window_dispatch_update_all();

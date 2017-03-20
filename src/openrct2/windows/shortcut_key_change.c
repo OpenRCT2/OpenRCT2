@@ -14,7 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../config.h"
+#include "../config/Config.h"
 #include "../interface/keyboard_shortcut.h"
 #include "../interface/themes.h"
 #include "../interface/window.h"
@@ -84,7 +84,7 @@ void window_shortcut_change_open(sint32 selected_key){
 	rct_window* w = window_create_centred(WW, WH, &window_shortcut_change_events, WC_CHANGE_KEYBOARD_SHORTCUT, 0);
 
 	w->widgets = window_shortcut_change_widgets;
-	w->enabled_widgets = (1 << 2);
+	w->enabled_widgets = (1ULL << WIDX_CLOSE);
 	window_init_scroll_widgets(w);
 }
 

@@ -33,8 +33,6 @@
  */
 void gfx_fill_rect_inset(rct_drawpixelinfo* dpi, sint16 left, sint16 top, sint16 right, sint16 bottom, sint32 colour, uint8 flags)
 {
-	uint8 shadow, fill, hilight;
-
 	if (colour & (COLOUR_FLAG_TRANSLUCENT | COLOUR_FLAG_8)) {
 		translucent_window_palette palette;
 		if (colour & COLOUR_FLAG_8) {
@@ -70,6 +68,7 @@ void gfx_fill_rect_inset(rct_drawpixelinfo* dpi, sint16 left, sint16 top, sint16
 			}
 		}
 	} else {
+		uint8 shadow, fill, hilight;
 		if (flags & INSET_RECT_FLAG_FILL_MID_LIGHT) {
 			shadow	= ColourMapA[colour].dark;
 			fill	= ColourMapA[colour].mid_light;

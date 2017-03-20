@@ -45,16 +45,18 @@
       <SubSystem>Console</SubSystem>
     </Link>
   </ItemDefinitionGroup>
-
   <!-- Files -->
   <ItemGroup>
+    <ClInclude Include="AssertHelpers.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="LanguagePackTest.cpp" />
+    <ClCompile Include="IniReaderTest.cpp" />
+    <ClCompile Include="IniWriterTest.cpp" />
     <ClCompile Include="sawyercoding_test.cpp" />
     <ClCompile Include="$(GtestDir)\src\gtest-all.cc" />
     <ClCompile Include="tests.cpp" />
+    <ClCompile Include="StringTest.cpp" />
   </ItemGroup>
-
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
 </Project>

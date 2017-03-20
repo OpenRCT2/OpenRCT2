@@ -23,7 +23,6 @@
 #define DECRYPT_MONEY(money) ((money32)rol32((money) ^ 0xF4EC9621, 13))
 #define ENCRYPT_MONEY(money) ((money32)(ror32((money), 13) ^ 0xF4EC9621))
 
-#define MAX_PARK_ENTRANCES 4
 
 enum {
 	PARK_FLAGS_PARK_OPEN = (1 << 0),
@@ -67,13 +66,6 @@ extern uint8 gGuestsInParkHistory[32];
 extern sint32 _guestGenerationProbability;
 extern sint32 _suggestedGuestMaximum;
 
-extern rct_xyzd16 gParkEntrances[MAX_PARK_ENTRANCES];
-
-extern bool gParkEntranceGhostExists;
-extern rct_xyz16 gParkEntranceGhostPosition;
-extern uint8 gParkEntranceGhostDirection;
-extern money32 gParkEntranceGhostPrice;
-
 void set_forced_park_rating(sint32 rating);
 sint32 get_forced_park_rating();
 
@@ -85,7 +77,7 @@ sint32 park_calculate_size();
 sint32 calculate_park_rating();
 money32 calculate_park_value();
 money32 calculate_company_value();
-void reset_park_entrances();
+void reset_park_entry();
 rct_peep * park_generate_new_guest();
 
 void park_update();
@@ -95,7 +87,7 @@ void update_park_fences(sint32 x, sint32 y);
 uint8 calculate_guest_initial_happiness(uint8 percentage);
 
 void park_set_open(sint32 open);
-sint32 park_get_entrance_index(sint32 x, sint32 y, sint32 z);
+sint32 park_entrance_get_index(sint32 x, sint32 y, sint32 z);
 void park_set_name(const char *name);
 void park_set_entrance_fee(money32 value);
 
@@ -103,12 +95,8 @@ sint32 map_buy_land_rights(sint32 x0, sint32 y0, sint32 x1, sint32 y1, sint32 se
 
 void game_command_set_park_entrance_fee(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *edx, sint32 *esi, sint32 *edi, sint32 *ebp);
 void game_command_set_park_open(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *edx, sint32 *esi, sint32 *edi, sint32 *ebp);
-void game_command_remove_park_entrance(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *edx, sint32 *esi, sint32 *edi, sint32 *ebp);
 void game_command_set_park_name(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *edx, sint32 *esi, sint32 *edi, sint32 *ebp);
 void game_command_buy_land_rights(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *edx, sint32 *esi, sint32 *edi, sint32 *ebp);
-
-void park_remove_ghost_entrance();
-money32 park_place_ghost_entrance(sint32 x, sint32 y, sint32 z, sint32 direction);
 
 money16 park_get_entrance_fee();
 

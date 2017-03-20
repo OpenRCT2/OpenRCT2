@@ -19,7 +19,7 @@
 #include <time.h>
 #include "audio/audio.h"
 #include "audio/AudioMixer.h"
-#include "config.h"
+#include "config/Config.h"
 #include "drawing/drawing.h"
 #include "drawing/lightfx.h"
 #include "editor.h"
@@ -27,6 +27,7 @@
 #include "input.h"
 #include "interface/chat.h"
 #include "interface/console.h"
+#include "interface/keyboard_shortcut.h"
 #include "interface/viewport.h"
 #include "intro.h"
 #include "localisation/date.h"
@@ -47,7 +48,7 @@
 #include "scenario/ScenarioRepository.h"
 #include "title/TitleScreen.h"
 #include "util/util.h"
-#include "world/climate.h"
+#include "world/Climate.h"
 #include "world/map.h"
 #include "world/park.h"
 #include "world/scenery.h"
@@ -153,7 +154,7 @@ bool rct2_init()
 
 	config_reset_shortcut_keys();
 	config_shortcut_keys_load();
-	gInputPlaceObjectModifier = PLACE_OBJECT_MODIFIER_NONE;
+	input_reset_place_obj_modifier();
 	// config_load();
 
 	if (!gfx_load_g1()) {

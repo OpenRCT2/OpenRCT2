@@ -16,7 +16,7 @@
 
 #include "../audio/audio.h"
 #include "../cheats.h"
-#include "../config.h"
+#include "../config/Config.h"
 #include "../editor.h"
 #include "../game.h"
 #include "../input.h"
@@ -329,7 +329,7 @@ static void window_top_toolbar_mouseup(rct_window *w, sint32 widgetIndex)
 		break;
 	case WIDX_SCENERY:
 		if (!tool_set(w, WIDX_SCENERY, 0)) {
-			gInputFlags |= INPUT_FLAG_6;
+			input_set_flag(INPUT_FLAG_6, true);
 			window_scenery_open();
 		}
 		break;
@@ -935,7 +935,7 @@ static void repaint_scenery_tool_down(sint16 x, sint16 y, sint16 widgetIndex){
 	}
 	case VIEWPORT_INTERACTION_ITEM_WALL:
 	{
-		rct_scenery_entry* scenery_entry = get_wall_entry(map_element->properties.fence.type);
+		rct_scenery_entry* scenery_entry = get_wall_entry(map_element->properties.wall.type);
 
 		// If can't repaint
 		if (!(scenery_entry->wall.flags &
@@ -949,7 +949,7 @@ static void repaint_scenery_tool_down(sint16 x, sint16 y, sint16 widgetIndex){
 			1 | (gWindowSceneryPrimaryColour << 8),
 			grid_y,
 			(map_element->type & MAP_ELEMENT_DIRECTION_MASK) | (map_element->base_height << 8),
-			GAME_COMMAND_SET_FENCE_COLOUR,
+			GAME_COMMAND_SET_WALL_COLOUR,
 			0,
 			gWindowScenerySecondaryColour | (gWindowSceneryTertiaryColour << 8));
 		break;
@@ -1039,7 +1039,7 @@ static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid
 		gSceneryShiftPressed = false;
 	} else {
 		if (!gSceneryCtrlPressed) {
-			if (gInputPlaceObjectModifier & PLACE_OBJECT_MODIFIER_COPY_Z) {
+			if (input_test_place_object_modifier(PLACE_OBJECT_MODIFIER_COPY_Z)) {
 				// CTRL pressed
 				rct_map_element* map_element;
 				uint16 flags =
@@ -1058,14 +1058,14 @@ static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid
 				}
 			}
 		} else {
-			if (!(gInputPlaceObjectModifier & PLACE_OBJECT_MODIFIER_COPY_Z)) {
+			if (!(input_test_place_object_modifier(PLACE_OBJECT_MODIFIER_COPY_Z))) {
 				// CTRL not pressed
 				gSceneryCtrlPressed = false;
 			}
 		}
 
 		if (!gSceneryShiftPressed) {
-			if (gInputPlaceObjectModifier & PLACE_OBJECT_MODIFIER_SHIFT_Z) {
+			if (input_test_place_object_modifier(PLACE_OBJECT_MODIFIER_SHIFT_Z)) {
 				// SHIFT pressed
 				gSceneryShiftPressed = true;
 				gSceneryShiftPressX = x;
@@ -1074,7 +1074,7 @@ static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid
 			}
 		}
 		else{
-			if (gInputPlaceObjectModifier & PLACE_OBJECT_MODIFIER_SHIFT_Z) {
+			if (input_test_place_object_modifier(PLACE_OBJECT_MODIFIER_SHIFT_Z)) {
 				// SHIFT pressed
 				gSceneryShiftPressZOffset = (gSceneryShiftPressY - y + 4) & 0xFFF8;
 
@@ -1573,7 +1573,7 @@ static void window_top_toolbar_scenery_tool_down(sint16 x, sint16 y, rct_window 
 
 			gDisableErrorWindowSound = true;
 			gGameCommandErrorTitle = STR_CANT_BUILD_PARK_ENTRANCE_HERE;
-			sint32 cost = game_do_command(gridX, flags, gridY, parameter_2, GAME_COMMAND_PLACE_FENCE, gSceneryPlaceZ, _unkF64F15);
+			sint32 cost = game_do_command(gridX, flags, gridY, parameter_2, GAME_COMMAND_PLACE_WALL, gSceneryPlaceZ, _unkF64F15);
 			gDisableErrorWindowSound = false;
 
 			if (cost != MONEY32_UNDEFINED){
@@ -2182,7 +2182,7 @@ static money32 try_place_ghost_scenery(rct_xy16 map_tile, uint32 parameter_1, ui
 			parameter_1 | 0x69,
 			map_tile.y,
 			parameter_2,
-			GAME_COMMAND_PLACE_FENCE,
+			GAME_COMMAND_PLACE_WALL,
 			gSceneryPlaceZ,
 			_unkF64F15);
 
@@ -3181,12 +3181,12 @@ void toggle_footpath_window()
  */
 void toggle_land_window(rct_window *topToolbar, sint32 widgetIndex)
 {
-	if ((gInputFlags & INPUT_FLAG_TOOL_ACTIVE) && gCurrentToolWidget.window_classification == WC_TOP_TOOLBAR && gCurrentToolWidget.widget_index == 7) {
+	if ((input_test_flag(INPUT_FLAG_TOOL_ACTIVE)) && gCurrentToolWidget.window_classification == WC_TOP_TOOLBAR && gCurrentToolWidget.widget_index == 7) {
 		tool_cancel();
 	} else {
 		show_gridlines();
 		tool_set(topToolbar, widgetIndex, 18);
-		gInputFlags |= INPUT_FLAG_6;
+		input_set_flag(INPUT_FLAG_6, true);
 		gLandToolSize = 1;
 		window_land_open();
 	}
@@ -3198,12 +3198,12 @@ void toggle_land_window(rct_window *topToolbar, sint32 widgetIndex)
  */
 void toggle_clear_scenery_window(rct_window *topToolbar, sint32 widgetIndex)
 {
-	if ((gInputFlags & INPUT_FLAG_TOOL_ACTIVE) && gCurrentToolWidget.window_classification == WC_TOP_TOOLBAR && gCurrentToolWidget.widget_index == 16) {
+	if ((input_test_flag(INPUT_FLAG_TOOL_ACTIVE) && gCurrentToolWidget.window_classification == WC_TOP_TOOLBAR && gCurrentToolWidget.widget_index == 16)) {
 		tool_cancel();
 	} else {
 		show_gridlines();
 		tool_set(topToolbar, widgetIndex, 12);
-		gInputFlags |= INPUT_FLAG_6;
+		input_set_flag(INPUT_FLAG_6, true);
 		gLandToolSize = 2;
 		window_clear_scenery_open();
 	}
@@ -3215,12 +3215,12 @@ void toggle_clear_scenery_window(rct_window *topToolbar, sint32 widgetIndex)
  */
 void toggle_water_window(rct_window *topToolbar, sint32 widgetIndex)
 {
-	if ((gInputFlags & INPUT_FLAG_TOOL_ACTIVE) && gCurrentToolWidget.window_classification == WC_TOP_TOOLBAR && gCurrentToolWidget.widget_index == 8) {
+	if ((input_test_flag(INPUT_FLAG_TOOL_ACTIVE)) && gCurrentToolWidget.window_classification == WC_TOP_TOOLBAR && gCurrentToolWidget.widget_index == 8) {
 		tool_cancel();
 	} else {
 		show_gridlines();
 		tool_set(topToolbar, widgetIndex, 19);
-		gInputFlags |= INPUT_FLAG_6;
+		input_set_flag(INPUT_FLAG_6, true);
 		gLandToolSize = 1;
 		window_water_open();
 	}
@@ -3232,7 +3232,7 @@ void toggle_water_window(rct_window *topToolbar, sint32 widgetIndex)
  */
 bool land_tool_is_active()
 {
-	if (!(gInputFlags & INPUT_FLAG_TOOL_ACTIVE))
+	if (!(input_test_flag(INPUT_FLAG_TOOL_ACTIVE)))
 		return false;
 	if (gCurrentToolWidget.window_classification != WC_TOP_TOOLBAR)
 		return false;
