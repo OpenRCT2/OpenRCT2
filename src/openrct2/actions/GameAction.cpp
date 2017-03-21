@@ -115,6 +115,16 @@ namespace GameActions
         GameActionResult result = Query(action);
         if (result.Error == GA_ERROR::OK)
         {
+            // Networked games send actions to the server to be run
+            if (network_get_mode() != NETWORK_MODE_NONE)
+            {
+                // Action has come from server.
+                if (!(actionFlags & GA_FLAGS::CLIENT_ONLY) && !(actionFlags & GA_FLAGS::GHOST))
+                {
+                    network_send_game_action(action);
+                }
+            }
+
             // Execute the action, changing the game state
             result = action->Execute();
 
