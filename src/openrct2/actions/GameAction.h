@@ -48,6 +48,7 @@ namespace GA_FLAGS
 {
     constexpr uint16 ALLOW_WHILE_PAUSED = 1 << 0;
     constexpr uint16 CLIENT_ONLY        = 1 << 1;
+    constexpr uint16 GHOST              = 1 << 2;
 }
 
 /**
