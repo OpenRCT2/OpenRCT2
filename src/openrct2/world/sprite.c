@@ -23,7 +23,7 @@
 #include "../OpenRCT2.h"
 #include "../rct2/addresses.h"
 #include "../scenario/scenario.h"
-#include "fountain.h"
+#include "Fountain.h"
 #include "sprite.h"
 
 #ifdef NO_RCT2

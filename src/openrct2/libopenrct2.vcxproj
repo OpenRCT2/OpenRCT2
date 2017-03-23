@@ -408,7 +408,7 @@
     <ClCompile Include="windows\water.c" />
     <ClCompile Include="world\Climate.cpp" />
     <ClCompile Include="world\footpath.c" />
-    <ClCompile Include="world\fountain.c" />
+    <ClCompile Include="world\Fountain.cpp" />
     <ClCompile Include="world\map.c" />
     <ClCompile Include="world\mapgen.c" />
     <ClCompile Include="world\map_animation.c" />
@@ -600,7 +600,7 @@
     <ClInclude Include="world\Climate.h" />
     <ClInclude Include="world\entrance.h" />
     <ClInclude Include="world\footpath.h" />
-    <ClInclude Include="world\fountain.h" />
+    <ClInclude Include="world\Fountain.h" />
     <ClInclude Include="world\map.h" />
     <ClInclude Include="world\mapgen.h" />
     <ClInclude Include="world\map_animation.h" />

@@ -16,7 +16,7 @@
 
 #include "../game.h"
 #include "../scenario/scenario.h"
-#include "fountain.h"
+#include "Fountain.h"
 #include "map.h"
 #include "scenery.h"
 #include "sprite.h"
