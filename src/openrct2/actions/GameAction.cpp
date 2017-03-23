@@ -16,6 +16,7 @@
 
 #include "../core/Guard.hpp"
 #include "../core/Memory.hpp"
+#include "../core/MemoryStream.h"
 #include "../core/Util.hpp"
 #include "../network/network.h"
 #include "GameAction.h"
@@ -121,7 +122,10 @@ namespace GameActions
                 // Action has come from server.
                 if (!(actionFlags & GA_FLAGS::CLIENT_ONLY) && !(actionFlags & GA_FLAGS::GHOST))
                 {
-                    network_send_game_action(action);
+                    MemoryStream stream;
+                    stream.WriteValue(action->GetFlags());
+                    action->Serialise(&stream);
+                    network_send_game_action((uint8*)stream.GetData(), stream.GetLength(), 0);
                 }
             }
 

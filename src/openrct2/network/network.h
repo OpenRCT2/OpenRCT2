@@ -147,8 +147,8 @@ public:
     void Server_Send_CHAT(const char* text);
     void Client_Send_GAMECMD(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uint32 esi, uint32 edi, uint32 ebp, uint8 callback);
     void Server_Send_GAMECMD(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uint32 esi, uint32 edi, uint32 ebp, uint8 playerid, uint8 callback);
-    void Client_Send_GAME_ACTION(const IGameAction * action);
-    void Server_Send_GAME_ACTION(const IGameAction * action);
+    void Client_Send_GAME_ACTION(const uint8 * buffer, uint64 size, uint32 type);
+    void Server_Send_GAME_ACTION(const uint8 * buffer, uint64 size, uint32 type);
     void Server_Send_TICK();
     void Server_Send_PLAYERLIST();
     void Client_Send_PING();
@@ -252,6 +252,8 @@ private:
     void Server_Handle_CHAT(NetworkConnection& connection, NetworkPacket& packet);
     void Client_Handle_GAMECMD(NetworkConnection& connection, NetworkPacket& packet);
     void Server_Handle_GAMECMD(NetworkConnection& connection, NetworkPacket& packet);
+    void Client_Handle_GAME_ACTION(NetworkConnection& connection, NetworkPacket& packet);
+    void Server_Handle_GAME_ACTION(NetworkConnection& connection, NetworkPacket& packet);
     void Client_Handle_TICK(NetworkConnection& connection, NetworkPacket& packet);
     void Client_Handle_PLAYERLIST(NetworkConnection& connection, NetworkPacket& packet);
     void Client_Handle_PING(NetworkConnection& connection, NetworkPacket& packet);
@@ -328,9 +330,7 @@ sint32 network_get_pickup_peep_old_x(uint8 playerid);
 void network_send_map();
 void network_send_chat(const char* text);
 void network_send_gamecmd(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uint32 esi, uint32 edi, uint32 ebp, uint8 callback);
-#ifdef __cplusplus
-void network_send_game_action(const IGameAction * action);
-#endif
+void network_send_game_action(const uint8 * buffer, uint64 size, uint32 type);
 void network_send_password(const char* password);
 
 void network_set_password(const char* password);
