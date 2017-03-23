@@ -238,7 +238,7 @@ extern "C"
                 delete zip;
                 Memory::Free(fdata);
             }
-            catch (Exception ex)
+            catch (const Exception &ex)
             {
                 Console::Error::WriteLine(ex.GetMessage());
             }
