@@ -104,6 +104,7 @@ Network::Network()
     client_command_handlers[NETWORK_COMMAND_MAP] = &Network::Client_Handle_MAP;
     client_command_handlers[NETWORK_COMMAND_CHAT] = &Network::Client_Handle_CHAT;
     client_command_handlers[NETWORK_COMMAND_GAMECMD] = &Network::Client_Handle_GAMECMD;
+    client_command_handlers[NETWORK_COMMAND_GAME_ACTION] = &Network::Client_Handle_GAME_ACTION;
     client_command_handlers[NETWORK_COMMAND_TICK] = &Network::Client_Handle_TICK;
     client_command_handlers[NETWORK_COMMAND_PLAYERLIST] = &Network::Client_Handle_PLAYERLIST;
     client_command_handlers[NETWORK_COMMAND_PING] = &Network::Client_Handle_PING;
@@ -119,6 +120,7 @@ Network::Network()
     server_command_handlers[NETWORK_COMMAND_AUTH] = &Network::Server_Handle_AUTH;
     server_command_handlers[NETWORK_COMMAND_CHAT] = &Network::Server_Handle_CHAT;
     server_command_handlers[NETWORK_COMMAND_GAMECMD] = &Network::Server_Handle_GAMECMD;
+    server_command_handlers[NETWORK_COMMAND_GAME_ACTION] = &Network::Server_Handle_GAME_ACTION;
     server_command_handlers[NETWORK_COMMAND_PING] = &Network::Server_Handle_PING;
     server_command_handlers[NETWORK_COMMAND_GAMEINFO] = &Network::Server_Handle_GAMEINFO;
     server_command_handlers[NETWORK_COMMAND_TOKEN] = &Network::Server_Handle_TOKEN;
@@ -1119,19 +1121,19 @@ void Network::Server_Send_GAMECMD(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx
     SendPacketToClients(*packet, false, true);
 }
 
-void Network::Client_Send_GAME_ACTION(const IGameAction * action)
+void Network::Client_Send_GAME_ACTION(const uint8 * buffer, uint64 size, uint32 type)
 {
     std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
-    *packet << (uint32)NETWORK_COMMAND_GAME_ACTION << (uint32)gCurrentTicks << eax << (ebx | GAME_COMMAND_FLAG_NETWORKED)
-        << ecx << edx << esi << edi << ebp << callback;
+    *packet << (uint32)NETWORK_COMMAND_GAME_ACTION << (uint32)gCurrentTicks << (uint32)type;
+    packet->Write(buffer, size);
     server_connection.QueuePacket(std::move(packet));
 }
 
-void Network::Server_Send_GAME_ACTION(const IGameAction * action)
+void Network::Server_Send_GAME_ACTION(const uint8 * buffer, uint64 size, uint32 type)
 {
     std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
-    *packet << (uint32)NETWORK_COMMAND_GAME_ACTION << (uint32)gCurrentTicks << eax << (ebx | GAME_COMMAND_FLAG_NETWORKED)
-        << ecx << edx << esi << edi << ebp << playerid << callback;
+    *packet << (uint32)NETWORK_COMMAND_GAME_ACTION << (uint32)gCurrentTicks << type;
+    packet->Write(buffer, size);
     SendPacketToClients(*packet);
 }
 
@@ -2017,7 +2019,37 @@ void Network::Client_Handle_GAMECMD(NetworkConnection& connection, NetworkPacket
     GameCommand gc = GameCommand(tick, args, playerid, callback);
     game_command_queue.insert(gc);
 }
+void Network::Client_Handle_GAME_ACTION(NetworkConnection& connection, NetworkPacket& packet)
+{
+    uint32 tick;
+    uint16 flags;
+    uint32 type;
+    money16 test;
+    packet >> tick >> type;
+    MemoryStream stream;
+    for (int i = packet.BytesRead; i < packet.Size; ++i) {
+        stream.WriteValue(((uint8*)packet.GetData())[i]);
+    }
+    stream.SetPosition(0);
+    flags = stream.ReadValue<uint16>();
+    test = stream.ReadValue<money16>();
+}
 
+void Network::Server_Handle_GAME_ACTION(NetworkConnection& connection, NetworkPacket& packet)
+{
+    uint32 tick;
+    uint16 flags;
+    uint32 type;
+    money16 test;
+    packet >> tick >> type;
+    MemoryStream stream;
+    for (int i = packet.BytesRead; i < packet.Size; ++i) {
+        stream.WriteValue(((uint8*)packet.GetData())[i]);
+    }
+    stream.SetPosition(0);
+    flags = stream.ReadValue<uint16>();
+    test = stream.ReadValue<money16>();
+}
 void Network::Server_Handle_GAMECMD(NetworkConnection& connection, NetworkPacket& packet)
 {
     uint32 tick;
@@ -2824,14 +2856,14 @@ void network_send_chat(const char* text)
     }
 }
 
-void network_send_game_action(const IGameAction * action)
+void network_send_game_action(const uint8 * buffer, uint64 size, uint32 type)
 {
     switch (gNetwork.GetMode()) {
     case NETWORK_MODE_SERVER:
-        gNetwork.Server_Send_GAME_ACTION(action);
+        gNetwork.Server_Send_GAME_ACTION(buffer, size, type);
         break;
     case NETWORK_MODE_CLIENT:
-        gNetwork.Client_Send_GAME_ACTION(action);
+        gNetwork.Client_Send_GAME_ACTION(buffer, size, type);
         break;
     }
 }
