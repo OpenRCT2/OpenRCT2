@@ -18,8 +18,8 @@
 #include <vector>
 #include <openrct2/Context.h>
 #include <openrct2/core/Registration.hpp>
+#include "drawing/engines/DrawingEngines.h"
 #include "UiContext.h"
-#include "drawing\engines\DrawingEngines.h"
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Ui;
