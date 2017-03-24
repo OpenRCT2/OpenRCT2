@@ -34,6 +34,32 @@ project(${PROJECT})
 add_library(${PROJECT} SHARED ${OPENRCT2_CORE_SOURCES})
 set_target_properties(${PROJECT} PROPERTIES PREFIX "")
 
+# Libraries
+if (UNIX AND NOT APPLE AND NOT DISABLE_TTF)
+    # FontConfig for TrueType fonts.
+    PKG_CHECK_MODULES(FONTCONFIG REQUIRED fontconfig)
+    include_directories(${FONTCONFIG_INCLUDE_DIRS})
+    target_link_libraries(${PROJECT} ${FONTCONFIG_LIBRARIES})
+endif()
+
+target_link_libraries(${PROJECT} ${GL_LIBRARIES})
+target_link_libraries(${PROJECT} ${SDL2_LIBRARIES}
+                                 ${SDL2_TTF_LIBRARIES}
+                                 ${LIBCURL_LIBRARIES}
+                                 ${JANSSON_LIBRARIES}
+                                 ${SPEEX_LIBRARIES}
+                                 ${PNG_LIBRARIES}
+                                 ${ZLIB_LIBRARIES}
+                                 ${BREAKPAD_LIBS}
+                                 ${SSL_LIBRARIES}
+                                 dl
+                                 ${LIBZIP_LIBRARIES})
+
+if (APPLE OR STATIC OR ${CMAKE_SYSTEM_NAME} MATCHES "BSD")
+    find_library(ICONV_LIBRARIES NAMES iconv libiconv libiconv-2 c)
+    target_link_libraries(${PROJECT} ${ICONV_LIBRARIES})
+endif()
+
 # Includes
 target_include_directories(${PROJECT} SYSTEM PRIVATE ${LIBZIP_INCLUDE_DIRS})
 target_include_directories(${PROJECT} PRIVATE ${SDL2_INCLUDE_DIRS}
