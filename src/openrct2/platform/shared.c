@@ -41,7 +41,7 @@ typedef void(*update_palette_func)(const uint8*, sint32, sint32);
 
 openrct2_cursor gCursorState;
 bool gModsHeld[MODS_NUM_HELD] = { 0 };
-sint32 gMapKeysStack[4] = { 0 };
+int gMapKeysStack[4] = { 0 };
 keypress *gKeysPressed;
 sint32 gCurKeyNum;
 sint32 gNumKeysPressed;
@@ -918,7 +918,7 @@ static inline void platform_map_keys_stack_insert(int val)
 	int i;
 
 	for (i = 0; i < 3; ++i) {
-		if (val == gMapKeysStack[i] ) {
+		if (val == gMapKeysStack[i]) {
 			break;
 		}
 	}
