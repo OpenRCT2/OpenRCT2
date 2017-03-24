@@ -16,7 +16,7 @@
 
 #pragma once
 
-#include "../../../common.h"
+#include <openrct2/common.h>
 
 #if OPENGL_NO_LINK
 

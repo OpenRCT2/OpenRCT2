@@ -16,7 +16,7 @@
 
 #pragma once
 
-#include "../../../common.h"
+#include <openrct2/common.h>
 
 #pragma pack(push, 1)
 

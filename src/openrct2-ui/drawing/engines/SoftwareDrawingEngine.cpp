@@ -14,25 +14,26 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../../core/Guard.hpp"
-#include "../../core/Math.hpp"
-#include "../../core/Memory.hpp"
-#include "../IDrawingContext.h"
-#include "../IDrawingEngine.h"
-#include "../Rain.h"
+#include <openrct2/config/Config.h>
+#include <openrct2/core/Guard.hpp>
+#include <openrct2/core/Math.hpp>
+#include <openrct2/core/Memory.hpp>
+#include <openrct2/drawing/IDrawingContext.h>
+#include <openrct2/drawing/IDrawingEngine.h>
+#include <openrct2/drawing/Rain.h>
 
 extern "C"
 {
-    #include "../../config/Config.h"
-    #include "../../game.h"
-    #include "../../interface/screenshot.h"
-    #include "../../interface/viewport.h"
-    #include "../../interface/window.h"
-    #include "../../intro.h"
-    #include "../../platform/platform.h"
-    #include "../../rct2.h"
-    #include "../drawing.h"
-    #include "../lightfx.h"
+    #include <openrct2/config/Config.h>
+    #include <openrct2/game.h>
+    #include <openrct2/interface/screenshot.h>
+    #include <openrct2/interface/viewport.h>
+    #include <openrct2/interface/window.h>
+    #include <openrct2/intro.h>
+    #include <openrct2/platform/platform.h>
+    #include <openrct2/rct2.h>
+    #include <openrct2/drawing/drawing.h>
+    #include <openrct2/drawing/lightfx.h>
 }
 
 class SoftwareDrawingEngine;
