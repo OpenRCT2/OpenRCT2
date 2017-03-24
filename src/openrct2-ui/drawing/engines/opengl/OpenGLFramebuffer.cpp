@@ -16,9 +16,9 @@
 
 #ifndef DISABLE_OPENGL
 
-#include "../../../common.h"
+#include <openrct2/common.h>
 #include <SDL_video.h>
-#include "../../../core/Memory.hpp"
+#include <openrct2/core/Memory.hpp>
 #include "OpenGLFramebuffer.h"
 
 constexpr GLuint BACKBUFFER_ID = 0;

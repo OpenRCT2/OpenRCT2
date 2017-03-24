@@ -16,7 +16,7 @@
 
 #pragma once
 
-#include "../../../common.h"
+#include <openrct2/common.h>
 #include "OpenGLAPI.h"
 
 class OpenGLShader final

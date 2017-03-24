@@ -40,22 +40,22 @@ IDrawingEngine * DrawingEngineFactory::CreateOpenGL()
 #include "TextureCache.h"
 #include "DrawCommands.h"
 
-#include "../../../core/Console.hpp"
-#include "../../../core/Exception.hpp"
-#include "../../../core/Math.hpp"
-#include "../../../core/Memory.hpp"
-#include "../../IDrawingContext.h"
-#include "../../IDrawingEngine.h"
-#include "../../Rain.h"
-#include "../../../config/Config.h"
+#include <openrct2/core/Console.hpp>
+#include <openrct2/core/Exception.hpp>
+#include <openrct2/core/Math.hpp>
+#include <openrct2/core/Memory.hpp>
+#include <openrct2/drawing/IDrawingContext.h>
+#include <openrct2/drawing/IDrawingEngine.h>
+#include <openrct2/drawing/Rain.h>
+#include <openrct2/config/Config.h>
 
 extern "C"
 {
-    #include "../../../config/Config.h"
-    #include "../../../interface/screenshot.h"
-    #include "../../../interface/window.h"
-    #include "../../../intro.h"
-    #include "../../drawing.h"
+    #include <openrct2/config/Config.h>
+    #include <openrct2/interface/screenshot.h>
+    #include <openrct2/interface/window.h>
+    #include <openrct2/intro.h>
+    #include <openrct2/drawing/drawing.h>
 }
 
 struct OpenGLVersion
