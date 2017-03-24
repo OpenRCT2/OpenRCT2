@@ -4,23 +4,32 @@ if (CMAKE_BINARY_DIR STREQUAL CMAKE_SOURCE_DIR)
     message(FATAL_ERROR "Building in-source is not supported! Create a build dir and remove ${CMAKE_SOURCE_DIR}/CMakeCache.txt")
 endif()
 
-# Includes
-INCLUDE_DIRECTORIES("${CMAKE_CURRENT_SOURCE_DIR}/..")
+# CMake dependencies
+include(FindPkgConfig)
+
+# Third party libraries (which we want to eventually remove from openrct2-cli)
+PKG_CHECK_MODULES(SDL2 REQUIRED sdl2)
 
 # Sources
 file(GLOB_RECURSE OPENRCT2_CLI_SOURCES
-    "${CMAKE_CURRENT_SOURCE_DIR}/*.c"
-    "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp"
-    "${CMAKE_CURRENT_SOURCE_DIR}/*.h"
-    "${CMAKE_CURRENT_SOURCE_DIR}/*.hpp")
+    "${CMAKE_CURRENT_LIST_DIR}/*.c"
+    "${CMAKE_CURRENT_LIST_DIR}/*.cpp"
+    "${CMAKE_CURRENT_LIST_DIR}/*.h"
+    "${CMAKE_CURRENT_LIST_DIR}/*.hpp")
+
+# Outputs
+set (PROJECT openrct2)
+project(${PROJECT})
+add_executable(${PROJECT} ${OPENRCT2_CLI_SOURCES})
+
+target_link_libraries(${PROJECT} "libopenrct2")
+
+# Includes
+target_include_directories(${PROJECT} PRIVATE ${SDL2_INCLUDE_DIRS}
+                                              "${CMAKE_CURRENT_LIST_DIR}/..")
 
 # Compiler flags
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${TARGET_M} -std=gnu11 ${COMMON_COMPILE_OPTIONS} -Wimplicit")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${TARGET_M} -std=gnu++14 ${COMMON_COMPILE_OPTIONS}")
 set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} ${TARGET_M}")
 set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${CMAKE_SHARED_LINKER_FLAGS} ${PIE_FLAG}")
-
-# Outputs
-set (PROJECT openrct2)
-project(${PROJECT})
-add_executable(${PROJECT} ${OPENRCT2_CLI_SOURCES})
