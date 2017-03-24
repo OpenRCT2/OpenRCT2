@@ -29,17 +29,7 @@ IDrawingEngine * DrawingEngineFactory::CreateOpenGL()
 #include <vector>
 #include <SDL_platform.h>
 
-#include "GLSLTypes.h"
-#include "OpenGLAPI.h"
-#include "OpenGLFramebuffer.h"
-#include "CopyFramebufferShader.h"
-#include "DrawImageShader.h"
-#include "DrawLineShader.h"
-#include "FillRectShader.h"
-#include "SwapFramebuffer.h"
-#include "TextureCache.h"
-#include "DrawCommands.h"
-
+#include <openrct2/config/Config.h>
 #include <openrct2/core/Console.hpp>
 #include <openrct2/core/Exception.hpp>
 #include <openrct2/core/Math.hpp>
@@ -51,12 +41,23 @@ IDrawingEngine * DrawingEngineFactory::CreateOpenGL()
 
 extern "C"
 {
-    #include <openrct2/config/Config.h>
     #include <openrct2/interface/screenshot.h>
     #include <openrct2/interface/window.h>
     #include <openrct2/intro.h>
     #include <openrct2/drawing/drawing.h>
 }
+
+#include "../DrawingEngines.h"
+#include "GLSLTypes.h"
+#include "OpenGLAPI.h"
+#include "OpenGLFramebuffer.h"
+#include "CopyFramebufferShader.h"
+#include "DrawImageShader.h"
+#include "DrawLineShader.h"
+#include "FillRectShader.h"
+#include "SwapFramebuffer.h"
+#include "TextureCache.h"
+#include "DrawCommands.h"
 
 struct OpenGLVersion
 {
@@ -498,7 +499,17 @@ private:
     }
 };
 
-IDrawingEngine * DrawingEngineFactory::CreateOpenGL()
+OpenGLDrawingEngineFactory::OpenGLDrawingEngineFactory()
+{
+    DrawingEngineFactory::Register(DRAWING_ENGINE_OPENGL, this);
+}
+
+OpenGLDrawingEngineFactory::~OpenGLDrawingEngineFactory()
+{
+    DrawingEngineFactory::Unregister(DRAWING_ENGINE_OPENGL);
+}
+
+IDrawingEngine * OpenGLDrawingEngineFactory::Create()
 {
     return new OpenGLDrawingEngine();
 }

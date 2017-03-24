@@ -33,8 +33,10 @@
     <ClCompile Include="drawing\engines\opengl\SwapFramebuffer.cpp" />
     <ClCompile Include="drawing\engines\opengl\TextureCache.cpp" />
     <ClCompile Include="drawing\engines\SoftwareDrawingEngine.cpp" />
+    <ClCompile Include="UiContext.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="drawing\engines\DrawingEngines.h" />
     <ClInclude Include="drawing\engines\opengl\CopyFramebufferShader.h" />
     <ClInclude Include="drawing\engines\opengl\DrawCommands.h" />
     <ClInclude Include="drawing\engines\opengl\DrawImageShader.h" />
@@ -46,6 +48,7 @@
     <ClInclude Include="drawing\engines\opengl\OpenGLShaderProgram.h" />
     <ClInclude Include="drawing\engines\opengl\SwapFramebuffer.h" />
     <ClInclude Include="drawing\engines\opengl\TextureCache.h" />
+    <ClInclude Include="UiContext.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{8DD8AB7D-2EA6-44E3-8265-BAF08E832951}</ProjectGuid>
