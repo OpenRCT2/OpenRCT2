@@ -26,6 +26,7 @@ enum DRAWING_ENGINE
     DRAWING_ENGINE_SOFTWARE,
     DRAWING_ENGINE_SOFTWARE_WITH_HARDWARE_DISPLAY,
     DRAWING_ENGINE_OPENGL,
+    DRAWING_ENGINE_COUNT,
 };
 
 enum DRAWING_ENGINE_FLAGS
@@ -66,11 +67,16 @@ interface IDrawingEngine
     virtual void InvalidateImage(uint32 image) abstract;
 };
 
+interface IDrawingEngineFactory
+{
+    virtual ~IDrawingEngineFactory() { }
+    virtual IDrawingEngine * Create() abstract;
+};
+
 namespace DrawingEngineFactory
 {
-    IDrawingEngine * CreateSoftware();
-    IDrawingEngine * CreateSoftwareWithHardwareDisplay();
-    IDrawingEngine * CreateOpenGL();
+    void Register(DRAWING_ENGINE type, IDrawingEngineFactory * factory);
+    void Unregister(DRAWING_ENGINE type);
 }
 
 interface IRainDrawer
