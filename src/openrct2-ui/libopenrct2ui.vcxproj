@@ -33,6 +33,7 @@
     <ClCompile Include="drawing\engines\opengl\SwapFramebuffer.cpp" />
     <ClCompile Include="drawing\engines\opengl\TextureCache.cpp" />
     <ClCompile Include="drawing\engines\SoftwareDrawingEngine.cpp" />
+    <ClCompile Include="Ui.cpp" />
     <ClCompile Include="UiContext.cpp" />
   </ItemGroup>
   <ItemGroup>
