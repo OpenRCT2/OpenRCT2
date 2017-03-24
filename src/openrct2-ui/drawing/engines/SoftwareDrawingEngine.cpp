@@ -21,6 +21,7 @@
 #include <openrct2/drawing/IDrawingContext.h>
 #include <openrct2/drawing/IDrawingEngine.h>
 #include <openrct2/drawing/Rain.h>
+#include "DrawingEngines.h"
 
 extern "C"
 {
@@ -827,12 +828,32 @@ private:
     }
 };
 
-IDrawingEngine * DrawingEngineFactory::CreateSoftware()
+SoftwareDrawingEngineFactory::SoftwareDrawingEngineFactory()
+{
+    DrawingEngineFactory::Register(DRAWING_ENGINE_SOFTWARE, this);
+}
+
+SoftwareDrawingEngineFactory::~SoftwareDrawingEngineFactory()
+{
+    DrawingEngineFactory::Unregister(DRAWING_ENGINE_SOFTWARE);
+}
+
+IDrawingEngine * SoftwareDrawingEngineFactory::Create()
 {
     return new SoftwareDrawingEngine(false);
 }
 
-IDrawingEngine * DrawingEngineFactory::CreateSoftwareWithHardwareDisplay()
+HardwareDisplayDrawingEngineFactory::HardwareDisplayDrawingEngineFactory()
+{
+    DrawingEngineFactory::Register(DRAWING_ENGINE_SOFTWARE_WITH_HARDWARE_DISPLAY, this);
+}
+
+HardwareDisplayDrawingEngineFactory::~HardwareDisplayDrawingEngineFactory()
+{
+    DrawingEngineFactory::Unregister(DRAWING_ENGINE_SOFTWARE_WITH_HARDWARE_DISPLAY);
+}
+
+IDrawingEngine * HardwareDisplayDrawingEngineFactory::Create()
 {
     return new SoftwareDrawingEngine(true);
 }

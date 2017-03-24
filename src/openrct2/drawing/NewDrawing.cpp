@@ -29,8 +29,27 @@ extern "C"
     #include "../rct2.h"
 }
 
-static sint32           _drawingEngineType  = DRAWING_ENGINE_SOFTWARE;
-static IDrawingEngine * _drawingEngine      = nullptr;
+static sint32                   _drawingEngineType  = DRAWING_ENGINE_SOFTWARE;
+static IDrawingEngine *         _drawingEngine      = nullptr;
+static IDrawingEngineFactory *  _drawingEngineFactories[DRAWING_ENGINE_COUNT] = { nullptr };
+
+void DrawingEngineFactory::Register(DRAWING_ENGINE type, IDrawingEngineFactory * factory)
+{
+    if (_drawingEngineFactories[type] != nullptr)
+    {
+        throw std::invalid_argument("Engine already registered.");
+    }
+    _drawingEngineFactories[type] = factory;
+}
+
+void DrawingEngineFactory::Unregister(DRAWING_ENGINE type)
+{
+    if (_drawingEngineFactories[type] == nullptr)
+    {
+        throw std::invalid_argument("Engine not registered.");
+    }
+    _drawingEngineFactories[type] = nullptr;
+}
 
 extern "C"
 {
@@ -69,20 +88,15 @@ extern "C"
     {
         assert(_drawingEngine == nullptr);
 
-        IDrawingEngine * drawingEngine = nullptr;
         _drawingEngineType = gConfigGeneral.drawing_engine;
-        switch (_drawingEngineType) {
-        case DRAWING_ENGINE_SOFTWARE:
-            drawingEngine = DrawingEngineFactory::CreateSoftware();
-            break;
-        case DRAWING_ENGINE_SOFTWARE_WITH_HARDWARE_DISPLAY:
-            drawingEngine = DrawingEngineFactory::CreateSoftwareWithHardwareDisplay();
-            break;
-        case DRAWING_ENGINE_OPENGL:
-            drawingEngine = DrawingEngineFactory::CreateOpenGL();
-            break;
+        IDrawingEngineFactory * deFactory = _drawingEngineFactories[_drawingEngineType];
+        if (deFactory == nullptr)
+        {
+            log_fatal("Drawing engine not registered.");
+            exit(-1);
         }
 
+        IDrawingEngine * drawingEngine = deFactory->Create();
         if (drawingEngine == nullptr)
         {
             if (_drawingEngineType == DRAWING_ENGINE_SOFTWARE)

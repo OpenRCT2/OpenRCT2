@@ -20,7 +20,9 @@
 #include <stdlib.h>
 #include <windows.h>
 #include <shellapi.h>
+#include <openrct2/Context.h>
 #include <openrct2/OpenRCT2.h>
+#include <openrct2-ui/UiContext.h>
 
 #define DLLEXPORT extern "C" __declspec(dllexport)
 
@@ -37,7 +39,14 @@ DLLEXPORT int LaunchOpenRCT2(int argc, wchar_t * * argvW)
         return -1;
     }
 
-    int exitCode = RunOpenRCT2(argc, argv);
+    OpenRCT2::IContext * context = OpenRCT2::CreateContext();
+    OpenRCT2::Ui::IUiContext * uiContext = OpenRCT2::Ui::CreateContext(context);
+
+    int exitCode = context->RunOpenRCT2(argc, argv);
+
+    delete uiContext;
+    delete context;
+
     FreeCommandLineArgs(argc, argv);
     return exitCode;
 }
