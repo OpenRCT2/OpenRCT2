@@ -23,7 +23,7 @@
 
 #include <SDL_video.h>
 
-#include "../../../core/Console.hpp"
+#include <openrct2/core/Console.hpp>
 
 template <typename T>
 static inline bool SetProc(T * func, const char * name)

@@ -18,12 +18,12 @@
 
 #include <vector>
 #include <stdexcept>
-#include "../../../core/Memory.hpp"
+#include <openrct2/core/Memory.hpp>
 #include "TextureCache.h"
 
 extern "C"
 {
-    #include "../../drawing.h"
+    #include <openrct2/drawing/drawing.h>
 }
 
 TextureCache::~TextureCache()

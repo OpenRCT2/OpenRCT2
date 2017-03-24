@@ -16,17 +16,17 @@
 
 #ifndef DISABLE_OPENGL
 
-#include "../../../core/Console.hpp"
-#include "../../../core/Exception.hpp"
-#include "../../../core/FileStream.hpp"
-#include "../../../core/Memory.hpp"
-#include "../../../core/Path.hpp"
-#include "../../../core/String.hpp"
+#include <openrct2/core/Console.hpp>
+#include <openrct2/core/Exception.hpp>
+#include <openrct2/core/FileStream.hpp>
+#include <openrct2/core/Memory.hpp>
+#include <openrct2/core/Path.hpp>
+#include <openrct2/core/String.hpp>
 #include "OpenGLShaderProgram.h"
 
 extern "C"
 {
-    #include "../../../platform/platform.h"
+    #include <openrct2/platform/platform.h>
 }
 
 OpenGLShader::OpenGLShader(const char * name, GLenum type)
