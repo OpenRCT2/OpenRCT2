@@ -828,32 +828,12 @@ private:
     }
 };
 
-SoftwareDrawingEngineFactory::SoftwareDrawingEngineFactory()
-{
-    DrawingEngineFactory::Register(DRAWING_ENGINE_SOFTWARE, this);
-}
-
-SoftwareDrawingEngineFactory::~SoftwareDrawingEngineFactory()
-{
-    DrawingEngineFactory::Unregister(DRAWING_ENGINE_SOFTWARE);
-}
-
-IDrawingEngine * SoftwareDrawingEngineFactory::Create()
+IDrawingEngine * OpenRCT2::Ui::SoftwareDrawingEngineFactory::Create()
 {
     return new SoftwareDrawingEngine(false);
 }
 
-HardwareDisplayDrawingEngineFactory::HardwareDisplayDrawingEngineFactory()
-{
-    DrawingEngineFactory::Register(DRAWING_ENGINE_SOFTWARE_WITH_HARDWARE_DISPLAY, this);
-}
-
-HardwareDisplayDrawingEngineFactory::~HardwareDisplayDrawingEngineFactory()
-{
-    DrawingEngineFactory::Unregister(DRAWING_ENGINE_SOFTWARE_WITH_HARDWARE_DISPLAY);
-}
-
-IDrawingEngine * HardwareDisplayDrawingEngineFactory::Create()
+IDrawingEngine * OpenRCT2::Ui::HardwareDisplayDrawingEngineFactory::Create()
 {
     return new SoftwareDrawingEngine(true);
 }

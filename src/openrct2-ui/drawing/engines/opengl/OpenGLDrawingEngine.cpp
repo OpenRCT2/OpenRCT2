@@ -499,17 +499,7 @@ private:
     }
 };
 
-OpenGLDrawingEngineFactory::OpenGLDrawingEngineFactory()
-{
-    DrawingEngineFactory::Register(DRAWING_ENGINE_OPENGL, this);
-}
-
-OpenGLDrawingEngineFactory::~OpenGLDrawingEngineFactory()
-{
-    DrawingEngineFactory::Unregister(DRAWING_ENGINE_OPENGL);
-}
-
-IDrawingEngine * OpenGLDrawingEngineFactory::Create()
+IDrawingEngine * OpenRCT2::Ui::OpenGLDrawingEngineFactory::Create()
 {
     return new OpenGLDrawingEngine();
 }
