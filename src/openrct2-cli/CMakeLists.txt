@@ -22,7 +22,9 @@ set (PROJECT openrct2)
 project(${PROJECT})
 add_executable(${PROJECT} ${OPENRCT2_CLI_SOURCES})
 
-target_link_libraries(${PROJECT} "libopenrct2")
+target_link_libraries(${PROJECT} "libopenrct2"
+                                 ${SDL2_LIBRARIES}
+                                 ${SDL2_TTF_LIBRARIES})
 
 # Includes
 target_include_directories(${PROJECT} PRIVATE ${SDL2_INCLUDE_DIRS}
