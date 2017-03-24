@@ -21,6 +21,32 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="drawing\engines\opengl\CopyFramebufferShader.cpp" />
+    <ClCompile Include="drawing\engines\opengl\DrawImageShader.cpp" />
+    <ClCompile Include="drawing\engines\opengl\DrawLineShader.cpp" />
+    <ClCompile Include="drawing\engines\opengl\FillRectShader.cpp" />
+    <ClCompile Include="drawing\engines\opengl\OpenGLAPI.cpp" />
+    <ClCompile Include="drawing\engines\opengl\OpenGLDrawingEngine.cpp" />
+    <ClCompile Include="drawing\engines\opengl\OpenGLFramebuffer.cpp" />
+    <ClCompile Include="drawing\engines\opengl\OpenGLShaderProgram.cpp" />
+    <ClCompile Include="drawing\engines\opengl\SwapFramebuffer.cpp" />
+    <ClCompile Include="drawing\engines\opengl\TextureCache.cpp" />
+    <ClCompile Include="drawing\engines\SoftwareDrawingEngine.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="drawing\engines\opengl\CopyFramebufferShader.h" />
+    <ClInclude Include="drawing\engines\opengl\DrawCommands.h" />
+    <ClInclude Include="drawing\engines\opengl\DrawImageShader.h" />
+    <ClInclude Include="drawing\engines\opengl\DrawLineShader.h" />
+    <ClInclude Include="drawing\engines\opengl\FillRectShader.h" />
+    <ClInclude Include="drawing\engines\opengl\GLSLTypes.h" />
+    <ClInclude Include="drawing\engines\opengl\OpenGLAPI.h" />
+    <ClInclude Include="drawing\engines\opengl\OpenGLFramebuffer.h" />
+    <ClInclude Include="drawing\engines\opengl\OpenGLShaderProgram.h" />
+    <ClInclude Include="drawing\engines\opengl\SwapFramebuffer.h" />
+    <ClInclude Include="drawing\engines\opengl\TextureCache.h" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{8DD8AB7D-2EA6-44E3-8265-BAF08E832951}</ProjectGuid>
     <RootNamespace>openrct2-ui</RootNamespace>
