@@ -643,7 +643,7 @@ static void ride_ratings_calculate_value(rct_ride *ride)
 	rct_ride *ride2;
 	sint32 i;
 	FOR_ALL_RIDES(i, ride2) {
-		if (ride2->type == ride->type)
+		if (ride2->type == ride->type && ride2->status == RIDE_STATUS_OPEN)
 			otherRidesOfSameType++;
 	}
 	if (otherRidesOfSameType > 1)
