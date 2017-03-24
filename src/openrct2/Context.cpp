@@ -38,7 +38,13 @@ public:
 
     sint32 RunOpenRCT2(int argc, char * * argv) override
     {
-        return ::RunOpenRCT2(argc, argv);
+        core_init();
+        int runGame = cmdline_run((const char * *)argv, argc);
+        if (runGame == 1)
+        {
+            openrct2_launch();
+        }
+        return gExitCode;
     }
 };
 

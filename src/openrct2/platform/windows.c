@@ -57,23 +57,12 @@ utf8 **windows_get_command_line_args(sint32 *outNumArgs);
 
 static HMODULE _dllModule = NULL;
 
-/**
- * Windows entry point to OpenRCT2 with a console window using a traditional C main function.
- */
-sint32 RunOpenRCT2(int argc, char * * argv)
+static HMODULE plaform_get_dll_module()
 {
-	HINSTANCE hInstance = GetModuleHandle(NULL);
-	_dllModule = hInstance;
-
-	core_init();
-
-	sint32 exitCode = cmdline_run((const char **)argv, argc);
-	if (exitCode == 1) {
-		openrct2_launch();
-		exitCode = gExitCode;
+	if (_dllModule == NULL) {
+		_dllModule = GetModuleHandle(NULL);
 	}
-
-	return exitCode;
+	return _dllModule;
 }
 
 #ifdef NO_RCT2
@@ -817,8 +806,9 @@ HWND windows_get_window_handle()
 
 void platform_init_window_icon()
 {
-	if (_dllModule != NULL) {
-		HICON icon = LoadIcon(_dllModule, MAKEINTRESOURCE(IDI_ICON));
+	HMODULE module = plaform_get_dll_module();
+	if (module != NULL) {
+		HICON icon = LoadIcon(module, MAKEINTRESOURCE(IDI_ICON));
 		if (icon != NULL) {
 			HWND hwnd = windows_get_window_handle();
 			SendMessage(hwnd, WM_SETICON, ICON_SMALL, (LPARAM)icon);
@@ -1134,7 +1124,7 @@ static bool windows_setup_file_association(
 	sint32 printResult;
 
 	GetModuleFileNameW(NULL, exePathW, sizeof(exePathW));
-	GetModuleFileNameW(_dllModule, dllPathW, sizeof(dllPathW));
+	GetModuleFileNameW(plaform_get_dll_module(), dllPathW, sizeof(dllPathW));
 
 	wchar_t *extensionW = utf8_to_widechar(extension);
 	wchar_t *fileTypeTextW = utf8_to_widechar(fileTypeText);

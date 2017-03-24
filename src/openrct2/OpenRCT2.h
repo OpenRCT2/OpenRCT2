@@ -87,10 +87,6 @@ extern "C"
 
     sint32 cmdline_run(const char * * argv, sint32 argc);
 
-#ifdef __WINDOWS__
-    int RunOpenRCT2(int argc, char * * argv);
-#endif
-
 #ifdef __cplusplus
 }
 #endif

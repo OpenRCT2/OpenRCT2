@@ -14,6 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
+#include <stdexcept>
 #include "../core/Exception.hpp"
 #include "../core/Registration.hpp"
 #include "IDrawingContext.h"
