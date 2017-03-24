@@ -16,7 +16,7 @@
 
 #pragma once
 
-#include <openrct2/common.h>
+#include "common.h"
 
 namespace OpenRCT2
 {
