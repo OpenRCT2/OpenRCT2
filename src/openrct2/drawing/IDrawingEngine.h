@@ -67,18 +67,6 @@ interface IDrawingEngine
     virtual void InvalidateImage(uint32 image) abstract;
 };
 
-interface IDrawingEngineFactory
-{
-    virtual ~IDrawingEngineFactory() { }
-    virtual IDrawingEngine * Create() abstract;
-};
-
-namespace DrawingEngineFactory
-{
-    void Register(DRAWING_ENGINE type, IDrawingEngineFactory * factory);
-    void Unregister(DRAWING_ENGINE type);
-}
-
 interface IRainDrawer
 {
     virtual ~IRainDrawer() { }
@@ -89,5 +77,24 @@ interface IRainDrawer
                       sint32 xStart,
                       sint32 yStart) abstract;
 };
+
+namespace OpenRCT2
+{
+    interface IRegistration;
+
+    namespace Drawing
+    {
+        interface IDrawingEngineFactory
+        {
+            virtual ~IDrawingEngineFactory() { }
+            virtual IDrawingEngine * Create() abstract;
+        };
+
+        namespace DrawingEngineFactory
+        {
+            IRegistration * Register(DRAWING_ENGINE type, IDrawingEngineFactory * factory);
+        }
+    }
+}
 
 #endif

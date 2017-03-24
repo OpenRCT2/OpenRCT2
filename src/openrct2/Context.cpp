@@ -14,6 +14,7 @@
 *****************************************************************************/
 #pragma endregion
 
+#include "drawing/IDrawingEngine.h"
 #include "Context.h"
 #include "OpenRCT2.h"
 
@@ -28,6 +29,11 @@ public:
 
     ~Context() override
     {
+    }
+
+    IRegistration * RegisterDrawingEngine(sint32 type, Drawing::IDrawingEngineFactory * factory) override
+    {
+        return Drawing::DrawingEngineFactory::Register((DRAWING_ENGINE)type, factory);
     }
 
     sint32 RunOpenRCT2(int argc, char * * argv) override

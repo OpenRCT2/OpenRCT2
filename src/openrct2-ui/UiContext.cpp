@@ -14,6 +14,10 @@
 *****************************************************************************/
 #pragma endregion
 
+#include <memory>
+#include <vector>
+#include <openrct2/Context.h>
+#include <openrct2/core/Registration.hpp>
 #include "UiContext.h"
 #include "drawing\engines\DrawingEngines.h"
 
@@ -24,6 +28,7 @@ class UiContext : public IUiContext
 {
 private:
     IContext * const _context;
+    std::vector<std::unique_ptr<IRegistration>> _registrations;
 
     // Drawing engines
     SoftwareDrawingEngineFactory        _softwareDrawingFactory;
@@ -36,6 +41,9 @@ public:
     UiContext(IContext * context) :
         _context(context)
     {
+        _registrations.emplace_back(context->RegisterDrawingEngine(DRAWING_ENGINE_SOFTWARE, &_softwareDrawingFactory));
+        _registrations.emplace_back(context->RegisterDrawingEngine(DRAWING_ENGINE_SOFTWARE_WITH_HARDWARE_DISPLAY, &_hardwareDrawingFactory));
+        _registrations.emplace_back(context->RegisterDrawingEngine(DRAWING_ENGINE_OPENGL, &_openglDrawingFactory));
     }
 
     ~UiContext() override

@@ -20,12 +20,20 @@
 
 namespace OpenRCT2
 {
+    interface IRegistration;
+
+    namespace Drawing
+    {
+        interface IDrawingEngineFactory;
+    }
+
     /**
      * Represents an instance of OpenRCT2 and can be used to get various services.
      */
     interface IContext
     {
-        virtual ~IContext() { }
+        virtual ~IContext() = default;
+        virtual IRegistration * RegisterDrawingEngine(sint32 type, Drawing::IDrawingEngineFactory * factory) abstract;
         virtual sint32 RunOpenRCT2(int argc, char * * argv) abstract;
     };
 

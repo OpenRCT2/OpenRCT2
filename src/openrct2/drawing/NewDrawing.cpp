@@ -15,6 +15,7 @@
 #pragma endregion
 
 #include "../core/Exception.hpp"
+#include "../core/Registration.hpp"
 #include "IDrawingContext.h"
 #include "IDrawingEngine.h"
 #include "NewDrawing.h"
@@ -29,26 +30,29 @@ extern "C"
     #include "../rct2.h"
 }
 
+using namespace OpenRCT2;
+using namespace OpenRCT2::Drawing;
+
 static sint32                   _drawingEngineType  = DRAWING_ENGINE_SOFTWARE;
 static IDrawingEngine *         _drawingEngine      = nullptr;
 static IDrawingEngineFactory *  _drawingEngineFactories[DRAWING_ENGINE_COUNT] = { nullptr };
 
-void DrawingEngineFactory::Register(DRAWING_ENGINE type, IDrawingEngineFactory * factory)
+IRegistration * DrawingEngineFactory::Register(DRAWING_ENGINE type, IDrawingEngineFactory * factory)
 {
     if (_drawingEngineFactories[type] != nullptr)
     {
         throw std::invalid_argument("Engine already registered.");
     }
     _drawingEngineFactories[type] = factory;
-}
 
-void DrawingEngineFactory::Unregister(DRAWING_ENGINE type)
-{
-    if (_drawingEngineFactories[type] == nullptr)
+    return Registration::Create([type, factory]() -> void
     {
-        throw std::invalid_argument("Engine not registered.");
-    }
-    _drawingEngineFactories[type] = nullptr;
+        if (_drawingEngineFactories[type] != factory)
+        {
+            throw std::invalid_argument("Engine not registered.");
+        }
+        _drawingEngineFactories[type] = nullptr;
+    });
 }
 
 extern "C"

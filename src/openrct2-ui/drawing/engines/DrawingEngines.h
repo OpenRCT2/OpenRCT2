@@ -19,32 +19,27 @@
 #include <openrct2/common.h>
 #include <openrct2/drawing/IDrawingEngine.h>
 
-interface IDrawingEngineFactory;
-
-class SoftwareDrawingEngineFactory : public IDrawingEngineFactory
+namespace OpenRCT2 { namespace Ui
 {
-public:
-    SoftwareDrawingEngineFactory();
-    ~SoftwareDrawingEngineFactory() override;
-    IDrawingEngine * Create() override;
-};
+    class SoftwareDrawingEngineFactory : public Drawing::IDrawingEngineFactory
+    {
+    public:
+        IDrawingEngine * Create() override;
+    };
 
-class HardwareDisplayDrawingEngineFactory : public IDrawingEngineFactory
-{
-public:
-    HardwareDisplayDrawingEngineFactory();
-    ~HardwareDisplayDrawingEngineFactory() override;
-    IDrawingEngine * Create() override;
-};
+    class HardwareDisplayDrawingEngineFactory : public Drawing::IDrawingEngineFactory
+    {
+    public:
+        IDrawingEngine * Create() override;
+    };
 
-#ifndef DISABLE_OPENGL
+    #ifndef DISABLE_OPENGL
 
-class OpenGLDrawingEngineFactory : public IDrawingEngineFactory
-{
-public:
-    OpenGLDrawingEngineFactory();
-    ~OpenGLDrawingEngineFactory() override;
-    IDrawingEngine * Create() override;
-};
+    class OpenGLDrawingEngineFactory : public Drawing::IDrawingEngineFactory
+    {
+    public:
+        IDrawingEngine * Create() override;
+    };
 
-#endif // DISABLE_OPENGL
+    #endif // DISABLE_OPENGL
+} }
