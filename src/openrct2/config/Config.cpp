@@ -128,8 +128,6 @@ namespace Config
     {
         if (reader->ReadSection("general"))
         {
-            config_release();
-
             auto model = &gConfigGeneral;
             model->always_show_gridlines = reader->GetBoolean("always_show_gridlines", false);
             model->autosave_frequency = reader->GetSint32("autosave", AUTOSAVE_EVERY_5MINUTES);
@@ -600,11 +598,13 @@ extern "C"
 
     void config_set_defaults()
     {
+	config_release();
         Config::SetDefaults();
     }
 
     bool config_open(const utf8 * path)
     {
+	config_release();
         return Config::ReadFile(path);
     }
 
