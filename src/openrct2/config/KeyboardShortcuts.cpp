@@ -98,7 +98,7 @@ namespace KeyboardShortcuts
         { SDLK_KP_MINUS,    KMOD_NONE },                        // SHORTCUT_RIDE_CONSTRUCTION_DEMOLISH_CURRENT
     };
 
-    constexpr sint32 CURRENT_FILE_VERSION = 2;
+    constexpr uint16 CURRENT_FILE_VERSION = 2;
 
     static void Reset()
     {
