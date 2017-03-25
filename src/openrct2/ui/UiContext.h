@@ -16,7 +16,9 @@
 
 #pragma once
 
+#include <vector>
 #include "../common.h"
+#include "../interface/Cursors.h"
 
 namespace OpenRCT2
 {
@@ -45,6 +47,34 @@ namespace OpenRCT2
             size_t SelectionSize;   // Selection length in bytes
         };
 
+        struct Resolution
+        {
+            sint32 Width;
+            sint32 Height;
+        };
+
+        inline bool operator <(const Resolution& lhs, const Resolution& rhs)
+        {
+            sint32 areaA = lhs.Width * lhs.Height;
+            sint32 areaB = rhs.Width * rhs.Height;
+            if (areaA == areaB)
+            {
+                return lhs.Width < rhs.Width;
+            }
+            return areaA < areaB;
+        }
+
+        inline bool operator ==(const Resolution& lhs, const Resolution& rhs)
+        {
+            return lhs.Width == rhs.Width &&
+                   lhs.Height == rhs.Height;
+        }
+
+        inline bool operator !=(const Resolution& lhs, const Resolution& rhs)
+        {
+            return !(lhs == rhs);
+        }
+
         /**
          * Represents the window or screen that OpenRCT2 is presented on.
          */
@@ -53,10 +83,14 @@ namespace OpenRCT2
             virtual ~IUiContext() = default;
 
             // Window
+            virtual CURSOR_ID   GetCursor() abstract;
+            virtual void        SetCursor(CURSOR_ID cursor) abstract;
             virtual void *  GetWindow() abstract;
             virtual sint32  GetWidth() abstract;
             virtual sint32  GetHeight() abstract;
             virtual void    SetFullscreenMode(FULLSCREEN_MODE mode) abstract;
+
+            virtual std::vector<Resolution> GetFullscreenResolutions() abstract;
 
             // Drawing
             virtual Drawing::IDrawingEngine *   CreateDrawingEngine(Drawing::DRAWING_ENGINE_TYPE type) abstract;

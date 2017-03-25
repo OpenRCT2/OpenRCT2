@@ -17,6 +17,7 @@
 #include <SDL_keycode.h>
 #include "audio/audio.h"
 #include "config/Config.h"
+#include "Context.h"
 #include "game.h"
 #include "input.h"
 #include "interface/chat.h"
@@ -1557,7 +1558,7 @@ void sub_6ED990(uint8 cursor_id)
 	if (_inputState == INPUT_STATE_RESIZING) {
 		cursor_id = CURSOR_DIAGONAL_ARROWS;
 	}
-	cursors_setcurrentcursor(cursor_id);
+	context_setcurrentcursor(cursor_id);
 }
 
 

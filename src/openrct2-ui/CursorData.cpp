@@ -14,9 +14,10 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "Cursors.h"
+#include <openrct2/interface/Cursors.h>
+#include "CursorRepository.h"
 
-namespace Cursors
+namespace OpenRCT2 { namespace Ui
 {
     static const CursorData BlankCursorData =
     {
@@ -654,7 +655,7 @@ namespace Cursors
         &HandClosedDownCursorData,  // CURSOR_HAND_CLOSED
     };
 
-    const CursorData * GetCursorData(CURSOR_ID cursorId)
+    const CursorData * CursorRepository::GetCursorData(CURSOR_ID cursorId)
     {
         const CursorData * result = nullptr;
         if (cursorId >= 0 && cursorId < CURSOR_COUNT)
@@ -663,4 +664,4 @@ namespace Cursors
         }
         return result;
     }
-}
+} }

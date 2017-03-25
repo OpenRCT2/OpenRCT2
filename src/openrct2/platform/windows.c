@@ -804,18 +804,6 @@ HWND windows_get_window_handle()
 	return result;
 }
 
-void platform_init_window_icon()
-{
-	HMODULE module = plaform_get_dll_module();
-	if (module != NULL) {
-		HICON icon = LoadIcon(module, MAKEINTRESOURCE(IDI_ICON));
-		if (icon != NULL) {
-			HWND hwnd = windows_get_window_handle();
-			SendMessage(hwnd, WM_SETICON, ICON_SMALL, (LPARAM)icon);
-		}
-	}
-}
-
 uint16 platform_get_locale_language()
 {
 	CHAR langCode[4];
