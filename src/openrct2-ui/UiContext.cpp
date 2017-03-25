@@ -18,6 +18,7 @@
 #include <memory>
 #include <vector>
 #include <SDL.h>
+#include <openrct2/audio/AudioMixer.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/Context.h>
 #include <openrct2/drawing/IDrawingEngine.h>
@@ -26,15 +27,31 @@
 #include <openrct2/Version.h>
 #include "CursorRepository.h"
 #include "drawing/engines/DrawingEngines.h"
+#include "TextComposition.h"
 #include "UiContext.h"
+
+extern "C"
+{
+    #include <openrct2/interface/console.h>
+    #include <openrct2/input.h>
+}
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Drawing;
 using namespace OpenRCT2::Ui;
 
+#ifdef __MACOSX__
+    // macOS uses COMMAND rather than CTRL for many keyboard shortcuts
+    #define KEYBOARD_PRIMARY_MODIFIER KMOD_GUI
+#else
+    #define KEYBOARD_PRIMARY_MODIFIER KMOD_CTRL
+#endif
+
 class UiContext : public IUiContext
 {
 private:
+    constexpr static uint32 TOUCH_DOUBLE_TIMEOUT = 300;
+
     IPlatformUiContext * const _platformUiContext;
 
     CursorRepository _cursorRepository;
@@ -48,6 +65,15 @@ private:
 
     bool _steamOverlayActive = false;
 
+    // Input
+    TextComposition _textComposition;
+    CursorState     _cursorState;
+    uint32          _lastKeyPressed;
+    const uint8 *   _keysState;
+    uint8 *         _keysPressed;
+    uint32          _lastGestureTimestamp;
+    float           _gestureRadius;
+
 public:
     UiContext(IPlatformUiContext * platformUiContext)
         : _platformUiContext(platformUiContext)
@@ -60,16 +86,6 @@ public:
     }
 
     // Window
-    CURSOR_ID GetCursor() override
-    {
-        return _cursorRepository.GetCurrentCursor();
-    }
-
-    void SetCursor(CURSOR_ID cursor) override
-    {
-        _cursorRepository.SetCurrentCursor(cursor);
-    }
-
     void * GetWindow() override
     {
         return _window;
@@ -122,6 +138,52 @@ public:
         return _fsResolutions;
     }
 
+    bool IsSteamOverlayActive() override
+    {
+        return _steamOverlayActive;
+    }
+
+    // Input
+    const CursorState * GetCursorState() override
+    {
+        return &_cursorState;
+    }
+
+    const uint8 * GetKeysState() override
+    {
+        return _keysState;
+    }
+
+    const uint8 * GetKeysPressed() override
+    {
+        return _keysPressed;
+    }
+
+    CURSOR_ID GetCursor() override
+    {
+        return _cursorRepository.GetCurrentCursor();
+    }
+
+    void SetCursor(CURSOR_ID cursor) override
+    {
+        _cursorRepository.SetCurrentCursor(cursor);
+    }
+
+    void SetCursorVisible(bool value) override
+    {
+        SDL_ShowCursor(value ? SDL_ENABLE : SDL_DISABLE);
+    }
+
+    void GetCursorPosition(sint32 * x, sint32 * y) override
+    {
+        SDL_GetMouseState(x, y);
+    }
+
+    void SetCursorPosition(sint32 x, sint32 y) override
+    {
+        SDL_WarpMouseInWindow(nullptr, x, y);
+    }
+
     // Drawing
     IDrawingEngine * CreateDrawingEngine(DRAWING_ENGINE_TYPE type) override
     {
@@ -140,9 +202,215 @@ public:
     }
 
     // Text input
-    bool                        IsTextInputActive() override { return false; }
-    const TextInputSession *    StartTextInput(utf8 * buffer, sint32 bufferSize) override { return nullptr; }
-    void                        StopTextInput() override { }
+    bool IsTextInputActive() override
+    {
+        return _textComposition.IsActive();
+    }
+
+    const TextInputSession * StartTextInput(utf8 * buffer, size_t bufferSize) override
+    {
+        return _textComposition.Start(buffer, bufferSize);
+    }
+
+    void StopTextInput() override
+    {
+        _textComposition.Stop();
+    }
+
+    void ProcessMessages()
+    {
+        _lastKeyPressed = 0;
+        _cursorState.left &= ~CURSOR_CHANGED;
+        _cursorState.middle &= ~CURSOR_CHANGED;
+        _cursorState.right &= ~CURSOR_CHANGED;
+        _cursorState.old = 0;
+        _cursorState.touch = false;
+
+        SDL_Event e;
+        while (SDL_PollEvent(&e))
+        {
+            switch (e.type) {
+            case SDL_QUIT:
+                rct2_quit();
+                break;
+            case SDL_WINDOWEVENT:
+                // HACK: Fix #2158, OpenRCT2 does not draw if it does not think that the window is
+                //                  visible - due a bug in SDL 2.0.3 this hack is required if the
+                //                  window is maximised, minimised and then restored again.
+                if (e.window.event == SDL_WINDOWEVENT_FOCUS_GAINED)
+                {
+                    if (SDL_GetWindowFlags(_window) & SDL_WINDOW_MAXIMIZED)
+                    {
+                        SDL_RestoreWindow(_window);
+                        SDL_MaximizeWindow(_window);
+                    }
+                    if ((SDL_GetWindowFlags(_window) & SDL_WINDOW_FULLSCREEN_DESKTOP) == SDL_WINDOW_FULLSCREEN_DESKTOP)
+                    {
+                        SDL_RestoreWindow(_window);
+                        SDL_SetWindowFullscreen(_window, SDL_WINDOW_FULLSCREEN_DESKTOP);
+                    }
+                }
+
+                if (e.window.event == SDL_WINDOWEVENT_SIZE_CHANGED)
+                {
+                    OnResize(e.window.data1, e.window.data2);
+                }
+                if (gConfigSound.audio_focus && gConfigSound.sound_enabled)
+                {
+                    if (e.window.event == SDL_WINDOWEVENT_FOCUS_GAINED)
+                    {
+                        Mixer_SetVolume(1);
+                    }
+                    if (e.window.event == SDL_WINDOWEVENT_FOCUS_LOST)
+                    {
+                        Mixer_SetVolume(0);
+                    }
+                }
+                break;
+            case SDL_MOUSEMOTION:
+                _cursorState.x = (sint32)(e.motion.x / gConfigGeneral.window_scale);
+                _cursorState.y = (sint32)(e.motion.y / gConfigGeneral.window_scale);
+                break;
+            case SDL_MOUSEWHEEL:
+                if (gConsoleOpen)
+                {
+                    console_scroll(e.wheel.y);
+                    break;
+                }
+                _cursorState.wheel += e.wheel.y * 128;
+                break;
+            case SDL_MOUSEBUTTONDOWN:
+            {
+                sint32 x = (sint32)(e.button.x / gConfigGeneral.window_scale);
+                sint32 y = (sint32)(e.button.y / gConfigGeneral.window_scale);
+                switch (e.button.button) {
+                case SDL_BUTTON_LEFT:
+                    store_mouse_input(MOUSE_STATE_LEFT_PRESS, x, y);
+                    _cursorState.left = CURSOR_PRESSED;
+                    _cursorState.old = 1;
+                    break;
+                case SDL_BUTTON_MIDDLE:
+                    _cursorState.middle = CURSOR_PRESSED;
+                    break;
+                case SDL_BUTTON_RIGHT:
+                    store_mouse_input(MOUSE_STATE_RIGHT_PRESS, x, y);
+                    _cursorState.right = CURSOR_PRESSED;
+                    _cursorState.old = 2;
+                    break;
+                }
+                break;
+            }
+            case SDL_MOUSEBUTTONUP:
+            {
+                sint32 x = (sint32)(e.button.x / gConfigGeneral.window_scale);
+                sint32 y = (sint32)(e.button.y / gConfigGeneral.window_scale);
+                switch (e.button.button) {
+                case SDL_BUTTON_LEFT:
+                    store_mouse_input(MOUSE_STATE_LEFT_RELEASE, x, y);
+                    _cursorState.left = CURSOR_RELEASED;
+                    _cursorState.old = 3;
+                    break;
+                case SDL_BUTTON_MIDDLE:
+                    _cursorState.middle = CURSOR_RELEASED;
+                    break;
+                case SDL_BUTTON_RIGHT:
+                    store_mouse_input(MOUSE_STATE_RIGHT_RELEASE, x, y);
+                    _cursorState.right = CURSOR_RELEASED;
+                    _cursorState.old = 4;
+                    break;
+                }
+                break;
+            }
+            // Apple sends touchscreen events for trackpads, so ignore these events on macOS
+#ifndef __MACOSX__
+            case SDL_FINGERMOTION:
+                _cursorState.x = (sint32)(e.tfinger.x * gScreenWidth);
+                _cursorState.y = (sint32)(e.tfinger.y * gScreenHeight);
+                break;
+            case SDL_FINGERDOWN:
+            {
+                sint32 x = (sint32)(e.tfinger.x * gScreenWidth);
+                sint32 y = (sint32)(e.tfinger.y * gScreenHeight);
+
+                _cursorState.touchIsDouble = (!_cursorState.touchIsDouble &&
+                    e.tfinger.timestamp - _cursorState.touchDownTimestamp < TOUCH_DOUBLE_TIMEOUT);
+
+                if (_cursorState.touchIsDouble)
+                {
+                    store_mouse_input(MOUSE_STATE_RIGHT_PRESS, x, y);
+                    _cursorState.right = CURSOR_PRESSED;
+                    _cursorState.old = 2;
+                }
+                else
+                {
+                    store_mouse_input(MOUSE_STATE_LEFT_PRESS, x, y);
+                    _cursorState.left = CURSOR_PRESSED;
+                    _cursorState.old = 1;
+                }
+                _cursorState.touch = true;
+                _cursorState.touchDownTimestamp = e.tfinger.timestamp;
+                break;
+            }
+            case SDL_FINGERUP:
+            {
+                sint32 x = (sint32)(e.tfinger.x * gScreenWidth);
+                sint32 y = (sint32)(e.tfinger.y * gScreenHeight);
+
+                if (_cursorState.touchIsDouble)
+                {
+                    store_mouse_input(MOUSE_STATE_RIGHT_RELEASE, x, y);
+                    _cursorState.left = CURSOR_RELEASED;
+                    _cursorState.old = 4;
+                }
+                else {
+                    store_mouse_input(MOUSE_STATE_LEFT_RELEASE, x, y);
+                    _cursorState.left = CURSOR_RELEASED;
+                    _cursorState.old = 3;
+                }
+                _cursorState.touch = true;
+                break;
+            }
+#endif
+            case SDL_KEYDOWN:
+                _textComposition.HandleMessage(&e);
+                break;
+            case SDL_MULTIGESTURE:
+                if (e.mgesture.numFingers == 2)
+                {
+                    if (e.mgesture.timestamp > _lastGestureTimestamp + 1000)
+                    {
+                        _gestureRadius = 0;
+                    }
+                    _lastGestureTimestamp = e.mgesture.timestamp;
+                    _gestureRadius += e.mgesture.dDist;
+
+                    // Zoom gesture
+                    constexpr sint32 tolerance = 128;
+                    sint32 gesturePixels = (sint32)(_gestureRadius * gScreenWidth);
+                    if (abs(gesturePixels) > tolerance)
+                    {
+                        _gestureRadius = 0;
+                        main_window_zoom(gesturePixels > 0, true);
+                    }
+                }
+                break;
+            case SDL_TEXTEDITING:
+                _textComposition.HandleMessage(&e);
+                break;
+            case SDL_TEXTINPUT:
+                _textComposition.HandleMessage(&e);
+                break;
+            default:
+                break;
+            }
+        }
+
+        _cursorState.any = _cursorState.left | _cursorState.middle | _cursorState.right;
+
+        // Updates the state of the keys
+        sint32 numKeys = 256;
+        _keysState = SDL_GetKeyboardState(&numKeys);
+    }
 
 private:
     void CreateWindow()

@@ -16,6 +16,8 @@
 
 #include <memory>
 #include <string>
+#include "Context.h"
+#include "ui/UiContext.h"
 #include "core/Console.hpp"
 #include "core/File.h"
 #include "core/FileStream.hpp"
@@ -463,7 +465,7 @@ namespace OpenRCT2
         {
             _lastTick = currentTick;
         }
-        platform_process_messages();
+        GetContext()->GetUiContext()->ProcessMessages();
         rct2_update();
         if (!_isWindowMinimised)
         {
@@ -486,7 +488,7 @@ namespace OpenRCT2
             _uncapTick = currentTick - UPDATE_TIME_MS - 1;
         }
 
-        platform_process_messages();
+        GetContext()->GetUiContext()->ProcessMessages();
 
         while (_uncapTick <= currentTick && currentTick - _uncapTick > UPDATE_TIME_MS)
         {

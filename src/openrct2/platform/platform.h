@@ -86,23 +86,6 @@ typedef struct rct2_time {
 	uint8 second;
 } rct2_time;
 
-typedef struct openrct2_cursor {
-	sint32 x, y;
-	uint8 left, middle, right, any;
-	sint32 wheel;
-	sint32 old;
-	bool touch, touchIsDouble;
-	uint32 touchDownTimestamp;
-} openrct2_cursor;
-
-enum {
-	CURSOR_UP = 0,
-	CURSOR_DOWN = 1,
-	CURSOR_CHANGED = 2,
-	CURSOR_RELEASED = CURSOR_UP | CURSOR_CHANGED,
-	CURSOR_PRESSED = CURSOR_DOWN | CURSOR_CHANGED,
-};
-
 typedef enum {FD_OPEN, FD_SAVE} filedialog_type;
 
 typedef struct file_dialog_desc {
@@ -116,44 +99,18 @@ typedef struct file_dialog_desc {
 	} filters[8];
 } file_dialog_desc;
 
-extern openrct2_cursor gCursorState;
-extern const uint8 *gKeysState;
-extern uint8 *gKeysPressed;
-extern uint32 gLastKeyPressed;
-
-extern textinputbuffer gTextInput;
-extern bool gTextInputCompositionActive;
-extern utf8 gTextInputComposition[32];
-extern sint32 gTextInputCompositionStart;
-extern sint32 gTextInputCompositionLength;
-
-extern sint32 gResolutionsAllowAnyAspectRatio;
-extern sint32 gNumResolutions;
-extern resolution_t *gResolutions;
 extern SDL_Window *gWindow;
-
 extern SDL_Color gPalette[256];
 
-extern bool gSteamOverlayActive;
-
 // Platform shared definitions
-void platform_update_fullscreen_resolutions();
-void platform_get_closest_resolution(sint32 inWidth, sint32 inHeight, sint32 *outWidth, sint32 *outHeight);
 void platform_init();
 void platform_draw();
 void platform_draw_require_end();
 void platform_free();
-void platform_trigger_resize();
 void platform_update_palette(const uint8 *colours, sint32 start_index, sint32 num_colours);
-void platform_set_fullscreen_mode(sint32 mode);
 void platform_toggle_windowed_mode();
-void platform_set_cursor(uint8 cursor);
 void platform_refresh_video();
-void platform_process_messages();
 sint32 platform_scancode_to_rct_keycode(sint32 sdl_key);
-void platform_start_text_input(utf8 *buffer, sint32 max_length);
-void platform_stop_text_input();
-bool platform_is_input_active();
 void platform_get_date_utc(rct2_date *out_date);
 void platform_get_time_utc(rct2_time *out_time);
 void platform_get_date_local(rct2_date *out_date);
@@ -183,11 +140,6 @@ sint32 platform_get_drives();
 bool platform_file_copy(const utf8 *srcPath, const utf8 *dstPath, bool overwrite);
 bool platform_file_move(const utf8 *srcPath, const utf8 *dstPath);
 bool platform_file_delete(const utf8 *path);
-void platform_hide_cursor();
-void platform_show_cursor();
-void platform_get_cursor_position(sint32 *x, sint32 *y);
-void platform_get_cursor_position_scaled(sint32 *x, sint32 *y);
-void platform_set_cursor_position(sint32 x, sint32 y);
 uint32 platform_get_ticks();
 void platform_sleep(uint32 ms);
 void platform_resolve_user_data_path();

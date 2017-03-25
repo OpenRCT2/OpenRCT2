@@ -690,3 +690,19 @@ void Mixer_SetVolume(float volume)
         gMixer->SetVolume(volume);
     }
 }
+
+sint32 DStoMixerVolume(sint32 volume)
+{
+    return (sint32)(SDL_MIX_MAXVOLUME * (SDL_pow(10, (float)volume / 2000)));
+}
+
+float DStoMixerPan(sint32 pan)
+{
+    return (((float)pan + -DSBPAN_LEFT) / DSBPAN_RIGHT) / 2;
+}
+
+double DStoMixerRate(sint32 frequency)
+{
+    return (double)frequency / 22050;
+}
+

@@ -15,6 +15,7 @@
 #pragma endregion
 
 #include <exception>
+#include "config/Config.h"
 #include "Context.h"
 #include "OpenRCT2.h"
 #include "ui/UiContext.h"
@@ -87,5 +88,64 @@ extern "C"
     void context_setcurrentcursor(sint32 cursor)
     {
         GetContext()->GetUiContext()->SetCursor((CURSOR_ID)cursor);
+    }
+
+    void context_hide_cursor()
+    {
+        GetContext()->GetUiContext()->SetCursorVisible(false);
+    }
+
+    void context_show_cursor()
+    {
+        GetContext()->GetUiContext()->SetCursorVisible(true);
+    }
+
+    void context_get_cursor_position(sint32 * x, sint32 * y)
+    {
+        GetContext()->GetUiContext()->GetCursorPosition(x, y);
+    }
+
+    void context_get_cursor_position_scaled(sint32 * x, sint32 * y)
+    {
+        context_get_cursor_position(x, y);
+
+        // Compensate for window scaling.
+        *x = (sint32)ceilf(*x / gConfigGeneral.window_scale);
+        *y = (sint32)ceilf(*y / gConfigGeneral.window_scale);
+    }
+
+    void context_set_cursor_position(sint32 x, sint32 y)
+    {
+        GetContext()->GetUiContext()->SetCursorPosition(x, y);
+    }
+
+    const CursorState * context_get_cursor_state()
+    {
+        return GetContext()->GetUiContext()->GetCursorState();
+    }
+
+    const uint8 * context_get_keys_state()
+    {
+        return GetContext()->GetUiContext()->GetKeysState();
+    }
+
+    const uint8 * context_get_keys_pressed()
+    {
+        return GetContext()->GetUiContext()->GetKeysPressed();
+    }
+
+    void context_start_text_input(utf8 * buffer, size_t maxLength)
+    {
+        GetContext()->GetUiContext()->StartTextInput(buffer, maxLength);
+    }
+
+    void context_stop_text_input()
+    {
+        GetContext()->GetUiContext()->StopTextInput();
+    }
+
+    bool context_is_input_active()
+    {
+        return GetContext()->GetUiContext()->IsTextInputActive();
     }
 }
