@@ -24,7 +24,7 @@ MemoryStream::MemoryStream(const MemoryStream &copy)
     _dataCapacity = copy._dataCapacity;
     _dataSize = copy._dataSize;
 
-    if (_access == MEMORY_ACCESS::OWNER)
+    if (_access & MEMORY_ACCESS::OWNER)
     {
         _data = Memory::Duplicate(copy._data, _dataCapacity);
         _position = (void*)((uintptr_t)_data + copy.GetPosition());

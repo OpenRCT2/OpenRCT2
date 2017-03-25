@@ -108,7 +108,7 @@ namespace GameActions
         return result;
     }
 
-    void Execute(const IGameAction * action, GameActionCallback callback)
+    GameActionResult Execute(const IGameAction * action, GameActionCallback callback, uint16 flags)
     {
         Guard::ArgumentNotNull(action);
 
@@ -120,12 +120,12 @@ namespace GameActions
             if (network_get_mode() != NETWORK_MODE_NONE)
             {
                 // Action has come from server.
-                if (!(actionFlags & GA_FLAGS::CLIENT_ONLY) && !(actionFlags & GA_FLAGS::GHOST))
+                if (!(actionFlags & GA_FLAGS::CLIENT_ONLY) && !(flags & GAME_COMMAND_FLAG_GHOST) && !(flags & 0x80))
                 {
                     MemoryStream stream;
-                    stream.WriteValue(action->GetFlags());
+                    stream.WriteValue(flags);
                     action->Serialise(&stream);
-                    network_send_game_action((uint8*)stream.GetData(), stream.GetLength(), 0);
+                    network_send_game_action((uint8*)stream.GetData(), stream.GetLength(),  action->GetType());
                 }
             }
 
@@ -167,5 +167,6 @@ namespace GameActions
             Memory::Copy(gCommonFormatArgs, result.ErrorMessageArgs, sizeof(result.ErrorMessageArgs));
             window_error_open(result.ErrorTitle, result.ErrorMessage);
         }
+        return result;
     }
 }
