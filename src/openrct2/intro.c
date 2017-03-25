@@ -16,6 +16,7 @@
 
 #include "audio/audio.h"
 #include "audio/AudioMixer.h"
+#include "Context.h"
 #include "drawing/drawing.h"
 #include "intro.h"
 #include "rct2.h"
@@ -221,7 +222,7 @@ void intro_draw(rct_drawpixelinfo *dpi)
 
 static void screen_intro_process_mouse_input()
 {
-	if (gCursorState.any == CURSOR_PRESSED) {
+	if (context_get_cursor_state()->any == CURSOR_PRESSED) {
 		screen_intro_skip_part();
 	}
 }
@@ -232,8 +233,12 @@ static void screen_intro_process_mouse_input()
  */
 static void screen_intro_process_keyboard_input()
 {
-	if (gLastKeyPressed != 0) {
-		screen_intro_skip_part();
+	const uint8 * keys = context_get_keys_state();
+	for (int i = 0; i < 256; i++) {
+		if (keys[i] != 0) {
+			screen_intro_skip_part();
+			break;
+		}
 	}
 }
 

@@ -15,6 +15,7 @@
 #pragma endregion
 
 #include "../audio/audio.h"
+#include "../Context.h"
 #include "../core/Guard.hpp"
 #include "../drawing/drawing.h"
 #include "../editor.h"
@@ -295,7 +296,7 @@ static bool window_other_wheel_input(rct_window *w, rct_widgetindex widgetIndex,
 static void window_all_wheel_input()
 {
 	// Get wheel value
-	sint32 raw = gCursorState.wheel;
+	sint32 raw = context_get_cursor_state()->wheel;
 	sint32 wheel = 0;
 	while (1) {
 		raw -= 120;
@@ -311,14 +312,17 @@ static void window_all_wheel_input()
 		wheel += 17;
 	}
 	raw -= 120;
-	gCursorState.wheel = raw;
+
+	// TODO do something about this hack
+	CursorState * cursorState = (CursorState *)context_get_cursor_state();
+	cursorState->wheel = raw;
 
 	if (wheel == 0)
 		return;
 
 	// Check window cursor is over
 	if (!(input_test_flag(INPUT_FLAG_5))) {
-		rct_window *w = window_find_from_point(gCursorState.x, gCursorState.y);
+		rct_window *w = window_find_from_point(cursorState->x, cursorState->y);
 		if (w != NULL) {
 			// Check if main window
 			if (w->classification == WC_MAIN_WINDOW || w->classification == WC_VIEWPORT) {
@@ -327,7 +331,7 @@ static void window_all_wheel_input()
 			}
 
 			// Check scroll view, cursor is over
-			rct_widgetindex widgetIndex = window_find_widget_from_point(w, gCursorState.x, gCursorState.y);
+			rct_widgetindex widgetIndex = window_find_widget_from_point(w, cursorState->x, cursorState->y);
 			if (widgetIndex != -1) {
 				rct_widget *widget = &w->widgets[widgetIndex];
 				if (widget->type == WWT_SCROLL) {
@@ -1471,7 +1475,7 @@ void window_viewport_get_map_coords_by_cursor(rct_window *w, sint16 *map_x, sint
 {
 	// Get mouse position to offset against.
 	sint32 mouse_x, mouse_y;
-	platform_get_cursor_position_scaled(&mouse_x, &mouse_y);
+	context_get_cursor_position_scaled(&mouse_x, &mouse_y);
 
 	// Compute map coordinate by mouse position.
 	get_map_coordinates_from_pos(mouse_x, mouse_y, VIEWPORT_INTERACTION_MASK_NONE, map_x, map_y, NULL, NULL, NULL);
@@ -1499,7 +1503,7 @@ void window_viewport_centre_tile_around_cursor(rct_window *w, sint16 map_x, sint
 
 	// Get mouse position to offset against.
 	sint32 mouse_x, mouse_y;
-	platform_get_cursor_position_scaled(&mouse_x, &mouse_y);
+	context_get_cursor_position_scaled(&mouse_x, &mouse_y);
 
 	// Rebase mouse position onto centre of window, and compensate for zoom level.
 	sint32 rebased_x = ((w->width >> 1) - mouse_x) * (1 << w->viewport->zoom),
@@ -2507,7 +2511,7 @@ void window_start_textbox(rct_window *call_w, rct_widgetindex call_widget, rct_s
 	// from crashing the game.
 	gTextBoxInput[maxLength - 1] = '\0';
 
-	platform_start_text_input(gTextBoxInput, maxLength);
+	context_start_text_input(gTextBoxInput, maxLength);
 }
 
 void window_cancel_textbox()
@@ -2520,7 +2524,7 @@ void window_cancel_textbox()
 		window_event_textinput_call(w, gCurrentTextBox.widget_index, NULL);
 		gCurrentTextBox.window.classification = WC_NULL;
 		gCurrentTextBox.window.number = 0;
-		platform_stop_text_input();
+		context_stop_text_input();
 		gUsingWidgetTextBox = false;
 		widget_invalidate(w, gCurrentTextBox.widget_index);
 		gCurrentTextBox.widget_index = WWT_LAST;

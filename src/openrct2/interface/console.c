@@ -18,6 +18,7 @@
 #include <SDL_scancode.h>
 
 #include "../config/Config.h"
+#include "../Context.h"
 #include "../drawing/drawing.h"
 #include "../game.h"
 #include "../input.h"
@@ -91,14 +92,14 @@ void console_open()
 	_consoleScrollPos = 0;
 	console_refresh_caret();
 	console_update_scroll();
-	platform_start_text_input(_consoleCurrentLine, sizeof(_consoleCurrentLine));
+	context_start_text_input(_consoleCurrentLine, sizeof(_consoleCurrentLine));
 }
 
 void console_close()
 {
 	gConsoleOpen = false;
 	console_invalidate();
-	platform_stop_text_input();
+	context_stop_text_input();
 }
 
 void console_toggle()
@@ -412,7 +413,7 @@ static void console_clear_input()
 {
 	_consoleCurrentLine[0] = 0;
 	if (gConsoleOpen) {
-		platform_start_text_input(_consoleCurrentLine, sizeof(_consoleCurrentLine));
+		context_start_text_input(_consoleCurrentLine, sizeof(_consoleCurrentLine));
 	}
 }
 

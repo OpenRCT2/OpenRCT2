@@ -19,17 +19,6 @@
 
 #include "../common.h"
 
-#ifdef __cplusplus
-extern "C"
-{
-#endif // __cplusplus
-
-    #include "../platform/platform.h"
-
-#ifdef __cplusplus
-}
-#endif // __cplusplus
-
 #define MIXER_LOOP_NONE         0
 #define MIXER_LOOP_INFINITE     -1
 
@@ -89,9 +78,9 @@ void Mixer_Channel_SetGroup(void* channel, sint32 group);
 void* Mixer_Play_Music(sint32 pathId, sint32 loop, sint32 streaming);
 void Mixer_SetVolume(float volume);
 
-static inline sint32 DStoMixerVolume(sint32 volume) { return (sint32)(SDL_MIX_MAXVOLUME * (SDL_pow(10, (float)volume / 2000))); }
-static inline float DStoMixerPan(sint32 pan) { return (((float)pan + -DSBPAN_LEFT) / DSBPAN_RIGHT) / 2; }
-static inline double DStoMixerRate(sint32 frequency) { return (double)frequency / 22050; }
+sint32 DStoMixerVolume(sint32 volume);
+float DStoMixerPan(sint32 pan);
+double DStoMixerRate(sint32 frequency);
 
 #ifdef __cplusplus
 }

@@ -20,6 +20,8 @@
 #include "../common.h"
 #include "../interface/Cursors.h"
 
+struct CursorState;
+
 namespace OpenRCT2
 {
     namespace Drawing
@@ -42,7 +44,7 @@ namespace OpenRCT2
             const utf8 * Buffer;    // UTF-8 stream
             size_t BufferSize;      // Maximum number of bytes (excluding null terminator)
             size_t Size;            // Number of bytes (excluding null terminator)
-            uint32 Length;          // Number of codepoints
+            size_t Length;          // Number of codepoints
             size_t SelectionStart;  // Selection start, in bytes
             size_t SelectionSize;   // Selection length in bytes
         };
@@ -83,21 +85,30 @@ namespace OpenRCT2
             virtual ~IUiContext() = default;
 
             // Window
-            virtual CURSOR_ID   GetCursor() abstract;
-            virtual void        SetCursor(CURSOR_ID cursor) abstract;
             virtual void *  GetWindow() abstract;
             virtual sint32  GetWidth() abstract;
             virtual sint32  GetHeight() abstract;
             virtual void    SetFullscreenMode(FULLSCREEN_MODE mode) abstract;
-
             virtual std::vector<Resolution> GetFullscreenResolutions() abstract;
+            virtual bool IsSteamOverlayActive() abstract;
+            virtual void ProcessMessages() abstract;
+
+            // Input
+            virtual const CursorState * GetCursorState() abstract;
+            virtual CURSOR_ID           GetCursor() abstract;
+            virtual void                SetCursor(CURSOR_ID cursor) abstract;
+            virtual void                SetCursorVisible(bool value) abstract;
+            virtual void                GetCursorPosition(sint32 * x, sint32 * y) abstract;
+            virtual void                SetCursorPosition(sint32 x, sint32 y) abstract;
+            virtual const uint8 *       GetKeysState() abstract;
+            virtual const uint8 *       GetKeysPressed() abstract;
 
             // Drawing
             virtual Drawing::IDrawingEngine *   CreateDrawingEngine(Drawing::DRAWING_ENGINE_TYPE type) abstract;
 
             // Text input
             virtual bool                        IsTextInputActive() abstract;
-            virtual const TextInputSession *    StartTextInput(utf8 * buffer, sint32 bufferSize) abstract;
+            virtual const TextInputSession *    StartTextInput(utf8 * buffer, size_t bufferSize) abstract;
             virtual void                        StopTextInput() abstract;
         };
     }
