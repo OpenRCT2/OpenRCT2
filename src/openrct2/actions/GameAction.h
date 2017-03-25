@@ -48,7 +48,6 @@ namespace GA_FLAGS
 {
     constexpr uint16 ALLOW_WHILE_PAUSED = 1 << 0;
     constexpr uint16 CLIENT_ONLY        = 1 << 1;
-    constexpr uint16 GHOST              = 1 << 2;
 }
 
 /**
@@ -82,6 +81,7 @@ interface IGameAction
      */
     virtual uint16 GetFlags() const abstract;
 
+    virtual uint32 GetType() const abstract;
     /**
      * Reads the game action directly from the given stream. Used for
      * sending across the network in multiplayer.
@@ -113,7 +113,7 @@ namespace GameActions
     GameActionFactory   Register(uint32 id, GameActionFactory action);
     IGameAction *       Create(uint32 id);
     GameActionResult    Query(const IGameAction * action);
-    void                Execute(const IGameAction * action, GameActionCallback callback = nullptr);
+    GameActionResult    Execute(const IGameAction * action, GameActionCallback callback = nullptr, uint16 flags = 0);
 
     template<typename T>
     GameActionFactory Register(uint32 id)

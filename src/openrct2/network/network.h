@@ -70,6 +70,7 @@ extern "C" {
 #include <openssl/evp.h>
 #include "../core/Json.hpp"
 #include "../core/Nullable.hpp"
+#include "../core/MemoryStream.h"
 #include "NetworkConnection.h"
 #include "NetworkGroup.h"
 #include "NetworkKey.h"
@@ -197,9 +198,20 @@ private:
         GameCommand(uint32 t, uint32* args, uint8 p, uint8 cb) {
             tick = t; eax = args[0]; ebx = args[1]; ecx = args[2]; edx = args[3];
             esi = args[4]; edi = args[5]; ebp = args[6]; playerid = p; callback = cb;
+            actionType = 0xFFFFFFFF;
         }
+
+        GameCommand(uint32 t, uint32 aType, MemoryStream const &stream, uint8 p)
+        {
+            tick = t; playerid = p; actionType = aType;
+            // Note this will leak memory. Do something about this
+            parameters = new MemoryStream(stream);
+        }
+
         uint32 tick;
         uint32 eax, ebx, ecx, edx, esi, edi, ebp;
+        uint32 actionType = 0xFFFFFFFF;
+        MemoryStream *parameters;
         uint8 playerid;
         uint8 callback;
         bool operator<(const GameCommand& comp) const {
