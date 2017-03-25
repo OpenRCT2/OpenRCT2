@@ -77,165 +77,11 @@ static const sint32 _fullscreen_modes[] = { 0, SDL_WINDOW_FULLSCREEN, SDL_WINDOW
 static uint32 _lastGestureTimestamp;
 static float _gestureRadius;
 
-static void platform_create_window();
-
-#if defined(__APPLE__) && (__ENVIRONMENT_MAC_OS_X_VERSION_MIN_REQUIRED__ < 101200)
-	mach_timebase_info_data_t _mach_base_info = { 0 };
-#endif
-
-static sint32 resolution_sort_func(const void *pa, const void *pb)
-{
-	const resolution_t *a = (resolution_t*)pa;
-	const resolution_t *b = (resolution_t*)pb;
-
-	sint32 areaA = a->width * a->height;
-	sint32 areaB = b->width * b->height;
-
-	if (areaA == areaB) return 0;
-	if (areaA < areaB) return -1;
-	return 1;
-}
-
-void platform_update_fullscreen_resolutions()
-{
-	// Query number of display modes
-	sint32 displayIndex = SDL_GetWindowDisplayIndex(gWindow);
-	sint32 numDisplayModes = SDL_GetNumDisplayModes(displayIndex);
-
-	// Get desktop aspect ratio
-	SDL_DisplayMode mode;
-	SDL_GetDesktopDisplayMode(displayIndex, &mode);
-
-	if (gResolutions != NULL)
-		free(gResolutions);
-
-	// Get resolutions
-	gNumResolutions = numDisplayModes;
-	gResolutions = malloc(gNumResolutions * sizeof(resolution_t));
-	gNumResolutions = 0;
-
-	float desktopAspectRatio = (float)mode.w / mode.h;
-	for (sint32 i = 0; i < numDisplayModes; i++) {
-		SDL_GetDisplayMode(displayIndex, i, &mode);
-
-		float aspectRatio = (float)mode.w / mode.h;
-		if (gResolutionsAllowAnyAspectRatio || fabs(desktopAspectRatio - aspectRatio) < 0.0001f) {
-			gResolutions[gNumResolutions].width = mode.w;
-			gResolutions[gNumResolutions].height = mode.h;
-			gNumResolutions++;
-		}
-	}
-
-	// Sort by area
-	qsort(gResolutions, gNumResolutions, sizeof(resolution_t), resolution_sort_func);
-
-	// Remove duplicates
-	resolution_t *resPlace = &gResolutions[0];
-	for (sint32 i = 1; i < gNumResolutions; i++) {
-		resolution_t *resLook = &gResolutions[i];
-		if (resLook->width != resPlace->width || resLook->height != resPlace->height)
-			*++resPlace = *resLook;
-	}
-
-	gNumResolutions = (sint32)(resPlace - &gResolutions[0]) + 1;
-
-	// Update config fullscreen resolution if not set
-	if (gConfigGeneral.fullscreen_width == -1 || gConfigGeneral.fullscreen_height == -1) {
-		gConfigGeneral.fullscreen_width = gResolutions[gNumResolutions - 1].width;
-		gConfigGeneral.fullscreen_height = gResolutions[gNumResolutions - 1].height;
-	}
-}
-
-void platform_get_closest_resolution(sint32 inWidth, sint32 inHeight, sint32 *outWidth, sint32 *outHeight)
-{
-	sint32 closestWidth = 640, closestHeight = 480;
-
-	sint32 closestAreaDiff = -1;
-	sint32 destinationArea = inWidth * inHeight;
-	for (sint32 i = 0; i < gNumResolutions; i++) {
-		// Check if exact match
-		if (gResolutions[i].width == inWidth && gResolutions[i].height == inHeight) {
-			closestWidth = gResolutions[i].width;
-			closestHeight = gResolutions[i].height;
-			closestAreaDiff = 0;
-			break;
-		}
-
-		// Check if area is closer to best match
-		sint32 areaDiff = abs((gResolutions[i].width * gResolutions[i].height) - destinationArea);
-		if (closestAreaDiff == -1 || areaDiff < closestAreaDiff) {
-			closestAreaDiff = areaDiff;
-			closestWidth = gResolutions[i].width;
-			closestHeight = gResolutions[i].height;
-		}
-	}
-
-	if (closestAreaDiff != -1) {
-		*outWidth = closestWidth;
-		*outHeight = closestHeight;
-	} else {
-		*outWidth = 640;
-		*outHeight = 480;
-	}
-}
-
 void platform_draw()
 {
 	if (!gOpenRCT2Headless) {
 		drawing_engine_draw();
 	}
-}
-
-static void platform_resize(sint32 width, sint32 height)
-{
-	uint32 flags;
-	sint32 dst_w = (sint32)(width / gConfigGeneral.window_scale);
-	sint32 dst_h = (sint32)(height / gConfigGeneral.window_scale);
-
-	gScreenWidth = dst_w;
-	gScreenHeight = dst_h;
-
-	drawing_engine_resize();
-
-	flags = SDL_GetWindowFlags(gWindow);
-
-	if ((flags & SDL_WINDOW_MINIMIZED) == 0) {
-		window_resize_gui(dst_w, dst_h);
-		window_relocate_windows(dst_w, dst_h);
-	}
-
-	gfx_invalidate_screen();
-
-	// Check if the window has been resized in windowed mode and update the config file accordingly
-	// This is called in rct2_update and is only called after resizing a window has finished
-	if (!(flags & platform_get_non_window_flags())) {
-		if (width != gConfigGeneral.window_width || height != gConfigGeneral.window_height) {
-			gConfigGeneral.window_width = width;
-			gConfigGeneral.window_height = height;
-			config_save_default();
-		}
-	}
-}
-
-/**
- * @brief platform_trigger_resize
- * Helper function to set various render target features.
- *
- * Does not get triggered on resize, but rather manually on config changes.
- */
-void platform_trigger_resize()
-{
-	char scale_quality_buffer[4]; // just to make sure we can hold whole uint8
-	uint8 scale_quality = gConfigGeneral.scale_quality;
-	if (gConfigGeneral.use_nn_at_integer_scales && gConfigGeneral.window_scale == floor(gConfigGeneral.window_scale)) {
-		scale_quality = 0;
-	}
-	snprintf(scale_quality_buffer, sizeof(scale_quality_buffer), "%u", scale_quality);
-	SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, scale_quality_buffer);
-
-	sint32 w, h;
-	SDL_GetWindowSize(gWindow, &w, &h);
-	platform_resize(w, h);
 }
 
 static uint8 soft_light(uint8 a, uint8 b)
@@ -572,15 +418,8 @@ void platform_process_messages()
 	gKeysState = SDL_GetKeyboardState(&numKeys);
 }
 
-static void platform_close_window()
-{
-	drawing_engine_dispose();
-	cursors_dispose();
-}
-
 void platform_init()
 {
-	platform_create_window();
 	gKeysPressed = malloc(sizeof(uint8) * 256);
 	memset(gKeysPressed, 0, sizeof(uint8) * 256);
 
@@ -591,57 +430,6 @@ void platform_init()
 	gPalette[255].r = 255;
 	gPalette[255].g = 255;
 	gPalette[255].b = 255;
-}
-
-static void platform_create_window()
-{
-	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
-		log_fatal("SDL_Init %s", SDL_GetError());
-		exit(-1);
-	}
-
-	SDL_SetHint(SDL_HINT_VIDEO_MINIMIZE_ON_FOCUS_LOSS, gConfigGeneral.minimize_fullscreen_focus_loss ? "1" : "0");
-
-	cursors_initialise();
-
-	// TODO This should probably be called somewhere else. It has nothing to do with window creation and can be done as soon as
-	// g1.dat is loaded.
-	sub_68371D();
-
-	// Get window size
-	sint32 width = gConfigGeneral.window_width;
-	sint32 height = gConfigGeneral.window_height;
-	if (width == -1) width = 640;
-	if (height == -1) height = 480;
-
-	// Create window in window first rather than fullscreen so we have the display the window is on first
-	uint32 flags = SDL_WINDOW_RESIZABLE;
-	if (gConfigGeneral.drawing_engine == DRAWING_ENGINE_OPENGL) {
-		flags |= SDL_WINDOW_OPENGL;
-	}
-
-	gWindow = SDL_CreateWindow(OPENRCT2_NAME, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, flags);
-	if (!gWindow) {
-		log_fatal("SDL_CreateWindow failed %s", SDL_GetError());
-		exit(-1);
-	}
-
-	SDL_SetWindowGrab(gWindow, gConfigGeneral.trap_cursor ? SDL_TRUE : SDL_FALSE);
-	SDL_SetWindowMinimumSize(gWindow, 720, 480);
-	platform_init_window_icon();
-#ifdef __MACOSX__
-	macos_disallow_automatic_window_tabbing();
-#endif
-
-	// Initialise the surface, palette and draw buffer
-	platform_resize(width, height);
-
-	platform_update_fullscreen_resolutions();
-	platform_set_fullscreen_mode(gConfigGeneral.fullscreen_mode);
-
-	// Check if steam overlay renderer is loaded into the process
-	gSteamOverlayActive = platform_check_steam_overlay_attached();
-	platform_trigger_resize();
 }
 
 sint32 platform_scancode_to_rct_keycode(sint32 sdl_key)
@@ -660,9 +448,6 @@ sint32 platform_scancode_to_rct_keycode(sint32 sdl_key)
 void platform_free()
 {
 	free(gKeysPressed);
-
-	platform_close_window();
-	SDL_Quit();
 }
 
 void platform_start_text_input(utf8* buffer, sint32 max_length)
@@ -721,16 +506,6 @@ void platform_toggle_windowed_mode()
 	platform_set_fullscreen_mode(targetMode);
 	gConfigGeneral.fullscreen_mode = targetMode;
 	config_save_default();
-}
-
-/**
- * This is not quite the same as the below function as we don't want to
- * dereference the cursor before the function.
- *  rct2: 0x0407956
- */
-void platform_set_cursor(uint8 cursor)
-{
-	cursors_setcurrentcursor(cursor);
 }
 
 void platform_refresh_video()

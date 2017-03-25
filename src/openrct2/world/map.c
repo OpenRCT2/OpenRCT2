@@ -18,6 +18,7 @@
 #include "../audio/audio.h"
 #include "../cheats.h"
 #include "../config/Config.h"
+#include "../Context.h"
 #include "../game.h"
 #include "../interface/Cursors.h"
 #include "../interface/window.h"
@@ -3319,7 +3320,7 @@ void map_invalidate_selection_rect()
  */
 void map_reorganise_elements()
 {
-	platform_set_cursor(CURSOR_ZZZ);
+	context_setcurrentcursor(CURSOR_ZZZ);
 
 	rct_map_element* new_map_elements = malloc(0x30000 * sizeof(rct_map_element));
 	rct_map_element* new_elements_pointer = new_map_elements;

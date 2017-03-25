@@ -17,6 +17,7 @@
 #include <exception>
 #include "Context.h"
 #include "OpenRCT2.h"
+#include "ui/UiContext.h"
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Ui;
@@ -78,5 +79,13 @@ namespace OpenRCT2
     IContext * GetContext()
     {
         return Context::Instance;
+    }
+}
+
+extern "C"
+{
+    void context_setcurrentcursor(sint32 cursor)
+    {
+        GetContext()->GetUiContext()->SetCursor((CURSOR_ID)cursor);
     }
 }
