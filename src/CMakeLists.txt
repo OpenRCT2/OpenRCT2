@@ -5,7 +5,8 @@ if (CMAKE_BINARY_DIR STREQUAL CMAKE_SOURCE_DIR)
 endif()
 set(ROOT_DIR "${CMAKE_CURRENT_LIST_DIR}/..")
 
-option (CLI_ONLY "CLI only build of OpenRCT2")
+option(FORCE32 "Force 32-bit build. It will add `-m32` to compiler flags.")
+option(CLI_ONLY "CLI only build of OpenRCT2")
 
 # Define current git branch
 execute_process(
