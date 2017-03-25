@@ -2214,6 +2214,11 @@ private:
 
     void FixWalls()
     {
+        // The user might attempt to load a save while in pause mode.
+        // Since we cannot place walls in pause mode without a cheat, temporarily turn it on.
+        bool oldCheatValue = gCheatsBuildInPauseMode;
+        gCheatsBuildInPauseMode = true;
+
         for (sint32 x = 0; x < RCT1_MAX_MAP_SIZE; x++)
         {
             for (sint32 y = 0; y < RCT1_MAX_MAP_SIZE; y++)
@@ -2253,40 +2258,42 @@ private:
                 while (!map_element_is_last_for_tile(mapElement++));
             }
         }
+
+        gCheatsBuildInPauseMode = oldCheatValue;
     }
 
     void ConvertWall(sint32 * type, sint32 * colourA, sint32 * colourB, sint32 * colourC)
     {
         switch (*type) {
-        case 12:    // creepy gate
-            *colourA = 24;
+        case RCT1_WALL_TYPE_WOODEN_PANEL_FENCE:
+            *colourA = COLOUR_DARK_BROWN;
             break;
-        case 26:    // white wooden fence
-            *type = 12;
-            *colourA = 2;
+        case RCT1_WALL_TYPE_WHITE_WOODEN_PANEL_FENCE:
+            *type = RCT1_WALL_TYPE_WOODEN_PANEL_FENCE;
+            *colourA = COLOUR_WHITE;
             break;
-        case 27:    // red wooden fence
-            *type = 12;
-            *colourA = 25;
+        case RCT1_WALL_TYPE_RED_WOODEN_PANEL_FENCE:
+            *type = RCT1_WALL_TYPE_WOODEN_PANEL_FENCE;
+            *colourA = COLOUR_SALMON_PINK;
             break;
-        case 50:    // plate glass
-            *colourA = 24;
+        case RCT1_WALL_TYPE_WOODEN_PANEL_FENCE_WITH_SNOW:
+            *colourA = COLOUR_DARK_BROWN;
             break;
-        case 13:
+        case RCT1_WALL_TYPE_WOODEN_PANEL_FENCE_WITH_GATE:
             *colourB = *colourA;
-            *colourA = 24;
+            *colourA = COLOUR_DARK_BROWN;
             break;
-        case 11:    // tall castle wall with grey gate
-        case 22:    // brick wall with gate
-            *colourB = 2;
+        case RCT1_WALL_TYPE_GLASS_SMOOTH:
+        case RCT1_WALL_TYPE_GLASS_PANELS:
+            *colourB = COLOUR_WHITE;
             break;
-        case 35:    // wood post fence
-        case 42:    // tall grey castle wall
-        case 43:    // wooden fence with snow
-        case 44:
-        case 45:
-        case 46:
-            *colourA = 1;
+        case RCT1_WALL_TYPE_SMALL_GREY_CASTLE:
+        case RCT1_WALL_TYPE_LARGE_CREY_CASTLE:
+        case RCT1_WALL_TYPE_LARGE_CREY_CASTLE_CROSS:
+        case RCT1_WALL_TYPE_LARGE_CREY_CASTLE_GATE:
+        case RCT1_WALL_TYPE_LARGE_CREY_CASTLE_WINDOW:
+        case RCT1_WALL_TYPE_MEDIUM_CREY_CASTLE:
+            *colourA = COLOUR_GREY;
             break;
         }
     }
