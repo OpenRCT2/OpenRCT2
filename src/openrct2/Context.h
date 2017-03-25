@@ -20,11 +20,9 @@
 
 namespace OpenRCT2
 {
-    interface IRegistration;
-
-    namespace Drawing
+    namespace Ui
     {
-        interface IDrawingEngineFactory;
+        interface IUiContext;
     }
 
     /**
@@ -33,9 +31,12 @@ namespace OpenRCT2
     interface IContext
     {
         virtual ~IContext() = default;
-        virtual IRegistration * RegisterDrawingEngine(sint32 type, Drawing::IDrawingEngineFactory * factory) abstract;
+
+        virtual Ui::IUiContext * GetUiContext() abstract;
         virtual sint32 RunOpenRCT2(int argc, char * * argv) abstract;
     };
 
     IContext * CreateContext();
+    IContext * CreateContext(Ui::IUiContext * uiContext);
+    IContext * GetContext();
 }

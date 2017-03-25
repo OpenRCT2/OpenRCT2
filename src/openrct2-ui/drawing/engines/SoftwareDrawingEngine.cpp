@@ -37,6 +37,8 @@ extern "C"
     #include <openrct2/drawing/lightfx.h>
 }
 
+using namespace OpenRCT2::Drawing;
+
 class SoftwareDrawingEngine;
 
 struct DirtyGrid
@@ -828,12 +830,12 @@ private:
     }
 };
 
-IDrawingEngine * OpenRCT2::Ui::SoftwareDrawingEngineFactory::Create()
+IDrawingEngine * OpenRCT2::Ui::CreateSoftwareDrawingEngine()
 {
     return new SoftwareDrawingEngine(false);
 }
 
-IDrawingEngine * OpenRCT2::Ui::HardwareDisplayDrawingEngineFactory::Create()
+IDrawingEngine * OpenRCT2::Ui::CreateHardwareDisplayDrawingEngine()
 {
     return new SoftwareDrawingEngine(true);
 }
