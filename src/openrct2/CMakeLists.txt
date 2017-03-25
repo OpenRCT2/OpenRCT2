@@ -11,7 +11,6 @@ include(FindPkgConfig)
 
 # Options
 option(STATIC "Create a static build.")
-option(FORCE32 "Force 32-bit build. It will add `-m32` to compiler flags.")
 option(USE_MMAP "Use mmap to try loading rct2's data segment into memory.")
 option(DISABLE_RCT2 "Build a standalone version, without using code and data segments from vanilla. On by default." ON)
 
@@ -25,8 +24,7 @@ if (NOT DISABLE_RCT2)
         message(FATAL_ERROR "DISABLE_RCT2 not supported for Windows")
     endif ()
     if (NOT FORCE32)
-        set(FORCE32 ON)
-        message("DISABLE_RCT2 implies FORCE32")
+        message(FATAL_ERROR "DISABLE_RCT2 requires FORCE32")
     endif ()
 endif ()
 
@@ -100,6 +98,8 @@ if (NOT DISABLE_RCT2 AND UNIX)
     )
     add_custom_target(segfiles DEPENDS openrct2_text openrct2_data)
     if (NOT USE_MMAP)
+        set(OBJ_FORMAT "elf32-i386")
+        set(LINKER_SCRIPT "ld_script_i386.xc")
         if (APPLE)
             set(RCT2_SEGMENT_LINKER_FLAGS "-sectcreate rct2_text __text ${CMAKE_BINARY_DIR}/openrct2_text -sectcreate rct2_data __data ${CMAKE_BINARY_DIR}/openrct2_data -segaddr rct2_data 0x8a4000 -segprot rct2_data rwx rwx -segaddr rct2_text 0x401000 -segprot rct2_text rwx rwx -segaddr __TEXT 0x2000000 -read_only_relocs suppress")
         else ()
@@ -144,10 +144,12 @@ set_target_properties(${PROJECT} PROPERTIES COMPILE_FLAGS "-Wundef")
 
 if (NOT DISABLE_RCT2)
     add_dependencies(${PROJECT} segfiles)
-    if (NOT APPLE AND NOT USE_MMAP)
-        add_dependencies(${PROJECT} linkable_sections)
+    if (NOT USE_MMAP)
+        if (NOT APPLE)
+            add_dependencies(${PROJECT} linkable_sections)
+        endif ()
+        set_target_properties(${PROJECT} PROPERTIES LINK_FLAGS ${RCT2_SEGMENT_LINKER_FLAGS})
     endif ()
-    set_target_properties(${PROJECT} PROPERTIES LINK_FLAGS ${RCT2_SEGMENT_LINKER_FLAGS})
 endif ()
 
 # Libraries
@@ -223,8 +225,10 @@ if (NOT DISABLE_TTF AND UNIX AND NOT APPLE)
 endif ()
 
 # Compiler flags
+set(DEBUG_LEVEL 0 CACHE STRING "Select debug level for compilation. Use value in range 0–3.")
 set(COMMON_COMPILE_OPTIONS "${COMMON_COMPILE_OPTIONS} -fstrict-aliasing -Werror -Wundef -Wmissing-declarations -Winit-self -Wall -Wno-unknown-pragmas -Wno-unused-function -Wno-missing-braces ")
 set(COMMON_COMPILE_OPTIONS "${COMMON_COMPILE_OPTIONS} -Wno-comment -Wshadow  -Wmissing-declarations -Wnonnull")
+set(COMMON_COMPILE_OPTIONS "${COMMON_COMPILE_OPTIONS} -DDEBUG=${DEBUG_LEVEL}")
 
 # On mingw all code is already PIC, this will avoid compiler error on redefining this option
 if (NOT MINGW)
@@ -237,14 +241,13 @@ else ()
     set(PIE_FLAG "-fpie")
 endif ()
 
-set(DEBUG_LEVEL 0 CACHE STRING "Select debug level for compilation. Use value in range 0–3.")
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DDEBUG=${DEBUG_LEVEL}")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DDEBUG=${DEBUG_LEVEL}")
+if (FORCE32)
+    set(TARGET_M "-m32")
+endif ()
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=gnu11 ${COMMON_COMPILE_OPTIONS} ${TARGET_M} -Wimplicit")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++14 ${COMMON_COMPILE_OPTIONS} ${TARGET_M}")
 set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} ${TARGET_M}")
-set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${CMAKE_SHARED_LINKER_FLAGS} ${PIE_FLAG}")
 
 function (ADD_CHECK_C_COMPILER_FLAG _CFLAGS _CACHE_VAR _FLAG)
     CHECK_C_COMPILER_FLAG("${_FLAG}" "${_CACHE_VAR}")
@@ -285,12 +288,6 @@ ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WARN_IGNORED_QUALIFIERS -Wignore
 set(COMMON_COMPILE_OPTIONS "${COMMON_COMPILE_OPTIONS} -fstrict-overflow")
 ADD_CHECK_C_COMPILER_FLAG(CMAKE_C_FLAGS C_WARN_STRICT_OVERFLOW -Wstrict-overflow=1)
 ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WARN_STRICT_OVERFLOW -Wstrict-overflow=1)
-
-if (FORCE32)
-    set(TARGET_M "-m32")
-    set(OBJ_FORMAT "elf32-i386")
-    set(LINKER_SCRIPT "ld_script_i386.xc")
-endif ()
 
 # Defines
 if (USE_MMAP)

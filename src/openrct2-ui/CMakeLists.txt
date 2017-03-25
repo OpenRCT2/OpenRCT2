@@ -53,16 +53,17 @@ target_include_directories(${PROJECT} PRIVATE "${CMAKE_CURRENT_LIST_DIR}/.."
                                               ${SDL2_INCLUDE_DIRS})
 
 # Compiler flags
+if (FORCE32)
+    set(TARGET_M "-m32")
+endif ()
 if (WIN32)
     # mingw complains about "%zu" not being a valid format specifier for printf, unless we
     # tell it that it is
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D__USE_MINGW_ANSI_STDIO=1")
 endif ()
-
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=gnu11 -Wimplicit")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++14")
-set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS}")
-set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${CMAKE_SHARED_LINKER_FLAGS}")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=gnu11 ${TARGET_M}")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++14 ${TARGET_M}")
+set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${TARGET_M}")
 
 # Defines
 if (DISABLE_OPENGL)
