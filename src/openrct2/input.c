@@ -159,8 +159,9 @@ static sint32 game_get_next_input(sint32 *x, sint32 *y)
 {
 	rct_mouse_data *input = get_mouse_input();
 	if (input == NULL) {
-		*x = gCursorState.x;
-		*y = gCursorState.y;
+		const CursorState * cursorState = context_get_cursor_state();
+		*x = cursorState->x;
+		*y = cursorState->y;
 		return 0;
 	} else {
 		*x = input->x;
@@ -200,7 +201,7 @@ static void input_scroll_drag_begin(sint32 x, sint32 y, rct_window* w, rct_widge
 	_ticksSinceDragStart = 0;
 
 	_dragScrollIndex = window_get_scroll_data_index(w, widgetIndex);
-	platform_hide_cursor();
+	context_hide_cursor();
 }
 
 /**
@@ -241,7 +242,7 @@ static void input_scroll_drag_continue(sint32 x, sint32 y, rct_window* w)
 	sint32 fixedCursorPositionX = (sint32) ceilf(gInputDragLastX * gConfigGeneral.window_scale);
 	sint32 fixedCursorPositionY = (sint32) ceilf(gInputDragLastY * gConfigGeneral.window_scale);
 
-	platform_set_cursor_position(fixedCursorPositionX, fixedCursorPositionY);
+	context_set_cursor_position(fixedCursorPositionX, fixedCursorPositionY);
 }
 
 /**
@@ -252,7 +253,7 @@ static void input_scroll_right(sint32 x, sint32 y, sint32 state)
 {
 	rct_window* w = window_find_by_number(_dragWidget.window_classification, _dragWidget.window_number);
 	if (w == NULL) {
-		platform_show_cursor();
+		context_show_cursor();
 		_inputState = INPUT_STATE_RESET;
 		return;
 	}
@@ -267,7 +268,7 @@ static void input_scroll_right(sint32 x, sint32 y, sint32 state)
 		break;
 	case MOUSE_STATE_RIGHT_RELEASE:
 		_inputState = INPUT_STATE_RESET;
-		platform_show_cursor();
+		context_show_cursor();
 		break;
 	}
 }
@@ -502,8 +503,8 @@ static void input_viewport_drag_begin(rct_window *w, sint32 x, sint32 y)
 	_dragWidget.window_classification = w->classification;
 	_dragWidget.window_number = w->number;
 	_ticksSinceDragStart = 0;
-	platform_get_cursor_position(&gInputDragLastX, &gInputDragLastY);
-	platform_hide_cursor();
+	context_get_cursor_position(&gInputDragLastX, &gInputDragLastY);
+	context_hide_cursor();
 
 	// gInputFlags |= INPUT_FLAG_5;
 }
@@ -514,7 +515,7 @@ static void input_viewport_drag_continue()
 	rct_window *w;
 	rct_viewport *viewport;
 
-	platform_get_cursor_position(&newDragX, &newDragY);
+	context_get_cursor_position(&newDragX, &newDragY);
 
 	dx = newDragX - gInputDragLastX;
 	dy = newDragY - gInputDragLastY;
@@ -530,7 +531,7 @@ static void input_viewport_drag_continue()
 	viewport = w->viewport;
 	_ticksSinceDragStart += gTicksSinceLastUpdate;
 	if (viewport == NULL) {
-		platform_show_cursor();
+		context_show_cursor();
 		_inputState = INPUT_STATE_RESET;
 	} else if (dx != 0 || dy != 0) {
 		if (!(w->flags & WF_NO_SCROLLING)) {
@@ -552,13 +553,13 @@ static void input_viewport_drag_continue()
 		}
 	}
 
-	platform_set_cursor_position(gInputDragLastX, gInputDragLastY);
+	context_set_cursor_position(gInputDragLastX, gInputDragLastY);
 }
 
 static void input_viewport_drag_end()
 {
 	_inputState = INPUT_STATE_RESET;
-	platform_show_cursor();
+	context_show_cursor();
 }
 
 #pragma endregion
@@ -1411,14 +1412,15 @@ void title_handle_keyboard_input()
 	if (!gConsoleOpen) {
 		// Handle modifier keys and key scrolling
 		gInputPlaceObjectModifier = PLACE_OBJECT_MODIFIER_NONE;
-		if (gKeysState[SDL_SCANCODE_LSHIFT] || gKeysState[SDL_SCANCODE_RSHIFT])
+		const uint8 * keysState = context_get_keys_state();
+		if (keysState[SDL_SCANCODE_LSHIFT] || keysState[SDL_SCANCODE_RSHIFT])
 			gInputPlaceObjectModifier |= PLACE_OBJECT_MODIFIER_SHIFT_Z;
-		if (gKeysState[SDL_SCANCODE_LCTRL] || gKeysState[SDL_SCANCODE_RCTRL])
+		if (keysState[SDL_SCANCODE_LCTRL] || keysState[SDL_SCANCODE_RCTRL])
 			gInputPlaceObjectModifier |= PLACE_OBJECT_MODIFIER_COPY_Z;
-		if (gKeysState[SDL_SCANCODE_LALT] || gKeysState[SDL_SCANCODE_RALT])
+		if (keysState[SDL_SCANCODE_LALT] || keysState[SDL_SCANCODE_RALT])
 			gInputPlaceObjectModifier |= 4;
 #ifdef __MACOSX__
-		if (gKeysState[SDL_SCANCODE_LGUI] || gKeysState[SDL_SCANCODE_RGUI]) {
+		if (keysState[SDL_SCANCODE_LGUI] || keysState[SDL_SCANCODE_RGUI]) {
 			gInputPlaceObjectModifier |= 8;
 		}
 #endif
@@ -1430,7 +1432,7 @@ void title_handle_keyboard_input()
 
 		// Reserve backtick for console
 		if (key == SDL_SCANCODE_GRAVE) {
-			if ((gConfigGeneral.debugging_tools && !platform_is_input_active()) || gConsoleOpen) {
+			if ((gConfigGeneral.debugging_tools && !context_is_input_active()) || gConsoleOpen) {
 				window_cancel_textbox();
 				console_toggle();
 			}
@@ -1476,17 +1478,18 @@ void game_handle_keyboard_input()
 
 		// Handle modifier keys and key scrolling
 		gInputPlaceObjectModifier = PLACE_OBJECT_MODIFIER_NONE;
-		if (gKeysState[SDL_SCANCODE_LSHIFT] || gKeysState[SDL_SCANCODE_RSHIFT]) {
+		const uint8 * keysState = context_get_keys_state();
+		if (keysState[SDL_SCANCODE_LSHIFT] || keysState[SDL_SCANCODE_RSHIFT]) {
 			gInputPlaceObjectModifier |= PLACE_OBJECT_MODIFIER_SHIFT_Z;
 		}
-		if (gKeysState[SDL_SCANCODE_LCTRL] || gKeysState[SDL_SCANCODE_RCTRL]) {
+		if (keysState[SDL_SCANCODE_LCTRL] || keysState[SDL_SCANCODE_RCTRL]) {
 			gInputPlaceObjectModifier |= PLACE_OBJECT_MODIFIER_COPY_Z;
 		}
-		if (gKeysState[SDL_SCANCODE_LALT] || gKeysState[SDL_SCANCODE_RALT]) {
+		if (keysState[SDL_SCANCODE_LALT] || keysState[SDL_SCANCODE_RALT]) {
 			gInputPlaceObjectModifier |= 4;
 		}
 #ifdef __MACOSX__
-		if (gKeysState[SDL_SCANCODE_LGUI] || gKeysState[SDL_SCANCODE_RGUI]) {
+		if (keysState[SDL_SCANCODE_LGUI] || keysState[SDL_SCANCODE_RGUI]) {
 			gInputPlaceObjectModifier |= 8;
 		}
 #endif
@@ -1501,7 +1504,7 @@ void game_handle_keyboard_input()
 
 		// Reserve backtick for console
 		if (key == SDL_SCANCODE_GRAVE) {
-			if ((gConfigGeneral.debugging_tools && !platform_is_input_active()) || gConsoleOpen) {
+			if ((gConfigGeneral.debugging_tools && !context_is_input_active()) || gConsoleOpen) {
 				window_cancel_textbox();
 				console_toggle();
 			}
@@ -1536,10 +1539,10 @@ void game_handle_keyboard_input()
  */
 sint32 get_next_key()
 {
-	sint32 i;
-	for (i = 0; i < 221; i++) {
-		if (gKeysPressed[i]) {
-			gKeysPressed[i] = 0;
+	uint8 * keysPressed = (uint8 *)context_get_keys_pressed();
+	for (sint32 i = 0; i < 221; i++) {
+		if (keysPressed[i]) {
+			keysPressed[i] = 0;
 			return i;
 		}
 	}
@@ -1617,15 +1620,16 @@ void game_handle_edge_scroll()
 	scrollY = 0;
 
 	// Scroll left / right
-	if (gCursorState.x == 0)
+	const CursorState * cursorState = context_get_cursor_state();
+	if (cursorState->x == 0)
 		scrollX = -1;
-	else if (gCursorState.x >= gScreenWidth - 1)
+	else if (cursorState->x >= gScreenWidth - 1)
 		scrollX = 1;
 
 	// Scroll up / down
-	if (gCursorState.y == 0)
+	if (cursorState->y == 0)
 		scrollY = -1;
-	else if (gCursorState.y >= gScreenHeight - 1)
+	else if (cursorState->y >= gScreenHeight - 1)
 		scrollY = 1;
 
 	// Scroll viewport
@@ -1661,25 +1665,26 @@ void game_handle_key_scroll()
 	scrollX = 0;
 	scrollY = 0;
 
+	const uint8 * keysState = context_get_keys_state();
 	for (sint32 shortcutId = SHORTCUT_SCROLL_MAP_UP; shortcutId <= SHORTCUT_SCROLL_MAP_RIGHT; shortcutId++) {
 		uint16 shortcutKey = gShortcutKeys[shortcutId];
 		uint8 scancode = shortcutKey & 0xFF;
 
 		if (shortcutKey == 0xFFFF) continue;
-		if (!gKeysState[scancode]) continue;
+		if (!keysState[scancode]) continue;
 
 		if (shortcutKey & SHIFT) {
-			if (!gKeysState[SDL_SCANCODE_LSHIFT] && !gKeysState[SDL_SCANCODE_RSHIFT]) continue;
+			if (!keysState[SDL_SCANCODE_LSHIFT] && !keysState[SDL_SCANCODE_RSHIFT]) continue;
 		}
 		if (shortcutKey & CTRL) {
-			if (!gKeysState[SDL_SCANCODE_LCTRL] && !gKeysState[SDL_SCANCODE_RCTRL]) continue;
+			if (!keysState[SDL_SCANCODE_LCTRL] && !keysState[SDL_SCANCODE_RCTRL]) continue;
 		}
 		if (shortcutKey & ALT) {
-			if (!gKeysState[SDL_SCANCODE_LALT] && !gKeysState[SDL_SCANCODE_RALT]) continue;
+			if (!keysState[SDL_SCANCODE_LALT] && !keysState[SDL_SCANCODE_RALT]) continue;
 		}
 #ifdef __MACOSX__
 		if (shortcutKey & CMD) {
-			if (!gKeysState[SDL_SCANCODE_LGUI] && !gKeysState[SDL_SCANCODE_RGUI]) continue;
+			if (!keysState[SDL_SCANCODE_LGUI] && !keysState[SDL_SCANCODE_RGUI]) continue;
 		}
 #endif
 

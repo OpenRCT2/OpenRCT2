@@ -16,6 +16,7 @@
 
 #include "../audio/audio.h"
 #include "../audio/AudioMixer.h"
+#include "../Context.h"
 #include "../interface/themes.h"
 #include "../localisation/localisation.h"
 #include "../network/network.h"
@@ -44,13 +45,13 @@ static void chat_clear_input();
 void chat_open()
 {
 	gChatOpen = true;
-	platform_start_text_input(_chatCurrentLine, sizeof(_chatCurrentLine));
+	context_start_text_input(_chatCurrentLine, sizeof(_chatCurrentLine));
 }
 
 void chat_close()
 {
 	gChatOpen = false;
-	platform_stop_text_input();
+	context_stop_text_input();
 }
 
 void chat_toggle()

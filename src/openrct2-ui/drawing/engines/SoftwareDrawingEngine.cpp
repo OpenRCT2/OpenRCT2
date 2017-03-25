@@ -15,6 +15,8 @@
 #pragma endregion
 
 #include <openrct2/config/Config.h>
+#include <openrct2/Context.h>
+#include <openrct2/ui/UiContext.h>
 #include <openrct2/core/Guard.hpp>
 #include <openrct2/core/Math.hpp>
 #include <openrct2/core/Memory.hpp>
@@ -37,6 +39,7 @@ extern "C"
     #include <openrct2/drawing/lightfx.h>
 }
 
+using namespace OpenRCT2;
 using namespace OpenRCT2::Drawing;
 
 class SoftwareDrawingEngine;
@@ -730,14 +733,15 @@ private:
         }
         SDL_RenderCopy(_sdlRenderer, _screenTexture, nullptr, nullptr);
 
-        if (gSteamOverlayActive && gConfigGeneral.steam_overlay_pause)
+        bool isSteamOverlayActive = GetContext()->GetUiContext()->IsSteamOverlayActive();
+        if (isSteamOverlayActive && gConfigGeneral.steam_overlay_pause)
         {
             OverlayPreRenderCheck();
         }
 
         SDL_RenderPresent(_sdlRenderer);
 
-        if (gSteamOverlayActive && gConfigGeneral.steam_overlay_pause)
+        if (isSteamOverlayActive && gConfigGeneral.steam_overlay_pause)
         {
             OverlayPostRenderCheck();
         }

@@ -18,6 +18,25 @@
 
 #include "common.h"
 
+typedef struct CursorState
+{
+    sint32  x, y;
+    uint8   left, middle, right, any;
+    sint32  wheel;
+    sint32  old;
+    bool    touch, touchIsDouble;
+    uint32  touchDownTimestamp;
+} CursorState;
+
+enum
+{
+    CURSOR_UP = 0,
+    CURSOR_DOWN = 1,
+    CURSOR_CHANGED = 2,
+    CURSOR_RELEASED = CURSOR_UP | CURSOR_CHANGED,
+    CURSOR_PRESSED = CURSOR_DOWN | CURSOR_CHANGED,
+};
+
 #ifdef __cplusplus
 
 namespace OpenRCT2
@@ -45,11 +64,23 @@ namespace OpenRCT2
 
 #endif // __cplusplus
 
-#if __cplusplus
+#ifdef __cplusplus
 extern "C"
 {
 #endif
     void context_setcurrentcursor(sint32 cursor);
-#if __cplusplus
+    void context_hide_cursor();
+    void context_show_cursor();
+    void context_get_cursor_position(sint32 * x, sint32 * y);
+    void context_get_cursor_position_scaled(sint32 * x, sint32 * y);
+    void context_set_cursor_position(sint32 x, sint32 y);
+    const CursorState * context_get_cursor_state();
+    const uint8 * context_get_keys_state();
+    const uint8 * context_get_keys_pressed();
+    void context_start_text_input(utf8 * buffer, size_t maxLength);
+    void context_stop_text_input();
+    bool context_is_input_active();
+
+#ifdef __cplusplus
 }
 #endif
