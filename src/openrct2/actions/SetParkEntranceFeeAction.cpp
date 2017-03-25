@@ -35,6 +35,11 @@ public:
         return GA_FLAGS::ALLOW_WHILE_PAUSED;
     }
 
+    uint32 GetType() const override
+    {
+        return GAME_COMMAND_SET_PARK_ENTRANCE_FEE;
+    }
+
     void Deserialise(IStream * stream) override
     {
         Fee = stream->ReadValue<money16>();
@@ -76,13 +81,13 @@ extern "C"
     {
         auto gameAction = SetParkEntranceFeeAction();
         gameAction.Fee = (money16)value;
-        GameActions::Execute(&gameAction);
+        GameActions::Execute(&gameAction, nullptr, 0);
     }
 
     void game_command_set_park_entrance_fee(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp)
     {
         auto gameAction = SetParkEntranceFeeAction();
         gameAction.Fee = (*edi & 0xFFFF);
-        GameActions::Execute(&gameAction);
+        GameActions::Execute(&gameAction, nullptr, 0);
     }
 }
