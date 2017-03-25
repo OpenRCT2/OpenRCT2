@@ -17,29 +17,20 @@
 #pragma once
 
 #include <openrct2/common.h>
-#include <openrct2/drawing/IDrawingEngine.h>
 
-namespace OpenRCT2 { namespace Ui
+namespace OpenRCT2
 {
-    class SoftwareDrawingEngineFactory : public Drawing::IDrawingEngineFactory
+    namespace Drawing
     {
-    public:
-        IDrawingEngine * Create() override;
-    };
+        interface IDrawingEngine;
+    }
 
-    class HardwareDisplayDrawingEngineFactory : public Drawing::IDrawingEngineFactory
+    namespace Ui
     {
-    public:
-        IDrawingEngine * Create() override;
-    };
-
-    #ifndef DISABLE_OPENGL
-
-    class OpenGLDrawingEngineFactory : public Drawing::IDrawingEngineFactory
-    {
-    public:
-        IDrawingEngine * Create() override;
-    };
-
-    #endif // DISABLE_OPENGL
-} }
+        Drawing::IDrawingEngine * CreateSoftwareDrawingEngine();
+        Drawing::IDrawingEngine * CreateHardwareDisplayDrawingEngine();
+#ifndef DISABLE_OPENGL
+        Drawing::IDrawingEngine * CreateOpenGLDrawingEngine();
+#endif
+    }
+}

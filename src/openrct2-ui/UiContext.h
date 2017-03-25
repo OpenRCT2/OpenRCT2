@@ -24,11 +24,8 @@ namespace OpenRCT2
 
     namespace Ui
     {
-        interface IUiContext
-        {
-            virtual ~IUiContext() { }
-        };
+        interface IUiContext;
 
-        IUiContext * CreateContext(IContext * context);
+        IUiContext * CreateContext();
     }
 }
