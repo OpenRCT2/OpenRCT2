@@ -18,6 +18,8 @@
 
 #include "common.h"
 
+#ifdef __cplusplus
+
 namespace OpenRCT2
 {
     namespace Ui
@@ -40,3 +42,14 @@ namespace OpenRCT2
     IContext * CreateContext(Ui::IUiContext * uiContext);
     IContext * GetContext();
 }
+
+#endif // __cplusplus
+
+#if __cplusplus
+extern "C"
+{
+#endif
+    void context_setcurrentcursor(sint32 cursor);
+#if __cplusplus
+}
+#endif

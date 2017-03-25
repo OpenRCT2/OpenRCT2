@@ -22,6 +22,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CursorData.cpp" />
+    <ClCompile Include="CursorRepository.cpp" />
     <ClCompile Include="drawing\engines\opengl\CopyFramebufferShader.cpp" />
     <ClCompile Include="drawing\engines\opengl\DrawImageShader.cpp" />
     <ClCompile Include="drawing\engines\opengl\DrawLineShader.cpp" />
@@ -35,8 +37,10 @@
     <ClCompile Include="drawing\engines\SoftwareDrawingEngine.cpp" />
     <ClCompile Include="Ui.cpp" />
     <ClCompile Include="UiContext.cpp" />
+    <ClCompile Include="UiContext.Win32.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CursorRepository.h" />
     <ClInclude Include="drawing\engines\DrawingEngines.h" />
     <ClInclude Include="drawing\engines\opengl\CopyFramebufferShader.h" />
     <ClInclude Include="drawing\engines\opengl\DrawCommands.h" />

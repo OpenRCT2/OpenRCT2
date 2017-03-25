@@ -14,28 +14,32 @@
 *****************************************************************************/
 #pragma endregion
 
-#pragma once
+#include <openrct2/interface/Cursors.h>
 
-#include <openrct2/common.h>
-
-struct SDL_Window;
+struct SDL_Cursor;
 
 namespace OpenRCT2
 {
-    interface IContext;
-
     namespace Ui
     {
-        interface IUiContext;
-
-        interface IPlatformUiContext
+        class CursorRepository
         {
-            virtual ~IPlatformUiContext() = default;
-            virtual void SetWindowIcon(SDL_Window * window) abstract;
-            virtual bool IsSteamOverlayAttached() abstract;
-        };
+        private:
+            constexpr static sint32 CURSOR_WIDTH = 32;
+            constexpr static sint32 CURSOR_HEIGHT = 32;
 
-        IUiContext * CreateContext();
-        IPlatformUiContext * CreatePlatformUiContext();
+            SDL_Cursor *    _loadedCursors[CURSOR_COUNT];
+            CURSOR_ID       _currentCursor = CURSOR_UNDEFINED;
+
+        public:
+            CursorRepository();
+            ~CursorRepository();
+            CURSOR_ID GetCurrentCursor();
+            void SetCurrentCursor(CURSOR_ID cursorId);
+
+        private:
+            SDL_Cursor * Create(const CursorData * cursorInfo);
+            static const CursorData * GetCursorData(CURSOR_ID cursorId);
+        };
     }
 }
