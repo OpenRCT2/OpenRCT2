@@ -14,8 +14,6 @@
 *****************************************************************************/
 #pragma endregion
 
-#ifndef _MSC_VER
-
 #include <openrct2/Context.h>
 
 using namespace OpenRCT2;
@@ -30,5 +28,3 @@ int main(int argc, char * * argv)
     delete context;
     return exitCode;
 }
-
-#endif
