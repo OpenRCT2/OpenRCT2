@@ -14,16 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
-#ifdef DISABLE_OPENGL
-
-#include "../../IDrawingEngine.h"
-
-IDrawingEngine * DrawingEngineFactory::CreateOpenGL()
-{
-    return nullptr;
-}
-
-#else
+#ifndef DISABLE_OPENGL
 
 #include <unordered_map>
 #include <vector>
@@ -58,6 +49,10 @@ extern "C"
 #include "SwapFramebuffer.h"
 #include "TextureCache.h"
 #include "DrawCommands.h"
+
+using namespace OpenRCT2;
+using namespace OpenRCT2::Drawing;
+using namespace OpenRCT2::Ui;
 
 struct OpenGLVersion
 {
@@ -499,7 +494,7 @@ private:
     }
 };
 
-IDrawingEngine * OpenRCT2::Ui::OpenGLDrawingEngineFactory::Create()
+IDrawingEngine * OpenRCT2::Ui::CreateOpenGLDrawingEngine()
 {
     return new OpenGLDrawingEngine();
 }

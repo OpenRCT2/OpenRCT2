@@ -26,6 +26,8 @@ extern "C"
 #include "Rain.h"
 #include "../core/Math.hpp"
 
+using namespace OpenRCT2::Drawing;
+
 typedef void (* DrawRainFunc)(IRainDrawer * rainDrawer, sint32 left, sint32 top, sint32 width, sint32 height);
 
 static void DrawLightRain(IRainDrawer * rainDrawer, sint32 left, sint32 top, sint32 width, sint32 height);

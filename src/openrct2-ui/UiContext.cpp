@@ -17,41 +17,56 @@
 #include <memory>
 #include <vector>
 #include <openrct2/Context.h>
-#include <openrct2/core/Registration.hpp>
+#include <openrct2/drawing/IDrawingEngine.h>
+#include <openrct2/ui/UiContext.h>
 #include "drawing/engines/DrawingEngines.h"
 #include "UiContext.h"
 
 using namespace OpenRCT2;
+using namespace OpenRCT2::Drawing;
 using namespace OpenRCT2::Ui;
 
 class UiContext : public IUiContext
 {
-private:
-    IContext * const _context;
-    std::vector<std::unique_ptr<IRegistration>> _registrations;
-
-    // Drawing engines
-    SoftwareDrawingEngineFactory        _softwareDrawingFactory;
-    HardwareDisplayDrawingEngineFactory _hardwareDrawingFactory;
-#ifndef DISABLE_OPENGL
-    OpenGLDrawingEngineFactory          _openglDrawingFactory;
-#endif
-
 public:
-    UiContext(IContext * context) :
-        _context(context)
+    UiContext()
     {
-        _registrations.emplace_back(context->RegisterDrawingEngine(DRAWING_ENGINE_SOFTWARE, &_softwareDrawingFactory));
-        _registrations.emplace_back(context->RegisterDrawingEngine(DRAWING_ENGINE_SOFTWARE_WITH_HARDWARE_DISPLAY, &_hardwareDrawingFactory));
-        _registrations.emplace_back(context->RegisterDrawingEngine(DRAWING_ENGINE_OPENGL, &_openglDrawingFactory));
     }
 
     ~UiContext() override
     {
     }
+
+    // Window
+    void *  GetWindow() override { return nullptr; }
+    sint32  GetWidth() override { return 0; }
+    sint32  GetHeight() override { return 0; }
+    void    SetFullscreenMode(FULLSCREEN_MODE mode) override { }
+
+    // Drawing
+    IDrawingEngine * CreateDrawingEngine(DRAWING_ENGINE_TYPE type) override
+    {
+        switch ((sint32)type) {
+        case DRAWING_ENGINE_SOFTWARE:
+            return CreateSoftwareDrawingEngine();
+        case DRAWING_ENGINE_SOFTWARE_WITH_HARDWARE_DISPLAY:
+            return CreateHardwareDisplayDrawingEngine();
+#ifndef DISABLE_OPENGL
+        case DRAWING_ENGINE_OPENGL:
+            return CreateOpenGLDrawingEngine();
+#endif
+        default:
+            return nullptr;
+        }
+    }
+
+    // Text input
+    bool                        IsTextInputActive() override { return false; }
+    const TextInputSession *    StartTextInput(utf8 * buffer, sint32 bufferSize) override { return nullptr; }
+    void                        StopTextInput() override { }
 };
 
-IUiContext * OpenRCT2::Ui::CreateContext(IContext * context)
+IUiContext * OpenRCT2::Ui::CreateContext()
 {
-    return new UiContext(context);
+    return new UiContext();
 }

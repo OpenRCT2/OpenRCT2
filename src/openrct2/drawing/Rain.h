@@ -18,6 +18,9 @@
 
 #include "../common.h"
 
-interface IRainDrawer;
+namespace OpenRCT2 { namespace Drawing
+{
+    interface IRainDrawer;
+} }
 
-void DrawRain(rct_drawpixelinfo * dpi, IRainDrawer * rainDrawer);
+void DrawRain(rct_drawpixelinfo * dpi, OpenRCT2::Drawing::IRainDrawer * rainDrawer);

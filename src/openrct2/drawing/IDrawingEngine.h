@@ -42,59 +42,44 @@ enum DRAWING_ENGINE_FLAGS
 #ifdef __cplusplus
 
 struct rct_drawpixelinfo;
-interface IDrawingContext;
 
-interface IDrawingEngine
+namespace OpenRCT2 { namespace Drawing
 {
-    virtual ~IDrawingEngine() { }
+    interface IDrawingContext;
 
-    virtual void Initialise(SDL_Window * window)     abstract;
-    virtual void Resize(uint32 width, uint32 height) abstract;
-    virtual void SetPalette(SDL_Color * colours)     abstract;
-
-    virtual void SetUncappedFrameRate(bool uncapped) abstract;
-
-    virtual void    Invalidate(sint32 left, sint32 top, sint32 right, sint32 bottom) abstract;
-    virtual void    Draw() abstract;
-    virtual void    CopyRect(sint32 x, sint32 y, sint32 width, sint32 height, sint32 dx, sint32 dy) abstract;
-    virtual sint32  Screenshot() abstract;
-
-    virtual IDrawingContext *   GetDrawingContext(rct_drawpixelinfo * dpi) abstract;
-    virtual rct_drawpixelinfo * GetDrawingPixelInfo() abstract;
-
-    virtual DRAWING_ENGINE_FLAGS GetFlags() abstract;
-
-    virtual void InvalidateImage(uint32 image) abstract;
-};
-
-interface IRainDrawer
-{
-    virtual ~IRainDrawer() { }
-    virtual void Draw(sint32 x,
-                      sint32 y,
-                      sint32 width,
-                      sint32 height,
-                      sint32 xStart,
-                      sint32 yStart) abstract;
-};
-
-namespace OpenRCT2
-{
-    interface IRegistration;
-
-    namespace Drawing
+    interface IDrawingEngine
     {
-        interface IDrawingEngineFactory
-        {
-            virtual ~IDrawingEngineFactory() { }
-            virtual IDrawingEngine * Create() abstract;
-        };
+        virtual ~IDrawingEngine() { }
 
-        namespace DrawingEngineFactory
-        {
-            IRegistration * Register(DRAWING_ENGINE type, IDrawingEngineFactory * factory);
-        }
-    }
-}
+        virtual void Initialise(SDL_Window * window)     abstract;
+        virtual void Resize(uint32 width, uint32 height) abstract;
+        virtual void SetPalette(SDL_Color * colours)     abstract;
+
+        virtual void SetUncappedFrameRate(bool uncapped) abstract;
+
+        virtual void    Invalidate(sint32 left, sint32 top, sint32 right, sint32 bottom) abstract;
+        virtual void    Draw() abstract;
+        virtual void    CopyRect(sint32 x, sint32 y, sint32 width, sint32 height, sint32 dx, sint32 dy) abstract;
+        virtual sint32  Screenshot() abstract;
+
+        virtual IDrawingContext *   GetDrawingContext(rct_drawpixelinfo * dpi) abstract;
+        virtual rct_drawpixelinfo * GetDrawingPixelInfo() abstract;
+
+        virtual DRAWING_ENGINE_FLAGS GetFlags() abstract;
+
+        virtual void InvalidateImage(uint32 image) abstract;
+    };
+
+    interface IRainDrawer
+    {
+        virtual ~IRainDrawer() { }
+        virtual void Draw(sint32 x,
+            sint32 y,
+            sint32 width,
+            sint32 height,
+            sint32 xStart,
+            sint32 yStart) abstract;
+    };
+} }
 
 #endif

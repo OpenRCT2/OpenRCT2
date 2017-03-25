@@ -14,41 +14,69 @@
 *****************************************************************************/
 #pragma endregion
 
-#include "drawing/IDrawingEngine.h"
+#include <exception>
 #include "Context.h"
 #include "OpenRCT2.h"
 
 using namespace OpenRCT2;
+using namespace OpenRCT2::Ui;
 
-class Context : public IContext
+namespace OpenRCT2
 {
-public:
-    Context()
+    class Context : public IContext
     {
-    }
+    private:
+        IUiContext * const _uiContext;
 
-    ~Context() override
-    {
-    }
+    public:
+        // Singleton of Context.
+        // Remove this when GetContext() is no longer called so that
+        // multiple instances can be created in parallel
+        static Context * Instance;
 
-    IRegistration * RegisterDrawingEngine(sint32 type, Drawing::IDrawingEngineFactory * factory) override
-    {
-        return Drawing::DrawingEngineFactory::Register((DRAWING_ENGINE)type, factory);
-    }
-
-    sint32 RunOpenRCT2(int argc, char * * argv) override
-    {
-        core_init();
-        int runGame = cmdline_run((const char * *)argv, argc);
-        if (runGame == 1)
+    public:
+        Context(IUiContext * uiContext)
+            : _uiContext(uiContext)
         {
-            openrct2_launch();
+            Instance = this;
         }
-        return gExitCode;
-    }
-};
 
-IContext * OpenRCT2::CreateContext()
-{
-    return new Context();
+        ~Context() override
+        {
+            Instance = nullptr;
+        }
+
+        IUiContext * GetUiContext() override
+        {
+            return _uiContext;
+        }
+
+        sint32 RunOpenRCT2(int argc, char * * argv) override
+        {
+            core_init();
+            int runGame = cmdline_run((const char * *)argv, argc);
+            if (runGame == 1)
+            {
+                openrct2_launch();
+            }
+            return gExitCode;
+        }
+    };
+
+    Context * Context::Instance = nullptr;
+
+    IContext * CreateContext()
+    {
+        return new Context(nullptr);
+    }
+
+    IContext * CreateContext(IUiContext * uiContext)
+    {
+        return new Context(uiContext);
+    }
+
+    IContext * GetContext()
+    {
+        return Context::Instance;
+    }
 }
