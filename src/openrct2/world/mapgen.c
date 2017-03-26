@@ -22,6 +22,7 @@
 #include "../game.h"
 #include "../localisation/string_ids.h"
 #include "../object.h"
+#include "../platform/platform.h"
 #include "../util/util.h"
 #include "../windows/error.h"
 #include "map.h"
@@ -142,7 +143,7 @@ void mapgen_generate(mapgen_settings *settings)
 	sint32 x, y, mapSize, floorTexture, wallTexture, waterLevel;
 	rct_map_element *mapElement;
 
-	util_srand((sint32)SDL_GetTicks());
+	util_srand((sint32)platform_get_ticks());
 
 	mapSize = settings->mapSize;
 	floorTexture = settings->floor;

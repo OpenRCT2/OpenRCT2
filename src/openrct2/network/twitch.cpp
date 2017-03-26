@@ -43,6 +43,7 @@ extern "C"
     #include "../localisation/localisation.h"
     #include "../management/news_item.h"
     #include "../peep/peep.h"
+    #include "../platform/platform.h"
     #include "../rct2.h"
     #include "../util/util.h"
     #include "../world/sprite.h"
@@ -142,7 +143,7 @@ namespace Twitch
             switch (_twitchState) {
             case TWITCH_STATE_LEFT:
             {
-                uint32 currentTime = SDL_GetTicks();
+                uint32 currentTime = platform_get_ticks();
                 uint32 timeSinceLastPulse = currentTime - _twitchLastPulseTick;
                 if (_twitchLastPulseTick == 0 || timeSinceLastPulse > PulseTime)
                 {
@@ -153,7 +154,7 @@ namespace Twitch
             }
             case TWITCH_STATE_JOINED:
             {
-                uint32 currentTime = SDL_GetTicks();
+                uint32 currentTime = platform_get_ticks();
                 uint32 timeSinceLastPulse = currentTime - _twitchLastPulseTick;
                 if (_twitchLastPulseTick == 0 || timeSinceLastPulse > PulseTime) {
                     _twitchLastPulseTick = currentTime;

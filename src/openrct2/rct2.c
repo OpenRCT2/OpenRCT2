@@ -380,7 +380,7 @@ sint32 check_file_paths()
 
 void rct2_update()
 {
-	sint32 tickCount = SDL_GetTicks();
+	sint32 tickCount = platform_get_ticks();
 	gTicksSinceLastUpdate = min(tickCount - gLastTickCount, 500);
 	gLastTickCount = tickCount;
 	if (game_is_not_paused()) {

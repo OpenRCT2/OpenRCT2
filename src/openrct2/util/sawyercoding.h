@@ -17,7 +17,6 @@
 #ifndef _SAWYERCODING_H_
 #define _SAWYERCODING_H_
 
-#include <SDL.h>
 #include "../common.h"
 
 #pragma pack(push, 1)

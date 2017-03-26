@@ -362,7 +362,7 @@ void scenario_autosave_check()
 	if (gLastAutoSaveUpdate == AUTOSAVE_PAUSE) return;
 
 	// Milliseconds since last save
-	uint32 timeSinceSave = SDL_GetTicks() - gLastAutoSaveUpdate;
+	uint32 timeSinceSave = platform_get_ticks() - gLastAutoSaveUpdate;
 
 	bool shouldSave = false;
 	switch (gConfigGeneral.autosave_frequency) {

@@ -14,14 +14,13 @@
  *****************************************************************************/
 #pragma endregion
 
-#include <SDL_platform.h>
 #include "crash.h"
 
 #ifdef USE_BREAKPAD
 #include <memory>
 #include <stdio.h>
 
-#if defined(__WINDOWS__)
+#if defined(_WIN32)
     #include <breakpad/client/windows/handler/exception_handler.h>
     #include <string>
     #include <ShlObj.h>

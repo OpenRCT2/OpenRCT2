@@ -80,7 +80,7 @@ struct ByteSwapT<2>
 {
     static uint16 SwapBE(uint16 value)
     {
-        return SDL_SwapBE16(value);
+        return (uint16)((value << 8) | (value >> 8));
     }
 };
 
@@ -89,7 +89,10 @@ struct ByteSwapT<4>
 {
     static uint32 SwapBE(uint32 value)
     {
-        return SDL_SwapBE32(value);
+        return (uint32)(((value << 24) |
+                        ((value << 8) & 0x00FF0000) |
+                        ((value >> 8) & 0x0000FF00) |
+                         (value >> 24)));
     }
 };
 

@@ -85,7 +85,7 @@ sint32 NetworkConnection::ReadPacket()
         }
         if (InboundPacket.BytesTransferred == sizeof(InboundPacket.Size) + InboundPacket.Size)
         {
-            _lastPacketTime = SDL_GetTicks();
+            _lastPacketTime = platform_get_ticks();
             return NETWORK_READPACKET_SUCCESS;
         }
     }
@@ -150,13 +150,13 @@ void NetworkConnection::SendQueuedPackets()
 
 void NetworkConnection::ResetLastPacketTime()
 {
-    _lastPacketTime = SDL_GetTicks();
+    _lastPacketTime = platform_get_ticks();
 }
 
 bool NetworkConnection::ReceivedPacketRecently()
 {
 #ifndef DEBUG
-    if (SDL_TICKS_PASSED(SDL_GetTicks(), _lastPacketTime + 7000))
+    if (platform_get_ticks() > _lastPacketTime + 7000)
     {
         return false;
     }

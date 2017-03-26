@@ -14,8 +14,6 @@
  *****************************************************************************/
 #pragma endregion
 
-#include <SDL_platform.h>
-
 #include "../core/Guard.hpp"
 #include "../OpenRCT2.h"
 
@@ -380,10 +378,12 @@ void Network::UpdateServer()
 			it++;
 		}
 	}
-	if (SDL_TICKS_PASSED(SDL_GetTicks(), last_tick_sent_time + 25)) {
+
+	uint32 ticks = platform_get_ticks();
+	if (ticks > last_tick_sent_time + 25) {
 		Server_Send_TICK();
 	}
-	if (SDL_TICKS_PASSED(SDL_GetTicks(), last_ping_sent_time + 3000)) {
+	if (ticks > last_ping_sent_time + 3000) {
 		Server_Send_PING();
 		Server_Send_PINGLIST();
 	}
@@ -427,7 +427,7 @@ void Network::UpdateClient()
 				window_network_status_open(str_connecting, []() -> void {
 					gNetwork.Close();
 				});
-				server_connect_time = SDL_GetTicks();
+				server_connect_time = platform_get_ticks();
 			}
 			break;
 		}
@@ -1044,7 +1044,7 @@ void Network::Server_Send_GAMECMD(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx
 
 void Network::Server_Send_TICK()
 {
-	last_tick_sent_time = SDL_GetTicks();
+	last_tick_sent_time = platform_get_ticks();
 	std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
 	*packet << (uint32)NETWORK_COMMAND_TICK << (uint32)gCurrentTicks << (uint32)gScenarioSrand0;
 	uint32 flags = 0;
@@ -1085,11 +1085,11 @@ void Network::Client_Send_PING()
 
 void Network::Server_Send_PING()
 {
-	last_ping_sent_time = SDL_GetTicks();
+	last_ping_sent_time = platform_get_ticks();
 	std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
 	*packet << (uint32)NETWORK_COMMAND_PING;
 	for (auto it = client_connection_list.begin(); it != client_connection_list.end(); it++) {
-		(*it)->PingTime = SDL_GetTicks();
+		(*it)->PingTime = platform_get_ticks();
 	}
 	SendPacketToClients(*packet, true);
 }
@@ -1254,7 +1254,7 @@ void Network::ProcessGameCommandQueue()
 			NetworkPlayer* player = GetPlayerByID(gc.playerid);
 			if (player) {
 				player->LastAction = NetworkActions::FindCommand(command);
-				player->LastActionTime = SDL_GetTicks();
+				player->LastActionTime = platform_get_ticks();
 				player->AddMoneySpent(cost);
 			}
 		}
@@ -1860,7 +1860,7 @@ void Network::Server_Handle_GAMECMD(NetworkConnection& connection, NetworkPacket
 
 	sint32 commandCommand = args[4];
 
-	uint32 ticks = SDL_GetTicks(); //tick count is different by time last_action_time is set, keep same value.
+	uint32 ticks = platform_get_ticks(); //tick count is different by time last_action_time is set, keep same value.
 
 	// Check if player's group permission allows command to run
 	NetworkGroup* group = GetGroupByID(connection.Player->Group);
@@ -1875,7 +1875,7 @@ void Network::Server_Handle_GAMECMD(NetworkConnection& connection, NetworkPacket
 	if (commandCommand == GAME_COMMAND_PLACE_SCENERY) {
 		if (
 			ticks - connection.Player->LastPlaceSceneryTime < ACTION_COOLDOWN_TIME_PLACE_SCENERY &&
-			// Incase SDL_GetTicks() wraps after ~49 days, ignore larger logged times.
+			// Incase platform_get_ticks() wraps after ~49 days, ignore larger logged times.
 			ticks > connection.Player->LastPlaceSceneryTime
 		) {
 			if (!(group->CanPerformCommand(MISC_COMMAND_TOGGLE_SCENERY_CLUSTER))) {
@@ -1889,7 +1889,7 @@ void Network::Server_Handle_GAMECMD(NetworkConnection& connection, NetworkPacket
 	else if (commandCommand == GAME_COMMAND_DEMOLISH_RIDE) {
 		if (
 			ticks - connection.Player->LastDemolishRideTime < ACTION_COOLDOWN_TIME_DEMOLISH_RIDE &&
-			// Incase SDL_GetTicks() wraps after ~49 days, ignore larger logged times.
+			// Incase platform_get_ticks() wraps after ~49 days, ignore larger logged times.
 			ticks > connection.Player->LastDemolishRideTime
 		) {
 			Server_Send_SHOWERROR(connection, STR_CANT_DO_THIS, STR_NETWORK_ACTION_RATE_LIMIT_MESSAGE);
@@ -1912,7 +1912,7 @@ void Network::Server_Handle_GAMECMD(NetworkConnection& connection, NetworkPacket
 	}
 
 	connection.Player->LastAction = NetworkActions::FindCommand(commandCommand);
-	connection.Player->LastActionTime = SDL_GetTicks();
+	connection.Player->LastActionTime = platform_get_ticks();
 	connection.Player->AddMoneySpent(cost);
 
 	if (commandCommand == GAME_COMMAND_PLACE_SCENERY) {
@@ -1986,7 +1986,7 @@ void Network::Client_Handle_PING(NetworkConnection& connection, NetworkPacket& p
 
 void Network::Server_Handle_PING(NetworkConnection& connection, NetworkPacket& packet)
 {
-	sint32 ping = SDL_GetTicks() - connection.PingTime;
+	sint32 ping = platform_get_ticks() - connection.PingTime;
 	if (ping < 0) {
 		ping = 0;
 	}
@@ -2204,7 +2204,7 @@ void network_add_player_money_spent(uint32 index, money32 cost)
 
 sint32 network_get_player_last_action(uint32 index, sint32 time)
 {
-	if (time && SDL_TICKS_PASSED(SDL_GetTicks(), gNetwork.player_list[index]->LastActionTime + time)) {
+	if (time && platform_get_ticks() > gNetwork.player_list[index]->LastActionTime + time) {
 		return -999;
 	}
 	return gNetwork.player_list[index]->LastAction;
@@ -2213,7 +2213,7 @@ sint32 network_get_player_last_action(uint32 index, sint32 time)
 void network_set_player_last_action(uint32 index, sint32 command)
 {
 	gNetwork.player_list[index]->LastAction = NetworkActions::FindCommand(command);
-	gNetwork.player_list[index]->LastActionTime = SDL_GetTicks();
+	gNetwork.player_list[index]->LastActionTime = platform_get_ticks();
 }
 
 rct_xyz16 network_get_player_last_action_coord(uint32 index)

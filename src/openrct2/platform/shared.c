@@ -14,6 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
+#include <stdlib.h>
 #include "../audio/audio.h"
 #include "../audio/AudioMixer.h"
 #include "../config/Config.h"
@@ -761,7 +762,21 @@ void platform_set_cursor_position(sint32 x, sint32 y)
 
 uint32 platform_get_ticks()
 {
-	return SDL_GetTicks();
+#ifdef _WIN32
+    return GetTickCount();
+#else
+    struct timespec ts;
+    if (clock_gettime(CLOCK_MONOTONIC, &ts) != 0) {
+        log_fatal("clock_gettime failed");
+        exit(-1);
+    }
+    return (uint32)(ts.tv_nsec / 1000000);
+#endif
+}
+
+void platform_sleep(uint32 ms)
+{
+    SDL_Delay(ms);
 }
 
 uint8 platform_get_currency_value(const char *currCode) {
