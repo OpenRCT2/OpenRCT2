@@ -22,6 +22,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="audio\AudioContext.cpp" />
     <ClCompile Include="CursorData.cpp" />
     <ClCompile Include="CursorRepository.cpp" />
     <ClCompile Include="drawing\engines\opengl\CopyFramebufferShader.cpp" />
