@@ -15,6 +15,7 @@
 #pragma endregion
 
 #include "../audio/audio.h"
+#include "../Context.h"
 #include "../drawing/drawing.h"
 #include "../game.h"
 #include "../input.h"
@@ -728,13 +729,14 @@ static void window_scenery_event_07(rct_window *w)
  */
 static void window_scenery_update(rct_window *w)
 {
-	rct_window *other = window_find_from_point(gCursorState.x, gCursorState.y);
+	const CursorState * state = context_get_cursor_state();
+	rct_window *other = window_find_from_point(state->x, state->y);
 	if (other == w) {
-		sint32 window_x = gCursorState.x - w->x + 26;
-		sint32 window_y = gCursorState.y - w->y;
+		sint32 window_x = state->x - w->x + 26;
+		sint32 window_y = state->y - w->y;
 
 		if (window_y < 44 || window_x <= w->width) {
-			rct_widgetindex widgetIndex = window_find_widget_from_point(w, gCursorState.x, gCursorState.y);
+			rct_widgetindex widgetIndex = window_find_widget_from_point(w, state->x, state->y);
 			if (widgetIndex >= WIDX_SCENERY_TAB_CONTENT_PANEL) {
 				w->scenery.hover_counter++;
 				if (w->scenery.hover_counter < 8) {

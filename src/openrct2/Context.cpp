@@ -15,6 +15,7 @@
 #pragma endregion
 
 #include <exception>
+#include "core/Memory.hpp"
 #include "config/Config.h"
 #include "Context.h"
 #include "OpenRCT2.h"
@@ -134,9 +135,9 @@ extern "C"
         return GetContext()->GetUiContext()->GetKeysPressed();
     }
 
-    void context_start_text_input(utf8 * buffer, size_t maxLength)
+    TextInputSession * context_start_text_input(utf8 * buffer, size_t maxLength)
     {
-        GetContext()->GetUiContext()->StartTextInput(buffer, maxLength);
+        return GetContext()->GetUiContext()->StartTextInput(buffer, maxLength);
     }
 
     void context_stop_text_input()
@@ -147,5 +148,24 @@ extern "C"
     bool context_is_input_active()
     {
         return GetContext()->GetUiContext()->IsTextInputActive();
+    }
+
+    void context_trigger_resize()
+    {
+        return GetContext()->GetUiContext()->TriggerResize();
+    }
+
+    void context_set_fullscreen_mode(sint32 mode)
+    {
+        return GetContext()->GetUiContext()->SetFullscreenMode((FULLSCREEN_MODE)mode);
+    }
+
+    sint32 context_get_resolutions(Resolution * * outResolutions)
+    {
+        auto resolutions = GetContext()->GetUiContext()->GetFullscreenResolutions();
+        sint32 count = (sint32)resolutions.size();
+        *outResolutions = Memory::AllocateArray<Resolution>(count);
+        Memory::CopyArray(*outResolutions, resolutions.data(), count);
+        return count;
     }
 }

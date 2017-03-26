@@ -28,6 +28,22 @@ typedef struct CursorState
     uint32  touchDownTimestamp;
 } CursorState;
 
+typedef struct TextInputSession
+{
+    utf8 * Buffer;          // UTF-8 stream
+    size_t BufferSize;      // Maximum number of bytes (excluding null terminator)
+    size_t Size;            // Number of bytes (excluding null terminator)
+    size_t Length;          // Number of codepoints
+    size_t SelectionStart;  // Selection start, in bytes
+    size_t SelectionSize;   // Selection length in bytes
+} TextInputSession;
+
+struct Resolution
+{
+    sint32 Width;
+    sint32 Height;
+};
+
 enum
 {
     CURSOR_UP = 0,
@@ -77,9 +93,12 @@ extern "C"
     const CursorState * context_get_cursor_state();
     const uint8 * context_get_keys_state();
     const uint8 * context_get_keys_pressed();
-    void context_start_text_input(utf8 * buffer, size_t maxLength);
+    TextInputSession * context_start_text_input(utf8 * buffer, size_t maxLength);
     void context_stop_text_input();
     bool context_is_input_active();
+    void context_trigger_resize();
+    void context_set_fullscreen_mode(sint32 mode);
+    sint32 context_get_resolutions(struct Resolution * * outResolutions);
 
 #ifdef __cplusplus
 }
