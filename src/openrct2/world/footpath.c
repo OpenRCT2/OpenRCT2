@@ -460,7 +460,7 @@ money32 footpath_remove_real(sint32 x, sint32 y, sint32 z, sint32 flags)
 	}
 
 	return cost;
-	}
+}
 
 /**
  *
