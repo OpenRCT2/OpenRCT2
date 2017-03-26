@@ -16,21 +16,33 @@
 
 #pragma once
 
-#include <openrct2/common.h>
+#include <SDL.h>
+#include <stdexcept>
 
-namespace OpenRCT2
+/**
+ * An exception which wraps an SDL error.
+ */
+class SDLException : public std::runtime_error
 {
-    namespace Drawing
+public:
+    explicit SDLException(const std::string& message)
+        : runtime_error(message.c_str())
     {
-        interface IDrawingEngine;
+        SDL_GetError();
     }
 
-    namespace Ui
+    explicit SDLException(const char * message)
+        : runtime_error(message)
     {
-        Drawing::IDrawingEngine * CreateSoftwareDrawingEngine(IUiContext * uiContext);
-        Drawing::IDrawingEngine * CreateHardwareDisplayDrawingEngine(IUiContext * uiContext);
-#ifndef DISABLE_OPENGL
-        Drawing::IDrawingEngine * CreateOpenGLDrawingEngine(IUiContext * uiContext);
-#endif
     }
-}
+
+    /**
+     * Throws an SDL exception with a message containing the given call information
+     * and the message given by SDL_GetError.
+     */
+    static void Throw(const char * call)
+    {
+        std::string message = std::string(call) + ": " + std::string(SDL_GetError());
+        throw SDLException(message);
+    }
+};
