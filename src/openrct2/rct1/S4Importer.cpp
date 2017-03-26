@@ -1891,7 +1891,7 @@ private:
     void ImportParkFlags()
     {
         // Date and srand
-        gCurrentTicks = _s4.ticks;
+        gScenarioTicks = _s4.ticks;
         gScenarioSrand0 = _s4.random_a;
         gScenarioSrand1 = _s4.random_b;
         gDateMonthsElapsed = _s4.month;
