@@ -288,7 +288,7 @@ sint32 cmdline_for_screenshot(const char **argv, sint32 argc)
 	}
 
 	gOpenRCT2Headless = true;
-	if (openrct2_initialise()) {
+	// if (openrct2_initialise()) {
 		drawing_engine_init();
 		rct2_open_file(inputPath);
 
@@ -373,7 +373,7 @@ sint32 cmdline_for_screenshot(const char **argv, sint32 argc)
 
 		free(dpi.bits);
 		drawing_engine_dispose();
-	}
-	openrct2_dispose();
+	// }
+	// openrct2_dispose();
 	return 1;
 }

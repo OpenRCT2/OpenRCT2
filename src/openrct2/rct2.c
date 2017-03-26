@@ -167,7 +167,7 @@ bool rct2_init()
 
 	font_sprite_initialise_characters();
 	if (!gOpenRCT2Headless) {
-		platform_init();
+		// platform_init();
 		audio_init_ride_sounds_and_info();
 	}
 	viewport_init_all();
