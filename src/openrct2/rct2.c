@@ -20,6 +20,7 @@
 #include "audio/audio.h"
 #include "audio/AudioMixer.h"
 #include "config/Config.h"
+#include "Context.h"
 #include "drawing/drawing.h"
 #include "drawing/lightfx.h"
 #include "editor.h"
@@ -114,8 +115,6 @@ uint32 gCurrentDrawCount = 0;
 uint8 gScreenFlags;
 uint32 gScreenAge;
 uint8 gSavePromptMode;
-sint32 gScreenWidth;
-sint32 gScreenHeight;
 
 char gRCT2AddressAppPath[MAX_PATH];
 char gRCT2AddressSavedGamesPath[MAX_PATH];
@@ -273,7 +272,7 @@ void rct2_draw(rct_drawpixelinfo *dpi)
 	console_draw(dpi);
 
 	if ((gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) && !gTitleHideVersionInfo) {
-		DrawOpenRCT2(dpi, 0, gScreenHeight - 20);
+		DrawOpenRCT2(dpi, 0, context_get_height() - 20);
 	}
 
 	if (gConfigGeneral.show_fps) {
@@ -303,7 +302,7 @@ static void rct2_measure_fps()
 
 static void rct2_draw_fps(rct_drawpixelinfo *dpi)
 {
-	sint32 x = gScreenWidth / 2;
+	sint32 x = context_get_width() / 2;
 	sint32 y = 2;
 
 	// Measure FPS

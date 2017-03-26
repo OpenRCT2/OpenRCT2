@@ -14,6 +14,8 @@
  *****************************************************************************/
 #pragma endregion
 
+#include "../Context.h"
+#include "../interface/themes.h"
 #include "../interface/viewport.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
@@ -107,8 +109,8 @@ rct_window *window_changelog_open()
 	if (!window_changelog_read_file())
 		return NULL;
 
-	sint32 screenWidth = gScreenWidth;
-	sint32 screenHeight = gScreenHeight;
+	sint32 screenWidth = context_get_width();
+	sint32 screenHeight = context_get_height();
 
 	window = window_create_centred(
 		screenWidth * 4 / 5,
@@ -144,8 +146,8 @@ static void window_changelog_mouseup(rct_window *w, rct_widgetindex widgetIndex)
 
 static void window_changelog_resize(rct_window *w)
 {
-	sint32 screenWidth = gScreenWidth;
-	sint32 screenHeight = gScreenHeight;
+	sint32 screenWidth = context_get_width();
+	sint32 screenHeight = context_get_height();
 
 	w->max_width = (screenWidth * 4) / 5;
 	w->max_height = (screenHeight * 4) / 5;

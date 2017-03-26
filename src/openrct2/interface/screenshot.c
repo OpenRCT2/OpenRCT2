@@ -16,6 +16,7 @@
 
 #include "../audio/audio.h"
 #include "../config/Config.h"
+#include "../Context.h"
 #include "../drawing/drawing.h"
 #include "../game.h"
 #include "../Imaging.h"
@@ -46,7 +47,7 @@ void screenshot_check()
 			screenshotIndex = screenshot_dump();
 
 			if (screenshotIndex != -1) {
-				audio_play_sound(SOUND_WINDOW_OPEN, 100, gScreenWidth / 2);
+				audio_play_sound(SOUND_WINDOW_OPEN, 100, context_get_width() / 2);
 			} else {
 				window_error_open(STR_SCREENSHOT_FAILED, STR_NONE);
 			}

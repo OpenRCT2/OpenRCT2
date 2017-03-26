@@ -83,6 +83,7 @@ public:
         {
             SDLException::Throw("SDL_Init(SDL_INIT_VIDEO)");
         }
+        _cursorRepository.LoadCursors();
     }
 
     ~UiContext() override
@@ -331,13 +332,13 @@ public:
             // Apple sends touchscreen events for trackpads, so ignore these events on macOS
 #ifndef __MACOSX__
             case SDL_FINGERMOTION:
-                _cursorState.x = (sint32)(e.tfinger.x * gScreenWidth);
-                _cursorState.y = (sint32)(e.tfinger.y * gScreenHeight);
+                _cursorState.x = (sint32)(e.tfinger.x * _width);
+                _cursorState.y = (sint32)(e.tfinger.y * _height);
                 break;
             case SDL_FINGERDOWN:
             {
-                sint32 x = (sint32)(e.tfinger.x * gScreenWidth);
-                sint32 y = (sint32)(e.tfinger.y * gScreenHeight);
+                sint32 x = (sint32)(e.tfinger.x * _width);
+                sint32 y = (sint32)(e.tfinger.y * _height);
 
                 _cursorState.touchIsDouble = (!_cursorState.touchIsDouble &&
                     e.tfinger.timestamp - _cursorState.touchDownTimestamp < TOUCH_DOUBLE_TIMEOUT);
@@ -360,8 +361,8 @@ public:
             }
             case SDL_FINGERUP:
             {
-                sint32 x = (sint32)(e.tfinger.x * gScreenWidth);
-                sint32 y = (sint32)(e.tfinger.y * gScreenHeight);
+                sint32 x = (sint32)(e.tfinger.x * _width);
+                sint32 y = (sint32)(e.tfinger.y * _height);
 
                 if (_cursorState.touchIsDouble)
                 {
@@ -393,7 +394,7 @@ public:
 
                     // Zoom gesture
                     constexpr sint32 tolerance = 128;
-                    sint32 gesturePixels = (sint32)(_gestureRadius * gScreenWidth);
+                    sint32 gesturePixels = (sint32)(_gestureRadius * _width);
                     if (abs(gesturePixels) > tolerance)
                     {
                         _gestureRadius = 0;

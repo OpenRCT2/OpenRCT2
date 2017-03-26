@@ -138,8 +138,10 @@ void game_handle_input()
 	if (_inputFlags & INPUT_FLAG_5) {
 		game_handle_input_mouse(x, y, state);
 	} else if (x != 0x80000000) {
-		x = clamp(0, x, gScreenWidth - 1);
-		y = clamp(0, y, gScreenHeight - 1);
+		sint32 screenWidth = context_get_width();
+		sint32 screenHeight = context_get_height();
+		x = clamp(0, x, screenWidth - 1);
+		y = clamp(0, y, screenHeight - 1);
 
 		game_handle_input_mouse(x, y, state);
 		process_mouse_over(x, y);
@@ -470,7 +472,7 @@ static void input_window_resize_begin(rct_window *w, rct_widgetindex widgetIndex
 
 static void input_window_resize_continue(rct_window *w, sint32 x, sint32 y)
 {
-	if (y < (sint32)gScreenHeight - 2) {
+	if (y < (sint32)context_get_height() - 2) {
 		sint32 dx, dy, targetWidth, targetHeight;
 		dx = x - gInputDragLastX;
 		dy = y - gInputDragLastY;
@@ -1623,13 +1625,13 @@ void game_handle_edge_scroll()
 	const CursorState * cursorState = context_get_cursor_state();
 	if (cursorState->x == 0)
 		scrollX = -1;
-	else if (cursorState->x >= gScreenWidth - 1)
+	else if (cursorState->x >= context_get_width() - 1)
 		scrollX = 1;
 
 	// Scroll up / down
 	if (cursorState->y == 0)
 		scrollY = -1;
-	else if (cursorState->y >= gScreenHeight - 1)
+	else if (cursorState->y >= context_get_height() - 1)
 		scrollY = 1;
 
 	// Scroll viewport

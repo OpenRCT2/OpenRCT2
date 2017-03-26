@@ -161,8 +161,6 @@ extern uint32 gCurrentDrawCount;
 extern uint8 gScreenFlags;
 extern uint32 gScreenAge;
 extern uint8 gSavePromptMode;
-extern sint32 gScreenWidth;
-extern sint32 gScreenHeight;
 
 extern char gRCT2AddressAppPath[];
 extern char gRCT2AddressSavedGamesPath[];

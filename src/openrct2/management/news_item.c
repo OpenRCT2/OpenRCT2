@@ -15,6 +15,7 @@
 #pragma endregion
 
 #include "../audio/audio.h"
+#include "../Context.h"
 #include "../input.h"
 #include "../interface/window.h"
 #include "../localisation/date.h"
@@ -97,7 +98,7 @@ static void news_item_tick_current()
 	// Only play news item sound when in normal playing mode
 	if (ticks == 1 && (gScreenFlags == SCREEN_FLAGS_PLAYING)) {
 		// Play sound
-		audio_play_sound_panned(SOUND_NEWS_ITEM, gScreenWidth / 2, 0, 0, 0);
+		audio_play_sound_panned(SOUND_NEWS_ITEM, context_get_width() / 2, 0, 0, 0);
 	}
 }
 

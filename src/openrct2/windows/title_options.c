@@ -15,6 +15,7 @@
 #pragma endregion
 
 #include "../config/Config.h"
+#include "../Context.h"
 #include "../game.h"
 #include "../intro.h"
 #include "../localisation/localisation.h"
@@ -70,10 +71,8 @@ static rct_window_event_list window_title_options_events = {
  */
 void window_title_options_open()
 {
-	rct_window* window;
-
-	window = window_create(
-		gScreenWidth - 80, 0,
+	rct_window * window = window_create(
+		context_get_width() - 80, 0,
 		80, 12,
 		&window_title_options_events,
 		WC_TITLE_OPTIONS,

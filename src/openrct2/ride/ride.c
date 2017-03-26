@@ -19,6 +19,7 @@
 #include "../cheats.h"
 #include "../common.h"
 #include "../config/Config.h"
+#include "../Context.h"
 #include "../editor.h"
 #include "../game.h"
 #include "../input.h"
@@ -3448,7 +3449,7 @@ sint32 ride_music_params_update(sint16 x, sint16 y, sint16 z, uint8 rideIndex, u
 		}
 		sint32 x2 = viewport->x + ((rotatedCoords.x - viewport->view_x) >> viewport->zoom);
 		x2 *= 0x10000;
-		uint16 screenwidth = gScreenWidth;
+		uint16 screenwidth = context_get_width();
 		if (screenwidth < 64) {
 			screenwidth = 64;
 		}
@@ -3456,7 +3457,7 @@ sint32 ride_music_params_update(sint16 x, sint16 y, sint16 z, uint8 rideIndex, u
 
 		sint32 y2 = viewport->y + ((rotatedCoords.y - viewport->view_y) >> viewport->zoom);
 		y2 *= 0x10000;
-		uint16 screenheight = gScreenHeight;
+		uint16 screenheight = context_get_height();
 		if (screenheight < 64) {
 			screenheight = 64;
 		}

@@ -15,6 +15,7 @@
 #pragma endregion
 
 #include "../config/Config.h"
+#include "../Context.h"
 #include "../game.h"
 #include "../sprites.h"
 #include "../localisation/localisation.h"
@@ -75,7 +76,7 @@ void window_title_exit_open()
 	rct_window* window;
 
 	window = window_create(
-		gScreenWidth - 40, gScreenHeight - 64,
+		context_get_width() - 40, context_get_height() - 64,
 		40, 64,
 		&window_title_exit_events,
 		WC_TITLE_EXIT,

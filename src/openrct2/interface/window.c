@@ -500,8 +500,8 @@ rct_window *window_create(sint32 x, sint32 y, sint32 width, sint32 height, rct_w
  */
 static bool sub_6EA8EC(sint32 x, sint32 y, sint32 width, sint32 height)
 {
-	uint16 screenWidth = gScreenWidth;
-	uint16 screenHeight = gScreenHeight;
+	uint16 screenWidth = context_get_width();
+	uint16 screenHeight = context_get_height();
 	sint32 unk;
 
 	unk = -(width / 4);
@@ -527,8 +527,8 @@ static bool sub_6EA934(sint32 x, sint32 y, sint32 width, sint32 height)
 {
 	if (x < 0) return false;
 	if (y < 28) return false;
-	if (x + width > gScreenWidth) return false;
-	if (y + height > gScreenHeight) return false;
+	if (x + width > context_get_width()) return false;
+	if (y + height > context_get_height()) return false;
 	return sub_6EA95D(x, y, width, height);
 }
 
@@ -569,8 +569,8 @@ static bool sub_6EA95D(sint32 x, sint32 y, sint32 width, sint32 height)
  */
 rct_window *window_create_auto_pos(sint32 width, sint32 height, rct_window_event_list *event_handlers, rct_windowclass cls, uint16 flags)
 {
-	uint16 screenWidth = gScreenWidth;
-	uint16 screenHeight = gScreenHeight;
+	uint16 screenWidth = context_get_width();
+	uint16 screenHeight = context_get_height();
 
 	// TODO dead code, looks like it is cascading the new window offset from an existing window
 	// we will have to re-implement this in our own way.
@@ -579,11 +579,11 @@ rct_window *window_create_auto_pos(sint32 width, sint32 height, rct_window_event
 	// 	cls &= ~0x80;
 	// 	rct_window *w = window_find_by_number(0, 0);
 	// 	if (w != NULL) {
-	// 		if (w->x > -60 && w->x < gScreenWidth - 20) {
-	// 			if (w->y < gScreenHeight - 20) {
+	// 		if (w->x > -60 && w->x < screenWidth - 20) {
+	// 			if (w->y < screenHeight - 20) {
 	// 				sint32 x = w->x;
-	// 				if (w->x + width > gScreenWidth)
-	// 					x = gScreenWidth - 20 - width;
+	// 				if (w->x + width > screenWidth)
+	// 					x = screenWidth - 20 - width;
 	// 				sint32 y = w->y;
 	// 				return window_create(x + 10, y + 10, width, height, event_handlers, cls, flags);
 	// 			}
@@ -689,12 +689,13 @@ foundSpace:
 	return window_create(x, y, width, height, event_handlers, cls, flags);
 }
 
-rct_window *window_create_centred(sint32 width, sint32 height, rct_window_event_list *event_handlers, rct_windowclass cls, uint16 flags)
+rct_window * window_create_centred(sint32 width, sint32 height, rct_window_event_list *event_handlers, rct_windowclass cls, uint16 flags)
 {
-	sint32 x, y;
+	sint32 screenWidth = context_get_width();
+	sint32 screenHeight = context_get_height();
 
-	x = (gScreenWidth - width) / 2;
-	y = max(28, (gScreenHeight - height) / 2);
+	sint32 x = (screenWidth - width) / 2;
+	sint32 y = max(28, (screenHeight - height) / 2);
 	return window_create(x, y, width, height, event_handlers, cls, flags);
 }
 
@@ -1233,7 +1234,7 @@ void window_push_others_right(rct_window* window)
 			continue;
 
 		window_invalidate(w);
-		if (window->x + window->width + 13 >= gScreenWidth)
+		if (window->x + window->width + 13 >= context_get_width())
 			continue;
 		uint16 push_amount = window->x + window->width - w->x + 3;
 		w->x += push_amount;
@@ -1268,7 +1269,7 @@ void window_push_others_below(rct_window *w1)
 			continue;
 
 		// Check if there is room to push it down
-		if (w1->y + w1->height + 80 >= gScreenHeight)
+		if (w1->y + w1->height + 80 >= context_get_height())
 			continue;
 
 		// Invalidate the window's current area
@@ -2402,7 +2403,7 @@ static void window_snap_right(rct_window *w, sint32 proximity)
 		leftMost = min(leftMost, w2->x);
 	}
 
-	screenWidth = gScreenWidth;
+	screenWidth = context_get_width();
 	if (screenWidth >= wLeftProximity && screenWidth <= wRightProximity)
 		leftMost = min(leftMost, screenWidth);
 
@@ -2435,7 +2436,7 @@ static void window_snap_bottom(rct_window *w, sint32 proximity)
 		topMost = min(topMost, w2->y);
 	}
 
-	screenHeight = gScreenHeight;
+	screenHeight = context_get_height();
 	if (screenHeight >= wTopProximity && screenHeight <= wBottomProximity)
 		topMost = min(topMost, screenHeight);
 
@@ -2448,7 +2449,7 @@ void window_move_and_snap(rct_window *w, sint32 newWindowX, sint32 newWindowY, s
 	sint32 originalX = w->x;
 	sint32 originalY = w->y;
 
-	newWindowY = clamp(29, newWindowY, gScreenHeight - 34);
+	newWindowY = clamp(29, newWindowY, context_get_height() - 34);
 
 	if (snapProximity > 0) {
 		w->x = newWindowX;

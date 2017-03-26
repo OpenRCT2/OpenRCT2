@@ -14,6 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
+#include "../Context.h"
 #include "../input.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
@@ -81,15 +82,13 @@ static rct_window_event_list window_debug_paint_events = {
 
 void window_debug_paint_open()
 {
-	rct_window * window;
-
 	// Check if window is already open
 	if (window_find_by_class(WC_DEBUG_PAINT) != NULL)
 		return;
 
-	window = window_create(
+	rct_window * window = window_create(
 		16,
-		gScreenHeight - 16 - 33 - WINDOW_HEIGHT,
+		context_get_height() - 16 - 33 - WINDOW_HEIGHT,
 		WINDOW_WIDTH,
 		WINDOW_HEIGHT,
 		&window_debug_paint_events,

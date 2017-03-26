@@ -664,4 +664,14 @@ extern "C"
         Memory::CopyArray(*outResolutions, resolutions.data(), count);
         return count;
     }
+
+    sint32 context_get_width()
+    {
+        return GetContext()->GetUiContext()->GetWidth();
+    }
+
+    sint32 context_get_height()
+    {
+        return GetContext()->GetUiContext()->GetHeight();
+    }
 }

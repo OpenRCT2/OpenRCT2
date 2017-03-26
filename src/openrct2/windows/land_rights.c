@@ -14,6 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
+#include "../Context.h"
 #include "../game.h"
 #include "../input.h"
 #include "../interface/viewport.h"
@@ -99,7 +100,7 @@ void window_land_rights_open()
 	if (window_find_by_class(WC_LAND_RIGHTS) != NULL)
 		return;
 
-	window = window_create(gScreenWidth - 98, 29, 98, 94, &window_land_rights_events, WC_LAND_RIGHTS, 0);
+	window = window_create(context_get_width() - 98, 29, 98, 94, &window_land_rights_events, WC_LAND_RIGHTS, 0);
 	window->widgets = window_land_rights_widgets;
 	window->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_DECREMENT) | (1 << WIDX_INCREMENT) | (1 << WIDX_PREVIEW) |
 		(1 << WIDX_BUY_LAND_RIGHTS) | (1 << WIDX_BUY_CONSTRUCTION_RIGHTS);

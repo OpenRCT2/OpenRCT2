@@ -424,7 +424,7 @@ void window_scenery_open()
 	init_scenery();
 
 	window = window_create(
-		gScreenWidth - WINDOW_SCENERY_WIDTH,
+		context_get_width() - WINDOW_SCENERY_WIDTH,
 		0x1D,
 		WINDOW_SCENERY_WIDTH,
 		WINDOW_SCENERY_HEIGHT,
@@ -748,7 +748,7 @@ static void window_scenery_update(rct_window *w)
 					}
 				} else {
 					sint32 windowHeight = min(463, w->scrolls[0].v_bottom + 62);
-					if (gScreenHeight < 600)
+					if (context_get_height() < 600)
 						windowHeight = min(374, windowHeight);
 					windowHeight = max(WINDOW_SCENERY_HEIGHT, windowHeight);
 

@@ -121,13 +121,15 @@ void window_error_open(rct_string_id title, rct_string_id message)
 	window_error_widgets[WIDX_BACKGROUND].right = width;
 	window_error_widgets[WIDX_BACKGROUND].bottom = height;
 
+	sint32 screenWidth = context_get_width();
+	sint32 screenHeight = context_get_height();
 	const CursorState * state = context_get_cursor_state();
 	x = state->x - (width / 2);
-	x = clamp(0, x, gScreenWidth);
+	x = clamp(0, x, screenWidth);
 
 	y = state->y + 26;
 	y = max(22, y);
-	maxY = gScreenHeight - height;
+	maxY = screenHeight - height;
 	if (y > maxY) {
 		y = y - height - 40;
 		y = min(y, maxY);
