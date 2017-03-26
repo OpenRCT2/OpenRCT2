@@ -14,17 +14,19 @@
  *****************************************************************************/
 #pragma endregion
 
+#include "../config/Config.h"
+#include "../Context.h"
 #include "../core/File.h"
 #include "../core/FileStream.hpp"
 #include "../core/Memory.hpp"
 #include "../core/Util.hpp"
 #include "../localisation/string_ids.h"
 #include "../OpenRCT2.h"
+#include "../ui/UiContext.h"
 #include "AudioMixer.h"
 
 extern "C"
 {
-	#include "../config/Config.h"
 	#include "../interface/viewport.h"
 	#include "../intro.h"
 	#include "../localisation/language.h"
@@ -255,7 +257,7 @@ sint32 audio_play_sound(sint32 soundId, sint32 volume, sint32 pan)
 	sint32 mixerPan = 0;
 	if (pan != AUDIO_PLAY_AT_CENTRE) {
 		sint32 x2 = pan << 16;
-		uint16 screenWidth = Math::Max(64, gScreenWidth);
+		uint16 screenWidth = Math::Max<sint32>(64, OpenRCT2::GetContext()->GetUiContext()->GetWidth());
 		mixerPan = ((x2 / screenWidth) - 0x8000) >> 4;
 			}
 

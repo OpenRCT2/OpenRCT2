@@ -15,6 +15,7 @@
 #pragma endregion
 
 #include "../config/Config.h"
+#include "../Context.h"
 #include "../editor.h"
 #include "../game.h"
 #include "../input.h"
@@ -88,7 +89,7 @@ void window_title_menu_open()
 	rct_window* window;
 
 	window = window_create(
-		0, gScreenHeight - 142,
+		0, context_get_height() - 142,
 		0, 100,
 		&window_title_menu_events,
 		WC_TITLE_MENU,
@@ -120,7 +121,7 @@ void window_title_menu_open()
 		i++;
 	}
 	window->width = x;
-	window->x = (gScreenWidth - window->width) / 2;
+	window->x = (context_get_width() - window->width) / 2;
 
 	window_init_scroll_widgets(window);
 }

@@ -18,6 +18,7 @@
 #include "../audio/AudioMixer.h"
 #include "../cheats.h"
 #include "../config/Config.h"
+#include "../Context.h"
 #include "../game.h"
 #include "../input.h"
 #include "../interface/window.h"
@@ -6997,7 +6998,7 @@ void peep_applause()
 	}
 
 	// Play applause noise
-	audio_play_sound_panned(SOUND_APPLAUSE, gScreenWidth / 2, 0, 0, 0);
+	audio_play_sound_panned(SOUND_APPLAUSE, context_get_width() / 2, 0, 0, 0);
 }
 
 /**

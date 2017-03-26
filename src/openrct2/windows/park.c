@@ -15,6 +15,7 @@
 #pragma endregion
 
 #include "../config/Config.h"
+#include "../Context.h"
 #include "../game.h"
 #include "../localisation/date.h"
 #include "../localisation/localisation.h"
@@ -1667,8 +1668,8 @@ void window_park_objective_open()
 	window->hold_down_widgets = window_park_page_hold_down_widgets[WINDOW_PARK_PAGE_OBJECTIVE];
 	window->event_handlers = &window_park_objective_events;
 	window_init_scroll_widgets(window);
-	window->x = gScreenWidth / 2 - 115;
-	window->y = gScreenHeight / 2 - 87;
+	window->x = context_get_width() / 2 - 115;
+	window->y = context_get_height() / 2 - 87;
 	window_invalidate(window);
 }
 

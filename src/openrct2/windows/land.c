@@ -14,6 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
+#include "../Context.h"
 #include "../input.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
@@ -126,7 +127,7 @@ void window_land_open()
 	if (window_find_by_class(WC_LAND) != NULL)
 		return;
 
-	window = window_create(gScreenWidth - 98, 29, 98, 160, &window_land_events, WC_LAND, 0);
+	window = window_create(context_get_width() - 98, 29, 98, 160, &window_land_events, WC_LAND, 0);
 	window->widgets = window_land_widgets;
 	window->enabled_widgets =
 		(1 << WIDX_CLOSE) |

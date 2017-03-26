@@ -100,6 +100,8 @@ extern "C"
     void context_trigger_resize();
     void context_set_fullscreen_mode(sint32 mode);
     sint32 context_get_resolutions(struct Resolution * * outResolutions);
+    sint32 context_get_width();
+    sint32 context_get_height();
 
 #ifdef __cplusplus
 }

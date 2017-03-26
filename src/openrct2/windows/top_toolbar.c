@@ -17,6 +17,7 @@
 #include "../audio/audio.h"
 #include "../cheats.h"
 #include "../config/Config.h"
+#include "../Context.h"
 #include "../editor.h"
 #include "../game.h"
 #include "../input.h"
@@ -290,11 +291,9 @@ static uint16	_unkF64F15;
  */
 void window_top_toolbar_open()
 {
-	rct_window* window;
-
-	window = window_create(
+	rct_window * window = window_create(
 		0, 0,
-		gScreenWidth, 28,
+		context_get_width(), 28,
 		&window_top_toolbar_events,
 		WC_TOP_TOOLBAR,
 		WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_NO_BACKGROUND
@@ -763,8 +762,9 @@ static void window_top_toolbar_invalidate(rct_window *w)
 	}
 
 	// Align right hand side toolbar buttons
+	sint32 screenWidth = context_get_width();
 	firstAlignment = 1;
-	x = max(640, gScreenWidth);
+	x = max(640, screenWidth);
 	for (sint32 i = 0; i < countof(right_aligned_widgets_order); ++i) {
 		widgetIndex = right_aligned_widgets_order[i];
 		widget = &window_top_toolbar_widgets[widgetIndex];

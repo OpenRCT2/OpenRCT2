@@ -15,6 +15,7 @@
 #pragma endregion
 
 #include "../audio/audio.h"
+#include "../Context.h"
 #include "../editor.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
@@ -125,8 +126,10 @@ void window_install_track_open(const utf8 *path)
 	gTrackDesignSceneryToggle = false;
 	_currentTrackPieceDirection = 2;
 
-	sint32 x = gScreenWidth / 2 - 201;
-	sint32 y = max(28, gScreenHeight / 2 - 200);
+	sint32 screenWidth = context_get_width();
+	sint32 screenHeight = context_get_height();
+	sint32 x = screenWidth / 2 - 201;
+	sint32 y = max(28, screenHeight / 2 - 200);
 
 	rct_window *w = window_create(x, y, 402, 400, &window_install_track_events, WC_INSTALL_TRACK, 0);
 	w->widgets = window_install_track_widgets;

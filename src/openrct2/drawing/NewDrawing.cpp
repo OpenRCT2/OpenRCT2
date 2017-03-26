@@ -139,7 +139,9 @@ extern "C"
         {
             drawing_engine_init();
         }
-        _drawingEngine->Resize(gScreenWidth, gScreenHeight);
+
+        IUiContext * uiContext = GetContext()->GetUiContext();
+        _drawingEngine->Resize(uiContext->GetWidth(), uiContext->GetHeight());
     }
 
     void drawing_engine_set_palette(SDL_Color * colours)

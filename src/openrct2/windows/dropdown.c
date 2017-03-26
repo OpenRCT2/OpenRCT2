@@ -14,6 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
+#include "../Context.h"
 #include "../input.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
@@ -176,10 +177,12 @@ void window_dropdown_show_text_custom_width(sint32 x, sint32 y, sint32 extray, u
 
 	width = _dropdown_item_width * _dropdown_num_columns + 3;
 	sint32 height = _dropdown_item_height * _dropdown_num_rows + 3;
-	if (x + width > gScreenWidth)
-		x = max(0, gScreenWidth - width);
-	if (y + height > gScreenHeight)
-		y = max(0, gScreenHeight - height);
+	sint32 screenWidth = context_get_width();
+	sint32 screenHeight = context_get_height();
+	if (x + width > screenWidth)
+		x = max(0, screenWidth - width);
+	if (y + height > screenHeight)
+		y = max(0, screenHeight - height);
 
 	window_dropdown_widgets[WIDX_BACKGROUND].bottom = (sint16)(_dropdown_item_height * num_items + 3);
 	window_dropdown_widgets[WIDX_BACKGROUND].right = (sint16)(_dropdown_item_width + 3);
@@ -245,10 +248,13 @@ void window_dropdown_show_image(sint32 x, sint32 y, sint32 extray, uint8 colour,
 	// Calculate position and size
 	width = _dropdown_item_width * _dropdown_num_columns + 3;
 	height = _dropdown_item_height * _dropdown_num_rows + 3;
-	if (x + width > gScreenWidth)
-		x = max(0, gScreenWidth - width);
-	if (y + height > gScreenHeight)
-		y = max(0, gScreenHeight - height);
+
+	sint32 screenWidth = context_get_width();
+	sint32 screenHeight = context_get_height();
+	if (x + width > screenWidth)
+		x = max(0, screenWidth - width);
+	if (y + height > screenHeight)
+		y = max(0, screenHeight - height);
 	window_dropdown_widgets[WIDX_BACKGROUND].right = width;
 	window_dropdown_widgets[WIDX_BACKGROUND].bottom = height;
 

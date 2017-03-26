@@ -17,6 +17,7 @@
 #include "../audio/audio.h"
 #include "../audio/AudioMixer.h"
 #include "../config/Config.h"
+#include "../Context.h"
 #include "../editor.h"
 #include "../game.h"
 #include "../interface/viewport.h"
@@ -701,7 +702,7 @@ static void vehicle_update_sound_params(rct_vehicle* vehicle)
 							pan_x >>= g_music_tracking_viewport->zoom;
 							pan_x += g_music_tracking_viewport->x;
 
-							uint16 screenwidth = gScreenWidth;
+							uint16 screenwidth = context_get_width();
 							if (screenwidth < 64) {
 								screenwidth = 64;
 							}
@@ -711,7 +712,7 @@ static void vehicle_update_sound_params(rct_vehicle* vehicle)
 							pan_y >>= g_music_tracking_viewport->zoom;
 							pan_y += g_music_tracking_viewport->y;
 
-							uint16 screenheight = gScreenHeight;
+							uint16 screenheight = context_get_height();
 							if (screenheight < 64) {
 								screenheight = 64;
 							}

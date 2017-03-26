@@ -28,12 +28,12 @@ namespace OpenRCT2
             constexpr static sint32 CURSOR_WIDTH = 32;
             constexpr static sint32 CURSOR_HEIGHT = 32;
 
-            SDL_Cursor *    _loadedCursors[CURSOR_COUNT];
+            SDL_Cursor *    _loadedCursors[CURSOR_COUNT] = { nullptr };
             CURSOR_ID       _currentCursor = CURSOR_UNDEFINED;
 
         public:
-            CursorRepository();
             ~CursorRepository();
+            void LoadCursors();
             CURSOR_ID GetCurrentCursor();
             void SetCurrentCursor(CURSOR_ID cursorId);
 
