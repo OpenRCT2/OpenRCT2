@@ -17,6 +17,7 @@
 #include "../audio/audio.h"
 #include "../cheats.h"
 #include "../config/Config.h"
+#include "../Context.h"
 #include "../drawing/drawing.h"
 #include "../game.h"
 #include "../input.h"
@@ -3826,6 +3827,7 @@ void ride_construction_toolupdate_entrance_exit(sint32 screenX, sint32 screenY)
  */
 void ride_construction_tooldown_construct(sint32 screenX, sint32 screenY)
 {
+	const CursorState * state = context_get_cursor_state();
 	sint32 trackType, trackDirection, rideIndex, edxRS16, x, y, z, properties, highestZ;
 	rct_window *w;
 
@@ -3923,7 +3925,7 @@ void ride_construction_tooldown_construct(sint32 screenX, sint32 screenY)
 					zAttempts == 0 ||
 					z < 0
 					) {
-					audio_play_sound_panned(SOUND_ERROR, gCursorState.x, x, y, z);
+					audio_play_sound_panned(SOUND_ERROR, state->x, x, y, z);
 					w = window_find_by_class(WC_RIDE_CONSTRUCTION);
 					if (w != NULL){
 						tool_set(w, WIDX_CONSTRUCT, TOOL_CROSSHAIR);
@@ -3995,7 +3997,7 @@ void ride_construction_tooldown_construct(sint32 screenX, sint32 screenY)
 				_currentTrackAlternative = saveCurrentTrackAlternative;
 				_currentTrackLiftHill = saveCurrentTrackLiftHill;
 
-				audio_play_sound_panned(SOUND_ERROR, gCursorState.x, x, y, z);
+				audio_play_sound_panned(SOUND_ERROR, state->x, x, y, z);
 				break;
 			} else if (zAttempts >= 0) {
 				z += 16;

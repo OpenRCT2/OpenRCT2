@@ -18,9 +18,8 @@
 
 #include <vector>
 #include "../common.h"
+#include "../Context.h"
 #include "../interface/Cursors.h"
-
-struct CursorState;
 
 namespace OpenRCT2
 {
@@ -37,22 +36,6 @@ namespace OpenRCT2
             WINDOWED,
             FULLSCREEN,
             FULLSCREEN_DESKTOP,
-        };
-
-        struct TextInputSession
-        {
-            const utf8 * Buffer;    // UTF-8 stream
-            size_t BufferSize;      // Maximum number of bytes (excluding null terminator)
-            size_t Size;            // Number of bytes (excluding null terminator)
-            size_t Length;          // Number of codepoints
-            size_t SelectionStart;  // Selection start, in bytes
-            size_t SelectionSize;   // Selection length in bytes
-        };
-
-        struct Resolution
-        {
-            sint32 Width;
-            sint32 Height;
         };
 
         inline bool operator <(const Resolution& lhs, const Resolution& rhs)
@@ -92,6 +75,7 @@ namespace OpenRCT2
             virtual std::vector<Resolution> GetFullscreenResolutions() abstract;
             virtual bool IsSteamOverlayActive() abstract;
             virtual void ProcessMessages() abstract;
+            virtual void TriggerResize() abstract;
 
             // Input
             virtual const CursorState * GetCursorState() abstract;
@@ -107,9 +91,9 @@ namespace OpenRCT2
             virtual Drawing::IDrawingEngine *   CreateDrawingEngine(Drawing::DRAWING_ENGINE_TYPE type) abstract;
 
             // Text input
-            virtual bool                        IsTextInputActive() abstract;
-            virtual const TextInputSession *    StartTextInput(utf8 * buffer, size_t bufferSize) abstract;
-            virtual void                        StopTextInput() abstract;
+            virtual bool                IsTextInputActive() abstract;
+            virtual TextInputSession *  StartTextInput(utf8 * buffer, size_t bufferSize) abstract;
+            virtual void                StopTextInput() abstract;
         };
     }
 }

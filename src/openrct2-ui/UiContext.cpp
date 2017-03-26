@@ -22,7 +22,6 @@
 #include <openrct2/config/Config.h>
 #include <openrct2/Context.h>
 #include <openrct2/drawing/IDrawingEngine.h>
-#include <openrct2/interface/window.h>
 #include <openrct2/ui/UiContext.h>
 #include <openrct2/Version.h>
 #include "CursorRepository.h"
@@ -32,8 +31,9 @@
 
 extern "C"
 {
-    #include <openrct2/interface/console.h>
     #include <openrct2/input.h>
+    #include <openrct2/interface/console.h>
+    #include <openrct2/interface/window.h>
 }
 
 using namespace OpenRCT2;
@@ -135,6 +135,7 @@ public:
 
     std::vector<Resolution> GetFullscreenResolutions() override
     {
+        UpdateFullscreenResolutions();
         return _fsResolutions;
     }
 
@@ -207,7 +208,7 @@ public:
         return _textComposition.IsActive();
     }
 
-    const TextInputSession * StartTextInput(utf8 * buffer, size_t bufferSize) override
+    TextInputSession * StartTextInput(utf8 * buffer, size_t bufferSize) override
     {
         return _textComposition.Start(buffer, bufferSize);
     }
@@ -217,7 +218,7 @@ public:
         _textComposition.Stop();
     }
 
-    void ProcessMessages()
+    void ProcessMessages() override
     {
         _lastKeyPressed = 0;
         _cursorState.left &= ~CURSOR_CHANGED;
@@ -412,6 +413,27 @@ public:
         _keysState = SDL_GetKeyboardState(&numKeys);
     }
 
+    /**
+     * Helper function to set various render target features.
+     * Does not get triggered on resize, but rather manually on config changes.
+     */
+    void TriggerResize() override
+    {
+        char scaleQualityBuffer[4];
+        uint8 scaleQuality = gConfigGeneral.scale_quality;
+        if (gConfigGeneral.use_nn_at_integer_scales &&
+            gConfigGeneral.window_scale == std::floor(gConfigGeneral.window_scale))
+        {
+            scaleQuality = 0;
+        }
+        snprintf(scaleQualityBuffer, sizeof(scaleQualityBuffer), "%u", scaleQuality);
+        SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, scaleQualityBuffer);
+
+        sint32 width, height;
+        SDL_GetWindowSize(_window, &width, &height);
+        OnResize(width, height);
+    }
+
 private:
     void CreateWindow()
     {
@@ -506,27 +528,6 @@ private:
         }
     }
 
-    /**
-     * Helper function to set various render target features.
-     * Does not get triggered on resize, but rather manually on config changes.
-     */
-    void TriggerResize()
-    {
-        char scaleQualityBuffer[4];
-        uint8 scaleQuality = gConfigGeneral.scale_quality;
-        if (gConfigGeneral.use_nn_at_integer_scales &&
-            gConfigGeneral.window_scale == std::floor(gConfigGeneral.window_scale))
-        {
-            scaleQuality = 0;
-        }
-        snprintf(scaleQualityBuffer, sizeof(scaleQualityBuffer), "%u", scaleQuality);
-        SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, scaleQualityBuffer);
-
-        sint32 width, height;
-        SDL_GetWindowSize(_window, &width, &height);
-        OnResize(width, height);
-    }
-
     void UpdateFullscreenResolutions()
     {
         // Query number of display modes
@@ -552,20 +553,20 @@ private:
         }
 
         // Sort by area
-        std::sort(resolutions.begin(), resolutions.end());
-        //    [](const Resolution &a, const Resolution &b) -> bool
-        //    {
-        //        sint32 areaA = a.Width * a.Height;
-        //        sint32 areaB = b.Width * b.Height;
-        //        return areaA < areaB;
-        //    });
+        std::sort(resolutions.begin(), resolutions.end(),
+            [](const Resolution &a, const Resolution &b) -> bool
+            {
+                sint32 areaA = a.Width * a.Height;
+                sint32 areaB = b.Width * b.Height;
+                return areaA < areaB;
+            });
 
         // Remove duplicates
-        auto last = std::unique(resolutions.begin(), resolutions.end());
-        //    [](const Resolution &a, const Resolution &b) -> bool
-        //    {
-        //        return (a.Width == b.Width && a.Height == b.Height);
-        //    });
+        auto last = std::unique(resolutions.begin(), resolutions.end(),
+            [](const Resolution &a, const Resolution &b) -> bool
+            {
+                return (a.Width == b.Width && a.Height == b.Height);
+            });
         resolutions.erase(last, resolutions.end());
 
         // Update config fullscreen resolution if not set

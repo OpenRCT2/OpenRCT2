@@ -14,6 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
+#include "../Context.h"
 #include "../input.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
@@ -75,8 +76,9 @@ void window_map_tooltip_update_visibility()
 {
 	sint32 cursorX, cursorY;
 
-	cursorX = gCursorState.x;
-	cursorY = gCursorState.y;
+	const CursorState * state = context_get_cursor_state();
+	cursorX = state->x;
+	cursorY = state->y;
 
 	// Check for cursor movement
 	_cursorHoldDuration++;
@@ -112,8 +114,9 @@ static void window_map_tooltip_open()
 
 	width = 200;
 	height = 44;
-	x = gCursorState.x - (width / 2);
-	y = gCursorState.y + 15;
+	const CursorState * state = context_get_cursor_state();
+	x = state->x - (width / 2);
+	y = state->y + 15;
 
 	w = window_find_by_class(WC_MAP_TOOLTIP);
 	if (w == NULL) {

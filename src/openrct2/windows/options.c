@@ -25,6 +25,7 @@
 #include "../audio/audio.h"
 #include "../audio/AudioMixer.h"
 #include "../config/Config.h"
+#include "../Context.h"
 #include "../drawing/drawing.h"
 #include "../drawing/IDrawingEngine.h"
 #include "../interface/themes.h"
@@ -402,6 +403,7 @@ static void window_options_update_height_markers();
 
 #pragma region Events
 
+static void window_options_close(rct_window *w);
 static void window_options_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_options_mousedown(rct_widgetindex widgetIndex, rct_window*w, rct_widget* widget);
 static void window_options_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex);
@@ -413,7 +415,7 @@ static void window_options_text_input(rct_window *w, rct_widgetindex widgetIndex
 static void window_options_tooltip(rct_window *w, rct_widgetindex widgetIndex, rct_string_id *stringid);
 
 static rct_window_event_list window_options_events = {
-	NULL,
+    window_options_close,
 	window_options_mouseup,
 	NULL,
 	window_options_mousedown,
@@ -565,6 +567,9 @@ static uint64 window_options_page_enabled_widgets[] = {
 
 #pragma endregion
 
+static struct Resolution * _resolutions = NULL;
+static sint32 _numResolutions = 0;
+
 /**
 *
 *  rct2: 0x006BAC5B
@@ -586,6 +591,12 @@ void window_options_open()
 	window_init_scroll_widgets(w);
 }
 
+static void window_options_close(rct_window *w)
+{
+    free(_resolutions);
+    _resolutions = NULL;
+    _numResolutions = 0;
+}
 
 /**
 *
@@ -637,7 +648,7 @@ static void window_options_mouseup(rct_window *w, rct_widgetindex widgetIndex)
 			gConfigGeneral.use_nn_at_integer_scales ^= 1;
 			config_save_default();
 			gfx_invalidate_screen();
-			platform_trigger_resize();
+			context_trigger_resize();
 			break;
 		}
 		break;
@@ -931,24 +942,24 @@ static void window_options_mousedown(rct_widgetindex widgetIndex, rct_window*w, 
 		switch (widgetIndex) {
 		case WIDX_RESOLUTION_DROPDOWN:
 		{
-			platform_update_fullscreen_resolutions();
+			_numResolutions = context_get_resolutions(&_resolutions);
 
 			sint32 selectedResolution = -1;
-			for (sint32 i = 0; i < gNumResolutions; i++) {
-				resolution_t *resolution = &gResolutions[i];
+			for (sint32 i = 0; i < _numResolutions; i++) {
+                struct Resolution *resolution = &_resolutions[i];
 
 				gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
 
 				uint16 *args = (uint16*)&gDropdownItemsArgs[i];
 				args[0] = STR_RESOLUTION_X_BY_Y;
-				args[1] = resolution->width;
-				args[2] = resolution->height;
+				args[1] = resolution->Width;
+				args[2] = resolution->Height;
 
-				if (resolution->width == gConfigGeneral.fullscreen_width && resolution->height == gConfigGeneral.fullscreen_height)
+				if (resolution->Width == gConfigGeneral.fullscreen_width && resolution->Height == gConfigGeneral.fullscreen_height)
 					selectedResolution = i;
 			}
 
-			window_options_show_dropdown(w, widget, gNumResolutions);
+			window_options_show_dropdown(w, widget, _numResolutions);
 
 			if (selectedResolution != -1 && selectedResolution < 32) {
 				dropdown_set_checked(selectedResolution, true);
@@ -987,14 +998,14 @@ static void window_options_mousedown(rct_widgetindex widgetIndex, rct_window*w, 
 			gConfigGeneral.window_scale += 0.25f;
 			config_save_default();
 			gfx_invalidate_screen();
-			platform_trigger_resize();
+			context_trigger_resize();
 			break;
 		case WIDX_SCALE_DOWN:
 			gConfigGeneral.window_scale -= 0.25f;
 			gConfigGeneral.window_scale = max(0.5f, gConfigGeneral.window_scale);
 			config_save_default();
 			gfx_invalidate_screen();
-			platform_trigger_resize();
+			context_trigger_resize();
 			break;
 		case WIDX_SCALE_QUALITY_DROPDOWN:
 			gDropdownItemsFormat[0] = STR_DROPDOWN_MENU_LABEL;
@@ -1259,13 +1270,13 @@ static void window_options_dropdown(rct_window *w, rct_widgetindex widgetIndex, 
 		switch (widgetIndex) {
 		case WIDX_RESOLUTION_DROPDOWN:
 			{
-				resolution_t *resolution = &gResolutions[dropdownIndex];
-				if (resolution->width != gConfigGeneral.fullscreen_width || resolution->height != gConfigGeneral.fullscreen_height) {
-					gConfigGeneral.fullscreen_width = resolution->width;
-					gConfigGeneral.fullscreen_height = resolution->height;
+				struct Resolution *resolution = &_resolutions[dropdownIndex];
+				if (resolution->Width != gConfigGeneral.fullscreen_width || resolution->Height != gConfigGeneral.fullscreen_height) {
+					gConfigGeneral.fullscreen_width = resolution->Width;
+					gConfigGeneral.fullscreen_height = resolution->Height;
 
 					if (gConfigGeneral.fullscreen_mode == SDL_WINDOW_FULLSCREEN)
-						platform_set_fullscreen_mode(SDL_WINDOW_FULLSCREEN);
+						context_set_fullscreen_mode(SDL_WINDOW_FULLSCREEN);
 
 					config_save_default();
 					gfx_invalidate_screen();
@@ -1274,7 +1285,7 @@ static void window_options_dropdown(rct_window *w, rct_widgetindex widgetIndex, 
 			break;
 		case WIDX_FULLSCREEN_DROPDOWN:
 			if (dropdownIndex != gConfigGeneral.fullscreen_mode){
-				platform_set_fullscreen_mode(dropdownIndex);
+				context_set_fullscreen_mode(dropdownIndex);
 
 				gConfigGeneral.fullscreen_mode = (uint8)dropdownIndex;
 				config_save_default();
@@ -1301,7 +1312,7 @@ static void window_options_dropdown(rct_window *w, rct_widgetindex widgetIndex, 
 				gConfigGeneral.scale_quality = (uint8)dropdownIndex;
 				config_save_default();
 				gfx_invalidate_screen();
-				platform_trigger_resize();
+				context_trigger_resize();
 			}
 			break;
 		}

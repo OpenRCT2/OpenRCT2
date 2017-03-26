@@ -64,6 +64,7 @@ static sint32 _consoleCaretTicks;
 static utf8 _consolePrintfBuffer[CONSOLE_BUFFER_2_SIZE];
 static utf8 _consoleErrorBuffer[CONSOLE_BUFFER_2_SIZE];
 static sint32 _consoleScrollPos = 0;
+static TextInputSession * _consoleTextInputSession;
 
 static utf8 _consoleHistory[CONSOLE_HISTORY_SIZE][CONSOLE_INPUT_SIZE];
 static sint32 _consoleHistoryIndex = 0;
@@ -92,7 +93,7 @@ void console_open()
 	_consoleScrollPos = 0;
 	console_refresh_caret();
 	console_update_scroll();
-	context_start_text_input(_consoleCurrentLine, sizeof(_consoleCurrentLine));
+	_consoleTextInputSession = context_start_text_input(_consoleCurrentLine, sizeof(_consoleCurrentLine));
 }
 
 void console_close()
@@ -236,8 +237,8 @@ void console_draw(rct_drawpixelinfo *dpi)
 
 	// Draw caret
 	if (_consoleCaretTicks < 15) {
-		memcpy(lineBuffer, _consoleCurrentLine, gTextInput.selection_offset);
-		lineBuffer[gTextInput.selection_offset] = 0;
+		memcpy(lineBuffer, _consoleCurrentLine, _consoleTextInputSession->SelectionStart);
+		lineBuffer[_consoleTextInputSession->SelectionStart] = 0;
 		sint32 caretX = x + gfx_get_string_width(lineBuffer);
 		sint32 caretY = y + lineHeight;
 
@@ -271,15 +272,17 @@ void console_input(sint32 c)
 			_consoleHistoryIndex--;
 			memcpy(_consoleCurrentLine, _consoleHistory[_consoleHistoryIndex], 256);
 		}
-		textinputbuffer_recalculate_length(&gTextInput);
-		gTextInput.selection_offset = strlen(_consoleCurrentLine);
+		_consoleTextInputSession->Size = strlen(_consoleTextInputSession->Buffer);
+		_consoleTextInputSession->Length = utf8_length(_consoleTextInputSession->Buffer);
+		_consoleTextInputSession->SelectionStart = strlen(_consoleCurrentLine);
 		break;
 	case SDL_SCANCODE_DOWN:
 		if (_consoleHistoryIndex < _consoleHistoryCount - 1) {
 			_consoleHistoryIndex++;
 			memcpy(_consoleCurrentLine, _consoleHistory[_consoleHistoryIndex], 256);
-			textinputbuffer_recalculate_length(&gTextInput);
-			gTextInput.selection_offset = strlen(_consoleCurrentLine);
+			_consoleTextInputSession->Size = strlen(_consoleTextInputSession->Buffer);
+			_consoleTextInputSession->Length = utf8_length(_consoleTextInputSession->Buffer);
+			_consoleTextInputSession->SelectionStart = strlen(_consoleCurrentLine);
 		} else {
 			_consoleHistoryIndex = _consoleHistoryCount;
 			console_clear_input();
@@ -1006,7 +1009,7 @@ static sint32 cc_set(const utf8 **argv, sint32 argc)
 			gConfigGeneral.window_scale = clamp(newScale, 0.5f, 5.0f);
 			config_save_default();
 			gfx_invalidate_screen();
-			platform_trigger_resize();
+			context_trigger_resize();
 			console_execute_silent("get window_scale");
 		}
 		else if (strcmp(argv[0], "window_limit") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
