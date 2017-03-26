@@ -41,6 +41,7 @@ extern "C"
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Drawing;
+using namespace OpenRCT2::Ui;
 
 class SoftwareDrawingEngine;
 
@@ -191,8 +192,10 @@ public:
 class SoftwareDrawingEngine final : public IDrawingEngine
 {
 private:
-    bool _hardwareDisplay;
+    IUiContext * const  _uiContext;
+    bool const          _hardwareDisplay;
 
+    SDL_Window *    _window         = nullptr;
     SDL_Surface *   _surface        = nullptr;
     SDL_Surface *   _RGBASurface    = nullptr;
     SDL_Palette *   _palette        = nullptr;
@@ -227,9 +230,10 @@ private:
     SoftwareDrawingContext *    _drawingContext;
 
 public:
-    explicit SoftwareDrawingEngine(bool hardwareDisplay)
+    explicit SoftwareDrawingEngine(IUiContext * uiContext, bool hardwareDisplay)
+        : _uiContext(uiContext),
+          _hardwareDisplay(hardwareDisplay)
     {
-        _hardwareDisplay = hardwareDisplay;
         _drawingContext = new SoftwareDrawingContext(this);
 #ifdef __ENABLE_LIGHTFX__
         _lastLightFXenabled = (gConfigGeneral.enable_light_fx != 0);
@@ -251,6 +255,7 @@ public:
 
     void Initialise(SDL_Window * window) override
     {
+        _window = window;
         if (_hardwareDisplay)
         {
             // Try to create the accelerated renderer.
@@ -340,17 +345,14 @@ public:
         }
         else
         {
-            SDL_Surface * windowSurface = SDL_GetWindowSurface(gWindow);
-            if (windowSurface == nullptr)
+            SDL_Surface * windowSurface = SDL_GetWindowSurface(_window);
+            if (windowSurface != nullptr && _palette != nullptr)
             {
-                log_fatal("SDL_GetWindowSurface failed %s", SDL_GetError());
-                exit(1);
-            }
-
-            if (_palette != nullptr && SDL_SetPaletteColors(_palette, palette, 0, 256))
-            {
-                log_fatal("SDL_SetPaletteColors failed %s", SDL_GetError());
-                exit(1);
+                // log_fatal("SDL_GetWindowSurface failed %s", SDL_GetError());
+                // exit(1);
+                // log_fatal("SDL_SetPaletteColors failed %s", SDL_GetError());
+                // exit(1);
+                SDL_SetPaletteColors(_palette, palette, 0, 256);
             }
         }
     }
@@ -688,7 +690,7 @@ private:
         // Copy the surface to the window
         if (gConfigGeneral.window_scale == 1 || gConfigGeneral.window_scale <= 0)
         {
-            SDL_Surface * windowSurface = SDL_GetWindowSurface(gWindow);
+            SDL_Surface * windowSurface = SDL_GetWindowSurface(_window);
             if (SDL_BlitSurface(_surface, nullptr, windowSurface, nullptr))
             {
                 log_fatal("SDL_BlitSurface %s", SDL_GetError());
@@ -706,13 +708,13 @@ private:
 
             // then scale to window size. Without changing to RGBA first, SDL complains
             // about blit configurations being incompatible.
-            if (SDL_BlitScaled(_RGBASurface, nullptr, SDL_GetWindowSurface(gWindow), nullptr))
+            if (SDL_BlitScaled(_RGBASurface, nullptr, SDL_GetWindowSurface(_window), nullptr))
             {
                 log_fatal("SDL_BlitScaled %s", SDL_GetError());
                 exit(1);
             }
         }
-        if (SDL_UpdateWindowSurface(gWindow))
+        if (SDL_UpdateWindowSurface(_window))
         {
             log_fatal("SDL_UpdateWindowSurface %s", SDL_GetError());
             exit(1);
@@ -834,14 +836,14 @@ private:
     }
 };
 
-IDrawingEngine * OpenRCT2::Ui::CreateSoftwareDrawingEngine()
+IDrawingEngine * OpenRCT2::Ui::CreateSoftwareDrawingEngine(IUiContext * uiContext)
 {
-    return new SoftwareDrawingEngine(false);
+    return new SoftwareDrawingEngine(uiContext, false);
 }
 
-IDrawingEngine * OpenRCT2::Ui::CreateHardwareDisplayDrawingEngine()
+IDrawingEngine * OpenRCT2::Ui::CreateHardwareDisplayDrawingEngine(IUiContext * uiContext)
 {
-    return new SoftwareDrawingEngine(true);
+    return new SoftwareDrawingEngine(uiContext, true);
 }
 
 SoftwareDrawingContext::SoftwareDrawingContext(SoftwareDrawingEngine * engine)

@@ -29,6 +29,7 @@
 #include <openrct2/drawing/IDrawingEngine.h>
 #include <openrct2/drawing/Rain.h>
 #include <openrct2/config/Config.h>
+#include <openrct2/ui/UiContext.h>
 
 extern "C"
 {
@@ -225,8 +226,9 @@ public:
 class OpenGLDrawingEngine : public IDrawingEngine
 {
 private:
-    SDL_Window *    _window         = nullptr;
-    SDL_GLContext   _context        = nullptr;
+    IUiContext * const  _uiContext  = nullptr;
+    SDL_Window *        _window     = nullptr;
+    SDL_GLContext       _context    = nullptr;
 
     uint32  _width      = 0;
     uint32  _height     = 0;
@@ -246,7 +248,8 @@ public:
     SDL_Color Palette[256];
     vec4f     GLPalette[256];
 
-    OpenGLDrawingEngine()
+    OpenGLDrawingEngine(IUiContext * uiContext)
+        : _uiContext(uiContext)
     {
         _drawingContext = new OpenGLDrawingContext(this);
     }
@@ -494,9 +497,9 @@ private:
     }
 };
 
-IDrawingEngine * OpenRCT2::Ui::CreateOpenGLDrawingEngine()
+IDrawingEngine * OpenRCT2::Ui::CreateOpenGLDrawingEngine(IUiContext * uiContext)
 {
-    return new OpenGLDrawingEngine();
+    return new OpenGLDrawingEngine(uiContext);
 }
 
 OpenGLDrawingContext::OpenGLDrawingContext(OpenGLDrawingEngine * engine)

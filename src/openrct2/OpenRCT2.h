@@ -24,6 +24,7 @@ extern "C"
 {
 #endif
     #include "platform/platform.h"
+    #undef CreateWindow
 #ifdef __cplusplus
 }
 #endif
@@ -39,17 +40,6 @@ enum STARTUP_ACTION
     STARTUP_ACTION_OPEN,
     STARTUP_ACTION_EDIT
 };
-
-#ifdef __cplusplus
-
-interface IPlatformEnvironment;
-
-namespace OpenRCT2
-{
-    IPlatformEnvironment * SetupEnvironment();
-}
-
-#endif
 
 #ifdef __cplusplus
 extern "C"
@@ -80,9 +70,6 @@ extern "C"
 #endif
 
     void openrct2_write_full_version_info(utf8 * buffer, size_t bufferSize);
-    bool openrct2_initialise();
-    void openrct2_launch();
-    void openrct2_dispose();
     void openrct2_finish();
 
     sint32 cmdline_run(const char * * argv, sint32 argc);

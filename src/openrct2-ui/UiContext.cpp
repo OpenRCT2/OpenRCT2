@@ -26,6 +26,7 @@
 #include <openrct2/Version.h>
 #include "CursorRepository.h"
 #include "drawing/engines/DrawingEngines.h"
+#include "SDLException.h"
 #include "TextComposition.h"
 #include "UiContext.h"
 
@@ -70,7 +71,7 @@ private:
     CursorState     _cursorState;
     uint32          _lastKeyPressed;
     const uint8 *   _keysState;
-    uint8 *         _keysPressed;
+    uint8           _keysPressed[256];
     uint32          _lastGestureTimestamp;
     float           _gestureRadius;
 
@@ -78,15 +79,20 @@ public:
     UiContext(IPlatformUiContext * platformUiContext)
         : _platformUiContext(platformUiContext)
     {
+        if (SDL_Init(SDL_INIT_VIDEO) < 0)
+        {
+            SDLException::Throw("SDL_Init(SDL_INIT_VIDEO)");
+        }
     }
 
     ~UiContext() override
     {
         CloseWindow();
+        SDL_Quit();
     }
 
     // Window
-    void * GetWindow() override
+    SDL_Window * GetWindow() override
     {
         return _window;
     }
@@ -190,12 +196,12 @@ public:
     {
         switch ((sint32)type) {
         case DRAWING_ENGINE_SOFTWARE:
-            return CreateSoftwareDrawingEngine();
+            return CreateSoftwareDrawingEngine(this);
         case DRAWING_ENGINE_SOFTWARE_WITH_HARDWARE_DISPLAY:
-            return CreateHardwareDisplayDrawingEngine();
+            return CreateHardwareDisplayDrawingEngine(this);
 #ifndef DISABLE_OPENGL
         case DRAWING_ENGINE_OPENGL:
-            return CreateOpenGLDrawingEngine();
+            return CreateOpenGLDrawingEngine(this);
 #endif
         default:
             return nullptr;
@@ -434,26 +440,19 @@ public:
         OnResize(width, height);
     }
 
-private:
-    void CreateWindow()
+    void CreateWindow() override
     {
-        if (SDL_Init(SDL_INIT_VIDEO) < 0)
-        {
-            log_fatal("SDL_Init %s", SDL_GetError());
-            exit(-1);
-        }
-
         SDL_SetHint(SDL_HINT_VIDEO_MINIMIZE_ON_FOCUS_LOSS, gConfigGeneral.minimize_fullscreen_focus_loss ? "1" : "0");
 
         // TODO This should probably be called somewhere else. It has nothing to do with window creation and can be done as soon as
         // g1.dat is loaded.
-        sub_68371D();
+        // sub_68371D();
 
         // Get saved window size
         sint32 width = gConfigGeneral.window_width;
         sint32 height = gConfigGeneral.window_height;
-        if (width == -1) width = 640;
-        if (height == -1) height = 480;
+        if (width <= 0) width = 640;
+        if (height <= 0) height = 480;
 
         // Create window in window first rather than fullscreen so we have the display the window is on first
         uint32 flags = SDL_WINDOW_RESIZABLE;
@@ -465,8 +464,7 @@ private:
         _window = SDL_CreateWindow(OPENRCT2_NAME, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, flags);
         if (_window == nullptr)
         {
-            log_fatal("SDL_CreateWindow failed %s", SDL_GetError());
-            exit(-1);
+            SDLException::Throw("SDL_CreateWindow(...)");
         }
 
         SDL_SetWindowGrab(_window, gConfigGeneral.trap_cursor ? SDL_TRUE : SDL_FALSE);
@@ -487,13 +485,13 @@ private:
         TriggerResize();
     }
 
-    void CloseWindow()
+    void CloseWindow() override
     {
         drawing_engine_dispose();
         SDL_DestroyWindow(_window);
-        SDL_Quit();
     }
 
+private:
     void OnResize(sint32 width, sint32 height)
     {
         // Scale the native window size to the game's canvas size

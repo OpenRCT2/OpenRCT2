@@ -389,9 +389,9 @@ static exitcode_t HandleCommandScanObjects(CommandLineArgEnumerator * enumerator
         return result;
     }
 
-    IPlatformEnvironment * env = OpenRCT2::SetupEnvironment();
-    IObjectRepository * objectRepository = CreateObjectRepository(env);
-    objectRepository->Construct();
+    // IPlatformEnvironment * env = OpenRCT2::SetupEnvironment();
+    // IObjectRepository * objectRepository = CreateObjectRepository(env);
+    // objectRepository->Construct();
     return EXITCODE_OK;
 }
 
