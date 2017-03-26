@@ -15,6 +15,7 @@
 #pragma endregion
 
 #include "../core/Console.hpp"
+#include "../Context.h"
 #include "../network/network.h"
 #include "../OpenRCT2.h"
 #include "../scenario/ScenarioRepository.h"
@@ -161,7 +162,7 @@ extern "C"
         window_title_exit_open();
         window_title_options_open();
         window_title_logo_open();
-        window_resize_gui(gScreenWidth, gScreenHeight);
+        window_resize_gui(context_get_width(), context_get_height());
         gTitleHideVersionInfo = false;
     }
 

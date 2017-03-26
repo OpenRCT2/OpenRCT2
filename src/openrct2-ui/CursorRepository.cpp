@@ -22,7 +22,17 @@
 
 using namespace OpenRCT2::Ui;
 
-CursorRepository::CursorRepository()
+CursorRepository::~CursorRepository()
+{
+    for (size_t i = 0; i < CURSOR_COUNT; i++)
+    {
+        SDL_FreeCursor(_loadedCursors[i]);
+        _loadedCursors[i] = nullptr;
+    }
+    _currentCursor = CURSOR_UNDEFINED;
+}
+
+void CursorRepository::LoadCursors()
 {
     // Using system cursors
     _loadedCursors[CURSOR_ARROW] = SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_ARROW);
@@ -40,16 +50,6 @@ CursorRepository::CursorRepository()
 
     _currentCursor = CURSOR_UNDEFINED;
     SetCurrentCursor(CURSOR_ARROW);
-}
-
-CursorRepository::~CursorRepository()
-{
-    for (size_t i = 0; i < CURSOR_COUNT; i++)
-    {
-        SDL_FreeCursor(_loadedCursors[i]);
-        _loadedCursors[i] = nullptr;
-    }
-    _currentCursor = CURSOR_UNDEFINED;
 }
 
 CURSOR_ID CursorRepository::GetCurrentCursor()

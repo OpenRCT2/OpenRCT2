@@ -15,6 +15,7 @@
 #pragma endregion
 
 #include "../config/Config.h"
+#include "../Context.h"
 #include "../drawing/drawing.h"
 #include "../game.h"
 #include "../input.h"
@@ -424,8 +425,8 @@ static void viewport_move(sint16 x, sint16 y, rct_window* w, rct_viewport* viewp
 	if (w->flags & WF_7){
 		sint32 left = max(viewport->x, 0);
 		sint32 top = max(viewport->y, 0);
-		sint32 right = min(viewport->x + viewport->width, gScreenWidth);
-		sint32 bottom = min(viewport->y + viewport->height, gScreenHeight);
+		sint32 right = min(viewport->x + viewport->width, context_get_width());
+		sint32 bottom = min(viewport->y + viewport->height, context_get_height());
 
 		if (left >= right) return;
 		if (top >= bottom) return;
@@ -447,7 +448,7 @@ static void viewport_move(sint16 x, sint16 y, rct_window* w, rct_viewport* viewp
 		viewport->x = 0;
 	}
 
-	sint32 eax = viewport->x + viewport->width - gScreenWidth;
+	sint32 eax = viewport->x + viewport->width - context_get_width();
 	if (eax > 0){
 		viewport->width -= eax;
 		viewport->view_width -= eax * zoom;
@@ -465,7 +466,7 @@ static void viewport_move(sint16 x, sint16 y, rct_window* w, rct_viewport* viewp
 		viewport->y = 0;
 	}
 
-	eax = viewport->y + viewport->height - gScreenHeight;
+	eax = viewport->y + viewport->height - context_get_height();
 	if (eax > 0){
 		viewport->height -= eax;
 		viewport->view_height -= eax * zoom;

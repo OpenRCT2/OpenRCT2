@@ -14,6 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
+#include "../Context.h"
 #include "../game.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
@@ -252,13 +253,13 @@ static void window_track_manage_paint(rct_window *w, rct_drawpixelinfo *dpi)
  */
 static void window_track_delete_prompt_open()
 {
-	rct_window *w;
-
 	window_close_by_class(WC_TRACK_DELETE_PROMPT);
 
-	w = window_create(
-		max(28, (gScreenWidth - 250) / 2),
-		(gScreenHeight - 44) / 2,
+	sint32 screenWidth = context_get_width();
+	sint32 screenHeight = context_get_height();
+	rct_window *w = window_create(
+		max(28, (screenWidth - 250) / 2),
+		(screenHeight - 44) / 2,
 		250,
 		74,
 		&window_track_delete_prompt_events,

@@ -14,6 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
+#include "../Context.h"
 #include "../interface/viewport.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
@@ -64,11 +65,9 @@ static rct_window_event_list window_main_events = {
  */
 void window_main_open()
 {
-	rct_window* window;
-
-	window_main_widgets[0].right = gScreenWidth;
-	window_main_widgets[0].bottom = gScreenHeight;
-	window = window_create(
+	window_main_widgets[0].right = context_get_width();
+	window_main_widgets[0].bottom = context_get_height();
+	rct_window * window = window_create(
 		0, 0,
 		window_main_widgets[0].right, window_main_widgets[0].bottom,
 		&window_main_events,

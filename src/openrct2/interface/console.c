@@ -127,7 +127,7 @@ void console_update()
 
 	_consoleLeft = 0;
 	_consoleTop = 0;
-	_consoleRight = gScreenWidth;
+	_consoleRight = context_get_width();
 	_consoleBottom = 322;
 
 	if (gConsoleOpen) {

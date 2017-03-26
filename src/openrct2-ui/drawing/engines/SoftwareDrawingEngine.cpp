@@ -655,8 +655,8 @@ private:
         // Determine region in pixels
         uint32 left = Math::Max<uint32>(0, x * _dirtyGrid.BlockWidth);
         uint32 top = Math::Max<uint32>(0, y * _dirtyGrid.BlockHeight);
-        uint32 right = Math::Min((uint32)gScreenWidth, left + (columns * _dirtyGrid.BlockWidth));
-        uint32 bottom = Math::Min((uint32)gScreenHeight, top + (rows * _dirtyGrid.BlockHeight));
+        uint32 right = Math::Min(_width, left + (columns * _dirtyGrid.BlockWidth));
+        uint32 bottom = Math::Min(_height, top + (rows * _dirtyGrid.BlockHeight));
         if (right <= left || bottom <= top)
         {
             return;

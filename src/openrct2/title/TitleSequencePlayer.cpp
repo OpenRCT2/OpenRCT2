@@ -447,13 +447,13 @@ private:
             sint32 z = map_element_height(x, y);
             window_set_location(w, x, y, z);
             viewport_update_position(w);
-        }
 
-        // Save known tile position in case of window resize
-        _lastScreenWidth = gScreenWidth;
-        _lastScreenHeight = gScreenHeight;
-        _viewCentreLocation.x = x;
-        _viewCentreLocation.y = y;
+            // Save known tile position in case of window resize
+            _lastScreenWidth = w->width;
+            _lastScreenHeight = w->height;
+            _viewCentreLocation.x = x;
+            _viewCentreLocation.y = y;
+        }
     }
 
     /**
@@ -461,10 +461,14 @@ private:
      */
     void FixViewLocation()
     {
-        if (gScreenWidth != _lastScreenWidth ||
-            gScreenHeight != _lastScreenHeight)
+        rct_window * w = window_get_main();
+        if (w != nullptr)
         {
-            SetViewLocation(_viewCentreLocation.x, _viewCentreLocation.y);
+            if (w->width != _lastScreenWidth ||
+                w->height != _lastScreenHeight)
+            {
+                SetViewLocation(_viewCentreLocation.x, _viewCentreLocation.y);
+            }
         }
     }
 };
