@@ -19,6 +19,7 @@
 #include "../audio/audio.h"
 #include "../audio/AudioMixer.h"
 #include "../config/Config.h"
+#include "../Context.h"
 #include "../drawing/drawing.h"
 #include "../drawing/IDrawingEngine.h"
 #include "../drawing/lightfx.h"
@@ -134,8 +135,8 @@ void platform_update_palette(const uint8* colours, sint32 start_index, sint32 nu
 
 void platform_init()
 {
-	gKeysPressed = malloc(sizeof(uint8) * 256);
-	memset(gKeysPressed, 0, sizeof(uint8) * 256);
+	// gKeysPressed = malloc(sizeof(uint8) * 256);
+	// memset(gKeysPressed, 0, sizeof(uint8) * 256);
 
 	// Set the highest palette entry to white.
 	// This fixes a bug with the TT:rainbow road due to the
@@ -161,13 +162,13 @@ sint32 platform_scancode_to_rct_keycode(sint32 sdl_key)
 
 void platform_free()
 {
-	free(gKeysPressed);
+	// free(gKeysPressed);
 }
 
 void platform_toggle_windowed_mode()
 {
 	sint32 targetMode = gConfigGeneral.fullscreen_mode == 0 ? 2 : 0;
-	platform_set_fullscreen_mode(targetMode);
+	context_set_fullscreen_mode(targetMode);
 	gConfigGeneral.fullscreen_mode = targetMode;
 	config_save_default();
 }

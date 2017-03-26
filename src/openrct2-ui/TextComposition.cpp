@@ -19,13 +19,13 @@
 #include <openrct2/core/Math.hpp>
 #include <openrct2/core/Memory.hpp>
 #include <openrct2/core/String.hpp>
-#include <openrct2/localisation/localisation.h>
 #include "TextComposition.h"
 
 extern "C"
 {
     #include <openrct2/interface/console.h>
     #include <openrct2/interface/window.h>
+    #include <openrct2/localisation/localisation.h>
 }
 
 #ifdef __MACOSX__
@@ -43,7 +43,7 @@ bool TextComposition::IsActive()
     return SDL_IsTextInputActive() && _session.Buffer != nullptr;
 }
 
-const TextInputSession * TextComposition::Start(utf8 * buffer, size_t bufferSize)
+TextInputSession * TextComposition::Start(utf8 * buffer, size_t bufferSize)
 {
     Guard::ArgumentNotNull(buffer);
 
@@ -250,7 +250,7 @@ void TextComposition::InsertCodepoint(codepoint_t codepoint)
     size_t remainingSize = _session.BufferSize - _session.Size;
     if (codepointLength <= remainingSize)
     {
-        utf8 * buffer = (utf8 *)_session.Buffer;
+        utf8 * buffer = _session.Buffer;
         utf8 * insertPtr = buffer + _session.SelectionStart;
         if (_session.SelectionStart < _session.Size)
         {
@@ -274,7 +274,7 @@ void TextComposition::InsertCodepoint(codepoint_t codepoint)
 
 void TextComposition::Clear()
 {
-    utf8 * buffer = (utf8 *)_session.Buffer;
+    utf8 * buffer = _session.Buffer;
     buffer[0] = 0;
     _session.Size = 0;
     _session.Length = 0;
@@ -284,7 +284,7 @@ void TextComposition::Clear()
 
 void TextComposition::Delete()
 {
-    utf8 * buffer = (utf8 *)_session.Buffer;
+    utf8 * buffer = _session.Buffer;
     utf8 * targetShiftPtr = buffer + _session.SelectionStart;
     utf8 * sourceShiftPtr = targetShiftPtr + _session.SelectionSize;
     size_t shiftSize = _session.SelectionSize - _session.SelectionStart - _session.SelectionSize + 1;

@@ -15,6 +15,7 @@
 #pragma endregion
 
 #include <openrct2/common.h>
+#include <openrct2/Context.h>
 #include <openrct2/ui/UiContext.h>
 
 union SDL_Event;
@@ -38,7 +39,7 @@ namespace OpenRCT2
 
         public:
             bool IsActive();
-            const TextInputSession * TextComposition::Start(utf8 * buffer, size_t bufferSize);
+            TextInputSession * TextComposition::Start(utf8 * buffer, size_t bufferSize);
             void Stop();
             void HandleMessage(const SDL_Event * e);
 

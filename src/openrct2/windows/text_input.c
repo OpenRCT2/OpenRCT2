@@ -22,6 +22,7 @@
  */
 
 #include "../config/Config.h"
+#include "../Context.h"
 #include "../platform/platform.h"
 #include "../interface/window.h"
 #include "../interface/widget.h"
@@ -147,7 +148,7 @@ void window_text_input_open(rct_window* call_w, rct_widgetindex call_widget, rct
 	calling_number = call_w->number;
 	calling_widget = call_widget;
 
-	platform_start_text_input(text_input, maxLength);
+	gTextInput = context_start_text_input(text_input, maxLength);
 
 	window_init_scroll_widgets(w);
 	w->colours[0] = call_w->colours[0];
@@ -208,7 +209,7 @@ void window_text_input_raw_open(rct_window* call_w, rct_widgetindex call_widget,
 	calling_number = call_w->number;
 	calling_widget = call_widget;
 
-	platform_start_text_input(text_input, maxLength);
+	gTextInput = context_start_text_input(text_input, maxLength);
 
 	window_init_scroll_widgets(w);
 	w->colours[0] = call_w->colours[0];
@@ -227,7 +228,7 @@ static void window_text_input_mouseup(rct_window *w, rct_widgetindex widgetIndex
 	switch (widgetIndex){
 	case WIDX_CANCEL:
 	case WIDX_CLOSE:
-		platform_stop_text_input();
+		context_stop_text_input();
 		// Pass back the text that has been entered.
 		// ecx when zero means text input failed
 		if (calling_w != NULL)
@@ -235,7 +236,7 @@ static void window_text_input_mouseup(rct_window *w, rct_widgetindex widgetIndex
 		window_close(w);
 		break;
 	case WIDX_OKAY:
-		platform_stop_text_input();
+		context_stop_text_input();
 		// Pass back the text that has been entered.
 		// ecx when none zero means text input success
 		if (calling_w != NULL)
@@ -285,19 +286,19 @@ static void window_text_input_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 		size_t string_length = get_string_size(wrap_pointer) - 1;
 
-		if (!cur_drawn && (gTextInput.selection_offset <= char_count + string_length)) {
+		if (!cur_drawn && (gTextInput->SelectionStart <= char_count + string_length)) {
 			// Make a copy of the string for measuring the width.
 			char temp_string[TEXT_INPUT_SIZE] = { 0 };
-			memcpy(temp_string, wrap_pointer, gTextInput.selection_offset - char_count);
+			memcpy(temp_string, wrap_pointer, gTextInput->SelectionStart - char_count);
 			cursorX = w->x + 13 + gfx_get_string_width(temp_string);
 			cursorY = y;
 
 			sint32 width = 6;
-			if (gTextInput.selection_offset < strlen(text_input)){
+			if (gTextInput->SelectionStart < strlen(text_input)){
 				// Make a 1 utf8-character wide string for measuring the width
 				// of the currently selected character.
 				utf8 tmp[5] = { 0 }; // This is easier than setting temp_string[0..5]
-				uint32 codepoint = utf8_get_next(text_input + gTextInput.selection_offset, NULL);
+				uint32 codepoint = utf8_get_next(text_input + gTextInput->SelectionStart, NULL);
 				utf8_write_codepoint(tmp, codepoint);
 				width = max(gfx_get_string_width(tmp) - 2, 4);
 			}
@@ -325,9 +326,9 @@ static void window_text_input_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	}
 
 	// IME composition
-	if (gTextInputCompositionActive) {
-		draw_ime_composition(dpi, cursorX, cursorY);
-	}
+	// if (gTextInputCompositionActive) {
+	// 	draw_ime_composition(dpi, cursorX, cursorY);
+	// }
 }
 
 void window_text_input_key(rct_window* w, sint32 key)
@@ -336,7 +337,7 @@ void window_text_input_key(rct_window* w, sint32 key)
 
 	// If the return button is pressed stop text input
 	if (new_char == '\r'){
-		platform_stop_text_input();
+		context_stop_text_input();
 		window_close(w);
 		rct_window* calling_w = window_find_by_number(calling_class, calling_number);
 		// Pass back the text that has been entered.
@@ -367,7 +368,7 @@ static void window_text_input_close(rct_window *w)
 {
 	// Make sure that we take it out of the text input
 	// mode otherwise problems may occur.
-	platform_stop_text_input();
+	context_stop_text_input();
 }
 
 static void window_text_input_invalidate(rct_window *w)
@@ -401,13 +402,13 @@ static void window_text_input_invalidate(rct_window *w)
 
 static void draw_ime_composition(rct_drawpixelinfo * dpi, int cursorX, int cursorY)
 {
-	int compositionWidth = gfx_get_string_width(gTextInputComposition);
-	int x = cursorX - (compositionWidth / 2);
-	int y = cursorY + 13;
-	int width = compositionWidth;
-	int height = 10;
+	// int compositionWidth = gfx_get_string_width(gTextInputComposition);
+	// int x = cursorX - (compositionWidth / 2);
+	// int y = cursorY + 13;
+	// int width = compositionWidth;
+	// int height = 10;
 
-	gfx_fill_rect(dpi, x - 1, y - 1, x + width + 1, y + height + 1, PALETTE_INDEX_12);
-	gfx_fill_rect(dpi, x, y, x + width, y + height, PALETTE_INDEX_0);
-	gfx_draw_string(dpi, gTextInputComposition, COLOUR_DARK_GREEN, x, y);
+	// gfx_fill_rect(dpi, x - 1, y - 1, x + width + 1, y + height + 1, PALETTE_INDEX_12);
+	// gfx_fill_rect(dpi, x, y, x + width, y + height, PALETTE_INDEX_0);
+	// gfx_draw_string(dpi, gTextInputComposition, COLOUR_DARK_GREEN, x, y);
 }
