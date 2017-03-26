@@ -449,7 +449,17 @@ money32 footpath_remove_real(sint32 x, sint32 y, sint32 z, sint32 flags)
 		sub_6A759F();
 	}
 
-	return (flags & (1 << 5)) || (gParkFlags & PARK_FLAGS_NO_MONEY) || map_element_is_ghost(mapElement) ? 0 : -MONEY(10,00);
+	if (
+		(flags & (1 << 5)) || 
+		(gParkFlags & PARK_FLAGS_NO_MONEY) || 
+		map_element_is_ghost(mapElement)
+	) {
+		return 0;
+	}
+	else
+	{
+		return -MONEY(10,00);
+	}
 }
 
 /**
