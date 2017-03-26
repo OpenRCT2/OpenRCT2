@@ -88,7 +88,7 @@ void invalidate_scroll();
 static rct_mouse_data* get_mouse_input();
 void map_element_right_click(sint32 type, rct_map_element *mapElement, sint32 x, sint32 y);
 sint32 sub_6EDE88(sint32 x, sint32 y, rct_map_element **mapElement, sint32 *outX, sint32 *outY);
-sint32 get_next_key(keypress *keypress);
+sint32 get_next_key(keypress *kp);
 static void game_handle_input_mouse(sint32 x, sint32 y, sint32 state);
 void game_handle_edge_scroll();
 void game_handle_key_scroll();
@@ -1503,12 +1503,12 @@ void game_handle_keyboard_input()
  *
  *  rct2: 0x00406CD2
  */
-sint32 get_next_key(keypress *keypress)
+sint32 get_next_key(keypress *kp)
 {
 	if (gCurKeyNum >= gNumKeysPressed)
 		return -1;
 
-	*keypress = gKeysPressed[gCurKeyNum];
+	*kp = gKeysPressed[gCurKeyNum];
 
 	++gCurKeyNum;
 	return 0;
