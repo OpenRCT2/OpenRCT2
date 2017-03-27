@@ -453,7 +453,7 @@ money32 footpath_remove_real(sint32 x, sint32 y, sint32 z, sint32 flags)
 
 	bool isNotOwnedByPark = (flags & (1 << 5));
 	bool moneyDisabled = (gParkFlags & PARK_FLAGS_NO_MONEY);
-	bool isGhost = map_element_is_ghost(mapElement);
+	bool isGhost = (mapElement == NULL) || (map_element_is_ghost(mapElement));
 
 	if (isNotOwnedByPark || moneyDisabled || isGhost) {
 		cost = 0;
