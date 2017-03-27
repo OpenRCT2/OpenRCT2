@@ -4393,7 +4393,7 @@ void game_command_set_sign_name(sint32* eax, sint32* ebx, sint32* ecx, sint32* e
 	}
 
 	if (newName[0] != 0) {
-		rct_string_id string_id = user_string_allocate(128, newName);
+		rct_string_id string_id = user_string_allocate(USER_STRING_DUPLICATION_PERMITTED, newName);
 		if (string_id != 0) {
 			rct_string_id prev_string_id = banner->string_idx;
 			banner->string_idx = string_id;

@@ -12562,7 +12562,7 @@ money32 set_peep_name(sint32 flags, sint32 state, uint16 sprite_index, uint8* te
 		return MONEY32_UNDEFINED;
 	}
 
-	rct_string_id newId = user_string_allocate(4, newName);
+	rct_string_id newId = user_string_allocate(USER_STRING_HIGH_ID_NUMBER, newName);
 	if (newId == 0) {
 		return MONEY32_UNDEFINED;
 	}

@@ -5584,7 +5584,7 @@ void game_command_set_ride_name(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *e
 		return;
 	}
 
-	rct_string_id newUserStringId = user_string_allocate(4, newName);
+	rct_string_id newUserStringId = user_string_allocate(USER_STRING_HIGH_ID_NUMBER | USER_STRING_DUPLICATION_PERMITTED, newName);
 	if (newUserStringId == 0) {
 		*ebx = MONEY32_UNDEFINED;
 		return;
@@ -5972,18 +5972,18 @@ foundRideEntry:
 	ride_set_colour_preset(ride, *outRideColour & 0xFF);
 	ride->overall_view = 0xFFFF;
 
+#pragma pack(push, 1)
+	struct {
+		uint16 type_name;
+		uint16 number;
+	} name_args;
+	assert_struct_size(name_args, 4);
+#pragma pack(pop)
+
 	// Ride name
 	if (rideEntryIndex == 255) {
 	useDefaultName:
 		ride->name = STR_NONE;
-
-#pragma pack(push, 1)
-		struct {
-			uint16 type_name;
-			uint16 number;
-		} name_args;
-		assert_struct_size(name_args, 4);
-#pragma pack(pop)
 		name_args.type_name = 2 + ride->type;
 		name_args.number = 0;
 		do {
@@ -5999,20 +5999,22 @@ foundRideEntry:
 		}
 		ride->name = 1;
 		ride->name_arguments_type_name = rideEntry->name;
-		ride->name_arguments_number = 0;
-
 		rct_string_id rideNameStringId = 0;
-		for (sint32 i = 0; i < 100; i++) {
-			ride->name_arguments_number++;
-			format_string(rideNameBuffer, 256, ride->name, &ride->name_arguments);
+		name_args.type_name = 2 + ride->type;
+		name_args.number = 0;
 
-			rideNameStringId = user_string_allocate(4, rideNameBuffer);
-			if (rideNameStringId != 0) {
-				ride->name = rideNameStringId;
-				break;
-			}
-		}
-		if (rideNameStringId == 0) {
+		do {
+			name_args.number++;
+			format_string(rideNameBuffer, 256, ride->name, &name_args);
+		} while (ride_name_exists(rideNameBuffer));
+
+		ride->name_arguments_type_name = name_args.type_name;
+		ride->name_arguments_number = name_args.number;
+		
+		rideNameStringId = user_string_allocate(USER_STRING_HIGH_ID_NUMBER | USER_STRING_DUPLICATION_PERMITTED, rideNameBuffer);
+		if (rideNameStringId != 0) {
+			ride->name = rideNameStringId;
+		} else {
 			goto useDefaultName;
 		}
 	}
