@@ -11185,12 +11185,14 @@ static void peep_make_passing_peeps_sick(rct_peep *peep)
 				sint32 zDiff = abs(otherPeep->z - peep->z);
 				if (zDiff <= 32) {
 					if (peep != otherPeep) {
-						if (otherPeep->action == PEEP_ACTION_NONE_1 || otherPeep->action == PEEP_ACTION_NONE_2) {
-							otherPeep->action = PEEP_ACTION_THROW_UP;
-							otherPeep->action_frame = 0;
-							otherPeep->action_sprite_image_offset = 0;
-							sub_693B58(otherPeep);
-							invalidate_sprite_2((rct_sprite*)otherPeep);
+						if (otherPeep->state != PEEP_STATE_QUEUING) {
+							if (otherPeep->action == PEEP_ACTION_NONE_1 || otherPeep->action == PEEP_ACTION_NONE_2) {
+								otherPeep->action = PEEP_ACTION_THROW_UP;
+								otherPeep->action_frame = 0;
+								otherPeep->action_sprite_image_offset = 0;
+								sub_693B58(otherPeep);
+								invalidate_sprite_2((rct_sprite*)otherPeep);
+							}
 						}
 					}
 				}
