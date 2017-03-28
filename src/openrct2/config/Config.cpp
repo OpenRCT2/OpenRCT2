@@ -598,13 +598,13 @@ extern "C"
 
     void config_set_defaults()
     {
-	config_release();
+        config_release();
         Config::SetDefaults();
     }
 
     bool config_open(const utf8 * path)
     {
-	config_release();
+        config_release();
         return Config::ReadFile(path);
     }
 
