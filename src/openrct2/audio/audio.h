@@ -14,11 +14,15 @@
  *****************************************************************************/
 #pragma endregion
 
-#ifndef _AUDIO_H_
-#define _AUDIO_H_
+#pragma once
 
 #include "../common.h"
 #include "../world/sprite.h"
+
+#ifdef __cplusplus
+extern "C"
+{
+#endif
 
 #define AUDIO_DEVICE_NAME_SIZE 256
 #define AUDIO_MAX_RIDE_MUSIC 2
@@ -163,7 +167,6 @@ typedef enum RCT2_SOUND {
 extern audio_device *gAudioDevices;
 extern sint32 gAudioDeviceCount;
 extern sint32 gAudioCurrentDevice;
-extern void *gCrowdSoundChannel;
 extern bool gGameSoundsOff;
 extern void *gRainSoundChannel;
 extern rct_ride_music gRideMusicList[AUDIO_MAX_RIDE_MUSIC];
@@ -247,11 +250,6 @@ void audio_quit();
 */
 void audio_start_title_music();
 /**
-* Stops the crowd sound effect from playing.
-* rct2: 0x006BD07F
-*/
-void audio_stop_crowd_sound();
-/**
 * Stops the rain sound effect from playing.
 */
 void audio_stop_rain_sound();
@@ -283,4 +281,6 @@ void audio_unpause_sounds();
 
 void audio_stop_all_music_and_sounds();
 
+#ifdef __cplusplus
+}
 #endif

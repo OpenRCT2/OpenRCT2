@@ -55,6 +55,7 @@ extern "C"
 }
 
 using namespace OpenRCT2;
+using namespace OpenRCT2::Audio;
 using namespace OpenRCT2::Ui;
 
 namespace OpenRCT2
@@ -66,7 +67,8 @@ namespace OpenRCT2
         constexpr static uint32 UPDATE_TIME_MS = 25;
 
         // Dependencies
-        IUiContext * const _uiContext = nullptr;
+        IAudioContext * const _audioContext = nullptr;
+        IUiContext * const _uiContext       = nullptr;
 
         // Services
         IPlatformEnvironment *      _env                    = nullptr;
@@ -89,8 +91,9 @@ namespace OpenRCT2
         static Context * Instance;
 
     public:
-        Context(IUiContext * uiContext)
-            : _uiContext(uiContext)
+        Context(IAudioContext * audioContext, IUiContext * uiContext)
+            : _audioContext(audioContext),
+              _uiContext(uiContext)
         {
             Instance = this;
         }
@@ -108,6 +111,11 @@ namespace OpenRCT2
             rct2_interop_dispose();
             platform_free();
             Instance = nullptr;
+        }
+
+        IAudioContext * GetAudioContext() override
+        {
+            return _audioContext;
         }
 
         IUiContext * GetUiContext() override
@@ -556,12 +564,12 @@ namespace OpenRCT2
 
     IContext * CreateContext()
     {
-        return new Context(nullptr);
+        return new Context(nullptr, nullptr);
     }
 
-    IContext * CreateContext(IUiContext * uiContext)
+    IContext * CreateContext(Audio::IAudioContext * audioContext, IUiContext * uiContext)
     {
-        return new Context(uiContext);
+        return new Context(audioContext, uiContext);
     }
 
     IContext * GetContext()

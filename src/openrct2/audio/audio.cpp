@@ -318,13 +318,8 @@ void audio_stop_all_music_and_sounds()
 	audio_stop_title_music();
 	audio_stop_vehicle_sounds();
 	audio_stop_ride_music();
-	audio_stop_crowd_sound();
+	peep_stop_crowd_noise();
 	audio_stop_rain_sound();
-}
-
-void audio_stop_crowd_sound()
-{
-	audio_stop_channel(&gCrowdSoundChannel);
 }
 
 void audio_stop_title_music()
@@ -393,7 +388,7 @@ void audio_init_ride_sounds(sint32 device)
 
 void audio_close()
 {
-	audio_stop_crowd_sound();
+	peep_stop_crowd_noise();
 	audio_stop_title_music();
 	audio_stop_ride_music();
 	audio_stop_rain_sound();
@@ -414,7 +409,7 @@ void audio_pause_sounds()
 	gGameSoundsOff = true;
 	audio_stop_vehicle_sounds();
 	audio_stop_ride_music();
-	audio_stop_crowd_sound();
+	peep_stop_crowd_noise();
 	audio_stop_rain_sound();
 }
 

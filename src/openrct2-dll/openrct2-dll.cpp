@@ -20,12 +20,14 @@
 #include <stdlib.h>
 #include <windows.h>
 #include <shellapi.h>
+#include <openrct2/audio/AudioContext.h>
 #include <openrct2/Context.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/ui/UiContext.h>
 #include <openrct2-ui/UiContext.h>
 
 using namespace OpenRCT2;
+using namespace OpenRCT2::Audio;
 using namespace OpenRCT2::Ui;
 
 #define DLLEXPORT extern "C" __declspec(dllexport)
@@ -43,13 +45,15 @@ DLLEXPORT int LaunchOpenRCT2(int argc, wchar_t * * argvW)
         return -1;
     }
 
-    IUiContext * uiContext = OpenRCT2::Ui::CreateContext();
-    IContext * context = OpenRCT2::CreateContext(uiContext);
+    IAudioContext * audioContext = CreateAudioContext();
+    IUiContext * uiContext = CreateUiContext();
+    IContext * context = OpenRCT2::CreateContext(audioContext, uiContext);
 
     int exitCode = context->RunOpenRCT2(argc, argv);
 
     delete context;
     delete uiContext;
+    delete audioContext;
 
     FreeCommandLineArgs(argc, argv);
     return exitCode;

@@ -57,6 +57,11 @@ enum
 
 namespace OpenRCT2
 {
+    namespace Audio
+    {
+        interface IAudioContext;
+    }
+
     namespace Ui
     {
         interface IUiContext;
@@ -69,13 +74,15 @@ namespace OpenRCT2
     {
         virtual ~IContext() = default;
 
-        virtual Ui::IUiContext * GetUiContext() abstract;
+        virtual Audio::IAudioContext *  GetAudioContext() abstract;
+        virtual Ui::IUiContext *        GetUiContext() abstract;
+
         virtual sint32 RunOpenRCT2(int argc, char * * argv) abstract;
         virtual void Finish() abstract;
     };
 
     IContext * CreateContext();
-    IContext * CreateContext(Ui::IUiContext * uiContext);
+    IContext * CreateContext(Audio::IAudioContext * audioContext, Ui::IUiContext * uiContext);
     IContext * GetContext();
 }
 

@@ -602,7 +602,7 @@ private:
     }
 };
 
-IUiContext * OpenRCT2::Ui::CreateContext()
+IUiContext * OpenRCT2::Ui::CreateUiContext()
 {
     auto platformUiContext = std::unique_ptr<IPlatformUiContext>(CreatePlatformUiContext());
     return new UiContext(platformUiContext.get());

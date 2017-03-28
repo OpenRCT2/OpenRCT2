@@ -17,25 +17,24 @@
 #pragma once
 
 #include "../common.h"
-#include "AudioFormat.h"
 #include "AudioMixer.h"
 
-/**
- * Represents a readable source of audio PCM data.
- */
-interface IAudioSource
+namespace OpenRCT2 { namespace Audio
 {
-    virtual ~IAudioSource() = default;
+    /**
+     * Represents a readable source of audio PCM data.
+     */
+    interface IAudioSource
+    {
+        virtual ~IAudioSource() = default;
 
-    virtual uint64 GetLength() abstract;
-    virtual AudioFormat GetFormat() abstract;
-    virtual size_t Read(void * dst, uint64 offset, size_t len) abstract;
-};
+        virtual uint64 GetLength() abstract;
+        // virtual AudioFormat GetFormat() abstract;
+        virtual size_t Read(void * dst, uint64 offset, size_t len) abstract;
+    };
 
-namespace AudioSource
-{
-    IAudioSource * CreateNull();
-    IAudioSource * CreateMemoryFromCSS1(const utf8 * path, size_t index, const AudioFormat * targetFormat = nullptr);
-    IAudioSource * CreateMemoryFromWAV(const utf8 * path, const AudioFormat * targetFormat = nullptr);
-    IAudioSource * CreateStreamFromWAV(SDL_RWops * rw);
-}
+    namespace AudioSource
+    {
+        IAudioSource * CreateNull();
+    }
+} }

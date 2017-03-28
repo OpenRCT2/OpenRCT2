@@ -16,29 +16,27 @@
 
 #include "AudioSource.h"
 
-/**
- * An audio source representing silence.
- */
-class NullAudioSource : public IAudioSource
+namespace OpenRCT2 { namespace Audio
 {
-public:
-    uint64 GetLength() override
+    /**
+     * An audio source representing silence.
+     */
+    class NullAudioSource : public IAudioSource
     {
-        return 0;
-    }
+    public:
+        uint64 GetLength() override
+        {
+            return 0;
+        }
 
-    AudioFormat GetFormat() override
+        size_t Read(void * dst, uint64 offset, size_t len) override
+        {
+            return 0;
+        }
+    };
+
+    IAudioSource * AudioSource::CreateNull()
     {
-        return { 0 };
+        return new NullAudioSource();
     }
-
-    size_t Read(void * dst, uint64 offset, size_t len) override
-    {
-        return 0;
-    }
-};
-
-IAudioSource * AudioSource::CreateNull()
-{
-    return new NullAudioSource();
-}
+} }
