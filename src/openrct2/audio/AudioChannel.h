@@ -16,70 +16,70 @@
 
 #pragma once
 
-#include <speex/speex_resampler.h>
 #include "../common.h"
-#include "AudioFormat.h"
-#include "AudioMixer.h"
 
-interface IAudioSource;
-
-/**
- * Represents an audio channel that represents an audio source
- * and a number of properties such as volume, pan and loop information.
- */
-interface IAudioChannel
+namespace OpenRCT2 { namespace Audio
 {
-    virtual ~IAudioChannel() = default;
+    interface IAudioSource;
 
-    virtual IAudioSource * GetSource() const abstract;
+    /**
+     * Represents an audio channel that represents an audio source
+     * and a number of properties such as volume, pan and loop information.
+     */
+    interface IAudioChannel
+    {
+        virtual ~IAudioChannel() = default;
 
-    virtual SpeexResamplerState * GetResampler() const abstract;
-    virtual void SetResampler(SpeexResamplerState * value) abstract;
+        virtual IAudioSource * GetSource() const abstract;
 
-    virtual sint32  GetGroup() const abstract;
-    virtual void    SetGroup(sint32 group) abstract;
+        // virtual SpeexResamplerState * GetResampler() const abstract;
+        // virtual void SetResampler(SpeexResamplerState * value) abstract;
 
-    virtual double  GetRate() const abstract;
-    virtual void    SetRate(double rate) abstract;
+        virtual sint32  GetGroup() const abstract;
+        virtual void    SetGroup(sint32 group) abstract;
 
-    virtual uint64  GetOffset() const abstract;
-    virtual bool    SetOffset(uint64 offset) abstract;
+        virtual double  GetRate() const abstract;
+        virtual void    SetRate(double rate) abstract;
 
-    virtual sint32  GetLoop() const abstract;
-    virtual void    SetLoop(sint32 value) abstract;
+        virtual uint64  GetOffset() const abstract;
+        virtual bool    SetOffset(uint64 offset) abstract;
 
-    virtual sint32  GetVolume() const abstract;
-    virtual float   GetVolumeL() const abstract;
-    virtual float   GetVolumeR() const abstract;
-    virtual float   GetOldVolumeL() const abstract;
-    virtual float   GetOldVolumeR() const abstract;
-    virtual sint32  GetOldVolume() const abstract;
-    virtual void    SetVolume(sint32 volume) abstract;
+        virtual sint32  GetLoop() const abstract;
+        virtual void    SetLoop(sint32 value) abstract;
 
-    virtual float   GetPan() const abstract;
-    virtual void    SetPan(float pan) abstract;
+        virtual sint32  GetVolume() const abstract;
+        virtual float   GetVolumeL() const abstract;
+        virtual float   GetVolumeR() const abstract;
+        virtual float   GetOldVolumeL() const abstract;
+        virtual float   GetOldVolumeR() const abstract;
+        virtual sint32  GetOldVolume() const abstract;
+        virtual void    SetVolume(sint32 volume) abstract;
 
-    virtual bool IsStopping() const abstract;
-    virtual void SetStopping(bool value) abstract;
+        virtual float   GetPan() const abstract;
+        virtual void    SetPan(float pan) abstract;
 
-    virtual bool IsDone() const abstract;
-    virtual void SetDone(bool value) abstract;
+        virtual bool IsStopping() const abstract;
+        virtual void SetStopping(bool value) abstract;
 
-    virtual bool DeleteOnDone() const abstract;
-    virtual void SetDeleteOnDone(bool value) abstract;
+        virtual bool IsDone() const abstract;
+        virtual void SetDone(bool value) abstract;
 
-    virtual void SetDeleteSourceOnDone(bool value) abstract;
+        virtual bool DeleteOnDone() const abstract;
+        virtual void SetDeleteOnDone(bool value) abstract;
 
-    virtual bool IsPlaying() const abstract;
+        virtual void SetDeleteSourceOnDone(bool value) abstract;
 
-    virtual void Play(IAudioSource * source, sint32 loop = MIXER_LOOP_NONE) abstract;
-    virtual void UpdateOldVolume() abstract;
+        virtual bool IsPlaying() const abstract;
 
-    virtual AudioFormat GetFormat() const abstract;
-    virtual size_t Read(void * dst, size_t len) abstract;
-};
+        virtual void Play(IAudioSource * source, sint32 loop = 0) abstract;
+        virtual void UpdateOldVolume() abstract;
 
-namespace AudioChannel
-{
-    IAudioChannel * Create();
-}
+        // virtual AudioFormat GetFormat() const abstract;
+        virtual size_t Read(void * dst, size_t len) abstract;
+    };
+
+    namespace AudioChannel
+    {
+        IAudioChannel * Create();
+    }
+} }

@@ -35,7 +35,7 @@ namespace OpenRCT2
             virtual bool IsSteamOverlayAttached() abstract;
         };
 
-        IUiContext * CreateContext();
+        IUiContext * CreateUiContext();
         IPlatformUiContext * CreatePlatformUiContext();
     }
 }

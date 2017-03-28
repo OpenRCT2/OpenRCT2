@@ -118,6 +118,8 @@ enum {
 	F1EE18_RIDE_ENTRANCE		= 1 << 3,
 };
 
+static void * _crowdSoundChannel = NULL;
+
 static void sub_68F41A(rct_peep *peep, sint32 index);
 static void peep_update(rct_peep *peep);
 static sint32 peep_has_empty_container(rct_peep* peep);
@@ -6888,6 +6890,14 @@ void peep_problem_warnings_update()
 	}
 }
 
+void peep_stop_crowd_noise()
+{
+	if (_crowdSoundChannel != NULL) {
+		Mixer_Stop_Channel(_crowdSoundChannel);
+		_crowdSoundChannel = NULL;
+	}
+}
+
 /**
  *
  *  rct2: 0x006BD18A
@@ -6938,9 +6948,9 @@ void peep_update_crowd_noise()
 	visiblePeeps = (visiblePeeps / 2) - 6;
 	if (visiblePeeps < 0) {
 		// Mute crowd noise
-		if (gCrowdSoundChannel) {
-			Mixer_Stop_Channel(gCrowdSoundChannel);
-			gCrowdSoundChannel = 0;
+		if (_crowdSoundChannel != NULL) {
+			Mixer_Stop_Channel(_crowdSoundChannel);
+			_crowdSoundChannel = NULL;
 		}
 	} else {
 		sint32 volume;
@@ -6952,14 +6962,14 @@ void peep_update_crowd_noise()
 		volume = (((207360000 - volume) >> viewport->zoom) - 207360000) / 65536 - 150;
 
 		// Load and play crowd noise if needed and set volume
-		if (!gCrowdSoundChannel) {
-			gCrowdSoundChannel = Mixer_Play_Music(PATH_ID_CSS2, MIXER_LOOP_INFINITE, false);
-			if (gCrowdSoundChannel) {
-				Mixer_Channel_SetGroup(gCrowdSoundChannel, MIXER_GROUP_SOUND);
+		if (_crowdSoundChannel == NULL) {
+			_crowdSoundChannel = Mixer_Play_Music(PATH_ID_CSS2, MIXER_LOOP_INFINITE, false);
+			if (_crowdSoundChannel != NULL) {
+				Mixer_Channel_SetGroup(_crowdSoundChannel, MIXER_GROUP_SOUND);
 			}
 		}
-		if (gCrowdSoundChannel) {
-			Mixer_Channel_Volume(gCrowdSoundChannel, DStoMixerVolume(volume));
+		if (_crowdSoundChannel != NULL) {
+			Mixer_Channel_Volume(_crowdSoundChannel, DStoMixerVolume(volume));
 		}
 	}
 }
