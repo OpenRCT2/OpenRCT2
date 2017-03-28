@@ -16,38 +16,41 @@
 
 #pragma once
 
-#include "../common.h"
+#include <openrct2/common.h>
 #include <SDL.h>
 
-/**
- * Represents the size, frequency and number of channels for
- * an audio stream or buffer.
- */
-struct AudioFormat
+namespace OpenRCT2 { namespace Audio
 {
-    sint32          freq;
-    SDL_AudioFormat format;
-    sint32          channels;
-
-    sint32 BytesPerSample() const
+    /**
+     * Represents the size, frequency and number of channels for
+     * an audio stream or buffer.
+     */
+    struct AudioFormat
     {
-        return (SDL_AUDIO_BITSIZE(format)) / 8;
+        sint32          freq;
+        SDL_AudioFormat format;
+        sint32          channels;
+
+        sint32 BytesPerSample() const
+        {
+            return (SDL_AUDIO_BITSIZE(format)) / 8;
+        }
+
+        sint32 GetByteRate() const
+        {
+            return BytesPerSample() * channels;
+        }
+    };
+
+    inline bool operator ==(const AudioFormat& lhs, const AudioFormat& rhs)
+    {
+        return lhs.freq == rhs.freq &&
+               lhs.format == rhs.format &&
+               lhs.channels == rhs.channels;
     }
 
-    sint32 GetByteRate() const
+    inline bool operator !=(const AudioFormat& lhs, const AudioFormat& rhs)
     {
-        return BytesPerSample() * channels;
+        return !(lhs == rhs);
     }
-};
-
-inline bool operator ==(const AudioFormat& lhs, const AudioFormat& rhs)
-{
-    return lhs.freq == rhs.freq &&
-            lhs.format == rhs.format &&
-            lhs.channels == rhs.channels;
-}
-
-inline bool operator !=(const AudioFormat& lhs, const AudioFormat& rhs)
-{
-    return !(lhs == rhs);
-}
+} }

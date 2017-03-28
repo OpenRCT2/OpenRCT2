@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include <string>
 #include "../common.h"
 
 namespace OpenRCT2
@@ -23,6 +24,8 @@ namespace OpenRCT2
     namespace Audio
     {
         interface IAudioChannel;
+        interface IAudioMixer;
+        interface IAudioSource;
 
         /**
          * Audio services for playing music and sound effects.
@@ -30,6 +33,13 @@ namespace OpenRCT2
         interface IAudioContext
         {
             virtual ~IAudioContext() = default;
+
+            virtual IAudioMixer * GetMixer() abstract;
+
+            virtual void SetOutputDevice(const char * deviceName) abstract;
+
+            virtual IAudioSource * CreateStreamFromWAV(const std::string &path) abstract;
+
 
             virtual void StartTitleMusic() abstract;
 
@@ -48,5 +58,7 @@ namespace OpenRCT2
             virtual void StopTitleMusic() abstract;
             virtual void StopVehicleSounds() abstract;
         };
+
+        IAudioContext * CreateAudioContext();
     }
 }

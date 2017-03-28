@@ -17,7 +17,6 @@
 #include <stdlib.h>
 #include <time.h>
 #include "../audio/audio.h"
-#include "../audio/AudioMixer.h"
 #include "../config/Config.h"
 #include "../Context.h"
 #include "../drawing/drawing.h"

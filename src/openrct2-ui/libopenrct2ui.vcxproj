@@ -22,7 +22,11 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="audio\AudioChannel.cpp" />
     <ClCompile Include="audio\AudioContext.cpp" />
+    <ClCompile Include="audio\AudioMixer.cpp" />
+    <ClCompile Include="audio\FileAudioSource.cpp" />
+    <ClCompile Include="audio\MemoryAudioSource.cpp" />
     <ClCompile Include="CursorData.cpp" />
     <ClCompile Include="CursorRepository.cpp" />
     <ClCompile Include="drawing\engines\opengl\CopyFramebufferShader.cpp" />
@@ -42,6 +46,8 @@
     <ClCompile Include="UiContext.Win32.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="audio\AudioContext.h" />
+    <ClInclude Include="audio\AudioFormat.h" />
     <ClInclude Include="CursorRepository.h" />
     <ClInclude Include="drawing\engines\DrawingEngines.h" />
     <ClInclude Include="drawing\engines\opengl\CopyFramebufferShader.h" />

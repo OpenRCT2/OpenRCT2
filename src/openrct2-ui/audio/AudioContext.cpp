@@ -25,6 +25,15 @@ namespace OpenRCT2 { namespace Audio
         {
         }
 
+        virtual void SetOutputDevice(const char * deviceName) override
+        {
+        }
+
+        virtual IAudioSource * CreateStreamFromWAV(const std::string &path) override
+        {
+            return nullptr;
+        }
+
         void StartTitleMusic() override { }
 
         IAudioChannel * PlaySound(sint32 soundId, sint32 volume, sint32 pan) override { return nullptr; }
