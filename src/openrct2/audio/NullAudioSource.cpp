@@ -24,7 +24,7 @@ namespace OpenRCT2 { namespace Audio
     class NullAudioSource : public IAudioSource
     {
     public:
-        uint64 GetLength() override
+        uint64 GetLength() const override
         {
             return 0;
         }
