@@ -2334,6 +2334,7 @@ static money32 smooth_land(sint32 flags, sint32 centreX, sint32 centreY, sint32 
 	sint32 x = mapLeft;
 	sint32 y = mapTop;
 	sint32 size = ((mapRight - mapLeft) >> 5) + 1;
+	sint32 toolSize = size;  // Required later for correcting the cost
 	sint32 initialMinZ = -2;
 
 	// Then do the smoothing
@@ -2500,7 +2501,10 @@ static money32 smooth_land(sint32 flags, sint32 centreX, sint32 centreY, sint32 
 	gCommandPosition.x = centreX;
 	gCommandPosition.y = centreY;
 	gCommandPosition.z = centreZ;
-	return totalCost * 4;
+
+	sint32 correction = 80*(toolSize + 1);
+
+	return totalCost + MONEY(correction,00);
 }
 
 /**
