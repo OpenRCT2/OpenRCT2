@@ -76,8 +76,8 @@ private:
     float           _gestureRadius;
 
 public:
-    UiContext(IPlatformUiContext * platformUiContext)
-        : _platformUiContext(platformUiContext)
+    UiContext()
+        : _platformUiContext(CreatePlatformUiContext())
     {
         if (SDL_Init(SDL_INIT_VIDEO) < 0)
         {
@@ -90,6 +90,7 @@ public:
     {
         CloseWindow();
         SDL_QuitSubSystem(SDL_INIT_VIDEO);
+        delete _platformUiContext;
     }
 
     // Window
@@ -604,6 +605,5 @@ private:
 
 IUiContext * OpenRCT2::Ui::CreateUiContext()
 {
-    auto platformUiContext = std::unique_ptr<IPlatformUiContext>(CreatePlatformUiContext());
-    return new UiContext(platformUiContext.get());
+    return new UiContext();
 }
