@@ -225,7 +225,7 @@ enum {
 	SCENERY_TYPE_BANNER
 };
 
-#define SCENERY_ENTRIES_BY_TAB 128
+#define SCENERY_ENTRIES_BY_TAB 256
 
 extern uint8 gWindowSceneryActiveTabIndex;
 extern uint16 gWindowSceneryTabSelections[20];
