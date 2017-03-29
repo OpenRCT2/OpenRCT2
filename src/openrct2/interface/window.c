@@ -456,7 +456,7 @@ rct_window *window_create(sint32 x, sint32 y, sint32 width, sint32 height, rct_w
 	// Play sounds and flash the window
 	if (!(flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT))){
 		w->flags |= WF_WHITE_BORDER_MASK;
-		audio_play_sound_panned(SOUND_WINDOW_OPEN, x + (width / 2), 0, 0, 0);
+		audio_play_sound(SOUND_WINDOW_OPEN, 0, x + (width / 2));
 	}
 
 	w->number = 0;

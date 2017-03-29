@@ -139,7 +139,7 @@ void window_error_open(rct_string_id title, rct_string_id message)
 	w->widgets = window_error_widgets;
 	w->error.var_480 = 0;
 	if (!gDisableErrorWindowSound) {
-		audio_play_sound_panned(SOUND_ERROR, 0, w->x + (w->width / 2), 0, 0);
+		audio_play_sound(SOUND_ERROR, 0, w->x + (w->width / 2));
 	}
 }
 

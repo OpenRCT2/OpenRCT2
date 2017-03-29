@@ -12,7 +12,8 @@ typedef struct SpeexResamplerState_ SpeexResamplerState;
 
 namespace OpenRCT2 { namespace Audio
 {
-    struct AudioFormat;
+    struct      AudioFormat;
+    interface   IAudioContext;
 
 #pragma pack(push, 1)
     struct WaveFormat
@@ -68,4 +69,6 @@ namespace OpenRCT2 { namespace Audio
     {
         IAudioMixer * Create();
     }
+
+    IAudioContext * CreateAudioContext();
 } }

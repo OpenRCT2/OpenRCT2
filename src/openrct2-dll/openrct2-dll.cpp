@@ -24,6 +24,7 @@
 #include <openrct2/Context.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/ui/UiContext.h>
+#include <openrct2-ui/audio/AudioContext.h>
 #include <openrct2-ui/UiContext.h>
 
 using namespace OpenRCT2;
@@ -47,7 +48,7 @@ DLLEXPORT int LaunchOpenRCT2(int argc, wchar_t * * argvW)
 
     IAudioContext * audioContext = CreateAudioContext();
     IUiContext * uiContext = CreateUiContext();
-    IContext * context = OpenRCT2::CreateContext(audioContext, uiContext);
+    IContext * context = CreateContext(audioContext, uiContext);
 
     int exitCode = context->RunOpenRCT2(argc, argv);
 

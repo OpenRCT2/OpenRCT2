@@ -17,6 +17,7 @@
 #pragma once
 
 #include <string>
+#include <vector>
 #include "../common.h"
 
 namespace OpenRCT2
@@ -36,7 +37,8 @@ namespace OpenRCT2
 
             virtual IAudioMixer * GetMixer() abstract;
 
-            virtual void SetOutputDevice(const char * deviceName) abstract;
+            virtual std::vector<std::string> GetOutputDevices() abstract;
+            virtual void SetOutputDevice(const std::string &deviceName) abstract;
 
             virtual IAudioSource * CreateStreamFromWAV(const std::string &path) abstract;
 
@@ -58,7 +60,5 @@ namespace OpenRCT2
             virtual void StopTitleMusic() abstract;
             virtual void StopVehicleSounds() abstract;
         };
-
-        IAudioContext * CreateAudioContext();
     }
 }
