@@ -7008,7 +7008,7 @@ void peep_applause()
 	}
 
 	// Play applause noise
-	audio_play_sound_panned(SOUND_APPLAUSE, context_get_width() / 2, 0, 0, 0);
+	audio_play_sound(SOUND_APPLAUSE, 0, context_get_width() / 2);
 }
 
 /**

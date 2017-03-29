@@ -41,7 +41,11 @@ static IAudioMixer * GetMixer()
 void Mixer_Init(const char * device)
 {
     IAudioContext * audioContext = GetContext()->GetAudioContext();
-    audioContext->SetOutputDevice(device);
+    if (device == nullptr)
+    {
+        device = "";
+    }
+    audioContext->SetOutputDevice(std::string(device));
 }
 
 void * Mixer_Play_Effect(size_t id, sint32 loop, sint32 volume, float pan, double rate, sint32 deleteondone)

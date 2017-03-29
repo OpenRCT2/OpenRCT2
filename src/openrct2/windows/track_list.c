@@ -193,7 +193,7 @@ static void window_track_list_select(rct_window *w, sint32 index)
 		return;
 	}
 
-	audio_play_sound_panned(SOUND_CLICK_1, w->x + (w->width / 2), 0, 0, 0);
+	audio_play_sound(SOUND_CLICK_1, 0, w->x + (w->width / 2));
 	if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)) {
 		if (index == 0) {
 			window_close(w);

@@ -14,7 +14,11 @@
 *****************************************************************************/
 #pragma endregion
 
+#include <openrct2/common.h>
+#include <SDL.h>
 #include <openrct2/audio/AudioContext.h>
+#include <openrct2/core/String.hpp>
+#include "../SDLException.h"
 #include "AudioContext.h"
 
 namespace OpenRCT2 { namespace Audio
@@ -27,7 +31,16 @@ namespace OpenRCT2 { namespace Audio
     public:
         AudioContext()
         {
+            if (SDL_Init(SDL_INIT_AUDIO) < 0)
+            {
+                SDLException::Throw("SDL_Init(SDL_INIT_AUDIO)");
+            }
             _audioMixer = AudioMixer::Create();
+        }
+
+        ~AudioContext() override
+        {
+            SDL_QuitSubSystem(SDL_INIT_AUDIO);
         }
 
         IAudioMixer * GetMixer() override
@@ -35,9 +48,26 @@ namespace OpenRCT2 { namespace Audio
             return _audioMixer;
         }
 
-        void SetOutputDevice(const char * deviceName) override
+        std::vector<std::string> GetOutputDevices() override
         {
-            _audioMixer->Init(deviceName);
+            std::vector<std::string> devices;
+            sint32 numDevices = SDL_GetNumAudioDevices(SDL_FALSE);
+            for (sint32 i = 0; i < numDevices; i++)
+            {
+                std::string deviceName = String::ToStd(SDL_GetAudioDeviceName(i, SDL_FALSE));
+                devices.push_back(deviceName);
+            }
+            return devices;
+        }
+
+        void SetOutputDevice(const std::string &deviceName) override
+        {
+            const char * szDeviceName = nullptr;
+            if (!deviceName.empty())
+            {
+                szDeviceName = deviceName.c_str();
+            }
+            _audioMixer->Init(szDeviceName);
         }
 
         IAudioSource * CreateStreamFromWAV(const std::string &path) override
