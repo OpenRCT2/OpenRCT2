@@ -40,7 +40,6 @@ extern "C"
 
 namespace OpenRCT2 { namespace Audio
 {
-
     struct Buffer
     {
     private:
@@ -74,14 +73,14 @@ namespace OpenRCT2 { namespace Audio
         }
     };
 
-    class AudioMixer final : public IAudioMixer
+    class AudioMixerImpl final : public IAudioMixer
     {
     private:
         IAudioSource * _nullSource = nullptr;
 
         SDL_AudioDeviceID _deviceId = 0;
         AudioFormat _format = { 0 };
-        std::list<IAudioChannel *> _channels;
+        std::list<ISDLAudioChannel *> _channels;
         float _volume = 1.0f;
         float _adjustSoundVolume = 0.0f;
         float _adjustMusicVolume = 0.0f;
@@ -96,18 +95,18 @@ namespace OpenRCT2 { namespace Audio
         Buffer _effectBuffer;
 
     public:
-        AudioMixer()
+        AudioMixerImpl()
         {
             _nullSource = AudioSource::CreateNull();
         }
 
-        ~AudioMixer()
+        ~AudioMixerImpl()
         {
             Close();
             delete _nullSource;
         }
 
-        void Init(const char* device) override
+        void Init(const char * device) override
         {
             Close();
 
@@ -118,7 +117,7 @@ namespace OpenRCT2 { namespace Audio
             want.samples = 1024;
             want.callback = [](void * arg, uint8 * dst, sint32 length) -> void
             {
-                auto mixer = static_cast<AudioMixer *>(arg);
+                auto mixer = static_cast<AudioMixerImpl *>(arg);
                 mixer->GetNextAudioChunk(dst, (size_t)length);
             };
             want.userdata = this;
@@ -182,7 +181,7 @@ namespace OpenRCT2 { namespace Audio
         IAudioChannel * Play(IAudioSource * source, sint32 loop, bool deleteondone, bool deletesourceondone) override
         {
             Lock();
-            IAudioChannel * channel = AudioChannel::Create();
+            ISDLAudioChannel * channel = AudioChannel::Create();
             if (channel != nullptr)
             {
                 channel->Play(source, loop);
@@ -260,11 +259,10 @@ namespace OpenRCT2 { namespace Audio
             Memory::Set(dst, 0, length);
 
             // Mix channels onto output buffer
-            std::list<IAudioChannel *>::iterator it = _channels.begin();
+            auto it = _channels.begin();
             while (it != _channels.end())
             {
-                IAudioChannel * channel = *it;
-
+                auto channel = *it;
                 sint32 group = channel->GetGroup();
                 if (group != MIXER_GROUP_SOUND || gConfigSound.sound_enabled)
                 {
@@ -297,7 +295,7 @@ namespace OpenRCT2 { namespace Audio
             }
         }
 
-        void MixChannel(IAudioChannel * channel, uint8 * data, size_t length)
+        void MixChannel(ISDLAudioChannel * channel, uint8 * data, size_t length)
         {
             sint32 byteRate = _format.GetByteRate();
             sint32 numSamples = (sint32)(length / byteRate);
@@ -372,7 +370,7 @@ namespace OpenRCT2 { namespace Audio
          * Resample the given buffer into _effectBuffer.
          * Assumes that srcBuffer is the same format as _format.
          */
-        size_t ApplyResample(IAudioChannel * channel, const void * srcBuffer, sint32 srcSamples, sint32 dstSamples)
+        size_t ApplyResample(ISDLAudioChannel * channel, const void * srcBuffer, sint32 srcSamples, sint32 dstSamples)
         {
             sint32 byteRate = _format.GetByteRate();
 
@@ -536,4 +534,9 @@ namespace OpenRCT2 { namespace Audio
             return result;
         }
     };
+
+    IAudioMixer * AudioMixer::Create()
+    {
+        return new AudioMixerImpl();
+    }
 } }

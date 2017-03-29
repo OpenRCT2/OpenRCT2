@@ -26,10 +26,10 @@
 
 namespace OpenRCT2 { namespace Audio
 {
-    class AudioChannelImpl : public IAudioChannel
+    class AudioChannelImpl : public ISDLAudioChannel
     {
     private:
-        IAudioSource * _source = nullptr;
+        ISDLAudioSource * _source = nullptr;
         SpeexResamplerState * _resampler = nullptr;
 
         sint32 _group = MIXER_GROUP_SOUND;
@@ -232,7 +232,7 @@ namespace OpenRCT2 { namespace Audio
 
         void Play(IAudioSource * source, sint32 loop) override
         {
-            _source = source;
+            _source = static_cast<ISDLAudioSource *>(source);
             _loop = loop;
             _offset = 0;
             _done = false;
@@ -290,7 +290,7 @@ namespace OpenRCT2 { namespace Audio
         }
     };
 
-    IAudioChannel * AudioChannel::Create()
+    ISDLAudioChannel * AudioChannel::Create()
     {
         return new (std::nothrow) AudioChannelImpl();
     }

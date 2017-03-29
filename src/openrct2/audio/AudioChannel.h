@@ -32,9 +32,6 @@ namespace OpenRCT2 { namespace Audio
 
         virtual IAudioSource * GetSource() const abstract;
 
-        // virtual SpeexResamplerState * GetResampler() const abstract;
-        // virtual void SetResampler(SpeexResamplerState * value) abstract;
-
         virtual sint32  GetGroup() const abstract;
         virtual void    SetGroup(sint32 group) abstract;
 
@@ -74,12 +71,6 @@ namespace OpenRCT2 { namespace Audio
         virtual void Play(IAudioSource * source, sint32 loop = 0) abstract;
         virtual void UpdateOldVolume() abstract;
 
-        // virtual AudioFormat GetFormat() const abstract;
         virtual size_t Read(void * dst, size_t len) abstract;
     };
-
-    namespace AudioChannel
-    {
-        IAudioChannel * Create();
-    }
 } }

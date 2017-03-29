@@ -27,7 +27,7 @@ namespace OpenRCT2 { namespace Audio
      * An audio source where raw PCM data is streamed directly from
      * a file.
      */
-    class FileAudioSource final : public IAudioSource
+    class FileAudioSource final : public ISDLAudioSource
     {
     private:
         AudioFormat _format = { 0 };
@@ -41,12 +41,12 @@ namespace OpenRCT2 { namespace Audio
             Unload();
         }
 
-        uint64 GetLength() override
+        uint64 GetLength() const override
         {
             return _dataLength;
         }
 
-        AudioFormat GetFormat() override
+        AudioFormat GetFormat() const override
         {
             return _format;
         }
