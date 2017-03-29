@@ -15,23 +15,34 @@
 #pragma endregion
 
 #include <openrct2/audio/AudioContext.h>
+#include "AudioContext.h"
 
 namespace OpenRCT2 { namespace Audio
 {
     class AudioContext : public IAudioContext
     {
+    private:
+        IAudioMixer * _audioMixer;
+
     public:
-        virtual ~AudioContext()
+        AudioContext()
         {
+            _audioMixer = AudioMixer::Create();
         }
 
-        virtual void SetOutputDevice(const char * deviceName) override
+        IAudioMixer * GetMixer() override
         {
+            return _audioMixer;
         }
 
-        virtual IAudioSource * CreateStreamFromWAV(const std::string &path) override
+        void SetOutputDevice(const char * deviceName) override
         {
-            return nullptr;
+            _audioMixer->Init(deviceName);
+        }
+
+        IAudioSource * CreateStreamFromWAV(const std::string &path) override
+        {
+            return AudioSource::CreateStreamFromWAV(path);
         }
 
         void StartTitleMusic() override { }
