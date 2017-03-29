@@ -89,7 +89,7 @@ public:
     ~UiContext() override
     {
         CloseWindow();
-        SDL_Quit();
+        SDL_QuitSubSystem(SDL_INIT_VIDEO);
     }
 
     // Window

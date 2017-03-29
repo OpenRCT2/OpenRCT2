@@ -843,7 +843,7 @@ void window_scenery_scrollmousedown(rct_window *w, sint32 scrollIndex, sint32 x,
 
 	gWindowSceneryPaintEnabled &= 0xFE;
 	gWindowSceneryEyedropperEnabled = false;
-	audio_play_sound_panned(4, (w->width >> 1) + w->x, 0, 0, 0);
+	audio_play_sound(4, 0, w->x + (w->width / 2));
 	w->scenery.hover_counter = -16;
 	gSceneryPlaceCost = MONEY32_UNDEFINED;
 	window_invalidate(w);

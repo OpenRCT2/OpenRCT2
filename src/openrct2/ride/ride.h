@@ -900,7 +900,8 @@ typedef struct rct_ride_properties {
 
 extern const rct_ride_properties RideProperties[RIDE_TYPE_COUNT];
 
-#define MAX_RIDES 255
+#define MAX_RIDES		255
+#define RIDE_ID_NULL	255
 
 #define RIDE_MODE_COUNT 37
 
