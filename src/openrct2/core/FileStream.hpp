@@ -17,10 +17,14 @@
 #pragma once
 
 #include "../common.h"
-
-#include <SDL.h>
 #include "IStream.hpp"
 #include "Math.hpp"
+#include "String.hpp"
+
+extern "C"
+{
+    #include "../localisation/language.h"
+}
 
 enum
 {
@@ -30,12 +34,12 @@ enum
 };
 
 /**
- * A stream for reading and writing to files. Wraps an SDL_RWops, SDL2's cross platform file stream.
+ * A stream for reading and writing to files.
  */
 class FileStream final : public IStream
 {
 private:
-    SDL_RWops * _file           = 0;
+    FILE *      _file           = nullptr;
     bool        _ownsFilePtr    = false;
     bool        _canRead        = false;
     bool        _canWrite       = false;
@@ -71,41 +75,35 @@ public:
             throw;
         }
 
-        _file = SDL_RWFromFile(path, mode);
+#ifdef _WIN32
+        wchar_t * pathW = utf8_to_widechar(path);
+        wchar_t * modeW = utf8_to_widechar(mode);
+        _file = _wfopen(pathW, modeW);
+        free(pathW);
+        free(modeW);
+#else
+        _file = fopen(path, mode);
+#endif
         if (_file == nullptr)
         {
-            throw IOException(SDL_GetError());
+            throw IOException(String::StdFormat("Unable to open '%s'", path));
         }
-        _fileSize = SDL_RWsize(_file);
+
+        Seek(0, STREAM_SEEK_END);
+        _fileSize = GetPosition();
+        Seek(0, STREAM_SEEK_BEGIN);
+
         _ownsFilePtr = true;
     }
 
-    FileStream(SDL_RWops * ops, sint32 fileMode)
-    {
-        _file = ops;
-        switch (fileMode) {
-        case FILE_MODE_OPEN:
-            _canRead = true;
-            _canWrite = false;
-            break;
-        case FILE_MODE_WRITE:
-            _canRead = true;
-            _canWrite = true;
-            break;
-        default:
-            throw;
-        }
-        _fileSize = SDL_RWsize(_file);
-    }
-
-    ~FileStream()
+    ~FileStream() override
     {
         if (!_disposed)
         {
             _disposed = true;
             if (_ownsFilePtr)
             {
-                SDL_RWclose(_file);
+                fclose(_file);
             }
         }
     }
@@ -114,7 +112,14 @@ public:
     bool CanWrite() const override { return _canWrite; }
 
     uint64 GetLength()   const override { return _fileSize; }
-    uint64 GetPosition() const override { return SDL_RWtell(_file); }
+    uint64 GetPosition() const override
+    {
+#ifdef _MSC_VER
+        return _ftelli64(_file);
+#else
+        return ftello64(_file);
+#endif
+    }
 
     void SetPosition(uint64 position) override
     {
@@ -123,17 +128,31 @@ public:
 
     void Seek(sint64 offset, sint32 origin) override
     {
+#ifdef _MSC_VER
         switch (origin) {
         case STREAM_SEEK_BEGIN:
-            SDL_RWseek(_file, offset, RW_SEEK_SET);
+            _fseeki64(_file, offset, SEEK_SET);
             break;
         case STREAM_SEEK_CURRENT:
-            SDL_RWseek(_file, offset, RW_SEEK_CUR);
+            _fseeki64(_file, offset, SEEK_CUR);
             break;
         case STREAM_SEEK_END:
-            SDL_RWseek(_file, offset, RW_SEEK_END);
+            _fseeki64(_file, offset, SEEK_END);
             break;
         }
+#else
+        switch (origin) {
+        case STREAM_SEEK_BEGIN:
+            fseeko64(_file, offset, SEEK_SET);
+            break;
+        case STREAM_SEEK_CURRENT:
+            fseeko64(_file, offset, SEEK_CUR);
+            break;
+        case STREAM_SEEK_END:
+            fseeko64(_file, offset, SEEK_END);
+            break;
+    }
+#endif
     }
 
     void Read(void * buffer, uint64 length) override
@@ -141,7 +160,7 @@ public:
         uint64 remainingBytes = GetLength() - GetPosition();
         if (length <= remainingBytes)
         {
-            if (SDL_RWread(_file, buffer, (size_t)length, 1) == 1)
+            if (fread(buffer, (size_t)length, 1, _file) == 1)
             {
                 return;
             }
@@ -151,7 +170,7 @@ public:
 
     void Write(const void * buffer, uint64 length) override
     {
-        if (SDL_RWwrite(_file, buffer, (size_t)length, 1) != 1)
+        if (fwrite(buffer, (size_t)length, 1, _file) != 1)
         {
             throw IOException("Unable to write to file.");
         }
@@ -162,7 +181,7 @@ public:
 
     uint64 TryRead(void * buffer, uint64 length) override
     {
-        size_t readBytes = SDL_RWread(_file, buffer, 1, (size_t)length);
+        size_t readBytes = fread(buffer, 1, (size_t)length, _file);
         return readBytes;
     }
 };
