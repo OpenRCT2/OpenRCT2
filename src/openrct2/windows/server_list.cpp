@@ -14,6 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
+#include <mutex>
 #include "../config/Config.h"
 #include "../network/network.h"
 #include "../network/ServerList.h"
@@ -42,7 +43,7 @@ extern "C"
 static char _playerName[32 + 1];
 static server_entry *_serverEntries = NULL;
 static sint32 _numServerEntries = 0;
-static SDL_mutex *_mutex = 0;
+static std::mutex _mutex;
 static uint32 _numPlayersOnline = 0;
 
 enum {
@@ -150,10 +151,6 @@ extern "C"
 		if (window != NULL)
 			return;
 	
-		if (_mutex == 0) {
-			_mutex = SDL_CreateMutex();
-		}
-	
 		window = window_create_centred(WWIDTH_MIN, WHEIGHT_MIN, &window_server_list_events, WC_SERVER_LIST, WF_10 | WF_RESIZABLE);
 	
 		window_server_list_widgets[WIDX_PLAYER_NAME_INPUT].string = _playerName;
@@ -193,12 +190,8 @@ extern "C"
 
 static void window_server_list_close(rct_window *w)
 {
+	std::lock_guard<std::mutex> guard(_mutex);
 	dispose_server_entry_list();
-	if (_mutex) {
-		SDL_LockMutex(_mutex);
-		SDL_DestroyMutex(_mutex);
-		_mutex = 0;
-	}
 }
 
 static void window_server_list_mouseup(rct_window *w, rct_widgetindex widgetIndex)
@@ -257,8 +250,11 @@ static void window_server_list_dropdown(rct_window *w, rct_widgetindex widgetInd
 		join_server(serverAddress);
 		break;
 	case DDIDX_FAVOURITE:
-		_serverEntries[serverIndex].favourite = !_serverEntries[serverIndex].favourite;
-		server_list_save_server_entries();
+		{
+			std::lock_guard<std::mutex> guard(_mutex);
+			_serverEntries[serverIndex].favourite = !_serverEntries[serverIndex].favourite;
+			server_list_save_server_entries();
+		}
 		break;
 	}
 }
@@ -361,9 +357,12 @@ static void window_server_list_textinput(rct_window *w, rct_widgetindex widgetIn
 		break;
 
 	case WIDX_ADD_SERVER:
-		add_server_entry(text);
-		sort_servers();
-		server_list_save_server_entries();
+		{
+			std::lock_guard<std::mutex> guard(_mutex);
+			add_server_entry(text);
+			sort_servers();
+			server_list_save_server_entries();
+		}
 		window_invalidate(w);
 		break;
 	}
@@ -413,6 +412,8 @@ static void window_server_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 static void window_server_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 scrollIndex)
 {
+	std::lock_guard<std::mutex> guard(_mutex);
+
 	uint8 paletteIndex = ColourMapA[w->colours[1]].mid_light;
 	gfx_clear(dpi, paletteIndex);
 
@@ -490,26 +491,19 @@ static void server_list_get_item_button(sint32 buttonIndex, sint32 x, sint32 y, 
 
 static void server_list_load_server_entries()
 {
-	SDL_LockMutex(_mutex);
-
 	uint32 numEntries;
 	server_entry * entries;
 	if (server_list_read(&numEntries, &entries)) {
+		std::lock_guard<std::mutex> guard(_mutex);
 		dispose_server_entry_list();
-
 		_numServerEntries = numEntries;
 		_serverEntries = entries;
-
 		sort_servers();
 	}
-
-	SDL_UnlockMutex(_mutex);
 }
 
 static void server_list_save_server_entries()
 {
-	SDL_LockMutex(_mutex);
-
 	// Get total number of favourite servers
 	sint32 count = 0;
 	for (sint32 i = 0; i < _numServerEntries; i++) {
@@ -534,13 +528,10 @@ static void server_list_save_server_entries()
 
 	// Free temporary list
 	free(entries);
-
-	SDL_UnlockMutex(_mutex);
 }
 
 static void dispose_server_entry_list()
 {
-	SDL_LockMutex(_mutex);
 	if (_serverEntries != NULL) {
 		for (sint32 i = 0; i < _numServerEntries; i++) {
 			dispose_server_entry(&_serverEntries[i]);
@@ -549,7 +540,6 @@ static void dispose_server_entry_list()
 		_serverEntries = NULL;
 	}
 	_numServerEntries = 0;
-	SDL_UnlockMutex(_mutex);
 }
 
 static void dispose_server_entry(server_entry *serverInfo)
@@ -562,10 +552,8 @@ static void dispose_server_entry(server_entry *serverInfo)
 
 static server_entry* add_server_entry(char *address)
 {
-	SDL_LockMutex(_mutex);
 	for (sint32 i = 0; i < _numServerEntries; i++) {
 		if (strcmp(_serverEntries[i].address, address) == 0) {
-			SDL_UnlockMutex(_mutex);
 			return &_serverEntries[i];
 		}
 	}
@@ -587,13 +575,11 @@ static server_entry* add_server_entry(char *address)
 	newserver->favourite = false;
 	newserver->players = 0;
 	newserver->maxplayers = 0;
-	SDL_UnlockMutex(_mutex);
 	return newserver;
 }
 
 static void remove_server_entry(sint32 index)
 {
-	SDL_LockMutex(_mutex);
 	if (_numServerEntries > index) {
 		sint32 serversToMove = _numServerEntries - index - 1;
 		memmove(&_serverEntries[index], &_serverEntries[index + 1], serversToMove * sizeof(server_entry));
@@ -601,7 +587,6 @@ static void remove_server_entry(sint32 index)
 		_numServerEntries--;
 		_serverEntries = (server_entry *)realloc(_serverEntries, _numServerEntries * sizeof(server_entry));
 	}
-	SDL_UnlockMutex(_mutex);
 }
 
 static sint32 server_compare(const void *a, const void *b)
@@ -698,15 +683,16 @@ static void fetch_servers()
 		masterServerUrl = gConfigNetwork.master_server_url;
 	}
 
-	SDL_LockMutex(_mutex);
-	for (sint32 i = 0; i < _numServerEntries; i++) {
-		if (!_serverEntries[i].favourite) {
-			remove_server_entry(i);
-			i = 0;
+	{
+		std::lock_guard<std::mutex> guard(_mutex);
+		for (sint32 i = 0; i < _numServerEntries; i++) {
+			if (!_serverEntries[i].favourite) {
+				remove_server_entry(i);
+				i = 0;
+			}
 		}
+		sort_servers();
 	}
-	sort_servers();
-	SDL_UnlockMutex(_mutex);
 
 	http_request_t request = { 0 };
 	request.url = masterServerUrl;
@@ -773,18 +759,19 @@ static void fetch_servers_callback(http_response_t* response)
 		char address[256];
 		snprintf(address, sizeof(address), "%s:%d", json_string_value(addressIp), (sint32)json_integer_value(port));
 
-		SDL_LockMutex(_mutex);
-		server_entry* newserver = add_server_entry(address);
-		SafeFree(newserver->name);
-		SafeFree(newserver->description);
-		SafeFree(newserver->version);
-		newserver->name = _strdup(json_string_value(name));
-		newserver->requiresPassword = json_is_true(requiresPassword);
-		newserver->description = _strdup(description == NULL ? "" : json_string_value(description));
-		newserver->version = _strdup(json_string_value(version));
-		newserver->players = (uint8)json_integer_value(players);
-		newserver->maxplayers = (uint8)json_integer_value(maxPlayers);
-		SDL_UnlockMutex(_mutex);
+		{
+			std::lock_guard<std::mutex> guard(_mutex);
+			server_entry* newserver = add_server_entry(address);
+			SafeFree(newserver->name);
+			SafeFree(newserver->description);
+			SafeFree(newserver->version);
+			newserver->name = _strdup(json_string_value(name));
+			newserver->requiresPassword = json_is_true(requiresPassword);
+			newserver->description = _strdup(description == NULL ? "" : json_string_value(description));
+			newserver->version = _strdup(json_string_value(version));
+			newserver->players = (uint8)json_integer_value(players);
+			newserver->maxplayers = (uint8)json_integer_value(maxPlayers);
+		}
 	}
 	http_request_dispose(response);
 
