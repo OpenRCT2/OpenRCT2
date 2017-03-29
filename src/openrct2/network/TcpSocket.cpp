@@ -16,14 +16,14 @@
 
 #ifndef DISABLE_NETWORK
 
+#include <chrono>
+#include <future>
+#include <thread>
+
 // MSVC: include <math.h> here otherwise PI gets defined twice
 #include <math.h>
 
-#include <SDL_platform.h>
-#include <SDL_thread.h>
-#include <SDL_timer.h>
-
-#ifdef __WINDOWS__
+#ifdef _WIN32
     // winsock2 must be included before windows.h
     #include <winsock2.h>
     #include <ws2tcpip.h>
@@ -58,15 +58,15 @@
         #define FLAG_NO_PIPE MSG_NOSIGNAL
     #else
         #define FLAG_NO_PIPE 0
-    #endif // defined(__LINUX__)
-#endif // __WINDOWS__
+    #endif // defined(__linux__)
+#endif // _WIN32
 
 #include "../core/Exception.hpp"
 #include "TcpSocket.h"
 
-constexpr uint32 CONNECT_TIMEOUT_MS = 3000;
+constexpr auto CONNECT_TIMEOUT = std::chrono::milliseconds(3000);
 
-#ifdef __WINDOWS__
+#ifdef _WIN32
     static bool _wsaInitialised = false;
 #endif
 
@@ -79,13 +79,6 @@ public:
     explicit SocketException(const std::string &message) : Exception(message) { }
 };
 
-struct ConnectRequest
-{
-    TcpSocket * Socket;
-    std::string Address;
-    uint16      Port;
-};
-
 class TcpSocket final : public ITcpSocket
 {
 private:
@@ -93,25 +86,22 @@ private:
     uint16          _listeningPort  = 0;
     SOCKET          _socket         = INVALID_SOCKET;
 
-    std::string     _hostName;
-
-    SDL_mutex *     _connectMutex   = nullptr;
-    std::string     _error;
+    std::string         _hostName;
+    std::future<void>   _connectFuture;
+    std::string         _error;
 
 public:
     TcpSocket()
     {
-        _connectMutex = SDL_CreateMutex();
     }
 
     ~TcpSocket() override
     {
-        SDL_LockMutex(_connectMutex);
+        if (_connectFuture.valid())
         {
-            CloseSocket();
+            _connectFuture.wait();
         }
-        SDL_UnlockMutex(_connectMutex);
-        SDL_DestroyMutex(_connectMutex);
+        CloseSocket();
     }
 
     SOCKET_STATUS GetStatus() override
@@ -264,7 +254,6 @@ public:
             }
 
             // Connect
-            uint32 connectStartTick;
             sint32 connectResult = connect(_socket, (sockaddr *)&ss, ss_len);
             if (connectResult != SOCKET_ERROR || (LAST_SOCKET_ERROR() != EINPROGRESS &&
                                                   LAST_SOCKET_ERROR() != EWOULDBLOCK))
@@ -272,7 +261,7 @@ public:
                 throw SocketException("Failed to connect.");
             }
 
-            connectStartTick = SDL_GetTicks();
+            auto connectStartTime = std::chrono::system_clock::now();
 
             sint32 error = 0;
             socklen_t len = sizeof(error);
@@ -288,7 +277,7 @@ public:
             do
             {
                 // Sleep for a bit
-                SDL_Delay(100);
+                std::this_thread::sleep_for(std::chrono::milliseconds(100));
 
                 fd_set writeFD;
                 FD_ZERO(&writeFD);
@@ -310,7 +299,7 @@ public:
                         return;
                     }
                 }
-            } while (!SDL_TICKS_PASSED(SDL_GetTicks(), connectStartTick + CONNECT_TIMEOUT_MS));
+            } while ((std::chrono::system_clock::now() - connectStartTime) < CONNECT_TIMEOUT);
 
             // Connection request timed out
             throw SocketException("Connection timed out.");
@@ -329,30 +318,22 @@ public:
             throw Exception("Socket not closed.");
         }
 
-        if (SDL_TryLockMutex(_connectMutex) == 0)
+        auto saddress = std::string(address);
+        std::promise<void> barrier;
+        _connectFuture = barrier.get_future();
+        auto thread = std::thread([this, saddress, port](std::promise<void> barrier2) -> void
         {
-            // Spin off a worker thread for resolving the address
-            auto req = new ConnectRequest();
-            req->Socket = this;
-            req->Address = std::string(address);
-            req->Port = port;
-            SDL_CreateThread([](void * pointer) -> sint32
+            try
             {
-                auto req2 = static_cast<ConnectRequest *>(pointer);
-                try
-                {
-                    req2->Socket->Connect(req2->Address.c_str(), req2->Port);
-                }
-                catch (const Exception & ex)
-                {
-                    req2->Socket->_error = std::string(ex.GetMessage());
-                }
-
-                SDL_UnlockMutex(req2->Socket->_connectMutex);
-                delete req2;
-                return 0;
-            }, 0, req);
-        }
+                Connect(saddress.c_str(), port);
+            }
+            catch (const Exception &ex)
+            {
+                _error = std::string(ex.GetMessage());
+            }
+            barrier2.set_value();
+        }, std::move(barrier));
+        thread.detach();
     }
 
     void Disconnect() override
@@ -419,11 +400,11 @@ public:
 
     void Close() override
     {
-        SDL_LockMutex(_connectMutex);
+        if (_connectFuture.valid())
         {
-            CloseSocket();
+            _connectFuture.wait();
         }
-        SDL_UnlockMutex(_connectMutex);
+        CloseSocket();
     }
 
     const char * GetHostName() const override
