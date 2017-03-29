@@ -15,19 +15,23 @@
 #pragma endregion
 
 #include "../config/Config.h"
-#include "../interface/colour.h"
-#include "../interface/themes.h"
-#include "../interface/widget.h"
-#include "../interface/window.h"
-#include "../localisation/localisation.h"
-#include "../network/http.h"
 #include "../network/network.h"
 #include "../network/ServerList.h"
-#include "../sprites.h"
-#include "../util/util.h"
-#include "../windows/dropdown.h"
-#include "../windows/tooltip.h"
-#include "error.h"
+
+extern "C"
+{
+	#include "../interface/colour.h"
+	#include "../interface/themes.h"
+	#include "../interface/widget.h"
+	#include "../interface/window.h"
+	#include "../localisation/localisation.h"
+	#include "../network/http.h"
+	#include "../sprites.h"
+	#include "../util/util.h"
+	#include "../windows/dropdown.h"
+	#include "../windows/tooltip.h"
+	#include "error.h"
+}
 
 #define WWIDTH_MIN 500
 #define WHEIGHT_MIN 300
@@ -119,6 +123,7 @@ enum {
 };
 
 static sint32 _hoverButtonIndex = -1;
+static char * _version = NULL;
 
 static void server_list_get_item_button(sint32 buttonIndex, sint32 x, sint32 y, sint32 width, sint32 *outX, sint32 *outY);
 static void server_list_load_server_entries();
@@ -134,53 +139,56 @@ static void fetch_servers();
 static void fetch_servers_callback(http_response_t* response);
 #endif
 
-void window_server_list_open()
+extern "C"
 {
-	rct_window* window;
-
-	// Check if window is already open
-	window = window_bring_to_front_by_class(WC_SERVER_LIST);
-	if (window != NULL)
-		return;
-
-	if (_mutex == 0) {
-		_mutex = SDL_CreateMutex();
+	void window_server_list_open()
+	{
+		rct_window* window;
+	
+		// Check if window is already open
+		window = window_bring_to_front_by_class(WC_SERVER_LIST);
+		if (window != NULL)
+			return;
+	
+		if (_mutex == 0) {
+			_mutex = SDL_CreateMutex();
+		}
+	
+		window = window_create_centred(WWIDTH_MIN, WHEIGHT_MIN, &window_server_list_events, WC_SERVER_LIST, WF_10 | WF_RESIZABLE);
+	
+		window_server_list_widgets[WIDX_PLAYER_NAME_INPUT].string = _playerName;
+		window->widgets = window_server_list_widgets;
+		window->enabled_widgets = (
+			(1 << WIDX_CLOSE) |
+			(1 << WIDX_PLAYER_NAME_INPUT) |
+			(1 << WIDX_FETCH_SERVERS) |
+			(1 << WIDX_ADD_SERVER) |
+			(1 << WIDX_START_SERVER)
+		);
+		window_init_scroll_widgets(window);
+		window->no_list_items = 0;
+		window->selected_list_item = -1;
+		window->frame_no = 0;
+		window->min_width = 320;
+		window->min_height = 90;
+		window->max_width = window->min_width;
+		window->max_height = window->min_height;
+	
+		window->page = 0;
+		window->list_information_type = 0;
+		window->colours[0] = COLOUR_GREY;
+		window->colours[1] = COLOUR_BORDEAUX_RED;
+		window->colours[2] = COLOUR_BORDEAUX_RED;
+	
+		window_set_resize(window, WWIDTH_MIN, WHEIGHT_MIN, WWIDTH_MAX, WHEIGHT_MAX);
+	
+		safe_strcpy(_playerName, gConfigNetwork.player_name, sizeof(_playerName));
+	
+		server_list_load_server_entries();
+		window->no_list_items = _numServerEntries;
+	
+		fetch_servers();
 	}
-
-	window = window_create_centred(WWIDTH_MIN, WHEIGHT_MIN, &window_server_list_events, WC_SERVER_LIST, WF_10 | WF_RESIZABLE);
-
-	window_server_list_widgets[WIDX_PLAYER_NAME_INPUT].string = _playerName;
-	window->widgets = window_server_list_widgets;
-	window->enabled_widgets = (
-		(1 << WIDX_CLOSE) |
-		(1 << WIDX_PLAYER_NAME_INPUT) |
-		(1 << WIDX_FETCH_SERVERS) |
-		(1 << WIDX_ADD_SERVER) |
-		(1 << WIDX_START_SERVER)
-	);
-	window_init_scroll_widgets(window);
-	window->no_list_items = 0;
-	window->selected_list_item = -1;
-	window->frame_no = 0;
-	window->min_width = 320;
-	window->min_height = 90;
-	window->max_width = window->min_width;
-	window->max_height = window->min_height;
-
-	window->page = 0;
-	window->list_information_type = 0;
-	window->colours[0] = COLOUR_GREY;
-	window->colours[1] = COLOUR_BORDEAUX_RED;
-	window->colours[2] = COLOUR_BORDEAUX_RED;
-
-	window_set_resize(window, WWIDTH_MIN, WHEIGHT_MIN, WWIDTH_MAX, WHEIGHT_MAX);
-
-	safe_strcpy(_playerName, gConfigNetwork.player_name, sizeof(_playerName));
-
-	server_list_load_server_entries();
-	window->no_list_items = _numServerEntries;
-
-	fetch_servers();
 }
 
 static void window_server_list_close(rct_window *w)
@@ -288,8 +296,6 @@ static void window_server_list_scroll_mousedown(rct_window *w, sint32 scrollInde
 	window_dropdown_show_text(ddx, ddy, 0, COLOUR_GREY, 0, 2);
 }
 
-char *gVersion = NULL;
-
 static void window_server_list_scroll_mouseover(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y)
 {
 	// Item
@@ -367,7 +373,7 @@ static void window_server_list_invalidate(rct_window *w)
 {
 	colour_scheme_update(w);
 
-	set_format_arg(0, char *, gVersion);
+	set_format_arg(0, char *, _version);
 	window_server_list_widgets[WIDX_BACKGROUND].right = w->width - 1;
 	window_server_list_widgets[WIDX_BACKGROUND].bottom = w->height - 1;
 	window_server_list_widgets[WIDX_TITLE].right = w->width - 2;
@@ -399,7 +405,7 @@ static void window_server_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	window_draw_widgets(w, dpi);
 
 	gfx_draw_string_left(dpi, STR_PLAYER_NAME, NULL, COLOUR_WHITE, w->x + 6, w->y + w->widgets[WIDX_PLAYER_NAME_INPUT].top);
-	char *version = NETWORK_STREAM_ID;
+	const char * version = NETWORK_STREAM_ID;
 	gfx_draw_string_left(dpi, STR_NETWORK_VERSION, (void*)&version, COLOUR_WHITE, w->x + 324, w->y + w->widgets[WIDX_START_SERVER].top);
 
 	gfx_draw_string_left(dpi, STR_X_PLAYERS_ONLINE, (void*)&_numPlayersOnline, COLOUR_WHITE, w->x + 8, w->y + w->height - 15);
@@ -424,7 +430,7 @@ static void window_server_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi
 		// Draw hover highlight
 		if (highlighted) {
 			gfx_filter_rect(dpi, 0, y, width, y + ITEM_HEIGHT, PALETTE_DARKEN_1);
-			gVersion = serverDetails->version;
+			_version = serverDetails->version;
 			w->widgets[WIDX_LIST].tooltip = STR_NETWORK_VERSION_TIP;
 		}
 
@@ -514,7 +520,7 @@ static void server_list_save_server_entries()
 	}
 
 	// Create temporary list of just favourite servers
-	server_entry * entries = calloc(count, sizeof(server_entry));
+	server_entry * entries = (server_entry *)calloc(count, sizeof(server_entry));
 	sint32 eindex = 0;
 	for (sint32 i = 0; i < _numServerEntries; i++) {
 		server_entry *serverInfo = &_serverEntries[i];
@@ -566,9 +572,9 @@ static server_entry* add_server_entry(char *address)
 
 	_numServerEntries++;
 	if (_serverEntries == NULL) {
-		_serverEntries = malloc(_numServerEntries * sizeof(server_entry));
+		_serverEntries = (server_entry *)malloc(_numServerEntries * sizeof(server_entry));
 	} else {
-		_serverEntries = realloc(_serverEntries, _numServerEntries * sizeof(server_entry));
+		_serverEntries = (server_entry *)realloc(_serverEntries, _numServerEntries * sizeof(server_entry));
 	}
 
 	sint32 index = _numServerEntries - 1;
@@ -593,7 +599,7 @@ static void remove_server_entry(sint32 index)
 		memmove(&_serverEntries[index], &_serverEntries[index + 1], serversToMove * sizeof(server_entry));
 
 		_numServerEntries--;
-		_serverEntries = realloc(_serverEntries, _numServerEntries * sizeof(server_entry));
+		_serverEntries = (server_entry *)realloc(_serverEntries, _numServerEntries * sizeof(server_entry));
 	}
 	SDL_UnlockMutex(_mutex);
 }
@@ -637,7 +643,7 @@ static void sort_servers()
 
 static char *substr(char *start, sint32 length)
 {
-	char *result = malloc(length + 1);
+	char *result = (char *)malloc(length + 1);
 	memcpy(result, start, length);
 	result[length] = 0;
 	return result;
