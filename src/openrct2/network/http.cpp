@@ -14,9 +14,10 @@
  *****************************************************************************/
 #pragma endregion
 
+#include <thread>
+
 extern "C" {
     #include "http.h"
-    #include "../platform/platform.h"
 }
 
 #ifdef DISABLE_HTTP
@@ -40,6 +41,70 @@ void http_dispose() { }
 
 #define MIME_TYPE_APPLICATION_JSON "application/json"
 #define OPENRCT2_USER_AGENT "OpenRCT2/" OPENRCT2_VERSION
+
+struct HttpRequest2
+{
+    void *          Tag = nullptr;
+    std::string     Method;
+    std::string     Url;
+    http_data_type  Type;
+    size_t          Size = 0;
+    union
+    {
+        char *      Buffer = 0;
+        json_t *    Json;
+    } Body;
+
+    HttpRequest2() { }
+
+    HttpRequest2(const HttpRequest2 &request)
+    {
+        Tag = request.Tag;
+        Method = request.Method;
+        Url = request.Url;
+        Type = request.Type;
+        Size = request.Size;
+        if (request.Type == HTTP_DATA_JSON)
+        {
+            Body.Json = json_deep_copy(request.Body.Json);
+        }
+        else
+        {
+            Body.Buffer = new char[request.Size];
+            memcpy(Body.Buffer, request.Body.Buffer, request.Size);
+        }
+    }
+
+    explicit HttpRequest2(const http_request_t * request)
+    {
+        Tag = request->tag;
+        Method = std::string(request->method);
+        Url = std::string(request->url);
+        Type = request->type;
+        Size = request->size;
+        if (request->type == HTTP_DATA_JSON)
+        {
+            Body.Json = json_deep_copy(request->root);
+        }
+        else
+        {
+            Body.Buffer = new char[request->size];
+            memcpy(Body.Buffer, request->body, request->size);
+        }
+    }
+
+    ~HttpRequest2()
+    {
+        if (Type == HTTP_DATA_JSON)
+        {
+            json_decref(Body.Json);
+        }
+        else
+        {
+            delete Body.Buffer;
+        }
+    }
+};
 
 typedef struct read_buffer {
     char *ptr;
@@ -85,7 +150,7 @@ static size_t http_request_write_func(void *ptr, size_t size, size_t nmemb, void
     return newBytesLength;
 }
 
-http_response_t *http_request(const http_request_t *request)
+static http_response_t *http_request(const HttpRequest2 &request)
 {
     CURL *curl;
     CURLcode curlResult;
@@ -97,13 +162,13 @@ http_response_t *http_request(const http_request_t *request)
     if (curl == NULL)
         return NULL;
 
-    if (request->type == HTTP_DATA_JSON && request->root != NULL) {
-        readBuffer.ptr = json_dumps(request->root, JSON_COMPACT);
+    if (request.Type == HTTP_DATA_JSON && request.Body.Json != NULL) {
+        readBuffer.ptr = json_dumps(request.Body.Json, JSON_COMPACT);
         readBuffer.length = strlen(readBuffer.ptr);
         readBuffer.position = 0;
-    } else if (request->type == HTTP_DATA_RAW && request->body != NULL) {
-        readBuffer.ptr = request->body;
-        readBuffer.length = request->size;
+    } else if (request.Type == HTTP_DATA_RAW && request.Body.Buffer != NULL) {
+        readBuffer.ptr = request.Body.Buffer;
+        readBuffer.length = request.Size;
         readBuffer.position = 0;
     }
 
@@ -113,10 +178,10 @@ http_response_t *http_request(const http_request_t *request)
 
     curl_slist *headers = NULL;
 
-    if (request->type == HTTP_DATA_JSON) {
+    if (request.Type == HTTP_DATA_JSON) {
         headers = curl_slist_append(headers, "Accept: " MIME_TYPE_APPLICATION_JSON);
 
-        if (request->root != NULL) {
+        if (request.Body.Json != NULL) {
             headers = curl_slist_append(headers, "Content-Type: " MIME_TYPE_APPLICATION_JSON);
         }
     }
@@ -129,18 +194,18 @@ http_response_t *http_request(const http_request_t *request)
         curl_easy_setopt(curl, CURLOPT_POSTFIELDS, readBuffer.ptr);
     }
 
-    curl_easy_setopt(curl, CURLOPT_CUSTOMREQUEST, request->method);
+    curl_easy_setopt(curl, CURLOPT_CUSTOMREQUEST, request.Method.c_str());
     curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
     curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, true);
     curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, true);
     curl_easy_setopt(curl, CURLOPT_USERAGENT, OPENRCT2_USER_AGENT);
-    curl_easy_setopt(curl, CURLOPT_URL, request->url);
+    curl_easy_setopt(curl, CURLOPT_URL, request.Url.c_str());
     curl_easy_setopt(curl, CURLOPT_WRITEDATA, &writeBuffer);
     curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, http_request_write_func);
 
     curlResult = curl_easy_perform(curl);
 
-    if (request->type == HTTP_DATA_JSON && request->root != NULL) {
+    if (request.Type == HTTP_DATA_JSON && request.Body.Json != NULL) {
         free(readBuffer.ptr);
     }
 
@@ -173,7 +238,7 @@ http_response_t *http_request(const http_request_t *request)
         root = json_loads(writeBuffer.ptr, 0, &error);
         if (root != NULL) {
             response = (http_response_t*) malloc(sizeof(http_response_t));
-            response->tag = request->tag;
+            response->tag = request.Tag;
             response->status_code = (sint32) httpStatusCode;
             response->root = root;
             response->type = HTTP_DATA_JSON;
@@ -182,7 +247,7 @@ http_response_t *http_request(const http_request_t *request)
         free(writeBuffer.ptr);
     } else {
         response = (http_response_t*) malloc(sizeof(http_response_t));
-        response->tag = request->tag;
+        response->tag = request.Tag;
         response->status_code = (sint32) httpStatusCode;
         response->body = writeBuffer.ptr;
         response->type = HTTP_DATA_RAW;
@@ -194,54 +259,15 @@ http_response_t *http_request(const http_request_t *request)
     return response;
 }
 
-void http_request_async(const http_request_t *request, void (*callback)(http_response_t*))
+void http_request_async(const http_request_t * request, void (*callback)(http_response_t*))
 {
-    struct TempThreadArgs {
-        http_request_t request;
-        void (*callback)(http_response_t*);
-    };
-
-    TempThreadArgs *args = (TempThreadArgs*)malloc(sizeof(TempThreadArgs));
-    args->request.url = _strdup(request->url);
-    args->request.method = request->method;
-
-    if (request->type == HTTP_DATA_JSON) {
-        args->request.root = json_deep_copy(request->root);
-    } else {
-        char* bodyCopy = (char*) malloc(request->size);
-        memcpy(bodyCopy, request->body, request->size);
-        args->request.body = bodyCopy;
-    }
-
-    args->request.type = request->type;
-    args->request.size = request->size;
-    args->request.tag = request->tag;
-    args->callback = callback;
-
-    SDL_Thread *thread = SDL_CreateThread([](void *ptr) -> sint32 {
-        TempThreadArgs *args2 = (TempThreadArgs*)ptr;
-
-        http_response_t *response = http_request(&args2->request);
-        args2->callback(response);
-
-        free((char*)args2->request.url);
-
-        if (args2->request.type == HTTP_DATA_JSON) {
-            json_decref((json_t*) args2->request.root);
-        } else {
-            free(args2->request.body);
-        }
-
-        free(args2);
-        return 0;
-    }, NULL, args);
-
-    if (thread == NULL) {
-        log_error("Unable to create thread!");
-        callback(NULL);
-    } else {
-        SDL_DetachThread(thread);
-    }
+    auto request2 = HttpRequest2(request);
+    auto thread = std::thread([](const HttpRequest2 &req, void(*callback2)(http_response_t*)) -> void
+    {
+        http_response_t * response = http_request(req);
+        callback2(response);
+    }, std::move(request2), callback);
+    thread.detach();
 }
 
 void http_request_dispose(http_response_t *response)
@@ -269,15 +295,15 @@ const char *http_get_extension_from_url(const char *url, const char *fallback)
 bool http_download_park(const char *url, char tmpPath[L_tmpnam + 10])
 {
 	// Download park to buffer in memory
-	http_request_t request;
-	request.url = url;
-	request.method = "GET";
-	request.type = HTTP_DATA_NONE;
+	HttpRequest2 request;
+	request.Url = url;
+	request.Method = "GET";
+	request.Type = HTTP_DATA_NONE;
 
-	http_response_t *response = http_request(&request);
+	http_response_t *response = http_request(request);
 
 	if (response == NULL || response->status_code != 200) {
-		Console::Error::WriteLine("Failed to download '%s'", request.url);
+		Console::Error::WriteLine("Failed to download '%s'", request.Url.c_str());
 		if (response != NULL) {
 			http_request_dispose(response);
 		}
@@ -286,20 +312,20 @@ bool http_download_park(const char *url, char tmpPath[L_tmpnam + 10])
 
 	// Generate temporary filename that includes the original extension
 	if (tmpnam(tmpPath) == NULL) {
-		Console::Error::WriteLine("Failed to generate temporary filename for downloaded park '%s'", request.url);
+		Console::Error::WriteLine("Failed to generate temporary filename for downloaded park '%s'", request.Url.c_str());
 		http_request_dispose(response);
 		return false;
 	}
 	size_t remainingBytes = L_tmpnam + 10 - strlen(tmpPath);
 
-	const char *ext = http_get_extension_from_url(request.url, ".sv6");
+	const char *ext = http_get_extension_from_url(request.Url.c_str(), ".sv6");
 	strncat(tmpPath, ext, remainingBytes);
 
 	// Store park in temporary file and load it (discard ending NUL in response body)
 	FILE* tmpFile = fopen(tmpPath, "wb");
 
 	if (tmpFile == NULL) {
-		Console::Error::WriteLine("Failed to write downloaded park '%s' to temporary file", request.url);
+		Console::Error::WriteLine("Failed to write downloaded park '%s' to temporary file", request.Url.c_str());
 		http_request_dispose(response);
 		return false;
 	}
