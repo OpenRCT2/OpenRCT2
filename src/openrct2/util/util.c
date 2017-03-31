@@ -134,8 +134,10 @@ void path_remove_extension(utf8 *path)
 {
 	// Find last dot in filename, and replace it with a null-terminator
 	char *lastDot = strrchr(path_get_filename(path), '.');
-	if (lastDot != NULL)
+	if (lastDot != NULL){
 		*lastDot = '\0';
+        while((lastDot = strrchr(path_get_filename(path), '.')) != NULL) *lastDot = '\0';
+    }
 	else
 		log_warning("No extension found. (path = %s)", path);
 }
