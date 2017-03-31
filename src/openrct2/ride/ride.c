@@ -5617,7 +5617,7 @@ void game_command_set_ride_name(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *e
 		return;
 	}
 
-	rct_string_id newUserStringId = user_string_allocate(4, newName);
+	rct_string_id newUserStringId = user_string_allocate(128, newName);
 	if (newUserStringId == 0) {
 		*ebx = MONEY32_UNDEFINED;
 		return;
@@ -6039,7 +6039,7 @@ foundRideEntry:
 			ride->name_arguments_number++;
 			format_string(rideNameBuffer, 256, ride->name, &ride->name_arguments);
 
-			rideNameStringId = user_string_allocate(4, rideNameBuffer);
+			rideNameStringId = user_string_allocate(128, rideNameBuffer);
 			if (rideNameStringId != 0) {
 				ride->name = rideNameStringId;
 				break;
