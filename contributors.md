@@ -73,6 +73,7 @@ Includes all git commit authors. Aliases are GitHub user names.
 * Daniel Trujillo Viedma (gDanix)
 * Jonathan Haas (HaasJona)
 * Jake Breen (Haekb)
+* Luis Rodriguez (luisfrdr)
 
 ## Toolchain
 * (Balletie) - macOS
