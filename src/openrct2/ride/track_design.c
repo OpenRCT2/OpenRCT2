@@ -1696,28 +1696,32 @@ void track_design_draw_preview(rct_track_td6 *td6, uint8 *pixels)
 	centre.y = (gTrackPreviewMin.y + gTrackPreviewMax.y) / 2 + 16;
 	centre.z = (gTrackPreviewMin.z + gTrackPreviewMax.z) / 2;
 
-	sint32 width = gTrackPreviewMax.x - gTrackPreviewMin.x;
-	sint32 height = gTrackPreviewMax.y - gTrackPreviewMin.y;
-	if (width < height) {
-		width = height;
-	}
+	sint32 size_x = gTrackPreviewMax.x - gTrackPreviewMin.x;
+	sint32 size_y = gTrackPreviewMax.y - gTrackPreviewMin.y;
+	sint32 size_z = gTrackPreviewMax.z - gTrackPreviewMin.z;
 
 	sint32 zoom_level = 1;
-	if (width > 1120) {
+
+	if (size_x < size_y) {
+		size_x = size_y;
+	}
+
+	if (size_x > 1000 || size_z > 280) {
 		zoom_level = 2;
 	}
-	if (width > 2240) {
+
+	if (size_x > 1600 || size_z > 1000) {
 		zoom_level = 3;
 	}
 
-	width = 370 << zoom_level;
-	height = 217 << zoom_level;
+	size_x = 370 << zoom_level;
+	size_y = 217 << zoom_level;
 
 	rct_viewport view;
 	view.width = 370;
 	view.height = 217;
-	view.view_width = width;
-	view.view_height = height;
+	view.view_width = size_x;
+	view.view_height = size_y;
 	view.x = 0;
 	view.y = 0;
 	view.zoom = zoom_level;
@@ -1732,7 +1736,7 @@ void track_design_draw_preview(rct_track_td6 *td6, uint8 *pixels)
 	dpi.pitch = 0;
 	dpi.bits = pixels;
 
-	rct_xy32 offset = { width / 2, height / 2 };
+	rct_xy32 offset = { size_x / 2, size_y / 2 };
 	for (sint32 i = 0; i < 4; i++) {
 		gCurrentRotation = i;
 
@@ -1742,8 +1746,8 @@ void track_design_draw_preview(rct_track_td6 *td6, uint8 *pixels)
 
 		sint32 left = pos2d.x;
 		sint32 top = pos2d.y;
-		sint32 right = left + width;
-		sint32 bottom = top + height;
+		sint32 right = left + size_x;
+		sint32 bottom = top + size_y;
 
 		view.view_x = left;
 		view.view_y = top;

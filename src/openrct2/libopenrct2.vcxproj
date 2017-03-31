@@ -337,8 +337,8 @@
     <ClCompile Include="windows\maze_construction.c" />
     <ClCompile Include="world\Balloon.cpp" />
     <ClCompile Include="world\banner.cpp" />
-    <ClCompile Include="world\duck.c" />
     <ClCompile Include="world\entrance.cpp" />
+    <ClCompile Include="world\Duck.cpp" />
     <ClCompile Include="world\money_effect.c" />
     <ClCompile Include="world\particle.c" />
     <ClCompile Include="util\sawyercoding.c" />

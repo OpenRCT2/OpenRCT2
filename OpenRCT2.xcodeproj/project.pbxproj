@@ -28,6 +28,7 @@
 		85B468FC1D96822F000F1DB5 /* paint_helpers.c in Sources */ = {isa = PBXBuildFile; fileRef = 85B468FB1D96822F000F1DB5 /* paint_helpers.c */; };
 		85B468FD1D96822F000F1DB5 /* paint_helpers.c in Sources */ = {isa = PBXBuildFile; fileRef = 85B468FB1D96822F000F1DB5 /* paint_helpers.c */; };
 		8DED2F20E0D63A1DCFCE0197 /* banner.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DEEAE6E8AC49B6F288E69B40 /* banner.cpp */; };
+		B94C3C5FC4DBBB864434DE83 /* Duck.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A5D1DB5BE280897DCDEBFCED /* Duck.cpp */; };
 		C606CCBE1DB4054000FE4015 /* compat.c in Sources */ = {isa = PBXBuildFile; fileRef = C606CCAB1DB4054000FE4015 /* compat.c */; };
 		C606CCBF1DB4054000FE4015 /* data.c in Sources */ = {isa = PBXBuildFile; fileRef = C606CCAC1DB4054000FE4015 /* data.c */; };
 		C606CCC01DB4054000FE4015 /* FunctionCall.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C606CCAE1DB4054000FE4015 /* FunctionCall.cpp */; };
@@ -485,6 +486,7 @@
 		D4F5B5EF1DAD8A4300AB6075 /* CursorData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D4F5B5EC1DAD8A4300AB6075 /* CursorData.cpp */; };
 		D4F5B5F01DAD8A4300AB6075 /* Cursors.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D4F5B5ED1DAD8A4300AB6075 /* Cursors.cpp */; };
 		F2CC500E17C9411FBA859888 /* Climate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 242F470FE91956ACA4078F6A /* Climate.cpp */; };
+		F408D5E134FE5B423BE5443F /* Duck.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A5D1DB5BE280897DCDEBFCED /* Duck.cpp */; };
 		F61331C839858250899F1E9B /* Balloon.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 437490DBD74ECF60C3363559 /* Balloon.cpp */; };
 /* End PBXBuildFile section */
 
@@ -549,6 +551,7 @@
 		791166FA1D7486EF005912EA /* NetworkServerAdvertiser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetworkServerAdvertiser.h; sourceTree = "<group>"; };
 		8594C05F1D885CF600235E93 /* track_data_old.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = track_data_old.c; sourceTree = "<group>"; };
 		85B468FB1D96822F000F1DB5 /* paint_helpers.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = paint_helpers.c; sourceTree = "<group>"; };
+		A5D1DB5BE280897DCDEBFCED /* Duck.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Duck.cpp; sourceTree = "<group>"; };
 		C606CCAB1DB4054000FE4015 /* compat.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; lineEnding = 0; path = compat.c; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.c; };
 		C606CCAC1DB4054000FE4015 /* data.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; lineEnding = 0; path = data.c; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.c; };
 		C606CCAD1DB4054000FE4015 /* data.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = data.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
@@ -1000,7 +1003,6 @@
 		D44271DA1CC81B3200D84D28 /* banner.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = banner.c; sourceTree = "<group>"; };
 		D44271D91CC81B3200D84D28 /* balloon.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = balloon.c; sourceTree = "<group>"; };
 		D44271DB1CC81B3200D84D28 /* banner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = banner.h; sourceTree = "<group>"; };
-		D44271DE1CC81B3200D84D28 /* duck.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = duck.c; sourceTree = "<group>"; };
 		D44271DF1CC81B3200D84D28 /* entrance.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = entrance.h; sourceTree = "<group>"; };
 		D44271E01CC81B3200D84D28 /* footpath.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = footpath.c; sourceTree = "<group>"; };
 		D44271E11CC81B3200D84D28 /* footpath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = footpath.h; sourceTree = "<group>"; };
@@ -2046,6 +2048,7 @@
 		D44271D81CC81B3200D84D28 /* world */ = {
 			isa = PBXGroup;
 			children = (
+				A5D1DB5BE280897DCDEBFCED /* Duck.cpp */,
 				EC3C3FED9FA55B65F65D706F /* Climate.h */,
 				242F470FE91956ACA4078F6A /* Climate.cpp */,
 				437490DBD74ECF60C3363559 /* Balloon.cpp */,
@@ -2702,6 +2705,7 @@
 				6876808CD662C4B16392A9B4 /* Balloon.cpp in Sources */,
 				7D02D519C9A56A1FB9854FE7 /* Climate.cpp in Sources */,
 				689149B0417A68D6765F09CD /* banner.cpp in Sources */,
+				F408D5E134FE5B423BE5443F /* Duck.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2727,7 +2731,6 @@
 				791166FB1D7486EF005912EA /* NetworkServerAdvertiser.cpp in Sources */,
 				D44272441CC81B3200D84D28 /* cable_lift.c in Sources */,
 				C647C6911E1D0CA000C7FB21 /* AudioMixer.cpp in Sources */,
-				D442729C1CC81B3200D84D28 /* duck.c in Sources */,
 				C65A88921E1B1148000368D7 /* AudioChannel.cpp in Sources */,
 				C686F91D1CDBC3B7009F9BFC /* multi_dimension_roller_coaster.c in Sources */,
 				C686F8B31CDBC37E009F9BFC /* surface.c in Sources */,
@@ -3061,6 +3064,7 @@
 				F61331C839858250899F1E9B /* Balloon.cpp in Sources */,
 				F2CC500E17C9411FBA859888 /* Climate.cpp in Sources */,
 				8DED2F20E0D63A1DCFCE0197 /* banner.cpp in Sources */,
+				B94C3C5FC4DBBB864434DE83 /* Duck.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

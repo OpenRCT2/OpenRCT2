@@ -1638,7 +1638,7 @@ static void window_top_toolbar_scenery_tool_down(sint16 x, sint16 y, rct_window 
 
 		gGameCommandErrorTitle = STR_CANT_POSITION_THIS_HERE;
 		game_command_callback = game_command_callback_place_banner;
-		game_do_command(gridX, flags, gridY, parameter_2, GAME_COMMAND_PLACE_BANNER, parameter_3, 0);
+		game_do_command(gridX, flags, gridY, parameter_2, GAME_COMMAND_PLACE_BANNER, parameter_3, gWindowSceneryPrimaryColour);
 		break;
 	}
 	}

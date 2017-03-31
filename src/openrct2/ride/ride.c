@@ -2590,7 +2590,7 @@ static void ride_call_closest_mechanic(sint32 rideIndex)
 
 rct_peep *ride_find_closest_mechanic(rct_ride *ride, sint32 forInspection)
 {
-	sint32 x, y, z, stationIndex, direction;
+	sint32 x, y, z, stationIndex;
 	uint16 xy;
 	rct_map_element *mapElement;
 
@@ -2613,9 +2613,8 @@ rct_peep *ride_find_closest_mechanic(rct_ride *ride, sint32 forInspection)
 
 	x *= 32;
 	y *= 32;
-	direction = mapElement->type & 3;
-	x -= TileDirectionDelta[direction].x;
-	y -= TileDirectionDelta[direction].y;
+
+	// Set x,y to centre of the station exit for the mechanic search.
 	x += 16;
 	y += 16;
 
