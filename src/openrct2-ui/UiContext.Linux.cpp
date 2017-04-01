@@ -16,10 +16,13 @@
 
 #ifdef __linux__
 
+#include <sstream>
 #include <openrct2/common.h>
-#include <SDL.h>
 #include <openrct2/core/String.hpp>
+#include <openrct2/ui/UiContext.h>
 #include "UiContext.h"
+
+#include <SDL.h>
 
 namespace OpenRCT2 { namespace Ui
 {
@@ -107,6 +110,100 @@ namespace OpenRCT2 { namespace Ui
             }
         }
 
+        std::string ShowFileDialog(SDL_Window * window, const FileDialogDesc &desc) override
+        {
+            std::string result;
+            std::string executablePath;
+            DIALOG_TYPE dtype = GetDialogApp(&executablePath);
+            switch (dtype) {
+            case DIALOG_TYPE::KDIALOG:
+            {
+                std::string action =
+                    (desc.Type == FILE_DIALOG_TYPE::OPEN) ? "--getopenfilename" :
+                                                            "--getsavefilename";
+                std::string filter = GetKDialogFilterString(desc.Filters);
+                std::string cmd = String::StdFormat("%s --title '%s' %s '%s/' ~ '%s'", executablePath, desc.Title, action, desc.InitialDirectory, filter);
+                std::string output;
+                if (Execute(cmd, &output) != 0)
+                {
+                    result = output;
+                }
+                break;
+            }
+            case DIALOG_TYPE::ZENITY:
+            {
+                std::string action = "--file-selection";
+                std::string flags;
+                if (desc.Type == FILE_DIALOG_TYPE::SAVE)
+                {
+                    flags = "--confirm-overwrite --save";
+                }
+                std::string filters = GetZenityFilterString(desc.Filters);
+                std::string cmd = String::StdFormat("%s %s --filename='%s/' %s --title='%s' / %s", executablePath, action, desc.InitialDirectory, flags, desc.Title, filters);
+                std::string output;
+                if (Execute(cmd, &output) != 0)
+                {
+                    result = output;
+                }
+                break;
+            }
+            default:
+                log_error("KDialog or Zenity not installed.");
+                break;
+            }
+
+            log_verbose("filename = %s", result.c_str());
+
+            if (desc.Type == FILE_DIALOG_TYPE::OPEN && access(result, F_OK) == -1)
+            {
+                std::string msg = String::StdFormat("\"%s\" not found: %s, please choose another file\n", result.c_str(), strerror(errno));
+                ShowMessageBox(window, msg);
+                return ShowFileDialog(window, desc);
+            }
+            else if (desc.Type == FILE_DIALOG_TYPE::SAVE && access(result, F_OK) != -1 && dtype == DIALOG_TYPE::KDIALOG)
+            {
+                std::string cmd = String::StdFormat("%s --yesno \"Overwrite %s?\"", executablePath, result.c_str());
+                if (Execute(cmd) != 0)
+                {
+                    result = std::string();
+                }
+            }
+            return result;
+        }
+
+        std::string ShowDirectoryDialog(SDL_Window * window, const std::string &title) override
+        {
+            std::string result;
+            std::string executablePath;
+            DIALOG_TYPE dtype = GetDialogApp(&executablePath);
+            switch (dtype) {
+            case DIALOG_TYPE::KDIALOG:
+            {
+                std::string output;
+                std::string cmd = String::Format("%s --title '%s' --getexistingdirectory /", executablePath.c_str(), title);
+                if (Execute(cmd, &output) == 0)
+                {
+                    result = output;
+                }
+                break;
+            }
+            case DIALOG_TYPE::ZENITY:
+            {
+                std::string output;
+                std::string cmd = String::Format("%s --title='%s' --file-selection --directory /", executablePath.c_str(), title);
+                if (Execute(cmd, &output) == 0)
+                {
+                    result = output;
+                }
+                break;
+            }
+            default:
+                log_error("KDialog or Zenity not installed.");
+                break;
+            }
+            return result;
+        }
+
     private:
         static DIALOG_TYPE GetDialogApp(std::string * executablePath)
         {
@@ -167,6 +264,66 @@ namespace OpenRCT2 { namespace Ui
 
             // Return exit code
             return pclose(fpipe);
+        }
+
+        static std::string GetKDialogFilterString(const std::vector<FileDialogDesc::Filter> filters)
+        {
+            std::stringstream filtersb;
+            bool first = true;
+            for (const auto &filter : filters)
+            {
+                // KDialog wants filters space-delimited and we don't expect ';' anywhere else
+                std::string pattern = filter.Pattern;
+                for (sint32 i = 0; i < pattern.size(); i++)
+                {
+                    if (pattern[i] == ';')
+                    {
+                        pattern[i] = ' ';
+                    }
+                }
+
+                if (first)
+                {
+                    filtersb << String::StdFormat("%s | %s", pattern.c_str(), filter.Name.c_str());
+                    first = false;
+                }
+                else
+                {
+                    filtersb << String::StdFormat("\\n%s | %s", pattern.c_str(), filter.Name.c_str());
+                }
+            }
+            return filtersb.str();
+        }
+
+        static std::string GetZenityFilterString(const std::vector<FileDialogDesc::Filter> filters)
+        {
+            // Zenity seems to be case sensitive, while KDialog isn't
+            std::stringstream filtersb;
+            bool first = true;
+            for (const auto &filter : filters)
+            {
+                filtersb << " --file-filter='" << filter.Name << " | ";
+                for (char c : filter.Pattern)
+                {
+                    if (c == ';')
+                    {
+                        filtersb << ' ';
+                    }
+                    else if (isalpha(c))
+                    {
+                        filtersb << '['
+                                 << toupper(c)
+                                 << tolower(c)
+                                 << ']';
+                    }
+                    else
+                    {
+                        filtersb << c;
+                    }
+                }
+                filtersb << "'";
+            }
+            return filtersb.str();
         }
     };
 

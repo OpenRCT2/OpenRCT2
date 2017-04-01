@@ -27,14 +27,18 @@ namespace OpenRCT2
 
     namespace Ui
     {
-        interface IUiContext;
+        struct      FileDialogDesc;
+        interface   IUiContext;
 
         interface IPlatformUiContext
         {
             virtual ~IPlatformUiContext() = default;
             virtual void SetWindowIcon(SDL_Window * window) abstract;
             virtual bool IsSteamOverlayAttached() abstract;
-            virtual void ShowMessageBox(SDL_Window * window, const std::string &message) abstract;
+
+            virtual void        ShowMessageBox(SDL_Window * window, const std::string &message) abstract;
+            virtual std::string ShowFileDialog(SDL_Window * window, const FileDialogDesc &desc) abstract;
+            virtual std::string ShowDirectoryDialog(SDL_Window * window, const std::string &title) abstract;
         };
 
         IUiContext * CreateUiContext();
