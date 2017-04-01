@@ -521,6 +521,16 @@ public:
         _platformUiContext->ShowMessageBox(_window, message);
     }
 
+    std::string ShowFileDialog(const FileDialogDesc &desc) override
+    {
+        return _platformUiContext->ShowFileDialog(_window, desc);
+    }
+
+    std::string ShowDirectoryDialog(const std::string &title) override
+    {
+        return _platformUiContext->ShowDirectoryDialog(_window, title);
+    }
+
 private:
     void OnResize(sint32 width, sint32 height)
     {

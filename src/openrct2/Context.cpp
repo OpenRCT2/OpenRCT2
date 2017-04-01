@@ -680,4 +680,29 @@ extern "C"
     {
         GetContext()->GetUiContext()->SetCursorTrap(value);
     }
+
+    bool platform_open_common_file_dialog(utf8 * outFilename, file_dialog_desc * desc, size_t outSize)
+    {
+        FileDialogDesc desc2;
+        desc2.Type = (FILE_DIALOG_TYPE)desc->type;
+        desc2.Title = String::ToStd(desc->title);
+        desc2.InitialDirectory = String::ToStd(desc->initial_directory);
+        desc2.DefaultFilename = String::ToStd(desc->default_filename);
+        for (const auto &filter : desc->filters)
+        {
+            if (filter.name != nullptr)
+            {
+                desc2.Filters.push_back({ String::ToStd(filter.name), String::ToStd(filter.pattern) });
+            }
+        }
+        std::string result = GetContext()->GetUiContext()->ShowFileDialog(desc2);
+        String::Set(outFilename, outSize, result.c_str());
+        return !result.empty();
+    }
+
+    utf8 * platform_open_directory_browser(const utf8 * title)
+    {
+        std::string result = GetContext()->GetUiContext()->ShowDirectoryDialog(title);
+        return String::Duplicate(result.c_str());
+    }
 }

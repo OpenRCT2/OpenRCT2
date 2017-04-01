@@ -62,6 +62,27 @@ namespace OpenRCT2
             return !(lhs == rhs);
         }
 
+        enum class FILE_DIALOG_TYPE
+        {
+            OPEN,
+            SAVE,
+        };
+
+        struct FileDialogDesc
+        {
+            struct Filter
+            {
+                std::string Name;       // E.g. "Image Files"
+                std::string Pattern;    // E.g. "*.png;*.jpg;*.gif"
+            };
+
+            FILE_DIALOG_TYPE    Type = FILE_DIALOG_TYPE::OPEN;
+            std::string         Title;
+            std::string         InitialDirectory;
+            std::string         DefaultFilename;
+            std::vector<Filter> Filters;
+        };
+
         /**
          * Represents the window or screen that OpenRCT2 is presented on.
          */
@@ -82,7 +103,10 @@ namespace OpenRCT2
             virtual bool IsSteamOverlayActive() abstract;
             virtual void ProcessMessages() abstract;
             virtual void TriggerResize() abstract;
-            virtual void ShowMessageBox(const std::string &message) abstract;
+
+            virtual void        ShowMessageBox(const std::string &message) abstract;
+            virtual std::string ShowFileDialog(const FileDialogDesc &desc) abstract;
+            virtual std::string ShowDirectoryDialog(const std::string &title) abstract;
 
             // Input
             virtual const CursorState * GetCursorState() abstract;
