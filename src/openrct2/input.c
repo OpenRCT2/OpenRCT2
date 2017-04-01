@@ -1613,9 +1613,7 @@ void game_handle_edge_scroll()
 		return;
 	if (mainWindow->viewport == NULL)
 		return;
-
-	uint32 window_flags = SDL_GetWindowFlags(gWindow);
-	if ((window_flags & SDL_WINDOW_INPUT_FOCUS) == 0)
+	if (!context_has_focus())
 		return;
 
 	scrollX = 0;

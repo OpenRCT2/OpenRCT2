@@ -16,20 +16,25 @@
 
 #include <memory>
 #include "../common.h"
+#include "../config/Config.h"
+#include "../Context.h"
 #include "../core/File.h"
 #include "../core/FileStream.hpp"
 #include "../core/Memory.hpp"
 #include "../core/Util.hpp"
 #include "../OpenRCT2.h"
 #include "../sprites.h"
+#include "../ui/UiContext.h"
 
 extern "C"
 {
-    #include "../config/Config.h"
     #include "../rct2/addresses.h"
     #include "../util/util.h"
     #include "drawing.h"
 }
+
+using namespace OpenRCT2;
+using namespace OpenRCT2::Ui;
 
 extern "C"
 {
@@ -116,7 +121,8 @@ extern "C"
             log_fatal("Unable to load g1 graphics");
             if (!gOpenRCT2Headless)
             {
-                platform_show_messagebox("Unable to load g1.dat. Your RollerCoaster Tycoon 2 path may be incorrectly set.");
+                IUiContext * uiContext = GetContext()->GetUiContext();
+                uiContext->ShowMessageBox("Unable to load g1.dat. Your RollerCoaster Tycoon 2 path may be incorrectly set.");
             }
             return false;
         }
@@ -174,7 +180,8 @@ extern "C"
             log_fatal("Unable to load g2 graphics");
             if (!gOpenRCT2Headless)
             {
-                platform_show_messagebox("Unable to load g2.dat");
+                IUiContext * uiContext = GetContext()->GetUiContext();
+                uiContext->ShowMessageBox("Unable to load g2.dat");
             }
         }
         return false;

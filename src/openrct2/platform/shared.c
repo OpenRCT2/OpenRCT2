@@ -49,7 +49,6 @@
 
 typedef void(*update_palette_func)(const uint8*, sint32, sint32);
 
-SDL_Window *gWindow = NULL;
 SDL_Renderer *gRenderer = NULL;
 SDL_Texture *gBufferTexture = NULL;
 SDL_PixelFormat *gBufferTextureFormat = NULL;

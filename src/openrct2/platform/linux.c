@@ -39,19 +39,6 @@
 #include "../util/util.h"
 #include "platform.h"
 
-// See http://syprog.blogspot.ru/2011/12/listing-loaded-shared-objects-in-linux.html
-struct lmap {
-	void* base_address;
-	char* path;
-	void* unused;
-	struct lmap *next, *prev;
-};
-
-struct dummy {
-	void* pointers[3];
-	struct dummy* ptr;
-};
-
 typedef enum { DT_NONE, DT_KDIALOG, DT_ZENITY } dialog_type;
 
 void platform_get_exe_path(utf8 *outPath, size_t outSize)
@@ -84,26 +71,6 @@ void platform_get_exe_path(utf8 *outPath, size_t outSize)
 	*exeDelimiter = '\0';
 
 	safe_strcpy(outPath, exePath, outSize);
-}
-
-bool platform_check_steam_overlay_attached() {
-	void* processHandle = dlopen(NULL, RTLD_NOW);
-
-	struct dummy* p = (struct dummy*) processHandle;
-	p = p->ptr;
-
-	struct lmap* pl = (struct lmap*) p->ptr;
-
-	while (pl != NULL) {
-		if (strstr(pl->path, "gameoverlayrenderer.so") != NULL) {
-			dlclose(processHandle);
-			return true;
-		}
-		pl = pl->next;
-	}
-	dlclose(processHandle);
-
-	return false;
 }
 
 /**
@@ -287,38 +254,6 @@ static void execute_cmd(char *command, sint32 *exit_value, char *buf, size_t *bu
 		pclose(f);
 }
 
-static dialog_type get_dialog_app(char *cmd, size_t *cmd_size) {
-	sint32 exit_value;
-	size_t size;
-	dialog_type dtype;
-
-	/*
-	 * prefer zenity as it offers more required features, e.g., overwrite
-	 * confirmation and selecting only existing files
-	 */
-
-	dtype = DT_ZENITY;
-	size = *cmd_size;
-	execute_cmd("which zenity", &exit_value, cmd, &size);
-
-	if (exit_value != 0) {
-		dtype = DT_KDIALOG;
-		size = *cmd_size;
-		execute_cmd("which kdialog", &exit_value, cmd, &size);
-
-		if (exit_value != 0) {
-			log_error("no dialog (zenity or kdialog) found\n");
-			return DT_NONE;
-		}
-	}
-
-	cmd[size-1] = '\0';
-
-	*cmd_size = size;
-
-	return dtype;
-}
-
 bool platform_open_common_file_dialog(utf8 *outFilename, file_dialog_desc *desc, size_t outSize) {
 	sint32 exit_value;
 	char executable[MAX_PATH];
@@ -496,33 +431,6 @@ utf8 *platform_open_directory_browser(const utf8 *title) {
 	return_value = _strdup(result);
 
 	return return_value;
-}
-
-void platform_show_messagebox(const char * message) {
-	size_t size;
-	dialog_type dtype;
-	char cmd[OPENRCT2_MAX_COMMAND_LENGTH];
-	char executable[MAX_PATH];
-
-	log_verbose(message);
-
-	size = OPENRCT2_MAX_COMMAND_LENGTH;
-	dtype = get_dialog_app(executable, &size);
-
-	switch (dtype) {
-		case DT_KDIALOG:
-			snprintf(cmd, OPENRCT2_MAX_COMMAND_LENGTH, "%s --title \"OpenRCT2\" --msgbox \"%s\"", executable, message);
-			break;
-		case DT_ZENITY:
-			snprintf(cmd, OPENRCT2_MAX_COMMAND_LENGTH, "%s --title=\"OpenRCT2\" --info --text=\"%s\"", executable, message);
-			break;
-		default:
-			SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_WARNING, "OpenRCT2", message, gWindow);
-			return;
-	}
-
-	size = OPENRCT2_MAX_COMMAND_LENGTH;
-	execute_cmd(cmd, 0, 0, 0);
 }
 
 #ifndef NO_TTF

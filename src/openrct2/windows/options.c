@@ -740,7 +740,7 @@ static void window_options_mouseup(rct_window *w, rct_widgetindex widgetIndex)
 		case WIDX_TRAP_CURSOR:
 			gConfigGeneral.trap_cursor ^= 1;
 			config_save_default();
-			SDL_SetWindowGrab(gWindow, gConfigGeneral.trap_cursor ? SDL_TRUE : SDL_FALSE);
+			context_set_cursor_trap(gConfigGeneral.trap_cursor);
 			window_invalidate(w);
 			break;
 		case WIDX_ZOOM_TO_CURSOR:

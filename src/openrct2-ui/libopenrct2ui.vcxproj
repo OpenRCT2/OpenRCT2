@@ -43,6 +43,7 @@
     <ClCompile Include="TextComposition.cpp" />
     <ClCompile Include="Ui.cpp" />
     <ClCompile Include="UiContext.cpp" />
+    <ClCompile Include="UiContext.Linux.cpp" />
     <ClCompile Include="UiContext.Win32.cpp" />
   </ItemGroup>
   <ItemGroup>
