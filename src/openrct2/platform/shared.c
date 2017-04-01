@@ -55,12 +55,6 @@ SDL_PixelFormat *gBufferTextureFormat = NULL;
 SDL_Color gPalette[256];
 uint32 gPaletteHWMapped[256];
 
-bool gSteamOverlayActive = false;
-
-static const sint32 _fullscreen_modes[] = { 0, SDL_WINDOW_FULLSCREEN, SDL_WINDOW_FULLSCREEN_DESKTOP };
-static uint32 _lastGestureTimestamp;
-static float _gestureRadius;
-
 void platform_draw()
 {
 	if (!gOpenRCT2Headless) {

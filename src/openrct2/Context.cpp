@@ -420,11 +420,11 @@ namespace OpenRCT2
         void RunFixedFrame()
         {
             _uncapTick = 0;
-            uint32 currentTick = SDL_GetTicks();
+            uint32 currentTick = platform_get_ticks();
             uint32 ticksElapsed = currentTick - _lastTick;
             if (ticksElapsed < UPDATE_TIME_MS)
             {
-                SDL_Delay(UPDATE_TIME_MS - ticksElapsed);
+                platform_sleep(UPDATE_TIME_MS - ticksElapsed);
                 _lastTick += UPDATE_TIME_MS;
             }
             else
@@ -441,7 +441,7 @@ namespace OpenRCT2
 
         void RunVariableFrame()
         {
-            uint32 currentTick = SDL_GetTicks();
+            uint32 currentTick = platform_get_ticks();
             if (_uncapTick == 0)
             {
                 _uncapTick = currentTick;
