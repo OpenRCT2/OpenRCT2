@@ -109,6 +109,8 @@ extern "C"
     sint32 context_get_resolutions(struct Resolution * * outResolutions);
     sint32 context_get_width();
     sint32 context_get_height();
+    bool context_has_focus();
+    void context_set_cursor_trap(bool value);
 
 #ifdef __cplusplus
 }

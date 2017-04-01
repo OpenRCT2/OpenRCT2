@@ -847,10 +847,4 @@ utf8* platform_get_username() {
 	}
 }
 
-void platform_init_window_icon()
-{
-	// TODO Create a surface with the window icon
-	// SDL_SetWindowIcon(gWindow, iconSurface)
-}
-
 #endif

@@ -584,11 +584,6 @@ void platform_get_user_directory(utf8 *outPath, const utf8 *subDirectory, size_t
 	}
 }
 
-void platform_show_messagebox(const utf8 * message)
-{
-	MessageBoxA(windows_get_window_handle(), message, "OpenRCT2", MB_OK);
-}
-
 /**
  *
  *  rct2: 0x004080EA
@@ -610,7 +605,7 @@ bool platform_open_common_file_dialog(utf8 *outFilename, file_dialog_desc *desc,
 	// Set open file name options
 	memset(&openFileName, 0, sizeof(OPENFILENAMEW));
 	openFileName.lStructSize = sizeof(OPENFILENAMEW);
-	openFileName.hwndOwner = windows_get_window_handle();
+	openFileName.hwndOwner = NULL; // windows_get_window_handle();
 	openFileName.nMaxFile = MAX_PATH;
 	openFileName.lpstrTitle = utf8_to_widechar(desc->title);
 	openFileName.lpstrInitialDir = utf8_to_widechar(desc->initial_directory);
@@ -775,33 +770,6 @@ sint32 windows_get_registry_install_info(rct2_install_info *installInfo, char *s
 
 	RegCloseKey(hKey);
 	return 1;
-}
-
-HWND windows_get_window_handle()
-{
-	SDL_SysWMinfo wmInfo;
-
-	if (gWindow == NULL)
-		return NULL;
-
-	SDL_VERSION(&wmInfo.version);
-	if (SDL_GetWindowWMInfo(gWindow, &wmInfo) != SDL_TRUE) {
-		log_error("SDL_GetWindowWMInfo failed %s", SDL_GetError());
-		exit(-1);
-	}
-	HWND handle = wmInfo.info.win.window;
-	#ifdef __MINGW32__
-	assert(sizeof(HWND) == sizeof(uint32));
-	uint8 A = (uint32)handle & 0xff000000 >> 24;
-	uint8 B = (uint32)handle & 0xff0000 >> 16;
-	uint8 C = (uint32)handle & 0xff00 >> 8;
-	uint8 D = (uint32)handle & 0xff;
-	HWND result = (HWND)(D << 24 | A << 16 | B << 8 | C);
-	log_warning("twisting bits of handle, a workaround for mingw/sdl bug");
-	#else
-	HWND result = handle;
-	#endif // __MINGW32__
-	return result;
 }
 
 uint16 platform_get_locale_language()

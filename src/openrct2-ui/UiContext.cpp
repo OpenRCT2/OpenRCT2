@@ -15,13 +15,16 @@
 #pragma endregion
 
 #include <algorithm>
+#include <chrono>
 #include <memory>
 #include <vector>
 #include <SDL.h>
 #include <openrct2/audio/AudioMixer.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/Context.h>
+#include <openrct2/core/String.hpp>
 #include <openrct2/drawing/IDrawingEngine.h>
+#include <openrct2/platform/Platform2.h>
 #include <openrct2/ui/UiContext.h>
 #include <openrct2/Version.h>
 #include "CursorRepository.h"
@@ -60,6 +63,8 @@ private:
     SDL_Window *    _window = nullptr;
     sint32          _width  = 0;
     sint32          _height = 0;
+    uint32          _windowFlags = 0;
+    uint32          _windowFlagsLastCheckTick = 0;
 
     bool _resolutionsAllowAnyAspectRatio = false;
     std::vector<Resolution> _fsResolutions;
@@ -147,6 +152,19 @@ public:
         return _fsResolutions;
     }
 
+    bool HasFocus() override
+    {
+        uint32 windowFlags = GetWindowFlags();
+        return (windowFlags & SDL_WINDOW_INPUT_FOCUS);
+    }
+
+    bool IsMinimised() override
+    {
+        uint32 windowFlags = GetWindowFlags();
+        return (windowFlags & SDL_WINDOW_MINIMIZED) ||
+               (windowFlags & SDL_WINDOW_HIDDEN);
+    }
+
     bool IsSteamOverlayActive() override
     {
         return _steamOverlayActive;
@@ -191,6 +209,11 @@ public:
     void SetCursorPosition(sint32 x, sint32 y) override
     {
         SDL_WarpMouseInWindow(nullptr, x, y);
+    }
+
+    void SetCursorTrap(bool value) override
+    {
+        SDL_SetWindowGrab(_window, value ? SDL_TRUE : SDL_FALSE);
     }
 
     // Drawing
@@ -469,8 +492,8 @@ public:
             SDLException::Throw("SDL_CreateWindow(...)");
         }
 
-        SDL_SetWindowGrab(_window, gConfigGeneral.trap_cursor ? SDL_TRUE : SDL_FALSE);
         SDL_SetWindowMinimumSize(_window, 720, 480);
+        SetCursorTrap(gConfigGeneral.trap_cursor);
         _platformUiContext->SetWindowIcon(_window);
 #ifdef __MACOSX__
         macos_disallow_automatic_window_tabbing();
@@ -491,6 +514,11 @@ public:
     {
         drawing_engine_dispose();
         SDL_DestroyWindow(_window);
+    }
+
+    void ShowMessageBox(const std::string &message) override
+    {
+        _platformUiContext->ShowMessageBox(_window, message);
     }
 
 private:
@@ -600,6 +628,18 @@ private:
             }
         }
         return result;
+    }
+
+    uint32 GetWindowFlags()
+    {
+        // Don't check if window is minimised too frequently (every second is fine)
+        uint32 tick = Platform::GetTicks();
+        if (tick > _windowFlagsLastCheckTick + 1000)
+        {
+            _windowFlags = SDL_GetWindowFlags(_window);
+            _windowFlagsLastCheckTick = tick;
+        }
+        return _windowFlags;
     }
 };
 

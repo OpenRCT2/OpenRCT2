@@ -77,9 +77,12 @@ namespace OpenRCT2
             virtual sint32  GetHeight() abstract;
             virtual void    SetFullscreenMode(FULLSCREEN_MODE mode) abstract;
             virtual std::vector<Resolution> GetFullscreenResolutions() abstract;
+            virtual bool HasFocus() abstract;
+            virtual bool IsMinimised() abstract;
             virtual bool IsSteamOverlayActive() abstract;
             virtual void ProcessMessages() abstract;
             virtual void TriggerResize() abstract;
+            virtual void ShowMessageBox(const std::string &message) abstract;
 
             // Input
             virtual const CursorState * GetCursorState() abstract;
@@ -88,6 +91,7 @@ namespace OpenRCT2
             virtual void                SetCursorVisible(bool value) abstract;
             virtual void                GetCursorPosition(sint32 * x, sint32 * y) abstract;
             virtual void                SetCursorPosition(sint32 x, sint32 y) abstract;
+            virtual void                SetCursorTrap(bool value) abstract;
             virtual const uint8 *       GetKeysState() abstract;
             virtual const uint8 *       GetKeysPressed() abstract;
 

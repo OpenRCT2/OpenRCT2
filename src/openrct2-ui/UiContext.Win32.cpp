@@ -14,18 +14,19 @@
 *****************************************************************************/
 #pragma endregion
 
+#ifdef _WIN32
+
 #define WIN32_LEAN_AND_MEAN
 
 #include <openrct2/common.h>
 #include <windows.h>
 #include <SDL.h>
 #include <SDL_syswm.h>
+#include <openrct2/core/String.hpp>
 #include "UiContext.h"
 
 // Native resource IDs
 #include "../../../resources/resource.h"
-
-#ifdef __WINDOWS__
 
 namespace OpenRCT2 { namespace Ui
 {
@@ -59,6 +60,13 @@ namespace OpenRCT2 { namespace Ui
         bool IsSteamOverlayAttached() override
         {
             return (GetModuleHandleA("GameOverlayRenderer.dll") != nullptr);
+        }
+
+        void ShowMessageBox(SDL_Window * window, const std::string &message) override
+        {
+            HWND hwnd = GetHWND(window);
+            std::wstring messageW = String::ToUtf16(message);
+            MessageBoxW(hwnd, messageW.c_str(), L"OpenRCT2", MB_OK);
         }
 
     private:
@@ -96,4 +104,4 @@ namespace OpenRCT2 { namespace Ui
     }
 } }
 
-#endif // __WINDOWS__
+#endif // _WIN32
