@@ -408,24 +408,12 @@ namespace OpenRCT2
             log_verbose("finish openrct2 loop");
         }
 
-        bool IsMinimised()
-        {
-            // Don't check if window is minimised too frequently (every second is fine)
-            if (_lastTick > _isWindowMinimisedLastCheckTick + 1000)
-            {
-                uint32 windowFlags = SDL_GetWindowFlags(gWindow);
-                _isWindowMinimised = (windowFlags & SDL_WINDOW_MINIMIZED) ||
-                    (windowFlags & SDL_WINDOW_HIDDEN);
-            }
-            return _isWindowMinimised;
-        }
-
         bool ShouldRunVariableFrame()
         {
             if (!gConfigGeneral.uncap_fps) return false;
             if (gGameSpeed > 4) return false;
             if (gOpenRCT2Headless) return false;
-            if (IsMinimised()) return false;
+            if (_uiContext->IsMinimised()) return false;
             return true;
         }
 
@@ -681,5 +669,15 @@ extern "C"
     sint32 context_get_height()
     {
         return GetContext()->GetUiContext()->GetHeight();
+    }
+
+    bool context_has_focus()
+    {
+        return GetContext()->GetUiContext()->HasFocus();
+    }
+
+    void context_set_cursor_trap(bool value)
+    {
+        GetContext()->GetUiContext()->SetCursorTrap(value);
     }
 }

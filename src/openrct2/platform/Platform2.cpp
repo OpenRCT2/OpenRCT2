@@ -16,28 +16,17 @@
 
 #pragma once
 
-#include <string>
-#include <openrct2/common.h>
+#include "Platform2.h"
 
-struct SDL_Window;
-
-namespace OpenRCT2
+extern "C"
 {
-    interface IContext;
+    #include "platform.h"
+}
 
-    namespace Ui
+namespace Platform
+{
+    uint32 GetTicks()
     {
-        interface IUiContext;
-
-        interface IPlatformUiContext
-        {
-            virtual ~IPlatformUiContext() = default;
-            virtual void SetWindowIcon(SDL_Window * window) abstract;
-            virtual bool IsSteamOverlayAttached() abstract;
-            virtual void ShowMessageBox(SDL_Window * window, const std::string &message) abstract;
-        };
-
-        IUiContext * CreateUiContext();
-        IPlatformUiContext * CreatePlatformUiContext();
+        return platform_get_ticks();
     }
 }

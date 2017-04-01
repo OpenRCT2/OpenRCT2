@@ -99,7 +99,6 @@ typedef struct file_dialog_desc {
 	} filters[8];
 } file_dialog_desc;
 
-extern SDL_Window *gWindow;
 extern SDL_Color gPalette[256];
 
 // Platform shared definitions
@@ -147,7 +146,6 @@ void platform_resolve_openrct_data_path();
 void platform_get_openrct_data_path(utf8 *outPath, size_t outSize);
 void platform_get_user_directory(utf8 *outPath, const utf8 *subDirectory, size_t outSize);
 utf8* platform_get_username();
-void platform_show_messagebox(const utf8 * message);
 bool platform_open_common_file_dialog(utf8 *outFilename, file_dialog_desc *desc, size_t outSize);
 utf8 *platform_open_directory_browser(const utf8 *title);
 uint8 platform_get_locale_currency();
@@ -177,7 +175,6 @@ void core_init();
 	#undef GetMessage
 
 	sint32 windows_get_registry_install_info(rct2_install_info *installInfo, char *source, char *font, uint8 charset);
-	HWND windows_get_window_handle();
 	void platform_setup_file_associations();
 	void platform_remove_file_associations();
 	bool platform_setup_uri_protocol();
