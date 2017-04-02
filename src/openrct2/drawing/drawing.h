@@ -253,6 +253,7 @@ typedef struct rct_palette {
 extern sint16 gCurrentFontSpriteBase;
 extern uint16 gCurrentFontFlags;
 
+extern rct_palette_entry gPalette[256];
 extern uint8 gGamePalette[256 * 4];
 extern uint32 gPaletteEffectFrame;
 extern const FILTER_PALETTE_ID GlassPaletteIds[COLOUR_COUNT];

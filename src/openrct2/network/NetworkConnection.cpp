@@ -19,7 +19,6 @@
 #include "network.h"
 #include "NetworkConnection.h"
 #include "../core/String.hpp"
-#include <SDL.h>
 
 extern "C"
 {

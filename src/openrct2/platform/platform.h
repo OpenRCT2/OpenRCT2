@@ -99,8 +99,6 @@ typedef struct file_dialog_desc {
 	} filters[8];
 } file_dialog_desc;
 
-extern SDL_Color gPalette[256];
-
 // Platform shared definitions
 void platform_init();
 void platform_draw();

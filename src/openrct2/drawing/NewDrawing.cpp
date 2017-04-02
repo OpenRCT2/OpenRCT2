@@ -144,7 +144,7 @@ extern "C"
         _drawingEngine->Resize(uiContext->GetWidth(), uiContext->GetHeight());
     }
 
-    void drawing_engine_set_palette(SDL_Color * colours)
+    void drawing_engine_set_palette(const rct_palette_entry * colours)
     {
         if (_drawingEngine != nullptr)
         {
