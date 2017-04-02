@@ -613,20 +613,32 @@ static void ride_ratings_calculate_value(rct_ride *ride)
 	if (!ride_has_ratings(ride)) {
 		return;
 	}
-
+#define ORIGINAL_RATINGS 1
 	sint32 value =
 		(((ride->excitement * RideRatings[ride->type].excitement) * 32) >> 15) +
 		(((ride->intensity  * RideRatings[ride->type].intensity) * 32) >> 15) +
 		(((ride->nausea     * RideRatings[ride->type].nausea) * 32) >> 15);
+	#ifdef ORIGINAL_RATINGS 
+	sint32 value_orig = value; 
+	#endif
 
 	sint32 monthsOld = gDateMonthsElapsed - ride->build_date;
 
 	// New ride reward
+	if (monthsOld <= 4)
+		value = (value * 3) / 2;   // 1.5x
+
+	else if (monthsOld <= 12) 
+		value = (value * 6) / 5;   // 1.2x
+
+#ifdef ORIGINAL_RATINGS
+	value = value_orig;
 	if (monthsOld <= 12) {
 		value += 10;
 		if (monthsOld <= 4)
 			value += 20;
 	}
+#endif
 
 	// Old ride penalty
 	if (monthsOld >= 40) value -= value / 4;
