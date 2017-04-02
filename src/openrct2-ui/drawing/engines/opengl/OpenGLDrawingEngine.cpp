@@ -304,11 +304,14 @@ public:
         _drawingContext->Resize(width, height);
     }
 
-    void SetPalette(SDL_Color * palette) override
+    void SetPalette(const rct_palette_entry * palette) override
     {
         for (sint32 i = 0; i < 256; i++)
         {
-            SDL_Color colour = palette[i];
+            SDL_Color colour;
+            colour.r = palette[i].red;
+            colour.g = palette[i].green;
+            colour.b = palette[i].blue;
             colour.a = i == 0 ? 0 : 255;
 
             Palette[i] = colour;

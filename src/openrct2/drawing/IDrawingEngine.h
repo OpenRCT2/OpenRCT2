@@ -18,8 +18,6 @@
 
 #include "../common.h"
 
-#include <SDL_video.h>
-
 enum DRAWING_ENGINE
 {
     DRAWING_ENGINE_NONE = -1,
@@ -42,6 +40,8 @@ enum DRAWING_ENGINE_FLAGS
 #ifdef __cplusplus
 
 struct rct_drawpixelinfo;
+struct rct_palette_entry;
+struct SDL_Window;
 
 namespace OpenRCT2 { namespace Drawing
 {
@@ -51,9 +51,9 @@ namespace OpenRCT2 { namespace Drawing
     {
         virtual ~IDrawingEngine() { }
 
-        virtual void Initialise(SDL_Window * window)     abstract;
-        virtual void Resize(uint32 width, uint32 height) abstract;
-        virtual void SetPalette(SDL_Color * colours)     abstract;
+        virtual void Initialise(SDL_Window * window)                abstract;
+        virtual void Resize(uint32 width, uint32 height)            abstract;
+        virtual void SetPalette(const rct_palette_entry * colours)  abstract;
 
         virtual void SetUncappedFrameRate(bool uncapped) abstract;
 
