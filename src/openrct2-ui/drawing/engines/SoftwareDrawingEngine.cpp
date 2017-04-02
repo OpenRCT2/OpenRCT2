@@ -320,7 +320,7 @@ public:
         }
     }
 
-    void SetPalette(SDL_Color * palette) override
+    void SetPalette(const rct_palette_entry * palette) override
     {
         if (_sdlRenderer != nullptr)
         {
@@ -328,7 +328,7 @@ public:
             {
                 for (sint32 i = 0; i < 256; i++)
                 {
-                    _paletteHWMapped[i] = SDL_MapRGB(_screenTextureFormat, palette[i].r, palette[i].g, palette[i].b);
+                    _paletteHWMapped[i] = SDL_MapRGB(_screenTextureFormat, palette[i].red, palette[i].green, palette[i].blue);
                 }
 
 #ifdef __ENABLE_LIGHTFX__
@@ -348,11 +348,14 @@ public:
             SDL_Surface * windowSurface = SDL_GetWindowSurface(_window);
             if (windowSurface != nullptr && _palette != nullptr)
             {
-                // log_fatal("SDL_GetWindowSurface failed %s", SDL_GetError());
-                // exit(1);
-                // log_fatal("SDL_SetPaletteColors failed %s", SDL_GetError());
-                // exit(1);
-                SDL_SetPaletteColors(_palette, palette, 0, 256);
+                SDL_Colour colours[256];
+                for (sint32 i = 0; i < 256; i++) {
+                    colours[i].r = palette[i].red;
+                    colours[i].g = palette[i].green;
+                    colours[i].b = palette[i].blue;
+                    colours[i].a = palette[i].alpha;
+                }
+                SDL_SetPaletteColors(_palette, colours, 0, 256);
             }
         }
     }

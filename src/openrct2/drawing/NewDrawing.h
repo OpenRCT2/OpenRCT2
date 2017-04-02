@@ -16,8 +16,6 @@
 
 #pragma once
 
-#include <SDL_video.h>
-
 #ifdef __cplusplus
 extern "C"
 {
@@ -32,7 +30,7 @@ sint32 drawing_engine_get_type();
 bool drawing_engine_requires_restart(sint32 srcEngine, sint32 dstEngine);
 void drawing_engine_init();
 void drawing_engine_resize();
-void drawing_engine_set_palette(SDL_Color * colours);
+void drawing_engine_set_palette(const rct_palette_entry * colours);
 void drawing_engine_draw();
 void drawing_engine_copy_rect(sint32 x, sint32 y, sint32 width, sint32 height, sint32 dx, sint32 dy);
 void drawing_engine_dispose();

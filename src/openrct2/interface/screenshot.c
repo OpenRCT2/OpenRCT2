@@ -59,13 +59,7 @@ void screenshot_check()
 
 static void screenshot_get_rendered_palette(rct_palette* palette) {
 	for (sint32 i = 0; i < 256; i++) {
-		const SDL_Color *renderedEntry = &gPalette[i];
-		rct_palette_entry *entry = &palette->entries[i];
-
-		entry->red = renderedEntry->r;
-		entry->green = renderedEntry->g;
-		entry->blue = renderedEntry->b;
-		entry->alpha = renderedEntry->a;
+		palette->entries[i] = gPalette[i];
 	}
 }
 

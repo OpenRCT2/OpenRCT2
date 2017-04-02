@@ -49,11 +49,7 @@
 
 typedef void(*update_palette_func)(const uint8*, sint32, sint32);
 
-SDL_Renderer *gRenderer = NULL;
-SDL_Texture *gBufferTexture = NULL;
-SDL_PixelFormat *gBufferTextureFormat = NULL;
-SDL_Color gPalette[256];
-uint32 gPaletteHWMapped[256];
+rct_palette_entry gPalette[256];
 
 void platform_draw()
 {
@@ -110,14 +106,11 @@ void platform_update_palette(const uint8* colours, sint32 start_index, sint32 nu
 			}
 		}
 
-		gPalette[i].r = r;
-		gPalette[i].g = g;
-		gPalette[i].b = b;
-		gPalette[i].a = 0;
+		gPalette[i].red = r;
+		gPalette[i].green = g;
+		gPalette[i].blue = b;
+		gPalette[i].alpha = 0;
 		colours += 4;
-		if (gBufferTextureFormat != NULL) {
-			gPaletteHWMapped[i] = SDL_MapRGB(gBufferTextureFormat, gPalette[i].r, gPalette[i].g, gPalette[i].b);
-		}
 	}
 
 	if (!gOpenRCT2Headless) {
@@ -133,10 +126,10 @@ void platform_init()
 	// Set the highest palette entry to white.
 	// This fixes a bug with the TT:rainbow road due to the
 	// image not using the correct white palette entry.
-	gPalette[255].a = 0;
-	gPalette[255].r = 255;
-	gPalette[255].g = 255;
-	gPalette[255].b = 255;
+	gPalette[255].alpha = 0;
+	gPalette[255].red = 255;
+	gPalette[255].green = 255;
+	gPalette[255].blue = 255;
 }
 
 sint32 platform_scancode_to_rct_keycode(sint32 sdl_key)
