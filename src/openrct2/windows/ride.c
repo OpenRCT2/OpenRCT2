@@ -25,21 +25,23 @@
 #include "../interface/window.h"
 #include "../localisation/date.h"
 #include "../localisation/localisation.h"
+#include "../network/network.h"
 #include "../object/ObjectManager.h"
 #include "../object/ObjectRepository.h"
 #include "../peep/staff.h"
+#include "../rct1.h"
 #include "../rct2.h"
 #include "../ride/ride.h"
 #include "../ride/ride_data.h"
 #include "../ride/track.h"
+#include "../ride/track_data.h"
 #include "../ride/track_design.h"
 #include "../sprites.h"
 #include "../windows/error.h"
 #include "../world/map.h"
 #include "../world/sprite.h"
 #include "dropdown.h"
-#include "../rct1.h"
-#include "../ride/track_data.h"
+
 
 enum {
 	WINDOW_RIDE_PAGE_MAIN,
@@ -3932,7 +3934,7 @@ static void window_ride_maintenance_invalidate(rct_window *w)
 	window_ride_anchor_border_widgets(w);
 	window_align_tabs(w, WIDX_TAB_1, WIDX_TAB_10);
 
-	if (gConfigGeneral.debugging_tools) {
+	if (gConfigGeneral.debugging_tools && network_get_mode() == NETWORK_MODE_NONE) {
 		window_ride_maintenance_widgets[WIDX_FORCE_BREAKDOWN].type = WWT_FLATBTN;
 	}
 	else {
