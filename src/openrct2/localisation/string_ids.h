@@ -3682,6 +3682,8 @@ enum {
 	STR_SHORTCUT_RIDE_CONSTRUCTION_BUILD_CURRENT = 6028,
 	STR_SHORTCUT_RIDE_CONSTRUCTION_DEMOLISH_CURRENT = 6029,
 
+	STR_SCENERY_EYEDROPPER_TIP = 6030,
+
 	// Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
 	STR_COUNT = 32768
 };

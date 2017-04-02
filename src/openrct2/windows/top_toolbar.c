@@ -35,6 +35,7 @@
 #include "../title/TitleScreen.h"
 #include "../util/util.h"
 #include "../world/banner.h"
+#include "../world/footpath.h"
 #include "../world/scenery.h"
 #include "dropdown.h"
 
@@ -1000,13 +1001,101 @@ static void repaint_scenery_tool_down(sint16 x, sint16 y, sint16 widgetIndex){
 	}
 }
 
+static void scenery_eyedropper_tool_down(sint16 x, sint16 y, sint16 widgetIndex)
+{
+	uint16 flags =
+		VIEWPORT_INTERACTION_MASK_SCENERY &
+		VIEWPORT_INTERACTION_MASK_WALL &
+		VIEWPORT_INTERACTION_MASK_LARGE_SCENERY &
+		VIEWPORT_INTERACTION_MASK_BANNER &
+		VIEWPORT_INTERACTION_MASK_FOOTPATH_ITEM;
+
+	sint16 gridX, gridY;
+	sint32 type;
+	rct_map_element* mapElement;
+	rct_viewport * viewport;
+	get_map_coordinates_from_pos(x, y, flags, &gridX, &gridY, &type, &mapElement, &viewport);
+
+	switch (type) {
+	case VIEWPORT_INTERACTION_ITEM_SCENERY:
+	{
+		sint32 entryIndex = mapElement->properties.scenery.type;
+		rct_scenery_entry * sceneryEntry = get_small_scenery_entry(entryIndex);
+		if (sceneryEntry != NULL || sceneryEntry != (rct_scenery_entry *)-1) {
+			sint32 sceneryId = get_scenery_id_from_entry_index(OBJECT_TYPE_SMALL_SCENERY, entryIndex);
+			if (sceneryId != -1 && window_scenery_set_selected_item(sceneryId)) {
+				gWindowSceneryRotation = map_element_get_direction(mapElement);
+				gWindowSceneryPrimaryColour = mapElement->properties.scenery.colour_1 & 0x1F;
+				gWindowScenerySecondaryColour = mapElement->properties.scenery.colour_2 & 0x1F;
+				gWindowSceneryEyedropperEnabled = false;
+			}
+		}
+		break;
+	}
+	case VIEWPORT_INTERACTION_ITEM_WALL:
+	{
+		sint32 entryIndex = mapElement->properties.wall.type;
+		rct_scenery_entry * sceneryEntry = get_wall_entry(entryIndex);
+		if (sceneryEntry != NULL || sceneryEntry != (rct_scenery_entry *)-1) {
+			sint32 sceneryId = get_scenery_id_from_entry_index(OBJECT_TYPE_WALLS, entryIndex);
+			if (sceneryId != -1 && window_scenery_set_selected_item(sceneryId)) {
+				gWindowSceneryPrimaryColour = mapElement->properties.wall.colour_1 & 0x1F;
+				gWindowScenerySecondaryColour = wall_element_get_secondary_colour(mapElement);
+				gWindowSceneryTertiaryColour = mapElement->properties.wall.colour_3 & 0x1F;
+				gWindowSceneryEyedropperEnabled = false;
+			}
+		}
+		break;
+	}
+	case VIEWPORT_INTERACTION_ITEM_LARGE_SCENERY:
+	{
+		sint32 entryIndex = mapElement->properties.scenerymultiple.type;
+		rct_scenery_entry * sceneryEntry = get_large_scenery_entry(entryIndex);
+		if (sceneryEntry != NULL || sceneryEntry != (rct_scenery_entry *)-1) {
+			sint32 sceneryId = get_scenery_id_from_entry_index(OBJECT_TYPE_LARGE_SCENERY, entryIndex);
+			if (sceneryId != -1 && window_scenery_set_selected_item(sceneryId)) {
+				gWindowSceneryRotation = map_element_get_direction(mapElement);
+				gWindowSceneryPrimaryColour = mapElement->properties.scenerymultiple.colour[0] & 0x1F;
+				gWindowScenerySecondaryColour = mapElement->properties.scenerymultiple.colour[1] & 0x1F;
+				gWindowSceneryEyedropperEnabled = false;
+			}
+		}
+		break;
+	}
+	case VIEWPORT_INTERACTION_ITEM_BANNER:
+	{
+		sint32 entryIndex = mapElement->properties.banner.index;
+		rct_scenery_entry * sceneryEntry = get_large_scenery_entry(entryIndex);
+		if (sceneryEntry != NULL || sceneryEntry != (rct_scenery_entry *)-1) {
+			sint32 sceneryId = get_scenery_id_from_entry_index(OBJECT_TYPE_BANNERS, entryIndex);
+			if (sceneryId != -1 && window_scenery_set_selected_item(sceneryId)) {
+				gWindowSceneryEyedropperEnabled = false;
+			}
+		}
+		break;
+	}
+	case VIEWPORT_INTERACTION_ITEM_FOOTPATH_ITEM:
+	{
+		sint32 entryIndex = footpath_element_get_path_scenery_index(mapElement);
+		rct_scenery_entry * sceneryEntry = get_footpath_item_entry(entryIndex);
+		if (sceneryEntry != NULL || sceneryEntry != (rct_scenery_entry *)-1) {
+			sint32 sceneryId = get_scenery_id_from_entry_index(OBJECT_TYPE_PATH_BITS, entryIndex);
+			if (sceneryId != -1 && window_scenery_set_selected_item(sceneryId)) {
+				gWindowSceneryEyedropperEnabled = false;
+			}
+		}
+		break;
+	}
+	}
+}
+
 /**
  *
  *  rct2: 0x006E1F34
  * Outputs
- * eax : grid_x
+ * eax : gridX
  * ebx : parameter_1
- * ecx : grid_y
+ * ecx : gridY
  * edx : parameter_2
  * edi : parameter_3
  */
@@ -1443,6 +1532,9 @@ static void window_top_toolbar_scenery_tool_down(sint16 x, sint16 y, rct_window 
 	scenery_remove_ghost_tool_placement();
 	if (gWindowSceneryPaintEnabled & 1) {
 		repaint_scenery_tool_down(x, y, widgetIndex);
+		return;
+	} else if (gWindowSceneryEyedropperEnabled) {
+		scenery_eyedropper_tool_down(x, y, widgetIndex);
 		return;
 	}
 
@@ -2270,6 +2362,8 @@ static void top_toolbar_tool_update_scenery(sint16 x, sint16 y){
 
 	if (gWindowSceneryPaintEnabled)
 		return;
+	if (gWindowSceneryEyedropperEnabled)
+		return;
 
 	sint16 selected_tab = gWindowSceneryTabSelections[gWindowSceneryActiveTabIndex];
 
@@ -2805,6 +2899,8 @@ static void window_top_toolbar_tool_drag(rct_window* w, sint32 widgetIndex, sint
 		break;
 	case WIDX_SCENERY:
 		if (gWindowSceneryPaintEnabled & 1)
+			window_top_toolbar_scenery_tool_down(x, y, w, widgetIndex);
+		if (gWindowSceneryEyedropperEnabled)
 			window_top_toolbar_scenery_tool_down(x, y, w, widgetIndex);
 		break;
 	}
