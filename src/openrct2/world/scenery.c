@@ -21,7 +21,7 @@
 #include "../cheats.h"
 #include "../object_list.h"
 #include "Climate.h"
-#include "fountain.h"
+#include "Fountain.h"
 #include "map.h"
 #include "park.h"
 #include "scenery.h"

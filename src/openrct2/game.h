@@ -19,7 +19,6 @@
 
 #include "rct2/addresses.h"
 #include "common.h"
-#include "platform/platform.h"
 #include "scenario/scenario.h"
 
 enum GAME_COMMAND {
