@@ -490,6 +490,7 @@ utf8 *platform_open_directory_browser(const utf8 *title) {
 		return NULL;
 	}
 
+	assert(size - 1 < countof(result));
 	result[size-1] = '\0';
 
 	return_value = _strdup(result);
