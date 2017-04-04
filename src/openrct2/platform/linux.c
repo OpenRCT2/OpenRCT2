@@ -470,7 +470,7 @@ utf8 *platform_open_directory_browser(const utf8 *title) {
 	char result[OPENRCT2_MAX_COMMAND_LENGTH];
 	char *return_value;
 
-	size = OPENRCT2_MAX_COMMAND_LENGTH;
+	size = MAX_PATH;
 	dtype = get_dialog_app(executable, &size);
 
 	switch (dtype) {
