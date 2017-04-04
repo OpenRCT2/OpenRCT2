@@ -629,6 +629,11 @@ extern "C"
         {
             return &_g2.elements[image_id - SPR_G2_BEGIN];
         }
+
+        if (_csg.data == nullptr)
+        {
+            gfx_load_csg();
+        }
         return &_csg.elements[image_id - SPR_CSG_BEGIN];
     }
 
