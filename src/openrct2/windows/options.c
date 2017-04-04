@@ -170,6 +170,7 @@ enum WINDOW_OPTIONS_WIDGET_IDX {
 	WIDX_WINDOW_LIMIT,
 	WIDX_WINDOW_LIMIT_UP,
 	WIDX_WINDOW_LIMIT_DOWN,
+	WIDX_PATH_TO_RCT1_TEXT,
 	WIDX_PATH_TO_RCT1_BUTTON,
 	WIDX_PATH_TO_RCT1_CLEAR,
 
@@ -333,6 +334,7 @@ static rct_widget window_options_misc_widgets[] = {
 	{ WWT_SPINNER,			1,	155,	299,	249,	260,	STR_NONE,									STR_NONE },											// Window limit
 	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	250,	254,	STR_NUMERIC_UP,								STR_NONE },											// Window limit up
 	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	255,	259,	STR_NUMERIC_DOWN,							STR_NONE },											// Window limit down
+	{ WWT_12,				1,	10,		142,	264,	275,	STR_PATH_TO_RCT1,							STR_PATH_TO_RCT1_TIP },								// RCT 1 path text
 	{ WWT_DROPDOWN_BUTTON,	1,	10,		289,	278,	289,	STR_NONE,									STR_STRING_TOOLTIP },								// RCT 1 path button
 	{ WWT_DROPDOWN_BUTTON,	1,	289,	299,	278,	289,	STR_CLOSE_X,								STR_PATH_TO_RCT1_CLEAR_TIP },						// RCT 1 path clear button
 	{ WIDGETS_END },
@@ -456,7 +458,7 @@ static rct_window_event_list window_options_events = {
 	(1 << WIDX_TAB_6) | \
 	(1 << WIDX_TAB_7)
 
-static uint32 window_options_page_enabled_widgets[] = {
+static uint64 window_options_page_enabled_widgets[] = {
 	MAIN_OPTIONS_ENABLED_WIDGETS |
 	(1 << WIDX_RESOLUTION) |
 	(1 << WIDX_RESOLUTION_DROPDOWN) |
@@ -550,7 +552,7 @@ static uint32 window_options_page_enabled_widgets[] = {
 	(1 << WIDX_WINDOW_LIMIT_UP) |
 	(1 << WIDX_WINDOW_LIMIT_DOWN) |
 	(1 << WIDX_PATH_TO_RCT1_BUTTON) |
-	(1 << WIDX_PATH_TO_RCT1_CLEAR),
+	(1ULL << WIDX_PATH_TO_RCT1_CLEAR),
 
 	MAIN_OPTIONS_ENABLED_WIDGETS |
 	(1 << WIDX_CHANNEL_BUTTON) |
@@ -850,6 +852,7 @@ static void window_options_mouseup(rct_window *w, sint32 widgetIndex)
 					SafeFree(gConfigGeneral.rct1_path);
 					gConfigGeneral.rct1_path = rct1path;
 					config_save_default();
+					window_error_open(STR_RESTART_REQUIRED, STR_NONE);
 				} else {
 					SafeFree(rct1path);
 					window_error_open(STR_PATH_TO_RCT1_WRONG_ERROR, STR_NONE);
@@ -1948,7 +1951,6 @@ static void window_options_paint(rct_window *w, rct_drawpixelinfo *dpi)
 			w->x + window_options_misc_widgets[WIDX_WINDOW_LIMIT].left + 1,
 			w->y + window_options_misc_widgets[WIDX_WINDOW_LIMIT].top
 		);
-		gfx_draw_string_left(dpi, STR_PATH_TO_RCT1, w, w->colours[1], w->x + 10, w->y + window_options_misc_widgets[WIDX_PATH_TO_RCT1_BUTTON].top - 14);
 		set_format_arg(0, uintptr_t, (uintptr_t)gConfigGeneral.rct1_path);
 		gfx_draw_string_left_clipped(
 			dpi,

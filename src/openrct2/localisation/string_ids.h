@@ -3692,6 +3692,7 @@ enum {
 	STR_PATH_TO_RCT1_BROWSER = 6035,
 	STR_PATH_TO_RCT1_CLEAR_TIP = 6036,
 	STR_PATH_TO_RCT1_WRONG_ERROR = 6037,
+	STR_PATH_TO_RCT1_TIP = 6038,
 
 	// Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
 	STR_COUNT = 32768
