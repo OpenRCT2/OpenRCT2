@@ -197,7 +197,7 @@ static void platform_resize(sint32 width, sint32 height)
 	// On macOS the resizing behaviour effectively resizes the window in the same
 	// way a normal drag would do, given constraints in the user desktop (e.g. the dock
 	// positioning). So it follows that the finished window size should be saved.
-#if defined(__APPLE__)
+#if defined(__MACOSX__)
 	const sint32 nonWindowFlags =
 	SDL_WINDOW_MINIMIZED | SDL_WINDOW_FULLSCREEN | SDL_WINDOW_FULLSCREEN_DESKTOP;
 #else
