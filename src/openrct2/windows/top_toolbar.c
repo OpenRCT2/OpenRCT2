@@ -1024,7 +1024,7 @@ static void scenery_eyedropper_tool_down(sint16 x, sint16 y, sint16 widgetIndex)
 		if (sceneryEntry != NULL || sceneryEntry != (rct_scenery_entry *)-1) {
 			sint32 sceneryId = get_scenery_id_from_entry_index(OBJECT_TYPE_SMALL_SCENERY, entryIndex);
 			if (sceneryId != -1 && window_scenery_set_selected_item(sceneryId)) {
-				gWindowSceneryRotation = map_element_get_direction(mapElement);
+				gWindowSceneryRotation = (get_current_rotation() + map_element_get_direction(mapElement)) & 3;
 				gWindowSceneryPrimaryColour = mapElement->properties.scenery.colour_1 & 0x1F;
 				gWindowScenerySecondaryColour = mapElement->properties.scenery.colour_2 & 0x1F;
 				gWindowSceneryEyedropperEnabled = false;
@@ -1054,7 +1054,7 @@ static void scenery_eyedropper_tool_down(sint16 x, sint16 y, sint16 widgetIndex)
 		if (sceneryEntry != NULL || sceneryEntry != (rct_scenery_entry *)-1) {
 			sint32 sceneryId = get_scenery_id_from_entry_index(OBJECT_TYPE_LARGE_SCENERY, entryIndex);
 			if (sceneryId != -1 && window_scenery_set_selected_item(sceneryId)) {
-				gWindowSceneryRotation = map_element_get_direction(mapElement);
+				gWindowSceneryRotation = (get_current_rotation() + map_element_get_direction(mapElement)) & 3;
 				gWindowSceneryPrimaryColour = mapElement->properties.scenerymultiple.colour[0] & 0x1F;
 				gWindowScenerySecondaryColour = mapElement->properties.scenerymultiple.colour[1] & 0x1F;
 				gWindowSceneryEyedropperEnabled = false;
