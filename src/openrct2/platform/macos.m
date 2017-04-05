@@ -279,4 +279,9 @@ uint8 platform_get_locale_measurement_format()
 	}
 }
 
+sint32 platform_get_non_window_flags()
+{
+	return SDL_WINDOW_MINIMIZED | SDL_WINDOW_FULLSCREEN | SDL_WINDOW_FULLSCREEN_DESKTOP;
+}
+
 #endif
