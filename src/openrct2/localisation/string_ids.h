@@ -3684,6 +3684,9 @@ enum {
 
 	STR_SCENERY_EYEDROPPER_TIP = 6030,
 
+	STR_SERVER_DESCRIPTION = 6031,
+	STR_SERVER_GREETING = 6032,
+
 	// Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
 	STR_COUNT = 32768
 };

@@ -35,6 +35,7 @@ enum {
 };
 
 #define NETWORK_DEFAULT_PORT 11753
+#define MAX_SERVER_DESCRIPTION_LENGTH 256
 
 #ifdef __cplusplus
 extern "C" {
