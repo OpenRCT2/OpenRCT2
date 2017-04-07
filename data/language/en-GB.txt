@@ -4788,6 +4788,12 @@ STR_DTLS    :
 # Rides/attractions #
 #####################
 
+#RCT2
+[TOPSP1]
+STR_NAME    :Top Spin
+STR_DESC    :Passengers ride in a gondola suspended by large rotating arms, rotating forwards and backwards head-over-heels
+STR_CPTY    :8 passengers
+
 #WW
 [CONDORRD]
 STR_NAME    :Condor Ride
