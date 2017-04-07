@@ -30,8 +30,10 @@
 #include <shlobj.h>
 #include <SDL_syswm.h>
 #include <sys/stat.h>
+#include <wchar.h>
 
 #include "../config/Config.h"
+#include "../localisation/date.h"
 #include "../localisation/language.h"
 #include "../OpenRCT2.h"
 #include "../util/util.h"
@@ -947,6 +949,50 @@ uint8 platform_get_locale_temperature_format()
 		return TEMPERATURE_FORMAT_F;
 	else
 		return TEMPERATURE_FORMAT_C;
+}
+
+uint8 platform_get_locale_date_format()
+{
+	// Retrieve short date format, eg "MM/dd/yyyy"
+	wchar_t dateFormat[20];
+	if (GetLocaleInfoEx(LOCALE_NAME_USER_DEFAULT, LOCALE_SSHORTDATE, dateFormat, sizeof(dateFormat)) == 0)
+	{
+		return DATE_FORMAT_DAY_MONTH_YEAR;
+	}
+
+	// The only valid characters for format types are: dgyM
+	// We try to find 3 strings of format types, ignore any characters in between.
+	// We also ignore 'g', as it represents 'era' and we don't have that concept
+	// in our date formats.
+	// https://msdn.microsoft.com/en-us/library/windows/desktop/dd317787(v=vs.85).aspx
+	//
+	wchar_t first[sizeof(dateFormat)];
+	wchar_t second[sizeof(dateFormat)];
+	if (swscanf(dateFormat, L"%l[dyM]%*l[^dyM]%l[dyM]%*l[^dyM]%*l[dyM]", first, second) != 2) {
+		return DATE_FORMAT_DAY_MONTH_YEAR;
+	}
+
+	if (wcsncmp(L"d", first, 1) == 0)
+	{
+		return DATE_FORMAT_DAY_MONTH_YEAR;
+	}
+	else if (wcsncmp(L"M", first, 1) == 0)
+	{
+		return DATE_FORMAT_MONTH_DAY_YEAR;
+	}
+	else if (wcsncmp(L"y", first, 1) == 0)
+	{
+		if (wcsncmp(L"d", second, 1) == 0) {
+			return DATE_FORMAT_YEAR_DAY_MONTH;
+		}
+		else {
+			// Closest possible option
+			return DATE_FORMAT_YEAR_MONTH_DAY;
+		}	
+	}
+	
+	// Default fallback
+	return DATE_FORMAT_DAY_MONTH_YEAR;
 }
 
 bool platform_check_steam_overlay_attached()
