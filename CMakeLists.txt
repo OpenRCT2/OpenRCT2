@@ -121,6 +121,11 @@ option(ENABLE_LIGHTFX "Enable lighting effects." ON)
 set(COMMON_COMPILE_OPTIONS "${COMMON_COMPILE_OPTIONS} -fstrict-aliasing -Werror -Wundef -Wmissing-declarations -Winit-self -Wall -Wno-unknown-pragmas -Wno-unused-function -Wno-missing-braces ")
 set(COMMON_COMPILE_OPTIONS "${COMMON_COMPILE_OPTIONS} -Wno-comment -Wshadow  -Wmissing-declarations -Wnonnull")
 
+# macOS builds fail on the use of tmpnam otherwise (#4959)
+if(APPLE)
+    set(COMMON_COMPILE_OPTIONS "${COMMON_COMPILE_OPTIONS} -Wno-error=deprecated-declarations -Wno-error=objc-method-access")
+endif()
+
 # On mingw all code is already PIC, this will avoid compiler error on redefining this option
 if(NOT MINGW)
     set(COMMON_COMPILE_OPTIONS "${COMMON_COMPILE_OPTIONS} -fPIC")
