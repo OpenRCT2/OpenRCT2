@@ -804,7 +804,7 @@ uint8 platform_get_locale_temperature_format(){
 
 uint8 platform_get_locale_date_format()
 {
-	// TODO Stub implementation
+	STUB();
 	return DATE_FORMAT_DAY_MONTH_YEAR;
 }
 
