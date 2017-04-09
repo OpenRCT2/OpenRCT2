@@ -4324,6 +4324,9 @@ STR_6026    :Åkturkonstruktion - Föregående spår
 STR_6027    :Åkturkonstruktion - Nästa spår
 STR_6028    :Åkturkonstruktion - Bygg valda spår
 STR_6029    :Åkturkonstruktion - Riv valda spår
+STR_6030    :{SMALLFONT}{BLACK}Dekorations-väljaren. Klicka på en dekoration på kartan för att välja samma del för konstruktion.
+STR_6031    :Server Beskrivning:
+STR_6032    :Server Hälsning:
 
 #############
 # Scenarion #
