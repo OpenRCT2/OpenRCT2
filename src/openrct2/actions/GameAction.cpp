@@ -126,6 +126,13 @@ namespace GameActions
                     stream.WriteValue(flags);
                     action->Serialise(&stream);
                     network_send_game_action((uint8*)stream.GetData(), stream.GetLength(),  action->GetType());
+                    if (network_get_mode() == NETWORK_MODE_CLIENT) {
+                        // Client sent the command to the server, do not run it locally, just return.  It will run when server sends it
+                        //game_command_callback = 0;
+                        // Decrement nest count
+                        //gGameCommandNestLevel--;
+                        return result;
+                    }
                 }
             }
 
