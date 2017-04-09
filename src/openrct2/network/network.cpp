@@ -2054,13 +2054,84 @@ void Network::Client_Handle_GAME_ACTION(NetworkConnection& connection, NetworkPa
 void Network::Server_Handle_GAME_ACTION(NetworkConnection& connection, NetworkPacket& packet)
 {
     uint32 tick;
-    uint32 type;
-    packet >> tick >> type;
+    uint32 commandType;
+
+    if (!connection.Player) {
+        return;
+    }
+
+    packet >> tick >> commandType;
     MemoryStream stream;
     for (int i = packet.BytesRead; i < packet.Size; ++i) {
         stream.WriteValue(((uint8*)packet.GetData())[i]);
     }
     stream.SetPosition(0);
+
+    uint32 ticks = SDL_GetTicks(); //tick count is different by time last_action_time is set, keep same value.
+                                   // Check if player's group permission allows command to run
+    NetworkGroup* group = GetGroupByID(connection.Player->Group);
+    if (!group || (group && !group->CanPerformCommand(commandType))) {
+        Server_Send_SHOWERROR(connection, STR_CANT_DO_THIS, STR_PERMISSION_DENIED);
+        return;
+    }
+
+    // In case someone modifies the code / memory to enable cluster build,
+    // require a small delay in between placing scenery to provide some security, as
+    // cluster mode is a for loop that runs the place_scenery code multiple times.
+    if (commandType == GAME_COMMAND_PLACE_SCENERY) {
+        if (
+            ticks - connection.Player->LastPlaceSceneryTime < ACTION_COOLDOWN_TIME_PLACE_SCENERY &&
+            // Incase SDL_GetTicks() wraps after ~49 days, ignore larger logged times.
+            ticks > connection.Player->LastPlaceSceneryTime
+            ) {
+            if (!(group->CanPerformCommand(MISC_COMMAND_TOGGLE_SCENERY_CLUSTER))) {
+                Server_Send_SHOWERROR(connection, STR_CANT_DO_THIS, STR_NETWORK_ACTION_RATE_LIMIT_MESSAGE);
+                return;
+            }
+        }
+    }
+    // This is to prevent abuse of demolishing rides. Anyone that is not the server
+    // host will have to wait a small amount of time in between deleting rides.
+    else if (commandType == GAME_COMMAND_DEMOLISH_RIDE) {
+        if (
+            ticks - connection.Player->LastDemolishRideTime < ACTION_COOLDOWN_TIME_DEMOLISH_RIDE &&
+            // Incase SDL_GetTicks() wraps after ~49 days, ignore larger logged times.
+            ticks > connection.Player->LastDemolishRideTime
+            ) {
+            Server_Send_SHOWERROR(connection, STR_CANT_DO_THIS, STR_NETWORK_ACTION_RATE_LIMIT_MESSAGE);
+            return;
+        }
+    }
+    // Don't let clients send pause or quit
+    else if (commandType == GAME_COMMAND_TOGGLE_PAUSE ||
+        commandType == GAME_COMMAND_LOAD_OR_QUIT
+        ) {
+        return;
+    }
+
+    // Set this to reference inside of game command functions
+    game_command_playerid = connection.Player->Id;
+    // Run game command, and if it is successful send to clients
+    auto ga = GameActions::Create(commandType);
+    uint16 flags = stream.ReadValue<uint16>();
+    ga->Deserialise(&stream);
+    auto result = GameActions::Execute(ga, nullptr, 0x80 | flags);
+    if (result.Error != GA_ERROR::OK) {
+        return;
+    }
+
+    connection.Player->LastAction = NetworkActions::FindCommand(commandType);
+    connection.Player->LastActionTime = SDL_GetTicks();
+    connection.Player->AddMoneySpent(result.Cost);
+
+    if (commandType == GAME_COMMAND_PLACE_SCENERY) {
+        connection.Player->LastPlaceSceneryTime = connection.Player->LastActionTime;
+    }
+    else if (commandType == GAME_COMMAND_DEMOLISH_RIDE) {
+        connection.Player->LastDemolishRideTime = connection.Player->LastActionTime;
+    }
+
+    Server_Send_GAME_ACTION((uint8*)stream.GetData(), stream.GetLength(), commandType);
 }
 void Network::Server_Handle_GAMECMD(NetworkConnection& connection, NetworkPacket& packet)
 {
