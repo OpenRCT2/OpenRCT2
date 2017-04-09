@@ -34,6 +34,7 @@
 #include <locale.h>
 
 #include "../config/Config.h"
+#include "../localisation/date.h"
 #include "../localisation/language.h"
 #include "../localisation/string_ids.h"
 #include "../util/util.h"
@@ -257,6 +258,7 @@ uint8 platform_get_locale_measurement_format(){
 
 uint8 platform_get_locale_date_format()
 {
+	// TODO Stub implementation
 	return DATE_FORMAT_DAY_MONTH_YEAR;
 }
 

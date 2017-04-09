@@ -27,6 +27,7 @@
 #include <time.h>
 #include <SDL_syswm.h>
 #include "../config/Config.h"
+#include "../localisation/date.h"
 #include "../localisation/language.h"
 #include "../OpenRCT2.h"
 #include "../util/util.h"
@@ -803,6 +804,7 @@ uint8 platform_get_locale_temperature_format(){
 
 uint8 platform_get_locale_date_format()
 {
+	// TODO Stub implementation
 	return DATE_FORMAT_DAY_MONTH_YEAR;
 }
 
