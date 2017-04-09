@@ -21,7 +21,6 @@
 #include <mach-o/dyld.h>
 #include "platform.h"
 #include "../util/util.h"
-#include "../localisation/date.h"
 #include "../localisation/language.h"
 #include "../config/Config.h"
 
@@ -278,12 +277,6 @@ uint8 platform_get_locale_measurement_format()
 
 		return MEASUREMENT_FORMAT_IMPERIAL;
 	}
-}
-
-uint8 platform_get_locale_date_format()
-{
-	// TODO Stub implementation
-	return DATE_FORMAT_DAY_MONTH_YEAR;
 }
 
 sint32 platform_get_non_window_flags()
