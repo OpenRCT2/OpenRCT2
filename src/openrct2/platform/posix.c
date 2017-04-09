@@ -801,6 +801,11 @@ uint8 platform_get_locale_temperature_format(){
 	return TEMPERATURE_FORMAT_C;
 }
 
+uint8 platform_get_locale_date_format()
+{
+	return DATE_FORMAT_DAY_MONTH_YEAR;
+}
+
 datetime64 platform_get_datetime_now_utc()
 {
 	const datetime64 epochAsTicks = 621355968000000000;

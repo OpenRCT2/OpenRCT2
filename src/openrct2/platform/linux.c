@@ -255,6 +255,11 @@ uint8 platform_get_locale_measurement_format(){
 	return MEASUREMENT_FORMAT_METRIC;
 }
 
+uint8 platform_get_locale_date_format()
+{
+	return DATE_FORMAT_DAY_MONTH_YEAR;
+}
+
 static void execute_cmd(char *command, sint32 *exit_value, char *buf, size_t *buf_size) {
 	FILE *f;
 	size_t n_chars;

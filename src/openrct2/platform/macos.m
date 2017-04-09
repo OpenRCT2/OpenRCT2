@@ -279,6 +279,11 @@ uint8 platform_get_locale_measurement_format()
 	}
 }
 
+uint8 platform_get_locale_date_format()
+{
+	return DATE_FORMAT_DAY_MONTH_YEAR;
+}
+
 sint32 platform_get_non_window_flags()
 {
 	return SDL_WINDOW_MINIMIZED | SDL_WINDOW_FULLSCREEN | SDL_WINDOW_FULLSCREEN_DESKTOP;
