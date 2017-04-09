@@ -30,7 +30,6 @@
 #include <shlobj.h>
 #include <SDL_syswm.h>
 #include <sys/stat.h>
-#include <wchar.h>
 
 #include "../config/Config.h"
 #include "../localisation/date.h"
