@@ -842,6 +842,12 @@ STR_0837    :Kan inte initiera grafiksystemet
 STR_0838    :<not used anymore>
 STR_0839    :{UINT16} x {UINT16}
 STR_0840    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{UINT16} x {UINT16}
+STR_0841    :<removed string - do not use>
+STR_0842    :<removed string - do not use>
+STR_0843    :<removed string - do not use>
+STR_0844    :<removed string - do not use>
+STR_0845    :<removed string - do not use>
+STR_0846    :<removed string - do not use>
 STR_0847    :Om 'OpenRCT2'
 STR_0848    :RollerCoaster Tycoon 2
 STR_0849    :{WINDOW_COLOUR_2}Version 2.01.028
@@ -1646,6 +1652,8 @@ STR_1647    :
 STR_1648    :{SMALLFONT}{OPENQUOTES}Hjälp! Släpp ner mig!{ENDQUOTES}
 STR_1649    :{SMALLFONT}{OPENQUOTES}Jag börjar få slut på pengar!{ENDQUOTES}
 STR_1650    :{SMALLFONT}{OPENQUOTES}Wow! De bygger en ny åktur!{ENDQUOTES}
+STR_1651    :<removed string - do not use>
+STR_1652    :<removed string - do not use>
 STR_1653    :{SMALLFONT}{OPENQUOTES}...och nu är vi på {STRINGID}!{ENDQUOTES}
 STR_1654    :{WINDOW_COLOUR_2}Nyliga tankar:
 STR_1655    :{SMALLFONT}{BLACK}Bygg gångväg på land
@@ -1885,6 +1893,8 @@ STR_1888    :{WINDOW_COLOUR_2}Tid sen senaste inspektion: {BLACK}mer än 4 timma
 STR_1889    :{WINDOW_COLOUR_2}Dötid: {MOVE_X}{255}{BLACK}{COMMA16}%
 STR_1890    :{SMALLFONT}{BLACK}Välj hur ofta en mekaniker ska göra underhåll på den här åkturen
 STR_1891    :Ingen {STRINGID} i parken än!
+STR_1892    :<removed string - do not use>
+STR_1893    :<removed string - do not use>
 STR_1894    :{WINDOW_COLOUR_2}{STRINGID} sålde: {BLACK}{COMMA32}
 STR_1895    :{SMALLFONT}{BLACK}Bygg ny Åktur/attraktion
 STR_1896    :{WINDOW_COLOUR_2}Utgifter/Inkomster
