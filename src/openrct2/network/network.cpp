@@ -2043,7 +2043,7 @@ void Network::Client_Handle_GAME_ACTION(NetworkConnection& connection, NetworkPa
     uint8 playerid;
     packet >> tick >> type >> playerid;
     MemoryStream stream;
-    for (int i = packet.BytesRead; i < packet.Size; ++i) {
+    for (size_t i = packet.BytesRead; i < packet.Size; ++i) {
         stream.WriteValue(((uint8*)packet.GetData())[i]);
     }
     stream.SetPosition(0);
@@ -2062,7 +2062,7 @@ void Network::Server_Handle_GAME_ACTION(NetworkConnection& connection, NetworkPa
 
     packet >> tick >> commandType;
     MemoryStream stream;
-    for (int i = packet.BytesRead; i < packet.Size; ++i) {
+    for (size_t i = packet.BytesRead; i < packet.Size; ++i) {
         stream.WriteValue(((uint8*)packet.GetData())[i]);
     }
     stream.SetPosition(0);
