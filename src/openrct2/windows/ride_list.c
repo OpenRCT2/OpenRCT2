@@ -72,7 +72,7 @@ static rct_widget window_ride_list_widgets[] = {
 	{ WIDGETS_END },
 };
 
-bool _quick_demolish_mode = false;
+static bool _quickDemolishMode = false;
 
 static void window_ride_list_mouseup(rct_window *w, sint32 widgetIndex);
 static void window_ride_list_resize(rct_window *w);
@@ -231,7 +231,7 @@ void window_ride_list_open()
 	}
 	_window_ride_list_information_type = INFORMATION_TYPE_STATUS;
 	window->list_information_type = 0;
-	_quick_demolish_mode = false;
+	_quickDemolishMode = false;
 }
 
 /**
@@ -271,10 +271,10 @@ static void window_ride_list_mouseup(rct_window *w, sint32 widgetIndex)
 		break;
 	case WIDX_QUICK_DEMOLISH:
 		if (network_get_mode() != NETWORK_MODE_CLIENT) {
-			_quick_demolish_mode = !_quick_demolish_mode;
+			_quickDemolishMode = !_quickDemolishMode;
 		}
 		else {
-			_quick_demolish_mode = false;
+			_quickDemolishMode = false;
 		}
 		window_invalidate(w);
 		break;
@@ -431,7 +431,7 @@ static void window_ride_list_scrollmousedown(rct_window *w, sint32 scrollIndex, 
 
 	// Open ride window
 	uint8 rideIndex = w->list_item_positions[index];
-	if (_quick_demolish_mode && network_get_mode() != NETWORK_MODE_CLIENT) {
+	if (_quickDemolishMode && network_get_mode() != NETWORK_MODE_CLIENT) {
 		gGameCommandErrorTitle = STR_CANT_DEMOLISH_RIDE;
 		game_do_command(0, GAME_COMMAND_FLAG_APPLY, 0, rideIndex, GAME_COMMAND_DEMOLISH_RIDE, 0, 0);
 	}
@@ -483,7 +483,7 @@ static void window_ride_list_invalidate(rct_window *w)
 
 	window_ride_list_widgets[WIDX_TITLE].text = page_names[w->page];
 
-	if (_quick_demolish_mode)
+	if (_quickDemolishMode)
 		w->pressed_widgets |= (1ULL << WIDX_QUICK_DEMOLISH);
 	else
 		w->pressed_widgets &= ~(1ULL << WIDX_QUICK_DEMOLISH);
@@ -568,12 +568,12 @@ static void window_ride_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, 
 
 	y = 0;
 	for (i = 0; i < w->no_list_items; i++) {
-		format = (_quick_demolish_mode ? STR_RED_STRINGID : STR_BLACK_STRING);
+		format = (_quickDemolishMode ? STR_RED_STRINGID : STR_BLACK_STRING);
 
 		// Background highlight
 		if (i == w->selected_list_item) {
 			gfx_filter_rect(dpi, 0, y, 800, y + 9, PALETTE_DARKEN_1);
-			format = (_quick_demolish_mode ? STR_LIGHTPINK_STRINGID : STR_WINDOW_COLOUR_2_STRINGID);
+			format = (_quickDemolishMode ? STR_LIGHTPINK_STRINGID : STR_WINDOW_COLOUR_2_STRINGID);
 		}
 
 		// Get ride
