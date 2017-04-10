@@ -1069,6 +1069,12 @@ static void vertical_drop_rc_track_inverted_flat_to_90_deg_quarter_loop_down(uin
 	bolliger_mabillard_track_inverted_flat_to_90_deg_quarter_loop_down(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_BOXED);
 }
 
+
+static void vertical_drop_rc_track_booster(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+{
+	bolliger_mabillard_track_booster(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_BOXED);
+}
+
 TRACK_PAINT_FUNCTION get_track_paint_function_vertical_drop_rc(sint32 trackType, sint32 direction)
 {
 	switch (trackType) {
@@ -1434,7 +1440,7 @@ TRACK_PAINT_FUNCTION get_track_paint_function_vertical_drop_rc(sint32 trackType,
 		return vertical_drop_rc_track_inverted_flat_to_90_deg_quarter_loop_down;
 
 	case TRACK_ELEM_BOOSTER:
-		return vertical_drop_rc_track_brakes;
+		return vertical_drop_rc_track_booster;
 	}
 	return NULL;
 }
