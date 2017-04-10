@@ -6164,12 +6164,10 @@ static void giga_rc_track_booster(uint8 rideIndex, uint8 trackSequence, uint8 di
 		case 0:
 		case 2:
 			sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | SPR_G2_GIGA_RC_BOOSTER_NE_SW, ne_sw_offsetX, ne_sw_offsetY, 32, 20, 3, height, 0, 6, height);
-			sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | SPR_G2_GIGA_RC_BOOSTER_NE_SW, ne_sw_offsetX, ne_sw_offsetY, 32, 1, 11, height, 0, 27, height + 5);
 			break;
 		case 1:
 		case 3:
 			sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | SPR_G2_GIGA_RC_BOOSTER_NW_SE, nw_se_offsetX, nw_se_offsetY, 32, 20, 3, height, 0, 6, height);
-			sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | SPR_G2_GIGA_RC_BOOSTER_NW_SE, nw_se_offsetX, nw_se_offsetY, 32, 1, 11, height, 0, 27, height + 5);
 			break;
 	}
 	if (track_paint_util_should_paint_supports(gPaintMapPosition)) {
