@@ -4331,6 +4331,9 @@ STR_6026    :Attractiebouw: vorig baanstuk
 STR_6027    :Attractiebouw: volgend baanstuk
 STR_6028    :Attractiebouw: onderdeel bouwen
 STR_6029    :Attractiebouw: onderdeel verwijderen
+STR_6030    :{SMALLFONT}{BLACK}Decorselector. Klik op een al geplaatst decorstuk om het te selecteren in dit venster (inclusief de kleuren).
+STR_6031    :Serverbeschrijving:
+STR_6032    :Welkomstboodschap:
 
 #############
 # Scenarios #
