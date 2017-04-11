@@ -7517,14 +7517,14 @@ loc_6DAEB9:
 	else if (trackType == TRACK_ELEM_BOOSTER && ride->type != RIDE_TYPE_WILD_MOUSE) {
 		regs.eax = (vehicle->brake_speed << 16);
 		if (regs.eax > _vehicleVelocityF64E08) {
-			vehicle->acceleration = RideProperties[ride->type].acceleration << 16; //_vehicleVelocityF64E08 * 1.2;
+			vehicle->acceleration = RideProperties[ride->type].powered_lift_acceleration << 16; //_vehicleVelocityF64E08 * 1.2;
 		}
 	}
 
 	if ((trackType == TRACK_ELEM_FLAT && ride->type == RIDE_TYPE_REVERSE_FREEFALL_COASTER) ||
 		(trackType == TRACK_ELEM_POWERED_LIFT)
 		) {
-		vehicle->acceleration = RideProperties[ride->type].acceleration << 16;
+		vehicle->acceleration = RideProperties[ride->type].powered_lift_acceleration << 16;
 	}
 	if (trackType == TRACK_ELEM_BRAKE_FOR_DROP) {
 		if (!vehicle->is_child) {
@@ -7869,7 +7869,7 @@ loc_6DBA33:;
 	if (trackType == TRACK_ELEM_BOOSTER && ride->type != RIDE_TYPE_WILD_MOUSE) {
 		regs.eax = (vehicle->brake_speed << 16);
 		if (regs.eax < _vehicleVelocityF64E08) {
-			regs.eax = RideProperties[ride->type].acceleration << 16;
+			regs.eax = RideProperties[ride->type].powered_lift_acceleration << 16;
 			vehicle->acceleration = regs.eax;
 		}
 	}
