@@ -750,6 +750,7 @@ void Network::SetupDefaultGroups()
 	user->ToggleActionPermission(18); // Cheat
 	user->ToggleActionPermission(20); // Passwordless login
 	user->ToggleActionPermission(21); // Modify Tile
+	user->ToggleActionPermission(22); // Edit Scenario Options
 	user->Id = 2;
 	group_list.push_back(std::move(user));
 	SetDefaultGroup(1);
