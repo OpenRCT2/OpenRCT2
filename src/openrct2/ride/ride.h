@@ -895,6 +895,7 @@ typedef struct rct_ride_properties {
 	uint8 max_value;
 	uint8 max_brakes_speed;
 	uint8 powered_lift_acceleration;
+	uint8 booster_acceleration;
 } rct_ride_properties;
 
 extern const rct_ride_properties RideProperties[RIDE_TYPE_COUNT];
