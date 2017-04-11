@@ -35,6 +35,7 @@ extern "C"
     static void *   _g1Buffer = nullptr;
     static rct_gx   _g2;
     static rct_gx   _csg;
+    static bool     _csgLoaded = false;
 
     #ifdef NO_RCT2
         rct_g1_element * g1Elements = nullptr;
@@ -222,6 +223,7 @@ extern "C"
                 // RCT1 used zoomed offsets that counted from the beginning of the file, rather than from the current sprite.
                 _csg.elements[i].zoomed_offset = i - (SPR_CSG_BEGIN + _csg.elements[i].zoomed_offset);
             }
+            _csgLoaded = true;
             return true;
         }
         catch (const Exception &)
@@ -637,4 +639,8 @@ extern "C"
         return &_csg.elements[image_id - SPR_CSG_BEGIN];
     }
 
+    bool is_csg_loaded()
+    {
+        return _csgLoaded;
+    }
 }
