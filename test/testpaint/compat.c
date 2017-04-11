@@ -165,3 +165,8 @@ bool track_element_is_inverted(rct_map_element *trackElement)
 {
 	return trackElement->properties.track.colour & TRACK_ELEMENT_COLOUR_FLAG_INVERTED;
 }
+
+bool is_csg_loaded()
+{
+	return false;
+}
