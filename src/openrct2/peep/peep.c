@@ -11124,7 +11124,7 @@ static bool peep_has_valid_xy(rct_peep *peep)
 
 static void peep_give_passing_peeps_purple_clothes(rct_peep *peep)
 {
-	if (peep_has_valid_xy(peep)) {
+	if (peep_has_valid_xy(peep) && peep->state != PEEP_STATE_ENTERING_RIDE && peep->state != PEEP_STATE_LEAVING_RIDE) {
 		rct_peep *otherPeep;
 		uint16 spriteIndex = sprite_get_first_in_quadrant(peep->x, peep->y);
 		for (; spriteIndex != SPRITE_INDEX_NULL; spriteIndex = otherPeep->next_in_quadrant) {
