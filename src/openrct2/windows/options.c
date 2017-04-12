@@ -843,12 +843,19 @@ static void window_options_mouseup(rct_window *w, sint32 widgetIndex)
 			utf8string rct1path = platform_open_directory_browser(language_get_string(STR_PATH_TO_RCT1_BROWSER));
 			if (rct1path) {
 				// Check if this directory actually contains RCT1
+				// The sprite file can be called either csg1.1 or csg1.dat, so check for both names.
 				utf8 checkpath[MAX_PATH];
 				safe_strcpy(checkpath, rct1path, MAX_PATH);
 				safe_strcat_path(checkpath, "Data", MAX_PATH);
 				safe_strcat_path(checkpath, "csg1.1", MAX_PATH);
-				if (platform_file_exists(checkpath))
-				{
+
+				if (!platform_file_exists(checkpath)) {
+					safe_strcpy(checkpath, rct1path, MAX_PATH);
+					safe_strcat_path(checkpath, "Data", MAX_PATH);
+					safe_strcat_path(checkpath, "csg1.dat", MAX_PATH);
+				}
+
+				if (platform_file_exists(checkpath)) {
 					SafeFree(gConfigGeneral.rct1_path);
 					gConfigGeneral.rct1_path = rct1path;
 					config_save_default();

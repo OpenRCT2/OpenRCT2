@@ -163,6 +163,7 @@ bool rct2_init()
 	if (!gfx_load_g2()) {
 		return false;
 	}
+	gfx_load_csg();
 
 	font_sprite_initialise_characters();
 	if (!gOpenRCT2Headless) {
