@@ -11122,7 +11122,9 @@ static bool peep_has_valid_xy(rct_peep *peep)
 	return false;
 }
 
-static void peep_apply_easter_egg_to_nearby_guests(rct_peep *peep, void(*easter_egg_function)(rct_peep* peep, rct_peep* otherPeep))
+typedef void(*easter_egg_function)(rct_peep* peep, rct_peep* otherPeep);
+
+static void peep_apply_easter_egg_to_nearby_guests(rct_peep *peep, easter_egg_function easter_egg)
 {
 	if (!peep_has_valid_xy(peep))
 		return;
@@ -11133,6 +11135,8 @@ static void peep_apply_easter_egg_to_nearby_guests(rct_peep *peep, void(*easter_
 
 	rct_peep * otherPeep = GET_PEEP(spriteIndex);
 	for (; spriteIndex != SPRITE_INDEX_NULL; spriteIndex = otherPeep->next_in_quadrant) {
+		otherPeep = GET_PEEP(spriteIndex);
+
 		if (otherPeep->sprite_identifier != SPRITE_IDENTIFIER_PEEP)
 			continue;
 
@@ -11143,7 +11147,7 @@ static void peep_apply_easter_egg_to_nearby_guests(rct_peep *peep, void(*easter_
 		if (zDiff > 32)
 			continue;
 
-		easter_egg_function(peep, otherPeep);
+		easter_egg(peep, otherPeep);
 	}
 }
 
