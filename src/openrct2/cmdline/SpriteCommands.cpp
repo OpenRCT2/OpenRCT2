@@ -40,9 +40,10 @@ static exitcode_t HandleSprite(CommandLineArgEnumerator *argEnumerator);
 const CommandLineCommand CommandLine::SpriteCommands[]
 {
     // Main commands
-    DefineCommand("details", "<spritefile> [idx]",                  SpriteOptions, HandleSprite),
-    DefineCommand("export",  "<spritefile> <idx> <output>",         SpriteOptions, HandleSprite),
-    DefineCommand("build",   "<spritefile> <resourcedir> [silent]", SpriteOptions, HandleSprite),
+    DefineCommand("details",   "<spritefile> [idx]",                  SpriteOptions, HandleSprite),
+    DefineCommand("export",    "<spritefile> <idx> <output>",         SpriteOptions, HandleSprite),
+    DefineCommand("build",     "<spritefile> <resourcedir> [silent]", SpriteOptions, HandleSprite),
+    DefineCommand("exportall", "<spritefile> <outputdir>",            SpriteOptions, HandleSprite),
     CommandTableEnd
 };
 

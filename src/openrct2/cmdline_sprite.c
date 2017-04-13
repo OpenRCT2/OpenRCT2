@@ -527,16 +527,16 @@ sint32 cmdline_for_sprite(const char **argv, sint32 argc)
 			return -1;
 		}
 
-		if (!platform_ensure_directory_exists(argv[2])){
+		safe_strcpy(outputPath, argv[2], MAX_PATH);
+		path_end_with_separator(outputPath, MAX_PATH);
+
+		if (!platform_ensure_directory_exists(outputPath)){
 			fprintf(stderr, "Unable to create directory.\n");
 			return -1;
 		}
 
-
 		sint32 maxIndex = (sint32)spriteFileHeader.num_entries;
 		sint32 numbers = (sint32)floor(log(maxIndex));
-
-		safe_strcpy(outputPath, argv[2], MAX_PATH);
 		size_t pathLen = strlen(outputPath);
 
 		if (pathLen >= (size_t)(MAX_PATH - numbers - 5)) {
