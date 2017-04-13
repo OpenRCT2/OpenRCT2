@@ -206,6 +206,7 @@
   <!-- Target to create openrct2.exe (windows) and openrct2.com (console) -->
   <Target Name="CreateGUI" DependsOnTargets="Build" AfterTargets="Build" Inputs="$(OutputExe)" Outputs="$(OutputCom)">
     <Copy SourceFiles="$(OutputExe)" DestinationFiles="$(OutputCom)" />
+    <Exec Command="editbin /subsystem:console &quot;$(OutputCom)&quot;" />
     <Exec Command="editbin /subsystem:windows &quot;$(OutputExe)&quot;" />
   </Target>
 
