@@ -81,7 +81,7 @@ namespace GameActions
         return false;
     }
 
-    GameActionResult Query(const IGameAction * action)
+    GameActionResult Query(const IGameAction * action, uint32 flags)
     {
         Guard::ArgumentNotNull(action);
 
@@ -94,7 +94,7 @@ namespace GameActions
         }
         else
         {
-            result = action->Query();
+            result = action->Query(flags);
             if (result.Error == GA_ERROR::OK)
             {
                 if (!CheckActionAffordability(&result))
@@ -108,24 +108,21 @@ namespace GameActions
         return result;
     }
 
-    GameActionResult Execute(const IGameAction * action, GameActionCallback callback, uint16 flags)
+    GameActionResult Execute(const IGameAction * action, uint32 flags, GameActionCallback callback)
     {
         Guard::ArgumentNotNull(action);
 
         uint16 actionFlags = action->GetFlags();
-        GameActionResult result = Query(action);
+        GameActionResult result = Query(action, flags);
         if (result.Error == GA_ERROR::OK)
         {
             // Networked games send actions to the server to be run
             if (network_get_mode() != NETWORK_MODE_NONE)
             {
                 // Action has come from server.
-                if (!(actionFlags & GA_FLAGS::CLIENT_ONLY) && !(flags & GAME_COMMAND_FLAG_GHOST) && !(flags & 0x80))
+                if (!(actionFlags & GA_FLAGS::CLIENT_ONLY) && !(flags & GAME_COMMAND_FLAG_GHOST) && !(flags & GAME_COMMAND_FLAG_NETWORKED))
                 {
-                    MemoryStream stream;
-                    stream.WriteValue(flags);
-                    action->Serialise(&stream);
-                    network_send_game_action((uint8*)stream.GetData(), stream.GetLength(),  action->GetType());
+                    network_send_game_action(action, flags);
                     if (network_get_mode() == NETWORK_MODE_CLIENT) {
                         // Client sent the command to the server, do not run it locally, just return.  It will run when server sends it
                         //game_command_callback = 0;
@@ -137,7 +134,7 @@ namespace GameActions
             }
 
             // Execute the action, changing the game state
-            result = action->Execute();
+            result = action->Execute(flags);
 
             // Update money balance
             if (!(gParkFlags & PARK_FLAGS_NO_MONEY) && result.Cost != 0)
