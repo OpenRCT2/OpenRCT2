@@ -50,6 +50,8 @@ extern "C" {
 #include "../Version.h"
 #include "NetworkTypes.h"
 
+typedef struct IGameAction IGameAction;
+
 #ifndef DISABLE_NETWORK
 
 // This define specifies which version of network stream current build uses.
@@ -148,8 +150,8 @@ public:
     void Server_Send_CHAT(const char* text);
     void Client_Send_GAMECMD(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uint32 esi, uint32 edi, uint32 ebp, uint8 callback);
     void Server_Send_GAMECMD(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uint32 esi, uint32 edi, uint32 ebp, uint8 playerid, uint8 callback);
-    void Client_Send_GAME_ACTION(const uint8 * buffer, uint64 size, uint32 type);
-    void Server_Send_GAME_ACTION(const uint8 * buffer, uint64 size, uint32 type);
+    void Client_Send_GAME_ACTION(const IGameAction *action, uint32 flags);
+    void Server_Send_GAME_ACTION(const IGameAction *action, uint32 flags);
     void Server_Send_TICK();
     void Server_Send_PLAYERLIST();
     void Client_Send_PING();
@@ -342,7 +344,7 @@ sint32 network_get_pickup_peep_old_x(uint8 playerid);
 void network_send_map();
 void network_send_chat(const char* text);
 void network_send_gamecmd(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uint32 esi, uint32 edi, uint32 ebp, uint8 callback);
-void network_send_game_action(const uint8 * buffer, uint64 size, uint32 type);
+void network_send_game_action(const IGameAction *action, uint32 flags);
 void network_send_password(const char* password);
 
 void network_set_password(const char* password);

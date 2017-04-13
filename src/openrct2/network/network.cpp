@@ -1121,19 +1121,23 @@ void Network::Server_Send_GAMECMD(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx
     SendPacketToClients(*packet, false, true);
 }
 
-void Network::Client_Send_GAME_ACTION(const uint8 * buffer, uint64 size, uint32 type)
+void Network::Client_Send_GAME_ACTION(const IGameAction *action, uint32 flags = 0)
 {
 	std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
-	*packet << (uint32)NETWORK_COMMAND_GAME_ACTION << (uint32)gCurrentTicks << (uint32)type;
-	packet->Write(buffer, size);
+	*packet << (uint32)NETWORK_COMMAND_GAME_ACTION << (uint32)gCurrentTicks << action->GetType() << flags;
+	MemoryStream stream;
+	action->Serialise(&stream);
+	packet->Write((uint8*)stream.GetData(), stream.GetLength());
 	server_connection.QueuePacket(std::move(packet));
 }
 
-void Network::Server_Send_GAME_ACTION(const uint8 * buffer, uint64 size, uint32 type)
+void Network::Server_Send_GAME_ACTION(const IGameAction *action, uint32 flags = 0)
 {
 	std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
-	*packet << (uint32)NETWORK_COMMAND_GAME_ACTION << (uint32)gCurrentTicks << type << gNetwork.GetPlayerID();
-	packet->Write(buffer, size);
+	*packet << (uint32)NETWORK_COMMAND_GAME_ACTION << (uint32)gCurrentTicks << action->GetType() << gNetwork.GetPlayerID() << flags;
+	MemoryStream stream;
+	action->Serialise(&stream);
+	packet->Write((uint8*)stream.GetData(), stream.GetLength());
 	SendPacketToClients(*packet);
 }
 
@@ -1362,10 +1366,10 @@ void Network::ProcessGameCommandQueue()
         }
         if (gc.actionType != 0xFFFFFFFF) {
             IGameAction * action = GameActions::Create(gc.actionType);
-            uint16 flags = gc.parameters->ReadValue<uint16>();
+            uint32 flags = gc.parameters->ReadValue<uint32>();
             action->Deserialise(gc.parameters);
             delete gc.parameters;
-            GameActionResult result = GameActions::Execute(action, nullptr, flags | 0x80);
+            GameActionResult result = GameActions::Execute(action, flags | GAME_COMMAND_FLAG_NETWORKED);
             if (result.Error != GA_ERROR::OK)
             {
                 game_commands_processed_this_tick++;
@@ -2115,9 +2119,9 @@ void Network::Server_Handle_GAME_ACTION(NetworkConnection& connection, NetworkPa
 	game_command_playerid = connection.Player->Id;
 	// Run game command, and if it is successful send to clients
 	auto ga = GameActions::Create(commandType);
-	uint16 flags = stream.ReadValue<uint16>();
+	uint32 flags = stream.ReadValue<uint32>();
 	ga->Deserialise(&stream);
-	auto result = GameActions::Execute(ga, nullptr, 0x80 | flags);
+	auto result = GameActions::Execute(ga, GAME_COMMAND_FLAG_NETWORKED | flags);
 	if (result.Error != GA_ERROR::OK) {
 		return;
 	}
@@ -2133,7 +2137,7 @@ void Network::Server_Handle_GAME_ACTION(NetworkConnection& connection, NetworkPa
 		connection.Player->LastDemolishRideTime = connection.Player->LastActionTime;
 	}
 
-	Server_Send_GAME_ACTION((uint8*)stream.GetData(), stream.GetLength(), commandType);
+	Server_Send_GAME_ACTION(ga, flags);
 }
 
 void Network::Server_Handle_GAMECMD(NetworkConnection& connection, NetworkPacket& packet)
@@ -2942,14 +2946,14 @@ void network_send_chat(const char* text)
     }
 }
 
-void network_send_game_action(const uint8 * buffer, uint64 size, uint32 type)
+void network_send_game_action(const IGameAction *action, uint32 flags = 0)
 {
 	switch (gNetwork.GetMode()) {
 	case NETWORK_MODE_SERVER:
-		gNetwork.Server_Send_GAME_ACTION(buffer, size, type);
+		gNetwork.Server_Send_GAME_ACTION(action, flags);
 		break;
 	case NETWORK_MODE_CLIENT:
-		gNetwork.Client_Send_GAME_ACTION(buffer, size, type);
+		gNetwork.Client_Send_GAME_ACTION(action, flags);
 		break;
 	}
 }
