@@ -417,8 +417,13 @@ void rct2_update()
 const utf8 *get_file_path(sint32 pathId)
 {
 	static utf8 path[MAX_PATH];
-	safe_strcpy(path, gRCT2AddressAppPath, sizeof(path));
-	safe_strcat_path(path, RCT2FilePaths[pathId], sizeof(path));
+	if (pathId == PATH_ID_CSS50 && !str_is_null_or_empty(gConfigGeneral.rct1_path)) {
+		safe_strcpy(path, gConfigGeneral.rct1_path, sizeof(path));
+		safe_strcat_path(path, RCT2FilePaths[PATH_ID_CSS17], sizeof(path));
+	} else {
+		safe_strcpy(path, gRCT2AddressAppPath, sizeof(path));
+		safe_strcat_path(path, RCT2FilePaths[pathId], sizeof(path));
+	}
 	return path;
 }
 

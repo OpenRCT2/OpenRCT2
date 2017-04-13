@@ -4338,6 +4338,9 @@ STR_6026    :Construção da atração - Peça anterior
 STR_6027    :Construção da atração - Próxima peça
 STR_6028    :Construção da atração - Construir atual
 STR_6029    :Construção da atração - Demolir atual
+STR_6030    :{SMALLFONT}{BLACK}Apanhador de cenário. Clique em qualquer cenário do mapa para selecionar a mesma peça para construção.
+STR_6031    :Descrição do Servidor:
+STR_6032    :Saudação do Servidor:
 
 #############
 # Scenarios #

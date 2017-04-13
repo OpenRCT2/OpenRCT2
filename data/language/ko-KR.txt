@@ -2749,7 +2749,7 @@ STR_2739    :없음
 STR_2740    :롤러코스터 타이쿤 1
 STR_2741    :롤러코스터 타이쿤 2
 STR_2742    :css50.dat 파일을 찾을 수 없습니다
-STR_2743    :data\css17.dat 파일을 RCT1 설치 폴더에서 복사하여 RCT2가 설치된 폴더 안에 data\css50.dat 이름으로 바꾸어 넣으십시오.
+STR_2743    :data\css17.dat 파일을 RCT1 설치 폴더에서 복사하여 RCT2가 설치된 폴더 안에 data\css50.dat 이름으로 바꾸어 넣거나, 기타 탭에서 RCT1의 경로를 올바르게 지정하세요.
 STR_2744    :[
 STR_2745    :\
 STR_2746    :]
@@ -4142,7 +4142,7 @@ STR_5832    :{SMALLFONT}{BLACK}높이를 "거리 및 속력"에 설정된 거리
 STR_5833    :{SMALLFONT}{BLACK}사용할 날짜 형식을 설정합니다.
 STR_5834    :{SMALLFONT}{BLACK}OpenRCT2가 사용할 오디오 장치를 선택합니다.
 STR_5835    :{SMALLFONT}{BLACK}게임 밖으로 커서가 나가면 게임에서 소리가 나지 않도록 만듭니다.
-STR_5836    :{SMALLFONT}{BLACK}첫 화면에서 사용할 음악을 선택합니다.{NEWLINE}RCT1 테마를 선택할 경우, RCT1 게임 폴더의 'data/css17.dat' 파일을 복사해서 RCT2 폴더에 'data/css50.dat'라는 이름으로 저장해두어야 합니다.
+STR_5836    :{SMALLFONT}{BLACK}첫 화면에서 사용할 음악을 선택합니다.{NEWLINE}RCT1 테마를 선택할 경우, RCT1 게임 폴더의 'data/css17.dat' 파일을 복사해서 RCT2 폴더에 'data/css50.dat'라는 이름으로 저장해두거나, 기타 탭에서 RCT1의 경로를 지정해야 합니다.
 STR_5837    :{SMALLFONT}{BLACK}사용자 UI 테마를 생성하고 관리합니다.
 STR_5838    :{SMALLFONT}{BLACK}메인 메뉴에 재정 창을 위한 별도의 버튼을 표시합니다.
 STR_5839    :{SMALLFONT}{BLACK}메인 매뉴에 연구 및 개발 창을 위한 별도의 버튼을 표시합니다.
@@ -4336,6 +4336,14 @@ STR_6026    :놀이기구 건설 - 이전 트랙
 STR_6027    :놀이기구 건설 - 다음 트랙
 STR_6028    :놀이기구 건설 - 선택한 트랙 건설
 STR_6029    :놀이기구 건설 - 선택한 트랙 제거
+STR_6030    :{SMALLFONT}{BLACK}오브젝트 스포이드 기능입니다. 지도 상의 오브젝트를 선택하면 그 오브젝트를 골라서 설치할 수 있습니다.
+STR_6031    :서버 설명:
+STR_6032    :서버 인사말:
+STR_6033    :RCT1 설치 경로:
+STR_6035    :RCT1이 설치된 폴더를 선택하세요
+STR_6036    :{SMALLFONT}{BLACK}초기화
+STR_6037    :RCT1이 설치된 폴더를 올바르게 선택해주세요
+STR_6038    :{SMALLFONT}{BLACK}RCT1을 설치했다면, 이 설정을 이용해서 시나리오나 음악 등을 불러오기 위해 RCT1이 설치된 폴더를 지정하세요.
 
 #############
 # Scenarios #

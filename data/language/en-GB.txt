@@ -2748,7 +2748,7 @@ STR_2739    :None
 STR_2740    :RollerCoaster Tycoon 1
 STR_2741    :RollerCoaster Tycoon 2
 STR_2742    :css50.dat not found
-STR_2743    :Copy data\css17.dat from your RCT1 installation to data\css50.dat in your RCT2 installation.
+STR_2743    :Copy data\css17.dat from your RCT1 installation to data\css50.dat in your RCT2 installation, or make sure the path to RCT1 in the Miscellaneous tab is correct.
 STR_2744    :[
 STR_2745    :\
 STR_2746    :]
@@ -4144,7 +4144,7 @@ STR_5832    :{SMALLFONT}{BLACK}Show height as generic units instead of measureme
 STR_5833    :{SMALLFONT}{BLACK}Changes what date format is used
 STR_5834    :{SMALLFONT}{BLACK}Select which audio device OpenRCT2 will use
 STR_5835    :{SMALLFONT}{BLACK}Mute the game if the window loses focus
-STR_5836    :{SMALLFONT}{BLACK}Select music to use on the main menu.{NEWLINE}Selecting RCT1 theme requires that you copy 'data/css17.dat' from your RCT1 game folder to 'data/css50.dat' in your RCT2 folder.
+STR_5836    :{SMALLFONT}{BLACK}Select music to use on the main menu.{NEWLINE}Selecting RCT1 theme requires that you copy 'data/css17.dat' from your RCT1 game folder to 'data/css50.dat' in your RCT2 folder, or set the path to RCT1 in the Miscellaneous tab.
 STR_5837    :{SMALLFONT}{BLACK}Create and manage custom UI themes
 STR_5838    :{SMALLFONT}{BLACK}Show a separate button for the finance window in the toolbar
 STR_5839    :{SMALLFONT}{BLACK}Show a separate button for the research and development window in the toolbar
@@ -4338,7 +4338,17 @@ STR_6026    :Ride construction - Previous track
 STR_6027    :Ride construction - Next track
 STR_6028    :Ride construction - Build current
 STR_6029    :Ride construction - Demolish current
-
+STR_6030    :{SMALLFONT}{BLACK}Scenery picker. Click any scenery on the map to select the same piece for construction.
+STR_6031    :Server Description:
+STR_6032    :Server Greeting:
+STR_6033    :Path to RCT1 installation:
+STR_6034    :{SMALLFONT}{BLACK}{STRING}
+STR_6035    :Please select your RCT1 directory
+STR_6036    :{SMALLFONT}{BLACK}Clear
+STR_6037    :Please select a valid RCT1 directory
+STR_6038    :{SMALLFONT}{BLACK}If you have RCT1 installed, set this option to its directory to load scenarios, music, etc.
+STR_6039    :{SMALLFONT}{BLACK}Quick demolish ride
+STR_6040    :Edit Scenario Options
 
 #############
 # Scenarios #
@@ -4785,6 +4795,12 @@ STR_DTLS    :
 #####################
 # Rides/attractions #
 #####################
+
+#RCT2
+[TOPSP1]
+STR_NAME    :Top Spin
+STR_DESC    :Passengers ride in a gondola suspended by large rotating arms, rotating forwards and backwards head-over-heels
+STR_CPTY    :8 passengers
 
 #WW
 [CONDORRD]

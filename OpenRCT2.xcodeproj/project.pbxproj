@@ -417,12 +417,7 @@
 		D44272961CC81B3200D84D28 /* track_place.c in Sources */ = {isa = PBXBuildFile; fileRef = D44271D51CC81B3200D84D28 /* track_place.c */; };
 		D44272971CC81B3200D84D28 /* viewport.c in Sources */ = {isa = PBXBuildFile; fileRef = D44271D61CC81B3200D84D28 /* viewport.c */; };
 		D44272981CC81B3200D84D28 /* water.c in Sources */ = {isa = PBXBuildFile; fileRef = D44271D71CC81B3200D84D28 /* water.c */; };
-		D442729A1CC81B3200D84D28 /* banner.c in Sources */ = {isa = PBXBuildFile; fileRef = D44271DA1CC81B3200D84D28 /* banner.c */; };
-		D44272991CC81B3200D84D28 /* balloon.c in Sources */ = {isa = PBXBuildFile; fileRef = D44271D91CC81B3200D84D28 /* balloon.c */; };
-		D442729B1CC81B3200D84D28 /* climate.c in Sources */ = {isa = PBXBuildFile; fileRef = D44271DC1CC81B3200D84D28 /* climate.c */; };
-		D442729C1CC81B3200D84D28 /* duck.c in Sources */ = {isa = PBXBuildFile; fileRef = D44271DE1CC81B3200D84D28 /* duck.c */; };
 		D442729D1CC81B3200D84D28 /* footpath.c in Sources */ = {isa = PBXBuildFile; fileRef = D44271E01CC81B3200D84D28 /* footpath.c */; };
-		D442729E1CC81B3200D84D28 /* fountain.c in Sources */ = {isa = PBXBuildFile; fileRef = D44271E21CC81B3200D84D28 /* fountain.c */; };
 		D442729F1CC81B3200D84D28 /* map.c in Sources */ = {isa = PBXBuildFile; fileRef = D44271E41CC81B3200D84D28 /* map.c */; };
 		D44272A01CC81B3200D84D28 /* map_animation.c in Sources */ = {isa = PBXBuildFile; fileRef = D44271E61CC81B3200D84D28 /* map_animation.c */; };
 		D44272A11CC81B3200D84D28 /* map_helpers.c in Sources */ = {isa = PBXBuildFile; fileRef = D44271E81CC81B3200D84D28 /* map_helpers.c */; };
@@ -433,6 +428,7 @@
 		D44272A61CC81B3200D84D28 /* scenery.c in Sources */ = {isa = PBXBuildFile; fileRef = D44271F01CC81B3200D84D28 /* scenery.c */; };
 		D44272A71CC81B3200D84D28 /* sprite.c in Sources */ = {isa = PBXBuildFile; fileRef = D44271F21CC81B3200D84D28 /* sprite.c */; };
 		D4469DAD1DEF84480039A779 /* Fonts.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D4469DAB1DEF84480039A779 /* Fonts.cpp */; };
+		D44D93AE1E92DD28004D6B77 /* Fountain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D44D93AD1E92DD28004D6B77 /* Fountain.cpp */; };
 		D45A38BC1CF3006400659A24 /* libcrypto.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D45A38B31CF3006400659A24 /* libcrypto.dylib */; };
 		D45A38BE1CF3006400659A24 /* libjansson.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D45A38B51CF3006400659A24 /* libjansson.dylib */; };
 		D45A38C01CF3006400659A24 /* libSDL2_ttf.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D45A38B71CF3006400659A24 /* libSDL2_ttf.dylib */; };
@@ -1000,14 +996,11 @@
 		D44271D51CC81B3200D84D28 /* track_place.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = track_place.c; sourceTree = "<group>"; };
 		D44271D61CC81B3200D84D28 /* viewport.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = viewport.c; sourceTree = "<group>"; };
 		D44271D71CC81B3200D84D28 /* water.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = water.c; sourceTree = "<group>"; };
-		D44271DA1CC81B3200D84D28 /* banner.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = banner.c; sourceTree = "<group>"; };
-		D44271D91CC81B3200D84D28 /* balloon.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = balloon.c; sourceTree = "<group>"; };
 		D44271DB1CC81B3200D84D28 /* banner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = banner.h; sourceTree = "<group>"; };
 		D44271DF1CC81B3200D84D28 /* entrance.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = entrance.h; sourceTree = "<group>"; };
 		D44271E01CC81B3200D84D28 /* footpath.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = footpath.c; sourceTree = "<group>"; };
 		D44271E11CC81B3200D84D28 /* footpath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = footpath.h; sourceTree = "<group>"; };
-		D44271E21CC81B3200D84D28 /* fountain.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = fountain.c; sourceTree = "<group>"; };
-		D44271E31CC81B3200D84D28 /* fountain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = fountain.h; sourceTree = "<group>"; };
+		D44271E31CC81B3200D84D28 /* Fountain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Fountain.h; sourceTree = "<group>"; };
 		D44271E41CC81B3200D84D28 /* map.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = map.c; sourceTree = "<group>"; };
 		D44271E51CC81B3200D84D28 /* map.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = map.h; sourceTree = "<group>"; };
 		D44271E61CC81B3200D84D28 /* map_animation.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = map_animation.c; sourceTree = "<group>"; };
@@ -1027,6 +1020,7 @@
 		D44271F41CC81B3200D84D28 /* water.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = water.h; sourceTree = "<group>"; };
 		D4469DAB1DEF84480039A779 /* Fonts.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Fonts.cpp; sourceTree = "<group>"; };
 		D4469DAC1DEF84480039A779 /* Fonts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Fonts.h; sourceTree = "<group>"; };
+		D44D93AD1E92DD28004D6B77 /* Fountain.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Fountain.cpp; sourceTree = "<group>"; };
 		D45A38B31CF3006400659A24 /* libcrypto.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libcrypto.dylib; sourceTree = "<group>"; };
 		D45A38B41CF3006400659A24 /* libfreetype.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libfreetype.dylib; sourceTree = "<group>"; };
 		D45A38B51CF3006400659A24 /* libjansson.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libjansson.dylib; sourceTree = "<group>"; };
@@ -1249,8 +1243,8 @@
 		D4F5B5EC1DAD8A4300AB6075 /* CursorData.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CursorData.cpp; sourceTree = "<group>"; };
 		D4F5B5ED1DAD8A4300AB6075 /* Cursors.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Cursors.cpp; sourceTree = "<group>"; };
 		D4F5B5EE1DAD8A4300AB6075 /* Cursors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Cursors.h; sourceTree = "<group>"; };
-		EC3C3FED9FA55B65F65D706F /* Climate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Climate.h; sourceTree = "<group>"; };
 		DEEAE6E8AC49B6F288E69B40 /* banner.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = banner.cpp; sourceTree = "<group>"; };
+		EC3C3FED9FA55B65F65D706F /* Climate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Climate.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -2052,17 +2046,14 @@
 				EC3C3FED9FA55B65F65D706F /* Climate.h */,
 				242F470FE91956ACA4078F6A /* Climate.cpp */,
 				437490DBD74ECF60C3363559 /* Balloon.cpp */,
-				D44271DA1CC81B3200D84D28 /* banner.c */,
 				DEEAE6E8AC49B6F288E69B40 /* banner.cpp */,
-				D44271D91CC81B3200D84D28 /* balloon.c */,
 				D44271DB1CC81B3200D84D28 /* banner.h */,
-				D44271DE1CC81B3200D84D28 /* duck.c */,
 				D48ABAB91E71EBD500A3E39C /* entrance.cpp */,
 				D44271DF1CC81B3200D84D28 /* entrance.h */,
 				D44271E01CC81B3200D84D28 /* footpath.c */,
 				D44271E11CC81B3200D84D28 /* footpath.h */,
-				D44271E21CC81B3200D84D28 /* fountain.c */,
-				D44271E31CC81B3200D84D28 /* fountain.h */,
+				D44D93AD1E92DD28004D6B77 /* Fountain.cpp */,
+				D44271E31CC81B3200D84D28 /* Fountain.h */,
 				D44271E61CC81B3200D84D28 /* map_animation.c */,
 				D44271E71CC81B3200D84D28 /* map_animation.h */,
 				D44271E81CC81B3200D84D28 /* map_helpers.c */,
@@ -2989,7 +2980,6 @@
 				C612A8991D64825300B634CA /* vehicle_data.c in Sources */,
 				D44271FB1CC81B3200D84D28 /* ScreenshotCommands.cpp in Sources */,
 				D464FEBB1D31A65300CBABAC /* IStream.cpp in Sources */,
-				D442729E1CC81B3200D84D28 /* fountain.c in Sources */,
 				C686F94B1CDBC3B7009F9BFC /* miniature_railway.c in Sources */,
 				C686F94D1CDBC3B7009F9BFC /* suspended_monorail.c in Sources */,
 				D44272131CC81B3200D84D28 /* editor.c in Sources */,
@@ -3035,6 +3025,7 @@
 				C686F93F1CDBC3B7009F9BFC /* enterprise.c in Sources */,
 				C686F91B1CDBC3B7009F9BFC /* mini_roller_coaster.c in Sources */,
 				D48ABABA1E71EBD500A3E39C /* entrance.cpp in Sources */,
+				D44D93AE1E92DD28004D6B77 /* Fountain.cpp in Sources */,
 				D464FEE51D31A6AA00CBABAC /* BannerObject.cpp in Sources */,
 				D44272391CC81B3200D84D28 /* peep.c in Sources */,
 				D44272681CC81B3200D84D28 /* land_rights.c in Sources */,

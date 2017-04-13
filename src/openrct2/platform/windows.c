@@ -1237,4 +1237,9 @@ bool platform_setup_uri_protocol()
 
 ///////////////////////////////////////////////////////////////////////////////
 
+sint32 platform_get_non_window_flags()
+{
+	return SDL_WINDOW_MAXIMIZED | SDL_WINDOW_MINIMIZED | SDL_WINDOW_FULLSCREEN | SDL_WINDOW_FULLSCREEN_DESKTOP;
+}
+
 #endif

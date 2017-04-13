@@ -29,6 +29,7 @@
 #include "../object_list.h"
 #include "../object/ObjectManager.h"
 #include "../object/ObjectRepository.h"
+#include "../platform/platform.h"
 #include "../rct1.h"
 #include "../ride/ride.h"
 #include "../ride/ride_data.h"
