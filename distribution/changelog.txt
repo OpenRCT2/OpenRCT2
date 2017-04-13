@@ -5,14 +5,53 @@
 - Feature: [#5305] Add scenery eye dropper tool.
 - Improved: [#5254] Scenario option changes are now synchronised over multiplayer.
 - Improved: [#3288] Added server description and greeting textboxes to the start server menu.
+- Improved: [#3502] Track previews display at higher zoom level for large layouts.
+- Improved: [#5055] Implement 'quick demolish' for rides.
 - Improved: [#5137] Removing all guests no longer closes the rides and removes the vehicles.
 - Improved: [#5163] Minor tile inspector improvements and fixes.
+- Improved: [#5222] Add Catalan language.
+- Improved: [#5351] Giga Coaster and Steel Twister RC boosters now use the correct sprites.
+- Improved: Looping RC and Corkscrew RC now use booster sprites from RCT1's CSG1.DAT if available.
+- Improved: Scenario options are now synced in multiplayer.
+- Improved: Remove duplicate ride penalty for closed rides.
+- Improved: Make shortcut keys window larger and resizable.
+- Removed: known_issues.txt no longer used, check issue tracker on GitHub.
+- Fix: [#1992] Felicity Anderson Cheat can crash the game, as well as blocking queues.
+- Fix: [#4493] Provide tooltip for disabled price field.
 - Fix: [#4689] Object selection tabs sometimes flicker.
 - Fix: [#4913] Server greeting displaying local setting.
+- Fix: [#4972] Map window not updated properly when shrinking map from Map Generation window.
+- Fix: [#5004] Peeps in parks imported from RCT1 show abnormalities.
+- Fix: [#5014] Research not importect from RCT1 correctly.
+- Fix: [#5032] Booster speed is not saved in TD6.
+- Fix: [#5140] Headless server should save default users.json.
 - Fix: [#5150] --openrct-data-path sets user data path instead of OpenRCT2 data path.
+- Fix: [#5169] Parks containing packed objects fail to open.
+- Fix: [#5199] "Force a breakdown" debugging tool isn't hidden in multiplayer.
 - Fix: [#5188] Clicking on a Magic Carpet doesn't open the ride window.
+- Fix: [#5218] Scale RCT1 park value objectives.
+- Fix: [#5219] Game crashes when opening 'misc' tab in options.
 - Fix: [#5238] RCT1 import: Rides are initially free when placing them.
-- Fix: [#5299] Scenario editor crash when placing peep spawn
+- Fix: [#5252] Correct typo in Conger Eel Coaster description.
+- Fix: [#5265] Queue line TVs not detected properly.
+- Fix: [#5271] Keyboard shortcuts window isn't large enough (for some languages).
+- Fix: [#5275] Door animations do not play correctly.
+- Fix: [#5284] Mechanic is called to fix a ride that's outside his patrol area.
+- Fix: [#5285] Intro always plays even if play_intro = false.
+- Fix: [#5299] Scenario editor crash when placing peep spawn.
+- Fix: [#5316] Banners always spawn black.
+- Fix: [#5318] Using the bulldozer tool on under-construction paths results in unlimited free money.
+- Fix: [#5325] Game crashes if encountering an invalid ride type during research.
+- Fix: [#5345] Correct typos in descriptions for Top Spin and Splash Boats.
+- Fix: [#5350] Steel Twister RC and Giga Coaster boosters are underpowered, Junior Roller Coaster boosters overpowered compared to RCTC.
+- Fix: [#5357] "Assertion failed!" after guest with name 'Emma Garrell' exits/enters ride.
+- Fix: Walls do not import from RCT1 correctly in pause mode.
+- Fix: Extraneous window tabs show up on MacOS 10.12.
+- Fix: Potential for integer overflow in ride length.
+- Fix: Vehicles erroneously removed when removing all guests.
+- Technical: INI configuration file now case-insensitive.
+- Technical: Remove version build from msbuild & NSIS.
+
 
 0.0.6 (2017-01-29)
 ------------------------------------------------------------------------
