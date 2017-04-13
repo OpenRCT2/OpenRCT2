@@ -50,7 +50,7 @@ public:
         stream->WriteValue(Fee);
     }
 
-    GameActionResult Query() const override
+    GameActionResult Query(uint32 flags = 0) const override
     {
         bool noMoney = (gParkFlags & PARK_FLAGS_NO_MONEY) != 0;
         bool forceFreeEntry = (gParkFlags & PARK_FLAGS_PARK_FREE_ENTRY) && !gCheatsUnlockAllPrices;
@@ -65,7 +65,7 @@ public:
         return GameActionResult();
     }
 
-    GameActionResult Execute() const override
+    GameActionResult Execute(uint32 flags = 0) const override
     {
         gParkEntranceFee = Fee;
         window_invalidate_by_class(WC_PARK_INFORMATION);
@@ -81,13 +81,13 @@ extern "C"
     {
         auto gameAction = SetParkEntranceFeeAction();
         gameAction.Fee = (money16)value;
-        GameActions::Execute(&gameAction, nullptr, 0);
+        GameActions::Execute(&gameAction, 0, nullptr);
     }
 
     void game_command_set_park_entrance_fee(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp)
     {
         auto gameAction = SetParkEntranceFeeAction();
         gameAction.Fee = (*edi & 0xFFFF);
-        GameActions::Execute(&gameAction, nullptr, 0);
+        GameActions::Execute(&gameAction, 0, nullptr);
     }
 }

@@ -97,12 +97,12 @@ interface IGameAction
     /**
      * Query the result of the game action without changing the game state.
      */
-    virtual GameActionResult Query() const abstract;
+    virtual GameActionResult Query(uint32 flags = 0) const abstract;
 
     /**
      * Apply the game action and change the game state.
      */
-    virtual GameActionResult Execute() const abstract;
+    virtual GameActionResult Execute(uint32 flags = 0) const abstract;
 };
 
 typedef IGameAction *(*GameActionFactory)();
@@ -112,8 +112,8 @@ namespace GameActions
 {
     GameActionFactory   Register(uint32 id, GameActionFactory action);
     IGameAction *       Create(uint32 id);
-    GameActionResult    Query(const IGameAction * action);
-    GameActionResult    Execute(const IGameAction * action, GameActionCallback callback = nullptr, uint16 flags = 0);
+    GameActionResult    Query(const IGameAction * action, uint32 flags = 0);
+    GameActionResult    Execute(const IGameAction * action, uint32 flags = 0, GameActionCallback callback = nullptr);
 
     template<typename T>
     GameActionFactory Register(uint32 id)
