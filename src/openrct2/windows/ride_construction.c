@@ -464,6 +464,7 @@ static sint32		_trackPlaceZ;
 static money32	_trackPlaceCost;
 static bool		_autoOpeningShop;
 static uint8	_rideConstructionState2;
+static bool		_boosterTrackSelected;
 
 static uint32	_currentDisabledSpecialTrackPieces;
 
@@ -2164,7 +2165,6 @@ static void window_ride_construction_invalidate(rct_window *w)
 {
 	rct_ride *ride;
 	rct_string_id stringId;
-	bool boosterTrackSelected = false;
 
 	ride = get_ride(_currentRideIndex);
 
@@ -2175,14 +2175,13 @@ static void window_ride_construction_invalidate(rct_window *w)
 			stringId = STR_LOG_BUMPS;
 		if (stringId == STR_SPINNING_CONTROL_TOGGLE_TRACK && ride->type != RIDE_TYPE_WILD_MOUSE) {
 			stringId = STR_BOOSTER;
-			boosterTrackSelected = true;
 		}
 	}
 	set_format_arg(0, uint16, stringId);
 
 	if (_currentlyShowingBrakeSpeed == 1) {
 		uint16 brakeSpeed2 = ((_currentBrakeSpeed2 * 9) >> 2) & 0xFFFF;
-		if (ride->type == RIDE_TYPE_GIGA_COASTER && boosterTrackSelected) {
+		if (ride->type == RIDE_TYPE_GIGA_COASTER && _boosterTrackSelected) {
 			brakeSpeed2 *= 2;
 		}
 		set_format_arg(2, uint16, brakeSpeed2);
@@ -3269,9 +3268,9 @@ static void window_ride_construction_update_widgets(rct_window *w)
 	window_ride_construction_widgets[WIDX_O_TRACK].type = WWT_EMPTY;
 
 	bool brakesSelected = _selectedTrackType == TRACK_ELEM_BRAKES || _currentTrackCurve == (0x100 | TRACK_ELEM_BRAKES);
-	bool boosterSelected = ride->type != RIDE_TYPE_WILD_MOUSE && (_selectedTrackType == TRACK_ELEM_BOOSTER || _currentTrackCurve == (0x100 | TRACK_ELEM_BOOSTER));
+	_boosterTrackSelected = ride->type != RIDE_TYPE_WILD_MOUSE && (_selectedTrackType == TRACK_ELEM_BOOSTER || _currentTrackCurve == (0x100 | TRACK_ELEM_BOOSTER));
 
-	if (!brakesSelected && !boosterSelected) {
+	if (!brakesSelected && !_boosterTrackSelected) {
 		if (is_track_enabled(TRACK_FLAT_ROLL_BANKING)) {
 			window_ride_construction_widgets[WIDX_BANK_LEFT].type = WWT_FLATBTN;
 			window_ride_construction_widgets[WIDX_BANK_STRAIGHT].type = WWT_FLATBTN;
