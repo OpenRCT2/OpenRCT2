@@ -2181,8 +2181,12 @@ static void window_ride_construction_invalidate(rct_window *w)
 
 	if (_currentlyShowingBrakeSpeed == 1) {
 		uint16 brakeSpeed2 = ((_currentBrakeSpeed2 * 9) >> 2) & 0xFFFF;
-		if (ride->type == RIDE_TYPE_GIGA_COASTER && _boosterTrackSelected) {
-			brakeSpeed2 *= 2;
+		if (_boosterTrackSelected){
+			if (ride->type == RIDE_TYPE_GIGA_COASTER) {
+				brakeSpeed2 *= 2;
+			} else if (ride->type == RIDE_TYPE_JUNIOR_ROLLER_COASTER) {
+				brakeSpeed2 /= 2;
+			}
 		}
 		set_format_arg(2, uint16, brakeSpeed2);
 	}

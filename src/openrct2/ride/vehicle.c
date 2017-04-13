@@ -7517,8 +7517,9 @@ loc_6DAEB9:
 	else if (trackType == TRACK_ELEM_BOOSTER && ride->type != RIDE_TYPE_WILD_MOUSE) {
 		if (ride->type == RIDE_TYPE_GIGA_COASTER) {
 			regs.eax = (vehicle->brake_speed << 17);
-		}
-		else {
+		} else if (ride-> type == RIDE_TYPE_JUNIOR_ROLLER_COASTER) {
+			regs.eax = (vehicle->brake_speed << 15);
+		} else {
 			regs.eax = (vehicle->brake_speed << 16);
 		}
 
@@ -7875,8 +7876,9 @@ loc_6DBA33:;
 	if (trackType == TRACK_ELEM_BOOSTER && ride->type != RIDE_TYPE_WILD_MOUSE) {
 		if (ride->type == RIDE_TYPE_GIGA_COASTER) {
 			regs.eax = (vehicle->brake_speed << 17);
-		}
-		else {
+		} else if (ride-> type == RIDE_TYPE_JUNIOR_ROLLER_COASTER) {
+			regs.eax = (vehicle->brake_speed << 15);
+		} else {
 			regs.eax = (vehicle->brake_speed << 16);
 		}
 
