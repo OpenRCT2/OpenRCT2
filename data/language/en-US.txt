@@ -3418,6 +3418,7 @@ STR_3443    :Page 4
 STR_3444    :Page 5
 STR_3445    :Set Patrol Area
 STR_3446    :Cancel Patrol Area
+STR_3447    :{BLACK}No mechanics are hired...
 
 # Strings added by OpenRCT2. Only add strings that differ from UK English!
 STR_5440    :Minimize fullscreen on focus loss
