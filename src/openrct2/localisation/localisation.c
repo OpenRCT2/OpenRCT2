@@ -20,6 +20,8 @@
 #include <windows.h>
 #elif defined(__ANDROID__)
 #include <jni.h>
+#include <SDL.h>
+
 #else
 #include <iconv.h>
 #include <errno.h>

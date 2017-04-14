@@ -14,7 +14,7 @@ android {
 
         externalNativeBuild {
             cmake {
-                arguments '-DDEBUG_LEVEL=3'//, '-DCMAKE_BUILD_TYPE=RELWITHDEBINFO'
+                arguments '-DDEBUG_LEVEL=3', '-DANDROID_STL=c++_static'//, '-DCMAKE_BUILD_TYPE=RELWITHDEBINFO'
                 //abiFilters 'x86', 'x86_64'
                 // abiFilters 'armeabi-v7a', 'arm64-v8a'
                 abiFilters 'armeabi-v7a'

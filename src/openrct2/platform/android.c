@@ -17,11 +17,18 @@
 #ifdef __ANDROID__
 
 #include "platform.h"
-#include "../config.h"
+#include "../config/Config.h"
 #include "../localisation/language.h"
 #include "../util/util.h"
 #include <wchar.h>
 #include <jni.h>
+
+int main(int argc, char *argv[]);
+
+int SDL_main(int argc, char *argv[])
+{
+    return main(argc, argv);
+}
 
 int mbtowc(wchar_t *__restrict pwc, const char *__restrict s, size_t n) {
     static mbstate_t mbs;
@@ -55,23 +62,25 @@ void platform_posix_sub_user_data_path(char *buffer, size_t size, const char *ho
     safe_strcpy(buffer, "/sdcard/openrct2-user/", size);
 }
 
-void platform_show_messagebox(char *message)
+void platform_show_messagebox(const utf8 * message)
 {
     STUB();
 }
 
-utf8 *platform_open_directory_browser(utf8 *title)
+utf8 *platform_open_directory_browser(const utf8 *title)
 {
     log_info(title);
     STUB();
     return "/sdcard/rct2";
 }
 
+#ifndef NO_TTF
 bool platform_get_font_path(TTFFontDescriptor *font, utf8 *buffer, size_t size)
 {
     STUB();
     return false;
 }
+#endif
 
 void platform_posix_sub_resolve_openrct_data_path(utf8 *out, size_t size) {
     safe_strcpy(out, "/sdcard/openrct2", size);

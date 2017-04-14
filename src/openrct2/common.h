@@ -223,6 +223,9 @@ typedef uint16 rct_string_id;
 	#define RESTRICT
 #endif
 
+#ifndef static_assert
+#define static_assert(...) _Static_assert(__VA_ARGS__)
+#endif
 #define assert_struct_size(x, y) static_assert(sizeof(x) == (y), "Improper struct size")
 
 #ifdef PLATFORM_X86
