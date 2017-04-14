@@ -3420,6 +3420,7 @@ STR_3443    :Página 4
 STR_3444    :Página 5
 STR_3445    :Establecer Área de Patrullaje
 STR_3446    :Cancelar Área de Patrullaje
+STR_3447    :{BLACK}No hay mecánicos contratados...
 
 # New strings, cleaner
 STR_5120    :Finanzas
