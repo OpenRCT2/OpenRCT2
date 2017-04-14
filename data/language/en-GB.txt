@@ -3456,6 +3456,7 @@ STR_3443    :Page 4
 STR_3444    :Page 5
 STR_3445    :Set Patrol Area
 STR_3446    :Cancel Patrol Area
+STR_3447    :{BLACK}No mechanics are hired...
 
 # New strings, cleaner
 STR_5120    :Finances
