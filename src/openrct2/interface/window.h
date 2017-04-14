@@ -35,7 +35,7 @@ struct track_design_file_ref;
 struct TitleSequence;
 
 extern uint16 TextInputDescriptionArgs[4];
-extern char gTextBoxInput[512];
+extern char gTextBoxInput[1024];
 extern sint32 gMaxTextBoxInputLength;
 extern sint32 gTextBoxFrameNo;
 extern bool gUsingWidgetTextBox;

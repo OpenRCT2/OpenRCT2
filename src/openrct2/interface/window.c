@@ -42,7 +42,7 @@ rct_window * gWindowAudioExclusive;
 
 uint16 TextInputDescriptionArgs[4];
 widget_identifier gCurrentTextBox = { { 255, 0 }, 0 };
-char gTextBoxInput[512] = { 0 };
+char gTextBoxInput[1024] = { 0 };
 sint32 gMaxTextBoxInputLength = 0;
 sint32 gTextBoxFrameNo = 0;
 bool gUsingWidgetTextBox = 0;
