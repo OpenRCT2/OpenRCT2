@@ -201,6 +201,8 @@ uint8 platform_get_currency_value(const char *currencyCode);
 uint16 platform_get_locale_language();
 uint8 platform_get_locale_measurement_format();
 uint8 platform_get_locale_temperature_format();
+uint8 platform_get_locale_date_format();
+
 #ifndef NO_TTF
 bool platform_get_font_path(TTFFontDescriptor *font, utf8 *buffer, size_t size);
 #endif // NO_TTF

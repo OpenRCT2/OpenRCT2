@@ -133,7 +133,7 @@ namespace Config
             model->autosave_frequency = reader->GetSint32("autosave", AUTOSAVE_EVERY_5MINUTES);
             model->confirmation_prompt = reader->GetBoolean("confirmation_prompt", false);
             model->construction_marker_colour = reader->GetBoolean("construction_marker_colour", false);
-            model->currency_format = reader->GetEnum<sint32>("currency_format", CURRENCY_POUNDS, Enum_Currency);
+            model->currency_format = reader->GetEnum<sint32>("currency_format", platform_get_locale_currency(), Enum_Currency);
             model->custom_currency_rate = reader->GetSint32("custom_currency_rate", 10);
             model->custom_currency_affix = reader->GetEnum<sint32>("custom_currency_affix", CURRENCY_SUFFIX, Enum_CurrencySymbolAffix);
             model->custom_currency_symbol = reader->GetCString("custom_currency_symbol", "Ctm");
@@ -144,13 +144,13 @@ namespace Config
             model->rct1_path = reader->GetCString("rct1_path", nullptr);
             model->rct2_path = reader->GetCString("game_path", nullptr);
             model->landscape_smoothing = reader->GetBoolean("landscape_smoothing", true);
-            model->language = reader->GetEnum<sint32>("language", LANGUAGE_ENGLISH_UK, Enum_LanguageEnum);
-            model->measurement_format = reader->GetEnum<sint32>("measurement_format", MEASUREMENT_FORMAT_METRIC, Enum_MeasurementFormat);
+            model->language = reader->GetEnum<sint32>("language", platform_get_locale_language(), Enum_LanguageEnum);
+            model->measurement_format = reader->GetEnum<sint32>("measurement_format", platform_get_locale_measurement_format(), Enum_MeasurementFormat);
             model->play_intro = reader->GetBoolean("play_intro", false);
             model->save_plugin_data = reader->GetBoolean("save_plugin_data", true);
             model->debugging_tools = reader->GetBoolean("debugging_tools", false);
             model->show_height_as_units = reader->GetBoolean("show_height_as_units", false);
-            model->temperature_format = reader->GetEnum<sint32>("temperature_format", TEMPERATURE_FORMAT_C, Enum_Temperature);
+            model->temperature_format = reader->GetEnum<sint32>("temperature_format", platform_get_locale_temperature_format(), Enum_Temperature);
             model->window_height = reader->GetSint32("window_height", -1);
             model->window_snap_proximity = reader->GetSint32("window_snap_proximity", 5);
             model->window_width = reader->GetSint32("window_width", -1);
@@ -161,7 +161,7 @@ namespace Config
             model->test_unfinished_tracks = reader->GetBoolean("test_unfinished_tracks", false);
 
             model->no_test_crashes = reader->GetBoolean("no_test_crashes", false);
-            model->date_format = reader->GetEnum<sint32>("date_format", DATE_FORMAT_DAY_MONTH_YEAR, Enum_DateFormat);
+            model->date_format = reader->GetEnum<sint32>("date_format", platform_get_locale_date_format(), Enum_DateFormat);
             model->auto_staff_placement = reader->GetBoolean("auto_staff", true);
             model->handymen_mow_default = reader->GetBoolean("handymen_mow_default", false);
             model->default_inspection_interval = reader->GetSint32("default_inspection_interval", 2);
