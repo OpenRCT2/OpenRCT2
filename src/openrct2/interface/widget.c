@@ -1055,7 +1055,7 @@ static void widget_text_box_draw(rct_drawpixelinfo *dpi, rct_window *w, sint32 w
 {
 	sint32 no_lines = 0;
 	sint32 font_height = 0;
-	char wrapped_string[512];
+	char wrapped_string[TEXT_INPUT_SIZE];
 
 	// Get the widget
 	rct_widget *widget = &w->widgets[widgetIndex];
@@ -1090,7 +1090,7 @@ static void widget_text_box_draw(rct_drawpixelinfo *dpi, rct_window *w, sint32 w
 	}
 
 
-	safe_strcpy(wrapped_string, gTextBoxInput, 512);
+	safe_strcpy(wrapped_string, gTextBoxInput, TEXT_INPUT_SIZE);
 
 	// String length needs to add 12 either side of box
 	// +13 for cursor when max length.
@@ -1103,7 +1103,7 @@ static void widget_text_box_draw(rct_drawpixelinfo *dpi, rct_window *w, sint32 w
 	size_t string_length = get_string_size(wrapped_string) - 1;
 
 	// Make a copy of the string for measuring the width.
-	char temp_string[512] = { 0 };
+	char temp_string[TEXT_INPUT_SIZE] = { 0 };
 	memcpy(temp_string, wrapped_string, min(string_length, gTextInput.selection_offset));
 	sint32 cur_x = l + gfx_get_string_width(temp_string) + 3;
 
