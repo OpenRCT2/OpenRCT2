@@ -241,6 +241,17 @@ typedef uint16 rct_string_id;
     #define FASTCALL
 #endif // PLATFORM_X86
 
+// C++17 or later
+#if defined(__cplusplus) && __cplusplus > 201402L
+	#define UNUSED_ATTR [[maybe_unused]]
+#else
+	#ifdef __GNUC__
+		#define UNUSED_ATTR [[gnu::unused]]
+	#else
+		#define UNUSED_ATTR
+	#endif
+#endif
+
 /**
  * x86 register structure, only used for easy interop to RCT2 code.
  */

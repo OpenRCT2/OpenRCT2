@@ -216,7 +216,7 @@ public:
 	}
 };
 
-static auto Factory = GameActions::Register<PlaceParkEntranceAction>(GAME_COMMAND_PLACE_PARK_ENTRANCE);
+static auto Factory UNUSED_ATTR = GameActions::Register<PlaceParkEntranceAction>(GAME_COMMAND_PLACE_PARK_ENTRANCE);
 
 extern "C"
 {
