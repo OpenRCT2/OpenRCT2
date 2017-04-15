@@ -4010,7 +4010,7 @@ static void window_ride_maintenance_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	// Mechanic status
 	if (ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN) {
 		switch (ride->mechanic_status) {
-		case RIDE_MECHANIC_STATUS_CALLING:
+		case RIDE_MECHANIC_STATUS_CALLING:{
 			sint32 count_staff = peep_get_staff_count();
 			rct_peep *peep;
 			uint16 spriteIndex;
@@ -4028,6 +4028,7 @@ static void window_ride_maintenance_paint(rct_window *w, rct_drawpixelinfo *dpi)
 			}else{
 				stringId = STR_CALLING_MECHANIC;
 			}
+		}
 			break;
 		case RIDE_MECHANIC_STATUS_HEADING:
 			stringId = STR_MEHCANIC_IS_HEADING_FOR_THE_RIDE;
