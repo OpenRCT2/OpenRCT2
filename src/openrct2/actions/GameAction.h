@@ -36,10 +36,15 @@ enum class GA_ERROR : uint16
     DISALLOWED,
     GAME_PAUSED,
     INSUFFICIENT_FUNDS,
+	NOT_IN_EDITOR_MODE,
 
     NOT_OWNED,
     TOO_LOW,
     TOO_HIGH,
+	NO_CLEARANCE,
+	ITEM_ALREADY_PLACED,
+
+	NO_FREE_ELEMENTS,
 
     UNKNOWN = UINT16_MAX,
 };
@@ -48,6 +53,7 @@ namespace GA_FLAGS
 {
     constexpr uint16 ALLOW_WHILE_PAUSED = 1 << 0;
     constexpr uint16 CLIENT_ONLY        = 1 << 1;
+	constexpr uint16 EDITOR_ONLY		= 1 << 2;
 }
 
 /**

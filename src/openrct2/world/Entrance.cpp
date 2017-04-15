@@ -573,25 +573,6 @@ static money32 RideEntranceExitPlaceGhost(uint8 rideIndex, sint16 x, sint16 y, u
 
 extern "C"
 {
-    /**
-     *
-     *  rct2: 0x006666E7
-     */
-    void game_command_place_park_entrance(sint32* eax,
-                                          sint32* ebx,
-                                          sint32* ecx,
-                                          sint32* edx,
-                                          sint32* esi,
-                                          sint32* edi,
-                                          sint32* ebp)
-    {
-        *ebx = ParkEntrancePlace(
-            *ebx & 0xFF,
-            *eax & 0xFFFF,
-            *ecx & 0xFFFF,
-            *edx & 0xFF,
-            (*ebx >> 8) & 0xFF);
-    }
 
     /**
      *
@@ -632,41 +613,6 @@ extern "C"
             );
         }
     }
-
-    /**
-     *
-     *  rct2: 0x00666F4E
-     */
-    money32 park_entrance_place_ghost(sint32 x, sint32 y, sint32 z, sint32 direction)
-    {
-        money32 result;
-
-        park_entrance_remove_ghost();
-        result = game_do_command(
-            x,
-            GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED |
-            GAME_COMMAND_FLAG_5 |
-            GAME_COMMAND_FLAG_GHOST |
-            GAME_COMMAND_FLAG_APPLY |
-            (direction << 8),
-            y,
-            z,
-            GAME_COMMAND_PLACE_PARK_ENTRANCE,
-            0,
-            0
-        );
-
-        if (result != MONEY32_UNDEFINED)
-        {
-            gParkEntranceGhostPosition.x = x;
-            gParkEntranceGhostPosition.y = y;
-            gParkEntranceGhostPosition.z = z;
-            gParkEntranceGhostDirection = direction;
-            gParkEntranceGhostExists = true;
-        }
-        return result;
-    }
-
 
     sint32 park_entrance_get_index(sint32 x, sint32 y, sint32 z)
     {
