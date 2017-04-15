@@ -2047,7 +2047,7 @@ void Network::Client_Handle_GAME_ACTION(NetworkConnection& connection, NetworkPa
 	uint8 playerid;
 	packet >> tick >> type >> playerid;
 	MemoryStream stream;
-	uint16 size = packet.Size - packet.BytesRead;
+	size_t size = packet.Size - packet.BytesRead;
 	stream.WriteArray(packet.Read(size), size);
 	stream.SetPosition(0);
 	GameCommand gc = GameCommand(tick, type, stream, playerid);
@@ -2113,7 +2113,7 @@ void Network::Server_Handle_GAME_ACTION(NetworkConnection& connection, NetworkPa
 	// Run game command, and if it is successful send to clients
 	auto ga = GameActions::Create(commandType);
 	MemoryStream stream;
-	uint16 size = packet.Size - packet.BytesRead;
+	size_t size = packet.Size - packet.BytesRead;
 	stream.WriteArray(packet.Read(size), size);
 	stream.SetPosition(0);
 	uint32 flags = stream.ReadValue<uint32>();
