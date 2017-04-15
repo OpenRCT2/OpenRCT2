@@ -81,13 +81,13 @@ extern "C"
     {
         auto gameAction = SetParkEntranceFeeAction();
         gameAction.Fee = (money16)value;
-        GameActions::Execute(&gameAction, 0, nullptr);
+        GameActions::Execute(&gameAction);
     }
 
     void game_command_set_park_entrance_fee(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp)
     {
         auto gameAction = SetParkEntranceFeeAction();
         gameAction.Fee = (*edi & 0xFFFF);
-        GameActions::Execute(&gameAction, 0, nullptr);
+        GameActions::Execute(&gameAction);
     }
 }
