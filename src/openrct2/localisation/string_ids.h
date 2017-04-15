@@ -3698,9 +3698,11 @@ enum {
 	STR_QUICK_DEMOLISH_RIDE = 6039,
 
 	STR_ACTION_EDIT_SCENARIO_OPTIONS = 6040,
+	
+	STR_NO_MECHANICS_ARE_HIRED_MESSAGE = 6041,
 
 	// Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
-	STR_COUNT = 32768
+	STR_COUNT = 32769
 };
 
 #endif
