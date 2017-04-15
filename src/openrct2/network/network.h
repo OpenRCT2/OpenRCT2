@@ -181,6 +181,7 @@ public:
     std::string ServerProviderWebsite;
 
 private:
+<<<<<<< 8f169e5ce2dfbca82427a8ee4023704f0ea31e2c
     bool ProcessConnection(NetworkConnection& connection);
     void ProcessPacket(NetworkConnection& connection, NetworkPacket& packet);
     void AddClient(ITcpSocket * socket);
@@ -208,12 +209,6 @@ private:
             tick = t; playerid = p; actionType = aType;
             // Note this will leak memory. Do something about this
             parameters = new MemoryStream(stream);
-        }
-
-        ~GameCommand()
-        {
-            if (parameters != nullptr)
-                delete parameters;
         }
 
         uint32 tick;

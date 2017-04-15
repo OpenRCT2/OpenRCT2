@@ -38,128 +38,6 @@ rct_xyzd16 gParkEntrances[MAX_PARK_ENTRANCES];
 rct_xyzd16 gRideEntranceExitGhostPosition;
 uint8 gRideEntranceExitGhostStationIndex;
 
-static money32 ParkEntrancePlace(sint32 flags, sint16 x, sint16 y, uint8 z, uint8 direction)
-{
-    if (!(gScreenFlags & SCREEN_FLAGS_EDITOR) && !gCheatsSandboxMode)
-    {
-        return MONEY32_UNDEFINED;
-    }
-
-    gCommandExpenditureType = RCT_EXPENDITURE_TYPE_LAND_PURCHASE;
-
-    gCommandPosition.x = x;
-    gCommandPosition.y = y;
-    gCommandPosition.z = z * 16;
-
-    if (!map_check_free_elements_and_reorganise(3))
-    {
-        return MONEY32_UNDEFINED;
-    }
-
-    if (x <= 32 || y <= 32 || x >= (gMapSizeUnits - 32) || y >= (gMapSizeUnits - 32))
-    {
-        gGameCommandErrorText = STR_TOO_CLOSE_TO_EDGE_OF_MAP;
-        return MONEY32_UNDEFINED;
-    }
-
-    sint8 entranceNum = -1;
-    for (uint8 i = 0; i < MAX_PARK_ENTRANCES; ++i)
-    {
-        if (gParkEntrances[i].x == MAP_LOCATION_NULL)
-        {
-            entranceNum = i;
-            break;
-        }
-    }
-
-    if (entranceNum == -1)
-    {
-        gGameCommandErrorText = STR_ERR_TOO_MANY_PARK_ENTRANCES;
-        return MONEY32_UNDEFINED;
-    }
-
-    if (flags & GAME_COMMAND_FLAG_APPLY)
-    {
-        gParkEntrances[entranceNum].x = x;
-        gParkEntrances[entranceNum].y = y;
-        gParkEntrances[entranceNum].z = z  * 16;
-        gParkEntrances[entranceNum].direction = direction;
-    }
-
-    sint8 zLow = z * 2;
-    sint8 zHigh = zLow + 12;
-
-    for (uint8 index = 0; index < 3; index++)
-    {
-        if (index == 1)
-        {
-            x += TileDirectionDelta[(direction - 1) & 0x3].x;
-            y += TileDirectionDelta[(direction - 1) & 0x3].y;
-        }
-        else if (index == 2)
-        {
-            x += TileDirectionDelta[(direction + 1) & 0x3].x * 2;
-            y += TileDirectionDelta[(direction + 1) & 0x3].y * 2;
-        }
-
-        if (!gCheatsDisableClearanceChecks)
-        {
-            if (!map_can_construct_at(x, y, zLow, zHigh, 0xF))
-            {
-                return MONEY32_UNDEFINED;
-            }
-        }
-
-        // Check that entrance element does not already exist at this location
-        rct_map_element* entranceElement = map_get_park_entrance_element_at(x, y, zLow, false);
-        if (entranceElement != NULL)
-        {
-            return MONEY32_UNDEFINED;
-        }
-
-        if (!(flags & GAME_COMMAND_FLAG_APPLY))
-        {
-            continue;
-        }
-
-        if (!(flags & GAME_COMMAND_FLAG_GHOST))
-        {
-            rct_map_element* surfaceElement = map_get_surface_element_at(x / 32, y / 32);
-            surfaceElement->properties.surface.ownership = 0;
-        }
-
-        rct_map_element* newElement = map_element_insert(x / 32, y / 32, zLow, 0xF);
-        assert(newElement != NULL);
-        newElement->clearance_height = zHigh;
-
-        if (flags & GAME_COMMAND_FLAG_GHOST)
-        {
-            newElement->flags |= MAP_ELEMENT_FLAG_GHOST;
-        }
-
-        newElement->type = MAP_ELEMENT_TYPE_ENTRANCE;
-        newElement->type |= direction;
-        newElement->properties.entrance.index = index;
-        newElement->properties.entrance.type = ENTRANCE_TYPE_PARK_ENTRANCE;
-        newElement->properties.entrance.path_type = gFootpathSelectedId;
-
-        if (!(flags & GAME_COMMAND_FLAG_GHOST))
-        {
-            footpath_connect_edges(x, y, newElement, 1);
-        }
-
-        update_park_fences_around_tile(x, y);
-
-        map_invalidate_tile(x, y, newElement->base_height * 8, newElement->clearance_height * 8);
-
-        if (index == 0)
-        {
-            map_animation_create(MAP_ANIMATION_TYPE_PARK_ENTRANCE, x, y, zLow);
-        }
-    }
-    return 0;
-}
-
 static void ParkEntranceRemoveSegment(sint32 x, sint32 y, sint32 z)
 {
     rct_map_element *mapElement;
@@ -576,25 +454,6 @@ static money32 RideEntranceExitPlaceGhost(uint8 rideIndex, sint16 x, sint16 y, u
 
 extern "C"
 {
-    /**
-     *
-     *  rct2: 0x006666E7
-     */
-    void game_command_place_park_entrance(sint32* eax,
-                                          sint32* ebx,
-                                          sint32* ecx,
-                                          sint32* edx,
-                                          sint32* esi,
-                                          sint32* edi,
-                                          sint32* ebp)
-    {
-        *ebx = ParkEntrancePlace(
-            *ebx & 0xFF,
-            *eax & 0xFFFF,
-            *ecx & 0xFFFF,
-            *edx & 0xFF,
-            (*ebx >> 8) & 0xFF);
-    }
 
     /**
      *
@@ -635,41 +494,6 @@ extern "C"
             );
         }
     }
-
-    /**
-     *
-     *  rct2: 0x00666F4E
-     */
-    money32 park_entrance_place_ghost(sint32 x, sint32 y, sint32 z, sint32 direction)
-    {
-        money32 result;
-
-        park_entrance_remove_ghost();
-        result = game_do_command(
-            x,
-            GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED |
-            GAME_COMMAND_FLAG_5 |
-            GAME_COMMAND_FLAG_GHOST |
-            GAME_COMMAND_FLAG_APPLY |
-            (direction << 8),
-            y,
-            z,
-            GAME_COMMAND_PLACE_PARK_ENTRANCE,
-            0,
-            0
-        );
-
-        if (result != MONEY32_UNDEFINED)
-        {
-            gParkEntranceGhostPosition.x = x;
-            gParkEntranceGhostPosition.y = y;
-            gParkEntranceGhostPosition.z = z;
-            gParkEntranceGhostDirection = direction;
-            gParkEntranceGhostExists = true;
-        }
-        return result;
-    }
-
 
     sint32 park_entrance_get_index(sint32 x, sint32 y, sint32 z)
     {
