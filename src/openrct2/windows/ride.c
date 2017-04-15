@@ -4018,9 +4018,7 @@ static void window_ride_maintenance_paint(rct_window *w, rct_drawpixelinfo *dpi)
 			FOR_ALL_STAFF(spriteIndex, peep){
 				if(peep->staff_type == STAFF_TYPE_MECHANIC){
 					count++;
-					if(count > 0){
-						break;
-					}
+					break;
 				}
 			}
 		
