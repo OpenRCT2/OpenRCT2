@@ -1368,7 +1368,6 @@ void Network::ProcessGameCommandQueue()
             IGameAction * action = GameActions::Create(gc.actionType);
             uint32 flags = gc.parameters->ReadValue<uint32>();
             action->Deserialise(gc.parameters);
-            delete gc.parameters;
             GameActionResult result = GameActions::Execute(action, flags | GAME_COMMAND_FLAG_NETWORKED);
             if (result.Error != GA_ERROR::OK)
             {
@@ -2048,9 +2047,8 @@ void Network::Client_Handle_GAME_ACTION(NetworkConnection& connection, NetworkPa
 	uint8 playerid;
 	packet >> tick >> type >> playerid;
 	MemoryStream stream;
-	for (size_t i = packet.BytesRead; i < packet.Size; ++i) {
-		stream.WriteValue(((uint8*)packet.GetData())[i]);
-	}
+	uint16 size = packet.Size - packet.BytesRead;
+	stream.WriteArray(packet.Read(size), size);
 	stream.SetPosition(0);
 	GameCommand gc = GameCommand(tick, type, stream, playerid);
 	game_command_queue.insert(gc);
@@ -2066,11 +2064,6 @@ void Network::Server_Handle_GAME_ACTION(NetworkConnection& connection, NetworkPa
 	}
 
 	packet >> tick >> commandType;
-	MemoryStream stream;
-	for (size_t i = packet.BytesRead; i < packet.Size; ++i) {
-		stream.WriteValue(((uint8*)packet.GetData())[i]);
-	}
-	stream.SetPosition(0);
 
 	//tick count is different by time last_action_time is set, keep same value
 	// Check if player's group permission allows command to run
@@ -2119,6 +2112,10 @@ void Network::Server_Handle_GAME_ACTION(NetworkConnection& connection, NetworkPa
 	game_command_playerid = connection.Player->Id;
 	// Run game command, and if it is successful send to clients
 	auto ga = GameActions::Create(commandType);
+	MemoryStream stream;
+	uint16 size = packet.Size - packet.BytesRead;
+	stream.WriteArray(packet.Read(size), size);
+	stream.SetPosition(0);
 	uint32 flags = stream.ReadValue<uint32>();
 	ga->Deserialise(&stream);
 	auto result = GameActions::Execute(ga, GAME_COMMAND_FLAG_NETWORKED | flags);

@@ -210,10 +210,16 @@ private:
             parameters = new MemoryStream(stream);
         }
 
+        ~GameCommand()
+        {
+            if (parameters != nullptr)
+                delete parameters;
+        }
+
         uint32 tick;
         uint32 eax, ebx, ecx, edx, esi, edi, ebp;
         uint32 actionType = 0xFFFFFFFF;
-        MemoryStream *parameters;
+        MemoryStream *parameters = nullptr;
         uint8 playerid;
         uint8 callback;
         bool operator<(const GameCommand& comp) const {
