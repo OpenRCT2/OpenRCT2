@@ -100,6 +100,13 @@ public:
     {
         // TODO: This should probably get implemented...
         STUB();
+        return nullptr;
+    }
+
+    IStream * GetFileStream(const utf8 * path) const override
+    {
+        STUB();
+        return nullptr;
     }
 
     void SetFileData(const utf8 * path, void * data, size_t dataSize) override
