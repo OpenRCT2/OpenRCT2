@@ -80,7 +80,7 @@ public:
 
         // TODO: Malloc our own copy
 
-        env->ReleaseStringChars(jniString, jniChars);
+        env->ReleaseStringUTFChars(jniString, jniChars);
         return nullptr;
     }
 
