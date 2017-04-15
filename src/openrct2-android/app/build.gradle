@@ -5,7 +5,7 @@ android {
     buildToolsVersion "25.0.2"
 
     defaultConfig {
-        applicationId "org.openrct2.android"
+        applicationId "org.openrct2"
         minSdkVersion 16
         targetSdkVersion 25
 
@@ -23,7 +23,21 @@ android {
         }
     }
 
+    signingConfigs {
+        debug {
+            storeFile file("external/debug.keystore")
+        }
+    }
+
     buildTypes {
+        debug {
+            applicationIdSuffix '.debug'
+            versionNameSuffix "-DEBUG"
+        }
+        develop {
+            applicationIdSuffix '.develop'
+            versionNameSuffix "-DEVELOP"
+        }
         release {
             minifyEnabled false
         }
@@ -38,35 +52,6 @@ android {
 
 apply plugin: 'de.undercouch.download'
 
-
-def downloadLibrarySources(name, url, md5, archiveRoot) {
-    tasks.create(name: "downloadLibraries:${name}") {
-        def tempFile = new File(buildDir, "libs/${md5}.tar.gz")
-        def destDir = new File(projectDir, "/../libs/${name}")
-        outputs.dir destDir
-
-        doLast {
-            if (!tempFile.exists()) {
-                download {
-                    src url
-                    dest tempFile
-                    overwrite true
-                }
-            }
-
-            copy {
-                from tarTree(resources.gzip(tempFile))
-                into temporaryDir
-            }
-
-            copy {
-                from new File(temporaryDir, archiveRoot)
-                into destDir
-            }
-        }
-    }
-}
-
 task downloadLibraries {
 
     dependsOn {
@@ -76,8 +61,8 @@ task downloadLibraries {
 
 dependencies {
     compile 'commons-io:commons-io:2.5'
-    compile 'com.android.support:appcompat-v7:25.0.0'
-    compile 'com.google.android.gms:play-services-analytics:9.8.0'
+    compile 'com.android.support:appcompat-v7:25.3.1'
+    compile 'com.google.android.gms:play-services-analytics:10.2.1'
 }
 
 task copyLanguageAssets(type: Copy) {
@@ -88,18 +73,7 @@ task copyLanguageAssets(type: Copy) {
 project.afterEvaluate {
     mergeDebugAssets.dependsOn copyLanguageAssets
 
-    mergeReleaseAssets.dependsOn copyLanguageAssets
-}
-
-project.afterEvaluate {
-    // Download the licenses when (actually: just before) the
-    // resources are generated (for both the "debug" and the
-    // "release" build types).
-
-    // If you add/change build types, you have to add to/change
-    // these task names.
-    preBuild.dependsOn tasks['downloadLibraries']
-    preDebugBuild.dependsOn tasks['downloadLibraries']
+    //mergeReleaseAssets.dependsOn copyLanguageAssets
 }
 
 apply plugin: 'com.google.gms.google-services'
