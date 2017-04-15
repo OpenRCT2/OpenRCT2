@@ -72,6 +72,11 @@
     <ClCompile Include="audio\FileAudioSource.cpp" />
     <ClCompile Include="audio\MemoryAudioSource.cpp" />
     <ClCompile Include="audio\NullAudioSource.cpp" />
+    <ClCompile Include="cmdline\UriHandler.cpp" />
+    <ClCompile Include="config\Config.cpp" />
+    <ClCompile Include="config\IniReader.cpp" />
+    <ClCompile Include="config\IniWriter.cpp" />
+    <ClCompile Include="config\KeyboardShortcuts.cpp" />
     <ClCompile Include="FileClassifier.cpp" />
     <ClCompile Include="network\ServerList.cpp" />
     <ClCompile Include="ParkImporter.cpp" />
@@ -88,7 +93,6 @@
     <ClCompile Include="cmdline\ScreenshotCommands.cpp" />
     <ClCompile Include="cmdline\SpriteCommands.cpp" />
     <ClCompile Include="cmdline_sprite.c" />
-    <ClCompile Include="config.c" />
     <ClCompile Include="core\Console.cpp" />
     <ClCompile Include="core\Diagnostics.cpp" />
     <ClCompile Include="core\File.cpp" />
@@ -331,8 +335,10 @@
     <ClCompile Include="windows\title_command_editor.c" />
     <ClCompile Include="windows\title_editor.c" />
     <ClCompile Include="windows\maze_construction.c" />
-    <ClCompile Include="world\balloon.c" />
-    <ClCompile Include="world\duck.c" />
+    <ClCompile Include="world\Balloon.cpp" />
+    <ClCompile Include="world\banner.cpp" />
+    <ClCompile Include="world\entrance.cpp" />
+    <ClCompile Include="world\Duck.cpp" />
     <ClCompile Include="world\money_effect.c" />
     <ClCompile Include="world\particle.c" />
     <ClCompile Include="util\sawyercoding.c" />
@@ -400,10 +406,9 @@
     <ClCompile Include="windows\view_clipping.c" />
     <ClCompile Include="windows\viewport.c" />
     <ClCompile Include="windows\water.c" />
-    <ClCompile Include="world\banner.c" />
-    <ClCompile Include="world\climate.c" />
+    <ClCompile Include="world\Climate.cpp" />
     <ClCompile Include="world\footpath.c" />
-    <ClCompile Include="world\fountain.c" />
+    <ClCompile Include="world\Fountain.cpp" />
     <ClCompile Include="world\map.c" />
     <ClCompile Include="world\mapgen.c" />
     <ClCompile Include="world\map_animation.c" />
@@ -411,6 +416,8 @@
     <ClCompile Include="world\park.c" />
     <ClCompile Include="world\scenery.c" />
     <ClCompile Include="world\sprite.c" />
+    <ClCompile Include="world\tile_inspector.c" />
+    <ClCompile Include="world\wall.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\resources\resource.h" />
@@ -418,6 +425,10 @@
     <ClInclude Include="audio\AudioFormat.h" />
     <ClInclude Include="audio\AudioMixer.h" />
     <ClInclude Include="audio\AudioSource.h" />
+    <ClInclude Include="config\Config.h" />
+    <ClInclude Include="config\ConfigEnum.hpp" />
+    <ClInclude Include="config\IniReader.hpp" />
+    <ClInclude Include="config\IniWriter.hpp" />
     <ClInclude Include="FileClassifier.h" />
     <ClInclude Include="network\ServerList.h" />
     <ClInclude Include="rct12.h" />
@@ -432,7 +443,6 @@
     <ClInclude Include="cmdline\CommandLine.hpp" />
     <ClInclude Include="cmdline_sprite.h" />
     <ClInclude Include="common.h" />
-    <ClInclude Include="config.h" />
     <ClInclude Include="core\Collections.hpp" />
     <ClInclude Include="core\Console.hpp" />
     <ClInclude Include="core\Diagnostics.hpp" />
@@ -584,12 +594,13 @@
     <ClInclude Include="util\util.h" />
     <ClInclude Include="windows\dropdown.h" />
     <ClInclude Include="windows\error.h" />
+    <ClInclude Include="windows\tile_inspector.h" />
     <ClInclude Include="windows\tooltip.h" />
     <ClInclude Include="world\banner.h" />
-    <ClInclude Include="world\climate.h" />
+    <ClInclude Include="world\Climate.h" />
     <ClInclude Include="world\entrance.h" />
     <ClInclude Include="world\footpath.h" />
-    <ClInclude Include="world\fountain.h" />
+    <ClInclude Include="world\Fountain.h" />
     <ClInclude Include="world\map.h" />
     <ClInclude Include="world\mapgen.h" />
     <ClInclude Include="world\map_animation.h" />
@@ -597,6 +608,7 @@
     <ClInclude Include="world\park.h" />
     <ClInclude Include="world\scenery.h" />
     <ClInclude Include="world\sprite.h" />
+    <ClInclude Include="world\tile_inspector.h" />
     <ClInclude Include="world\water.h" />
   </ItemGroup>
   <ItemGroup>

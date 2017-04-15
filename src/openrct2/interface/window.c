@@ -15,6 +15,7 @@
 #pragma endregion
 
 #include "../audio/audio.h"
+#include "../core/Guard.hpp"
 #include "../drawing/drawing.h"
 #include "../editor.h"
 #include "../game.h"
@@ -28,7 +29,7 @@
 #include "viewport.h"
 #include "widget.h"
 #include "window.h"
-#include "../config.h"
+#include "../config/Config.h"
 
 #define RCT2_FIRST_WINDOW		(g_window_list)
 #define RCT2_LAST_WINDOW		(gWindowNextSlot - 1)
@@ -41,7 +42,7 @@ rct_window * gWindowAudioExclusive;
 
 uint16 TextInputDescriptionArgs[4];
 widget_identifier gCurrentTextBox = { { 255, 0 }, 0 };
-char gTextBoxInput[512] = { 0 };
+char gTextBoxInput[TEXT_INPUT_SIZE] = { 0 };
 sint32 gMaxTextBoxInputLength = 0;
 sint32 gTextBoxFrameNo = 0;
 bool gUsingWidgetTextBox = 0;
@@ -311,7 +312,7 @@ static void window_all_wheel_input()
 		return;
 
 	// Check window cursor is over
-	if (!(gInputFlags & INPUT_FLAG_5)) {
+	if (!(input_test_flag(INPUT_FLAG_5))) {
 		rct_window *w = window_find_from_point(gCursorState.x, gCursorState.y);
 		if (w != NULL) {
 			// Check if main window
@@ -1274,12 +1275,13 @@ void window_push_others_below(rct_window *w1)
  */
 rct_window *window_get_main()
 {
-	rct_window* w;
+	rct_window* w = NULL;
 
 	for (w = g_window_list; w < RCT2_NEW_WINDOW; w++)
 		if (w->classification == WC_MAIN_WINDOW)
 			return w;
 
+	openrct2_assert(w != NULL, "Failed to get main window");
 	return NULL;
 }
 
@@ -1835,7 +1837,7 @@ void window_set_resize(rct_window *w, sint32 minWidth, sint32 minHeight, sint32 
  */
 sint32 tool_set(rct_window *w, sint32 widgetIndex, sint32 tool)
 {
-	if (gInputFlags & INPUT_FLAG_TOOL_ACTIVE) {
+	if (input_test_flag(INPUT_FLAG_TOOL_ACTIVE)) {
 		if (
 			w->classification == gCurrentToolWidget.window_classification &&
 			w->number == gCurrentToolWidget.window_number &&
@@ -1848,8 +1850,8 @@ sint32 tool_set(rct_window *w, sint32 widgetIndex, sint32 tool)
 		}
 	}
 
-	gInputFlags |= INPUT_FLAG_TOOL_ACTIVE;
-	gInputFlags &= ~INPUT_FLAG_6;
+	input_set_flag(INPUT_FLAG_TOOL_ACTIVE, true);
+	input_set_flag(INPUT_FLAG_6, false);
 	gCurrentToolId = tool;
 	gCurrentToolWidget.window_classification = w->classification;
 	gCurrentToolWidget.window_number = w->number;
@@ -1863,8 +1865,8 @@ sint32 tool_set(rct_window *w, sint32 widgetIndex, sint32 tool)
  */
 void tool_cancel()
 {
-	if (gInputFlags & INPUT_FLAG_TOOL_ACTIVE) {
-		gInputFlags &= ~INPUT_FLAG_TOOL_ACTIVE;
+	if (input_test_flag(INPUT_FLAG_TOOL_ACTIVE)) {
+		input_set_flag(INPUT_FLAG_TOOL_ACTIVE, false);
 
 		map_invalidate_selection_rect();
 		map_invalidate_map_selection_tiles();
@@ -2487,7 +2489,7 @@ void window_start_textbox(rct_window *call_w, sint32 call_widget, rct_string_id 
 	// Enter in the the text input buffer any existing
 	// text.
 	if (existing_text != STR_NONE)
-		format_string(gTextBoxInput, 512, existing_text, &existing_args);
+		format_string(gTextBoxInput, TEXT_INPUT_SIZE, existing_text, &existing_args);
 
 	// In order to prevent strings that exceed the maxLength
 	// from crashing the game.

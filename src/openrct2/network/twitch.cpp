@@ -30,12 +30,13 @@
 #endif
 
 #include <vector>
+#include <SDL.h>
 #include "../core/Math.hpp"
 #include "../core/String.hpp"
 
 extern "C"
 {
-    #include "../config.h"
+    #include "../config/Config.h"
     #include "../drawing/drawing.h"
     #include "../game.h"
     #include "../interface/console.h"
@@ -199,7 +200,7 @@ namespace Twitch
         _twitchState = TWITCH_STATE_JOINING;
         _twitchIdle = false;
 
-        http_request_t request;
+        http_request_t request = { 0 };
         request.url = url;
         request.method = HTTP_METHOD_GET;
         request.body = nullptr;
@@ -276,7 +277,7 @@ namespace Twitch
         _twitchState = TWITCH_STATE_WAITING;
         _twitchIdle = false;
 
-        http_request_t request;
+        http_request_t request = { 0 };
         request.url = url;
         request.method = HTTP_METHOD_GET;
         request.body = NULL;
@@ -307,7 +308,7 @@ namespace Twitch
         _twitchState = TWITCH_STATE_WAITING;
         _twitchIdle = false;
 
-        http_request_t request;
+        http_request_t request = { 0 };
         request.url = url;
         request.method = HTTP_METHOD_GET;
         request.body = nullptr;

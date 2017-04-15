@@ -259,7 +259,7 @@ static void window_clear_scenery_paint(rct_window *w, rct_drawpixelinfo *dpi)
  */
 static sint32 window_clear_scenery_should_close()
 {
-	if (!(gInputFlags & INPUT_FLAG_TOOL_ACTIVE))
+	if (!(input_test_flag(INPUT_FLAG_TOOL_ACTIVE)))
 		return 1;
 	if (gCurrentToolWidget.window_classification != WC_TOP_TOOLBAR)
 		return 1;

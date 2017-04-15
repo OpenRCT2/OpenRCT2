@@ -14,7 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../config.h"
+#include "../config/Config.h"
 #include "../game.h"
 #include "../localisation/date.h"
 #include "../localisation/localisation.h"
@@ -30,6 +30,7 @@
 #include "../scenario/scenario.h"
 #include "../sprites.h"
 #include "../util/util.h"
+#include "../world/entrance.h"
 #include "../world/park.h"
 #include "../world/sprite.h"
 #include "../management/finance.h"
@@ -634,7 +635,7 @@ void window_park_entrance_open()
  */
 static void window_park_entrance_close(rct_window *w)
 {
-	if (gInputFlags & INPUT_FLAG_TOOL_ACTIVE)
+	if (input_test_flag(INPUT_FLAG_TOOL_ACTIVE))
 		if (w->classification == gCurrentToolWidget.window_classification && w->number == gCurrentToolWidget.window_number)
 			tool_cancel();
 }
@@ -1155,14 +1156,14 @@ static void window_park_init_viewport(rct_window *w)
 
 void toggle_land_rights_window(rct_window *parkWindow, sint32 widgetIndex)
 {
-	if ((gInputFlags & INPUT_FLAG_TOOL_ACTIVE) && gCurrentToolWidget.window_classification == WC_PARK_INFORMATION &&
+	if ((input_test_flag(INPUT_FLAG_TOOL_ACTIVE)) && gCurrentToolWidget.window_classification == WC_PARK_INFORMATION &&
 		gCurrentToolWidget.widget_index == WIDX_BUY_LAND_RIGHTS) {
 		tool_cancel();
 	}
 	else {
 		show_gridlines();
 		tool_set(parkWindow, widgetIndex, 2);
-		gInputFlags |= INPUT_FLAG_6;
+		input_set_flag(INPUT_FLAG_6, true);
 		gLandToolSize = 1;
 		window_land_rights_open();
 	}
@@ -1187,7 +1188,7 @@ void window_park_rating_open()
 		window->viewport_focus_coordinates.y = -1;
 	}
 
-	if (gInputFlags & INPUT_FLAG_TOOL_ACTIVE)
+	if (input_test_flag(INPUT_FLAG_TOOL_ACTIVE))
 	if (window->classification == gCurrentToolWidget.window_classification && window->number == gCurrentToolWidget.window_number)
 		tool_cancel();
 
@@ -1303,7 +1304,7 @@ void window_park_guests_open()
 		window->viewport_focus_coordinates.y = -1;
 	}
 
-	if (gInputFlags & INPUT_FLAG_TOOL_ACTIVE)
+	if (input_test_flag(INPUT_FLAG_TOOL_ACTIVE))
 		if (window->classification == gCurrentToolWidget.window_classification && window->number == gCurrentToolWidget.window_number)
 			tool_cancel();
 
@@ -1673,7 +1674,7 @@ void window_park_objective_open()
 		window->viewport_focus_coordinates.y = -1;
 	}
 
-	if (gInputFlags & INPUT_FLAG_TOOL_ACTIVE)
+	if (input_test_flag(INPUT_FLAG_TOOL_ACTIVE))
 		if (window->classification == gCurrentToolWidget.window_classification && window->number == gCurrentToolWidget.window_number)
 			tool_cancel();
 
@@ -1838,7 +1839,7 @@ void window_park_awards_open()
 		window->viewport_focus_coordinates.y = -1;
 	}
 
-	if (gInputFlags & INPUT_FLAG_TOOL_ACTIVE)
+	if (input_test_flag(INPUT_FLAG_TOOL_ACTIVE))
 		if (window->classification == gCurrentToolWidget.window_classification && window->number == gCurrentToolWidget.window_number)
 			tool_cancel();
 
@@ -1946,7 +1947,7 @@ static void window_park_set_page(rct_window *w, sint32 page)
 {
 	sint32 listen;
 
-	if (gInputFlags & INPUT_FLAG_TOOL_ACTIVE)
+	if (input_test_flag(INPUT_FLAG_TOOL_ACTIVE))
 		if (w->classification == gCurrentToolWidget.window_classification && w->number == gCurrentToolWidget.window_number)
 			tool_cancel();
 

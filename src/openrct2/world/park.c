@@ -15,7 +15,7 @@
 #pragma endregion
 
 #include "../cheats.h"
-#include "../config.h"
+#include "../config/Config.h"
 #include "../game.h"
 #include "../interface/colour.h"
 #include "../interface/window.h"
@@ -32,6 +32,7 @@
 #include "../ride/ride_data.h"
 #include "../scenario/scenario.h"
 #include "../world/map.h"
+#include "entrance.h"
 #include "park.h"
 #include "sprite.h"
 
@@ -69,13 +70,6 @@ sint32 _suggestedGuestMaximum;
  * approximately 1 guest per second can be generated (+60 guests in one minute).
  */
 sint32 _guestGenerationProbability;
-
-rct_xyzd16 gParkEntrances[MAX_PARK_ENTRANCES];
-
-bool gParkEntranceGhostExists;
-rct_xyz16 gParkEntranceGhostPosition;
-uint8 gParkEntranceGhostDirection;
-money32 gParkEntranceGhostPrice;
 
 sint32 park_is_open()
 {
@@ -354,12 +348,10 @@ money32 calculate_company_value()
  *
  *  rct2: 0x00667104
  */
-void reset_park_entrances()
+void reset_park_entry()
 {
 	gParkName = 0;
-	for (sint32 i = 0; i < MAX_PARK_ENTRANCES; i++) {
-		gParkEntrances[i].x = MAP_LOCATION_NULL;
-	}
+    reset_park_entrance();
 	for (sint32 i = 0; i < MAX_PEEP_SPAWNS; i++) {
 		gPeepSpawns[i].x = PEEP_SPAWN_UNDEFINED;
 	}
@@ -474,21 +466,25 @@ static sint32 park_calculate_guest_generation_probability()
 	return probability;
 }
 
-static void get_random_peep_spawn(rct2_peep_spawn *spawn)
+/**
+ * Choose a random peep spawn and iterates through until defined spawn is found.
+ */
+static uint32 get_random_peep_spawn_index()
 {
-	*spawn = gPeepSpawns[0];
-	if (gPeepSpawns[1].x != PEEP_SPAWN_UNDEFINED) {
-		if (scenario_rand() & 0x80000) {
-			*spawn = gPeepSpawns[1];
-		}
+	uint32 spawnIndexList[MAX_PEEP_SPAWNS];
+	uint32 numSpawns = map_get_available_peep_spawn_index_list(spawnIndexList);
+	if (numSpawns > 0) {
+		return spawnIndexList[scenario_rand() % numSpawns];
+	}
+	else {
+		return 0;
 	}
 }
 
 rct_peep *park_generate_new_guest()
 {
 	rct_peep *peep = NULL;
-	rct2_peep_spawn spawn;
-	get_random_peep_spawn(&spawn);
+	rct2_peep_spawn spawn = gPeepSpawns[get_random_peep_spawn_index()];
 
 	if (spawn.x != 0xFFFF) {
 		spawn.direction ^= 2;
@@ -709,23 +705,6 @@ void game_command_set_park_open(sint32* eax, sint32* ebx, sint32* ecx, sint32* e
 	*ebx = 0;
 }
 
-sint32 park_get_entrance_index(sint32 x, sint32 y, sint32 z)
-{
-	sint32 i;
-
-	for (i = 0; i < MAX_PARK_ENTRANCES; i++) {
-		if (
-			x == gParkEntrances[i].x &&
-			y == gParkEntrances[i].y &&
-			z == gParkEntrances[i].z
-		) {
-			return i;
-		}
-	}
-
-	return -1;
-}
-
 /**
 *
 *  rct2: 0x00664D05
@@ -795,76 +774,6 @@ void update_park_fences(sint32 x, sint32 y)
 		map_invalidate_tile(x, y, z0, z1);
 		sufaceElement->properties.surface.ownership = newOwnership;
 	}
-}
-
-static void park_remove_entrance_segment(sint32 x, sint32 y, sint32 z)
-{
-	rct_map_element *mapElement;
-
-	mapElement = map_get_park_entrance_element_at(x, y, z, true);
-	if (mapElement == NULL)
-		return;
-
-	map_invalidate_tile(x, y, mapElement->base_height * 8, mapElement->clearance_height * 8);
-	map_element_remove(mapElement);
-	update_park_fences(x, y);
-}
-
-/**
- *
- *  rct2: 0x00666A63
- */
-void game_command_remove_park_entrance(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *edx, sint32 *esi, sint32 *edi, sint32 *ebp)
-{
-	sint32 x, y, z, entranceIndex, direction;
-
-	x = *eax & 0xFFFF;
-	y = *ecx & 0xFFFF;
-	z = *edx * 16;
-
-	if (!(gScreenFlags & SCREEN_FLAGS_EDITOR) && !gCheatsSandboxMode) {
-		*ebx = MONEY32_UNDEFINED;
-		return;
-	}
-
-	gCommandExpenditureType = RCT_EXPENDITURE_TYPE_LAND_PURCHASE;
-	gCommandPosition.x = x;
-	gCommandPosition.y = y;
-	gCommandPosition.z = z;
-
-	if (!(*ebx & GAME_COMMAND_FLAG_APPLY)) {
-		*ebx = 0;
-		return;
-	}
-
-	entranceIndex = park_get_entrance_index(x, y, z);
-	if (entranceIndex == -1) {
-		*ebx = 0;
-		return;
-	}
-
-	gParkEntrances[entranceIndex].x = MAP_LOCATION_NULL;
-	direction = (gParkEntrances[entranceIndex].direction - 1) & 3;
-	z = (*edx & 0xFF) * 2;
-
-	// Centre (sign)
-	park_remove_entrance_segment(x, y, z);
-
-	// Left post
-	park_remove_entrance_segment(
-		x + TileDirectionDelta[direction].x,
-		y + TileDirectionDelta[direction].y,
-		z
-	);
-
-	// Right post
-	park_remove_entrance_segment(
-		x - TileDirectionDelta[direction].x,
-		y - TileDirectionDelta[direction].y,
-		z
-	);
-
-	*ebx = 0;
 }
 
 void park_set_name(const char *name)
@@ -1132,54 +1041,6 @@ void set_forced_park_rating(sint32 rating){
 
 sint32 get_forced_park_rating(){
 	return gForcedParkRating;
-}
-
-/**
- *
- *  rct2: 0x00666F9E
- */
-void park_remove_ghost_entrance()
-{
-	if (gParkEntranceGhostExists) {
-		gParkEntranceGhostExists = false;
-		game_do_command(
-			gParkEntranceGhostPosition.x,
-			40 | GAME_COMMAND_FLAG_APPLY,
-			gParkEntranceGhostPosition.y,
-			gParkEntranceGhostPosition.z,
-			GAME_COMMAND_REMOVE_PARK_ENTRANCE,
-			0,
-			0
-		);
-	}
-}
-
-/**
- *
- *  rct2: 0x00666F4E
- */
-money32 park_place_ghost_entrance(sint32 x, sint32 y, sint32 z, sint32 direction)
-{
-	money32 result;
-
-	park_remove_ghost_entrance();
-	result = game_do_command(
-		x,
-		104 | GAME_COMMAND_FLAG_APPLY | (direction << 8),
-		y,
-		z,
-		GAME_COMMAND_PLACE_PARK_ENTRANCE,
-		0,
-		0
-	);
-	if (result != MONEY32_UNDEFINED) {
-		gParkEntranceGhostPosition.x = x;
-		gParkEntranceGhostPosition.y = y;
-		gParkEntranceGhostPosition.z = z;
-		gParkEntranceGhostDirection = direction;
-		gParkEntranceGhostExists = true;
-	}
-	return result;
 }
 
 money16 park_get_entrance_fee()

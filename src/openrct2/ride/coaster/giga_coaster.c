@@ -6151,6 +6151,33 @@ static void giga_rc_track_right_banked_25_deg_down_to_flat(uint8 rideIndex, uint
 	giga_rc_track_flat_to_left_banked_25_deg_up(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
 }
 
+static void giga_rc_track_booster(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+{
+    // These offsets could be moved to the g2.dat file when that supports offsets.
+    sint8 ne_sw_offsetX = 7;
+    sint8 ne_sw_offsetY = -15;
+    sint8 nw_se_offsetX = -15;
+    sint8 nw_se_offsetY = 7;
+
+
+	switch (direction) {
+		case 0:
+		case 2:
+			sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | SPR_G2_GIGA_RC_BOOSTER_NE_SW, ne_sw_offsetX, ne_sw_offsetY, 32, 20, 3, height, 0, 6, height);
+			break;
+		case 1:
+		case 3:
+			sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | SPR_G2_GIGA_RC_BOOSTER_NW_SE, nw_se_offsetX, nw_se_offsetY, 32, 20, 3, height, 0, 6, height);
+			break;
+	}
+	if (track_paint_util_should_paint_supports(gPaintMapPosition)) {
+		metal_a_supports_paint_setup(METAL_SUPPORTS_TUBES, 4, 0, height, gTrackColours[SCHEME_SUPPORTS]);
+	}
+	paint_util_push_tunnel_rotated(direction, height, TUNNEL_6);
+	paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+	paint_util_set_general_support_height(height + 32, 0x20);
+}
+
 TRACK_PAINT_FUNCTION get_track_paint_function_giga_rc(sint32 trackType, sint32 direction)
 {
 	switch (trackType) {
@@ -6432,7 +6459,7 @@ TRACK_PAINT_FUNCTION get_track_paint_function_giga_rc(sint32 trackType, sint32 d
 		return giga_rc_track_right_banked_25_deg_down_to_flat;
 
 	case TRACK_ELEM_BOOSTER:
-		return giga_rc_track_brakes;
+		return giga_rc_track_booster;
 	}
 	return NULL;
 }

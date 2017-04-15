@@ -17,6 +17,7 @@
 #pragma once
 
 #include <string>
+#include <vector>
 #include "../common.h"
 
 namespace String
@@ -32,6 +33,7 @@ namespace String
     bool   Equals(const std::string &a, const std::string &b, bool ignoreCase = false);
     bool   Equals(const utf8 * a, const utf8 * b, bool ignoreCase = false);
     bool   StartsWith(const utf8 * str, const utf8 * match, bool ignoreCase = false);
+    size_t IndexOf(const utf8 * str, utf8 match, size_t startIndex = 0);
     size_t LastIndexOf(const utf8 * str, utf8 match);
 
     /**
@@ -64,6 +66,22 @@ namespace String
      */
     utf8 * DiscardDuplicate(utf8 * * ptr, const utf8 * replacement);
 
+    /**
+     * Creates a new string containing the characters between index and and end of the input string.
+     */
+    utf8 * Substring(const utf8 * buffer, size_t index);
+
+    /**
+     * Creates a new string containing the characters between index and index + size of the input string.
+     */
+    utf8 * Substring(const utf8 * buffer, size_t index, size_t size);
+
+    /**
+     * Splits the given string by a delimiter and returns the values as a new string array.
+     * @returns the number of values.
+     */
+    std::vector<std::string> Split(const std::string &s, const std::string &delimiter);
+
     utf8 *       SkipBOM(utf8 * buffer);
     const utf8 * SkipBOM(const utf8 * buffer);
 
@@ -75,4 +93,5 @@ namespace String
     utf8 *          Trim(utf8 * str);
     const utf8 *    TrimStart(const utf8 * str);
     utf8 *          TrimStart(utf8 * buffer, size_t bufferSize, const utf8 * src);
+    std::string     Trim(const std::string &s);
 }

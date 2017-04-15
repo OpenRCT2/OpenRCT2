@@ -14,7 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../config.h"
+#include "../config/Config.h"
 #include "../game.h"
 #include "../interface/viewport.h"
 #include "../interface/widget.h"
@@ -378,7 +378,7 @@ void window_staff_disable_widgets(rct_window* w)
  */
 void window_staff_overview_close(rct_window *w)
 {
-	if (gInputFlags & INPUT_FLAG_TOOL_ACTIVE){
+	if (input_test_flag(INPUT_FLAG_TOOL_ACTIVE)) {
 		if (w->classification == gCurrentToolWidget.window_classification &&
 			w->number == gCurrentToolWidget.window_number)
 			tool_cancel();
@@ -391,7 +391,7 @@ void window_staff_overview_close(rct_window *w)
  */
 void window_staff_set_page(rct_window* w, sint32 page)
 {
-	if (gInputFlags & INPUT_FLAG_TOOL_ACTIVE)
+	if (input_test_flag(INPUT_FLAG_TOOL_ACTIVE))
 	{
 		if(w->number == gCurrentToolWidget.window_number &&
 		   w->classification == gCurrentToolWidget.window_classification)
@@ -1318,7 +1318,7 @@ void window_staff_options_mousedown(sint32 widgetIndex, rct_window* w, rct_widge
 	sint32 y = widget->top + w->y;
 	sint32 extray = widget->bottom - widget->top + 1;
 	sint32 width = widget->right - widget->left - 3;
-	window_dropdown_show_text_custom_width(x, y, extray, w->colours[1], DROPDOWN_FLAG_STAY_OPEN, numCostumes, width);
+	window_dropdown_show_text_custom_width(x, y, extray, w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, numCostumes, width);
 
 	// See above note.
 	gDropdownItemsChecked = itemsChecked;

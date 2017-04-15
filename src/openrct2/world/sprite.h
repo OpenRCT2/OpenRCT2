@@ -127,6 +127,13 @@ typedef struct rct_balloon {
 	uint8 pad_28[4];
 	uint8 colour;					// 0x2C
 	uint8 var_2D;
+
+#ifdef __cplusplus
+	void Update();
+	void Pop();
+	void Press();
+#endif
+
 } rct_balloon;
 assert_struct_size(rct_balloon, 0x2e);
 
@@ -154,6 +161,19 @@ typedef struct rct_duck {
 	sint16 target_y;				// 0x32
 	uint8 pad_34[0x14];
 	uint8 state;					// 0x48
+
+#ifdef __cplusplus
+	void UpdateFlyToWater();
+	void UpdateSwim();
+	void UpdateDrink();
+	void UpdateDoubleDrink();
+	void UpdateFlyAway();
+	uint32 GetFrameImage(sint32 direction) const;
+	void Invalidate();
+	void Remove();
+	void MoveTo(sint16 x, sint16 y, sint16 z);
+#endif
+
 } rct_duck;
 assert_struct_size(rct_duck, 0x49);
 
@@ -337,6 +357,14 @@ typedef union {
 	rct_crashed_vehicle_particle crashed_vehicle_particle;
 	rct_crash_splash crash_splash;
 	rct_steam_particle steam_particle;
+
+#ifdef __cplusplus
+	bool IsBalloon();
+	bool IsDuck();
+	rct_balloon * AsBalloon();
+	rct_duck * AsDuck();
+#endif
+
 } rct_sprite;
 assert_struct_size(rct_sprite, 0x100);
 
@@ -376,6 +404,7 @@ enum {
 	LITTER_TYPE_EMPTY_BOWL_BLUE,
 };
 
+rct_sprite *try_get_sprite(size_t spriteIndex);
 rct_sprite *get_sprite(size_t sprite_idx);
 
 #ifdef NO_RCT2
@@ -414,7 +443,7 @@ void sprite_position_tween_reset();
 ///////////////////////////////////////////////////////////////
 // Balloon
 ///////////////////////////////////////////////////////////////
-void create_balloon(sint32 x, sint32 y, sint32 z, sint32 colour, uint8 bl);
+void create_balloon(sint32 x, sint32 y, sint32 z, sint32 colour, bool isPopped);
 void balloon_update(rct_balloon *balloon);
 void game_command_balloon_press(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp);
 
@@ -425,6 +454,7 @@ void create_duck(sint32 targetX, sint32 targetY);
 void duck_update(rct_duck *duck);
 void duck_press(rct_duck *duck);
 void duck_remove_all();
+uint32 duck_get_frame_image(const rct_duck * duck, sint32 direction);
 
 ///////////////////////////////////////////////////////////////
 // Money effect
@@ -443,3 +473,4 @@ void crash_splash_update(rct_crash_splash *splash);
 const char *sprite_checksum();
 
 #endif
+

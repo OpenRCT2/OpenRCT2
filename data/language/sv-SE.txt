@@ -842,6 +842,12 @@ STR_0837    :Kan inte initiera grafiksystemet
 STR_0838    :<not used anymore>
 STR_0839    :{UINT16} x {UINT16}
 STR_0840    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{UINT16} x {UINT16}
+STR_0841    :<removed string - do not use>
+STR_0842    :<removed string - do not use>
+STR_0843    :<removed string - do not use>
+STR_0844    :<removed string - do not use>
+STR_0845    :<removed string - do not use>
+STR_0846    :<removed string - do not use>
 STR_0847    :Om 'OpenRCT2'
 STR_0848    :RollerCoaster Tycoon 2
 STR_0849    :{WINDOW_COLOUR_2}Version 2.01.028
@@ -1646,6 +1652,8 @@ STR_1647    :
 STR_1648    :{SMALLFONT}{OPENQUOTES}Hjälp! Släpp ner mig!{ENDQUOTES}
 STR_1649    :{SMALLFONT}{OPENQUOTES}Jag börjar få slut på pengar!{ENDQUOTES}
 STR_1650    :{SMALLFONT}{OPENQUOTES}Wow! De bygger en ny åktur!{ENDQUOTES}
+STR_1651    :<removed string - do not use>
+STR_1652    :<removed string - do not use>
 STR_1653    :{SMALLFONT}{OPENQUOTES}...och nu är vi på {STRINGID}!{ENDQUOTES}
 STR_1654    :{WINDOW_COLOUR_2}Nyliga tankar:
 STR_1655    :{SMALLFONT}{BLACK}Bygg gångväg på land
@@ -1885,6 +1893,8 @@ STR_1888    :{WINDOW_COLOUR_2}Tid sen senaste inspektion: {BLACK}mer än 4 timma
 STR_1889    :{WINDOW_COLOUR_2}Dötid: {MOVE_X}{255}{BLACK}{COMMA16}%
 STR_1890    :{SMALLFONT}{BLACK}Välj hur ofta en mekaniker ska göra underhåll på den här åkturen
 STR_1891    :Ingen {STRINGID} i parken än!
+STR_1892    :<removed string - do not use>
+STR_1893    :<removed string - do not use>
 STR_1894    :{WINDOW_COLOUR_2}{STRINGID} sålde: {BLACK}{COMMA32}
 STR_1895    :{SMALLFONT}{BLACK}Bygg ny Åktur/attraktion
 STR_1896    :{WINDOW_COLOUR_2}Utgifter/Inkomster
@@ -3524,7 +3534,7 @@ STR_5195    :Rensa Land
 STR_5196    :Landsrättigheter
 STR_5197    :Dekorationer
 STR_5198    :Gångväg
-STR_5199    :Åkturskonstruktion
+STR_5199    :Åkturkonstruktion
 STR_5200    :Spårdesignplacering
 STR_5201    :Ny åktur
 STR_5202    :Spårdesignval
@@ -4295,8 +4305,38 @@ STR_5997    :Lägg till/Välj summa pengar
 STR_5998    :Lägg till summa pengar
 STR_5999    :Välj summa pengar
 STR_6000    :Skriv in nytt värde
-
+STR_6001    :Aktivera ljuseffekter (experiment)
+STR_6002    :{SMALLFONT}{BLACK}Lampor och åkturer kommer lysa upp i natten.{NEWLINE}Kräver rendering-motorn vara satt på Hårdvaruhantering.
+STR_6003    :Avskärnings-vy
+STR_6004    :Avskärnings-vy
+STR_6005    :Aktivera Avskärnings-vy
+STR_6006    :{SMALLFONT}{BLACK}Avskärnings-vyn kommer endast visa element på eller under den avskurna höjden
+STR_6007    :Avskärnings-höjd
+STR_6008    :{SMALLFONT}{BLACK}Klicka för att växla råa-värden<->värden i måttenheter
+STR_6009    :{SMALLFONT}{BLACK}Välj avskärnings-höjd
+STR_6010    :{COMMA2DP32}m
+STR_6011    :{COMMA1DP16}ft
 STR_6012    :{COMMA1DP16}
+STR_6013    :{SMALLFONT}{BLACK}Gästerna kommer endast betala biljetterna för att komma in i parken och tjänster.{NEWLINE}Åktursbiljetterna kommer vara gratis.
+STR_6014    :{SMALLFONT}{BLACK}Gästerna kommer endast betala för åkturer och tjänster.{NEWLINE}Dem kommer inte betala något för inträde.
+STR_6015    :Lutande
+STR_6016    :Modifiera Ruta
+STR_6017    :Vänligen sakta ned
+STR_6018    :Åkturkonstruktion - Sväng vänster
+STR_6019    :Åkturkonstruktion - Sväng höger
+STR_6020    :Åkturkonstruktion - Rakt spår
+STR_6021    :Åkturkonstruktion - Lutning nedåt
+STR_6022    :Åkturkonstruktion - Lutning uppåt
+STR_6023    :Åkturkonstruktion - Växla kjedjelyft
+STR_6024    :Åkturkonstruktion - Lutning vänster
+STR_6025    :Åkturkonstruktion - Lutning höger
+STR_6026    :Åkturkonstruktion - Föregående spår
+STR_6027    :Åkturkonstruktion - Nästa spår
+STR_6028    :Åkturkonstruktion - Bygg valda spår
+STR_6029    :Åkturkonstruktion - Riv valda spår
+STR_6030    :{SMALLFONT}{BLACK}Dekorations-väljaren. Klicka på en dekoration på kartan för att välja samma del för konstruktion.
+STR_6031    :Server Beskrivning:
+STR_6032    :Server Hälsning:
 
 #############
 # Scenarion #

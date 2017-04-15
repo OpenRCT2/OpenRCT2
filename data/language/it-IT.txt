@@ -3494,7 +3494,7 @@ STR_5151    :.
 #Decimal separator
 STR_5152    :,
 STR_5153    :Modifica temi...
-STR_5154    :Visualizzazione hardware
+STR_5154    :Rendering hardware
 STR_5155    :Permetti di testare percorsi non finiti
 STR_5156    :{SMALLFONT}{BLACK}Permette di effettuare il test della maggior parte dei percorsi anche quando il percorso non è un circuito completo, non si applica alla modalità sezioni a blocchi
 STR_5157    :Sblocca tutti i prezzi
@@ -3655,8 +3655,8 @@ STR_5309    :OpenRCT2
 STR_5310    :Casuale
 STR_5311    :{SMALLFONT}{BLACK}Strumenti di debug
 STR_5312    :Mostra console
-STR_5313    :Show tile inspector
-STR_5314    :Tile inspector
+STR_5313    :Mostra analizzatore cella
+STR_5314    :Analizzatore cella
 STR_5315    :Erba
 STR_5316    :Sabbia
 STR_5317    :Sporco
@@ -4037,8 +4037,8 @@ STR_5724    :Temporale
 STR_5725    :{BLACK}Forza clima:
 STR_5726    :{SMALLFONT}{BLACK}Imposta il clima attuale nel parco
 STR_5727    :Qualità scala
-STR_5728    :Richiede la visualizzazione hardware
-STR_5729    :{SMALLFONT}{BLACK}Richiede la visualizzazione hardware
+STR_5728    :Richiede il rendering hardware
+STR_5729    :{SMALLFONT}{BLACK}Richiede il rendering hardware
 STR_5730    :Nearest Neighbour
 STR_5731    :Lineare
 STR_5732    :Anisotropico
@@ -4128,9 +4128,9 @@ STR_5814    :{WINDOW_COLOUR_1}{OPENQUOTES}{STRING}{ENDQUOTES}
 #tooltips
 STR_5815    :{SMALLFONT}{BLACK}Mostra il contatore FPS mentre si gioca
 STR_5816    :{SMALLFONT}{BLACK}Imposta il rapporto a cui il gioco viene scalato.{NEWLINE}Utile quando si gioca ad alte risoluzioni
-STR_5817    :{SMALLFONT}{BLACK}[Richiede display hardware]{NEWLINE}Imposta il tipo di scalatura della grafica
-STR_5818    :{SMALLFONT}{BLACK}[Richiede display hardware]{NEWLINE}Usa la scalatura Nearest Neighbour{NEWLINE}quando il rapporto di scalatura{NEWLINE}è impostato a valori interi (1, 2, 3...)
-STR_5819    :{SMALLFONT}{BLACK}[Richiede display hardware]{NEWLINE}Mette in pausa il gioco{NEWLINE}se l'overlay di Steam è aperto
+STR_5817    :{SMALLFONT}{BLACK}[Richiede rendering hardware]{NEWLINE}Imposta il tipo di scalatura della grafica
+STR_5818    :{SMALLFONT}{BLACK}[Richiede rendering hardware]{NEWLINE}Usa la scalatura Nearest Neighbour{NEWLINE}quando il rapporto di scalatura{NEWLINE}è impostato a valori interi (1, 2, 3...)
+STR_5819    :{SMALLFONT}{BLACK}[Richiede rendering hardware]{NEWLINE}Mette in pausa il gioco{NEWLINE}se l'overlay di Steam è aperto
 STR_5820    :{SMALLFONT}{BLACK}Riduce a icona il gioco{NEWLINE}se il focus viene perso in modalità schermo intero
 STR_5821    :{SMALLFONT}{BLACK}Cambia il colore dell'indicatore di costruzione{NEWLINE}di attrazioni, sentieri, chioschi, scenario...
 STR_5822    :{SMALLFONT}{BLACK}Alterna tra giorno e notte.{NEWLINE}Un ciclo dura un mese di gioco.
@@ -4189,7 +4189,7 @@ STR_5874    :{SMALLFONT}{BLACK}Permette di rendere qualsiasi pezzo del tracciato
 STR_5875    :Motore di rendering:
 STR_5876    :{SMALLFONT}{BLACK}Il motore grafico usato per mostrare la grafica del gioco.
 STR_5877    :Software
-STR_5878    :Software (display hardware)
+STR_5878    :Software (rendering hardware)
 STR_5879    :OpenGL (sperimentale)
 STR_5880    :Solo selezionati
 STR_5881    :Solo non selezionati
@@ -4313,8 +4313,35 @@ STR_5997    :Aggiungi/imposta denaro
 STR_5998    :Aggiungi denaro
 STR_5999    :Imposta denaro
 STR_6000    :Inserire il nuovo valore
-
+STR_6001    :Attiva effetti luce (sperimentale)
+STR_6002    :{SMALLFONT}{BLACK}Le attrazioni e i lampioni saranno illuminati di notte.{NEWLINE}Richiede il motore di rendering hardware.
+STR_6003    :Vista sezionata
+STR_6004    :Vista sezionata
+STR_6005    :Attiva la vista sezionata
+STR_6006    :{SMALLFONT}{BLACK}La vista sezionata mostra solo elementi della mappa pari o inferiori all'altezza specificata
+STR_6007    :Altezza sezionamento
+STR_6008    :{SMALLFONT}{BLACK}Cliccare per cambiare tra valore grezzo e unità di misura
+STR_6009    :{SMALLFONT}{BLACK}Selezionare altezza sezionamento
+STR_6010    :{COMMA2DP32}m
+STR_6011    :{COMMA1DP16}ft
 STR_6012    :{COMMA1DP16}
+STR_6013    :{SMALLFONT}{BLACK}I visitatori pagheranno solo l'accesso al parco e i servizi.{NEWLINE}L'ingresso nelle attrazioni è gratis.
+STR_6014    :{SMALLFONT}{BLACK}I visitatori pagheranno solo l'ingresso nelle attrazioni.{NEWLINE}L'ingresso al parco è gratis.
+STR_6015    :Inclinato
+STR_6016    :Modifica cella
+STR_6017    :Si prega di rallentare
+STR_6018    :Costruzione percorso - Curva a sinistra
+STR_6019    :Costruzione percorso - Curva a destra
+STR_6020    :Costruzione percorso - Usa tracciato predefinito
+STR_6021    :Costruzione percorso - Discesa
+STR_6022    :Costruzione percorso - Salita
+STR_6023    :Costruzione percorso - Attiva catena di traino
+STR_6024    :Costruzione percorso - Inclina a sinistra
+STR_6025    :Costruzione percorso - Inclina a destra
+STR_6026    :Costruzione percorso - Pezzo precedente
+STR_6027    :Costruzione percorso - Pezzo successivo
+STR_6028    :Costruzione percorso - Costruisci attuale
+STR_6029    :Costruzione percorso - Demolisci attuale
 
 
 #############

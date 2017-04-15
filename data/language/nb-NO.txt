@@ -4321,6 +4321,24 @@ STR_6009    :{SMALLFONT}{BLACK}Velg kutthøyde
 STR_6010    :{COMMA2DP32}m
 STR_6011    :{COMMA1DP16}ft
 STR_6012    :{COMMA1DP16}
+STR_6013    :{SMALLFONT}{BLACK}Gjester betaler kun for inngang, tjenester og kioskvarer.{NEWLINE}De betaler ikke for attraksjoner.
+STR_6014    :{SMALLFONT}{BLACK}Gjester betaler kun for attraksjoner, tjenester og kioskvarer.{NEWLINE}De betaler ikke for inngang.
+STR_6015    :Helning
+STR_6016    :Endre rute
+STR_6017    :Vennligst ro ned
+STR_6018    :Attraksjonskonstruksjon - Sving venstre
+STR_6019    :Attraksjonskonstruksjon - Sving høyre
+STR_6020    :Attraksjonskonstruksjon - Rett spor
+STR_6021    :Attraksjonskonstruksjon - Bakke nedover
+STR_6022    :Attraksjonskonstruksjon - Bakke oppover
+STR_6023    :Attraksjonskonstruksjon - Skru av/på trekk
+STR_6024    :Attraksjonskonstruksjon - Helning venstre
+STR_6025    :Attraksjonskonstruksjon - Helning høyre
+STR_6026    :Attraksjonskonstruksjon - Flytt til forrige seksjon
+STR_6027    :Attraksjonskonstruksjon - Flytt til neste seksjon
+STR_6028    :Attraksjonskonstruksjon - Konstruer valgt seksjon
+STR_6029    :Attraksjonskonstruksjon - Fjern markert seksjon
+STR_6030    :{SMALLFONT}{BLACK}Pyntvelger. Klikk hvilken som helst pynt på kartet for å velge samme element for konstruksjon.
 
 #############
 # Scenarios #
@@ -4330,112 +4348,112 @@ STR_6012    :{COMMA1DP16}
 <Forest Frontiers>
 STR_SCNR    :Forest Frontiers
 STR_PARK    :Forest Frontiers
-STR_DTLS    :Deep in the forest, build a thriving theme park in a large cleared area
+STR_DTLS    :Bygg en blomstrende fornøyelsespark i en stor lysning langt inne i skogen
 
 <Dynamite Dunes>
 STR_SCNR    :Dynamite Dunes
 STR_PARK    :Dynamite Dunes
-STR_DTLS    :Built in the middle of the desert, this theme park contains just one roller coaster but has space for expansion
+STR_DTLS    :Denne ørken-fornøyelsesparken har kun én berg-og-dal-bane, men stort rom for utvidelse
 
 <Leafy Lake>
 STR_SCNR    :Leafy Lake
 STR_PARK    :Leafy Lake
-STR_DTLS    :Starting from scratch, build a theme park around a large lake
+STR_DTLS    :Bygg en fornøyelsespark rundt en stor innsjø fra bunnen av
 
 <Diamond Heights>
 STR_SCNR    :Diamond Heights
 STR_PARK    :Diamond Heights
-STR_DTLS    :Diamond Heights is already a successful theme park with great rides - develop it to double its value
+STR_DTLS    :Diamond Heights er allerede en vellykket fornøyelsespark med flotte attraksjoner – videreutvikle den til det dobbelte i verdi
 
 <Evergreen Gardens>
 STR_SCNR    :Evergreen Gardens
 STR_PARK    :Evergreen Gardens
-STR_DTLS    :Convert the beautiful Evergreen Gardens into a thriving theme park
+STR_DTLS    :Konverter den praktfulle parken Evergreen Gardens til en blomstrende fornøyelsespark
 
 <Bumbly Beach>
 STR_SCNR    :Bumbly Beach
 STR_PARK    :Bumbly Beach
-STR_DTLS    :Develop Bumbly Beach's small amusement park into a thriving theme park
+STR_DTLS    :Utvid Bumbly Beach sin lille fornøyelsespark til å bli storslått
 
 <Trinity Islands>
 STR_SCNR    :Trinity Islands
 STR_PARK    :Trinity Islands
-STR_DTLS    :Several islands form the basis for this new park
+STR_DTLS    :En liten øysamling er basisen for denne nye parken
 
 <Katie's Dreamland>
 STR_SCNR    :Katie's Dreamland
 STR_PARK    :Katie's Dreamland
-STR_DTLS    :A small theme park with a few rides and room for expansion - Your aim is to double the park value
+STR_DTLS    :En liten fornøyelsespark med noen få attraksjoner og rom for utvidelse – Målet ditt er å doble parkens verdi
 
 <Pokey Park>
 STR_SCNR    :Pokey Park
 STR_PARK    :Pokey Park
-STR_DTLS    :A small, cramped amusement park which requires major expansion
+STR_DTLS    :En liten og trang fornøyelsespark som trenger massiv utvidelse
 
 <White Water Park>
 STR_SCNR    :White Water Park
 STR_PARK    :White Water Park
-STR_DTLS    :A park with some excellent water-based rides requires expansion
+STR_DTLS    :En park med forteffelige vannbaserte attraksjoner som trenger utvidelse
 
 <Millennium Mines>
 STR_SCNR    :Millennium Mines
 STR_PARK    :Millennium Mines
-STR_DTLS    :Convert a large abandoned mine from a tourist attraction into a theme park
+STR_DTLS    :Konverter en forlatt gruve fra en døende turistattraksjon til en massiv fornøyelsespark
 
 <Karts & Coasters>
 STR_SCNR    :Karts & Coasters
 STR_PARK    :Karts & Coasters
-STR_DTLS    :A large park hidden in the forest, with only go-kart tracks and wooden roller coasters
+STR_DTLS    :En bortgjemt park i skogen, med kun go karts og tre-berg-og-dal-baner
 
 <Mel's World>
 STR_SCNR    :Mel's World
 STR_PARK    :Mel's World
-STR_DTLS    :This theme park has some well-designed modern rides, but plenty of space for expansion
+STR_DTLS    :Denne fornøyelsesparken har et par veldesignede moderne attraksjoner, men masse rom for utvidelse
 
 <Mystic Mountain>
 STR_SCNR    :Mystic Mountain
 STR_PARK    :Mystic Mountain
-STR_DTLS    :In the hilly forests of Mystic Mountain, build a theme park from scratch
+STR_DTLS    :I Mystic Mountains skogledde åser skal du bygge en fornøyelsespark fra bunnen av 
 
 <Pacific Pyramids>
 STR_SCNR    :Pacific Pyramids
 STR_PARK    :Pacific Pyramids
-STR_DTLS    :Convert the Egyptian Ruins tourist attraction into a thriving theme park
+STR_DTLS    :Konverter disse egyptiske ruinene til en blomstrende fornøyelsespark
 
 <Crumbly Woods>
 STR_SCNR    :Crumbly Woods
 STR_PARK    :Crumbly Woods
-STR_DTLS    :A large park with well-designed but rather old rides - Replace the old rides or add new rides to make the park more popular
+STR_DTLS    :En stor park med gode, men eldene attraksjoner – Erstatt the gamle attraksjonene eller legg til nye for å gjøre denne parken mer populær
 
 <Paradise Pier>
 STR_SCNR    :Paradise Pier
 STR_PARK    :Paradise Pier
-STR_DTLS    :Convert this sleepy town's pier into a thriving attraction
+STR_DTLS    :Gjør om denne sløve byens brygge til en tiltrekkende attraksjon
 
 <Lightning Peaks>
 STR_SCNR    :Lightning Peaks
 STR_PARK    :Lightning Peaks
-STR_DTLS    :The beautiful mountains of Lightning Peaks are popular with walkers and sightseers - Use the available land to attract a new thrill-seeking clientele
+STR_DTLS    :Lightning Peaks praktfulle fjell er allerede populære hos turgåere og turister – Bruk den tilgjengelige landmassen til å tiltrekke et nytt spenningssøkende klientell
 
 <Ivory Towers>
 STR_SCNR    :Ivory Towers
 STR_PARK    :Ivory Towers
-STR_DTLS    :A well-established park, which has a few problems
+STR_DTLS    :En veletablert park med et par problemer
 
 <Rainbow Valley>
 STR_SCNR    :Rainbow Valley
 STR_PARK    :Rainbow Valley
-STR_DTLS    :Rainbow Valley's local authority won't allow any landscape changes or large tree removal, but you must develop the area into a large theme park
+STR_DTLS    :Rainbow Valleys lokale myndigheter tillater hverken landskapsendring eller trefelling – Likevel skal du utvikle området til å bli en stor fornøyelesspark
 
 <Thunder Rock>
 STR_SCNR    :Thunder Rock
 STR_PARK    :Thunder Rock
-STR_DTLS    :Thunder Rock stands in the middle of a desert and attracts many tourists - Use the available space to build rides to attract more people
+STR_DTLS    :Thunder Rock er ørkenens midtpunkt og en stor turistattraksjon – Bruk det tilgjengelige området til å bygge attraksjoner for å tiltrekke flere turister
 
 <Mega Park>
 STR_SCNR    :Mega Park
 STR_PARK    :Mega Park
-STR_DTLS    :Just for fun!
+STR_DTLS    :Bare for gøy!
 
 ## Added Attractions
 <Whispering Cliffs>

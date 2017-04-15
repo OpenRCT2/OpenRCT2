@@ -23,7 +23,7 @@
 #include "../interface/viewport.h"
 #include "../interface/window.h"
 #include "../paint/map_element/map_element.h"
-#include "../world/climate.h"
+#include "../world/Climate.h"
 #include "drawing.h"
 #include "lightfx.h"
 

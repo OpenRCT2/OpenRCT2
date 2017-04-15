@@ -24,14 +24,16 @@
 
 #include "../audio/audio.h"
 #include "../audio/AudioMixer.h"
-#include "../config.h"
+#include "../config/Config.h"
 #include "../drawing/drawing.h"
+#include "../drawing/IDrawingEngine.h"
 #include "../interface/themes.h"
 #include "../interface/viewport.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
 #include "../localisation/currency.h"
 #include "../localisation/date.h"
+#include "../localisation/language.h"
 #include "../localisation/localisation.h"
 #include "../platform/platform.h"
 #include "../rct2.h"
@@ -168,6 +170,9 @@ enum WINDOW_OPTIONS_WIDGET_IDX {
 	WIDX_WINDOW_LIMIT,
 	WIDX_WINDOW_LIMIT_UP,
 	WIDX_WINDOW_LIMIT_DOWN,
+	WIDX_PATH_TO_RCT1_TEXT,
+	WIDX_PATH_TO_RCT1_BUTTON,
+	WIDX_PATH_TO_RCT1_CLEAR,
 
 	// Twitch
 	WIDX_CHANNEL_BUTTON = WIDX_PAGE_START,
@@ -326,9 +331,12 @@ static rct_widget window_options_misc_widgets[] = {
 	{ WWT_CHECKBOX,			2,	10,		299,	219,	230,	STR_AUTO_OPEN_SHOPS,						STR_AUTO_OPEN_SHOPS_TIP },							// Automatically open shops & stalls
 	{ WWT_DROPDOWN,			1,	155,	299,	234,	245,	STR_NONE,									STR_NONE },											// Default inspection time dropdown
 	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	235,	244,	STR_DROPDOWN_GLYPH,							STR_DEFAULT_INSPECTION_INTERVAL_TIP },				// Default inspection time dropdown button
-	{ WWT_SPINNER,			1,	155,	299,	249,	260,	STR_NONE,									STR_NONE },								// Window limit
+	{ WWT_SPINNER,			1,	155,	299,	249,	260,	STR_NONE,									STR_NONE },											// Window limit
 	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	250,	254,	STR_NUMERIC_UP,								STR_NONE },											// Window limit up
 	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	255,	259,	STR_NUMERIC_DOWN,							STR_NONE },											// Window limit down
+	{ WWT_12,				1,	10,		142,	264,	275,	STR_PATH_TO_RCT1,							STR_PATH_TO_RCT1_TIP },								// RCT 1 path text
+	{ WWT_DROPDOWN_BUTTON,	1,	10,		289,	278,	289,	STR_NONE,									STR_STRING_TOOLTIP },								// RCT 1 path button
+	{ WWT_DROPDOWN_BUTTON,	1,	289,	299,	278,	289,	STR_CLOSE_X,								STR_PATH_TO_RCT1_CLEAR_TIP },						// RCT 1 path clear button
 	{ WIDGETS_END },
 };
 
@@ -403,6 +411,7 @@ static void window_options_invalidate(rct_window *w);
 static void window_options_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_options_scrollgetsize(rct_window *w, sint32 scrollIndex, sint32 *width, sint32 *height);
 static void window_options_text_input(rct_window *w, sint32 widgetIndex, char *text);
+static void window_options_tooltip(rct_window *w, sint32 widgetIndex, rct_string_id *stringid);
 
 static rct_window_event_list window_options_events = {
 	NULL,
@@ -427,7 +436,7 @@ static rct_window_event_list window_options_events = {
 	window_options_text_input,
 	NULL,
 	NULL,
-	NULL,
+	window_options_tooltip,
 	NULL,
 	NULL,
 	window_options_invalidate,
@@ -449,7 +458,7 @@ static rct_window_event_list window_options_events = {
 	(1 << WIDX_TAB_6) | \
 	(1 << WIDX_TAB_7)
 
-static uint32 window_options_page_enabled_widgets[] = {
+static uint64 window_options_page_enabled_widgets[] = {
 	MAIN_OPTIONS_ENABLED_WIDGETS |
 	(1 << WIDX_RESOLUTION) |
 	(1 << WIDX_RESOLUTION_DROPDOWN) |
@@ -541,7 +550,9 @@ static uint32 window_options_page_enabled_widgets[] = {
 	(1 << WIDX_DEFAULT_INSPECTION_INTERVAL_DROPDOWN) |
 	(1 << WIDX_WINDOW_LIMIT) |
 	(1 << WIDX_WINDOW_LIMIT_UP) |
-	(1 << WIDX_WINDOW_LIMIT_DOWN),
+	(1 << WIDX_WINDOW_LIMIT_DOWN) |
+	(1 << WIDX_PATH_TO_RCT1_BUTTON) |
+	(1ULL << WIDX_PATH_TO_RCT1_CLEAR),
 
 	MAIN_OPTIONS_ENABLED_WIDGETS |
 	(1 << WIDX_CHANNEL_BUTTON) |
@@ -827,6 +838,43 @@ static void window_options_mouseup(rct_window *w, sint32 widgetIndex)
 			config_save_default();
 			window_invalidate(w);
 			break;
+		case WIDX_PATH_TO_RCT1_BUTTON:
+		{
+			utf8string rct1path = platform_open_directory_browser(language_get_string(STR_PATH_TO_RCT1_BROWSER));
+			if (rct1path) {
+				// Check if this directory actually contains RCT1
+				// The sprite file can be called either csg1.1 or csg1.dat, so check for both names.
+				utf8 checkpath[MAX_PATH];
+				safe_strcpy(checkpath, rct1path, MAX_PATH);
+				safe_strcat_path(checkpath, "Data", MAX_PATH);
+				safe_strcat_path(checkpath, "csg1.1", MAX_PATH);
+
+				if (!platform_file_exists(checkpath)) {
+					safe_strcpy(checkpath, rct1path, MAX_PATH);
+					safe_strcat_path(checkpath, "Data", MAX_PATH);
+					safe_strcat_path(checkpath, "csg1.dat", MAX_PATH);
+				}
+
+				if (platform_file_exists(checkpath)) {
+					SafeFree(gConfigGeneral.rct1_path);
+					gConfigGeneral.rct1_path = rct1path;
+					config_save_default();
+					window_error_open(STR_RESTART_REQUIRED, STR_NONE);
+				} else {
+					SafeFree(rct1path);
+					window_error_open(STR_PATH_TO_RCT1_WRONG_ERROR, STR_NONE);
+				}
+			}
+			window_invalidate(w);
+			break;
+		}
+		case WIDX_PATH_TO_RCT1_CLEAR:
+			if (!str_is_null_or_empty(gConfigGeneral.rct1_path)) {
+				SafeFree(gConfigGeneral.rct1_path);
+				config_save_default();
+			}
+			window_invalidate(w);
+			break;
 		}
 		break;
 
@@ -1096,6 +1144,7 @@ static void window_options_mousedown(sint32 widgetIndex, rct_window*w, rct_widge
 				w->y + widget->top,
 				widget->bottom - widget->top + 1,
 				w->colours[1],
+				0,
 				DROPDOWN_FLAG_STAY_OPEN,
 				num_items,
 				widget->right - widget->left - 3
@@ -1118,6 +1167,7 @@ static void window_options_mousedown(sint32 widgetIndex, rct_window*w, rct_widge
 				w->y + widget->top,
 				widget->bottom - widget->top + 1,
 				w->colours[1],
+				0,
 				DROPDOWN_FLAG_STAY_OPEN,
 				num_items,
 				widget->right - widget->left - 3
@@ -1671,6 +1721,8 @@ static void window_options_invalidate(rct_window *w)
 		window_options_misc_widgets[WIDX_WINDOW_LIMIT].type = WWT_SPINNER;
 		window_options_misc_widgets[WIDX_WINDOW_LIMIT_UP].type = WWT_DROPDOWN_BUTTON;
 		window_options_misc_widgets[WIDX_WINDOW_LIMIT_DOWN].type = WWT_DROPDOWN_BUTTON;
+		window_options_misc_widgets[WIDX_PATH_TO_RCT1_BUTTON].type = WWT_DROPDOWN_BUTTON;
+		window_options_misc_widgets[WIDX_PATH_TO_RCT1_CLEAR].type = WWT_DROPDOWN_BUTTON;
 		break;
 
 	case WINDOW_OPTIONS_PAGE_TWITCH:
@@ -1906,6 +1958,16 @@ static void window_options_paint(rct_window *w, rct_drawpixelinfo *dpi)
 			w->x + window_options_misc_widgets[WIDX_WINDOW_LIMIT].left + 1,
 			w->y + window_options_misc_widgets[WIDX_WINDOW_LIMIT].top
 		);
+		set_format_arg(0, uintptr_t, (uintptr_t)gConfigGeneral.rct1_path);
+		gfx_draw_string_left_clipped(
+			dpi,
+			STR_STRING,
+			gCommonFormatArgs,
+			w->colours[1],
+			w->x + window_options_misc_widgets[WIDX_PATH_TO_RCT1_BUTTON].left + 1,
+			w->y + window_options_misc_widgets[WIDX_PATH_TO_RCT1_BUTTON].top,
+			277
+		);
 		break;
 	}
 }
@@ -1918,6 +1980,7 @@ static void window_options_show_dropdown(rct_window *w, rct_widget *widget, sint
 		w->y + widget->top,
 		widget->bottom - widget->top + 1,
 		w->colours[1],
+		0,
 		DROPDOWN_FLAG_STAY_OPEN,
 		num_items,
 		widget->right - widget->left - 3
@@ -1947,6 +2010,18 @@ static void window_options_text_input(rct_window *w, sint32 widgetIndex, char *t
 			free(gConfigTwitch.channel);
 		gConfigTwitch.channel = _strdup(text);
 		config_save_default();
+	}
+}
+
+static void window_options_tooltip(rct_window *w, sint32 widgetIndex, rct_string_id *stringid)
+{
+	if (widgetIndex == WIDX_PATH_TO_RCT1_BUTTON && w->page == WINDOW_OPTIONS_PAGE_MISC) {
+		if (str_is_null_or_empty(gConfigGeneral.rct1_path)) {
+			// No tooltip if the path is empty
+			*stringid = STR_NONE;
+		} else {
+			set_format_arg(0, uintptr_t, (uintptr_t)gConfigGeneral.rct1_path);
+		}
 	}
 }
 

@@ -14,7 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../config.h"
+#include "../config/Config.h"
 #include "../drawing/drawing.h"
 #include "../game.h"
 #include "../input.h"
@@ -27,7 +27,7 @@
 #include "../ride/track_data.h"
 #include "../sprites.h"
 #include "../world/banner.h"
-#include "../world/climate.h"
+#include "../world/Climate.h"
 #include "../world/entrance.h"
 #include "../world/footpath.h"
 #include "../world/map.h"
@@ -91,11 +91,11 @@ void viewport_init_all()
 	}
 
 	// ?
-	gInputFlags = 0;
-	gInputState = INPUT_STATE_RESET;
+	input_reset_flags();
+	input_set_state(INPUT_STATE_RESET);
 	gPressedWidget.window_classification = 255;
 	gPickupPeepImage = UINT32_MAX;
-	gTooltipNotShownTicks = -1;
+	reset_tooltip_not_shown();
 	gMapSelectFlags = 0;
 	gStaffDrawPatrolAreas = 0xFFFF;
 	textinput_cancel();

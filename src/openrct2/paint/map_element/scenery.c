@@ -15,7 +15,7 @@
 #pragma endregion
 
 #include "map_element.h"
-#include "../../config.h"
+#include "../../config/Config.h"
 #include "../../game.h"
 #include "../../interface/viewport.h"
 #include "../../localisation/date.h"

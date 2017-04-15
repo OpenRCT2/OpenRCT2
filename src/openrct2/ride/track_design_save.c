@@ -15,7 +15,7 @@
 #pragma endregion
 
 #include "../audio/audio.h"
-#include "../config.h"
+#include "../config/Config.h"
 #include "../game.h"
 #include "../localisation/localisation.h"
 #include "../localisation/string_ids.h"
@@ -176,7 +176,7 @@ bool track_design_save(uint8 rideIndex)
 	format_string(track_name, MAX_PATH, ride->name, &ride->name_arguments);
 
 	window_loadsave_open(LOADSAVETYPE_TRACK | LOADSAVETYPE_SAVE, track_name);
-	gLoadSaveCallback = track_design_save_callback;
+	window_loadsave_set_loadsave_callback(track_design_save_callback);
 
 	return true;
 }
@@ -200,7 +200,7 @@ static sint32 map_element_get_total_element_count(rct_map_element *mapElement)
 	switch (map_element_get_type(mapElement)) {
 	case MAP_ELEMENT_TYPE_PATH:
 	case MAP_ELEMENT_TYPE_SCENERY:
-	case MAP_ELEMENT_TYPE_FENCE:
+	case MAP_ELEMENT_TYPE_WALL:
 		return 1;
 
 	case MAP_ELEMENT_TYPE_SCENERY_MULTIPLE:
@@ -332,15 +332,15 @@ static void track_design_save_add_large_scenery(sint32 x, sint32 y, rct_map_elem
 
 static void track_design_save_add_wall(sint32 x, sint32 y, rct_map_element *mapElement)
 {
-	sint32 entryType = mapElement->properties.fence.type;
+	sint32 entryType = mapElement->properties.wall.type;
 	rct_object_entry *entry = (rct_object_entry*)&object_entry_groups[OBJECT_TYPE_WALLS].entries[entryType];
 
 	uint8 flags = 0;
 	flags |= mapElement->type & 3;
-	flags |= mapElement->properties.fence.item[0] << 2;
+	flags |= mapElement->properties.wall.colour_3 << 2;
 
-	uint8 secondaryColour = ((mapElement->flags & 0x60) >> 2) | (mapElement->properties.fence.item[1] >> 5);
-	uint8 primaryColour = mapElement->properties.fence.item[1] & 0x1F;
+	uint8 secondaryColour = wall_element_get_secondary_colour(mapElement);
+	uint8 primaryColour = mapElement->properties.wall.colour_1 & 0x1F;
 
 	track_design_save_push_map_element(x, y, mapElement);
 	track_design_save_push_map_element_desc(entry, x, y, mapElement->base_height, flags, primaryColour, secondaryColour);
@@ -515,15 +515,15 @@ static void track_design_save_remove_large_scenery(sint32 x, sint32 y, rct_map_e
 
 static void track_design_save_remove_wall(sint32 x, sint32 y, rct_map_element *mapElement)
 {
-	sint32 entryType = mapElement->properties.fence.type;
+	sint32 entryType = mapElement->properties.wall.type;
 	rct_object_entry *entry = (rct_object_entry*)&object_entry_groups[OBJECT_TYPE_WALLS].entries[entryType];
 
 	uint8 flags = 0;
 	flags |= mapElement->type & 3;
-	flags |= mapElement->properties.fence.item[0] << 2;
+	flags |= mapElement->properties.wall.colour_3 << 2;
 
-	uint8 secondaryColour = ((mapElement->flags & 0x60) >> 2) | (mapElement->properties.fence.item[1] >> 5);
-	uint8 primaryColour = mapElement->properties.fence.item[1] & 0x1F;
+	uint8 secondaryColour = wall_element_get_secondary_colour(mapElement);
+	uint8 primaryColour = mapElement->properties.wall.colour_1 & 0x1F;
 
 	track_design_save_pop_map_element(x, y, mapElement);
 	track_design_save_pop_map_element_desc(entry, x, y, mapElement->base_height, flags, primaryColour, secondaryColour);
@@ -608,7 +608,7 @@ static void track_design_save_select_nearby_scenery_for_tile(sint32 rideIndex, s
 				case MAP_ELEMENT_TYPE_SCENERY:
 					interactionType = VIEWPORT_INTERACTION_ITEM_SCENERY;
 					break;
-				case MAP_ELEMENT_TYPE_FENCE:
+				case MAP_ELEMENT_TYPE_WALL:
 					interactionType = VIEWPORT_INTERACTION_ITEM_WALL;
 					break;
 				case MAP_ELEMENT_TYPE_SCENERY_MULTIPLE:

@@ -14,16 +14,18 @@
  *****************************************************************************/
 #pragma endregion
 
+#include <memory>
 #include <string>
 #include "core/Console.hpp"
-#include "core/Guard.hpp"
 #include "core/File.h"
 #include "core/FileStream.hpp"
+#include "core/Guard.hpp"
 #include "core/String.hpp"
 #include "FileClassifier.h"
 #include "network/network.h"
 #include "object/ObjectRepository.h"
 #include "OpenRCT2.h"
+#include "ParkImporter.h"
 #include "platform/crash.h"
 #include "PlatformEnvironment.h"
 #include "ride/TrackDesignRepository.h"
@@ -35,7 +37,7 @@
 extern "C"
 {
     #include "audio/audio.h"
-    #include "config.h"
+    #include "config/Config.h"
     #include "editor.h"
     #include "game.h"
     #include "interface/chat.h"
@@ -518,49 +520,58 @@ namespace OpenRCT2
         ClassifiedFile info;
         if (TryClassifyFile(path, &info))
         {
-            if (info.Type == FILE_TYPE::SAVED_GAME)
+            if (info.Type == FILE_TYPE::SAVED_GAME ||
+                info.Type == FILE_TYPE::SCENARIO)
             {
+                std::unique_ptr<IParkImporter> parkImporter;
                 if (info.Version <= 2)
                 {
-                    if (rct1_load_saved_game(path))
+                    parkImporter.reset(ParkImporter::CreateS4());
+                }
+                else
+                {
+                    parkImporter.reset(ParkImporter::CreateS6());
+                }
+
+                if (info.Type == FILE_TYPE::SAVED_GAME)
+                {
+                    try
                     {
+                        parkImporter->LoadSavedGame(path);
+                        parkImporter->Import();
+                        game_fix_save_vars();
+                        sprite_position_tween_reset();
+                        gScreenAge = 0;
+                        gLastAutoSaveUpdate = AUTOSAVE_PAUSE;
                         game_load_init();
                         return true;
                     }
+                    catch (const Exception &)
+                    {
+                        Console::Error::WriteLine("Error loading saved game.");
+                    }
                 }
                 else
                 {
-                    if (game_load_save(path))
+                    try
                     {
-                        gFirstTimeSave = 0;
-                        return true;
-                    }
-                }
-                Console::Error::WriteLine("Error loading saved game.");
-            }
-            else if (info.Type == FILE_TYPE::SCENARIO)
-            {
-                if (info.Version <= 2)
-                {
-
-                    if (rct1_load_scenario(path))
-                    {
+                        parkImporter->LoadScenario(path);
+                        parkImporter->Import();
+                        game_fix_save_vars();
+                        sprite_position_tween_reset();
+                        gScreenAge = 0;
+                        gLastAutoSaveUpdate = AUTOSAVE_PAUSE;
                         scenario_begin();
                         return true;
                     }
-                }
-                else
-                {
-                    if (scenario_load_and_play_from_path(path))
+                    catch (const Exception &)
                     {
-                        return true;
+                        Console::Error::WriteLine("Error loading scenario.");
                     }
                 }
-                Console::Error::WriteLine("Error loading scenario.");
             }
             else
             {
-                Console::Error::WriteLine("Invalid file type.");
                 Console::Error::WriteLine("Invalid file type.");
             }
         }

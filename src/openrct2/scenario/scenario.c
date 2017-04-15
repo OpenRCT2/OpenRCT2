@@ -16,7 +16,7 @@
 
 #include "../audio/audio.h"
 #include "../cheats.h"
-#include "../config.h"
+#include "../config/Config.h"
 #include "../game.h"
 #include "../interface/viewport.h"
 #include "../localisation/date.h"
@@ -36,7 +36,7 @@
 #include "../ride/ride.h"
 #include "../util/sawyercoding.h"
 #include "../util/util.h"
-#include "../world/climate.h"
+#include "../world/Climate.h"
 #include "../world/map.h"
 #include "../world/park.h"
 #include "../world/scenery.h"

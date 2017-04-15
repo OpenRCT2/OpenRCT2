@@ -317,6 +317,7 @@ void gfx_unload_g1();
 void gfx_unload_g2();
 void gfx_unload_csg();
 rct_g1_element* gfx_get_g1_element(sint32 image_id);
+bool is_csg_loaded();
 uint32 gfx_object_allocate_images(const rct_g1_element * images, uint32 count);
 void gfx_object_free_images(uint32 baseImageId, uint32 count);
 void gfx_object_check_all_images_freed();

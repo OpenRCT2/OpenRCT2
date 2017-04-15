@@ -19,7 +19,7 @@
 #include <time.h>
 #include "audio/audio.h"
 #include "audio/AudioMixer.h"
-#include "config.h"
+#include "config/Config.h"
 #include "drawing/drawing.h"
 #include "drawing/lightfx.h"
 #include "editor.h"
@@ -27,6 +27,7 @@
 #include "input.h"
 #include "interface/chat.h"
 #include "interface/console.h"
+#include "interface/keyboard_shortcut.h"
 #include "interface/viewport.h"
 #include "intro.h"
 #include "localisation/date.h"
@@ -47,7 +48,7 @@
 #include "scenario/ScenarioRepository.h"
 #include "title/TitleScreen.h"
 #include "util/util.h"
-#include "world/climate.h"
+#include "world/Climate.h"
 #include "world/map.h"
 #include "world/park.h"
 #include "world/scenery.h"
@@ -153,7 +154,7 @@ bool rct2_init()
 
 	config_reset_shortcut_keys();
 	config_shortcut_keys_load();
-	gInputPlaceObjectModifier = PLACE_OBJECT_MODIFIER_NONE;
+	input_reset_place_obj_modifier();
 	// config_load();
 
 	if (!gfx_load_g1()) {
@@ -416,8 +417,13 @@ void rct2_update()
 const utf8 *get_file_path(sint32 pathId)
 {
 	static utf8 path[MAX_PATH];
-	safe_strcpy(path, gRCT2AddressAppPath, sizeof(path));
-	safe_strcat_path(path, RCT2FilePaths[pathId], sizeof(path));
+	if (pathId == PATH_ID_CSS50 && !str_is_null_or_empty(gConfigGeneral.rct1_path)) {
+		safe_strcpy(path, gConfigGeneral.rct1_path, sizeof(path));
+		safe_strcat_path(path, RCT2FilePaths[PATH_ID_CSS17], sizeof(path));
+	} else {
+		safe_strcpy(path, gRCT2AddressAppPath, sizeof(path));
+		safe_strcat_path(path, RCT2FilePaths[pathId], sizeof(path));
+	}
 	return path;
 }
 

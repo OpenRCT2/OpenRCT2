@@ -682,7 +682,7 @@ static sint32 track_design_place_scenery(rct_td6_scenery_element *scenery_start,
 						0x69,
 						mapCoord.y,
 						(z << 8) | ((rotation + scenery->flags) & 0x3),
-						GAME_COMMAND_REMOVE_FENCE,
+						GAME_COMMAND_REMOVE_WALL,
 						0,
 						0);
 					break;
@@ -819,7 +819,7 @@ static sint32 track_design_place_scenery(rct_td6_scenery_element *scenery_start,
 						bl | (entry_index << 8),
 						mapCoord.y,
 						rotation | (scenery->primary_colour << 8),
-						GAME_COMMAND_PLACE_FENCE,
+						GAME_COMMAND_PLACE_WALL,
 						z,
 						scenery->secondary_colour | ((scenery->flags & 0xFC) << 6)
 						);
@@ -1453,8 +1453,8 @@ static money32 place_track_design(sint16 x, sint16 y, sint16 z, uint8 flags, uin
 		} else {
 			operation = PTD_OPERATION_2;
 		}
-		
-		if (_trackDesignDontPlaceScenery) 
+
+		if (_trackDesignDontPlaceScenery)
 			operation |= PTD_OPERATION_DONT_PLACE_SCENERY;
 		cost = sub_6D01B3(td6, operation, rideIndex, x, y, z);
 	}
@@ -1536,7 +1536,7 @@ static money32 place_maze_design(uint8 flags, uint8 rideIndex, uint16 mazeEntry,
 	if (flags & GAME_COMMAND_FLAG_APPLY) {
 		if (!(flags & GAME_COMMAND_FLAG_GHOST)) {
 			footpath_remove_litter(x, y, z);
-			map_remove_walls_at(floor2(x, 32), floor2(y, 32), z, z + 32);
+			wall_remove_at(floor2(x, 32), floor2(y, 32), z, z + 32);
 		}
 	}
 
@@ -1696,28 +1696,32 @@ void track_design_draw_preview(rct_track_td6 *td6, uint8 *pixels)
 	centre.y = (gTrackPreviewMin.y + gTrackPreviewMax.y) / 2 + 16;
 	centre.z = (gTrackPreviewMin.z + gTrackPreviewMax.z) / 2;
 
-	sint32 width = gTrackPreviewMax.x - gTrackPreviewMin.x;
-	sint32 height = gTrackPreviewMax.y - gTrackPreviewMin.y;
-	if (width < height) {
-		width = height;
-	}
+	sint32 size_x = gTrackPreviewMax.x - gTrackPreviewMin.x;
+	sint32 size_y = gTrackPreviewMax.y - gTrackPreviewMin.y;
+	sint32 size_z = gTrackPreviewMax.z - gTrackPreviewMin.z;
 
 	sint32 zoom_level = 1;
-	if (width > 1120) {
+
+	if (size_x < size_y) {
+		size_x = size_y;
+	}
+
+	if (size_x > 1000 || size_z > 280) {
 		zoom_level = 2;
 	}
-	if (width > 2240) {
+
+	if (size_x > 1600 || size_z > 1000) {
 		zoom_level = 3;
 	}
 
-	width = 370 << zoom_level;
-	height = 217 << zoom_level;
+	size_x = 370 << zoom_level;
+	size_y = 217 << zoom_level;
 
 	rct_viewport view;
 	view.width = 370;
 	view.height = 217;
-	view.view_width = width;
-	view.view_height = height;
+	view.view_width = size_x;
+	view.view_height = size_y;
 	view.x = 0;
 	view.y = 0;
 	view.zoom = zoom_level;
@@ -1732,7 +1736,7 @@ void track_design_draw_preview(rct_track_td6 *td6, uint8 *pixels)
 	dpi.pitch = 0;
 	dpi.bits = pixels;
 
-	rct_xy32 offset = { width / 2, height / 2 };
+	rct_xy32 offset = { size_x / 2, size_y / 2 };
 	for (sint32 i = 0; i < 4; i++) {
 		gCurrentRotation = i;
 
@@ -1742,8 +1746,8 @@ void track_design_draw_preview(rct_track_td6 *td6, uint8 *pixels)
 
 		sint32 left = pos2d.x;
 		sint32 top = pos2d.y;
-		sint32 right = left + width;
-		sint32 bottom = top + height;
+		sint32 right = left + size_x;
+		sint32 bottom = top + size_y;
 
 		view.view_x = left;
 		view.view_y = top;

@@ -456,50 +456,47 @@ static bool map_animation_invalidate_wall_door(sint32 x, sint32 y, sint32 baseZ)
 	if (gCurrentTicks & 1)
 		return false;
 
-	bool wasInvalidated = false;
+	bool removeAnimation = true;
 	mapElement = map_get_first_element_at(x >> 5, y >> 5);
 	do {
 		if (mapElement->base_height != baseZ)
 			continue;
-		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_FENCE)
+		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_WALL)
 			continue;
 
 		sceneryEntry = get_wall_entry(mapElement->properties.scenery.type);
 		if (!(sceneryEntry->wall.flags & WALL_SCENERY_IS_DOOR))
 			continue;
 
-		uint8 di = 0;
-		uint8 bl = mapElement->properties.fence.item[2];
-		uint8 bh = bl & 0x78;
-		if (bh != 0) {
-			if (bh == 0x78) {
-				bl &= 0x87;
-			} else {
-				di |= 2;
-				if (bh != 40) {
-					bh += 8;
-					if (bh == 104 && !(sceneryEntry->wall.flags & WALL_SCENERY_FLAG6))
-						bh = 120;
-
-					di |= 1;
-					bl &= 135;
-					bl |= bh;
-				}
-			}
-		}
 		if (game_is_paused()) {
 			return false;
 		}
-		mapElement->properties.fence.item[2] = bl;
-		if (di & 1) {
+
+		bool invalidate = false;
+
+		uint8 currentFrame = wall_element_get_animation_frame(mapElement);
+		if (currentFrame != 0) {
+			if (currentFrame == 15) {
+				currentFrame = 0;
+			} else {
+				removeAnimation = false;
+				if (currentFrame != 5) {
+					currentFrame++;
+					if (currentFrame == 13 && !(sceneryEntry->wall.flags & WALL_SCENERY_FLAG6))
+						currentFrame = 15;
+
+					invalidate = true;
+				}
+			}
+		}
+		wall_element_set_animation_frame(mapElement, currentFrame);
+		if (invalidate) {
 			sint32 z = mapElement->base_height * 8;
 			map_invalidate_tile_zoom1(x, y, z, z + 32);
 		}
-		if (di & 2)
-			wasInvalidated = true;
 	} while (!map_element_is_last_for_tile(mapElement++));
 
-	return !wasInvalidated;
+	return removeAnimation;
 }
 
 /**
@@ -516,7 +513,7 @@ static bool map_animation_invalidate_wall(sint32 x, sint32 y, sint32 baseZ)
 	do {
 		if (mapElement->base_height != baseZ)
 			continue;
-		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_FENCE)
+		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_WALL)
 			continue;
 
 		sceneryEntry = get_wall_entry(mapElement->properties.scenery.type);

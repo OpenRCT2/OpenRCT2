@@ -15,7 +15,7 @@
 #pragma endregion
 
 #include "../../common.h"
-#include "../../config.h"
+#include "../../config/Config.h"
 #include "../../interface/viewport.h"
 #include "../../world/sprite.h"
 #include "../../paint/paint.h"

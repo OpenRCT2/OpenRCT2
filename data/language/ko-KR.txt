@@ -1832,7 +1832,7 @@ STR_1825    :{SMALLFONT}{BLACK}이 놀이기구/시설에서 기다리고 있는
 STR_1826    :상태
 STR_1827    :인기도
 STR_1828    :만족도
-STR_1829    :수익
+STR_1829    :순익
 STR_1830    :대기 길이
 STR_1831    :대기 시간
 STR_1832    :신뢰도
@@ -1844,7 +1844,7 @@ STR_1837    :만족도: 알 수 없움
 STR_1838    :만족도: {COMMA16}%
 STR_1839    :신뢰도: {COMMA16}%
 STR_1840    :고장률: {COMMA16}%
-STR_1841    :수익: 시간당 {CURRENCY2DP}
+STR_1841    :순익: 시간당 {CURRENCY2DP}
 STR_1842    :좋아하는 손님 수: {COMMA16}명
 STR_1843    :좋아하는 손님 수: {COMMA16}명
 STR_1844    :{SMALLFONT}{BLACK}놀이기구/시설 목록에서 보여줄 정보를 선택하세요
@@ -2724,8 +2724,8 @@ STR_2714    :-
 STR_2715    :.
 STR_2716    :/
 STR_2717    :'
-STR_2718    :(상위 폴더)
-STR_2719    :(새 파일)
+STR_2718    :상위 폴더
+STR_2719    :새 파일
 STR_2720    :{UINT16}초
 STR_2721    :{UINT16}초
 STR_2722    :{UINT16}분 {UINT16}초
@@ -2749,7 +2749,7 @@ STR_2739    :없음
 STR_2740    :롤러코스터 타이쿤 1
 STR_2741    :롤러코스터 타이쿤 2
 STR_2742    :css50.dat 파일을 찾을 수 없습니다
-STR_2743    :data\css17.dat 파일을 RCT1 설치 폴더에서 복사하여 RCT2가 설치된 폴더 안에 data\css50.dat 이름으로 바꾸어 넣으십시오.
+STR_2743    :data\css17.dat 파일을 RCT1 설치 폴더에서 복사하여 RCT2가 설치된 폴더 안에 data\css50.dat 이름으로 바꾸어 넣거나, 기타 탭에서 RCT1의 경로를 올바르게 지정하세요.
 STR_2744    :[
 STR_2745    :\
 STR_2746    :]
@@ -4142,7 +4142,7 @@ STR_5832    :{SMALLFONT}{BLACK}높이를 "거리 및 속력"에 설정된 거리
 STR_5833    :{SMALLFONT}{BLACK}사용할 날짜 형식을 설정합니다.
 STR_5834    :{SMALLFONT}{BLACK}OpenRCT2가 사용할 오디오 장치를 선택합니다.
 STR_5835    :{SMALLFONT}{BLACK}게임 밖으로 커서가 나가면 게임에서 소리가 나지 않도록 만듭니다.
-STR_5836    :{SMALLFONT}{BLACK}첫 화면에서 사용할 음악을 선택합니다.{NEWLINE}RCT1 테마를 선택할 경우, RCT1 게임 폴더의 'data/css17.dat' 파일을 복사해서 RCT2 폴더에 'data/css50.dat'라는 이름으로 저장해두어야 합니다.
+STR_5836    :{SMALLFONT}{BLACK}첫 화면에서 사용할 음악을 선택합니다.{NEWLINE}RCT1 테마를 선택할 경우, RCT1 게임 폴더의 'data/css17.dat' 파일을 복사해서 RCT2 폴더에 'data/css50.dat'라는 이름으로 저장해두거나, 기타 탭에서 RCT1의 경로를 지정해야 합니다.
 STR_5837    :{SMALLFONT}{BLACK}사용자 UI 테마를 생성하고 관리합니다.
 STR_5838    :{SMALLFONT}{BLACK}메인 메뉴에 재정 창을 위한 별도의 버튼을 표시합니다.
 STR_5839    :{SMALLFONT}{BLACK}메인 매뉴에 연구 및 개발 창을 위한 별도의 버튼을 표시합니다.
@@ -4251,7 +4251,7 @@ STR_5941    :{WINDOW_COLOUR_2}기본 높이:
 STR_5942    :{WINDOW_COLOUR_2}공원 이름: {BLACK}{STRINGID}
 STR_5943    :{WINDOW_COLOUR_2}추가: {BLACK}{STRINGID}
 STR_5944    :{WINDOW_COLOUR_2}추가: {BLACK}없음
-STR_5945    :{WINDOW_COLOUR_2}연결된 모서리:
+STR_5945    :{WINDOW_COLOUR_2}연결된 면:
 STR_5946    :{WINDOW_COLOUR_2}놀이기구 종류: {BLACK}{STRINGID}
 STR_5947    :{WINDOW_COLOUR_2}놀이기구 ID: {BLACK}{COMMA16}
 STR_5948    :{WINDOW_COLOUR_2}놀이기구 이름: {BLACK}{STRINGID}
@@ -4269,7 +4269,7 @@ STR_5959    :남동
 STR_5960    :{WINDOW_COLOUR_2}1/4칸 위치:
 STR_5961    :{WINDOW_COLOUR_2}엔트리 인덱스: {BLACK}{COMMA16}
 STR_5962    :{WINDOW_COLOUR_2}겹침 탐지:
-STR_5963    :{WINDOW_COLOUR_2}올라간 코너:
+STR_5963    :{WINDOW_COLOUR_2}올라간 구석:
 STR_5964    :{WINDOW_COLOUR_2}대각선
 STR_5965    :{WINDOW_COLOUR_2}입구 종류: {BLACK}{STRINGID}
 STR_5966    :{WINDOW_COLOUR_2}공원 입구 조각: {BLACK}{STRINGID}
@@ -4321,6 +4321,29 @@ STR_6011    :{COMMA1DP16}ft
 STR_6012    :{COMMA1DP16}
 STR_6013    :{SMALLFONT}{BLACK}손님들이 공원 입장료와 상점/매점에만 돈을 지불합니다.{NEWLINE}놀이기구 탑승료는 무료로 고정됩니다.
 STR_6014    :{SMALLFONT}{BLACK}손님들이 놀이기구 탑승료와 상점/매점에만 돈을 지불합니다.{NEWLINE}공원 입장료로 돈을 지불하지는 않습니다.
+STR_6015    :경사짐
+STR_6016    :칸 편집
+STR_6017    :천천히 하세요
+STR_6018    :놀이기구 건설 - 왼쪽 회전
+STR_6019    :놀이기구 건설 - 오른쪽 회전
+STR_6020    :놀이기구 건설 - 기본 트랙 사용
+STR_6021    :놀이기구 건설 - 하강
+STR_6022    :놀이기구 건설 - 상승
+STR_6023    :놀이기구 건설 - 체인 리프트 켜기/끄기
+STR_6024    :놀이기구 건설 - 왼쪽 뱅크
+STR_6025    :놀이기구 건설 - 오른쪽 뱅크
+STR_6026    :놀이기구 건설 - 이전 트랙
+STR_6027    :놀이기구 건설 - 다음 트랙
+STR_6028    :놀이기구 건설 - 선택한 트랙 건설
+STR_6029    :놀이기구 건설 - 선택한 트랙 제거
+STR_6030    :{SMALLFONT}{BLACK}오브젝트 스포이드 기능입니다. 지도 상의 오브젝트를 선택하면 그 오브젝트를 골라서 설치할 수 있습니다.
+STR_6031    :서버 설명:
+STR_6032    :서버 인사말:
+STR_6033    :RCT1 설치 경로:
+STR_6035    :RCT1이 설치된 폴더를 선택하세요
+STR_6036    :{SMALLFONT}{BLACK}초기화
+STR_6037    :RCT1이 설치된 폴더를 올바르게 선택해주세요
+STR_6038    :{SMALLFONT}{BLACK}RCT1을 설치했다면, 이 설정을 이용해서 시나리오나 음악 등을 불러오기 위해 RCT1이 설치된 폴더를 지정하세요.
 
 #############
 # Scenarios #
@@ -4983,7 +5006,7 @@ STR_DESC    :탑승객에게 정말로 나는 듯한 경험을 주기 위해, �
 STR_CPTY    :차량당 4명의 승객
 
 [BMFL]
-STR_NAME    :플로어리스 롤러 코스터
+STR_NAME    :플로어리스 롤러코스터
 STR_DESC    :꼬여있는 트랙과 여러 전이를 미끄러지듯 통과하면서 승객들에게 광활한 허공을 느끼게 해주는, 바닥이 없는 넓은 롤러코스터 차량
 STR_CPTY    :차량당 4명의 승객
 
@@ -5244,7 +5267,7 @@ STR_CPTY    :승객 12명
 
 [SIMPOD]
 STR_NAME    :모션 시뮬레이터
-STR_DESC    :수압식 관절에 의해 흔들리고 움직이는 모션 시뮬레이터 안에서 영화를 보는 놀이기구
+STR_DESC    :유압식 관절에 의해 흔들리며 움직이는 모션 시뮬레이터 안에서 영화를 보는 놀이기구
 STR_CPTY    :승객 8명
 
 [SSC1]
@@ -7326,7 +7349,7 @@ STR_CPTY    :차량당 4명의 승객
 [CONDORRD]
 STR_NAME    :콘도르 라이드
 STR_DESC    :하나의 레일로 이루어진 트랙에 매달린 콘도르 모양의 차량에 얼굴을 아래로 한 자세로 타고 코너를 돌 때마다 이리 저리 자유롭게 흔들리는 차량
-STR_CPTY    :차량당 승객 1명
+STR_CPTY    :차량당 승객 4명
 
 [CONGAEEL]
 STR_NAME    :콩가 뱀장어 코스터

@@ -16,7 +16,7 @@
 
 #include "audio/audio.h"
 #include "cheats.h"
-#include "config.h"
+#include "config/Config.h"
 #include "editor.h"
 #include "game.h"
 #include "input.h"
@@ -47,7 +47,8 @@
 #include "util/util.h"
 #include "windows/error.h"
 #include "windows/tooltip.h"
-#include "world/climate.h"
+#include "world/Climate.h"
+#include "world/entrance.h"
 #include "world/footpath.h"
 #include "world/map_animation.h"
 #include "world/park.h"
@@ -311,11 +312,11 @@ void game_update()
 		if (gGameSpeed > 1)
 			continue;
 
-		if (gInputState == INPUT_STATE_RESET ||
-			gInputState == INPUT_STATE_NORMAL
+		if (input_get_state() == INPUT_STATE_RESET ||
+			input_get_state() == INPUT_STATE_NORMAL
 		) {
-			if (gInputFlags & INPUT_FLAG_VIEWPORT_SCROLLING) {
-				gInputFlags &= ~INPUT_FLAG_VIEWPORT_SCROLLING;
+			if (input_test_flag(INPUT_FLAG_VIEWPORT_SCROLLING)) {
+				input_set_flag(INPUT_FLAG_VIEWPORT_SCROLLING, false);
 				break;
 			}
 		} else {
@@ -335,7 +336,7 @@ void game_update()
 
 	gGameCommandNestLevel = 0;
 
-	gInputFlags &= ~INPUT_FLAG_VIEWPORT_SCROLLING;
+	input_set_flag(INPUT_FLAG_VIEWPORT_SCROLLING, false);
 
 	// the flickering frequency is reduced by 4, compared to the original
 	// it was done due to inability to reproduce original frequency
@@ -494,7 +495,7 @@ sint32 game_do_command_p(sint32 command, sint32 *eax, sint32 *ebx, sint32 *ecx, 
 
 	// Remove ghost scenery so it doesn't interfere with incoming network command
 	if ((flags & GAME_COMMAND_FLAG_NETWORKED) && !(flags & GAME_COMMAND_FLAG_GHOST) &&
-		(command == GAME_COMMAND_PLACE_FENCE ||
+		(command == GAME_COMMAND_PLACE_WALL ||
 		command == GAME_COMMAND_PLACE_SCENERY ||
 		command == GAME_COMMAND_PLACE_LARGE_SCENERY ||
 		command == GAME_COMMAND_PLACE_BANNER ||
@@ -1129,14 +1130,14 @@ void game_load_or_quit_no_save_prompt()
 			load_landscape();
 		} else {
 			window_loadsave_open(LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME, NULL);
-			gLoadSaveCallback = game_load_or_quit_no_save_prompt_callback;
+			window_loadsave_set_loadsave_callback(game_load_or_quit_no_save_prompt_callback);
 		}
 		break;
 	case PM_SAVE_BEFORE_QUIT:
 		game_do_command(0, 1, 0, 1, GAME_COMMAND_LOAD_OR_QUIT, 0, 0);
 		tool_cancel();
-		if (gInputFlags & INPUT_FLAG_5) {
-			gInputFlags &= ~INPUT_FLAG_5;
+		if (input_test_flag(INPUT_FLAG_5)) {
+			input_set_flag(INPUT_FLAG_5, false);
 		}
 		gGameSpeed = 1;
 		gFirstTimeSave = 1;
@@ -1156,7 +1157,7 @@ void game_init_all(sint32 mapSize)
 	map_init(mapSize);
 	park_init();
 	finance_init();
-	reset_park_entrances();
+	reset_park_entry();
 	banner_init();
 	ride_init_all();
 	reset_sprite_list();
@@ -1217,8 +1218,8 @@ GAME_COMMAND_POINTER* new_game_command_table[GAME_COMMAND_COUNT] = {
 	game_command_set_maze_track,
 	game_command_set_park_entrance_fee,
 	game_command_update_staff_colour,
-	game_command_place_fence,
-	game_command_remove_fence,
+	game_command_place_wall,
+	game_command_remove_wall,
 	game_command_place_large_scenery,
 	game_command_remove_large_scenery,
 	game_command_set_current_loan,
@@ -1229,7 +1230,7 @@ GAME_COMMAND_POINTER* new_game_command_table[GAME_COMMAND_COUNT] = {
 	game_command_place_banner,
 	game_command_remove_banner,
 	game_command_set_scenery_colour,
-	game_command_set_fence_colour,
+	game_command_set_wall_colour,
 	game_command_set_large_scenery_colour,
 	game_command_set_banner_colour,
 	game_command_set_land_ownership,
@@ -1245,4 +1246,6 @@ GAME_COMMAND_POINTER* new_game_command_table[GAME_COMMAND_COUNT] = {
 	game_command_pickup_guest,
 	game_command_pickup_staff,
 	game_command_balloon_press,
+	game_command_modify_tile,
+	game_command_edit_scenario_options,
 };

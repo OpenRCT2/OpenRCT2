@@ -14,7 +14,8 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../config.h"
+#include "../config/Config.h"
+#include "../core/Guard.hpp"
 #include "../game.h"
 #include "../interface/window.h"
 #include "../localisation/date.h"
@@ -183,9 +184,10 @@ void research_finish_item(sint32 entryIndex)
 		sint32 base_ride_type = (entryIndex >> 8) & 0xFF;
 		sint32 rideEntryIndex = entryIndex & 0xFF;
 		rct_ride_entry *rideEntry = get_ride_entry(rideEntryIndex);
-		if (rideEntry != NULL && rideEntry != (rct_ride_entry *)-1)
+		if (rideEntry != NULL && rideEntry != (rct_ride_entry *)-1 && base_ride_type != RIDE_TYPE_NULL)
 		{
 			ride_type_set_invented(base_ride_type);
+			openrct2_assert(base_ride_type < countof(RideTypePossibleTrackConfigurations), "Invalid base_ride_type = %d", base_ride_type);
 			gResearchedTrackTypesA[base_ride_type] = (RideTypePossibleTrackConfigurations[base_ride_type]) & 0xFFFFFFFFULL;
 			gResearchedTrackTypesB[base_ride_type] = (RideTypePossibleTrackConfigurations[base_ride_type] >> 32ULL) & 0xFFFFFFFFULL;
 

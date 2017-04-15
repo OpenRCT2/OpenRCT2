@@ -29,7 +29,7 @@
 
 extern "C"
 {
-    #include "../config.h"
+    #include "../config/Config.h"
     #include "../game.h"
     #include "../interface/viewport.h"
     #include "../localisation/date.h"
@@ -45,7 +45,8 @@ extern "C"
     #include "../ride/ride_ratings.h"
     #include "../scenario/scenario.h"
     #include "../util/sawyercoding.h"
-    #include "../world/climate.h"
+    #include "../world/Climate.h"
+    #include "../world/entrance.h"
     #include "../world/map_animation.h"
     #include "../world/park.h"
 }

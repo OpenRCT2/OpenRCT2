@@ -55,6 +55,8 @@ Includes all git commit authors. Aliases are GitHub user names.
 * Niels NTG Poldervaart (Niels-NTG) - Misc.
 * (zaxcav) - Improvements to original pathfinding algorithm.
 * Hielke Morsink (Broxzier) - Tile inspector, misc.
+* Joël Troch (JoelTroch) - Keyboard shortcuts for ride construction.
+* Thomas Delebo (delebota) - Misc.
 
 ## Bug fixes
 * (halfbro)
@@ -73,6 +75,7 @@ Includes all git commit authors. Aliases are GitHub user names.
 * Daniel Trujillo Viedma (gDanix)
 * Jonathan Haas (HaasJona)
 * Jake Breen (Haekb)
+* Marco Benzi Tobar (Lisergishnu)
 
 ## Toolchain
 * (Balletie) - macOS
@@ -99,6 +102,7 @@ Includes all git commit authors. Aliases are GitHub user names.
 * Miscellaneous fixes: Alexander Overvoorde (Overv), Ed Foley (e-foley)
 * English (UK) - Ted John (IntelOrca), (Tinytimrob)
 * English (US) - Ted John (IntelOrca), Michael Steenbeek (Gymnasiast); small fixes: (LRFLEW), (mike-koch), Harry Lam (daihakken)
+* Catalan - Joan Josep (J0anJosep)
 * Czech - Martin Černáč (octaroot), (Clonewayx), Tomáš Pazdiora (Aroidzap)
 * Dutch - Michael Steenbeek (Gymnasiast), Yannic Geurts (xzbobzx), (mrtnptrs), Thomas den Hollander (ThomasdenH), (hostbrute),  Marijn van der Werf (marijnvdwerf), Tom Kroes (ThePsionic); reviewing and discussion: Aaron van Geffen (AaronVanGeffen), (Balletie) and Sijmen Schoon (SijmenSchoon).
 * Finnish - (DJHasis), (Zode), (TheWing)

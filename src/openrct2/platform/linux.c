@@ -24,6 +24,8 @@
 #include <sys/sysctl.h>
 #endif
 
+#define OPENRCT2_MAX_COMMAND_LENGTH (2 * MAX_PATH)
+
 #include <ctype.h>
 #include <dlfcn.h>
 #include <errno.h>
@@ -31,7 +33,7 @@
 #include <fnmatch.h>
 #include <locale.h>
 
-#include "../config.h"
+#include "../config/Config.h"
 #include "../localisation/language.h"
 #include "../localisation/string_ids.h"
 #include "../util/util.h"
@@ -320,16 +322,16 @@ static dialog_type get_dialog_app(char *cmd, size_t *cmd_size) {
 bool platform_open_common_file_dialog(utf8 *outFilename, file_dialog_desc *desc, size_t outSize) {
 	sint32 exit_value;
 	char executable[MAX_PATH];
-	char cmd[MAX_PATH];
-	char result[MAX_PATH];
+	char cmd[OPENRCT2_MAX_COMMAND_LENGTH];
+	char result[OPENRCT2_MAX_COMMAND_LENGTH];
 	size_t size;
 	dialog_type dtype;
 	char *action = NULL;
 	char *flags = NULL;
-	char filter[MAX_PATH] = { 0 };
+	char filter[OPENRCT2_MAX_COMMAND_LENGTH] = { 0 };
 	char filterPatternRegex[64];
 
-	size = MAX_PATH;
+	size = OPENRCT2_MAX_COMMAND_LENGTH;
 	dtype = get_dialog_app(executable, &size);
 
 	switch (dtype) {
@@ -376,7 +378,7 @@ bool platform_open_common_file_dialog(utf8 *outFilename, file_dialog_desc *desc,
 				}
 			}
 
-			snprintf(cmd, MAX_PATH, "%s --title \"%s\" %s ~ \"%s\"", executable, desc->title, action, filter);
+			snprintf(cmd, OPENRCT2_MAX_COMMAND_LENGTH, "%s --title '%s' %s '%s/' ~ '%s'", executable, desc->title, action, desc->initial_directory, filter);
 			break;
 		case DT_ZENITY:
 			action = "--file-selection";
@@ -412,20 +414,20 @@ bool platform_open_common_file_dialog(utf8 *outFilename, file_dialog_desc *desc,
 					filterPatternRegex[regexIterator+1] = 0;
 
 					char filterTemp[100] = { 0 };
-					snprintf(filterTemp, countof(filterTemp), " --file-filter=\"%s | %s\"", desc->filters[j].name, filterPatternRegex);
+					snprintf(filterTemp, countof(filterTemp), " --file-filter='%s | %s'", desc->filters[j].name, filterPatternRegex);
 					safe_strcat(filter, filterTemp, countof(filter));
 				}
 			}
 			char filterTemp[100] = { 0 };
-			snprintf(filterTemp, countof(filterTemp), " --file-filter=\"%s | *\"", (char *)language_get_string(STR_ALL_FILES));
+			snprintf(filterTemp, countof(filterTemp), " --file-filter='%s | *'", (char *)language_get_string(STR_ALL_FILES));
 			safe_strcat(filter, filterTemp, countof(filter));
 
-			snprintf(cmd, MAX_PATH, "%s %s %s --title=\"%s\" / %s", executable, action, flags, desc->title, filter);
+			snprintf(cmd, OPENRCT2_MAX_COMMAND_LENGTH, "%s %s --filename='%s/' %s --title='%s' / %s", executable, action, desc->initial_directory, flags, desc->title, filter);
 			break;
 		default: return 0;
 	}
 
-	size = MAX_PATH;
+	size = OPENRCT2_MAX_COMMAND_LENGTH;
 	execute_cmd(cmd, &exit_value, result, &size);
 
 	if (exit_value != 0) {
@@ -436,17 +438,17 @@ bool platform_open_common_file_dialog(utf8 *outFilename, file_dialog_desc *desc,
 	log_verbose("filename = %s", result);
 
 	if (desc->type == FD_OPEN && access(result, F_OK) == -1) {
-		char msg[MAX_PATH];
+		char msg[OPENRCT2_MAX_COMMAND_LENGTH];
 
-		snprintf(msg, MAX_PATH, "\"%s\" not found: %s, please choose another file\n", result, strerror(errno));
+		snprintf(msg, OPENRCT2_MAX_COMMAND_LENGTH, "\"%s\" not found: %s, please choose another file\n", result, strerror(errno));
 		platform_show_messagebox(msg);
 
 		return platform_open_common_file_dialog(outFilename, desc, outSize);
 	} else
 	if (desc->type == FD_SAVE && access(result, F_OK) != -1 && dtype == DT_KDIALOG) {
-		snprintf(cmd, MAX_PATH, "%s --yesno \"Overwrite %s?\"", executable, result);
+		snprintf(cmd, OPENRCT2_MAX_COMMAND_LENGTH, "%s --yesno \"Overwrite %s?\"", executable, result);
 
-		size = MAX_PATH;
+		size = OPENRCT2_MAX_COMMAND_LENGTH;
 		execute_cmd(cmd, &exit_value, 0, 0);
 
 		if (exit_value != 0) {
@@ -459,13 +461,13 @@ bool platform_open_common_file_dialog(utf8 *outFilename, file_dialog_desc *desc,
 	return 1;
 }
 
-utf8 *platform_open_directory_browser(utf8 *title) {
+utf8 *platform_open_directory_browser(const utf8 *title) {
 	size_t size;
 	dialog_type dtype;
 	sint32 exit_value;
-	char cmd[MAX_PATH];
+	char cmd[OPENRCT2_MAX_COMMAND_LENGTH];
 	char executable[MAX_PATH];
-	char result[MAX_PATH];
+	char result[OPENRCT2_MAX_COMMAND_LENGTH];
 	char *return_value;
 
 	size = MAX_PATH;
@@ -473,21 +475,22 @@ utf8 *platform_open_directory_browser(utf8 *title) {
 
 	switch (dtype) {
 		case DT_KDIALOG:
-			snprintf(cmd, MAX_PATH, "%s --title \"%s\" --getexistingdirectory /", executable, title);
+			snprintf(cmd, OPENRCT2_MAX_COMMAND_LENGTH, "%s --title '%s' --getexistingdirectory /", executable, title);
 			break;
 		case DT_ZENITY:
-			snprintf(cmd, MAX_PATH, "%s --title=\"%s\" --file-selection --directory /", executable, title);
+			snprintf(cmd, OPENRCT2_MAX_COMMAND_LENGTH, "%s --title='%s' --file-selection --directory /", executable, title);
 			break;
 		default: return 0;
 	}
 
-	size = MAX_PATH;
+	size = OPENRCT2_MAX_COMMAND_LENGTH;
 	execute_cmd(cmd, &exit_value, result, &size);
 
 	if (exit_value != 0) {
 		return NULL;
 	}
 
+	assert(size - 1 < countof(result));
 	result[size-1] = '\0';
 
 	return_value = _strdup(result);
@@ -498,27 +501,27 @@ utf8 *platform_open_directory_browser(utf8 *title) {
 void platform_show_messagebox(const char * message) {
 	size_t size;
 	dialog_type dtype;
-	char cmd[MAX_PATH];
+	char cmd[OPENRCT2_MAX_COMMAND_LENGTH];
 	char executable[MAX_PATH];
 
 	log_verbose(message);
 
-	size = MAX_PATH;
+	size = OPENRCT2_MAX_COMMAND_LENGTH;
 	dtype = get_dialog_app(executable, &size);
 
 	switch (dtype) {
 		case DT_KDIALOG:
-			snprintf(cmd, MAX_PATH, "%s --title \"OpenRCT2\" --msgbox \"%s\"", executable, message);
+			snprintf(cmd, OPENRCT2_MAX_COMMAND_LENGTH, "%s --title \"OpenRCT2\" --msgbox \"%s\"", executable, message);
 			break;
 		case DT_ZENITY:
-			snprintf(cmd, MAX_PATH, "%s --title=\"OpenRCT2\" --info --text=\"%s\"", executable, message);
+			snprintf(cmd, OPENRCT2_MAX_COMMAND_LENGTH, "%s --title=\"OpenRCT2\" --info --text=\"%s\"", executable, message);
 			break;
 		default:
 			SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_WARNING, "OpenRCT2", message, gWindow);
 			return;
 	}
 
-	size = MAX_PATH;
+	size = OPENRCT2_MAX_COMMAND_LENGTH;
 	execute_cmd(cmd, 0, 0, 0);
 }
 
@@ -565,5 +568,10 @@ bool platform_get_font_path(TTFFontDescriptor *font, utf8 *buffer, size_t size)
 	return found;
 }
 #endif // NO_TTF
+
+sint32 platform_get_non_window_flags()
+{
+	return SDL_WINDOW_MAXIMIZED | SDL_WINDOW_MINIMIZED | SDL_WINDOW_FULLSCREEN | SDL_WINDOW_FULLSCREEN_DESKTOP;
+}
 
 #endif

@@ -14,7 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../config.h"
+#include "../config/Config.h"
 #include "../interface/themes.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
@@ -352,6 +352,7 @@ static void window_multiplayer_groups_show_group_dropdown(rct_window *w, rct_wid
 		w->y + dropdownWidget->top,
 		dropdownWidget->bottom - dropdownWidget->top + 1,
 		w->colours[1],
+		0,
 		0,
 		numItems,
 		widget->right - dropdownWidget->left

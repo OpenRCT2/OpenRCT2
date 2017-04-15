@@ -14,7 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../config.h"
+#include "../config/Config.h"
 #include "../game.h"
 #include "../input.h"
 #include "../management/marketing.h"
@@ -555,7 +555,7 @@ void window_guest_disable_widgets(rct_window* w){
  */
 void window_guest_overview_close(rct_window *w)
 {
-	if (gInputFlags & INPUT_FLAG_TOOL_ACTIVE){
+	if (input_test_flag(INPUT_FLAG_TOOL_ACTIVE)) {
 		if (w->classification == gCurrentToolWidget.window_classification &&
 			w->number == gCurrentToolWidget.window_number)
 			tool_cancel();
@@ -656,7 +656,7 @@ void window_guest_overview_mouse_up(rct_window *w, sint32 widgetIndex)
  *  rct2: 0x696AA0
  */
 void window_guest_set_page(rct_window* w, sint32 page){
-	if (gInputFlags & INPUT_FLAG_TOOL_ACTIVE)
+	if (input_test_flag(INPUT_FLAG_TOOL_ACTIVE))
 	{
 		if(w->number == gCurrentToolWidget.window_number &&
 		   w->classification == gCurrentToolWidget.window_classification)
@@ -1058,7 +1058,14 @@ void window_guest_overview_invalidate(rct_window *w)
 		window_init_scroll_widgets(w);
 	}
 
-	w->pressed_widgets &= ~(WIDX_TAB_1 | WIDX_TAB_2 |WIDX_TAB_3 |WIDX_TAB_4 |WIDX_TAB_5 |WIDX_TAB_6);
+	w->pressed_widgets &= ~(
+		(1ULL << WIDX_TAB_1) |
+		(1ULL << WIDX_TAB_2) |
+		(1ULL << WIDX_TAB_3) |
+		(1ULL << WIDX_TAB_4) |
+		(1ULL << WIDX_TAB_5) |
+		(1ULL << WIDX_TAB_6)
+		);
 	w->pressed_widgets |= 1ULL << (w->page + WIDX_TAB_1);
 
 	rct_peep* peep = GET_PEEP(w->number);

@@ -18,7 +18,7 @@
 #include "../audio/AudioMixer.h"
 #include "../cheats.h"
 #include "../common.h"
-#include "../config.h"
+#include "../config/Config.h"
 #include "../editor.h"
 #include "../game.h"
 #include "../input.h"
@@ -38,7 +38,7 @@
 #include "../util/util.h"
 #include "../windows/error.h"
 #include "../world/banner.h"
-#include "../world/climate.h"
+#include "../world/Climate.h"
 #include "../world/footpath.h"
 #include "../world/map.h"
 #include "../world/map_animation.h"
@@ -185,8 +185,8 @@ uint8 _currentBrakeSpeed2;
 uint8 _currentSeatRotationAngle;
 
 rct_xyz16 _unkF44188;
-rct_xyzd16 _unkF440BF;
-uint8 _unkF440C4;
+
+
 rct_xyzd16 _unkF440C5;
 
 uint8 gRideEntranceExitPlaceType;
@@ -214,9 +214,7 @@ static void ride_spiral_slide_update(rct_ride *ride);
 static void ride_update(sint32 rideIndex);
 static void ride_update_vehicle_colours(sint32 rideIndex);
 static void ride_set_vehicle_colours_to_random_preset(rct_ride *ride, uint8 preset_index);
-static void maze_entrance_hedge_removal(sint32 x, sint32 y, rct_map_element *mapElement);
 void loc_6DDF9C(rct_ride *ride, rct_map_element *mapElement);
-static void maze_entrance_hedge_replacement(sint32 x, sint32 y, rct_map_element *mapElement);
 bool sub_6CA2DF(sint32 *trackType, sint32 *trackDirection, sint32 *rideIndex, sint32 *edxRS16, sint32 *x, sint32 *y, sint32 *z, sint32 *properties);
 money32 sub_6CA162(sint32 rideIndex, sint32 trackType, sint32 trackDirection, sint32 edxRS16, sint32 x, sint32 y, sint32 z);
 
@@ -765,7 +763,7 @@ sint32 ride_find_track_gap(rct_xy_element *input, rct_xy_element *output)
 {
 	rct_window *w;
 	rct_ride *ride;
-	track_circuit_iterator it, slowIt;
+	track_circuit_iterator it = { 0 }, slowIt;
 	sint32 rideIndex;
 
 	assert(map_element_get_type(input->element) == MAP_ELEMENT_TYPE_TRACK);
@@ -1099,7 +1097,7 @@ void ride_clear_for_construction(sint32 rideIndex)
  *
  *  rct2: 0x006664DF
  */
-static void ride_remove_peeps(sint32 rideIndex)
+void ride_remove_peeps(sint32 rideIndex)
 {
 	rct_ride *ride = get_ride(rideIndex);
 
@@ -1330,36 +1328,6 @@ sint32 sub_6C683D(sint32* x, sint32* y, sint32* z, sint32 direction, sint32 type
 	return 0;
 }
 
-void ride_restore_provisional_entrance_or_exit()
-{
-	if (_currentTrackSelectionFlags & TRACK_SELECTION_FLAG_ENTRANCE_OR_EXIT) {
-		game_do_command(
-			_unkF440BF.x,
-			(GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5 | GAME_COMMAND_FLAG_GHOST) | (_unkF440BF.direction << 8),
-			_unkF440BF.y,
-			_currentRideIndex | (gRideEntranceExitPlaceType << 8),
-			GAME_COMMAND_PLACE_RIDE_ENTRANCE_OR_EXIT,
-			_unkF440C4,
-			0
-		);
-	}
-}
-
-void ride_remove_provisional_entrance_or_exit()
-{
-	if (_currentTrackSelectionFlags & TRACK_SELECTION_FLAG_ENTRANCE_OR_EXIT) {
-		game_do_command(
-			_unkF440BF.x,
-			(GAME_COMMAND_FLAG_5 | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_APPLY),
-			_unkF440BF.y,
-			_currentRideIndex,
-			GAME_COMMAND_REMOVE_RIDE_ENTRANCE_OR_EXIT,
-			_unkF440C4,
-			0
-		);
-	}
-}
-
 void ride_restore_provisional_track_piece()
 {
 	if (_currentTrackSelectionFlags & TRACK_SELECTION_FLAG_TRACK) {
@@ -1423,7 +1391,7 @@ void sub_6C96C0()
 {
 
 	if (_currentTrackSelectionFlags & TRACK_SELECTION_FLAG_ENTRANCE_OR_EXIT) {
-		ride_remove_provisional_entrance_or_exit();
+		ride_entrance_exit_remove_ghost();
 		_currentTrackSelectionFlags &= ~TRACK_SELECTION_FLAG_ENTRANCE_OR_EXIT;
 	}
 	if (_currentTrackSelectionFlags & TRACK_SELECTION_FLAG_TRACK) {
@@ -1769,7 +1737,7 @@ static sint32 ride_modify_entrance_or_exit(rct_map_element *mapElement, sint32 x
 	sub_6C9627();
 	if (
 		_rideConstructionState != RIDE_CONSTRUCTION_STATE_ENTRANCE_EXIT ||
-		!(gInputFlags & INPUT_FLAG_TOOL_ACTIVE) ||
+		!(input_test_flag(INPUT_FLAG_TOOL_ACTIVE)) ||
 		gCurrentToolWidget.window_classification != WC_RIDE_CONSTRUCTION
 	) {
 		// Replace entrance / exit
@@ -1777,7 +1745,7 @@ static sint32 ride_modify_entrance_or_exit(rct_map_element *mapElement, sint32 x
 		gRideEntranceExitPlaceType = entranceType;
 		gRideEntranceExitPlaceRideIndex = rideIndex;
 		gRideEntranceExitPlaceStationIndex = bl;
-		gInputFlags |= INPUT_FLAG_6;
+		input_set_flag(INPUT_FLAG_6, true);
 		if (_rideConstructionState != RIDE_CONSTRUCTION_STATE_ENTRANCE_EXIT) {
 			gRideEntranceExitPlacePreviousRideConstructionState = _rideConstructionState;
 			_rideConstructionState = RIDE_CONSTRUCTION_STATE_ENTRANCE_EXIT;
@@ -1936,7 +1904,7 @@ sint32 sub_6CC3FB(sint32 rideIndex)
 	w = ride_create_or_find_construction_window(rideIndex);
 
 	tool_set(w, 23, 12);
-	gInputFlags |= INPUT_FLAG_6;
+	input_set_flag(INPUT_FLAG_6, true);
 
 	ride = get_ride(_currentRideIndex);
 
@@ -2622,7 +2590,7 @@ static void ride_call_closest_mechanic(sint32 rideIndex)
 
 rct_peep *ride_find_closest_mechanic(rct_ride *ride, sint32 forInspection)
 {
-	sint32 x, y, z, stationIndex, direction;
+	sint32 x, y, z, stationIndex;
 	uint16 xy;
 	rct_map_element *mapElement;
 
@@ -2645,9 +2613,8 @@ rct_peep *ride_find_closest_mechanic(rct_ride *ride, sint32 forInspection)
 
 	x *= 32;
 	y *= 32;
-	direction = mapElement->type & 3;
-	x -= TileDirectionDelta[direction].x;
-	y -= TileDirectionDelta[direction].y;
+
+	// Set x,y to centre of the station exit for the mechanic search.
 	x += 16;
 	y += 16;
 
@@ -5194,7 +5161,7 @@ static sint32 ride_is_valid_for_test(sint32 rideIndex, sint32 goingToBeOpen, sin
 {
 	sint32 stationIndex;
 	rct_ride *ride;
-	rct_xy_element trackElement, problematicTrackElement;
+	rct_xy_element trackElement, problematicTrackElement = { 0 };
 
 	ride = get_ride(rideIndex);
 	if (ride->type == RIDE_TYPE_NULL)
@@ -5323,7 +5290,7 @@ static sint32 ride_is_valid_for_open(sint32 rideIndex, sint32 goingToBeOpen, sin
 {
 	sint32 stationIndex;
 	rct_ride *ride;
-	rct_xy_element trackElement, problematicTrackElement;
+	rct_xy_element trackElement, problematicTrackElement = { 0 };
 
 	ride = get_ride(rideIndex);
 
@@ -5333,7 +5300,7 @@ static sint32 ride_is_valid_for_open(sint32 rideIndex, sint32 goingToBeOpen, sin
 	// with auto open on.
 	if (WC_RIDE_CONSTRUCTION == gCurrentToolWidget.window_classification &&
 		rideIndex == gCurrentToolWidget.window_number &&
-		(gInputFlags & INPUT_FLAG_TOOL_ACTIVE))
+		(input_test_flag(INPUT_FLAG_TOOL_ACTIVE)))
 		window_close_by_number(WC_RIDE_CONSTRUCTION, rideIndex);
 
 	stationIndex = ride_mode_check_station_present(ride);
@@ -6097,7 +6064,7 @@ foundRideEntry:
 		ride->price_secondary = RideData4[ride->type].price_secondary;
 
 		if (rideEntry->shop_item == SHOP_ITEM_NONE) {
-			if (!(gParkFlags & PARK_FLAGS_PARK_FREE_ENTRY)) {
+			if (!(gParkFlags & PARK_FLAGS_PARK_FREE_ENTRY) && !gCheatsUnlockAllPrices) {
 				ride->price = 0;
 			}
 		} else {
@@ -6621,7 +6588,7 @@ void game_command_set_ride_price(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *
 	*ebx = 0; // for cost check - changing ride price does not cost anything
 
 	gCommandExpenditureType = RCT_EXPENDITURE_TYPE_PARK_RIDE_TICKETS;
-	if (flags & 0x1) {
+	if (flags & GAME_COMMAND_FLAG_APPLY) {
 		uint32 shop_item;
 
 		if (ride->overall_view != (uint16)-1) {
@@ -7042,32 +7009,6 @@ void set_vehicle_type_image_max_sizes(rct_ride_entry_vehicle* vehicle_type, sint
 	vehicle_type->sprite_width = al;
 	vehicle_type->sprite_height_negative = bl;
 	vehicle_type->sprite_height_positive = bh;
-}
-
-/**
- *
- *  rct2: 0x006CA28C
- */
-money32 ride_get_entrance_or_exit_price(sint32 rideIndex, sint32 x, sint32 y, sint32 direction, sint32 dh, sint32 di)
-{
-	sub_6C96C0();
-	money32 result = game_do_command(
-		x,
-		(GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5 | GAME_COMMAND_FLAG_GHOST) | (direction << 8),
-		y,
-		rideIndex | (dh << 8),
-		GAME_COMMAND_PLACE_RIDE_ENTRANCE_OR_EXIT,
-		di,
-		0
-	);
-	if (result != MONEY32_UNDEFINED) {
-		_currentTrackSelectionFlags |= TRACK_SELECTION_FLAG_ENTRANCE_OR_EXIT;
-		_unkF440BF.x = x;
-		_unkF440BF.y = y;
-		_unkF440BF.direction = direction;
-		_unkF440C4 = di & 0xFF;
-	}
-	return result;
 }
 
 static sint32 loc_6CD18E(sint16 mapX, sint16 mapY, sint16 entranceMinX, sint16 entranceMinY, sint16 entranceMaxX, sint16 entranceMaxY)
@@ -8082,379 +8023,6 @@ void sub_6CB945(sint32 rideIndex)
 	}
 }
 
-/**
- * Removes the hedge walls for an entrance placement.
- *  rct2: 0x00666CBE
- */
-static void maze_entrance_hedge_removal(sint32 x, sint32 y, rct_map_element *mapElement)
-{
-	sint32 direction = mapElement->type & MAP_ELEMENT_DIRECTION_MASK;
-	x += TileDirectionDelta[direction].x;
-	y += TileDirectionDelta[direction].y;
-	sint32 z = mapElement->base_height;
-	sint32 rideIndex = mapElement->properties.track.ride_index;
-
-	mapElement = map_get_first_element_at(x >> 5, y >> 5);
-	do {
-		if (mapElement->type != MAP_ELEMENT_TYPE_TRACK) continue;
-		if (mapElement->properties.track.ride_index != rideIndex) continue;
-		if (mapElement->base_height != z) continue;
-		if (mapElement->properties.track.type != TRACK_ELEM_INVERTED_90_DEG_UP_TO_FLAT_QUARTER_LOOP) continue;
-
-		// Each maze element is split into 4 sections with 4 different walls
-		uint8 mazeSection = direction * 4;
-		// Remove the top outer wall
-		mapElement->properties.track.maze_entry &= ~(1 << ((mazeSection + 9) & 0x0F));
-		// Remove the bottom outer wall
-		mapElement->properties.track.maze_entry &= ~(1 << ((mazeSection + 12) & 0x0F));
-		// Remove the intersecting wall
-		mapElement->properties.track.maze_entry &= ~(1 << ((mazeSection + 10) & 0x0F));
-		// Remove the top hedge section
-		mapElement->properties.track.maze_entry &= ~(1 << ((mazeSection + 11) & 0x0F));
-		// Remove the bottom hedge section
-		mapElement->properties.track.maze_entry &= ~(1 << ((mazeSection + 15) & 0x0F));
-
-		map_invalidate_tile(x, y, mapElement->base_height * 8, mapElement->clearance_height * 8);
-		return;
-	} while (!map_element_is_last_for_tile(mapElement++));
-}
-
-/**
- * Replaces the outer hedge walls for an entrance placement removal.
- *  rct2: 0x00666D6F
- */
-static void maze_entrance_hedge_replacement(sint32 x, sint32 y, rct_map_element *mapElement)
-{
-	sint32 direction = mapElement->type & MAP_ELEMENT_DIRECTION_MASK;
-	x += TileDirectionDelta[direction].x;
-	y += TileDirectionDelta[direction].y;
-	sint32 z = mapElement->base_height;
-	sint32 rideIndex = mapElement->properties.track.ride_index;
-
-	mapElement = map_get_first_element_at(x >> 5, y >> 5);
-	do {
-		if (mapElement->type != MAP_ELEMENT_TYPE_TRACK) continue;
-		if (mapElement->properties.track.ride_index != rideIndex) continue;
-		if (mapElement->base_height != z) continue;
-		if (mapElement->properties.track.type != TRACK_ELEM_INVERTED_90_DEG_UP_TO_FLAT_QUARTER_LOOP) continue;
-
-		// Each maze element is split into 4 sections with 4 different walls
-		uint8 mazeSection = direction * 4;
-		// Add the top outer wall
-		mapElement->properties.track.maze_entry |= (1 << ((mazeSection + 9) & 0x0F));
-		// Add the bottom outer wall
-		mapElement->properties.track.maze_entry |= (1 << ((mazeSection + 12) & 0x0F));
-
-		map_invalidate_tile(x, y, mapElement->base_height * 8, mapElement->clearance_height * 8);
-		return;
-	} while (!map_element_is_last_for_tile(mapElement++));
-}
-
-static money32 place_ride_entrance_or_exit(sint16 x, sint16 y, sint16 z, uint8 direction, uint8 flags, uint8 rideIndex, uint8 station_num, uint8 is_exit)
-{
-	// Remember when in Unknown station num mode rideIndex is unknown and z is set
-	// When in known station num mode rideIndex is known and z is unknown
-
-	money32 cost = 0;
-	gCommandPosition.x = x;
-	gCommandPosition.y = y;
-
-	if (!map_check_free_elements_and_reorganise(1)) {
-		return MONEY32_UNDEFINED;
-	}
-
-	if (!(flags & GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED) && game_is_paused() && !gCheatsBuildInPauseMode){
-		gGameCommandErrorText = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
-		return MONEY32_UNDEFINED;
-	}
-
-	if (station_num == 0xFF) {
-		z *= 16;
-		if (flags & GAME_COMMAND_FLAG_APPLY)
-			return MONEY32_UNDEFINED;
-
-		if (!gCheatsSandboxMode && !map_is_location_owned(x, y, z)) {
-			return MONEY32_UNDEFINED;
-		}
-
-		sint16 clear_z = z / 8 + (is_exit ? 5 : 7);
-
-		if (!gCheatsDisableClearanceChecks && !map_can_construct_with_clear_at(x, y, z / 8, clear_z, &map_place_non_scenery_clear_func, 0xF, flags, &cost)) {
-			return MONEY32_UNDEFINED;
-		}
-
-		if (gMapGroundFlags & ELEMENT_IS_UNDERWATER) {
-			gGameCommandErrorText = STR_RIDE_CANT_BUILD_THIS_UNDERWATER;
-			return MONEY32_UNDEFINED;
-		}
-
-		if (z > 1952) {
-			gGameCommandErrorText = STR_TOO_HIGH;
-			return MONEY32_UNDEFINED;
-		}
-	} else {
-		if (rideIndex >= MAX_RIDES)
-		{
-			log_warning("Invalid game command for ride %u", rideIndex);
-			return MONEY32_UNDEFINED;
-		}
-		rct_ride* ride = get_ride(rideIndex);
-		if (ride->type == RIDE_TYPE_NULL)
-		{
-			log_warning("Invalid game command for ride %u", rideIndex);
-			return MONEY32_UNDEFINED;
-		}
-		if (ride->status != RIDE_STATUS_CLOSED) {
-			gGameCommandErrorText = STR_MUST_BE_CLOSED_FIRST;
-			return MONEY32_UNDEFINED;
-		}
-
-		if (ride->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK) {
-			gGameCommandErrorText = STR_NOT_ALLOWED_TO_MODIFY_STATION;
-			return MONEY32_UNDEFINED;
-		}
-
-		ride_clear_for_construction(rideIndex);
-		ride_remove_peeps(rideIndex);
-
-		uint8 requires_remove = 0;
-		sint16 remove_x = 0;
-		sint16 remove_y = 0;
-
-		if (is_exit) {
-			if (ride->exits[station_num] != 0xFFFF) {
-				if (flags & GAME_COMMAND_FLAG_GHOST) {
-					gGameCommandErrorText = 0;
-					return MONEY32_UNDEFINED;
-				}
-
-				remove_x = (ride->exits[station_num] & 0xFF) * 32;
-				remove_y = ((ride->exits[station_num] >> 8) & 0xFF) * 32;
-				requires_remove = 1;
-			}
-		} else if (ride->entrances[station_num] != 0xFFFF) {
-			if (flags & GAME_COMMAND_FLAG_GHOST) {
-				gGameCommandErrorText = 0;
-				return MONEY32_UNDEFINED;
-			}
-
-			remove_x = (ride->entrances[station_num] & 0xFF) * 32;
-			remove_y = ((ride->entrances[station_num] >> 8) & 0xFF) * 32;
-			requires_remove = 1;
-		}
-
-		if (requires_remove) {
-			money32 success = game_do_command(
-				remove_x,
-				flags,
-				remove_y,
-				rideIndex,
-				GAME_COMMAND_REMOVE_RIDE_ENTRANCE_OR_EXIT,
-				station_num,
-				0
-			);
-
-			if (success == MONEY32_UNDEFINED) {
-				return MONEY32_UNDEFINED;
-			}
-		}
-
-		z = ride->station_heights[station_num] * 8;
-		gCommandPosition.z = z;
-
-		if (
-			(flags & GAME_COMMAND_FLAG_APPLY) &&
-			!(flags & GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED) &&
-			!(flags & GAME_COMMAND_FLAG_GHOST)
-		) {
-			footpath_remove_litter(x, y, z);
-			map_remove_walls_at_z(x, y, z);
-		}
-
-		if (!gCheatsSandboxMode && !map_is_location_owned(x, y, z)) {
-			return MONEY32_UNDEFINED;
-		}
-
-		sint8 clear_z = (z / 8) + (is_exit ? 5 : 7);
-
-		if (!gCheatsDisableClearanceChecks && !map_can_construct_with_clear_at(x, y, z / 8, clear_z, &map_place_non_scenery_clear_func, 0xF, flags, &cost)) {
-			return MONEY32_UNDEFINED;
-		}
-
-		if (gMapGroundFlags & ELEMENT_IS_UNDERWATER) {
-			gGameCommandErrorText = STR_RIDE_CANT_BUILD_THIS_UNDERWATER;
-			return MONEY32_UNDEFINED;
-		}
-
-		if (z / 8 > 244){
-			gGameCommandErrorText = STR_TOO_HIGH;
-			return MONEY32_UNDEFINED;
-		}
-
-		if (flags & GAME_COMMAND_FLAG_APPLY) {
-			rct_xyz16 coord;
-			coord.x = x + 16;
-			coord.y = y + 16;
-			coord.z = map_element_height(coord.x, coord.y);
-			network_set_player_last_action_coord(network_get_player_index(game_command_playerid), coord);
-
-			rct_map_element* mapElement = map_element_insert(x / 32, y / 32, z / 8, 0xF);
-			assert(mapElement != NULL);
-			mapElement->clearance_height = clear_z;
-			mapElement->properties.entrance.type = is_exit;
-			mapElement->properties.entrance.index = station_num << 4;
-			mapElement->properties.entrance.ride_index = rideIndex;
-			mapElement->type = MAP_ELEMENT_TYPE_ENTRANCE | direction;
-
-			if (flags & GAME_COMMAND_FLAG_GHOST) {
-				mapElement->flags |= MAP_ELEMENT_FLAG_GHOST;
-			}
-
-			if (is_exit) {
-				ride->exits[station_num] = (x / 32) | (y / 32 << 8);
-			} else {
-				ride->entrances[station_num] = (x / 32) | (y / 32 << 8);
-				ride->last_peep_in_queue[station_num] = SPRITE_INDEX_NULL;
-				ride->queue_length[station_num] = 0;
-
-				map_animation_create(MAP_ANIMATION_TYPE_RIDE_ENTRANCE, x, y, z / 8);
-			}
-
-			footpath_queue_chain_reset();
-			if (!(flags & GAME_COMMAND_FLAG_GHOST)) {
-				maze_entrance_hedge_removal(x, y, mapElement);
-			}
-			footpath_connect_edges(x, y, mapElement, flags);
-			sub_6A759F();
-
-			map_invalidate_tile_full(x, y);
-		}
-	}
-
-	gCommandExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
-	return cost;
-}
-
-/**
- *
- *  rct2: 0x006660A8
- */
-void game_command_place_ride_entrance_or_exit(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *edx, sint32 *esi, sint32 *edi, sint32 *ebp){
-	*ebx = place_ride_entrance_or_exit(
-		*eax & 0xFFFF,
-		*ecx & 0xFFFF,
-		*edx & 0xFF,
-		(*ebx >> 8) & 0xFF,
-		*ebx & 0xFF,
-		*edx & 0xFF,
-		*edi & 0xFF,
-		(*edx >> 8) & 0xFF
-		);
-}
-
-static money32 remove_ride_entrance_or_exit(sint16 x, sint16 y, uint8 rideIndex, uint8 station_num, uint8 flags){
-	if (rideIndex >= MAX_RIDES)
-	{
-		log_warning("Invalid game command for ride %u", rideIndex);
-		return MONEY32_UNDEFINED;
-	}
-	rct_ride* ride = get_ride(rideIndex);
-	if (ride->type == RIDE_TYPE_NULL)
-	{
-		log_warning("Invalide ride id %u for entrance/exit removal", rideIndex);
-		return MONEY32_UNDEFINED;
-	}
-
-	if (!(flags & GAME_COMMAND_FLAG_GHOST)){
-		if (!(flags & GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED) && game_is_paused() && !gCheatsBuildInPauseMode){
-			gGameCommandErrorText = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
-			return MONEY32_UNDEFINED;
-		}
-	}
-
-	if (ride->status != RIDE_STATUS_CLOSED){
-		gGameCommandErrorText = STR_MUST_BE_CLOSED_FIRST;
-		return MONEY32_UNDEFINED;
-	}
-
-	if (ride->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK) {
-		gGameCommandErrorText = STR_NOT_ALLOWED_TO_MODIFY_STATION;
-		return MONEY32_UNDEFINED;
-	}
-
-	if (flags & GAME_COMMAND_FLAG_APPLY){
-		ride_clear_for_construction(rideIndex);
-		ride_remove_peeps(rideIndex);
-		invalidate_test_results(rideIndex);
-
-		uint8 found = 0;
-		rct_map_element* mapElement = map_get_first_element_at(x / 32, y / 32);
-		if (mapElement == NULL)
-		{
-			log_warning("Invalid coordinates for entrance/exit removal x = %d, y = %d", x, y);
-			return MONEY32_UNDEFINED;
-		}
-		do{
-			if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_ENTRANCE)
-				continue;
-
-			if (mapElement->base_height != ride->station_heights[station_num])
-				continue;
-
-			if (flags & (1 << 5) && !(mapElement->flags & MAP_ELEMENT_FLAG_GHOST))
-				continue;
-
-			found = 1;
-			break;
-		} while (!map_element_is_last_for_tile(mapElement++));
-
-		if (!found){
-			return MONEY32_UNDEFINED;
-		}
-
-		rct_xyz16 coord;
-		coord.x = x + 16;
-		coord.y = y + 16;
-		coord.z = map_element_height(coord.x, coord.y);
-		network_set_player_last_action_coord(network_get_player_index(game_command_playerid), coord);
-
-		footpath_queue_chain_reset();
-		maze_entrance_hedge_replacement(x, y, mapElement);
-		footpath_remove_edges_at(x, y, mapElement);
-
-		uint8 is_exit = mapElement->properties.entrance.type;
-
-		map_element_remove(mapElement);
-
-		if (is_exit){
-			ride->exits[station_num] = 0xFFFF;
-		}
-		else{
-			ride->entrances[station_num] = 0xFFFF;
-		}
-
-		sub_6A759F();
-
-		map_invalidate_tile_full(x, y);
-	}
-
-	gCommandExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
-	return 0;
-}
-
-/**
- *
- *  rct2: 0x0066640B
- */
-void game_command_remove_ride_entrance_or_exit(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *edx, sint32 *esi, sint32 *edi, sint32 *ebp){
-	*ebx = remove_ride_entrance_or_exit(
-		*eax & 0xFFFF,
-		*ecx & 0xFFFF,
-		*edx & 0xFF,
-		*edi & 0xFF,
-		*ebx & 0xFF
-		);
-}
 
 void ride_set_to_default_inspection_interval(sint32 rideIndex)
 {

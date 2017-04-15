@@ -17,7 +17,7 @@
 #pragma warning(disable : 4295) // 'identifier': array is too small to include a terminating null character
 
 #include "../audio/audio.h"
-#include "../config.h"
+#include "../config/Config.h"
 #include "../game.h"
 #include "../editor.h"
 #include "../interface/themes.h"
@@ -29,6 +29,7 @@
 #include "../object_list.h"
 #include "../object/ObjectManager.h"
 #include "../object/ObjectRepository.h"
+#include "../platform/platform.h"
 #include "../rct1.h"
 #include "../ride/ride.h"
 #include "../ride/ride_data.h"
@@ -58,7 +59,8 @@ enum {
 	FILTER_SELECTED = (1 << 12),
 	FILTER_NONSELECTED = (1 << 13),
 
-	FILTER_ALL = 0x7EF,
+	FILTER_RIDES = FILTER_RIDE_TRANSPORT | FILTER_RIDE_GENTLE | FILTER_RIDE_COASTER | FILTER_RIDE_THRILL | FILTER_RIDE_WATER | FILTER_RIDE_STALL,
+	FILTER_ALL = FILTER_RIDES | FILTER_RCT2 | FILTER_WW | FILTER_TT | FILTER_CUSTOM | FILTER_SELECTED | FILTER_NONSELECTED,
 } FILTER_FLAGS;
 
 uint32 _filter_flags;
@@ -595,8 +597,8 @@ static void setup_in_use_selection_flags()
 			assert(type < object_entry_group_counts[OBJECT_TYPE_PATHS]);
 			gEditorSelectedObjects[OBJECT_TYPE_PATHS][type] |= (1 << 0);
 			break;
-		case MAP_ELEMENT_TYPE_FENCE:
-			type = iter.element->properties.fence.type;
+		case MAP_ELEMENT_TYPE_WALL:
+			type = iter.element->properties.wall.type;
 			assert(type < object_entry_group_counts[OBJECT_TYPE_WALLS]);
 			gEditorSelectedObjects[OBJECT_TYPE_WALLS][type] |= (1 << 0);
 			break;
@@ -808,7 +810,7 @@ static void window_editor_object_selection_mouseup(rct_window *w, sint32 widgetI
 		window_editor_object_set_page(w, widgetIndex - WIDX_TAB_1);
 		break;
 	case WIDX_FILTER_RIDE_TAB_ALL:
-		_filter_flags |= 0x7E0;
+		_filter_flags |= FILTER_RIDES;
 		gConfigInterface.object_selection_filter_flags = _filter_flags;
 		config_save_default();
 
@@ -826,7 +828,7 @@ static void window_editor_object_selection_mouseup(rct_window *w, sint32 widgetI
 	case WIDX_FILTER_RIDE_TAB_THRILL:
 	case WIDX_FILTER_RIDE_TAB_WATER:
 	case WIDX_FILTER_RIDE_TAB_STALL:
-		_filter_flags &= ~0x7E0;
+		_filter_flags &= ~FILTER_RIDES;
 		_filter_flags |= (1 << (widgetIndex - WIDX_FILTER_RIDE_TAB_TRANSPORT + 5));
 		gConfigInterface.object_selection_filter_flags = _filter_flags;
 		config_save_default();
@@ -1194,7 +1196,7 @@ static void window_editor_object_selection_invalidate(rct_window *w)
 			(1 << WIDX_FILTER_RIDE_TAB_WATER) | (1 << WIDX_FILTER_RIDE_TAB_STALL);
 		for (sint32 i = 0; i < 7; i++)
 			w->pressed_widgets &= ~(1 << (WIDX_FILTER_RIDE_TAB_ALL + i));
-		if ((_filter_flags & 0x7E0) == 0x7E0)
+		if ((_filter_flags & FILTER_RIDES) == FILTER_RIDES)
 			w->pressed_widgets |= (1 << WIDX_FILTER_RIDE_TAB_ALL);
 		else {
 			for (sint32 i = 0; i < 6; i++) {

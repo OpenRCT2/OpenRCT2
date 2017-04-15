@@ -183,7 +183,7 @@ typedef struct rct_ride {
 		uint8 speed;				// 0x0D0
 		uint8 rotations;			// 0x0D0
 	};
-	
+
 	uint8 boat_hire_return_direction;	// 0x0D1
 	rct_xy8 boat_hire_return_position;	// 0x0D2
 	uint8 measurement_index;		// 0x0D4
@@ -894,7 +894,8 @@ typedef struct rct_ride_properties {
 	uint8 min_value;
 	uint8 max_value;
 	uint8 max_brakes_speed;
-	uint8 acceleration;
+	uint8 powered_lift_acceleration;
+	uint8 booster_acceleration;
 } rct_ride_properties;
 
 extern const rct_ride_properties RideProperties[RIDE_TYPE_COUNT];
@@ -978,8 +979,7 @@ extern uint8 _currentBrakeSpeed2;
 extern uint8 _currentSeatRotationAngle;
 
 extern rct_xyz16 _unkF44188;
-extern rct_xyzd16 _unkF440BF;
-extern uint8 _unkF440C4;
+
 extern rct_xyzd16 _unkF440C5;
 
 extern uint8 gRideEntranceExitPlaceType;
@@ -1016,6 +1016,7 @@ sint32 ride_find_track_gap(rct_xy_element *input, rct_xy_element *output);
 void ride_construct_new(ride_list_item listItem);
 void ride_construct(sint32 rideIndex);
 sint32 ride_modify(rct_xy_element *input);
+void ride_remove_peeps(sint32 rideIndex);
 void ride_get_status(sint32 rideIndex, rct_string_id *formatSecondary, sint32 *argument);
 rct_peep *ride_get_assigned_mechanic(rct_ride *ride);
 sint32 ride_get_total_length(rct_ride *ride);
@@ -1059,8 +1060,8 @@ void game_command_set_ride_price(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *
 money32 ride_create_command(sint32 type, sint32 subType, sint32 flags, uint8 *outRideIndex, uint8 *outRideColour);
 
 void ride_clear_for_construction(sint32 rideIndex);
-void ride_restore_provisional_entrance_or_exit();
-void ride_remove_provisional_entrance_or_exit();
+void ride_entrance_exit_place_provisional_ghost();
+void ride_entrance_exit_remove_ghost();
 void ride_restore_provisional_track_piece();
 void ride_remove_provisional_track_piece();
 void set_vehicle_type_image_max_sizes(rct_ride_entry_vehicle* vehicle_type, sint32 num_images);
@@ -1102,7 +1103,7 @@ bool track_block_get_previous_from_zero(sint16 x, sint16 y, sint16 z, uint8 ride
 
 void sub_6C84CE();
 void sub_6C96C0();
-money32 ride_get_entrance_or_exit_price(sint32 rideIndex, sint32 x, sint32 y, sint32 direction, sint32 dh, sint32 di);
+money32 ride_entrance_exit_place_ghost(sint32 rideIndex, sint32 x, sint32 y, sint32 direction, sint32 placeType, sint32 stationNum);
 void ride_get_entrance_or_exit_position_from_screen_position(sint32 x, sint32 y, sint32 *outX, sint32 *outY, sint32 *outDirection);
 
 bool ride_select_backwards_from_front();

@@ -9,7 +9,7 @@
   <PropertyGroup>
     <!-- Allow any version of VS and Windows SDK -->
     <PlatformToolset>$(DefaultPlatformToolset)</PlatformToolset>
-    <TargetPlatformVersion>$(UCRTVersion)</TargetPlatformVersion>
+    <TargetPlatformVersion>10.0.14393.0</TargetPlatformVersion>
 
     <CharacterSet>MultiByte</CharacterSet>
 

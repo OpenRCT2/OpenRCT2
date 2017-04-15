@@ -262,7 +262,7 @@ void window_footpath_open()
 	tool_cancel();
 	gFootpathConstructionMode = PATH_CONSTRUCTION_MODE_LAND;
 	tool_set(window, WIDX_CONSTRUCT_ON_LAND, 17);
-	gInputFlags |= INPUT_FLAG_6;
+	input_set_flag(INPUT_FLAG_6, true);
 	_footpathErrorOccured = false;
 	window_footpath_set_enabled_and_pressed_widgets();
 }
@@ -308,7 +308,7 @@ static void window_footpath_mouseup(rct_window *w, sint32 widgetIndex)
 		gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
 		gFootpathConstructionMode = PATH_CONSTRUCTION_MODE_LAND;
 		tool_set(w, WIDX_CONSTRUCT_ON_LAND, 17);
-		gInputFlags |= INPUT_FLAG_6;
+		input_set_flag(INPUT_FLAG_6, true);
 		_footpathErrorOccured = false;
 		window_footpath_set_enabled_and_pressed_widgets();
 		break;
@@ -323,7 +323,7 @@ static void window_footpath_mouseup(rct_window *w, sint32 widgetIndex)
 		gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
 		gFootpathConstructionMode = PATH_CONSTRUCTION_MODE_BRIDGE_OR_TUNNEL_TOOL;
 		tool_set(w, WIDX_CONSTRUCT_BRIDGE_OR_TUNNEL, 12);
-		gInputFlags |= INPUT_FLAG_6;
+		input_set_flag(INPUT_FLAG_6, true);
 		_footpathErrorOccured = false;
 		window_footpath_set_enabled_and_pressed_widgets();
 		break;
@@ -520,14 +520,14 @@ static void window_footpath_update(rct_window *w)
 
 	// Check tool
 	if (gFootpathConstructionMode == PATH_CONSTRUCTION_MODE_LAND) {
-		if (!(gInputFlags & INPUT_FLAG_TOOL_ACTIVE))
+		if (!(input_test_flag(INPUT_FLAG_TOOL_ACTIVE)))
 			window_close(w);
 		else if (gCurrentToolWidget.window_classification != WC_FOOTPATH)
 			window_close(w);
 		else if (gCurrentToolWidget.widget_index != WIDX_CONSTRUCT_ON_LAND)
 			window_close(w);
 	} else if (gFootpathConstructionMode == PATH_CONSTRUCTION_MODE_BRIDGE_OR_TUNNEL_TOOL) {
-		if (!(gInputFlags & INPUT_FLAG_TOOL_ACTIVE))
+		if (!(input_test_flag(INPUT_FLAG_TOOL_ACTIVE)))
 			window_close(w);
 		else if (gCurrentToolWidget.window_classification != WC_FOOTPATH)
 			window_close(w);
@@ -894,8 +894,8 @@ static void window_footpath_construct()
 	if (cost != MONEY32_UNDEFINED && !gCheatsDisableClearanceChecks) {
 		// It is possible, let's remove walls between the old and new piece of path
 		uint8 direction = gFootpathConstructDirection;
-		map_remove_intersecting_walls(x, y, z, z + 4 + ((slope & 0xf) ? 2 : 0), direction ^ 2);
-		map_remove_intersecting_walls(
+		wall_remove_intersecting_walls(x, y, z, z + 4 + ((slope & 0xf) ? 2 : 0), direction ^ 2);
+		wall_remove_intersecting_walls(
 			x - TileDirectionDelta[direction].x,
 			y - TileDirectionDelta[direction].y,
 			z, z + 4, direction

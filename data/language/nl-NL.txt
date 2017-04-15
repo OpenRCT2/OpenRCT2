@@ -2745,7 +2745,7 @@ STR_2739    :Geen
 STR_2740    :RollerCoaster Tycoon 1
 STR_2741    :RollerCoaster Tycoon 2
 STR_2742    :css50.dat niet gevonden
-STR_2743    :Kopieer data\css17.dat van je RCT1-installatie naar data\css50.dat in je RCT2-installatie.
+STR_2743    :Kopieer data\css17.dat van je RCT1-installatie naar data\css50.dat in je RCT2-installatie, of stel een pad in naar je RCT1-bestanden onder het tabblad 'Overige instellingen'
 STR_2744    :[
 STR_2745    :\
 STR_2746    :]
@@ -2783,7 +2783,7 @@ STR_2777    :{MOVE_X}{SMALLFONT}{STRING}
 STR_2778    :{RIGHTGUILLEMET}{MOVE_X}{SMALLFONT}{STRING}
 STR_2779    :Kijkvenster {COMMA16}
 STR_2780    :Extra kijkvenster
-STR_2781    :{STRINGID}:{MOVE_X}{195}{STRINGID}
+STR_2781    :{STRINGID}:{MOVE_X}{255}{STRINGID}
 STR_2782    :SHIFT + 
 STR_2783    :CTRL + 
 STR_2784    :Sneltoets wijzigen
@@ -4137,7 +4137,7 @@ STR_5832    :{SMALLFONT}{BLACK}Toon hoogtes in eenheden in plaats van echte mate
 STR_5833    :{SMALLFONT}{BLACK}Stelt de datumindeling in.
 STR_5834    :{SMALLFONT}{BLACK}Stelt in welk audioapparaat OpenRCT2 zal gebruiken.
 STR_5835    :{SMALLFONT}{BLACK}Dempt het geluid als het venster de focus kwijtraakt.
-STR_5836    :{SMALLFONT}{BLACK}Selecteert welke muziek er wordt gebruikt tijdens de titelpresentatie.{NEWLINE}Om de muziek van RCT1 te gebruiken moet je het bestand 'data/css17.dat' uit je RCT1-map kopiëren naar 'data/css50.dat' in je RCT2-map.
+STR_5836    :{SMALLFONT}{BLACK}Selecteert welke muziek er wordt gebruikt tijdens de titelpresentatie.{NEWLINE}Om de muziek van RCT1 te gebruiken moet je het bestand 'data/css17.dat' uit je RCT1-map kopiëren naar 'data/css50.dat' in je RCT2-map, of een pad naar je RCT1-bestanden instellen onder het tabblad 'Overige instellingen'.
 STR_5837    :{SMALLFONT}{BLACK}Eigen thema's voor de GUI aanmaken en beheren.
 STR_5838    :{SMALLFONT}{BLACK}Toont een knop voor financiën in de werkbalk.
 STR_5839    :{SMALLFONT}{BLACK}Toont een knop voor onderzoek en ontwikkeling in de werkbalk.
@@ -4311,9 +4311,34 @@ STR_6006    :{SMALLFONT}{BLACK}Hiermee worden alleen elementen onder een bepaald
 STR_6007    :Snijhoogte
 STR_6008    :{SMALLFONT}{BLACK}Klik hierop om te wisselen tussen interne waardes en toegankelijke waardes (zoals meters).
 STR_6009    :{SMALLFONT}{BLACK}Selecteer een hoogte waarboven kaartelementen niet meer moeten worden getekend.
-STR_6010    :{COMMA2DP32}m
-STR_6011    :{COMMA1DP16}ft
+STR_6010    :{COMMA2DP32} m
+STR_6011    :{COMMA1DP16} ft
 STR_6012    :{COMMA1DP16}
+STR_6013    :{SMALLFONT}{BLACK}Bezoekers betalen om het park te betreden en voor faciliteiten.{NEWLINE}Attracties zijn gratis.
+STR_6014    :{SMALLFONT}{BLACK}Bezoekers betalen om in attracties te gaan en voor faciliteiten{NEWLINE}Het park betreden is gratis.
+STR_6015    :Helling
+STR_6016    :Vakje aanpassen
+STR_6017    :Ietsje langzamer alsjeblieft.
+STR_6018    :Attractiebouw: bocht naar links
+STR_6019    :Attractiebouw: bocht naar rechts
+STR_6020    :Attractiebouw: standaardbaanstuk
+STR_6021    :Attractiebouw: helling naar beneden
+STR_6022    :Attractiebouw: helling naar boven
+STR_6023    :Attractiebouw: kettinglift aan/uit
+STR_6024    :Attractiebouw: banking (links)
+STR_6025    :Attractiebouw: banking (rechts)
+STR_6026    :Attractiebouw: vorig baanstuk
+STR_6027    :Attractiebouw: volgend baanstuk
+STR_6028    :Attractiebouw: onderdeel bouwen
+STR_6029    :Attractiebouw: onderdeel verwijderen
+STR_6030    :{SMALLFONT}{BLACK}Decorselector. Klik op een al geplaatst decorstuk om het te selecteren in dit venster (inclusief de kleuren).
+STR_6031    :Serverbeschrijving:
+STR_6032    :Welkomstboodschap:
+STR_6033    :Locatie RCT1-bestanden:
+STR_6035    :Selecteer de map waar je RCT1-bestanden staan
+STR_6036    :{SMALLFONT}{BLACK}Wissen
+STR_6037    :Selecteer een geldige RCT1-map.
+STR_6038    :{SMALLFONT}{BLACK}Als je RCT1 hebt, stel dan hier het pad in om gebruik te maken van de scenario's, baanontwerpen en graphics.
 
 #############
 # Scenarios #
@@ -6996,6 +7021,10 @@ STR_NAME    :Wachtrij-tv
 #TT
 [MEDBENCH]
 STR_NAME    :Krukjes
+
+#TT
+[1920SLMP]
+STR_NAME    :Antieke straatlantaarns
 
 #OCC
 [LITTERPA]

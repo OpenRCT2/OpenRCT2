@@ -15,7 +15,7 @@
 #pragma endregion
 
 #include <time.h>
-#include "../config.h"
+#include "../config/Config.h"
 #include "../editor.h"
 #include "../game.h"
 #include "../interface/themes.h"
@@ -123,7 +123,7 @@ typedef struct loadsave_list_item {
 	uint8 type;
 } loadsave_list_item;
 
-loadsave_callback gLoadSaveCallback;
+static loadsave_callback _loadSaveCallback;
 
 sint32 _listItemsCount = 0;
 loadsave_list_item *_listItems = NULL;
@@ -139,6 +139,11 @@ static void window_loadsave_select(rct_window *w, const char *path);
 static void window_loadsave_sort_list(sint32 index, sint32 endIndex);
 
 static rct_window *window_overwrite_prompt_open(const char *name, const char *path);
+
+void window_loadsave_set_loadsave_callback(loadsave_callback cb)
+{
+	_loadSaveCallback = cb;
+}
 
 static sint32 window_loadsave_get_dir(utf8 *last_save, char *path, const char *subdir, size_t pathSize)
 {
@@ -156,7 +161,7 @@ static sint32 window_loadsave_get_dir(utf8 *last_save, char *path, const char *s
 
 rct_window *window_loadsave_open(sint32 type, char *defaultName)
 {
-	gLoadSaveCallback = NULL;
+	_loadSaveCallback = NULL;
 	_type = type;
 	_defaultName[0] = '\0';
 
@@ -650,7 +655,7 @@ static void window_loadsave_populate_list(rct_window *w, sint32 includeNewItem, 
 			safe_strcpy(filter, directory, sizeof(filter));
 			safe_strcat_path(filter, "*", sizeof(filter));
 			path_append_extension(filter, extToken, sizeof(filter));
-			
+
 			file_info fileInfo;
 			fileEnumHandle = platform_enumerate_files_begin(filter);
 			while (platform_enumerate_files_next(fileEnumHandle, &fileInfo)) {
@@ -685,8 +690,8 @@ static void window_loadsave_populate_list(rct_window *w, sint32 includeNewItem, 
 
 static void window_loadsave_invoke_callback(sint32 result, const utf8 * path)
 {
-	if (gLoadSaveCallback != NULL) {
-		gLoadSaveCallback(result, path);
+	if (_loadSaveCallback != NULL) {
+		_loadSaveCallback(result, path);
 	}
 }
 

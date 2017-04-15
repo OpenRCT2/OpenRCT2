@@ -610,10 +610,44 @@ static void ride_ratings_calculate(rct_ride *ride)
 
 static void ride_ratings_calculate_value(rct_ride *ride)
 {
+	typedef struct row {
+		sint32 months, multiplier, divisor, summand;
+	} row;
+
+	static const row age_table_new[] = {
+		{5,         3,          2,          0},   // 1.5x
+		{13,        6,          5,          0},   // 1.2x
+		{40,        1,          1,          0},   // 1x
+		{64,        3,          4,          0},   // 0.75x
+		{88,        9,          16,         0},   // 0.56x
+		{104,       27,         64,         0},   // 0.42x
+		{120,       81,         256,        0},   // 0.32x
+		{128,       81,         512,        0},   // 0.16x
+		{200,       81,         1024,       0},   // 0.08x
+		{200,       9,          16,         0}    // 0.56x "easter egg"
+		};
+
+#ifdef ORIGINAL_RATINGS
+	static const row age_table_old[] = {
+		{5,         1,          1,          30},  // +30
+		{13,        1,          1,          10},  // +10
+		{40,        1,          1,          0},   // 1x
+		{64,        3,          4,          0},   // 0.75x
+		{88,        9,          16,         0},   // 0.56x
+		{104,       27,         64,         0},   // 0.42x
+		{120,       81,         256,        0},   // 0.32x
+		{128,       81,         512,        0},   // 0.16x
+		{200,       81,         1024,       0},   // 0.08x
+		{200,       9,          16,         0}    // 0.56x "easter egg"
+		};
+#endif
+
+
 	if (!ride_has_ratings(ride)) {
 		return;
 	}
 
+	// Start with the base ratings, multiplied by the ride type specific weights for excitement, intensity and nausea.
 	sint32 value =
 		(((ride->excitement * RideRatings[ride->type].excitement) * 32) >> 15) +
 		(((ride->intensity  * RideRatings[ride->type].intensity) * 32) >> 15) +
@@ -621,21 +655,30 @@ static void ride_ratings_calculate_value(rct_ride *ride)
 
 	sint32 monthsOld = gDateMonthsElapsed - ride->build_date;
 
-	// New ride reward
-	if (monthsOld <= 12) {
-		value += 10;
-		if (monthsOld <= 4)
-			value += 20;
-	}
+	const row *age_table = age_table_new;
+	sint32 table_size = countof(age_table_new);
 
-	// Old ride penalty
-	if (monthsOld >= 40) value -= value / 4;
-	if (monthsOld >= 64) value -= value / 4;
-	if (monthsOld < 200) {
-		if (monthsOld >= 88) value -= value / 4;
-		if (monthsOld >= 104) value -= value / 4;
-		if (monthsOld >= 120) value -= value / 2;
-		if (monthsOld >= 128) value -= value / 2;
+#ifdef ORIGINAL_RATINGS
+	age_table = age_table_old;
+	table_size = countof(age_table_old);
+#endif
+
+	row last_row = age_table[table_size-1];
+
+	// Ride is older than oldest age in the table?
+	if(monthsOld >= last_row.months) {
+		value = (value * last_row.multiplier) / last_row.divisor + last_row.summand;
+	}
+	else {
+		// Find the first hit in the table that matches this ride's age
+		for(sint32 it = 0; it < table_size; it++) {
+			row curr = age_table[it];
+
+			if(monthsOld < curr.months) {
+				value = (value * curr.multiplier) / curr.divisor + curr.summand;
+				break;
+			}
+		}
 	}
 
 	// Other ride of same type penalty
@@ -643,7 +686,7 @@ static void ride_ratings_calculate_value(rct_ride *ride)
 	rct_ride *ride2;
 	sint32 i;
 	FOR_ALL_RIDES(i, ride2) {
-		if (ride2->type == ride->type)
+		if (ride2->type == ride->type && ride2->status == RIDE_STATUS_OPEN)
 			otherRidesOfSameType++;
 	}
 	if (otherRidesOfSameType > 1)

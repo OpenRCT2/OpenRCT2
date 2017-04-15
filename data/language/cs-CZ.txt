@@ -1,4 +1,4 @@
-﻿# STR_XXXX part is read and XXXX becomes the string id number.
+# STR_XXXX part is read and XXXX becomes the string id number.
 # Everything after the colon and before the new line will be saved as the string.
 # Use # at the beginning of a line to leave a comment.
 STR_0000    :
@@ -4324,6 +4324,24 @@ STR_6011    :{COMMA1DP16}ft
 STR_6012    :{COMMA1DP16}
 STR_6013    :{SMALLFONT}{BLACK}Návštěvníci platí pouze za vstup do parku a služby. Atrakce jsou zdrarma.
 STR_6014    :{SMALLFONT}{BLACK}Návštěvníci platí pouze za služby a atrakce. Vstup do parku je zdarma.
+STR_6015    :Nakloněný
+STR_6016    :Upravit dlaždici
+STR_6017    :Zpomalte prosím
+STR_6018    :Stavba trati - zatáčka vlevo
+STR_6019    :Stavba trati - zatáčka vpravo
+STR_6020    :Stavba trati - použít výchozí díl
+STR_6021    :Stavba trati - svah dolů
+STR_6022    :Stavba trati - svah vzhůru
+STR_6023    :Stavba trati - řetězový vlek
+STR_6024    :Stavba trati - náklon vlevo
+STR_6025    :Stavba trati - náklon vpravo
+STR_6026    :Stavba trati - předchozí díl
+STR_6027    :Stavba trati - následující díl
+STR_6028    :Stavba trati - postavit aktivní část
+STR_6029    :Stavba trati - odebrat aktivní část
+STR_6030    :{SMALLFONT}{BLACK}Výběr kulis. Klikněte na jakoukoliv kulisu na mapě pro postavení její kopie.
+STR_6031    :Popis serveru:
+STR_6032    :Uvítací zpráva serveru:
 
 ###############################################################################
 ## RCT2 Objects

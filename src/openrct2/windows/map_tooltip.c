@@ -14,10 +14,11 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../localisation/localisation.h"
 #include "../input.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
+#include "../localisation/localisation.h"
+#include "../platform/platform.h"
 
 static rct_widget window_map_tooltip_widgets[] = {
 	{ WWT_IMGBTN, 0, 0, 199, 0, 29, 0xFFFFFFFF, STR_NONE },
@@ -72,15 +73,14 @@ static void window_map_tooltip_open();
  */
 void window_map_tooltip_update_visibility()
 {
-	sint32 cursorX, cursorY, inputFlags;
+	sint32 cursorX, cursorY;
 
 	cursorX = gCursorState.x;
 	cursorY = gCursorState.y;
-	inputFlags = gInputFlags;
 
 	// Check for cursor movement
 	_cursorHoldDuration++;
-	if (abs(cursorX - _lastCursorX) > 5 || abs(cursorY - _lastCursorY) > 5 || (inputFlags & INPUT_FLAG_5))
+	if (abs(cursorX - _lastCursorX) > 5 || abs(cursorY - _lastCursorY) > 5 || (input_test_flag(INPUT_FLAG_5)))
 		_cursorHoldDuration = 0;
 
 	_lastCursorX = cursorX;
@@ -92,7 +92,7 @@ void window_map_tooltip_update_visibility()
 
 	if (_cursorHoldDuration < 25 ||
 		stringId == STR_NONE ||
-		(gInputPlaceObjectModifier & 3) ||
+		(input_test_place_object_modifier(PLACE_OBJECT_MODIFIER_COPY_Z | PLACE_OBJECT_MODIFIER_SHIFT_Z)) ||
 		window_find_by_class(WC_ERROR) != NULL
 	) {
 		window_close_by_class(WC_MAP_TOOLTIP);

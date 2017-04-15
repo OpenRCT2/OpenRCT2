@@ -67,7 +67,7 @@ std::shared_ptr<SawyerChunk> SawyerChunkReader::ReadChunk()
         case CHUNK_ENCODING_RLECOMPRESSED:
         case CHUNK_ENCODING_ROTATE:
         {
-            std::unique_ptr<uint8> compressedData = std::unique_ptr<uint8>(Memory::Allocate<uint8>(header.length));
+            std::unique_ptr<uint8[]> compressedData(new uint8[header.length]);
             if (_stream->TryRead(compressedData.get(), header.length) != header.length)
             {
                 throw SawyerChunkException("Corrupt chunk size.");

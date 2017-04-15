@@ -35,6 +35,7 @@ enum {
 };
 
 #define NETWORK_DEFAULT_PORT 11753
+#define MAX_SERVER_DESCRIPTION_LENGTH 256
 
 #ifdef __cplusplus
 extern "C" {
@@ -55,7 +56,7 @@ extern "C" {
 // This define specifies which version of network stream current build uses.
 // It is used for making sure only compatible builds get connected, even within
 // single OpenRCT2 version.
-#define NETWORK_STREAM_VERSION "2"
+#define NETWORK_STREAM_VERSION "18"
 #define NETWORK_STREAM_ID OPENRCT2_VERSION "-" NETWORK_STREAM_VERSION
 
 #ifdef __cplusplus

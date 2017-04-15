@@ -167,7 +167,7 @@ void window_track_place_open(const track_design_file_ref *tdFileRef)
 		| 1 << WIDX_SELECT_DIFFERENT_DESIGN;
 	window_init_scroll_widgets(w);
 	tool_set(w, 6, 12);
-	gInputFlags |= INPUT_FLAG_6;
+	input_set_flag(INPUT_FLAG_6, true);
 	window_push_others_right(w);
 	show_gridlines();
 	_window_track_place_last_cost = MONEY32_UNDEFINED;
@@ -234,7 +234,7 @@ static void window_track_place_mouseup(rct_window *w, sint32 widgetIndex)
  */
 static void window_track_place_update(rct_window *w)
 {
-	if (!(gInputFlags & INPUT_FLAG_TOOL_ACTIVE))
+	if (!(input_test_flag(INPUT_FLAG_TOOL_ACTIVE)))
 		if (gCurrentToolWidget.window_classification != WC_TRACK_DESIGN_PLACE)
 			window_close(w);
 }

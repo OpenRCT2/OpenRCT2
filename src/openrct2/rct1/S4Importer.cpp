@@ -51,10 +51,11 @@ extern "C"
     #include "../ride/track.h"
     #include "../util/sawyercoding.h"
     #include "../util/util.h"
-    #include "../world/climate.h"
+    #include "../world/Climate.h"
     #include "../world/footpath.h"
     #include "../world/map_animation.h"
     #include "../world/park.h"
+    #include "../world/entrance.h"
     #include "../world/scenery.h"
 }
 
@@ -227,7 +228,11 @@ public:
 
             dst->objective_type = _s4.scenario_objective_type;
             dst->objective_arg_1 = _s4.scenario_objective_years;
-            dst->objective_arg_2 = _s4.scenario_objective_currency;
+            // RCT1 used another way of calculating park value.
+            if (_s4.scenario_objective_type == OBJECTIVE_PARK_VALUE_BY)
+                dst->objective_arg_2 = CorrectRCT1ParkValue(_s4.scenario_objective_currency);
+            else
+                dst->objective_arg_2 = _s4.scenario_objective_currency;
             dst->objective_arg_3 = _s4.scenario_objective_num_guests;
 
             std::string name = std::string(_s4.scenario_name, sizeof(_s4.scenario_name));
@@ -252,6 +257,11 @@ public:
         }
 
         return result;
+    }
+
+    sint32 CorrectRCT1ParkValue(sint32 oldParkValue)
+    {
+        return oldParkValue * 10;
     }
 
 private:
@@ -409,11 +419,11 @@ private:
             case MAP_ELEMENT_TYPE_SCENERY_MULTIPLE:
                 AddEntryForLargeScenery(mapElement->properties.scenerymultiple.type & MAP_ELEMENT_LARGE_TYPE_MASK);
                 break;
-            case MAP_ELEMENT_TYPE_FENCE:
+            case MAP_ELEMENT_TYPE_WALL:
             {
-                uint8  var_05 = mapElement->properties.fence.item[0];
-                uint16 var_06 = mapElement->properties.fence.item[1] |
-                               (mapElement->properties.fence.item[2] << 8);
+                uint8  var_05 = mapElement->properties.wall.colour_3;
+                uint16 var_06 = mapElement->properties.wall.colour_1 |
+                               (mapElement->properties.wall.animation << 8);
 
                 for (sint32 edge = 0; edge < 4; edge++)
                 {
@@ -1602,7 +1612,7 @@ private:
         gInitialCash = _s4.cash;
 
         gCompanyValue = _s4.company_value;
-        gParkValue = _s4.park_value;
+        gParkValue = CorrectRCT1ParkValue(_s4.park_value);
         gCurrentProfit = _s4.profit;
 
         for (size_t i = 0; i < 128; i++)
@@ -1881,7 +1891,7 @@ private:
     void ImportParkFlags()
     {
         // Date and srand
-        gCurrentTicks = _s4.ticks;
+        gScenarioTicks = _s4.ticks;
         gScenarioSrand0 = _s4.random_a;
         gScenarioSrand1 = _s4.random_b;
         gDateMonthsElapsed = _s4.month;
@@ -2001,8 +2011,15 @@ private:
     {
         gScenarioObjectiveType = _s4.scenario_objective_type;
         gScenarioObjectiveYear = _s4.scenario_objective_years;
-        gScenarioObjectiveCurrency = _s4.scenario_objective_currency;
         gScenarioObjectiveNumGuests = _s4.scenario_objective_num_guests;
+        // RCT1 used a different way of calculating the park value.
+        // This is corrected here, but since scenario_objective_currency doubles as minimum excitement rating,
+        // we need to check the goal to avoid affecting scenarios like Volcania.
+        if (_s4.scenario_objective_type == OBJECTIVE_PARK_VALUE_BY)
+            gScenarioObjectiveCurrency = CorrectRCT1ParkValue(_s4.scenario_objective_currency);
+        else
+            gScenarioObjectiveCurrency = _s4.scenario_objective_currency;
+
     }
 
     void ImportSavedView()
@@ -2098,15 +2115,15 @@ private:
                         break;
                     }
                     break;
-                case MAP_ELEMENT_TYPE_FENCE:
+                case MAP_ELEMENT_TYPE_WALL:
                     colour = ((mapElement->type & 0xC0) >> 3) |
-                             ((mapElement->properties.fence.type & 0xE0) >> 5);
+                             ((mapElement->properties.wall.type & 0xE0) >> 5);
                     colour = RCT1::GetColour(colour);
 
                     mapElement->type &= 0x3F;
-                    mapElement->properties.fence.type &= 0x1F;
+                    mapElement->properties.wall.type &= 0x1F;
                     mapElement->type |= (colour & 0x18) << 3;
-                    mapElement->properties.fence.type |= (colour & 7) << 5;
+                    mapElement->properties.wall.type |= (colour & 7) << 5;
                     break;
                 case MAP_ELEMENT_TYPE_SCENERY_MULTIPLE:
                     colour = RCT1::GetColour(mapElement->properties.scenerymultiple.colour[0] & 0x1F);
@@ -2197,6 +2214,11 @@ private:
 
     void FixWalls()
     {
+        // The user might attempt to load a save while in pause mode.
+        // Since we cannot place walls in pause mode without a cheat, temporarily turn it on.
+        bool oldCheatValue = gCheatsBuildInPauseMode;
+        gCheatsBuildInPauseMode = true;
+
         for (sint32 x = 0; x < RCT1_MAX_MAP_SIZE; x++)
         {
             for (sint32 y = 0; y < RCT1_MAX_MAP_SIZE; y++)
@@ -2204,14 +2226,14 @@ private:
                 rct_map_element * mapElement = map_get_first_element_at(x, y);
                 do
                 {
-                    if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_FENCE)
+                    if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_WALL)
                     {
                         rct_map_element originalMapElement = *mapElement;
                         map_element_remove(mapElement);
 
-                        uint8 var_05 = originalMapElement.properties.fence.item[0];
-                        uint16 var_06 = originalMapElement.properties.fence.item[1] |
-                                       (originalMapElement.properties.fence.item[2] << 8);
+                        uint8 var_05 = originalMapElement.properties.wall.colour_3;
+                        uint16 var_06 = originalMapElement.properties.wall.colour_1 |
+                                       (originalMapElement.properties.wall.animation << 8);
 
                         for (sint32 edge = 0; edge < 4; edge++)
                         {
@@ -2221,13 +2243,13 @@ private:
                             {
                                 sint32 type = typeA | (typeB << 2);
                                 sint32 colourA = ((originalMapElement.type & 0xC0) >> 3) |
-                                               (originalMapElement.properties.fence.type >> 5);
+                                               (originalMapElement.properties.wall.type >> 5);
                                 sint32 colourB = 0;
                                 sint32 colourC = 0;
                                 ConvertWall(&type, &colourA, &colourB, &colourC);
 
                                 type = _wallTypeToEntryMap[type];
-                                map_place_fence(type, x * 32, y * 32, 0, edge, colourA, colourB, colourC, 169);
+                                wall_place(type, x * 32, y * 32, 0, edge, colourA, colourB, colourC, 169);
                             }
                         }
                         break;
@@ -2236,40 +2258,42 @@ private:
                 while (!map_element_is_last_for_tile(mapElement++));
             }
         }
+
+        gCheatsBuildInPauseMode = oldCheatValue;
     }
 
     void ConvertWall(sint32 * type, sint32 * colourA, sint32 * colourB, sint32 * colourC)
     {
         switch (*type) {
-        case 12:    // creepy gate
-            *colourA = 24;
+        case RCT1_WALL_TYPE_WOODEN_PANEL_FENCE:
+            *colourA = COLOUR_DARK_BROWN;
             break;
-        case 26:    // white wooden fence
-            *type = 12;
-            *colourA = 2;
+        case RCT1_WALL_TYPE_WHITE_WOODEN_PANEL_FENCE:
+            *type = RCT1_WALL_TYPE_WOODEN_PANEL_FENCE;
+            *colourA = COLOUR_WHITE;
             break;
-        case 27:    // red wooden fence
-            *type = 12;
-            *colourA = 25;
+        case RCT1_WALL_TYPE_RED_WOODEN_PANEL_FENCE:
+            *type = RCT1_WALL_TYPE_WOODEN_PANEL_FENCE;
+            *colourA = COLOUR_SALMON_PINK;
             break;
-        case 50:    // plate glass
-            *colourA = 24;
+        case RCT1_WALL_TYPE_WOODEN_PANEL_FENCE_WITH_SNOW:
+            *colourA = COLOUR_DARK_BROWN;
             break;
-        case 13:
+        case RCT1_WALL_TYPE_WOODEN_PANEL_FENCE_WITH_GATE:
             *colourB = *colourA;
-            *colourA = 24;
+            *colourA = COLOUR_DARK_BROWN;
             break;
-        case 11:    // tall castle wall with grey gate
-        case 22:    // brick wall with gate
-            *colourB = 2;
+        case RCT1_WALL_TYPE_GLASS_SMOOTH:
+        case RCT1_WALL_TYPE_GLASS_PANELS:
+            *colourB = COLOUR_WHITE;
             break;
-        case 35:    // wood post fence
-        case 42:    // tall grey castle wall
-        case 43:    // wooden fence with snow
-        case 44:
-        case 45:
-        case 46:
-            *colourA = 1;
+        case RCT1_WALL_TYPE_SMALL_GREY_CASTLE:
+        case RCT1_WALL_TYPE_LARGE_CREY_CASTLE:
+        case RCT1_WALL_TYPE_LARGE_CREY_CASTLE_CROSS:
+        case RCT1_WALL_TYPE_LARGE_CREY_CASTLE_GATE:
+        case RCT1_WALL_TYPE_LARGE_CREY_CASTLE_WINDOW:
+        case RCT1_WALL_TYPE_MEDIUM_CREY_CASTLE:
+            *colourA = COLOUR_GREY;
             break;
         }
     }

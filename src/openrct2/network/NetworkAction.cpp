@@ -128,14 +128,14 @@ const std::vector<NetworkAction> NetworkActions::Actions =
             GAME_COMMAND_REMOVE_SCENERY,
             GAME_COMMAND_PLACE_SCENERY,
             GAME_COMMAND_SET_BRAKES_SPEED,
-            GAME_COMMAND_REMOVE_FENCE,
-            GAME_COMMAND_PLACE_FENCE,
+            GAME_COMMAND_REMOVE_WALL,
+            GAME_COMMAND_PLACE_WALL,
             GAME_COMMAND_REMOVE_LARGE_SCENERY,
             GAME_COMMAND_PLACE_LARGE_SCENERY,
             GAME_COMMAND_PLACE_BANNER,
             GAME_COMMAND_REMOVE_BANNER,
             GAME_COMMAND_SET_SCENERY_COLOUR,
-            GAME_COMMAND_SET_FENCE_COLOUR,
+            GAME_COMMAND_SET_WALL_COLOUR,
             GAME_COMMAND_SET_LARGE_SCENERY_COLOUR,
             GAME_COMMAND_SET_BANNER_COLOUR,
             GAME_COMMAND_SET_BANNER_NAME,
@@ -221,7 +221,17 @@ const std::vector<NetworkAction> NetworkActions::Actions =
         {
             MISC_COMMAND_PASSWORDLESS_LOGIN
         }
-    },
+    }, {
+        STR_ACTION_MODIFY_TILE, "PERMISSION_MODIFY_TILE",
+        {
+            GAME_COMMAND_MODIFY_TILE
+        }
+    }, {
+        STR_ACTION_EDIT_SCENARIO_OPTIONS, "PERMISSION_EDIT_SCENARIO_OPTIONS",
+        {
+            GAME_COMMAND_EDIT_SCENARIO_OPTIONS
+        }
+    }
 };
 
 #endif

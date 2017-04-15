@@ -22,7 +22,16 @@
 #include "platform.h"
 #include "../util/util.h"
 #include "../localisation/language.h"
-#include "../config.h"
+#include "../config/Config.h"
+
+void macos_disallow_automatic_window_tabbing()
+{
+	@autoreleasepool {
+		if ([NSWindow respondsToSelector:@selector(setAllowsAutomaticWindowTabbing:)]) {
+			[NSWindow setAllowsAutomaticWindowTabbing:NO];
+		}
+	}
+}
 
 bool platform_check_steam_overlay_attached() {
 	STUB();
@@ -105,7 +114,7 @@ void platform_show_messagebox(const char * message)
 	}
 }
 
-utf8 *platform_open_directory_browser(utf8 *title)
+utf8 *platform_open_directory_browser(const utf8 *title)
 {
 	@autoreleasepool
 	{
@@ -268,6 +277,11 @@ uint8 platform_get_locale_measurement_format()
 
 		return MEASUREMENT_FORMAT_IMPERIAL;
 	}
+}
+
+sint32 platform_get_non_window_flags()
+{
+	return SDL_WINDOW_MINIMIZED | SDL_WINDOW_FULLSCREEN | SDL_WINDOW_FULLSCREEN_DESKTOP;
 }
 
 #endif

@@ -16,6 +16,7 @@
 
 #include <memory>
 #include "../common.h"
+#include "../core/File.h"
 #include "../core/FileStream.hpp"
 #include "../core/Memory.hpp"
 #include "../core/Util.hpp"
@@ -24,7 +25,7 @@
 
 extern "C"
 {
-    #include "../config.h"
+    #include "../config/Config.h"
     #include "../rct2/addresses.h"
     #include "../util/util.h"
     #include "drawing.h"
@@ -35,6 +36,7 @@ extern "C"
     static void *   _g1Buffer = nullptr;
     static rct_gx   _g2;
     static rct_gx   _csg;
+    static bool     _csgLoaded = false;
 
     #ifdef NO_RCT2
         rct_g1_element * g1Elements = nullptr;
@@ -193,10 +195,21 @@ extern "C"
         safe_strcat_path(pathHeader, "Data", sizeof(pathHeader));
         safe_strcat_path(pathHeader, "csg1i.dat", sizeof(pathHeader));
 
+        // csg1.1 and csg1.dat are the same file.
+        // In the CD version, it's called csg1.1 on the CD and csg1.dat on the disk.
+        // In the GOG version, it's always called csg1.1.
+        // In the Steam version, it's always called csg1.dat.
         char pathData[MAX_PATH];
         safe_strcpy(pathData, gConfigGeneral.rct1_path, sizeof(pathData));
         safe_strcat_path(pathData, "Data", sizeof(pathData));
         safe_strcat_path(pathData, "csg1.1", sizeof(pathData));
+
+        if (!File::Exists(pathData))
+        {
+            safe_strcpy(pathData, gConfigGeneral.rct1_path, sizeof(pathData));
+            safe_strcat_path(pathData, "Data", sizeof(pathData));
+            safe_strcat_path(pathData, "csg1.dat", sizeof(pathData));
+        }
 
         try
         {
@@ -222,6 +235,7 @@ extern "C"
                 // RCT1 used zoomed offsets that counted from the beginning of the file, rather than from the current sprite.
                 _csg.elements[i].zoomed_offset = i - (SPR_CSG_BEGIN + _csg.elements[i].zoomed_offset);
             }
+            _csgLoaded = true;
             return true;
         }
         catch (const Exception &)
@@ -629,7 +643,12 @@ extern "C"
         {
             return &_g2.elements[image_id - SPR_G2_BEGIN];
         }
+
         return &_csg.elements[image_id - SPR_CSG_BEGIN];
     }
 
+    bool is_csg_loaded()
+    {
+        return _csgLoaded;
+    }
 }

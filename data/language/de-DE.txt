@@ -4312,6 +4312,8 @@ STR_6009    :{SMALLFONT}{BLACK}Schnitthöhe auswählen
 STR_6010    :{COMMA2DP32}m
 STR_6011    :{COMMA1DP16}ft
 STR_6012    :{COMMA1DP16}
+STR_6013    :{SMALLFONT}{BLACK}Gäste zahlen lediglich den Eintritt zum Park.{NEWLINE}Die Attraktionen sind kostenfrei.
+STR_6014    :{SMALLFONT}{BLACK}Gäste zahlen lediglich für Attraktionen und Service.{NEWLINE}Der Eintritt in den Park ist kostenfrei.
 
 #############
 # Scenarios #

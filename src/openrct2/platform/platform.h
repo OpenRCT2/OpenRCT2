@@ -195,12 +195,14 @@ void platform_get_user_directory(utf8 *outPath, const utf8 *subDirectory, size_t
 utf8* platform_get_username();
 void platform_show_messagebox(const utf8 * message);
 bool platform_open_common_file_dialog(utf8 *outFilename, file_dialog_desc *desc, size_t outSize);
-utf8 *platform_open_directory_browser(utf8 *title);
+utf8 *platform_open_directory_browser(const utf8 *title);
 uint8 platform_get_locale_currency();
 uint8 platform_get_currency_value(const char *currencyCode);
 uint16 platform_get_locale_language();
 uint8 platform_get_locale_measurement_format();
 uint8 platform_get_locale_temperature_format();
+uint8 platform_get_locale_date_format();
+
 #ifndef NO_TTF
 bool platform_get_font_path(TTFFontDescriptor *font, utf8 *buffer, size_t size);
 #endif // NO_TTF
@@ -224,6 +226,7 @@ void core_init();
 	HWND windows_get_window_handle();
 	void platform_setup_file_associations();
 	void platform_remove_file_associations();
+	bool platform_setup_uri_protocol();
 	// This function cannot be marked as 'static', even though it may seem to be,
 	// as it requires external linkage, which 'static' prevents
 	__declspec(dllexport) sint32 StartOpenRCT(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, sint32 nCmdShow);
@@ -233,5 +236,14 @@ void core_init();
 	void platform_posix_sub_user_data_path(char *buffer, size_t size, const char *homedir);
 	void platform_posix_sub_resolve_openrct_data_path(utf8 *out, size_t size);
 #endif
+
+#ifdef __MACOSX__
+	void macos_disallow_automatic_window_tabbing();
+#endif
+
+// On macOS the resizing behaviour effectively resizes the window in the same
+// way a normal drag would do, given constraints in the user desktop (e.g. the dock
+// positioning). So it follows that the finished window size should be saved.
+sint32 platform_get_non_window_flags();
 
 #endif

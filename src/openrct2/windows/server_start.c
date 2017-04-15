@@ -14,7 +14,8 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../config.h"
+#include "../config/Config.h"
+#include "../interface/chat.h"
 #include "../interface/themes.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
@@ -27,6 +28,8 @@
 
 static char _port[7];
 static char _name[65];
+static char _description[MAX_SERVER_DESCRIPTION_LENGTH];
+static char _greeting[CHAT_INPUT_SIZE];
 static char _password[33];
 
 enum {
@@ -35,6 +38,8 @@ enum {
 	WIDX_CLOSE,
 	WIDX_PORT_INPUT,
 	WIDX_NAME_INPUT,
+	WIDX_DESCRIPTION_INPUT,
+	WIDX_GREETING_INPUT,
 	WIDX_PASSWORD_INPUT,
 	WIDX_MAXPLAYERS,
 	WIDX_MAXPLAYERS_INCREASE,
@@ -45,7 +50,7 @@ enum {
 };
 
 #define WW 300
-#define WH 120
+#define WH 152
 
 static rct_widget window_server_start_widgets[] = {
 	{ WWT_FRAME,			0,	0,		WW-1,	0,			WH-1,	0xFFFFFFFF,						STR_NONE },					// panel / background
@@ -53,11 +58,13 @@ static rct_widget window_server_start_widgets[] = {
 	{ WWT_CLOSEBOX,			0,	WW-13,	WW-3,	2,			13,		STR_CLOSE_X,					STR_CLOSE_WINDOW_TIP },		// close x button
 	{ WWT_TEXT_BOX,			1,	120,	WW-8,	20,			32,		STR_NONE,						STR_NONE },					// port text box
 	{ WWT_TEXT_BOX,			1,	120,	WW-8,	36,			48,		STR_NONE,						STR_NONE },					// name text box
-	{ WWT_TEXT_BOX,			1,	120,	WW-8,	52,			64,		STR_NONE,						STR_NONE },					// password text box
-	{ WWT_SPINNER,			1,	120,	WW-8,	68,			77,		STR_SERVER_MAX_PLAYERS_VALUE,	STR_NONE },					// max players
-	{ WWT_DROPDOWN_BUTTON,	1,	WW-18,	WW-8,	68,			72,		STR_NUMERIC_UP,					STR_NONE },
-	{ WWT_DROPDOWN_BUTTON,	1,	WW-18,	WW-8,	72,			76,		STR_NUMERIC_DOWN,				STR_NONE },
-	{ WWT_CHECKBOX,			1,	6,		WW-8,	85,			91,		STR_ADVERTISE,					STR_ADVERTISE_SERVER_TIP },	// advertise checkbox
+	{ WWT_TEXT_BOX,			1,	120,	WW-8,	52,			64,		STR_NONE,						STR_NONE },					// description text box
+	{ WWT_TEXT_BOX,			1,	120,	WW-8,	68,			80,		STR_NONE,						STR_NONE },					// greeting text box
+	{ WWT_TEXT_BOX,			1,	120,	WW-8,	84,			96,		STR_NONE,						STR_NONE },					// password text box
+	{ WWT_SPINNER,			1,	120,	WW-8,	100,		109,	STR_SERVER_MAX_PLAYERS_VALUE,	STR_NONE },					// max players
+	{ WWT_DROPDOWN_BUTTON,	1,	WW-18,	WW-8,	100,		104,	STR_NUMERIC_UP,					STR_NONE },
+	{ WWT_DROPDOWN_BUTTON,	1,	WW-18,	WW-8,	104,		108,	STR_NUMERIC_DOWN,				STR_NONE },
+	{ WWT_CHECKBOX,			1,	6,		WW-8,	117,		123,	STR_ADVERTISE,					STR_ADVERTISE_SERVER_TIP },	// advertise checkbox
 	{ WWT_DROPDOWN_BUTTON,	1,	6,		106,	WH-6-11,	WH-6,	STR_NEW_GAME,					STR_NONE },					// start server button
 	{ WWT_DROPDOWN_BUTTON,	1,	112,	212,	WH-6-11,	WH-6,	STR_LOAD_GAME,					STR_NONE },
 	{ WIDGETS_END },
@@ -114,12 +121,16 @@ void window_server_start_open()
 
 	window_server_start_widgets[WIDX_PORT_INPUT].string = _port;
 	window_server_start_widgets[WIDX_NAME_INPUT].string = _name;
+	window_server_start_widgets[WIDX_DESCRIPTION_INPUT].string = _description;
+	window_server_start_widgets[WIDX_GREETING_INPUT].string = _greeting;
 	window_server_start_widgets[WIDX_PASSWORD_INPUT].string = _password;
 	window->widgets = window_server_start_widgets;
 	window->enabled_widgets = (
 		(1 << WIDX_CLOSE) |
 		(1 << WIDX_PORT_INPUT) |
 		(1 << WIDX_NAME_INPUT) |
+		(1 << WIDX_DESCRIPTION_INPUT) |
+		(1 << WIDX_GREETING_INPUT) |
 		(1 << WIDX_PASSWORD_INPUT) |
 		(1 << WIDX_MAXPLAYERS) |
 		(1 << WIDX_MAXPLAYERS_INCREASE) |
@@ -142,6 +153,8 @@ void window_server_start_open()
 
 	snprintf(_port, 7, "%u", gConfigNetwork.default_port);
 	safe_strcpy(_name, gConfigNetwork.server_name, sizeof(_name));
+	safe_strcpy(_description, gConfigNetwork.server_description, sizeof(_description));
+	safe_strcpy(_greeting, gConfigNetwork.server_greeting, sizeof(_greeting));
 }
 
 static void window_server_start_close(rct_window *w)
@@ -178,6 +191,12 @@ static void window_server_start_mouseup(rct_window *w, sint32 widgetIndex)
 	case WIDX_NAME_INPUT:
 		window_start_textbox(w, widgetIndex, STR_STRING, _name, 64);
 		break;
+	case WIDX_DESCRIPTION_INPUT:
+		window_start_textbox(w, widgetIndex, STR_STRING, _description, MAX_SERVER_DESCRIPTION_LENGTH);
+		break;
+	case WIDX_GREETING_INPUT:
+		window_start_textbox(w, widgetIndex, STR_STRING, _greeting, CHAT_INPUT_SIZE);
+		break;
 	case WIDX_PASSWORD_INPUT:
 		window_start_textbox(w, widgetIndex, STR_STRING, _password, 32);
 		break;
@@ -206,7 +225,7 @@ static void window_server_start_mouseup(rct_window *w, sint32 widgetIndex)
 	case WIDX_LOAD_SERVER:
 		network_set_password(_password);
 		window_loadsave_open(LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME, NULL);
-		gLoadSaveCallback = window_server_start_loadsave_callback;
+		window_loadsave_set_loadsave_callback(window_server_start_loadsave_callback);
 		break;
 	}
 }
@@ -216,6 +235,8 @@ static void window_server_start_update(rct_window *w)
 	if (gCurrentTextBox.window.classification == w->classification && gCurrentTextBox.window.number == w->number) {
 		window_update_textbox_caret();
 		widget_invalidate(w, WIDX_NAME_INPUT);
+		widget_invalidate(w, WIDX_DESCRIPTION_INPUT);
+		widget_invalidate(w, WIDX_GREETING_INPUT);
 		widget_invalidate(w, WIDX_PASSWORD_INPUT);
 	}
 }
@@ -256,6 +277,40 @@ static void window_server_start_textinput(rct_window *w, sint32 widgetIndex, cha
 
 		widget_invalidate(w, WIDX_NAME_INPUT);
 		break;
+	case WIDX_DESCRIPTION_INPUT:
+		if (strcmp(_description, text) == 0)
+			return;
+
+		memset(_description, 0, sizeof(_description));
+		if (strlen(text) > 0) {
+			safe_strcpy(_description, text, sizeof(_description));
+		}
+
+		if (strlen(_description) > 0) {
+			SafeFree(gConfigNetwork.server_description);
+			gConfigNetwork.server_description = _strdup(_description);
+			config_save_default();
+		}
+
+		widget_invalidate(w, WIDX_DESCRIPTION_INPUT);
+		break;
+	case WIDX_GREETING_INPUT:
+		if (strcmp(_greeting, text) == 0)
+			return;
+
+		memset(_greeting, 0, sizeof(_greeting));
+		if (strlen(text) > 0) {
+			safe_strcpy(_greeting, text, sizeof(_greeting));
+		}
+
+		if (strlen(_greeting) > 0) {
+			SafeFree(gConfigNetwork.server_greeting);
+			gConfigNetwork.server_greeting = _strdup(_greeting);
+			config_save_default();
+		}
+
+		widget_invalidate(w, WIDX_GREETING_INPUT);
+		break;
 	case WIDX_PASSWORD_INPUT:
 		if (strcmp(_password, text) == 0)
 			return;
@@ -284,6 +339,8 @@ static void window_server_start_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 	gfx_draw_string_left(dpi, STR_PORT, NULL, w->colours[1], w->x + 6, w->y + w->widgets[WIDX_PORT_INPUT].top);
 	gfx_draw_string_left(dpi, STR_SERVER_NAME, NULL, w->colours[1], w->x + 6, w->y + w->widgets[WIDX_NAME_INPUT].top);
+	gfx_draw_string_left(dpi, STR_SERVER_DESCRIPTION, NULL, w->colours[1], w->x + 6, w->y + w->widgets[WIDX_DESCRIPTION_INPUT].top);
+	gfx_draw_string_left(dpi, STR_SERVER_GREETING, NULL, w->colours[1], w->x + 6, w->y + w->widgets[WIDX_GREETING_INPUT].top);
 	gfx_draw_string_left(dpi, STR_PASSWORD, NULL, w->colours[1], w->x + 6, w->y + w->widgets[WIDX_PASSWORD_INPUT].top);
 	gfx_draw_string_left(dpi, STR_MAX_PLAYERS, NULL, w->colours[1], w->x + 6, w->y + w->widgets[WIDX_MAXPLAYERS].top);
 }

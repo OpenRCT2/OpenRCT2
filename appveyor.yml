@@ -7,10 +7,6 @@ cache:
 - C:\ProgramData\chocolatey\lib -> scripts\ps\appveyor_install.ps1
 - secure-file -> scripts\ps\appveyor_install.ps1
 environment:
-  ENCKEY:
-    secure: saYAIpqXzpq0U+JH+MNi/isRQ6Y51PZhm4BrnePDiAPptFO5htxFOLegrYqxdy67
-  SIGN_PASSWORD:
-    secure: bzYmf0ElxisSGyZnIjUOYQ==
   OPENRCT2_ORG_TOKEN:
     secure: leQX3xCQpmBLGuMqrxjFlzexDt96ypNRMM5TTRVHbGE8PwVg9crgeykLc2BIZU6HDHveJCHqh2cGMdHtHYJYcw==
   BUILD_SERVER: AppVeyor

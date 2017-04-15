@@ -1,4 +1,4 @@
-﻿# STR_XXXX part is read and XXXX becomes the string id number.
+# STR_XXXX part is read and XXXX becomes the string id number.
 # Everything after the colon and before the new line will be saved as the string.
 # Use # at the beginning of a line to leave a comment.
 STR_0000    :
@@ -4033,8 +4033,8 @@ STR_5724    :Tempestade
 STR_5725    :{BLACK}Forçar clima:
 STR_5726    :{SMALLFONT}{BLACK}Define o clima atual no parque
 STR_5727    :Qualidade da escala
-STR_5728    :Requer opção de exibição de hardware
-STR_5729    :{SMALLFONT}{BLACK}Requer opção de exibição de hardware
+STR_5728    :Requer opção de exibição por hardware
+STR_5729    :{SMALLFONT}{BLACK}Requer opção de exibição por hardware
 STR_5730    :Vizinho mais próximo
 STR_5731    :Linear
 STR_5732    :Anisotrópica
@@ -4125,9 +4125,9 @@ STR_5814    :{WINDOW_COLOUR_1}{OPENQUOTES}{STRING}{ENDQUOTES}
 #tooltips
 STR_5815    :{SMALLFONT}{BLACK}Mostra o contador de FPS dentro do jogo
 STR_5816    :{SMALLFONT}{BLACK}Define a proporção de dimensionamento do jogo.{NEWLINE}Mais útil quando está jogando em{NEWLINE}alta resolução
-STR_5817    :{SMALLFONT}{BLACK}[Requer exibição de hardware]{NEWLINE}Define o tipo de escala da interface de usuário
-STR_5818    :{SMALLFONT}{BLACK}[Requer exibição de hardware]{NEWLINE}Usa a escala do vizinho mais próximo{NEWLINE}quando o fator de escala da janela está definido{NEWLINE}com valores integrais (1, 2, 3, etc)
-STR_5819    :{SMALLFONT}{BLACK}[Requer exibição de hardware]{NEWLINE}Pausa o jogo quando a interface da Steam{NEWLINE}estiver sobrepondo durante o jogo
+STR_5817    :{SMALLFONT}{BLACK}[Requer exibição por hardware]{NEWLINE}Define o tipo de escala da interface de usuário
+STR_5818    :{SMALLFONT}{BLACK}[Requer exibição por hardware]{NEWLINE}Usa a escala do vizinho mais próximo{NEWLINE}quando o fator de escala da janela está definido{NEWLINE}com valores integrais (1, 2, 3, etc)
+STR_5819    :{SMALLFONT}{BLACK}[Requer exibição por hardware]{NEWLINE}Pausa o jogo quando a interface da Steam{NEWLINE}estiver sobrepondo durante o jogo
 STR_5820    :{SMALLFONT}{BLACK}Minimiza o jogo se o foco for{NEWLINE}perdido enquanto estiver em modo tela cheia
 STR_5821    :{SMALLFONT}{BLACK}Muda a cor do marcador de construção enquanto estiver construindo atrações,{NEWLINE}caminhos, lojas, cenário, etc.
 STR_5822    :{SMALLFONT}{BLACK}Alterna entre dia e noite.{NEWLINE}Ciclo completo leva um mês do jogo
@@ -4309,8 +4309,38 @@ STR_5997    :Adicionar/definir dinheiro
 STR_5998    :Adicionar dinheiro
 STR_5999    :Definir dinheiro
 STR_6000    :Inserir novo valor
-
+STR_6001    :Habilitar efeitos de iluminação (experimental)
+STR_6002    :{SMALLFONT}{BLACK}Lâmpadas e atrações acenderão a noite.{NEWLINE}Requer que o motor de renderização esteja definido em exibição por hardware.
+STR_6003    :Cortar Visão
+STR_6004    :Cortar Visão
+STR_6005    :Habilitar corte de visão
+STR_6006    :{SMALLFONT}{BLACK}Corte de visão somente mostra elementos do mapa na altura ou abaixo da altura de corte
+STR_6007    :Altura de corte
+STR_6008    :{SMALLFONT}{BLACK}Clique para alternar o valor bruto<->valor em unidades de medida
+STR_6009    :{SMALLFONT}{BLACK}Selecione altura de corte
+STR_6010    :{COMMA2DP32}m
+STR_6011    :{COMMA1DP16}ft
 STR_6012    :{COMMA1DP16}
+STR_6013    :{SMALLFONT}{BLACK}Visitantes pagarão apenas o ingresso para entrar no parque e serviços.{NEWLINE}Entrada das atrações são grátis.
+STR_6014    :{SMALLFONT}{BLACK}Visitantes pagarão apenas o ingresso para entrar nas atrações e serviços.{NEWLINE}Eles não pagarão nada para entrar no parque.
+STR_6015    :Inclinado
+STR_6016    :Modificar Azulejo
+STR_6017    :Por favor diminua a velocidade
+STR_6018    :Construção da atração - Virar à esquerda
+STR_6019    :Construção da atração - Virar à direita
+STR_6020    :Construção da atração - Usar pista padrão
+STR_6021    :Construção da atração - Inclinar para baixo
+STR_6022    :Construção da atração - Inclinar para cima
+STR_6023    :Construção da atração - Alternar corrente de elevação
+STR_6024    :Construção da atração - Torcer para a esquerda
+STR_6025    :Construção da atração - Torcer para a direita
+STR_6026    :Construção da atração - Peça anterior
+STR_6027    :Construção da atração - Próxima peça
+STR_6028    :Construção da atração - Construir atual
+STR_6029    :Construção da atração - Demolir atual
+STR_6030    :{SMALLFONT}{BLACK}Apanhador de cenário. Clique em qualquer cenário do mapa para selecionar a mesma peça para construção.
+STR_6031    :Descrição do Servidor:
+STR_6032    :Saudação do Servidor:
 
 #############
 # Scenarios #

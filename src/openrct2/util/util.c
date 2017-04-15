@@ -494,3 +494,43 @@ uint8 *util_zlib_deflate(const uint8 *data, size_t data_in_size, size_t *data_ou
 	buffer = realloc(buffer, *data_out_size);
 	return buffer;
 }
+
+// Type-independant code left as macro to reduce duplicate code.
+#define add_clamp_body(value, value_to_add, min_cap, max_cap) \
+    if ((value_to_add > 0) && (value > (max_cap - value_to_add))) { \
+        value = max_cap; \
+    } \
+    else if ((value_to_add < 0) && (value < (min_cap - value_to_add))) { \
+        value = min_cap; \
+    } \
+    else { \
+       value += value_to_add; \
+    }
+
+sint8 add_clamp_sint8(sint8 value, sint8 value_to_add)
+{
+	add_clamp_body(value, value_to_add, INT8_MIN, INT8_MAX);
+	return value;
+}
+
+sint16 add_clamp_sint16(sint16 value, sint16 value_to_add)
+{
+	add_clamp_body(value, value_to_add, INT16_MIN, INT16_MAX);
+	return value;
+}
+
+sint32 add_clamp_sint32(sint32 value, sint32 value_to_add)
+{
+	add_clamp_body(value, value_to_add, INT32_MIN, INT32_MAX);
+	return value;
+}
+
+money32 add_clamp_money32(money32 value, money32 value_to_add)
+{
+	// This function is intended only for clarity, as money32
+	// is technically the same as sint32
+	assert_struct_size(money32, sizeof(sint32));
+	return add_clamp_sint32(value, value_to_add);
+}
+
+#undef add_clamp_body

@@ -5863,6 +5863,39 @@ static void corkscrew_rc_track_block_brakes(uint8 rideIndex, uint8 trackSequence
 	paint_util_set_general_support_height(height + 32, 0x20);
 }
 
+static void corkscrew_rc_track_booster(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+{
+	if (!is_csg_loaded())
+	{
+		corkscrew_rc_track_brakes(rideIndex, trackSequence, direction, height, mapElement);
+		return;
+	}
+
+	uint32 sprite_ne_sw_behind = SPR_CSG_BEGIN + 56213;
+	uint32 sprite_nw_se_behind = SPR_CSG_BEGIN + 56214;
+	uint32 sprite_ne_sw_after = SPR_CSG_BEGIN + 56215;
+	uint32 sprite_nw_se_after = SPR_CSG_BEGIN + 56216;
+
+	switch (direction) {
+		case 0:
+		case 2:
+			sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | sprite_ne_sw_behind, 0, 0, 32, 20, 3, height, 0, 6, height);
+			sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | sprite_ne_sw_after, 0, 0, 32, 1, 26, height, 0, 27, height);
+			break;
+		case 1:
+		case 3:
+			sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | sprite_nw_se_behind, 0, 0, 32, 20, 3, height, 0, 6, height);
+			sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | sprite_nw_se_after, 0, 0, 32, 1, 26, height, 0, 27, height);
+			break;
+	}
+	if (track_paint_util_should_paint_supports(gPaintMapPosition)) {
+		metal_a_supports_paint_setup(METAL_SUPPORTS_TUBES, 4, 0, height, gTrackColours[SCHEME_SUPPORTS]);
+	}
+	paint_util_push_tunnel_rotated(direction, height, TUNNEL_0);
+	paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+	paint_util_set_general_support_height(height + 32, 0x20);
+}
+
 TRACK_PAINT_FUNCTION get_track_paint_function_corkscrew_rc(sint32 trackType, sint32 direction)
 {
 	switch (trackType) {
@@ -6086,7 +6119,7 @@ TRACK_PAINT_FUNCTION get_track_paint_function_corkscrew_rc(sint32 trackType, sin
 		return corkscrew_rc_track_block_brakes;
 
 	case TRACK_ELEM_BOOSTER:
-		return corkscrew_rc_track_brakes;
+		return corkscrew_rc_track_booster;
 	}
 	return NULL;
 }

@@ -14,7 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../config.h"
+#include "../config/Config.h"
 #include "../game.h"
 #include "../sprites.h"
 #include "../localisation/localisation.h"
@@ -23,6 +23,10 @@
 #include "../interface/themes.h"
 #include "../intro.h"
 #include "../rct2.h"
+
+enum WINDOW_TITLE_EXIT_WIDGET_IDX {
+	WIDX_EXIT,
+};
 
 static rct_widget window_title_exit_widgets[] = {
 	{ WWT_IMGBTN, 2, 0, 39, 0, 63, SPR_MENU_EXIT, STR_EXIT },
@@ -80,7 +84,7 @@ void window_title_exit_open()
 		WF_STICK_TO_BACK | WF_TRANSPARENT
 	);
 	window->widgets = window_title_exit_widgets;
-	window->enabled_widgets |= 1;
+	window->enabled_widgets |= (1ULL << WIDX_EXIT);
 	window_init_scroll_widgets(window);
 }
 
@@ -93,9 +97,12 @@ static void window_title_exit_mouseup(rct_window *w, sint32 widgetIndex)
 	if (gIntroState != INTRO_STATE_NONE)
 		return;
 
-	if (widgetIndex == 0)
+	switch (widgetIndex) {
+	case WIDX_EXIT:
 		rct2_quit();
-// 		game_do_command(0, 1, 0, 0, 5, 3, 0);
+		//game_do_command(0, 1, 0, 0, 5, 3, 0);
+		break;
+	};
 }
 
 /**
