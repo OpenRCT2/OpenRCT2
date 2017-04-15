@@ -3701,7 +3701,7 @@ enum {
 	STR_NO_MECHANICS_ARE_HIRED_MESSAGE = 6041,
 
 	// Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
-	STR_COUNT = 32769
+	STR_COUNT = 32768
 };
 
 #endif
