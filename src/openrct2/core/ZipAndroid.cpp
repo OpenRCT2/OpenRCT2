@@ -14,6 +14,8 @@
  *****************************************************************************/
 #pragma endregion
 
+#ifdef __ANDROID__
+
 #include <SDL.h>
 #include <jni.h>
 #include "IStream.hpp"
@@ -145,3 +147,5 @@ namespace Zip
         return result;
     }
 }
+
+#endif // __ANDROID__
