@@ -4018,15 +4018,18 @@ static void window_ride_maintenance_paint(rct_window *w, rct_drawpixelinfo *dpi)
 			FOR_ALL_STAFF(spriteIndex, peep){
 				if(peep->staff_type == STAFF_TYPE_MECHANIC){
 					count++;
+					if(count > 0){
+						break;
+					}
 				}
 			}
 		
-		if(count == 0){
-			stringId = STR_NO_MECHANICS_ARE_HIRED_MESSAGE;
-		}
-		else{
-			stringId = STR_CALLING_MECHANIC;
-		}
+			if(count == 0){
+				stringId = STR_NO_MECHANICS_ARE_HIRED_MESSAGE;
+			}
+			else{
+				stringId = STR_CALLING_MECHANIC;
+			}
 		}
 			break;
 		case RIDE_MECHANIC_STATUS_HEADING:
