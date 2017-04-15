@@ -3456,7 +3456,6 @@ STR_3443    :Page 4
 STR_3444    :Page 5
 STR_3445    :Set Patrol Area
 STR_3446    :Cancel Patrol Area
-STR_3447    :{BLACK}No mechanics are hired!
 
 # New strings, cleaner
 STR_5120    :Finances
@@ -4350,6 +4349,7 @@ STR_6037    :Please select a valid RCT1 directory
 STR_6038    :{SMALLFONT}{BLACK}If you have RCT1 installed, set this option to its directory to load scenarios, music, etc.
 STR_6039    :{SMALLFONT}{BLACK}Quick demolish ride
 STR_6040    :Edit Scenario Options
+STR_6041    :{BLACK}No mechanics are hired!
 
 #############
 # Scenarios #
