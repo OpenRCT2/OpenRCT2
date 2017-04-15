@@ -1368,6 +1368,7 @@ void Network::ProcessGameCommandQueue()
             IGameAction * action = GameActions::Create(gc.actionType);
             uint32 flags = gc.parameters->ReadValue<uint32>();
             action->Deserialise(gc.parameters);
+            delete gc.parameters;
             GameActionResult result = GameActions::Execute(action, flags | GAME_COMMAND_FLAG_NETWORKED);
             if (result.Error != GA_ERROR::OK)
             {
