@@ -67,6 +67,7 @@ namespace Config
         ConfigEnumEntry<sint32>("HKD", CURRENCY_HKD),
         ConfigEnumEntry<sint32>("TWD", CURRENCY_TWD),
         ConfigEnumEntry<sint32>("CNY", CURRENCY_YUAN),
+        ConfigEnumEntry<sint32>("CUSTOM", CURRENCY_CUSTOM),
     });
 
     static auto Enum_CurrencySymbolAffix = ConfigEnum<sint32>(
