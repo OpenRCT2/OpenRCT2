@@ -4349,6 +4349,7 @@ STR_6037    :Please select a valid RCT1 directory
 STR_6038    :{SMALLFONT}{BLACK}If you have RCT1 installed, set this option to its directory to load scenarios, music, etc.
 STR_6039    :{SMALLFONT}{BLACK}Quick demolish ride
 STR_6040    :Edit Scenario Options
+STR_6041    :{BLACK}No mechanics are hired!
 
 #############
 # Scenarios #
