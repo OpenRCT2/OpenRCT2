@@ -26,6 +26,13 @@ extern "C"
 #include "../world/footpath.h"
 }
 
+struct PlaceParkEntranceGameActionResult : public GameActionResult {
+	PlaceParkEntranceGameActionResult(GA_ERROR error, rct_string_id message) :GameActionResult(error, message)
+	{
+		ErrorTitle = STR_CANT_BUILD_PARK_ENTRANCE_HERE;
+	}
+};
+
 class PlaceParkEntranceAction : public IGameAction
 {
 public:
@@ -64,7 +71,7 @@ public:
 	{
 		if (!(gScreenFlags & SCREEN_FLAGS_EDITOR) && !gCheatsSandboxMode)
 		{
-			return GameActionResult(GA_ERROR::NOT_IN_EDITOR_MODE, STR_NONE);
+			return PlaceParkEntranceGameActionResult(GA_ERROR::NOT_IN_EDITOR_MODE, STR_NONE);
 		}
 
 		gCommandExpenditureType = RCT_EXPENDITURE_TYPE_LAND_PURCHASE;
@@ -75,12 +82,12 @@ public:
 
 		if (!map_check_free_elements_and_reorganise(3))
 		{
-			return GameActionResult(GA_ERROR::NO_FREE_ELEMENTS, STR_NONE);
+			return PlaceParkEntranceGameActionResult(GA_ERROR::NO_FREE_ELEMENTS, STR_NONE);
 		}
 
 		if (x <= 32 || y <= 32 || x >= (gMapSizeUnits - 32) || y >= (gMapSizeUnits - 32))
 		{
-			return GameActionResult(GA_ERROR::INVALID_PARAMETERS, STR_TOO_CLOSE_TO_EDGE_OF_MAP);
+			return PlaceParkEntranceGameActionResult(GA_ERROR::INVALID_PARAMETERS, STR_TOO_CLOSE_TO_EDGE_OF_MAP);
 		}
 
 		sint8 entranceNum = -1;
@@ -95,7 +102,7 @@ public:
 
 		if (entranceNum == -1)
 		{
-			return GameActionResult(GA_ERROR::INVALID_PARAMETERS, STR_ERR_TOO_MANY_PARK_ENTRANCES);
+			return PlaceParkEntranceGameActionResult(GA_ERROR::INVALID_PARAMETERS, STR_ERR_TOO_MANY_PARK_ENTRANCES);
 		}
 
 		sint8 zLow = z * 2;
@@ -118,7 +125,7 @@ public:
 			{
 				if (!map_can_construct_at(entranceLoc.x, entranceLoc.y, zLow, zHigh, 0xF))
 				{
-					return GameActionResult(GA_ERROR::NO_CLEARANCE, STR_NONE);
+					return PlaceParkEntranceGameActionResult(GA_ERROR::NO_CLEARANCE, STR_NONE);
 				}
 			}
 
@@ -126,7 +133,7 @@ public:
 			rct_map_element* entranceElement = map_get_park_entrance_element_at(entranceLoc.x, entranceLoc.y, zLow, false);
 			if (entranceElement != NULL)
 			{
-				return GameActionResult(GA_ERROR::ITEM_ALREADY_PLACED, STR_NONE);
+				return PlaceParkEntranceGameActionResult(GA_ERROR::ITEM_ALREADY_PLACED, STR_NONE);
 			}
 		}
 		return GameActionResult();
@@ -180,7 +187,7 @@ public:
 			}
 
 			rct_map_element* newElement = map_element_insert(entranceLoc.x / 32, entranceLoc.y / 32, zLow, 0xF);
-			assert(newElement != NULL);
+			Guard::Assert(newElement != NULL);
 			newElement->clearance_height = zHigh;
 
 			if (flags & GAME_COMMAND_FLAG_GHOST)
@@ -220,6 +227,23 @@ static auto Factory UNUSED_ATTR = GameActions::Register<PlaceParkEntranceAction>
 
 extern "C"
 {
+	money32 place_park_entrance(sint16 x, sint16 y, sint16 z, uint8 direction)
+	{
+		auto gameAction = PlaceParkEntranceAction();
+		gameAction.x = x;
+		gameAction.y = y;
+		gameAction.z = z;
+		gameAction.direction = direction;
+		auto result = GameActions::Execute(&gameAction);
+		if (result.Error == GA_ERROR::OK)
+		{
+			return 0;
+		}
+		else
+		{
+			return MONEY32_UNDEFINED;
+		}
+	}
 
 	/**
 	 *
@@ -233,29 +257,7 @@ extern "C"
 		sint32* edi,
 		sint32* ebp)
 	{
-		auto gameAction = PlaceParkEntranceAction();
-		gameAction.x = (*eax & 0xFFFF);
-		gameAction.y = (*ecx & 0xFFFF);
-		gameAction.z = (*edx & 0xFF);
-		gameAction.direction = ((*ebx >> 8) & 0xFF);
-		uint8 flags = (*ebx & 0xFF);
-		GameActionResult result;
-		if (flags & GAME_COMMAND_FLAG_APPLY) {
-			result = GameActions::Execute(&gameAction, flags);
-		}
-		else
-		{
-			result = GameActions::Query(&gameAction, flags);
-		}
-
-		if (result.Error != GA_ERROR::OK)
-		{
-			*ebx = MONEY32_UNDEFINED;
-		}
-		else
-		{
-			*ebx = result.Cost;
-		}
+		Guard::Assert(false, "GAME_COMMAND_PLACE_PARK_ENTRANCE DEPRECIATED");
 	}
 
 	/**
