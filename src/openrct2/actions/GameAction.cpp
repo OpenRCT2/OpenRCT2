@@ -165,7 +165,7 @@ namespace GameActions
             callback(result);
         }
 
-        if (result.Error != GA_ERROR::OK)
+        if (result.Error != GA_ERROR::OK && !(flags & GAME_COMMAND_FLAG_GHOST))
         {
             // Show the error box
             Memory::Copy(gCommonFormatArgs, result.ErrorMessageArgs, sizeof(result.ErrorMessageArgs));

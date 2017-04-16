@@ -1323,15 +1323,7 @@ static void window_map_place_park_entrance_tool_down(sint32 x, sint32 y)
     place_park_entrance_get_map_position(x, y, &mapX, &mapY, &mapZ, &direction);
     if (mapX != MAP_LOCATION_NULL) {
         gGameCommandErrorTitle = STR_CANT_BUILD_PARK_ENTRANCE_HERE;
-        money32 price = game_do_command(
-            mapX,
-            GAME_COMMAND_FLAG_APPLY | (direction << 8),
-            mapY,
-            mapZ,
-            GAME_COMMAND_PLACE_PARK_ENTRANCE,
-            0,
-            0
-        );
+        money32 price = place_park_entrance(mapX, mapY, mapZ, direction);
         if (price != MONEY32_UNDEFINED) {
             audio_play_sound_at_location(
                 SOUND_PLACE_ITEM,
