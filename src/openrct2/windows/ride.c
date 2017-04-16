@@ -4013,20 +4013,13 @@ static void window_ride_maintenance_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		case RIDE_MECHANIC_STATUS_CALLING:{
 			rct_peep *peep;
 			uint16 spriteIndex;
-			sint32 count = 0;
+			stringId = STR_NO_MECHANICS_ARE_HIRED_MESSAGE;
 			
 			FOR_ALL_STAFF(spriteIndex, peep){
 				if(peep->staff_type == STAFF_TYPE_MECHANIC){
-					count++;
+					stringId = STR_CALLING_MECHANIC;
 					break;
 				}
-			}
-		
-			if(count == 0){
-				stringId = STR_NO_MECHANICS_ARE_HIRED_MESSAGE;
-			}
-			else{
-				stringId = STR_CALLING_MECHANIC;
 			}
 		}
 			break;
