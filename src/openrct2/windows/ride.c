@@ -4007,12 +4007,12 @@ static void window_ride_maintenance_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	gfx_draw_string_left(dpi, stringId, &breakdownMessage, COLOUR_BLACK, x, y);
 	y += 10;
 
+	rct_peep *peep;
+	uint16 spriteIndex;
 	// Mechanic status
 	if (ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN) {
 		switch (ride->mechanic_status) {
 		case RIDE_MECHANIC_STATUS_CALLING:
-			rct_peep *peep;
-			uint16 spriteIndex;
 			stringId = STR_NO_MECHANICS_ARE_HIRED_MESSAGE;
 			
 			FOR_ALL_STAFF(spriteIndex, peep) {
