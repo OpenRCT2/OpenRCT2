@@ -4010,18 +4010,17 @@ static void window_ride_maintenance_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	// Mechanic status
 	if (ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN) {
 		switch (ride->mechanic_status) {
-		case RIDE_MECHANIC_STATUS_CALLING:{
+		case RIDE_MECHANIC_STATUS_CALLING:
 			rct_peep *peep;
 			uint16 spriteIndex;
 			stringId = STR_NO_MECHANICS_ARE_HIRED_MESSAGE;
 			
-			FOR_ALL_STAFF(spriteIndex, peep){
-				if(peep->staff_type == STAFF_TYPE_MECHANIC){
+			FOR_ALL_STAFF(spriteIndex, peep) {
+				if (peep->staff_type == STAFF_TYPE_MECHANIC) {
 					stringId = STR_CALLING_MECHANIC;
 					break;
 				}
 			}
-		}
 			break;
 		case RIDE_MECHANIC_STATUS_HEADING:
 			stringId = STR_MEHCANIC_IS_HEADING_FOR_THE_RIDE;
@@ -4038,8 +4037,7 @@ static void window_ride_maintenance_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		if (stringId != 0) {
 			if (stringId == STR_CALLING_MECHANIC || stringId == STR_NO_MECHANICS_ARE_HIRED_MESSAGE) {
 				gfx_draw_string_left_wrapped(dpi, NULL, x + 4, y, 280, stringId, COLOUR_BLACK);
-			} 
-			else {
+			} else {
 				rct_peep *mechanicSprite = &(get_sprite(ride->mechanic)->peep);
 				if (peep_is_mechanic(mechanicSprite)) {
 					set_format_arg(0, rct_string_id, mechanicSprite->name_string_idx);
