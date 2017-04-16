@@ -4026,7 +4026,7 @@ static void window_ride_maintenance_paint(rct_window *w, rct_drawpixelinfo *dpi)
 			stringId = STR_MEHCANIC_IS_HEADING_FOR_THE_RIDE;
 			break;
 		case RIDE_MECHANIC_STATUS_FIXING:
-		case 4:
+		case RIDE_MECHANIC_STATUS_HAS_FIXED_STATION_BRAKES:
 			stringId = STR_MEHCANIC_IS_FIXING_THE_RIDE;
 			break;
 		default:
