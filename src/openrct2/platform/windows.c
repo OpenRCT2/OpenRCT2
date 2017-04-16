@@ -1258,14 +1258,10 @@ bool platform_setup_uri_protocol()
 						HKEY hMuiCacheKey;
 						if (RegCreateKeyW(hRootKey, MUI_CACHE, &hMuiCacheKey) == ERROR_SUCCESS) {
 							swprintf_s(buffer, sizeof(buffer), L"%s.FriendlyAppName", exePath);
-#ifdef __MINGW32__
-							// mingw-w64 defines RegSetKeyValueW's signature incorrectly
-							// A fix has already been submitted upstream, this can be be removed after their next release:
+							// mingw-w64 used to define RegSetKeyValueW's signature incorrectly
+							// You need at least mingw-w64 5.0 including this commit:
 							//   https://sourceforge.net/p/mingw-w64/mingw-w64/ci/da9341980a4b70be3563ac09b5927539e7da21f7/
-							RegSetKeyValueW(hMuiCacheKey, NULL, (LPCSTR)buffer, REG_SZ, (LPCSTR)L"OpenRCT2", sizeof(L"OpenRCT2") + 1);
-#else
 							RegSetKeyValueW(hMuiCacheKey, NULL, buffer, REG_SZ, L"OpenRCT2", sizeof(L"OpenRCT2") + 1);
-#endif
 						}
 
 						log_verbose("URI protocol setup successful");
