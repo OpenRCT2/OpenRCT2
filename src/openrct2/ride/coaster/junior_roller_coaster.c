@@ -4857,8 +4857,8 @@ static void junior_rc_booster_paint_setup(uint8 rideIndex, uint8 trackSequence, 
 
 	const rct_xy16 pos = {gPaintMapPosition.x, gPaintMapPosition.y};
 	if (track_paint_util_should_paint_supports(pos)) {
-		sint32 edi = (direction & 1) ? 2 : 1;
-		metal_a_supports_paint_setup(edi, 4, 0, height, gTrackColours[SCHEME_SUPPORTS]);
+		uint8 supportType = (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK;
+		metal_a_supports_paint_setup(supportType, 4, 0, height, gTrackColours[SCHEME_SUPPORTS]);
 	}
 
 	paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_D0 | SEGMENT_CC, direction), 0xFFFF, 0);
