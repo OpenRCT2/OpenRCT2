@@ -1049,7 +1049,7 @@ static void scenery_eyedropper_tool_down(sint16 x, sint16 y, sint16 widgetIndex)
 	}
 	case VIEWPORT_INTERACTION_ITEM_LARGE_SCENERY:
 	{
-		sint32 entryIndex = mapElement->properties.scenerymultiple.type;
+		sint32 entryIndex = mapElement->properties.scenerymultiple.type & MAP_ELEMENT_LARGE_TYPE_MASK;
 		rct_scenery_entry * sceneryEntry = get_large_scenery_entry(entryIndex);
 		if (sceneryEntry != NULL || sceneryEntry != (rct_scenery_entry *)-1) {
 			sint32 sceneryId = get_scenery_id_from_entry_index(OBJECT_TYPE_LARGE_SCENERY, entryIndex);
