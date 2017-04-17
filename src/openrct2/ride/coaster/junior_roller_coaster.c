@@ -637,6 +637,9 @@ enum {
 	SPR_JUNIOR_RC_60_DEG_UP_TO_FLAT_CHAIN_SE_NW = SPR_G2_BEGIN + 55,
 	SPR_JUNIOR_RC_60_DEG_UP_TO_FLAT_CHAIN_NW_SE_PART_0_2 = SPR_G2_BEGIN + 56,
 	SPR_JUNIOR_RC_60_DEG_UP_TO_FLAT_CHAIN_NE_SW_PART_0_2 = SPR_G2_BEGIN + 57,
+
+	SPR_JUNIOR_RC_BOOSTER_NW_SE = SPR_G2_BEGIN + 85,
+	SPR_JUNIOR_RC_BOOSTER_NE_SW = SPR_G2_BEGIN + 86,
 };
 
 static const uint32 junior_rc_track_pieces_flat[3][4] = {
@@ -4834,6 +4837,34 @@ static void junior_rc_25_deg_down_to_flat_paint_setup(uint8 rideIndex, uint8 tra
 	junior_rc_flat_to_25_deg_up_paint_setup(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
 }
 
+static void junior_rc_booster_paint_setup(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+{
+	sint32 XoffsetNESW = 12;
+	sint32 YoffsetNESW = -10;
+	sint32 XoffsetNWSE = 10;
+	sint32 YoffsetNWSE = -10;
+
+	if (direction & 1) {
+		sub_98196C(SPR_JUNIOR_RC_BOOSTER_NE_SW | gTrackColours[SCHEME_TRACK], XoffsetNESW, YoffsetNESW, 20, 32, 1, height, get_current_rotation());
+
+		paint_util_push_tunnel_right(height, TUNNEL_0);
+	}
+	else {
+		sub_98196C(SPR_JUNIOR_RC_BOOSTER_NW_SE | gTrackColours[SCHEME_TRACK], XoffsetNWSE, YoffsetNWSE, 32, 20, 1, height, get_current_rotation());
+
+		paint_util_push_tunnel_left(height, TUNNEL_0);
+	}
+
+	const rct_xy16 pos = {gPaintMapPosition.x, gPaintMapPosition.y};
+	if (track_paint_util_should_paint_supports(pos)) {
+		sint32 edi = (direction & 1) ? 2 : 1;
+		metal_a_supports_paint_setup(edi, 4, 0, height, gTrackColours[SCHEME_SUPPORTS]);
+	}
+
+	paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_D0 | SEGMENT_CC, direction), 0xFFFF, 0);
+	paint_util_set_general_support_height(height + 32, 0x20);
+}
+
 
 /* 0x008AAA0C */
 TRACK_PAINT_FUNCTION get_track_paint_function_junior_rc(sint32 trackType, sint32 direction) {
@@ -5041,7 +5072,7 @@ TRACK_PAINT_FUNCTION get_track_paint_function_junior_rc(sint32 trackType, sint32
 		return junior_rc_block_brake_paint_setup;
 
 	case TRACK_ELEM_BOOSTER:
-		return junior_rc_brake_paint_setup;
+		return junior_rc_booster_paint_setup;
 
 	case TRACK_ELEM_DIAG_60_DEG_DOWN_TO_FLAT:
 		return junior_rc_diag_60_deg_down_to_flat_paint_setup;
