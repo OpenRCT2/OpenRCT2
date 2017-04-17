@@ -122,7 +122,7 @@ namespace GameActions
     GameActionResult    Execute(const IGameAction * action, uint32 flags = 0, GameActionCallback callback = nullptr);
 
     template<typename T>
-    GameActionFactory Register(uint32 id)
+    static GameActionFactory Register(uint32 id)
     {
         GameActionFactory factory = []() -> IGameAction *
         {
