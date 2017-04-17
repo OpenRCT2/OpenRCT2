@@ -90,7 +90,7 @@ static rct_window_event_list window_text_input_events = {
 };
 
 rct_string_id input_text_description;
-char text_input[512] = { 0 };
+char text_input[TEXT_INPUT_SIZE] = { 0 };
 rct_windowclass calling_class = 0;
 rct_windownumber calling_number = 0;
 sint32 calling_widget = 0;
@@ -116,8 +116,8 @@ void window_text_input_open(rct_window* call_w, sint32 call_widget, rct_string_i
 	input_text_description = description;
 
 	// Work out the existing size of the window
-	char wrapped_string[512];
-	safe_strcpy(wrapped_string, text_input, 512);
+	char wrapped_string[TEXT_INPUT_SIZE];
+	safe_strcpy(wrapped_string, text_input, TEXT_INPUT_SIZE);
 
 	sint32 no_lines = 0, font_height = 0;
 
@@ -177,8 +177,8 @@ void window_text_input_raw_open(rct_window* call_w, sint32 call_widget, rct_stri
 	input_text_description = description;
 
 	// Work out the existing size of the window
-	char wrapped_string[512];
-	safe_strcpy(wrapped_string, text_input, 512);
+	char wrapped_string[TEXT_INPUT_SIZE];
+	safe_strcpy(wrapped_string, text_input, TEXT_INPUT_SIZE);
 
 	sint32 no_lines = 0, font_height = 0;
 
@@ -264,8 +264,8 @@ static void window_text_input_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
 	gCurrentFontFlags = 0;
 
-	char wrapped_string[512];
-	safe_strcpy(wrapped_string, text_input, 512);
+	char wrapped_string[TEXT_INPUT_SIZE];
+	safe_strcpy(wrapped_string, text_input, TEXT_INPUT_SIZE);
 
 	// String length needs to add 12 either side of box
 	// +13 for cursor when max length.
@@ -287,7 +287,7 @@ static void window_text_input_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 		if (!cur_drawn && (gTextInput.selection_offset <= char_count + string_length)) {
 			// Make a copy of the string for measuring the width.
-			char temp_string[512] = { 0 };
+			char temp_string[TEXT_INPUT_SIZE] = { 0 };
 			memcpy(temp_string, wrap_pointer, gTextInput.selection_offset - char_count);
 			cursorX = w->x + 13 + gfx_get_string_width(temp_string);
 			cursorY = y;
@@ -372,8 +372,8 @@ static void window_text_input_close(rct_window *w)
 static void window_text_input_invalidate(rct_window *w)
 {
 	// Work out the existing size of the window
-	char wrapped_string[512];
-	safe_strcpy(wrapped_string, text_input, 512);
+	char wrapped_string[TEXT_INPUT_SIZE];
+	safe_strcpy(wrapped_string, text_input, TEXT_INPUT_SIZE);
 
 	sint32 no_lines = 0, font_height = 0;
 

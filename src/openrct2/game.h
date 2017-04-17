@@ -19,7 +19,6 @@
 
 #include "rct2/addresses.h"
 #include "common.h"
-#include "platform/platform.h"
 #include "scenario/scenario.h"
 
 enum GAME_COMMAND {
@@ -94,6 +93,7 @@ enum GAME_COMMAND {
 	GAME_COMMAND_PICKUP_STAFF,
 	GAME_COMMAND_BALLOON_PRESS,
 	GAME_COMMAND_MODIFY_TILE,
+	GAME_COMMAND_EDIT_SCENARIO_OPTIONS,
 	GAME_COMMAND_COUNT
 };
 

@@ -201,6 +201,8 @@ uint8 platform_get_currency_value(const char *currencyCode);
 uint16 platform_get_locale_language();
 uint8 platform_get_locale_measurement_format();
 uint8 platform_get_locale_temperature_format();
+uint8 platform_get_locale_date_format();
+
 #ifndef NO_TTF
 bool platform_get_font_path(TTFFontDescriptor *font, utf8 *buffer, size_t size);
 #endif // NO_TTF
@@ -238,5 +240,10 @@ void core_init();
 #ifdef __MACOSX__
 	void macos_disallow_automatic_window_tabbing();
 #endif
+
+// On macOS the resizing behaviour effectively resizes the window in the same
+// way a normal drag would do, given constraints in the user desktop (e.g. the dock
+// positioning). So it follows that the finished window size should be saved.
+sint32 platform_get_non_window_flags();
 
 #endif

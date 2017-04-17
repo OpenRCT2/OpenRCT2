@@ -297,7 +297,7 @@ static money32 BannerSetName(uint8 bannerIndex,
     rct_banner* banner = &gBanners[bannerIndex];
 
     gCommandExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_RUNNING_COSTS;
-    size_t indexToOffset[3] = { 24, 12, 0 };
+    size_t indexToOffset[3] = { 24, 0, 12 };
 
     if (nameChunkIndex > Util::CountOf(indexToOffset))
     {

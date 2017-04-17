@@ -226,6 +226,11 @@ const std::vector<NetworkAction> NetworkActions::Actions =
         {
             GAME_COMMAND_MODIFY_TILE
         }
+    }, {
+        STR_ACTION_EDIT_SCENARIO_OPTIONS, "PERMISSION_EDIT_SCENARIO_OPTIONS",
+        {
+            GAME_COMMAND_EDIT_SCENARIO_OPTIONS
+        }
     }
 };
 

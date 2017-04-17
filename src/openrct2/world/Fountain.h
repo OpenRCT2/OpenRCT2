@@ -14,20 +14,33 @@
  *****************************************************************************/
 #pragma endregion
 
-#ifndef _WORLD_FOUNTAIN_H_
-#define _WORLD_FOUNTAIN_H_
+#pragma once
 
 #include "../common.h"
-#include "map.h"
-#include "sprite.h"
 
-enum {
-	JUMPING_FOUNTAIN_TYPE_WATER,
-	JUMPING_FOUNTAIN_TYPE_SNOW
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+    #include "map.h"
+    #include "sprite.h"
+#ifdef __cplusplus
+}
+#endif
+
+enum
+{
+    JUMPING_FOUNTAIN_TYPE_WATER,
+    JUMPING_FOUNTAIN_TYPE_SNOW
 };
 
-void jumping_fountain_begin(sint32 type, sint32 x, sint32 y, rct_map_element *mapElement);
-void jumping_fountain_create(sint32 type, sint32 x, sint32 y, sint32 z, sint32 direction, sint32 flags, sint32 iteration);
-void jumping_fountain_update(rct_jumping_fountain *jumpingFountain);
-
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+    void jumping_fountain_begin(sint32 type, sint32 x, sint32 y, const rct_map_element * mapElement);
+    void jumping_fountain_create(sint32 type, sint32 x, sint32 y, sint32 z, sint32 direction, sint32 flags, sint32 iteration);
+    void jumping_fountain_update(rct_jumping_fountain * jumpingFountain);
+#ifdef __cplusplus
+}
 #endif

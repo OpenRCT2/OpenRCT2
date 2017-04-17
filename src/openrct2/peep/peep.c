@@ -11122,105 +11122,89 @@ static bool peep_has_valid_xy(rct_peep *peep)
 	return false;
 }
 
-static void peep_give_passing_peeps_purple_clothes(rct_peep *peep)
+typedef void(*easter_egg_function)(rct_peep* peep, rct_peep* otherPeep);
+
+static void peep_apply_easter_egg_to_nearby_guests(rct_peep *peep, easter_egg_function easter_egg)
 {
-	if (peep_has_valid_xy(peep)) {
-		rct_peep *otherPeep;
-		uint16 spriteIndex = sprite_get_first_in_quadrant(peep->x, peep->y);
-		for (; spriteIndex != SPRITE_INDEX_NULL; spriteIndex = otherPeep->next_in_quadrant) {
-			otherPeep = GET_PEEP(spriteIndex);
-			if (otherPeep->type == PEEP_TYPE_GUEST) {
-				sint32 zDiff = abs(otherPeep->z - peep->z);
-				if (zDiff <= 32) {
-					otherPeep->tshirt_colour = COLOUR_BRIGHT_PURPLE;
-					otherPeep->trousers_colour = COLOUR_BRIGHT_PURPLE;
-					invalidate_sprite_2((rct_sprite*)peep);
-				}
-			}
-		}
+	if (!peep_has_valid_xy(peep))
+		return;
+
+	uint16 spriteIndex = sprite_get_first_in_quadrant(peep->x, peep->y);
+	if (spriteIndex == SPRITE_INDEX_NULL)
+		return;
+
+	rct_peep * otherPeep = GET_PEEP(spriteIndex);
+	for (; spriteIndex != SPRITE_INDEX_NULL; spriteIndex = otherPeep->next_in_quadrant) {
+		otherPeep = GET_PEEP(spriteIndex);
+
+		if (otherPeep->sprite_identifier != SPRITE_IDENTIFIER_PEEP)
+			continue;
+
+		if (otherPeep->type != PEEP_TYPE_GUEST)
+			continue;
+
+		sint32 zDiff = abs(otherPeep->z - peep->z);
+		if (zDiff > 32)
+			continue;
+
+		easter_egg(peep, otherPeep);
 	}
 }
 
-static void peep_give_passing_peeps_pizza(rct_peep *peep)
+static void peep_give_passing_peeps_purple_clothes(rct_peep *peep, rct_peep *otherPeep)
 {
-	if (peep_has_valid_xy(peep)) {
-		rct_peep *otherPeep;
-		uint16 spriteIndex = sprite_get_first_in_quadrant(peep->x, peep->y);
-		for (; spriteIndex != SPRITE_INDEX_NULL; spriteIndex = otherPeep->next_in_quadrant) {
-			otherPeep = GET_PEEP(spriteIndex);
-			if (otherPeep->type == PEEP_TYPE_GUEST) {
-				sint32 zDiff = abs(otherPeep->z - peep->z);
-				if (zDiff <= 32) {
-					if (!(otherPeep->item_standard_flags & PEEP_ITEM_PIZZA)) {
-						otherPeep->item_standard_flags |= PEEP_ITEM_PIZZA;
+	otherPeep->tshirt_colour = COLOUR_BRIGHT_PURPLE;
+	otherPeep->trousers_colour = COLOUR_BRIGHT_PURPLE;
+	invalidate_sprite_2((rct_sprite*)otherPeep);
+}
 
-						sint32 peepDirection = (peep->sprite_direction >> 3) ^ 2;
-						sint32 otherPeepOppositeDirection = otherPeep->sprite_direction >> 3;
-						if (peepDirection == otherPeepOppositeDirection) {
-							if (otherPeep->action == PEEP_ACTION_NONE_1 || otherPeep->action == PEEP_ACTION_NONE_2) {
-								invalidate_sprite_2((rct_sprite*)peep);
-								otherPeep->action = PEEP_ACTION_WAVE_2;
-								otherPeep->action_frame = 0;
-								otherPeep->action_sprite_image_offset = 0;
-								sub_693B58(otherPeep);
-								invalidate_sprite_2((rct_sprite*)otherPeep);
-							}
-						}
-						invalidate_sprite_2((rct_sprite*)otherPeep);
-					}
-				}
-			}
+static void peep_give_passing_peeps_pizza(rct_peep *peep, rct_peep *otherPeep)
+{
+	if ((otherPeep->item_standard_flags & PEEP_ITEM_PIZZA))
+		return;
+
+	otherPeep->item_standard_flags |= PEEP_ITEM_PIZZA;
+
+	sint32 peepDirection = (peep->sprite_direction >> 3) ^ 2;
+	sint32 otherPeepOppositeDirection = otherPeep->sprite_direction >> 3;
+	if (peepDirection == otherPeepOppositeDirection) {
+		if (otherPeep->action == PEEP_ACTION_NONE_1 || otherPeep->action == PEEP_ACTION_NONE_2) {
+			invalidate_sprite_2((rct_sprite*)peep);
+			otherPeep->action = PEEP_ACTION_WAVE_2;
+			otherPeep->action_frame = 0;
+			otherPeep->action_sprite_image_offset = 0;
+			sub_693B58(otherPeep);
+			invalidate_sprite_2((rct_sprite*)otherPeep);
 		}
+	}
+	invalidate_sprite_2((rct_sprite*)otherPeep);
+}
+
+static void peep_make_passing_peeps_sick(rct_peep *peep, rct_peep *otherPeep)
+{
+	if (peep == otherPeep)
+		return;
+	if (otherPeep->state == PEEP_STATE_QUEUING)
+		return;
+
+	if (otherPeep->action == PEEP_ACTION_NONE_1 || otherPeep->action == PEEP_ACTION_NONE_2) {
+		otherPeep->action = PEEP_ACTION_THROW_UP;
+		otherPeep->action_frame = 0;
+		otherPeep->action_sprite_image_offset = 0;
+		sub_693B58(otherPeep);
+		invalidate_sprite_2((rct_sprite*)otherPeep);
 	}
 }
 
-static void peep_make_passing_peeps_sick(rct_peep *peep)
+static void peep_give_passing_peeps_ice_cream(rct_peep *peep, rct_peep *otherPeep)
 {
-	if (peep_has_valid_xy(peep)) {
-		rct_peep *otherPeep;
-		uint16 spriteIndex = sprite_get_first_in_quadrant(peep->x, peep->y);
-		for (; spriteIndex != SPRITE_INDEX_NULL; spriteIndex = otherPeep->next_in_quadrant) {
-			otherPeep = GET_PEEP(spriteIndex);
-			if (otherPeep->type == PEEP_TYPE_GUEST) {
-				sint32 zDiff = abs(otherPeep->z - peep->z);
-				if (zDiff <= 32) {
-					if (peep != otherPeep) {
-						if (otherPeep->state != PEEP_STATE_QUEUING) {
-							if (otherPeep->action == PEEP_ACTION_NONE_1 || otherPeep->action == PEEP_ACTION_NONE_2) {
-								otherPeep->action = PEEP_ACTION_THROW_UP;
-								otherPeep->action_frame = 0;
-								otherPeep->action_sprite_image_offset = 0;
-								sub_693B58(otherPeep);
-								invalidate_sprite_2((rct_sprite*)otherPeep);
-							}
-						}
-					}
-				}
-			}
-		}
-	}
-}
+	if (peep == otherPeep)
+		return;
+	if (otherPeep->item_standard_flags & PEEP_ITEM_ICE_CREAM)
+		return;
 
-static void peep_give_passing_peeps_ice_cream(rct_peep *peep)
-{
-	if (peep_has_valid_xy(peep)) {
-		rct_peep *otherPeep;
-		uint16 spriteIndex = sprite_get_first_in_quadrant(peep->x, peep->y);
-		for (; spriteIndex != SPRITE_INDEX_NULL; spriteIndex = otherPeep->next_in_quadrant) {
-			otherPeep = GET_PEEP(spriteIndex);
-			if (otherPeep->type == PEEP_TYPE_GUEST) {
-				sint32 zDiff = abs(otherPeep->z - peep->z);
-				if (zDiff <= 32) {
-					if (peep != otherPeep) {
-						if (!(otherPeep->item_standard_flags & PEEP_ITEM_ICE_CREAM)) {
-							otherPeep->item_standard_flags |= PEEP_ITEM_ICE_CREAM;
-							peep_update_sprite_type(otherPeep);
-						}
-					}
-				}
-			}
-		}
-	}
+	otherPeep->item_standard_flags |= PEEP_ITEM_ICE_CREAM;
+	peep_update_sprite_type(otherPeep);
 }
 
 /**
@@ -11230,15 +11214,15 @@ static void peep_give_passing_peeps_ice_cream(rct_peep *peep)
 static void peep_easter_egg_peep_interactions(rct_peep *peep)
 {
 	if (peep->peep_flags & PEEP_FLAGS_PURPLE) {
-		peep_give_passing_peeps_purple_clothes(peep);
+		peep_apply_easter_egg_to_nearby_guests(peep, &peep_give_passing_peeps_purple_clothes);
 	}
 
 	if (peep->peep_flags & PEEP_FLAGS_PIZZA) {
-		peep_give_passing_peeps_pizza(peep);
+		peep_apply_easter_egg_to_nearby_guests(peep, &peep_give_passing_peeps_pizza);
 	}
 
 	if (peep->peep_flags & PEEP_FLAGS_CONTAGIOUS) {
-		peep_make_passing_peeps_sick(peep);
+		peep_apply_easter_egg_to_nearby_guests(peep, &peep_make_passing_peeps_sick);
 	}
 
 	if (peep->peep_flags & PEEP_FLAGS_JOY) {
@@ -11254,7 +11238,7 @@ static void peep_easter_egg_peep_interactions(rct_peep *peep)
 	}
 
 	if (peep->peep_flags & PEEP_FLAGS_ICE_CREAM) {
-		peep_give_passing_peeps_ice_cream(peep);
+		peep_apply_easter_egg_to_nearby_guests(peep, &peep_give_passing_peeps_ice_cream);
 	}
 }
 

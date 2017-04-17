@@ -379,14 +379,14 @@ static money32 WallPlace(uint8 wallType,
         uint16 waterHeight = surfaceElement->properties.surface.terrain & MAP_ELEMENT_WATER_HEIGHT_MASK;
         waterHeight *= 16;
 
-        if (position.z < waterHeight)
+        if (position.z < waterHeight && !gCheatsDisableClearanceChecks)
         {
             gGameCommandErrorText = STR_CANT_BUILD_THIS_UNDERWATER;
             return MONEY32_UNDEFINED;
         }
     }
 
-    if (position.z / 8 < surfaceElement->base_height)
+    if (position.z / 8 < surfaceElement->base_height && !gCheatsDisableClearanceChecks)
     {
         gGameCommandErrorText = STR_CAN_ONLY_BUILD_THIS_ABOVE_GROUND;
         return MONEY32_UNDEFINED;

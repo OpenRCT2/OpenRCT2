@@ -1696,8 +1696,8 @@ static void map_window_set_pixels(rct_window *w)
 				colour = map_window_get_pixel_colour_ride(x, y);
 				break;
 			}
-			destination[0] = HIBYTE(colour);
-			destination[1] = LOBYTE(colour);
+			destination[0] = (colour >> 8) & 0xFF;
+			destination[1] = colour;
 		}
 		x += dx;
 		y += dy;
