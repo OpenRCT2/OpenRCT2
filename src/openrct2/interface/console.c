@@ -33,6 +33,7 @@
 #include "../peep/staff.h"
 #include "../platform/platform.h"
 #include "../rct2.h"
+#include "../ride/ride.h"
 #include "../util/sawyercoding.h"
 #include "../util/util.h"
 #include "../Version.h"
@@ -500,6 +501,7 @@ static sint32 cc_rides(const utf8 **argv, sint32 argc)
 					}
 					else {
 						ride->mode = mode;
+						invalidate_test_results(ride_index);
 					}
 				}
 			}
