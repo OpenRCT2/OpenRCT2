@@ -34,8 +34,8 @@ extern "C"
 extern "C"
 {
     static void *   _g1Buffer = nullptr;
-    static rct_gx   _g2;
-    static rct_gx   _csg;
+    static rct_gx   _g2 = { 0 };
+    static rct_gx   _csg = { 0 };
     static bool     _csgLoaded = false;
 
     #ifdef NO_RCT2
@@ -641,10 +641,20 @@ extern "C"
         }
         if (image_id < SPR_CSG_BEGIN)
         {
-            return &_g2.elements[image_id - SPR_G2_BEGIN];
+            const uint32 idx = image_id - SPR_G2_BEGIN;
+            openrct2_assert(idx < _g2.header.num_entries,
+                            "Invalid entry in g2.dat requested, idx = %u. You may have to update your g2.dat.", idx);
+            return &_g2.elements[idx];
         }
 
-        return &_csg.elements[image_id - SPR_CSG_BEGIN];
+        if (is_csg_loaded())
+        {
+            const uint32 idx = image_id - SPR_CSG_BEGIN;
+            openrct2_assert(idx < _csg.header.num_entries,
+                            "Invalid entry in csg.dat requested, idx = %u.", idx);
+            return &_csg.elements[idx];
+        }
+        return nullptr;
     }
 
     bool is_csg_loaded()
