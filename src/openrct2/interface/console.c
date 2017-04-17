@@ -461,8 +461,8 @@ static sint32 cc_rides(const utf8 **argv, sint32 argc)
 				console_printf("rides set type <ride id> <ride type>");
 				console_printf("rides set friction <ride id> <friction value>");
 				console_printf("rides set excitement <ride id> <excitement value>");
-				console_printf("rides set intensity <ride id> <excitement value>");
-				console_printf("rides set nausea <ride id> <excitement value>");
+				console_printf("rides set intensity <ride id> <intensity value>");
+				console_printf("rides set nausea <ride id> <nausea value>");
 				return 0;
 			}
 			if (strcmp(argv[1], "type") == 0) {
