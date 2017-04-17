@@ -618,24 +618,23 @@ static void window_scenery_mouseup(rct_window *w, sint32 widgetIndex)
 void window_scenery_update_scroll(rct_window *w)
 {
 	sint32 tabIndex = gWindowSceneryActiveTabIndex;
+	sint32 listHeight = w->height - 14 - window_scenery_widgets[WIDX_SCENERY_LIST].top - 1;
 
 	scenery_item sceneryItem = window_scenery_count_rows_with_selected_item(tabIndex);
 	w->scrolls[0].v_bottom = window_scenery_rows_height(sceneryItem.allRows) + 1;
 
-	sint32 rowsOnPage = rows_on_page(w->height);
+	sint32 maxTop = max(0, w->scrolls[0].v_bottom - listHeight);
 	sint32 rowSelected = count_rows(sceneryItem.selected_item);
-
-	if (sceneryItem.allRows - rowSelected <= rowsOnPage){
-		rowSelected = sceneryItem.allRows - rowsOnPage;
-	}
-
 	if (sceneryItem.sceneryId == -1) {
 		rowSelected = 0;
 		sint16 sceneryId = window_scenery_tab_entries[tabIndex][0];
 		if (sceneryId != -1)
 			gWindowSceneryTabSelections[tabIndex] = sceneryId;
 	}
+
 	w->scrolls[0].v_top = window_scenery_rows_height(rowSelected);
+	w->scrolls[0].v_top = min(maxTop, w->scrolls[0].v_top);
+
 	widget_scroll_update_thumbs(w, WIDX_SCENERY_LIST);
 }
 
@@ -763,6 +762,7 @@ static void window_scenery_update(rct_window *w)
 					sint32 windowHeight = min(463, w->scrolls[0].v_bottom + 62);
 					if (gScreenHeight < 600)
 						windowHeight = min(374, windowHeight);
+					windowHeight = max(WINDOW_SCENERY_HEIGHT, windowHeight);
 
 					w->min_width = WINDOW_SCENERY_WIDTH;
 					w->max_width = WINDOW_SCENERY_WIDTH;

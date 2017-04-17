@@ -2749,7 +2749,7 @@ STR_2739    :Aucun
 STR_2740    :RollerCoaster Tycoon 1
 STR_2741    :RollerCoaster Tycoon 2
 STR_2742    :css50.dat introuvable
-STR_2743    :Renommez et déplacez data\css17.dat depuis votre dossier RCT1 en data\css50.dat dans votre dossier RCT2
+STR_2743    :Copiez data\css17.dat depuis votre installation de RCT1 en data\css50.dat dans celui de RCT2, ou vérifiez que le chemin vers l'installation de RCT1 dans les options diverses est défini correctement.
 STR_2744    :[
 STR_2745    :\
 STR_2746    :]
@@ -4145,7 +4145,7 @@ STR_5832    :{SMALLFONT}{BLACK}Affiche les hauteurs comme des unités génériqu
 STR_5833    :{SMALLFONT}{BLACK}Change le format de date utilisé
 STR_5834    :{SMALLFONT}{BLACK}Sélectionne le périphérique audio que doit utiliser OpenRCT2
 STR_5835    :{SMALLFONT}{BLACK}Coupe le son du jeu si la fenêtre passe à l'arrière-plan
-STR_5836    :{SMALLFONT}{BLACK}Sélectionne la musique du menu principal.{NEWLINE}La musique RCT1 nécessite que vous copiiez et renommiez le fichier {OPENQUOTES}data/css17.dat{ENDQUOTES} de votre dossier RCT1 en {OPENQUOTES}data/css50.dat{ENDQUOTES} dans votre dossier RCT2
+STR_5836    :{SMALLFONT}{BLACK}Sélectionne la musique du menu principal.{NEWLINE}La musique RCT1 nécessite que vous copiez et renommiez le fichier {OPENQUOTES}data/css17.dat{ENDQUOTES} de votre dossier RCT1 en {OPENQUOTES}data/css50.dat{ENDQUOTES} dans votre dossier RCT2, ou que vous ayez défini le chemin d'installation de RCT1 dans les options diverses.
 STR_5837    :{SMALLFONT}{BLACK}Créer et gérer des thèmes d'interface personnalisés
 STR_5838    :{SMALLFONT}{BLACK}Affiche un bouton séparé pour les options financières dans la barre d'outils
 STR_5839    :{SMALLFONT}{BLACK}Affiche un bouton séparé pour la recherche et développement dans la barre d'outils
@@ -4339,6 +4339,14 @@ STR_6026    :Construction de manège - Piste précédente
 STR_6027    :Construction de manège - Piste suivante
 STR_6028    :Construction de manège - Construire l’actuel
 STR_6029    :Construction de manège - Démolir l’actuel
+STR_6030    :{SMALLFONT}{BLACK}Sélectionneur de décor. Cliquez sur un décor sur la carte afin de sélectionner la même pièce pour construction 
+STR_6031    :Description du serveur:
+STR_6032    :Message de bienvenue du serveur:
+STR_6033    :Chemin vers l'installation de RCT1:
+STR_6035    :Veuillez choisir votre installation de RCT1
+STR_6036    :{SMALLFONT}{BLACK}Vider
+STR_6037    :Veuillez choisir une installation valide de RCT1
+STR_6038    :{SMALLFONT}{BLACK}Si vous avez une installation de RCT1, définissez cette option pour pouvoir charger les scénarios, musiques...
 
 #############
 # Scenarios #

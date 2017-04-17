@@ -20,46 +20,6 @@ if [[ ! -d build ]]; then
 	mkdir -p build
 fi
 
-if [[ $TARGET != "ubuntu_i686" && $TARGET != "docker32" && $SYSTEM != "Darwin" ]]; then
-	sha256sum=c71bb6b488376853252a00f3ed216e09d645f71357ea76b9b55c56e40b4f44ca
-	libVFile="./libversion"
-	libdir="./lib"
-	currentversion=0
-	needsdownload="true"
-
-	if [ -f $libVFile ]; then
-		while read line; do
-			currentversion=$line
-			continue
-		done < $libVFile
-	fi
-
-	if [ "z$currentversion" == "z$sha256sum" ]; then
-		needsdownload="false"
-	fi
-
-	if [ ! -d $libdir ]; then
-		needsdownload="true"
-	fi
-
-	if [[ "$needsdownload" = "true" ]]; then
-		echo "Found library had sha256sum $currentversion, expected $sha256sum"
-		echo "New libraries need to be downloaded. Clearing cache and calling ./install.sh"
-		rm -rf ./lib
-		if [[ -f $cachedir/orctlibs.zip ]]; then
-			rm -rf $cachedir/orctlibs.zip
-		fi
-		if [[ -d /usr/local/cross-tools/orctlibs ]]; then
-			sudo rm -rf /usr/local/cross-tools/orctlibs
-		fi
-		if [[ -d $cachedir/orctlibs ]]; then
-			rm -rf $cachedir/orctlibs
-		fi
-		scripts/linux/install.sh
-	fi
-# if [[ $TARGET != "linux" && $TARGET != "docker32" && $SYSTEM != "Darwin" ]]; then
-fi
-
 pushd build
 	echo OPENRCT2_CMAKE_OPTS = $OPENRCT2_CMAKE_OPTS
 	if [[ $TARGET == "docker32" ]]
@@ -96,7 +56,7 @@ pushd build
 		chmod a+rwx $(pwd)
 		chmod g+s $(pwd)
 		# CMAKE and MAKE opts from environment
-		docker run -v /usr/local/cross-tools/:/usr/local/cross-tools/ -v $PARENT:$PARENT -w $PARENT/build -i -t openrct2/openrct2:mingw bash -c "cmake ../ $OPENRCT2_CMAKE_OPTS && make $OPENRCT_MAKE_OPTS"
+		docker run -v $PARENT:$PARENT -w $PARENT/build -i -t openrct2/openrct2:mingw-arch bash -c "cmake ../ $OPENRCT2_CMAKE_OPTS && make $OPENRCT_MAKE_OPTS"
 	else
 		echo "Unkown target $TARGET"
 		exit 1

@@ -2721,7 +2721,7 @@ STR_2739    :Ninguna
 STR_2740    :RollerCoaster Tycoon 1
 STR_2741    :RollerCoaster Tycoon 2
 STR_2742    :css50.dat no encontrado
-STR_2743    :Copia data\css17.dat de tu instalación de RCT1 en data\css50.dat de la instalación de RCT2,
+STR_2743    :Copia data\css17.dat de tu instalación de RCT1 en data\css50.dat de tu instalación de RCT2, o asegúrate de que la carpeta de RCT1 en la sección "Otras Opciones" esté establecido correctamente.
 STR_2744    :[
 STR_2745    :\
 STR_2746    :]
@@ -4105,7 +4105,7 @@ STR_5832    :{SMALLFONT}{BLACK}Mostrar marcas de altura con{NEWLINE}valores rela
 STR_5833    :{SMALLFONT}{BLACK}Cambiar el formato de fecha a usar en el juego.
 STR_5834    :{SMALLFONT}{BLACK}Selecciona el dispositivo de sonido que OpenRCT2 debe usar.
 STR_5835    :{SMALLFONT}{BLACK}Silenciar el juego si la ventana pierde el foco.
-STR_5836    :{SMALLFONT}{BLACK}Selecciona la música usada en el menú principal.{NEWLINE}Seleccionar el tema de RCT1 requiere copiar el archivo 'data/css17.dat' de la carpeta de RCT1 a 'data/css50.dat' en la carpeta de RCT2.
+STR_5836    :{SMALLFONT}{BLACK}Selecciona la música usada en el menú principal.{NEWLINE}Seleccionar el tema de RCT1 requiere copiar el archivo 'data/css17.dat' de la carpeta de RCT1 a 'data/css50.dat' en la carpeta de RCT2, o establece la ruta de RCT1 en "Otras Opciones".
 STR_5837    :{SMALLFONT}{BLACK}Crea y gestiona tus temas personalizados de la interfaz.
 STR_5838    :{SMALLFONT}{BLACK}Mostrar un botón separado para las finanzas en la barra de herramienta superior.
 STR_5839    :{SMALLFONT}{BLACK}Mostrar un botón separado para la investigación y desarrollo en la barra de herramienta superior.
@@ -4298,6 +4298,14 @@ STR_6026    :Construir Atrac. - Pieza Anterior
 STR_6027    :Construir Atrac. - Pieza Siguiente
 STR_6028    :Construir Atrac. - Construir Actual
 STR_6029    :Construir Atrac. - Demoler Actual
+STR_6030    :{SMALLFONT}{BLACK}Selector de Escenario. Haz clic en cualquier escenario del mapa para construirlo.
+STR_6031    :Descripción Servidor:
+STR_6032    :Msg. de Bienvenida:
+STR_6033    :Ruta de Instalación RCT1:
+STR_6035    :Por favor selecciona la carpeta de RCT1
+STR_6036    :{SMALLFONT}{BLACK}Borrar
+STR_6037    :Por favor selecciona una carpeta válida con una instalación de RCT1
+STR_6038    :{SMALLFONT}{BLACK}Si tienes una instalación de RCT1, establece esta opción hacia la carpeta de la instalación para cargar los escenarios, música, etc.
 
 ##############
 # Escenarios #
