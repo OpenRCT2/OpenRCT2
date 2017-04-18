@@ -23,63 +23,47 @@
 #endif
 
 #ifdef OPENRCT2_BUILD_NUMBER
-    const char *gBuildNumber = OPENRCT2_BUILD_NUMBER;
+    const char gBuildNumber[] = OPENRCT2_BUILD_NUMBER;
 #else
-    const char *gBuildNumber = "";
+    const char gBuildNumber[] = "";
 #endif
 
 #ifdef OPENRCT2_BUILD_SERVER
-    const char *gBuildServer = OPENRCT2_BUILD_SERVER;
+    const char gBuildServer[] = OPENRCT2_BUILD_SERVER;
 #else
-    const char *gBuildServer = "";
+    const char gBuildServer[] = "";
 #endif
 
 #ifdef OPENRCT2_BRANCH
-    const char *gGitBranch = OPENRCT2_BRANCH;
+    const char gGitBranch[] = OPENRCT2_BRANCH;
 #else
-    const char *gGitBranch = "";
+    const char gGitBranch[] = "";
 #endif
 
 #ifdef OPENRCT2_COMMIT_SHA1
-    const char *gCommitSha1 = OPENRCT2_COMMIT_SHA1;
+    const char gCommitSha1[] = OPENRCT2_COMMIT_SHA1;
 #else
-    const char *gCommitSha1 = "";
+    const char gCommitSha1[] = "";
 #endif
 
 #ifdef OPENRCT2_COMMIT_SHA1_SHORT
-    const char *gCommitSha1Short = OPENRCT2_COMMIT_SHA1_SHORT;
+    const char gCommitSha1Short[] = OPENRCT2_COMMIT_SHA1_SHORT;
 #else
-    const char *gCommitSha1Short = "";
+    const char gCommitSha1Short[] = "";
 #endif
 
-namespace Version
-{
-    static std::string _info;
-
-    std::string GetInfo()
-    {
-        if (_info.empty())
-        {
-            utf8 buffer[256];
-            size_t bufferSize = sizeof(buffer);
-            String::Set(buffer, bufferSize, OPENRCT2_NAME ", v" OPENRCT2_VERSION);
-            if (!String::IsNullOrEmpty(gGitBranch))
-            {
-                String::AppendFormat(buffer, bufferSize, "-%s", gGitBranch);
-            }
-            if (!String::IsNullOrEmpty(gCommitSha1Short))
-            {
-                String::AppendFormat(buffer, bufferSize, " build %s", gCommitSha1Short);
-            }
-            if (!String::IsNullOrEmpty(gBuildServer))
-            {
-                String::AppendFormat(buffer, bufferSize, " provided by %s", gBuildServer);
-            }
+const char gVersionInfoFull[] =
+    OPENRCT2_NAME ", v" OPENRCT2_VERSION
+#ifdef OPENRCT2_BRANCH
+    "-" OPENRCT2_BRANCH
+#endif
+#ifdef OPENRCT2_COMMIT_SHA1_SHORT
+    " build " OPENRCT2_COMMIT_SHA1_SHORT
+#endif
+#ifdef OPENRCT2_BUILD_SERVER
+    " provided by " OPENRCT2_BUILD_SERVER
+#endif
 #ifdef DEBUG
-            String::AppendFormat(buffer, bufferSize, " (DEBUG)", gBuildServer);
+    " (DEBUG)"
 #endif
-            _info = std::string(buffer);
-        }
-        return _info;
-    }
-}
+    ;
