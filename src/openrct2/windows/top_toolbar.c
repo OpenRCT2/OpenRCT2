@@ -1078,7 +1078,7 @@ static void scenery_eyedropper_tool_down(sint16 x, sint16 y, sint16 widgetIndex)
 	{
 		sint32 entryIndex = footpath_element_get_path_scenery_index(mapElement);
 		rct_scenery_entry * sceneryEntry = get_footpath_item_entry(entryIndex);
-		if (sceneryEntry != NULL || sceneryEntry != (rct_scenery_entry *)-1) {
+		if (sceneryEntry != NULL && sceneryEntry != (rct_scenery_entry *)-1) {
 			sint32 sceneryId = get_scenery_id_from_entry_index(OBJECT_TYPE_PATH_BITS, entryIndex);
 			if (sceneryId != -1 && window_scenery_set_selected_item(sceneryId)) {
 				gWindowSceneryEyedropperEnabled = false;
