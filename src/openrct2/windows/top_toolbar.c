@@ -145,6 +145,7 @@ static const sint32 left_aligned_widgets_order[] = {
 	WIDX_PAUSE,
 	WIDX_FASTFORWARD,
 	WIDX_FILE_MENU,
+	WIDX_MUTE,
 	WIDX_NETWORK,
 	WIDX_CHEATS,
 	WIDX_DEBUG,
@@ -156,7 +157,7 @@ static const sint32 left_aligned_widgets_order[] = {
 	WIDX_ROTATE,
 	WIDX_VIEW_MENU,
 	WIDX_MAP,
-	WIDX_MUTE,
+	
 };
 
 // from right to left
@@ -189,7 +190,7 @@ static rct_widget window_top_toolbar_widgets[] = {
 	{ WWT_TRNBTN,	1,	0x0082 + 30,	0x009F + 30,	0,		27,		0x20000000 | SPR_TOOLBAR_ROTATE,			STR_ROTATE_TIP },					// Rotate camera
 	{ WWT_TRNBTN,	1,	0x00A0 + 30,	0x00BD + 30,	0,		27,		0x20000000 | SPR_TOOLBAR_VIEW,				STR_VIEW_OPTIONS_TIP },				// Transparency menu
 	{ WWT_TRNBTN,	1,	0x00BE + 30,	0x00DB + 30,	0,		27,		0x20000000 | SPR_TOOLBAR_MAP,				STR_SHOW_MAP_TIP },					// Map
-	{ WWT_TRNBTN,	1,	0x00DC + 30,	0x00F9 + 30,	0,		27,		0x20000000 | SPR_TAB_TOOLBAR,				STR_SHOW_MUTE },					// Mute
+	{ WWT_TRNBTN,	0,	0x00DC + 30,	0x00F9 + 30,	0,		27,		0x20000000 | SPR_TAB_TOOLBAR,				STR_SHOW_MUTE },					// Mute
 	{ WWT_TRNBTN,	2,	0x010B,	0x0128,	0,						27,		0x20000000 | SPR_TOOLBAR_LAND,				STR_ADJUST_LAND_TIP },				// Land
 	{ WWT_TRNBTN,	2,	0x0129,	0x0146,	0,						27,		0x20000000 | SPR_TOOLBAR_WATER,				STR_ADJUST_WATER_TIP },				// Water
 	{ WWT_TRNBTN,	2,	0x0147,	0x0164,	0,						27,		0x20000000 | SPR_TOOLBAR_SCENERY,			STR_PLACE_SCENERY_TIP },			// Scenery
