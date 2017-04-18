@@ -1368,7 +1368,6 @@ void Network::ProcessGameCommandQueue()
             IGameAction * action = GameActions::Create(gc.actionType);
             uint32 flags = gc.parameters->ReadValue<uint32>();
             action->Deserialise(gc.parameters);
-            delete gc.parameters;
             GameActionResult result = GameActions::Execute(action, flags | GAME_COMMAND_FLAG_NETWORKED);
             if (result.Error != GA_ERROR::OK)
             {
@@ -2038,7 +2037,7 @@ void Network::Client_Handle_GAMECMD(NetworkConnection& connection, NetworkPacket
     uint8 callback;
     packet >> tick >> args[0] >> args[1] >> args[2] >> args[3] >> args[4] >> args[5] >> args[6] >> playerid >> callback;
 
-    GameCommand gc = GameCommand(tick, args, playerid, callback);
+    GameCommand gc(tick, args, playerid, callback);
     game_command_queue.insert(gc);
 }
 void Network::Client_Handle_GAME_ACTION(NetworkConnection& connection, NetworkPacket& packet)
@@ -2051,7 +2050,7 @@ void Network::Client_Handle_GAME_ACTION(NetworkConnection& connection, NetworkPa
 	size_t size = packet.Size - packet.BytesRead;
 	stream.WriteArray(packet.Read(size), size);
 	stream.SetPosition(0);
-	GameCommand gc = GameCommand(tick, type, stream, playerid);
+	GameCommand gc(tick, type, stream, playerid);
 	game_command_queue.insert(gc);
 }
 
