@@ -85,7 +85,7 @@ namespace Guard
         if (expression) return;
 
         Console::Error::WriteLine(ASSERTION_MESSAGE);
-        Console::Error::WriteLine("Version: %s", Version::GetInfo().c_str());
+        Console::Error::WriteLine("Version: %s", gVersionInfoFull);
 
         // This is never freed, but acceptable considering we are about to crash out
         utf8 * formattedMessage = nullptr;
@@ -143,7 +143,7 @@ namespace Guard
         String::Set(buffer, bufferSize, ASSERTION_MESSAGE);
         String::Append(buffer, bufferSize, "\r\n\r\n");
         String::Append(buffer, bufferSize, "Version: ");
-        String::Append(buffer, bufferSize, Version::GetInfo().c_str());
+        String::Append(buffer, bufferSize, gVersionInfoFull);
         if (formattedMessage != nullptr)
         {
             String::Append(buffer, bufferSize, "\r\n");
