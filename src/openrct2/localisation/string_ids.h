@@ -3715,6 +3715,8 @@ enum {
 	STR_ERROR_24_BIT_BITMAP = 6054,
 	STR_OPENRCT2_HEIGHTMAP_FILE = 6055,
 
+	STR_SHOW_MUTE = 6056,
+
 	// Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
 	STR_COUNT = 32768
 };

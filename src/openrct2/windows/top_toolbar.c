@@ -47,6 +47,7 @@ enum {
 	WIDX_ROTATE,
 	WIDX_VIEW_MENU,
 	WIDX_MAP,
+	WIDX_MUTE,
 
 	WIDX_LAND,
 	WIDX_WATER,
@@ -155,6 +156,7 @@ static const sint32 left_aligned_widgets_order[] = {
 	WIDX_ROTATE,
 	WIDX_VIEW_MENU,
 	WIDX_MAP,
+	WIDX_MUTE,
 };
 
 // from right to left
@@ -187,7 +189,7 @@ static rct_widget window_top_toolbar_widgets[] = {
 	{ WWT_TRNBTN,	1,	0x0082 + 30,	0x009F + 30,	0,		27,		0x20000000 | SPR_TOOLBAR_ROTATE,			STR_ROTATE_TIP },					// Rotate camera
 	{ WWT_TRNBTN,	1,	0x00A0 + 30,	0x00BD + 30,	0,		27,		0x20000000 | SPR_TOOLBAR_VIEW,				STR_VIEW_OPTIONS_TIP },				// Transparency menu
 	{ WWT_TRNBTN,	1,	0x00BE + 30,	0x00DB + 30,	0,		27,		0x20000000 | SPR_TOOLBAR_MAP,				STR_SHOW_MAP_TIP },					// Map
-
+	{ WWT_TRNBTN,	1,	0x00DC + 30,	0x00F9 + 30,	0,		27,		0x20000000 | SPR_TAB_TOOLBAR,				STR_SHOW_MUTE },					// Mute
 	{ WWT_TRNBTN,	2,	0x010B,	0x0128,	0,						27,		0x20000000 | SPR_TOOLBAR_LAND,				STR_ADJUST_LAND_TIP },				// Land
 	{ WWT_TRNBTN,	2,	0x0129,	0x0146,	0,						27,		0x20000000 | SPR_TOOLBAR_WATER,				STR_ADJUST_WATER_TIP },				// Water
 	{ WWT_TRNBTN,	2,	0x0147,	0x0164,	0,						27,		0x20000000 | SPR_TOOLBAR_SCENERY,			STR_PLACE_SCENERY_TIP },			// Scenery
@@ -360,6 +362,12 @@ static void window_top_toolbar_mouseup(rct_window *w, sint32 widgetIndex)
 		break;
 	case WIDX_NEWS:
 		window_news_open();
+		break;
+	case WIDX_MUTE:
+		if(gGameSoundsOff)
+			audio_unpause_sounds();
+		else
+			audio_pause_sounds();
 		break;
 	}
 }
@@ -648,6 +656,7 @@ static void window_top_toolbar_invalidate(rct_window *w)
 	window_top_toolbar_widgets[WIDX_ROTATE].type = WWT_TRNBTN;
 	window_top_toolbar_widgets[WIDX_VIEW_MENU].type = WWT_TRNBTN;
 	window_top_toolbar_widgets[WIDX_MAP].type = WWT_TRNBTN;
+	window_top_toolbar_widgets[WIDX_MUTE].type = WWT_TRNBTN;
 	window_top_toolbar_widgets[WIDX_LAND].type = WWT_TRNBTN;
 	window_top_toolbar_widgets[WIDX_WATER].type = WWT_TRNBTN;
 	window_top_toolbar_widgets[WIDX_SCENERY].type = WWT_TRNBTN;
@@ -668,6 +677,7 @@ static void window_top_toolbar_invalidate(rct_window *w)
 
 	if (gScreenFlags & (SCREEN_FLAGS_SCENARIO_EDITOR | SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)) {
 		window_top_toolbar_widgets[WIDX_PAUSE].type = WWT_EMPTY;
+		window_top_toolbar_widgets[WIDX_MUTE].type = WWT_EMPTY;
 		window_top_toolbar_widgets[WIDX_RIDES].type = WWT_EMPTY;
 		window_top_toolbar_widgets[WIDX_PARK].type = WWT_EMPTY;
 		window_top_toolbar_widgets[WIDX_STAFF].type = WWT_EMPTY;
@@ -830,6 +840,15 @@ static void window_top_toolbar_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		}
 	}
 
+	//Draw Mute Button
+	if (window_top_toolbar_widgets[WIDX_FASTFORWARD].type != WWT_EMPTY) {
+		x = w->x + window_top_toolbar_widgets[WIDX_MUTE].left + 0;
+		y = w->y + window_top_toolbar_widgets[WIDX_MUTE].top + 0;
+		if (widget_is_pressed(w, WIDX_MUTE))
+			y++;
+		imgId = SPR_TAB_MUSIC_0;
+		gfx_draw_sprite(dpi, imgId, x, y, 0);
+	}
 	// Draw cheats button
 	if (window_top_toolbar_widgets[WIDX_CHEATS].type != WWT_EMPTY) {
 		x = w->x + window_top_toolbar_widgets[WIDX_CHEATS].left - 1;
