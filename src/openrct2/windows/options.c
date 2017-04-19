@@ -145,6 +145,7 @@ enum WINDOW_OPTIONS_WIDGET_IDX {
 	WIDX_TOOLBAR_SHOW_RESEARCH,
 	WIDX_TOOLBAR_SHOW_CHEATS,
 	WIDX_TOOLBAR_SHOW_NEWS,
+	WIDX_TOOLBAR_SHOW_MUTE,
 	WIDX_SELECT_BY_TRACK_TYPE,
 	WIDX_SCENARIO_GROUPING,
 	WIDX_SCENARIO_GROUPING_DROPDOWN,
@@ -294,18 +295,16 @@ static rct_widget window_options_controls_and_interface_widgets[] = {
 	{ WWT_CHECKBOX,			2,	10,		299,	98,			109,	STR_INVERT_RIGHT_MOUSE_DRAG,			STR_INVERT_RIGHT_MOUSE_DRAG_TIP },			// Invert right mouse dragging
 	{ WWT_CHECKBOX,			2,	10,		299,	113,		124,	STR_ZOOM_TO_CURSOR,						STR_ZOOM_TO_CURSOR_TIP },			// Zoom to cursor
 	{ WWT_DROPDOWN_BUTTON,	1,	26,		185,	128,		139,	STR_HOTKEY,								STR_HOTKEY_TIP },							// Set hotkeys buttons
-
 	{ WWT_GROUPBOX,			1,	5,      304,	148,		194,	STR_THEMES_GROUP,						STR_NONE },									// Toolbar buttons group
 	{ WWT_DROPDOWN,			1,	155,	299,	162,		173,	STR_NONE,								STR_NONE },									// Themes
 	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	163,		172,	STR_DROPDOWN_GLYPH,						STR_CURRENT_THEME_TIP },
 	{ WWT_DROPDOWN_BUTTON,	1,	10,		145,	178,		189,	STR_EDIT_THEMES_BUTTON,					STR_EDIT_THEMES_BUTTON_TIP },				// Themes button
-
 	{ WWT_GROUPBOX,			1,	5,      304,	198,		260,	STR_TOOLBAR_BUTTONS_GROUP,				STR_NONE },									// Toolbar buttons group
 	{ WWT_CHECKBOX,			2,	10,		145,	229,		240,	STR_FINANCES_BUTTON_ON_TOOLBAR,			STR_FINANCES_BUTTON_ON_TOOLBAR_TIP },		// Finances
 	{ WWT_CHECKBOX,			2,	10,		145,	244,		255,	STR_RESEARCH_BUTTON_ON_TOOLBAR,			STR_RESEARCH_BUTTON_ON_TOOLBAR_TIP },		// Research
-	{ WWT_CHECKBOX,			2,	155,	299,	229,		240,	STR_CHEATS_BUTTON_ON_TOOLBAR,			STR_CHEATS_BUTTON_ON_TOOLBAR_TIP },			// Cheats
-	{ WWT_CHECKBOX,			2,	155,	299,	244,		255,	STR_SHOW_RECENT_MESSAGES_ON_TOOLBAR,	STR_SHOW_RECENT_MESSAGES_ON_TOOLBAR_TIP },	// Recent messages
-
+	{ WWT_CHECKBOX,			2,	130,	180,	229,		240,	STR_CHEATS_BUTTON_ON_TOOLBAR,			STR_CHEATS_BUTTON_ON_TOOLBAR_TIP },			// Cheats
+	{ WWT_CHECKBOX,			2,	130,	180,	244,		255,	STR_SHOW_RECENT_MESSAGES_ON_TOOLBAR,	STR_SHOW_RECENT_MESSAGES_ON_TOOLBAR_TIP },	// Recent messages
+	{ WWT_CHECKBOX,			2,	235,	215,	229,		240,	STR_MUTE_BUTTON_ON_TOOLBAR,				STR_MUTE_BUTTON_ON_TOOLBAR_TIP },			// Mute
 	{ WWT_CHECKBOX,			2,	10,		299,	269,		280,	STR_SELECT_BY_TRACK_TYPE,				STR_SELECT_BY_TRACK_TYPE_TIP },				// Select by track type
 	{ WWT_DROPDOWN,			2,	155,	299,	284,		295,	STR_NONE,								STR_NONE },									// Scenario select mode
 	{ WWT_DROPDOWN_BUTTON,	2,	288,	298,	285,		294,	STR_DROPDOWN_GLYPH,						STR_SCENARIO_GROUPING_TIP },
@@ -529,7 +528,8 @@ static uint64 window_options_page_enabled_widgets[] = {
 	(1 << WIDX_SELECT_BY_TRACK_TYPE) |
 	(1 << WIDX_SCENARIO_GROUPING) |
 	(1 << WIDX_SCENARIO_GROUPING_DROPDOWN) |
-	(1 << WIDX_SCENARIO_UNLOCKING),
+	(1 << WIDX_SCENARIO_UNLOCKING) |
+	(1 << WIDX_TOOLBAR_SHOW_MUTE),
 
 	MAIN_OPTIONS_ENABLED_WIDGETS |
 	(1 << WIDX_REAL_NAME_CHECKBOX) |
@@ -760,6 +760,12 @@ static void window_options_mouseup(rct_window *w, sint32 widgetIndex)
 			break;
 		case WIDX_TOOLBAR_SHOW_NEWS:
 			gConfigInterface.toolbar_show_news ^= 1;
+			config_save_default();
+			window_invalidate(w);
+			window_invalidate_by_class(WC_TOP_TOOLBAR);
+			break;
+		case WIDX_TOOLBAR_SHOW_MUTE:
+			gConfigInterface.toolbar_show_mute ^= 1;
 			config_save_default();
 			window_invalidate(w);
 			window_invalidate_by_class(WC_TOP_TOOLBAR);
@@ -1658,6 +1664,7 @@ static void window_options_invalidate(rct_window *w)
 		widget_set_checkbox_value(w, WIDX_TOOLBAR_SHOW_RESEARCH, gConfigInterface.toolbar_show_research);
 		widget_set_checkbox_value(w, WIDX_TOOLBAR_SHOW_CHEATS, gConfigInterface.toolbar_show_cheats);
 		widget_set_checkbox_value(w, WIDX_TOOLBAR_SHOW_NEWS, gConfigInterface.toolbar_show_news);
+		widget_set_checkbox_value(w, WIDX_TOOLBAR_SHOW_MUTE, gConfigInterface.toolbar_show_mute);
 		widget_set_checkbox_value(w, WIDX_SELECT_BY_TRACK_TYPE, gConfigInterface.select_by_track_type);
 		widget_set_checkbox_value(w, WIDX_SCENARIO_UNLOCKING, gConfigGeneral.scenario_unlocking_enabled);
 
@@ -1677,6 +1684,7 @@ static void window_options_invalidate(rct_window *w)
 		window_options_controls_and_interface_widgets[WIDX_TOOLBAR_SHOW_RESEARCH].type = WWT_CHECKBOX;
 		window_options_controls_and_interface_widgets[WIDX_TOOLBAR_SHOW_CHEATS].type = WWT_CHECKBOX;
 		window_options_controls_and_interface_widgets[WIDX_TOOLBAR_SHOW_NEWS].type = WWT_CHECKBOX;
+		window_options_controls_and_interface_widgets[WIDX_TOOLBAR_SHOW_MUTE].type = WWT_CHECKBOX;
 		window_options_controls_and_interface_widgets[WIDX_SELECT_BY_TRACK_TYPE].type = WWT_CHECKBOX;
 		window_options_controls_and_interface_widgets[WIDX_SCENARIO_GROUPING].type = WWT_DROPDOWN;
 		window_options_controls_and_interface_widgets[WIDX_SCENARIO_UNLOCKING].type = WWT_CHECKBOX;
