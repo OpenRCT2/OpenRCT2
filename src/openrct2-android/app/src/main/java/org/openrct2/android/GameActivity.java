@@ -16,9 +16,6 @@ public class GameActivity extends SDLActivity {
                 "png16",
                 "SDL2-2.0",
 
-                "freetype",
-                "SDL2_ttf",
-
                 "openrct2"
         };
     }
