@@ -3492,7 +3492,7 @@ STR_5150    :Enable debugging tools
 STR_5151    :,
 STR_5152    :.
 STR_5153    :Edit Themes...
-STR_5154    :Mute
+STR_5154    :Hardware display
 STR_5155    :Allow testing of unfinished tracks
 STR_5156    :{SMALLFONT}{BLACK}Allows testing of most ride types even when the track is unfinished, does not apply to block sectioned modes
 STR_5157    :Unlock all prices
@@ -4366,6 +4366,7 @@ STR_6054    :Only 24-bit bitmaps are supported
 STR_6055    :OpenRCT2 Heightmap File
 STR_6056    :{SMALLFONT}{BLACK}Mute
 STR_6057    :{SMALLFONT}{BLACK}Show a separate button for the Mute Option in the toolbar
+STR_6058    :Mute
 
 #############
 # Scenarios #
