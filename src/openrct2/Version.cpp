@@ -22,36 +22,6 @@
 #include OPENRCT2_BUILD_INFO_HEADER
 #endif
 
-#ifdef OPENRCT2_BUILD_NUMBER
-    const char gBuildNumber[] = OPENRCT2_BUILD_NUMBER;
-#else
-    const char gBuildNumber[] = "";
-#endif
-
-#ifdef OPENRCT2_BUILD_SERVER
-    const char gBuildServer[] = OPENRCT2_BUILD_SERVER;
-#else
-    const char gBuildServer[] = "";
-#endif
-
-#ifdef OPENRCT2_BRANCH
-    const char gGitBranch[] = OPENRCT2_BRANCH;
-#else
-    const char gGitBranch[] = "";
-#endif
-
-#ifdef OPENRCT2_COMMIT_SHA1
-    const char gCommitSha1[] = OPENRCT2_COMMIT_SHA1;
-#else
-    const char gCommitSha1[] = "";
-#endif
-
-#ifdef OPENRCT2_COMMIT_SHA1_SHORT
-    const char gCommitSha1Short[] = OPENRCT2_COMMIT_SHA1_SHORT;
-#else
-    const char gCommitSha1Short[] = "";
-#endif
-
 const char gVersionInfoFull[] =
     OPENRCT2_NAME ", v" OPENRCT2_VERSION
 #ifdef OPENRCT2_BRANCH
