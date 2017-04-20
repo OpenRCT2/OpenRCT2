@@ -720,7 +720,6 @@ static void window_top_toolbar_invalidate(rct_window *w)
 
 		if (!gConfigInterface.toolbar_show_news)
 			window_top_toolbar_widgets[WIDX_NEWS].type = WWT_EMPTY;
-		
 		if (!gConfigInterface.toolbar_show_mute)
 			window_top_toolbar_widgets[WIDX_MUTE].type = WWT_EMPTY;
 		switch (network_get_mode()) {
