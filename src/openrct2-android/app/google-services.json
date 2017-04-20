@@ -8,7 +8,7 @@
       "client_info": {
         "mobilesdk_app_id": "",
         "android_client_info": {
-          "package_name": "org.openrct2.android"
+          "package_name": "org.openrct2.debug"
         }
       },
       "oauth_client": [],
