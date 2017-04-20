@@ -127,5 +127,5 @@ add_library(openrct2 SHARED ${ORCT2_SOURCES})
 # add lib dependencies
 target_link_libraries(openrct2
                         android log dl GLESv1_CM GLESv2 z
-                        SDL2 png jansson speexdsp
+                        SDL2 SDL2main png jansson speexdsp
                       )
