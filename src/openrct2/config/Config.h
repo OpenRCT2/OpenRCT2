@@ -102,7 +102,7 @@ typedef struct InterfaceConfiguration
     bool        toolbar_show_research;
     bool        toolbar_show_cheats;
     bool        toolbar_show_news;
-	bool		toolbar_show_mute;
+    bool        toolbar_show_mute;
     bool        select_by_track_type;
     bool        console_small_font;
     utf8 *      current_theme_preset;

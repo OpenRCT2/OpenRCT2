@@ -274,7 +274,7 @@ namespace Config
             model->toolbar_show_research = reader->GetBoolean("toolbar_show_research", true);
             model->toolbar_show_cheats = reader->GetBoolean("toolbar_show_cheats", false);
             model->toolbar_show_news = reader->GetBoolean("toolbar_show_news", false);
-			model->toolbar_show_mute = reader->GetBoolean("toolbar_show_mute", false);
+            model->toolbar_show_mute = reader->GetBoolean("toolbar_show_mute", false);
             model->select_by_track_type = reader->GetBoolean("select_by_track_type", false);
             model->console_small_font = reader->GetBoolean("console_small_font", false);
             model->current_theme_preset = reader->GetCString("current_theme", "*RCT2");
@@ -291,7 +291,7 @@ namespace Config
         writer->WriteBoolean("toolbar_show_research", model->toolbar_show_research);
         writer->WriteBoolean("toolbar_show_cheats", model->toolbar_show_cheats);
         writer->WriteBoolean("toolbar_show_news", model->toolbar_show_news);
-		writer->WriteBoolean("toolbar_show_mute", model->toolbar_show_mute);
+        writer->WriteBoolean("toolbar_show_mute", model->toolbar_show_mute);
         writer->WriteBoolean("select_by_track_type", model->select_by_track_type);
         writer->WriteBoolean("console_small_font", model->console_small_font);
         writer->WriteString("current_theme", model->current_theme_preset);
