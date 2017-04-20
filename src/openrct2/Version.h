@@ -60,12 +60,6 @@
 extern "C"
 {
 #endif
-    // The following constants are for automated build servers
-    extern const char gBuildNumber[];
-    extern const char gBuildServer[];
-    extern const char gGitBranch[];
-    extern const char gCommitSha1[];
-    extern const char gCommitSha1Short[];
     extern const char gVersionInfoFull[];
 #ifdef __cplusplus
 }
