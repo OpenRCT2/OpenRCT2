@@ -365,12 +365,13 @@ static void window_top_toolbar_mouseup(rct_window *w, sint32 widgetIndex)
 		window_news_open();
 		break;
 	case WIDX_MUTE:
-		if(gGameSoundsOff)
-			audio_unpause_sounds();
-		else
-			audio_pause_sounds();
-		break;
-	}
+		gConfigSound.sound_enabled = !gConfigSound.sound_enabled;
+		gConfigSound.ride_music_enabled = !gConfigSound.ride_music_enabled;
+		if (!gConfigSound.ride_music_enabled) {
+			audio_stop_ride_music();
+		}
+		config_save_default();
+		break;	}
 }
 
 /**
@@ -720,8 +721,10 @@ static void window_top_toolbar_invalidate(rct_window *w)
 
 		if (!gConfigInterface.toolbar_show_news)
 			window_top_toolbar_widgets[WIDX_NEWS].type = WWT_EMPTY;
+		
 		if (!gConfigInterface.toolbar_show_mute)
 			window_top_toolbar_widgets[WIDX_MUTE].type = WWT_EMPTY;
+		
 		switch (network_get_mode()) {
 		case NETWORK_MODE_NONE:
 			window_top_toolbar_widgets[WIDX_NETWORK].type = WWT_EMPTY;
