@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Main msbuild project for OpenRCT2 -->
+<<<<<<< HEAD
 <!-- Inputs (/p: or environment variables)
        - OPENRCT2_BUILD_SERVER
        - GIT_TAG
@@ -194,6 +195,23 @@
   <Target Name="TestPaint" DependsOnTargets="Build" Condition="'$(Platform)'=='Win32'">
     <Exec Command="$(TargetDir)testpaint\openrct2.exe" />
   </Target>
+=======
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <!-- Import custom build tasks -->
+  <Import Project="openrct2.props" />
+
+  <!-- Import the C++ project for OpenRCT2 -->
+  <Import Project="openrct2.vcxproj" />
+>>>>>>> 8c00ad0... Create custom task for 7z
+
+  <PropertyGroup>
+    <RootDir>$(MsBuildThisFileDirectory)</RootDir>
+    <DistDir>$(RootDir)distribution\</DistDir>
+  </PropertyGroup>
+
+  <Target Name="install">
+    <Exec Command="powershell -ExecutionPolicy Unrestricted -File scripts\ps\install.ps1 -q" />
+  </Target>
 
   <!-- Target to build g2.dat containing OpenRCT2 sprites -->
   <Target Name="g2" DependsOnTargets="Build" AfterTargets="Build" Inputs="@(g2Inputs)" Outputs="$(g2Output)"
@@ -307,4 +325,47 @@
           CustomErrorRegularExpression="&quot;error&quot;:1" />
   </Target>
 
+<<<<<<< HEAD
+=======
+  <!-- Target to publish OpenRCT2 as a portable zip -->
+  <Target Name="publish" DependsOnTargets="Build;g2">
+    <PropertyGroup>
+      <ArtifactsDir>$(RootDir)artifacts\</ArtifactsDir>
+      <TempDir>$(ArtifactsDir)temp</TempDir>
+      <OutZip>$(ArtifactsDir)openrct2.zip</OutZip>
+    </PropertyGroup>
+    <ItemGroup>
+      <PublishItems Include="$(TargetDir)data\**\*" />
+      <PublishItems Include="$(TargetDir)openrct2.exe" />
+      <PublishItems Include="$(TargetDir)openrct2.dll" />
+      <PublishItems Include="$(TargetDir)curl-ca-bundle.crt" />
+      <PublishItems Include="$(DistDir)changelog.txt" />
+      <PublishItems Include="$(DistDir)known_issues.txt" />
+      <PublishItems Include="$(DistDir)readme.txt" />
+      <PublishItems Include="$(RootDir)contributors.md" />
+      <PublishItems Include="$(RootDir)licence.txt" />
+    </ItemGroup>
+
+    <!-- Clean -->
+    <RemoveDir Directories="$(ArtifactsDir)" />
+    <RemoveDir Directories="$(TempDir)" />
+
+    <!-- Copy publish files -->
+    <Message Importance="high" Text="Copying publish files..." />
+    <MakeDir Directories="$(ArtifactsDir)" />
+    <MakeDir Directories="$(TempDir)" />
+    <Copy SourceFiles="@(PublishItems)" DestinationFolder="$(TempDir)\%(RecursiveDir)" />
+
+    <!-- Create zip -->
+    <Message Importance="high" Text="Creating openrct2.zip..." />
+    <_7z Output="$(OutZip)" Inputs="$(TempDir)\*" />
+
+    <!-- Delete the temporary directory -->
+    <RemoveDir Directories="$(TempDir)" />
+  </Target>
+<<<<<<< HEAD
+
+>>>>>>> 5cb50f6... Add install and publish targets to msbuild project
+=======
+>>>>>>> 8c00ad0... Create custom task for 7z
 </Project>
