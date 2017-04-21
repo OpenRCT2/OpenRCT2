@@ -484,7 +484,7 @@ static sint32 cc_rides(const utf8 **argv, sint32 argc)
 				}
 			}
 			else if (strcmp(argv[1], "mode") == 0) {
-				bool int_valid[3] = { 0 };
+				bool int_valid[2] = { 0 };
 				sint32 ride_index = console_parse_int(argv[2], &int_valid[0]);
 				sint32 mode = console_parse_int(argv[3], &int_valid[1]);
 				if (!int_valid[0] || !int_valid[1]) {
@@ -493,10 +493,10 @@ static sint32 cc_rides(const utf8 **argv, sint32 argc)
 					console_printf("Ride index must not be negative");
 				} else {
 					rct_ride *ride = get_ride(ride_index);
-					if (mode <= 0) {
-						console_printf("Ride mode must be strictly positive");
+					if (mode <= 0 || mode > RIDE_MODE_COUNT) {
+						console_printf("Invalid ride mode.");
 					}
-					else if (ride->type == RIDE_TYPE_NULL) {
+					else if (ride == NULL || ride->type == RIDE_TYPE_NULL) {
 						console_printf("No ride found with index %d", ride_index);
 					}
 					else {

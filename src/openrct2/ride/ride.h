@@ -902,6 +902,8 @@ extern const rct_ride_properties RideProperties[RIDE_TYPE_COUNT];
 
 #define MAX_RIDES 255
 
+#define RIDE_MODE_COUNT 36
+
 #define MAX_RIDE_MEASUREMENTS 8
 #define RIDE_VALUE_UNDEFINED 0xFFFF
 #define RIDE_INITIAL_RELIABILITY ((100 << 8) - 1)
