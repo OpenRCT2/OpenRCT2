@@ -365,12 +365,7 @@ static void window_top_toolbar_mouseup(rct_window *w, sint32 widgetIndex)
 		window_news_open();
 		break;
 	case WIDX_MUTE:
-		gConfigSound.sound_enabled = !gConfigSound.sound_enabled;
-		gConfigSound.ride_music_enabled = !gConfigSound.ride_music_enabled;
-		if (!gConfigSound.ride_music_enabled) {
-			audio_stop_ride_music();
-		}
-		config_save_default();
+		audio_toggle_all_sounds();
 		break;
 	}
 }
@@ -795,6 +790,11 @@ static void window_top_toolbar_invalidate(rct_window *w)
 		w->pressed_widgets |= (1 << WIDX_PAUSE);
 	else
 		w->pressed_widgets &= ~(1 << WIDX_PAUSE);
+
+	if (!gConfigSound.sound_enabled)
+		w->pressed_widgets |= (1 << WIDX_MUTE);
+	else
+		w->pressed_widgets &= ~(1 << WIDX_MUTE);
 
 	// Zoomed out/in disable. Not sure where this code is in the original.
 	if (window_get_main()->viewport->zoom == 0){
