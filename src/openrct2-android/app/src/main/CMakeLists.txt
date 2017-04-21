@@ -36,7 +36,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DDEBUG=${DEBUG_LEVEL}")
 
 include(ExternalProject)
 ExternalProject_Add(libs
-    URL https://github.com/marijnvdwerf/openrct2-dependencies-android/releases/download/v0.4/openrct2-libs-android-${ANDROID_ABI}.zip
+    URL https://github.com/marijnvdwerf/openrct2-dependencies-android/releases/download/v0.6/openrct2-libs-android-${ANDROID_ABI}.zip
 
     SOURCE_DIR "${CMAKE_BINARY_DIR}/libs"
 
