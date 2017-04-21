@@ -468,7 +468,7 @@ static sint32 cc_rides(const utf8 **argv, sint32 argc)
 				return 0;
 			}
 			if (strcmp(argv[1], "type") == 0) {
-				bool int_valid[3] = { 0 };
+				bool int_valid[2] = { 0 };
 				sint32 ride_index = console_parse_int(argv[2], &int_valid[0]);
 				sint32 type = console_parse_int(argv[3], &int_valid[1]);
 				if (!int_valid[0] || !int_valid[1]) {
