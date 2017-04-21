@@ -4347,6 +4347,9 @@ STR_6035    :Veuillez choisir votre installation de RCT1
 STR_6036    :{SMALLFONT}{BLACK}Vider
 STR_6037    :Veuillez choisir une installation valide de RCT1
 STR_6038    :{SMALLFONT}{BLACK}Si vous avez une installation de RCT1, définissez cette option pour pouvoir charger les scénarios, musiques...
+STR_6039    :{SMALLFONT}{BLACK}Démolir le manège rapidement.
+STR_6040    :Modifier les options de scénario. 
+STR_6041    :{BLACK}Pas de mécanicien à embaucher !
 
 #############
 # Scenarios #

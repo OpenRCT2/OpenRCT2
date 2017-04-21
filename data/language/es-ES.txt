@@ -4306,6 +4306,9 @@ STR_6035    :Por favor selecciona la carpeta de RCT1
 STR_6036    :{SMALLFONT}{BLACK}Borrar
 STR_6037    :Por favor selecciona una carpeta válida con una instalación de RCT1
 STR_6038    :{SMALLFONT}{BLACK}Si tienes una instalación de RCT1, establece esta opción hacia la carpeta de la instalación para cargar los escenarios, música, etc.
+STR_6039    :{SMALLFONT}{BLACK}Demoler atracción rápidamente
+STR_6040    :Editar Opciones de Escenario
+STR_6041    :{BLACK}¡No hay mecánicos contratados!
 
 ##############
 # Escenarios #

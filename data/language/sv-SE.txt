@@ -4338,6 +4338,10 @@ STR_6030    :{SMALLFONT}{BLACK}Dekorations-väljaren. Klicka på en dekoration p
 STR_6031    :Server Beskrivning:
 STR_6032    :Server Hälsning:
 
+STR_6039    :{SMALLFONT}{BLACK}Demolera attraktioner snabbt
+STR_6040    :Redigera scenario inställningar
+STR_6041    :{BLACK}Inga mekaniker är anställda! 
+
 #############
 # Scenarion #
 ################

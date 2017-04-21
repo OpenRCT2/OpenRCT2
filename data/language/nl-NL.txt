@@ -4339,6 +4339,9 @@ STR_6035    :Selecteer de map waar je RCT1-bestanden staan
 STR_6036    :{SMALLFONT}{BLACK}Wissen
 STR_6037    :Selecteer een geldige RCT1-map.
 STR_6038    :{SMALLFONT}{BLACK}Als je RCT1 hebt, stel dan hier het pad in om gebruik te maken van de scenario's, baanontwerpen en graphics.
+STR_6039    :{SMALLFONT}{BLACK}Snel afbreken
+STR_6040    :Scenario-opties bewerken
+STR_6041    :{BLACK}Er zijn geen monteurs ingehuurd! 
 
 #############
 # Scenarios #

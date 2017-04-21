@@ -4344,6 +4344,9 @@ STR_6035    :RCT1이 설치된 폴더를 선택하세요
 STR_6036    :{SMALLFONT}{BLACK}초기화
 STR_6037    :RCT1이 설치된 폴더를 올바르게 선택해주세요
 STR_6038    :{SMALLFONT}{BLACK}RCT1을 설치했다면, 이 설정을 이용해서 시나리오나 음악 등을 불러오기 위해 RCT1이 설치된 폴더를 지정하세요.
+STR_6039    :{SMALLFONT}{BLACK}빠른 놀이기구 파괴
+STR_6040    :시나리오 설정 편집
+STR_6041    :{BLACK}고용된 정비기술자가 없습니다!
 
 #############
 # Scenarios #
