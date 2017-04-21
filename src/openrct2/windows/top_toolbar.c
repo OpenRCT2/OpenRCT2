@@ -365,12 +365,14 @@ static void window_top_toolbar_mouseup(rct_window *w, sint32 widgetIndex)
 		window_news_open();
 		break;
 	case WIDX_MUTE:
-		if(gGameSoundsOff)
-			audio_unpause_sounds();
-		else
-			audio_pause_sounds();
-		break;
+		gConfigSound.sound_enabled = !gConfigSound.sound_enabled;
+		gConfigSound.ride_music_enabled = !gConfigSound.ride_music_enabled;
+		if (!gConfigSound.ride_music_enabled) {
+			audio_stop_ride_music();
 		}
+		config_save_default();
+		break;
+	}
 }
 
 /**
