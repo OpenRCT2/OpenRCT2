@@ -1434,6 +1434,8 @@ void title_handle_keyboard_input()
 			}
 		}
 	}
+
+	gNumKeysPressed = 0;
 }
 
 /**
@@ -1497,6 +1499,8 @@ void game_handle_keyboard_input()
 			keyboard_shortcut_handle(key);
 		}
 	}
+
+	gNumKeysPressed = 0;
 }
 
 /**

@@ -303,7 +303,6 @@ void platform_process_messages()
 
 	keypress key = KEYBOARD_KEYPRESS_UNDEFINED;
 	gLastKeyPressed = key;
-	gNumKeysPressed = 0;
 
 	int mod_held_idx;
 
@@ -659,6 +658,7 @@ void platform_init()
 {
 	platform_create_window();
 	gKeysPressed = calloc(sizeof(keypress), KEYBOARD_KEYPRESSES_PER_UPDATE);
+	gNumKeysPressed = 0;
 
 	// Set the highest palette entry to white.
 	// This fixes a bug with the TT:rainbow road due to the
