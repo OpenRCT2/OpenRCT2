@@ -69,7 +69,7 @@ namespace Imaging
             png_set_sig_bytes(png_ptr, sig_read);
 
             // To simplify the reading process, convert 4-16 bit data to 24-32 bit data
-            png_read_png(png_ptr, info_ptr, PNG_TRANSFORM_STRIP_16 | PNG_TRANSFORM_PACKING | PNG_TRANSFORM_EXPAND, nullptr);
+            png_read_png(png_ptr, info_ptr, PNG_TRANSFORM_STRIP_16 | PNG_TRANSFORM_PACKING | PNG_TRANSFORM_EXPAND | PNG_TRANSFORM_GRAY_TO_RGB, nullptr);
 
             // Read header
             png_uint_32 pngWidth, pngHeight;
