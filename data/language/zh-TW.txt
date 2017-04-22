@@ -2749,7 +2749,7 @@ STR_2739    :無
 STR_2740    :夢幻遊樂園 (RCT1)
 STR_2741    :模擬樂園 (RCT2)
 STR_2742    :找不到css50.dat
-STR_2743    :請複製夢幻遊樂園(RCT1)文件夾中的'data\css17.dat'到模擬樂園(RCT2)的文件夾, 並重新命名為'data\css50.dat'.
+STR_2743    :請複製夢幻遊樂園(RCT1)文件夾中的'data\css17.dat'到模擬樂園(RCT2)的文件夾, 並重新命名為'data\css50.dat', 又或者請檢查"其他"選項中夢幻遊樂園(RCT1)的安裝路徑是否正確.
 STR_2744    :[
 STR_2745    :\
 STR_2746    :]
@@ -4145,7 +4145,7 @@ STR_5832    :{SMALLFONT}{BLACK}將高度的單位顯示為一個通用單位, �
 STR_5833    :{SMALLFONT}{BLACK}改變日期格式
 STR_5834    :{SMALLFONT}{BLACK}選擇OpenRCT2會使用的音效設備
 STR_5835    :{SMALLFONT}{BLACK}當焦點失去時靜音
-STR_5836    :{SMALLFONT}{BLACK}選擇主選單音樂.選擇夢幻遊樂園(RCT1)的主選單音樂{NEWLINE}需要複製夢幻遊樂園(RCT1)文件夾中的'data\css17.dat'到模擬樂園(RCT2)的文件夾, 並重新命名為'data\css50.dat'.
+STR_5836    :{SMALLFONT}{BLACK}選擇主選單音樂.選擇夢幻遊樂園(RCT1)的主選單音樂{NEWLINE}需要複製夢幻遊樂園(RCT1)文件夾中的'data\css17.dat'到模擬樂園(RCT2)的文件夾, 並重新命名為'data\css50.dat', 又或者於"其他"設置中設置夢幻遊樂園(RCT1)的安裝路徑.
 STR_5837    :{SMALLFONT}{BLACK}建立或管理自訂的介面主題
 STR_5838    :{SMALLFONT}{BLACK}在工具列上顯示單獨的財政按鈕
 STR_5839    :{SMALLFONT}{BLACK}在工具列上顯示單獨的研發按鈕
@@ -4342,6 +4342,15 @@ STR_6029    :建造遊樂設施 - 移除當前選定的軌道
 STR_6030    :{SMALLFONT}{BLACK}景物選取器. 點撃選取地圖上的景物來建造相同的景物.
 STR_6031    :伺服器描述:
 STR_6032    :伺服器歡迎訊息:
+STR_6033    :夢幻遊樂園(RCT1)安裝路徑:
+STR_6034    :{SMALLFONT}{BLACK}{STRING}
+STR_6035    :請選擇已安裝夢幻遊樂園(RCT1)的文件夾
+STR_6036    :{SMALLFONT}{BLACK}清除
+STR_6037    :請選擇一個正確的夢幻遊樂園(RCT1)文件夾
+STR_6038    :{SMALLFONT}{BLACK}如果你已安裝夢幻遊樂園(RCT1), 請於此選項設置它的安裝路徑, 以便載入劇情, 音樂等物件.
+STR_6039    :{SMALLFONT}{BLACK}快速拆除遊樂設施
+STR_6040    :編輯劇情選項
+STR_6041    :{BLACK}沒有僱用任何的維修人員!
 
 #############
 # Scenarios #
@@ -4614,7 +4623,7 @@ STR_DTLS    :一個大型的賞花公園需要改造為一個壯大的主題樂�
 <Iceberg Islands>
 STR_SCNR    :Iceberg Islands
 STR_PARK    :Iceberg Islands
-STR_DTLS    :A collection of icebergs make a cold setting for this ambitious theme park
+STR_DTLS    :一些冰川為此雄心勃勃的主題樂園帶來了一絲寒意
 
 <Volcania>
 STR_SCNR    :Volcania
@@ -4624,7 +4633,7 @@ STR_DTLS    :此建造雲霄飛車挑戰設定於一座沉睡火山之中
 <Arid Heights>
 STR_SCNR    :Arid Heights
 STR_PARK    :Arid Heights
-STR_DTLS    :Free of any financial limits, your challenge is to develop this desert park while keeping the guests happy
+STR_DTLS    :沒有任何財政上的限制, 你的挑戰是要發展這個沙漠中的樂園並讓遊客樂而忘返
 
 <Razor Rocks>
 STR_SCNR    :Razor Rocks
