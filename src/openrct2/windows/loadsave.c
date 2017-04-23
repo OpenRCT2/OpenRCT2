@@ -732,85 +732,86 @@ static void window_loadsave_select(rct_window *w, const char *path)
 		return;
 	}
 
+	char pathBuffer[MAX_PATH];
+	safe_strcpy(pathBuffer, path, sizeof(pathBuffer));
+
 	switch (_type & 0x0F) {
 	case (LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME) :
-		save_path(&gConfigGeneral.last_save_game_directory, path);
-		safe_strcpy(gScenarioSavePath, path, MAX_PATH);
-		window_loadsave_invoke_callback(MODAL_RESULT_OK, path);
+		save_path(&gConfigGeneral.last_save_game_directory, pathBuffer);
+		safe_strcpy(gScenarioSavePath, pathBuffer, MAX_PATH);
+		window_loadsave_invoke_callback(MODAL_RESULT_OK, pathBuffer);
 		window_close(w);
 		gfx_invalidate_screen();
 		break;
 	case (LOADSAVETYPE_SAVE | LOADSAVETYPE_GAME) :
-		save_path(&gConfigGeneral.last_save_game_directory, path);
-		if (scenario_save(path, gConfigGeneral.save_plugin_data ? 1 : 0)) {
-			safe_strcpy(gScenarioSavePath, path, MAX_PATH);
+		save_path(&gConfigGeneral.last_save_game_directory, pathBuffer);
+		if (scenario_save(pathBuffer, gConfigGeneral.save_plugin_data ? 1 : 0)) {
+			safe_strcpy(gScenarioSavePath, pathBuffer, MAX_PATH);
 			gFirstTimeSave = 0;
 
 			window_close_by_class(WC_LOADSAVE);
 			gfx_invalidate_screen();
 
-			window_loadsave_invoke_callback(MODAL_RESULT_OK, path);
+			window_loadsave_invoke_callback(MODAL_RESULT_OK, pathBuffer);
 		} else {
 			window_error_open(STR_SAVE_GAME, STR_GAME_SAVE_FAILED);
-			window_loadsave_invoke_callback(MODAL_RESULT_FAIL, path);
+			window_loadsave_invoke_callback(MODAL_RESULT_FAIL, pathBuffer);
 		}
 		break;
 	case (LOADSAVETYPE_LOAD | LOADSAVETYPE_LANDSCAPE) :
-		save_path(&gConfigGeneral.last_save_landscape_directory, path);
-		if (editor_load_landscape(path)) {
+		save_path(&gConfigGeneral.last_save_landscape_directory, pathBuffer);
+		if (editor_load_landscape(pathBuffer)) {
 			gfx_invalidate_screen();
-			window_loadsave_invoke_callback(MODAL_RESULT_OK, path);
+			window_loadsave_invoke_callback(MODAL_RESULT_OK, pathBuffer);
 		} else {
 			// Not the best message...
 			window_error_open(STR_LOAD_LANDSCAPE, STR_FAILED_TO_LOAD_FILE_CONTAINS_INVALID_DATA);
-			window_loadsave_invoke_callback(MODAL_RESULT_FAIL, path);
+			window_loadsave_invoke_callback(MODAL_RESULT_FAIL, pathBuffer);
 		}
 		break;
 	case (LOADSAVETYPE_SAVE | LOADSAVETYPE_LANDSCAPE) :
-		save_path(&gConfigGeneral.last_save_landscape_directory, path);
-		scenario_set_filename(path);
-		if (scenario_save(path, gConfigGeneral.save_plugin_data ? 3 : 2)) {
+		save_path(&gConfigGeneral.last_save_landscape_directory, pathBuffer);
+		scenario_set_filename(pathBuffer);
+		if (scenario_save(pathBuffer, gConfigGeneral.save_plugin_data ? 3 : 2)) {
 			window_close_by_class(WC_LOADSAVE);
 			gfx_invalidate_screen();
-			window_loadsave_invoke_callback(MODAL_RESULT_OK, path);
+			window_loadsave_invoke_callback(MODAL_RESULT_OK, pathBuffer);
 		} else {
 			window_error_open(STR_SAVE_LANDSCAPE, STR_LANDSCAPE_SAVE_FAILED);
-			window_loadsave_invoke_callback(MODAL_RESULT_FAIL, path);
+			window_loadsave_invoke_callback(MODAL_RESULT_FAIL, pathBuffer);
 		}
 		break;
 	case (LOADSAVETYPE_SAVE | LOADSAVETYPE_SCENARIO) :
 	{
-		save_path(&gConfigGeneral.last_save_scenario_directory, path);
+		save_path(&gConfigGeneral.last_save_scenario_directory, pathBuffer);
 		sint32 parkFlagsBackup = gParkFlags;
 		gParkFlags &= ~PARK_FLAGS_SPRITES_INITIALISED;
 		gS6Info.editor_step = 255;
-		scenario_set_filename(path);
-		sint32 success = scenario_save(path, gConfigGeneral.save_plugin_data ? 3 : 2);
+		scenario_set_filename(pathBuffer);
+		sint32 success = scenario_save(pathBuffer, gConfigGeneral.save_plugin_data ? 3 : 2);
 		gParkFlags = parkFlagsBackup;
 
 		if (success) {
 			window_close_by_class(WC_LOADSAVE);
-			window_loadsave_invoke_callback(MODAL_RESULT_OK, path);
+			window_loadsave_invoke_callback(MODAL_RESULT_OK, pathBuffer);
 			title_load();
 		} else {
 			window_error_open(STR_FILE_DIALOG_TITLE_SAVE_SCENARIO, STR_SCENARIO_SAVE_FAILED);
 			gS6Info.editor_step = EDITOR_STEP_OBJECTIVE_SELECTION;
-			window_loadsave_invoke_callback(MODAL_RESULT_FAIL, path);
+			window_loadsave_invoke_callback(MODAL_RESULT_FAIL, pathBuffer);
 		}
 		break;
 	}
 	case (LOADSAVETYPE_LOAD | LOADSAVETYPE_TRACK) :
-		save_path(&gConfigGeneral.last_save_track_directory, path);
-		window_install_track_open(path);
+		save_path(&gConfigGeneral.last_save_track_directory, pathBuffer);
+		window_install_track_open(pathBuffer);
 		window_close_by_class(WC_LOADSAVE);
-		window_loadsave_invoke_callback(MODAL_RESULT_OK, path);
+		window_loadsave_invoke_callback(MODAL_RESULT_OK, pathBuffer);
 		break;
 	case (LOADSAVETYPE_SAVE | LOADSAVETYPE_TRACK) :
 	{
-		char p[MAX_PATH];
-		safe_strcpy(p, path, sizeof(p));
-		path_set_extension(p, "td6", sizeof(p));
-		sint32 success = track_design_save_to_file(p);
+		path_set_extension(pathBuffer, "td6", sizeof(pathBuffer));
+		sint32 success = track_design_save_to_file(pathBuffer);
 
 		if (success) {
 			window_close_by_class(WC_LOADSAVE);
@@ -820,10 +821,11 @@ static void window_loadsave_select(rct_window *w, const char *path)
 			window_error_open(STR_FILE_DIALOG_TITLE_SAVE_TRACK, STR_TRACK_SAVE_FAILED);
 			window_loadsave_invoke_callback(MODAL_RESULT_FAIL, path);
 		}
+		break;
 	}
-	case (LOADSAVETYPE_LOAD | LOADSAVETYPE_IMAGE):
+	case (LOADSAVETYPE_LOAD | LOADSAVETYPE_IMAGE) :
 		window_close_by_class(WC_LOADSAVE);
-		window_loadsave_invoke_callback(MODAL_RESULT_OK, path);
+		window_loadsave_invoke_callback(MODAL_RESULT_OK, pathBuffer);
 		break;
 	}
 }
