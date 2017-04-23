@@ -459,12 +459,53 @@ static sint32 cc_rides(const utf8 **argv, sint32 argc)
 			}
 		} else if (strcmp(argv[0], "set") == 0) {
 			if (argc < 4) {
-				console_printf("rides set type <ride id> <ride type>");
-				console_printf("rides set mode <ride id> <operating mode>");
-				console_printf("rides set friction <ride id> <friction value>");
-				console_printf("rides set excitement <ride id> <excitement value>");
-				console_printf("rides set intensity <ride id> <intensity value>");
-				console_printf("rides set nausea <ride id> <nausea value>");
+				if (argc > 1 && strcmp(argv[1], "mode") == 0){
+					console_printf("Ride modes are specified using integer IDs, as listed below:");
+					console_printf("00 - Normal mode");
+					console_printf("01 - Continuous circuit mode");
+					console_printf("02 - Reverse-incline launched shuttle mode");
+					console_printf("03 - Powered launch (passing station) mode");
+					console_printf("04 - Shuttle mode");
+					console_printf("05 - Boat hire mode");
+					console_printf("06 - Upward launch mode");
+					console_printf("07 - Rotating lift mode");
+					console_printf("08 - Station to station mode");
+					console_printf("09 - Single ride per admission");
+					console_printf("10 - Unlimited rides per admission");
+					console_printf("11 - Maze mode");
+					console_printf("12 - Race mode");
+					console_printf("13 - Bumper car mode");
+					console_printf("14 - Swing mode");
+					console_printf("15 - Shop/stall mode");
+					console_printf("16 - Rotation mode");
+					console_printf("17 - Forward rotation mode");
+					console_printf("18 - Backward rotation mode");
+					console_printf("19 - Film: 'Avenging Aviators'");
+					console_printf("20 - 3D Film: 'Mouse Tails'");
+					console_printf("21 - Space Rings mode");
+					console_printf("22 - Beginner mode");
+					console_printf("23 - LIM-powered launch mode");
+					console_printf("24 - Film: 'Thrill Riders'");
+					console_printf("25 - 3D Film: 'Storm Chasers'");
+					console_printf("26 - 3D Film: 'Space Raiders'");
+					console_printf("27 - Intense mode");
+					console_printf("28 - Berserk mode");
+					console_printf("29 - Haunted House mode");
+					console_printf("30 - Circus show mode");
+					console_printf("31 - Downward launch mode");
+					console_printf("32 - Crooked House mode");
+					console_printf("33 - Freefall drop mode");
+					console_printf("34 - Continuous circuit block sectioned mode");
+					console_printf("35 - Powered launch mode");
+					console_printf("36 - Powered launch block sectioned mode");
+				} else {
+					console_printf("rides set type <ride id> <ride type>");
+					console_printf("rides set mode [<ride id> <operating mode>]");
+					console_printf("rides set friction <ride id> <friction value>");
+					console_printf("rides set excitement <ride id> <excitement value>");
+					console_printf("rides set intensity <ride id> <intensity value>");
+					console_printf("rides set nausea <ride id> <nausea value>");
+				}
 				return 0;
 			}
 			if (strcmp(argv[1], "type") == 0) {
