@@ -3712,6 +3712,7 @@ enum {
 	STR_ERROR_WIDTH_AND_HEIGHT_DO_NOT_MATCH = 6051,
 	STR_ERROR_HEIHGT_MAP_TOO_BIG = 6052,
 	STR_ERROR_CANNOT_NORMALIZE = 6053,
+	STR_ERROR_24_BIT_BITMAP = 6054,
 
 	// Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
 	STR_COUNT = 32768

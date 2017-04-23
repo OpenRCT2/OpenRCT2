@@ -816,6 +816,13 @@ bool mapgen_load_heightmap(const utf8 *path)
 		numChannels = bitmap->format->BytesPerPixel;
 		pitch = bitmap->pitch;
 
+		if (numChannels < 3 || bitmap->format->BitsPerPixel < 24)
+		{
+			window_error_open(STR_HEIGHT_MAP_ERROR, STR_ERROR_24_BIT_BITMAP);
+			SDL_FreeSurface(bitmap);
+			return false;
+		}
+
 		// Copy pixels over, then discard the surface
 		SDL_LockSurface(bitmap);
 		pixels = malloc(height * bitmap->pitch);
