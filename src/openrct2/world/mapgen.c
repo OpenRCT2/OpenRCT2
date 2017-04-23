@@ -897,7 +897,7 @@ static void mapgen_smooth_heightmap(uint8 *src, sint32 strength)
 			{
 				uint32 heightSum = 0;
 
-				// Loop over neightbour pixels, all of them have the same weight
+				// Loop over neighbour pixels, all of them have the same weight
 				for (sint8 offsetX = -1; offsetX <= 1; offsetX++)
 				{
 					for (sint8 offsetY = -1; offsetY <= 1; offsetY++)
