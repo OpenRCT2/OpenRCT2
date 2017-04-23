@@ -1367,114 +1367,114 @@ STR_1361    :Kan ikke endre hastighet...
 STR_1362    :Kan ikke endre utskytningshastighet...
 STR_1363    :For høyt for støttestrukturer!
 STR_1364    :Støttestrukturer for bane kan ikke forlenges!
-STR_1365    :In-line Twist (venstre)
-STR_1366    :In-line Twist (høyre)
-STR_1367    :Half Loop
-STR_1368    :Half Corkscrew (venstre)
-STR_1369    :Half Corkscrew (høyre)
-STR_1370    :Barrel Roll (venstre)
-STR_1371    :Barrel Roll (høyre)
-STR_1372    :Launched Lift Hill
-STR_1373    :Large Half Loop (venstre)
-STR_1374    :Large Half Loop (høyre)
-STR_1375    :Upper Transfer
-STR_1376    :Lower Transfer
-STR_1377    :Heartline Roll (venstre)
-STR_1378    :Heartline Roll (høyre)
-STR_1379    :Reverser (venstre)
-STR_1380    :Reverser (høyre)
-STR_1381    :Curved Lift Hill (venstre)
-STR_1382    :Curved Lift Hill (høyre)
-STR_1383    :Quarter Loop
+STR_1365    :Tvist (venstre)
+STR_1366    :Tvist (høyre)
+STR_1367    :Halvloop
+STR_1368    :Halv korkskrue (venstre)
+STR_1369    :Halv korkskrue (høyre)
+STR_1370    :Barrel roll (venstre)
+STR_1371    :Barrel roll (høyre)
+STR_1372    :Utskytningstrekk
+STR_1373    :Stor halvloop (venstre)
+STR_1374    :Stor halvloop (høyre)
+STR_1375    :Øvre viderekobling
+STR_1376    :Nedre viderekobling
+STR_1377    :Nøytral rull(venstre)
+STR_1378    :Nøytral rull(høyre)
+STR_1379    :Omvender (venstre)
+STR_1380    :Omvender (høyre)
+STR_1381    :Kurvetrekk (venstre)
+STR_1382    :Kurvetrekk (høyre)
+STR_1383    :Kvartloop
 STR_1384    :{YELLOW}{STRINGID}
-STR_1385    :{SMALLFONT}{BLACK}Other track configurations
-STR_1386    :Special...
-STR_1387    :Can't change land type...
+STR_1385    :{SMALLFONT}{BLACK}Andre banekonfigurasjoner
+STR_1386    :Spesial...
+STR_1387    :Kan ikke endre landtype...
 STR_1388    :{OUTLINE}{GREEN}+ {CURRENCY}
 STR_1389    :{OUTLINE}{RED}- {CURRENCY}
 STR_1390    :{CURRENCY2DP}
 STR_1391    :{RED}{CURRENCY2DP}
-STR_1392    :{SMALLFONT}{BLACK}View of ride/attraction
-STR_1393    :{SMALLFONT}{BLACK}Vehicle details and options
-STR_1394    :{SMALLFONT}{BLACK}Operating options
-STR_1395    :{SMALLFONT}{BLACK}Maintenance options
-STR_1396    :{SMALLFONT}{BLACK}Colour scheme options
-STR_1397    :{SMALLFONT}{BLACK}Sound & music options
-STR_1398    :{SMALLFONT}{BLACK}Measurements and test data
-STR_1399    :{SMALLFONT}{BLACK}Graphs
-STR_1400    :Entrance
-STR_1401    :Exit
-STR_1402    :{SMALLFONT}{BLACK}Build or move entrance to ride/attraction
-STR_1403    :{SMALLFONT}{BLACK}Build or move exit from ride/attraction
-STR_1404    :{SMALLFONT}{BLACK}Rotate 90{DEGREE}
-STR_1405    :{SMALLFONT}{BLACK}Mirror image
-STR_1406    :{SMALLFONT}{BLACK}Toggle scenery on/off (if available for this design)
-STR_1407    :{WINDOW_COLOUR_2}Build this...
-STR_1408    :{WINDOW_COLOUR_2}Cost: {BLACK}{CURRENCY}
-STR_1409    :Entry/Exit Platform
-STR_1410    :Vertical Tower
-STR_1411    :{STRINGID} in the way
-STR_1412    :{WINDOW_COLOUR_3}Data logging not available for this type of ride
-STR_1413    :{WINDOW_COLOUR_3}Data logging will start when next {STRINGID} leaves {STRINGID}
+STR_1392    :{SMALLFONT}{BLACK}Attraksjonskamera
+STR_1393    :{SMALLFONT}{BLACK}Vogndetaljer og -innstillinger
+STR_1394    :{SMALLFONT}{BLACK}Operasjonsinnstillinger
+STR_1395    :{SMALLFONT}{BLACK}Vedlikeholdsinnstillinger
+STR_1396    :{SMALLFONT}{BLACK}Fargeinnstillinger
+STR_1397    :{SMALLFONT}{BLACK}Lyd- og musikkinnstillinger
+STR_1398    :{SMALLFONT}{BLACK}Målinger og testdata
+STR_1399    :{SMALLFONT}{BLACK}Grafer
+STR_1400    :Inngang
+STR_1401    :Utgang
+STR_1402    :{SMALLFONT}{BLACK}Bygg eller flytt attraksjonsinngang
+STR_1403    :{SMALLFONT}{BLACK}Bygg eller flytt attraksjonsutgang
+STR_1404    :{SMALLFONT}{BLACK}Roter 90{DEGREE}
+STR_1405    :{SMALLFONT}{BLACK}Speilbilde
+STR_1406    :{SMALLFONT}{BLACK}Vis/skjul pynt (hvis gyldig for dette designet)
+STR_1407    :{WINDOW_COLOUR_2}Bygg dette...
+STR_1408    :{WINDOW_COLOUR_2}Kost: {BLACK}{CURRENCY}
+STR_1409    :Inngangs-/utgangsplatform
+STR_1410    :Vertikalt tårn
+STR_1411    :{STRINGID} i veien
+STR_1412    :{WINDOW_COLOUR_3}Datalogger ikke tilgjengelig for denne typen attraksjon
+STR_1413    :{WINDOW_COLOUR_3}Datalogging vil starte når neste {STRINGID} forlater {STRINGID}
 STR_1414    :{SMALLFONT}{BLACK}{DURATION}
-STR_1415    :{WINDOW_COLOUR_2}Velocity
-STR_1416    :{WINDOW_COLOUR_2}Altitude
+STR_1415    :{WINDOW_COLOUR_2}Fart
+STR_1416    :{WINDOW_COLOUR_2}Høyde
 STR_1417    :{WINDOW_COLOUR_2}Vert.G's
 STR_1418    :{WINDOW_COLOUR_2}Lat.G's
 STR_1419    :{SMALLFONT}{BLACK}{VELOCITY}
 STR_1420    :{SMALLFONT}{BLACK}{LENGTH}
 STR_1421    :{SMALLFONT}{BLACK}{COMMA16}g
-STR_1422    :{SMALLFONT}{BLACK}Logging data from {POP16}{STRINGID}
-STR_1423    :{SMALLFONT}{BLACK}Queue line path
-STR_1424    :{SMALLFONT}{BLACK}Footpath
-STR_1425    :Footpath
-STR_1426    :Queue Line
-STR_1427    :{WINDOW_COLOUR_2}Customers: {BLACK}{COMMA32} per hour
-STR_1428    :{WINDOW_COLOUR_2}Admission price:
+STR_1422    :{SMALLFONT}{BLACK}Logger data fra {POP16}{STRINGID}
+STR_1423    :{SMALLFONT}{BLACK}Køsti
+STR_1424    :{SMALLFONT}{BLACK}Gangsti
+STR_1425    :Gangsti
+STR_1426    :Kø
+STR_1427    :{WINDOW_COLOUR_2}Kunder: {BLACK}{COMMA32} i timen
+STR_1428    :{WINDOW_COLOUR_2}Inngangspris:
 STR_1429    :{POP16}{POP16}{POP16}{CURRENCY2DP}
-STR_1430    :Free
-STR_1431    :Walking
-STR_1432    :Heading for {STRINGID}
-STR_1433    :Queuing for {STRINGID}
-STR_1434    :Drowning
-STR_1435    :On {STRINGID}
-STR_1436    :In {STRINGID}
-STR_1437    :At {STRINGID}
-STR_1438    :Sitting
-STR_1439    :(select location)
-STR_1440    :Mowing grass
-STR_1441    :Sweeping footpath
-STR_1442    :Emptying litter bin
-STR_1443    :Watering gardens
-STR_1444    :Watching {STRINGID}
-STR_1445    :Watching construction of {STRINGID}
-STR_1446    :Looking at scenery
-STR_1447    :Leaving the park
-STR_1448    :Watching new ride being constructed
+STR_1430    :Gratis
+STR_1431    :Vandrer
+STR_1432    :På vei mot {STRINGID}
+STR_1433    :I kø for {STRINGID}
+STR_1434    :Drukner
+STR_1435    :På {STRINGID}
+STR_1436    :I {STRINGID}
+STR_1437    :Ved {STRINGID}
+STR_1438    :Sitter
+STR_1439    :(velg lokasjon)
+STR_1440    :Klipper gress
+STR_1441    :Koster gangsti
+STR_1442    :Tømmer søppelkasse
+STR_1443    :Vanner planter
+STR_1444    :Ser på {STRINGID}
+STR_1445    :Ser på konstruksjonen av {STRINGID}
+STR_1446    :Ser på pynt
+STR_1447    :Forlater parken
+STR_1448    :Ser på ny attraksjon under konstruksjon
 STR_1449    :{SPRITE} {STRINGID}{NEWLINE}({STRINGID})
 STR_1450    :{INLINE_SPRITE}{09}{20}{00}{00}{SPRITE} {STRINGID}{NEWLINE}({STRINGID})
 STR_1451    :{STRINGID}{NEWLINE}({STRINGID})
-STR_1452    :Guest's name
-STR_1453    :Enter name for this guest:
-STR_1454    :Can't name guest...
-STR_1455    :Invalid name for guest
-STR_1456    :{WINDOW_COLOUR_2}Cash spent: {BLACK}{CURRENCY2DP}
-STR_1457    :{WINDOW_COLOUR_2}Cash in pocket: {BLACK}{CURRENCY2DP}
-STR_1458    :{WINDOW_COLOUR_2}Time in park: {BLACK}{REALTIME}
-STR_1459    :Track style
-STR_1460    :{SMALLFONT}{BLACK}'U' shaped open track
-STR_1461    :{SMALLFONT}{BLACK}'O' shaped enclosed track
-STR_1462    :Too steep for lift hill
-STR_1463    :Guests
-STR_1464    :Helix up (small)
-STR_1465    :Helix up (large)
-STR_1466    :Helix down (small)
-STR_1467    :Helix down (large)
-STR_1468    :Staff
-STR_1469    :Ride must start and end with stations
-STR_1470    :Station not long enough
-STR_1471    :{WINDOW_COLOUR_2}Speed:
-STR_1472    :{SMALLFONT}{BLACK}Speed of this ride
+STR_1452    :Gjestens navn
+STR_1453    :Skriv inn navn for denne gjesten:
+STR_1454    :Kan ikke navngi gjest...
+STR_1455    :Ugyldig navn for gjest
+STR_1456    :{WINDOW_COLOUR_2}Penger brukt: {BLACK}{CURRENCY2DP}
+STR_1457    :{WINDOW_COLOUR_2}Penger i lommen: {BLACK}{CURRENCY2DP}
+STR_1458    :{WINDOW_COLOUR_2}Tid i park: {BLACK}{REALTIME}
+STR_1459    :Banestil
+STR_1460    :{SMALLFONT}{BLACK}Halvsirkelformet åpen bane
+STR_1461    :{SMALLFONT}{BLACK}Sirkelformet lukket bane
+STR_1462    :For bratt for trekk
+STR_1463    :Gjester
+STR_1464    :Helix opp (small)
+STR_1465    :Helix opp (large)
+STR_1466    :Helix ned (small)
+STR_1467    :Helix ned (large)
+STR_1468    :Ansatte
+STR_1469    :Attraksjon må starte og slutte med stasjoner
+STR_1470    :Stasjon ikke lang nok
+STR_1471    :{WINDOW_COLOUR_2}Fart:
+STR_1472    :{SMALLFONT}{BLACK}Attraksjonens fart
 STR_1473    :{WINDOW_COLOUR_2}Excitement rating: {BLACK}{COMMA2DP32}  ({STRINGID})
 STR_1474    :{WINDOW_COLOUR_2}Excitement rating: {BLACK}Not yet available
 STR_1475    :{WINDOW_COLOUR_2}Intensity rating: {BLACK}{COMMA2DP32}  ({STRINGID})
@@ -2748,7 +2748,7 @@ STR_2739    :None
 STR_2740    :RollerCoaster Tycoon 1
 STR_2741    :RollerCoaster Tycoon 2
 STR_2742    :css50.dat not found
-STR_2743    :Copy data\css17.dat from your RCT1 installation to data\css50.dat in your RCT2 installation.
+STR_2743    :Kopier data\css17.dat fra din RCT1-installasjon til data\css50.dat i din RCT2-installasjon – eller sørg for at stien til din RCT1-insallasjon i Diverse-fanen er korrekt.
 STR_2744    :[
 STR_2745    :\
 STR_2746    :]
@@ -4144,7 +4144,7 @@ STR_5832    :{SMALLFONT}{BLACK}Show height as generic units instead of measureme
 STR_5833    :{SMALLFONT}{BLACK}Changes what date format is used
 STR_5834    :{SMALLFONT}{BLACK}Select which audio device OpenRCT2 will use
 STR_5835    :{SMALLFONT}{BLACK}Mute the game if the window loses focus
-STR_5836    :{SMALLFONT}{BLACK}Select music to use on the main menu.{NEWLINE}Selecting RCT1 theme requires that you copy 'data/css17.dat' from your RCT1 game folder to 'data/css50.dat' in your RCT2 folder.
+STR_5836    :{SMALLFONT}{BLACK}Velg musikk for hovedmenyen.{NEWLINE}For å velge RCT1-musikk må du kopiere 'data/css17.dat' fra din RCT1-installasjon til 'data/css50.dat' i din RCT2-installasjon – eller sett stien til din RCT1-installasjon i Diverse-fanen.
 STR_5837    :{SMALLFONT}{BLACK}Create and manage custom UI themes
 STR_5838    :{SMALLFONT}{BLACK}Show a separate button for the finance window in the toolbar
 STR_5839    :{SMALLFONT}{BLACK}Show a separate button for the research and development window in the toolbar
@@ -4339,6 +4339,16 @@ STR_6027    :Attraksjonskonstruksjon - Flytt til neste seksjon
 STR_6028    :Attraksjonskonstruksjon - Konstruer valgt seksjon
 STR_6029    :Attraksjonskonstruksjon - Fjern markert seksjon
 STR_6030    :{SMALLFONT}{BLACK}Pyntvelger. Klikk hvilken som helst pynt på kartet for å velge samme element for konstruksjon.
+STR_6031    :Serverbeskrivelse:
+STR_6032    :Server-velkomstbeskjed:
+STR_6033    :Sti til RCT1 insallasjonsmappe:
+STR_6035    :Velg din RCT1-mappe
+STR_6036    :{SMALLFONT}{BLACK}Visk ut
+STR_6037    :Vennligst velg en gyldig RCT1 mappe
+STR_6038    :{SMALLFONT}{BLACK}Hvis du har RCT1 installert kan du sette denne verdien for å hente inn blant annet scenarier og musikk
+STR_6039    :{SMALLFONT}{BLACK}Rask attraksjonsrivning
+STR_6040    :Endre scenarioinnstillinger
+STR_6041    :{BLACK}Ingen mekanikere er ansatt!
 
 #############
 # Scenarios #

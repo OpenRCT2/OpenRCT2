@@ -4342,15 +4342,15 @@ STR_6029    :建造遊樂設施 - 移除當前選定的軌道
 STR_6030    :{SMALLFONT}{BLACK}景物選取器. 點撃選取地圖上的景物來建造相同的景物.
 STR_6031    :伺服器描述:
 STR_6032    :伺服器歡迎訊息:
-STR_6033    :夢幻遊樂園(RCT1)安裝路徑:
+STR_6033    :夢幻遊樂園(RCT1)安裝路徑:
 STR_6034    :{SMALLFONT}{BLACK}{STRING}
-STR_6035    :請選擇已安裝夢幻遊樂園(RCT1)的文件夾
-STR_6036    :{SMALLFONT}{BLACK}清除
-STR_6037    :請選擇一個正確的夢幻遊樂園(RCT1)文件夾
-STR_6038    :{SMALLFONT}{BLACK}如果你已安裝夢幻遊樂園(RCT1), 請於此選項設置它的安裝路徑, 以便載入劇情, 音樂等物件.
-STR_6039    :{SMALLFONT}{BLACK}快速拆除遊樂設施
-STR_6040    :編輯劇情選項
-STR_6041    :{BLACK}沒有僱用任何的維修人員!
+STR_6035    :請選擇已安裝夢幻遊樂園(RCT1)的文件夾
+STR_6036    :{SMALLFONT}{BLACK}清除
+STR_6037    :請選擇一個正確的夢幻遊樂園(RCT1)文件夾
+STR_6038    :{SMALLFONT}{BLACK}如果你已安裝夢幻遊樂園(RCT1), 請於此選項設置它的安裝路徑, 以便載入劇情, 音樂等物件.
+STR_6039    :{SMALLFONT}{BLACK}快速拆除遊樂設施
+STR_6040    :編輯劇情選項
+STR_6041    :{BLACK}沒有僱用任何的維修人員!
 
 #############
 # Scenarios #
