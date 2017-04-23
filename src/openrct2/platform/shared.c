@@ -41,7 +41,8 @@ typedef void(*update_palette_func)(const uint8*, sint32, sint32);
 
 openrct2_cursor gCursorState;
 bool gModsHeld[MODS_NUM_HELD] = { 0 };
-int gMapKeysStack[4] = { 0 };
+int gMapKeysStackHorizontal[2] = { 0 };
+int gMapKeysStackVertical[2] = { 0 };
 keypress *gKeysPressed;
 sint32 gCurKeyNum;
 sint32 gNumKeysPressed;
@@ -915,39 +916,34 @@ static void platform_filter_keypress(keypress *key)
 
 static inline void platform_map_keys_stack_insert(int val)
 {
-	int i;
-
-	for (i = 0; i < 3; ++i) {
-		if (val == gMapKeysStack[i]) {
-			break;
-		}
+	if (val == SHORTCUT_SCROLL_MAP_LEFT || val == SHORTCUT_SCROLL_MAP_RIGHT) {
+		if (gMapKeysStackHorizontal[0])
+			gMapKeysStackHorizontal[1] = val;
+		else
+			gMapKeysStackHorizontal[0] = val;
+	} else {
+		if (gMapKeysStackVertical[0])
+			gMapKeysStackVertical[1] = val;
+		else
+			gMapKeysStackVertical[0] = val;
 	}
-
-	for (int j = i; j > 0; --j) {
-		gMapKeysStack[j] = gMapKeysStack[j-1];
-	}
-
-	gMapKeysStack[0] = val;
 }
 
 static inline void platform_map_keys_stack_remove(int val)
 {
-	int i;
-
-	for (i = 0; i < 3; ++i) {
-		if (val == gMapKeysStack[i]) {
-			break;
-		}
+	if (val == SHORTCUT_SCROLL_MAP_LEFT || val == SHORTCUT_SCROLL_MAP_RIGHT) {
+		if (gMapKeysStackHorizontal[0] == val)
+			gMapKeysStackHorizontal[0] = gMapKeysStackHorizontal[1];
+		gMapKeysStackHorizontal[1] = 0;
+	} else {
+		if (gMapKeysStackVertical[0] == val)
+			gMapKeysStackVertical[0] = gMapKeysStackVertical[1];
+		gMapKeysStackVertical[1] = 0;
 	}
-
-	for (int j = i; j < 3; ++j) {
-		gMapKeysStack[j] = gMapKeysStack[j+1];
-	}
-
-	gMapKeysStack[3] = 0;
 }
 
 void platform_map_keys_stack_clear(void)
 {
-	memset(gMapKeysStack, 0x0, sizeof(gMapKeysStack));
+	memset(gMapKeysStackHorizontal, 0, sizeof(gMapKeysStackHorizontal));
+	memset(gMapKeysStackVertical, 0, sizeof(gMapKeysStackVertical));
 }

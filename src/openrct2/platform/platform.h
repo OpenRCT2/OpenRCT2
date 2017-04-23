@@ -129,7 +129,8 @@ typedef struct {
 
 extern openrct2_cursor gCursorState;
 extern keypress *gKeysPressed;
-extern int gMapKeysStack[]; // State for map scroll shortcut keys
+extern int gMapKeysStackHorizontal[2]; // State for map scroll shortcut keys
+extern int gMapKeysStackVertical[2];
 extern bool gModsHeld[];
 extern sint32 gNumKeysPressed;
 extern sint32 gCurKeyNum;

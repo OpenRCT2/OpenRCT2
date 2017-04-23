@@ -1634,19 +1634,13 @@ void game_handle_key_scroll()
 	scrollX = 0;
 	scrollY = 0;
 
-	for (int i = 0; i < 4 && gMapKeysStack[i] != 0; i++) {
-		int val = gMapKeysStack[i];
-		if (val == SHORTCUT_SCROLL_MAP_UP || val == SHORTCUT_SCROLL_MAP_DOWN) {
-			scrollY = val - SHORTCUT_SCROLL_MAP_UP - 1;
-			break;
-		}
-	}
-	for (int i = 0; i < 4 && gMapKeysStack[i] != 0; i++) {
-		int val = gMapKeysStack[i];
-		if (val == SHORTCUT_SCROLL_MAP_LEFT || val == SHORTCUT_SCROLL_MAP_RIGHT) {
-			scrollX = val - SHORTCUT_SCROLL_MAP_LEFT - 1;
-			break;
-		}
+	for (int i = 0; i < 2; ++i) {
+		int valX = gMapKeysStackHorizontal[i];
+		int valY = gMapKeysStackVertical[i];
+		if (valX)
+			scrollX = valX - SHORTCUT_SCROLL_MAP_LEFT - 1;
+		if (valY)
+			scrollY = valY - SHORTCUT_SCROLL_MAP_UP - 1;
 	}
 
 	// Scroll viewport
