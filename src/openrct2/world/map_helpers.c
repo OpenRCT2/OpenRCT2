@@ -322,7 +322,7 @@ static sint32 map_smooth_wavy(sint32 l, sint32 t, sint32 r, sint32 b)
 }
 
 /**
- * Raises the corners based on the height offset of neightbour tiles.
+ * Raises the corners based on the height offset of neighbour tiles.
  * This does not change the base height, unless all corners have been raised.
  * @returns 0 if no edits were made, 1 otherwise
  */
@@ -355,9 +355,9 @@ sint32 tile_smooth(sint32 x, sint32 y)
 			if (y_offset == 0 && x_offset == 0)
 				continue;
 
-			// Get neightbour height. If the element is not valid (outside of map) assume the same height
-			rct_map_element *neightbour_element = map_get_surface_element_at(x + x_offset, y + y_offset);
-			neighbourHeightOffset.baseheight[index] = neightbour_element ? neightbour_element->base_height : surfaceElement->base_height;
+			// Get neighbour height. If the element is not valid (outside of map) assume the same height
+			rct_map_element *neighbour_element = map_get_surface_element_at(x + x_offset, y + y_offset);
+			neighbourHeightOffset.baseheight[index] = neighbour_element ? neighbour_element->base_height : surfaceElement->base_height;
 
 			// Make the height relative to the current surface element
 			neighbourHeightOffset.baseheight[index] -= surfaceElement->base_height;
