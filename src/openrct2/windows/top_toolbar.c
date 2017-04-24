@@ -47,6 +47,7 @@ enum {
 	WIDX_ROTATE,
 	WIDX_VIEW_MENU,
 	WIDX_MAP,
+	WIDX_MUTE,
 
 	WIDX_LAND,
 	WIDX_WATER,
@@ -144,6 +145,7 @@ static const sint32 left_aligned_widgets_order[] = {
 	WIDX_PAUSE,
 	WIDX_FASTFORWARD,
 	WIDX_FILE_MENU,
+	WIDX_MUTE,
 	WIDX_NETWORK,
 	WIDX_CHEATS,
 	WIDX_DEBUG,
@@ -155,6 +157,7 @@ static const sint32 left_aligned_widgets_order[] = {
 	WIDX_ROTATE,
 	WIDX_VIEW_MENU,
 	WIDX_MAP,
+	
 };
 
 // from right to left
@@ -187,7 +190,8 @@ static rct_widget window_top_toolbar_widgets[] = {
 	{ WWT_TRNBTN,	1,	0x0082 + 30,	0x009F + 30,	0,		27,		0x20000000 | SPR_TOOLBAR_ROTATE,			STR_ROTATE_TIP },					// Rotate camera
 	{ WWT_TRNBTN,	1,	0x00A0 + 30,	0x00BD + 30,	0,		27,		0x20000000 | SPR_TOOLBAR_VIEW,				STR_VIEW_OPTIONS_TIP },				// Transparancy menu
 	{ WWT_TRNBTN,	1,	0x00BE + 30,	0x00DB + 30,	0,		27,		0x20000000 | SPR_TOOLBAR_MAP,				STR_SHOW_MAP_TIP },					// Map
-
+	{ WWT_TRNBTN,	0,	0x00DC + 30,	0x00F9 + 30,	0,		27,		0x20000000 | SPR_TAB_TOOLBAR,
+		STR_TOOLBAR_MUTE_TIP},				// Mute
 	{ WWT_TRNBTN,	2,	0x010B,	0x0128,	0,						27,		0x20000000 | SPR_TOOLBAR_LAND,				STR_ADJUST_LAND_TIP },				// Land
 	{ WWT_TRNBTN,	2,	0x0129,	0x0146,	0,						27,		0x20000000 | SPR_TOOLBAR_WATER,				STR_ADJUST_WATER_TIP },				// Water
 	{ WWT_TRNBTN,	2,	0x0147,	0x0164,	0,						27,		0x20000000 | SPR_TOOLBAR_SCENERY,			STR_PLACE_SCENERY_TIP },			// Scenery
@@ -198,7 +202,6 @@ static rct_widget window_top_toolbar_widgets[] = {
 	{ WWT_TRNBTN,	3,	0x0226,	0x0243,	0,						27,		0x20000000 | SPR_TAB_TOOLBAR,				STR_STAFF_TIP },					// Staff
 	{ WWT_TRNBTN,	3,	0x0230,	0x024D,	0,						27,		0x20000000 | SPR_TOOLBAR_GUESTS,			STR_GUESTS_TIP },					// Guests
 	{ WWT_TRNBTN,	2,	0x0230,	0x024D,	0,						27,		0x20000000 | SPR_TOOLBAR_CLEAR_SCENERY,		STR_CLEAR_SCENERY_TIP },			// Clear scenery
-
 	{ WWT_TRNBTN,	0,	0x001E,	0x003B,	0,						27,		0x20000000 | SPR_TAB_TOOLBAR,				STR_GAME_SPEED_TIP },				// Fast forward
 	{ WWT_TRNBTN,	0,	0x001E,	0x003B,	0,						27,		0x20000000 | SPR_TAB_TOOLBAR,				STR_CHEATS_TIP },					// Cheats
 	{ WWT_TRNBTN,	0,	0x001E,	0x003B,	0,						27,		0x20000000 | SPR_TAB_TOOLBAR,				STR_DEBUG_TIP },					// Debug
@@ -360,6 +363,9 @@ static void window_top_toolbar_mouseup(rct_window *w, sint32 widgetIndex)
 		break;
 	case WIDX_NEWS:
 		window_news_open();
+		break;
+	case WIDX_MUTE:
+		audio_toggle_all_sounds();
 		break;
 	}
 }
@@ -648,6 +654,7 @@ static void window_top_toolbar_invalidate(rct_window *w)
 	window_top_toolbar_widgets[WIDX_ROTATE].type = WWT_TRNBTN;
 	window_top_toolbar_widgets[WIDX_VIEW_MENU].type = WWT_TRNBTN;
 	window_top_toolbar_widgets[WIDX_MAP].type = WWT_TRNBTN;
+	window_top_toolbar_widgets[WIDX_MUTE].type = WWT_TRNBTN;
 	window_top_toolbar_widgets[WIDX_LAND].type = WWT_TRNBTN;
 	window_top_toolbar_widgets[WIDX_WATER].type = WWT_TRNBTN;
 	window_top_toolbar_widgets[WIDX_SCENERY].type = WWT_TRNBTN;
@@ -710,7 +717,10 @@ static void window_top_toolbar_invalidate(rct_window *w)
 
 		if (!gConfigInterface.toolbar_show_news)
 			window_top_toolbar_widgets[WIDX_NEWS].type = WWT_EMPTY;
-
+		
+		if (!gConfigInterface.toolbar_show_mute)
+			window_top_toolbar_widgets[WIDX_MUTE].type = WWT_EMPTY;
+		
 		switch (network_get_mode()) {
 		case NETWORK_MODE_NONE:
 			window_top_toolbar_widgets[WIDX_NETWORK].type = WWT_EMPTY;
@@ -781,6 +791,11 @@ static void window_top_toolbar_invalidate(rct_window *w)
 	else
 		w->pressed_widgets &= ~(1 << WIDX_PAUSE);
 
+	if (!gConfigSound.sound_enabled)
+		w->pressed_widgets |= (1 << WIDX_MUTE);
+	else
+		w->pressed_widgets &= ~(1 << WIDX_MUTE);
+
 	// Zoomed out/in disable. Not sure where this code is in the original.
 	if (window_get_main()->viewport->zoom == 0){
 		w->disabled_widgets |= (1 << WIDX_ZOOM_IN);
@@ -829,7 +844,16 @@ static void window_top_toolbar_paint(rct_window *w, rct_drawpixelinfo *dpi)
 			gfx_draw_sprite(dpi, SPR_G2_HYPER_ARROW, x + 5 + i * 6, y + 15, 0);
 		}
 	}
-
+	
+	//Draw Mute Button
+	if (window_top_toolbar_widgets[WIDX_MUTE].type != WWT_EMPTY) {
+		x = w->x + window_top_toolbar_widgets[WIDX_MUTE].left + 0;
+		y = w->y + window_top_toolbar_widgets[WIDX_MUTE].top + 0;
+		if (widget_is_pressed(w, WIDX_MUTE))
+			y++;
+		imgId = SPR_TAB_MUSIC_0;
+		gfx_draw_sprite(dpi, imgId, x, y, 0);
+	}
 	// Draw cheats button
 	if (window_top_toolbar_widgets[WIDX_CHEATS].type != WWT_EMPTY) {
 		x = w->x + window_top_toolbar_widgets[WIDX_CHEATS].left - 1;

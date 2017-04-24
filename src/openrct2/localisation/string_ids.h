@@ -3699,6 +3699,9 @@ enum {
 	STR_ACTION_EDIT_SCENARIO_OPTIONS = 6040,
 	
 	STR_NO_MECHANICS_ARE_HIRED_MESSAGE = 6041,
+	STR_TOOLBAR_MUTE_TIP = 6042,
+	STR_MUTE_BUTTON_ON_TOOLBAR_TIP = 6043,
+	STR_MUTE_BUTTON_ON_TOOLBAR = 6044,
 
 	// Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
 	STR_COUNT = 32768
