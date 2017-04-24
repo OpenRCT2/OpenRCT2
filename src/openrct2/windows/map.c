@@ -1236,7 +1236,7 @@ static void sub_666EEF(sint32 x, sint32 y, sint16 *mapX, sint16 *mapY, sint16 *m
 static void window_map_place_park_entrance_tool_update(sint32 x, sint32 y)
 {
 	sint16 mapX, mapY, mapZ = 0;
-	sint32 direction, sideDirection;
+	sint32 direction = 0, sideDirection;
 
 	map_invalidate_selection_rect();
 	map_invalidate_map_selection_tiles();
