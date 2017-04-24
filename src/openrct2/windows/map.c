@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -1270,7 +1270,7 @@ static void window_map_place_park_entrance_tool_update(sint32 x, sint32 y)
 	}
 
 	park_entrance_remove_ghost();
-	gParkEntranceGhostPrice = park_entrance_place_ghost(mapX, mapY, mapZ, direction);
+	park_entrance_place_ghost(mapX, mapY, mapZ, direction);
 }
 
 /**

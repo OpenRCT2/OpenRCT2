@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -30,10 +30,9 @@ extern "C"
     #include "../ride/track.h"
 }
 
-bool gParkEntranceGhostExists;
-rct_xyz16 gParkEntranceGhostPosition;
-uint8 gParkEntranceGhostDirection;
-money32 gParkEntranceGhostPrice;
+bool gParkEntranceGhostExists = false;
+rct_xyz16 gParkEntranceGhostPosition = { 0, 0, 0 };
+uint8 gParkEntranceGhostDirection = 0;
 rct_xyzd16 gParkEntrances[MAX_PARK_ENTRANCES];
 
 rct_xyzd16 gRideEntranceExitGhostPosition;

@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -38,7 +38,6 @@ typedef struct rct_map_element rct_map_element;
 extern bool gParkEntranceGhostExists;
 extern rct_xyz16 gParkEntranceGhostPosition;
 extern uint8 gParkEntranceGhostDirection;
-extern money32 gParkEntranceGhostPrice;
 
 #define MAX_PARK_ENTRANCES 4
 
