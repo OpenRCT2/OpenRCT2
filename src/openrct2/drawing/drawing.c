@@ -15,6 +15,7 @@
 #pragma endregion
 
 #include "../common.h"
+#include "../core/Guard.hpp"
 #include "../interface/window.h"
 #include "../localisation/localisation.h"
 #include "../object.h"
@@ -518,7 +519,8 @@ void load_palette(){
 
 	uint32 palette = 0x5FC;
 
-	if ((intptr_t)water_type != -1){
+	if ((intptr_t)water_type != -1) {
+		openrct2_assert(water_type->image_id != (uint32)-1, "Failed to load water palette");
 		palette = water_type->image_id;
 	}
 
