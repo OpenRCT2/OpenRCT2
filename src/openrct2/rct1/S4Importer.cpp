@@ -482,7 +482,7 @@ private:
 
                         // Check if there are spare entries available
                         size_t maxEntries = (size_t)object_entry_group_counts[objectType];
-                        if (entries->GetCount() < maxEntries)
+                        if (entries != nullptr && entries->GetCount() < maxEntries)
                         {
                             entries->GetOrAddEntry(objectName);
                         }

@@ -1043,10 +1043,10 @@ void game_autosave()
 	rct2_time currentTime;
 	platform_get_time_local(&currentTime);
 
-	utf8 timeName[34];
-	snprintf(timeName, 34, "autosave_%d-%02d-%02d_%02d-%02d-%02d%s",
-		currentDate.year, currentDate.month, currentDate.day, currentTime.hour, currentTime.minute,currentTime.second,
-		fileExtension);
+	utf8 timeName[44];
+	snprintf(timeName, sizeof(timeName), "autosave_%04u-%02u-%02u_%02u-%02u-%02u%s",
+		currentDate.year, currentDate.month, currentDate.day, currentTime.hour,
+		currentTime.minute, currentTime.second, fileExtension);
 
 	limit_autosave_count(NUMBER_OF_AUTOSAVES_TO_KEEP);
 

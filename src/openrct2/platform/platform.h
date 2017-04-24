@@ -74,16 +74,16 @@ typedef struct file_info {
 } file_info;
 
 typedef struct rct2_date {
-	sint16 day;
-	sint16 month;
+	uint8 day;
+	uint8 month;
 	sint16 year;
-	sint16 day_of_week;
+	uint8 day_of_week;
 } rct2_date;
 
 typedef struct rct2_time {
-	sint16 hour;
-	sint16 minute;
-	sint16 second;
+	uint8 hour;
+	uint8 minute;
+	uint8 second;
 } rct2_time;
 
 typedef struct openrct2_cursor {
