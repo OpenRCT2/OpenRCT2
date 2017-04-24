@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -24,6 +24,7 @@
 #include "../object/ObjectRepository.h"
 #include "../rct12/SawyerChunkWriter.h"
 #include "S6Exporter.h"
+#include <functional>
 
 extern "C"
 {
@@ -138,7 +139,7 @@ void S6Exporter::Save(IStream * stream, bool isScenario)
 
     // Read all written bytes back into a single buffer
     stream->SetPosition(0);
-    auto data = std::unique_ptr<uint8>(stream->ReadArray<uint8>(fileSize));
+    auto data = std::unique_ptr<uint8, std::function<void(uint8*)>>(stream->ReadArray<uint8>(fileSize), Memory::Free<uint8>);
     uint32 checksum = sawyercoding_calculate_checksum(data.get(), fileSize);
 
     // Write the checksum on the end
