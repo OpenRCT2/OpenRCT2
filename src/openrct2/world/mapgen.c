@@ -966,6 +966,7 @@ void mapgen_generate_from_heightmap(mapgen_settings *settings)
 		if (minValue == maxValue)
 		{
 			window_error_open(STR_HEIGHT_MAP_ERROR, STR_ERROR_CANNOT_NORMALIZE);
+			free(dest);
 			return;
 		}
 	}
