@@ -4354,7 +4354,7 @@ STR_6042    :Load height map
 STR_6043    :Select height map
 STR_6044    :Smooth height map
 STR_6045    :Strength
-STR_6046    :Normalize height map
+STR_6046    :Normalise height map
 STR_6047    :Smooth tiles
 STR_6048    :Height map error
 STR_6049    :Error reading PNG
