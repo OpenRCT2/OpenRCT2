@@ -2692,14 +2692,14 @@ STR_2682    :<not used anymore>
 STR_2683    :<not used anymore>
 STR_2684    :{SMALLFONT}{BLACK}Un grand groupe de visiteurs arrive
 STR_2685    :Paramètres de bruit Simplex
-STR_2686    :{WINDOW_COLOUR_2}Graves :
-STR_2687    :{WINDOW_COLOUR_2}Aigus :
-STR_2688    :{WINDOW_COLOUR_2}Fréquence de base :
-STR_2689    :{WINDOW_COLOUR_2}Octaves :
+STR_2686    :Graves :
+STR_2687    :Aigus :
+STR_2688    :Fréquence de base :
+STR_2689    :Octaves :
 STR_2690    :Génération de carte
-STR_2691    :{WINDOW_COLOUR_2}Hauteur de base :
-STR_2692    :{WINDOW_COLOUR_2}Niveau de l'eau :
-STR_2693    :{WINDOW_COLOUR_2}Terrain :
+STR_2691    :Hauteur de base :
+STR_2692    :Niveau de l'eau :
+STR_2693    :Terrain :
 STR_2694    :Générer
 STR_2695    :Terrain aléatoire
 STR_2696    :Placer les arbres
@@ -3219,7 +3219,7 @@ STR_3207    :Concepteur de montagnes russes
 STR_3208    :Gestionnaire de voies
 STR_3209    :Retour étape précédente :
 STR_3210    :Passer à l'étape suivante :
-STR_3211    :{WINDOW_COLOUR_2}Taille carte :
+STR_3211    :Taille carte :
 STR_3212    :{POP16}{COMMA16} x {PUSH16}{COMMA16}
 STR_3213    :Impossible de diminuer davantage la taille de la carte
 STR_3214    :Impossible d'augmenter davantage la taille de le carte

@@ -1,4 +1,4 @@
-﻿STR_0000    :
+STR_0000    :
 STR_0001    :{STRINGID} {COMMA16}
 STR_0002    :Spiraalachtbaan
 STR_0003    :Staande achtbaan
@@ -2693,9 +2693,9 @@ STR_2687    :Maximum:
 STR_2688    :Basisfrequentie:
 STR_2689    :Octaven:
 STR_2690    :Kaartgenerator
-STR_2691    :{WINDOW_COLOUR_2}Basishoogte:
-STR_2692    :{WINDOW_COLOUR_2}Waterniveau:
-STR_2693    :{WINDOW_COLOUR_2}Terrein:
+STR_2691    :Basishoogte:
+STR_2692    :Waterniveau:
+STR_2693    :Terrein:
 STR_2694    :Genereren
 STR_2695    :Willekeurig terrein
 STR_2696    :Bomen plaatsen
@@ -3213,7 +3213,7 @@ STR_3207    :Achtbaanontwerper
 STR_3208    :Baanontwerpbeheer
 STR_3209    :Terug naar de vorige stap:
 STR_3210    :Verder naar de volgende stap:
-STR_3211    :{WINDOW_COLOUR_2}Kaartgrootte:
+STR_3211    :Kaartgrootte:
 STR_3212    :{POP16}{COMMA16} x {PUSH16}{COMMA16}
 STR_3213    :Kan de kaart niet verder verkleinen
 STR_3214    :Kan de kaart niet verder vergroten
@@ -4916,11 +4916,162 @@ STR_SCNR    :Bouw je eigen Six Flags-park
 STR_PARK    :Six Flags
 STR_DTLS    :Maak je eigen Six Flags-park, door gebruik te maken van attracties uit andere Six Flags-parken of door zelf nieuwe attracties te ontwerpen.
 
-#TT
+## Wacky Worlds Scenarios
+<Africa - African Diamond Mine>
+STR_SCNR    : Afrika - Diamantmijn
+STR_PARK    :Mines of Africa
+STR_DTLS    :Je hebt in verlaten diamantmijn geërfd en een waardevolle diamant gevonden. Je besluit dit geld te investeren om een wereldberoemd themapark te bouwen.
+
+<Africa - Oasis>
+STR_SCNR    : Afrika - Oase
+STR_PARK    :Mirage Madness
+STR_DTLS    :Er is een oase in de woestijn gevonden die een prachtige locatie van een park zou vormen. Voor transport van en naar de oase is gezorgd.
+
+<Africa - Victoria Falls>
+STR_SCNR    : Afrika - Victoriawatervallen
+STR_PARK    :Over The Edge
+STR_DTLS    :Er is een stuwdam gebouwd die goedkope energie in overvloed levert voor je park. Je moet een hoge parkwaarde bereiken om de lening voor de dam terug te betalen.
+
+<Antarctic - Ecological Salvage>
+STR_SCNR    : Antarctica - Ecologische reddingsactie
+STR_PARK    :Icy Adventures
+STR_DTLS    :De milieuorganisatie heeft je gevraagd om een lelijke oude olieraffinaderij om te vormen tot een toeristische trekpleister. Land is goedkoop maar de rente op leningen is hoog. Je kunt de oude gebouwen verkopen als schroot.
+
+<Asia - Great Wall of China Tourism Enhancement>
+STR_SCNR    : Azië - Meer toeristen naar de Chinese Muur
+STR_PARK    :De Chinese Muur
+STR_DTLS    :De regering heeft besloten om meer toeristen naar de Chinese Muur door er een themapark naast te bouwen. Geld speelt geen rol!
+
+<Asia - Japanese Coastal Reclaim>
+STR_SCNR    : Azië - Polderen aan de kust
+STR_PARK    :Okinawa Coast
+STR_DTLS    :Een bestaand pretpark heeft geen ruimte meer. Je enige optie is om naar de zee uit te breiden, waarvoor je geld hebt geleend. Vanwege het aardbevingsgevaar zijn er hoogtebeperkingen van kracht.
+
+<Asia - Maharaja Palace>
+STR_SCNR    : Azië - Paleis van de Maharadja
+STR_PARK    :Park Maharadja
+STR_DTLS    :De Maharadja heeft jou aangewezen om de lokale bevolking te vermaken. Bouw een park dat is geïnspireerd door het paleis van de Maharadja.
+
+<Australasia - Ayers Rock>
+STR_SCNR    : Australië - Ayers Rock
+STR_PARK    :Ayers Adventure
+STR_DTLS    :Je helpt de Aboriginals om een park te bouwen om het bewustzijn voor hun cultuur te vergroten. Je moet een groot aantal bezoekers aantrekken om hen de unieke geschiedenis van de Aboriginals bij te brengen.
+
+<Australasia - Fun at the Beach>
+STR_SCNR    : Australië - Plezier op het strand
+STR_PARK    :Beach Barbecue Blast
+STR_DTLS    :Het themapark van een lokale ondernemer is over de kop gegaan. Je bezit zelf al een klein park en hebt het andere park overgenomen. Combineer beide parken tot één groot park.
+
+<Europe - European Cultural Festival>
+STR_SCNR    : Europa - Europees Cultureel Festival
+STR_PARK    :European Extravaganza
+STR_DTLS    :Je bent aangesteld om het beheer over een attractiepark over de Europese cultuur over te nemen. Je moet het aantal bezoekers verhogen om de EU-subsidie terug te betalen voor het einde van de huidige termijn van het Europees Parlement.
+
+<Europe - Renovation>
+STR_SCNR    : Europa - Renovatie
+STR_PARK    :From The Ashes
+STR_DTLS    :Een oud park is vervallen. Je hebt een lening van de Europese Unie gekregen om het troosteloze terrein weer in oude luister te herstellen! Je moet het park renoveren en de lening terugbetalen.
+
+<N America - Extreme Hawaiian Island>
+STR_SCNR    : Noord-Amerika - Extreem Hawaiiaans eiland
+STR_PARK    :Wacky Waikiki
+STR_DTLS    :De bevolking van Hawaii wil wel eens iets spannenders dan surfen. Houd dit in het achterhoofd bij het bouwen van een park om zoveel mogelijk mogelijk toeristen aan te trekken.
+
+<North America - Grand Canyon>
+STR_SCNR    : Noord-Amerika - Grand Canyon
+STR_PARK    :Canyon Calamities
+STR_DTLS    :Je moet een park bouwen op de beperkte ruimte aan weerszijden van dit natuurschoon. Hierbij heb je de mogelijkheid om land te kopen van de indianen.
+
+<North America - Rollercoaster Heaven>
+STR_SCNR    : Noord-Amerika - Rollercoaster Heaven
+STR_PARK    :Rollercoaster Heaven
+STR_DTLS    :Je bent een succesvol zakenman op een lange sabbatical. Die wil je gebruiken om het stadspark om te toveren in een achtbanenparadijs. Geld speelt geen rol!
+
+<South America - Inca Lost City>
+STR_SCNR    : Zuid-Amerika - Verloren Incastad
+STR_PARK    :Lost City Founder
+STR_DTLS    :Om nog meer toeristen te trekken moet je een park bouwen dat past bij de omgeving. Dat betekent ook dat er hoogtebeperkingen zijn.
+
+<South America - Rain Forest Plateau>
+STR_SCNR    : Zuid-Amerika - Regenwoudplateau
+STR_PARK    :Rainforest Romp
+STR_DTLS    :In het regenwoud is er niet veel plek. Je moet zo veel mogelijk in de open plek zien te persen om een goed alternatief voor de lokale houtindustrie te vormen.
+
+<South America - Rio Carnival>
+STR_SCNR    : Zuid-Amerika - Carnival van Rio
+STR_PARK    :Sugarloaf Shores
+STR_DTLS    :Je hebt een klein park in de buurt van Rio, maar de bank wil haar lening terug. Je moet je winst zien te verhogen om je schuld terug te betalen.
+
+## Time Twister
+<Dark Age - Castle>
+STR_SCNR    :  Middeleeuwen - Kasteel
+STR_PARK    :Cliffside Castle
+STR_DTLS    :De leden van de lokale vereniging die oude veldslagen naspeelt nemen hun hobby serieus. Ze hebben jou de klus om van Cliffside Castle een middeleeuws themapark te maken toevertrouwd.
+
+<Dark Age - Robin Hood>
+STR_SCNR    :  Middeleeuwen - Robin Hood
+STR_PARK    :Sherwood Forest
+STR_DTLS    :Om geld van de rijken naar de armen te brengen hebben jij en je Merry Men besloten een themapark te bouwen in Sherwood Forest.
+
+<Future - First Encounters>
+STR_SCNR    :  Toekomst - Eerste ontmoeting
+STR_PARK    :Extraterrestrial Extravaganza
+STR_DTLS    :Er is leven aangetroffen op een verre planeet! Bouw een buitenaards themapark om munt te slaan uit de onverwachte golf van interesse.
+
+<Future - Future World>
+STR_SCNR    :  Toekomst - Stad van de toekomst
+STR_PARK    :Gemini City
+STR_DTLS    :Laat je inventieve, utopische visie van de toekomst zien - bedenk een furistisch ontwerp met state-of-the-art attracties.
+
 <Mythological - Animatronic Film Set>
 STR_SCNR    :  Mythologie - Animatronic-filmset
 STR_PARK    :Animatronic Antics
 STR_DTLS    :Je moet een bestaand pretpark, gebouwd op een oude filmset, beheren en verbeteren. Bouw een eerbetoon aan de pioniers van de stop-motionanimatie, die de wezens uit de mythologie tot leven brachten op het witte doek.
+
+<Mythological - Cradle of Civilization>
+STR_SCNR    :  Mythologie - Wieg van de beschaving
+STR_PARK    :Mythological Madness
+STR_DTLS    :Je bezit een eiland van grote archeologische waarde. Je hebt besloten om het voor het nageslacht te beschermen. Dit wil je bekostigen door een park te bouwen met de mythologische geschiedenis van je eiland als thema.
+
+<Prehistoric - After the Asteroid>
+STR_SCNR    :  Prehistorie - Na de meteoriet
+STR_PARK    :Crater Carnage
+STR_DTLS    :Je bezig een stoffige oude meteorietkrater. Als echte ondernemer heb je besloten om er een themapark van te maken en zo munt te slaan uit je waardeloos lijkende land.
+
+<Prehistoric - Jurassic Safari>
+STR_SCNR    :  Prehistorie - Jurasafari
+STR_PARK    :Coastersaurus
+STR_DTLS    :Je moet een themapark bouwen in Jurastijl. Om de bezoekers zo dicht mogelijk bij de exotische planten en dieren te laten komen, moeten je attracties over en door de vallei gaan lopen.
+
+<Prehistoric - Stone Age>
+STR_SCNR    :  Prehistorie - Steentijd
+STR_PARK    :Rocky Rambles
+STR_DTLS    :Om te voorkomen dat er een snelweg wordt aangelegd en zo de mysterieuze prehistorische steencirkels te beschermen, moet je een winstgevend themapark bouwen. Het kan echter lastig worden om bezoekers aan te trekken, aangezien het terrein vrij ruw is.
+
+<Roaring Twenties - Prison Island>
+STR_SCNR    :  Roaring Twenties - Alcatraz
+STR_PARK    :Alcatraz
+STR_DTLS    :Het beruchte gevangeniseiland, dat ooit volzat met illegale drankstokers en gangsters, is nu te koop. Je hebt besloten het te veranderen in een toeristentrekpleister. Geld speelt geen rol!
+
+<Roaring Twenties - Schneider Cup>
+STR_SCNR    : Roaring Twenties - Schneider Cup
+STR_PARK    :Schneider Shores
+STR_DTLS    :Het is al bijna 75 jaar geleden dat je grootvader de Schneider Cup won. Je hebt besloten zijn prestatie te eren met een themapark dat is geïnspireerd door de beroemde watervliegtuigenrace.
+
+<Roaring Twenties - Skyscrapers>
+STR_SCNR    :  Roaring Twenties - Wolkenkrabbers
+STR_PARK    :Metropolis
+STR_DTLS    :Je bezit een lege kavel in de stad, tussen de laagbouw. Bouw een themapark van wolkenkrabbers, geïnspireerd door de artdecostijl van de jaren twintig.
+
+<Rock 'n' Roll - Flower Power>
+STR_SCNR    :  Rock 'n' Roll - Flower Power
+STR_PARK    :Woodstock
+STR_DTLS    :Een groot jaarlijks muziekfestival vindt plaats op jouw terrein. Bouw een hip themapark om het publiek van vrije geesten te vermaken.
+
+<Rock 'n' Roll - Rock 'n' Roll>
+STR_SCNR    :  Rock 'n' Roll - Rock 'n' Roll
+STR_PARK    :Rock 'n' Roll Revival
+STR_DTLS    :Dit verouderde themapark heeft betere dagen gekend. Geef het park een rock 'n' roll-makeover en verander het in een succesvolle onderneming.
 
 #OCC
 <Panda World>

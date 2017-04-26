@@ -1815,7 +1815,7 @@ STR_1809    :{WINDOW_COLOUR_2}Quebra atual: {OUTLINE}{RED}{STRINGID}
 STR_1810    :{WINDOW_COLOUR_2}Transportando:
 STR_1811    :Impossível construir isto aqui...
 STR_1812    :{SMALLFONT}{BLACK}{STRINGID}
-STR_1813    :Objetos váriados
+STR_1813    :Objetos variados
 STR_1814    :Ações
 STR_1815    :Pensamentos
 STR_1816    :{SMALLFONT}{BLACK}Selecione o tipo de informação para mostrar na lista de visitantes
@@ -2691,14 +2691,14 @@ STR_2682    :<not used anymore>
 STR_2683    :<not used anymore>
 STR_2684    :{SMALLFONT}{BLACK}Um grande grupo de visitantes está chegando
 STR_2685    :Parâmetros de ruído simples
-STR_2686    :{WINDOW_COLOUR_2}Baixo:
-STR_2687    :{WINDOW_COLOUR_2}Alto:
-STR_2688    :{WINDOW_COLOUR_2}Frequência base:
-STR_2689    :{WINDOW_COLOUR_2}Oitavas:
+STR_2686    :Baixo:
+STR_2687    :Alto:
+STR_2688    :Frequência base:
+STR_2689    :Oitavas:
 STR_2690    :Gerador de Mapa
-STR_2691    :{WINDOW_COLOUR_2}Altura da base:
-STR_2692    :{WINDOW_COLOUR_2}Nível de água:
-STR_2693    :{WINDOW_COLOUR_2}Terreno:
+STR_2691    :Altura da base:
+STR_2692    :Nível de água:
+STR_2693    :Terreno:
 STR_2694    :Gerar
 STR_2695    :Terreno aleatório
 STR_2696    :Colocar árvores
@@ -2748,7 +2748,7 @@ STR_2739    :Nenhum
 STR_2740    :RollerCoaster Tycoon 1
 STR_2741    :RollerCoaster Tycoon 2
 STR_2742    :css50.dat não encontrado
-STR_2743    :Copie data\css17.dat da instalação do seu RCT1 para data\css50.dat na sua pasta de instalação do RCT2.
+STR_2743    :Copie data\css17.dat da instalação do seu RCT1 para data\css50.dat na sua pasta de instalação do RCT2, ou tenha certeza que o caminho para o RCT1 na aba Variados está correto.
 STR_2744    :[
 STR_2745    :\
 STR_2746    :]
@@ -3218,7 +3218,7 @@ STR_3207    :Construtor de Montanha-Russa
 STR_3208    :Gerenciador de Projetos de Pista
 STR_3209    :Voltar para o Passo Anterior:
 STR_3210    :Avançar para o Próximo Passo:
-STR_3211    :{WINDOW_COLOUR_2}Tamanho do Mapa:
+STR_3211    :Tamanho do Mapa:
 STR_3212    :{POP16}{COMMA16} x {PUSH16}{COMMA16}
 STR_3213    :Impossível diminuir ainda mais o tamanho do mapa
 STR_3214    :Impossível aumentar ainda mais o tamanho do mapa
@@ -4144,7 +4144,7 @@ STR_5832    :{SMALLFONT}{BLACK}Mostra altura como unidade genérica ao invés de
 STR_5833    :{SMALLFONT}{BLACK}Muda qual formato de data é usado
 STR_5834    :{SMALLFONT}{BLACK}Seleciona qual dispositivo de audio o OpenRCT2 irá usar
 STR_5835    :{SMALLFONT}{BLACK}Deixa o jogo mudo se a janela perder foco
-STR_5836    :{SMALLFONT}{BLACK}Seleciona música que será usada no menu principal.{NEWLINE}Selecionar o tema do RCT requer que você copie 'data/css17.dat' da pasta do seu RCT para 'data/css50.dat' da pasta do seu RCT2.
+STR_5836    :{SMALLFONT}{BLACK}Seleciona música que será usada no menu principal.{NEWLINE}Selecionar o tema do RCT1 requer que você copie 'data/css17.dat' da pasta do seu RCT1 para 'data/css50.dat' da pasta do seu RCT2, ou definir o caminho para o RCT1 na aba Variados.
 STR_5837    :{SMALLFONT}{BLACK}Cria e gerencia temas de interface de usuário personalizadas
 STR_5838    :{SMALLFONT}{BLACK}Mostra um botão separado para janela de finanças na barra de ferramentas
 STR_5839    :{SMALLFONT}{BLACK}Mostra um botão separado para janela de pesquisa e desenvolvimento na barra de ferramentas
@@ -4341,6 +4341,28 @@ STR_6029    :Construção da atração - Demolir atual
 STR_6030    :{SMALLFONT}{BLACK}Apanhador de cenário. Clique em qualquer cenário do mapa para selecionar a mesma peça para construção.
 STR_6031    :Descrição do Servidor:
 STR_6032    :Saudação do Servidor:
+STR_6033    :Caminho para a instalação do RCT1:
+STR_6034    :{SMALLFONT}{BLACK}{STRING}
+STR_6035    :Por favor selecione o diretório do seu RCT1
+STR_6036    :{SMALLFONT}{BLACK}Limpar
+STR_6037    :Por favor seleciona um diretório válido do RCT1
+STR_6038    :{SMALLFONT}{BLACK}Se você instalou o RCT1, defina esta opção para seu diretório para carregar cenários, músicas, etc.
+STR_6039    :{SMALLFONT}{BLACK}Demole atração rapidamente
+STR_6040    :Editar Opções do Cenário
+STR_6041    :{BLACK}Não há mecânicos contratados!
+STR_6042    :Carregar altura do mapa
+STR_6043    :Selecionar altura do mapa
+STR_6044    :Suavizar altura do mapa
+STR_6045    :Força
+STR_6046    :Normalizar altura do mapa
+STR_6047    :Suavizar azulejos
+STR_6048    :Erro de altura de mapa
+STR_6049    :Erro ao ler PNG
+STR_6050    :Erro ao ler bitmap
+STR_6051    :A largura e a altura precisam combinar
+STR_6052    :A altura do mapa é muito grande, e será cortada
+STR_6053    :A altura do mapa não pode ser normalizada
+STR_6054    :Apenas bitmaps de 24-bit são suportados
 
 #############
 # Scenarios #

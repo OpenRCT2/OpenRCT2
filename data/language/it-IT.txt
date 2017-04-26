@@ -2692,14 +2692,14 @@ STR_2682    :<not used anymore>
 STR_2683    :<not used anymore>
 STR_2684    :{SMALLFONT}{BLACK}Arriva un largo numero di visitatori
 STR_2685    :Simplex Noise Parameters
-STR_2686    :{WINDOW_COLOUR_2}Basso:
-STR_2687    :{WINDOW_COLOUR_2}Alto:
-STR_2688    :{WINDOW_COLOUR_2}Base Frequency:
-STR_2689    :{WINDOW_COLOUR_2}Ottavi:
+STR_2686    :Basso:
+STR_2687    :Alto:
+STR_2688    :Base Frequency:
+STR_2689    :Ottavi:
 STR_2690    :Generazione Mappa
-STR_2691    :{WINDOW_COLOUR_2}Base height:
-STR_2692    :{WINDOW_COLOUR_2}Livello acqua:
-STR_2693    :{WINDOW_COLOUR_2}Terreno:
+STR_2691    :Base height:
+STR_2692    :Livello acqua:
+STR_2693    :Terreno:
 STR_2694    :Genera
 STR_2695    :Terreno casuale
 STR_2696    :Colloca alberi
@@ -3218,7 +3218,7 @@ STR_3207    :Progettista di ottovolanti
 STR_3208    :Responsabile dei progetti di tracciato
 STR_3209    :Torna un passo indietro:
 STR_3210    :Vai un passo avanti:
-STR_3211    :{WINDOW_COLOUR_2}Dimens. mappa:
+STR_3211    :Dimens. mappa:
 STR_3212    :{POP16}{COMMA16} x {PUSH16}{COMMA16}
 STR_3213    :Impossibile rimpicciolire ulteriormente la mappa
 STR_3214    :Impossibile ingrandire ulteriormente la mappa

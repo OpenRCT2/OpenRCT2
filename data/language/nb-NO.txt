@@ -2691,14 +2691,14 @@ STR_2682    :<removed string - do not use>
 STR_2683    :<removed string - do not use>
 STR_2684    :{SMALLFONT}{BLACK}Large group of guests arrive
 STR_2685    :Simplex Noise Parameters
-STR_2686    :{WINDOW_COLOUR_2}Low:
-STR_2687    :{WINDOW_COLOUR_2}High:
-STR_2688    :{WINDOW_COLOUR_2}Base Frequency:
-STR_2689    :{WINDOW_COLOUR_2}Octaves:
+STR_2686    :Low:
+STR_2687    :High:
+STR_2688    :Base Frequency:
+STR_2689    :Octaves:
 STR_2690    :Map Generation
-STR_2691    :{WINDOW_COLOUR_2}Base height:
-STR_2692    :{WINDOW_COLOUR_2}Water level:
-STR_2693    :{WINDOW_COLOUR_2}Terrain:
+STR_2691    :Base height:
+STR_2692    :Water level:
+STR_2693    :Terrain:
 STR_2694    :Generate
 STR_2695    :Random terrain
 STR_2696    :Place trees
@@ -3218,7 +3218,7 @@ STR_3207    :Roller Coaster Designer
 STR_3208    :Track Designs Manager
 STR_3209    :Back to Previous Step:
 STR_3210    :Forward to Next Step:
-STR_3211    :{WINDOW_COLOUR_2}Map size:
+STR_3211    :Map size:
 STR_3212    :{POP16}{COMMA16} x {PUSH16}{COMMA16}
 STR_3213    :Can't decrease map size any further
 STR_3214    :Can't increase map size any further

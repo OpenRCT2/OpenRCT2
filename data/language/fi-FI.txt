@@ -2696,14 +2696,14 @@ STR_2682    :<not used anymore>
 STR_2683    :<not used anymore>
 STR_2684    :{SMALLFONT}{BLACK}Suuri kävijäryhmä saapuu
 STR_2685    :Simplex Noise Parameters
-STR_2686    :{WINDOW_COLOUR_2}Matala:
-STR_2687    :{WINDOW_COLOUR_2}Korkea:
-STR_2688    :{WINDOW_COLOUR_2}Base Frequency:
-STR_2689    :{WINDOW_COLOUR_2}Octaves:
+STR_2686    :Matala:
+STR_2687    :Korkea:
+STR_2688    :Base Frequency:
+STR_2689    :Octaves:
 STR_2690    :Kartan luonti
-STR_2691    :{WINDOW_COLOUR_2}Peruskorkeus:
-STR_2692    :{WINDOW_COLOUR_2}Vedentaso:
-STR_2693    :{WINDOW_COLOUR_2}Ympäristö:
+STR_2691    :Peruskorkeus:
+STR_2692    :Vedentaso:
+STR_2693    :Ympäristö:
 STR_2694    :Luo
 STR_2695    :Satunnainen ympäristö
 STR_2696    :Aseta puita
@@ -3223,7 +3223,7 @@ STR_3207    :Roller Coaster Designer
 STR_3208    :Track Designs Manager
 STR_3209    :Takaisin edelliseen vaiheeseen:
 STR_3210    :Siirry seuraavaan vaiheeseen:
-STR_3211    :{WINDOW_COLOUR_2}Kartan koko:
+STR_3211    :Kartan koko:
 STR_3212    :{POP16}{COMMA16} x {PUSH16}{COMMA16}
 STR_3213    :Karttaa ei voi enempää pienentää
 STR_3214    :Karttaa ei voi enempää suurentaa

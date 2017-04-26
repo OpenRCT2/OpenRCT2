@@ -2664,14 +2664,14 @@ STR_2680    :Investigación Completa
 STR_2681    :{MEDIUMFONT}{BLACK}Incrementa tu dinero en {CURRENCY}
 STR_2684    :{SMALLFONT}{BLACK}Llega un gran grupo de visitantes
 STR_2685    :Simplex Noise Parameters
-STR_2686    :{WINDOW_COLOUR_2}Bajo:
-STR_2687    :{WINDOW_COLOUR_2}Alto:
-STR_2688    :{WINDOW_COLOUR_2}Frecuencia Base:
-STR_2689    :{WINDOW_COLOUR_2}Octavas:
+STR_2686    :Bajo:
+STR_2687    :Alto:
+STR_2688    :Frecuencia Base:
+STR_2689    :Octavas:
 STR_2690    :Generación Mapa
-STR_2691    :{WINDOW_COLOUR_2}Altura de base:
-STR_2692    :{WINDOW_COLOUR_2}Altura de agua:
-STR_2693    :{WINDOW_COLOUR_2}Terreno:
+STR_2691    :Altura de base:
+STR_2692    :Altura de agua:
+STR_2693    :Terreno:
 STR_2694    :Generar
 STR_2695    :Terreno aleatorio
 STR_2696    :Colocar arboles
@@ -3185,7 +3185,7 @@ STR_3207    :Diseñador de Montañas Rusas
 STR_3208    :Diseñador de Vías
 STR_3209    :Regresar al paso anterior:
 STR_3210    :Avanzar al siguiente paso:
-STR_3211    :{WINDOW_COLOUR_2}Tamaño de Mapa:
+STR_3211    :Tamaño de Mapa:
 STR_3212    :{POP16}{COMMA16} x {PUSH16}{COMMA16}
 STR_3213    :No puedes disminuir más el tamaño del mapa
 STR_3214    :No puedes aumentar más el tamaño del mapa
