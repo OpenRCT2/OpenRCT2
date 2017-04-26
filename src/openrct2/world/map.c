@@ -4424,6 +4424,11 @@ void game_command_set_sign_name(sint32* eax, sint32* ebx, sint32* ecx, sint32* e
 
 void game_command_set_sign_style(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp) {
 	uint8 bannerId = *ecx & 0xFF;
+	if (bannerId > countof(gBanners)) {
+		log_warning("Invalid game command for setting sign style, banner id = %d", bannerId);
+		*ebx = MONEY32_UNDEFINED;
+		return;
+	}
 	rct_banner *banner = &gBanners[bannerId];
 	sint32 x = banner->x << 5;
 	sint32 y = banner->y << 5;
