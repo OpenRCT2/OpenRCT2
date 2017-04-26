@@ -17,6 +17,7 @@
 #include <assert.h>
 #include <stdarg.h>
 #include <stdio.h>
+#include <time.h>
 #include "diagnostic.h"
 
 static bool _log_location_enabled = true;
@@ -30,6 +31,15 @@ const char * _level_strings[] = {
 	"INFO"
 };
 
+// returns the current system time in a printable format                                                                                                                                                    
+char* getTime() {
+        time_t rawTime;
+        time(&rawTime);
+        static char curTime[128];
+        strftime(curTime, sizeof(curTime), "[%FT%T]", localtime(&rawTime));
+        return curTime;
+}
+
 void diagnostic_log(DiagnosticLevel diagnosticLevel, const char *format, ...)
 {
 	FILE *stream;
@@ -40,6 +50,9 @@ void diagnostic_log(DiagnosticLevel diagnosticLevel, const char *format, ...)
 
 	stream = stderr;
 
+	// timestamp                                                                                                                                                                                        
+        fprintf(stream, "%s: ", getTime());
+	
 	// Level
 	fprintf(stream, "%s: ", _level_strings[diagnosticLevel]);
 
@@ -61,6 +74,9 @@ void diagnostic_log_with_location(DiagnosticLevel diagnosticLevel, const char *f
 		return;
 
 	stream = stderr;
+	
+	// timestamp                                                                                                                                                                                        
+        fprintf(stream, "%s: ", getTime());
 
 	// Level and source code information
 	if (_log_location_enabled)

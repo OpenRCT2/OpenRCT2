@@ -81,6 +81,7 @@ extern bool _log_levels[DIAGNOSTIC_LEVEL_COUNT];
 extern "C" {
 #endif // __cplusplus
 
+char* getTime();
 void diagnostic_log(DiagnosticLevel diagnosticLevel, const char *format, ...);
 void diagnostic_log_with_location(DiagnosticLevel diagnosticLevel, const char *file, const char *function, sint32 line, const char *format, ...);
 
