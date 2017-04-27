@@ -5028,10 +5028,10 @@ STR_SCNR    :  Mythologie - Animatronic-filmset
 STR_PARK    :Animatronic Antics
 STR_DTLS    :Je moet een bestaand pretpark, gebouwd op een oude filmset, beheren en verbeteren. Bouw een eerbetoon aan de pioniers van de stop-motionanimatie, die de wezens uit de mythologie tot leven brachten op het witte doek.
 
-<Mythological - Cradle of Civilization>
+<Mythological - Cradle of Civilisation>
 STR_SCNR    :  Mythologie - Wieg van de beschaving
 STR_PARK    :Mythological Madness
-STR_DTLS    :Je bezit een eiland van grote archeologische waarde. Je hebt besloten om het voor het nageslacht te beschermen. Dit wil je bekostigen door een park te bouwen met de mythologische geschiedenis van je eiland als thema.
+STR_DTLS    :Je bezit een eiland van grote archeologische waarde, dat je voor het nageslacht wilt beschermen. Dit wil je bekostigen door een park te bouwen met de mythologische geschiedenis van je eiland als thema.
 
 <Prehistoric - After the Asteroid>
 STR_SCNR    :  Prehistorie - Na de meteoriet
@@ -5071,7 +5071,7 @@ STR_DTLS    :Een groot jaarlijks muziekfestival vindt plaats op jouw terrein. Bo
 <Rock 'n' Roll - Rock 'n' Roll>
 STR_SCNR    :  Rock 'n' Roll - Rock 'n' Roll
 STR_PARK    :Rock 'n' Roll Revival
-STR_DTLS    :Dit verouderde themapark heeft betere dagen gekend. Geef het park een rock 'n' roll-makeover en verander het in een succesvolle onderneming.
+STR_DTLS    :Dit verouderde themapark heeft betere tijden gekend. Geef het park een rock 'n' roll-makeover en verander het in een succesvolle onderneming.
 
 #OCC
 <Panda World>
