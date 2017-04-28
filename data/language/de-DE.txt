@@ -2747,7 +2747,7 @@ STR_2739    :Keine
 STR_2740    :RollerCoaster Tycoon 1
 STR_2741    :RollerCoaster Tycoon 2
 STR_2742    :css50.dat nicht gefunden
-STR_2743    :Kopieren Sie data\css17.dat aus Ihrem RCT1-Verzeichnis nach data\css50.dat in Ihrem RCT2-Verzeichnis.
+STR_2743    :Kopieren Sie data\css17.dat aus Ihrem RCT1-Verzeichnis nach data\css50.dat in Ihrem RCT2-Verzeichnis oder versichern Sie sich, dass der Pfad zur RCT1-Installation in den Optionen korrekt angegeben ist.
 STR_2744    :[
 STR_2745    :\
 STR_2746    :]
@@ -4136,7 +4136,7 @@ STR_5832    :{SMALLFONT}{BLACK}Zeigt Höhen als generische Einheiten,{NEWLINE}an
 STR_5833    :{SMALLFONT}{BLACK}Verändert das verwendete Datumsformat
 STR_5834    :{SMALLFONT}{BLACK}Das zu verwendende Audiogerät auswählen
 STR_5835    :{SMALLFONT}{BLACK}Schaltet das Spiel stumm, wenn das{NEWLINE}Spiel nicht mehr im Vordergrund ist
-STR_5836    :{SMALLFONT}{BLACK}Die im Hauptmenü verwendete{NEWLINE}Musik auswählen.{NEWLINE}{NEWLINE}Die RCT1-Musik erfordert das Kopieren von 'data/css17.dat',{NEWLINE}aus dem RCT1-Ordner, nach 'data/css50.dat' im{NEWLINE}RCT2-Ordner
+STR_5836    :{SMALLFONT}{BLACK}Die im Hauptmenü verwendete{NEWLINE}Musik auswählen.{NEWLINE}{NEWLINE}Die RCT1-Musik erfordert das Kopieren von 'data/css17.dat',{NEWLINE}aus dem RCT1-Ordner, nach 'data/css50.dat' im{NEWLINE}RCT2-Ordner oder versichern Sie sich, dass der Pfad zur RCT1-Installation in den Optionen korrekt angegeben ist.
 STR_5837    :{SMALLFONT}{BLACK}Benutzerdefinierte GUIs{NEWLINE}erstellen und verwalten
 STR_5838    :{SMALLFONT}{BLACK}Zeigt für die Finanzen in der Symbolleiste{NEWLINE}eine gesonderte Schaltfläche an
 STR_5839    :{SMALLFONT}{BLACK}Zeigt für die Forschung & Entwicklung{NEWLINE}in der Symbolleiste eine gesonderte Schaltfläche an
@@ -4160,6 +4160,7 @@ STR_5856    :{SMALLFONT}{BLACK}Die im Vollbildmodus verwendete{NEWLINE}Auflösun
 STR_5857    :{SMALLFONT}{BLACK}Spieloptionen
 STR_5858    :{SMALLFONT}{BLACK}GPU anstelle der CPU für die Anzeige verwenden. Verbessert die Kompatibilität mit Aufnahmeprogrammen. Möglicherweise wird die Leistung geringfügig beeinträchtigt
 STR_5859    :{SMALLFONT}{BLACK}Aktiviert Tweening für ein sichtbar flüssigeres Spielverhalten. Wenn deaktiviert läuft das Spiel mit 40 FPS
+STR_5860    :Umschalten zwischen original und dekompilierten Streckenbau
 STR_5861    :Schlüsselüberprüfung fehlgeschlagen.
 STR_5862    :Blockiere unbekannte Spieler
 STR_5863    :{SMALLFONT}{BLACK}Erlaube nur Spieler, mit bekanntem{NEWLINE}Schlüssel, sich zu verbinden
@@ -4314,6 +4315,32 @@ STR_6011    :{COMMA1DP16}ft
 STR_6012    :{COMMA1DP16}
 STR_6013    :{SMALLFONT}{BLACK}Gäste zahlen lediglich den Eintritt zum Park.{NEWLINE}Die Attraktionen sind kostenfrei.
 STR_6014    :{SMALLFONT}{BLACK}Gäste zahlen lediglich für Attraktionen und Service.{NEWLINE}Der Eintritt in den Park ist kostenfrei.
+STR_6015    :Geneigt
+STR_6016    :Modifiziere Kachel
+STR_6017    :Bitte verlangsamen Sie Ihr Tempo
+STR_6018    :Streckenbau - Bogen links
+STR_6019    :Streckenbau - Bogen rechts
+STR_6020    :Streckenbau - Verwende Standard Abschnitt
+STR_6021    :Streckenbau - Neigung unten
+STR_6022    :Streckenbau - Neigung Oben
+STR_6023    :Streckenbau - Umschalten Kettenlift
+STR_6024    :Streckenbau - Überhöhung links
+STR_6025    :Streckenbau - Überhöhung rechts
+STR_6026    :Streckenbau - Vorausgehender Abschnitt
+STR_6027    :Streckenbau - Nächster Abschnitt
+STR_6028    :Streckenbau - Aktuellen Abschnitt platzieren
+STR_6029    :Streckenbau - Aktuellen Abschnitt abreißen
+STR_6030    :{SMALLFONT}{BLACK}Landschaftsauswahl. Wählen Sie ein Landschaftselement auf der Karte aus, und verwenden Sie es zum Platzieren.
+STR_6031    :Serverbeschreibung:
+STR_6032    :Serverbegrüßung:
+STR_6033    :Pfad zur RCT1-Installation:
+STR_6035    :Bitte wählen Sie ein RCT1-Verzeichnis
+STR_6036    :{SMALLFONT}{BLACK}Leeren
+STR_6037    :Bitte wählen Sie ein valides RCT1-Verzeichnis
+STR_6038    :{SMALLFONT}{BLACK}Falls Sie RCT1 installiert haben, setzen Sie diese Option zum Laden von Scenarios, Musik, usw. 
+STR_6039    :{SMALLFONT}{BLACK}Schnellabriss
+STR_6040    :Bearbeite Szenariooptionen
+STR_6041    :{BLACK}Es sind keine Mechaniker eingestellt! 
 
 #############
 # Scenarios #
