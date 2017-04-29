@@ -2063,7 +2063,7 @@ static bool ride_get_place_position_from_screen_position(sint32 screenX, sint32 
 	rct_viewport *viewport;
 
 	if (!_trackPlaceCtrlState) {
-		if (gInputPlaceObjectModifier & PLACE_OBJECT_MODIFIER_COPY_Z) {
+		if (platform_check_ctrl()) {
 			get_map_coordinates_from_pos(screenX, screenY, 0xFCCA, &mapX, &mapY, &interactionType, &mapElement, &viewport);
 			if (interactionType != 0) {
 				_trackPlaceCtrlZ = mapElement->base_height * 8;
@@ -2071,20 +2071,20 @@ static bool ride_get_place_position_from_screen_position(sint32 screenX, sint32 
 			}
 		}
 	} else {
-		if (!(gInputPlaceObjectModifier & PLACE_OBJECT_MODIFIER_COPY_Z)) {
+		if (!platform_check_ctrl()) {
 			_trackPlaceCtrlState = false;
 		}
 	}
 
 	if (!_trackPlaceShiftState) {
-		if (gInputPlaceObjectModifier & PLACE_OBJECT_MODIFIER_SHIFT_Z) {
+		if (platform_check_shift()) {
 			_trackPlaceShiftState = true;
 			_trackPlaceShiftStartScreenX = screenX;
 			_trackPlaceShiftStartScreenY = screenY;
 			_trackPlaceShiftZ = 0;
 		}
 	} else {
-		if (gInputPlaceObjectModifier & PLACE_OBJECT_MODIFIER_SHIFT_Z) {
+		if (platform_check_shift()) {
 			_trackPlaceShiftZ = floor2(_trackPlaceShiftStartScreenY - screenY + 4, 8);
 			screenX = _trackPlaceShiftStartScreenX;
 			screenY = _trackPlaceShiftStartScreenY;

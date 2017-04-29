@@ -64,19 +64,11 @@ typedef enum INPUT_STATE {
 	INPUT_STATE_SCROLL_RIGHT
 } INPUT_STATE;
 
-typedef enum PLACE_OBJECT_MODIFIER {
-	PLACE_OBJECT_MODIFIER_NONE = 0,
-	PLACE_OBJECT_MODIFIER_SHIFT_Z = (1 << 0),
-	PLACE_OBJECT_MODIFIER_COPY_Z = (1 << 1),
-} PLACE_OBJECT_MODIFIER;
-
 typedef struct widget_ref {
 	rct_windowclass window_classification;
 	rct_windownumber window_number;
 	rct_widgetindex widget_index;
 } widget_ref;
-
-extern uint8 gInputPlaceObjectModifier;
 
 extern sint32 gInputDragLastX;
 extern sint32 gInputDragLastY;
@@ -103,8 +95,6 @@ void store_mouse_input(sint32 state, sint32 x, sint32 y);
 void input_set_flag(INPUT_FLAGS flag, bool on);
 bool input_test_flag(INPUT_FLAGS flag);
 void input_reset_flags();
-
-bool input_test_place_object_modifier(PLACE_OBJECT_MODIFIER modifier);
 
 void input_set_state(INPUT_STATE state);
 INPUT_STATE input_get_state();

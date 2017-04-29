@@ -41,6 +41,12 @@
 #define KEYBOARD_PRIMARY_MODIFIER KMOD_CTRL
 #endif
 
+#define KEYBOARD_KEYPRESS_UNDEFINED { SDLK_UNKNOWN, KMOD_NONE }
+#define KEYBOARD_KEYPRESSES_PER_UPDATE 16
+
+// Number of modifier keys - 2xA, 2xC, 2xGUI, 2xS
+#define MODS_NUM_HELD (SDLK_RGUI - SDLK_LCTRL + 1)
+
 #define INVALID_HANDLE -1
 
 #define TOUCH_DOUBLE_TIMEOUT 300
@@ -58,9 +64,9 @@
 #define ALT 0x400
 #define CMD 0x800
 #ifdef __MACOSX__
-	#define PLATFORM_MODIFIER CMD
+	#define PLATFORM_MODIFIER KMOD_GUI
 #else
-	#define PLATFORM_MODIFIER CTRL
+	#define PLATFORM_MODIFIER KMOD_CTRL
 #endif
 
 typedef struct resolution {
@@ -116,10 +122,19 @@ typedef struct file_dialog_desc {
 	} filters[8];
 } file_dialog_desc;
 
+typedef struct {
+	SDL_Keycode keycode;
+	uint16 mod;
+} keypress;
+
 extern openrct2_cursor gCursorState;
-extern const uint8 *gKeysState;
-extern uint8 *gKeysPressed;
-extern uint32 gLastKeyPressed;
+extern keypress *gKeysPressed;
+extern int gMapKeysStackHorizontal[2]; // State for map scroll shortcut keys
+extern int gMapKeysStackVertical[2];
+extern bool gModsHeld[];
+extern sint32 gNumKeysPressed;
+extern sint32 gCurKeyNum;
+extern keypress gLastKeyPressed;
 
 extern textinputbuffer gTextInput;
 extern bool gTextInputCompositionActive;
@@ -150,7 +165,6 @@ void platform_toggle_windowed_mode();
 void platform_set_cursor(uint8 cursor);
 void platform_refresh_video();
 void platform_process_messages();
-sint32 platform_scancode_to_rct_keycode(sint32 sdl_key);
 void platform_start_text_input(utf8 *buffer, sint32 max_length);
 void platform_stop_text_input();
 bool platform_is_input_active();
@@ -158,6 +172,12 @@ void platform_get_date_utc(rct2_date *out_date);
 void platform_get_time_utc(rct2_time *out_time);
 void platform_get_date_local(rct2_date *out_date);
 void platform_get_time_local(rct2_time *out_time);
+bool platform_keypress_equals(keypress k1, keypress k2);
+bool platform_check_alt(void);
+bool platform_check_ctrl(void);
+bool platform_check_gui(void);
+bool platform_check_shift(void);
+void platform_map_keys_stack_clear(void);
 
 // Platform specific definitions
 void platform_get_exe_path(utf8 *outPath, size_t outSize);

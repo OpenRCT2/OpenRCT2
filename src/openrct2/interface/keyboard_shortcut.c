@@ -43,14 +43,14 @@ static const shortcut_action shortcut_table[SHORTCUT_COUNT];
  *
  *  rct2: 0x006E3E91
  */
-void keyboard_shortcut_set(sint32 key)
+void keyboard_shortcut_set(keypress key)
 {
 	sint32 i;
 
 	// Unmap shortcut that already uses this key
 	for (i = 0; i < SHORTCUT_COUNT; i++) {
-		if (key == gShortcutKeys[i]) {
-			gShortcutKeys[i] = SHORTCUT_UNDEFINED;
+		if (platform_keypress_equals(key, gShortcutKeys[i])) {
+			gShortcutKeys[i] = (keypress)SHORTCUT_UNDEFINED;
 			break;
 		}
 	}
@@ -60,12 +60,13 @@ void keyboard_shortcut_set(sint32 key)
 	window_close_by_class(WC_CHANGE_KEYBOARD_SHORTCUT);
 	window_invalidate_by_class(WC_KEYBOARD_SHORTCUT_LIST);
 	config_shortcut_keys_save();
+	platform_map_keys_stack_clear();
 }
 
-static sint32 keyboard_shortcut_get_from_key(sint32 key)
+static sint32 keyboard_shortcut_get_from_key(keypress key)
 {
 	for (sint32 i = 0; i < SHORTCUT_COUNT; i++) {
-		if (key == gShortcutKeys[i]) {
+		if (platform_keypress_equals(key, gShortcutKeys[i])) {
 			return i;
 		}
 	}
@@ -76,17 +77,16 @@ static sint32 keyboard_shortcut_get_from_key(sint32 key)
  *
  *  rct2: 0x006E3E68
  */
-void keyboard_shortcut_handle(sint32 key)
+void keyboard_shortcut_handle(keypress key)
 {
 	sint32 shortcut = keyboard_shortcut_get_from_key(key);
-	if (shortcut != -1) {
+	if (shortcut != -1)
 		keyboard_shortcut_handle_command(shortcut);
-	}
 }
 
 void keyboard_shortcut_handle_command(sint32 shortcutIndex)
 {
-	if (shortcutIndex >= 0 && shortcutIndex < countof(shortcut_table)) {
+	if (shortcutIndex >= 0 && shortcutIndex < SHORTCUT_COUNT) {
 		shortcut_action action = shortcut_table[shortcutIndex];
 		if (action != NULL) {
 			action();
@@ -94,22 +94,24 @@ void keyboard_shortcut_handle_command(sint32 shortcutIndex)
 	}
 }
 
-void keyboard_shortcut_format_string(char *buffer, size_t size, uint16 shortcutKey)
+void keyboard_shortcut_format_string(char *buffer, size_t size, keypress shortcut_key)
 {
 	char formatBuffer[256];
 
-	if (size == 0) return;
+	if (size == 0)
+		return;
 	*buffer = 0;
-	if (shortcutKey == SHORTCUT_UNDEFINED) return;
-	if (shortcutKey & 0x100) {
+	if (platform_keypress_equals(shortcut_key, (keypress)SHORTCUT_UNDEFINED))
+		return;
+	if (shortcut_key.mod & KMOD_SHIFT) {
 		format_string(formatBuffer, 256, STR_SHIFT_PLUS, NULL);
 		safe_strcat(buffer, formatBuffer, size);
 	}
-	if (shortcutKey & 0x200) {
+	if (shortcut_key.mod & KMOD_CTRL) {
 		format_string(formatBuffer, 256, STR_CTRL_PLUS, NULL);
 		safe_strcat(buffer, formatBuffer, size);
 	}
-	if (shortcutKey & 0x400) {
+	if (shortcut_key.mod & KMOD_ALT) {
 #ifdef __MACOSX__
 		format_string(formatBuffer, 256, STR_OPTION_PLUS, NULL);
 #else
@@ -117,11 +119,11 @@ void keyboard_shortcut_format_string(char *buffer, size_t size, uint16 shortcutK
 #endif
 		safe_strcat(buffer, formatBuffer, size);
 	}
-	if (shortcutKey & 0x800) {
+	if (shortcut_key.mod & KMOD_GUI) {
 		format_string(formatBuffer, 256, STR_CMD_PLUS, NULL);
 		safe_strcat(buffer, formatBuffer, size);
 	}
-	safe_strcat(buffer, SDL_GetScancodeName(shortcutKey & 0xFF), size);
+	safe_strcat(buffer, SDL_GetKeyName(shortcut_key.keycode), size);
 }
 
 #pragma region Shortcut Commands

@@ -40,9 +40,13 @@
 typedef void(*update_palette_func)(const uint8*, sint32, sint32);
 
 openrct2_cursor gCursorState;
-const uint8 *gKeysState;
-uint8 *gKeysPressed;
-uint32 gLastKeyPressed;
+bool gModsHeld[MODS_NUM_HELD] = { 0 };
+int gMapKeysStackHorizontal[2] = { 0 };
+int gMapKeysStackVertical[2] = { 0 };
+keypress *gKeysPressed;
+sint32 gCurKeyNum;
+sint32 gNumKeysPressed;
+keypress gLastKeyPressed;
 textinputbuffer gTextInput;
 
 bool gTextInputCompositionActive;
@@ -67,7 +71,12 @@ static const sint32 _fullscreen_modes[] = { 0, SDL_WINDOW_FULLSCREEN, SDL_WINDOW
 static uint32 _lastGestureTimestamp;
 static float _gestureRadius;
 
+static void platform_process_text_input_special_keys(keypress key);
 static void platform_create_window();
+
+static void platform_filter_keypress(keypress *key);
+static inline void platform_map_keys_stack_insert(int val);
+static inline void platform_map_keys_stack_remove(int val);
 
 static sint32 resolution_sort_func(const void *pa, const void *pb)
 {
@@ -291,7 +300,11 @@ void platform_process_messages()
 {
 	SDL_Event e;
 
-	gLastKeyPressed = 0;
+	keypress key = KEYBOARD_KEYPRESS_UNDEFINED;
+	gLastKeyPressed = key;
+
+	int mod_held_idx;
+
 	// gCursorState.wheel = 0;
 	gCursorState.left &= ~CURSOR_CHANGED;
 	gCursorState.middle &= ~CURSOR_CHANGED;
@@ -299,7 +312,14 @@ void platform_process_messages()
 	gCursorState.old = 0;
 	gCursorState.touch = false;
 
+	bool skip = false;
 	while (SDL_PollEvent(&e)) {
+
+		// Multiple window events per update must be handled; ignore inputs.
+		if (skip && !(e.type == SDL_WINDOWEVENT ||
+					  e.type == SDL_QUIT))
+			continue;
+
 		switch (e.type) {
 		case SDL_QUIT:
 // 			rct2_finish();
@@ -318,18 +338,33 @@ void platform_process_messages()
 					SDL_RestoreWindow(gWindow);
 					SDL_SetWindowFullscreen(gWindow, SDL_WINDOW_FULLSCREEN_DESKTOP);
 				}
-			}
 
-			if (e.window.event == SDL_WINDOWEVENT_SIZE_CHANGED)
-				platform_resize(e.window.data1, e.window.data2);
-			if (gConfigSound.audio_focus && gConfigSound.sound_enabled) {
-				if (e.window.event == SDL_WINDOWEVENT_FOCUS_GAINED) {
+				if (gConfigSound.audio_focus && gConfigSound.sound_enabled) {
 					Mixer_SetVolume(1);
 				}
-				if (e.window.event == SDL_WINDOWEVENT_FOCUS_LOST) {
+
+				skip = true;
+			}
+
+			if (e.window.event == SDL_WINDOWEVENT_SIZE_CHANGED) {
+				platform_resize(e.window.data1, e.window.data2);
+			}
+
+			if (e.window.event == SDL_WINDOWEVENT_FOCUS_LOST) {
+				// Reset held keys to make up for lost KEYUP events during lost focus
+				platform_map_keys_stack_clear();
+				memset(gModsHeld, 0x0, sizeof(gModsHeld));
+
+				if (gConfigSound.audio_focus && gConfigSound.sound_enabled) {
 					Mixer_SetVolume(0);
 				}
+
+				skip = true;
 			}
+
+			// Handle no input during window events.
+			memset(gKeysPressed, 0x0, sizeof(keypress) * KEYBOARD_KEYPRESSES_PER_UPDATE);
+
 			break;
 		case SDL_MOUSEMOTION:
 			gCursorState.x = (sint32)(e.motion.x / gConfigGeneral.window_scale);
@@ -430,78 +465,69 @@ void platform_process_messages()
 		}
 #endif
 		case SDL_KEYDOWN:
-			if (gTextInputCompositionActive) break;
+			if (gTextInputCompositionActive)
+				break;
 
-			if (e.key.keysym.sym == SDLK_KP_ENTER){
-				// Map Keypad enter to regular enter.
-				e.key.keysym.scancode = SDL_SCANCODE_RETURN;
+			// Ignore unknown keys
+			if ((e.key.keysym.sym & ~(1<<30)) == SDLK_UNKNOWN)
+				break;
+
+			key = (keypress){ e.key.keysym.sym, e.key.keysym.mod };
+			platform_filter_keypress(&key);
+
+			if (gTextInput.buffer != NULL)
+				platform_process_text_input_special_keys(key);
+
+			// We don't want repeat events (repeats from key being held down)
+			if (e.key.repeat)
+				break;
+
+			// Handle modifiers
+			mod_held_idx = key.keycode - SDLK_LCTRL;
+			if ((mod_held_idx >= 0) && (mod_held_idx < MODS_NUM_HELD)) {
+				gModsHeld[mod_held_idx] = true;
+				break;
+			}
+			// Ignore MODE mode (for global modifier state)
+			if (key.keycode == SDLK_MODE)
+				break;
+
+			gLastKeyPressed = key;
+
+			if (gNumKeysPressed < KEYBOARD_KEYPRESSES_PER_UPDATE) {
+				// Handle only KEYBOARD_KEYPRESSES_PER_UPDATE keypresses per update
+				gKeysPressed[gNumKeysPressed] = gLastKeyPressed;
+				++gNumKeysPressed;
 			}
 
-			gLastKeyPressed = e.key.keysym.sym;
-			gKeysPressed[e.key.keysym.scancode] = 1;
-
-			// Text input
-			if (gTextInput.buffer == NULL) break;
-
-			// Clear the input on <CTRL>Backspace (Windows/Linux) or <MOD>Backspace (macOS)
-			if (e.key.keysym.sym == SDLK_BACKSPACE && (e.key.keysym.mod & KEYBOARD_PRIMARY_MODIFIER)) {
-				textinputbuffer_clear(&gTextInput);
-				console_refresh_caret();
-				window_update_textbox();
-			}
-
-			// If backspace and we have input text with a cursor position none zero
-			if (e.key.keysym.sym == SDLK_BACKSPACE) {
-				if (gTextInput.selection_offset > 0) {
-					size_t endOffset = gTextInput.selection_offset;
-					textinputbuffer_cursor_left(&gTextInput);
-					gTextInput.selection_size = endOffset - gTextInput.selection_offset;
-					textinputbuffer_remove_selected(&gTextInput);
-
-					console_refresh_caret();
-					window_update_textbox();
+			// Handle map scrolling keys
+			for (int i = SHORTCUT_SCROLL_MAP_UP; i <= SHORTCUT_SCROLL_MAP_RIGHT; ++i) {
+				if (platform_keypress_equals(key, gShortcutKeys[i])) {
+					platform_map_keys_stack_insert(i);
+					break;
 				}
 			}
-			if (e.key.keysym.sym == SDLK_HOME) {
-				textinputbuffer_cursor_home(&gTextInput);
-				console_refresh_caret();
-			}
-			if (e.key.keysym.sym == SDLK_END) {
-				textinputbuffer_cursor_end(&gTextInput);
-				console_refresh_caret();
-			}
-			if (e.key.keysym.sym == SDLK_DELETE) {
-				size_t startOffset = gTextInput.selection_offset;
-				textinputbuffer_cursor_right(&gTextInput);
-				gTextInput.selection_size = gTextInput.selection_offset - startOffset;
-				gTextInput.selection_offset = startOffset;
-				textinputbuffer_remove_selected(&gTextInput);
-				console_refresh_caret();
-				window_update_textbox();
-			}
-			if (e.key.keysym.sym == SDLK_RETURN) {
-				window_cancel_textbox();
-			}
-			if (e.key.keysym.sym == SDLK_LEFT) {
-				textinputbuffer_cursor_left(&gTextInput);
-				console_refresh_caret();
-			}
-			else if (e.key.keysym.sym == SDLK_RIGHT) {
-				textinputbuffer_cursor_right(&gTextInput);
-				console_refresh_caret();
-			}
-			else if (e.key.keysym.sym == SDLK_v && (SDL_GetModState() & KEYBOARD_PRIMARY_MODIFIER)) {
-				if (SDL_HasClipboardText()) {
-					utf8* text = SDL_GetClipboardText();
 
-					utf8_remove_formatting(text, false);
-					textinputbuffer_insert(&gTextInput, text);
+			break;
+		case SDL_KEYUP:
+			// Handle keyup for held keys
+			key = (keypress){ e.key.keysym.sym, e.key.keysym.mod };
+			platform_filter_keypress(&key);
 
-					SDL_free(text);
-
-					window_update_textbox();
+			// Held map scroll keys
+			// (Discard modifier, user might have released it while holding)
+			for (int i = SHORTCUT_SCROLL_MAP_UP; i <= SHORTCUT_SCROLL_MAP_RIGHT; ++i) {
+				if (key.keycode == gShortcutKeys[i].keycode) {
+					platform_map_keys_stack_remove(i);
+					break;
 				}
 			}
+
+			// Modifiers
+			mod_held_idx = key.keycode - SDLK_LCTRL;
+			if ((mod_held_idx >= 0) && (mod_held_idx < MODS_NUM_HELD))
+				gModsHeld[mod_held_idx] = false;
+
 			break;
 		case SDL_MULTIGESTURE:
 			if (e.mgesture.numFingers == 2) {
@@ -552,10 +578,73 @@ void platform_process_messages()
 	}
 
 	gCursorState.any = gCursorState.left | gCursorState.middle | gCursorState.right;
+}
 
-	// Updates the state of the keys
-	sint32 numKeys = 256;
-	gKeysState = SDL_GetKeyboardState(&numKeys);
+static void platform_process_text_input_special_keys(keypress key)
+{
+	if (key.keycode == SDLK_BACKSPACE) {
+		if (key.mod & KEYBOARD_PRIMARY_MODIFIER) {
+			// Clear the input on <CTRL>Backspace (Windows/Linux) or <MOD>Backspace (macOS)
+			textinputbuffer_clear(&gTextInput);
+			console_refresh_caret();
+			window_update_textbox();
+
+			// If we have input text with a cursor position none zero
+		} else if (gTextInput.selection_offset > 0) {
+			size_t endOffset = gTextInput.selection_offset;
+			textinputbuffer_cursor_left(&gTextInput);
+			gTextInput.selection_size = endOffset - gTextInput.selection_offset;
+			textinputbuffer_remove_selected(&gTextInput);
+
+			console_refresh_caret();
+			window_update_textbox();
+		}
+	}
+
+	if (key.keycode == SDLK_HOME) {
+		textinputbuffer_cursor_home(&gTextInput);
+		console_refresh_caret();
+	}
+
+	if (key.keycode == SDLK_END) {
+		textinputbuffer_cursor_end(&gTextInput);
+		console_refresh_caret();
+	}
+
+	if (key.keycode == SDLK_DELETE) {
+		size_t startOffset = gTextInput.selection_offset;
+		textinputbuffer_cursor_right(&gTextInput);
+		gTextInput.selection_size = gTextInput.selection_offset - startOffset;
+		gTextInput.selection_offset = startOffset;
+		textinputbuffer_remove_selected(&gTextInput);
+		console_refresh_caret();
+		window_update_textbox();
+	}
+
+	if (key.keycode == SDLK_RETURN) {
+		window_cancel_textbox();
+	}
+
+	if (key.keycode == SDLK_LEFT) {
+		textinputbuffer_cursor_left(&gTextInput);
+		console_refresh_caret();
+
+	} else if (key.keycode == SDLK_RIGHT) {
+		textinputbuffer_cursor_right(&gTextInput);
+		console_refresh_caret();
+
+	} else if (platform_keypress_equals(key, (keypress){ SDLK_v, KEYBOARD_PRIMARY_MODIFIER })) {
+		if (SDL_HasClipboardText()) {
+			utf8* text = SDL_GetClipboardText();
+
+			utf8_remove_formatting(text, false);
+			textinputbuffer_insert(&gTextInput, text);
+
+			SDL_free(text);
+
+			window_update_textbox();
+		}
+	}
 }
 
 static void platform_close_window()
@@ -567,8 +656,8 @@ static void platform_close_window()
 void platform_init()
 {
 	platform_create_window();
-	gKeysPressed = malloc(sizeof(uint8) * 256);
-	memset(gKeysPressed, 0, sizeof(uint8) * 256);
+	gKeysPressed = calloc(sizeof(keypress), KEYBOARD_KEYPRESSES_PER_UPDATE);
+	gNumKeysPressed = 0;
 
 	// Set the highest palette entry to white.
 	// This fixes a bug with the TT:rainbow road due to the
@@ -628,19 +717,6 @@ static void platform_create_window()
 	// Check if steam overlay renderer is loaded into the process
 	gSteamOverlayActive = platform_check_steam_overlay_attached();
 	platform_trigger_resize();
-}
-
-sint32 platform_scancode_to_rct_keycode(sint32 sdl_key)
-{
-	char keycode = (char)SDL_GetKeyFromScancode((SDL_Scancode)sdl_key);
-
-	// Until we reshufle the text files to use the new positions
-	// this will suffice to move the majority to the correct positions.
-	// Note any special buttons PgUp PgDwn are mapped wrong.
-	if (keycode >= 'a' && keycode <= 'z')
-		keycode = toupper(keycode);
-
-	return keycode;
 }
 
 void platform_free()
@@ -781,4 +857,91 @@ uint8 platform_get_currency_value(const char *currCode) {
 void core_init()
 {
 	bitcount_init();
+}
+
+bool platform_keypress_equals(keypress k1, keypress k2)
+{
+	return (k1.keycode == k2.keycode) && (k1.mod == k2.mod);
+}
+
+/**
+ * Check if the last pressed key was the modifier, or if the last pressed
+ * key had the modifier set.
+ */
+bool platform_check_alt(void)
+{
+	return gModsHeld[SDLK_LALT - SDLK_LCTRL] || gModsHeld[SDLK_RALT - SDLK_LCTRL];
+}
+
+bool platform_check_ctrl(void)
+{
+	return gModsHeld[SDLK_LCTRL - SDLK_LCTRL] || gModsHeld[SDLK_RCTRL - SDLK_LCTRL];
+}
+
+bool platform_check_gui(void)
+{
+	return gModsHeld[SDLK_LGUI - SDLK_LCTRL] || gModsHeld[SDLK_RGUI - SDLK_LCTRL];
+}
+
+bool platform_check_shift(void)
+{
+	return gModsHeld[SDLK_LSHIFT - SDLK_LCTRL] || gModsHeld[SDLK_RSHIFT - SDLK_LCTRL];
+}
+
+/**
+ * Filter / sanitize / override keypress before it is handled.
+ */
+static void platform_filter_keypress(keypress *key)
+{
+	// Map Keypad enter to return
+	if (key->keycode == SDLK_KP_ENTER) {
+		key->keycode = SDLK_RETURN;
+	}
+
+	// Filter out unwanted modifiers
+	key->mod &= (KMOD_ALT | KMOD_CTRL | KMOD_GUI | KMOD_MODE | KMOD_SHIFT);
+
+	// Don't distinguish between L/R modifier
+	if (key->mod & KMOD_ALT)
+		key->mod |= KMOD_ALT;
+	if (key->mod & KMOD_CTRL)
+		key->mod |= KMOD_CTRL;
+	if (key->mod & KMOD_GUI)
+		key->mod |= KMOD_GUI;
+	if (key->mod & KMOD_SHIFT)
+		key->mod |= KMOD_SHIFT;
+}
+
+static inline void platform_map_keys_stack_insert(int val)
+{
+	if (val == SHORTCUT_SCROLL_MAP_LEFT || val == SHORTCUT_SCROLL_MAP_RIGHT) {
+		if (gMapKeysStackHorizontal[0])
+			gMapKeysStackHorizontal[1] = val;
+		else
+			gMapKeysStackHorizontal[0] = val;
+	} else {
+		if (gMapKeysStackVertical[0])
+			gMapKeysStackVertical[1] = val;
+		else
+			gMapKeysStackVertical[0] = val;
+	}
+}
+
+static inline void platform_map_keys_stack_remove(int val)
+{
+	if (val == SHORTCUT_SCROLL_MAP_LEFT || val == SHORTCUT_SCROLL_MAP_RIGHT) {
+		if (gMapKeysStackHorizontal[0] == val)
+			gMapKeysStackHorizontal[0] = gMapKeysStackHorizontal[1];
+		gMapKeysStackHorizontal[1] = 0;
+	} else {
+		if (gMapKeysStackVertical[0] == val)
+			gMapKeysStackVertical[0] = gMapKeysStackVertical[1];
+		gMapKeysStackVertical[1] = 0;
+	}
+}
+
+void platform_map_keys_stack_clear(void)
+{
+	memset(gMapKeysStackHorizontal, 0, sizeof(gMapKeysStackHorizontal));
+	memset(gMapKeysStackVertical, 0, sizeof(gMapKeysStackVertical));
 }
