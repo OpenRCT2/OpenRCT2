@@ -158,6 +158,7 @@ void platform_get_date_utc(rct2_date *out_date);
 void platform_get_time_utc(rct2_time *out_time);
 void platform_get_date_local(rct2_date *out_date);
 void platform_get_time_local(rct2_time *out_time);
+void printLocalDateTime(FILE *stream);
 
 // Platform specific definitions
 void platform_get_exe_path(utf8 *outPath, size_t outSize);

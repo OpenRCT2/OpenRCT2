@@ -782,3 +782,13 @@ void core_init()
 {
 	bitcount_init();
 }
+
+// prints the current system time in a printable format to the passed stream
+void printLocalDateTime (FILE *stream) {
+	rct2_date outDate;
+	platform_get_date_local(&outDate);
+	rct2_time outTime;
+	platform_get_time_local(&outTime);
+	fprintf(stream, "[%hd-%hhu-%hhuT", outDate.year, outDate.month, outDate.day);
+	fprintf(stream, "%hhu:%hhu:%hhu]", outTime.hour, outTime.minute, outTime.second);
+}
