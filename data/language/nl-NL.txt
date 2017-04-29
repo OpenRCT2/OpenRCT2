@@ -4341,7 +4341,21 @@ STR_6037    :Selecteer een geldige RCT1-map.
 STR_6038    :{SMALLFONT}{BLACK}Als je RCT1 hebt, stel dan hier het pad in om gebruik te maken van de scenario's, baanontwerpen en graphics.
 STR_6039    :{SMALLFONT}{BLACK}Snel afbreken
 STR_6040    :Scenario-opties bewerken
-STR_6041    :{BLACK}Er zijn geen monteurs ingehuurd! 
+STR_6041    :{BLACK}Er zijn geen monteurs ingehuurd!
+STR_6042    :Hoogtekaart laden
+STR_6043    :Hoogtekaart selecteren
+STR_6044    :Hoogtekaart verzachten
+STR_6045    :Sterkte
+STR_6046    :Hoogtekaart normaliseren
+STR_6047    :Landschap verzachten
+STR_6048    :Fout bij het verwerken van hoogtekaart
+STR_6049    :Kon PNG niet inlezen
+STR_6050    :Kon bitmap niet inlezen
+STR_6051    :De breedte en hoogte moeten overeenkomen
+STR_6052    :De hoogtekaart is te groot en zal worden bijgesneden
+STR_6053    :De hoogtekaart kan niet worden genormaliseerd
+STR_6054    :Alleen 24-bit bitmaps worden ondersteund
+STR_6055    :Hoogtekaart voor OpenRCT2
 
 #############
 # Scenarios #
