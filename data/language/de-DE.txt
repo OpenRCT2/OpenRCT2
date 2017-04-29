@@ -2690,14 +2690,14 @@ STR_2682    :{MEDIUMFONT}{BLACK}Zw. freiem und kostenpfl. Eintritt umsch.
 STR_2683    :{MEDIUMFONT}{BLACK}Erhöht das Vergnügen der Besucher maximal
 STR_2684    :{SMALLFONT}{BLACK}Eine große Gruppe von Besuchern tritt ein
 STR_2685    :`Simplex Noise' Param.
-STR_2686    :{WINDOW_COLOUR_2}Niedrig:
-STR_2687    :{WINDOW_COLOUR_2}Hoch:
-STR_2688    :{WINDOW_COLOUR_2}Basisfrequenz:
-STR_2689    :{WINDOW_COLOUR_2}Oktaven:
+STR_2686    :Niedrig:
+STR_2687    :Hoch:
+STR_2688    :Basisfrequenz:
+STR_2689    :Oktaven:
 STR_2690    :Kartengenerierung
-STR_2691    :{WINDOW_COLOUR_2}Basishöhe:
-STR_2692    :{WINDOW_COLOUR_2}Wasserhöhe:
-STR_2693    :{WINDOW_COLOUR_2}Terrain:
+STR_2691    :Basishöhe:
+STR_2692    :Wasserhöhe:
+STR_2693    :Terrain:
 STR_2694    :Generieren
 STR_2695    :Zufälliges Terrain
 STR_2696    :Bäume platzieren
@@ -3217,7 +3217,7 @@ STR_3207    :Achterbahn-Designer
 STR_3208    :Streckenentwurf-Manager
 STR_3209    :Zurück zum vorherigen Schritt:
 STR_3210    :Weiter zum nächsten Schritt:
-STR_3211    :{WINDOW_COLOUR_2}Kartengröße:
+STR_3211    :Kartengröße:
 STR_3212    :{POP16}{COMMA16} x {PUSH16}{COMMA16}
 STR_3213    :Kartengröße kann nicht mehr verkleinert werden
 STR_3214    :Kartengröße kann nicht mehr vergrößert werden

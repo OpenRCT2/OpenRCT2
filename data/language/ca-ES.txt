@@ -2691,14 +2691,14 @@ STR_2682    :<removed string - do not use>
 STR_2683    :<removed string - do not use>
 STR_2684    :{SMALLFONT}{BLACK}Arriba un grup gran de visitants.
 STR_2685    :Paràmetres de soroll del símplex
-STR_2686    :{WINDOW_COLOUR_2}Baix:
-STR_2687    :{WINDOW_COLOUR_2}Alt:
-STR_2688    :{WINDOW_COLOUR_2}Freqüència base:
-STR_2689    :{WINDOW_COLOUR_2}Octaves:
+STR_2686    :Baix:
+STR_2687    :Alt:
+STR_2688    :Freqüència base:
+STR_2689    :Octaves:
 STR_2690    :Generació del mapa
-STR_2691    :{WINDOW_COLOUR_2}Altura base:
-STR_2692    :{WINDOW_COLOUR_2}Nivell de l'aigua:
-STR_2693    :{WINDOW_COLOUR_2}Terreny:
+STR_2691    :Altura base:
+STR_2692    :Nivell de l'aigua:
+STR_2693    :Terreny:
 STR_2694    :Genera
 STR_2695    :Terreny aleatori
 STR_2696    :Posa arbres
@@ -3218,7 +3218,7 @@ STR_3207    :Dissenyador de muntanyes russes
 STR_3208    :Gestor dels dissenys de via
 STR_3209    :Torna al pas anterior:
 STR_3210    :Avança al pas següent:
-STR_3211    :{WINDOW_COLOUR_2}Mida del mapa:
+STR_3211    :Mida del mapa:
 STR_3212    :{POP16}{COMMA16} x {PUSH16}{COMMA16}
 STR_3213    :La mida del mapa no es pot baixar més.
 STR_3214    :La mida del mapa no es pot augmentar més.
