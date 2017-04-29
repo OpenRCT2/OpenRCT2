@@ -4309,6 +4309,19 @@ STR_6038    :{SMALLFONT}{BLACK}Si tienes una instalación de RCT1, establece est
 STR_6039    :{SMALLFONT}{BLACK}Demoler atracción rápidamente
 STR_6040    :Editar Opciones de Escenario
 STR_6041    :{BLACK}¡No hay mecánicos contratados!
+STR_6042    :Cargar mapa de altura
+STR_6043    :Seleccionar mapa de altura
+STR_6044    :Suavizar mapa de altura
+STR_6045    :Intensidad
+STR_6046    :Normalizar mapa de altura
+STR_6047    :Suavizar baldosa
+STR_6048    :Error de mapa de altura
+STR_6049    :Error al leer PNG
+STR_6050    :Error al leer bitmap
+STR_6051    :El ancho y la altura deben ser la misma.
+STR_6052    :El mapa de altura es muy grande, será cortado.
+STR_6053    :El mapa de altura no puede ser normalizado.
+STR_6054    :Sólo bitmaps de 24-bits son soportados
 
 ##############
 # Escenarios #
