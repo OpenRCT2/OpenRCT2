@@ -292,9 +292,9 @@ static rct_object_entry DefaultSelectedObjects[] = {
 	{ 0x00000085, { "PATHASH " }, 0 },		// Footpath: Ash Footpath
 
 	// The following are for all random map generation features to work out the box
-	{ 0x00000087, { "SCGJUNGL" }, 0 },		// Jungle Themeing
-	{ 0x00000087, { "SCGSNOW " }, 0 },		// Snow and Ice Themeing
-	{ 0x00000087, { "SCGWATER" }, 0 }		// Water Feature Themeing
+	{ 0x00000087, { "SCGJUNGL" }, 0 },		// Jungle Theming
+	{ 0x00000087, { "SCGSNOW " }, 0 },		// Snow and Ice Theming
+	{ 0x00000087, { "SCGWATER" }, 0 }		// Water Feature Theming
 };
 
 enum {

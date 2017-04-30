@@ -9298,7 +9298,7 @@ static void peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_peep
 		if (counter >= 200 || _peepPathFindTilesChecked <= 0) {
 			/* The current search ends here.
 			 * The path continues, so the goal could still be reachable from here.
-			 * If the search result is better than the best so far (in the paramaters),
+			 * If the search result is better than the best so far (in the parameters),
 			 * then update the parameters with this search before continuing to the next map element. */
 			if (new_score < *endScore || (new_score == *endScore && counter < *endSteps )) {
 				// Update the search results

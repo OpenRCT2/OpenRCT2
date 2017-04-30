@@ -239,7 +239,7 @@ void RideObject::Load()
                     image_index += b;
                 }
 
-                // Verticle
+                // Vertical
                 if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_VERTICAL_SLOPES)
                 {
                     vehicleEntry->var_28 = image_index;

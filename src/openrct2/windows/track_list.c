@@ -497,7 +497,7 @@ static void window_track_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		gfx_draw_string_left(dpi, STR_MAX_POSITIVE_VERTICAL_G, &gForces, COLOUR_BLACK, x, y);
 		y += 10;
 
-		// Maximum negative verical Gs
+		// Maximum negative vertical Gs
 		gForces = td6->max_negative_vertical_g * 32;
 		gfx_draw_string_left(dpi, STR_MAX_NEGATIVE_VERTICAL_G, &gForces, COLOUR_BLACK, x, y);
 		y += 10;
