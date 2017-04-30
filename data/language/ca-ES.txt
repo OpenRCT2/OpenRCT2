@@ -2295,7 +2295,7 @@ STR_2287    :s'està completant el disseny.
 STR_2288    :desconeguda
 STR_2289    :{STRINGID} {STRINGID}
 STR_2290    :<removed string - do not use>
-STR_2291    :Seleccioneu l'escenari per una nova partida.
+STR_2291    :Seleccioneu l'escenari per una nova partida
 STR_2292    :{WINDOW_COLOUR_2}Atraccions visitades:
 STR_2293    :{BLACK} Cap
 STR_2294    :{SMALLFONT}{BLACK}Canvia l'estil del terreny
@@ -2748,7 +2748,7 @@ STR_2739    :Cap
 STR_2740    :RollerCoaster Tycoon 1
 STR_2741    :RollerCoaster Tycoon 2
 STR_2742    :El fitxer «css50.dat» no s'ha trobat.
-STR_2743    :Copieu «data\css17.dat» de la vostra instal·lació del RCT1 en «data\css50.dat» a la instal·lació del RCT2.
+STR_2743    :Copieu «data/css17.dat» de la vostra instal·lació del RCT1 en «data/css50.dat» a la instal·lació del RCT2, o establiu correctament el camí del RCT1 a la pestanya d'altres opcions.
 STR_2744    :[
 STR_2745    :\
 STR_2746    :]
@@ -2788,7 +2788,7 @@ STR_2778    :{RIGHTGUILLEMET}{MOVE_X}{SMALLFONT}{STRING}
 STR_2779    :Vista #{COMMA16}
 STR_2780    :Vista extra
 # End of new strings
-STR_2781    :{STRINGID}:{MOVE_X}{195}{STRINGID}
+STR_2781    :{STRINGID}:{MOVE_X}{255}{STRINGID}
 STR_2782    :SHIFT + 
 STR_2783    :CTRL + 
 STR_2784    :Canvia la drecera de teclat
@@ -3280,7 +3280,7 @@ STR_3269    :Sense modificar el terreny
 STR_3270    :{SMALLFONT}{BLACK}Prohibeix els canvis d'alçada i inclinació del terreny.
 STR_3271    :Sense construccions altres
 STR_3272    :{SMALLFONT}{BLACK}Prohibeix qualsevol element massa alt.
-STR_3273    :Fes més difícil aconseguir una bona valoració
+STR_3273    :Fes més difícil aconseguir i mantenir una bona valoració
 STR_3274    :{SMALLFONT}{BLACK}Fes que sigui més difícil obtenir una bona valoració del parc.
 STR_3275    :Fes més difícil atreure visitants
 STR_3276    :{SMALLFONT}{BLACK}Fes que sigui més difícil atreure visitants al parc.
@@ -4144,7 +4144,7 @@ STR_5832    :{SMALLFONT}{BLACK}Mostra les alçades com a unitats genèriques (-2
 STR_5833    :{SMALLFONT}{BLACK}Canvia el format de les dates.
 STR_5834    :{SMALLFONT}{BLACK}Trieu quin dispositiu de so ha de fer servir l'OpenRCT2.
 STR_5835    :{SMALLFONT}{BLACK}Silencia el joc si la finestra perd el focus.
-STR_5836    :{SMALLFONT}{BLACK}Seleccioneu la peça de música per al menú principal.{NEWLINE}Si seleccioneu el tema de l'RCT1, cal que copieu «data/css17.dat» de la carpeta del RCT1 al directori del RCT2 com a «data/css50.dat».
+STR_5836    :{SMALLFONT}{BLACK}Seleccioneu la peça de música per al menú principal.{NEWLINE}Si seleccioneu el tema de l'RCT1, cal que copieu «data/css17.dat» de la carpeta del RCT1 al directori del RCT2 com a «data/css50.dat», o bé establiu correctament la carpeta del RCT1 a la pestanya d'altres opcions.
 STR_5837    :{SMALLFONT}{BLACK}Crea i gestiona els temes de la interfície personalitzats.
 STR_5838    :{SMALLFONT}{BLACK}Mostra un botó per a la finestra de finances a la barra d'eines.
 STR_5839    :{SMALLFONT}{BLACK}Mostra un botó per a la finestra de recerques a la barra d'eines.
@@ -4338,6 +4338,32 @@ STR_6026    :Construcció d'atraccions - Secció anterior
 STR_6027    :Construcció d'atraccions - Secció següent
 STR_6028    :Construcció d'atraccions - Construeix l'actual
 STR_6029    :Construcció d'atraccions - Elimina l'actual
+STR_6030    :{SMALLFONT}{BLACK}Seleccionador de decoracions. Seleccioneu una decoració del mapa per construir-ne més del mateix tipus.
+STR_6031    :Descripció del servidor:
+STR_6032    :Missatge de benvinguda:
+STR_6033    :Camí de la instal·lació del RCT1:
+STR_6034    :{SMALLFONT}{BLACK}{STRING}
+STR_6035    :Seleccioneu el camí d'instal·lació del RCT1
+STR_6036    :{SMALLFONT}{BLACK}Esborra
+STR_6037    :Seleccioneu una carpeta del RCT1 vàlida.
+STR_6038    :{SMALLFONT}{BLACK}Si teniu instal·lat el RCT1, indiqueu a quina carpeta està per usar-ne els escenaris, la música, etc.
+STR_6039    :{SMALLFONT}{BLACK}Retirada ràpida d'atraccions
+STR_6040    :Opcions d'edició d'escenaris
+STR_6041    :{BLACK}No s'han contractat mecànics!
+STR_6042    :Carrega el mapa d'alçades
+STR_6043    :Selecciona el mapa d'alçades
+STR_6044    :Suavitza el mapa d'alçades
+STR_6045    :Força
+STR_6046    :Normalitza el mapa d'alçades
+STR_6047    :Suavitza les caselles
+STR_6048    :Error del mapa d'alçades
+STR_6049    :S'ha produït un error mentre es llegia el fitxer PNG.
+STR_6050    :S'ha produït un error mentre es llegia el bitmap.
+STR_6051    :Cal que l'amplada i l'alçada coincideixin
+STR_6052    :El mapa d'alçades és massa gran i es retallarà
+STR_6053    :Aquest mapa d'alçades no es pot normalitzar
+STR_6054    :Només es poden usar bitmaps de 24 bits
+STR_6055    :Fitxer de mapa d'alçades de l'OpenRCT2
 
 #############
 # Scenarios #
@@ -4783,6 +4809,12 @@ STR_DTLS    :
 #####################
 # Rides/attractions #
 #####################
+
+#RCT2
+[TOPSP1]
+STR_NAME    :Top Spin
+STR_DESC    :Les cabines on estan els passatgers estan suspeses per braços que dirigeixen les cabines girant-les, balancejant-les i movent-les cap endavant i cap enrere.
+STR_CPTY    :8 passatgers
 
 #WW
 [CONDORRD]
