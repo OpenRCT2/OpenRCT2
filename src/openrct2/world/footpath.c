@@ -1767,7 +1767,7 @@ void footpath_update_path_wide_flags(sint32 x, sint32 y)
 	 * they were cleared. Consequently only the wide flag for this single
 	 * tile is modified by this update.
 	 * This is important for avoiding glitches in pathfinding that occurs
-	 * between between the batches of updates to the path wide flags.
+	 * between the batches of updates to the path wide flags.
 	 * Corresponding pathList[] indexes for the following tiles
 	 * are: 2, 3, 4, 5.
 	 * Note: indexes 3, 4, 5 are reset in the current call;

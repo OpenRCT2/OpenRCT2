@@ -634,7 +634,7 @@ sint32 platform_scancode_to_rct_keycode(sint32 sdl_key)
 {
 	char keycode = (char)SDL_GetKeyFromScancode((SDL_Scancode)sdl_key);
 
-	// Until we reshufle the text files to use the new positions
+	// Until we reshuffle the text files to use the new positions
 	// this will suffice to move the majority to the correct positions.
 	// Note any special buttons PgUp PgDwn are mapped wrong.
 	if (keycode >= 'a' && keycode <= 'z')

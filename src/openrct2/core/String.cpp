@@ -228,7 +228,7 @@ namespace String
             va_end(args1);
             va_end(args2);
 
-            // An error occured...
+            // An error occurred...
             return nullptr;
         }
 
@@ -244,7 +244,7 @@ namespace String
                 va_end(args1);
                 va_end(args2);
 
-                // An error occured...
+                // An error occurred...
                 return nullptr;
             }
         }

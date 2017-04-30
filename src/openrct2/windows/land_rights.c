@@ -210,7 +210,7 @@ static void window_land_rights_invalidate(rct_window *w)
 		SPR_LAND_TOOL_SIZE_0 + gLandToolSize :
 		0xFFFFFFFF;
 
-	// Disable ownership and/or construction buying functions if there're no tiles left for sale
+	// Disable ownership and/or construction buying functions if there are no tiles left for sale
 	if (gLandRemainingOwnershipSales == 0) {
 		w->disabled_widgets |= (1 << WIDX_BUY_LAND_RIGHTS);
 		window_land_rights_widgets[WIDX_BUY_LAND_RIGHTS].tooltip = STR_NO_LAND_RIGHTS_FOR_SALE_TIP;

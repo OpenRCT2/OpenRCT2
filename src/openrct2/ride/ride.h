@@ -302,7 +302,7 @@ typedef struct rct_ride {
 	uint32 no_primary_items_sold;	// 0x1A4
 	uint32 no_secondary_items_sold; // 0x1A8
 	uint8 breakdown_sound_modifier;	// 0x1AC
-	// Used to oscilate the sound when ride breaks down.
+	// Used to oscillate the sound when ride breaks down.
 	// 0 = no change, 255 = max change
 	uint8 not_fixed_timeout;		// 0x1AD
 	uint8 last_crash_type;			// 0x1AE

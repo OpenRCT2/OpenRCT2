@@ -516,7 +516,7 @@ static void viewport_surface_draw_land_side_top(enum edge_t edge, uint8 height, 
 	const uint8 rotation = get_current_rotation();
 	uint8 cur_height = min(regs.ch, regs.ah);
 	if (regs.ch != regs.ah) {
-		// neightbour tile corners aren't level
+		// neighbour tile corners aren't level
 		uint32 image_offset = 3;
 		if (regs.ch > regs.ah) {
 			image_offset = 4;
@@ -778,7 +778,7 @@ static void viewport_surface_draw_water_side_top(enum edge_t edge, uint8 height,
 	const uint8 rotation = get_current_rotation();
 	uint8 cur_height = min(regs.ch, regs.ah);
 	if (regs.ch != regs.ah) {
-		// neightbour tile corners aren't level
+		// neighbour tile corners aren't level
 		uint32 image_offset = 3;
 		if (regs.ch > regs.ah) {
 			image_offset = 4;

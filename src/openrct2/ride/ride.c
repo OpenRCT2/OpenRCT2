@@ -602,7 +602,7 @@ bool track_block_get_next(rct_xy_element *input, rct_xy_element *output, sint32 
 
 /**
  * Returns the begin position / direction and end position / direction of the
- * track piece that procedes the given location. Gets the previous track block
+ * track piece that proceeds the given location. Gets the previous track block
  * coordinates from the coordinates of the first of element of a track block.
  * Use track_block_get_previous if you are unsure if you are on the first
  * element of a track block
@@ -2454,11 +2454,11 @@ static void ride_breakdown_status_update(sint32 rideIndex)
 {
 	rct_ride *ride = get_ride(rideIndex);
 
-	// Warn player if ride hasnt been fixed for ages
+	// Warn player if ride hasn't been fixed for ages
 	if (ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN) {
 		ride->not_fixed_timeout++;
 		// When there has been a full 255 timeout ticks this
-		// will force timeout ticks to keep issueing news every
+		// will force timeout ticks to keep issuing news every
 		// 16 ticks. Note there is no reason to do this.
 		if (ride->not_fixed_timeout == 0)
 			ride->not_fixed_timeout -= 16;

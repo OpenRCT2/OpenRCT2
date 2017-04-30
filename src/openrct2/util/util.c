@@ -495,7 +495,7 @@ uint8 *util_zlib_deflate(const uint8 *data, size_t data_in_size, size_t *data_ou
 	return buffer;
 }
 
-// Type-independant code left as macro to reduce duplicate code.
+// Type-independent code left as macro to reduce duplicate code.
 #define add_clamp_body(value, value_to_add, min_cap, max_cap) \
     if ((value_to_add > 0) && (value > (max_cap - value_to_add))) { \
         value = max_cap; \

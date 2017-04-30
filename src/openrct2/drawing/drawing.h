@@ -72,7 +72,7 @@ assert_struct_size(rct_g1_element_32bit, 0x10);
 
 
 enum {
-	G1_FLAG_BMP				= (1 << 0), // Image data is encoded as raw pixels (no transparancy)
+	G1_FLAG_BMP				= (1 << 0), // Image data is encoded as raw pixels (no transparency)
 	G1_FLAG_1				= (1 << 1),
 	G1_FLAG_RLE_COMPRESSION	= (1 << 2), // Image data is encoded using RCT2's form of run length encoding
 	G1_FLAG_HAS_ZOOM_SPRITE	= (1 << 4), // Use a different sprite for higher zoom levels

@@ -305,7 +305,7 @@ std::string NetworkKey::PublicKeyString()
  * public key. Serves a purpose of easy identification keys in multiplayer
  * overview, multiplayer settings.
  *
- * In particular, any of digest functions applied to a standarised key
+ * In particular, any of digest functions applied to a standardised key
  * representation, like PEM, will be sufficient.
  *
  * @return returns a string containing key hash.
@@ -419,7 +419,7 @@ bool NetworkKey::Verify(const uint8 * md, const size_t len, const char * sig, co
 
     if (1 != EVP_DigestVerifyInit(mdctx, nullptr, EVP_sha256(), nullptr, _key))
     {
-        log_error("Failed to initalise verification routine");
+        log_error("Failed to initialise verification routine");
         EVP_MD_CTX_destroy(mdctx);
         return false;
     }
@@ -435,7 +435,7 @@ bool NetworkKey::Verify(const uint8 * md, const size_t len, const char * sig, co
     if (1 == EVP_DigestVerifyFinal(mdctx, (uint8 *)sig, siglen))
     {
         EVP_MD_CTX_destroy(mdctx);
-        log_verbose("Succesfully verified signature");
+        log_verbose("Successfully verified signature");
         return true;
     }
     else

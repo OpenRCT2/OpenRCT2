@@ -55,7 +55,7 @@ void intro_update()
 	case INTRO_STATE_PUBLISHER_BEGIN:
 		load_palette();
 
-		// Set the Y for the Infogrammes logo
+		// Set the Y for the Infogrames logo
 		_introStateCounter = -580;
 
 		// Play the chain lift sound
@@ -64,7 +64,7 @@ void intro_update()
 		gIntroState++;
 		break;
 	case INTRO_STATE_PUBLISHER_SCROLL:
-		// Move the Infogrammes logo down
+		// Move the Infogrames logo down
 		_introStateCounter += 5;
 
 		// Check if logo is off the screen...ish

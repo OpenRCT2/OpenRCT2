@@ -185,7 +185,7 @@ static rct_widget window_top_toolbar_widgets[] = {
 	{ WWT_TRNBTN,	1,	0x0046 + 30,	0x0063 + 30,	0,		27,		0x20000000 | SPR_TOOLBAR_ZOOM_OUT,			STR_ZOOM_OUT_TIP },					// Zoom out
 	{ WWT_TRNBTN,	1,	0x0064 + 30,	0x0081 + 30,	0,		27,		0x20000000 | SPR_TOOLBAR_ZOOM_IN,			STR_ZOOM_IN_TIP },					// Zoom in
 	{ WWT_TRNBTN,	1,	0x0082 + 30,	0x009F + 30,	0,		27,		0x20000000 | SPR_TOOLBAR_ROTATE,			STR_ROTATE_TIP },					// Rotate camera
-	{ WWT_TRNBTN,	1,	0x00A0 + 30,	0x00BD + 30,	0,		27,		0x20000000 | SPR_TOOLBAR_VIEW,				STR_VIEW_OPTIONS_TIP },				// Transparancy menu
+	{ WWT_TRNBTN,	1,	0x00A0 + 30,	0x00BD + 30,	0,		27,		0x20000000 | SPR_TOOLBAR_VIEW,				STR_VIEW_OPTIONS_TIP },				// Transparency menu
 	{ WWT_TRNBTN,	1,	0x00BE + 30,	0x00DB + 30,	0,		27,		0x20000000 | SPR_TOOLBAR_MAP,				STR_SHOW_MAP_TIP },					// Map
 
 	{ WWT_TRNBTN,	2,	0x010B,	0x0128,	0,						27,		0x20000000 | SPR_TOOLBAR_LAND,				STR_ADJUST_LAND_TIP },				// Land
@@ -1243,7 +1243,7 @@ static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid
 			rotation -= get_current_rotation();
 			rotation &= 0x3;
 
-			// Also places it in lower but think thats for clobering
+			// Also places it in lower but think thats for clobbering
 			*parameter_1 = (selected_scenery & 0xFF) << 8;
 			*parameter_2 = (cl ^ (1 << 1)) | (gWindowSceneryPrimaryColour << 8);
 			*parameter_3 = rotation | (gWindowScenerySecondaryColour << 16);
@@ -1321,7 +1321,7 @@ static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid
 		rotation -= get_current_rotation();
 		rotation &= 0x3;
 
-		// Also places it in lower but think thats for clobering
+		// Also places it in lower but think thats for clobbering
 		*parameter_1 = (selected_scenery & 0xFF) << 8;
 		*parameter_2 = 0 | (gWindowSceneryPrimaryColour << 8);
 		*parameter_3 = rotation | (gWindowScenerySecondaryColour << 16);
@@ -1405,7 +1405,7 @@ static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid
 			return;
 
 		_unkF64F15 = gWindowScenerySecondaryColour | (gWindowSceneryTertiaryColour << 8);
-		// Also places it in lower but think thats for clobering
+		// Also places it in lower but think thats for clobbering
 		*parameter_1 = (selected_scenery & 0xFF) << 8;
 		*parameter_2 = cl | (gWindowSceneryPrimaryColour << 8);
 		*parameter_3 = 0;
@@ -1506,7 +1506,7 @@ static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid
 
 		z /= 2;
 
-		// Also places it in lower but think thats for clobering
+		// Also places it in lower but think thats for clobbering
 		*parameter_1 = (selected_scenery & 0xFF) << 8;
 		*parameter_2 = z | (rotation << 8);
 		*parameter_3 = gWindowSceneryPrimaryColour;

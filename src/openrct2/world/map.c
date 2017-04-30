@@ -3929,7 +3929,7 @@ static void clear_element_at(sint32 x, sint32 y, rct_map_element **elementPtr)
 		element->properties.surface.terrain = 0;
 		element->properties.surface.grass_length = 1;
 		element->properties.surface.ownership = 0;
-		// Because this element is not completely removed, the pointer must be updated muanually
+		// Because this element is not completely removed, the pointer must be updated manually
 		// The rest of the elements are removed from the array, so the pointer doesn't need to be updated.
 		(*elementPtr)++;
 		break;

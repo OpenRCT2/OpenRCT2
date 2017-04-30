@@ -434,7 +434,7 @@ static void window_scenarioselect_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 	// Scenario score
 	if (scenario->highscore != NULL) {
-		// TODO: Should probably be translateable
+		// TODO: Should probably be translatable
 		const utf8 *completedByName = "???";
 		if (!str_is_null_or_empty(scenario->highscore->name)) {
 			completedByName = scenario->highscore->name;

@@ -67,7 +67,7 @@ namespace String
     utf8 * DiscardDuplicate(utf8 * * ptr, const utf8 * replacement);
 
     /**
-     * Creates a new string containing the characters between index and and end of the input string.
+     * Creates a new string containing the characters between index and the end of the input string.
      */
     utf8 * Substring(const utf8 * buffer, size_t index);
 
