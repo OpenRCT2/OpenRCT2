@@ -114,8 +114,10 @@ public:
     uint64 GetLength()   const override { return _fileSize; }
     uint64 GetPosition() const override
     {
-#ifdef _MSC_VER
+#if defined(_MSC_VER)
         return _ftelli64(_file);
+#elif (defined(__APPLE__) && defined(__MACH__))
+        return ftello(_file);
 #else
         return ftello64(_file);
 #endif
@@ -128,7 +130,7 @@ public:
 
     void Seek(sint64 offset, sint32 origin) override
     {
-#ifdef _MSC_VER
+#if defined(_MSC_VER)
         switch (origin) {
         case STREAM_SEEK_BEGIN:
             _fseeki64(_file, offset, SEEK_SET);
@@ -138,6 +140,18 @@ public:
             break;
         case STREAM_SEEK_END:
             _fseeki64(_file, offset, SEEK_END);
+            break;
+        }
+#elif (defined(__APPLE__) && defined(__MACH__))
+        switch (origin) {
+        case STREAM_SEEK_BEGIN:
+            fseeko(_file, offset, SEEK_SET);
+            break;
+        case STREAM_SEEK_CURRENT:
+            fseeko(_file, offset, SEEK_CUR);
+            break;
+        case STREAM_SEEK_END:
+            fseeko(_file, offset, SEEK_END);
             break;
         }
 #else
