@@ -105,7 +105,7 @@ void window_text_input_open(rct_window* call_w, sint32 call_widget, rct_string_i
 	// Clear the text input buffer
 	memset(text_input, 0, maxLength);
 
-	// Enter in the the text input buffer any existing
+	// Enter in the text input buffer any existing
 	// text.
 	if (existing_text != STR_NONE)
 		format_string(text_input, maxLength, existing_text, &existing_args);
@@ -164,7 +164,7 @@ void window_text_input_raw_open(rct_window* call_w, sint32 call_widget, rct_stri
 	// Clear the text input buffer
 	memset(text_input, 0, maxLength);
 
-	// Enter in the the text input buffer any existing
+	// Enter in the text input buffer any existing
 	// text.
 	if (existing_text != NULL)
 		safe_strcpy(text_input, existing_text, maxLength);

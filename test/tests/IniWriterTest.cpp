@@ -32,7 +32,7 @@ TEST_F(IniWriterTest, create_one_section)
     uint8 null_terminator = 0;
     ms.Write(&null_terminator, 1);
     ASSERT_GE(ms.GetPosition(), 12);
-    ASSERT_LE(ms.GetPosition(), 13); // Accomodate for varying-sized newline (Windows)
+    ASSERT_LE(ms.GetPosition(), 13); // Accommodate for varying-sized newline (Windows)
     ASSERT_EQ(ms.GetLength(), ms.GetPosition());
     ms.SetPosition(0);
     const char * ini = (const char *)ms.ReadString();
@@ -53,7 +53,7 @@ TEST_F(IniWriterTest, create_multiple_sections)
     uint8 null_terminator = 0;
     ms.Write(&null_terminator, 1);
     ASSERT_GE(ms.GetPosition(), 48);
-    ASSERT_LE(ms.GetPosition(), 55); // Accomodate for varying-sized newline (Windows)
+    ASSERT_LE(ms.GetPosition(), 55); // Accommodate for varying-sized newline (Windows)
     ASSERT_EQ(ms.GetLength(), ms.GetPosition());
     ms.SetPosition(0);
     const char * ini = (const char *)ms.ReadString();
@@ -72,7 +72,7 @@ TEST_F(IniWriterTest, create_loose_bool_entry)
     uint8 null_terminator = 0;
     ms.Write(&null_terminator, 1);
     ASSERT_GE(ms.GetPosition(), 16);
-    ASSERT_LE(ms.GetPosition(), 17); // Accomodate for varying-sized newline (Windows)
+    ASSERT_LE(ms.GetPosition(), 17); // Accommodate for varying-sized newline (Windows)
     ASSERT_EQ(ms.GetLength(), ms.GetPosition());
     ms.SetPosition(0);
     const char * ini = (const char *)ms.ReadString();
@@ -91,7 +91,7 @@ TEST_F(IniWriterTest, create_loose_enum_entry)
     uint8 null_terminator = 0;
     ms.Write(&null_terminator, 1);
     ASSERT_GE(ms.GetPosition(), 34);
-    ASSERT_LE(ms.GetPosition(), 36); // Accomodate for varying-sized newline (Windows)
+    ASSERT_LE(ms.GetPosition(), 36); // Accommodate for varying-sized newline (Windows)
     ASSERT_EQ(ms.GetLength(), ms.GetPosition());
     ms.SetPosition(0);
     const char * ini = (const char *)ms.ReadString();
@@ -109,7 +109,7 @@ TEST_F(IniWriterTest, create_loose_float_entry)
     uint8 null_terminator = 0;
     ms.Write(&null_terminator, 1);
     ASSERT_GE(ms.GetPosition(), 16);
-    ASSERT_LE(ms.GetPosition(), 17); // Accomodate for varying-sized newline (Windows)
+    ASSERT_LE(ms.GetPosition(), 17); // Accommodate for varying-sized newline (Windows)
     ASSERT_EQ(ms.GetLength(), ms.GetPosition());
     ms.SetPosition(0);
     const char * ini = (const char *)ms.ReadString();
@@ -132,7 +132,7 @@ TEST_F(IniWriterTest, create_loose_sint32_entry)
     uint8 null_terminator = 0;
     ms.Write(&null_terminator, 1);
     ASSERT_GE(ms.GetPosition(), 73);
-    ASSERT_LE(ms.GetPosition(), 78); // Accomodate for varying-sized newline (Windows)
+    ASSERT_LE(ms.GetPosition(), 78); // Accommodate for varying-sized newline (Windows)
     ASSERT_EQ(ms.GetLength(), ms.GetPosition());
     ms.SetPosition(0);
     const char * ini = (const char *)ms.ReadString();
@@ -151,7 +151,7 @@ TEST_F(IniWriterTest, create_loose_string_entry)
     uint8 null_terminator = 0;
     ms.Write(&null_terminator, 1);
     ASSERT_GE(ms.GetPosition(), 43);
-    ASSERT_LE(ms.GetPosition(), 44); // Accomodate for varying-sized newline (Windows)
+    ASSERT_LE(ms.GetPosition(), 44); // Accommodate for varying-sized newline (Windows)
     ASSERT_EQ(ms.GetLength(), ms.GetPosition());
     ms.SetPosition(0);
     const char * ini = (const char *)ms.ReadString();
@@ -175,7 +175,7 @@ TEST_F(IniWriterTest, create_multiple_section_with_values)
     uint8 null_terminator = 0;
     ms.Write(&null_terminator, 1);
     ASSERT_GE(ms.GetPosition(), 99);
-    ASSERT_LE(ms.GetPosition(), 108); // Accomodate for varying-sized newline (Windows)
+    ASSERT_LE(ms.GetPosition(), 108); // Accommodate for varying-sized newline (Windows)
     ASSERT_EQ(ms.GetLength(), ms.GetPosition());
     ms.SetPosition(0);
     const char * ini = (const char *)ms.ReadString();
@@ -198,7 +198,7 @@ TEST_F(IniWriterTest, create_duplicate_sections)
     uint8 null_terminator = 0;
     ms.Write(&null_terminator, 1);
     ASSERT_GE(ms.GetPosition(), 33);
-    ASSERT_LE(ms.GetPosition(), 43); // Accomodate for varying-sized newline (Windows)
+    ASSERT_LE(ms.GetPosition(), 43); // Accommodate for varying-sized newline (Windows)
     ASSERT_EQ(ms.GetLength(), ms.GetPosition());
     ms.SetPosition(0);
     const char * ini = (const char *)ms.ReadString();

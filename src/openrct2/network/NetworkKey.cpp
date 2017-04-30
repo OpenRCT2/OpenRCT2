@@ -387,7 +387,7 @@ bool NetworkKey::Sign(const uint8 * md, const size_t len, char ** signature, siz
     /* Allocate memory for the signature based on size in slen */
     if ((sig = (unsigned char*)OPENSSL_malloc((sint32)(sizeof(unsigned char) * (*out_size)))) == NULL)
     {
-        log_error("Failed to crypto-allocate space fo signature");
+        log_error("Failed to crypto-allocate space for signature");
         EVP_MD_CTX_destroy(mdctx);
         return false;
     }
