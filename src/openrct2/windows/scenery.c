@@ -485,22 +485,6 @@ void window_scenery_open()
 
 /**
  *
- *  rct2: 0x0066DB3D
- */
-static bool window_scenery_is_scenery_tool_active() {
-	sint32 toolWindowClassification = gCurrentToolWidget.window_classification;
-	sint32 toolWidgetIndex = gCurrentToolWidget.widget_index;
-
-	if (input_test_flag(INPUT_FLAG_TOOL_ACTIVE))
-		if (toolWindowClassification == WC_TOP_TOOLBAR && toolWidgetIndex == 9) // 9 is WIDX_SCENERY
-			return true;
-
-	return false;
-}
-
-
-/**
- *
  *  rct2: 0x006E1A73
  */
 void window_scenery_close(rct_window *w)
@@ -509,7 +493,7 @@ void window_scenery_close(rct_window *w)
 	hide_gridlines();
 	viewport_set_visibility(0);
 
-	if (window_scenery_is_scenery_tool_active())
+	if (scenery_tool_is_active())
 		tool_cancel();
 }
 
@@ -783,7 +767,7 @@ static void window_scenery_update(rct_window *w)
 
 	window_invalidate(w);
 
-	if (!window_scenery_is_scenery_tool_active()){
+	if (!scenery_tool_is_active()){
 		window_close(w);
 		return;
 	}

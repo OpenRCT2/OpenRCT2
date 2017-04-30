@@ -42,6 +42,7 @@
 enum {
 	WIDX_PAUSE,
 	WIDX_FILE_MENU,
+	WIDX_MUTE,
 	WIDX_ZOOM_OUT,
 	WIDX_ZOOM_IN,
 	WIDX_ROTATE,
@@ -144,6 +145,7 @@ static const sint32 left_aligned_widgets_order[] = {
 	WIDX_PAUSE,
 	WIDX_FASTFORWARD,
 	WIDX_FILE_MENU,
+	WIDX_MUTE,
 	WIDX_NETWORK,
 	WIDX_CHEATS,
 	WIDX_DEBUG,
@@ -155,6 +157,7 @@ static const sint32 left_aligned_widgets_order[] = {
 	WIDX_ROTATE,
 	WIDX_VIEW_MENU,
 	WIDX_MAP,
+	
 };
 
 // from right to left
@@ -182,12 +185,12 @@ static const sint32 right_aligned_widgets_order[] = {
 static rct_widget window_top_toolbar_widgets[] = {
 	{ WWT_TRNBTN,	0,	0x0000,			0x001D,			0,		27,		0x20000000 | SPR_TOOLBAR_PAUSE,				STR_PAUSE_GAME_TIP },				// Pause
 	{ WWT_TRNBTN,	0,	0x001E + 30,	0x003B + 30,	0,		27,		0x20000000 | SPR_TOOLBAR_FILE,				STR_DISC_AND_GAME_OPTIONS_TIP },	// File menu
+	{ WWT_TRNBTN,	0,	0x00DC + 30,	0x00F9 + 30,	0,		27,		0x20000000 | SPR_G2_TOOLBAR_MUTE,			STR_TOOLBAR_MUTE_TIP },				// Mute
 	{ WWT_TRNBTN,	1,	0x0046 + 30,	0x0063 + 30,	0,		27,		0x20000000 | SPR_TOOLBAR_ZOOM_OUT,			STR_ZOOM_OUT_TIP },					// Zoom out
 	{ WWT_TRNBTN,	1,	0x0064 + 30,	0x0081 + 30,	0,		27,		0x20000000 | SPR_TOOLBAR_ZOOM_IN,			STR_ZOOM_IN_TIP },					// Zoom in
 	{ WWT_TRNBTN,	1,	0x0082 + 30,	0x009F + 30,	0,		27,		0x20000000 | SPR_TOOLBAR_ROTATE,			STR_ROTATE_TIP },					// Rotate camera
 	{ WWT_TRNBTN,	1,	0x00A0 + 30,	0x00BD + 30,	0,		27,		0x20000000 | SPR_TOOLBAR_VIEW,				STR_VIEW_OPTIONS_TIP },				// Transparency menu
 	{ WWT_TRNBTN,	1,	0x00BE + 30,	0x00DB + 30,	0,		27,		0x20000000 | SPR_TOOLBAR_MAP,				STR_SHOW_MAP_TIP },					// Map
-
 	{ WWT_TRNBTN,	2,	0x010B,	0x0128,	0,						27,		0x20000000 | SPR_TOOLBAR_LAND,				STR_ADJUST_LAND_TIP },				// Land
 	{ WWT_TRNBTN,	2,	0x0129,	0x0146,	0,						27,		0x20000000 | SPR_TOOLBAR_WATER,				STR_ADJUST_WATER_TIP },				// Water
 	{ WWT_TRNBTN,	2,	0x0147,	0x0164,	0,						27,		0x20000000 | SPR_TOOLBAR_SCENERY,			STR_PLACE_SCENERY_TIP },			// Scenery
@@ -198,7 +201,6 @@ static rct_widget window_top_toolbar_widgets[] = {
 	{ WWT_TRNBTN,	3,	0x0226,	0x0243,	0,						27,		0x20000000 | SPR_TAB_TOOLBAR,				STR_STAFF_TIP },					// Staff
 	{ WWT_TRNBTN,	3,	0x0230,	0x024D,	0,						27,		0x20000000 | SPR_TOOLBAR_GUESTS,			STR_GUESTS_TIP },					// Guests
 	{ WWT_TRNBTN,	2,	0x0230,	0x024D,	0,						27,		0x20000000 | SPR_TOOLBAR_CLEAR_SCENERY,		STR_CLEAR_SCENERY_TIP },			// Clear scenery
-
 	{ WWT_TRNBTN,	0,	0x001E,	0x003B,	0,						27,		0x20000000 | SPR_TAB_TOOLBAR,				STR_GAME_SPEED_TIP },				// Fast forward
 	{ WWT_TRNBTN,	0,	0x001E,	0x003B,	0,						27,		0x20000000 | SPR_TAB_TOOLBAR,				STR_CHEATS_TIP },					// Cheats
 	{ WWT_TRNBTN,	0,	0x001E,	0x003B,	0,						27,		0x20000000 | SPR_TAB_TOOLBAR,				STR_DEBUG_TIP },					// Debug
@@ -360,6 +362,9 @@ static void window_top_toolbar_mouseup(rct_window *w, sint32 widgetIndex)
 		break;
 	case WIDX_NEWS:
 		window_news_open();
+		break;
+	case WIDX_MUTE:
+		audio_toggle_all_sounds();
 		break;
 	}
 }
@@ -648,6 +653,7 @@ static void window_top_toolbar_invalidate(rct_window *w)
 	window_top_toolbar_widgets[WIDX_ROTATE].type = WWT_TRNBTN;
 	window_top_toolbar_widgets[WIDX_VIEW_MENU].type = WWT_TRNBTN;
 	window_top_toolbar_widgets[WIDX_MAP].type = WWT_TRNBTN;
+	window_top_toolbar_widgets[WIDX_MUTE].type = WWT_TRNBTN;
 	window_top_toolbar_widgets[WIDX_LAND].type = WWT_TRNBTN;
 	window_top_toolbar_widgets[WIDX_WATER].type = WWT_TRNBTN;
 	window_top_toolbar_widgets[WIDX_SCENERY].type = WWT_TRNBTN;
@@ -710,6 +716,9 @@ static void window_top_toolbar_invalidate(rct_window *w)
 
 		if (!gConfigInterface.toolbar_show_news)
 			window_top_toolbar_widgets[WIDX_NEWS].type = WWT_EMPTY;
+
+		if (!gConfigInterface.toolbar_show_mute)
+			window_top_toolbar_widgets[WIDX_MUTE].type = WWT_EMPTY;
 
 		switch (network_get_mode()) {
 		case NETWORK_MODE_NONE:
@@ -780,6 +789,11 @@ static void window_top_toolbar_invalidate(rct_window *w)
 		w->pressed_widgets |= (1 << WIDX_PAUSE);
 	else
 		w->pressed_widgets &= ~(1 << WIDX_PAUSE);
+
+	if (!gGameSoundsOff)
+		window_top_toolbar_widgets[WIDX_MUTE].image = 0x20000000 | SPR_G2_TOOLBAR_MUTE;
+	else
+		window_top_toolbar_widgets[WIDX_MUTE].image = 0x20000000 | SPR_G2_TOOLBAR_UNMUTE;
 
 	// Zoomed out/in disable. Not sure where this code is in the original.
 	if (window_get_main()->viewport->zoom == 0){
@@ -3277,7 +3291,7 @@ void toggle_footpath_window()
  */
 void toggle_land_window(rct_window *topToolbar, sint32 widgetIndex)
 {
-	if ((input_test_flag(INPUT_FLAG_TOOL_ACTIVE)) && gCurrentToolWidget.window_classification == WC_TOP_TOOLBAR && gCurrentToolWidget.widget_index == 7) {
+	if ((input_test_flag(INPUT_FLAG_TOOL_ACTIVE)) && gCurrentToolWidget.window_classification == WC_TOP_TOOLBAR && gCurrentToolWidget.widget_index == WIDX_LAND) {
 		tool_cancel();
 	} else {
 		show_gridlines();
@@ -3294,7 +3308,7 @@ void toggle_land_window(rct_window *topToolbar, sint32 widgetIndex)
  */
 void toggle_clear_scenery_window(rct_window *topToolbar, sint32 widgetIndex)
 {
-	if ((input_test_flag(INPUT_FLAG_TOOL_ACTIVE) && gCurrentToolWidget.window_classification == WC_TOP_TOOLBAR && gCurrentToolWidget.widget_index == 16)) {
+	if ((input_test_flag(INPUT_FLAG_TOOL_ACTIVE) && gCurrentToolWidget.window_classification == WC_TOP_TOOLBAR && gCurrentToolWidget.widget_index == WIDX_CLEAR_SCENERY)) {
 		tool_cancel();
 	} else {
 		show_gridlines();
@@ -3311,7 +3325,7 @@ void toggle_clear_scenery_window(rct_window *topToolbar, sint32 widgetIndex)
  */
 void toggle_water_window(rct_window *topToolbar, sint32 widgetIndex)
 {
-	if ((input_test_flag(INPUT_FLAG_TOOL_ACTIVE)) && gCurrentToolWidget.window_classification == WC_TOP_TOOLBAR && gCurrentToolWidget.widget_index == 8) {
+	if ((input_test_flag(INPUT_FLAG_TOOL_ACTIVE)) && gCurrentToolWidget.window_classification == WC_TOP_TOOLBAR && gCurrentToolWidget.widget_index == WIDX_WATER) {
 		tool_cancel();
 	} else {
 		show_gridlines();
@@ -3333,6 +3347,62 @@ bool land_tool_is_active()
 	if (gCurrentToolWidget.window_classification != WC_TOP_TOOLBAR)
 		return false;
 	if (gCurrentToolWidget.widget_index != WIDX_LAND)
+		return false;
+	return true;
+}
+
+/**
+ *
+ *  rct2: 0x0066D125
+ */
+bool clear_scenery_tool_is_active()
+{
+	if (!(input_test_flag(INPUT_FLAG_TOOL_ACTIVE)))
+		return false;
+	if (gCurrentToolWidget.window_classification != WC_TOP_TOOLBAR)
+		return false;
+	if (gCurrentToolWidget.widget_index != WIDX_CLEAR_SCENERY)
+		return false;
+	return true;
+}
+
+bool land_rights_tool_is_active()
+{
+	if (!(input_test_flag(INPUT_FLAG_TOOL_ACTIVE)))
+		return false;
+	if (gCurrentToolWidget.window_classification != WC_PARK_INFORMATION)
+		return false;
+	if (gCurrentToolWidget.widget_index != WIDX_PARK)
+		return false;
+	return true;
+}
+
+/**
+ *
+ *  rct2: 0x0066DB3D
+ */
+bool scenery_tool_is_active()
+{
+	sint32 toolWindowClassification = gCurrentToolWidget.window_classification;
+	sint32 toolWidgetIndex = gCurrentToolWidget.widget_index;
+	if (input_test_flag(INPUT_FLAG_TOOL_ACTIVE))
+		if (toolWindowClassification == WC_TOP_TOOLBAR && toolWidgetIndex == WIDX_SCENERY)
+			return true;
+
+	return false;
+}
+
+/**
+ *
+ *  rct2: 0x0066D125
+ */
+bool water_tool_is_active()
+{
+	if (!(input_test_flag(INPUT_FLAG_TOOL_ACTIVE)))
+		return false;
+	if (gCurrentToolWidget.window_classification != WC_TOP_TOOLBAR)
+		return false;
+	if (gCurrentToolWidget.widget_index != WIDX_WATER)
 		return false;
 	return true;
 }
