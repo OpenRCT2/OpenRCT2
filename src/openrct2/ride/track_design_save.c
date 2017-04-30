@@ -951,7 +951,7 @@ static bool track_design_save_to_td6_for_tracked_ride(uint8 rideIndex, rct_track
 
 	sint32 z = 0;
 	// Find the start of the track.
-	// It has to do this as a backwards loop incase this is an incomplete track.
+	// It has to do this as a backwards loop in case this is an incomplete track.
 	if (track_block_get_previous(trackElement.x, trackElement.y, trackElement.element, &trackBeginEnd)) {
 		rct_map_element* initial_map = trackElement.element;
 		do {

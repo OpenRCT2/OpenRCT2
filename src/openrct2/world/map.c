@@ -1615,7 +1615,7 @@ static money32 map_set_land_height(sint32 flags, sint32 x, sint32 y, sint32 heig
 		return MONEY32_UNDEFINED;
 	}
 
-	// Divide by 2 and subtract 7 to get the ingame units.
+	// Divide by 2 and subtract 7 to get the in-game units.
 	if (height > 142) {
 		gGameCommandErrorText = STR_TOO_HIGH;
 		return MONEY32_UNDEFINED;

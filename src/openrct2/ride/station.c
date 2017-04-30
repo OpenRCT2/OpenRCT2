@@ -84,7 +84,7 @@ static void ride_update_station_blocksection(rct_ride *ride, sint32 stationIndex
 static void ride_update_station_bumpercar(rct_ride *ride, sint32 stationIndex)
 {
 	// Change of station depart flag should really call invalidate_station_start
-	// but since bumpercars do not have station lights there is no point.
+	// but since dodgems do not have station lights there is no point.
 	if (
 		ride->status == RIDE_STATUS_CLOSED ||
 		(ride->lifecycle_flags & (RIDE_LIFECYCLE_BROKEN_DOWN | RIDE_LIFECYCLE_CRASHED))

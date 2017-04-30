@@ -725,7 +725,7 @@ void platform_toggle_windowed_mode()
 
 /**
  * This is not quite the same as the below function as we don't want to
- * derfererence the cursor before the function.
+ * dereference the cursor before the function.
  *  rct2: 0x0407956
  */
 void platform_set_cursor(uint8 cursor)

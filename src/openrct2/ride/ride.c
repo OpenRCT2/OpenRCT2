@@ -5946,7 +5946,7 @@ foundRideEntry:
 	}
 	*outRideIndex = rideIndex;
 
-	// Ride/vehicle colour is calcualted before applying to ensure
+	// Ride/vehicle colour is calculated before applying to ensure
 	// correct colour is passed over the network.
 	if (!(flags & GAME_COMMAND_FLAG_APPLY) && !(flags & GAME_COMMAND_FLAG_NETWORKED)) {
 		*outRideColour =
@@ -6756,7 +6756,7 @@ void increment_turn_count_4_plus_elements(rct_ride* ride, uint8 type){
 	switch (type){
 	case 0:
 	case 1:
-		// Just incase fallback to 3 element turn
+		// Just in case fallback to 3 element turn
 		increment_turn_count_3_elements(ride, type);
 		return;
 	case 2:
