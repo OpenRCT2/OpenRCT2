@@ -52,8 +52,6 @@ rct_widget window_clear_scenery_widgets[] = {
 	{ WIDGETS_END },
 };
 
-static sint32 window_clear_scenery_should_close();
-
 static void window_clear_scenery_close(rct_window *w);
 static void window_clear_scenery_mouseup(rct_window *w, sint32 widgetIndex);
 static void window_clear_scenery_update(rct_window *w);
@@ -126,7 +124,7 @@ void window_clear_scenery_open()
 static void window_clear_scenery_close(rct_window *w)
 {
 	// If the tool wasn't changed, turn tool off
-	if (!window_clear_scenery_should_close())
+	if (clear_scenery_tool_is_active())
 		tool_cancel();
 }
 
@@ -203,7 +201,7 @@ static void window_clear_scenery_inputsize(rct_window *w)
 static void window_clear_scenery_update(rct_window *w)
 {
 	// Close window if another tool is open
-	if (window_clear_scenery_should_close())
+	if (!clear_scenery_tool_is_active())
 		window_close(w);
 }
 
@@ -251,19 +249,4 @@ static void window_clear_scenery_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	) {
 		gfx_draw_string_centred(dpi, STR_COST_AMOUNT, x, y, COLOUR_BLACK, &gClearSceneryCost);
 	}
-}
-
-/**
- *
- *  rct2: 0x0066D125
- */
-static sint32 window_clear_scenery_should_close()
-{
-	if (!(input_test_flag(INPUT_FLAG_TOOL_ACTIVE)))
-		return 1;
-	if (gCurrentToolWidget.window_classification != WC_TOP_TOOLBAR)
-		return 1;
-	if (gCurrentToolWidget.widget_index != 16)
-		return 1;
-	return 0;
 }

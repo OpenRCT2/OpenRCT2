@@ -3291,7 +3291,7 @@ void toggle_footpath_window()
  */
 void toggle_land_window(rct_window *topToolbar, sint32 widgetIndex)
 {
-	if ((input_test_flag(INPUT_FLAG_TOOL_ACTIVE)) && gCurrentToolWidget.window_classification == WC_TOP_TOOLBAR && gCurrentToolWidget.widget_index == 7) {
+	if ((input_test_flag(INPUT_FLAG_TOOL_ACTIVE)) && gCurrentToolWidget.window_classification == WC_TOP_TOOLBAR && gCurrentToolWidget.widget_index == WIDX_LAND) {
 		tool_cancel();
 	} else {
 		show_gridlines();
@@ -3308,7 +3308,7 @@ void toggle_land_window(rct_window *topToolbar, sint32 widgetIndex)
  */
 void toggle_clear_scenery_window(rct_window *topToolbar, sint32 widgetIndex)
 {
-	if ((input_test_flag(INPUT_FLAG_TOOL_ACTIVE) && gCurrentToolWidget.window_classification == WC_TOP_TOOLBAR && gCurrentToolWidget.widget_index == 16)) {
+	if ((input_test_flag(INPUT_FLAG_TOOL_ACTIVE) && gCurrentToolWidget.window_classification == WC_TOP_TOOLBAR && gCurrentToolWidget.widget_index == WIDX_CLEAR_SCENERY)) {
 		tool_cancel();
 	} else {
 		show_gridlines();
@@ -3325,7 +3325,7 @@ void toggle_clear_scenery_window(rct_window *topToolbar, sint32 widgetIndex)
  */
 void toggle_water_window(rct_window *topToolbar, sint32 widgetIndex)
 {
-	if ((input_test_flag(INPUT_FLAG_TOOL_ACTIVE)) && gCurrentToolWidget.window_classification == WC_TOP_TOOLBAR && gCurrentToolWidget.widget_index == 8) {
+	if ((input_test_flag(INPUT_FLAG_TOOL_ACTIVE)) && gCurrentToolWidget.window_classification == WC_TOP_TOOLBAR && gCurrentToolWidget.widget_index == WIDX_WATER) {
 		tool_cancel();
 	} else {
 		show_gridlines();
@@ -3347,6 +3347,62 @@ bool land_tool_is_active()
 	if (gCurrentToolWidget.window_classification != WC_TOP_TOOLBAR)
 		return false;
 	if (gCurrentToolWidget.widget_index != WIDX_LAND)
+		return false;
+	return true;
+}
+
+/**
+ *
+ *  rct2: 0x0066D125
+ */
+bool clear_scenery_tool_is_active()
+{
+	if (!(input_test_flag(INPUT_FLAG_TOOL_ACTIVE)))
+		return false;
+	if (gCurrentToolWidget.window_classification != WC_TOP_TOOLBAR)
+		return false;
+	if (gCurrentToolWidget.widget_index != WIDX_CLEAR_SCENERY)
+		return false;
+	return true;
+}
+
+bool land_rights_tool_is_active()
+{
+	if (!(input_test_flag(INPUT_FLAG_TOOL_ACTIVE)))
+		return false;
+	if (gCurrentToolWidget.window_classification != WC_PARK_INFORMATION)
+		return false;
+	if (gCurrentToolWidget.widget_index != WIDX_PARK)
+		return false;
+	return true;
+}
+
+/**
+ *
+ *  rct2: 0x0066DB3D
+ */
+bool scenery_tool_is_active()
+{
+	sint32 toolWindowClassification = gCurrentToolWidget.window_classification;
+	sint32 toolWidgetIndex = gCurrentToolWidget.widget_index;
+	if (input_test_flag(INPUT_FLAG_TOOL_ACTIVE))
+		if (toolWindowClassification == WC_TOP_TOOLBAR && toolWidgetIndex == WIDX_SCENERY)
+			return true;
+
+	return false;
+}
+
+/**
+ *
+ *  rct2: 0x0066D125
+ */
+bool water_tool_is_active()
+{
+	if (!(input_test_flag(INPUT_FLAG_TOOL_ACTIVE)))
+		return false;
+	if (gCurrentToolWidget.window_classification != WC_TOP_TOOLBAR)
+		return false;
+	if (gCurrentToolWidget.widget_index != WIDX_WATER)
 		return false;
 	return true;
 }
