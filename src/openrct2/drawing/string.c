@@ -1386,7 +1386,7 @@ void shorten_path(utf8 *buffer, size_t bufferSize, const utf8 *path, sint32 avai
 	// TODO: Replace with unicode ellipsis when supported
 	safe_strcpy(buffer, "...", bufferSize);
 
-	// Abreviate beginning with xth separator
+	// Abbreviate beginning with xth separator
 	sint32 begin = -1;
 	for (sint32 x = 0; x < path_separators; x++){
 		do {

@@ -158,7 +158,7 @@ void reset_sprite_list()
  *
  *  rct2: 0x0069EBE4
  * This function looks as though it sets some sort of order for sprites.
- * Sprites can share thier position if this is the case.
+ * Sprites can share their position if this is the case.
  */
 void reset_sprite_spatial_index()
 {
