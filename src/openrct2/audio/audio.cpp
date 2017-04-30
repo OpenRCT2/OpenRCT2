@@ -398,12 +398,11 @@ void audio_close()
 	gAudioCurrentDevice = -1;
 }
 
-void audio_toggle_all_sounds(){
-	gConfigSound.sound_enabled = !gConfigSound.sound_enabled;
-	if (gConfigSound.sound_enabled)
+void audio_toggle_all_sounds()
+{
+	if (gGameSoundsOff) {
 		audio_unpause_sounds();
-	else {
-		audio_stop_title_music();
+	} else {
 		audio_pause_sounds();
 	}
 }

@@ -790,7 +790,7 @@ static void window_top_toolbar_invalidate(rct_window *w)
 	else
 		w->pressed_widgets &= ~(1 << WIDX_PAUSE);
 
-	if (gConfigSound.sound_enabled)
+	if (!gGameSoundsOff)
 		window_top_toolbar_widgets[WIDX_MUTE].image = 0x20000000 | SPR_G2_TOOLBAR_MUTE;
 	else
 		window_top_toolbar_widgets[WIDX_MUTE].image = 0x20000000 | SPR_G2_TOOLBAR_UNMUTE;
