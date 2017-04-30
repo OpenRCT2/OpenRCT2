@@ -822,7 +822,7 @@ static void ride_ratings_apply_adjustments(rct_ride *ride, rating_tuple *ratings
 }
 
 /**
- * Lowers excitment, the higher the intensity.
+ * Lowers excitement, the higher the intensity.
  *  rct2: 0x0065E7A3
  */
 static void ride_ratings_apply_intensity_penalty(rating_tuple *ratings)

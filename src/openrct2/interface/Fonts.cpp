@@ -154,13 +154,13 @@ void TryLoadFonts()
         {
             return;
         }
-        Console::Error::WriteLine("Unable to initialise prefered TrueType font -- falling back to Arial.");
+        Console::Error::WriteLine("Unable to initialise preferred TrueType font -- falling back to Arial.");
 
         if (LoadFont(&TTFFontArial))
         {
             return;
         }
-        Console::Error::WriteLine("Unable to initialise prefered TrueType font -- Falling back to sprite font.");
+        Console::Error::WriteLine("Unable to initialise preferred TrueType font -- Falling back to sprite font.");
     }
 #endif // NO_TTF
     LoadSpriteFont();

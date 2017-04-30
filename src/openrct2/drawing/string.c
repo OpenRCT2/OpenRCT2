@@ -245,7 +245,7 @@ sint32 gfx_wrap_string(utf8 *text, sint32 width, sint32 *outNumLines, sint32 *ou
 
 /**
  * Draws i formatted text string left aligned at i specified position but clips
- * the text with an elipsis if the text width exceeds the specified width.
+ * the text with an ellipsis if the text width exceeds the specified width.
  *  rct2: 0x006C1B83
  * dpi (edi)
  * format (bx)
@@ -270,7 +270,7 @@ void gfx_draw_string_left_clipped(rct_drawpixelinfo* dpi, rct_string_id format, 
 
 /**
  * Draws i formatted text string centred at i specified position but clips the
- * text with an elipsis if the text width exceeds the specified width.
+ * text with an ellipsis if the text width exceeds the specified width.
  *  rct2: 0x006C1BBA
  * dpi (edi)
  * format (bx)
@@ -1386,7 +1386,7 @@ void shorten_path(utf8 *buffer, size_t bufferSize, const utf8 *path, sint32 avai
 	// TODO: Replace with unicode ellipsis when supported
 	safe_strcpy(buffer, "...", bufferSize);
 
-	// Abreviate beginning with xth separator
+	// Abbreviate beginning with xth separator
 	sint32 begin = -1;
 	for (sint32 x = 0; x < path_separators; x++){
 		do {

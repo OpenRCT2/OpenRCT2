@@ -465,7 +465,7 @@ static money32 RideEntranceExitRemove(sint16 x, sint16 y, uint8 rideIndex, uint8
     rct_ride* ride = get_ride(rideIndex);
     if (ride->type == RIDE_TYPE_NULL)
     {
-        log_warning("Invalide ride id %u for entrance/exit removal", rideIndex);
+        log_warning("Invalid ride id %u for entrance/exit removal", rideIndex);
         return MONEY32_UNDEFINED;
     }
 

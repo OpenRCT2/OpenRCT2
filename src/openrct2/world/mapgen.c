@@ -190,7 +190,7 @@ void mapgen_generate(mapgen_settings *settings)
 		mapgen_simplex(settings);
 		mapgen_smooth_height(2 + (util_rand() % 6));
 	} else {
-		// Keep overwriting the map with rough cicular blobs of different sizes and heights.
+		// Keep overwriting the map with rough circular blobs of different sizes and heights.
 		// This procedural method can produce intersecting contour like land and lakes.
 		// Large blobs, general shape of map
 		mapgen_blobs(6, _heightSize / 2, _heightSize * 4, 4, 16);

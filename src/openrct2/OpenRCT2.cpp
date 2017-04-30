@@ -52,7 +52,7 @@ extern "C"
     #include "rct2/interop.h"
 }
 
-// The game update inverval in milliseconds, (1000 / 40fps) = 25ms
+// The game update interval in milliseconds, (1000 / 40fps) = 25ms
 constexpr uint32 UPDATE_TIME_MS = 25;
 
 extern "C"
@@ -86,7 +86,7 @@ namespace OpenRCT2
     static uint32 _lastTick;
     static uint32 _uncapTick;
 
-    /** If set, will end the OpenRCT2 game loop. Intentially private to this module so that the flag can not be set back to false. */
+    /** If set, will end the OpenRCT2 game loop. Intentionally private to this module so that the flag can not be set back to false. */
     static bool _finished;
 
     static bool ShouldRunVariableFrame();

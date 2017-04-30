@@ -298,7 +298,7 @@ static void window_map_mouseup(rct_window *w, sint32 widgetIndex)
 		if (tool_set(w, widgetIndex, 2))
 			break;
 		_activeTool = 2;
-		// Prevent mountain tool tool size.
+		// Prevent mountain tool size.
 		gLandToolSize = max(MINIMUM_TOOL_SIZE, gLandToolSize);
 		show_gridlines();
 		show_land_rights();

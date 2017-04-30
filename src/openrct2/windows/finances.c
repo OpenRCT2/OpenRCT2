@@ -958,7 +958,7 @@ static void window_finances_park_value_graph_paint(rct_window *w, rct_drawpixeli
 		if (balance == MONEY32_UNDEFINED)
 			continue;
 
-		// Modifier balance then keep halfing until less than 255 pixels
+		// Modifier balance then keep halving until less than 255 pixels
 		balance = abs(balance) >> yAxisScale;
 		while (balance > 255) {
 			balance /= 2;
@@ -1064,7 +1064,7 @@ static void window_finances_profit_graph_paint(rct_window *w, rct_drawpixelinfo 
 		if (balance == MONEY32_UNDEFINED)
 			continue;
 
-		// Modifier balance then keep halfing until less than 127 pixels
+		// Modifier balance then keep halving until less than 127 pixels
 		balance = abs(balance) >> yAxisScale;
 		while (balance > 127) {
 			balance /= 2;
@@ -1148,7 +1148,7 @@ static void window_finances_marketing_invalidate(rct_window *w)
 	window_finances_marketing_widgets[WIDX_ACITVE_CAMPAGINS_GROUP].bottom = y - 20;
 	window_finances_marketing_widgets[WIDX_CAMPAGINS_AVAILABLE_GROUP].top = y - 13;
 
-	// Update new campagin button visibility
+	// Update new campaign button visibility
 	for (i = 0; i < ADVERTISING_CAMPAIGN_COUNT; i++) {
 		rct_widget *campaginButton = &window_finances_marketing_widgets[WIDX_CAMPAIGN_1 + i];
 

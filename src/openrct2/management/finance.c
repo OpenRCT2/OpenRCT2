@@ -327,7 +327,7 @@ void game_command_set_current_loan(sint32* eax, sint32* ebx, sint32* ecx, sint32
 
 /**
  * Shift the expenditure table history one month to the left
- * If the table is full, acumulate the sum of the oldest month first
+ * If the table is full, accumulate the sum of the oldest month first
  * rct2: 0x0069DEAD
  */
 void finance_shift_expenditure_table()

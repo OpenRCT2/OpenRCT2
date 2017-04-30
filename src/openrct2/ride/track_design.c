@@ -1262,7 +1262,7 @@ static bool track_design_place_ride(rct_track_td6 *td6, sint16 x, sint16 y, sint
 * bl == 0, Draw outlines on the ground
 * bl == 1,
 * bl == 2,
-* bl == 3, Returns the z value of a succesful placement. Only lower 16 bits are the value, the rest may be garbage?
+* bl == 3, Returns the z value of a successful placement. Only lower 16 bits are the value, the rest may be garbage?
 * bl == 4,
 * bl == 5, Returns cost to create the track. All 32 bits are used. Places the track. (used by the preview)
 * bl == 6, Clear white outlined track.

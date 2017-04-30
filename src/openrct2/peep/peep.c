@@ -9121,7 +9121,7 @@ static void peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_peep
 
 		/* If this map element is the search goal the current search path ends here. */
 		if (new_score == 0) {
-			/* If the search result is better than the best so far (in the paramaters),
+			/* If the search result is better than the best so far (in the parameters),
 			 * then update the parameters with this search before continuing to the next map element. */
 			if (new_score < *endScore || (new_score == *endScore && counter < *endSteps )) {
 				// Update the search results
@@ -9174,7 +9174,7 @@ static void peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_peep
 			 * thereafter stay on thin paths. */
 			/* So, if the current path is also wide the goal could still
 			 * be reachable from here.
-			 * If the search result is better than the best so far (in the paramaters),
+			 * If the search result is better than the best so far (in the parameters),
 			 * then update the parameters with this search before continuing to the next map element. */
 			if (footpath_element_is_wide(currentMapElement) &&
 				(new_score < *endScore || (new_score == *endScore && counter < *endSteps ))) {
@@ -9330,7 +9330,7 @@ static void peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_peep
 				/* If the junction search limit is reached, the
 				 * current search path ends here. The goal may still
 				 * be reachable from here.
-				 * If the search result is better than the best so far (in the paramaters),
+				 * If the search result is better than the best so far (in the parameters),
 				 * then update the parameters with this search before continuing to the next map element. */
 				if (_peepPathFindNumJunctions <= 0) {
 					if (new_score < *endScore || (new_score == *endScore && counter < *endSteps )) {

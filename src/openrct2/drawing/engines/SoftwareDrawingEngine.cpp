@@ -572,7 +572,7 @@ private:
 
     static void ResetWindowVisbilities()
     {
-        // reset window visibilty status to unknown
+        // reset window visibility status to unknown
         for (rct_window *w = g_window_list; w < gWindowNextSlot; w++)
         {
             w->visibility = VC_UNKNOWN;

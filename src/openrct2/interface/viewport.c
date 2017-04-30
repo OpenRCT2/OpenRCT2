@@ -997,7 +997,7 @@ void viewport_set_visibility(uint8 mode)
 
 /**
  * Stores some info about the element pointed at, if requested for this particular type through the interaction mask.
- * Origninaly checked 0x0141F569 at start
+ * Originally checked 0x0141F569 at start
  *  rct2: 0x00688697
  */
 static void store_interaction_info(paint_struct *ps)

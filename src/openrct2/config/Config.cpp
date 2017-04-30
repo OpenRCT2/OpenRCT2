@@ -171,7 +171,7 @@ namespace Config
             model->load_save_sort = reader->GetSint32("load_save_sort", SORT_NAME_ASCENDING);
             model->minimize_fullscreen_focus_loss = reader->GetBoolean("minimize_fullscreen_focus_loss", true);
 
-             //Default config setting is false until the games canvas can be seperated from the effect
+             //Default config setting is false until the games canvas can be separated from the effect
             model->day_night_cycle = reader->GetBoolean("day_night_cycle", false);
 
             model->enable_light_fx = reader->GetBoolean("enable_light_fx", false);

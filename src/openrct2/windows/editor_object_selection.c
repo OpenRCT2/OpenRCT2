@@ -276,12 +276,12 @@ static rct_object_entry DefaultSelectedObjects[] = {
 	{ 0x00000080, { "FAID1   " }, 0 },		// Ride: First Aid Room
 	{ 0x00000080, { "INFOK   " }, 0 },		// Ride: Information Kiosk
 	{ 0x00000080, { "DRNKS   " }, 0 },		// Ride: Drinks Stall
-	{ 0x00000080, { "CNDYF   " }, 0 },		// Ride: Cotten Candy Stall
+	{ 0x00000080, { "CNDYF   " }, 0 },		// Ride: Cotton Candy Stall
 	{ 0x00000080, { "BURGB   " }, 0 },		// Ride: Burger Bar
 	{ 0x00000080, { "BALLN   " }, 0 },		// Ride: Balloon Stall
 	{ 0x00000080, { "ARRT1   " }, 0 },		// Ride: Corkscrew Roller Coaster
 	{ 0x00000080, { "RBOAT   " }, 0 },		// Ride: Rowing Boats
-	{ 0x00000088, { "PKENT1  " }, 0 },		// Park Entrace: Traditional Park Entrance
+	{ 0x00000088, { "PKENT1  " }, 0 },		// Park Entrance: Traditional Park Entrance
 	{ 0x00000089, { "WTRCYAN " }, 0 },		// Water: Natural Water
 	{ 0x00000085, { "TARMACB " }, 0 },		// Footpath: Brown Tarmac Footpath
 	{ 0x00000085, { "PATHSPCE" }, 0 },		// Footpath: Space Style Footpath

@@ -22,7 +22,7 @@ extern "C"
 }
 
 /**
- * Class to accuately measure elapsed time with high precision.
+ * Class to accurately measure elapsed time with high precision.
  */
 class Stopwatch final
 {

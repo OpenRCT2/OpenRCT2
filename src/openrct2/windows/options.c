@@ -324,7 +324,7 @@ static rct_widget window_options_misc_widgets[] = {
 	{ WWT_DROPDOWN,			1,	155,	299,	144,	155,	STR_NONE,									STR_NONE },											// Autosave dropdown
 	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	145,	154,	STR_DROPDOWN_GLYPH,							STR_AUTOSAVE_FREQUENCY_TIP },						// Autosave dropdown button
 	{ WWT_DROPDOWN,			1,	155,	299,	159,	170,	STR_NONE,									STR_NONE },											// Title sequence dropdown
-	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	160,	169,	STR_DROPDOWN_GLYPH,							STR_TITLE_SEQUENCE_TIP },							// Title seqeuence dropdown button
+	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	160,	169,	STR_DROPDOWN_GLYPH,							STR_TITLE_SEQUENCE_TIP },							// Title sequence dropdown button
 	{ WWT_DROPDOWN_BUTTON,	1,	26,		185,	174,	185,	STR_EDIT_TITLE_SEQUENCES_BUTTON,			STR_EDIT_TITLE_SEQUENCES_BUTTON_TIP },				// Edit title sequences button
 	{ WWT_CHECKBOX,			2,	10,		299,	189,	200,	STR_AUTO_STAFF_PLACEMENT,					STR_AUTO_STAFF_PLACEMENT_TIP },						// Auto staff placement
 	{ WWT_CHECKBOX,			2,	10,		299,	204,	215,	STR_HANDYMEN_MOW_BY_DEFAULT,				STR_HANDYMEN_MOW_BY_DEFAULT_TIP },					// Handymen mow by default

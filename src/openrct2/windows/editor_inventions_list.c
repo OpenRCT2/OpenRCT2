@@ -846,7 +846,7 @@ static void window_editor_inventions_list_scrollpaint(rct_window *w, rct_drawpix
 		researchItemEndMarker = RESEARCHED_ITEMS_SEPARATOR;
 	}
 
-	// Since this is now a do while need to conteract the +10
+	// Since this is now a do while need to counteract the +10
 	itemY = -10;
 	do{
 		itemY += 10;

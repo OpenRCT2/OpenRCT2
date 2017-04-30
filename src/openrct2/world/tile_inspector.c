@@ -696,7 +696,7 @@ sint32 tile_inspector_track_base_height_offset(sint32 x, sint32 y, sint32 elemen
 		}
 	}
 
-	// TODO: Only invalidate when one of the affacted tiles is selected
+	// TODO: Only invalidate when one of the affected tiles is selected
 	window_invalidate_by_class(WC_TILE_INSPECTOR);
 
 	return 0;
@@ -830,7 +830,7 @@ sint32 tile_inspector_track_set_chain(sint32 x, sint32 y, sint32 elementIndex, b
 		}
 	}
 
-	// TODO: Only invalidate when one of the affacted tiles is selected
+	// TODO: Only invalidate when one of the affected tiles is selected
 	window_invalidate_by_class(WC_TILE_INSPECTOR);
 
 	return 0;

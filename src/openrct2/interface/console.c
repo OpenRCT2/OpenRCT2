@@ -1078,7 +1078,7 @@ static sint32 cc_set(const utf8 **argv, sint32 argc)
 static sint32 cc_twitch(const utf8 **argv, sint32 argc)
 {
 #ifdef DISABLE_TWITCH
-	console_writeline_error("OpenRCT2 build not compiled with Twitch integeration.");
+	console_writeline_error("OpenRCT2 build not compiled with Twitch integration.");
 #else
 	// TODO add some twitch commands
 #endif

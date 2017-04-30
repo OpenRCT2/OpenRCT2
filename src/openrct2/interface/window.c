@@ -2486,7 +2486,7 @@ void window_start_textbox(rct_window *call_w, sint32 call_widget, rct_string_id 
 	// Clear the text input buffer
 	memset(gTextBoxInput, 0, maxLength);
 
-	// Enter in the the text input buffer any existing
+	// Enter in the text input buffer any existing
 	// text.
 	if (existing_text != STR_NONE)
 		format_string(gTextBoxInput, TEXT_INPUT_SIZE, existing_text, &existing_args);

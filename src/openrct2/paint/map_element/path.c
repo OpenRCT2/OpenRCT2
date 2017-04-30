@@ -607,7 +607,7 @@ static void sub_6A3F61(rct_map_element * map_element, uint16 bp, uint16 height, 
 					gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
 				}
 
-				// Draw additional path bits (bins, benchs, lamps, queue screens)
+				// Draw additional path bits (bins, benches, lamps, queue screens)
 				rct_scenery_entry* sceneryEntry = get_footpath_item_entry(footpath_element_get_path_scenery_index(map_element));
 				switch (sceneryEntry->path_bit.draw_type) {
 				case PATH_BIT_DRAW_TYPE_LIGHTS:

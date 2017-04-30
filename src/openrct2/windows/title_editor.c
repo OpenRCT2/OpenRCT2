@@ -139,7 +139,7 @@ enum WINDOW_TITLE_EDITOR_WIDGET_IDX {
 	WIDX_TITLE_EDITOR_SKIP,
 };
 
-// Increase BW if certain launguages do not fit
+// Increase BW if certain languages do not fit
 // BW should be a multiple of 4
 #define WW 320
 #define WH 270
