@@ -37,7 +37,7 @@ typedef struct rct_sprite_file_header {
 assert_struct_size(rct_sprite_file_header, 8);
 
 typedef struct rct_sprite_file_palette_entry {
-    uint8 b, g, r, a;
+	uint8 b, g, r, a;
 } rct_sprite_file_palette_entry;
 
 typedef struct rle_code {
@@ -218,7 +218,12 @@ static bool sprite_file_export(sint32 spriteIndex, const char *outPath)
 	dpi.zoom_level = 0;
 
 	memcpy(spriteFilePalette, _standardPalette, 256 * 4);
-	gfx_rle_sprite_to_buffer(spriteHeader->offset, pixels, (uint8*)spriteFilePalette, &dpi, IMAGE_TYPE_DEFAULT, 0, spriteHeader->height, 0, spriteHeader->width);
+
+	if (spriteHeader->flags & G1_FLAG_RLE_COMPRESSION) {
+		gfx_rle_sprite_to_buffer(spriteHeader->offset, pixels, (uint8*)spriteFilePalette, &dpi, IMAGE_TYPE_DEFAULT, 0, spriteHeader->height, 0, spriteHeader->width);
+	} else {
+		gfx_bmp_sprite_to_buffer((uint8*)spriteFilePalette, NULL, spriteHeader->offset, pixels, spriteHeader, &dpi, spriteHeader->height, spriteHeader->width, IMAGE_TYPE_DEFAULT);
+	}
 
 	if (image_io_png_write(&dpi, (rct_palette*)spriteFilePalette, outPath)) {
 		return true;
