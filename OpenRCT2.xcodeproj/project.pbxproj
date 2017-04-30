@@ -227,6 +227,7 @@
 		C686F9541CDBC3B7009F9BFC /* submarine_ride.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F9091CDBC3B7009F9BFC /* submarine_ride.c */; };
 		C686F9551CDBC3B7009F9BFC /* water_coaster.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F90A1CDBC3B7009F9BFC /* water_coaster.c */; };
 		C686F9581CDBC4C7009F9BFC /* vehicle_paint.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F9561CDBC4C7009F9BFC /* vehicle_paint.c */; };
+		C68B2CB51EB60DDE0020651C /* server_list.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C68B2CB41EB60DDE0020651C /* server_list.cpp */; };
 		C6B5A7D41CDFE4CB00C9C006 /* S6Exporter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C6B5A7D01CDFE4CB00C9C006 /* S6Exporter.cpp */; };
 		C6B5A7D51CDFE4CB00C9C006 /* S6Importer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C6B5A7D21CDFE4CB00C9C006 /* S6Importer.cpp */; };
 		C6CABA7E1E13F11C00D33A6B /* hook.c in Sources */ = {isa = PBXBuildFile; fileRef = C6E96E181E0406F00076A04F /* hook.c */; };
@@ -282,7 +283,6 @@
 		D44272011CC81B3200D84D28 /* Guard.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D44270E71CC81B3200D84D28 /* Guard.cpp */; };
 		D44272021CC81B3200D84D28 /* Json.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D44270EB1CC81B3200D84D28 /* Json.cpp */; };
 		D44272031CC81B3200D84D28 /* Path.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D44270F01CC81B3200D84D28 /* Path.cpp */; };
-		D44272041CC81B3200D84D28 /* Stopwatch.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D44270F21CC81B3200D84D28 /* Stopwatch.cpp */; };
 		D44272051CC81B3200D84D28 /* String.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D44270F51CC81B3200D84D28 /* String.cpp */; };
 		D44272061CC81B3200D84D28 /* textinputbuffer.c in Sources */ = {isa = PBXBuildFile; fileRef = D44270F91CC81B3200D84D28 /* textinputbuffer.c */; };
 		D44272081CC81B3200D84D28 /* diagnostic.c in Sources */ = {isa = PBXBuildFile; fileRef = D44270FE1CC81B3200D84D28 /* diagnostic.c */; };
@@ -392,7 +392,6 @@
 		D442727D1CC81B3200D84D28 /* ride_list.c in Sources */ = {isa = PBXBuildFile; fileRef = D44271BB1CC81B3200D84D28 /* ride_list.c */; };
 		D442727E1CC81B3200D84D28 /* save_prompt.c in Sources */ = {isa = PBXBuildFile; fileRef = D44271BC1CC81B3200D84D28 /* save_prompt.c */; };
 		D442727F1CC81B3200D84D28 /* scenery.c in Sources */ = {isa = PBXBuildFile; fileRef = D44271BD1CC81B3200D84D28 /* scenery.c */; };
-		D44272801CC81B3200D84D28 /* server_list.c in Sources */ = {isa = PBXBuildFile; fileRef = D44271BE1CC81B3200D84D28 /* server_list.c */; };
 		D44272811CC81B3200D84D28 /* server_start.c in Sources */ = {isa = PBXBuildFile; fileRef = D44271BF1CC81B3200D84D28 /* server_start.c */; };
 		D44272821CC81B3200D84D28 /* shortcut_key_change.c in Sources */ = {isa = PBXBuildFile; fileRef = D44271C01CC81B3200D84D28 /* shortcut_key_change.c */; };
 		D44272831CC81B3200D84D28 /* shortcut_keys.c in Sources */ = {isa = PBXBuildFile; fileRef = D44271C11CC81B3200D84D28 /* shortcut_keys.c */; };
@@ -695,6 +694,7 @@
 		C686F90A1CDBC3B7009F9BFC /* water_coaster.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = water_coaster.c; sourceTree = "<group>"; };
 		C686F9561CDBC4C7009F9BFC /* vehicle_paint.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = vehicle_paint.c; sourceTree = "<group>"; };
 		C686F9571CDBC4C7009F9BFC /* vehicle_paint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = vehicle_paint.h; sourceTree = "<group>"; };
+		C68B2CB41EB60DDE0020651C /* server_list.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = server_list.cpp; sourceTree = "<group>"; };
 		C6B5A7D01CDFE4CB00C9C006 /* S6Exporter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = S6Exporter.cpp; sourceTree = "<group>"; };
 		C6B5A7D11CDFE4CB00C9C006 /* S6Exporter.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; path = S6Exporter.h; sourceTree = "<group>"; };
 		C6B5A7D21CDFE4CB00C9C006 /* S6Importer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = S6Importer.cpp; sourceTree = "<group>"; };
@@ -799,9 +799,6 @@
 		D44270EF1CC81B3200D84D28 /* Memory.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Memory.hpp; sourceTree = "<group>"; usesTabs = 0; };
 		D44270F01CC81B3200D84D28 /* Path.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Path.cpp; sourceTree = "<group>"; usesTabs = 0; };
 		D44270F11CC81B3200D84D28 /* Path.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Path.hpp; sourceTree = "<group>"; usesTabs = 0; };
-		D44270F21CC81B3200D84D28 /* Stopwatch.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Stopwatch.cpp; sourceTree = "<group>"; usesTabs = 0; };
-		D44270F31CC81B3200D84D28 /* stopwatch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stopwatch.h; sourceTree = "<group>"; usesTabs = 1; wrapsLines = 1; };
-		D44270F41CC81B3200D84D28 /* Stopwatch.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Stopwatch.hpp; sourceTree = "<group>"; usesTabs = 0; };
 		D44270F51CC81B3200D84D28 /* String.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = String.cpp; sourceTree = "<group>"; usesTabs = 0; };
 		D44270F61CC81B3200D84D28 /* String.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = String.hpp; sourceTree = "<group>"; usesTabs = 0; };
 		D44270F71CC81B3200D84D28 /* StringBuilder.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = StringBuilder.hpp; sourceTree = "<group>"; usesTabs = 0; };
@@ -970,7 +967,6 @@
 		D44271BB1CC81B3200D84D28 /* ride_list.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ride_list.c; sourceTree = "<group>"; };
 		D44271BC1CC81B3200D84D28 /* save_prompt.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = save_prompt.c; sourceTree = "<group>"; };
 		D44271BD1CC81B3200D84D28 /* scenery.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = scenery.c; sourceTree = "<group>"; };
-		D44271BE1CC81B3200D84D28 /* server_list.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = server_list.c; sourceTree = "<group>"; };
 		D44271BF1CC81B3200D84D28 /* server_start.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = server_start.c; sourceTree = "<group>"; };
 		D44271C01CC81B3200D84D28 /* shortcut_key_change.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = shortcut_key_change.c; sourceTree = "<group>"; };
 		D44271C11CC81B3200D84D28 /* shortcut_keys.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = shortcut_keys.c; sourceTree = "<group>"; };
@@ -1724,9 +1720,6 @@
 				D464FEBD1D31A66E00CBABAC /* MemoryStream.h */,
 				D44270F01CC81B3200D84D28 /* Path.cpp */,
 				D44270F11CC81B3200D84D28 /* Path.hpp */,
-				D44270F21CC81B3200D84D28 /* Stopwatch.cpp */,
-				D44270F31CC81B3200D84D28 /* stopwatch.h */,
-				D44270F41CC81B3200D84D28 /* Stopwatch.hpp */,
 				D44270F51CC81B3200D84D28 /* String.cpp */,
 				D44270F61CC81B3200D84D28 /* String.hpp */,
 				D44270F71CC81B3200D84D28 /* StringBuilder.hpp */,
@@ -2007,7 +2000,7 @@
 				D44271B91CC81B3200D84D28 /* ride.c */,
 				D44271BC1CC81B3200D84D28 /* save_prompt.c */,
 				D44271BD1CC81B3200D84D28 /* scenery.c */,
-				D44271BE1CC81B3200D84D28 /* server_list.c */,
+				C68B2CB41EB60DDE0020651C /* server_list.cpp */,
 				D44271BF1CC81B3200D84D28 /* server_start.c */,
 				D44271C01CC81B3200D84D28 /* shortcut_key_change.c */,
 				D44271C11CC81B3200D84D28 /* shortcut_keys.c */,
@@ -2856,6 +2849,7 @@
 				D42E337E1E5C27D600D630AF /* IniReader.cpp in Sources */,
 				D442723B1CC81B3200D84D28 /* crash.cpp in Sources */,
 				C650B21A1CCABBDD00B4D91C /* tables.cpp in Sources */,
+				C68B2CB51EB60DDE0020651C /* server_list.cpp in Sources */,
 				D44272291CC81B3200D84D28 /* LanguagePack.cpp in Sources */,
 				D44272901CC81B3200D84D28 /* title_options.c in Sources */,
 				C6CABA821E1466D600D33A6B /* FileClassifier.cpp in Sources */,
@@ -2892,7 +2886,6 @@
 				D44272061CC81B3200D84D28 /* textinputbuffer.c in Sources */,
 				C686F9191CDBC3B7009F9BFC /* mine_ride.c in Sources */,
 				C650B2191CCABBDD00B4D91C /* S4Importer.cpp in Sources */,
-				D44272801CC81B3200D84D28 /* server_list.c in Sources */,
 				D44272911CC81B3200D84D28 /* title_scenarioselect.c in Sources */,
 				C686F8B61CDBC37E009F9BFC /* misc.c in Sources */,
 				D44272411CC81B3200D84D28 /* rct1.c in Sources */,
@@ -2951,7 +2944,6 @@
 				D44272401CC81B3200D84D28 /* windows.c in Sources */,
 				D44272881CC81B3200D84D28 /* text_input.c in Sources */,
 				D442720F1CC81B3200D84D28 /* scrolling_text.c in Sources */,
-				D44272041CC81B3200D84D28 /* Stopwatch.cpp in Sources */,
 				D43407D81D0E14BE00C2B3D4 /* DrawImageShader.cpp in Sources */,
 				007A05D01CFB2C8B00F419C3 /* NetworkGroup.cpp in Sources */,
 				656F6C8E1E45BFC200E0F770 /* Version.cpp in Sources */,
