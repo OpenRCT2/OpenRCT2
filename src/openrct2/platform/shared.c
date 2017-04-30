@@ -15,6 +15,7 @@
 #pragma endregion
 
 #include <stdlib.h>
+#include <time.h>
 #include "../audio/audio.h"
 #include "../audio/AudioMixer.h"
 #include "../config/Config.h"
