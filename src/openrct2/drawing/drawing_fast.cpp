@@ -21,6 +21,11 @@ extern "C"
     #include "drawing.h"
 }
 
+// This will have -1 (0xffffffff) for (val <= 0), 0 otherwise, so it can act as a mask
+// This is expected to generate
+//     sar eax, 0x1f (arithmetic shift right by 31)
+#define less_or_equal_zero_mask(val) (((val - 1) >> (sizeof(val) * 8 - 1)))
+
 template<sint32 image_type, sint32 zoom_level>
 static void FASTCALL DrawRLESprite2(const uint8* RESTRICT source_bits_pointer,
                                       uint8* RESTRICT dest_bits_pointer,
@@ -31,119 +36,104 @@ static void FASTCALL DrawRLESprite2(const uint8* RESTRICT source_bits_pointer,
                                       sint32 source_x_start,
                                       sint32 width)
 {
-    // The distance between two samples in the source image.
-    // We draw the image at 1 / (2^zoom_level) scale.
     sint32 zoom_amount = 1 << zoom_level;
+    sint32 zoom_mask = 0xFFFFFFFF << zoom_level;
+    uint8* next_dest_pointer = dest_bits_pointer;
 
-    // Width of one screen line in the dest buffer
     sint32 line_width = (dpi->width >> zoom_level) + dpi->pitch;
 
-    // Move up to the first line of the image if source_y_start is negative. Why does this even occur?
-    if (source_y_start < 0)
-    {   
-        source_y_start    += zoom_amount;
-        height            -= zoom_amount;
-        dest_bits_pointer += line_width;
-    }
+    const sint32 source_y_start_mask = less_or_equal_zero_mask(source_y_start + 1);
+    source_y_start += zoom_amount & source_y_start_mask;
+    next_dest_pointer += line_width & source_y_start_mask;
+    height -= zoom_amount & source_y_start_mask;
 
     //For every line in the image
-    for (sint32 i = 0; i < height; i += zoom_amount)
-    {
+    for (sint32 i = 0; i < height; i += zoom_amount) {
         sint32 y = source_y_start + i;
+        uint8 i2 = i >> zoom_level;
 
         //The first part of the source pointer is a list of offsets to different lines
         //This will move the pointer to the correct source line.
-        const uint8 *lineData = source_bits_pointer + ((uint16*)source_bits_pointer)[y];
-        uint8* loop_dest_pointer = dest_bits_pointer + line_width * (i >> zoom_level);
+        const uint8 *next_source_pointer = source_bits_pointer + ((uint16*)source_bits_pointer)[y];
+        uint8* loop_dest_pointer = next_dest_pointer + line_width * i2;
 
-        uint8 isEndOfLine = 0;
+        uint8 last_data_line = 0;
 
-        // For every data chunk in the line
-        while (!isEndOfLine)
-        {
-            const uint8* copySrc = lineData;
-            //uint8* copyDest = loop_dest_pointer;
+        //For every data section in the line
+        while (!last_data_line) {
+            const uint8* source_pointer = next_source_pointer;
+            uint8* dest_pointer = loop_dest_pointer;
 
-            // Read chunk metadata
-            uint8 dataSize    = *copySrc++;
-            uint8 firstPixelX = *copySrc++;
-
-            isEndOfLine = dataSize & 0x80;  // If the last bit in dataSize is set, then this is the last line
-            dataSize &= 0x7F;               // The rest of the bits are the actual size
-
+            sint32 no_pixels = *source_pointer++;
+            //gap_size is the number of non drawn pixels you require to
+            //jump over on your destination
+            uint8 gap_size = *source_pointer++;
+            //The last bit in no_pixels tells you if you have reached the end of a line
+            last_data_line = no_pixels & 0x80;
+            //Clear the last data line bit so we have just the no_pixels
+            no_pixels &= 0x7f;
             //Have our next source pointer point to the next data section
-            lineData = copySrc + dataSize;
+            next_source_pointer = source_pointer + no_pixels;
 
-            sint32 x_start = firstPixelX - source_x_start;
-            sint32 numPixels = dataSize;
+            //Calculates the start point of the image
+            sint32 x_start = gap_size - source_x_start;
+            const sint32 x_diff = x_start & ~zoom_mask;
+            const sint32 x_mask = ~less_or_equal_zero_mask(x_diff);
 
-            if (x_start > 0)
-            {
-                int mod = x_start & (zoom_amount - 1);  // x_start modulo zoom_amount
+            no_pixels -= x_diff;
+            x_start += ~zoom_mask & x_mask;
+            source_pointer += (x_start&~zoom_mask) & x_mask;
 
-                // If x_start is not a multiple of zoom_amount, round it up to a multiple
-                if (mod != 0)
-                {
-                    int offset = zoom_amount - mod;
-                    x_start   += offset;
-                    copySrc   += offset;
-                    numPixels -= offset;
-                }
-            }
-            else if (x_start < 0)
-            {
-                // Clamp x_start to zero if negative
-                int offset = 0 - x_start;
-                x_start = 0;
-                copySrc   += offset;
-                numPixels -= offset;
-            }
+            // This will have -1 (0xffffffff) for (x_start <= 0), 0 otherwise
+            sint32 sign = less_or_equal_zero_mask(x_start);
 
+            dest_pointer += (x_start >> zoom_level) & ~sign;
+
+            //If the start is negative we require to remove part of the image.
+            //This is done by moving the image pointer to the correct position.
+            source_pointer -= x_start & sign;
+            //The no_pixels will be reduced in this operation
+            no_pixels += x_start & sign;
+            //Reset the start position to zero as we have taken into account all moves
+            x_start &= ~sign;
+
+            sint32 x_end = x_start + no_pixels;
             //If the end position is further out than the whole image
             //end position then we need to shorten the line again
-            if (x_start + numPixels > width)
-                numPixels = width - x_start;
-
-            uint8 *copyDest = loop_dest_pointer + (x_start >> zoom_level);
+            const sint32 pixels_till_end = x_end - width;
+            //Shorten the line
+            no_pixels -= pixels_till_end & ~(less_or_equal_zero_mask(pixels_till_end));
 
             //Finally after all those checks, copy the image onto the drawing surface
             //If the image type is not a basic one we require to mix the pixels
-            if (image_type & IMAGE_TYPE_REMAP)  // palette controlled images
-            {
-                for (int j = 0; j < numPixels; j += zoom_amount, copySrc += zoom_amount, copyDest++)
-                {
+            if (image_type & IMAGE_TYPE_REMAP) {//In the .exe these are all unraveled loops
+                for (; no_pixels > 0; no_pixels -= zoom_amount, source_pointer += zoom_amount, dest_pointer++) {
+                    uint8 al = *source_pointer;
+                    uint8 ah = *dest_pointer;
                     if (image_type & IMAGE_TYPE_TRANSPARENT)
-                    {
-                        uint8 color = (((uint16)*copySrc << 8) | *copyDest) - 0x100;
-                        *copyDest = palette_pointer[color];
-                    }
+                        al = palette_pointer[(((uint16)al << 8) | ah) - 0x100];
                     else
-                    {
-                        *copyDest = palette_pointer[*copySrc];
-                    }
+                        al = palette_pointer[al];
+                    *dest_pointer = al;
                 }
-            }
-            else if (image_type & IMAGE_TYPE_TRANSPARENT)  // single alpha blended color (used for glass)
-            {
-                for (int j = 0; j < numPixels; j += zoom_amount, copyDest++)
-                {
-                    uint8 pixel = *copyDest;
+            } else if (image_type & IMAGE_TYPE_TRANSPARENT) {//In the .exe these are all unraveled loops
+                //Doesn't use source pointer ??? mix with background only?
+                //Not Tested
+
+                for (; no_pixels > 0; no_pixels -= zoom_amount, dest_pointer++) {
+                    uint8 pixel = *dest_pointer;
                     pixel = palette_pointer[pixel];
-                    *copyDest = pixel;
+                    *dest_pointer = pixel;
                 }
-            }
-            else  // standard opaque image
+            } else
             {
-                if (zoom_level == 0)
-                {
-                    // Since we're sampling each pixel at this zoom level, just do a straight memcpy
-                    if (numPixels > 0)
-                        memcpy(copyDest, copySrc, numPixels);
-                }
-                else
-                {
-                    for (int j = 0; j < numPixels; j += zoom_amount, copySrc += zoom_amount, copyDest++)
-                        *copyDest = *copySrc;
+                if (zoom_amount == 1) {
+                    no_pixels &= ~less_or_equal_zero_mask(no_pixels);
+                    memcpy(dest_pointer, source_pointer, no_pixels);
+                } else {
+                    for (; no_pixels > 0; no_pixels -= zoom_amount, source_pointer += zoom_amount, dest_pointer++) {
+                        *dest_pointer = *source_pointer;
+                    }
                 }
             }
         }
