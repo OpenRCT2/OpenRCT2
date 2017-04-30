@@ -5,6 +5,7 @@
 - Feature: [#5110] The tile inspector can now be used in multiplayer.
 - Feature: [#5305] Add scenery eye dropper tool.
 - Feature: [#5370] Ride operating mode can be set from the console.
+- Feature: [#5415] Add mute toolbar button (as seen in RCT1 and Locomotion).
 - Improved: [#5254] Scenario option changes are now synchronised over multiplayer.
 - Improved: [#3288] Added server description and greeting textboxes to the start server menu.
 - Improved: [#3502] Track previews display at higher zoom level for large layouts.
