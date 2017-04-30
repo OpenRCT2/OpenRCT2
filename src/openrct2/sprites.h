@@ -757,8 +757,14 @@ enum {
 
 	SPR_G2_GIGA_RC_BOOSTER_NE_SW = SPR_G2_BEGIN + 81,
 	SPR_G2_GIGA_RC_BOOSTER_NW_SE = SPR_G2_BEGIN + 82,
-    SPR_G2_BM_BOOSTER_NE_SW = SPR_G2_BEGIN + 83,
-    SPR_G2_BM_BOOSTER_NW_SE = SPR_G2_BEGIN + 84,
+	SPR_G2_BM_BOOSTER_NE_SW = SPR_G2_BEGIN + 83,
+	SPR_G2_BM_BOOSTER_NW_SE = SPR_G2_BEGIN + 84,
+
+	SPR_G2_TOOLBAR_MUTE = SPR_G2_BEGIN + 87,
+	SPR_G2_TOOLBAR_MUTE_PRESSED = SPR_G2_BEGIN + 88,
+	SPR_G2_TOOLBAR_UNMUTE = SPR_G2_BEGIN + 89,
+	SPR_G2_TOOLBAR_UNMUTE_PRESSED = SPR_G2_BEGIN + 90,
+
 
 	// 0x60000, chosen because it's a round hex number
 	// of the last possible range of image ID values that is large enough to fit all csg1 sprites.
