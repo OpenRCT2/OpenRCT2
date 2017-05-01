@@ -7933,6 +7933,9 @@ static sint32 peep_interact_with_entrance(rct_peep* peep, sint16 x, sint16 y, rc
 	uint8 entranceType = map_element->properties.entrance.type;
 	uint8 rideIndex = map_element->properties.entrance.ride_index;
 
+	// Store some details to determine when to override the default
+	// behaviour (defined below) for when staff attempt to enter a ride
+	// to fix/inspect it.
 	if (entranceType == ENTRANCE_TYPE_RIDE_EXIT){
 		_unk_F1EE18 |= F1EE18_RIDE_EXIT;
 		_peepRideEntranceExitElement = map_element;
@@ -7943,32 +7946,48 @@ static sint32 peep_interact_with_entrance(rct_peep* peep, sint16 x, sint16 y, rc
 	}
 
 	if (entranceType == ENTRANCE_TYPE_RIDE_EXIT){
+		// Default guest/staff behaviour attempting to enter a
+		// ride exit is to turn around.
 		peep->interactionRideIndex = 0xFF;
 		return peep_return_to_center_of_tile(peep);
 	}
 
 	if (entranceType == ENTRANCE_TYPE_RIDE_ENTRANCE){
 		if (peep->type == PEEP_TYPE_STAFF){
+			// Default staff behaviour attempting to enter a
+			// ride entrance is to turn around.
 			peep->interactionRideIndex = 0xFF;
 			return peep_return_to_center_of_tile(peep);
 		}
 
 		if (peep->state == PEEP_STATE_QUEUING){
+			// Guest is in the ride queue.
 			peep->sub_state = 11;
 			peep->action_sprite_image_offset = _unk_F1AEF0;
 			return 1;
 		}
 
+		// Guest is on a normal path, i.e. ride has no queue.
 		if (peep->interactionRideIndex == rideIndex)
+			// Peep is retrying the ride entrance without leaving
+			// the path tile and without trying any other ride
+			// attached to this path tile. i.e. stick with the
+			// peeps previous decision not to go on the ride.
 			return peep_return_to_center_of_tile(peep);
 
 		peep->var_F4 = 0;
 		uint8 stationNum = (map_element->properties.entrance.index >> 4) & 0x7;
+		// Guest walks up to the ride for the first time since entering
+		// the path tile or since considering another ride attached to
+		// the path tile.
 		if (!peep_should_go_on_ride(peep, rideIndex, stationNum, 0)){
+			// Peep remembers that this is the last ride they
+			// considered while on this path tile.
 			peep->interactionRideIndex = rideIndex;
 			return peep_return_to_center_of_tile(peep);
 		}
 
+		// Guest has decided to go on the ride.
 		peep->action_sprite_image_offset = _unk_F1AEF0;
 		peep->interactionRideIndex = rideIndex;
 
@@ -8000,6 +8019,7 @@ static sint32 peep_interact_with_entrance(rct_peep* peep, sint16 x, sint16 y, rc
 	else{
 		// PARK_ENTRANCE
 		if (peep->type == PEEP_TYPE_STAFF)
+			// Staff cannot leave the park, so go back.
 			return  peep_return_to_center_of_tile(peep);
 
 		// If not the center of the entrance arch
@@ -8321,15 +8341,22 @@ static sint32 peep_interact_with_path(rct_peep* peep, sint16 x, sint16 y, rct_ma
 
 		uint8 rideIndex = map_element->properties.path.ride_index;
 
+		// Check if this queue path tile is connected to a ride.
 		if (rideIndex == 0xFF){
+			// Queue is not connected to a ride.
 			peep->interactionRideIndex = 0xFF;
 			return peep_footpath_move_forward(peep, x, y, map_element, vandalism_present);
 		}
 
+		// Queue is connected to a ride.
 		if (peep->state == PEEP_STATE_QUEUING){
+			// Check if this queue is connected to the ride the
+			// peep is queuing for, i.e. the player hasn't edited
+			// the queue.
 			if (peep->current_ride == rideIndex){
 				return peep_footpath_move_forward(peep, x, y, map_element, vandalism_present);
 			}
+			// Queue got disconnected from the ride.
 			remove_peep_from_queue(peep);
 			peep_decrement_num_riders(peep);
 			peep->state = PEEP_STATE_1;
@@ -8337,20 +8364,33 @@ static sint32 peep_interact_with_path(rct_peep* peep, sint16 x, sint16 y, rct_ma
 			return peep_footpath_move_forward(peep, x, y, map_element, vandalism_present);
 		}
 
+		// One of two cases applies here:
+		// 1. Peep is in the ride queue but no longer queuing.
+		//    This usually means the ride was closed.
+		// 2. Peep is walking up to the queue entrance from
+		//    a normal path tile.
+
 		if (peep->interactionRideIndex == rideIndex){
+			// Case 1 above applies, so walk the queue.
 			return peep_footpath_move_forward(peep, x, y, map_element, vandalism_present);
 		}
 
+		// Case 2 above applies - decide whether to go on the ride.
 		peep->var_F4 = 0;
 		uint8 stationNum = (map_element->properties.path.additions & 0x70) >> 4;
 		if (!peep_should_go_on_ride(peep, rideIndex, stationNum, PEEP_RIDE_DECISION_AT_QUEUE)){
-			peep->interactionRideIndex = rideIndex;
+			// Peep has decided not to go on the ride.
 			return peep_return_to_center_of_tile(peep);
 		}
 
+		// Peep has decided to go on the ride at the queue.
+		// Set the following so the peep will correctly walk up
+		// and back down the queue if the ride is closed
+		// while they are queuing.
 		peep->interactionRideIndex = rideIndex;
 		rct_ride* ride = get_ride(rideIndex);
 
+		// Add the peep to the ride queue.
 		uint16 old_last_peep = ride->last_peep_in_queue[stationNum];
 		ride->last_peep_in_queue[stationNum] = peep->sprite_index;
 		peep->next_in_queue = old_last_peep;
