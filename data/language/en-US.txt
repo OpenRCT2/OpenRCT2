@@ -574,8 +574,8 @@ STR_0569    :Riding in special harnesses below the track, riders experience the 
 STR_0570    :
 STR_0571    :Circular cars spin around as they travel along the zig-zagging wooden track
 STR_0572    :Large capacity boats travel along a wide water channel, propelled up slopes by a conveyor belt, accelerating down steep slopes to soak the riders with a giant splash
-STR_0573    :Powered helicoper shaped cars running on a steel track, controlled by the pedalling of the riders
-STR_0574    :Riders are held in special harnesses in a lying-down position, travlling through twisted track and inversions either on their backs or facing the ground
+STR_0573    :Powered helicopter shaped cars running on a steel track, controlled by the pedalling of the riders
+STR_0574    :Riders are held in special harnesses in a lying-down position, travelling through twisted track and inversions either on their backs or facing the ground
 STR_0575    :Powered trains hanging from a single rail transport people around the park
 STR_0576    :
 STR_0577    :Bogied cars run on wooden tracks, turning around on special reversing sections
@@ -2639,7 +2639,7 @@ STR_DTLS    :In this tiny park you must finish building the five existing coaste
 <Nevermore Park>
 STR_SCNR    :Nevermore Park
 STR_PARK    :Nevermore Park
-STR_DTLS    :A large park with a novel transporation system around its edge
+STR_DTLS    :A large park with a novel transportation system around its edge
 
 <Pacifica>
 STR_SCNR    :Pacifica

@@ -2749,7 +2749,7 @@ STR_2739    :Nessuno
 STR_2740    :RollerCoaster Tycoon 1
 STR_2741    :RollerCoaster Tycoon 2
 STR_2742    :css50.dat not found
-STR_2743    :Copy data\css17.dat from your RCT1 installation to data\css50.dat in your RCT2 installation.
+STR_2743    :Copiare 'data/css17.dat' dalla cartella di installazione di RCT1 come 'data/css50.dat' nella cartella di RCT2, oppure impostare il percorso di installazione di RCT1 nella scheda "Altro".
 STR_2744    :[
 STR_2745    :\
 STR_2746    :]
@@ -4147,7 +4147,7 @@ STR_5832    :{SMALLFONT}{BLACK}Mostra l'altezza in unità generiche invece del f
 STR_5833    :{SMALLFONT}{BLACK}Cambia il formato della data utilizzato
 STR_5834    :{SMALLFONT}{BLACK}Seleziona il dispositivo audio utilizzato da OpenRCT2
 STR_5835    :{SMALLFONT}{BLACK}Disattiva l'audio del gioco se la finestra perde il focus
-STR_5836    :{SMALLFONT}{BLACK}Imposta la musica da utilizzare nel menù principale.{NEWLINE}Selezionando RCT1 sarà necessario copiare il file {OPENQUOTES}data/css17.dat{ENDQUOTES} dalla cartella di RCT1 a {OPENQUOTES}data/css50.dat{ENDQUOTES} nella cartella di RCT2.
+STR_5836    :{SMALLFONT}{BLACK}Imposta la musica da utilizzare nel menù principale.{NEWLINE}Selezionando RCT1 sarà necessario copiare il file 'data/css17.dat' dalla cartella di RCT1 a 'data/css50.dat' nella cartella di RCT2, oppure impostare il percorso di RCT1 nella scheda "Altro".
 STR_5837    :{SMALLFONT}{BLACK}Crea e gestisci i temi dell'interfaccia
 STR_5838    :{SMALLFONT}{BLACK}Mostra un pulsante differente per le finanze nella barra degli strumenti
 STR_5839    :{SMALLFONT}{BLACK}Mostra un pulsante differente per le ricerche e sviluppo nella barra degli strumenti
@@ -4342,6 +4342,31 @@ STR_6026    :Costruzione percorso - Pezzo precedente
 STR_6027    :Costruzione percorso - Pezzo successivo
 STR_6028    :Costruzione percorso - Costruisci attuale
 STR_6029    :Costruzione percorso - Demolisci attuale
+STR_6030    :{SMALLFONT}{BLACK}Contagocce scenario. Fare clic su un qualsiasi elemento dello scenario per attivare la costruzione di quel pezzo.
+STR_6031    :Descrizione server:
+STR_6032    :Messaggio di benvenuto server:
+STR_6033    :Percorso installazione di RCT1:
+STR_6035    :Selezionare la cartella di installazione di RCT1
+STR_6036    :{SMALLFONT}{BLACK}Pulisci
+STR_6037    :Selezionare una cartella di installazione di RCT1 valida
+STR_6038    :{SMALLFONT}{BLACK}Se RCT1 è installato, selezionarne la cartella per caricarne gli scenari, la musica, ecc.
+STR_6039    :{SMALLFONT}{BLACK}Demolizione veloce percorso
+STR_6040    :Modifica opzioni scenario
+STR_6041    :{BLACK}Non è stato assunto alcun meccanico!
+STR_6042    :Carica heightmap
+STR_6043    :Seleziona heightmap
+STR_6044    :Ammorbidisci heightmap
+STR_6045    :Forza
+STR_6046    :Normalizza heightmap
+STR_6047    :Ammorbidisci celle
+STR_6048    :Errore nella heightmap
+STR_6049    :Errore nella lettura del PNG
+STR_6050    :Errore nella lettura della bitmap
+STR_6051    :Larghezza e altezza devono corrispondere
+STR_6052    :La heightmap è troppo grande e sarà tagliata
+STR_6053    :La heightmap non può essere normalizzata
+STR_6054    :Sono supportate solo le bitmap a 24 bit
+STR_6055    :File di heightmap di OpenRCT2
 
 
 #############
