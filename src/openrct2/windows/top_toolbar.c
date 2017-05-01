@@ -219,14 +219,14 @@ static rct_widget window_top_toolbar_widgets[] = {
 	{ WIDGETS_END },
 };
 
-static void window_top_toolbar_mouseup(rct_window *w, sint32 widgetIndex);
-static void window_top_toolbar_mousedown(sint32 widgetIndex, rct_window*w, rct_widget* widget);
-static void window_top_toolbar_dropdown(rct_window *w, sint32 widgetIndex, sint32 dropdownIndex);
-static void window_top_toolbar_tool_update(rct_window* w, sint32 widgetIndex, sint32 x, sint32 y);
-static void window_top_toolbar_tool_down(rct_window* w, sint32 widgetIndex, sint32 x, sint32 y);
-static void window_top_toolbar_tool_drag(rct_window* w, sint32 widgetIndex, sint32 x, sint32 y);
-static void window_top_toolbar_tool_up(rct_window* w, sint32 widgetIndex, sint32 x, sint32 y);
-static void window_top_toolbar_tool_abort(rct_window *w, sint32 widgetIndex);
+static void window_top_toolbar_mouseup(rct_window *w, rct_widgetindex widgetIndex);
+static void window_top_toolbar_mousedown(rct_widgetindex widgetIndex, rct_window*w, rct_widget* widget);
+static void window_top_toolbar_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex);
+static void window_top_toolbar_tool_update(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y);
+static void window_top_toolbar_tool_down(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y);
+static void window_top_toolbar_tool_drag(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y);
+static void window_top_toolbar_tool_up(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y);
+static void window_top_toolbar_tool_abort(rct_window *w, rct_widgetindex widgetIndex);
 static void window_top_toolbar_invalidate(rct_window *w);
 static void window_top_toolbar_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
@@ -273,9 +273,9 @@ void top_toolbar_init_network_menu(rct_window *window, rct_widget *widget);
 void top_toolbar_network_menu_dropdown(sint16 dropdownIndex);
 
 void toggle_footpath_window();
-void toggle_land_window(rct_window *topToolbar, sint32 widgetIndex);
-void toggle_clear_scenery_window(rct_window *topToolbar, sint32 widgetIndex);
-void toggle_water_window(rct_window *topToolbar, sint32 widgetIndex);
+void toggle_land_window(rct_window *topToolbar, rct_widgetindex widgetIndex);
+void toggle_clear_scenery_window(rct_window *topToolbar, rct_widgetindex widgetIndex);
+void toggle_water_window(rct_window *topToolbar, rct_widgetindex widgetIndex);
 
 money32 selection_lower_land(uint8 flags);
 money32 selection_raise_land(uint8 flags);
@@ -309,7 +309,7 @@ void window_top_toolbar_open()
  *
  *  rct2: 0x0066C957
  */
-static void window_top_toolbar_mouseup(rct_window *w, sint32 widgetIndex)
+static void window_top_toolbar_mouseup(rct_window *w, rct_widgetindex widgetIndex)
 {
 	rct_window *mainWindow;
 
@@ -379,7 +379,7 @@ static void window_top_toolbar_mouseup(rct_window *w, sint32 widgetIndex)
  *
  *  rct2: 0x0066CA3B
  */
-static void window_top_toolbar_mousedown(sint32 widgetIndex, rct_window*w, rct_widget* widget)
+static void window_top_toolbar_mousedown(rct_widgetindex widgetIndex, rct_window*w, rct_widget* widget)
 {
 	sint32 numItems;
 
@@ -529,7 +529,7 @@ static void window_top_toolbar_scenarioselect_callback(const utf8 *path)
  *
  *  rct2: 0x0066C9EA
  */
-static void window_top_toolbar_dropdown(rct_window *w, sint32 widgetIndex, sint32 dropdownIndex)
+static void window_top_toolbar_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex)
 {
 	switch (widgetIndex) {
 	case WIDX_FILE_MENU:
@@ -915,7 +915,7 @@ static void window_top_toolbar_paint(rct_window *w, rct_drawpixelinfo *dpi)
  *
  *  rct2: 0x006E3158
  */
-static void repaint_scenery_tool_down(sint16 x, sint16 y, sint16 widgetIndex){
+static void repaint_scenery_tool_down(sint16 x, sint16 y, rct_widgetindex widgetIndex){
 	// ax, cx, bl
 	sint16 grid_x, grid_y;
 	sint32 type;
@@ -1021,7 +1021,7 @@ static void repaint_scenery_tool_down(sint16 x, sint16 y, sint16 widgetIndex){
 	}
 }
 
-static void scenery_eyedropper_tool_down(sint16 x, sint16 y, sint16 widgetIndex)
+static void scenery_eyedropper_tool_down(sint16 x, sint16 y, rct_widgetindex widgetIndex)
 {
 	uint16 flags =
 		VIEWPORT_INTERACTION_MASK_SCENERY &
@@ -1548,7 +1548,7 @@ void game_command_callback_place_banner(sint32 eax, sint32 ebx, sint32 ecx, sint
  *
  *  rct2: 0x006E2CC6
  */
-static void window_top_toolbar_scenery_tool_down(sint16 x, sint16 y, rct_window *w, sint16 widgetIndex)
+static void window_top_toolbar_scenery_tool_down(sint16 x, sint16 y, rct_window *w, rct_widgetindex widgetIndex)
 {
 	scenery_remove_ghost_tool_placement();
 	if (gWindowSceneryPaintEnabled & 1) {
@@ -2646,7 +2646,7 @@ static void top_toolbar_tool_update_scenery(sint16 x, sint16 y){
  *
  *  rct2: 0x0066CB25
  */
-static void window_top_toolbar_tool_update(rct_window* w, sint32 widgetIndex, sint32 x, sint32 y)
+static void window_top_toolbar_tool_update(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y)
 {
 	switch (widgetIndex) {
 	case WIDX_CLEAR_SCENERY:
@@ -2671,7 +2671,7 @@ static void window_top_toolbar_tool_update(rct_window* w, sint32 widgetIndex, si
  *
  *  rct2: 0x0066CB73
  */
-static void window_top_toolbar_tool_down(rct_window* w, sint32 widgetIndex, sint32 x, sint32 y)
+static void window_top_toolbar_tool_down(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y)
 {
 	switch (widgetIndex){
 	case WIDX_CLEAR_SCENERY:
@@ -2770,8 +2770,8 @@ static void window_top_toolbar_land_tool_drag(sint16 x, sint16 y)
 	rct_window *window = window_find_from_point(x, y);
 	if (!window)
 		return;
-	sint32 widget_index = window_find_widget_from_point(window, x, y);
-	if (widget_index == 0xFFFF)
+	rct_widgetindex widget_index = window_find_widget_from_point(window, x, y);
+	if (widget_index == -1)
 		return;
 	rct_widget *widget = &window->widgets[widget_index];
 	if (widget->type != WWT_VIEWPORT)
@@ -2809,8 +2809,8 @@ static void window_top_toolbar_water_tool_drag(sint16 x, sint16 y)
 	rct_window *window = window_find_from_point(x, y);
 	if (!window)
 		return;
-	sint32 widget_index = window_find_widget_from_point(window, x, y);
-	if (widget_index == 0xFFFF)
+	rct_widgetindex widget_index = window_find_widget_from_point(window, x, y);
+	if (widget_index == -1)
 		return;
 	rct_widget *widget = &window->widgets[widget_index];
 	if (widget->type != WWT_VIEWPORT)
@@ -2871,7 +2871,7 @@ static void window_top_toolbar_water_tool_drag(sint16 x, sint16 y)
  *
  *  rct2: 0x0066CB4E
  */
-static void window_top_toolbar_tool_drag(rct_window* w, sint32 widgetIndex, sint32 x, sint32 y)
+static void window_top_toolbar_tool_drag(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y)
 {
 	switch (widgetIndex){
 	case WIDX_CLEAR_SCENERY:
@@ -2931,7 +2931,7 @@ static void window_top_toolbar_tool_drag(rct_window* w, sint32 widgetIndex, sint
  *
  *  rct2: 0x0066CC5B
  */
-static void window_top_toolbar_tool_up(rct_window* w, sint32 widgetIndex, sint32 x, sint32 y)
+static void window_top_toolbar_tool_up(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y)
 {
 	switch (widgetIndex) {
 	case WIDX_LAND:
@@ -2956,7 +2956,7 @@ static void window_top_toolbar_tool_up(rct_window* w, sint32 widgetIndex, sint32
  *
  *  rct2: 0x0066CA58
  */
-static void window_top_toolbar_tool_abort(rct_window *w, sint32 widgetIndex)
+static void window_top_toolbar_tool_abort(rct_window *w, rct_widgetindex widgetIndex)
 {
 	switch (widgetIndex) {
 	case WIDX_LAND:
@@ -3295,7 +3295,7 @@ void toggle_footpath_window()
  *
  *  rct2: 0x0066CD54
  */
-void toggle_land_window(rct_window *topToolbar, sint32 widgetIndex)
+void toggle_land_window(rct_window *topToolbar, rct_widgetindex widgetIndex)
 {
 	if ((input_test_flag(INPUT_FLAG_TOOL_ACTIVE)) && gCurrentToolWidget.window_classification == WC_TOP_TOOLBAR && gCurrentToolWidget.widget_index == WIDX_LAND) {
 		tool_cancel();
@@ -3312,7 +3312,7 @@ void toggle_land_window(rct_window *topToolbar, sint32 widgetIndex)
  *
  *  rct2: 0x0066CD0C
  */
-void toggle_clear_scenery_window(rct_window *topToolbar, sint32 widgetIndex)
+void toggle_clear_scenery_window(rct_window *topToolbar, rct_widgetindex widgetIndex)
 {
 	if ((input_test_flag(INPUT_FLAG_TOOL_ACTIVE) && gCurrentToolWidget.window_classification == WC_TOP_TOOLBAR && gCurrentToolWidget.widget_index == WIDX_CLEAR_SCENERY)) {
 		tool_cancel();
@@ -3329,7 +3329,7 @@ void toggle_clear_scenery_window(rct_window *topToolbar, sint32 widgetIndex)
  *
  *  rct2: 0x0066CD9C
  */
-void toggle_water_window(rct_window *topToolbar, sint32 widgetIndex)
+void toggle_water_window(rct_window *topToolbar, rct_widgetindex widgetIndex)
 {
 	if ((input_test_flag(INPUT_FLAG_TOOL_ACTIVE)) && gCurrentToolWidget.window_classification == WC_TOP_TOOLBAR && gCurrentToolWidget.widget_index == WIDX_WATER) {
 		tool_cancel();
@@ -3390,7 +3390,7 @@ bool land_rights_tool_is_active()
 bool scenery_tool_is_active()
 {
 	sint32 toolWindowClassification = gCurrentToolWidget.window_classification;
-	sint32 toolWidgetIndex = gCurrentToolWidget.widget_index;
+	rct_widgetindex toolWidgetIndex = gCurrentToolWidget.widget_index;
 	if (input_test_flag(INPUT_FLAG_TOOL_ACTIVE))
 		if (toolWindowClassification == WC_TOP_TOOLBAR && toolWidgetIndex == WIDX_SCENERY)
 			return true;

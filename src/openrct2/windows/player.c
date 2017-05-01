@@ -92,10 +92,10 @@ rct_widget *window_player_page_widgets[] = {
 #pragma region Events
 
 void window_player_overview_close(rct_window *w);
-void window_player_overview_mouse_up(rct_window *w, sint32 widgetIndex);
+void window_player_overview_mouse_up(rct_window *w, rct_widgetindex widgetIndex);
 void window_player_overview_resize(rct_window *w);
-void window_player_overview_mouse_down(sint32 widgetIndex, rct_window *w, rct_widget *widget);
-void window_player_overview_dropdown(rct_window *w, sint32 widgetIndex, sint32 dropdownIndex);
+void window_player_overview_mouse_down(rct_widgetindex widgetIndex, rct_window *w, rct_widget *widget);
+void window_player_overview_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex);
 void window_player_overview_update(rct_window* w);
 void window_player_overview_invalidate(rct_window *w);
 void window_player_overview_paint(rct_window *w, rct_drawpixelinfo *dpi);
@@ -132,7 +132,7 @@ static rct_window_event_list window_player_overview_events = {
 };
 
 void window_player_statistics_close(rct_window *w);
-void window_player_statistics_mouse_up(rct_window *w, sint32 widgetIndex);
+void window_player_statistics_mouse_up(rct_window *w, rct_widgetindex widgetIndex);
 void window_player_statistics_resize(rct_window *w);
 void window_player_statistics_update(rct_window* w);
 void window_player_statistics_invalidate(rct_window *w);
@@ -269,7 +269,7 @@ void window_player_overview_close(rct_window *w)
 
 }
 
-void window_player_overview_mouse_up(rct_window *w, sint32 widgetIndex)
+void window_player_overview_mouse_up(rct_window *w, rct_widgetindex widgetIndex)
 {
 	switch(widgetIndex){
 	case WIDX_CLOSE:
@@ -298,7 +298,7 @@ void window_player_overview_mouse_up(rct_window *w, sint32 widgetIndex)
 	}
 }
 
-void window_player_overview_mouse_down(sint32 widgetIndex, rct_window *w, rct_widget *widget)
+void window_player_overview_mouse_down(rct_widgetindex widgetIndex, rct_window *w, rct_widget *widget)
 {
 	switch(widgetIndex){
 	case WIDX_GROUP_DROPDOWN:
@@ -307,7 +307,7 @@ void window_player_overview_mouse_down(sint32 widgetIndex, rct_window *w, rct_wi
 	}
 }
 
-void window_player_overview_dropdown(rct_window *w, sint32 widgetIndex, sint32 dropdownIndex)
+void window_player_overview_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex)
 {
 	sint32 player = network_get_player_index((uint8)w->number);
 	if (player == -1) {
@@ -463,7 +463,7 @@ void window_player_statistics_close(rct_window *w)
 	}
 }
 
-void window_player_statistics_mouse_up(rct_window *w, sint32 widgetIndex)
+void window_player_statistics_mouse_up(rct_window *w, rct_widgetindex widgetIndex)
 {
 	switch (widgetIndex) {
 	case WIDX_CLOSE:

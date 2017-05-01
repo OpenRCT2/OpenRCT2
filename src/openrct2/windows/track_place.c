@@ -62,11 +62,11 @@ static rct_widget window_track_place_widgets[] = {
 };
 
 static void window_track_place_close(rct_window *w);
-static void window_track_place_mouseup(rct_window *w, sint32 widgetIndex);
+static void window_track_place_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_track_place_update(rct_window *w);
-static void window_track_place_toolupdate(rct_window* w, sint32 widgetIndex, sint32 x, sint32 y);
-static void window_track_place_tooldown(rct_window* w, sint32 widgetIndex, sint32 x, sint32 y);
-static void window_track_place_toolabort(rct_window *w, sint32 widgetIndex);
+static void window_track_place_toolupdate(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y);
+static void window_track_place_tooldown(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y);
+static void window_track_place_toolabort(rct_window *w, rct_widgetindex widgetIndex);
 static void window_track_place_unknown14(rct_window *w);
 static void window_track_place_invalidate(rct_window *w);
 static void window_track_place_paint(rct_window *w, rct_drawpixelinfo *dpi);
@@ -203,7 +203,7 @@ static void window_track_place_close(rct_window *w)
  *
  *  rct2: 0x006CFEAC
  */
-static void window_track_place_mouseup(rct_window *w, sint32 widgetIndex)
+static void window_track_place_mouseup(rct_window *w, rct_widgetindex widgetIndex)
 {
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
@@ -245,7 +245,7 @@ static void window_track_place_update(rct_window *w)
  *
  *  rct2: 0x006CFF2D
  */
-static void window_track_place_toolupdate(rct_window* w, sint32 widgetIndex, sint32 x, sint32 y)
+static void window_track_place_toolupdate(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y)
 {
 	sint16 mapX, mapY, mapZ;
 
@@ -304,7 +304,7 @@ static void window_track_place_toolupdate(rct_window* w, sint32 widgetIndex, sin
  *
  *  rct2: 0x006CFF34
  */
-static void window_track_place_tooldown(rct_window* w, sint32 widgetIndex, sint32 x, sint32 y)
+static void window_track_place_tooldown(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y)
 {
 	sint32 i;
 	sint16 mapX, mapY, mapZ;
@@ -359,7 +359,7 @@ static void window_track_place_tooldown(rct_window* w, sint32 widgetIndex, sint3
  *
  *  rct2: 0x006D015C
  */
-static void window_track_place_toolabort(rct_window *w, sint32 widgetIndex)
+static void window_track_place_toolabort(rct_window *w, rct_widgetindex widgetIndex)
 {
 	window_track_place_clear_provisional();
 }

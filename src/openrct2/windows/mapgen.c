@@ -228,31 +228,31 @@ static rct_widget *PageWidgets[WINDOW_MAPGEN_PAGE_COUNT] = {
 #pragma region Events
 
 static void window_mapgen_shared_close(rct_window *w);
-static void window_mapgen_shared_mouseup(rct_window *w, sint32 widgetIndex);
+static void window_mapgen_shared_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 
-static void window_mapgen_base_mouseup(rct_window *w, sint32 widgetIndex);
-static void window_mapgen_base_mousedown(sint32 widgetIndex, rct_window *w, rct_widget* widget);
-static void window_mapgen_base_dropdown(rct_window *w, sint32 widgetIndex, sint32 dropdownIndex);
+static void window_mapgen_base_mouseup(rct_window *w, rct_widgetindex widgetIndex);
+static void window_mapgen_base_mousedown(rct_widgetindex widgetIndex, rct_window *w, rct_widget* widget);
+static void window_mapgen_base_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex);
 static void window_mapgen_base_update(rct_window *w);
-static void window_mapgen_textinput(rct_window *w, sint32 widgetIndex, char *text);
+static void window_mapgen_textinput(rct_window *w, rct_widgetindex widgetIndex, char *text);
 static void window_mapgen_base_invalidate(rct_window *w);
 static void window_mapgen_base_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
-static void window_mapgen_random_mouseup(rct_window *w, sint32 widgetIndex);
-static void window_mapgen_random_mousedown(sint32 widgetIndex, rct_window*w, rct_widget* widget);
+static void window_mapgen_random_mouseup(rct_window *w, rct_widgetindex widgetIndex);
+static void window_mapgen_random_mousedown(rct_widgetindex widgetIndex, rct_window*w, rct_widget* widget);
 static void window_mapgen_random_update(rct_window *w);
 static void window_mapgen_random_invalidate(rct_window *w);
 static void window_mapgen_random_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
-static void window_mapgen_simplex_mouseup(rct_window *w, sint32 widgetIndex);
-static void window_mapgen_simplex_mousedown(sint32 widgetIndex, rct_window *w, rct_widget* widget);
-static void window_mapgen_simplex_dropdown(rct_window *w, sint32 widgetIndex, sint32 dropdownIndex);
+static void window_mapgen_simplex_mouseup(rct_window *w, rct_widgetindex widgetIndex);
+static void window_mapgen_simplex_mousedown(rct_widgetindex widgetIndex, rct_window *w, rct_widget* widget);
+static void window_mapgen_simplex_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex);
 static void window_mapgen_simplex_update(rct_window *w);
 static void window_mapgen_simplex_invalidate(rct_window *w);
 static void window_mapgen_simplex_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
-static void window_mapgen_heightmap_mouseup(rct_window *w, sint32 widgetIndex);
-static void window_mapgen_heightmap_mousedown(sint32 widgetIndex, rct_window *w, rct_widget* widget);
+static void window_mapgen_heightmap_mouseup(rct_window *w, rct_widgetindex widgetIndex);
+static void window_mapgen_heightmap_mousedown(rct_widgetindex widgetIndex, rct_window *w, rct_widget* widget);
 static void window_mapgen_heightmap_invalidate(rct_window *w);
 static void window_mapgen_heightmap_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
@@ -616,7 +616,7 @@ static void window_mapgen_shared_close(rct_window *w)
 	mapgen_unload_heightmap();
 }
 
-static void window_mapgen_shared_mouseup(rct_window *w, sint32 widgetIndex)
+static void window_mapgen_shared_mouseup(rct_window *w, rct_widgetindex widgetIndex)
 {
 	switch (widgetIndex)
 	{
@@ -634,7 +634,7 @@ static void window_mapgen_shared_mouseup(rct_window *w, sint32 widgetIndex)
 
 #pragma region Base page
 
-static void window_mapgen_base_mouseup(rct_window *w, sint32 widgetIndex)
+static void window_mapgen_base_mouseup(rct_window *w, rct_widgetindex widgetIndex)
 {
 	window_mapgen_shared_mouseup(w, widgetIndex);
 
@@ -670,7 +670,7 @@ static void window_mapgen_base_mouseup(rct_window *w, sint32 widgetIndex)
 	}
 }
 
-static void window_mapgen_base_mousedown(sint32 widgetIndex, rct_window *w, rct_widget* widget)
+static void window_mapgen_base_mousedown(rct_widgetindex widgetIndex, rct_window *w, rct_widget* widget)
 {
 	sint32 i;
 	sint32 defaultIndex = -1;
@@ -738,7 +738,7 @@ static void window_mapgen_base_mousedown(sint32 widgetIndex, rct_window *w, rct_
 	}
 }
 
-static void window_mapgen_base_dropdown(rct_window *w, sint32 widgetIndex, sint32 dropdownIndex)
+static void window_mapgen_base_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex)
 {
 	sint32 type;
 
@@ -786,7 +786,7 @@ static void window_mapgen_base_update(rct_window *w)
 	widget_invalidate(w, WIDX_TAB_1);
 }
 
-static void window_mapgen_textinput(rct_window *w, sint32 widgetIndex, char *text)
+static void window_mapgen_textinput(rct_window *w, rct_widgetindex widgetIndex, char *text)
 {
 	sint32 value;
 	char* end;
@@ -863,7 +863,7 @@ static void window_mapgen_base_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 #pragma region Random page
 
-static void window_mapgen_random_mouseup(rct_window *w, sint32 widgetIndex)
+static void window_mapgen_random_mouseup(rct_window *w, rct_widgetindex widgetIndex)
 {
 	window_mapgen_shared_mouseup(w, widgetIndex);
 
@@ -895,7 +895,7 @@ static void window_mapgen_random_mouseup(rct_window *w, sint32 widgetIndex)
 	}
 }
 
-static void window_mapgen_random_mousedown(sint32 widgetIndex, rct_window *w, rct_widget* widget)
+static void window_mapgen_random_mousedown(rct_widgetindex widgetIndex, rct_window *w, rct_widget* widget)
 {
 
 }
@@ -936,7 +936,7 @@ static void window_mapgen_random_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 #pragma region Simplex page
 
-static void window_mapgen_simplex_mouseup(rct_window *w, sint32 widgetIndex)
+static void window_mapgen_simplex_mouseup(rct_window *w, rct_widgetindex widgetIndex)
 {
 	window_mapgen_shared_mouseup(w, widgetIndex);
 
@@ -969,7 +969,7 @@ static void window_mapgen_simplex_mouseup(rct_window *w, sint32 widgetIndex)
 	}
 }
 
-static void window_mapgen_simplex_mousedown(sint32 widgetIndex, rct_window *w, rct_widget* widget)
+static void window_mapgen_simplex_mousedown(rct_widgetindex widgetIndex, rct_window *w, rct_widget* widget)
 {
 	sint32 i;
 	sint32 defaultIndex = -1;
@@ -1061,7 +1061,7 @@ static void window_mapgen_simplex_mousedown(sint32 widgetIndex, rct_window *w, r
 	}
 }
 
-static void window_mapgen_simplex_dropdown(rct_window *w, sint32 widgetIndex, sint32 dropdownIndex)
+static void window_mapgen_simplex_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex)
 {
 	sint32 type;
 
@@ -1159,7 +1159,7 @@ static void window_mapgen_simplex_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 #pragma region Heightmap page
 
-static void window_mapgen_heightmap_mousedown(sint32 widgetIndex, rct_window *w, rct_widget* widget)
+static void window_mapgen_heightmap_mousedown(rct_widgetindex widgetIndex, rct_window *w, rct_widget* widget)
 {
 	switch (widgetIndex)
 	{
@@ -1231,7 +1231,7 @@ static void window_mapgen_heightmap_loadsave_callback(sint32 result, const utf8 
 	}
 }
 
-static void window_mapgen_heightmap_mouseup(rct_window *w, sint32 widgetIndex)
+static void window_mapgen_heightmap_mouseup(rct_window *w, rct_widgetindex widgetIndex)
 {
 	window_mapgen_shared_mouseup(w, widgetIndex);
 
@@ -1265,7 +1265,7 @@ static void window_mapgen_heightmap_mouseup(rct_window *w, sint32 widgetIndex)
 		break;
 	case WIDX_HEIGHTMAP_SMOOTH_TILES:
 		_heightmapSmoothTiles = !_heightmapSmoothTiles;
-		widget_set_checkbox_value(w, _heightmapSmoothTiles, _heightmapSmoothTiles);
+		widget_set_checkbox_value(w, WIDX_HEIGHTMAP_SMOOTH_TILES, _heightmapSmoothTiles);
 		widget_invalidate(w, WIDX_HEIGHTMAP_SMOOTH_TILES);
 		break;
 	}
@@ -1376,7 +1376,7 @@ static void window_mapgen_set_pressed_tab(rct_window *w)
 
 static void window_mapgen_draw_tab_image(rct_drawpixelinfo *dpi, rct_window *w, sint32 page, sint32 spriteIndex)
 {
-	sint32 widgetIndex = WIDX_TAB_1 + page;
+	rct_widgetindex widgetIndex = WIDX_TAB_1 + page;
 
 	if (!(w->disabled_widgets & (1LL << widgetIndex))) {
 		if (w->page == page) {

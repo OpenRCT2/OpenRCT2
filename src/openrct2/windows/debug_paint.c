@@ -45,7 +45,7 @@ static rct_widget window_debug_paint_widgets[] = {
 	{ WIDGETS_END },
 };
 
-static void window_debug_paint_mouseup(rct_window * w, sint32 widgetIndex);
+static void window_debug_paint_mouseup(rct_window * w, rct_widgetindex widgetIndex);
 static void window_debug_paint_invalidate(rct_window * w);
 static void window_debug_paint_paint(rct_window * w, rct_drawpixelinfo * dpi);
 
@@ -107,7 +107,7 @@ void window_debug_paint_open()
 	window->colours[1] = COLOUR_GREY;
 }
 
-static void window_debug_paint_mouseup(rct_window * w, sint32 widgetIndex)
+static void window_debug_paint_mouseup(rct_window * w, rct_widgetindex widgetIndex)
 {
 	switch (widgetIndex) {
 		case WIDX_TOGGLE_OLD_DRAWING:

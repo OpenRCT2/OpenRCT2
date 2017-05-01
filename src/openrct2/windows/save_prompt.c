@@ -71,7 +71,7 @@ static const rct_string_id window_save_prompt_labels[][2] = {
 
 
 static void window_save_prompt_close(rct_window *w);
-static void window_save_prompt_mouseup(rct_window *w, sint32 widgetIndex);
+static void window_save_prompt_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_save_prompt_invalidate(rct_window *w);
 static void window_save_prompt_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_save_prompt_callback(sint32 result, const utf8 * path);
@@ -214,7 +214,7 @@ static void window_save_prompt_close(rct_window *w)
  *
  *  rct2: 0x0066DDF2
  */
-static void window_save_prompt_mouseup(rct_window *w, sint32 widgetIndex)
+static void window_save_prompt_mouseup(rct_window *w, rct_widgetindex widgetIndex)
 {
 	if (gScreenFlags & (SCREEN_FLAGS_TITLE_DEMO | SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)) {
 		switch (widgetIndex) {

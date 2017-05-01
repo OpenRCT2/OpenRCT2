@@ -120,17 +120,17 @@ static const uint16 RideKeyColours[] = {
 
 static void window_map_close(rct_window *w);
 static void window_map_resize(rct_window *w);
-static void window_map_mouseup(rct_window *w, sint32 widgetIndex);
-static void window_map_mousedown(sint32 widgetIndex, rct_window*w, rct_widget* widget);
+static void window_map_mouseup(rct_window *w, rct_widgetindex widgetIndex);
+static void window_map_mousedown(rct_widgetindex widgetIndex, rct_window*w, rct_widget* widget);
 static void window_map_update(rct_window *w);
-static void window_map_toolupdate(rct_window* w, sint32 widgetIndex, sint32 x, sint32 y);
-static void window_map_tooldown(rct_window* w, sint32 widgetIndex, sint32 x, sint32 y);
-static void window_map_tooldrag(rct_window* w, sint32 widgetIndex, sint32 x, sint32 y);
-static void window_map_toolabort(rct_window *w, sint32 widgetIndex);
+static void window_map_toolupdate(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y);
+static void window_map_tooldown(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y);
+static void window_map_tooldrag(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y);
+static void window_map_toolabort(rct_window *w, rct_widgetindex widgetIndex);
 static void window_map_scrollgetsize(rct_window *w, sint32 scrollIndex, sint32 *width, sint32 *height);
 static void window_map_scrollmousedown(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y);
-static void window_map_textinput(rct_window *w, sint32 widgetIndex, char *text);
-static void window_map_tooltip(rct_window* w, sint32 widgetIndex, rct_string_id *stringId);
+static void window_map_textinput(rct_window *w, rct_widgetindex widgetIndex, char *text);
+static void window_map_tooltip(rct_window* w, rct_widgetindex widgetIndex, rct_string_id *stringId);
 static void window_map_invalidate(rct_window *w);
 static void window_map_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_map_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 scrollIndex);
@@ -290,7 +290,7 @@ static void window_map_close(rct_window *w)
  *
  *  rct2: 0x0068CFC1
  */
-static void window_map_mouseup(rct_window *w, sint32 widgetIndex)
+static void window_map_mouseup(rct_window *w, rct_widgetindex widgetIndex)
 {
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
@@ -412,7 +412,7 @@ static void window_map_resize(rct_window *w)
  *
  *  rct2: 0x0068D040
  */
-static void window_map_mousedown(sint32 widgetIndex, rct_window *w, rct_widget *widget)
+static void window_map_mousedown(rct_widgetindex widgetIndex, rct_window *w, rct_widget *widget)
 {
 	switch (widgetIndex) {
 	case WIDX_MAP_SIZE_SPINNER_UP:
@@ -461,7 +461,7 @@ static void window_map_update(rct_window *w)
  *
  *  rct2: 0x0068D093
  */
-static void window_map_toolupdate(rct_window* w, sint32 widgetIndex, sint32 x, sint32 y)
+static void window_map_toolupdate(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y)
 {
 	switch (widgetIndex) {
 	case WIDX_SET_LAND_RIGHTS:
@@ -480,7 +480,7 @@ static void window_map_toolupdate(rct_window* w, sint32 widgetIndex, sint32 x, s
  *
  *  rct2: 0x0068D074
  */
-static void window_map_tooldown(rct_window* w, sint32 widgetIndex, sint32 x, sint32 y)
+static void window_map_tooldown(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y)
 {
 	switch (widgetIndex) {
 	case WIDX_BUILD_PARK_ENTRANCE:
@@ -496,7 +496,7 @@ static void window_map_tooldown(rct_window* w, sint32 widgetIndex, sint32 x, sin
  *
  *  rct2: 0x0068D088
  */
-static void window_map_tooldrag(rct_window* w, sint32 widgetIndex, sint32 x, sint32 y)
+static void window_map_tooldrag(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y)
 {
 	switch (widgetIndex) {
 	case WIDX_SET_LAND_RIGHTS:
@@ -520,7 +520,7 @@ static void window_map_tooldrag(rct_window* w, sint32 widgetIndex, sint32 x, sin
  *
  *  rct2: 0x0068D055
  */
-static void window_map_toolabort(rct_window *w, sint32 widgetIndex)
+static void window_map_toolabort(rct_window *w, rct_widgetindex widgetIndex)
 {
 	switch (widgetIndex) {
 	case WIDX_SET_LAND_RIGHTS:
@@ -633,7 +633,7 @@ static void window_map_scrollmousedown(rct_window *w, sint32 scrollIndex, sint32
 	}
 }
 
-static void window_map_textinput(rct_window *w, sint32 widgetIndex, char *text)
+static void window_map_textinput(rct_window *w, rct_widgetindex widgetIndex, char *text)
 {
 	sint32 size;
 	char* end;
@@ -676,7 +676,7 @@ static void window_map_textinput(rct_window *w, sint32 widgetIndex, char *text)
  *
  *  rct2: 0x0068D140
  */
-static void window_map_tooltip(rct_window* w, sint32 widgetIndex, rct_string_id *stringId)
+static void window_map_tooltip(rct_window* w, rct_widgetindex widgetIndex, rct_string_id *stringId)
 {
 	set_format_arg(0, rct_string_id, STR_MAP);
 }

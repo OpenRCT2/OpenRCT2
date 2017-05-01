@@ -456,15 +456,15 @@ static bool windowTileInspectorApplyToAll = false;
 static bool windowTileInspectorElementCopied = false;
 static rct_map_element tileInspectorCopiedElement;
 
-static void window_tile_inspector_mouseup(rct_window *w, sint32 widgetIndex);
+static void window_tile_inspector_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_tile_inspector_resize(rct_window *w);
-static void window_tile_inspector_mousedown(sint32 widgetIndex, rct_window *w, rct_widget* widget);
+static void window_tile_inspector_mousedown(rct_widgetindex widgetIndex, rct_window *w, rct_widget* widget);
 static void window_tile_inspector_update(rct_window *w);
-static void window_tile_inspector_dropdown(rct_window *w, sint32 widgetIndex, sint32 dropdownIndex);
-static void window_tile_inspector_tool_update(rct_window* w, sint32 widgetIndex, sint32 x, sint32 y);
+static void window_tile_inspector_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex);
+static void window_tile_inspector_tool_update(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y);
 static void window_tile_inspector_update_selected_tile(rct_window *w, sint32 x, sint32 y);
-static void window_tile_inspector_tool_down(rct_window* w, sint32 widgetIndex, sint32 x, sint32 y);
-static void window_tile_inspector_tool_drag(rct_window* w, sint32 widgetIndex, sint32 x, sint32 y);
+static void window_tile_inspector_tool_down(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y);
+static void window_tile_inspector_tool_drag(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y);
 static void window_tile_inspector_scrollgetsize(rct_window *w, sint32 scrollIndex, sint32 *width, sint32 *height);
 static void window_tile_inspector_scrollmousedown(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y);
 static void window_tile_inspector_scrollmouseover(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y);
@@ -880,7 +880,7 @@ static void window_tile_inspector_clamp_corrupt(sint32 elementIndex)
 	);
 }
 
-static void window_tile_inspector_mouseup(rct_window *w, sint32 widgetIndex)
+static void window_tile_inspector_mouseup(rct_window *w, rct_widgetindex widgetIndex)
 {
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
@@ -1144,7 +1144,7 @@ static void window_tile_inspector_resize(rct_window *w)
 	}
 }
 
-static void window_tile_inspector_mousedown(sint32 widgetIndex, rct_window *w, rct_widget* widget)
+static void window_tile_inspector_mousedown(rct_widgetindex widgetIndex, rct_window *w, rct_widget* widget)
 {
 	switch (w->page) {
 	case TILE_INSPECTOR_PAGE_WALL:
@@ -1192,7 +1192,7 @@ static void window_tile_inspector_update(rct_window *w)
 		window_close(w);
 }
 
-static void window_tile_inspector_dropdown(rct_window *w, sint32 widgetIndex, sint32 dropdownIndex)
+static void window_tile_inspector_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex)
 {
 	if (dropdownIndex == -1) {
 		return;
@@ -1214,7 +1214,7 @@ static void window_tile_inspector_dropdown(rct_window *w, sint32 widgetIndex, si
 	}
 }
 
-static void window_tile_inspector_tool_update(rct_window* w, sint32 widgetIndex, sint32 x, sint32 y)
+static void window_tile_inspector_tool_update(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y)
 {
 	map_invalidate_selection_rect();
 
@@ -1272,12 +1272,12 @@ static void window_tile_inspector_update_selected_tile(rct_window *w, sint32 x, 
 	window_tile_inspector_auto_set_buttons(w);
 }
 
-static void window_tile_inspector_tool_down(rct_window* w, sint32 widgetIndex, sint32 x, sint32 y)
+static void window_tile_inspector_tool_down(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y)
 {
 	window_tile_inspector_update_selected_tile(w, x, y);
 }
 
-static void window_tile_inspector_tool_drag(rct_window* w, sint32 widgetIndex, sint32 x, sint32 y)
+static void window_tile_inspector_tool_drag(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y)
 {
 	window_tile_inspector_update_selected_tile(w, x, y);
 }

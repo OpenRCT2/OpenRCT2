@@ -54,11 +54,11 @@ static rct_widget window_land_rights_widgets[] = {
 };
 
 static void window_land_rights_close(rct_window *w);
-static void window_land_rights_mouseup(rct_window *w, sint32 widgetIndex);
+static void window_land_rights_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_land_rights_update(rct_window *w);
 static void window_land_rights_invalidate(rct_window *w);
 static void window_land_rights_paint(rct_window *w, rct_drawpixelinfo *dpi);
-static void window_land_rights_textinput(rct_window *w, sint32 widgetIndex, char *text);
+static void window_land_rights_textinput(rct_window *w, rct_widgetindex widgetIndex, char *text);
 static void window_land_rights_inputsize(rct_window *w);
 
 static rct_window_event_list window_land_rights_events = {
@@ -123,7 +123,7 @@ static void window_land_rights_close(rct_window *w)
 		tool_cancel();
 }
 
-static void window_land_rights_mouseup(rct_window *w, sint32 widgetIndex)
+static void window_land_rights_mouseup(rct_window *w, rct_widgetindex widgetIndex)
 {
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
@@ -165,7 +165,7 @@ static void window_land_rights_mouseup(rct_window *w, sint32 widgetIndex)
 	}
 }
 
-static void window_land_rights_textinput(rct_window *w, sint32 widgetIndex, char *text)
+static void window_land_rights_textinput(rct_window *w, rct_widgetindex widgetIndex, char *text)
 {
 	sint32 size;
 	char* end;

@@ -104,14 +104,14 @@ static rct_widget *window_research_page_widgets[] = {
 
 #pragma region Events
 
-static void window_research_development_mouseup(rct_window *w, sint32 widgetIndex);
+static void window_research_development_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_research_development_update(rct_window *w);
 static void window_research_development_invalidate(rct_window *w);
 static void window_research_development_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
-static void window_research_funding_mouseup(rct_window *w, sint32 widgetIndex);
-static void window_research_funding_mousedown(sint32 widgetIndex, rct_window*w, rct_widget* widget);
-static void window_research_funding_dropdown(rct_window *w, sint32 widgetIndex, sint32 dropdownIndex);
+static void window_research_funding_mouseup(rct_window *w, rct_widgetindex widgetIndex);
+static void window_research_funding_mousedown(rct_widgetindex widgetIndex, rct_window*w, rct_widget* widget);
+static void window_research_funding_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex);
 static void window_research_funding_update(rct_window *w);
 static void window_research_funding_invalidate(rct_window *w);
 static void window_research_funding_paint(rct_window *w, rct_drawpixelinfo *dpi);
@@ -271,7 +271,7 @@ void window_research_open()
  *
  *  rct2: 0x006B6B38
  */
-static void window_research_development_mouseup(rct_window *w, sint32 widgetIndex)
+static void window_research_development_mouseup(rct_window *w, rct_widgetindex widgetIndex)
 {
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
@@ -334,7 +334,7 @@ static void window_research_development_paint(rct_window *w, rct_drawpixelinfo *
 	window_research_development_page_paint(w, dpi, WIDX_CURRENTLY_IN_DEVELOPMENT_GROUP);
 }
 
-void window_research_development_page_paint(rct_window *w, rct_drawpixelinfo *dpi, sint32 baseWidgetIndex)
+void window_research_development_page_paint(rct_window *w, rct_drawpixelinfo *dpi, rct_widgetindex baseWidgetIndex)
 {
 	baseWidgetIndex = baseWidgetIndex - WIDX_CURRENTLY_IN_DEVELOPMENT_GROUP;
 
@@ -430,7 +430,7 @@ void window_research_development_page_paint(rct_window *w, rct_drawpixelinfo *dp
  *
  *  rct2: 0x0069DB3F
  */
-static void window_research_funding_mouseup(rct_window *w, sint32 widgetIndex)
+static void window_research_funding_mouseup(rct_window *w, rct_widgetindex widgetIndex)
 {
 	sint32 activeResearchTypes;
 
@@ -460,7 +460,7 @@ static void window_research_funding_mouseup(rct_window *w, sint32 widgetIndex)
  *
  *  rct2: 0x0069DB66
  */
-static void window_research_funding_mousedown(sint32 widgetIndex, rct_window *w, rct_widget* widget)
+static void window_research_funding_mousedown(rct_widgetindex widgetIndex, rct_window *w, rct_widget* widget)
 {
 	rct_widget *dropdownWidget;
 	sint32 i;
@@ -493,7 +493,7 @@ static void window_research_funding_mousedown(sint32 widgetIndex, rct_window *w,
  *
  *  rct2: 0x0069DB6D
  */
-static void window_research_funding_dropdown(rct_window *w, sint32 widgetIndex, sint32 dropdownIndex)
+static void window_research_funding_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex)
 {
 	if (widgetIndex != WIDX_RESEARCH_FUNDING_DROPDOWN_BUTTON || dropdownIndex == -1)
 		return;
@@ -578,7 +578,7 @@ static void window_research_funding_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	window_research_funding_page_paint(w, dpi, WIDX_RESEARCH_FUNDING);
 }
 
-void window_research_funding_page_paint(rct_window *w, rct_drawpixelinfo *dpi, sint32 baseWidgetIndex)
+void window_research_funding_page_paint(rct_window *w, rct_drawpixelinfo *dpi, rct_widgetindex baseWidgetIndex)
 {
 	if (gParkFlags & PARK_FLAGS_NO_MONEY)
 		return;
@@ -637,7 +637,7 @@ static void window_research_set_pressed_tab(rct_window *w)
 
 static void window_research_draw_tab_image(rct_drawpixelinfo *dpi, rct_window *w, sint32 page, sint32 spriteIndex)
 {
-	sint32 widgetIndex = WIDX_TAB_1 + page;
+	rct_widgetindex widgetIndex = WIDX_TAB_1 + page;
 
 	if (!(w->disabled_widgets & (1LL << widgetIndex))) {
 		if (w->page == page) {

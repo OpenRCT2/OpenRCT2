@@ -96,8 +96,8 @@ static const rct_string_id ScenarioOriginStringIds[] = {
 static void window_scenarioselect_init_tabs(rct_window *w);
 
 static void window_scenarioselect_close(rct_window *w);
-static void window_scenarioselect_mouseup(rct_window *w, sint32 widgetIndex);
-static void window_scenarioselect_mousedown(sint32 widgetIndex, rct_window*w, rct_widget* widget);
+static void window_scenarioselect_mouseup(rct_window *w, rct_widgetindex widgetIndex);
+static void window_scenarioselect_mousedown(rct_widgetindex widgetIndex, rct_window*w, rct_widget* widget);
 static void window_scenarioselect_scrollgetsize(rct_window *w, sint32 scrollIndex, sint32 *width, sint32 *height);
 static void window_scenarioselect_scrollmousedown(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y);
 static void window_scenarioselect_scrollmouseover(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y);
@@ -235,14 +235,14 @@ static void window_scenarioselect_close(rct_window *w)
 	SafeFree(_listItems);
 }
 
-static void window_scenarioselect_mouseup(rct_window *w, sint32 widgetIndex)
+static void window_scenarioselect_mouseup(rct_window *w, rct_widgetindex widgetIndex)
 {
 	if (widgetIndex == WIDX_CLOSE) {
 		window_close(w);
 	}
 }
 
-static void window_scenarioselect_mousedown(sint32 widgetIndex, rct_window*w, rct_widget* widget)
+static void window_scenarioselect_mousedown(rct_widgetindex widgetIndex, rct_window*w, rct_widget* widget)
 {
 	if (widgetIndex >= WIDX_TAB1 && widgetIndex <= WIDX_TAB8) {
 		w->selected_tab = widgetIndex - 4;

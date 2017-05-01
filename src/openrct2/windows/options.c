@@ -402,15 +402,15 @@ static void window_options_update_height_markers();
 
 #pragma region Events
 
-static void window_options_mouseup(rct_window *w, sint32 widgetIndex);
-static void window_options_mousedown(sint32 widgetIndex, rct_window*w, rct_widget* widget);
-static void window_options_dropdown(rct_window *w, sint32 widgetIndex, sint32 dropdownIndex);
+static void window_options_mouseup(rct_window *w, rct_widgetindex widgetIndex);
+static void window_options_mousedown(rct_widgetindex widgetIndex, rct_window*w, rct_widget* widget);
+static void window_options_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex);
 static void window_options_update(rct_window *w);
 static void window_options_invalidate(rct_window *w);
 static void window_options_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_options_scrollgetsize(rct_window *w, sint32 scrollIndex, sint32 *width, sint32 *height);
-static void window_options_text_input(rct_window *w, sint32 widgetIndex, char *text);
-static void window_options_tooltip(rct_window *w, sint32 widgetIndex, rct_string_id *stringid);
+static void window_options_text_input(rct_window *w, rct_widgetindex widgetIndex, char *text);
+static void window_options_tooltip(rct_window *w, rct_widgetindex widgetIndex, rct_string_id *stringid);
 
 static rct_window_event_list window_options_events = {
 	NULL,
@@ -594,7 +594,7 @@ void window_options_open()
 *
 *  rct2: 0x006BAFCA
 */
-static void window_options_mouseup(rct_window *w, sint32 widgetIndex)
+static void window_options_mouseup(rct_window *w, rct_widgetindex widgetIndex)
 {
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
@@ -923,7 +923,7 @@ static void window_options_mouseup(rct_window *w, sint32 widgetIndex)
 *
 *  rct2: 0x006BB01B
 */
-static void window_options_mousedown(sint32 widgetIndex, rct_window*w, rct_widget* widget)
+static void window_options_mousedown(rct_widgetindex widgetIndex, rct_window*w, rct_widget* widget)
 {
 	uint32 num_items;
 
@@ -1252,7 +1252,7 @@ static void window_options_mousedown(sint32 widgetIndex, rct_window*w, rct_widge
 *
 *  rct2: 0x006BB076
 */
-static void window_options_dropdown(rct_window *w, sint32 widgetIndex, sint32 dropdownIndex)
+static void window_options_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex)
 {
 	if (dropdownIndex == -1)
 		return;
@@ -2008,7 +2008,7 @@ static void window_options_scrollgetsize(rct_window *w, sint32 scrollIndex, sint
 	}
 }
 
-static void window_options_text_input(rct_window *w, sint32 widgetIndex, char *text)
+static void window_options_text_input(rct_window *w, rct_widgetindex widgetIndex, char *text)
 {
 	if (text == NULL)
 		return;
@@ -2021,7 +2021,7 @@ static void window_options_text_input(rct_window *w, sint32 widgetIndex, char *t
 	}
 }
 
-static void window_options_tooltip(rct_window *w, sint32 widgetIndex, rct_string_id *stringid)
+static void window_options_tooltip(rct_window *w, rct_widgetindex widgetIndex, rct_string_id *stringid)
 {
 	if (widgetIndex == WIDX_PATH_TO_RCT1_BUTTON && w->page == WINDOW_OPTIONS_PAGE_MISC) {
 		if (str_is_null_or_empty(gConfigGeneral.rct1_path)) {
@@ -2060,7 +2060,7 @@ static void window_options_set_pressed_tab(rct_window *w)
 
 static void window_options_draw_tab_image(rct_drawpixelinfo *dpi, rct_window *w, sint32 page, sint32 spriteIndex)
 {
-	sint32 widgetIndex = WIDX_TAB_1 + page;
+	rct_widgetindex widgetIndex = WIDX_TAB_1 + page;
 	rct_widget *widget = &w->widgets[widgetIndex];
 
 	sint16 l = w->x + widget->left;

@@ -33,7 +33,7 @@ rct_widget window_publisher_credits_widgets[] = {
 	{ WIDGETS_END },
 };
 
-static void window_publisher_credits_mouseup(rct_window *w, sint32 widgetIndex);
+static void window_publisher_credits_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_publisher_credits_scrollgetsize(rct_window *w, sint32 scrollIndex, sint32 *width, sint32 *height);
 static void window_publisher_credits_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_publisher_credits_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 scrollIndex);
@@ -104,7 +104,7 @@ void window_publisher_credits_open()
 *
 *  rct2: 0x0066D7A8
 */
-static void window_publisher_credits_mouseup(rct_window *w, sint32 widgetIndex)
+static void window_publisher_credits_mouseup(rct_window *w, rct_widgetindex widgetIndex)
 {
 	switch (widgetIndex) {
 	case WIDX_CLOSE:

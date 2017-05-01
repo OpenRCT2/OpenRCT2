@@ -74,15 +74,15 @@ static rct_widget window_ride_list_widgets[] = {
 
 static bool _quickDemolishMode = false;
 
-static void window_ride_list_mouseup(rct_window *w, sint32 widgetIndex);
+static void window_ride_list_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_ride_list_resize(rct_window *w);
-static void window_ride_list_mousedown(sint32 widgetIndex, rct_window*w, rct_widget* widget);
-static void window_ride_list_dropdown(rct_window *w, sint32 widgetIndex, sint32 dropdownIndex);
+static void window_ride_list_mousedown(rct_widgetindex widgetIndex, rct_window*w, rct_widget* widget);
+static void window_ride_list_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex);
 static void window_ride_list_update(rct_window *w);
 static void window_ride_list_scrollgetsize(rct_window *w, sint32 scrollIndex, sint32 *width, sint32 *height);
 static void window_ride_list_scrollmousedown(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y);
 static void window_ride_list_scrollmouseover(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y);
-static void window_ride_list_tooltip(rct_window* w, sint32 widgetIndex, rct_string_id *stringId);
+static void window_ride_list_tooltip(rct_window* w, rct_widgetindex widgetIndex, rct_string_id *stringId);
 static void window_ride_list_invalidate(rct_window *w);
 static void window_ride_list_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_ride_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 scrollIndex);
@@ -238,7 +238,7 @@ void window_ride_list_open()
  *
  *  rct2: 0x006B3511
  */
-static void window_ride_list_mouseup(rct_window *w, sint32 widgetIndex)
+static void window_ride_list_mouseup(rct_window *w, rct_widgetindex widgetIndex)
 {
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
@@ -305,7 +305,7 @@ static void window_ride_list_resize(rct_window *w)
  *
  *  rct2: 0x006B3532
  */
-static void window_ride_list_mousedown(sint32 widgetIndex, rct_window*w, rct_widget* widget)
+static void window_ride_list_mousedown(rct_widgetindex widgetIndex, rct_window*w, rct_widget* widget)
 {
 	if (widgetIndex == WIDX_OPEN_CLOSE_ALL) {
 		gDropdownItemsFormat[0] = STR_CLOSE_ALL;
@@ -358,7 +358,7 @@ static void window_ride_list_mousedown(sint32 widgetIndex, rct_window*w, rct_wid
  *
  *  rct2: 0x006B3547
  */
-static void window_ride_list_dropdown(rct_window *w, sint32 widgetIndex, sint32 dropdownIndex)
+static void window_ride_list_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex)
 {
 	if (widgetIndex == WIDX_OPEN_CLOSE_ALL) {
 		if (dropdownIndex == 0)
@@ -460,7 +460,7 @@ static void window_ride_list_scrollmouseover(rct_window *w, sint32 scrollIndex, 
  *
  *  rct2: 0x006B3861
  */
-static void window_ride_list_tooltip(rct_window* w, sint32 widgetIndex, rct_string_id *stringId)
+static void window_ride_list_tooltip(rct_window* w, rct_widgetindex widgetIndex, rct_string_id *stringId)
 {
 	set_format_arg(0, rct_string_id, STR_LIST);
 }

@@ -62,16 +62,16 @@ enum {
 };
 
 static void window_scenery_close(rct_window *w);
-static void window_scenery_mouseup(rct_window *w, sint32 widgetIndex);
+static void window_scenery_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_scenery_resize(rct_window *w);
-static void window_scenery_mousedown(sint32 widgetIndex, rct_window* w, rct_widget* widget);
-static void window_scenery_dropdown(rct_window *w, sint32 widgetIndex, sint32 dropdownIndex);
+static void window_scenery_mousedown(rct_widgetindex widgetIndex, rct_window* w, rct_widget* widget);
+static void window_scenery_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex);
 static void window_scenery_update(rct_window *w);
 static void window_scenery_event_07(rct_window *w);
 static void window_scenery_scrollgetsize(rct_window *w, sint32 scrollIndex, sint32 *width, sint32 *height);
 static void window_scenery_scrollmousedown(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y);
 static void window_scenery_scrollmouseover(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y);
-static void window_scenery_tooltip(rct_window* w, sint32 widgetIndex, rct_string_id *stringId);
+static void window_scenery_tooltip(rct_window* w, rct_widgetindex widgetIndex, rct_string_id *stringId);
 static void window_scenery_invalidate(rct_window *w);
 static void window_scenery_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_scenery_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 scrollIndex);
@@ -311,7 +311,7 @@ void init_scenery()
 		init_scenery_entry(sceneryEntry, sceneryId, sceneryEntry->path_bit.scenery_tab_id);
 	}
 
-	for (sint32 widgetIndex = WIDX_SCENERY_TAB_1; widgetIndex < WIDX_SCENERY_LIST; widgetIndex++)
+	for (rct_widgetindex widgetIndex = WIDX_SCENERY_TAB_1; widgetIndex < WIDX_SCENERY_LIST; widgetIndex++)
 		window_scenery_widgets[widgetIndex].type = WWT_EMPTY;
 
 	uint8 tabIndexes[20];
@@ -557,7 +557,7 @@ static sint32 rows_on_page(sint32 height)
  *
  *  rct2: 0x006BD94C
  */
-static void window_scenery_mouseup(rct_window *w, sint32 widgetIndex)
+static void window_scenery_mouseup(rct_window *w, rct_widgetindex widgetIndex)
 {
 	switch (widgetIndex) {
 	case WIDX_SCENERY_CLOSE:
@@ -667,7 +667,7 @@ static void window_scenery_resize(rct_window *w)
  *
  *  rct2: 0x006E1A25
  */
-static void window_scenery_mousedown(sint32 widgetIndex, rct_window* w, rct_widget* widget) {
+static void window_scenery_mousedown(rct_widgetindex widgetIndex, rct_window* w, rct_widget* widget) {
 	switch (widgetIndex) {
 	case WIDX_SCENERY_PRIMARY_COLOUR_BUTTON:
 		window_dropdown_show_colour(w, widget, w->colours[1], gWindowSceneryPrimaryColour);
@@ -694,7 +694,7 @@ static void window_scenery_mousedown(sint32 widgetIndex, rct_window* w, rct_widg
  *
  *  rct2: 0x006E1A54
  */
-static void window_scenery_dropdown(rct_window *w, sint32 widgetIndex, sint32 dropdownIndex)
+static void window_scenery_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex)
 {
 	if (dropdownIndex == -1)
 		return;
@@ -735,7 +735,7 @@ static void window_scenery_update(rct_window *w)
 		sint32 window_y = gCursorState.y - w->y;
 
 		if (window_y < 44 || window_x <= w->width) {
-			sint32 widgetIndex = window_find_widget_from_point(w, gCursorState.x, gCursorState.y);
+			rct_widgetindex widgetIndex = window_find_widget_from_point(w, gCursorState.x, gCursorState.y);
 			if (widgetIndex >= WIDX_SCENERY_TAB_CONTENT_PANEL) {
 				w->scenery.hover_counter++;
 				if (w->scenery.hover_counter < 8) {
@@ -865,7 +865,7 @@ void window_scenery_scrollmouseover(rct_window *w, sint32 scrollIndex, sint32 x,
  *
  *  rct2: 0x006E1C05
  */
-void window_scenery_tooltip(rct_window* w, sint32 widgetIndex, rct_string_id *stringId)
+void window_scenery_tooltip(rct_window* w, rct_widgetindex widgetIndex, rct_string_id *stringId)
 {
 	switch (widgetIndex) {
 	case WIDX_SCENERY_LIST:

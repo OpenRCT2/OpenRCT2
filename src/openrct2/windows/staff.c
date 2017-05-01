@@ -130,29 +130,29 @@ void window_staff_unknown_05(rct_window *w);
 void window_staff_viewport_init(rct_window* w);
 
 void window_staff_overview_close(rct_window *w);
-void window_staff_overview_mouseup(rct_window *w, sint32 widgetIndex);
+void window_staff_overview_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 void window_staff_overview_resize(rct_window *w);
-void window_staff_overview_mousedown(sint32 widgetIndex, rct_window* w, rct_widget* widget);
-void window_staff_overview_dropdown(rct_window *w, sint32 widgetIndex, sint32 dropdownIndex);
+void window_staff_overview_mousedown(rct_widgetindex widgetIndex, rct_window* w, rct_widget* widget);
+void window_staff_overview_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex);
 void window_staff_overview_update(rct_window* w);
 void window_staff_overview_invalidate(rct_window *w);
 void window_staff_overview_paint(rct_window *w, rct_drawpixelinfo *dpi);
 void window_staff_overview_tab_paint(rct_window* w, rct_drawpixelinfo* dpi);
-void window_staff_overview_tool_update(rct_window* w, sint32 widgetIndex, sint32 x, sint32 y);
-void window_staff_overview_tool_down(rct_window* w, sint32 widgetIndex, sint32 x, sint32 y);
-void window_staff_overview_tool_abort(rct_window *w, sint32 widgetIndex);
-void window_staff_overview_text_input(rct_window *w, sint32 widgetIndex, char *text);
+void window_staff_overview_tool_update(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y);
+void window_staff_overview_tool_down(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y);
+void window_staff_overview_tool_abort(rct_window *w, rct_widgetindex widgetIndex);
+void window_staff_overview_text_input(rct_window *w, rct_widgetindex widgetIndex, char *text);
 void window_staff_overview_unknown_14(rct_window *w);
 
-void window_staff_options_mouseup(rct_window *w, sint32 widgetIndex);
+void window_staff_options_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 void window_staff_options_update(rct_window* w);
 void window_staff_options_invalidate(rct_window *w);
 void window_staff_options_paint(rct_window *w, rct_drawpixelinfo *dpi);
 void window_staff_options_tab_paint(rct_window* w, rct_drawpixelinfo* dpi);
-void window_staff_options_mousedown(sint32 widgetIndex, rct_window* w, rct_widget* widget);
-void window_staff_options_dropdown(rct_window *w, sint32 widgetIndex, sint32 dropdownIndex);
+void window_staff_options_mousedown(rct_widgetindex widgetIndex, rct_window* w, rct_widget* widget);
+void window_staff_options_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex);
 
-void window_staff_stats_mouseup(rct_window *w, sint32 widgetIndex);
+void window_staff_stats_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 void window_staff_stats_resize(rct_window *w);
 void window_staff_stats_update(rct_window* w);
 void window_staff_stats_invalidate(rct_window *w);
@@ -458,7 +458,7 @@ void game_command_callback_pickup_staff(sint32 eax, sint32 ebx, sint32 ecx, sint
  *
  *  rct2: 0x006BDF55
  */
-void window_staff_overview_mouseup(rct_window *w, sint32 widgetIndex)
+void window_staff_overview_mouseup(rct_window *w, rct_widgetindex widgetIndex)
 {
 	rct_peep* peep = GET_PEEP(w->number);
 
@@ -549,7 +549,7 @@ void window_staff_overview_resize(rct_window *w)
  * Handle the dropdown of patrol button.
  *  rct2: 0x006BDF98
  */
-void window_staff_overview_mousedown(sint32 widgetIndex, rct_window* w, rct_widget* widget)
+void window_staff_overview_mousedown(rct_widgetindex widgetIndex, rct_window* w, rct_widget* widget)
 {
 	if (widgetIndex != WIDX_PATROL) {
 		return;
@@ -577,7 +577,7 @@ void window_staff_overview_mousedown(sint32 widgetIndex, rct_window* w, rct_widg
  *
  *  rct2: 0x006BDFA3
  */
-void window_staff_overview_dropdown(rct_window *w, sint32 widgetIndex, sint32 dropdownIndex)
+void window_staff_overview_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex)
 {
 	if (widgetIndex != WIDX_PATROL) {
 		return;
@@ -637,7 +637,7 @@ static void window_staff_set_order(rct_window* w, sint32 order_id)
  *
  *  rct2: 0x006BE7DB
  */
-void window_staff_options_mouseup(rct_window *w, sint32 widgetIndex)
+void window_staff_options_mouseup(rct_window *w, rct_widgetindex widgetIndex)
 {
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
@@ -671,7 +671,7 @@ void window_staff_options_update(rct_window* w)
  *
  *  rct2: 0x006BEBCF
  */
-void window_staff_stats_mouseup(rct_window *w, sint32 widgetIndex)
+void window_staff_stats_mouseup(rct_window *w, rct_widgetindex widgetIndex)
 {
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
@@ -1106,7 +1106,7 @@ void window_staff_stats_paint(rct_window *w, rct_drawpixelinfo *dpi)
  *
  *  rct2: 0x006BDFD8
  */
-void window_staff_overview_tool_update(rct_window* w, sint32 widgetIndex, sint32 x, sint32 y)
+void window_staff_overview_tool_update(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y)
 {
 	if (widgetIndex != WIDX_PICKUP)
 		return;
@@ -1157,7 +1157,7 @@ void window_staff_overview_tool_update(rct_window* w, sint32 widgetIndex, sint32
  *
  *  rct2: 0x006BDFC3
  */
-void window_staff_overview_tool_down(rct_window* w, sint32 widgetIndex, sint32 x, sint32 y)
+void window_staff_overview_tool_down(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y)
 {
 	if (widgetIndex == WIDX_PICKUP) {
 		sint32 dest_x, dest_y;
@@ -1184,7 +1184,7 @@ void window_staff_overview_tool_down(rct_window* w, sint32 widgetIndex, sint32 x
  *
  *  rct2: 0x6BDFAE
  */
-void window_staff_overview_tool_abort(rct_window *w, sint32 widgetIndex)
+void window_staff_overview_tool_abort(rct_window *w, rct_widgetindex widgetIndex)
 {
 	if (widgetIndex == WIDX_PICKUP) {
 		game_do_command(w->number, GAME_COMMAND_FLAG_APPLY, 1, 0, GAME_COMMAND_PICKUP_STAFF, w->picked_peep_old_x, 0);
@@ -1197,7 +1197,7 @@ void window_staff_overview_tool_abort(rct_window *w, sint32 widgetIndex)
 }
 
 /* rct2: 0x6BDFED */
-void window_staff_overview_text_input(rct_window *w, sint32 widgetIndex, char *text)
+void window_staff_overview_text_input(rct_window *w, rct_widgetindex widgetIndex, char *text)
 {
 	if (widgetIndex != WIDX_RENAME)
 		return;
@@ -1292,7 +1292,7 @@ void window_staff_viewport_init(rct_window* w){
 * Handle the costume of staff member.
 * rct2: 0x006BE802
 */
-void window_staff_options_mousedown(sint32 widgetIndex, rct_window* w, rct_widget* widget)
+void window_staff_options_mousedown(rct_widgetindex widgetIndex, rct_window* w, rct_widget* widget)
 {
 	if (widgetIndex != WIDX_COSTUME_BTN) {
 		return;
@@ -1330,7 +1330,7 @@ void window_staff_options_mousedown(sint32 widgetIndex, rct_window* w, rct_widge
  *
  *  rct2: 0x6BE809
  */
-void window_staff_options_dropdown(rct_window *w, sint32 widgetIndex, sint32 dropdownIndex)
+void window_staff_options_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex)
 {
 	if (widgetIndex != WIDX_COSTUME_BTN) {
 		return;

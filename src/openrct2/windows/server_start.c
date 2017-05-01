@@ -71,9 +71,9 @@ static rct_widget window_server_start_widgets[] = {
 };
 
 static void window_server_start_close(rct_window *w);
-static void window_server_start_mouseup(rct_window *w, sint32 widgetIndex);
+static void window_server_start_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_server_start_update(rct_window *w);
-static void window_server_start_textinput(rct_window *w, sint32 widgetIndex, char *text);
+static void window_server_start_textinput(rct_window *w, rct_widgetindex widgetIndex, char *text);
 static void window_server_start_invalidate(rct_window *w);
 static void window_server_start_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
@@ -179,7 +179,7 @@ static void window_server_start_loadsave_callback(sint32 result, const utf8 * pa
 	}
 }
 
-static void window_server_start_mouseup(rct_window *w, sint32 widgetIndex)
+static void window_server_start_mouseup(rct_window *w, rct_widgetindex widgetIndex)
 {
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
@@ -241,7 +241,7 @@ static void window_server_start_update(rct_window *w)
 	}
 }
 
-static void window_server_start_textinput(rct_window *w, sint32 widgetIndex, char *text)
+static void window_server_start_textinput(rct_window *w, rct_widgetindex widgetIndex, char *text)
 {
 	if (text == NULL) return;
 

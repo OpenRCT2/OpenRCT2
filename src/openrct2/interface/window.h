@@ -55,7 +55,7 @@ typedef struct window_identifier {
 
 typedef struct widget_identifier {
 	window_identifier window;
-	sint32 widget_index;
+	rct_widgetindex widget_index;
 } widget_identifier;
 
 extern widget_identifier gCurrentTextBox;
@@ -150,29 +150,29 @@ enum{
 
 typedef struct rct_window_event_list {
 	void (*close)(struct rct_window*);
-	void (*mouse_up)(struct rct_window*, sint32);
+	void (*mouse_up)(struct rct_window*, rct_widgetindex);
 	void (*resize)(struct rct_window*);
-	void (*mouse_down)(sint32, struct rct_window*, rct_widget*);
-	void (*dropdown)(struct rct_window*, sint32, sint32);
+	void (*mouse_down)(rct_widgetindex, struct rct_window*, rct_widget*);
+	void (*dropdown)(struct rct_window*, rct_widgetindex, sint32);
 	void (*unknown_05)(struct rct_window*);
 	void (*update)(struct rct_window*);
 	void (*unknown_07)(struct rct_window*);
 	void (*unknown_08)(struct rct_window*);
-	void (*tool_update)(struct rct_window*, sint32, sint32, sint32);
-	void (*tool_down)(struct rct_window*, sint32, sint32, sint32);
-	void (*tool_drag)(struct rct_window*, sint32, sint32, sint32);
-	void (*tool_up)(struct rct_window*, sint32, sint32, sint32);
-	void (*tool_abort)(struct rct_window*, sint32);
+	void (*tool_update)(struct rct_window*, rct_widgetindex, sint32, sint32);
+	void (*tool_down)(struct rct_window*, rct_widgetindex, sint32, sint32);
+	void (*tool_drag)(struct rct_window*, rct_widgetindex, sint32, sint32);
+	void (*tool_up)(struct rct_window*, rct_widgetindex, sint32, sint32);
+	void (*tool_abort)(struct rct_window*, rct_widgetindex);
 	void (*unknown_0E)(struct rct_window*);
 	void (*get_scroll_size)(struct rct_window*, sint32, sint32*, sint32*);
 	void (*scroll_mousedown)(struct rct_window*, sint32, sint32, sint32);
 	void (*scroll_mousedrag)(struct rct_window*, sint32, sint32, sint32);
 	void (*scroll_mouseover)(struct rct_window*, sint32, sint32, sint32);
-	void (*text_input)(struct rct_window*, sint32, char*);
+	void (*text_input)(struct rct_window*, rct_widgetindex, char*);
 	void (*unknown_14)(struct rct_window*);
 	void (*unknown_15)(struct rct_window*, sint32, sint32);
-	void (*tooltip)(struct rct_window*, sint32, rct_string_id*);
-	void (*cursor)(struct rct_window*, sint32, sint32, sint32, sint32*);
+	void (*tooltip)(struct rct_window*, rct_widgetindex, rct_string_id*);
+	void (*cursor)(struct rct_window*, rct_widgetindex, sint32, sint32, sint32*);
 	void (*moved)(struct rct_window*, sint32, sint32);
 	void (*invalidate)(struct rct_window*);
 	void (*paint)(struct rct_window*, rct_drawpixelinfo*);
@@ -617,17 +617,17 @@ void window_close_all_except_class(rct_windowclass cls);
 rct_window *window_find_by_class(rct_windowclass cls);
 rct_window *window_find_by_number(rct_windowclass cls, rct_windownumber number);
 rct_window *window_find_from_point(sint32 x, sint32 y);
-sint32 window_find_widget_from_point(rct_window *w, sint32 x, sint32 y);
+rct_widgetindex window_find_widget_from_point(rct_window *w, sint32 x, sint32 y);
 void window_invalidate(rct_window *window);
 void window_invalidate_by_class(rct_windowclass cls);
 void window_invalidate_by_number(rct_windowclass cls, rct_windownumber number);
 void window_invalidate_all();
-void widget_invalidate(rct_window *w, sint32 widgetIndex);
-void widget_invalidate_by_class(rct_windowclass cls, sint32 widgetIndex);
-void widget_invalidate_by_number(rct_windowclass cls, rct_windownumber number, sint32 widgetIndex);
+void widget_invalidate(rct_window *w, rct_widgetindex widgetIndex);
+void widget_invalidate_by_class(rct_windowclass cls, rct_widgetindex widgetIndex);
+void widget_invalidate_by_number(rct_windowclass cls, rct_windownumber number, rct_widgetindex widgetIndex);
 void window_init_scroll_widgets(rct_window *w);
 void window_update_scroll_widgets(rct_window *w);
-sint32 window_get_scroll_data_index(rct_window *w, sint32 widget_index);
+sint32 window_get_scroll_data_index(rct_window *w, rct_widgetindex widget_index);
 
 rct_window *window_bring_to_front(rct_window *w);
 rct_window *window_bring_to_front_by_class(rct_windowclass cls);
@@ -649,7 +649,7 @@ void window_zoom_in(rct_window *w, bool atCursor);
 void window_zoom_out(rct_window *w, bool atCursor);
 void main_window_zoom(bool zoomIn, bool atCursor);
 
-void window_show_textinput(rct_window *w, sint32 widgetIndex, uint16 title, uint16 text, sint32 value);
+void window_show_textinput(rct_window *w, rct_widgetindex widgetIndex, uint16 title, uint16 text, sint32 value);
 void window_text_input_key(rct_window* w, sint32 key);
 
 void window_draw_all(rct_drawpixelinfo *dpi, sint16 left, sint16 top, sint16 right, sint16 bottom);
@@ -743,8 +743,8 @@ void window_server_list_open();
 void window_server_start_open();
 
 void window_research_open();
-void window_research_development_page_paint(rct_window *w, rct_drawpixelinfo *dpi, sint32 baseWidgetIndex);
-void window_research_funding_page_paint(rct_window *w, rct_drawpixelinfo *dpi, sint32 baseWidgetIndex);
+void window_research_development_page_paint(rct_window *w, rct_drawpixelinfo *dpi, rct_widgetindex baseWidgetIndex);
+void window_research_funding_page_paint(rct_window *w, rct_drawpixelinfo *dpi, rct_widgetindex baseWidgetIndex);
 
 void window_scenery_open();
 void window_music_credits_open();
@@ -756,8 +756,8 @@ void window_title_editor_open(sint32 tab);
 void window_title_command_editor_open(struct TitleSequence * sequence, sint32 command, bool insert);
 void window_tile_inspector_open();
 void window_tile_inspector_clear_clipboard();
-void window_text_input_open(rct_window* call_w, sint32 call_widget, rct_string_id title, rct_string_id description, rct_string_id existing_text, uintptr_t existing_args, sint32 maxLength);
-void window_text_input_raw_open(rct_window* call_w, sint32 call_widget, rct_string_id title, rct_string_id description, utf8string existing_text, sint32 maxLength);
+void window_text_input_open(rct_window* call_w, rct_widgetindex call_widget, rct_string_id title, rct_string_id description, rct_string_id existing_text, uintptr_t existing_args, sint32 maxLength);
+void window_text_input_raw_open(rct_window* call_w, rct_widgetindex call_widget, rct_string_id title, rct_string_id description, utf8string existing_text, sint32 maxLength);
 rct_window *window_mapgen_open();
 rct_window *window_loadsave_open(sint32 type, char *defaultName);
 rct_window *window_changelog_open();
@@ -777,7 +777,7 @@ void window_guest_list_init_vars_a();
 void window_guest_list_init_vars_b();
 void window_bubble_list_item(rct_window* w, sint32 item_position);
 
-void window_align_tabs( rct_window *w, uint8 start_tab_id, uint8 end_tab_id );
+void window_align_tabs( rct_window *w, rct_widgetindex start_tab_id, rct_widgetindex end_tab_id );
 
 void window_new_ride_init_vars();
 void window_new_ride_focus(ride_list_item rideItem);
@@ -791,29 +791,29 @@ void game_command_callback_pickup_guest(sint32 eax, sint32 ebx, sint32 ecx, sint
 void game_command_callback_pickup_staff(sint32 eax, sint32 ebx, sint32 ecx, sint32 edx, sint32 esi, sint32 edi, sint32 ebp);
 
 void window_event_close_call(rct_window* w);
-void window_event_mouse_up_call(rct_window* w, sint32 widgetIndex);
+void window_event_mouse_up_call(rct_window* w, rct_widgetindex widgetIndex);
 void window_event_resize_call(rct_window* w);
-void window_event_mouse_down_call(rct_window *w, sint32 widgetIndex);
-void window_event_dropdown_call(rct_window* w, sint32 widgetIndex, sint32 dropdownIndex);
+void window_event_mouse_down_call(rct_window *w, rct_widgetindex widgetIndex);
+void window_event_dropdown_call(rct_window* w, rct_widgetindex widgetIndex, sint32 dropdownIndex);
 void window_event_unknown_05_call(rct_window* w);
 void window_event_update_call(rct_window *w);
 void window_event_unknown_07_call(rct_window* w);
 void window_event_unknown_08_call(rct_window* w);
-void window_event_tool_update_call(rct_window* w, sint32 widgetIndex, sint32 x, sint32 y);
-void window_event_tool_down_call(rct_window* w, sint32 widgetIndex, sint32 x, sint32 y);
-void window_event_tool_drag_call(rct_window* w, sint32 widgetIndex, sint32 x, sint32 y);
-void window_event_tool_up_call(rct_window* w, sint32 widgetIndex, sint32 x, sint32 y);
-void window_event_tool_abort_call(rct_window* w, sint32 widgetIndex);
+void window_event_tool_update_call(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y);
+void window_event_tool_down_call(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y);
+void window_event_tool_drag_call(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y);
+void window_event_tool_up_call(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y);
+void window_event_tool_abort_call(rct_window* w, rct_widgetindex widgetIndex);
 void window_event_unknown_0E_call(rct_window* w);
 void window_get_scroll_size(rct_window *w, sint32 scrollIndex, sint32 *width, sint32 *height);
 void window_event_scroll_mousedown_call(rct_window* w, sint32 scrollIndex, sint32 x, sint32 y);
 void window_event_scroll_mousedrag_call(rct_window* w, sint32 scrollIndex, sint32 x, sint32 y);
 void window_event_scroll_mouseover_call(rct_window* w, sint32 scrollIndex, sint32 x, sint32 y);
-void window_event_textinput_call(rct_window *w, sint32 widgetIndex, char *text);
+void window_event_textinput_call(rct_window *w, rct_widgetindex widgetIndex, char *text);
 void window_event_unknown_14_call(rct_window* w);
 void window_event_unknown_15_call(rct_window* w, sint32 scrollIndex, sint32 scrollAreaType);
-rct_string_id window_event_tooltip_call(rct_window* w, sint32 widgetIndex);
-sint32 window_event_cursor_call(rct_window* w, sint32 widgetIndex, sint32 x, sint32 y);
+rct_string_id window_event_tooltip_call(rct_window* w, rct_widgetindex widgetIndex);
+sint32 window_event_cursor_call(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y);
 void window_event_moved_call(rct_window* w, sint32 x, sint32 y);
 void window_event_invalidate_call(rct_window* w);
 void window_event_paint_call(rct_window* w, rct_drawpixelinfo *dpi);
@@ -825,7 +825,7 @@ void textinput_cancel();
 void window_move_and_snap(rct_window *w, sint32 newWindowX, sint32 newWindowY, sint32 snapProximity);
 sint32 window_can_resize(rct_window *w);
 
-void window_start_textbox(rct_window *call_w, sint32 call_widget, rct_string_id existing_text, char *existing_args, sint32 maxLength);
+void window_start_textbox(rct_window *call_w, rct_widgetindex call_widget, rct_string_id existing_text, char *existing_args, sint32 maxLength);
 void window_cancel_textbox();
 void window_update_textbox_caret();
 void window_update_textbox();

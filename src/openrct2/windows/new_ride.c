@@ -201,13 +201,13 @@ static rct_widget window_new_ride_widgets[] = {
 
 #pragma region Events
 
-static void window_new_ride_mouseup(rct_window *w, sint32 widgetIndex);
-static void window_new_ride_mousedown(sint32 widgetIndex, rct_window *w, rct_widget *widget);
+static void window_new_ride_mouseup(rct_window *w, rct_widgetindex widgetIndex);
+static void window_new_ride_mousedown(rct_widgetindex widgetIndex, rct_window *w, rct_widget *widget);
 static void window_new_ride_update(rct_window *w);
 static void window_new_ride_scrollgetsize(rct_window *w, sint32 scrollIndex, sint32 *width, sint32 *height);
 static void window_new_ride_scrollmousedown(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y);
 static void window_new_ride_scrollmouseover(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y);
-static void window_new_ride_tooltip(rct_window* w, sint32 widgetIndex, rct_string_id *stringId);
+static void window_new_ride_tooltip(rct_window* w, rct_widgetindex widgetIndex, rct_string_id *stringId);
 static void window_new_ride_invalidate(rct_window *w);
 static void window_new_ride_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_new_ride_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 scrollIndex);
@@ -588,7 +588,7 @@ const sint32 ThrillRidesTabAnimationSequence[] = {
 
 static void window_new_ride_draw_tab_image(rct_drawpixelinfo *dpi, rct_window *w, sint32 page, sint32 spriteIndex)
 {
-	sint32 widgetIndex = WIDX_TAB_1 + page;
+	rct_widgetindex widgetIndex = WIDX_TAB_1 + page;
 
 	if (w->widgets[widgetIndex].type != WWT_EMPTY && !(w->disabled_widgets & (1LL << widgetIndex))) {
 		sint32 frame = 0;
@@ -619,7 +619,7 @@ static void window_new_ride_draw_tab_images(rct_drawpixelinfo *dpi, rct_window *
  *
  *  rct2: 0x006B6B38
  */
-static void window_new_ride_mouseup(rct_window *w, sint32 widgetIndex)
+static void window_new_ride_mouseup(rct_window *w, rct_widgetindex widgetIndex)
 {
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
@@ -638,7 +638,7 @@ static void window_new_ride_mouseup(rct_window *w, sint32 widgetIndex)
  *
  *  rct2: 0x006B6B4F
  */
-static void window_new_ride_mousedown(sint32 widgetIndex, rct_window *w, rct_widget *widget)
+static void window_new_ride_mousedown(rct_widgetindex widgetIndex, rct_window *w, rct_widget *widget)
 {
 	if (widgetIndex >= WIDX_TAB_1 && widgetIndex <= WIDX_TAB_7)
 		window_new_ride_set_page(w, widgetIndex - WIDX_TAB_1);
@@ -726,7 +726,7 @@ static void window_new_ride_scrollmouseover(rct_window *w, sint32 scrollIndex, s
  *
  *  rct2: 0x006B6BBF
  */
-static void window_new_ride_tooltip(rct_window* w, sint32 widgetIndex, rct_string_id *stringId)
+static void window_new_ride_tooltip(rct_window* w, rct_widgetindex widgetIndex, rct_string_id *stringId)
 {
 	set_format_arg(0, rct_string_id, STR_LIST);
 }

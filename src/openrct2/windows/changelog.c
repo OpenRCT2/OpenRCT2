@@ -50,7 +50,7 @@ rct_widget window_changelog_widgets[] = {
 };
 
 static void window_changelog_close(rct_window *w);
-static void window_changelog_mouseup(rct_window *w, sint32 widgetIndex);
+static void window_changelog_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_changelog_resize(rct_window *w);
 static void window_changelog_scrollgetsize(rct_window *w, sint32 scrollIndex, sint32 *width, sint32 *height);
 static void window_changelog_invalidate(rct_window *w);
@@ -134,7 +134,7 @@ static void window_changelog_close(rct_window *w)
 	window_changelog_dispose_file();
 }
 
-static void window_changelog_mouseup(rct_window *w, sint32 widgetIndex)
+static void window_changelog_mouseup(rct_window *w, rct_widgetindex widgetIndex)
 {
 	switch (widgetIndex) {
 	case WIDX_CLOSE:

@@ -186,19 +186,19 @@ static rct_widget window_editor_object_selection_widgets[] = {
 #pragma region Events
 
 static void window_editor_object_selection_close(rct_window *w);
-static void window_editor_object_selection_mouseup(rct_window *w, sint32 widgetIndex);
+static void window_editor_object_selection_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_editor_object_selection_resize(rct_window *w);
-static void window_editor_object_selection_mousedown(sint32 widgetIndex, rct_window*w, rct_widget* widget);
-static void window_editor_object_selection_dropdown(rct_window *w, sint32 widgetIndex, sint32 dropdownIndex);
+static void window_editor_object_selection_mousedown(rct_widgetindex widgetIndex, rct_window*w, rct_widget* widget);
+static void window_editor_object_selection_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex);
 static void window_editor_object_selection_update(rct_window *w);
 static void window_editor_object_selection_scrollgetsize(rct_window *w, sint32 scrollIndex, sint32 *width, sint32 *height);
 static void window_editor_object_selection_scroll_mousedown(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y);
 static void window_editor_object_selection_scroll_mouseover(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y);
-static void window_editor_object_selection_tooltip(rct_window* w, sint32 widgetIndex, rct_string_id *stringId);
+static void window_editor_object_selection_tooltip(rct_window* w, rct_widgetindex widgetIndex, rct_string_id *stringId);
 static void window_editor_object_selection_invalidate(rct_window *w);
 static void window_editor_object_selection_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_editor_object_selection_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 scrollIndex);
-static void window_editor_object_selection_textinput(rct_window *w, sint32 widgetIndex, char *text);
+static void window_editor_object_selection_textinput(rct_window *w, rct_widgetindex widgetIndex, char *text);
 
 static rct_window_event_list window_editor_object_selection_events = {
 	window_editor_object_selection_close,
@@ -785,7 +785,7 @@ static void window_editor_object_selection_close(rct_window *w)
  *
  *  rct2: 0x006AAFAB
  */
-static void window_editor_object_selection_mouseup(rct_window *w, sint32 widgetIndex)
+static void window_editor_object_selection_mouseup(rct_window *w, rct_widgetindex widgetIndex)
 {
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
@@ -895,7 +895,7 @@ static void window_editor_object_selection_resize(rct_window *w)
 	window_set_resize(w, 600, 400, 1200, 1000);
 }
 
-void window_editor_object_selection_mousedown(sint32 widgetIndex, rct_window*w, rct_widget* widget)
+void window_editor_object_selection_mousedown(rct_widgetindex widgetIndex, rct_window*w, rct_widget* widget)
 {
 	sint32 num_items;
 
@@ -943,7 +943,7 @@ void window_editor_object_selection_mousedown(sint32 widgetIndex, rct_window*w, 
 	}
 }
 
-static void window_editor_object_selection_dropdown(rct_window *w, sint32 widgetIndex, sint32 dropdownIndex)
+static void window_editor_object_selection_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex)
 {
 	if (dropdownIndex == -1)
 		return;
@@ -1081,7 +1081,7 @@ static void window_editor_object_selection_scroll_mouseover(rct_window *w, sint3
  *
  *  rct2: 0x006AB058
  */
-static void window_editor_object_selection_tooltip(rct_window* w, sint32 widgetIndex, rct_string_id *stringId)
+static void window_editor_object_selection_tooltip(rct_window* w, rct_widgetindex widgetIndex, rct_string_id *stringId)
 {
 	switch (widgetIndex) {
 	case WIDX_TAB_1:
@@ -1762,7 +1762,7 @@ static void window_editor_object_selection_update(rct_window *w)
 		widget_invalidate(w, WIDX_FILTER_STRING_BUTTON);
 	}
 
-	for (sint32 i = WIDX_FILTER_RIDE_TAB_TRANSPORT; i <= WIDX_FILTER_RIDE_TAB_STALL; i++) {
+	for (rct_widgetindex i = WIDX_FILTER_RIDE_TAB_TRANSPORT; i <= WIDX_FILTER_RIDE_TAB_STALL; i++) {
 		if (!(w->pressed_widgets & (1ULL << i)))
 			continue;
 
@@ -1775,7 +1775,7 @@ static void window_editor_object_selection_update(rct_window *w)
 	}
 }
 
-static void window_editor_object_selection_textinput(rct_window *w, sint32 widgetIndex, char *text)
+static void window_editor_object_selection_textinput(rct_window *w, rct_widgetindex widgetIndex, char *text)
 {
 	if (widgetIndex != WIDX_FILTER_STRING_BUTTON || text == NULL)
 		return;

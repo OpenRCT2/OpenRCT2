@@ -48,11 +48,11 @@ static rct_widget window_water_widgets[] = {
 };
 
 static void window_water_close(rct_window *w);
-static void window_water_mouseup(rct_window *w, sint32 widgetIndex);
+static void window_water_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_water_update(rct_window *w);
 static void window_water_invalidate(rct_window *w);
 static void window_water_paint(rct_window *w, rct_drawpixelinfo *dpi);
-static void window_water_textinput(rct_window *w, sint32 widgetIndex, char *text);
+static void window_water_textinput(rct_window *w, rct_widgetindex widgetIndex, char *text);
 static void window_water_inputsize(rct_window *w);
 
 static rct_window_event_list window_water_events = {
@@ -131,7 +131,7 @@ static void window_water_close(rct_window *w)
  *
  *  rct2: 0x006E6B4E
  */
-static void window_water_mouseup(rct_window *w, sint32 widgetIndex)
+static void window_water_mouseup(rct_window *w, rct_widgetindex widgetIndex)
 {
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
@@ -157,7 +157,7 @@ static void window_water_mouseup(rct_window *w, sint32 widgetIndex)
 	}
 }
 
-static void window_water_textinput(rct_window *w, sint32 widgetIndex, char *text)
+static void window_water_textinput(rct_window *w, rct_widgetindex widgetIndex, char *text)
 {
 	sint32 size;
 	char* end;

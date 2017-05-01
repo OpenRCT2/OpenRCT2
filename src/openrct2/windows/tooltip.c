@@ -141,7 +141,7 @@ void window_tooltip_show(rct_string_id id, sint32 x, sint32 y)
  *
  *  rct2: 0x006EA10D
  */
-void window_tooltip_open(rct_window *widgetWindow, sint32 widgetIndex, sint32 x, sint32 y)
+void window_tooltip_open(rct_window *widgetWindow, rct_widgetindex widgetIndex, sint32 x, sint32 y)
 {
 	rct_widget *widget;
 

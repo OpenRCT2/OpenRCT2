@@ -70,14 +70,14 @@ static rct_widget window_server_list_widgets[] = {
 };
 
 static void window_server_list_close(rct_window *w);
-static void window_server_list_mouseup(rct_window *w, sint32 widgetIndex);
+static void window_server_list_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_server_list_resize(rct_window *w);
-static void window_server_list_dropdown(rct_window *w, sint32 widgetIndex, sint32 dropdownIndex);
+static void window_server_list_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex);
 static void window_server_list_update(rct_window *w);
 static void window_server_list_scroll_getsize(rct_window *w, sint32 scrollIndex, sint32 *width, sint32 *height);
 static void window_server_list_scroll_mousedown(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y);
 static void window_server_list_scroll_mouseover(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y);
-static void window_server_list_textinput(rct_window *w, sint32 widgetIndex, char *text);
+static void window_server_list_textinput(rct_window *w, rct_widgetindex widgetIndex, char *text);
 static void window_server_list_invalidate(rct_window *w);
 static void window_server_list_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_server_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 scrollIndex);
@@ -193,7 +193,7 @@ static void window_server_list_close(rct_window *w)
 	}
 }
 
-static void window_server_list_mouseup(rct_window *w, sint32 widgetIndex)
+static void window_server_list_mouseup(rct_window *w, rct_widgetindex widgetIndex)
 {
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
@@ -231,7 +231,7 @@ static void window_server_list_resize(rct_window *w)
 	window_set_resize(w, WWIDTH_MIN, WHEIGHT_MIN, WWIDTH_MAX, WHEIGHT_MAX);
 }
 
-static void window_server_list_dropdown(rct_window *w, sint32 widgetIndex, sint32 dropdownIndex)
+static void window_server_list_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex)
 {
 	sint32 serverIndex = w->selected_list_item;
 	if (serverIndex < 0) return;
@@ -329,7 +329,7 @@ static void window_server_list_scroll_mouseover(rct_window *w, sint32 scrollInde
 	}
 }
 
-static void window_server_list_textinput(rct_window *w, sint32 widgetIndex, char *text)
+static void window_server_list_textinput(rct_window *w, rct_widgetindex widgetIndex, char *text)
 {
 	if (text == NULL || text[0] == 0) return;
 

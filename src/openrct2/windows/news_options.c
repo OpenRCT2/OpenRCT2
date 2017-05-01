@@ -85,7 +85,7 @@ static rct_widget window_news_options_widgets[] = {
 	{ WIDGETS_END },
 };
 
-static void window_news_options_mouseup(rct_window *w, sint32 widgetIndex);
+static void window_news_options_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_news_options_update(rct_window *w);
 static void window_news_options_invalidate(rct_window *w);
 static void window_news_options_paint(rct_window *w, rct_drawpixelinfo *dpi);
@@ -152,7 +152,7 @@ void window_news_options_open()
 	}
 }
 
-static void window_news_options_mouseup(rct_window *w, sint32 widgetIndex)
+static void window_news_options_mouseup(rct_window *w, rct_widgetindex widgetIndex)
 {
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
@@ -274,7 +274,7 @@ const sint32 window_news_option_tab_animation_frames[] = { 1, 16, 8 };
 
 static void window_news_options_draw_tab_image(rct_window *w, rct_drawpixelinfo *dpi, sint32 page, sint32 spriteIndex)
 {
-	sint32 widgetIndex = WIDX_TAB_PARK + page;
+	rct_widgetindex widgetIndex = WIDX_TAB_PARK + page;
 
 	if (!(w->disabled_widgets & (1LL << widgetIndex))) {
 		if (w->page == page) {

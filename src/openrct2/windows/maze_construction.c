@@ -88,12 +88,12 @@ static rct_widget window_maze_construction_widgets[] = {
 #pragma region Events
 
 static void window_maze_construction_close(rct_window *w);
-static void window_maze_construction_mouseup(rct_window *w, sint32 widgetIndex);
+static void window_maze_construction_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_maze_construction_resize(rct_window *w);
-static void window_maze_construction_mousedown(sint32 widgetIndex, rct_window *w, rct_widget *widget);
+static void window_maze_construction_mousedown(rct_widgetindex widgetIndex, rct_window *w, rct_widget *widget);
 static void window_maze_construction_update(rct_window *w);
-static void window_maze_construction_toolupdate(rct_window* w, sint32 widgetIndex, sint32 x, sint32 y);
-static void window_maze_construction_tooldown(rct_window* w, sint32 widgetIndex, sint32 x, sint32 y);
+static void window_maze_construction_toolupdate(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y);
+static void window_maze_construction_tooldown(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y);
 static void window_maze_construction_invalidate(rct_window *w);
 static void window_maze_construction_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
@@ -192,7 +192,7 @@ static void window_maze_construction_close(rct_window *w)
 	}
 }
 
-static void window_maze_construction_entrance_mouseup(rct_window *w, sint32 widgetIndex){
+static void window_maze_construction_entrance_mouseup(rct_window *w, rct_widgetindex widgetIndex){
 	if (tool_set(w, widgetIndex, TOOL_CROSSHAIR))
 		return;
 
@@ -215,7 +215,7 @@ static void window_maze_construction_entrance_mouseup(rct_window *w, sint32 widg
  *
  *  rct2: 0x006CD461
  */
-static void window_maze_construction_mouseup(rct_window *w, sint32 widgetIndex)
+static void window_maze_construction_mouseup(rct_window *w, rct_widgetindex widgetIndex)
 {
 	switch (widgetIndex){
 	case WIDX_CLOSE:
@@ -260,7 +260,7 @@ static void window_maze_construction_resize(rct_window *w)
 	if (currentDisabledWidgets == disabledWidgets)
 		return;
 
-	for (sint32 i = 0; i < 64; i++) {
+	for (rct_widgetindex i = 0; i < 64; i++) {
 		if ((disabledWidgets & (1ULL << i)) != (currentDisabledWidgets & (1ULL << i))) {
 			widget_invalidate(w, i);
 		}
@@ -272,7 +272,7 @@ static void window_maze_construction_resize(rct_window *w)
  *
  *  rct2: 0x006CD48C
  */
-static void window_maze_construction_mousedown(sint32 widgetIndex, rct_window *w, rct_widget *widget)
+static void window_maze_construction_mousedown(rct_widgetindex widgetIndex, rct_window *w, rct_widget *widget)
 {
 	switch (widgetIndex) {
 	case WIDX_MAZE_BUILD_MODE:
@@ -336,7 +336,7 @@ static void window_maze_construction_update(rct_window *w)
  *
  *  rct2: 0x006CD63E
  */
-static void window_maze_construction_toolupdate(rct_window* w, sint32 widgetIndex, sint32 x, sint32 y)
+static void window_maze_construction_toolupdate(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y)
 {
 	switch (widgetIndex){
 	case WIDX_MAZE_DIRECTION_GROUPBOX:
@@ -410,7 +410,7 @@ static void window_maze_construction_entrance_tooldown(sint32 x, sint32 y, rct_w
  *
  *  rct2: 0x006CD65D
  */
-static void window_maze_construction_tooldown(rct_window* w, sint32 widgetIndex, sint32 x, sint32 y)
+static void window_maze_construction_tooldown(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y)
 {
 	switch (widgetIndex){
 	case WIDX_MAZE_DIRECTION_GROUPBOX:

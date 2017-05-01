@@ -52,7 +52,7 @@ static rct_widget window_viewport_widgets[] = {
 	{ WIDGETS_END },
 };
 
-static void window_viewport_mouseup(rct_window *w, sint32 widgetIndex);
+static void window_viewport_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_viewport_resize(rct_window *w);
 static void window_viewport_update(rct_window *w);
 static void window_viewport_invalidate(rct_window *w);
@@ -135,7 +135,7 @@ static void window_viewport_anchor_border_widgets(rct_window *w)
 	w->widgets[WIDX_CLOSE].right = w->width - 3;
 }
 
-static void window_viewport_mouseup(rct_window *w, sint32 widgetIndex)
+static void window_viewport_mouseup(rct_window *w, rct_widgetindex widgetIndex)
 {
 	rct_window *mainWindow;
 	sint16 x, y;
