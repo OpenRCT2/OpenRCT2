@@ -95,7 +95,7 @@ static sint32 window_get_scroll_index(rct_window *w, sint32 targetWidgetIndex)
 		return -1;
 
 	sint32 scrollIndex = 0;
-	sint32 widgetIndex = 0;
+	rct_widgetindex widgetIndex = 0;
 	for (rct_widget *widget = w->widgets; widget->type != WWT_LAST; widget++, widgetIndex++) {
 		if (widgetIndex == targetWidgetIndex)
 			break;
@@ -192,7 +192,7 @@ static void window_scroll_wheel_input(rct_window *w, sint32 scrollIndex, sint32 
 {
 	rct_scroll *scroll = &w->scrolls[scrollIndex];
 	rct_widget *widget = window_get_scroll_widget(w, scrollIndex);
-	sint32 widgetIndex = window_get_widget_index(w, widget);
+	rct_widgetindex widgetIndex = window_get_widget_index(w, widget);
 
 	if (scroll->flags & VSCROLLBAR_VISIBLE) {
 		sint32 size = widget->bottom - widget->top - 1;
@@ -250,7 +250,7 @@ static void window_viewport_wheel_input(rct_window *w, sint32 wheel)
 		window_zoom_out(w, true);
 }
 
-static bool window_other_wheel_input(rct_window *w, sint32 widgetIndex, sint32 wheel)
+static bool window_other_wheel_input(rct_window *w, rct_widgetindex widgetIndex, sint32 wheel)
 {
 	// HACK: Until we have a new window system that allows us to add new events like mouse wheel easily,
 	//       this selective approach will have to do.
@@ -279,7 +279,7 @@ static bool window_other_wheel_input(rct_window *w, sint32 widgetIndex, sint32 w
 
 	// Preview / Increment / Decrement
 	if (widgetIndex >= previewWidgetIndex && widgetIndex < previewWidgetIndex + 3) {
-		sint32 buttonWidgetIndex = wheel < 0 ? previewWidgetIndex + 2 : previewWidgetIndex + 1;
+		rct_widgetindex buttonWidgetIndex = wheel < 0 ? previewWidgetIndex + 2 : previewWidgetIndex + 1;
 		window_event_mouse_up_call(w, buttonWidgetIndex);
 		return true;
 	}
@@ -326,7 +326,7 @@ static void window_all_wheel_input()
 			}
 
 			// Check scroll view, cursor is over
-			sint32 widgetIndex = window_find_widget_from_point(w, gCursorState.x, gCursorState.y);
+			rct_widgetindex widgetIndex = window_find_widget_from_point(w, gCursorState.x, gCursorState.y);
 			if (widgetIndex != -1) {
 				rct_widget *widget = &w->widgets[widgetIndex];
 				if (widget->type == WWT_SCROLL) {
@@ -890,13 +890,13 @@ rct_window *window_find_from_point(sint32 x, sint32 y)
  * returns widget_index (edx)
  * EDI NEEDS TO BE SET TO w->widgets[widget_index] AFTER
  */
-sint32 window_find_widget_from_point(rct_window *w, sint32 x, sint32 y)
+rct_widgetindex window_find_widget_from_point(rct_window *w, sint32 x, sint32 y)
 {
 	// Invalidate the window
 	window_event_invalidate_call(w);
 
 	// Find the widget at point x, y
-	sint32 widget_index = -1;
+	rct_widgetindex widget_index = -1;
 	for (sint32 i = 0;; i++) {
 		rct_widget *widget = &w->widgets[i];
 		if (widget->type == WWT_LAST) {
@@ -976,7 +976,7 @@ void window_invalidate_all()
  * Invalidates the specified widget of a window.
  *  rct2: 0x006EC402
  */
-void widget_invalidate(rct_window *w, sint32 widgetIndex)
+void widget_invalidate(rct_window *w, rct_widgetindex widgetIndex)
 {
 	rct_widget* widget;
 
@@ -997,7 +997,7 @@ void widget_invalidate(rct_window *w, sint32 widgetIndex)
 /**
  * Invalidates the specified widget of all windows that match the specified window class.
  */
-void widget_invalidate_by_class(rct_windowclass cls, sint32 widgetIndex)
+void widget_invalidate_by_class(rct_windowclass cls, rct_widgetindex widgetIndex)
 {
 	rct_window* w;
 
@@ -1013,7 +1013,7 @@ void widget_invalidate_by_class(rct_windowclass cls, sint32 widgetIndex)
  * @param cls (al) with bit 15 set
  * @param number (bx)
  */
-void widget_invalidate_by_number(rct_windowclass cls, rct_windownumber number, sint32 widgetIndex)
+void widget_invalidate_by_number(rct_windowclass cls, rct_windownumber number, rct_widgetindex widgetIndex)
 {
 	rct_window* w;
 
@@ -1073,7 +1073,8 @@ void window_init_scroll_widgets(rct_window *w)
  */
 void window_update_scroll_widgets(rct_window *w)
 {
-	sint32 widgetIndex, scrollIndex, width, height, scrollPositionChanged;
+	sint32 scrollIndex, width, height, scrollPositionChanged;
+	rct_widgetindex widgetIndex;
 	rct_scroll *scroll;
 	rct_widget *widget;
 
@@ -1116,7 +1117,7 @@ void window_update_scroll_widgets(rct_window *w)
 	}
 }
 
-sint32 window_get_scroll_data_index(rct_window *w, sint32 widget_index)
+sint32 window_get_scroll_data_index(rct_window *w, rct_widgetindex widget_index)
 {
 	sint32 i, result;
 
@@ -1723,7 +1724,7 @@ static void window_draw_single(rct_drawpixelinfo *dpi, rct_window *w, sint32 lef
 void window_draw_widgets(rct_window *w, rct_drawpixelinfo *dpi)
 {
 	rct_widget *widget;
-	sint32 widgetIndex;
+	rct_widgetindex widgetIndex;
 
 	if ((w->flags & WF_TRANSPARENT) && !(w->flags & WF_NO_BACKGROUND))
 		gfx_filter_rect(dpi, w->x, w->y, w->x + w->width - 1, w->y + w->height - 1, PALETTE_51);
@@ -1903,7 +1904,7 @@ void window_event_close_call(rct_window *w)
 		w->event_handlers->close(w);
 }
 
-void window_event_mouse_up_call(rct_window *w, sint32 widgetIndex)
+void window_event_mouse_up_call(rct_window *w, rct_widgetindex widgetIndex)
 {
 	if (w->event_handlers->mouse_up != NULL)
 		w->event_handlers->mouse_up(w, widgetIndex);
@@ -1915,13 +1916,13 @@ void window_event_resize_call(rct_window *w)
 		w->event_handlers->resize(w);
 }
 
-void window_event_mouse_down_call(rct_window *w, sint32 widgetIndex)
+void window_event_mouse_down_call(rct_window *w, rct_widgetindex widgetIndex)
 {
 	if (w->event_handlers->mouse_down != NULL)
 		w->event_handlers->mouse_down(widgetIndex, w, &w->widgets[widgetIndex]);
 }
 
-void window_event_dropdown_call(rct_window *w, sint32 widgetIndex, sint32 dropdownIndex)
+void window_event_dropdown_call(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex)
 {
 	if (w->event_handlers->dropdown != NULL)
 		w->event_handlers->dropdown(w, widgetIndex, dropdownIndex);
@@ -1951,31 +1952,31 @@ void window_event_unknown_08_call(rct_window *w)
 		w->event_handlers->unknown_08(w);
 }
 
-void window_event_tool_update_call(rct_window *w, sint32 widgetIndex, sint32 x, sint32 y)
+void window_event_tool_update_call(rct_window *w, rct_widgetindex widgetIndex, sint32 x, sint32 y)
 {
 	if (w->event_handlers->tool_update != NULL)
 		w->event_handlers->tool_update(w, widgetIndex, x, y);
 }
 
-void window_event_tool_down_call(rct_window *w, sint32 widgetIndex, sint32 x, sint32 y)
+void window_event_tool_down_call(rct_window *w, rct_widgetindex widgetIndex, sint32 x, sint32 y)
 {
 	if (w->event_handlers->tool_down != NULL)
 		w->event_handlers->tool_down(w, widgetIndex, x, y);
 }
 
-void window_event_tool_drag_call(rct_window *w, sint32 widgetIndex, sint32 x, sint32 y)
+void window_event_tool_drag_call(rct_window *w, rct_widgetindex widgetIndex, sint32 x, sint32 y)
 {
 	if (w->event_handlers->tool_drag != NULL)
 		w->event_handlers->tool_drag(w, widgetIndex, x, y);
 }
 
-void window_event_tool_up_call(rct_window *w, sint32 widgetIndex, sint32 x, sint32 y)
+void window_event_tool_up_call(rct_window *w, rct_widgetindex widgetIndex, sint32 x, sint32 y)
 {
 	if (w->event_handlers->tool_up != NULL)
 		w->event_handlers->tool_up(w, widgetIndex, x, y);
 }
 
-void window_event_tool_abort_call(rct_window *w, sint32 widgetIndex)
+void window_event_tool_abort_call(rct_window *w, rct_widgetindex widgetIndex)
 {
 	if (w->event_handlers->tool_abort != NULL)
 		w->event_handlers->tool_abort(w, widgetIndex);
@@ -2012,7 +2013,7 @@ void window_event_scroll_mouseover_call(rct_window *w, sint32 scrollIndex, sint3
 		w->event_handlers->scroll_mouseover(w, scrollIndex, x, y);
 }
 
-void window_event_textinput_call(rct_window *w, sint32 widgetIndex, char *text)
+void window_event_textinput_call(rct_window *w, rct_widgetindex widgetIndex, char *text)
 {
 	if (w->event_handlers->text_input != NULL)
 		w->event_handlers->text_input(w, widgetIndex, text);
@@ -2030,7 +2031,7 @@ void window_event_unknown_15_call(rct_window *w, sint32 scrollIndex, sint32 scro
 		w->event_handlers->unknown_15(w, scrollIndex, scrollAreaType);
 }
 
-rct_string_id window_event_tooltip_call(rct_window *w, sint32 widgetIndex)
+rct_string_id window_event_tooltip_call(rct_window *w, rct_widgetindex widgetIndex)
 {
 	rct_string_id result = 0;
 	if (w->event_handlers->tooltip != NULL)
@@ -2038,7 +2039,7 @@ rct_string_id window_event_tooltip_call(rct_window *w, sint32 widgetIndex)
 	return result;
 }
 
-sint32 window_event_cursor_call(rct_window *w, sint32 widgetIndex, sint32 x, sint32 y)
+sint32 window_event_cursor_call(rct_window *w, rct_widgetindex widgetIndex, sint32 x, sint32 y)
 {
 	sint32 cursorId = CURSOR_ARROW;
 	if (w->event_handlers->cursor != NULL)
@@ -2205,7 +2206,7 @@ void window_resize_gui_scenario_editor(sint32 width, sint32 height)
 }
 
 /* Based on rct2: 0x6987ED and another version from window_park */
-void window_align_tabs(rct_window *w, uint8 start_tab_id, uint8 end_tab_id)
+void window_align_tabs(rct_window *w, rct_widgetindex start_tab_id, rct_widgetindex end_tab_id)
 {
 	sint32 i, x = w->widgets[start_tab_id].left;
 	sint32 tab_width = w->widgets[start_tab_id].right - w->widgets[start_tab_id].left;
@@ -2237,7 +2238,7 @@ void window_close_construction_windows()
  */
 static void window_invalidate_pressed_image_buttons(rct_window *w)
 {
-	sint32 widgetIndex;
+	rct_widgetindex widgetIndex;
 	rct_widget *widget;
 
 	widgetIndex = 0;
@@ -2472,7 +2473,7 @@ void textinput_cancel()
 	window_close_by_class(WC_TEXTINPUT);
 }
 
-void window_start_textbox(rct_window *call_w, sint32 call_widget, rct_string_id existing_text, char * existing_args, sint32 maxLength)
+void window_start_textbox(rct_window *call_w, rct_widgetindex call_widget, rct_string_id existing_text, char * existing_args, sint32 maxLength)
 {
 	if (gUsingWidgetTextBox)
 		window_cancel_textbox();

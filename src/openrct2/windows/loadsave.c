@@ -69,12 +69,12 @@ static rct_widget window_loadsave_widgets[] = {
 #pragma region Events
 
 static void window_loadsave_close(rct_window *w);
-static void window_loadsave_mouseup(rct_window *w, sint32 widgetIndex);
+static void window_loadsave_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_loadsave_scrollgetsize(rct_window *w, sint32 scrollIndex, sint32 *width, sint32 *height);
 static void window_loadsave_scrollmousedown(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y);
 static void window_loadsave_scrollmouseover(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y);
-static void window_loadsave_textinput(rct_window *w, sint32 widgetIndex, char *text);
-static void window_loadsave_tooltip(rct_window* w, sint32 widgetIndex, rct_string_id *stringId);
+static void window_loadsave_textinput(rct_window *w, rct_widgetindex widgetIndex, char *text);
+static void window_loadsave_tooltip(rct_window* w, rct_widgetindex widgetIndex, rct_string_id *stringId);
 static void window_loadsave_invalidate(rct_window *w);
 static void window_loadsave_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_loadsave_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 scrollIndex);
@@ -292,7 +292,7 @@ static bool browse(bool isSave, char *path, size_t pathSize)
 	return platform_open_common_file_dialog(path, &desc, pathSize);
 }
 
-static void window_loadsave_mouseup(rct_window *w, sint32 widgetIndex)
+static void window_loadsave_mouseup(rct_window *w, rct_widgetindex widgetIndex)
 {
 	char path[MAX_PATH];
 
@@ -410,7 +410,7 @@ static void window_loadsave_scrollmouseover(rct_window *w, sint32 scrollIndex, s
 	window_invalidate(w);
 }
 
-static void window_loadsave_textinput(rct_window *w, sint32 widgetIndex, char *text)
+static void window_loadsave_textinput(rct_window *w, rct_widgetindex widgetIndex, char *text)
 {
 	char path[MAX_PATH];
 	sint32 i, overwrite;
@@ -464,7 +464,7 @@ static void window_loadsave_textinput(rct_window *w, sint32 widgetIndex, char *t
 
 }
 
-static void window_loadsave_tooltip(rct_window* w, sint32 widgetIndex, rct_string_id *stringId)
+static void window_loadsave_tooltip(rct_window* w, rct_widgetindex widgetIndex, rct_string_id *stringId)
 {
 	set_format_arg(0, rct_string_id, STR_LIST);
 }
@@ -857,7 +857,7 @@ static rct_widget window_overwrite_prompt_widgets[] = {
 	{ WIDGETS_END }
 };
 
-static void window_overwrite_prompt_mouseup(rct_window *w, sint32 widgetIndex);
+static void window_overwrite_prompt_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_overwrite_prompt_invalidate(rct_window *w);
 static void window_overwrite_prompt_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
@@ -914,7 +914,7 @@ static rct_window *window_overwrite_prompt_open(const char *name, const char *pa
 	return w;
 }
 
-static void window_overwrite_prompt_mouseup(rct_window *w, sint32 widgetIndex)
+static void window_overwrite_prompt_mouseup(rct_window *w, rct_widgetindex widgetIndex)
 {
 	rct_window *loadsaveWindow;
 

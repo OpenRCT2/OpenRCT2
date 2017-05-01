@@ -50,7 +50,7 @@ static rct_widget window_text_input_widgets[] = {
 };
 
 static void window_text_input_close(rct_window *w);
-static void window_text_input_mouseup(rct_window *w, sint32 widgetIndex);
+static void window_text_input_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_text_input_update7(rct_window *w);
 static void window_text_input_text(sint32 key, rct_window* w);
 static void window_text_input_invalidate(rct_window *w);
@@ -96,7 +96,7 @@ rct_windownumber calling_number = 0;
 sint32 calling_widget = 0;
 sint32 _maxInputLength;
 
-void window_text_input_open(rct_window* call_w, sint32 call_widget, rct_string_id title, rct_string_id description, rct_string_id existing_text, uintptr_t existing_args, sint32 maxLength)
+void window_text_input_open(rct_window* call_w, rct_widgetindex call_widget, rct_string_id title, rct_string_id description, rct_string_id existing_text, uintptr_t existing_args, sint32 maxLength)
 {
 	_maxInputLength = maxLength;
 
@@ -155,7 +155,7 @@ void window_text_input_open(rct_window* call_w, sint32 call_widget, rct_string_i
 	w->colours[2] = call_w->colours[2];
 }
 
-void window_text_input_raw_open(rct_window* call_w, sint32 call_widget, rct_string_id title, rct_string_id description, utf8string existing_text, sint32 maxLength)
+void window_text_input_raw_open(rct_window* call_w, rct_widgetindex call_widget, rct_string_id title, rct_string_id description, utf8string existing_text, sint32 maxLength)
 {
 	_maxInputLength = maxLength;
 
@@ -219,7 +219,7 @@ void window_text_input_raw_open(rct_window* call_w, sint32 call_widget, rct_stri
 /**
 *
 */
-static void window_text_input_mouseup(rct_window *w, sint32 widgetIndex)
+static void window_text_input_mouseup(rct_window *w, rct_widgetindex widgetIndex)
 {
 	rct_window *calling_w;
 

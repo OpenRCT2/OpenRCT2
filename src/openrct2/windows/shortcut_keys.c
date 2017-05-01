@@ -46,11 +46,11 @@ static rct_widget window_shortcut_widgets[] = {
 	{ WIDGETS_END }
 };
 
-static void window_shortcut_mouseup(rct_window *w, sint32 widgetIndex);
+static void window_shortcut_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_shortcut_resize(rct_window *w);
 static void window_shortcut_invalidate(rct_window *w);
 static void window_shortcut_paint(rct_window *w, rct_drawpixelinfo *dpi);
-static void window_shortcut_tooltip(rct_window* w, sint32 widgetIndex, rct_string_id *stringId);
+static void window_shortcut_tooltip(rct_window* w, rct_widgetindex widgetIndex, rct_string_id *stringId);
 static void window_shortcut_scrollgetsize(rct_window *w, sint32 scrollIndex, sint32 *width, sint32 *height);
 static void window_shortcut_scrollmousedown(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y);
 static void window_shortcut_scrollmouseover(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y);
@@ -182,7 +182,7 @@ void window_shortcut_keys_open()
 *
 *  rct2: 0x006E39E4
 */
-static void window_shortcut_mouseup(rct_window *w, sint32 widgetIndex)
+static void window_shortcut_mouseup(rct_window *w, rct_widgetindex widgetIndex)
 {
 	switch (widgetIndex){
 	case WIDX_CLOSE:
@@ -229,7 +229,7 @@ static void window_shortcut_paint(rct_window *w, rct_drawpixelinfo *dpi)
 *
 *  rct2: 0x006E3A0C
 */
-static void window_shortcut_tooltip(rct_window* w, sint32 widgetIndex, rct_string_id *stringId)
+static void window_shortcut_tooltip(rct_window* w, rct_widgetindex widgetIndex, rct_string_id *stringId)
 {
 	set_format_arg(0, rct_string_id, STR_LIST);
 }

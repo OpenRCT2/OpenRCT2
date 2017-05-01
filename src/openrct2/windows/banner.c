@@ -76,10 +76,10 @@ rct_widget window_banner_widgets[] = {
 	{ WIDGETS_END },
 };
 
-static void window_banner_mouseup(rct_window *w, sint32 widgetIndex);
-static void window_banner_mousedown(sint32 widgetIndex, rct_window*w, rct_widget* widget);
-static void window_banner_dropdown(rct_window *w, sint32 widgetIndex, sint32 dropdownIndex);
-static void window_banner_textinput(rct_window *w, sint32 widgetIndex, char *text);
+static void window_banner_mouseup(rct_window *w, rct_widgetindex widgetIndex);
+static void window_banner_mousedown(rct_widgetindex widgetIndex, rct_window*w, rct_widget* widget);
+static void window_banner_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex);
+static void window_banner_textinput(rct_window *w, rct_widgetindex widgetIndex, char *text);
 static void window_banner_unknown_14(rct_window *w);
 static void window_banner_invalidate(rct_window *w);
 static void window_banner_paint(rct_window *w, rct_drawpixelinfo *dpi);
@@ -189,7 +189,7 @@ void window_banner_open(rct_windownumber number)
  *
  *  rct2: 0x6ba4d6
  */
-static void window_banner_mouseup(rct_window *w, sint32 widgetIndex)
+static void window_banner_mouseup(rct_window *w, rct_widgetindex widgetIndex)
 {
 	rct_banner* banner = &gBanners[w->number];
 	sint32 x = banner->x << 5;
@@ -224,7 +224,7 @@ static void window_banner_mouseup(rct_window *w, sint32 widgetIndex)
  *
  *  rct2: 0x6ba4ff
  */
-static void window_banner_mousedown(sint32 widgetIndex, rct_window*w, rct_widget* widget)
+static void window_banner_mousedown(rct_widgetindex widgetIndex, rct_window*w, rct_widget* widget)
 {
 	rct_banner* banner = &gBanners[w->number];
 
@@ -261,7 +261,7 @@ static void window_banner_mousedown(sint32 widgetIndex, rct_window*w, rct_widget
  *
  *  rct2: 0x6ba517
  */
-static void window_banner_dropdown(rct_window *w, sint32 widgetIndex, sint32 dropdownIndex)
+static void window_banner_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex)
 {
 	rct_banner* banner = &gBanners[w->number];
 
@@ -285,7 +285,7 @@ static void window_banner_dropdown(rct_window *w, sint32 widgetIndex, sint32 dro
  *
  *  rct2: 0x6ba50c
  */
-static void window_banner_textinput(rct_window *w, sint32 widgetIndex, char *text)
+static void window_banner_textinput(rct_window *w, rct_widgetindex widgetIndex, char *text)
 {
 	if (widgetIndex == WIDX_BANNER_TEXT && text != NULL) {
 		game_do_command(1, GAME_COMMAND_FLAG_APPLY, w->number, *((sint32*)(text + 0)), GAME_COMMAND_SET_BANNER_NAME, *((sint32*)(text + 8)), *((sint32*)(text + 4)));

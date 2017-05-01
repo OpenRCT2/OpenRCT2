@@ -92,7 +92,7 @@ extern sint32 gTooltipCursorY;
 extern TOOL_IDX gCurrentToolId;
 extern widget_ref gCurrentToolWidget;
 
-void input_window_position_begin(rct_window *w, sint32 widgetIndex, sint32 x, sint32 y);
+void input_window_position_begin(rct_window *w, rct_widgetindex widgetIndex, sint32 x, sint32 y);
 
 void title_handle_keyboard_input();
 void game_handle_input();

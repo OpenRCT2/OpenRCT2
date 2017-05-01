@@ -80,8 +80,8 @@ widget_ref gCurrentToolWidget;
 static sint16 _clickRepeatTicks;
 
 static sint32 game_get_next_input(sint32 *x, sint32 *y);
-static void input_widget_over(sint32 x, sint32 y, rct_window *w, sint32 widgetIndex);
-static void input_widget_over_change_check(rct_windowclass windowClass, rct_windownumber windowNumber, sint32 widgetIndex);
+static void input_widget_over(sint32 x, sint32 y, rct_window *w, rct_widgetindex widgetIndex);
+static void input_widget_over_change_check(rct_windowclass windowClass, rct_windownumber windowNumber, rct_widgetindex widgetIndex);
 static void input_widget_over_flatbutton_invalidate();
 void process_mouse_over(sint32 x, sint32 y);
 void process_mouse_tool(sint32 x, sint32 y);
@@ -93,27 +93,27 @@ sint32 get_next_key();
 static void game_handle_input_mouse(sint32 x, sint32 y, sint32 state);
 void game_handle_edge_scroll();
 void game_handle_key_scroll();
-static void input_widget_left(sint32 x, sint32 y, rct_window *w, sint32 widgetIndex);
-void input_state_widget_pressed(sint32 x, sint32 y, sint32 state, sint32 widgetIndex, rct_window* w, rct_widget* widget);
+static void input_widget_left(sint32 x, sint32 y, rct_window *w, rct_widgetindex widgetIndex);
+void input_state_widget_pressed(sint32 x, sint32 y, sint32 state, rct_widgetindex widgetIndex, rct_window* w, rct_widget* widget);
 void sub_6ED990(uint8 cursor_id);
 static void input_window_position_continue(rct_window *w, sint32 lastX, sint32 lastY, sint32 newX, sint32 newY);
 static void input_window_position_end(rct_window *w, sint32 x, sint32 y);
-static void input_window_resize_begin(rct_window *w, sint32 widgetIndex, sint32 x, sint32 y);
+static void input_window_resize_begin(rct_window *w, rct_widgetindex widgetIndex, sint32 x, sint32 y);
 static void input_window_resize_continue(rct_window *w, sint32 x, sint32 y);
 static void input_window_resize_end();
 static void input_viewport_drag_begin(rct_window *w, sint32 x, sint32 y);
 static void input_viewport_drag_continue();
 static void input_viewport_drag_end();
-static void input_scroll_begin(rct_window *w, sint32 widgetIndex, sint32 x, sint32 y);
-static void input_scroll_continue(rct_window *w, sint32 widgetIndex, sint32 state, sint32 x, sint32 y);
+static void input_scroll_begin(rct_window *w, rct_widgetindex widgetIndex, sint32 x, sint32 y);
+static void input_scroll_continue(rct_window *w, rct_widgetindex widgetIndex, sint32 state, sint32 x, sint32 y);
 static void input_scroll_end();
-static void input_scroll_part_update_hthumb(rct_window *w, sint32 widgetIndex, sint32 x, sint32 scroll_id);
-static void input_scroll_part_update_hleft(rct_window *w, sint32 widgetIndex, sint32 scroll_id);
-static void input_scroll_part_update_hright(rct_window *w, sint32 widgetIndex, sint32 scroll_id);
-static void input_scroll_part_update_vthumb(rct_window *w, sint32 widgetIndex, sint32 y, sint32 scroll_id);
-static void input_scroll_part_update_vtop(rct_window *w, sint32 widgetIndex, sint32 scroll_id);
-static void input_scroll_part_update_vbottom(rct_window *w, sint32 widgetIndex, sint32 scroll_id);
-static void input_update_tooltip(rct_window *w, sint32 widgetIndex, sint32 x, sint32 y);
+static void input_scroll_part_update_hthumb(rct_window *w, rct_widgetindex widgetIndex, sint32 x, sint32 scroll_id);
+static void input_scroll_part_update_hleft(rct_window *w, rct_widgetindex widgetIndex, sint32 scroll_id);
+static void input_scroll_part_update_hright(rct_window *w, rct_widgetindex widgetIndex, sint32 scroll_id);
+static void input_scroll_part_update_vthumb(rct_window *w, rct_widgetindex widgetIndex, sint32 y, sint32 scroll_id);
+static void input_scroll_part_update_vtop(rct_window *w, rct_widgetindex widgetIndex, sint32 scroll_id);
+static void input_scroll_part_update_vbottom(rct_window *w, rct_widgetindex widgetIndex, sint32 scroll_id);
+static void input_update_tooltip(rct_window *w, rct_widgetindex widgetIndex, sint32 x, sint32 y);
 
 #pragma region Mouse input
 
@@ -188,7 +188,7 @@ static rct_mouse_data *get_mouse_input()
  *
  *  rct2: 0x006E957F
  */
-static void input_scroll_drag_begin(sint32 x, sint32 y, rct_window* w, rct_widget* widget, sint32 widgetIndex)
+static void input_scroll_drag_begin(sint32 x, sint32 y, rct_window* w, rct_widget* widget, rct_widgetindex widgetIndex)
 {
 	_inputState = INPUT_STATE_SCROLL_RIGHT;
 	gInputDragLastX = x;
@@ -279,7 +279,7 @@ static void game_handle_input_mouse(sint32 x, sint32 y, sint32 state)
 {
 	rct_window *w;
 	rct_widget *widget;
-	sint32 widgetIndex;
+	rct_widgetindex widgetIndex;
 
 	// Get window and widget under cursor position
 	w = window_find_from_point(x, y);
@@ -428,7 +428,7 @@ static void game_handle_input_mouse(sint32 x, sint32 y, sint32 state)
 
 #pragma region Window positioning / resizing
 
-void input_window_position_begin(rct_window *w, sint32 widgetIndex, sint32 x, sint32 y)
+void input_window_position_begin(rct_window *w, rct_widgetindex widgetIndex, sint32 x, sint32 y)
 {
 	_inputState = INPUT_STATE_POSITIONING_WINDOW;
 	gInputDragLastX = x - w->x;
@@ -454,7 +454,7 @@ static void input_window_position_end(rct_window *w, sint32 x, sint32 y)
 	window_event_moved_call(w, x, y);
 }
 
-static void input_window_resize_begin(rct_window *w, sint32 widgetIndex, sint32 x, sint32 y)
+static void input_window_resize_begin(rct_window *w, rct_widgetindex widgetIndex, sint32 x, sint32 y)
 {
 	_inputState = INPUT_STATE_RESIZING;
 	gInputDragLastX = x;
@@ -564,7 +564,7 @@ static void input_viewport_drag_end()
 
 #pragma region Scroll bars
 
-static void input_scroll_begin(rct_window *w, sint32 widgetIndex, sint32 x, sint32 y)
+static void input_scroll_begin(rct_window *w, rct_widgetindex widgetIndex, sint32 x, sint32 y)
 {
 	rct_widget *widget;
 
@@ -634,7 +634,7 @@ static void input_scroll_begin(rct_window *w, sint32 widgetIndex, sint32 x, sint
 	window_invalidate_by_number(widgetIndex, w->classification);
 }
 
-static void input_scroll_continue(rct_window *w, sint32 widgetIndex, sint32 state, sint32 x, sint32 y)
+static void input_scroll_continue(rct_window *w, rct_widgetindex widgetIndex, sint32 state, sint32 x, sint32 y)
 {
 	rct_widget *widget;
 	sint32 scroll_part, scroll_id;
@@ -704,7 +704,7 @@ static void input_scroll_end()
  *
  *  rct2: 0x006E98F2
  */
-static void input_scroll_part_update_hthumb(rct_window *w, sint32 widgetIndex, sint32 x, sint32 scroll_id)
+static void input_scroll_part_update_hthumb(rct_window *w, rct_widgetindex widgetIndex, sint32 x, sint32 scroll_id)
 {
 	rct_widget *widget = &w->widgets[widgetIndex];
 
@@ -741,7 +741,7 @@ static void input_scroll_part_update_hthumb(rct_window *w, sint32 widgetIndex, s
  *
  *  rct2: 0x006E99A9
  */
-static void input_scroll_part_update_vthumb(rct_window *w, sint32 widgetIndex, sint32 y, sint32 scroll_id)
+static void input_scroll_part_update_vthumb(rct_window *w, rct_widgetindex widgetIndex, sint32 y, sint32 scroll_id)
 {
 	assert(w != NULL);
 	rct_widget *widget = &w->widgets[widgetIndex];
@@ -779,7 +779,7 @@ static void input_scroll_part_update_vthumb(rct_window *w, sint32 widgetIndex, s
  *
  *  rct2: 0x006E9A60
  */
-static void input_scroll_part_update_hleft(rct_window *w, sint32 widgetIndex, sint32 scroll_id)
+static void input_scroll_part_update_hleft(rct_window *w, rct_widgetindex widgetIndex, sint32 scroll_id)
 {
 	assert(w != NULL);
 	if (window_find_by_number(w->classification, w->number)) {
@@ -795,7 +795,7 @@ static void input_scroll_part_update_hleft(rct_window *w, sint32 widgetIndex, si
  *
  *  rct2: 0x006E9ABF
  */
-static void input_scroll_part_update_hright(rct_window *w, sint32 widgetIndex, sint32 scroll_id)
+static void input_scroll_part_update_hright(rct_window *w, rct_widgetindex widgetIndex, sint32 scroll_id)
 {
 	assert(w != NULL);
 	rct_widget *widget = &w->widgets[widgetIndex];
@@ -820,7 +820,7 @@ static void input_scroll_part_update_hright(rct_window *w, sint32 widgetIndex, s
  *
  *  rct2: 0x006E9C37
  */
-static void input_scroll_part_update_vtop(rct_window *w, sint32 widgetIndex, sint32 scroll_id)
+static void input_scroll_part_update_vtop(rct_window *w, rct_widgetindex widgetIndex, sint32 scroll_id)
 {
 	assert(w != NULL);
 	if (window_find_by_number(w->classification, w->number)) {
@@ -836,7 +836,7 @@ static void input_scroll_part_update_vtop(rct_window *w, sint32 widgetIndex, sin
  *
  *  rct2: 0x006E9C96
  */
-static void input_scroll_part_update_vbottom(rct_window *w, sint32 widgetIndex, sint32 scroll_id)
+static void input_scroll_part_update_vbottom(rct_window *w, rct_widgetindex widgetIndex, sint32 scroll_id)
 {
 	assert(w != NULL);
 	rct_widget *widget = &w->widgets[widgetIndex];
@@ -865,7 +865,7 @@ static void input_scroll_part_update_vbottom(rct_window *w, sint32 widgetIndex, 
  *
  *  rct2: 0x006E9253
  */
-static void input_widget_over(sint32 x, sint32 y, rct_window *w, sint32 widgetIndex)
+static void input_widget_over(sint32 x, sint32 y, rct_window *w, rct_widgetindex widgetIndex)
 {
 	rct_windowclass windowClass = 255;
 	rct_windownumber windowNumber = 0;
@@ -903,7 +903,7 @@ static void input_widget_over(sint32 x, sint32 y, rct_window *w, sint32 widgetIn
  *
  *  rct2: 0x006E9269
  */
-static void input_widget_over_change_check(rct_windowclass windowClass, rct_windownumber windowNumber, sint32 widgetIndex)
+static void input_widget_over_change_check(rct_windowclass windowClass, rct_windownumber windowNumber, rct_widgetindex widgetIndex)
 {
 	// Prevents invalid widgets being clicked source of bug is elsewhere
 	if (widgetIndex == -1)
@@ -951,7 +951,7 @@ static void input_widget_over_flatbutton_invalidate()
  *
  *  rct2: 0x006E95F9
  */
-static void input_widget_left(sint32 x, sint32 y, rct_window *w, sint32 widgetIndex)
+static void input_widget_left(sint32 x, sint32 y, rct_window *w, rct_widgetindex widgetIndex)
 {
 	rct_windowclass windowClass = 255;
 	rct_windownumber windowNumber = 0;
@@ -1049,7 +1049,7 @@ void process_mouse_over(sint32 x, sint32 y)
 	if (window != NULL) {
 		sint32 ebx, edi;
 		rct_window* subWindow;
-		sint32 widgetId = window_find_widget_from_point(window, x, y);
+		rct_widgetindex widgetId = window_find_widget_from_point(window, x, y);
 		if (widgetId != -1) {
 			switch (window->widgets[widgetId].type){
 
@@ -1153,13 +1153,13 @@ void process_mouse_tool(sint32 x, sint32 y)
  *
  *  rct2: 0x006E8DA7
  */
-void input_state_widget_pressed(sint32 x, sint32 y, sint32 state, sint32 widgetIndex, rct_window *w, rct_widget *widget)
+void input_state_widget_pressed(sint32 x, sint32 y, sint32 state, rct_widgetindex widgetIndex, rct_window *w, rct_widget *widget)
 {
 	rct_windowclass cursor_w_class;
 	rct_windownumber cursor_w_number;
 	cursor_w_class = gPressedWidget.window_classification;
 	cursor_w_number = gPressedWidget.window_number;
-	sint32 cursor_widgetIndex = gPressedWidget.widget_index;
+	rct_widgetindex cursor_widgetIndex = gPressedWidget.widget_index;
 
 	rct_window *cursor_w = window_find_by_number(cursor_w_class, cursor_w_number);
 	if (cursor_w == NULL) {
@@ -1360,7 +1360,7 @@ void input_state_widget_pressed(sint32 x, sint32 y, sint32 state, sint32 widgetI
 	}
 }
 
-static void input_update_tooltip(rct_window *w, sint32 widgetIndex, sint32 x, sint32 y)
+static void input_update_tooltip(rct_window *w, rct_widgetindex widgetIndex, sint32 x, sint32 y)
 {
 	if (gTooltipWidget.window_classification == 255) {
 		if (gTooltipCursorX == x && gTooltipCursorY == y) {

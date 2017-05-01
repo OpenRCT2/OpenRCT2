@@ -63,7 +63,7 @@ rct_widget window_view_clipping_widgets[] = {
 #pragma region Events
 
 static void window_view_clipping_close_button(rct_window *w);
-static void window_view_clipping_mouseup(rct_window *w, int widgetIndex);
+static void window_view_clipping_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_view_clipping_update(rct_window *w);
 static void window_view_clipping_invalidate(rct_window *w);
 static void window_view_clipping_paint(rct_window *w, rct_drawpixelinfo *dpi);
@@ -172,7 +172,7 @@ static void window_view_clipping_close_button(rct_window *w)
 	window_view_clipping_close();
 }
 
-static void window_view_clipping_mouseup(rct_window *w, int widgetIndex)
+static void window_view_clipping_mouseup(rct_window *w, rct_widgetindex widgetIndex)
 {
 	rct_window *mainWindow;
 

@@ -45,7 +45,7 @@ static rct_widget window_staff_fire_widgets[] = {
 	{ WIDGETS_END }
 };
 
-static void window_staff_fire_mouseup(rct_window *w, sint32 widgetIndex);
+static void window_staff_fire_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_staff_fire_invalidate(rct_window *w);
 static void window_staff_fire_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
@@ -104,7 +104,7 @@ void window_staff_fire_prompt_open(rct_peep* peep)
 *
 *  rct2: 0x006C0B40
 */
-static void window_staff_fire_mouseup(rct_window *w, sint32 widgetIndex)
+static void window_staff_fire_mouseup(rct_window *w, rct_widgetindex widgetIndex)
 {
 	rct_peep* peep = &get_sprite(w->number)->peep;
 

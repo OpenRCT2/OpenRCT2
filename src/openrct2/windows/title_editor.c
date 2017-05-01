@@ -46,16 +46,16 @@ enum WINDOW_TITLE_EDITOR_TAB {
 };
 
 static void window_title_editor_close(rct_window *w);
-static void window_title_editor_mouseup(rct_window *w, sint32 widgetIndex);
+static void window_title_editor_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_title_editor_resize(rct_window *w);
-static void window_title_editor_mousedown(sint32 widgetIndex, rct_window*w, rct_widget* widget);
-static void window_title_editor_dropdown(rct_window *w, sint32 widgetIndex, sint32 dropdownIndex);
+static void window_title_editor_mousedown(rct_widgetindex widgetIndex, rct_window*w, rct_widget* widget);
+static void window_title_editor_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex);
 static void window_title_editor_update(rct_window *w);
 static void window_title_editor_scrollgetsize(rct_window *w, sint32 scrollIndex, sint32 *width, sint32 *height);
 static void window_title_editor_scrollmousedown(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y);
 static void window_title_editor_scrollmouseover(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y);
-static void window_title_editor_textinput(rct_window *w, sint32 widgetIndex, char *text);
-static void window_title_editor_tooltip(rct_window* w, sint32 widgetIndex, rct_string_id *stringId);
+static void window_title_editor_textinput(rct_window *w, rct_widgetindex widgetIndex, char *text);
+static void window_title_editor_tooltip(rct_window* w, rct_widgetindex widgetIndex, rct_string_id *stringId);
 static void window_title_editor_invalidate(rct_window *w);
 static void window_title_editor_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_title_editor_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 scrollIndex);
@@ -296,7 +296,7 @@ static void window_title_editor_close(rct_window *w)
 	_renameSavePath = NULL;
 }
 
-static void window_title_editor_mouseup(rct_window *w, sint32 widgetIndex)
+static void window_title_editor_mouseup(rct_window *w, rct_widgetindex widgetIndex)
 {
 	bool commandEditorOpen = (window_find_by_class(WC_TITLE_COMMAND_EDITOR) != NULL);
 	switch (widgetIndex) {
@@ -483,7 +483,7 @@ static void window_title_editor_resize(rct_window *w)
 	}
 }
 
-static void window_title_editor_mousedown(sint32 widgetIndex, rct_window* w, rct_widget* widget)
+static void window_title_editor_mousedown(rct_widgetindex widgetIndex, rct_window* w, rct_widget* widget)
 {
 	switch (widgetIndex) {
 	case WIDX_TITLE_EDITOR_PRESETS_TAB:
@@ -528,7 +528,7 @@ static void window_title_editor_mousedown(sint32 widgetIndex, rct_window* w, rct
 	}
 }
 
-static void window_title_editor_dropdown(rct_window *w, sint32 widgetIndex, sint32 dropdownIndex)
+static void window_title_editor_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex)
 {
 	if (dropdownIndex == -1)
 		return;
@@ -612,7 +612,7 @@ static void window_title_editor_scrollmouseover(rct_window *w, sint32 scrollInde
 	widget_invalidate(w, WIDX_TITLE_EDITOR_LIST);
 }
 
-static void window_title_editor_textinput(rct_window *w, sint32 widgetIndex, char *text)
+static void window_title_editor_textinput(rct_window *w, rct_widgetindex widgetIndex, char *text)
 {
 	if (str_is_null_or_empty(text)) {
 		return;
@@ -649,7 +649,7 @@ static void window_title_editor_textinput(rct_window *w, sint32 widgetIndex, cha
 	}
 }
 
-static void window_title_editor_tooltip(rct_window* w, sint32 widgetIndex, rct_string_id *stringId)
+static void window_title_editor_tooltip(rct_window* w, rct_widgetindex widgetIndex, rct_string_id *stringId)
 {
 	set_format_arg(0, rct_string_id, STR_LIST);
 }
@@ -663,7 +663,7 @@ static void window_title_editor_invalidate(rct_window *w)
 			(1LL << WIDX_TITLE_EDITOR_SAVES_TAB) |
 			(1LL << WIDX_TITLE_EDITOR_SCRIPT_TAB)
 	);
-	uint8 widgetIndex = w->selected_tab + WIDX_TITLE_EDITOR_PRESETS_TAB;
+	rct_widgetindex widgetIndex = w->selected_tab + WIDX_TITLE_EDITOR_PRESETS_TAB;
 
 	w->pressed_widgets = pressed_widgets | (1 << widgetIndex);
 

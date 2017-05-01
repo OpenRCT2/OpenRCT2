@@ -55,11 +55,11 @@ rct_widget window_clear_scenery_widgets[] = {
 };
 
 static void window_clear_scenery_close(rct_window *w);
-static void window_clear_scenery_mouseup(rct_window *w, sint32 widgetIndex);
+static void window_clear_scenery_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_clear_scenery_update(rct_window *w);
 static void window_clear_scenery_invalidate(rct_window *w);
 static void window_clear_scenery_paint(rct_window *w, rct_drawpixelinfo *dpi);
-static void window_clear_scenery_textinput(rct_window *w, sint32 widgetIndex, char *text);
+static void window_clear_scenery_textinput(rct_window *w, rct_widgetindex widgetIndex, char *text);
 static void window_clear_scenery_inputsize(rct_window *w);
 
 static rct_window_event_list window_clear_scenery_events = {
@@ -134,7 +134,7 @@ static void window_clear_scenery_close(rct_window *w)
  *
  *  rct2: 0x0068E185
  */
-static void window_clear_scenery_mouseup(rct_window *w, sint32 widgetIndex)
+static void window_clear_scenery_mouseup(rct_window *w, rct_widgetindex widgetIndex)
 {
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
@@ -172,7 +172,7 @@ static void window_clear_scenery_mouseup(rct_window *w, sint32 widgetIndex)
 	}
 }
 
-static void window_clear_scenery_textinput(rct_window *w, sint32 widgetIndex, char *text)
+static void window_clear_scenery_textinput(rct_window *w, rct_widgetindex widgetIndex, char *text)
 {
 	sint32 size;
 	char* end;

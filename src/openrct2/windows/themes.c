@@ -44,16 +44,16 @@ enum {
 	WINDOW_THEMES_TAB_COUNT
 } WINDOW_THEMES_TAB;
 
-static void window_themes_mouseup(rct_window *w, sint32 widgetIndex);
+static void window_themes_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_themes_resize(rct_window *w);
-static void window_themes_mousedown(sint32 widgetIndex, rct_window*w, rct_widget* widget);
-static void window_themes_dropdown(rct_window *w, sint32 widgetIndex, sint32 dropdownIndex);
+static void window_themes_mousedown(rct_widgetindex widgetIndex, rct_window*w, rct_widget* widget);
+static void window_themes_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex);
 static void window_themes_update(rct_window *w);
 static void window_themes_scrollgetsize(rct_window *w, sint32 scrollIndex, sint32 *width, sint32 *height);
 static void window_themes_scrollmousedown(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y);
 static void window_themes_scrollmouseover(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y);
-static void window_themes_textinput(rct_window *w, sint32 widgetIndex, char *text);
-static void window_themes_tooltip(rct_window* w, sint32 widgetIndex, rct_string_id *stringId);
+static void window_themes_textinput(rct_window *w, rct_widgetindex widgetIndex, char *text);
+static void window_themes_tooltip(rct_window* w, rct_widgetindex widgetIndex, rct_string_id *stringId);
 static void window_themes_invalidate(rct_window *w);
 static void window_themes_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_themes_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 scrollIndex);
@@ -355,7 +355,7 @@ void window_themes_open()
 	window->max_height = 107;
 }
 
-static void window_themes_mouseup(rct_window *w, sint32 widgetIndex)
+static void window_themes_mouseup(rct_window *w, rct_widgetindex widgetIndex)
 {
 	size_t activeAvailableThemeIndex;
 	const utf8 * activeThemeName;
@@ -461,7 +461,7 @@ static void window_themes_resize(rct_window *w)
 	}
 }
 
-static void window_themes_mousedown(sint32 widgetIndex, rct_window* w, rct_widget* widget)
+static void window_themes_mousedown(rct_widgetindex widgetIndex, rct_window* w, rct_widget* widget)
 {
 	sint16 newSelectedTab;
 	sint32 num_items;
@@ -538,7 +538,7 @@ static void window_themes_mousedown(sint32 widgetIndex, rct_window* w, rct_widge
 	}
 }
 
-static void window_themes_dropdown(rct_window *w, sint32 widgetIndex, sint32 dropdownIndex)
+static void window_themes_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex)
 {
 	switch (widgetIndex) {
 	case WIDX_THEMES_LIST:
@@ -641,7 +641,7 @@ void window_themes_scrollmouseover(rct_window *w, sint32 scrollIndex, sint32 x, 
 	//	return;
 }
 
-static void window_themes_textinput(rct_window *w, sint32 widgetIndex, char *text)
+static void window_themes_textinput(rct_window *w, rct_widgetindex widgetIndex, char *text)
 {
 	if (text == NULL || text[0] == 0)
 		return;
@@ -677,7 +677,7 @@ static void window_themes_textinput(rct_window *w, sint32 widgetIndex, char *tex
 	}
 }
 
-void window_themes_tooltip(rct_window* w, sint32 widgetIndex, rct_string_id *stringId)
+void window_themes_tooltip(rct_window* w, rct_widgetindex widgetIndex, rct_string_id *stringId)
 {
 	set_format_arg(0, rct_string_id, STR_LIST);
 }
@@ -697,7 +697,7 @@ void window_themes_invalidate(rct_window *w)
 			(1LL << WIDX_THEMES_PROMPTS_TAB) |
 			(1LL << WIDX_THEMES_FEATURES_TAB)
 	);
-	uint8 widgetIndex = _selected_tab + WIDX_THEMES_SETTINGS_TAB;
+	rct_widgetindex widgetIndex = _selected_tab + WIDX_THEMES_SETTINGS_TAB;
 
 	w->pressed_widgets = pressed_widgets | (1 << widgetIndex);
 

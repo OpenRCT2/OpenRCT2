@@ -97,14 +97,14 @@ static rct_widget window_footpath_widgets[] = {
 };
 
 static void window_footpath_close(rct_window *w);
-static void window_footpath_mouseup(rct_window *w, sint32 widgetIndex);
-static void window_footpath_mousedown(sint32 widgetIndex, rct_window *w, rct_widget *widget);
-static void window_footpath_dropdown(rct_window *w, sint32 widgetIndex, sint32 dropdownIndex);
+static void window_footpath_mouseup(rct_window *w, rct_widgetindex widgetIndex);
+static void window_footpath_mousedown(rct_widgetindex widgetIndex, rct_window *w, rct_widget *widget);
+static void window_footpath_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex);
 static void window_footpath_update(rct_window *w);
-static void window_footpath_toolupdate(rct_window* w, sint32 widgetIndex, sint32 x, sint32 y);
-static void window_footpath_tooldown(rct_window* w, sint32 widgetIndex, sint32 x, sint32 y);
-static void window_footpath_tooldrag(rct_window* w, sint32 widgetIndex, sint32 x, sint32 y);
-static void window_footpath_toolup(rct_window* w, sint32 widgetIndex, sint32 x, sint32 y);
+static void window_footpath_toolupdate(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y);
+static void window_footpath_tooldown(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y);
+static void window_footpath_tooldrag(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y);
+static void window_footpath_toolup(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y);
 static void window_footpath_invalidate(rct_window *w);
 static void window_footpath_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
@@ -285,7 +285,7 @@ static void window_footpath_close(rct_window *w)
  *
  *  rct2: 0x006A7E92
  */
-static void window_footpath_mouseup(rct_window *w, sint32 widgetIndex)
+static void window_footpath_mouseup(rct_window *w, rct_widgetindex widgetIndex)
 {
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
@@ -334,7 +334,7 @@ static void window_footpath_mouseup(rct_window *w, sint32 widgetIndex)
  *
  *  rct2: 0x006A7EC5
  */
-static void window_footpath_mousedown(sint32 widgetIndex, rct_window*w, rct_widget* widget)
+static void window_footpath_mousedown(rct_widgetindex widgetIndex, rct_window*w, rct_widget* widget)
 {
 	switch (widgetIndex) {
 	case WIDX_FOOTPATH_TYPE:
@@ -371,7 +371,7 @@ static void window_footpath_mousedown(sint32 widgetIndex, rct_window*w, rct_widg
  *
  *  rct2: 0x006A7F18
  */
-static void window_footpath_dropdown(rct_window *w, sint32 widgetIndex, sint32 dropdownIndex)
+static void window_footpath_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex)
 {
 	if (widgetIndex == WIDX_FOOTPATH_TYPE)
 		gFootpathSelectedType = SELECTED_PATH_TYPE_NORMAL;
@@ -418,7 +418,7 @@ static void window_footpath_dropdown(rct_window *w, sint32 widgetIndex, sint32 d
  *
  *  rct2: 0x006A8032
  */
-static void window_footpath_toolupdate(rct_window* w, sint32 widgetIndex, sint32 x, sint32 y)
+static void window_footpath_toolupdate(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y)
 {
 	if (widgetIndex == WIDX_CONSTRUCT_ON_LAND) {
 		window_footpath_set_provisional_path_at_point(x, y);
@@ -431,7 +431,7 @@ static void window_footpath_toolupdate(rct_window* w, sint32 widgetIndex, sint32
  *
  *  rct2: 0x006A8047
  */
-static void window_footpath_tooldown(rct_window* w, sint32 widgetIndex, sint32 x, sint32 y)
+static void window_footpath_tooldown(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y)
 {
 	if (widgetIndex == WIDX_CONSTRUCT_ON_LAND)
 		window_footpath_place_path_at_point(x, y);
@@ -443,7 +443,7 @@ static void window_footpath_tooldown(rct_window* w, sint32 widgetIndex, sint32 x
  *
  *  rct2: 0x006A8067
  */
-static void window_footpath_tooldrag(rct_window* w, sint32 widgetIndex, sint32 x, sint32 y)
+static void window_footpath_tooldrag(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y)
 {
 	if (widgetIndex == WIDX_CONSTRUCT_ON_LAND) {
 		window_footpath_place_path_at_point(x, y);
@@ -454,7 +454,7 @@ static void window_footpath_tooldrag(rct_window* w, sint32 widgetIndex, sint32 x
  *
  *  rct2: 0x006A8066
  */
-static void window_footpath_toolup(rct_window* w, sint32 widgetIndex, sint32 x, sint32 y)
+static void window_footpath_toolup(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y)
 {
 	if (widgetIndex == WIDX_CONSTRUCT_ON_LAND) {
 		_footpathErrorOccured = false;

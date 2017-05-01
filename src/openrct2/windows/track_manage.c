@@ -62,12 +62,12 @@ static rct_widget window_track_delete_prompt_widgets[] = {
 #pragma region Events
 
 static void window_track_manage_close(rct_window *w);
-static void window_track_manage_mouseup(rct_window *w, sint32 widgetIndex);
-static void window_track_manage_textinput(rct_window *w, sint32 widgetIndex, char *text);
+static void window_track_manage_mouseup(rct_window *w, rct_widgetindex widgetIndex);
+static void window_track_manage_textinput(rct_window *w, rct_widgetindex widgetIndex, char *text);
 static void window_track_manage_invalidate(rct_window *w);
 static void window_track_manage_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
-static void window_track_delete_prompt_mouseup(rct_window *w, sint32 widgetIndex);
+static void window_track_delete_prompt_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_track_delete_prompt_invalidate(rct_window *w);
 static void window_track_delete_prompt_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
@@ -188,7 +188,7 @@ static void window_track_manage_close(rct_window *w)
  *
  *  rct2: 0x006D3523
  */
-static void window_track_manage_mouseup(rct_window *w, sint32 widgetIndex)
+static void window_track_manage_mouseup(rct_window *w, rct_widgetindex widgetIndex)
 {
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
@@ -214,7 +214,7 @@ static void window_track_manage_mouseup(rct_window *w, sint32 widgetIndex)
  *
  *  rct2: 0x006D3523
  */
-static void window_track_manage_textinput(rct_window *w, sint32 widgetIndex, char *text)
+static void window_track_manage_textinput(rct_window *w, rct_widgetindex widgetIndex, char *text)
 {
 	if (widgetIndex != WIDX_RENAME || str_is_null_or_empty(text)) {
 		return;
@@ -286,7 +286,7 @@ static void window_track_delete_prompt_open()
  *
  *  rct2: 0x006D3823
  */
-static void window_track_delete_prompt_mouseup(rct_window *w, sint32 widgetIndex)
+static void window_track_delete_prompt_mouseup(rct_window *w, rct_widgetindex widgetIndex)
 {
 	switch (widgetIndex) {
 	case WIDX_CLOSE:

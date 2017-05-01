@@ -182,24 +182,24 @@ static rct_widget *window_editor_scenario_options_widgets[] = {
 
 #pragma region Events
 
-static void window_editor_scenario_options_financial_mouseup(rct_window *w, sint32 widgetIndex);
+static void window_editor_scenario_options_financial_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_editor_scenario_options_financial_resize(rct_window *w);
-static void window_editor_scenario_options_financial_mousedown(sint32 widgetIndex, rct_window *w, rct_widget *widget);
+static void window_editor_scenario_options_financial_mousedown(rct_widgetindex widgetIndex, rct_window *w, rct_widget *widget);
 static void window_editor_scenario_options_financial_update(rct_window *w);
 static void window_editor_scenario_options_financial_invalidate(rct_window *w);
 static void window_editor_scenario_options_financial_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
-static void window_editor_scenario_options_guests_mouseup(rct_window *w, sint32 widgetIndex);
+static void window_editor_scenario_options_guests_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_editor_scenario_options_guests_resize(rct_window *w);
-static void window_editor_scenario_options_guests_mousedown(sint32 widgetIndex, rct_window *w, rct_widget *widget);
+static void window_editor_scenario_options_guests_mousedown(rct_widgetindex widgetIndex, rct_window *w, rct_widget *widget);
 static void window_editor_scenario_options_guests_update(rct_window *w);
 static void window_editor_scenario_options_guests_invalidate(rct_window *w);
 static void window_editor_scenario_options_guests_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
-static void window_editor_scenario_options_park_mouseup(rct_window *w, sint32 widgetIndex);
+static void window_editor_scenario_options_park_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_editor_scenario_options_park_resize(rct_window *w);
-static void window_editor_scenario_options_park_mousedown(sint32 widgetIndex, rct_window *w, rct_widget *widget);
-static void window_editor_scenario_options_park_dropdown(rct_window *w, sint32 widgetIndex, sint32 dropdownIndex);
+static void window_editor_scenario_options_park_mousedown(rct_widgetindex widgetIndex, rct_window *w, rct_widget *widget);
+static void window_editor_scenario_options_park_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex);
 static void window_editor_scenario_options_park_update(rct_window *w);
 static void window_editor_scenario_options_park_invalidate(rct_window *w);
 static void window_editor_scenario_options_park_paint(rct_window *w, rct_drawpixelinfo *dpi);
@@ -488,7 +488,7 @@ static void window_editor_scenario_options_set_page(rct_window *w, sint32 page)
  *
  *  rct2: 0x0067049D
  */
-static void window_editor_scenario_options_financial_mouseup(rct_window *w, sint32 widgetIndex)
+static void window_editor_scenario_options_financial_mouseup(rct_window *w, rct_widgetindex widgetIndex)
 {
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
@@ -539,7 +539,7 @@ static void window_editor_scenario_options_financial_resize(rct_window *w)
  *
  *  rct2: 0x006704C8
  */
-static void window_editor_scenario_options_financial_mousedown(sint32 widgetIndex, rct_window *w, rct_widget *widget)
+static void window_editor_scenario_options_financial_mousedown(rct_widgetindex widgetIndex, rct_window *w, rct_widget *widget)
 {
 	switch (widgetIndex) {
 	case WIDX_INITIAL_CASH_INCREASE:
@@ -823,7 +823,7 @@ static void window_editor_scenario_options_financial_paint(rct_window *w, rct_dr
  *
  *  rct2: 0x00670A62
  */
-static void window_editor_scenario_options_guests_mouseup(rct_window *w, sint32 widgetIndex)
+static void window_editor_scenario_options_guests_mouseup(rct_window *w, rct_widgetindex widgetIndex)
 {
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
@@ -874,7 +874,7 @@ static void window_editor_scenario_options_guests_resize(rct_window *w)
  *
  *  rct2: 0x00670A89
  */
-static void window_editor_scenario_options_guests_mousedown(sint32 widgetIndex, rct_window *w, rct_widget *widget)
+static void window_editor_scenario_options_guests_mousedown(rct_widgetindex widgetIndex, rct_window *w, rct_widget *widget)
 {
 	switch (widgetIndex) {
 	case WIDX_CASH_PER_GUEST_INCREASE:
@@ -1131,7 +1131,7 @@ static void window_editor_scenario_options_guests_paint(rct_window *w, rct_drawp
  *
  *  rct2: 0x00670FD8
  */
-static void window_editor_scenario_options_park_mouseup(rct_window *w, sint32 widgetIndex)
+static void window_editor_scenario_options_park_mouseup(rct_window *w, rct_widgetindex widgetIndex)
 {
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
@@ -1218,7 +1218,7 @@ static void window_editor_scenario_options_park_resize(rct_window *w)
  *
  *  rct2: 0x00671019
  */
-static void window_editor_scenario_options_park_mousedown(sint32 widgetIndex, rct_window *w, rct_widget *widget)
+static void window_editor_scenario_options_park_mousedown(rct_widgetindex widgetIndex, rct_window *w, rct_widget *widget)
 {
 	rct_widget *dropdownWidget;
 
@@ -1347,7 +1347,7 @@ static void window_editor_scenario_options_park_mousedown(sint32 widgetIndex, rc
  *
  *  rct2: 0x00671060
  */
-static void window_editor_scenario_options_park_dropdown(rct_window *w, sint32 widgetIndex, sint32 dropdownIndex)
+static void window_editor_scenario_options_park_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex)
 {
 	if (widgetIndex == WIDX_PAY_FOR_PARK_OR_RIDES_DROPDOWN && dropdownIndex != -1) {
 		game_do_command(

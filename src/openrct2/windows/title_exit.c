@@ -34,7 +34,7 @@ static rct_widget window_title_exit_widgets[] = {
 };
 
 static void window_title_exit_paint(rct_window *w, rct_drawpixelinfo *dpi);
-static void window_title_exit_mouseup(rct_window *w, sint32 widgetIndex);
+static void window_title_exit_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_title_exit_invalidate(rct_window *w);
 
 static rct_window_event_list window_title_exit_events = {
@@ -92,7 +92,7 @@ void window_title_exit_open()
 *
 *  rct2: 0x0066B83C
 */
-static void window_title_exit_mouseup(rct_window *w, sint32 widgetIndex)
+static void window_title_exit_mouseup(rct_window *w, rct_widgetindex widgetIndex)
 {
 	if (gIntroState != INTRO_STATE_NONE)
 		return;

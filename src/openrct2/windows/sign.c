@@ -57,10 +57,10 @@ rct_widget window_sign_widgets[] = {
 		{ WIDGETS_END },
 };
 
-static void window_sign_mouseup(rct_window *w, sint32 widgetIndex);
-static void window_sign_mousedown(sint32 widgetIndex, rct_window*w, rct_widget* widget);
-static void window_sign_dropdown(rct_window *w, sint32 widgetIndex, sint32 dropdownIndex);
-static void window_sign_textinput(rct_window *w, sint32 widgetIndex, char *text);
+static void window_sign_mouseup(rct_window *w, rct_widgetindex widgetIndex);
+static void window_sign_mousedown(rct_widgetindex widgetIndex, rct_window*w, rct_widget* widget);
+static void window_sign_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex);
+static void window_sign_textinput(rct_window *w, rct_widgetindex widgetIndex, char *text);
 static void window_sign_unknown_14(rct_window *w);
 static void window_sign_invalidate(rct_window *w);
 static void window_sign_paint(rct_window *w, rct_drawpixelinfo *dpi);
@@ -98,8 +98,8 @@ static rct_window_event_list window_sign_events = {
 	NULL
 };
 
-static void window_sign_small_mouseup(rct_window *w, sint32 widgetIndex);
-static void window_sign_small_dropdown(rct_window *w, sint32 widgetIndex, sint32 dropdownIndex);
+static void window_sign_small_mouseup(rct_window *w, rct_widgetindex widgetIndex);
+static void window_sign_small_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex);
 static void window_sign_small_invalidate(rct_window *w);
 
 // 0x9A410C
@@ -214,7 +214,7 @@ void window_sign_open(rct_windownumber number)
  *
  *  rct2: 0x6B9765
  */
-static void window_sign_mouseup(rct_window *w, sint32 widgetIndex)
+static void window_sign_mouseup(rct_window *w, rct_widgetindex widgetIndex)
 {
 	rct_banner* banner = &gBanners[w->number];
 	sint32 x = banner->x << 5;
@@ -270,7 +270,7 @@ static void window_sign_mouseup(rct_window *w, sint32 widgetIndex)
  *
  *  rct2: 0x6B9784
   & 0x6E6164 */
-static void window_sign_mousedown(sint32 widgetIndex, rct_window*w, rct_widget* widget)
+static void window_sign_mousedown(rct_widgetindex widgetIndex, rct_window*w, rct_widget* widget)
 {
 	switch (widgetIndex) {
 	case WIDX_MAIN_COLOUR:
@@ -286,7 +286,7 @@ static void window_sign_mousedown(sint32 widgetIndex, rct_window*w, rct_widget* 
  *
  *  rct2: 0x6B979C
  */
-static void window_sign_dropdown(rct_window *w, sint32 widgetIndex, sint32 dropdownIndex)
+static void window_sign_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex)
 {
 	switch (widgetIndex){
 	case WIDX_MAIN_COLOUR:
@@ -310,7 +310,7 @@ static void window_sign_dropdown(rct_window *w, sint32 widgetIndex, sint32 dropd
  *
  *  rct2: 0x6B9791, 0x6E6171
  */
-static void window_sign_textinput(rct_window *w, sint32 widgetIndex, char *text)
+static void window_sign_textinput(rct_window *w, rct_widgetindex widgetIndex, char *text)
 {
 	if (widgetIndex == WIDX_SIGN_TEXT && text != NULL) {
 		game_do_command(1, GAME_COMMAND_FLAG_APPLY, w->number, *((sint32*)(text + 0)), GAME_COMMAND_SET_SIGN_NAME, *((sint32*)(text + 8)), *((sint32*)(text + 4)));
@@ -479,7 +479,7 @@ void window_sign_small_open(rct_windownumber number){
  *
  *  rct2: 0x6E6145
  */
-static void window_sign_small_mouseup(rct_window *w, sint32 widgetIndex)
+static void window_sign_small_mouseup(rct_window *w, rct_widgetindex widgetIndex)
 {
 	rct_banner* banner = &gBanners[w->number];
 	sint32 x = banner->x << 5;
@@ -533,7 +533,7 @@ static void window_sign_small_mouseup(rct_window *w, sint32 widgetIndex)
  *
  *  rct2: 0x6E617C
  */
-static void window_sign_small_dropdown(rct_window *w, sint32 widgetIndex, sint32 dropdownIndex)
+static void window_sign_small_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex)
 {
 	switch (widgetIndex){
 	case WIDX_MAIN_COLOUR:

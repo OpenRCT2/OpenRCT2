@@ -40,7 +40,7 @@ static rct_widget window_shortcut_change_widgets[] = {
 	{ WIDGETS_END }
 };
 
-static void window_shortcut_change_mouseup(rct_window *w, sint32 widgetIndex);
+static void window_shortcut_change_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_shortcut_change_invalidate(rct_window *w);
 static void window_shortcut_change_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
@@ -92,7 +92,7 @@ void window_shortcut_change_open(sint32 selected_key){
 *
 *  rct2: 0x006E3AE0
 */
-static void window_shortcut_change_mouseup(rct_window *w, sint32 widgetIndex)
+static void window_shortcut_change_mouseup(rct_window *w, rct_widgetindex widgetIndex)
 {
 	switch (widgetIndex){
 	case WIDX_CLOSE:

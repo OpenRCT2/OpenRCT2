@@ -43,17 +43,17 @@ enum {
 bool _quick_fire_mode = false;
 
 static void window_staff_list_close(rct_window *w);
-static void window_staff_list_mouseup(rct_window *w, sint32 widgetIndex);
+static void window_staff_list_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_staff_list_resize(rct_window *w);
-static void window_staff_list_mousedown(sint32 widgetIndex, rct_window*w, rct_widget* widget);
-static void window_staff_list_dropdown(rct_window *w, sint32 widgetIndex, sint32 dropdownIndex);
+static void window_staff_list_mousedown(rct_widgetindex widgetIndex, rct_window*w, rct_widget* widget);
+static void window_staff_list_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex);
 static void window_staff_list_update(rct_window *w);
-static void window_staff_list_tooldown(rct_window *w, sint32 widgetIndex, sint32 x, sint32 y);
-static void window_staff_list_toolabort(rct_window *w, sint32 widgetIndex);
+static void window_staff_list_tooldown(rct_window *w, rct_widgetindex widgetIndex, sint32 x, sint32 y);
+static void window_staff_list_toolabort(rct_window *w, rct_widgetindex widgetIndex);
 static void window_staff_list_scrollgetsize(rct_window *w, sint32 scrollIndex, sint32 *width, sint32 *height);
 static void window_staff_list_scrollmousedown(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y);
 static void window_staff_list_scrollmouseover(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y);
-static void window_staff_list_tooltip(rct_window* w, sint32 widgetIndex, rct_string_id *stringId);
+static void window_staff_list_tooltip(rct_window* w, rct_widgetindex widgetIndex, rct_string_id *stringId);
 static void window_staff_list_invalidate(rct_window *w);
 static void window_staff_list_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_staff_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 scrollIndex);
@@ -213,7 +213,7 @@ void window_staff_list_close(rct_window *w)
 *
 *  rct2: 0x006BD94C
 */
-static void window_staff_list_mouseup(rct_window *w, sint32 widgetIndex)
+static void window_staff_list_mouseup(rct_window *w, rct_widgetindex widgetIndex)
 {
 	switch (widgetIndex) {
 	case WIDX_STAFF_LIST_CLOSE:
@@ -270,7 +270,7 @@ static void window_staff_list_resize(rct_window *w)
 *
 *  rct2: 0x006BD971
 */
-static void window_staff_list_mousedown(sint32 widgetIndex, rct_window* w, rct_widget* widget)
+static void window_staff_list_mousedown(rct_widgetindex widgetIndex, rct_window* w, rct_widget* widget)
 {
 	sint16 newSelectedTab;
 
@@ -299,7 +299,7 @@ static void window_staff_list_mousedown(sint32 widgetIndex, rct_window* w, rct_w
 *
 *  rct2: 0x006BD9A6
 */
-static void window_staff_list_dropdown(rct_window *w, sint32 widgetIndex, sint32 dropdownIndex)
+static void window_staff_list_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex)
 {
 	if (widgetIndex == WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER && dropdownIndex != -1) {
 		update_staff_colour(_windowStaffListSelectedTab, dropdownIndex);
@@ -340,7 +340,7 @@ void window_staff_list_update(rct_window *w)
  *
  *  rct2: 0x006BD990
  */
-static void window_staff_list_tooldown(rct_window *w, sint32 widgetIndex, sint32 x, sint32 y)
+static void window_staff_list_tooldown(rct_window *w, rct_widgetindex widgetIndex, sint32 x, sint32 y)
 {
 	if (widgetIndex == WIDX_STAFF_LIST_SHOW_PATROL_AREA_BUTTON) {
 		sint32 selectedPeepType = _windowStaffListSelectedTab;
@@ -395,7 +395,7 @@ static void window_staff_list_tooldown(rct_window *w, sint32 widgetIndex, sint32
 *
 *  rct2: 0x006BD99B
 */
-void window_staff_list_toolabort(rct_window *w, sint32 widgetIndex)
+void window_staff_list_toolabort(rct_window *w, rct_widgetindex widgetIndex)
 {
 	if (widgetIndex == WIDX_STAFF_LIST_SHOW_PATROL_AREA_BUTTON) {
 		hide_gridlines();
@@ -484,7 +484,7 @@ void window_staff_list_scrollmouseover(rct_window *w, sint32 scrollIndex, sint32
 *
 *  rct2: 0x006BDC90
 */
-void window_staff_list_tooltip(rct_window* w, sint32 widgetIndex, rct_string_id *stringId)
+void window_staff_list_tooltip(rct_window* w, rct_widgetindex widgetIndex, rct_string_id *stringId)
 {
 	set_format_arg(0, rct_string_id, STR_LIST);
 }

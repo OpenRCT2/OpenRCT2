@@ -71,18 +71,18 @@ static rct_widget window_editor_inventions_list_drag_widgets[] = {
 #pragma region Events
 
 static void window_editor_inventions_list_close(rct_window *w);
-static void window_editor_inventions_list_mouseup(rct_window *w, sint32 widgetIndex);
+static void window_editor_inventions_list_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_editor_inventions_list_update(rct_window *w);
 static void window_editor_inventions_list_scrollgetheight(rct_window *w, sint32 scrollIndex, sint32 *width, sint32 *height);
 static void window_editor_inventions_list_scrollmousedown(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y);
 static void window_editor_inventions_list_scrollmouseover(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y);
-static void window_editor_inventions_list_tooltip(rct_window* w, sint32 widgetIndex, rct_string_id *stringId);
-static void window_editor_inventions_list_cursor(rct_window *w, sint32 widgetIndex, sint32 x, sint32 y, sint32 *cursorId);
+static void window_editor_inventions_list_tooltip(rct_window* w, rct_widgetindex widgetIndex, rct_string_id *stringId);
+static void window_editor_inventions_list_cursor(rct_window *w, rct_widgetindex widgetIndex, sint32 x, sint32 y, sint32 *cursorId);
 static void window_editor_inventions_list_invalidate(rct_window *w);
 static void window_editor_inventions_list_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_editor_inventions_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 scrollIndex);
 
-static void window_editor_inventions_list_drag_cursor(rct_window *w, sint32 widgetIndex, sint32 x, sint32 y, sint32 *cursorId);
+static void window_editor_inventions_list_drag_cursor(rct_window *w, rct_widgetindex widgetIndex, sint32 x, sint32 y, sint32 *cursorId);
 static void window_editor_inventions_list_drag_moved(rct_window* w, sint32 x, sint32 y);
 static void window_editor_inventions_list_drag_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
@@ -502,7 +502,7 @@ static rct_research_item *get_research_item_at(sint32 x, sint32 y)
 {
 	rct_window *w = window_find_by_class(WC_EDITOR_INVENTION_LIST);
 	if (w != NULL && w->x <= x && w->y < y && w->x + w->width > x && w->y + w->height > y) {
-		sint16 widgetIndex = window_find_widget_from_point(w, x, y);
+		rct_widgetindex widgetIndex = window_find_widget_from_point(w, x, y);
 		rct_widget *widget = &w->widgets[widgetIndex];
 		if (widgetIndex == WIDX_PRE_RESEARCHED_SCROLL || widgetIndex == WIDX_RESEARCH_ORDER_SCROLL) {
 			gPressedWidget.widget_index = widgetIndex;
@@ -575,7 +575,7 @@ static void window_editor_inventions_list_close(rct_window *w)
  *
  *  rct2: 0x0068521B
  */
-static void window_editor_inventions_list_mouseup(rct_window *w, sint32 widgetIndex)
+static void window_editor_inventions_list_mouseup(rct_window *w, rct_widgetindex widgetIndex)
 {
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
@@ -680,7 +680,7 @@ static void window_editor_inventions_list_scrollmouseover(rct_window *w, sint32 
  *
  *  rct2: 0x0068526B
  */
-static void window_editor_inventions_list_tooltip(rct_window* w, sint32 widgetIndex, rct_string_id *stringId)
+static void window_editor_inventions_list_tooltip(rct_window* w, rct_widgetindex widgetIndex, rct_string_id *stringId)
 {
 	set_format_arg(0, rct_string_id, STR_LIST);
 }
@@ -689,7 +689,7 @@ static void window_editor_inventions_list_tooltip(rct_window* w, sint32 widgetIn
  *
  *  rct2: 0x00685291
  */
-static void window_editor_inventions_list_cursor(rct_window *w, sint32 widgetIndex, sint32 x, sint32 y, sint32 *cursorId)
+static void window_editor_inventions_list_cursor(rct_window *w, rct_widgetindex widgetIndex, sint32 x, sint32 y, sint32 *cursorId)
 {
 	rct_research_item *researchItem;
 	sint32 scrollIndex;
@@ -942,7 +942,7 @@ static void window_editor_inventions_list_drag_open(rct_research_item *researchI
  *
  *  rct2: 0x0068549C
  */
-static void window_editor_inventions_list_drag_cursor(rct_window *w, sint32 widgetIndex, sint32 x, sint32 y, sint32 *cursorId)
+static void window_editor_inventions_list_drag_cursor(rct_window *w, rct_widgetindex widgetIndex, sint32 x, sint32 y, sint32 *cursorId)
 {
 	rct_window *inventionListWindow = window_find_by_class(WC_EDITOR_INVENTION_LIST);
 	if (inventionListWindow != NULL) {

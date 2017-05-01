@@ -140,13 +140,13 @@ static rct_widget window_ride_construction_widgets[] = {
 #pragma region Events
 
 static void window_ride_construction_close(rct_window *w);
-static void window_ride_construction_mouseup(rct_window *w, sint32 widgetIndex);
+static void window_ride_construction_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_ride_construction_resize(rct_window *w);
-static void window_ride_construction_mousedown(sint32 widgetIndex, rct_window *w, rct_widget *widget);
-static void window_ride_construction_dropdown(rct_window *w, sint32 widgetIndex, sint32 dropdownIndex);
+static void window_ride_construction_mousedown(rct_widgetindex widgetIndex, rct_window *w, rct_widget *widget);
+static void window_ride_construction_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex);
 static void window_ride_construction_update(rct_window *w);
-static void window_ride_construction_toolupdate(rct_window* w, sint32 widgetIndex, sint32 x, sint32 y);
-static void window_ride_construction_tooldown(rct_window* w, sint32 widgetIndex, sint32 x, sint32 y);
+static void window_ride_construction_toolupdate(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y);
+static void window_ride_construction_tooldown(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y);
 static void window_ride_construction_invalidate(rct_window *w);
 static void window_ride_construction_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
@@ -689,7 +689,7 @@ static void window_ride_construction_close(rct_window *w)
  *
  *  rct2: 0x006C6E14
  */
-static void window_ride_construction_mouseup(rct_window *w, sint32 widgetIndex)
+static void window_ride_construction_mouseup(rct_window *w, rct_widgetindex widgetIndex)
 {
 	window_ride_construction_update_enabled_track_pieces();
 	switch (widgetIndex){
@@ -1291,7 +1291,7 @@ static void window_ride_construction_resize(rct_window *w)
 	if (currentDisabledWidgets == disabledWidgets)
 		return;
 
-	for (sint32 i = 0; i < 64; i++) {
+	for (rct_widgetindex i = 0; i < 64; i++) {
 		if ((disabledWidgets & (1ULL << i)) != (currentDisabledWidgets & (1ULL << i))) {
 			widget_invalidate(w, i);
 		}
@@ -1303,7 +1303,7 @@ static void window_ride_construction_resize(rct_window *w)
  *
  *  rct2: 0x006C6E6A
  */
-static void window_ride_construction_mousedown(sint32 widgetIndex, rct_window *w, rct_widget *widget)
+static void window_ride_construction_mousedown(rct_widgetindex widgetIndex, rct_window *w, rct_widget *widget)
 {
 	rct_ride *ride = get_ride(_currentRideIndex);
 
@@ -1627,7 +1627,7 @@ static void window_ride_construction_mousedown(sint32 widgetIndex, rct_window *w
  *
  *  rct2: 0x006C78CD
  */
-static void window_ride_construction_dropdown(rct_window *w, sint32 widgetIndex, sint32 dropdownIndex)
+static void window_ride_construction_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex)
 {
 	if (widgetIndex != WIDX_SPECIAL_TRACK_DROPDOWN)
 		return;
@@ -2132,7 +2132,7 @@ static bool ride_get_place_position_from_screen_position(sint32 screenX, sint32 
  *
  *  rct2: 0x006C8229
  */
-static void window_ride_construction_toolupdate(rct_window* w, sint32 widgetIndex, sint32 x, sint32 y)
+static void window_ride_construction_toolupdate(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y)
 {
 	switch (widgetIndex) {
 	case WIDX_CONSTRUCT:
@@ -2149,7 +2149,7 @@ static void window_ride_construction_toolupdate(rct_window* w, sint32 widgetInde
  *
  *  rct2: 0x006C8248
  */
-static void window_ride_construction_tooldown(rct_window* w, sint32 widgetIndex, sint32 x, sint32 y)
+static void window_ride_construction_tooldown(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y)
 {
 	switch (widgetIndex) {
 	case WIDX_CONSTRUCT:
@@ -3414,7 +3414,7 @@ static void window_ride_construction_update_widgets(rct_window *w)
 		return;
 	}
 
-	sint32 widgetIndex;
+	rct_widgetindex widgetIndex;
 	switch (_currentTrackCurve) {
 	case TRACK_CURVE_NONE:
 		widgetIndex = WIDX_STRAIGHT;
