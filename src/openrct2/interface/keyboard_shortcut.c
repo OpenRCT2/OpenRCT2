@@ -373,7 +373,7 @@ static void shortcut_adjust_land()
 			rct_window *window = window_find_by_class(WC_TOP_TOOLBAR);
 			if (window != NULL) {
 				window_invalidate(window);
-				window_event_mouse_up_call(window, 7);
+				window_event_mouse_up_call(window, 8);
 			}
 		}
 	}
@@ -389,7 +389,7 @@ static void shortcut_adjust_water()
 			rct_window *window = window_find_by_class(WC_TOP_TOOLBAR);
 			if (window != NULL) {
 				window_invalidate(window);
-				window_event_mouse_up_call(window, 8);
+				window_event_mouse_up_call(window, 9);
 			}
 		}
 	}
@@ -405,7 +405,7 @@ static void shortcut_build_scenery()
 			rct_window *window = window_find_by_class(WC_TOP_TOOLBAR);
 			if (window != NULL) {
 				window_invalidate(window);
-				window_event_mouse_up_call(window, 9);
+				window_event_mouse_up_call(window, 10);
 			}
 		}
 	}
@@ -421,7 +421,7 @@ static void shortcut_build_paths()
 			rct_window *window = window_find_by_class(WC_TOP_TOOLBAR);
 			if (window != NULL) {
 				window_invalidate(window);
-				window_event_mouse_up_call(window, 10);
+				window_event_mouse_up_call(window, 11);
 			}
 		}
 	}
@@ -434,11 +434,7 @@ static void shortcut_build_new_ride()
 
 	if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)) {
 		if (!(gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER))) {
-			rct_window *window = window_find_by_class(WC_TOP_TOOLBAR);
-			if (window != NULL) {
-				window_invalidate(window);
-				window_event_mouse_up_call(window, 11);
-			}
+			window_new_ride_open();
 		}
 	}
 }
@@ -472,11 +468,7 @@ static void shortcut_show_rides_list()
 		return;
 
 	if (!(gScreenFlags & (SCREEN_FLAGS_SCENARIO_EDITOR | SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER))) {
-		rct_window *window = window_find_by_class(WC_TOP_TOOLBAR);
-		if (window != NULL) {
-			window_invalidate(window);
-			window_event_mouse_up_call(window, 12);
-		}
+		window_ride_list_open();
 	}
 }
 
@@ -486,11 +478,7 @@ static void shortcut_show_park_information()
 		return;
 
 	if (!(gScreenFlags & (SCREEN_FLAGS_SCENARIO_EDITOR | SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER))) {
-		rct_window *window = window_find_by_class(WC_TOP_TOOLBAR);
-		if (window != NULL) {
-			window_invalidate(window);
-			window_event_mouse_up_call(window, 13);
-		}
+		window_park_entrance_open();
 	}
 }
 
@@ -500,11 +488,7 @@ static void shortcut_show_guest_list()
 		return;
 
 	if (!(gScreenFlags & (SCREEN_FLAGS_SCENARIO_EDITOR | SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER))) {
-		rct_window *window = window_find_by_class(WC_TOP_TOOLBAR);
-		if (window != NULL) {
-			window_invalidate(window);
-			window_event_mouse_up_call(window, 15);
-		}
+		window_guest_list_open();
 	}
 }
 
@@ -514,11 +498,7 @@ static void shortcut_show_staff_list()
 		return;
 
 	if (!(gScreenFlags & (SCREEN_FLAGS_SCENARIO_EDITOR | SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER))) {
-		rct_window *window = window_find_by_class(WC_TOP_TOOLBAR);
-		if (window != NULL) {
-			window_invalidate(window);
-			window_event_mouse_up_call(window, 14);
-		}
+		window_staff_list_open();
 	}
 }
 
