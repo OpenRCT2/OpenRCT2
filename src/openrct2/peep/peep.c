@@ -9105,9 +9105,32 @@ static void peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_peep
 			z = mapElement->base_height;
 
 			if (footpath_element_is_wide(mapElement)) {
-				searchResult = PATH_SEARCH_WIDE;
-				found = true;
-				break;
+				if (peep->type == PEEP_TYPE_STAFF && peep->staff_type == STAFF_TYPE_MECHANIC) {
+					// Check whether the tile is not on the
+					// edge of the mechanic patrol zone.
+					bool onZoneEdge = false;
+					int neighbourDir = 0;
+					while (!onZoneEdge && neighbourDir <= 3) {
+						int neighbourX = x + TileDirectionDelta[neighbourDir].x;
+						int neighbourY = y + TileDirectionDelta[neighbourDir].y;
+						onZoneEdge = !staff_is_location_in_patrol(peep, neighbourX, neighbourY);
+						neighbourDir++;
+					}
+					// Wide paths not on the edge of the
+					// mechanic patrol zone are observed.
+					if (!onZoneEdge) {
+						searchResult = PATH_SEARCH_WIDE;
+						found = true;
+						break;
+					}
+					// Wide path flag for path tiles on the
+					// edge of the mechanic patrol zone are
+					// ignored.
+				} else {
+					searchResult = PATH_SEARCH_WIDE;
+					found = true;
+					break;
+				}
 			}
 
 			searchResult = PATH_SEARCH_THIN;
