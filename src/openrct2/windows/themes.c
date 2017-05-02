@@ -686,8 +686,18 @@ void window_themes_invalidate(rct_window *w)
 {
 	colour_scheme_update(w);
 
-	sint32 pressed_widgets = w->pressed_widgets & 0xFFFFE00F;
-	uint8 widgetIndex = _selected_tab + 4;
+	sint32 pressed_widgets = w->pressed_widgets & ~(
+			(1LL << WIDX_THEMES_SETTINGS_TAB) |
+			(1LL << WIDX_THEMES_MAIN_UI_TAB) |
+			(1LL << WIDX_THEMES_PARK_TAB) |
+			(1LL << WIDX_THEMES_TOOLS_TAB) |
+			(1LL << WIDX_THEMES_RIDE_PEEPS_TAB) |
+			(1LL << WIDX_THEMES_EDITORS_TAB) |
+			(1LL << WIDX_THEMES_MISC_TAB) |
+			(1LL << WIDX_THEMES_PROMPTS_TAB) |
+			(1LL << WIDX_THEMES_FEATURES_TAB)
+	);
+	uint8 widgetIndex = _selected_tab + WIDX_THEMES_SETTINGS_TAB;
 
 	w->pressed_widgets = pressed_widgets | (1 << widgetIndex);
 

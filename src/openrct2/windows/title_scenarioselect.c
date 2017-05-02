@@ -217,7 +217,7 @@ static void window_scenarioselect_init_tabs(rct_window *w)
 
 	sint32 x = 3;
 	for (sint32 i = 0; i < 8; i++) {
-		rct_widget* widget = &w->widgets[i + 4];
+		rct_widget* widget = &w->widgets[i + WIDX_TAB1];
 		if (!(showPages & (1 << i))) {
 			widget->type = WWT_EMPTY;
 			continue;
@@ -343,7 +343,7 @@ static void window_scenarioselect_invalidate(rct_window *w)
 						   | (1 << WIDX_TAB3) | (1 << WIDX_TAB4) | (1 << WIDX_TAB5)
 						   | (1 << WIDX_TAB6) | (1 << WIDX_TAB7) | (1 << WIDX_TAB8) );
 
-	w->pressed_widgets |= 1LL << (w->selected_tab + 4);
+	w->pressed_widgets |= 1LL << (w->selected_tab + WIDX_TAB1);
 
 	sint32 windowWidth = w->width;
 	window_scenarioselect_widgets[WIDX_BACKGROUND].right = windowWidth - 1;

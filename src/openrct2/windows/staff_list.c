@@ -497,9 +497,14 @@ void window_staff_list_invalidate(rct_window *w)
 {
 	colour_scheme_update(w);
 
-	sint32 pressed_widgets = w->pressed_widgets & 0xFFFFFF0F;
+	sint32 pressed_widgets = w->pressed_widgets & ~(
+			(1LL << WIDX_STAFF_LIST_HANDYMEN_TAB) |
+			(1LL << WIDX_STAFF_LIST_MECHANICS_TAB) |
+			(1LL << WIDX_STAFF_LIST_SECURITY_TAB) |
+			(1LL << WIDX_STAFF_LIST_ENTERTAINERS_TAB)
+	);
 	uint8 tabIndex = _windowStaffListSelectedTab;
-	uint8 widgetIndex = tabIndex + 4;
+	uint8 widgetIndex = tabIndex + WIDX_STAFF_LIST_HANDYMEN_TAB;
 
 	w->pressed_widgets = pressed_widgets | (1ULL << widgetIndex);
 	window_staff_list_widgets[WIDX_STAFF_LIST_HIRE_BUTTON].text = StaffNamingConvention[tabIndex].action_hire;

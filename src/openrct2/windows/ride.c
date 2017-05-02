@@ -1517,8 +1517,8 @@ static rct_window *window_ride_open(sint32 rideIndex)
 	sint32 numSubTypes;
 
 	w = window_create_auto_pos(316, 207, window_ride_page_events[0], WC_RIDE, WF_10 | WF_RESIZABLE);
-	w->widgets = window_ride_page_widgets[0];
-	w->enabled_widgets = window_ride_page_enabled_widgets[0];
+	w->widgets = window_ride_page_widgets[WINDOW_RIDE_PAGE_MAIN];
+	w->enabled_widgets = window_ride_page_enabled_widgets[WINDOW_RIDE_PAGE_MAIN];
 	w->number = rideIndex;
 
 	w->page = 0;
@@ -2341,9 +2341,9 @@ static void window_ride_main_invalidate(rct_window *w)
 	window_ride_set_pressed_tab(w);
 
 	rct_ride *ride = get_ride(w->number);
-	w->disabled_widgets &= ~((1 << 22) | (1 << 19));
+	w->disabled_widgets &= ~((1 << WIDX_DEMOLISH) | (1 << WIDX_CONSTRUCTION));
 	if (ride->lifecycle_flags & (RIDE_LIFECYCLE_INDESTRUCTIBLE | RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK))
-		w->disabled_widgets |= (1 << 22);
+		w->disabled_widgets |= (1 << WIDX_DEMOLISH);
 
 	set_format_arg(0, rct_string_id, ride->name);
 	set_format_arg(2, uint32, ride->name_arguments);

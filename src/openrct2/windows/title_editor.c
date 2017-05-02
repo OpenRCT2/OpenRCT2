@@ -658,8 +658,12 @@ static void window_title_editor_invalidate(rct_window *w)
 {
 	colour_scheme_update(w);
 
-	sint32 pressed_widgets = w->pressed_widgets & 0xFFFFFF8F;
-	uint8 widgetIndex = w->selected_tab + 4;
+	sint32 pressed_widgets = w->pressed_widgets & ~(
+			(1LL << WIDX_TITLE_EDITOR_PRESETS_TAB) |
+			(1LL << WIDX_TITLE_EDITOR_SAVES_TAB) |
+			(1LL << WIDX_TITLE_EDITOR_SCRIPT_TAB)
+	);
+	uint8 widgetIndex = w->selected_tab + WIDX_TITLE_EDITOR_PRESETS_TAB;
 
 	w->pressed_widgets = pressed_widgets | (1 << widgetIndex);
 

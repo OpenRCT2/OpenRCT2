@@ -1067,7 +1067,15 @@ static void window_footpath_set_enabled_and_pressed_widgets()
 		map_invalidate_map_selection_tiles();
 	}
 
-	uint64 pressedWidgets = w->pressed_widgets & 0xFFFF887F;
+	uint64 pressedWidgets = w->pressed_widgets & ~(
+			(1LL << WIDX_DIRECTION_NW) |
+			(1LL << WIDX_DIRECTION_NE) |
+			(1LL << WIDX_DIRECTION_SW) |
+			(1LL << WIDX_DIRECTION_SE) |
+			(1LL << WIDX_SLOPEDOWN) |
+			(1LL << WIDX_LEVEL) |
+			(1LL << WIDX_SLOPEUP)
+	);
 	uint64 disabledWidgets = 0;
 	sint32 currentRotation = get_current_rotation();
 	if (gFootpathConstructionMode >= PATH_CONSTRUCTION_MODE_BRIDGE_OR_TUNNEL) {

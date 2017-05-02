@@ -2134,9 +2134,9 @@ void window_resize_gui(sint32 width, sint32 height)
 		viewport->height = height;
 		viewport->view_width = width << viewport->zoom;
 		viewport->view_height = height << viewport->zoom;
-		if (mainWind->widgets != NULL && mainWind->widgets[0].type == WWT_VIEWPORT){
-			mainWind->widgets[0].right = width;
-			mainWind->widgets[0].bottom = height;
+		if (mainWind->widgets != NULL && mainWind->widgets[WC_MAIN_WINDOW__0].type == WWT_VIEWPORT){
+			mainWind->widgets[WC_MAIN_WINDOW__0].right = width;
+			mainWind->widgets[WC_MAIN_WINDOW__0].bottom = height;
 		}
 	}
 
@@ -2185,9 +2185,9 @@ void window_resize_gui_scenario_editor(sint32 width, sint32 height)
 		viewport->height = height;
 		viewport->view_width = width << viewport->zoom;
 		viewport->view_height = height << viewport->zoom;
-		if (mainWind->widgets != NULL && mainWind->widgets[0].type == WWT_VIEWPORT){
-			mainWind->widgets[0].right = width;
-			mainWind->widgets[0].bottom = height;
+		if (mainWind->widgets != NULL && mainWind->widgets[WC_MAIN_WINDOW__0].type == WWT_VIEWPORT){
+			mainWind->widgets[WC_MAIN_WINDOW__0].right = width;
+			mainWind->widgets[WC_MAIN_WINDOW__0].bottom = height;
 		}
 	}
 
