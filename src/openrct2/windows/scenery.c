@@ -914,7 +914,7 @@ void window_scenery_invalidate(rct_window *w)
 	window_scenery_widgets[WIDX_SCENERY_TITLE].text = titleStringId;
 
 	w->pressed_widgets = 0;
-	w->pressed_widgets |= 1ULL << (tabIndex + 4);
+	w->pressed_widgets |= 1ULL << (tabIndex + WIDX_SCENERY_TAB_1);
 	if (gWindowSceneryPaintEnabled == 1)
 		w->pressed_widgets |= (1 << WIDX_SCENERY_REPAINT_SCENERY_BUTTON);
 	if (gWindowSceneryEyedropperEnabled)
