@@ -65,6 +65,8 @@ enum WINDOW_STAFF_WIDGET_IDX {
 	WIDX_COSTUME_BTN,
 };
 
+validate_global_widx(WC_PEEP, WIDX_PATROL);
+
 rct_widget window_staff_overview_widgets[] = {
 	{ WWT_FRAME,	0, 0,		WW - 1,		0,			WH - 1,	0xFFFFFFFF,				STR_NONE },				// Panel / Background
 	{ WWT_CAPTION,	0, 1,		WW - 2,		1,			14,		STR_STRINGID,			STR_WINDOW_TITLE_TIP }, // Title

@@ -87,6 +87,11 @@ enum {
 	WIDX_SEAT_ROTATION_ANGLE_SPINNER_DOWN,
 };
 
+validate_global_widx(WC_RIDE_CONSTRUCTION, WIDX_CONSTRUCT);
+validate_global_widx(WC_RIDE_CONSTRUCTION, WIDX_ENTRANCE);
+validate_global_widx(WC_RIDE_CONSTRUCTION, WIDX_EXIT);
+validate_global_widx(WC_RIDE_CONSTRUCTION, WIDX_ROTATE);
+
 static rct_widget window_ride_construction_widgets[] = {
 	{ WWT_FRAME,			0,	0,		165,	0,		393,	0xFFFFFFFF,									STR_NONE												},
 	{ WWT_CAPTION,			0,	1,		164,	1,		14,		STR_RIDE_CONSTRUCTION_WINDOW_TITLE,			STR_WINDOW_TITLE_TIP									},
@@ -3924,7 +3929,7 @@ void ride_construction_tooldown_construct(sint32 screenX, sint32 screenY)
 					audio_play_sound_panned(SOUND_ERROR, gCursorState.x, x, y, z);
 					w = window_find_by_class(WC_RIDE_CONSTRUCTION);
 					if (w != NULL){
-						tool_set(w, 23, 12);
+						tool_set(w, WIDX_CONSTRUCT, 12);
 						input_set_flag(INPUT_FLAG_6, true);
 						_trackPlaceCtrlState = false;
 						_trackPlaceShiftState = false;

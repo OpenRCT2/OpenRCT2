@@ -39,6 +39,8 @@ enum WINDOW_WATER_WIDGET_IDX {
 	WIDX_BUY_CONSTRUCTION_RIGHTS
 };
 
+validate_global_widx(WC_LAND_RIGHTS, WIDX_PREVIEW);
+
 static rct_widget window_land_rights_widgets[] = {
 	{ WWT_FRAME,	0,	0,	97,	0,	93,	0xFFFFFFFF,									STR_NONE },							    // panel / background
 	{ WWT_CAPTION,	0,	1,	96,	1,	14,	STR_LAND_RIGHTS,							STR_WINDOW_TITLE_TIP },				    // title bar

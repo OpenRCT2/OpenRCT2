@@ -69,6 +69,8 @@ enum WINDOW_GUEST_WIDGET_IDX {
 	WIDX_RIDE_SCROLL = 10
 };
 
+validate_global_widx(WC_PEEP, WIDX_ACTION_LBL);
+
 rct_widget window_guest_overview_widgets[] = {
 	{WWT_FRAME,    0, 0,   191, 0,   156, 0xFFFFFFFF, STR_NONE},                            // Panel / Background
 	{WWT_CAPTION,  0, 1,   190, 1,   14,  STR_STRINGID,         STR_WINDOW_TITLE_TIP},            // Title

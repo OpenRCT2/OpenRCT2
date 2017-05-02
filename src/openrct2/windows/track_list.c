@@ -41,6 +41,8 @@ enum {
 	WIDX_BACK,
 };
 
+validate_global_widx(WC_TRACK_DESIGN_LIST, WIDX_ROTATE);
+
 static rct_widget window_track_list_widgets[] = {
 	{ WWT_FRAME,			0,	0,		599,	0,		399,	0xFFFFFFFF,				STR_NONE								},
 	{ WWT_CAPTION,			0,	1,		598,	1,		14,		STR_SELECT_DESIGN,		STR_WINDOW_TITLE_TIP					},

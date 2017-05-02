@@ -71,6 +71,12 @@ enum {
 	WIDX_SEPARATOR,
 };
 
+validate_global_widx(WC_TOP_TOOLBAR, WIDX_PAUSE);
+validate_global_widx(WC_TOP_TOOLBAR, WIDX_LAND);
+validate_global_widx(WC_TOP_TOOLBAR, WIDX_WATER);
+validate_global_widx(WC_TOP_TOOLBAR, WIDX_SCENERY);
+validate_global_widx(WC_TOP_TOOLBAR, WIDX_PATH);
+
 typedef enum {
 	DDIDX_NEW_GAME = 0,
 	DDIDX_LOAD_GAME = 1,

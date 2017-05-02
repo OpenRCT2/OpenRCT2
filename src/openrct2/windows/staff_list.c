@@ -383,7 +383,7 @@ static void window_staff_list_tooldown(rct_window *w, sint32 widgetIndex, sint32
 		if (closestPeep != NULL) {
 			tool_cancel();
 			rct_window *staffWindow = window_staff_open(closestPeep);
-			window_event_dropdown_call(staffWindow, 11, 0);
+			window_event_dropdown_call(staffWindow, WC_PEEP__WIDX_PATROL, 0);
 		} else {
 			set_format_arg(0, rct_string_id, StaffNamingConvention[selectedPeepType].plural);
 			window_error_open(STR_NO_THING_IN_PARK_YET, STR_NONE);

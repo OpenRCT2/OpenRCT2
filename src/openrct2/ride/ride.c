@@ -1741,7 +1741,7 @@ static sint32 ride_modify_entrance_or_exit(rct_map_element *mapElement, sint32 x
 		gCurrentToolWidget.window_classification != WC_RIDE_CONSTRUCTION
 	) {
 		// Replace entrance / exit
-		tool_set(constructionWindow, entranceType == 0 ? 29 : 30, 12);
+		tool_set(constructionWindow, entranceType == 0 ? WC_RIDE_CONSTRUCTION__WIDX_ENTRANCE : WC_RIDE_CONSTRUCTION__WIDX_EXIT, 12);
 		gRideEntranceExitPlaceType = entranceType;
 		gRideEntranceExitPlaceRideIndex = rideIndex;
 		gRideEntranceExitPlaceStationIndex = bl;
@@ -1756,7 +1756,7 @@ static sint32 ride_modify_entrance_or_exit(rct_map_element *mapElement, sint32 x
 	} else {
 		// Remove entrance / exit
 		game_do_command(x, (GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_APPLY), y, rideIndex, GAME_COMMAND_REMOVE_RIDE_ENTRANCE_OR_EXIT, bl, 0);
-		gCurrentToolWidget.widget_index = entranceType == ENTRANCE_TYPE_RIDE_ENTRANCE ? 29 : 30;
+		gCurrentToolWidget.widget_index = entranceType == ENTRANCE_TYPE_RIDE_ENTRANCE ? WC_RIDE_CONSTRUCTION__WIDX_ENTRANCE : WC_RIDE_CONSTRUCTION__WIDX_EXIT;
 		gRideEntranceExitPlaceType = entranceType;
 	}
 
@@ -1903,7 +1903,7 @@ sint32 sub_6CC3FB(sint32 rideIndex)
 
 	w = ride_create_or_find_construction_window(rideIndex);
 
-	tool_set(w, 23, 12);
+	tool_set(w, WC_RIDE_CONSTRUCTION__WIDX_CONSTRUCT, 12);
 	input_set_flag(INPUT_FLAG_6, true);
 
 	ride = get_ride(_currentRideIndex);
@@ -5111,7 +5111,7 @@ static void loc_6B51C0(sint32 rideIndex)
 
 		w = window_find_by_class(WC_RIDE_CONSTRUCTION);
 		if (w != NULL)
-			window_event_mouse_up_call(w, 29 + entranceOrExit);
+			window_event_mouse_up_call(w, WC_RIDE_CONSTRUCTION__WIDX_ENTRANCE + entranceOrExit);
 	}
 }
 

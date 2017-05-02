@@ -143,6 +143,9 @@ enum WINDOW_SCENERY_LIST_WIDGET_IDX {
 	WIDX_SCENERY_BUILD_CLUSTER_BUTTON,		// 80000000
 };
 
+validate_global_widx(WC_SCENERY, WIDX_SCENERY_TAB_1);
+validate_global_widx(WC_SCENERY, WIDX_SCENERY_ROTATE_OBJECTS_BUTTON);
+
 static rct_widget window_scenery_widgets[] = {
 	{ WWT_FRAME, 0, 0, 633, 0, 141, 0xFFFFFFFF, STR_NONE },								// 1				0x009DE298
 	{ WWT_CAPTION, 0, 1, 632, 1, 14, 0xFFFFFFFF, STR_WINDOW_TITLE_TIP },				// 2				0x009DE2A8
