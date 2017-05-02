@@ -68,6 +68,9 @@ enum WINDOW_MAP_WIDGET_IDX {
 	WIDX_MAP_GENERATOR = 21
 };
 
+validate_global_widx(WC_MAP, WIDX_LAND_TOOL);
+validate_global_widx(WC_MAP, WIDX_ROTATE_90);
+
 static rct_widget window_map_widgets[] = {
 	{ WWT_FRAME,			0,	0,		244,	0,		258,	STR_NONE,								STR_NONE },
 	{ WWT_CAPTION,			0,	1,		243,	1,		14,		STR_MAP_LABEL,							STR_WINDOW_TITLE_TIP },

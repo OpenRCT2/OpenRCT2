@@ -168,7 +168,7 @@ static void shortcut_pause_game()
 		rct_window *window = window_find_by_class(WC_TOP_TOOLBAR);
 		if (window != NULL) {
 			window_invalidate(window);
-			window_event_mouse_up_call(window, 0);
+			window_event_mouse_up_call(window, WC_TOP_TOOLBAR__WIDX_PAUSE);
 		}
 	}
 }
@@ -208,39 +208,39 @@ static void shortcut_rotate_construction_object()
 
 	// Rotate scenery
 	rct_window *w = window_find_by_class(WC_SCENERY);
-	if (w != NULL && !widget_is_disabled(w, 25) && w->widgets[25].type != WWT_EMPTY) {
-		window_event_mouse_up_call(w, 25);
+	if (w != NULL && !widget_is_disabled(w, WC_SCENERY__WIDX_SCENERY_ROTATE_OBJECTS_BUTTON) && w->widgets[WC_SCENERY__WIDX_SCENERY_ROTATE_OBJECTS_BUTTON].type != WWT_EMPTY) {
+		window_event_mouse_up_call(w, WC_SCENERY__WIDX_SCENERY_ROTATE_OBJECTS_BUTTON);
 		return;
 	}
 
 	// Rotate construction track piece
 	w = window_find_by_class(WC_RIDE_CONSTRUCTION);
-	if (w != NULL && !widget_is_disabled(w, 32) && w->widgets[32].type != WWT_EMPTY) {
+	if (w != NULL && !widget_is_disabled(w, WC_RIDE_CONSTRUCTION__WIDX_ROTATE) && w->widgets[WC_RIDE_CONSTRUCTION__WIDX_ROTATE].type != WWT_EMPTY) {
 		// Check if building a maze...
-		if (w->widgets[32].tooltip != STR_RIDE_CONSTRUCTION_BUILD_MAZE_IN_THIS_DIRECTION_TIP) {
-			window_event_mouse_up_call(w, 32);
+		if (w->widgets[WC_RIDE_CONSTRUCTION__WIDX_ROTATE].tooltip != STR_RIDE_CONSTRUCTION_BUILD_MAZE_IN_THIS_DIRECTION_TIP) {
+			window_event_mouse_up_call(w, WC_RIDE_CONSTRUCTION__WIDX_ROTATE);
 			return;
 		}
 	}
 
 	// Rotate track design preview
 	w = window_find_by_class(WC_TRACK_DESIGN_LIST);
-	if (w != NULL && !widget_is_disabled(w, 5) && w->widgets[5].type != WWT_EMPTY) {
-		window_event_mouse_up_call(w, 5);
+	if (w != NULL && !widget_is_disabled(w, WC_TRACK_DESIGN_LIST__WIDX_ROTATE) && w->widgets[WC_TRACK_DESIGN_LIST__WIDX_ROTATE].type != WWT_EMPTY) {
+		window_event_mouse_up_call(w, WC_TRACK_DESIGN_LIST__WIDX_ROTATE);
 		return;
 	}
 
 	// Rotate track design placement
 	w = window_find_by_class(WC_TRACK_DESIGN_PLACE);
-	if (w != NULL && !widget_is_disabled(w, 3) && w->widgets[3].type != WWT_EMPTY) {
-		window_event_mouse_up_call(w, 3);
+	if (w != NULL && !widget_is_disabled(w, WC_TRACK_DESIGN_PLACE__WIDX_ROTATE) && w->widgets[WC_TRACK_DESIGN_PLACE__WIDX_ROTATE].type != WWT_EMPTY) {
+		window_event_mouse_up_call(w, WC_TRACK_DESIGN_PLACE__WIDX_ROTATE);
 		return;
 	}
 
 	// Rotate park entrance
 	w = window_find_by_class(WC_MAP);
-	if (w != NULL && !widget_is_disabled(w, 20) && w->widgets[20].type != WWT_EMPTY) {
-		window_event_mouse_up_call(w, 20);
+	if (w != NULL && !widget_is_disabled(w, WC_MAP__WIDX_ROTATE_90) && w->widgets[WC_MAP__WIDX_ROTATE_90].type != WWT_EMPTY) {
+		window_event_mouse_up_call(w, WC_MAP__WIDX_ROTATE_90);
 		return;
 	}
 }
@@ -373,7 +373,7 @@ static void shortcut_adjust_land()
 			rct_window *window = window_find_by_class(WC_TOP_TOOLBAR);
 			if (window != NULL) {
 				window_invalidate(window);
-				window_event_mouse_up_call(window, 8);
+				window_event_mouse_up_call(window, WC_TOP_TOOLBAR__WIDX_LAND);
 			}
 		}
 	}
@@ -389,7 +389,7 @@ static void shortcut_adjust_water()
 			rct_window *window = window_find_by_class(WC_TOP_TOOLBAR);
 			if (window != NULL) {
 				window_invalidate(window);
-				window_event_mouse_up_call(window, 9);
+				window_event_mouse_up_call(window, WC_TOP_TOOLBAR__WIDX_WATER);
 			}
 		}
 	}
@@ -405,7 +405,7 @@ static void shortcut_build_scenery()
 			rct_window *window = window_find_by_class(WC_TOP_TOOLBAR);
 			if (window != NULL) {
 				window_invalidate(window);
-				window_event_mouse_up_call(window, 10);
+				window_event_mouse_up_call(window, WC_TOP_TOOLBAR__WIDX_SCENERY);
 			}
 		}
 	}
@@ -421,7 +421,7 @@ static void shortcut_build_paths()
 			rct_window *window = window_find_by_class(WC_TOP_TOOLBAR);
 			if (window != NULL) {
 				window_invalidate(window);
-				window_event_mouse_up_call(window, 11);
+				window_event_mouse_up_call(window, WC_TOP_TOOLBAR__WIDX_PATH);
 			}
 		}
 	}

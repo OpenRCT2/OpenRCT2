@@ -4966,7 +4966,7 @@ static void setup_scenery_selection(rct_window* w)
 		cancel_scenery_selection();
 	}
 
-	while (tool_set(w, 0, 12));
+	while (tool_set(w, WIDX_BACKGROUND, 12));
 
 	gTrackDesignSaveRideIndex = (uint8)w->number;
 

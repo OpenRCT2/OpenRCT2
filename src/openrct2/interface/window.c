@@ -259,15 +259,19 @@ static bool window_other_wheel_input(rct_window *w, sint32 widgetIndex, sint32 w
 	sint32 previewWidgetIndex;
 	switch (w->classification) {
 	case WC_WATER:
+		previewWidgetIndex = WC_WATER__WIDX_PREVIEW;
+		break;
 	case WC_CLEAR_SCENERY:
+		previewWidgetIndex = WC_CLEAR_SCENERY__WIDX_PREVIEW;
+		break;
 	case WC_LAND_RIGHTS:
-		previewWidgetIndex = 3;
+		previewWidgetIndex = WC_LAND_RIGHTS__WIDX_PREVIEW;
 		break;
 	case WC_LAND:
-		previewWidgetIndex = 5;
+		previewWidgetIndex = WC_LAND__WIDX_PREVIEW;
 		break;
 	case WC_MAP:
-		previewWidgetIndex = 13;
+		previewWidgetIndex = WC_MAP__WIDX_LAND_TOOL;
 		break;
 	default:
 		return false;

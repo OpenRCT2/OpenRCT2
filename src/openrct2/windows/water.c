@@ -35,6 +35,8 @@ enum WINDOW_WATER_WIDGET_IDX {
 	WIDX_INCREMENT
 };
 
+validate_global_widx(WC_WATER, WIDX_PREVIEW);
+
 static rct_widget window_water_widgets[] = {
 	{ WWT_FRAME,	0,	0,	75,	0,	76,	0xFFFFFFFF,								STR_NONE },							// panel / background
 	{ WWT_CAPTION,	0,	1,	74,	1,	14,	STR_WATER,								STR_WINDOW_TITLE_TIP },				// title bar

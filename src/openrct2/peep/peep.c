@@ -10852,7 +10852,7 @@ static void peep_on_exit_ride(rct_peep *peep, sint32 rideIndex)
 		rct_window *w = window_find_by_number(WC_PEEP, peep->sprite_index);
 		if (w != NULL) {
 			window_event_invalidate_call(w);
-			widget_invalidate(w, 12);
+			widget_invalidate(w, WC_PEEP__WIDX_ACTION_LBL);
 		}
 	}
 
@@ -11623,7 +11623,7 @@ static void peep_reset_ride_heading(rct_peep *peep)
 	w = window_find_by_number(WC_PEEP, peep->sprite_index);
 	if (w != NULL) {
 		window_event_invalidate_call(w);
-		widget_invalidate(w, 12);
+		widget_invalidate(w, WC_PEEP__WIDX_ACTION_LBL);
 	}
 }
 
@@ -12084,7 +12084,7 @@ static void peep_pick_ride_to_go_on(rct_peep *peep)
 	rct_window *w = window_find_by_number(WC_PEEP, peep->sprite_index);
 	if (w != NULL) {
 		window_event_invalidate_call(w);
-		widget_invalidate(w, 12);
+		widget_invalidate(w, WC_PEEP__WIDX_ACTION_LBL);
 	}
 
 	// Make peep look at their map if they have one
@@ -12190,7 +12190,7 @@ static void peep_head_for_nearest_ride_type(rct_peep *peep, sint32 rideType)
 	rct_window *w = window_find_by_number(WC_PEEP, peep->sprite_index);
 	if (w != NULL) {
 		window_event_invalidate_call(w);
-		widget_invalidate(w, 12);
+		widget_invalidate(w, WC_PEEP__WIDX_ACTION_LBL);
 	}
 
 	peep->var_F4 = 0;

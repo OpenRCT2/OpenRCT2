@@ -40,6 +40,8 @@ enum WINDOW_LAND_WIDGET_IDX {
 	WIDX_WALL,
 };
 
+validate_global_widx(WC_LAND, WIDX_PREVIEW);
+
 static rct_widget window_land_widgets[] = {
 	{ WWT_FRAME,	0,	0,	97,	0,	159,		0xFFFFFFFF,								STR_NONE },						// panel / background
 	{ WWT_CAPTION,	0,	1,	96,	1,	14,			STR_LAND,								STR_WINDOW_TITLE_TIP },			// title bar

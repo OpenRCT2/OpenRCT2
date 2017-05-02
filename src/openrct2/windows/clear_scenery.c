@@ -39,6 +39,8 @@ enum WINDOW_CLEAR_SCENERY_WIDGET_IDX {
 	WIDX_FOOTPATH
 };
 
+validate_global_widx(WC_CLEAR_SCENERY, WIDX_PREVIEW);
+
 rct_widget window_clear_scenery_widgets[] = {
 	{ WWT_FRAME,	0,	0,	97,	0,	93,	0xFFFFFFFF,									STR_NONE },							// panel / background
 	{ WWT_CAPTION,	0,	1,	96,	1,	14,	STR_CLEAR_SCENERY,							STR_WINDOW_TITLE_TIP },				// title bar

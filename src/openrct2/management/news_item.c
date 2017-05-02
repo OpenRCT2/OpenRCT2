@@ -355,7 +355,7 @@ void news_item_open_subject(sint32 type, sint32 subject)
 			window = window_find_by_class(WC_TOP_TOOLBAR);
 			if (window != NULL) {
 				window_invalidate(window);
-				if (!tool_set(window, 9, 0)) {
+				if (!tool_set(window, WC_TOP_TOOLBAR__WIDX_WATER, 0)) {
 					input_set_flag(INPUT_FLAG_6, true);
 					window_scenery_open();
 				}
@@ -365,7 +365,7 @@ void news_item_open_subject(sint32 type, sint32 subject)
 		// Switch to new scenery tab
 		window = window_find_by_class(WC_SCENERY);
 		if (window != NULL)
-			window_event_mouse_down_call(window, 4 + subject);
+			window_event_mouse_down_call(window, WC_SCENERY__WIDX_SCENERY_TAB_1 + subject);
 		break;
 	case NEWS_ITEM_PEEPS:
 		window_guest_list_open_with_filter(GLFT_GUESTS_THINKING_X, subject);;

@@ -143,6 +143,8 @@ enum WINDOW_STAFF_LIST_WIDGET_IDX {
 	WIDX_LIST_SORT_RIDE,
 };
 
+validate_global_widx(WC_EDITOR_OBJECT_SELECTION, WIDX_TAB_1);
+
 static rct_widget window_editor_object_selection_widgets[] = {
 	{ WWT_FRAME,			0,	0,		599,	0,		399,	0xFFFFFFFF,						STR_NONE },
 	{ WWT_CAPTION,			0,	1,		598,	1,		14,		STR_OBJECT_SELECTION,			STR_WINDOW_TITLE_TIP },

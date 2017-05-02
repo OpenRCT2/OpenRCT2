@@ -482,6 +482,32 @@ enum {
 	WC_CHAT = 223,
 };
 
+#define validate_global_widx(wc, widx) \
+    static_assert(widx == wc ## __ ## widx, "Global WIDX of " #widx " doesn't match actual value.")
+
+#define WC_TOP_TOOLBAR__WIDX_PAUSE						0
+#define WC_TOP_TOOLBAR__WIDX_LAND						8
+#define WC_TOP_TOOLBAR__WIDX_WATER						9
+#define WC_TOP_TOOLBAR__WIDX_SCENERY					10
+#define WC_TOP_TOOLBAR__WIDX_PATH						11
+#define WC_RIDE_CONSTRUCTION__WIDX_CONSTRUCT			23
+#define WC_RIDE_CONSTRUCTION__WIDX_ENTRANCE				29
+#define WC_RIDE_CONSTRUCTION__WIDX_EXIT					30
+#define WC_RIDE_CONSTRUCTION__WIDX_ROTATE				32
+#define WC_SCENERY__WIDX_SCENERY_TAB_1					4
+#define WC_SCENERY__WIDX_SCENERY_ROTATE_OBJECTS_BUTTON	25
+#define WC_LAND__WIDX_PREVIEW							5
+#define WC_WATER__WIDX_PREVIEW							3
+#define WC_PEEP__WIDX_PATROL							11
+#define WC_PEEP__WIDX_ACTION_LBL						12
+#define WC_TRACK_DESIGN_LIST__WIDX_ROTATE				5
+#define WC_TRACK_DESIGN_PLACE__WIDX_ROTATE				3
+#define WC_MAP__WIDX_LAND_TOOL							13
+#define WC_MAP__WIDX_ROTATE_90							20
+#define WC_EDITOR_OBJECT_SELECTION__WIDX_TAB_1			4
+#define WC_CLEAR_SCENERY__WIDX_PREVIEW					3
+#define WC_LAND_RIGHTS__WIDX_PREVIEW					3
+
 enum PROMPT_MODE {
 	PM_SAVE_BEFORE_LOAD = 0,
 	PM_SAVE_BEFORE_QUIT,
