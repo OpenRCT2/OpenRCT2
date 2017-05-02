@@ -9110,7 +9110,7 @@ static void peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_peep
 					// edge of the mechanic patrol zone.
 					bool onZoneEdge = false;
 					int neighbourDir = 0;
-					while (!onZoneEdge && neighbourDir <= 3) {
+					while (!onZoneEdge && neighbourDir <= 7) {
 						int neighbourX = x + TileDirectionDelta[neighbourDir].x;
 						int neighbourY = y + TileDirectionDelta[neighbourDir].y;
 						onZoneEdge = !staff_is_location_in_patrol(peep, neighbourX, neighbourY);
