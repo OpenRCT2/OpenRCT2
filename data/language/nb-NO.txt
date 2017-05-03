@@ -2690,18 +2690,18 @@ STR_2681    :{MEDIUMFONT}{BLACK}Increases your money by {CURRENCY}
 STR_2682    :<removed string - do not use>
 STR_2683    :<removed string - do not use>
 STR_2684    :{SMALLFONT}{BLACK}Large group of guests arrive
-STR_2685    :Simplex Noise Parameters
-STR_2686    :Low:
-STR_2687    :High:
-STR_2688    :Base Frequency:
-STR_2689    :Octaves:
-STR_2690    :Map Generation
-STR_2691    :Base height:
-STR_2692    :Water level:
-STR_2693    :Terrain:
-STR_2694    :Generate
-STR_2695    :Random terrain
-STR_2696    :Place trees
+STR_2685    :Parametere for Simplex-støy
+STR_2686    :Lav:
+STR_2687    :Høy:
+STR_2688    :Basefrekvens:
+STR_2689    :Oktavenr:
+STR_2690    :Kartgenerering
+STR_2691    :Basehøyde:
+STR_2692    :Vannhøyde:
+STR_2693    :Terreng:
+STR_2694    :Generer
+STR_2695    :Tilfeldig terreng
+STR_2696    :Plasser trær
 STR_2697    :???
 STR_2698    :???
 STR_2699    :???
@@ -3218,7 +3218,7 @@ STR_3207    :Roller Coaster Designer
 STR_3208    :Track Designs Manager
 STR_3209    :Back to Previous Step:
 STR_3210    :Forward to Next Step:
-STR_3211    :Map size:
+STR_3211    :Kartstørrelse:
 STR_3212    :{POP16}{COMMA16} x {PUSH16}{COMMA16}
 STR_3213    :Can't decrease map size any further
 STR_3214    :Can't increase map size any further
@@ -4349,6 +4349,19 @@ STR_6038    :{SMALLFONT}{BLACK}Hvis du har RCT1 installert kan du sette denne ve
 STR_6039    :{SMALLFONT}{BLACK}Rask attraksjonsrivning
 STR_6040    :Endre scenarioinnstillinger
 STR_6041    :{BLACK}Ingen mekanikere er ansatt!
+STR_6042    :Last inn høydekart
+STR_6043    :Velg høydekart
+STR_6044    :Jevn ut høydekart
+STR_6045    :Styrke
+STR_6046    :Normaliser høydekart
+STR_6047    :Jevn ut ruter
+STR_6048    :Feil i høydekart
+STR_6049    :Kunne ikke lese PNG
+STR_6050    :Kunne ikke lese bitmap
+STR_6051    :Bredden og høyden må være like
+STR_6052    :Høydekartet er for stort og vil bli kuttet av
+STR_6053    :Høydekartet kunne ikke normaliseres
+STR_6054    :Kun 24-bit bitmaps er støttet
 
 #############
 # Scenarios #
