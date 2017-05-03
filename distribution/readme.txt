@@ -1,4 +1,4 @@
-Last updated:    2017-01-29
+Last updated:    2017-05-03
 Release version: 0.0.7.0
 ------------------------------------------------------------------------
 
@@ -156,6 +156,7 @@ libcURL  | MIT (or Modified BSD-style) licence.
 libspeex | BSD-style licence.
 libpng   | libpng licence.
 libzip   | BSD 3 clause licence.
+OpenSSL  | Apache Licence 1.0
 SDL2     | zlib licence.
 SDL2 TTF | zlib licence.
 zlib     | zlib licence.
