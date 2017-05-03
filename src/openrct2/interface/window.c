@@ -1839,7 +1839,7 @@ void window_set_resize(rct_window *w, sint32 minWidth, sint32 minHeight, sint32 
  * @param widgetIndex (dx)
  * @param w (esi)
  */
-sint32 tool_set(rct_window *w, sint32 widgetIndex, sint32 tool)
+bool tool_set(rct_window *w, rct_widgetindex widgetIndex, TOOL_IDX tool)
 {
 	if (input_test_flag(INPUT_FLAG_TOOL_ACTIVE)) {
 		if (
@@ -1848,7 +1848,7 @@ sint32 tool_set(rct_window *w, sint32 widgetIndex, sint32 tool)
 			widgetIndex == gCurrentToolWidget.widget_index
 		) {
 			tool_cancel();
-			return 1;
+			return true;
 		} else {
 			tool_cancel();
 		}
@@ -1860,7 +1860,7 @@ sint32 tool_set(rct_window *w, sint32 widgetIndex, sint32 tool)
 	gCurrentToolWidget.window_classification = w->classification;
 	gCurrentToolWidget.window_number = w->number;
 	gCurrentToolWidget.widget_index = widgetIndex;
-	return 0;
+	return false;
 }
 
 /**

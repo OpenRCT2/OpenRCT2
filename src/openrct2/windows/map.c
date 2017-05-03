@@ -298,7 +298,7 @@ static void window_map_mouseup(rct_window *w, sint32 widgetIndex)
 		break;
 	case WIDX_SET_LAND_RIGHTS:
 		window_invalidate(w);
-		if (tool_set(w, widgetIndex, 2))
+		if (tool_set(w, widgetIndex, TOOL_UP_ARROW))
 			break;
 		_activeTool = 2;
 		// Prevent mountain tool size.
@@ -353,7 +353,7 @@ static void window_map_mouseup(rct_window *w, sint32 widgetIndex)
 		break;
 	case WIDX_BUILD_PARK_ENTRANCE:
 		window_invalidate(w);
-		if (tool_set(w, widgetIndex, 2))
+		if (tool_set(w, widgetIndex, TOOL_UP_ARROW))
 			break;
 
 		gParkEntranceGhostExists = false;
@@ -367,7 +367,7 @@ static void window_map_mouseup(rct_window *w, sint32 widgetIndex)
 		gWindowSceneryRotation = (gWindowSceneryRotation + 1) & 3;
 		break;
 	case WIDX_PEOPLE_STARTING_POSITION:
-		if (tool_set(w, widgetIndex, 2))
+		if (tool_set(w, widgetIndex, TOOL_UP_ARROW))
 			break;
 
 		show_gridlines();

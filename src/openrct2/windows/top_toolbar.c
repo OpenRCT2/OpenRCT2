@@ -337,7 +337,7 @@ static void window_top_toolbar_mouseup(rct_window *w, sint32 widgetIndex)
 		toggle_water_window(w, WIDX_WATER);
 		break;
 	case WIDX_SCENERY:
-		if (!tool_set(w, WIDX_SCENERY, 0)) {
+		if (!tool_set(w, WIDX_SCENERY, TOOL_ARROW)) {
 			input_set_flag(INPUT_FLAG_6, true);
 			window_scenery_open();
 		}
@@ -1915,7 +1915,7 @@ static void top_toolbar_tool_update_land_paint(sint16 x, sint16 y){
 static void top_toolbar_tool_update_land(sint16 x, sint16 y){
 	map_invalidate_selection_rect();
 
-	if (gCurrentToolId == 3){
+	if (gCurrentToolId == TOOL_UP_DOWN_ARROW){
 		if (!(gMapSelectFlags & MAP_SELECT_FLAG_ENABLE))
 			return;
 
@@ -2085,7 +2085,7 @@ static void top_toolbar_tool_update_land(sint16 x, sint16 y){
 static void top_toolbar_tool_update_water(sint16 x, sint16 y){
 	map_invalidate_selection_rect();
 
-	if (gCurrentToolId == 3){
+	if (gCurrentToolId == TOOL_UP_DOWN_ARROW){
 		if (!(gMapSelectFlags & MAP_SELECT_FLAG_ENABLE))
 			return;
 
@@ -2689,7 +2689,7 @@ static void window_top_toolbar_tool_down(rct_window* w, sint32 widgetIndex, sint
 			gMapSelectPositionB.x,
 			gMapSelectPositionB.y
 			);
-		gCurrentToolId = 12;
+		gCurrentToolId = TOOL_CROSSHAIR;
 		break;
 	case WIDX_LAND:
 		if (gMapSelectFlags & MAP_SELECT_FLAG_ENABLE) {
@@ -2703,12 +2703,12 @@ static void window_top_toolbar_tool_down(rct_window* w, sint32 widgetIndex, sint
 				gMapSelectPositionB.x,
 				gMapSelectPositionB.y
 				);
-			gCurrentToolId = 3;
+			gCurrentToolId = TOOL_UP_DOWN_ARROW;
 		}
 		break;
 	case WIDX_WATER:
 		if (gMapSelectFlags & MAP_SELECT_FLAG_ENABLE) {
-			gCurrentToolId = 3;
+			gCurrentToolId = TOOL_UP_DOWN_ARROW;
 		}
 		break;
 	case WIDX_SCENERY:
@@ -2892,7 +2892,7 @@ static void window_top_toolbar_tool_drag(rct_window* w, sint32 widgetIndex, sint
 			gMapSelectPositionB.x,
 			gMapSelectPositionB.y
 		);
-		gCurrentToolId = 12;
+		gCurrentToolId = TOOL_CROSSHAIR;
 		break;
 	case WIDX_LAND:
 		// Custom setting to only change land style instead of raising or lowering land
@@ -2909,7 +2909,7 @@ static void window_top_toolbar_tool_drag(rct_window* w, sint32 widgetIndex, sint
 					gMapSelectPositionB.y
 					);
 				// The tool is set to 12 here instead of 3 so that the dragging cursor is not the elevation change cursor
-				gCurrentToolId = 12;
+				gCurrentToolId = TOOL_CROSSHAIR;
 			}
 		} else {
 			window_top_toolbar_land_tool_drag(x, y);
@@ -2937,17 +2937,17 @@ static void window_top_toolbar_tool_up(rct_window* w, sint32 widgetIndex, sint32
 	case WIDX_LAND:
 		map_invalidate_selection_rect();
 		gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
-		gCurrentToolId = 0x12;
+		gCurrentToolId = TOOL_DIG_DOWN;
 		break;
 	case WIDX_WATER:
 		map_invalidate_selection_rect();
 		gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
-		gCurrentToolId = 0x13;
+		gCurrentToolId = TOOL_WATER_DOWN;
 		break;
 	case WIDX_CLEAR_SCENERY:
 		map_invalidate_selection_rect();
 		gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
-		gCurrentToolId = 0x0C;
+		gCurrentToolId = TOOL_CROSSHAIR;
 		break;
 	}
 }
@@ -3301,7 +3301,7 @@ void toggle_land_window(rct_window *topToolbar, sint32 widgetIndex)
 		tool_cancel();
 	} else {
 		show_gridlines();
-		tool_set(topToolbar, widgetIndex, 18);
+		tool_set(topToolbar, widgetIndex, TOOL_DIG_DOWN);
 		input_set_flag(INPUT_FLAG_6, true);
 		gLandToolSize = 1;
 		window_land_open();
@@ -3318,7 +3318,7 @@ void toggle_clear_scenery_window(rct_window *topToolbar, sint32 widgetIndex)
 		tool_cancel();
 	} else {
 		show_gridlines();
-		tool_set(topToolbar, widgetIndex, 12);
+		tool_set(topToolbar, widgetIndex, TOOL_CROSSHAIR);
 		input_set_flag(INPUT_FLAG_6, true);
 		gLandToolSize = 2;
 		window_clear_scenery_open();
@@ -3335,7 +3335,7 @@ void toggle_water_window(rct_window *topToolbar, sint32 widgetIndex)
 		tool_cancel();
 	} else {
 		show_gridlines();
-		tool_set(topToolbar, widgetIndex, 19);
+		tool_set(topToolbar, widgetIndex, TOOL_WATER_DOWN);
 		input_set_flag(INPUT_FLAG_6, true);
 		gLandToolSize = 1;
 		window_water_open();

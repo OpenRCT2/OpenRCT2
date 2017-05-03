@@ -355,7 +355,7 @@ void news_item_open_subject(sint32 type, sint32 subject)
 			window = window_find_by_class(WC_TOP_TOOLBAR);
 			if (window != NULL) {
 				window_invalidate(window);
-				if (!tool_set(window, WC_TOP_TOOLBAR__WIDX_WATER, 0)) {
+				if (!tool_set(window, WC_TOP_TOOLBAR__WIDX_SCENERY, TOOL_ARROW)) {
 					input_set_flag(INPUT_FLAG_6, true);
 					window_scenery_open();
 				}

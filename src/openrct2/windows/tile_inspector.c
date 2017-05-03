@@ -558,7 +558,7 @@ void window_tile_inspector_open()
 
 	windowTileInspectorTileSelected = false;
 
-	tool_set(window, WIDX_BACKGROUND, 12);
+	tool_set(window, WIDX_BACKGROUND, TOOL_CROSSHAIR);
 	window_tile_inspector_auto_set_buttons(window);
 }
 
