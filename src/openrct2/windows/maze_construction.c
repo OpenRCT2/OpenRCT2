@@ -185,7 +185,7 @@ static void window_maze_construction_close(rct_window *w)
 	if (ride->overall_view == 0xFFFF) {
 		sint32 savedPausedState = gGamePaused;
 		gGamePaused = 0;
-		game_do_command(0, 9, 0, rideIndex, GAME_COMMAND_DEMOLISH_RIDE, 0, 0);
+		game_do_command(0, GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED, 0, rideIndex, GAME_COMMAND_DEMOLISH_RIDE, 0, 0);
 		gGamePaused = savedPausedState;
 	} else {
 		window_ride_main_open(rideIndex);
@@ -205,8 +205,8 @@ static void window_maze_construction_entrance_mouseup(rct_window *w, sint32 widg
 
 	// ???
 	uint8 old_state = _rideConstructionState;
-	_rideConstructionState = 5;
-	if (old_state != 5)
+	_rideConstructionState = RIDE_CONSTRUCTION_STATE_ENTRANCE_EXIT;
+	if (old_state != RIDE_CONSTRUCTION_STATE_ENTRANCE_EXIT)
 		_rideConstructionState = old_state;
 	window_maze_construction_update_pressed_widgets();
 }
@@ -369,7 +369,11 @@ static void window_maze_construction_entrance_tooldown(sint32 x, sint32 y, rct_w
 
 	uint8 rideIndex = gRideEntranceExitPlaceRideIndex;
 	uint8 entranceExitType = gRideEntranceExitPlaceType;
-	gGameCommandErrorTitle = entranceExitType ? STR_CANT_BUILD_MOVE_ENTRANCE_FOR_THIS_RIDE_ATTRACTION : STR_CANT_BUILD_MOVE_EXIT_FOR_THIS_RIDE_ATTRACTION;
+	if (entranceExitType == ENTRANCE_TYPE_RIDE_ENTRANCE) {
+		gGameCommandErrorTitle = STR_CANT_BUILD_MOVE_ENTRANCE_FOR_THIS_RIDE_ATTRACTION;
+	} else {
+		gGameCommandErrorTitle = STR_CANT_BUILD_MOVE_EXIT_FOR_THIS_RIDE_ATTRACTION;
+	}
 
 	money32 cost = game_do_command(
 		x,
@@ -489,17 +493,17 @@ static void window_maze_construction_construct(sint32 direction)
 	z = _currentTrackBeginZ;
 	switch (_rideConstructionState) {
 	case RIDE_CONSTRUCTION_STATE_MAZE_BUILD:
-		mode = 0;
-		flags = 1;
+		mode = GC_SET_MAZE_TRACK_BUILD;
+		flags = GAME_COMMAND_FLAG_APPLY;
 		break;
 	case RIDE_CONSTRUCTION_STATE_MAZE_MOVE:
-		mode = 1;
-		flags = 1 | 8;
+		mode = GC_SET_MAZE_TRACK_MOVE;
+		flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED;
 		break;
 	default:
 	case RIDE_CONSTRUCTION_STATE_MAZE_FILL:
-		mode = 2;
-		flags = 1 | 8;
+		mode = GC_SET_MAZE_TRACK_FILL;
+		flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED;
 		break;
 	}
 
@@ -519,7 +523,7 @@ static void window_maze_construction_construct(sint32 direction)
 
 	_currentTrackBeginX = x;
 	_currentTrackBeginY = y;
-	if (_rideConstructionState != 7) {
+	if (_rideConstructionState != RIDE_CONSTRUCTION_STATE_MAZE_MOVE) {
 		audio_play_sound_at_location(SOUND_PLACE_ITEM, x, y, z);
 	}
 }
