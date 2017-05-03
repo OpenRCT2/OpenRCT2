@@ -1,4 +1,4 @@
-0.0.7 (in development)
+0.0.7 (2017-05-03)
 ------------------------------------------------------------------------
 - Feature: [#1730] Keyboard shortcuts for track construction.
 - Feature: [#2060, #5282] Heightmap loader
