@@ -1811,7 +1811,7 @@ static money32 set_maze_track(uint16 x, uint8 flags, uint8 direction, uint16 y, 
 
 	mapElement = map_get_track_element_at_of_type_from_ride(x, y, baseHeight, TRACK_ELEM_MAZE, rideIndex);
 	if (mapElement == NULL) {
-		if (mode != 0) {
+		if (mode != GC_SET_MAZE_TRACK_BUILD) {
 			gGameCommandErrorText = 0;
 			return MONEY32_UNDEFINED;
 		}
@@ -1880,8 +1880,9 @@ static money32 set_maze_track(uint16 x, uint8 flags, uint8 direction, uint16 y, 
 	}
 
 
-	if (mode == 0) {
-		// Build mode
+	switch (mode) {
+	case GC_SET_MAZE_TRACK_BUILD:
+	{
 		uint8 segmentOffset = maze_element_get_segment_bit(x, y);
 
 		mapElement->properties.track.maze_entry &= ~(1 << segmentOffset);
@@ -1903,10 +1904,14 @@ static money32 set_maze_track(uint16 x, uint8 flags, uint8 direction, uint16 y, 
 				}
 			}
 		}
-	} else if (mode == 1) {
-		// Move mode
-	} else {
-		// Fill-in mode
+
+		break;
+	}
+
+	case GC_SET_MAZE_TRACK_MOVE:
+		break;
+
+	case GC_SET_MAZE_TRACK_FILL:
 		if (direction != 4) {
 			uint16 previousSegmentX = x - TileDirectionDelta[direction].x / 2;
 			uint16 previousSegmentY = y - TileDirectionDelta[direction].y / 2;
@@ -1943,6 +1948,7 @@ static money32 set_maze_track(uint16 x, uint8 flags, uint8 direction, uint16 y, 
 				segmentBit--;
 			} while ((segmentBit & 0x3) != 0x3);
 		}
+		break;
 	}
 
 	map_invalidate_tile(floor2(x, 32), floor2(y, 32), mapElement->base_height * 8, mapElement->clearance_height * 8);
