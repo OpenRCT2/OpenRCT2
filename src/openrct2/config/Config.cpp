@@ -344,9 +344,9 @@ namespace Config
             model->player_name = reader->GetCString("player_name", "Player");
             model->default_port = reader->GetSint32("default_port", NETWORK_DEFAULT_PORT);
 
-			model->listen_address = reader->GetCString("listen_address", "");
-			if (strlen(model->listen_address) == 0)
-				model->listen_address = nullptr;
+            model->listen_address = reader->GetCString("listen_address", "");
+            if (strlen(model->listen_address) == 0)
+                model->listen_address = nullptr;
 
             model->default_password = reader->GetCString("default_password", nullptr);
             model->stay_connected = reader->GetBoolean("stay_connected", true);
@@ -370,7 +370,7 @@ namespace Config
         writer->WriteSection("network");
         writer->WriteString("player_name", model->player_name);
         writer->WriteSint32("default_port", model->default_port);
-		writer->WriteString("listen_address", model->listen_address);
+        writer->WriteString("listen_address", model->listen_address);
         writer->WriteString("default_password", model->default_password);
         writer->WriteBoolean("stay_connected", model->stay_connected);
         writer->WriteBoolean("advertise", model->advertise);
