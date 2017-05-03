@@ -137,6 +137,7 @@ typedef struct NetworkConfiguration
 {
     utf8 *      player_name;
     sint32      default_port;
+	char *      listen_address;
     utf8 *      default_password;
     bool        stay_connected;
     bool        advertise;
