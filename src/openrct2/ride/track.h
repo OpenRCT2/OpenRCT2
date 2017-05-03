@@ -491,6 +491,12 @@ enum {
 	TRACK_ELEMENT_LOCATION_IS_UNDERGROUND = 2,
 };
 
+enum {
+	GC_SET_MAZE_TRACK_BUILD = 0,
+	GC_SET_MAZE_TRACK_MOVE = 1,
+	GC_SET_MAZE_TRACK_FILL = 2,
+};
+
 typedef struct track_circuit_iterator {
 	rct_xy_element last;
 	rct_xy_element current;

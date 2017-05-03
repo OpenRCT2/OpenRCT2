@@ -39,6 +39,8 @@ enum WINDOW_WATER_WIDGET_IDX {
 	WIDX_BUY_CONSTRUCTION_RIGHTS
 };
 
+validate_global_widx(WC_LAND_RIGHTS, WIDX_PREVIEW);
+
 static rct_widget window_land_rights_widgets[] = {
 	{ WWT_FRAME,	0,	0,	97,	0,	93,	0xFFFFFFFF,									STR_NONE },							    // panel / background
 	{ WWT_CAPTION,	0,	1,	96,	1,	14,	STR_LAND_RIGHTS,							STR_WINDOW_TITLE_TIP },				    // title bar
@@ -51,14 +53,12 @@ static rct_widget window_land_rights_widgets[] = {
 	{ WIDGETS_END },
 };
 
-static sint32 window_land_rights_should_close();
-
 static void window_land_rights_close(rct_window *w);
-static void window_land_rights_mouseup(rct_window *w, sint32 widgetIndex);
+static void window_land_rights_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_land_rights_update(rct_window *w);
 static void window_land_rights_invalidate(rct_window *w);
 static void window_land_rights_paint(rct_window *w, rct_drawpixelinfo *dpi);
-static void window_land_rights_textinput(rct_window *w, sint32 widgetIndex, char *text);
+static void window_land_rights_textinput(rct_window *w, rct_widgetindex widgetIndex, char *text);
 static void window_land_rights_inputsize(rct_window *w);
 
 static rct_window_event_list window_land_rights_events = {
@@ -119,11 +119,11 @@ void window_land_rights_open()
 static void window_land_rights_close(rct_window *w)
 {
 	// If the tool wasn't changed, turn tool off
-	if (!window_land_rights_should_close())
+	if (land_rights_tool_is_active())
 		tool_cancel();
 }
 
-static void window_land_rights_mouseup(rct_window *w, sint32 widgetIndex)
+static void window_land_rights_mouseup(rct_window *w, rct_widgetindex widgetIndex)
 {
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
@@ -165,7 +165,7 @@ static void window_land_rights_mouseup(rct_window *w, sint32 widgetIndex)
 	}
 }
 
-static void window_land_rights_textinput(rct_window *w, sint32 widgetIndex, char *text)
+static void window_land_rights_textinput(rct_window *w, rct_widgetindex widgetIndex, char *text)
 {
 	sint32 size;
 	char* end;
@@ -192,7 +192,7 @@ static void window_land_rights_inputsize(rct_window *w)
 static void window_land_rights_update(rct_window *w)
 {
 	// Close window if another tool is open
-	if (window_land_rights_should_close())
+	if (!land_rights_tool_is_active())
 		window_close(w);
 }
 
@@ -210,7 +210,7 @@ static void window_land_rights_invalidate(rct_window *w)
 		SPR_LAND_TOOL_SIZE_0 + gLandToolSize :
 		0xFFFFFFFF;
 
-	// Disable ownership and/or construction buying functions if there're no tiles left for sale
+	// Disable ownership and/or construction buying functions if there are no tiles left for sale
 	if (gLandRemainingOwnershipSales == 0) {
 		w->disabled_widgets |= (1 << WIDX_BUY_LAND_RIGHTS);
 		window_land_rights_widgets[WIDX_BUY_LAND_RIGHTS].tooltip = STR_NO_LAND_RIGHTS_FOR_SALE_TIP;
@@ -249,15 +249,4 @@ static void window_land_rights_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	) {
 		gfx_draw_string_centred(dpi, STR_COST_AMOUNT, x, y, COLOUR_BLACK, &gLandRightsCost);
 	}
-}
-
-static sint32 window_land_rights_should_close()
-{
-	if (!(gInputFlags & INPUT_FLAG_TOOL_ACTIVE))
-		return 1;
-	if (gCurrentToolWidget.window_classification != WC_PARK_INFORMATION)
-		return 1;
-	if (gCurrentToolWidget.widget_index != 14)
-		return 1;
-	return 0;
 }

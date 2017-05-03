@@ -26,7 +26,8 @@
 #include <pwd.h>
 #include <time.h>
 #include <SDL_syswm.h>
-#include "../config.h"
+#include "../config/Config.h"
+#include "../localisation/date.h"
 #include "../localisation/language.h"
 #include "../OpenRCT2.h"
 #include "../util/util.h"
@@ -799,6 +800,12 @@ uint8 platform_get_locale_temperature_format(){
 		}
 	}
 	return TEMPERATURE_FORMAT_C;
+}
+
+uint8 platform_get_locale_date_format()
+{
+	STUB();
+	return DATE_FORMAT_DAY_MONTH_YEAR;
 }
 
 datetime64 platform_get_datetime_now_utc()

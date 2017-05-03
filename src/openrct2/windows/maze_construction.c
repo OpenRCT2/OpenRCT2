@@ -88,12 +88,12 @@ static rct_widget window_maze_construction_widgets[] = {
 #pragma region Events
 
 static void window_maze_construction_close(rct_window *w);
-static void window_maze_construction_mouseup(rct_window *w, sint32 widgetIndex);
+static void window_maze_construction_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_maze_construction_resize(rct_window *w);
-static void window_maze_construction_mousedown(sint32 widgetIndex, rct_window *w, rct_widget *widget);
+static void window_maze_construction_mousedown(rct_widgetindex widgetIndex, rct_window *w, rct_widget *widget);
 static void window_maze_construction_update(rct_window *w);
-static void window_maze_construction_toolupdate(rct_window* w, sint32 widgetIndex, sint32 x, sint32 y);
-static void window_maze_construction_tooldown(rct_window* w, sint32 widgetIndex, sint32 x, sint32 y);
+static void window_maze_construction_toolupdate(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y);
+static void window_maze_construction_tooldown(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y);
 static void window_maze_construction_invalidate(rct_window *w);
 static void window_maze_construction_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
@@ -141,7 +141,16 @@ rct_window *window_maze_construction_open()
 {
 	rct_window *w = window_create(0, 29, 166, 200, &window_maze_construction_events, WC_RIDE_CONSTRUCTION, WF_NO_AUTO_CLOSE);
 	w->widgets = window_maze_construction_widgets;
-	w->enabled_widgets = 0x6F0001C4;
+	w->enabled_widgets = (1ULL << WIDX_CLOSE) |
+		(1ULL << WIDX_MAZE_BUILD_MODE) |
+		(1ULL << WIDX_MAZE_MOVE_MODE) |
+		(1ULL << WIDX_MAZE_FILL_MODE) |
+		(1ULL << WIDX_MAZE_DIRECTION_NW) |
+		(1ULL << WIDX_MAZE_DIRECTION_NE) |
+		(1ULL << WIDX_MAZE_DIRECTION_SW) |
+		(1ULL << WIDX_MAZE_DIRECTION_SE) |
+		(1ULL << WIDX_MAZE_ENTRANCE) |
+		(1ULL << WIDX_MAZE_EXIT);
 
 	window_init_scroll_widgets(w);
 	colour_scheme_update(w);
@@ -176,28 +185,28 @@ static void window_maze_construction_close(rct_window *w)
 	if (ride->overall_view == 0xFFFF) {
 		sint32 savedPausedState = gGamePaused;
 		gGamePaused = 0;
-		game_do_command(0, 9, 0, rideIndex, GAME_COMMAND_DEMOLISH_RIDE, 0, 0);
+		game_do_command(0, GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED, 0, rideIndex, GAME_COMMAND_DEMOLISH_RIDE, 0, 0);
 		gGamePaused = savedPausedState;
 	} else {
 		window_ride_main_open(rideIndex);
 	}
 }
 
-static void window_maze_construction_entrance_mouseup(rct_window *w, sint32 widgetIndex){
-	if (tool_set(w, widgetIndex, 12))
+static void window_maze_construction_entrance_mouseup(rct_window *w, rct_widgetindex widgetIndex){
+	if (tool_set(w, widgetIndex, TOOL_CROSSHAIR))
 		return;
 
 	gRideEntranceExitPlaceType = widgetIndex == WIDX_MAZE_ENTRANCE ? ENTRANCE_TYPE_RIDE_ENTRANCE : ENTRANCE_TYPE_RIDE_EXIT;
 	gRideEntranceExitPlaceRideIndex = (uint8)w->number;
 	gRideEntranceExitPlaceStationIndex = 0;
-	gInputFlags |= INPUT_FLAG_6;
+	input_set_flag(INPUT_FLAG_6, true);
 
 	sub_6C9627();
 
 	// ???
 	uint8 old_state = _rideConstructionState;
-	_rideConstructionState = 5;
-	if (old_state != 5)
+	_rideConstructionState = RIDE_CONSTRUCTION_STATE_ENTRANCE_EXIT;
+	if (old_state != RIDE_CONSTRUCTION_STATE_ENTRANCE_EXIT)
 		_rideConstructionState = old_state;
 	window_maze_construction_update_pressed_widgets();
 }
@@ -206,7 +215,7 @@ static void window_maze_construction_entrance_mouseup(rct_window *w, sint32 widg
  *
  *  rct2: 0x006CD461
  */
-static void window_maze_construction_mouseup(rct_window *w, sint32 widgetIndex)
+static void window_maze_construction_mouseup(rct_window *w, rct_widgetindex widgetIndex)
 {
 	switch (widgetIndex){
 	case WIDX_CLOSE:
@@ -251,7 +260,7 @@ static void window_maze_construction_resize(rct_window *w)
 	if (currentDisabledWidgets == disabledWidgets)
 		return;
 
-	for (sint32 i = 0; i < 64; i++) {
+	for (rct_widgetindex i = 0; i < 64; i++) {
 		if ((disabledWidgets & (1ULL << i)) != (currentDisabledWidgets & (1ULL << i))) {
 			widget_invalidate(w, i);
 		}
@@ -263,7 +272,7 @@ static void window_maze_construction_resize(rct_window *w)
  *
  *  rct2: 0x006CD48C
  */
-static void window_maze_construction_mousedown(sint32 widgetIndex, rct_window *w, rct_widget *widget)
+static void window_maze_construction_mousedown(rct_widgetindex widgetIndex, rct_window *w, rct_widget *widget)
 {
 	switch (widgetIndex) {
 	case WIDX_MAZE_BUILD_MODE:
@@ -313,7 +322,7 @@ static void window_maze_construction_update(rct_window *w)
 	case RIDE_CONSTRUCTION_STATE_BACK:
 	case RIDE_CONSTRUCTION_STATE_SELECTED:
 		if (
-			(gInputFlags & INPUT_FLAG_TOOL_ACTIVE) &&
+			(input_test_flag(INPUT_FLAG_TOOL_ACTIVE)) &&
 			gCurrentToolWidget.window_classification == WC_RIDE_CONSTRUCTION
 		) {
 			tool_cancel();
@@ -327,7 +336,7 @@ static void window_maze_construction_update(rct_window *w)
  *
  *  rct2: 0x006CD63E
  */
-static void window_maze_construction_toolupdate(rct_window* w, sint32 widgetIndex, sint32 x, sint32 y)
+static void window_maze_construction_toolupdate(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y)
 {
 	switch (widgetIndex){
 	case WIDX_MAZE_DIRECTION_GROUPBOX:
@@ -360,7 +369,11 @@ static void window_maze_construction_entrance_tooldown(sint32 x, sint32 y, rct_w
 
 	uint8 rideIndex = gRideEntranceExitPlaceRideIndex;
 	uint8 entranceExitType = gRideEntranceExitPlaceType;
-	gGameCommandErrorTitle = entranceExitType ? STR_CANT_BUILD_MOVE_ENTRANCE_FOR_THIS_RIDE_ATTRACTION : STR_CANT_BUILD_MOVE_EXIT_FOR_THIS_RIDE_ATTRACTION;
+	if (entranceExitType == ENTRANCE_TYPE_RIDE_ENTRANCE) {
+		gGameCommandErrorTitle = STR_CANT_BUILD_MOVE_ENTRANCE_FOR_THIS_RIDE_ATTRACTION;
+	} else {
+		gGameCommandErrorTitle = STR_CANT_BUILD_MOVE_EXIT_FOR_THIS_RIDE_ATTRACTION;
+	}
 
 	money32 cost = game_do_command(
 		x,
@@ -397,7 +410,7 @@ static void window_maze_construction_entrance_tooldown(sint32 x, sint32 y, rct_w
  *
  *  rct2: 0x006CD65D
  */
-static void window_maze_construction_tooldown(rct_window* w, sint32 widgetIndex, sint32 x, sint32 y)
+static void window_maze_construction_tooldown(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y)
 {
 	switch (widgetIndex){
 	case WIDX_MAZE_DIRECTION_GROUPBOX:
@@ -480,17 +493,17 @@ static void window_maze_construction_construct(sint32 direction)
 	z = _currentTrackBeginZ;
 	switch (_rideConstructionState) {
 	case RIDE_CONSTRUCTION_STATE_MAZE_BUILD:
-		mode = 0;
-		flags = 1;
+		mode = GC_SET_MAZE_TRACK_BUILD;
+		flags = GAME_COMMAND_FLAG_APPLY;
 		break;
 	case RIDE_CONSTRUCTION_STATE_MAZE_MOVE:
-		mode = 1;
-		flags = 1 | 8;
+		mode = GC_SET_MAZE_TRACK_MOVE;
+		flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED;
 		break;
 	default:
 	case RIDE_CONSTRUCTION_STATE_MAZE_FILL:
-		mode = 2;
-		flags = 1 | 8;
+		mode = GC_SET_MAZE_TRACK_FILL;
+		flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED;
 		break;
 	}
 
@@ -510,7 +523,7 @@ static void window_maze_construction_construct(sint32 direction)
 
 	_currentTrackBeginX = x;
 	_currentTrackBeginY = y;
-	if (_rideConstructionState != 7) {
+	if (_rideConstructionState != RIDE_CONSTRUCTION_STATE_MAZE_MOVE) {
 		audio_play_sound_at_location(SOUND_PLACE_ITEM, x, y, z);
 	}
 }

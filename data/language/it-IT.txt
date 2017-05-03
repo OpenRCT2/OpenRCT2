@@ -2692,14 +2692,14 @@ STR_2682    :<not used anymore>
 STR_2683    :<not used anymore>
 STR_2684    :{SMALLFONT}{BLACK}Arriva un largo numero di visitatori
 STR_2685    :Simplex Noise Parameters
-STR_2686    :{WINDOW_COLOUR_2}Basso:
-STR_2687    :{WINDOW_COLOUR_2}Alto:
-STR_2688    :{WINDOW_COLOUR_2}Base Frequency:
-STR_2689    :{WINDOW_COLOUR_2}Ottavi:
+STR_2686    :Basso:
+STR_2687    :Alto:
+STR_2688    :Base Frequency:
+STR_2689    :Ottavi:
 STR_2690    :Generazione Mappa
-STR_2691    :{WINDOW_COLOUR_2}Base height:
-STR_2692    :{WINDOW_COLOUR_2}Livello acqua:
-STR_2693    :{WINDOW_COLOUR_2}Terreno:
+STR_2691    :Base height:
+STR_2692    :Livello acqua:
+STR_2693    :Terreno:
 STR_2694    :Genera
 STR_2695    :Terreno casuale
 STR_2696    :Colloca alberi
@@ -2749,7 +2749,7 @@ STR_2739    :Nessuno
 STR_2740    :RollerCoaster Tycoon 1
 STR_2741    :RollerCoaster Tycoon 2
 STR_2742    :css50.dat not found
-STR_2743    :Copy data\css17.dat from your RCT1 installation to data\css50.dat in your RCT2 installation.
+STR_2743    :Copiare 'data/css17.dat' dalla cartella di installazione di RCT1 come 'data/css50.dat' nella cartella di RCT2, oppure impostare il percorso di installazione di RCT1 nella scheda "Altro".
 STR_2744    :[
 STR_2745    :\
 STR_2746    :]
@@ -3218,7 +3218,7 @@ STR_3207    :Progettista di ottovolanti
 STR_3208    :Responsabile dei progetti di tracciato
 STR_3209    :Torna un passo indietro:
 STR_3210    :Vai un passo avanti:
-STR_3211    :{WINDOW_COLOUR_2}Dimens. mappa:
+STR_3211    :Dimens. mappa:
 STR_3212    :{POP16}{COMMA16} x {PUSH16}{COMMA16}
 STR_3213    :Impossibile rimpicciolire ulteriormente la mappa
 STR_3214    :Impossibile ingrandire ulteriormente la mappa
@@ -3494,7 +3494,7 @@ STR_5151    :.
 #Decimal separator
 STR_5152    :,
 STR_5153    :Modifica temi...
-STR_5154    :Visualizzazione hardware
+STR_5154    :Rendering hardware
 STR_5155    :Permetti di testare percorsi non finiti
 STR_5156    :{SMALLFONT}{BLACK}Permette di effettuare il test della maggior parte dei percorsi anche quando il percorso non è un circuito completo, non si applica alla modalità sezioni a blocchi
 STR_5157    :Sblocca tutti i prezzi
@@ -3655,8 +3655,8 @@ STR_5309    :OpenRCT2
 STR_5310    :Casuale
 STR_5311    :{SMALLFONT}{BLACK}Strumenti di debug
 STR_5312    :Mostra console
-STR_5313    :Show tile inspector
-STR_5314    :Tile inspector
+STR_5313    :Mostra analizzatore cella
+STR_5314    :Analizzatore cella
 STR_5315    :Erba
 STR_5316    :Sabbia
 STR_5317    :Sporco
@@ -4037,8 +4037,8 @@ STR_5724    :Temporale
 STR_5725    :{BLACK}Forza clima:
 STR_5726    :{SMALLFONT}{BLACK}Imposta il clima attuale nel parco
 STR_5727    :Qualità scala
-STR_5728    :Richiede la visualizzazione hardware
-STR_5729    :{SMALLFONT}{BLACK}Richiede la visualizzazione hardware
+STR_5728    :Richiede il rendering hardware
+STR_5729    :{SMALLFONT}{BLACK}Richiede il rendering hardware
 STR_5730    :Nearest Neighbour
 STR_5731    :Lineare
 STR_5732    :Anisotropico
@@ -4128,9 +4128,9 @@ STR_5814    :{WINDOW_COLOUR_1}{OPENQUOTES}{STRING}{ENDQUOTES}
 #tooltips
 STR_5815    :{SMALLFONT}{BLACK}Mostra il contatore FPS mentre si gioca
 STR_5816    :{SMALLFONT}{BLACK}Imposta il rapporto a cui il gioco viene scalato.{NEWLINE}Utile quando si gioca ad alte risoluzioni
-STR_5817    :{SMALLFONT}{BLACK}[Richiede display hardware]{NEWLINE}Imposta il tipo di scalatura della grafica
-STR_5818    :{SMALLFONT}{BLACK}[Richiede display hardware]{NEWLINE}Usa la scalatura Nearest Neighbour{NEWLINE}quando il rapporto di scalatura{NEWLINE}è impostato a valori interi (1, 2, 3...)
-STR_5819    :{SMALLFONT}{BLACK}[Richiede display hardware]{NEWLINE}Mette in pausa il gioco{NEWLINE}se l'overlay di Steam è aperto
+STR_5817    :{SMALLFONT}{BLACK}[Richiede rendering hardware]{NEWLINE}Imposta il tipo di scalatura della grafica
+STR_5818    :{SMALLFONT}{BLACK}[Richiede rendering hardware]{NEWLINE}Usa la scalatura Nearest Neighbour{NEWLINE}quando il rapporto di scalatura{NEWLINE}è impostato a valori interi (1, 2, 3...)
+STR_5819    :{SMALLFONT}{BLACK}[Richiede rendering hardware]{NEWLINE}Mette in pausa il gioco{NEWLINE}se l'overlay di Steam è aperto
 STR_5820    :{SMALLFONT}{BLACK}Riduce a icona il gioco{NEWLINE}se il focus viene perso in modalità schermo intero
 STR_5821    :{SMALLFONT}{BLACK}Cambia il colore dell'indicatore di costruzione{NEWLINE}di attrazioni, sentieri, chioschi, scenario...
 STR_5822    :{SMALLFONT}{BLACK}Alterna tra giorno e notte.{NEWLINE}Un ciclo dura un mese di gioco.
@@ -4147,7 +4147,7 @@ STR_5832    :{SMALLFONT}{BLACK}Mostra l'altezza in unità generiche invece del f
 STR_5833    :{SMALLFONT}{BLACK}Cambia il formato della data utilizzato
 STR_5834    :{SMALLFONT}{BLACK}Seleziona il dispositivo audio utilizzato da OpenRCT2
 STR_5835    :{SMALLFONT}{BLACK}Disattiva l'audio del gioco se la finestra perde il focus
-STR_5836    :{SMALLFONT}{BLACK}Imposta la musica da utilizzare nel menù principale.{NEWLINE}Selezionando RCT1 sarà necessario copiare il file {OPENQUOTES}data/css17.dat{ENDQUOTES} dalla cartella di RCT1 a {OPENQUOTES}data/css50.dat{ENDQUOTES} nella cartella di RCT2.
+STR_5836    :{SMALLFONT}{BLACK}Imposta la musica da utilizzare nel menù principale.{NEWLINE}Selezionando RCT1 sarà necessario copiare il file 'data/css17.dat' dalla cartella di RCT1 a 'data/css50.dat' nella cartella di RCT2, oppure impostare il percorso di RCT1 nella scheda "Altro".
 STR_5837    :{SMALLFONT}{BLACK}Crea e gestisci i temi dell'interfaccia
 STR_5838    :{SMALLFONT}{BLACK}Mostra un pulsante differente per le finanze nella barra degli strumenti
 STR_5839    :{SMALLFONT}{BLACK}Mostra un pulsante differente per le ricerche e sviluppo nella barra degli strumenti
@@ -4189,7 +4189,7 @@ STR_5874    :{SMALLFONT}{BLACK}Permette di rendere qualsiasi pezzo del tracciato
 STR_5875    :Motore di rendering:
 STR_5876    :{SMALLFONT}{BLACK}Il motore grafico usato per mostrare la grafica del gioco.
 STR_5877    :Software
-STR_5878    :Software (display hardware)
+STR_5878    :Software (rendering hardware)
 STR_5879    :OpenGL (sperimentale)
 STR_5880    :Solo selezionati
 STR_5881    :Solo non selezionati
@@ -4313,8 +4313,60 @@ STR_5997    :Aggiungi/imposta denaro
 STR_5998    :Aggiungi denaro
 STR_5999    :Imposta denaro
 STR_6000    :Inserire il nuovo valore
-
+STR_6001    :Attiva effetti luce (sperimentale)
+STR_6002    :{SMALLFONT}{BLACK}Le attrazioni e i lampioni saranno illuminati di notte.{NEWLINE}Richiede il motore di rendering hardware.
+STR_6003    :Vista sezionata
+STR_6004    :Vista sezionata
+STR_6005    :Attiva la vista sezionata
+STR_6006    :{SMALLFONT}{BLACK}La vista sezionata mostra solo elementi della mappa pari o inferiori all'altezza specificata
+STR_6007    :Altezza sezionamento
+STR_6008    :{SMALLFONT}{BLACK}Cliccare per cambiare tra valore grezzo e unità di misura
+STR_6009    :{SMALLFONT}{BLACK}Selezionare altezza sezionamento
+STR_6010    :{COMMA2DP32}m
+STR_6011    :{COMMA1DP16}ft
 STR_6012    :{COMMA1DP16}
+STR_6013    :{SMALLFONT}{BLACK}I visitatori pagheranno solo l'accesso al parco e i servizi.{NEWLINE}L'ingresso nelle attrazioni è gratis.
+STR_6014    :{SMALLFONT}{BLACK}I visitatori pagheranno solo l'ingresso nelle attrazioni.{NEWLINE}L'ingresso al parco è gratis.
+STR_6015    :Inclinato
+STR_6016    :Modifica cella
+STR_6017    :Si prega di rallentare
+STR_6018    :Costruzione percorso - Curva a sinistra
+STR_6019    :Costruzione percorso - Curva a destra
+STR_6020    :Costruzione percorso - Usa tracciato predefinito
+STR_6021    :Costruzione percorso - Discesa
+STR_6022    :Costruzione percorso - Salita
+STR_6023    :Costruzione percorso - Attiva catena di traino
+STR_6024    :Costruzione percorso - Inclina a sinistra
+STR_6025    :Costruzione percorso - Inclina a destra
+STR_6026    :Costruzione percorso - Pezzo precedente
+STR_6027    :Costruzione percorso - Pezzo successivo
+STR_6028    :Costruzione percorso - Costruisci attuale
+STR_6029    :Costruzione percorso - Demolisci attuale
+STR_6030    :{SMALLFONT}{BLACK}Contagocce scenario. Fare clic su un qualsiasi elemento dello scenario per attivare la costruzione di quel pezzo.
+STR_6031    :Descrizione server:
+STR_6032    :Messaggio di benvenuto server:
+STR_6033    :Percorso installazione di RCT1:
+STR_6035    :Selezionare la cartella di installazione di RCT1
+STR_6036    :{SMALLFONT}{BLACK}Pulisci
+STR_6037    :Selezionare una cartella di installazione di RCT1 valida
+STR_6038    :{SMALLFONT}{BLACK}Se RCT1 è installato, selezionarne la cartella per caricarne gli scenari, la musica, ecc.
+STR_6039    :{SMALLFONT}{BLACK}Demolizione veloce percorso
+STR_6040    :Modifica opzioni scenario
+STR_6041    :{BLACK}Non è stato assunto alcun meccanico!
+STR_6042    :Carica heightmap
+STR_6043    :Seleziona heightmap
+STR_6044    :Ammorbidisci heightmap
+STR_6045    :Forza
+STR_6046    :Normalizza heightmap
+STR_6047    :Ammorbidisci celle
+STR_6048    :Errore nella heightmap
+STR_6049    :Errore nella lettura del PNG
+STR_6050    :Errore nella lettura della bitmap
+STR_6051    :Larghezza e altezza devono corrispondere
+STR_6052    :La heightmap è troppo grande e sarà tagliata
+STR_6053    :La heightmap non può essere normalizzata
+STR_6054    :Sono supportate solo le bitmap a 24 bit
+STR_6055    :File di heightmap di OpenRCT2
 
 
 #############

@@ -21,7 +21,6 @@
 #include "../management/finance.h"
 #include "../management/research.h"
 #include "../object.h"
-#include "../platform/platform.h"
 #include "../rct12.h"
 #include "../rct2.h"
 #include "../rct2/addresses.h"
@@ -343,6 +342,20 @@ enum {
 	OBJECTIVE_MONTHLY_FOOD_INCOME
 };
 
+enum {
+	SCENARIO_SELECT_MODE_DIFFICULTY,
+	SCENARIO_SELECT_MODE_ORIGIN,
+};
+
+enum {
+	AUTOSAVE_EVERY_MINUTE,
+	AUTOSAVE_EVERY_5MINUTES,
+	AUTOSAVE_EVERY_15MINUTES,
+	AUTOSAVE_EVERY_30MINUTES,
+	AUTOSAVE_EVERY_HOUR,
+	AUTOSAVE_NEVER
+};
+
 #define AUTOSAVE_PAUSE 0
 
 extern const rct_string_id ScenarioCategoryStringIds[SCENARIO_CATEGORY_COUNT];
@@ -368,7 +381,7 @@ extern rct_s6_info gS6Info;
 extern char gScenarioName[64];
 extern char gScenarioDetails[256];
 extern char gScenarioCompletedBy[32];
-extern char gScenarioSavePath[MAX_PATH];
+extern char gScenarioSavePath[260];
 extern char gScenarioExpansionPacks[3256];
 extern sint32 gFirstTimeSave;
 extern uint16 gSavedAge;
@@ -376,8 +389,6 @@ extern uint32 gLastAutoSaveUpdate;
 
 extern const char *_scenarioFileName;
 
-bool scenario_load_basic(const char *path, rct_s6_header *header, rct_s6_info *info);
-bool scenario_load_rw(SDL_RWops * rw);
 sint32 scenario_load(const char *path);
 sint32 scenario_load_and_play_from_path(const char *path);
 void scenario_begin();
@@ -385,7 +396,7 @@ void scenario_update();
 uint32 scenario_rand();
 uint32 scenario_rand_max(uint32 max);
 sint32 scenario_prepare_for_save();
-sint32 scenario_save(SDL_RWops* rw, sint32 flags);
+sint32 scenario_save(const utf8 * path, sint32 flags);
 void scenario_remove_trackless_rides(rct_s6_data *s6);
 void scenario_fix_ghosts(rct_s6_data *s6);
 void scenario_set_filename(const char *value);

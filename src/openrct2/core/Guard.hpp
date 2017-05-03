@@ -27,11 +27,21 @@ void openrct2_assert(bool expression, const char * message, ...);
 
 #include <stdarg.h>
 
+enum class ASSERT_BEHAVIOUR
+{
+    ABORT,
+    CASSERT,
+    MESSAGE_BOX,
+};
+
 /**
  * Utility methods for asserting function parameters.
  */
 namespace Guard
 {
+    ASSERT_BEHAVIOUR GetAssertBehaviour();
+    void SetAssertBehaviour(ASSERT_BEHAVIOUR behaviour);
+
     void Assert(bool expression, const char * message = nullptr, ...);
     void Assert_VA(bool expression, const char * message, va_list args);
     void Fail(const char * message = nullptr, ...);

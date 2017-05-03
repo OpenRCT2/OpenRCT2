@@ -18,5 +18,6 @@
 #define _MAP_HELPERS_H_
 
 sint32 map_smooth(sint32 l, sint32 t, sint32 r, sint32 b);
+sint32 tile_smooth(sint32 x, sint32 y);
 
 #endif

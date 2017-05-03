@@ -45,7 +45,7 @@ static rct_widget window_ride_demolish_widgets[] = {
 	{ WIDGETS_END }
 };
 
-static void window_ride_demolish_mouseup(rct_window *w, sint32 widgetIndex);
+static void window_ride_demolish_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_ride_demolish_invalidate(rct_window *w);
 static void window_ride_demolish_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
@@ -102,7 +102,7 @@ void window_ride_demolish_prompt_open(sint32 rideIndex)
 *
 *  rct2: 0x006B4933
 */
-static void window_ride_demolish_mouseup(rct_window *w, sint32 widgetIndex)
+static void window_ride_demolish_mouseup(rct_window *w, rct_widgetindex widgetIndex)
 {
 	switch (widgetIndex) {
 	case WIDX_DEMOLISH:

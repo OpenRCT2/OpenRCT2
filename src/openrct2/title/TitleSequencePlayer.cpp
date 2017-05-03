@@ -14,14 +14,15 @@
  *****************************************************************************/
 #pragma endregion
 
+#include <memory>
 #include "../common.h"
-#include <SDL.h>
 #include "../core/Console.hpp"
 #include "../core/Exception.hpp"
 #include "../core/Guard.hpp"
 #include "../core/Math.hpp"
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
+#include "../ParkImporter.h"
 #include "../scenario/ScenarioRepository.h"
 #include "../scenario/ScenarioSources.h"
 #include "TitleSequence.h"
@@ -284,7 +285,7 @@ private:
             TitleSequenceParkHandle * parkHandle = TitleSequenceGetParkHandle(_sequence, saveIndex);
             if (parkHandle != nullptr)
             {
-                loadSuccess = LoadParkFromRW(parkHandle->RWOps, parkHandle->IsScenario);
+                loadSuccess = LoadParkFromStream((IStream *)parkHandle->Stream, parkHandle->HintPath);
                 TitleSequenceCloseParkHandle(parkHandle);
             }
             if (!loadSuccess)
@@ -351,26 +352,50 @@ private:
 
     bool LoadParkFromFile(const utf8 * path)
     {
+        log_verbose("TitleSequencePlayer::LoadParkFromFile(%s)", path);
         bool success = false;
-        bool isScenario = String::Equals(Path::GetExtension(path), ".sc6", true);
-        SDL_RWops * rw = SDL_RWFromFile(path, "rb");
-        if (rw != nullptr)
+        try
         {
-            success = LoadParkFromRW(rw, isScenario);
-            SDL_RWclose(rw);
+            auto parkImporter = std::unique_ptr<IParkImporter>(ParkImporter::Create(path));
+            parkImporter->Load(path);
+            parkImporter->Import();
+            PrepareParkForPlayback();
+            success = true;
+        }
+        catch (Exception)
+        {
+            Console::Error::WriteLine("Unable to load park: %s", path);
         }
         return success;
     }
 
-    bool LoadParkFromRW(SDL_RWops * rw, bool isScenario)
+    /**
+     * @param stream The stream to read the park data from.
+     * @param pathHint Hint path, the extension is grabbed to determine what importer to use.
+     */
+    bool LoadParkFromStream(IStream * stream, const std::string &hintPath)
     {
-        bool successfulLoad = isScenario ? scenario_load_rw(rw) :
-                                           game_load_sv6(rw);
-        if (!successfulLoad)
+        log_verbose("TitleSequencePlayer::LoadParkFromStream(%s)", hintPath.c_str());
+        bool success = false;
+        try
         {
-            return false;
+            std::string extension = Path::GetExtension(hintPath);
+            bool isScenario = ParkImporter::ExtensionIsScenario(hintPath);
+            auto parkImporter = std::unique_ptr<IParkImporter>(ParkImporter::Create(hintPath));
+            parkImporter->LoadFromStream(stream, isScenario);
+            parkImporter->Import();
+            PrepareParkForPlayback();
+            success = true;
         }
+        catch (Exception)
+        {
+            Console::Error::WriteLine("Unable to load park: %s", hintPath.c_str());
+        }
+        return success;
+    }
 
+    void PrepareParkForPlayback()
+    {
         rct_window * w = window_get_main();
         w->viewport_target_sprite = -1;
         w->saved_view_x = gSavedViewX;
@@ -400,17 +425,12 @@ private:
         reset_sprite_spatial_index();
         reset_all_sprite_quadrant_placements();
         window_new_ride_init_vars();
-        if (!isScenario)
-        {
-            sub_684AC3();
-        }
         scenery_set_default_placement_configuration();
         news_item_init_queue();
         load_palette();
         gfx_invalidate_screen();
         gScreenAge = 0;
         gGameSpeed = 1;
-        return true;
     }
 
     /**

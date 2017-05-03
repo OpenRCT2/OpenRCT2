@@ -50,8 +50,8 @@ enum PEEP_THOUGHT_TYPE {
 	PEEP_THOUGHT_TYPE_GOOD_VALUE = 10, // "X is really good value"
 	PEEP_THOUGHT_TYPE_ALREADY_GOT = 11, // "I've already got"
 	PEEP_THOUGHT_TYPE_CANT_AFFORD = 12, // "I can't afford"
-	PEEP_THOUGHT_TYPE_NOT_HUNGRY = 13, // "I'm not not hungry"
-	PEEP_THOUGHT_TYPE_NOT_THIRSTY = 14, // "I'm not not thirsty"
+	PEEP_THOUGHT_TYPE_NOT_HUNGRY = 13, // "I'm not hungry"
+	PEEP_THOUGHT_TYPE_NOT_THIRSTY = 14, // "I'm not thirsty"
 	PEEP_THOUGHT_TYPE_DROWNING = 15, // "Help! I'm drowning!"
 	PEEP_THOUGHT_TYPE_LOST = 16, // "I'm lost!"
 	PEEP_THOUGHT_TYPE_WAS_GREAT = 17, // "X was great"
@@ -75,7 +75,7 @@ enum PEEP_THOUGHT_TYPE {
 	PEEP_THOUGHT_TYPE_VERY_CLEAN = 35, // "This park is very clean and tidy"
 	PEEP_THOUGHT_TYPE_FOUNTAINS = 36, // "The jumping fountains are great"
 	PEEP_THOUGHT_TYPE_MUSIC = 37, // "The music is nice here"
-	PEEP_THOUGHT_TYPE_BALLOON = 38, // "This baloon from X is really good value"
+	PEEP_THOUGHT_TYPE_BALLOON = 38, // "This balloon from X is really good value"
 	PEEP_THOUGHT_TYPE_TOY = 39, // "This cuddly toy from X is really good value"
 	PEEP_THOUGHT_TYPE_MAP = 40,
 	PEEP_THOUGHT_TYPE_PHOTO = 41, // "This on ride photo from X is really good value"
@@ -296,7 +296,7 @@ enum PEEP_FLAGS {
 	PEEP_FLAGS_PAINTING = (1 << 7),
 	PEEP_FLAGS_WOW = (1 << 8), // Makes a peep WOW2
 	PEEP_FLAGS_LITTER = (1 << 9), // Makes the peep throw litter
-	PEEP_FLAGS_LOST = (1 << 10), // Makes the peep feel lost (animation trigerred)
+	PEEP_FLAGS_LOST = (1 << 10), // Makes the peep feel lost (animation triggered)
 	PEEP_FLAGS_HUNGER = (1 << 11), // Makes the peep become hungry quicker
 	PEEP_FLAGS_BATHROOM = (1 << 12), // Makes the peep want to go to the bathroom
 	PEEP_FLAGS_CROWDED = (1 << 13), // The peep will start feeling crowded

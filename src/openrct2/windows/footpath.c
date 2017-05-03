@@ -97,14 +97,14 @@ static rct_widget window_footpath_widgets[] = {
 };
 
 static void window_footpath_close(rct_window *w);
-static void window_footpath_mouseup(rct_window *w, sint32 widgetIndex);
-static void window_footpath_mousedown(sint32 widgetIndex, rct_window *w, rct_widget *widget);
-static void window_footpath_dropdown(rct_window *w, sint32 widgetIndex, sint32 dropdownIndex);
+static void window_footpath_mouseup(rct_window *w, rct_widgetindex widgetIndex);
+static void window_footpath_mousedown(rct_widgetindex widgetIndex, rct_window *w, rct_widget *widget);
+static void window_footpath_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex);
 static void window_footpath_update(rct_window *w);
-static void window_footpath_toolupdate(rct_window* w, sint32 widgetIndex, sint32 x, sint32 y);
-static void window_footpath_tooldown(rct_window* w, sint32 widgetIndex, sint32 x, sint32 y);
-static void window_footpath_tooldrag(rct_window* w, sint32 widgetIndex, sint32 x, sint32 y);
-static void window_footpath_toolup(rct_window* w, sint32 widgetIndex, sint32 x, sint32 y);
+static void window_footpath_toolupdate(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y);
+static void window_footpath_tooldown(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y);
+static void window_footpath_tooldrag(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y);
+static void window_footpath_toolup(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y);
 static void window_footpath_invalidate(rct_window *w);
 static void window_footpath_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
@@ -261,8 +261,8 @@ void window_footpath_open()
 
 	tool_cancel();
 	gFootpathConstructionMode = PATH_CONSTRUCTION_MODE_LAND;
-	tool_set(window, WIDX_CONSTRUCT_ON_LAND, 17);
-	gInputFlags |= INPUT_FLAG_6;
+	tool_set(window, WIDX_CONSTRUCT_ON_LAND, TOOL_PATH_DOWN);
+	input_set_flag(INPUT_FLAG_6, true);
 	_footpathErrorOccured = false;
 	window_footpath_set_enabled_and_pressed_widgets();
 }
@@ -285,7 +285,7 @@ static void window_footpath_close(rct_window *w)
  *
  *  rct2: 0x006A7E92
  */
-static void window_footpath_mouseup(rct_window *w, sint32 widgetIndex)
+static void window_footpath_mouseup(rct_window *w, rct_widgetindex widgetIndex)
 {
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
@@ -307,8 +307,8 @@ static void window_footpath_mouseup(rct_window *w, sint32 widgetIndex)
 		map_invalidate_map_selection_tiles();
 		gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
 		gFootpathConstructionMode = PATH_CONSTRUCTION_MODE_LAND;
-		tool_set(w, WIDX_CONSTRUCT_ON_LAND, 17);
-		gInputFlags |= INPUT_FLAG_6;
+		tool_set(w, WIDX_CONSTRUCT_ON_LAND, TOOL_PATH_DOWN);
+		input_set_flag(INPUT_FLAG_6, true);
 		_footpathErrorOccured = false;
 		window_footpath_set_enabled_and_pressed_widgets();
 		break;
@@ -322,8 +322,8 @@ static void window_footpath_mouseup(rct_window *w, sint32 widgetIndex)
 		map_invalidate_map_selection_tiles();
 		gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
 		gFootpathConstructionMode = PATH_CONSTRUCTION_MODE_BRIDGE_OR_TUNNEL_TOOL;
-		tool_set(w, WIDX_CONSTRUCT_BRIDGE_OR_TUNNEL, 12);
-		gInputFlags |= INPUT_FLAG_6;
+		tool_set(w, WIDX_CONSTRUCT_BRIDGE_OR_TUNNEL, TOOL_CROSSHAIR);
+		input_set_flag(INPUT_FLAG_6, true);
 		_footpathErrorOccured = false;
 		window_footpath_set_enabled_and_pressed_widgets();
 		break;
@@ -334,7 +334,7 @@ static void window_footpath_mouseup(rct_window *w, sint32 widgetIndex)
  *
  *  rct2: 0x006A7EC5
  */
-static void window_footpath_mousedown(sint32 widgetIndex, rct_window*w, rct_widget* widget)
+static void window_footpath_mousedown(rct_widgetindex widgetIndex, rct_window*w, rct_widget* widget)
 {
 	switch (widgetIndex) {
 	case WIDX_FOOTPATH_TYPE:
@@ -371,7 +371,7 @@ static void window_footpath_mousedown(sint32 widgetIndex, rct_window*w, rct_widg
  *
  *  rct2: 0x006A7F18
  */
-static void window_footpath_dropdown(rct_window *w, sint32 widgetIndex, sint32 dropdownIndex)
+static void window_footpath_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex)
 {
 	if (widgetIndex == WIDX_FOOTPATH_TYPE)
 		gFootpathSelectedType = SELECTED_PATH_TYPE_NORMAL;
@@ -418,7 +418,7 @@ static void window_footpath_dropdown(rct_window *w, sint32 widgetIndex, sint32 d
  *
  *  rct2: 0x006A8032
  */
-static void window_footpath_toolupdate(rct_window* w, sint32 widgetIndex, sint32 x, sint32 y)
+static void window_footpath_toolupdate(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y)
 {
 	if (widgetIndex == WIDX_CONSTRUCT_ON_LAND) {
 		window_footpath_set_provisional_path_at_point(x, y);
@@ -431,7 +431,7 @@ static void window_footpath_toolupdate(rct_window* w, sint32 widgetIndex, sint32
  *
  *  rct2: 0x006A8047
  */
-static void window_footpath_tooldown(rct_window* w, sint32 widgetIndex, sint32 x, sint32 y)
+static void window_footpath_tooldown(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y)
 {
 	if (widgetIndex == WIDX_CONSTRUCT_ON_LAND)
 		window_footpath_place_path_at_point(x, y);
@@ -443,7 +443,7 @@ static void window_footpath_tooldown(rct_window* w, sint32 widgetIndex, sint32 x
  *
  *  rct2: 0x006A8067
  */
-static void window_footpath_tooldrag(rct_window* w, sint32 widgetIndex, sint32 x, sint32 y)
+static void window_footpath_tooldrag(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y)
 {
 	if (widgetIndex == WIDX_CONSTRUCT_ON_LAND) {
 		window_footpath_place_path_at_point(x, y);
@@ -454,7 +454,7 @@ static void window_footpath_tooldrag(rct_window* w, sint32 widgetIndex, sint32 x
  *
  *  rct2: 0x006A8066
  */
-static void window_footpath_toolup(rct_window* w, sint32 widgetIndex, sint32 x, sint32 y)
+static void window_footpath_toolup(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y)
 {
 	if (widgetIndex == WIDX_CONSTRUCT_ON_LAND) {
 		_footpathErrorOccured = false;
@@ -520,14 +520,14 @@ static void window_footpath_update(rct_window *w)
 
 	// Check tool
 	if (gFootpathConstructionMode == PATH_CONSTRUCTION_MODE_LAND) {
-		if (!(gInputFlags & INPUT_FLAG_TOOL_ACTIVE))
+		if (!(input_test_flag(INPUT_FLAG_TOOL_ACTIVE)))
 			window_close(w);
 		else if (gCurrentToolWidget.window_classification != WC_FOOTPATH)
 			window_close(w);
 		else if (gCurrentToolWidget.widget_index != WIDX_CONSTRUCT_ON_LAND)
 			window_close(w);
 	} else if (gFootpathConstructionMode == PATH_CONSTRUCTION_MODE_BRIDGE_OR_TUNNEL_TOOL) {
-		if (!(gInputFlags & INPUT_FLAG_TOOL_ACTIVE))
+		if (!(input_test_flag(INPUT_FLAG_TOOL_ACTIVE)))
 			window_close(w);
 		else if (gCurrentToolWidget.window_classification != WC_FOOTPATH)
 			window_close(w);
@@ -894,8 +894,8 @@ static void window_footpath_construct()
 	if (cost != MONEY32_UNDEFINED && !gCheatsDisableClearanceChecks) {
 		// It is possible, let's remove walls between the old and new piece of path
 		uint8 direction = gFootpathConstructDirection;
-		map_remove_intersecting_walls(x, y, z, z + 4 + ((slope & 0xf) ? 2 : 0), direction ^ 2);
-		map_remove_intersecting_walls(
+		wall_remove_intersecting_walls(x, y, z, z + 4 + ((slope & 0xf) ? 2 : 0), direction ^ 2);
+		wall_remove_intersecting_walls(
 			x - TileDirectionDelta[direction].x,
 			y - TileDirectionDelta[direction].y,
 			z, z + 4, direction
@@ -1067,7 +1067,15 @@ static void window_footpath_set_enabled_and_pressed_widgets()
 		map_invalidate_map_selection_tiles();
 	}
 
-	uint64 pressedWidgets = w->pressed_widgets & 0xFFFF887F;
+	uint64 pressedWidgets = w->pressed_widgets & ~(
+			(1LL << WIDX_DIRECTION_NW) |
+			(1LL << WIDX_DIRECTION_NE) |
+			(1LL << WIDX_DIRECTION_SW) |
+			(1LL << WIDX_DIRECTION_SE) |
+			(1LL << WIDX_SLOPEDOWN) |
+			(1LL << WIDX_LEVEL) |
+			(1LL << WIDX_SLOPEUP)
+	);
 	uint64 disabledWidgets = 0;
 	sint32 currentRotation = get_current_rotation();
 	if (gFootpathConstructionMode >= PATH_CONSTRUCTION_MODE_BRIDGE_OR_TUNNEL) {

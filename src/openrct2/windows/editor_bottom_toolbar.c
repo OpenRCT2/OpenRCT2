@@ -15,7 +15,7 @@
 #pragma endregion
 
 #include "../audio/audio.h"
-#include "../config.h"
+#include "../config/Config.h"
 #include "../game.h"
 #include "../editor.h"
 #include "../input.h"
@@ -48,7 +48,7 @@ static rct_widget window_editor_bottom_toolbar_widgets[] = {
 	{ WIDGETS_END },
 };
 
-static void window_editor_bottom_toolbar_mouseup(rct_window *w, sint32 widgetIndex);
+static void window_editor_bottom_toolbar_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_editor_bottom_toolbar_invalidate(rct_window *w);
 static void window_editor_bottom_toolbar_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
@@ -238,7 +238,7 @@ static bool window_editor_bottom_toolbar_check_object_selection()
 	w = window_find_by_class(WC_EDITOR_OBJECT_SELECTION);
 	if (w != NULL) {
 		// Click tab with missing object
-		window_event_mouse_up_call(w, 4 + missingObjectType);
+		window_event_mouse_up_call(w, WC_EDITOR_OBJECT_SELECTION__WIDX_TAB_1 + missingObjectType);
 	}
 	return false;
 }
@@ -350,11 +350,11 @@ void window_editor_bottom_toolbar_jump_forward_to_save_scenario()
 *
 *  rct2: 0x0066F5AE
 */
-static void window_editor_bottom_toolbar_mouseup(rct_window *w, sint32 widgetIndex)
+static void window_editor_bottom_toolbar_mouseup(rct_window *w, rct_widgetindex widgetIndex)
 {
 	if (widgetIndex == WIDX_PREVIOUS_STEP_BUTTON) {
 		if ((gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) ||
-			(gSpriteListCount[SPRITE_LIST_NULL] == MAX_SPRITES && !(gParkFlags & PARK_FLAGS_18))
+			(gSpriteListCount[SPRITE_LIST_NULL] == MAX_SPRITES && !(gParkFlags & PARK_FLAGS_SPRITES_INITIALISED))
 		) {
 			previous_button_mouseup_events[gS6Info.editor_step]();
 		}
@@ -401,7 +401,7 @@ void window_editor_bottom_toolbar_invalidate(rct_window *w)
 		} else if (gS6Info.editor_step == EDITOR_STEP_ROLLERCOASTER_DESIGNER) {
 			hide_next_step_button();
 		} else if (!(gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)) {
-			if (gSpriteListCount[SPRITE_LIST_NULL] != MAX_SPRITES || gParkFlags & PARK_FLAGS_18) {
+			if (gSpriteListCount[SPRITE_LIST_NULL] != MAX_SPRITES || gParkFlags & PARK_FLAGS_SPRITES_INITIALISED) {
 				hide_previous_step_button();
 			}
 		}
@@ -426,7 +426,7 @@ void window_editor_bottom_toolbar_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	else if (gSpriteListCount[SPRITE_LIST_NULL] != MAX_SPRITES) {
 		drawNextButton = true;
 	}
-	else if (gParkFlags & PARK_FLAGS_18) {
+	else if (gParkFlags & PARK_FLAGS_SPRITES_INITIALISED) {
 		drawNextButton = true;
 	}
 	else {

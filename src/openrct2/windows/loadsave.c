@@ -15,7 +15,8 @@
 #pragma endregion
 
 #include <time.h>
-#include "../config.h"
+#include "../config/Config.h"
+#include "../core/Guard.hpp"
 #include "../editor.h"
 #include "../game.h"
 #include "../interface/themes.h"
@@ -68,12 +69,12 @@ static rct_widget window_loadsave_widgets[] = {
 #pragma region Events
 
 static void window_loadsave_close(rct_window *w);
-static void window_loadsave_mouseup(rct_window *w, sint32 widgetIndex);
+static void window_loadsave_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_loadsave_scrollgetsize(rct_window *w, sint32 scrollIndex, sint32 *width, sint32 *height);
 static void window_loadsave_scrollmousedown(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y);
 static void window_loadsave_scrollmouseover(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y);
-static void window_loadsave_textinput(rct_window *w, sint32 widgetIndex, char *text);
-static void window_loadsave_tooltip(rct_window* w, sint32 widgetIndex, rct_string_id *stringId);
+static void window_loadsave_textinput(rct_window *w, rct_widgetindex widgetIndex, char *text);
+static void window_loadsave_tooltip(rct_window* w, rct_widgetindex widgetIndex, rct_string_id *stringId);
 static void window_loadsave_invalidate(rct_window *w);
 static void window_loadsave_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_loadsave_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 scrollIndex);
@@ -123,7 +124,7 @@ typedef struct loadsave_list_item {
 	uint8 type;
 } loadsave_list_item;
 
-loadsave_callback gLoadSaveCallback;
+static loadsave_callback _loadSaveCallback;
 
 sint32 _listItemsCount = 0;
 loadsave_list_item *_listItems = NULL;
@@ -139,6 +140,11 @@ static void window_loadsave_select(rct_window *w, const char *path);
 static void window_loadsave_sort_list(sint32 index, sint32 endIndex);
 
 static rct_window *window_overwrite_prompt_open(const char *name, const char *path);
+
+void window_loadsave_set_loadsave_callback(loadsave_callback cb)
+{
+	_loadSaveCallback = cb;
+}
 
 static sint32 window_loadsave_get_dir(utf8 *last_save, char *path, const char *subdir, size_t pathSize)
 {
@@ -156,7 +162,7 @@ static sint32 window_loadsave_get_dir(utf8 *last_save, char *path, const char *s
 
 rct_window *window_loadsave_open(sint32 type, char *defaultName)
 {
-	gLoadSaveCallback = NULL;
+	_loadSaveCallback = NULL;
 	_type = type;
 	_defaultName[0] = '\0';
 
@@ -207,6 +213,14 @@ rct_window *window_loadsave_open(sint32 type, char *defaultName)
 		w->widgets[WIDX_TITLE].text = isSave ? STR_FILE_DIALOG_TITLE_SAVE_TRACK : STR_FILE_DIALOG_TITLE_INSTALL_NEW_TRACK_DESIGN;
 		if (window_loadsave_get_dir(gConfigGeneral.last_save_track_directory, path, "track", sizeof(path))) {
 			window_loadsave_populate_list(w, isSave, path, isSave ? ".td6" : ".td6;.td4");
+			success = true;
+		}
+		break;
+	case LOADSAVETYPE_IMAGE:
+		openrct2_assert(isSave == false, "Cannot save images through loadsave window");
+		w->widgets[WIDX_TITLE].text = STR_FILE_DIALOG_TITLE_LOAD_HEIGHTMAP;
+		if (window_loadsave_get_dir(gConfigGeneral.last_save_track_directory, path, "", sizeof(path))) {
+			window_loadsave_populate_list(w, false, path, ".bmp;.png");
 			success = true;
 		}
 		break;
@@ -267,13 +281,18 @@ static bool browse(bool isSave, char *path, size_t pathSize)
 		desc.filters[0].name = language_get_string(STR_OPENRCT2_TRACK_DESIGN_FILE);
 		desc.filters[0].pattern = isSave ? "*.td6" : "*.td6;*.td4";
 		break;
+	case LOADSAVETYPE_IMAGE:
+		title = STR_FILE_DIALOG_TITLE_LOAD_HEIGHTMAP;
+		desc.filters[0].name = language_get_string(STR_OPENRCT2_HEIGHTMAP_FILE);
+		desc.filters[0].pattern = "*.jpg;*.png";
+		break;
 	}
 
 	desc.title = language_get_string(title);
 	return platform_open_common_file_dialog(path, &desc, pathSize);
 }
 
-static void window_loadsave_mouseup(rct_window *w, sint32 widgetIndex)
+static void window_loadsave_mouseup(rct_window *w, rct_widgetindex widgetIndex)
 {
 	char path[MAX_PATH];
 
@@ -391,7 +410,7 @@ static void window_loadsave_scrollmouseover(rct_window *w, sint32 scrollIndex, s
 	window_invalidate(w);
 }
 
-static void window_loadsave_textinput(rct_window *w, sint32 widgetIndex, char *text)
+static void window_loadsave_textinput(rct_window *w, rct_widgetindex widgetIndex, char *text)
 {
 	char path[MAX_PATH];
 	sint32 i, overwrite;
@@ -445,7 +464,7 @@ static void window_loadsave_textinput(rct_window *w, sint32 widgetIndex, char *t
 
 }
 
-static void window_loadsave_tooltip(rct_window* w, sint32 widgetIndex, rct_string_id *stringId)
+static void window_loadsave_tooltip(rct_window* w, rct_widgetindex widgetIndex, rct_string_id *stringId)
 {
 	set_format_arg(0, rct_string_id, STR_LIST);
 }
@@ -650,7 +669,7 @@ static void window_loadsave_populate_list(rct_window *w, sint32 includeNewItem, 
 			safe_strcpy(filter, directory, sizeof(filter));
 			safe_strcat_path(filter, "*", sizeof(filter));
 			path_append_extension(filter, extToken, sizeof(filter));
-			
+
 			file_info fileInfo;
 			fileEnumHandle = platform_enumerate_files_begin(filter);
 			while (platform_enumerate_files_next(fileEnumHandle, &fileInfo)) {
@@ -685,8 +704,8 @@ static void window_loadsave_populate_list(rct_window *w, sint32 includeNewItem, 
 
 static void window_loadsave_invoke_callback(sint32 result, const utf8 * path)
 {
-	if (gLoadSaveCallback != NULL) {
-		gLoadSaveCallback(result, path);
+	if (_loadSaveCallback != NULL) {
+		_loadSaveCallback(result, path);
 	}
 }
 
@@ -718,107 +737,86 @@ static void window_loadsave_select(rct_window *w, const char *path)
 		return;
 	}
 
-	SDL_RWops* rw;
+	char pathBuffer[MAX_PATH];
+	safe_strcpy(pathBuffer, path, sizeof(pathBuffer));
+
 	switch (_type & 0x0F) {
 	case (LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME) :
-		save_path(&gConfigGeneral.last_save_game_directory, path);
-		safe_strcpy(gScenarioSavePath, path, MAX_PATH);
-		window_loadsave_invoke_callback(MODAL_RESULT_OK, path);
+		save_path(&gConfigGeneral.last_save_game_directory, pathBuffer);
+		safe_strcpy(gScenarioSavePath, pathBuffer, MAX_PATH);
+		window_loadsave_invoke_callback(MODAL_RESULT_OK, pathBuffer);
 		window_close(w);
 		gfx_invalidate_screen();
 		break;
 	case (LOADSAVETYPE_SAVE | LOADSAVETYPE_GAME) :
-		save_path(&gConfigGeneral.last_save_game_directory, path);
-		rw = SDL_RWFromFile(path, "wb+");
-		if (rw != NULL) {
-			sint32 success = scenario_save(rw, gConfigGeneral.save_plugin_data ? 1 : 0);
-			SDL_RWclose(rw);
-			if (success) {
-				safe_strcpy(gScenarioSavePath, path, MAX_PATH);
-				gFirstTimeSave = 0;
+		save_path(&gConfigGeneral.last_save_game_directory, pathBuffer);
+		if (scenario_save(pathBuffer, gConfigGeneral.save_plugin_data ? 1 : 0)) {
+			safe_strcpy(gScenarioSavePath, pathBuffer, MAX_PATH);
+			gFirstTimeSave = 0;
 
-				window_close_by_class(WC_LOADSAVE);
-				gfx_invalidate_screen();
+			window_close_by_class(WC_LOADSAVE);
+			gfx_invalidate_screen();
 
-				window_loadsave_invoke_callback(MODAL_RESULT_OK, path);
-			} else {
-				window_error_open(STR_SAVE_GAME, STR_GAME_SAVE_FAILED);
-				window_loadsave_invoke_callback(MODAL_RESULT_FAIL, path);
-			}
+			window_loadsave_invoke_callback(MODAL_RESULT_OK, pathBuffer);
 		} else {
 			window_error_open(STR_SAVE_GAME, STR_GAME_SAVE_FAILED);
-			window_loadsave_invoke_callback(MODAL_RESULT_FAIL, path);
+			window_loadsave_invoke_callback(MODAL_RESULT_FAIL, pathBuffer);
 		}
 		break;
 	case (LOADSAVETYPE_LOAD | LOADSAVETYPE_LANDSCAPE) :
-		save_path(&gConfigGeneral.last_save_landscape_directory, path);
-		if (editor_load_landscape(path)) {
+		save_path(&gConfigGeneral.last_save_landscape_directory, pathBuffer);
+		if (editor_load_landscape(pathBuffer)) {
 			gfx_invalidate_screen();
-			window_loadsave_invoke_callback(MODAL_RESULT_OK, path);
+			window_loadsave_invoke_callback(MODAL_RESULT_OK, pathBuffer);
 		} else {
 			// Not the best message...
 			window_error_open(STR_LOAD_LANDSCAPE, STR_FAILED_TO_LOAD_FILE_CONTAINS_INVALID_DATA);
-			window_loadsave_invoke_callback(MODAL_RESULT_FAIL, path);
+			window_loadsave_invoke_callback(MODAL_RESULT_FAIL, pathBuffer);
 		}
 		break;
 	case (LOADSAVETYPE_SAVE | LOADSAVETYPE_LANDSCAPE) :
-		save_path(&gConfigGeneral.last_save_landscape_directory, path);
-		rw = SDL_RWFromFile(path, "wb+");
-		if (rw != NULL) {
-			scenario_set_filename(path);
-			sint32 success = scenario_save(rw, gConfigGeneral.save_plugin_data ? 3 : 2);
-			SDL_RWclose(rw);
-			if (success) {
-				window_close_by_class(WC_LOADSAVE);
-				gfx_invalidate_screen();
-				window_loadsave_invoke_callback(MODAL_RESULT_OK, path);
-			} else {
-				window_error_open(STR_SAVE_LANDSCAPE, STR_LANDSCAPE_SAVE_FAILED);
-				window_loadsave_invoke_callback(MODAL_RESULT_FAIL, path);
-			}
+		save_path(&gConfigGeneral.last_save_landscape_directory, pathBuffer);
+		scenario_set_filename(pathBuffer);
+		if (scenario_save(pathBuffer, gConfigGeneral.save_plugin_data ? 3 : 2)) {
+			window_close_by_class(WC_LOADSAVE);
+			gfx_invalidate_screen();
+			window_loadsave_invoke_callback(MODAL_RESULT_OK, pathBuffer);
 		} else {
 			window_error_open(STR_SAVE_LANDSCAPE, STR_LANDSCAPE_SAVE_FAILED);
-			window_loadsave_invoke_callback(MODAL_RESULT_FAIL, path);
+			window_loadsave_invoke_callback(MODAL_RESULT_FAIL, pathBuffer);
 		}
 		break;
 	case (LOADSAVETYPE_SAVE | LOADSAVETYPE_SCENARIO) :
 	{
-		save_path(&gConfigGeneral.last_save_scenario_directory, path);
+		save_path(&gConfigGeneral.last_save_scenario_directory, pathBuffer);
 		sint32 parkFlagsBackup = gParkFlags;
-		gParkFlags &= ~PARK_FLAGS_18;
+		gParkFlags &= ~PARK_FLAGS_SPRITES_INITIALISED;
 		gS6Info.editor_step = 255;
-		rw = SDL_RWFromFile(path, "wb+");
-		sint32 success = 0;
-		if (rw != NULL) {
-			scenario_set_filename(path);
-			success = scenario_save(rw, gConfigGeneral.save_plugin_data ? 3 : 2);
-			SDL_RWclose(rw);
-		}
+		scenario_set_filename(pathBuffer);
+		sint32 success = scenario_save(pathBuffer, gConfigGeneral.save_plugin_data ? 3 : 2);
 		gParkFlags = parkFlagsBackup;
 
 		if (success) {
 			window_close_by_class(WC_LOADSAVE);
-			window_loadsave_invoke_callback(MODAL_RESULT_OK, path);
+			window_loadsave_invoke_callback(MODAL_RESULT_OK, pathBuffer);
 			title_load();
 		} else {
 			window_error_open(STR_FILE_DIALOG_TITLE_SAVE_SCENARIO, STR_SCENARIO_SAVE_FAILED);
 			gS6Info.editor_step = EDITOR_STEP_OBJECTIVE_SELECTION;
-			window_loadsave_invoke_callback(MODAL_RESULT_FAIL, path);
+			window_loadsave_invoke_callback(MODAL_RESULT_FAIL, pathBuffer);
 		}
 		break;
 	}
 	case (LOADSAVETYPE_LOAD | LOADSAVETYPE_TRACK) :
-		save_path(&gConfigGeneral.last_save_track_directory, path);
-		window_install_track_open(path);
+		save_path(&gConfigGeneral.last_save_track_directory, pathBuffer);
+		window_install_track_open(pathBuffer);
 		window_close_by_class(WC_LOADSAVE);
-		window_loadsave_invoke_callback(MODAL_RESULT_OK, path);
+		window_loadsave_invoke_callback(MODAL_RESULT_OK, pathBuffer);
 		break;
 	case (LOADSAVETYPE_SAVE | LOADSAVETYPE_TRACK) :
 	{
-		char p[MAX_PATH];
-		safe_strcpy(p, path, sizeof(p));
-		path_set_extension(p, "td6", sizeof(p));
-		sint32 success = track_design_save_to_file(p);
+		path_set_extension(pathBuffer, "td6", sizeof(pathBuffer));
+		sint32 success = track_design_save_to_file(pathBuffer);
 
 		if (success) {
 			window_close_by_class(WC_LOADSAVE);
@@ -828,7 +826,12 @@ static void window_loadsave_select(rct_window *w, const char *path)
 			window_error_open(STR_FILE_DIALOG_TITLE_SAVE_TRACK, STR_TRACK_SAVE_FAILED);
 			window_loadsave_invoke_callback(MODAL_RESULT_FAIL, path);
 		}
+		break;
 	}
+	case (LOADSAVETYPE_LOAD | LOADSAVETYPE_IMAGE) :
+		window_close_by_class(WC_LOADSAVE);
+		window_loadsave_invoke_callback(MODAL_RESULT_OK, pathBuffer);
+		break;
 	}
 }
 
@@ -854,7 +857,7 @@ static rct_widget window_overwrite_prompt_widgets[] = {
 	{ WIDGETS_END }
 };
 
-static void window_overwrite_prompt_mouseup(rct_window *w, sint32 widgetIndex);
+static void window_overwrite_prompt_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_overwrite_prompt_invalidate(rct_window *w);
 static void window_overwrite_prompt_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
@@ -911,7 +914,7 @@ static rct_window *window_overwrite_prompt_open(const char *name, const char *pa
 	return w;
 }
 
-static void window_overwrite_prompt_mouseup(rct_window *w, sint32 widgetIndex)
+static void window_overwrite_prompt_mouseup(rct_window *w, rct_widgetindex widgetIndex)
 {
 	rct_window *loadsaveWindow;
 

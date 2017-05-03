@@ -14,7 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../config.h"
+#include "../config/Config.h"
 #include "../drawing/drawing.h"
 #include "../game.h"
 #include "../input.h"
@@ -23,6 +23,7 @@
 #include "../interface/widget.h"
 #include "../interface/window.h"
 #include "../localisation/localisation.h"
+#include "../ParkImporter.h"
 #include "../peep/peep.h"
 #include "../peep/staff.h"
 #include "../scenario/scenario.h"
@@ -45,16 +46,16 @@ enum WINDOW_TITLE_EDITOR_TAB {
 };
 
 static void window_title_editor_close(rct_window *w);
-static void window_title_editor_mouseup(rct_window *w, sint32 widgetIndex);
+static void window_title_editor_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_title_editor_resize(rct_window *w);
-static void window_title_editor_mousedown(sint32 widgetIndex, rct_window*w, rct_widget* widget);
-static void window_title_editor_dropdown(rct_window *w, sint32 widgetIndex, sint32 dropdownIndex);
+static void window_title_editor_mousedown(rct_widgetindex widgetIndex, rct_window*w, rct_widget* widget);
+static void window_title_editor_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex);
 static void window_title_editor_update(rct_window *w);
 static void window_title_editor_scrollgetsize(rct_window *w, sint32 scrollIndex, sint32 *width, sint32 *height);
 static void window_title_editor_scrollmousedown(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y);
 static void window_title_editor_scrollmouseover(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y);
-static void window_title_editor_textinput(rct_window *w, sint32 widgetIndex, char *text);
-static void window_title_editor_tooltip(rct_window* w, sint32 widgetIndex, rct_string_id *stringId);
+static void window_title_editor_textinput(rct_window *w, rct_widgetindex widgetIndex, char *text);
+static void window_title_editor_tooltip(rct_window* w, rct_widgetindex widgetIndex, rct_string_id *stringId);
 static void window_title_editor_invalidate(rct_window *w);
 static void window_title_editor_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_title_editor_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 scrollIndex);
@@ -138,7 +139,7 @@ enum WINDOW_TITLE_EDITOR_WIDGET_IDX {
 	WIDX_TITLE_EDITOR_SKIP,
 };
 
-// Increase BW if certain launguages do not fit
+// Increase BW if certain languages do not fit
 // BW should be a multiple of 4
 #define WW 320
 #define WH 270
@@ -295,7 +296,7 @@ static void window_title_editor_close(rct_window *w)
 	_renameSavePath = NULL;
 }
 
-static void window_title_editor_mouseup(rct_window *w, sint32 widgetIndex)
+static void window_title_editor_mouseup(rct_window *w, rct_widgetindex widgetIndex)
 {
 	bool commandEditorOpen = (window_find_by_class(WC_TITLE_COMMAND_EDITOR) != NULL);
 	switch (widgetIndex) {
@@ -335,7 +336,7 @@ static void window_title_editor_mouseup(rct_window *w, sint32 widgetIndex)
 	case WIDX_TITLE_EDITOR_ADD_SAVE:
 		if (!_isSequenceReadOnly && !_isSequencePlaying && !commandEditorOpen) {
 			window_loadsave_open(LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME, NULL);
-			gLoadSaveCallback = window_title_editor_add_park_callback;
+			window_loadsave_set_loadsave_callback(window_title_editor_add_park_callback);
 		}
 		break;
 	case WIDX_TITLE_EDITOR_REMOVE_SAVE:
@@ -358,11 +359,12 @@ static void window_title_editor_mouseup(rct_window *w, sint32 widgetIndex)
 	case WIDX_TITLE_EDITOR_LOAD_SAVE:
 		if (w->selected_list_item >= 0 && w->selected_list_item < (sint16)_editingTitleSequence->NumSaves) {
 			TitleSequenceParkHandle * handle = TitleSequenceGetParkHandle(_editingTitleSequence, w->selected_list_item);
-			if (handle->IsScenario) {
-				scenario_load_rw(handle->RWOps);
+			const utf8 * extension = path_get_extension(handle->HintPath);
+			bool isScenario = park_importer_extension_is_scenario(extension);
+			park_importer_load_from_stream(handle->Stream, handle->HintPath);
+			if (isScenario) {
 				scenario_begin();
 			} else {
-				game_load_sv6(handle->RWOps);
 				game_load_init();
 			}
 			TitleSequenceCloseParkHandle(handle);
@@ -481,7 +483,7 @@ static void window_title_editor_resize(rct_window *w)
 	}
 }
 
-static void window_title_editor_mousedown(sint32 widgetIndex, rct_window* w, rct_widget* widget)
+static void window_title_editor_mousedown(rct_widgetindex widgetIndex, rct_window* w, rct_widget* widget)
 {
 	switch (widgetIndex) {
 	case WIDX_TITLE_EDITOR_PRESETS_TAB:
@@ -516,6 +518,7 @@ static void window_title_editor_mousedown(sint32 widgetIndex, rct_window* w, rct
 				w->y + widget->top,
 				widget->bottom - widget->top + 1,
 				w->colours[1],
+				0,
 				DROPDOWN_FLAG_STAY_OPEN,
 				numItems,
 				widget->right - widget->left - 3);
@@ -525,7 +528,7 @@ static void window_title_editor_mousedown(sint32 widgetIndex, rct_window* w, rct
 	}
 }
 
-static void window_title_editor_dropdown(rct_window *w, sint32 widgetIndex, sint32 dropdownIndex)
+static void window_title_editor_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex)
 {
 	if (dropdownIndex == -1)
 		return;
@@ -609,7 +612,7 @@ static void window_title_editor_scrollmouseover(rct_window *w, sint32 scrollInde
 	widget_invalidate(w, WIDX_TITLE_EDITOR_LIST);
 }
 
-static void window_title_editor_textinput(rct_window *w, sint32 widgetIndex, char *text)
+static void window_title_editor_textinput(rct_window *w, rct_widgetindex widgetIndex, char *text)
 {
 	if (str_is_null_or_empty(text)) {
 		return;
@@ -646,7 +649,7 @@ static void window_title_editor_textinput(rct_window *w, sint32 widgetIndex, cha
 	}
 }
 
-static void window_title_editor_tooltip(rct_window* w, sint32 widgetIndex, rct_string_id *stringId)
+static void window_title_editor_tooltip(rct_window* w, rct_widgetindex widgetIndex, rct_string_id *stringId)
 {
 	set_format_arg(0, rct_string_id, STR_LIST);
 }
@@ -655,8 +658,12 @@ static void window_title_editor_invalidate(rct_window *w)
 {
 	colour_scheme_update(w);
 
-	sint32 pressed_widgets = w->pressed_widgets & 0xFFFFFF8F;
-	uint8 widgetIndex = w->selected_tab + 4;
+	sint32 pressed_widgets = w->pressed_widgets & ~(
+			(1LL << WIDX_TITLE_EDITOR_PRESETS_TAB) |
+			(1LL << WIDX_TITLE_EDITOR_SAVES_TAB) |
+			(1LL << WIDX_TITLE_EDITOR_SCRIPT_TAB)
+	);
+	rct_widgetindex widgetIndex = w->selected_tab + WIDX_TITLE_EDITOR_PRESETS_TAB;
 
 	w->pressed_widgets = pressed_widgets | (1 << widgetIndex);
 

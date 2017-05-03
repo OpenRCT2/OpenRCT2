@@ -16,6 +16,10 @@
 
 #pragma once
 
+#ifdef __cplusplus
+    #include <vector>
+#endif
+
 #include "../common.h"
 
 #ifdef __cplusplus
@@ -29,6 +33,7 @@ extern "C"
 
 #ifdef __cplusplus
     interface   IPlatformEnvironment;
+    interface   IStream;
     class       Object;
 #else
     typedef struct Object Object;
@@ -77,10 +82,15 @@ interface IObjectRepository
     virtual void                            AddObject(const rct_object_entry * objectEntry,
                                                       const void * data,
                                                       size_t dataSize) abstract;
+
+    virtual void                            ExportPackedObject(IStream * stream) abstract;
+    virtual void                            WritePackedObjects(IStream * stream, std::vector<const ObjectRepositoryItem *> &objects) abstract;
 };
 
 IObjectRepository * CreateObjectRepository(IPlatformEnvironment * env);
 IObjectRepository * GetObjectRepository();
+
+bool IsObjectCustom(const ObjectRepositoryItem * object);
 
 #endif
 

@@ -4943,7 +4943,7 @@ void bolliger_mabillard_track_diag_flat_to_60_deg_down(uint8 rideIndex, uint8 tr
 				}
 			}
 			paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
-			paint_util_set_general_support_height(height + 64, 0x20);
+			paint_util_set_general_support_height(height + 72, 0x20);
 			break;
 		case 1:
 			if (track_element_is_lift_hill(mapElement)) {
@@ -8152,4 +8152,30 @@ void bolliger_mabillard_track_90_deg_to_inverted_flat_quarter_loop_up(uint8 ride
 void bolliger_mabillard_track_inverted_flat_to_90_deg_quarter_loop_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement, sint32 supportType)
 {
 	bolliger_mabillard_track_90_deg_to_inverted_flat_quarter_loop_up(rideIndex, 2 - trackSequence, direction, height, mapElement, supportType);
+}
+
+void bolliger_mabillard_track_booster(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement, sint32 supportType)
+{
+	// These offsets could be moved to the g2.dat file when that supports offsets.
+	sint8 ne_sw_offsetX = 8;
+	sint8 ne_sw_offsetY = -17;
+	sint8 nw_se_offsetX = -17;
+	sint8 nw_se_offsetY = 8;
+
+	switch (direction) {
+		case 0:
+		case 2:
+			sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | SPR_G2_BM_BOOSTER_NE_SW, ne_sw_offsetX, ne_sw_offsetY, 32, 20, 3, height, 0, 6, height);
+			break;
+		case 1:
+		case 3:
+			sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | SPR_G2_BM_BOOSTER_NW_SE, nw_se_offsetX, nw_se_offsetY, 32, 20, 3, height, 0, 6, height);
+			break;
+	}
+	if (track_paint_util_should_paint_supports(gPaintMapPosition)) {
+		metal_a_supports_paint_setup(supportType, 4, 0, height, gTrackColours[SCHEME_SUPPORTS]);
+	}
+	paint_util_push_tunnel_rotated(direction, height, TUNNEL_6);
+	paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+	paint_util_set_general_support_height(height + 32, 0x20);
 }

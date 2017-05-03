@@ -48,13 +48,15 @@ Includes all git commit authors. Aliases are GitHub user names.
 * Robert Jordan (trigger-death) - UI theming, title sequence editor, misc.
 * Aaron van Geffen (AaronVanGeffen) - scenario select screen, font detection, misc.
 * Michał Janiszewski (janisozaur) - Linux port, crash handling, security, misc.
-* Kelson Blakewood (spacek531) - title sequence for 0.0.4
+* Kelson Blakewood (spacek531) - title sequence for 0.0.4 and 0.0.5/0.0.6
 * Hugo Wallenburg (Goddesen) - Misc.
 * Matte Andersson (Nubbie) - Misc, UX
 * Daniel Trujillo Viedma (gDanix) - Custom currency.
 * Niels NTG Poldervaart (Niels-NTG) - Misc.
 * (zaxcav) - Improvements to original pathfinding algorithm.
-* Hielke Morsink (Broxzier) - Tile inspector, misc.
+* Hielke Morsink (Broxzier) - Tile inspector, heightmap loader, misc.
+* Joël Troch (JoelTroch) - Keyboard shortcuts for ride construction.
+* Thomas Delebo (delebota) - Misc.
 
 ## Bug fixes
 * (halfbro)
@@ -72,6 +74,9 @@ Includes all git commit authors. Aliases are GitHub user names.
 * Sven Slootweg (joepie91)
 * Daniel Trujillo Viedma (gDanix)
 * Jonathan Haas (HaasJona)
+* Jake Breen (Haekb)
+* Marco Benzi Tobar (Lisergishnu)
+* Richard Jenkins (rwjuk)
 
 ## Toolchain
 * (Balletie) - macOS
@@ -98,6 +103,7 @@ Includes all git commit authors. Aliases are GitHub user names.
 * Miscellaneous fixes: Alexander Overvoorde (Overv), Ed Foley (e-foley)
 * English (UK) - Ted John (IntelOrca), (Tinytimrob)
 * English (US) - Ted John (IntelOrca), Michael Steenbeek (Gymnasiast); small fixes: (LRFLEW), (mike-koch), Harry Lam (daihakken)
+* Catalan - Joan Josep (J0anJosep)
 * Czech - Martin Černáč (octaroot), (Clonewayx), Tomáš Pazdiora (Aroidzap)
 * Dutch - Michael Steenbeek (Gymnasiast), Yannic Geurts (xzbobzx), (mrtnptrs), Thomas den Hollander (ThomasdenH), (hostbrute),  Marijn van der Werf (marijnvdwerf), Tom Kroes (ThePsionic); reviewing and discussion: Aaron van Geffen (AaronVanGeffen), (Balletie) and Sijmen Schoon (SijmenSchoon).
 * Finnish - (DJHasis), (Zode), (TheWing)

@@ -24,7 +24,7 @@
 #include "../scenario/scenario.h"
 #include "../sprites.h"
 #include "../util/util.h"
-#include "../world/climate.h"
+#include "../world/Climate.h"
 #include "../world/park.h"
 #include "dropdown.h"
 #include "error.h"
@@ -129,16 +129,16 @@ static rct_widget *window_editor_objective_options_widgets[] = {
 
 #pragma region Events
 
-static void window_editor_objective_options_main_mouseup(rct_window *w, sint32 widgetIndex);
+static void window_editor_objective_options_main_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_editor_objective_options_main_resize(rct_window *w);
-static void window_editor_objective_options_main_mousedown(sint32 widgetIndex, rct_window*w, rct_widget* widget);
-static void window_editor_objective_options_main_dropdown(rct_window *w, sint32 widgetIndex, sint32 dropdownIndex);
+static void window_editor_objective_options_main_mousedown(rct_widgetindex widgetIndex, rct_window*w, rct_widget* widget);
+static void window_editor_objective_options_main_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex);
 static void window_editor_objective_options_main_update(rct_window *w);
-static void window_editor_objective_options_main_textinput(rct_window *w, sint32 widgetIndex, char *text);
+static void window_editor_objective_options_main_textinput(rct_window *w, rct_widgetindex widgetIndex, char *text);
 static void window_editor_objective_options_main_invalidate(rct_window *w);
 static void window_editor_objective_options_main_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
-static void window_editor_objective_options_rides_mouseup(rct_window *w, sint32 widgetIndex);
+static void window_editor_objective_options_rides_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_editor_objective_options_rides_resize(rct_window *w);
 static void window_editor_objective_options_rides_update(rct_window *w);
 static void window_editor_objective_options_rides_scrollgetheight(rct_window *w, sint32 scrollIndex, sint32 *width, sint32 *height);
@@ -407,7 +407,7 @@ static void window_editor_objective_options_set_objective(rct_window *w, sint32 
  *
  *  rct2: 0x006719CA
  */
-static void window_editor_objective_options_main_mouseup(rct_window *w, sint32 widgetIndex)
+static void window_editor_objective_options_main_mouseup(rct_window *w, rct_widgetindex widgetIndex)
 {
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
@@ -503,6 +503,7 @@ static void window_editor_objective_options_show_objective_dropdown(rct_window *
 		w->y + dropdownWidget->top,
 		dropdownWidget->bottom - dropdownWidget->top + 1,
 		w->colours[1],
+		0,
 		DROPDOWN_FLAG_STAY_OPEN,
 		numItems,
 		dropdownWidget->right - dropdownWidget->left - 3
@@ -533,6 +534,7 @@ static void window_editor_objective_options_show_climate_dropdown(rct_window *w)
 		w->y + dropdownWidget->top,
 		dropdownWidget->bottom - dropdownWidget->top + 1,
 		w->colours[1],
+		0,
 		DROPDOWN_FLAG_STAY_OPEN,
 		4,
 		dropdownWidget->right - dropdownWidget->left - 3
@@ -556,6 +558,7 @@ static void window_editor_objective_options_show_category_dropdown(rct_window *w
 		w->y + dropdownWidget->top,
 		dropdownWidget->bottom - dropdownWidget->top + 1,
 		w->colours[1],
+		0,
 		DROPDOWN_FLAG_STAY_OPEN,
 		5,
 		dropdownWidget->right - dropdownWidget->left - 3
@@ -683,7 +686,7 @@ static void window_editor_objective_options_arg_2_decrease(rct_window *w)
  *
  *  rct2: 0x00671A0D
  */
-static void window_editor_objective_options_main_mousedown(sint32 widgetIndex, rct_window *w, rct_widget* widget)
+static void window_editor_objective_options_main_mousedown(rct_widgetindex widgetIndex, rct_window *w, rct_widget* widget)
 {
 	switch (widgetIndex) {
 	case WIDX_OBJECTIVE_DROPDOWN:
@@ -714,7 +717,7 @@ static void window_editor_objective_options_main_mousedown(sint32 widgetIndex, r
  *
  *  rct2: 0x00671A54
  */
-static void window_editor_objective_options_main_dropdown(rct_window *w, sint32 widgetIndex, sint32 dropdownIndex)
+static void window_editor_objective_options_main_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex)
 {
 	uint8 newObjectiveType;
 
@@ -783,7 +786,7 @@ static void window_editor_objective_options_main_update(rct_window *w)
  *
  *  rct2: 0x00671A73
  */
-static void window_editor_objective_options_main_textinput(rct_window *w, sint32 widgetIndex, char *text)
+static void window_editor_objective_options_main_textinput(rct_window *w, rct_widgetindex widgetIndex, char *text)
 {
 	if (text == NULL)
 		return;
@@ -1055,7 +1058,7 @@ static void window_editor_objective_options_main_paint(rct_window *w, rct_drawpi
  *
  *  rct2: 0x006724A4
  */
-static void window_editor_objective_options_rides_mouseup(rct_window *w, sint32 widgetIndex)
+static void window_editor_objective_options_rides_mouseup(rct_window *w, rct_widgetindex widgetIndex)
 {
 	switch (widgetIndex) {
 	case WIDX_CLOSE:

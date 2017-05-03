@@ -19,7 +19,6 @@
 
 #include "rct2/addresses.h"
 #include "common.h"
-#include "platform/platform.h"
 #include "scenario/scenario.h"
 
 enum GAME_COMMAND {
@@ -65,8 +64,8 @@ enum GAME_COMMAND {
 	GAME_COMMAND_SET_MAZE_TRACK,
 	GAME_COMMAND_SET_PARK_ENTRANCE_FEE,
 	GAME_COMMAND_SET_STAFF_COLOUR,
-	GAME_COMMAND_PLACE_FENCE,
-	GAME_COMMAND_REMOVE_FENCE,
+	GAME_COMMAND_PLACE_WALL,
+	GAME_COMMAND_REMOVE_WALL,
 	GAME_COMMAND_PLACE_LARGE_SCENERY,
 	GAME_COMMAND_REMOVE_LARGE_SCENERY,
 	GAME_COMMAND_SET_CURRENT_LOAN,
@@ -77,7 +76,7 @@ enum GAME_COMMAND {
 	GAME_COMMAND_PLACE_BANNER,
 	GAME_COMMAND_REMOVE_BANNER,
 	GAME_COMMAND_SET_SCENERY_COLOUR,
-	GAME_COMMAND_SET_FENCE_COLOUR,
+	GAME_COMMAND_SET_WALL_COLOUR,
 	GAME_COMMAND_SET_LARGE_SCENERY_COLOUR,
 	GAME_COMMAND_SET_BANNER_COLOUR,
 	GAME_COMMAND_SET_LAND_OWNERSHIP,
@@ -93,6 +92,8 @@ enum GAME_COMMAND {
 	GAME_COMMAND_PICKUP_GUEST,
 	GAME_COMMAND_PICKUP_STAFF,
 	GAME_COMMAND_BALLOON_PRESS,
+	GAME_COMMAND_MODIFY_TILE,
+	GAME_COMMAND_EDIT_SCENARIO_OPTIONS,
 	GAME_COMMAND_COUNT
 };
 
@@ -167,8 +168,6 @@ sint32 game_do_command_p(sint32 command, sint32 *eax, sint32 *ebx, sint32 *ecx, 
 
 void game_load_or_quit_no_save_prompt();
 bool game_load_sv6_path(const char * path);
-bool game_load_sv6(SDL_RWops* rw);
-sint32 game_load_network(SDL_RWops* rw);
 bool game_load_save(const utf8 *path);
 void game_load_init();
 void game_pause_toggle(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *edx, sint32 *esi, sint32 *edi, sint32 *ebp);

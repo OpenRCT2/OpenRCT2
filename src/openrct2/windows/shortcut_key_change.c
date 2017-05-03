@@ -14,7 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../config.h"
+#include "../config/Config.h"
 #include "../interface/keyboard_shortcut.h"
 #include "../interface/themes.h"
 #include "../interface/window.h"
@@ -40,7 +40,7 @@ static rct_widget window_shortcut_change_widgets[] = {
 	{ WIDGETS_END }
 };
 
-static void window_shortcut_change_mouseup(rct_window *w, sint32 widgetIndex);
+static void window_shortcut_change_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_shortcut_change_invalidate(rct_window *w);
 static void window_shortcut_change_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
@@ -84,7 +84,7 @@ void window_shortcut_change_open(sint32 selected_key){
 	rct_window* w = window_create_centred(WW, WH, &window_shortcut_change_events, WC_CHANGE_KEYBOARD_SHORTCUT, 0);
 
 	w->widgets = window_shortcut_change_widgets;
-	w->enabled_widgets = (1 << 2);
+	w->enabled_widgets = (1ULL << WIDX_CLOSE);
 	window_init_scroll_widgets(w);
 }
 
@@ -92,7 +92,7 @@ void window_shortcut_change_open(sint32 selected_key){
 *
 *  rct2: 0x006E3AE0
 */
-static void window_shortcut_change_mouseup(rct_window *w, sint32 widgetIndex)
+static void window_shortcut_change_mouseup(rct_window *w, rct_widgetindex widgetIndex)
 {
 	switch (widgetIndex){
 	case WIDX_CLOSE:

@@ -14,7 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../config.h"
+#include "../config/Config.h"
 #include "../game.h"
 #include "../input.h"
 #include "../interface/themes.h"
@@ -28,7 +28,7 @@
 #include "../peep/staff.h"
 #include "../rct2.h"
 #include "../sprites.h"
-#include "../world/climate.h"
+#include "../world/Climate.h"
 #include "../world/park.h"
 #include "../world/sprite.h"
 
@@ -72,12 +72,12 @@ rct_widget window_game_bottom_toolbar_widgets[] = {
 	{ WIDGETS_END },
 };
 
-static void window_game_bottom_toolbar_mouseup(rct_window *w, sint32 widgetIndex);
-static void window_game_bottom_toolbar_tooltip(rct_window* w, sint32 widgetIndex, rct_string_id *stringId);
+static void window_game_bottom_toolbar_mouseup(rct_window *w, rct_widgetindex widgetIndex);
+static void window_game_bottom_toolbar_tooltip(rct_window* w, rct_widgetindex widgetIndex, rct_string_id *stringId);
 static void window_game_bottom_toolbar_invalidate(rct_window *w);
 static void window_game_bottom_toolbar_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_game_bottom_toolbar_update(rct_window* w);
-static void window_game_bottom_toolbar_cursor(rct_window *w, sint32 widgetIndex, sint32 x, sint32 y, sint32 *cursorId);
+static void window_game_bottom_toolbar_cursor(rct_window *w, rct_widgetindex widgetIndex, sint32 x, sint32 y, sint32 *cursorId);
 static void window_game_bottom_toolbar_unknown05(rct_window *w);
 
 static void window_game_bottom_toolbar_draw_left_panel(rct_drawpixelinfo *dpi, rct_window *w);
@@ -162,7 +162,7 @@ void window_game_bottom_toolbar_open()
  *
  *  rct2: 0x0066C588
  */
-static void window_game_bottom_toolbar_mouseup(rct_window *w, sint32 widgetIndex)
+static void window_game_bottom_toolbar_mouseup(rct_window *w, rct_widgetindex widgetIndex)
 {
 	NewsItem *newsItem;
 
@@ -211,7 +211,7 @@ static void window_game_bottom_toolbar_mouseup(rct_window *w, sint32 widgetIndex
 	}
 }
 
-static void window_game_bottom_toolbar_tooltip(rct_window* w, sint32 widgetIndex, rct_string_id *stringId)
+static void window_game_bottom_toolbar_tooltip(rct_window* w, rct_widgetindex widgetIndex, rct_string_id *stringId)
 {
 	sint32 month, day;
 
@@ -490,13 +490,13 @@ static void window_game_bottom_toolbar_draw_right_panel(rct_drawpixelinfo *dpi, 
 	x += 30;
 
 	// Current weather
-	gfx_draw_sprite(dpi, climate_weather_data[gClimateCurrentWeather].sprite_id, x, y, 0);
+	gfx_draw_sprite(dpi, ClimateWeatherData[gClimateCurrentWeather].SpriteId, x, y, 0);
 
 	// Next weather
-	if (climate_weather_data[gClimateCurrentWeather].sprite_id != climate_weather_data[gClimateNextWeather].sprite_id) {
+	if (ClimateWeatherData[gClimateCurrentWeather].SpriteId != ClimateWeatherData[gClimateNextWeather].SpriteId) {
 		if (gClimateUpdateTimer < 960) {
 			gfx_draw_sprite(dpi, SPR_NEXT_WEATHER, x + 27, y + 5, 0);
-			gfx_draw_sprite(dpi, climate_weather_data[gClimateNextWeather].sprite_id, x + 40, y, 0);
+			gfx_draw_sprite(dpi, ClimateWeatherData[gClimateNextWeather].SpriteId, x + 40, y, 0);
 		}
 	}
 }
@@ -620,7 +620,7 @@ static void window_game_bottom_toolbar_update(rct_window* w){
  *
  *  rct2: 0x0066C644
  */
-static void window_game_bottom_toolbar_cursor(rct_window *w, sint32 widgetIndex, sint32 x, sint32 y, sint32 *cursorId)
+static void window_game_bottom_toolbar_cursor(rct_window *w, rct_widgetindex widgetIndex, sint32 x, sint32 y, sint32 *cursorId)
 {
 	switch (widgetIndex) {
 	case WIDX_MONEY:

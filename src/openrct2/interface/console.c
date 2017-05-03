@@ -17,7 +17,7 @@
 #include <stdarg.h>
 #include <SDL_scancode.h>
 
-#include "../config.h"
+#include "../config/Config.h"
 #include "../drawing/drawing.h"
 #include "../game.h"
 #include "../input.h"
@@ -33,10 +33,12 @@
 #include "../peep/staff.h"
 #include "../platform/platform.h"
 #include "../rct2.h"
+#include "../ride/ride.h"
 #include "../util/sawyercoding.h"
 #include "../util/util.h"
+#include "../Version.h"
 #include "../world/banner.h"
-#include "../world/climate.h"
+#include "../world/Climate.h"
 #include "../world/park.h"
 #include "../world/scenery.h"
 #include "console.h"
@@ -453,16 +455,31 @@ static sint32 cc_rides(const utf8 **argv, sint32 argc)
 			FOR_ALL_RIDES(i, ride) {
 				char name[128];
 				format_string(name, 128, ride->name, &ride->name_arguments);
-				console_printf("rides %03d type: %02u subtype %03u name %s", i, ride->type, ride->subtype, name);
+				console_printf("ride: %03d type: %02u subtype %03u operating mode: %02u name: %s", i, ride->type, ride->subtype, ride->mode, name);
 			}
 		} else if (strcmp(argv[0], "set") == 0) {
 			if (argc < 4) {
-				console_printf("rides set type <ride id> <ride type>");
-				console_printf("rides set friction <ride id> <friction value>");
+				if (argc > 1 && strcmp(argv[1], "mode") == 0){
+					console_printf("Ride modes are specified using integer IDs as given below:");
+					for (sint32 i = 0; i < RIDE_MODE_COUNT; i++) {
+						char mode_name[128] = { 0 };
+						rct_string_id mode_string_id = STR_RIDE_MODE_NORMAL + i;
+						format_string(mode_name, 128, mode_string_id, 0);
+						console_printf("%02d - %s", i, mode_name);
+					}
+					
+				} else {
+					console_printf("rides set type <ride id> <ride type>");
+					console_printf("rides set mode [<ride id> <operating mode>]");
+					console_printf("rides set friction <ride id> <friction value>");
+					console_printf("rides set excitement <ride id> <excitement value>");
+					console_printf("rides set intensity <ride id> <intensity value>");
+					console_printf("rides set nausea <ride id> <nausea value>");
+				}
 				return 0;
 			}
 			if (strcmp(argv[1], "type") == 0) {
-				bool int_valid[3] = { 0 };
+				bool int_valid[2] = { 0 };
 				sint32 ride_index = console_parse_int(argv[2], &int_valid[0]);
 				sint32 type = console_parse_int(argv[3], &int_valid[1]);
 				if (!int_valid[0] || !int_valid[1]) {
@@ -476,30 +493,129 @@ static sint32 cc_rides(const utf8 **argv, sint32 argc)
 						console_printf("That didn't work");
 					}
 				}
-			} else if (strcmp(argv[1], "friction") == 0) {
+			}
+			else if (strcmp(argv[1], "mode") == 0) {
+				bool int_valid[2] = { 0 };
+				sint32 ride_index = console_parse_int(argv[2], &int_valid[0]);
+				sint32 mode = console_parse_int(argv[3], &int_valid[1]);
+				if (!int_valid[0] || !int_valid[1]) {
+					console_printf("This command expects integer arguments");
+				} else if (ride_index < 0) {
+					console_printf("Ride index must not be negative");
+				} else {
+					rct_ride *ride = get_ride(ride_index);
+					if (mode <= 0 || mode > (RIDE_MODE_COUNT - 1)) {
+						console_printf("Invalid ride mode.");
+					}
+					else if (ride == NULL || ride->type == RIDE_TYPE_NULL) {
+						console_printf("No ride found with index %d", ride_index);
+					}
+					else {
+						ride->mode = mode;
+						invalidate_test_results(ride_index);
+					}
+				}
+			}
+			else if (strcmp(argv[1], "friction") == 0) {
 				bool int_valid[2] = { 0 };
 				sint32 ride_index = console_parse_int(argv[2], &int_valid[0]);
 				sint32 friction = console_parse_int(argv[3], &int_valid[1]);
 
 				if (ride_index < 0) {
 					console_printf("Ride index must not be negative");
-				} else if (!int_valid[0] || !int_valid[1]) {
+				}
+				else if (!int_valid[0] || !int_valid[1]) {
 					console_printf("This command expects integer arguments");
-				} else {
+				}
+				else {
 					rct_ride *ride = get_ride(ride_index);
 					if (friction <= 0) {
 						console_printf("Friction value must be strictly positive");
-					} else if (ride->type == RIDE_TYPE_NULL) {
-						console_printf("No ride found with index %d",ride_index);
-					} else {
+					}
+					else if (ride->type == RIDE_TYPE_NULL) {
+						console_printf("No ride found with index %d", ride_index);
+					}
+					else {
 						for (sint32 i = 0; i < ride->num_vehicles; i++) {
 							uint16 vehicle_index = ride->vehicles[i];
- 							while (vehicle_index != SPRITE_INDEX_NULL) {
-								rct_vehicle *vehicle=GET_VEHICLE(vehicle_index);
-								vehicle->friction=friction;
-								vehicle_index=vehicle->next_vehicle_on_train;
+							while (vehicle_index != SPRITE_INDEX_NULL) {
+								rct_vehicle *vehicle = GET_VEHICLE(vehicle_index);
+								vehicle->friction = friction;
+								vehicle_index = vehicle->next_vehicle_on_train;
 							}
 						}
+					}
+				}
+			}
+			else if (strcmp(argv[1], "excitement") == 0) {
+				bool int_valid[2] = { 0 };
+				sint32 ride_index = console_parse_int(argv[2], &int_valid[0]);
+				ride_rating excitement = console_parse_int(argv[3], &int_valid[1]);
+
+				if (ride_index < 0) {
+					console_printf("Ride index must not be negative");
+				}
+				else if (!int_valid[0] || !int_valid[1]) {
+					console_printf("This command expects integer arguments");
+				}
+				else {
+					rct_ride *ride = get_ride(ride_index);
+					if (excitement <= 0) {
+						console_printf("Excitement value must be strictly positive");
+					}
+					else if (ride->type == RIDE_TYPE_NULL) {
+						console_printf("No ride found with index %d", ride_index);
+					}
+					else {
+						ride->excitement = excitement;
+					}
+				}
+			}
+			else if (strcmp(argv[1], "intensity") == 0) {
+				bool int_valid[2] = { 0 };
+				sint32 ride_index = console_parse_int(argv[2], &int_valid[0]);
+				ride_rating intensity = console_parse_int(argv[3], &int_valid[1]);
+
+				if (ride_index < 0) {
+					console_printf("Ride index must not be negative");
+				}
+				else if (!int_valid[0] || !int_valid[1]) {
+					console_printf("This command expects integer arguments");
+				}
+				else {
+					rct_ride *ride = get_ride(ride_index);
+					if (intensity <= 0) {
+						console_printf("Intensity value must be strictly positive");
+					}
+					else if (ride->type == RIDE_TYPE_NULL) {
+						console_printf("No ride found with index %d", ride_index);
+					}
+					else {
+						ride->intensity = intensity;
+					}
+				}
+			}
+			else if (strcmp(argv[1], "nausea") == 0) {
+				bool int_valid[2] = { 0 };
+				sint32 ride_index = console_parse_int(argv[2], &int_valid[0]);
+				ride_rating nausea = console_parse_int(argv[3], &int_valid[1]);
+
+				if (ride_index < 0) {
+					console_printf("Ride index must not be negative");
+				}
+				else if (!int_valid[0] || !int_valid[1]) {
+					console_printf("This command expects integer arguments");
+				}
+				else {
+					rct_ride *ride = get_ride(ride_index);
+					if (nausea <= 0) {
+						console_printf("Nausea value must be strictly positive");
+					}
+					else if (ride->type == RIDE_TYPE_NULL) {
+						console_printf("No ride found with index %d", ride_index);
+					}
+					else {
+						ride->nausea = nausea;
 					}
 				}
 			}
@@ -909,7 +1025,7 @@ static sint32 cc_set(const utf8 **argv, sint32 argc)
 		else if (strcmp(argv[0], "cheat_sandbox_mode") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
 			if (gCheatsSandboxMode != (int_val[0] != 0)) {
 				if (game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_SANDBOXMODE, (int_val[0] != 0), GAME_COMMAND_CHEAT, 0, 0) != MONEY32_UNDEFINED) {
-					//Change it locally so it shows the accurate value in the 
+					//Change it locally so it shows the accurate value in the
 					//"console_execute_silent("get cheat_sandbox_mode")" line when in network client mode
 					gCheatsSandboxMode = (int_val[0] != 0);
 				}
@@ -922,7 +1038,7 @@ static sint32 cc_set(const utf8 **argv, sint32 argc)
 		else if (strcmp(argv[0], "cheat_disable_clearance_checks") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
 			if (gCheatsDisableClearanceChecks != (int_val[0] != 0)) {
 				if (game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_DISABLECLEARANCECHECKS, (int_val[0] != 0), GAME_COMMAND_CHEAT, 0, 0) != MONEY32_UNDEFINED) {
-					//Change it locally so it shows the accurate value in the 
+					//Change it locally so it shows the accurate value in the
 					//"console_execute_silent("get cheat_disable_clearance_checks")" line when in network client mode
 					gCheatsDisableClearanceChecks = (int_val[0] != 0);
 				}
@@ -935,7 +1051,7 @@ static sint32 cc_set(const utf8 **argv, sint32 argc)
 		else if (strcmp(argv[0], "cheat_disable_support_limits") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
 			if (gCheatsDisableSupportLimits != (int_val[0] != 0)) {
 				if (game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_DISABLESUPPORTLIMITS, (int_val[0] != 0), GAME_COMMAND_CHEAT, 0, 0) != MONEY32_UNDEFINED) {
-					//Change it locally so it shows the accurate value in the 
+					//Change it locally so it shows the accurate value in the
 					//"console_execute_silent("get cheat_disable_support_limits")" line when in network client mode
 					gCheatsDisableSupportLimits = (int_val[0] != 0);
 				}
@@ -962,7 +1078,7 @@ static sint32 cc_set(const utf8 **argv, sint32 argc)
 static sint32 cc_twitch(const utf8 **argv, sint32 argc)
 {
 #ifdef DISABLE_TWITCH
-	console_writeline_error("OpenRCT2 build not compiled with Twitch integeration.");
+	console_writeline_error("OpenRCT2 build not compiled with Twitch integration.");
 #else
 	// TODO add some twitch commands
 #endif
@@ -1058,7 +1174,7 @@ static sint32 cc_reset_user_strings(const utf8 **argv, sint32 argc)
 
 static sint32 cc_fix_banner_count(const utf8 **argv, sint32 argc)
 {
-	fix_banner_count();
+	banner_reset_broken_index();
 	return 0;
 }
 

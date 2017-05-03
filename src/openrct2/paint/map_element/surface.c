@@ -15,7 +15,7 @@
 #pragma endregion
 
 #include "../../cheats.h"
-#include "../../config.h"
+#include "../../config/Config.h"
 #include "../../interface/viewport.h"
 #include "../../peep/staff.h"
 #include "../../rct2.h"
@@ -516,7 +516,7 @@ static void viewport_surface_draw_land_side_top(enum edge_t edge, uint8 height, 
 	const uint8 rotation = get_current_rotation();
 	uint8 cur_height = min(regs.ch, regs.ah);
 	if (regs.ch != regs.ah) {
-		// neightbour tile corners aren't level
+		// neighbour tile corners aren't level
 		uint32 image_offset = 3;
 		if (regs.ch > regs.ah) {
 			image_offset = 4;
@@ -778,7 +778,7 @@ static void viewport_surface_draw_water_side_top(enum edge_t edge, uint8 height,
 	const uint8 rotation = get_current_rotation();
 	uint8 cur_height = min(regs.ch, regs.ah);
 	if (regs.ch != regs.ah) {
-		// neightbour tile corners aren't level
+		// neighbour tile corners aren't level
 		uint32 image_offset = 3;
 		if (regs.ch > regs.ah) {
 			image_offset = 4;
@@ -1076,7 +1076,7 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
 		if ((mapElement->properties.surface.terrain & 0xE0) == 0) {
 			if ((mapElement->type & 0x3) == 0) {
 				if (zoomLevel == 0) {
-					if ((gCurrentViewportFlags & 0x1001) == 0) {
+					if ((gCurrentViewportFlags & (VIEWPORT_FLAG_HIDE_BASE | VIEWPORT_FLAG_UNDERGROUND_INSIDE)) == 0) {
 						branch = mapElement->properties.surface.grass_length & 0x7;
 					}
 				}

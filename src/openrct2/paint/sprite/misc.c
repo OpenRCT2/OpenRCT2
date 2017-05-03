@@ -32,7 +32,7 @@ const uint32 vehicle_particle_base_sprites[] = {
 	22577, 22589, 22601, 22613, 22625
 };
 
-extern const uint8 * duck_animations[];
+extern const uint8 * DuckAnimations[];
 
 /**
  * rct2: 0x00672AC9
@@ -181,18 +181,14 @@ void misc_paint(rct_sprite *misc, sint32 imageDirection)
 			break;
 		}
 
-		case SPRITE_MISC_DUCK: // 8
-		{
-			if (dpi->zoom_level != 0) {
-				return;
+		case SPRITE_MISC_DUCK:
+			if (dpi->zoom_level == 0) {
+				rct_duck * duck = &misc->duck;
+				uint32 imageId = duck_get_frame_image(&misc->duck, imageDirection);
+				if (imageId != 0) {
+					sub_98196C(imageId, 0, 0, 1, 1, 0, duck->z, get_current_rotation());
+				}
 			}
-
-			rct_duck duck = misc->duck;
-
-			uint8 imageOffset = duck_animations[duck.state][duck.frame];
-			uint32 imageId = 23133 + (imageOffset * 4) + (imageDirection / 8);
-			sub_98196C(imageId, 0, 0, 1, 1, 0, duck.z, get_current_rotation());
 			break;
-		}
 	}
 }

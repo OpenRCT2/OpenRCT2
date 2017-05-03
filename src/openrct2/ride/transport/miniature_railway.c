@@ -1253,7 +1253,7 @@ static void paint_miniature_railway_track_left_eighth_to_diag(uint8 rideIndex, u
 
 	bool isSupported = false;
 	bool isRightEighthToOrthog = mapElement->properties.track.type == TRACK_ELEM_RIGHT_EIGHTH_TO_ORTHOGONAL;
-	// Right eigth to orthogonal calls this function but we do not want to have a support call for it
+	// Right eighth to orthogonal calls this function but we do not want to have a support call for it
 	// for track sequence 4
 	if (trackSequence != 4 || !isRightEighthToOrthog) {
 		isSupported = wooden_a_supports_paint_setup(supportType[direction][trackSequence], 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
@@ -1403,7 +1403,7 @@ static void paint_miniature_railway_track_right_eighth_to_diag(uint8 rideIndex, 
 
 	bool isSupported = false;
 	bool isLeftEighthToOrthog = mapElement->properties.track.type == TRACK_ELEM_LEFT_EIGHTH_TO_ORTHOGONAL;
-	// Right eigth to orthogonal calls this function but we do not want to have a support call for it
+	// Right eighth to orthogonal calls this function but we do not want to have a support call for it
 	// for track sequence 4
 	if (trackSequence != 4 || !isLeftEighthToOrthog) {
 		isSupported = wooden_a_supports_paint_setup(supportType[direction][trackSequence], 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);

@@ -113,6 +113,9 @@ typedef uint8 colour_t;
 #endif // __GNUC__
 #endif // __cplusplus
 
+// Gets the name of a symbol as a C string
+#define nameof(symbol) #symbol
+
 #if defined(__unix__) || (defined(__APPLE__) && defined(__MACH__))
 #include <unistd.h>
 #define STUB() log_warning("Function %s at %s:%d is a stub.\n", __PRETTY_FUNCTION__, __FILE__, __LINE__)
@@ -141,8 +144,6 @@ char *strndup(const char *src, size_t size);
 #ifndef MAP_ANONYMOUS
 #define MAP_ANONYMOUS MAP_ANON
 #endif
-
-#include "version.h"
 
 #define OPENRCT2_MASTER_SERVER_URL	"https://servers.openrct2.website"
 
@@ -222,16 +223,7 @@ typedef uint16 rct_string_id;
 	#define RESTRICT
 #endif
 
-#ifdef __cplusplus
 #define assert_struct_size(x, y) static_assert(sizeof(x) == (y), "Improper struct size")
-#else
-	// Visual Studio does not know _Static_assert
-	#if !defined(_MSC_VER)
-		#define assert_struct_size(x, y) _Static_assert(sizeof(x) == (y), "Improper struct size")
-	#else
-		#define assert_struct_size(x, y)
-	#endif // !defined(_MSC_VER)
-#endif
 
 #ifdef PLATFORM_X86
 	#ifndef FASTCALL

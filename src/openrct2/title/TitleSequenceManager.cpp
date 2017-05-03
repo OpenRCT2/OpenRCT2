@@ -67,6 +67,10 @@ namespace TitleSequenceManager
 
     const TitleSequenceManagerItem * GetItem(size_t i)
     {
+        if (i >= _items.size())
+        {
+            return nullptr;
+        }
         return &_items[i];
     }
 

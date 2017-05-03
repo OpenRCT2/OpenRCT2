@@ -15,7 +15,7 @@
 #pragma endregion
 
 #include "../audio/audio.h"
-#include "../config.h"
+#include "../config/Config.h"
 #include "../game.h"
 #include "../localisation/localisation.h"
 #include "../interface/themes.h"
@@ -71,7 +71,7 @@ static const rct_string_id window_save_prompt_labels[][2] = {
 
 
 static void window_save_prompt_close(rct_window *w);
-static void window_save_prompt_mouseup(rct_window *w, sint32 widgetIndex);
+static void window_save_prompt_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_save_prompt_invalidate(rct_window *w);
 static void window_save_prompt_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_save_prompt_callback(sint32 result, const utf8 * path);
@@ -190,9 +190,9 @@ void window_save_prompt_open()
 	window_invalidate_by_class(WC_TOP_TOOLBAR);
 
 	stringId = window_save_prompt_labels[prompt_mode][0];
-	if (stringId == STR_LOAD_GAME_PROMPT_TITLE && gScreenFlags & 2)
+	if (stringId == STR_LOAD_GAME_PROMPT_TITLE && gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
 		stringId = STR_LOAD_LANDSCAPE_PROMPT_TITLE;
-	if (stringId == STR_QUIT_GAME_PROMPT_TITLE && gScreenFlags & 2)
+	if (stringId == STR_QUIT_GAME_PROMPT_TITLE && gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
 		stringId = STR_QUIT_SCENARIO_EDITOR;
 	window_save_prompt_widgets[WIDX_TITLE].text = stringId;
 	window_save_prompt_widgets[WIDX_LABEL].text = window_save_prompt_labels[prompt_mode][1];
@@ -214,7 +214,7 @@ static void window_save_prompt_close(rct_window *w)
  *
  *  rct2: 0x0066DDF2
  */
-static void window_save_prompt_mouseup(rct_window *w, sint32 widgetIndex)
+static void window_save_prompt_mouseup(rct_window *w, rct_widgetindex widgetIndex)
 {
 	if (gScreenFlags & (SCREEN_FLAGS_TITLE_DEMO | SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)) {
 		switch (widgetIndex) {
@@ -236,7 +236,7 @@ static void window_save_prompt_mouseup(rct_window *w, sint32 widgetIndex)
 				save_game_as();
 			}
 			window_close(w);
-			gLoadSaveCallback = window_save_prompt_callback;
+			window_loadsave_set_loadsave_callback(window_save_prompt_callback);
 			break;
 		case WIDX_DONT_SAVE:
 			game_load_or_quit_no_save_prompt();

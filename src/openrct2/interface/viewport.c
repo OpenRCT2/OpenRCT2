@@ -14,7 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../config.h"
+#include "../config/Config.h"
 #include "../drawing/drawing.h"
 #include "../game.h"
 #include "../input.h"
@@ -27,7 +27,7 @@
 #include "../ride/track_data.h"
 #include "../sprites.h"
 #include "../world/banner.h"
-#include "../world/climate.h"
+#include "../world/Climate.h"
 #include "../world/entrance.h"
 #include "../world/footpath.h"
 #include "../world/map.h"
@@ -62,10 +62,10 @@ uint32 gUnkEDF81C;
 
 static rct_drawpixelinfo _viewportDpi1;
 static rct_drawpixelinfo _viewportDpi2;
-static uint8 _unk9AC148;
+static uint8 _interactionSpriteType;
 static uint8 _unk9AC149;
-static sint16 _unk9AC14C;
-static sint16 _unk9AC14E;
+static sint16 _interactionMapX;
+static sint16 _interactionMapY;
 static uint16 _unk9AC154;
 static sint16 _unk9ABDAE;
 
@@ -91,11 +91,11 @@ void viewport_init_all()
 	}
 
 	// ?
-	gInputFlags = 0;
-	gInputState = INPUT_STATE_RESET;
+	input_reset_flags();
+	input_set_state(INPUT_STATE_RESET);
 	gPressedWidget.window_classification = 255;
 	gPickupPeepImage = UINT32_MAX;
-	gTooltipNotShownTicks = -1;
+	reset_tooltip_not_shown();
 	gMapSelectFlags = 0;
 	gStaffDrawPatrolAreas = 0xFFFF;
 	textinput_cancel();
@@ -997,7 +997,7 @@ void viewport_set_visibility(uint8 mode)
 
 /**
  * Stores some info about the element pointed at, if requested for this particular type through the interaction mask.
- * Origninaly checked 0x0141F569 at start
+ * Originally checked 0x0141F569 at start
  *  rct2: 0x00688697
  */
 static void store_interaction_info(paint_struct *ps)
@@ -1014,10 +1014,10 @@ static void store_interaction_info(paint_struct *ps)
 		mask = 1 << (ps->sprite_type - 1);
 
 	if (!(_unk9AC154 & mask)) {
-		_unk9AC148 = ps->sprite_type;
+		_interactionSpriteType = ps->sprite_type;
 		_unk9AC149 = ps->var_29;
-		_unk9AC14C = ps->map_x;
-		_unk9AC14E = ps->map_y;
+		_interactionMapX = ps->map_x;
+		_interactionMapY = ps->map_y;
 		_interaction_element = ps->mapElement;
 	}
 }
@@ -1355,7 +1355,7 @@ static void sub_68862C(rct_drawpixelinfo * dpi, paint_struct * ps)
 void get_map_coordinates_from_pos(sint32 screenX, sint32 screenY, sint32 flags, sint16 *x, sint16 *y, sint32 *interactionType, rct_map_element **mapElement, rct_viewport **viewport)
 {
 	_unk9AC154 = flags & 0xFFFF;
-	_unk9AC148 = 0;
+	_interactionSpriteType = 0;
 	rct_window* window = window_find_from_point(screenX, screenY);
 	if (window != NULL && window->viewport != NULL)
 	{
@@ -1386,9 +1386,9 @@ void get_map_coordinates_from_pos(sint32 screenX, sint32 screenY, sint32 flags, 
 		}
 		if (viewport != NULL) *viewport = myviewport;
 	}
-	if (interactionType != NULL) *interactionType = _unk9AC148;
-	if (x != NULL) *x = _unk9AC14C;
-	if (y != NULL) *y = _unk9AC14E;
+	if (interactionType != NULL) *interactionType = _interactionSpriteType;
+	if (x != NULL) *x = _interactionMapX;
+	if (y != NULL) *y = _interactionMapY;
 	if (mapElement != NULL) *mapElement = _interaction_element;
 }
 

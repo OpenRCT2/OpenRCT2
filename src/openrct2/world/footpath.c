@@ -153,8 +153,8 @@ static void loc_6A6620(sint32 flags, sint32 x, sint32 y, rct_map_element *mapEle
 	if ((mapElement->properties.path.type & 4) && !(flags & GAME_COMMAND_FLAG_GHOST)) {
 		sint32 direction = mapElement->properties.path.type & 3;
 		sint32 z = mapElement->base_height;
-		map_remove_intersecting_walls(x, y, z, z + 6, direction ^ 2);
-		map_remove_intersecting_walls(x, y, z, z + 6, direction);
+		wall_remove_intersecting_walls(x, y, z, z + 6, direction ^ 2);
+		wall_remove_intersecting_walls(x, y, z, z + 6, direction);
 		mapElement = map_get_footpath_element(x / 32, y / 32, z);
 	}
 
@@ -220,10 +220,10 @@ static money32 footpath_element_insert(sint32 type, sint32 x, sint32 y, sint32 z
 
 		footpath_queue_chain_reset();
 
-		if (!(flags & (1 << 7)))
+		if (!(flags & GAME_COMMAND_FLAG_7))
 			footpath_remove_edges_at(x, y, mapElement);
 
-		if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !(flags & (1 << 6)))
+		if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !(flags & GAME_COMMAND_FLAG_GHOST))
 			automatically_set_peep_spawn(x, y, mapElement->base_height / 2);
 
 		loc_6A6620(flags, x, y, mapElement);
@@ -449,7 +449,17 @@ money32 footpath_remove_real(sint32 x, sint32 y, sint32 z, sint32 flags)
 		sub_6A759F();
 	}
 
-	return (flags & (1 << 5)) || (gParkFlags & PARK_FLAGS_NO_MONEY) ? 0 : -MONEY(10,00);
+	money32 cost = -MONEY(10,00);
+
+	bool isNotOwnedByPark = (flags & (1 << 5));
+	bool moneyDisabled = (gParkFlags & PARK_FLAGS_NO_MONEY);
+	bool isGhost = (mapElement == NULL) || (map_element_is_ghost(mapElement));
+
+	if (isNotOwnedByPark || moneyDisabled || isGhost) {
+		cost = 0;
+	}
+
+	return cost;
 }
 
 /**
@@ -852,7 +862,7 @@ bool fence_in_the_way(sint32 x, sint32 y, sint32 z0, sint32 z1, sint32 direction
 	if (mapElement == NULL)
 		return false;
 	do {
-		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_FENCE)
+		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_WALL)
 			continue;
 		if (mapElement->flags & MAP_ELEMENT_FLAG_GHOST)
 			continue;
@@ -1757,7 +1767,7 @@ void footpath_update_path_wide_flags(sint32 x, sint32 y)
 	 * they were cleared. Consequently only the wide flag for this single
 	 * tile is modified by this update.
 	 * This is important for avoiding glitches in pathfinding that occurs
-	 * between between the batches of updates to the path wide flags.
+	 * between the batches of updates to the path wide flags.
 	 * Corresponding pathList[] indexes for the following tiles
 	 * are: 2, 3, 4, 5.
 	 * Note: indexes 3, 4, 5 are reset in the current call;

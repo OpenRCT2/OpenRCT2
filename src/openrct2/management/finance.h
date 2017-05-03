@@ -54,7 +54,7 @@ extern money32 gCurrentExpenditure;
 extern money32 gCurrentProfit;
 
 /**
- * The total profit for the entire scenario that preceeds
+ * The total profit for the entire scenario that precedes
  * the current financial table.
  */
 extern money32 gHistoricalProfit;

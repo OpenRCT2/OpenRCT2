@@ -37,7 +37,7 @@ rct_widget window_about_widgets[] = {
 	{ WIDGETS_END },
 };
 
-static void window_about_mouseup(rct_window *w, sint32 widgetIndex);
+static void window_about_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_about_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
 static rct_window_event_list window_about_events = {
@@ -104,7 +104,7 @@ void window_about_open()
  *
  *  rct2: 0x0066D4D5
  */
-static void window_about_mouseup(rct_window *w, sint32 widgetIndex)
+static void window_about_mouseup(rct_window *w, rct_widgetindex widgetIndex)
 {
 	switch (widgetIndex) {
 	case WIDX_CLOSE:

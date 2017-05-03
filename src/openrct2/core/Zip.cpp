@@ -16,6 +16,7 @@
 
 #include <zip.h>
 #include "IStream.hpp"
+#include "MemoryStream.h"
 #include "Zip.h"
 
 class ZipArchive final : public IZipArchive
@@ -97,6 +98,18 @@ public:
 
         if (outSize != nullptr) *outSize = (size_t)dataSize;
         return data;
+    }
+
+    IStream * GetFileStream(const utf8 * path) const override
+    {
+        IStream * stream = nullptr;
+        size_t dataSize;
+        void * data = GetFileData(path, &dataSize);
+        if (data != nullptr)
+        {
+            stream = new MemoryStream(data, dataSize, MEMORY_ACCESS::READ | MEMORY_ACCESS::OWNER);
+        }
+        return stream;
     }
 
     void SetFileData(const utf8 * path, void * data, size_t dataSize) override

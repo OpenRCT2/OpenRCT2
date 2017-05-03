@@ -21,7 +21,7 @@
  * that is used for inputing new text for ride names and peep names.
  */
 
-#include "../config.h"
+#include "../config/Config.h"
 #include "../platform/platform.h"
 #include "../interface/window.h"
 #include "../interface/widget.h"
@@ -50,7 +50,7 @@ static rct_widget window_text_input_widgets[] = {
 };
 
 static void window_text_input_close(rct_window *w);
-static void window_text_input_mouseup(rct_window *w, sint32 widgetIndex);
+static void window_text_input_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_text_input_update7(rct_window *w);
 static void window_text_input_text(sint32 key, rct_window* w);
 static void window_text_input_invalidate(rct_window *w);
@@ -90,13 +90,13 @@ static rct_window_event_list window_text_input_events = {
 };
 
 rct_string_id input_text_description;
-char text_input[512] = { 0 };
+char text_input[TEXT_INPUT_SIZE] = { 0 };
 rct_windowclass calling_class = 0;
 rct_windownumber calling_number = 0;
 sint32 calling_widget = 0;
 sint32 _maxInputLength;
 
-void window_text_input_open(rct_window* call_w, sint32 call_widget, rct_string_id title, rct_string_id description, rct_string_id existing_text, uintptr_t existing_args, sint32 maxLength)
+void window_text_input_open(rct_window* call_w, rct_widgetindex call_widget, rct_string_id title, rct_string_id description, rct_string_id existing_text, uintptr_t existing_args, sint32 maxLength)
 {
 	_maxInputLength = maxLength;
 
@@ -105,7 +105,7 @@ void window_text_input_open(rct_window* call_w, sint32 call_widget, rct_string_i
 	// Clear the text input buffer
 	memset(text_input, 0, maxLength);
 
-	// Enter in the the text input buffer any existing
+	// Enter in the text input buffer any existing
 	// text.
 	if (existing_text != STR_NONE)
 		format_string(text_input, maxLength, existing_text, &existing_args);
@@ -116,8 +116,8 @@ void window_text_input_open(rct_window* call_w, sint32 call_widget, rct_string_i
 	input_text_description = description;
 
 	// Work out the existing size of the window
-	char wrapped_string[512];
-	safe_strcpy(wrapped_string, text_input, 512);
+	char wrapped_string[TEXT_INPUT_SIZE];
+	safe_strcpy(wrapped_string, text_input, TEXT_INPUT_SIZE);
 
 	sint32 no_lines = 0, font_height = 0;
 
@@ -155,7 +155,7 @@ void window_text_input_open(rct_window* call_w, sint32 call_widget, rct_string_i
 	w->colours[2] = call_w->colours[2];
 }
 
-void window_text_input_raw_open(rct_window* call_w, sint32 call_widget, rct_string_id title, rct_string_id description, utf8string existing_text, sint32 maxLength)
+void window_text_input_raw_open(rct_window* call_w, rct_widgetindex call_widget, rct_string_id title, rct_string_id description, utf8string existing_text, sint32 maxLength)
 {
 	_maxInputLength = maxLength;
 
@@ -164,7 +164,7 @@ void window_text_input_raw_open(rct_window* call_w, sint32 call_widget, rct_stri
 	// Clear the text input buffer
 	memset(text_input, 0, maxLength);
 
-	// Enter in the the text input buffer any existing
+	// Enter in the text input buffer any existing
 	// text.
 	if (existing_text != NULL)
 		safe_strcpy(text_input, existing_text, maxLength);
@@ -177,8 +177,8 @@ void window_text_input_raw_open(rct_window* call_w, sint32 call_widget, rct_stri
 	input_text_description = description;
 
 	// Work out the existing size of the window
-	char wrapped_string[512];
-	safe_strcpy(wrapped_string, text_input, 512);
+	char wrapped_string[TEXT_INPUT_SIZE];
+	safe_strcpy(wrapped_string, text_input, TEXT_INPUT_SIZE);
 
 	sint32 no_lines = 0, font_height = 0;
 
@@ -219,7 +219,7 @@ void window_text_input_raw_open(rct_window* call_w, sint32 call_widget, rct_stri
 /**
 *
 */
-static void window_text_input_mouseup(rct_window *w, sint32 widgetIndex)
+static void window_text_input_mouseup(rct_window *w, rct_widgetindex widgetIndex)
 {
 	rct_window *calling_w;
 
@@ -264,8 +264,8 @@ static void window_text_input_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
 	gCurrentFontFlags = 0;
 
-	char wrapped_string[512];
-	safe_strcpy(wrapped_string, text_input, 512);
+	char wrapped_string[TEXT_INPUT_SIZE];
+	safe_strcpy(wrapped_string, text_input, TEXT_INPUT_SIZE);
 
 	// String length needs to add 12 either side of box
 	// +13 for cursor when max length.
@@ -287,7 +287,7 @@ static void window_text_input_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 		if (!cur_drawn && (gTextInput.selection_offset <= char_count + string_length)) {
 			// Make a copy of the string for measuring the width.
-			char temp_string[512] = { 0 };
+			char temp_string[TEXT_INPUT_SIZE] = { 0 };
 			memcpy(temp_string, wrap_pointer, gTextInput.selection_offset - char_count);
 			cursorX = w->x + 13 + gfx_get_string_width(temp_string);
 			cursorY = y;
@@ -372,8 +372,8 @@ static void window_text_input_close(rct_window *w)
 static void window_text_input_invalidate(rct_window *w)
 {
 	// Work out the existing size of the window
-	char wrapped_string[512];
-	safe_strcpy(wrapped_string, text_input, 512);
+	char wrapped_string[TEXT_INPUT_SIZE];
+	safe_strcpy(wrapped_string, text_input, TEXT_INPUT_SIZE);
 
 	sint32 no_lines = 0, font_height = 0;
 

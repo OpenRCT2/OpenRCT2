@@ -14,7 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../config.h"
+#include "../config/Config.h"
 #include "../util/util.h"
 #include "currency.h"
 #include "string_ids.h"
@@ -43,5 +43,8 @@ void currency_load_custom_currency_config()
 {
 	CurrencyDescriptors[CURRENCY_CUSTOM].rate = gConfigGeneral.custom_currency_rate;
 	CurrencyDescriptors[CURRENCY_CUSTOM].affix_unicode = gConfigGeneral.custom_currency_affix;
-	safe_strcpy(CurrencyDescriptors[CURRENCY_CUSTOM].symbol_unicode, gConfigGeneral.custom_currency_symbol, CURRENCY_SYMBOL_MAX_SIZE);
+	if (gConfigGeneral.custom_currency_symbol != NULL)
+	{
+		safe_strcpy(CurrencyDescriptors[CURRENCY_CUSTOM].symbol_unicode, gConfigGeneral.custom_currency_symbol, CURRENCY_SYMBOL_MAX_SIZE);
+	}
 }

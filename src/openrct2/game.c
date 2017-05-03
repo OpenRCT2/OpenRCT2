@@ -16,7 +16,7 @@
 
 #include "audio/audio.h"
 #include "cheats.h"
-#include "config.h"
+#include "config/Config.h"
 #include "editor.h"
 #include "game.h"
 #include "input.h"
@@ -47,7 +47,8 @@
 #include "util/util.h"
 #include "windows/error.h"
 #include "windows/tooltip.h"
-#include "world/climate.h"
+#include "world/Climate.h"
+#include "world/entrance.h"
 #include "world/footpath.h"
 #include "world/map_animation.h"
 #include "world/park.h"
@@ -199,24 +200,24 @@ void update_palette_effects()
 		}
 
 		// animate the water/lava/chain movement palette
-		sint32 q = 0;
+		uint32 shade = 0;
 		if (gConfigGeneral.render_weather_gloom) {
 			uint8 gloom = gClimateCurrentWeatherGloom;
 			if (gloom != 0) {
 				FILTER_PALETTE_ID weatherColour = ClimateWeatherGloomColours[gloom];
-				q = 1;
+				shade = 1;
 				if (weatherColour != PALETTE_DARKEN_1) {
-					q = 2;
+					shade = 2;
 				}
 			}
 		}
 		uint32 j = gPaletteEffectFrame;
 		j = (((uint16)((~j / 2) * 128) * 15) >> 16);
-		sint32 p = SPR_GAME_PALETTE_WATER;
+		uint32 waterId = SPR_GAME_PALETTE_WATER;
 		if ((intptr_t)water_type != -1) {
-			p = water_type->var_06;
+			waterId = water_type->palette_index_1;
 		}
-		rct_g1_element g1_element = g1Elements[q + p];
+		rct_g1_element g1_element = g1Elements[shade + waterId];
 		uint8* vs = &g1_element.offset[j * 3];
 		uint8* vd = &gGamePalette[230 * 4];
 		sint32 n = 5;
@@ -231,11 +232,11 @@ void update_palette_effects()
 			vd += 4;
 		}
 
-		p = SPR_GAME_PALETTE_3;
+		waterId = SPR_GAME_PALETTE_3;
 		if ((intptr_t)water_type != -1) {
-			p = water_type->var_0A;
+			waterId = water_type->palette_index_2;
 		}
-		g1_element = g1Elements[q + p];
+		g1_element = g1Elements[shade + waterId];
 		vs = &g1_element.offset[j * 3];
 		n = 5;
 		for (sint32 i = 0; i < n; i++) {
@@ -250,8 +251,8 @@ void update_palette_effects()
 		}
 
 		j = ((uint16)(gPaletteEffectFrame * -960) * 3) >> 16;
-		p = SPR_GAME_PALETTE_4;
-		g1_element = g1Elements[q + p];
+		waterId = SPR_GAME_PALETTE_4;
+		g1_element = g1Elements[shade + waterId];
 		vs = &g1_element.offset[j * 3];
 		vd += 12;
 		n = 3;
@@ -311,11 +312,11 @@ void game_update()
 		if (gGameSpeed > 1)
 			continue;
 
-		if (gInputState == INPUT_STATE_RESET ||
-			gInputState == INPUT_STATE_NORMAL
+		if (input_get_state() == INPUT_STATE_RESET ||
+			input_get_state() == INPUT_STATE_NORMAL
 		) {
-			if (gInputFlags & INPUT_FLAG_VIEWPORT_SCROLLING) {
-				gInputFlags &= ~INPUT_FLAG_VIEWPORT_SCROLLING;
+			if (input_test_flag(INPUT_FLAG_VIEWPORT_SCROLLING)) {
+				input_set_flag(INPUT_FLAG_VIEWPORT_SCROLLING, false);
 				break;
 			}
 		} else {
@@ -335,7 +336,7 @@ void game_update()
 
 	gGameCommandNestLevel = 0;
 
-	gInputFlags &= ~INPUT_FLAG_VIEWPORT_SCROLLING;
+	input_set_flag(INPUT_FLAG_VIEWPORT_SCROLLING, false);
 
 	// the flickering frequency is reduced by 4, compared to the original
 	// it was done due to inability to reproduce original frequency
@@ -494,7 +495,7 @@ sint32 game_do_command_p(sint32 command, sint32 *eax, sint32 *ebx, sint32 *ecx, 
 
 	// Remove ghost scenery so it doesn't interfere with incoming network command
 	if ((flags & GAME_COMMAND_FLAG_NETWORKED) && !(flags & GAME_COMMAND_FLAG_GHOST) &&
-		(command == GAME_COMMAND_PLACE_FENCE ||
+		(command == GAME_COMMAND_PLACE_WALL ||
 		command == GAME_COMMAND_PLACE_SCENERY ||
 		command == GAME_COMMAND_PLACE_LARGE_SCENERY ||
 		command == GAME_COMMAND_PLACE_BANNER ||
@@ -844,26 +845,15 @@ bool game_load_save(const utf8 *path)
 
 	safe_strcpy(gScenarioSavePath, path, MAX_PATH);
 
-	SDL_RWops* rw = SDL_RWFromFile(path, "rb");
-	if (rw == NULL) {
-		log_error("unable to open %s", path);
-		gErrorType = ERROR_TYPE_FILE_LOAD;
-		gGameCommandErrorTitle = STR_FILE_CONTAINS_INVALID_DATA;
-		return false;
-	}
-
 	uint32 extension_type = get_file_extension_type(path);
 	bool result = false;
-
 	if (extension_type == FILE_EXTENSION_SV6) {
-		result = game_load_sv6(rw);
+		result = game_load_sv6_path(path);
 	} else if (extension_type == FILE_EXTENSION_SV4) {
 		result = rct1_load_saved_game(path);
 		if (result)
 			gFirstTimeSave = 1;
 	}
-
-	SDL_RWclose(rw);
 
 	if (result) {
 		if (network_get_mode() == NETWORK_MODE_CLIENT) {
@@ -948,12 +938,8 @@ void save_game()
 {
 	if (!gFirstTimeSave) {
 		log_verbose("Saving to %s", gScenarioSavePath);
-
-		SDL_RWops* rw = SDL_RWFromFile(gScenarioSavePath, "wb+");
-		if (rw != NULL) {
-			scenario_save(rw, 0x80000000 | (gConfigGeneral.save_plugin_data ? 1 : 0));
+		if (scenario_save(gScenarioSavePath, 0x80000000 | (gConfigGeneral.save_plugin_data ? 1 : 0))) {
 			log_verbose("Saved to %s", gScenarioSavePath);
-			SDL_RWclose(rw);
 
 			// Setting screen age to zero, so no prompt will pop up when closing the
 			// game shortly after saving.
@@ -1057,10 +1043,10 @@ void game_autosave()
 	rct2_time currentTime;
 	platform_get_time_local(&currentTime);
 
-	utf8 timeName[34];
-	snprintf(timeName, 34, "autosave_%d-%02d-%02d_%02d-%02d-%02d%s",
-		currentDate.year, currentDate.month, currentDate.day, currentTime.hour, currentTime.minute,currentTime.second,
-		fileExtension);
+	utf8 timeName[44];
+	snprintf(timeName, sizeof(timeName), "autosave_%04u-%02u-%02u_%02u-%02u-%02u%s",
+		currentDate.year, currentDate.month, currentDate.day, currentTime.hour,
+		currentTime.minute, currentTime.second, fileExtension);
 
 	limit_autosave_count(NUMBER_OF_AUTOSAVES_TO_KEEP);
 
@@ -1077,11 +1063,7 @@ void game_autosave()
 		platform_file_copy(path, backupPath, true);
 	}
 
-	SDL_RWops* rw = SDL_RWFromFile(path, "wb+");
-	if (rw != NULL) {
-		scenario_save(rw, saveFlags);
-		SDL_RWclose(rw);
-	}
+	scenario_save(path, saveFlags);
 }
 
 /**
@@ -1148,14 +1130,14 @@ void game_load_or_quit_no_save_prompt()
 			load_landscape();
 		} else {
 			window_loadsave_open(LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME, NULL);
-			gLoadSaveCallback = game_load_or_quit_no_save_prompt_callback;
+			window_loadsave_set_loadsave_callback(game_load_or_quit_no_save_prompt_callback);
 		}
 		break;
 	case PM_SAVE_BEFORE_QUIT:
 		game_do_command(0, 1, 0, 1, GAME_COMMAND_LOAD_OR_QUIT, 0, 0);
 		tool_cancel();
-		if (gInputFlags & INPUT_FLAG_5) {
-			gInputFlags &= ~INPUT_FLAG_5;
+		if (input_test_flag(INPUT_FLAG_5)) {
+			input_set_flag(INPUT_FLAG_5, false);
 		}
 		gGameSpeed = 1;
 		gFirstTimeSave = 1;
@@ -1175,7 +1157,7 @@ void game_init_all(sint32 mapSize)
 	map_init(mapSize);
 	park_init();
 	finance_init();
-	reset_park_entrances();
+	reset_park_entry();
 	banner_init();
 	ride_init_all();
 	reset_sprite_list();
@@ -1236,8 +1218,8 @@ GAME_COMMAND_POINTER* new_game_command_table[GAME_COMMAND_COUNT] = {
 	game_command_set_maze_track,
 	game_command_set_park_entrance_fee,
 	game_command_update_staff_colour,
-	game_command_place_fence,
-	game_command_remove_fence,
+	game_command_place_wall,
+	game_command_remove_wall,
 	game_command_place_large_scenery,
 	game_command_remove_large_scenery,
 	game_command_set_current_loan,
@@ -1248,7 +1230,7 @@ GAME_COMMAND_POINTER* new_game_command_table[GAME_COMMAND_COUNT] = {
 	game_command_place_banner,
 	game_command_remove_banner,
 	game_command_set_scenery_colour,
-	game_command_set_fence_colour,
+	game_command_set_wall_colour,
 	game_command_set_large_scenery_colour,
 	game_command_set_banner_colour,
 	game_command_set_land_ownership,
@@ -1264,4 +1246,6 @@ GAME_COMMAND_POINTER* new_game_command_table[GAME_COMMAND_COUNT] = {
 	game_command_pickup_guest,
 	game_command_pickup_staff,
 	game_command_balloon_press,
+	game_command_modify_tile,
+	game_command_edit_scenario_options,
 };

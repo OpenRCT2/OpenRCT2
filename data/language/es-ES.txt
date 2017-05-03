@@ -2664,14 +2664,14 @@ STR_2680    :Investigación Completa
 STR_2681    :{MEDIUMFONT}{BLACK}Incrementa tu dinero en {CURRENCY}
 STR_2684    :{SMALLFONT}{BLACK}Llega un gran grupo de visitantes
 STR_2685    :Simplex Noise Parameters
-STR_2686    :{WINDOW_COLOUR_2}Bajo:
-STR_2687    :{WINDOW_COLOUR_2}Alto:
-STR_2688    :{WINDOW_COLOUR_2}Frecuencia Base:
-STR_2689    :{WINDOW_COLOUR_2}Octavas:
+STR_2686    :Bajo:
+STR_2687    :Alto:
+STR_2688    :Frecuencia Base:
+STR_2689    :Octavas:
 STR_2690    :Generación Mapa
-STR_2691    :{WINDOW_COLOUR_2}Altura de base:
-STR_2692    :{WINDOW_COLOUR_2}Altura de agua:
-STR_2693    :{WINDOW_COLOUR_2}Terreno:
+STR_2691    :Altura de base:
+STR_2692    :Altura de agua:
+STR_2693    :Terreno:
 STR_2694    :Generar
 STR_2695    :Terreno aleatorio
 STR_2696    :Colocar arboles
@@ -2721,7 +2721,7 @@ STR_2739    :Ninguna
 STR_2740    :RollerCoaster Tycoon 1
 STR_2741    :RollerCoaster Tycoon 2
 STR_2742    :css50.dat no encontrado
-STR_2743    :Copia data\css17.dat de tu instalación de RCT1 en data\css50.dat de la instalación de RCT2,
+STR_2743    :Copia data\css17.dat de tu instalación de RCT1 en data\css50.dat de tu instalación de RCT2, o asegúrate de que la carpeta de RCT1 en la sección "Otras Opciones" esté establecido correctamente.
 STR_2744    :[
 STR_2745    :\
 STR_2746    :]
@@ -3185,7 +3185,7 @@ STR_3207    :Diseñador de Montañas Rusas
 STR_3208    :Diseñador de Vías
 STR_3209    :Regresar al paso anterior:
 STR_3210    :Avanzar al siguiente paso:
-STR_3211    :{WINDOW_COLOUR_2}Tamaño de Mapa:
+STR_3211    :Tamaño de Mapa:
 STR_3212    :{POP16}{COMMA16} x {PUSH16}{COMMA16}
 STR_3213    :No puedes disminuir más el tamaño del mapa
 STR_3214    :No puedes aumentar más el tamaño del mapa
@@ -4105,7 +4105,7 @@ STR_5832    :{SMALLFONT}{BLACK}Mostrar marcas de altura con{NEWLINE}valores rela
 STR_5833    :{SMALLFONT}{BLACK}Cambiar el formato de fecha a usar en el juego.
 STR_5834    :{SMALLFONT}{BLACK}Selecciona el dispositivo de sonido que OpenRCT2 debe usar.
 STR_5835    :{SMALLFONT}{BLACK}Silenciar el juego si la ventana pierde el foco.
-STR_5836    :{SMALLFONT}{BLACK}Selecciona la música usada en el menú principal.{NEWLINE}Seleccionar el tema de RCT1 requiere copiar el archivo 'data/css17.dat' de la carpeta de RCT1 a 'data/css50.dat' en la carpeta de RCT2.
+STR_5836    :{SMALLFONT}{BLACK}Selecciona la música usada en el menú principal.{NEWLINE}Seleccionar el tema de RCT1 requiere copiar el archivo 'data/css17.dat' de la carpeta de RCT1 a 'data/css50.dat' en la carpeta de RCT2, o establece la ruta de RCT1 en "Otras Opciones".
 STR_5837    :{SMALLFONT}{BLACK}Crea y gestiona tus temas personalizados de la interfaz.
 STR_5838    :{SMALLFONT}{BLACK}Mostrar un botón separado para las finanzas en la barra de herramienta superior.
 STR_5839    :{SMALLFONT}{BLACK}Mostrar un botón separado para la investigación y desarrollo en la barra de herramienta superior.
@@ -4281,6 +4281,47 @@ STR_6009    :{SMALLFONT}{BLACK}Selecciona la altura de corte
 STR_6010    :{COMMA2DP32}m
 STR_6011    :{COMMA1DP16}ft
 STR_6012    :{COMMA1DP16}
+STR_6013    :{SMALLFONT}{BLACK}Los visitantes sólo pagarán por la entrada del parque y los servicios.{NEWLINE}La entrada de la atracción es gratis.
+STR_6014    :{SMALLFONT}{BLACK}Los visitantes sólo pagarán por la entrada de atracciones y servicios.{NEWLINE}Los visitantes no pagan por entrar al parque.
+STR_6015    :Inclinado
+STR_6016    :Modificar Baldosa
+STR_6017    :Por favor más despacio
+STR_6018    :Construir Atrac. - Curva Izquierda
+STR_6019    :Construir Atrac. - Curva Derecha
+STR_6020    :Const. Atrac. - Usar vía por defecto
+STR_6021    :Construir Atrac. - Cuesta abajo
+STR_6022    :Construir Atrac. - Cuesta arriba
+STR_6023    :Construir Atrac. - Cadena Elevación
+STR_6024    :Construir Atrac. - Peralte Izquierdo
+STR_6025    :Construir Atrac. - Peralte Derecho
+STR_6026    :Construir Atrac. - Pieza Anterior
+STR_6027    :Construir Atrac. - Pieza Siguiente
+STR_6028    :Construir Atrac. - Construir Actual
+STR_6029    :Construir Atrac. - Demoler Actual
+STR_6030    :{SMALLFONT}{BLACK}Selector de Escenario. Haz clic en cualquier escenario del mapa para construirlo.
+STR_6031    :Descripción Servidor:
+STR_6032    :Msg. de Bienvenida:
+STR_6033    :Ruta de Instalación RCT1:
+STR_6035    :Por favor selecciona la carpeta de RCT1
+STR_6036    :{SMALLFONT}{BLACK}Borrar
+STR_6037    :Por favor selecciona una carpeta válida con una instalación de RCT1
+STR_6038    :{SMALLFONT}{BLACK}Si tienes una instalación de RCT1, establece esta opción hacia la carpeta de la instalación para cargar los escenarios, música, etc.
+STR_6039    :{SMALLFONT}{BLACK}Demoler atracción rápidamente
+STR_6040    :Editar Opciones de Escenario
+STR_6041    :{BLACK}¡No hay mecánicos contratados!
+STR_6042    :Cargar mapa de altura
+STR_6043    :Seleccionar mapa de altura
+STR_6044    :Suavizar mapa de altura
+STR_6045    :Intensidad
+STR_6046    :Normalizar mapa de altura
+STR_6047    :Suavizar baldosa
+STR_6048    :Error de mapa de altura
+STR_6049    :Error al leer PNG
+STR_6050    :Error al leer bitmap
+STR_6051    :El ancho y la altura deben ser la misma.
+STR_6052    :El mapa de altura es muy grande, será cortado.
+STR_6053    :El mapa de altura no puede ser normalizado.
+STR_6054    :Sólo bitmaps de 24-bits son soportados
 
 ##############
 # Escenarios #

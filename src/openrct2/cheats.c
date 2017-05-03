@@ -15,15 +15,17 @@
 #pragma endregion
 
 #include "cheats.h"
-#include "config.h"
+#include "config/Config.h"
 #include "game.h"
 #include "interface/window.h"
 #include "localisation/date.h"
 #include "management/finance.h"
 #include "network/network.h"
-#include "world/climate.h"
+#include "util/util.h"
+#include "world/Climate.h"
 #include "world/footpath.h"
 #include "world/scenery.h"
+#include "world/sprite.h"
 
 bool gCheatsSandboxMode = false;
 bool gCheatsDisableClearanceChecks = false;
@@ -217,7 +219,7 @@ static void cheat_10_minute_inspections()
 static void cheat_no_money(bool enabled)
 {
 	if (enabled) {
-		gParkFlags |= PARK_FLAGS_NO_MONEY;	
+		gParkFlags |= PARK_FLAGS_NO_MONEY;
 	}
 	else {
 		gParkFlags &= ~PARK_FLAGS_NO_MONEY;
@@ -234,8 +236,7 @@ static void cheat_no_money(bool enabled)
 
 static void cheat_set_money(money32 amount)
 {
-	money32 money = clamp(INT_MIN, amount, INT_MAX);
-	gCashEncrypted = ENCRYPT_MONEY(money);
+	gCashEncrypted = ENCRYPT_MONEY(amount);
 
 	window_invalidate_by_class(WC_FINANCES);
 	window_invalidate_by_class(WC_BOTTOM_TOOLBAR);
@@ -244,19 +245,7 @@ static void cheat_set_money(money32 amount)
 static void cheat_add_money(money32 amount)
 {
 	money32 currentMoney = DECRYPT_MONEY(gCashEncrypted);
-	if (amount >= 0) {
-		if (currentMoney < INT_MAX - amount)
-			currentMoney += amount;
-		else
-			currentMoney = INT_MAX;
-	}
-	else {
-		money32 absAmount = amount * -1;
-		if (currentMoney > INT_MIN + absAmount)
-			currentMoney -= absAmount;
-		else
-			currentMoney = INT_MIN;
-	}
+	currentMoney = add_clamp_money32(currentMoney, amount);
 
 	gCashEncrypted = ENCRYPT_MONEY(currentMoney);
 
@@ -277,10 +266,8 @@ static void cheat_clear_loan()
 
 static void cheat_generate_guests(sint32 count)
 {
-	sint32 i;
-
-	for (i = 0; i < count; i++)
-		generate_new_guest();
+	for (sint32 i = 0; i < count; i++)
+		park_generate_new_guest();
 
 	window_invalidate_by_class(WC_BOTTOM_TOOLBAR);
 }
@@ -360,6 +347,7 @@ static void cheat_give_all_guests(sint32 object)
 static void cheat_remove_all_guests()
 {
 	rct_peep *peep;
+	rct_vehicle *vehicle;
 	uint16 spriteIndex, nextSpriteIndex;
 
 	for (spriteIndex = gSpriteListHead[SPRITE_LIST_PEEP]; spriteIndex != SPRITE_INDEX_NULL; spriteIndex = nextSpriteIndex) {
@@ -370,19 +358,39 @@ static void cheat_remove_all_guests()
 		}
 	}
 
-	sint32 i;
+	sint32 rideIndex;
 	rct_ride *ride;
 
-	FOR_ALL_RIDES(i, ride)
+	FOR_ALL_RIDES(rideIndex, ride)
 	{
-		ride_clear_for_construction(i);
-		ride_set_status(i, RIDE_STATUS_CLOSED);
+		ride->num_riders = 0;
 
-		for (size_t j = 0; j < 4; j++) {
-			ride->queue_length[j] = 0;
-			ride->last_peep_in_queue[j] = SPRITE_INDEX_NULL;
+		for (size_t stationIndex = 0; stationIndex < RCT12_MAX_STATIONS_PER_RIDE; stationIndex++)
+		{
+			ride->queue_length[stationIndex] = 0;
+			ride->last_peep_in_queue[stationIndex] = SPRITE_INDEX_NULL;
+		}
+
+		for (size_t trainIndex = 0; trainIndex < 32; trainIndex++)
+		{
+			spriteIndex = ride->vehicles[trainIndex];
+			while (spriteIndex != SPRITE_INDEX_NULL)
+			{
+				vehicle = GET_VEHICLE(spriteIndex);
+
+				vehicle->num_peeps = 0;
+				vehicle->next_free_seat = 0;
+
+				for (size_t peepInTrainIndex = 0; peepInTrainIndex < 32; peepInTrainIndex++)
+				{
+					vehicle->peep[peepInTrainIndex] = SPRITE_INDEX_NULL;
+				}
+
+				spriteIndex = vehicle->next_vehicle_on_train;
+			}
 		}
 	}
+
 	window_invalidate_by_class(WC_RIDE);
 	gfx_invalidate_screen();
 }

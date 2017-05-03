@@ -41,11 +41,11 @@ static rct_widget window_news_widgets[] = {
 	{ WIDGETS_END },
 };
 
-static void window_news_mouseup(rct_window *w, sint32 widgetIndex);
+static void window_news_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_news_update(rct_window *w);
 static void window_news_scrollgetsize(rct_window *w, sint32 scrollIndex, sint32 *width, sint32 *height);
 static void window_news_scrollmousedown(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y);
-static void window_news_tooltip(rct_window* w, sint32 widgetIndex, rct_string_id *stringId);
+static void window_news_tooltip(rct_window* w, rct_widgetindex widgetIndex, rct_string_id *stringId);
 static void window_news_invalidate(rct_window *w);
 static void window_news_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_news_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 scrollIndex);
@@ -121,7 +121,7 @@ void window_news_open()
  *
  *  rct2: 0x0066D4D5
  */
-static void window_news_mouseup(rct_window *w, sint32 widgetIndex)
+static void window_news_mouseup(rct_window *w, rct_widgetindex widgetIndex)
 {
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
@@ -247,7 +247,7 @@ static void window_news_scrollmousedown(rct_window *w, sint32 scrollIndex, sint3
  *
  *  rct2: 0x0066EAAE
  */
-static void window_news_tooltip(rct_window* w, sint32 widgetIndex, rct_string_id *stringId)
+static void window_news_tooltip(rct_window* w, rct_widgetindex widgetIndex, rct_string_id *stringId)
 {
 	set_format_arg(0, rct_string_id, STR_LIST);
 }

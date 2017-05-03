@@ -37,7 +37,7 @@ typedef struct rct_sprite_file_header {
 assert_struct_size(rct_sprite_file_header, 8);
 
 typedef struct rct_sprite_file_palette_entry {
-    uint8 b, g, r, a;
+	uint8 b, g, r, a;
 } rct_sprite_file_palette_entry;
 
 typedef struct rle_code {
@@ -218,7 +218,12 @@ static bool sprite_file_export(sint32 spriteIndex, const char *outPath)
 	dpi.zoom_level = 0;
 
 	memcpy(spriteFilePalette, _standardPalette, 256 * 4);
-	gfx_rle_sprite_to_buffer(spriteHeader->offset, pixels, (uint8*)spriteFilePalette, &dpi, IMAGE_TYPE_DEFAULT, 0, spriteHeader->height, 0, spriteHeader->width);
+
+	if (spriteHeader->flags & G1_FLAG_RLE_COMPRESSION) {
+		gfx_rle_sprite_to_buffer(spriteHeader->offset, pixels, (uint8*)spriteFilePalette, &dpi, IMAGE_TYPE_DEFAULT, 0, spriteHeader->height, 0, spriteHeader->width);
+	} else {
+		gfx_bmp_sprite_to_buffer((uint8*)spriteFilePalette, NULL, spriteHeader->offset, pixels, spriteHeader, &dpi, spriteHeader->height, spriteHeader->width, IMAGE_TYPE_DEFAULT);
+	}
 
 	if (image_io_png_write(&dpi, (rct_palette*)spriteFilePalette, outPath)) {
 		return true;
@@ -527,16 +532,16 @@ sint32 cmdline_for_sprite(const char **argv, sint32 argc)
 			return -1;
 		}
 
-		if (!platform_ensure_directory_exists(argv[2])){
+		safe_strcpy(outputPath, argv[2], MAX_PATH);
+		path_end_with_separator(outputPath, MAX_PATH);
+
+		if (!platform_ensure_directory_exists(outputPath)){
 			fprintf(stderr, "Unable to create directory.\n");
 			return -1;
 		}
 
-
 		sint32 maxIndex = (sint32)spriteFileHeader.num_entries;
 		sint32 numbers = (sint32)floor(log(maxIndex));
-
-		safe_strcpy(outputPath, argv[2], MAX_PATH);
 		size_t pathLen = strlen(outputPath);
 
 		if (pathLen >= (size_t)(MAX_PATH - numbers - 5)) {

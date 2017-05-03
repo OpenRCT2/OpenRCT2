@@ -6178,6 +6178,36 @@ static void mini_rc_track_right_curved_lift_hill(uint8 rideIndex, uint8 trackSeq
 	}
 }
 
+static void mini_rc_track_booster(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+{
+	// These offsets could be moved to the g2.dat file when that supports offsets.
+    sint8 ne_sw_offsetX = 7;
+    sint8 ne_sw_offsetY = -15;
+    sint8 nw_se_offsetX = -15;
+    sint8 nw_se_offsetY = 7;
+
+
+	switch (direction) {
+		case 0:
+		case 2:
+			sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | SPR_G2_MINI_RC_BOOSTER_NE_SW, ne_sw_offsetX, ne_sw_offsetY, 32, 20, 3, height, 0, 6, height);
+			if (track_paint_util_should_paint_supports(gPaintMapPosition)) {
+				metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+			}
+			break;
+		case 1:
+		case 3:
+			sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | SPR_G2_MINI_RC_BOOSTER_NW_SE, nw_se_offsetX, nw_se_offsetY, 32, 20, 3, height, 0, 6, height);
+			if (track_paint_util_should_paint_supports(gPaintMapPosition)) {
+				metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+			}
+			break;
+	}
+	paint_util_push_tunnel_rotated(direction, height, TUNNEL_6);
+	paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+	paint_util_set_general_support_height(height + 32, 0x20);
+}
+
 TRACK_PAINT_FUNCTION get_track_paint_function_mini_rc(sint32 trackType, sint32 direction)
 {
 	switch (trackType) {
@@ -6451,6 +6481,8 @@ TRACK_PAINT_FUNCTION get_track_paint_function_mini_rc(sint32 trackType, sint32 d
 		return mini_rc_track_left_curved_lift_hill;
 	case TRACK_ELEM_RIGHT_CURVED_LIFT_HILL:
 		return mini_rc_track_right_curved_lift_hill;
+	case TRACK_ELEM_BOOSTER:
+		return mini_rc_track_booster;
 	}
 	return NULL;
 }

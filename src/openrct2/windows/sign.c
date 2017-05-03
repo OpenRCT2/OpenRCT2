@@ -15,7 +15,7 @@
 #pragma endregion
 
 #include "../game.h"
-#include "../config.h"
+#include "../config/Config.h"
 #include "../localisation/localisation.h"
 #include "../interface/viewport.h"
 #include "../interface/widget.h"
@@ -57,10 +57,10 @@ rct_widget window_sign_widgets[] = {
 		{ WIDGETS_END },
 };
 
-static void window_sign_mouseup(rct_window *w, sint32 widgetIndex);
-static void window_sign_mousedown(sint32 widgetIndex, rct_window*w, rct_widget* widget);
-static void window_sign_dropdown(rct_window *w, sint32 widgetIndex, sint32 dropdownIndex);
-static void window_sign_textinput(rct_window *w, sint32 widgetIndex, char *text);
+static void window_sign_mouseup(rct_window *w, rct_widgetindex widgetIndex);
+static void window_sign_mousedown(rct_widgetindex widgetIndex, rct_window*w, rct_widget* widget);
+static void window_sign_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex);
+static void window_sign_textinput(rct_window *w, rct_widgetindex widgetIndex, char *text);
 static void window_sign_unknown_14(rct_window *w);
 static void window_sign_invalidate(rct_window *w);
 static void window_sign_paint(rct_window *w, rct_drawpixelinfo *dpi);
@@ -98,8 +98,8 @@ static rct_window_event_list window_sign_events = {
 	NULL
 };
 
-static void window_sign_small_mouseup(rct_window *w, sint32 widgetIndex);
-static void window_sign_small_dropdown(rct_window *w, sint32 widgetIndex, sint32 dropdownIndex);
+static void window_sign_small_mouseup(rct_window *w, rct_widgetindex widgetIndex);
+static void window_sign_small_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex);
 static void window_sign_small_invalidate(rct_window *w);
 
 // 0x9A410C
@@ -214,7 +214,7 @@ void window_sign_open(rct_windownumber number)
  *
  *  rct2: 0x6B9765
  */
-static void window_sign_mouseup(rct_window *w, sint32 widgetIndex)
+static void window_sign_mouseup(rct_window *w, rct_widgetindex widgetIndex)
 {
 	rct_banner* banner = &gBanners[w->number];
 	sint32 x = banner->x << 5;
@@ -270,7 +270,7 @@ static void window_sign_mouseup(rct_window *w, sint32 widgetIndex)
  *
  *  rct2: 0x6B9784
   & 0x6E6164 */
-static void window_sign_mousedown(sint32 widgetIndex, rct_window*w, rct_widget* widget)
+static void window_sign_mousedown(rct_widgetindex widgetIndex, rct_window*w, rct_widget* widget)
 {
 	switch (widgetIndex) {
 	case WIDX_MAIN_COLOUR:
@@ -286,7 +286,7 @@ static void window_sign_mousedown(sint32 widgetIndex, rct_window*w, rct_widget* 
  *
  *  rct2: 0x6B979C
  */
-static void window_sign_dropdown(rct_window *w, sint32 widgetIndex, sint32 dropdownIndex)
+static void window_sign_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex)
 {
 	switch (widgetIndex){
 	case WIDX_MAIN_COLOUR:
@@ -310,7 +310,7 @@ static void window_sign_dropdown(rct_window *w, sint32 widgetIndex, sint32 dropd
  *
  *  rct2: 0x6B9791, 0x6E6171
  */
-static void window_sign_textinput(rct_window *w, sint32 widgetIndex, char *text)
+static void window_sign_textinput(rct_window *w, rct_widgetindex widgetIndex, char *text)
 {
 	if (widgetIndex == WIDX_SIGN_TEXT && text != NULL) {
 		game_do_command(1, GAME_COMMAND_FLAG_APPLY, w->number, *((sint32*)(text + 0)), GAME_COMMAND_SET_SIGN_NAME, *((sint32*)(text + 8)), *((sint32*)(text + 4)));
@@ -335,10 +335,10 @@ static void window_sign_invalidate(rct_window *w)
 	main_colour_btn->type = WWT_EMPTY;
 	text_colour_btn->type = WWT_EMPTY;
 
-	if (scenery_entry->large_scenery.flags&(1 << 0)){
+	if (scenery_entry->large_scenery.flags & LARGE_SCENERY_FLAG_HAS_PRIMARY_COLOUR){
 		main_colour_btn->type = WWT_COLOURBTN;
 	}
-	if (scenery_entry->large_scenery.flags&(1 << 1)) {
+	if (scenery_entry->large_scenery.flags & LARGE_SCENERY_FLAG_HAS_SECONDARY_COLOUR) {
 		text_colour_btn->type = WWT_COLOURBTN;
 	}
 
@@ -434,10 +434,10 @@ void window_sign_small_open(rct_windownumber number){
 	rct_map_element* map_element = map_get_first_element_at(view_x / 32, view_y / 32);
 
 	while (1){
-		if (map_element_get_type(map_element) == MAP_ELEMENT_TYPE_FENCE) {
-			rct_scenery_entry* scenery_entry = get_wall_entry(map_element->properties.fence.type);
-			if (scenery_entry->wall.var_0D != 0xFF){
-				if (map_element->properties.fence.item[0] == w->number)
+		if (map_element_get_type(map_element) == MAP_ELEMENT_TYPE_WALL) {
+			rct_scenery_entry* scenery_entry = get_wall_entry(map_element->properties.wall.type);
+			if (scenery_entry->wall.scrolling_mode != 0xFF){
+				if (map_element->properties.wall.banner_index == w->number)
 					break;
 			}
 		}
@@ -447,10 +447,9 @@ void window_sign_small_open(rct_windownumber number){
 	sint32 view_z = map_element->base_height << 3;
 	w->frame_no = view_z;
 
-	w->list_information_type = map_element->properties.fence.item[1] & 0x1F;
-	w->var_492 =
-		((map_element->properties.fence.item[1] >> 5) | ((map_element->flags & 0x60) >> 2));
-	w->var_48C = map_element->properties.fence.type;
+	w->list_information_type = map_element->properties.wall.colour_1 & 0x1F;
+	w->var_492 = wall_element_get_secondary_colour(map_element);
+	w->var_48C = map_element->properties.wall.type;
 
 	view_x += 16;
 	view_y += 16;
@@ -480,7 +479,7 @@ void window_sign_small_open(rct_windownumber number){
  *
  *  rct2: 0x6E6145
  */
-static void window_sign_small_mouseup(rct_window *w, sint32 widgetIndex)
+static void window_sign_small_mouseup(rct_window *w, rct_widgetindex widgetIndex)
 {
 	rct_banner* banner = &gBanners[w->number];
 	sint32 x = banner->x << 5;
@@ -496,10 +495,10 @@ static void window_sign_small_mouseup(rct_window *w, sint32 widgetIndex)
 		break;
 	case WIDX_SIGN_DEMOLISH:
 		while (1){
-			if (map_element_get_type(map_element) == MAP_ELEMENT_TYPE_FENCE) {
-				rct_scenery_entry* scenery_entry = get_wall_entry(map_element->properties.fence.type);
-				if (scenery_entry->wall.var_0D != 0xFF){
-					if (map_element->properties.fence.item[0] == w->number)
+			if (map_element_get_type(map_element) == MAP_ELEMENT_TYPE_WALL) {
+				rct_scenery_entry* scenery_entry = get_wall_entry(map_element->properties.wall.type);
+				if (scenery_entry->wall.scrolling_mode != 0xFF){
+					if (map_element->properties.wall.banner_index == w->number)
 						break;
 				}
 			}
@@ -511,7 +510,7 @@ static void window_sign_small_mouseup(rct_window *w, sint32 widgetIndex)
 			1 | ((map_element->type & 0x3) << 8),
 			y,
 			(map_element->base_height << 8) | (map_element->type & 0x3),
-			GAME_COMMAND_REMOVE_FENCE,
+			GAME_COMMAND_REMOVE_WALL,
 			0,
 			0);
 		break;
@@ -534,7 +533,7 @@ static void window_sign_small_mouseup(rct_window *w, sint32 widgetIndex)
  *
  *  rct2: 0x6E617C
  */
-static void window_sign_small_dropdown(rct_window *w, sint32 widgetIndex, sint32 dropdownIndex)
+static void window_sign_small_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex)
 {
 	switch (widgetIndex){
 	case WIDX_MAIN_COLOUR:
@@ -570,7 +569,7 @@ static void window_sign_small_invalidate(rct_window *w)
 	main_colour_btn->type = WWT_EMPTY;
 	text_colour_btn->type = WWT_EMPTY;
 
-	if (scenery_entry->wall.flags & WALL_SCENERY_FLAG1) {
+	if (scenery_entry->wall.flags & WALL_SCENERY_HAS_PRIMARY_COLOUR) {
 		main_colour_btn->type = WWT_COLOURBTN;
 	}
 	if (scenery_entry->wall.flags & WALL_SCENERY_HAS_SECONDARY_COLOUR) {

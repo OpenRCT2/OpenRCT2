@@ -15,7 +15,7 @@
 #pragma endregion
 
 #include "../paint.h"
-#include "../../config.h"
+#include "../../config/Config.h"
 #include "../../game.h"
 #include "../../interface/viewport.h"
 #include "../../localisation/localisation.h"
@@ -47,6 +47,10 @@ void banner_paint(uint8 direction, sint32 height, rct_map_element* map_element)
 	height -= 16;
 
 	rct_scenery_entry* banner_scenery = get_banner_entry(gBanners[map_element->properties.banner.index].type);
+
+	if ((banner_scenery == (rct_scenery_entry *)-1) || (banner_scenery == NULL)) {
+		return;
+	}
 
 	direction += map_element->properties.banner.position;
 	direction &= 3;

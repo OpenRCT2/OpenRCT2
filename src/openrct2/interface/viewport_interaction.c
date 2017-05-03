@@ -256,7 +256,7 @@ sint32 viewport_interaction_get_item_right(sint32 x, sint32 y, viewport_interact
 
 	case VIEWPORT_INTERACTION_ITEM_WALL:
 		sceneryEntry = get_wall_entry(mapElement->properties.scenery.type);
-		if (sceneryEntry->wall.var_0D != 255) {
+		if (sceneryEntry->wall.scrolling_mode != 255) {
 			set_map_tooltip_format_arg(0, rct_string_id, STR_MAP_TOOLTIP_STRINGID_CLICK_TO_MODIFY);
 			set_map_tooltip_format_arg(2, rct_string_id, sceneryEntry->name);
 			return info->type;
@@ -281,7 +281,7 @@ sint32 viewport_interaction_get_item_right(sint32 x, sint32 y, viewport_interact
 		return info->type;
 	}
 
-	if (!(gInputFlags & INPUT_FLAG_6) || !(gInputFlags & INPUT_FLAG_TOOL_ACTIVE)) {
+	if (!(input_test_flag(INPUT_FLAG_6)) || !(input_test_flag(INPUT_FLAG_TOOL_ACTIVE))) {
 		if (window_find_by_class(WC_RIDE_CONSTRUCTION) == NULL && window_find_by_class(WC_FOOTPATH) == NULL) {
 			return info->type = VIEWPORT_INTERACTION_ITEM_NONE;
 		}
@@ -304,7 +304,7 @@ sint32 viewport_interaction_get_item_right(sint32 x, sint32 y, viewport_interact
 	case VIEWPORT_INTERACTION_ITEM_FOOTPATH_ITEM:
 		sceneryEntry = get_footpath_item_entry(footpath_element_get_path_scenery_index(mapElement));
 		set_map_tooltip_format_arg(0, rct_string_id, STR_MAP_TOOLTIP_STRINGID_CLICK_TO_REMOVE);
-		if (mapElement->flags & 0x20) {
+		if (mapElement->flags & MAP_ELEMENT_FLAG_BROKEN) {
 			set_map_tooltip_format_arg(2, rct_string_id, STR_BROKEN);
 			set_map_tooltip_format_arg(4, rct_string_id, sceneryEntry->name);
 		} else {
@@ -490,9 +490,9 @@ void viewport_interaction_remove_park_entrance(rct_map_element *mapElement, sint
  */
 static void viewport_interaction_remove_park_wall(rct_map_element *mapElement, sint32 x, sint32 y)
 {
-	rct_scenery_entry *sceneryEntry = get_wall_entry(mapElement->properties.fence.type);
-	if (sceneryEntry->wall.var_0D != 0xFF){
-		window_sign_small_open(mapElement->properties.fence.item[0]);
+	rct_scenery_entry *sceneryEntry = get_wall_entry(mapElement->properties.wall.type);
+	if (sceneryEntry->wall.scrolling_mode != 0xFF){
+		window_sign_small_open(mapElement->properties.wall.banner_index);
 	} else {
 		gGameCommandErrorTitle = STR_CANT_REMOVE_THIS;
 		game_do_command(
@@ -500,7 +500,7 @@ static void viewport_interaction_remove_park_wall(rct_map_element *mapElement, s
 			GAME_COMMAND_FLAG_APPLY,
 			y,
 			(mapElement->type & 0x3) | (mapElement->base_height << 8),
-			GAME_COMMAND_REMOVE_FENCE,
+			GAME_COMMAND_REMOVE_WALL,
 			0,
 			0
 		);

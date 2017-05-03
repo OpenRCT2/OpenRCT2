@@ -14,7 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../../config.h"
+#include "../../config/Config.h"
 #include "../../drawing/lightfx.h"
 #include "../../interface/viewport.h"
 #include "../../paint/sprite/sprite.h"

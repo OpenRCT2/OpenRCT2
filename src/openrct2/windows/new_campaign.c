@@ -14,7 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../config.h"
+#include "../config/Config.h"
 #include "../game.h"
 #include "../localisation/localisation.h"
 #include "../interface/widget.h"
@@ -57,9 +57,9 @@ static rct_widget window_new_campaign_widgets[] = {
 };
 
 
-static void window_new_campaign_mouseup(rct_window *w, sint32 widgetIndex);
-static void window_new_campaign_mousedown(sint32 widgetIndex, rct_window*w, rct_widget* widget);
-static void window_new_campaign_dropdown(rct_window *w, sint32 widgetIndex, sint32 dropdownIndex);
+static void window_new_campaign_mouseup(rct_window *w, rct_widgetindex widgetIndex);
+static void window_new_campaign_mousedown(rct_widgetindex widgetIndex, rct_window*w, rct_widget* widget);
+static void window_new_campaign_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex);
 static void window_new_campaign_invalidate(rct_window *w);
 static void window_new_campaign_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
@@ -218,7 +218,7 @@ static void window_new_campaign_get_shop_items()
  *
  *  rct2: 0x0069E50B
  */
-static void window_new_campaign_mouseup(rct_window *w, sint32 widgetIndex)
+static void window_new_campaign_mouseup(rct_window *w, rct_widgetindex widgetIndex)
 {
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
@@ -235,7 +235,7 @@ static void window_new_campaign_mouseup(rct_window *w, sint32 widgetIndex)
  *
  *  rct2: 0x0069E51C
  */
-static void window_new_campaign_mousedown(sint32 widgetIndex, rct_window *w, rct_widget* widget)
+static void window_new_campaign_mousedown(rct_widgetindex widgetIndex, rct_window *w, rct_widget* widget)
 {
 	rct_widget *dropdownWidget;
 
@@ -261,6 +261,7 @@ static void window_new_campaign_mousedown(sint32 widgetIndex, rct_window *w, rct
 					w->y + dropdownWidget->top,
 					dropdownWidget->bottom - dropdownWidget->top + 1,
 					w->colours[1],
+					0,
 					DROPDOWN_FLAG_STAY_OPEN,
 					numItems,
 					dropdownWidget->right - dropdownWidget->left - 3
@@ -283,6 +284,7 @@ static void window_new_campaign_mousedown(sint32 widgetIndex, rct_window *w, rct
 				w->y + dropdownWidget->top,
 				dropdownWidget->bottom - dropdownWidget->top + 1,
 				w->colours[1],
+				0,
 				DROPDOWN_FLAG_STAY_OPEN,
 				numItems,
 				dropdownWidget->right - dropdownWidget->left - 3
@@ -305,7 +307,7 @@ static void window_new_campaign_mousedown(sint32 widgetIndex, rct_window *w, rct
  *
  *  rct2: 0x0069E537
  */
-static void window_new_campaign_dropdown(rct_window *w, sint32 widgetIndex, sint32 dropdownIndex)
+static void window_new_campaign_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex)
 {
 	if (widgetIndex != WIDX_RIDE_DROPDOWN_BUTTON)
 		return;

@@ -47,11 +47,11 @@ IDrawingEngine * DrawingEngineFactory::CreateOpenGL()
 #include "../../IDrawingContext.h"
 #include "../../IDrawingEngine.h"
 #include "../../Rain.h"
-#include "../../../config.h"
+#include "../../../config/Config.h"
 
 extern "C"
 {
-    #include "../../../config.h"
+    #include "../../../config/Config.h"
     #include "../../../interface/screenshot.h"
     #include "../../../interface/window.h"
     #include "../../../intro.h"

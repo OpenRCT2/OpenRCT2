@@ -76,12 +76,7 @@ void finance_payment(money32 amount, rct_expenditure_type type)
 	money32 new_money;
 
 	//overflow check
-	if (amount < 0 && cur_money >= INT_MAX + amount)
-		new_money = INT_MAX;
-	else if (amount >= 0 && cur_money < INT_MIN + amount)
-		new_money = INT_MIN;
-	else
-		new_money = cur_money - amount;
+	new_money = add_clamp_money32(cur_money, -amount);
 
 	gCashEncrypted = ENCRYPT_MONEY(new_money);
 	gExpenditureTable[type] -= amount;
@@ -332,7 +327,7 @@ void game_command_set_current_loan(sint32* eax, sint32* ebx, sint32* ecx, sint32
 
 /**
  * Shift the expenditure table history one month to the left
- * If the table is full, acumulate the sum of the oldest month first
+ * If the table is full, accumulate the sum of the oldest month first
  * rct2: 0x0069DEAD
  */
 void finance_shift_expenditure_table()

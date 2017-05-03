@@ -20,7 +20,7 @@
 
 extern "C"
 {
-    #include "../config.h"
+    #include "../config/Config.h"
     #include "../platform/crash.h"
 }
 
@@ -31,6 +31,7 @@ extern "C"
 #include "../network/network.h"
 #include "../object/ObjectRepository.h"
 #include "../OpenRCT2.h"
+#include "../Version.h"
 #include "CommandLine.hpp"
 
 #ifdef USE_BREAKPAD
@@ -125,6 +126,7 @@ const CommandLineCommand CommandLine::RootCommands[]
     DefineCommand("set-rct2", "<path>",                 StandardOptions, HandleCommandSetRCT2),
     DefineCommand("convert",  "<source> <destination>", StandardOptions, CommandLine::HandleCommandConvert),
     DefineCommand("scan-objects", "<path>",             StandardOptions, HandleCommandScanObjects),
+    DefineCommand("handle-uri", "openrct2://.../",      StandardOptions, CommandLine::HandleCommandUri),
 
 #if defined(__WINDOWS__) && !defined(__MINGW32__)
     DefineCommand("register-shell", "", RegisterShellOptions, HandleCommandRegisterShell),

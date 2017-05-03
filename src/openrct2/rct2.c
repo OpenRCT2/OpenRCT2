@@ -19,7 +19,7 @@
 #include <time.h>
 #include "audio/audio.h"
 #include "audio/AudioMixer.h"
-#include "config.h"
+#include "config/Config.h"
 #include "drawing/drawing.h"
 #include "drawing/lightfx.h"
 #include "editor.h"
@@ -27,6 +27,7 @@
 #include "input.h"
 #include "interface/chat.h"
 #include "interface/console.h"
+#include "interface/keyboard_shortcut.h"
 #include "interface/viewport.h"
 #include "intro.h"
 #include "localisation/date.h"
@@ -47,7 +48,7 @@
 #include "scenario/ScenarioRepository.h"
 #include "title/TitleScreen.h"
 #include "util/util.h"
-#include "world/climate.h"
+#include "world/Climate.h"
 #include "world/map.h"
 #include "world/park.h"
 #include "world/scenery.h"
@@ -153,7 +154,7 @@ bool rct2_init()
 
 	config_reset_shortcut_keys();
 	config_shortcut_keys_load();
-	gInputPlaceObjectModifier = PLACE_OBJECT_MODIFIER_NONE;
+	input_reset_place_obj_modifier();
 	// config_load();
 
 	if (!gfx_load_g1()) {
@@ -377,45 +378,6 @@ sint32 check_file_paths()
 	return 1;
 }
 
-/**
- *
- *  rct2: 0x00674CA5
- */
-sint32 check_file_path(sint32 pathId)
-{
-	const utf8* path = get_file_path(pathId);
-	SDL_RWops *file = SDL_RWFromFile(path, "rb");
-
-	switch (pathId) {
-	case PATH_ID_G1:
-		if (file == NULL) {
-			log_fatal("Could not find file %s", path);
-			return 0;
-		}
-		break;
-
-	case PATH_ID_CUSTOM1:
-		if (file != NULL) {
-			// Store file size in music_custom1_size @ 0x009AF164
-			gRideMusicInfoList[36]->length = (uint32)SDL_RWsize(file);
-		}
-		break;
-
-	case PATH_ID_CUSTOM2:
-		if (file != NULL) {
-			// Store file size in music_custom2_size @ 0x009AF16E
-			gRideMusicInfoList[37]->length = (uint32)SDL_RWsize(file);
-		}
-		break;
-	}
-
-	if (file != NULL) {
-		SDL_RWclose(file);
-	}
-
-	return 1;
-}
-
 void rct2_update()
 {
 	sint32 tickCount = SDL_GetTicks();
@@ -455,8 +417,13 @@ void rct2_update()
 const utf8 *get_file_path(sint32 pathId)
 {
 	static utf8 path[MAX_PATH];
-	safe_strcpy(path, gRCT2AddressAppPath, sizeof(path));
-	safe_strcat_path(path, RCT2FilePaths[pathId], sizeof(path));
+	if (pathId == PATH_ID_CSS50 && !str_is_null_or_empty(gConfigGeneral.rct1_path)) {
+		safe_strcpy(path, gConfigGeneral.rct1_path, sizeof(path));
+		safe_strcat_path(path, RCT2FilePaths[PATH_ID_CSS17], sizeof(path));
+	} else {
+		safe_strcpy(path, gRCT2AddressAppPath, sizeof(path));
+		safe_strcat_path(path, RCT2FilePaths[pathId], sizeof(path));
+	}
 	return path;
 }
 

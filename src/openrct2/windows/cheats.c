@@ -14,7 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../config.h"
+#include "../config/Config.h"
 #include "../game.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
@@ -24,7 +24,7 @@
 #include "../ride/ride.h"
 #include "../scenario/scenario.h"
 #include "../sprites.h"
-#include "../world/climate.h"
+#include "../world/Climate.h"
 #include "../world/park.h"
 #include "../world/sprite.h"
 #include "../interface/themes.h"
@@ -66,7 +66,9 @@ enum WINDOW_CHEATS_WIDGET_IDX {
 	WIDX_TAB_2,
 	WIDX_TAB_3,
 	WIDX_TAB_4,
-	WIDX_NO_MONEY,
+	WIDX_TAB_CONTENT,
+
+	WIDX_NO_MONEY = WIDX_TAB_CONTENT,
 	WIDX_ADD_SET_MONEY_GROUP,
 	WIDX_MONEY_SPINNER,
 	WIDX_MONEY_SPINNER_INCREMENT,
@@ -74,7 +76,8 @@ enum WINDOW_CHEATS_WIDGET_IDX {
 	WIDX_ADD_MONEY,
 	WIDX_SET_MONEY,
 	WIDX_CLEAR_LOAN,
-	WIDX_GUEST_PARAMETERS_GROUP = 8, //Same as NO_MONEY as it is also the 8th widget but on a different page
+
+	WIDX_GUEST_PARAMETERS_GROUP = WIDX_TAB_CONTENT,
 	WIDX_GUEST_HAPPINESS_MAX,
 	WIDX_GUEST_HAPPINESS_MIN,
 	WIDX_GUEST_ENERGY_MAX,
@@ -102,7 +105,8 @@ enum WINDOW_CHEATS_WIDGET_IDX {
 	WIDX_TRAM_GUESTS,
 	WIDX_REMOVE_ALL_GUESTS,
 	WIDX_EXPLODE_GUESTS,
-	WIDX_GENERAL_GROUP = 8,
+
+	WIDX_GENERAL_GROUP = WIDX_TAB_CONTENT,
 	WIDX_OPEN_CLOSE_PARK,
 	WIDX_PARK_PARAMETERS,
 	WIDX_SANDBOX_MODE,
@@ -128,7 +132,8 @@ enum WINDOW_CHEATS_WIDGET_IDX {
 	WIDX_DISABLE_PLANT_AGING,
 	WIDX_FAST_STAFF,
 	WIDX_NORMAL_STAFF,
-	WIDX_RENEW_RIDES = 8,
+
+	WIDX_RENEW_RIDES = WIDX_TAB_CONTENT,
 	WIDX_MAKE_DESTRUCTIBLE,
 	WIDX_FIX_ALL,
 	WIDX_FAST_LIFT_HILL,
@@ -287,18 +292,18 @@ static rct_widget *window_cheats_page_widgets[] = {
 	window_cheats_rides_widgets,
 };
 
-static void window_cheats_money_mouseup(rct_window *w, sint32 widgetIndex);
-static void window_cheats_money_mousedown(sint32 widgetIndex, rct_window *w, rct_widget* widget);
-static void window_cheats_misc_mousedown(sint32 widgetIndex, rct_window *w, rct_widget* widget);
-static void window_cheats_misc_dropdown(rct_window *w, sint32 widgetIndex, sint32 dropdownIndex);
-static void window_cheats_guests_mouseup(rct_window *w, sint32 widgetIndex);
-static void window_cheats_misc_mouseup(rct_window *w, sint32 widgetIndex);
-static void window_cheats_rides_mouseup(rct_window *w, sint32 widgetIndex);
+static void window_cheats_money_mouseup(rct_window *w, rct_widgetindex widgetIndex);
+static void window_cheats_money_mousedown(rct_widgetindex widgetIndex, rct_window *w, rct_widget* widget);
+static void window_cheats_misc_mousedown(rct_widgetindex widgetIndex, rct_window *w, rct_widget* widget);
+static void window_cheats_misc_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex);
+static void window_cheats_guests_mouseup(rct_window *w, rct_widgetindex widgetIndex);
+static void window_cheats_misc_mouseup(rct_window *w, rct_widgetindex widgetIndex);
+static void window_cheats_rides_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_cheats_update(rct_window *w);
 static void window_cheats_invalidate(rct_window *w);
 static void window_cheats_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_cheats_set_page(rct_window *w, sint32 page);
-static void window_cheats_text_input(rct_window *w, sint32 widgetIndex, char *text);
+static void window_cheats_text_input(rct_window *w, rct_widgetindex widgetIndex, char *text);
 
 static rct_window_event_list window_cheats_money_events = {
 	NULL,
@@ -491,15 +496,15 @@ void window_cheats_open()
 	park_rating_spinner_value = get_forced_park_rating() >= 0 ? get_forced_park_rating() : 999;
 }
 
-static void window_cheats_money_mousedown(sint32 widgetIndex, rct_window *w, rct_widget* widget)
+static void window_cheats_money_mousedown(rct_widgetindex widgetIndex, rct_window *w, rct_widget* widget)
 {
 	switch (widgetIndex) {
 	case WIDX_MONEY_SPINNER_INCREMENT:
-		_moneySpinnerValue = min(INT_MAX, MONEY_INCREMENT_DIV * (_moneySpinnerValue / MONEY_INCREMENT_DIV + 1));
+		_moneySpinnerValue = add_clamp_money32(MONEY_INCREMENT_DIV * (_moneySpinnerValue / MONEY_INCREMENT_DIV), MONEY_INCREMENT_DIV);
 		widget_invalidate_by_class(WC_CHEATS, WIDX_MONEY_SPINNER);
 		break;
 	case WIDX_MONEY_SPINNER_DECREMENT:
-		_moneySpinnerValue = max(INT_MIN, MONEY_INCREMENT_DIV * (_moneySpinnerValue / MONEY_INCREMENT_DIV - 1));
+		_moneySpinnerValue = add_clamp_money32(MONEY_INCREMENT_DIV * (_moneySpinnerValue / MONEY_INCREMENT_DIV), -MONEY_INCREMENT_DIV);
 		widget_invalidate_by_class(WC_CHEATS, WIDX_MONEY_SPINNER);
 		break;
 	case WIDX_ADD_MONEY:
@@ -508,7 +513,7 @@ static void window_cheats_money_mousedown(sint32 widgetIndex, rct_window *w, rct
 	}
 }
 
-static void window_cheats_misc_mousedown(int widgetIndex, rct_window *w, rct_widget* widget)
+static void window_cheats_misc_mousedown(rct_widgetindex widgetIndex, rct_window *w, rct_widget* widget)
 {
 	switch (widgetIndex) {
 	case WIDX_INCREASE_PARK_RATING:
@@ -528,7 +533,7 @@ static void window_cheats_misc_mousedown(int widgetIndex, rct_window *w, rct_wid
 		int i, currentWeather;
 
 		dropdownWidget = widget - 1;
-			
+
 		for (i = 0; i < 6; i++) {
 			gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
 			gDropdownItemsArgs[i] = WeatherTypes[i];
@@ -538,6 +543,7 @@ static void window_cheats_misc_mousedown(int widgetIndex, rct_window *w, rct_wid
 			w->y + dropdownWidget->top,
 			dropdownWidget->bottom - dropdownWidget->top + 1,
 			w->colours[1],
+			0,
 			DROPDOWN_FLAG_STAY_OPEN,
 			6,
 			dropdownWidget->right - dropdownWidget->left - 3
@@ -550,7 +556,7 @@ static void window_cheats_misc_mousedown(int widgetIndex, rct_window *w, rct_wid
 	}
 }
 
-static void window_cheats_misc_dropdown(rct_window *w, sint32 widgetIndex, sint32 dropdownIndex)
+static void window_cheats_misc_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex)
 {
 	if (widgetIndex != WIDX_WEATHER_DROPDOWN_BUTTON || dropdownIndex == -1)
 		return;
@@ -558,7 +564,7 @@ static void window_cheats_misc_dropdown(rct_window *w, sint32 widgetIndex, sint3
 	game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_FORCEWEATHER, dropdownIndex, GAME_COMMAND_CHEAT, 0, 0);
 }
 
-static void window_cheats_money_mouseup(rct_window *w, sint32 widgetIndex)
+static void window_cheats_money_mouseup(rct_window *w, rct_widgetindex widgetIndex)
 {
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
@@ -571,7 +577,7 @@ static void window_cheats_money_mouseup(rct_window *w, sint32 widgetIndex)
 		window_cheats_set_page(w, widgetIndex - WIDX_TAB_1);
 		break;
 	case WIDX_NO_MONEY:
-		game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_NOMONEY, gParkFlags & PARK_FLAGS_NO_MONEY ? 0 : 1, GAME_COMMAND_CHEAT, 0, 0); 
+		game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_NOMONEY, gParkFlags & PARK_FLAGS_NO_MONEY ? 0 : 1, GAME_COMMAND_CHEAT, 0, 0);
 		break;
 	case WIDX_MONEY_SPINNER:
 		money_to_string(_moneySpinnerValue, _moneySpinnerText, MONEY_DIGITS);
@@ -586,7 +592,7 @@ static void window_cheats_money_mouseup(rct_window *w, sint32 widgetIndex)
 	}
 }
 
-static void window_cheats_guests_mouseup(rct_window *w, sint32 widgetIndex)
+static void window_cheats_guests_mouseup(rct_window *w, rct_widgetindex widgetIndex)
 {
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
@@ -679,7 +685,7 @@ static void window_cheats_guests_mouseup(rct_window *w, sint32 widgetIndex)
 	}
 }
 
-static void window_cheats_misc_mouseup(rct_window *w, sint32 widgetIndex)
+static void window_cheats_misc_mouseup(rct_window *w, rct_widgetindex widgetIndex)
 {
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
@@ -754,7 +760,7 @@ static void window_cheats_misc_mouseup(rct_window *w, sint32 widgetIndex)
 	}
 }
 
-static void window_cheats_rides_mouseup(rct_window *w, sint32 widgetIndex)
+static void window_cheats_rides_mouseup(rct_window *w, rct_widgetindex widgetIndex)
 {
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
@@ -823,7 +829,7 @@ static void window_cheats_rides_mouseup(rct_window *w, sint32 widgetIndex)
 	}
 }
 
-static void window_cheats_text_input(rct_window *w, int widgetIndex, char *text) {
+static void window_cheats_text_input(rct_window *w, rct_widgetindex widgetIndex, char *text) {
 	if (text == NULL)
 		return;
 
@@ -867,8 +873,8 @@ static void window_cheats_invalidate(rct_window *w)
 
 	switch (w->page) {
 	case WINDOW_CHEATS_PAGE_MONEY:{
-		widget_set_checkbox_value(w, WIDX_NO_MONEY, gParkFlags & PARK_FLAGS_NO_MONEY); 
-		
+		widget_set_checkbox_value(w, WIDX_NO_MONEY, gParkFlags & PARK_FLAGS_NO_MONEY);
+
 		uint64 money_widgets = (1 << WIDX_ADD_SET_MONEY_GROUP) | (1 << WIDX_MONEY_SPINNER) | (1 << WIDX_MONEY_SPINNER_INCREMENT) |
 			(1 << WIDX_MONEY_SPINNER_DECREMENT) | (1 << WIDX_ADD_MONEY) | (1 << WIDX_SET_MONEY) | (1 << WIDX_CLEAR_LOAN);
 		if (gParkFlags & PARK_FLAGS_NO_MONEY) {
@@ -989,7 +995,7 @@ static void window_cheats_set_page(rct_window *w, sint32 page)
 	w->widgets = window_cheats_page_widgets[page];
 
 	sint32 maxY = 0;
-	rct_widget *widget = &w->widgets[8];
+	rct_widget *widget = &w->widgets[WIDX_TAB_CONTENT];
 	while (widget->type != WWT_LAST) {
 		maxY = max(maxY, widget->bottom);
 		widget++;

@@ -15,7 +15,8 @@
 #pragma endregion
 
 #include "../audio/audio.h"
-#include "../config.h"
+#include "../config/Config.h"
+#include "../drawing/IDrawingEngine.h"
 #include "../editor.h"
 #include "../interface/themes.h"
 #include "../interface/widget.h"
@@ -40,6 +41,8 @@ enum {
 	WIDX_BACK,
 };
 
+validate_global_widx(WC_TRACK_DESIGN_LIST, WIDX_ROTATE);
+
 static rct_widget window_track_list_widgets[] = {
 	{ WWT_FRAME,			0,	0,		599,	0,		399,	0xFFFFFFFF,				STR_NONE								},
 	{ WWT_CAPTION,			0,	1,		598,	1,		14,		STR_SELECT_DESIGN,		STR_WINDOW_TITLE_TIP					},
@@ -53,12 +56,12 @@ static rct_widget window_track_list_widgets[] = {
 };
 
 static void window_track_list_close(rct_window *w);
-static void window_track_list_mouseup(rct_window *w, sint32 widgetIndex);
+static void window_track_list_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_track_list_update(rct_window *w);
 static void window_track_list_scrollgetsize(rct_window *w, sint32 scrollIndex, sint32 *width, sint32 *height);
 static void window_track_list_scrollmousedown(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y);
 static void window_track_list_scrollmouseover(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y);
-static void window_track_list_tooltip(rct_window* w, sint32 widgetIndex, rct_string_id *stringId);
+static void window_track_list_tooltip(rct_window* w, rct_widgetindex widgetIndex, rct_string_id *stringId);
 static void window_track_list_invalidate(rct_window *w);
 static void window_track_list_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_track_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 scrollIndex);
@@ -234,7 +237,7 @@ static sint32 window_track_list_get_list_item_index_from_position(sint32 x, sint
  *
  *  rct2: 0x006CFA31
  */
-static void window_track_list_mouseup(rct_window *w, sint32 widgetIndex)
+static void window_track_list_mouseup(rct_window *w, rct_widgetindex widgetIndex)
 {
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
@@ -316,7 +319,7 @@ static void window_track_list_scrollmouseover(rct_window *w, sint32 scrollIndex,
  *
  *  rct2: 0x006CFD6C
  */
-static void window_track_list_tooltip(rct_window* w, sint32 widgetIndex, rct_string_id *stringId)
+static void window_track_list_tooltip(rct_window* w, rct_widgetindex widgetIndex, rct_string_id *stringId)
 {
 	set_format_arg(0, rct_string_id, STR_LIST);
 }

@@ -25,7 +25,7 @@
 
 extern "C"
 {
-    #include "../config.h"
+    #include "../config/Config.h"
     #include "../localisation/date.h"
     #include "../management/finance.h"
     #include "../peep/peep.h"

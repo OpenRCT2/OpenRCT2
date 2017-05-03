@@ -14,7 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../config.h"
+#include "../config/Config.h"
 #include "../game.h"
 #include "../interface/viewport.h"
 #include "../localisation/date.h"
@@ -24,6 +24,7 @@
 #include "../network/network.h"
 #include "../scenario/scenario.h"
 #include "../util/util.h"
+#include "../world/entrance.h"
 #include "../world/footpath.h"
 #include "../world/scenery.h"
 #include "../world/sprite.h"
@@ -118,25 +119,25 @@ static inline void staff_autoposition_new_staff_member(rct_peep *newPeep)
 		// No walking guests; pick random park entrance
 		count = 0;
 		uint8 i;
-		for (i = 0; i < 4; ++i) {
-			if (gParkEntranceX[i] != SPRITE_LOCATION_NULL)
+		for (i = 0; i < MAX_PARK_ENTRANCES; ++i) {
+			if (gParkEntrances[i].x != SPRITE_LOCATION_NULL)
 				++count;
 		}
 
 		if (count > 0) {
 			uint32 rand = scenario_rand_max(count);
-			for (i = 0; i < 4; ++i) {
-				if (gParkEntranceX[i] != SPRITE_LOCATION_NULL) {
+			for (i = 0; i < MAX_PARK_ENTRANCES; ++i) {
+				if (gParkEntrances[i].x != SPRITE_LOCATION_NULL) {
 					if (rand == 0)
 						break;
 					--rand;
 				}
 			}
 
-			uint8 dir = gParkEntranceDirection[i];
-			x = gParkEntranceX[i];
-			y = gParkEntranceY[i];
-			z = gParkEntranceZ[i];
+			uint8 dir = gParkEntrances[i].direction;
+			x = gParkEntrances[i].x;
+			y = gParkEntrances[i].y;
+			z = gParkEntrances[i].z;
 			x += 16 + ((dir & 1) == 0 ? ((dir & 2) ? 32 : -32) : 0);
 			y += 16 + ((dir & 1) == 1 ? ((dir & 2) ? -32 : 32) : 0);
 		} else {
@@ -406,7 +407,7 @@ void game_command_set_staff_order(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 
 		if(order_id & 0x80){ // change costume
 			uint8 sprite_type = order_id & ~0x80;
 			sprite_type += 4;
-			if (sprite_type > countof(peep_slow_walking_types)) {
+			if (sprite_type >= countof(peep_slow_walking_types)) {
 				log_error("Invalid change costume order for sprite_type %u", sprite_type);
 				*ebx = MONEY32_UNDEFINED;
 				return;

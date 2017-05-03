@@ -36,7 +36,6 @@ namespace Imaging
     {
         png_structp png_ptr;
         png_infop info_ptr;
-        unsigned int sig_read = 0;
 
         // Setup PNG structures
         png_ptr = png_create_read_struct(PNG_LIBPNG_VER_STRING, nullptr, nullptr, nullptr);
@@ -55,6 +54,7 @@ namespace Imaging
         // Open PNG file
         try
         {
+            unsigned int sig_read = 0;
             auto fs = FileStream(path, FILE_MODE_OPEN);
 
             // Set error handling
@@ -69,7 +69,7 @@ namespace Imaging
             png_set_sig_bytes(png_ptr, sig_read);
 
             // To simplify the reading process, convert 4-16 bit data to 24-32 bit data
-            png_read_png(png_ptr, info_ptr, PNG_TRANSFORM_STRIP_16 | PNG_TRANSFORM_PACKING | PNG_TRANSFORM_EXPAND, nullptr);
+            png_read_png(png_ptr, info_ptr, PNG_TRANSFORM_STRIP_16 | PNG_TRANSFORM_PACKING | PNG_TRANSFORM_EXPAND | PNG_TRANSFORM_GRAY_TO_RGB, nullptr);
 
             // Read header
             png_uint_32 pngWidth, pngHeight;

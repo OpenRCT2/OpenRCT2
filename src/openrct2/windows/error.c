@@ -15,9 +15,10 @@
 #pragma endregion
 
 #include "../audio/audio.h"
-#include "../localisation/localisation.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
+#include "../localisation/localisation.h"
+#include "../platform/platform.h"
 #include "../rct2.h"
 #include "error.h"
 

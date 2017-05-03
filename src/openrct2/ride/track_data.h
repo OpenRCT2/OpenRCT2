@@ -30,7 +30,7 @@ extern const uint8 FlatRideTrackSequenceProperties[256][16];
 
 extern const uint64 RideTypePossibleTrackConfigurations[RIDE_TYPE_COUNT];
 extern const rct_preview_track *TrackBlocks[256];
-extern const rct_preview_track *FlatRideTrackBlocks[255];
+extern const rct_preview_track *FlatRideTrackBlocks[256];
 
 extern const uint8 TrackPieceLengths[256];
 

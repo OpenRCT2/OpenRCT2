@@ -15,7 +15,6 @@
 #pragma endregion
 
 #include <vector>
-#include <SDL.h>
 #include "../common.h"
 #include "../core/Collections.hpp"
 #include "../core/Console.hpp"
@@ -25,6 +24,7 @@
 #include "../core/Guard.hpp"
 #include "../core/Math.hpp"
 #include "../core/Memory.hpp"
+#include "../core/MemoryStream.h"
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
 #include "../core/StringBuilder.hpp"
@@ -38,7 +38,7 @@
 static std::vector<utf8 *> GetSaves(const utf8 * path);
 static std::vector<utf8 *> GetSaves(IZipArchive * zip);
 static std::vector<TitleCommand> LegacyScriptRead(utf8 * script, size_t scriptLength, std::vector<utf8 *> saves);
-static void LegacyScriptGetLine(SDL_RWops * file, char * parts);
+static void LegacyScriptGetLine(IStream * stream, char * parts);
 static void * ReadScriptFile(const utf8 * path, size_t * outSize);
 static utf8 * LegacyScriptWrite(TitleSequence * seq);
 
@@ -140,9 +140,8 @@ extern "C"
                 if (zip != nullptr)
                 {
                     handle = Memory::Allocate<TitleSequenceParkHandle>();
-                    handle->Data = zip->GetFileData(filename, &handle->DataSize);
-                    handle->RWOps = SDL_RWFromMem(handle->Data, (sint32)handle->DataSize);
-                    handle->IsScenario = String::Equals(Path::GetExtension(filename), ".sc6", true);
+                    handle->Stream = zip->GetFileStream(filename);
+                    handle->HintPath = String::Duplicate(filename);
                     delete zip;
                 }
             }
@@ -153,9 +152,8 @@ extern "C"
                 Path::Append(absolutePath, sizeof(absolutePath), filename);
 
                 handle = Memory::Allocate<TitleSequenceParkHandle>();
-                handle->Data = nullptr;
-                handle->RWOps = SDL_RWFromFile(absolutePath, "rb");
-                handle->IsScenario = String::Equals(Path::GetExtension(filename), ".sc6", true);
+                handle->Stream = new FileStream(absolutePath, FILE_MODE_OPEN);
+                handle->HintPath = String::Duplicate(filename);
             }
         }
         return handle;
@@ -165,9 +163,8 @@ extern "C"
     {
         if (handle != nullptr)
         {
-            SDL_RWclose(handle->RWOps);
-            Memory::Free(handle->Data);
-            Memory::Free(handle);
+            Memory::Free(handle->HintPath);
+            delete ((IStream *)handle->Stream);
         }
     }
 
@@ -241,7 +238,7 @@ extern "C"
                 delete zip;
                 Memory::Free(fdata);
             }
-            catch (Exception ex)
+            catch (const Exception &ex)
             {
                 Console::Error::WriteLine(ex.GetMessage());
             }
@@ -394,10 +391,11 @@ static std::vector<utf8 *> GetSaves(IZipArchive * zip)
 static std::vector<TitleCommand> LegacyScriptRead(utf8 * script, size_t scriptLength, std::vector<utf8 *> saves)
 {
     std::vector<TitleCommand> commands;
-    SDL_RWops * file = SDL_RWFromMem(script, (sint32)scriptLength);
-    do {
+    auto fs = MemoryStream(script, scriptLength);
+    do
+    {
         char parts[3 * 128], *token, *part1, *part2;
-        LegacyScriptGetLine(file, parts);
+        LegacyScriptGetLine(&fs, parts);
 
         token = &parts[0 * 128];
         part1 = &parts[1 * 128];
@@ -468,13 +466,12 @@ static std::vector<TitleCommand> LegacyScriptRead(utf8 * script, size_t scriptLe
         {
             commands.push_back(command);
         }
-    } while (SDL_RWtell(file) < (sint32)scriptLength);
-    SDL_RWclose(file);
-
+    }
+    while (fs.GetPosition() < scriptLength);
     return commands;
 }
 
-static void LegacyScriptGetLine(SDL_RWops * file, char * parts)
+static void LegacyScriptGetLine(IStream * stream, char * parts)
 {
     for (sint32 i = 0; i < 3; i++)
     {
@@ -488,7 +485,7 @@ static void LegacyScriptGetLine(SDL_RWops * file, char * parts)
     for (; part < 3;)
     {
         sint32 c = 0;
-        if (SDL_RWread(file, &c, 1, 1) != 1)
+        if (stream->TryRead(&c, 1) != 1)
         {
             c = EOF;
         }

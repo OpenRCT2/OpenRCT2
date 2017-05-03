@@ -39,7 +39,8 @@ assert_struct_size(rct_banner, 8);
 enum{
 	BANNER_FLAG_NO_ENTRY = (1 << 0),
 	BANNER_FLAG_IS_LARGE_SCENERY = (1 << 1),
-	BANNER_FLAG_LINKED_TO_RIDE = (1 << 2)
+	BANNER_FLAG_LINKED_TO_RIDE = (1 << 2),
+	BANNER_FLAG_IS_WALL = (1 << 3)
 };
 
 extern rct_banner gBanners[MAX_BANNERS];
@@ -48,7 +49,7 @@ void banner_init();
 sint32 create_new_banner(uint8 flags);
 rct_map_element *banner_get_map_element(sint32 bannerIndex);
 sint32 banner_get_closest_ride_index(sint32 x, sint32 y, sint32 z);
-void fix_banner_count();
+void banner_reset_broken_index();
 void game_command_callback_place_banner(sint32 eax, sint32 ebx, sint32 ecx, sint32 edx, sint32 esi, sint32 edi, sint32 ebp);
 
 #endif

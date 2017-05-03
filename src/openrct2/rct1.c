@@ -14,68 +14,12 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "config.h"
+#include "config/Config.h"
 #include "game.h"
 #include "localisation/string_ids.h"
 #include "rct1.h"
 #include "util/sawyercoding.h"
 #include "util/util.h"
-
-bool rct1_read_sc4(const char *path, rct1_s4 *s4)
-{
-	uint8 *buffer, *decodedBuffer;
-	size_t length, decodedLength;
-	bool success;
-
-	if (!readentirefile(path, (void**)&buffer, &length)) {
-		gErrorType = ERROR_TYPE_FILE_LOAD;
-		gErrorStringId = STR_FILE_CONTAINS_INVALID_DATA;
-		return 0;
-	}
-
-	sint32 fileType = sawyercoding_detect_file_type(buffer, length);
-
-	decodedBuffer = malloc(sizeof(rct1_s4));
-	decodedLength = (fileType & FILE_VERSION_MASK) == FILE_VERSION_RCT1 ?
-		sawyercoding_decode_sv4(buffer, decodedBuffer, length, sizeof(rct1_s4)) :
-		sawyercoding_decode_sc4(buffer, decodedBuffer, length, sizeof(rct1_s4));
-	if (decodedLength == sizeof(rct1_s4)) {
-		memcpy(s4, decodedBuffer, sizeof(rct1_s4));
-		success = true;
-	} else {
-		success = false;
-	}
-
-	free(buffer);
-	free(decodedBuffer);
-	return success;
-}
-
-bool rct1_read_sv4(const char *path, rct1_s4 *s4)
-{
-	uint8 *buffer, *decodedBuffer;
-	size_t length, decodedLength;
-	bool success;
-
-	if (!readentirefile(path, (void**)&buffer, &length)) {
-		gErrorType = ERROR_TYPE_FILE_LOAD;
-		gErrorStringId = STR_FILE_CONTAINS_INVALID_DATA;
-		return 0;
-	}
-
-	decodedBuffer = malloc(sizeof(rct1_s4));
-	decodedLength = sawyercoding_decode_sv4(buffer, decodedBuffer, length, sizeof(rct1_s4));
-	if (decodedLength == sizeof(rct1_s4)) {
-		memcpy(s4, decodedBuffer, sizeof(rct1_s4));
-		success = true;
-	} else {
-		success = false;
-	}
-
-	free(buffer);
-	free(decodedBuffer);
-	return success;
-}
 
 bool rideTypeShouldLoseSeparateFlag(const rct_ride_entry *rideEntry)
 {

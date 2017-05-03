@@ -24,14 +24,16 @@
 
 #include "../audio/audio.h"
 #include "../audio/AudioMixer.h"
-#include "../config.h"
+#include "../config/Config.h"
 #include "../drawing/drawing.h"
+#include "../drawing/IDrawingEngine.h"
 #include "../interface/themes.h"
 #include "../interface/viewport.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
 #include "../localisation/currency.h"
 #include "../localisation/date.h"
+#include "../localisation/language.h"
 #include "../localisation/localisation.h"
 #include "../platform/platform.h"
 #include "../rct2.h"
@@ -143,6 +145,7 @@ enum WINDOW_OPTIONS_WIDGET_IDX {
 	WIDX_TOOLBAR_SHOW_RESEARCH,
 	WIDX_TOOLBAR_SHOW_CHEATS,
 	WIDX_TOOLBAR_SHOW_NEWS,
+	WIDX_TOOLBAR_SHOW_MUTE,
 	WIDX_SELECT_BY_TRACK_TYPE,
 	WIDX_SCENARIO_GROUPING,
 	WIDX_SCENARIO_GROUPING_DROPDOWN,
@@ -168,6 +171,9 @@ enum WINDOW_OPTIONS_WIDGET_IDX {
 	WIDX_WINDOW_LIMIT,
 	WIDX_WINDOW_LIMIT_UP,
 	WIDX_WINDOW_LIMIT_DOWN,
+	WIDX_PATH_TO_RCT1_TEXT,
+	WIDX_PATH_TO_RCT1_BUTTON,
+	WIDX_PATH_TO_RCT1_CLEAR,
 
 	// Twitch
 	WIDX_CHANNEL_BUTTON = WIDX_PAGE_START,
@@ -181,6 +187,14 @@ enum WINDOW_OPTIONS_WIDGET_IDX {
 #define WW 			310
 #define WH 			332
 
+#ifndef DISABLE_TWITCH
+	#define TWITCH_TAB_SPRITE	0x20000000 | SPR_TAB
+	#define TWITCH_TAB_COLOUR	1
+#else
+	#define TWITCH_TAB_SPRITE	0x20000000 | SPR_G2_TAB_DISABLED
+	#define TWITCH_TAB_COLOUR	0
+#endif
+
 #define MAIN_OPTIONS_WIDGETS \
 	{ WWT_FRAME,			0,	0,		WW-1,	0,		WH-1,	STR_NONE,				STR_NONE }, \
 	{ WWT_CAPTION,			0,	1,		WW-2,	1,		14,		STR_OPTIONS_TITLE,		STR_WINDOW_TITLE_TIP }, \
@@ -192,7 +206,7 @@ enum WINDOW_OPTIONS_WIDGET_IDX {
 	{ WWT_TAB,				1,	96,		126,	17,		43,		0x20000000 | SPR_TAB,	STR_OPTIONS_AUDIO_TIP }, \
 	{ WWT_TAB,				1,	127,	157,	17,		43,		0x20000000 | SPR_TAB,	STR_OPTIONS_CONTROLS_AND_INTERFACE_TIP }, \
 	{ WWT_TAB,				1,	158,	188,	17,		43,		0x20000000 | SPR_TAB,	STR_OPTIONS_MISCELLANEOUS_TIP }, \
-	{ WWT_TAB,				1,	189,	219,	17,		43,		0x20000000 | SPR_TAB,	STR_OPTIONS_TWITCH_TIP }
+	{ WWT_TAB,				TWITCH_TAB_COLOUR,	189,	219,	17,		43,		TWITCH_TAB_SPRITE,		STR_OPTIONS_TWITCH_TIP }
 
 static rct_widget window_options_display_widgets[] = {
 	MAIN_OPTIONS_WIDGETS,
@@ -281,22 +295,20 @@ static rct_widget window_options_controls_and_interface_widgets[] = {
 	{ WWT_CHECKBOX,			2,	10,		299,	98,			109,	STR_INVERT_RIGHT_MOUSE_DRAG,			STR_INVERT_RIGHT_MOUSE_DRAG_TIP },			// Invert right mouse dragging
 	{ WWT_CHECKBOX,			2,	10,		299,	113,		124,	STR_ZOOM_TO_CURSOR,						STR_ZOOM_TO_CURSOR_TIP },			// Zoom to cursor
 	{ WWT_DROPDOWN_BUTTON,	1,	26,		185,	128,		139,	STR_HOTKEY,								STR_HOTKEY_TIP },							// Set hotkeys buttons
-
 	{ WWT_GROUPBOX,			1,	5,      304,	148,		194,	STR_THEMES_GROUP,						STR_NONE },									// Toolbar buttons group
 	{ WWT_DROPDOWN,			1,	155,	299,	162,		173,	STR_NONE,								STR_NONE },									// Themes
 	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	163,		172,	STR_DROPDOWN_GLYPH,						STR_CURRENT_THEME_TIP },
 	{ WWT_DROPDOWN_BUTTON,	1,	10,		145,	178,		189,	STR_EDIT_THEMES_BUTTON,					STR_EDIT_THEMES_BUTTON_TIP },				// Themes button
-
-	{ WWT_GROUPBOX,			1,	5,      304,	198,		260,	STR_TOOLBAR_BUTTONS_GROUP,				STR_NONE },									// Toolbar buttons group
+	{ WWT_GROUPBOX,			1,	5,		304,	198,		273,	STR_TOOLBAR_BUTTONS_GROUP,				STR_NONE },									// Toolbar buttons group
 	{ WWT_CHECKBOX,			2,	10,		145,	229,		240,	STR_FINANCES_BUTTON_ON_TOOLBAR,			STR_FINANCES_BUTTON_ON_TOOLBAR_TIP },		// Finances
 	{ WWT_CHECKBOX,			2,	10,		145,	244,		255,	STR_RESEARCH_BUTTON_ON_TOOLBAR,			STR_RESEARCH_BUTTON_ON_TOOLBAR_TIP },		// Research
 	{ WWT_CHECKBOX,			2,	155,	299,	229,		240,	STR_CHEATS_BUTTON_ON_TOOLBAR,			STR_CHEATS_BUTTON_ON_TOOLBAR_TIP },			// Cheats
 	{ WWT_CHECKBOX,			2,	155,	299,	244,		255,	STR_SHOW_RECENT_MESSAGES_ON_TOOLBAR,	STR_SHOW_RECENT_MESSAGES_ON_TOOLBAR_TIP },	// Recent messages
-
-	{ WWT_CHECKBOX,			2,	10,		299,	269,		280,	STR_SELECT_BY_TRACK_TYPE,				STR_SELECT_BY_TRACK_TYPE_TIP },				// Select by track type
-	{ WWT_DROPDOWN,			2,	155,	299,	284,		295,	STR_NONE,								STR_NONE },									// Scenario select mode
-	{ WWT_DROPDOWN_BUTTON,	2,	288,	298,	285,		294,	STR_DROPDOWN_GLYPH,						STR_SCENARIO_GROUPING_TIP },
-	{ WWT_CHECKBOX,			2,	18,		299,	299,		310,	STR_OPTIONS_SCENARIO_UNLOCKING,			STR_SCENARIO_UNLOCKING_TIP },				// Unlocking of scenarios
+	{ WWT_CHECKBOX,			2,	10,	    185,	259,		270,	STR_MUTE_BUTTON_ON_TOOLBAR,				STR_MUTE_BUTTON_ON_TOOLBAR_TIP },			// Mute
+	{ WWT_CHECKBOX,			2,	10,		299,	279,		285,	STR_SELECT_BY_TRACK_TYPE,				STR_SELECT_BY_TRACK_TYPE_TIP },				// Select by track type
+	{ WWT_DROPDOWN,			2,	155,	299,	294,		305,	STR_NONE,								STR_NONE },									// Scenario select mode
+	{ WWT_DROPDOWN_BUTTON,	2,	288,	298,	295,		304,	STR_DROPDOWN_GLYPH,						STR_SCENARIO_GROUPING_TIP },
+	{ WWT_CHECKBOX,			2,	18,		299,	309,		320,	STR_OPTIONS_SCENARIO_UNLOCKING,			STR_SCENARIO_UNLOCKING_TIP },				// Unlocking of scenarios
 	{ WIDGETS_END },
 };
 
@@ -311,16 +323,19 @@ static rct_widget window_options_misc_widgets[] = {
 	{ WWT_DROPDOWN,			1,	155,	299,	144,	155,	STR_NONE,									STR_NONE },											// Autosave dropdown
 	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	145,	154,	STR_DROPDOWN_GLYPH,							STR_AUTOSAVE_FREQUENCY_TIP },						// Autosave dropdown button
 	{ WWT_DROPDOWN,			1,	155,	299,	159,	170,	STR_NONE,									STR_NONE },											// Title sequence dropdown
-	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	160,	169,	STR_DROPDOWN_GLYPH,							STR_TITLE_SEQUENCE_TIP },							// Title seqeuence dropdown button
+	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	160,	169,	STR_DROPDOWN_GLYPH,							STR_TITLE_SEQUENCE_TIP },							// Title sequence dropdown button
 	{ WWT_DROPDOWN_BUTTON,	1,	26,		185,	174,	185,	STR_EDIT_TITLE_SEQUENCES_BUTTON,			STR_EDIT_TITLE_SEQUENCES_BUTTON_TIP },				// Edit title sequences button
 	{ WWT_CHECKBOX,			2,	10,		299,	189,	200,	STR_AUTO_STAFF_PLACEMENT,					STR_AUTO_STAFF_PLACEMENT_TIP },						// Auto staff placement
 	{ WWT_CHECKBOX,			2,	10,		299,	204,	215,	STR_HANDYMEN_MOW_BY_DEFAULT,				STR_HANDYMEN_MOW_BY_DEFAULT_TIP },					// Handymen mow by default
 	{ WWT_CHECKBOX,			2,	10,		299,	219,	230,	STR_AUTO_OPEN_SHOPS,						STR_AUTO_OPEN_SHOPS_TIP },							// Automatically open shops & stalls
 	{ WWT_DROPDOWN,			1,	155,	299,	234,	245,	STR_NONE,									STR_NONE },											// Default inspection time dropdown
 	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	235,	244,	STR_DROPDOWN_GLYPH,							STR_DEFAULT_INSPECTION_INTERVAL_TIP },				// Default inspection time dropdown button
-	{ WWT_SPINNER,			1,	155,	299,	249,	260,	STR_NONE,									STR_NONE },								// Window limit
+	{ WWT_SPINNER,			1,	155,	299,	249,	260,	STR_NONE,									STR_NONE },											// Window limit
 	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	250,	254,	STR_NUMERIC_UP,								STR_NONE },											// Window limit up
 	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	255,	259,	STR_NUMERIC_DOWN,							STR_NONE },											// Window limit down
+	{ WWT_12,				1,	10,		142,	264,	275,	STR_PATH_TO_RCT1,							STR_PATH_TO_RCT1_TIP },								// RCT 1 path text
+	{ WWT_DROPDOWN_BUTTON,	1,	10,		289,	278,	289,	STR_NONE,									STR_STRING_TOOLTIP },								// RCT 1 path button
+	{ WWT_DROPDOWN_BUTTON,	1,	289,	299,	278,	289,	STR_CLOSE_X,								STR_PATH_TO_RCT1_CLEAR_TIP },						// RCT 1 path clear button
 	{ WIDGETS_END },
 };
 
@@ -387,14 +402,15 @@ static void window_options_update_height_markers();
 
 #pragma region Events
 
-static void window_options_mouseup(rct_window *w, sint32 widgetIndex);
-static void window_options_mousedown(sint32 widgetIndex, rct_window*w, rct_widget* widget);
-static void window_options_dropdown(rct_window *w, sint32 widgetIndex, sint32 dropdownIndex);
+static void window_options_mouseup(rct_window *w, rct_widgetindex widgetIndex);
+static void window_options_mousedown(rct_widgetindex widgetIndex, rct_window*w, rct_widget* widget);
+static void window_options_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex);
 static void window_options_update(rct_window *w);
 static void window_options_invalidate(rct_window *w);
 static void window_options_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_options_scrollgetsize(rct_window *w, sint32 scrollIndex, sint32 *width, sint32 *height);
-static void window_options_text_input(rct_window *w, sint32 widgetIndex, char *text);
+static void window_options_text_input(rct_window *w, rct_widgetindex widgetIndex, char *text);
+static void window_options_tooltip(rct_window *w, rct_widgetindex widgetIndex, rct_string_id *stringid);
 
 static rct_window_event_list window_options_events = {
 	NULL,
@@ -419,7 +435,7 @@ static rct_window_event_list window_options_events = {
 	window_options_text_input,
 	NULL,
 	NULL,
-	NULL,
+	window_options_tooltip,
 	NULL,
 	NULL,
 	window_options_invalidate,
@@ -441,7 +457,7 @@ static rct_window_event_list window_options_events = {
 	(1 << WIDX_TAB_6) | \
 	(1 << WIDX_TAB_7)
 
-static uint32 window_options_page_enabled_widgets[] = {
+static uint64 window_options_page_enabled_widgets[] = {
 	MAIN_OPTIONS_ENABLED_WIDGETS |
 	(1 << WIDX_RESOLUTION) |
 	(1 << WIDX_RESOLUTION_DROPDOWN) |
@@ -512,7 +528,8 @@ static uint32 window_options_page_enabled_widgets[] = {
 	(1 << WIDX_SELECT_BY_TRACK_TYPE) |
 	(1 << WIDX_SCENARIO_GROUPING) |
 	(1 << WIDX_SCENARIO_GROUPING_DROPDOWN) |
-	(1 << WIDX_SCENARIO_UNLOCKING),
+	(1 << WIDX_SCENARIO_UNLOCKING) |
+	(1 << WIDX_TOOLBAR_SHOW_MUTE),
 
 	MAIN_OPTIONS_ENABLED_WIDGETS |
 	(1 << WIDX_REAL_NAME_CHECKBOX) |
@@ -533,7 +550,9 @@ static uint32 window_options_page_enabled_widgets[] = {
 	(1 << WIDX_DEFAULT_INSPECTION_INTERVAL_DROPDOWN) |
 	(1 << WIDX_WINDOW_LIMIT) |
 	(1 << WIDX_WINDOW_LIMIT_UP) |
-	(1 << WIDX_WINDOW_LIMIT_DOWN),
+	(1 << WIDX_WINDOW_LIMIT_DOWN) |
+	(1 << WIDX_PATH_TO_RCT1_BUTTON) |
+	(1ULL << WIDX_PATH_TO_RCT1_CLEAR),
 
 	MAIN_OPTIONS_ENABLED_WIDGETS |
 	(1 << WIDX_CHANNEL_BUTTON) |
@@ -575,7 +594,7 @@ void window_options_open()
 *
 *  rct2: 0x006BAFCA
 */
-static void window_options_mouseup(rct_window *w, sint32 widgetIndex)
+static void window_options_mouseup(rct_window *w, rct_widgetindex widgetIndex)
 {
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
@@ -745,6 +764,12 @@ static void window_options_mouseup(rct_window *w, sint32 widgetIndex)
 			window_invalidate(w);
 			window_invalidate_by_class(WC_TOP_TOOLBAR);
 			break;
+		case WIDX_TOOLBAR_SHOW_MUTE:
+			gConfigInterface.toolbar_show_mute ^= 1;
+			config_save_default();
+			window_invalidate(w);
+			window_invalidate_by_class(WC_TOP_TOOLBAR);
+			break;
 		case WIDX_INVERT_DRAG:
 			gConfigGeneral.invert_viewport_drag ^= 1;
 			config_save_default();
@@ -819,6 +844,43 @@ static void window_options_mouseup(rct_window *w, sint32 widgetIndex)
 			config_save_default();
 			window_invalidate(w);
 			break;
+		case WIDX_PATH_TO_RCT1_BUTTON:
+		{
+			utf8string rct1path = platform_open_directory_browser(language_get_string(STR_PATH_TO_RCT1_BROWSER));
+			if (rct1path) {
+				// Check if this directory actually contains RCT1
+				// The sprite file can be called either csg1.1 or csg1.dat, so check for both names.
+				utf8 checkpath[MAX_PATH];
+				safe_strcpy(checkpath, rct1path, MAX_PATH);
+				safe_strcat_path(checkpath, "Data", MAX_PATH);
+				safe_strcat_path(checkpath, "csg1.1", MAX_PATH);
+
+				if (!platform_file_exists(checkpath)) {
+					safe_strcpy(checkpath, rct1path, MAX_PATH);
+					safe_strcat_path(checkpath, "Data", MAX_PATH);
+					safe_strcat_path(checkpath, "csg1.dat", MAX_PATH);
+				}
+
+				if (platform_file_exists(checkpath)) {
+					SafeFree(gConfigGeneral.rct1_path);
+					gConfigGeneral.rct1_path = rct1path;
+					config_save_default();
+					window_error_open(STR_RESTART_REQUIRED, STR_NONE);
+				} else {
+					SafeFree(rct1path);
+					window_error_open(STR_PATH_TO_RCT1_WRONG_ERROR, STR_NONE);
+				}
+			}
+			window_invalidate(w);
+			break;
+		}
+		case WIDX_PATH_TO_RCT1_CLEAR:
+			if (!str_is_null_or_empty(gConfigGeneral.rct1_path)) {
+				SafeFree(gConfigGeneral.rct1_path);
+				config_save_default();
+			}
+			window_invalidate(w);
+			break;
 		}
 		break;
 
@@ -861,7 +923,7 @@ static void window_options_mouseup(rct_window *w, sint32 widgetIndex)
 *
 *  rct2: 0x006BB01B
 */
-static void window_options_mousedown(sint32 widgetIndex, rct_window*w, rct_widget* widget)
+static void window_options_mousedown(rct_widgetindex widgetIndex, rct_window*w, rct_widget* widget)
 {
 	uint32 num_items;
 
@@ -1088,6 +1150,7 @@ static void window_options_mousedown(sint32 widgetIndex, rct_window*w, rct_widge
 				w->y + widget->top,
 				widget->bottom - widget->top + 1,
 				w->colours[1],
+				0,
 				DROPDOWN_FLAG_STAY_OPEN,
 				num_items,
 				widget->right - widget->left - 3
@@ -1110,6 +1173,7 @@ static void window_options_mousedown(sint32 widgetIndex, rct_window*w, rct_widge
 				w->y + widget->top,
 				widget->bottom - widget->top + 1,
 				w->colours[1],
+				0,
 				DROPDOWN_FLAG_STAY_OPEN,
 				num_items,
 				widget->right - widget->left - 3
@@ -1188,7 +1252,7 @@ static void window_options_mousedown(sint32 widgetIndex, rct_window*w, rct_widge
 *
 *  rct2: 0x006BB076
 */
-static void window_options_dropdown(rct_window *w, sint32 widgetIndex, sint32 dropdownIndex)
+static void window_options_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex)
 {
 	if (dropdownIndex == -1)
 		return;
@@ -1428,7 +1492,12 @@ static void window_options_invalidate(rct_window *w)
 		window_init_scroll_widgets(w);
 	}
 	window_options_set_pressed_tab(w);
+
+#ifdef DISABLE_TWITCH
+	w->disabled_widgets = (1 << WIDX_TAB_7);
+#else
 	w->disabled_widgets = 0;
+#endif
 
 	switch (w->page) {
 	case WINDOW_OPTIONS_PAGE_DISPLAY:
@@ -1595,6 +1664,7 @@ static void window_options_invalidate(rct_window *w)
 		widget_set_checkbox_value(w, WIDX_TOOLBAR_SHOW_RESEARCH, gConfigInterface.toolbar_show_research);
 		widget_set_checkbox_value(w, WIDX_TOOLBAR_SHOW_CHEATS, gConfigInterface.toolbar_show_cheats);
 		widget_set_checkbox_value(w, WIDX_TOOLBAR_SHOW_NEWS, gConfigInterface.toolbar_show_news);
+		widget_set_checkbox_value(w, WIDX_TOOLBAR_SHOW_MUTE, gConfigInterface.toolbar_show_mute);
 		widget_set_checkbox_value(w, WIDX_SELECT_BY_TRACK_TYPE, gConfigInterface.select_by_track_type);
 		widget_set_checkbox_value(w, WIDX_SCENARIO_UNLOCKING, gConfigGeneral.scenario_unlocking_enabled);
 
@@ -1614,6 +1684,7 @@ static void window_options_invalidate(rct_window *w)
 		window_options_controls_and_interface_widgets[WIDX_TOOLBAR_SHOW_RESEARCH].type = WWT_CHECKBOX;
 		window_options_controls_and_interface_widgets[WIDX_TOOLBAR_SHOW_CHEATS].type = WWT_CHECKBOX;
 		window_options_controls_and_interface_widgets[WIDX_TOOLBAR_SHOW_NEWS].type = WWT_CHECKBOX;
+		window_options_controls_and_interface_widgets[WIDX_TOOLBAR_SHOW_MUTE].type = WWT_CHECKBOX;
 		window_options_controls_and_interface_widgets[WIDX_SELECT_BY_TRACK_TYPE].type = WWT_CHECKBOX;
 		window_options_controls_and_interface_widgets[WIDX_SCENARIO_GROUPING].type = WWT_DROPDOWN;
 		window_options_controls_and_interface_widgets[WIDX_SCENARIO_UNLOCKING].type = WWT_CHECKBOX;
@@ -1658,6 +1729,8 @@ static void window_options_invalidate(rct_window *w)
 		window_options_misc_widgets[WIDX_WINDOW_LIMIT].type = WWT_SPINNER;
 		window_options_misc_widgets[WIDX_WINDOW_LIMIT_UP].type = WWT_DROPDOWN_BUTTON;
 		window_options_misc_widgets[WIDX_WINDOW_LIMIT_DOWN].type = WWT_DROPDOWN_BUTTON;
+		window_options_misc_widgets[WIDX_PATH_TO_RCT1_BUTTON].type = WWT_DROPDOWN_BUTTON;
+		window_options_misc_widgets[WIDX_PATH_TO_RCT1_CLEAR].type = WWT_DROPDOWN_BUTTON;
 		break;
 
 	case WINDOW_OPTIONS_PAGE_TWITCH:
@@ -1893,6 +1966,16 @@ static void window_options_paint(rct_window *w, rct_drawpixelinfo *dpi)
 			w->x + window_options_misc_widgets[WIDX_WINDOW_LIMIT].left + 1,
 			w->y + window_options_misc_widgets[WIDX_WINDOW_LIMIT].top
 		);
+		set_format_arg(0, uintptr_t, (uintptr_t)gConfigGeneral.rct1_path);
+		gfx_draw_string_left_clipped(
+			dpi,
+			STR_STRING,
+			gCommonFormatArgs,
+			w->colours[1],
+			w->x + window_options_misc_widgets[WIDX_PATH_TO_RCT1_BUTTON].left + 1,
+			w->y + window_options_misc_widgets[WIDX_PATH_TO_RCT1_BUTTON].top,
+			277
+		);
 		break;
 	}
 }
@@ -1905,6 +1988,7 @@ static void window_options_show_dropdown(rct_window *w, rct_widget *widget, sint
 		w->y + widget->top,
 		widget->bottom - widget->top + 1,
 		w->colours[1],
+		0,
 		DROPDOWN_FLAG_STAY_OPEN,
 		num_items,
 		widget->right - widget->left - 3
@@ -1924,7 +2008,7 @@ static void window_options_scrollgetsize(rct_window *w, sint32 scrollIndex, sint
 	}
 }
 
-static void window_options_text_input(rct_window *w, sint32 widgetIndex, char *text)
+static void window_options_text_input(rct_window *w, rct_widgetindex widgetIndex, char *text)
 {
 	if (text == NULL)
 		return;
@@ -1934,6 +2018,18 @@ static void window_options_text_input(rct_window *w, sint32 widgetIndex, char *t
 			free(gConfigTwitch.channel);
 		gConfigTwitch.channel = _strdup(text);
 		config_save_default();
+	}
+}
+
+static void window_options_tooltip(rct_window *w, rct_widgetindex widgetIndex, rct_string_id *stringid)
+{
+	if (widgetIndex == WIDX_PATH_TO_RCT1_BUTTON && w->page == WINDOW_OPTIONS_PAGE_MISC) {
+		if (str_is_null_or_empty(gConfigGeneral.rct1_path)) {
+			// No tooltip if the path is empty
+			*stringid = STR_NONE;
+		} else {
+			set_format_arg(0, uintptr_t, (uintptr_t)gConfigGeneral.rct1_path);
+		}
 	}
 }
 
@@ -1964,7 +2060,11 @@ static void window_options_set_pressed_tab(rct_window *w)
 
 static void window_options_draw_tab_image(rct_drawpixelinfo *dpi, rct_window *w, sint32 page, sint32 spriteIndex)
 {
-	sint32 widgetIndex = WIDX_TAB_1 + page;
+	rct_widgetindex widgetIndex = WIDX_TAB_1 + page;
+	rct_widget *widget = &w->widgets[widgetIndex];
+
+	sint16 l = w->x + widget->left;
+	sint16 t = w->y + widget->top;
 
 	if (!(w->disabled_widgets & (1LL << widgetIndex))) {
 		if (w->page == page) {
@@ -1972,7 +2072,17 @@ static void window_options_draw_tab_image(rct_drawpixelinfo *dpi, rct_window *w,
 			spriteIndex += (frame % window_options_tab_animation_frames[w->page]);
 		}
 
-		gfx_draw_sprite(dpi, spriteIndex, w->x + w->widgets[widgetIndex].left, w->y + w->widgets[widgetIndex].top, 0);
+		// Draw normal, enabled sprite.
+		gfx_draw_sprite(dpi, spriteIndex, l, t, 0);
+	} else {
+		// Get the window background colour
+		uint8 window_colour = NOT_TRANSLUCENT(w->colours[widget->colour]);
+
+		// Draw greyed out (light border bottom right shadow)
+		gfx_draw_sprite_solid(dpi, spriteIndex, l + 1, t + 1, ColourMapA[window_colour].lighter);
+
+		// Draw greyed out (dark)
+		gfx_draw_sprite_solid(dpi, spriteIndex, l, t, ColourMapA[window_colour].mid_light);
 	}
 }
 

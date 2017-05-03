@@ -16,7 +16,7 @@
 
 #include "../audio/audio.h"
 #include "../cheats.h"
-#include "../config.h"
+#include "../config/Config.h"
 #include "../drawing/drawing.h"
 #include "../game.h"
 #include "../input.h"
@@ -33,6 +33,7 @@
 #include "dropdown.h"
 #include "../sprites.h"
 #include "../world/map.h"
+#include "../world/entrance.h"
 
 /* move to ride.c */
 static void sub_6B2FA9(rct_windownumber number)
@@ -86,6 +87,11 @@ enum {
 	WIDX_SEAT_ROTATION_ANGLE_SPINNER_DOWN,
 };
 
+validate_global_widx(WC_RIDE_CONSTRUCTION, WIDX_CONSTRUCT);
+validate_global_widx(WC_RIDE_CONSTRUCTION, WIDX_ENTRANCE);
+validate_global_widx(WC_RIDE_CONSTRUCTION, WIDX_EXIT);
+validate_global_widx(WC_RIDE_CONSTRUCTION, WIDX_ROTATE);
+
 static rct_widget window_ride_construction_widgets[] = {
 	{ WWT_FRAME,			0,	0,		165,	0,		393,	0xFFFFFFFF,									STR_NONE												},
 	{ WWT_CAPTION,			0,	1,		164,	1,		14,		STR_RIDE_CONSTRUCTION_WINDOW_TITLE,			STR_WINDOW_TITLE_TIP									},
@@ -134,13 +140,13 @@ static rct_widget window_ride_construction_widgets[] = {
 #pragma region Events
 
 static void window_ride_construction_close(rct_window *w);
-static void window_ride_construction_mouseup(rct_window *w, sint32 widgetIndex);
+static void window_ride_construction_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_ride_construction_resize(rct_window *w);
-static void window_ride_construction_mousedown(sint32 widgetIndex, rct_window *w, rct_widget *widget);
-static void window_ride_construction_dropdown(rct_window *w, sint32 widgetIndex, sint32 dropdownIndex);
+static void window_ride_construction_mousedown(rct_widgetindex widgetIndex, rct_window *w, rct_widget *widget);
+static void window_ride_construction_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex);
 static void window_ride_construction_update(rct_window *w);
-static void window_ride_construction_toolupdate(rct_window* w, sint32 widgetIndex, sint32 x, sint32 y);
-static void window_ride_construction_tooldown(rct_window* w, sint32 widgetIndex, sint32 x, sint32 y);
+static void window_ride_construction_toolupdate(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y);
+static void window_ride_construction_tooldown(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y);
 static void window_ride_construction_invalidate(rct_window *w);
 static void window_ride_construction_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
@@ -463,6 +469,7 @@ static sint32		_trackPlaceZ;
 static money32	_trackPlaceCost;
 static bool		_autoOpeningShop;
 static uint8	_rideConstructionState2;
+static bool		_boosterTrackSelected;
 
 static uint32	_currentDisabledSpecialTrackPieces;
 
@@ -553,7 +560,37 @@ rct_window *window_ride_construction_open()
 	w = window_create(0, 29, 166, 394, &window_ride_construction_events, WC_RIDE_CONSTRUCTION, WF_NO_AUTO_CLOSE);
 
 	w->widgets = window_ride_construction_widgets;
-	w->enabled_widgets = 0x67EFFFFFC4;
+	w->enabled_widgets = (1ULL << WIDX_CLOSE) |
+		(1ULL << WIDX_LEFT_CURVE_VERY_SMALL) |
+		(1ULL << WIDX_LEFT_CURVE_SMALL) |
+		(1ULL << WIDX_LEFT_CURVE) |
+		(1ULL << WIDX_STRAIGHT) |
+		(1ULL << WIDX_RIGHT_CURVE) |
+		(1ULL << WIDX_RIGHT_CURVE_SMALL) |
+		(1ULL << WIDX_RIGHT_CURVE_VERY_SMALL) |
+		(1ULL << WIDX_SPECIAL_TRACK_DROPDOWN) |
+		(1ULL << WIDX_SLOPE_DOWN_STEEP) |
+		(1ULL << WIDX_SLOPE_DOWN) |
+		(1ULL << WIDX_LEVEL) |
+		(1ULL << WIDX_SLOPE_UP) |
+		(1ULL << WIDX_SLOPE_UP_STEEP) |
+		(1ULL << WIDX_CHAIN_LIFT) |
+		(1ULL << WIDX_BANK_LEFT) |
+		(1ULL << WIDX_BANK_STRAIGHT) |
+		(1ULL << WIDX_BANK_RIGHT) |
+		(1ULL << WIDX_CONSTRUCT) |
+		(1ULL << WIDX_DEMOLISH) |
+		(1ULL << WIDX_LEFT_CURVE_LARGE) |
+		(1ULL << WIDX_PREVIOUS_SECTION) |
+		(1ULL << WIDX_NEXT_SECTION) |
+		(1ULL << WIDX_ENTRANCE) |
+		(1ULL << WIDX_EXIT) |
+		(1ULL << WIDX_RIGHT_CURVE_LARGE) |
+		(1ULL << WIDX_ROTATE) |
+		(1ULL << WIDX_U_TRACK) |
+		(1ULL << WIDX_O_TRACK) |
+		(1ULL << WIDX_SEAT_ROTATION_ANGLE_SPINNER_UP) |
+		(1ULL << WIDX_SEAT_ROTATION_ANGLE_SPINNER_DOWN);
 
 	window_init_scroll_widgets(w);
 
@@ -652,7 +689,7 @@ static void window_ride_construction_close(rct_window *w)
  *
  *  rct2: 0x006C6E14
  */
-static void window_ride_construction_mouseup(rct_window *w, sint32 widgetIndex)
+static void window_ride_construction_mouseup(rct_window *w, rct_widgetindex widgetIndex)
 {
 	window_ride_construction_update_enabled_track_pieces();
 	switch (widgetIndex){
@@ -1254,7 +1291,7 @@ static void window_ride_construction_resize(rct_window *w)
 	if (currentDisabledWidgets == disabledWidgets)
 		return;
 
-	for (sint32 i = 0; i < 64; i++) {
+	for (rct_widgetindex i = 0; i < 64; i++) {
 		if ((disabledWidgets & (1ULL << i)) != (currentDisabledWidgets & (1ULL << i))) {
 			widget_invalidate(w, i);
 		}
@@ -1266,7 +1303,7 @@ static void window_ride_construction_resize(rct_window *w)
  *
  *  rct2: 0x006C6E6A
  */
-static void window_ride_construction_mousedown(sint32 widgetIndex, rct_window *w, rct_widget *widget)
+static void window_ride_construction_mousedown(rct_widgetindex widgetIndex, rct_window *w, rct_widget *widget)
 {
 	rct_ride *ride = get_ride(_currentRideIndex);
 
@@ -1590,7 +1627,7 @@ static void window_ride_construction_mousedown(sint32 widgetIndex, rct_window *w
  *
  *  rct2: 0x006C78CD
  */
-static void window_ride_construction_dropdown(rct_window *w, sint32 widgetIndex, sint32 dropdownIndex)
+static void window_ride_construction_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex)
 {
 	if (widgetIndex != WIDX_SPECIAL_TRACK_DROPDOWN)
 		return;
@@ -1923,7 +1960,7 @@ static void window_ride_construction_rotate(rct_window *w)
  */
 static void window_ride_construction_entrance_click(rct_window *w)
 {
-	if (tool_set(w, WIDX_ENTRANCE, 12)) {
+	if (tool_set(w, WIDX_ENTRANCE, TOOL_CROSSHAIR)) {
 		if (!ride_try_get_origin_element(_currentRideIndex, NULL)) {
 			sub_6CC3FB(_currentRideIndex);
 		}
@@ -1931,7 +1968,7 @@ static void window_ride_construction_entrance_click(rct_window *w)
 		gRideEntranceExitPlaceType = ENTRANCE_TYPE_RIDE_ENTRANCE;
 		gRideEntranceExitPlaceRideIndex = w->number & 0xFF;
 		gRideEntranceExitPlaceStationIndex = 0;
-		gInputFlags |= INPUT_FLAG_6;
+		input_set_flag(INPUT_FLAG_6, true);
 		sub_6C9627();
 		if (_rideConstructionState != RIDE_CONSTRUCTION_STATE_ENTRANCE_EXIT) {
 			gRideEntranceExitPlacePreviousRideConstructionState = _rideConstructionState;
@@ -1947,7 +1984,7 @@ static void window_ride_construction_entrance_click(rct_window *w)
  */
 static void window_ride_construction_exit_click(rct_window *w)
 {
-	if (tool_set(w, WIDX_EXIT, 12)) {
+	if (tool_set(w, WIDX_EXIT, TOOL_CROSSHAIR)) {
 		if (!ride_try_get_origin_element(_currentRideIndex, NULL)) {
 			sub_6CC3FB(_currentRideIndex);
 		}
@@ -1955,7 +1992,7 @@ static void window_ride_construction_exit_click(rct_window *w)
 		gRideEntranceExitPlaceType = ENTRANCE_TYPE_RIDE_EXIT;
 		gRideEntranceExitPlaceRideIndex = w->number & 0xFF;
 		gRideEntranceExitPlaceStationIndex = 0;
-		gInputFlags |= INPUT_FLAG_6;
+		input_set_flag(INPUT_FLAG_6, true);
 		sub_6C9627();
 		if (_rideConstructionState != RIDE_CONSTRUCTION_STATE_ENTRANCE_EXIT) {
 			gRideEntranceExitPlacePreviousRideConstructionState = _rideConstructionState;
@@ -2008,7 +2045,7 @@ static void window_ride_construction_update(rct_window *w)
 	case RIDE_CONSTRUCTION_STATE_BACK:
 	case RIDE_CONSTRUCTION_STATE_SELECTED:
 		if (
-			(gInputFlags & INPUT_FLAG_TOOL_ACTIVE) &&
+			(input_test_flag(INPUT_FLAG_TOOL_ACTIVE)) &&
 			gCurrentToolWidget.window_classification == WC_RIDE_CONSTRUCTION
 		) {
 			tool_cancel();
@@ -2095,7 +2132,7 @@ static bool ride_get_place_position_from_screen_position(sint32 screenX, sint32 
  *
  *  rct2: 0x006C8229
  */
-static void window_ride_construction_toolupdate(rct_window* w, sint32 widgetIndex, sint32 x, sint32 y)
+static void window_ride_construction_toolupdate(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y)
 {
 	switch (widgetIndex) {
 	case WIDX_CONSTRUCT:
@@ -2112,7 +2149,7 @@ static void window_ride_construction_toolupdate(rct_window* w, sint32 widgetInde
  *
  *  rct2: 0x006C8248
  */
-static void window_ride_construction_tooldown(rct_window* w, sint32 widgetIndex, sint32 x, sint32 y)
+static void window_ride_construction_tooldown(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y)
 {
 	switch (widgetIndex) {
 	case WIDX_CONSTRUCT:
@@ -2141,13 +2178,21 @@ static void window_ride_construction_invalidate(rct_window *w)
 		stringId = RideConfigurationStringIds[_currentTrackCurve & 0xFF];
 		if (stringId == STR_RAPIDS && ride->type == RIDE_TYPE_CAR_RIDE)
 			stringId = STR_LOG_BUMPS;
-		if (stringId == STR_SPINNING_CONTROL_TOGGLE_TRACK && ride->type != RIDE_TYPE_WILD_MOUSE)
+		if (stringId == STR_SPINNING_CONTROL_TOGGLE_TRACK && ride->type != RIDE_TYPE_WILD_MOUSE) {
 			stringId = STR_BOOSTER;
+		}
 	}
 	set_format_arg(0, uint16, stringId);
 
 	if (_currentlyShowingBrakeSpeed == 1) {
 		uint16 brakeSpeed2 = ((_currentBrakeSpeed2 * 9) >> 2) & 0xFFFF;
+		if (_boosterTrackSelected){
+			if (ride->type == RIDE_TYPE_GIGA_COASTER) {
+				brakeSpeed2 *= 2;
+			} else if (ride->type == RIDE_TYPE_JUNIOR_ROLLER_COASTER) {
+				brakeSpeed2 /= 2;
+			}
+		}
 		set_format_arg(2, uint16, brakeSpeed2);
 	}
 
@@ -2610,7 +2655,7 @@ bool sub_6CA2DF(sint32 *_trackType, sint32 *_trackDirection, sint32 *_rideIndex,
 	x = _currentTrackBeginX;
 	y = _currentTrackBeginY;
 	z = _currentTrackBeginZ;
-	if (_rideConstructionState == 2) {
+	if (_rideConstructionState == RIDE_CONSTRUCTION_STATE_BACK) {
 		z -= trackCoordinates->z_end;
 		trackDirection = _currentTrackPieceDirection ^ 0x02;
 		trackDirection -= trackCoordinates->rotation_end;
@@ -3232,9 +3277,9 @@ static void window_ride_construction_update_widgets(rct_window *w)
 	window_ride_construction_widgets[WIDX_O_TRACK].type = WWT_EMPTY;
 
 	bool brakesSelected = _selectedTrackType == TRACK_ELEM_BRAKES || _currentTrackCurve == (0x100 | TRACK_ELEM_BRAKES);
-	bool boosterSelected = ride->type != RIDE_TYPE_WILD_MOUSE && (_selectedTrackType == TRACK_ELEM_BOOSTER || _currentTrackCurve == (0x100 | TRACK_ELEM_BOOSTER));
+	_boosterTrackSelected = ride->type != RIDE_TYPE_WILD_MOUSE && (_selectedTrackType == TRACK_ELEM_BOOSTER || _currentTrackCurve == (0x100 | TRACK_ELEM_BOOSTER));
 
-	if (!brakesSelected && !boosterSelected) {
+	if (!brakesSelected && !_boosterTrackSelected) {
 		if (is_track_enabled(TRACK_FLAT_ROLL_BANKING)) {
 			window_ride_construction_widgets[WIDX_BANK_LEFT].type = WWT_FLATBTN;
 			window_ride_construction_widgets[WIDX_BANK_STRAIGHT].type = WWT_FLATBTN;
@@ -3369,7 +3414,7 @@ static void window_ride_construction_update_widgets(rct_window *w)
 		return;
 	}
 
-	sint32 widgetIndex;
+	rct_widgetindex widgetIndex;
 	switch (_currentTrackCurve) {
 	case TRACK_CURVE_NONE:
 		widgetIndex = WIDX_STRAIGHT;
@@ -3523,6 +3568,7 @@ static void window_ride_construction_show_special_track_dropdown(rct_window *w, 
 		w->y + widget->top,
 		widget->bottom - widget->top + 1,
 		w->colours[1],
+		0,
 		0,
 		_numCurrentPossibleRideConfigurations,
 		widget->right - widget->left
@@ -3736,7 +3782,7 @@ void ride_construction_toolupdate_construct(sint32 screenX, sint32 screenY)
 void ride_construction_toolupdate_entrance_exit(sint32 screenX, sint32 screenY)
 {
 	sint32 x, y, direction;
-	uint8 unk;
+	uint8 stationNum;
 
 	map_invalidate_selection_rect();
 	map_invalidate_map_selection_tiles();
@@ -3762,16 +3808,16 @@ void ride_construction_toolupdate_entrance_exit(sint32 screenX, sint32 screenY)
 	map_invalidate_selection_rect();
 
 	direction = gRideEntranceExitPlaceDirection ^ 2;
-	unk = gRideEntranceExitPlaceStationIndex;
+	stationNum = gRideEntranceExitPlaceStationIndex;
 	if (
 		!(_currentTrackSelectionFlags & TRACK_SELECTION_FLAG_ENTRANCE_OR_EXIT) ||
-		x != _unkF440BF.x ||
-		y != _unkF440BF.y ||
-		direction != _unkF440BF.direction ||
-		unk != _unkF440C4
+		x != gRideEntranceExitGhostPosition.x ||
+		y != gRideEntranceExitGhostPosition.y ||
+		direction != gRideEntranceExitGhostPosition.direction ||
+		stationNum != gRideEntranceExitGhostStationIndex
 	) {
-		_currentTrackPrice = ride_get_entrance_or_exit_price(
-			_currentRideIndex, x, y, direction, gRideEntranceExitPlaceType, unk
+		_currentTrackPrice = ride_entrance_exit_place_ghost(
+			_currentRideIndex, x, y, direction, gRideEntranceExitPlaceType, stationNum
 		);
 		sub_6C84CE();
 	}
@@ -3883,8 +3929,8 @@ void ride_construction_tooldown_construct(sint32 screenX, sint32 screenY)
 					audio_play_sound_panned(SOUND_ERROR, gCursorState.x, x, y, z);
 					w = window_find_by_class(WC_RIDE_CONSTRUCTION);
 					if (w != NULL){
-						tool_set(w, 23, 12);
-						gInputFlags |= INPUT_FLAG_6;
+						tool_set(w, WIDX_CONSTRUCT, TOOL_CROSSHAIR);
+						input_set_flag(INPUT_FLAG_6, true);
 						_trackPlaceCtrlState = false;
 						_trackPlaceShiftState = false;
 					}
@@ -4059,4 +4105,480 @@ void window_ride_construction_do_entrance_exit_check()
 			}
 		}
 	}
+}
+
+void window_ride_construction_keyboard_shortcut_turn_left()
+{
+	rct_window *w = window_find_by_class(WC_RIDE_CONSTRUCTION);
+	if (w == NULL || widget_is_disabled(w, WIDX_STRAIGHT) || w->widgets[WIDX_STRAIGHT].type == WWT_EMPTY) {
+		return;
+	}
+
+	switch (_currentTrackCurve) {
+	case TRACK_CURVE_LEFT_SMALL:
+		if (!widget_is_disabled(w, WIDX_LEFT_CURVE_VERY_SMALL) && w->widgets[WIDX_LEFT_CURVE_VERY_SMALL].type != WWT_EMPTY) {
+			window_event_mouse_down_call(w, WIDX_LEFT_CURVE_VERY_SMALL);
+		}
+		break;
+	case TRACK_CURVE_LEFT:
+		if (!widget_is_disabled(w, WIDX_LEFT_CURVE_SMALL) && w->widgets[WIDX_LEFT_CURVE_SMALL].type != WWT_EMPTY) {
+			window_event_mouse_down_call(w, WIDX_LEFT_CURVE_SMALL);
+		} else if (!widget_is_disabled(w, WIDX_LEFT_CURVE_VERY_SMALL) && w->widgets[WIDX_LEFT_CURVE_VERY_SMALL].type != WWT_EMPTY) {
+			window_event_mouse_down_call(w, WIDX_LEFT_CURVE_VERY_SMALL);
+		} else {
+			return;
+		}
+		break;
+	case TRACK_CURVE_LEFT_LARGE:
+		if (!widget_is_disabled(w, WIDX_LEFT_CURVE) && w->widgets[WIDX_LEFT_CURVE].type != WWT_EMPTY) {
+			window_event_mouse_down_call(w, WIDX_LEFT_CURVE);
+		} else if (!widget_is_disabled(w, WIDX_LEFT_CURVE_SMALL) && w->widgets[WIDX_LEFT_CURVE_SMALL].type != WWT_EMPTY) {
+			window_event_mouse_down_call(w, WIDX_LEFT_CURVE_SMALL);
+		} else if (!widget_is_disabled(w, WIDX_LEFT_CURVE_VERY_SMALL) && w->widgets[WIDX_LEFT_CURVE_VERY_SMALL].type != WWT_EMPTY) {
+			window_event_mouse_down_call(w, WIDX_LEFT_CURVE_VERY_SMALL);
+		} else {
+			return;
+		}
+		break;
+	case TRACK_CURVE_NONE:
+		if (!widget_is_disabled(w, WIDX_LEFT_CURVE_LARGE) && w->widgets[WIDX_LEFT_CURVE_LARGE].type != WWT_EMPTY) {
+			window_event_mouse_down_call(w, WIDX_LEFT_CURVE_LARGE);
+		} else if (!widget_is_disabled(w, WIDX_LEFT_CURVE) && w->widgets[WIDX_LEFT_CURVE].type != WWT_EMPTY) {
+			window_event_mouse_down_call(w, WIDX_LEFT_CURVE);
+		} else if (!widget_is_disabled(w, WIDX_LEFT_CURVE_SMALL) && w->widgets[WIDX_LEFT_CURVE_SMALL].type != WWT_EMPTY) {
+			window_event_mouse_down_call(w, WIDX_LEFT_CURVE_SMALL);
+		} else if (!widget_is_disabled(w, WIDX_LEFT_CURVE_VERY_SMALL) && w->widgets[WIDX_LEFT_CURVE_VERY_SMALL].type != WWT_EMPTY) {
+			window_event_mouse_down_call(w, WIDX_LEFT_CURVE_VERY_SMALL);
+		} else {
+			return;
+		}
+		break;
+	case TRACK_CURVE_RIGHT_LARGE:
+		if (!widget_is_disabled(w, WIDX_STRAIGHT) && w->widgets[WIDX_STRAIGHT].type != WWT_EMPTY) {
+			window_event_mouse_down_call(w, WIDX_STRAIGHT);
+		} else if (!widget_is_disabled(w, WIDX_LEFT_CURVE_LARGE) && w->widgets[WIDX_LEFT_CURVE_LARGE].type != WWT_EMPTY) {
+			window_event_mouse_down_call(w, WIDX_LEFT_CURVE_LARGE);
+		} else if (!widget_is_disabled(w, WIDX_LEFT_CURVE) && w->widgets[WIDX_LEFT_CURVE].type != WWT_EMPTY) {
+			window_event_mouse_down_call(w, WIDX_LEFT_CURVE);
+		} else if (!widget_is_disabled(w, WIDX_LEFT_CURVE_SMALL) && w->widgets[WIDX_LEFT_CURVE_SMALL].type != WWT_EMPTY) {
+			window_event_mouse_down_call(w, WIDX_LEFT_CURVE_SMALL);
+		} else if (!widget_is_disabled(w, WIDX_LEFT_CURVE_VERY_SMALL) && w->widgets[WIDX_LEFT_CURVE_VERY_SMALL].type != WWT_EMPTY) {
+			window_event_mouse_down_call(w, WIDX_LEFT_CURVE_VERY_SMALL);
+		} else {
+			return;
+		}
+		break;
+	case TRACK_CURVE_RIGHT:
+		if (!widget_is_disabled(w, WIDX_RIGHT_CURVE_LARGE) && w->widgets[WIDX_RIGHT_CURVE_LARGE].type != WWT_EMPTY) {
+			window_event_mouse_down_call(w, WIDX_RIGHT_CURVE_LARGE);
+		} else if (!widget_is_disabled(w, WIDX_STRAIGHT) && w->widgets[WIDX_STRAIGHT].type != WWT_EMPTY) {
+			window_event_mouse_down_call(w, WIDX_STRAIGHT);
+		} else if (!widget_is_disabled(w, WIDX_LEFT_CURVE_LARGE) && w->widgets[WIDX_LEFT_CURVE_LARGE].type != WWT_EMPTY) {
+			window_event_mouse_down_call(w, WIDX_LEFT_CURVE_LARGE);
+		} else if (!widget_is_disabled(w, WIDX_LEFT_CURVE) && w->widgets[WIDX_LEFT_CURVE].type != WWT_EMPTY) {
+			window_event_mouse_down_call(w, WIDX_LEFT_CURVE);
+		} else if (!widget_is_disabled(w, WIDX_LEFT_CURVE_SMALL) && w->widgets[WIDX_LEFT_CURVE_SMALL].type != WWT_EMPTY) {
+			window_event_mouse_down_call(w, WIDX_LEFT_CURVE_SMALL);
+		} else if (!widget_is_disabled(w, WIDX_LEFT_CURVE_VERY_SMALL) && w->widgets[WIDX_LEFT_CURVE_VERY_SMALL].type != WWT_EMPTY) {
+			window_event_mouse_down_call(w, WIDX_LEFT_CURVE_VERY_SMALL);
+		} else {
+			return;
+		}
+		break;
+	case TRACK_CURVE_RIGHT_SMALL:
+		if (!widget_is_disabled(w, WIDX_RIGHT_CURVE) && w->widgets[WIDX_RIGHT_CURVE].type != WWT_EMPTY) {
+			window_event_mouse_down_call(w, WIDX_RIGHT_CURVE);
+		} else if (!widget_is_disabled(w, WIDX_RIGHT_CURVE_LARGE) && w->widgets[WIDX_RIGHT_CURVE_LARGE].type != WWT_EMPTY) {
+			window_event_mouse_down_call(w, WIDX_RIGHT_CURVE_LARGE);
+		} else if (!widget_is_disabled(w, WIDX_STRAIGHT) && w->widgets[WIDX_STRAIGHT].type != WWT_EMPTY) {
+			window_event_mouse_down_call(w, WIDX_STRAIGHT);
+		} else if (!widget_is_disabled(w, WIDX_LEFT_CURVE_LARGE) && w->widgets[WIDX_LEFT_CURVE_LARGE].type != WWT_EMPTY) {
+			window_event_mouse_down_call(w, WIDX_LEFT_CURVE_LARGE);
+		} else if (!widget_is_disabled(w, WIDX_LEFT_CURVE) && w->widgets[WIDX_LEFT_CURVE].type != WWT_EMPTY) {
+			window_event_mouse_down_call(w, WIDX_LEFT_CURVE);
+		} else if (!widget_is_disabled(w, WIDX_LEFT_CURVE_SMALL) && w->widgets[WIDX_LEFT_CURVE_SMALL].type != WWT_EMPTY) {
+			window_event_mouse_down_call(w, WIDX_LEFT_CURVE_SMALL);
+		} else if (!widget_is_disabled(w, WIDX_LEFT_CURVE_VERY_SMALL) && w->widgets[WIDX_LEFT_CURVE_VERY_SMALL].type != WWT_EMPTY) {
+			window_event_mouse_down_call(w, WIDX_LEFT_CURVE_VERY_SMALL);
+		} else {
+			return;
+		}
+		break;
+	case TRACK_CURVE_RIGHT_VERY_SMALL:
+		if (!widget_is_disabled(w, WIDX_RIGHT_CURVE_SMALL) && w->widgets[WIDX_RIGHT_CURVE_SMALL].type != WWT_EMPTY) {
+			window_event_mouse_down_call(w, WIDX_RIGHT_CURVE_SMALL);
+		} else if (!widget_is_disabled(w, WIDX_RIGHT_CURVE) && w->widgets[WIDX_RIGHT_CURVE].type != WWT_EMPTY) {
+			window_event_mouse_down_call(w, WIDX_RIGHT_CURVE);
+		} else if (!widget_is_disabled(w, WIDX_RIGHT_CURVE_LARGE) && w->widgets[WIDX_RIGHT_CURVE_LARGE].type != WWT_EMPTY) {
+			window_event_mouse_down_call(w, WIDX_RIGHT_CURVE_LARGE);
+		} else if (!widget_is_disabled(w, WIDX_STRAIGHT) && w->widgets[WIDX_STRAIGHT].type != WWT_EMPTY) {
+			window_event_mouse_down_call(w, WIDX_STRAIGHT);
+		} else if (!widget_is_disabled(w, WIDX_LEFT_CURVE_LARGE) && w->widgets[WIDX_LEFT_CURVE_LARGE].type != WWT_EMPTY) {
+			window_event_mouse_down_call(w, WIDX_LEFT_CURVE_LARGE);
+		} else if (!widget_is_disabled(w, WIDX_LEFT_CURVE) && w->widgets[WIDX_LEFT_CURVE].type != WWT_EMPTY) {
+			window_event_mouse_down_call(w, WIDX_LEFT_CURVE);
+		} else if (!widget_is_disabled(w, WIDX_LEFT_CURVE_SMALL) && w->widgets[WIDX_LEFT_CURVE_SMALL].type != WWT_EMPTY) {
+			window_event_mouse_down_call(w, WIDX_LEFT_CURVE_SMALL);
+		} else if (!widget_is_disabled(w, WIDX_LEFT_CURVE_VERY_SMALL) && w->widgets[WIDX_LEFT_CURVE_VERY_SMALL].type != WWT_EMPTY) {
+			window_event_mouse_down_call(w, WIDX_LEFT_CURVE_VERY_SMALL);
+		} else {
+			return;
+		}
+		break;
+	default:
+		return;
+	}
+}
+
+void window_ride_construction_keyboard_shortcut_turn_right()
+{
+	rct_window *w = window_find_by_class(WC_RIDE_CONSTRUCTION);
+	if (w == NULL || widget_is_disabled(w, WIDX_STRAIGHT) || w->widgets[WIDX_STRAIGHT].type == WWT_EMPTY) {
+		return;
+	}
+
+	switch (_currentTrackCurve) {
+	case TRACK_CURVE_RIGHT_SMALL:
+		if (!widget_is_disabled(w, WIDX_RIGHT_CURVE_VERY_SMALL) && w->widgets[WIDX_RIGHT_CURVE_VERY_SMALL].type != WWT_EMPTY) {
+			window_event_mouse_down_call(w, WIDX_RIGHT_CURVE_VERY_SMALL);
+		}
+		break;
+	case TRACK_CURVE_RIGHT:
+		if (!widget_is_disabled(w, WIDX_RIGHT_CURVE_SMALL) && w->widgets[WIDX_RIGHT_CURVE_SMALL].type != WWT_EMPTY) {
+			window_event_mouse_down_call(w, WIDX_RIGHT_CURVE_SMALL);
+		} else if (!widget_is_disabled(w, WIDX_RIGHT_CURVE_VERY_SMALL) && w->widgets[WIDX_RIGHT_CURVE_VERY_SMALL].type != WWT_EMPTY) {
+			window_event_mouse_down_call(w, WIDX_RIGHT_CURVE_VERY_SMALL);
+		} else {
+			return;
+		}
+		break;
+	case TRACK_CURVE_RIGHT_LARGE:
+		if (!widget_is_disabled(w, WIDX_RIGHT_CURVE) && w->widgets[WIDX_RIGHT_CURVE].type != WWT_EMPTY) {
+			window_event_mouse_down_call(w, WIDX_RIGHT_CURVE);
+		} else if (!widget_is_disabled(w, WIDX_RIGHT_CURVE_SMALL) && w->widgets[WIDX_RIGHT_CURVE_SMALL].type != WWT_EMPTY) {
+			window_event_mouse_down_call(w, WIDX_RIGHT_CURVE_SMALL);
+		} else if (!widget_is_disabled(w, WIDX_RIGHT_CURVE_VERY_SMALL) && w->widgets[WIDX_RIGHT_CURVE_VERY_SMALL].type != WWT_EMPTY) {
+			window_event_mouse_down_call(w, WIDX_RIGHT_CURVE_VERY_SMALL);
+		} else {
+			return;
+		}
+		break;
+	case TRACK_CURVE_NONE:
+		if (!widget_is_disabled(w, WIDX_RIGHT_CURVE_LARGE) && w->widgets[WIDX_RIGHT_CURVE_LARGE].type != WWT_EMPTY) {
+			window_event_mouse_down_call(w, WIDX_RIGHT_CURVE_LARGE);
+		} else if (!widget_is_disabled(w, WIDX_LEFT_CURVE) && w->widgets[WIDX_RIGHT_CURVE].type != WWT_EMPTY) {
+			window_event_mouse_down_call(w, WIDX_RIGHT_CURVE);
+		} else if (!widget_is_disabled(w, WIDX_RIGHT_CURVE_SMALL) && w->widgets[WIDX_RIGHT_CURVE_SMALL].type != WWT_EMPTY) {
+			window_event_mouse_down_call(w, WIDX_RIGHT_CURVE_SMALL);
+		} else if (!widget_is_disabled(w, WIDX_RIGHT_CURVE_VERY_SMALL) && w->widgets[WIDX_RIGHT_CURVE_VERY_SMALL].type != WWT_EMPTY) {
+			window_event_mouse_down_call(w, WIDX_RIGHT_CURVE_VERY_SMALL);
+		} else {
+			return;
+		}
+		break;
+	case TRACK_CURVE_LEFT_LARGE:
+		if (!widget_is_disabled(w, WIDX_STRAIGHT) && w->widgets[WIDX_STRAIGHT].type != WWT_EMPTY) {
+			window_event_mouse_down_call(w, WIDX_STRAIGHT);
+		} else if (!widget_is_disabled(w, WIDX_RIGHT_CURVE_LARGE) && w->widgets[WIDX_RIGHT_CURVE_LARGE].type != WWT_EMPTY) {
+			window_event_mouse_down_call(w, WIDX_RIGHT_CURVE_LARGE);
+		} else if (!widget_is_disabled(w, WIDX_RIGHT_CURVE) && w->widgets[WIDX_RIGHT_CURVE].type != WWT_EMPTY) {
+			window_event_mouse_down_call(w, WIDX_RIGHT_CURVE);
+		} else if (!widget_is_disabled(w, WIDX_RIGHT_CURVE_SMALL) && w->widgets[WIDX_RIGHT_CURVE_SMALL].type != WWT_EMPTY) {
+			window_event_mouse_down_call(w, WIDX_RIGHT_CURVE_SMALL);
+		} else if (!widget_is_disabled(w, WIDX_RIGHT_CURVE_VERY_SMALL) && w->widgets[WIDX_RIGHT_CURVE_VERY_SMALL].type != WWT_EMPTY) {
+			window_event_mouse_down_call(w, WIDX_RIGHT_CURVE_VERY_SMALL);
+		} else {
+			return;
+		}
+		break;
+	case TRACK_CURVE_LEFT:
+		if (!widget_is_disabled(w, WIDX_LEFT_CURVE_LARGE) && w->widgets[WIDX_LEFT_CURVE_LARGE].type != WWT_EMPTY) {
+			window_event_mouse_down_call(w, WIDX_LEFT_CURVE_LARGE);
+		} else if (!widget_is_disabled(w, WIDX_STRAIGHT) && w->widgets[WIDX_STRAIGHT].type != WWT_EMPTY) {
+			window_event_mouse_down_call(w, WIDX_STRAIGHT);
+		} else if (!widget_is_disabled(w, WIDX_RIGHT_CURVE_LARGE) && w->widgets[WIDX_RIGHT_CURVE_LARGE].type != WWT_EMPTY) {
+			window_event_mouse_down_call(w, WIDX_RIGHT_CURVE_LARGE);
+		} else if (!widget_is_disabled(w, WIDX_RIGHT_CURVE) && w->widgets[WIDX_RIGHT_CURVE].type != WWT_EMPTY) {
+			window_event_mouse_down_call(w, WIDX_RIGHT_CURVE);
+		} else if (!widget_is_disabled(w, WIDX_RIGHT_CURVE_SMALL) && w->widgets[WIDX_RIGHT_CURVE_SMALL].type != WWT_EMPTY) {
+			window_event_mouse_down_call(w, WIDX_RIGHT_CURVE_SMALL);
+		} else if (!widget_is_disabled(w, WIDX_RIGHT_CURVE_VERY_SMALL) && w->widgets[WIDX_RIGHT_CURVE_VERY_SMALL].type != WWT_EMPTY) {
+			window_event_mouse_down_call(w, WIDX_RIGHT_CURVE_VERY_SMALL);
+		} else {
+			return;
+		}
+		break;
+	case TRACK_CURVE_LEFT_SMALL:
+		if (!widget_is_disabled(w, WIDX_LEFT_CURVE) && w->widgets[WIDX_LEFT_CURVE].type != WWT_EMPTY) {
+			window_event_mouse_down_call(w, WIDX_LEFT_CURVE);
+		} else if (!widget_is_disabled(w, WIDX_LEFT_CURVE_LARGE) && w->widgets[WIDX_LEFT_CURVE_LARGE].type != WWT_EMPTY) {
+			window_event_mouse_down_call(w, WIDX_LEFT_CURVE_LARGE);
+		} else if (!widget_is_disabled(w, WIDX_STRAIGHT) && w->widgets[WIDX_STRAIGHT].type != WWT_EMPTY) {
+			window_event_mouse_down_call(w, WIDX_STRAIGHT);
+		} else if (!widget_is_disabled(w, WIDX_RIGHT_CURVE_LARGE) && w->widgets[WIDX_RIGHT_CURVE_LARGE].type != WWT_EMPTY) {
+			window_event_mouse_down_call(w, WIDX_RIGHT_CURVE_LARGE);
+		} else if (!widget_is_disabled(w, WIDX_RIGHT_CURVE) && w->widgets[WIDX_RIGHT_CURVE].type != WWT_EMPTY) {
+			window_event_mouse_down_call(w, WIDX_RIGHT_CURVE);
+		} else if (!widget_is_disabled(w, WIDX_RIGHT_CURVE_SMALL) && w->widgets[WIDX_RIGHT_CURVE_SMALL].type != WWT_EMPTY) {
+			window_event_mouse_down_call(w, WIDX_RIGHT_CURVE_SMALL);
+		} else if (!widget_is_disabled(w, WIDX_RIGHT_CURVE_VERY_SMALL) && w->widgets[WIDX_RIGHT_CURVE_VERY_SMALL].type != WWT_EMPTY) {
+			window_event_mouse_down_call(w, WIDX_RIGHT_CURVE_VERY_SMALL);
+		} else {
+			return;
+		}
+		break;
+	case TRACK_CURVE_LEFT_VERY_SMALL:
+		if (!widget_is_disabled(w, WIDX_LEFT_CURVE_SMALL) && w->widgets[WIDX_LEFT_CURVE_SMALL].type != WWT_EMPTY) {
+			window_event_mouse_down_call(w, WIDX_LEFT_CURVE_SMALL);
+		} else if (!widget_is_disabled(w, WIDX_LEFT_CURVE) && w->widgets[WIDX_LEFT_CURVE].type != WWT_EMPTY) {
+			window_event_mouse_down_call(w, WIDX_LEFT_CURVE);
+		} else if (!widget_is_disabled(w, WIDX_LEFT_CURVE_LARGE) && w->widgets[WIDX_LEFT_CURVE_LARGE].type != WWT_EMPTY) {
+			window_event_mouse_down_call(w, WIDX_LEFT_CURVE_LARGE);
+		} else if (!widget_is_disabled(w, WIDX_STRAIGHT) && w->widgets[WIDX_STRAIGHT].type != WWT_EMPTY) {
+			window_event_mouse_down_call(w, WIDX_STRAIGHT);
+		} else if (!widget_is_disabled(w, WIDX_RIGHT_CURVE_LARGE) && w->widgets[WIDX_RIGHT_CURVE_LARGE].type != WWT_EMPTY) {
+			window_event_mouse_down_call(w, WIDX_RIGHT_CURVE_LARGE);
+		} else if (!widget_is_disabled(w, WIDX_RIGHT_CURVE) && w->widgets[WIDX_RIGHT_CURVE].type != WWT_EMPTY) {
+			window_event_mouse_down_call(w, WIDX_RIGHT_CURVE);
+		} else if (!widget_is_disabled(w, WIDX_RIGHT_CURVE_SMALL) && w->widgets[WIDX_RIGHT_CURVE_SMALL].type != WWT_EMPTY) {
+			window_event_mouse_down_call(w, WIDX_RIGHT_CURVE_SMALL);
+		} else if (!widget_is_disabled(w, WIDX_RIGHT_CURVE_VERY_SMALL) && w->widgets[WIDX_RIGHT_CURVE_VERY_SMALL].type != WWT_EMPTY) {
+			window_event_mouse_down_call(w, WIDX_RIGHT_CURVE_VERY_SMALL);
+		} else {
+			return;
+		}
+		break;
+	default:
+		return;
+	}
+}
+
+void window_ride_construction_keyboard_shortcut_use_track_default()
+{
+	rct_window *w = window_find_by_class(WC_RIDE_CONSTRUCTION);
+	if (w == NULL || widget_is_disabled(w, WIDX_STRAIGHT) || w->widgets[WIDX_STRAIGHT].type == WWT_EMPTY) {
+		return;
+	}
+
+	if (!widget_is_disabled(w, WIDX_STRAIGHT) && w->widgets[WIDX_STRAIGHT].type != WWT_EMPTY) {
+		window_event_mouse_down_call(w, WIDX_STRAIGHT);
+	}
+
+	if (!widget_is_disabled(w, WIDX_LEVEL) && w->widgets[WIDX_LEVEL].type != WWT_EMPTY) {
+		window_event_mouse_down_call(w, WIDX_LEVEL);
+	}
+
+	if (!widget_is_disabled(w, WIDX_CHAIN_LIFT) && w->widgets[WIDX_CHAIN_LIFT].type != WWT_EMPTY && _currentTrackLiftHill & 1) {
+		window_event_mouse_down_call(w, WIDX_CHAIN_LIFT);
+	}
+
+	if (!widget_is_disabled(w, WIDX_BANK_STRAIGHT) && w->widgets[WIDX_BANK_STRAIGHT].type != WWT_EMPTY) {
+		window_event_mouse_down_call(w, WIDX_BANK_STRAIGHT);
+	}
+}
+
+void window_ride_construction_keyboard_shortcut_slope_down()
+{
+	rct_window * w = window_find_by_class(WC_RIDE_CONSTRUCTION);
+	if (w == NULL || widget_is_disabled(w, WIDX_STRAIGHT) || w->widgets[WIDX_STRAIGHT].type == WWT_EMPTY) {
+		return;
+	}
+
+	switch (_currentTrackSlopeEnd) {
+	case TRACK_SLOPE_DOWN_25:
+		if (!widget_is_disabled(w, WIDX_SLOPE_DOWN_STEEP) && w->widgets[WIDX_SLOPE_DOWN_STEEP].type != WWT_EMPTY) {
+			window_event_mouse_down_call(w, WIDX_SLOPE_DOWN_STEEP);
+		}
+		break;
+	case TRACK_SLOPE_NONE:
+		if (!widget_is_disabled(w, WIDX_SLOPE_DOWN) && w->widgets[WIDX_SLOPE_DOWN].type != WWT_EMPTY) {
+			window_event_mouse_down_call(w, WIDX_SLOPE_DOWN);
+		} else if (!widget_is_disabled(w, WIDX_SLOPE_DOWN_STEEP) && w->widgets[WIDX_SLOPE_DOWN_STEEP].type != WWT_EMPTY) {
+			window_event_mouse_down_call(w, WIDX_SLOPE_DOWN_STEEP);
+		} else {
+			return;
+		}
+		break;
+	case TRACK_SLOPE_UP_25:
+		if (!widget_is_disabled(w, WIDX_LEVEL) && w->widgets[WIDX_LEVEL].type != WWT_EMPTY) {
+			window_event_mouse_down_call(w, WIDX_LEVEL);
+		} else if (!widget_is_disabled(w, WIDX_SLOPE_DOWN) && w->widgets[WIDX_SLOPE_DOWN].type != WWT_EMPTY) {
+			window_event_mouse_down_call(w, WIDX_SLOPE_DOWN);
+		} else if (!widget_is_disabled(w, WIDX_SLOPE_DOWN_STEEP) && w->widgets[WIDX_SLOPE_DOWN_STEEP].type != WWT_EMPTY) {
+			window_event_mouse_down_call(w, WIDX_SLOPE_DOWN_STEEP);
+		} else {
+			return;
+		}
+		break;
+	case TRACK_SLOPE_UP_60:
+		if (!widget_is_disabled(w, WIDX_SLOPE_UP) && w->widgets[WIDX_SLOPE_UP].type != WWT_EMPTY) {
+			window_event_mouse_down_call(w, WIDX_SLOPE_UP);
+		} else if (!widget_is_disabled(w, WIDX_LEVEL) && w->widgets[WIDX_LEVEL].type != WWT_EMPTY) {
+			window_event_mouse_down_call(w, WIDX_LEVEL);
+		} else if (!widget_is_disabled(w, WIDX_SLOPE_DOWN) && w->widgets[WIDX_SLOPE_DOWN].type != WWT_EMPTY) {
+			window_event_mouse_down_call(w, WIDX_SLOPE_DOWN);
+		} else if (!widget_is_disabled(w, WIDX_SLOPE_DOWN_STEEP) && w->widgets[WIDX_SLOPE_DOWN_STEEP].type != WWT_EMPTY) {
+			window_event_mouse_down_call(w, WIDX_SLOPE_DOWN_STEEP);
+		} else {
+			return;
+		}
+		break;
+	default:
+		return;
+	}
+}
+
+void window_ride_construction_keyboard_shortcut_slope_up()
+{
+	rct_window *w = window_find_by_class(WC_RIDE_CONSTRUCTION);
+	if (w == NULL || widget_is_disabled(w, WIDX_STRAIGHT) || w->widgets[WIDX_STRAIGHT].type == WWT_EMPTY) {
+		return;
+	}
+
+	switch (_currentTrackSlopeEnd) {
+	case TRACK_SLOPE_UP_25:
+		if (!widget_is_disabled(w, WIDX_SLOPE_UP_STEEP) && w->widgets[WIDX_SLOPE_UP_STEEP].type != WWT_EMPTY) {
+			window_event_mouse_down_call(w, WIDX_SLOPE_UP_STEEP);
+		}
+		break;
+	case TRACK_SLOPE_NONE:
+		if (!widget_is_disabled(w, WIDX_SLOPE_UP) && w->widgets[WIDX_SLOPE_UP].type != WWT_EMPTY) {
+			window_event_mouse_down_call(w, WIDX_SLOPE_UP);
+		} else if (!widget_is_disabled(w, WIDX_SLOPE_UP_STEEP) && w->widgets[WIDX_SLOPE_UP_STEEP].type != WWT_EMPTY) {
+			window_event_mouse_down_call(w, WIDX_SLOPE_UP_STEEP);
+		} else {
+			return;
+		}
+		break;
+	case TRACK_SLOPE_DOWN_25:
+		if (!widget_is_disabled(w, WIDX_LEVEL) && w->widgets[WIDX_LEVEL].type != WWT_EMPTY) {
+			window_event_mouse_down_call(w, WIDX_LEVEL);
+		} else if (!widget_is_disabled(w, WIDX_SLOPE_UP) && w->widgets[WIDX_SLOPE_UP].type != WWT_EMPTY) {
+			window_event_mouse_down_call(w, WIDX_SLOPE_UP);
+		} else if (!widget_is_disabled(w, WIDX_SLOPE_UP_STEEP) && w->widgets[WIDX_SLOPE_UP_STEEP].type != WWT_EMPTY) {
+			window_event_mouse_down_call(w, WIDX_SLOPE_UP_STEEP);
+		} else {
+			return;
+		}
+		break;
+	case TRACK_SLOPE_DOWN_60:
+		if (!widget_is_disabled(w, WIDX_SLOPE_DOWN) && w->widgets[WIDX_SLOPE_DOWN].type != WWT_EMPTY) {
+			window_event_mouse_down_call(w, WIDX_SLOPE_DOWN);
+		} else if (!widget_is_disabled(w, WIDX_LEVEL) && w->widgets[WIDX_LEVEL].type != WWT_EMPTY) {
+			window_event_mouse_down_call(w, WIDX_LEVEL);
+		} else if (!widget_is_disabled(w, WIDX_SLOPE_UP) && w->widgets[WIDX_SLOPE_UP].type != WWT_EMPTY) {
+			window_event_mouse_down_call(w, WIDX_SLOPE_UP);
+		} else if (!widget_is_disabled(w, WIDX_SLOPE_UP_STEEP) && w->widgets[WIDX_SLOPE_UP_STEEP].type != WWT_EMPTY) {
+			window_event_mouse_down_call(w, WIDX_SLOPE_UP_STEEP);
+		} else {
+			return;
+		}
+		break;
+	default:
+		return;
+	}
+}
+
+void window_ride_construction_keyboard_shortcut_chain_lift_toggle()
+{
+	rct_window *w = window_find_by_class(WC_RIDE_CONSTRUCTION);
+	if (w == NULL || widget_is_disabled(w, WIDX_CHAIN_LIFT) || w->widgets[WIDX_CHAIN_LIFT].type == WWT_EMPTY) {
+		return;
+	}
+
+	window_event_mouse_down_call(w, WIDX_CHAIN_LIFT);
+}
+
+void window_ride_construction_keyboard_shortcut_bank_left()
+{
+	rct_window *w = window_find_by_class(WC_RIDE_CONSTRUCTION);
+	if (w == NULL || widget_is_disabled(w, WIDX_BANK_STRAIGHT) || w->widgets[WIDX_BANK_STRAIGHT].type == WWT_EMPTY) {
+		return;
+	}
+
+	switch (_currentTrackBankEnd) {
+	case TRACK_BANK_NONE:
+		if (!widget_is_disabled(w, WIDX_BANK_LEFT) && w->widgets[WIDX_BANK_LEFT].type != WWT_EMPTY) {
+			window_event_mouse_down_call(w, WIDX_BANK_LEFT);
+		}
+		break;
+	case TRACK_BANK_RIGHT:
+		if (!widget_is_disabled(w, WIDX_BANK_STRAIGHT) && w->widgets[WIDX_BANK_STRAIGHT].type != WWT_EMPTY) {
+			window_event_mouse_down_call(w, WIDX_BANK_STRAIGHT);
+		} else if (!widget_is_disabled(w, WIDX_BANK_LEFT) && w->widgets[WIDX_BANK_LEFT].type != WWT_EMPTY) {
+			window_event_mouse_down_call(w, WIDX_BANK_LEFT);
+		} else {
+			return;
+		}
+		break;
+	default:
+		return;
+	}
+}
+
+void window_ride_construction_keyboard_shortcut_bank_right()
+{
+	rct_window *w = window_find_by_class(WC_RIDE_CONSTRUCTION);
+	if (w == NULL || widget_is_disabled(w, WIDX_BANK_STRAIGHT) || w->widgets[WIDX_BANK_STRAIGHT].type == WWT_EMPTY) {
+		return;
+	}
+
+	switch (_currentTrackBankEnd) {
+	case TRACK_BANK_NONE:
+		if (!widget_is_disabled(w, WIDX_BANK_RIGHT) && w->widgets[WIDX_BANK_RIGHT].type != WWT_EMPTY) {
+			window_event_mouse_down_call(w, WIDX_BANK_RIGHT);
+		}
+		break;
+	case TRACK_BANK_LEFT:
+		if (!widget_is_disabled(w, WIDX_BANK_STRAIGHT) && w->widgets[WIDX_BANK_STRAIGHT].type != WWT_EMPTY) {
+			window_event_mouse_down_call(w, WIDX_BANK_STRAIGHT);
+		} else if (!widget_is_disabled(w, WIDX_BANK_RIGHT) && w->widgets[WIDX_BANK_RIGHT].type != WWT_EMPTY) {
+			window_event_mouse_down_call(w, WIDX_BANK_RIGHT);
+		} else {
+			return;
+		}
+		break;
+	default:
+		return;
+	}
+}
+
+void window_ride_construction_keyboard_shortcut_previous_track()
+{
+	rct_window *w = window_find_by_class(WC_RIDE_CONSTRUCTION);
+	if (w == NULL || widget_is_disabled(w, WIDX_PREVIOUS_SECTION) || w->widgets[WIDX_PREVIOUS_SECTION].type == WWT_EMPTY) {
+		return;
+	}
+
+	window_event_mouse_up_call(w, WIDX_PREVIOUS_SECTION);
+}
+
+void window_ride_construction_keyboard_shortcut_next_track()
+{
+	rct_window *w = window_find_by_class(WC_RIDE_CONSTRUCTION);
+	if (w == NULL || widget_is_disabled(w, WIDX_NEXT_SECTION) || w->widgets[WIDX_NEXT_SECTION].type == WWT_EMPTY) {
+		return;
+	}
+
+	window_event_mouse_up_call(w, WIDX_NEXT_SECTION);
+}
+
+void window_ride_construction_keyboard_shortcut_build_current()
+{
+	rct_window *w = window_find_by_class(WC_RIDE_CONSTRUCTION);
+	if (w == NULL || widget_is_disabled(w, WIDX_CONSTRUCT) || w->widgets[WIDX_CONSTRUCT].type == WWT_EMPTY) {
+		return;
+	}
+
+	window_event_mouse_up_call(w, WIDX_CONSTRUCT);
+}
+
+void window_ride_construction_keyboard_shortcut_demolish_current()
+{
+	rct_window *w = window_find_by_class(WC_RIDE_CONSTRUCTION);
+	if (w == NULL || widget_is_disabled(w, WIDX_DEMOLISH) || w->widgets[WIDX_DEMOLISH].type == WWT_EMPTY) {
+		return;
+	}
+
+	window_event_mouse_up_call(w, WIDX_DEMOLISH);
 }

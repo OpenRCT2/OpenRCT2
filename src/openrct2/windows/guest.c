@@ -14,7 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../config.h"
+#include "../config/Config.h"
 #include "../game.h"
 #include "../input.h"
 #include "../management/marketing.h"
@@ -68,6 +68,8 @@ enum WINDOW_GUEST_WIDGET_IDX {
 
 	WIDX_RIDE_SCROLL = 10
 };
+
+validate_global_widx(WC_PEEP, WIDX_ACTION_LBL);
 
 rct_widget window_guest_overview_widgets[] = {
 	{WWT_FRAME,    0, 0,   191, 0,   156, 0xFFFFFFFF, STR_NONE},                            // Panel / Background
@@ -177,17 +179,17 @@ void window_guest_viewport_init(rct_window* w);
 
 void window_guest_overview_close(rct_window *w);
 void window_guest_overview_resize(rct_window *w);
-void window_guest_overview_mouse_up(rct_window *w, sint32 widgetIndex);
+void window_guest_overview_mouse_up(rct_window *w, rct_widgetindex widgetIndex);
 void window_guest_overview_paint(rct_window *w, rct_drawpixelinfo *dpi);
 void window_guest_overview_invalidate(rct_window *w);
 void window_guest_overview_unknown_14(rct_window *w);
 void window_guest_overview_update(rct_window* w);
-void window_guest_overview_text_input(rct_window *w, sint32 widgetIndex, char *text);
-void window_guest_overview_tool_update(rct_window* w, sint32 widgetIndex, sint32 x, sint32 y);
-void window_guest_overview_tool_down(rct_window* w, sint32 widgetIndex, sint32 x, sint32 y);
-void window_guest_overview_tool_abort(rct_window *w, sint32 widgetIndex);
+void window_guest_overview_text_input(rct_window *w, rct_widgetindex widgetIndex, char *text);
+void window_guest_overview_tool_update(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y);
+void window_guest_overview_tool_down(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y);
+void window_guest_overview_tool_abort(rct_window *w, rct_widgetindex widgetIndex);
 
-void window_guest_mouse_up(rct_window *w, sint32 widgetIndex);
+void window_guest_mouse_up(rct_window *w, rct_widgetindex widgetIndex);
 void window_guest_unknown_05(rct_window *w);
 
 void window_guest_stats_resize(rct_window *w);
@@ -197,7 +199,7 @@ void window_guest_stats_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
 void window_guest_rides_resize(rct_window *w);
 void window_guest_rides_update(rct_window *w);
-void window_guest_rides_tooltip(rct_window* w, sint32 widgetIndex, rct_string_id *stringId);
+void window_guest_rides_tooltip(rct_window* w, rct_widgetindex widgetIndex, rct_string_id *stringId);
 void window_guest_rides_scroll_get_size(rct_window *w, sint32 scrollIndex, sint32 *width, sint32 *height);
 void window_guest_rides_scroll_mouse_down(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y);
 void window_guest_rides_scroll_mouse_over(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y);
@@ -555,7 +557,7 @@ void window_guest_disable_widgets(rct_window* w){
  */
 void window_guest_overview_close(rct_window *w)
 {
-	if (gInputFlags & INPUT_FLAG_TOOL_ACTIVE){
+	if (input_test_flag(INPUT_FLAG_TOOL_ACTIVE)) {
 		if (w->classification == gCurrentToolWidget.window_classification &&
 			w->number == gCurrentToolWidget.window_number)
 			tool_cancel();
@@ -599,7 +601,7 @@ void game_command_callback_pickup_guest(sint32 eax, sint32 ebx, sint32 ecx, sint
 		sint32 peepnum = eax;
 		rct_window* w = window_find_by_number(WC_PEEP, peepnum);
 		if (w) {
-			tool_set(w, WIDX_PICKUP, 7);
+			tool_set(w, WIDX_PICKUP, TOOL_PICKER);
 		}
 		}break;
 	case 2:
@@ -615,7 +617,7 @@ void game_command_callback_pickup_guest(sint32 eax, sint32 ebx, sint32 ecx, sint
  *
  *  rct2: 0x00696A06
  */
-void window_guest_overview_mouse_up(rct_window *w, sint32 widgetIndex)
+void window_guest_overview_mouse_up(rct_window *w, rct_widgetindex widgetIndex)
 {
 	rct_peep* peep = GET_PEEP(w->number);
 
@@ -656,7 +658,7 @@ void window_guest_overview_mouse_up(rct_window *w, sint32 widgetIndex)
  *  rct2: 0x696AA0
  */
 void window_guest_set_page(rct_window* w, sint32 page){
-	if (gInputFlags & INPUT_FLAG_TOOL_ACTIVE)
+	if (input_test_flag(INPUT_FLAG_TOOL_ACTIVE))
 	{
 		if(w->number == gCurrentToolWidget.window_number &&
 		   w->classification == gCurrentToolWidget.window_classification)
@@ -1058,7 +1060,14 @@ void window_guest_overview_invalidate(rct_window *w)
 		window_init_scroll_widgets(w);
 	}
 
-	w->pressed_widgets &= ~(WIDX_TAB_1 | WIDX_TAB_2 |WIDX_TAB_3 |WIDX_TAB_4 |WIDX_TAB_5 |WIDX_TAB_6);
+	w->pressed_widgets &= ~(
+		(1ULL << WIDX_TAB_1) |
+		(1ULL << WIDX_TAB_2) |
+		(1ULL << WIDX_TAB_3) |
+		(1ULL << WIDX_TAB_4) |
+		(1ULL << WIDX_TAB_5) |
+		(1ULL << WIDX_TAB_6)
+		);
 	w->pressed_widgets |= 1ULL << (w->page + WIDX_TAB_1);
 
 	rct_peep* peep = GET_PEEP(w->number);
@@ -1139,7 +1148,7 @@ void window_guest_overview_update(rct_window* w){
 }
 
 /* rct2: 0x696A6A */
-void window_guest_overview_text_input(rct_window *w, sint32 widgetIndex, char *text)
+void window_guest_overview_text_input(rct_window *w, rct_widgetindex widgetIndex, char *text)
 {
 	if (widgetIndex != WIDX_RENAME)
 		return;
@@ -1157,7 +1166,7 @@ void window_guest_overview_text_input(rct_window *w, sint32 widgetIndex, char *t
  *
  *  rct2: 0x696A5F
  */
-void window_guest_overview_tool_update(rct_window* w, sint32 widgetIndex, sint32 x, sint32 y)
+void window_guest_overview_tool_update(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y)
 {
 	if (widgetIndex != WIDX_PICKUP)
 		return;
@@ -1208,7 +1217,7 @@ void window_guest_overview_tool_update(rct_window* w, sint32 widgetIndex, sint32
  *
  *  rct2: 0x696A54
  */
-void window_guest_overview_tool_down(rct_window* w, sint32 widgetIndex, sint32 x, sint32 y)
+void window_guest_overview_tool_down(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y)
 {
 	if (widgetIndex != WIDX_PICKUP)
 		return;
@@ -1228,7 +1237,7 @@ void window_guest_overview_tool_down(rct_window* w, sint32 widgetIndex, sint32 x
  *
  *  rct2: 0x696A49
  */
-void window_guest_overview_tool_abort(rct_window *w, sint32 widgetIndex)
+void window_guest_overview_tool_abort(rct_window *w, rct_widgetindex widgetIndex)
 {
 	if (widgetIndex != WIDX_PICKUP)
 		return;
@@ -1240,7 +1249,7 @@ void window_guest_overview_tool_abort(rct_window *w, sint32 widgetIndex)
  * This is a combination of 5 functions that were identical
  *  rct2: 0x69744F, 0x697795, 0x697BDD, 0x697E18, 0x698279
  */
-void window_guest_mouse_up(rct_window *w, sint32 widgetIndex)
+void window_guest_mouse_up(rct_window *w, rct_widgetindex widgetIndex)
 {
 	switch (widgetIndex){
 	case WIDX_CLOSE:
@@ -1557,7 +1566,7 @@ void window_guest_rides_update(rct_window *w)
  *
  *  rct2: 0x697844
  */
-void window_guest_rides_tooltip(rct_window* w, sint32 widgetIndex, rct_string_id *stringId)
+void window_guest_rides_tooltip(rct_window* w, rct_widgetindex widgetIndex, rct_string_id *stringId)
 {
 	set_format_arg(0, rct_string_id, STR_LIST);
 }

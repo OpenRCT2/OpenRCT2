@@ -20,11 +20,12 @@
 #include "../interface/widget.h"
 #include "../interface/window.h"
 #include "../localisation/localisation.h"
+#include "../object/ObjectManager.h"
+#include "../platform/platform.h"
 #include "../ride/ride.h"
 #include "../ride/track.h"
 #include "../ride/track_design.h"
 #include "../ride/TrackDesignRepository.h"
-#include "../object/ObjectManager.h"
 #include "../sprites.h"
 #include "../util/util.h"
 #include "error.h"
@@ -53,10 +54,10 @@ static rct_widget window_install_track_widgets[] = {
 };
 
 static void window_install_track_close(rct_window *w);
-static void window_install_track_mouseup(rct_window *w, sint32 widgetIndex);
+static void window_install_track_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_install_track_invalidate(rct_window *w);
 static void window_install_track_paint(rct_window *w, rct_drawpixelinfo *dpi);
-static void window_install_track_text_input(rct_window *w, sint32 widgetIndex, char *text);
+static void window_install_track_text_input(rct_window *w, rct_widgetindex widgetIndex, char *text);
 
 static rct_window_event_list window_install_track_events = {
 	window_install_track_close,
@@ -160,7 +161,7 @@ static void window_install_track_close(rct_window *w)
 *
 *  rct2: 0x006D407A
 */
-static void window_install_track_mouseup(rct_window *w, sint32 widgetIndex)
+static void window_install_track_mouseup(rct_window *w, rct_widgetindex widgetIndex)
 {
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
@@ -357,7 +358,7 @@ static void window_install_track_paint(rct_window *w, rct_drawpixelinfo *dpi)
 *
 *  rct2: 0x006D40A7
 */
-static void window_install_track_text_input(rct_window *w, sint32 widgetIndex, char *text)
+static void window_install_track_text_input(rct_window *w, rct_widgetindex widgetIndex, char *text)
 {
 	if (widgetIndex != WIDX_INSTALL || str_is_null_or_empty(text)) {
 		return;

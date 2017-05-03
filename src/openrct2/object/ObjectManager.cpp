@@ -215,6 +215,23 @@ public:
         }
     }
 
+    std::vector<const ObjectRepositoryItem *> GetPackableObjects() override
+    {
+        std::vector<const ObjectRepositoryItem *> objects;
+        size_t numObjects = _objectRepository->GetNumObjects();
+        for (size_t i = 0; i < numObjects; i++)
+        {
+            const ObjectRepositoryItem * item = &_objectRepository->GetObjects()[i];
+            if (item->LoadedObject != nullptr &&
+                item->LoadedObject->GetLegacyData() != nullptr &&
+                IsObjectCustom(item))
+            {
+                objects.push_back(item);
+            }
+        }
+        return objects;
+    }
+
 private:
     sint32 FindSpareSlot(uint8 objectType)
     {
@@ -401,7 +418,7 @@ private:
                 }
             }
 
-            // HACK Scenery window will lose its tabs after changing the the scenery group indexing
+            // HACK Scenery window will lose its tabs after changing the scenery group indexing
             //      for now just close it, but it will be better to later tell it to invalidate the tabs
             window_close_by_class(WC_SCENERY);
         }

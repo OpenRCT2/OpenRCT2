@@ -20,8 +20,8 @@
 #include "../scenario/scenario.h"
 #include "../cheats.h"
 #include "../object_list.h"
-#include "climate.h"
-#include "fountain.h"
+#include "Climate.h"
+#include "Fountain.h"
 #include "map.h"
 #include "park.h"
 #include "scenery.h"
@@ -35,6 +35,7 @@ uint8 gWindowSceneryRotation;
 colour_t gWindowSceneryPrimaryColour;
 colour_t gWindowScenerySecondaryColour;
 colour_t gWindowSceneryTertiaryColour;
+bool gWindowSceneryEyedropperEnabled;
 
 rct_map_element *gSceneryMapElement;
 uint8 gSceneryMapElementType;
@@ -210,7 +211,7 @@ void scenery_remove_ghost_tool_placement(){
 			105 | (gSceneryMapElementType << 8),
 			y,
 			gSceneryGhostWallRotation |(z << 8),
-			GAME_COMMAND_REMOVE_FENCE,
+			GAME_COMMAND_REMOVE_WALL,
 			0,
 			0);
 	}
@@ -286,4 +287,16 @@ rct_scenery_set_entry *get_scenery_group_entry(sint32 entryIndex)
 		return NULL;
 	}
 	return (rct_scenery_set_entry*)gSceneryGroupEntries[entryIndex];
+}
+
+sint32 get_scenery_id_from_entry_index(uint8 objectType, sint32 entryIndex)
+{
+	switch (objectType) {
+	case OBJECT_TYPE_SMALL_SCENERY: return entryIndex;
+	case OBJECT_TYPE_PATH_BITS:		return entryIndex + 0x100;
+	case OBJECT_TYPE_WALLS:			return entryIndex + 0x200;
+	case OBJECT_TYPE_LARGE_SCENERY: return entryIndex + 0x300;
+	case OBJECT_TYPE_BANNERS:		return entryIndex + 0x400;
+	default:						return -1;
+	}
 }

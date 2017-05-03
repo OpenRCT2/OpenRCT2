@@ -48,6 +48,8 @@ enum {
 	WIDX_PRICE
 };
 
+validate_global_widx(WC_TRACK_DESIGN_PLACE, WIDX_ROTATE);
+
 static rct_widget window_track_place_widgets[] = {
 	{ WWT_FRAME,			0,	0,		199,	0,		123,	0xFFFFFFFF,						STR_NONE									},
 	{ WWT_CAPTION,			0,	1,		198,	1,		14,		STR_STRING,						STR_WINDOW_TITLE_TIP						},
@@ -60,11 +62,11 @@ static rct_widget window_track_place_widgets[] = {
 };
 
 static void window_track_place_close(rct_window *w);
-static void window_track_place_mouseup(rct_window *w, sint32 widgetIndex);
+static void window_track_place_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_track_place_update(rct_window *w);
-static void window_track_place_toolupdate(rct_window* w, sint32 widgetIndex, sint32 x, sint32 y);
-static void window_track_place_tooldown(rct_window* w, sint32 widgetIndex, sint32 x, sint32 y);
-static void window_track_place_toolabort(rct_window *w, sint32 widgetIndex);
+static void window_track_place_toolupdate(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y);
+static void window_track_place_tooldown(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y);
+static void window_track_place_toolabort(rct_window *w, rct_widgetindex widgetIndex);
 static void window_track_place_unknown14(rct_window *w);
 static void window_track_place_invalidate(rct_window *w);
 static void window_track_place_paint(rct_window *w, rct_drawpixelinfo *dpi);
@@ -166,8 +168,8 @@ void window_track_place_open(const track_design_file_ref *tdFileRef)
 		| 1 << WIDX_MIRROR
 		| 1 << WIDX_SELECT_DIFFERENT_DESIGN;
 	window_init_scroll_widgets(w);
-	tool_set(w, 6, 12);
-	gInputFlags |= INPUT_FLAG_6;
+	tool_set(w, WIDX_PRICE, TOOL_CROSSHAIR);
+	input_set_flag(INPUT_FLAG_6, true);
 	window_push_others_right(w);
 	show_gridlines();
 	_window_track_place_last_cost = MONEY32_UNDEFINED;
@@ -201,7 +203,7 @@ static void window_track_place_close(rct_window *w)
  *
  *  rct2: 0x006CFEAC
  */
-static void window_track_place_mouseup(rct_window *w, sint32 widgetIndex)
+static void window_track_place_mouseup(rct_window *w, rct_widgetindex widgetIndex)
 {
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
@@ -234,7 +236,7 @@ static void window_track_place_mouseup(rct_window *w, sint32 widgetIndex)
  */
 static void window_track_place_update(rct_window *w)
 {
-	if (!(gInputFlags & INPUT_FLAG_TOOL_ACTIVE))
+	if (!(input_test_flag(INPUT_FLAG_TOOL_ACTIVE)))
 		if (gCurrentToolWidget.window_classification != WC_TRACK_DESIGN_PLACE)
 			window_close(w);
 }
@@ -243,7 +245,7 @@ static void window_track_place_update(rct_window *w)
  *
  *  rct2: 0x006CFF2D
  */
-static void window_track_place_toolupdate(rct_window* w, sint32 widgetIndex, sint32 x, sint32 y)
+static void window_track_place_toolupdate(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y)
 {
 	sint16 mapX, mapY, mapZ;
 
@@ -302,7 +304,7 @@ static void window_track_place_toolupdate(rct_window* w, sint32 widgetIndex, sin
  *
  *  rct2: 0x006CFF34
  */
-static void window_track_place_tooldown(rct_window* w, sint32 widgetIndex, sint32 x, sint32 y)
+static void window_track_place_tooldown(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y)
 {
 	sint32 i;
 	sint16 mapX, mapY, mapZ;
@@ -337,7 +339,7 @@ static void window_track_place_tooldown(rct_window* w, sint32 widgetIndex, sint3
 			} else {
 				sub_6CC3FB(rideIndex);
 				w = window_find_by_class(WC_RIDE_CONSTRUCTION);
-				window_event_mouse_up_call(w, 29);
+				window_event_mouse_up_call(w, WC_RIDE_CONSTRUCTION__WIDX_ENTRANCE);
 			}
 			return;
 		}
@@ -357,7 +359,7 @@ static void window_track_place_tooldown(rct_window* w, sint32 widgetIndex, sint3
  *
  *  rct2: 0x006D015C
  */
-static void window_track_place_toolabort(rct_window *w, sint32 widgetIndex)
+static void window_track_place_toolabort(rct_window *w, rct_widgetindex widgetIndex)
 {
 	window_track_place_clear_provisional();
 }

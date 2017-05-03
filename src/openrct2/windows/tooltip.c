@@ -74,8 +74,8 @@ void window_tooltip_reset(sint32 x, sint32 y)
 	gTooltipCursorY = y;
 	gTooltipTimeout = 0;
 	gTooltipWidget.window_classification = 255;
-	gInputState = INPUT_STATE_NORMAL;
-	gInputFlags &= ~INPUT_FLAG_4;
+	input_set_state(INPUT_STATE_NORMAL);
+	input_set_flag(INPUT_FLAG_4, false);
 }
 
 void window_tooltip_show(rct_string_id id, sint32 x, sint32 y)
@@ -134,14 +134,14 @@ void window_tooltip_show(rct_string_id id, sint32 x, sint32 y)
 		);
 	w->widgets = window_tooltip_widgets;
 
-	gTooltipNotShownTicks = 0;
+	reset_tooltip_not_shown();
 }
 
 /**
  *
  *  rct2: 0x006EA10D
  */
-void window_tooltip_open(rct_window *widgetWindow, sint32 widgetIndex, sint32 x, sint32 y)
+void window_tooltip_open(rct_window *widgetWindow, rct_widgetindex widgetIndex, sint32 x, sint32 y)
 {
 	rct_widget *widget;
 
@@ -180,7 +180,7 @@ void window_tooltip_close()
  */
 static void window_tooltip_update(rct_window *w)
 {
-	gTooltipNotShownTicks = 0;
+	reset_tooltip_not_shown();
 }
 
 /**

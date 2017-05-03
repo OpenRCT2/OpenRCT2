@@ -34,6 +34,7 @@ void path_append_extension(utf8 *path, const utf8 *newExtension, size_t size);
 void path_remove_extension(utf8 *path);
 void path_end_with_separator(utf8 *path, size_t size);
 bool readentirefile(const utf8 *path, void **outBuffer, size_t *outLength);
+bool writeentirefile(const utf8 * path, const void * buffer, size_t length);
 
 sint32 bitscanforward(sint32 source);
 void bitcount_init();
@@ -53,7 +54,12 @@ bool str_is_null_or_empty(const char *str);
 void util_srand(sint32 source);
 uint32 util_rand();
 
-uint8 *util_zlib_deflate(uint8 *data, size_t data_in_size, size_t *data_out_size);
+uint8 *util_zlib_deflate(const uint8 *data, size_t data_in_size, size_t *data_out_size);
 uint8 *util_zlib_inflate(uint8 *data, size_t data_in_size, size_t *data_out_size);
+
+sint8 add_clamp_sint8(sint8 value, sint8 value_to_add);
+sint16 add_clamp_sint16(sint16 value, sint16 value_to_add);
+sint32 add_clamp_sint32(sint32 value, sint32 value_to_add);
+money32 add_clamp_money32(money32 value, money32 value_to_add);
 
 #endif

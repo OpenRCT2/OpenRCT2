@@ -775,7 +775,7 @@ STR_0765    :游客 {INT32}
 STR_0766    :游客 {INT32}
 STR_0767    :游客 {INT32}
 STR_0768    :勤杂工 {INT32}
-STR_0769    :维修员 {INT32}
+STR_0769    :机械师 {INT32}
 STR_0770    :警卫 {INT32}
 STR_0771    :表演人员 {INT32}
 STR_0772    :未命名游乐园{POP16}{POP16}
@@ -1709,7 +1709,7 @@ STR_1697    :不能在等候区放置此物品
 STR_1698    :只能在等候区放置此物品
 STR_1699    :游戏中已有太多人
 STR_1700    :雇佣新的清洁工
-STR_1701    :雇佣新的机械工
+STR_1701    :雇佣新的机械师
 STR_1702    :雇佣新的安保人员
 STR_1703    :雇佣新的表演人员
 STR_1704    :不能雇佣新职员...
@@ -1868,11 +1868,11 @@ STR_1856    :{WINDOW_COLOUR_2}每件产品售出的利润: {BLACK}{CURRENCY2DP}
 STR_1857    :{WINDOW_COLOUR_2}每件产品售出的亏损: {BLACK}{CURRENCY2DP}
 STR_1858    :{WINDOW_COLOUR_2}成本: {BLACK}每个月{CURRENCY2DP}
 STR_1859    :位清洁工
-STR_1860    :位维修工
+STR_1860    :位机械师
 STR_1861    :位警卫
 STR_1862    :位演员
 STR_1863    :位清洁工
-STR_1864    :位维修工
+STR_1864    :位机械师
 STR_1865    :位警卫
 STR_1866    :位演员
 STR_1867    :{BLACK}{COMMA16} {STRINGID}
@@ -1898,7 +1898,7 @@ STR_1886    :Inspecting {STRINGID}
 STR_1887    :{WINDOW_COLOUR_2}上次检查时间: {BLACK}{COMMA16}分钟前
 STR_1888    :{WINDOW_COLOUR_2}上次检查时间: {BLACK}大于4小时
 STR_1889    :{WINDOW_COLOUR_2}故障度: {MOVE_X}{255}{BLACK}{COMMA16}%
-STR_1890    :{SMALLFONT}{BLACK}选择维修工检查此游乐设施的时间间隔
+STR_1890    :{SMALLFONT}{BLACK}选择机械师检查此游乐设施的时间间隔
 STR_1891    :在乐园里暂未有{STRINGID}!
 # The following two strings were used to display an error when the disc was missing.
 # This has been replaced in OpenRCT2.
@@ -1939,7 +1939,7 @@ STR_1925    :不能放置人物于此...
 STR_1926    :{SMALLFONT}
 STR_1927    :{YELLOW}{STRINGID}发生故障了
 STR_1928    :{RED}{STRINGID}毁坏了!
-STR_1929    :{RED}{STRINGID}依然未修复好{NEWLINE}请检查维修人员位置所在, 或考虑以更好的方法管理他们
+STR_1929    :{RED}{STRINGID}依然未修复好{NEWLINE}请检查机械师位置所在, 或考虑以更好的方法管理他们
 STR_1930    :{SMALLFONT}{BLACK}开启/关闭这位游客的追踪信息 - (假若开启追踪, 这位游客的行动将会报告于最近消息里)
 STR_1931    :{STRINGID}已在轮候{STRINGID}
 STR_1932    :{STRINGID}已在{STRINGID}上
@@ -2697,14 +2697,14 @@ STR_2682    :<not used anymore>
 STR_2683    :<not used anymore>
 STR_2684    :{SMALLFONT}{BLACK}Large group of guests arrive
 STR_2685    :Simplex Noise Parameters
-STR_2686    :{WINDOW_COLOUR_2}Low:
-STR_2687    :{WINDOW_COLOUR_2}High:
-STR_2688    :{WINDOW_COLOUR_2}Base Frequency:
-STR_2689    :{WINDOW_COLOUR_2}Octaves:
+STR_2686    :Low:
+STR_2687    :High:
+STR_2688    :Base Frequency:
+STR_2689    :Octaves:
 STR_2690    :Map Generation
-STR_2691    :{WINDOW_COLOUR_2}Base height:
-STR_2692    :{WINDOW_COLOUR_2}Water level:
-STR_2693    :{WINDOW_COLOUR_2}Terrain:
+STR_2691    :Base height:
+STR_2692    :Water level:
+STR_2693    :Terrain:
 STR_2694    :Generate
 STR_2695    :Random terrain
 STR_2696    :Place trees
@@ -2754,7 +2754,7 @@ STR_2739    :无
 STR_2740    :过山车大亨1(RCT1)
 STR_2741    :过山车大亨2(RCT2)
 STR_2742    :找不到css50.dat
-STR_2743    :Copy data\css17.dat from your RCT1 installation to data\css50.dat in your RCT2 installation.
+STR_2743    :将过山车大亨1安装目录下的'data/css17.dat'拷贝到过山车大亨2安装目录并重命名为'data/css50.dat', 或确保杂项窗口中过山车大亨1的路径设置正确.
 STR_2744    :[
 STR_2745    :\
 STR_2746    :]
@@ -3224,7 +3224,7 @@ STR_3207    :过山车设计工具
 STR_3208    :轨道设计管理工具
 STR_3209    :上一步:
 STR_3210    :下一步:
-STR_3211    :{WINDOW_COLOUR_2}地图大小:
+STR_3211    :地图大小:
 STR_3212    :{POP16}{COMMA16} x {PUSH16}{COMMA16}
 STR_3213    :不能再缩小地图
 STR_3214    :不能再扩大地图
@@ -4149,7 +4149,7 @@ STR_5832    :{SMALLFONT}{BLACK}高度用通用单位替换"距离和速度单位
 STR_5833    :{SMALLFONT}{BLACK}修改日期格式
 STR_5834    :{SMALLFONT}{BLACK}选择OpenRCT2使用的音频设备
 STR_5835    :{SMALLFONT}{BLACK}游戏窗口失焦时静音
-STR_5836    :{SMALLFONT}{BLACK}选择主菜单使用的音乐.{NEWLINE}选择过山车大亨1的主题音乐时需要手动将过山车大亨1游戏目录下的'data/css17.dat'拷贝并重命名为过山车大亨2游戏目录下的'data/css50.dat'.
+STR_5836    :{SMALLFONT}{BLACK}选择主菜单使用的音乐.{NEWLINE}选择过山车大亨1的主题音乐时需要手动将过山车大亨1游戏目录下的'data/css17.dat'拷贝并重命名为过山车大亨2游戏目录下的'data/css50.dat', 或者在杂项窗口中设定过山车大亨1的路径.
 STR_5837    :{SMALLFONT}{BLACK}创建并管理自定义游戏界面配色主题
 STR_5838    :{SMALLFONT}{BLACK}在工具栏上为财务窗口显示一个单独的按钮
 STR_5839    :{SMALLFONT}{BLACK}在工具栏上为研发窗口显示一个单独的按钮
@@ -4173,6 +4173,7 @@ STR_5856    :{SMALLFONT}{BLACK}全屏模式时设置游戏分辨率
 STR_5857    :{SMALLFONT}{BLACK}游戏选项
 STR_5858    :{SMALLFONT}{BLACK}使用GPU代替CPU渲染画面. 提高截屏软件的兼容性. 可能会轻微降低游戏性能.
 STR_5859    :{SMALLFONT}{BLACK}启用补帧从而平滑游戏表现. {NEWLINE}当禁用时,{NEWLINE}游戏帧数会稳定在40 FPS.
+STR_5860    :开启原版/反编译版本的轨道绘图模式
 STR_5861    :密码验证失败.
 STR_5862    :阻止未知玩家进入.
 STR_5863    :{SMALLFONT}{BLACK}只允许拥有已知密码的用户加入.
@@ -4274,8 +4275,7 @@ STR_5958    :东北
 STR_5959    :东南
 STR_5960    :{WINDOW_COLOUR_2}四角放置:
 STR_5961    :{WINDOW_COLOUR_2}入口编号:{BLACK}{COMMA16}
-#碰撞检测?
-STR_5962    :{WINDOW_COLOUR_2}冲突检测:
+STR_5962    :{WINDOW_COLOUR_2}碰撞检测:
 STR_5963    :{WINDOW_COLOUR_2}已升起的角:
 STR_5964    :{WINDOW_COLOUR_2}斜角
 STR_5965    :{WINDOW_COLOUR_2}入口类型:{BLACK}{STRINGID}
@@ -4314,8 +4314,47 @@ STR_5997    :增加/设置金钱
 STR_5998    :增加金钱
 STR_5999    :设置金钱
 STR_6000    :请输入一个新的值
-
+STR_6001    :启用光照效果(实验性质)
+STR_6002    :{SMALLFONT}{BLACK}夜晚时路灯和游乐设施将会被点亮.{NEWLINE}此功能需要先开启硬件渲染.
+STR_6003    :剖视图
+STR_6004    :剖视图
+STR_6005    :启用剖视图
+STR_6006    :{SMALLFONT}{BLACK}剖视图只显示小于等于切割高度的地图元素
+STR_6007    :切割高度
+STR_6008    :{SMALLFONT}{BLACK}单击在原始值或度量单位值之间切换
+STR_6009    :{SMALLFONT}{BLACK}选择切割高度
+STR_6010    :{COMMA2DP32}米
+STR_6011    :{COMMA1DP16}英尺
 STR_6012    :{COMMA1DP16}
+STR_6013    :{SMALLFONT}{BLACK}游客仅需付费购买游乐园门票和服务.{NEWLINE}搭乘游乐设施免费.
+STR_6014    :{SMALLFONT}{BLACK}游客仅需付费购买游乐设施门票和服务.{NEWLINE}进入游乐园免费.
+STR_6015    :坡道
+STR_6016    :修改网格
+STR_6017    :请调低速度
+STR_6018    :游乐设施建造- 向左转
+STR_6019    :游乐设施建造- 向右转
+STR_6020    :游乐设施建造- 使用默认轨道
+STR_6021    :游乐设施建造- 降低坡度
+STR_6022    :游乐设施建造- 升高坡度
+STR_6023    :游乐设施建造- 牵引链条开关
+STR_6024    :游乐设施建造- 向左倾斜
+STR_6025    :游乐设施建造- 向右倾斜
+STR_6026    :游乐设施建造- 上一个轨道
+STR_6027    :游乐设施建造- 下一个轨道
+STR_6028    :游乐设施建造- 建造当前选中的
+STR_6029    :游乐设施建造- 拆除当前选中的
+STR_6030    :{SMALLFONT}{BLACK}景物选择器. 点击地图上任意景物来建造相同的景物.
+STR_6031    :服务器描述:
+STR_6032    :服务器欢迎信息:
+STR_6033    :过山车大亨1安装路径:
+STR_6035    :请选择你的过山车大亨1的目录
+STR_6036    :{SMALLFONT}{BLACK}清除
+STR_6037    :请选择一个有效的过山车大亨1的目录
+STR_6038    :{SMALLFONT}{BLACK}如果你安装了过山车大亨1, 设置此选项到其路径以便读取剧情, 音乐等.
+STR_6039    :{SMALLFONT}{BLACK}快速拆除游乐设施
+STR_6040    :编辑剧情选项
+STR_6041    :{BLACK}没有雇佣机械师! 
+
 
 
 #############

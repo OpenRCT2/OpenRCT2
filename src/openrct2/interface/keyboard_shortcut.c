@@ -15,7 +15,7 @@
 #pragma endregion
 
 #include "../audio/audio.h"
-#include "../config.h"
+#include "../config/Config.h"
 #include "../editor.h"
 #include "../game.h"
 #include "../input.h"
@@ -24,6 +24,7 @@
 #include "../localisation/localisation.h"
 #include "../network/network.h"
 #include "../platform/platform.h"
+#include "../ride/track.h"
 #include "../ride/track_paint.h"
 #include "../title/TitleScreen.h"
 #include "../util/util.h"
@@ -157,7 +158,7 @@ static void shortcut_cancel_construction_mode()
 	rct_window *window = window_find_by_class(WC_ERROR);
 	if (window != NULL)
 		window_close(window);
-	else if (gInputFlags & INPUT_FLAG_TOOL_ACTIVE)
+	else if (input_test_flag(INPUT_FLAG_TOOL_ACTIVE))
 		tool_cancel();
 }
 
@@ -167,7 +168,7 @@ static void shortcut_pause_game()
 		rct_window *window = window_find_by_class(WC_TOP_TOOLBAR);
 		if (window != NULL) {
 			window_invalidate(window);
-			window_event_mouse_up_call(window, 0);
+			window_event_mouse_up_call(window, WC_TOP_TOOLBAR__WIDX_PAUSE);
 		}
 	}
 }
@@ -207,39 +208,39 @@ static void shortcut_rotate_construction_object()
 
 	// Rotate scenery
 	rct_window *w = window_find_by_class(WC_SCENERY);
-	if (w != NULL && !widget_is_disabled(w, 25) && w->widgets[25].type != WWT_EMPTY) {
-		window_event_mouse_up_call(w, 25);
+	if (w != NULL && !widget_is_disabled(w, WC_SCENERY__WIDX_SCENERY_ROTATE_OBJECTS_BUTTON) && w->widgets[WC_SCENERY__WIDX_SCENERY_ROTATE_OBJECTS_BUTTON].type != WWT_EMPTY) {
+		window_event_mouse_up_call(w, WC_SCENERY__WIDX_SCENERY_ROTATE_OBJECTS_BUTTON);
 		return;
 	}
 
 	// Rotate construction track piece
 	w = window_find_by_class(WC_RIDE_CONSTRUCTION);
-	if (w != NULL && !widget_is_disabled(w, 32) && w->widgets[32].type != WWT_EMPTY) {
+	if (w != NULL && !widget_is_disabled(w, WC_RIDE_CONSTRUCTION__WIDX_ROTATE) && w->widgets[WC_RIDE_CONSTRUCTION__WIDX_ROTATE].type != WWT_EMPTY) {
 		// Check if building a maze...
-		if (w->widgets[32].tooltip != STR_RIDE_CONSTRUCTION_BUILD_MAZE_IN_THIS_DIRECTION_TIP) {
-			window_event_mouse_up_call(w, 32);
+		if (w->widgets[WC_RIDE_CONSTRUCTION__WIDX_ROTATE].tooltip != STR_RIDE_CONSTRUCTION_BUILD_MAZE_IN_THIS_DIRECTION_TIP) {
+			window_event_mouse_up_call(w, WC_RIDE_CONSTRUCTION__WIDX_ROTATE);
 			return;
 		}
 	}
 
 	// Rotate track design preview
 	w = window_find_by_class(WC_TRACK_DESIGN_LIST);
-	if (w != NULL && !widget_is_disabled(w, 5) && w->widgets[5].type != WWT_EMPTY) {
-		window_event_mouse_up_call(w, 5);
+	if (w != NULL && !widget_is_disabled(w, WC_TRACK_DESIGN_LIST__WIDX_ROTATE) && w->widgets[WC_TRACK_DESIGN_LIST__WIDX_ROTATE].type != WWT_EMPTY) {
+		window_event_mouse_up_call(w, WC_TRACK_DESIGN_LIST__WIDX_ROTATE);
 		return;
 	}
 
 	// Rotate track design placement
 	w = window_find_by_class(WC_TRACK_DESIGN_PLACE);
-	if (w != NULL && !widget_is_disabled(w, 3) && w->widgets[3].type != WWT_EMPTY) {
-		window_event_mouse_up_call(w, 3);
+	if (w != NULL && !widget_is_disabled(w, WC_TRACK_DESIGN_PLACE__WIDX_ROTATE) && w->widgets[WC_TRACK_DESIGN_PLACE__WIDX_ROTATE].type != WWT_EMPTY) {
+		window_event_mouse_up_call(w, WC_TRACK_DESIGN_PLACE__WIDX_ROTATE);
 		return;
 	}
 
 	// Rotate park entrance
 	w = window_find_by_class(WC_MAP);
-	if (w != NULL && !widget_is_disabled(w, 20) && w->widgets[20].type != WWT_EMPTY) {
-		window_event_mouse_up_call(w, 20);
+	if (w != NULL && !widget_is_disabled(w, WC_MAP__WIDX_ROTATE_90) && w->widgets[WC_MAP__WIDX_ROTATE_90].type != WWT_EMPTY) {
+		window_event_mouse_up_call(w, WC_MAP__WIDX_ROTATE_90);
 		return;
 	}
 }
@@ -372,7 +373,7 @@ static void shortcut_adjust_land()
 			rct_window *window = window_find_by_class(WC_TOP_TOOLBAR);
 			if (window != NULL) {
 				window_invalidate(window);
-				window_event_mouse_up_call(window, 7);
+				window_event_mouse_up_call(window, WC_TOP_TOOLBAR__WIDX_LAND);
 			}
 		}
 	}
@@ -388,7 +389,7 @@ static void shortcut_adjust_water()
 			rct_window *window = window_find_by_class(WC_TOP_TOOLBAR);
 			if (window != NULL) {
 				window_invalidate(window);
-				window_event_mouse_up_call(window, 8);
+				window_event_mouse_up_call(window, WC_TOP_TOOLBAR__WIDX_WATER);
 			}
 		}
 	}
@@ -404,7 +405,7 @@ static void shortcut_build_scenery()
 			rct_window *window = window_find_by_class(WC_TOP_TOOLBAR);
 			if (window != NULL) {
 				window_invalidate(window);
-				window_event_mouse_up_call(window, 9);
+				window_event_mouse_up_call(window, WC_TOP_TOOLBAR__WIDX_SCENERY);
 			}
 		}
 	}
@@ -420,7 +421,7 @@ static void shortcut_build_paths()
 			rct_window *window = window_find_by_class(WC_TOP_TOOLBAR);
 			if (window != NULL) {
 				window_invalidate(window);
-				window_event_mouse_up_call(window, 10);
+				window_event_mouse_up_call(window, WC_TOP_TOOLBAR__WIDX_PATH);
 			}
 		}
 	}
@@ -433,11 +434,7 @@ static void shortcut_build_new_ride()
 
 	if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)) {
 		if (!(gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER))) {
-			rct_window *window = window_find_by_class(WC_TOP_TOOLBAR);
-			if (window != NULL) {
-				window_invalidate(window);
-				window_event_mouse_up_call(window, 11);
-			}
+			window_new_ride_open();
 		}
 	}
 }
@@ -471,11 +468,7 @@ static void shortcut_show_rides_list()
 		return;
 
 	if (!(gScreenFlags & (SCREEN_FLAGS_SCENARIO_EDITOR | SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER))) {
-		rct_window *window = window_find_by_class(WC_TOP_TOOLBAR);
-		if (window != NULL) {
-			window_invalidate(window);
-			window_event_mouse_up_call(window, 12);
-		}
+		window_ride_list_open();
 	}
 }
 
@@ -485,11 +478,7 @@ static void shortcut_show_park_information()
 		return;
 
 	if (!(gScreenFlags & (SCREEN_FLAGS_SCENARIO_EDITOR | SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER))) {
-		rct_window *window = window_find_by_class(WC_TOP_TOOLBAR);
-		if (window != NULL) {
-			window_invalidate(window);
-			window_event_mouse_up_call(window, 13);
-		}
+		window_park_entrance_open();
 	}
 }
 
@@ -499,11 +488,7 @@ static void shortcut_show_guest_list()
 		return;
 
 	if (!(gScreenFlags & (SCREEN_FLAGS_SCENARIO_EDITOR | SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER))) {
-		rct_window *window = window_find_by_class(WC_TOP_TOOLBAR);
-		if (window != NULL) {
-			window_invalidate(window);
-			window_event_mouse_up_call(window, 15);
-		}
+		window_guest_list_open();
 	}
 }
 
@@ -513,11 +498,7 @@ static void shortcut_show_staff_list()
 		return;
 
 	if (!(gScreenFlags & (SCREEN_FLAGS_SCENARIO_EDITOR | SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER))) {
-		rct_window *window = window_find_by_class(WC_TOP_TOOLBAR);
-		if (window != NULL) {
-			window_invalidate(window);
-			window_event_mouse_up_call(window, 14);
-		}
+		window_staff_list_open();
 	}
 }
 
@@ -635,6 +616,102 @@ static void shortcut_debug_paint_toggle()
 	}
 }
 
+static void shortcut_ride_construction_turn_left()
+{
+	if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
+		return;
+
+	window_ride_construction_keyboard_shortcut_turn_left();
+}
+
+static void shortcut_ride_construction_turn_right()
+{
+	if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
+		return;
+
+	window_ride_construction_keyboard_shortcut_turn_right();
+}
+
+static void shortcut_ride_construction_use_track_default()
+{
+	if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
+		return;
+
+	window_ride_construction_keyboard_shortcut_use_track_default();
+}
+
+static void shortcut_ride_construction_slope_down()
+{
+	if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
+		return;
+
+	window_ride_construction_keyboard_shortcut_slope_down();
+}
+
+static void shortcut_ride_construction_slope_up()
+{
+	if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
+		return;
+
+	window_ride_construction_keyboard_shortcut_slope_up();
+}
+
+static void shortcut_ride_construction_chain_lift_toggle()
+{
+	if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
+		return;
+
+	window_ride_construction_keyboard_shortcut_chain_lift_toggle();
+}
+
+static void shortcut_ride_construction_bank_left()
+{
+	if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
+		return;
+
+	window_ride_construction_keyboard_shortcut_bank_left();
+}
+
+static void shortcut_ride_construction_bank_right()
+{
+	if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
+		return;
+
+	window_ride_construction_keyboard_shortcut_bank_right();
+}
+
+static void shortcut_ride_construction_previous_track()
+{
+	if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
+		return;
+
+	window_ride_construction_keyboard_shortcut_previous_track();
+}
+
+static void shortcut_ride_construction_next_track()
+{
+	if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
+		return;
+
+	window_ride_construction_keyboard_shortcut_next_track();
+}
+
+static void shortcut_ride_construction_build_current()
+{
+	if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
+		return;
+
+	window_ride_construction_keyboard_shortcut_build_current();
+}
+
+static void shortcut_ride_construction_demolish_current()
+{
+	if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
+		return;
+
+	window_ride_construction_keyboard_shortcut_demolish_current();
+}
+
 static const shortcut_action shortcut_table[SHORTCUT_COUNT] = {
 	shortcut_close_top_most_window,
 	shortcut_close_all_floating_windows,
@@ -688,6 +765,18 @@ static const shortcut_action shortcut_table[SHORTCUT_COUNT] = {
 	shortcut_orginal_painting_toggle,
 	shortcut_debug_paint_toggle,
 	shortcut_see_through_paths_toggle,
+	shortcut_ride_construction_turn_left,
+	shortcut_ride_construction_turn_right,
+	shortcut_ride_construction_use_track_default,
+	shortcut_ride_construction_slope_down,
+	shortcut_ride_construction_slope_up,
+	shortcut_ride_construction_chain_lift_toggle,
+	shortcut_ride_construction_bank_left,
+	shortcut_ride_construction_bank_right,
+	shortcut_ride_construction_previous_track,
+	shortcut_ride_construction_next_track,
+	shortcut_ride_construction_build_current,
+	shortcut_ride_construction_demolish_current,
 };
 
 #pragma endregion

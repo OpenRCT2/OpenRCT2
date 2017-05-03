@@ -15,14 +15,32 @@
 #pragma endregion
 
 #include "../common.h"
+#include <math.h>
 #include <SDL.h>
-
+#include "../Imaging.h"
+#include "../core/Guard.hpp"
+#include "../game.h"
+#include "../localisation/string_ids.h"
 #include "../object.h"
 #include "../util/util.h"
+#include "../windows/error.h"
 #include "map.h"
 #include "map_helpers.h"
 #include "mapgen.h"
 #include "scenery.h"
+
+#pragma region Height map struct
+
+static struct {
+	uint32 width, height;
+	uint8 *mono_bitmap;
+} _heightMapData = {
+	.width = 0,
+	.height = 0,
+	.mono_bitmap = NULL
+};
+
+#pragma endregion Height map struct
 
 #pragma region Random objects
 
@@ -116,7 +134,7 @@ void mapgen_generate_blank(mapgen_settings *settings)
 		}
 	}
 
-	mapgen_set_water_level(settings->waterLevel);
+	mapgen_set_water_level(settings->water_level);
 }
 
 void mapgen_generate(mapgen_settings *settings)
@@ -129,7 +147,7 @@ void mapgen_generate(mapgen_settings *settings)
 	mapSize = settings->mapSize;
 	floorTexture = settings->floor;
 	wallTexture = settings->wall;
-	waterLevel = settings->waterLevel;
+	waterLevel = settings->water_level;
 
 	if (floorTexture == -1)
 		floorTexture = BaseTerrain[util_rand() % countof(BaseTerrain)];
@@ -172,7 +190,7 @@ void mapgen_generate(mapgen_settings *settings)
 		mapgen_simplex(settings);
 		mapgen_smooth_height(2 + (util_rand() % 6));
 	} else {
-		// Keep overwriting the map with rough cicular blobs of different sizes and heights.
+		// Keep overwriting the map with rough circular blobs of different sizes and heights.
 		// This procedural method can produce intersecting contour like land and lakes.
 		// Large blobs, general shape of map
 		mapgen_blobs(6, _heightSize / 2, _heightSize * 4, 4, 16);
@@ -761,6 +779,251 @@ static void mapgen_simplex(mapgen_settings *settings)
 			set_height(x, y, low + (sint32)(normalisedNoiseValue * high));
 		}
 	}
+}
+
+#pragma endregion
+
+#pragma region Heightmap
+
+bool mapgen_load_heightmap(const utf8 *path)
+{
+	const char* extension = path_get_extension(path);
+	uint8 *pixels;
+	size_t pitch;
+	uint32 numChannels;
+	uint32 width, height;
+
+	if (strcicmp(extension, ".png") == 0) {
+		if (!image_io_png_read(&pixels, &width, &height, path)) {
+			log_warning("Error reading PNG");
+			window_error_open(STR_HEIGHT_MAP_ERROR, STR_ERROR_READING_PNG);
+			return false;
+		}
+
+		numChannels = 4;
+		pitch = width * numChannels;
+	}
+	else if (strcicmp(extension, ".bmp") == 0) {
+		SDL_Surface *bitmap = SDL_LoadBMP(path);
+		if (bitmap == NULL) {
+			log_warning("Failed to load bitmap: %s", SDL_GetError());
+			window_error_open(STR_HEIGHT_MAP_ERROR, STR_ERROR_READING_BITMAP);
+			return false;
+		}
+
+		width = bitmap->w;
+		height = bitmap->h;
+		numChannels = bitmap->format->BytesPerPixel;
+		pitch = bitmap->pitch;
+
+		if (numChannels < 3 || bitmap->format->BitsPerPixel < 24)
+		{
+			window_error_open(STR_HEIGHT_MAP_ERROR, STR_ERROR_24_BIT_BITMAP);
+			SDL_FreeSurface(bitmap);
+			return false;
+		}
+
+		// Copy pixels over, then discard the surface
+		SDL_LockSurface(bitmap);
+		pixels = malloc(height * bitmap->pitch);
+		memcpy(pixels, bitmap->pixels, height * bitmap->pitch);
+		SDL_UnlockSurface(bitmap);
+		SDL_FreeSurface(bitmap);
+	}
+	else
+	{
+		openrct2_assert(false, "A file with an invalid file extension was selected.");
+		return false;
+	}
+
+	if (width != height) {
+		window_error_open(STR_HEIGHT_MAP_ERROR, STR_ERROR_WIDTH_AND_HEIGHT_DO_NOT_MATCH);
+		free(pixels);
+		return false;
+	}
+
+	if (width > 254) {
+		window_error_open(STR_HEIGHT_MAP_ERROR, STR_ERROR_HEIHGT_MAP_TOO_BIG);
+		width = height = min(height, 254);
+	}
+
+	// Allocate memory for the height map values, one byte pixel
+	free(_heightMapData.mono_bitmap);
+	_heightMapData.mono_bitmap = (uint8*)malloc(width * height);
+	_heightMapData.width = width;
+	_heightMapData.height = height;
+
+	// Copy average RGB value to mono bitmap
+	for (uint32 x = 0; x < _heightMapData.width; x++)
+	{
+		for (uint32 y = 0; y < _heightMapData.height; y++)
+		{
+			const uint8 red = pixels[x * numChannels + y * pitch];
+			const uint8 green = pixels[x * numChannels + y * pitch + 1];
+			const uint8 blue = pixels[x * numChannels + y * pitch + 2];
+			_heightMapData.mono_bitmap[x + y * _heightMapData.width] = (red + green + blue) / 3;
+		}
+	}
+
+	free(pixels);
+	return true;
+}
+
+/**
+ * Frees the memory used to store the selected height map
+ */
+void mapgen_unload_heightmap()
+{
+	free(_heightMapData.mono_bitmap);
+	_heightMapData.mono_bitmap = NULL;
+	_heightMapData.width = 0;
+	_heightMapData.height = 0;
+}
+
+/**
+ * Applies box blur to the surface N times
+ */
+static void mapgen_smooth_heightmap(uint8 *src, sint32 strength)
+{
+	// Create buffer to store one channel
+	uint8 *dest = (uint8*)malloc(_heightMapData.width * _heightMapData.height);
+
+	for (sint32 i = 0; i < strength; i++)
+	{
+		// Calculate box blur value to all pixels of the surface
+		for (uint32 y = 0; y < _heightMapData.height; y++)
+		{
+			for (uint32 x = 0; x < _heightMapData.width; x++)
+			{
+				uint32 heightSum = 0;
+
+				// Loop over neighbour pixels, all of them have the same weight
+				for (sint8 offsetX = -1; offsetX <= 1; offsetX++)
+				{
+					for (sint8 offsetY = -1; offsetY <= 1; offsetY++)
+					{
+						// Clamp x and y so they stay within the image
+						// This assumes the height map is not tiled, and increases the weight of the edges
+						const sint32 readX = clamp((sint32)x + offsetX, 0, (sint32)_heightMapData.width - 1);
+						const sint32 readY = clamp((sint32)y + offsetY, 0, (sint32)_heightMapData.height - 1);
+						heightSum += src[readX + readY * _heightMapData.width];
+					}
+				}
+
+				// Take average
+				dest[x + y * _heightMapData.width] = heightSum / 9;
+			}
+		}
+
+		// Now apply the blur to the source pixels
+		for (uint32 y = 0; y < _heightMapData.height; y++)
+		{
+			for (uint32 x = 0; x < _heightMapData.width; x++)
+			{
+				src[x + y * _heightMapData.width] = dest[x + y * _heightMapData.width];
+			}
+		}
+	}
+
+	free(dest);
+}
+
+void mapgen_generate_from_heightmap(mapgen_settings *settings)
+{
+	openrct2_assert(_heightMapData.width == _heightMapData.height, "Invalid height map size");
+	openrct2_assert(_heightMapData.mono_bitmap != NULL, "No height map loaded");
+	openrct2_assert(settings->simplex_high != settings->simplex_low, "Low and high setting cannot be the same");
+
+	// Make a copy of the original height map that we can edit
+	uint8 *dest = (uint8*)malloc(_heightMapData.width * _heightMapData.height);
+	memcpy(dest, _heightMapData.mono_bitmap, _heightMapData.width * _heightMapData.width);
+
+	map_init(_heightMapData.width + 2); // + 2 for the black tiles around the map
+
+	if (settings->smooth_height_map)
+	{
+		mapgen_smooth_heightmap(dest, settings->smooth_strength);
+	}
+
+	uint8 maxValue = 255;
+	uint8 minValue = 0;
+
+	if (settings->normalize_height)
+	{
+		// Get highest and lowest pixel value
+		maxValue = 0;
+		minValue = 0xff;
+		for (uint32 y = 0; y < _heightMapData.height; y++)
+		{
+			for (uint32 x = 0; x < _heightMapData.width; x++)
+			{
+				uint8 value = dest[x + y * _heightMapData.width];
+				maxValue = max(maxValue, value);
+				minValue = min(minValue, value);
+			}
+		}
+
+		if (minValue == maxValue)
+		{
+			window_error_open(STR_HEIGHT_MAP_ERROR, STR_ERROR_CANNOT_NORMALIZE);
+			free(dest);
+			return;
+		}
+	}
+
+	openrct2_assert(maxValue > minValue, "Input range is invalid");
+	openrct2_assert(settings->simplex_high > settings->simplex_low, "Output range is invalid");
+
+	const uint8 rangeIn = maxValue - minValue;
+	const uint8 rangeOut = settings->simplex_high - settings->simplex_low;
+
+	for (uint32 y = 0; y < _heightMapData.height; y++)
+	{
+		for (uint32 x = 0; x < _heightMapData.width; x++)
+		{
+			// The x and y axis are flipped in the world, so this uses y for x and x for y.
+			rct_map_element *const surfaceElement = map_get_surface_element_at(y + 1, x + 1);
+
+			// Read value from bitmap, and convert its range
+			uint8 value = dest[x + y * _heightMapData.width];
+			value = (uint8)((float)(value - minValue) / rangeIn * rangeOut) + settings->simplex_low;
+			surfaceElement->base_height = value;
+
+			// Floor to even number
+			surfaceElement->base_height /= 2;
+			surfaceElement->base_height *= 2;
+			surfaceElement->clearance_height = surfaceElement->base_height;
+
+			// Set water level
+			if (surfaceElement->base_height < settings->water_level)
+			{
+				surfaceElement->properties.surface.terrain |= settings->water_level / 2;
+			}
+		}
+	}
+
+	// Smooth map
+	if (settings->smooth)
+	{
+		// Keep smoothing the entire map until no tiles are changed anymore
+		while (true)
+		{
+			uint32 numTilesChanged = 0;
+			for (uint32 y = 1; y <= _heightMapData.height; y++)
+			{
+				for (uint32 x = 1; x <= _heightMapData.width; x++)
+				{
+					numTilesChanged += tile_smooth(x, y);
+				}
+			}
+
+			if (numTilesChanged == 0)
+				break;
+		}
+	}
+
+	// Clean up
+	free(dest);
 }
 
 #pragma endregion

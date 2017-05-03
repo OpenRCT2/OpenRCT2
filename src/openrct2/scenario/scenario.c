@@ -16,7 +16,7 @@
 
 #include "../audio/audio.h"
 #include "../cheats.h"
-#include "../config.h"
+#include "../config/Config.h"
 #include "../game.h"
 #include "../interface/viewport.h"
 #include "../localisation/date.h"
@@ -36,7 +36,7 @@
 #include "../ride/ride.h"
 #include "../util/sawyercoding.h"
 #include "../util/util.h"
-#include "../world/climate.h"
+#include "../world/Climate.h"
 #include "../world/map.h"
 #include "../world/park.h"
 #include "../world/scenery.h"
@@ -87,43 +87,6 @@ money32 gScenarioCompanyValueRecord;
 
 static sint32 scenario_create_ducks();
 static void scenario_objective_check();
-
-/**
- * Loads only the basic information from a scenario.
- *  rct2: 0x006761D6
- */
-bool scenario_load_basic(const char *path, rct_s6_header *header, rct_s6_info *info)
-{
-	log_verbose("loading scenario details, %s", path);
-
-	SDL_RWops* rw = SDL_RWFromFile(path, "rb");
-	if (rw != NULL) {
-		// Read first chunk
-		size_t loaded_size = sawyercoding_read_chunk_with_size(rw, (uint8*)header, sizeof(rct_s6_header));
-		if (loaded_size != sizeof(rct_s6_header)) {
-			log_error("Failed to read header from scenario %s", path);
-			SDL_RWclose(rw);
-			return false;
-		}
-		if (header->type == S6_TYPE_SCENARIO) {
-			// Read second chunk
-			loaded_size = sawyercoding_read_chunk_with_size(rw, (uint8*)info, sizeof(rct_s6_info));
-			SDL_RWclose(rw);
-			if (loaded_size != sizeof(rct_s6_info)) {
-				log_error("Failed to read info from scenario %s", path);
-				return false;
-			}
-			return true;
-		} else {
-			log_error("invalid scenario, %s", path);
-			SDL_RWclose(rw);
-			return false;
-		}
-	}
-
-	log_error("unable to open scenario, %s", path);
-	return false;
-}
 
 sint32 scenario_load_and_play_from_path(const char *path)
 {
@@ -301,7 +264,7 @@ void scenario_begin()
 		gParkEntranceFee = 0;
 	}
 
-	gParkFlags |= PARK_FLAGS_18;
+	gParkFlags |= PARK_FLAGS_SPRITES_INITIALISED;
 
 	load_palette();
 	gfx_invalidate_screen();
@@ -382,9 +345,9 @@ static void scenario_entrance_fee_too_high_check()
 	money16 max_fee = totalRideValue + (totalRideValue / 2);
 
 	if ((gParkFlags & PARK_FLAGS_PARK_OPEN) && park_get_entrance_fee() > max_fee) {
-		for (sint32 i = 0; i < MAX_PARK_ENTRANCES && gParkEntranceX[i] != SPRITE_LOCATION_NULL; i++) {
-			x = gParkEntranceX[i] + 16;
-			y = gParkEntranceY[i] + 16;
+		for (sint32 i = 0; i < MAX_PARK_ENTRANCES && gParkEntrances[i].x != SPRITE_LOCATION_NULL; i++) {
+			x = gParkEntrances[i].x + 16;
+			y = gParkEntrances[i].y + 16;
 		}
 
 		uint32 packed_xy = (y << 16) | x;
@@ -461,7 +424,7 @@ static void scenario_week_update()
 
 	rct_water_type* water_type = (rct_water_type*)object_entry_groups[OBJECT_TYPE_WATER].chunks[0];
 
-	if (month <= MONTH_APRIL && (intptr_t)water_type != -1 && water_type->var_0E & 1) {
+	if (month <= MONTH_APRIL && (intptr_t)water_type != -1 && water_type->flags & WATER_FLAGS_ALLOW_DUCKS) {
 		// 100 attempts at finding some water to create a few ducks at
 		for (sint32 i = 0; i < 100; i++) {
 			if (scenario_create_ducks())

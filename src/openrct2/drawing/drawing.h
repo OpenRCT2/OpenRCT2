@@ -72,7 +72,7 @@ assert_struct_size(rct_g1_element_32bit, 0x10);
 
 
 enum {
-	G1_FLAG_BMP				= (1 << 0), // Image data is encoded as raw pixels (no transparancy)
+	G1_FLAG_BMP				= (1 << 0), // Image data is encoded as raw pixels (no transparency)
 	G1_FLAG_1				= (1 << 1),
 	G1_FLAG_RLE_COMPRESSION	= (1 << 2), // Image data is encoded using RCT2's form of run length encoding
 	G1_FLAG_HAS_ZOOM_SPRITE	= (1 << 4), // Use a different sprite for higher zoom levels
@@ -270,7 +270,6 @@ extern sint32 gPickupPeepX;
 extern sint32 gPickupPeepY;
 
 extern rct_g1_element *g1Elements;
-extern rct_gx g2;
 
 extern rct_drawpixelinfo gScreenDPI;
 extern rct_drawpixelinfo gWindowDPI;
@@ -318,10 +317,12 @@ void gfx_unload_g1();
 void gfx_unload_g2();
 void gfx_unload_csg();
 rct_g1_element* gfx_get_g1_element(sint32 image_id);
+bool is_csg_loaded();
 uint32 gfx_object_allocate_images(const rct_g1_element * images, uint32 count);
 void gfx_object_free_images(uint32 baseImageId, uint32 count);
 void gfx_object_check_all_images_freed();
 void sub_68371D();
+void FASTCALL gfx_bmp_sprite_to_buffer(uint8* palette_pointer, uint8* unknown_pointer, uint8* source_pointer, uint8* dest_pointer, rct_g1_element* source_image, rct_drawpixelinfo *dest_dpi, sint32 height, sint32 width, sint32 image_type);
 void FASTCALL gfx_rle_sprite_to_buffer(const uint8* RESTRICT source_bits_pointer, uint8* RESTRICT dest_bits_pointer, const uint8* RESTRICT palette_pointer, const rct_drawpixelinfo * RESTRICT dpi, sint32 image_type, sint32 source_y_start, sint32 height, sint32 source_x_start, sint32 width);
 void FASTCALL gfx_draw_sprite(rct_drawpixelinfo *dpi, sint32 image_id, sint32 x, sint32 y, uint32 tertiary_colour);
 void FASTCALL gfx_draw_glpyh(rct_drawpixelinfo *dpi, sint32 image_id, sint32 x, sint32 y, uint8 * palette);

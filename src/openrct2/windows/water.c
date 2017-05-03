@@ -35,6 +35,8 @@ enum WINDOW_WATER_WIDGET_IDX {
 	WIDX_INCREMENT
 };
 
+validate_global_widx(WC_WATER, WIDX_PREVIEW);
+
 static rct_widget window_water_widgets[] = {
 	{ WWT_FRAME,	0,	0,	75,	0,	76,	0xFFFFFFFF,								STR_NONE },							// panel / background
 	{ WWT_CAPTION,	0,	1,	74,	1,	14,	STR_WATER,								STR_WINDOW_TITLE_TIP },				// title bar
@@ -45,14 +47,12 @@ static rct_widget window_water_widgets[] = {
 	{ WIDGETS_END },
 };
 
-static sint32 window_water_should_close();
-
 static void window_water_close(rct_window *w);
-static void window_water_mouseup(rct_window *w, sint32 widgetIndex);
+static void window_water_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_water_update(rct_window *w);
 static void window_water_invalidate(rct_window *w);
 static void window_water_paint(rct_window *w, rct_drawpixelinfo *dpi);
-static void window_water_textinput(rct_window *w, sint32 widgetIndex, char *text);
+static void window_water_textinput(rct_window *w, rct_widgetindex widgetIndex, char *text);
 static void window_water_inputsize(rct_window *w);
 
 static rct_window_event_list window_water_events = {
@@ -123,7 +123,7 @@ void window_water_open()
 static void window_water_close(rct_window *w)
 {
 	// If the tool wasn't changed, turn tool off
-	if (!window_water_should_close())
+	if (water_tool_is_active())
 		tool_cancel();
 }
 
@@ -131,7 +131,7 @@ static void window_water_close(rct_window *w)
  *
  *  rct2: 0x006E6B4E
  */
-static void window_water_mouseup(rct_window *w, sint32 widgetIndex)
+static void window_water_mouseup(rct_window *w, rct_widgetindex widgetIndex)
 {
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
@@ -157,7 +157,7 @@ static void window_water_mouseup(rct_window *w, sint32 widgetIndex)
 	}
 }
 
-static void window_water_textinput(rct_window *w, sint32 widgetIndex, char *text)
+static void window_water_textinput(rct_window *w, rct_widgetindex widgetIndex, char *text)
 {
 	sint32 size;
 	char* end;
@@ -189,7 +189,7 @@ static void window_water_inputsize(rct_window *w)
 static void window_water_update(rct_window *w)
 {
 	// Close window if another tool is open
-	if (window_water_should_close())
+	if (!water_tool_is_active())
 		window_close(w);
 }
 
@@ -242,19 +242,4 @@ static void window_water_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		gfx_draw_string_centred(dpi, STR_LOWER_COST_AMOUNT, x, y, COLOUR_BLACK, &gWaterToolLowerCost);
 
 
-}
-
-/**
- *
- *  rct2: 0x0066D125
- */
-static sint32 window_water_should_close()
-{
-	if (!(gInputFlags & INPUT_FLAG_TOOL_ACTIVE))
-		return 1;
-	if (gCurrentToolWidget.window_classification != WC_TOP_TOOLBAR)
-		return 1;
-	if (gCurrentToolWidget.widget_index != 8)
-		return 1;
-	return 0;
 }

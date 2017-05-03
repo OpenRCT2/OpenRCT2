@@ -34,7 +34,7 @@
 #include "../sprites.h"
 
 #define WINDOW_SCENERY_WIDTH	634
-#define WINDOW_SCENERY_HEIGHT	142
+#define WINDOW_SCENERY_HEIGHT	180
 #define SCENERY_BUTTON_WIDTH	66
 #define SCENERY_BUTTON_HEIGHT	80
 
@@ -62,16 +62,16 @@ enum {
 };
 
 static void window_scenery_close(rct_window *w);
-static void window_scenery_mouseup(rct_window *w, sint32 widgetIndex);
+static void window_scenery_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_scenery_resize(rct_window *w);
-static void window_scenery_mousedown(sint32 widgetIndex, rct_window* w, rct_widget* widget);
-static void window_scenery_dropdown(rct_window *w, sint32 widgetIndex, sint32 dropdownIndex);
+static void window_scenery_mousedown(rct_widgetindex widgetIndex, rct_window* w, rct_widget* widget);
+static void window_scenery_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex);
 static void window_scenery_update(rct_window *w);
 static void window_scenery_event_07(rct_window *w);
 static void window_scenery_scrollgetsize(rct_window *w, sint32 scrollIndex, sint32 *width, sint32 *height);
 static void window_scenery_scrollmousedown(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y);
 static void window_scenery_scrollmouseover(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y);
-static void window_scenery_tooltip(rct_window* w, sint32 widgetIndex, rct_string_id *stringId);
+static void window_scenery_tooltip(rct_window* w, rct_widgetindex widgetIndex, rct_string_id *stringId);
 static void window_scenery_invalidate(rct_window *w);
 static void window_scenery_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_scenery_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 scrollIndex);
@@ -139,8 +139,12 @@ enum WINDOW_SCENERY_LIST_WIDGET_IDX {
 	WIDX_SCENERY_PRIMARY_COLOUR_BUTTON,		// 8000000
 	WIDX_SCENERY_SECONDARY_COLOUR_BUTTON,	// 10000000
 	WIDX_SCENERY_TERTIARY_COLOUR_BUTTON,	// 20000000
-	WIDX_SCENERY_BUILD_CLUSTER_BUTTON,		// 40000000
+	WIDX_SCENERY_EYEDROPPER_BUTTON,			// 40000000
+	WIDX_SCENERY_BUILD_CLUSTER_BUTTON,		// 80000000
 };
+
+validate_global_widx(WC_SCENERY, WIDX_SCENERY_TAB_1);
+validate_global_widx(WC_SCENERY, WIDX_SCENERY_ROTATE_OBJECTS_BUTTON);
 
 static rct_widget window_scenery_widgets[] = {
 	{ WWT_FRAME, 0, 0, 633, 0, 141, 0xFFFFFFFF, STR_NONE },								// 1				0x009DE298
@@ -173,7 +177,8 @@ static rct_widget window_scenery_widgets[] = {
 	{ WWT_COLOURBTN, 1, 615, 626, 93, 104, 0xFFFFFFFF, STR_SELECT_COLOUR },				// 8000000			0x009DE448
 	{ WWT_COLOURBTN, 1, 615, 626, 105, 116, 0xFFFFFFFF, STR_SELECT_SECONDARY_COLOUR },	// 10000000			0x009DE458
 	{ WWT_COLOURBTN, 1, 615, 626, 117, 128, 0xFFFFFFFF, STR_SELECT_TERNARY_COLOUR },		// 20000000			0x009DE468
-	{ WWT_FLATBTN, 1, 609, 632, 117, 140, SPR_SCENERY_CLUSTER, STR_SCENERY_CLUSTER_TIP },									// 40000000			0x009DE478
+	{ WWT_FLATBTN, 1, 609, 632, 130, 153, SPR_PICKUP_BTN, STR_SCENERY_EYEDROPPER_TIP },									// 40000000			0x009DE478
+	{ WWT_FLATBTN, 1, 609, 632, 154, 177, SPR_SCENERY_CLUSTER, STR_SCENERY_CLUSTER_TIP },									// 40000000			0x009DE478
 	{ WIDGETS_END },
 };
 
@@ -306,7 +311,7 @@ void init_scenery()
 		init_scenery_entry(sceneryEntry, sceneryId, sceneryEntry->path_bit.scenery_tab_id);
 	}
 
-	for (sint32 widgetIndex = WIDX_SCENERY_TAB_1; widgetIndex < WIDX_SCENERY_LIST; widgetIndex++)
+	for (rct_widgetindex widgetIndex = WIDX_SCENERY_TAB_1; widgetIndex < WIDX_SCENERY_LIST; widgetIndex++)
 		window_scenery_widgets[widgetIndex].type = WWT_EMPTY;
 
 	uint8 tabIndexes[20];
@@ -456,6 +461,7 @@ void window_scenery_open()
 		(1 << WIDX_SCENERY_SECONDARY_COLOUR_BUTTON) |
 		(1 << WIDX_SCENERY_REPAINT_SCENERY_BUTTON) |
 		(1 << WIDX_SCENERY_TERTIARY_COLOUR_BUTTON) |
+		(1 << WIDX_SCENERY_EYEDROPPER_BUTTON) |
 		(1 << WIDX_SCENERY_BUILD_CLUSTER_BUTTON);
 
 	window_init_scroll_widgets(window);
@@ -471,6 +477,7 @@ void window_scenery_open()
 	gSceneryPlaceCost = MONEY32_UNDEFINED;
 	gSceneryPlaceRotation = 0;
 	gWindowSceneryPaintEnabled = 0; // repaint coloured scenery tool state
+	gWindowSceneryEyedropperEnabled = false;
 	gWindowSceneryClusterEnabled = 0; // build cluster tool state
 
 	window->min_width = WINDOW_SCENERY_WIDTH;
@@ -478,22 +485,6 @@ void window_scenery_open()
 	window->min_height = WINDOW_SCENERY_HEIGHT;
 	window->max_height = WINDOW_SCENERY_HEIGHT;
 }
-
-/**
- *
- *  rct2: 0x0066DB3D
- */
-static bool window_scenery_is_scenery_tool_active() {
-	sint32 toolWindowClassification = gCurrentToolWidget.window_classification;
-	sint32 toolWidgetIndex = gCurrentToolWidget.widget_index;
-
-	if (gInputFlags & INPUT_FLAG_TOOL_ACTIVE)
-		if (toolWindowClassification == WC_TOP_TOOLBAR && toolWidgetIndex == 9) // 9 is WIDX_SCENERY
-			return true;
-
-	return false;
-}
-
 
 /**
  *
@@ -505,7 +496,7 @@ void window_scenery_close(rct_window *w)
 	hide_gridlines();
 	viewport_set_visibility(0);
 
-	if (window_scenery_is_scenery_tool_active())
+	if (scenery_tool_is_active())
 		tool_cancel();
 }
 
@@ -566,7 +557,7 @@ static sint32 rows_on_page(sint32 height)
  *
  *  rct2: 0x006BD94C
  */
-static void window_scenery_mouseup(rct_window *w, sint32 widgetIndex)
+static void window_scenery_mouseup(rct_window *w, rct_widgetindex widgetIndex)
 {
 	switch (widgetIndex) {
 	case WIDX_SCENERY_CLOSE:
@@ -580,9 +571,19 @@ static void window_scenery_mouseup(rct_window *w, sint32 widgetIndex)
 		break;
 	case WIDX_SCENERY_REPAINT_SCENERY_BUTTON:
 		gWindowSceneryPaintEnabled ^= 1;
+		gWindowSceneryClusterEnabled = 0;
+		gWindowSceneryEyedropperEnabled = false;
+		window_invalidate(w);
+		break;
+	case WIDX_SCENERY_EYEDROPPER_BUTTON:
+		gWindowSceneryPaintEnabled = 0;
+		gWindowSceneryClusterEnabled = 0;
+		gWindowSceneryEyedropperEnabled = !gWindowSceneryEyedropperEnabled;
 		window_invalidate(w);
 		break;
 	case WIDX_SCENERY_BUILD_CLUSTER_BUTTON:
+		gWindowSceneryPaintEnabled = 0;
+		gWindowSceneryEyedropperEnabled = false;
 		if (gWindowSceneryClusterEnabled == 1) {
 			gWindowSceneryClusterEnabled = 0;
 		}
@@ -604,24 +605,23 @@ static void window_scenery_mouseup(rct_window *w, sint32 widgetIndex)
 void window_scenery_update_scroll(rct_window *w)
 {
 	sint32 tabIndex = gWindowSceneryActiveTabIndex;
+	sint32 listHeight = w->height - 14 - window_scenery_widgets[WIDX_SCENERY_LIST].top - 1;
 
 	scenery_item sceneryItem = window_scenery_count_rows_with_selected_item(tabIndex);
 	w->scrolls[0].v_bottom = window_scenery_rows_height(sceneryItem.allRows) + 1;
 
-	sint32 rowsOnPage = rows_on_page(w->height);
+	sint32 maxTop = max(0, w->scrolls[0].v_bottom - listHeight);
 	sint32 rowSelected = count_rows(sceneryItem.selected_item);
-
-	if (sceneryItem.allRows - rowSelected <= rowsOnPage){
-		rowSelected = sceneryItem.allRows - rowsOnPage;
-	}
-
 	if (sceneryItem.sceneryId == -1) {
 		rowSelected = 0;
 		sint16 sceneryId = window_scenery_tab_entries[tabIndex][0];
 		if (sceneryId != -1)
 			gWindowSceneryTabSelections[tabIndex] = sceneryId;
 	}
+
 	w->scrolls[0].v_top = window_scenery_rows_height(rowSelected);
+	w->scrolls[0].v_top = min(maxTop, w->scrolls[0].v_top);
+
 	widget_scroll_update_thumbs(w, WIDX_SCENERY_LIST);
 }
 
@@ -667,7 +667,7 @@ static void window_scenery_resize(rct_window *w)
  *
  *  rct2: 0x006E1A25
  */
-static void window_scenery_mousedown(sint32 widgetIndex, rct_window* w, rct_widget* widget) {
+static void window_scenery_mousedown(rct_widgetindex widgetIndex, rct_window* w, rct_widget* widget) {
 	switch (widgetIndex) {
 	case WIDX_SCENERY_PRIMARY_COLOUR_BUTTON:
 		window_dropdown_show_colour(w, widget, w->colours[1], gWindowSceneryPrimaryColour);
@@ -694,7 +694,7 @@ static void window_scenery_mousedown(sint32 widgetIndex, rct_window* w, rct_widg
  *
  *  rct2: 0x006E1A54
  */
-static void window_scenery_dropdown(rct_window *w, sint32 widgetIndex, sint32 dropdownIndex)
+static void window_scenery_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex)
 {
 	if (dropdownIndex == -1)
 		return;
@@ -735,11 +735,11 @@ static void window_scenery_update(rct_window *w)
 		sint32 window_y = gCursorState.y - w->y;
 
 		if (window_y < 44 || window_x <= w->width) {
-			sint32 widgetIndex = window_find_widget_from_point(w, gCursorState.x, gCursorState.y);
+			rct_widgetindex widgetIndex = window_find_widget_from_point(w, gCursorState.x, gCursorState.y);
 			if (widgetIndex >= WIDX_SCENERY_TAB_CONTENT_PANEL) {
 				w->scenery.hover_counter++;
 				if (w->scenery.hover_counter < 8) {
-					if (gInputState != INPUT_STATE_SCROLL_LEFT) {
+					if (input_get_state() != INPUT_STATE_SCROLL_LEFT) {
 						w->min_width = WINDOW_SCENERY_WIDTH;
 						w->max_width = WINDOW_SCENERY_WIDTH;
 						w->min_height = WINDOW_SCENERY_HEIGHT;
@@ -749,6 +749,7 @@ static void window_scenery_update(rct_window *w)
 					sint32 windowHeight = min(463, w->scrolls[0].v_bottom + 62);
 					if (gScreenHeight < 600)
 						windowHeight = min(374, windowHeight);
+					windowHeight = max(WINDOW_SCENERY_HEIGHT, windowHeight);
 
 					w->min_width = WINDOW_SCENERY_WIDTH;
 					w->max_width = WINDOW_SCENERY_WIDTH;
@@ -759,7 +760,7 @@ static void window_scenery_update(rct_window *w)
 		}
 	} else {
 		w->scenery.hover_counter = 0;
-		if (gInputState != INPUT_STATE_SCROLL_LEFT) {
+		if (input_get_state() != INPUT_STATE_SCROLL_LEFT) {
 			w->min_width = WINDOW_SCENERY_WIDTH;
 			w->max_width = WINDOW_SCENERY_WIDTH;
 			w->min_height = WINDOW_SCENERY_HEIGHT;
@@ -769,20 +770,22 @@ static void window_scenery_update(rct_window *w)
 
 	window_invalidate(w);
 
-	if (!window_scenery_is_scenery_tool_active()){
+	if (!scenery_tool_is_active()){
 		window_close(w);
 		return;
 	}
 
-	if (gWindowSceneryPaintEnabled == 1) { // the repaint scenery tool is active
-		gCurrentToolId = 0x17;
+	if (gWindowSceneryEyedropperEnabled) {
+		gCurrentToolId = TOOL_PICKER;
+	} else if (gWindowSceneryPaintEnabled == 1) { // the repaint scenery tool is active
+		gCurrentToolId = TOOL_PAINT_DOWN;
 	} else {
 		uint16 tabIndex = gWindowSceneryActiveTabIndex;
 		sint16 tabSelectedSceneryId = gWindowSceneryTabSelections[tabIndex];
 
 		if (tabSelectedSceneryId != -1) {
 			if (tabSelectedSceneryId >= 0x400) { // banner
-				gCurrentToolId = 0x18;
+				gCurrentToolId = TOOL_ENTRANCE_DOWN;
 			} else if (tabSelectedSceneryId >= 0x300) { // large scenery
 				gCurrentToolId = get_large_scenery_entry(tabSelectedSceneryId - 0x300)->large_scenery.tool_id;
 			} else if (tabSelectedSceneryId >= 0x200) { // wall
@@ -838,6 +841,7 @@ void window_scenery_scrollmousedown(rct_window *w, sint32 scrollIndex, sint32 x,
 	gWindowSceneryTabSelections[tabIndex] = sceneryId;
 
 	gWindowSceneryPaintEnabled &= 0xFE;
+	gWindowSceneryEyedropperEnabled = false;
 	audio_play_sound_panned(4, (w->width >> 1) + w->x, 0, 0, 0);
 	w->scenery.hover_counter = -16;
 	gSceneryPlaceCost = MONEY32_UNDEFINED;
@@ -861,7 +865,7 @@ void window_scenery_scrollmouseover(rct_window *w, sint32 scrollIndex, sint32 x,
  *
  *  rct2: 0x006E1C05
  */
-void window_scenery_tooltip(rct_window* w, sint32 widgetIndex, rct_string_id *stringId)
+void window_scenery_tooltip(rct_window* w, rct_widgetindex widgetIndex, rct_string_id *stringId)
 {
 	switch (widgetIndex) {
 	case WIDX_SCENERY_LIST:
@@ -909,22 +913,29 @@ void window_scenery_invalidate(rct_window *w)
 
 	window_scenery_widgets[WIDX_SCENERY_TITLE].text = titleStringId;
 
-	w->pressed_widgets = (((uint32)w->pressed_widgets & 0xFF00000F) | (1 << (tabIndex + 4))) & 0xBBFFFFFF;
-
+	w->pressed_widgets = 0;
+	w->pressed_widgets |= 1ULL << (tabIndex + WIDX_SCENERY_TAB_1);
 	if (gWindowSceneryPaintEnabled == 1)
 		w->pressed_widgets |= (1 << WIDX_SCENERY_REPAINT_SCENERY_BUTTON);
-
+	if (gWindowSceneryEyedropperEnabled)
+		w->pressed_widgets |= (1 << WIDX_SCENERY_EYEDROPPER_BUTTON);
 	if (gWindowSceneryClusterEnabled == 1)
 		w->pressed_widgets |= (1 << WIDX_SCENERY_BUILD_CLUSTER_BUTTON);
 
 	window_scenery_widgets[WIDX_SCENERY_ROTATE_OBJECTS_BUTTON].type = WWT_EMPTY;
+	window_scenery_widgets[WIDX_SCENERY_EYEDROPPER_BUTTON].type = WWT_EMPTY;
 	window_scenery_widgets[WIDX_SCENERY_BUILD_CLUSTER_BUTTON].type = WWT_EMPTY;
+
+	if (!(gWindowSceneryPaintEnabled & 1)) {
+		window_scenery_widgets[WIDX_SCENERY_EYEDROPPER_BUTTON].type = WWT_FLATBTN;
+	}
 
 	sint16 tabSelectedSceneryId = gWindowSceneryTabSelections[tabIndex];
 	if (tabSelectedSceneryId != -1) {
 		if (tabSelectedSceneryId < 0x100) {
-			if (!(gWindowSceneryPaintEnabled & 1))
+			if (!(gWindowSceneryPaintEnabled & 1)) {
 				window_scenery_widgets[WIDX_SCENERY_BUILD_CLUSTER_BUTTON].type = WWT_FLATBTN;
+			}
 
 			rct_scenery_entry* sceneryEntry = get_small_scenery_entry(tabSelectedSceneryId);
 			if (sceneryEntry->small_scenery.flags & SMALL_SCENERY_FLAG4) {
@@ -963,19 +974,19 @@ void window_scenery_invalidate(rct_window *w)
 		} else if (tabSelectedSceneryId >= 0x300) {
 			sceneryEntry = get_large_scenery_entry(tabSelectedSceneryId - 0x300);
 
-			if (sceneryEntry->large_scenery.flags & 1)
+			if (sceneryEntry->large_scenery.flags & LARGE_SCENERY_FLAG_HAS_PRIMARY_COLOUR)
 				window_scenery_widgets[WIDX_SCENERY_PRIMARY_COLOUR_BUTTON].type = WWT_COLOURBTN;
-			if (sceneryEntry->large_scenery.flags & 2)
+			if (sceneryEntry->large_scenery.flags & LARGE_SCENERY_FLAG_HAS_SECONDARY_COLOUR)
 				window_scenery_widgets[WIDX_SCENERY_SECONDARY_COLOUR_BUTTON].type = WWT_COLOURBTN;
 		} else if (tabSelectedSceneryId >= 0x200) {
 			sceneryEntry = get_wall_entry(tabSelectedSceneryId - 0x200);
-			if (sceneryEntry->wall.flags & (WALL_SCENERY_FLAG1 | WALL_SCENERY_FLAG2)) {
+			if (sceneryEntry->wall.flags & (WALL_SCENERY_HAS_PRIMARY_COLOUR | WALL_SCENERY_HAS_GLASS)) {
 				window_scenery_widgets[WIDX_SCENERY_PRIMARY_COLOUR_BUTTON].type = WWT_COLOURBTN;
 
 				if (sceneryEntry->wall.flags & WALL_SCENERY_HAS_SECONDARY_COLOUR) {
 					window_scenery_widgets[WIDX_SCENERY_SECONDARY_COLOUR_BUTTON].type = WWT_COLOURBTN;
 
-					if (sceneryEntry->wall.flags2 & WALL_SCENERY_FLAG1)
+					if (sceneryEntry->wall.flags2 & WALL_SCENERY_2_NO_SELECT_PRIMARY_COLOUR)
 						window_scenery_widgets[WIDX_SCENERY_PRIMARY_COLOUR_BUTTON].type = WWT_EMPTY;
 					if (sceneryEntry->wall.flags & WALL_SCENERY_HAS_TERNARY_COLOUR)
 						window_scenery_widgets[WIDX_SCENERY_TERTIARY_COLOUR_BUTTON].type = WWT_COLOURBTN;
@@ -1005,9 +1016,11 @@ void window_scenery_invalidate(rct_window *w)
 
 	window_scenery_widgets[WIDX_SCENERY_ROTATE_OBJECTS_BUTTON].left = w->width - 25;
 	window_scenery_widgets[WIDX_SCENERY_REPAINT_SCENERY_BUTTON].left = w->width - 25;
+	window_scenery_widgets[WIDX_SCENERY_EYEDROPPER_BUTTON].left = w->width - 25;
 	window_scenery_widgets[WIDX_SCENERY_BUILD_CLUSTER_BUTTON].left = w->width - 25;
 	window_scenery_widgets[WIDX_SCENERY_ROTATE_OBJECTS_BUTTON].right = w->width - 2;
 	window_scenery_widgets[WIDX_SCENERY_REPAINT_SCENERY_BUTTON].right = w->width - 2;
+	window_scenery_widgets[WIDX_SCENERY_EYEDROPPER_BUTTON].right = w->width - 2;
 	window_scenery_widgets[WIDX_SCENERY_BUILD_CLUSTER_BUTTON].right = w->width - 2;
 
 	window_scenery_widgets[WIDX_SCENERY_PRIMARY_COLOUR_BUTTON].left = w->width - 19;
@@ -1038,6 +1051,8 @@ void window_scenery_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	sint16 selectedSceneryEntryId = w->scenery.selected_scenery_id;
 	if (selectedSceneryEntryId == -1) {
 		if (gWindowSceneryPaintEnabled & 1)  // repaint coloured scenery tool is on
+			return;
+		if (gWindowSceneryEyedropperEnabled)
 			return;
 
 		selectedSceneryEntryId = gWindowSceneryTabSelections[tabIndex];
@@ -1100,12 +1115,12 @@ void window_scenery_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 sc
 	while ((currentSceneryGlobalId = window_scenery_tab_entries[tabIndex][sceneryTabItemIndex]) != -1) {
 		uint16 tabSelectedSceneryId = gWindowSceneryTabSelections[tabIndex];
 
-		if (gWindowSceneryPaintEnabled == 1) {
+		if (gWindowSceneryPaintEnabled == 1 || gWindowSceneryEyedropperEnabled) {
 			if (w->scenery.selected_scenery_id == currentSceneryGlobalId) {
 				gfx_fill_rect_inset(dpi, left, top, left + SCENERY_BUTTON_WIDTH - 1,
 					top + SCENERY_BUTTON_HEIGHT - 1, w->colours[1], INSET_RECT_FLAG_FILL_MID_LIGHT);
 			}
-		} 
+		}
 		else {
 			if (tabSelectedSceneryId == currentSceneryGlobalId) {
 				gfx_fill_rect_inset(dpi, left, top, left + SCENERY_BUTTON_WIDTH - 1,
@@ -1142,7 +1157,7 @@ void window_scenery_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 sc
 				uint8 tertiaryColour = w->colours[1];
 				uint16 spriteTop = (sceneryEntry->wall.height * 2) + 0x32;
 
-				if (sceneryEntry->wall.flags & WALL_SCENERY_FLAG2) {
+				if (sceneryEntry->wall.flags & WALL_SCENERY_HAS_GLASS) {
 					imageId |= (gWindowSceneryPrimaryColour << 19) | 0x20000000;
 
 					if (sceneryEntry->wall.flags & WALL_SCENERY_HAS_SECONDARY_COLOUR) {
@@ -1219,4 +1234,36 @@ void window_scenery_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 sc
 		}
 		sceneryTabItemIndex++;
 	}
+}
+
+static sint32 window_scenery_find_tab_with_scenery_id(sint32 sceneryId)
+{
+	for (sint32 i = 0; i < 20; i++) {
+		for (sint32 j = 0; j < SCENERY_ENTRIES_BY_TAB; j++) {
+			sint16 entry = window_scenery_tab_entries[i][j];
+			if (entry == -1) break;
+			if (entry == sceneryId) return i;
+		}
+	}
+	return -1;
+}
+
+bool window_scenery_set_selected_item(sint32 sceneryId)
+{
+	bool result = false;
+	rct_window * w = window_bring_to_front_by_class(WC_SCENERY);
+	if (w != NULL) {
+		sint32 tabIndex = window_scenery_find_tab_with_scenery_id(sceneryId);
+		if (tabIndex != -1) {
+			gWindowSceneryActiveTabIndex = tabIndex;
+			gWindowSceneryTabSelections[tabIndex] = sceneryId;
+
+			audio_play_sound_panned(4, (w->width >> 1) + w->x, 0, 0, 0);
+			w->scenery.hover_counter = -16;
+			gSceneryPlaceCost = MONEY32_UNDEFINED;
+			window_invalidate(w);
+			result = true;
+		}
+	}
+	return result;
 }

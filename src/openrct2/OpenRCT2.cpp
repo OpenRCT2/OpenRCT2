@@ -14,25 +14,30 @@
  *****************************************************************************/
 #pragma endregion
 
+#include <memory>
 #include <string>
 #include "core/Console.hpp"
+#include "core/File.h"
+#include "core/FileStream.hpp"
 #include "core/Guard.hpp"
 #include "core/String.hpp"
 #include "FileClassifier.h"
 #include "network/network.h"
 #include "object/ObjectRepository.h"
 #include "OpenRCT2.h"
+#include "ParkImporter.h"
 #include "platform/crash.h"
 #include "PlatformEnvironment.h"
 #include "ride/TrackDesignRepository.h"
 #include "scenario/ScenarioRepository.h"
 #include "title/TitleScreen.h"
 #include "title/TitleSequenceManager.h"
+#include "Version.h"
 
 extern "C"
 {
     #include "audio/audio.h"
-    #include "config.h"
+    #include "config/Config.h"
     #include "editor.h"
     #include "game.h"
     #include "interface/chat.h"
@@ -43,11 +48,11 @@ extern "C"
     #include "object_list.h"
     #include "platform/platform.h"
     #include "rct1.h"
+    #include "rct2.h"
     #include "rct2/interop.h"
-    #include "version.h"
 }
 
-// The game update inverval in milliseconds, (1000 / 40fps) = 25ms
+// The game update interval in milliseconds, (1000 / 40fps) = 25ms
 constexpr uint32 UPDATE_TIME_MS = 25;
 
 extern "C"
@@ -76,16 +81,14 @@ extern "C"
 namespace OpenRCT2
 {
     static IPlatformEnvironment * _env = nullptr;
-    static std::string _versionInfo;
     static bool _isWindowMinimised;
     static uint32 _isWindowMinimisedLastCheckTick;
     static uint32 _lastTick;
     static uint32 _uncapTick;
 
-    /** If set, will end the OpenRCT2 game loop. Intentially private to this module so that the flag can not be set back to false. */
+    /** If set, will end the OpenRCT2 game loop. Intentionally private to this module so that the flag can not be set back to false. */
     static bool _finished;
 
-    static void SetVersionInfoString();
     static bool ShouldRunVariableFrame();
     static void RunGameLoop();
     static void RunFixedFrame();
@@ -98,11 +101,7 @@ extern "C"
 {
     void openrct2_write_full_version_info(utf8 * buffer, size_t bufferSize)
     {
-        if (OpenRCT2::_versionInfo.empty())
-        {
-            OpenRCT2::SetVersionInfoString();
-        }
-        String::Set(buffer, bufferSize, OpenRCT2::_versionInfo.c_str());
+        String::Set(buffer, bufferSize, gVersionInfoFull);
     }
 
     static void openrct2_set_exe_path()
@@ -326,6 +325,36 @@ extern "C"
     {
         OpenRCT2::_finished = true;
     }
+
+    bool check_file_path(sint32 pathId)
+    {
+        const utf8 * path = get_file_path(pathId);
+        switch (pathId) {
+        case PATH_ID_G1:
+            if (!File::Exists(path))
+            {
+                Console::Error::WriteLine("Unable to find '%s'", path);
+                return false;
+            }
+            break;
+        case PATH_ID_CUSTOM1:
+        case PATH_ID_CUSTOM2:
+            if (File::Exists(path))
+            {
+                try
+                {
+                    auto fs = FileStream(path, FILE_MODE_OPEN);
+                    sint32 index = 36 + (pathId - PATH_ID_CUSTOM1);
+                    gRideMusicInfoList[index]->length = fs.GetLength();
+                }
+                catch (const Exception &)
+                {
+                }
+            }
+            break;
+        }
+        return true;
+    }
 }
 
 namespace OpenRCT2
@@ -378,29 +407,6 @@ namespace OpenRCT2
 
         IPlatformEnvironment * env = CreatePlatformEnvironment(basePaths);
         return env;
-    }
-
-    static void SetVersionInfoString()
-    {
-        utf8 buffer[256];
-        size_t bufferSize = sizeof(buffer);
-        String::Set(buffer, bufferSize, OPENRCT2_NAME ", v" OPENRCT2_VERSION);
-        if (!String::IsNullOrEmpty(gGitBranch))
-        {
-            String::AppendFormat(buffer, bufferSize, "-%s", gGitBranch);
-        }
-        if (!String::IsNullOrEmpty(gCommitSha1Short))
-        {
-            String::AppendFormat(buffer, bufferSize, " build %s", gCommitSha1Short);
-        }
-        if (!String::IsNullOrEmpty(gBuildServer))
-        {
-            String::AppendFormat(buffer, bufferSize, " provided by %s", gBuildServer);
-        }
-    #if DEBUG
-        String::AppendFormat(buffer, bufferSize, " (DEBUG)", gBuildServer);
-    #endif
-        _versionInfo = buffer;
     }
 
     /**
@@ -514,49 +520,58 @@ namespace OpenRCT2
         ClassifiedFile info;
         if (TryClassifyFile(path, &info))
         {
-            if (info.Type == FILE_TYPE::SAVED_GAME)
+            if (info.Type == FILE_TYPE::SAVED_GAME ||
+                info.Type == FILE_TYPE::SCENARIO)
             {
+                std::unique_ptr<IParkImporter> parkImporter;
                 if (info.Version <= 2)
                 {
-                    if (rct1_load_saved_game(path))
+                    parkImporter.reset(ParkImporter::CreateS4());
+                }
+                else
+                {
+                    parkImporter.reset(ParkImporter::CreateS6());
+                }
+
+                if (info.Type == FILE_TYPE::SAVED_GAME)
+                {
+                    try
                     {
+                        parkImporter->LoadSavedGame(path);
+                        parkImporter->Import();
+                        game_fix_save_vars();
+                        sprite_position_tween_reset();
+                        gScreenAge = 0;
+                        gLastAutoSaveUpdate = AUTOSAVE_PAUSE;
                         game_load_init();
                         return true;
                     }
+                    catch (const Exception &)
+                    {
+                        Console::Error::WriteLine("Error loading saved game.");
+                    }
                 }
                 else
                 {
-                    if (game_load_save(path))
+                    try
                     {
-                        gFirstTimeSave = 0;
-                        return true;
-                    }
-                }
-                Console::Error::WriteLine("Error loading saved game.");
-            }
-            else if (info.Type == FILE_TYPE::SCENARIO)
-            {
-                if (info.Version <= 2)
-                {
-
-                    if (rct1_load_scenario(path))
-                    {
+                        parkImporter->LoadScenario(path);
+                        parkImporter->Import();
+                        game_fix_save_vars();
+                        sprite_position_tween_reset();
+                        gScreenAge = 0;
+                        gLastAutoSaveUpdate = AUTOSAVE_PAUSE;
                         scenario_begin();
                         return true;
                     }
-                }
-                else
-                {
-                    if (scenario_load_and_play_from_path(path))
+                    catch (const Exception &)
                     {
-                        return true;
+                        Console::Error::WriteLine("Error loading scenario.");
                     }
                 }
-                Console::Error::WriteLine("Error loading scenario.");
             }
             else
             {
-                Console::Error::WriteLine("Invalid file type.");
                 Console::Error::WriteLine("Invalid file type.");
             }
         }

@@ -16,7 +16,7 @@
 
 #include "../audio/audio.h"
 #include "../cheats.h"
-#include "../config.h"
+#include "../config/Config.h"
 #include "../game.h"
 #include "../interface/viewport.h"
 #include "../localisation/localisation.h"
@@ -921,6 +921,10 @@ static money32 track_place(sint32 rideIndex, sint32 type, sint32 originX, sint32
 		log_warning("Invalid ride for track placement, rideIndex = %d", rideIndex);
 		return MONEY32_UNDEFINED;
 	}
+	if (ride->type == RIDE_TYPE_NULL) {
+		log_warning("Invalid ride type, rideIndex = %d", rideIndex);
+		return MONEY32_UNDEFINED;
+	}
 	rct_ride_entry *rideEntry = get_ride_entry(ride->subtype);
 	if (rideEntry == (rct_ride_entry *)-1 || rideEntry == NULL)
 	{
@@ -1121,20 +1125,20 @@ static money32 track_place(sint32 rideIndex, sint32 type, sint32 originX, sint32
 		if ((flags & GAME_COMMAND_FLAG_APPLY) && !(flags & GAME_COMMAND_FLAG_GHOST) && !gCheatsDisableClearanceChecks) {
 			footpath_remove_litter(x, y, z);
 			if (rideTypeFlags & RIDE_TYPE_FLAG_TRACK_NO_WALLS) {
-				map_remove_walls_at(x, y, baseZ * 8, clearanceZ * 8);
+				wall_remove_at(x, y, baseZ * 8, clearanceZ * 8);
 			} else {
 				// Remove walls in the directions this track intersects
 				uint8 intersectingDirections = (*wallEdges)[blockIndex];
 				intersectingDirections ^= 0x0F;
 				for (sint32 i = 0; i < 4; i++) {
 					if (intersectingDirections & (1 << i)) {
-						map_remove_intersecting_walls(x, y, baseZ, clearanceZ, i);
+						wall_remove_intersecting_walls(x, y, baseZ, clearanceZ, i);
 					}
 				}
 			}
 		}
 
-		bh = gMapGroundFlags & (ELEMENT_IS_1 | ELEMENT_IS_UNDERGROUND);
+		bh = gMapGroundFlags & (ELEMENT_IS_ABOVE_GROUND | ELEMENT_IS_UNDERGROUND);
 		if (gTrackGroundFlags != 0 && (gTrackGroundFlags & bh) == 0) {
 			gGameCommandErrorText = STR_CANT_BUILD_PARTLY_ABOVE_AND_PARTLY_BELOW_GROUND;
 			return MONEY32_UNDEFINED;
@@ -1228,7 +1232,7 @@ static money32 track_place(sint32 rideIndex, sint32 type, sint32 originX, sint32
 						temp_x += TileDirectionDelta[temp_direction].x;
 						temp_y += TileDirectionDelta[temp_direction].y;
 						temp_direction ^= (1 << 1);
-						map_remove_intersecting_walls(temp_x, temp_y, baseZ, clearanceZ, temp_direction & 3);
+						wall_remove_intersecting_walls(temp_x, temp_y, baseZ, clearanceZ, temp_direction & 3);
 					}
 				}
 			}
@@ -1779,7 +1783,7 @@ static money32 set_maze_track(uint16 x, uint8 flags, uint8 direction, uint16 y, 
 	if ((flags & GAME_COMMAND_FLAG_APPLY) != 0) {
 		if (!(flags & GAME_COMMAND_FLAG_GHOST) && !(flags & GAME_COMMAND_FLAG_2)) {
 			footpath_remove_litter(x, y, z);
-			map_remove_walls_at(floor2(x, 32), floor2(y, 32), z, z + 32);
+			wall_remove_at(floor2(x, 32), floor2(y, 32), z, z + 32);
 		}
 	}
 
@@ -1807,7 +1811,7 @@ static money32 set_maze_track(uint16 x, uint8 flags, uint8 direction, uint16 y, 
 
 	mapElement = map_get_track_element_at_of_type_from_ride(x, y, baseHeight, TRACK_ELEM_MAZE, rideIndex);
 	if (mapElement == NULL) {
-		if (mode != 0) {
+		if (mode != GC_SET_MAZE_TRACK_BUILD) {
 			gGameCommandErrorText = 0;
 			return MONEY32_UNDEFINED;
 		}
@@ -1876,8 +1880,9 @@ static money32 set_maze_track(uint16 x, uint8 flags, uint8 direction, uint16 y, 
 	}
 
 
-	if (mode == 0) {
-		// Build mode
+	switch (mode) {
+	case GC_SET_MAZE_TRACK_BUILD:
+	{
 		uint8 segmentOffset = maze_element_get_segment_bit(x, y);
 
 		mapElement->properties.track.maze_entry &= ~(1 << segmentOffset);
@@ -1899,10 +1904,14 @@ static money32 set_maze_track(uint16 x, uint8 flags, uint8 direction, uint16 y, 
 				}
 			}
 		}
-	} else if (mode == 1) {
-		// Move mode
-	} else {
-		// Fill-in mode
+
+		break;
+	}
+
+	case GC_SET_MAZE_TRACK_MOVE:
+		break;
+
+	case GC_SET_MAZE_TRACK_FILL:
 		if (direction != 4) {
 			uint16 previousSegmentX = x - TileDirectionDelta[direction].x / 2;
 			uint16 previousSegmentY = y - TileDirectionDelta[direction].y / 2;
@@ -1939,6 +1948,7 @@ static money32 set_maze_track(uint16 x, uint8 flags, uint8 direction, uint16 y, 
 				segmentBit--;
 			} while ((segmentBit & 0x3) != 0x3);
 		}
+		break;
 	}
 
 	map_invalidate_tile(floor2(x, 32), floor2(y, 32), mapElement->base_height * 8, mapElement->clearance_height * 8);

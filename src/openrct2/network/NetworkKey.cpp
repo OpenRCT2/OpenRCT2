@@ -16,13 +16,14 @@
 
 #ifndef DISABLE_NETWORK
 
-#include "NetworkKey.h"
-#include "../diagnostic.h"
-
-#include <openssl/evp.h>
-#include <openssl/rsa.h>
-#include <openssl/pem.h>
 #include <vector>
+#include <openssl/evp.h>
+#include <openssl/pem.h>
+#include <openssl/rsa.h>
+
+#include "../core/IStream.hpp"
+#include "../diagnostic.h"
+#include "NetworkKey.h"
 
 #define KEY_TYPE EVP_PKEY_RSA
 
@@ -90,10 +91,11 @@ bool NetworkKey::Generate()
     return true;
 }
 
-bool NetworkKey::LoadPrivate(SDL_RWops * file)
+bool NetworkKey::LoadPrivate(IStream * stream)
 {
-    assert(file != nullptr);
-    size_t size = (size_t)file->size(file);
+    Guard::ArgumentNotNull(stream);
+
+    size_t size = (size_t)stream->GetLength();
     if (size == (size_t)-1)
     {
         log_error("unknown size, refusing to load key");
@@ -105,7 +107,7 @@ bool NetworkKey::LoadPrivate(SDL_RWops * file)
         return false;
     }
     char * priv_key = new char[size];
-    file->read(file, priv_key, 1, size);
+    stream->Read(priv_key, size);
     BIO * bio = BIO_new_mem_buf(priv_key, (sint32)size);
     if (bio == nullptr)
     {
@@ -134,10 +136,11 @@ bool NetworkKey::LoadPrivate(SDL_RWops * file)
     return true;
 }
 
-bool NetworkKey::LoadPublic(SDL_RWops * file)
+bool NetworkKey::LoadPublic(IStream * stream)
 {
-    assert(file != nullptr);
-    size_t size = (size_t)file->size(file);
+    Guard::ArgumentNotNull(stream);
+
+    size_t size = (size_t)stream->GetLength();
     if (size == (size_t)-1)
     {
         log_error("unknown size, refusing to load key");
@@ -149,7 +152,7 @@ bool NetworkKey::LoadPublic(SDL_RWops * file)
         return false;
     }
     char * pub_key = new char[size];
-    file->read(file, pub_key, 1, size);
+    stream->Read(pub_key, size);
     BIO * bio = BIO_new_mem_buf(pub_key, (sint32)size);
     if (bio == nullptr)
     {
@@ -171,7 +174,7 @@ bool NetworkKey::LoadPublic(SDL_RWops * file)
     return true;
 }
 
-bool NetworkKey::SavePrivate(SDL_RWops *file)
+bool NetworkKey::SavePrivate(IStream * stream)
 {
     if (_key == nullptr)
     {
@@ -208,7 +211,7 @@ bool NetworkKey::SavePrivate(SDL_RWops *file)
     sint32 keylen = BIO_pending(bio);
     char * pem_key = new char[keylen];
     BIO_read(bio, pem_key, keylen);
-    file->write(file, pem_key, keylen, 1);
+    stream->Write(pem_key, keylen);
     log_verbose("saving key of length %u", keylen);
     BIO_free_all(bio);
     delete [] pem_key;
@@ -219,7 +222,7 @@ bool NetworkKey::SavePrivate(SDL_RWops *file)
     return true;
 }
 
-bool NetworkKey::SavePublic(SDL_RWops *file)
+bool NetworkKey::SavePublic(IStream * stream)
 {
     if (_key == nullptr)
     {
@@ -250,7 +253,7 @@ bool NetworkKey::SavePublic(SDL_RWops *file)
     sint32 keylen = BIO_pending(bio);
     char * pem_key = new char[keylen];
     BIO_read(bio, pem_key, keylen);
-    file->write(file, pem_key, keylen, 1);
+    stream->Write(pem_key, keylen);
     BIO_free_all(bio);
     delete [] pem_key;
 
@@ -302,7 +305,7 @@ std::string NetworkKey::PublicKeyString()
  * public key. Serves a purpose of easy identification keys in multiplayer
  * overview, multiplayer settings.
  *
- * In particular, any of digest functions applied to a standarised key
+ * In particular, any of digest functions applied to a standardised key
  * representation, like PEM, will be sufficient.
  *
  * @return returns a string containing key hash.
@@ -384,7 +387,7 @@ bool NetworkKey::Sign(const uint8 * md, const size_t len, char ** signature, siz
     /* Allocate memory for the signature based on size in slen */
     if ((sig = (unsigned char*)OPENSSL_malloc((sint32)(sizeof(unsigned char) * (*out_size)))) == NULL)
     {
-        log_error("Failed to crypto-allocate space fo signature");
+        log_error("Failed to crypto-allocate space for signature");
         EVP_MD_CTX_destroy(mdctx);
         return false;
     }
@@ -416,7 +419,7 @@ bool NetworkKey::Verify(const uint8 * md, const size_t len, const char * sig, co
 
     if (1 != EVP_DigestVerifyInit(mdctx, nullptr, EVP_sha256(), nullptr, _key))
     {
-        log_error("Failed to initalise verification routine");
+        log_error("Failed to initialise verification routine");
         EVP_MD_CTX_destroy(mdctx);
         return false;
     }
@@ -432,7 +435,7 @@ bool NetworkKey::Verify(const uint8 * md, const size_t len, const char * sig, co
     if (1 == EVP_DigestVerifyFinal(mdctx, (uint8 *)sig, siglen))
     {
         EVP_MD_CTX_destroy(mdctx);
-        log_verbose("Succesfully verified signature");
+        log_verbose("Successfully verified signature");
         return true;
     }
     else

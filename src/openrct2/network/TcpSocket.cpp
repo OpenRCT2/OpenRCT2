@@ -66,6 +66,10 @@
 
 constexpr uint32 CONNECT_TIMEOUT_MS = 3000;
 
+#ifdef __WINDOWS__
+    static bool _wsaInitialised = false;
+#endif
+
 class TcpSocket;
 
 class SocketException : public Exception
@@ -431,7 +435,7 @@ private:
     explicit TcpSocket(SOCKET socket)
     {
         _socket = socket;
-		_status = SOCKET_STATUS_CONNECTED;
+        _status = SOCKET_STATUS_CONNECTED;
     }
 
     void CloseSocket()
@@ -490,6 +494,50 @@ private:
 ITcpSocket * CreateTcpSocket()
 {
     return new TcpSocket();
+}
+
+bool InitialiseWSA()
+{
+#ifdef __WINDOWS__
+    if (!_wsaInitialised)
+    {
+        log_verbose("Initialising WSA");
+        WSADATA wsa_data;
+        if (WSAStartup(MAKEWORD(2, 2), &wsa_data) != 0)
+        {
+            log_error("Unable to initialise winsock.");
+            return false;
+        }
+        _wsaInitialised = true;
+    }
+    return _wsaInitialised;
+#else
+    return true;
+#endif
+}
+
+void DisposeWSA()
+{
+#ifdef __WINDOWS__
+    if (_wsaInitialised)
+    {
+        WSACleanup();
+        _wsaInitialised = false;
+    }
+#endif
+}
+
+namespace Convert
+{
+    uint16 HostToNetwork(uint16 value)
+    {
+        return htons(value);
+    }
+
+    uint16 NetworkToHost(uint16 value)
+    {
+        return ntohs(value);
+    }
 }
 
 #endif

@@ -18,7 +18,7 @@
  * 'Custom currency configuration' window definition and logic.
  */
 
-#include "../config.h"
+#include "../config/Config.h"
 #include "../localisation/localisation.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
@@ -51,10 +51,10 @@ rct_widget window_custom_currency_widgets[] = {
 };
 
 
-static void custom_currency_window_mousedown(sint32 widgetIndex, rct_window *w, rct_widget *widget);
-static void custom_currency_window_mouseup(rct_window *w, sint32 widgetIndex);
-static void custom_currency_window_dropdown(rct_window *w, sint32 widgetIndex, sint32 dropdownIndex);
-static void custom_currency_window_text_input(struct rct_window *w, sint32 widgetIndex, char *text);
+static void custom_currency_window_mousedown(rct_widgetindex widgetIndex, rct_window *w, rct_widget *widget);
+static void custom_currency_window_mouseup(rct_window *w, rct_widgetindex widgetIndex);
+static void custom_currency_window_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex);
+static void custom_currency_window_text_input(struct rct_window *w, rct_widgetindex widgetIndex, char *text);
 static void custom_currency_window_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
 
@@ -125,7 +125,7 @@ void custom_currency_window_open()
 
 
 
-static void custom_currency_window_mousedown(sint32 widgetIndex, rct_window *w, rct_widget *widget)
+static void custom_currency_window_mousedown(rct_widgetindex widgetIndex, rct_window *w, rct_widget *widget)
 {
 	widget = &w->widgets[widgetIndex - 1];
 
@@ -163,6 +163,7 @@ static void custom_currency_window_mousedown(sint32 widgetIndex, rct_window *w, 
 			w->y + widget->top,
 			widget->bottom - widget->top + 1,
 			w->colours[1],
+			0,
 			DROPDOWN_FLAG_STAY_OPEN,
 			2,
 			widget->right - widget->left - 3
@@ -190,7 +191,7 @@ static void custom_currency_window_mousedown(sint32 widgetIndex, rct_window *w, 
 	}
 }
 
-static void custom_currency_window_mouseup(rct_window *w, sint32 widgetIndex)
+static void custom_currency_window_mouseup(rct_window *w, rct_widgetindex widgetIndex)
 {
 	switch(widgetIndex) {
 	case WIDX_RATE:
@@ -207,7 +208,7 @@ static void custom_currency_window_mouseup(rct_window *w, sint32 widgetIndex)
 	}
 }
 
-static void custom_currency_window_dropdown(rct_window *w, sint32 widgetIndex, sint32 dropdownIndex)
+static void custom_currency_window_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex)
 {
 	if(dropdownIndex == -1)
 		return;
@@ -231,7 +232,7 @@ static void custom_currency_window_dropdown(rct_window *w, sint32 widgetIndex, s
 	}
 }
 
-static void custom_currency_window_text_input(struct rct_window *w, sint32 widgetIndex, char *text)
+static void custom_currency_window_text_input(struct rct_window *w, rct_widgetindex widgetIndex, char *text)
 {
 	if (text == NULL)
 		return;

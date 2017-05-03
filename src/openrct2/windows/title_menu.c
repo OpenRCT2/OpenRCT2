@@ -14,7 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../config.h"
+#include "../config/Config.h"
 #include "../editor.h"
 #include "../game.h"
 #include "../input.h"
@@ -43,10 +43,10 @@ static rct_widget window_title_menu_widgets[] = {
 	{ WIDGETS_END },
 };
 
-static void window_title_menu_mouseup(rct_window *w, sint32 widgetIndex);
-static void window_title_menu_mousedown(sint32 widgetIndex, rct_window*w, rct_widget* widget);
-static void window_title_menu_dropdown(rct_window *w, sint32 widgetIndex, sint32 dropdownIndex);
-static void window_title_menu_cursor(rct_window *w, sint32 widgetIndex, sint32 x, sint32 y, sint32 *cursorId);
+static void window_title_menu_mouseup(rct_window *w, rct_widgetindex widgetIndex);
+static void window_title_menu_mousedown(rct_widgetindex widgetIndex, rct_window*w, rct_widget* widget);
+static void window_title_menu_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex);
+static void window_title_menu_cursor(rct_window *w, rct_widgetindex widgetIndex, sint32 x, sint32 y, sint32 *cursorId);
 static void window_title_menu_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_title_menu_invalidate(rct_window *w);
 
@@ -108,7 +108,7 @@ void window_title_menu_open()
 		(1 << WIDX_GAME_TOOLS)
 	);
 
-	sint32 i = 0;
+	rct_widgetindex i = 0;
 	sint32 x = 0;
 	for (rct_widget *widget = window->widgets; widget->type != WWT_LAST; widget++) {
 		if (widget_is_enabled(window, i)) {
@@ -134,22 +134,48 @@ static void window_title_menu_scenarioselect_callback(const utf8 *path)
 	}
 }
 
-static void window_title_menu_mouseup(rct_window *w, sint32 widgetIndex)
+static void window_title_menu_mouseup(rct_window *w, rct_widgetindex widgetIndex)
 {
+	rct_window *windowToOpen = NULL;
+
 	switch (widgetIndex) {
 	case WIDX_START_NEW_GAME:
-		window_scenarioselect_open(window_title_menu_scenarioselect_callback);
+		windowToOpen = window_find_by_class(WC_SCENARIO_SELECT);
+		if (windowToOpen != NULL) {
+			window_bring_to_front(windowToOpen);
+		}
+		else {
+			window_close_by_class(WC_LOADSAVE);
+			window_close_by_class(WC_SERVER_LIST);
+			window_scenarioselect_open(window_title_menu_scenarioselect_callback);
+		}
 		break;
 	case WIDX_CONTINUE_SAVED_GAME:
-		game_do_command(0, 1, 0, 0, GAME_COMMAND_LOAD_OR_QUIT, 0, 0);
+		windowToOpen = window_find_by_class(WC_LOADSAVE);
+		if (windowToOpen != NULL) {
+			window_bring_to_front(windowToOpen);
+		}
+		else {
+			window_close_by_class(WC_SCENARIO_SELECT);
+			window_close_by_class(WC_SERVER_LIST);
+			game_do_command(0, 1, 0, 0, GAME_COMMAND_LOAD_OR_QUIT, 0, 0);
+		}
 		break;
 	case WIDX_MULTIPLAYER:
-		window_server_list_open();
+		windowToOpen = window_find_by_class(WC_SERVER_LIST);
+		if (windowToOpen != NULL) {
+			window_bring_to_front(windowToOpen);
+		}
+		else {
+			window_close_by_class(WC_SCENARIO_SELECT);
+			window_close_by_class(WC_LOADSAVE);
+			window_server_list_open();
+		}
 		break;
 	}
 }
 
-static void window_title_menu_mousedown(sint32 widgetIndex, rct_window*w, rct_widget* widget)
+static void window_title_menu_mousedown(rct_widgetindex widgetIndex, rct_window*w, rct_widget* widget)
 {
 	if (widgetIndex == WIDX_GAME_TOOLS) {
 		gDropdownItemsFormat[0] = STR_SCENARIO_EDITOR;
@@ -167,7 +193,7 @@ static void window_title_menu_mousedown(sint32 widgetIndex, rct_window*w, rct_wi
 	}
 }
 
-static void window_title_menu_dropdown(rct_window *w, sint32 widgetIndex, sint32 dropdownIndex)
+static void window_title_menu_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex)
 {
 	if (widgetIndex == WIDX_GAME_TOOLS) {
 		switch (dropdownIndex) {
@@ -187,7 +213,7 @@ static void window_title_menu_dropdown(rct_window *w, sint32 widgetIndex, sint32
 	}
 }
 
-static void window_title_menu_cursor(rct_window *w, sint32 widgetIndex, sint32 x, sint32 y, sint32 *cursorId)
+static void window_title_menu_cursor(rct_window *w, rct_widgetindex widgetIndex, sint32 x, sint32 y, sint32 *cursorId)
 {
 	gTooltipTimeout = 2000;
 }

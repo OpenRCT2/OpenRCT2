@@ -20,7 +20,7 @@
 #include "../../world/scenery.h"
 #include "../../game.h"
 #include "../../ride/track.h"
-#include "../../config.h"
+#include "../../config/Config.h"
 #include "../../localisation/localisation.h"
 #include "../../interface/colour.h"
 #include "../../interface/viewport.h"
@@ -54,7 +54,7 @@ static void fence_paint_door(uint32 imageId,
                       rct_xyz16 boundsR2, rct_xyz16 boundsR2_,
                       rct_xyz16 boundsL1, rct_xyz16 boundsL1_)
 {
-    if (sceneryEntry->wall.flags & WALL_SCENERY_FLAG1) {
+    if (sceneryEntry->wall.flags & WALL_SCENERY_HAS_PRIMARY_COLOUR) {
         imageId |= imageColourFlags;
     }
 
@@ -95,8 +95,8 @@ static void fence_paint_wall(uint32 frameNum, const rct_scenery_entry * sceneryE
     uint32 imageId = baseImageId;
 
 
-    if (sceneryEntry->wall.flags & WALL_SCENERY_FLAG2) {
-        if (sceneryEntry->wall.flags & WALL_SCENERY_FLAG1) {
+    if (sceneryEntry->wall.flags & WALL_SCENERY_HAS_GLASS) {
+        if (sceneryEntry->wall.flags & WALL_SCENERY_HAS_PRIMARY_COLOUR) {
             imageId |= imageColourFlags;
         }
 
@@ -110,7 +110,7 @@ static void fence_paint_wall(uint32 frameNum, const rct_scenery_entry * sceneryE
             sub_98199C(imageId, (sint8)offset.x, (sint8)offset.y, bounds.x, bounds.y, (sint8)bounds.z, offset.z, boundsOffset.x, boundsOffset.y, boundsOffset.z, get_current_rotation());
         }
     } else {
-        if (sceneryEntry->wall.flags & WALL_SCENERY_FLAG1) {
+        if (sceneryEntry->wall.flags & WALL_SCENERY_HAS_PRIMARY_COLOUR) {
             imageId |= imageColourFlags;
         }
 
@@ -134,7 +134,7 @@ void fence_paint(uint8 direction, sint32 height, rct_map_element * map_element)
 {
     gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_WALL;
 
-    rct_scenery_entry * sceneryEntry = get_wall_entry(map_element->properties.fence.type);
+    rct_scenery_entry * sceneryEntry = get_wall_entry(map_element->properties.wall.type);
     if (sceneryEntry == NULL || sceneryEntry == (rct_scenery_entry *)-1) {
         return;
     }
@@ -145,18 +145,18 @@ void fence_paint(uint8 direction, sint32 height, rct_map_element * map_element)
     }
 
 
-    sint32 primaryColour = map_element->properties.fence.item[1] & 0x1F;
+    sint32 primaryColour = map_element->properties.wall.colour_1 & 0x1F;
     uint32 imageColourFlags = primaryColour << 19 | 0x20000000;
     uint32 dword_141F718 = imageColourFlags + 0x23800006;
 
     if (sceneryEntry->wall.flags & WALL_SCENERY_HAS_SECONDARY_COLOUR) {
-        uint8 secondaryColour = (map_element->properties.fence.item[1] >> 5) | ((map_element->flags & 0x60) >> 2);
+        uint8 secondaryColour = wall_element_get_secondary_colour(map_element);
         imageColourFlags |= secondaryColour << 24 | 0x80000000;
     }
 
     uint32 tertiaryColour = 0;
     if (sceneryEntry->wall.flags & WALL_SCENERY_HAS_TERNARY_COLOUR) {
-        tertiaryColour = map_element->properties.fence.item[0];
+        tertiaryColour = map_element->properties.wall.colour_3;
         imageColourFlags &= 0x0DFFFFFFF;
     }
 
@@ -182,7 +182,9 @@ void fence_paint(uint8 direction, sint32 height, rct_map_element * map_element)
     if (sceneryEntry->wall.flags & WALL_SCENERY_IS_DOOR) {
         rct_xyz16 offset;
         rct_xyz16 boundsR1, boundsR1_, boundsR2, boundsR2_, boundsL1, boundsL1_;
-        uint8 animationFrame = (map_element->properties.fence.item[2] >> 3) & 0x1F;
+        uint8 animationFrame = wall_element_get_animation_frame(map_element);
+        // Add the direction as well
+        animationFrame |= (map_element->properties.wall.animation & WALL_ANIMATION_FLAG_DIRECTION_BACKWARD) >> 3;
         uint32 imageId;
         switch (direction) {
             case 0:
@@ -281,7 +283,7 @@ void fence_paint(uint8 direction, sint32 height, rct_map_element * map_element)
                 imageOffset = 0;
             }
 
-            if (sceneryEntry->wall.flags & WALL_SCENERY_FLAG2) {
+            if (sceneryEntry->wall.flags & WALL_SCENERY_HAS_GLASS) {
                 if (sceneryEntry->wall.flags & WALL_SCENERY_IS_BANNER) {
                     imageOffset += 12;
                 }
@@ -332,7 +334,7 @@ void fence_paint(uint8 direction, sint32 height, rct_map_element * map_element)
     fence_paint_wall(frameNum, sceneryEntry, dword_141F710, imageColourFlags, dword_141F718, tertiaryColour, imageOffset, offset, bounds, boundsOffset);
 
 
-    if (sceneryEntry->wall.var_0D == 0xFF) {
+    if (sceneryEntry->wall.scrolling_mode == 0xFF) {
         return;
     }
 
@@ -343,21 +345,21 @@ void fence_paint(uint8 direction, sint32 height, rct_map_element * map_element)
     set_format_arg(0, uint32, 0);
     set_format_arg(4, uint32, 0);
 
-    uint8 al_2 = map_element->properties.fence.item[1] >> 5 | (map_element->flags & 0x60) >> 2;
+    uint8 secondaryColour = wall_element_get_secondary_colour(map_element);
 
     if (dword_141F710 != 0) {
-        al_2 = COLOUR_GREY;
+        secondaryColour = COLOUR_GREY;
     }
 
     if (direction == 0) {
-        al_2 |= 0x80;
+        secondaryColour |= 0x80;
     }
 
-    set_format_arg(7, uint8, al_2);
+    set_format_arg(7, uint8, secondaryColour);
 
-    uint16 scrollingMode = sceneryEntry->wall.var_0D + ((direction + 1) & 0x3);
+    uint16 scrollingMode = sceneryEntry->wall.scrolling_mode + ((direction + 1) & 0x3);
 
-    uint8 bannerIndex = map_element->properties.fence.item[0];
+    uint8 bannerIndex = map_element->properties.wall.banner_index;
     rct_banner * banner = &gBanners[bannerIndex];
 
     set_format_arg(0, rct_string_id, banner->string_idx);
