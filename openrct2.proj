@@ -19,7 +19,7 @@
     <TestConfig Condition="'$(Configuration)'=='DebugTests' OR '$(Configuration)'=='ReleaseTests'">true</TestConfig>
     <GIT_COMMIT_SHA1_SHORT Condition="'$(GIT_COMMIT_SHA1)'!=''">$(GIT_COMMIT_SHA1.Substring(0, 7))</GIT_COMMIT_SHA1_SHORT>
 
-    <Version>0.0.7</Version>
+    <Version>0.0.8</Version>
     <VersionExtra Condition="'$(GIT_BRANCH)'!=''">-$(GIT_BRANCH)-$(GIT_COMMIT_SHA1_SHORT)</VersionExtra>
     <VersionExtra Condition="'$(GIT_TAG)'!=''"></VersionExtra>
     <TargetLibsVersion>11</TargetLibsVersion>
