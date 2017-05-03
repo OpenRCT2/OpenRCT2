@@ -1162,7 +1162,7 @@ void toggle_land_rights_window(rct_window *parkWindow, sint32 widgetIndex)
 	}
 	else {
 		show_gridlines();
-		tool_set(parkWindow, widgetIndex, 2);
+		tool_set(parkWindow, widgetIndex, TOOL_UP_ARROW);
 		input_set_flag(INPUT_FLAG_6, true);
 		gLandToolSize = 1;
 		window_land_rights_open();

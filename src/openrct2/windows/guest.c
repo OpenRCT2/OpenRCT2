@@ -601,7 +601,7 @@ void game_command_callback_pickup_guest(sint32 eax, sint32 ebx, sint32 ecx, sint
 		sint32 peepnum = eax;
 		rct_window* w = window_find_by_number(WC_PEEP, peepnum);
 		if (w) {
-			tool_set(w, WIDX_PICKUP, 7);
+			tool_set(w, WIDX_PICKUP, TOOL_PICKER);
 		}
 		}break;
 	case 2:

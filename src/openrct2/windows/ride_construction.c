@@ -1960,7 +1960,7 @@ static void window_ride_construction_rotate(rct_window *w)
  */
 static void window_ride_construction_entrance_click(rct_window *w)
 {
-	if (tool_set(w, WIDX_ENTRANCE, 12)) {
+	if (tool_set(w, WIDX_ENTRANCE, TOOL_CROSSHAIR)) {
 		if (!ride_try_get_origin_element(_currentRideIndex, NULL)) {
 			sub_6CC3FB(_currentRideIndex);
 		}
@@ -1984,7 +1984,7 @@ static void window_ride_construction_entrance_click(rct_window *w)
  */
 static void window_ride_construction_exit_click(rct_window *w)
 {
-	if (tool_set(w, WIDX_EXIT, 12)) {
+	if (tool_set(w, WIDX_EXIT, TOOL_CROSSHAIR)) {
 		if (!ride_try_get_origin_element(_currentRideIndex, NULL)) {
 			sub_6CC3FB(_currentRideIndex);
 		}
@@ -2655,7 +2655,7 @@ bool sub_6CA2DF(sint32 *_trackType, sint32 *_trackDirection, sint32 *_rideIndex,
 	x = _currentTrackBeginX;
 	y = _currentTrackBeginY;
 	z = _currentTrackBeginZ;
-	if (_rideConstructionState == 2) {
+	if (_rideConstructionState == RIDE_CONSTRUCTION_STATE_BACK) {
 		z -= trackCoordinates->z_end;
 		trackDirection = _currentTrackPieceDirection ^ 0x02;
 		trackDirection -= trackCoordinates->rotation_end;
@@ -3929,7 +3929,7 @@ void ride_construction_tooldown_construct(sint32 screenX, sint32 screenY)
 					audio_play_sound_panned(SOUND_ERROR, gCursorState.x, x, y, z);
 					w = window_find_by_class(WC_RIDE_CONSTRUCTION);
 					if (w != NULL){
-						tool_set(w, WIDX_CONSTRUCT, 12);
+						tool_set(w, WIDX_CONSTRUCT, TOOL_CROSSHAIR);
 						input_set_flag(INPUT_FLAG_6, true);
 						_trackPlaceCtrlState = false;
 						_trackPlaceShiftState = false;

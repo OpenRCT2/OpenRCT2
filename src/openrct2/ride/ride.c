@@ -1741,7 +1741,7 @@ static sint32 ride_modify_entrance_or_exit(rct_map_element *mapElement, sint32 x
 		gCurrentToolWidget.window_classification != WC_RIDE_CONSTRUCTION
 	) {
 		// Replace entrance / exit
-		tool_set(constructionWindow, entranceType == 0 ? WC_RIDE_CONSTRUCTION__WIDX_ENTRANCE : WC_RIDE_CONSTRUCTION__WIDX_EXIT, 12);
+		tool_set(constructionWindow, entranceType == ENTRANCE_TYPE_RIDE_ENTRANCE ? WC_RIDE_CONSTRUCTION__WIDX_ENTRANCE : WC_RIDE_CONSTRUCTION__WIDX_EXIT, TOOL_CROSSHAIR);
 		gRideEntranceExitPlaceType = entranceType;
 		gRideEntranceExitPlaceRideIndex = rideIndex;
 		gRideEntranceExitPlaceStationIndex = bl;
@@ -1903,7 +1903,7 @@ sint32 sub_6CC3FB(sint32 rideIndex)
 
 	w = ride_create_or_find_construction_window(rideIndex);
 
-	tool_set(w, WC_RIDE_CONSTRUCTION__WIDX_CONSTRUCT, 12);
+	tool_set(w, WC_RIDE_CONSTRUCTION__WIDX_CONSTRUCT, TOOL_CROSSHAIR);
 	input_set_flag(INPUT_FLAG_6, true);
 
 	ride = get_ride(_currentRideIndex);

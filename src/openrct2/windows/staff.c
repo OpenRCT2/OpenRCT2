@@ -442,7 +442,7 @@ void game_command_callback_pickup_staff(sint32 eax, sint32 ebx, sint32 ecx, sint
 		sint32 peepnum = eax;
 		rct_window* w = window_find_by_number(WC_PEEP, peepnum);
 		if (w) {
-			tool_set(w, WIDX_PICKUP, 7);
+			tool_set(w, WIDX_PICKUP, TOOL_PICKER);
 		}
 		}break;
 	case 2:
@@ -596,7 +596,7 @@ void window_staff_overview_dropdown(rct_window *w, sint32 widgetIndex, sint32 dr
 		staff_update_greyed_patrol_areas();
 	}
 	else {
-		if (!tool_set(w, widgetIndex, 22)) {
+		if (!tool_set(w, widgetIndex, TOOL_WALK_DOWN)) {
 			show_gridlines();
 			gStaffDrawPatrolAreas = w->number;
 			gfx_invalidate_screen();

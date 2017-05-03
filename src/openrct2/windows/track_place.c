@@ -168,7 +168,7 @@ void window_track_place_open(const track_design_file_ref *tdFileRef)
 		| 1 << WIDX_MIRROR
 		| 1 << WIDX_SELECT_DIFFERENT_DESIGN;
 	window_init_scroll_widgets(w);
-	tool_set(w, WIDX_PRICE, 12);
+	tool_set(w, WIDX_PRICE, TOOL_CROSSHAIR);
 	input_set_flag(INPUT_FLAG_6, true);
 	window_push_others_right(w);
 	show_gridlines();

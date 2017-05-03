@@ -776,16 +776,16 @@ static void window_scenery_update(rct_window *w)
 	}
 
 	if (gWindowSceneryEyedropperEnabled) {
-		gCurrentToolId = 7;
+		gCurrentToolId = TOOL_PICKER;
 	} else if (gWindowSceneryPaintEnabled == 1) { // the repaint scenery tool is active
-		gCurrentToolId = 0x17;
+		gCurrentToolId = TOOL_PAINT_DOWN;
 	} else {
 		uint16 tabIndex = gWindowSceneryActiveTabIndex;
 		sint16 tabSelectedSceneryId = gWindowSceneryTabSelections[tabIndex];
 
 		if (tabSelectedSceneryId != -1) {
 			if (tabSelectedSceneryId >= 0x400) { // banner
-				gCurrentToolId = 0x18;
+				gCurrentToolId = TOOL_ENTRANCE_DOWN;
 			} else if (tabSelectedSceneryId >= 0x300) { // large scenery
 				gCurrentToolId = get_large_scenery_entry(tabSelectedSceneryId - 0x300)->large_scenery.tool_id;
 			} else if (tabSelectedSceneryId >= 0x200) { // wall

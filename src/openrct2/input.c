@@ -74,7 +74,7 @@ widget_ref gTooltipWidget;
 sint32 gTooltipCursorX;
 sint32 gTooltipCursorY;
 
-uint8 gCurrentToolId;
+TOOL_IDX gCurrentToolId;
 widget_ref gCurrentToolWidget;
 
 static sint16 _clickRepeatTicks;

@@ -557,6 +557,20 @@ enum GUEST_LIST_FILTER_TYPE
 	GLFT_GUESTS_THINKING_X,
 };
 
+typedef enum {
+	TOOL_ARROW = 0,
+	TOOL_UP_ARROW = 2,
+	TOOL_UP_DOWN_ARROW = 3,
+	TOOL_PICKER = 7,
+	TOOL_CROSSHAIR = 12,
+	TOOL_PATH_DOWN = 17,
+	TOOL_DIG_DOWN = 18,
+	TOOL_WATER_DOWN = 19,
+	TOOL_WALK_DOWN = 22,
+	TOOL_PAINT_DOWN = 23,
+	TOOL_ENTRANCE_DOWN = 24,
+} TOOL_IDX;
+
 typedef void (*modal_callback)(sint32 result);
 typedef void (*loadsave_callback)(sint32 result, const utf8 * path);
 typedef void (*scenarioselect_callback)(const utf8 *path);
@@ -648,7 +662,7 @@ void window_move_position(rct_window *w, sint32 dx, sint32 dy);
 void window_resize(rct_window *w, sint32 dw, sint32 dh);
 void window_set_resize(rct_window *w, sint32 minWidth, sint32 minHeight, sint32 maxWidth, sint32 maxHeight);
 
-sint32 tool_set(rct_window *w, sint32 widgetIndex, sint32 tool);
+bool tool_set(rct_window *w, rct_widgetindex widgetIndex, TOOL_IDX tool);
 void tool_cancel();
 
 void window_close_construction_windows();

@@ -193,7 +193,7 @@ static void window_maze_construction_close(rct_window *w)
 }
 
 static void window_maze_construction_entrance_mouseup(rct_window *w, sint32 widgetIndex){
-	if (tool_set(w, widgetIndex, 12))
+	if (tool_set(w, widgetIndex, TOOL_CROSSHAIR))
 		return;
 
 	gRideEntranceExitPlaceType = widgetIndex == WIDX_MAZE_ENTRANCE ? ENTRANCE_TYPE_RIDE_ENTRANCE : ENTRANCE_TYPE_RIDE_EXIT;
