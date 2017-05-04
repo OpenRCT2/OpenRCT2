@@ -264,7 +264,7 @@ sint32 network_init();
 void network_close();
 void network_shutdown_client();
 sint32 network_begin_client(const char *host, sint32 port);
-sint32 network_begin_server(sint32 port);
+sint32 network_begin_server(sint32 port, const char* address);
 
 sint32 network_get_mode();
 sint32 network_get_status();
