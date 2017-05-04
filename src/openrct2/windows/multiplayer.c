@@ -298,6 +298,11 @@ void window_multiplayer_open()
 	}
 }
 
+void window_multiplayer_close() {
+	//To be called on any network issue. For Safety Reasons.
+	window_close_by_class(WC_MULTIPLAYER);
+}
+
 static void window_multiplayer_set_page(rct_window* w, sint32 page)
 {
 	_windowInformationSizeDirty = true;
