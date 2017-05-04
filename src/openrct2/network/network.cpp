@@ -264,7 +264,7 @@ bool Network::BeginClient(const char* host, uint16 port)
 	return true;
 }
 
-bool Network::BeginServer(uint16 port)
+bool Network::BeginServer(uint16 port, const char* address)
 {
 	Close();
 	if (!Init())
@@ -280,7 +280,7 @@ bool Network::BeginServer(uint16 port)
 	listening_socket = CreateTcpSocket();
 	try
 	{
-		listening_socket->Listen(gConfigNetwork.listen_address, port);
+		listening_socket->Listen(address, port);
 	}
 	catch (const Exception &ex)
 	{
@@ -2136,7 +2136,11 @@ sint32 network_begin_client(const char *host, sint32 port)
 
 sint32 network_begin_server(sint32 port)
 {
-	return gNetwork.BeginServer(port);
+	char *address = nullptr;
+	if (strlen(gConfigNetwork.listen_address) > 0)
+		address = gConfigNetwork.listen_address;
+
+	return gNetwork.BeginServer(port, address);
 }
 
 void network_update()

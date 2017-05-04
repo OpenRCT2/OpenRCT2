@@ -95,7 +95,7 @@ public:
 	bool Init();
 	void Close();
 	bool BeginClient(const char* host, uint16 port);
-	bool BeginServer(uint16 port);
+	bool BeginServer(uint16 port, const char* address);
 	sint32 GetMode();
 	sint32 GetStatus();
 	sint32 GetAuthStatus();

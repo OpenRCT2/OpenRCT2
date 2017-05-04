@@ -343,11 +343,7 @@ namespace Config
             auto model = &gConfigNetwork;
             model->player_name = reader->GetCString("player_name", "Player");
             model->default_port = reader->GetSint32("default_port", NETWORK_DEFAULT_PORT);
-
             model->listen_address = reader->GetCString("listen_address", "");
-            if (strlen(model->listen_address) == 0)
-                model->listen_address = nullptr;
-
             model->default_password = reader->GetCString("default_password", nullptr);
             model->stay_connected = reader->GetBoolean("stay_connected", true);
             model->advertise = reader->GetBoolean("advertise", true);
