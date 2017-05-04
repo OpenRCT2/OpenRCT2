@@ -4367,6 +4367,9 @@ STR_6052    :La heightmap è troppo grande e sarà tagliata
 STR_6053    :La heightmap non può essere normalizzata
 STR_6054    :Sono supportate solo le bitmap a 24 bit
 STR_6055    :File di heightmap di OpenRCT2
+STR_6056    :{SMALLFONT}{BLACK}Muto
+STR_6057    :{SMALLFONT}{BLACK}Mostra un bottone separato per l'opzione Muto nella barra degli strumenti
+STR_6058    :Muto
 
 
 #############

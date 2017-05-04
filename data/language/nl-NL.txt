@@ -4356,6 +4356,9 @@ STR_6052    :De hoogtekaart is te groot en zal worden bijgesneden
 STR_6053    :De hoogtekaart kan niet worden genormaliseerd
 STR_6054    :Alleen 24-bit bitmaps worden ondersteund
 STR_6055    :Hoogtekaart voor OpenRCT2
+STR_6056    :{SMALLFONT}{BLACK}Dempen
+STR_6057    :{SMALLFONT}{BLACK}Toon een knop in de werkbalk om het geluid te dempen
+STR_6058    :Dempen
 
 #############
 # Scenarios #
