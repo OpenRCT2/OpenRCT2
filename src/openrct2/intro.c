@@ -106,7 +106,7 @@ void intro_update()
 			}
 
 			// Play long peep scream sound
-			_soundChannel = Mixer_Play_Effect(SOUND_SCREAM_1, MIXER_LOOP_NONE, SDL_MIX_MAXVOLUME, 0.5f, 1, true);
+			_soundChannel = Mixer_Play_Effect(SOUND_SCREAM_1, MIXER_LOOP_NONE, SDL_MIX_MAXVOLUME, 0.5f, 1, false);
 
 			gIntroState++;
 			_introStateCounter = 0;
