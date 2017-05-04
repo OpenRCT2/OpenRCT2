@@ -41,12 +41,7 @@
 
 #ifdef __APPLE__
 	#include <mach/mach_time.h>
-#endif
-
-#if (defined __APPLE__ \
-&& __ENVIRONMENT_MAC_OS_X_VERSION_MIN_REQUIRED__ >= 101200 \
-&& __clang_major__ >= 8)
-#define MACOS_SIERRA_ONWARDS 1
+	#include <AvailabilityMacros.h>
 #endif
 
 typedef void(*update_palette_func)(const uint8*, sint32, sint32);
@@ -82,8 +77,7 @@ static float _gestureRadius;
 static void platform_create_window();
 
 #if defined(__APPLE__) && !defined(MACOS_SIERRA_ONWARDS)
-	mach_timebase_info_data_t mach_base_info = { 0 };
-	bool mach_info_initialised = false;
+	mach_timebase_info_data_t _mach_base_info = { 0 };
 #endif
 
 static sint32 resolution_sort_func(const void *pa, const void *pb)
@@ -780,16 +774,8 @@ uint32 platform_get_ticks()
 {
 #ifdef _WIN32
     return GetTickCount();
-#elif defined(__APPLE__) && !defined(MACOS_SIERRA_ONWARDS)
-	if (!mach_info_initialised) {
-		kern_return_t ret = mach_timebase_info(&mach_base_info);
-		if (ret != 0) {
-			log_fatal("Unable to get mach_timebase_info.");
-			exit(-1);
-		}
-		mach_info_initialised = true;
-	}
-	return (uint32)(((mach_absolute_time() * mach_base_info.numer) / mach_base_info.denom) / 1000000);
+#elif defined(__APPLE__) && (__ENVIRONMENT_MAC_OS_X_VERSION_MIN_REQUIRED__ >= 101200)
+	return (uint32)(((mach_absolute_time() * _mach_base_info.numer) / _mach_base_info.denom) / 1000000);
 #else
     struct timespec ts;
     if (clock_gettime(CLOCK_MONOTONIC, &ts) != 0) {
@@ -822,4 +808,12 @@ uint8 platform_get_currency_value(const char *currCode) {
 void core_init()
 {
 	bitcount_init();
+	
+#if defined(__APPLE__) && !defined(MACOS_SIERRA_ONWARDS)
+	kern_return_t ret = mach_timebase_info(&_mach_base_info);
+	if (ret != 0) {
+		log_fatal("Unable to get mach_timebase_info.");
+		exit(-1);
+	}
+#endif
 }
