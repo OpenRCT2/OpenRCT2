@@ -111,7 +111,7 @@ bool object_entry_is_empty(const rct_object_entry *entry)
 {
 	uint64 a, b;
 	memcpy(&a, (uint8 *)entry, 8);
-	memcpy(&b, (uint8 *)entry + 4, 8);
+	memcpy(&b, (uint8 *)entry + 8, 8);
 
 	if (a == 0xFFFFFFFFFFFFFFFF && b == 0xFFFFFFFFFFFFFFFF) return true;
 	if (a == 0 && b == 0) return true;
