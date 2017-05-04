@@ -39,6 +39,16 @@
 #include "../world/Climate.h"
 #include "platform.h"
 
+#ifdef __APPLE__
+	#include <mach/mach_time.h>
+#endif
+
+#if (defined __APPLE__ \
+&& __ENVIRONMENT_MAC_OS_X_VERSION_MIN_REQUIRED__ >= 101200 \
+&& __clang_major__ >= 8)
+#define MACOS_SIERRA_ONWARDS 1
+#endif
+
 typedef void(*update_palette_func)(const uint8*, sint32, sint32);
 
 openrct2_cursor gCursorState;
@@ -765,6 +775,15 @@ uint32 platform_get_ticks()
 {
 #ifdef _WIN32
     return GetTickCount();
+#elif defined(__APPLE__) && !defined(MACOS_SIERRA_ONWARDS)
+	mach_timebase_info_data_t mach_base_info;
+	kern_return_t ret = mach_timebase_info(&mach_base_info);
+	if (ret == 0){
+		return (uint32)(((mach_absolute_time() * mach_base_info.numer) / mach_base_info.denom) / 1000000);
+	} else{
+		log_fatal("Unable to get mach_timebase_info.");
+		exit(-1);
+	}
 #else
     struct timespec ts;
     if (clock_gettime(CLOCK_MONOTONIC, &ts) != 0) {
