@@ -81,6 +81,11 @@ static float _gestureRadius;
 
 static void platform_create_window();
 
+#if defined(__APPLE__) && !defined(MACOS_SIERRA_ONWARDS)
+	mach_timebase_info_data_t mach_base_info = { 0 };
+	bool mach_info_initialised = false;
+#endif
+
 static sint32 resolution_sort_func(const void *pa, const void *pb)
 {
 	const resolution_t *a = (resolution_t*)pa;
@@ -776,14 +781,15 @@ uint32 platform_get_ticks()
 #ifdef _WIN32
     return GetTickCount();
 #elif defined(__APPLE__) && !defined(MACOS_SIERRA_ONWARDS)
-	mach_timebase_info_data_t mach_base_info;
-	kern_return_t ret = mach_timebase_info(&mach_base_info);
-	if (ret == 0) {
-		return (uint32)(((mach_absolute_time() * mach_base_info.numer) / mach_base_info.denom) / 1000000);
-	} else {
-		log_fatal("Unable to get mach_timebase_info.");
-		exit(-1);
+	if (!mach_info_initialised) {
+		kern_return_t ret = mach_timebase_info(&mach_base_info);
+		if (ret != 0) {
+			log_fatal("Unable to get mach_timebase_info.");
+			exit(-1);
+		}
+		mach_info_initialised = true;
 	}
+	return (uint32)(((mach_absolute_time() * mach_base_info.numer) / mach_base_info.denom) / 1000000);
 #else
     struct timespec ts;
     if (clock_gettime(CLOCK_MONOTONIC, &ts) != 0) {
