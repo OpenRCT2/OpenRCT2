@@ -777,7 +777,7 @@ uint32 platform_get_ticks()
 {
 #ifdef _WIN32
     return GetTickCount();
-#elif defined(__APPLE__) && (__ENVIRONMENT_MAC_OS_X_VERSION_MIN_REQUIRED__ >= 101200)
+#elif defined(__APPLE__) && (__ENVIRONMENT_MAC_OS_X_VERSION_MIN_REQUIRED__ < 101200)
 	return (uint32)(((mach_absolute_time() * _mach_base_info.numer) / _mach_base_info.denom) / 1000000);
 #else
     struct timespec ts;
