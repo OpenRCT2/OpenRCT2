@@ -6105,8 +6105,8 @@ foundRideEntry:
 			}
 		}
 
-		// Set the on-ride photo price. (Whether the ride has one or not.)
-		if (shop_item_has_common_price(SHOP_ITEM_PHOTO)) {
+		// Set the on-ride photo price, whether the ride has one or not (except shops).
+		if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_SHOP) && shop_item_has_common_price(SHOP_ITEM_PHOTO)) {
 			money32 price = shop_item_get_common_price(ride, SHOP_ITEM_PHOTO);
 			if (price != MONEY32_UNDEFINED) {
 				ride->price_secondary = (money16)price;
