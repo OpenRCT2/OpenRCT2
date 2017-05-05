@@ -133,6 +133,7 @@ bool Network::Init()
 
 	status = NETWORK_STATUS_READY;
 
+	server_connection = new NetworkConnection();
 	ServerName = std::string();
 	ServerDescription = std::string();
 	ServerGreeting = std::string();
@@ -151,8 +152,8 @@ void Network::Close()
 		return;
 	}
 	if (mode == NETWORK_MODE_CLIENT) {
-		delete server_connection.Socket;
-		server_connection.Socket = nullptr;
+		delete server_connection->Socket;
+		server_connection->Socket = nullptr;
 	} else if (mode == NETWORK_MODE_SERVER) {
 		delete listening_socket;
 		listening_socket = nullptr;
@@ -163,9 +164,10 @@ void Network::Close()
 	mode = NETWORK_MODE_NONE;
 	status = NETWORK_STATUS_NONE;
 	_lastConnectStatus = SOCKET_STATUS_CLOSED;
-	server_connection.AuthStatus = NETWORK_AUTH_NONE;
-	server_connection.InboundPacket.Clear();
-	server_connection.SetLastDisconnectReason(nullptr);
+	server_connection->AuthStatus = NETWORK_AUTH_NONE;
+	server_connection->InboundPacket.Clear();
+	server_connection->SetLastDisconnectReason(nullptr);
+	SafeDelete(server_connection);
 
 	client_connection_list.clear();
 	game_command_queue.clear();
@@ -190,9 +192,9 @@ bool Network::BeginClient(const char* host, uint16 port)
 
 	mode = NETWORK_MODE_CLIENT;
 
-	assert(server_connection.Socket == nullptr);
-	server_connection.Socket = CreateTcpSocket();
-	server_connection.Socket->ConnectAsync(host, port);
+	assert(server_connection->Socket == nullptr);
+	server_connection->Socket = CreateTcpSocket();
+	server_connection->Socket->ConnectAsync(host, port);
 	status = NETWORK_STATUS_CONNECTING;
 	_lastConnectStatus = SOCKET_STATUS_CLOSED;
 
@@ -337,7 +339,7 @@ sint32 Network::GetStatus()
 sint32 Network::GetAuthStatus()
 {
 	if (GetMode() == NETWORK_MODE_CLIENT) {
-		return server_connection.AuthStatus;
+		return server_connection->AuthStatus;
 	} else
 	if (GetMode() == NETWORK_MODE_SERVER) {
 		return NETWORK_AUTH_OK;
@@ -403,7 +405,7 @@ void Network::UpdateClient()
 	switch(status){
 	case NETWORK_STATUS_CONNECTING:
 	{
-		switch (server_connection.Socket->GetStatus()) {
+		switch (server_connection->Socket->GetStatus()) {
 		case SOCKET_STATUS_RESOLVING:
 		{
 			if (_lastConnectStatus != SOCKET_STATUS_RESOLVING)
@@ -434,7 +436,7 @@ void Network::UpdateClient()
 		case SOCKET_STATUS_CONNECTED:
 		{
 			status = NETWORK_STATUS_CONNECTED;
-			server_connection.ResetLastPacketTime();
+			server_connection->ResetLastPacketTime();
 			Client_Send_TOKEN();
 			char str_authenticating[256];
 			format_string(str_authenticating, 256, STR_MULTIPLAYER_AUTHENTICATING, NULL);
@@ -445,7 +447,7 @@ void Network::UpdateClient()
 		}
 		default:
 		{
-			const char * error = server_connection.Socket->GetError();
+			const char * error = server_connection->Socket->GetError();
 			if (error != nullptr) {
 				Console::Error::WriteLine(error);
 			}
@@ -460,15 +462,15 @@ void Network::UpdateClient()
 	}
 	case NETWORK_STATUS_CONNECTED:
 	{
-		if (!ProcessConnection(server_connection)) {
+		if (!ProcessConnection(*server_connection)) {
 			// Do not show disconnect message window when password window closed/canceled
-			if (server_connection.AuthStatus == NETWORK_AUTH_REQUIREPASSWORD) {
+			if (server_connection->AuthStatus == NETWORK_AUTH_REQUIREPASSWORD) {
 				window_network_status_close();
 			} else {
 				char str_disconnected[256];
 
-				if (server_connection.GetLastDisconnectReason()) {
-					const char * disconnect_reason = server_connection.GetLastDisconnectReason();
+				if (server_connection->GetLastDisconnectReason()) {
+					const char * disconnect_reason = server_connection->GetLastDisconnectReason();
 					format_string(str_disconnected, 256, STR_MULTIPLAYER_DISCONNECTED_WITH_REASON, &disconnect_reason);
 				} else {
 					format_string(str_disconnected, 256, STR_MULTIPLAYER_DISCONNECTED_NO_REASON, NULL);
@@ -609,7 +611,7 @@ void Network::SetPassword(const char* password)
 void Network::ShutdownClient()
 {
 	if (GetMode() == NETWORK_MODE_CLIENT) {
-		server_connection.Socket->Disconnect();
+		server_connection->Socket->Disconnect();
 	}
 }
 
@@ -858,8 +860,8 @@ void Network::Client_Send_TOKEN()
 	log_verbose("requesting token");
 	std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
 	*packet << (uint32)NETWORK_COMMAND_TOKEN;
-	server_connection.AuthStatus = NETWORK_AUTH_REQUESTED;
-	server_connection.QueuePacket(std::move(packet));
+	server_connection->AuthStatus = NETWORK_AUTH_REQUESTED;
+	server_connection->QueuePacket(std::move(packet));
 }
 
 void Network::Client_Send_AUTH(const char* name, const char* password, const char* pubkey, const char *sig, size_t sigsize)
@@ -873,8 +875,8 @@ void Network::Client_Send_AUTH(const char* name, const char* password, const cha
 	assert(sigsize <= (size_t)UINT32_MAX);
 	*packet << (uint32)sigsize;
 	packet->Write((const uint8 *)sig, sigsize);
-	server_connection.AuthStatus = NETWORK_AUTH_REQUESTED;
-	server_connection.QueuePacket(std::move(packet));
+	server_connection->AuthStatus = NETWORK_AUTH_REQUESTED;
+	server_connection->QueuePacket(std::move(packet));
 }
 
 void Network::Client_Send_OBJECTS(const std::vector<std::string> &objects)
@@ -887,7 +889,7 @@ void Network::Client_Send_OBJECTS(const std::vector<std::string> &objects)
 		log_verbose("client requests object %s", objects[i].c_str());
 		packet->Write((const uint8 *)objects[i].c_str(), 8);
 	}
-	server_connection.QueuePacket(std::move(packet));
+	server_connection->QueuePacket(std::move(packet));
 }
 
 void Network::Server_Send_TOKEN(NetworkConnection& connection)
@@ -1015,7 +1017,7 @@ void Network::Client_Send_CHAT(const char* text)
 	std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
 	*packet << (uint32)NETWORK_COMMAND_CHAT;
 	packet->WriteString(text);
-	server_connection.QueuePacket(std::move(packet));
+	server_connection->QueuePacket(std::move(packet));
 }
 
 void Network::Server_Send_CHAT(const char* text)
@@ -1031,7 +1033,7 @@ void Network::Client_Send_GAMECMD(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx
 	std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
 	*packet << (uint32)NETWORK_COMMAND_GAMECMD << (uint32)gCurrentTicks << eax << (ebx | GAME_COMMAND_FLAG_NETWORKED)
 			<< ecx << edx << esi << edi << ebp << callback;
-	server_connection.QueuePacket(std::move(packet));
+	server_connection->QueuePacket(std::move(packet));
 }
 
 void Network::Server_Send_GAMECMD(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uint32 esi, uint32 edi, uint32 ebp, uint8 playerid, uint8 callback)
@@ -1080,7 +1082,7 @@ void Network::Client_Send_PING()
 {
 	std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
 	*packet << (uint32)NETWORK_COMMAND_PING;
-	server_connection.QueuePacket(std::move(packet));
+	server_connection->QueuePacket(std::move(packet));
 }
 
 void Network::Server_Send_PING()
@@ -1963,7 +1965,7 @@ void Network::Client_Handle_PLAYERLIST(NetworkConnection& connection, NetworkPac
 			if (player) {
 				*player = tempplayer;
 				if (player->Flags & NETWORK_PLAYER_FLAG_ISSERVER) {
-					server_connection.Player = player;
+					server_connection->Player = player;
 				}
 			}
 		}
@@ -2081,7 +2083,7 @@ void Network::Client_Send_GAMEINFO()
 	log_verbose("requesting gameinfo");
 	std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
 	*packet << (uint32)NETWORK_COMMAND_GAMEINFO;
-	server_connection.QueuePacket(std::move(packet));
+	server_connection->QueuePacket(std::move(packet));
 }
 
 static std::string json_stdstring_value(const json_t * string)

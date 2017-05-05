@@ -198,7 +198,7 @@ private:
 	bool wsa_initialized = false;
 	ITcpSocket * listening_socket = nullptr;
 	uint16 listening_port = 0;
-	NetworkConnection server_connection;
+	NetworkConnection * server_connection = nullptr;
 	SOCKET_STATUS _lastConnectStatus = SOCKET_STATUS_CLOSED;
 	uint32 last_tick_sent_time = 0;
 	uint32 last_ping_sent_time = 0;
