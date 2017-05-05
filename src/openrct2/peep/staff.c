@@ -623,6 +623,21 @@ sint32 staff_is_location_in_patrol(rct_peep *staff, sint32 x, sint32 y)
     return staff_is_location_in_patrol_area(staff, x, y);
 }
 
+
+sint32 staff_is_location_on_patrol_edge(rct_peep *mechanic, sint32 x, sint32 y)
+{
+	// Check whether the location x,y is inside and on the edge of the
+	// patrol zone for mechanic.
+	sint32 onZoneEdge = 0;
+	int neighbourDir = 0;
+	while (!onZoneEdge && neighbourDir <= 7) {
+		int neighbourX = x + TileDirectionDelta[neighbourDir].x;
+		int neighbourY = y + TileDirectionDelta[neighbourDir].y;
+		onZoneEdge = !staff_is_location_in_patrol(mechanic, neighbourX, neighbourY);
+		neighbourDir++;
+	}
+	return onZoneEdge;
+}
 /**
  *
  *  rct2: 0x006C095B

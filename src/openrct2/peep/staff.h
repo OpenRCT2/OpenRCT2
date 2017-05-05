@@ -84,6 +84,7 @@ void update_staff_colour(uint8 staffType, uint16 colour);
 uint16 hire_new_staff_member(uint8 staffType);
 void staff_update_greyed_patrol_areas();
 sint32 staff_is_location_in_patrol(rct_peep *mechanic, sint32 x, sint32 y);
+sint32 staff_is_location_on_patrol_edge(rct_peep *mechanic, sint32 x, sint32 y);
 sint32 staff_path_finding(rct_peep* peep);
 void staff_reset_stats();
 bool staff_is_patrol_area_set(sint32 staffIndex, sint32 x, sint32 y);
