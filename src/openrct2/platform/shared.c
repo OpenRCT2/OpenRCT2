@@ -785,7 +785,7 @@ uint32 platform_get_ticks()
         log_fatal("clock_gettime failed");
         exit(-1);
     }
-    return (uint32)(ts.tv_nsec / 1000000);
+    return (uint32)(ts.tv_sec * 1000 + ts.tv_nsec / 1000000);
 #endif
 }
 
