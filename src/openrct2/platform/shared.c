@@ -42,6 +42,9 @@
 #ifdef __APPLE__
 	#include <mach/mach_time.h>
 	#include <AvailabilityMacros.h>
+	#ifndef __ENVIRONMENT_MAC_OS_X_VERSION_MIN_REQUIRED__
+		#error Missing __ENVIRONMENT_MAC_OS_X_VERSION_MIN_REQUIRED__ define
+	#endif
 #endif
 
 typedef void(*update_palette_func)(const uint8*, sint32, sint32);
@@ -76,7 +79,7 @@ static float _gestureRadius;
 
 static void platform_create_window();
 
-#if defined(__APPLE__) && !defined(MACOS_SIERRA_ONWARDS)
+#if defined(__APPLE__) && (__ENVIRONMENT_MAC_OS_X_VERSION_MIN_REQUIRED__ < 101200)
 	mach_timebase_info_data_t _mach_base_info = { 0 };
 #endif
 
@@ -809,7 +812,7 @@ void core_init()
 {
 	bitcount_init();
 	
-#if defined(__APPLE__) && !defined(MACOS_SIERRA_ONWARDS)
+#if defined(__APPLE__) && (__ENVIRONMENT_MAC_OS_X_VERSION_MIN_REQUIRED__ < 101200)
 	kern_return_t ret = mach_timebase_info(&_mach_base_info);
 	if (ret != 0) {
 		log_fatal("Unable to get mach_timebase_info.");
