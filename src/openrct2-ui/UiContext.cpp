@@ -155,7 +155,7 @@ public:
     bool HasFocus() override
     {
         uint32 windowFlags = GetWindowFlags();
-        return (windowFlags & SDL_WINDOW_INPUT_FOCUS);
+        return (windowFlags & SDL_WINDOW_INPUT_FOCUS) != 0;
     }
 
     bool IsMinimised() override
