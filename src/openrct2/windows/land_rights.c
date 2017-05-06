@@ -114,10 +114,16 @@ void window_land_rights_open()
 	gWaterToolLowerCost = MONEY32_UNDEFINED;
 
 	show_land_rights();
+	
+	if (gLandRemainingConstructionSales == 0) {
+		show_construction_rights();
+	}
 }
 
 static void window_land_rights_close(rct_window *w)
 {
+	hide_construction_rights();
+	
 	// If the tool wasn't changed, turn tool off
 	if (land_rights_tool_is_active())
 		tool_cancel();

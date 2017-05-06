@@ -1035,15 +1035,6 @@ static void window_park_entrance_invalidate(rct_window *w)
 		window_park_entrance_widgets[i].bottom = height + 23;
 		height += 24;
 	}
-
-	// Disable land rights button if there's no more construction/ownership for sale
-	if (gLandRemainingOwnershipSales == 0 && gLandRemainingConstructionSales == 0) {
-		w->disabled_widgets |= (1 << WIDX_BUY_LAND_RIGHTS);
-		window_park_entrance_widgets[WIDX_BUY_LAND_RIGHTS].tooltip = STR_NO_LAND_OR_CONSTRUCTION_RIGHTS_FOR_SALE_TIP;
-	} else {
-		w->disabled_widgets &= ~(1 << WIDX_BUY_LAND_RIGHTS);
-		window_park_entrance_widgets[WIDX_BUY_LAND_RIGHTS].tooltip = STR_BUY_LAND_AND_CONSTRUCTION_RIGHTS_TIP;
-	}
 }
 
 /**
