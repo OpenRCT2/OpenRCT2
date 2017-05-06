@@ -138,16 +138,19 @@ void marketing_set_guest_campaign(rct_peep *peep, sint32 campaign)
 	}
 }
 
-bool marketing_start_campaign(sint32 type, sint32 rideOrItem, sint32 numWeeks)
+void game_command_callback_marketing_start_campaign(sint32 eax, sint32 ebx, sint32 ecx, sint32 edx, sint32 esi, sint32 edi, sint32 ebp)
+{
+	if (ebx != MONEY32_UNDEFINED)
+	{
+		window_close_by_class(WC_NEW_CAMPAIGN);
+	}
+}
+
+void marketing_start_campaign(sint32 type, sint32 rideOrItem, sint32 numWeeks)
 {
 	gGameCommandErrorTitle = STR_CANT_START_MARKETING_CAMPAIGN;
-	sint32 retVal = game_do_command(0, (numWeeks << 8) | GAME_COMMAND_FLAG_APPLY, 0, (rideOrItem << 8) | type, GAME_COMMAND_START_MARKETING_CAMPAIGN, 0, 0);
-	if (retVal == MONEY32_UNDEFINED) {
-		return false;
-	}
-	else {
-		return true;
-	}
+	game_command_callback = game_command_callback_marketing_start_campaign;
+	game_do_command(0, (numWeeks << 8) | GAME_COMMAND_FLAG_APPLY, 0, (rideOrItem << 8) | type, GAME_COMMAND_START_MARKETING_CAMPAIGN, 0, 0);
 }
 
 /**
