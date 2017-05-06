@@ -14,8 +14,6 @@
 *****************************************************************************/
 #pragma endregion
 
-#pragma once
-
 #include "Platform2.h"
 
 extern "C"
