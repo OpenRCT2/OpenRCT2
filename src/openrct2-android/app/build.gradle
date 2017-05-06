@@ -63,6 +63,14 @@ android.applicationVariants.all { variant ->
             src 'https://github.com/marijnvdwerf/openrct2-dependencies-android/releases/download/v0.7/g2.dat'
             dest "$variant.mergeAssets.outputDir/data"
         }
+        download {
+            src 'https://github.com/OpenRCT2/title-sequences/releases/download/v0.0.5/title-sequence-v0.0.5.zip'
+            dest new File(buildDir, 'title-sequence.zip')
+        }
+        copy {
+            from zipTree(new File(buildDir, 'title-sequence.zip'))
+            into "$variant.mergeAssets.outputDir/data/title"
+        }
     }
 }
 
