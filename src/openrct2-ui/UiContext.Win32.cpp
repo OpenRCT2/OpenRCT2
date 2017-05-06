@@ -134,7 +134,7 @@ namespace OpenRCT2 { namespace Ui
                     sint32 filterIndex = openFileName.nFilterIndex - 1;
 
                     assert(filterIndex >= 0);
-                    assert(filterIndex < desc.Filters.size());
+                    assert(filterIndex < (sint32)desc.Filters.size());
 
                     std::string pattern = desc.Filters[filterIndex].Pattern;
                     std::string patternExtension = Path::GetExtension(pattern);
