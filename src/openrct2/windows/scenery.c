@@ -1257,7 +1257,7 @@ bool window_scenery_set_selected_item(sint32 sceneryId)
 			gWindowSceneryActiveTabIndex = tabIndex;
 			gWindowSceneryTabSelections[tabIndex] = sceneryId;
 
-			audio_play_sound_panned(4, (w->width >> 1) + w->x, 0, 0, 0);
+			audio_play_sound(SOUND_CLICK_1, 0, context_get_width() / 2);
 			w->scenery.hover_counter = -16;
 			gSceneryPlaceCost = MONEY32_UNDEFINED;
 			window_invalidate(w);
