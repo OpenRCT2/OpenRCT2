@@ -47,7 +47,8 @@ extern uint8 gMarketingCampaignRideIndex[22];
 sint32 marketing_get_campaign_guest_generation_probability(sint32 campaign);
 void marketing_update();
 void marketing_set_guest_campaign(rct_peep *peep, sint32 campaign);
-bool marketing_start_campaign(sint32 type, sint32 rideOrItem, sint32 numWeeks);
+void game_command_callback_marketing_start_campaign(sint32 eax, sint32 ebx, sint32 ecx, sint32 edx, sint32 esi, sint32 edi, sint32 ebp);
+void marketing_start_campaign(sint32 type, sint32 rideOrItem, sint32 numWeeks);
 void game_command_start_campaign(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp);
 bool marketing_is_campaign_type_applicable(sint32 campaignType);
 

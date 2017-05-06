@@ -86,6 +86,7 @@ GAME_COMMAND_CALLBACK_POINTER* game_command_callback_table[] = {
 	game_command_callback_hire_new_staff_member,
 	game_command_callback_pickup_guest,
 	game_command_callback_pickup_staff,
+	game_command_callback_marketing_start_campaign,
 };
 sint32 game_command_playerid = -1;
 

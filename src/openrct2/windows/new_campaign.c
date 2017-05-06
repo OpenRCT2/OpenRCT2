@@ -225,10 +225,7 @@ static void window_new_campaign_mouseup(rct_window *w, rct_widgetindex widgetInd
 		window_close(w);
 		break;
 	case WIDX_START_BUTTON:
-		if (marketing_start_campaign(w->campaign.campaign_type, w->campaign.ride_id, w->campaign.no_weeks))
-		{
-			window_close(w);
-		}
+		marketing_start_campaign(w->campaign.campaign_type, w->campaign.ride_id, w->campaign.no_weeks);
 		break;
 	}
 }
