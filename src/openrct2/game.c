@@ -961,7 +961,7 @@ static sint32 compare_autosave_file_paths (const void * a, const void * b ) {
 	return strcmp(*(char **)a, *(char **)b);
 }
 
-static void limit_autosave_count(const size_t numberOfFilesToKeep)
+static void limit_autosave_count(const size_t numberOfFilesToKeep, bool processLandscapeFolder)
 {
 	sint32 fileEnumHandle = 0;
 
@@ -976,8 +976,13 @@ static void limit_autosave_count(const size_t numberOfFilesToKeep)
 
 	size_t i=0;
 
-	platform_get_user_directory(filter, "save", sizeof(filter));
-	safe_strcat_path(filter, "autosave_*.sv6", sizeof(filter));
+	if (processLandscapeFolder) {
+		platform_get_user_directory(filter, "landscape", sizeof(filter));
+		safe_strcat_path(filter, "autosave_*.sc6", sizeof(filter));
+	} else {
+		platform_get_user_directory(filter, "save", sizeof(filter));
+		safe_strcat_path(filter, "autosave_*.sv6", sizeof(filter));
+	}
 
 	// At first, count how many autosaves there are
 	fileEnumHandle = platform_enumerate_files_begin(filter);
@@ -999,7 +1004,11 @@ static void limit_autosave_count(const size_t numberOfFilesToKeep)
 		memset(autosaveFiles[i], 0, sizeof(utf8) * MAX_PATH);
 
 		if(platform_enumerate_files_next(fileEnumHandle, &fileInfo)) {
-			platform_get_user_directory(autosaveFiles[i], "save", sizeof(utf8) * MAX_PATH);
+			if (processLandscapeFolder) {
+				platform_get_user_directory(autosaveFiles[i], "landscape", sizeof(utf8) * MAX_PATH);
+			} else {
+				platform_get_user_directory(autosaveFiles[i], "save", sizeof(utf8) * MAX_PATH);
+			}
 			safe_strcat_path(autosaveFiles[i], fileInfo.path, sizeof(utf8) * MAX_PATH);
 		}
 	}
@@ -1048,7 +1057,7 @@ void game_autosave()
 		currentDate.year, currentDate.month, currentDate.day, currentTime.hour,
 		currentTime.minute, currentTime.second, fileExtension);
 
-	limit_autosave_count(NUMBER_OF_AUTOSAVES_TO_KEEP);
+	limit_autosave_count(NUMBER_OF_AUTOSAVES_TO_KEEP, (gScreenFlags & SCREEN_FLAGS_EDITOR));
 
 	utf8 path[MAX_PATH];
 	utf8 backupPath[MAX_PATH];
