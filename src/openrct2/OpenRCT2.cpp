@@ -23,6 +23,7 @@ extern "C"
 {
     #include "audio/audio.h"
     #include "platform/platform.h"
+    #include "rct2.h"
 }
 
 extern "C"

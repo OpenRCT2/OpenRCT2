@@ -39,7 +39,7 @@ namespace OpenRCT2
 
         public:
             bool IsActive();
-            TextInputSession * TextComposition::Start(utf8 * buffer, size_t bufferSize);
+            TextInputSession * Start(utf8 * buffer, size_t bufferSize);
             void Stop();
             void HandleMessage(const SDL_Event * e);
 
