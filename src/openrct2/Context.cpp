@@ -570,7 +570,7 @@ extern "C"
 {
     void openrct2_write_full_version_info(utf8 * buffer, size_t bufferSize)
     {
-        String::Set(buffer, bufferSize, Version::GetInfo().c_str());
+        String::Set(buffer, bufferSize, gVersionInfoFull);
     }
 
     void openrct2_finish()
