@@ -280,7 +280,7 @@ static void window_text_input_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	size_t char_count = 0;
 	uint8 cur_drawn = 0;
 
-	sint32 cursorX = 0, cursorY = 0;
+	sint32 cursorX = 0;
 	for (sint32 line = 0; line <= no_lines; line++) {
 		gfx_draw_string(dpi, wrap_pointer, w->colours[1], w->x + 12, y);
 
@@ -291,7 +291,6 @@ static void window_text_input_paint(rct_window *w, rct_drawpixelinfo *dpi)
 			char temp_string[TEXT_INPUT_SIZE] = { 0 };
 			memcpy(temp_string, wrap_pointer, gTextInput->SelectionStart - char_count);
 			cursorX = w->x + 13 + gfx_get_string_width(temp_string);
-			cursorY = y;
 
 			sint32 width = 6;
 			if (gTextInput->SelectionStart < strlen(text_input)){
@@ -322,7 +321,6 @@ static void window_text_input_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 	if (!cur_drawn) {
 		cursorX = gLastDrawStringX;
-		cursorY = y - 10;
 	}
 
 	// IME composition

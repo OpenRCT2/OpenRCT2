@@ -77,7 +77,6 @@ namespace OpenRCT2
         IScenarioRepository *       _scenarioRepository     = nullptr;
 
         bool _isWindowMinimised = false;
-        uint32 _isWindowMinimisedLastCheckTick = 0;
         uint32 _lastTick = 0;
         uint32 _uncapTick = 0;
 
@@ -138,7 +137,7 @@ namespace OpenRCT2
         /**
          * Causes the OpenRCT2 game loop to finish.
          */
-        void Finish()
+        void Finish() override
         {
             _finished = true;
         }
