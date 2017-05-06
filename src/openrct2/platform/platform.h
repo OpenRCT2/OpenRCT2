@@ -188,6 +188,7 @@ void platform_get_cursor_position(sint32 *x, sint32 *y);
 void platform_get_cursor_position_scaled(sint32 *x, sint32 *y);
 void platform_set_cursor_position(sint32 x, sint32 y);
 uint32 platform_get_ticks();
+void platform_sleep(uint32 ms);
 void platform_resolve_user_data_path();
 void platform_resolve_openrct_data_path();
 void platform_get_openrct_data_path(utf8 *outPath, size_t outSize);

@@ -14,9 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
-#include <SDL_platform.h>
-
-#if defined(DEBUG) && defined(__WINDOWS__)
+#if defined(DEBUG) && defined(_WIN32)
     #define WIN32_LEAN_AND_MEAN
     #include <windows.h>
     #undef GetMessage
@@ -29,7 +27,7 @@ namespace Debug
     void Break()
     {
 #if defined(DEBUG)
-#if defined(__WINDOWS__)
+#if defined(_WIN32)
         if (IsDebuggerPresent())
         {
             DebugBreak();

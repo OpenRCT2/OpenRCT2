@@ -14,8 +14,6 @@
  *****************************************************************************/
 #pragma endregion
 
-#include <SDL_platform.h>
-
 #include "../core/Guard.hpp"
 #include "../OpenRCT2.h"
 
@@ -135,6 +133,7 @@ bool Network::Init()
 
 	status = NETWORK_STATUS_READY;
 
+	server_connection = new NetworkConnection();
 	ServerName = std::string();
 	ServerDescription = std::string();
 	ServerGreeting = std::string();
@@ -153,8 +152,8 @@ void Network::Close()
 		return;
 	}
 	if (mode == NETWORK_MODE_CLIENT) {
-		delete server_connection.Socket;
-		server_connection.Socket = nullptr;
+		delete server_connection->Socket;
+		server_connection->Socket = nullptr;
 	} else if (mode == NETWORK_MODE_SERVER) {
 		delete listening_socket;
 		listening_socket = nullptr;
@@ -165,9 +164,10 @@ void Network::Close()
 	mode = NETWORK_MODE_NONE;
 	status = NETWORK_STATUS_NONE;
 	_lastConnectStatus = SOCKET_STATUS_CLOSED;
-	server_connection.AuthStatus = NETWORK_AUTH_NONE;
-	server_connection.InboundPacket.Clear();
-	server_connection.SetLastDisconnectReason(nullptr);
+	server_connection->AuthStatus = NETWORK_AUTH_NONE;
+	server_connection->InboundPacket.Clear();
+	server_connection->SetLastDisconnectReason(nullptr);
+	SafeDelete(server_connection);
 
 	client_connection_list.clear();
 	game_command_queue.clear();
@@ -192,9 +192,9 @@ bool Network::BeginClient(const char* host, uint16 port)
 
 	mode = NETWORK_MODE_CLIENT;
 
-	assert(server_connection.Socket == nullptr);
-	server_connection.Socket = CreateTcpSocket();
-	server_connection.Socket->ConnectAsync(host, port);
+	assert(server_connection->Socket == nullptr);
+	server_connection->Socket = CreateTcpSocket();
+	server_connection->Socket->ConnectAsync(host, port);
 	status = NETWORK_STATUS_CONNECTING;
 	_lastConnectStatus = SOCKET_STATUS_CLOSED;
 
@@ -339,7 +339,7 @@ sint32 Network::GetStatus()
 sint32 Network::GetAuthStatus()
 {
 	if (GetMode() == NETWORK_MODE_CLIENT) {
-		return server_connection.AuthStatus;
+		return server_connection->AuthStatus;
 	} else
 	if (GetMode() == NETWORK_MODE_SERVER) {
 		return NETWORK_AUTH_OK;
@@ -380,10 +380,12 @@ void Network::UpdateServer()
 			it++;
 		}
 	}
-	if (SDL_TICKS_PASSED(SDL_GetTicks(), last_tick_sent_time + 25)) {
+
+	uint32 ticks = platform_get_ticks();
+	if (ticks > last_tick_sent_time + 25) {
 		Server_Send_TICK();
 	}
-	if (SDL_TICKS_PASSED(SDL_GetTicks(), last_ping_sent_time + 3000)) {
+	if (ticks > last_ping_sent_time + 3000) {
 		Server_Send_PING();
 		Server_Send_PINGLIST();
 	}
@@ -403,7 +405,7 @@ void Network::UpdateClient()
 	switch(status){
 	case NETWORK_STATUS_CONNECTING:
 	{
-		switch (server_connection.Socket->GetStatus()) {
+		switch (server_connection->Socket->GetStatus()) {
 		case SOCKET_STATUS_RESOLVING:
 		{
 			if (_lastConnectStatus != SOCKET_STATUS_RESOLVING)
@@ -427,14 +429,14 @@ void Network::UpdateClient()
 				window_network_status_open(str_connecting, []() -> void {
 					gNetwork.Close();
 				});
-				server_connect_time = SDL_GetTicks();
+				server_connect_time = platform_get_ticks();
 			}
 			break;
 		}
 		case SOCKET_STATUS_CONNECTED:
 		{
 			status = NETWORK_STATUS_CONNECTED;
-			server_connection.ResetLastPacketTime();
+			server_connection->ResetLastPacketTime();
 			Client_Send_TOKEN();
 			char str_authenticating[256];
 			format_string(str_authenticating, 256, STR_MULTIPLAYER_AUTHENTICATING, NULL);
@@ -445,7 +447,7 @@ void Network::UpdateClient()
 		}
 		default:
 		{
-			const char * error = server_connection.Socket->GetError();
+			const char * error = server_connection->Socket->GetError();
 			if (error != nullptr) {
 				Console::Error::WriteLine(error);
 			}
@@ -460,15 +462,15 @@ void Network::UpdateClient()
 	}
 	case NETWORK_STATUS_CONNECTED:
 	{
-		if (!ProcessConnection(server_connection)) {
+		if (!ProcessConnection(*server_connection)) {
 			// Do not show disconnect message window when password window closed/canceled
-			if (server_connection.AuthStatus == NETWORK_AUTH_REQUIREPASSWORD) {
+			if (server_connection->AuthStatus == NETWORK_AUTH_REQUIREPASSWORD) {
 				window_network_status_close();
 			} else {
 				char str_disconnected[256];
 
-				if (server_connection.GetLastDisconnectReason()) {
-					const char * disconnect_reason = server_connection.GetLastDisconnectReason();
+				if (server_connection->GetLastDisconnectReason()) {
+					const char * disconnect_reason = server_connection->GetLastDisconnectReason();
 					format_string(str_disconnected, 256, STR_MULTIPLAYER_DISCONNECTED_WITH_REASON, &disconnect_reason);
 				} else {
 					format_string(str_disconnected, 256, STR_MULTIPLAYER_DISCONNECTED_NO_REASON, NULL);
@@ -609,7 +611,7 @@ void Network::SetPassword(const char* password)
 void Network::ShutdownClient()
 {
 	if (GetMode() == NETWORK_MODE_CLIENT) {
-		server_connection.Socket->Disconnect();
+		server_connection->Socket->Disconnect();
 	}
 }
 
@@ -858,8 +860,8 @@ void Network::Client_Send_TOKEN()
 	log_verbose("requesting token");
 	std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
 	*packet << (uint32)NETWORK_COMMAND_TOKEN;
-	server_connection.AuthStatus = NETWORK_AUTH_REQUESTED;
-	server_connection.QueuePacket(std::move(packet));
+	server_connection->AuthStatus = NETWORK_AUTH_REQUESTED;
+	server_connection->QueuePacket(std::move(packet));
 }
 
 void Network::Client_Send_AUTH(const char* name, const char* password, const char* pubkey, const char *sig, size_t sigsize)
@@ -873,8 +875,8 @@ void Network::Client_Send_AUTH(const char* name, const char* password, const cha
 	assert(sigsize <= (size_t)UINT32_MAX);
 	*packet << (uint32)sigsize;
 	packet->Write((const uint8 *)sig, sigsize);
-	server_connection.AuthStatus = NETWORK_AUTH_REQUESTED;
-	server_connection.QueuePacket(std::move(packet));
+	server_connection->AuthStatus = NETWORK_AUTH_REQUESTED;
+	server_connection->QueuePacket(std::move(packet));
 }
 
 void Network::Client_Send_OBJECTS(const std::vector<std::string> &objects)
@@ -887,7 +889,7 @@ void Network::Client_Send_OBJECTS(const std::vector<std::string> &objects)
 		log_verbose("client requests object %s", objects[i].c_str());
 		packet->Write((const uint8 *)objects[i].c_str(), 8);
 	}
-	server_connection.QueuePacket(std::move(packet));
+	server_connection->QueuePacket(std::move(packet));
 }
 
 void Network::Server_Send_TOKEN(NetworkConnection& connection)
@@ -1015,7 +1017,7 @@ void Network::Client_Send_CHAT(const char* text)
 	std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
 	*packet << (uint32)NETWORK_COMMAND_CHAT;
 	packet->WriteString(text);
-	server_connection.QueuePacket(std::move(packet));
+	server_connection->QueuePacket(std::move(packet));
 }
 
 void Network::Server_Send_CHAT(const char* text)
@@ -1031,7 +1033,7 @@ void Network::Client_Send_GAMECMD(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx
 	std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
 	*packet << (uint32)NETWORK_COMMAND_GAMECMD << (uint32)gCurrentTicks << eax << (ebx | GAME_COMMAND_FLAG_NETWORKED)
 			<< ecx << edx << esi << edi << ebp << callback;
-	server_connection.QueuePacket(std::move(packet));
+	server_connection->QueuePacket(std::move(packet));
 }
 
 void Network::Server_Send_GAMECMD(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uint32 esi, uint32 edi, uint32 ebp, uint8 playerid, uint8 callback)
@@ -1044,7 +1046,7 @@ void Network::Server_Send_GAMECMD(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx
 
 void Network::Server_Send_TICK()
 {
-	last_tick_sent_time = SDL_GetTicks();
+	last_tick_sent_time = platform_get_ticks();
 	std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
 	*packet << (uint32)NETWORK_COMMAND_TICK << (uint32)gCurrentTicks << (uint32)gScenarioSrand0;
 	uint32 flags = 0;
@@ -1080,16 +1082,16 @@ void Network::Client_Send_PING()
 {
 	std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
 	*packet << (uint32)NETWORK_COMMAND_PING;
-	server_connection.QueuePacket(std::move(packet));
+	server_connection->QueuePacket(std::move(packet));
 }
 
 void Network::Server_Send_PING()
 {
-	last_ping_sent_time = SDL_GetTicks();
+	last_ping_sent_time = platform_get_ticks();
 	std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
 	*packet << (uint32)NETWORK_COMMAND_PING;
 	for (auto it = client_connection_list.begin(); it != client_connection_list.end(); it++) {
-		(*it)->PingTime = SDL_GetTicks();
+		(*it)->PingTime = platform_get_ticks();
 	}
 	SendPacketToClients(*packet, true);
 }
@@ -1254,7 +1256,7 @@ void Network::ProcessGameCommandQueue()
 			NetworkPlayer* player = GetPlayerByID(gc.playerid);
 			if (player) {
 				player->LastAction = NetworkActions::FindCommand(command);
-				player->LastActionTime = SDL_GetTicks();
+				player->LastActionTime = platform_get_ticks();
 				player->AddMoneySpent(cost);
 			}
 		}
@@ -1860,7 +1862,7 @@ void Network::Server_Handle_GAMECMD(NetworkConnection& connection, NetworkPacket
 
 	sint32 commandCommand = args[4];
 
-	uint32 ticks = SDL_GetTicks(); //tick count is different by time last_action_time is set, keep same value.
+	uint32 ticks = platform_get_ticks(); //tick count is different by time last_action_time is set, keep same value.
 
 	// Check if player's group permission allows command to run
 	NetworkGroup* group = GetGroupByID(connection.Player->Group);
@@ -1875,7 +1877,7 @@ void Network::Server_Handle_GAMECMD(NetworkConnection& connection, NetworkPacket
 	if (commandCommand == GAME_COMMAND_PLACE_SCENERY) {
 		if (
 			ticks - connection.Player->LastPlaceSceneryTime < ACTION_COOLDOWN_TIME_PLACE_SCENERY &&
-			// Incase SDL_GetTicks() wraps after ~49 days, ignore larger logged times.
+			// Incase platform_get_ticks() wraps after ~49 days, ignore larger logged times.
 			ticks > connection.Player->LastPlaceSceneryTime
 		) {
 			if (!(group->CanPerformCommand(MISC_COMMAND_TOGGLE_SCENERY_CLUSTER))) {
@@ -1889,7 +1891,7 @@ void Network::Server_Handle_GAMECMD(NetworkConnection& connection, NetworkPacket
 	else if (commandCommand == GAME_COMMAND_DEMOLISH_RIDE) {
 		if (
 			ticks - connection.Player->LastDemolishRideTime < ACTION_COOLDOWN_TIME_DEMOLISH_RIDE &&
-			// Incase SDL_GetTicks() wraps after ~49 days, ignore larger logged times.
+			// Incase platform_get_ticks() wraps after ~49 days, ignore larger logged times.
 			ticks > connection.Player->LastDemolishRideTime
 		) {
 			Server_Send_SHOWERROR(connection, STR_CANT_DO_THIS, STR_NETWORK_ACTION_RATE_LIMIT_MESSAGE);
@@ -1912,7 +1914,7 @@ void Network::Server_Handle_GAMECMD(NetworkConnection& connection, NetworkPacket
 	}
 
 	connection.Player->LastAction = NetworkActions::FindCommand(commandCommand);
-	connection.Player->LastActionTime = SDL_GetTicks();
+	connection.Player->LastActionTime = platform_get_ticks();
 	connection.Player->AddMoneySpent(cost);
 
 	if (commandCommand == GAME_COMMAND_PLACE_SCENERY) {
@@ -1963,7 +1965,7 @@ void Network::Client_Handle_PLAYERLIST(NetworkConnection& connection, NetworkPac
 			if (player) {
 				*player = tempplayer;
 				if (player->Flags & NETWORK_PLAYER_FLAG_ISSERVER) {
-					server_connection.Player = player;
+					server_connection->Player = player;
 				}
 			}
 		}
@@ -1986,7 +1988,7 @@ void Network::Client_Handle_PING(NetworkConnection& connection, NetworkPacket& p
 
 void Network::Server_Handle_PING(NetworkConnection& connection, NetworkPacket& packet)
 {
-	sint32 ping = SDL_GetTicks() - connection.PingTime;
+	sint32 ping = platform_get_ticks() - connection.PingTime;
 	if (ping < 0) {
 		ping = 0;
 	}
@@ -2081,7 +2083,7 @@ void Network::Client_Send_GAMEINFO()
 	log_verbose("requesting gameinfo");
 	std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
 	*packet << (uint32)NETWORK_COMMAND_GAMEINFO;
-	server_connection.QueuePacket(std::move(packet));
+	server_connection->QueuePacket(std::move(packet));
 }
 
 static std::string json_stdstring_value(const json_t * string)
@@ -2204,7 +2206,7 @@ void network_add_player_money_spent(uint32 index, money32 cost)
 
 sint32 network_get_player_last_action(uint32 index, sint32 time)
 {
-	if (time && SDL_TICKS_PASSED(SDL_GetTicks(), gNetwork.player_list[index]->LastActionTime + time)) {
+	if (time && platform_get_ticks() > gNetwork.player_list[index]->LastActionTime + time) {
 		return -999;
 	}
 	return gNetwork.player_list[index]->LastAction;
@@ -2213,7 +2215,7 @@ sint32 network_get_player_last_action(uint32 index, sint32 time)
 void network_set_player_last_action(uint32 index, sint32 command)
 {
 	gNetwork.player_list[index]->LastAction = NetworkActions::FindCommand(command);
-	gNetwork.player_list[index]->LastActionTime = SDL_GetTicks();
+	gNetwork.player_list[index]->LastActionTime = platform_get_ticks();
 }
 
 rct_xyz16 network_get_player_last_action_coord(uint32 index)

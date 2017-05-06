@@ -131,7 +131,8 @@ void chat_draw(rct_drawpixelinfo * dpi)
 
 	// Draw chat history
 	for (sint32 i = 0; i < CHAT_HISTORY_SIZE; i++, y -= stringHeight) {
-		if (!gChatOpen && SDL_TICKS_PASSED(SDL_GetTicks(), chat_history_get_time(i) + 10000)) {
+		uint32 expireTime = chat_history_get_time(i) + 10000;
+		if (!gChatOpen && platform_get_ticks() > expireTime) {
 			break;
 		}
 
@@ -174,7 +175,7 @@ void chat_history_add(const char *src)
 	sint32 index = _chatHistoryIndex % CHAT_HISTORY_SIZE;
 	memset(_chatHistory[index], 0, CHAT_INPUT_SIZE);
 	memcpy(_chatHistory[index], src, min(strlen(src), CHAT_INPUT_SIZE - 1));
-	_chatHistoryTime[index] = SDL_GetTicks();
+	_chatHistoryTime[index] = platform_get_ticks();
 	_chatHistoryIndex++;
 	Mixer_Play_Effect(SOUND_NEWS_ITEM, 0, SDL_MIX_MAXVOLUME, 0, 1.5f, true);
 	network_append_chat_log(src);

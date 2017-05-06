@@ -14,6 +14,8 @@
  *****************************************************************************/
 #pragma endregion
 
+#include <stdlib.h>
+#include <time.h>
 #include "../audio/audio.h"
 #include "../audio/AudioMixer.h"
 #include "../config/Config.h"
@@ -36,6 +38,14 @@
 #include "../Version.h"
 #include "../world/Climate.h"
 #include "platform.h"
+
+#ifdef __APPLE__
+	#include <mach/mach_time.h>
+	#include <AvailabilityMacros.h>
+	#ifndef __ENVIRONMENT_MAC_OS_X_VERSION_MIN_REQUIRED__
+		#error Missing __ENVIRONMENT_MAC_OS_X_VERSION_MIN_REQUIRED__ define
+	#endif
+#endif
 
 typedef void(*update_palette_func)(const uint8*, sint32, sint32);
 
@@ -68,6 +78,10 @@ static uint32 _lastGestureTimestamp;
 static float _gestureRadius;
 
 static void platform_create_window();
+
+#if defined(__APPLE__) && (__ENVIRONMENT_MAC_OS_X_VERSION_MIN_REQUIRED__ < 101200)
+	mach_timebase_info_data_t _mach_base_info = { 0 };
+#endif
 
 static sint32 resolution_sort_func(const void *pa, const void *pb)
 {
@@ -761,7 +775,23 @@ void platform_set_cursor_position(sint32 x, sint32 y)
 
 uint32 platform_get_ticks()
 {
-	return SDL_GetTicks();
+#ifdef _WIN32
+    return GetTickCount();
+#elif defined(__APPLE__) && (__ENVIRONMENT_MAC_OS_X_VERSION_MIN_REQUIRED__ < 101200)
+	return (uint32)(((mach_absolute_time() * _mach_base_info.numer) / _mach_base_info.denom) / 1000000);
+#else
+    struct timespec ts;
+    if (clock_gettime(CLOCK_MONOTONIC, &ts) != 0) {
+        log_fatal("clock_gettime failed");
+        exit(-1);
+    }
+    return (uint32)(ts.tv_sec * 1000 + ts.tv_nsec / 1000000);
+#endif
+}
+
+void platform_sleep(uint32 ms)
+{
+    SDL_Delay(ms);
 }
 
 uint8 platform_get_currency_value(const char *currCode) {
@@ -781,4 +811,12 @@ uint8 platform_get_currency_value(const char *currCode) {
 void core_init()
 {
 	bitcount_init();
+	
+#if defined(__APPLE__) && (__ENVIRONMENT_MAC_OS_X_VERSION_MIN_REQUIRED__ < 101200)
+	kern_return_t ret = mach_timebase_info(&_mach_base_info);
+	if (ret != 0) {
+		log_fatal("Unable to get mach_timebase_info.");
+		exit(-1);
+	}
+#endif
 }

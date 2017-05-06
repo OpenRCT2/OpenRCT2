@@ -14,20 +14,25 @@
  *****************************************************************************/
 #pragma endregion
 
+#include <mutex>
 #include "../config/Config.h"
-#include "../interface/colour.h"
-#include "../interface/themes.h"
-#include "../interface/widget.h"
-#include "../interface/window.h"
-#include "../localisation/localisation.h"
-#include "../network/http.h"
 #include "../network/network.h"
 #include "../network/ServerList.h"
-#include "../sprites.h"
-#include "../util/util.h"
-#include "../windows/dropdown.h"
-#include "../windows/tooltip.h"
-#include "error.h"
+
+extern "C"
+{
+	#include "../interface/colour.h"
+	#include "../interface/themes.h"
+	#include "../interface/widget.h"
+	#include "../interface/window.h"
+	#include "../localisation/localisation.h"
+	#include "../network/http.h"
+	#include "../sprites.h"
+	#include "../util/util.h"
+	#include "../windows/dropdown.h"
+	#include "../windows/tooltip.h"
+	#include "error.h"
+}
 
 #define WWIDTH_MIN 500
 #define WHEIGHT_MIN 300
@@ -38,7 +43,7 @@
 static char _playerName[32 + 1];
 static server_entry *_serverEntries = NULL;
 static sint32 _numServerEntries = 0;
-static SDL_mutex *_mutex = 0;
+static std::mutex _mutex;
 static uint32 _numPlayersOnline = 0;
 
 enum {
@@ -119,6 +124,7 @@ enum {
 };
 
 static sint32 _hoverButtonIndex = -1;
+static char * _version = NULL;
 
 static void server_list_get_item_button(sint32 buttonIndex, sint32 x, sint32 y, sint32 width, sint32 *outX, sint32 *outY);
 static void server_list_load_server_entries();
@@ -134,63 +140,58 @@ static void fetch_servers();
 static void fetch_servers_callback(http_response_t* response);
 #endif
 
-void window_server_list_open()
+extern "C"
 {
-	rct_window* window;
-
-	// Check if window is already open
-	window = window_bring_to_front_by_class(WC_SERVER_LIST);
-	if (window != NULL)
-		return;
-
-	if (_mutex == 0) {
-		_mutex = SDL_CreateMutex();
+	void window_server_list_open()
+	{
+		rct_window* window;
+	
+		// Check if window is already open
+		window = window_bring_to_front_by_class(WC_SERVER_LIST);
+		if (window != NULL)
+			return;
+	
+		window = window_create_centred(WWIDTH_MIN, WHEIGHT_MIN, &window_server_list_events, WC_SERVER_LIST, WF_10 | WF_RESIZABLE);
+	
+		window_server_list_widgets[WIDX_PLAYER_NAME_INPUT].string = _playerName;
+		window->widgets = window_server_list_widgets;
+		window->enabled_widgets = (
+			(1 << WIDX_CLOSE) |
+			(1 << WIDX_PLAYER_NAME_INPUT) |
+			(1 << WIDX_FETCH_SERVERS) |
+			(1 << WIDX_ADD_SERVER) |
+			(1 << WIDX_START_SERVER)
+		);
+		window_init_scroll_widgets(window);
+		window->no_list_items = 0;
+		window->selected_list_item = -1;
+		window->frame_no = 0;
+		window->min_width = 320;
+		window->min_height = 90;
+		window->max_width = window->min_width;
+		window->max_height = window->min_height;
+	
+		window->page = 0;
+		window->list_information_type = 0;
+		window->colours[0] = COLOUR_GREY;
+		window->colours[1] = COLOUR_BORDEAUX_RED;
+		window->colours[2] = COLOUR_BORDEAUX_RED;
+	
+		window_set_resize(window, WWIDTH_MIN, WHEIGHT_MIN, WWIDTH_MAX, WHEIGHT_MAX);
+	
+		safe_strcpy(_playerName, gConfigNetwork.player_name, sizeof(_playerName));
+	
+		server_list_load_server_entries();
+		window->no_list_items = _numServerEntries;
+	
+		fetch_servers();
 	}
-
-	window = window_create_centred(WWIDTH_MIN, WHEIGHT_MIN, &window_server_list_events, WC_SERVER_LIST, WF_10 | WF_RESIZABLE);
-
-	window_server_list_widgets[WIDX_PLAYER_NAME_INPUT].string = _playerName;
-	window->widgets = window_server_list_widgets;
-	window->enabled_widgets = (
-		(1 << WIDX_CLOSE) |
-		(1 << WIDX_PLAYER_NAME_INPUT) |
-		(1 << WIDX_FETCH_SERVERS) |
-		(1 << WIDX_ADD_SERVER) |
-		(1 << WIDX_START_SERVER)
-	);
-	window_init_scroll_widgets(window);
-	window->no_list_items = 0;
-	window->selected_list_item = -1;
-	window->frame_no = 0;
-	window->min_width = 320;
-	window->min_height = 90;
-	window->max_width = window->min_width;
-	window->max_height = window->min_height;
-
-	window->page = 0;
-	window->list_information_type = 0;
-	window->colours[0] = COLOUR_GREY;
-	window->colours[1] = COLOUR_BORDEAUX_RED;
-	window->colours[2] = COLOUR_BORDEAUX_RED;
-
-	window_set_resize(window, WWIDTH_MIN, WHEIGHT_MIN, WWIDTH_MAX, WHEIGHT_MAX);
-
-	safe_strcpy(_playerName, gConfigNetwork.player_name, sizeof(_playerName));
-
-	server_list_load_server_entries();
-	window->no_list_items = _numServerEntries;
-
-	fetch_servers();
 }
 
 static void window_server_list_close(rct_window *w)
 {
+	std::lock_guard<std::mutex> guard(_mutex);
 	dispose_server_entry_list();
-	if (_mutex) {
-		SDL_LockMutex(_mutex);
-		SDL_DestroyMutex(_mutex);
-		_mutex = 0;
-	}
 }
 
 static void window_server_list_mouseup(rct_window *w, rct_widgetindex widgetIndex)
@@ -249,8 +250,11 @@ static void window_server_list_dropdown(rct_window *w, rct_widgetindex widgetInd
 		join_server(serverAddress);
 		break;
 	case DDIDX_FAVOURITE:
-		_serverEntries[serverIndex].favourite = !_serverEntries[serverIndex].favourite;
-		server_list_save_server_entries();
+		{
+			std::lock_guard<std::mutex> guard(_mutex);
+			_serverEntries[serverIndex].favourite = !_serverEntries[serverIndex].favourite;
+			server_list_save_server_entries();
+		}
 		break;
 	}
 }
@@ -287,8 +291,6 @@ static void window_server_list_scroll_mousedown(rct_window *w, sint32 scrollInde
 	}
 	window_dropdown_show_text(ddx, ddy, 0, COLOUR_GREY, 0, 2);
 }
-
-char *gVersion = NULL;
 
 static void window_server_list_scroll_mouseover(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y)
 {
@@ -355,9 +357,12 @@ static void window_server_list_textinput(rct_window *w, rct_widgetindex widgetIn
 		break;
 
 	case WIDX_ADD_SERVER:
-		add_server_entry(text);
-		sort_servers();
-		server_list_save_server_entries();
+		{
+			std::lock_guard<std::mutex> guard(_mutex);
+			add_server_entry(text);
+			sort_servers();
+			server_list_save_server_entries();
+		}
 		window_invalidate(w);
 		break;
 	}
@@ -367,7 +372,7 @@ static void window_server_list_invalidate(rct_window *w)
 {
 	colour_scheme_update(w);
 
-	set_format_arg(0, char *, gVersion);
+	set_format_arg(0, char *, _version);
 	window_server_list_widgets[WIDX_BACKGROUND].right = w->width - 1;
 	window_server_list_widgets[WIDX_BACKGROUND].bottom = w->height - 1;
 	window_server_list_widgets[WIDX_TITLE].right = w->width - 2;
@@ -399,7 +404,7 @@ static void window_server_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	window_draw_widgets(w, dpi);
 
 	gfx_draw_string_left(dpi, STR_PLAYER_NAME, NULL, COLOUR_WHITE, w->x + 6, w->y + w->widgets[WIDX_PLAYER_NAME_INPUT].top);
-	char *version = NETWORK_STREAM_ID;
+	const char * version = NETWORK_STREAM_ID;
 	gfx_draw_string_left(dpi, STR_NETWORK_VERSION, (void*)&version, COLOUR_WHITE, w->x + 324, w->y + w->widgets[WIDX_START_SERVER].top);
 
 	gfx_draw_string_left(dpi, STR_X_PLAYERS_ONLINE, (void*)&_numPlayersOnline, COLOUR_WHITE, w->x + 8, w->y + w->height - 15);
@@ -407,6 +412,8 @@ static void window_server_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 static void window_server_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 scrollIndex)
 {
+	std::lock_guard<std::mutex> guard(_mutex);
+
 	uint8 paletteIndex = ColourMapA[w->colours[1]].mid_light;
 	gfx_clear(dpi, paletteIndex);
 
@@ -424,7 +431,7 @@ static void window_server_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi
 		// Draw hover highlight
 		if (highlighted) {
 			gfx_filter_rect(dpi, 0, y, width, y + ITEM_HEIGHT, PALETTE_DARKEN_1);
-			gVersion = serverDetails->version;
+			_version = serverDetails->version;
 			w->widgets[WIDX_LIST].tooltip = STR_NETWORK_VERSION_TIP;
 		}
 
@@ -484,26 +491,19 @@ static void server_list_get_item_button(sint32 buttonIndex, sint32 x, sint32 y, 
 
 static void server_list_load_server_entries()
 {
-	SDL_LockMutex(_mutex);
-
 	uint32 numEntries;
 	server_entry * entries;
 	if (server_list_read(&numEntries, &entries)) {
+		std::lock_guard<std::mutex> guard(_mutex);
 		dispose_server_entry_list();
-
 		_numServerEntries = numEntries;
 		_serverEntries = entries;
-
 		sort_servers();
 	}
-
-	SDL_UnlockMutex(_mutex);
 }
 
 static void server_list_save_server_entries()
 {
-	SDL_LockMutex(_mutex);
-
 	// Get total number of favourite servers
 	sint32 count = 0;
 	for (sint32 i = 0; i < _numServerEntries; i++) {
@@ -514,7 +514,7 @@ static void server_list_save_server_entries()
 	}
 
 	// Create temporary list of just favourite servers
-	server_entry * entries = calloc(count, sizeof(server_entry));
+	server_entry * entries = (server_entry *)calloc(count, sizeof(server_entry));
 	sint32 eindex = 0;
 	for (sint32 i = 0; i < _numServerEntries; i++) {
 		server_entry *serverInfo = &_serverEntries[i];
@@ -528,13 +528,10 @@ static void server_list_save_server_entries()
 
 	// Free temporary list
 	free(entries);
-
-	SDL_UnlockMutex(_mutex);
 }
 
 static void dispose_server_entry_list()
 {
-	SDL_LockMutex(_mutex);
 	if (_serverEntries != NULL) {
 		for (sint32 i = 0; i < _numServerEntries; i++) {
 			dispose_server_entry(&_serverEntries[i]);
@@ -543,7 +540,6 @@ static void dispose_server_entry_list()
 		_serverEntries = NULL;
 	}
 	_numServerEntries = 0;
-	SDL_UnlockMutex(_mutex);
 }
 
 static void dispose_server_entry(server_entry *serverInfo)
@@ -556,19 +552,17 @@ static void dispose_server_entry(server_entry *serverInfo)
 
 static server_entry* add_server_entry(char *address)
 {
-	SDL_LockMutex(_mutex);
 	for (sint32 i = 0; i < _numServerEntries; i++) {
 		if (strcmp(_serverEntries[i].address, address) == 0) {
-			SDL_UnlockMutex(_mutex);
 			return &_serverEntries[i];
 		}
 	}
 
 	_numServerEntries++;
 	if (_serverEntries == NULL) {
-		_serverEntries = malloc(_numServerEntries * sizeof(server_entry));
+		_serverEntries = (server_entry *)malloc(_numServerEntries * sizeof(server_entry));
 	} else {
-		_serverEntries = realloc(_serverEntries, _numServerEntries * sizeof(server_entry));
+		_serverEntries = (server_entry *)realloc(_serverEntries, _numServerEntries * sizeof(server_entry));
 	}
 
 	sint32 index = _numServerEntries - 1;
@@ -581,21 +575,18 @@ static server_entry* add_server_entry(char *address)
 	newserver->favourite = false;
 	newserver->players = 0;
 	newserver->maxplayers = 0;
-	SDL_UnlockMutex(_mutex);
 	return newserver;
 }
 
 static void remove_server_entry(sint32 index)
 {
-	SDL_LockMutex(_mutex);
 	if (_numServerEntries > index) {
 		sint32 serversToMove = _numServerEntries - index - 1;
 		memmove(&_serverEntries[index], &_serverEntries[index + 1], serversToMove * sizeof(server_entry));
 
 		_numServerEntries--;
-		_serverEntries = realloc(_serverEntries, _numServerEntries * sizeof(server_entry));
+		_serverEntries = (server_entry *)realloc(_serverEntries, _numServerEntries * sizeof(server_entry));
 	}
-	SDL_UnlockMutex(_mutex);
 }
 
 static sint32 server_compare(const void *a, const void *b)
@@ -637,7 +628,7 @@ static void sort_servers()
 
 static char *substr(char *start, sint32 length)
 {
-	char *result = malloc(length + 1);
+	char *result = (char *)malloc(length + 1);
 	memcpy(result, start, length);
 	result[length] = 0;
 	return result;
@@ -692,15 +683,16 @@ static void fetch_servers()
 		masterServerUrl = gConfigNetwork.master_server_url;
 	}
 
-	SDL_LockMutex(_mutex);
-	for (sint32 i = 0; i < _numServerEntries; i++) {
-		if (!_serverEntries[i].favourite) {
-			remove_server_entry(i);
-			i = 0;
+	{
+		std::lock_guard<std::mutex> guard(_mutex);
+		for (sint32 i = 0; i < _numServerEntries; i++) {
+			if (!_serverEntries[i].favourite) {
+				remove_server_entry(i);
+				i = 0;
+			}
 		}
+		sort_servers();
 	}
-	sort_servers();
-	SDL_UnlockMutex(_mutex);
 
 	http_request_t request = { 0 };
 	request.url = masterServerUrl;
@@ -767,18 +759,19 @@ static void fetch_servers_callback(http_response_t* response)
 		char address[256];
 		snprintf(address, sizeof(address), "%s:%d", json_string_value(addressIp), (sint32)json_integer_value(port));
 
-		SDL_LockMutex(_mutex);
-		server_entry* newserver = add_server_entry(address);
-		SafeFree(newserver->name);
-		SafeFree(newserver->description);
-		SafeFree(newserver->version);
-		newserver->name = _strdup(json_string_value(name));
-		newserver->requiresPassword = json_is_true(requiresPassword);
-		newserver->description = _strdup(description == NULL ? "" : json_string_value(description));
-		newserver->version = _strdup(json_string_value(version));
-		newserver->players = (uint8)json_integer_value(players);
-		newserver->maxplayers = (uint8)json_integer_value(maxPlayers);
-		SDL_UnlockMutex(_mutex);
+		{
+			std::lock_guard<std::mutex> guard(_mutex);
+			server_entry* newserver = add_server_entry(address);
+			SafeFree(newserver->name);
+			SafeFree(newserver->description);
+			SafeFree(newserver->version);
+			newserver->name = _strdup(json_string_value(name));
+			newserver->requiresPassword = json_is_true(requiresPassword);
+			newserver->description = _strdup(description == NULL ? "" : json_string_value(description));
+			newserver->version = _strdup(json_string_value(version));
+			newserver->players = (uint8)json_integer_value(players);
+			newserver->maxplayers = (uint8)json_integer_value(maxPlayers);
+		}
 	}
 	http_request_dispose(response);
 

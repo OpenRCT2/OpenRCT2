@@ -15,6 +15,7 @@
 #pragma endregion
 
 #include <algorithm>
+#include <chrono>
 #include <memory>
 #include <unordered_map>
 #include <vector>
@@ -28,7 +29,6 @@
 #include "../core/Memory.hpp"
 #include "../core/MemoryStream.h"
 #include "../core/Path.hpp"
-#include "../core/Stopwatch.hpp"
 #include "../core/String.hpp"
 #include "../PlatformEnvironment.h"
 #include "../rct12/SawyerChunkReader.h"
@@ -296,16 +296,17 @@ private:
         Console::WriteLine("Scanning %lu objects...", _queryDirectoryResult.TotalFiles);
         _numConflicts = 0;
 
-        auto stopwatch = Stopwatch();
-        stopwatch.Start();
+        auto startTime = std::chrono::high_resolution_clock::now();
 
         const std::string &rct2Path = _env->GetDirectoryPath(DIRBASE::RCT2, DIRID::OBJECT);
         const std::string &openrct2Path = _env->GetDirectoryPath(DIRBASE::USER, DIRID::OBJECT);
         ScanDirectory(rct2Path);
         ScanDirectory(openrct2Path);
 
-        stopwatch.Stop();
-        Console::WriteLine("Scanning complete in %.2f seconds.", stopwatch.GetElapsedMilliseconds() / 1000.0f);
+        auto endTime = std::chrono::high_resolution_clock::now();
+        std::chrono::duration<float> duration = endTime - startTime;
+
+        Console::WriteLine("Scanning complete in %.2f seconds.", duration.count());
         if (_numConflicts > 0)
         {
             Console::WriteLine("%d object conflicts found.", _numConflicts);

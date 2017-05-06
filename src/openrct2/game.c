@@ -427,7 +427,7 @@ void game_logic_update()
 
 	// start autosave timer after update
 	if (gLastAutoSaveUpdate == AUTOSAVE_PAUSE)
-		gLastAutoSaveUpdate = SDL_GetTicks();
+		gLastAutoSaveUpdate = platform_get_ticks();
 }
 
 /**
@@ -585,7 +585,7 @@ sint32 game_do_command_p(sint32 command, sint32 *eax, sint32 *ebx, sint32 *ecx, 
 
 			// start autosave timer after game command
 			if (gLastAutoSaveUpdate == AUTOSAVE_PAUSE)
-				gLastAutoSaveUpdate = SDL_GetTicks();
+				gLastAutoSaveUpdate = platform_get_ticks();
 
 			return cost;
 		}

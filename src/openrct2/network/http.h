@@ -55,7 +55,6 @@ typedef struct http_response_t {
 #define HTTP_METHOD_PUT		"PUT"
 #define HTTP_METHOD_DELETE	"DELETE"
 
-http_response_t *http_request(const http_request_t *request);
 void http_request_async(const http_request_t *request, void (*callback)(http_response_t*));
 void http_request_dispose(http_response_t *response);
 

@@ -428,7 +428,7 @@ set_target_properties(${PROJECT} PROPERTIES PREFIX "")
 set_target_properties(${PROJECT} PROPERTIES COMPILE_FLAGS "-Wundef")
 
 # Link shared libs first
-TARGET_LINK_LIBRARIES(${PROJECT} ${GLLIBS})
+TARGET_LINK_LIBRARIES(${PROJECT} pthread ${GLLIBS})
 # if creating a static binary, precede libraries with -static, then name all the libs
 TARGET_LINK_LIBRARIES(${PROJECT} ${STATIC_START} ${SDL2LIBS} ${HTTPLIBS} ${NETWORKLIBS} ${SPEEX_LIBRARIES} ${DLLIB} ${REQUIREDLIBS} ${BREAKPAD_LIBS})
 

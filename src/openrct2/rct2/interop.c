@@ -14,6 +14,8 @@
  *****************************************************************************/
 #pragma endregion
 
+#include <stdio.h>
+
 #include "../common.h"
 
 #if defined(__WINDOWS__)
@@ -179,17 +181,20 @@ bool rct2_interop_setup_segment()
 
 	utf8 segmentDataPath[MAX_PATH];
 	rct2_interop_get_segment_data_path(segmentDataPath, sizeof(segmentDataPath));
-	SDL_RWops * rw = SDL_RWFromFile(segmentDataPath, "rb");
-	if (rw == NULL)
+
+	// Warning: for Windows this will fail if given a non-ASCII path,
+	//          but given this code is temporary - its not worth resolving.
+	FILE * file = fopen(segmentDataPath, "rb");
+	if (file == NULL)
 	{
 		log_error("failed to load file");
 		return false;
 	}
-	if (SDL_RWread(rw, segments, len, 1) != 1) {
+	if (fread(segments, len, 1, file) != 1) {
 		log_error("Unable to read chunk header!");
 		return false;
 	}
-	SDL_RWclose(rw);
+	fclose(file);
 #endif // defined(USE_MMAP) && defined(__WINDOWS__)
 
 #if !defined(NO_RCT2) && defined(USE_MMAP)
