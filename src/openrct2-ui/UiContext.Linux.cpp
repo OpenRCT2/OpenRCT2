@@ -16,6 +16,7 @@
 
 #ifdef __linux__
 
+#include <dlfcn.h>
 #include <sstream>
 #include <openrct2/common.h>
 #include <openrct2/core/String.hpp>
@@ -154,13 +155,13 @@ namespace OpenRCT2 { namespace Ui
 
             log_verbose("filename = %s", result.c_str());
 
-            if (desc.Type == FILE_DIALOG_TYPE::OPEN && access(result, F_OK) == -1)
+            if (desc.Type == FILE_DIALOG_TYPE::OPEN && access(result.c_str(), F_OK) == -1)
             {
                 std::string msg = String::StdFormat("\"%s\" not found: %s, please choose another file\n", result.c_str(), strerror(errno));
                 ShowMessageBox(window, msg);
                 return ShowFileDialog(window, desc);
             }
-            else if (desc.Type == FILE_DIALOG_TYPE::SAVE && access(result, F_OK) != -1 && dtype == DIALOG_TYPE::KDIALOG)
+            else if (desc.Type == FILE_DIALOG_TYPE::SAVE && access(result.c_str(), F_OK) != -1 && dtype == DIALOG_TYPE::KDIALOG)
             {
                 std::string cmd = String::StdFormat("%s --yesno \"Overwrite %s?\"", executablePath, result.c_str());
                 if (Execute(cmd) != 0)
@@ -274,7 +275,7 @@ namespace OpenRCT2 { namespace Ui
             {
                 // KDialog wants filters space-delimited and we don't expect ';' anywhere else
                 std::string pattern = filter.Pattern;
-                for (sint32 i = 0; i < pattern.size(); i++)
+                for (size_t i = 0; i < pattern.size(); i++)
                 {
                     if (pattern[i] == ';')
                     {
@@ -299,7 +300,6 @@ namespace OpenRCT2 { namespace Ui
         {
             // Zenity seems to be case sensitive, while KDialog isn't
             std::stringstream filtersb;
-            bool first = true;
             for (const auto &filter : filters)
             {
                 filtersb << " --file-filter='" << filter.Name << " | ";

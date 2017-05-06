@@ -16,10 +16,14 @@
 
 #ifndef _MSC_VER
 
+#include <openrct2/audio/AudioContext.h>
 #include <openrct2/Context.h>
+#include <openrct2/ui/UiContext.h>
+#include "audio/AudioContext.h"
 #include "UiContext.h"
 
 using namespace OpenRCT2;
+using namespace OpenRCT2::Audio;
 using namespace OpenRCT2::Ui;
 
 /**
@@ -28,8 +32,10 @@ using namespace OpenRCT2::Ui;
 int main(int argc, char * * argv)
 {
     // Run OpenRCT2 with a UI context
-    IContext * context = CreateContext();
-    IUiContext * uiContext = CreateContext(context);
+    
+    IAudioContext * audioContext = CreateAudioContext();
+    IUiContext * uiContext = CreateUiContext();
+    IContext * context = CreateContext(audioContext, uiContext);
     int exitCode = context->RunOpenRCT2(argc, argv);
     delete uiContext;
     delete context;
