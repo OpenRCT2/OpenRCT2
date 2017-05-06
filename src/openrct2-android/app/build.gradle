@@ -53,10 +53,16 @@ android {
 
 apply plugin: 'de.undercouch.download'
 
-task downloadLibraries {
-
-    dependsOn {
-        tasks.findAll { task -> task.name.startsWith('downloadLibraries:') }
+android.applicationVariants.all { variant ->
+    variant.mergeAssets.doLast {
+        copy {
+            from '../../../data'
+            into "$variant.mergeAssets.outputDir/data"
+        }
+        download {
+            src 'https://github.com/marijnvdwerf/openrct2-dependencies-android/releases/download/v0.7/g2.dat'
+            dest "$variant.mergeAssets.outputDir/data"
+        }
     }
 }
 
@@ -64,17 +70,6 @@ dependencies {
     compile 'commons-io:commons-io:2.5'
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.google.android.gms:play-services-analytics:10.2.1'
-}
-
-task copyLanguageAssets(type: Copy) {
-    from '../../../data'
-    into 'src/main/assets/data'
-}
-
-project.afterEvaluate {
-    mergeDebugAssets.dependsOn copyLanguageAssets
-
-    //mergeReleaseAssets.dependsOn copyLanguageAssets
 }
 
 apply plugin: 'com.google.gms.google-services'
