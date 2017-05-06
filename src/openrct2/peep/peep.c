@@ -9203,12 +9203,12 @@ static void peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_peep
 					junctionList[junctInd].z = _peepPathFindHistory[histIdx].location.z;
 					directionList[junctInd] = _peepPathFindHistory[histIdx].direction;
 				}
-				#if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
-				if (gPathFindDebug) {
-					log_info("[%03d] Search path ends at %d,%d,%d; At goal; Score: %d", counter, x >> 5, y >> 5, z, *endScore);
-				}
-				#endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
 			}
+			#if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
+			if (gPathFindDebug) {
+				log_info("[%03d] Search path ends at %d,%d,%d; At goal; Score: %d", counter, x >> 5, y >> 5, z, new_score);
+			}
+			#endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
 			continue;
 		}
 
@@ -9260,7 +9260,7 @@ static void peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_peep
 			}
 			#if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
 			if (gPathFindDebug) {
-				log_info("[%03d] Search path ends at %d,%d,%d; Wide path; Score: %d", counter, x >> 5, y >> 5, z, *endScore);
+				log_info("[%03d] Search path ends at %d,%d,%d; Wide path; Score: %d", counter, x >> 5, y >> 5, z, new_score);
 			}
 			#endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
 			continue;
@@ -9320,7 +9320,7 @@ static void peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_peep
 			}
 			#if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
 			if (gPathFindDebug) {
-				log_info("[%03d] Search path ends at %d,%d,%d; Search limit reached", counter, x >> 5, y >> 5, z);
+				log_info("[%03d] Search path ends at %d,%d,%d; Search limit reached; Score: %d", counter, x >> 5, y >> 5, z, new_score);
 			}
 			#endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
 			continue;
@@ -9416,7 +9416,7 @@ static void peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_peep
 					}
 					#if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
 					if (gPathFindDebug) {
-						log_info("[%03d] Search path ends at %d,%d,%d; NumJunctions < 0; Score: %d", counter, x >> 5, y >> 5, z, *endScore);
+						log_info("[%03d] Search path ends at %d,%d,%d; NumJunctions < 0; Score: %d", counter, x >> 5, y >> 5, z, new_score);
 					}
 					#endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
 					continue;
