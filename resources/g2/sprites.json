@@ -238,5 +238,44 @@
     },
     {
         "path": "icons/paste.png"
+    },
+    {
+        "path": "icons/tab_disabled.png"
+    },
+    {
+        "path": "track/intamin/booster_1.png"
+    },
+    {
+        "path": "track/intamin/booster_2.png"
+    },
+    {
+        "path": "track/bm/booster_1.png"
+    },
+    {
+        "path": "track/bm/booster_2.png"
+    },
+    {
+        "path": "track/junior/booster_1.png"
+    },
+    {
+        "path": "track/junior/booster_2.png"
+    },
+    {
+        "path": "icons/mute.png"
+    },
+    {
+        "path": "icons/mute_pressed.png"
+    },
+    {
+        "path": "icons/unmute.png"
+    },
+    {
+        "path": "icons/unmute_pressed.png"
+    },
+    {
+        "path": "track/mini/booster_1.png"
+    },
+    {
+        "path": "track/mini/booster_2.png"
     }
 ]
