@@ -19,6 +19,7 @@ extern "C"
     #include "../platform/platform.h"
 }
 
+#include <android/log.h>
 #include "Console.hpp"
 
 namespace Console
@@ -46,13 +47,13 @@ namespace Console
         va_list args;
 
         va_start(args, format);
-        vfprintf(stdout, format, args);
+        __android_log_vprint(ANDROID_LOG_INFO, "OpenRCT2", format, args);
         va_end(args);
     }
 
     void WriteLine()
     {
-        puts("");
+        __android_log_write(ANDROID_LOG_INFO, "OpenRCT2", "");
     }
 
     void WriteLine(const utf8 * format, ...)
@@ -60,8 +61,7 @@ namespace Console
         va_list args;
 
         va_start(args, format);
-        vfprintf(stdout, format, args);
-        puts("");
+        __android_log_vprint(ANDROID_LOG_INFO, "OpenRCT2", format, args);
         va_end(args);
     }
 
@@ -74,7 +74,7 @@ namespace Console
 
         void Write(const utf8 * str)
         {
-            fputs(str, stderr);
+            __android_log_write(ANDROID_LOG_ERROR, "OpenRCT2", str);
         }
 
         void WriteFormat(const utf8 * format, ...)
@@ -82,13 +82,13 @@ namespace Console
             va_list args;
 
             va_start(args, format);
-            vfprintf(stderr, format, args);
+            __android_log_vprint(ANDROID_LOG_ERROR, "OpenRCT2", format, args);
             va_end(args);
         }
 
         void WriteLine()
         {
-            fputs(PLATFORM_NEWLINE, stderr);
+            __android_log_write(ANDROID_LOG_ERROR, "OpenRCT2", "");
         }
 
         void WriteLine(const utf8 * format, ...)
@@ -101,8 +101,7 @@ namespace Console
 
         void WriteLine_VA(const utf8 * format, va_list args)
         {
-            vfprintf(stdout, format, args);
-            puts("");
+            __android_log_vprint(ANDROID_LOG_ERROR, "OpenRCT2", format, args);
         }
     }
 }
