@@ -14,6 +14,7 @@
 *****************************************************************************/
 #pragma endregion
 
+#include <cmath>
 #include "../config/Config.h"
 #include "../Context.h"
 #include "audio.h"
