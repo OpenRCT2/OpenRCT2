@@ -24,7 +24,7 @@
 
 extern "C"
 {
-	sint32 gSpriteMode = 0;
+    sint32 gSpriteMode = 0;
 }
 
 static const char * _mode;
@@ -41,7 +41,7 @@ const CommandLineCommand CommandLine::SpriteCommands[]
 {
     // Main commands
     DefineCommand("append",    "<spritefile> <input> [x_offset y_offset]", SpriteOptions, HandleSprite),
-    DefineCommand("build",     "<spritefile> <resourcedir> [silent]",      SpriteOptions, HandleSprite),
+    DefineCommand("build",     "<spritefile> <json path> [silent]",        SpriteOptions, HandleSprite),
     DefineCommand("create",    "<spritefile>",                             SpriteOptions, HandleSprite),
     DefineCommand("details",   "<spritefile> [idx]",                       SpriteOptions, HandleSprite),
     DefineCommand("export",    "<spritefile> <idx> <output>",              SpriteOptions, HandleSprite),
