@@ -1060,7 +1060,7 @@ bool platform_get_font_path(TTFFontDescriptor *font, utf8 *buffer, size_t size)
 #endif
 }
 
-char * platform_get_absolute_path(const utf8 * relativePath, const utf8 * basePath)
+utf8 * platform_get_absolute_path(const utf8 * relativePath, const utf8 * basePath)
 {
 	utf8 path[MAX_PATH];
 	safe_strcpy(path, basePath, sizeof(path));
