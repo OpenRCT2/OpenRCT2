@@ -50,7 +50,8 @@ matrix:
           script:
             - './gradlew app:assembleDebug'
           after_success:
-            - curl --progress-bar --upload-file app/build/outputs/apk/app-debug.apk  https://transfer.sh/openrct2-android.apk -o link && cat link
+            - curl --progress-bar --upload-file app/build/outputs/apk/app-arm-debug.apk https://transfer.sh/openrct2-android-arm.apk -o link && cat link
+            - curl --progress-bar --upload-file app/build/outputs/apk/app-x86-debug.apk https://transfer.sh/openrct2-android-x86.apk -o link && cat link
         # Following entries used to be included in testing, but they only proved useful while changing things in CMake setup.
         # They are meant to be used when there are changes to CMakeLists.txt
         # - os: linux
