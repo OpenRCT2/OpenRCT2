@@ -1,6 +1,9 @@
 package org.openrct2.android;
 
+import android.util.Log;
+
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Enumeration;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
@@ -25,14 +28,14 @@ public class ZipArchive {
         return _zipArchive.size();
     }
 
-    public String getFileName(int index) {
+    private ZipEntry getZipEntry(int index) {
         Enumeration<? extends ZipEntry> entries = _zipArchive.entries();
 
         int i = 0;
         while (entries.hasMoreElements()) {
             ZipEntry entry = entries.nextElement();
             if (index == i) {
-                return entry.getName();
+                return entry;
             }
 
             i++;
@@ -41,14 +44,34 @@ public class ZipArchive {
         return null;
     }
 
+    public String getFileName(int index) {
+        ZipEntry entry = getZipEntry(index);
+
+        if (entry != null) {
+            return entry.getName();
+        }
+
+        return null;
+    }
+
     public long getFileSize(int index) {
+        ZipEntry entry = getZipEntry(index);
+
+        if (entry != null) {
+            return entry.getSize();
+        }
+
+        return -1;
+    }
+
+    public int getFileIndex(String path) {
         Enumeration<? extends ZipEntry> entries = _zipArchive.entries();
 
         int i = 0;
         while (entries.hasMoreElements()) {
             ZipEntry entry = entries.nextElement();
-            if (index == i) {
-                return entry.getSize();
+            if (entry.getName().equalsIgnoreCase(path)) {
+                return i;
             }
 
             i++;
@@ -57,7 +80,26 @@ public class ZipArchive {
         return -1;
     }
 
-    public void getFile(int index) {
-        // Maybe based on <http://stackoverflow.com/questions/6369402/how-to-move-data-from-java-inputstream-to-a-char-in-c-with-jni>...
+    public long getFile(int index) throws IOException {
+        ZipEntry entry = getZipEntry(index);
+
+        if (entry == null) {
+            return 0;
+        }
+
+        InputStream inputStream = _zipArchive.getInputStream(entry);
+
+        int numBytesToRead = (int) entry.getSize();
+        if (numBytesToRead == -1) {
+            Log.e("ZipArchive", "Unknown length for zip entry");
+            return 0;
+        }
+
+        byte[] inBuffer = new byte[numBytesToRead];
+        inputStream.read(inBuffer, 0, numBytesToRead);
+
+        return allocBytes(inBuffer, numBytesToRead);
     }
+
+    native static long allocBytes(byte[] input, int size);
 }
