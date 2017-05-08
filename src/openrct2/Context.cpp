@@ -124,13 +124,8 @@ namespace OpenRCT2
 
         sint32 RunOpenRCT2(int argc, char * * argv) override
         {
-            core_init();
-            int runGame = cmdline_run((const char * *)argv, argc);
-            if (runGame == 1)
-            {
-                Initialise();
-                Launch();
-            }
+            Initialise();
+            Launch();
             return gExitCode;
         }
 
