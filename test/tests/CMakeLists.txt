@@ -4,13 +4,13 @@ cmake_minimum_required(VERSION 2.6)
 INCLUDE(ExternalProject)
 
 ExternalProject_Add(
-		googletest-distribution
-		URL https://github.com/google/googletest/archive/release-1.8.0.tar.gz
-		URL_HASH SHA1=e7e646a6204638fe8e87e165292b8dd9cd4c36ed
-		TIMEOUT 10
-		CONFIGURE_COMMAND ""
-		BUILD_COMMAND ""
-		INSTALL_COMMAND ""
+        googletest-distribution
+        URL https://github.com/google/googletest/archive/release-1.8.0.tar.gz
+        URL_HASH SHA1=e7e646a6204638fe8e87e165292b8dd9cd4c36ed
+        TIMEOUT 10
+        CONFIGURE_COMMAND ""
+        BUILD_COMMAND ""
+        INSTALL_COMMAND ""
 )
 
 # Specify include dir
@@ -18,19 +18,19 @@ ExternalProject_Get_Property(googletest-distribution SOURCE_DIR)
 set(GOOGLETEST_DISTRIB_SOURCE_DIR "${SOURCE_DIR}")
 
 ExternalProject_Add(
-		googletest
-		DEPENDS googletest-distribution
-		DOWNLOAD_COMMAND ""
-		SOURCE_DIR "${GOOGLETEST_DISTRIB_SOURCE_DIR}/googletest"
-		CMAKE_ARGS "-DCMAKE_CXX_FLAGS=${TARGET_M}"
-		BUILD_BYPRODUCTS "googletest-prefix/src/googletest-build/${CMAKE_STATIC_LIBRARY_PREFIX}gtest${CMAKE_STATIC_LIBRARY_SUFFIX}"
-		BUILD_BYPRODUCTS "googletest-prefix/src/googletest-build/${CMAKE_STATIC_LIBRARY_PREFIX}gtest_main${CMAKE_STATIC_LIBRARY_SUFFIX}"
-		# Disable install step
-		INSTALL_COMMAND ""
-		# Wrap download, configure and build steps in a script to log output
-		LOG_DOWNLOAD ON
-		LOG_CONFIGURE ON
-		LOG_BUILD ON)
+        googletest
+        DEPENDS googletest-distribution
+        DOWNLOAD_COMMAND ""
+        SOURCE_DIR "${GOOGLETEST_DISTRIB_SOURCE_DIR}/googletest"
+        CMAKE_ARGS "-DCMAKE_CXX_FLAGS=${TARGET_M}"
+        BUILD_BYPRODUCTS "googletest-prefix/src/googletest-build/${CMAKE_STATIC_LIBRARY_PREFIX}gtest${CMAKE_STATIC_LIBRARY_SUFFIX}"
+        BUILD_BYPRODUCTS "googletest-prefix/src/googletest-build/${CMAKE_STATIC_LIBRARY_PREFIX}gtest_main${CMAKE_STATIC_LIBRARY_SUFFIX}"
+        # Disable install step
+        INSTALL_COMMAND ""
+        # Wrap download, configure and build steps in a script to log output
+        LOG_DOWNLOAD ON
+        LOG_CONFIGURE ON
+        LOG_BUILD ON)
 
 
 # Specify include dir
@@ -57,16 +57,16 @@ set(GTEST_LIBRARIES gtest gtest_main pthread)
 
 # Some most common files required in tests
 set(COMMON_TEST_SOURCES
-	"../../src/openrct2/core/Console.cpp"
-	"../../src/openrct2/core/Diagnostics.cpp"
-	"../../src/openrct2/core/Guard.cpp"
-	"../../src/openrct2/core/String.cpp"
-	"../../src/openrct2/diagnostic.c"
-	"../../src/openrct2/localisation/format_codes.c"
-	"../../src/openrct2/localisation/utf8.c"
-	"../../src/openrct2/util/util.c"
-	"../../src/openrct2/Version.cpp"
-	)
+    "../../src/openrct2/core/Console.cpp"
+    "../../src/openrct2/core/Diagnostics.cpp"
+    "../../src/openrct2/core/Guard.cpp"
+    "../../src/openrct2/core/String.cpp"
+    "../../src/openrct2/diagnostic.c"
+    "../../src/openrct2/localisation/format_codes.c"
+    "../../src/openrct2/localisation/utf8.c"
+    "../../src/openrct2/util/util.c"
+    "../../src/openrct2/Version.cpp"
+    )
 
 # Create a re-usable library to save some compilation time
 add_library(test-common STATIC ${COMMON_TEST_SOURCES})
@@ -76,41 +76,41 @@ add_library(test-common STATIC ${COMMON_TEST_SOURCES})
 # sawyercoding test
 
 set(SAWYERCODING_TEST_SOURCES
-		"sawyercoding_test.cpp"
-		"../../src/openrct2/diagnostic.c"
-		"../../src/openrct2/util/sawyercoding.c"
-		"../../src/openrct2/localisation/utf8.c"
-		)
+        "sawyercoding_test.cpp"
+        "../../src/openrct2/diagnostic.c"
+        "../../src/openrct2/util/sawyercoding.c"
+        "../../src/openrct2/localisation/utf8.c"
+        )
 add_executable(test_sawyercoding ${SAWYERCODING_TEST_SOURCES})
 target_link_libraries(test_sawyercoding ${GTEST_LIBRARIES})
 add_test(NAME sawyercoding COMMAND test_sawyercoding)
 
 # LanguagePack test
 set(LANGUAGEPACK_TEST_SOURCES
-		"LanguagePackTest.cpp"
-		"../../src/openrct2/localisation/LanguagePack.cpp"
-		)
+        "LanguagePackTest.cpp"
+        "../../src/openrct2/localisation/LanguagePack.cpp"
+        )
 add_executable(test_languagepack ${LANGUAGEPACK_TEST_SOURCES})
 target_link_libraries(test_languagepack ${GTEST_LIBRARIES} test-common dl z SDL2)
 add_test(NAME languagepack COMMAND test_languagepack)
 
 # INI test
 set(INI_TEST_SOURCES
-		"IniWriterTest.cpp"
-		"IniReaderTest.cpp"
-		"../../src/openrct2/config/IniReader.cpp"
-		"../../src/openrct2/config/IniWriter.cpp"
-		"../../src/openrct2/core/IStream.cpp"
-		"../../src/openrct2/core/MemoryStream.cpp"
-		)
+        "IniWriterTest.cpp"
+        "IniReaderTest.cpp"
+        "../../src/openrct2/config/IniReader.cpp"
+        "../../src/openrct2/config/IniWriter.cpp"
+        "../../src/openrct2/core/IStream.cpp"
+        "../../src/openrct2/core/MemoryStream.cpp"
+        )
 add_executable(test_ini ${INI_TEST_SOURCES})
 target_link_libraries(test_ini ${GTEST_LIBRARIES} test-common dl z)
 add_test(NAME ini COMMAND test_ini)
 
 # String test
 set(STRING_TEST_SOURCES
-		"StringTest.cpp"
-		)
+        "StringTest.cpp"
+        )
 add_executable(test_string ${STRING_TEST_SOURCES})
 target_link_libraries(test_string ${GTEST_LIBRARIES} test-common dl z)
 add_test(NAME string COMMAND test_string)
