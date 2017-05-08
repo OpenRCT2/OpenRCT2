@@ -51,7 +51,7 @@ using namespace OpenRCT2::Ui;
     #define KEYBOARD_PRIMARY_MODIFIER KMOD_CTRL
 #endif
 
-class UiContext : public IUiContext
+class UiContext final : public IUiContext
 {
 private:
     constexpr static uint32 TOUCH_DOUBLE_TIMEOUT = 300;

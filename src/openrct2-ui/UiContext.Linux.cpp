@@ -34,7 +34,7 @@ namespace OpenRCT2 { namespace Ui
         ZENITY,
     };
 
-    class LinuxContext : public IPlatformUiContext
+    class LinuxContext final : public IPlatformUiContext
     {
     private:
 
