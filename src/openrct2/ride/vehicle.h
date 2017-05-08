@@ -383,7 +383,7 @@ rct_vehicle *vehicle_get_head(rct_vehicle *vehicle);
 rct_vehicle *vehicle_get_tail(rct_vehicle *vehicle);
 const rct_vehicle_info *vehicle_get_move_info(sint32 cd, sint32 typeAndDirection, sint32 offset);
 uint16 vehicle_get_move_info_size(sint32 cd, sint32 typeAndDirection);
-bool vehicle_update_bumper_car_collision(rct_vehicle *vehicle, sint16 x, sint16 y, uint16 *spriteId);
+bool vehicle_update_dodgems_collision(rct_vehicle *vehicle, sint16 x, sint16 y, uint16 *spriteId);
 
 extern rct_vehicle *gCurrentVehicle;
 extern uint8 _vehicleStationIndex;

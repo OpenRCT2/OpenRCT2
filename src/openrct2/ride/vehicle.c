@@ -68,7 +68,7 @@ static void vehicle_update_waiting_for_cable_lift(rct_vehicle *vehicle);
 static void vehicle_update_travelling_cable_lift(rct_vehicle* vehicle);
 static void vehicle_update_crash_setup(rct_vehicle* vehicle);
 static void vehicle_update_collision_setup(rct_vehicle* vehicle);
-static sint32 vehicle_update_motion_bumper_car(rct_vehicle* vehicle);
+static sint32 vehicle_update_motion_dodgems(rct_vehicle* vehicle);
 static void sub_6D63D4(rct_vehicle *vehicle);
 static bool vehicle_update_motion_collision_detection(rct_vehicle *vehicle, sint16 x, sint16 y, sint16 z, uint16 *otherVehicleIndex);
 static void vehicle_update_sound(rct_vehicle *vehicle);
@@ -2046,7 +2046,7 @@ static void vehicle_update_dodgems_mode(rct_vehicle *vehicle) {
 		vehicle_invalidate(vehicle);
 	}
 
-	vehicle_update_motion_bumper_car(vehicle);
+	vehicle_update_motion_dodgems(vehicle);
 
 	// Update the length of time vehicle has been in bumper mode
 	if (vehicle->sub_state++ == 0xFF) {
@@ -5574,7 +5574,7 @@ sint32 vehicle_is_used_in_pairs(rct_vehicle *vehicle)
  *
  *  rct2: 0x006DA44E
  */
-static sint32 vehicle_update_motion_bumper_car(rct_vehicle* vehicle) {
+static sint32 vehicle_update_motion_dodgems(rct_vehicle* vehicle) {
 	_vehicleMotionTrackFlags = 0;
 	rct_ride* ride = get_ride(vehicle->ride);
 
@@ -5633,7 +5633,7 @@ static sint32 vehicle_update_motion_bumper_car(rct_vehicle* vehicle) {
 		location.x += Unk9A36C4[oldC4 + 1].x;
 		location.y += Unk9A36C4[oldC4 + 1].y;
 
-		if (!vehicle_update_bumper_car_collision(vehicle, location.x, location.y, &collideSprite)) {
+		if (!vehicle_update_dodgems_collision(vehicle, location.x, location.y, &collideSprite)) {
 			vehicle_invalidate(vehicle);
 			sprite_move(
 				location.x,
@@ -5664,7 +5664,7 @@ static sint32 vehicle_update_motion_bumper_car(rct_vehicle* vehicle) {
 			location.x += Unk9A36C4[direction].x;
 			location.y += Unk9A36C4[direction].y;
 
-			if (vehicle_update_bumper_car_collision(vehicle, location.x, location.y, &collideSprite))
+			if (vehicle_update_dodgems_collision(vehicle, location.x, location.y, &collideSprite))
 				break;
 
 			vehicle->remaining_distance -= Unk9A36C4[direction].distance;
@@ -5744,7 +5744,7 @@ static sint32 vehicle_update_motion_bumper_car(rct_vehicle* vehicle) {
  *
  *  rct2: 0x006DD365
  */
-bool vehicle_update_bumper_car_collision(rct_vehicle *vehicle, sint16 x, sint16 y, uint16 *spriteId)
+bool vehicle_update_dodgems_collision(rct_vehicle *vehicle, sint16 x, sint16 y, uint16 *spriteId)
 {
 	uint16 bp = (vehicle->var_44 * 30) >> 9;
 	uint32 trackType = vehicle->track_type >> 2;

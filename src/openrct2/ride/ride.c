@@ -4529,7 +4529,7 @@ static rct_vehicle *vehicle_create_car(
 			vehicle->sprite_direction = scenario_rand() & 0x1E;
 			chosenLoc.y = y + (scenario_rand() & 0xFF);
 			chosenLoc.x = x + (scenario_rand() & 0xFF);
-		} while (vehicle_update_bumper_car_collision(vehicle, chosenLoc.x, chosenLoc.y, NULL));
+		} while (vehicle_update_dodgems_collision(vehicle, chosenLoc.x, chosenLoc.y, NULL));
 
 		sprite_move(chosenLoc.x, chosenLoc.y, z, (rct_sprite*)vehicle);
 	} else {
