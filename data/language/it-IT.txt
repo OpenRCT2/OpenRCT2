@@ -1,4 +1,4 @@
-﻿# STR_XXXX part is read and XXXX becomes the string id number.
+# STR_XXXX part is read and XXXX becomes the string id number.
 # Everything after the colon and before the new line will be saved as the string.
 # Use # at the beginning of a line to leave a comment.
 STR_0000    :
@@ -947,7 +947,7 @@ STR_0941    :Nascondi pareti verticali
 STR_0942    :Attrazioni trasparenti
 STR_0943    :Scenario trasparente
 STR_0944    :Salva
-STR_0945    :Non salv.
+STR_0945    :Non salvare
 STR_0946    :Annulla
 STR_0947    :Salvare prima di caricare?
 STR_0948    :Salvare prima di uscire?
@@ -1671,7 +1671,7 @@ STR_1663    :{WINDOW_COLOUR_2}Nausea:
 STR_1664    :{WINDOW_COLOUR_2}Energia:
 STR_1665    :{WINDOW_COLOUR_2}Fame:
 STR_1666    :{WINDOW_COLOUR_2}Sete:
-STR_1667    :{WINDOW_COLOUR_2}Toilet:
+STR_1667    :{WINDOW_COLOUR_2}Bagno:
 STR_1668    :{WINDOW_COLOUR_2}Soddisfazione: {BLACK}Ignota
 STR_1669    :{WINDOW_COLOUR_2}Soddisfazione: {BLACK}{COMMA16}%
 STR_1670    :{WINDOW_COLOUR_2}Totale clienti: {BLACK}{COMMA32}
@@ -1721,7 +1721,7 @@ STR_1713    :{INLINE_SPRITE}{248}{19}{00}{00}{WINDOW_COLOUR_2}Annaffia i fiori
 STR_1714    :{INLINE_SPRITE}{249}{19}{00}{00}{WINDOW_COLOUR_2}Svuota i cestini
 STR_1715    :{INLINE_SPRITE}{250}{19}{00}{00}{WINDOW_COLOUR_2}Taglia l'erba
 STR_1716    :Non è un nome valido per il parco
-STR_1717    :Impossibile ribattezzare il parco...
+STR_1717    :Impossibile rinominare il parco...
 STR_1718    :Nome del parco
 STR_1719    :Digita il nome del parco:
 STR_1720    :{SMALLFONT}{BLACK}Battezza il parco
@@ -2368,7 +2368,7 @@ STR_2358    :Unità
 STR_2359    :Valori reali
 STR_2360    :{WINDOW_COLOUR_2}Risoluzione:
 STR_2361    :Addolcimento del paesaggio
-STR_2362    :{SMALLFONT}{BLACK}Attiva/disattiva l'addolcimento degli spigoli delle mattonelle del paesaggio
+STR_2362    :{SMALLFONT}{BLACK}Attiva/disattiva l'addolcimento degli spigoli delle celle del paesaggio
 STR_2363    :Griglia sovrapposta al paesaggio
 STR_2364    :{SMALLFONT}{BLACK}Attiva/disattiva la griglia sovrapposta al paesaggio
 STR_2365    :La banca si rifiuta di concedere altri prestiti!
@@ -2706,7 +2706,7 @@ STR_2696    :Colloca alberi
 STR_2697    :???
 STR_2698    :???
 STR_2699    :???
-STR_2700    :Frequenza di autosalvataggio:
+STR_2700    :Salvataggio automatico:
 STR_2701    :Ogni minuto
 STR_2702    :Ogni 5 minuti
 STR_2703    :Ogni 15 minuti
@@ -2724,8 +2724,8 @@ STR_2714    :-
 STR_2715    :.
 STR_2716    :/
 STR_2717    :'
-STR_2718    :(up)
-STR_2719    :(new file)
+STR_2718    :Sali di livello
+STR_2719    :Crea nuovo
 STR_2720    :{UINT16}sec
 STR_2721    :{UINT16}sec
 STR_2722    :{UINT16}min:{UINT16}sec
@@ -3102,7 +3102,7 @@ STR_3091    :Non ti è permesso cancellare questa sezione!
 STR_3092    :Non ti è permesso spostare o modificare la stazione di quest'attrazione!
 STR_3093    :{WINDOW_COLOUR_2}Preferito: {BLACK}{STRINGID}
 STR_3094    :N/A
-STR_3095    :{WINDOW_COLOUR_2}Vel. catena di traino:
+STR_3095    :{WINDOW_COLOUR_2}Velocità catena di traino:
 STR_3096    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{VELOCITY}
 STR_3097    :{SMALLFONT}{BLACK}Seleziona la velocità della catena di traino sulla salita
 STR_3098    :Impossibile modificare la velocità della catena di traino sulla salita...
@@ -3119,7 +3119,7 @@ STR_3108    :Prova
 STR_3109    :Apri
 STR_3110    :{WINDOW_COLOUR_2}Blocca le sezioni: {BLACK}{COMMA16}
 STR_3111    :{SMALLFONT}{BLACK}Clicca sul progetto per costruirlo
-STR_3112    :{SMALLFONT}{BLACK}Clicca sul progetto per ribattezzarlo o cancellarlo
+STR_3112    :{SMALLFONT}{BLACK}Clicca sul progetto per rinominarlo o cancellarlo
 STR_3113    :Scegli un altro progetto
 STR_3114    :{SMALLFONT}{BLACK}Torna alla finestra della scelta dei progetti
 STR_3115    :{SMALLFONT}{BLACK}Salva il progetto del tracciato
@@ -3268,9 +3268,9 @@ STR_3257    :{SMALLFONT}{BLACK}Stabilisci se i visitatori in generale dovrebbero
 STR_3258    :Attrazioni più intense preferite
 STR_3259    :{SMALLFONT}{BLACK}Stabilisci se i visitatori in generale dovrebbero preferire solo attrazioni più intense
 STR_3260    :{WINDOW_COLOUR_2}Denaro per visitatore (media):
-STR_3261    :{WINDOW_COLOUR_2}Felicità iniziale visitat.:
-STR_3262    :{WINDOW_COLOUR_2}Fame iniziale visitat.:
-STR_3263    :{WINDOW_COLOUR_2}Sete iniziale visitat.:
+STR_3261    :{WINDOW_COLOUR_2}Felicità iniziale visitatori:
+STR_3262    :{WINDOW_COLOUR_2}Fame iniziale visitatori:
+STR_3263    :{WINDOW_COLOUR_2}Sete iniziale visitatori:
 STR_3264    :Impossibile aumentarlo ulteriormente!
 STR_3265    :Impossibile ridurlo ulteriormente!
 STR_3266    :{SMALLFONT}{BLACK}Stabilisci il prezzo dell'ingresso e delle attrazioni
@@ -3302,7 +3302,7 @@ STR_3291    :Temperato
 STR_3292    :Caldo e secco
 STR_3293    :Freddo
 STR_3294    :Modifica...
-STR_3295    :{SMALLFONT}{BLACK}Ribattezza il parco
+STR_3295    :{SMALLFONT}{BLACK}Rinomina il parco
 STR_3296    :{SMALLFONT}{BLACK}Modifica il nome dello scenario
 STR_3297    :{SMALLFONT}{BLACK}Modifica le informazioni sul parco/scenario
 STR_3298    :{WINDOW_COLOUR_2}Nome parco: {BLACK}{STRINGID}
@@ -3355,11 +3355,11 @@ STR_3344    :Strumento di progettazione degli ottovolanti
 STR_3345    :Strumento di gestione dei progetti di tracciato
 STR_3346    :Impossibile salvare il progetto di tracciato...
 STR_3347    :L{GREEN}attrazione è troppo grande, contiene troppi elementi o lo scenario è sparso su un'area troppo vasta
-STR_3348    :Ribattezza
+STR_3348    :Rinomina
 STR_3349    :Cancella
 STR_3350    :Battezza il progetto di tracciato
 STR_3351    :Digita il nome di questo progetto di tracciato:
-STR_3352    :Impossibile ribattezzare il  progetto di tracciato...
+STR_3352    :Impossibile rinominare il progetto di tracciato...
 STR_3353    :Il nuovo nome contiene dei caratteri non validi
 STR_3354    :Esiste già un altro file con quel nome, o il file è protetto dalla scrittura
 STR_3355    :Il file è protetto dalla scrittura o è chiuso all'accesso
@@ -3463,14 +3463,14 @@ STR_5121    :Ricerca
 STR_5122    :Attrazioni in base al tipo di percorso (come in RCT1)
 STR_5123    :Rinnova attrazioni
 STR_5124    :<not used anymore>
-STR_5125    :Tutti distruttibili
+STR_5125    :Tutte distruttibili
 STR_5126    :Musica iniziale casuale
 STR_5127    :{SMALLFONT}{BLACK}Trascinando, modifica il paesaggio anziché cambiare altezza
 STR_5128    :Dimensione selezione
 STR_5129    :Inserire la dimensione della selezione tra {COMMA16} e {COMMA16}
 STR_5130    :Dimensione mappa
 STR_5131    :Inserire dimensione mappa tra {COMMA16} e {COMMA16}
-STR_5132    :Aggiusta tutte le attrazioni
+STR_5132    :Aggiusta attrazioni
 STR_5133    :{SMALLFONT}{BLACK}Modifica un'area più piccola dei terreni del parco
 STR_5134    :{SMALLFONT}{BLACK}Modifica un'area più grande dei terreni del parco
 STR_5135    :{SMALLFONT}{BLACK}Acquista nuovi terreni o permessi di costruzione
@@ -3498,7 +3498,7 @@ STR_5154    :Rendering hardware
 STR_5155    :Permetti di testare percorsi non finiti
 STR_5156    :{SMALLFONT}{BLACK}Permette di effettuare il test della maggior parte dei percorsi anche quando il percorso non è un circuito completo, non si applica alla modalità sezioni a blocchi
 STR_5157    :Sblocca tutti i prezzi
-STR_5158    :Torna al menù
+STR_5158    :Torna al menu
 STR_5159    :Esci da OpenRCT2
 STR_5160    :{POP16}{MONTH} {PUSH16}{PUSH16}{STRINGID}, anno {POP16}{COMMA16}
 STR_5161    :Formato data:
@@ -3602,7 +3602,7 @@ STR_5256    :Create a new theme to make changes to
 STR_5257    :{SMALLFONT}{BLACK}Create a new theme based on the current one
 STR_5258    :{SMALLFONT}{BLACK}Delete the current theme
 STR_5259    :{SMALLFONT}{BLACK}Rename the current theme
-STR_5260    :Screenshot Gigante
+STR_5260    :Schermata gigante
 STR_5261    :Filtro
 STR_5262    :Wacky Worlds
 STR_5263    :Time Twister
@@ -3620,15 +3620,15 @@ STR_5274    :{SMALLFONT}{BLACK}Percorso
 STR_5275    :Cerca per oggetti
 STR_5276    :Inserisci il nome di un oggetto da cercare
 STR_5277    :Pulisci
-STR_5278    :Modalità Sandbox
+STR_5278    :Modalità sandbox
 STR_5279    :Disattiva modalità sandbox
 STR_5280    :{SMALLFONT}{BLACK}Permetti la modifica delle impostazioni del terreno tramite la finestra Mappa e altre opzioni che sono solitamente non disponibili nella modifica Scenario
 STR_5281    :{SMALLFONT}{BLACK}Feature
 STR_5282    :RCT1 Ride Open/Close Lights
 STR_5283    :RCT1 Park Open/Close Lights
 STR_5284    :RCT1 Selezione Font Scenario
-STR_5285    :ESPLODE!!!
-STR_5286    :{SMALLFONT}{BLACK}Qualche visitatore esplode
+STR_5285    :ESPLODI!!!
+STR_5286    :{SMALLFONT}{BLACK}Fa esplodere alcuni visitatori
 STR_5287    :L'attrazione è già partita
 STR_5288    :Corsa chiusa
 STR_5289    :Nessun guasto per questa attrazione
@@ -3646,7 +3646,7 @@ STR_5300    :{SMALLFONT}{BLACK}Licenzia velocemente il personale
 STR_5301    :{MEDIUMFONT}{BLACK}Cancella il prestito
 STR_5302    :Azzera prestito
 STR_5303    :Permetti la costruzione in pausa
-STR_5304    :Sequenza Titolo:
+STR_5304    :Sequenza del titolo:
 STR_5305    :RollerCoaster Tycoon 1
 STR_5306    :RollerCoaster Tycoon 1 (AA)
 STR_5307    :RollerCoaster Tycoon 1 (AA + LL)
@@ -3685,12 +3685,12 @@ STR_5339    :{SMALLFONT}{BLACK}Altezza base
 STR_5340    :{SMALLFONT}{BLACK}Clearance height
 STR_5341    :<removed string - do not use>
 STR_5342    :<removed string - do not use>
-STR_5343    :Posiziona personale automaticamente
+STR_5343    :Colloca automaticamente il personale
 STR_5344    :Changelog
-STR_5345    :Trucchi Finanziari
-STR_5346    :Trucchi Visitatori
-STR_5347    :Trucchi Parco
-STR_5348    :Trucchi Attrazione
+STR_5345    :Trucchi finanziari
+STR_5346    :Trucchi visitatori
+STR_5347    :Trucchi parco
+STR_5348    :Trucchi attrazioni
 STR_5349    :{SMALLFONT}{BLACK}Tutte le attrazioni
 STR_5350    :Max
 STR_5351    :Min
@@ -3699,22 +3699,22 @@ STR_5353    :{BLACK}Energia:
 STR_5354    :{BLACK}Fame:
 STR_5355    :{BLACK}Sete:
 STR_5356    :{BLACK}Nausea:
-STR_5357    :{BLACK}Tolleranza Nausea:
-STR_5358    :{BLACK}Necessità Bagno:
-STR_5359    :Rimuovi Visitatori
+STR_5357    :{BLACK}Tolleranza nausea:
+STR_5358    :{BLACK}Bagno:
+STR_5359    :Rimuovi visitatori
 STR_5360    :{SMALLFONT}{BLACK}Rimuovi tutti i visitatori dalla mappa
-STR_5361    :Su titti i visitatori:
+STR_5361    :Dai a tutti i visitatori:
 STR_5362    :{BLACK}Imposta ai visitatori l'intensità attrazione:
 STR_5363    :Più di 1
 STR_5364    :Meno di 15
 STR_5365    :{BLACK}Velocità personale:
 STR_5366    :Normale
 STR_5367    :Veloce
-STR_5368    :Resetta lo stato dei crash
-STR_5369    :Parametri Parco...
+STR_5368    :Reset stato incidenti
+STR_5369    :Parametri parco...
 STR_5370    :{SMALLFONT}{BLACK}Clicca questo pulsante per modificare il parco{NEWLINE}parametri come restrizione,{NEWLINE}generazione visitatori e soldi.
 STR_5371    :Selezione oggetti
-STR_5372    :Inverti il drag destra del mouse
+STR_5372    :Inverti direzione trascinamento con clic destro
 STR_5373    :Nome {STRINGID}
 STR_5374    :Data {STRINGID}
 STR_5375    :{UP}
@@ -3778,11 +3778,11 @@ STR_5432    :Comando:
 STR_5433    :Sequenza Titoli
 STR_5434    :Editor Comandi
 STR_5435    :Rinomina salvataggio
-STR_5436    :Modifica Sequenza dei Titoli...
+STR_5436    :Modifica sequenza titolo...
 STR_5437    :Nessun salvataggio selezionato
 STR_5438    :Non puoi fare modifiche mentre l'editor dei comandi è aperto
 STR_5439    :A wait command with at least 4 seconds is required with a restart command
-STR_5440    :Minimizza la schermata a tutto quando si perde il focus
+STR_5440    :Riduci schermo intero se il gioco perde il focus
 STR_5441    :{SMALLFONT}{BLACK}Identifica le attrazioni in base al percorso{NEWLINE}in modo che si possano sostituirne successivamente{NEWLINE}i veicoli (come in RCT1)
 STR_5442    :Voto del parco:
 STR_5443    :Velocità{MOVE_X}{87}{STRINGID}
@@ -3798,14 +3798,14 @@ STR_5452    :Visibilità della barra
 STR_5453    :Selezione altra corsa
 STR_5454    :FPS senza limiti
 STR_5455    :Abilita modalità sandbox
-STR_5456    :Disabilita verifiche di pulizia
+STR_5456    :Disabilita controlli distanze
 STR_5457    :Disabilita limite supporti
 STR_5458    :Ruota senso orario
 STR_5459    :Ruota antiorario
 STR_5460    :Ruota visuale antiorario
 STR_5461    :Imposta parametri visitatori
 STR_5462    :{CURRENCY}
-STR_5463    :Obiettivo: {OPENQUOTES}Divertirsi!{ENDQUOTES}
+STR_5463    :Obiett. "Divertiti"
 STR_5464    :Generale
 STR_5465    :Clima
 STR_5466    :Personale
@@ -3815,7 +3815,7 @@ STR_5469    :Scorri la mappa in alto
 STR_5470    :Scorri la mappa a sinistra
 STR_5471    :Scorri la mappa in basso
 STR_5472    :Scorri la mappa a destra
-STR_5473    :Ciclo giorno / notte
+STR_5473    :Ciclo giorno/notte
 STR_5474    :Mostra testo nei cartelli in maiuscolo
 STR_5475    :{COMMA16} settimane
 STR_5476    :Hardware
@@ -3849,12 +3849,12 @@ STR_5503    :Inserisci hostname o indirizzo IP:
 STR_5504    :{SMALLFONT}{BLACK}Show multiplayer status
 STR_5505    :Impossibile connettersi al server.
 STR_5506    :I visitatori ignorano l'intensità
-STR_5507    :Il tuttofare taglia l'erba in modo predefinito
+STR_5507    :I tuttofare tagliano l'erba di default
 STR_5508    :Permetti caricamento file con checksum errato
 STR_5509    :{SMALLFONT}{BLACK}Permetti il caricamento di scenari e salvataggi{NEWLINE}che hanno un codice di controllo errato,{NEWLINE}come ad esempio gli scenari della demo{NEWLINE}o i salvataggi danneggiati.
 STR_5510    :Scheda audio predefinita
 STR_5511    :(UNKNOWN)
-STR_5512    :Salva gioco con nome...
+STR_5512    :Salva partita con nome...
 STR_5513    :Salvataggio veloce
 STR_5514    :Disattiva vandalismi
 STR_5515    :{SMALLFONT}{BLACK}Impedisce ai visitatori di vandalizzare il parco quando sono arrabbiati
@@ -3896,12 +3896,12 @@ STR_5550    :{POP16}{POP16}Anno {COMMA16}, {PUSH16}{PUSH16}{MONTH} {PUSH16}{PUSH
 STR_5551    :Anno/Giorno/Mese
 STR_5552    :{POP16}{POP16}Anno {COMMA16}, {PUSH16}{PUSH16}{PUSH16}{STRINGID} {MONTH}
 STR_5553    :Gioco in pausa quando l'overlay di Steam è aperto
-STR_5554    :{SMALLFONT}{BLACK}Enable mountain tool
+STR_5554    :{SMALLFONT}{BLACK}Attiva lo strumento montagna
 STR_5555    :Mostra i veicoli di altre attrazioni
 STR_5556    :{SMALLFONT}{BLACK}Caccia giocatore
 STR_5557    :Rimani connesso in caso di asincronia (multigiocatore)
 STR_5558    :È necessario riavviare il gioco per attivare questa opzione
-STR_5559    :Ispezioni ogni 10 minuti
+STR_5559    :Ispezioni ogni 10 min.
 STR_5560    :{SMALLFONT}{BLACK}Imposta l'intervallo di ispezione a {OPENQUOTES}Ogni 10 minuti{ENDQUOTES} su tutte le attrazioni
 STR_5561    :Caricamento lingua fallito
 STR_5562    :ATTENZIONE!
@@ -3921,7 +3921,7 @@ STR_5575    :Massimo numero giocatori:
 STR_5576    :Porta:
 STR_5577    :Won sudcoreani (W)
 STR_5578    :Rubli russi (R)
-STR_5579    :Window scale factor:
+STR_5579    :Fattore di scala:
 STR_5580    :Corona ceca (Kc)
 STR_5581    :Mostra FPS
 STR_5582    :Blocca il mouse nella finestra
@@ -4042,7 +4042,7 @@ STR_5729    :{SMALLFONT}{BLACK}Richiede il rendering hardware
 STR_5730    :Nearest Neighbour
 STR_5731    :Lineare
 STR_5732    :Anisotropico
-STR_5733    :Scala con N. Neighbour a valori interi
+STR_5733    :Scala con "Nearest Neighbour" a valori interi
 # tooltip for tab in options window
 STR_5734    :{SMALLFONT}{BLACK}Rendering
 STR_5735    :Stato della rete
@@ -4050,8 +4050,8 @@ STR_5736    :Giocatore
 STR_5737    :Chiuso, ma {COMMA16} persone sono sull'attrazione
 STR_5738    :Chiuso, ma {COMMA16} persone sono sull'attrazione
 STR_5739    :{WINDOW_COLOUR_2}Clienti nelle attrazioni: {BLACK}{COMMA16}
-STR_5740    :Rimuovi scadenza da campagne di marketing
-STR_5741    :{SMALLFONT}{BLACK}Permette di creare campagne di marketing infinite
+STR_5740    :Campagne di marketing infinite
+STR_5741    :{SMALLFONT}{BLACK}Permette di creare campagne di marketing senza scadenza
 STR_5742    :Autenticazione...
 STR_5743    :Connessione...
 STR_5744    :Risoluzione indirizzo...
@@ -4098,7 +4098,7 @@ STR_5784    :{BLACK}Completare gli scenari precedenti per sbloccare questo.
 STR_5785    :Impossibile rinominare il gruppo...
 STR_5786    :Nome di gruppo non valido
 STR_5787    :{COMMA32} giocatori connessi
-STR_5788    :Tempo ispezioni predefinito:
+STR_5788    :Ispeziona attrazioni:
 STR_5789    :Disattiva effetto fulmine
 STR_5790    :{SMALLFONT}{BLACK}Attiva/disattiva i prezzi di RCT1{NEWLINE}(es. sia prezzo di ingresso che prezzo sulle attrazioni)
 STR_5791    :{SMALLFONT}{BLACK}Imposta l'affidabilità di tutte le attrazioni a 100%{NEWLINE}e reimposta la loro data di costruzione a {OPENQUOTES}quest'anno{ENDQUOTES}
@@ -4147,14 +4147,14 @@ STR_5832    :{SMALLFONT}{BLACK}Mostra l'altezza in unità generiche invece del f
 STR_5833    :{SMALLFONT}{BLACK}Cambia il formato della data utilizzato
 STR_5834    :{SMALLFONT}{BLACK}Seleziona il dispositivo audio utilizzato da OpenRCT2
 STR_5835    :{SMALLFONT}{BLACK}Disattiva l'audio del gioco se la finestra perde il focus
-STR_5836    :{SMALLFONT}{BLACK}Imposta la musica da utilizzare nel menù principale.{NEWLINE}Selezionando RCT1 sarà necessario copiare il file 'data/css17.dat' dalla cartella di RCT1 a 'data/css50.dat' nella cartella di RCT2, oppure impostare il percorso di RCT1 nella scheda "Altro".
+STR_5836    :{SMALLFONT}{BLACK}Imposta la musica da utilizzare nel menu principale.{NEWLINE}Selezionando RCT1 sarà necessario copiare il file 'data/css17.dat' dalla cartella di RCT1 a 'data/css50.dat' nella cartella di RCT2, oppure impostare il percorso di RCT1 nella scheda "Altro".
 STR_5837    :{SMALLFONT}{BLACK}Crea e gestisci i temi dell'interfaccia
 STR_5838    :{SMALLFONT}{BLACK}Mostra un pulsante differente per le finanze nella barra degli strumenti
 STR_5839    :{SMALLFONT}{BLACK}Mostra un pulsante differente per le ricerche e sviluppo nella barra degli strumenti
 STR_5840    :{SMALLFONT}{BLACK}Mostra un pulsante differente per i trucchi nella barra degli strumenti
 STR_5841    :{SMALLFONT}{BLACK}Mostra un pulsante differente per le novità nella barra degli strumenti
 STR_5842    :{SMALLFONT}{BLACK}Mostra scenari divisi per difficoltà (come in RCT2) o per gioco di origine (come in RCT1)
-STR_5843    :{SMALLFONT}{BLACK}Abilita lo sblocco degli scenari (RCT1)
+STR_5843    :{SMALLFONT}{BLACK}Abilita lo sblocco degli scenari come in RCT1
 STR_5844    :{SMALLFONT}{BLACK}Connettiti al server multigiocatore{NEWLINE}anche in caso di asincronia o errori
 STR_5845    :{SMALLFONT}{BLACK}Aggiungi un pulsante{NEWLINE}per debuggare nella barra.{NEWLINE}Abilita le shortcut nellatastiera per la console sviluppatori
 STR_5846    :{SMALLFONT}{BLACK}Imposta i salvataggi automatici di OpenRCT2 spesso
@@ -4184,12 +4184,12 @@ STR_5869    :{WINDOW_COLOUR_2}Sito provider: {BLACK}{STRING}
 STR_5870    :{SMALLFONT}{BLACK}Mostra le informazioni del server
 STR_5871    :Le piante non invecchiano
 STR_5872    :{SMALLFONT}{BLACK}Disabilità l'invecchiamento delle piante.
-STR_5873    :Permetti catena di traino su tutti i pezzi del tracciato
+STR_5873    :Permetti catena di traino su tutti i pezzi
 STR_5874    :{SMALLFONT}{BLACK}Permette di rendere qualsiasi pezzo del tracciato una catena di traino
 STR_5875    :Motore di rendering:
 STR_5876    :{SMALLFONT}{BLACK}Il motore grafico usato per mostrare la grafica del gioco.
 STR_5877    :Software
-STR_5878    :Software (rendering hardware)
+STR_5878    :Rendering hardware
 STR_5879    :OpenGL (sperimentale)
 STR_5880    :Solo selezionati
 STR_5881    :Solo non selezionati
@@ -4217,7 +4217,7 @@ STR_5902    :Mostra i bounding box
 STR_5903    :Mostra la finestra di debug del rendering
 STR_5904    :Reimposta data
 STR_5905    :{SMALLFONT}{BLACK}Uno strumento di generazione mappe che crea automaticamente un paesaggio personalizzato
-STR_5906    :Zoom alla posizione del cursore
+STR_5906    :Zoom rispetto alla posizione del cursore
 STR_5907    :{SMALLFONT}{BLACK}Se abilitato, effettuando lo zoom l'ingrandimento avverrà centrato sul cursore anziché al centro dello schermo.
 STR_5908    :Permetti qualsiasi cambio di tipo percorso
 STR_5909    :{SMALLFONT}{BLACK}Permette di cambiare liberamente il tipo di percorso. Potrebbe causare blocchi del gioco.
@@ -4314,7 +4314,7 @@ STR_5998    :Aggiungi denaro
 STR_5999    :Imposta denaro
 STR_6000    :Inserire il nuovo valore
 STR_6001    :Attiva effetti luce (sperimentale)
-STR_6002    :{SMALLFONT}{BLACK}Le attrazioni e i lampioni saranno illuminati di notte.{NEWLINE}Richiede il motore di rendering hardware.
+STR_6002    :{SMALLFONT}{BLACK}Le attrazioni e i lampioni saranno illuminati di notte. Richiede il motore di rendering hardware.
 STR_6003    :Vista sezionata
 STR_6004    :Vista sezionata
 STR_6005    :Attiva la vista sezionata
@@ -4345,7 +4345,7 @@ STR_6029    :Costruzione percorso - Demolisci attuale
 STR_6030    :{SMALLFONT}{BLACK}Contagocce scenario. Fare clic su un qualsiasi elemento dello scenario per attivare la costruzione di quel pezzo.
 STR_6031    :Descrizione server:
 STR_6032    :Messaggio di benvenuto server:
-STR_6033    :Percorso installazione di RCT1:
+STR_6033    :Cartella di RCT1:
 STR_6035    :Selezionare la cartella di installazione di RCT1
 STR_6036    :{SMALLFONT}{BLACK}Pulisci
 STR_6037    :Selezionare una cartella di installazione di RCT1 valida
