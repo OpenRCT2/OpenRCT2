@@ -4529,7 +4529,7 @@ static rct_vehicle *vehicle_create_car(
 			vehicle->sprite_direction = scenario_rand() & 0x1E;
 			chosenLoc.y = y + (scenario_rand() & 0xFF);
 			chosenLoc.x = x + (scenario_rand() & 0xFF);
-		} while (vehicle_update_bumper_car_collision(vehicle, chosenLoc.x, chosenLoc.y, NULL));
+		} while (vehicle_update_dodgems_collision(vehicle, chosenLoc.x, chosenLoc.y, NULL));
 
 		sprite_move(chosenLoc.x, chosenLoc.y, z, (rct_sprite*)vehicle);
 	} else {
@@ -8065,9 +8065,9 @@ bool shop_item_is_food_or_drink(sint32 shopItem)
 	switch (shopItem) {
 	case SHOP_ITEM_DRINK:
 	case SHOP_ITEM_BURGER:
-	case SHOP_ITEM_FRIES:
+	case SHOP_ITEM_CHIPS:
 	case SHOP_ITEM_ICE_CREAM:
-	case SHOP_ITEM_COTTON_CANDY:
+	case SHOP_ITEM_CANDYFLOSS:
 	case SHOP_ITEM_PIZZA:
 	case SHOP_ITEM_POPCORN:
 	case SHOP_ITEM_HOT_DOG:
@@ -8101,9 +8101,9 @@ bool shop_item_is_food(sint32 shopItem)
 {
 	switch (shopItem) {
 	case SHOP_ITEM_BURGER:
-	case SHOP_ITEM_FRIES:
+	case SHOP_ITEM_CHIPS:
 	case SHOP_ITEM_ICE_CREAM:
-	case SHOP_ITEM_COTTON_CANDY:
+	case SHOP_ITEM_CANDYFLOSS:
 	case SHOP_ITEM_PIZZA:
 	case SHOP_ITEM_POPCORN:
 	case SHOP_ITEM_HOT_DOG:

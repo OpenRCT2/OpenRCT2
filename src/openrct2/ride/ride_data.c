@@ -58,7 +58,7 @@ const bool hasRunningTrack[0x60] = {
 	true,	// 16 Go Karts
 	true,	// 17 Log Flume
 	true,	// 18 River Rapids
-	false,	// 19 Bumper Cars
+	false,	// 19 Dodgems
 	false,	// 1a Pirate Ship
 	false,	// 1b Swinging Inverter Ship
 	false,	// 1c Food Stall
@@ -158,7 +158,7 @@ const uint8 initialUpkeepCosts[0x60] = {
 	50,	// 16 Go Karts
 	80,	// 17 Log Flume
 	82,	// 18 River Rapids
-	50,	// 19 Bumper Cars
+	50,	// 19 Dodgems
 	50,	// 1a Pirate Ship
 	50,	// 1b Swinging Inverter Ship
 	50,	// 1c Food Stall
@@ -251,7 +251,7 @@ const uint8 costPerTrackPiece[0x60] = {
 	0,	// 16 Go Karts
 	0,	// 17 Log Flume
 	0,	// 18 River Rapids
-	0,	// 19 Bumper Cars
+	0,	// 19 Dodgems
 	0,	// 1a Pirate Ship
 	0,	// 1b Swinging Inverter Ship
 	0,	// 1c Food Stall
@@ -347,7 +347,7 @@ const uint8 rideUnknownData1[0x60] = {
 	8,	// 16 Go Karts
 	9,	// 17 Log Flume
 	10,	// 18 River Rapids
-	5,	// 19 Bumper Cars
+	5,	// 19 Dodgems
 	0,	// 1a Pirate Ship
 	0,	// 1b Swinging Inverter Ship
 	0,	// 1c Food Stall
@@ -444,7 +444,7 @@ const bool rideUnknownData2[0x60] = {
 	false,	// 16 Go Karts
 	false,	// 17 Log Flume
 	false,	// 18 River Rapids
-	false,	// 19 Bumper Cars
+	false,	// 19 Dodgems
 	false,	// 1a Pirate Ship
 	false,	// 1b Swinging Inverter Ship
 	false,	// 1c Food Stall
@@ -538,7 +538,7 @@ const uint8 rideUnknownData3[0x60] = {
 	0,	// 16 Go Karts
 	10,	// 17 Log Flume
 	10,	// 18 River Rapids
-	0,	// 19 Bumper Cars
+	0,	// 19 Dodgems
 	0,	// 1a Pirate Ship
 	0,	// 1b Swinging Inverter Ship
 	0,	// 1c Food Stall
@@ -632,7 +632,7 @@ const uint8 rideBonusValue[0x60] = {
 	55,  // 16 Go Karts
 	65,  // 17 Log Flume
 	70,  // 18 River Rapids
-	35,  // 19 Bumper Cars
+	35,  // 19 Dodgems
 	35,  // 1a Pirate Ship
 	35,  // 1b Swinging Inverter Ship
 	15,  // 1c Food Stall
@@ -742,7 +742,7 @@ const rct_ride_name_convention RideNameConvention[96] = {
 	{ RIDE_COMPONENT_TYPE_CAR,			RIDE_COMPONENT_TYPE_TRACK,				RIDE_COMPONENT_TYPE_STATION }, // 16 Go Karts
 	{ RIDE_COMPONENT_TYPE_BOAT,			RIDE_COMPONENT_TYPE_TRACK,				RIDE_COMPONENT_TYPE_STATION }, // 17 Log Flume
 	{ RIDE_COMPONENT_TYPE_BOAT,			RIDE_COMPONENT_TYPE_TRACK,				RIDE_COMPONENT_TYPE_STATION }, // 18 River Rapids
-	{ RIDE_COMPONENT_TYPE_CAR,			RIDE_COMPONENT_TYPE_BUILDING,			RIDE_COMPONENT_TYPE_STATION }, // 19 Bumper Cars
+	{ RIDE_COMPONENT_TYPE_CAR,			RIDE_COMPONENT_TYPE_BUILDING,			RIDE_COMPONENT_TYPE_STATION }, // 19 Dodgems
 	{ RIDE_COMPONENT_TYPE_SHIP,			RIDE_COMPONENT_TYPE_STRUCTURE,			RIDE_COMPONENT_TYPE_STATION }, // 1a Pirate Ship
 	{ RIDE_COMPONENT_TYPE_SHIP,			RIDE_COMPONENT_TYPE_STRUCTURE,			RIDE_COMPONENT_TYPE_STATION }, // 1b Swinging Inverter Ship
 	{ RIDE_COMPONENT_TYPE_CAR,			RIDE_COMPONENT_TYPE_BUILDING,			RIDE_COMPONENT_TYPE_STATION }, // 1c Food Stall
@@ -934,7 +934,7 @@ const uint8 RideAvailableModes[] = {
 	RIDE_MODE_RACE, RIDE_MODE_CONTINUOUS_CIRCUIT, 0xFF,																										// 16 Go Karts
 	RIDE_MODE_CONTINUOUS_CIRCUIT, 0xFF,																														// 17 Log Flume
 	RIDE_MODE_CONTINUOUS_CIRCUIT, 0xFF,																														// 18 River Rapids
-	RIDE_MODE_BUMPERCAR, 0xFF,																																// 19 Bumper Cars
+	RIDE_MODE_BUMPERCAR, 0xFF,																																// 19 Dodgems
 	RIDE_MODE_SWING, 0xFF,																																	// 1A Pirate Ship
 	RIDE_MODE_SWING, 0xFF,																																	// 1B Swinging Inverter Ship
 	RIDE_MODE_SHOP_STALL, 0xFF,																																// 1C Food Stall
@@ -1032,7 +1032,7 @@ const uint8 RideAvailableBreakdowns[] = {
 	(1 << BREAKDOWN_VEHICLE_MALFUNCTION),																																							// 16 Go Karts
 	(1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_CONTROL_FAILURE),																																// 17 Log Flume
 	(1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_CONTROL_FAILURE),																																// 18 River Rapids
-	(1 << BREAKDOWN_SAFETY_CUT_OUT),																																								// 19 Bumper Cars
+	(1 << BREAKDOWN_SAFETY_CUT_OUT),																																								// 19 Dodgems
 	(1 << BREAKDOWN_SAFETY_CUT_OUT),																																								// 1A Pirate Ship
 	(1 << BREAKDOWN_SAFETY_CUT_OUT),																																								// 1B Swinging Inverter Ship
 	0,																																																// 1C Food Stall
@@ -1412,9 +1412,9 @@ const money8 DefaultShopItemPrice[SHOP_ITEM_COUNT] = {
 	MONEY(2,50),						// SHOP_ITEM_UMBRELLA
 	MONEY(1,20),						// SHOP_ITEM_DRINK
 	MONEY(1,50),						// SHOP_ITEM_BURGER
-	MONEY(1,50),						// SHOP_ITEM_FRIES
+	MONEY(1,50),						// SHOP_ITEM_CHIPS
 	MONEY(0,90),						// SHOP_ITEM_ICE_CREAM
-	MONEY(0,80),						// SHOP_ITEM_COTTON_CANDY
+	MONEY(0,80),						// SHOP_ITEM_CANDYFLOSS
 	MONEY(0,00),						// SHOP_ITEM_EMPTY_CAN
 	MONEY(0,00),						// SHOP_ITEM_RUBBISH
 	MONEY(0,00),						// SHOP_ITEM_EMPTY_BURGER_BOX
@@ -1528,9 +1528,9 @@ const uint32 ShopItemImage[SHOP_ITEM_COUNT] = {
 	SPR_SHOP_ITEM_UMBRELLA,
 	SPR_SHOP_ITEM_DRINK,
 	SPR_SHOP_ITEM_BURGER,
-	SPR_SHOP_ITEM_FRIES,
+	SPR_SHOP_ITEM_CHIPS,
 	SPR_SHOP_ITEM_ICE_CREAM,
-	SPR_SHOP_ITEM_COTTON_CANDY,
+	SPR_SHOP_ITEM_CANDYFLOSS,
 	SPR_SHOP_ITEM_EMPTY_CAN,
 	SPR_SHOP_ITEM_RUBBISH,
 	SPR_SHOP_ITEM_EMPTY_BURGER_BOX,
@@ -1663,7 +1663,7 @@ const rct_ride_lift_data RideLiftData[] = {
 	{ 255,			5, 5 }, // Go Karts
 	{ 255,			5, 5 }, // Log Flume
 	{ 255,			5, 5 }, // River Rapids
-	{ 255,			5, 5 }, // Bumper Cars
+	{ 255,			5, 5 }, // Dodgems
 	{ 255,			5, 5 }, // Pirate Ship
 	{ 255,			5, 5 }, // Swinging Inverter Ship
 	{ 255,			5, 5 }, // Food Stall
@@ -2435,9 +2435,9 @@ const rct_shop_item_stats ShopItemStats[SHOP_ITEM_COUNT] = {
 	{ 20, 35, 25, 50 },	// SHOP_ITEM_UMBRELLA
 	{  3, 12, 20, 10 },	// SHOP_ITEM_DRINK
 	{  5, 19, 19, 22 },	// SHOP_ITEM_BURGER
-	{  4, 16, 16, 18 },	// SHOP_ITEM_FRIES
+	{  4, 16, 16, 18 },	// SHOP_ITEM_CHIPS
 	{  4, 10, 15,  6 },	// SHOP_ITEM_ICE_CREAM
-	{  3,  9,  9,  6 },	// SHOP_ITEM_COTTON_CANDY
+	{  3,  9,  9,  6 },	// SHOP_ITEM_CANDYFLOSS
 	{  0,  0,  0,  0 },	// SHOP_ITEM_EMPTY_CAN
 	{  0,  0,  0,  0 },	// SHOP_ITEM_RUBBISH
 	{  0,  0,  0,  0 },	// SHOP_ITEM_EMPTY_BURGER_BOX

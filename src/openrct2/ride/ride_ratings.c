@@ -717,7 +717,7 @@ static uint16 ride_compute_upkeep(rct_ride *ride)
 
 	// The data originally here was 20's and 0's. The 20's all represented
 	// rides that had tracks. The 0's were fixed rides like crooked house or
-	// bumper cars.
+	// dodgems.
 	// Data source is 0x0097E3AC
 	if (hasRunningTrack[ride->type]) {
 		totalLength *= 20;

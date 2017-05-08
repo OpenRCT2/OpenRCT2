@@ -750,9 +750,9 @@ static const uint8 byte_9822F4[] = {
 	0,		// SHOP_ITEM_UMBRELLA
 	100,	// SHOP_ITEM_DRINK
 	150,	// SHOP_ITEM_BURGER
-	120,	// SHOP_ITEM_FRIES
+	120,	// SHOP_ITEM_CHIPS
 	60,		// SHOP_ITEM_ICE_CREAM
-	50,		// SHOP_ITEM_COTTON_CANDY
+	50,		// SHOP_ITEM_CANDYFLOSS
 	0,		// SHOP_ITEM_EMPTY_CAN
 	0,		// SHOP_ITEM_RUBBISH
 	0,		// SHOP_ITEM_EMPTY_BURGER_BOX
@@ -828,9 +828,9 @@ static const uint8 peep_item_containers[] = {
 	0xFF,							// PEEP_ITEM_UMBRELLA
 	SHOP_ITEM_EMPTY_CAN,			// PEEP_ITEM_DRINK
 	SHOP_ITEM_EMPTY_BURGER_BOX,		// PEEP_ITEM_BURGER
-	SHOP_ITEM_RUBBISH,				// PEEP_ITEM_FRIES
+	SHOP_ITEM_RUBBISH,				// PEEP_ITEM_CHIPS
 	0xFF,							// PEEP_ITEM_ICE_CREAM
-	0xFF,							// PEEP_ITEM_COTTON_CANDY
+	0xFF,							// PEEP_ITEM_CANDYFLOSS
 	0xFF,							// PEEP_ITEM_EMPTY_CAN
 	0xFF,							// PEEP_ITEM_RUBBISH
 	0xFF,							// PEEP_ITEM_EMPTY_BURGER_BOX
@@ -1677,14 +1677,14 @@ typedef struct item_pref_t {
 
 item_pref_t item_order_preference[] = {
 		{ 0, PEEP_ITEM_ICE_CREAM, PEEP_SPRITE_TYPE_ICE_CREAM },
-		{ 0, PEEP_ITEM_FRIES, PEEP_SPRITE_TYPE_FRIES },
+		{ 0, PEEP_ITEM_CHIPS, PEEP_SPRITE_TYPE_CHIPS },
 		{ 0, PEEP_ITEM_PIZZA, PEEP_SPRITE_TYPE_PIZZA },
 		{ 0, PEEP_ITEM_BURGER, PEEP_SPRITE_TYPE_BURGER },
 		{ 0, PEEP_ITEM_DRINK, PEEP_SPRITE_TYPE_DRINK },
 		{ 0, PEEP_ITEM_COFFEE, PEEP_SPRITE_TYPE_COFFEE },
 		{ 0, PEEP_ITEM_CHICKEN, PEEP_SPRITE_TYPE_CHICKEN },
 		{ 0, PEEP_ITEM_LEMONADE, PEEP_SPRITE_TYPE_LEMONADE },
-		{ 0, PEEP_ITEM_COTTON_CANDY, PEEP_SPRITE_TYPE_CANDYFLOSS },
+		{ 0, PEEP_ITEM_CANDYFLOSS, PEEP_SPRITE_TYPE_CANDYFLOSS },
 		{ 0, PEEP_ITEM_POPCORN, PEEP_SPRITE_TYPE_PIZZA },
 		{ 0, PEEP_ITEM_HOT_DOG, PEEP_SPRITE_TYPE_HOT_DOG  },
 		{ 0, PEEP_ITEM_TENTACLE, PEEP_SPRITE_TYPE_TENTACLE },
@@ -4886,7 +4886,7 @@ static void peep_update_queuing(rct_peep* peep){
 		if (!(peep->time_in_queue & 0x3F) && peep->action == 0xFE && peep->next_action_sprite_type == 2){
 			switch (peep->sprite_type) {
 			case PEEP_SPRITE_TYPE_ICE_CREAM:
-			case PEEP_SPRITE_TYPE_FRIES:
+			case PEEP_SPRITE_TYPE_CHIPS:
 			case PEEP_SPRITE_TYPE_BURGER:
 			case PEEP_SPRITE_TYPE_DRINK:
 			case PEEP_SPRITE_TYPE_CANDYFLOSS:
@@ -4980,7 +4980,7 @@ static void peep_update_mowing(rct_peep* peep){
 		for (; (map_element_get_type(map_element) != MAP_ELEMENT_TYPE_SURFACE); map_element++);
 
 		if ((map_element->properties.surface.terrain & MAP_ELEMENT_SURFACE_TERRAIN_MASK) == (TERRAIN_GRASS << 5)){
-			map_element->properties.surface.grass_length = 0;
+			map_element->properties.surface.grass_length = GRASS_LENGTH_MOWED;
 			map_invalidate_tile_zoom0(peep->next_x, peep->next_y, map_element->base_height * 8, map_element->base_height * 8 + 16);
 		}
 		peep->staff_lawns_mown++;
@@ -5659,9 +5659,9 @@ static const uint8 item_standard_litter[32] = {
 	LITTER_TYPE_RUBBISH,			// PEEP_ITEM_UMBRELLA
 	LITTER_TYPE_RUBBISH,			// PEEP_ITEM_DRINK
 	LITTER_TYPE_RUBBISH,			// PEEP_ITEM_BURGER
-	LITTER_TYPE_RUBBISH,			// PEEP_ITEM_FRIES
+	LITTER_TYPE_RUBBISH,			// PEEP_ITEM_CHIPS
 	LITTER_TYPE_RUBBISH,			// PEEP_ITEM_ICE_CREAM
-	LITTER_TYPE_RUBBISH,			// PEEP_ITEM_COTTON_CANDY
+	LITTER_TYPE_RUBBISH,			// PEEP_ITEM_CANDYFLOSS
 	LITTER_TYPE_EMPTY_CAN,			// PEEP_ITEM_EMPTY_CAN
 	LITTER_TYPE_RUBBISH,			// PEEP_ITEM_RUBBISH
 	LITTER_TYPE_EMPTY_BURGER_BOX,	// PEEP_ITEM_EMPTY_BURGER_BOX
@@ -7603,9 +7603,9 @@ static sint32 peep_has_food_standard_flag(rct_peep* peep){
 	return peep->item_standard_flags &(
 		PEEP_ITEM_DRINK |
 		PEEP_ITEM_BURGER |
-		PEEP_ITEM_FRIES |
+		PEEP_ITEM_CHIPS |
 		PEEP_ITEM_ICE_CREAM |
-		PEEP_ITEM_COTTON_CANDY |
+		PEEP_ITEM_CANDYFLOSS |
 		PEEP_ITEM_PIZZA |
 		PEEP_ITEM_POPCORN |
 		PEEP_ITEM_HOT_DOG |
@@ -10932,7 +10932,7 @@ static bool sub_69AF1E(rct_peep *peep, sint32 rideIndex, sint32 shopItem, money3
 	}
 
 	if ((shopItem == SHOP_ITEM_BALLOON) || (shopItem == SHOP_ITEM_ICE_CREAM)
-		|| (shopItem == SHOP_ITEM_COTTON_CANDY) || (shopItem == SHOP_ITEM_SUNGLASSES)) {
+		|| (shopItem == SHOP_ITEM_CANDYFLOSS) || (shopItem == SHOP_ITEM_SUNGLASSES)) {
 		if (gClimateCurrentRainLevel != 0)
 			return 0;
 	}

@@ -53,7 +53,7 @@ static void vehicle_update_rotating(rct_vehicle* vehicle);
 static void vehicle_update_space_rings_operating(rct_vehicle* vehicle);
 static void vehicle_update_haunted_house_operating(rct_vehicle* vehicle);
 static void vehicle_update_crooked_house_operating(rct_vehicle* vehicle);
-static void vehicle_update_bumpcar_mode(rct_vehicle* vehicle);
+static void vehicle_update_dodgems_mode(rct_vehicle* vehicle);
 static void vehicle_update_swinging(rct_vehicle* vehicle);
 static void vehicle_update_simulator_operating(rct_vehicle* vehicle);
 static void vehicle_update_top_spin_operating(rct_vehicle* vehicle);
@@ -68,7 +68,7 @@ static void vehicle_update_waiting_for_cable_lift(rct_vehicle *vehicle);
 static void vehicle_update_travelling_cable_lift(rct_vehicle* vehicle);
 static void vehicle_update_crash_setup(rct_vehicle* vehicle);
 static void vehicle_update_collision_setup(rct_vehicle* vehicle);
-static sint32 vehicle_update_motion_bumper_car(rct_vehicle* vehicle);
+static sint32 vehicle_update_motion_dodgems(rct_vehicle* vehicle);
 static void sub_6D63D4(rct_vehicle *vehicle);
 static bool vehicle_update_motion_collision_detection(rct_vehicle *vehicle, sint16 x, sint16 y, sint16 z, uint16 *otherVehicleIndex);
 static void vehicle_update_sound(rct_vehicle *vehicle);
@@ -1620,8 +1620,8 @@ static void vehicle_update(rct_vehicle *vehicle)
 	case VEHICLE_STATUS_CRASHED:
 		vehicle_update_crash(vehicle);
 		break;
-	case VEHICLE_STATUS_TRAVELLING_BUMPER_CARS:
-		vehicle_update_bumpcar_mode(vehicle);
+	case VEHICLE_STATUS_TRAVELLING_DODGEMS:
+		vehicle_update_dodgems_mode(vehicle);
 		break;
 	case VEHICLE_STATUS_SWINGING:
 		vehicle_update_swinging(vehicle);
@@ -2036,7 +2036,7 @@ static void vehicle_update_waiting_for_passengers(rct_vehicle* vehicle){
  *
  *  rct2: 0x006D91BF
  */
-static void vehicle_update_bumpcar_mode(rct_vehicle* vehicle) {
+static void vehicle_update_dodgems_mode(rct_vehicle *vehicle) {
 	rct_ride* ride = get_ride(vehicle->ride);
 	rct_ride_entry* rideEntry = get_ride_entry(vehicle->ride_subtype);
 	rct_ride_entry_vehicle* vehicleEntry = &rideEntry->vehicles[vehicle->vehicle_type];
@@ -2046,7 +2046,7 @@ static void vehicle_update_bumpcar_mode(rct_vehicle* vehicle) {
 		vehicle_invalidate(vehicle);
 	}
 
-	vehicle_update_motion_bumper_car(vehicle);
+	vehicle_update_motion_dodgems(vehicle);
 
 	// Update the length of time vehicle has been in bumper mode
 	if (vehicle->sub_state++ == 0xFF) {
@@ -2163,13 +2163,13 @@ static void vehicle_update_waiting_to_depart(rct_vehicle* vehicle) {
 
 	switch (ride->mode) {
 	case RIDE_MODE_BUMPERCAR:
-		vehicle->status = VEHICLE_STATUS_TRAVELLING_BUMPER_CARS;
+		vehicle->status = VEHICLE_STATUS_TRAVELLING_DODGEMS;
 		vehicle_invalidate_window(vehicle);
 		// Bumper mode uses sub_state / var_CE to tell how long
 		// the vehicle has been ridden.
 		vehicle->sub_state = 0;
 		vehicle->var_CE = 0;
-		vehicle_update_bumpcar_mode(vehicle);
+			vehicle_update_dodgems_mode(vehicle);
 		break;
 	case RIDE_MODE_SWING:
 		vehicle->status = VEHICLE_STATUS_SWINGING;
@@ -5034,7 +5034,7 @@ void vehicle_get_g_forces(rct_vehicle *vehicle, sint32 *verticalG, sint32 *later
 	case TRACK_ELEM_25_DEG_DOWN_LEFT_BANKED:
 	case TRACK_ELEM_25_DEG_DOWN_RIGHT_BANKED:
 	case TRACK_ELEM_WHIRLPOOL:
-	case TRACK_ELEM_REVERSE_WHOA_BELLY_VERTICAL:
+	case TRACK_ELEM_REVERSE_FREEFALL_VERTICAL:
 	case TRACK_ELEM_90_DEG_UP:
 	case TRACK_ELEM_90_DEG_DOWN:
 	case TRACK_ELEM_DIAG_FLAT:
@@ -5300,7 +5300,7 @@ void vehicle_get_g_forces(rct_vehicle *vehicle, sint32 *verticalG, sint32 *later
 		vertFactor = -160;
 		//6d74FD
 		break;
-	case TRACK_ELEM_REVERSE_WHOA_BELLY_SLOPE:
+	case TRACK_ELEM_REVERSE_FREEFALL_SLOPE:
 	case TRACK_ELEM_AIR_THRUST_VERTICAL_DOWN_TO_LEVEL:
 		vertFactor = 120;
 		//6d7458
@@ -5574,7 +5574,7 @@ sint32 vehicle_is_used_in_pairs(rct_vehicle *vehicle)
  *
  *  rct2: 0x006DA44E
  */
-static sint32 vehicle_update_motion_bumper_car(rct_vehicle* vehicle) {
+static sint32 vehicle_update_motion_dodgems(rct_vehicle* vehicle) {
 	_vehicleMotionTrackFlags = 0;
 	rct_ride* ride = get_ride(vehicle->ride);
 
@@ -5633,7 +5633,7 @@ static sint32 vehicle_update_motion_bumper_car(rct_vehicle* vehicle) {
 		location.x += Unk9A36C4[oldC4 + 1].x;
 		location.y += Unk9A36C4[oldC4 + 1].y;
 
-		if (!vehicle_update_bumper_car_collision(vehicle, location.x, location.y, &collideSprite)) {
+		if (!vehicle_update_dodgems_collision(vehicle, location.x, location.y, &collideSprite)) {
 			vehicle_invalidate(vehicle);
 			sprite_move(
 				location.x,
@@ -5664,7 +5664,7 @@ static sint32 vehicle_update_motion_bumper_car(rct_vehicle* vehicle) {
 			location.x += Unk9A36C4[direction].x;
 			location.y += Unk9A36C4[direction].y;
 
-			if (vehicle_update_bumper_car_collision(vehicle, location.x, location.y, &collideSprite))
+			if (vehicle_update_dodgems_collision(vehicle, location.x, location.y, &collideSprite))
 				break;
 
 			vehicle->remaining_distance -= Unk9A36C4[direction].distance;
@@ -5744,7 +5744,7 @@ static sint32 vehicle_update_motion_bumper_car(rct_vehicle* vehicle) {
  *
  *  rct2: 0x006DD365
  */
-bool vehicle_update_bumper_car_collision(rct_vehicle *vehicle, sint16 x, sint16 y, uint16 *spriteId)
+bool vehicle_update_dodgems_collision(rct_vehicle *vehicle, sint16 x, sint16 y, uint16 *spriteId)
 {
 	uint16 bp = (vehicle->var_44 * 30) >> 9;
 	uint32 trackType = vehicle->track_type >> 2;

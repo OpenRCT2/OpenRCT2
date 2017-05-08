@@ -1833,7 +1833,7 @@ static void track_design_preview_clear_map()
 		map_element->clearance_height = 0;
 		map_element->properties.surface.slope = 0;
 		map_element->properties.surface.terrain = 0;
-		map_element->properties.surface.grass_length = 1;
+		map_element->properties.surface.grass_length = GRASS_LENGTH_CLEAR_0;
 		map_element->properties.surface.ownership = OWNERSHIP_OWNED;
 	}
 	map_update_tile_pointers();

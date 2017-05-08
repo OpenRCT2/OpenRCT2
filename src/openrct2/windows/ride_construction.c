@@ -1455,7 +1455,7 @@ static void window_ride_construction_mousedown(rct_widgetindex widgetIndex, rct_
 		}
 		if (ride->type == RIDE_TYPE_REVERSE_FREEFALL_COASTER || ride->type == RIDE_TYPE_AIR_POWERED_VERTICAL_COASTER) {
 			if (_rideConstructionState == RIDE_CONSTRUCTION_STATE_FRONT && _currentTrackCurve == TRACK_CURVE_NONE) {
-				_currentTrackCurve = TRACK_ELEM_REVERSE_WHOA_BELLY_SLOPE | 0x100;
+				_currentTrackCurve = TRACK_ELEM_REVERSE_FREEFALL_SLOPE | 0x100;
 				sub_6C84CE();
 			}
 		} else {

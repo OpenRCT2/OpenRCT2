@@ -1176,11 +1176,10 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
 			rct2_peep_spawn * spawn = &gPeepSpawns[i];
 
 			if ((spawn->x & 0xFFE0) == pos.x && (spawn->y & 0xFFE0) == pos.y) {
-				// TODO: SPR_TERRAIN_SELECTION_SQUARE_SIMPLE ??? (no variations)
-				sub_98196C(2624, 0, 0, 32, 32, 16, spawn->z * 16, rotation);
+				sub_98196C(SPR_TERRAIN_SELECTION_SQUARE_SIMPLE, 0, 0, 32, 32, 16, spawn->z * 16, rotation);
 
 				sint32 offset = ((spawn->direction ^ 2) + rotation) & 3;
-				uint32 image_id = (3111 + offset) | 0x20380000;
+				uint32 image_id = (PEEP_SPAWN_ARROW_0 + offset) | 0x20380000;
 				sub_98196C(image_id, 0, 0, 32, 32, 19, spawn->z * 16, rotation);
 			}
 		}
@@ -1190,13 +1189,12 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
 		// loc_660E9A:
 		if (mapElement->properties.surface.ownership & OWNERSHIP_OWNED) {
 			assert(surfaceShape < countof(byte_97B444));
-			// TODO: SPR_TERRAIN_SELECTION_SQUARE?
-			paint_attach_to_previous_ps(2625 + byte_97B444[surfaceShape], 0, 0);
+			paint_attach_to_previous_ps(SPR_TERRAIN_SELECTION_SQUARE + byte_97B444[surfaceShape], 0, 0);
 		} else if (mapElement->properties.surface.ownership & OWNERSHIP_AVAILABLE) {
 			rct_xy16 pos = {gPaintMapPosition.x, gPaintMapPosition.y};
 			paint_struct * backup = g_ps_F1AD28;
 			sint32 height2 = (map_element_height(pos.x + 16, pos.y + 16) & 0xFFFF) + 3;
-			sub_98196C(22955, 16, 16, 1, 1, 0, height2, rotation);
+			sub_98196C(SPR_LAND_OWNERSHIP_AVAILABLE, 16, 16, 1, 1, 0, height2, rotation);
 			g_ps_F1AD28 = backup;
 		}
 	}
@@ -1205,13 +1203,12 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
 		&& !(mapElement->properties.surface.ownership & OWNERSHIP_OWNED)) {
 		if (mapElement->properties.surface.ownership & OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED) {
 			assert(surfaceShape < countof(byte_97B444));
-			// TODO: SPR_TERRAIN_SELECTION_DOTTED ???
-			paint_attach_to_previous_ps(2644 + byte_97B444[surfaceShape], 0, 0);
+			paint_attach_to_previous_ps(SPR_TERRAIN_SELECTION_DOTTED + byte_97B444[surfaceShape], 0, 0);
 		} else if (mapElement->properties.surface.ownership & OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE) {
 			paint_struct * backup = g_ps_F1AD28;
 			rct_xy16 pos = {gPaintMapPosition.x, gPaintMapPosition.y};
 			sint32 height2 = map_element_height(pos.x + 16, pos.y + 16) & 0xFFFF;
-			sub_98196C(22956, 16, 16, 1, 1, 0, height2 + 3, rotation);
+			sub_98196C(SPR_LAND_CONSTRUCTION_RIGHTS_AVAILABLE, 16, 16, 1, 1, 0, height2 + 3, rotation);
 			g_ps_F1AD28 = backup;
 		}
 	}
