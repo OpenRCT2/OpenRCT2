@@ -364,9 +364,9 @@ TRACK_PAINT_FUNCTION get_track_paint_function_reverse_freefall_rc(sint32 trackTy
 	case TRACK_ELEM_BEGIN_STATION:
 	case TRACK_ELEM_MIDDLE_STATION:
 		return paint_reverse_freefall_rc_station;
-	case TRACK_ELEM_REVERSE_WHOA_BELLY_SLOPE:
+	case TRACK_ELEM_REVERSE_FREEFALL_SLOPE:
 		return paint_reverse_freefall_rc_slope;
-	case TRACK_ELEM_REVERSE_WHOA_BELLY_VERTICAL:
+	case TRACK_ELEM_REVERSE_FREEFALL_VERTICAL:
 		return paint_reverse_freefall_rc_vertical;
 	}
 	return NULL;

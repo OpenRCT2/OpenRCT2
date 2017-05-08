@@ -5034,7 +5034,7 @@ void vehicle_get_g_forces(rct_vehicle *vehicle, sint32 *verticalG, sint32 *later
 	case TRACK_ELEM_25_DEG_DOWN_LEFT_BANKED:
 	case TRACK_ELEM_25_DEG_DOWN_RIGHT_BANKED:
 	case TRACK_ELEM_WHIRLPOOL:
-	case TRACK_ELEM_REVERSE_WHOA_BELLY_VERTICAL:
+	case TRACK_ELEM_REVERSE_FREEFALL_VERTICAL:
 	case TRACK_ELEM_90_DEG_UP:
 	case TRACK_ELEM_90_DEG_DOWN:
 	case TRACK_ELEM_DIAG_FLAT:
@@ -5300,7 +5300,7 @@ void vehicle_get_g_forces(rct_vehicle *vehicle, sint32 *verticalG, sint32 *later
 		vertFactor = -160;
 		//6d74FD
 		break;
-	case TRACK_ELEM_REVERSE_WHOA_BELLY_SLOPE:
+	case TRACK_ELEM_REVERSE_FREEFALL_SLOPE:
 	case TRACK_ELEM_AIR_THRUST_VERTICAL_DOWN_TO_LEVEL:
 		vertFactor = 120;
 		//6d7458

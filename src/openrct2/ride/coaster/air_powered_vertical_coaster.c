@@ -790,9 +790,9 @@ TRACK_PAINT_FUNCTION get_track_paint_function_air_powered_vertical_rc(sint32 tra
 		return air_powered_vertical_rc_track_right_bank;
 	case TRACK_ELEM_BRAKES:
 		return air_powered_vertical_rc_track_brakes;
-	case TRACK_ELEM_REVERSE_WHOA_BELLY_SLOPE:
+	case TRACK_ELEM_REVERSE_FREEFALL_SLOPE:
 		return air_powered_vertical_rc_track_vertical_slope_up;
-	case TRACK_ELEM_REVERSE_WHOA_BELLY_VERTICAL:
+	case TRACK_ELEM_REVERSE_FREEFALL_VERTICAL:
 		return air_powered_vertical_rc_track_vertical_up;
 	case TRACK_ELEM_AIR_THRUST_TOP_CAP:
 		return air_powered_vertical_rc_track_vertical_top;
