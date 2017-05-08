@@ -5946,7 +5946,7 @@ foundRideEntry:
 	}
 	*outRideIndex = rideIndex;
 
-	// Ride/vehicle colour is calculated before applying to ensure
+	// Ride/vehicle colour is calcualted before applying to ensure
 	// correct colour is passed over the network.
 	if (!(flags & GAME_COMMAND_FLAG_APPLY) && !(flags & GAME_COMMAND_FLAG_NETWORKED)) {
 		*outRideColour =
@@ -6756,7 +6756,7 @@ void increment_turn_count_4_plus_elements(rct_ride* ride, uint8 type){
 	switch (type){
 	case 0:
 	case 1:
-		// Just in case fallback to 3 element turn
+		// Just incase fallback to 3 element turn
 		increment_turn_count_3_elements(ride, type);
 		return;
 	case 2:
@@ -8065,9 +8065,9 @@ bool shop_item_is_food_or_drink(sint32 shopItem)
 	switch (shopItem) {
 	case SHOP_ITEM_DRINK:
 	case SHOP_ITEM_BURGER:
-	case SHOP_ITEM_FRIES:
+	case SHOP_ITEM_CHIPS:
 	case SHOP_ITEM_ICE_CREAM:
-	case SHOP_ITEM_COTTON_CANDY:
+	case SHOP_ITEM_CANDYFLOSS:
 	case SHOP_ITEM_PIZZA:
 	case SHOP_ITEM_POPCORN:
 	case SHOP_ITEM_HOT_DOG:
@@ -8101,9 +8101,9 @@ bool shop_item_is_food(sint32 shopItem)
 {
 	switch (shopItem) {
 	case SHOP_ITEM_BURGER:
-	case SHOP_ITEM_FRIES:
+	case SHOP_ITEM_CHIPS:
 	case SHOP_ITEM_ICE_CREAM:
-	case SHOP_ITEM_COTTON_CANDY:
+	case SHOP_ITEM_CANDYFLOSS:
 	case SHOP_ITEM_PIZZA:
 	case SHOP_ITEM_POPCORN:
 	case SHOP_ITEM_HOT_DOG:

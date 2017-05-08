@@ -759,7 +759,7 @@ enum {
 	RIDE_TYPE_FLAG_HAS_DATA_LOGGING = 1 << 9,
 	RIDE_TYPE_FLAG_HAS_DROPS = 1 << 10,
 	RIDE_TYPE_FLAG_NO_TEST_MODE = 1 << 11,
-	RIDE_TYPE_FLAG_TRACK_ELEMENTS_HAVE_TWO_VARIETIES = 1 << 12,	// used by rides with two varieties, like the u and o shapes of the dinghy slide and the dry and submerged track of the water coaster
+	RIDE_TYPE_FLAG_TRACK_ELEMENTS_HAVE_TWO_VARIETIES = 1 << 12,	// used by rides with two variaties, like the u and o shapes of the dinghy slide and the dry and submerged track of the water coaster
 	RIDE_TYPE_FLAG_NO_VEHICLES = 1 << 13,						// used only by maze, spiral slide and shops
 	RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS = 1 << 14,
 	RIDE_TYPE_FLAG_HAS_NO_TRACK = 1 << 15,
@@ -813,9 +813,9 @@ enum {
 	SHOP_ITEM_UMBRELLA,
 	SHOP_ITEM_DRINK,
 	SHOP_ITEM_BURGER,
-	SHOP_ITEM_FRIES,
+	SHOP_ITEM_CHIPS,
 	SHOP_ITEM_ICE_CREAM,
-	SHOP_ITEM_COTTON_CANDY,
+	SHOP_ITEM_CANDYFLOSS,
 	SHOP_ITEM_EMPTY_CAN,
 	SHOP_ITEM_RUBBISH,
 	SHOP_ITEM_EMPTY_BURGER_BOX,

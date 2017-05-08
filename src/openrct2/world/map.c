@@ -406,7 +406,7 @@ void map_init(sint32 size)
 		map_element->base_height = 14;
 		map_element->clearance_height = 14;
 		map_element->properties.surface.slope = 0;
-		map_element->properties.surface.grass_length = 1;
+		map_element->properties.surface.grass_length = GRASS_LENGTH_CLEAR_0;
 		map_element->properties.surface.ownership = 0;
 		map_element->properties.surface.terrain = 0;
 
@@ -3927,7 +3927,7 @@ static void clear_element_at(sint32 x, sint32 y, rct_map_element **elementPtr)
 		element->clearance_height = 2;
 		element->properties.surface.slope = 0;
 		element->properties.surface.terrain = 0;
-		element->properties.surface.grass_length = 1;
+		element->properties.surface.grass_length = GRASS_LENGTH_CLEAR_0;
 		element->properties.surface.ownership = 0;
 		// Because this element is not completely removed, the pointer must be updated manually
 		// The rest of the elements are removed from the array, so the pointer doesn't need to be updated.

@@ -624,43 +624,43 @@ static const uint8 PeepSpriteImage_IceCream_34_sequence[] = { 0, 1, 2, 3, 4, 5, 
 static const uint8 PeepSpriteImage_IceCream_35_sequence[] = { 0, 1, 2, 2, 2, 2, 3, 4, 5, 5, 5, 5, 4 };
 static const uint8 PeepSpriteImage_IceCream_36_sequence[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10, 11, 12, 11, 12, 11, 12, 11, 12, 11, 11, 11, 11, 11, 13, 14, 15 };
 
-static const uint8 PeepSpriteImage_Fries_00_sequence[] = { 0, 1, 2, 3, 4, 5, 0, 1, 2, 3, 4, 5, 0, 1, 2, 3, 4, 5, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17 };
-static const uint8 PeepSpriteImage_Fries_01_sequence[] = { 0, 1, 2, 3, 4, 5, 6, 6, 6, 6, 6, 6, 6, 6, 7, 8 };
-static const uint8 PeepSpriteImage_Fries_02_sequence[] = { 0 };
-static const uint8 PeepSpriteImage_Fries_03_sequence[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
-static const uint8 PeepSpriteImage_Fries_04_sequence[] = { 0, 1, 2, 3, 4, 5, 6, 6, 6, 6, 6, 6, 7, 8, 9, 10, 11, 12, 13, 14 };
-static const uint8 PeepSpriteImage_Fries_05_sequence[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13 };
-static const uint8 PeepSpriteImage_Fries_06_sequence[] = { 0, 1, 2, 3, 4, 5 };
-static const uint8 PeepSpriteImage_Fries_07_sequence[] = { 0 };
-static const uint8 PeepSpriteImage_Fries_08_sequence[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
-static const uint8 PeepSpriteImage_Fries_09_sequence[] = { 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0 };
-static const uint8 PeepSpriteImage_Fries_10_sequence[] = { 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0 };
-static const uint8 PeepSpriteImage_Fries_11_sequence[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
-static const uint8 PeepSpriteImage_Fries_12_sequence[] = { 0, 1, 2, 3, 4, 5 };
-static const uint8 PeepSpriteImage_Fries_13_sequence[] = { 0, 1, 2, 3, 4, 4, 3, 2, 1, 0 };
-static const uint8 PeepSpriteImage_Fries_14_sequence[] = { 8, 8, 9, 9, 10, 10, 9, 9, 8, 8, 11, 12, 13, 14, 15, 15, 15, 15, 15, 15, 15, 15, 15, 14, 14, 13, 13, 8, 8, 9, 9, 8, 8 };
-static const uint8 PeepSpriteImage_Fries_15_sequence[] = { 0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10, 11, 11 };
-static const uint8 PeepSpriteImage_Fries_16_sequence[] = { 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4 };
-static const uint8 PeepSpriteImage_Fries_17_sequence[] = { 0, 1, 2, 3, 4, 3, 2, 1, 0, 1, 2, 3, 4, 3, 2, 1, 0, 1, 2, 3, 4, 3, 2, 1, 0, 1, 2, 3, 4, 3, 2, 1, 0, 1, 2, 3, 4, 3, 2, 1, 0, 1, 2, 3, 4, 3, 2, 1, 0, 1, 2, 3, 4, 3, 2, 1, 0, 1, 2, 3, 4, 3, 2, 1, 0, 5, 6, 7 };
-static const uint8 PeepSpriteImage_Fries_18_sequence[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 14, 14, 14, 14, 14, 14, 15, 16, 15, 14, 15, 16, 15, 14, 14, 14, 14, 14, 14, 17, 18, 18, 18, 18, 18, 18, 18, 17, 14, 14, 14, 14, 19, 20, 20, 20, 19, 14, 14, 14, 14, 14, 14, 14, 14, 15, 16, 15, 14, 15, 16, 15, 14, 14, 14, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0 };
-static const uint8 PeepSpriteImage_Fries_19_sequence[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 15, 16, 15, 14, 14, 14, 14, 14, 14, 19, 20, 20, 20, 19, 14, 14, 14, 14, 14, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0 };
-static const uint8 PeepSpriteImage_Fries_20_sequence[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 9, 8, 14, 15, 15, 15, 16, 17, 17, 17, 14, 11, 12, 13, 12, 13, 12, 11, 9, 10, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0 };
-static const uint8 PeepSpriteImage_Fries_21_sequence[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 16, 15, 14, 15, 16, 17, 16, 15, 14, 15, 16, 17, 16, 15, 14, 15, 16, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0 };
-static const uint8 PeepSpriteImage_Fries_22_sequence[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 16, 15, 14, 15, 16, 17, 16, 15, 14, 15, 16, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0, 0, 0, 0, 0, 0, 18, 19, 20, 21, 22, 21, 20, 21, 22, 21, 20, 21, 22, 20, 21, 22, 21, 20, 19, 18, 0, 0, 23, 24, 25, 26, 27, 28, 28, 26, 24, 29, 30, 31, 32, 31, 30, 31, 32, 31, 30, 31, 32, 31, 30, 29, 0 };
-static const uint8 PeepSpriteImage_Fries_23_sequence[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 18, 17, 16, 17, 18, 19, 18, 17, 16, 17, 18, 19, 18, 17, 16, 17, 18, 19, 18, 17, 16, 17, 18, 19, 18, 17, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0 };
-static const uint8 PeepSpriteImage_Fries_24_sequence[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 16, 15, 14, 15, 16, 17, 16, 15, 14, 15, 16, 17, 16, 15, 14, 13, 12, 11, 11, 12, 13, 14, 15, 16, 17, 16, 15, 14, 15, 16, 17, 16, 15, 14, 15, 16, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0, 0, 0, 0, 0, 0, 18, 19, 20, 21, 22, 21, 20, 21, 22, 21, 20, 21, 22, 20, 19, 18, 0, 0, 23, 24, 25, 26, 27, 28, 28, 26, 24, 0, 0, 0, 0, 0, 0 };
-static const uint8 PeepSpriteImage_Fries_25_sequence[] = { 0, 1, 2, 3, 4, 5, 5, 5, 5, 5, 5, 5, 5, 4, 3, 2, 1, 0 };
-static const uint8 PeepSpriteImage_Fries_26_sequence[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 };
-static const uint8 PeepSpriteImage_Fries_27_sequence[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 11, 12, 11, 10, 10, 10, 13, 14, 14, 14, 13, 10, 10, 10, 11, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0 };
-static const uint8 PeepSpriteImage_Fries_28_sequence[] = { 0, 1, 2, 3, 3, 4, 4, 3, 3, 4, 4, 3, 3, 4, 4, 3, 3, 2, 1, 0 };
-static const uint8 PeepSpriteImage_Fries_29_sequence[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0 };
-static const uint8 PeepSpriteImage_Fries_30_sequence[] = { 0, 1, 2, 3, 4, 5, 6, 5, 4, 5, 6, 5, 4, 5, 6, 5, 4, 5, 6, 5, 4, 3, 2, 1, 0 };
-static const uint8 PeepSpriteImage_Fries_31_sequence[] = { 0, 1, 2, 3, 4, 5, 5, 5, 5, 6, 7, 6, 5, 5, 5, 5, 5, 5, 4, 3, 2, 1, 0 };
-static const uint8 PeepSpriteImage_Fries_32_sequence[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 5, 4, 3, 2, 1, 0 };
-static const uint8 PeepSpriteImage_Fries_33_sequence[] = { 0, 1, 2, 3, 4, 4, 4, 4, 4, 4, 4, 4, 3, 2, 1, 0 };
-static const uint8 PeepSpriteImage_Fries_34_sequence[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 8, 9, 10, 11, 12, 13, 14, 15, 16, 16, 15, 14, 8, 9, 10, 11, 12, 13, 8, 9, 10, 11, 12, 13, 8, 9, 10, 11, 12, 13, 14, 15, 16, 16, 15, 14, 8, 9, 10, 11, 12, 13, 8, 9, 10, 11, 12, 13, 7, 6, 5, 4, 3, 2, 1, 0 };
-static const uint8 PeepSpriteImage_Fries_35_sequence[] = { 0, 1, 2, 2, 2, 2, 3, 4, 5, 5, 5, 5, 4 };
-static const uint8 PeepSpriteImage_Fries_36_sequence[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10, 11, 12, 11, 12, 11, 12, 11, 12, 11, 11, 11, 11, 11, 13, 14, 15 };
+static const uint8 PeepSpriteImage_Chips_00_sequence[] = { 0, 1, 2, 3, 4, 5, 0, 1, 2, 3, 4, 5, 0, 1, 2, 3, 4, 5, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17 };
+static const uint8 PeepSpriteImage_Chips_01_sequence[] = { 0, 1, 2, 3, 4, 5, 6, 6, 6, 6, 6, 6, 6, 6, 7, 8 };
+static const uint8 PeepSpriteImage_Chips_02_sequence[] = { 0 };
+static const uint8 PeepSpriteImage_Chips_03_sequence[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
+static const uint8 PeepSpriteImage_Chips_04_sequence[] = { 0, 1, 2, 3, 4, 5, 6, 6, 6, 6, 6, 6, 7, 8, 9, 10, 11, 12, 13, 14 };
+static const uint8 PeepSpriteImage_Chips_05_sequence[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13 };
+static const uint8 PeepSpriteImage_Chips_06_sequence[] = { 0, 1, 2, 3, 4, 5 };
+static const uint8 PeepSpriteImage_Chips_07_sequence[] = { 0 };
+static const uint8 PeepSpriteImage_Chips_08_sequence[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
+static const uint8 PeepSpriteImage_Chips_09_sequence[] = { 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0 };
+static const uint8 PeepSpriteImage_Chips_10_sequence[] = { 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0 };
+static const uint8 PeepSpriteImage_Chips_11_sequence[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
+static const uint8 PeepSpriteImage_Chips_12_sequence[] = { 0, 1, 2, 3, 4, 5 };
+static const uint8 PeepSpriteImage_Chips_13_sequence[] = { 0, 1, 2, 3, 4, 4, 3, 2, 1, 0 };
+static const uint8 PeepSpriteImage_Chips_14_sequence[] = { 8, 8, 9, 9, 10, 10, 9, 9, 8, 8, 11, 12, 13, 14, 15, 15, 15, 15, 15, 15, 15, 15, 15, 14, 14, 13, 13, 8, 8, 9, 9, 8, 8 };
+static const uint8 PeepSpriteImage_Chips_15_sequence[] = { 0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10, 11, 11 };
+static const uint8 PeepSpriteImage_Chips_16_sequence[] = { 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4 };
+static const uint8 PeepSpriteImage_Chips_17_sequence[] = { 0, 1, 2, 3, 4, 3, 2, 1, 0, 1, 2, 3, 4, 3, 2, 1, 0, 1, 2, 3, 4, 3, 2, 1, 0, 1, 2, 3, 4, 3, 2, 1, 0, 1, 2, 3, 4, 3, 2, 1, 0, 1, 2, 3, 4, 3, 2, 1, 0, 1, 2, 3, 4, 3, 2, 1, 0, 1, 2, 3, 4, 3, 2, 1, 0, 5, 6, 7 };
+static const uint8 PeepSpriteImage_Chips_18_sequence[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 14, 14, 14, 14, 14, 14, 15, 16, 15, 14, 15, 16, 15, 14, 14, 14, 14, 14, 14, 17, 18, 18, 18, 18, 18, 18, 18, 17, 14, 14, 14, 14, 19, 20, 20, 20, 19, 14, 14, 14, 14, 14, 14, 14, 14, 15, 16, 15, 14, 15, 16, 15, 14, 14, 14, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0 };
+static const uint8 PeepSpriteImage_Chips_19_sequence[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 15, 16, 15, 14, 14, 14, 14, 14, 14, 19, 20, 20, 20, 19, 14, 14, 14, 14, 14, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0 };
+static const uint8 PeepSpriteImage_Chips_20_sequence[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 9, 8, 14, 15, 15, 15, 16, 17, 17, 17, 14, 11, 12, 13, 12, 13, 12, 11, 9, 10, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0 };
+static const uint8 PeepSpriteImage_Chips_21_sequence[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 16, 15, 14, 15, 16, 17, 16, 15, 14, 15, 16, 17, 16, 15, 14, 15, 16, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0 };
+static const uint8 PeepSpriteImage_Chips_22_sequence[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 16, 15, 14, 15, 16, 17, 16, 15, 14, 15, 16, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0, 0, 0, 0, 0, 0, 18, 19, 20, 21, 22, 21, 20, 21, 22, 21, 20, 21, 22, 20, 21, 22, 21, 20, 19, 18, 0, 0, 23, 24, 25, 26, 27, 28, 28, 26, 24, 29, 30, 31, 32, 31, 30, 31, 32, 31, 30, 31, 32, 31, 30, 29, 0 };
+static const uint8 PeepSpriteImage_Chips_23_sequence[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 18, 17, 16, 17, 18, 19, 18, 17, 16, 17, 18, 19, 18, 17, 16, 17, 18, 19, 18, 17, 16, 17, 18, 19, 18, 17, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0 };
+static const uint8 PeepSpriteImage_Chips_24_sequence[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 16, 15, 14, 15, 16, 17, 16, 15, 14, 15, 16, 17, 16, 15, 14, 13, 12, 11, 11, 12, 13, 14, 15, 16, 17, 16, 15, 14, 15, 16, 17, 16, 15, 14, 15, 16, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0, 0, 0, 0, 0, 0, 18, 19, 20, 21, 22, 21, 20, 21, 22, 21, 20, 21, 22, 20, 19, 18, 0, 0, 23, 24, 25, 26, 27, 28, 28, 26, 24, 0, 0, 0, 0, 0, 0 };
+static const uint8 PeepSpriteImage_Chips_25_sequence[] = { 0, 1, 2, 3, 4, 5, 5, 5, 5, 5, 5, 5, 5, 4, 3, 2, 1, 0 };
+static const uint8 PeepSpriteImage_Chips_26_sequence[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 };
+static const uint8 PeepSpriteImage_Chips_27_sequence[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 11, 12, 11, 10, 10, 10, 13, 14, 14, 14, 13, 10, 10, 10, 11, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0 };
+static const uint8 PeepSpriteImage_Chips_28_sequence[] = { 0, 1, 2, 3, 3, 4, 4, 3, 3, 4, 4, 3, 3, 4, 4, 3, 3, 2, 1, 0 };
+static const uint8 PeepSpriteImage_Chips_29_sequence[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0 };
+static const uint8 PeepSpriteImage_Chips_30_sequence[] = { 0, 1, 2, 3, 4, 5, 6, 5, 4, 5, 6, 5, 4, 5, 6, 5, 4, 5, 6, 5, 4, 3, 2, 1, 0 };
+static const uint8 PeepSpriteImage_Chips_31_sequence[] = { 0, 1, 2, 3, 4, 5, 5, 5, 5, 6, 7, 6, 5, 5, 5, 5, 5, 5, 4, 3, 2, 1, 0 };
+static const uint8 PeepSpriteImage_Chips_32_sequence[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 5, 4, 3, 2, 1, 0 };
+static const uint8 PeepSpriteImage_Chips_33_sequence[] = { 0, 1, 2, 3, 4, 4, 4, 4, 4, 4, 4, 4, 3, 2, 1, 0 };
+static const uint8 PeepSpriteImage_Chips_34_sequence[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 8, 9, 10, 11, 12, 13, 14, 15, 16, 16, 15, 14, 8, 9, 10, 11, 12, 13, 8, 9, 10, 11, 12, 13, 8, 9, 10, 11, 12, 13, 14, 15, 16, 16, 15, 14, 8, 9, 10, 11, 12, 13, 8, 9, 10, 11, 12, 13, 7, 6, 5, 4, 3, 2, 1, 0 };
+static const uint8 PeepSpriteImage_Chips_35_sequence[] = { 0, 1, 2, 2, 2, 2, 3, 4, 5, 5, 5, 5, 4 };
+static const uint8 PeepSpriteImage_Chips_36_sequence[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10, 11, 12, 11, 12, 11, 12, 11, 12, 11, 11, 11, 11, 11, 13, 14, 15 };
 
 static const uint8 PeepSpriteImage_Burger_00_sequence[] = { 0, 1, 2, 3, 4, 5, 0, 1, 2, 3, 4, 5, 0, 1, 2, 3, 4, 5, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17 };
 static const uint8 PeepSpriteImage_Burger_01_sequence[] = { 0, 1, 2, 3, 4, 5, 6, 6, 6, 6, 6, 6, 6, 6, 7, 8 };
@@ -2481,44 +2481,44 @@ static const rct_peep_animation PeepSpriteImage_IceCream[] = {
 	{ 7181,  countof(PeepSpriteImage_IceCream_36_sequence), PeepSpriteImage_IceCream_36_sequence },
 };
 
-static const rct_peep_animation PeepSpriteImage_Fries[] = {
-	{ 7609,  countof(PeepSpriteImage_Fries_00_sequence), PeepSpriteImage_Fries_00_sequence },
-	{ 6585,  countof(PeepSpriteImage_Fries_01_sequence), PeepSpriteImage_Fries_01_sequence },
-	{ 7605,  countof(PeepSpriteImage_Fries_02_sequence), PeepSpriteImage_Fries_02_sequence },
-	{ 7733,  countof(PeepSpriteImage_Fries_03_sequence), PeepSpriteImage_Fries_03_sequence },
-	{ 6697,  countof(PeepSpriteImage_Fries_04_sequence), PeepSpriteImage_Fries_04_sequence },
-	{ 6757,  countof(PeepSpriteImage_Fries_05_sequence), PeepSpriteImage_Fries_05_sequence },
-	{ 6561,  countof(PeepSpriteImage_Fries_06_sequence), PeepSpriteImage_Fries_06_sequence },
-	{ 7681,  countof(PeepSpriteImage_Fries_07_sequence), PeepSpriteImage_Fries_07_sequence },
-	{ 7685,  countof(PeepSpriteImage_Fries_08_sequence), PeepSpriteImage_Fries_08_sequence },
-	{ 6637,  countof(PeepSpriteImage_Fries_09_sequence), PeepSpriteImage_Fries_09_sequence },
-	{ 6645,  countof(PeepSpriteImage_Fries_10_sequence), PeepSpriteImage_Fries_10_sequence },
-	{ 6813,  countof(PeepSpriteImage_Fries_11_sequence), PeepSpriteImage_Fries_11_sequence },
-	{ 11301, countof(PeepSpriteImage_Fries_12_sequence), PeepSpriteImage_Fries_12_sequence },
-	{ 6825,  countof(PeepSpriteImage_Fries_13_sequence), PeepSpriteImage_Fries_13_sequence },
-	{ 6845,  countof(PeepSpriteImage_Fries_14_sequence), PeepSpriteImage_Fries_14_sequence },
-	{ 6909,  countof(PeepSpriteImage_Fries_15_sequence), PeepSpriteImage_Fries_15_sequence },
-	{ 11325, countof(PeepSpriteImage_Fries_16_sequence), PeepSpriteImage_Fries_16_sequence },
-	{ 6957,  countof(PeepSpriteImage_Fries_17_sequence), PeepSpriteImage_Fries_17_sequence },
-	{ 11513, countof(PeepSpriteImage_Fries_18_sequence), PeepSpriteImage_Fries_18_sequence },
-	{ 11513, countof(PeepSpriteImage_Fries_19_sequence), PeepSpriteImage_Fries_19_sequence },
-	{ 11597, countof(PeepSpriteImage_Fries_20_sequence), PeepSpriteImage_Fries_20_sequence },
-	{ 11669, countof(PeepSpriteImage_Fries_21_sequence), PeepSpriteImage_Fries_21_sequence },
-	{ 11669, countof(PeepSpriteImage_Fries_22_sequence), PeepSpriteImage_Fries_22_sequence },
-	{ 11801, countof(PeepSpriteImage_Fries_23_sequence), PeepSpriteImage_Fries_23_sequence },
-	{ 11669, countof(PeepSpriteImage_Fries_24_sequence), PeepSpriteImage_Fries_24_sequence },
-	{ 11377, countof(PeepSpriteImage_Fries_25_sequence), PeepSpriteImage_Fries_25_sequence },
-	{ 6989,  countof(PeepSpriteImage_Fries_26_sequence), PeepSpriteImage_Fries_26_sequence },
-	{ 7041,  countof(PeepSpriteImage_Fries_27_sequence), PeepSpriteImage_Fries_27_sequence },
-	{ 7101,  countof(PeepSpriteImage_Fries_28_sequence), PeepSpriteImage_Fries_28_sequence },
-	{ 11401, countof(PeepSpriteImage_Fries_29_sequence), PeepSpriteImage_Fries_29_sequence },
-	{ 7121,  countof(PeepSpriteImage_Fries_30_sequence), PeepSpriteImage_Fries_30_sequence },
-	{ 7149,  countof(PeepSpriteImage_Fries_31_sequence), PeepSpriteImage_Fries_31_sequence },
-	{ 7249,  countof(PeepSpriteImage_Fries_32_sequence), PeepSpriteImage_Fries_32_sequence },
-	{ 7309,  countof(PeepSpriteImage_Fries_33_sequence), PeepSpriteImage_Fries_33_sequence },
-	{ 7329,  countof(PeepSpriteImage_Fries_34_sequence), PeepSpriteImage_Fries_34_sequence },
-	{ 7285,  countof(PeepSpriteImage_Fries_35_sequence), PeepSpriteImage_Fries_35_sequence },
-	{ 7181,  countof(PeepSpriteImage_Fries_36_sequence), PeepSpriteImage_Fries_36_sequence },
+static const rct_peep_animation PeepSpriteImage_Chips[] = {
+	{ 7609,  countof(PeepSpriteImage_Chips_00_sequence), PeepSpriteImage_Chips_00_sequence },
+	{ 6585,  countof(PeepSpriteImage_Chips_01_sequence), PeepSpriteImage_Chips_01_sequence },
+	{ 7605,  countof(PeepSpriteImage_Chips_02_sequence), PeepSpriteImage_Chips_02_sequence },
+	{ 7733,  countof(PeepSpriteImage_Chips_03_sequence), PeepSpriteImage_Chips_03_sequence },
+	{ 6697,  countof(PeepSpriteImage_Chips_04_sequence), PeepSpriteImage_Chips_04_sequence },
+	{ 6757,  countof(PeepSpriteImage_Chips_05_sequence), PeepSpriteImage_Chips_05_sequence },
+	{ 6561,  countof(PeepSpriteImage_Chips_06_sequence), PeepSpriteImage_Chips_06_sequence },
+	{ 7681,  countof(PeepSpriteImage_Chips_07_sequence), PeepSpriteImage_Chips_07_sequence },
+	{ 7685,  countof(PeepSpriteImage_Chips_08_sequence), PeepSpriteImage_Chips_08_sequence },
+	{ 6637,  countof(PeepSpriteImage_Chips_09_sequence), PeepSpriteImage_Chips_09_sequence },
+	{ 6645,  countof(PeepSpriteImage_Chips_10_sequence), PeepSpriteImage_Chips_10_sequence },
+	{ 6813,  countof(PeepSpriteImage_Chips_11_sequence), PeepSpriteImage_Chips_11_sequence },
+	{ 11301, countof(PeepSpriteImage_Chips_12_sequence), PeepSpriteImage_Chips_12_sequence },
+	{ 6825,  countof(PeepSpriteImage_Chips_13_sequence), PeepSpriteImage_Chips_13_sequence },
+	{ 6845,  countof(PeepSpriteImage_Chips_14_sequence), PeepSpriteImage_Chips_14_sequence },
+	{ 6909,  countof(PeepSpriteImage_Chips_15_sequence), PeepSpriteImage_Chips_15_sequence },
+	{ 11325, countof(PeepSpriteImage_Chips_16_sequence), PeepSpriteImage_Chips_16_sequence },
+	{ 6957,  countof(PeepSpriteImage_Chips_17_sequence), PeepSpriteImage_Chips_17_sequence },
+	{ 11513, countof(PeepSpriteImage_Chips_18_sequence), PeepSpriteImage_Chips_18_sequence },
+	{ 11513, countof(PeepSpriteImage_Chips_19_sequence), PeepSpriteImage_Chips_19_sequence },
+	{ 11597, countof(PeepSpriteImage_Chips_20_sequence), PeepSpriteImage_Chips_20_sequence },
+	{ 11669, countof(PeepSpriteImage_Chips_21_sequence), PeepSpriteImage_Chips_21_sequence },
+	{ 11669, countof(PeepSpriteImage_Chips_22_sequence), PeepSpriteImage_Chips_22_sequence },
+	{ 11801, countof(PeepSpriteImage_Chips_23_sequence), PeepSpriteImage_Chips_23_sequence },
+	{ 11669, countof(PeepSpriteImage_Chips_24_sequence), PeepSpriteImage_Chips_24_sequence },
+	{ 11377, countof(PeepSpriteImage_Chips_25_sequence), PeepSpriteImage_Chips_25_sequence },
+	{ 6989,  countof(PeepSpriteImage_Chips_26_sequence), PeepSpriteImage_Chips_26_sequence },
+	{ 7041,  countof(PeepSpriteImage_Chips_27_sequence), PeepSpriteImage_Chips_27_sequence },
+	{ 7101,  countof(PeepSpriteImage_Chips_28_sequence), PeepSpriteImage_Chips_28_sequence },
+	{ 11401, countof(PeepSpriteImage_Chips_29_sequence), PeepSpriteImage_Chips_29_sequence },
+	{ 7121,  countof(PeepSpriteImage_Chips_30_sequence), PeepSpriteImage_Chips_30_sequence },
+	{ 7149,  countof(PeepSpriteImage_Chips_31_sequence), PeepSpriteImage_Chips_31_sequence },
+	{ 7249,  countof(PeepSpriteImage_Chips_32_sequence), PeepSpriteImage_Chips_32_sequence },
+	{ 7309,  countof(PeepSpriteImage_Chips_33_sequence), PeepSpriteImage_Chips_33_sequence },
+	{ 7329,  countof(PeepSpriteImage_Chips_34_sequence), PeepSpriteImage_Chips_34_sequence },
+	{ 7285,  countof(PeepSpriteImage_Chips_35_sequence), PeepSpriteImage_Chips_35_sequence },
+	{ 7181,  countof(PeepSpriteImage_Chips_36_sequence), PeepSpriteImage_Chips_36_sequence },
 };
 
 static const rct_peep_animation PeepSpriteImage_Burger[] = {
@@ -4402,7 +4402,7 @@ static const rct_sprite_bounds PeepSpriteBounds_IceCream[] = {
 	{ 9, 22, 7 },
 };
 
-static const rct_sprite_bounds PeepSpriteBounds_Fries[] = {
+static const rct_sprite_bounds PeepSpriteBounds_Chips[] = {
 	{ 8, 16, 5 },
 	{ 8, 16, 5 },
 	{ 8, 16, 5 },
@@ -5421,7 +5421,7 @@ rct_peep_animation_entry g_peep_animation_entries[] =
 	{ PeepSpriteImage_EntertainerSheriff, PeepSpriteBounds_EntertainerSheriff },
 	{ PeepSpriteImage_EntertainerPirate, PeepSpriteBounds_EntertainerPirate },
 	{ PeepSpriteImage_IceCream, PeepSpriteBounds_IceCream },
-	{ PeepSpriteImage_Fries, PeepSpriteBounds_Fries },
+	{ PeepSpriteImage_Chips, PeepSpriteBounds_Chips },
 	{ PeepSpriteImage_Burger, PeepSpriteBounds_Burger },
 	{ PeepSpriteImage_Drink, PeepSpriteBounds_Drink },
 	{ PeepSpriteImage_Balloon, PeepSpriteBounds_Balloon },
