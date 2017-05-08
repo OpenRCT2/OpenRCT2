@@ -251,6 +251,7 @@ public:
     OpenGLDrawingEngine(IUiContext * uiContext)
         : _uiContext(uiContext)
     {
+        UNUSED(_uiContext); // Will be used in due course to retrieve window information
         _drawingContext = new OpenGLDrawingContext(this);
     }
 
