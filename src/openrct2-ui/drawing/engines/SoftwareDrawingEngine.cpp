@@ -234,6 +234,7 @@ public:
         : _uiContext(uiContext),
           _hardwareDisplay(hardwareDisplay)
     {
+        UNUSED(_uiContext); // Will be used in due course to retrieve window information
         _drawingContext = new SoftwareDrawingContext(this);
 #ifdef __ENABLE_LIGHTFX__
         _lastLightFXenabled = (gConfigGeneral.enable_light_fx != 0);

@@ -123,7 +123,12 @@ namespace OpenRCT2 { namespace Ui
                     (desc.Type == FILE_DIALOG_TYPE::OPEN) ? "--getopenfilename" :
                                                             "--getsavefilename";
                 std::string filter = GetKDialogFilterString(desc.Filters);
-                std::string cmd = String::StdFormat("%s --title '%s' %s '%s/' ~ '%s'", executablePath, desc.Title, action, desc.InitialDirectory, filter);
+                std::string cmd = String::StdFormat("%s --title '%s' %s '%s/' ~ '%s'",
+                    executablePath.c_str(),
+                    desc.Title.c_str(),
+                    action.c_str(),
+                    desc.InitialDirectory.c_str(),
+                    filter.c_str());
                 std::string output;
                 if (Execute(cmd, &output) != 0)
                 {
@@ -140,7 +145,13 @@ namespace OpenRCT2 { namespace Ui
                     flags = "--confirm-overwrite --save";
                 }
                 std::string filters = GetZenityFilterString(desc.Filters);
-                std::string cmd = String::StdFormat("%s %s --filename='%s/' %s --title='%s' / %s", executablePath, action, desc.InitialDirectory, flags, desc.Title, filters);
+                std::string cmd = String::StdFormat("%s %s --filename='%s/' %s --title='%s' / %s",
+                    executablePath.c_str(),
+                    action.c_str(),
+                    desc.InitialDirectory.c_str(),
+                    flags.c_str(),
+                    desc.Title.c_str(),
+                    filters.c_str());
                 std::string output;
                 if (Execute(cmd, &output) != 0)
                 {
@@ -163,7 +174,7 @@ namespace OpenRCT2 { namespace Ui
             }
             else if (desc.Type == FILE_DIALOG_TYPE::SAVE && access(result.c_str(), F_OK) != -1 && dtype == DIALOG_TYPE::KDIALOG)
             {
-                std::string cmd = String::StdFormat("%s --yesno \"Overwrite %s?\"", executablePath, result.c_str());
+                std::string cmd = String::StdFormat("%s --yesno \"Overwrite %s?\"", executablePath.c_str(), result.c_str());
                 if (Execute(cmd) != 0)
                 {
                     result = std::string();
@@ -181,7 +192,7 @@ namespace OpenRCT2 { namespace Ui
             case DIALOG_TYPE::KDIALOG:
             {
                 std::string output;
-                std::string cmd = String::Format("%s --title '%s' --getexistingdirectory /", executablePath.c_str(), title);
+                std::string cmd = String::Format("%s --title '%s' --getexistingdirectory /", executablePath.c_str(), title.c_str());
                 if (Execute(cmd, &output) == 0)
                 {
                     result = output;
@@ -191,7 +202,7 @@ namespace OpenRCT2 { namespace Ui
             case DIALOG_TYPE::ZENITY:
             {
                 std::string output;
-                std::string cmd = String::Format("%s --title='%s' --file-selection --directory /", executablePath.c_str(), title);
+                std::string cmd = String::Format("%s --title='%s' --file-selection --directory /", executablePath.c_str(), title.c_str());
                 if (Execute(cmd, &output) == 0)
                 {
                     result = output;
@@ -243,7 +254,7 @@ namespace OpenRCT2 { namespace Ui
 
                 // Trim line breaks
                 size_t outputLength = outputBuffer.size();
-                for (size_t i = outputBuffer.size() - 1; i >= 0; i--)
+                for (size_t i = outputLength - 1; i != SIZE_MAX; i--)
                 {
                     if (outputBuffer[i] == '\n')
                     {
