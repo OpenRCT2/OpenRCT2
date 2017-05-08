@@ -53,7 +53,7 @@ static void vehicle_update_rotating(rct_vehicle* vehicle);
 static void vehicle_update_space_rings_operating(rct_vehicle* vehicle);
 static void vehicle_update_haunted_house_operating(rct_vehicle* vehicle);
 static void vehicle_update_crooked_house_operating(rct_vehicle* vehicle);
-static void vehicle_update_bumpcar_mode(rct_vehicle* vehicle);
+static void vehicle_update_dodgems_mode(rct_vehicle *vehicle);
 static void vehicle_update_swinging(rct_vehicle* vehicle);
 static void vehicle_update_simulator_operating(rct_vehicle* vehicle);
 static void vehicle_update_top_spin_operating(rct_vehicle* vehicle);
@@ -1620,8 +1620,8 @@ static void vehicle_update(rct_vehicle *vehicle)
 	case VEHICLE_STATUS_CRASHED:
 		vehicle_update_crash(vehicle);
 		break;
-	case VEHICLE_STATUS_TRAVELLING_BUMPER_CARS:
-		vehicle_update_bumpcar_mode(vehicle);
+	case VEHICLE_STATUS_TRAVELLING_DODGEMS:
+		vehicle_update_dodgems_mode(vehicle);
 		break;
 	case VEHICLE_STATUS_SWINGING:
 		vehicle_update_swinging(vehicle);
@@ -2036,7 +2036,7 @@ static void vehicle_update_waiting_for_passengers(rct_vehicle* vehicle){
  *
  *  rct2: 0x006D91BF
  */
-static void vehicle_update_bumpcar_mode(rct_vehicle* vehicle) {
+static void vehicle_update_dodgems_mode(rct_vehicle *vehicle) {
 	rct_ride* ride = get_ride(vehicle->ride);
 	rct_ride_entry* rideEntry = get_ride_entry(vehicle->ride_subtype);
 	rct_ride_entry_vehicle* vehicleEntry = &rideEntry->vehicles[vehicle->vehicle_type];
@@ -2163,13 +2163,13 @@ static void vehicle_update_waiting_to_depart(rct_vehicle* vehicle) {
 
 	switch (ride->mode) {
 	case RIDE_MODE_BUMPERCAR:
-		vehicle->status = VEHICLE_STATUS_TRAVELLING_BUMPER_CARS;
+		vehicle->status = VEHICLE_STATUS_TRAVELLING_DODGEMS;
 		vehicle_invalidate_window(vehicle);
 		// Bumper mode uses sub_state / var_CE to tell how long
 		// the vehicle has been ridden.
 		vehicle->sub_state = 0;
 		vehicle->var_CE = 0;
-		vehicle_update_bumpcar_mode(vehicle);
+			vehicle_update_dodgems_mode(vehicle);
 		break;
 	case RIDE_MODE_SWING:
 		vehicle->status = VEHICLE_STATUS_SWINGING;
