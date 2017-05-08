@@ -147,7 +147,11 @@ public class MainActivity extends AppCompatActivity {
 
     private void startGame() {
         copyAssets();
-        startActivity(new Intent(this, GameActivity.class));
+        Intent intent = new Intent(this, GameActivity.class);
+        if (getIntent().hasExtra("commandLineArgs")) {
+            intent.putExtra("commandLineArgs", getIntent().getStringArrayExtra("commandLineArgs"));
+        }
+        startActivity(intent);
         finish();
     }
 

@@ -20,4 +20,11 @@ public class GameActivity extends SDLActivity {
                 "openrct2"
         };
     }
+
+    protected String[] getArguments() {
+        if (getIntent().hasExtra("commandLineArgs")) {
+            return getIntent().getStringArrayExtra("commandLineArgs");
+        }
+        return new String[0];
+    }
 }
