@@ -1422,7 +1422,8 @@ private:
             if (dst->outside_of_park && !(dst->state == PEEP_STATE_LEAVING_PARK))
             {
                 gNumGuestsHeadingForPark++;
-            } else
+            }
+            else
             {
                 gNumGuestsInPark++;
             }
