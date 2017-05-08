@@ -18,6 +18,7 @@
 
 #include <openrct2/audio/AudioContext.h>
 #include <openrct2/Context.h>
+#include <openrct2/OpenRCT2.h>
 #include <openrct2/ui/UiContext.h>
 #include "audio/AudioContext.h"
 #include "UiContext.h"
@@ -31,15 +32,22 @@ using namespace OpenRCT2::Ui;
  */
 int main(int argc, char * * argv)
 {
-    // Run OpenRCT2 with a UI context
-    
-    IAudioContext * audioContext = CreateAudioContext();
-    IUiContext * uiContext = CreateUiContext();
-    IContext * context = CreateContext(audioContext, uiContext);
-    int exitCode = context->RunOpenRCT2(argc, argv);
-    delete uiContext;
-    delete context;
-    return exitCode;
+    core_init();
+    int runGame = cmdline_run((const char * *)argv, argc);
+    if (runGame == 1)
+    {
+        // Run OpenRCT2 with a UI context
+        IAudioContext * audioContext = CreateAudioContext();
+        IUiContext * uiContext = CreateUiContext();
+        IContext * context = CreateContext(audioContext, uiContext);
+
+        context->RunOpenRCT2(argc, argv);
+
+        delete context;
+        delete uiContext;
+        delete audioContext;
+    }
+    return gExitCode;
 }
 
 #endif
