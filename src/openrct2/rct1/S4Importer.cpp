@@ -1417,9 +1417,16 @@ private:
 
         peep_update_name_sort(dst);
 
-        if (!dst->outside_of_park && dst->type == PEEP_TYPE_GUEST)
+        if (dst->type == PEEP_TYPE_GUEST)
         {
-            gNumGuestsInPark++;
+            if (dst->outside_of_park && dst->state != PEEP_STATE_LEAVING_PARK)
+            {
+                gNumGuestsHeadingForPark++;
+            }
+            else
+            {
+                gNumGuestsInPark++;
+            }
         }
     }
 
