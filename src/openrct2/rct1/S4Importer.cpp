@@ -1419,9 +1419,11 @@ private:
 
         if (dst->type == PEEP_TYPE_GUEST)
         {
-            if (dst->outside_of_park && !(dst->state == PEEP_STATE_LEAVING_PARK)) {
+            if (dst->outside_of_park && !(dst->state == PEEP_STATE_LEAVING_PARK))
+            {
                 gNumGuestsHeadingForPark++;
-            } else {
+            } else
+            {
                 gNumGuestsInPark++;
             }
         }
