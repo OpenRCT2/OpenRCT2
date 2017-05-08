@@ -52,6 +52,7 @@ add_dependencies(${GTEST_MAIN_LIBRARY} ${GTEST_LIBRARY})
 
 include_directories(SYSTEM ${GTEST_INCLUDE_DIR})
 include_directories("${ROOT_DIR}/src")
+include_directories(${SDL2_INCLUDE_DIRS})
 
 set(GTEST_LIBRARIES gtest gtest_main pthread)
 
