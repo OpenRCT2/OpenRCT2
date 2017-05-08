@@ -53,7 +53,7 @@ static void vehicle_update_rotating(rct_vehicle* vehicle);
 static void vehicle_update_space_rings_operating(rct_vehicle* vehicle);
 static void vehicle_update_haunted_house_operating(rct_vehicle* vehicle);
 static void vehicle_update_crooked_house_operating(rct_vehicle* vehicle);
-static void vehicle_update_dodgems_mode(rct_vehicle *vehicle);
+static void vehicle_update_dodgems_mode(rct_vehicle* vehicle);
 static void vehicle_update_swinging(rct_vehicle* vehicle);
 static void vehicle_update_simulator_operating(rct_vehicle* vehicle);
 static void vehicle_update_top_spin_operating(rct_vehicle* vehicle);
