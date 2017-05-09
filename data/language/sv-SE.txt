@@ -2744,7 +2744,7 @@ STR_2739    :Ingen
 STR_2740    :RollerCoaster Tycoon 1
 STR_2741    :RollerCoaster Tycoon 2
 STR_2742    :css50.dat hittades inte
-STR_2743    :Kopiera data\css17.dat från din RCT1-installation till data\css50.dat i din RCT2-installation.
+STR_2743    :Kopiera 'data/css17.dat' från din RCT1-installation till 'data/css50.dat' i din RCT2-installation eller kolla så att sökvägen till RCT1 i 'Diverse' fliken är korrekt.
 STR_2744    :[
 STR_2745    :\
 STR_2746    :]
@@ -4140,7 +4140,7 @@ STR_5832    :{SMALLFONT}{BLACK}Visa höjd som generella enheter istället för v
 STR_5833    :{SMALLFONT}{BLACK}Välj vilket datumformat du ska använda
 STR_5834    :{SMALLFONT}{BLACK}Välj vilken ljudenhet OpenRCT2 ska använda
 STR_5835    :{SMALLFONT}{BLACK}Tysta spelet om spelet tappar fokus
-STR_5836    :{SMALLFONT}{BLACK}Välj vilken musik som ska spelas på huvudmenyn.{NEWLINE}Val av RCT1 sången kräver att du kopierar 'data/css17.dat' från din RCT1-mapp till 'data/css50.dat' i din RCT2-mapp.
+STR_5836    :{SMALLFONT}{BLACK}Välj vilken musik som ska spelas på huvudmenyn.{NEWLINE}Val av RCT1 sången kräver att du kopierar 'data/css17.dat' från din RCT1-mapp till 'data/css50.dat' i din RCT2-mapp eller kolla så att sökvägen till RCT1 i 'Diverse' fliken är korrekt.
 STR_5837    :{SMALLFONT}{BLACK}Skapa och hantera egna UI-teman
 STR_5838    :{SMALLFONT}{BLACK}Visa en knapp för 'finans'-fönstret i verktygsfältet
 STR_5839    :{SMALLFONT}{BLACK}Visa en knapp för 'forskning & utveckling'-fönstret i verktygsfältet
@@ -4337,10 +4337,31 @@ STR_6029    :Åkturkonstruktion - Riv valda spår
 STR_6030    :{SMALLFONT}{BLACK}Dekorations-väljaren. Klicka på en dekoration på kartan för att välja samma del för konstruktion.
 STR_6031    :Server Beskrivning:
 STR_6032    :Server Hälsning:
-
+STR_6033    :Sökvägen till RCT1-mappen:
+STR_6035    :Vänligen välj installationsmappen för RCT1
+STR_6036    :{SMALLFONT}{BLACK}Rensa
+STR_6037    :Vänligen välj en giltig sökväg till RCT1-mappen
+STR_6038    :{SMALLFONT}{BLACK}Om du har RCT1-installerat, navigera till den mappen för att ladda scenarion, music, m.m.
 STR_6039    :{SMALLFONT}{BLACK}Demolera attraktioner snabbt
-STR_6040    :Redigera scenario inställningar
-STR_6041    :{BLACK}Inga mekaniker är anställda! 
+STR_6040    :Redigera scenario-inställningar
+STR_6041    :{BLACK}Inga mekaniker är anställda!
+STR_6042    :Ladda höjdkarta
+STR_6043    :Välj höjdkarta
+STR_6044    :Utjämna höjdkarta
+STR_6045    :Styrka
+STR_6046    :Normalisera höjdkarta
+STR_6047    :Utjämna rutor
+STR_6048    :Fel med höjdkarta 
+STR_6049    :Fel vid inläsning av PNG
+STR_6050    :Fel vid inläsning av bitmap
+STR_6051    :Höjden och bredden måste vara lika
+STR_6052    :Höjdkartan är för stor och kommer skäras av
+STR_6053    :Höjdkartan kan inte normaliseras
+STR_6054    :Endast 24-bit bitmaps stöds
+STR_6055    :OpenRCT2 Höjdkart-filer
+STR_6056    :{SMALLFONT}{BLACK}Tysta
+STR_6057    :{SMALLFONT}{BLACK}Visa en knapp för att 'Tysta' spelet i verktygsfältet
+STR_6058    :Tysta
 
 #############
 # Scenarion #

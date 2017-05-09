@@ -3772,17 +3772,17 @@ STR_5424    :等待{MOVE_X}{87}{COMMA16}
 STR_5425    :重新开始
 STR_5426    :结束
 STR_5427    :坐标:
-STR_5428    :Anticlockwise rotations:
+STR_5428    :逆时针旋转次数:
 STR_5429    :放大级别:
 STR_5430    :等待秒数:
 STR_5431    :要读取的存档:
 STR_5432    :命令:
 STR_5433    :Title Sequences
-STR_5434    :Command Editor
-STR_5435    :Rename save
+STR_5434    :命令编辑器
+STR_5435    :重命名存档
 STR_5436    :编辑主菜单动画...
 STR_5437    :暂无存档被选中
-STR_5438    :Can't make changes while command editor is open
+STR_5438    :当命令编辑器打开时不能做出改变
 STR_5439    :A wait command with at least 4 seconds is required with a restart command
 STR_5440    :当焦点失去时最小化全屏幕的游戏
 STR_5441    :{SMALLFONT}{BLACK}根据轨道类型区分游乐设施{NEWLINE}使得车辆类型可以在建造后更改{NEWLINE}(过山车大亨1行为).
@@ -3790,9 +3790,9 @@ STR_5442    :Force park rating:
 STR_5443    :速度{MOVE_X}{87}{STRINGID}
 STR_5444    :速度:
 STR_5445    :速度
-STR_5446    :Get
-STR_5447    :Type {STRINGID}
-STR_5448    :Ride / Vehicle {STRINGID}
+STR_5446    :取得
+STR_5447    :类型 {STRINGID}
+STR_5448    :游乐设施/车辆 {STRINGID}
 STR_5449    :减慢游戏速度
 STR_5450    :加快游戏速度
 STR_5451    :打开作弊窗口
@@ -3858,7 +3858,7 @@ STR_5511    :(UNKNOWN)
 STR_5512    :另存游戏
 STR_5513    :(快速)保存游戏
 STR_5514    :禁止故意破坏
-STR_5515    :{SMALLFONT}{BLACK}Stops guests from vandalising your park when they're angry
+STR_5515    :{SMALLFONT}{BLACK}游客愤怒时阻止其可以毁坏公物
 STR_5516    :{SMALLFONT}{BLACK}黑色
 STR_5517    :{SMALLFONT}{BLACK}灰色
 STR_5518    :{SMALLFONT}{BLACK}白色
@@ -3909,17 +3909,17 @@ STR_5562    :警告！
 STR_5563    :此功能暂未稳定地使用，请多加留意.
 STR_5564    :插入已损坏元素
 STR_5565    :{SMALLFONT}{BLACK}在一个网格的最上插入一个已损坏的地图元素.此插入会隐藏其他元素.
-STR_5566    :Password:
+STR_5566    :密码:
 STR_5567    :Advertise
-STR_5568    :Password Required
-STR_5569    :This server requires a password
+STR_5568    :需要密码
+STR_5569    :此服务器需要密码
 STR_5570    :Fetch Servers
-STR_5571    :Join Game
-STR_5572    :Add To Favourites
-STR_5573    :Remove From Favourites
-STR_5574    :Server Name:
-STR_5575    :Max Players:
-STR_5576    :Port:
+STR_5571    :加入游戏
+STR_5572    :添加至收藏
+STR_5573    :从收藏中去除
+STR_5574    :服务器名称:
+STR_5575    :最大人数:
+STR_5576    :端口:
 STR_5577    :韩元 (W)
 STR_5578    :卢布 (R)
 STR_5579    :窗口缩放比例:
@@ -3957,11 +3957,11 @@ STR_5610    :{SMALLFONT}{BLACK}移除选中的地图元素. 使用时请注意. 
 STR_5611    :G
 STR_5612    :{SMALLFONT}{BLACK}Ghost flag
 STR_5613    :B
-STR_5614    :{SMALLFONT}{BLACK}Broken flag
+STR_5614    :{SMALLFONT}{BLACK}损坏标记
 STR_5615    :L
-STR_5616    :{SMALLFONT}{BLACK}Last element for tile flag
-STR_5617    :{SMALLFONT}{BLACK}Move selected element up.
-STR_5618    :{SMALLFONT}{BLACK}Move selected element down.
+STR_5616    :{SMALLFONT}{BLACK}网格标记的最后一个元素
+STR_5617    :{SMALLFONT}{BLACK}将选中的元素移至上方.
+STR_5618    :{SMALLFONT}{BLACK}将选中的元素移至下方.
 STR_5619    :过山车大亨
 STR_5620    :过山车大亨：快乐天地
 STR_5621    :过山车大亨：极限反转
@@ -4075,7 +4075,7 @@ STR_5759    :下载地图中 ... ({INT32} / {INT32}) KB
 STR_5760    :港币 (HK$)
 STR_5761    :新台币 (NT$)
 STR_5762    :人民币 (CN{YEN})
-STR_5763    :All files
+STR_5763    :所有文件
 STR_5764    :不正确的游乐设施类型
 STR_5765    :无法修改类型不正确的游乐设施
 STR_5766    :<available string id>
@@ -4354,6 +4354,24 @@ STR_6038    :{SMALLFONT}{BLACK}如果你安装了过山车大亨1, 设置此选�
 STR_6039    :{SMALLFONT}{BLACK}快速拆除游乐设施
 STR_6040    :编辑剧情选项
 STR_6041    :{BLACK}没有雇佣机械师! 
+STR_6042    :载入高度图
+STR_6043    :选择高度图
+STR_6044    :平滑高度图
+STR_6045    :强度
+STR_6046    :归一化高度图
+STR_6047    :平滑网格
+STR_6048    :高度图错误
+STR_6049    :PNG读取错误
+STR_6050    :位图读取错误
+STR_6051    :宽度和高度需要相匹配
+STR_6052    :此高度图过大, 将被切开
+STR_6053    :此高度图不能被归一化
+STR_6054    :只支持24位的位图
+STR_6055    :OpenRCT2高度图文件
+STR_6056    :{SMALLFONT}{BLACK}静音
+STR_6057    :{SMALLFONT}{BLACK}在工具栏为静音选项显示一个单独的按钮
+STR_6058    :静音
+
 
 
 
