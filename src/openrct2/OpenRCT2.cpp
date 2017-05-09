@@ -299,9 +299,6 @@ extern "C"
             OpenRCT2::RunGameLoop();
         }
         openrct2_dispose();
-
-        // HACK Some threads are still running which causes the game to not terminate. Investigation required!
-        exit(gExitCode);
     }
 
     void openrct2_dispose()

@@ -67,12 +67,13 @@ sint32 RunOpenRCT2(int argc, char * * argv)
 
 	core_init();
 
-	int runGame = cmdline_run((const char **)argv, argc);
-	if (runGame == 1) {
+	sint32 exitCode = cmdline_run((const char **)argv, argc);
+	if (exitCode == 1) {
 		openrct2_launch();
+		exitCode = gExitCode;
 	}
 
-	return gExitCode;
+	return exitCode;
 }
 
 #ifdef NO_RCT2
@@ -109,7 +110,7 @@ BOOL APIENTRY DllMain(HANDLE hModule, DWORD dwReason, LPVOID lpReserved)
  */
 __declspec(dllexport) sint32 StartOpenRCT(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, sint32 nCmdShow)
 {
-	sint32 argc, runGame;
+	sint32 argc;
 	char **argv;
 
 	if (_dllModule == NULL) {
@@ -118,9 +119,8 @@ __declspec(dllexport) sint32 StartOpenRCT(HINSTANCE hInstance, HINSTANCE hPrevIn
 
 	core_init();
 
-	// argv = CommandLineToArgvA(lpCmdLine, &argc);
 	argv = (char**)windows_get_command_line_args(&argc);
-	runGame = cmdline_run((const char **)argv, argc);
+	sint32 exitCode = cmdline_run((const char **)argv, argc);
 
 	// Free argv
 	for (sint32 i = 0; i < argc; i++) {
@@ -128,11 +128,14 @@ __declspec(dllexport) sint32 StartOpenRCT(HINSTANCE hInstance, HINSTANCE hPrevIn
 	}
 	free(argv);
 
-	if (runGame == 1) {
+	if (exitCode == 1) {
 		openrct2_launch();
+		exitCode = gExitCode;
 	}
 
-	exit(gExitCode);
+
+	exit(exitCode);
+	return exitCode;
 }
 
 #endif // NO_RCT2
@@ -1055,6 +1058,26 @@ bool platform_get_font_path(TTFFontDescriptor *font, utf8 *buffer, size_t size)
 	safe_strcat_path(buffer, font->filename, size);
 	return true;
 #endif
+}
+
+utf8 * platform_get_absolute_path(const utf8 * relativePath, const utf8 * basePath)
+{
+	utf8 path[MAX_PATH];
+	safe_strcpy(path, basePath, sizeof(path));
+	safe_strcat_path(path, relativePath, sizeof(path));
+
+	wchar_t * pathW = utf8_to_widechar(path);
+	wchar_t fullPathW[MAX_PATH];
+	DWORD fullPathLen = GetFullPathNameW(pathW, countof(fullPathW), fullPathW, NULL);
+
+	free(pathW);
+
+	if (fullPathLen == 0)
+	{
+		return NULL;
+	}
+
+	return widechar_to_utf8(fullPathW);
 }
 
 datetime64 platform_get_datetime_now_utc()
