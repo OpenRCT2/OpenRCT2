@@ -48,6 +48,14 @@ sint32 mph_to_dmps(sint32 mph)
 	return (mph * 73243) >> 14;
 }
 
+void safe_decrement(uint16 *target)
+{
+	if ((*target) > 0)
+	{
+		(*target)--;
+	}
+}
+
 bool filename_valid_characters(const utf8 *filename)
 {
 	for (sint32 i = 0; filename[i] != '\0'; i++) {
