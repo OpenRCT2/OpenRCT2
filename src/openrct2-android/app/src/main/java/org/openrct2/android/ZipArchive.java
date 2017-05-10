@@ -2,6 +2,8 @@ package org.openrct2.android;
 
 import android.util.Log;
 
+import org.apache.commons.io.IOUtils;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Enumeration;
@@ -96,7 +98,7 @@ public class ZipArchive {
         }
 
         byte[] inBuffer = new byte[numBytesToRead];
-        inputStream.read(inBuffer, 0, numBytesToRead);
+        IOUtils.read(inputStream, inBuffer);
 
         return allocBytes(inBuffer, numBytesToRead);
     }
