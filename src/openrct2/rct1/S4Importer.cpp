@@ -1421,11 +1421,11 @@ private:
         {
             if (dst->outside_of_park && dst->state != PEEP_STATE_LEAVING_PARK)
             {
-                gNumGuestsHeadingForPark++;
+                increment_guests_heading_for_park();
             }
             else
             {
-                gNumGuestsInPark++;
+                increment_guests_in_park();
             }
         }
     }

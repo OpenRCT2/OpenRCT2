@@ -24,8 +24,6 @@ sint32 metres_to_feet(sint32 metres);
 sint32 mph_to_kmph(sint32 mph);
 sint32 mph_to_dmps(sint32 mph);
 
-void safe_decrement(uint16 *target);
-
 bool filename_valid_characters(const utf8 *filename);
 
 char *path_get_directory(const utf8 *path);
