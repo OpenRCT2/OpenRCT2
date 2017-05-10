@@ -175,7 +175,7 @@ static rct_widget window_scenery_widgets[] = {
     { WWT_COLOURBTN, 1, 615, 626, 93, 104, 0xFFFFFFFF, STR_SELECT_COLOUR },             // 8000000          0x009DE448
     { WWT_COLOURBTN, 1, 615, 626, 105, 116, 0xFFFFFFFF, STR_SELECT_SECONDARY_COLOUR },  // 10000000         0x009DE458
     { WWT_COLOURBTN, 1, 615, 626, 117, 128, 0xFFFFFFFF, STR_SELECT_TERNARY_COLOUR },        // 20000000         0x009DE468
-    { WWT_FLATBTN, 1, 609, 632, 130, 153, SPR_PICKUP_BTN, STR_SCENERY_EYEDROPPER_TIP },                                 // 40000000         0x009DE478
+    { WWT_FLATBTN, 1, 609, 632, 130, 153, SPR_G2_EYEDROPPER, STR_SCENERY_EYEDROPPER_TIP },                                 // 40000000         0x009DE478
     { WWT_FLATBTN, 1, 609, 632, 154, 177, SPR_SCENERY_CLUSTER, STR_SCENERY_CLUSTER_TIP },                                   // 40000000         0x009DE478
     { WIDGETS_END },
 };
@@ -772,7 +772,7 @@ static void window_scenery_update(rct_window *w)
     }
 
     if (gWindowSceneryEyedropperEnabled) {
-        gCurrentToolId = TOOL_PICKER;
+        gCurrentToolId = TOOL_CROSSHAIR;
     } else if (gWindowSceneryPaintEnabled == 1) { // the repaint scenery tool is active
         gCurrentToolId = TOOL_PAINT_DOWN;
     } else {
