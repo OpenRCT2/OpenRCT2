@@ -434,5 +434,10 @@
         "path": "edge/skyscraper_b.png",
         "x_offset": 2,
         "y_offset": 2
+    },
+    {
+        "path": "icons/eyedropper.png",
+        "x_offset": 5,
+        "y_offset": 5
     }
 ]

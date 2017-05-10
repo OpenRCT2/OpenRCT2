@@ -842,6 +842,8 @@ enum {
     SPR_G2_WALL_TEXTURE_STONE_GREY = SPR_G2_BEGIN + 120,
     SPR_G2_WALL_TEXTURE_SKYSCRAPER_A = SPR_G2_BEGIN + 121,
     SPR_G2_WALL_TEXTURE_SKYSCRAPER_B = SPR_G2_BEGIN + 122,
+    
+    SPR_G2_EYEDROPPER = SPR_G2_BEGIN + 123,
 
     // 0x60000, chosen because it's a round hex number
     // of the last possible range of image ID values that is large enough to fit all csg1 sprites.
