@@ -3275,10 +3275,10 @@ STR_3269    :Verbied veranderen landschap
 STR_3270    :{SMALLFONT}{BLACK}Verbied het veranderen van het landschap
 STR_3271    :Verbied hoog bouwen
 STR_3272    :{SMALLFONT}{BLACK}Verbied bouwen boven boomhoogte
-STR_3273    :Hogere moeilijkheid parkwaardering
-STR_3274    :{SMALLFONT}{BLACK}Maak het krijgen van een goede parkwaardering uitdagender
-STR_3275    :Hogere moeilijkheid bezoekersgeneratie
-STR_3276    :{SMALLFONT}{BLACK}Maak het moeilijker om bezoekers aan te trekken
+STR_3273    :Hogere eisen voor goede parkwaardering
+STR_3274    :{SMALLFONT}{BLACK}Maakt het krijgen van een goede parkwaardering uitdagender
+STR_3275    :Hogere eisen voor trekken bezoekers
+STR_3276    :{SMALLFONT}{BLACK}Maakt het moeilijker om bezoekers aan te trekken
 STR_3277    :{WINDOW_COLOUR_2}Prijs landaankoop:
 STR_3278    :{WINDOW_COLOUR_2}Prijs bouwrechten:
 STR_3279    :Gratis entree / Per rit betalen
