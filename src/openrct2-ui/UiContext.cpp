@@ -16,6 +16,8 @@
 
 #include <algorithm>
 #include <chrono>
+#include <cstdlib>
+#include <cmath>
 #include <memory>
 #include <vector>
 #include <SDL.h>
@@ -495,10 +497,11 @@ public:
         SDL_SetWindowMinimumSize(_window, 720, 480);
         SetCursorTrap(gConfigGeneral.trap_cursor);
         _platformUiContext->SetWindowIcon(_window);
-#ifdef __MACOSX__
-        macos_disallow_automatic_window_tabbing();
-#endif
-
+		
+		#ifdef __MACOSX__
+			
+		#endif
+		
         // Initialise the surface, palette and draw buffer
         OnResize(width, height);
 
@@ -508,6 +511,8 @@ public:
         // Check if steam overlay renderer is loaded into the process
         _steamOverlayActive = _platformUiContext->IsSteamOverlayAttached();
         TriggerResize();
+		
+		
     }
 
     void CloseWindow() override

@@ -47,6 +47,10 @@
 	#endif
 #endif
 
+#if defined(__APPLE__) && (__ENVIRONMENT_MAC_OS_X_VERSION_MIN_REQUIRED__ < 101200)
+	mach_timebase_info_data_t _mach_base_info = { 0 };
+#endif
+
 typedef void(*update_palette_func)(const uint8*, sint32, sint32);
 
 rct_palette_entry gPalette[256];
