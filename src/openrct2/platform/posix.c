@@ -116,7 +116,7 @@ void platform_get_time_local(rct2_time *out_time)
 static size_t platform_utf8_to_multibyte(const utf8 *path, char *buffer, size_t buffer_size)
 {
 	wchar_t *wpath = utf8_to_widechar(path);
-	setlocale(LC_CTYPE, "");
+	setlocale(LC_CTYPE, "UTF-8");
 	size_t len = wcstombs(NULL, wpath, 0);
 	bool truncated = false;
 	if (len > buffer_size - 1) {

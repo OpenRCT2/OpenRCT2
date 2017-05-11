@@ -1966,7 +1966,11 @@ static void window_options_paint(rct_window *w, rct_drawpixelinfo *dpi)
 			w->x + window_options_misc_widgets[WIDX_WINDOW_LIMIT].left + 1,
 			w->y + window_options_misc_widgets[WIDX_WINDOW_LIMIT].top
 		);
-		set_format_arg(0, uintptr_t, (uintptr_t)gConfigGeneral.rct1_path);
+		#ifdef __MACOSX__
+			set_format_arg(0, uintptr_t, (uintptr_t)macos_str_decomp_to_precomp(gConfigGeneral.rct1_path));
+		#else
+			set_format_arg(0, uintptr_t, (uintptr_t)gConfigGeneral.rct1_path);
+		#endif
 		gfx_draw_string_left_clipped(
 			dpi,
 			STR_STRING,

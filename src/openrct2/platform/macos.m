@@ -133,6 +133,15 @@ utf8 *platform_open_directory_browser(const utf8 *title)
 	}
 }
 
+utf8* macos_str_decomp_to_precomp(utf8 *input)
+{
+	@autoreleasepool
+	{
+		NSString *inputDecomp = [NSString stringWithUTF8String:input];
+		return strdup([inputDecomp.precomposedStringWithCanonicalMapping cStringUsingEncoding:NSUTF8StringEncoding]);
+	}
+}
+
 bool platform_open_common_file_dialog(utf8 *outFilename, file_dialog_desc *desc, size_t outSize) {
 	@autoreleasepool
 	{

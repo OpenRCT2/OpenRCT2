@@ -241,6 +241,7 @@ void core_init();
 
 #ifdef __MACOSX__
 	void macos_disallow_automatic_window_tabbing();
+	utf8* macos_str_decomp_to_precomp();
 #endif
 
 // On macOS the resizing behaviour effectively resizes the window in the same
