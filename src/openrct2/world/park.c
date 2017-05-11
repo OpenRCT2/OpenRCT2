@@ -359,7 +359,7 @@ void reset_park_entry()
 
 /**
  * Calculates the probability of a new guest. Also sets total ride value and suggested guest maximum.
- * Total ride value should probably be set else where, as its not just used for guest generation.
+ * Total ride value should probably be set elsewhere, as it's not just used for guest generation.
  * Suggested guest maximum should probably be an output result, not a global.
  * @returns A probability out of 65535
  *  rct2: 0x0066730A

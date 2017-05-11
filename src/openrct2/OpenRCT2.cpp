@@ -169,8 +169,8 @@ extern "C"
         objRepo->LoadOrConstruct();
 
         // TODO Like objects, this can take a while if there are a lot of track designs
-        //      its also really something really we might want to do in the background
-        //      as its not required until the player wants to place a new ride.
+        //      it's also really something we might want to do in the background
+        //      as it's not required until the player wants to place a new ride.
         tdRepo->Scan();
 
         scenarioRepo->Scan();

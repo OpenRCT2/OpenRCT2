@@ -453,7 +453,7 @@ bool ride_try_get_origin_element(sint32 rideIndex, rct_xy_element *output)
 
 		// Found a track piece for target ride
 
-		// Check if its not the station or ??? (but allow end piece of station)
+		// Check if it's not the station or ??? (but allow end piece of station)
 		bool specialTrackPiece = (
 			it.element->properties.track.type != TRACK_ELEM_BEGIN_STATION &&
 			it.element->properties.track.type != TRACK_ELEM_MIDDLE_STATION &&
@@ -2303,7 +2303,7 @@ static sint32 ride_get_new_breakdown_problem(rct_ride *ride)
 	sint32 availableBreakdownProblems, monthsOld, totalProbability, randomProbability, problemBits, breakdownProblem;
 	rct_ride_entry *entry;
 
-	// Brake failure is more likely when its raining
+	// Brake failure is more likely when it's raining
 	_breakdownProblemProbabilities[BREAKDOWN_BRAKES_FAILURE] = gClimateCurrentRainLevel == 0 ? 3 : 20;
 
 	entry = get_ride_entry_by_ride(ride);
@@ -5294,7 +5294,7 @@ static sint32 ride_is_valid_for_open(sint32 rideIndex, sint32 goingToBeOpen, sin
 
 	ride = get_ride(rideIndex);
 
-	// Check to see if construction tool in use. If it is close the construction window
+	// Check to see if construction tool is in use. If it is close the construction window
 	// to set the track to its final state and clean up ghosts.
 	// We can't just call close as it would cause a stack overflow during shop creation
 	// with auto open on.

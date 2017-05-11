@@ -111,7 +111,7 @@ bool language_open(sint32 id)
         gCurrentLanguage = id;
         TryLoadFonts();
 
-        // Objects and their localized strings need to be refreshed
+        // Objects and their localised strings need to be refreshed
         GetObjectManager()->ResetObjects();
         return true;
     }

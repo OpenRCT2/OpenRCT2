@@ -1802,7 +1802,7 @@ static void window_ride_construction_mouseup_demolish(rct_window* w)
 		_rideConstructionState2 = RIDE_CONSTRUCTION_STATE_BACK;
 	}
 
-	// Invalidate the selected track element or make sure its at origin???
+	// Invalidate the selected track element or make sure it's at origin???
 	x = _currentTrackBeginX;
 	y = _currentTrackBeginY;
 	z = _currentTrackBeginZ;

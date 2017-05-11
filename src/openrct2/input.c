@@ -1072,7 +1072,7 @@ void process_mouse_over(sint32 x, sint32 y)
 				ebx = 0;
 				edi = cursorId;
 				// Window event WE_UNKNOWN_0E was called here, but no windows actually implemented a handler and
-				// its not known what it was for
+				// it's not known what it was for
 				cursorId = edi;
 				if ((ebx & 0xFF) != 0)
 				{

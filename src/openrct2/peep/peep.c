@@ -4056,7 +4056,7 @@ static void peep_update_ride_sub_state_20(rct_peep* peep){
 		return;
 	}
 
-	// Do not play toilet flush sound on title screen as its considered loud and annoying
+	// Do not play toilet flush sound on title screen as it's considered loud and annoying
 	if (!(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)) {
 		audio_play_sound_at_location(SOUND_TOILET_FLUSH, peep->x, peep->y, peep->z);
 	}
@@ -4838,7 +4838,7 @@ static void peep_update_queuing(rct_peep* peep){
 			// Fix #4819: Occasionally the peep->next_in_queue is incorrectly set
 			// to prevent this from causing the peeps to enter a loop
 			// first check if the next in queue is actually nearby
-			// if they are not then its safe to assume that this is
+			// if they are not then it's safe to assume that this is
 			// the front of the queue.
 			rct_peep* next_peep = GET_PEEP(peep->next_in_queue);
 			if (abs(next_peep->x - peep->x) < 32 &&

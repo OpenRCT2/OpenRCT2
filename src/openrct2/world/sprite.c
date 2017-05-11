@@ -697,7 +697,7 @@ void litter_remove_at(sint32 x, sint32 y, sint32 z)
 }
 
 /**
- * Determines whether its worth tweening a sprite or not when frame smoothing is on.
+ * Determines whether it's worth tweening a sprite or not when frame smoothing is on.
  */
 static bool sprite_should_tween(rct_sprite *sprite)
 {

@@ -87,7 +87,7 @@ static wchar_t encoding_convert_x_to_unicode(wchar_t code, const encoding_conver
 
 wchar_t encoding_convert_unicode_to_rct2(wchar_t unicode)
 {
-	// Can't do a binary search as its sorted by RCT2 code, not unicode
+	// Can't do a binary search as it's sorted by RCT2 code, not unicode
 	for (sint32 i = 0; i < countof(RCT2ToUnicodeTable); i++) {
 		if (RCT2ToUnicodeTable[i].unicode == unicode) return RCT2ToUnicodeTable[i].code;
 	}

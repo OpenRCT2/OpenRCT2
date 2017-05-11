@@ -44,7 +44,7 @@ static void window_shortcut_change_mouseup(rct_window *w, rct_widgetindex widget
 static void window_shortcut_change_invalidate(rct_window *w);
 static void window_shortcut_change_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
-//0x9A3F7C
+// 0x9A3F7C
 static rct_window_event_list window_shortcut_change_events = {
 	NULL,
 	window_shortcut_change_mouseup,

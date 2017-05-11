@@ -1132,7 +1132,7 @@ void window_guest_overview_update(rct_window* w){
 	else
 		w->highlighted_item++;
 
-	// Disable peep watching thought for multiplayer as its client specific
+	// Disable peep watching thought for multiplayer as it's client specific
 	if (network_get_mode() == NETWORK_MODE_NONE) {
 		// Create the "I have the strangest feeling I am being watched thought"
 		if ((w->highlighted_item & 0xFFFF) >= 3840) {
@@ -1369,16 +1369,16 @@ void window_guest_stats_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	window_guest_thoughts_tab_paint(w, dpi);
 	window_guest_inventory_tab_paint(w, dpi);
 
-	//ebx
+	// ebx
 	rct_peep* peep = GET_PEEP(w->number);
 
 	// Not sure why this is not stats widgets
-	//cx
+	// cx
 	sint32 x = w->x + window_guest_rides_widgets[WIDX_PAGE_BACKGROUND].left + 4;
-	//dx
+	// dx
 	sint32 y = w->y + window_guest_rides_widgets[WIDX_PAGE_BACKGROUND].top + 4;
 
-	//Happiness
+	// Happiness
 	gfx_draw_string_left(dpi, STR_GUEST_STAT_HAPPINESS_LABEL, gCommonFormatArgs, COLOUR_BLACK, x, y);
 
 	sint32 happiness = peep->happiness;
@@ -1389,7 +1389,7 @@ void window_guest_stats_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	}
 	window_guest_stats_bars_paint(happiness, x, y, w, dpi, ebp);
 
-	//Energy
+	// Energy
 	y += 10;
 	gfx_draw_string_left(dpi, STR_GUEST_STAT_ENERGY_LABEL, gCommonFormatArgs, COLOUR_BLACK, x, y);
 
@@ -1401,7 +1401,7 @@ void window_guest_stats_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	if (energy < 10)energy = 10;
 	window_guest_stats_bars_paint(energy, x, y, w, dpi, ebp);
 
-	//Hunger
+	// Hunger
 	y += 10;
 	gfx_draw_string_left(dpi, STR_GUEST_STAT_HUNGER_LABEL, gCommonFormatArgs, COLOUR_BLACK, x, y);
 
@@ -1420,7 +1420,7 @@ void window_guest_stats_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	}
 	window_guest_stats_bars_paint(hunger, x, y, w, dpi, ebp);
 
-	//Thirst
+	// Thirst
 	y += 10;
 	gfx_draw_string_left(dpi, STR_GUEST_STAT_THIRST_LABEL, gCommonFormatArgs, COLOUR_BLACK, x, y);
 
@@ -1439,7 +1439,7 @@ void window_guest_stats_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	}
 	window_guest_stats_bars_paint(thirst, x, y, w, dpi, ebp);
 
-	//Nausea
+	// Nausea
 	y += 10;
 	gfx_draw_string_left(dpi, STR_GUEST_STAT_NAUSEA_LABEL, gCommonFormatArgs, COLOUR_BLACK, x, y);
 
@@ -1455,7 +1455,7 @@ void window_guest_stats_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	}
 	window_guest_stats_bars_paint(nausea, x, y, w, dpi, ebp);
 
-	//Bathroom
+	// Bathroom
 	y += 10;
 	gfx_draw_string_left(dpi, STR_GUEST_STAT_TOILET_LABEL, gCommonFormatArgs, COLOUR_BLACK, x, y);
 
@@ -1680,9 +1680,9 @@ void window_guest_rides_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 	rct_peep* peep = GET_PEEP(w->number);
 
-	//cx
+	// cx
 	sint32 x = w->x + window_guest_rides_widgets[WIDX_PAGE_BACKGROUND].left + 2;
-	//dx
+	// dx
 	sint32 y = w->y + window_guest_rides_widgets[WIDX_PAGE_BACKGROUND].top + 2;
 
 	gfx_draw_string_left(dpi, STR_GUEST_LABEL_RIDES_BEEN_ON, NULL, COLOUR_BLACK, x, y);
@@ -1947,9 +1947,9 @@ void window_guest_thoughts_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 	rct_peep* peep = GET_PEEP(w->number);
 
-	//cx
+	// cx
 	sint32 x = w->x + window_guest_thoughts_widgets[WIDX_PAGE_BACKGROUND].left + 4;
-	//dx
+	// dx
 	sint32 y = w->y + window_guest_thoughts_widgets[WIDX_PAGE_BACKGROUND].top + 4;
 
 	gfx_draw_string_left(dpi, STR_GUEST_RECENT_THOUGHTS_LABEL, NULL, COLOUR_BLACK, x, y);

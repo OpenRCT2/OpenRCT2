@@ -255,7 +255,7 @@ static void sub_68B3FB(sint32 x, sint32 y)
 
 		rct_xy16 dword_9DE574 = gPaintMapPosition;
 		g_currently_drawn_item = map_element;
-		//setup the painting of for example: the underground, signs, rides, scenery, etc.
+		// Setup the painting of for example: the underground, signs, rides, scenery, etc.
 		switch (map_element_get_type(map_element))
 		{
 		case MAP_ELEMENT_TYPE_SURFACE:
