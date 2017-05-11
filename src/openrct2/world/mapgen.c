@@ -200,7 +200,7 @@ void mapgen_generate(mapgen_settings *settings)
 		// Small blobs, small hills and lakes
 		mapgen_blobs(32, _heightSize / 32, _heightSize / 16, 4, 18);
 
-		// Smooth the land so that their aren't cliffs round every blob.
+		// Smooth the land so that there aren't cliffs round every blob.
 		mapgen_smooth_height(2);
 	}
 
@@ -488,7 +488,7 @@ static void mapgen_blob_fill(sint32 height)
 
 		for (sint32 y = top; y <= bottom; y++) {
 			if (y >= firstLand && y <= lastLand && landX[x * _heightSize + y]) {
-				// Not only do we know its landlocked to both x and y
+				// Not only do we know it's landlocked to both x and y
 				// we can change the land too
 				set_height(x, y, BLOB_HEIGHT);
 			}

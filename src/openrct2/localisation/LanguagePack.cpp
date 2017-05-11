@@ -326,7 +326,7 @@ public:
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Parsing
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    // Partial support to open a uncompiled language file which parses tokens and converts them to the corresponding character
+    // Partial support to open an uncompiled language file which parses tokens and converts them to the corresponding character
     // code. Due to resource strings (strings in scenarios and objects) being written to the original game's string table,
     // get_string will use those if the same entry in the loaded language is empty.
     //

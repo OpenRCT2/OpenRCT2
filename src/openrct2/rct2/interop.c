@@ -183,7 +183,7 @@ bool rct2_interop_setup_segment()
 	rct2_interop_get_segment_data_path(segmentDataPath, sizeof(segmentDataPath));
 
 	// Warning: for Windows this will fail if given a non-ASCII path,
-	//          but given this code is temporary - its not worth resolving.
+	//          but given this code is temporary - it's not worth resolving.
 	FILE * file = fopen(segmentDataPath, "rb");
 	if (file == NULL)
 	{

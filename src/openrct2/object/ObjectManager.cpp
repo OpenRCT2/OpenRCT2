@@ -297,7 +297,7 @@ private:
             object->Unload();
             delete object;
 
-            // Because its possible to have the same loaded object for multiple
+            // Because it's possible to have the same loaded object for multiple
             // slots, we have to make sure find and set all of them to nullptr
             if (_loadedObjects != nullptr)
             {

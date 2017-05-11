@@ -83,7 +83,7 @@
 #define RCT2_ADDRESS_SPRITE_LISTS_HEAD				0x013573BC
 #define RCT2_ADDRESS_SPRITE_LISTS_COUNT				0x013573C8
 
-//How many ticks the scenario has existed for
+// How many ticks the scenario has existed for
 #define RCT2_ADDRESS_SAVED_VIEW_X					0x0138869A
 #define RCT2_ADDRESS_SAVED_VIEW_Y					0x0138869C
 #define RCT2_ADDRESS_SAVED_VIEW_ZOOM				0x0138869E
@@ -298,9 +298,9 @@
 #define RCT2_ADDRESS_PARK_ENTRANCE_GHOST_EXISTS		0x009E32D2
 #define RCT2_ADDRESS_PARK_ENTRANCE_GHOST_PRICE		0x009E32D3
 
-//Every pixel changed by rain is stored.
-//32bit (pixel_offset 24 bit)(pixel_colour 8 bit)
-//Use the rainPixels[] global in drawing.c from now on
+// Every pixel changed by rain is stored.
+// 32bit (pixel_offset 24 bit)(pixel_colour 8 bit)
+// Use the rainPixels[] global in drawing.c from now on
 #define RCT2_ADDRESS_RAIN_PIXEL_STORE				0x00EDF850
 #define RCT2_ADDRESS_UNCOMPLETED_RESEARCH_TYPES		0x00EE787C
 

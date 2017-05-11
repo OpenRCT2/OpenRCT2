@@ -81,7 +81,7 @@ static sint32 screenshot_get_next_path(char *path, size_t size)
 	char park_name[128];
 	format_string(park_name, 128, gParkName, &gParkNameArgs);
 
-	// retrieve current time
+	// Retrieve current time
 	rct2_date currentDate;
 	platform_get_date_local(&currentDate);
 	rct2_time currentTime;
