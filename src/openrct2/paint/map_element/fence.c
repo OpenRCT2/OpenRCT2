@@ -174,7 +174,7 @@ void fence_paint(uint8 direction, sint32 height, rct_map_element * map_element)
         dword_141F710 = construction_markers[gConfigGeneral.construction_marker_colour];
     }
 
-    // save map_element
+    // Save map_element
 
     uint8 ah = sceneryEntry->wall.height * 8 - 2;
 

@@ -176,7 +176,7 @@ enum WINDOW_CHEATS_WIDGET_IDX {
 #define MAX_BTN_LEFT	((sint16)(XPL(1.5)))
 #define MAX_BTN_RIGHT	((sint16)(WPL(1)))
 
-#define TXTO 3	//text horizontal offset from button left (for button text)
+#define TXTO 3	// Text horizontal offset from button left (for button text)
 #pragma endregion
 
 #define MAIN_CHEATS_WIDGETS \
@@ -736,7 +736,7 @@ static void window_cheats_misc_mouseup(rct_window *w, rct_widgetindex widgetInde
 	case WIDX_SANDBOX_MODE:
 		game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_SANDBOXMODE, !gCheatsSandboxMode, GAME_COMMAND_CHEAT, 0, 0);
 		// To prevent tools from staying active after disabling cheat
-		//tool_cancel();
+		// tool_cancel();
 		break;
 	case WIDX_RESET_DATE:
 		game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_RESETDATE, 0, GAME_COMMAND_CHEAT, 0, 0);

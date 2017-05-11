@@ -66,7 +66,7 @@ typedef struct rct_g1_element_32bit {
 	sint16 x_offset;                // 0x08
 	sint16 y_offset;                // 0x0A
 	uint16 flags;                   // 0x0C
-	uint16 zoomed_offset;   // 0x0E
+	uint16 zoomed_offset;			// 0x0E
 } rct_g1_element_32bit;
 assert_struct_size(rct_g1_element_32bit, 0x10);
 
@@ -102,13 +102,13 @@ typedef enum {
 
 	PALETTE_34 = 34,
 
-	PALETTE_45 = 45, // Decolorize + lighten
+	PALETTE_45 = 45, // Decolourise + lighten
 
 	PALETTE_DARKEN_3 = 47,
 
 	PALETTE_DARKEN_1 = 49,
 	PALETTE_DARKEN_2 = 50,
-	PALETTE_51 = 51, // Decolorize + darken
+	PALETTE_51 = 51, // Decolourise + darken
 	PALETTE_TRANSLUCENT_GREY = 52,
 	PALETTE_TRANSLUCENT_GREY_HIGHLIGHT = 53,
 	PALETTE_TRANSLUCENT_GREY_SHADOW = 54,

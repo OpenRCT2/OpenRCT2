@@ -89,7 +89,7 @@ const language_descriptor LanguagesDescriptors[LANGUAGE_COUNT] = {
     { "ru-RU", "Russian", "Russian", FONT(&TTFFontArial), RCT2_LANGUAGE_ID_ENGLISH_UK },      // LANGUAGE_RUSSIAN
     { "cs-CZ", "Czech", "Czech", FONT(&TTFFontArial), RCT2_LANGUAGE_ID_ENGLISH_UK },          // LANGUAGE_CZECH
     { "ja-JP", "Japanese", "Japanese", FONT(&TTFFontMSGothic), RCT2_LANGUAGE_ID_ENGLISH_UK }, // LANGUAGE_JAPANESE
-    { "nb-NO", "Norwegian", "Norsk", FONT_OPENRCT2_SPRITE, RCT2_LANGUAGE_ID_ENGLISH_UK },    // LANGUAGE_NORWEGIAN
+    { "nb-NO", "Norwegian", "Norsk", FONT_OPENRCT2_SPRITE, RCT2_LANGUAGE_ID_ENGLISH_UK },     // LANGUAGE_NORWEGIAN
     { "ca-ES", "Catalan", u8"Català", FONT_OPENRCT2_SPRITE, RCT2_LANGUAGE_ID_SPANISH },       // LANGUAGE_CATALAN
 };
 

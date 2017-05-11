@@ -64,7 +64,7 @@ static void paint_dodgems(uint8 rideIndex, uint8 trackSequence, uint8 direction,
 	switch (direction) {
 		case 2:
 			trackSequence = 15 - trackSequence;
-			// fallthrough
+			// Fallthrough
 		case 0:
 			if ((trackSequence / 4) & 1) {
 				paint_dodgems_roof(height + 30, 0);
@@ -75,7 +75,7 @@ static void paint_dodgems(uint8 rideIndex, uint8 trackSequence, uint8 direction,
 
 		case 3:
 			trackSequence = 15 - trackSequence;
-			// fallthrough
+			// Fallthrough
 		case 1:
 			if ((trackSequence / 4) & 1) {
 				paint_dodgems_roof(height + 30, 1);

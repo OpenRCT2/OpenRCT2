@@ -236,7 +236,7 @@ static money32 RideEntranceExitPlace(sint16 x,
     uint8 stationNum, 
     bool isExit)
 {
-    // Remember when in Unknown station num mode rideIndex is unknown and z is set
+    // Remember when in unknown station num mode rideIndex is unknown and z is set
     // When in known station num mode rideIndex is known and z is unknown
 
     money32 cost = 0;

@@ -195,10 +195,10 @@ static void cheat_reset_crash_status()
 	rct_ride *ride;
 
 	FOR_ALL_RIDES(i, ride){
-		//reset crash status
+		// Reset crash status
 		if (ride->lifecycle_flags & RIDE_LIFECYCLE_CRASHED)
 			ride->lifecycle_flags &= ~RIDE_LIFECYCLE_CRASHED;
-		//reset crash history
+		// Reset crash history
 		ride->last_crash_type = RIDE_CRASH_TYPE_NONE;
 	}
 	window_invalidate_by_class(WC_RIDE);

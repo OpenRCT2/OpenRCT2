@@ -77,19 +77,19 @@ static void paint_circus_show(uint8 rideIndex, uint8 trackSequence, uint8 direct
 	sint32 cornerSegments = 0;
 	switch (trackSequence) {
 		case 1:
-			// top
+			// Top
 			cornerSegments = SEGMENT_B4 | SEGMENT_C8 | SEGMENT_CC;
 			break;
 		case 3:
-			// right
+			// Right
 			cornerSegments = SEGMENT_CC | SEGMENT_BC | SEGMENT_D4;
 			break;
 		case 6:
-			// left
+			// Left
 			cornerSegments = SEGMENT_C8 | SEGMENT_B8 | SEGMENT_D0;
 			break;
 		case 7:
-			// bottom
+			// Bottom
 			cornerSegments = SEGMENT_D0 | SEGMENT_C0 | SEGMENT_D4;
 			break;
 	}

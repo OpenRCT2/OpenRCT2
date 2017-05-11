@@ -712,12 +712,12 @@ sint32 cmdline_for_sprite(const char **argv, sint32 argc)
 				json_decref(sprite_list);
 				return -1;
 			}
-			//Get x and y offsets, if present
+			// Get x and y offsets, if present
 			json_t* x_offset = json_object_get(sprite_description, "x_offset");
 			json_t* y_offset = json_object_get(sprite_description, "y_offset");
 
 			
-			//Resolve absolute sprite path
+			// Resolve absolute sprite path
 			char *imagePath = platform_get_absolute_path(json_string_value(path), directoryPath);
 
 			rct_g1_element spriteElement;

@@ -93,7 +93,7 @@ enum {
 	FORMAT_PALESILVER,
 	FORMAT_COLOUR_CODE_END = FORMAT_PALESILVER,
 
-	// Extra non-ascii characters
+	// Extra non-ASCII characters
 	FORMAT_AMINUSCULE = 159,
 	FORMAT_CENT = 162,
 	FORMAT_POUND = 163,
@@ -125,7 +125,7 @@ enum {
 	FORMAT_TICK = 10003,
 	FORMAT_CROSS = 10005,
 
-	// Format codes that need suitable unicode allocations
+	// Format codes that need suitable Unicode allocations
 	FORMAT_SYMBOL_i = 20000,
 	FORMAT_SYMBOL_RAILWAY = 20001,
 	FORMAT_SYMBOL_ROAD = 20002,
