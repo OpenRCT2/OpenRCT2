@@ -2033,11 +2033,11 @@ void peep_sprite_remove(rct_peep* peep){
 void peep_remove(rct_peep* peep){
 	if (peep->type == PEEP_TYPE_GUEST){
 		if (peep->outside_of_park == 0){
-			gNumGuestsInPark--;
+			decrement_guests_in_park();
 			gToolbarDirtyFlags |= BTM_TB_DIRTY_FLAG_PEEP_COUNT;
 		}
 		if (peep->state == PEEP_STATE_ENTERING_PARK){
-			gNumGuestsHeadingForPark--;
+			decrement_guests_heading_for_park();
 		}
 	}
 	peep_sprite_remove(peep);
@@ -5207,7 +5207,7 @@ static void peep_update_leaving_park(rct_peep* peep){
 
 	peep->outside_of_park = 1;
 	peep->destination_tolerence = 5;
-	gNumGuestsInPark--;
+	decrement_guests_in_park();
 	gToolbarDirtyFlags |= BTM_TB_DIRTY_FLAG_PEEP_COUNT;
 	peep->var_37 = 1;
 
@@ -5312,7 +5312,7 @@ static void peep_update_entering_park(rct_peep* peep){
 	if (peep->var_37 != 1){
 		sub_693C9E(peep);
 		if ((_unk_F1EE18 & F1EE18_OUTSIDE_PARK)) {
-			gNumGuestsHeadingForPark--;
+			decrement_guests_heading_for_park();
 			peep_sprite_remove(peep);
 		}
 		return;
@@ -5330,8 +5330,8 @@ static void peep_update_entering_park(rct_peep* peep){
 
 	peep->outside_of_park = 0;
 	peep->time_in_park = gScenarioTicks;
-	gNumGuestsInPark++;
-	gNumGuestsHeadingForPark--;
+	increment_guests_in_park();
+	decrement_guests_heading_for_park();
 	gToolbarDirtyFlags |= BTM_TB_DIRTY_FLAG_PEEP_COUNT;
 	window_invalidate_by_class(WC_GUEST_LIST);
 }
@@ -7260,7 +7260,7 @@ rct_peep *peep_generate(sint32 x, sint32 y, sint32 z)
 	}
 	peep_update_name_sort(peep);
 
-	gNumGuestsHeadingForPark++;
+	increment_guests_heading_for_park();
 
 	return peep;
 }
@@ -8070,7 +8070,7 @@ static sint32 peep_interact_with_entrance(rct_peep* peep, sint16 x, sint16 y, rc
 		if (!(gParkFlags & PARK_FLAGS_PARK_OPEN)){
 			peep->state = PEEP_STATE_LEAVING_PARK;
 			peep->var_37 = 1;
-			gNumGuestsHeadingForPark--;
+			decrement_guests_heading_for_park();
 			peep_window_state_update(peep);
 			return peep_return_to_center_of_tile(peep);
 		}
@@ -8127,7 +8127,7 @@ static sint32 peep_interact_with_entrance(rct_peep* peep, sint16 x, sint16 y, rc
 		if (!found){
 			peep->state = PEEP_STATE_LEAVING_PARK;
 			peep->var_37 = 1;
-			gNumGuestsHeadingForPark--;
+			decrement_guests_heading_for_park();
 			peep_window_state_update(peep);
 			return peep_return_to_center_of_tile(peep);
 		}
@@ -8149,7 +8149,7 @@ static sint32 peep_interact_with_entrance(rct_peep* peep, sint16 x, sint16 y, rc
 			if (entranceFee > peep->cash_in_pocket){
 				peep->state = PEEP_STATE_LEAVING_PARK;
 				peep->var_37 = 1;
-				gNumGuestsHeadingForPark--;
+				decrement_guests_heading_for_park();
 				peep_window_state_update(peep);
 				return peep_return_to_center_of_tile(peep);
 			}
@@ -12807,4 +12807,36 @@ void peep_autoposition(rct_peep *newPeep)
 
     sprite_move(x, y, z + 16, (rct_sprite *)newPeep);
     invalidate_sprite_2((rct_sprite *)newPeep);
+}
+
+void increment_guests_in_park(){
+	if (gNumGuestsInPark < UINT16_MAX){
+		gNumGuestsInPark++;
+	} else {
+		openrct2_assert(false, "Attempt to increment guests in park above max value (65535).");
+	}
+}
+
+void increment_guests_heading_for_park(){
+	if (gNumGuestsHeadingForPark < UINT16_MAX){
+		gNumGuestsHeadingForPark++;
+	} else {
+		openrct2_assert(false, "Attempt to increment guests heading for park above max value (65535).");
+	}
+}
+
+void decrement_guests_in_park(){
+	if (gNumGuestsInPark > 0){
+		gNumGuestsInPark--;
+	} else {
+		log_error("Attempt to decrement guests in park below zero.");
+	}
+}
+
+void decrement_guests_heading_for_park(){
+	if (gNumGuestsHeadingForPark > 0){
+		gNumGuestsHeadingForPark--;
+	} else {
+		log_error("Attempt to decrement guests heading for park below zero.");
+	}
 }

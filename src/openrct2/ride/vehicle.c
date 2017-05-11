@@ -4602,7 +4602,7 @@ static void vehicle_kill_all_passengers(rct_vehicle* vehicle) {
 		for (uint8 i = 0; i < curVehicle->num_peeps; i++) {
 			rct_peep* peep = GET_PEEP(curVehicle->peep[i]);
 			if (peep->outside_of_park == 0) {
-				gNumGuestsInPark--;
+				decrement_guests_in_park();
 				gToolbarDirtyFlags |=
 					BTM_TB_DIRTY_FLAG_PEEP_COUNT;
 			}

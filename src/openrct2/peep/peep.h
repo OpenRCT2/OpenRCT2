@@ -780,4 +780,9 @@ void pathfind_logging_disable();
 
 void peep_autoposition(rct_peep *newPeep);
 
+void increment_guests_in_park();
+void increment_guests_heading_for_park();
+void decrement_guests_in_park();
+void decrement_guests_heading_for_park();
+
 #endif
