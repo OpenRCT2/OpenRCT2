@@ -12813,7 +12813,7 @@ void increment_guests_in_park(){
 	if (gNumGuestsInPark < UINT16_MAX){
 		gNumGuestsInPark++;
 	} else {
-		log_error("Attempt to increment guests in park above max value.");
+		openrct2_assert(false, "Attempt to increment guests in park above max value (65535).");
 	}
 }
 
@@ -12821,7 +12821,7 @@ void increment_guests_heading_for_park(){
 	if (gNumGuestsHeadingForPark < UINT16_MAX){
 		gNumGuestsHeadingForPark++;
 	} else {
-		log_error("Attempt to increment guests heading for park above max value.");
+		openrct2_assert(false, "Attempt to increment guests heading for park above max value (65535).");
 	}
 }
 
