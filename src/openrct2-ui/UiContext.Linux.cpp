@@ -14,7 +14,7 @@
 *****************************************************************************/
 #pragma endregion
 
-#ifdef __linux__
+#if defined(__linux__)
 
 #include <dlfcn.h>
 #include <sstream>
@@ -49,6 +49,9 @@ namespace OpenRCT2 { namespace Ui
 
         bool IsSteamOverlayAttached() override
         {
+			#ifdef __APPLE__
+			return false;
+	#endif
             // See http://syprog.blogspot.ru/2011/12/listing-loaded-shared-objects-in-linux.html
             struct lmap
             {
