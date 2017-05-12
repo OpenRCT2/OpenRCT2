@@ -603,6 +603,30 @@
 		F76C88921EC539A300FA49E2 /* libopenrct2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F76C809A1EC4D9FA00FA49E2 /* libopenrct2.a */; };
 		F7D7747B1EC5EB6D00BE6EBC /* lay_down_roller_coaster.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84951EC4E7CC00FA49E2 /* lay_down_roller_coaster.c */; };
 		F7D7747F1EC61E5100BE6EBC /* UiContext.macOS.mm in Sources */ = {isa = PBXBuildFile; fileRef = F7D7747E1EC61E5100BE6EBC /* UiContext.macOS.mm */; };
+		F7D7748D1EC66F8600BE6EBC /* libopenrct2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F76C809A1EC4D9FA00FA49E2 /* libopenrct2.a */; };
+		F7D7748E1EC66FA000BE6EBC /* libiconv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D41B741C1C210A7A0080A7B9 /* libiconv.tbd */; };
+		F7D7748F1EC66FA900BE6EBC /* libcurl.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D41B73EE1C2101890080A7B9 /* libcurl.tbd */; };
+		F7D774901EC66FB000BE6EBC /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D47304D41C4FF8250015C0EA /* libz.tbd */; };
+		F7D774911EC66FBA00BE6EBC /* libcrypto.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D45A38B31CF3006400659A24 /* libcrypto.dylib */; };
+		F7D774921EC66FBA00BE6EBC /* libfreetype.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D45A38B41CF3006400659A24 /* libfreetype.dylib */; };
+		F7D774931EC66FBA00BE6EBC /* libjansson.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D45A38B51CF3006400659A24 /* libjansson.dylib */; };
+		F7D774941EC66FBA00BE6EBC /* libpng16.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D4A8B4B31DB41873007A2F29 /* libpng16.dylib */; };
+		F7D774951EC66FBA00BE6EBC /* libspeexdsp.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D45A38B91CF3006400659A24 /* libspeexdsp.dylib */; };
+		F7D774961EC66FBA00BE6EBC /* libzip.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C6E96E351E0408B40076A04F /* libzip.dylib */; };
+		F7D774971EC6705F00BE6EBC /* libcrypto.dylib in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D45A38B31CF3006400659A24 /* libcrypto.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		F7D774981EC6705F00BE6EBC /* libfreetype.dylib in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D45A38B41CF3006400659A24 /* libfreetype.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		F7D774991EC6705F00BE6EBC /* libjansson.dylib in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D45A38B51CF3006400659A24 /* libjansson.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		F7D7749A1EC6705F00BE6EBC /* libpng16.dylib in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D4A8B4B31DB41873007A2F29 /* libpng16.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		F7D7749B1EC6705F00BE6EBC /* libspeexdsp.dylib in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D45A38B91CF3006400659A24 /* libspeexdsp.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		F7D7749C1EC6705F00BE6EBC /* libzip.dylib in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C6E96E351E0408B40076A04F /* libzip.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		F7D7749E1EC6713200BE6EBC /* Cli.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C857D1EC4E80E00FA49E2 /* Cli.cpp */; };
+		F7D7749F1EC6714C00BE6EBC /* libSDL2_ttf.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D45A38B71CF3006400659A24 /* libSDL2_ttf.dylib */; };
+		F7D774A01EC6714C00BE6EBC /* libSDL2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D45A38B81CF3006400659A24 /* libSDL2.dylib */; };
+		F7D774A11EC6715C00BE6EBC /* libSDL2_ttf.dylib in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D45A38B71CF3006400659A24 /* libSDL2_ttf.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		F7D774A21EC6715C00BE6EBC /* libSDL2.dylib in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D45A38B81CF3006400659A24 /* libSDL2.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		F7D774AC1EC6741D00BE6EBC /* language in CopyFiles */ = {isa = PBXBuildFile; fileRef = D4EC48E41C2637710024B507 /* language */; };
+		F7D774AD1EC6741D00BE6EBC /* shaders in CopyFiles */ = {isa = PBXBuildFile; fileRef = D43407E11D0E14CE00C2B3D4 /* shaders */; };
+		F7D774AE1EC6741D00BE6EBC /* title in CopyFiles */ = {isa = PBXBuildFile; fileRef = D4EC48E51C2637710024B507 /* title */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -641,6 +665,36 @@
 				D45A395F1CF300AF00659A24 /* libspeexdsp.dylib in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F7D774821EC66CD700BE6EBC /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 12;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				F7D774A11EC6715C00BE6EBC /* libSDL2_ttf.dylib in Embed Frameworks */,
+				F7D774A21EC6715C00BE6EBC /* libSDL2.dylib in Embed Frameworks */,
+				F7D774971EC6705F00BE6EBC /* libcrypto.dylib in Embed Frameworks */,
+				F7D774981EC6705F00BE6EBC /* libfreetype.dylib in Embed Frameworks */,
+				F7D774991EC6705F00BE6EBC /* libjansson.dylib in Embed Frameworks */,
+				F7D7749A1EC6705F00BE6EBC /* libpng16.dylib in Embed Frameworks */,
+				F7D7749B1EC6705F00BE6EBC /* libspeexdsp.dylib in Embed Frameworks */,
+				F7D7749C1EC6705F00BE6EBC /* libzip.dylib in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F7D774AA1EC6740D00BE6EBC /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 6;
+			files = (
+				F7D774AC1EC6741D00BE6EBC /* language in CopyFiles */,
+				F7D774AD1EC6741D00BE6EBC /* shaders in CopyFiles */,
+				F7D774AE1EC6741D00BE6EBC /* title in CopyFiles */,
+			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -1650,6 +1704,7 @@
 		F76C882B1EC4E91600FA49E2 /* OpenRCT2.rc */ = {isa = PBXFileReference; lastKnownFileType = text; path = OpenRCT2.rc; sourceTree = "<group>"; };
 		F76C882C1EC4E91600FA49E2 /* resource.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = resource.h; sourceTree = "<group>"; };
 		F7D7747E1EC61E5100BE6EBC /* UiContext.macOS.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = UiContext.macOS.mm; sourceTree = "<group>"; };
+		F7D774841EC66CD700BE6EBC /* OpenRCT2-cli */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "OpenRCT2-cli"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1675,6 +1730,25 @@
 				D45A38C01CF3006400659A24 /* libSDL2_ttf.dylib in Frameworks */,
 				D45A38C21CF3006400659A24 /* libspeexdsp.dylib in Frameworks */,
 				C6E96E361E0408B40076A04F /* libzip.dylib in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F7D774811EC66CD700BE6EBC /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F7D7748D1EC66F8600BE6EBC /* libopenrct2.a in Frameworks */,
+				F7D774901EC66FB000BE6EBC /* libz.tbd in Frameworks */,
+				F7D7748F1EC66FA900BE6EBC /* libcurl.tbd in Frameworks */,
+				F7D7748E1EC66FA000BE6EBC /* libiconv.tbd in Frameworks */,
+				F7D774911EC66FBA00BE6EBC /* libcrypto.dylib in Frameworks */,
+				F7D774921EC66FBA00BE6EBC /* libfreetype.dylib in Frameworks */,
+				F7D774931EC66FBA00BE6EBC /* libjansson.dylib in Frameworks */,
+				F7D774941EC66FBA00BE6EBC /* libpng16.dylib in Frameworks */,
+				F7D774A01EC6714C00BE6EBC /* libSDL2.dylib in Frameworks */,
+				F7D7749F1EC6714C00BE6EBC /* libSDL2_ttf.dylib in Frameworks */,
+				F7D774951EC66FBA00BE6EBC /* libspeexdsp.dylib in Frameworks */,
+				F7D774961EC66FBA00BE6EBC /* libzip.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2153,6 +2227,7 @@
 				D497D0781C20FD52002BF46A /* OpenRCT2.app */,
 				C64FDA5D1D6D99F400F259B9 /* PaintTest */,
 				F76C809A1EC4D9FA00FA49E2 /* libopenrct2.a */,
+				F7D774841EC66CD700BE6EBC /* OpenRCT2-cli */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -3339,6 +3414,26 @@
 			productReference = F76C809A1EC4D9FA00FA49E2 /* libopenrct2.a */;
 			productType = "com.apple.product-type.library.static";
 		};
+		F7D774831EC66CD700BE6EBC /* OpenRCT2-cli */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F7D7748A1EC66CD700BE6EBC /* Build configuration list for PBXNativeTarget "OpenRCT2-cli" */;
+			buildPhases = (
+				F7D7748B1EC66E6600BE6EBC /* Download Libraries */,
+				F7D7748C1EC66E9300BE6EBC /* Get Git Variables */,
+				F7D774801EC66CD700BE6EBC /* Sources */,
+				F7D774811EC66CD700BE6EBC /* Frameworks */,
+				F7D774821EC66CD700BE6EBC /* Embed Frameworks */,
+				F7D774AA1EC6740D00BE6EBC /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "OpenRCT2-cli";
+			productName = "OpenRCT2-cli";
+			productReference = F7D774841EC66CD700BE6EBC /* OpenRCT2-cli */;
+			productType = "com.apple.product-type.tool";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -3355,6 +3450,10 @@
 						CreatedOnToolsVersion = 7.2;
 					};
 					F76C80991EC4D9FA00FA49E2 = {
+						CreatedOnToolsVersion = 8.3.2;
+						ProvisioningStyle = Automatic;
+					};
+					F7D774831EC66CD700BE6EBC = {
 						CreatedOnToolsVersion = 8.3.2;
 						ProvisioningStyle = Automatic;
 					};
@@ -3376,6 +3475,7 @@
 				D497D0771C20FD52002BF46A /* OpenRCT2 */,
 				C64FDA5C1D6D99F400F259B9 /* PaintTest */,
 				F76C80991EC4D9FA00FA49E2 /* libopenrct2 */,
+				F7D774831EC66CD700BE6EBC /* OpenRCT2-cli */,
 			);
 		};
 /* End PBXProject section */
@@ -3526,6 +3626,36 @@
 			shellScript = "version=\"11\"\nzipname=\"openrct2-libs-macos.zip\"\nliburl=\"https://github.com/OpenRCT2/Dependencies/releases/download/v$version/$zipname\"\n\n[[ ! -d \"${SRCROOT}/libxc\" || ! -e \"${SRCROOT}/libversion\" || $(head -n 1 \"${SRCROOT}/libversion\") != $version ]]\noutdated=$?\n\nif [[ $outdated -eq 0 ]]; then\nif [[ -d \"${SRCROOT}/libxc\" ]]; then rm -r \"${SRCROOT}/libxc\"; fi\nmkdir \"${SRCROOT}/libxc\"\n\ncurl -L -o \"${SRCROOT}/libxc/$zipname\" \"$liburl\"\nunzip -uaq -d \"${SRCROOT}/libxc\" \"${SRCROOT}/libxc/$zipname\"\nrm \"${SRCROOT}/libxc/$zipname\"\n\necho $version > \"${SRCROOT}/libversion\"\nfi";
 		};
 		F76C809F1EC4DB0300FA49E2 /* Get Git Variables */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Get Git Variables";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/gitversion.h",
+				"$(DERIVED_FILE_DIR)/Info.plist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "echo \"#define\" OPENRCT2_BRANCH \\\"$(git rev-parse --abbrev-ref HEAD)\\\" > \"${DERIVED_FILE_DIR}/gitversion.h\"\necho \"#define\" OPENRCT2_COMMIT_SHA1 \\\"$(git rev-parse HEAD)\\\" >> \"${DERIVED_FILE_DIR}/gitversion.h\"\necho \"#define\" OPENRCT2_COMMIT_SHA1_SHORT \\\"$(git rev-parse --short HEAD)\\\" >> \"${DERIVED_FILE_DIR}/gitversion.h\"\ncp \"${SRCROOT}/distribution/macos/Info.plist\" \"${DERIVED_FILE_DIR}/Info.plist\"\nplutil -replace CFBundleVersion -string \"$(git rev-parse --short HEAD)\" \"${DERIVED_FILE_DIR}/Info.plist\"";
+		};
+		F7D7748B1EC66E6600BE6EBC /* Download Libraries */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Download Libraries";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "version=\"11\"\nzipname=\"openrct2-libs-macos.zip\"\nliburl=\"https://github.com/OpenRCT2/Dependencies/releases/download/v$version/$zipname\"\n\n[[ ! -d \"${SRCROOT}/libxc\" || ! -e \"${SRCROOT}/libversion\" || $(head -n 1 \"${SRCROOT}/libversion\") != $version ]]\noutdated=$?\n\nif [[ $outdated -eq 0 ]]; then\nif [[ -d \"${SRCROOT}/libxc\" ]]; then rm -r \"${SRCROOT}/libxc\"; fi\nmkdir \"${SRCROOT}/libxc\"\n\ncurl -L -o \"${SRCROOT}/libxc/$zipname\" \"$liburl\"\nunzip -uaq -d \"${SRCROOT}/libxc\" \"${SRCROOT}/libxc/$zipname\"\nrm \"${SRCROOT}/libxc/$zipname\"\n\necho $version > \"${SRCROOT}/libversion\"\nfi";
+		};
+		F7D7748C1EC66E9300BE6EBC /* Get Git Variables */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -4307,6 +4437,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		F7D774801EC66CD700BE6EBC /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F7D7749E1EC6713200BE6EBC /* Cli.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -4661,6 +4799,72 @@
 			};
 			name = Release;
 		};
+		F7D774881EC66CD700BE6EBC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_ARC = NO;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = NO;
+				CODE_SIGN_IDENTITY = "";
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+					NO_RCT2,
+					__ENABLE_LIGHTFX__,
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = NO;
+				HEADER_SEARCH_PATHS = (
+					"$(SRCROOT)/libxc/include",
+					"$(SRCROOT)/libxc/include/SDL2",
+					"$(SRCROOT)/libxc/include/libpng16",
+					"$(SRCROOT)/libxc/include/openssl",
+					"$(SRCROOT)/src/",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/libxc/lib",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		F7D774891EC66CD700BE6EBC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_ARC = NO;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = NO;
+				CODE_SIGN_IDENTITY = "";
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					OPENGL_NO_LINK,
+					"OPENRCT2_BUILD_INFO_HEADER=\"\\\"$(DERIVED_FILE_DIR)/gitversion.h\\\"\"",
+					NO_RCT2,
+					__ENABLE_LIGHTFX__,
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = NO;
+				HEADER_SEARCH_PATHS = (
+					"$(SRCROOT)/libxc/include",
+					"$(SRCROOT)/libxc/include/SDL2",
+					"$(SRCROOT)/libxc/include/libpng16",
+					"$(SRCROOT)/libxc/include/openssl",
+					"$(SRCROOT)/src/",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/libxc/lib",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -4699,6 +4903,14 @@
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
+		};
+		F7D7748A1EC66CD700BE6EBC /* Build configuration list for PBXNativeTarget "OpenRCT2-cli" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F7D774881EC66CD700BE6EBC /* Debug */,
+				F7D774891EC66CD700BE6EBC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
 		};
 /* End XCConfigurationList section */
 	};
