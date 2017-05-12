@@ -8357,22 +8357,15 @@ static sint32 peep_interact_with_path(rct_peep* peep, sint16 x, sint16 y, rct_ma
 
         uint8 rideIndex = map_element->properties.path.ride_index;
 
-        // Check if this queue path tile is connected to a ride.
-        if (rideIndex == 0xFF){
-            // Queue is not connected to a ride.
-            peep->interaction_ride_index = 0xFF;
-            return peep_footpath_move_forward(peep, x, y, map_element, vandalism_present);
-        }
-
-        // Queue is connected to a ride.
         if (peep->state == PEEP_STATE_QUEUING){
             // Check if this queue is connected to the ride the
             // peep is queuing for, i.e. the player hasn't edited
-            // the queue.
+            // the queue, rebuilt the ride, etc.
             if (peep->current_ride == rideIndex){
                 return peep_footpath_move_forward(peep, x, y, map_element, vandalism_present);
             }
-            // Queue got disconnected from the ride.
+            // Queue got disconnected from the original ride.
+            peep->interaction_ride_index = 0xFF;
             remove_peep_from_queue(peep);
             peep_decrement_num_riders(peep);
             peep->state = PEEP_STATE_1;
@@ -8380,29 +8373,27 @@ static sint32 peep_interact_with_path(rct_peep* peep, sint16 x, sint16 y, rct_ma
             return peep_footpath_move_forward(peep, x, y, map_element, vandalism_present);
         }
 
-        // One of two cases applies here:
-        // 1. Peep is in the ride queue but no longer queuing.
-        //    This usually means the ride was closed.
-        // 2. Peep is walking up to the queue entrance from
-        //    a normal path tile.
+        // Peep is not queuing.
+        peep->var_F4 = 0;
+        uint8 stationNum = (map_element->properties.path.additions & 0x70) >> 4;
 
-        if (peep->interaction_ride_index == rideIndex){
-            // Case 1 above applies, so walk the queue.
+        if ((map_element->properties.path.type & (1 << 3)) // Queue has the ride sign on it
+            && (((map_element->type & (3 << 6)) >> 6) == ((peep->direction)^2)) // Ride sign is facing the direction the peep is walking
+            ) {
+            /* Peep is approaching the entrance of a ride queue.
+             * Decide whether to go on the ride. */
+            if (!peep_should_go_on_ride(peep, rideIndex, stationNum, PEEP_RIDE_DECISION_AT_QUEUE)){
+                // Peep has decided not to go on the ride.
+                return peep_return_to_center_of_tile(peep);
+            }
+        }
+        else {
+            /* Peep is approaching a queue tile without a ride
+             * sign facing the peep. */
             return peep_footpath_move_forward(peep, x, y, map_element, vandalism_present);
         }
 
-        // Case 2 above applies - decide whether to go on the ride.
-        peep->var_F4 = 0;
-        uint8 stationNum = (map_element->properties.path.additions & 0x70) >> 4;
-        if (!peep_should_go_on_ride(peep, rideIndex, stationNum, PEEP_RIDE_DECISION_AT_QUEUE)){
-            // Peep has decided not to go on the ride.
-            return peep_return_to_center_of_tile(peep);
-        }
-
         // Peep has decided to go on the ride at the queue.
-        // Set the following so the peep will correctly walk up
-        // and back down the queue if the ride is closed
-        // while they are queuing.
         peep->interaction_ride_index = rideIndex;
         rct_ride* ride = get_ride(rideIndex);
 
