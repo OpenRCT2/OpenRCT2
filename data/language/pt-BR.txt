@@ -4363,6 +4363,10 @@ STR_6051    :A largura e a altura precisam combinar
 STR_6052    :A altura do mapa é muito grande, e será cortada
 STR_6053    :A altura do mapa não pode ser normalizada
 STR_6054    :Apenas bitmaps de 24-bit são suportados
+STR_6055    :Arquivo OpenRCT2 de altura de mapa
+STR_6056    :{SMALLFONT}{BLACK}Mudo
+STR_6057    :{SMALLFONT}{BLACK}Mostrar na barra de ferramentas um botão separado para a opção Mudo
+STR_6058    :Mudo
 
 #############
 # Scenarios #
