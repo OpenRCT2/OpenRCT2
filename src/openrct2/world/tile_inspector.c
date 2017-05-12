@@ -83,7 +83,7 @@ sint32 tile_inspector_insert_corrupt_at(sint32 x, sint32 y, sint16 elementIndex,
 		corruptElement->type = MAP_ELEMENT_TYPE_CORRUPT;
 
 		// Set the base height to be the same as the selected element
-		rct_map_element *const selectedElement = map_get_nth_element_at(x, y, elementIndex);
+		rct_map_element *const selectedElement = map_get_nth_element_at(x, y, elementIndex + 1);
 		if (!selectedElement) {
 			return MONEY32_UNDEFINED;
 		}
