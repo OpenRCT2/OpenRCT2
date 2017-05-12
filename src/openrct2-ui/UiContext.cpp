@@ -498,10 +498,6 @@ public:
         SetCursorTrap(gConfigGeneral.trap_cursor);
         _platformUiContext->SetWindowIcon(_window);
 		
-		#ifdef __MACOSX__
-			
-		#endif
-		
         // Initialise the surface, palette and draw buffer
         OnResize(width, height);
 
@@ -511,8 +507,6 @@ public:
         // Check if steam overlay renderer is loaded into the process
         _steamOverlayActive = _platformUiContext->IsSteamOverlayAttached();
         TriggerResize();
-		
-		
     }
 
     void CloseWindow() override
