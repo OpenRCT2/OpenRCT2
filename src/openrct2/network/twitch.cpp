@@ -491,7 +491,7 @@ namespace Twitch
                 if (!is_user_string_id(peep->name_string_idx) && !(peep->peep_flags & PEEP_FLAGS_LEAVING_PARK))
                 {
                     // Rename peep and add flags
-                    rct_string_id newStringId = user_string_allocate(4, member->Name);
+                    rct_string_id newStringId = user_string_allocate(USER_STRING_HIGH_ID_NUMBER, member->Name);
                     if (newStringId != 0)
                     {
                         peep->name_string_idx = newStringId;

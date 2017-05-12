@@ -825,7 +825,7 @@ void game_command_set_park_name(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *e
 		return;
 	}
 
-	newUserStringId = user_string_allocate(4, newName);
+	newUserStringId = user_string_allocate(USER_STRING_HIGH_ID_NUMBER, newName);
 	if (newUserStringId == 0) {
 		gGameCommandErrorText = STR_INVALID_NAME_FOR_PARK;
 		*ebx = MONEY32_UNDEFINED;

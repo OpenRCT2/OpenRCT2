@@ -1339,7 +1339,7 @@ static bool sub_6D2189(rct_track_td6 *td6, money32 *cost, uint8 *rideId, uint8 *
 	}
 
 	rct_ride *ride = get_ride(rideIndex);
-	rct_string_id new_ride_name = user_string_allocate(132, "");
+	rct_string_id new_ride_name = user_string_allocate(USER_STRING_HIGH_ID_NUMBER | USER_STRING_DUPLICATION_PERMITTED, "");
 	if (new_ride_name != 0) {
 		rct_string_id old_name = ride->name;
 		ride->name = new_ride_name;

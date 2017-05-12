@@ -59,6 +59,12 @@ wchar_t encoding_convert_big5_to_unicode(wchar_t big5);
 #define MAX_USER_STRINGS 1024
 #define USER_STRING_MAX_LENGTH 32
 
+// Constants used by user_string_allocate
+enum {
+	USER_STRING_HIGH_ID_NUMBER = 1 << 2,
+	USER_STRING_DUPLICATION_PERMITTED = 1 << 7
+};
+
 // Real name data
 extern const char real_name_initials[16];
 extern const char *real_names[1024];

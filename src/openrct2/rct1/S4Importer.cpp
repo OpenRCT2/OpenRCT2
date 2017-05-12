@@ -675,7 +675,7 @@ private:
             std::string rideName = GetUserString(src->name);
             if (!rideName.empty())
             {
-                rct_string_id rideNameStringId = user_string_allocate(4, rideName.c_str());
+                rct_string_id rideNameStringId = user_string_allocate(USER_STRING_HIGH_ID_NUMBER, rideName.c_str());
                 if (rideNameStringId != 0)
                 {
                     dst->name = rideNameStringId;
@@ -1286,7 +1286,7 @@ private:
             std::string peepName = GetUserString(src->name_string_idx);
             if (!peepName.empty())
             {
-                rct_string_id peepNameStringId = user_string_allocate(4, peepName.c_str());
+                rct_string_id peepNameStringId = user_string_allocate(USER_STRING_HIGH_ID_NUMBER, peepName.c_str());
                 if (peepNameStringId != 0)
                 {
                     dst->name_string_idx = peepNameStringId;
@@ -1887,7 +1887,7 @@ private:
             }
         }
 
-        rct_string_id stringId = user_string_allocate(4, parkName.c_str());
+        rct_string_id stringId = user_string_allocate(USER_STRING_HIGH_ID_NUMBER, parkName.c_str());
         if (stringId != 0)
         {
             gParkName = stringId;
@@ -2338,7 +2338,7 @@ private:
             std::string bannerText = GetUserString(src->string_idx);
             if (!bannerText.empty())
             {
-                rct_string_id bannerTextStringId = user_string_allocate(128, bannerText.c_str());
+                rct_string_id bannerTextStringId = user_string_allocate(USER_STRING_DUPLICATION_PERMITTED, bannerText.c_str());
                 if (bannerTextStringId != 0)
                 {
                     dst->string_idx = bannerTextStringId;
