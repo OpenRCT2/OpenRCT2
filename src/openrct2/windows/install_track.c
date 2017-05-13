@@ -16,7 +16,6 @@
 
 #include "../audio/audio.h"
 #include "../editor.h"
-#include "../interface/themes.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
 #include "../localisation/localisation.h"
@@ -191,8 +190,6 @@ static void window_install_track_mouseup(rct_window *w, rct_widgetindex widgetIn
 */
 static void window_install_track_invalidate(rct_window *w)
 {
-	colour_scheme_update(w);
-
 	w->pressed_widgets |= 1 << WIDX_TRACK_PREVIEW;
 	if (!gTrackDesignSceneryToggle) {
 		w->pressed_widgets |= (1 << WIDX_TOGGLE_SCENERY);

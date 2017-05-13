@@ -18,7 +18,6 @@
 #include "../drawing/drawing.h"
 #include "../game.h"
 #include "../input.h"
-#include "../interface/themes.h"
 #include "../interface/viewport.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
@@ -656,8 +655,6 @@ static void window_title_editor_tooltip(rct_window* w, rct_widgetindex widgetInd
 
 static void window_title_editor_invalidate(rct_window *w)
 {
-	colour_scheme_update(w);
-
 	sint32 pressed_widgets = w->pressed_widgets & ~(
 			(1LL << WIDX_TITLE_EDITOR_PRESETS_TAB) |
 			(1LL << WIDX_TITLE_EDITOR_SAVES_TAB) |

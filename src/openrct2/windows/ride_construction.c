@@ -20,7 +20,6 @@
 #include "../drawing/drawing.h"
 #include "../game.h"
 #include "../input.h"
-#include "../interface/themes.h"
 #include "../interface/viewport.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
@@ -633,7 +632,6 @@ rct_window *window_ride_construction_open()
 	_autoOpeningShop = false;
 	_trackPlaceCtrlState = false;
 	_trackPlaceShiftState = false;
-	colour_scheme_update(w);
 	return w;
 }
 

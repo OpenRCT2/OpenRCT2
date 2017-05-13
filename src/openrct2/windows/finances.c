@@ -29,7 +29,6 @@
 #include "../scenario/scenario.h"
 #include "../sprites.h"
 #include "dropdown.h"
-#include "../interface/themes.h"
 
 enum {
 	WINDOW_FINANCES_PAGE_SUMMARY,
@@ -644,8 +643,6 @@ static void window_finances_summary_update(rct_window *w)
  */
 static void window_finances_summary_invalidate(rct_window *w)
 {
-	colour_scheme_update(w);
-
 	if (w->widgets != window_finances_page_widgets[WINDOW_FINANCES_PAGE_SUMMARY]) {
 		w->widgets = window_finances_page_widgets[WINDOW_FINANCES_PAGE_SUMMARY];
 		window_init_scroll_widgets(w);
@@ -800,8 +797,6 @@ static void window_finances_financial_graph_update(rct_window *w)
  */
 static void window_finances_financial_graph_invalidate(rct_window *w)
 {
-	colour_scheme_update(w);
-
 	if (w->widgets != window_finances_page_widgets[WINDOW_FINANCES_PAGE_FINANCIAL_GRAPH]) {
 		w->widgets = window_finances_page_widgets[WINDOW_FINANCES_PAGE_FINANCIAL_GRAPH];
 		window_init_scroll_widgets(w);
@@ -910,8 +905,6 @@ static void window_finances_park_value_graph_update(rct_window *w)
  */
 static void window_finances_park_value_graph_invalidate(rct_window *w)
 {
-	colour_scheme_update(w);
-
 	if (w->widgets != window_finances_page_widgets[WINDOW_FINANCES_PAGE_VALUE_GRAPH]) {
 		w->widgets = window_finances_page_widgets[WINDOW_FINANCES_PAGE_VALUE_GRAPH];
 		window_init_scroll_widgets(w);
@@ -1016,8 +1009,6 @@ static void window_finances_profit_graph_update(rct_window *w)
  */
 static void window_finances_profit_graph_invalidate(rct_window *w)
 {
-	colour_scheme_update(w);
-
 	if (w->widgets != window_finances_page_widgets[WINDOW_FINANCES_PAGE_PROFIT_GRAPH]) {
 		w->widgets = window_finances_page_widgets[WINDOW_FINANCES_PAGE_PROFIT_GRAPH];
 		window_init_scroll_widgets(w);
@@ -1126,8 +1117,6 @@ static void window_finances_marketing_update(rct_window *w)
 static void window_finances_marketing_invalidate(rct_window *w)
 {
 	sint32 i;
-
-	colour_scheme_update(w);
 
 	if (w->widgets != window_finances_page_widgets[WINDOW_FINANCES_PAGE_MARKETING]) {
 		w->widgets = window_finances_page_widgets[WINDOW_FINANCES_PAGE_MARKETING];
@@ -1338,8 +1327,6 @@ static void window_finances_research_update(rct_window *w)
  */
 static void window_finances_research_invalidate(rct_window *w)
 {
-	colour_scheme_update(w);
-
 	if (w->widgets != window_finances_page_widgets[WINDOW_FINANCES_PAGE_RESEARCH]) {
 		w->widgets = window_finances_page_widgets[WINDOW_FINANCES_PAGE_RESEARCH];
 		window_init_scroll_widgets(w);

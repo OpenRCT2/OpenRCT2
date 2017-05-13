@@ -18,7 +18,6 @@
 #include "../drawing/drawing.h"
 #include "../game.h"
 #include "../input.h"
-#include "../interface/themes.h"
 #include "../interface/viewport.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
@@ -153,7 +152,6 @@ rct_window *window_maze_construction_open()
 		(1ULL << WIDX_MAZE_EXIT);
 
 	window_init_scroll_widgets(w);
-	colour_scheme_update(w);
 
 	w->number = _currentRideIndex;
 

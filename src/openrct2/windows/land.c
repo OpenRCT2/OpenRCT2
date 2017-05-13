@@ -15,7 +15,6 @@
 #pragma endregion
 
 #include "../input.h"
-#include "../interface/themes.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
 #include "../localisation/localisation.h"
@@ -338,8 +337,6 @@ static void window_land_update(rct_window *w)
  */
 static void window_land_invalidate(rct_window *w)
 {
-	colour_scheme_update(w);
-
 	w->pressed_widgets = (1 << WIDX_PREVIEW);
 	if (gLandToolTerrainSurface != 255)
 		w->pressed_widgets |= (1 << WIDX_FLOOR);

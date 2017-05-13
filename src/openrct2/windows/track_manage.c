@@ -15,7 +15,6 @@
 #pragma endregion
 
 #include "../game.h"
-#include "../interface/themes.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
 #include "../localisation/localisation.h"
@@ -64,11 +63,9 @@ static rct_widget window_track_delete_prompt_widgets[] = {
 static void window_track_manage_close(rct_window *w);
 static void window_track_manage_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_track_manage_textinput(rct_window *w, rct_widgetindex widgetIndex, char *text);
-static void window_track_manage_invalidate(rct_window *w);
 static void window_track_manage_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
 static void window_track_delete_prompt_mouseup(rct_window *w, rct_widgetindex widgetIndex);
-static void window_track_delete_prompt_invalidate(rct_window *w);
 static void window_track_delete_prompt_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
 // 0x009940EC
@@ -98,7 +95,7 @@ static rct_window_event_list window_track_manage_events = {
 	NULL,
 	NULL,
 	NULL,
-	window_track_manage_invalidate,
+	NULL,
 	window_track_manage_paint,
 	NULL
 };
@@ -130,7 +127,7 @@ static rct_window_event_list window_track_delete_prompt_events = {
 	NULL,
 	NULL,
 	NULL,
-	window_track_delete_prompt_invalidate,
+	NULL,
 	window_track_delete_prompt_paint,
 	NULL
 };
@@ -239,11 +236,6 @@ static void window_track_manage_textinput(rct_window *w, rct_widgetindex widgetI
 	}
 }
 
-static void window_track_manage_invalidate(rct_window *w)
-{
-	colour_scheme_update(w);
-}
-
 /**
  *
  *  rct2: 0x006D3523
@@ -303,11 +295,6 @@ static void window_track_delete_prompt_mouseup(rct_window *w, rct_widgetindex wi
 		}
 		break;
 	}
-}
-
-static void window_track_delete_prompt_invalidate(rct_window *w)
-{
-	colour_scheme_update(w);
 }
 
 /**

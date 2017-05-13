@@ -22,7 +22,6 @@
 extern "C"
 {
 	#include "../interface/colour.h"
-	#include "../interface/themes.h"
 	#include "../interface/widget.h"
 	#include "../interface/window.h"
 	#include "../localisation/localisation.h"
@@ -370,8 +369,6 @@ static void window_server_list_textinput(rct_window *w, rct_widgetindex widgetIn
 
 static void window_server_list_invalidate(rct_window *w)
 {
-	colour_scheme_update(w);
-
 	set_format_arg(0, char *, _version);
 	window_server_list_widgets[WIDX_BACKGROUND].right = w->width - 1;
 	window_server_list_widgets[WIDX_BACKGROUND].bottom = w->height - 1;

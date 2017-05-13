@@ -706,6 +706,12 @@ extern "C"
         }
         ThemeManager::ActiveAvailableThemeIndex = index;
         String::DiscardDuplicate(&gConfigInterface.current_theme_preset, theme_manager_get_available_theme_name(index));
+
+        // Apply the selected theme to all open windows
+        for (rct_window *w = g_window_list; w < gWindowNextSlot; w++)
+        {
+            colour_scheme_update(w);
+        }
     }
 
     uint8 theme_get_colour(rct_windowclass wc, uint8 index)
@@ -871,6 +877,13 @@ extern "C"
         else
         {
             const WindowThemeDesc * desc = GetWindowThemeDescriptor(classification);
+
+            // Some windows don't have a theme set (e.g. main window, title screen)
+            if (desc == nullptr)
+            {
+                return;
+            }
+
             windowTheme = &desc->DefaultTheme;
         }
 

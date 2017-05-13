@@ -16,7 +16,6 @@
 
 #include "../editor.h"
 #include "../game.h"
-#include "../interface/themes.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
 #include "../localisation/localisation.h"
@@ -719,8 +718,6 @@ static void window_editor_scenario_options_financial_update(rct_window *w)
  */
 static void window_editor_scenario_options_financial_invalidate(rct_window *w)
 {
-	colour_scheme_update(w);
-
 	rct_widget *widgets = window_editor_scenario_options_widgets[w->page];
 	if (w->widgets != widgets) {
 		w->widgets = widgets;
@@ -1026,8 +1023,6 @@ static void window_editor_scenario_options_guests_update(rct_window *w)
 static void window_editor_scenario_options_guests_invalidate(rct_window *w)
 {
 	rct_widget *widgets;
-
-	colour_scheme_update(w);
 
 	widgets = window_editor_scenario_options_widgets[w->page];
 	if (w->widgets != widgets) {
@@ -1381,8 +1376,6 @@ static void window_editor_scenario_options_park_update(rct_window *w)
 static void window_editor_scenario_options_park_invalidate(rct_window *w)
 {
 	uint64 pressedWidgets;
-
-	colour_scheme_update(w);
 
 	rct_widget *widgets = window_editor_scenario_options_widgets[w->page];
 	if (w->widgets != widgets) {

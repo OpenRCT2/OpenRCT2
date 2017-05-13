@@ -20,7 +20,6 @@
 #include "../localisation/localisation.h"
 #include "../platform/platform.h"
 #include "../interface/keyboard_shortcut.h"
-#include "../interface/themes.h"
 
 #define WW 420
 #define WH 280
@@ -203,8 +202,6 @@ static void window_shortcut_resize(rct_window *w)
 
 static void window_shortcut_invalidate(rct_window *w)
 {
-	colour_scheme_update(w);
-
 	window_shortcut_widgets[WIDX_BACKGROUND].right = w->width - 1;
 	window_shortcut_widgets[WIDX_BACKGROUND].bottom = w->height - 1;
 	window_shortcut_widgets[WIDX_TITLE].right = w->width - 2;

@@ -16,7 +16,6 @@
 
 #include "../config/Config.h"
 #include "../interface/keyboard_shortcut.h"
-#include "../interface/themes.h"
 #include "../interface/window.h"
 #include "../interface/widget.h"
 #include "../localisation/localisation.h"
@@ -41,7 +40,6 @@ static rct_widget window_shortcut_change_widgets[] = {
 };
 
 static void window_shortcut_change_mouseup(rct_window *w, rct_widgetindex widgetIndex);
-static void window_shortcut_change_invalidate(rct_window *w);
 static void window_shortcut_change_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
 // 0x9A3F7C
@@ -71,7 +69,7 @@ static rct_window_event_list window_shortcut_change_events = {
 	NULL,
 	NULL,
 	NULL,
-	window_shortcut_change_invalidate,
+	NULL,
 	window_shortcut_change_paint,
 	NULL
 };
@@ -99,11 +97,6 @@ static void window_shortcut_change_mouseup(rct_window *w, rct_widgetindex widget
 		window_close(w);
 		break;
 	}
-}
-
-static void window_shortcut_change_invalidate(rct_window *w)
-{
-	colour_scheme_update(w);
 }
 
 /**

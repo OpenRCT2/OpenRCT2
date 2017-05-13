@@ -584,9 +584,6 @@ void window_options_open()
 	w->page = WINDOW_OPTIONS_PAGE_DISPLAY;
 	w->frame_no = 0;
 	window_init_scroll_widgets(w);
-	//window_invalidate(w);
-
-	colour_scheme_update(w);
 }
 
 
@@ -1484,8 +1481,6 @@ static void window_options_dropdown(rct_window *w, rct_widgetindex widgetIndex, 
 static void window_options_invalidate(rct_window *w)
 {
 	rct_widget* widget;
-
-	colour_scheme_update(w);
 
 	if (window_options_page_widgets[w->page] != w->widgets) {
 		w->widgets = window_options_page_widgets[w->page];

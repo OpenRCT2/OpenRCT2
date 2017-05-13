@@ -17,7 +17,6 @@
 #include "../editor.h"
 #include "../input.h"
 #include "../interface/Cursors.h"
-#include "../interface/themes.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
 #include "../localisation/localisation.h"
@@ -722,8 +721,6 @@ static void window_editor_inventions_list_cursor(rct_window *w, rct_widgetindex 
  */
 static void window_editor_inventions_list_invalidate(rct_window *w)
 {
-	colour_scheme_update(w);
-
 	w->pressed_widgets |= 1 << WIDX_PREVIEW;
 	w->pressed_widgets |= 1 << WIDX_TAB_1;
 

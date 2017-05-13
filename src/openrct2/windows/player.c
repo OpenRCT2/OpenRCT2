@@ -26,7 +26,6 @@
 #include "../scenario/scenario.h"
 #include "../localisation/localisation.h"
 #include "../sprites.h"
-#include "../interface/themes.h"
 #include "../interface/viewport.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
@@ -412,8 +411,6 @@ void window_player_overview_invalidate(rct_window *w)
 		window_init_scroll_widgets(w);
 	}
 
-	colour_scheme_update(w);
-
 	w->pressed_widgets &= ~(WIDX_TAB_1);
 	w->pressed_widgets &= ~(WIDX_TAB_2);
 	w->pressed_widgets |= 1ULL << (w->page + WIDX_TAB_1);
@@ -497,8 +494,6 @@ void window_player_statistics_invalidate(rct_window *w)
 		w->widgets = window_player_page_widgets[w->page];
 		window_init_scroll_widgets(w);
 	}
-
-	colour_scheme_update(w);
 
 	w->pressed_widgets &= ~(WIDX_TAB_1);
 	w->pressed_widgets &= ~(WIDX_TAB_2);

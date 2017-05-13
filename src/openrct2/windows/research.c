@@ -25,7 +25,6 @@
 #include "../sprites.h"
 #include "../world/scenery.h"
 #include "dropdown.h"
-#include "../interface/themes.h"
 #include "../rct1.h"
 
 enum {
@@ -305,8 +304,6 @@ static void window_research_development_update(rct_window *w)
  */
 static void window_research_development_invalidate(rct_window *w)
 {
-	colour_scheme_update(w);
-
 	if (w->widgets != window_research_page_widgets[WINDOW_RESEARCH_PAGE_DEVELOPMENT]) {
 		w->widgets = window_research_page_widgets[WINDOW_RESEARCH_PAGE_DEVELOPMENT];
 		window_init_scroll_widgets(w);
@@ -520,8 +517,6 @@ static void window_research_funding_update(rct_window *w)
  */
 static void window_research_funding_invalidate(rct_window *w)
 {
-	colour_scheme_update(w);
-
 	if (w->widgets != window_research_page_widgets[WINDOW_RESEARCH_PAGE_FUNDING]) {
 		w->widgets = window_research_page_widgets[WINDOW_RESEARCH_PAGE_FUNDING];
 		window_init_scroll_widgets(w);

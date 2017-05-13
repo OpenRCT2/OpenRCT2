@@ -18,7 +18,6 @@
 #include "../drawing/drawing.h"
 #include "../game.h"
 #include "../input.h"
-#include "../interface/themes.h"
 #include "../interface/viewport.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
@@ -495,8 +494,6 @@ void window_staff_list_tooltip(rct_window* w, rct_widgetindex widgetIndex, rct_s
 */
 void window_staff_list_invalidate(rct_window *w)
 {
-	colour_scheme_update(w);
-
 	sint32 pressed_widgets = w->pressed_widgets & ~(
 			(1LL << WIDX_STAFF_LIST_HANDYMEN_TAB) |
 			(1LL << WIDX_STAFF_LIST_MECHANICS_TAB) |

@@ -16,7 +16,6 @@
 
 #include "../config/Config.h"
 #include "../game.h"
-#include "../interface/themes.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
 #include "../localisation/localisation.h"
@@ -596,8 +595,6 @@ static void window_guest_list_tooltip(rct_window* w, rct_widgetindex widgetIndex
  */
 static void window_guest_list_invalidate(rct_window *w)
 {
-	colour_scheme_update(w);
-
 	w->pressed_widgets &= ~(1 << WIDX_TAB_1);
 	w->pressed_widgets &= ~(1 << WIDX_TAB_2);
 	w->pressed_widgets |= (1LL << (_window_guest_list_selected_tab + WIDX_TAB_1));

@@ -23,7 +23,6 @@
 #include "../interface/widget.h"
 #include "../interface/window.h"
 #include "dropdown.h"
-#include "../interface/themes.h"
 
 #define INITIAL_WIDTH 500
 #define INITIAL_HEIGHT 350
@@ -194,8 +193,6 @@ static void window_viewport_invalidate(rct_window *w)
 	rct_widget *viewportWidget;
 	rct_viewport *viewport;
 	sint32 i;
-
-	colour_scheme_update(w);
 
 	viewportWidget = &window_viewport_widgets[WIDX_VIEWPORT];
 	viewport = w->viewport;

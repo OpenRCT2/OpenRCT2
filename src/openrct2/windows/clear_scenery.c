@@ -15,7 +15,6 @@
 #pragma endregion
 
 #include "../input.h"
-#include "../interface/themes.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
 #include "../localisation/localisation.h"
@@ -213,8 +212,6 @@ static void window_clear_scenery_update(rct_window *w)
  */
 static void window_clear_scenery_invalidate(rct_window *w)
 {
-	colour_scheme_update(w);
-
 	// Set the preview image button to be pressed down
 	w->pressed_widgets = (1 << WIDX_PREVIEW) |
 		(gClearSmallScenery ? (1 << WIDX_SMALL_SCENERY) : 0) |

@@ -18,7 +18,6 @@
 #include "../cheats.h"
 #include "../game.h"
 #include "../input.h"
-#include "../interface/themes.h"
 #include "../interface/viewport.h"
 #include "../interface/widget.h"
 #include "../localisation/localisation.h"
@@ -544,8 +543,6 @@ static void window_footpath_invalidate(rct_window *w)
 {
 	sint32 selectedPath;
 	rct_footpath_entry *pathType;
-
-	colour_scheme_update(w);
 
 	// Press / unpress footpath and queue type buttons
 	w->pressed_widgets &= ~(1 << WIDX_FOOTPATH_TYPE);

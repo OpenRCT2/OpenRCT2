@@ -964,8 +964,6 @@ static void window_park_entrance_invalidate(rct_window *w)
 {
 	sint32 i, height;
 
-	colour_scheme_update(w);
-
 	w->widgets = window_park_page_widgets[w->page];
 	window_init_scroll_widgets(w);
 
@@ -1232,8 +1230,6 @@ static void window_park_rating_invalidate(rct_window *w)
 {
 	rct_widget *widgets;
 
-	colour_scheme_update(w);
-
 	widgets = window_park_page_widgets[w->page];
 	if (w->widgets != widgets) {
 		w->widgets = widgets;
@@ -1348,8 +1344,6 @@ static void window_park_guests_update(rct_window *w)
 static void window_park_guests_invalidate(rct_window *w)
 {
 	rct_widget *widgets;
-
-	colour_scheme_update(w);
 
 	widgets = window_park_page_widgets[w->page];
 	if (w->widgets != widgets) {
@@ -1468,8 +1462,6 @@ static void window_park_price_invalidate(rct_window *w)
 {
 	rct_widget *widgets;
 
-	colour_scheme_update(w);
-
 	widgets = window_park_page_widgets[w->page];
 	if (w->widgets != widgets) {
 		w->widgets = widgets;
@@ -1585,8 +1577,6 @@ static void window_park_stats_update(rct_window *w)
 static void window_park_stats_invalidate(rct_window *w)
 {
 	rct_widget *widgets;
-
-	colour_scheme_update(w);
 
 	widgets = window_park_page_widgets[w->page];
 	if (w->widgets != widgets) {
@@ -1752,8 +1742,6 @@ static void window_park_objective_textinput(rct_window *w, rct_widgetindex widge
  */
 static void window_park_objective_invalidate(rct_window *w)
 {
-	colour_scheme_update(w);
-
 	window_park_set_pressed_tab(w);
 	window_park_prepare_window_title_text();
 
@@ -1882,8 +1870,6 @@ static void window_park_awards_update(rct_window *w)
 static void window_park_awards_invalidate(rct_window *w)
 {
 	rct_widget *widgets;
-
-	colour_scheme_update(w);
 
 	widgets = window_park_page_widgets[w->page];
 	if (w->widgets != widgets) {

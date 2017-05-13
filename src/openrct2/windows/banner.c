@@ -26,7 +26,6 @@
 #include "error.h"
 #include "dropdown.h"
 #include "../drawing/drawing.h"
-#include "../interface/themes.h"
 #include "../sprites.h"
 
 #define WW 113
@@ -300,8 +299,6 @@ static void window_banner_textinput(rct_window *w, rct_widgetindex widgetIndex, 
  */
 static void window_banner_invalidate(rct_window *w)
 {
-	colour_scheme_update(w);
-
 	rct_banner* banner = &gBanners[w->number];
 	rct_widget* colour_btn = &window_banner_widgets[WIDX_MAIN_COLOUR];
 	colour_btn->type = WWT_EMPTY;

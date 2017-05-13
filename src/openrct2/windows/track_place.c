@@ -18,7 +18,6 @@
 #include "../cheats.h"
 #include "../game.h"
 #include "../input.h"
-#include "../interface/themes.h"
 #include "../interface/viewport.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
@@ -375,7 +374,6 @@ static void window_track_place_unknown14(rct_window *w)
 
 static void window_track_place_invalidate(rct_window *w)
 {
-	colour_scheme_update(w);
 	window_track_place_draw_mini_preview(_trackDesign);
 }
 

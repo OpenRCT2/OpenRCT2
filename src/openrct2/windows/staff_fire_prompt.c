@@ -22,7 +22,6 @@
 #include "../peep/staff.h"
 #include "../sprites.h"
 #include "../world/sprite.h"
-#include "../interface/themes.h"
 
 #define WW 200
 #define WH 100
@@ -46,7 +45,6 @@ static rct_widget window_staff_fire_widgets[] = {
 };
 
 static void window_staff_fire_mouseup(rct_window *w, rct_widgetindex widgetIndex);
-static void window_staff_fire_invalidate(rct_window *w);
 static void window_staff_fire_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
 //0x9A3F7C
@@ -76,7 +74,7 @@ static rct_window_event_list window_staff_fire_events = {
 	NULL,
 	NULL,
 	NULL,
-	window_staff_fire_invalidate,
+	NULL,
 	window_staff_fire_paint,
 	NULL
 };
@@ -93,8 +91,6 @@ void window_staff_fire_prompt_open(rct_peep* peep)
 	w->enabled_widgets |= (1 << WIDX_CLOSE) | (1 << WIDX_YES) | (1 << WIDX_CANCEL);
 
 	window_init_scroll_widgets(w);
-
-	colour_scheme_update(w);
 
 	w->number = peep->sprite_index;
 }
@@ -116,11 +112,6 @@ static void window_staff_fire_mouseup(rct_window *w, rct_widgetindex widgetIndex
 	case WIDX_CLOSE:
 		window_close(w);
 	}
-}
-
-static void window_staff_fire_invalidate(rct_window *w)
-{
-	colour_scheme_update(w);
 }
 
 /**

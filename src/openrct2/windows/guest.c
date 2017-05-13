@@ -26,7 +26,6 @@
 #include "../scenario/scenario.h"
 #include "../localisation/localisation.h"
 #include "../sprites.h"
-#include "../interface/themes.h"
 #include "../interface/viewport.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
@@ -1053,8 +1052,6 @@ void window_guest_overview_paint(rct_window *w, rct_drawpixelinfo *dpi)
  */
 void window_guest_overview_invalidate(rct_window *w)
 {
-	colour_scheme_update(w);
-
 	if (window_guest_page_widgets[w->page] != w->widgets){
 		w->widgets = window_guest_page_widgets[w->page];
 		window_init_scroll_widgets(w);
@@ -1303,8 +1300,6 @@ void window_guest_stats_update(rct_window *w)
  */
 void window_guest_stats_invalidate(rct_window *w)
 {
-	colour_scheme_update(w);
-
 	if (w->widgets != window_guest_page_widgets[w->page]) {
 		w->widgets = window_guest_page_widgets[w->page];
 		window_init_scroll_widgets(w);
@@ -1634,8 +1629,6 @@ void window_guest_rides_scroll_mouse_over(rct_window *w, sint32 scrollIndex, sin
  */
 void window_guest_rides_invalidate(rct_window *w)
 {
-	colour_scheme_update(w);
-
 	if (window_guest_page_widgets[w->page] != w->widgets){
 		w->widgets = window_guest_page_widgets[w->page];
 		window_init_scroll_widgets(w);
@@ -1760,8 +1753,6 @@ void window_guest_finance_update(rct_window *w)
  */
 void window_guest_finance_invalidate(rct_window *w)
 {
-	colour_scheme_update(w);
-
 	if (window_guest_page_widgets[w->page] != w->widgets){
 		w->widgets = window_guest_page_widgets[w->page];
 		window_init_scroll_widgets(w);
@@ -1903,8 +1894,6 @@ void window_guest_thoughts_update(rct_window *w)
  */
 void window_guest_thoughts_invalidate(rct_window *w)
 {
-	colour_scheme_update(w);
-
 	if (window_guest_page_widgets[w->page] != w->widgets){
 		w->widgets = window_guest_page_widgets[w->page];
 		window_init_scroll_widgets(w);
@@ -2005,8 +1994,6 @@ void window_guest_inventory_update(rct_window *w)
  */
 void window_guest_inventory_invalidate(rct_window *w)
 {
-	colour_scheme_update(w);
-
 	if (window_guest_page_widgets[w->page] != w->widgets){
 		w->widgets = window_guest_page_widgets[w->page];
 		window_init_scroll_widgets(w);

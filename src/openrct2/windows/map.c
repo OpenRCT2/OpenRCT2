@@ -18,7 +18,6 @@
 #include "../cheats.h"
 #include "../game.h"
 #include "../input.h"
-#include "../interface/themes.h"
 #include "../interface/viewport.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
@@ -689,8 +688,6 @@ static void window_map_invalidate(rct_window *w)
 {
 	uint64 pressedWidgets;
 	sint32 i, height;
-
-	colour_scheme_update(w);
 
 	// Set the pressed widgets
 	pressedWidgets = w->pressed_widgets;

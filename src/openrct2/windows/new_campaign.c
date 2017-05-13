@@ -23,7 +23,6 @@
 #include "../ride/ride.h"
 #include "../ride/ride_data.h"
 #include "dropdown.h"
-#include "../interface/themes.h"
 
 #define SELECTED_RIDE_UNDEFINED ((uint16)0xFFFF)
 
@@ -329,8 +328,6 @@ static void window_new_campaign_dropdown(rct_window *w, rct_widgetindex widgetIn
  */
 static void window_new_campaign_invalidate(rct_window *w)
 {
-	colour_scheme_update(w);
-
 	window_new_campaign_widgets[WIDX_RIDE_LABEL].type = WWT_EMPTY;
 	window_new_campaign_widgets[WIDX_RIDE_DROPDOWN].type = WWT_EMPTY;
 	window_new_campaign_widgets[WIDX_RIDE_DROPDOWN_BUTTON].type = WWT_EMPTY;

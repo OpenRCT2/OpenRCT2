@@ -22,7 +22,6 @@
 #include "../input.h"
 #include "../interface/console.h"
 #include "../interface/screenshot.h"
-#include "../interface/themes.h"
 #include "../interface/viewport.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
@@ -648,8 +647,6 @@ static void window_top_toolbar_invalidate(rct_window *w)
 {
 	sint32 x, enabledWidgets, widgetIndex, widgetWidth, firstAlignment;
 	rct_widget *widget;
-
-	colour_scheme_update(w);
 
 	// Enable / disable buttons
 	window_top_toolbar_widgets[WIDX_PAUSE].type = WWT_TRNBTN;

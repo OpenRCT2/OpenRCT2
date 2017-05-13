@@ -22,7 +22,6 @@
 #include "../sprites.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
-#include "../interface/themes.h"
 
 enum WINDOW_NEWS_WIDGET_IDX {
 	WIDX_BACKGROUND,
@@ -46,7 +45,6 @@ static void window_news_update(rct_window *w);
 static void window_news_scrollgetsize(rct_window *w, sint32 scrollIndex, sint32 *width, sint32 *height);
 static void window_news_scrollmousedown(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y);
 static void window_news_tooltip(rct_window* w, rct_widgetindex widgetIndex, rct_string_id *stringId);
-static void window_news_invalidate(rct_window *w);
 static void window_news_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_news_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 scrollIndex);
 
@@ -76,7 +74,7 @@ static rct_window_event_list window_news_events = {
 	window_news_tooltip,
 	NULL,
 	NULL,
-	window_news_invalidate,
+	NULL,
 	window_news_paint,
 	window_news_scrollpaint
 };
@@ -259,11 +257,6 @@ static void window_news_tooltip(rct_window* w, rct_widgetindex widgetIndex, rct_
 static void window_news_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
 	window_draw_widgets(w, dpi);
-}
-
-static void window_news_invalidate(rct_window *w)
-{
-	colour_scheme_update(w);
 }
 
 /**
