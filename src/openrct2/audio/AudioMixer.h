@@ -18,6 +18,8 @@
 
 #include "../common.h"
 
+#define SDL_MIX_MAXVOLUME 128
+
 #define MIXER_LOOP_NONE         0
 #define MIXER_LOOP_INFINITE     -1
 

@@ -18,7 +18,7 @@
 
 #include <unordered_map>
 #include <vector>
-#include <SDL_platform.h>
+#include <SDL.h>
 
 #include <openrct2/config/Config.h>
 #include <openrct2/core/Console.hpp>

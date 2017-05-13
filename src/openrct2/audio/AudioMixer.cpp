@@ -28,8 +28,6 @@ extern "C"
     #include "../rct2.h"
 }
 
-#define SDL_MIX_MAXVOLUME 128
-
 using namespace OpenRCT2;
 using namespace OpenRCT2::Audio;
 
