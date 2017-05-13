@@ -6,6 +6,20 @@
 	objectVersion = 46;
 	objects = {
 
+/* Begin PBXAggregateTarget section */
+		C68B2D431EC790690020651C /* Download Libraries */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = C68B2D461EC790690020651C /* Build configuration list for PBXAggregateTarget "Download Libraries" */;
+			buildPhases = (
+				C68B2D471EC790710020651C /* Download Libraries */,
+			);
+			dependencies = (
+			);
+			name = "Download Libraries";
+			productName = "Download Libraries";
+		};
+/* End PBXAggregateTarget section */
+
 /* Begin PBXBuildFile section */
 		C606CCBE1DB4054000FE4015 /* compat.c in Sources */ = {isa = PBXBuildFile; fileRef = C606CCAB1DB4054000FE4015 /* compat.c */; };
 		C606CCBF1DB4054000FE4015 /* data.c in Sources */ = {isa = PBXBuildFile; fileRef = C606CCAC1DB4054000FE4015 /* data.c */; };
@@ -630,6 +644,27 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		C68B2D481EC790970020651C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D497D0701C20FD52002BF46A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C68B2D431EC790690020651C;
+			remoteInfo = "Download Libraries";
+		};
+		C68B2D4A1EC7909B0020651C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D497D0701C20FD52002BF46A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C68B2D431EC790690020651C;
+			remoteInfo = "Download Libraries";
+		};
+		C68B2D4C1EC7909E0020651C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D497D0701C20FD52002BF46A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F76C80991EC4D9FA00FA49E2;
+			remoteInfo = libopenrct2;
+		};
 		F76C888F1EC5325700FA49E2 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = D497D0701C20FD52002BF46A /* Project object */;
@@ -1031,8 +1066,6 @@
 		D4EC48E41C2637710024B507 /* language */ = {isa = PBXFileReference; lastKnownFileType = folder; name = language; path = data/language; sourceTree = SOURCE_ROOT; };
 		D4EC48E51C2637710024B507 /* title */ = {isa = PBXFileReference; lastKnownFileType = folder; name = title; path = data/title; sourceTree = SOURCE_ROOT; };
 		F76C809A1EC4D9FA00FA49E2 /* libopenrct2.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libopenrct2.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		F76C80A01EC4DD9400FA49E2 /* shaders */ = {isa = PBXFileReference; lastKnownFileType = folder; name = shaders; path = data/shaders; sourceTree = "<group>"; };
-		F76C82A11EC4E50D00FA49E2 /* resource.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = resource.h; path = resources/resource.h; sourceTree = "<group>"; };
 		F76C83571EC4E7CC00FA49E2 /* audio.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = audio.cpp; sourceTree = "<group>"; };
 		F76C83581EC4E7CC00FA49E2 /* audio.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = audio.h; sourceTree = "<group>"; };
 		F76C83591EC4E7CC00FA49E2 /* AudioChannel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AudioChannel.h; sourceTree = "<group>"; };
@@ -1591,118 +1624,6 @@
 		F76C85AD1EC4E82600FA49E2 /* UiContext.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UiContext.h; sourceTree = "<group>"; };
 		F76C85AE1EC4E82600FA49E2 /* UiContext.Linux.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = UiContext.Linux.cpp; sourceTree = "<group>"; };
 		F76C85AF1EC4E82600FA49E2 /* UiContext.Win32.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = UiContext.Win32.cpp; sourceTree = "<group>"; };
-		F76C87B61EC4E91500FA49E2 /* 7.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 7.png; sourceTree = "<group>"; };
-		F76C87B71EC4E91500FA49E2 /* empty.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = empty.png; sourceTree = "<group>"; };
-		F76C87B91EC4E91500FA49E2 /* 29.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 29.png; sourceTree = "<group>"; };
-		F76C87BA1EC4E91500FA49E2 /* 30.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 30.png; sourceTree = "<group>"; };
-		F76C87BB1EC4E91500FA49E2 /* 31.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 31.png; sourceTree = "<group>"; };
-		F76C87BC1EC4E91500FA49E2 /* 32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 32.png; sourceTree = "<group>"; };
-		F76C87BD1EC4E91500FA49E2 /* 58.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 58.png; sourceTree = "<group>"; };
-		F76C87BE1EC4E91500FA49E2 /* cheats.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cheats.png; sourceTree = "<group>"; };
-		F76C87BF1EC4E91500FA49E2 /* copy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = copy.png; sourceTree = "<group>"; };
-		F76C87C01EC4E91500FA49E2 /* fast_forward.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fast_forward.png; sourceTree = "<group>"; };
-		F76C87C11EC4E91500FA49E2 /* game_speed_indicator.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = game_speed_indicator.png; sourceTree = "<group>"; };
-		F76C87C21EC4E91500FA49E2 /* game_speed_indicator_double.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = game_speed_indicator_double.png; sourceTree = "<group>"; };
-		F76C87C31EC4E91500FA49E2 /* large_scenery.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = large_scenery.png; sourceTree = "<group>"; };
-		F76C87C41EC4E91500FA49E2 /* map_gen_land.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = map_gen_land.png; sourceTree = "<group>"; };
-		F76C87C51EC4E91500FA49E2 /* map_gen_noise.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = map_gen_noise.png; sourceTree = "<group>"; };
-		F76C87C61EC4E91500FA49E2 /* map_gen_trees.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = map_gen_trees.png; sourceTree = "<group>"; };
-		F76C87C71EC4E91500FA49E2 /* multiplayer.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = multiplayer.png; sourceTree = "<group>"; };
-		F76C87C81EC4E91500FA49E2 /* mute.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mute.png; sourceTree = "<group>"; };
-		F76C87C91EC4E91500FA49E2 /* mute_pressed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mute_pressed.png; sourceTree = "<group>"; };
-		F76C87CA1EC4E91500FA49E2 /* paste.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = paste.png; sourceTree = "<group>"; };
-		F76C87CB1EC4E91500FA49E2 /* paths.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = paths.png; sourceTree = "<group>"; };
-		F76C87CC1EC4E91500FA49E2 /* rct1_close_off.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = rct1_close_off.png; sourceTree = "<group>"; };
-		F76C87CD1EC4E91500FA49E2 /* rct1_close_off_pressed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = rct1_close_off_pressed.png; sourceTree = "<group>"; };
-		F76C87CE1EC4E91500FA49E2 /* rct1_close_on.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = rct1_close_on.png; sourceTree = "<group>"; };
-		F76C87CF1EC4E91500FA49E2 /* rct1_close_on_pressed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = rct1_close_on_pressed.png; sourceTree = "<group>"; };
-		F76C87D01EC4E91500FA49E2 /* rct1_open_off.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = rct1_open_off.png; sourceTree = "<group>"; };
-		F76C87D11EC4E91500FA49E2 /* rct1_open_off_pressed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = rct1_open_off_pressed.png; sourceTree = "<group>"; };
-		F76C87D21EC4E91500FA49E2 /* rct1_open_on.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = rct1_open_on.png; sourceTree = "<group>"; };
-		F76C87D31EC4E91500FA49E2 /* rct1_open_on_pressed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = rct1_open_on_pressed.png; sourceTree = "<group>"; };
-		F76C87D41EC4E91500FA49E2 /* rct1_test_off.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = rct1_test_off.png; sourceTree = "<group>"; };
-		F76C87D51EC4E91500FA49E2 /* rct1_test_off_pressed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = rct1_test_off_pressed.png; sourceTree = "<group>"; };
-		F76C87D61EC4E91500FA49E2 /* rct1_test_on.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = rct1_test_on.png; sourceTree = "<group>"; };
-		F76C87D71EC4E91500FA49E2 /* rct1_test_on_pressed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = rct1_test_on_pressed.png; sourceTree = "<group>"; };
-		F76C87D81EC4E91500FA49E2 /* server_password.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = server_password.png; sourceTree = "<group>"; };
-		F76C87D91EC4E91500FA49E2 /* small_scenery.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = small_scenery.png; sourceTree = "<group>"; };
-		F76C87DA1EC4E91500FA49E2 /* sort.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sort.png; sourceTree = "<group>"; };
-		F76C87DB1EC4E91500FA49E2 /* tab_disabled.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tab_disabled.png; sourceTree = "<group>"; };
-		F76C87DC1EC4E91500FA49E2 /* twitch.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = twitch.png; sourceTree = "<group>"; };
-		F76C87DD1EC4E91500FA49E2 /* unmute.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = unmute.png; sourceTree = "<group>"; };
-		F76C87DE1EC4E91500FA49E2 /* unmute_pressed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = unmute_pressed.png; sourceTree = "<group>"; };
-		F76C87DF1EC4E91500FA49E2 /* zoom_in.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = zoom_in.png; sourceTree = "<group>"; };
-		F76C87E01EC4E91500FA49E2 /* zoom_in_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = zoom_in_background.png; sourceTree = "<group>"; };
-		F76C87E11EC4E91500FA49E2 /* zoom_out.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = zoom_out.png; sourceTree = "<group>"; };
-		F76C87E21EC4E91500FA49E2 /* zoom_out_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = zoom_out_background.png; sourceTree = "<group>"; };
-		F76C87E31EC4E91500FA49E2 /* logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = logo.png; sourceTree = "<group>"; };
-		F76C87E41EC4E91500FA49E2 /* logo_text.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = logo_text.png; sourceTree = "<group>"; };
-		F76C87E51EC4E91500FA49E2 /* sprites.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = sprites.json; sourceTree = "<group>"; };
-		F76C87E81EC4E91500FA49E2 /* booster_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = booster_1.png; sourceTree = "<group>"; };
-		F76C87E91EC4E91500FA49E2 /* booster_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = booster_2.png; sourceTree = "<group>"; };
-		F76C87EB1EC4E91500FA49E2 /* booster_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = booster_1.png; sourceTree = "<group>"; };
-		F76C87EC1EC4E91500FA49E2 /* booster_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = booster_2.png; sourceTree = "<group>"; };
-		F76C87EE1EC4E91500FA49E2 /* booster_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = booster_1.png; sourceTree = "<group>"; };
-		F76C87EF1EC4E91500FA49E2 /* booster_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = booster_2.png; sourceTree = "<group>"; };
-		F76C87F01EC4E91500FA49E2 /* flat_to_steep_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = flat_to_steep_1.png; sourceTree = "<group>"; };
-		F76C87F11EC4E91500FA49E2 /* flat_to_steep_2_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = flat_to_steep_2_1.png; sourceTree = "<group>"; };
-		F76C87F21EC4E91500FA49E2 /* flat_to_steep_2_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = flat_to_steep_2_2.png; sourceTree = "<group>"; };
-		F76C87F31EC4E91500FA49E2 /* flat_to_steep_3_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = flat_to_steep_3_1.png; sourceTree = "<group>"; };
-		F76C87F41EC4E91500FA49E2 /* flat_to_steep_3_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = flat_to_steep_3_2.png; sourceTree = "<group>"; };
-		F76C87F51EC4E91500FA49E2 /* flat_to_steep_4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = flat_to_steep_4.png; sourceTree = "<group>"; };
-		F76C87F61EC4E91500FA49E2 /* flat_to_steep_diagonal_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = flat_to_steep_diagonal_1.png; sourceTree = "<group>"; };
-		F76C87F71EC4E91500FA49E2 /* flat_to_steep_diagonal_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = flat_to_steep_diagonal_2.png; sourceTree = "<group>"; };
-		F76C87F81EC4E91500FA49E2 /* flat_to_steep_diagonal_3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = flat_to_steep_diagonal_3.png; sourceTree = "<group>"; };
-		F76C87F91EC4E91500FA49E2 /* flat_to_steep_diagonal_4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = flat_to_steep_diagonal_4.png; sourceTree = "<group>"; };
-		F76C87FA1EC4E91500FA49E2 /* flat_to_steep_diagonal_lift_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = flat_to_steep_diagonal_lift_1.png; sourceTree = "<group>"; };
-		F76C87FB1EC4E91500FA49E2 /* flat_to_steep_diagonal_lift_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = flat_to_steep_diagonal_lift_2.png; sourceTree = "<group>"; };
-		F76C87FC1EC4E91500FA49E2 /* flat_to_steep_diagonal_lift_3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = flat_to_steep_diagonal_lift_3.png; sourceTree = "<group>"; };
-		F76C87FD1EC4E91500FA49E2 /* flat_to_steep_diagonal_lift_4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = flat_to_steep_diagonal_lift_4.png; sourceTree = "<group>"; };
-		F76C87FE1EC4E91500FA49E2 /* flat_to_steep_lift_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = flat_to_steep_lift_1.png; sourceTree = "<group>"; };
-		F76C87FF1EC4E91500FA49E2 /* flat_to_steep_lift_2_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = flat_to_steep_lift_2_1.png; sourceTree = "<group>"; };
-		F76C88001EC4E91500FA49E2 /* flat_to_steep_lift_2_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = flat_to_steep_lift_2_2.png; sourceTree = "<group>"; };
-		F76C88011EC4E91500FA49E2 /* flat_to_steep_lift_3_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = flat_to_steep_lift_3_1.png; sourceTree = "<group>"; };
-		F76C88021EC4E91500FA49E2 /* flat_to_steep_lift_3_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = flat_to_steep_lift_3_2.png; sourceTree = "<group>"; };
-		F76C88031EC4E91500FA49E2 /* flat_to_steep_lift_4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = flat_to_steep_lift_4.png; sourceTree = "<group>"; };
-		F76C88041EC4E91500FA49E2 /* steep_to_flat_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = steep_to_flat_1.png; sourceTree = "<group>"; };
-		F76C88051EC4E91600FA49E2 /* steep_to_flat_2_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = steep_to_flat_2_1.png; sourceTree = "<group>"; };
-		F76C88061EC4E91600FA49E2 /* steep_to_flat_2_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = steep_to_flat_2_2.png; sourceTree = "<group>"; };
-		F76C88071EC4E91600FA49E2 /* steep_to_flat_3_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = steep_to_flat_3_1.png; sourceTree = "<group>"; };
-		F76C88081EC4E91600FA49E2 /* steep_to_flat_3_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = steep_to_flat_3_2.png; sourceTree = "<group>"; };
-		F76C88091EC4E91600FA49E2 /* steep_to_flat_4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = steep_to_flat_4.png; sourceTree = "<group>"; };
-		F76C880A1EC4E91600FA49E2 /* steep_to_flat_diagonal_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = steep_to_flat_diagonal_1.png; sourceTree = "<group>"; };
-		F76C880B1EC4E91600FA49E2 /* steep_to_flat_diagonal_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = steep_to_flat_diagonal_2.png; sourceTree = "<group>"; };
-		F76C880C1EC4E91600FA49E2 /* steep_to_flat_diagonal_3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = steep_to_flat_diagonal_3.png; sourceTree = "<group>"; };
-		F76C880D1EC4E91600FA49E2 /* steep_to_flat_diagonal_4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = steep_to_flat_diagonal_4.png; sourceTree = "<group>"; };
-		F76C880E1EC4E91600FA49E2 /* steep_to_flat_diagonal_lift_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = steep_to_flat_diagonal_lift_1.png; sourceTree = "<group>"; };
-		F76C880F1EC4E91600FA49E2 /* steep_to_flat_diagonal_lift_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = steep_to_flat_diagonal_lift_2.png; sourceTree = "<group>"; };
-		F76C88101EC4E91600FA49E2 /* steep_to_flat_diagonal_lift_3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = steep_to_flat_diagonal_lift_3.png; sourceTree = "<group>"; };
-		F76C88111EC4E91600FA49E2 /* steep_to_flat_diagonal_lift_4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = steep_to_flat_diagonal_lift_4.png; sourceTree = "<group>"; };
-		F76C88121EC4E91600FA49E2 /* steep_to_flat_lift_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = steep_to_flat_lift_1.png; sourceTree = "<group>"; };
-		F76C88131EC4E91600FA49E2 /* steep_to_flat_lift_2_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = steep_to_flat_lift_2_1.png; sourceTree = "<group>"; };
-		F76C88141EC4E91600FA49E2 /* steep_to_flat_lift_2_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = steep_to_flat_lift_2_2.png; sourceTree = "<group>"; };
-		F76C88151EC4E91600FA49E2 /* steep_to_flat_lift_3_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = steep_to_flat_lift_3_1.png; sourceTree = "<group>"; };
-		F76C88161EC4E91600FA49E2 /* steep_to_flat_lift_3_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = steep_to_flat_lift_3_2.png; sourceTree = "<group>"; };
-		F76C88171EC4E91600FA49E2 /* steep_to_flat_lift_4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = steep_to_flat_lift_4.png; sourceTree = "<group>"; };
-		F76C88191EC4E91600FA49E2 /* booster_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = booster_1.png; sourceTree = "<group>"; };
-		F76C881A1EC4E91600FA49E2 /* booster_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = booster_2.png; sourceTree = "<group>"; };
-		F76C881C1EC4E91600FA49E2 /* icon.ico */ = {isa = PBXFileReference; lastKnownFileType = image.ico; path = icon.ico; sourceTree = "<group>"; };
-		F76C881D1EC4E91600FA49E2 /* icon_flag.svg */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = icon_flag.svg; sourceTree = "<group>"; };
-		F76C881E1EC4E91600FA49E2 /* icon_noflag.svg */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = icon_noflag.svg; sourceTree = "<group>"; };
-		F76C881F1EC4E91600FA49E2 /* icon_x1024.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_x1024.png; sourceTree = "<group>"; };
-		F76C88201EC4E91600FA49E2 /* icon_x128.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_x128.png; sourceTree = "<group>"; };
-		F76C88211EC4E91600FA49E2 /* icon_x16.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_x16.png; sourceTree = "<group>"; };
-		F76C88221EC4E91600FA49E2 /* icon_x2048.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_x2048.png; sourceTree = "<group>"; };
-		F76C88231EC4E91600FA49E2 /* icon_x256.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_x256.png; sourceTree = "<group>"; };
-		F76C88241EC4E91600FA49E2 /* icon_x32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_x32.png; sourceTree = "<group>"; };
-		F76C88251EC4E91600FA49E2 /* icon_x4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_x4.png; sourceTree = "<group>"; };
-		F76C88261EC4E91600FA49E2 /* icon_x40.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_x40.png; sourceTree = "<group>"; };
-		F76C88271EC4E91600FA49E2 /* icon_x512.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_x512.png; sourceTree = "<group>"; };
-		F76C88281EC4E91600FA49E2 /* icon_x64.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_x64.png; sourceTree = "<group>"; };
-		F76C88291EC4E91600FA49E2 /* icon_x8.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_x8.png; sourceTree = "<group>"; };
-		F76C882A1EC4E91600FA49E2 /* makeico.linq */ = {isa = PBXFileReference; lastKnownFileType = text; path = makeico.linq; sourceTree = "<group>"; };
-		F76C882B1EC4E91600FA49E2 /* OpenRCT2.rc */ = {isa = PBXFileReference; lastKnownFileType = text; path = OpenRCT2.rc; sourceTree = "<group>"; };
-		F76C882C1EC4E91600FA49E2 /* resource.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = resource.h; sourceTree = "<group>"; };
 		F7D7747E1EC61E5100BE6EBC /* UiContext.macOS.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = UiContext.macOS.mm; sourceTree = "<group>"; };
 		F7D774841EC66CD700BE6EBC /* OpenRCT2-cli */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "OpenRCT2-cli"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -2016,7 +1937,6 @@
 		D41B72431C21015A0080A7B9 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
-				F76C87B41EC4E91500FA49E2 /* resources */,
 				F76C85801EC4E82600FA49E2 /* openrct2-ui */,
 				F76C857C1EC4E80E00FA49E2 /* openrct2-cli */,
 				F76C83551EC4E7CC00FA49E2 /* libopenrct2 */,
@@ -2210,8 +2130,6 @@
 		D497D06F1C20FD52002BF46A = {
 			isa = PBXGroup;
 			children = (
-				F76C82A11EC4E50D00FA49E2 /* resource.h */,
-				F76C80A01EC4DD9400FA49E2 /* shaders */,
 				D41B72431C21015A0080A7B9 /* Sources */,
 				D497D07A1C20FD52002BF46A /* Resources */,
 				8546F74A1D7E1D220004004C /* Tests */,
@@ -2299,19 +2217,37 @@
 			isa = PBXGroup;
 			children = (
 				F76C83561EC4E7CC00FA49E2 /* audio */,
+				F76C83621EC4E7CC00FA49E2 /* cmdline */,
+				F76C836D1EC4E7CC00FA49E2 /* config */,
+				F76C83781EC4E7CC00FA49E2 /* core */,
+				F76C839D1EC4E7CC00FA49E2 /* drawing */,
+				F76C83BB1EC4E7CC00FA49E2 /* interface */,
+				F76C83D71EC4E7CC00FA49E2 /* localisation */,
+				F76C83EA1EC4E7CC00FA49E2 /* management */,
+				F76C83F51EC4E7CC00FA49E2 /* network */,
+				F76C84111EC4E7CC00FA49E2 /* object */,
+				F76C843A1EC4E7CC00FA49E2 /* paint */,
+				F76C84531EC4E7CC00FA49E2 /* peep */,
+				F76C84591EC4E7CC00FA49E2 /* platform */,
+				F76C84661EC4E7CC00FA49E2 /* rct1 */,
+				F76C846C1EC4E7CC00FA49E2 /* rct12 */,
+				F76C84761EC4E7CC00FA49E2 /* rct2 */,
+				F76C84831EC4E7CC00FA49E2 /* ride */,
+				F76C84F31EC4E7CD00FA49E2 /* scenario */,
+				F76C84FB1EC4E7CD00FA49E2 /* title */,
+				F76C85041EC4E7CD00FA49E2 /* ui */,
+				F76C85061EC4E7CD00FA49E2 /* util */,
+				F76C850D1EC4E7CD00FA49E2 /* windows */,
+				F76C855B1EC4E7CD00FA49E2 /* world */,
 				F76C835F1EC4E7CC00FA49E2 /* cheats.c */,
 				F76C83601EC4E7CC00FA49E2 /* cheats.h */,
-				F76C83621EC4E7CC00FA49E2 /* cmdline */,
 				F76C836A1EC4E7CC00FA49E2 /* cmdline_sprite.c */,
 				F76C836B1EC4E7CC00FA49E2 /* cmdline_sprite.h */,
 				F76C836C1EC4E7CC00FA49E2 /* common.h */,
-				F76C836D1EC4E7CC00FA49E2 /* config */,
 				F76C83761EC4E7CC00FA49E2 /* Context.cpp */,
 				F76C83771EC4E7CC00FA49E2 /* Context.h */,
-				F76C83781EC4E7CC00FA49E2 /* core */,
 				F76C839B1EC4E7CC00FA49E2 /* diagnostic.c */,
 				F76C839C1EC4E7CC00FA49E2 /* diagnostic.h */,
-				F76C839D1EC4E7CC00FA49E2 /* drawing */,
 				F76C83B11EC4E7CC00FA49E2 /* editor.c */,
 				F76C83B21EC4E7CC00FA49E2 /* editor.h */,
 				F76C83B31EC4E7CC00FA49E2 /* FileClassifier.cpp */,
@@ -2322,43 +2258,25 @@
 				F76C83B81EC4E7CC00FA49E2 /* Imaging.h */,
 				F76C83B91EC4E7CC00FA49E2 /* input.c */,
 				F76C83BA1EC4E7CC00FA49E2 /* input.h */,
-				F76C83BB1EC4E7CC00FA49E2 /* interface */,
 				F76C83D41EC4E7CC00FA49E2 /* intro.c */,
 				F76C83D51EC4E7CC00FA49E2 /* intro.h */,
-				F76C83D71EC4E7CC00FA49E2 /* localisation */,
-				F76C83EA1EC4E7CC00FA49E2 /* management */,
-				F76C83F51EC4E7CC00FA49E2 /* network */,
-				F76C84111EC4E7CC00FA49E2 /* object */,
 				F76C84351EC4E7CC00FA49E2 /* object.h */,
 				F76C84361EC4E7CC00FA49E2 /* object_list.c */,
 				F76C84371EC4E7CC00FA49E2 /* object_list.h */,
 				F76C84381EC4E7CC00FA49E2 /* OpenRCT2.cpp */,
 				F76C84391EC4E7CC00FA49E2 /* OpenRCT2.h */,
-				F76C843A1EC4E7CC00FA49E2 /* paint */,
 				F76C84511EC4E7CC00FA49E2 /* ParkImporter.cpp */,
 				F76C84521EC4E7CC00FA49E2 /* ParkImporter.h */,
-				F76C84531EC4E7CC00FA49E2 /* peep */,
-				F76C84591EC4E7CC00FA49E2 /* platform */,
 				F76C84641EC4E7CC00FA49E2 /* PlatformEnvironment.cpp */,
 				F76C84651EC4E7CC00FA49E2 /* PlatformEnvironment.h */,
-				F76C84661EC4E7CC00FA49E2 /* rct1 */,
 				F76C846A1EC4E7CC00FA49E2 /* rct1.c */,
 				F76C846B1EC4E7CC00FA49E2 /* rct1.h */,
-				F76C846C1EC4E7CC00FA49E2 /* rct12 */,
 				F76C84751EC4E7CC00FA49E2 /* rct12.h */,
-				F76C84761EC4E7CC00FA49E2 /* rct2 */,
 				F76C84801EC4E7CC00FA49E2 /* rct2.c */,
 				F76C84811EC4E7CC00FA49E2 /* rct2.h */,
-				F76C84831EC4E7CC00FA49E2 /* ride */,
-				F76C84F31EC4E7CD00FA49E2 /* scenario */,
 				F76C84FA1EC4E7CD00FA49E2 /* sprites.h */,
-				F76C84FB1EC4E7CD00FA49E2 /* title */,
-				F76C85041EC4E7CD00FA49E2 /* ui */,
-				F76C85061EC4E7CD00FA49E2 /* util */,
 				F76C850B1EC4E7CD00FA49E2 /* Version.cpp */,
 				F76C850C1EC4E7CD00FA49E2 /* Version.h */,
-				F76C850D1EC4E7CD00FA49E2 /* windows */,
-				F76C855B1EC4E7CD00FA49E2 /* world */,
 			);
 			name = libopenrct2;
 			sourceTree = "<group>";
@@ -2627,10 +2545,10 @@
 			isa = PBXGroup;
 			children = (
 				F76C843B1EC4E7CC00FA49E2 /* map_element */,
+				F76C84491EC4E7CC00FA49E2 /* sprite */,
 				F76C84461EC4E7CC00FA49E2 /* paint.c */,
 				F76C84471EC4E7CC00FA49E2 /* paint.h */,
 				F76C84481EC4E7CC00FA49E2 /* paint_helpers.c */,
-				F76C84491EC4E7CC00FA49E2 /* sprite */,
 				F76C844F1EC4E7CC00FA49E2 /* supports.c */,
 				F76C84501EC4E7CC00FA49E2 /* supports.h */,
 			);
@@ -2739,20 +2657,22 @@
 		F76C84831EC4E7CC00FA49E2 /* ride */ = {
 			isa = PBXGroup;
 			children = (
-				F76C84841EC4E7CC00FA49E2 /* cable_lift.c */,
-				F76C84851EC4E7CC00FA49E2 /* cable_lift.h */,
 				F76C84861EC4E7CC00FA49E2 /* coaster */,
 				F76C84A91EC4E7CC00FA49E2 /* gentle */,
+				F76C84C01EC4E7CC00FA49E2 /* shops */,
+				F76C84C61EC4E7CC00FA49E2 /* thrill */,
+				F76C84DE1EC4E7CD00FA49E2 /* transport */,
+				F76C84EA1EC4E7CD00FA49E2 /* water */,
+				F76C84841EC4E7CC00FA49E2 /* cable_lift.c */,
+				F76C84851EC4E7CC00FA49E2 /* cable_lift.h */,
 				F76C84BA1EC4E7CC00FA49E2 /* ride.c */,
 				F76C84BB1EC4E7CC00FA49E2 /* ride.h */,
 				F76C84BC1EC4E7CC00FA49E2 /* ride_data.c */,
 				F76C84BD1EC4E7CC00FA49E2 /* ride_data.h */,
 				F76C84BE1EC4E7CC00FA49E2 /* ride_ratings.c */,
 				F76C84BF1EC4E7CC00FA49E2 /* ride_ratings.h */,
-				F76C84C01EC4E7CC00FA49E2 /* shops */,
 				F76C84C41EC4E7CC00FA49E2 /* station.c */,
 				F76C84C51EC4E7CC00FA49E2 /* station.h */,
-				F76C84C61EC4E7CC00FA49E2 /* thrill */,
 				F76C84D21EC4E7CC00FA49E2 /* track.c */,
 				F76C84D31EC4E7CC00FA49E2 /* track.h */,
 				F76C84D41EC4E7CC00FA49E2 /* track_data.c */,
@@ -2765,14 +2685,12 @@
 				F76C84DB1EC4E7CD00FA49E2 /* track_paint.h */,
 				F76C84DC1EC4E7CD00FA49E2 /* TrackDesignRepository.cpp */,
 				F76C84DD1EC4E7CD00FA49E2 /* TrackDesignRepository.h */,
-				F76C84DE1EC4E7CD00FA49E2 /* transport */,
 				F76C84E41EC4E7CD00FA49E2 /* vehicle.c */,
 				F76C84E51EC4E7CD00FA49E2 /* vehicle.h */,
 				F76C84E61EC4E7CD00FA49E2 /* vehicle_data.c */,
 				F76C84E71EC4E7CD00FA49E2 /* vehicle_data.h */,
 				F76C84E81EC4E7CD00FA49E2 /* vehicle_paint.c */,
 				F76C84E91EC4E7CD00FA49E2 /* vehicle_paint.h */,
-				F76C84EA1EC4E7CD00FA49E2 /* water */,
 			);
 			path = ride;
 			sourceTree = "<group>";
@@ -3079,10 +2997,10 @@
 			isa = PBXGroup;
 			children = (
 				F76C85811EC4E82600FA49E2 /* audio */,
+				F76C858D1EC4E82600FA49E2 /* drawing */,
 				F76C858A1EC4E82600FA49E2 /* CursorData.cpp */,
 				F76C858B1EC4E82600FA49E2 /* CursorRepository.cpp */,
 				F76C858C1EC4E82600FA49E2 /* CursorRepository.h */,
-				F76C858D1EC4E82600FA49E2 /* drawing */,
 				F76C85A81EC4E82600FA49E2 /* SDLException.h */,
 				F76C85A91EC4E82600FA49E2 /* TextComposition.cpp */,
 				F76C85AA1EC4E82600FA49E2 /* TextComposition.h */,
@@ -3122,8 +3040,8 @@
 		F76C858E1EC4E82600FA49E2 /* engines */ = {
 			isa = PBXGroup;
 			children = (
-				F76C858F1EC4E82600FA49E2 /* DrawingEngines.h */,
 				F76C85901EC4E82600FA49E2 /* opengl */,
+				F76C858F1EC4E82600FA49E2 /* DrawingEngines.h */,
 				F76C85A61EC4E82600FA49E2 /* SoftwareDrawingEngine.cpp */,
 			);
 			path = engines;
@@ -3155,189 +3073,6 @@
 				F76C85A51EC4E82600FA49E2 /* TextureCache.h */,
 			);
 			path = opengl;
-			sourceTree = "<group>";
-		};
-		F76C87B41EC4E91500FA49E2 /* resources */ = {
-			isa = PBXGroup;
-			children = (
-				F76C87B51EC4E91500FA49E2 /* g2 */,
-				F76C881B1EC4E91600FA49E2 /* logo */,
-				F76C882B1EC4E91600FA49E2 /* OpenRCT2.rc */,
-				F76C882C1EC4E91600FA49E2 /* resource.h */,
-			);
-			path = resources;
-			sourceTree = SOURCE_ROOT;
-		};
-		F76C87B51EC4E91500FA49E2 /* g2 */ = {
-			isa = PBXGroup;
-			children = (
-				F76C87B61EC4E91500FA49E2 /* 7.png */,
-				F76C87B71EC4E91500FA49E2 /* empty.png */,
-				F76C87B81EC4E91500FA49E2 /* icons */,
-				F76C87E31EC4E91500FA49E2 /* logo.png */,
-				F76C87E41EC4E91500FA49E2 /* logo_text.png */,
-				F76C87E51EC4E91500FA49E2 /* sprites.json */,
-				F76C87E61EC4E91500FA49E2 /* track */,
-			);
-			path = g2;
-			sourceTree = "<group>";
-		};
-		F76C87B81EC4E91500FA49E2 /* icons */ = {
-			isa = PBXGroup;
-			children = (
-				F76C87B91EC4E91500FA49E2 /* 29.png */,
-				F76C87BA1EC4E91500FA49E2 /* 30.png */,
-				F76C87BB1EC4E91500FA49E2 /* 31.png */,
-				F76C87BC1EC4E91500FA49E2 /* 32.png */,
-				F76C87BD1EC4E91500FA49E2 /* 58.png */,
-				F76C87BE1EC4E91500FA49E2 /* cheats.png */,
-				F76C87BF1EC4E91500FA49E2 /* copy.png */,
-				F76C87C01EC4E91500FA49E2 /* fast_forward.png */,
-				F76C87C11EC4E91500FA49E2 /* game_speed_indicator.png */,
-				F76C87C21EC4E91500FA49E2 /* game_speed_indicator_double.png */,
-				F76C87C31EC4E91500FA49E2 /* large_scenery.png */,
-				F76C87C41EC4E91500FA49E2 /* map_gen_land.png */,
-				F76C87C51EC4E91500FA49E2 /* map_gen_noise.png */,
-				F76C87C61EC4E91500FA49E2 /* map_gen_trees.png */,
-				F76C87C71EC4E91500FA49E2 /* multiplayer.png */,
-				F76C87C81EC4E91500FA49E2 /* mute.png */,
-				F76C87C91EC4E91500FA49E2 /* mute_pressed.png */,
-				F76C87CA1EC4E91500FA49E2 /* paste.png */,
-				F76C87CB1EC4E91500FA49E2 /* paths.png */,
-				F76C87CC1EC4E91500FA49E2 /* rct1_close_off.png */,
-				F76C87CD1EC4E91500FA49E2 /* rct1_close_off_pressed.png */,
-				F76C87CE1EC4E91500FA49E2 /* rct1_close_on.png */,
-				F76C87CF1EC4E91500FA49E2 /* rct1_close_on_pressed.png */,
-				F76C87D01EC4E91500FA49E2 /* rct1_open_off.png */,
-				F76C87D11EC4E91500FA49E2 /* rct1_open_off_pressed.png */,
-				F76C87D21EC4E91500FA49E2 /* rct1_open_on.png */,
-				F76C87D31EC4E91500FA49E2 /* rct1_open_on_pressed.png */,
-				F76C87D41EC4E91500FA49E2 /* rct1_test_off.png */,
-				F76C87D51EC4E91500FA49E2 /* rct1_test_off_pressed.png */,
-				F76C87D61EC4E91500FA49E2 /* rct1_test_on.png */,
-				F76C87D71EC4E91500FA49E2 /* rct1_test_on_pressed.png */,
-				F76C87D81EC4E91500FA49E2 /* server_password.png */,
-				F76C87D91EC4E91500FA49E2 /* small_scenery.png */,
-				F76C87DA1EC4E91500FA49E2 /* sort.png */,
-				F76C87DB1EC4E91500FA49E2 /* tab_disabled.png */,
-				F76C87DC1EC4E91500FA49E2 /* twitch.png */,
-				F76C87DD1EC4E91500FA49E2 /* unmute.png */,
-				F76C87DE1EC4E91500FA49E2 /* unmute_pressed.png */,
-				F76C87DF1EC4E91500FA49E2 /* zoom_in.png */,
-				F76C87E01EC4E91500FA49E2 /* zoom_in_background.png */,
-				F76C87E11EC4E91500FA49E2 /* zoom_out.png */,
-				F76C87E21EC4E91500FA49E2 /* zoom_out_background.png */,
-			);
-			path = icons;
-			sourceTree = "<group>";
-		};
-		F76C87E61EC4E91500FA49E2 /* track */ = {
-			isa = PBXGroup;
-			children = (
-				F76C87E71EC4E91500FA49E2 /* bm */,
-				F76C87EA1EC4E91500FA49E2 /* intamin */,
-				F76C87ED1EC4E91500FA49E2 /* junior */,
-				F76C88181EC4E91600FA49E2 /* mini */,
-			);
-			path = track;
-			sourceTree = "<group>";
-		};
-		F76C87E71EC4E91500FA49E2 /* bm */ = {
-			isa = PBXGroup;
-			children = (
-				F76C87E81EC4E91500FA49E2 /* booster_1.png */,
-				F76C87E91EC4E91500FA49E2 /* booster_2.png */,
-			);
-			path = bm;
-			sourceTree = "<group>";
-		};
-		F76C87EA1EC4E91500FA49E2 /* intamin */ = {
-			isa = PBXGroup;
-			children = (
-				F76C87EB1EC4E91500FA49E2 /* booster_1.png */,
-				F76C87EC1EC4E91500FA49E2 /* booster_2.png */,
-			);
-			path = intamin;
-			sourceTree = "<group>";
-		};
-		F76C87ED1EC4E91500FA49E2 /* junior */ = {
-			isa = PBXGroup;
-			children = (
-				F76C87EE1EC4E91500FA49E2 /* booster_1.png */,
-				F76C87EF1EC4E91500FA49E2 /* booster_2.png */,
-				F76C87F01EC4E91500FA49E2 /* flat_to_steep_1.png */,
-				F76C87F11EC4E91500FA49E2 /* flat_to_steep_2_1.png */,
-				F76C87F21EC4E91500FA49E2 /* flat_to_steep_2_2.png */,
-				F76C87F31EC4E91500FA49E2 /* flat_to_steep_3_1.png */,
-				F76C87F41EC4E91500FA49E2 /* flat_to_steep_3_2.png */,
-				F76C87F51EC4E91500FA49E2 /* flat_to_steep_4.png */,
-				F76C87F61EC4E91500FA49E2 /* flat_to_steep_diagonal_1.png */,
-				F76C87F71EC4E91500FA49E2 /* flat_to_steep_diagonal_2.png */,
-				F76C87F81EC4E91500FA49E2 /* flat_to_steep_diagonal_3.png */,
-				F76C87F91EC4E91500FA49E2 /* flat_to_steep_diagonal_4.png */,
-				F76C87FA1EC4E91500FA49E2 /* flat_to_steep_diagonal_lift_1.png */,
-				F76C87FB1EC4E91500FA49E2 /* flat_to_steep_diagonal_lift_2.png */,
-				F76C87FC1EC4E91500FA49E2 /* flat_to_steep_diagonal_lift_3.png */,
-				F76C87FD1EC4E91500FA49E2 /* flat_to_steep_diagonal_lift_4.png */,
-				F76C87FE1EC4E91500FA49E2 /* flat_to_steep_lift_1.png */,
-				F76C87FF1EC4E91500FA49E2 /* flat_to_steep_lift_2_1.png */,
-				F76C88001EC4E91500FA49E2 /* flat_to_steep_lift_2_2.png */,
-				F76C88011EC4E91500FA49E2 /* flat_to_steep_lift_3_1.png */,
-				F76C88021EC4E91500FA49E2 /* flat_to_steep_lift_3_2.png */,
-				F76C88031EC4E91500FA49E2 /* flat_to_steep_lift_4.png */,
-				F76C88041EC4E91500FA49E2 /* steep_to_flat_1.png */,
-				F76C88051EC4E91600FA49E2 /* steep_to_flat_2_1.png */,
-				F76C88061EC4E91600FA49E2 /* steep_to_flat_2_2.png */,
-				F76C88071EC4E91600FA49E2 /* steep_to_flat_3_1.png */,
-				F76C88081EC4E91600FA49E2 /* steep_to_flat_3_2.png */,
-				F76C88091EC4E91600FA49E2 /* steep_to_flat_4.png */,
-				F76C880A1EC4E91600FA49E2 /* steep_to_flat_diagonal_1.png */,
-				F76C880B1EC4E91600FA49E2 /* steep_to_flat_diagonal_2.png */,
-				F76C880C1EC4E91600FA49E2 /* steep_to_flat_diagonal_3.png */,
-				F76C880D1EC4E91600FA49E2 /* steep_to_flat_diagonal_4.png */,
-				F76C880E1EC4E91600FA49E2 /* steep_to_flat_diagonal_lift_1.png */,
-				F76C880F1EC4E91600FA49E2 /* steep_to_flat_diagonal_lift_2.png */,
-				F76C88101EC4E91600FA49E2 /* steep_to_flat_diagonal_lift_3.png */,
-				F76C88111EC4E91600FA49E2 /* steep_to_flat_diagonal_lift_4.png */,
-				F76C88121EC4E91600FA49E2 /* steep_to_flat_lift_1.png */,
-				F76C88131EC4E91600FA49E2 /* steep_to_flat_lift_2_1.png */,
-				F76C88141EC4E91600FA49E2 /* steep_to_flat_lift_2_2.png */,
-				F76C88151EC4E91600FA49E2 /* steep_to_flat_lift_3_1.png */,
-				F76C88161EC4E91600FA49E2 /* steep_to_flat_lift_3_2.png */,
-				F76C88171EC4E91600FA49E2 /* steep_to_flat_lift_4.png */,
-			);
-			path = junior;
-			sourceTree = "<group>";
-		};
-		F76C88181EC4E91600FA49E2 /* mini */ = {
-			isa = PBXGroup;
-			children = (
-				F76C88191EC4E91600FA49E2 /* booster_1.png */,
-				F76C881A1EC4E91600FA49E2 /* booster_2.png */,
-			);
-			path = mini;
-			sourceTree = "<group>";
-		};
-		F76C881B1EC4E91600FA49E2 /* logo */ = {
-			isa = PBXGroup;
-			children = (
-				F76C881C1EC4E91600FA49E2 /* icon.ico */,
-				F76C881D1EC4E91600FA49E2 /* icon_flag.svg */,
-				F76C881E1EC4E91600FA49E2 /* icon_noflag.svg */,
-				F76C881F1EC4E91600FA49E2 /* icon_x1024.png */,
-				F76C88201EC4E91600FA49E2 /* icon_x128.png */,
-				F76C88211EC4E91600FA49E2 /* icon_x16.png */,
-				F76C88221EC4E91600FA49E2 /* icon_x2048.png */,
-				F76C88231EC4E91600FA49E2 /* icon_x256.png */,
-				F76C88241EC4E91600FA49E2 /* icon_x32.png */,
-				F76C88251EC4E91600FA49E2 /* icon_x4.png */,
-				F76C88261EC4E91600FA49E2 /* icon_x40.png */,
-				F76C88271EC4E91600FA49E2 /* icon_x512.png */,
-				F76C88281EC4E91600FA49E2 /* icon_x64.png */,
-				F76C88291EC4E91600FA49E2 /* icon_x8.png */,
-				F76C882A1EC4E91600FA49E2 /* makeico.linq */,
-			);
-			path = logo;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -3375,7 +3110,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = D497D0891C20FD53002BF46A /* Build configuration list for PBXNativeTarget "OpenRCT2" */;
 			buildPhases = (
-				D4EC48E91C264FC20024B507 /* Download Libraries */,
 				D4E09E831E049C0600F53CE3 /* Download Title Sequences */,
 				D4EC012A1C25532B00DAFE69 /* Setup AppIcon */,
 				D4CA88671D4E962100060C11 /* Get Git Variables */,
@@ -3389,6 +3123,7 @@
 			);
 			dependencies = (
 				F76C88901EC5325700FA49E2 /* PBXTargetDependency */,
+				C68B2D491EC790970020651C /* PBXTargetDependency */,
 			);
 			name = OpenRCT2;
 			productName = OpenRCT2;
@@ -3399,7 +3134,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = F76C809D1EC4D9FA00FA49E2 /* Build configuration list for PBXNativeTarget "libopenrct2" */;
 			buildPhases = (
-				F76C809E1EC4DAAB00FA49E2 /* Download Libraries */,
 				F76C809F1EC4DB0300FA49E2 /* Get Git Variables */,
 				F76C80961EC4D9FA00FA49E2 /* Sources */,
 				F76C88381EC4EB5900FA49E2 /* Resources */,
@@ -3408,6 +3142,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				C68B2D4B1EC7909B0020651C /* PBXTargetDependency */,
 			);
 			name = libopenrct2;
 			productName = libopenrct2;
@@ -3418,7 +3153,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = F7D7748A1EC66CD700BE6EBC /* Build configuration list for PBXNativeTarget "OpenRCT2-cli" */;
 			buildPhases = (
-				F7D7748B1EC66E6600BE6EBC /* Download Libraries */,
 				F7D7748C1EC66E9300BE6EBC /* Get Git Variables */,
 				F7D774801EC66CD700BE6EBC /* Sources */,
 				F7D774811EC66CD700BE6EBC /* Frameworks */,
@@ -3428,6 +3162,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				C68B2D4D1EC7909E0020651C /* PBXTargetDependency */,
 			);
 			name = "OpenRCT2-cli";
 			productName = "OpenRCT2-cli";
@@ -3445,6 +3180,10 @@
 				TargetAttributes = {
 					C64FDA5C1D6D99F400F259B9 = {
 						CreatedOnToolsVersion = 7.3.1;
+					};
+					C68B2D431EC790690020651C = {
+						CreatedOnToolsVersion = 8.2.1;
+						ProvisioningStyle = Automatic;
 					};
 					D497D0771C20FD52002BF46A = {
 						CreatedOnToolsVersion = 7.2;
@@ -3476,6 +3215,7 @@
 				C64FDA5C1D6D99F400F259B9 /* PaintTest */,
 				F76C80991EC4D9FA00FA49E2 /* libopenrct2 */,
 				F7D774831EC66CD700BE6EBC /* OpenRCT2-cli */,
+				C68B2D431EC790690020651C /* Download Libraries */,
 			);
 		};
 /* End PBXProject section */
@@ -3519,6 +3259,20 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "dd if=\"${SRCROOT}/openrct2.exe\" of=\"${DERIVED_FILE_DIR}/openrct2_text\" bs=4096 skip=1 count=1187\ndd if=\"${SRCROOT}/openrct2.exe\" of=\"${DERIVED_FILE_DIR}/openrct2_data\" bs=4096 skip=1188 count=318\ndd if=/dev/zero of=\"${DERIVED_FILE_DIR}/openrct2_data\" bs=4096 seek=318 count=2630 conv=notrunc\ndd if=\"${SRCROOT}/openrct2.exe\" of=\"${DERIVED_FILE_DIR}/openrct2_data\" bs=4096 skip=1506 seek=2948 count=1 conv=notrunc";
+		};
+		C68B2D471EC790710020651C /* Download Libraries */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Download Libraries";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "version=\"11\"\nzipname=\"openrct2-libs-macos.zip\"\nliburl=\"https://github.com/OpenRCT2/Dependencies/releases/download/v$version/$zipname\"\n\n[[ ! -d \"${SRCROOT}/libxc\" || ! -e \"${SRCROOT}/libversion\" || $(head -n 1 \"${SRCROOT}/libversion\") != $version ]]\noutdated=$?\n\nif [[ $outdated -eq 0 ]]; then\nif [[ -d \"${SRCROOT}/libxc\" ]]; then rm -r \"${SRCROOT}/libxc\"; fi\nmkdir \"${SRCROOT}/libxc\"\n\ncurl -L -o \"${SRCROOT}/libxc/$zipname\" \"$liburl\"\nunzip -uaq -d \"${SRCROOT}/libxc\" \"${SRCROOT}/libxc/$zipname\"\nrm \"${SRCROOT}/libxc/$zipname\"\n\necho $version > \"${SRCROOT}/libversion\"\nfi";
 		};
 		D42C09D21C254F4E00309751 /* Build g2.dat */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -3597,34 +3351,6 @@
 			shellPath = /bin/sh;
 			shellScript = "if [[ ! -e \"${SRCROOT}/distribution/macos/Assets.xcassets/AppIcon.appiconset/icon_16x16.png\" ]]; then ln \"${SRCROOT}/resources/logo/icon_x16.png\" \"${SRCROOT}/distribution/macos/Assets.xcassets/AppIcon.appiconset/icon_16x16.png\"; fi\nif [[ ! -e \"${SRCROOT}/distribution/macos/Assets.xcassets/AppIcon.appiconset/icon_16x16@2x.png\" ]]; then ln \"${SRCROOT}/resources/logo/icon_x32.png\" \"${SRCROOT}/distribution/macos/Assets.xcassets/AppIcon.appiconset/icon_16x16@2x.png\"; fi\nif [[ ! -e \"${SRCROOT}/distribution/macos/Assets.xcassets/AppIcon.appiconset/icon_32x32.png\" ]]; then ln \"${SRCROOT}/resources/logo/icon_x32.png\" \"${SRCROOT}/distribution/macos/Assets.xcassets/AppIcon.appiconset/icon_32x32.png\"; fi\nif [[ ! -e \"${SRCROOT}/distribution/macos/Assets.xcassets/AppIcon.appiconset/icon_32x32@2x.png\" ]]; then ln \"${SRCROOT}/resources/logo/icon_x64.png\" \"${SRCROOT}/distribution/macos/Assets.xcassets/AppIcon.appiconset/icon_32x32@2x.png\"; fi\nif [[ ! -e \"${SRCROOT}/distribution/macos/Assets.xcassets/AppIcon.appiconset/icon_128x128.png\" ]]; then ln \"${SRCROOT}/resources/logo/icon_x128.png\" \"${SRCROOT}/distribution/macos/Assets.xcassets/AppIcon.appiconset/icon_128x128.png\"; fi\nif [[ ! -e \"${SRCROOT}/distribution/macos/Assets.xcassets/AppIcon.appiconset/icon_128x128@2x.png\" ]]; then ln \"${SRCROOT}/resources/logo/icon_x256.png\" \"${SRCROOT}/distribution/macos/Assets.xcassets/AppIcon.appiconset/icon_128x128@2x.png\"; fi\nif [[ ! -e \"${SRCROOT}/distribution/macos/Assets.xcassets/AppIcon.appiconset/icon_256x256.png\" ]]; then ln \"${SRCROOT}/resources/logo/icon_x256.png\" \"${SRCROOT}/distribution/macos/Assets.xcassets/AppIcon.appiconset/icon_256x256.png\"; fi\nif [[ ! -e \"${SRCROOT}/distribution/macos/Assets.xcassets/AppIcon.appiconset/icon_256x256@2x.png\" ]]; then ln \"${SRCROOT}/resources/logo/icon_x512.png\" \"${SRCROOT}/distribution/macos/Assets.xcassets/AppIcon.appiconset/icon_256x256@2x.png\"; fi\nif [[ ! -e \"${SRCROOT}/distribution/macos/Assets.xcassets/AppIcon.appiconset/icon_512x512.png\" ]]; then ln \"${SRCROOT}/resources/logo/icon_x512.png\" \"${SRCROOT}/distribution/macos/Assets.xcassets/AppIcon.appiconset/icon_512x512.png\"; fi\nif [[ ! -e \"${SRCROOT}/distribution/macos/Assets.xcassets/AppIcon.appiconset/icon_512x512@2x.png\" ]]; then ln \"${SRCROOT}/resources/logo/icon_x1024.png\" \"${SRCROOT}/distribution/macos/Assets.xcassets/AppIcon.appiconset/icon_512x512@2x.png\"; fi";
 		};
-		D4EC48E91C264FC20024B507 /* Download Libraries */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Download Libraries";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "version=\"11\"\nzipname=\"openrct2-libs-macos.zip\"\nliburl=\"https://github.com/OpenRCT2/Dependencies/releases/download/v$version/$zipname\"\n\n[[ ! -d \"${SRCROOT}/libxc\" || ! -e \"${SRCROOT}/libversion\" || $(head -n 1 \"${SRCROOT}/libversion\") != $version ]]\noutdated=$?\n\nif [[ $outdated -eq 0 ]]; then\n    if [[ -d \"${SRCROOT}/libxc\" ]]; then rm -r \"${SRCROOT}/libxc\"; fi\n    mkdir \"${SRCROOT}/libxc\"\n\n    curl -L -o \"${SRCROOT}/libxc/$zipname\" \"$liburl\"\n    unzip -uaq -d \"${SRCROOT}/libxc\" \"${SRCROOT}/libxc/$zipname\"\n    rm \"${SRCROOT}/libxc/$zipname\"\n\n    echo $version > \"${SRCROOT}/libversion\"\nfi";
-		};
-		F76C809E1EC4DAAB00FA49E2 /* Download Libraries */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Download Libraries";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "version=\"11\"\nzipname=\"openrct2-libs-macos.zip\"\nliburl=\"https://github.com/OpenRCT2/Dependencies/releases/download/v$version/$zipname\"\n\n[[ ! -d \"${SRCROOT}/libxc\" || ! -e \"${SRCROOT}/libversion\" || $(head -n 1 \"${SRCROOT}/libversion\") != $version ]]\noutdated=$?\n\nif [[ $outdated -eq 0 ]]; then\nif [[ -d \"${SRCROOT}/libxc\" ]]; then rm -r \"${SRCROOT}/libxc\"; fi\nmkdir \"${SRCROOT}/libxc\"\n\ncurl -L -o \"${SRCROOT}/libxc/$zipname\" \"$liburl\"\nunzip -uaq -d \"${SRCROOT}/libxc\" \"${SRCROOT}/libxc/$zipname\"\nrm \"${SRCROOT}/libxc/$zipname\"\n\necho $version > \"${SRCROOT}/libversion\"\nfi";
-		};
 		F76C809F1EC4DB0300FA49E2 /* Get Git Variables */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -3640,20 +3366,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "echo \"#define\" OPENRCT2_BRANCH \\\"$(git rev-parse --abbrev-ref HEAD)\\\" > \"${DERIVED_FILE_DIR}/gitversion.h\"\necho \"#define\" OPENRCT2_COMMIT_SHA1 \\\"$(git rev-parse HEAD)\\\" >> \"${DERIVED_FILE_DIR}/gitversion.h\"\necho \"#define\" OPENRCT2_COMMIT_SHA1_SHORT \\\"$(git rev-parse --short HEAD)\\\" >> \"${DERIVED_FILE_DIR}/gitversion.h\"\ncp \"${SRCROOT}/distribution/macos/Info.plist\" \"${DERIVED_FILE_DIR}/Info.plist\"\nplutil -replace CFBundleVersion -string \"$(git rev-parse --short HEAD)\" \"${DERIVED_FILE_DIR}/Info.plist\"";
-		};
-		F7D7748B1EC66E6600BE6EBC /* Download Libraries */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Download Libraries";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "version=\"11\"\nzipname=\"openrct2-libs-macos.zip\"\nliburl=\"https://github.com/OpenRCT2/Dependencies/releases/download/v$version/$zipname\"\n\n[[ ! -d \"${SRCROOT}/libxc\" || ! -e \"${SRCROOT}/libversion\" || $(head -n 1 \"${SRCROOT}/libversion\") != $version ]]\noutdated=$?\n\nif [[ $outdated -eq 0 ]]; then\nif [[ -d \"${SRCROOT}/libxc\" ]]; then rm -r \"${SRCROOT}/libxc\"; fi\nmkdir \"${SRCROOT}/libxc\"\n\ncurl -L -o \"${SRCROOT}/libxc/$zipname\" \"$liburl\"\nunzip -uaq -d \"${SRCROOT}/libxc\" \"${SRCROOT}/libxc/$zipname\"\nrm \"${SRCROOT}/libxc/$zipname\"\n\necho $version > \"${SRCROOT}/libversion\"\nfi";
 		};
 		F7D7748C1EC66E9300BE6EBC /* Get Git Variables */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -4448,6 +4160,21 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		C68B2D491EC790970020651C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C68B2D431EC790690020651C /* Download Libraries */;
+			targetProxy = C68B2D481EC790970020651C /* PBXContainerItemProxy */;
+		};
+		C68B2D4B1EC7909B0020651C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C68B2D431EC790690020651C /* Download Libraries */;
+			targetProxy = C68B2D4A1EC7909B0020651C /* PBXContainerItemProxy */;
+		};
+		C68B2D4D1EC7909E0020651C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = F76C80991EC4D9FA00FA49E2 /* libopenrct2 */;
+			targetProxy = C68B2D4C1EC7909E0020651C /* PBXContainerItemProxy */;
+		};
 		F76C88901EC5325700FA49E2 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = F76C80991EC4D9FA00FA49E2 /* libopenrct2 */;
@@ -4551,6 +4278,20 @@
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				VALID_ARCHS = i386;
+			};
+			name = Release;
+		};
+		C68B2D441EC790690020651C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		C68B2D451EC790690020651C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
 		};
@@ -4877,6 +4618,14 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
+		C68B2D461EC790690020651C /* Build configuration list for PBXAggregateTarget "Download Libraries" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C68B2D441EC790690020651C /* Debug */,
+				C68B2D451EC790690020651C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
 		D497D0731C20FD52002BF46A /* Build configuration list for PBXProject "OpenRCT2" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -4911,6 +4660,7 @@
 				F7D774891EC66CD700BE6EBC /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
