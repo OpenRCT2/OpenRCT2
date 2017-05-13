@@ -144,14 +144,14 @@ extern "C"
 	void window_server_list_open()
 	{
 		rct_window* window;
-	
+
 		// Check if window is already open
 		window = window_bring_to_front_by_class(WC_SERVER_LIST);
 		if (window != NULL)
 			return;
-	
+
 		window = window_create_centred(WWIDTH_MIN, WHEIGHT_MIN, &window_server_list_events, WC_SERVER_LIST, WF_10 | WF_RESIZABLE);
-	
+
 		window_server_list_widgets[WIDX_PLAYER_NAME_INPUT].string = _playerName;
 		window->widgets = window_server_list_widgets;
 		window->enabled_widgets = (
@@ -169,20 +169,17 @@ extern "C"
 		window->min_height = 90;
 		window->max_width = window->min_width;
 		window->max_height = window->min_height;
-	
+
 		window->page = 0;
 		window->list_information_type = 0;
-		window->colours[0] = COLOUR_GREY;
-		window->colours[1] = COLOUR_BORDEAUX_RED;
-		window->colours[2] = COLOUR_BORDEAUX_RED;
-	
+
 		window_set_resize(window, WWIDTH_MIN, WHEIGHT_MIN, WWIDTH_MAX, WHEIGHT_MAX);
-	
+
 		safe_strcpy(_playerName, gConfigNetwork.player_name, sizeof(_playerName));
-	
+
 		server_list_load_server_entries();
 		window->no_list_items = _numServerEntries;
-	
+
 		fetch_servers();
 	}
 }
