@@ -16,6 +16,8 @@
 
 #include "../common.h"
 
+#include <ctype.h>
+
 #ifdef __WINDOWS__
 #include <windows.h>
 #else
