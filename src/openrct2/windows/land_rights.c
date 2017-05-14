@@ -122,7 +122,9 @@ void window_land_rights_open()
 
 static void window_land_rights_close(rct_window *w)
 {
-	hide_construction_rights();
+	if (gLandRemainingConstructionSales == 0) {
+		hide_construction_rights();
+	}
 	
 	// If the tool wasn't changed, turn tool off
 	if (land_rights_tool_is_active())
