@@ -867,7 +867,7 @@ static void input_scroll_part_update_vbottom(rct_window *w, rct_widgetindex widg
  */
 static void input_widget_over(sint32 x, sint32 y, rct_window *w, rct_widgetindex widgetIndex)
 {
-	rct_windowclass windowClass = 255;
+	rct_windowclass windowClass = WC_NULL;
 	rct_windownumber windowNumber = 0;
 	rct_widget *widget = NULL;
 
@@ -953,7 +953,7 @@ static void input_widget_over_flatbutton_invalidate()
  */
 static void input_widget_left(sint32 x, sint32 y, rct_window *w, rct_widgetindex widgetIndex)
 {
-	rct_windowclass windowClass = 255;
+	rct_windowclass windowClass = WC_NULL;
 	rct_windownumber windowNumber = 0;
 	rct_widget *widget;
 

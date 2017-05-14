@@ -480,6 +480,8 @@ enum {
 	WC_EDITOR_TRACK_BOTTOM_TOOLBAR = 221,
 	WC_EDITOR_SCENARIO_BOTTOM_TOOLBAR = 222,
 	WC_CHAT = 223,
+
+	WC_NULL = 255,
 };
 
 #define validate_global_widx(wc, widx) \
