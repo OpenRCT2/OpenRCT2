@@ -2,15 +2,17 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    buildToolsVersion '25.0.2'
 
     defaultConfig {
-        applicationId "org.openrct2"
+        applicationId 'website.openrct2'
+        applicationIdSuffix 'debug'
         minSdkVersion 16
         targetSdkVersion 25
+        minifyEnabled false
 
         versionCode 2
-        versionName "0.0.6"
+        versionName '0.0.8'
 
         externalNativeBuild {
             cmake {
@@ -22,21 +24,20 @@ android {
 
     signingConfigs {
         debug {
-            storeFile file("external/debug.keystore")
+            storeFile file('external/debug.keystore')
         }
     }
 
     buildTypes {
         debug {
-            applicationIdSuffix '.debug'
-            versionNameSuffix "-DEBUG"
+            versionNameSuffix '-DEBUG'
         }
         develop {
             applicationIdSuffix '.develop'
-            versionNameSuffix "-DEVELOP"
+            versionNameSuffix '-DEVELOP'
         }
         release {
-            minifyEnabled false
+            applicationIdSuffix ''
         }
     }
 

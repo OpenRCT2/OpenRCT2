@@ -1350,7 +1350,7 @@ sint32 win1252_to_utf8(utf8string dst, const char *src, size_t srcLength, size_t
 #elif defined(__ANDROID__)
     JNIEnv *env = SDL_AndroidGetJNIEnv();
 
-    jclass *localisation = (*env)->FindClass(env, "org/openrct2/android/Localisation");
+    jclass *localisation = (*env)->FindClass(env, "website/openrct2/Localisation");
     jmethodID win1252ToUtf8 = (*env)->GetStaticMethodID(env, localisation, "win1252ToUtf8", "([B)Ljava/lang/String;");
 
 	jbyteArray *bytes = (*env)->NewByteArray(env, srcLength);

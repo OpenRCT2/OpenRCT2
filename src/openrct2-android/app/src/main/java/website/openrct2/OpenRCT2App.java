@@ -1,4 +1,4 @@
-package org.openrct2.android;
+package website.openrct2;
 
 import android.app.Application;
 

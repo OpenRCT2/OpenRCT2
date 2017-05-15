@@ -31,7 +31,7 @@ public:
         // retrieve the JNI environment.
         JNIEnv *env = (JNIEnv *) SDL_AndroidGetJNIEnv();
 
-        jclass jniClass = env->FindClass("org/openrct2/android/ZipArchive");
+        jclass jniClass = env->FindClass("website/openrct2/ZipArchive");
         jmethodID constructor = env->GetMethodID(jniClass, "<init>", "(Ljava/lang/String;)V");
 
         jstring jniPath = env->NewStringUTF(path);
@@ -157,13 +157,13 @@ namespace Zip {
 extern "C" {
 
 JNIEXPORT jlong JNICALL
-Java_org_openrct2_android_ZipArchive_allocBytes(JNIEnv *env, jclass, jbyteArray input,
+Java_website_openrct2_ZipArchive_allocBytes(JNIEnv *env, jclass, jbyteArray input,
                                                 jint numBytes);
 }
 
 
 JNIEXPORT jlong JNICALL
-Java_org_openrct2_android_ZipArchive_allocBytes(JNIEnv *env, jclass, jbyteArray input,
+Java_website_openrct2_ZipArchive_allocBytes(JNIEnv *env, jclass, jbyteArray input,
                                                 jint numBytes) {
 
     jbyte *bufferPtr = env->GetByteArrayElements(input, NULL);
