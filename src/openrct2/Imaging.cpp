@@ -64,7 +64,7 @@ namespace Imaging
                 return false;
             }
 
-            // Setup png reading
+            // Setup PNG reading
             png_set_read_fn(png_ptr, &fs, PngReadData);
             png_set_sig_bytes(png_ptr, sig_read);
 

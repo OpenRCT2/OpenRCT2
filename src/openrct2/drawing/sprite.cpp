@@ -281,7 +281,7 @@ extern "C"
         if (image_type & IMAGE_TYPE_REMAP){
             assert(palette_pointer != nullptr);
 
-            //image with remaps
+            // Image with remaps
             for (; height > 0; height -= zoom_amount){
                 uint8* next_source_pointer = source_pointer + source_line_width;
                 uint8* next_dest_pointer = dest_pointer + dest_line_width;
@@ -299,10 +299,10 @@ extern "C"
             return;
         }
 
-        //Image is Transparent. It only uses source pointer for
-        //telling if it needs to be drawn not for colour. Colour provided
-        //by the palette pointer.
-        if (image_type & IMAGE_TYPE_TRANSPARENT){//Not tested
+        // Image is transparent. It only uses source pointer for
+        // telling if it needs to be drawn not for colour. Colour provided
+        // by the palette pointer.
+        if (image_type & IMAGE_TYPE_TRANSPARENT){ // Not tested
             assert(palette_pointer != nullptr);
             for (; height > 0; height -= zoom_amount){
                 uint8* next_source_pointer = source_pointer + source_line_width;
@@ -323,8 +323,8 @@ extern "C"
             return;
         }
 
-        //Basic bitmap no fancy stuff
-        if (!(source_image->flags & G1_FLAG_BMP)){//Not tested
+        // Basic bitmap no fancy stuff
+        if (!(source_image->flags & G1_FLAG_BMP)){ // Not tested
             for (; height > 0; height -= zoom_amount){
                 uint8* next_source_pointer = source_pointer + source_line_width;
                 uint8* next_dest_pointer = dest_pointer + dest_line_width;
@@ -339,7 +339,7 @@ extern "C"
             return;
         }
 
-        //Basic bitmap with no draw pixels
+        // Basic bitmap with no draw pixels
         for (; height > 0; height -= zoom_amount){
             uint8* next_source_pointer = source_pointer + source_line_width;
             uint8* next_dest_pointer = dest_pointer + dest_line_width;
@@ -455,7 +455,7 @@ extern "C"
             return;
         }
 
-        //Its used super often so we will define it to a separate variable.
+        // Its used super often so we will define it to a separate variable.
         sint32 zoom_level = dpi->zoom_level;
         sint32 zoom_mask = 0xFFFFFFFF << zoom_level;
 
@@ -464,9 +464,9 @@ extern "C"
             y -= ~zoom_mask;
         }
 
-        //This will be the height of the drawn image
+        // This will be the height of the drawn image
         sint32 height = g1_source->height;
-        //This is the start y coordinate on the destination
+        // This is the start y coordinate on the destination
         sint16 dest_start_y = y + g1_source->y_offset;
 
         // For whatever reason the RLE version does not use
@@ -481,16 +481,16 @@ extern "C"
         sint32 source_start_y = 0;
 
         if (dest_start_y < 0){
-            //If the destination y is negative reduce the height of the
-            //image as we will cut off the bottom
+            // If the destination y is negative reduce the height of the
+            // image as we will cut off the bottom
             height += dest_start_y;
-            //If the image is no longer visible nothing to draw
+            // If the image is no longer visible nothing to draw
             if (height <= 0){
                 return;
             }
-            //The source image will start a further up the image
+            // The source image will start a further up the image
             source_start_y -= dest_start_y;
-            //The destination start is now reset to 0
+            // The destination start is now reset to 0
             dest_start_y = 0;
         }
         else{
@@ -503,33 +503,33 @@ extern "C"
         sint32 dest_end_y = dest_start_y + height;
 
         if (dest_end_y > dpi->height){
-            //If the destination y is outside of the drawing
-            //image reduce the height of the image
+            // If the destination y is outside of the drawing
+            // image reduce the height of the image
             height -= dest_end_y - dpi->height;
         }
-        //If the image no longer has anything to draw
+        // If the image no longer has anything to draw
         if (height <= 0)return;
 
         dest_start_y >>= zoom_level;
 
-        //This will be the width of the drawn image
+        // This will be the width of the drawn image
         sint32 width = g1_source->width;
-        //This is the source start x coordinate
+        // This is the source start x coordinate
         sint32 source_start_x = 0;
-        //This is the destination start x coordinate
+        // This is the destination start x coordinate
         sint16 dest_start_x = ((x + g1_source->x_offset + ~zoom_mask)&zoom_mask) - dpi->x;
 
         if (dest_start_x < 0){
-            //If the destination is negative reduce the width
-            //image will cut off the side
+            // If the destination is negative reduce the width
+            // image will cut off the side
             width += dest_start_x;
-            //If there is no image to draw
+            // If there is no image to draw
             if (width <= 0){
                 return;
             }
-            //The source start will also need to cut off the side
+            // The source start will also need to cut off the side
             source_start_x -= dest_start_x;
-            //Reset the destination to 0
+            // Reset the destination to 0
             dest_start_x = 0;
         }
         else{
@@ -541,27 +541,27 @@ extern "C"
         sint32 dest_end_x = dest_start_x + width;
 
         if (dest_end_x > dpi->width){
-            //If the destination x is outside of the drawing area
-            //reduce the image width.
+            // If the destination x is outside of the drawing area
+            // reduce the image width.
             width -= dest_end_x - dpi->width;
-            //If there is no image to draw.
+            // If there is no image to draw.
             if (width <= 0)return;
         }
 
         dest_start_x >>= zoom_level;
 
         uint8* dest_pointer = (uint8*)dpi->bits;
-        //Move the pointer to the start point of the destination
+        // Move the pointer to the start point of the destination
         dest_pointer += ((dpi->width >> zoom_level) + dpi->pitch) * dest_start_y + dest_start_x;
 
         if (g1_source->flags & G1_FLAG_RLE_COMPRESSION){
-            //We have to use a different method to move the source pointer for
-            //rle encoded sprites so that will be handled within this function
+            // We have to use a different method to move the source pointer for
+            // rle encoded sprites so that will be handled within this function
             gfx_rle_sprite_to_buffer(g1_source->offset, dest_pointer, palette_pointer, dpi, image_type, source_start_y, height, source_start_x, width);
             return;
         }
         uint8* source_pointer = g1_source->offset;
-        //Move the pointer to the start point of the source
+        // Move the pointer to the start point of the source
         source_pointer += g1_source->width*source_start_y + source_start_x;
 
         if (!(g1_source->flags & G1_FLAG_1)) {
@@ -585,7 +585,7 @@ extern "C"
         assert(imgColour->flags & G1_FLAG_BMP);
 
         if (dpi->zoom_level != 0) {
-            // TODO implement other zoom levels (probably not used though)
+            // TODO: Implement other zoom levels (probably not used though)
             assert(false);
             return;
         }

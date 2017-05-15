@@ -71,12 +71,12 @@ const rct_string_id ResearchFundingLevelNames[] = {
 };
 
 const rct_string_id MarketingCampaignNames[ADVERTISING_CAMPAIGN_COUNT][3] = {
-	{ STR_MARKETING_VOUCHERS_FOR_FREE_ENTRY_TO_THE_PARK,			STR_VOUCHERS_FOR_FREE_ENTRY_TO,			STR_MARKETING_FINISHED_FREE_ENTRY }, 		// ADVERTISING_CAMPAIGN_PARK_ENTRY_FREE,
+	{ STR_MARKETING_VOUCHERS_FOR_FREE_ENTRY_TO_THE_PARK,			STR_VOUCHERS_FOR_FREE_ENTRY_TO,			STR_MARKETING_FINISHED_FREE_ENTRY },		// ADVERTISING_CAMPAIGN_PARK_ENTRY_FREE,
 	{ STR_MARKETING_VOUCHERS_FOR_FREE_RIDES_ON_A_PARTICULAR_RIDE,	STR_VOUCHERS_FOR_FREE_RIDE_ON,			STR_MARKETING_FINISHED_FREE_RIDES },		// ADVERTISING_CAMPAIGN_RIDE_FREE,
 	{ STR_MARKETING_VOUCHERS_FOR_HALF_PRICE_ENTRY_TO_THE_PARK,		STR_VOUCHERS_FOR_HALF_PRICE_ENTRY_TO,	STR_MARKETING_FINISHED_HALF_PRICE_ENTRY },	// ADVERTISING_CAMPAIGN_PARK_ENTRY_HALF_PRICE,
-	{ STR_MARKETING_VOUCHERS_FOR_FREE_FOOD_OR_DRINK,				STR_VOUCHERS_FOR_FREE,					STR_MARKETING_FINISHED_FREE_RIDE },				// ADVERTISING_CAMPAIGN_FOOD_OR_DRINK_FREE,
-	{ STR_MARKETING_ADVERTISING_CAMPAIGN_FOR_THE_PARK,				STR_ADVERTISING_CAMPAIGN_FOR_1,			STR_MARKETING_FINISHED_PARK_ADS },		// ADVERTISING_CAMPAIGN_PARK,
-	{ STR_MARKETING_ADVERTISING_CAMPAIGN_FOR_A_PARTICULAR_RIDE,		STR_ADVERTISING_CAMPAIGN_FOR_2,			STR_MARKETING_FINISHED_RIDE_ADS },		// ADVERTISING_CAMPAIGN_RIDE,
+	{ STR_MARKETING_VOUCHERS_FOR_FREE_FOOD_OR_DRINK,				STR_VOUCHERS_FOR_FREE,					STR_MARKETING_FINISHED_FREE_RIDE },			// ADVERTISING_CAMPAIGN_FOOD_OR_DRINK_FREE,
+	{ STR_MARKETING_ADVERTISING_CAMPAIGN_FOR_THE_PARK,				STR_ADVERTISING_CAMPAIGN_FOR_1,			STR_MARKETING_FINISHED_PARK_ADS },			// ADVERTISING_CAMPAIGN_PARK,
+	{ STR_MARKETING_ADVERTISING_CAMPAIGN_FOR_A_PARTICULAR_RIDE,		STR_ADVERTISING_CAMPAIGN_FOR_2,			STR_MARKETING_FINISHED_RIDE_ADS },			// ADVERTISING_CAMPAIGN_RIDE,
 };
 
 const rct_string_id RideInspectionIntervalNames[] = {
@@ -411,7 +411,7 @@ static void format_integer(char **dest, size_t *size, sint64 value)
 		nend = (*dest) - 1;
 		reverse_string();
 
-		format_push_char_safe('\0'); // truncate overflowed string
+		format_push_char_safe('\0'); // Truncate overflowed string
 	} else {
 		// Reverse string
 		nend = (*dest) - 1;
@@ -494,7 +494,7 @@ static void format_comma_separated_integer(char **dest, size_t *size, sint64 val
 		nend = (*dest) - 1;
 		reverse_string();
 
-		format_push_char_safe('\0'); // truncate overflowed string
+		format_push_char_safe('\0'); // Truncate overflowed string
 	} else {
 		// Reverse string
 		nend = *dest - 1;
@@ -587,7 +587,7 @@ static void format_comma_separated_fixed_1dp(char **dest, size_t *size, sint64 v
 		nend = (*dest) - 1;
 		reverse_string();
 
-		format_push_char_safe('\0'); // truncate overflowed string
+		format_push_char_safe('\0'); // Truncate overflowed string
 	} else {
 		// Reverse string
 		nend = *dest - 1;
@@ -686,7 +686,7 @@ static void format_comma_separated_fixed_2dp(char **dest, size_t *size, sint64 v
 		nend = (*dest) - 1;
 		reverse_string();
 
-		format_push_char_safe('\0'); // truncate overflowed string
+		format_push_char_safe('\0'); // Truncate overflowed string
 	} else {
 		// Reverse string
 		nend = *dest - 1;
@@ -708,7 +708,7 @@ static void format_currency(char **dest, size_t *size, sint64 value)
 		value = -value;
 	}
 
-	//Round the value away from zero
+	// Round the value away from zero
 	value = (value + 99) / 100;
 
 	// Currency symbol
@@ -1217,7 +1217,7 @@ money32 string_to_money(char * string_to_monetise)
 	const char* decimal_char = language_get_string(STR_LOCALE_DECIMAL_POINT);
 	char * text_ptr = string_to_monetise;
 	int i, j, sign;
-	//Remove everything except numbers decimal, and minus sign(s)
+	// Remove everything except numbers decimal, and minus sign(s)
 	for (i = 0; text_ptr[i] != '\0'; ++i) {
 		while (!(
 			(text_ptr[i] >= '0' && text_ptr[i] <= '9') ||
@@ -1225,7 +1225,7 @@ money32 string_to_money(char * string_to_monetise)
 			(text_ptr[i] == '-') ||
 			(text_ptr[i] == '\0')
 		)) {
-			//move everything over to the left by one
+			// Move everything over to the left by one
 			for (j = i; text_ptr[j] != '\0'; ++j) {
 				text_ptr[j] = text_ptr[j + 1];
 			}
@@ -1233,7 +1233,7 @@ money32 string_to_money(char * string_to_monetise)
 		}
 	}
 
-	//if first character of shortened string is a minus, consider number negative
+	// If first character of shortened string is a minus, consider number negative
 	if (text_ptr[0] == '-') {
 		sign = -1;
 	}
@@ -1241,7 +1241,7 @@ money32 string_to_money(char * string_to_monetise)
 		sign = 1;
 	}
 
-	//now minus signs can be removed from string
+	// Now minus signs can be removed from string
 	for (i = 0; text_ptr[i] != '\0'; ++i) {
 		if (text_ptr[i] == '-') {
 			for (j = i; text_ptr[j] != '\0'; ++j) {
@@ -1251,8 +1251,8 @@ money32 string_to_money(char * string_to_monetise)
 		}
 	}
 
-	//Due to the nature of strstr and strtok, decimals at the very beginning will be ignored, causing
-	//".1" to be interpreted as "1". To prevent this, prefix with "0" if decimal is at the beginning.
+	// Due to the nature of strstr and strtok, decimals at the very beginning will be ignored, causing
+	// ".1" to be interpreted as "1". To prevent this, prefix with "0" if decimal is at the beginning.
 	char * buffer = (char *)malloc(strlen(string_to_monetise) + 4);
 	if (string_to_monetise[0] == decimal_char[0]) {
 		strcpy(buffer, "0");
@@ -1264,7 +1264,7 @@ money32 string_to_money(char * string_to_monetise)
 
 	int number = 0, decimal = 0;
 	if (strstr(buffer, decimal_char) == NULL) {
-		//if decimal char does not exist, no tokenising is needed.
+		// If decimal char does not exist, no tokenising is needed.
 		number = atoi(buffer);
 	}
 	else {
@@ -1274,16 +1274,16 @@ money32 string_to_money(char * string_to_monetise)
 		if (numberText != NULL) number = atoi(numberText);
 		if (decimalText != NULL) decimal = atoi(decimalText);
 
-		//The second parameter in MONEY must be two digits in length, while the game only ever uses
-		//the first of the two digits.
-		//Convert invalid numbers, such as ".6", ".234", ".05", to ".60", ".20", ".00" (respectively)
+		// The second parameter in MONEY must be two digits in length, while the game only ever uses
+		// the first of the two digits.
+		// Convert invalid numbers, such as ".6", ".234", ".05", to ".60", ".20", ".00" (respectively)
 		while (decimal > 10) decimal /= 10;
 		if (decimal < 10) decimal *= 10;
 	}
 	free(buffer);
 
 	money32 result = MONEY(number, decimal);
-	//check if MONEY resulted in overflow
+	// Check if MONEY resulted in overflow
 	if ((number > 0 && result < 0) || result / 10 < number) {
 		result = INT_MAX;
 	}
@@ -1299,14 +1299,14 @@ void money_to_string(money32 amount, char * buffer_to_put_value_to, size_t buffe
 	}
 	int sign = amount >= 0 ? 1 : -1;
 	int a = abs(amount);
-	if (a / 10 > 0 && a % 10 > 0) { // if whole and decimal exist
+	if (a / 10 > 0 && a % 10 > 0) { // If whole and decimal exist
 		const char* decimal_char = language_get_string(STR_LOCALE_DECIMAL_POINT);
 		snprintf(buffer_to_put_value_to, buffer_len, "%d%s%d0", (a / 10) * sign, decimal_char, a % 10);
 	}
-	else if (a / 10 > 0 && a % 10 == 0) { // if whole exists, but not decimal
+	else if (a / 10 > 0 && a % 10 == 0) { // If whole exists, but not decimal
 		snprintf(buffer_to_put_value_to, buffer_len, "%d", (a / 10) * sign);
 	}
-	else if (a / 10 == 0 && a % 10 > 0) { //if decimal exists, but not whole
+	else if (a / 10 == 0 && a % 10 > 0) { // If decimal exists, but not whole
 		const char* decimal_char = language_get_string(STR_LOCALE_DECIMAL_POINT);
 		snprintf(buffer_to_put_value_to, buffer_len, "%s0%s%d0", sign < 0 ? "-" : "", decimal_char, a % 10);
 	}
@@ -1359,7 +1359,7 @@ sint32 win1252_to_utf8(utf8string dst, const char *src, size_t srcLength, size_t
 				log_error("Unsupported conversion from %s to %s, errno = %d", from_charset, to_charset, error);
 				break;
 			default:
-				log_error("Unknown error while initializing iconv, errno = %d", error);
+				log_error("Unknown error while initialising iconv, errno = %d", error);
 		}
 		return 0;
 	}
