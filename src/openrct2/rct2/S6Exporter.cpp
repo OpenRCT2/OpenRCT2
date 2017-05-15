@@ -24,7 +24,6 @@
 #include "../object/ObjectRepository.h"
 #include "../rct12/SawyerChunkWriter.h"
 #include "S6Exporter.h"
-#include "../ride/track_data.h"
 #include <functional>
 
 extern "C"
