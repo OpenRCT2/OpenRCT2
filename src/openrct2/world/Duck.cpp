@@ -305,7 +305,7 @@ uint32 rct_duck::GetFrameImage(sint32 direction) const
     uint32 imageId = 0;
     if (state < DUCK_MAX_STATES)
     {
-        // TODO check frame is in range
+        // TODO: Check frame is in range
         uint8 imageOffset = DuckAnimations[state][frame];
         imageId = SPR_DUCK + (imageOffset * 4) + (direction / 8);
     }

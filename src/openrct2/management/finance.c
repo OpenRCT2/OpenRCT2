@@ -180,7 +180,7 @@ void finance_reset_history()
 */
 void finance_init() {
 
-	// It only initializes the first month
+	// It only initialises the first month
 	for (uint32 i = 0; i < RCT_EXPENDITURE_TYPE_COUNT; i++) {
 		gExpenditureTable[i] = 0;
 	}

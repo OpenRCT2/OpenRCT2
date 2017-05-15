@@ -141,7 +141,7 @@ static sint32 _window_guest_list_highlighted_index; // 0x00F1EE10
 static sint32 _window_guest_list_selected_tab;      // 0x00F1EE12
 static sint32 _window_guest_list_selected_filter;   // 0x00F1EE06
 static sint32 _window_guest_list_selected_page;     // 0x00F1EE07
-static uint32 _window_guest_list_selected_view;  // 0x00F1EE13
+static uint32 _window_guest_list_selected_view;		// 0x00F1EE13
 static sint32 _window_guest_list_num_pages;         // 0x00F1EE08
 static sint32 _window_guest_list_num_groups;        // 0x00F1AF22
 static bool _window_guest_list_tracking_only;

@@ -163,7 +163,7 @@ void update_palette_effects()
 	rct_water_type* water_type = (rct_water_type*)object_entry_groups[OBJECT_TYPE_WATER].chunks[0];
 
 	if (gClimateLightningFlash == 1) {
-		// change palette to lighter colour during lightning
+		// Change palette to lighter colour during lightning
 		sint32 palette = SPR_GAME_PALETTE_DEFAULT;
 
 		if ((intptr_t)water_type != -1) {
@@ -182,7 +182,7 @@ void update_palette_effects()
 		gClimateLightningFlash++;
 	} else {
 		if (gClimateLightningFlash == 2) {
-			// change palette back to normal after lightning
+			// Change palette back to normal after lightning
 			sint32 palette = SPR_GAME_PALETTE_DEFAULT;
 
 			if ((intptr_t)water_type != -1) {
@@ -200,7 +200,7 @@ void update_palette_effects()
 			}
 		}
 
-		// animate the water/lava/chain movement palette
+		// Animate the water/lava/chain movement palette
 		uint32 shade = 0;
 		if (gConfigGeneral.render_weather_gloom) {
 			uint8 gloom = gClimateCurrentWeatherGloom;
@@ -294,7 +294,7 @@ void game_update()
 
 	if (network_get_mode() == NETWORK_MODE_CLIENT && network_get_status() == NETWORK_STATUS_CONNECTED && network_get_authstatus() == NETWORK_AUTH_OK) {
 		if (network_get_server_tick() - gCurrentTicks >= 10) {
-			// make sure client doesn't fall behind the server too much
+			// Make sure client doesn't fall behind the server too much
 			numUpdates += 10;
 		}
 	}
@@ -372,7 +372,7 @@ void game_logic_update()
 	network_update();
 	if (network_get_mode() == NETWORK_MODE_CLIENT && network_get_status() == NETWORK_STATUS_CONNECTED && network_get_authstatus() == NETWORK_AUTH_OK) {
 		if (gCurrentTicks >= network_get_server_tick()) {
-			// don't run past the server
+			// Don't run past the server
 			return;
 		}
 	}
@@ -426,7 +426,7 @@ void game_logic_update()
 		window_error_open(title_text, body_text);
 	}
 
-	// start autosave timer after update
+	// Start autosave timer after update
 	if (gLastAutoSaveUpdate == AUTOSAVE_PAUSE)
 		gLastAutoSaveUpdate = platform_get_ticks();
 }
@@ -584,7 +584,7 @@ sint32 game_do_command_p(sint32 command, sint32 *eax, sint32 *ebx, sint32 *ecx, 
 				network_add_player_money_spent(network_get_current_player_id(), cost);
 			}
 
-			// start autosave timer after game command
+			// Start autosave timer after game command
 			if (gLastAutoSaveUpdate == AUTOSAVE_PAUSE)
 				gLastAutoSaveUpdate = platform_get_ticks();
 
@@ -1017,7 +1017,7 @@ static void limit_autosave_count(const size_t numberOfFilesToKeep, bool processL
 
 	qsort (autosaveFiles, autosavesCount, sizeof (char*), compare_autosave_file_paths);
 
-	// calculate how many saves we need to delete.
+	// Calculate how many saves we need to delete.
 	numAutosavesToDelete = autosavesCount - numberOfFilesToKeep;
 
 	i=0;
@@ -1047,7 +1047,7 @@ void game_autosave()
 		saveFlags |= 2;
 	}
 
-	// retrieve current time
+	// Retrieve current time
 	rct2_date currentDate;
 	platform_get_date_local(&currentDate);
 	rct2_time currentTime;

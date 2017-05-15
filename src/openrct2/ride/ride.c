@@ -2659,7 +2659,7 @@ rct_peep *find_closest_mechanic(sint32 x, sint32 y, sint32 forInspection)
 		if (peep->x == MAP_LOCATION_NULL)
 			continue;
 
-		// manhattan distance
+		// Manhattan distance
 		distance = abs(peep->x - x) + abs(peep->y - y);
 		if (distance < closestDistance) {
 			closestDistance = distance;
@@ -2693,7 +2693,7 @@ rct_peep *ride_get_assigned_mechanic(rct_ride *ride)
 
 #define MAKE_TUNEID_LIST(...) (uint8[]){(countof(((uint8[]){__VA_ARGS__}))), __VA_ARGS__}
 
-//0x009AEF28
+// 0x009AEF28
 uint8 *ride_music_style_tuneids[] = {
 	MAKE_TUNEID_LIST(13), // MUSIC_STYLE_DODGEMS_BEAT
 	MAKE_TUNEID_LIST(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12), // MUSIC_STYLE_FAIRGROUND_ORGAN

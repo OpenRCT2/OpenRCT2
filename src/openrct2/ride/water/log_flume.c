@@ -206,7 +206,7 @@ static void paint_log_flume_track_station(uint8 rideIndex, uint8 trackSequence, 
 	}
 
 	track_paint_util_draw_station_3(rideIndex, trackSequence, direction, height + 2, height, mapElement);
-	// covers shouldn't be offset by +2
+	// Covers shouldn't be offset by +2
 
 	paint_util_push_tunnel_rotated(direction, height, TUNNEL_6);
 

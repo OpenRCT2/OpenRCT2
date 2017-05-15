@@ -113,16 +113,16 @@ void chat_draw(rct_drawpixelinfo * dpi)
 
 		if (_chatTop < 50) {
 			_chatTop = 50;
-		} else if (_chatHeight < 150) { //Min height
+		} else if (_chatHeight < 150) { // Min height
 			_chatTop = _chatBottom - 150;
 			_chatHeight = 150;
 		}
 
-		gfx_set_dirty_blocks(_chatLeft, _chatTop - 5, _chatRight, _chatBottom + 5); //Background area + Textbox
-		gfx_filter_rect(dpi, _chatLeft, _chatTop - 5, _chatRight, _chatBottom + 5, PALETTE_51); //Opaque gray background
+		gfx_set_dirty_blocks(_chatLeft, _chatTop - 5, _chatRight, _chatBottom + 5); // Background area + Textbox
+		gfx_filter_rect(dpi, _chatLeft, _chatTop - 5, _chatRight, _chatBottom + 5, PALETTE_51); // Opaque gray background
 		gfx_fill_rect_inset(dpi, _chatLeft, _chatTop - 5, _chatRight, _chatBottom + 5, chatBackgroundColor, INSET_RECT_FLAG_FILL_NONE);
 		gfx_fill_rect_inset(dpi, _chatLeft + 1, _chatTop - 4, _chatRight - 1, _chatBottom - inputLineHeight - 6, chatBackgroundColor, INSET_RECT_FLAG_BORDER_INSET);
-		gfx_fill_rect_inset(dpi, _chatLeft + 1, _chatBottom - inputLineHeight - 5, _chatRight - 1, _chatBottom + 4, chatBackgroundColor, INSET_RECT_FLAG_BORDER_INSET); //Textbox
+		gfx_fill_rect_inset(dpi, _chatLeft + 1, _chatBottom - inputLineHeight - 5, _chatRight - 1, _chatBottom + 4, chatBackgroundColor, INSET_RECT_FLAG_BORDER_INSET); // Textbox
 	}
 
 	sint32 x = _chatLeft + 5;
@@ -158,7 +158,7 @@ void chat_draw(rct_drawpixelinfo * dpi)
 		inputLineHeight = gfx_draw_string_left_wrapped(dpi, (void*)&lineCh, x, y + 3, _chatWidth - 10, STR_STRING, TEXT_COLOUR_255);
 		gfx_set_dirty_blocks(x, y, x + _chatWidth, y + inputLineHeight + 15);
 
-		//TODO: Show caret if the input text have multiple lines
+		// TODO: Show caret if the input text has multiple lines
 		if (_chatCaretTicks < 15 && gfx_get_string_width(lineBuffer) < (_chatWidth - 10)) {
 			memcpy(lineBuffer, _chatCurrentLine, gTextInput.selection_offset);
 			lineBuffer[gTextInput.selection_offset] = 0;
@@ -232,7 +232,7 @@ sint32 chat_history_draw_string(rct_drawpixelinfo *dpi, void *args, sint32 x, si
 
 	sint32 expectedY = y - (numLines * lineHeight);
 	if (expectedY < 50) {
-		return (numLines * lineHeight); //Skip drawing, return total height.
+		return (numLines * lineHeight); // Skip drawing, return total height.
 	}
 
 	lineY = y;

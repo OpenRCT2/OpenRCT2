@@ -176,7 +176,7 @@ enum WINDOW_CHEATS_WIDGET_IDX {
 #define MAX_BTN_LEFT	((sint16)(XPL(1.5)))
 #define MAX_BTN_RIGHT	((sint16)(WPL(1)))
 
-#define TXTO 3	//text horizontal offset from button left (for button text)
+#define TXTO 3	// Text horizontal offset from button left (for button text)
 #pragma endregion
 
 #define MAIN_CHEATS_WIDGETS \
@@ -261,7 +261,7 @@ static rct_widget window_cheats_misc_widgets[] = {
 	{ WWT_CLOSEBOX,			1,		XPL(0),					WPL(0),					YPL(13),		HPL(13),		STR_CHEAT_WATER_PLANTS,				STR_NONE },								// Water plants
 	{ WWT_CLOSEBOX,			1,		XPL(1),					WPL(1),					YPL(13),		HPL(13),		STR_CHEAT_FIX_VANDALISM,			STR_NONE },								// Fix vandalism
 	{ WWT_CLOSEBOX,			1,		XPL(0),					WPL(0),					YPL(14),		HPL(14),		STR_CHEAT_REMOVE_LITTER,			STR_NONE },								// Remove litter
-	{ WWT_CHECKBOX,			1,		XPL(0),					WPL(0),					YPL(15),		HPL(15),		STR_CHEAT_DISABLE_PLANT_AGING,		STR_CHEAT_DISABLE_PLANT_AGING_TIP },	// Disable plant aging
+	{ WWT_CHECKBOX,			1,		XPL(0),					WPL(0),					YPL(15),		HPL(15),		STR_CHEAT_DISABLE_PLANT_AGING,		STR_CHEAT_DISABLE_PLANT_AGING_TIP },	// Disable plant ageing
 	{ WWT_CLOSEBOX,			1,		MAX_BTN_LEFT,			MAX_BTN_RIGHT,			YPL(16),		HPL(16),		STR_FAST,							STR_NONE },								// Fast staff
 	{ WWT_CLOSEBOX,			1,		MIN_BTN_LEFT,			MIN_BTN_RIGHT,			YPL(16),		HPL(16),		STR_NORMAL,							STR_NONE },								// Normal staff
 	{ WIDGETS_END },
@@ -736,7 +736,7 @@ static void window_cheats_misc_mouseup(rct_window *w, rct_widgetindex widgetInde
 	case WIDX_SANDBOX_MODE:
 		game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_SANDBOXMODE, !gCheatsSandboxMode, GAME_COMMAND_CHEAT, 0, 0);
 		// To prevent tools from staying active after disabling cheat
-		//tool_cancel();
+		// tool_cancel();
 		break;
 	case WIDX_RESET_DATE:
 		game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_RESETDATE, 0, GAME_COMMAND_CHEAT, 0, 0);

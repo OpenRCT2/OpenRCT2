@@ -47,35 +47,35 @@ static void FASTCALL DrawRLESprite2(const uint8* RESTRICT source_bits_pointer,
     next_dest_pointer += line_width & source_y_start_mask;
     height -= zoom_amount & source_y_start_mask;
 
-    //For every line in the image
+    // For every line in the image
     for (sint32 i = 0; i < height; i += zoom_amount) {
         sint32 y = source_y_start + i;
         uint8 i2 = i >> zoom_level;
 
-        //The first part of the source pointer is a list of offsets to different lines
-        //This will move the pointer to the correct source line.
+        // The first part of the source pointer is a list of offsets to different lines
+        // This will move the pointer to the correct source line.
         const uint8 *next_source_pointer = source_bits_pointer + ((uint16*)source_bits_pointer)[y];
         uint8* loop_dest_pointer = next_dest_pointer + line_width * i2;
 
         uint8 last_data_line = 0;
 
-        //For every data section in the line
+        // For every data section in the line
         while (!last_data_line) {
             const uint8* source_pointer = next_source_pointer;
             uint8* dest_pointer = loop_dest_pointer;
 
             sint32 no_pixels = *source_pointer++;
-            //gap_size is the number of non drawn pixels you require to
-            //jump over on your destination
+            // gap_size is the number of non drawn pixels you require to
+            // jump over on your destination
             uint8 gap_size = *source_pointer++;
-            //The last bit in no_pixels tells you if you have reached the end of a line
+            // The last bit in no_pixels tells you if you have reached the end of a line
             last_data_line = no_pixels & 0x80;
-            //Clear the last data line bit so we have just the no_pixels
+            // Clear the last data line bit so we have just the no_pixels
             no_pixels &= 0x7f;
-            //Have our next source pointer point to the next data section
+            // Have our next source pointer point to the next data section
             next_source_pointer = source_pointer + no_pixels;
 
-            //Calculates the start point of the image
+            // Calculates the start point of the image
             sint32 x_start = gap_size - source_x_start;
             const sint32 x_diff = x_start & ~zoom_mask;
             const sint32 x_mask = ~less_or_equal_zero_mask(x_diff);
@@ -89,23 +89,23 @@ static void FASTCALL DrawRLESprite2(const uint8* RESTRICT source_bits_pointer,
 
             dest_pointer += (x_start >> zoom_level) & ~sign;
 
-            //If the start is negative we require to remove part of the image.
-            //This is done by moving the image pointer to the correct position.
+            // If the start is negative we require to remove part of the image.
+            // This is done by moving the image pointer to the correct position.
             source_pointer -= x_start & sign;
-            //The no_pixels will be reduced in this operation
+            // The no_pixels will be reduced in this operation
             no_pixels += x_start & sign;
-            //Reset the start position to zero as we have taken into account all moves
+            // Reset the start position to zero as we have taken into account all moves
             x_start &= ~sign;
 
             sint32 x_end = x_start + no_pixels;
-            //If the end position is further out than the whole image
-            //end position then we need to shorten the line again
+            // If the end position is further out than the whole image
+            // end position then we need to shorten the line again
             const sint32 pixels_till_end = x_end - width;
-            //Shorten the line
+            // Shorten the line
             no_pixels -= pixels_till_end & ~(less_or_equal_zero_mask(pixels_till_end));
 
-            //Finally after all those checks, copy the image onto the drawing surface
-            //If the image type is not a basic one we require to mix the pixels
+            // Finally after all those checks, copy the image onto the drawing surface
+            // If the image type is not a basic one we require to mix the pixels
             if (image_type & IMAGE_TYPE_REMAP) {//In the .exe these are all unraveled loops
                 for (; no_pixels > 0; no_pixels -= zoom_amount, source_pointer += zoom_amount, dest_pointer++) {
                     uint8 al = *source_pointer;
@@ -117,8 +117,8 @@ static void FASTCALL DrawRLESprite2(const uint8* RESTRICT source_bits_pointer,
                     *dest_pointer = al;
                 }
             } else if (image_type & IMAGE_TYPE_TRANSPARENT) {//In the .exe these are all unraveled loops
-                //Doesn't use source pointer ??? mix with background only?
-                //Not Tested
+                // Doesn't use source pointer ??? mix with background only?
+                // Not Tested
 
                 for (; no_pixels > 0; no_pixels -= zoom_amount, dest_pointer++) {
                     uint8 pixel = *dest_pointer;

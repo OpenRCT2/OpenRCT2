@@ -857,8 +857,8 @@ static sint32 cc_set(const utf8 **argv, sint32 argc)
 			bool run_get_money = true;
 			if (gCashEncrypted != ENCRYPT_MONEY(money)) {
 				if (game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_SETMONEY, money, GAME_COMMAND_CHEAT, 0, 0) != MONEY32_UNDEFINED) {
-					//When in networked client mode, console_execute_silent("get money")
-					//does not print value accurately. Instead, print the argument.
+					// When in networked client mode, console_execute_silent("get money")
+					// does not print value accurately. Instead, print the argument.
 					if (network_get_mode() == NETWORK_MODE_CLIENT) {
 						run_get_money = false;
 						console_printf("money %d.%d0", money / 10, money % 10);
@@ -1025,8 +1025,8 @@ static sint32 cc_set(const utf8 **argv, sint32 argc)
 		else if (strcmp(argv[0], "cheat_sandbox_mode") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
 			if (gCheatsSandboxMode != (int_val[0] != 0)) {
 				if (game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_SANDBOXMODE, (int_val[0] != 0), GAME_COMMAND_CHEAT, 0, 0) != MONEY32_UNDEFINED) {
-					//Change it locally so it shows the accurate value in the
-					//"console_execute_silent("get cheat_sandbox_mode")" line when in network client mode
+					// Change it locally so it shows the accurate value in the
+					// "console_execute_silent("get cheat_sandbox_mode")" line when in networked client mode
 					gCheatsSandboxMode = (int_val[0] != 0);
 				}
 				else {
@@ -1038,8 +1038,8 @@ static sint32 cc_set(const utf8 **argv, sint32 argc)
 		else if (strcmp(argv[0], "cheat_disable_clearance_checks") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
 			if (gCheatsDisableClearanceChecks != (int_val[0] != 0)) {
 				if (game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_DISABLECLEARANCECHECKS, (int_val[0] != 0), GAME_COMMAND_CHEAT, 0, 0) != MONEY32_UNDEFINED) {
-					//Change it locally so it shows the accurate value in the
-					//"console_execute_silent("get cheat_disable_clearance_checks")" line when in network client mode
+					// Change it locally so it shows the accurate value in the
+					// "console_execute_silent("get cheat_disable_clearance_checks")" line when in networked client mode
 					gCheatsDisableClearanceChecks = (int_val[0] != 0);
 				}
 				else {
@@ -1051,8 +1051,8 @@ static sint32 cc_set(const utf8 **argv, sint32 argc)
 		else if (strcmp(argv[0], "cheat_disable_support_limits") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
 			if (gCheatsDisableSupportLimits != (int_val[0] != 0)) {
 				if (game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_DISABLESUPPORTLIMITS, (int_val[0] != 0), GAME_COMMAND_CHEAT, 0, 0) != MONEY32_UNDEFINED) {
-					//Change it locally so it shows the accurate value in the
-					//"console_execute_silent("get cheat_disable_support_limits")" line when in network client mode
+					// Change it locally so it shows the accurate value in the
+					// "console_execute_silent("get cheat_disable_support_limits")" line when in networked client mode
 					gCheatsDisableSupportLimits = (int_val[0] != 0);
 				}
 				else {
@@ -1080,7 +1080,7 @@ static sint32 cc_twitch(const utf8 **argv, sint32 argc)
 #ifdef DISABLE_TWITCH
 	console_writeline_error("OpenRCT2 build not compiled with Twitch integration.");
 #else
-	// TODO add some twitch commands
+	// TODO: Add some twitch commands
 #endif
 	return 0;
 }

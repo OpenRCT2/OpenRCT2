@@ -63,15 +63,15 @@ static const rct_string_id BannerColouredTextFormats[] = {
 };
 
 rct_widget window_banner_widgets[] = {
-	{ WWT_FRAME,			0,	0,			WW - 1,	0,		WH - 1,		0xFFFFFFFF,					STR_NONE},								// panel / background
+	{ WWT_FRAME,			0,	0,			WW - 1,	0,		WH - 1,		0xFFFFFFFF,					STR_NONE},							// panel / background
 	{ WWT_CAPTION,			0,	1,			WW - 2,	1,		14,			STR_BANNER_WINDOW_TITLE,	STR_WINDOW_TITLE_TIP},				// title bar
 	{ WWT_CLOSEBOX,			0,	WW - 13,	WW - 3,	2,		13,			STR_CLOSE_X,				STR_CLOSE_WINDOW_TIP},				// close x button
-	{ WWT_VIEWPORT,			1,	3,			WW - 26,17,		WH - 20,	0x0FFFFFFFE,				STR_NONE},								// tab content panel
+	{ WWT_VIEWPORT,			1,	3,			WW - 26,17,		WH - 20,	0x0FFFFFFFE,				STR_NONE},							// tab content panel
 	{ WWT_FLATBTN,			1,	WW - 25,	WW - 2,	19,		42,			SPR_RENAME,					STR_CHANGE_BANNER_TEXT_TIP},		// change banner button
 	{ WWT_FLATBTN,			1,	WW - 25,	WW - 2,	43,		66,			SPR_NO_ENTRY,				STR_SET_AS_NO_ENTRY_BANNER_TIP},	// no entry button
 	{ WWT_FLATBTN,			1,	WW - 25,	WW - 2,	67,		90,			SPR_DEMOLISH,				STR_DEMOLISH_BANNER_TIP},			// demolish button
 	{ WWT_COLOURBTN,		1,	5,			16,		WH - 16,WH - 5,		0xFFFFFFFF,					STR_SELECT_MAIN_SIGN_COLOUR_TIP},	// high money
-	{ WWT_DROPDOWN,			1,	43,			81,		WH - 16,WH - 5,		0xFFFFFFFF,					STR_NONE},								// high money
+	{ WWT_DROPDOWN,			1,	43,			81,		WH - 16,WH - 5,		0xFFFFFFFF,					STR_NONE},							// high money
 	{ WWT_DROPDOWN_BUTTON,	1,	70,			80,		WH - 15,WH - 6,		STR_DROPDOWN_GLYPH,			STR_SELECT_TEXT_COLOUR_TIP},		// high money
 	{ WIDGETS_END },
 };
@@ -239,7 +239,7 @@ static void window_banner_mousedown(rct_widgetindex widgetIndex, rct_window*w, r
 			gDropdownItemsArgs[i] = BannerColouredTextFormats[i + 1];
 		}
 
-		//Switch to the dropdown box widget.
+		// Switch to the dropdown box widget.
 		widget--;
 
 		window_dropdown_show_text_custom_width(
@@ -306,7 +306,7 @@ static void window_banner_invalidate(rct_window *w)
 	rct_widget* colour_btn = &window_banner_widgets[WIDX_MAIN_COLOUR];
 	colour_btn->type = WWT_EMPTY;
 
-	//scenery item not sure why we use this instead of banner?
+	// Scenery item not sure why we use this instead of banner?
 	rct_scenery_entry* sceneryEntry = get_banner_entry(banner->type);
 
 	if (sceneryEntry->banner.flags & 1) colour_btn->type = WWT_COLOURBTN;

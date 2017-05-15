@@ -49,7 +49,7 @@ static rct_window_event_list window_editor_main_events = {
 	NULL,
 	NULL,
 	NULL,
-	window_editor_main_paint,// 0x0066FC97, //window_editor_main_paint,
+	window_editor_main_paint,// 0x0066FC97, // window_editor_main_paint,
 	NULL,
 };
 

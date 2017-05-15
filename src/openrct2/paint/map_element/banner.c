@@ -62,7 +62,7 @@ void banner_paint(uint8 direction, sint32 height, rct_map_element* map_element)
 	uint32 base_id = (direction << 1) + banner_scenery->image;
 	uint32 image_id = base_id;
 
-	if (map_element->flags & MAP_ELEMENT_FLAG_GHOST)//if being placed
+	if (map_element->flags & MAP_ELEMENT_FLAG_GHOST) // if being placed
 	{
 		gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
 		image_id |= construction_markers[gConfigGeneral.construction_marker_colour];

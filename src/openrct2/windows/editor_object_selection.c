@@ -913,7 +913,7 @@ void window_editor_object_selection_mousedown(rct_widgetindex widgetIndex, rct_w
 		gDropdownItemsArgs[DDIX_FILTER_WW] = STR_OBJECT_FILTER_WW;
 		gDropdownItemsArgs[DDIX_FILTER_TT] = STR_OBJECT_FILTER_TT;
 		gDropdownItemsArgs[DDIX_FILTER_CUSTOM] = STR_OBJECT_FILTER_CUSTOM;
-		//Track manager cannot select multiple, so only show selection filters if not in track manager
+		// Track manager cannot select multiple, so only show selection filters if not in track manager
 		if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)) {
 			num_items = 7;
 			gDropdownItemsFormat[DDIX_FILTER_SEPERATOR] = 0;
@@ -1014,7 +1014,7 @@ static void window_editor_object_selection_scroll_mousedown(rct_window *w, sint3
 		window_close_all();
 		//window_close(w);
 
-		//This function calls window_track_list_open
+		// This function calls window_track_list_open
 		window_editor_object_selection_manage_tracks();
 		return;
 	}
