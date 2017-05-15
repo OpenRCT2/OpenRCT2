@@ -2487,7 +2487,7 @@ static rct_string_id window_ride_get_status_vehicle(rct_window *w, void *argumen
 			trackType == TRACK_ELEM_60_DEG_UP_TO_FLAT ||
 			trackType == TRACK_ELEM_DIAG_25_DEG_UP_TO_FLAT ||
 			trackType == TRACK_ELEM_DIAG_60_DEG_UP_TO_FLAT) {
-			if (track_type_is_invented(ride->type, TRACK_BLOCK_BRAKES) && vehicle->velocity == 0) {
+			if (track_piece_is_available_for_ride_type(ride->type, TRACK_BLOCK_BRAKES) && vehicle->velocity == 0) {
 				*(rct_string_id*)(uintptr_t)arguments = STR_STOPPED_BY_BLOCK_BRAKES;
 				return STR_BLACK_STRING;
 			}
@@ -3407,7 +3407,8 @@ static void window_ride_operating_invalidate(rct_window *w)
 		);
 
 	// Lift hill speed
-	if ((rideEntry->enabledTrackPiecesA & (1UL << TRACK_LIFT_HILL)) && track_type_is_invented(ride->type, TRACK_LIFT_HILL)) {
+	if ((rideEntry->enabledTrackPiecesA & (1UL << TRACK_LIFT_HILL)) &&
+            track_piece_is_available_for_ride_type(ride->type, TRACK_LIFT_HILL)) {
 		window_ride_operating_widgets[WIDX_LIFT_HILL_SPEED_LABEL].type = WWT_24;
 		window_ride_operating_widgets[WIDX_LIFT_HILL_SPEED].type = WWT_SPINNER;
 		window_ride_operating_widgets[WIDX_LIFT_HILL_SPEED_INCREASE].type = WWT_DROPDOWN_BUTTON;

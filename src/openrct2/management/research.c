@@ -610,7 +610,7 @@ bool ride_entry_is_invented(sint32 rideEntryIndex)
 	return invented;
 }
 
-bool track_type_is_invented(uint8 rideType, sint32 trackType)
+bool track_piece_is_available_for_ride_type(uint8 rideType, sint32 trackType)
 {
 	return RideTypePossibleTrackConfigurations[rideType] & (1ULL << trackType);
 }
