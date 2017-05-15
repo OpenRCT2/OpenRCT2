@@ -212,8 +212,8 @@ public:
         // pad_01357400
         memcpy(gResearchedRideTypes, _s6.researched_ride_types, sizeof(_s6.researched_ride_types));
         memcpy(gResearchedRideEntries, _s6.researched_ride_entries, sizeof(_s6.researched_ride_entries));
-        memcpy(gResearchedTrackTypesA, _s6.researched_track_types_a, sizeof(_s6.researched_track_types_a));
-        memcpy(gResearchedTrackTypesB, _s6.researched_track_types_b, sizeof(_s6.researched_track_types_b));
+        // _s6.researched_track_types_a
+        // _s6.researched_track_types_b
 
         gNumGuestsInPark         = _s6.guests_in_park;
         gNumGuestsHeadingForPark = _s6.guests_heading_for_park;

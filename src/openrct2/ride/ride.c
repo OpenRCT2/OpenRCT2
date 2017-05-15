@@ -169,7 +169,7 @@ sint8 _rideConstructionArrowPulseTime;
 uint8 _currentTrackSlopeEnd;
 uint8 _currentTrackBankEnd;
 uint8 _currentTrackLiftHill;
-uint8 _currentTrackCovered;
+uint8 _currentTrackAlternative;
 uint8 _selectedTrackType;
 
 uint8 _previousTrackBankEnd;
@@ -1456,9 +1456,9 @@ static void ride_construction_reset_current_piece()
 		_currentTrackSlopeEnd = 0;
 		_currentTrackBankEnd = 0;
 		_currentTrackLiftHill = 0;
-		_currentTrackCovered = 0;
+		_currentTrackAlternative = RIDE_TYPE_NO_ALTERNATIVES;
 		if (RideData4[ride->type].flags & RIDE_TYPE_FLAG4_START_CONSTRUCTION_INVERTED) {
-			_currentTrackCovered |= 2;
+			_currentTrackAlternative |= RIDE_TYPE_ALTERNATIVE_TRACK_TYPE;
 		}
 		_previousTrackSlopeEnd = 0;
 		_previousTrackBankEnd = 0;
@@ -1503,10 +1503,10 @@ void ride_construction_set_default_next_piece()
 		}
 
 		// Set whether track is covered
-		_currentTrackCovered &= ~2;
-		if (RideData4[ride->type].flags & RIDE_TYPE_FLAG4_3) {
-			if (mapElement->properties.track.colour & 4) {
-				_currentTrackCovered |= 2;
+		_currentTrackAlternative &= ~RIDE_TYPE_ALTERNATIVE_TRACK_TYPE;
+		if (RideData4[ride->type].flags & RIDE_TYPE_FLAG4_HAS_ALTERNATIVE_TRACK_TYPE) {
+			if (mapElement->properties.track.colour & TRACK_ELEMENT_COLOUR_FLAG_INVERTED) {
+				_currentTrackAlternative |= RIDE_TYPE_ALTERNATIVE_TRACK_TYPE;
 			}
 		}
 
@@ -1528,10 +1528,10 @@ void ride_construction_set_default_next_piece()
 		_currentTrackCurve = curve;
 
 		// Set track banking
-		if (RideData4[ride->type].flags & RIDE_TYPE_FLAG4_3) {
+		if (RideData4[ride->type].flags & RIDE_TYPE_FLAG4_HAS_ALTERNATIVE_TRACK_TYPE) {
 			if (bank == TRACK_BANK_UPSIDE_DOWN) {
 				bank = TRACK_BANK_NONE;
-				_currentTrackCovered ^= 2;
+				_currentTrackAlternative ^= RIDE_TYPE_ALTERNATIVE_TRACK_TYPE;
 			}
 		}
 		_currentTrackBankEnd = bank;
@@ -1558,10 +1558,10 @@ void ride_construction_set_default_next_piece()
 		trackType = mapElement->properties.track.type;
 
 		// Set whether track is covered
-		_currentTrackCovered &= ~2;
-		if (RideData4[ride->type].flags & RIDE_TYPE_FLAG4_3) {
-			if (mapElement->properties.track.colour & 4) {
-				_currentTrackCovered |= 2;
+		_currentTrackAlternative &= ~RIDE_TYPE_ALTERNATIVE_TRACK_TYPE;
+		if (RideData4[ride->type].flags & RIDE_TYPE_FLAG4_HAS_ALTERNATIVE_TRACK_TYPE) {
+			if (mapElement->properties.track.colour & TRACK_ELEMENT_COLOUR_FLAG_INVERTED) {
+				_currentTrackAlternative |= RIDE_TYPE_ALTERNATIVE_TRACK_TYPE;
 			}
 		}
 
@@ -1583,10 +1583,10 @@ void ride_construction_set_default_next_piece()
 		_currentTrackCurve = curve;
 
 		// Set track banking
-		if (RideData4[ride->type].flags & RIDE_TYPE_FLAG4_3) {
+		if (RideData4[ride->type].flags & RIDE_TYPE_FLAG4_HAS_ALTERNATIVE_TRACK_TYPE) {
 			if (bank == TRACK_BANK_UPSIDE_DOWN) {
 				bank = TRACK_BANK_NONE;
-				_currentTrackCovered ^= 2;
+				_currentTrackAlternative ^= RIDE_TYPE_ALTERNATIVE_TRACK_TYPE;
 			}
 		}
 		_currentTrackBankEnd = bank;
@@ -1912,10 +1912,10 @@ sint32 sub_6CC3FB(sint32 rideIndex)
 	_currentTrackSlopeEnd = 0;
 	_currentTrackBankEnd = 0;
 	_currentTrackLiftHill = 0;
-	_currentTrackCovered = 0;
+	_currentTrackAlternative = RIDE_TYPE_NO_ALTERNATIVES;
 
 	if (RideData4[ride->type].flags & RIDE_TYPE_FLAG4_START_CONSTRUCTION_INVERTED)
-		_currentTrackCovered |= 2;
+		_currentTrackAlternative |= RIDE_TYPE_ALTERNATIVE_TRACK_TYPE;
 
 	_previousTrackBankEnd = 0;
 	_previousTrackSlopeEnd = 0;
@@ -4599,7 +4599,7 @@ static rct_vehicle *vehicle_create_car(
 		}
 		vehicle->update_flags = VEHICLE_UPDATE_FLAG_1;
 		if (vehicleEntry->flags_a & VEHICLE_ENTRY_FLAG_A_6) {
-			if (mapElement->properties.track.colour & 4) {
+			if (mapElement->properties.track.colour & TRACK_ELEMENT_COLOUR_FLAG_INVERTED) {
 				vehicle->update_flags |= VEHICLE_UPDATE_FLAG_11;
 			}
 		}

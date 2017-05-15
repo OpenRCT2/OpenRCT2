@@ -534,7 +534,7 @@ static bool is_track_enabled(sint32 trackFlagIndex)
 
 static sint32 ride_get_alternative_type(rct_ride *ride)
 {
-	return (_currentTrackCovered & 2) ?
+	return (_currentTrackAlternative & RIDE_TYPE_ALTERNATIVE_TRACK_TYPE) ?
 		RideData4[ride->type].alternate_type :
 		ride->type;
 }
@@ -618,10 +618,10 @@ rct_window *window_ride_construction_open()
 	_currentTrackSlopeEnd = 0;
 	_currentTrackBankEnd = 0;
 	_currentTrackLiftHill = 0;
-	_currentTrackCovered = 0;
+	_currentTrackAlternative = RIDE_TYPE_NO_ALTERNATIVES;
 
 	if (RideData4[ride->type].flags & RIDE_TYPE_FLAG4_START_CONSTRUCTION_INVERTED)
-		_currentTrackCovered |= 2;
+		_currentTrackAlternative |= RIDE_TYPE_ALTERNATIVE_TRACK_TYPE;
 
 	_previousTrackBankEnd = 0;
 	_previousTrackSlopeEnd = 0;
@@ -1525,7 +1525,7 @@ static void window_ride_construction_mousedown(rct_widgetindex widgetIndex, rct_
 		sub_6C9627();
 		_currentTrackLiftHill ^= 1;
 		if (_currentTrackLiftHill & 1) {
-			_currentTrackCovered &= ~1;
+			_currentTrackAlternative &= ~RIDE_TYPE_ALTERNATIVE_TRACK_PIECES;
 		}
 		_currentTrackPrice = MONEY32_UNDEFINED;
 		sub_6C84CE();
@@ -1589,13 +1589,13 @@ static void window_ride_construction_mousedown(rct_widgetindex widgetIndex, rct_
 		break;
 	case WIDX_U_TRACK:
 		sub_6C9627();
-		_currentTrackCovered &= ~1;
+		_currentTrackAlternative &= ~RIDE_TYPE_ALTERNATIVE_TRACK_PIECES;
 		_currentTrackPrice = MONEY32_UNDEFINED;
 		sub_6C84CE();
 		break;
 	case WIDX_O_TRACK:
 		sub_6C9627();
-		_currentTrackCovered |= 1;
+		_currentTrackAlternative |= RIDE_TYPE_ALTERNATIVE_TRACK_PIECES;
 		_currentTrackLiftHill &= ~1;
 		_currentTrackPrice = MONEY32_UNDEFINED;
 		sub_6C84CE();
@@ -1888,7 +1888,7 @@ void window_ride_construction_mouseup_demolish_next_piece(sint32 x, sint32 y, si
 		sint32 b2 = _currentTrackSlopeEnd;
 		sint32 bankEnd = _previousTrackBankEnd;
 		sint32 bankStart = _currentTrackBankEnd;
-		sint32 b5 = _currentTrackCovered;
+		sint32 b5 = _currentTrackAlternative;
 		sint32 b4 = _currentTrackLiftHill;
 		ride_construction_set_default_next_piece();
 		sub_6C84CE();
@@ -1901,7 +1901,7 @@ void window_ride_construction_mouseup_demolish_next_piece(sint32 x, sint32 y, si
 				_currentTrackSlopeEnd = b2;
 				_previousTrackBankEnd = bankEnd;
 				_currentTrackBankEnd = bankStart;
-				_currentTrackCovered = b5;
+				_currentTrackAlternative = b5;
 				_currentTrackLiftHill = b4;
 				sub_6C84CE();
 			}
@@ -2608,8 +2608,8 @@ bool sub_6CA2DF(sint32 *_trackType, sint32 *_trackDirection, sint32 *_rideIndex,
 		edxRS16 |= 0x1;
 	}
 
-	if (_currentTrackCovered & (1 << 1)) {
-		edxRS16 |= 0x2;
+	if (_currentTrackAlternative & RIDE_TYPE_ALTERNATIVE_TRACK_TYPE) {
+		edxRS16 |= RIDE_TYPE_ALTERNATIVE_TRACK_TYPE;
 	}
 
 	rct_ride *ride = get_ride(rideIndex);
@@ -2640,7 +2640,7 @@ bool sub_6CA2DF(sint32 *_trackType, sint32 *_trackDirection, sint32 *_rideIndex,
 		}
 	}
 
-	if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_TRACK_ELEMENTS_HAVE_TWO_VARIETIES) && _currentTrackCovered & 1) {
+	if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_TRACK_ELEMENTS_HAVE_TWO_VARIETIES) && _currentTrackAlternative & RIDE_TYPE_ALTERNATIVE_TRACK_PIECES) {
 		if (ride->type != RIDE_TYPE_WATER_COASTER || trackType == TRACK_ELEM_FLAT || trackType == TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES || trackType == TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES) {
 			sint16 alternativeType = AlternativeTrackTypes[trackType];
 			if (alternativeType > -1) {
@@ -2745,9 +2745,8 @@ static void window_ride_construction_update_enabled_track_pieces()
 	if (rideEntry == NULL)
 		return;
 
-	sint32 rideType = (_currentTrackCovered & 2) ? RideData4[ride->type].alternate_type : ride->type;
-	_enabledRidePieces.a = rideEntry->enabledTrackPiecesA & gResearchedTrackTypesA[rideType];
-	_enabledRidePieces.b = rideEntry->enabledTrackPiecesB & gResearchedTrackTypesB[rideType];
+	sint32 rideType = (_currentTrackAlternative & RIDE_TYPE_ALTERNATIVE_TRACK_TYPE) ? RideData4[ride->type].alternate_type : ride->type;
+	_enabledRidePieces.ab = rideEntry->enabledTrackPieces & RideTypePossibleTrackConfigurations[rideType];
 }
 
 /**
@@ -2951,7 +2950,7 @@ static void window_ride_construction_update_possible_ride_configurations()
 	ride = get_ride(_currentRideIndex);
 
 	_currentlyShowingBrakeSpeed = 0;
-	if (_currentTrackCovered & 2)
+	if (_currentTrackAlternative & RIDE_TYPE_ALTERNATIVE_TRACK_TYPE)
 		edi = RideData4[ride->type].alternate_type;
 	else
 		edi = ride->type;
@@ -3472,7 +3471,7 @@ static void window_ride_construction_update_widgets(rct_window *w)
 
 	if (_currentlyShowingBrakeSpeed == 0) {
 		if (ride_type_has_flag(rideType, RIDE_TYPE_FLAG_TRACK_ELEMENTS_HAVE_TWO_VARIETIES)) {
-			if (_currentTrackCovered & 1) {
+			if (_currentTrackAlternative & RIDE_TYPE_ALTERNATIVE_TRACK_PIECES) {
 				w->pressed_widgets |= (1ULL << WIDX_O_TRACK);
 			} else {
 				w->pressed_widgets |= (1ULL << WIDX_U_TRACK);
@@ -3984,7 +3983,7 @@ void ride_construction_tooldown_construct(sint32 screenX, sint32 screenY)
 				sint32 saveCurrentTrackSlopeEnd = _currentTrackSlopeEnd;
 				sint32 savePreviousTrackBankEnd = _previousTrackBankEnd;
 				sint32 saveCurrentTrackBankEnd = _currentTrackBankEnd;
-				sint32 saveCurrentTrackCovered = _currentTrackCovered;
+				sint32 saveCurrentTrackAlternative = _currentTrackAlternative;
 				sint32 saveCurrentTrackLiftHill = _currentTrackLiftHill;
 
 				sub_6CC3FB(_currentRideIndex);
@@ -3995,7 +3994,7 @@ void ride_construction_tooldown_construct(sint32 screenX, sint32 screenY)
 				_currentTrackSlopeEnd = saveCurrentTrackSlopeEnd;
 				_previousTrackBankEnd = savePreviousTrackBankEnd;
 				_currentTrackBankEnd = saveCurrentTrackBankEnd;
-				_currentTrackCovered = saveCurrentTrackCovered;
+				_currentTrackAlternative = saveCurrentTrackAlternative;
 				_currentTrackLiftHill = saveCurrentTrackLiftHill;
 
 				audio_play_sound_panned(SOUND_ERROR, gCursorState.x, x, y, z);

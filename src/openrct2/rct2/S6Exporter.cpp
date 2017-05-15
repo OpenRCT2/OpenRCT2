@@ -24,6 +24,7 @@
 #include "../object/ObjectRepository.h"
 #include "../rct12/SawyerChunkWriter.h"
 #include "S6Exporter.h"
+#include "../ride/track_data.h"
 #include <functional>
 
 extern "C"
@@ -201,8 +202,8 @@ void S6Exporter::Export()
     // pad_01357400
     memcpy(_s6.researched_ride_types, gResearchedRideTypes, sizeof(_s6.researched_ride_types));
     memcpy(_s6.researched_ride_entries, gResearchedRideEntries, sizeof(_s6.researched_ride_entries));
-    memcpy(_s6.researched_track_types_a, gResearchedTrackTypesA, sizeof(_s6.researched_track_types_a));
-    memcpy(_s6.researched_track_types_b, gResearchedTrackTypesB, sizeof(_s6.researched_track_types_b));
+    // Not used by OpenRCT2 any more, but left in to keep RCT2 export working.
+    memcpy(_s6.researched_track_types, RideTypePossibleTrackConfigurations, sizeof(_s6.researched_track_types));
 
     _s6.guests_in_park          = gNumGuestsInPark;
     _s6.guests_heading_for_park = gNumGuestsHeadingForPark;

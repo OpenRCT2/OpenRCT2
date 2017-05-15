@@ -965,7 +965,7 @@ extern sint8 _rideConstructionArrowPulseTime;
 extern uint8 _currentTrackSlopeEnd;
 extern uint8 _currentTrackBankEnd;
 extern uint8 _currentTrackLiftHill;
-extern uint8 _currentTrackCovered;
+extern uint8 _currentTrackAlternative;
 extern uint8 _selectedTrackType;
 
 extern uint8 _previousTrackBankEnd;

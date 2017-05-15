@@ -994,64 +994,8 @@ static bool track_design_save_to_td6_for_tracked_ride(uint8 rideIndex, rct_track
 	rct_td6_track_element *track = td6->track_elements;
 	do {
 		track->type = trackElement.element->properties.track.type;
-		if (track->type == 0xFF) {
-			track->type = 101;
-		}
-
-		if (track->type == TRACK_ELEM_LEFT_VERTICAL_LOOP ||
-			track->type == TRACK_ELEM_RIGHT_VERTICAL_LOOP
-		) {
-			td6->flags |= (1 << 7);
-		}
-
-		if (track->type == TRACK_ELEM_LEFT_TWIST_DOWN_TO_UP ||
-			track->type == TRACK_ELEM_RIGHT_TWIST_DOWN_TO_UP ||
-			track->type == TRACK_ELEM_LEFT_TWIST_UP_TO_DOWN ||
-			track->type == TRACK_ELEM_RIGHT_TWIST_UP_TO_DOWN
-		) {
-			td6->flags |= (1 << 17);
-		}
-
-		if (track->type == TRACK_ELEM_LEFT_BARREL_ROLL_UP_TO_DOWN ||
-			track->type == TRACK_ELEM_RIGHT_BARREL_ROLL_UP_TO_DOWN ||
-			track->type == TRACK_ELEM_LEFT_BARREL_ROLL_DOWN_TO_UP ||
-			track->type == TRACK_ELEM_RIGHT_BARREL_ROLL_DOWN_TO_UP
-		) {
-			td6->flags |= (1 << 29);
-		}
-
-		if (track->type == TRACK_ELEM_HALF_LOOP_UP ||
-			track->type == TRACK_ELEM_HALF_LOOP_DOWN
-		) {
-			td6->flags |= (1 << 18);
-		}
-
-		if (track->type == TRACK_ELEM_LEFT_CORKSCREW_UP ||
-			track->type == TRACK_ELEM_RIGHT_CORKSCREW_UP ||
-			track->type == TRACK_ELEM_LEFT_CORKSCREW_DOWN ||
-			track->type == TRACK_ELEM_RIGHT_CORKSCREW_DOWN
-		) {
-			td6->flags |= (1 << 19);
-		}
-
-		if (track->type == TRACK_ELEM_WATER_SPLASH) {
-			td6->flags |= (1 << 27);
-		}
-
-		if (track->type == TRACK_ELEM_POWERED_LIFT) {
-			td6->flags |= (1 << 30);
-		}
-
-		if (track->type == TRACK_ELEM_LEFT_LARGE_HALF_LOOP_UP ||
-			track->type == TRACK_ELEM_RIGHT_LARGE_HALF_LOOP_UP ||
-			track->type == TRACK_ELEM_RIGHT_LARGE_HALF_LOOP_DOWN ||
-			track->type == TRACK_ELEM_LEFT_LARGE_HALF_LOOP_DOWN
-		) {
-			td6->flags |= (1u << 31);
-		}
-
-		if (track->type == TRACK_ELEM_LOG_FLUME_REVERSER) {
-			td6->flags2 |= TRACK_FLAGS2_CONTAINS_LOG_FLUME_REVERSER;
+		if (track->type == TRACK_ELEM_255) {
+			track->type = TRACK_ELEM_255_ALIAS;
 		}
 
 		uint8 bh;
@@ -1064,10 +1008,10 @@ static bool track_design_save_to_td6_for_tracked_ride(uint8 rideIndex, rct_track
 		uint8 flags = (trackElement.element->type & (1 << 7)) | bh;
 		flags |= (trackElement.element->properties.track.colour & 3) << 4;
 		if (
-			RideData4[ride->type].flags & RIDE_TYPE_FLAG4_3 &&
-			trackElement.element->properties.track.colour & (1 << 2)
+			RideData4[ride->type].flags & RIDE_TYPE_FLAG4_HAS_ALTERNATIVE_TRACK_TYPE &&
+			trackElement.element->properties.track.colour & TRACK_ELEMENT_COLOUR_FLAG_INVERTED
 		) {
-			flags |= (1 << 6);
+			flags |= TRACK_ELEMENT_FLAG_INVERTED;
 		}
 
 		track->flags = flags;
