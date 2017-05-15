@@ -284,7 +284,7 @@ static bool browse(bool isSave, char *path, size_t pathSize)
 	case LOADSAVETYPE_IMAGE:
 		title = STR_FILE_DIALOG_TITLE_LOAD_HEIGHTMAP;
 		desc.filters[0].name = language_get_string(STR_OPENRCT2_HEIGHTMAP_FILE);
-		desc.filters[0].pattern = "*.jpg;*.png";
+		desc.filters[0].pattern = "*.jpg;*.png;*.bmp";
 		break;
 	}
 
