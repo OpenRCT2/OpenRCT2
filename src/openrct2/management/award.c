@@ -441,7 +441,7 @@ static sint32 award_is_deserved_most_disappointing(sint32 awardType, sint32 acti
 	disappointingRides = 0;
 
 	FOR_ALL_RIDES(i, ride) {
-		if (ride->excitement == (ride_rating)(uint16)0xFFFF || ride->popularity == 0xFF)
+		if (ride->excitement == RIDE_RATING_UNDEFINED || ride->popularity == 0xFF)
 			continue;
 
 		countedRides++;

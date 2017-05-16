@@ -11310,37 +11310,38 @@ static void peep_easter_egg_peep_interactions(rct_peep *peep)
  *
  * @return (CF)
  */
-static bool sub_69101A(rct_map_element *esi) {
-	rct_ride *ride = get_ride(esi->properties.track.ride_index);
+static bool peep_should_watch_ride(rct_map_element *mapElement) {
+	rct_ride *ride = get_ride(mapElement->properties.track.ride_index);
 	if (gRideClassifications[ride->type] != RIDE_CLASS_RIDE) {
+		return false;
+	}
+
+	// This is most likely to have peeps watch new rides
+	if (ride->excitement == RIDE_RATING_UNDEFINED) {
 		return true;
 	}
 
-	if ((uint16) ride->excitement == 0xFFFF) {
-		return false;
-	}
-
 	if (ride->excitement >= RIDE_RATING(4, 70)) {
-		return false;
+		return true;
 	}
 
 	if (ride->intensity >= RIDE_RATING(4, 50)) {
-		return false;
+		return true;
 	}
 
 	if (RideData4[ride->type].flags & RIDE_TYPE_FLAG4_INTERESTING_TO_LOOK_AT) {
 		if ((scenario_rand() & 0xFFFF) > 0x3333) {
-			return true;
+			return false;
 		}
 	} else if (RideData4[ride->type].flags & RIDE_TYPE_FLAG4_SLIGHTLY_INTERESTING_TO_LOOK_AT) {
 		if ((scenario_rand() & 0xFFFF) > 0x1000) {
-			return true;
+			return false;
 		}
 	} else {
-		return true;
+		return false;
 	}
 
-	return false;
+	return true;
 }
 
 /**
@@ -11400,7 +11401,7 @@ static bool peep_find_ride_to_look_at(rct_peep *peep, uint8 edge, uint8 *rideToV
 		if (peep->next_z + 6 < mapElement->base_height) continue;
 
 		if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_TRACK) {
-			if (!sub_69101A(mapElement)) {
+			if (peep_should_watch_ride(mapElement)) {
 				return loc_690FD0(peep, rideToView, rideSeatToView, mapElement);
 			}
 		}
@@ -11469,7 +11470,7 @@ static bool peep_find_ride_to_look_at(rct_peep *peep, uint8 edge, uint8 *rideToV
 		if (peep->next_z + 8 < mapElement->base_height) continue;
 
 		if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_TRACK) {
-			if (!sub_69101A(mapElement)) {
+			if (peep_should_watch_ride(mapElement)) {
 				return loc_690FD0(peep, rideToView, rideSeatToView, mapElement);
 			}
 		}
@@ -11537,7 +11538,7 @@ static bool peep_find_ride_to_look_at(rct_peep *peep, uint8 edge, uint8 *rideToV
 		if (peep->next_z + 10 < mapElement->base_height) continue;
 
 		if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_TRACK) {
-			if (!sub_69101A(mapElement)) {
+			if (peep_should_watch_ride(mapElement)) {
 				return loc_690FD0(peep, rideToView, rideSeatToView, mapElement);
 			}
 		}
@@ -11565,7 +11566,7 @@ bool loc_690FD0(rct_peep *peep, uint8 *rideToView, uint8 *rideSeatToView, rct_ma
 	rct_ride *ride = get_ride(esi->properties.track.ride_index);
 
 	*rideToView = esi->properties.track.ride_index;
-	if ((uint16) ride->excitement == 0xFFFF) {
+	if (ride->excitement == RIDE_RATING_UNDEFINED) {
 		*rideSeatToView = 1;
 		if (ride->status != RIDE_STATUS_OPEN) {
 			if (esi->clearance_height > peep->next_z + 8) {

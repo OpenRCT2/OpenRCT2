@@ -7280,7 +7280,7 @@ void invalidate_test_results(sint32 rideIndex)
 	rct_ride *ride = get_ride(rideIndex);
 
 	ride_measurement_clear(ride);
-	ride->excitement = 0xFFFF;
+	ride->excitement = RIDE_RATING_UNDEFINED;
 	ride->lifecycle_flags &= ~RIDE_LIFECYCLE_TESTED;
 	ride->lifecycle_flags &= ~RIDE_LIFECYCLE_TEST_IN_PROGRESS;
 	if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK) {
