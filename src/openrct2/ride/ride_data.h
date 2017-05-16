@@ -114,16 +114,16 @@ enum {
 	RIDE_TYPE_FLAG4_3 = (1 << 3),
 	RIDE_TYPE_FLAG4_PEEP_CHECK_GFORCES = (1 << 4),
 	RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT = (1 << 5),
-	RIDE_TYPE_FLAG4_6 = (1 << 6),
+	RIDE_TYPE_FLAG4_ALLOW_MORE_VEHICLES_THAN_STATION_FITS = (1 << 6),
 	RIDE_TYPE_FLAG4_HAS_AIR_TIME = (1 << 7),
 	RIDE_TYPE_FLAG4_SINGLE_SESSION = (1 << 8),
 	RIDE_TYPE_FLAG4_ALLOW_MULTIPLE_CIRCUITS = (1 << 9),
-	RIDE_TYPE_FLAG4_10 = (1 << 10),
-	RIDE_TYPE_FLAG4_11 = (1 << 11),
+	RIDE_TYPE_FLAG4_ALLOW_CABLE_LIFT_HILL = (1 << 10),
+	RIDE_TYPE_FLAG4_SHOW_IN_TRACK_DESIGNER = (1 << 11),
 	RIDE_TYPE_FLAG4_TRANSPORT_RIDE = (1 << 12),
-	RIDE_TYPE_FLAG4_13 = (1 << 13),
-	RIDE_TYPE_FLAG4_14 = (1 << 14),
-	RIDE_TYPE_FLAG4_FLYING_RC = (1 << 15), // This is only set on the Flying RC and its alternative type. It seems to be used in determining the track variety or something like that.
+	RIDE_TYPE_FLAG4_INTERESTING_TO_LOOK_AT = (1 << 13),
+	RIDE_TYPE_FLAG4_SLIGHTLY_INTERESTING_TO_LOOK_AT = (1 << 14),
+	RIDE_TYPE_FLAG4_START_CONSTRUCTION_INVERTED = (1 << 15), // This is only set on the Flying RC and its alternative type.
 };
 
 typedef struct rct_shop_item_stats {
