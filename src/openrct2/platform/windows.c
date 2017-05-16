@@ -135,7 +135,6 @@ __declspec(dllexport) sint32 StartOpenRCT(HINSTANCE hInstance, HINSTANCE hPrevIn
 
 
 	exit(exitCode);
-	return exitCode;
 }
 
 #endif // NO_RCT2
