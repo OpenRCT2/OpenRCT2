@@ -111,7 +111,7 @@ enum {
 	RIDE_TYPE_FLAG4_0 = (1 << 0),
 	RIDE_TYPE_FLAG4_MUSIC_ON_DEFAULT = (1 << 1),
 	RIDE_TYPE_FLAG4_ALLOW_MUSIC = (1 << 2),
-	RIDE_TYPE_FLAG4_3 = (1 << 3),
+	RIDE_TYPE_FLAG4_HAS_ALTERNATIVE_TRACK_TYPE = (1 << 3),	// Used by the Flying RC, Lay-down RC, Multi-dimension RC
 	RIDE_TYPE_FLAG4_PEEP_CHECK_GFORCES = (1 << 4),
 	RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT = (1 << 5),
 	RIDE_TYPE_FLAG4_ALLOW_MORE_VEHICLES_THAN_STATION_FITS = (1 << 6),
@@ -124,6 +124,12 @@ enum {
 	RIDE_TYPE_FLAG4_INTERESTING_TO_LOOK_AT = (1 << 13),
 	RIDE_TYPE_FLAG4_SLIGHTLY_INTERESTING_TO_LOOK_AT = (1 << 14),
 	RIDE_TYPE_FLAG4_START_CONSTRUCTION_INVERTED = (1 << 15), // This is only set on the Flying RC and its alternative type.
+};
+
+enum {
+	RIDE_TYPE_NO_ALTERNATIVES = 0,
+	RIDE_TYPE_ALTERNATIVE_TRACK_PIECES = 1,	// Dinghy slide and Water Coaster
+	RIDE_TYPE_ALTERNATIVE_TRACK_TYPE = 2,	// Flying RC, Lay-down RC, Multi-dimension RC
 };
 
 typedef struct rct_shop_item_stats {

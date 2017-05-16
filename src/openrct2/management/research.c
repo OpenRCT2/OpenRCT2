@@ -188,14 +188,6 @@ void research_finish_item(sint32 entryIndex)
 		{
 			ride_type_set_invented(base_ride_type);
 			openrct2_assert(base_ride_type < countof(RideTypePossibleTrackConfigurations), "Invalid base_ride_type = %d", base_ride_type);
-			gResearchedTrackTypesA[base_ride_type] = (RideTypePossibleTrackConfigurations[base_ride_type]) & 0xFFFFFFFFULL;
-			gResearchedTrackTypesB[base_ride_type] = (RideTypePossibleTrackConfigurations[base_ride_type] >> 32ULL) & 0xFFFFFFFFULL;
-
-			if (RideData4[base_ride_type].flags & RIDE_TYPE_FLAG4_3) {
-				sint32 ebx = RideData4[base_ride_type].alternate_type;
-				gResearchedTrackTypesA[ebx] = (RideTypePossibleTrackConfigurations[ebx]) & 0xFFFFFFFFULL;
-				gResearchedTrackTypesB[ebx] = (RideTypePossibleTrackConfigurations[ebx] >> 32ULL) & 0xFFFFFFFFULL;
-			}
 
 			ride_entry_set_invented(rideEntryIndex);
 
@@ -618,16 +610,9 @@ bool ride_entry_is_invented(sint32 rideEntryIndex)
 	return invented;
 }
 
-bool track_type_is_invented(uint8 rideType, sint32 trackType)
+bool track_piece_is_available_for_ride_type(uint8 rideType, sint32 trackType)
 {
-	if (trackType < 32) {
-		bool invented = (gResearchedTrackTypesA[rideType] & (1UL << trackType));
-		return invented;
-	} else {
-		trackType -= 32;
-		bool invented = (gResearchedTrackTypesB[rideType] & (1UL << trackType));
-		return invented;
-	}
+	return RideTypePossibleTrackConfigurations[rideType] & (1ULL << trackType);
 }
 
 static void ride_type_set_invented(sint32 rideType)

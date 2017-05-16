@@ -7407,7 +7407,7 @@ loc_6DB358:
 	// Update VEHICLE_UPDATE_FLAG_11 flag
 	vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_11;
 	sint32 rideType = get_ride(mapElement->properties.track.ride_index)->type;
-	if (RideData4[rideType].flags & RIDE_TYPE_FLAG4_3) {
+	if (RideData4[rideType].flags & RIDE_TYPE_FLAG4_HAS_ALTERNATIVE_TRACK_TYPE) {
 		if (mapElement->properties.track.colour & 4) {
 			vehicle->update_flags |= VEHICLE_UPDATE_FLAG_11;
 		}
@@ -7759,7 +7759,7 @@ static bool vehicle_update_track_motion_backwards_get_new_track(rct_vehicle *veh
 
 		// Update VEHICLE_UPDATE_FLAG_11
 		vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_11;
-		if (RideData4[ride->type].flags & RIDE_TYPE_FLAG4_3) {
+		if (RideData4[ride->type].flags & RIDE_TYPE_FLAG4_HAS_ALTERNATIVE_TRACK_TYPE) {
 			if (mapElement->properties.track.colour & 4) {
 				vehicle->update_flags |= VEHICLE_UPDATE_FLAG_11;
 			}
@@ -8134,7 +8134,7 @@ loc_6DC476:
 
 	sint32 rideType = get_ride(mapElement->properties.track.ride_index)->type;
 	vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_11;
-	if (RideData4[rideType].flags & RIDE_TYPE_FLAG4_3) {
+	if (RideData4[rideType].flags & RIDE_TYPE_FLAG4_HAS_ALTERNATIVE_TRACK_TYPE) {
 		if (mapElement->properties.track.colour & (1 << 2)) {
 			vehicle->update_flags |= VEHICLE_UPDATE_FLAG_11;
 		}
@@ -8351,7 +8351,7 @@ loc_6DCA9A:
 
 	rideType = get_ride(mapElement->properties.track.ride_index)->type;
 	vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_11;
-	if (RideData4[rideType].flags & RIDE_TYPE_FLAG4_3) {
+	if (RideData4[rideType].flags & RIDE_TYPE_FLAG4_HAS_ALTERNATIVE_TRACK_TYPE) {
 		if (mapElement->properties.track.colour & (1 << 2)) {
 			vehicle->update_flags |= VEHICLE_UPDATE_FLAG_11;
 		}

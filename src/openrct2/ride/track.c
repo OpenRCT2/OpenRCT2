@@ -941,10 +941,7 @@ static money32 track_place(sint32 rideIndex, sint32 type, sint32 originX, sint32
 	direction &= 3;
 	gTrackGroundFlags = 0;
 
-	uint64 enabledTrackPieces = 0;
-	enabledTrackPieces |= rideEntry->enabledTrackPiecesB & gResearchedTrackTypesB[ride->type];
-	enabledTrackPieces <<= 32;
-	enabledTrackPieces |= rideEntry->enabledTrackPiecesA & gResearchedTrackTypesA[ride->type];
+	uint64 enabledTrackPieces = rideEntry->enabledTrackPieces & RideTypePossibleTrackConfigurations[ride->type];
 	uint32 rideTypeFlags = RideProperties[ride->type].flags;
 
 	if ((ride->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK) && type == 1) {
@@ -2188,7 +2185,7 @@ sint32 track_get_actual_bank(rct_map_element *mapElement, sint32 bank)
 
 sint32 track_get_actual_bank_2(sint32 rideType, sint32 trackColour, sint32 bank)
 {
-	if (RideData4[rideType].flags & RIDE_TYPE_FLAG4_3) {
+	if (RideData4[rideType].flags & RIDE_TYPE_FLAG4_HAS_ALTERNATIVE_TRACK_TYPE) {
 		if (trackColour & 4) {
 			if (bank == TRACK_BANK_NONE) {
 				bank = TRACK_BANK_UPSIDE_DOWN;
