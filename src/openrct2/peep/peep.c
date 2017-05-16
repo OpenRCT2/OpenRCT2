@@ -11566,7 +11566,7 @@ bool loc_690FD0(rct_peep *peep, uint8 *rideToView, uint8 *rideSeatToView, rct_ma
 	rct_ride *ride = get_ride(esi->properties.track.ride_index);
 
 	*rideToView = esi->properties.track.ride_index;
-	if ((uint16) ride->excitement == RIDE_RATING_UNDEFINED) {
+	if (ride->excitement == RIDE_RATING_UNDEFINED) {
 		*rideSeatToView = 1;
 		if (ride->status != RIDE_STATUS_OPEN) {
 			if (esi->clearance_height > peep->next_z + 8) {
