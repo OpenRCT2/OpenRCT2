@@ -532,7 +532,7 @@ static void setup_track_designer_objects()
 			for (uint8 j = 0; j < 3; j++) {
 				uint8 rideType = item->RideType[j];
 				if (rideType != 0xFF) {
-					if (RideData4[rideType].flags & RIDE_TYPE_FLAG4_11) {
+					if (RideData4[rideType].flags & RIDE_TYPE_FLAG4_SHOW_IN_TRACK_DESIGNER) {
 						*selectionFlags &= ~OBJECT_SELECTION_FLAG_6;
 						break;
 					}

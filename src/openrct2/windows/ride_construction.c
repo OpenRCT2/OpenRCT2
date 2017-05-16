@@ -620,7 +620,7 @@ rct_window *window_ride_construction_open()
 	_currentTrackLiftHill = 0;
 	_currentTrackCovered = 0;
 
-	if (RideData4[ride->type].flags & RIDE_TYPE_FLAG4_FLYING_RC)
+	if (RideData4[ride->type].flags & RIDE_TYPE_FLAG4_START_CONSTRUCTION_INVERTED)
 		_currentTrackCovered |= 2;
 
 	_previousTrackBankEnd = 0;

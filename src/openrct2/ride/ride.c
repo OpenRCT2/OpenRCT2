@@ -1457,7 +1457,7 @@ static void ride_construction_reset_current_piece()
 		_currentTrackBankEnd = 0;
 		_currentTrackLiftHill = 0;
 		_currentTrackCovered = 0;
-		if (RideData4[ride->type].flags & RIDE_TYPE_FLAG4_FLYING_RC) {
+		if (RideData4[ride->type].flags & RIDE_TYPE_FLAG4_START_CONSTRUCTION_INVERTED) {
 			_currentTrackCovered |= 2;
 		}
 		_previousTrackSlopeEnd = 0;
@@ -1914,7 +1914,7 @@ sint32 sub_6CC3FB(sint32 rideIndex)
 	_currentTrackLiftHill = 0;
 	_currentTrackCovered = 0;
 
-	if (RideData4[ride->type].flags & RIDE_TYPE_FLAG4_FLYING_RC)
+	if (RideData4[ride->type].flags & RIDE_TYPE_FLAG4_START_CONSTRUCTION_INVERTED)
 		_currentTrackCovered |= 2;
 
 	_previousTrackBankEnd = 0;
@@ -5272,7 +5272,7 @@ static sint32 ride_is_valid_for_test(sint32 rideIndex, sint32 goingToBeOpen, sin
 	}
 
 	if (
-		(RideData4[ride->type].flags & RIDE_TYPE_FLAG4_10) &&
+		(RideData4[ride->type].flags & RIDE_TYPE_FLAG4_ALLOW_CABLE_LIFT_HILL) &&
 		(ride->lifecycle_flags & RIDE_LIFECYCLE_CABLE_LIFT_HILL_COMPONENT_USED) &&
 		!(ride->lifecycle_flags & RIDE_LIFECYCLE_CABLE_LIFT)
 		) {
@@ -5403,7 +5403,7 @@ static sint32 ride_is_valid_for_open(sint32 rideIndex, sint32 goingToBeOpen, sin
 	}
 
 	if (
-		(RideData4[ride->type].flags & RIDE_TYPE_FLAG4_10) &&
+		(RideData4[ride->type].flags & RIDE_TYPE_FLAG4_ALLOW_CABLE_LIFT_HILL) &&
 		(ride->lifecycle_flags & RIDE_LIFECYCLE_CABLE_LIFT_HILL_COMPONENT_USED) &&
 		!(ride->lifecycle_flags & RIDE_LIFECYCLE_CABLE_LIFT)
 	) {
@@ -7582,7 +7582,7 @@ void ride_update_max_vehicles(sint32 rideIndex)
 
 			if (
 				(ride->mode != RIDE_MODE_STATION_TO_STATION && ride->mode != RIDE_MODE_CONTINUOUS_CIRCUIT) ||
-				!(RideData4[ride->type].flags & RIDE_TYPE_FLAG4_6)
+				!(RideData4[ride->type].flags & RIDE_TYPE_FLAG4_ALLOW_MORE_VEHICLES_THAN_STATION_FITS)
 			) {
 				maxNumTrains = min(maxNumTrains, 31);
 			} else {
