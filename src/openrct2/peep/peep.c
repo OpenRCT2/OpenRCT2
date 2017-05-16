@@ -3980,7 +3980,7 @@ static void peep_update_ride_sub_state_18(rct_peep* peep){
 		}
 	}
 
-	peep->interactionRideIndex = 0xFF;
+	peep->interaction_ride_index = 0xFF;
 	peep_decrement_num_riders(peep);
 	peep->state = PEEP_STATE_FALLING;
 	peep_window_state_update(peep);
@@ -7130,7 +7130,7 @@ rct_peep *peep_generate(sint32 x, sint32 y, sint32 z)
 
 	peep->var_41 = (scenario_rand() & 0x1F) + 45;
 	peep->var_C4 = 0;
-	peep->interactionRideIndex = 0xFF;
+	peep->interaction_ride_index = 0xFF;
 	peep->type = PEEP_TYPE_GUEST;
 	peep->previous_ride = 0xFF;
 	peep->thoughts->type = PEEP_THOUGHT_TYPE_NONE;
@@ -7948,7 +7948,7 @@ static sint32 peep_interact_with_entrance(rct_peep* peep, sint16 x, sint16 y, rc
 	if (entranceType == ENTRANCE_TYPE_RIDE_EXIT){
 		// Default guest/staff behaviour attempting to enter a
 		// ride exit is to turn around.
-		peep->interactionRideIndex = 0xFF;
+		peep->interaction_ride_index = 0xFF;
 		return peep_return_to_center_of_tile(peep);
 	}
 
@@ -7956,7 +7956,7 @@ static sint32 peep_interact_with_entrance(rct_peep* peep, sint16 x, sint16 y, rc
 		if (peep->type == PEEP_TYPE_STAFF){
 			// Default staff behaviour attempting to enter a
 			// ride entrance is to turn around.
-			peep->interactionRideIndex = 0xFF;
+			peep->interaction_ride_index = 0xFF;
 			return peep_return_to_center_of_tile(peep);
 		}
 
@@ -7968,7 +7968,7 @@ static sint32 peep_interact_with_entrance(rct_peep* peep, sint16 x, sint16 y, rc
 		}
 
 		// Guest is on a normal path, i.e. ride has no queue.
-		if (peep->interactionRideIndex == rideIndex)
+		if (peep->interaction_ride_index == rideIndex)
 			// Peep is retrying the ride entrance without leaving
 			// the path tile and without trying any other ride
 			// attached to this path tile. i.e. stick with the
@@ -7983,13 +7983,13 @@ static sint32 peep_interact_with_entrance(rct_peep* peep, sint16 x, sint16 y, rc
 		if (!peep_should_go_on_ride(peep, rideIndex, stationNum, 0)){
 			// Peep remembers that this is the last ride they
 			// considered while on this path tile.
-			peep->interactionRideIndex = rideIndex;
+			peep->interaction_ride_index = rideIndex;
 			return peep_return_to_center_of_tile(peep);
 		}
 
 		// Guest has decided to go on the ride.
 		peep->action_sprite_image_offset = _unk_F1AEF0;
-		peep->interactionRideIndex = rideIndex;
+		peep->interaction_ride_index = rideIndex;
 
 		rct_ride* ride = get_ride(rideIndex);
 		uint16 previous_last = ride->last_peep_in_queue[stationNum];
@@ -8344,7 +8344,7 @@ static sint32 peep_interact_with_path(rct_peep* peep, sint16 x, sint16 y, rct_ma
 		// Check if this queue path tile is connected to a ride.
 		if (rideIndex == 0xFF){
 			// Queue is not connected to a ride.
-			peep->interactionRideIndex = 0xFF;
+			peep->interaction_ride_index = 0xFF;
 			return peep_footpath_move_forward(peep, x, y, map_element, vandalism_present);
 		}
 
@@ -8370,7 +8370,7 @@ static sint32 peep_interact_with_path(rct_peep* peep, sint16 x, sint16 y, rct_ma
 		// 2. Peep is walking up to the queue entrance from
 		//    a normal path tile.
 
-		if (peep->interactionRideIndex == rideIndex){
+		if (peep->interaction_ride_index == rideIndex){
 			// Case 1 above applies, so walk the queue.
 			return peep_footpath_move_forward(peep, x, y, map_element, vandalism_present);
 		}
@@ -8387,7 +8387,7 @@ static sint32 peep_interact_with_path(rct_peep* peep, sint16 x, sint16 y, rct_ma
 		// Set the following so the peep will correctly walk up
 		// and back down the queue if the ride is closed
 		// while they are queuing.
-		peep->interactionRideIndex = rideIndex;
+		peep->interaction_ride_index = rideIndex;
 		rct_ride* ride = get_ride(rideIndex);
 
 		// Add the peep to the ride queue.
@@ -8419,7 +8419,7 @@ static sint32 peep_interact_with_path(rct_peep* peep, sint16 x, sint16 y, rct_ma
 		return peep_footpath_move_forward(peep, x, y, map_element, vandalism_present);
 	}
 	else{
-		peep->interactionRideIndex = 0xFF;
+		peep->interaction_ride_index = 0xFF;
 		if (peep->state == PEEP_STATE_QUEUING){
 			remove_peep_from_queue(peep);
 			peep_decrement_num_riders(peep);
@@ -8449,7 +8449,7 @@ static sint32 peep_interact_with_shop(rct_peep* peep, sint16 x, sint16 y, rct_ma
 	if (ride->status != RIDE_STATUS_OPEN)
 		return peep_return_to_center_of_tile(peep);
 
-	if (peep->interactionRideIndex == rideIndex)
+	if (peep->interaction_ride_index == rideIndex)
 		return peep_return_to_center_of_tile(peep);
 
 	if (peep->peep_flags & PEEP_FLAGS_LEAVING_PARK)
@@ -10500,7 +10500,7 @@ static sint32 sub_693C9E(rct_peep *peep)
 		sint16 z = abs(map_element_height(x, y) - peep->z);
 
 		if (z <= 3 || (peep->type == PEEP_TYPE_STAFF && z <= 32)){
-			peep->interactionRideIndex = 0xFF;
+			peep->interaction_ride_index = 0xFF;
 			if (peep->state == PEEP_STATE_QUEUING){
 				remove_peep_from_queue(peep);
 				peep_decrement_num_riders(peep);

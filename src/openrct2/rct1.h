@@ -449,7 +449,7 @@ typedef struct rct1_peep {
 		uint8 maze_last_edge;		// 0x78
 		uint8 direction;	//Direction ?
 	};
-	uint8 interactionRideIndex;
+	uint8 interaction_ride_index;
 	uint16 time_in_queue;			// 0x7A
 	uint8 rides_been_on[32];		// 0x7C
 	// 255 bit bitmap of every ride the peep has been on see
