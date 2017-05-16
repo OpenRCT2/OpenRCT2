@@ -123,7 +123,7 @@ const bool hasRunningTrack[RIDE_TYPE_COUNT] = {
 	true,	// 57 Mini Roller Coaster
 	true,	// 58 Mine Ride
 	true,	// 59 (none)
-    true,	// 5a LIM Launched Roller Coaster
+	true,	// 5a LIM Launched Roller Coaster
 };
 
 /**
@@ -224,7 +224,7 @@ const uint8 initialUpkeepCosts[RIDE_TYPE_COUNT] = {
 	35,	// 57 Mini Roller Coaster
 	50,	// 58 Mine Ride
 	42,	// 59 (none)
-    42,	// 5a LIM Launched Roller Coaster
+	42,	// 5a LIM Launched Roller Coaster
 };
 
 const uint8 costPerTrackPiece[RIDE_TYPE_COUNT] = {
@@ -318,7 +318,7 @@ const uint8 costPerTrackPiece[RIDE_TYPE_COUNT] = {
 	80,	// 57 Mini Roller Coaster
 	80,	// 58 Mine Ride
 	80,	// 59 (none)
-    80,	// 5a LIM Launched Roller Coaster
+	80,	// 5a LIM Launched Roller Coaster
 };
 
 /**
@@ -415,7 +415,7 @@ const uint8 costPerVehicle[RIDE_TYPE_COUNT] = {
 	8,	// 57 Mini Roller Coaster
 	10,	// 58 Mine Ride
 	9,	// 59 (none)
-    9,	// 5a LIM Launched Roller Coaster
+	9,	// 5a LIM Launched Roller Coaster
 };
 
 /**
@@ -513,7 +513,7 @@ const bool chargeUpkeepForTrainLength[RIDE_TYPE_COUNT] = {
 	true,	// 57 Mini Roller Coaster
 	true,	// 58 Mine Ride
 	true,	// 59 (none)
-    true,	// 5a LIM Launched Roller Coaster
+	true,	// 5a LIM Launched Roller Coaster
 };
 
 /* Data at 0x0097E3B8 */
@@ -608,7 +608,7 @@ const uint8 costPerStation[RIDE_TYPE_COUNT] = {
 	10,	// 57 Mini Roller Coaster
 	10,	// 58 Mine Ride
 	10,	// 59 (none)
-    10,	// 5a LIM Launched Roller Coaster
+	10,	// 5a LIM Launched Roller Coaster
 };
 
 // Data at 0x0097D21E
@@ -703,7 +703,7 @@ const uint8 rideBonusValue[RIDE_TYPE_COUNT] = {
 	60,  // 57 Mini Roller Coaster
 	70,  // 58 Mine Ride
 	55,  // 59 (none)
-    55,  // 5a LIM Launched Roller Coaster
+	55,  // 5a LIM Launched Roller Coaster
 };
 
 const ride_component_name RideComponentNames[] = {
