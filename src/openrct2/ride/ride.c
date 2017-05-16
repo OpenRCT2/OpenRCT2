@@ -5773,14 +5773,12 @@ static bool ride_name_exists(char *name)
 	char buffer[256];
 	rct_ride *ride;
 	sint32 i;
-
 	FOR_ALL_RIDES(i, ride) {
 		format_string(buffer, 256, ride->name, &ride->name_arguments);
-		if (strcmp(buffer, name) == 0) {
+		if ((strcmp(buffer, name) == 0) && ride_has_any_track_elements(i)) {
 			return true;
 		}
 	}
-
 	return false;
 }
 
@@ -6000,7 +5998,7 @@ foundRideEntry:
 		ride->name = 1;
 		ride->name_arguments_type_name = rideEntry->name;
 		rct_string_id rideNameStringId = 0;
-		name_args.type_name = 2 + ride->type;
+		name_args.type_name = rideEntry->name;
 		name_args.number = 0;
 
 		do {
