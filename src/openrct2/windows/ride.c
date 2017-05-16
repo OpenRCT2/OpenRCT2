@@ -5202,7 +5202,7 @@ static void window_ride_measurements_invalidate(rct_window *w)
 			window_ride_measurements_widgets[WIDX_SAVE_TRACK_DESIGN].type = WWT_FLATBTN;
 			w->disabled_widgets |= (1 << WIDX_SAVE_TRACK_DESIGN);
 			if (ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED) {
-				if (ride->excitement != -1) {
+				if (ride->excitement != RIDE_RATING_UNDEFINED) {
 					w->disabled_widgets &= ~(1 << WIDX_SAVE_TRACK_DESIGN);
 					window_ride_measurements_widgets[WIDX_SAVE_TRACK_DESIGN].tooltip = STR_SAVE_TRACK_DESIGN;
 				}
@@ -5245,7 +5245,7 @@ static void window_ride_measurements_paint(rct_window *w, rct_drawpixelinfo *dpi
 			// Excitement
 			set_format_arg(0, uint32, ride->excitement);
 			set_format_arg(4, rct_string_id, RatingNames[min(ride->excitement >> 8, 5)]);
-			rct_string_id stringId = ride->excitement == -1 ? STR_EXCITEMENT_RATING_NOT_YET_AVAILABLE : STR_EXCITEMENT_RATING;
+			rct_string_id stringId = ride->excitement == RIDE_RATING_UNDEFINED ? STR_EXCITEMENT_RATING_NOT_YET_AVAILABLE : STR_EXCITEMENT_RATING;
 			gfx_draw_string_left(dpi, stringId, gCommonFormatArgs, COLOUR_BLACK, x, y);
 			y += 10;
 
@@ -5254,7 +5254,7 @@ static void window_ride_measurements_paint(rct_window *w, rct_drawpixelinfo *dpi
 			set_format_arg(4, rct_string_id, RatingNames[min(ride->intensity >> 8, 5)]);
 
 			stringId = STR_INTENSITY_RATING;
-			if (ride->excitement == -1)
+			if (ride->excitement == RIDE_RATING_UNDEFINED)
 				stringId = STR_INTENSITY_RATING_NOT_YET_AVAILABLE;
 			else if (ride->intensity >= RIDE_RATING(10,00))
 				stringId = STR_INTENSITY_RATING_RED;
@@ -5265,7 +5265,7 @@ static void window_ride_measurements_paint(rct_window *w, rct_drawpixelinfo *dpi
 			// Nausea
 			set_format_arg(0, uint32, ride->nausea);
 			set_format_arg(4, rct_string_id, RatingNames[min(ride->nausea >> 8, 5)]);
-			stringId = ride->excitement == -1 ? STR_NAUSEA_RATING_NOT_YET_AVAILABLE : STR_NAUSEA_RATING;
+			stringId = ride->excitement == RIDE_RATING_UNDEFINED ? STR_NAUSEA_RATING_NOT_YET_AVAILABLE : STR_NAUSEA_RATING;
 			gfx_draw_string_left(dpi, stringId, gCommonFormatArgs, COLOUR_BLACK, x, y);
 			y += 20;
 

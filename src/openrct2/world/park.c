@@ -240,7 +240,7 @@ sint32 calculate_park_rating()
 		FOR_ALL_RIDES(i, ride) {
 			total_ride_uptime += 100 - ride->downtime;
 
-			if (ride->excitement != -1){
+			if (ride->excitement != RIDE_RATING_UNDEFINED){
 				total_ride_excitement += ride->excitement / 8;
 				total_ride_intensity += ride->intensity / 8;
 				num_exciting_rides++;
