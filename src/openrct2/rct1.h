@@ -1204,7 +1204,7 @@ enum {
 	RCT1_WATER_ORANGE
 };
 
-extern const uint8 gRideCategories[0x60];
+extern const uint8 gRideCategories[RIDE_TYPE_COUNT];
 
 sint32 vehicle_preference_compare(uint8 rideType, const char * a, const char * b);
 bool rideTypeShouldLoseSeparateFlag(const rct_ride_entry *rideEntry);

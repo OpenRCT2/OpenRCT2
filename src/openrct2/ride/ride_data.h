@@ -139,17 +139,17 @@ typedef struct rct_shop_item_stats {
 	uint16 cold_value;
 } rct_shop_item_stats;
 
-extern const bool hasRunningTrack[0x60];
-extern const uint8 initialUpkeepCosts[0x60];
-extern const uint8 costPerTrackPiece[0x60];
+extern const bool hasRunningTrack[RIDE_TYPE_COUNT];
+extern const uint8 initialUpkeepCosts[RIDE_TYPE_COUNT];
+extern const uint8 costPerTrackPiece[RIDE_TYPE_COUNT];
 
-extern const uint8 rideUnknownData1[0x60];
-extern const bool rideUnknownData2[0x60];
-extern const uint8 rideUnknownData3[0x60];
-extern const uint8 rideBonusValue[0x60];
+extern const uint8 costPerVehicle[RIDE_TYPE_COUNT];
+extern const bool chargeUpkeepForTrainLength[RIDE_TYPE_COUNT];
+extern const uint8 costPerStation[RIDE_TYPE_COUNT];
+extern const uint8 rideBonusValue[RIDE_TYPE_COUNT];
 
 extern const ride_component_name RideComponentNames[RIDE_COMPONENT_TYPE_COUNT];
-extern const rct_ride_name_convention RideNameConvention[96];
+extern const rct_ride_name_convention RideNameConvention[RIDE_TYPE_COUNT];
 extern const rct_ride_name RideNaming[RIDE_TYPE_COUNT];
 extern const uint8 RideAvailableModes[];
 extern const uint8 AllRideModesAvailable[];

@@ -32,7 +32,7 @@
 #include "../sprites.h"
 #include "../interface/colour.h"
 
-const bool hasRunningTrack[0x60] = {
+const bool hasRunningTrack[RIDE_TYPE_COUNT] = {
 	true,	// 0 Spiral Roller coaster
 	true,	// 1 Stand Up Coaster
 	true,	// 2 Suspended Swinging
@@ -122,7 +122,8 @@ const bool hasRunningTrack[0x60] = {
 	true,	// 56 Inverted Impulse Coaster
 	true,	// 57 Mini Roller Coaster
 	true,	// 58 Mine Ride
-	true,	// 59 LIM Launched Roller Coaster
+	true,	// 59 (none)
+    true,	// 5a LIM Launched Roller Coaster
 };
 
 /**
@@ -132,7 +133,7 @@ const bool hasRunningTrack[0x60] = {
  *
  * data generation script: https://gist.github.com/kevinburke/6bcf4a8fcc95faad7bac
  */
-const uint8 initialUpkeepCosts[0x60] = {
+const uint8 initialUpkeepCosts[RIDE_TYPE_COUNT] = {
 	41,	// 00 Spiral Roller coaster
 	40,	// 01 Stand Up Coaster
 	40,	// 02 Suspended Swinging
@@ -219,13 +220,14 @@ const uint8 initialUpkeepCosts[0x60] = {
 	50,	// 53 (none)
 	50,	// 54 (none)
 	40,	// 55 (none)
-	180,	// 56 Inverted Impulse Coaster
+	180,// 56 Inverted Impulse Coaster
 	35,	// 57 Mini Roller Coaster
 	50,	// 58 Mine Ride
-	42,	// 59 LIM Launched Roller Coaster
+	42,	// 59 (none)
+    42,	// 5a LIM Launched Roller Coaster
 };
 
-const uint8 costPerTrackPiece[0x60] = {
+const uint8 costPerTrackPiece[RIDE_TYPE_COUNT] = {
 	80,	// 00 Spiral Roller coaster
 	80,	// 01 Stand Up Coaster
 	80,	// 02 Suspended Swinging
@@ -315,13 +317,14 @@ const uint8 costPerTrackPiece[0x60] = {
 	80,	// 56 Inverted Impulse Coaster
 	80,	// 57 Mini Roller Coaster
 	80,	// 58 Mine Ride
-	80,	// 59 LIM Launched Roller Coaster
+	80,	// 59 (none)
+    80,	// 5a LIM Launched Roller Coaster
 };
 
 /**
  * Data initially at 0x0097E3B4
  */
-const uint8 rideUnknownData1[0x60] = {
+const uint8 costPerVehicle[RIDE_TYPE_COUNT] = {
 	10,	// 00 Spiral Roller coaster
 	10,	// 01 Stand Up Coaster
 	20,	// 02 Suspended Swinging
@@ -411,14 +414,15 @@ const uint8 rideUnknownData1[0x60] = {
 	11,	// 56 Inverted Impulse Coaster
 	8,	// 57 Mini Roller Coaster
 	10,	// 58 Mine Ride
-	9,	// 59 LIM Launched Roller Coaster
+	9,	// 59 (none)
+    9,	// 5a LIM Launched Roller Coaster
 };
 
 /**
  * Data at 0x0097E3B6, originally set to either be 3 or 0 and replaced here by
  * a boolean table. This may be exactly the same as hasRunningTrack above.
  */
-const bool rideUnknownData2[0x60] = {
+const bool chargeUpkeepForTrainLength[RIDE_TYPE_COUNT] = {
 	true,	// 00 Spiral Roller coaster
 	true,	// 01 Stand Up Coaster
 	true,	// 02 Suspended Swinging
@@ -508,11 +512,12 @@ const bool rideUnknownData2[0x60] = {
 	true,	// 56 Inverted Impulse Coaster
 	true,	// 57 Mini Roller Coaster
 	true,	// 58 Mine Ride
-	true,	// 59 LIM Launched Roller Coaster
+	true,	// 59 (none)
+    true,	// 5a LIM Launched Roller Coaster
 };
 
 /* Data at 0x0097E3B8 */
-const uint8 rideUnknownData3[0x60] = {
+const uint8 costPerStation[RIDE_TYPE_COUNT] = {
 	10,	// 00 Spiral Roller coaster
 	10,	// 01 Stand Up Coaster
 	10,	// 02 Suspended Swinging
@@ -602,11 +607,12 @@ const uint8 rideUnknownData3[0x60] = {
 	10,	// 56 Inverted Impulse Coaster
 	10,	// 57 Mini Roller Coaster
 	10,	// 58 Mine Ride
-	10,	// 59 LIM Launched Roller Coaster
+	10,	// 59 (none)
+    10,	// 5a LIM Launched Roller Coaster
 };
 
 // Data at 0x0097D21E
-const uint8 rideBonusValue[0x60] = {
+const uint8 rideBonusValue[RIDE_TYPE_COUNT] = {
 	85,  // 00 Spiral Roller coaster
 	90,  // 01 Stand Up Coaster
 	90,  // 02 Suspended Swinging
@@ -696,7 +702,8 @@ const uint8 rideBonusValue[0x60] = {
 	75,  // 56 Inverted Impulse Coaster
 	60,  // 57 Mini Roller Coaster
 	70,  // 58 Mine Ride
-	55,  // 59 LIM Launched Roller Coaster
+	55,  // 59 (none)
+    55,  // 5a LIM Launched Roller Coaster
 };
 
 const ride_component_name RideComponentNames[] = {
@@ -716,7 +723,7 @@ const ride_component_name RideComponentNames[] = {
 	{ STR_RIDE_COMPONENT_COURSE,			STR_RIDE_COMPONENT_COURSE_PLURAL,			STR_RIDE_COMPONENT_COURSE_CAPITALISED,				STR_RIDE_COMPONENT_COURSE_CAPITALISED_PLURAL,			STR_RIDE_COMPONENT_COURSE_COUNT,			STR_RIDE_COMPONENT_COURSE_COUNT_PLURAL,				STR_RIDE_COMPONENT_COURSE_NO },
 };
 
-const rct_ride_name_convention RideNameConvention[96] = {
+const rct_ride_name_convention RideNameConvention[RIDE_TYPE_COUNT] = {
 	{ RIDE_COMPONENT_TYPE_TRAIN,		RIDE_COMPONENT_TYPE_TRACK,				RIDE_COMPONENT_TYPE_STATION }, // 00 Spiral Roller coaster
 	{ RIDE_COMPONENT_TYPE_TRAIN,		RIDE_COMPONENT_TYPE_TRACK,				RIDE_COMPONENT_TYPE_STATION }, // 01 Stand Up Coaster
 	{ RIDE_COMPONENT_TYPE_TRAIN,		RIDE_COMPONENT_TYPE_TRACK,				RIDE_COMPONENT_TYPE_STATION }, // 02 Suspended Swinging
@@ -806,8 +813,8 @@ const rct_ride_name_convention RideNameConvention[96] = {
 	{ RIDE_COMPONENT_TYPE_TRAIN,		RIDE_COMPONENT_TYPE_TRACK,				RIDE_COMPONENT_TYPE_STATION }, // 56 Inverted Impulse Coaster
 	{ RIDE_COMPONENT_TYPE_CAR,			RIDE_COMPONENT_TYPE_TRACK,				RIDE_COMPONENT_TYPE_STATION }, // 57 Mini Roller Coaster
 	{ RIDE_COMPONENT_TYPE_TRAIN,		RIDE_COMPONENT_TYPE_TRACK,				RIDE_COMPONENT_TYPE_STATION }, // 58 Mine Ride
-	{ RIDE_COMPONENT_TYPE_CAR,			RIDE_COMPONENT_TYPE_TRACK,				RIDE_COMPONENT_TYPE_STATION }, // 59 LIM Launched Roller Coaster
-	{ RIDE_COMPONENT_TYPE_TRAIN,		RIDE_COMPONENT_TYPE_TRACK,				RIDE_COMPONENT_TYPE_STATION }
+	{ RIDE_COMPONENT_TYPE_CAR,			RIDE_COMPONENT_TYPE_TRACK,				RIDE_COMPONENT_TYPE_STATION }, // 59 (none)
+	{ RIDE_COMPONENT_TYPE_TRAIN,		RIDE_COMPONENT_TYPE_TRACK,				RIDE_COMPONENT_TYPE_STATION }, // 5a LIM Launched Roller Coaster
 };
 
 const rct_ride_name RideNaming[] =	{
@@ -999,7 +1006,7 @@ const uint8 RideAvailableModes[] = {
 	RIDE_MODE_CONTINUOUS_CIRCUIT, RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED, 0xFF,																		// 57 Mini Roller Coaster
 	RIDE_MODE_CONTINUOUS_CIRCUIT, 0xFF,																														// 58 Mine Ride
 	RIDE_MODE_CONTINUOUS_CIRCUIT, RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED, 0xFF,																		// 59 Unknown
-	RIDE_MODE_POWERED_LAUNCH_PASSTROUGH, RIDE_MODE_POWERED_LAUNCH, RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED, 0xFF											// 60 LIM Launched Roller Coaster
+	RIDE_MODE_POWERED_LAUNCH_PASSTROUGH, RIDE_MODE_POWERED_LAUNCH, RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED, 0xFF											// 5a LIM Launched Roller Coaster
 };
 
 const uint8 AllRideModesAvailable[] = {
@@ -1097,7 +1104,7 @@ const uint8 RideAvailableBreakdowns[] = {
 	(1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_RESTRAINTS_STUCK_CLOSED) | (1 << BREAKDOWN_RESTRAINTS_STUCK_OPEN) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION) | (1 << BREAKDOWN_BRAKES_FAILURE),	// 57 Mini Roller Coaster
 	(1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_RESTRAINTS_STUCK_CLOSED) | (1 << BREAKDOWN_RESTRAINTS_STUCK_OPEN) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION),										// 58 Mine Ride
 	(1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_RESTRAINTS_STUCK_CLOSED) | (1 << BREAKDOWN_RESTRAINTS_STUCK_OPEN) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION) | (1 << BREAKDOWN_BRAKES_FAILURE),	// 59 Unknown
-	(1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_RESTRAINTS_STUCK_CLOSED) | (1 << BREAKDOWN_RESTRAINTS_STUCK_OPEN) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION) | (1 << BREAKDOWN_BRAKES_FAILURE)	// 60 LIM Launched Roller Coaster
+	(1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_RESTRAINTS_STUCK_CLOSED) | (1 << BREAKDOWN_RESTRAINTS_STUCK_OPEN) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION) | (1 << BREAKDOWN_BRAKES_FAILURE)	// 5a LIM Launched Roller Coaster
 };
 
 // rct2: 0x00993E7C and 0x00993E1C
