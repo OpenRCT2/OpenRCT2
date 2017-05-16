@@ -132,6 +132,6 @@ const uint8 gRideCategories[] = {
 	2,		 // Inverted Impulse Coaster
 	2,		 // Mini Roller Coaster
 	2,		 // Mine Ride
-	255,	 //59 Unknown Ride
+	255,	 // 59 Unknown Ride
 	2		 // LIM Launched Roller Coaster
 };

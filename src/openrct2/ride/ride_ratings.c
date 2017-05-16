@@ -746,16 +746,16 @@ static uint16 ride_compute_upkeep(rct_ride *ride)
 	// various variables set on the ride itself.
 
 	// https://gist.github.com/kevinburke/e19b803cd2769d96c540
-	upkeep += rideUnknownData1[ride->type] * ride->num_vehicles;
+	upkeep += costPerVehicle[ride->type] * ride->num_vehicles;
 
 	// either set to 3 or 0, extra boosts for some rides including mini golf
-	if (rideUnknownData2[ride->type]) {
+	if (chargeUpkeepForTrainLength[ride->type]) {
 		upkeep += 3 * ride->num_cars_per_train;
 	}
 
 	// slight upkeep boosts for some rides - 5 for mini railroad, 10 for log
 	// flume/rapids, 10 for roller coaster, 28 for giga coaster
-	upkeep += rideUnknownData3[ride->type] * ride->num_stations;
+	upkeep += costPerStation[ride->type] * ride->num_stations;
 
 	if (ride->mode == RIDE_MODE_REVERSE_INCLINE_LAUNCHED_SHUTTLE) {
 		upkeep += 30;
