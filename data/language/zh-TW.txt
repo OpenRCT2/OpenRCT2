@@ -4382,7 +4382,7 @@ STR_DTLS    :在隱藏於森林深處的清空範圍中, 建造一個很受歡�
 <Dynamite Dunes>
 STR_SCNR    :Dynamite Dunes
 STR_PARK    :Dynamite Dunes
-STR_DTLS    :這個座立於沙漠中的樂園只有一座雲霄飛車, 但不缺乏可供擴充的位置
+STR_DTLS    :這個座立於沙漠中的樂園只有一座雲霄飛車, 但不缺乏可供擴充的區域
 
 <Leafy Lake>
 STR_SCNR    :Leafy Lake
@@ -4510,9 +4510,9 @@ STR_SCNR    :Funtopia
 STR_PARK    :Funtopia
 STR_DTLS    :這個被一條高速公路所分開的樂園已擁有幾個已在運行的遊樂設施
 
-<Haunted Harbor>
-STR_SCNR    :Haunted Harbor
-STR_PARK    :Haunted Harbor
+<Haunted Harbour>
+STR_SCNR    :Haunted Harbour
+STR_PARK    :Haunted Harbour
 STR_DTLS    :當地政府已同意將鄰近的土地以低廉的價格販賣給這個小型海邊樂園, 但條件是要保留某些遊樂設施
 
 <Fun Fortress>
@@ -4583,52 +4583,52 @@ STR_DTLS    :以添加遊樂設施及雲霄飛車發展這個羅馬主題的樂�
 <Swamp Cove>
 STR_SCNR    :Swamp Cove
 STR_PARK    :Swamp Cove
-STR_DTLS    :Built partly on a series of small islands, this park already has a pair of large roller coasters as its centerpiece
+STR_DTLS    :此樂園已經有一對建造在數個小島嶼上的巨型雲霄飛車作為它的靈魂
 
 <Adrenaline Heights>
 STR_SCNR    :Adrenaline Heights
 STR_PARK    :Adrenaline Heights
-STR_DTLS    :Build a park to appeal to the high-intensity thrill-seeking local people
+STR_DTLS    :建造一個能吸引喜好高刺激度遊樂設施的當地遊客前往的樂園
 
 <Utopia Park>
 STR_SCNR    :Utopia Park
 STR_PARK    :Utopia Park
-STR_DTLS    :An oasis in the middle of the desert provides an unusual opportunity to build an amusement park
+STR_DTLS    :一個沙漠中的綠洲帶來了一個非比尋常的機會去建造一個主題樂園
 
 <Rotting Heights>
 STR_SCNR    :Rotting Heights
 STR_PARK    :Rotting Heights
-STR_DTLS    :Overgrown and dilapidated, can you resurrect this once-great amusement park?
+STR_DTLS    :你能拯救這個曾經輝煌過, 但現殘破又雜草叢生的主題樂園嗎?
 
 <Fiasco Forest>
 STR_SCNR    :Fiasco Forest
 STR_PARK    :Fiasco Forest
-STR_DTLS    :Full of badly designed and dangerous rides, you have a very limited budget and time to fix the problems and turn the park around
+STR_DTLS    :你只有非常有限的資金及時間去修復這一個充滿不同劣質設計及非常危險的遊樂設施的樂園
 
 <Pickle Park>
 STR_SCNR    :Pickle Park
 STR_PARK    :Pickle Park
-STR_DTLS    :The local authority will not allow any kind of advertising or promotion, so this park must succeed by reputation only
+STR_DTLS    :當地政府並不准許任何營銷活動, 所以這個樂園必須要以名譽來達至成功
 
 <Giggle Downs>
 STR_SCNR    :Giggle Downs
 STR_PARK    :Giggle Downs
-STR_DTLS    :A four lane steeplechase ride is the centerpiece of this expanding park
+STR_DTLS    :四座馬術障礙賽式雲霄飛車是這個需要擴張的樂園的靈魂
 
 <Mineral Park>
 STR_SCNR    :Mineral Park
 STR_PARK    :Mineral Park
-STR_DTLS    :Turn this abandoned stone quarry into a place to attract thrill-seeking tourists
+STR_DTLS    :將這個已廢棄的石礦轉型成一個能夠吸引喜好剌激的遊客前往的地方
 
 <Coaster Crazy>
 STR_SCNR    :Coaster Crazy
 STR_PARK    :Coaster Crazy
-STR_DTLS    :You have limited funds but unlimited time to turn this mountainside area into a vast roller coaster park
+STR_DTLS    :你擁有有限的金錢但無限的時間來將這個山區轉變成一個巨大的雲霄飛車樂園
 
 <Urban Park>
 STR_SCNR    :Urban Park
 STR_PARK    :Urban Park
-STR_DTLS    :A tiny park has done a deal with the nearby town to allow expansion through the town itself
+STR_DTLS    :這個微小的樂園已與鄰近城鎮商討好使用後者來擴充前者的交易
 
 <Geoffrey Gardens>
 STR_SCNR    :Geoffrey Gardens
@@ -4655,47 +4655,47 @@ STR_DTLS    :沒有任何財政上的限制, 你的挑戰是要發展這個沙�
 <Razor Rocks>
 STR_SCNR    :Razor Rocks
 STR_PARK    :Razor Rocks
-STR_DTLS    :Your task is to build a massive coaster-filled park in amongst Razor Rocks
+STR_DTLS    :你的任務是於Razor Rocks之中建造一個擁有不同雲霄飛車的樂園
 
 <Crater Lake>
 STR_SCNR    :Crater Lake
 STR_PARK    :Crater Lake
-STR_DTLS    :A large lake in an ancient crater is the setting for this park
+STR_DTLS    :此樂園設定於一個沉睡火山口的湖之上
 
 <Vertigo Views>
 STR_SCNR    :Vertigo Views
 STR_PARK    :Vertigo Views
-STR_DTLS    :This large park already has an excellent hyper-coaster, but your task is to massively increase its profit
+STR_DTLS    :這個大型的樂園已經擁有一座很棒的Hyper式雲霄飛車, 但你的任務是要將他的利潤大幅增加
 
 <Paradise Pier 2>
 STR_SCNR    :Paradise Pier 2
 STR_PARK    :Paradise Pier 2
-STR_DTLS    :Paradise Pier has expanded its network of walkways over the sea, and your task is to expand the park to use the extra space
+STR_DTLS    :Paradise Pier 已向海中心擴張它的道路網絡, 你的任務是讓樂園使用那些新擴張的區域
 
 <Dragon's Cove>
 STR_SCNR    :Dragon's Cove
 STR_PARK    :Dragon's Cove
-STR_DTLS    :This sea-side cove is the setting for this coaster-building challenge
+STR_DTLS    :此建造雲霄飛車挑戰設定於一個處於海邊的洞穴之中
 
 <Good Knight Park>
 STR_SCNR    :Good Knight Park
 STR_PARK    :Good Knight Park
-STR_DTLS    :A castle with a pair of roller coasters needs developing into a larger theme park
+STR_DTLS    :一個擁有一對雲霄飛車的城堡需要發展成一個更大型的主題樂園
 
 <Wacky Warren>
 STR_SCNR    :Wacky Warren
 STR_PARK    :Wacky Warren
-STR_DTLS    :A park which has much of its footpaths and coasters underground
+STR_DTLS    :一個擁有很多道路及雲霄飛車於地下的樂園
 
 <Grand Glacier>
 STR_SCNR    :Grand Glacier
 STR_PARK    :Grand Glacier
-STR_DTLS    :A glacier-filled valley is yours to develop into a theme park
+STR_DTLS    :一個由冰川所填滿的峽谷現可由你任意發展成一個樂園
 
 <Crazy Craters>
 STR_SCNR    :Crazy Craters
 STR_PARK    :Crazy Craters
-STR_DTLS    :In a far-off world where money is not needed, you must build an entertainment centre to keep the people happy
+STR_DTLS    :在一個不用錢的遙遠的世界中, 你需要建造一個娛樂中心來讓遊客開心
 
 <Dusty Desert>
 STR_SCNR    :Dusty Desert
@@ -4705,7 +4705,7 @@ STR_DTLS    :你需要在此沙漠中的樂園完成未建好的5座雲霄飛車
 <Woodworm Park>
 STR_SCNR    :Woodworm Park
 STR_PARK    :Woodworm Park
-STR_DTLS    :This historical park is only allowed to build older-styled rides
+STR_DTLS    :這個很有歷史的樂園只能讓你建造一些古舊風格的遊樂設施
 
 <Icarus Park>
 STR_SCNR    :Icarus Park
@@ -4715,7 +4715,7 @@ STR_DTLS    :發展此外星樂園並將其利潤最大化
 <Sunny Swamps>
 STR_SCNR    :Sunny Swamps
 STR_PARK    :Sunny Swamps
-STR_DTLS    :This well-themed amusement park already has several rides, but has plenty of space for expansion
+STR_DTLS    :這個佈置得很好的主題樂園已經有數項遊樂設施, 但有很多擴張的空間
 
 <Frightmare Hills>
 STR_SCNR    :Frightmare Hills
@@ -4725,7 +4725,7 @@ STR_DTLS    :一個在中心擁有一座巨大的雲霄飛車的恐怖樂園
 <Thunder Rocks>
 STR_SCNR    :Thunder Rocks
 STR_PARK    :Thunder Rocks
-STR_DTLS    :Two large hunks of rock stick out of the sand, upon which the beginnings of a theme park are constructed
+STR_DTLS    :兩座屹立在沙地之上的巨型石將會作為建造一個主題樂園的初始環境
 
 <Octagon Park>
 STR_SCNR    :Octagon Park
@@ -4735,7 +4735,7 @@ STR_DTLS    :你需要在此大型樂園內建造十座雲霄飛車
 <Pleasure Island>
 STR_SCNR    :Pleasure Island
 STR_PARK    :Pleasure Island
-STR_DTLS    :A long thin island makes a challenging setting to build a selection of coasters
+STR_DTLS    :一個又長又窄的島嶼令到建造挑選好的雲霄飛車十分有挑戰性
 
 <Icicle Worlds>
 STR_SCNR    :Icicle Worlds
