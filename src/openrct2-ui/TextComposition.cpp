@@ -112,7 +112,7 @@ void TextComposition::HandleMessage(const SDL_Event * e)
             key = SDLK_RETURN;
         }
 		
-		GetContext()->GetUiContext()->SetKeysPressed(key, e->key.keysym.scancode);
+        GetContext()->GetUiContext()->SetKeysPressed(key, e->key.keysym.scancode);
 
         // Text input
         if (_session.Buffer == nullptr)

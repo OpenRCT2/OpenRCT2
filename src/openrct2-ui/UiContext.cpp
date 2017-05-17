@@ -218,11 +218,11 @@ public:
         SDL_SetWindowGrab(_window, value ? SDL_TRUE : SDL_FALSE);
     }
 	
-	void SetKeysPressed(uint32 keysym, uint8 scancode) override
-	{
-			_lastKeyPressed = keysym;
-			_keysPressed[scancode] = 1;
-	}
+    void SetKeysPressed(uint32 keysym, uint8 scancode) override
+    {
+        _lastKeyPressed = keysym;
+        _keysPressed[scancode] = 1;
+    }
 
     // Drawing
     IDrawingEngine * CreateDrawingEngine(DRAWING_ENGINE_TYPE type) override
