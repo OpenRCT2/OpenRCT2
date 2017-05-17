@@ -30,7 +30,6 @@ protected:
 
     void DumpRatings()
     {
-        int expI = 0;
         for (int rideId = 0; rideId < MAX_RIDES; rideId++)
         {
             rct_ride * ride = get_ride(rideId);
