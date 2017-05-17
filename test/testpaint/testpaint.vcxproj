@@ -146,7 +146,6 @@
     <ClCompile Include="..\..\src\openrct2\ride\gentle\spiral_slide.c" />
     <ClCompile Include="..\..\src\openrct2\ride\ride_data.c" />
     <ClCompile Include="..\..\src\openrct2\ride\shops\facility.c" />
-    <ClCompile Include="..\..\src\openrct2\ride\shops\misc.c" />
     <ClCompile Include="..\..\src\openrct2\ride\shops\shop.c" />
     <ClCompile Include="..\..\src\openrct2\ride\thrill\3d_cinema.c" />
     <ClCompile Include="..\..\src\openrct2\ride\thrill\enterprise.c" />

@@ -97,7 +97,6 @@
 		C64FDA921D6D9A2100F259B9 /* space_rings.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8EA1CDBC3B7009F9BFC /* space_rings.c */; };
 		C64FDA931D6D9A2100F259B9 /* spiral_slide.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8EB1CDBC3B7009F9BFC /* spiral_slide.c */; };
 		C64FDA941D6D9A2100F259B9 /* facility.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8ED1CDBC3B7009F9BFC /* facility.c */; };
-		C64FDA951D6D9A2100F259B9 /* misc.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8EE1CDBC3B7009F9BFC /* misc.c */; };
 		C64FDA961D6D9A2100F259B9 /* shop.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8EF1CDBC3B7009F9BFC /* shop.c */; };
 		C64FDA971D6D9A2100F259B9 /* 3d_cinema.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8F11CDBC3B7009F9BFC /* 3d_cinema.c */; };
 		C64FDA981D6D9A2100F259B9 /* enterprise.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8F21CDBC3B7009F9BFC /* enterprise.c */; };
@@ -199,7 +198,6 @@
 		C686F9391CDBC3B7009F9BFC /* space_rings.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8EA1CDBC3B7009F9BFC /* space_rings.c */; };
 		C686F93A1CDBC3B7009F9BFC /* spiral_slide.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8EB1CDBC3B7009F9BFC /* spiral_slide.c */; };
 		C686F93B1CDBC3B7009F9BFC /* facility.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8ED1CDBC3B7009F9BFC /* facility.c */; };
-		C686F93C1CDBC3B7009F9BFC /* misc.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8EE1CDBC3B7009F9BFC /* misc.c */; };
 		C686F93D1CDBC3B7009F9BFC /* shop.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8EF1CDBC3B7009F9BFC /* shop.c */; };
 		C686F93E1CDBC3B7009F9BFC /* 3d_cinema.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8F11CDBC3B7009F9BFC /* 3d_cinema.c */; };
 		C686F93F1CDBC3B7009F9BFC /* enterprise.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8F21CDBC3B7009F9BFC /* enterprise.c */; };
@@ -664,7 +662,6 @@
 		C686F8EA1CDBC3B7009F9BFC /* space_rings.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = space_rings.c; sourceTree = "<group>"; };
 		C686F8EB1CDBC3B7009F9BFC /* spiral_slide.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = spiral_slide.c; sourceTree = "<group>"; };
 		C686F8ED1CDBC3B7009F9BFC /* facility.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = facility.c; sourceTree = "<group>"; };
-		C686F8EE1CDBC3B7009F9BFC /* misc.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = misc.c; sourceTree = "<group>"; };
 		C686F8EF1CDBC3B7009F9BFC /* shop.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = shop.c; sourceTree = "<group>"; };
 		C686F8F11CDBC3B7009F9BFC /* 3d_cinema.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = 3d_cinema.c; sourceTree = "<group>"; };
 		C686F8F21CDBC3B7009F9BFC /* enterprise.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = enterprise.c; sourceTree = "<group>"; };
@@ -1447,7 +1444,6 @@
 			isa = PBXGroup;
 			children = (
 				C686F8ED1CDBC3B7009F9BFC /* facility.c */,
-				C686F8EE1CDBC3B7009F9BFC /* misc.c */,
 				C686F8EF1CDBC3B7009F9BFC /* shop.c */,
 			);
 			path = shops;
@@ -2651,7 +2647,6 @@
 				C64FDA921D6D9A2100F259B9 /* space_rings.c in Sources */,
 				C64FDA931D6D9A2100F259B9 /* spiral_slide.c in Sources */,
 				C64FDA941D6D9A2100F259B9 /* facility.c in Sources */,
-				C64FDA951D6D9A2100F259B9 /* misc.c in Sources */,
 				C64FDA961D6D9A2100F259B9 /* shop.c in Sources */,
 				C64FDA971D6D9A2100F259B9 /* 3d_cinema.c in Sources */,
 				C64FDA981D6D9A2100F259B9 /* enterprise.c in Sources */,
