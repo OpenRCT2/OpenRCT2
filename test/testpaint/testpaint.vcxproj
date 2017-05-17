@@ -170,7 +170,6 @@
     <ClCompile Include="..\..\src\openrct2\ride\water\boat_ride.c" />
     <ClCompile Include="..\..\src\openrct2\ride\water\dingy_slide.c" />
     <ClCompile Include="..\..\src\openrct2\ride\water\log_flume.c" />
-    <ClCompile Include="..\..\src\openrct2\ride\water\river_rafts.c" />
     <ClCompile Include="..\..\src\openrct2\ride\water\river_rapids.c" />
     <ClCompile Include="..\..\src\openrct2\ride\water\splash_boats.c" />
     <ClCompile Include="..\..\src\openrct2\ride\water\submarine_ride.c" />

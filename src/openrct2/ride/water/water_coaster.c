@@ -362,11 +362,11 @@ TRACK_PAINT_FUNCTION get_track_paint_function_water_rc(sint32 trackType, sint32 
 	// Use River Rafts
 	//////////////////////////////////////////////////////
 	case TRACK_ELEM_FLAT_COVERED:
-		return get_track_paint_function_river_rafts(TRACK_ELEM_FLAT, direction);
+		return get_track_paint_function_splash_boats(TRACK_ELEM_FLAT, direction);
 	case TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES_COVERED:
-		return get_track_paint_function_river_rafts(TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES, direction);
+		return get_track_paint_function_splash_boats(TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES, direction);
 	case TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES_COVERED:
-		return get_track_paint_function_river_rafts(TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES, direction);
+		return get_track_paint_function_splash_boats(TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES, direction);
 	}
 	return NULL;
 }
