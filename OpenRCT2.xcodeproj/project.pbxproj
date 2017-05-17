@@ -1624,7 +1624,7 @@
 		F76C85AD1EC4E82600FA49E2 /* UiContext.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UiContext.h; sourceTree = "<group>"; };
 		F76C85AE1EC4E82600FA49E2 /* UiContext.Linux.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = UiContext.Linux.cpp; sourceTree = "<group>"; };
 		F76C85AF1EC4E82600FA49E2 /* UiContext.Win32.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = UiContext.Win32.cpp; sourceTree = "<group>"; };
-		F7D7747E1EC61E5100BE6EBC /* UiContext.macOS.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = UiContext.macOS.mm; sourceTree = "<group>"; };
+		F7D7747E1EC61E5100BE6EBC /* UiContext.macOS.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = UiContext.macOS.mm; sourceTree = "<group>"; usesTabs = 0; };
 		F7D774841EC66CD700BE6EBC /* OpenRCT2-cli */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "OpenRCT2-cli"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -4625,6 +4625,7 @@
 				C68B2D451EC790690020651C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		D497D0731C20FD52002BF46A /* Build configuration list for PBXProject "OpenRCT2" */ = {
 			isa = XCConfigurationList;

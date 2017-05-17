@@ -1,17 +1,17 @@
 #pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
 /*****************************************************************************
-* OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
-*
-* OpenRCT2 is the work of many authors, a full list can be found in contributors.md
-* For more information, visit https://github.com/OpenRCT2/OpenRCT2
-*
-* OpenRCT2 is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* A full copy of the GNU General Public License can be found in licence.txt
-*****************************************************************************/
+ * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
+ *
+ * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
+ * For more information, visit https://github.com/OpenRCT2/OpenRCT2
+ *
+ * OpenRCT2 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * A full copy of the GNU General Public License can be found in licence.txt
+ *****************************************************************************/
 #pragma endregion
 
 #if defined(__APPLE__) && defined(__MACH__)
@@ -36,11 +36,11 @@ namespace OpenRCT2 { namespace Ui
     public:
         macOSContext()
         {
-			@autoreleasepool {
-				if ([NSWindow respondsToSelector:@selector(setAllowsAutomaticWindowTabbing:)]) {
-					[NSWindow setAllowsAutomaticWindowTabbing:NO];
-				}
-			}
+            @autoreleasepool {
+                if ([NSWindow respondsToSelector:@selector(setAllowsAutomaticWindowTabbing:)]) {
+                    [NSWindow setAllowsAutomaticWindowTabbing:NO];
+                }
+            }
         }
 
         void SetWindowIcon(SDL_Window * window) override
@@ -49,84 +49,84 @@ namespace OpenRCT2 { namespace Ui
 
         bool IsSteamOverlayAttached() override
         {
-			STUB();
-			return false;
+            STUB();
+            return false;
         }
 
         void ShowMessageBox(SDL_Window * window, const std::string &message) override
         {
-			@autoreleasepool
-			{
-				NSAlert *alert = [[[NSAlert alloc] init] autorelease];
-				[alert addButtonWithTitle:@"OK"];
-				alert.messageText = [NSString stringWithUTF8String:message.c_str()];
-				[alert runModal];
-			}
+            @autoreleasepool
+            {
+                NSAlert *alert = [[[NSAlert alloc] init] autorelease];
+                [alert addButtonWithTitle:@"OK"];
+                alert.messageText = [NSString stringWithUTF8String:message.c_str()];
+                [alert runModal];
+            }
         }
 
         std::string ShowFileDialog(SDL_Window * window, const FileDialogDesc &desc) override
         {
-			@autoreleasepool
-			{
-				NSMutableArray *extensions = [NSMutableArray new];
-				for (const OpenRCT2::Ui::FileDialogDesc::Filter &filter: desc.Filters) {
-					if (filter.Pattern != "") {
-						NSString *fp = [NSString stringWithUTF8String:filter.Pattern.c_str()];
-						fp = [fp stringByReplacingOccurrencesOfString:@"*." withString:@""];
-						[extensions addObjectsFromArray:[fp componentsSeparatedByString:@";"]];
-					}
-				}
-				
-				NSString *directory;
-				NSSavePanel *panel;
-				if (desc.Type == FILE_DIALOG_TYPE::SAVE)
-				{
-					NSString *filePath = [NSString stringWithUTF8String:desc.DefaultFilename.c_str()];
-					directory = filePath.stringByDeletingLastPathComponent;
-					NSString *basename = filePath.lastPathComponent;
-					panel = [NSSavePanel savePanel];
-					panel.nameFieldStringValue = [NSString stringWithFormat:@"%@.%@", basename, extensions.firstObject];
-				}
-				else if (desc.Type == FILE_DIALOG_TYPE::OPEN)
-				{
-					directory = [NSString stringWithUTF8String:desc.InitialDirectory.c_str()];
-					NSOpenPanel *open = [NSOpenPanel openPanel];
-					open.canChooseDirectories = false;
-					open.canChooseFiles = true;
-					open.allowsMultipleSelection = false;
-					panel = open;
-				} else {
-					return std::string();
-				}
-				
-				panel.title = [NSString stringWithUTF8String:desc.Title.c_str()];
-				panel.allowedFileTypes = extensions;
-				panel.directoryURL = [NSURL fileURLWithPath:directory];
-				if ([panel runModal] == NSFileHandlingPanelCancelButton){
-					return std::string();
-				} else {
-					return panel.URL.path.UTF8String;
-				}
-			}
+            @autoreleasepool
+            {
+                NSMutableArray *extensions = [NSMutableArray new];
+                for (const OpenRCT2::Ui::FileDialogDesc::Filter &filter: desc.Filters) {
+                    if (filter.Pattern != "") {
+                        NSString *fp = [NSString stringWithUTF8String:filter.Pattern.c_str()];
+                        fp = [fp stringByReplacingOccurrencesOfString:@"*." withString:@""];
+                        [extensions addObjectsFromArray:[fp componentsSeparatedByString:@";"]];
+                    }
+                }
+
+                NSString *directory;
+                NSSavePanel *panel;
+                if (desc.Type == FILE_DIALOG_TYPE::SAVE)
+                {
+                    NSString *filePath = [NSString stringWithUTF8String:desc.DefaultFilename.c_str()];
+                    directory = filePath.stringByDeletingLastPathComponent;
+                    NSString *basename = filePath.lastPathComponent;
+                    panel = [NSSavePanel savePanel];
+                    panel.nameFieldStringValue = [NSString stringWithFormat:@"%@.%@", basename, extensions.firstObject];
+                }
+                else if (desc.Type == FILE_DIALOG_TYPE::OPEN)
+                {
+                    directory = [NSString stringWithUTF8String:desc.InitialDirectory.c_str()];
+                    NSOpenPanel *open = [NSOpenPanel openPanel];
+                    open.canChooseDirectories = false;
+                    open.canChooseFiles = true;
+                    open.allowsMultipleSelection = false;
+                    panel = open;
+                } else {
+                    return std::string();
+                }
+
+                panel.title = [NSString stringWithUTF8String:desc.Title.c_str()];
+                panel.allowedFileTypes = extensions;
+                panel.directoryURL = [NSURL fileURLWithPath:directory];
+                if ([panel runModal] == NSFileHandlingPanelCancelButton){
+                    return std::string();
+                } else {
+                    return panel.URL.path.UTF8String;
+                }
+            }
         }
 
         std::string ShowDirectoryDialog(SDL_Window * window, const std::string &title) override
         {
-			@autoreleasepool
-			{
-				NSOpenPanel *panel = [NSOpenPanel openPanel];
-				panel.canChooseFiles = false;
-				panel.canChooseDirectories = true;
-				panel.allowsMultipleSelection = false;
-				utf8 *url = NULL;
-				if ([panel runModal] == NSFileHandlingPanelOKButton)
-				{
-					NSString *selectedPath = panel.URL.path;
-					const char *path = selectedPath.UTF8String;
-					url = _strdup(path);
-				}
-				return url;
-			}
+            @autoreleasepool
+            {
+                NSOpenPanel *panel = [NSOpenPanel openPanel];
+                panel.canChooseFiles = false;
+                panel.canChooseDirectories = true;
+                panel.allowsMultipleSelection = false;
+                utf8 *url = NULL;
+                if ([panel runModal] == NSFileHandlingPanelOKButton)
+                {
+                    NSString *selectedPath = panel.URL.path;
+                    const char *path = selectedPath.UTF8String;
+                    url = _strdup(path);
+                }
+                return url;
+            }
         }
 
     private:
@@ -163,7 +163,7 @@ namespace OpenRCT2 { namespace Ui
                         break;
                     }
                 }
-
+                
                 // Convert to string
                 *output = std::string(outputBuffer.data(), outputLength);
             }
@@ -171,12 +171,12 @@ namespace OpenRCT2 { namespace Ui
             {
                 fflush(fpipe);
             }
-
+            
             // Return exit code
             return pclose(fpipe);
         }
     };
-
+    
     IPlatformUiContext * CreatePlatformUiContext()
     {
         return new macOSContext();
