@@ -6325,7 +6325,7 @@ const TRACK_PAINT_FUNCTION_GETTER RideTypeTrackPaintFunctions[RIDE_TYPE_COUNT] =
 	get_track_paint_function_inverted_hairpin_rc,						// RIDE_TYPE_INVERTED_HAIRPIN_COASTER
 	get_track_paint_function_magic_carpet,							// RIDE_TYPE_MAGIC_CARPET
 	get_track_paint_function_submarine_ride,						// RIDE_TYPE_SUBMARINE_RIDE
-	get_track_paint_function_river_rafts,							// RIDE_TYPE_RIVER_RAFTS
+	get_track_paint_function_splash_boats,							// RIDE_TYPE_RIVER_RAFTS
 	get_track_paint_function_shop,						// RIDE_TYPE_50
 	get_track_paint_function_enterprise,				// RIDE_TYPE_ENTERPRISE
 	get_track_paint_function_shop,						// RIDE_TYPE_52

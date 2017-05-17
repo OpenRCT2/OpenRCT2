@@ -118,7 +118,6 @@
 		C64FDAA71D6D9A2100F259B9 /* boat_ride.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F9031CDBC3B7009F9BFC /* boat_ride.c */; };
 		C64FDAA81D6D9A2100F259B9 /* dingy_slide.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F9041CDBC3B7009F9BFC /* dingy_slide.c */; };
 		C64FDAA91D6D9A2100F259B9 /* log_flume.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F9051CDBC3B7009F9BFC /* log_flume.c */; };
-		C64FDAAA1D6D9A2100F259B9 /* river_rafts.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F9061CDBC3B7009F9BFC /* river_rafts.c */; };
 		C64FDAAB1D6D9A2100F259B9 /* river_rapids.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F9071CDBC3B7009F9BFC /* river_rapids.c */; };
 		C64FDAAC1D6D9A2100F259B9 /* splash_boats.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F9081CDBC3B7009F9BFC /* splash_boats.c */; };
 		C64FDAAD1D6D9A2100F259B9 /* submarine_ride.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F9091CDBC3B7009F9BFC /* submarine_ride.c */; };
@@ -221,7 +220,6 @@
 		C686F94E1CDBC3B7009F9BFC /* boat_ride.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F9031CDBC3B7009F9BFC /* boat_ride.c */; };
 		C686F94F1CDBC3B7009F9BFC /* dingy_slide.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F9041CDBC3B7009F9BFC /* dingy_slide.c */; };
 		C686F9501CDBC3B7009F9BFC /* log_flume.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F9051CDBC3B7009F9BFC /* log_flume.c */; };
-		C686F9511CDBC3B7009F9BFC /* river_rafts.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F9061CDBC3B7009F9BFC /* river_rafts.c */; };
 		C686F9521CDBC3B7009F9BFC /* river_rapids.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F9071CDBC3B7009F9BFC /* river_rapids.c */; };
 		C686F9531CDBC3B7009F9BFC /* splash_boats.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F9081CDBC3B7009F9BFC /* splash_boats.c */; };
 		C686F9541CDBC3B7009F9BFC /* submarine_ride.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F9091CDBC3B7009F9BFC /* submarine_ride.c */; };
@@ -687,7 +685,6 @@
 		C686F9031CDBC3B7009F9BFC /* boat_ride.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = boat_ride.c; sourceTree = "<group>"; };
 		C686F9041CDBC3B7009F9BFC /* dingy_slide.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = dingy_slide.c; sourceTree = "<group>"; };
 		C686F9051CDBC3B7009F9BFC /* log_flume.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = log_flume.c; sourceTree = "<group>"; };
-		C686F9061CDBC3B7009F9BFC /* river_rafts.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = river_rafts.c; sourceTree = "<group>"; };
 		C686F9071CDBC3B7009F9BFC /* river_rapids.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = river_rapids.c; sourceTree = "<group>"; };
 		C686F9081CDBC3B7009F9BFC /* splash_boats.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = splash_boats.c; sourceTree = "<group>"; };
 		C686F9091CDBC3B7009F9BFC /* submarine_ride.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = submarine_ride.c; sourceTree = "<group>"; };
@@ -1492,7 +1489,6 @@
 				C686F9031CDBC3B7009F9BFC /* boat_ride.c */,
 				C686F9041CDBC3B7009F9BFC /* dingy_slide.c */,
 				C686F9051CDBC3B7009F9BFC /* log_flume.c */,
-				C686F9061CDBC3B7009F9BFC /* river_rafts.c */,
 				C686F9071CDBC3B7009F9BFC /* river_rapids.c */,
 				C686F9081CDBC3B7009F9BFC /* splash_boats.c */,
 				C686F9091CDBC3B7009F9BFC /* submarine_ride.c */,
@@ -2680,7 +2676,6 @@
 				C64FDAA71D6D9A2100F259B9 /* boat_ride.c in Sources */,
 				C64FDAA81D6D9A2100F259B9 /* dingy_slide.c in Sources */,
 				C64FDAA91D6D9A2100F259B9 /* log_flume.c in Sources */,
-				C64FDAAA1D6D9A2100F259B9 /* river_rafts.c in Sources */,
 				C606CCC91DB4054000FE4015 /* Utils.cpp in Sources */,
 				C64FDAAB1D6D9A2100F259B9 /* river_rapids.c in Sources */,
 				C64FDAAC1D6D9A2100F259B9 /* splash_boats.c in Sources */,
@@ -3037,7 +3032,6 @@
 				C686F9281CDBC3B7009F9BFC /* wild_mouse.c in Sources */,
 				D44272701CC81B3200D84D28 /* music_credits.c in Sources */,
 				D433A5021E4A861F00D9A6DF /* SawyerChunkWriter.cpp in Sources */,
-				C686F9511CDBC3B7009F9BFC /* river_rafts.c in Sources */,
 				C686F90E1CDBC3B7009F9BFC /* corkscrew_roller_coaster.c in Sources */,
 				D44272A61CC81B3200D84D28 /* scenery.c in Sources */,
 				C686F9111CDBC3B7009F9BFC /* heartline_twister_coaster.c in Sources */,
