@@ -287,7 +287,7 @@ void TextComposition::Delete()
     utf8 * buffer = _session.Buffer;
     utf8 * targetShiftPtr = buffer + _session.SelectionStart;
     utf8 * sourceShiftPtr = targetShiftPtr + _session.SelectionSize;
-    size_t shiftSize = _session.SelectionSize - _session.SelectionStart - _session.SelectionSize + 1;
+    size_t shiftSize = _session.Size - (_session.SelectionStart - _session.SelectionSize + 1);
     memmove(targetShiftPtr, sourceShiftPtr, shiftSize);
     _session.SelectionSize = 0;
     RecalculateLength();
