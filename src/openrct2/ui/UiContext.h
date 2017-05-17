@@ -119,7 +119,7 @@ namespace OpenRCT2
             virtual void                SetCursorTrap(bool value) abstract;
             virtual const uint8 *       GetKeysState() abstract;
             virtual const uint8 *       GetKeysPressed() abstract;
-			virtual void				SetKeysPressed(uint32 keysym, uint8 scancode) abstract;
+            virtual void                SetKeysPressed(uint32 keysym, uint8 scancode) abstract;
 
             // Drawing
             virtual Drawing::IDrawingEngine *   CreateDrawingEngine(Drawing::DRAWING_ENGINE_TYPE type) abstract;
