@@ -20,7 +20,6 @@
 #include "../localisation/localisation.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
-#include "../interface/themes.h"
 #include "../rct2.h"
 
 enum WINDOW_TITLE_OPTIONS_WIDGET_IDX {
@@ -33,7 +32,6 @@ static rct_widget window_title_options_widgets[] = {
 };
 
 static void window_title_options_mouseup(rct_window *w, rct_widgetindex widgetIndex);
-static void window_title_options_invalidate(rct_window *w);
 static void window_title_options_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
 static rct_window_event_list window_title_options_events = {
@@ -62,7 +60,7 @@ static rct_window_event_list window_title_options_events = {
 	NULL,
 	NULL,
 	NULL,
-	window_title_options_invalidate,
+	NULL,
 	window_title_options_paint,
 	NULL
 };
@@ -101,9 +99,4 @@ static void window_title_options_mouseup(rct_window *w, rct_widgetindex widgetIn
 static void window_title_options_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
 	window_draw_widgets(w, dpi);
-}
-
-static void window_title_options_invalidate(rct_window *w)
-{
-	colour_scheme_update(w);
 }

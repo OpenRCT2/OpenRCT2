@@ -15,7 +15,6 @@
 #pragma endregion
 
 #include "../config/Config.h"
-#include "../interface/themes.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
 #include "../localisation/localisation.h"
@@ -426,7 +425,6 @@ static void window_multiplayer_information_update(rct_window *w)
 
 static void window_multiplayer_information_invalidate(rct_window *w)
 {
-	colour_scheme_update(w);
 	window_multiplayer_set_pressed_tab(w);
 	window_multiplayer_anchor_border_widgets(w);
 	window_align_tabs(w, WIDX_TAB1, WIDX_TAB4);
@@ -563,8 +561,6 @@ static void window_multiplayer_players_scrollmouseover(rct_window *w, sint32 scr
 
 static void window_multiplayer_players_invalidate(rct_window *w)
 {
-	colour_scheme_update(w);
-
 	window_multiplayer_set_pressed_tab(w);
 	window_multiplayer_anchor_border_widgets(w);
 	window_multiplayer_players_widgets[WIDX_LIST].right = w->width - 4;
@@ -799,7 +795,6 @@ static void window_multiplayer_groups_text_input(rct_window *w, rct_widgetindex 
 
 static void window_multiplayer_groups_invalidate(rct_window *w)
 {
-	colour_scheme_update(w);
 	window_multiplayer_set_pressed_tab(w);
 	window_multiplayer_anchor_border_widgets(w);
 	window_multiplayer_groups_widgets[WIDX_PERMISSIONS_LIST].right = w->width - 4;
@@ -943,7 +938,6 @@ static void window_multiplayer_options_update(rct_window *w)
 
 static void window_multiplayer_options_invalidate(rct_window *w)
 {
-	colour_scheme_update(w);
 	window_multiplayer_set_pressed_tab(w);
 	window_multiplayer_anchor_border_widgets(w);
 	window_align_tabs(w, WIDX_TAB1, WIDX_TAB4);

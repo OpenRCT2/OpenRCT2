@@ -21,7 +21,6 @@
 #include "../rct2.h"
 #include "../sprites.h"
 #include "../world/map.h"
-#include "../interface/themes.h"
 
 #define MINIMUM_TOOL_SIZE 1
 #define MAXIMUM_TOOL_SIZE 64
@@ -199,8 +198,6 @@ static void window_water_update(rct_window *w)
  */
 static void window_water_invalidate(rct_window *w)
 {
-	colour_scheme_update(w);
-
 	// Set the preview image button to be pressed down
 	w->pressed_widgets |= (1 << WIDX_PREVIEW);
 

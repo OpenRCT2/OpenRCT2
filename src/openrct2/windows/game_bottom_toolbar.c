@@ -17,7 +17,6 @@
 #include "../config/Config.h"
 #include "../game.h"
 #include "../input.h"
-#include "../interface/themes.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
 #include "../localisation/date.h"
@@ -241,8 +240,6 @@ static void window_game_bottom_toolbar_invalidate(rct_window *w)
 {
 	sint32 x;
 	NewsItem *newsItem;
-
-	colour_scheme_update(w);
 
 	// Anchor the middle and right panel to the right
 	x = gScreenWidth;

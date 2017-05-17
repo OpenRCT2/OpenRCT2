@@ -22,7 +22,6 @@
 #include "../peep/staff.h"
 #include "../sprites.h"
 #include "../world/sprite.h"
-#include "../interface/themes.h"
 
 #define WW 200
 #define WH 100
@@ -46,7 +45,6 @@ static rct_widget window_ride_demolish_widgets[] = {
 };
 
 static void window_ride_demolish_mouseup(rct_window *w, rct_widgetindex widgetIndex);
-static void window_ride_demolish_invalidate(rct_window *w);
 static void window_ride_demolish_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
 //0x0098E2E4
@@ -76,7 +74,7 @@ static rct_window_event_list window_ride_demolish_events = {
 	NULL,
 	NULL,
 	NULL,
-	window_ride_demolish_invalidate,
+	NULL,
 	window_ride_demolish_paint,
 	NULL
 };
@@ -114,11 +112,6 @@ static void window_ride_demolish_mouseup(rct_window *w, rct_widgetindex widgetIn
 		window_close(w);
 		break;
 	}
-}
-
-static void window_ride_demolish_invalidate(rct_window *w)
-{
-	colour_scheme_update(w);
 }
 
 /**

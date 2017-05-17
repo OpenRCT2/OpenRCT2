@@ -18,7 +18,6 @@
 #include "../editor.h"
 #include "../game.h"
 #include "../input.h"
-#include "../interface/themes.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
 #include "../localisation/localisation.h"
@@ -48,7 +47,6 @@ static void window_title_menu_mousedown(rct_widgetindex widgetIndex, rct_window*
 static void window_title_menu_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex);
 static void window_title_menu_cursor(rct_window *w, rct_widgetindex widgetIndex, sint32 x, sint32 y, sint32 *cursorId);
 static void window_title_menu_paint(rct_window *w, rct_drawpixelinfo *dpi);
-static void window_title_menu_invalidate(rct_window *w);
 
 static rct_window_event_list window_title_menu_events = {
 	NULL,
@@ -76,7 +74,7 @@ static rct_window_event_list window_title_menu_events = {
 	NULL,
 	window_title_menu_cursor,
 	NULL,
-	window_title_menu_invalidate,
+	NULL,
 	window_title_menu_paint,
 	NULL
 };
@@ -222,9 +220,4 @@ static void window_title_menu_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
 	gfx_filter_rect(dpi, w->x, w->y, w->x + w->width - 1, w->y + 82 - 1, PALETTE_51);
 	window_draw_widgets(w, dpi);
-}
-
-static void window_title_menu_invalidate(rct_window *w)
-{
-	colour_scheme_update(w);
 }

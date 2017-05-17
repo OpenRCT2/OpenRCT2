@@ -198,8 +198,6 @@ static void window_news_options_update(rct_window *w)
 
 static void window_news_options_invalidate(rct_window *w)
 {
-	// colour_scheme_update(w);
-
 	// Set pressed tab
 	w->pressed_widgets &= ~(1ULL << WIDX_TAB_PARK);
 	w->pressed_widgets &= ~(1ULL << WIDX_TAB_RIDE);

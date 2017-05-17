@@ -14,7 +14,6 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../interface/themes.h"
 #include "../interface/viewport.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
@@ -171,8 +170,6 @@ static void window_changelog_scrollgetsize(rct_window *w, sint32 scrollIndex, si
 
 static void window_changelog_invalidate(rct_window *w)
 {
-	colour_scheme_update(w);
-
 	window_changelog_widgets[WIDX_BACKGROUND].right = w->width - 1;
 	window_changelog_widgets[WIDX_BACKGROUND].bottom = w->height - 1;
 	window_changelog_widgets[WIDX_TITLE].right = w->width - 2;

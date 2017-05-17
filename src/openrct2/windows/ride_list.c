@@ -471,9 +471,6 @@ static void window_ride_list_tooltip(rct_window* w, rct_widgetindex widgetIndex,
  */
 static void window_ride_list_invalidate(rct_window *w)
 {
-
-	colour_scheme_update(w);
-
 	window_ride_list_widgets[WIDX_CURRENT_INFORMATION_TYPE].text = ride_info_type_string_mapping[_window_ride_list_information_type];
 
 	// Set correct active tab

@@ -24,7 +24,6 @@
 #include "../world/mapgen.h"
 #include "../world/scenery.h"
 #include "dropdown.h"
-#include "../interface/themes.h"
 #include "../localisation/string_ids.h"
 
 enum {
@@ -821,8 +820,6 @@ static void window_mapgen_textinput(rct_window *w, rct_widgetindex widgetIndex, 
 
 static void window_mapgen_base_invalidate(rct_window *w)
 {
-	colour_scheme_update(w);
-
 	if (w->widgets != PageWidgets[WINDOW_MAPGEN_PAGE_BASE]) {
 		w->widgets = PageWidgets[WINDOW_MAPGEN_PAGE_BASE];
 		window_init_scroll_widgets(w);
@@ -910,8 +907,6 @@ static void window_mapgen_random_update(rct_window *w)
 
 static void window_mapgen_random_invalidate(rct_window *w)
 {
-	colour_scheme_update(w);
-
 	if (w->widgets != PageWidgets[WINDOW_MAPGEN_PAGE_RANDOM]) {
 		w->widgets = PageWidgets[WINDOW_MAPGEN_PAGE_RANDOM];
 		window_init_scroll_widgets(w);
@@ -1113,8 +1108,6 @@ static void window_mapgen_simplex_update(rct_window *w)
 
 static void window_mapgen_simplex_invalidate(rct_window *w)
 {
-	colour_scheme_update(w);
-
 	if (w->widgets != PageWidgets[WINDOW_MAPGEN_PAGE_SIMPLEX]) {
 		w->widgets = PageWidgets[WINDOW_MAPGEN_PAGE_SIMPLEX];
 		window_init_scroll_widgets(w);
@@ -1276,8 +1269,6 @@ static void window_mapgen_heightmap_mouseup(rct_window *w, rct_widgetindex widge
 
 static void window_mapgen_heightmap_invalidate(rct_window *w)
 {
-	colour_scheme_update(w);
-
 	if (w->widgets != PageWidgets[WINDOW_MAPGEN_PAGE_HEIGHTMAP])
 	{
 		w->widgets = PageWidgets[WINDOW_MAPGEN_PAGE_HEIGHTMAP];

@@ -684,8 +684,6 @@ void window_themes_tooltip(rct_window* w, rct_widgetindex widgetIndex, rct_strin
 
 void window_themes_invalidate(rct_window *w)
 {
-	colour_scheme_update(w);
-
 	sint32 pressed_widgets = w->pressed_widgets & ~(
 			(1LL << WIDX_THEMES_SETTINGS_TAB) |
 			(1LL << WIDX_THEMES_MAIN_UI_TAB) |

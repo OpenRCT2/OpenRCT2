@@ -27,7 +27,6 @@
 #include "error.h"
 #include "dropdown.h"
 #include "../drawing/drawing.h"
-#include "../interface/themes.h"
 #include "../sprites.h"
 
 #define WW 113
@@ -325,8 +324,6 @@ static void window_sign_textinput(rct_window *w, rct_widgetindex widgetIndex, ch
  */
 static void window_sign_invalidate(rct_window *w)
 {
-	colour_scheme_update(w);
-
 	rct_widget* main_colour_btn = &window_sign_widgets[WIDX_MAIN_COLOUR];
 	rct_widget* text_colour_btn = &window_sign_widgets[WIDX_TEXT_COLOUR];
 
@@ -559,8 +556,6 @@ static void window_sign_small_dropdown(rct_window *w, rct_widgetindex widgetInde
  */
 static void window_sign_small_invalidate(rct_window *w)
 {
-	colour_scheme_update(w);
-
 	rct_widget* main_colour_btn = &window_sign_widgets[WIDX_MAIN_COLOUR];
 	rct_widget* text_colour_btn = &window_sign_widgets[WIDX_TEXT_COLOUR];
 

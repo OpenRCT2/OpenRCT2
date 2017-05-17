@@ -15,7 +15,6 @@
 #pragma endregion
 
 #include "../config/Config.h"
-#include "../interface/themes.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
 #include "../interface/viewport.h"
@@ -145,8 +144,6 @@ void window_view_clipping_open()
 
 	window_push_others_below(window);
 
-	colour_scheme_update(window);
-
 	// Turn on view clipping when the window is opened.
 	if (mainWindow != NULL) {
 		mainWindow->viewport->flags |= VIEWPORT_FLAG_PAINT_CLIP_TO_HEIGHT;
@@ -232,8 +229,6 @@ static void window_view_clipping_update(rct_window *w)
 
 static void window_view_clipping_invalidate(rct_window *w)
 {
-	colour_scheme_update(w);
-
 	widget_scroll_update_thumbs(w, WIDX_CLIP_HEIGHT_SLIDER);
 
 	rct_window *mainWindow = window_get_main();

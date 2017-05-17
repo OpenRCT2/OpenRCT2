@@ -18,7 +18,6 @@
 #include "../config/Config.h"
 #include "../drawing/IDrawingEngine.h"
 #include "../editor.h"
-#include "../interface/themes.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
 #include "../localisation/localisation.h"
@@ -339,8 +338,6 @@ static void window_track_list_update(rct_window *w)
  */
 static void window_track_list_invalidate(rct_window *w)
 {
-	colour_scheme_update(w);
-
 	rct_string_id stringId = STR_NONE;
 	rct_ride_entry *entry = get_ride_entry(_window_track_list_item.entry_index);
 	if (entry != NULL && entry != (rct_ride_entry*)-1) {

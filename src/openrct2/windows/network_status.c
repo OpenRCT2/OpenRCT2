@@ -14,7 +14,6 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../interface/themes.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
 #include "../localisation/localisation.h"
@@ -161,8 +160,6 @@ static void window_network_status_textinput(rct_window *w, rct_widgetindex widge
 
 static void window_network_status_invalidate(rct_window *w)
 {
-	colour_scheme_update(w);
-
 	window_network_status_widgets[WIDX_BACKGROUND].right = w->width - 1;
 	window_network_status_widgets[WIDX_BACKGROUND].bottom = w->height - 1;
 	window_network_status_widgets[WIDX_TITLE].right = w->width - 2;

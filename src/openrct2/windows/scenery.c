@@ -28,7 +28,6 @@
 #include "../world/scenery.h"
 #include "../world/sprite.h"
 #include "dropdown.h"
-#include "../interface/themes.h"
 #include "../network/network.h"
 #include "error.h"
 #include "../sprites.h"
@@ -904,8 +903,6 @@ void window_scenery_tooltip(rct_window* w, rct_widgetindex widgetIndex, rct_stri
  */
 void window_scenery_invalidate(rct_window *w)
 {
-	colour_scheme_update(w);
-
 	uint16 tabIndex = gWindowSceneryActiveTabIndex;
 	uint32 titleStringId = STR_MISCELLANEOUS;
 	if (tabIndex < 19)

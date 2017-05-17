@@ -2330,8 +2330,6 @@ static void window_ride_main_invalidate(rct_window *w)
 	rct_widget *widgets;
 	sint32 i, height;
 
-	colour_scheme_update(w);
-
 	widgets = window_ride_page_widgets[w->page];
 	if (w->widgets != widgets) {
 		w->widgets = widgets;
@@ -2802,8 +2800,6 @@ static void window_ride_vehicle_invalidate(rct_window *w)
 	rct_ride_entry *rideEntry;
 	rct_string_id stringId;
 	sint32 carsPerTrain;
-
-	colour_scheme_update(w);
 
 	widgets = window_ride_page_widgets[w->page];
 	if (w->widgets != widgets) {
@@ -3381,8 +3377,6 @@ static void window_ride_operating_invalidate(rct_window *w)
 	rct_ride_entry *rideEntry;
 	rct_string_id format, caption, tooltip;
 
-	colour_scheme_update(w);
-
 	widgets = window_ride_page_widgets[w->page];
 	if (w->widgets != widgets) {
 		w->widgets = widgets;
@@ -3916,8 +3910,6 @@ static void window_ride_maintenance_invalidate(rct_window *w)
 {
 	rct_widget *widgets;
 
-	colour_scheme_update(w);
-
 	widgets = window_ride_page_widgets[w->page];
 	if (w->widgets != widgets) {
 		w->widgets = widgets;
@@ -4411,8 +4403,6 @@ static void window_ride_colour_invalidate(rct_window *w)
 	track_colour trackColour;
 	vehicle_colour vehicleColour;
 
-	colour_scheme_update(w);
-
 	widgets = window_ride_page_widgets[w->page];
 	if (w->widgets != widgets) {
 		w->widgets = widgets;
@@ -4891,8 +4881,6 @@ static void window_ride_music_invalidate(rct_window *w)
 	rct_widget *widgets;
 	sint32 isMusicActivated;
 
-	colour_scheme_update(w);
-
 	widgets = window_ride_page_widgets[w->page];
 	if (w->widgets != widgets) {
 		w->widgets = widgets;
@@ -5170,8 +5158,6 @@ static void window_ride_measurements_toolabort(rct_window *w, rct_widgetindex wi
 static void window_ride_measurements_invalidate(rct_window *w)
 {
 	rct_widget *widgets;
-
-	colour_scheme_update(w);
 
 	widgets = window_ride_page_widgets[w->page];
 	if (w->widgets != widgets) {
@@ -5568,8 +5554,6 @@ static void window_ride_graphs_invalidate(rct_window *w)
 	rct_widget *widgets;
 	rct_ride *ride;
 	sint32 x, y;
-
-	colour_scheme_update(w);
 
 	widgets = window_ride_page_widgets[w->page];
 	if (w->widgets != widgets) {
@@ -6001,8 +5985,6 @@ static void window_ride_income_invalidate(rct_window *w)
 	rct_ride_entry *rideEntry;
 	sint32 primaryItem, secondaryItem;
 
-	colour_scheme_update(w);
-
 	widgets = window_ride_page_widgets[w->page];
 	if (w->widgets != widgets) {
 		w->widgets = widgets;
@@ -6248,8 +6230,6 @@ static void window_ride_customer_update(rct_window *w)
 static void window_ride_customer_invalidate(rct_window *w)
 {
 	rct_widget *widgets;
-
-	colour_scheme_update(w);
 
 	widgets = window_ride_page_widgets[w->page];
 	if (w->widgets != widgets) {

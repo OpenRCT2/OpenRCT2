@@ -20,7 +20,6 @@
 #include "../config/Config.h"
 #include "../game.h"
 #include "../editor.h"
-#include "../interface/themes.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
 #include "../localisation/localisation.h"
@@ -1109,8 +1108,6 @@ static void window_editor_object_selection_tooltip(rct_window* w, rct_widgetinde
  */
 static void window_editor_object_selection_invalidate(rct_window *w)
 {
-	colour_scheme_update(w);
-
 	// Resize widgets
 	w->widgets[WIDX_BACKGROUND].right = w->width - 1;
 	w->widgets[WIDX_BACKGROUND].bottom = w->height - 1;

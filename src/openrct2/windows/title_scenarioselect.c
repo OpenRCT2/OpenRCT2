@@ -337,8 +337,6 @@ static void window_scenarioselect_scrollmouseover(rct_window *w, sint32 scrollIn
 
 static void window_scenarioselect_invalidate(rct_window *w)
 {
-	colour_scheme_update(w);
-
 	w->pressed_widgets &= ~( (1 << WIDX_CLOSE) | (1 << WIDX_TAB1) | (1 << WIDX_TAB2)
 						   | (1 << WIDX_TAB3) | (1 << WIDX_TAB4) | (1 << WIDX_TAB5)
 						   | (1 << WIDX_TAB6) | (1 << WIDX_TAB7) | (1 << WIDX_TAB8) );

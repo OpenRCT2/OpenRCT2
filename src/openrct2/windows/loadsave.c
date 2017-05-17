@@ -19,7 +19,6 @@
 #include "../core/Guard.hpp"
 #include "../editor.h"
 #include "../game.h"
-#include "../interface/themes.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
 #include "../localisation/localisation.h"
@@ -75,7 +74,6 @@ static void window_loadsave_scrollmousedown(rct_window *w, sint32 scrollIndex, s
 static void window_loadsave_scrollmouseover(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y);
 static void window_loadsave_textinput(rct_window *w, rct_widgetindex widgetIndex, char *text);
 static void window_loadsave_tooltip(rct_window* w, rct_widgetindex widgetIndex, rct_string_id *stringId);
-static void window_loadsave_invalidate(rct_window *w);
 static void window_loadsave_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_loadsave_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 scrollIndex);
 
@@ -105,7 +103,7 @@ static rct_window_event_list window_loadsave_events = {
 	window_loadsave_tooltip,
 	NULL,
 	NULL,
-	window_loadsave_invalidate,
+	NULL,
 	window_loadsave_paint,
 	window_loadsave_scrollpaint
 };
@@ -467,11 +465,6 @@ static void window_loadsave_textinput(rct_window *w, rct_widgetindex widgetIndex
 static void window_loadsave_tooltip(rct_window* w, rct_widgetindex widgetIndex, rct_string_id *stringId)
 {
 	set_format_arg(0, rct_string_id, STR_LIST);
-}
-
-static void window_loadsave_invalidate(rct_window *w)
-{
-	colour_scheme_update(w);
 }
 
 static void window_loadsave_paint(rct_window *w, rct_drawpixelinfo *dpi)
@@ -858,7 +851,6 @@ static rct_widget window_overwrite_prompt_widgets[] = {
 };
 
 static void window_overwrite_prompt_mouseup(rct_window *w, rct_widgetindex widgetIndex);
-static void window_overwrite_prompt_invalidate(rct_window *w);
 static void window_overwrite_prompt_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
 static rct_window_event_list window_overwrite_prompt_events = {
@@ -887,7 +879,7 @@ static rct_window_event_list window_overwrite_prompt_events = {
 	NULL,
 	NULL,
 	NULL,
-	window_overwrite_prompt_invalidate,
+	NULL,
 	window_overwrite_prompt_paint,
 	NULL
 };
@@ -932,11 +924,6 @@ static void window_overwrite_prompt_mouseup(rct_window *w, rct_widgetindex widge
 		window_close(w);
 		break;
 	}
-}
-
-static void window_overwrite_prompt_invalidate(rct_window *w)
-{
-	colour_scheme_update(w);
 }
 
 static void window_overwrite_prompt_paint(rct_window *w, rct_drawpixelinfo *dpi)

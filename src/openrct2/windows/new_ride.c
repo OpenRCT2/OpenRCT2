@@ -19,7 +19,6 @@
 #include "../game.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
-#include "../interface/themes.h"
 #include "../localisation/localisation.h"
 #include "../management/news_item.h"
 #include "../management/research.h"
@@ -737,8 +736,6 @@ static void window_new_ride_tooltip(rct_window* w, rct_widgetindex widgetIndex, 
  */
 static void window_new_ride_invalidate(rct_window *w)
 {
-	colour_scheme_update(w);
-
 	window_new_ride_set_pressed_tab(w);
 
 	window_new_ride_widgets[WIDX_TITLE].text = window_new_ride_titles[_windowNewRideCurrentTab];

@@ -18,7 +18,6 @@
 #include "../core/Guard.hpp"
 #include "../game.h"
 #include "../input.h"
-#include "../interface/themes.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
 #include "../localisation/localisation.h"
@@ -1377,8 +1376,6 @@ static void window_tile_inspector_scrollmouseover(rct_window *w, sint32 scrollIn
 
 static void window_tile_inspector_invalidate(rct_window *w)
 {
-	colour_scheme_update(w);
-
 	w->widgets[WIDX_BACKGROUND].bottom = w->height - 1;
 
 	if (w->page == TILE_INSPECTOR_PAGE_DEFAULT) {

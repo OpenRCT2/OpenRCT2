@@ -15,7 +15,6 @@
 #pragma endregion
 
 #include "../game.h"
-#include "../interface/themes.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
 #include "../localisation/date.h"
@@ -828,8 +827,6 @@ static void window_editor_objective_options_main_invalidate(rct_window *w)
 	rct_widget *widgets;
 	rct_stex_entry *stex;
 
-	colour_scheme_update(w);
-
 	stex = g_stexEntries[0];
 	if (stex == (rct_stex_entry*)-1)
 		stex = NULL;
@@ -1160,8 +1157,6 @@ static void window_editor_objective_options_rides_scrollmouseover(rct_window *w,
 static void window_editor_objective_options_rides_invalidate(rct_window *w)
 {
 	rct_widget *widgets;
-
-	colour_scheme_update(w);
 
 	widgets = window_editor_objective_options_widgets[w->page];
 	if (w->widgets != widgets) {

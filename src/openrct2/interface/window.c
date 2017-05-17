@@ -20,6 +20,7 @@
 #include "../editor.h"
 #include "../game.h"
 #include "../input.h"
+#include "../interface/themes.h"
 #include "../interface/Cursors.h"
 #include "../localisation/localisation.h"
 #include "../localisation/string_ids.h"
@@ -478,6 +479,7 @@ rct_window *window_create(sint32 x, sint32 y, sint32 width, sint32 height, rct_w
 	w->var_4AE = 0;
 	RCT2_NEW_WINDOW++;
 
+	colour_scheme_update(w);
 	window_invalidate(w);
 	return w;
 }
@@ -2511,7 +2513,7 @@ void window_cancel_textbox()
 			gCurrentTextBox.window.number
 			);
 		window_event_textinput_call(w, gCurrentTextBox.widget_index, NULL);
-		gCurrentTextBox.window.classification = 255;
+		gCurrentTextBox.window.classification = WC_NULL;
 		gCurrentTextBox.window.number = 0;
 		platform_stop_text_input();
 		gUsingWidgetTextBox = false;

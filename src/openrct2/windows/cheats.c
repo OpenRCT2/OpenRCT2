@@ -27,7 +27,6 @@
 #include "../world/Climate.h"
 #include "../world/park.h"
 #include "../world/sprite.h"
-#include "../interface/themes.h"
 #include "../cheats.h"
 #include "../network/network.h"
 #include "../management/marketing.h"
@@ -851,8 +850,6 @@ static void window_cheats_update(rct_window *w)
 static void window_cheats_invalidate(rct_window *w)
 {
 	sint32 i;
-
-	colour_scheme_update(w);
 
 	rct_widget *widgets = window_cheats_page_widgets[w->page];
 	if (w->widgets != widgets) {
