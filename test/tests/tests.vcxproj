@@ -44,6 +44,10 @@
       <AdditionalDependencies>libopenrct2.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Console</SubSystem>
     </Link>
+    <PostBuildEvent>
+      <Command>xcopy /EIY "$(ProjectDir)testdata" "$(OutputPath)testdata"</Command>
+      <Message>Copies test data to output directory.</Message>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <!-- Files -->
   <ItemGroup>
