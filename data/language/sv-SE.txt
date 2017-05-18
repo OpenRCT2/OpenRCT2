@@ -4338,6 +4338,7 @@ STR_6030    :{SMALLFONT}{BLACK}Dekorations-väljaren. Klicka på en dekoration p
 STR_6031    :Server Beskrivning:
 STR_6032    :Server Hälsning:
 STR_6033    :Sökvägen till RCT1-mappen:
+STR_6034    :{SMALLFONT}{BLACK}{STRING}
 STR_6035    :Vänligen välj installationsmappen för RCT1
 STR_6036    :{SMALLFONT}{BLACK}Rensa
 STR_6037    :Vänligen välj en giltig sökväg till RCT1-mappen
