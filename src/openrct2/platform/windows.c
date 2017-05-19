@@ -67,15 +67,6 @@ static HMODULE plaform_get_dll_module()
 
 #ifdef NO_RCT2
 
-#ifdef __MINGW32__
-
-int main(int argc, char **argv)
-{
-	return RunOpenRCT2(argc, argv);
-}
-
-#endif
-
 #else
 
 /* DllMain is already defined in one of static libraries we implicitly depend

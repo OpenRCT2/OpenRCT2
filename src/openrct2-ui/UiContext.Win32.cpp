@@ -16,6 +16,12 @@
 
 #ifdef _WIN32
 
+#ifdef __MINGW32__
+// 0x0600 == vista
+#define WINVER 0x0600
+#define _WIN32_WINNT 0x0600
+#endif // __MINGW32__
+
 #include <sstream>
 #include <openrct2/common.h>
 #include <openrct2/core/Math.hpp>
@@ -31,7 +37,7 @@
 #include <SDL_syswm.h>
 
 // Native resource IDs
-#include "../../../resources/resource.h"
+#include "../../resources/resource.h"
 
 static std::wstring SHGetPathFromIDListLongPath(LPCITEMIDLIST pidl)
 {
@@ -191,15 +197,6 @@ namespace OpenRCT2 { namespace Ui
                 }
 
                 result = wmInfo.info.win.window;
-#ifdef __MINGW32__
-                assert(sizeof(HWND) == sizeof(uint32));
-                uint8 A = (uint32)result & 0xff000000 >> 24;
-                uint8 B = (uint32)result & 0xff0000 >> 16;
-                uint8 C = (uint32)result & 0xff00 >> 8;
-                uint8 D = (uint32)handle & 0xff;
-                result = (HWND)(D << 24 | A << 16 | B << 8 | C);
-                log_warning("twisting bits of handle, a workaround for mingw/sdl bug");
-#endif // __MINGW32__
             }
             return result;
         }
