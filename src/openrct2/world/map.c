@@ -1800,10 +1800,10 @@ static money32 map_set_land_ownership(uint8 flags, sint16 x1, sint16 y1, sint16 
 		return 0;
 
 	// Clamp to maximum addressable element to prevent long loop spamming the log
-	x1 = clamp(0, x1, gMapSizeUnits);
-	y1 = clamp(0, y1, gMapSizeUnits);
-	x2 = min(x2, gMapSizeUnits);
-	y2 = min(y2, gMapSizeUnits);
+	x1 = clamp(32, x1, gMapSizeUnits - 32);
+	y1 = clamp(32, y1, gMapSizeUnits - 32);
+	x2 = clamp(32, x2, gMapSizeUnits - 32);
+	y2 = clamp(32, y2, gMapSizeUnits - 32);
 	gUnk9E2E28 = 0;
 	map_buy_land_rights(x1, y1, x2, y2, 6, flags | (newOwnership << 8));
 
@@ -1811,8 +1811,8 @@ static money32 map_set_land_ownership(uint8 flags, sint16 x1, sint16 y1, sint16 
 		return 0;
 	}
 
-	sint16 x = clamp(0, x1, gMapSizeUnits);
-	sint16 y = clamp(0, y1, gMapSizeUnits);
+	sint16 x = clamp(32, x1, gMapSizeUnits - 32);
+	sint16 y = clamp(32, y1, gMapSizeUnits - 32);
 
 	x += 16;
 	y += 16;
