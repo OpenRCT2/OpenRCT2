@@ -4362,6 +4362,11 @@ STR_6051    :Bredden og høyden må være like
 STR_6052    :Høydekartet er for stort og vil bli kuttet av
 STR_6053    :Høydekartet kunne ikke normaliseres
 STR_6054    :Kun 24-bit bitmaps er støttet
+STR_6055    :OpenRCT2 høydekartfil
+STR_6056    :{SMALLFONT}{BLACK}Demp lyd
+STR_6057    :{SMALLFONT}{BLACK}Show a separate button for the Mute Option in the toolbar
+STR_6057    :{SMALLFONT}{BLACK}Vis en separat knapp for lyddemping i verktøylinjen
+STR_6058    :Demp lyd
 
 #############
 # Scenarios #
