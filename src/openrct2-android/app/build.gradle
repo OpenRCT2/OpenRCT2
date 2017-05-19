@@ -6,17 +6,15 @@ android {
 
     defaultConfig {
         applicationId 'website.openrct2'
-        applicationIdSuffix 'debug'
         minSdkVersion 16
         targetSdkVersion 25
-        minifyEnabled false
 
         versionCode 2
         versionName '0.0.8'
 
         externalNativeBuild {
             cmake {
-                arguments '-DDEBUG_LEVEL=3', '-DANDROID_STL=c++_shared'
+                arguments '-DANDROID_STL=c++_shared'
                 targets 'openrct2'
             }
         }
@@ -30,14 +28,20 @@ android {
 
     buildTypes {
         debug {
+            applicationIdSuffix '.debug'
             versionNameSuffix '-DEBUG'
+        }
+        pr {
+            applicationIdSuffix '.debug'
+            signingConfig signingConfigs.debug
         }
         develop {
             applicationIdSuffix '.develop'
             versionNameSuffix '-DEVELOP'
+            signingConfig signingConfigs.debug
         }
         release {
-            applicationIdSuffix ''
+            signingConfig signingConfigs.debug
         }
     }
 
