@@ -17,6 +17,7 @@
 #include <algorithm>
 #include <memory>
 #include <vector>
+#include "../config/Config.h"
 #include "../core/Collections.hpp"
 #include "../core/Console.hpp"
 #include "../core/File.h"
@@ -24,6 +25,8 @@
 #include "../core/FileStream.hpp"
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
+#include "../object/ObjectRepository.h"
+#include "../object/RideObject.h"
 #include "../PlatformEnvironment.h"
 #include "TrackDesignRepository.h"
 
@@ -90,13 +93,32 @@ public:
         return _items.size();
     }
 
+    /**
+     *
+     * @param rideType
+     * @param entry The entry name to count the track list of. Leave empty to count track list for the non-separated types (e.g. Hyper-Twister, Car Ride)
+     * @return
+     */
     size_t GetCountForObjectEntry(uint8 rideType, const std::string &entry) const override
     {
         size_t count = 0;
+        IObjectRepository * repo = GetObjectRepository();
+
         for (const auto item : _items)
         {
-            if (item.RideType == rideType &&
-                (entry.empty() || String::Equals(item.ObjectEntry, entry, true)))
+            if (item.RideType != rideType)
+                continue;
+
+            bool entryIsNotSeparate = false;
+            if (entry.empty())
+            {
+                const ObjectRepositoryItem * ori = repo->FindObject(item.ObjectEntry.c_str());
+
+                if (gConfigInterface.select_by_track_type || !(ori->RideFlags & ORI_RIDE_FLAG_SEPARATE))
+                    entryIsNotSeparate = true;
+            }
+
+            if (entryIsNotSeparate || String::Equals(item.ObjectEntry, entry, true))
             {
                 count++;
             }
@@ -104,13 +126,33 @@ public:
         return count;
     }
 
+    /**
+     *
+     * @param outRefs
+     * @param rideType
+     * @param entry The entry name to build a track list for. Leave empty to build track list for the non-separated types (e.g. Hyper-Twister, Car Ride)
+     * @return
+     */
     size_t GetItemsForObjectEntry(track_design_file_ref * * outRefs, uint8 rideType, const std::string &entry) const override
     {
         std::vector<track_design_file_ref> refs;
+        IObjectRepository * repo = GetObjectRepository();
+
         for (const auto item : _items)
         {
-            if (item.RideType == rideType &&
-                (entry.empty() || String::Equals(item.ObjectEntry, entry, true)))
+            if (item.RideType != rideType)
+                continue;
+
+            bool entryIsNotSeparate = false;
+            if (entry.empty())
+            {
+                const ObjectRepositoryItem * ori = repo->FindObject(item.ObjectEntry.c_str());
+
+                if (gConfigInterface.select_by_track_type || !(ori->RideFlags & ORI_RIDE_FLAG_SEPARATE))
+                    entryIsNotSeparate = true;
+            }
+
+            if (entryIsNotSeparate || String::Equals(item.ObjectEntry, entry, true))
             {
                 track_design_file_ref ref;
                 ref.name = String::Duplicate(GetNameFromTrackPath(item.Path));

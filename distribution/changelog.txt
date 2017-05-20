@@ -1,5 +1,6 @@
 0.0.8 (in development)
 ------------------------------------------------------------------------
+- Fix: [#3681] Steel Twister rollercoaster always shows all track designs
 - Fix: Track components added by OpenRCT2 are now usable in older scenarios.
 
 0.0.7 (2017-05-03)
