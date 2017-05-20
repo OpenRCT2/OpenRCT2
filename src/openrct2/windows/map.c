@@ -37,6 +37,10 @@
 #define MINIMUM_MAP_SIZE_PRACTICAL MINIMUM_MAP_SIZE_TECHNICAL-2
 #define MAXIMUM_MAP_SIZE_PRACTICAL MAXIMUM_MAP_SIZE_TECHNICAL-2
 
+#define MAP_COLOUR_2(colourA, colourB) ((colourA << 8) | colourB)
+#define MAP_COLOUR(colour) MAP_COLOUR_2(colour, colour)
+#define FALLBACK_COLOUR(colour) ((colour << 24) || colour << 16)
+
 enum {
 	PAGE_PEEPS,
 	PAGE_RIDES
@@ -107,14 +111,14 @@ const rct_xy16 MiniMapOffsets[] = {
 
 /** rct2: 0x00981BCC */
 static const uint16 RideKeyColours[] = {
-	0x3D3D,			// COLOUR_KEY_RIDE
-	0x2A2A,			// COLOUR_KEY_FOOD
-	0x1414,			// COLOUR_KEY_DRINK
-	0xD1D1,			// COLOUR_KEY_SOUVENIR
-	0x8888,			// COLOUR_KEY_KIOSK
-	0x6666,			// COLOUR_KEY_FIRST_AID
-	0x3737,			// COLOUR_KEY_CASH_MACHINE
-	0xA1A1,			// COLOUR_KEY_TOILETS
+	MAP_COLOUR(PALETTE_INDEX_61),	// COLOUR_KEY_RIDE
+	MAP_COLOUR(PALETTE_INDEX_42),	// COLOUR_KEY_FOOD
+	MAP_COLOUR(PALETTE_INDEX_20),	// COLOUR_KEY_DRINK
+	MAP_COLOUR(PALETTE_INDEX_209),	// COLOUR_KEY_SOUVENIR
+	MAP_COLOUR(PALETTE_INDEX_136),	// COLOUR_KEY_KIOSK
+	MAP_COLOUR(PALETTE_INDEX_102),	// COLOUR_KEY_FIRST_AID
+	MAP_COLOUR(PALETTE_INDEX_55),	// COLOUR_KEY_CASH_MACHINE
+	MAP_COLOUR(PALETTE_INDEX_161),	// COLOUR_KEY_TOILETS
 };
 
 static void window_map_close(rct_window *w);
@@ -878,7 +882,7 @@ static void window_map_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32
 {
 	rct_g1_element *g1_element, pushed_g1_element;
 
-	gfx_clear(dpi, 10);
+	gfx_clear(dpi, PALETTE_INDEX_10);
 
 	g1_element = &g1Elements[0];
 	pushed_g1_element = *g1_element;
@@ -908,7 +912,7 @@ static void window_map_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32
  */
 static void window_map_init_map()
 {
-	memset(_mapImageData, 0x0A, sizeof(*_mapImageData));
+	memset(_mapImageData, PALETTE_INDEX_10, sizeof(*_mapImageData));
 	_currentLine = 0;
 }
 
@@ -1076,22 +1080,22 @@ static void window_map_paint_peep_overlay(rct_drawpixelinfo *dpi)
 		right = left;
 		bottom = top;
 
-		colour = 0x14;
+			colour = PALETTE_INDEX_20;
 
 		if ((peep->flags & SPRITE_FLAGS_PEEP_FLASHING) != 0) {
 			if (peep->type == PEEP_TYPE_STAFF) {
 				if ((gWindowMapFlashingFlags & (1 << 3)) != 0) {
-					colour = 0x8A;
+					colour = PALETTE_INDEX_138;
 					left--;
 					if ((gWindowMapFlashingFlags & (1 << 15)) == 0)
-						colour = 0xA;
+						colour = PALETTE_INDEX_10;
 				}
 			} else {
 				if ((gWindowMapFlashingFlags & (1 << 1)) != 0) {
-					colour = 0xAC;
+					colour = PALETTE_INDEX_172;
 					left--;
 					if ((gWindowMapFlashingFlags & (1 << 15)) == 0)
-						colour = 0x15;
+						colour = PALETTE_INDEX_21;
 				}
 			}
 		}
@@ -1126,7 +1130,7 @@ static void window_map_paint_train_overlay(rct_drawpixelinfo *dpi)
 			right = left;
 			bottom = top;
 
-			gfx_fill_rect(dpi, left, top, right, bottom, 0xAB);
+			gfx_fill_rect(dpi, left, top, right, bottom, PALETTE_INDEX_171);
 		}
 	}
 }
@@ -1154,20 +1158,20 @@ static void window_map_paint_hud_rectangle(rct_drawpixelinfo *dpi)
 	sint16 bottom = ((viewport->view_y + viewport->view_height) >> 4) + offset.y;
 
 	// top horizontal lines
-	gfx_fill_rect(dpi, left, top, left + 3, top, 0x38);
-	gfx_fill_rect(dpi, right - 3, top, right, top, 0x38);
+	gfx_fill_rect(dpi, left, top, left + 3, top, PALETTE_INDEX_56);
+	gfx_fill_rect(dpi, right - 3, top, right, top, PALETTE_INDEX_56);
 
 	// left vertical lines
-	gfx_fill_rect(dpi, left, top, left, top + 3, 0x38);
-	gfx_fill_rect(dpi, left, bottom - 3, left, bottom, 0x38);
+	gfx_fill_rect(dpi, left, top, left, top + 3, PALETTE_INDEX_56);
+	gfx_fill_rect(dpi, left, bottom - 3, left, bottom, PALETTE_INDEX_56);
 
 	// bottom horizontal lines
-	gfx_fill_rect(dpi, left, bottom, left + 3, bottom, 0x38);
-	gfx_fill_rect(dpi, right - 3, bottom, right, bottom, 0x38);
+	gfx_fill_rect(dpi, left, bottom, left + 3, bottom, PALETTE_INDEX_56);
+	gfx_fill_rect(dpi, right - 3, bottom, right, bottom, PALETTE_INDEX_56);
 
 	// right vertical lines
-	gfx_fill_rect(dpi, right, top, right, top + 3, 0x38);
-	gfx_fill_rect(dpi, right, bottom - 3, right, bottom, 0x38);
+	gfx_fill_rect(dpi, right, top, right, top + 3, PALETTE_INDEX_56);
+	gfx_fill_rect(dpi, right, bottom - 3, right, bottom, PALETTE_INDEX_56);
 }
 
 /**
@@ -1429,22 +1433,22 @@ static void map_window_decrease_map_size()
 	gfx_invalidate_screen();
 }
 
-static const uint16 WaterColour = 0xC3C3;
+static const uint16 WaterColour = MAP_COLOUR(PALETTE_INDEX_195);
 static const uint16 TerrainColour[] = {
-	0x4949,			// TERRAIN_GRASS
-	0x2828,			// TERRAIN_SAND
-	0x6C6C,			// TERRAIN_DIRT
-	0x0C0C,			// TERRAIN_ROCK
-	0x3E3E,			// TERRAIN_MARTIAN
-	0x0A10,			// TERRAIN_CHECKERBOARD
-	0x496C,			// TERRAIN_GRASS_CLUMPS
-	0x8D8D,			// TERRAIN_ICE
-	0xAC0A,			// TERRAIN_GRID_RED
-	0x360A,			// TERRAIN_GRID_YELLOW
-	0xA20A,			// TERRAIN_GRID_BLUE
-	0x660A,			// TERRAIN_GRID_GREEN
-	0x6F6F,			// TERRAIN_SAND_DARK
-	0xDEDE,			// TERRAIN_SAND_LIGHT
+	MAP_COLOUR(PALETTE_INDEX_73),						// TERRAIN_GRASS
+	MAP_COLOUR(PALETTE_INDEX_40),						// TERRAIN_SAND
+	MAP_COLOUR(PALETTE_INDEX_108),						// TERRAIN_DIRT
+	MAP_COLOUR(PALETTE_INDEX_12),						// TERRAIN_ROCK
+	MAP_COLOUR(PALETTE_INDEX_62),						// TERRAIN_MARTIAN
+	MAP_COLOUR_2(PALETTE_INDEX_10, PALETTE_INDEX_16),	// TERRAIN_CHECKERBOARD
+	MAP_COLOUR_2(PALETTE_INDEX_73, PALETTE_INDEX_108),	// TERRAIN_GRASS_CLUMPS
+	MAP_COLOUR(PALETTE_INDEX_141),						// TERRAIN_ICE
+	MAP_COLOUR_2(PALETTE_INDEX_172, PALETTE_INDEX_10),	// TERRAIN_GRID_RED
+	MAP_COLOUR_2(PALETTE_INDEX_54, PALETTE_INDEX_10),	// TERRAIN_GRID_YELLOW
+	MAP_COLOUR_2(PALETTE_INDEX_162, PALETTE_INDEX_10),	// TERRAIN_GRID_BLUE
+	MAP_COLOUR_2(PALETTE_INDEX_102, PALETTE_INDEX_10),	// TERRAIN_GRID_GREEN
+	MAP_COLOUR(PALETTE_INDEX_111),						// TERRAIN_SAND_DARK
+	MAP_COLOUR(PALETTE_INDEX_222),						// TERRAIN_SAND_LIGHT
 };
 
 static const uint16 ElementTypeMaskColour[] = {
@@ -1460,15 +1464,15 @@ static const uint16 ElementTypeMaskColour[] = {
 };
 
 static const uint16 ElementTypeAddColour[] = {
-	0x0000,			// MAP_ELEMENT_TYPE_SURFACE
-	0x1111,			// MAP_ELEMENT_TYPE_PATH
-	0xB700,			// MAP_ELEMENT_TYPE_TRACK
-	0x0063,			// MAP_ELEMENT_TYPE_SCENERY
-	0xBABA,			// MAP_ELEMENT_TYPE_ENTRANCE
-	0x0000,			// MAP_ELEMENT_TYPE_WALL
-	0x6363,			// MAP_ELEMENT_TYPE_SCENERY_MULTIPLE
-	0x0000,			// MAP_ELEMENT_TYPE_BANNER
-	0x4444,			// MAP_ELEMENT_TYPE_CORRUPT
+	MAP_COLOUR(PALETTE_INDEX_0),						// MAP_ELEMENT_TYPE_SURFACE
+	MAP_COLOUR(PALETTE_INDEX_17),						// MAP_ELEMENT_TYPE_PATH
+	MAP_COLOUR_2(PALETTE_INDEX_135, PALETTE_INDEX_0),	// MAP_ELEMENT_TYPE_TRACK
+	MAP_COLOUR_2(PALETTE_INDEX_0, PALETTE_INDEX_99),	// MAP_ELEMENT_TYPE_SCENERY
+	MAP_COLOUR(PALETTE_INDEX_186),						// MAP_ELEMENT_TYPE_ENTRANCE
+	MAP_COLOUR(PALETTE_INDEX_0),						// MAP_ELEMENT_TYPE_WALL
+	MAP_COLOUR(PALETTE_INDEX_99),						// MAP_ELEMENT_TYPE_SCENERY_MULTIPLE
+	MAP_COLOUR(PALETTE_INDEX_0),						// MAP_ELEMENT_TYPE_BANNER
+	MAP_COLOUR(PALETTE_INDEX_68),						// MAP_ELEMENT_TYPE_CORRUPT
 };
 
 enum {
@@ -1590,7 +1594,7 @@ static uint16 map_window_get_pixel_colour_peep(sint32 x, sint32 y)
 		colour = WaterColour;
 
 	if (!(mapElement->properties.surface.ownership & OWNERSHIP_OWNED))
-		colour = 10 | (colour & 0xFF00);
+		colour = PALETTE_INDEX_10 | (colour & 0xFF00);
 
 	const sint32 maxSupportedMapElementType = (sint32)countof(ElementTypeAddColour);
 	while (!map_element_is_last_for_tile(mapElement++)) {
@@ -1611,22 +1615,22 @@ static uint16 map_window_get_pixel_colour_ride(sint32 x, sint32 y)
 	rct_ride *ride;
 	uint32 colour;
 
-	colour = 0x0D0D0000;
+	colour = FALLBACK_COLOUR(PALETTE_INDEX_13);
 	mapElement = map_get_surface_element_at(x >> 5, y >> 5);
 	do {
 		switch (map_element_get_type(mapElement)) {
 		case MAP_ELEMENT_TYPE_SURFACE:
 			if (mapElement->properties.surface.terrain & 0x1F) {
 				colour &= 0xFFFF;
-				colour |= 0xC2C20000;
+				colour |= FALLBACK_COLOUR(PALETTE_INDEX_194);
 			}
 			if (!(mapElement->properties.surface.ownership & OWNERSHIP_OWNED)) {
 				colour &= 0xFF00FFFF;
-				colour |= 0x000A0000;
+				colour |= PALETTE_INDEX_10 << 16;
 			}
 			break;
 		case MAP_ELEMENT_TYPE_PATH:
-			colour = 0x0E0E;
+			colour = MAP_COLOUR(PALETTE_INDEX_14);
 			break;
 		case MAP_ELEMENT_TYPE_ENTRANCE:
 			if (mapElement->properties.entrance.type == ENTRANCE_TYPE_PARK_ENTRANCE)

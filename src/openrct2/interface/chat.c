@@ -165,7 +165,7 @@ void chat_draw(rct_drawpixelinfo * dpi)
 			sint32 caretX = x + gfx_get_string_width(lineBuffer);
 			sint32 caretY = y + 14;
 
-			gfx_fill_rect(dpi, caretX, caretY, caretX + 6, caretY + 1, 0x38);
+			gfx_fill_rect(dpi, caretX, caretY, caretX + 6, caretY + 1, PALETTE_INDEX_56);
 		}
 	}
 }

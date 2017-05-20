@@ -2968,7 +2968,7 @@ static void window_ride_vehicle_scrollpaint(rct_window *w, rct_drawpixelinfo *dp
 	rct_ride_entry *rideEntry = get_ride_entry_by_ride(ride);
 
 	// Background
-	gfx_fill_rect(dpi, dpi->x, dpi->y, dpi->x + dpi->width, dpi->y + dpi->height, 12);
+	gfx_fill_rect(dpi, dpi->x, dpi->y, dpi->x + dpi->width, dpi->y + dpi->height, PALETTE_INDEX_12);
 
 	rct_widget *widget = &window_ride_vehicle_widgets[WIDX_VEHICLE_TRAINS_PREVIEW];
 	sint32 startX = max(2, ((widget->right - widget->left) - ((ride->num_vehicles - 1) * 36)) / 2 - 25);
@@ -4581,7 +4581,7 @@ static void window_ride_colour_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	// Track / shop item preview
 	widget = &window_ride_colour_widgets[WIDX_TRACK_PREVIEW];
 	if (widget->type != WWT_EMPTY)
-		gfx_fill_rect(dpi, w->x + widget->left + 1, w->y + widget->top + 1, w->x + widget->right - 1, w->y + widget->bottom - 1, 12);
+		gfx_fill_rect(dpi, w->x + widget->left + 1, w->y + widget->top + 1, w->x + widget->right - 1, w->y + widget->bottom - 1, PALETTE_INDEX_12);
 
 	track_colour trackColour = ride_get_track_colour(ride, w->ride_colour);
 
@@ -4634,7 +4634,7 @@ static void window_ride_colour_paint(rct_window *w, rct_drawpixelinfo *dpi)
 			widget->right - widget->left,
 			widget->bottom - widget->top
 		)) {
-			gfx_clear(&clippedDpi, 12);
+			gfx_clear(&clippedDpi, PALETTE_INDEX_12);
 
 			if (ride->entrance_style != RIDE_ENTRANCE_STYLE_NONE) {
 				const rct_ride_entrance_definition *entranceStyle = &RideEntranceDefinitions[ride->entrance_style];
@@ -4680,7 +4680,7 @@ static void window_ride_colour_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi
 	vehicleColour = ride_get_vehicle_colour(ride, w->var_48C);
 
 	// Background colour
-	gfx_fill_rect(dpi, dpi->x, dpi->y, dpi->x + dpi->width - 1, dpi->y + dpi->height - 1, 12);
+	gfx_fill_rect(dpi, dpi->x, dpi->y, dpi->x + dpi->width - 1, dpi->y + dpi->height - 1, PALETTE_INDEX_12);
 
 	// ?
 	x = (vehiclePreviewWidget->right - vehiclePreviewWidget->left) / 2;
@@ -5720,7 +5720,7 @@ static void window_ride_graphs_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi
 			top = bottom;
 			bottom = tmp;
 		}
-		gfx_fill_rect(dpi, x, top, x, bottom, x > measurement->current_item ? 17 : 21);
+		gfx_fill_rect(dpi, x, top, x, bottom, x > measurement->current_item ? PALETTE_INDEX_17 : PALETTE_INDEX_21);
 	}
 }
 

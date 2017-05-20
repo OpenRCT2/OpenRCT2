@@ -732,7 +732,7 @@ static void window_finances_summary_paint(rct_window *w, rct_drawpixelinfo *dpi)
 			x + 80,
 			y - 1
 		);
-		gfx_fill_rect(dpi, x + 10, y - 2, x + 10 + 70, y - 2, 10);
+		gfx_fill_rect(dpi, x + 10, y - 2, x + 10 + 70, y - 2, PALETTE_INDEX_10);
 
 		x += 80;
 	}
