@@ -455,7 +455,7 @@ static void window_track_place_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	// Draw mini tile preview
 	rct_drawpixelinfo clippedDpi;
 	if (clip_drawpixelinfo(&clippedDpi, dpi, w->x + 4, w->y + 18, 168, 78)) {
-		rct_g1_element *substituteElement = &g1Elements[0];
+		rct_g1_element *substituteElement = &g1Elements[SPR_TEMP];
 		rct_g1_element tmpElement = *substituteElement;
 		substituteElement->offset = _window_track_place_mini_preview;
 		substituteElement->width = TRACK_MINI_PREVIEW_WIDTH;

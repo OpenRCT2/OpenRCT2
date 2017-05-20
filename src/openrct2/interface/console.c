@@ -240,13 +240,13 @@ void console_draw(rct_drawpixelinfo *dpi)
 		sint32 caretX = x + gfx_get_string_width(lineBuffer);
 		sint32 caretY = y + lineHeight;
 
-		gfx_fill_rect(dpi, caretX, caretY, caretX + 6, caretY + 1, FORMAT_WHITE);
+		gfx_fill_rect(dpi, caretX, caretY, caretX + 6, caretY + 1, PALETTE_INDEX_144);
 	}
-	gfx_fill_rect(dpi, _consoleLeft, _consoleBottom - 21, _consoleRight, _consoleBottom - 21, 14);
-	gfx_fill_rect(dpi, _consoleLeft, _consoleBottom - 20, _consoleRight, _consoleBottom - 20, 11);
+	gfx_fill_rect(dpi, _consoleLeft, _consoleBottom - 21, _consoleRight, _consoleBottom - 21, PALETTE_INDEX_14);
+	gfx_fill_rect(dpi, _consoleLeft, _consoleBottom - 20, _consoleRight, _consoleBottom - 20, PALETTE_INDEX_11);
 
-	gfx_fill_rect(dpi, _consoleLeft, _consoleBottom - 1, _consoleRight, _consoleBottom - 1, 14);
-	gfx_fill_rect(dpi, _consoleLeft, _consoleBottom - 0, _consoleRight, _consoleBottom - 0, 12);
+	gfx_fill_rect(dpi, _consoleLeft, _consoleBottom - 1, _consoleRight, _consoleBottom - 1, PALETTE_INDEX_14);
+	gfx_fill_rect(dpi, _consoleLeft, _consoleBottom - 0, _consoleRight, _consoleBottom - 0, PALETTE_INDEX_12);
 }
 
 void console_input(sint32 c)

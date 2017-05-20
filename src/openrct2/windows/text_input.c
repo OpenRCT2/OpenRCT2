@@ -304,6 +304,7 @@ static void window_text_input_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 			if (w->frame_no > 15){
 				uint8 colour = ColourMapA[w->colours[1]].mid_light;
+				// TODO: palette index addition
 				gfx_fill_rect(dpi, cursorX, y + 9, cursorX + width, y + 9, colour + 5);
 			}
 
@@ -406,7 +407,7 @@ static void draw_ime_composition(rct_drawpixelinfo * dpi, int cursorX, int curso
 	int width = compositionWidth;
 	int height = 10;
 
-	gfx_fill_rect(dpi, x - 1, y - 1, x + width + 1, y + height + 1, 12);
-	gfx_fill_rect(dpi, x, y, x + width, y + height, 0);
+	gfx_fill_rect(dpi, x - 1, y - 1, x + width + 1, y + height + 1, PALETTE_INDEX_12);
+	gfx_fill_rect(dpi, x, y, x + width, y + height, PALETTE_INDEX_0);
 	gfx_draw_string(dpi, gTextInputComposition, COLOUR_DARK_GREEN, x, y);
 }
