@@ -1087,7 +1087,7 @@ static const rct_string_id MusicStyleNames[] = {
 	STR_MUSIC_STYLE_CANDY_STYLE,
 };
 
-static const rct_string_id RideModeNames[] = {
+const rct_string_id RideModeNames[] = {
 	STR_RIDE_MODE_NORMAL,
 	STR_RIDE_MODE_CONTINUOUS_CIRCUIT,
 	STR_RIDE_MODE_REVERSE_INCLINE_LAUNCHED_SHUTTLE,
