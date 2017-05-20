@@ -839,7 +839,7 @@ static void window_map_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	if (w->widgets[WIDX_PEOPLE_STARTING_POSITION].type != WWT_EMPTY) {
 		x = w->x + w->widgets[WIDX_PEOPLE_STARTING_POSITION].left + 12;
 		y = w->y + w->widgets[WIDX_PEOPLE_STARTING_POSITION].top + 18;
-		gfx_draw_sprite(dpi, 0x0B6E0190A, x, y, 0);
+		gfx_draw_sprite(dpi, 0xA0000000 | (COLOUR_LIGHT_BROWN << 24) | (COLOUR_BRIGHT_RED << 19) | SPR_6410, x, y, 0);
 	}
 
 	if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode) {
@@ -884,7 +884,7 @@ static void window_map_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32
 
 	gfx_clear(dpi, PALETTE_INDEX_10);
 
-	g1_element = &g1Elements[0];
+	g1_element = &g1Elements[SPR_TEMP];
 	pushed_g1_element = *g1_element;
 
 	g1_element->offset = (uint8 *) _mapImageData;
@@ -894,7 +894,7 @@ static void window_map_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32
 	g1_element->y_offset = -8;
 	g1_element->flags = 0;
 
-	gfx_draw_sprite(dpi, 0, 0, 0, 0);
+	gfx_draw_sprite(dpi, SPR_TEMP, 0, 0, 0);
 
 	*g1_element = pushed_g1_element;
 
