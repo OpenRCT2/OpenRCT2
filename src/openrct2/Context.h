@@ -36,6 +36,8 @@ typedef struct TextInputSession
     size_t Length;          // Number of codepoints
     size_t SelectionStart;  // Selection start, in bytes
     size_t SelectionSize;   // Selection length in bytes
+
+    const utf8 * ImeBuffer; // IME UTF-8 stream
 } TextInputSession;
 
 struct Resolution

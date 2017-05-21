@@ -101,7 +101,7 @@ sint32 gfx_get_string_width_new_lined(utf8 *text)
  *  rct2: 0x006C2321
  * buffer (esi)
  */
-sint32 gfx_get_string_width(char* buffer)
+sint32 gfx_get_string_width(const utf8 * buffer)
 {
 	return ttf_get_string_width(buffer);
 }

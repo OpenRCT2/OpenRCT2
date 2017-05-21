@@ -338,7 +338,7 @@ void FASTCALL gfx_draw_sprite_raw_masked_software(rct_drawpixelinfo *dpi, sint32
 // string
 sint32 clip_text(char *buffer, sint32 width);
 sint32 gfx_wrap_string(char* buffer, sint32 width, sint32* num_lines, sint32* font_height);
-sint32 gfx_get_string_width(char *buffer);
+sint32 gfx_get_string_width(const utf8 * buffer);
 sint32 gfx_get_string_width_new_lined(char* buffer);
 void gfx_draw_string(rct_drawpixelinfo *dpi, char *buffer, sint32 colour, sint32 x, sint32 y);
 void gfx_draw_string_left(rct_drawpixelinfo *dpi, rct_string_id format, void *args, sint32 colour, sint32 x, sint32 y);

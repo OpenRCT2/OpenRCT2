@@ -53,7 +53,6 @@ static rct_widget window_text_input_widgets[] = {
 static void window_text_input_close(rct_window *w);
 static void window_text_input_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_text_input_update7(rct_window *w);
-static void window_text_input_text(sint32 key, rct_window* w);
 static void window_text_input_invalidate(rct_window *w);
 static void window_text_input_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void draw_ime_composition(rct_drawpixelinfo * dpi, int cursorX, int cursorY);
@@ -281,6 +280,7 @@ static void window_text_input_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	uint8 cur_drawn = 0;
 
 	sint32 cursorX = 0;
+	sint32 cursorY = 0;
 	for (sint32 line = 0; line <= no_lines; line++) {
 		gfx_draw_string(dpi, wrap_pointer, w->colours[1], w->x + 12, y);
 
@@ -291,6 +291,7 @@ static void window_text_input_paint(rct_window *w, rct_drawpixelinfo *dpi)
 			char temp_string[TEXT_INPUT_SIZE] = { 0 };
 			memcpy(temp_string, wrap_pointer, gTextInput->SelectionStart - char_count);
 			cursorX = w->x + 13 + gfx_get_string_width(temp_string);
+			cursorY = y;
 
 			sint32 width = 6;
 			if (gTextInput->SelectionStart < strlen(text_input)){
@@ -321,12 +322,13 @@ static void window_text_input_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 	if (!cur_drawn) {
 		cursorX = gLastDrawStringX;
+		cursorY = y - 10;
 	}
 
 	// IME composition
-	// if (gTextInputCompositionActive) {
-	// 	draw_ime_composition(dpi, cursorX, cursorY);
-	// }
+	if (!str_is_null_or_empty(gTextInput->ImeBuffer)) {
+		draw_ime_composition(dpi, cursorX, cursorY);
+	}
 }
 
 void window_text_input_key(rct_window* w, sint32 key)
@@ -400,13 +402,13 @@ static void window_text_input_invalidate(rct_window *w)
 
 static void draw_ime_composition(rct_drawpixelinfo * dpi, int cursorX, int cursorY)
 {
-	// int compositionWidth = gfx_get_string_width(gTextInputComposition);
-	// int x = cursorX - (compositionWidth / 2);
-	// int y = cursorY + 13;
-	// int width = compositionWidth;
-	// int height = 10;
+	int compositionWidth = gfx_get_string_width(gTextInput->ImeBuffer);
+	int x = cursorX - (compositionWidth / 2);
+	int y = cursorY + 13;
+	int width = compositionWidth;
+	int height = 10;
 
-	// gfx_fill_rect(dpi, x - 1, y - 1, x + width + 1, y + height + 1, PALETTE_INDEX_12);
-	// gfx_fill_rect(dpi, x, y, x + width, y + height, PALETTE_INDEX_0);
-	// gfx_draw_string(dpi, gTextInputComposition, COLOUR_DARK_GREEN, x, y);
+	gfx_fill_rect(dpi, x - 1, y - 1, x + width + 1, y + height + 1, PALETTE_INDEX_12);
+	gfx_fill_rect(dpi, x, y, x + width, y + height, PALETTE_INDEX_0);
+	gfx_draw_string(dpi, (char *)gTextInput->ImeBuffer, COLOUR_DARK_GREEN, x, y);
 }
