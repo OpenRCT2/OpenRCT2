@@ -57,6 +57,7 @@ TextInputSession * TextComposition::Start(utf8 * buffer, size_t bufferSize)
     _session.Size = strlen(buffer);
     _session.SelectionStart = _session.Size;
     _session.SelectionSize = 0;
+    _session.ImeBuffer = _imeBuffer;
     RecalculateLength();
     return &_session;
 }
@@ -65,6 +66,7 @@ void TextComposition::Stop()
 {
     SDL_StopTextInput();
     _session.Buffer = nullptr;
+    _session.ImeBuffer = nullptr;
     _imeActive = false;
 }
 
@@ -111,7 +113,7 @@ void TextComposition::HandleMessage(const SDL_Event * e)
             // Map Keypad enter to regular enter.
             key = SDLK_RETURN;
         }
-		
+
         GetContext()->GetUiContext()->SetKeysPressed(key, e->key.keysym.scancode);
 
         // Text input
