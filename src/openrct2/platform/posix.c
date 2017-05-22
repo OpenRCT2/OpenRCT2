@@ -391,6 +391,10 @@ sint32 platform_enumerate_files_begin(const utf8 *pattern)
 				safe_strcpy(paths[idx], dir_name, path_len);
 				safe_strcat_path(paths[idx], d->d_name, path_len);
 				log_verbose("paths[%d] = %s", idx, paths[idx]);
+
+				#ifdef __MACOSX__
+					paths[idx] = macos_str_decomp_to_precomp(paths[idx]);
+				#endif
 			}
 			enumFileInfo->handle = 0;
 			enumFileInfo->active = 1;
