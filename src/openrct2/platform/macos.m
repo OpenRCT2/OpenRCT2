@@ -137,6 +137,10 @@ utf8* macos_str_decomp_to_precomp(utf8 *input)
 {
 	@autoreleasepool
 	{
+		if (input == NULL) {
+			return NULL;
+		}
+
 		NSString *inputDecomp = [NSString stringWithUTF8String:input];
 		return strdup([inputDecomp.precomposedStringWithCanonicalMapping cStringUsingEncoding:NSUTF8StringEncoding]);
 	}
