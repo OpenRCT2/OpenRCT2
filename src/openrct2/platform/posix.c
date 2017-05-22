@@ -393,7 +393,11 @@ sint32 platform_enumerate_files_begin(const utf8 *pattern)
 				log_verbose("paths[%d] = %s", idx, paths[idx]);
 
 				#ifdef __MACOSX__
-					paths[idx] = macos_str_decomp_to_precomp(paths[idx]);
+					utf8* precomp_path = macos_str_decomp_to_precomp(paths[idx]);
+					size_t precomp_len = sizeof(utf8) * min(MAX_PATH, strnlen(precomp_path, MAX_PATH) + 2);
+					paths[idx] = malloc(precomp_len);
+					safe_strcpy(paths[idx], precomp_path, precomp_len);
+					log_verbose("macOS decomp-to-precomp fix - paths[%d] = %s", idx, paths[idx]);
 				#endif
 			}
 			enumFileInfo->handle = 0;
