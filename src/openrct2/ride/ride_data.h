@@ -54,11 +54,6 @@ typedef struct rct_ride_name_convention {
     ride_component_type station;
 } rct_ride_name_convention;
 
-typedef struct rct_ride_name {
-    rct_string_id name;
-    rct_string_id description;
-} rct_ride_name;
-
 typedef struct rct_ride_entrance_definition {
     uint32 sprite_index;
     uint16 height;

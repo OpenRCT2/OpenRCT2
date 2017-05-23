@@ -33,6 +33,7 @@
 extern "C"
 {
     #include "../rct2.h"
+    #include "ride_group.h"
     #include "track_design.h"
 }
 
@@ -109,7 +110,9 @@ public:
         for (const auto item : _items)
         {
             if (item.RideType != rideType)
+            {
                 continue;
+            }
 
             bool entryIsNotSeparate = false;
             if (entry.empty())
@@ -128,6 +131,31 @@ public:
         return count;
     }
 
+    size_t GetCountForRideGroup(uint8 rideType, ride_group * rideGroup) const override
+    {
+        size_t count = 0;
+        IObjectRepository * repo = GetObjectRepository();
+
+        for (const auto item : _items)
+        {
+            if (item.RideType != rideType)
+            {
+                continue;
+            }
+
+            const ObjectRepositoryItem * ori = repo->FindObject(item.ObjectEntry.c_str());
+            uint8 rideGroupIndex = (ori->RideFlags >> 2);
+            ride_group * itemRideGroup = ride_group_find(rideType, rideGroupIndex);
+
+            if (itemRideGroup != NULL && ride_groups_are_equal(itemRideGroup, rideGroup))
+            {
+                count++;
+            }
+        }
+
+        return count;
+    }
+
     /**
      *
      * @param outRefs
@@ -143,7 +171,9 @@ public:
         for (const auto item : _items)
         {
             if (item.RideType != rideType)
+            {
                 continue;
+            }
 
             bool entryIsNotSeparate = false;
             if (entry.empty())
@@ -155,6 +185,35 @@ public:
             }
 
             if (entryIsNotSeparate || String::Equals(item.ObjectEntry, entry, true))
+            {
+                track_design_file_ref ref;
+                ref.name = String::Duplicate(GetNameFromTrackPath(item.Path));
+                ref.path = String::Duplicate(item.Path);
+                refs.push_back(ref);
+            }
+        }
+
+        *outRefs = Collections::ToArray(refs);
+        return refs.size();
+    }
+
+    size_t GetItemsForRideGroup(track_design_file_ref **outRefs, uint8 rideType, ride_group * rideGroup) const override
+    {
+        std::vector<track_design_file_ref> refs;
+        IObjectRepository * repo = GetObjectRepository();
+
+        for (const auto item : _items)
+        {
+            if (item.RideType != rideType)
+            {
+                continue;
+            }
+
+            const ObjectRepositoryItem * ori = repo->FindObject(item.ObjectEntry.c_str());
+            uint8 rideGroupIndex = (ori->RideFlags >> 2);
+            ride_group * itemRideGroup = ride_group_find(rideType, rideGroupIndex);
+
+            if (itemRideGroup != NULL && ride_groups_are_equal(itemRideGroup, rideGroup))
             {
                 track_design_file_ref ref;
                 ref.name = String::Duplicate(GetNameFromTrackPath(item.Path));
@@ -424,10 +483,22 @@ extern "C"
         return repo->GetCountForObjectEntry(rideType, String::ToStd(entry));
     }
 
+    size_t track_repository_get_count_for_ride_group(uint8 rideType, ride_group * rideGroup)
+    {
+        ITrackDesignRepository * repo = GetTrackDesignRepository();
+        return repo->GetCountForRideGroup(rideType, rideGroup);
+    }
+
     size_t track_repository_get_items_for_ride(track_design_file_ref * * outRefs, uint8 rideType, const utf8 * entry)
     {
         ITrackDesignRepository * repo = GetTrackDesignRepository();
         return repo->GetItemsForObjectEntry(outRefs, rideType, String::ToStd(entry));
+    }
+
+    size_t track_repository_get_items_for_ride_group(track_design_file_ref * * outRefs, uint8 rideType, ride_group * rideGroup)
+    {
+        ITrackDesignRepository * repo = GetTrackDesignRepository();
+        return repo->GetItemsForRideGroup(outRefs, rideType, rideGroup);
     }
 
     bool track_repository_delete(const utf8 * path)

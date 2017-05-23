@@ -27,6 +27,8 @@ extern "C"
     #include "../drawing/drawing.h"
     #include "../localisation/localisation.h"
     #include "../rct1.h"
+    #include "../ride/ride.h"
+    #include "../ride/ride_group.h"
     #include "../ride/track.h"
 }
 
@@ -76,26 +78,18 @@ void RideObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
     GetStringTable()->Read(context, stream, OBJ_STRING_ID_NAME);
     GetStringTable()->Read(context, stream, OBJ_STRING_ID_DESCRIPTION);
 
-    // TODO: Move to its own function when ride construction window is merged.
-    if (gConfigInterface.select_by_track_type)
+    // Add boosters if the track type is eligible
+    for (sint32 i = 0; i < 3; i++)
     {
-        _legacyType.enabledTrackPieces = 0xFFFFFFFFFFFFFFFF;
-    }
-    else
-    {
-        // When not in select by track type mode, add boosters if the track type is eligible
-        for (sint32 i = 0; i < 3; i++)
-        {
-            if (_legacyType.ride_type[i] == RIDE_TYPE_LOOPING_ROLLER_COASTER ||
-                _legacyType.ride_type[i] == RIDE_TYPE_CORKSCREW_ROLLER_COASTER ||
-                _legacyType.ride_type[i] == RIDE_TYPE_TWISTER_ROLLER_COASTER ||
-                _legacyType.ride_type[i] == RIDE_TYPE_VERTICAL_DROP_ROLLER_COASTER ||
-                _legacyType.ride_type[i] == RIDE_TYPE_GIGA_COASTER ||
-                _legacyType.ride_type[i] == RIDE_TYPE_JUNIOR_ROLLER_COASTER)
-            {
-
-                _legacyType.enabledTrackPieces |= (1ULL << TRACK_BOOSTER);
-            }
+        if (
+            _legacyType.ride_type[i] == RIDE_TYPE_LOOPING_ROLLER_COASTER ||
+            _legacyType.ride_type[i] == RIDE_TYPE_CORKSCREW_ROLLER_COASTER ||
+            _legacyType.ride_type[i] == RIDE_TYPE_TWISTER_ROLLER_COASTER ||
+            _legacyType.ride_type[i] == RIDE_TYPE_VERTICAL_DROP_ROLLER_COASTER ||
+            _legacyType.ride_type[i] == RIDE_TYPE_GIGA_COASTER ||
+            _legacyType.ride_type[i] == RIDE_TYPE_JUNIOR_ROLLER_COASTER
+        ) {
+            _legacyType.enabledTrackPieces |= (1ULL << TRACK_BOOSTER);
         }
     }
 
@@ -414,6 +408,27 @@ void RideObject::SetRepositoryItem(ObjectRepositoryItem * item) const
         flags |= ORI_RIDE_FLAG_SEPARATE;
     }
     item->RideFlags = flags;
+
+    // Find the first non-null ride type, to be used when checking the ride group
+    uint8 rideTypeIdx = ride_entry_get_first_non_null_ride_type((rct_ride_entry *)&_legacyType);
+
+    // Determines the ride group. Will fall back to 0 if there is none found.
+    uint8 rideGroupIndex = 0;
+
+    ride_group * rideGroup = get_ride_group(rideTypeIdx, (rct_ride_entry *)&_legacyType);
+    for (uint8 i = rideGroupIndex + 1; i < 2; i++)
+    {
+        ride_group * irg = ride_group_find(rideTypeIdx, i);
+
+        if (irg != NULL)
+        {
+            if (ride_groups_are_equal(irg, rideGroup))
+            {
+                rideGroupIndex = i;
+            }
+        }
+    }
+    item->RideFlags = (rideGroupIndex << 2) | flags;
 }
 
 void RideObject::ReadLegacyVehicle(IReadObjectContext * context, IStream * stream, rct_ride_entry_vehicle * vehicle)
