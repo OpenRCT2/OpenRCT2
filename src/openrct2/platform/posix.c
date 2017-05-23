@@ -391,6 +391,17 @@ sint32 platform_enumerate_files_begin(const utf8 *pattern)
 				safe_strcpy(paths[idx], dir_name, path_len);
 				safe_strcat_path(paths[idx], d->d_name, path_len);
 				log_verbose("paths[%d] = %s", idx, paths[idx]);
+
+// macOS uses decomposed Unicode strings (e.g. an 'e' and a combining accent) in filenames
+// This causes problems with the sprite font, as the font only contains precomposed characters
+// The block below converts all filename strings to their precomposed form, preventing mojibake
+#ifdef __MACOSX__
+				utf8* precomp_path = macos_str_decomp_to_precomp(paths[idx]);
+				size_t precomp_len = sizeof(utf8) * min(MAX_PATH, strnlen(precomp_path, MAX_PATH) + 2);
+				paths[idx] = malloc(precomp_len);
+				safe_strcpy(paths[idx], precomp_path, precomp_len);
+				log_verbose("macOS decomp-to-precomp fix - paths[%d] = %s", idx, paths[idx]);
+#endif
 			}
 			enumFileInfo->handle = 0;
 			enumFileInfo->active = 1;
@@ -798,12 +809,12 @@ time_t platform_file_get_modified_time(const utf8* path){
 }
 
 uint8 platform_get_locale_temperature_format(){
-	// LC_MEASUREMENT is GNU specific.
-	#ifdef LC_MEASUREMENT
+// LC_MEASUREMENT is GNU specific.
+#ifdef LC_MEASUREMENT
 	const char *langstring = setlocale(LC_MEASUREMENT, "");
-	#else
+#else
 	const char *langstring = setlocale(LC_ALL, "");
-	#endif
+#endif
 
 	if(langstring != NULL){
 		if (!fnmatch("*_US*", langstring, 0) ||
