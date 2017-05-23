@@ -4,6 +4,7 @@ if (CMAKE_BINARY_DIR STREQUAL CMAKE_SOURCE_DIR)
     message(FATAL_ERROR "Building in-source is not supported! Create a build dir and remove ${CMAKE_SOURCE_DIR}/CMakeCache.txt")
 endif()
 set(ROOT_DIR "${CMAKE_CURRENT_LIST_DIR}")
+set(CMAKE_MACOSX_RPATH 1)
 
 set(TITLE_SEQUENCE_URL  "https://github.com/OpenRCT2/title-sequences/releases/download/v0.0.5/title-sequence-v0.0.5.zip")
 set(TITLE_SEQUENCE_SHA1 "79ffb2585d12abcbfce205d7696e3472a504b005")
