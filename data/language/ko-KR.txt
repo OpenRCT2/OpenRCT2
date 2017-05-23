@@ -2389,7 +2389,7 @@ STR_2380    :{SMALLFONT}{BLACK}물 편집 크기 줄이기
 STR_2381    :{SMALLFONT}{BLACK}물 편집 크기 늘이기
 STR_2382    :땅
 STR_2383    :물
-STR_2384    :{WINDOW_COLOUR_2}대상:
+STR_2384    :{WINDOW_COLOUR_2}목표:
 STR_2385    :{BLACK}없음
 STR_2386    :{BLACK}공원에 최소 {COMMA16}명 이상의 손님을 {MONTHYEAR}까지 유치하고, 공원 등급을 600 이상으로 유지하세요
 STR_2387    :{BLACK}최소 {POP16}{POP16}{CURRENCY} 이상의 공원 가치를 {PUSH16}{PUSH16}{PUSH16}{MONTHYEAR}까지 달성하세요
