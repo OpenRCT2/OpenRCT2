@@ -113,6 +113,7 @@ matrix:
             - brew install sdl2_ttf
             - brew install speex
             - brew install libzip
+            - brew install pkg-config
           script:
             - mkdir build
             - cd build
