@@ -12,6 +12,7 @@ include(FindPkgConfig)
 
 # Third party libraries
 PKG_CHECK_MODULES(SDL2 REQUIRED sdl2)
+PKG_CHECK_MODULES(SPEEX REQUIRED speexdsp)
 if (NOT DISABLE_OPENGL)
     # GL doesn't work nicely with macOS, while find_package doesn't work with multiarch on Ubuntu.
     if (APPLE)
@@ -43,7 +44,12 @@ add_executable(${PROJECT} ${OPENRCT2_UI_SOURCES} ${OPENRCT2_UI_M_SOURCES} ${OPEN
 
 target_link_libraries(${PROJECT} "libopenrct2"
                                  ${SDL2_LIBRARIES}
-                                 ${SDL2_TTF_LIBRARIES})
+                                 ${SDL2_TTF_LIBRARIES}
+                                 ${SPEEX_LIBRARIES})
+
+if (APPLE)
+	target_link_libraries(${PROJECT} "-framework Cocoa")
+endif ()
 
 if (NOT DISABLE_OPENGL)
     if (WIN32)
@@ -57,7 +63,8 @@ endif ()
 
 # Includes
 target_include_directories(${PROJECT} PRIVATE "${CMAKE_CURRENT_LIST_DIR}/.."
-                                              ${SDL2_INCLUDE_DIRS})
+                                              ${SDL2_INCLUDE_DIRS}
+                                              ${SPEEX_INCLUDE_DIRS})
 
 # Compiler flags
 if (FORCE32)
