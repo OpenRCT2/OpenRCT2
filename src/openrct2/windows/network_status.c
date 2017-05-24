@@ -84,7 +84,7 @@ void window_network_status_open(const char* text, close_callback onClose)
 	safe_strcpy(window_network_status_text, text, sizeof(window_network_status_text));
 
 	// Check if window is already open
-	rct_window *window = window_bring_to_front_by_class(WC_NETWORK_STATUS);
+	rct_window *window = window_bring_to_front_by_class_with_flags(WC_NETWORK_STATUS, 0);
 	if (window != NULL)
 		return;
 
