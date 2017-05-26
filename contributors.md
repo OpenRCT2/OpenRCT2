@@ -77,6 +77,7 @@ Includes all git commit authors. Aliases are GitHub user names.
 * Jake Breen (Haekb)
 * Marco Benzi Tobar (Lisergishnu)
 * Richard Jenkins (rwjuk)
+* (ceeac)
 
 ## Toolchain
 * (Balletie) - macOS
