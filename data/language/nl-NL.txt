@@ -1800,7 +1800,7 @@ STR_1796    :Is defect en moet worden gerepareerd
 STR_1797    :Deze optie kan niet worden aangepast bij deze attractie
 STR_1798    :Draaikolk
 STR_1799    :{POP16}{POP16}{POP16}{POP16}{POP16}{CURRENCY2DP}
-STR_1800    :Veiligheidsvergrendeling
+STR_1800    :Noodstop
 STR_1801    :Veiligheidsbeugel gaat niet open
 STR_1802    :Veiligheidsbeugel gaat niet dicht
 STR_1803    :Deuren gaan niet open
@@ -5910,7 +5910,7 @@ STR_DESC    :Omgekeerde achtbaantrein bestaande uit karretjes in de vorm van een
 STR_CPTY    :4 passagiers per karretje
 
 [VEKVAMP]
-STR_NAME    :Karretjes zonder bodem
+STR_NAME    :Karretjes zonder vloer
 STR_DESC    :Omgekeerde achtbaantrein bestaande uit stoeltjesliftachtige karretjes die vrijuit kunnen schommelen als de trein door een bocht gaat.
 STR_CPTY    :2 passagiers per karretje
 
@@ -6179,8 +6179,8 @@ STR_DESC    :Passagiers staan in de brede achtbaantrein met speciaal ontworpen b
 STR_CPTY    :4 passagiers per karretje
 
 [BMFL]
-STR_NAME    :Achtbaan zonder bodem
-STR_DESC    :Brede achtbaantreinen zonder bodem, die de passagiers het gevoel geeft in de open lucht te zijn terwijl ze langs de kronkelende baan en door meerdere omkeringen glijden.
+STR_NAME    :Achtbaan zonder vloer
+STR_DESC    :Brede achtbaantreinen zonder vloer, die de passagiers het gevoel geeft in de open lucht te zijn terwijl ze langs de kronkelende baan en door meerdere omkeringen glijden.
 STR_CPTY    :4 passagiers per karretje
 
 [GOLTR]
