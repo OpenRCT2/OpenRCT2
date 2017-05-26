@@ -1168,18 +1168,23 @@ rct_window *window_bring_to_front(rct_window *w)
 	return w;
 }
 
-rct_window *window_bring_to_front_by_class(rct_windowclass cls)
+rct_window *window_bring_to_front_by_class_with_flags(rct_windowclass cls, uint16 flags)
 {
 	rct_window* w;
 
 	w = window_find_by_class(cls);
 	if (w != NULL) {
-		w->flags |= WF_WHITE_BORDER_MASK;
+		w->flags |= flags;
 		window_invalidate(w);
 		w = window_bring_to_front(w);
 	}
 
 	return w;
+}
+
+rct_window *window_bring_to_front_by_class(rct_windowclass cls)
+{
+	return window_bring_to_front_by_class_with_flags(cls, WF_WHITE_BORDER_MASK);
 }
 
 /**

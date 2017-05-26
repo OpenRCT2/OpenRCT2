@@ -633,6 +633,7 @@ sint32 window_get_scroll_data_index(rct_window *w, rct_widgetindex widget_index)
 
 rct_window *window_bring_to_front(rct_window *w);
 rct_window *window_bring_to_front_by_class(rct_windowclass cls);
+rct_window *window_bring_to_front_by_class_with_flags(rct_windowclass cls, uint16 flags);
 rct_window *window_bring_to_front_by_number(rct_windowclass cls, rct_windownumber number);
 
 void window_push_others_right(rct_window *w);
