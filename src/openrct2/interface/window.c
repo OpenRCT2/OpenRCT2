@@ -1168,7 +1168,7 @@ rct_window *window_bring_to_front(rct_window *w)
 	return w;
 }
 
-rct_window *window_bring_to_front_by_class_with_flags(rct_windowclass cls, uint16_t flags)
+rct_window *window_bring_to_front_by_class_with_flags(rct_windowclass cls, uint16 flags)
 {
 	rct_window* w;
 
