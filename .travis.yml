@@ -111,7 +111,7 @@ matrix:
             - brew outdated libpng || brew upgrade libpng
             - brew install sdl2
             - brew install sdl2_ttf
-            - brew install speex
+            - brew install speexdsp
             - brew install libzip
             - brew outdated pkg-config || brew upgrade pkg-config
           script:
