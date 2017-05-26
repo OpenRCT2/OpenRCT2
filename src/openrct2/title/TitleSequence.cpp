@@ -166,6 +166,7 @@ extern "C"
         {
             Memory::Free(handle->HintPath);
             delete ((IStream *)handle->Stream);
+            Memory::Free(handle);
         }
     }
 
