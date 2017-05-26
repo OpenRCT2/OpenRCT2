@@ -267,7 +267,7 @@ namespace TitleSequenceManager
         if (item.PredefinedIndex != PREDEFINED_INDEX_CUSTOM)
         {
             rct_string_id stringId = PredefinedSequences[item.PredefinedIndex].StringId;
-            item.Name = String::Duplicate(language_get_string(stringId));
+            item.Name = language_get_string(stringId);
         }
         item.IsZip = isZip;
         _items.push_back(item);
