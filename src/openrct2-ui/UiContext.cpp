@@ -75,12 +75,12 @@ private:
 
     // Input
     TextComposition _textComposition;
-    CursorState     _cursorState;
-    uint32          _lastKeyPressed;
-    const uint8 *   _keysState;
-    uint8           _keysPressed[256];
-    uint32          _lastGestureTimestamp;
-    float           _gestureRadius;
+    CursorState     _cursorState            = { 0 };
+    uint32          _lastKeyPressed         = 0;
+    const uint8 *   _keysState              = nullptr;
+    uint8           _keysPressed[256]       = { 0 };
+    uint32          _lastGestureTimestamp   = 0;
+    float           _gestureRadius          = 0;
 
 public:
     UiContext()
@@ -217,7 +217,7 @@ public:
     {
         SDL_SetWindowGrab(_window, value ? SDL_TRUE : SDL_FALSE);
     }
-	
+
     void SetKeysPressed(uint32 keysym, uint8 scancode) override
     {
         _lastKeyPressed = keysym;
