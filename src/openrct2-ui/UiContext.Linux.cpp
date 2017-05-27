@@ -123,7 +123,7 @@ namespace OpenRCT2 { namespace Ui
                     (desc.Type == FILE_DIALOG_TYPE::OPEN) ? "--getopenfilename" :
                                                             "--getsavefilename";
                 std::string filter = GetKDialogFilterString(desc.Filters);
-                std::string cmd = String::StdFormat("%s --title '%s' %s '%s/' ~ '%s'",
+                std::string cmd = String::StdFormat("%s --title '%s' %s '%s' '%s'",
                     executablePath.c_str(),
                     desc.Title.c_str(),
                     action.c_str(),
@@ -226,7 +226,7 @@ namespace OpenRCT2 { namespace Ui
             {
                 return DIALOG_TYPE::ZENITY;
             }
-            if (Execute("which kdialog", executablePath))
+            if (Execute("which kdialog", executablePath) == 0)
             {
                 return DIALOG_TYPE::KDIALOG;
             }
