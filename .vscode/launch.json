@@ -7,10 +7,15 @@
             "request": "launch",
             "program": "${workspaceRoot}/bin/openrct2",
             "args": [],
-            "stopAtEntry": true,
+            "stopAtEntry": false,
             "cwd": "${workspaceRoot}/bin",
             "environment": [],
             "externalConsole": true,
+            "setupCommands": [
+                {
+                    "text": "-enable-pretty-printing"
+                }
+            ],
             "linux": {
                 "MIMode": "gdb"
             },
@@ -27,6 +32,11 @@
             "request": "attach",
             "program": "${workspaceRoot}/bin/openrct2",
             "processId": "${command.pickProcess}",
+            "setupCommands": [
+                {
+                    "text": "-enable-pretty-printing"
+                }
+            ],
             "linux": {
                 "MIMode": "gdb"
             },
