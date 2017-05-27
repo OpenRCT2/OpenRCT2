@@ -34,6 +34,7 @@
 #include "../platform/platform.h"
 #include "../rct2.h"
 #include "../ride/ride.h"
+#include "../ride/ride_data.h"
 #include "../util/sawyercoding.h"
 #include "../util/util.h"
 #include "../Version.h"
@@ -43,7 +44,6 @@
 #include "../world/scenery.h"
 #include "console.h"
 #include "viewport.h"
-#include "window.h"
 
 #define CONSOLE_BUFFER_SIZE 8192
 #define CONSOLE_BUFFER_2_SIZE 256

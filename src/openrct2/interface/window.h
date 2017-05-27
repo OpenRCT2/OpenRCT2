@@ -36,9 +36,6 @@ struct TitleSequence;
 
 #define TEXT_INPUT_SIZE 1024
 
-extern const rct_string_id RideModeNames[];
-extern const rct_string_id StaffCostumeNames[];
-
 extern uint16 TextInputDescriptionArgs[4];
 extern char gTextBoxInput[TEXT_INPUT_SIZE];
 extern sint32 gMaxTextBoxInputLength;
