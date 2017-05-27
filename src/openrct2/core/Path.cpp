@@ -44,7 +44,10 @@ namespace Path
 
     std::string GetDirectory(const std::string &path)
     {
-        return GetDirectory(path.c_str());
+        const utf8* directory = GetDirectory(path.c_str());
+        std::string result(directory);
+        Memory::Free(directory);
+        return result;
     }
 
     utf8 * GetDirectory(const utf8 * path)
