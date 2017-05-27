@@ -130,7 +130,7 @@ namespace OpenRCT2 { namespace Ui
                     desc.InitialDirectory.c_str(),
                     filter.c_str());
                 std::string output;
-                if (Execute(cmd, &output) != 0)
+                if (Execute(cmd, &output) == 0)
                 {
                     result = output;
                 }
@@ -153,7 +153,7 @@ namespace OpenRCT2 { namespace Ui
                     desc.Title.c_str(),
                     filters.c_str());
                 std::string output;
-                if (Execute(cmd, &output) != 0)
+                if (Execute(cmd, &output) == 0)
                 {
                     result = output;
                 }
@@ -164,20 +164,21 @@ namespace OpenRCT2 { namespace Ui
                 break;
             }
 
-            log_verbose("filename = %s", result.c_str());
-
-            if (desc.Type == FILE_DIALOG_TYPE::OPEN && access(result.c_str(), F_OK) == -1)
+            if (!result.empty())
             {
-                std::string msg = String::StdFormat("\"%s\" not found: %s, please choose another file\n", result.c_str(), strerror(errno));
-                ShowMessageBox(window, msg);
-                return ShowFileDialog(window, desc);
-            }
-            else if (desc.Type == FILE_DIALOG_TYPE::SAVE && access(result.c_str(), F_OK) != -1 && dtype == DIALOG_TYPE::KDIALOG)
-            {
-                std::string cmd = String::StdFormat("%s --yesno \"Overwrite %s?\"", executablePath.c_str(), result.c_str());
-                if (Execute(cmd) != 0)
+                if (desc.Type == FILE_DIALOG_TYPE::OPEN && access(result.c_str(), F_OK) == -1)
                 {
-                    result = std::string();
+                    std::string msg = String::StdFormat("\"%s\" not found: %s, please choose another file\n", result.c_str(), strerror(errno));
+                    ShowMessageBox(window, msg);
+                    return ShowFileDialog(window, desc);
+                }
+                else if (desc.Type == FILE_DIALOG_TYPE::SAVE && access(result.c_str(), F_OK) != -1 && dtype == DIALOG_TYPE::KDIALOG)
+                {
+                    std::string cmd = String::StdFormat("%s --yesno \"Overwrite %s?\"", executablePath.c_str(), result.c_str());
+                    if (Execute(cmd) != 0)
+                    {
+                        result = std::string();
+                    }
                 }
             }
             return result;
@@ -323,8 +324,8 @@ namespace OpenRCT2 { namespace Ui
                     else if (isalpha(c))
                     {
                         filtersb << '['
-                                 << toupper(c)
-                                 << tolower(c)
+                                 << (char)tolower(c)
+                                 << (char)toupper(c)
                                  << ']';
                     }
                     else
