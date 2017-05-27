@@ -24,6 +24,7 @@
 #include <openrct2/audio/AudioMixer.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/Context.h>
+#include <openrct2/core/Math.hpp>
 #include <openrct2/core/String.hpp>
 #include <openrct2/drawing/IDrawingEngine.h>
 #include <openrct2/platform/Platform2.h>
@@ -295,6 +296,24 @@ public:
                 {
                     OnResize(e.window.data1, e.window.data2);
                 }
+
+                switch (e.window.event) {
+                case SDL_WINDOWEVENT_SIZE_CHANGED:
+                case SDL_WINDOWEVENT_MOVED:
+                case SDL_WINDOWEVENT_MAXIMIZED:
+                case SDL_WINDOWEVENT_RESTORED:
+                {
+                    // Update default display index
+                    sint32 displayIndex = SDL_GetWindowDisplayIndex(_window);
+                    if (displayIndex != gConfigGeneral.default_display)
+                    {
+                        gConfigGeneral.default_display = displayIndex;
+                        config_save_default();
+                    }
+                    break;
+                }
+                }
+
                 if (gConfigSound.audio_focus && gConfigSound.sound_enabled)
                 {
                     if (e.window.event == SDL_WINDOWEVENT_FOCUS_GAINED)
@@ -481,6 +500,11 @@ public:
         // g1.dat is loaded.
         // sub_68371D();
 
+        // Set window position to default display
+        sint32 defaultDisplay = Math::Clamp(0, gConfigGeneral.default_display, 0xFFFF);
+        sint32 x = SDL_WINDOWPOS_UNDEFINED_DISPLAY(defaultDisplay);
+        sint32 y = SDL_WINDOWPOS_UNDEFINED_DISPLAY(defaultDisplay);
+
         // Get saved window size
         sint32 width = gConfigGeneral.window_width;
         sint32 height = gConfigGeneral.window_height;
@@ -494,7 +518,7 @@ public:
             flags |= SDL_WINDOW_OPENGL;
         }
 
-        _window = SDL_CreateWindow(OPENRCT2_NAME, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, flags);
+        _window = SDL_CreateWindow(OPENRCT2_NAME, x, y, width, height, flags);
         if (_window == nullptr)
         {
             SDLException::Throw("SDL_CreateWindow(...)");
@@ -503,7 +527,7 @@ public:
         SDL_SetWindowMinimumSize(_window, 720, 480);
         SetCursorTrap(gConfigGeneral.trap_cursor);
         _platformUiContext->SetWindowIcon(_window);
-		
+
         // Initialise the surface, palette and draw buffer
         OnResize(width, height);
 

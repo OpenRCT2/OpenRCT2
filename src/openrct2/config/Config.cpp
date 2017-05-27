@@ -160,6 +160,7 @@ namespace Config
             model->window_height = reader->GetSint32("window_height", -1);
             model->window_snap_proximity = reader->GetSint32("window_snap_proximity", 5);
             model->window_width = reader->GetSint32("window_width", -1);
+            model->default_display = reader->GetSint32("default_display", 0);
             model->drawing_engine = reader->GetEnum<sint32>("drawing_engine", DRAWING_ENGINE_SOFTWARE, Enum_DrawingEngine);
             model->uncap_fps = reader->GetBoolean("uncap_fps", false);
 
@@ -233,6 +234,7 @@ namespace Config
         writer->WriteSint32("window_height", model->window_height);
         writer->WriteSint32("window_snap_proximity", model->window_snap_proximity);
         writer->WriteSint32("window_width", model->window_width);
+        writer->WriteSint32("default_display", model->default_display);
         writer->WriteEnum<sint32>("drawing_engine", model->drawing_engine, Enum_DrawingEngine);
         writer->WriteBoolean("uncap_fps", model->uncap_fps);
         writer->WriteBoolean("test_unfinished_tracks", model->test_unfinished_tracks);
