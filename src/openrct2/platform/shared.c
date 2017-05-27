@@ -636,9 +636,6 @@ static void platform_create_window()
 	// Initialise the surface, palette and draw buffer
 	platform_resize(width, height);
 
-	platform_update_fullscreen_resolutions();
-	platform_set_fullscreen_mode(gConfigGeneral.fullscreen_mode);
-
 	// Check if steam overlay renderer is loaded into the process
 	gSteamOverlayActive = platform_check_steam_overlay_attached();
 	platform_trigger_resize();
