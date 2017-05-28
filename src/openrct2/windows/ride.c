@@ -584,7 +584,7 @@ static void window_ride_measurements_mousedown(rct_widgetindex widgetIndex, rct_
 static void window_ride_measurements_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex);
 static void window_ride_measurements_update(rct_window *w);
 static void window_ride_measurements_tooldown(rct_window *w, rct_widgetindex widgetIndex, sint32 x, sint32 y);
-static void window_ride_measurements_tooldrag(struct rct_window*, rct_widgetindex, sint32, sint32);
+static void window_ride_measurements_tooldrag(rct_window *w, rct_widgetindex widgetIndex, sint32 x, sint32 y);
 static void window_ride_measurements_toolabort(rct_window *w, rct_widgetindex widgetIndex);
 static void window_ride_measurements_invalidate(rct_window *w);
 static void window_ride_measurements_paint(rct_window *w, rct_drawpixelinfo *dpi);
