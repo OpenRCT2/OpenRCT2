@@ -34,6 +34,7 @@
 #include "../platform/platform.h"
 #include "../rct2.h"
 #include "../ride/ride.h"
+#include "../ride/ride_data.h"
 #include "../util/sawyercoding.h"
 #include "../util/util.h"
 #include "../Version.h"
@@ -43,7 +44,6 @@
 #include "../world/scenery.h"
 #include "console.h"
 #include "viewport.h"
-#include "window.h"
 
 #define CONSOLE_BUFFER_SIZE 8192
 #define CONSOLE_BUFFER_2_SIZE 256
@@ -463,7 +463,7 @@ static sint32 cc_rides(const utf8 **argv, sint32 argc)
 					console_printf("Ride modes are specified using integer IDs as given below:");
 					for (sint32 i = 0; i < RIDE_MODE_COUNT; i++) {
 						char mode_name[128] = { 0 };
-						rct_string_id mode_string_id = STR_RIDE_MODE_NORMAL + i;
+						rct_string_id mode_string_id = RideModeNames[i];
 						format_string(mode_name, 128, mode_string_id, 0);
 						console_printf("%02d - %s", i, mode_name);
 					}
@@ -643,7 +643,7 @@ static sint32 cc_staff(const utf8 **argv, sint32 argc)
 				console_printf("staff set costume <staff id> <costume id>");
 				for (sint32 i = 0; i < ENTERTAINER_COSTUME_COUNT; i++) {
 					char costume_name[128] = { 0 };
-					rct_string_id costume = STR_STAFF_OPTION_COSTUME_PANDA + i;
+					rct_string_id costume = StaffCostumeNames[i];
 					format_string(costume_name, 128, STR_DROPDOWN_MENU_LABEL, &costume);
 					// That's a terrible hack here. Costume names include inline sprites
 					// that don't work well with the console, so manually skip past them.

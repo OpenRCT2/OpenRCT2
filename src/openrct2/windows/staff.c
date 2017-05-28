@@ -290,20 +290,6 @@ uint32 window_staff_page_enabled_widgets[] = {
 	(1 << WIDX_TAB_3)
 };
 
-static const uint32 staffCostumeNames[] = {
-	STR_STAFF_OPTION_COSTUME_PANDA,
-	STR_STAFF_OPTION_COSTUME_TIGER,
-	STR_STAFF_OPTION_COSTUME_ELEPHANT,
-	STR_STAFF_OPTION_COSTUME_ROMAN,
-	STR_STAFF_OPTION_COSTUME_GORILLA,
-	STR_STAFF_OPTION_COSTUME_SNOWMAN,
-	STR_STAFF_OPTION_COSTUME_KNIGHT,
-	STR_STAFF_OPTION_COSTUME_ASTRONAUT,
-	STR_STAFF_OPTION_COSTUME_BANDIT,
-	STR_STAFF_OPTION_COSTUME_SHERIFF,
-	STR_STAFF_OPTION_COSTUME_PIRATE,
-};
-
 static uint8 _availableCostumes[ENTERTAINER_COSTUME_COUNT];
 
 /**
@@ -805,7 +791,7 @@ void window_staff_options_invalidate(rct_window *w)
 		window_staff_options_widgets[WIDX_CHECKBOX_4].type = WWT_EMPTY;
 		window_staff_options_widgets[WIDX_COSTUME_BOX].type = WWT_DROPDOWN;
 		window_staff_options_widgets[WIDX_COSTUME_BTN].type = WWT_DROPDOWN_BUTTON;
-		window_staff_options_widgets[WIDX_COSTUME_BOX].text = staffCostumeNames[peep->sprite_type - 4];
+		window_staff_options_widgets[WIDX_COSTUME_BOX].text = StaffCostumeNames[peep->sprite_type - 4];
 		break;
 	case STAFF_TYPE_HANDYMAN:
 		window_staff_options_widgets[WIDX_CHECKBOX_1].type = WWT_CHECKBOX;
@@ -1309,7 +1295,7 @@ void window_staff_options_mousedown(rct_widgetindex widgetIndex, rct_window* w, 
 		if (costume == peep->sprite_type) {
 			itemsChecked = 1 << i;
 		}
-		gDropdownItemsArgs[i] = staffCostumeNames[costume];
+		gDropdownItemsArgs[i] = StaffCostumeNames[costume];
 		gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
 	}
 

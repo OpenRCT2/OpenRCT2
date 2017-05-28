@@ -180,4 +180,6 @@ extern const uint8 RideConstructionDefaultTrackType[RIDE_TYPE_COUNT];
 
 extern const track_colour_preset_list RideColourPresets[RIDE_TYPE_COUNT];
 
+extern const rct_string_id RideModeNames[RIDE_MODE_COUNT];
+
 #endif
