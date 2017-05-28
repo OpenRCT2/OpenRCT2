@@ -75,7 +75,7 @@ STR_0070    :Giga Coaster
 STR_0071    :Roto-Drop
 STR_0072    :Flying Saucers
 STR_0073    :Casa distorta
-STR_0074    :Monorail Cycles
+STR_0074    :Biciclette su monorotaia
 STR_0075    :Ottovolante invertito compatto
 STR_0076    :Attrazione acquatica
 STR_0077    :Ottovolante verticale ad aria
@@ -526,16 +526,16 @@ STR_0521    :Un ottovolante veloce e snodato con curve strette e discese ripide.
 STR_0522    :Un piccolo ottovolante dove i passeggeri siedono sopra al percorso senza un vagone attorno
 STR_0523    :I passeggeri viaggiano lentamente su veicoli elettrici lungo un percorso basato su un circuito
 STR_0524    :I carrelli sono lanciati pneumaticamente su un'alta torre di acciaio e poi sono lasciati cadere liberamente
-STR_0525    :Riders career down a twisting track guided only by the curvature and banking of the semi-circular track
+STR_0525    :I passeggeri viaggiano lungo un percorso tortuoso, guidati soltanto dalle curvature e dalle inclinazioni del tracciato semi-circolare
 STR_0526    :I passeggeri viaggiano in una cabina di osservazione rotante mentre salgono su un'alta torre
 STR_0527    :Un rapido ottovolante d'acciaio caratterizzato da cadute verticali
-STR_0528    :Riders travel in inflatable dinghies down a twisting semi-circular or completely enclosed tube track
+STR_0528    :I passeggeri viaggiano su canotti gonfiabili lungo un tortuoso percorso a forma di tubo, dalla sezione completamente chiusa o semi-circolare
 STR_0529    :Il treno della miniera è una montagna russa a tema fatta in acciaio realizzata per ricordare una vecchia ferrovia
 STR_0530    :Le carrozze pendono da un cavo d'acciaio che fa avanti e indietro per tutto il tracciato
-STR_0531    :A compact steel-tracked roller coaster where the train travels through corkscrews and loops
+STR_0531    :Un ottovolante compatto su un tracciato d'acciaio nel quale i treni viaggiano lungo avvitamenti e inversioni
 STR_0532    :
 STR_0533    :
-STR_0534    :Go-kart guidati con motore a benzina
+STR_0534    :Go-kart a motore a benzina guidati dai visitatori
 STR_0535    :Delle barche a forma di tronchi viaggiano lungo un canale d'acqua, schizzando i passeggeri mentre volano giù per ripide discese
 STR_0536    :Delle barche rotonde scorrono lungo un largo canale d'acqua, schizzando attraverso cascate e spaventando i passeggeri con delle rapide schiumose
 STR_0537    :
@@ -557,14 +557,14 @@ STR_0552    :
 STR_0553    :
 STR_0554    :La carrozza acquista velocità a partire dalla stazione attraverso un lungo tratto pianeggiante grazie a dei motori a induzione lineare, quindi percorre una salita ripida per poi scendere in caduta libera e tornare alla stazione
 STR_0555    :Gli ospiti della attrazione usano l'ascensore su una torre verticale per andare da un livello all'altro
-STR_0556    :Extra-wide cars descend completely vertical sloped track for the ultimate freefall roller coaster experience
+STR_0556    :Carrelli molto larghi discendono lungo un percorso completamente verticale, per far vivere un'incredibile esperienza di caduta libera
 STR_0557    :
 STR_0558    :
 STR_0559    :
 STR_0560    :
 STR_0561    :
-STR_0562    :Powered cars travel along a multi-level track past spooky scenery and special effects
-STR_0563    :Seduti comodamente - il solo limite è che si può effettuare un solo giro alla volta - i passeggeri sperimentano dolci discese e numerose curve, sperimentando una piacevole sensazione di assenza di peso
+STR_0562    :Carrelli a motore viaggiano lungo un tracciato su più livelli attraversando scenari spaventosi ed effetti speciali
+STR_0563    :Seduti comodamente - il solo limite è che si può effettuare un solo giro alla volta - i passeggeri sperimentano dolci discese e numerose curve, provando una piacevole sensazione di assenza di peso
 STR_0564    :Quest'attrazione, in cui si viaggia lungo un tracciato di legno, è veloce, ricca di imprevisti, rumorosa e dà al passeggero la sensazione di essere senza controllo, oltre che quella di una grande libertà
 STR_0565    :Un semplice ottovolante di legno, adatto solo a curve e declivi  lenti, in cui le carrozze sono tenute in pista solo dalla frizione delle ruote sui i bordi della pista e dalla gravità
 STR_0566    :Carrozze individuali sfrecciano per uno stretto percorso a zig-zag con curve molto strette e corte e ripide discese
@@ -572,21 +572,21 @@ STR_0567    :Seduti su sedili sospesi a entrambi i lati del tracciato, i passegg
 STR_0568    :
 STR_0569    :I passeggeri, cinti da speciali imbracature al di sotto il tracciato, sperimentano la sensazione del volo quando vengono fatti oscillare nell'aria
 STR_0570    :
-STR_0571    :Circular cars spin around as they travel along the zig-zagging wooden track
-STR_0572    :Large capacity boats travel along a wide water channel, propelled up slopes by a conveyer belt, accelerating down steep slopes to soak the riders with a gaint splash
-STR_0573    :Powered helicoper shaped cars running on a steel track, controlled by the pedalling of the riders
-STR_0574    :Riders are held in special harnesses in a lying-down position, travlling through twisted track and inversions either on their backs or facing the ground
+STR_0571    :Carrelli circolari ruotano su sé stessi mentre viaggiano lungo il percorso di legno a zig-zag
+STR_0572    :Barche molto capienti viaggiano lungo un ampio canale d'acqua, trasportate in salita da una catena e lasciate accelerare lungo rapide discese in modo da bagnare i passeggeri con un grande spruzzo
+STR_0573    :Carrelli a motore a forma di elicottero viaggiano lungo un percorso di acciaio, controllati dai pedali dei passeggeri
+STR_0574    :I passeggeri, mantenuti orizzontali tramite uno speciale sistema di ritenuta, viaggiano lungo un tracciato tortuoso e numerose inversioni, sia supini che rivolti verso il terreno
 STR_0575    :Dei treni elettrici sospesi sotto una singola rotaia trasportano i passeggeri per tutto il parco
 STR_0576    :
-STR_0577    :Bogied cars run on wooden tracks, turning around on special reversing sections
+STR_0577    :Carrelli corrono lungo tracciati di legno, ruotando su sé stessi in speciali sezioni di inversione
 STR_0578    :Le carrozze corrono per il tracciato caratterizzato da vari giri,  ripide discese e curve ondulanti
 STR_0579    :
-STR_0580    :A giant steel roller coaster capable of smooth drops and hills of over 300ft
+STR_0580    :Un gigante ottovolante di acciaio in grado di offrire morbide cadute e risalite a più di 90 metri di altezza
 STR_0581    :Un anello di sedie è posizionato in cima alla torre mentre ruota piano, quindi precipita fermandosi gentilmente alla base tramite freni magnetici
 STR_0582    :
 STR_0583    :
-STR_0584    :Special bicycles run on a steel monorail track, propelled by the pedalling of the riders
-STR_0585    :Riders sit in pairs of seats suspended beneath the track as they loop and twist through tight inversions
+STR_0584    :Speciali biciclette viaggiano lungo un percorso a monorotaia di acciaio, spinte soltanto dalle pedalate dei passeggeri
+STR_0585    :I passeggeri viaggiano su coppie di sedili sospesi sotto al percorso, mentre viaggiano attraverso numerose inversioni e inclinazioni
 STR_0586    :Carrozze a forma di barca viaggiano lungo l'ottovolante, caratterizzato da ripide discese, curve avvitate e tuffi in sezioni acquatiche più tranquille.
 STR_0587    :After an exhilarating air-powered launch, the train speeds up a vertical track, over the top, and vertically down the other side to return to the station
 STR_0588    :Individual cars run beneath a zig-zagging track with hairpin turns and sharp drops
