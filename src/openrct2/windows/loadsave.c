@@ -286,6 +286,10 @@ static bool browse(bool isSave, char *path, size_t pathSize)
 		break;
 	}
 
+	// Add 'all files' filter
+	desc.filters[1].name = language_get_string(STR_ALL_FILES);
+	desc.filters[1].pattern = "*";
+
 	desc.title = language_get_string(title);
 	return platform_open_common_file_dialog(path, &desc, pathSize);
 }
