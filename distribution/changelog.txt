@@ -5,6 +5,7 @@
 - Fix: [#3178, #5456] Paths with non-ASCII characters not handled properly on macOS.
 - Fix: [#3681] Steel Twister rollercoaster always shows all track designs
 - Fix: Track components added by OpenRCT2 are now usable in older scenarios.
+- Technical: [#5458] Begin offering headless build with reduced compile- and run-time dependencies
 
 0.0.7 (2017-05-03)
 ------------------------------------------------------------------------
