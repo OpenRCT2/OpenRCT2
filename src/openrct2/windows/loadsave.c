@@ -286,7 +286,7 @@ static bool browse(bool isSave, char *path, size_t pathSize)
 		break;
 	}
 
-	// Add 'all files' filter
+	// Add 'all files' filter. If the number of filters is increased, this code will need to be adjusted.
 	desc.filters[1].name = language_get_string(STR_ALL_FILES);
 	desc.filters[1].pattern = "*";
 
