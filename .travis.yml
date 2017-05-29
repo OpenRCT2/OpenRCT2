@@ -1,7 +1,7 @@
 language: c
 
 before_install:
-    - if [[ $TRAVIS_OS_NAME == "linux" ]]; then bash scripts/linux/install.sh; export OPENRCT_MAKE_OPTS="-j2 -k" ; fi
+    - if [[ $TRAVIS_OS_NAME == "linux" ]]; then bash scripts/linux/install.sh; export OPENRCT_MAKE_OPTS="-j2 -k all openrct2-cli" ; fi
     - if [[ $TRAVIS_OS_NAME == "osx" ]]; then sudo gem install xcpretty-travis-formatter; fi
 
 sudo: required
