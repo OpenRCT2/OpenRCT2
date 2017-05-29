@@ -10,7 +10,6 @@ set(TITLE_SEQUENCE_URL  "https://github.com/OpenRCT2/title-sequences/releases/do
 set(TITLE_SEQUENCE_SHA1 "79ffb2585d12abcbfce205d7696e3472a504b005")
 
 option(FORCE32 "Force 32-bit build. It will add `-m32` to compiler flags.")
-option(CLI_ONLY "CLI only build of OpenRCT2")
 option(WITH_TESTS "Build tests")
 
 # Define current git branch
@@ -49,11 +48,8 @@ endif()
 
 # Include sub-projects
 include("${ROOT_DIR}/src/openrct2/CMakeLists.txt" NO_POLICY_SCOPE)
-if (CLI_ONLY)
-    include("${ROOT_DIR}/src/openrct2-cli/CMakeLists.txt" NO_POLICY_SCOPE)
-else ()
-    include("${ROOT_DIR}/src/openrct2-ui/CMakeLists.txt" NO_POLICY_SCOPE)
-endif ()
+include("${ROOT_DIR}/src/openrct2-cli/CMakeLists.txt" NO_POLICY_SCOPE)
+include("${ROOT_DIR}/src/openrct2-ui/CMakeLists.txt" NO_POLICY_SCOPE)
 
 # g2
 add_custom_command(

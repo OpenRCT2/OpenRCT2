@@ -18,9 +18,9 @@ file(GLOB_RECURSE OPENRCT2_CLI_SOURCES
     "${CMAKE_CURRENT_LIST_DIR}/*.hpp")
 
 # Outputs
-set (PROJECT openrct2)
+set (PROJECT openrct2-cli)
 project(${PROJECT})
-add_executable(${PROJECT} ${OPENRCT2_CLI_SOURCES})
+add_executable(${PROJECT} EXCLUDE_FROM_ALL ${OPENRCT2_CLI_SOURCES})
 
 target_link_libraries(${PROJECT} "libopenrct2")
 
