@@ -65,7 +65,9 @@ if (NOT DISABLE_TTF)
         # FreeType is required by SDL2_ttf, but not wired up properly in package
         PKG_CHECK_MODULES(FREETYPE REQUIRED freetype2)
     endif ()
-    PKG_CHECK_MODULES(FONTCONFIG REQUIRED fontconfig)
+    if (UNIX AND NOT APPLE)
+        PKG_CHECK_MODULES(FONTCONFIG REQUIRED fontconfig)
+    endif ()
     PKG_CHECK_MODULES(SDL2_TTF REQUIRED SDL2_ttf)
 endif ()
 
