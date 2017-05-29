@@ -1,12 +1,13 @@
 # OPENRCT2
 
-sdl
+/sdl
 
 # Compiled dll
 openrct2.dll
 
 # Distribution
 distribution/windows/*.exe
+distribution/android/*/external/
 
 # Build artifacts
 artifacts

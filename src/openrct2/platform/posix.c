@@ -14,7 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
-#if defined(__unix__) || (defined(__APPLE__) && defined(__MACH__)) || defined(__FreeBSD__)
+#if defined(__unix__) || (defined(__APPLE__) && defined(__MACH__)) || defined(__FreeBSD__) && !defined(__ANDROID__)
 
 #include <dirent.h>
 #include <errno.h>
@@ -49,11 +49,11 @@ utf8 _openrctDataDirectoryPath[MAX_PATH] = { 0 };
 /**
  * The main entry point for non-Windows platforms.
  */
-sint32 main(sint32 argc, const char **argv)
+int main(int argc, char *argv[])
 {
 	core_init();
 
-	sint32 exitCode = cmdline_run(argv, argc);
+	sint32 exitCode = cmdline_run((const char **)argv, argc);
 	if (exitCode == 1)
 	{
 		openrct2_launch();

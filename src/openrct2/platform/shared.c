@@ -601,6 +601,7 @@ static void platform_create_window()
 	}
 
 	SDL_SetHint(SDL_HINT_VIDEO_MINIMIZE_ON_FOCUS_LOSS, gConfigGeneral.minimize_fullscreen_focus_loss ? "1" : "0");
+	SDL_SetHint(SDL_HINT_ANDROID_SEPARATE_MOUSE_AND_TOUCH, "1");
 
 	cursors_initialise();
 
@@ -807,6 +808,12 @@ uint8 platform_get_currency_value(const char *currCode) {
 
 	return CURRENCY_POUNDS;
 }
+
+#ifndef __ANDROID__
+float platform_get_default_scale() {
+	return 1;
+}
+#endif
 
 void core_init()
 {
