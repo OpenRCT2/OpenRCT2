@@ -232,7 +232,7 @@ void track_design_save_init();
 void track_design_save_reset_scenery();
 bool track_design_save_contains_map_element(rct_map_element *mapElement);
 void track_design_save_select_nearby_scenery(sint32 rideIndex);
-void track_design_save_toggle_map_element(sint32 interactionType, sint32 x, sint32 y, rct_map_element *mapElement);
+void track_design_save_select_map_element(sint32 interactionType, sint32 x, sint32 y, rct_map_element *mapElement, bool collect);
 bool track_design_save(uint8 rideIndex);
 bool track_design_save_to_file(const utf8 *path);
 

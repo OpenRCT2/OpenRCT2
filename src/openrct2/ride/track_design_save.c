@@ -31,6 +31,7 @@
 #include "TrackDesignRepository.h"
 
 #define TRACK_MAX_SAVED_MAP_ELEMENTS 1500
+#define TRACK_NEARBY_SCENERY_DISTANCE 1
 
 bool gTrackDesignSaveMode = false;
 uint8 gTrackDesignSaveRideIndex = 255;
@@ -75,16 +76,20 @@ void track_design_save_init()
  *
  *  rct2: 0x006D2B07
  */
-void track_design_save_toggle_map_element(sint32 interactionType, sint32 x, sint32 y, rct_map_element *mapElement)
+void track_design_save_select_map_element(sint32 interactionType, sint32 x, sint32 y, rct_map_element *mapElement, bool collect)
 {
 	if (track_design_save_contains_map_element(mapElement)) {
-		track_design_save_remove_map_element(interactionType, x, y, mapElement);
+		if (!collect) {
+			track_design_save_remove_map_element(interactionType, x, y, mapElement);
+		}
 	} else {
-		if (!track_design_save_add_map_element(interactionType, x, y, mapElement)) {
-			window_error_open(
-				STR_SAVE_TRACK_SCENERY_UNABLE_TO_SELECT_ADDITIONAL_ITEM_OF_SCENERY,
-				STR_SAVE_TRACK_SCENERY_TOO_MANY_ITEMS_SELECTED
-			);
+		if (collect) {
+			if (!track_design_save_add_map_element(interactionType, x, y, mapElement)) {
+				window_error_open(
+					STR_SAVE_TRACK_SCENERY_UNABLE_TO_SELECT_ADDITIONAL_ITEM_OF_SCENERY,
+					STR_SAVE_TRACK_SCENERY_TOO_MANY_ITEMS_SELECTED
+				);
+			}
 		}
 	}
 }
@@ -593,8 +598,8 @@ static void track_design_save_select_nearby_scenery_for_tile(sint32 rideIndex, s
 {
 	rct_map_element *mapElement;
 
-	for (sint32 y = cy - 1; y <= cy + 1; y++) {
-		for (sint32 x = cx - 1; x <= cx + 1; x++) {
+	for (sint32 y = cy - TRACK_NEARBY_SCENERY_DISTANCE; y <= cy + TRACK_NEARBY_SCENERY_DISTANCE; y++) {
+		for (sint32 x = cx - TRACK_NEARBY_SCENERY_DISTANCE; x <= cx + TRACK_NEARBY_SCENERY_DISTANCE; x++) {
 			mapElement = map_get_first_element_at(x, y);
 			do {
 				sint32 interactionType = VIEWPORT_INTERACTION_ITEM_NONE;

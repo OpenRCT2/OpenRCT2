@@ -584,6 +584,7 @@ static void window_ride_measurements_mousedown(rct_widgetindex widgetIndex, rct_
 static void window_ride_measurements_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex);
 static void window_ride_measurements_update(rct_window *w);
 static void window_ride_measurements_tooldown(rct_window *w, rct_widgetindex widgetIndex, sint32 x, sint32 y);
+static void window_ride_measurements_tooldrag(rct_window *w, rct_widgetindex widgetIndex, sint32 x, sint32 y);
 static void window_ride_measurements_toolabort(rct_window *w, rct_widgetindex widgetIndex);
 static void window_ride_measurements_invalidate(rct_window *w);
 static void window_ride_measurements_paint(rct_window *w, rct_drawpixelinfo *dpi);
@@ -820,7 +821,7 @@ static rct_window_event_list window_ride_measurements_events = {
 	NULL,
 	NULL,
 	window_ride_measurements_tooldown,
-	NULL,
+	window_ride_measurements_tooldrag,
 	NULL,
 	window_ride_measurements_toolabort,
 	NULL,
@@ -951,6 +952,9 @@ static rct_window_event_list *window_ride_page_events[] = {
 #pragma endregion
 
 static uint8 _rideType;
+static bool _collectTrackDesignScenery = false;
+static sint32 _lastSceneryX = 0;
+static sint32 _lastSceneryY = 0;
 
 static void set_operating_setting(sint32 rideNumber, uint8 setting, uint8 value);
 
@@ -5091,13 +5095,40 @@ static void window_ride_measurements_tooldown(rct_window *w, rct_widgetindex wid
 	sint16 mapX, mapY;
 	sint32 interactionType;
 
+	_lastSceneryX = x;
+	_lastSceneryY = y;
+	_collectTrackDesignScenery = true; // Default to true in case user does not select anything valid
+
 	get_map_coordinates_from_pos(x, y, 0xFCCF, &mapX, &mapY, &interactionType, &mapElement, NULL);
 	switch (interactionType) {
 	case VIEWPORT_INTERACTION_ITEM_SCENERY:
 	case VIEWPORT_INTERACTION_ITEM_LARGE_SCENERY:
 	case VIEWPORT_INTERACTION_ITEM_WALL:
 	case VIEWPORT_INTERACTION_ITEM_FOOTPATH:
-		track_design_save_toggle_map_element(interactionType, mapX, mapY, mapElement);
+		_collectTrackDesignScenery = !track_design_save_contains_map_element(mapElement);
+		track_design_save_select_map_element(interactionType, mapX, mapY, mapElement, _collectTrackDesignScenery);
+		break;
+	}
+}
+
+static void window_ride_measurements_tooldrag(rct_window *w, rct_widgetindex widgetIndex, sint32 x, sint32 y)
+{
+	if (x == _lastSceneryX && y == _lastSceneryY)
+		return;
+	_lastSceneryX = x;
+	_lastSceneryY = y;
+
+	rct_map_element *mapElement;
+	sint16 mapX, mapY;
+	sint32 interactionType;
+
+	get_map_coordinates_from_pos(x, y, 0xFCCF, &mapX, &mapY, &interactionType, &mapElement, NULL);
+	switch (interactionType) {
+	case VIEWPORT_INTERACTION_ITEM_SCENERY:
+	case VIEWPORT_INTERACTION_ITEM_LARGE_SCENERY:
+	case VIEWPORT_INTERACTION_ITEM_WALL:
+	case VIEWPORT_INTERACTION_ITEM_FOOTPATH:
+		track_design_save_select_map_element(interactionType, mapX, mapY, mapElement, _collectTrackDesignScenery);
 		break;
 	}
 }
