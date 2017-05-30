@@ -16,13 +16,13 @@ matrix:
           services:
             - docker
           env:
-            - OPENRCT2_CMAKE_OPTS="-DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_INSTALL_PREFIX=OpenRCT2" TARGET=ubuntu_amd64
+            - OPENRCT2_CMAKE_OPTS="-DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_INSTALL_PREFIX=OpenRCT2 -DPORTABLE=ON" TARGET=ubuntu_amd64
             - secure: "S3u2VCE2Vy8KNXoeh+DhnzjCmgTX0r95uEZrXDU+IKANOOCKn7Dg4OFDZE3LY/i1y2/EUDpnR5yLC38Ks795EUP/sv/OoMl4tjQ20yERjqWh+gcIRrgx7SdVabuAh3t4aBdaLD4Pfnj5avxeCt6rL7yGnj0wdbrbJSBZPsgSnuQ="
           after_success:
             - sudo chown -R $USER build
             - cd build
               # make install is done inside docker
-            - mv OpenRCT2/bin/openrct2 OpenRCT2/ && mv OpenRCT2/share/openrct2 OpenRCT2/data && mv OpenRCT2/share/doc/openrct2 OpenRCT2/doc
+            - mv OpenRCT2/bin/openrct2 OpenRCT2/ && mv OpenRCT2/bin/libopenrct2.so OpenRCT2/ && mv OpenRCT2/share/openrct2 OpenRCT2/data && mv OpenRCT2/share/doc/openrct2 OpenRCT2/doc
             - rm -rf OpenRCT2/bin OpenRCT2/share # remove empty dirs
             - tar cvzf openrct2-linux.tar.gz OpenRCT2/
             - if [[ "z${TRAVIS_TAG}" != "z" ]] ; then

@@ -11,6 +11,7 @@ set(TITLE_SEQUENCE_SHA1 "79ffb2585d12abcbfce205d7696e3472a504b005")
 
 option(FORCE32 "Force 32-bit build. It will add `-m32` to compiler flags.")
 option(WITH_TESTS "Build tests")
+option(PORTABLE "Create a portable build (-rpath=$ORIGIN)" OFF)
 
 # Define current git branch
 execute_process(
@@ -81,11 +82,15 @@ install(CODE "file(DOWNLOAD ${TITLE_SEQUENCE_URL} \$ENV{DESTDIR}${CMAKE_INSTALL_
 install(CODE "execute_process(COMMAND \"${CMAKE_COMMAND}\" -E chdir \$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/share/${PROJECT}/title/ \"${CMAKE_COMMAND}\" -E tar xvf title-sequences.zip)")
 install(CODE "file(REMOVE \$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/share/${PROJECT}/title/title-sequences.zip)")
 if (WIN32)
-    install(TARGETS "libopenrct2" RUNTIME DESTINATION bin)
-else()
-    install(TARGETS "libopenrct2" LIBRARY DESTINATION lib)
-endif()
-install(TARGETS "openrct2" RUNTIME DESTINATION bin)
+    install(TARGETS "libopenrct2" RUNTIME DESTINATION "bin")
+else ()
+    if (PORTABLE)
+        install(TARGETS "libopenrct2" LIBRARY DESTINATION "bin")
+    else ()
+        install(TARGETS "libopenrct2" LIBRARY DESTINATION "lib")
+    endif ()
+endif ()
+install(TARGETS "openrct2" RUNTIME DESTINATION "bin")
 install(FILES "${CMAKE_CURRENT_BINARY_DIR}/g2.dat" DESTINATION "share/openrct2")
 install(DIRECTORY "data/" DESTINATION "share/openrct2")
 install(FILES ${DOC_FILES} DESTINATION "share/doc/openrct2")
