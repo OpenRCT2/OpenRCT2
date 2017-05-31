@@ -33,6 +33,7 @@ struct rct_window;
 union rct_window_event;
 struct track_design_file_ref;
 struct TitleSequence;
+struct TextInputSession;
 
 #define TEXT_INPUT_SIZE 1024
 
@@ -41,6 +42,7 @@ extern char gTextBoxInput[TEXT_INPUT_SIZE];
 extern sint32 gMaxTextBoxInputLength;
 extern sint32 gTextBoxFrameNo;
 extern bool gUsingWidgetTextBox;
+extern struct TextInputSession * gTextInput;
 
 typedef void wndproc(struct rct_window*, union rct_window_event*);
 

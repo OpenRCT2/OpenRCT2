@@ -286,7 +286,7 @@ static void window_scenarioselect_scrollmousedown(rct_window *w, sint32 scrollIn
 		case LIST_ITEM_TYPE_SCENARIO:
 			y -= 24;
 			if (y < 0 && !listItem->scenario.is_locked) {
-				audio_play_sound_panned(SOUND_CLICK_1, w->width / 2 + w->x, 0, 0, 0);
+				audio_play_sound(SOUND_CLICK_1, 0, w->x + (w->width / 2));
 				_callback(listItem->scenario.scenario->path);
 			}
 			break;

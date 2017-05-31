@@ -46,23 +46,6 @@
 utf8 _userDataDirectoryPath[MAX_PATH] = { 0 };
 utf8 _openrctDataDirectoryPath[MAX_PATH] = { 0 };
 
-/**
- * The main entry point for non-Windows platforms.
- */
-sint32 main(sint32 argc, const char **argv)
-{
-	core_init();
-
-	sint32 exitCode = cmdline_run(argv, argc);
-	if (exitCode == 1)
-	{
-		openrct2_launch();
-		exitCode = gExitCode;
-	}
-
-	return exitCode;
-}
-
 void platform_get_date_utc(rct2_date *out_date)
 {
 	assert(out_date != NULL);
@@ -856,12 +839,6 @@ utf8* platform_get_username() {
 	} else {
 		return NULL;
 	}
-}
-
-void platform_init_window_icon()
-{
-	// TODO Create a surface with the window icon
-	// SDL_SetWindowIcon(gWindow, iconSurface)
 }
 
 #endif

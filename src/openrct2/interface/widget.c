@@ -22,6 +22,7 @@
 #include "../platform/platform.h"
 #include "../localisation/localisation.h"
 #include "../util/util.h"
+#include "../Context.h"
 
 #include <math.h>
 
@@ -1104,15 +1105,15 @@ static void widget_text_box_draw(rct_drawpixelinfo *dpi, rct_window *w, rct_widg
 
 	// Make a copy of the string for measuring the width.
 	char temp_string[TEXT_INPUT_SIZE] = { 0 };
-	memcpy(temp_string, wrapped_string, min(string_length, gTextInput.selection_offset));
+	memcpy(temp_string, wrapped_string, min(string_length, gTextInput->SelectionStart));
 	sint32 cur_x = l + gfx_get_string_width(temp_string) + 3;
 
 	sint32 width = 6;
-	if ((uint32)gTextInput.selection_offset < strlen(gTextBoxInput)){
+	if ((uint32)gTextInput->SelectionStart < strlen(gTextBoxInput)){
 		// Make a new 1 character wide string for measuring the width
 		// of the character that the cursor is under.
 		temp_string[1] = '\0';
-		temp_string[0] = gTextBoxInput[gTextInput.selection_offset];
+		temp_string[0] = gTextBoxInput[gTextInput->SelectionStart];
 		width = max(gfx_get_string_width(temp_string) - 2, 4);
 	}
 

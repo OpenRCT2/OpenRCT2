@@ -16,6 +16,7 @@
 
 #include "audio/audio.h"
 #include "audio/AudioMixer.h"
+#include "Context.h"
 #include "drawing/drawing.h"
 #include "intro.h"
 #include "rct2.h"
@@ -68,7 +69,7 @@ void intro_update()
 		_introStateCounter += 5;
 
 		// Check if logo is off the screen...ish
-		if (_introStateCounter > gScreenHeight - 120) {
+		if (_introStateCounter > context_get_height() - 120) {
 			_introStateCounter = -116;
 			gIntroState++;
 		}
@@ -84,7 +85,7 @@ void intro_update()
 		_introStateCounter += 5;
 
 		// Check if logo is almost scrolled to the bottom
-		if (!_chainLiftFinished && _introStateCounter >= gScreenHeight + 40 - 421) {
+		if (!_chainLiftFinished && _introStateCounter >= context_get_height() + 40 - 421) {
 			_chainLiftFinished = true;
 
 			// Stop the chain lift sound
@@ -98,7 +99,7 @@ void intro_update()
 		}
 
 		// Check if logo is off the screen...ish
-		if (_introStateCounter >= gScreenHeight + 40) {
+		if (_introStateCounter >= context_get_height() + 40) {
 			// Stop the track friction sound
 			if (_soundChannel != NULL) {
 				Mixer_Stop_Channel(_soundChannel);
@@ -159,7 +160,7 @@ void intro_update()
 
 void intro_draw(rct_drawpixelinfo *dpi)
 {
-	sint32 screenWidth = gScreenWidth;
+	sint32 screenWidth = context_get_width();
 
 	switch (gIntroState) {
 	case INTRO_STATE_DISCLAIMER_1:
@@ -221,7 +222,7 @@ void intro_draw(rct_drawpixelinfo *dpi)
 
 static void screen_intro_process_mouse_input()
 {
-	if (gCursorState.any == CURSOR_PRESSED) {
+	if (context_get_cursor_state()->any == CURSOR_PRESSED) {
 		screen_intro_skip_part();
 	}
 }
@@ -232,8 +233,12 @@ static void screen_intro_process_mouse_input()
  */
 static void screen_intro_process_keyboard_input()
 {
-	if (gLastKeyPressed != 0) {
-		screen_intro_skip_part();
+	const uint8 * keys = context_get_keys_state();
+	for (int i = 0; i < 256; i++) {
+		if (keys[i] != 0) {
+			screen_intro_skip_part();
+			break;
+		}
 	}
 }
 
@@ -253,7 +258,7 @@ static void screen_intro_skip_part()
 
 static void screen_intro_draw_logo(rct_drawpixelinfo *dpi)
 {
-	sint32 screenWidth = gScreenWidth;
+	sint32 screenWidth = context_get_width();
 	sint32 imageWidth = 640;
 	sint32 imageX = (screenWidth - imageWidth) / 2;
 

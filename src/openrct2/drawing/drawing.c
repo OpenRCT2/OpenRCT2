@@ -15,6 +15,7 @@
 #pragma endregion
 
 #include "../common.h"
+#include "../Context.h"
 #include "../core/Guard.hpp"
 #include "../interface/window.h"
 #include "../localisation/localisation.h"
@@ -546,7 +547,7 @@ void load_palette(){
  */
 void gfx_invalidate_screen()
 {
-	gfx_set_dirty_blocks(0, 0, gScreenWidth, gScreenHeight);
+	gfx_set_dirty_blocks(0, 0, context_get_width(), context_get_height());
 }
 
 /**

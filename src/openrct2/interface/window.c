@@ -15,6 +15,7 @@
 #pragma endregion
 
 #include "../audio/audio.h"
+#include "../Context.h"
 #include "../core/Guard.hpp"
 #include "../drawing/drawing.h"
 #include "../editor.h"
@@ -47,6 +48,7 @@ char gTextBoxInput[TEXT_INPUT_SIZE] = { 0 };
 sint32 gMaxTextBoxInputLength = 0;
 sint32 gTextBoxFrameNo = 0;
 bool gUsingWidgetTextBox = 0;
+TextInputSession * gTextInput;
 
 uint16 gWindowUpdateTicks;
 uint8 gToolbarDirtyFlags;
@@ -295,7 +297,7 @@ static bool window_other_wheel_input(rct_window *w, rct_widgetindex widgetIndex,
 static void window_all_wheel_input()
 {
 	// Get wheel value
-	sint32 raw = gCursorState.wheel;
+	sint32 raw = context_get_cursor_state()->wheel;
 	sint32 wheel = 0;
 	while (1) {
 		raw -= 120;
@@ -311,14 +313,17 @@ static void window_all_wheel_input()
 		wheel += 17;
 	}
 	raw -= 120;
-	gCursorState.wheel = raw;
+
+	// TODO do something about this hack
+	CursorState * cursorState = (CursorState *)context_get_cursor_state();
+	cursorState->wheel = raw;
 
 	if (wheel == 0)
 		return;
 
 	// Check window cursor is over
 	if (!(input_test_flag(INPUT_FLAG_5))) {
-		rct_window *w = window_find_from_point(gCursorState.x, gCursorState.y);
+		rct_window *w = window_find_from_point(cursorState->x, cursorState->y);
 		if (w != NULL) {
 			// Check if main window
 			if (w->classification == WC_MAIN_WINDOW || w->classification == WC_VIEWPORT) {
@@ -327,7 +332,7 @@ static void window_all_wheel_input()
 			}
 
 			// Check scroll view, cursor is over
-			rct_widgetindex widgetIndex = window_find_widget_from_point(w, gCursorState.x, gCursorState.y);
+			rct_widgetindex widgetIndex = window_find_widget_from_point(w, cursorState->x, cursorState->y);
 			if (widgetIndex != -1) {
 				rct_widget *widget = &w->widgets[widgetIndex];
 				if (widget->type == WWT_SCROLL) {
@@ -451,7 +456,7 @@ rct_window *window_create(sint32 x, sint32 y, sint32 width, sint32 height, rct_w
 	// Play sounds and flash the window
 	if (!(flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT))){
 		w->flags |= WF_WHITE_BORDER_MASK;
-		audio_play_sound_panned(SOUND_WINDOW_OPEN, x + (width / 2), 0, 0, 0);
+		audio_play_sound(SOUND_WINDOW_OPEN, 0, x + (width / 2));
 	}
 
 	w->number = 0;
@@ -495,8 +500,8 @@ rct_window *window_create(sint32 x, sint32 y, sint32 width, sint32 height, rct_w
  */
 static bool sub_6EA8EC(sint32 x, sint32 y, sint32 width, sint32 height)
 {
-	uint16 screenWidth = gScreenWidth;
-	uint16 screenHeight = gScreenHeight;
+	uint16 screenWidth = context_get_width();
+	uint16 screenHeight = context_get_height();
 	sint32 unk;
 
 	unk = -(width / 4);
@@ -522,8 +527,8 @@ static bool sub_6EA934(sint32 x, sint32 y, sint32 width, sint32 height)
 {
 	if (x < 0) return false;
 	if (y < 28) return false;
-	if (x + width > gScreenWidth) return false;
-	if (y + height > gScreenHeight) return false;
+	if (x + width > context_get_width()) return false;
+	if (y + height > context_get_height()) return false;
 	return sub_6EA95D(x, y, width, height);
 }
 
@@ -564,8 +569,8 @@ static bool sub_6EA95D(sint32 x, sint32 y, sint32 width, sint32 height)
  */
 rct_window *window_create_auto_pos(sint32 width, sint32 height, rct_window_event_list *event_handlers, rct_windowclass cls, uint16 flags)
 {
-	uint16 screenWidth = gScreenWidth;
-	uint16 screenHeight = gScreenHeight;
+	uint16 screenWidth = context_get_width();
+	uint16 screenHeight = context_get_height();
 
 	// TODO dead code, looks like it is cascading the new window offset from an existing window
 	// we will have to re-implement this in our own way.
@@ -574,11 +579,11 @@ rct_window *window_create_auto_pos(sint32 width, sint32 height, rct_window_event
 	// 	cls &= ~0x80;
 	// 	rct_window *w = window_find_by_number(0, 0);
 	// 	if (w != NULL) {
-	// 		if (w->x > -60 && w->x < gScreenWidth - 20) {
-	// 			if (w->y < gScreenHeight - 20) {
+	// 		if (w->x > -60 && w->x < screenWidth - 20) {
+	// 			if (w->y < screenHeight - 20) {
 	// 				sint32 x = w->x;
-	// 				if (w->x + width > gScreenWidth)
-	// 					x = gScreenWidth - 20 - width;
+	// 				if (w->x + width > screenWidth)
+	// 					x = screenWidth - 20 - width;
 	// 				sint32 y = w->y;
 	// 				return window_create(x + 10, y + 10, width, height, event_handlers, cls, flags);
 	// 			}
@@ -684,12 +689,13 @@ foundSpace:
 	return window_create(x, y, width, height, event_handlers, cls, flags);
 }
 
-rct_window *window_create_centred(sint32 width, sint32 height, rct_window_event_list *event_handlers, rct_windowclass cls, uint16 flags)
+rct_window * window_create_centred(sint32 width, sint32 height, rct_window_event_list *event_handlers, rct_windowclass cls, uint16 flags)
 {
-	sint32 x, y;
+	sint32 screenWidth = context_get_width();
+	sint32 screenHeight = context_get_height();
 
-	x = (gScreenWidth - width) / 2;
-	y = max(28, (gScreenHeight - height) / 2);
+	sint32 x = (screenWidth - width) / 2;
+	sint32 y = max(28, (screenHeight - height) / 2);
 	return window_create(x, y, width, height, event_handlers, cls, flags);
 }
 
@@ -1228,7 +1234,7 @@ void window_push_others_right(rct_window* window)
 			continue;
 
 		window_invalidate(w);
-		if (window->x + window->width + 13 >= gScreenWidth)
+		if (window->x + window->width + 13 >= context_get_width())
 			continue;
 		uint16 push_amount = window->x + window->width - w->x + 3;
 		w->x += push_amount;
@@ -1263,7 +1269,7 @@ void window_push_others_below(rct_window *w1)
 			continue;
 
 		// Check if there is room to push it down
-		if (w1->y + w1->height + 80 >= gScreenHeight)
+		if (w1->y + w1->height + 80 >= context_get_height())
 			continue;
 
 		// Invalidate the window's current area
@@ -1471,7 +1477,7 @@ void window_viewport_get_map_coords_by_cursor(rct_window *w, sint16 *map_x, sint
 {
 	// Get mouse position to offset against.
 	sint32 mouse_x, mouse_y;
-	platform_get_cursor_position_scaled(&mouse_x, &mouse_y);
+	context_get_cursor_position_scaled(&mouse_x, &mouse_y);
 
 	// Compute map coordinate by mouse position.
 	get_map_coordinates_from_pos(mouse_x, mouse_y, VIEWPORT_INTERACTION_MASK_NONE, map_x, map_y, NULL, NULL, NULL);
@@ -1499,7 +1505,7 @@ void window_viewport_centre_tile_around_cursor(rct_window *w, sint16 map_x, sint
 
 	// Get mouse position to offset against.
 	sint32 mouse_x, mouse_y;
-	platform_get_cursor_position_scaled(&mouse_x, &mouse_y);
+	context_get_cursor_position_scaled(&mouse_x, &mouse_y);
 
 	// Rebase mouse position onto centre of window, and compensate for zoom level.
 	sint32 rebased_x = ((w->width >> 1) - mouse_x) * (1 << w->viewport->zoom),
@@ -2397,7 +2403,7 @@ static void window_snap_right(rct_window *w, sint32 proximity)
 		leftMost = min(leftMost, w2->x);
 	}
 
-	screenWidth = gScreenWidth;
+	screenWidth = context_get_width();
 	if (screenWidth >= wLeftProximity && screenWidth <= wRightProximity)
 		leftMost = min(leftMost, screenWidth);
 
@@ -2430,7 +2436,7 @@ static void window_snap_bottom(rct_window *w, sint32 proximity)
 		topMost = min(topMost, w2->y);
 	}
 
-	screenHeight = gScreenHeight;
+	screenHeight = context_get_height();
 	if (screenHeight >= wTopProximity && screenHeight <= wBottomProximity)
 		topMost = min(topMost, screenHeight);
 
@@ -2443,7 +2449,7 @@ void window_move_and_snap(rct_window *w, sint32 newWindowX, sint32 newWindowY, s
 	sint32 originalX = w->x;
 	sint32 originalY = w->y;
 
-	newWindowY = clamp(29, newWindowY, gScreenHeight - 34);
+	newWindowY = clamp(29, newWindowY, context_get_height() - 34);
 
 	if (snapProximity > 0) {
 		w->x = newWindowX;
@@ -2507,7 +2513,7 @@ void window_start_textbox(rct_window *call_w, rct_widgetindex call_widget, rct_s
 	// from crashing the game.
 	gTextBoxInput[maxLength - 1] = '\0';
 
-	platform_start_text_input(gTextBoxInput, maxLength);
+	context_start_text_input(gTextBoxInput, maxLength);
 }
 
 void window_cancel_textbox()
@@ -2520,7 +2526,7 @@ void window_cancel_textbox()
 		window_event_textinput_call(w, gCurrentTextBox.widget_index, NULL);
 		gCurrentTextBox.window.classification = WC_NULL;
 		gCurrentTextBox.window.number = 0;
-		platform_stop_text_input();
+		context_stop_text_input();
 		gUsingWidgetTextBox = false;
 		widget_invalidate(w, gCurrentTextBox.widget_index);
 		gCurrentTextBox.widget_index = WWT_LAST;

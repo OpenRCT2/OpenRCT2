@@ -15,6 +15,7 @@
 #pragma endregion
 
 #include <memory>
+#include "../Context.h"
 #include "../core/Console.hpp"
 #include "../core/Exception.hpp"
 #include "../core/FileStream.hpp"
@@ -25,6 +26,7 @@
 #include "../interface/window.h"
 #include "../network/network.h"
 #include "../OpenRCT2.h"
+#include "../ui/UiContext.h"
 #include "Config.h"
 #include "IniReader.hpp"
 #include "IniWriter.hpp"
@@ -37,6 +39,9 @@ extern "C"
     #include "../platform/platform.h"
     #include "../scenario/scenario.h"
 }
+
+using namespace OpenRCT2;
+using namespace OpenRCT2::Ui;
 
 namespace Config
 {
@@ -155,6 +160,7 @@ namespace Config
             model->window_height = reader->GetSint32("window_height", -1);
             model->window_snap_proximity = reader->GetSint32("window_snap_proximity", 5);
             model->window_width = reader->GetSint32("window_width", -1);
+            model->default_display = reader->GetSint32("default_display", 0);
             model->drawing_engine = reader->GetEnum<sint32>("drawing_engine", DRAWING_ENGINE_SOFTWARE, Enum_DrawingEngine);
             model->uncap_fps = reader->GetBoolean("uncap_fps", false);
 
@@ -228,6 +234,7 @@ namespace Config
         writer->WriteSint32("window_height", model->window_height);
         writer->WriteSint32("window_snap_proximity", model->window_snap_proximity);
         writer->WriteSint32("window_width", model->window_width);
+        writer->WriteSint32("default_display", model->default_display);
         writer->WriteEnum<sint32>("drawing_engine", model->drawing_engine, Enum_DrawingEngine);
         writer->WriteBoolean("uncap_fps", model->uncap_fps);
         writer->WriteBoolean("test_unfinished_tracks", model->test_unfinished_tracks);
@@ -688,7 +695,8 @@ extern "C"
             }
             while (1)
             {
-                platform_show_messagebox("OpenRCT2 needs files from the original RollerCoaster Tycoon 2 in order to work. Please select the directory where you installed RollerCoaster Tycoon 2.");
+                IUiContext * uiContext = GetContext()->GetUiContext();
+                uiContext->ShowMessageBox("OpenRCT2 needs files from the original RollerCoaster Tycoon 2 in order to work. Please select the directory where you installed RollerCoaster Tycoon 2.");
                 utf8 * installPath = platform_open_directory_browser("Please select your RCT2 directory");
                 if (installPath == nullptr)
                 {
@@ -703,9 +711,8 @@ extern "C"
                     return true;
                 }
 
-                utf8 message[MAX_PATH];
-                snprintf(message, MAX_PATH, "Could not find %s" PATH_SEPARATOR "Data" PATH_SEPARATOR "g1.dat at this path", installPath);
-                platform_show_messagebox(message);
+                std::string message = String::StdFormat("Could not find %s" PATH_SEPARATOR "Data" PATH_SEPARATOR "g1.dat at this path", installPath);
+                uiContext->ShowMessageBox(message);
             }
         }
         return true;

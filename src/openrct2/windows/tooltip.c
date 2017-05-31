@@ -14,6 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
+#include "../Context.h"
 #include "../drawing/drawing.h"
 #include "../localisation/localisation.h"
 #include "../input.h"
@@ -110,12 +111,14 @@ void window_tooltip_show(rct_string_id id, sint32 x, sint32 y)
 
 	memcpy(_tooltipText, buffer, sizeof(_tooltipText));
 
-	x = clamp(0, x - (width / 2), gScreenWidth - width);
+	sint32 screenWidth = context_get_width();
+	sint32 screenHeight = context_get_height();
+	x = clamp(0, x - (width / 2), screenWidth - width);
 
 	// TODO The cursor size will be relative to the window DPI.
 	//      The amount to offset the y should be adjusted.
 
-	sint32 max_y = gScreenHeight - height;
+	sint32 max_y = screenHeight - height;
 	y += 26; // Normally, we'd display the tooltip 26 lower
 	if (y > max_y)
 		// If y is too large, the tooltip could be forced below the cursor if we'd just clamped y,

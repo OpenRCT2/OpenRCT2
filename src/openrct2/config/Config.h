@@ -25,6 +25,7 @@ typedef struct GeneralConfiguration
     utf8 *      rct2_path;
 
     // Display
+    sint32      default_display;
     sint32      window_width;
     sint32      window_height;
     sint32      fullscreen_mode;

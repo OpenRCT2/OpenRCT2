@@ -57,37 +57,15 @@ utf8 **windows_get_command_line_args(sint32 *outNumArgs);
 
 static HMODULE _dllModule = NULL;
 
-/**
- * Windows entry point to OpenRCT2 with a console window using a traditional C main function.
- */
-sint32 RunOpenRCT2(int argc, char * * argv)
+static HMODULE plaform_get_dll_module()
 {
-	HINSTANCE hInstance = GetModuleHandle(NULL);
-	_dllModule = hInstance;
-
-	core_init();
-
-	sint32 exitCode = cmdline_run((const char **)argv, argc);
-	if (exitCode == 1) {
-		openrct2_launch();
-		exitCode = gExitCode;
+	if (_dllModule == NULL) {
+		_dllModule = GetModuleHandle(NULL);
 	}
-
-	return exitCode;
+	return _dllModule;
 }
 
-#ifdef NO_RCT2
-
-#ifdef __MINGW32__
-
-int main(int argc, char **argv)
-{
-	return RunOpenRCT2(argc, argv);
-}
-
-#endif
-
-#else
+#ifndef NO_RCT2
 
 /* DllMain is already defined in one of static libraries we implicitly depend
  * on (libcrypto), which is their bug really, but since we don't do anything in
@@ -595,156 +573,6 @@ void platform_get_user_directory(utf8 *outPath, const utf8 *subDirectory, size_t
 	}
 }
 
-void platform_show_messagebox(const utf8 * message)
-{
-	MessageBoxA(windows_get_window_handle(), message, "OpenRCT2", MB_OK);
-}
-
-/**
- *
- *  rct2: 0x004080EA
- */
-bool platform_open_common_file_dialog(utf8 *outFilename, file_dialog_desc *desc, size_t outSize)
-{
-	OPENFILENAMEW openFileName;
-	wchar_t wcFilename[MAX_PATH];
-
-	// Copy default filename to result filename buffer
-	if (desc->default_filename == NULL) {
-		wcFilename[0] = 0;
-	} else {
-		wchar_t *wcDefaultFilename = utf8_to_widechar(desc->default_filename);
-		lstrcpyW(wcFilename, wcDefaultFilename);
-		free(wcDefaultFilename);
-	}
-
-	// Set open file name options
-	memset(&openFileName, 0, sizeof(OPENFILENAMEW));
-	openFileName.lStructSize = sizeof(OPENFILENAMEW);
-	openFileName.hwndOwner = windows_get_window_handle();
-	openFileName.nMaxFile = MAX_PATH;
-	openFileName.lpstrTitle = utf8_to_widechar(desc->title);
-	openFileName.lpstrInitialDir = utf8_to_widechar(desc->initial_directory);
-	openFileName.lpstrFile = wcFilename;
-
-	utf8 filters[256];
-	utf8 *ch = filters;
-	for (sint32 i = 0; i < countof(desc->filters); i++) {
-		if (desc->filters[i].name != NULL) {
-			safe_strcpy(ch, desc->filters[i].name, sizeof(filters) - (ch - filters));
-			ch = strchr(ch, 0) + 1;
-			safe_strcpy(ch, desc->filters[i].pattern, sizeof(filters) - (ch - filters));
-			ch = strchr(ch, 0) + 1;
-		}
-	}
-	assert(ch != filters);
-	*ch = 0;
-
-	// HACK: Replace all null terminators with 0x01 so that we convert the entire string
-	size_t fullLength = (size_t)(ch - filters);
-	for (size_t i = 0; i < fullLength; i++) {
-		if (filters[i] == '\0') {
-			filters[i] = 1;
-		}
-	}
-	wchar_t *wcFilter = utf8_to_widechar(filters);
-	fullLength = lstrlenW(wcFilter);
-	for (size_t i = 0; i < fullLength; i++) {
-		if (wcFilter[i] == 1) {
-			wcFilter[i] = '\0';
-		}
-	}
-
-	openFileName.lpstrFilter = wcFilter;
-
-	// Open dialog
-	BOOL result = false;
-	DWORD commonFlags = OFN_EXPLORER | OFN_PATHMUSTEXIST | OFN_HIDEREADONLY | OFN_NOCHANGEDIR;
-	if (desc->type == FD_OPEN) {
-		openFileName.Flags = commonFlags | OFN_NONETWORKBUTTON | OFN_FILEMUSTEXIST;
-		result = GetOpenFileNameW(&openFileName);
-	} else if (desc->type == FD_SAVE) {
-		openFileName.Flags = commonFlags | OFN_CREATEPROMPT | OFN_OVERWRITEPROMPT;
-		result = GetSaveFileNameW(&openFileName);
-	}
-
-	// Clean up
-	free((void*)openFileName.lpstrTitle);
-	free((void*)openFileName.lpstrInitialDir);
-	free((void*)openFileName.lpstrFilter);
-
-	if (result) {
-		utf8 *resultFilename = widechar_to_utf8(openFileName.lpstrFile);
-		safe_strcpy(outFilename, resultFilename, outSize);
-		free(resultFilename);
-
-		// If there is no extension, append the pattern
-		const utf8 *outFilenameExtension = path_get_extension(outFilename);
-		if (str_is_null_or_empty(outFilenameExtension)) {
-			sint32 filterIndex = openFileName.nFilterIndex - 1;
-
-			assert(filterIndex >= 0);
-			assert(filterIndex < countof(desc->filters));
-
-			const utf8 *pattern = desc->filters[filterIndex].pattern;
-			const utf8 *patternExtension = path_get_extension(pattern);
-			if (!str_is_null_or_empty(patternExtension)) {
-				safe_strcat(outFilename, patternExtension, outSize);
-			}
-		}
-	}
-
-	return result;
-}
-
-utf8 *platform_open_directory_browser(const utf8 *title)
-{
-	BROWSEINFOW bi;
-	wchar_t pszBuffer[MAX_PATH], wctitle[256];
-	LPITEMIDLIST pidl;
-	LPMALLOC lpMalloc;
-
-	MultiByteToWideChar(CP_UTF8, 0, title, -1, wctitle, countof(wctitle));
-
-	// Initialize COM
-	if (FAILED(CoInitializeEx(0, COINIT_APARTMENTTHREADED))) {
-		CoUninitialize();
-
-		log_error("Error opening directory browse window");
-		return 0;
-	}
-
-	// Get a pointer to the shell memory allocator
-	if (FAILED(SHGetMalloc(&lpMalloc))) {
-		CoUninitialize();
-
-		log_error("Error opening directory browse window");
-		return 0;
-	}
-
-	bi.hwndOwner = NULL;
-	bi.pidlRoot = NULL;
-	bi.pszDisplayName = pszBuffer;
-	bi.lpszTitle = wctitle;
-	bi.ulFlags = BIF_RETURNFSANCESTORS | BIF_RETURNONLYFSDIRS;
-	bi.lpfn = NULL;
-	bi.lParam = 0;
-
-	utf8 *outPath = NULL;
-
-	if ((pidl = SHBrowseForFolderW(&bi)) != NULL) {
-		// Copy the path directory to the buffer
-		if (SHGetPathFromIDListW(pidl, pszBuffer)) {
-			// Store pszBuffer (and the path) in the outPath
-			sint32 outPathCapacity = lstrlenW(pszBuffer) * 4 + 1;
-			outPath = (utf8*)malloc(outPathCapacity);
-			WideCharToMultiByte(CP_UTF8, 0, pszBuffer, countof(pszBuffer), outPath, outPathCapacity, NULL, NULL);
-		}
-	}
-	CoUninitialize();
-	return outPath;
-}
-
 /**
  *
  *  rct2: 0x00407978
@@ -786,44 +614,6 @@ sint32 windows_get_registry_install_info(rct2_install_info *installInfo, char *s
 
 	RegCloseKey(hKey);
 	return 1;
-}
-
-HWND windows_get_window_handle()
-{
-	SDL_SysWMinfo wmInfo;
-
-	if (gWindow == NULL)
-		return NULL;
-
-	SDL_VERSION(&wmInfo.version);
-	if (SDL_GetWindowWMInfo(gWindow, &wmInfo) != SDL_TRUE) {
-		log_error("SDL_GetWindowWMInfo failed %s", SDL_GetError());
-		exit(-1);
-	}
-	HWND handle = wmInfo.info.win.window;
-	#ifdef __MINGW32__
-	assert(sizeof(HWND) == sizeof(uint32));
-	uint8 A = (uint32)handle & 0xff000000 >> 24;
-	uint8 B = (uint32)handle & 0xff0000 >> 16;
-	uint8 C = (uint32)handle & 0xff00 >> 8;
-	uint8 D = (uint32)handle & 0xff;
-	HWND result = (HWND)(D << 24 | A << 16 | B << 8 | C);
-	log_warning("twisting bits of handle, a workaround for mingw/sdl bug");
-	#else
-	HWND result = handle;
-	#endif // __MINGW32__
-	return result;
-}
-
-void platform_init_window_icon()
-{
-	if (_dllModule != NULL) {
-		HICON icon = LoadIcon(_dllModule, MAKEINTRESOURCE(IDI_ICON));
-		if (icon != NULL) {
-			HWND hwnd = windows_get_window_handle();
-			SendMessage(hwnd, WM_SETICON, ICON_SMALL, (LPARAM)icon);
-		}
-	}
 }
 
 uint16 platform_get_locale_language()
@@ -1134,7 +924,7 @@ static bool windows_setup_file_association(
 	sint32 printResult;
 
 	GetModuleFileNameW(NULL, exePathW, sizeof(exePathW));
-	GetModuleFileNameW(_dllModule, dllPathW, sizeof(dllPathW));
+	GetModuleFileNameW(plaform_get_dll_module(), dllPathW, sizeof(dllPathW));
 
 	wchar_t *extensionW = utf8_to_widechar(extension);
 	wchar_t *fileTypeTextW = utf8_to_widechar(fileTypeText);

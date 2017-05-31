@@ -14,6 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
+#include "../Context.h"
 #include "../input.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
@@ -104,7 +105,7 @@ void window_clear_scenery_open()
 	if (window_find_by_class(WC_CLEAR_SCENERY) != NULL)
 		return;
 
-	window = window_create(gScreenWidth - 98, 29, 98, 94, &window_clear_scenery_events, WC_CLEAR_SCENERY, 0);
+	window = window_create(context_get_width() - 98, 29, 98, 94, &window_clear_scenery_events, WC_CLEAR_SCENERY, 0);
 	window->widgets = window_clear_scenery_widgets;
 	window->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_INCREMENT) | (1 << WIDX_DECREMENT) | (1 << WIDX_PREVIEW) |
 		(1 << WIDX_SMALL_SCENERY) | (1 << WIDX_LARGE_SCENERY) | (1 << WIDX_FOOTPATH);

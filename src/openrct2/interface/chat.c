@@ -16,6 +16,7 @@
 
 #include "../audio/audio.h"
 #include "../audio/AudioMixer.h"
+#include "../Context.h"
 #include "../interface/themes.h"
 #include "../localisation/localisation.h"
 #include "../network/network.h"
@@ -25,17 +26,18 @@
 #include "chat.h"
 
 bool gChatOpen = false;
-char _chatCurrentLine[CHAT_MAX_MESSAGE_LENGTH];
-char _chatHistory[CHAT_HISTORY_SIZE][CHAT_INPUT_SIZE];
-uint32 _chatHistoryTime[CHAT_HISTORY_SIZE];
-uint32 _chatHistoryIndex = 0;
-uint32 _chatCaretTicks = 0;
-sint32 _chatLeft;
-sint32 _chatTop;
-sint32 _chatRight;
-sint32 _chatBottom;
-sint32 _chatWidth;
-sint32 _chatHeight;
+static char _chatCurrentLine[CHAT_MAX_MESSAGE_LENGTH];
+static char _chatHistory[CHAT_HISTORY_SIZE][CHAT_INPUT_SIZE];
+static uint32 _chatHistoryTime[CHAT_HISTORY_SIZE];
+static uint32 _chatHistoryIndex = 0;
+static uint32 _chatCaretTicks = 0;
+static sint32 _chatLeft;
+static sint32 _chatTop;
+static sint32 _chatRight;
+static sint32 _chatBottom;
+static sint32 _chatWidth;
+static sint32 _chatHeight;
+static TextInputSession * _chatTextInputSession;
 
 static const char* chat_history_get(uint32 index);
 static uint32 chat_history_get_time(uint32 index);
@@ -44,13 +46,13 @@ static void chat_clear_input();
 void chat_open()
 {
 	gChatOpen = true;
-	platform_start_text_input(_chatCurrentLine, sizeof(_chatCurrentLine));
+	_chatTextInputSession = context_start_text_input(_chatCurrentLine, sizeof(_chatCurrentLine));
 }
 
 void chat_close()
 {
 	gChatOpen = false;
-	platform_stop_text_input();
+	context_stop_text_input();
 }
 
 void chat_toggle()
@@ -82,9 +84,9 @@ void chat_draw(rct_drawpixelinfo * dpi)
 	}
 
 	_chatLeft = 10;
-	_chatRight = min((gScreenWidth - 10), CHAT_MAX_WINDOW_WIDTH);
+	_chatRight = min((context_get_width() - 10), CHAT_MAX_WINDOW_WIDTH);
 	_chatWidth = _chatRight - _chatLeft;
-	_chatBottom = gScreenHeight - 45;
+	_chatBottom = context_get_height() - 45;
 	_chatTop = _chatBottom - 10;
 
 	char lineBuffer[CHAT_INPUT_SIZE + 10];
@@ -160,8 +162,8 @@ void chat_draw(rct_drawpixelinfo * dpi)
 
 		// TODO: Show caret if the input text has multiple lines
 		if (_chatCaretTicks < 15 && gfx_get_string_width(lineBuffer) < (_chatWidth - 10)) {
-			memcpy(lineBuffer, _chatCurrentLine, gTextInput.selection_offset);
-			lineBuffer[gTextInput.selection_offset] = 0;
+			memcpy(lineBuffer, _chatCurrentLine, _chatTextInputSession->SelectionStart);
+			lineBuffer[_chatTextInputSession->SelectionStart] = 0;
 			sint32 caretX = x + gfx_get_string_width(lineBuffer);
 			sint32 caretY = y + 14;
 

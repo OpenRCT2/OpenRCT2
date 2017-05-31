@@ -15,6 +15,7 @@
 #pragma endregion
 
 #include "../audio/audio.h"
+#include "../Context.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
 #include "../localisation/localisation.h"
@@ -120,12 +121,15 @@ void window_error_open(rct_string_id title, rct_string_id message)
 	window_error_widgets[WIDX_BACKGROUND].right = width;
 	window_error_widgets[WIDX_BACKGROUND].bottom = height;
 
-	x = gCursorState.x - (width / 2);
-	x = clamp(0, x, gScreenWidth);
+	sint32 screenWidth = context_get_width();
+	sint32 screenHeight = context_get_height();
+	const CursorState * state = context_get_cursor_state();
+	x = state->x - (width / 2);
+	x = clamp(0, x, screenWidth);
 
-	y = gCursorState.y + 26;
+	y = state->y + 26;
 	y = max(22, y);
-	maxY = gScreenHeight - height;
+	maxY = screenHeight - height;
 	if (y > maxY) {
 		y = y - height - 40;
 		y = min(y, maxY);
@@ -135,7 +139,7 @@ void window_error_open(rct_string_id title, rct_string_id message)
 	w->widgets = window_error_widgets;
 	w->error.var_480 = 0;
 	if (!gDisableErrorWindowSound) {
-		audio_play_sound_panned(SOUND_ERROR, 0, w->x + (w->width / 2), 0, 0);
+		audio_play_sound(SOUND_ERROR, 0, w->x + (w->width / 2));
 	}
 }
 

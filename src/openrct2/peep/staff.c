@@ -15,7 +15,9 @@
 #pragma endregion
 
 #include "../config/Config.h"
+#include "../Context.h"
 #include "../game.h"
+#include "../input.h"
 #include "../interface/viewport.h"
 #include "../localisation/date.h"
 #include "../localisation/localisation.h"
@@ -546,7 +548,11 @@ uint16 hire_new_staff_member(uint8 staffType)
 	command_y = command_z = esi = new_sprite_index = ebp = 0;
 	command_x = 0x8000;
 
-	sint32 autoposition = gConfigGeneral.auto_staff_placement == ((SDL_GetModState() & KMOD_SHIFT) == 0);
+	sint32 autoposition = gConfigGeneral.auto_staff_placement;
+	if (gInputPlaceObjectModifier & PLACE_OBJECT_MODIFIER_SHIFT_Z) {
+		autoposition = autoposition ^ 1;
+	}
+
 	ebx = autoposition << 16 | staffType << 8 | GAME_COMMAND_FLAG_APPLY;
 
 	game_command_callback = game_command_callback_hire_new_staff_member;

@@ -47,6 +47,30 @@ namespace String
         return returnValue;
     }
 
+    std::string ToUtf8(const std::wstring &s)
+    {
+        std::string result;
+        utf8 * cstr = widechar_to_utf8(s.c_str());
+        if (cstr != nullptr)
+        {
+            result = std::string(cstr);
+        }
+        free(cstr);
+        return result;
+    }
+
+    std::wstring ToUtf16(const std::string &s)
+    {
+        std::wstring result;
+        wchar_t * wcstr = utf8_to_widechar(s.c_str());
+        if (wcstr != nullptr)
+        {
+            result = std::wstring(wcstr);
+        }
+        free(wcstr);
+        return result;
+    }
+
     bool IsNullOrEmpty(const utf8 * str)
     {
         return str == nullptr || str[0] == '\0';

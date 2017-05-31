@@ -695,7 +695,7 @@ static void window_new_ride_scrollmousedown(rct_window *w, sint32 scrollIndex, s
 	_windowNewRideHighlightedItem[_windowNewRideCurrentTab] = item;
 	w->new_ride.selected_ride_id = item.ride_type_and_entry;
 
-	audio_play_sound_panned(SOUND_CLICK_1, w->x + (w->width / 2), 0, 0, 0);
+	audio_play_sound(SOUND_CLICK_1, 0, w->x + (w->width / 2));
 	w->new_ride.selected_ride_countdown = 8;
 	window_invalidate(w);
 }

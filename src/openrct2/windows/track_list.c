@@ -16,6 +16,7 @@
 
 #include "../audio/audio.h"
 #include "../config/Config.h"
+#include "../Context.h"
 #include "../drawing/IDrawingEngine.h"
 #include "../editor.h"
 #include "../interface/widget.h"
@@ -121,8 +122,10 @@ void window_track_list_open(ride_list_item item)
 
 	sint32 x, y;
 	if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER) {
-		x = gScreenWidth / 2 - 300;
-		y = max(28, gScreenHeight / 2 - 200);
+		sint32 screenWidth = context_get_width();
+		sint32 screenHeight = context_get_height();
+		x = screenWidth / 2 - 300;
+		y = max(28, screenHeight / 2 - 200);
 	} else {
 		x = 0;
 		y = 29;
@@ -190,7 +193,7 @@ static void window_track_list_select(rct_window *w, sint32 index)
 		return;
 	}
 
-	audio_play_sound_panned(SOUND_CLICK_1, w->x + (w->width / 2), 0, 0, 0);
+	audio_play_sound(SOUND_CLICK_1, 0, w->x + (w->width / 2));
 	if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)) {
 		if (index == 0) {
 			window_close(w);

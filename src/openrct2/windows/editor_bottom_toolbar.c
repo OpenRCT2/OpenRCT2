@@ -16,6 +16,7 @@
 
 #include "../audio/audio.h"
 #include "../config/Config.h"
+#include "../Context.h"
 #include "../game.h"
 #include "../editor.h"
 #include "../input.h"
@@ -135,10 +136,8 @@ static void sub_6DFED0();
 */
 void window_editor_bottom_toolbar_open()
 {
-	rct_window* window;
-
-	window = window_create(0, gScreenHeight - 32,
-		gScreenWidth, 32,
+	rct_window * window = window_create(0, context_get_height() - 32,
+		context_get_width(), 32,
 		&window_editor_bottom_toolbar_events,
 		WC_BOTTOM_TOOLBAR, WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_NO_BACKGROUND);
 	window->widgets = window_editor_bottom_toolbar_widgets;
@@ -371,7 +370,7 @@ void window_editor_bottom_toolbar_invalidate(rct_window *w)
 {
 	colour_scheme_update_by_class(w, (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) ? WC_EDITOR_SCENARIO_BOTTOM_TOOLBAR : WC_EDITOR_TRACK_BOTTOM_TOOLBAR);
 
-	uint16 screenWidth = gScreenWidth;
+	uint16 screenWidth = context_get_width();
 	window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].left = screenWidth - 200;
 	window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].right = screenWidth - 1;
 	window_editor_bottom_toolbar_widgets[WIDX_NEXT_STEP_BUTTON].left = screenWidth - 198;

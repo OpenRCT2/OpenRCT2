@@ -14,6 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
+#include "../Context.h"
 #include "../input.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
@@ -98,7 +99,7 @@ void window_water_open()
 		return;
 
 	window = window_create(
-		gScreenWidth - 76,
+		context_get_width() - 76,
 		29,
 		76,
 		77,

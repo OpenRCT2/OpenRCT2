@@ -114,25 +114,6 @@ void platform_show_messagebox(const char * message)
 	}
 }
 
-utf8 *platform_open_directory_browser(const utf8 *title)
-{
-	@autoreleasepool
-	{
-		NSOpenPanel *panel = [NSOpenPanel openPanel];
-		panel.canChooseFiles = false;
-		panel.canChooseDirectories = true;
-		panel.allowsMultipleSelection = false;
-		utf8 *url = NULL;
-		if ([panel runModal] == NSFileHandlingPanelOKButton)
-		{
-			NSString *selectedPath = panel.URL.path;
-			const char *path = selectedPath.UTF8String;
-			url = _strdup(path);
-		}
-		return url;
-	}
-}
-
 utf8* macos_str_decomp_to_precomp(utf8 *input)
 {
 	@autoreleasepool
@@ -143,54 +124,6 @@ utf8* macos_str_decomp_to_precomp(utf8 *input)
 
 		NSString *inputDecomp = [NSString stringWithUTF8String:input];
 		return strdup([inputDecomp.precomposedStringWithCanonicalMapping cStringUsingEncoding:NSUTF8StringEncoding]);
-	}
-}
-
-bool platform_open_common_file_dialog(utf8 *outFilename, file_dialog_desc *desc, size_t outSize) {
-	@autoreleasepool
-	{
-		NSMutableArray *extensions = [NSMutableArray new];
-		for (int i=0; i < countof(desc->filters); ++i) {
-			if (desc->filters[i].pattern != NULL) {
-				NSString *fp = [NSString stringWithUTF8String:desc->filters[i].pattern];
-				fp = [fp stringByReplacingOccurrencesOfString:@"*." withString:@""];
-				[extensions addObjectsFromArray:[fp componentsSeparatedByString:@";"]];
-			}
-		}
-
-		NSString *directory;
-		NSSavePanel *panel;
-		if (desc->type == FD_SAVE)
-		{
-			NSString *filePath = [NSString stringWithUTF8String:desc->default_filename];
-			directory = filePath.stringByDeletingLastPathComponent;
-			NSString *basename = filePath.lastPathComponent;
-			panel = [NSSavePanel savePanel];
-			panel.nameFieldStringValue = [NSString stringWithFormat:@"%@.%@", basename, extensions.firstObject];
-		}
-		else if (desc->type == FD_OPEN)
-		{
-			directory = [NSString stringWithUTF8String:desc->initial_directory];
-			NSOpenPanel *open = [NSOpenPanel openPanel];
-			open.canChooseDirectories = false;
-			open.canChooseFiles = true;
-			open.allowsMultipleSelection = false;
-			panel = open;
-		} else {
-			return false;
-		}
-
-		panel.title = [NSString stringWithUTF8String:desc->title];
-		panel.allowedFileTypes = extensions;
-		panel.directoryURL = [NSURL fileURLWithPath:directory];
-		if ([panel runModal] == NSFileHandlingPanelCancelButton){
-			SDL_RaiseWindow(gWindow);
-			return false;
-		} else {
-			safe_strcpy(outFilename, panel.URL.path.UTF8String, outSize);
-			SDL_RaiseWindow(gWindow);
-			return true;
-		}
 	}
 }
 

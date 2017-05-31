@@ -16,6 +16,7 @@
 
 #include "../audio/audio.h"
 #include "../config/Config.h"
+#include "../Context.h"
 #include "../drawing/drawing.h"
 #include "../game.h"
 #include "../Imaging.h"
@@ -46,7 +47,7 @@ void screenshot_check()
 			screenshotIndex = screenshot_dump();
 
 			if (screenshotIndex != -1) {
-				audio_play_sound(SOUND_WINDOW_OPEN, 100, gScreenWidth / 2);
+				audio_play_sound(SOUND_WINDOW_OPEN, 100, context_get_width() / 2);
 			} else {
 				window_error_open(STR_SCREENSHOT_FAILED, STR_NONE);
 			}
@@ -58,13 +59,7 @@ void screenshot_check()
 
 static void screenshot_get_rendered_palette(rct_palette* palette) {
 	for (sint32 i = 0; i < 256; i++) {
-		const SDL_Color *renderedEntry = &gPalette[i];
-		rct_palette_entry *entry = &palette->entries[i];
-
-		entry->red = renderedEntry->r;
-		entry->green = renderedEntry->g;
-		entry->blue = renderedEntry->b;
-		entry->alpha = renderedEntry->a;
+		palette->entries[i] = gPalette[i];
 	}
 }
 
@@ -288,7 +283,7 @@ sint32 cmdline_for_screenshot(const char **argv, sint32 argc)
 	}
 
 	gOpenRCT2Headless = true;
-	if (openrct2_initialise()) {
+	// if (openrct2_initialise()) {
 		drawing_engine_init();
 		rct2_open_file(inputPath);
 
@@ -373,7 +368,7 @@ sint32 cmdline_for_screenshot(const char **argv, sint32 argc)
 
 		free(dpi.bits);
 		drawing_engine_dispose();
-	}
-	openrct2_dispose();
+	// }
+	// openrct2_dispose();
 	return 1;
 }

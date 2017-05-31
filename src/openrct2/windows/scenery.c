@@ -15,6 +15,7 @@
 #pragma endregion
 
 #include "../audio/audio.h"
+#include "../Context.h"
 #include "../drawing/drawing.h"
 #include "../game.h"
 #include "../input.h"
@@ -423,7 +424,7 @@ void window_scenery_open()
 	init_scenery();
 
 	window = window_create(
-		gScreenWidth - WINDOW_SCENERY_WIDTH,
+		context_get_width() - WINDOW_SCENERY_WIDTH,
 		0x1D,
 		WINDOW_SCENERY_WIDTH,
 		WINDOW_SCENERY_HEIGHT,
@@ -728,13 +729,14 @@ static void window_scenery_event_07(rct_window *w)
  */
 static void window_scenery_update(rct_window *w)
 {
-	rct_window *other = window_find_from_point(gCursorState.x, gCursorState.y);
+	const CursorState * state = context_get_cursor_state();
+	rct_window *other = window_find_from_point(state->x, state->y);
 	if (other == w) {
-		sint32 window_x = gCursorState.x - w->x + 26;
-		sint32 window_y = gCursorState.y - w->y;
+		sint32 window_x = state->x - w->x + 26;
+		sint32 window_y = state->y - w->y;
 
 		if (window_y < 44 || window_x <= w->width) {
-			rct_widgetindex widgetIndex = window_find_widget_from_point(w, gCursorState.x, gCursorState.y);
+			rct_widgetindex widgetIndex = window_find_widget_from_point(w, state->x, state->y);
 			if (widgetIndex >= WIDX_SCENERY_TAB_CONTENT_PANEL) {
 				w->scenery.hover_counter++;
 				if (w->scenery.hover_counter < 8) {
@@ -746,7 +748,7 @@ static void window_scenery_update(rct_window *w)
 					}
 				} else {
 					sint32 windowHeight = min(463, w->scrolls[0].v_bottom + 62);
-					if (gScreenHeight < 600)
+					if (context_get_height() < 600)
 						windowHeight = min(374, windowHeight);
 					windowHeight = max(WINDOW_SCENERY_HEIGHT, windowHeight);
 
@@ -841,7 +843,7 @@ void window_scenery_scrollmousedown(rct_window *w, sint32 scrollIndex, sint32 x,
 
 	gWindowSceneryPaintEnabled &= 0xFE;
 	gWindowSceneryEyedropperEnabled = false;
-	audio_play_sound_panned(4, (w->width >> 1) + w->x, 0, 0, 0);
+	audio_play_sound(4, 0, w->x + (w->width / 2));
 	w->scenery.hover_counter = -16;
 	gSceneryPlaceCost = MONEY32_UNDEFINED;
 	window_invalidate(w);
@@ -1255,7 +1257,7 @@ bool window_scenery_set_selected_item(sint32 sceneryId)
 			gWindowSceneryActiveTabIndex = tabIndex;
 			gWindowSceneryTabSelections[tabIndex] = sceneryId;
 
-			audio_play_sound_panned(4, (w->width >> 1) + w->x, 0, 0, 0);
+			audio_play_sound(SOUND_CLICK_1, 0, context_get_width() / 2);
 			w->scenery.hover_counter = -16;
 			gSceneryPlaceCost = MONEY32_UNDEFINED;
 			window_invalidate(w);
