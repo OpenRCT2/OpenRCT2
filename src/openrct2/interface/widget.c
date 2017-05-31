@@ -1105,6 +1105,7 @@ static void widget_text_box_draw(rct_drawpixelinfo *dpi, rct_window *w, rct_widg
 
 	// Make a copy of the string for measuring the width.
 	char temp_string[TEXT_INPUT_SIZE] = { 0 };
+	gTextInput = context_start_text_input(gTextBoxInput, TEXT_INPUT_SIZE);
 	memcpy(temp_string, wrapped_string, min(string_length, gTextInput->SelectionStart));
 	sint32 cur_x = l + gfx_get_string_width(temp_string) + 3;
 
