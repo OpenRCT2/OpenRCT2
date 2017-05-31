@@ -7,6 +7,10 @@ endif ()
 # Options
 option(DISABLE_OPENGL "Disable OpenGL support.")
 
+if (PORTABLE)
+    set(CMAKE_INSTALL_RPATH "$ORIGIN")
+endif ()
+
 # CMake dependencies
 include(FindPkgConfig)
 
@@ -74,10 +78,6 @@ if (WIN32)
     # mingw complains about "%zu" not being a valid format specifier for printf, unless we
     # tell it that it is
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D__USE_MINGW_ANSI_STDIO=1")
-endif ()
-
-if (PORTABLE)
-    set(CMAKE_INSTALL_RPATH "$ORIGIN")
 endif ()
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=gnu11 ${TARGET_M}")
