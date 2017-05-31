@@ -4,6 +4,10 @@ if (CMAKE_BINARY_DIR STREQUAL CMAKE_SOURCE_DIR)
     message(FATAL_ERROR "Building in-source is not supported! Create a build dir and remove ${CMAKE_SOURCE_DIR}/CMakeCache.txt")
 endif ()
 
+if (PORTABLE)
+    set(CMAKE_INSTALL_RPATH "$ORIGIN")
+endif ()
+
 # CMake dependencies
 include(FindPkgConfig)
 
