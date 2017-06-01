@@ -161,7 +161,7 @@ static void loc_6A6620(sint32 flags, sint32 x, sint32 y, rct_map_element *mapEle
 	if (!(flags & GAME_COMMAND_FLAG_7))
 		footpath_connect_edges(x, y, mapElement, flags);
 
-	sub_6A759F();
+	footpath_update_queue_chains();
 	map_invalidate_tile_full(x, y);
 }
 
@@ -446,7 +446,7 @@ money32 footpath_remove_real(sint32 x, sint32 y, sint32 z, sint32 flags)
 		footpath_remove_edges_at(x, y, mapElement);
 		map_invalidate_tile_full(x, y);
 		map_element_remove(mapElement);
-		sub_6A759F();
+		footpath_update_queue_chains();
 	}
 
 	money32 cost = -MONEY(10,00);
@@ -1302,7 +1302,7 @@ void footpath_connect_edges(sint32 x, sint32 y, rct_map_element *mapElement, sin
 	rct_neighbour_list neighbourList;
 	rct_neighbour neighbour;
 
-	sub_6A759F();
+	footpath_update_queue_chains();
 
 	neighbour_list_init(&neighbourList);
 
@@ -1474,7 +1474,7 @@ void footpath_queue_chain_push(uint8 rideIndex)
  *
  *  rct2: 0x006A759F
  */
-void sub_6A759F()
+void footpath_update_queue_chains()
 {
 	for (uint8 *queueChainPtr = _footpathQueueChain; queueChainPtr < _footpathQueueChainNext; queueChainPtr++) {
 		uint8 rideIndex = *queueChainPtr;

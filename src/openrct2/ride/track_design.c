@@ -870,7 +870,7 @@ static sint32 track_design_place_scenery(rct_td6_scenery_element *scenery_start,
 						if (_trackDesignPlaceOperation == PTD_OPERATION_4) bl = 105;
 
 						footpath_connect_edges(mapCoord.x, mapCoord.y, map_element, bl);
-						sub_6A759F();
+						footpath_update_queue_chains();
 						continue;
 					}
 					break;

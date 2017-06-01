@@ -8015,7 +8015,7 @@ void sub_6CB945(sint32 rideIndex)
 				footpath_queue_chain_reset();
 				maze_entrance_hedge_replacement(location.x, location.y, mapElement);
 				footpath_remove_edges_at(location.x, location.y, mapElement);
-				sub_6A759F();
+				footpath_update_queue_chains();
 				map_invalidate_tile_full(location.x, location.y);
 				map_element_remove(mapElement);
 				mapElement--;

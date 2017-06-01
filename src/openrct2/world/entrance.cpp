@@ -440,7 +440,7 @@ static money32 RideEntranceExitPlace(sint16 x,
             }
 
             footpath_connect_edges(x, y, mapElement, flags);
-            sub_6A759F();
+            footpath_update_queue_chains();
 
             map_invalidate_tile_full(x, y);
         }
@@ -546,7 +546,7 @@ static money32 RideEntranceExitRemove(sint16 x, sint16 y, uint8 rideIndex, uint8
             ride->entrances[stationNum] = 0xFFFF;
         }
 
-        sub_6A759F();
+        footpath_update_queue_chains();
 
         map_invalidate_tile_full(x, y);
     }
