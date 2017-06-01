@@ -262,7 +262,7 @@ static void window_track_place_toolupdate(rct_window* w, rct_widgetindex widgetI
 
 	// Check if tool map position has changed since last update
 	if (mapX == _window_track_place_last_x && mapY == _window_track_place_last_y) {
-		sub_6D01B3(_trackDesign, PTD_OPERATION_DRAW_OUTLINES, 0, mapX, mapY, 0);
+		place_virtual_track(_trackDesign, PTD_OPERATION_DRAW_OUTLINES, 0, mapX, mapY, 0);
 		return;
 	}
 
@@ -296,7 +296,7 @@ static void window_track_place_toolupdate(rct_window* w, rct_widgetindex widgetI
 		widget_invalidate(w, WIDX_PRICE);
 	}
 
-	sub_6D01B3(_trackDesign, PTD_OPERATION_DRAW_OUTLINES, 0, mapX, mapY, mapZ);
+	place_virtual_track(_trackDesign, PTD_OPERATION_DRAW_OUTLINES, 0, mapX, mapY, mapZ);
 }
 
 /**
@@ -384,7 +384,7 @@ static void window_track_place_invalidate(rct_window *w)
 static void window_track_place_clear_provisional()
 {
 	if (_window_track_place_last_was_valid) {
-		sub_6D01B3(
+		place_virtual_track(
 			_trackDesign,
 			PTD_OPERATION_CLEAR_OUTLINES,
 			_window_track_place_ride_index,
@@ -421,7 +421,7 @@ static sint32 window_track_place_get_base_z(sint32 x, sint32 y)
 	if (mapElement->properties.surface.terrain & 0x1F)
 		z = max(z, (mapElement->properties.surface.terrain & 0x1F) << 4);
 
-	return z + sub_6D01B3(_trackDesign, PTD_OPERATION_GET_PLACE_Z, 0, x, y, z);
+	return z + place_virtual_track(_trackDesign, PTD_OPERATION_GET_PLACE_Z, 0, x, y, z);
 }
 
 static void window_track_place_attempt_placement(rct_track_td6 *td6, sint32 x, sint32 y, sint32 z, sint32 bl, money32 *cost, uint8 *rideIndex)
