@@ -22,7 +22,7 @@
 #include "../world/map.h"
 #include "vehicle.h"
 
-#define MAX_TRACK_TYPES_PER_RIDE_ENTRY  3
+#define MAX_RIDE_TYPES_PER_RIDE_ENTRY   3
 typedef fixed16_2dp ride_rating;
 
 // Convenience function for writing ride ratings. The result is a 16 bit signed
@@ -89,7 +89,7 @@ typedef struct rct_ride_entry {
 	rct_string_id description;							// 0x002
 	uint32 images_offset;								// 0x004
 	uint32 flags;										// 0x008
-	uint8 ride_type[MAX_TRACK_TYPES_PER_RIDE_ENTRY];	// 0x00C
+	uint8 ride_type[MAX_RIDE_TYPES_PER_RIDE_ENTRY];	// 0x00C
 	uint8 min_cars_in_train;							// 0x00F
 	uint8 max_cars_in_train;							// 0x010
 	uint8 cars_per_flat_ride;							// 0x011

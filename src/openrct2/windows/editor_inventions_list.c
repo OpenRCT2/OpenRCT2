@@ -220,7 +220,7 @@ static void research_rides_setup(){
 				if (!(gEditorSelectedObjects[OBJECT_TYPE_RIDE][rideType] & (1 << 0)))
 					continue;
 
-				for (uint8 j = 0; j < MAX_TRACK_TYPES_PER_RIDE_ENTRY; j++) {
+				for (uint8 j = 0; j < MAX_RIDE_TYPES_PER_RIDE_ENTRY; j++) {
 					if (master_ride->ride_type[j] == ride_base_type) {
 						master_found = true;
 						break;
@@ -240,7 +240,7 @@ static void research_rides_setup(){
 			}
 
 			bool foundBaseType = false;
-			for (uint8 j = 0; j < MAX_TRACK_TYPES_PER_RIDE_ENTRY; j++) {
+			for (uint8 j = 0; j < MAX_RIDE_TYPES_PER_RIDE_ENTRY; j++) {
 				if (ride_entry->ride_type[j] == ride_base_type) {
 					foundBaseType = true;
 				}

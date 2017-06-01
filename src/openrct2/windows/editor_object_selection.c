@@ -716,7 +716,7 @@ static void remove_selected_objects_from_research(const rct_object_entry* instal
 	if (entry_type == OBJECT_TYPE_RIDE){
 		rct_ride_entry* rideEntry = (rct_ride_entry*)object_entry_groups[entry_type].chunks[entry_index];
 
-		for (uint8 j = 0; j < MAX_TRACK_TYPES_PER_RIDE_ENTRY; j++) {
+		for (uint8 j = 0; j < MAX_RIDE_TYPES_PER_RIDE_ENTRY; j++) {
 			research_remove(entry_index | rideEntry->ride_type[j] << 8 | 0x10000);
 		}
 	}
