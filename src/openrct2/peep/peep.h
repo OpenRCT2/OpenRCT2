@@ -751,7 +751,7 @@ void peep_decrement_num_riders(rct_peep* peep);
 void peep_insert_new_thought(rct_peep *peep, uint8 thought_type, uint8 thought_arguments);
 
 void peep_set_map_tooltip(rct_peep *peep);
-void sub_693B58(rct_peep* peep);
+void peep_update_current_action_sprite_type(rct_peep* peep);
 void remove_peep_from_ride(rct_peep* peep);
 void remove_peep_from_queue(rct_peep* peep);
 

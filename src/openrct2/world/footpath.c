@@ -842,7 +842,7 @@ void footpath_interrupt_peeps(sint32 x, sint32 y, sint32 z)
 					peep->destination_x = (peep->x & 0xFFE0) + 16;
 					peep->destination_y = (peep->y & 0xFFE0) + 16;
 					peep->destination_tolerence = 5;
-					sub_693B58(peep);
+					peep_update_current_action_sprite_type(peep);
 				}
 			}
 		}

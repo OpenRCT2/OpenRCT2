@@ -909,7 +909,7 @@ static void sub_68F41A(rct_peep *peep, sint32 index)
 		}
 
 		peep->action_sprite_type = 0xFF;
-		sub_693B58(peep);
+		peep_update_current_action_sprite_type(peep);
 		return;
 	}
 
@@ -1219,7 +1219,7 @@ static void sub_68F41A(rct_peep *peep, sint32 index)
 					peep->action = PEEP_ACTION_THROW_UP;
 					peep->action_frame = 0;
 					peep->action_sprite_image_offset = 0;
-					sub_693B58(peep);
+					peep_update_current_action_sprite_type(peep);
 					invalidate_sprite_2((rct_sprite*)peep);
 				}
 			}
@@ -1392,12 +1392,14 @@ static uint8 peep_get_action_sprite_type(rct_peep* peep)
 	}
 }
 
-void sub_693B58(rct_peep* peep){
+void peep_update_current_action_sprite_type(rct_peep* peep){
 	if (peep->sprite_type >= countof(g_peep_animation_entries)) {
 		return;
 	}
 	uint8 action_sprite_type = peep_get_action_sprite_type(peep);
-	if (action_sprite_type == peep->action_sprite_type)return;
+	if (action_sprite_type == peep->action_sprite_type) {
+		return;
+	}
 
 	invalidate_sprite_2((rct_sprite*)peep);
 	peep->action_sprite_type = action_sprite_type;
@@ -1420,7 +1422,7 @@ void sub_693BE5(rct_peep* peep, uint8 al){
 	if (peep->action >= PEEP_ACTION_NONE_1){
 		peep->action_sprite_image_offset = 0;
 	}
-	sub_693B58(peep);
+	peep_update_current_action_sprite_type(peep);
 }
 
 /**
@@ -1587,7 +1589,7 @@ static sint32 peep_update_action(sint16* x, sint16* y, sint16* xy_distance, rct_
 	if (peep->action_frame >= peepAnimation[peep->action_sprite_type].num_frames){
 		peep->action_sprite_image_offset = 0;
 		peep->action = 0xFF;
-		sub_693B58(peep);
+		peep_update_current_action_sprite_type(peep);
 		invalidate_sprite_2((rct_sprite*)peep);
 		*x = peep->x;
 		*y = peep->y;
@@ -1658,7 +1660,7 @@ static void set_sprite_type(rct_peep* peep, uint8 type){
 	}
 
 	peep->action_sprite_type = 0xFF;
-	sub_693B58(peep);
+	peep_update_current_action_sprite_type(peep);
 
 	if (peep->state == PEEP_STATE_SITTING){
 		peep->action = PEEP_ACTION_NONE_1;
@@ -1924,7 +1926,7 @@ bool peep_pickup_place(rct_peep* peep, sint32 x, sint32 y, sint32 z, bool apply)
 		if (peep->type == PEEP_TYPE_GUEST) {
 			peep->action_sprite_type = 0xFF;
 			peep->happiness_growth_rate = max(peep->happiness_growth_rate - 10, 0);
-			sub_693B58(peep);
+			peep_update_current_action_sprite_type(peep);
 		}
 
 		network_set_pickup_peep(game_command_playerid, 0);
@@ -2113,7 +2115,7 @@ static void peep_update_falling(rct_peep* peep){
 						peep->action_frame = 0;
 						peep->action_sprite_image_offset = 0;
 
-						sub_693B58(peep);
+						peep_update_current_action_sprite_type(peep);
 						invalidate_sprite_2((rct_sprite*)peep);
 						peep_window_state_update(peep);
 						return;
@@ -2178,7 +2180,7 @@ static void peep_try_get_up_from_sitting(rct_peep* peep){
 	peep->destination_x = (peep->x & 0xFFE0) + 16;
 	peep->destination_y = (peep->y & 0xFFE0) + 16;
 	peep->destination_tolerence = 5;
-	sub_693B58(peep);
+	peep_update_current_action_sprite_type(peep);
 }
 
 /** rct2: 0x00981F2C, 0x00981F2E */
@@ -2244,7 +2246,7 @@ static void peep_update_sitting(rct_peep* peep){
 			peep->destination_x = (peep->x & 0xFFE0) + 16;
 			peep->destination_y = (peep->y & 0xFFE0) + 16;
 			peep->destination_tolerence = 5;
-			sub_693B58(peep);
+			peep_update_current_action_sprite_type(peep);
 			return;
 		}
 
@@ -2261,7 +2263,7 @@ static void peep_update_sitting(rct_peep* peep){
 			peep->action = PEEP_ACTION_SITTING_EAT_FOOD;
 			peep->action_frame = 0;
 			peep->action_sprite_image_offset = 0;
-			sub_693B58(peep);
+			peep_update_current_action_sprite_type(peep);
 			invalidate_sprite_2((rct_sprite*)peep);
 			return;
 		}
@@ -2286,7 +2288,7 @@ static void peep_update_sitting(rct_peep* peep){
 		}
 		peep->action_frame = 0;
 		peep->action_sprite_image_offset = 0;
-		sub_693B58(peep);
+		peep_update_current_action_sprite_type(peep);
 		invalidate_sprite_2((rct_sprite*)peep);
 		return;
 	}
@@ -3840,7 +3842,7 @@ static void peep_update_ride_sub_state_17(rct_peep* peep){
 			peep->action = PEEP_ACTION_JUMP;
 			peep->action_frame = 0;
 			peep->action_sprite_image_offset = 0;
-			sub_693B58(peep);
+			peep_update_current_action_sprite_type(peep);
 			invalidate_sprite_2((rct_sprite*)peep);
 		}
 	}
@@ -4378,7 +4380,7 @@ static bool peep_update_fixing_sub_state_2345(bool firstRun, rct_peep *peep, rct
 		peep->action = (scenario_rand() & 1) ? PEEP_ACTION_STAFF_FIX_2 : PEEP_ACTION_STAFF_FIX;
 		peep->action_sprite_image_offset = 0;
 		peep->action_frame = 0;
-		sub_693B58(peep);
+		peep_update_current_action_sprite_type(peep);
 		invalidate_sprite_2((rct_sprite *) peep);
 	}
 
@@ -4415,7 +4417,7 @@ static bool peep_update_fixing_sub_state_6(bool firstRun, rct_peep *peep, rct_ri
 		peep->action_sprite_image_offset = 0;
 		peep->action_frame = 0;
 
-		sub_693B58(peep);
+		peep_update_current_action_sprite_type(peep);
 		invalidate_sprite_2((rct_sprite *) peep);
 	}
 
@@ -4513,7 +4515,7 @@ static bool peep_update_fixing_sub_state_8(bool firstRun, rct_peep *peep) {
 		peep->action_frame = 0;
 		peep->action_sprite_image_offset = 0;
 
-		sub_693B58(peep);
+		peep_update_current_action_sprite_type(peep);
 		invalidate_sprite_2((rct_sprite *) peep);
 	}
 
@@ -4618,7 +4620,7 @@ static bool peep_update_fixing_sub_state_10(bool firstRun, rct_peep *peep, rct_r
 		peep->action_frame = 0;
 		peep->action_sprite_image_offset = 0;
 
-		sub_693B58(peep);
+		peep_update_current_action_sprite_type(peep);
 		invalidate_sprite_2((rct_sprite *) peep);
 	}
 
@@ -4644,7 +4646,7 @@ static bool peep_update_fixing_sub_state_11(bool firstRun, rct_peep *peep, rct_r
 		peep->action_frame = 0;
 		peep->action_sprite_image_offset = 0;
 
-		sub_693B58(peep);
+		peep_update_current_action_sprite_type(peep);
 		invalidate_sprite_2((rct_sprite *) peep);
 	}
 
@@ -4736,7 +4738,7 @@ static bool peep_update_fixing_sub_state_13(bool firstRun, sint32 steps, rct_pee
 		peep->action_frame = 0;
 		peep->action_sprite_image_offset = 0;
 
-		sub_693B58(peep);
+		peep_update_current_action_sprite_type(peep);
 		invalidate_sprite_2((rct_sprite *) peep);
 	}
 
@@ -4876,7 +4878,7 @@ static void peep_update_queuing(rct_peep* peep){
 			peep->action = PEEP_ACTION_EAT_FOOD;
 			peep->action_frame = 0;
 			peep->action_sprite_image_offset = 0;
-			sub_693B58(peep);
+			peep_update_current_action_sprite_type(peep);
 			invalidate_sprite_2((rct_sprite*)peep);
 		}
 		if (peep->time_in_queue >= 3500 && (0xFFFF & scenario_rand()) <= 93)
@@ -4914,7 +4916,7 @@ static void peep_update_queuing(rct_peep* peep){
 				peep->action = PEEP_ACTION_EAT_FOOD;
 				peep->action_frame = 0;
 				peep->action_sprite_image_offset = 0;
-				sub_693B58(peep);
+				peep_update_current_action_sprite_type(peep);
 				invalidate_sprite_2((rct_sprite*)peep);
 				break;
 			}
@@ -5007,7 +5009,7 @@ static void peep_update_watering(rct_peep* peep){
 		peep->action = PEEP_ACTION_STAFF_WATERING;
 		peep->action_frame = 0;
 		peep->action_sprite_image_offset = 0;
-		sub_693B58(peep);
+		peep_update_current_action_sprite_type(peep);
 		invalidate_sprite_2((rct_sprite*)peep);
 
 		peep->sub_state = 1;
@@ -5063,7 +5065,7 @@ static void peep_update_emptying_bin(rct_peep* peep){
 		peep->action = PEEP_ACTION_STAFF_EMPTY_BIN;
 		peep->action_frame = 0;
 		peep->action_sprite_image_offset = 0;
-		sub_693B58(peep);
+		peep_update_current_action_sprite_type(peep);
 		invalidate_sprite_2((rct_sprite*)peep);
 
 		peep->sub_state = 1;
@@ -5146,7 +5148,7 @@ static void peep_update_sweeping(rct_peep* peep){
 		peep->action = PEEP_ACTION_STAFF_SWEEP;
 		peep->action_frame = 0;
 		peep->action_sprite_image_offset = 0;
-		sub_693B58(peep);
+		peep_update_current_action_sprite_type(peep);
 		invalidate_sprite_2((rct_sprite*)peep);
 		return;
 	}
@@ -5263,7 +5265,7 @@ static void peep_update_watching(rct_peep* peep){
 					peep->action = PEEP_ACTION_EAT_FOOD;
 					peep->action_frame = 0;
 					peep->action_sprite_image_offset = 0;
-					sub_693B58(peep);
+					peep_update_current_action_sprite_type(peep);
 					invalidate_sprite_2((rct_sprite*)peep);
 					return;
 				}
@@ -5273,7 +5275,7 @@ static void peep_update_watching(rct_peep* peep){
 				peep->action = PEEP_ACTION_TAKE_PHOTO;
 				peep->action_frame = 0;
 				peep->action_sprite_image_offset = 0;
-				sub_693B58(peep);
+				peep_update_current_action_sprite_type(peep);
 				invalidate_sprite_2((rct_sprite*)peep);
 				return;
 			}
@@ -5283,7 +5285,7 @@ static void peep_update_watching(rct_peep* peep){
 					peep->action = PEEP_ACTION_WAVE;
 					peep->action_frame = 0;
 					peep->action_sprite_image_offset = 0;
-					sub_693B58(peep);
+					peep_update_current_action_sprite_type(peep);
 					invalidate_sprite_2((rct_sprite*)peep);
 					return;
 				}
@@ -5304,7 +5306,7 @@ static void peep_update_watching(rct_peep* peep){
 		peep->destination_x = (peep->x & 0xFFE0) + 16;
 		peep->destination_y = (peep->y & 0xFFE0) + 16;
 		peep->destination_tolerence = 5;
-		sub_693B58(peep);
+		peep_update_current_action_sprite_type(peep);
 	}
 }
 
@@ -5613,7 +5615,7 @@ static void peep_update_buying(rct_peep* peep)
 				peep->action_frame = 0;
 				peep->action_sprite_image_offset = 0;
 
-				sub_693B58(peep);
+				peep_update_current_action_sprite_type(peep);
 				invalidate_sprite_2((rct_sprite*)peep);
 
 				ride->no_primary_items_sold++;
@@ -5976,7 +5978,7 @@ static void peep_update_answering(rct_peep* peep){
 		peep->action_frame = 0;
 		peep->action_sprite_image_offset = 0;
 
-		sub_693B58(peep);
+		peep_update_current_action_sprite_type(peep);
 		invalidate_sprite_2((rct_sprite*)peep);
 
 		peep->sub_state = 1;
@@ -6369,7 +6371,7 @@ static void peep_update_walking(rct_peep* peep){
 				peep->action_frame = 0;
 				peep->action_sprite_image_offset = 0;
 
-				sub_693B58(peep);
+				peep_update_current_action_sprite_type(peep);
 				invalidate_sprite_2((rct_sprite*)peep);
 			}
 		}
@@ -6384,7 +6386,7 @@ static void peep_update_walking(rct_peep* peep){
 				peep->action_frame = 0;
 				peep->action_sprite_image_offset = 0;
 
-				sub_693B58(peep);
+				peep_update_current_action_sprite_type(peep);
 				invalidate_sprite_2((rct_sprite*)peep);
 			}
 		}
@@ -6399,7 +6401,7 @@ static void peep_update_walking(rct_peep* peep){
 				peep->action_frame = 0;
 				peep->action_sprite_image_offset = 0;
 
-				sub_693B58(peep);
+				peep_update_current_action_sprite_type(peep);
 				invalidate_sprite_2((rct_sprite*)peep);
 			}
 		}
@@ -7002,7 +7004,7 @@ void peep_applause()
 			peep->action = PEEP_ACTION_CLAP;
 			peep->action_frame = 0;
 			peep->action_sprite_image_offset = 0;
-			sub_693B58(peep);
+			peep_update_current_action_sprite_type(peep);
 			invalidate_sprite_2((rct_sprite*)peep);
 		}
 	}
@@ -7742,7 +7744,7 @@ void peep_insert_new_thought(rct_peep *peep, uint8 thought_type, uint8 thought_a
 			peep->action = action;
 			peep->action_frame = 0;
 			peep->action_sprite_image_offset = 0;
-			sub_693B58(peep);
+			peep_update_current_action_sprite_type(peep);
 			invalidate_sprite_2((rct_sprite*)peep);
 	}
 
@@ -11255,7 +11257,7 @@ static void peep_give_passing_peeps_pizza(rct_peep *peep, rct_peep *otherPeep)
 			otherPeep->action = PEEP_ACTION_WAVE_2;
 			otherPeep->action_frame = 0;
 			otherPeep->action_sprite_image_offset = 0;
-			sub_693B58(otherPeep);
+			peep_update_current_action_sprite_type(otherPeep);
 			invalidate_sprite_2((rct_sprite*)otherPeep);
 		}
 	}
@@ -11273,7 +11275,7 @@ static void peep_make_passing_peeps_sick(rct_peep *peep, rct_peep *otherPeep)
 		otherPeep->action = PEEP_ACTION_THROW_UP;
 		otherPeep->action_frame = 0;
 		otherPeep->action_sprite_image_offset = 0;
-		sub_693B58(otherPeep);
+		peep_update_current_action_sprite_type(otherPeep);
 		invalidate_sprite_2((rct_sprite*)otherPeep);
 	}
 }
@@ -11313,7 +11315,7 @@ static void peep_easter_egg_peep_interactions(rct_peep *peep)
 				peep->action = PEEP_ACTION_JOY;
 				peep->action_frame = 0;
 				peep->action_sprite_image_offset = 0;
-				sub_693B58(peep);
+				peep_update_current_action_sprite_type(peep);
 				invalidate_sprite_2((rct_sprite*)peep);
 			}
 		}
@@ -12544,7 +12546,7 @@ static void peep_read_map(rct_peep *peep)
 		peep->action = PEEP_ACTION_READ_MAP;
 		peep->action_frame = 0;
 		peep->action_sprite_image_offset = 0;
-		sub_693B58(peep);
+		peep_update_current_action_sprite_type(peep);
 		invalidate_sprite_2((rct_sprite*)peep);
 	}
 }
