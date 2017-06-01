@@ -180,7 +180,7 @@ static void window_track_list_close(rct_window *w)
 	// to do it again. Otherwise, this window will get
 	// another close signal from the track manager load function,
 	// try to load the track manager again, and an infinite loop will result.
-	if (gScreenAge != 0){
+	if ((gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER) && gScreenAge != 0){
 		window_close_by_number(WC_MANAGE_TRACK_DESIGN, w->number);
 		window_close_by_number(WC_TRACK_DELETE_PROMPT, w->number);
 		trackmanager_load();
