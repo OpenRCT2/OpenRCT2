@@ -124,8 +124,10 @@ namespace OpenRCT2
 
         sint32 RunOpenRCT2(int argc, char * * argv) override
         {
-            Initialise();
-            Launch();
+            if (Initialise())
+            {
+                Launch();
+            }
             return gExitCode;
         }
 
@@ -677,26 +679,43 @@ extern "C"
 
     bool platform_open_common_file_dialog(utf8 * outFilename, file_dialog_desc * desc, size_t outSize)
     {
-        FileDialogDesc desc2;
-        desc2.Type = (FILE_DIALOG_TYPE)desc->type;
-        desc2.Title = String::ToStd(desc->title);
-        desc2.InitialDirectory = String::ToStd(desc->initial_directory);
-        desc2.DefaultFilename = String::ToStd(desc->default_filename);
-        for (const auto &filter : desc->filters)
+        try
         {
-            if (filter.name != nullptr)
+            FileDialogDesc desc2;
+            desc2.Type = (FILE_DIALOG_TYPE)desc->type;
+            desc2.Title = String::ToStd(desc->title);
+            desc2.InitialDirectory = String::ToStd(desc->initial_directory);
+            desc2.DefaultFilename = String::ToStd(desc->default_filename);
+            for (const auto &filter : desc->filters)
             {
-                desc2.Filters.push_back({ String::ToStd(filter.name), String::ToStd(filter.pattern) });
+                if (filter.name != nullptr)
+                {
+                    desc2.Filters.push_back({ String::ToStd(filter.name), String::ToStd(filter.pattern) });
+                }
             }
+            std::string result = GetContext()->GetUiContext()->ShowFileDialog(desc2);
+            String::Set(outFilename, outSize, result.c_str());
+            return !result.empty();
         }
-        std::string result = GetContext()->GetUiContext()->ShowFileDialog(desc2);
-        String::Set(outFilename, outSize, result.c_str());
-        return !result.empty();
+        catch (const std::exception &ex)
+        {
+            log_error(ex.what());
+            outFilename[0] = '\0';
+            return false;
+        }
     }
 
     utf8 * platform_open_directory_browser(const utf8 * title)
     {
-        std::string result = GetContext()->GetUiContext()->ShowDirectoryDialog(title);
-        return String::Duplicate(result.c_str());
+        try
+        {
+            std::string result = GetContext()->GetUiContext()->ShowDirectoryDialog(title);
+            return String::Duplicate(result.c_str());
+        }
+        catch (const std::exception &ex)
+        {
+            log_error(ex.what());
+            return nullptr;
+        }
     }
 }
