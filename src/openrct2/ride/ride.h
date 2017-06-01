@@ -1037,7 +1037,7 @@ rct_ride_measurement *ride_get_measurement(sint32 rideIndex, rct_string_id *mess
 void ride_breakdown_add_news_item(sint32 rideIndex);
 rct_peep *ride_find_closest_mechanic(rct_ride *ride, sint32 forInspection);
 sint32 sub_6CC3FB(sint32 rideIndex);
-void sub_6C9627();
+void ride_construction_invalidate_current_track();
 sint32 sub_6C683D(sint32* x, sint32* y, sint32* z, sint32 direction, sint32 type, uint16 extra_params, rct_map_element** output_element, uint16 flags);
 void ride_set_map_tooltip(rct_map_element *mapElement);
 sint32 ride_music_params_update(sint16 x, sint16 y, sint16 z, uint8 rideIndex, uint16 sampleRate, uint32 position, uint8 *tuneId);

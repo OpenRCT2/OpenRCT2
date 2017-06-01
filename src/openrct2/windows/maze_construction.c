@@ -166,7 +166,7 @@ rct_window *window_maze_construction_open()
  */
 static void window_maze_construction_close(rct_window *w)
 {
-	sub_6C9627();
+	ride_construction_invalidate_current_track();
 	viewport_set_visibility(0);
 
 	map_invalidate_map_selection_tiles();
@@ -199,7 +199,7 @@ static void window_maze_construction_entrance_mouseup(rct_window *w, rct_widgeti
 	gRideEntranceExitPlaceStationIndex = 0;
 	input_set_flag(INPUT_FLAG_6, true);
 
-	sub_6C9627();
+	ride_construction_invalidate_current_track();
 
 	// ???
 	uint8 old_state = _rideConstructionState;
@@ -352,7 +352,7 @@ static void window_maze_construction_toolupdate(rct_window* w, rct_widgetindex w
  *  rct2: 0x006C825F
  */
 static void window_maze_construction_entrance_tooldown(sint32 x, sint32 y, rct_window* w){
-	sub_6C9627();
+	ride_construction_invalidate_current_track();
 
 	map_invalidate_selection_rect();
 
@@ -484,7 +484,7 @@ static void window_maze_construction_construct(sint32 direction)
 {
 	sint32 x, y, z, flags, mode;
 
-	sub_6C9627();
+	ride_construction_invalidate_current_track();
 
 	x = _currentTrackBeginX + (TileDirectionDelta[direction].x / 2);
 	y = _currentTrackBeginY + (TileDirectionDelta[direction].y / 2);

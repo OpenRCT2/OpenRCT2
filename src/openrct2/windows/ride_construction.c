@@ -642,7 +642,7 @@ rct_window *window_ride_construction_open()
  */
 static void window_ride_construction_close(rct_window *w)
 {
-	sub_6C9627();
+	ride_construction_invalidate_current_track();
 	viewport_set_visibility(0);
 
 	map_invalidate_map_selection_tiles();
@@ -1309,55 +1309,55 @@ static void window_ride_construction_mousedown(rct_widgetindex widgetIndex, rct_
 	window_ride_construction_update_enabled_track_pieces();
 	switch (widgetIndex) {
 	case WIDX_LEFT_CURVE:
-		sub_6C9627();
+		ride_construction_invalidate_current_track();
 		_currentTrackCurve = TRACK_CURVE_LEFT;
 		_currentTrackPrice = MONEY32_UNDEFINED;
 		window_ride_construction_update_active_elements();
 		break;
 	case WIDX_RIGHT_CURVE:
-		sub_6C9627();
+		ride_construction_invalidate_current_track();
 		_currentTrackCurve = TRACK_CURVE_RIGHT;
 		_currentTrackPrice = MONEY32_UNDEFINED;
 		window_ride_construction_update_active_elements();
 		break;
 	case WIDX_LEFT_CURVE_SMALL:
-		sub_6C9627();
+		ride_construction_invalidate_current_track();
 		_currentTrackCurve = TRACK_CURVE_LEFT_SMALL;
 		_currentTrackPrice = MONEY32_UNDEFINED;
 		window_ride_construction_update_active_elements();
 		break;
 	case WIDX_RIGHT_CURVE_SMALL:
-		sub_6C9627();
+		ride_construction_invalidate_current_track();
 		_currentTrackCurve = TRACK_CURVE_RIGHT_SMALL;
 		_currentTrackPrice = MONEY32_UNDEFINED;
 		window_ride_construction_update_active_elements();
 		break;
 	case WIDX_LEFT_CURVE_VERY_SMALL:
-		sub_6C9627();
+		ride_construction_invalidate_current_track();
 		_currentTrackCurve = TRACK_CURVE_LEFT_VERY_SMALL;
 		_currentTrackPrice = MONEY32_UNDEFINED;
 		window_ride_construction_update_active_elements();
 		break;
 	case WIDX_RIGHT_CURVE_VERY_SMALL:
-		sub_6C9627();
+		ride_construction_invalidate_current_track();
 		_currentTrackCurve = TRACK_CURVE_RIGHT_VERY_SMALL;
 		_currentTrackPrice = MONEY32_UNDEFINED;
 		window_ride_construction_update_active_elements();
 		break;
 	case WIDX_LEFT_CURVE_LARGE:
-		sub_6C9627();
+		ride_construction_invalidate_current_track();
 		_currentTrackCurve = TRACK_CURVE_LEFT_LARGE;
 		_currentTrackPrice = MONEY32_UNDEFINED;
 		window_ride_construction_update_active_elements();
 		break;
 	case WIDX_RIGHT_CURVE_LARGE:
-		sub_6C9627();
+		ride_construction_invalidate_current_track();
 		_currentTrackCurve = TRACK_CURVE_RIGHT_LARGE;
 		_currentTrackPrice = MONEY32_UNDEFINED;
 		window_ride_construction_update_active_elements();
 		break;
 	case WIDX_STRAIGHT:
-		sub_6C9627();
+		ride_construction_invalidate_current_track();
 		if (_currentTrackCurve != TRACK_CURVE_NONE)
 			_currentTrackBankEnd = TRACK_BANK_NONE;
 		_currentTrackCurve = TRACK_CURVE_NONE;
@@ -1365,7 +1365,7 @@ static void window_ride_construction_mousedown(rct_widgetindex widgetIndex, rct_
 		window_ride_construction_update_active_elements();
 		break;
 	case WIDX_SLOPE_DOWN_STEEP:
-		sub_6C9627();
+		ride_construction_invalidate_current_track();
 		if (is_track_enabled(TRACK_HELIX_SMALL)) {
 			if (_currentTrackCurve == TRACK_CURVE_LEFT && _currentTrackBankEnd == TRACK_BANK_LEFT) {
 				_currentTrackCurve = TRACK_ELEM_LEFT_HALF_BANKED_HELIX_DOWN_LARGE | 0x100;
@@ -1424,14 +1424,14 @@ static void window_ride_construction_mousedown(rct_widgetindex widgetIndex, rct_
 		}
 		break;
 	case WIDX_SLOPE_DOWN:
-		sub_6C9627();
+		ride_construction_invalidate_current_track();
 		if (_rideConstructionState == 2 && _currentTrackBankEnd != TRACK_BANK_NONE) {
 			_currentTrackBankEnd = TRACK_BANK_NONE;
 		}
 		loc_6C7502(6);
 		break;
 	case WIDX_LEVEL:
-		sub_6C9627();
+		ride_construction_invalidate_current_track();
 		if (_rideConstructionState == RIDE_CONSTRUCTION_STATE_FRONT && _previousTrackSlopeEnd == 6) {
 			if (_currentTrackCurve == TRACK_CURVE_LEFT_SMALL) {
 				_currentTrackBankEnd = TRACK_BANK_LEFT;
@@ -1448,7 +1448,7 @@ static void window_ride_construction_mousedown(rct_widgetindex widgetIndex, rct_
 		loc_6C7502(0);
 		break;
 	case WIDX_SLOPE_UP:
-		sub_6C9627();
+		ride_construction_invalidate_current_track();
 		if (_rideConstructionState == 1 && _currentTrackBankEnd != TRACK_BANK_NONE) {
 			_currentTrackBankEnd = TRACK_BANK_NONE;
 		}
@@ -1462,7 +1462,7 @@ static void window_ride_construction_mousedown(rct_widgetindex widgetIndex, rct_
 		}
 		break;
 	case WIDX_SLOPE_UP_STEEP:
-		sub_6C9627();
+		ride_construction_invalidate_current_track();
 		if (is_track_enabled(TRACK_HELIX_SMALL)) {
 			if (_currentTrackCurve == TRACK_CURVE_LEFT && _currentTrackBankEnd == TRACK_BANK_LEFT) {
 				_currentTrackCurve = TRACK_ELEM_LEFT_HALF_BANKED_HELIX_UP_LARGE | 0x100;
@@ -1521,7 +1521,7 @@ static void window_ride_construction_mousedown(rct_widgetindex widgetIndex, rct_
 		}
 		break;
 	case WIDX_CHAIN_LIFT:
-		sub_6C9627();
+		ride_construction_invalidate_current_track();
 		_currentTrackLiftHill ^= 1;
 		if (_currentTrackLiftHill & 1) {
 			_currentTrackAlternative &= ~RIDE_TYPE_ALTERNATIVE_TRACK_PIECES;
@@ -1530,7 +1530,7 @@ static void window_ride_construction_mousedown(rct_widgetindex widgetIndex, rct_
 		window_ride_construction_update_active_elements();
 		break;
 	case WIDX_BANK_LEFT:
-		sub_6C9627();
+		ride_construction_invalidate_current_track();
 		if (_currentlyShowingBrakeSpeed == 0) {
 			_currentTrackBankEnd = TRACK_BANK_LEFT;
 			_currentTrackPrice = MONEY32_UNDEFINED;
@@ -1538,7 +1538,7 @@ static void window_ride_construction_mousedown(rct_widgetindex widgetIndex, rct_
 		}
 		break;
 	case WIDX_BANK_STRAIGHT:
-		sub_6C9627();
+		ride_construction_invalidate_current_track();
 		if (_currentlyShowingBrakeSpeed == 0) {
 			_currentTrackBankEnd = TRACK_BANK_NONE;
 			_currentTrackPrice = MONEY32_UNDEFINED;
@@ -1562,7 +1562,7 @@ static void window_ride_construction_mousedown(rct_widgetindex widgetIndex, rct_
 		}
 		break;
 	case WIDX_BANK_RIGHT:
-		sub_6C9627();
+		ride_construction_invalidate_current_track();
 		if (_currentlyShowingBrakeSpeed == 0) {
 			_currentTrackBankEnd = TRACK_BANK_RIGHT;
 			_currentTrackPrice = MONEY32_UNDEFINED;
@@ -1587,13 +1587,13 @@ static void window_ride_construction_mousedown(rct_widgetindex widgetIndex, rct_
 		window_ride_construction_show_special_track_dropdown(w, widget);
 		break;
 	case WIDX_U_TRACK:
-		sub_6C9627();
+		ride_construction_invalidate_current_track();
 		_currentTrackAlternative &= ~RIDE_TYPE_ALTERNATIVE_TRACK_PIECES;
 		_currentTrackPrice = MONEY32_UNDEFINED;
 		window_ride_construction_update_active_elements();
 		break;
 	case WIDX_O_TRACK:
-		sub_6C9627();
+		ride_construction_invalidate_current_track();
 		_currentTrackAlternative |= RIDE_TYPE_ALTERNATIVE_TRACK_PIECES;
 		_currentTrackLiftHill &= ~1;
 		_currentTrackPrice = MONEY32_UNDEFINED;
@@ -1633,7 +1633,7 @@ static void window_ride_construction_dropdown(rct_window *w, rct_widgetindex wid
 	if (dropdownIndex == -1)
 		return;
 
-	sub_6C9627();
+	ride_construction_invalidate_current_track();
 	_currentTrackPrice = MONEY32_UNDEFINED;
 	sint32 trackPiece = _currentPossibleRideConfigurations[dropdownIndex];
 	switch (trackPiece) {
@@ -1663,7 +1663,7 @@ static void window_ride_construction_construct(rct_window *w)
 
 	_currentTrackPrice = MONEY32_UNDEFINED;
 	_trackPlaceCost = MONEY32_UNDEFINED;
-	sub_6C9627();
+	ride_construction_invalidate_current_track();
 	if (sub_6CA2DF(&trackType, &trackDirection, &rideIndex, &edxRS16, &x, &y, &z, &properties)) {
 		window_ride_construction_update_active_elements();
 		return;
@@ -1783,7 +1783,7 @@ static void window_ride_construction_mouseup_demolish(rct_window* w)
 	//bool gotoStartPlacementMode;
 
 	_currentTrackPrice = MONEY32_UNDEFINED;
-	sub_6C9627();
+	ride_construction_invalidate_current_track();
 
 	// Select the track element that is to be deleted
 	_rideConstructionState2 = RIDE_CONSTRUCTION_STATE_SELECTED;
@@ -1948,7 +1948,7 @@ void window_ride_construction_mouseup_demolish_next_piece(sint32 x, sint32 y, si
 static void window_ride_construction_rotate(rct_window *w)
 {
 	_currentTrackPieceDirection = (_currentTrackPieceDirection + 1) & 3;
-	sub_6C9627();
+	ride_construction_invalidate_current_track();
 	_currentTrackPrice = MONEY32_UNDEFINED;
 	window_ride_construction_update_active_elements();
 }
@@ -1968,7 +1968,7 @@ static void window_ride_construction_entrance_click(rct_window *w)
 		gRideEntranceExitPlaceRideIndex = w->number & 0xFF;
 		gRideEntranceExitPlaceStationIndex = 0;
 		input_set_flag(INPUT_FLAG_6, true);
-		sub_6C9627();
+		ride_construction_invalidate_current_track();
 		if (_rideConstructionState != RIDE_CONSTRUCTION_STATE_ENTRANCE_EXIT) {
 			gRideEntranceExitPlacePreviousRideConstructionState = _rideConstructionState;
 			_rideConstructionState = RIDE_CONSTRUCTION_STATE_ENTRANCE_EXIT;
@@ -1992,7 +1992,7 @@ static void window_ride_construction_exit_click(rct_window *w)
 		gRideEntranceExitPlaceRideIndex = w->number & 0xFF;
 		gRideEntranceExitPlaceStationIndex = 0;
 		input_set_flag(INPUT_FLAG_6, true);
-		sub_6C9627();
+		ride_construction_invalidate_current_track();
 		if (_rideConstructionState != RIDE_CONSTRUCTION_STATE_ENTRANCE_EXIT) {
 			gRideEntranceExitPlacePreviousRideConstructionState = _rideConstructionState;
 			_rideConstructionState = RIDE_CONSTRUCTION_STATE_ENTRANCE_EXIT;
@@ -2807,7 +2807,7 @@ void sub_6C94D8()
 	// Recheck if area is fine for new track.
 	// Set by footpath placement
 	if (_currentTrackSelectionFlags & TRACK_SELECTION_FLAG_RECHECK) {
-		sub_6C9627();
+		ride_construction_invalidate_current_track();
 		_currentTrackSelectionFlags &= ~TRACK_SELECTION_FLAG_RECHECK;
 	}
 
@@ -3647,7 +3647,7 @@ void ride_construction_toolupdate_construct(sint32 screenX, sint32 screenY)
 	gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
 	gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
 	if (!ride_get_place_position_from_screen_position(screenX, screenY, &x, &y)) {
-		sub_6C9627();
+		ride_construction_invalidate_current_track();
 		map_invalidate_map_selection_tiles();
 		return;
 	}
@@ -3670,7 +3670,7 @@ void ride_construction_toolupdate_construct(sint32 screenX, sint32 screenY)
 
 	sint32 trackType, trackDirection, rideIndex, edxRS16;
 	if (sub_6CA2DF(&trackType, &trackDirection, &rideIndex, &edxRS16, NULL, NULL, NULL, NULL)) {
-		sub_6C9627();
+		ride_construction_invalidate_current_track();
 		map_invalidate_map_selection_tiles();
 		return;
 	}
@@ -3789,7 +3789,7 @@ void ride_construction_toolupdate_entrance_exit(sint32 screenX, sint32 screenY)
 	gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
 	ride_get_entrance_or_exit_position_from_screen_position(screenX, screenY, &x, &y, &direction);
 	if (gRideEntranceExitPlaceDirection == 255) {
-		sub_6C9627();
+		ride_construction_invalidate_current_track();
 		return;
 	}
 	gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
@@ -3832,7 +3832,7 @@ void ride_construction_tooldown_construct(sint32 screenX, sint32 screenY)
 	rct_window *w;
 
 	map_invalidate_map_selection_tiles();
-	sub_6C9627();
+	ride_construction_invalidate_current_track();
 
 	if (sub_6CA2DF(&trackType, &trackDirection, &rideIndex, &edxRS16, &x, &y, &z, &properties))
 		return;
@@ -4028,7 +4028,7 @@ void ride_construction_tooldown_construct(sint32 screenX, sint32 screenY)
  */
 static void ride_construction_tooldown_entrance_exit(sint32 screenX, sint32 screenY)
 {
-	sub_6C9627();
+	ride_construction_invalidate_current_track();
 	map_invalidate_selection_rect();
 	gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
 	gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;

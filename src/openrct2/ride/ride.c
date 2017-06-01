@@ -776,7 +776,7 @@ sint32 ride_find_track_gap(rct_xy_element *input, rct_xy_element *output)
 
 	w = window_find_by_class(WC_RIDE_CONSTRUCTION);
 	if (w != NULL && _rideConstructionState != RIDE_CONSTRUCTION_STATE_0 && _currentRideIndex == rideIndex)
-		sub_6C9627();
+		ride_construction_invalidate_current_track();
 
 	bool counter = true;
 	track_circuit_iterator_begin(&it, *input);
@@ -972,7 +972,7 @@ static rct_window *ride_create_or_find_construction_window(sint32 rideIndex)
 		_currentRideIndex = rideIndex;
 		w = window_ride_construction_open();
 	} else {
-		sub_6C9627();
+		ride_construction_invalidate_current_track();
 		_currentRideIndex = rideIndex;
 	}
 
@@ -1401,7 +1401,7 @@ void sub_6C96C0()
 	}
 }
 
-void sub_6C9627()
+void ride_construction_invalidate_current_track()
 {
 	sint32 x, y, z;
 
@@ -1610,7 +1610,7 @@ void ride_construction_set_default_next_piece()
 void ride_select_next_section()
 {
 	if (_rideConstructionState == RIDE_CONSTRUCTION_STATE_SELECTED) {
-		sub_6C9627();
+		ride_construction_invalidate_current_track();
 		sint32 x = _currentTrackBeginX;
 		sint32 y = _currentTrackBeginY;
 		sint32 z = _currentTrackBeginZ;
@@ -1666,7 +1666,7 @@ void ride_select_next_section()
 void ride_select_previous_section()
 {
 	if (_rideConstructionState == RIDE_CONSTRUCTION_STATE_SELECTED) {
-		sub_6C9627();
+		ride_construction_invalidate_current_track();
 		sint32 x = _currentTrackBeginX;
 		sint32 y = _currentTrackBeginY;
 		sint32 z = _currentTrackBeginZ;
@@ -1735,7 +1735,7 @@ static sint32 ride_modify_entrance_or_exit(rct_map_element *mapElement, sint32 x
 			return 0;
 	}
 
-	sub_6C9627();
+	ride_construction_invalidate_current_track();
 	if (
 		_rideConstructionState != RIDE_CONSTRUCTION_STATE_ENTRANCE_EXIT ||
 		!(input_test_flag(INPUT_FLAG_TOOL_ACTIVE)) ||
@@ -4099,7 +4099,7 @@ static sint32 ride_check_block_brakes(rct_xy_element *input, rct_xy_element *out
 	rideIndex = input->element->properties.track.ride_index;
 	w = window_find_by_class(WC_RIDE_CONSTRUCTION);
 	if (w != NULL && _rideConstructionState != RIDE_CONSTRUCTION_STATE_0 && _currentRideIndex == rideIndex)
-		sub_6C9627();
+		ride_construction_invalidate_current_track();
 
 	track_circuit_iterator_begin(&it, *input);
 	while (track_circuit_iterator_next(&it)) {
@@ -4148,7 +4148,7 @@ static bool ride_check_track_contains_inversions(rct_xy_element *input, rct_xy_e
 
 	rct_window *w = window_find_by_class(WC_RIDE_CONSTRUCTION);
 	if (w != NULL && _rideConstructionState != RIDE_CONSTRUCTION_STATE_0 && rideIndex == _currentRideIndex) {
-		sub_6C9627();
+		ride_construction_invalidate_current_track();
 	}
 
 	track_circuit_iterator it;
@@ -4179,7 +4179,7 @@ static bool ride_check_track_contains_banked(rct_xy_element *input, rct_xy_eleme
 
 	rct_window *w = window_find_by_class(WC_RIDE_CONSTRUCTION);
 	if (w != NULL && _rideConstructionState != RIDE_CONSTRUCTION_STATE_0 && rideIndex == _currentRideIndex) {
-		sub_6C9627();
+		ride_construction_invalidate_current_track();
 	}
 
 	track_circuit_iterator it;
@@ -4204,7 +4204,7 @@ static sint32 ride_check_station_length(rct_xy_element *input, rct_xy_element *o
 	if (w != 0 &&
 		_rideConstructionState != RIDE_CONSTRUCTION_STATE_0 &&
 		_currentRideIndex == input->element->properties.track.ride_index){
-		sub_6C9627();
+		ride_construction_invalidate_current_track();
 	}
 
 	output->x = input->x;
@@ -4259,7 +4259,7 @@ static bool ride_check_start_and_end_is_station(rct_xy_element *input, rct_xy_el
 
 	w = window_find_by_class(WC_RIDE_CONSTRUCTION);
 	if (w != NULL && _rideConstructionState != RIDE_CONSTRUCTION_STATE_0 && rideIndex == _currentRideIndex) {
-		sub_6C9627();
+		ride_construction_invalidate_current_track();
 	}
 
 	// Check back of the track
@@ -7196,7 +7196,7 @@ bool ride_select_backwards_from_front()
 {
 	track_begin_end trackBeginEnd;
 
-	sub_6C9627();
+	ride_construction_invalidate_current_track();
 	if (track_block_get_previous_from_zero(_currentTrackBeginX, _currentTrackBeginY, _currentTrackBeginZ, _currentRideIndex, _currentTrackPieceDirection, &trackBeginEnd)) {
 		_rideConstructionState = RIDE_CONSTRUCTION_STATE_SELECTED;
 		_currentTrackBeginX = trackBeginEnd.begin_x;
@@ -7216,7 +7216,7 @@ bool ride_select_forwards_from_back()
 {
 	sint32 x, y, z, direction;
 
-	sub_6C9627();
+	ride_construction_invalidate_current_track();
 
 	x = _currentTrackBeginX;
 	y = _currentTrackBeginY;
@@ -7488,7 +7488,7 @@ foundTrack:
 
 	w = window_find_by_class(WC_RIDE_CONSTRUCTION);
 	if (w != NULL && _rideConstructionState != RIDE_CONSTRUCTION_STATE_0 && _currentRideIndex == rideIndex) {
-		sub_6C9627();
+		ride_construction_invalidate_current_track();
 	}
 
 	result = 0;
