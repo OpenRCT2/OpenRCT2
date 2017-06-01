@@ -128,7 +128,7 @@ void game_handle_input()
 		window_event_unknown_07_call(w);
 	}
 
-	sub_6EA73F();
+	invalidate_all_windows_after_input();
 
 	sint32 x, y, state;
 	while ((state = game_get_next_input(&x, &y)) != MOUSE_STATE_RELEASED) {

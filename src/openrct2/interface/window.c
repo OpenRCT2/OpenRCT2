@@ -78,7 +78,7 @@ float window_scroll_locations[][2] = {
 	{0.125f,	0.125f},
 };
 
-static bool sub_6EA95D(sint32 x, sint32 y, sint32 width, sint32 height);
+static bool window_fits_between_others(sint32 x, sint32 y, sint32 width, sint32 height);
 static void window_all_wheel_input();
 static sint32 window_draw_split(rct_drawpixelinfo *dpi, rct_window *w, sint32 left, sint32 top, sint32 right, sint32 bottom);
 static void window_draw_single(rct_drawpixelinfo *dpi, rct_window *w, sint32 left, sint32 top, sint32 right, sint32 bottom);
@@ -498,7 +498,7 @@ rct_window *window_create(sint32 x, sint32 y, sint32 width, sint32 height, rct_w
  * @param width (bx)
  * @param height (cx)
  */
-static bool sub_6EA8EC(sint32 x, sint32 y, sint32 width, sint32 height)
+static bool window_fits_on_screen(sint32 x, sint32 y, sint32 width, sint32 height)
 {
 	uint16 screenWidth = context_get_width();
 	uint16 screenHeight = context_get_height();
@@ -511,7 +511,7 @@ static bool sub_6EA8EC(sint32 x, sint32 y, sint32 width, sint32 height)
 	if (y < 28) return false;
 	unk = screenHeight - (height / 4);
 	if (y > unk) return false;
-	return sub_6EA95D(x, y, width, height);
+	return window_fits_between_others(x, y, width, height);
 }
 
 /**
@@ -523,13 +523,13 @@ static bool sub_6EA8EC(sint32 x, sint32 y, sint32 width, sint32 height)
  * @param width (bx)
  * @param height (cx)
  */
-static bool sub_6EA934(sint32 x, sint32 y, sint32 width, sint32 height)
+static bool window_fits_within_space(sint32 x, sint32 y, sint32 width, sint32 height)
 {
 	if (x < 0) return false;
 	if (y < 28) return false;
 	if (x + width > context_get_width()) return false;
 	if (y + height > context_get_height()) return false;
-	return sub_6EA95D(x, y, width, height);
+	return window_fits_between_others(x, y, width, height);
 }
 
 /**
@@ -541,7 +541,7 @@ static bool sub_6EA934(sint32 x, sint32 y, sint32 width, sint32 height)
  * @param width (bx)
  * @param height (cx)
  */
-static bool sub_6EA95D(sint32 x, sint32 y, sint32 width, sint32 height)
+static bool window_fits_between_others(sint32 x, sint32 y, sint32 width, sint32 height)
 {
 	for (rct_window *w = g_window_list; w < RCT2_LAST_WINDOW; w++) {
 		if (w->flags & WF_STICK_TO_BACK)
@@ -594,19 +594,19 @@ rct_window *window_create_auto_pos(sint32 width, sint32 height, rct_window_event
 	// Place window in an empty corner of the screen
 	sint32 x = 0;
 	sint32 y = 30;
-	if (sub_6EA934(x, y, width, height)) goto foundSpace;
+	if (window_fits_within_space(x, y, width, height)) goto foundSpace;
 
 	x = screenWidth - width;
 	y = 30;
-	if (sub_6EA934(x, y, width, height)) goto foundSpace;
+	if (window_fits_within_space(x, y, width, height)) goto foundSpace;
 
 	x = 0;
 	y = screenHeight - 34 - height;
-	if (sub_6EA934(x, y, width, height)) goto foundSpace;
+	if (window_fits_within_space(x, y, width, height)) goto foundSpace;
 
 	x = screenWidth - width;
 	y = screenHeight - 34 - height;
-	if (sub_6EA934(x, y, width, height)) goto foundSpace;
+	if (window_fits_within_space(x, y, width, height)) goto foundSpace;
 
 	// Place window next to another
 	for (rct_window *w = g_window_list; w < RCT2_LAST_WINDOW; w++) {
@@ -615,35 +615,35 @@ rct_window *window_create_auto_pos(sint32 width, sint32 height, rct_window_event
 
 		x = w->x + w->width + 2;
 		y = w->y;
-		if (sub_6EA934(x, y, width, height)) goto foundSpace;
+		if (window_fits_within_space(x, y, width, height)) goto foundSpace;
 
 		x = w->x - w->width - 2;
 		y = w->y;
-		if (sub_6EA934(x, y, width, height)) goto foundSpace;
+		if (window_fits_within_space(x, y, width, height)) goto foundSpace;
 
 		x = w->x;
 		y = w->y + w->height + 2;
-		if (sub_6EA934(x, y, width, height)) goto foundSpace;
+		if (window_fits_within_space(x, y, width, height)) goto foundSpace;
 
 		x = w->x;
 		y = w->y - w->height - 2;
-		if (sub_6EA934(x, y, width, height)) goto foundSpace;
+		if (window_fits_within_space(x, y, width, height)) goto foundSpace;
 
 		x = w->x + w->width + 2;
 		y = w->y - w->height - 2;
-		if (sub_6EA934(x, y, width, height)) goto foundSpace;
+		if (window_fits_within_space(x, y, width, height)) goto foundSpace;
 
 		x = w->x - w->width - 2;
 		y = w->y - w->height - 2;
-		if (sub_6EA934(x, y, width, height)) goto foundSpace;
+		if (window_fits_within_space(x, y, width, height)) goto foundSpace;
 
 		x = w->x + w->width + 2;
 		y = w->y + w->height + 2;
-		if (sub_6EA934(x, y, width, height)) goto foundSpace;
+		if (window_fits_within_space(x, y, width, height)) goto foundSpace;
 
 		x = w->x - w->width - 2;
 		y = w->y + w->height + 2;
-		if (sub_6EA934(x, y, width, height)) goto foundSpace;
+		if (window_fits_within_space(x, y, width, height)) goto foundSpace;
 	}
 
 	// Overlap
@@ -653,19 +653,19 @@ rct_window *window_create_auto_pos(sint32 width, sint32 height, rct_window_event
 
 		x = w->x + w->width + 2;
 		y = w->y;
-		if (sub_6EA8EC(x, y, width, height)) goto foundSpace;
+		if (window_fits_on_screen(x, y, width, height)) goto foundSpace;
 
 		x = w->x - w->width - 2;
 		y = w->y;
-		if (sub_6EA8EC(x, y, width, height)) goto foundSpace;
+		if (window_fits_on_screen(x, y, width, height)) goto foundSpace;
 
 		x = w->x;
 		y = w->y + w->height + 2;
-		if (sub_6EA8EC(x, y, width, height)) goto foundSpace;
+		if (window_fits_on_screen(x, y, width, height)) goto foundSpace;
 
 		x = w->x;
 		y = w->y - w->height - 2;
-		if (sub_6EA8EC(x, y, width, height)) goto foundSpace;
+		if (window_fits_on_screen(x, y, width, height)) goto foundSpace;
 	}
 
 	// Cascade
@@ -2268,7 +2268,7 @@ static void window_invalidate_pressed_image_buttons(rct_window *w)
  *
  *  rct2: 0x006EA73F
  */
-void sub_6EA73F()
+void invalidate_all_windows_after_input()
 {
 	for (rct_window *w = RCT2_LAST_WINDOW; w >= g_window_list; w--) {
 		window_update_scroll_widgets(w);

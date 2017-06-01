@@ -824,7 +824,7 @@ void window_event_invalidate_call(rct_window* w);
 void window_event_paint_call(rct_window* w, rct_drawpixelinfo *dpi);
 void window_event_scroll_paint_call(rct_window* w, rct_drawpixelinfo *dpi, sint32 scrollIndex);
 
-void sub_6EA73F();
+void invalidate_all_windows_after_input();
 void textinput_cancel();
 
 void window_move_and_snap(rct_window *w, sint32 newWindowX, sint32 newWindowY, sint32 snapProximity);
