@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -78,7 +78,7 @@ private:
     {
         const char * copyrights[] =
         {
-            "#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers",
+            "#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers",
             "/*****************************************************************************",
             " * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.",
             " *",
