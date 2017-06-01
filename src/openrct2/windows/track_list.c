@@ -125,10 +125,10 @@ void window_track_list_open(ride_list_item item)
 		sint32 screenWidth = context_get_width();
 		sint32 screenHeight = context_get_height();
 		x = screenWidth / 2 - 300;
-		y = max(28, screenHeight / 2 - 200);
+		y = max(TOP_TOOLBAR_CLEARANCE, screenHeight / 2 - 200);
 	} else {
 		x = 0;
-		y = 29;
+		y = TOP_TOOLBAR_CLEARANCE + 1;
 	}
 	rct_window *w = window_create(
 		x,

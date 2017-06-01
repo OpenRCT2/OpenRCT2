@@ -258,7 +258,7 @@ static void window_track_delete_prompt_open()
 	sint32 screenWidth = context_get_width();
 	sint32 screenHeight = context_get_height();
 	rct_window *w = window_create(
-		max(28, (screenWidth - 250) / 2),
+		max(TOP_TOOLBAR_CLEARANCE, (screenWidth - 250) / 2),
 		(screenHeight - 44) / 2,
 		250,
 		74,
