@@ -101,3 +101,5 @@ install(FILES "resources/logo/icon_x128.png" DESTINATION "share/icons/hicolor/12
 install(FILES "resources/logo/icon_x256.png" DESTINATION "share/icons/hicolor/256x256/apps RENAME openrct2.png")
 install(FILES "resources/logo/icon_flag.svg" DESTINATION "share/icons/hicolor/scalable/apps RENAME openrct2.svg")
 install(FILES "distribution/linux/openrct2.desktop" DESTINATION "share/applications")
+install(DIRECTORY "distribution/man/" DESTINATION "share/man/man6" FILES_MATCHING PATTERN "*.6")
+install(CODE "execute_process(COMMAND find \$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/share/man/man6 -type f -exec gzip -f \"{}\" \;)")
