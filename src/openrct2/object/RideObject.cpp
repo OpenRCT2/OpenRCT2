@@ -42,7 +42,7 @@ void RideObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
 {
     stream->Seek(8, STREAM_SEEK_CURRENT);
     _legacyType.flags = stream->ReadValue<uint32>();
-    for (sint32 i = 0; i < 3; i++)
+    for (sint32 i = 0; i < MAX_RIDE_TYPES_PER_RIDE_ENTRY; i++)
     {
         _legacyType.ride_type[i] = stream->ReadValue<uint8>();
     }
@@ -395,7 +395,7 @@ const utf8 * RideObject::GetCapacity() const
 
 void RideObject::SetRepositoryItem(ObjectRepositoryItem * item) const
 {
-    for (sint32 i = 0; i < 3; i++)
+    for (sint32 i = 0; i < MAX_RIDE_TYPES_PER_RIDE_ENTRY; i++)
     {
         item->RideType[i] = _legacyType.ride_type[i];
     }

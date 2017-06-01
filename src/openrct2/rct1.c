@@ -28,7 +28,7 @@ bool rideTypeShouldLoseSeparateFlag(const rct_ride_entry *rideEntry)
 	}
 
 	bool remove_flag = true;
-	for (sint32 j = 0; j < 3; j++) {
+	for (sint32 j = 0; j < MAX_RIDE_TYPES_PER_RIDE_ENTRY; j++) {
 		if (rideEntry->ride_type[j] == RIDE_TYPE_NULL) {
 			continue;
 		}

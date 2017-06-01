@@ -285,7 +285,7 @@ void reset_type_to_ride_entry_index_map()
 		if (rideEntry == (rct_ride_entry *)-1) {
 			continue;
 		}
-		for (uint8 j = 0; j < 3; j++) {
+		for (uint8 j = 0; j < MAX_RIDE_TYPES_PER_RIDE_ENTRY; j++) {
 			uint8 rideType = rideEntry->ride_type[j];
 			if (rideType < RIDE_TYPE_COUNT) {
 				uint8 * entryArray = &entryTypeTable[rideType * stride];

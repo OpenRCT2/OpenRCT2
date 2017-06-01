@@ -199,11 +199,11 @@ void research_finish_item(sint32 entryIndex)
 					if ((rideEntry2->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE))
 						continue;
 
-					if (rideEntry2->ride_type[0] == base_ride_type ||
-						rideEntry2->ride_type[1] == base_ride_type ||
-						rideEntry2->ride_type[2] == base_ride_type
-						) {
-						ride_entry_set_invented(i);
+					for (uint8 j = 0; j < MAX_RIDE_TYPES_PER_RIDE_ENTRY; j++) {
+						if (rideEntry2->ride_type[j] == base_ride_type) {
+							ride_entry_set_invented(i);
+							break;
+						}
 					}
 				}
 			}
@@ -493,7 +493,7 @@ void research_populate_list_random()
 			continue;
 
 		sint32 researched = (scenario_rand() & 0xFF) > 128;
-		for (sint32 j = 0; j < 3; j++) {
+		for (sint32 j = 0; j < MAX_RIDE_TYPES_PER_RIDE_ENTRY; j++) {
 			sint32 rideType = rideEntry->ride_type[j];
 			if (rideType != 255)
 				research_insert(researched, 0x10000 | (rideType << 8) | i, rideEntry->category[0]);
@@ -519,7 +519,7 @@ void research_populate_list_researched()
 		if (rideEntry == (rct_ride_entry*)-1)
 			continue;
 
-		for (sint32 j = 0; j < 3; j++) {
+		for (sint32 j = 0; j < MAX_RIDE_TYPES_PER_RIDE_ENTRY; j++) {
 			sint32 rideType = rideEntry->ride_type[j];
 			if (rideType != 255)
 				research_insert(true, 0x10000 | (rideType << 8) | i, rideEntry->category[0]);
@@ -581,7 +581,7 @@ void research_insert_ride_entry(uint8 entryIndex, bool researched)
 {
 	rct_ride_entry *rideEntry = get_ride_entry(entryIndex);
 	uint8 category = rideEntry->category[0];
-	for (sint32 i = 0; i < 3; i++) {
+	for (sint32 i = 0; i < MAX_RIDE_TYPES_PER_RIDE_ENTRY; i++) {
 		uint8 rideType = rideEntry->ride_type[i];
 		if (rideType != 255) {
 			research_insert(researched, 0x10000 | (rideType << 8) | entryIndex, category);

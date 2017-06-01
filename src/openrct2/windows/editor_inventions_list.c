@@ -205,7 +205,7 @@ static void research_rides_setup(){
 		uint8 object_index = research->entryIndex & 0xFF;
 		rct_ride_entry* ride_entry = get_ride_entry(object_index);
 
-		uint8 master_found = 0;
+		bool master_found = false;
 		if (!(ride_entry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE)){
 
 			for (uint8 rideType = 0; rideType < object_entry_group_counts[OBJECT_TYPE_RIDE]; rideType++){
@@ -220,10 +220,14 @@ static void research_rides_setup(){
 				if (!(gEditorSelectedObjects[OBJECT_TYPE_RIDE][rideType] & (1 << 0)))
 					continue;
 
-				if (ride_base_type == master_ride->ride_type[0] ||
-					ride_base_type == master_ride->ride_type[1] ||
-					ride_base_type == master_ride->ride_type[2]){
-					master_found = 1;
+				for (uint8 j = 0; j < MAX_RIDE_TYPES_PER_RIDE_ENTRY; j++) {
+					if (master_ride->ride_type[j] == ride_base_type) {
+						master_found = true;
+						break;
+					}
+				}
+
+				if (master_found) {
 					break;
 				}
 			}
@@ -231,11 +235,18 @@ static void research_rides_setup(){
 
 		if (!master_found){
 			// If not in use
-			if (!(gEditorSelectedObjects[OBJECT_TYPE_RIDE][object_index] & (1 << 0)))
+			if (!(gEditorSelectedObjects[OBJECT_TYPE_RIDE][object_index] & (1 << 0))) {
 				continue;
-			if (ride_base_type != ride_entry->ride_type[0] &&
-				ride_base_type != ride_entry->ride_type[1] &&
-				ride_base_type != ride_entry->ride_type[2]){
+			}
+
+			bool foundBaseType = false;
+			for (uint8 j = 0; j < MAX_RIDE_TYPES_PER_RIDE_ENTRY; j++) {
+				if (ride_entry->ride_type[j] == ride_base_type) {
+					foundBaseType = true;
+				}
+			}
+
+			if (!foundBaseType) {
 				continue;
 			}
 		}

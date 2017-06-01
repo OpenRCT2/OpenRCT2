@@ -715,9 +715,10 @@ static void remove_selected_objects_from_research(const rct_object_entry* instal
 
 	if (entry_type == OBJECT_TYPE_RIDE){
 		rct_ride_entry* rideEntry = (rct_ride_entry*)object_entry_groups[entry_type].chunks[entry_index];
-		research_remove(entry_index | rideEntry->ride_type[0] << 8 | 0x10000);
-		research_remove(entry_index | rideEntry->ride_type[1] << 8 | 0x10000);
-		research_remove(entry_index | rideEntry->ride_type[2] << 8 | 0x10000);
+
+		for (uint8 j = 0; j < MAX_RIDE_TYPES_PER_RIDE_ENTRY; j++) {
+			research_remove(entry_index | rideEntry->ride_type[j] << 8 | 0x10000);
+		}
 	}
 	else if (entry_type == OBJECT_TYPE_SCENERY_SETS){
 		research_remove(entry_index);

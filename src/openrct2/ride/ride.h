@@ -22,6 +22,7 @@
 #include "../world/map.h"
 #include "vehicle.h"
 
+#define MAX_RIDE_TYPES_PER_RIDE_ENTRY   3
 typedef fixed16_2dp ride_rating;
 
 // Convenience function for writing ride ratings. The result is a 16 bit signed
@@ -84,33 +85,33 @@ assert_struct_size(vehicle_colour_preset_list, (1 + 256 * 3));
  * size: unknown
  */
 typedef struct rct_ride_entry {
-	rct_string_id name;						// 0x000
-	rct_string_id description;				// 0x002
-	uint32 images_offset;					// 0x004
-	uint32 flags;							// 0x008
-	uint8 ride_type[3];						// 0x00C
-	uint8 min_cars_in_train;				// 0x00F
-	uint8 max_cars_in_train;				// 0x010
-	uint8 cars_per_flat_ride;				// 0x011
+	rct_string_id name;									// 0x000
+	rct_string_id description;							// 0x002
+	uint32 images_offset;								// 0x004
+	uint32 flags;										// 0x008
+	uint8 ride_type[MAX_RIDE_TYPES_PER_RIDE_ENTRY];	// 0x00C
+	uint8 min_cars_in_train;							// 0x00F
+	uint8 max_cars_in_train;							// 0x010
+	uint8 cars_per_flat_ride;							// 0x011
 	// Number of cars that can't hold passengers
-	uint8 zero_cars;						// 0x012
+	uint8 zero_cars;									// 0x012
 	// The index to the vehicle type displayed in
 	// the vehicle tab.
-	uint8 tab_vehicle;						// 0x013
-	uint8 default_vehicle;					// 0x014
+	uint8 tab_vehicle;									// 0x013
+	uint8 default_vehicle;								// 0x014
 	// Convert from first - fourth vehicle to
 	// vehicle structure
-	uint8 front_vehicle;					// 0x015
-	uint8 second_vehicle;					// 0x016
-	uint8 rear_vehicle;						// 0x017
-	uint8 third_vehicle;					// 0x018
-	uint8 pad_019;
-	rct_ride_entry_vehicle vehicles[4];		// 0x1A
+	uint8 front_vehicle;								// 0x015
+	uint8 second_vehicle;								// 0x016
+	uint8 rear_vehicle;									// 0x017
+	uint8 third_vehicle;								// 0x018
+	uint8 pad_019;									  	// 0x019
+	rct_ride_entry_vehicle vehicles[4];					// 0x01A
 	vehicle_colour_preset_list *vehicle_preset_list;	// 0x1AE
-	sint8 excitement_multipler;				// 0x1B2
-	sint8 intensity_multipler;				// 0x1B3
-	sint8 nausea_multipler;					// 0x1B4
-	uint8 max_height;			// 0x1B5
+	sint8 excitement_multipler;							// 0x1B2
+	sint8 intensity_multipler;							// 0x1B3
+	sint8 nausea_multipler;								// 0x1B4
+	uint8 max_height;									// 0x1B5
 	union {
 		uint64 enabledTrackPieces;						// 0x1B6
 		struct {

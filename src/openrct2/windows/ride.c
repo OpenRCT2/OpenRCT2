@@ -3701,7 +3701,7 @@ static void window_ride_maintenance_mousedown(rct_widgetindex widgetIndex, rct_w
 
 	case WIDX_FORCE_BREAKDOWN:
 		num_items = 1;
-		for (j = 0; j < 3; j++) {
+		for (j = 0; j < MAX_RIDE_TYPES_PER_RIDE_ENTRY; j++) {
 			if (ride_type->ride_type[j] != 0xFF)
 				break;
 		}
@@ -3822,7 +3822,7 @@ static void window_ride_maintenance_dropdown(rct_window *w, rct_widgetindex widg
 		}
 		else {
 			sint32 j;
-			for (j = 0; j < 3; j++) {
+			for (j = 0; j < MAX_RIDE_TYPES_PER_RIDE_ENTRY; j++) {
 				if (ride_type->ride_type[j] != 0xFF)
 					break;
 			}
