@@ -472,7 +472,7 @@ void map_strip_ghost_flag_from_elements()
 	rct_map_element *mapElement = gMapElements;
 	do {
 		mapElement->flags &= ~MAP_ELEMENT_FLAG_GHOST;
-	} while (++mapElement < gMapElements + 3 * (MAX_MAP_EDGE_SIZE * MAX_MAP_EDGE_SIZE));
+	} while (++mapElement < gMapElements + MAX_MAP_ELEMENTS);
 }
 
 /**

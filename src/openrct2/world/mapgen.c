@@ -843,9 +843,9 @@ bool mapgen_load_heightmap(const utf8 *path)
 		return false;
 	}
 
-	if (width > 254) {
+	if (width > (MAX_MAP_EDGE_SIZE - 2)) {
 		window_error_open(STR_HEIGHT_MAP_ERROR, STR_ERROR_HEIHGT_MAP_TOO_BIG);
-		width = height = min(height, 254);
+		width = height = min(height, (MAX_MAP_EDGE_SIZE - 2));
 	}
 
 	// Allocate memory for the height map values, one byte pixel
