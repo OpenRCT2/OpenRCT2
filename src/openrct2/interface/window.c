@@ -78,7 +78,7 @@ float window_scroll_locations[][2] = {
 	{0.125f,	0.125f},
 };
 
-static bool windows_fits_between_others(sint32 x, sint32 y, sint32 width, sint32 height);
+static bool window_fits_between_others(sint32 x, sint32 y, sint32 width, sint32 height);
 static void window_all_wheel_input();
 static sint32 window_draw_split(rct_drawpixelinfo *dpi, rct_window *w, sint32 left, sint32 top, sint32 right, sint32 bottom);
 static void window_draw_single(rct_drawpixelinfo *dpi, rct_window *w, sint32 left, sint32 top, sint32 right, sint32 bottom);
@@ -511,7 +511,7 @@ static bool window_fits_on_screen(sint32 x, sint32 y, sint32 width, sint32 heigh
 	if (y < 28) return false;
 	unk = screenHeight - (height / 4);
 	if (y > unk) return false;
-	return windows_fits_between_others(x, y, width, height);
+	return window_fits_between_others(x, y, width, height);
 }
 
 /**
@@ -529,7 +529,7 @@ static bool window_fits_within_space(sint32 x, sint32 y, sint32 width, sint32 he
 	if (y < 28) return false;
 	if (x + width > context_get_width()) return false;
 	if (y + height > context_get_height()) return false;
-	return windows_fits_between_others(x, y, width, height);
+	return window_fits_between_others(x, y, width, height);
 }
 
 /**
@@ -541,7 +541,7 @@ static bool window_fits_within_space(sint32 x, sint32 y, sint32 width, sint32 he
  * @param width (bx)
  * @param height (cx)
  */
-static bool windows_fits_between_others(sint32 x, sint32 y, sint32 width, sint32 height)
+static bool window_fits_between_others(sint32 x, sint32 y, sint32 width, sint32 height)
 {
 	for (rct_window *w = g_window_list; w < RCT2_LAST_WINDOW; w++) {
 		if (w->flags & WF_STICK_TO_BACK)
