@@ -2513,7 +2513,7 @@ void window_start_textbox(rct_window *call_w, rct_widgetindex call_widget, rct_s
 	// from crashing the game.
 	gTextBoxInput[maxLength - 1] = '\0';
 
-	context_start_text_input(gTextBoxInput, maxLength);
+	gTextInput = context_start_text_input(gTextBoxInput, maxLength);
 }
 
 void window_cancel_textbox()
