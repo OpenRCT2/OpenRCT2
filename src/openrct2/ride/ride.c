@@ -1334,7 +1334,7 @@ void ride_restore_provisional_track_piece()
 	if (_currentTrackSelectionFlags & TRACK_SELECTION_FLAG_TRACK) {
 		sint32 x, y, z, direction, type, rideIndex, edxRS16;
 		if (sub_6CA2DF(&type, &direction, &rideIndex, &edxRS16, &x, &y, &z, NULL)) {
-			sub_6C96C0();
+			ride_construction_remove_ghosts();
 		} else {
 			_currentTrackPrice = sub_6CA162(rideIndex, type, direction, edxRS16, x, y, z);
 			window_ride_construction_update_active_elements();
@@ -1388,9 +1388,8 @@ void ride_remove_provisional_track_piece()
  *
  *  rct2: 0x006C96C0
  */
-void sub_6C96C0()
+void ride_construction_remove_ghosts()
 {
-
 	if (_currentTrackSelectionFlags & TRACK_SELECTION_FLAG_ENTRANCE_OR_EXIT) {
 		ride_entrance_exit_remove_ghost();
 		_currentTrackSelectionFlags &= ~TRACK_SELECTION_FLAG_ENTRANCE_OR_EXIT;
@@ -1438,7 +1437,7 @@ void ride_construction_invalidate_current_track()
 			gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
 			map_invalidate_tile_full(_currentTrackBeginX, _currentTrackBeginY);
 		}
-		sub_6C96C0();
+		ride_construction_remove_ghosts();
 		break;
 	}
 }

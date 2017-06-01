@@ -734,7 +734,7 @@ extern "C"
                                             sint32 placeType, 
                                             sint32 stationNum)
     {
-        sub_6C96C0();
+        ride_construction_remove_ghosts();
         money32 result = RideEntranceExitPlaceGhost(rideIndex, x, y, direction, placeType, stationNum);
         
         if (result != MONEY32_UNDEFINED) 

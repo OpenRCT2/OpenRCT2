@@ -2757,7 +2757,7 @@ money32 sub_6CA162(sint32 rideIndex, sint32 trackType, sint32 trackDirection, si
 	rct_ride *ride;
 	money32 result;
 
-	sub_6C96C0();
+	ride_construction_remove_ghosts();
 	ride = get_ride(rideIndex);
 	if (ride->type == RIDE_TYPE_MAZE) {
 		result = game_do_command(x, 105 | (4 << 8), y, rideIndex | (trackType << 8) | (edxRS16 << 16), GAME_COMMAND_SET_MAZE_TRACK, z, 0);
@@ -2816,7 +2816,7 @@ void sub_6C94D8()
 	case RIDE_CONSTRUCTION_STATE_BACK:
 		if (!(_currentTrackSelectionFlags & TRACK_SELECTION_FLAG_TRACK)) {
 			if (sub_6CA2DF(&type, &direction, &rideIndex, &edxRS16, &x, &y, &z, NULL)) {
-				sub_6C96C0();
+				ride_construction_remove_ghosts();
 			} else {
 				_currentTrackPrice = sub_6CA162(rideIndex, type, direction, edxRS16, x, y, z);
 				window_ride_construction_update_active_elements();
@@ -2859,7 +2859,7 @@ void sub_6C94D8()
 		direction = _currentTrackPieceDirection & 3;
 		type = _currentTrackPieceType;
 		if (sub_6C683D(&x, &y, &z, direction, type, 0, NULL, _currentTrackSelectionFlags & TRACK_SELECTION_FLAG_ARROW ? 2 : 1)) {
-			sub_6C96C0();
+			ride_construction_remove_ghosts();
 			_rideConstructionState = RIDE_CONSTRUCTION_STATE_0;
 		}
 		break;
