@@ -81,7 +81,7 @@ matrix:
               export PUSH_BRANCH=master ;
               else export PUSH_BRANCH=$TRAVIS_BRANCH ; export FILENAME_PART=-${TRAVIS_BRANCH}-$(git rev-parse --short HEAD) ;
               fi
-            - if [[ "z$OPENRCT2_ORG_TOKEN" != "z" && ("${TRAVIS_BRANCH}" =~ ^(develop|push/) || "z${TRAVIS_TAG}" != "z") ]] ; then
+            - if [[ "z$OPENRCT2_ORG_TOKEN" != "z" && "$TRAVIS_PULL_REQUEST" == "false" && ("${TRAVIS_BRANCH}" =~ ^(develop|push/) || "z${TRAVIS_TAG}" != "z") ]] ; then
               curl -o - -v --form "key=$OPENRCT2_ORG_TOKEN" --form "fileName=OpenRCT2-${OPENRCT2_VERSION}${FILENAME_PART}-macos.zip" --form "version=${OPENRCT2_VERSION}" --form "gitHash=$TRAVIS_COMMIT" --form "gitBranch=$PUSH_BRANCH" --form "flavourId=3" --form "file=@openrct2-macos.zip" "https://openrct2.org/altapi/?command=push-build"; else
               curl --progress-bar --upload-file openrct2-macos.zip https://transfer.sh/openrct2-macos.zip -o link && cat link;
               fi
