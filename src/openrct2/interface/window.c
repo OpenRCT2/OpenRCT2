@@ -811,6 +811,7 @@ rct_window *window_find_by_number(rct_windowclass cls, rct_windownumber number)
 void window_close_top()
 {
 	rct_window* w;
+
 	window_close_by_class(WC_DROPDOWN);
 
 	if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)

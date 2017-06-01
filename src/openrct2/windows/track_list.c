@@ -265,7 +265,7 @@ static void window_track_list_mouseup(rct_window *w, rct_widgetindex widgetIndex
 		break;
 	case WIDX_BACK:
 		window_close(w);
-		if (gScreenFlags | SCREEN_FLAGS_TRACK_MANAGER) {
+		if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)) {
 			window_new_ride_open();
 		}
 		break;
