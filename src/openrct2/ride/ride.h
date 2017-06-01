@@ -220,9 +220,9 @@ typedef struct rct_ride {
 	union {
 		uint8 inversions;			// 0x114 (???X XXXX)
 		uint8 holes;				// 0x114 (???X XXXX)
-		// The undercover portion is a very rough approximation of how much of the ride is undercover.
+		// This a very rough approximation of how much of the ride is undercover.
 		// It reaches the maximum value of 7 at about 50% undercover and doesn't increase beyond that.
-		uint8 undercover_portion;	// 0x114 (XXX?-????)
+		uint8 sheltered_eighths;	// 0x114 (XXX?-????)
 	};
 	// Y is number of powered lifts, X is drops
 	uint8 drops;					// 0x115 (YYXX XXXX)

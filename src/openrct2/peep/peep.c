@@ -11775,7 +11775,7 @@ static bool peep_should_go_on_ride(rct_peep *peep, sint32 rideIndex, sint32 entr
 
 				// Peeps won't go on rides that aren't sufficiently undercover while it's raining.
 				// The threshold is fairly low and only requires about 10-15% of the ride to be undercover.
-				if (gClimateCurrentRainLevel != 0 && (ride->undercover_portion >> 5) < 3) {
+				if (gClimateCurrentRainLevel != 0 && (ride->sheltered_eighths >> 5) < 3) {
 					if (peepAtRide) {
 						peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_NOT_WHILE_RAINING, rideIndex);
 						if (peep->happiness_growth_rate >= 64) {
