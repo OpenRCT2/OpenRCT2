@@ -1892,7 +1892,7 @@ void window_ride_construction_mouseup_demolish_next_piece(sint32 x, sint32 y, si
 		ride_construction_set_default_next_piece();
 		window_ride_construction_update_active_elements();
 		if (!ride_try_get_origin_element(_currentRideIndex, NULL)) {
-			sub_6CC3FB(_currentRideIndex);
+			ride_initialise_construction_window(_currentRideIndex);
 			_currentTrackPieceDirection = direction;
 			if (!(slope & 0x100)) {
 				_currentTrackCurve = slope;
@@ -1961,7 +1961,7 @@ static void window_ride_construction_entrance_click(rct_window *w)
 {
 	if (tool_set(w, WIDX_ENTRANCE, TOOL_CROSSHAIR)) {
 		if (!ride_try_get_origin_element(_currentRideIndex, NULL)) {
-			sub_6CC3FB(_currentRideIndex);
+			ride_initialise_construction_window(_currentRideIndex);
 		}
 	} else {
 		gRideEntranceExitPlaceType = ENTRANCE_TYPE_RIDE_ENTRANCE;
@@ -1985,7 +1985,7 @@ static void window_ride_construction_exit_click(rct_window *w)
 {
 	if (tool_set(w, WIDX_EXIT, TOOL_CROSSHAIR)) {
 		if (!ride_try_get_origin_element(_currentRideIndex, NULL)) {
-			sub_6CC3FB(_currentRideIndex);
+			ride_initialise_construction_window(_currentRideIndex);
 		}
 	} else {
 		gRideEntranceExitPlaceType = ENTRANCE_TYPE_RIDE_EXIT;
@@ -3986,7 +3986,7 @@ void ride_construction_tooldown_construct(sint32 screenX, sint32 screenY)
 				sint32 saveCurrentTrackAlternative = _currentTrackAlternative;
 				sint32 saveCurrentTrackLiftHill = _currentTrackLiftHill;
 
-				sub_6CC3FB(_currentRideIndex);
+				ride_initialise_construction_window(_currentRideIndex);
 
 				_currentTrackPieceDirection = saveTrackDirection;
 				_currentTrackCurve = saveCurrentTrackCurve;

@@ -1021,7 +1021,7 @@ void ride_construct(sint32 rideIndex)
 		if (w != NULL && ride_modify(&trackElement))
 			window_scroll_to_location(w, trackElement.x, trackElement.y, trackElement.element->base_height * 8);
 	} else {
-		sub_6CC3FB(rideIndex);
+		ride_initialise_construction_window(rideIndex);
 	}
 }
 
@@ -1727,7 +1727,7 @@ static sint32 ride_modify_entrance_or_exit(rct_map_element *mapElement, sint32 x
 	// Get or create construction window for ride
 	constructionWindow = window_find_by_class(WC_RIDE_CONSTRUCTION);
 	if (constructionWindow == NULL) {
-		if (!sub_6CC3FB(rideIndex))
+		if (!ride_initialise_construction_window(rideIndex))
 			return 0;
 
 		constructionWindow = window_find_by_class(WC_RIDE_CONSTRUCTION);
@@ -1888,7 +1888,7 @@ sint32 ride_modify(rct_xy_element *input)
  *
  *  rct2: 0x006CC3FB
  */
-sint32 sub_6CC3FB(sint32 rideIndex)
+sint32 ride_initialise_construction_window(sint32 rideIndex)
 {
 	rct_ride *ride;
 	rct_window *w;

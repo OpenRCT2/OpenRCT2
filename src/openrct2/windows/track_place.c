@@ -336,7 +336,7 @@ static void window_track_place_tooldown(rct_window* w, rct_widgetindex widgetInd
 				window_ride_main_open(rideIndex);
 				window_close(w);
 			} else {
-				sub_6CC3FB(rideIndex);
+				ride_initialise_construction_window(rideIndex);
 				w = window_find_by_class(WC_RIDE_CONSTRUCTION);
 				window_event_mouse_up_call(w, WC_RIDE_CONSTRUCTION__WIDX_ENTRANCE);
 			}
