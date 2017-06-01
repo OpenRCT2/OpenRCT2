@@ -811,8 +811,6 @@ rct_window *window_find_by_number(rct_windowclass cls, rct_windownumber number)
 void window_close_top()
 {
 	rct_window* w;
-	bool window_is_track_list;
-
 	window_close_by_class(WC_DROPDOWN);
 
 	if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
@@ -821,17 +819,7 @@ void window_close_top()
 
 	for (w = RCT2_NEW_WINDOW - 1; w >= g_window_list; w--) {
 		if (!(w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT))) {
-			window_is_track_list = (w->classification == WC_TRACK_DESIGN_LIST);
 			window_close(w);
-
-			if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER) {
-				if (window_is_track_list) {
-					window_close_by_number(WC_MANAGE_TRACK_DESIGN, w->number);
-					window_close_by_number(WC_TRACK_DELETE_PROMPT, w->number);
-					trackmanager_load();
-				}
-			}
-
 			return;
 		}
 	}
