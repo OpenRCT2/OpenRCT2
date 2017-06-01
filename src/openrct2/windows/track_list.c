@@ -177,6 +177,17 @@ static void window_track_list_close(rct_window *w)
 	}
 	SafeFree(_trackDesigns);
 	_trackDesignsCount = 0;
+
+	// If gScreenAge is zero, we're already in the process
+	// of loading the track manager, so we shouldn't try
+	// to do it again. Otherwise, this window will get
+	// another close signal from the track manager load function,
+	// try to load the track manager again, and an infinite loop will result.
+	if ((gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER) && gScreenAge != 0){
+		window_close_by_number(WC_MANAGE_TRACK_DESIGN, w->number);
+		window_close_by_number(WC_TRACK_DELETE_PROMPT, w->number);
+		trackmanager_load();
+	}
 }
 
 /**
@@ -244,11 +255,6 @@ static void window_track_list_mouseup(rct_window *w, rct_widgetindex widgetIndex
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
 		window_close(w);
-		if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER) {
-			window_close_by_number(WC_MANAGE_TRACK_DESIGN, w->number);
-			window_close_by_number(WC_TRACK_DELETE_PROMPT, w->number);
-			trackmanager_load();
-		}
 		break;
 	case WIDX_ROTATE:
 		_currentTrackPieceDirection++;
@@ -262,11 +268,7 @@ static void window_track_list_mouseup(rct_window *w, rct_widgetindex widgetIndex
 		break;
 	case WIDX_BACK:
 		window_close(w);
-		if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER) {
-			window_close_by_number(WC_MANAGE_TRACK_DESIGN, w->number);
-			window_close_by_number(WC_TRACK_DELETE_PROMPT, w->number);
-			trackmanager_load();
-		} else {
+		if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)) {
 			window_new_ride_open();
 		}
 		break;
