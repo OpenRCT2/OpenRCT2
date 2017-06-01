@@ -939,7 +939,7 @@ static uint32 ride_ratings_get_proximity_score()
  * Seems to calculate how much of the track is sheltered in eighths.
  *  rct2: 0x0065E72D
  */
-static sint32 sub_65E72D(rct_ride *ride)
+static sint32 get_num_of_sheltered_eighths(rct_ride *ride)
 {
 	sint32 totalLength = ride_get_total_length(ride);
 	sint32 shelteredLength = ride->sheltered_length;
@@ -1731,7 +1731,7 @@ static void ride_ratings_calculate_miniature_railway(rct_ride *ride)
 	ride->upkeep_cost = ride_compute_upkeep(ride);
 	ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
 
-	sint32 edx = sub_65E72D(ride);
+	sint32 edx = get_num_of_sheltered_eighths(ride);
 	if (((edx >> 8) & 0xFF) >= 4)
 		ride->excitement /= 4;
 
@@ -1767,7 +1767,7 @@ static void ride_ratings_calculate_monorail(rct_ride *ride)
 	ride->upkeep_cost = ride_compute_upkeep(ride);
 	ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
 
-	sint32 edx = sub_65E72D(ride);
+	sint32 edx = get_num_of_sheltered_eighths(ride);
 	if (((edx >> 8) & 0xFF) >= 4)
 		ride->excitement /= 4;
 
@@ -2083,7 +2083,7 @@ static void ride_ratings_calculate_observation_tower(rct_ride *ride)
 	ride->inversions &= 0x1F;
 	ride->inversions |= 7 << 5;
 
-	sint32 edx = sub_65E72D(ride);
+	sint32 edx = get_num_of_sheltered_eighths(ride);
 	if (((edx >> 8) & 0xFF) >= 5)
 		ride->excitement /= 4;
 }
@@ -2248,7 +2248,7 @@ static void ride_ratings_calculate_chairlift(rct_ride *ride)
 	ride->upkeep_cost = ride_compute_upkeep(ride);
 	ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
 
-	sint32 edx = sub_65E72D(ride);
+	sint32 edx = get_num_of_sheltered_eighths(ride);
 	if (((edx >> 8) & 0xFF) >= 4)
 		ride->excitement /= 4;
 
@@ -2403,7 +2403,7 @@ static void ride_ratings_calculate_go_karts(rct_ride *ride)
 	ride->upkeep_cost = ride_compute_upkeep(ride);
 	ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
 
-	sint32 edx = sub_65E72D(ride);
+	sint32 edx = get_num_of_sheltered_eighths(ride);
 
 	ride->inversions &= 0x1F;
 	ride->inversions |= edx << 5;
@@ -2856,7 +2856,7 @@ static void ride_ratings_calculate_lift(rct_ride *ride)
 	ride->inversions &= 0x1F;
 	ride->inversions |= 7 << 5;
 
-	if ((sub_65E72D(ride) >> 8) >= 5)
+	if ((get_num_of_sheltered_eighths(ride) >> 8) >= 5)
 		ride->excitement /= 4;
 }
 
@@ -3182,7 +3182,7 @@ static void ride_ratings_calculate_suspended_monorail(rct_ride *ride)
 	ride->upkeep_cost = ride_compute_upkeep(ride);
 	ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
 
-	sint32 edx = sub_65E72D(ride);
+	sint32 edx = get_num_of_sheltered_eighths(ride);
 	if (((edx >> 8) & 0xFF) >= 4)
 		ride->excitement /= 4;
 
