@@ -508,7 +508,7 @@ static bool window_fits_on_screen(sint32 x, sint32 y, sint32 width, sint32 heigh
 	if (x < unk) return false;
 	unk =  screenWidth + (unk * 2);
 	if (x > unk) return false;
-	if (y < 28) return false;
+	if (y < TOP_TOOLBAR_CLEARANCE && !(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)) return false;
 	unk = screenHeight - (height / 4);
 	if (y > unk) return false;
 	return window_fits_between_others(x, y, width, height);
@@ -526,7 +526,7 @@ static bool window_fits_on_screen(sint32 x, sint32 y, sint32 width, sint32 heigh
 static bool window_fits_within_space(sint32 x, sint32 y, sint32 width, sint32 height)
 {
 	if (x < 0) return false;
-	if (y < 28) return false;
+	if (y < TOP_TOOLBAR_CLEARANCE && !(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)) return false;
 	if (x + width > context_get_width()) return false;
 	if (y + height > context_get_height()) return false;
 	return window_fits_between_others(x, y, width, height);
@@ -695,7 +695,7 @@ rct_window * window_create_centred(sint32 width, sint32 height, rct_window_event
 	sint32 screenHeight = context_get_height();
 
 	sint32 x = (screenWidth - width) / 2;
-	sint32 y = max(28, (screenHeight - height) / 2);
+	sint32 y = max(TOP_TOOLBAR_CLEARANCE, (screenHeight - height) / 2);
 	return window_create(x, y, width, height, event_handlers, cls, flags);
 }
 
@@ -2117,7 +2117,7 @@ void window_relocate_windows(sint32 width, sint32 height){
 		sint32 x = w->x;
 		sint32 y = w->y;
 		w->x = new_location;
-		w->y = new_location + 28;
+		w->y = new_location + TOP_TOOLBAR_CLEARANCE;
 
 		// Move the next new location so windows are not directly on top
 		new_location += 8;
@@ -2448,8 +2448,9 @@ void window_move_and_snap(rct_window *w, sint32 newWindowX, sint32 newWindowY, s
 {
 	sint32 originalX = w->x;
 	sint32 originalY = w->y;
+	sint32 minY = (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) ? 1 : TOP_TOOLBAR_CLEARANCE + 1;
 
-	newWindowY = clamp(29, newWindowY, context_get_height() - 34);
+	newWindowY = clamp(minY, newWindowY, context_get_height() - 34);
 
 	if (snapProximity > 0) {
 		w->x = newWindowX;
