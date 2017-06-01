@@ -936,7 +936,7 @@ static uint32 ride_ratings_get_proximity_score()
 }
 
 /**
- * Seems to calculate how much of the track is sheltered in eighths.
+ * Calculates how much of the track is sheltered in eighths.
  *  rct2: 0x0065E72D
  */
 static sint32 get_num_of_sheltered_eighths(rct_ride *ride)
