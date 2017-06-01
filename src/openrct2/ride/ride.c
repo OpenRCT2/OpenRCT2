@@ -1337,7 +1337,7 @@ void ride_restore_provisional_track_piece()
 			sub_6C96C0();
 		} else {
 			_currentTrackPrice = sub_6CA162(rideIndex, type, direction, edxRS16, x, y, z);
-			sub_6C84CE();
+			window_ride_construction_update_active_elements();
 		}
 	}
 }
@@ -1619,7 +1619,7 @@ void ride_select_next_section()
 		rct_map_element *mapElement;
 		if (sub_6C683D(&x, &y, &z, direction & 3, type, 0, &mapElement, 0)) {
 			_rideConstructionState = RIDE_CONSTRUCTION_STATE_0;
-			sub_6C84CE();
+			window_ride_construction_update_active_elements();
 			return;
 		}
 		rct_xy_element inputElement, outputElement;
@@ -1640,7 +1640,7 @@ void ride_select_next_section()
 			_currentTrackSelectionFlags = 0;
 			_rideConstructionArrowPulseTime = 0;
 			ride_construction_set_default_next_piece();
-			sub_6C84CE();
+			window_ride_construction_update_active_elements();
 			return;
 		}
 
@@ -1651,10 +1651,10 @@ void ride_select_next_section()
 		_currentTrackPieceType = mapElement->properties.track.type;
 		_currentTrackSelectionFlags = 0;
 		_rideConstructionArrowPulseTime = 0;
-		sub_6C84CE();
+		window_ride_construction_update_active_elements();
 	} else if (_rideConstructionState == RIDE_CONSTRUCTION_STATE_BACK) {
 		if (ride_select_forwards_from_back()) {
-			sub_6C84CE();
+			window_ride_construction_update_active_elements();
 		}
 	}
 }
@@ -1675,7 +1675,7 @@ void ride_select_previous_section()
 		rct_map_element *mapElement;
 		if (sub_6C683D(&x, &y, &z, direction & 3, type, 0, &mapElement, 0)) {
 			_rideConstructionState = RIDE_CONSTRUCTION_STATE_0;
-			sub_6C84CE();
+			window_ride_construction_update_active_elements();
 			return;
 		}
 		track_begin_end trackBeginEnd;
@@ -1687,7 +1687,7 @@ void ride_select_previous_section()
 			_currentTrackPieceType = trackBeginEnd.begin_element->properties.track.type;
 			_currentTrackSelectionFlags = 0;
 			_rideConstructionArrowPulseTime = 0;
-			sub_6C84CE();
+			window_ride_construction_update_active_elements();
 		} else {
 			_rideConstructionState = RIDE_CONSTRUCTION_STATE_BACK;
 			_currentTrackBeginX = trackBeginEnd.end_x;
@@ -1698,11 +1698,11 @@ void ride_select_previous_section()
 			_currentTrackSelectionFlags = 0;
 			_rideConstructionArrowPulseTime = 0;
 			ride_construction_set_default_next_piece();
-			sub_6C84CE();
+			window_ride_construction_update_active_elements();
 		}
 	} else if (_rideConstructionState == RIDE_CONSTRUCTION_STATE_FRONT) {
 		if (ride_select_backwards_from_front()) {
-			sub_6C84CE();
+			window_ride_construction_update_active_elements();
 		}
 	}
 }
@@ -1752,7 +1752,7 @@ static sint32 ride_modify_entrance_or_exit(rct_map_element *mapElement, sint32 x
 			_rideConstructionState = RIDE_CONSTRUCTION_STATE_ENTRANCE_EXIT;
 		}
 
-		sub_6C84CE();
+		window_ride_construction_update_active_elements();
 		gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
 	} else {
 		// Remove entrance / exit
@@ -1848,13 +1848,13 @@ sint32 ride_modify(rct_xy_element *input)
 	_rideConstructionArrowPulseTime = 0;
 
 	if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_NO_TRACK)) {
-		sub_6C84CE();
+		window_ride_construction_update_active_elements();
 		return 1;
 	}
 
 	ride_select_next_section();
 	if (_rideConstructionState == RIDE_CONSTRUCTION_STATE_FRONT) {
-		sub_6C84CE();
+		window_ride_construction_update_active_elements();
 		return 1;
 	}
 
@@ -1880,7 +1880,7 @@ sint32 ride_modify(rct_xy_element *input)
 		_rideConstructionArrowPulseTime = 0;
 	}
 
-	sub_6C84CE();
+	window_ride_construction_update_active_elements();
 	return 1;
 }
 
@@ -1926,7 +1926,7 @@ sint32 sub_6CC3FB(sint32 rideIndex)
 	_currentTrackSelectionFlags = 0;
 	_rideConstructionArrowPulseTime = 0;
 
-	sub_6C84CE();
+	window_ride_construction_update_active_elements();
 	return 1;
 }
 
@@ -6215,7 +6215,7 @@ void game_command_callback_ride_construct_placed_back(sint32 eax, sint32 ebx, si
 	}
 
 	window_ride_construction_do_station_check();
-	sub_6C84CE();
+	window_ride_construction_update_active_elements();
 }
 
 void game_command_callback_ride_construct_placed_front(sint32 eax, sint32 ebx, sint32 ecx, sint32 edx, sint32 esi, sint32 edi, sint32 ebp)
@@ -6249,7 +6249,7 @@ void game_command_callback_ride_construct_placed_front(sint32 eax, sint32 ebx, s
 
 	window_ride_construction_do_station_check();
 	window_ride_construction_do_entrance_exit_check();
-	sub_6C84CE();
+	window_ride_construction_update_active_elements();
 }
 
 /**
