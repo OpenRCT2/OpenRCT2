@@ -36,6 +36,8 @@
 #define MAP_COLOUR(colour) MAP_COLOUR_2(colour, colour)
 #define FALLBACK_COLOUR(colour) ((colour << 24) || colour << 16)
 
+#define MAP_WINDOW_MAP_SIZE (MAXIMUM_MAP_SIZE_TECHNICAL * 2)
+
 enum {
 	PAGE_PEEPS,
 	PAGE_RIDES
@@ -171,7 +173,7 @@ static uint8 _activeTool;
 static uint32 _currentLine;
 
 /** rct2: 0x00F1AD68 */
-static uint8 (*_mapImageData)[MAXIMUM_MAP_SIZE_TECHNICAL * 2][MAXIMUM_MAP_SIZE_TECHNICAL * 2];
+static uint8 (*_mapImageData)[MAP_WINDOW_MAP_SIZE][MAP_WINDOW_MAP_SIZE];
 
 static sint32 _nextPeepSpawnIndex = 0;
 
@@ -883,8 +885,8 @@ static void window_map_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32
 	pushed_g1_element = *g1_element;
 
 	g1_element->offset = (uint8 *) _mapImageData;
-	g1_element->width = 512;
-	g1_element->height = 512;
+	g1_element->width = MAP_WINDOW_MAP_SIZE;
+	g1_element->height = MAP_WINDOW_MAP_SIZE;
 	g1_element->x_offset = -8;
 	g1_element->y_offset = -8;
 	g1_element->flags = 0;
@@ -1650,8 +1652,8 @@ static void map_window_set_pixels(rct_window *w)
 	uint8 *destination;
 	sint32 x = 0, y = 0, dx = 0, dy = 0;
 
-	sint32 pos = (_currentLine * 511) + MAXIMUM_MAP_SIZE_TECHNICAL - 1;
-	rct_xy16 destinationPosition = {.y = pos/512, .x = pos % 512};
+	sint32 pos = (_currentLine * (MAP_WINDOW_MAP_SIZE - 1)) + MAXIMUM_MAP_SIZE_TECHNICAL - 1;
+	rct_xy16 destinationPosition = {.y = pos/MAP_WINDOW_MAP_SIZE, .x = pos % MAP_WINDOW_MAP_SIZE};
 	destination = &(*_mapImageData)[destinationPosition.y][destinationPosition.x];
 	switch (get_current_rotation()) {
 	case 0:
