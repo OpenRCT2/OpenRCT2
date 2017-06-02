@@ -89,7 +89,6 @@ void process_mouse_tool(sint32 x, sint32 y);
 void invalidate_scroll();
 static rct_mouse_data* get_mouse_input();
 void map_element_right_click(sint32 type, rct_map_element *mapElement, sint32 x, sint32 y);
-sint32 sub_6EDE88(sint32 x, sint32 y, rct_map_element **mapElement, sint32 *outX, sint32 *outY);
 sint32 get_next_key();
 static void game_handle_input_mouse(sint32 x, sint32 y, sint32 state);
 void game_handle_edge_scroll();
