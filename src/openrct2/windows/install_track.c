@@ -129,7 +129,7 @@ void window_install_track_open(const utf8 *path)
 	sint32 screenWidth = context_get_width();
 	sint32 screenHeight = context_get_height();
 	sint32 x = screenWidth / 2 - 201;
-	sint32 y = max(TOP_TOOLBAR_CLEARANCE, screenHeight / 2 - 200);
+	sint32 y = max(TOP_TOOLBAR_HEIGHT + 1, screenHeight / 2 - 200);
 
 	rct_window *w = window_create(x, y, 402, 400, &window_install_track_events, WC_INSTALL_TRACK, 0);
 	w->widgets = window_install_track_widgets;

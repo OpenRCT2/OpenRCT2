@@ -36,7 +36,7 @@ struct TitleSequence;
 struct TextInputSession;
 
 #define TEXT_INPUT_SIZE 1024
-#define TOP_TOOLBAR_CLEARANCE 28
+#define TOP_TOOLBAR_HEIGHT 27
 
 extern uint16 TextInputDescriptionArgs[4];
 extern char gTextBoxInput[TEXT_INPUT_SIZE];
