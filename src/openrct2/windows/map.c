@@ -1715,7 +1715,7 @@ static void map_window_screen_to_map(sint32 screenX, sint32 screenY, sint32 *map
 	sint32 x, y;
 
 	screenX = ((screenX + 8) - MAXIMUM_MAP_SIZE_TECHNICAL) / 2;
-	screenY = ((screenY + 8)                    ) / 2;
+	screenY = ((screenY + 8)) / 2;
 	x = (screenY - screenX) * 32;
 	y = (screenX + screenY) * 32;
 	switch (get_current_rotation()) {
