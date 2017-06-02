@@ -113,5 +113,6 @@ bool ride_entry_is_invented(sint32 rideEntryIndex);
 bool track_piece_is_available_for_ride_type(uint8 rideType, sint32 trackType);
 bool scenery_is_invented(uint16 sceneryItem);
 void reset_researched_scenery_items();
+void reset_researched_ride_types_and_entries();
 
 #endif

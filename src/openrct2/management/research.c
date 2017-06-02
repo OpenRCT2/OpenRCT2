@@ -643,3 +643,14 @@ void reset_researched_scenery_items()
 		gResearchedSceneryItems[i] = 0xFFFFFFFF;
 	}
 }
+
+void reset_researched_ride_types_and_entries()
+{
+	for (sint32 i = 0; i < 4; i++) {
+		gResearchedRideTypes[i] = 0xFFFFFFFF;
+	}
+
+	for (sint32 i = 0; i < MAX_RESEARCHED_RIDE_ENTRIES; i++) {
+		gResearchedRideEntries[i] = 0xFFFFFFFF;
+	}
+}
