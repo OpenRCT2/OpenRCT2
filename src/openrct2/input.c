@@ -1470,6 +1470,10 @@ void game_handle_keyboard_input()
 	rct_window *w;
 	sint32 key;
 
+	if (gOpenRCT2Headless) {
+		return;
+	}
+
 	if (!gConsoleOpen) {
 		// Handle mouse scrolling
 		if (_inputState == INPUT_STATE_NORMAL && gConfigGeneral.edge_scrolling) {

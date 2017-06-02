@@ -129,5 +129,7 @@ namespace OpenRCT2
             virtual TextInputSession *  StartTextInput(utf8 * buffer, size_t bufferSize) abstract;
             virtual void                StopTextInput() abstract;
         };
+
+        IUiContext * CreateDummyUiContext();
     }
 }
