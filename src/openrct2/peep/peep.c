@@ -141,7 +141,7 @@ static void peep_on_enter_or_exit_ride(rct_peep *peep, sint32 rideIndex, sint32 
 static void peep_update_favourite_ride(rct_peep *peep, rct_ride *ride);
 static sint16 peep_calculate_ride_satisfaction(rct_peep *peep, rct_ride *ride);
 static void peep_update_ride_nausea_growth(rct_peep *peep, rct_ride *ride);
-static bool sub_69AF1E(rct_peep *peep, sint32 rideIndex, sint32 shopItem, money32 price);
+static bool peep_decide_and_buy_item(rct_peep *peep, sint32 rideIndex, sint32 shopItem, money32 price);
 static bool peep_should_use_cash_machine(rct_peep *peep, sint32 rideIndex);
 static bool peep_should_go_on_ride(rct_peep *peep, sint32 rideIndex, sint32 entranceNum, sint32 flags);
 static void peep_ride_is_too_intense(rct_peep *peep, sint32 rideIndex, bool peepAtRide);
@@ -3373,7 +3373,7 @@ static void peep_update_ride_sub_state_9(rct_peep* peep){
 
 	if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_RIDE_PHOTO){
 		uint8 secondaryItem = RidePhotoItems[ride->type];
-		if (sub_69AF1E(peep, peep->current_ride, secondaryItem, ride->price_secondary)) {
+		if (peep_decide_and_buy_item(peep, peep->current_ride, secondaryItem, ride->price_secondary)) {
 			ride->no_secondary_items_sold++;
 		}
 	}
@@ -5626,7 +5626,7 @@ static void peep_update_buying(rct_peep* peep)
 			if (ride_type->shop_item_secondary != 0xFF){
 				money16 price = ride->price_secondary;
 
-				item_bought = sub_69AF1E(peep, peep->current_ride, ride_type->shop_item_secondary, price);
+				item_bought = peep_decide_and_buy_item(peep, peep->current_ride, ride_type->shop_item_secondary, price);
 				if (item_bought) {
 					ride->no_secondary_items_sold++;
 				}
@@ -5635,7 +5635,7 @@ static void peep_update_buying(rct_peep* peep)
 			if (!item_bought && ride_type->shop_item != 0xFF){
 				money16 price = ride->price;
 
-				item_bought = sub_69AF1E(peep, peep->current_ride, ride_type->shop_item, price);
+				item_bought = peep_decide_and_buy_item(peep, peep->current_ride, ride_type->shop_item, price);
 				if (item_bought) {
 					ride->no_primary_items_sold++;
 				}
@@ -10922,7 +10922,7 @@ static void peep_on_enter_or_exit_ride(rct_peep *peep, sint32 rideIndex, sint32 
  *
  *  rct2: 0x0069AF1E
  */
-static bool sub_69AF1E(rct_peep *peep, sint32 rideIndex, sint32 shopItem, money32 price)
+static bool peep_decide_and_buy_item(rct_peep *peep, sint32 rideIndex, sint32 shopItem, money32 price)
 {
 	rct_ride* ride = get_ride(rideIndex);
 	money32 value;
