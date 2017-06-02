@@ -130,7 +130,7 @@ static sint32 peep_empty_container_standard_flag(rct_peep* peep);
 static sint32 peep_empty_container_extra_flag(rct_peep* peep);
 static sint32 peep_should_find_bench(rct_peep* peep);
 static void peep_stop_purchase_thought(rct_peep* peep, uint8 ride_type);
-static void peep_set_action_sprite_type(rct_peep* peep);
+static void peep_switch_to_next_action_sprite_type(rct_peep* peep);
 static sint32 peep_perform_next_action(rct_peep *peep);
 static void peep_spend_money(rct_peep *peep, money16 *peep_expend_type, money32 amount);
 static void peep_set_has_ridden(rct_peep *peep, sint32 rideIndex);
@@ -1665,12 +1665,12 @@ static void set_sprite_type(rct_peep* peep, uint8 type){
 	if (peep->state == PEEP_STATE_SITTING){
 		peep->action = PEEP_ACTION_NONE_1;
 		peep->next_action_sprite_type = 7;
-		peep_set_action_sprite_type(peep);
+		peep_switch_to_next_action_sprite_type(peep);
 	}
 	if (peep->state == PEEP_STATE_WATCHING){
 		peep->action = PEEP_ACTION_NONE_1;
 		peep->next_action_sprite_type = 2;
-		peep_set_action_sprite_type(peep);
+		peep_switch_to_next_action_sprite_type(peep);
 	}
 }
 
@@ -2219,7 +2219,7 @@ static void peep_update_sitting(rct_peep* peep){
 		invalidate_sprite_2((rct_sprite*)peep);
 		peep->action = 254;
 		peep->next_action_sprite_type = 7;
-		peep_set_action_sprite_type(peep);
+		peep_switch_to_next_action_sprite_type(peep);
 
 		peep->sub_state++;
 
@@ -5243,7 +5243,7 @@ static void peep_update_watching(rct_peep* peep){
 		peep->action = 0xFE;
 		peep->next_action_sprite_type = 2;
 
-		peep_set_action_sprite_type(peep);
+		peep_switch_to_next_action_sprite_type(peep);
 
 		peep->sub_state++;
 
@@ -7843,7 +7843,7 @@ void peep_set_map_tooltip(rct_peep *peep)
 }
 
 
-void peep_set_action_sprite_type(rct_peep* peep) {
+void peep_switch_to_next_action_sprite_type(rct_peep* peep) {
 	// TBD: Add nextActionSpriteType as function parameter and make peep->next_action_sprite_type obsolete?
 	uint8 nextActionSpriteType = peep->next_action_sprite_type;
 	if (nextActionSpriteType != peep->action_sprite_type) {
