@@ -606,16 +606,18 @@ private:
         SDL_GetDesktopDisplayMode(displayIndex, &mode);
 
         // Get resolutions
-        auto resolutions = std::vector<Resolution>(numDisplayModes);
+        auto resolutions = std::vector<Resolution>();
         float desktopAspectRatio = (float)mode.w / mode.h;
         for (sint32 i = 0; i < numDisplayModes; i++)
         {
             SDL_GetDisplayMode(displayIndex, i, &mode);
-
-            float aspectRatio = (float)mode.w / mode.h;
-            if (_resolutionsAllowAnyAspectRatio || std::fabs(desktopAspectRatio - aspectRatio) < 0.0001f)
+            if (mode.w > 0 && mode.h > 0)
             {
-                resolutions.push_back({ mode.w, mode.h });
+                float aspectRatio = (float)mode.w / mode.h;
+                if (_resolutionsAllowAnyAspectRatio || std::fabs(desktopAspectRatio - aspectRatio) < 0.0001f)
+                {
+                    resolutions.push_back({ mode.w, mode.h });
+                }
             }
         }
 
@@ -642,6 +644,8 @@ private:
             gConfigGeneral.fullscreen_width = resolutions.back().Width;
             gConfigGeneral.fullscreen_height = resolutions.back().Height;
         }
+
+        _fsResolutions = resolutions;
     }
 
     Resolution GetClosestResolution(sint32 inWidth, sint32 inHeight)
