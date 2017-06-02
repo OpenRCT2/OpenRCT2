@@ -576,7 +576,7 @@ static void window_editor_inventions_list_close(rct_window *w)
 	// When used in-game (as a cheat)
 	if (!(gScreenFlags & SCREEN_FLAGS_EDITOR)) {
 		gSilentResearch = true;
-		sub_684AC3();
+		research_reset_current_item();
 		gSilentResearch = false;
 	}
 }
