@@ -238,7 +238,7 @@ typedef struct rct_s6_data {
 	uint8 last_entrance_style;
 	uint8 rct1_water_colour;
 	uint8 pad_01358842[2];
-	rct_research_item research_items[500];
+	rct_research_item research_items[MAX_RESEARCH_ITEMS];
 	uint16 map_base_z;
 	char scenario_name[64];
 	char scenario_description[256];

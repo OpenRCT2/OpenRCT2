@@ -107,9 +107,7 @@ void park_init()
 	for (i = 0; i < 2; i++)
 		gResearchedRideTypes[i] = 0;
 
-	for (i = 0; i < 56; i++) {
-		gResearchedSceneryItems[i] = 0xFFFFFFFF;
-	}
+	reset_researched_scenery_items();
 
 	gParkEntranceFee = MONEY(10, 00);
 	gPeepSpawns[0].x = PEEP_SPAWN_UNDEFINED;

@@ -23,6 +23,7 @@
 #include "../scenario/scenario.h"
 #include "../sprites.h"
 #include "../localisation/localisation.h"
+#include "../management/research.h"
 #include "../interface/themes.h"
 #include "../interface/viewport.h"
 #include "../interface/widget.h"
@@ -128,8 +129,6 @@ static const rct_string_id EditorStepNames[] = {
 	STR_EDITOR_STEP_TRACK_DESIGNS_MANAGER,
 };
 
-static void sub_6DFED0();
-
 /**
 * Creates the main editor top toolbar window.
 * rct2: 0x0066F052 (part of 0x0066EF38)
@@ -149,7 +148,7 @@ void window_editor_bottom_toolbar_open()
 		(1 << WIDX_NEXT_IMAGE);
 
 	window_init_scroll_widgets(window);
-	sub_6DFED0();
+	reset_researched_scenery_items();
 }
 
 /**
@@ -163,23 +162,12 @@ void window_editor_bottom_toolbar_jump_back_to_object_selection() {
 }
 
 /**
- *
- *  rct2: 0x006DFED0
- */
-static void sub_6DFED0()
-{
-	for (sint32 i = 0; i < 56; i++) {
-		gResearchedSceneryItems[i] = 0xFFFFFFFF;
-	}
-}
-
-/**
 *
 *  rct2: 0x0066F62C
 */
 void window_editor_bottom_toolbar_jump_back_to_landscape_editor() {
 	window_close_all();
-	sub_6DFED0();
+	reset_researched_scenery_items();
 	scenery_set_default_placement_configuration();
 	gS6Info.editor_step = EDITOR_STEP_LANDSCAPE_EDITOR;
 	window_map_open();
@@ -273,7 +261,7 @@ void window_editor_bottom_toolbar_jump_forward_from_object_selection()
 	if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) {
 		sub_66F6E3();
 	} else {
-		sub_6DFED0();
+		reset_researched_scenery_items();
 		scenery_set_default_placement_configuration();
 		gS6Info.editor_step = EDITOR_STEP_LANDSCAPE_EDITOR;
 		window_map_open();
