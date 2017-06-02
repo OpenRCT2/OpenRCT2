@@ -433,7 +433,7 @@ typedef struct rct1_peep {
 	// Normally 0, 1 for carrying sliding board on spiral slide ride, 2 for carrying lawn mower
 	uint8 special_sprite;   		// 0x6D
 	uint8 action_sprite_type;		// 0x6E
-	// Seems to be used like a local variable, as it's always set before calling sub_693BAB, which reads this again
+	// Seems to be used like a local variable, as it's always set before calling peep_set_action_sprite_type, which reads this again
 	uint8 next_action_sprite_type;	// 0x6F
 	uint8 action_sprite_image_offset; // 0x70
 	uint8 action;					// 0x71
