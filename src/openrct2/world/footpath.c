@@ -25,7 +25,7 @@
 #include "../util/util.h"
 
 void footpath_interrupt_peeps(sint32 x, sint32 y, sint32 z);
-void sub_6A7642(sint32 x, sint32 y, rct_map_element *mapElement);
+void footpath_update_queue_entrance_banner(sint32 x, sint32 y, rct_map_element *mapElement);
 
 uint8 gFootpathProvisionalFlags;
 rct_xyz16 gFootpathProvisionalPosition;
@@ -1306,7 +1306,7 @@ void footpath_connect_edges(sint32 x, sint32 y, rct_map_element *mapElement, sin
 
 	neighbour_list_init(&neighbourList);
 
-	sub_6A7642(x, y, mapElement);
+	footpath_update_queue_entrance_banner(x, y, mapElement);
 	for (sint32 direction = 0; direction < 4; direction++) {
 		loc_6A6C85(x, y, direction, mapElement, flags, true, &neighbourList);
 	}
@@ -1940,7 +1940,7 @@ void footpath_update_path_wide_flags(sint32 x, sint32 y)
  *
  *  rct2: 0x006A7642
  */
-void sub_6A7642(sint32 x, sint32 y, rct_map_element *mapElement)
+void footpath_update_queue_entrance_banner(sint32 x, sint32 y, rct_map_element *mapElement)
 {
 	sint32 elementType = map_element_get_type(mapElement);
 	switch (elementType) {
@@ -2059,7 +2059,7 @@ void footpath_remove_edges_at(sint32 x, sint32 y, rct_map_element *mapElement)
 			return;
 	}
 
-	sub_6A7642(x, y, mapElement);
+	footpath_update_queue_entrance_banner(x, y, mapElement);
 
 	for (sint32 direction = 0; direction < 4; direction++) {
 		sint32 z1 = mapElement->base_height;
