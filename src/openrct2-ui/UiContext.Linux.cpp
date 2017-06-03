@@ -18,6 +18,7 @@
 
 #include <dlfcn.h>
 #include <sstream>
+#include <stdexcept>
 #include <openrct2/common.h>
 #include <openrct2/core/String.hpp>
 #include <openrct2/ui/UiContext.h>
@@ -160,7 +161,7 @@ namespace OpenRCT2 { namespace Ui
                 break;
             }
             default:
-                log_error("KDialog or Zenity not installed.");
+                ThrowMissingDialogApp();
                 break;
             }
 
@@ -211,7 +212,7 @@ namespace OpenRCT2 { namespace Ui
                 break;
             }
             default:
-                log_error("KDialog or Zenity not installed.");
+                ThrowMissingDialogApp();
                 break;
             }
             return result;
@@ -336,6 +337,11 @@ namespace OpenRCT2 { namespace Ui
                 filtersb << "'";
             }
             return filtersb.str();
+        }
+
+        static void ThrowMissingDialogApp()
+        {
+            throw std::runtime_error("KDialog or Zenity not installed.");
         }
     };
 

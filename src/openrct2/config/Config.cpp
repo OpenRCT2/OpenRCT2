@@ -693,26 +693,36 @@ extern "C"
             {
                 return false;
             }
-            while (1)
+
+            try
             {
-                IUiContext * uiContext = GetContext()->GetUiContext();
-                uiContext->ShowMessageBox("OpenRCT2 needs files from the original RollerCoaster Tycoon 2 in order to work. Please select the directory where you installed RollerCoaster Tycoon 2.");
-                utf8 * installPath = platform_open_directory_browser("Please select your RCT2 directory");
-                if (installPath == nullptr)
+                while (true)
                 {
-                    return false;
+                    IUiContext * uiContext = GetContext()->GetUiContext();
+                    uiContext->ShowMessageBox("OpenRCT2 needs files from the original RollerCoaster Tycoon 2 in order to work. Please select the directory where you installed RollerCoaster Tycoon 2.");
+
+                    std::string installPath = uiContext->ShowDirectoryDialog("Please select your RCT2 directory");
+                    if (installPath.empty())
+                    {
+                        return false;
+                    }
+
+                    Memory::Free(gConfigGeneral.rct2_path);
+                    gConfigGeneral.rct2_path = String::Duplicate(installPath.c_str());
+
+                    if (platform_original_game_data_exists(installPath.c_str()))
+                    {
+                        return true;
+                    }
+
+                    std::string message = String::StdFormat("Could not find %s" PATH_SEPARATOR "Data" PATH_SEPARATOR "g1.dat at this path", installPath.c_str());
+                    uiContext->ShowMessageBox(message);
                 }
-
-                Memory::Free(gConfigGeneral.rct2_path);
-                gConfigGeneral.rct2_path = installPath;
-
-                if (platform_original_game_data_exists(installPath))
-                {
-                    return true;
-                }
-
-                std::string message = String::StdFormat("Could not find %s" PATH_SEPARATOR "Data" PATH_SEPARATOR "g1.dat at this path", installPath);
-                uiContext->ShowMessageBox(message);
+            }
+            catch (const std::exception &ex)
+            {
+                Console::Error::WriteLine(ex.what());
+                return false;
             }
         }
         return true;
