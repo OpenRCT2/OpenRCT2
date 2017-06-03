@@ -32,14 +32,11 @@
 #define MINIMUM_TOOL_SIZE 1
 #define MAXIMUM_TOOL_SIZE 64
 
-#define MINIMUM_MAP_SIZE_TECHNICAL 15
-#define MAXIMUM_MAP_SIZE_TECHNICAL 256
-#define MINIMUM_MAP_SIZE_PRACTICAL MINIMUM_MAP_SIZE_TECHNICAL-2
-#define MAXIMUM_MAP_SIZE_PRACTICAL MAXIMUM_MAP_SIZE_TECHNICAL-2
-
 #define MAP_COLOUR_2(colourA, colourB) ((colourA << 8) | colourB)
 #define MAP_COLOUR(colour) MAP_COLOUR_2(colour, colour)
 #define FALLBACK_COLOUR(colour) ((colour << 24) || colour << 16)
+
+#define MAP_WINDOW_MAP_SIZE (MAXIMUM_MAP_SIZE_TECHNICAL * 2)
 
 enum {
 	PAGE_PEEPS,
@@ -176,7 +173,7 @@ static uint8 _activeTool;
 static uint32 _currentLine;
 
 /** rct2: 0x00F1AD68 */
-static uint8 (*_mapImageData)[512][512];
+static uint8 (*_mapImageData)[MAP_WINDOW_MAP_SIZE][MAP_WINDOW_MAP_SIZE];
 
 static sint32 _nextPeepSpawnIndex = 0;
 
@@ -888,8 +885,8 @@ static void window_map_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32
 	pushed_g1_element = *g1_element;
 
 	g1_element->offset = (uint8 *) _mapImageData;
-	g1_element->width = 512;
-	g1_element->height = 512;
+	g1_element->width = MAP_WINDOW_MAP_SIZE;
+	g1_element->height = MAP_WINDOW_MAP_SIZE;
 	g1_element->x_offset = -8;
 	g1_element->y_offset = -8;
 	g1_element->flags = 0;
@@ -1397,14 +1394,14 @@ static void window_map_set_peep_spawn_tool_down(sint32 x, sint32 y)
  */
 static void map_window_increase_map_size()
 {
-	if (gMapSize >= 256) {
+	if (gMapSize >= MAXIMUM_MAP_SIZE_TECHNICAL) {
 		window_error_open(STR_CANT_INCREASE_MAP_SIZE_ANY_FURTHER, STR_NONE);
 		return;
 	}
 
 	gMapSize++;
 	gMapSizeUnits = (gMapSize - 1) * 32;
-	gMapSizeMinus2 = (gMapSize * 32) + 254;
+	gMapSizeMinus2 = (gMapSize * 32) + MAXIMUM_MAP_SIZE_PRACTICAL;
 	gMapSizeMaxXY = ((gMapSize - 1) * 32) - 1;
 	map_extend_boundary_surface();
 	window_map_init_map();
@@ -1425,7 +1422,7 @@ static void map_window_decrease_map_size()
 
 	gMapSize--;
 	gMapSizeUnits = (gMapSize - 1) * 32;
-	gMapSizeMinus2 = (gMapSize * 32) + 254;
+	gMapSizeMinus2 = (gMapSize * 32) + MAXIMUM_MAP_SIZE_PRACTICAL;
 	gMapSizeMaxXY = ((gMapSize - 1) * 32) - 1;
 	map_remove_out_of_range_elements();
 	window_map_init_map();
@@ -1655,8 +1652,8 @@ static void map_window_set_pixels(rct_window *w)
 	uint8 *destination;
 	sint32 x = 0, y = 0, dx = 0, dy = 0;
 
-	sint32 pos = (_currentLine * 511) + 255;
-	rct_xy16 destinationPosition = {.y = pos/512, .x = pos % 512};
+	sint32 pos = (_currentLine * (MAP_WINDOW_MAP_SIZE - 1)) + MAXIMUM_MAP_SIZE_TECHNICAL - 1;
+	rct_xy16 destinationPosition = {.y = pos/MAP_WINDOW_MAP_SIZE, .x = pos % MAP_WINDOW_MAP_SIZE};
 	destination = &(*_mapImageData)[destinationPosition.y][destinationPosition.x];
 	switch (get_current_rotation()) {
 	case 0:
@@ -1672,20 +1669,20 @@ static void map_window_set_pixels(rct_window *w)
 		dy = 0;
 		break;
 	case 2:
-		x = (255 - _currentLine) * 32;
+		x = ((MAXIMUM_MAP_SIZE_TECHNICAL - 1) - _currentLine) * 32;
 		y = 8192 - 32;
 		dx = 0;
 		dy = -32;
 		break;
 	case 3:
 		x = 0;
-		y = (255 - _currentLine) * 32;
+		y = ((MAXIMUM_MAP_SIZE_TECHNICAL - 1) - _currentLine) * 32;
 		dx = 32;
 		dy = 0;
 		break;
 	}
 
-	for (sint32 i = 0; i < 256; i++) {
+	for (sint32 i = 0; i < MAXIMUM_MAP_SIZE_TECHNICAL; i++) {
 		if (
 			x > 0 &&
 			y > 0 &&
@@ -1711,7 +1708,7 @@ static void map_window_set_pixels(rct_window *w)
 		destination = &(*_mapImageData)[destinationPosition.y][destinationPosition.x];
 	}
 	_currentLine++;
-	if (_currentLine >= 256)
+	if (_currentLine >= MAXIMUM_MAP_SIZE_TECHNICAL)
 		_currentLine = 0;
 }
 
@@ -1719,8 +1716,8 @@ static void map_window_screen_to_map(sint32 screenX, sint32 screenY, sint32 *map
 {
 	sint32 x, y;
 
-	screenX = ((screenX + 8) - 256) / 2;
-	screenY = ((screenY + 8)      ) / 2;
+	screenX = ((screenX + 8) - MAXIMUM_MAP_SIZE_TECHNICAL) / 2;
+	screenY = ((screenY + 8)) / 2;
 	x = (screenY - screenX) * 32;
 	y = (screenX + screenY) * 32;
 	switch (get_current_rotation()) {

@@ -94,7 +94,7 @@ sint16 gMapSizeMaxXY;
 sint16 gMapBaseZ;
 
 #if defined(NO_RCT2)
-rct_map_element gMapElements[0x30000];
+rct_map_element gMapElements[MAX_TILE_MAP_ELEMENT_POINTERS * 3];
 rct_map_element *gMapElementTilePointers[MAX_TILE_MAP_ELEMENT_POINTERS];
 #else
 rct_map_element *gMapElements = RCT2_ADDRESS(RCT2_ADDRESS_MAP_ELEMENTS, rct_map_element);
@@ -202,13 +202,13 @@ sint32 map_element_iterator_next(map_element_iterator *it)
 		return 1;
 	}
 
-	if (it->x < 255) {
+	if (it->x < (MAXIMUM_MAP_SIZE_TECHNICAL - 1)) {
 		it->x++;
 		it->element = map_get_first_element_at(it->x, it->y);
 		return 1;
 	}
 
-	if (it->y < 255) {
+	if (it->y < (MAXIMUM_MAP_SIZE_TECHNICAL - 1)) {
 		it->x = 0;
 		it->y++;
 		it->element = map_get_first_element_at(it->x, it->y);
@@ -225,11 +225,11 @@ void map_element_iterator_restart_for_tile(map_element_iterator *it)
 
 rct_map_element *map_get_first_element_at(sint32 x, sint32 y)
 {
-	if (x < 0 || y < 0 || x > 255 || y > 255) {
+	if (x < 0 || y < 0 || x > (MAXIMUM_MAP_SIZE_TECHNICAL - 1) || y > (MAXIMUM_MAP_SIZE_TECHNICAL - 1)) {
 		log_error("Trying to access element outside of range");
 		return NULL;
 	}
-	return gMapElementTilePointers[x + y * 256];
+	return gMapElementTilePointers[x + y * MAXIMUM_MAP_SIZE_TECHNICAL];
 }
 
 rct_map_element *map_get_nth_element_at(sint32 x, sint32 y, sint32 n)
@@ -257,11 +257,11 @@ rct_map_element *map_get_nth_element_at(sint32 x, sint32 y, sint32 n)
 
 void map_set_tile_elements(sint32 x, sint32 y, rct_map_element *elements)
 {
-	if (x < 0 || y < 0 || x > 255 || y > 255) {
+	if (x < 0 || y < 0 || x > (MAXIMUM_MAP_SIZE_TECHNICAL - 1) || y > (MAXIMUM_MAP_SIZE_TECHNICAL - 1)) {
 		log_error("Trying to access element outside of range");
 		return;
 	}
-	gMapElementTilePointers[x + y * 256] = elements;
+	gMapElementTilePointers[x + y * MAXIMUM_MAP_SIZE_TECHNICAL] = elements;
 }
 
 sint32 map_element_is_last_for_tile(const rct_map_element *element)
@@ -439,8 +439,8 @@ void map_count_remaining_land_rights()
 	gLandRemainingOwnershipSales = 0;
 	gLandRemainingConstructionSales = 0;
 
-	for (sint32 x = 0; x <= 255; x++) {
-		for (sint32 y = 0; y <= 255; y++) {
+	for (sint32 x = 0; x < MAXIMUM_MAP_SIZE_TECHNICAL; x++) {
+		for (sint32 y = 0; y < MAXIMUM_MAP_SIZE_TECHNICAL; y++) {
 			rct_map_element *element = map_get_surface_element_at(x, y);
 			// Surface elements are sometimes hacked out to save some space for other map elements
 			if (element == NULL) {
@@ -472,7 +472,7 @@ void map_strip_ghost_flag_from_elements()
 	rct_map_element *mapElement = gMapElements;
 	do {
 		mapElement->flags &= ~MAP_ELEMENT_FLAG_GHOST;
-	} while (++mapElement < gMapElements + 0x30000);
+	} while (++mapElement < gMapElements + MAX_MAP_ELEMENTS);
 }
 
 /**
@@ -489,8 +489,8 @@ void map_update_tile_pointers()
 
 	rct_map_element *mapElement = gMapElements;
 	rct_map_element **tile = gMapElementTilePointers;
-	for (y = 0; y < 256; y++) {
-		for (x = 0; x < 256; x++) {
+	for (y = 0; y < MAXIMUM_MAP_SIZE_TECHNICAL; y++) {
+		for (x = 0; x < MAXIMUM_MAP_SIZE_TECHNICAL; x++) {
 			*tile++ = mapElement;
 			while (!map_element_is_last_for_tile(mapElement++));
 		}
@@ -783,7 +783,7 @@ sint32 map_height_from_slope(sint32 x, sint32 y, sint32 slope)
 
 bool map_is_location_valid(sint32 x, sint32 y)
 {
-	if (x < (256 * 32) && x >= 0 && y < (256 * 32) && y >= 0) {
+	if (x < (MAXIMUM_MAP_SIZE_TECHNICAL * 32) && x >= 0 && y < (MAXIMUM_MAP_SIZE_TECHNICAL * 32) && y >= 0) {
 		return true;
 	}
 	return false;
@@ -1197,7 +1197,7 @@ void game_command_set_large_scenery_colour(sint32* eax, sint32* ebx, sint32* ecx
 	baseTile.y = y - baseTile.y;
 
 	for (sint32 i = 0; scenery_entry->large_scenery.tiles[i].x_offset != -1; ++i) {
-		assert(i < 256);
+		assert(i < MAXIMUM_MAP_SIZE_TECHNICAL);
 
 		// Work out the current tile coordinates
 		rct_xyz16 currentTile = {
@@ -1337,8 +1337,8 @@ restart_from_beginning:
 static void map_reset_clear_large_scenery_flag(){
 	rct_map_element* mapElement;
 	// TODO: Improve efficiency of this
-	for (sint32 y = 0; y <= 255; y++) {
-		for (sint32 x = 0; x <= 255; x++) {
+	for (sint32 y = 0; y < MAXIMUM_MAP_SIZE_TECHNICAL; y++) {
+		for (sint32 x = 0; x < MAXIMUM_MAP_SIZE_TECHNICAL; x++) {
 			mapElement = map_get_first_element_at(x, y);
 			do {
 				if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_SCENERY_MULTIPLE) {
@@ -2281,8 +2281,8 @@ static money32 smooth_land(sint32 flags, sint32 centreX, sint32 centreY, sint32 
 	// Cap bounds to map
 	mapLeft = max(mapLeft, 32);
 	mapTop = max(mapTop, 32);
-	mapRight = clamp(0, mapRight, 255 * 32);
-	mapBottom = clamp(0, mapBottom, 255 * 32);
+	mapRight = clamp(0, mapRight, (MAXIMUM_MAP_SIZE_TECHNICAL - 1) * 32);
+	mapBottom = clamp(0, mapBottom, (MAXIMUM_MAP_SIZE_TECHNICAL - 1) * 32);
 
 	sint32 commandType;
 	sint32 centreZ = map_element_height(centreX, centreY);
@@ -2339,7 +2339,7 @@ static money32 smooth_land(sint32 flags, sint32 centreX, sint32 centreY, sint32 
 
 	// Then do the smoothing
 	// The coords go in circles around the selected tile(s)
-	for (; size <= 256; size += 2) {
+	for (; size <= MAXIMUM_MAP_SIZE_TECHNICAL; size += 2) {
 		initialMinZ += 2;
 		sint32 minZ = initialMinZ * 2;
 		x -= 32;
@@ -2944,7 +2944,7 @@ void game_command_place_scenery(sint32* eax, sint32* ebx, sint32* ecx, sint32* e
 
 bool map_is_location_at_edge(sint32 x, sint32 y)
 {
-	return x < 32 || y < 32 || x >= ((256 - 1) * 32) || y >= ((256 - 1) * 32);
+	return x < 32 || y < 32 || x >= ((MAXIMUM_MAP_SIZE_TECHNICAL - 1) * 32) || y >= ((MAXIMUM_MAP_SIZE_TECHNICAL - 1) * 32);
 }
 
 /**
@@ -3322,7 +3322,7 @@ void map_reorganise_elements()
 {
 	context_setcurrentcursor(CURSOR_ZZZ);
 
-	rct_map_element* new_map_elements = malloc(0x30000 * sizeof(rct_map_element));
+	rct_map_element* new_map_elements = malloc(3 * (MAXIMUM_MAP_SIZE_TECHNICAL * MAXIMUM_MAP_SIZE_TECHNICAL) * sizeof(rct_map_element));
 	rct_map_element* new_elements_pointer = new_map_elements;
 
 	if (new_map_elements == NULL) {
@@ -3332,8 +3332,8 @@ void map_reorganise_elements()
 
 	uint32 num_elements;
 
-	for (sint32 y = 0; y < 256; y++) {
-		for (sint32 x = 0; x < 256; x++) {
+	for (sint32 y = 0; y < MAXIMUM_MAP_SIZE_TECHNICAL; y++) {
+		for (sint32 x = 0; x < MAXIMUM_MAP_SIZE_TECHNICAL; x++) {
 			rct_map_element *startElement = map_get_first_element_at(x, y);
 			rct_map_element *endElement = startElement;
 			while (!map_element_is_last_for_tile(endElement++));
@@ -3346,7 +3346,7 @@ void map_reorganise_elements()
 
 	num_elements = (uint32)(new_elements_pointer - new_map_elements);
 	memcpy(gMapElements, new_map_elements, num_elements * sizeof(rct_map_element));
-	memset(gMapElements + num_elements, 0, (0x30000 - num_elements) * sizeof(rct_map_element));
+	memset(gMapElements + num_elements, 0, (3 * (MAXIMUM_MAP_SIZE_TECHNICAL * MAXIMUM_MAP_SIZE_TECHNICAL) - num_elements) * sizeof(rct_map_element));
 
 	free(new_map_elements);
 
@@ -3394,10 +3394,10 @@ rct_map_element *map_element_insert(sint32 x, sint32 y, sint32 z, sint32 flags)
 	}
 
 	newMapElement = gNextFreeMapElement;
-	originalMapElement = gMapElementTilePointers[y * 256 + x];
+	originalMapElement = gMapElementTilePointers[y * MAXIMUM_MAP_SIZE_TECHNICAL + x];
 
 	// Set tile index pointer to point to new element block
-	gMapElementTilePointers[y * 256 + x] = newMapElement;
+	gMapElementTilePointers[y * MAXIMUM_MAP_SIZE_TECHNICAL + x] = newMapElement;
 
 	// Copy all elements that are below the insert height
 	while (z >= originalMapElement->base_height) {
@@ -3823,8 +3823,8 @@ void map_remove_out_of_range_elements()
 {
 	sint32 mapMaxXY = gMapSizeMaxXY;
 
-	for (sint32 y = 0; y < (256 * 32); y += 32) {
-		for (sint32 x = 0; x < (256 * 32); x += 32) {
+	for (sint32 y = 0; y < (MAXIMUM_MAP_SIZE_TECHNICAL * 32); y += 32) {
+		for (sint32 x = 0; x < (MAXIMUM_MAP_SIZE_TECHNICAL * 32); x += 32) {
 			if (x == 0 || y == 0 || x >= mapMaxXY || y >= mapMaxXY) {
 				map_buy_land_rights(x, y, x, y, 1, GAME_COMMAND_FLAG_APPLY);
 				clear_elements_at(x, y);
@@ -3843,7 +3843,7 @@ void map_extend_boundary_surface()
 	sint32 x, y, z, slope;
 
 	y = gMapSize - 2;
-	for (x = 0; x < 256; x++) {
+	for (x = 0; x < MAXIMUM_MAP_SIZE_TECHNICAL; x++) {
 		existingMapElement = map_get_surface_element_at(x, y - 1);
 		newMapElement = map_get_surface_element_at(x, y);
 
@@ -3879,7 +3879,7 @@ void map_extend_boundary_surface()
 	}
 
 	x = gMapSize - 2;
-	for (y = 0; y < 256; y++) {
+	for (y = 0; y < MAXIMUM_MAP_SIZE_TECHNICAL; y++) {
 		existingMapElement = map_get_surface_element_at(x - 1, y);
 		newMapElement = map_get_surface_element_at(x, y);
 
@@ -4351,8 +4351,8 @@ bool map_surface_is_blocked(sint16 x, sint16 y){
 /* Clears all map elements, to be used before generating a new map */
 void map_clear_all_elements()
 {
-	for (sint32 y = 0; y < (256 * 32); y += 32) {
-		for (sint32 x = 0; x < (256 * 32); x += 32) {
+	for (sint32 y = 0; y < (MAXIMUM_MAP_SIZE_TECHNICAL * 32); y += 32) {
+		for (sint32 x = 0; x < (MAXIMUM_MAP_SIZE_TECHNICAL * 32); x += 32) {
 			clear_elements_at(x, y);
 		}
 	}

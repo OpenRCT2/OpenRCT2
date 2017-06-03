@@ -304,7 +304,7 @@ static void mapgen_place_trees()
 
 	sint32 availablePositionsCount = 0;
 	struct { sint32 x; sint32 y; } tmp, *pos, *availablePositions;
-	availablePositions = malloc(256 * 256 * sizeof(tmp));
+	availablePositions = malloc(MAXIMUM_MAP_SIZE_TECHNICAL * MAXIMUM_MAP_SIZE_TECHNICAL * sizeof(tmp));
 
 	// Create list of available tiles
 	for (sint32 y = 1; y < gMapSize - 1; y++) {
@@ -843,9 +843,9 @@ bool mapgen_load_heightmap(const utf8 *path)
 		return false;
 	}
 
-	if (width > 254) {
+	if (width > MAXIMUM_MAP_SIZE_PRACTICAL) {
 		window_error_open(STR_HEIGHT_MAP_ERROR, STR_ERROR_HEIHGT_MAP_TOO_BIG);
-		width = height = min(height, 254);
+		width = height = min(height, MAXIMUM_MAP_SIZE_PRACTICAL);
 	}
 
 	// Allocate memory for the height map values, one byte pixel
