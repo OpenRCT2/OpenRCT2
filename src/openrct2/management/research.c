@@ -646,7 +646,8 @@ void reset_researched_scenery_items()
 
 void reset_researched_ride_types_and_entries()
 {
-	for (sint32 i = 0; i < 4; i++) {
+	// Iteration endpoint used to be 4 for unknown reasons, likely a mistake
+	for (sint32 i = 0; i < MAX_RESEARCHED_RIDE_TYPES; i++) {
 		gResearchedRideTypes[i] = 0xFFFFFFFF;
 	}
 
