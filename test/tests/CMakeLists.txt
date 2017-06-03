@@ -115,3 +115,10 @@ set(STRING_TEST_SOURCES
 add_executable(test_string ${STRING_TEST_SOURCES})
 target_link_libraries(test_string ${GTEST_LIBRARIES} test-common dl z)
 add_test(NAME string COMMAND test_string)
+
+# Ride ratings test
+set(RIDE_RATINGS_TEST_SOURCES "${CMAKE_CURRENT_LIST_DIR}/RideRatings.cpp"
+                              "${CMAKE_CURRENT_LIST_DIR}/TestData.cpp")
+add_executable(test_ride_ratings ${RIDE_RATINGS_TEST_SOURCES})
+target_link_libraries(test_ride_ratings ${GTEST_LIBRARIES} libopenrct2 dl z)
+add_test(NAME ride_ratings COMMAND test_ride_ratings)
