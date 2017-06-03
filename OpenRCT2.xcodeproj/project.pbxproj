@@ -434,6 +434,8 @@
 		F76C88921EC539A300FA49E2 /* libopenrct2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F76C809A1EC4D9FA00FA49E2 /* libopenrct2.a */; };
 		F775F5341EE35A6B001F00E7 /* DummyUiContext.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F775F5331EE35A6B001F00E7 /* DummyUiContext.cpp */; };
 		F775F5351EE35A89001F00E7 /* DummyUiContext.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F775F5331EE35A6B001F00E7 /* DummyUiContext.cpp */; };
+		F775F5371EE3724F001F00E7 /* DummyAudioContext.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F775F5361EE3724F001F00E7 /* DummyAudioContext.cpp */; };
+		F775F5381EE3725C001F00E7 /* DummyAudioContext.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F775F5361EE3724F001F00E7 /* DummyAudioContext.cpp */; };
 		F7D7747B1EC5EB6D00BE6EBC /* lay_down_roller_coaster.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84951EC4E7CC00FA49E2 /* lay_down_roller_coaster.c */; };
 		F7D7747F1EC61E5100BE6EBC /* UiContext.macOS.mm in Sources */ = {isa = PBXBuildFile; fileRef = F7D7747E1EC61E5100BE6EBC /* UiContext.macOS.mm */; };
 		F7D7748D1EC66F8600BE6EBC /* libopenrct2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F76C809A1EC4D9FA00FA49E2 /* libopenrct2.a */; };
@@ -1323,6 +1325,7 @@
 		F76C85AF1EC4E82600FA49E2 /* UiContext.Win32.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = UiContext.Win32.cpp; sourceTree = "<group>"; };
 		F775F5321EE35A48001F00E7 /* Ui.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Ui.h; sourceTree = "<group>"; };
 		F775F5331EE35A6B001F00E7 /* DummyUiContext.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DummyUiContext.cpp; sourceTree = "<group>"; };
+		F775F5361EE3724F001F00E7 /* DummyAudioContext.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DummyAudioContext.cpp; sourceTree = "<group>"; };
 		F7D7747E1EC61E5100BE6EBC /* UiContext.macOS.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = UiContext.macOS.mm; sourceTree = "<group>"; usesTabs = 0; };
 		F7D774841EC66CD700BE6EBC /* OpenRCT2-cli */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "OpenRCT2-cli"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -1768,6 +1771,7 @@
 		F76C83561EC4E7CC00FA49E2 /* audio */ = {
 			isa = PBXGroup;
 			children = (
+				F775F5361EE3724F001F00E7 /* DummyAudioContext.cpp */,
 				F76C83571EC4E7CC00FA49E2 /* audio.cpp */,
 				F76C83581EC4E7CC00FA49E2 /* audio.h */,
 				F76C83591EC4E7CC00FA49E2 /* AudioChannel.h */,
@@ -2924,6 +2928,7 @@
 				F775F5341EE35A6B001F00E7 /* DummyUiContext.cpp in Sources */,
 				F76C887F1EC5324E00FA49E2 /* CopyFramebufferShader.cpp in Sources */,
 				F76C88801EC5324E00FA49E2 /* DrawImageShader.cpp in Sources */,
+				F775F5371EE3724F001F00E7 /* DummyAudioContext.cpp in Sources */,
 				F76C88811EC5324E00FA49E2 /* DrawLineShader.cpp in Sources */,
 				F76C88821EC5324E00FA49E2 /* FillRectShader.cpp in Sources */,
 				F76C88831EC5324E00FA49E2 /* OpenGLAPI.cpp in Sources */,
@@ -2945,6 +2950,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F775F5381EE3725C001F00E7 /* DummyAudioContext.cpp in Sources */,
 				F775F5351EE35A89001F00E7 /* DummyUiContext.cpp in Sources */,
 				F7D7747B1EC5EB6D00BE6EBC /* lay_down_roller_coaster.c in Sources */,
 				F76C85B01EC4E88300FA49E2 /* audio.cpp in Sources */,
