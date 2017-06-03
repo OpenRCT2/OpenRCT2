@@ -16,6 +16,7 @@
 
 #include "../common.h"
 #include "../core/Console.hpp"
+#include "../core/File.h"
 #include "../core/FileStream.hpp"
 #include "../core/Memory.hpp"
 #include "../core/Path.hpp"
@@ -128,20 +129,18 @@ extern "C"
         try
         {
             std::string path = KeyboardShortcuts::GetPath();
-            auto fs = FileStream(path, FILE_MODE_OPEN);
-
-            uint16 version = fs.ReadValue<uint16>();
-            if (version == KeyboardShortcuts::CURRENT_FILE_VERSION)
+            if (File::Exists(path))
             {
-                for (sint32 i = 0; i < SHORTCUT_COUNT; i++)
+                auto fs = FileStream(path, FILE_MODE_OPEN);
+                uint16 version = fs.ReadValue<uint16>();
+                if (version == KeyboardShortcuts::CURRENT_FILE_VERSION)
                 {
-                    gShortcutKeys[i] = fs.ReadValue<uint16>();
+                    for (sint32 i = 0; i < SHORTCUT_COUNT; i++)
+                    {
+                        gShortcutKeys[i] = fs.ReadValue<uint16>();
+                    }
+                    result = true;
                 }
-                result = true;
-            }
-            else
-            {
-                result = false;
             }
         }
         catch (const Exception &ex)
