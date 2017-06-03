@@ -815,7 +815,7 @@ void game_fix_save_vars() {
 	}
 
 	// Fix invalid research items
-	for (sint32 i = 0; i < 500; i++) {
+	for (sint32 i = 0; i < MAX_RESEARCH_ITEMS; i++) {
 		rct_research_item *researchItem = &gResearchItems[i];
 		if (researchItem->entryIndex == RESEARCHED_ITEMS_SEPARATOR) continue;
 		if (researchItem->entryIndex == RESEARCHED_ITEMS_END) continue;

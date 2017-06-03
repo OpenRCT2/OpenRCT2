@@ -40,6 +40,12 @@ enum{
 // Extra end of list entry. Unsure why?
 #define RESEARCHED_ITEMS_END_2 -3
 
+#define MAX_RESEARCH_ITEMS 500
+#define MAX_RESEARCHED_SCENERY_ITEMS 56
+#define MAX_RESEARCHED_RIDE_TYPES 8
+#define MAX_RESEARCHED_RIDE_ENTRIES 8
+#define MAX_RESEARCHED_TRACK_TYPES 128
+
 enum {
 	RESEARCH_FUNDING_NONE,
 	RESEARCH_FUNDING_MINIMUM,
@@ -75,13 +81,13 @@ extern uint8 gResearchExpectedDay;
 extern uint8 gResearchNextCategory;
 extern uint32 gResearchNextItem;
 
-extern rct_research_item gResearchItems[500];
+extern rct_research_item gResearchItems[MAX_RESEARCH_ITEMS];
 extern uint8 gResearchUncompletedCategories;
-extern uint32 gResearchedRideTypes[8];
-extern uint32 gResearchedRideEntries[8];
-extern uint32 gResearchedTrackTypesA[128];
-extern uint32 gResearchedTrackTypesB[128];
-extern uint32 gResearchedSceneryItems[56];
+extern uint32 gResearchedRideTypes[MAX_RESEARCHED_RIDE_TYPES];
+extern uint32 gResearchedRideEntries[MAX_RESEARCHED_RIDE_ENTRIES];
+extern uint32 gResearchedTrackTypesA[MAX_RESEARCHED_TRACK_TYPES];
+extern uint32 gResearchedTrackTypesB[MAX_RESEARCHED_TRACK_TYPES];
+extern uint32 gResearchedSceneryItems[MAX_RESEARCHED_SCENERY_ITEMS];
 extern bool gSilentResearch;
 
 void research_reset_items();
@@ -106,5 +112,7 @@ bool ride_type_is_invented(sint32 rideType);
 bool ride_entry_is_invented(sint32 rideEntryIndex);
 bool track_piece_is_available_for_ride_type(uint8 rideType, sint32 trackType);
 bool scenery_is_invented(uint16 sceneryItem);
+void reset_researched_scenery_items();
+void reset_researched_ride_types_and_entries();
 
 #endif

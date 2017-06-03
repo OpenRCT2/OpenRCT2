@@ -44,16 +44,16 @@ uint8 gResearchNextCategory;
 uint32 gResearchNextItem;
 
 // 0x01358844[500]
-rct_research_item gResearchItems[500];
+rct_research_item gResearchItems[MAX_RESEARCH_ITEMS];
 
 // 0x00EE787C
 uint8 gResearchUncompletedCategories;
 
-uint32 gResearchedRideTypes[8];
-uint32 gResearchedRideEntries[8];
-uint32 gResearchedTrackTypesA[128];
-uint32 gResearchedTrackTypesB[128];
-uint32 gResearchedSceneryItems[56];
+uint32 gResearchedRideTypes[MAX_RESEARCHED_RIDE_TYPES];
+uint32 gResearchedRideEntries[MAX_RESEARCHED_RIDE_ENTRIES];
+uint32 gResearchedTrackTypesA[MAX_RESEARCHED_TRACK_TYPES];
+uint32 gResearchedTrackTypesB[MAX_RESEARCHED_TRACK_TYPES];
+uint32 gResearchedSceneryItems[MAX_RESEARCHED_SCENERY_ITEMS];
 
 bool gSilentResearch = false;
 
@@ -635,4 +635,23 @@ bool scenery_is_invented(uint16 sceneryItem)
 	sint32 bitIndex = sceneryItem & 0x1F;
 	bool invented = (gResearchedSceneryItems[quadIndex] & ((uint32)1 << bitIndex));
 	return invented;
+}
+
+void reset_researched_scenery_items()
+{
+	for (sint32 i = 0; i < MAX_RESEARCHED_SCENERY_ITEMS; i++) {
+		gResearchedSceneryItems[i] = 0xFFFFFFFF;
+	}
+}
+
+void reset_researched_ride_types_and_entries()
+{
+	// Iteration endpoint used to be 4 for unknown reasons, likely a mistake
+	for (sint32 i = 0; i < MAX_RESEARCHED_RIDE_TYPES; i++) {
+		gResearchedRideTypes[i] = 0xFFFFFFFF;
+	}
+
+	for (sint32 i = 0; i < MAX_RESEARCHED_RIDE_ENTRIES; i++) {
+		gResearchedRideEntries[i] = 0xFFFFFFFF;
+	}
 }

@@ -1684,13 +1684,7 @@ static sint32 get_object_from_object_selection(uint8 object_type, sint32 y)
  */
 static void window_editor_object_selection_manage_tracks()
 {
-	for (sint32 i = 0; i < 4; i++) {
-		gResearchedRideTypes[i] = 0xFFFFFFFF;
-	}
-
-	for (sint32 i = 0; i < 8; i++) {
-		gResearchedRideEntries[i] = 0xFFFFFFFF;
-	}
+	reset_researched_ride_types_and_entries();
 
 	gS6Info.editor_step = EDITOR_STEP_TRACK_DESIGNS_MANAGER;
 
