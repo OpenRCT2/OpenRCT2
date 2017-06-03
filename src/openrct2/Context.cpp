@@ -17,6 +17,7 @@
 #include <exception>
 #include <memory>
 #include <string>
+#include "audio/AudioContext.h"
 #include "Context.h"
 #include "ui/UiContext.h"
 #include "core/Console.hpp"
@@ -139,8 +140,7 @@ namespace OpenRCT2
             _finished = true;
         }
 
-    private:
-        bool Initialise()
+        bool Initialise() final override
         {
 #ifndef DISABLE_NETWORK
             gHashCTX = EVP_MD_CTX_create();
@@ -233,6 +233,7 @@ namespace OpenRCT2
             return true;
         }
 
+    private:
         IPlatformEnvironment * SetupEnvironment()
         {
             utf8 userPath[MAX_PATH];
@@ -544,11 +545,30 @@ namespace OpenRCT2
         }
     };
 
+    class PlainContext final : public Context
+    {
+        std::unique_ptr<IAudioContext>  _audioContext;
+        std::unique_ptr<IUiContext>     _uiContext;
+
+    public:
+        PlainContext()
+            : PlainContext(CreateDummyAudioContext(), CreateDummyUiContext())
+        {
+        }
+
+        PlainContext(IAudioContext * audioContext, IUiContext * uiContext)
+            : Context(audioContext, uiContext)
+        {
+            _audioContext = std::unique_ptr<IAudioContext>(audioContext);
+            _uiContext = std::unique_ptr<IUiContext>(uiContext);
+        }
+    };
+
     Context * Context::Instance = nullptr;
 
     IContext * CreateContext()
     {
-        return new Context(nullptr, nullptr);
+        return new PlainContext();
     }
 
     IContext * CreateContext(Audio::IAudioContext * audioContext, IUiContext * uiContext)

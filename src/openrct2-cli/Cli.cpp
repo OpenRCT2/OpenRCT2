@@ -15,6 +15,7 @@
 #pragma endregion
 
 #include <openrct2/Context.h>
+#include <openrct2/OpenRCT2.h>
 
 using namespace OpenRCT2;
 
@@ -23,8 +24,16 @@ using namespace OpenRCT2;
 */
 int main(int argc, char * * argv)
 {
-    IContext * context = CreateContext();
-    int exitCode = context->RunOpenRCT2(argc, argv);
-    delete context;
-    return exitCode;
+    core_init();
+    int runGame = cmdline_run((const char * *)argv, argc);
+    if (runGame == 1)
+    {
+        gOpenRCT2Headless = true;
+
+        // Run OpenRCT2 with a plain context
+        auto context = CreateContext();
+        context->RunOpenRCT2(argc, argv);
+        delete context;
+    }
+    return gExitCode;
 }

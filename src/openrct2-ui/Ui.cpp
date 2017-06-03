@@ -39,16 +39,26 @@ int main(int argc, char * * argv)
     int runGame = cmdline_run((const char * *)argv, argc);
     if (runGame == 1)
     {
-        // Run OpenRCT2 with a UI context
-        IAudioContext * audioContext = CreateAudioContext();
-        IUiContext * uiContext = gOpenRCT2Headless ? CreateDummyUiContext() : CreateUiContext();
-        IContext * context = CreateContext(audioContext, uiContext);
+        if (gOpenRCT2Headless)
+        {
+            // Run OpenRCT2 with a plain context
+            auto context = CreateContext();
+            context->RunOpenRCT2(argc, argv);
+            delete context;
+        }
+        else
+        {
+            // Run OpenRCT2 with a UI context
+            auto audioContext = CreateAudioContext();
+            auto uiContext = CreateUiContext();
+            auto context = CreateContext(audioContext, uiContext);
 
-        context->RunOpenRCT2(argc, argv);
+            context->RunOpenRCT2(argc, argv);
 
-        delete context;
-        delete uiContext;
-        delete audioContext;
+            delete context;
+            delete uiContext;
+            delete audioContext;
+        }
     }
     return gExitCode;
 }

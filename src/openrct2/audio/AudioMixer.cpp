@@ -59,16 +59,19 @@ void * Mixer_Play_Effect(size_t id, sint32 loop, sint32 volume, float pan, doubl
         else
         {
             IAudioMixer * mixer = GetMixer();
-            mixer->Lock();
-            IAudioSource * source = mixer->GetSoundSource((sint32)id);
-            channel = mixer->Play(source, loop, deleteondone != 0, false);
-            if (channel != nullptr)
+            if (mixer != nullptr)
             {
-                channel->SetVolume(volume);
-                channel->SetPan(pan);
-                channel->SetRate(rate);
+                mixer->Lock();
+                IAudioSource * source = mixer->GetSoundSource((sint32)id);
+                channel = mixer->Play(source, loop, deleteondone != 0, false);
+                if (channel != nullptr)
+                {
+                    channel->SetVolume(volume);
+                    channel->SetPan(pan);
+                    channel->SetRate(rate);
+                }
+                mixer->Unlock();
             }
-            mixer->Unlock();
         }
     }
     return channel;

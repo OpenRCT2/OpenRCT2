@@ -60,5 +60,7 @@ namespace OpenRCT2
             virtual void StopTitleMusic() abstract;
             virtual void StopVehicleSounds() abstract;
         };
+
+        IAudioContext * CreateDummyAudioContext();
     }
 }

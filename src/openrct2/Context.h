@@ -80,6 +80,8 @@ namespace OpenRCT2
         virtual Ui::IUiContext *        GetUiContext() abstract;
 
         virtual sint32 RunOpenRCT2(int argc, char * * argv) abstract;
+
+        virtual bool Initialise() abstract;
         virtual void Finish() abstract;
     };
 
