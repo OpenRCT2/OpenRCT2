@@ -25,6 +25,7 @@
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/ui/UiContext.h>
 #include <openrct2-ui/audio/AudioContext.h>
+#include <openrct2-ui/Ui.h>
 #include <openrct2-ui/UiContext.h>
 
 using namespace OpenRCT2;
@@ -36,25 +37,6 @@ using namespace OpenRCT2::Ui;
 static char * * GetCommandLineArgs(int argc, wchar_t * * argvW);
 static void FreeCommandLineArgs(int argc, char * * argv);
 static char * ConvertUTF16toUTF8(const wchar_t * src);
-
-static int NormalisedMain(int argc, char * * argv)
-{
-    core_init();
-    int runGame = cmdline_run((const char * *)argv, argc);
-    if (runGame == 1)
-    {
-        IAudioContext * audioContext = CreateAudioContext();
-        IUiContext * uiContext = CreateUiContext();
-        IContext * context = CreateContext(audioContext, uiContext);
-
-        context->RunOpenRCT2(argc, argv);
-
-        delete context;
-        delete uiContext;
-        delete audioContext;
-    }
-    return gExitCode;
-}
 
 DLLEXPORT int LaunchOpenRCT2(int argc, wchar_t * * argvW)
 {

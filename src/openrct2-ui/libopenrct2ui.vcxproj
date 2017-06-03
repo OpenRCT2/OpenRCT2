@@ -64,6 +64,7 @@
     <ClInclude Include="drawing\engines\opengl\TextureCache.h" />
     <ClInclude Include="SDLException.h" />
     <ClInclude Include="TextComposition.h" />
+    <ClInclude Include="Ui.h" />
     <ClInclude Include="UiContext.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

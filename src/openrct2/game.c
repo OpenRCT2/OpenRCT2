@@ -338,31 +338,34 @@ void game_update()
 
 	gGameCommandNestLevel = 0;
 
-	input_set_flag(INPUT_FLAG_VIEWPORT_SCROLLING, false);
+	if (!gOpenRCT2Headless)
+	{
+		input_set_flag(INPUT_FLAG_VIEWPORT_SCROLLING, false);
 
-	// the flickering frequency is reduced by 4, compared to the original
-	// it was done due to inability to reproduce original frequency
-	// and decision that the original one looks too fast
-	if (gCurrentTicks % 4 == 0)
-		gWindowMapFlashingFlags ^= (1 << 15);
+		// the flickering frequency is reduced by 4, compared to the original
+		// it was done due to inability to reproduce original frequency
+		// and decision that the original one looks too fast
+		if (gCurrentTicks % 4 == 0)
+			gWindowMapFlashingFlags ^= (1 << 15);
 
-	// Handle guest map flashing
-	gWindowMapFlashingFlags &= ~(1 << 1);
-	if (gWindowMapFlashingFlags & (1 << 0))
-		gWindowMapFlashingFlags |= (1 << 1);
-	gWindowMapFlashingFlags &= ~(1 << 0);
+		// Handle guest map flashing
+		gWindowMapFlashingFlags &= ~(1 << 1);
+		if (gWindowMapFlashingFlags & (1 << 0))
+			gWindowMapFlashingFlags |= (1 << 1);
+		gWindowMapFlashingFlags &= ~(1 << 0);
 
-	// Handle staff map flashing
-	gWindowMapFlashingFlags &= ~(1 << 3);
-	if (gWindowMapFlashingFlags & (1 << 2))
-		gWindowMapFlashingFlags |= (1 << 3);
-	gWindowMapFlashingFlags &= ~(1 << 2);
+		// Handle staff map flashing
+		gWindowMapFlashingFlags &= ~(1 << 3);
+		if (gWindowMapFlashingFlags & (1 << 2))
+			gWindowMapFlashingFlags |= (1 << 3);
+		gWindowMapFlashingFlags &= ~(1 << 2);
 
-	window_map_tooltip_update_visibility();
+		window_map_tooltip_update_visibility();
 
-	// Input
-	gUnk141F568 = gUnk13CA740;
-	game_handle_input();
+		// Input
+		gUnk141F568 = gUnk13CA740;
+		game_handle_input();
+	}
 }
 
 void game_logic_update()
@@ -915,8 +918,11 @@ void game_load_init()
 
 	load_palette();
 	gfx_invalidate_screen();
-	window_tile_inspector_clear_clipboard();
-	window_update_all();
+
+	if (!gOpenRCT2Headless) {
+		window_tile_inspector_clear_clipboard();
+		window_update_all();
+	}
 
 	gGameSpeed = 1;
 }

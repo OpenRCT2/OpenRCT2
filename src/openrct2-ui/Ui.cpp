@@ -14,13 +14,12 @@
 *****************************************************************************/
 #pragma endregion
 
-#ifndef _MSC_VER
-
 #include <openrct2/audio/AudioContext.h>
 #include <openrct2/Context.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/ui/UiContext.h>
 #include "audio/AudioContext.h"
+#include "Ui.h"
 #include "UiContext.h"
 
 using namespace OpenRCT2;
@@ -30,7 +29,11 @@ using namespace OpenRCT2::Ui;
 /**
  * Main entry point for non-Windows sytems. Windows instead uses its own DLL proxy.
  */
+#ifdef _MSC_VER
+int NormalisedMain(int argc, char * * argv)
+#else
 int main(int argc, char * * argv)
+#endif
 {
     core_init();
     int runGame = cmdline_run((const char * *)argv, argc);
@@ -38,7 +41,7 @@ int main(int argc, char * * argv)
     {
         // Run OpenRCT2 with a UI context
         IAudioContext * audioContext = CreateAudioContext();
-        IUiContext * uiContext = CreateUiContext();
+        IUiContext * uiContext = gOpenRCT2Headless ? CreateDummyUiContext() : CreateUiContext();
         IContext * context = CreateContext(audioContext, uiContext);
 
         context->RunOpenRCT2(argc, argv);
@@ -49,5 +52,3 @@ int main(int argc, char * * argv)
     }
     return gExitCode;
 }
-
-#endif
