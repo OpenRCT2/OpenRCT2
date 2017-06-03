@@ -274,6 +274,9 @@ bool Network::BeginServer(uint16 port, const char* address)
 
 	_userManager.Load();
 
+	if (strlen(address) == 0)
+		address = nullptr;
+
 	log_verbose("Begin listening for clients");
 
 	assert(listening_socket == nullptr);
@@ -2134,9 +2137,9 @@ sint32 network_begin_client(const char *host, sint32 port)
 	return gNetwork.BeginClient(host, port);
 }
 
-sint32 network_begin_server(sint32 port)
+sint32 network_begin_server(sint32 port, const char* address)
 {
-	return gNetwork.BeginServer(port);
+	return gNetwork.BeginServer(port, address);
 }
 
 void network_update()
@@ -2670,7 +2673,7 @@ void network_send_gamecmd(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uint32
 void network_send_map() {}
 void network_update() {}
 sint32 network_begin_client(const char *host, sint32 port) { return 1; }
-sint32 network_begin_server(sint32 port) { return 1; }
+sint32 network_begin_server(sint32 port, const char * address) { return 1; }
 sint32 network_get_num_players() { return 1; }
 const char* network_get_player_name(uint32 index) { return "local (OpenRCT2 compiled without MP)"; }
 uint32 network_get_player_flags(uint32 index) { return 0; }

@@ -44,8 +44,10 @@ extern "C"
 sint32  gNetworkStart = NETWORK_MODE_NONE;
 char gNetworkStartHost[128];
 sint32  gNetworkStartPort = NETWORK_DEFAULT_PORT;
+char* gNetworkStartAddress = nullptr;
 
 static uint32 _port            = 0;
+static char*  _address         = nullptr;
 #endif
 
 static bool   _help            = false;
@@ -72,6 +74,7 @@ static const CommandLineOptionDefinition StandardOptions[]
     { CMDLINE_TYPE_SWITCH,  &_headless,        NAC, "headless",          "run " OPENRCT2_NAME " headless" IMPLIES_SILENT_BREAKPAD     },
 #ifndef DISABLE_NETWORK
     { CMDLINE_TYPE_INTEGER, &_port,            NAC, "port",              "port to use for hosting or joining a server"                },
+    { CMDLINE_TYPE_STRING,  &_address,         NAC, "address",           "address to listen on when hosting a server"                 },
 #endif
     { CMDLINE_TYPE_STRING,  &_password,        NAC, "password",          "password needed to join the server"                         },
     { CMDLINE_TYPE_STRING,  &_userDataPath,    NAC, "user-data-path",    "path to the user data directory (containing config.ini)"    },
@@ -287,6 +290,8 @@ exitcode_t HandleCommandHost(CommandLineArgEnumerator * enumerator)
 
     gNetworkStart = NETWORK_MODE_SERVER;
     gNetworkStartPort = _port;
+    gNetworkStartAddress = _address;
+
     return EXITCODE_CONTINUE;
 }
 

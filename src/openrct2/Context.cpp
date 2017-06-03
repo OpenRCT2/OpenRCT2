@@ -345,6 +345,11 @@ namespace OpenRCT2
                         gNetworkStartPort = gConfigNetwork.default_port;
                     }
 
+                    if (String::IsNullOrEmpty(gNetworkStartAddress))
+                    {
+                        gNetworkStartAddress = gConfigNetwork.listen_address;
+                    }
+
                     if (String::IsNullOrEmpty(gCustomPassword))
                     {
                         network_set_password(gConfigNetwork.default_password);
@@ -353,7 +358,7 @@ namespace OpenRCT2
                     {
                         network_set_password(gCustomPassword);
                     }
-                    network_begin_server(gNetworkStartPort);
+                    network_begin_server(gNetworkStartPort, gNetworkStartAddress);
                 }
 #endif // DISABLE_NETWORK
                 break;

@@ -67,6 +67,7 @@ extern "C"
     extern sint32 gNetworkStart;
     extern char gNetworkStartHost[128];
     extern sint32 gNetworkStartPort;
+    extern char* gNetworkStartAddress;
 #endif
 
     void openrct2_write_full_version_info(utf8 * buffer, size_t bufferSize);
