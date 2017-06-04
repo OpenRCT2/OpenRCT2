@@ -222,7 +222,7 @@ void viewport_update_pointers()
  * edx is assumed to be (and always is) the current rotation, so it is not
  * needed as parameter.
  */
-void sub_689174(sint16* x, sint16* y, sint16 *z)
+void viewport_adjust_for_map_height(sint16* x, sint16* y, sint16 *z)
 {
 	sint16 start_x = *x;
 	sint16 start_y = *y;
@@ -526,7 +526,7 @@ void viewport_update_position(rct_window *window)
 	sint16 y = viewport->view_height / 2 + window->saved_view_y;
 	sint16 z;
 
-	sub_689174(&x, &y, &z);
+	viewport_adjust_for_map_height(&x, &y, &z);
 
 	viewport_set_underground_flag(0, window, viewport);
 

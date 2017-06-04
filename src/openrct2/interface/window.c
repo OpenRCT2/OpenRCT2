@@ -1451,7 +1451,7 @@ void window_rotate_camera(rct_window *w, sint32 direction)
 		x = (viewport->view_width >> 1) + viewport->view_x;
 		y = (viewport->view_height >> 1) + viewport->view_y;
 
-		sub_689174(&x, &y, &z);
+		viewport_adjust_for_map_height(&x, &y, &z);
 	}
 	else {
 		z = map_element_height(x, y);
