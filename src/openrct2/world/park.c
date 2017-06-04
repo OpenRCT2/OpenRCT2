@@ -774,6 +774,15 @@ void update_park_fences(sint32 x, sint32 y)
 	}
 }
 
+void update_park_fences_around_tile(sint32 x, sint32 y)
+{
+	update_park_fences(x, y);
+	update_park_fences(x + 32, y);
+	update_park_fences(x - 32, y);
+	update_park_fences(x, y + 32);
+	update_park_fences(x, y - 32);
+}
+
 void park_set_name(const char *name)
 {
 	gGameCommandErrorTitle = STR_CANT_RENAME_PARK;
@@ -860,21 +869,13 @@ static money32 map_buy_land_rights_for_tile(sint32 x, sint32 y, sint32 setting, 
 		}
 		if (flags & GAME_COMMAND_FLAG_APPLY) {
 			surfaceElement->properties.surface.ownership |= OWNERSHIP_OWNED;
-			update_park_fences(x, y);
-			update_park_fences(x - 32, y);
-			update_park_fences(x + 32, y);
-			update_park_fences(x, y + 32);
-			update_park_fences(x, y - 32);
+			update_park_fences_around_tile(x, y);
 		}
 		return gLandPrice;
 	case 1:
 		if (flags & GAME_COMMAND_FLAG_APPLY) {
 			surfaceElement->properties.surface.ownership &= ~(OWNERSHIP_OWNED | OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED);
-			update_park_fences(x, y);
-			update_park_fences(x - 32, y);
-			update_park_fences(x + 32, y);
-			update_park_fences(x, y + 32);
-			update_park_fences(x, y - 32);
+			update_park_fences_around_tile(x, y);
 		}
 		return 0;
 	case 2:
@@ -958,11 +959,7 @@ static money32 map_buy_land_rights_for_tile(sint32 x, sint32 y, sint32 setting, 
 		}
 		surfaceElement->properties.surface.ownership &= 0x0F;
 		surfaceElement->properties.surface.ownership |= newOwnership;
-		update_park_fences(x, y);
-		update_park_fences(x - 32, y);
-		update_park_fences(x + 32, y);
-		update_park_fences(x, y + 32);
-		update_park_fences(x, y - 32);
+		update_park_fences_around_tile(x, y);
 		gUnk9E2E28 |= 1;
 		return 0;
 	}

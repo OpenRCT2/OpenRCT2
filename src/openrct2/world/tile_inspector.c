@@ -389,7 +389,7 @@ sint32 tile_inspector_surface_show_park_fences(sint32 x, sint32 y, bool showFenc
 		if (!showFences)
 			surfaceelement->properties.surface.ownership &= ~0x0F;
 		else
-			update_park_fences(x << 5, y << 5);
+			update_park_fences_around_tile(x << 5, y << 5);
 
 		map_invalidate_tile_full(x << 5, y << 5);
 
