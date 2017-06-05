@@ -574,6 +574,28 @@ static rct_map_element* window_tile_inspector_get_selected_element(rct_window *w
 	return map_get_first_element_at(windowTileInspectorTileX, windowTileInspectorTileY) + w->selected_list_item;
 }
 
+static void window_tile_inspector_select_element_from_list(rct_window *w, sint32 index)
+{
+	sint32 page;
+	if (index < 0 || index >= windowTileInspectorElementCount) {
+		w->selected_list_item = -1;
+		page = 0;
+	}
+	else {
+		w->selected_list_item = index;
+
+		// Get type of selected map element to select the correct page
+		rct_map_element *const mapElement = window_tile_inspector_get_selected_element(w);
+		page = (min(map_element_get_type(mapElement), MAP_ELEMENT_TYPE_CORRUPT) >> 2) + 1;
+	}
+
+	window_tile_inspector_set_page(w, page);
+
+	// Enable/disable buttons
+	window_tile_inspector_auto_set_buttons(w);
+	window_invalidate(w);
+}
+
 static void window_tile_inspector_load_tile(rct_window* w)
 {
 	rct_map_element *element = map_get_first_element_at(windowTileInspectorTileX, windowTileInspectorTileY);
@@ -910,9 +932,12 @@ static void window_tile_inspector_mouseup(rct_window *w, rct_widgetindex widgetI
 	case WIDX_BUTTON_CORRUPT:
 		window_tile_inspector_insert_corrupt_element(w->selected_list_item);
 		break;
-	case WIDX_BUTTON_REMOVE:
+	case WIDX_BUTTON_REMOVE: {
+		sint32 nextItemToSelect = w->selected_list_item - 1;
 		window_tile_inspector_remove_element(w->selected_list_item);
+		window_tile_inspector_select_element_from_list(w, nextItemToSelect);
 		break;
+	}
 	case WIDX_BUTTON_ROTATE:
 		window_tile_inspector_rotate_element(w->selected_list_item);
 		break;
@@ -1344,24 +1369,7 @@ static void window_tile_inspector_scrollmousedown(rct_window *w, sint32 scrollIn
 {
 	// Because the list items are displayed in reverse order, subtract the calculated index from the amount of elements
 	const sint16 index = windowTileInspectorElementCount - (y - 1) / LIST_ITEM_HEIGHT - 1;
-	sint32 page;
-	if (index < 0 || index >= windowTileInspectorElementCount) {
-		w->selected_list_item = -1;
-		page = 0;
-	}
-	else {
-		w->selected_list_item = index;
-
-		// Get type of selected map element to select the correct page
-		rct_map_element *const mapElement = window_tile_inspector_get_selected_element(w);
-		page = (min(map_element_get_type(mapElement), MAP_ELEMENT_TYPE_CORRUPT) >> 2) + 1;
-	}
-
-	window_tile_inspector_set_page(w, page);
-
-	// Enable/disable buttons
-	window_tile_inspector_auto_set_buttons(w);
-	window_invalidate(w);
+	window_tile_inspector_select_element_from_list(w, index);
 }
 
 static void window_tile_inspector_scrollmouseover(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y)
