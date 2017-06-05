@@ -68,6 +68,7 @@ rct_ride_rating_calc_data gRideRatingsCalcData;
 
 static const ride_ratings_calculation ride_ratings_calculate_func_table[RIDE_TYPE_COUNT];
 
+static void ride_ratings_update_state();
 static void ride_ratings_update_state_0();
 static void ride_ratings_update_state_1();
 static void ride_ratings_update_state_2();
@@ -80,6 +81,25 @@ static void ride_ratings_calculate_value(rct_ride *ride);
 static void ride_ratings_score_close_proximity(rct_map_element *mapElement);
 
 /**
+ * This is a small hack function to keep calling the ride rating processor until
+ * the given ride's ratings have been calculated. What ever is currently being
+ * processed will be overwritten.
+ * Only purpose of this function currently is for testing.
+ */
+void ride_ratings_update_ride(int rideIndex)
+{
+	rct_ride *ride = get_ride(rideIndex);
+	if (ride->type != RIDE_TYPE_NULL && ride->status != RIDE_STATUS_CLOSED) {
+		gRideRatingsCalcData.current_ride = rideIndex;
+		gRideRatingsCalcData.state = RIDE_RATINGS_STATE_INITIALISE;
+		while (gRideRatingsCalcData.state != RIDE_RATINGS_STATE_FIND_NEXT_RIDE)
+		{
+			ride_ratings_update_state();
+		}
+	}
+}
+
+/**
  *
  *  rct2: 0x006B5A2A
  */
@@ -88,6 +108,11 @@ void ride_ratings_update_all()
 	if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
 		return;
 
+	ride_ratings_update_state();
+}
+
+static void ride_ratings_update_state()
+{
 	switch (gRideRatingsCalcData.state) {
 	case RIDE_RATINGS_STATE_FIND_NEXT_RIDE:
 		ride_ratings_update_state_0();

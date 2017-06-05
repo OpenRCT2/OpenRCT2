@@ -8221,15 +8221,15 @@ uint32 ride_customers_per_hour(const rct_ride *ride) {
 // Calculates the number of customers for this ride in the last 5 minutes (or more correctly 9600 game ticks)
 uint32 ride_customers_in_last_5_minutes(const rct_ride *ride) {
 	uint32 sum = ride->num_customers[0]
-	             + ride->num_customers[1]
-	             + ride->num_customers[2]
-	             + ride->num_customers[3]
-	             + ride->num_customers[4]
-	             + ride->num_customers[5]
-	             + ride->num_customers[6]
-	             + ride->num_customers[7]
-	             + ride->num_customers[8]
-	             + ride->num_customers[9];
+				 + ride->num_customers[1]
+				 + ride->num_customers[2]
+				 + ride->num_customers[3]
+				 + ride->num_customers[4]
+				 + ride->num_customers[5]
+				 + ride->num_customers[6]
+				 + ride->num_customers[7]
+				 + ride->num_customers[8]
+				 + ride->num_customers[9];
 	return sum;
 }
 
@@ -8375,4 +8375,104 @@ bool ride_has_adjacent_station(rct_ride *ride)
 bool ride_has_ratings(const rct_ride * ride)
 {
 	return ride->excitement != RIDE_RATING_UNDEFINED;
+}
+
+const char * ride_type_get_enum_name(sint32 rideType)
+{
+	static const char * RideTypeEnumNames[RIDE_TYPE_COUNT] =
+	{
+		nameof(RIDE_TYPE_SPIRAL_ROLLER_COASTER),
+		nameof(RIDE_TYPE_STAND_UP_ROLLER_COASTER),
+		nameof(RIDE_TYPE_SUSPENDED_SWINGING_COASTER),
+		nameof(RIDE_TYPE_INVERTED_ROLLER_COASTER),
+		nameof(RIDE_TYPE_JUNIOR_ROLLER_COASTER),
+		nameof(RIDE_TYPE_MINIATURE_RAILWAY),
+		nameof(RIDE_TYPE_MONORAIL),
+		nameof(RIDE_TYPE_MINI_SUSPENDED_COASTER),
+		nameof(RIDE_TYPE_BOAT_RIDE),
+		nameof(RIDE_TYPE_WOODEN_WILD_MOUSE),
+		nameof(RIDE_TYPE_STEEPLECHASE),
+		nameof(RIDE_TYPE_CAR_RIDE),
+		nameof(RIDE_TYPE_LAUNCHED_FREEFALL),
+		nameof(RIDE_TYPE_BOBSLEIGH_COASTER),
+		nameof(RIDE_TYPE_OBSERVATION_TOWER),
+		nameof(RIDE_TYPE_LOOPING_ROLLER_COASTER),
+		nameof(RIDE_TYPE_DINGHY_SLIDE),
+		nameof(RIDE_TYPE_MINE_TRAIN_COASTER),
+		nameof(RIDE_TYPE_CHAIRLIFT),
+		nameof(RIDE_TYPE_CORKSCREW_ROLLER_COASTER),
+		nameof(RIDE_TYPE_MAZE),
+		nameof(RIDE_TYPE_SPIRAL_SLIDE),
+		nameof(RIDE_TYPE_GO_KARTS),
+		nameof(RIDE_TYPE_LOG_FLUME),
+		nameof(RIDE_TYPE_RIVER_RAPIDS),
+		nameof(RIDE_TYPE_DODGEMS),
+		nameof(RIDE_TYPE_PIRATE_SHIP),
+		nameof(RIDE_TYPE_SWINGING_INVERTER_SHIP),
+		nameof(RIDE_TYPE_FOOD_STALL),
+		nameof(RIDE_TYPE_1D),
+		nameof(RIDE_TYPE_DRINK_STALL),
+		nameof(RIDE_TYPE_1F),
+		nameof(RIDE_TYPE_SHOP),
+		nameof(RIDE_TYPE_MERRY_GO_ROUND),
+		nameof(RIDE_TYPE_22),
+		nameof(RIDE_TYPE_INFORMATION_KIOSK),
+		nameof(RIDE_TYPE_TOILETS),
+		nameof(RIDE_TYPE_FERRIS_WHEEL),
+		nameof(RIDE_TYPE_MOTION_SIMULATOR),
+		nameof(RIDE_TYPE_3D_CINEMA),
+		nameof(RIDE_TYPE_TOP_SPIN),
+		nameof(RIDE_TYPE_SPACE_RINGS),
+		nameof(RIDE_TYPE_REVERSE_FREEFALL_COASTER),
+		nameof(RIDE_TYPE_LIFT),
+		nameof(RIDE_TYPE_VERTICAL_DROP_ROLLER_COASTER),
+		nameof(RIDE_TYPE_CASH_MACHINE),
+		nameof(RIDE_TYPE_TWIST),
+		nameof(RIDE_TYPE_HAUNTED_HOUSE),
+		nameof(RIDE_TYPE_FIRST_AID),
+		nameof(RIDE_TYPE_CIRCUS_SHOW),
+		nameof(RIDE_TYPE_GHOST_TRAIN),
+		nameof(RIDE_TYPE_TWISTER_ROLLER_COASTER),
+		nameof(RIDE_TYPE_WOODEN_ROLLER_COASTER),
+		nameof(RIDE_TYPE_SIDE_FRICTION_ROLLER_COASTER),
+		nameof(RIDE_TYPE_WILD_MOUSE),
+		nameof(RIDE_TYPE_MULTI_DIMENSION_ROLLER_COASTER),
+		nameof(RIDE_TYPE_MULTI_DIMENSION_ROLLER_COASTER_ALT),
+		nameof(RIDE_TYPE_FLYING_ROLLER_COASTER),
+		nameof(RIDE_TYPE_FLYING_ROLLER_COASTER_ALT),
+		nameof(RIDE_TYPE_VIRGINIA_REEL),
+		nameof(RIDE_TYPE_SPLASH_BOATS),
+		nameof(RIDE_TYPE_MINI_HELICOPTERS),
+		nameof(RIDE_TYPE_LAY_DOWN_ROLLER_COASTER),
+		nameof(RIDE_TYPE_SUSPENDED_MONORAIL),
+		nameof(RIDE_TYPE_LAY_DOWN_ROLLER_COASTER_ALT),
+		nameof(RIDE_TYPE_REVERSER_ROLLER_COASTER),
+		nameof(RIDE_TYPE_HEARTLINE_TWISTER_COASTER),
+		nameof(RIDE_TYPE_MINI_GOLF),
+		nameof(RIDE_TYPE_GIGA_COASTER),
+		nameof(RIDE_TYPE_ROTO_DROP),
+		nameof(RIDE_TYPE_FLYING_SAUCERS),
+		nameof(RIDE_TYPE_CROOKED_HOUSE),
+		nameof(RIDE_TYPE_MONORAIL_CYCLES),
+		nameof(RIDE_TYPE_COMPACT_INVERTED_COASTER),
+		nameof(RIDE_TYPE_WATER_COASTER),
+		nameof(RIDE_TYPE_AIR_POWERED_VERTICAL_COASTER),
+		nameof(RIDE_TYPE_INVERTED_HAIRPIN_COASTER),
+		nameof(RIDE_TYPE_MAGIC_CARPET),
+		nameof(RIDE_TYPE_SUBMARINE_RIDE),
+		nameof(RIDE_TYPE_RIVER_RAFTS),
+		nameof(RIDE_TYPE_50),
+		nameof(RIDE_TYPE_ENTERPRISE),
+		nameof(RIDE_TYPE_52),
+		nameof(RIDE_TYPE_53),
+		nameof(RIDE_TYPE_54),
+		nameof(RIDE_TYPE_55),
+		nameof(RIDE_TYPE_INVERTED_IMPULSE_COASTER),
+		nameof(RIDE_TYPE_MINI_ROLLER_COASTER),
+		nameof(RIDE_TYPE_MINE_RIDE),
+		nameof(RIDE_TYPE_59),
+		nameof(RIDE_TYPE_LIM_LAUNCHED_ROLLER_COASTER),
+	};
+
+	return RideTypeEnumNames[rideType];
 }

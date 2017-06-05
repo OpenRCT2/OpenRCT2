@@ -71,6 +71,38 @@ namespace File
         auto fs = FileStream(path, FILE_MODE_WRITE);
         fs.Write(buffer, length);
     }
+
+    std::vector<std::string> ReadAllLines(const std::string &path)
+    {
+        std::vector<std::string> lines;
+        size_t length;
+        char * data = (char *)ReadAllBytes(path, &length);
+        char * lineStart = data;
+        char * ch = data;
+        char lastC = 0;
+        for (size_t i = 0; i < length; i++)
+        {
+            char c = *ch;
+            if (c == '\n' && lastC == '\r')
+            {
+                // Ignore \r\n
+                lineStart = ch + 1;
+            }
+            else if (c == '\n' || c == '\r')
+            {
+                lines.emplace_back(lineStart, ch - lineStart);
+                lineStart = ch + 1;
+            }
+            lastC = c;
+            ch++;
+        }
+
+        // Last line
+        lines.emplace_back(lineStart, ch - lineStart);
+
+        Memory::Free(data);
+        return lines;
+    }
 }
 
 extern "C"

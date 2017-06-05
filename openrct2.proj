@@ -189,7 +189,10 @@
   </Target>
 
   <Target Name="Test" DependsOnTargets="Build">
-    <Exec Command="$(TargetDir)tests\tests.exe" />
+    <Exec Command="$(TargetDir)tests\tests.exe &quot;--gtest_output=xml:$(ArtifactsDir)test-results.xml&quot;" />
+  </Target>
+  <Target Name="TestNoRCT2" DependsOnTargets="Build">
+    <Exec Command="$(TargetDir)tests\tests.exe &quot;--gtest_filter=-RideRatings*&quot; &quot;--gtest_output=xml:$(ArtifactsDir)test-results.xml&quot;" />
   </Target>
   <Target Name="TestPaint" DependsOnTargets="Build" Condition="'$(Platform)'=='Win32'">
     <Exec Command="$(TargetDir)testpaint\openrct2.exe" />

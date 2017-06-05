@@ -1164,4 +1164,6 @@ rct_map_element *get_station_platform(sint32 x, sint32 y, sint32 z, sint32 z_tol
 bool ride_has_adjacent_station(rct_ride *ride);
 bool ride_has_ratings(const rct_ride * ride);
 
+const char * ride_type_get_enum_name(sint32 rideType);
+
 #endif

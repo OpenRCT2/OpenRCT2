@@ -21,7 +21,9 @@ configuration: Release
 build:
   project: openrct2.proj
 test_script:
-- ps: msbuild openrct2.proj /t:test /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
+- ps: msbuild openrct2.proj /t:TestNoRCT2 /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
+after_test:
+- ps: (new-object net.webclient).UploadFile("https://ci.appveyor.com/api/testresults/junit/$($env:APPVEYOR_JOB_ID)", (Resolve-Path .\artifacts\test-results.xml))
 artifacts:
 - path: .\artifacts\openrct2-portable*.zip
   name: OpenRCT2-portable
