@@ -4409,7 +4409,7 @@ static void ride_set_start_finish_points(sint32 rideIndex, rct_xy_element *start
  *
  *  rct2: 0x0069ED9E
  */
-static sint32 sub_69ED9E()
+static sint32 count_free_misc_sprite_slots()
 {
 	sint32 miscSpriteCount = gSpriteListCount[SPRITE_LIST_MISC];
 	sint32 remainingSpriteCount = gSpriteListCount[SPRITE_LIST_NULL];
@@ -4770,7 +4770,7 @@ static bool ride_create_vehicles(rct_ride *ride, sint32 rideIndex, rct_xy_elemen
 
 	// Check if there are enough free sprite slots for all the vehicles
 	sint32 totalCars = ride->num_vehicles * ride->num_cars_per_train;
-	if (totalCars > sub_69ED9E()) {
+	if (totalCars > count_free_misc_sprite_slots()) {
 		gGameCommandErrorText = STR_UNABLE_TO_CREATE_ENOUGH_VEHICLES;
 		return false;
 	}
@@ -5006,7 +5006,7 @@ static bool ride_create_cable_lift(sint32 rideIndex, bool isApplying)
 		return false;
 	}
 
-	if (sub_69ED9E() <= 5) {
+	if (count_free_misc_sprite_slots() <= 5) {
 		gGameCommandErrorText = STR_UNABLE_TO_CREATE_ENOUGH_VEHICLES;
 		return false;
 	}
