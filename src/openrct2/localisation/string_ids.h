@@ -3719,6 +3719,8 @@ enum {
 	STR_MUTE_BUTTON_ON_TOOLBAR_TIP = 6057,
 	STR_MUTE_BUTTON_ON_TOOLBAR = 6058,
 
+	STR_RIGHTGUILLEMET = 6059,
+
 	// Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
 	STR_COUNT = 32768
 };
