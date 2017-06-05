@@ -35,14 +35,6 @@
 #include "../world/map.h"
 #include "../world/entrance.h"
 
-/* move to ride.c */
-static void sub_6B2FA9(rct_windownumber number)
-{
-	rct_window* w  = window_find_by_number(WC_RIDE, number);
-	if (w != NULL && w->page == 1)
-		window_close(w);
-}
-
 #pragma region Widgets
 
 enum {
@@ -539,6 +531,14 @@ static sint32 ride_get_alternative_type(rct_ride *ride)
 		ride->type;
 }
 
+/* move to ride.c */
+static void close_ride_window_for_construction(rct_windownumber number)
+{
+	rct_window* w = window_find_by_number(WC_RIDE, number);
+	if (w != NULL && w->page == 1)
+		window_close(w);
+}
+
 /**
  *
  *  rct2: 0x006CB481
@@ -546,7 +546,7 @@ static sint32 ride_get_alternative_type(rct_ride *ride)
 rct_window *window_ride_construction_open()
 {
 	sint32 rideIndex = _currentRideIndex;
-	sub_6B2FA9(rideIndex);
+	close_ride_window_for_construction(rideIndex);
 
 	rct_window *w;
 	rct_ride* ride = get_ride(rideIndex);
