@@ -81,7 +81,7 @@ if (NOT "z$ENV{CI}" STREQUAL "z")
 endif ()
 
 if (NOT DISABLE_RCT2_TESTS)
-    execute_process(COMMAND ${CMAKE_COMMAND} -E create_symlink "${CMAKE_CURRENT_LIST_DIR}/testdata/parks" "${CMAKE_CURRENT_BINARY_DIR}/parks")
+    execute_process(COMMAND ${CMAKE_COMMAND} -E create_symlink "${CMAKE_CURRENT_LIST_DIR}/testdata" "${CMAKE_CURRENT_BINARY_DIR}/testdata")
 endif ()
 
 # Start of our tests
