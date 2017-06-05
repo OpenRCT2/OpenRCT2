@@ -6927,7 +6927,7 @@ static void vehicle_trigger_on_ride_photo(rct_vehicle *vehicle, rct_map_element 
  *
  *  rct2: 0x006DEDE8
  */
-static void sub_6DEDE8(rct_vehicle *vehicle)
+static void vehicle_update_handle_scenery_door(rct_vehicle *vehicle)
 {
 	sint32 trackType = vehicle->track_type >> 2;
 	const rct_preview_track *trackBlock = TrackBlocks[trackType];
@@ -7470,7 +7470,7 @@ loc_6DB41D:
 		vehicle->update_flags ^= VEHICLE_UPDATE_FLAG_13;
 	}
 	if (vehicleEntry->flags_a & VEHICLE_ENTRY_FLAG_A_8) {
-		sub_6DEDE8(vehicle);
+		vehicle_update_handle_scenery_door(vehicle);
 	}
 	return true;
 }
