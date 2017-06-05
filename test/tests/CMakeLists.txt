@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 2.6)
 
+option(DISABLE_RCT2_TESTS "Disable tests that require RollerCoaster Tycoon 2 assets.")
+
 # Bootstrap GoogleTest
 INCLUDE(ExternalProject)
 
@@ -72,6 +74,16 @@ set(COMMON_TEST_SOURCES
 # Create a re-usable library to save some compilation time
 add_library(test-common STATIC ${COMMON_TEST_SOURCES})
 
+# Setup testdata. It should be fine here, as the only way to reach here is by explicitly requesting tests.
+if (NOT "z$ENV{CI}" STREQUAL "z")
+    message("Detected CI environment. Disabling ride rating test.")
+    set(DISABLE_RCT2_TESTS ON)
+endif ()
+
+if (NOT DISABLE_RCT2_TESTS)
+    execute_process(COMMAND ${CMAKE_COMMAND} -E create_symlink "${CMAKE_CURRENT_LIST_DIR}/testdata/parks" "${CMAKE_CURRENT_BINARY_DIR}/parks")
+endif ()
+
 # Start of our tests
 
 # sawyercoding test
@@ -117,10 +129,7 @@ target_link_libraries(test_string ${GTEST_LIBRARIES} test-common dl z)
 add_test(NAME string COMMAND test_string)
 
 # Ride ratings test
-if (NOT "z$ENV{CI}" STREQUAL "z")
-    message("Detected CI environment. Disabling ride rating test.")
-else ()
-    execute_process(COMMAND ${CMAKE_COMMAND} -E create_symlink "${CMAKE_CURRENT_LIST_DIR}/testdata/parks" "${CMAKE_CURRENT_BINARY_DIR}/parks")
+if (NOT DISABLE_RCT2_TESTS)
     set(RIDE_RATINGS_TEST_SOURCES "${CMAKE_CURRENT_LIST_DIR}/RideRatings.cpp"
                                   "${CMAKE_CURRENT_LIST_DIR}/TestData.cpp")
     add_executable(test_ride_ratings ${RIDE_RATINGS_TEST_SOURCES})
