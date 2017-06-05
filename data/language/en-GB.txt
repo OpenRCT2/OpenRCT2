@@ -4370,6 +4370,8 @@ STR_6058    :Mute
 STR_6059    :{RIGHTGUILLEMET}
 STR_6060    :Show guest purchases as animation
 STR_6061    :{SMALLFONT}{BLACK}Show animated money effect{NEWLINE}when guests make purchases.
+STR_6062    :{OUTLINE}{GREEN}+ {CURRENCY2DP}
+STR_6063    :{OUTLINE}{RED}- {CURRENCY2DP}
 
 #############
 # Scenarios #

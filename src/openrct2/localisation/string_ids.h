@@ -3723,6 +3723,8 @@ enum {
 
 	STR_SHOW_GUEST_PURCHASES = 6060,
 	STR_SHOW_GUEST_PURCHASES_TIP = 6061,
+	STR_MONEY_EFFECT_RECEIVE_HIGHP = 6062,
+	STR_MONEY_EFFECT_SPEND_HIGHP = 6063,
 
 	// Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
 	STR_COUNT = 32768

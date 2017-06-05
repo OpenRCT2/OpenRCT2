@@ -32,16 +32,12 @@ static const rct_xy16 _moneyEffectMoveOffset[] = {
  */
 void money_effect_create_at(money32 value, sint32 x, sint32 y, sint32 z, bool vertical)
 {
-	rct_money_effect *moneyEffect;
-	rct_string_id stringId;
-	char buffer[128];
-
-	moneyEffect = (rct_money_effect*)create_sprite(2);
+	rct_money_effect * moneyEffect = (rct_money_effect *)create_sprite(2);
 	if (moneyEffect == NULL)
 		return;
 
 	moneyEffect->value = value;
-	moneyEffect->vertical = vertical;
+	moneyEffect->vertical = (vertical ? 1 : 0);
 	moneyEffect->var_14 = 64;
 	moneyEffect->var_09 = 20;
 	moneyEffect->var_15 = 30;
@@ -51,12 +47,11 @@ void money_effect_create_at(money32 value, sint32 x, sint32 y, sint32 z, bool ve
 	moneyEffect->num_movements = 0;
 	moneyEffect->move_delay = 0;
 
-	stringId = 1388;
-	if (value < 0) {
-		value *= -1;
-		stringId = 1399;
-	}
+	// Construct string to display
+	rct_string_id stringId = money_effect_get_string_id(moneyEffect);
+	char buffer[128];
 	format_string(buffer, 128, stringId, &value);
+
 	gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
 	moneyEffect->offset_x = -(gfx_get_string_width(buffer) / 2);
 	moneyEffect->wiggle = 0;
@@ -129,4 +124,18 @@ void money_effect_update(rct_money_effect *moneyEffect)
 		return;
 
 	sprite_remove((rct_sprite*)moneyEffect);
+}
+
+rct_string_id money_effect_get_string_id(const rct_money_effect * sprite)
+{
+	bool vertical = (sprite->vertical != 0);
+	rct_string_id spentStringId = vertical ? STR_MONEY_EFFECT_SPEND_HIGHP : STR_MONEY_EFFECT_SPEND;
+	rct_string_id receiveStringId = vertical ? STR_MONEY_EFFECT_RECEIVE_HIGHP : STR_MONEY_EFFECT_RECEIVE;
+	rct_string_id stringId = receiveStringId;
+	money32 value = sprite->value;
+	if (value < 0) {
+		value *= -1;
+		stringId = spentStringId;
+	}
+	return stringId;
 }
