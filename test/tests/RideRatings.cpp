@@ -6,7 +6,6 @@
 #include <openrct2/core/Path.hpp>
 #include <openrct2/core/String.hpp>
 #include <openrct2/OpenRCT2.h>
-#include <openrct2/ui/UiContext.h>
 #include "TestData.h"
 
 extern "C"
@@ -16,8 +15,6 @@ extern "C"
 }
 
 using namespace OpenRCT2;
-using namespace OpenRCT2::Audio;
-using namespace OpenRCT2::Ui;
 
 class RideRatings : public testing::Test
 {

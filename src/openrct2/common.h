@@ -296,7 +296,4 @@ assert_struct_size(registers, 7 * 4);
 
 #define UNUSED(x)  ((void)(x))
 
-// Macro for turning symbol names into strings
-#define SZ(x)       #x
-
 #endif
