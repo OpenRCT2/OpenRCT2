@@ -7014,7 +7014,7 @@ static void vehicle_update_handle_water_splash(rct_vehicle *vehicle)
  */
 static void sub_6DB807(rct_vehicle *vehicle)
 {
-	const rct_vehicle_info *moveInfo = vehicle_get_move_info(
+	/*const rct_vehicle_info *moveInfo = vehicle_get_move_info(
 		vehicle->var_CD,
 		vehicle->track_type,
 		vehicle->track_progress
@@ -7022,7 +7022,7 @@ static void sub_6DB807(rct_vehicle *vehicle)
 	sint32 x = vehicle->track_x + moveInfo->x;
 	sint32 y = vehicle->track_y + moveInfo->y;
 	sint32 z = vehicle->z;
-	sprite_move(x, y, z, (rct_sprite*)vehicle);
+	sprite_move(x, y, z, (rct_sprite*)vehicle);*/
 }
 
 extern const rct_xy16 DuckMoveOffset[4];
@@ -7200,7 +7200,7 @@ static bool vehicle_update_motion_collision_detection(
  *
  *  rct2: 0x006DB7D6
  */
-static void sub_6DB7D6(rct_vehicle *vehicle)
+static void vehicle_update_reverser_car_reverse(rct_vehicle *vehicle)
 {
 	rct_vehicle *previousVehicle = GET_VEHICLE(vehicle->prev_vehicle_on_ride);
 	rct_vehicle *nextVehicle = GET_VEHICLE(vehicle->next_vehicle_on_ride);
@@ -7608,7 +7608,7 @@ loc_6DAEB9:
 			trackType == TRACK_ELEM_RIGHT_REVERSER) &&
 		vehicle->track_progress == 96
 		) {
-		sub_6DB7D6(vehicle);
+		vehicle_update_reverser_car_reverse(vehicle);
 
 		const rct_vehicle_info *moveInfo2 = vehicle_get_move_info(
 			vehicle->var_CD,
