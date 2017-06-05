@@ -1413,10 +1413,10 @@ void peep_update_current_action_sprite_type(rct_peep* peep){
 }
 
 /* 0x00693BE5 */
-void sub_693BE5(rct_peep* peep, uint8 al){
-	if (al == peep->special_sprite)return;
+void peep_switch_to_special_sprite(rct_peep* peep, uint8 special_sprite_id){
+	if (special_sprite_id == peep->special_sprite)return;
 
-	peep->special_sprite = al;
+	peep->special_sprite = special_sprite_id;
 
 	// If NONE_1 or NONE_2
 	if (peep->action >= PEEP_ACTION_NONE_1){
@@ -1437,7 +1437,7 @@ void remove_peep_from_ride(rct_peep* peep)
 	peep_decrement_num_riders(peep);
 	peep->state = PEEP_STATE_1;
 	peep_window_state_update(peep);
-	sub_693BE5(peep, 0);
+	peep_switch_to_special_sprite(peep, 0);
 }
 
 static void peep_state_reset(rct_peep* peep){
@@ -1445,7 +1445,7 @@ static void peep_state_reset(rct_peep* peep){
 	peep->state = PEEP_STATE_1;
 	peep_window_state_update(peep);
 
-	sub_693BE5(peep, 0);
+	peep_switch_to_special_sprite(peep, 0);
 }
 
 /**
@@ -2892,7 +2892,7 @@ static void peep_update_ride_sub_state_2_enter_ride(rct_peep* peep, rct_ride* ri
 	}
 
 	if (ride->type == RIDE_TYPE_SPIRAL_SLIDE){
-		sub_693BE5(peep, 1);
+		peep_switch_to_special_sprite(peep, 1);
 	}
 
 	peep_update_ride_sub_state_1(peep);
@@ -3366,7 +3366,7 @@ static void peep_update_ride_sub_state_9(rct_peep* peep){
 			return;
 		}
 
-		sub_693BE5(peep, 0);
+		peep_switch_to_special_sprite(peep, 0);
 		sprite_move(x, y, peep->z, (rct_sprite*)peep);
 		invalidate_sprite_2((rct_sprite*)peep);
 	}
@@ -4967,7 +4967,7 @@ static void peep_update_mowing(rct_peep* peep){
 		peep->var_37++;
 
 		if (peep->var_37 == 1){
-			sub_693BE5(peep, 2);
+			peep_switch_to_special_sprite(peep, 2);
 		}
 
 		if (peep->var_37 == countof(_9929C8)) {

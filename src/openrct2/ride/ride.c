@@ -1170,7 +1170,7 @@ void ride_remove_peeps(sint32 rideIndex)
 
 			invalidate_sprite_2((rct_sprite*)peep);
 			peep->state = PEEP_STATE_FALLING;
-			sub_693BE5(peep, 0);
+			peep_switch_to_special_sprite(peep, 0);
 
 			peep->happiness = min(peep->happiness, peep->happiness_growth_rate) / 2;
 			peep->happiness_growth_rate = peep->happiness;

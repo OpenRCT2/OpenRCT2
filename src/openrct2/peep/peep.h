@@ -755,7 +755,7 @@ void peep_update_current_action_sprite_type(rct_peep* peep);
 void remove_peep_from_ride(rct_peep* peep);
 void remove_peep_from_queue(rct_peep* peep);
 
-void sub_693BE5(rct_peep* peep, uint8 al);
+void peep_switch_to_special_sprite(rct_peep* peep, uint8 special_sprite_id);
 void peep_update_name_sort(rct_peep *peep);
 void peep_sort();
 void peep_update_names(bool realNames);
