@@ -10565,8 +10565,13 @@ static void peep_spend_money(rct_peep *peep, money16 *peep_expend_type, money32 
 	gUnk141F568 = gUnk13CA740;
 	finance_payment(-amount, gCommandExpenditureType);
 
-	if (gConfigGeneral.show_guest_purchases)
-		money_effect_create_at(amount, peep->x, peep->y, peep->z, true);
+	if (gConfigGeneral.show_guest_purchases) {
+		// HACK Currently disabled for multiplayer due to limitation of all sprites
+		//      needing to be synchronised
+		if (network_get_mode() == NETWORK_MODE_NONE) {
+			money_effect_create_at(amount, peep->x, peep->y, peep->z, true);
+		}
+	}
 
 	audio_play_sound_at_location(SOUND_PURCHASE, peep->x, peep->y, peep->z);
 }
