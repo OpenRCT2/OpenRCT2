@@ -3875,7 +3875,7 @@ void map_extend_boundary_surface()
 		newMapElement->base_height = z;
 		newMapElement->clearance_height = z;
 
-		update_park_fences_around_tile(x << 5, y << 5);
+		update_park_fences(x << 5, y << 5);
 	}
 
 	x = gMapSize - 2;
