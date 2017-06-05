@@ -702,7 +702,7 @@ static void peep_leave_park(rct_peep* peep){
  *
  *  rct2: 0x0068F8CD
  */
-static void sub_68F8CD(rct_peep *peep)
+static void peep_decide_whether_to_leave_park(rct_peep *peep)
 {
 	if (peep->energy_growth_rate >= 33) {
 		peep->energy_growth_rate -= 2;
@@ -1113,7 +1113,7 @@ static void sub_68F41A(rct_peep *peep, sint32 index)
 		case PEEP_STATE_WALKING:
 		case PEEP_STATE_LEAVING_PARK:
 		case PEEP_STATE_ENTERING_PARK:
-			sub_68F8CD(peep);
+			peep_decide_whether_to_leave_park(peep);
 			peep_update_hunger(peep);
 			break;
 
@@ -1180,7 +1180,7 @@ static void sub_68F41A(rct_peep *peep, sint32 index)
 		case PEEP_STATE_ENTERING_RIDE:
 			if (peep->sub_state == 17 ||
 				peep->sub_state == 15){
-				sub_68F8CD(peep);
+				peep_decide_whether_to_leave_park(peep);
 			}
 			peep_update_hunger(peep);
 			break;
