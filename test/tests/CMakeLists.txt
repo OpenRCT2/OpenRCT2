@@ -117,6 +117,7 @@ target_link_libraries(test_string ${GTEST_LIBRARIES} test-common dl z)
 add_test(NAME string COMMAND test_string)
 
 # Ride ratings test
+execute_process(COMMAND ${CMAKE_COMMAND} -E create_symlink "${CMAKE_CURRENT_LIST_DIR}/testdata/parks" "${CMAKE_CURRENT_BINARY_DIR}/parks")
 set(RIDE_RATINGS_TEST_SOURCES "${CMAKE_CURRENT_LIST_DIR}/RideRatings.cpp"
                               "${CMAKE_CURRENT_LIST_DIR}/TestData.cpp")
 add_executable(test_ride_ratings ${RIDE_RATINGS_TEST_SOURCES})
