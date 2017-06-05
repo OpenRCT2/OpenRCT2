@@ -16,7 +16,7 @@ matrix:
           services:
             - docker
           env:
-            - OPENRCT2_CMAKE_OPTS="-DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_INSTALL_PREFIX=OpenRCT2 -DPORTABLE=ON" TARGET=ubuntu_amd64
+            - OPENRCT2_CMAKE_OPTS="-DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_INSTALL_PREFIX=OpenRCT2 -DPORTABLE=ON -DDISABLE_RCT2_TESTS=on" TARGET=ubuntu_amd64
             - secure: "S3u2VCE2Vy8KNXoeh+DhnzjCmgTX0r95uEZrXDU+IKANOOCKn7Dg4OFDZE3LY/i1y2/EUDpnR5yLC38Ks795EUP/sv/OoMl4tjQ20yERjqWh+gcIRrgx7SdVabuAh3t4aBdaLD4Pfnj5avxeCt6rL7yGnj0wdbrbJSBZPsgSnuQ="
           after_success:
             - sudo chown -R $USER build
@@ -37,7 +37,7 @@ matrix:
           services:
             - docker
           env:
-            - OPENRCT2_CMAKE_OPTS="-DFORCE32=ON -DDISABLE_RCT2=OFF -DCMAKE_INSTALL_PREFIX=OpenRCT2" TARGET=ubuntu_i686
+            - OPENRCT2_CMAKE_OPTS="-DFORCE32=ON -DDISABLE_RCT2=OFF -DCMAKE_INSTALL_PREFIX=OpenRCT2 -DDISABLE_RCT2_TESTS=on" TARGET=ubuntu_i686
             - secure: "S3u2VCE2Vy8KNXoeh+DhnzjCmgTX0r95uEZrXDU+IKANOOCKn7Dg4OFDZE3LY/i1y2/EUDpnR5yLC38Ks795EUP/sv/OoMl4tjQ20yERjqWh+gcIRrgx7SdVabuAh3t4aBdaLD4Pfnj5avxeCt6rL7yGnj0wdbrbJSBZPsgSnuQ="
           after_success:
             - sudo chown -R $USER build
@@ -55,19 +55,19 @@ matrix:
               else curl --progress-bar --upload-file openrct2-linux.tar.gz https://transfer.sh/openrct2-linux-i686.tar.gz -o link && cat link;
               fi
         - os: linux
-          env: OPENRCT2_CMAKE_OPTS="-DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++" TARGET=ubuntu_amd64
+          env: OPENRCT2_CMAKE_OPTS="-DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ -DDISABLE_RCT2_TESTS=on" TARGET=ubuntu_amd64
         - os: linux
-          env: OPENRCT2_CMAKE_OPTS="-DCMAKE_TOOLCHAIN_FILE=../CMakeLists_mingw.txt -DFORCE32=on" TARGET=windows
+          env: OPENRCT2_CMAKE_OPTS="-DCMAKE_TOOLCHAIN_FILE=../CMakeLists_mingw.txt -DFORCE32=on -DDISABLE_RCT2_TESTS=on" TARGET=windows
         - os: linux
-          env: TARGET=docker64 OPENRCT2_CMAKE_OPTS="-DDISABLE_TTF=ON -DCMAKE_BUILD_TYPE=release"
+          env: TARGET=docker64 OPENRCT2_CMAKE_OPTS="-DDISABLE_TTF=ON -DCMAKE_BUILD_TYPE=release -DDISABLE_RCT2_TESTS=on"
           services:
             - docker
         - os: linux
-          env: OPENRCT2_CMAKE_OPTS="-DDISABLE_NETWORK=ON -DDISABLE_HTTP_TWITCH=ON" TARGET=docker64
+          env: OPENRCT2_CMAKE_OPTS="-DDISABLE_NETWORK=ON -DDISABLE_HTTP_TWITCH=ON -DDISABLE_RCT2_TESTS=on" TARGET=docker64
           services:
             - docker
         - os: linux
-          env: OPENRCT2_CMAKE_OPTS="-DDISABLE_OPENGL=ON" TARGET=docker64
+          env: OPENRCT2_CMAKE_OPTS="-DDISABLE_OPENGL=ON -DDISABLE_RCT2_TESTS=on" TARGET=docker64
           services:
             - docker
         - os: osx
