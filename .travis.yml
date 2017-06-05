@@ -12,66 +12,8 @@ env:
 
 matrix:
     include:
-        - os: linux
-          services:
-            - docker
-          env:
-            - OPENRCT2_CMAKE_OPTS="-DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_INSTALL_PREFIX=OpenRCT2 -DPORTABLE=ON" TARGET=ubuntu_amd64
-            - secure: "S3u2VCE2Vy8KNXoeh+DhnzjCmgTX0r95uEZrXDU+IKANOOCKn7Dg4OFDZE3LY/i1y2/EUDpnR5yLC38Ks795EUP/sv/OoMl4tjQ20yERjqWh+gcIRrgx7SdVabuAh3t4aBdaLD4Pfnj5avxeCt6rL7yGnj0wdbrbJSBZPsgSnuQ="
-          after_success:
-            - sudo chown -R $USER build
-            - cd build
-              # make install is done inside docker
-            - mv OpenRCT2/bin/openrct2 OpenRCT2/ && mv OpenRCT2/bin/libopenrct2.so OpenRCT2/ && mv OpenRCT2/share/openrct2 OpenRCT2/data && mv OpenRCT2/share/doc/openrct2 OpenRCT2/doc
-            - rm -rf OpenRCT2/bin OpenRCT2/share # remove empty dirs
-            - tar cvzf openrct2-linux.tar.gz OpenRCT2/
-            - if [[ "z${TRAVIS_TAG}" != "z" ]] ; then
-              export PUSH_BRANCH=master ;
-              else export PUSH_BRANCH=$TRAVIS_BRANCH ; export FILENAME_PART=-${TRAVIS_BRANCH}-$(git rev-parse --short HEAD) ;
-              fi
-            - if [[ "z$OPENRCT2_ORG_TOKEN" != "z" && "$TRAVIS_PULL_REQUEST" == "false" && ("${TRAVIS_BRANCH}" =~ ^(develop|push/) || "z${TRAVIS_TAG}" != "z") ]] ; then
-              curl -o - -v --form "key=$OPENRCT2_ORG_TOKEN" --form "fileName=OpenRCT2-${OPENRCT2_VERSION}${FILENAME_PART}-linux-x86_64.tar.gz" --form "version=${OPENRCT2_VERSION}" --form "gitHash=$TRAVIS_COMMIT" --form "gitBranch=$PUSH_BRANCH" --form "flavourId=9" --form "file=@openrct2-linux.tar.gz" "https://openrct2.org/altapi/?command=push-build";
-              else curl --progress-bar --upload-file openrct2-linux.tar.gz https://transfer.sh/openrct2-linux-x86_64.tar.gz -o link && cat link;
-              fi
-        - os: linux
-          services:
-            - docker
-          env:
-            - OPENRCT2_CMAKE_OPTS="-DFORCE32=ON -DDISABLE_RCT2=OFF -DCMAKE_INSTALL_PREFIX=OpenRCT2" TARGET=ubuntu_i686
-            - secure: "S3u2VCE2Vy8KNXoeh+DhnzjCmgTX0r95uEZrXDU+IKANOOCKn7Dg4OFDZE3LY/i1y2/EUDpnR5yLC38Ks795EUP/sv/OoMl4tjQ20yERjqWh+gcIRrgx7SdVabuAh3t4aBdaLD4Pfnj5avxeCt6rL7yGnj0wdbrbJSBZPsgSnuQ="
-          after_success:
-            - sudo chown -R $USER build
-            - cd build
-              # make install is done inside docker
-            - mv OpenRCT2/bin/openrct2 OpenRCT2/ && mv OpenRCT2/share/openrct2 OpenRCT2/data && mv OpenRCT2/share/doc/openrct2 OpenRCT2/doc
-            - rm -rf OpenRCT2/bin OpenRCT2/share # remove empty dirs
-            - tar cvzf openrct2-linux.tar.gz OpenRCT2/
-            - if [[ "z${TRAVIS_TAG}" != "z" ]] ; then
-              export PUSH_BRANCH=master ;
-              else export PUSH_BRANCH=$TRAVIS_BRANCH ; export FILENAME_PART=-${TRAVIS_BRANCH}-$(git rev-parse --short HEAD) ;
-              fi
-            - if [[ "z$OPENRCT2_ORG_TOKEN" != "z" && "$TRAVIS_PULL_REQUEST" == "false" && ("${TRAVIS_BRANCH}" =~ ^(develop|push/) || "z${TRAVIS_TAG}" != "z") ]] ; then
-              curl -o - -v --form "key=$OPENRCT2_ORG_TOKEN" --form "fileName=OpenRCT2-${OPENRCT2_VERSION}${FILENAME_PART}-linux-i686.tar.gz" --form "version=${OPENRCT2_VERSION}" --form "gitHash=$TRAVIS_COMMIT" --form "gitBranch=$PUSH_BRANCH" --form "flavourId=4" --form "file=@openrct2-linux.tar.gz" "https://openrct2.org/altapi/?command=push-build";
-              else curl --progress-bar --upload-file openrct2-linux.tar.gz https://transfer.sh/openrct2-linux-i686.tar.gz -o link && cat link;
-              fi
-        - os: linux
-          env: OPENRCT2_CMAKE_OPTS="-DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++" TARGET=ubuntu_amd64
-        - os: linux
-          env: OPENRCT2_CMAKE_OPTS="-DCMAKE_TOOLCHAIN_FILE=../CMakeLists_mingw.txt -DFORCE32=on" TARGET=windows
-        - os: linux
-          env: TARGET=docker64 OPENRCT2_CMAKE_OPTS="-DDISABLE_TTF=ON -DCMAKE_BUILD_TYPE=release"
-          services:
-            - docker
-        - os: linux
-          env: OPENRCT2_CMAKE_OPTS="-DDISABLE_NETWORK=ON -DDISABLE_HTTP_TWITCH=ON" TARGET=docker64
-          services:
-            - docker
-        - os: linux
-          env: OPENRCT2_CMAKE_OPTS="-DDISABLE_OPENGL=ON" TARGET=docker64
-          services:
-            - docker
         - os: osx
-          osx_image: xcode8
+          osx_image: xcode7.3
           env:
             - secure: "OXn/i72FxW/oh6RGlaN+gHSbkt1ToFe36etaiDOsJQznt6fe9CpFdnE8U1XBHlGokcEjbGNErRU7CFDKYHQuGrPZyHXwgqG2/0emIqFaFt5ti5ypyYKf5qH9x1LLLfdZxDyHkxXdlJ7Etxbp3G7qrV8CGRQiYRNHm1f98AmuufE="
           after_success:
@@ -104,7 +46,7 @@ matrix:
 
 script:
     - if [[ $TRAVIS_OS_NAME == "linux" ]]; then bash scripts/linux/build.sh ; fi
-    - if [[ $TRAVIS_OS_NAME == "osx" ]]; then set -o pipefail && xcodebuild | xcpretty -f `xcpretty-travis-formatter`; fi
+    - if [[ $TRAVIS_OS_NAME == "osx" ]]; then set -o pipefail && xcodebuild ; fi
 
 notifications:
     on_failure: change
