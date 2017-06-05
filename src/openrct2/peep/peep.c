@@ -170,7 +170,7 @@ static bool peep_update_fixing_sub_state_11(bool firstRun, rct_peep *peep, rct_r
 static bool peep_update_fixing_sub_state_12(bool firstRun, rct_peep *peep, rct_ride *ride);
 static bool peep_update_fixing_sub_state_13(bool firstRun, sint32 steps, rct_peep *peep, rct_ride *ride);
 static bool peep_update_fixing_sub_state_14(bool firstRun, rct_peep *peep, rct_ride *ride);
-static void sub_6B7588(sint32 rideIndex);
+static void peep_update_ride_inspected(sint32 rideIndex);
 
 bool loc_690FD0(rct_peep *peep, uint8 *rideToView, uint8 *rideSeatToView, rct_map_element *esi);
 
@@ -4722,7 +4722,7 @@ static bool peep_update_fixing_sub_state_13(bool firstRun, sint32 steps, rct_pee
 
 	if (!firstRun) {
 		if (peep->state == PEEP_STATE_INSPECTING) {
-			sub_6B7588(peep->current_ride);
+			peep_update_ride_inspected(peep->current_ride);
 
 			peep->staff_rides_inspected++;
 			peep->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME | RIDE_INVALIDATE_RIDE_LIST;
@@ -4810,7 +4810,7 @@ static bool peep_update_fixing_sub_state_14(bool firstRun, rct_peep *peep, rct_r
 /**
  * rct2: 0x6B7588
  */
-static void sub_6B7588(sint32 rideIndex) {
+static void peep_update_ride_inspected(sint32 rideIndex) {
 	rct_ride *ride = get_ride(rideIndex);
 	ride->lifecycle_flags &= ~RIDE_LIFECYCLE_DUE_INSPECTION;
 
