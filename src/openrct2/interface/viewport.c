@@ -250,7 +250,7 @@ void viewport_adjust_for_map_height(sint16* x, sint16* y, sint16 *z)
 	*z = height;
 }
 
-static void sub_6E7FF3(rct_drawpixelinfo *dpi, rct_window *window, rct_viewport *viewport, sint32 x, sint32 y)
+static void viewport_redraw_after_shift(rct_drawpixelinfo *dpi, rct_window *window, rct_viewport *viewport, sint32 x, sint32 y)
 {
 	// sub-divide by intersecting windows
 	if (window < gWindowNextSlot)
@@ -261,7 +261,7 @@ static void sub_6E7FF3(rct_drawpixelinfo *dpi, rct_window *window, rct_viewport 
 			viewport->x                    >= window->x + window->width ||
 			viewport->y + viewport->height <= window->y                 ||
 			viewport->y                    >= window->y + window->height){
-			sub_6E7FF3(dpi, window + 1, viewport, x, y);
+			viewport_redraw_after_shift(dpi, window + 1, viewport, x, y);
 			return;
 		}
 
@@ -273,49 +273,49 @@ static void sub_6E7FF3(rct_drawpixelinfo *dpi, rct_window *window, rct_viewport 
 		{
 			viewport->width = window->x - viewport->x;
 			viewport->view_width = viewport->width << viewport->zoom;
-			sub_6E7FF3(dpi, window, viewport, x, y);
+			viewport_redraw_after_shift(dpi, window, viewport, x, y);
 
 			viewport->x += viewport->width;
 			viewport->view_x += viewport->width << viewport->zoom;
 			viewport->width = view_copy.width - viewport->width;
 			viewport->view_width = viewport->width << viewport->zoom;
-			sub_6E7FF3(dpi, window, viewport, x, y);
+			viewport_redraw_after_shift(dpi, window, viewport, x, y);
 		}
 		else if (viewport->x + viewport->width > window->x + window->width)
 		{
 			viewport->width = window->x + window->width - viewport->x;
 			viewport->view_width = viewport->width << viewport->zoom;
-			sub_6E7FF3(dpi, window, viewport, x, y);
+			viewport_redraw_after_shift(dpi, window, viewport, x, y);
 
 			viewport->x += viewport->width;
 			viewport->view_x += viewport->width << viewport->zoom;
 			viewport->width = view_copy.width - viewport->width;
 			viewport->view_width = viewport->width << viewport->zoom;
-			sub_6E7FF3(dpi, window, viewport, x, y);
+			viewport_redraw_after_shift(dpi, window, viewport, x, y);
 		}
 		else if (viewport->y < window->y)
 		{
 			viewport->height = window->y - viewport->y;
 			viewport->view_width = viewport->width << viewport->zoom;
-			sub_6E7FF3(dpi, window, viewport, x, y);
+			viewport_redraw_after_shift(dpi, window, viewport, x, y);
 
 			viewport->y += viewport->height;
 			viewport->view_y += viewport->height << viewport->zoom;
 			viewport->height = view_copy.height - viewport->height;
 			viewport->view_width = viewport->width << viewport->zoom;
-			sub_6E7FF3(dpi, window, viewport, x, y);
+			viewport_redraw_after_shift(dpi, window, viewport, x, y);
 		}
 		else if (viewport->y + viewport->height > window->y + window->height)
 		{
 			viewport->height = window->y + window->height - viewport->y;
 			viewport->view_width = viewport->width << viewport->zoom;
-			sub_6E7FF3(dpi, window, viewport, x, y);
+			viewport_redraw_after_shift(dpi, window, viewport, x, y);
 
 			viewport->y += viewport->height;
 			viewport->view_y += viewport->height << viewport->zoom;
 			viewport->height = view_copy.height - viewport->height;
 			viewport->view_width = viewport->width << viewport->zoom;
-			sub_6E7FF3(dpi, window, viewport, x, y);
+			viewport_redraw_after_shift(dpi, window, viewport, x, y);
 		}
 
 		// restore viewport
@@ -403,7 +403,7 @@ static void viewport_shift_pixels(rct_drawpixelinfo *dpi, rct_window* w, rct_vie
 	}
 
 	w = orignal_w;
-	sub_6E7FF3(dpi, w, viewport, x_diff, y_diff);
+	viewport_redraw_after_shift(dpi, w, viewport, x_diff, y_diff);
 }
 
 static void viewport_move(sint16 x, sint16 y, rct_window* w, rct_viewport* viewport)
