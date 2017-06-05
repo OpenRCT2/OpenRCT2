@@ -148,11 +148,7 @@ static money32 ParkEntrancePlace(sint32 flags, sint16 x, sint16 y, uint8 z, uint
             footpath_connect_edges(x, y, newElement, 1);
         }
 
-        update_park_fences(x, y);
-        update_park_fences(x - 32, y);
-        update_park_fences(x + 32, y);
-        update_park_fences(x, y - 32);
-        update_park_fences(x, y + 32);
+        update_park_fences_around_tile(x, y);
 
         map_invalidate_tile(x, y, newElement->base_height * 8, newElement->clearance_height * 8);
 
