@@ -49,6 +49,7 @@ typedef struct GeneralConfiguration
     bool        render_weather_effects;
     bool        render_weather_gloom;
     bool        disable_lightning_effect;
+    bool        show_guest_purchases;
 
     // Localisation
     sint32      language;

@@ -202,6 +202,7 @@ namespace Config
             model->zoom_to_cursor = reader->GetBoolean("zoom_to_cursor", true);
             model->render_weather_effects = reader->GetBoolean("render_weather_effects", true);
             model->render_weather_gloom = reader->GetBoolean("render_weather_gloom", true);
+            model->show_guest_purchases = reader->GetBoolean("show_guest_purchases", false);
         }
     }
 
@@ -270,6 +271,7 @@ namespace Config
         writer->WriteBoolean("zoom_to_cursor", model->zoom_to_cursor);
         writer->WriteBoolean("render_weather_effects", model->render_weather_effects);
         writer->WriteBoolean("render_weather_gloom", model->render_weather_gloom);
+        writer->WriteBoolean("show_guest_purchases", model->show_guest_purchases);
     }
 
     static void ReadInterface(IIniReader * reader)
