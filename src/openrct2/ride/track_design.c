@@ -1322,7 +1322,7 @@ sint32 place_virtual_track(rct_track_td6 *td6, uint8 bl, uint8 rideIndex, sint32
  * ebx = ride_id
  * cost = edi
  */
-static bool sub_6D2189(rct_track_td6 *td6, money32 *cost, uint8 *rideId, uint8 *flags)
+static bool track_design_place_preview(rct_track_td6 *td6, money32 *cost, uint8 *rideId, uint8 *flags)
 {
 	*flags = 0;
 
@@ -1683,7 +1683,7 @@ void track_design_draw_preview(rct_track_td6 *td6, uint8 *pixels)
 	money32 cost;
 	uint8 rideIndex;
 	uint8 flags;
-	if (!sub_6D2189(td6, &cost, &rideIndex, &flags)) {
+	if (!track_design_place_preview(td6, &cost, &rideIndex, &flags)) {
 		memset(pixels, 0, TRACK_PREVIEW_IMAGE_SIZE * 4);
 		track_design_preview_restore_map(mapBackup);
 		return;
