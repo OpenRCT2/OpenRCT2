@@ -105,7 +105,7 @@ static void window_ride_demolish_mouseup(rct_window *w, rct_widgetindex widgetIn
 	switch (widgetIndex) {
 	case WIDX_DEMOLISH:
 		gGameCommandErrorTitle = STR_CANT_DEMOLISH_RIDE;
-		game_do_command(0, 1, 0, w->number, GAME_COMMAND_DEMOLISH_RIDE, 0, 0);
+		game_do_command(0, 1, 0, w->number, GAME_COMMAND_DEMOLISH_RIDE, 0, 1); // Set ebp to 1 to be used to log demolish from window prompt
 		break;
 	case WIDX_CANCEL:
 	case WIDX_CLOSE:

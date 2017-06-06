@@ -152,6 +152,7 @@ typedef struct NetworkConfiguration
     utf8 *      provider_website;
     bool        known_keys_only;
     bool        log_chat;
+    bool        log_server_actions;
 } NetworkConfiguration;
 
 typedef struct NotificationConfiguration

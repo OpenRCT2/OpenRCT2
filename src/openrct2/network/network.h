@@ -85,13 +85,15 @@ enum {
 	NETWORK_TICK_FLAG_CHECKSUMS = 1 << 0,
 };
 
-struct ObjectRepositoryItem;
+interface	IPlatformEnvironment;
+struct		ObjectRepositoryItem;
 
 class Network
 {
 public:
 	Network();
 	~Network();
+	void SetEnvironment(IPlatformEnvironment * env);
 	bool Init();
 	void Close();
 	bool BeginClient(const char* host, uint16 port);
@@ -120,9 +122,16 @@ public:
 	void SaveGroups();
 	void LoadGroups();
 
+	std::string BeginLog(const std::string &directory, const std::string &filenameFormat);
+	void AppendLog(const std::string &logPath, const std::string &s);
+
 	void BeginChatLog();
-	void AppendChatLog(const utf8 *text);
+	void AppendChatLog(const std::string &s);
 	void CloseChatLog();
+
+	void BeginServerLog();
+	void AppendServerLog(const std::string &s);
+	void CloseServerLog();
 
 	void Client_Send_TOKEN();
 	void Client_Send_AUTH(const char* name, const char* password, const char *pubkey, const char *sig, size_t sigsize);
@@ -217,9 +226,12 @@ private:
 	INetworkServerAdvertiser * _advertiser = nullptr;
 	uint32 server_connect_time = 0;
 	uint8 default_group = 0;
-	IStream * _chatLogStream = nullptr;
-	std::string _chatLogPath;
 	uint32 game_commands_processed_this_tick = 0;
+	std::string _chatLogPath;
+	std::string _chatLogFilenameFormat = "%Y%m%d-%H%M%S.txt";
+	std::string _serverLogPath;
+	std::string _serverLogFilenameFormat = "-%Y%m%d-%H%M%S.txt";
+	IPlatformEnvironment * _env;
 
 	void UpdateServer();
 	void UpdateClient();
@@ -262,7 +274,7 @@ private:
 #ifdef __cplusplus
 extern "C" {
 #endif // __cplusplus
-sint32 network_init();
+void network_set_env(void * env);
 void network_close();
 void network_shutdown_client();
 sint32 network_begin_client(const char *host, sint32 port);
@@ -316,6 +328,7 @@ void network_set_password(const char* password);
 
 void network_print_error();
 void network_append_chat_log(const utf8 *text);
+void network_append_server_log(const utf8 *text);
 const utf8 * network_get_server_name();
 const utf8 * network_get_server_description();
 const utf8 * network_get_server_greeting();

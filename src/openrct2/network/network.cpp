@@ -16,6 +16,7 @@
 
 #include "../core/Guard.hpp"
 #include "../OpenRCT2.h"
+#include "../PlatformEnvironment.h"
 
 extern "C" {
 	#include "../platform/platform.h"
@@ -125,6 +126,11 @@ Network::~Network()
 	Close();
 }
 
+void Network::SetEnvironment(IPlatformEnvironment * env)
+{
+	_env = env;
+}
+
 bool Network::Init()
 {
 	if (!InitialiseWSA()) {
@@ -170,6 +176,9 @@ void Network::Close()
 		_advertiser = nullptr;
 	}
 
+	CloseChatLog();
+	CloseServerLog();
+
 	mode = NETWORK_MODE_NONE;
 	status = NETWORK_STATUS_NONE;
 	_lastConnectStatus = SOCKET_STATUS_CLOSED;
@@ -185,7 +194,6 @@ void Network::Close()
 
 	DisposeWSA();
 
-	CloseChatLog();
 	gfx_invalidate_screen();
 
 	_requireClose = false;
@@ -210,6 +218,7 @@ bool Network::BeginClient(const char* host, uint16 port)
 	_lastConnectStatus = SOCKET_STATUS_CLOSED;
 
 	BeginChatLog();
+	BeginServerLog();
 
 	utf8 keyPath[MAX_PATH];
 	network_get_private_key_path(keyPath, sizeof(keyPath), gConfigNetwork.player_name);
@@ -313,6 +322,7 @@ bool Network::BeginServer(uint16 port, const char* address)
 	cheats_reset();
 	LoadGroups();
 	BeginChatLog();
+	BeginServerLog();
 
 	NetworkPlayer *player = AddPlayer(gConfigNetwork.player_name, "");
 	player->Flags |= NETWORK_PLAYER_FLAG_ISSERVER;
@@ -823,60 +833,95 @@ void Network::LoadGroups()
 	group_list.at(0)->ActionsAllowed.fill(0xFF);
 }
 
-void Network::BeginChatLog()
+std::string Network::BeginLog(const std::string &directory, const std::string &filenameFormat)
 {
-	utf8 filename[32];
+	utf8 filename[256];
 	time_t timer;
-	struct tm * tmInfo;
 	time(&timer);
-	tmInfo = localtime(&timer);
-	strftime(filename, sizeof(filename), "%Y%m%d-%H%M%S.txt", tmInfo);
-
-	utf8 path[MAX_PATH];
-	platform_get_user_directory(path, "chatlogs", sizeof(path));
-	Path::Append(path, sizeof(path), filename);
-
-	_chatLogPath = std::string(path);
-}
-
-void Network::AppendChatLog(const utf8 *text)
-{
-	if (!gConfigNetwork.log_chat) {
-		return;
+	auto tmInfo = localtime(&timer);
+	if (strftime(filename, sizeof(filename), filenameFormat.c_str(), tmInfo) == 0) {
+		throw std::runtime_error("strftime failed");
 	}
 
-	const utf8 *chatLogPath = _chatLogPath.c_str();
+	return Path::Combine(directory, filename);
+}
 
-	utf8 directory[MAX_PATH];
-	Path::GetDirectory(directory, sizeof(directory), chatLogPath);
-	if (platform_ensure_directory_exists(directory)) {
+void Network::AppendLog(const std::string &logPath, const std::string &s)
+{
+	std::string directory = Path::GetDirectory(logPath);
+	if (platform_ensure_directory_exists(directory.c_str())) {
 		try
 		{
-			_chatLogStream = new FileStream(chatLogPath, FILE_MODE_APPEND);
+			auto fs = FileStream(logPath, FILE_MODE_APPEND);
 
 			utf8 buffer[256];
 			time_t timer;
-			struct tm * tmInfo;
 			time(&timer);
-			tmInfo = localtime(&timer);
-			strftime(buffer, sizeof(buffer), "[%Y/%m/%d %H:%M:%S] ", tmInfo);
+			auto tmInfo = localtime(&timer);
+			if (strftime(buffer, sizeof(buffer), "[%Y/%m/%d %H:%M:%S] ", tmInfo) != 0) {
+				String::Append(buffer, sizeof(buffer), s.c_str());
+				utf8_remove_formatting(buffer, false);
+				String::Append(buffer, sizeof(buffer), PLATFORM_NEWLINE);
 
-			String::Append(buffer, sizeof(buffer), text);
-			utf8_remove_formatting(buffer, false);
-			String::Append(buffer, sizeof(buffer), PLATFORM_NEWLINE);
-
-			_chatLogStream->Write(buffer, strlen(buffer));
-			delete _chatLogStream;
-			_chatLogStream = nullptr;
+				fs.Write(buffer, strlen(buffer));
+			}
 		}
-		catch (const Exception &)
+		catch (const Exception &ex)
 		{
+			log_error("%s", ex.GetMessage());
 		}
+	}
+}
+
+void Network::BeginChatLog()
+{
+	auto directory = _env->GetDirectoryPath(DIRBASE::USER, DIRID::LOG_CHAT);
+	_chatLogPath = BeginLog(directory, _chatLogFilenameFormat);
+}
+
+void Network::AppendChatLog(const std::string &s)
+{
+	if (gConfigNetwork.log_chat) {
+		AppendLog(_chatLogPath, s);
 	}
 }
 
 void Network::CloseChatLog()
 {
+}
+
+void Network::BeginServerLog()
+{
+	auto directory = _env->GetDirectoryPath(DIRBASE::USER, DIRID::LOG_SERVER);
+	_serverLogPath = BeginLog(directory, (ServerName + _serverLogFilenameFormat));
+
+	// Log server start event
+	utf8 logMessage[256];
+	if (GetMode() == NETWORK_MODE_CLIENT) {
+		format_string(logMessage, sizeof(logMessage), STR_LOG_CLIENT_STARTED, NULL);
+	} else if (GetMode() == NETWORK_MODE_SERVER) {
+		format_string(logMessage, sizeof(logMessage), STR_LOG_SERVER_STARTED, NULL);
+	}
+	AppendServerLog(logMessage);
+}
+
+void Network::AppendServerLog(const std::string &s)
+{
+	if (gConfigNetwork.log_server_actions) {
+		AppendLog(_serverLogPath.c_str(), s);
+	}
+}
+
+void Network::CloseServerLog()
+{
+	// Log server stopped event
+	char logMessage[256];
+	if (GetMode() == NETWORK_MODE_CLIENT) {
+		format_string(logMessage, sizeof(logMessage), STR_LOG_CLIENT_STOPPED, NULL);
+	} else if (GetMode() == NETWORK_MODE_SERVER) {
+		format_string(logMessage, sizeof(logMessage), STR_LOG_SERVER_STOPPED, NULL);
+	}
+	AppendServerLog(logMessage);
 }
 
 void Network::Client_Send_TOKEN()
@@ -1292,6 +1337,9 @@ void Network::AddClient(ITcpSocket * socket)
 {
 	auto connection = std::unique_ptr<NetworkConnection>(new NetworkConnection);  // change to make_unique in c++14
 	connection->Socket = socket;
+	char addr[128];
+	snprintf(addr, sizeof(addr), "Client joined from %s", socket->GetHostName());
+	AppendServerLog(addr);
 	client_connection_list.push_back(std::move(connection));
 }
 
@@ -1317,6 +1365,9 @@ void Network::RemoveClient(std::unique_ptr<NetworkConnection>& connection)
 			game_do_command(pickup_peep->sprite_index, GAME_COMMAND_FLAG_APPLY, 1, 0, pickup_peep->type == PEEP_TYPE_GUEST ? GAME_COMMAND_PICKUP_GUEST : GAME_COMMAND_PICKUP_STAFF, network_get_pickup_peep_old_x(connection_player->Id), 0);
 		}
 		gNetwork.Server_Send_EVENT_PLAYER_DISCONNECTED((char*)connection_player->Name.c_str(), connection->GetLastDisconnectReason());
+
+		// Log player disconnected event
+		AppendServerLog(text);
 	}
 	player_list.erase(std::remove_if(player_list.begin(), player_list.end(), [connection_player](std::unique_ptr<NetworkPlayer>& player){
 						  return player.get() == connection_player;
@@ -1516,6 +1567,9 @@ void Network::Server_Client_Joined(const char* name, const std::string &keyhash,
 		IObjectManager * objManager = GetObjectManager();
 		auto objects = objManager->GetPackableObjects();
 		Server_Send_OBJECTS(connection, objects);
+
+		// Log player joining event
+		AppendServerLog(text);
 	}
 }
 
@@ -2138,9 +2192,9 @@ void Network::Client_Handle_GAMEINFO(NetworkConnection& connection, NetworkPacke
 	network_chat_show_server_greeting();
 }
 
-sint32 network_init()
+void network_set_env(void * env)
 {
-	return gNetwork.Init();
+	gNetwork.SetEnvironment((IPlatformEnvironment *)env);
 }
 
 void network_close()
@@ -2375,6 +2429,18 @@ void game_command_set_player_group(sint32* eax, sint32* ebx, sint32* ecx, sint32
 		}
 
 		window_invalidate_by_number(WC_PLAYER, playerid);
+
+		// Log set player group event
+		NetworkPlayer* game_command_player = gNetwork.GetPlayerByID(game_command_playerid);
+		NetworkGroup* new_player_group = gNetwork.GetGroupByID(groupid);
+		char log_msg[256];
+		const char * args[3] = {
+			(char *) player->Name.c_str(),
+			(char *) new_player_group->GetName().c_str(),
+			(char *) game_command_player->Name.c_str()
+		};
+		format_string(log_msg, 256, STR_LOG_SET_PLAYER_GROUP, args);
+		network_append_server_log(log_msg);
 	}
 	*ebx = 0;
 }
@@ -2384,9 +2450,6 @@ void game_command_modify_groups(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *e
 	uint8 action = (uint8)*eax;
 	uint8 groupid = (uint8)(*eax >> 8);
 	uint8 nameChunkIndex = (uint8)(*eax >> 16);
-
-	char oldName[128] = { 0 };
-	static char newName[128];
 
 	switch (action)
 	{
@@ -2399,6 +2462,16 @@ void game_command_modify_groups(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *e
 				*ebx = MONEY32_UNDEFINED;
 				return;
 			}
+				
+			// Log add player group event
+			NetworkPlayer* game_command_player = gNetwork.GetPlayerByID(game_command_playerid);
+			char log_msg[256];
+			const char * args[2] = {
+				(char *) game_command_player->Name.c_str(),
+				(char *) newgroup->GetName().c_str()
+			};
+			format_string(log_msg, 256, STR_LOG_ADD_PLAYER_GROUP, args);
+			network_append_server_log(log_msg);
 		}
 	}break;
 	case 1:{ // remove group
@@ -2417,6 +2490,18 @@ void game_command_modify_groups(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *e
 			}
 		}
 		if (*ebx & GAME_COMMAND_FLAG_APPLY) {
+			// Log remove player group event
+			NetworkPlayer* game_command_player = gNetwork.GetPlayerByID(game_command_playerid);
+			NetworkGroup* group = gNetwork.GetGroupByID(groupid);
+			char* groupName = (char *)group->GetName().c_str();
+			char log_msg[256];
+			const char * args[2] = {
+				(char *) game_command_player->Name.c_str(),
+				groupName
+			};
+			format_string(log_msg, 256, STR_LOG_REMOVE_PLAYER_GROUP, args);
+			network_append_server_log(log_msg);
+
 			gNetwork.RemoveGroup(groupid);
 		}
 	}break;
@@ -2456,9 +2541,22 @@ void game_command_modify_groups(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *e
 					group->ToggleActionPermission(index);
 				}
 			}
+
+			// Log edit player group permissions event
+			char log_msg[256];
+			const char * args[2] = {
+				(char *) player->Name.c_str(),
+				(char *) group->GetName().c_str()
+			};
+			format_string(log_msg, 256, STR_LOG_EDIT_PLAYER_GROUP_PERMISSIONS, args);
+			network_append_server_log(log_msg);
 		}
 	}break;
 	case 3:{ // set group name
+		NetworkGroup* group = gNetwork.GetGroupByID(groupid);
+		const char * oldName = group->GetName().c_str();
+		static char newName[128];
+
 		size_t nameChunkOffset = nameChunkIndex - 1;
 		if (nameChunkIndex == 0)
 			nameChunkOffset = 2;
@@ -2486,8 +2584,18 @@ void game_command_modify_groups(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *e
 		}
 
 		if (*ebx & GAME_COMMAND_FLAG_APPLY) {
-			NetworkGroup* group = gNetwork.GetGroupByID(groupid);
 			if (group) {
+				// Log edit player group name event
+				NetworkPlayer* player = gNetwork.GetPlayerByID(game_command_playerid);
+				char log_msg[256];
+				const char * args[3] = {
+					(char *) player->Name.c_str(),
+					oldName,
+					newName
+				};
+				format_string(log_msg, 256, STR_LOG_EDIT_PLAYER_GROUP_NAME, args);
+				network_append_server_log(log_msg);
+
 				group->SetName(newName);
 			}
 		}
@@ -2501,6 +2609,17 @@ void game_command_modify_groups(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *e
 		}
 		if (*ebx & GAME_COMMAND_FLAG_APPLY) {
 			gNetwork.SetDefaultGroup(groupid);
+
+			// Log edit default player group event
+			NetworkPlayer* player = gNetwork.GetPlayerByID(game_command_playerid);
+			NetworkGroup* group = gNetwork.GetGroupByID(groupid);
+			char log_msg[256];
+			const char * args[2] = {
+				(char *) player->Name.c_str(),
+				(char *) group->GetName().c_str()
+			};
+			format_string(log_msg, 256, STR_LOG_EDIT_DEFAULT_PLAYER_GROUP, args);
+			network_append_server_log(log_msg);
 		}
 	}break;
 	}
@@ -2529,6 +2648,16 @@ void game_command_kick_player(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *edx
 			networkUserManager->RemoveUser(player->KeyHash);
 			networkUserManager->Save();
 		}
+
+		// Log kick player event
+		NetworkPlayer* kicker = gNetwork.GetPlayerByID(game_command_playerid);
+		char log_msg[256];
+		const char * args[2] = {
+			(char *) player->Name.c_str(),
+			(char *) kicker->Name.c_str(),
+		};
+		format_string(log_msg, 256, STR_LOG_PLAYER_KICKED, args);
+		network_append_server_log(log_msg);
 	}
 	*ebx = 0;
 }
@@ -2657,6 +2786,11 @@ void network_append_chat_log(const utf8 *text)
 	gNetwork.AppendChatLog(text);
 }
 
+void network_append_server_log(const utf8 *text)
+{
+	gNetwork.AppendServerLog(text);
+}
+
 static void network_get_keys_directory(utf8 *buffer, size_t bufferSize)
 {
 	platform_get_user_directory(buffer, "keys", bufferSize);
@@ -2729,11 +2863,13 @@ sint32 network_get_pickup_peep_old_x(uint8 playerid) { return _pickup_peep_old_x
 void network_send_chat(const char* text) {}
 void network_send_password(const char* password) {}
 void network_close() {}
+void network_set_env(void * env) {}
 void network_shutdown_client() {}
 void network_set_password(const char* password) {}
 uint8 network_get_current_player_id() { return 0; }
 sint32 network_get_current_player_group_index() { return 0; }
 void network_append_chat_log(const utf8 *text) { }
+void network_append_server_log(const utf8 *text) { }
 const utf8 * network_get_server_name() { return nullptr; }
 const utf8 * network_get_server_description() { return nullptr; }
 const utf8 * network_get_server_greeting() { return nullptr; }
