@@ -214,7 +214,7 @@ static money32 staff_hire_new_staff_member(uint8 staff_type, uint8 flags, sint16
 		return MONEY32_UNDEFINED;
 	}
 
-	if (!(flags & GAME_COMMAND_FLAG_APPLY))
+	if (flags & GAME_COMMAND_FLAG_APPLY)
 	{
 		sint32 newStaffId = i;
 		const rct_sprite_bounds *spriteBounds;
