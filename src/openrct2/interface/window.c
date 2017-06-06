@@ -1416,7 +1416,7 @@ void window_scroll_to_location(rct_window *w, sint32 x, sint32 y, sint32 z)
  *
  *  rct2: 0x00688956
  */
-static void sub_688956()
+static void call_event_unknown_14_on_all_windows()
 {
 	rct_window *w;
 
@@ -1451,7 +1451,7 @@ void window_rotate_camera(rct_window *w, sint32 direction)
 		x = (viewport->view_width >> 1) + viewport->view_x;
 		y = (viewport->view_height >> 1) + viewport->view_y;
 
-		sub_689174(&x, &y, &z);
+		viewport_adjust_for_map_height(&x, &y, &z);
 	}
 	else {
 		z = map_element_height(x, y);
@@ -1469,7 +1469,7 @@ void window_rotate_camera(rct_window *w, sint32 direction)
 
 	window_invalidate(w);
 
-	sub_688956();
+	call_event_unknown_14_on_all_windows();
 	reset_all_sprite_quadrant_placements();
 }
 

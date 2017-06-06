@@ -6927,7 +6927,7 @@ static void vehicle_trigger_on_ride_photo(rct_vehicle *vehicle, rct_map_element 
  *
  *  rct2: 0x006DEDE8
  */
-static void sub_6DEDE8(rct_vehicle *vehicle)
+static void vehicle_update_handle_scenery_door(rct_vehicle *vehicle)
 {
 	sint32 trackType = vehicle->track_type >> 2;
 	const rct_preview_track *trackBlock = TrackBlocks[trackType];
@@ -7012,7 +7012,7 @@ static void vehicle_update_handle_water_splash(rct_vehicle *vehicle)
  *
  *  rct2: 0x006DB807
  */
-static void sub_6DB807(rct_vehicle *vehicle)
+static void vehicle_update_reverser_car_bogies(rct_vehicle *vehicle)
 {
 	const rct_vehicle_info *moveInfo = vehicle_get_move_info(
 		vehicle->var_CD,
@@ -7200,7 +7200,7 @@ static bool vehicle_update_motion_collision_detection(
  *
  *  rct2: 0x006DB7D6
  */
-static void sub_6DB7D6(rct_vehicle *vehicle)
+static void vehicle_reverse_reverser_car(rct_vehicle *vehicle)
 {
 	rct_vehicle *previousVehicle = GET_VEHICLE(vehicle->prev_vehicle_on_ride);
 	rct_vehicle *nextVehicle = GET_VEHICLE(vehicle->next_vehicle_on_ride);
@@ -7211,8 +7211,8 @@ static void sub_6DB7D6(rct_vehicle *vehicle)
 	previousVehicle->track_progress = 86;
 	nextVehicle->track_progress = 158;
 
-	sub_6DB807(nextVehicle);
-	sub_6DB807(previousVehicle);
+	vehicle_update_reverser_car_bogies(nextVehicle);
+	vehicle_update_reverser_car_bogies(previousVehicle);
 }
 
 /**
@@ -7470,7 +7470,7 @@ loc_6DB41D:
 		vehicle->update_flags ^= VEHICLE_UPDATE_FLAG_13;
 	}
 	if (vehicleEntry->flags_a & VEHICLE_ENTRY_FLAG_A_8) {
-		sub_6DEDE8(vehicle);
+		vehicle_update_handle_scenery_door(vehicle);
 	}
 	return true;
 }
@@ -7608,7 +7608,7 @@ loc_6DAEB9:
 			trackType == TRACK_ELEM_RIGHT_REVERSER) &&
 		vehicle->track_progress == 96
 		) {
-		sub_6DB7D6(vehicle);
+		vehicle_reverse_reverser_car(vehicle);
 
 		const rct_vehicle_info *moveInfo2 = vehicle_get_move_info(
 			vehicle->var_CD,

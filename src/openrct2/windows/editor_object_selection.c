@@ -773,7 +773,7 @@ static void window_editor_object_selection_close(rct_window *w)
 		// Used for in-game object selection cheat
 		// This resets the ride selection list and resets research to 0 on current item
 		gSilentResearch = true;
-		sub_684AC3();
+		research_reset_current_item();
 		gSilentResearch = false;
 	}
 	research_remove_non_separate_vehicle_types();

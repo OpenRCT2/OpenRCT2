@@ -89,14 +89,13 @@ void process_mouse_tool(sint32 x, sint32 y);
 void invalidate_scroll();
 static rct_mouse_data* get_mouse_input();
 void map_element_right_click(sint32 type, rct_map_element *mapElement, sint32 x, sint32 y);
-sint32 sub_6EDE88(sint32 x, sint32 y, rct_map_element **mapElement, sint32 *outX, sint32 *outY);
 sint32 get_next_key();
 static void game_handle_input_mouse(sint32 x, sint32 y, sint32 state);
 void game_handle_edge_scroll();
 void game_handle_key_scroll();
 static void input_widget_left(sint32 x, sint32 y, rct_window *w, rct_widgetindex widgetIndex);
 void input_state_widget_pressed(sint32 x, sint32 y, sint32 state, rct_widgetindex widgetIndex, rct_window* w, rct_widget* widget);
-void sub_6ED990(uint8 cursor_id);
+void set_cursor(uint8 cursor_id);
 static void input_window_position_continue(rct_window *w, sint32 lastX, sint32 lastY, sint32 newX, sint32 newY);
 static void input_window_position_end(rct_window *w, sint32 x, sint32 y);
 static void input_window_resize_begin(rct_window *w, rct_widgetindex widgetIndex, sint32 x, sint32 y);
@@ -1060,7 +1059,7 @@ void process_mouse_over(sint32 x, sint32 y)
 			case WWT_VIEWPORT:
 				if (!(_inputFlags & INPUT_FLAG_TOOL_ACTIVE)) {
 					if (viewport_interaction_left_over(x, y)) {
-						sub_6ED990(CURSOR_HAND_POINT);
+						set_cursor(CURSOR_HAND_POINT);
 						return;
 					}
 					break;
@@ -1080,7 +1079,7 @@ void process_mouse_over(sint32 x, sint32 y)
 				cursorId = edi;
 				if ((ebx & 0xFF) != 0)
 				{
-					sub_6ED990(cursorId);
+					set_cursor(cursorId);
 					return;
 				}
 				break;
@@ -1129,7 +1128,7 @@ void process_mouse_over(sint32 x, sint32 y)
 	}
 
 	viewport_interaction_right_over(x, y);
-	sub_6ED990(cursorId);
+	set_cursor(cursorId);
 }
 
 /**
@@ -1562,7 +1561,7 @@ sint32 get_next_key()
 *
 *  rct2: 0x006ED990
 */
-void sub_6ED990(uint8 cursor_id)
+void set_cursor(uint8 cursor_id)
 {
 	if (_inputState == INPUT_STATE_RESIZING) {
 		cursor_id = CURSOR_DIAGONAL_ARROWS;

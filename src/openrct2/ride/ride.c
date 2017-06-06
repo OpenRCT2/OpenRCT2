@@ -217,7 +217,7 @@ static void ride_update_vehicle_colours(sint32 rideIndex);
 static void ride_set_vehicle_colours_to_random_preset(rct_ride *ride, uint8 preset_index);
 void loc_6DDF9C(rct_ride *ride, rct_map_element *mapElement);
 bool sub_6CA2DF(sint32 *trackType, sint32 *trackDirection, sint32 *rideIndex, sint32 *edxRS16, sint32 *x, sint32 *y, sint32 *z, sint32 *properties);
-money32 sub_6CA162(sint32 rideIndex, sint32 trackType, sint32 trackDirection, sint32 edxRS16, sint32 x, sint32 y, sint32 z);
+money32 place_provisional_track_piece(sint32 rideIndex, sint32 trackType, sint32 trackDirection, sint32 edxRS16, sint32 x, sint32 y, sint32 z);
 
 rct_ride *get_ride(sint32 index)
 {
@@ -776,7 +776,7 @@ sint32 ride_find_track_gap(rct_xy_element *input, rct_xy_element *output)
 
 	w = window_find_by_class(WC_RIDE_CONSTRUCTION);
 	if (w != NULL && _rideConstructionState != RIDE_CONSTRUCTION_STATE_0 && _currentRideIndex == rideIndex)
-		sub_6C9627();
+		ride_construction_invalidate_current_track();
 
 	bool counter = true;
 	track_circuit_iterator_begin(&it, *input);
@@ -972,7 +972,7 @@ static rct_window *ride_create_or_find_construction_window(sint32 rideIndex)
 		_currentRideIndex = rideIndex;
 		w = window_ride_construction_open();
 	} else {
-		sub_6C9627();
+		ride_construction_invalidate_current_track();
 		_currentRideIndex = rideIndex;
 	}
 
@@ -1021,7 +1021,7 @@ void ride_construct(sint32 rideIndex)
 		if (w != NULL && ride_modify(&trackElement))
 			window_scroll_to_location(w, trackElement.x, trackElement.y, trackElement.element->base_height * 8);
 	} else {
-		sub_6CC3FB(rideIndex);
+		ride_initialise_construction_window(rideIndex);
 	}
 }
 
@@ -1170,7 +1170,7 @@ void ride_remove_peeps(sint32 rideIndex)
 
 			invalidate_sprite_2((rct_sprite*)peep);
 			peep->state = PEEP_STATE_FALLING;
-			sub_693BE5(peep, 0);
+			peep_switch_to_special_sprite(peep, 0);
 
 			peep->happiness = min(peep->happiness, peep->happiness_growth_rate) / 2;
 			peep->happiness_growth_rate = peep->happiness;
@@ -1334,10 +1334,10 @@ void ride_restore_provisional_track_piece()
 	if (_currentTrackSelectionFlags & TRACK_SELECTION_FLAG_TRACK) {
 		sint32 x, y, z, direction, type, rideIndex, edxRS16;
 		if (sub_6CA2DF(&type, &direction, &rideIndex, &edxRS16, &x, &y, &z, NULL)) {
-			sub_6C96C0();
+			ride_construction_remove_ghosts();
 		} else {
-			_currentTrackPrice = sub_6CA162(rideIndex, type, direction, edxRS16, x, y, z);
-			sub_6C84CE();
+			_currentTrackPrice = place_provisional_track_piece(rideIndex, type, direction, edxRS16, x, y, z);
+			window_ride_construction_update_active_elements();
 		}
 	}
 }
@@ -1388,9 +1388,8 @@ void ride_remove_provisional_track_piece()
  *
  *  rct2: 0x006C96C0
  */
-void sub_6C96C0()
+void ride_construction_remove_ghosts()
 {
-
 	if (_currentTrackSelectionFlags & TRACK_SELECTION_FLAG_ENTRANCE_OR_EXIT) {
 		ride_entrance_exit_remove_ghost();
 		_currentTrackSelectionFlags &= ~TRACK_SELECTION_FLAG_ENTRANCE_OR_EXIT;
@@ -1401,7 +1400,10 @@ void sub_6C96C0()
 	}
 }
 
-void sub_6C9627()
+/*
+*  rct2: 0x006C9627
+*/
+void ride_construction_invalidate_current_track()
 {
 	sint32 x, y, z;
 
@@ -1438,7 +1440,7 @@ void sub_6C9627()
 			gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
 			map_invalidate_tile_full(_currentTrackBeginX, _currentTrackBeginY);
 		}
-		sub_6C96C0();
+		ride_construction_remove_ghosts();
 		break;
 	}
 }
@@ -1610,7 +1612,7 @@ void ride_construction_set_default_next_piece()
 void ride_select_next_section()
 {
 	if (_rideConstructionState == RIDE_CONSTRUCTION_STATE_SELECTED) {
-		sub_6C9627();
+		ride_construction_invalidate_current_track();
 		sint32 x = _currentTrackBeginX;
 		sint32 y = _currentTrackBeginY;
 		sint32 z = _currentTrackBeginZ;
@@ -1619,7 +1621,7 @@ void ride_select_next_section()
 		rct_map_element *mapElement;
 		if (sub_6C683D(&x, &y, &z, direction & 3, type, 0, &mapElement, 0)) {
 			_rideConstructionState = RIDE_CONSTRUCTION_STATE_0;
-			sub_6C84CE();
+			window_ride_construction_update_active_elements();
 			return;
 		}
 		rct_xy_element inputElement, outputElement;
@@ -1640,7 +1642,7 @@ void ride_select_next_section()
 			_currentTrackSelectionFlags = 0;
 			_rideConstructionArrowPulseTime = 0;
 			ride_construction_set_default_next_piece();
-			sub_6C84CE();
+			window_ride_construction_update_active_elements();
 			return;
 		}
 
@@ -1651,10 +1653,10 @@ void ride_select_next_section()
 		_currentTrackPieceType = mapElement->properties.track.type;
 		_currentTrackSelectionFlags = 0;
 		_rideConstructionArrowPulseTime = 0;
-		sub_6C84CE();
+		window_ride_construction_update_active_elements();
 	} else if (_rideConstructionState == RIDE_CONSTRUCTION_STATE_BACK) {
 		if (ride_select_forwards_from_back()) {
-			sub_6C84CE();
+			window_ride_construction_update_active_elements();
 		}
 	}
 }
@@ -1666,7 +1668,7 @@ void ride_select_next_section()
 void ride_select_previous_section()
 {
 	if (_rideConstructionState == RIDE_CONSTRUCTION_STATE_SELECTED) {
-		sub_6C9627();
+		ride_construction_invalidate_current_track();
 		sint32 x = _currentTrackBeginX;
 		sint32 y = _currentTrackBeginY;
 		sint32 z = _currentTrackBeginZ;
@@ -1675,7 +1677,7 @@ void ride_select_previous_section()
 		rct_map_element *mapElement;
 		if (sub_6C683D(&x, &y, &z, direction & 3, type, 0, &mapElement, 0)) {
 			_rideConstructionState = RIDE_CONSTRUCTION_STATE_0;
-			sub_6C84CE();
+			window_ride_construction_update_active_elements();
 			return;
 		}
 		track_begin_end trackBeginEnd;
@@ -1687,7 +1689,7 @@ void ride_select_previous_section()
 			_currentTrackPieceType = trackBeginEnd.begin_element->properties.track.type;
 			_currentTrackSelectionFlags = 0;
 			_rideConstructionArrowPulseTime = 0;
-			sub_6C84CE();
+			window_ride_construction_update_active_elements();
 		} else {
 			_rideConstructionState = RIDE_CONSTRUCTION_STATE_BACK;
 			_currentTrackBeginX = trackBeginEnd.end_x;
@@ -1698,11 +1700,11 @@ void ride_select_previous_section()
 			_currentTrackSelectionFlags = 0;
 			_rideConstructionArrowPulseTime = 0;
 			ride_construction_set_default_next_piece();
-			sub_6C84CE();
+			window_ride_construction_update_active_elements();
 		}
 	} else if (_rideConstructionState == RIDE_CONSTRUCTION_STATE_FRONT) {
 		if (ride_select_backwards_from_front()) {
-			sub_6C84CE();
+			window_ride_construction_update_active_elements();
 		}
 	}
 }
@@ -1727,7 +1729,7 @@ static sint32 ride_modify_entrance_or_exit(rct_map_element *mapElement, sint32 x
 	// Get or create construction window for ride
 	constructionWindow = window_find_by_class(WC_RIDE_CONSTRUCTION);
 	if (constructionWindow == NULL) {
-		if (!sub_6CC3FB(rideIndex))
+		if (!ride_initialise_construction_window(rideIndex))
 			return 0;
 
 		constructionWindow = window_find_by_class(WC_RIDE_CONSTRUCTION);
@@ -1735,7 +1737,7 @@ static sint32 ride_modify_entrance_or_exit(rct_map_element *mapElement, sint32 x
 			return 0;
 	}
 
-	sub_6C9627();
+	ride_construction_invalidate_current_track();
 	if (
 		_rideConstructionState != RIDE_CONSTRUCTION_STATE_ENTRANCE_EXIT ||
 		!(input_test_flag(INPUT_FLAG_TOOL_ACTIVE)) ||
@@ -1752,7 +1754,7 @@ static sint32 ride_modify_entrance_or_exit(rct_map_element *mapElement, sint32 x
 			_rideConstructionState = RIDE_CONSTRUCTION_STATE_ENTRANCE_EXIT;
 		}
 
-		sub_6C84CE();
+		window_ride_construction_update_active_elements();
 		gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
 	} else {
 		// Remove entrance / exit
@@ -1848,13 +1850,13 @@ sint32 ride_modify(rct_xy_element *input)
 	_rideConstructionArrowPulseTime = 0;
 
 	if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_NO_TRACK)) {
-		sub_6C84CE();
+		window_ride_construction_update_active_elements();
 		return 1;
 	}
 
 	ride_select_next_section();
 	if (_rideConstructionState == RIDE_CONSTRUCTION_STATE_FRONT) {
-		sub_6C84CE();
+		window_ride_construction_update_active_elements();
 		return 1;
 	}
 
@@ -1880,7 +1882,7 @@ sint32 ride_modify(rct_xy_element *input)
 		_rideConstructionArrowPulseTime = 0;
 	}
 
-	sub_6C84CE();
+	window_ride_construction_update_active_elements();
 	return 1;
 }
 
@@ -1888,7 +1890,7 @@ sint32 ride_modify(rct_xy_element *input)
  *
  *  rct2: 0x006CC3FB
  */
-sint32 sub_6CC3FB(sint32 rideIndex)
+sint32 ride_initialise_construction_window(sint32 rideIndex)
 {
 	rct_ride *ride;
 	rct_window *w;
@@ -1926,7 +1928,7 @@ sint32 sub_6CC3FB(sint32 rideIndex)
 	_currentTrackSelectionFlags = 0;
 	_rideConstructionArrowPulseTime = 0;
 
-	sub_6C84CE();
+	window_ride_construction_update_active_elements();
 	return 1;
 }
 
@@ -4099,7 +4101,7 @@ static sint32 ride_check_block_brakes(rct_xy_element *input, rct_xy_element *out
 	rideIndex = input->element->properties.track.ride_index;
 	w = window_find_by_class(WC_RIDE_CONSTRUCTION);
 	if (w != NULL && _rideConstructionState != RIDE_CONSTRUCTION_STATE_0 && _currentRideIndex == rideIndex)
-		sub_6C9627();
+		ride_construction_invalidate_current_track();
 
 	track_circuit_iterator_begin(&it, *input);
 	while (track_circuit_iterator_next(&it)) {
@@ -4148,7 +4150,7 @@ static bool ride_check_track_contains_inversions(rct_xy_element *input, rct_xy_e
 
 	rct_window *w = window_find_by_class(WC_RIDE_CONSTRUCTION);
 	if (w != NULL && _rideConstructionState != RIDE_CONSTRUCTION_STATE_0 && rideIndex == _currentRideIndex) {
-		sub_6C9627();
+		ride_construction_invalidate_current_track();
 	}
 
 	track_circuit_iterator it;
@@ -4179,7 +4181,7 @@ static bool ride_check_track_contains_banked(rct_xy_element *input, rct_xy_eleme
 
 	rct_window *w = window_find_by_class(WC_RIDE_CONSTRUCTION);
 	if (w != NULL && _rideConstructionState != RIDE_CONSTRUCTION_STATE_0 && rideIndex == _currentRideIndex) {
-		sub_6C9627();
+		ride_construction_invalidate_current_track();
 	}
 
 	track_circuit_iterator it;
@@ -4204,7 +4206,7 @@ static sint32 ride_check_station_length(rct_xy_element *input, rct_xy_element *o
 	if (w != 0 &&
 		_rideConstructionState != RIDE_CONSTRUCTION_STATE_0 &&
 		_currentRideIndex == input->element->properties.track.ride_index){
-		sub_6C9627();
+		ride_construction_invalidate_current_track();
 	}
 
 	output->x = input->x;
@@ -4259,7 +4261,7 @@ static bool ride_check_start_and_end_is_station(rct_xy_element *input, rct_xy_el
 
 	w = window_find_by_class(WC_RIDE_CONSTRUCTION);
 	if (w != NULL && _rideConstructionState != RIDE_CONSTRUCTION_STATE_0 && rideIndex == _currentRideIndex) {
-		sub_6C9627();
+		ride_construction_invalidate_current_track();
 	}
 
 	// Check back of the track
@@ -4410,7 +4412,7 @@ static void ride_set_start_finish_points(sint32 rideIndex, rct_xy_element *start
  *
  *  rct2: 0x0069ED9E
  */
-static sint32 sub_69ED9E()
+static sint32 count_free_misc_sprite_slots()
 {
 	sint32 miscSpriteCount = gSpriteListCount[SPRITE_LIST_MISC];
 	sint32 remainingSpriteCount = gSpriteListCount[SPRITE_LIST_NULL];
@@ -4771,7 +4773,7 @@ static bool ride_create_vehicles(rct_ride *ride, sint32 rideIndex, rct_xy_elemen
 
 	// Check if there are enough free sprite slots for all the vehicles
 	sint32 totalCars = ride->num_vehicles * ride->num_cars_per_train;
-	if (totalCars > sub_69ED9E()) {
+	if (totalCars > count_free_misc_sprite_slots()) {
 		gGameCommandErrorText = STR_UNABLE_TO_CREATE_ENOUGH_VEHICLES;
 		return false;
 	}
@@ -5007,7 +5009,7 @@ static bool ride_create_cable_lift(sint32 rideIndex, bool isApplying)
 		return false;
 	}
 
-	if (sub_69ED9E() <= 5) {
+	if (count_free_misc_sprite_slots() <= 5) {
 		gGameCommandErrorText = STR_UNABLE_TO_CREATE_ENOUGH_VEHICLES;
 		return false;
 	}
@@ -6215,7 +6217,7 @@ void game_command_callback_ride_construct_placed_back(sint32 eax, sint32 ebx, si
 	}
 
 	window_ride_construction_do_station_check();
-	sub_6C84CE();
+	window_ride_construction_update_active_elements();
 }
 
 void game_command_callback_ride_construct_placed_front(sint32 eax, sint32 ebx, sint32 ecx, sint32 edx, sint32 esi, sint32 edi, sint32 ebp)
@@ -6249,7 +6251,7 @@ void game_command_callback_ride_construct_placed_front(sint32 eax, sint32 ebx, s
 
 	window_ride_construction_do_station_check();
 	window_ride_construction_do_entrance_exit_check();
-	sub_6C84CE();
+	window_ride_construction_update_active_elements();
 }
 
 /**
@@ -7196,7 +7198,7 @@ bool ride_select_backwards_from_front()
 {
 	track_begin_end trackBeginEnd;
 
-	sub_6C9627();
+	ride_construction_invalidate_current_track();
 	if (track_block_get_previous_from_zero(_currentTrackBeginX, _currentTrackBeginY, _currentTrackBeginZ, _currentRideIndex, _currentTrackPieceDirection, &trackBeginEnd)) {
 		_rideConstructionState = RIDE_CONSTRUCTION_STATE_SELECTED;
 		_currentTrackBeginX = trackBeginEnd.begin_x;
@@ -7216,7 +7218,7 @@ bool ride_select_forwards_from_back()
 {
 	sint32 x, y, z, direction;
 
-	sub_6C9627();
+	ride_construction_invalidate_current_track();
 
 	x = _currentTrackBeginX;
 	y = _currentTrackBeginY;
@@ -7488,7 +7490,7 @@ foundTrack:
 
 	w = window_find_by_class(WC_RIDE_CONSTRUCTION);
 	if (w != NULL && _rideConstructionState != RIDE_CONSTRUCTION_STATE_0 && _currentRideIndex == rideIndex) {
-		sub_6C9627();
+		ride_construction_invalidate_current_track();
 	}
 
 	result = 0;
@@ -8015,7 +8017,7 @@ void sub_6CB945(sint32 rideIndex)
 				footpath_queue_chain_reset();
 				maze_entrance_hedge_replacement(location.x, location.y, mapElement);
 				footpath_remove_edges_at(location.x, location.y, mapElement);
-				sub_6A759F();
+				footpath_update_queue_chains();
 				map_invalidate_tile_full(location.x, location.y);
 				map_element_remove(mapElement);
 				mapElement--;

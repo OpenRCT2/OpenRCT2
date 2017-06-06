@@ -175,7 +175,7 @@ void scenario_begin()
 	gParkFlags &= ~PARK_FLAGS_NO_MONEY;
 	if (gParkFlags & PARK_FLAGS_NO_MONEY_SCENARIO)
 		gParkFlags |= PARK_FLAGS_NO_MONEY;
-	sub_684AC3();
+	research_reset_current_item();
 	scenery_set_default_placement_configuration();
 	news_item_init_queue();
 	if (gScenarioObjectiveType != OBJECTIVE_NONE)

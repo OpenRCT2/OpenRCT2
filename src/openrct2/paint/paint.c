@@ -592,7 +592,7 @@ bool paint_attach_to_previous_ps(uint32 image_id, uint16 x, uint16 y)
  * @param y_offsets (di)
  * @param rotation (ebp)
  */
-void sub_685EBC(money32 amount, rct_string_id string_id, sint16 y, sint16 z, sint8 y_offsets[], sint16 offset_x, uint32 rotation)
+void paint_floating_money_effect(money32 amount, rct_string_id string_id, sint16 y, sint16 z, sint8 y_offsets[], sint16 offset_x, uint32 rotation)
 {
 	if (gNextFreePaintStruct >= gEndOfPaintStructArray) {
 		return;

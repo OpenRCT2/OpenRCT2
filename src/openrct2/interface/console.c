@@ -1133,14 +1133,14 @@ static sint32 cc_load_object(const utf8 **argv, sint32 argc) {
 			}
 
 			gSilentResearch = true;
-			sub_684AC3();
+			research_reset_current_item();
 			gSilentResearch = false;
 		}
 		else if (objectType == OBJECT_TYPE_SCENERY_SETS) {
 			research_insert(true, groupIndex, RESEARCH_CATEGORY_SCENERYSET);
 
 			gSilentResearch = true;
-			sub_684AC3();
+			research_reset_current_item();
 			gSilentResearch = false;
 		}
 		scenery_set_default_placement_configuration();

@@ -292,7 +292,7 @@ void research_update()
  *
  *  rct2: 0x00684AC3
  */
-void sub_684AC3(){
+void research_reset_current_item(){
 	rct_research_item* research = gResearchItems;
 	for (; research->entryIndex != RESEARCHED_ITEMS_END; research++);
 

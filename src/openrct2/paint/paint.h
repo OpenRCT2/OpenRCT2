@@ -170,7 +170,7 @@ void paint_util_push_tunnel_rotated(uint8 direction, uint16 height, uint8 type);
 
 bool paint_attach_to_previous_attach(uint32 image_id, uint16 x, uint16 y);
 bool paint_attach_to_previous_ps(uint32 image_id, uint16 x, uint16 y);
-void sub_685EBC(money32 amount, rct_string_id string_id, sint16 y, sint16 z, sint8 y_offsets[], sint16 offset_x, uint32 rotation);
+void paint_floating_money_effect(money32 amount, rct_string_id string_id, sint16 y, sint16 z, sint8 y_offsets[], sint16 offset_x, uint32 rotation);
 
 void paint_init(rct_drawpixelinfo * dpi);
 void paint_generate_structs(rct_drawpixelinfo * dpi);

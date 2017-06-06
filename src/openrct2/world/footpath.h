@@ -87,7 +87,7 @@ void footpath_get_coordinates_from_pos(sint32 screenX, sint32 screenY, sint32 *x
 void footpath_bridge_get_info_from_pos(sint32 screenX, sint32 screenY, sint32 *x, sint32 *y, sint32 *direction, rct_map_element **mapElement);
 void footpath_remove_litter(sint32 x, sint32 y, sint32 z);
 void footpath_connect_edges(sint32 x, sint32 y, rct_map_element *mapElement, sint32 flags);
-void sub_6A759F();
+void footpath_update_queue_chains();
 bool fence_in_the_way(sint32 x, sint32 y, sint32 z0, sint32 z1, sint32 direction);
 void footpath_chain_ride_queue(sint32 rideIndex, sint32 entranceIndex, sint32 x, sint32 y, rct_map_element *mapElement, sint32 direction);
 void footpath_update_path_wide_flags(sint32 x, sint32 y);

@@ -220,9 +220,9 @@ typedef struct rct_ride {
 	union {
 		uint8 inversions;			// 0x114 (???X XXXX)
 		uint8 holes;				// 0x114 (???X XXXX)
-		// The undercover portion is a very rough approximation of how much of the ride is undercover.
+		// This is a very rough approximation of how much of the ride is undercover.
 		// It reaches the maximum value of 7 at about 50% undercover and doesn't increase beyond that.
-		uint8 undercover_portion;	// 0x114 (XXX?-????)
+		uint8 sheltered_eighths;	// 0x114 (XXX?-????)
 	};
 	// Y is number of powered lifts, X is drops
 	uint8 drops;					// 0x115 (YYXX XXXX)
@@ -1036,8 +1036,8 @@ void ride_measurements_update();
 rct_ride_measurement *ride_get_measurement(sint32 rideIndex, rct_string_id *message);
 void ride_breakdown_add_news_item(sint32 rideIndex);
 rct_peep *ride_find_closest_mechanic(rct_ride *ride, sint32 forInspection);
-sint32 sub_6CC3FB(sint32 rideIndex);
-void sub_6C9627();
+sint32 ride_initialise_construction_window(sint32 rideIndex);
+void ride_construction_invalidate_current_track();
 sint32 sub_6C683D(sint32* x, sint32* y, sint32* z, sint32 direction, sint32 type, uint16 extra_params, rct_map_element** output_element, uint16 flags);
 void ride_set_map_tooltip(rct_map_element *mapElement);
 sint32 ride_music_params_update(sint16 x, sint16 y, sint16 z, uint8 rideIndex, uint16 sampleRate, uint32 position, uint8 *tuneId);
@@ -1105,8 +1105,8 @@ bool track_block_get_next_from_zero(sint16 x, sint16 y, sint16 z_start, uint8 ri
 bool track_block_get_previous(sint32 x, sint32 y, rct_map_element *mapElement, track_begin_end *outTrackBeginEnd);
 bool track_block_get_previous_from_zero(sint16 x, sint16 y, sint16 z, uint8 rideIndex, uint8 direction, track_begin_end *outTrackBeginEnd);
 
-void sub_6C84CE();
-void sub_6C96C0();
+void window_ride_construction_update_active_elements();
+void ride_construction_remove_ghosts();
 money32 ride_entrance_exit_place_ghost(sint32 rideIndex, sint32 x, sint32 y, sint32 direction, sint32 placeType, sint32 stationNum);
 void ride_get_entrance_or_exit_position_from_screen_position(sint32 x, sint32 y, sint32 *outX, sint32 *outY, sint32 *outDirection);
 

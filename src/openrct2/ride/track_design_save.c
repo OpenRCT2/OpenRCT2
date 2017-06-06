@@ -927,7 +927,7 @@ static bool track_design_save_to_td6_for_maze(uint8 rideIndex, rct_track_td6 *td
 
 	// Save global vars as they are still used by scenery
 	sint16 startZ = gTrackPreviewOrigin.z;
-	sub_6D01B3(td6, PTD_OPERATION_DRAW_OUTLINES, 0, 4096, 4096, 0);
+	place_virtual_track(td6, PTD_OPERATION_DRAW_OUTLINES, 0, 4096, 4096, 0);
 	gTrackPreviewOrigin = (rct_xyz16) { startX, startY, startZ };
 
 	gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
@@ -1107,7 +1107,7 @@ static bool track_design_save_to_td6_for_tracked_ride(uint8 rideIndex, rct_track
 	td6->entrance_elements = realloc(td6->entrance_elements, numEntranceElements * sizeof(rct_td6_entrance_element) + 1);
 	*((uint8*)&td6->entrance_elements[numEntranceElements]) = 0xFF;
 
-	sub_6D01B3(td6, PTD_OPERATION_DRAW_OUTLINES, 0, 4096, 4096, 0);
+	place_virtual_track(td6, PTD_OPERATION_DRAW_OUTLINES, 0, 4096, 4096, 0);
 
 	// Resave global vars for scenery reasons.
 	gTrackPreviewOrigin = (rct_xyz16) { start_x, start_y, start_z };

@@ -539,7 +539,7 @@ typedef struct rct_peep {
 	// Normally 0, 1 for carrying sliding board on spiral slide ride, 2 for carrying lawn mower
 	uint8 special_sprite;   	    // 0x6D
 	uint8 action_sprite_type;		// 0x6E
-	// Seems to be used like a local variable, as it's always set before calling sub_693BAB, which reads this again
+	// Seems to be used like a local variable, as it's always set before calling peep_switch_to_next_action_sprite_type, which reads this again
 	uint8 next_action_sprite_type;    // 0x6F
 	uint8 action_sprite_image_offset; // 0x70
 	uint8 action;					// 0x71
@@ -751,11 +751,11 @@ void peep_decrement_num_riders(rct_peep* peep);
 void peep_insert_new_thought(rct_peep *peep, uint8 thought_type, uint8 thought_arguments);
 
 void peep_set_map_tooltip(rct_peep *peep);
-void sub_693B58(rct_peep* peep);
+void peep_update_current_action_sprite_type(rct_peep* peep);
 void remove_peep_from_ride(rct_peep* peep);
 void remove_peep_from_queue(rct_peep* peep);
 
-void sub_693BE5(rct_peep* peep, uint8 al);
+void peep_switch_to_special_sprite(rct_peep* peep, uint8 special_sprite_id);
 void peep_update_name_sort(rct_peep *peep);
 void peep_sort();
 void peep_update_names(bool realNames);
