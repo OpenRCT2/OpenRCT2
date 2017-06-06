@@ -24,6 +24,7 @@
 #include "core/File.h"
 #include "core/FileStream.hpp"
 #include "core/Guard.hpp"
+#include "core/MemoryStream.h"
 #include "core/String.hpp"
 #include "FileClassifier.h"
 #include "network/network.h"
@@ -322,14 +323,16 @@ namespace OpenRCT2
                 {
 #ifndef DISABLE_HTTP
                     // Download park and open it using its temporary filename
-                    char tmpPath[MAX_PATH];
-                    if (!http_download_park(gOpenRCT2StartupActionPath, tmpPath))
+                    void * data;
+                    size_t dataSize = http_download_park(gOpenRCT2StartupActionPath, &data);
+                    if (dataSize == 0)
                     {
                         title_load();
                         break;
                     }
 
-                    parkLoaded = OpenParkAutoDetectFormat(tmpPath);
+                    auto ms = MemoryStream(data, dataSize, MEMORY_ACCESS::OWNER);
+                    parkLoaded = OpenParkAutoDetectFormat(&ms);
 #endif
                 }
                 else
@@ -491,10 +494,10 @@ namespace OpenRCT2
             sprite_position_tween_restore();
         }
 
-        bool OpenParkAutoDetectFormat(const utf8 * path)
+        bool OpenParkAutoDetectFormat(IStream * stream)
         {
             ClassifiedFile info;
-            if (TryClassifyFile(path, &info))
+            if (TryClassifyFile(stream, &info))
             {
                 if (info.Type == FILE_TYPE::SAVED_GAME ||
                     info.Type == FILE_TYPE::SCENARIO)
@@ -513,7 +516,7 @@ namespace OpenRCT2
                     {
                         try
                         {
-                            parkImporter->LoadSavedGame(path);
+                            parkImporter->LoadFromStream(stream, false);
                             parkImporter->Import();
                             game_fix_save_vars();
                             sprite_position_tween_reset();
@@ -531,7 +534,7 @@ namespace OpenRCT2
                     {
                         try
                         {
-                            parkImporter->LoadScenario(path);
+                            parkImporter->LoadFromStream(stream, true);
                             parkImporter->Import();
                             game_fix_save_vars();
                             sprite_position_tween_reset();

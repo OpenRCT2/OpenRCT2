@@ -292,7 +292,7 @@ const char *http_get_extension_from_url(const char *url, const char *fallback)
     }
 }
 
-bool http_download_park(const char *url, char tmpPath[L_tmpnam + 10])
+size_t http_download_park(const char * url, void * * outData)
 {
     // Download park to buffer in memory
     HttpRequest2 request;
@@ -307,35 +307,24 @@ bool http_download_park(const char *url, char tmpPath[L_tmpnam + 10])
         if (response != NULL) {
             http_request_dispose(response);
         }
-        return false;
+
+        *outData = NULL;
+        return 0;
     }
 
-    // Generate temporary filename that includes the original extension
-    if (tmpnam(tmpPath) == NULL) {
-        Console::Error::WriteLine("Failed to generate temporary filename for downloaded park '%s'", request.Url.c_str());
-        http_request_dispose(response);
-        return false;
+    size_t dataSize = response->size - 1;
+    void * data = malloc(dataSize);
+    if (data == NULL) {
+        dataSize = 0;
+        Console::Error::WriteLine("Failed to allocate memory for downloaded park.");
+    } else {
+        memcpy(data, response->body, dataSize);
     }
-    size_t remainingBytes = L_tmpnam + 10 - strlen(tmpPath);
-
-    const char *ext = http_get_extension_from_url(request.Url.c_str(), ".sv6");
-    strncat(tmpPath, ext, remainingBytes);
-
-    // Store park in temporary file and load it (discard ending NUL in response body)
-    FILE* tmpFile = fopen(tmpPath, "wb");
-
-    if (tmpFile == NULL) {
-        Console::Error::WriteLine("Failed to write downloaded park '%s' to temporary file", request.Url.c_str());
-        http_request_dispose(response);
-        return false;
-    }
-
-    fwrite(response->body, 1, response->size - 1, tmpFile);
-    fclose(tmpFile);
 
     http_request_dispose(response);
 
-    return true;
+    *outData = data;
+    return dataSize;
 }
 
 #endif
