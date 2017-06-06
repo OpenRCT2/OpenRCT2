@@ -151,6 +151,15 @@ void Network::Close()
 		// which may no longer be valid on Linux and would cause a segfault.
 		return;
 	}
+
+	// HACK Because Close() is closed all over the place, it sometimes gets called inside an Update
+	//      call. This then causes disposed data to be accessed. Therefore, save closing until the
+	//      end of the update loop.
+	if (_closeLock) {
+		_requireClose = true;
+		return;
+	}
+
 	if (mode == NETWORK_MODE_CLIENT) {
 		delete server_connection->Socket;
 		server_connection->Socket = nullptr;
@@ -178,6 +187,8 @@ void Network::Close()
 
 	CloseChatLog();
 	gfx_invalidate_screen();
+
+	_requireClose = false;
 }
 
 bool Network::BeginClient(const char* host, uint16 port)
@@ -362,6 +373,8 @@ uint8 Network::GetPlayerID()
 
 void Network::Update()
 {
+	_closeLock = true;
+
 	switch (GetMode()) {
 	case NETWORK_MODE_SERVER:
 		UpdateServer();
@@ -369,6 +382,12 @@ void Network::Update()
 	case NETWORK_MODE_CLIENT:
 		UpdateClient();
 		break;
+	}
+
+	// If the Close() was called during the update, close it for real
+	_closeLock = false;
+	if (_requireClose) {
+		Close();
 	}
 }
 
@@ -405,6 +424,8 @@ void Network::UpdateServer()
 
 void Network::UpdateClient()
 {
+	assert(server_connection != nullptr);
+
 	switch(status){
 	case NETWORK_STATUS_CONNECTING:
 	{

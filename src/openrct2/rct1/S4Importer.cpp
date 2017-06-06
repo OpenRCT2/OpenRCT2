@@ -468,7 +468,7 @@ private:
             std::vector<const char *> objects = RCT1::GetSceneryObjects(sceneryTheme);
             for (const char * objectName : objects)
             {
-                rct_object_entry * foundEntry = object_list_find_by_name(objectName);
+                const rct_object_entry * foundEntry = object_list_find_by_name(objectName);
                 if (foundEntry != nullptr)
                 {
                     uint8 objectType = foundEntry->flags & 0x0F;

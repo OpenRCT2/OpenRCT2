@@ -195,6 +195,8 @@ private:
 
 	sint32 mode = NETWORK_MODE_NONE;
 	sint32 status = NETWORK_STATUS_NONE;
+	bool _closeLock = false;
+	bool _requireClose = false;
 	bool wsa_initialized = false;
 	ITcpSocket * listening_socket = nullptr;
 	uint16 listening_port = 0;

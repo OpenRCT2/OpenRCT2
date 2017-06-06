@@ -114,8 +114,8 @@ sint32 object_calculate_checksum(const rct_object_entry * entry, const void * da
 sint32 find_object_in_entry_group(const rct_object_entry* entry, uint8* entry_type, uint8* entry_index);
 void object_create_identifier_name(char* string_buffer, size_t size, const rct_object_entry* object);
 
-rct_object_entry *object_list_find_by_name(const char *name);
-rct_object_entry *object_list_find(rct_object_entry *entry);
+const rct_object_entry * object_list_find_by_name(const char *name);
+const rct_object_entry * object_list_find(rct_object_entry *entry);
 
 void object_entry_get_name(utf8 * buffer, size_t bufferSize, const rct_object_entry * entry);
 void object_entry_get_name_fixed(utf8 * buffer, size_t bufferSize, const rct_object_entry * entry);

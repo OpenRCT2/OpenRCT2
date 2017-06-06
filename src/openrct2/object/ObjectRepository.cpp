@@ -717,18 +717,28 @@ bool IsObjectCustom(const ObjectRepositoryItem * object)
 
 extern "C"
 {
-    rct_object_entry * object_list_find(rct_object_entry * entry)
+    const rct_object_entry * object_list_find(rct_object_entry * entry)
     {
-        IObjectRepository * objRepo = GetObjectRepository();
-        const ObjectRepositoryItem * item = objRepo->FindObject(entry);
-        return (rct_object_entry *)&item->ObjectEntry;
+        const rct_object_entry * result = nullptr;
+        auto objRepo = GetObjectRepository();
+        auto item = objRepo->FindObject(entry);
+        if (item != nullptr)
+        {
+            result = &item->ObjectEntry;
+        }
+        return result;
     }
 
-    rct_object_entry * object_list_find_by_name(const char * name)
+    const rct_object_entry * object_list_find_by_name(const char * name)
     {
-        IObjectRepository * objRepo = GetObjectRepository();
-        const ObjectRepositoryItem * item = objRepo->FindObject(name);
-        return (rct_object_entry *)&item->ObjectEntry;
+        const rct_object_entry * result = nullptr;
+        auto objRepo = GetObjectRepository();
+        auto item = objRepo->FindObject(name);
+        if (item != nullptr)
+        {
+            result = &item->ObjectEntry;
+        }
+        return result;
     }
 
     void object_list_load()
