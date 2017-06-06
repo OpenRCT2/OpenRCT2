@@ -23,56 +23,56 @@ static bool _log_location_enabled = true;
 bool _log_levels[DIAGNOSTIC_LEVEL_COUNT] = { true, true, true, false, true };
 
 const char * _level_strings[] = {
-	"FATAL",
-	"ERROR",
-	"WARNING",
-	"VERBOSE",
-	"INFO"
+    "FATAL",
+    "ERROR",
+    "WARNING",
+    "VERBOSE",
+    "INFO"
 };
 
 void diagnostic_log(DiagnosticLevel diagnosticLevel, const char *format, ...)
 {
-	FILE *stream;
-	va_list args;
+    FILE *stream;
+    va_list args;
 
-	if (!_log_levels[diagnosticLevel])
-		return;
+    if (!_log_levels[diagnosticLevel])
+        return;
 
-	stream = stderr;
+    stream = stderr;
 
-	// Level
-	fprintf(stream, "%s: ", _level_strings[diagnosticLevel]);
+    // Level
+    fprintf(stream, "%s: ", _level_strings[diagnosticLevel]);
 
-	// Message
-	va_start(args, format);
-	vfprintf(stream, format, args);
-	va_end(args);
+    // Message
+    va_start(args, format);
+    vfprintf(stream, format, args);
+    va_end(args);
 
-	// Line terminator
-	fprintf(stream, "\n");
+    // Line terminator
+    fprintf(stream, "\n");
 }
 
 void diagnostic_log_with_location(DiagnosticLevel diagnosticLevel, const char *file, const char *function, sint32 line, const char *format, ...)
 {
-	FILE *stream;
-	va_list args;
+    FILE *stream;
+    va_list args;
 
-	if (!_log_levels[diagnosticLevel])
-		return;
+    if (!_log_levels[diagnosticLevel])
+        return;
 
-	stream = stderr;
+    stream = stderr;
 
-	// Level and source code information
-	if (_log_location_enabled)
-		fprintf(stream, "%s[%s:%d (%s)]: ", _level_strings[diagnosticLevel], file, line, function);
-	else
-		fprintf(stream, "%s: ", _level_strings[diagnosticLevel]);
+    // Level and source code information
+    if (_log_location_enabled)
+        fprintf(stream, "%s[%s:%d (%s)]: ", _level_strings[diagnosticLevel], file, line, function);
+    else
+        fprintf(stream, "%s: ", _level_strings[diagnosticLevel]);
 
-	// Message
-	va_start(args, format);
-	vfprintf(stream, format, args);
-	va_end(args);
+    // Message
+    va_start(args, format);
+    vfprintf(stream, format, args);
+    va_end(args);
 
-	// Line terminator
-	fprintf(stream, "\n");
+    // Line terminator
+    fprintf(stream, "\n");
 }

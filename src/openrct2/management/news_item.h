@@ -20,25 +20,25 @@
 #include "../common.h"
 
 enum {
-	NEWS_ITEM_NULL,
-	NEWS_ITEM_RIDE,
-	NEWS_ITEM_PEEP_ON_RIDE,
-	NEWS_ITEM_PEEP,
-	NEWS_ITEM_MONEY,
-	NEWS_ITEM_BLANK,
-	NEWS_ITEM_RESEARCH,
-	NEWS_ITEM_PEEPS,
-	NEWS_ITEM_AWARD,
-	NEWS_ITEM_GRAPH
+    NEWS_ITEM_NULL,
+    NEWS_ITEM_RIDE,
+    NEWS_ITEM_PEEP_ON_RIDE,
+    NEWS_ITEM_PEEP,
+    NEWS_ITEM_MONEY,
+    NEWS_ITEM_BLANK,
+    NEWS_ITEM_RESEARCH,
+    NEWS_ITEM_PEEPS,
+    NEWS_ITEM_AWARD,
+    NEWS_ITEM_GRAPH
 };
 
 enum {
-	NEWS_TYPE_HAS_LOCATION = 1,
-	NEWS_TYPE_HAS_SUBJECT = 2,
+    NEWS_TYPE_HAS_LOCATION = 1,
+    NEWS_TYPE_HAS_SUBJECT = 2,
 };
 
 enum {
-	NEWS_FLAG_HAS_BUTTON = 1 << 0,
+    NEWS_FLAG_HAS_BUTTON = 1 << 0,
 };
 
 extern const uint8 news_type_properties[10];
@@ -47,13 +47,13 @@ extern const uint8 news_type_properties[10];
  * A single news item / message.
  */
 typedef struct NewsItem {
-	uint8   Type;
-	uint8   Flags;
-	uint32  Assoc;
-	uint16  Ticks;
-	uint16  MonthYear;
-	uint8   Day;
-	utf8    Text[256];
+    uint8   Type;
+    uint8   Flags;
+    uint32  Assoc;
+    uint16  Ticks;
+    uint16  MonthYear;
+    uint8   Day;
+    utf8    Text[256];
 } NewsItem;
 
 #define MAX_NEWS_ITEMS 61

@@ -25,46 +25,46 @@
 #include "../rct2.h"
 
 enum WINDOW_TITLE_EXIT_WIDGET_IDX {
-	WIDX_EXIT,
+    WIDX_EXIT,
 };
 
 static rct_widget window_title_exit_widgets[] = {
-	{ WWT_IMGBTN, 2, 0, 39, 0, 63, SPR_MENU_EXIT, STR_EXIT },
-	{ WIDGETS_END },
+    { WWT_IMGBTN, 2, 0, 39, 0, 63, SPR_MENU_EXIT, STR_EXIT },
+    { WIDGETS_END },
 };
 
 static void window_title_exit_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_title_exit_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 
 static rct_window_event_list window_title_exit_events = {
-	NULL,
-	window_title_exit_mouseup,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	window_title_exit_paint,
-	NULL
+    NULL,
+    window_title_exit_mouseup,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    window_title_exit_paint,
+    NULL
 };
 
 /**
@@ -73,18 +73,18 @@ static rct_window_event_list window_title_exit_events = {
  */
 void window_title_exit_open()
 {
-	rct_window* window;
+    rct_window* window;
 
-	window = window_create(
-		context_get_width() - 40, context_get_height() - 64,
-		40, 64,
-		&window_title_exit_events,
-		WC_TITLE_EXIT,
-		WF_STICK_TO_BACK | WF_TRANSPARENT
-	);
-	window->widgets = window_title_exit_widgets;
-	window->enabled_widgets |= (1ULL << WIDX_EXIT);
-	window_init_scroll_widgets(window);
+    window = window_create(
+        context_get_width() - 40, context_get_height() - 64,
+        40, 64,
+        &window_title_exit_events,
+        WC_TITLE_EXIT,
+        WF_STICK_TO_BACK | WF_TRANSPARENT
+    );
+    window->widgets = window_title_exit_widgets;
+    window->enabled_widgets |= (1ULL << WIDX_EXIT);
+    window_init_scroll_widgets(window);
 }
 
 /**
@@ -93,15 +93,15 @@ void window_title_exit_open()
 */
 static void window_title_exit_mouseup(rct_window *w, rct_widgetindex widgetIndex)
 {
-	if (gIntroState != INTRO_STATE_NONE)
-		return;
+    if (gIntroState != INTRO_STATE_NONE)
+        return;
 
-	switch (widgetIndex) {
-	case WIDX_EXIT:
-		rct2_quit();
-		//game_do_command(0, 1, 0, 0, 5, 3, 0);
-		break;
-	};
+    switch (widgetIndex) {
+    case WIDX_EXIT:
+        rct2_quit();
+        //game_do_command(0, 1, 0, 0, 5, 3, 0);
+        break;
+    };
 }
 
 /**
@@ -110,5 +110,5 @@ static void window_title_exit_mouseup(rct_window *w, rct_widgetindex widgetIndex
 */
 static void window_title_exit_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
-	window_draw_widgets(w, dpi);
+    window_draw_widgets(w, dpi);
 }

@@ -23,7 +23,7 @@
 #include <openrct2/world/sprite.h>
 #include <openrct2/paint/map_element/map_element.h>
 
-#define RCT2_ADDRESS_SPRITE_LIST					0x010E63BC
+#define RCT2_ADDRESS_SPRITE_LIST                    0x010E63BC
 
 #define gRideEntries                RCT2_ADDRESS(RCT2_ADDRESS_RIDE_ENTRIES,                rct_ride_entry*)
 #define gCurrentRotation        RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8)
@@ -39,37 +39,37 @@ uint8 gTrackDesignSaveRideIndex = 255;
 uint8 gClipHeight = 255;
 
 const rct_xy16 TileDirectionDelta[] = {
-	{-32, 0},
-	{0,   +32},
-	{+32, 0},
-	{0,   -32},
-	{-32, +32},
-	{+32, +32},
-	{+32, -32},
-	{-32, -32}
+    {-32, 0},
+    {0,   +32},
+    {+32, 0},
+    {0,   -32},
+    {-32, +32},
+    {+32, +32},
+    {+32, -32},
+    {-32, -32}
 };
 
 uint8 get_current_rotation() {
-	return gCurrentRotation & 3;
+    return gCurrentRotation & 3;
 }
 
 const uint32 construction_markers[] = {
-	COLOUR_DARK_GREEN << 19 | COLOUR_GREY << 24 | IMAGE_TYPE_REMAP, // White
-	2 << 19 | 0b110000 << 19 | IMAGE_TYPE_TRANSPARENT, // Translucent
+    COLOUR_DARK_GREEN << 19 | COLOUR_GREY << 24 | IMAGE_TYPE_REMAP, // White
+    2 << 19 | 0b110000 << 19 | IMAGE_TYPE_TRANSPARENT, // Translucent
 };
 
 int object_entry_group_counts[] = {
-	128,    // rides
-	252,    // small scenery
-	128,    // large scenery
-	128,    // walls
-	32,        // banners
-	16,        // paths
-	15,        // path bits
-	19,        // scenery sets
-	1,        // park entrance
-	1,        // water
-	1        // scenario text
+    128,    // rides
+    252,    // small scenery
+    128,    // large scenery
+    128,    // walls
+    32,        // banners
+    16,        // paths
+    15,        // path bits
+    19,        // scenery sets
+    1,        // park entrance
+    1,        // water
+    1        // scenario text
 };
 
 GeneralConfiguration gConfigGeneral;
@@ -89,84 +89,84 @@ void fence_paint(uint8 direction, int height, rct_map_element *mapElement) { }
 void scenery_multiple_paint(uint8 direction, uint16 height, rct_map_element *mapElement) { }
 
 rct_ride *get_ride(int index) {
-	if (index < 0 || index >= MAX_RIDES) {
-		log_error("invalid index %d for ride", index);
-		return NULL;
-	}
-	return &gRideList[index];
+    if (index < 0 || index >= MAX_RIDES) {
+        log_error("invalid index %d for ride", index);
+        return NULL;
+    }
+    return &gRideList[index];
 }
 
 rct_ride_entry *get_ride_entry(int index) {
-	if (index < 0 || index >= object_entry_group_counts[OBJECT_TYPE_RIDE]) {
-		log_error("invalid index %d for ride type", index);
-		return NULL;
-	}
-	return gRideEntries[index];
+    if (index < 0 || index >= object_entry_group_counts[OBJECT_TYPE_RIDE]) {
+        log_error("invalid index %d for ride type", index);
+        return NULL;
+    }
+    return gRideEntries[index];
 }
 
 rct_ride_entry *get_ride_entry_by_ride(rct_ride *ride) {
-	rct_ride_entry *type = get_ride_entry(ride->subtype);
-	if (type == NULL) {
-		log_error("Invalid ride subtype for ride");
-	}
-	return type;
+    rct_ride_entry *type = get_ride_entry(ride->subtype);
+    if (type == NULL) {
+        log_error("Invalid ride subtype for ride");
+    }
+    return type;
 }
 
 rct_sprite *get_sprite(size_t sprite_idx) {
-	assert(sprite_idx < MAX_SPRITES);
-	return &sprite_list[sprite_idx];
+    assert(sprite_idx < MAX_SPRITES);
+    return &sprite_list[sprite_idx];
 }
 
 int map_element_is_last_for_tile(const rct_map_element *element) {
-	return element->flags & MAP_ELEMENT_FLAG_LAST_TILE;
+    return element->flags & MAP_ELEMENT_FLAG_LAST_TILE;
 }
 
 int map_element_get_type(const rct_map_element *element) {
-	return element->type & MAP_ELEMENT_TYPE_MASK;
+    return element->type & MAP_ELEMENT_TYPE_MASK;
 }
 
 int map_element_get_direction(const rct_map_element *element) {
-	return element->type & MAP_ELEMENT_DIRECTION_MASK;
+    return element->type & MAP_ELEMENT_DIRECTION_MASK;
 }
 
 rct_map_element *map_get_first_element_at(int x, int y) {
-	if (x < 0 || y < 0 || x > 255 || y > 255) {
-		log_error("Trying to access element outside of range");
-		return NULL;
-	}
-	return gMapElementTilePointers[x + y * 256];
+    if (x < 0 || y < 0 || x > 255 || y > 255) {
+        log_error("Trying to access element outside of range");
+        return NULL;
+    }
+    return gMapElementTilePointers[x + y * 256];
 }
 
 int map_get_station(rct_map_element *mapElement) {
-	return (mapElement->properties.track.sequence & 0x70) >> 4;
+    return (mapElement->properties.track.sequence & 0x70) >> 4;
 }
 
 bool ride_type_has_flag(int rideType, int flag)
 {
-	return (RideProperties[rideType].flags & flag) != 0;
+    return (RideProperties[rideType].flags & flag) != 0;
 }
 
 sint16 get_height_marker_offset()
 {
-	return 0;
+    return 0;
 }
 
 bool track_element_is_lift_hill(rct_map_element *trackElement)
 {
-	return trackElement->type & 0x80;
+    return trackElement->type & 0x80;
 }
 
 bool track_element_is_cable_lift(rct_map_element *trackElement)
 {
-	return trackElement->properties.track.colour & TRACK_ELEMENT_COLOUR_FLAG_CABLE_LIFT;
+    return trackElement->properties.track.colour & TRACK_ELEMENT_COLOUR_FLAG_CABLE_LIFT;
 }
 
 bool track_element_is_inverted(rct_map_element *trackElement)
 {
-	return trackElement->properties.track.colour & TRACK_ELEMENT_COLOUR_FLAG_INVERTED;
+    return trackElement->properties.track.colour & TRACK_ELEMENT_COLOUR_FLAG_INVERTED;
 }
 
 bool is_csg_loaded()
 {
-	return false;
+    return false;
 }

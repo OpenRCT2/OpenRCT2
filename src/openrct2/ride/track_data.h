@@ -35,8 +35,8 @@ extern const rct_preview_track *FlatRideTrackBlocks[256];
 extern const uint8 TrackPieceLengths[256];
 
 typedef struct track_curve_chain {
-	uint16 next;
-	uint16 previous;
+    uint16 next;
+    uint16 previous;
 } track_curve_chain;
 
 extern const track_curve_chain gTrackCurveChain[256];
@@ -46,20 +46,20 @@ extern const TRACK_PAINT_FUNCTION_GETTER RideTypeTrackPaintFunctions[RIDE_TYPE_C
 extern const uint32 * RideTypeTrackPaintFunctionsOld[RIDE_TYPE_COUNT];
 
 typedef struct track_descriptor {
-	bool starts_diagonal;
-	uint8 slope_start;
-	uint8 bank_start;
-	uint8 track_curve;
-	uint8 slope_end;
-	uint8 bank_end;
-	uint8 track_element;
+    bool starts_diagonal;
+    uint8 slope_start;
+    uint8 bank_start;
+    uint8 track_curve;
+    uint8 slope_end;
+    uint8 bank_end;
+    uint8 track_element;
 } track_descriptor;
 
 extern const track_descriptor gTrackDescriptors[142];
 
 typedef struct {
-	uint16 size;
-	const rct_vehicle_info info[];
+    uint16 size;
+    const rct_vehicle_info info[];
 } rct_vehicle_info_list;
 
 extern const rct_vehicle_info_list **gTrackVehicleInfo[17];
@@ -70,10 +70,10 @@ extern const money32 TrackPricing[256];
 extern const money32 FlatRideTrackPricing[256];
 
 typedef struct dodgems_track_size {
-	uint8 left;
-	uint8 top;
-	uint8 right;
-	uint8 bottom;
+    uint8 left;
+    uint8 top;
+    uint8 right;
+    uint8 bottom;
 } dodgems_track_size;
 
 extern const dodgems_track_size DodgemsTrackSize[256];

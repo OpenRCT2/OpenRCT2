@@ -20,40 +20,40 @@
 #include "../interface/window.h"
 
 static rct_widget window_title_logo_widgets[] = {
-	{ WIDGETS_END },
+    { WIDGETS_END },
 };
 
 static void window_title_logo_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
 static rct_window_event_list window_title_logo_events = {
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	window_title_logo_paint,
-	NULL
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    window_title_logo_paint,
+    NULL
 };
 
 /**
@@ -62,12 +62,12 @@ static rct_window_event_list window_title_logo_events = {
  */
 void window_title_logo_open()
 {
-	rct_window *window = window_create(0, 0, 200, 106, &window_title_logo_events, WC_TITLE_LOGO, WF_STICK_TO_BACK | WF_TRANSPARENT);
-	window->widgets = window_title_logo_widgets;
-	window_init_scroll_widgets(window);
-	window->colours[0] = TRANSLUCENT(COLOUR_GREY);
-	window->colours[1] = TRANSLUCENT(COLOUR_GREY);
-	window->colours[2] = TRANSLUCENT(COLOUR_GREY);
+    rct_window *window = window_create(0, 0, 200, 106, &window_title_logo_events, WC_TITLE_LOGO, WF_STICK_TO_BACK | WF_TRANSPARENT);
+    window->widgets = window_title_logo_widgets;
+    window_init_scroll_widgets(window);
+    window->colours[0] = TRANSLUCENT(COLOUR_GREY);
+    window->colours[1] = TRANSLUCENT(COLOUR_GREY);
+    window->colours[2] = TRANSLUCENT(COLOUR_GREY);
 }
 
 /**
@@ -76,8 +76,8 @@ void window_title_logo_open()
 */
 static void window_title_logo_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
-	sint32 x = 2;
-	sint32 y = 2;
-	gfx_draw_sprite(dpi, SPR_G2_LOGO, w->x + x, w->y + y, 0);
-	gfx_draw_sprite(dpi, SPR_G2_TITLE, w->x + x + 104, w->y + y + 18, 0);
+    sint32 x = 2;
+    sint32 y = 2;
+    gfx_draw_sprite(dpi, SPR_G2_LOGO, w->x + x, w->y + y, 0);
+    gfx_draw_sprite(dpi, SPR_G2_TITLE, w->x + x + 104, w->y + y + 18, 0);
 }

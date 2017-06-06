@@ -20,29 +20,29 @@
 #include "../common.h"
 
 enum {
-	MONTH_MARCH,
-	MONTH_APRIL,
-	MONTH_MAY,
-	MONTH_JUNE,
-	MONTH_JULY,
-	MONTH_AUGUST,
-	MONTH_SEPTEMBER,
-	MONTH_OCTOBER,
+    MONTH_MARCH,
+    MONTH_APRIL,
+    MONTH_MAY,
+    MONTH_JUNE,
+    MONTH_JULY,
+    MONTH_AUGUST,
+    MONTH_SEPTEMBER,
+    MONTH_OCTOBER,
 
-	MONTH_COUNT
+    MONTH_COUNT
 };
 
 enum {
-	DATE_FORMAT_DAY_MONTH_YEAR,
-	DATE_FORMAT_MONTH_DAY_YEAR,
-	DATE_FORMAT_YEAR_MONTH_DAY,
-	DATE_FORMAT_YEAR_DAY_MONTH
+    DATE_FORMAT_DAY_MONTH_YEAR,
+    DATE_FORMAT_MONTH_DAY_YEAR,
+    DATE_FORMAT_YEAR_MONTH_DAY,
+    DATE_FORMAT_YEAR_DAY_MONTH
 };
 
 typedef struct openrct_timeofday {
-	uint8 second;
-	uint8 minute;
-	uint8 hour;
+    uint8 second;
+    uint8 minute;
+    uint8 hour;
 } openrct_timeofday;
 
 extern const sint16 days_in_month[MONTH_COUNT];

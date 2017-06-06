@@ -294,48 +294,48 @@ const char *http_get_extension_from_url(const char *url, const char *fallback)
 
 bool http_download_park(const char *url, char tmpPath[L_tmpnam + 10])
 {
-	// Download park to buffer in memory
-	HttpRequest2 request;
-	request.Url = url;
-	request.Method = "GET";
-	request.Type = HTTP_DATA_NONE;
+    // Download park to buffer in memory
+    HttpRequest2 request;
+    request.Url = url;
+    request.Method = "GET";
+    request.Type = HTTP_DATA_NONE;
 
-	http_response_t *response = http_request(request);
+    http_response_t *response = http_request(request);
 
-	if (response == NULL || response->status_code != 200) {
-		Console::Error::WriteLine("Failed to download '%s'", request.Url.c_str());
-		if (response != NULL) {
-			http_request_dispose(response);
-		}
-		return false;
-	}
+    if (response == NULL || response->status_code != 200) {
+        Console::Error::WriteLine("Failed to download '%s'", request.Url.c_str());
+        if (response != NULL) {
+            http_request_dispose(response);
+        }
+        return false;
+    }
 
-	// Generate temporary filename that includes the original extension
-	if (tmpnam(tmpPath) == NULL) {
-		Console::Error::WriteLine("Failed to generate temporary filename for downloaded park '%s'", request.Url.c_str());
-		http_request_dispose(response);
-		return false;
-	}
-	size_t remainingBytes = L_tmpnam + 10 - strlen(tmpPath);
+    // Generate temporary filename that includes the original extension
+    if (tmpnam(tmpPath) == NULL) {
+        Console::Error::WriteLine("Failed to generate temporary filename for downloaded park '%s'", request.Url.c_str());
+        http_request_dispose(response);
+        return false;
+    }
+    size_t remainingBytes = L_tmpnam + 10 - strlen(tmpPath);
 
-	const char *ext = http_get_extension_from_url(request.Url.c_str(), ".sv6");
-	strncat(tmpPath, ext, remainingBytes);
+    const char *ext = http_get_extension_from_url(request.Url.c_str(), ".sv6");
+    strncat(tmpPath, ext, remainingBytes);
 
-	// Store park in temporary file and load it (discard ending NUL in response body)
-	FILE* tmpFile = fopen(tmpPath, "wb");
+    // Store park in temporary file and load it (discard ending NUL in response body)
+    FILE* tmpFile = fopen(tmpPath, "wb");
 
-	if (tmpFile == NULL) {
-		Console::Error::WriteLine("Failed to write downloaded park '%s' to temporary file", request.Url.c_str());
-		http_request_dispose(response);
-		return false;
-	}
+    if (tmpFile == NULL) {
+        Console::Error::WriteLine("Failed to write downloaded park '%s' to temporary file", request.Url.c_str());
+        http_request_dispose(response);
+        return false;
+    }
 
-	fwrite(response->body, 1, response->size - 1, tmpFile);
-	fclose(tmpFile);
+    fwrite(response->body, 1, response->size - 1, tmpFile);
+    fclose(tmpFile);
 
-	http_request_dispose(response);
+    http_request_dispose(response);
 
-	return true;
+    return true;
 }
 
 #endif

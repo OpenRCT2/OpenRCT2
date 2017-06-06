@@ -135,7 +135,7 @@ static money32 BannerSetColour(sint16 x, sint16 y, uint8 baseHeight, uint8 direc
     {
         return MONEY32_UNDEFINED;
     }
-    
+
 
     if (flags & GAME_COMMAND_FLAG_APPLY)
     {
@@ -425,7 +425,7 @@ static uint8 BannerGetNewIndex() {
     return BANNER_NULL;
 }
 
-extern "C" 
+extern "C"
 {
     /**
      *

@@ -25,24 +25,24 @@
 
 
 enum {
-	PARK_FLAGS_PARK_OPEN = (1 << 0),
-	PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT = (1 << 1),
-	PARK_FLAGS_FORBID_LANDSCAPE_CHANGES = (1 << 2),
-	PARK_FLAGS_FORBID_TREE_REMOVAL = (1 << 3),
-	PARK_FLAGS_SHOW_REAL_GUEST_NAMES = (1 << 4),
-	PARK_FLAGS_FORBID_HIGH_CONSTRUCTION = (1 << 5), // below tree height
-	PARK_FLAGS_PREF_LESS_INTENSE_RIDES = (1 << 6),
-	PARK_FLAGS_FORBID_MARKETING_CAMPAIGN = (1 << 7),
-	PARK_FLAGS_ANTI_CHEAT_DEPRECATED = (1 << 8), // Not used anymore, used for cheat detection
-	PARK_FLAGS_PREF_MORE_INTENSE_RIDES = (1 << 9),
-	PARK_FLAGS_NO_MONEY = (1 << 11),
-	PARK_FLAGS_DIFFICULT_GUEST_GENERATION = (1 << 12),
-	PARK_FLAGS_PARK_FREE_ENTRY = (1 << 13),
-	PARK_FLAGS_DIFFICULT_PARK_RATING = (1 << 14),
-	PARK_FLAGS_LOCK_REAL_NAMES_OPTION = (1 << 15),
-	PARK_FLAGS_NO_MONEY_SCENARIO = (1 << 17),  // equivalent to PARK_FLAGS_NO_MONEY, but used in scenario editor
-	PARK_FLAGS_SPRITES_INITIALISED = (1 << 18), // After a scenario is loaded this prevents edits in the scenario editor
-	PARK_FLAGS_SIX_FLAGS_DEPRECATED = (1 << 19) // Not used anymore
+    PARK_FLAGS_PARK_OPEN = (1 << 0),
+    PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT = (1 << 1),
+    PARK_FLAGS_FORBID_LANDSCAPE_CHANGES = (1 << 2),
+    PARK_FLAGS_FORBID_TREE_REMOVAL = (1 << 3),
+    PARK_FLAGS_SHOW_REAL_GUEST_NAMES = (1 << 4),
+    PARK_FLAGS_FORBID_HIGH_CONSTRUCTION = (1 << 5), // below tree height
+    PARK_FLAGS_PREF_LESS_INTENSE_RIDES = (1 << 6),
+    PARK_FLAGS_FORBID_MARKETING_CAMPAIGN = (1 << 7),
+    PARK_FLAGS_ANTI_CHEAT_DEPRECATED = (1 << 8), // Not used anymore, used for cheat detection
+    PARK_FLAGS_PREF_MORE_INTENSE_RIDES = (1 << 9),
+    PARK_FLAGS_NO_MONEY = (1 << 11),
+    PARK_FLAGS_DIFFICULT_GUEST_GENERATION = (1 << 12),
+    PARK_FLAGS_PARK_FREE_ENTRY = (1 << 13),
+    PARK_FLAGS_DIFFICULT_PARK_RATING = (1 << 14),
+    PARK_FLAGS_LOCK_REAL_NAMES_OPTION = (1 << 15),
+    PARK_FLAGS_NO_MONEY_SCENARIO = (1 << 17),  // equivalent to PARK_FLAGS_NO_MONEY, but used in scenario editor
+    PARK_FLAGS_SPRITES_INITIALISED = (1 << 18), // After a scenario is loaded this prevents edits in the scenario editor
+    PARK_FLAGS_SIX_FLAGS_DEPRECATED = (1 << 19) // Not used anymore
 };
 
 extern rct_string_id gParkName;

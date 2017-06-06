@@ -23,7 +23,7 @@
 
 NetworkGroup::NetworkGroup()
 {
-	ActionsAllowed = { 0 };
+    ActionsAllowed = { 0 };
 }
 
 NetworkGroup::~NetworkGroup()

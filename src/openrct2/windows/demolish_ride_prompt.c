@@ -27,21 +27,21 @@
 #define WH 100
 
 enum WINDOW_RIDE_DEMOLISH_WIDGET_IDX {
-	WIDX_BACKGROUND,
-	WIDX_TITLE,
-	WIDX_CLOSE,
-	WIDX_DEMOLISH,
-	WIDX_CANCEL
+    WIDX_BACKGROUND,
+    WIDX_TITLE,
+    WIDX_CLOSE,
+    WIDX_DEMOLISH,
+    WIDX_CANCEL
 };
 
 // 0x009AEBA0
 static rct_widget window_ride_demolish_widgets[] = {
-	{ WWT_FRAME,			0, 0,		WW - 1,		0,			WH - 1, STR_NONE,				STR_NONE },
-	{ WWT_CAPTION,			0, 1,		WW - 2,		1,			14,		STR_DEMOLISH_RIDE,		STR_WINDOW_TITLE_TIP },
-	{ WWT_CLOSEBOX,			0, WW - 13, WW - 3,		2,			13,		STR_CLOSE_X,			STR_CLOSE_WINDOW_TIP },
-	{ WWT_DROPDOWN_BUTTON,	0, 10,		94,			WH - 20,	WH - 9, STR_DEMOLISH,			STR_NONE },
-	{ WWT_DROPDOWN_BUTTON,	0, WW - 95, WW - 11,	WH - 20,	WH - 9, STR_SAVE_PROMPT_CANCEL, STR_NONE },
-	{ WIDGETS_END }
+    { WWT_FRAME,            0, 0,       WW - 1,     0,          WH - 1, STR_NONE,               STR_NONE },
+    { WWT_CAPTION,          0, 1,       WW - 2,     1,          14,     STR_DEMOLISH_RIDE,      STR_WINDOW_TITLE_TIP },
+    { WWT_CLOSEBOX,         0, WW - 13, WW - 3,     2,          13,     STR_CLOSE_X,            STR_CLOSE_WINDOW_TIP },
+    { WWT_DROPDOWN_BUTTON,  0, 10,      94,         WH - 20,    WH - 9, STR_DEMOLISH,           STR_NONE },
+    { WWT_DROPDOWN_BUTTON,  0, WW - 95, WW - 11,    WH - 20,    WH - 9, STR_SAVE_PROMPT_CANCEL, STR_NONE },
+    { WIDGETS_END }
 };
 
 static void window_ride_demolish_mouseup(rct_window *w, rct_widgetindex widgetIndex);
@@ -49,50 +49,50 @@ static void window_ride_demolish_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
 //0x0098E2E4
 static rct_window_event_list window_ride_demolish_events = {
-	NULL,
-	window_ride_demolish_mouseup,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	window_ride_demolish_paint,
-	NULL
+    NULL,
+    window_ride_demolish_mouseup,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    window_ride_demolish_paint,
+    NULL
 };
 
 /** Based off of rct2: 0x006B486A */
 void window_ride_demolish_prompt_open(sint32 rideIndex)
 {
-	rct_window *w;
+    rct_window *w;
 
-	w = window_bring_to_front_by_number(WC_DEMOLISH_RIDE_PROMPT, rideIndex);
-	if (w != NULL)
-		return;
+    w = window_bring_to_front_by_number(WC_DEMOLISH_RIDE_PROMPT, rideIndex);
+    if (w != NULL)
+        return;
 
-	w = window_create_centred(WW, WH, &window_ride_demolish_events, WC_DEMOLISH_RIDE_PROMPT, WF_TRANSPARENT);
-	w->widgets = window_ride_demolish_widgets;
-	w->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_CANCEL) | (1 << WIDX_DEMOLISH);
-	window_init_scroll_widgets(w);
-	w->number = rideIndex;
+    w = window_create_centred(WW, WH, &window_ride_demolish_events, WC_DEMOLISH_RIDE_PROMPT, WF_TRANSPARENT);
+    w->widgets = window_ride_demolish_widgets;
+    w->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_CANCEL) | (1 << WIDX_DEMOLISH);
+    window_init_scroll_widgets(w);
+    w->number = rideIndex;
 }
 
 
@@ -102,16 +102,16 @@ void window_ride_demolish_prompt_open(sint32 rideIndex)
 */
 static void window_ride_demolish_mouseup(rct_window *w, rct_widgetindex widgetIndex)
 {
-	switch (widgetIndex) {
-	case WIDX_DEMOLISH:
-		gGameCommandErrorTitle = STR_CANT_DEMOLISH_RIDE;
-		game_do_command(0, 1, 0, w->number, GAME_COMMAND_DEMOLISH_RIDE, 0, 1); // Set ebp to 1 to be used to log demolish from window prompt
-		break;
-	case WIDX_CANCEL:
-	case WIDX_CLOSE:
-		window_close(w);
-		break;
-	}
+    switch (widgetIndex) {
+    case WIDX_DEMOLISH:
+        gGameCommandErrorTitle = STR_CANT_DEMOLISH_RIDE;
+        game_do_command(0, 1, 0, w->number, GAME_COMMAND_DEMOLISH_RIDE, 0, 1); // Set ebp to 1 to be used to log demolish from window prompt
+        break;
+    case WIDX_CANCEL:
+    case WIDX_CLOSE:
+        window_close(w);
+        break;
+    }
 }
 
 /**
@@ -120,15 +120,15 @@ static void window_ride_demolish_mouseup(rct_window *w, rct_widgetindex widgetIn
 */
 static void window_ride_demolish_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
-	window_draw_widgets(w, dpi);
+    window_draw_widgets(w, dpi);
 
-	rct_ride* ride = get_ride(w->number);
+    rct_ride* ride = get_ride(w->number);
 
-	set_format_arg(0, rct_string_id, ride->name);
-	set_format_arg(2, uint32, ride->name_arguments);
+    set_format_arg(0, rct_string_id, ride->name);
+    set_format_arg(2, uint32, ride->name_arguments);
 
-	sint32 x = w->x + WW / 2;
-	sint32 y = w->y + (WH / 2) - 3;
+    sint32 x = w->x + WW / 2;
+    sint32 y = w->y + (WH / 2) - 3;
 
-	gfx_draw_string_centred_wrapped(dpi, gCommonFormatArgs, x, y, WW - 4, STR_DEMOLISH_RIDE_ID, COLOUR_BLACK);
+    gfx_draw_string_centred_wrapped(dpi, gCommonFormatArgs, x, y, WW - 4, STR_DEMOLISH_RIDE_ID, COLOUR_BLACK);
 }

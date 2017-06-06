@@ -23,9 +23,9 @@
 
 #ifdef __WINDOWS__
 #include "../rct2.h"
-	#ifndef HAVE_MATH_H
-		#define HAVE_MATH_H
-	#endif
+    #ifndef HAVE_MATH_H
+        #define HAVE_MATH_H
+    #endif
 #endif // __WINDOWS__
 
 #include "../core/textinputbuffer.h"
@@ -58,45 +58,45 @@
 #define ALT 0x400
 #define CMD 0x800
 #ifdef __MACOSX__
-	#define PLATFORM_MODIFIER CMD
+    #define PLATFORM_MODIFIER CMD
 #else
-	#define PLATFORM_MODIFIER CTRL
+    #define PLATFORM_MODIFIER CTRL
 #endif
 
 typedef struct resolution {
-	sint32 width, height;
+    sint32 width, height;
 } resolution_t;
 
 typedef struct file_info {
-	const char *path;
-	uint64 size;
-	uint64 last_modified;
+    const char *path;
+    uint64 size;
+    uint64 last_modified;
 } file_info;
 
 typedef struct rct2_date {
-	uint8 day;
-	uint8 month;
-	sint16 year;
-	uint8 day_of_week;
+    uint8 day;
+    uint8 month;
+    sint16 year;
+    uint8 day_of_week;
 } rct2_date;
 
 typedef struct rct2_time {
-	uint8 hour;
-	uint8 minute;
-	uint8 second;
+    uint8 hour;
+    uint8 minute;
+    uint8 second;
 } rct2_time;
 
 typedef enum {FD_OPEN, FD_SAVE} filedialog_type;
 
 typedef struct file_dialog_desc {
-	uint8 type;
-	const utf8 *title;
-	const utf8 *initial_directory;
-	const utf8 *default_filename;
-	struct {
-		const utf8 *name;			// E.g. "Image Files"
-		const utf8 *pattern;		// E.g. "*.png;*.jpg;*.gif"
-	} filters[8];
+    uint8 type;
+    const utf8 *title;
+    const utf8 *initial_directory;
+    const utf8 *default_filename;
+    struct {
+        const utf8 *name;           // E.g. "Image Files"
+        const utf8 *pattern;        // E.g. "*.png;*.jpg;*.gif"
+    } filters[8];
 } file_dialog_desc;
 
 // Platform shared definitions
@@ -166,29 +166,29 @@ void core_init();
 
 // Windows specific definitions
 #ifdef __WINDOWS__
-	#ifndef WIN32_LEAN_AND_MEAN
-		#define WIN32_LEAN_AND_MEAN
-	#endif
-	#include <windows.h>
-	#undef GetMessage
+    #ifndef WIN32_LEAN_AND_MEAN
+        #define WIN32_LEAN_AND_MEAN
+    #endif
+    #include <windows.h>
+    #undef GetMessage
 
-	sint32 windows_get_registry_install_info(rct2_install_info *installInfo, char *source, char *font, uint8 charset);
-	void platform_setup_file_associations();
-	void platform_remove_file_associations();
-	bool platform_setup_uri_protocol();
-	// This function cannot be marked as 'static', even though it may seem to be,
-	// as it requires external linkage, which 'static' prevents
-	__declspec(dllexport) sint32 StartOpenRCT(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, sint32 nCmdShow);
+    sint32 windows_get_registry_install_info(rct2_install_info *installInfo, char *source, char *font, uint8 charset);
+    void platform_setup_file_associations();
+    void platform_remove_file_associations();
+    bool platform_setup_uri_protocol();
+    // This function cannot be marked as 'static', even though it may seem to be,
+    // as it requires external linkage, which 'static' prevents
+    __declspec(dllexport) sint32 StartOpenRCT(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, sint32 nCmdShow);
 #endif // __WINDOWS__
 
 #if defined(__LINUX__) || defined(__MACOSX__) || defined(__FREEBSD__)
-	void platform_posix_sub_user_data_path(char *buffer, size_t size, const char *homedir);
-	void platform_posix_sub_resolve_openrct_data_path(utf8 *out, size_t size);
+    void platform_posix_sub_user_data_path(char *buffer, size_t size, const char *homedir);
+    void platform_posix_sub_resolve_openrct_data_path(utf8 *out, size_t size);
 #endif
 
 #ifdef __MACOSX__
-	void macos_disallow_automatic_window_tabbing();
-	utf8* macos_str_decomp_to_precomp();
+    void macos_disallow_automatic_window_tabbing();
+    utf8* macos_str_decomp_to_precomp();
 #endif
 
 // On macOS the resizing behaviour effectively resizes the window in the same

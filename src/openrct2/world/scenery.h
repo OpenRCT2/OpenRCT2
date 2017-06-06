@@ -23,206 +23,206 @@
 
 #pragma pack(push, 1)
 typedef struct rct_small_scenery_entry {
-	uint32 flags;			// 0x06
-	uint8 height;			// 0x0A
-	uint8 tool_id;			// 0x0B
-	sint16 price;			// 0x0C
-	sint16 removal_price;	// 0x0E
-	uint8 *var_10;
-	uint16 var_14;
-	uint16 var_16;
-	uint16 var_18;
-	uint8 scenery_tab_id;	// 0x1A
+    uint32 flags;           // 0x06
+    uint8 height;           // 0x0A
+    uint8 tool_id;          // 0x0B
+    sint16 price;           // 0x0C
+    sint16 removal_price;   // 0x0E
+    uint8 *var_10;
+    uint16 var_14;
+    uint16 var_16;
+    uint16 var_18;
+    uint8 scenery_tab_id;   // 0x1A
 } rct_small_scenery_entry;
 #ifdef PLATFORM_32BIT
 assert_struct_size(rct_small_scenery_entry, 21);
 #endif
 
 typedef enum {
-	SMALL_SCENERY_FLAG_FULL_TILE = (1 << 0),					// 0x1
-	SMALL_SCENERY_FLAG_VOFFSET_CENTRE = (1 << 1),				// 0x2
-	SMALL_SCENERY_FLAG_REQUIRE_FLAT_SURFACE = (1 << 2),			// 0x4
-	SMALL_SCENERY_FLAG4 = (1 << 3),								// 0x8
-	SMALL_SCENERY_FLAG_ANIMATED = (1 << 4),						// 0x10
-	SMALL_SCENERY_FLAG6 = (1 << 5),								// 0x20
-	SMALL_SCENERY_FLAG_CAN_BE_WATERED = (1 << 6),				// 0x40
-	SMALL_SCENERY_FLAG_ANIMATED_FG = (1 << 7),					// 0x80
-	SMALL_SCENERY_FLAG9 = (1 << 8),								// 0x100
-	SMALL_SCENERY_FLAG_HAS_GLASS = (1 << 9),					// 0x200
-	SMALL_SCENERY_FLAG_HAS_PRIMARY_COLOUR = (1 << 10),			// 0x400
-	SMALL_SCENERY_FLAG12 = (1 << 11),							// 0x800
-	SMALL_SCENERY_FLAG13 = (1 << 12),							// 0x1000
-	SMALL_SCENERY_FLAG_IS_CLOCK = (1 << 13),					// 0x2000
-	SMALL_SCENERY_FLAG15 = (1 << 14),							// 0x4000
-	SMALL_SCENERY_FLAG16 = (1 << 15),							// 0x8000
-	SMALL_SCENERY_FLAG17 = (1 << 16),							// 0x10000
-	SMALL_SCENERY_FLAG18 = (1 << 17),							// 0x20000
-	SMALL_SCENERY_FLAG_ALLOW_WALLS = (1 << 18),					// 0x40000
-	SMALL_SCENERY_FLAG_HAS_SECONDARY_COLOUR = (1 << 19),		// 0x80000
-	SMALL_SCENERY_FLAG20 = (1 << 20),							// 0x100000
-	SMALL_SCENERY_FLAG21 = (1 << 21),							// 0x200000
-	SMALL_SCENERY_FLAG22 = (1 << 22),							// 0x400000
-	SMALL_SCENERY_FLAG23 = (1 << 23),							// 0x800000
-	SMALL_SCENERY_FLAG24 = (1 << 24),							// 0x1000000
-	SMALL_SCENERY_FLAG25 = (1 << 25),							// 0x2000000
-	SMALL_SCENERY_FLAG26 = (1 << 26),							// 0x4000000
-	SMALL_SCENERY_FLAG27 = (1 << 27),							// 0x8000000
+    SMALL_SCENERY_FLAG_FULL_TILE = (1 << 0),                    // 0x1
+    SMALL_SCENERY_FLAG_VOFFSET_CENTRE = (1 << 1),               // 0x2
+    SMALL_SCENERY_FLAG_REQUIRE_FLAT_SURFACE = (1 << 2),         // 0x4
+    SMALL_SCENERY_FLAG4 = (1 << 3),                             // 0x8
+    SMALL_SCENERY_FLAG_ANIMATED = (1 << 4),                     // 0x10
+    SMALL_SCENERY_FLAG6 = (1 << 5),                             // 0x20
+    SMALL_SCENERY_FLAG_CAN_BE_WATERED = (1 << 6),               // 0x40
+    SMALL_SCENERY_FLAG_ANIMATED_FG = (1 << 7),                  // 0x80
+    SMALL_SCENERY_FLAG9 = (1 << 8),                             // 0x100
+    SMALL_SCENERY_FLAG_HAS_GLASS = (1 << 9),                    // 0x200
+    SMALL_SCENERY_FLAG_HAS_PRIMARY_COLOUR = (1 << 10),          // 0x400
+    SMALL_SCENERY_FLAG12 = (1 << 11),                           // 0x800
+    SMALL_SCENERY_FLAG13 = (1 << 12),                           // 0x1000
+    SMALL_SCENERY_FLAG_IS_CLOCK = (1 << 13),                    // 0x2000
+    SMALL_SCENERY_FLAG15 = (1 << 14),                           // 0x4000
+    SMALL_SCENERY_FLAG16 = (1 << 15),                           // 0x8000
+    SMALL_SCENERY_FLAG17 = (1 << 16),                           // 0x10000
+    SMALL_SCENERY_FLAG18 = (1 << 17),                           // 0x20000
+    SMALL_SCENERY_FLAG_ALLOW_WALLS = (1 << 18),                 // 0x40000
+    SMALL_SCENERY_FLAG_HAS_SECONDARY_COLOUR = (1 << 19),        // 0x80000
+    SMALL_SCENERY_FLAG20 = (1 << 20),                           // 0x100000
+    SMALL_SCENERY_FLAG21 = (1 << 21),                           // 0x200000
+    SMALL_SCENERY_FLAG22 = (1 << 22),                           // 0x400000
+    SMALL_SCENERY_FLAG23 = (1 << 23),                           // 0x800000
+    SMALL_SCENERY_FLAG24 = (1 << 24),                           // 0x1000000
+    SMALL_SCENERY_FLAG25 = (1 << 25),                           // 0x2000000
+    SMALL_SCENERY_FLAG26 = (1 << 26),                           // 0x4000000
+    SMALL_SCENERY_FLAG27 = (1 << 27),                           // 0x8000000
 } SMALL_SCENERY_FLAGS;
 
 typedef struct rct_large_scenery_tile {
-	sint16 x_offset;
-	sint16 y_offset;
-	sint16 z_offset;
-	uint8 z_clearance;
-	uint16 var_7;
+    sint16 x_offset;
+    sint16 y_offset;
+    sint16 z_offset;
+    uint8 z_clearance;
+    uint16 var_7;
 } rct_large_scenery_tile;
 assert_struct_size(rct_large_scenery_tile, 9);
 
 typedef struct rct_large_scenery_text_glyph {
-	uint8 image_offset;
-	uint8 width;
-	uint8 height;
-	uint8 var_3;
+    uint8 image_offset;
+    uint8 width;
+    uint8 height;
+    uint8 var_3;
 } rct_large_scenery_text_glyph;
 assert_struct_size(rct_large_scenery_text_glyph, 4);
 
 typedef struct rct_large_scenery_text {
-	rct_xy16 offset[2];		// 0x0
-	uint16 max_width;		// 0x8
-	uint16 pad_A;			// 0xA
-	uint8 flags;			// 0xC
-	uint8 var_D;			// 0xD
-	rct_large_scenery_text_glyph glyphs[256]; // 0xE
+    rct_xy16 offset[2];     // 0x0
+    uint16 max_width;       // 0x8
+    uint16 pad_A;           // 0xA
+    uint8 flags;            // 0xC
+    uint8 var_D;            // 0xD
+    rct_large_scenery_text_glyph glyphs[256]; // 0xE
 } rct_large_scenery_text;
 assert_struct_size(rct_large_scenery_text, 14 + 4 * 256);
 
 typedef enum {
-	LARGE_SCENERY_TEXT_FLAG_VERTICAL = (1 << 0),	// 0x1
-	LARGE_SCENERY_TEXT_FLAG_TWO_LINE = (1 << 1),	// 0x2
+    LARGE_SCENERY_TEXT_FLAG_VERTICAL = (1 << 0),    // 0x1
+    LARGE_SCENERY_TEXT_FLAG_TWO_LINE = (1 << 1),    // 0x2
 } LARGE_SCENERY_TEXT_FLAGS;
 
 typedef struct rct_large_scenery_entry {
-	uint8 tool_id;			// 0x06
-	uint8 flags;			// 0x07
-	sint16 price;			// 0x08
-	sint16 removal_price;	// 0x0A
-	rct_large_scenery_tile* tiles; // 0x0C
-	uint8 scenery_tab_id;	// 0x10
-	uint8 var_11;
-	rct_large_scenery_text* text; // 0x12
-	uint32 text_image;	// 0x16
+    uint8 tool_id;          // 0x06
+    uint8 flags;            // 0x07
+    sint16 price;           // 0x08
+    sint16 removal_price;   // 0x0A
+    rct_large_scenery_tile* tiles; // 0x0C
+    uint8 scenery_tab_id;   // 0x10
+    uint8 var_11;
+    rct_large_scenery_text* text; // 0x12
+    uint32 text_image;  // 0x16
 } rct_large_scenery_entry;
 #ifdef PLATFORM_32BIT
 assert_struct_size(rct_large_scenery_entry, 20);
 #endif
 
 typedef enum {
-	LARGE_SCENERY_FLAG_HAS_PRIMARY_COLOUR = (1 << 0),			// 0x1
-	LARGE_SCENERY_FLAG_HAS_SECONDARY_COLOUR = (1 << 1),			// 0x2
-	LARGE_SCENERY_FLAG_3D_TEXT = (1 << 2),			// 0x4
-	LARGE_SCENERY_FLAG_ANIMATED = (1 << 3),			// 0x8
-	LARGE_SCENERY_FLAG5 = (1 << 4),			// 0x10
+    LARGE_SCENERY_FLAG_HAS_PRIMARY_COLOUR = (1 << 0),           // 0x1
+    LARGE_SCENERY_FLAG_HAS_SECONDARY_COLOUR = (1 << 1),         // 0x2
+    LARGE_SCENERY_FLAG_3D_TEXT = (1 << 2),          // 0x4
+    LARGE_SCENERY_FLAG_ANIMATED = (1 << 3),         // 0x8
+    LARGE_SCENERY_FLAG5 = (1 << 4),         // 0x10
 } LARGE_SCENERY_FLAGS;
 
 typedef struct rct_wall_scenery_entry {
-	uint8 tool_id;			// 0x06
-	uint8 flags;			// 0x07
-	uint8 height;			// 0x08
-	uint8 flags2;			// 0x09
-	sint16 price;			// 0x0A
-	uint8 scenery_tab_id;	// 0x0C
-	uint8 scrolling_mode;   // 0x0D 0xFF if no scrolling
+    uint8 tool_id;          // 0x06
+    uint8 flags;            // 0x07
+    uint8 height;           // 0x08
+    uint8 flags2;           // 0x09
+    sint16 price;           // 0x0A
+    uint8 scenery_tab_id;   // 0x0C
+    uint8 scrolling_mode;   // 0x0D 0xFF if no scrolling
 } rct_wall_scenery_entry;
 assert_struct_size(rct_wall_scenery_entry, 8);
 
 typedef enum {
-	WALL_SCENERY_HAS_PRIMARY_COLOUR = (1 << 0),		// 0x1
-	WALL_SCENERY_HAS_GLASS = (1 << 1),		// 0x2
-	WALL_SCENERY_CANT_BUILD_ON_SLOPE = (1 << 2),		// 0x4
-	WALL_SCENERY_IS_BANNER = (1 << 3),		// 0x8  // Probably indicates translucency
-	WALL_SCENERY_IS_DOOR = (1 << 4),		// 0x10
-	WALL_SCENERY_FLAG6 = (1 << 5),		// 0x20
-	WALL_SCENERY_HAS_SECONDARY_COLOUR = (1 << 6),		// 0x40
-	WALL_SCENERY_HAS_TERNARY_COLOUR = (1 << 7),			// 0x80
+    WALL_SCENERY_HAS_PRIMARY_COLOUR = (1 << 0),     // 0x1
+    WALL_SCENERY_HAS_GLASS = (1 << 1),      // 0x2
+    WALL_SCENERY_CANT_BUILD_ON_SLOPE = (1 << 2),        // 0x4
+    WALL_SCENERY_IS_BANNER = (1 << 3),      // 0x8  // Probably indicates translucency
+    WALL_SCENERY_IS_DOOR = (1 << 4),        // 0x10
+    WALL_SCENERY_FLAG6 = (1 << 5),      // 0x20
+    WALL_SCENERY_HAS_SECONDARY_COLOUR = (1 << 6),       // 0x40
+    WALL_SCENERY_HAS_TERNARY_COLOUR = (1 << 7),         // 0x80
 } WALL_SCENERY_FLAGS;
 
 typedef enum {
-	WALL_SCENERY_2_NO_SELECT_PRIMARY_COLOUR = (1 << 0),		// 0x1
-	// Flags 2 and 3 are the door sound type
-	WALL_SCENERY_2_FLAG4 = (1 << 3),		// 0x8
-	WALL_SCENERY_2_FLAG5 = (1 << 4),		// 0x10
+    WALL_SCENERY_2_NO_SELECT_PRIMARY_COLOUR = (1 << 0),     // 0x1
+    // Flags 2 and 3 are the door sound type
+    WALL_SCENERY_2_FLAG4 = (1 << 3),        // 0x8
+    WALL_SCENERY_2_FLAG5 = (1 << 4),        // 0x10
 } WALL_SCENERY_2_FLAGS;
 
 typedef struct rct_path_bit_scenery_entry {
-	uint16 flags;			// 0x06
-	uint8 draw_type;		// 0x08
-	uint8 tool_id;			// 0x09
-	sint16 price;			// 0x0A
-	uint8 scenery_tab_id;	// 0x0C
+    uint16 flags;           // 0x06
+    uint8 draw_type;        // 0x08
+    uint8 tool_id;          // 0x09
+    sint16 price;           // 0x0A
+    uint8 scenery_tab_id;   // 0x0C
 } rct_path_bit_scenery_entry;
 assert_struct_size(rct_path_bit_scenery_entry, 7);
 
 typedef struct rct_banner_scenery_entry {
-	uint8 scrolling_mode;	// 0x06
-	uint8 flags;			// 0x07
-	sint16 price;			// 0x08
-	uint8 scenery_tab_id;	// 0x0A
+    uint8 scrolling_mode;   // 0x06
+    uint8 flags;            // 0x07
+    sint16 price;           // 0x08
+    uint8 scenery_tab_id;   // 0x0A
 } rct_banner_scenery_entry;
 assert_struct_size(rct_banner_scenery_entry, 5);
 
 typedef struct rct_scenery_entry {
-	rct_string_id name;		// 0x00
-	uint32 image;			// 0x02
-	union {
-		rct_small_scenery_entry small_scenery;
-		rct_large_scenery_entry large_scenery;
-		rct_wall_scenery_entry wall;
-		rct_path_bit_scenery_entry path_bit;
-		rct_banner_scenery_entry banner;
-	};
+    rct_string_id name;     // 0x00
+    uint32 image;           // 0x02
+    union {
+        rct_small_scenery_entry small_scenery;
+        rct_large_scenery_entry large_scenery;
+        rct_wall_scenery_entry wall;
+        rct_path_bit_scenery_entry path_bit;
+        rct_banner_scenery_entry banner;
+    };
 } rct_scenery_entry;
 #ifdef PLATFORM_32BIT
 assert_struct_size(rct_scenery_entry, 6 + 21);
 #endif
 
 typedef struct rct_scenery_set_entry {
-	rct_string_id name;				// 0x00
-	uint32 image;					// 0x02
-	uint16 scenery_entries[0x80];	// 0x06
-	uint8 entry_count;				// 0x106
-	uint8 var_107;
-	uint8 var_108;					// 0x108, order?
-	uint8 pad_109;
-	uint32 entertainer_costumes;	// 0x10A
+    rct_string_id name;             // 0x00
+    uint32 image;                   // 0x02
+    uint16 scenery_entries[0x80];   // 0x06
+    uint8 entry_count;              // 0x106
+    uint8 var_107;
+    uint8 var_108;                  // 0x108, order?
+    uint8 pad_109;
+    uint32 entertainer_costumes;    // 0x10A
 } rct_scenery_set_entry;
 assert_struct_size(rct_scenery_set_entry, 14 + 2 * 0x80);
 #pragma pack(pop)
 
 enum {
-	PATH_BIT_FLAG_IS_BIN					= 1 << 0,
-	PATH_BIT_FLAG_IS_BENCH					= 1 << 1,
-	PATH_BIT_FLAG_BREAKABLE					= 1 << 2,
-	PATH_BIT_FLAG_LAMP						= 1 << 3,
-	PATH_BIT_FLAG_JUMPING_FOUNTAIN_WATER	= 1 << 4,
-	PATH_BIT_FLAG_JUMPING_FOUNTAIN_SNOW		= 1 << 5,
-	PATH_BIT_FLAG_DONT_ALLOW_ON_QUEUE		= 1 << 6,
-	PATH_BIT_FLAG_DONT_ALLOW_ON_SLOPE		= 1 << 7,
-	PATH_BIT_FLAG_IS_QUEUE_SCREEN			= 1 << 8
+    PATH_BIT_FLAG_IS_BIN                    = 1 << 0,
+    PATH_BIT_FLAG_IS_BENCH                  = 1 << 1,
+    PATH_BIT_FLAG_BREAKABLE                 = 1 << 2,
+    PATH_BIT_FLAG_LAMP                      = 1 << 3,
+    PATH_BIT_FLAG_JUMPING_FOUNTAIN_WATER    = 1 << 4,
+    PATH_BIT_FLAG_JUMPING_FOUNTAIN_SNOW     = 1 << 5,
+    PATH_BIT_FLAG_DONT_ALLOW_ON_QUEUE       = 1 << 6,
+    PATH_BIT_FLAG_DONT_ALLOW_ON_SLOPE       = 1 << 7,
+    PATH_BIT_FLAG_IS_QUEUE_SCREEN           = 1 << 8
 };
 
 enum {
-	PATH_BIT_DRAW_TYPE_LIGHTS,
-	PATH_BIT_DRAW_TYPE_BINS,
-	PATH_BIT_DRAW_TYPE_BENCHES,
-	PATH_BIT_DRAW_TYPE_JUMPING_FOUNTAINS
+    PATH_BIT_DRAW_TYPE_LIGHTS,
+    PATH_BIT_DRAW_TYPE_BINS,
+    PATH_BIT_DRAW_TYPE_BENCHES,
+    PATH_BIT_DRAW_TYPE_JUMPING_FOUNTAINS
 };
 
 enum {
-	SCENERY_TYPE_SMALL,
-	SCENERY_TYPE_PATH_ITEM,
-	SCENERY_TYPE_WALL,
-	SCENERY_TYPE_LARGE,
-	SCENERY_TYPE_BANNER
+    SCENERY_TYPE_SMALL,
+    SCENERY_TYPE_PATH_ITEM,
+    SCENERY_TYPE_WALL,
+    SCENERY_TYPE_LARGE,
+    SCENERY_TYPE_BANNER
 };
 
 #define SCENERY_ENTRIES_BY_TAB 256

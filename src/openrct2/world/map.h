@@ -21,87 +21,87 @@
 
 #pragma pack(push, 1)
 typedef struct rct_map_element_surface_properties {
-	uint8 slope; //4 0xE0 Edge Style, 0x1F Slope
-	uint8 terrain; //5 0xE0 Terrain Style, 0x1F Water height
-	uint8 grass_length; //6
-	uint8 ownership; //7
+    uint8 slope; //4 0xE0 Edge Style, 0x1F Slope
+    uint8 terrain; //5 0xE0 Terrain Style, 0x1F Water height
+    uint8 grass_length; //6
+    uint8 ownership; //7
 } rct_map_element_surface_properties;
 assert_struct_size(rct_map_element_surface_properties, 4);
 
 typedef struct rct_map_element_path_properties {
-	uint8 type; //4 0xF0 Path type, 0x08 Ride sign, 0x04 Set when path is diagonal, 0x03 Rotation
-	uint8 additions; //5
-	uint8 edges; //6
-	union {
-		uint8 addition_status; //7
-		uint8 ride_index;
-	};
+    uint8 type; //4 0xF0 Path type, 0x08 Ride sign, 0x04 Set when path is diagonal, 0x03 Rotation
+    uint8 additions; //5
+    uint8 edges; //6
+    union {
+        uint8 addition_status; //7
+        uint8 ride_index;
+    };
 } rct_map_element_path_properties;
 assert_struct_size(rct_map_element_path_properties, 4);
 
 typedef struct rct_map_element_track_properties {
-	uint8 type; //4
-	union{
-		struct{
-			uint8 sequence; //5
-			uint8 colour; //6
-		};
-		uint16 maze_entry; // 5
-	};
-	uint8 ride_index; //7
+    uint8 type; //4
+    union{
+        struct{
+            uint8 sequence; //5
+            uint8 colour; //6
+        };
+        uint16 maze_entry; // 5
+    };
+    uint8 ride_index; //7
 } rct_map_element_track_properties;
 assert_struct_size(rct_map_element_track_properties, 4);
 
 typedef struct rct_map_element_scenery_properties {
-	uint8 type; //4
-	uint8 age; //5
-	uint8 colour_1; //6
-	uint8 colour_2; //7
+    uint8 type; //4
+    uint8 age; //5
+    uint8 colour_1; //6
+    uint8 colour_2; //7
 } rct_map_element_scenery_properties;
 assert_struct_size(rct_map_element_scenery_properties, 4);
 
 typedef struct rct_map_element_entrance_properties {
-	uint8 type; //4
-	uint8 index; //5
-	uint8 path_type; //6
-	uint8 ride_index; //7
+    uint8 type; //4
+    uint8 index; //5
+    uint8 path_type; //6
+    uint8 ride_index; //7
 } rct_map_element_entrance_properties;
 assert_struct_size(rct_map_element_entrance_properties, 4);
 
 typedef struct rct_map_element_wall_properties {
-	uint8 type; //4
-	union {
-		uint8 colour_3; //5
-		uint8 banner_index; //5
-	};
-	uint8 colour_1; //6 0b_2221_1111 2 = colour_2 (uses flags for rest of colour2), 1 = colour_1
-	uint8 animation; //7 0b_dfff_ft00 d = direction, f = frame num, t = across track flag (not used)
+    uint8 type; //4
+    union {
+        uint8 colour_3; //5
+        uint8 banner_index; //5
+    };
+    uint8 colour_1; //6 0b_2221_1111 2 = colour_2 (uses flags for rest of colour2), 1 = colour_1
+    uint8 animation; //7 0b_dfff_ft00 d = direction, f = frame num, t = across track flag (not used)
 } rct_map_element_wall_properties;
 assert_struct_size(rct_map_element_wall_properties, 4);
 
 typedef struct rct_map_element_scenerymultiple_properties {
-	uint16 type; //4
-	uint8 colour[2]; //6
+    uint16 type; //4
+    uint8 colour[2]; //6
 } rct_map_element_scenerymultiple_properties;
 assert_struct_size(rct_map_element_scenerymultiple_properties, 4);
 
 typedef struct rct_map_element_banner_properties {
-	uint8 index; //4
-	uint8 position; //5
-	uint8 flags; //6
-	uint8 unused; //7
+    uint8 index; //4
+    uint8 position; //5
+    uint8 flags; //6
+    uint8 unused; //7
 } rct_map_element_banner_properties;
 assert_struct_size(rct_map_element_banner_properties, 4);
 
 typedef union {
-	rct_map_element_surface_properties surface;
-	rct_map_element_path_properties path;
-	rct_map_element_track_properties track;
-	rct_map_element_scenery_properties scenery;
-	rct_map_element_entrance_properties entrance;
-	rct_map_element_wall_properties wall;
-	rct_map_element_scenerymultiple_properties scenerymultiple;
-	rct_map_element_banner_properties banner;
+    rct_map_element_surface_properties surface;
+    rct_map_element_path_properties path;
+    rct_map_element_track_properties track;
+    rct_map_element_scenery_properties scenery;
+    rct_map_element_entrance_properties entrance;
+    rct_map_element_wall_properties wall;
+    rct_map_element_scenerymultiple_properties scenerymultiple;
+    rct_map_element_banner_properties banner;
 } rct_map_element_properties;
 assert_struct_size(rct_map_element_properties, 4);
 
@@ -110,128 +110,128 @@ assert_struct_size(rct_map_element_properties, 4);
  * size: 0x08
  */
 typedef struct rct_map_element {
-	uint8 type; //0
-	uint8 flags; //1
-	uint8 base_height; //2
-	uint8 clearance_height; //3
-	rct_map_element_properties properties;
+    uint8 type; //0
+    uint8 flags; //1
+    uint8 base_height; //2
+    uint8 clearance_height; //3
+    rct_map_element_properties properties;
 } rct_map_element;
 assert_struct_size(rct_map_element, 8);
 #pragma pack(pop)
 
 enum {
-	MAP_ELEMENT_QUADRANT_SW,
-	MAP_ELEMENT_QUADRANT_NW,
-	MAP_ELEMENT_QUADRANT_NE,
-	MAP_ELEMENT_QUADRANT_SE
+    MAP_ELEMENT_QUADRANT_SW,
+    MAP_ELEMENT_QUADRANT_NW,
+    MAP_ELEMENT_QUADRANT_NE,
+    MAP_ELEMENT_QUADRANT_SE
 };
 
 enum {
-	MAP_ELEMENT_TYPE_SURFACE = (0 << 2),
-	MAP_ELEMENT_TYPE_PATH = (1 << 2),
-	MAP_ELEMENT_TYPE_TRACK = (2 << 2),
-	MAP_ELEMENT_TYPE_SCENERY = (3 << 2),
-	MAP_ELEMENT_TYPE_ENTRANCE = (4 << 2),
-	MAP_ELEMENT_TYPE_WALL = (5 << 2),
-	MAP_ELEMENT_TYPE_SCENERY_MULTIPLE = (6 << 2),
-	MAP_ELEMENT_TYPE_BANNER = (7 << 2),
-	// The corrupt element type is used for skipping drawing other following
-	// elements on a given tile.
-	MAP_ELEMENT_TYPE_CORRUPT = (8 << 2),
+    MAP_ELEMENT_TYPE_SURFACE = (0 << 2),
+    MAP_ELEMENT_TYPE_PATH = (1 << 2),
+    MAP_ELEMENT_TYPE_TRACK = (2 << 2),
+    MAP_ELEMENT_TYPE_SCENERY = (3 << 2),
+    MAP_ELEMENT_TYPE_ENTRANCE = (4 << 2),
+    MAP_ELEMENT_TYPE_WALL = (5 << 2),
+    MAP_ELEMENT_TYPE_SCENERY_MULTIPLE = (6 << 2),
+    MAP_ELEMENT_TYPE_BANNER = (7 << 2),
+    // The corrupt element type is used for skipping drawing other following
+    // elements on a given tile.
+    MAP_ELEMENT_TYPE_CORRUPT = (8 << 2),
 };
 
 enum {
-	MAP_ELEMENT_TYPE_FLAG_HIGHLIGHT = (1 << 6)
+    MAP_ELEMENT_TYPE_FLAG_HIGHLIGHT = (1 << 6)
 };
 
 enum {
-	MAP_ELEMENT_DIRECTION_WEST,
-	MAP_ELEMENT_DIRECTION_NORTH,
-	MAP_ELEMENT_DIRECTION_EAST,
-	MAP_ELEMENT_DIRECTION_SOUTH
+    MAP_ELEMENT_DIRECTION_WEST,
+    MAP_ELEMENT_DIRECTION_NORTH,
+    MAP_ELEMENT_DIRECTION_EAST,
+    MAP_ELEMENT_DIRECTION_SOUTH
 };
 
 enum {
-	MAP_ELEMENT_FLAG_GHOST = (1 << 4),
-	MAP_ELEMENT_FLAG_BROKEN = (1 << 5),
-	MAP_ELEMENT_FLAG_BLOCK_BRAKE_CLOSED = (1 << 5),
-	MAP_ELEMENT_FLAG_CANNOT_REMOVE_TRACK = (1 << 6),
-	MAP_ELEMENT_FLAG_LAST_TILE = (1 << 7)
+    MAP_ELEMENT_FLAG_GHOST = (1 << 4),
+    MAP_ELEMENT_FLAG_BROKEN = (1 << 5),
+    MAP_ELEMENT_FLAG_BLOCK_BRAKE_CLOSED = (1 << 5),
+    MAP_ELEMENT_FLAG_CANNOT_REMOVE_TRACK = (1 << 6),
+    MAP_ELEMENT_FLAG_LAST_TILE = (1 << 7)
 };
 
 enum {
-	TERRAIN_GRASS,
-	TERRAIN_SAND,
-	TERRAIN_DIRT,
-	TERRAIN_ROCK,
-	TERRAIN_MARTIAN,
-	TERRAIN_CHECKERBOARD,
-	TERRAIN_GRASS_CLUMPS,
-	TERRAIN_ICE,
-	TERRAIN_GRID_RED,
-	TERRAIN_GRID_YELLOW,
-	TERRAIN_GRID_BLUE,
-	TERRAIN_GRID_GREEN,
-	TERRAIN_SAND_DARK,
-	TERRAIN_SAND_LIGHT,
-	TERRAIN_CHECKERBOARD_INVERTED,
-	TERRAIN_UNDERGROUND_VIEW,
+    TERRAIN_GRASS,
+    TERRAIN_SAND,
+    TERRAIN_DIRT,
+    TERRAIN_ROCK,
+    TERRAIN_MARTIAN,
+    TERRAIN_CHECKERBOARD,
+    TERRAIN_GRASS_CLUMPS,
+    TERRAIN_ICE,
+    TERRAIN_GRID_RED,
+    TERRAIN_GRID_YELLOW,
+    TERRAIN_GRID_BLUE,
+    TERRAIN_GRID_GREEN,
+    TERRAIN_SAND_DARK,
+    TERRAIN_SAND_LIGHT,
+    TERRAIN_CHECKERBOARD_INVERTED,
+    TERRAIN_UNDERGROUND_VIEW,
 };
 
 enum {
-	TERRAIN_EDGE_ROCK,
-	TERRAIN_EDGE_WOOD_RED,
-	TERRAIN_EDGE_WOOD_BLACK,
-	TERRAIN_EDGE_ICE
+    TERRAIN_EDGE_ROCK,
+    TERRAIN_EDGE_WOOD_RED,
+    TERRAIN_EDGE_WOOD_BLACK,
+    TERRAIN_EDGE_ICE
 };
 
 enum {
-	GRASS_LENGTH_MOWED,
-	GRASS_LENGTH_CLEAR_0,
-	GRASS_LENGTH_CLEAR_1,
-	GRASS_LENGTH_CLEAR_2,
-	GRASS_LENGTH_CLUMPS_0,
-	GRASS_LENGTH_CLUMPS_1,
-	GRASS_LENGTH_CLUMPS_2
+    GRASS_LENGTH_MOWED,
+    GRASS_LENGTH_CLEAR_0,
+    GRASS_LENGTH_CLEAR_1,
+    GRASS_LENGTH_CLEAR_2,
+    GRASS_LENGTH_CLUMPS_0,
+    GRASS_LENGTH_CLUMPS_1,
+    GRASS_LENGTH_CLUMPS_2
 };
 
 enum {
-	OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED = (1 << 4),
-	OWNERSHIP_OWNED = (1 << 5),
-	OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE = (1 << 6),
-	OWNERSHIP_AVAILABLE = (1 << 7)
+    OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED = (1 << 4),
+    OWNERSHIP_OWNED = (1 << 5),
+    OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE = (1 << 6),
+    OWNERSHIP_AVAILABLE = (1 << 7)
 };
 
 enum {
-	PATH_QUEUE,
-	PATH_TARMAC,
-	PATH_DIRT,
-	PATH_CRAZY,
-	PATH_ROAD,
-	PATH_TILE
+    PATH_QUEUE,
+    PATH_TARMAC,
+    PATH_DIRT,
+    PATH_CRAZY,
+    PATH_ROAD,
+    PATH_TILE
 };
 
 enum {
-	PATH_FLAG_QUEUE_BANNER = 1 << 3
+    PATH_FLAG_QUEUE_BANNER = 1 << 3
 };
 
 enum {
-	WALL_ANIMATION_FLAG_ACROSS_TRACK = (1 << 2),
-	// 3 - 6 animation frame number
-	WALL_ANIMATION_FLAG_DIRECTION_BACKWARD = (1 << 7),
-	WALL_ANIMATION_FLAG_ALL_FLAGS = WALL_ANIMATION_FLAG_ACROSS_TRACK | WALL_ANIMATION_FLAG_DIRECTION_BACKWARD
+    WALL_ANIMATION_FLAG_ACROSS_TRACK = (1 << 2),
+    // 3 - 6 animation frame number
+    WALL_ANIMATION_FLAG_DIRECTION_BACKWARD = (1 << 7),
+    WALL_ANIMATION_FLAG_ALL_FLAGS = WALL_ANIMATION_FLAG_ACROSS_TRACK | WALL_ANIMATION_FLAG_DIRECTION_BACKWARD
 };
 
 enum {
-	ENTRANCE_TYPE_RIDE_ENTRANCE,
-	ENTRANCE_TYPE_RIDE_EXIT,
-	ENTRANCE_TYPE_PARK_ENTRANCE
+    ENTRANCE_TYPE_RIDE_ENTRANCE,
+    ENTRANCE_TYPE_RIDE_EXIT,
+    ENTRANCE_TYPE_PARK_ENTRANCE
 };
 
 enum {
-	ELEMENT_IS_ABOVE_GROUND = 1 << 0,
-	ELEMENT_IS_UNDERGROUND = 1 << 1,
-	ELEMENT_IS_UNDERWATER = 1 << 2,
+    ELEMENT_IS_ABOVE_GROUND = 1 << 0,
+    ELEMENT_IS_UNDERGROUND = 1 << 1,
+    ELEMENT_IS_UNDERWATER = 1 << 2,
 };
 
 #define MAP_ELEMENT_QUADRANT_MASK 0xC0
@@ -265,88 +265,88 @@ enum {
 
 #pragma pack(push, 1)
 typedef struct rct_xy8 {
-	union {
-		struct {
-			uint8 x, y;
-		};
-		uint16 xy;
-	};
+    union {
+        struct {
+            uint8 x, y;
+        };
+        uint16 xy;
+    };
 } rct_xy8;
 assert_struct_size(rct_xy8, 2);
 
 typedef struct rct_xyz8 {
-	uint8 x, y, z;
+    uint8 x, y, z;
 } rct_xyz8;
 assert_struct_size(rct_xyz8, 3);
 
 typedef struct rct_xyzd8 {
-	uint8 x, y, z, direction;
+    uint8 x, y, z, direction;
 } rct_xyzd8;
 assert_struct_size(rct_xyzd8, 4);
 
 typedef struct rct_xy16 {
-	sint16 x, y;
+    sint16 x, y;
 } rct_xy16;
 assert_struct_size(rct_xy16, 4);
 
 typedef struct rct_xyz16 {
-	sint16 x, y, z;
+    sint16 x, y, z;
 } rct_xyz16;
 assert_struct_size(rct_xyz16, 6);
 
 typedef struct rct_xyzd16 {
-	sint16 x, y, z;
-	uint8 direction;
+    sint16 x, y, z;
+    uint8 direction;
 } rct_xyzd16;
 assert_struct_size(rct_xyzd16, 7);
 
 typedef struct rct_xy32 {
-	sint32 x, y;
+    sint32 x, y;
 } rct_xy32;
 
 typedef struct rct_xyz32 {
-	sint32 x, y, z;
+    sint32 x, y, z;
 } rct_xyz32;
 
 typedef struct rct_xy_element {
-	sint32 x, y;
-	rct_map_element *element;
+    sint32 x, y;
+    rct_map_element *element;
 } rct_xy_element;
 #ifdef PLATFORM_32BIT
 assert_struct_size(rct_xy_element, 12);
 #endif
 
 typedef struct rct2_peep_spawn {
-	uint16 x;
-	uint16 y;
-	uint8 z;
-	uint8 direction;
+    uint16 x;
+    uint16 y;
+    uint8 z;
+    uint8 direction;
 } rct2_peep_spawn;
 assert_struct_size(rct2_peep_spawn, 6);
 #pragma pack(pop)
 
 enum {
-	MAP_SELECT_FLAG_ENABLE				= 1 << 0,
-	MAP_SELECT_FLAG_ENABLE_CONSTRUCT	= 1 << 1,
-	MAP_SELECT_FLAG_ENABLE_ARROW		= 1 << 2,
-	MAP_SELECT_FLAG_GREEN				= 1 << 3,
+    MAP_SELECT_FLAG_ENABLE              = 1 << 0,
+    MAP_SELECT_FLAG_ENABLE_CONSTRUCT    = 1 << 1,
+    MAP_SELECT_FLAG_ENABLE_ARROW        = 1 << 2,
+    MAP_SELECT_FLAG_GREEN               = 1 << 3,
 };
 
 enum {
-	MAP_SELECT_TYPE_CORNER_0,
-	MAP_SELECT_TYPE_CORNER_1,
-	MAP_SELECT_TYPE_CORNER_2,
-	MAP_SELECT_TYPE_CORNER_3,
-	MAP_SELECT_TYPE_FULL,
-	MAP_SELECT_TYPE_FULL_WATER,
-	MAP_SELECT_TYPE_QUARTER_0,
-	MAP_SELECT_TYPE_QUARTER_1,
-	MAP_SELECT_TYPE_QUARTER_2,
-	MAP_SELECT_TYPE_QUARTER_3,
-	MAP_SELECT_TYPE_EDGE_0,
-	MAP_SELECT_TYPE_EDGE_1,
-	MAP_SELECT_TYPE_EDGE_2,
-	MAP_SELECT_TYPE_EDGE_3,
+    MAP_SELECT_TYPE_CORNER_0,
+    MAP_SELECT_TYPE_CORNER_1,
+    MAP_SELECT_TYPE_CORNER_2,
+    MAP_SELECT_TYPE_CORNER_3,
+    MAP_SELECT_TYPE_FULL,
+    MAP_SELECT_TYPE_FULL_WATER,
+    MAP_SELECT_TYPE_QUARTER_0,
+    MAP_SELECT_TYPE_QUARTER_1,
+    MAP_SELECT_TYPE_QUARTER_2,
+    MAP_SELECT_TYPE_QUARTER_3,
+    MAP_SELECT_TYPE_EDGE_0,
+    MAP_SELECT_TYPE_EDGE_1,
+    MAP_SELECT_TYPE_EDGE_2,
+    MAP_SELECT_TYPE_EDGE_3,
 };
 
 extern const rct_xy16 TileDirectionDelta[];
@@ -362,12 +362,12 @@ extern sint16 gMapSize;
 extern sint16 gMapSizeMaxXY;
 extern sint16 gMapBaseZ;
 
-extern uint16		gMapSelectFlags;
-extern uint16		gMapSelectType;
-extern rct_xy16		gMapSelectPositionA;
-extern rct_xy16		gMapSelectPositionB;
-extern rct_xyz16	gMapSelectArrowPosition;
-extern uint8		gMapSelectArrowDirection;
+extern uint16       gMapSelectFlags;
+extern uint16       gMapSelectType;
+extern rct_xy16     gMapSelectPositionA;
+extern rct_xy16     gMapSelectPositionB;
+extern rct_xyz16    gMapSelectArrowPosition;
+extern uint8        gMapSelectArrowDirection;
 
 extern uint8 gMapGroundFlags;
 
@@ -498,9 +498,9 @@ void game_command_set_sign_style(sint32* eax, sint32* ebx, sint32* ecx, sint32* 
 void game_command_modify_tile(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp);
 
 typedef struct map_element_iterator {
-	sint32 x;
-	sint32 y;
-	rct_map_element *element;
+    sint32 x;
+    sint32 y;
+    rct_map_element *element;
 } map_element_iterator;
 #ifdef PLATFORM_32BIT
 assert_struct_size(map_element_iterator, 12);
@@ -539,8 +539,8 @@ void map_clear_all_elements();
 
 rct_map_element *map_get_large_scenery_segment(sint32 x, sint32 y, sint32 z, sint32 direction, sint32 sequence);
 bool map_large_scenery_get_origin(
-	sint32 x, sint32 y, sint32 z, sint32 direction, sint32 sequence,
-	sint32 *outX, sint32 *outY, sint32 *outZ, rct_map_element** outElement
+    sint32 x, sint32 y, sint32 z, sint32 direction, sint32 sequence,
+    sint32 *outX, sint32 *outY, sint32 *outZ, rct_map_element** outElement
 );
 
 void map_offset_with_rotation(sint16 *x, sint16 *y, sint16 offsetX, sint16 offsetY, uint8 rotation);

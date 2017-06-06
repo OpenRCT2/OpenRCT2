@@ -21,42 +21,42 @@
 #include "../drawing/font.h"
 
 enum {
-	LANGUAGE_UNDEFINED,
-	LANGUAGE_ENGLISH_UK,
-	LANGUAGE_ENGLISH_US,
-	LANGUAGE_GERMAN,
-	LANGUAGE_DUTCH,
-	LANGUAGE_FRENCH,
-	LANGUAGE_HUNGARIAN,
-	LANGUAGE_POLISH,
-	LANGUAGE_SPANISH,
-	LANGUAGE_SWEDISH,
-	LANGUAGE_ITALIAN,
-	LANGUAGE_PORTUGUESE_BR,
-	LANGUAGE_CHINESE_TRADITIONAL,
-	LANGUAGE_CHINESE_SIMPLIFIED,
-	LANGUAGE_FINNISH,
-	LANGUAGE_KOREAN,
-	LANGUAGE_RUSSIAN,
-	LANGUAGE_CZECH,
-	LANGUAGE_JAPANESE,
-	LANGUAGE_NORWEGIAN,
-	LANGUAGE_CATALAN,
-	LANGUAGE_COUNT
+    LANGUAGE_UNDEFINED,
+    LANGUAGE_ENGLISH_UK,
+    LANGUAGE_ENGLISH_US,
+    LANGUAGE_GERMAN,
+    LANGUAGE_DUTCH,
+    LANGUAGE_FRENCH,
+    LANGUAGE_HUNGARIAN,
+    LANGUAGE_POLISH,
+    LANGUAGE_SPANISH,
+    LANGUAGE_SWEDISH,
+    LANGUAGE_ITALIAN,
+    LANGUAGE_PORTUGUESE_BR,
+    LANGUAGE_CHINESE_TRADITIONAL,
+    LANGUAGE_CHINESE_SIMPLIFIED,
+    LANGUAGE_FINNISH,
+    LANGUAGE_KOREAN,
+    LANGUAGE_RUSSIAN,
+    LANGUAGE_CZECH,
+    LANGUAGE_JAPANESE,
+    LANGUAGE_NORWEGIAN,
+    LANGUAGE_CATALAN,
+    LANGUAGE_COUNT
 };
 
 #define FONT_OPENRCT2_SPRITE NULL
 
 typedef struct language_descriptor {
-	const char *locale;
-	const utf8 *english_name;
-	const utf8 *native_name;
+    const char *locale;
+    const utf8 *english_name;
+    const utf8 *native_name;
 #ifndef NO_TTF
-	TTFFontSetDescriptor *font;
+    TTFFontSetDescriptor *font;
 #else
-	void * font;
+    void * font;
 #endif // NO_TTF
-	uint8 rct2_original_id;
+    uint8 rct2_original_id;
 } language_descriptor;
 
 extern const language_descriptor LanguagesDescriptors[LANGUAGE_COUNT];

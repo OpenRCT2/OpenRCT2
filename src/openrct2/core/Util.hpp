@@ -28,7 +28,7 @@ namespace Util {
 template <typename T, size_t N>
 static constexpr size_t CountOf(T const (&)[N]) noexcept
 {
-	return N;
+    return N;
 }
 
 } // namespace Util

@@ -20,41 +20,41 @@
 #include "window.h"
 
 typedef enum {
-	WWT_EMPTY = 0,
-	WWT_FRAME = 1,
-	WWT_RESIZE = 2,
-	WWT_IMGBTN = 3,
-	WWT_4 = 4, // Same as IMGBTN but uses .image + 1 while pressed/active
-	WWT_5 = 5,
-	WWT_COLOURBTN = 6,
-	WWT_TRNBTN = 7,
-	WWT_TAB = 8,
-	WWT_FLATBTN = 9,
-	WWT_DROPDOWN_BUTTON = 10,
-	WWT_11, // Same as dropdown button but uses .text + 1 while pressed/active
-	WWT_12, // looks like a normal label to me
-	WWT_13,
-	WWT_14,
-	WWT_SPINNER = 15,
-	WWT_DROPDOWN = 16,
-	WWT_VIEWPORT = 17,
-	WWT_18,
-	WWT_GROUPBOX = 19,
-	WWT_CAPTION = 20,
-	WWT_CLOSEBOX = 21,
-	WWT_SCROLL = 22,
-	WWT_CHECKBOX = 23,
-	WWT_24,
-	WWT_25,
-	WWT_TEXT_BOX = 27,
-	WWT_LAST = 26,
+    WWT_EMPTY = 0,
+    WWT_FRAME = 1,
+    WWT_RESIZE = 2,
+    WWT_IMGBTN = 3,
+    WWT_4 = 4, // Same as IMGBTN but uses .image + 1 while pressed/active
+    WWT_5 = 5,
+    WWT_COLOURBTN = 6,
+    WWT_TRNBTN = 7,
+    WWT_TAB = 8,
+    WWT_FLATBTN = 9,
+    WWT_DROPDOWN_BUTTON = 10,
+    WWT_11, // Same as dropdown button but uses .text + 1 while pressed/active
+    WWT_12, // looks like a normal label to me
+    WWT_13,
+    WWT_14,
+    WWT_SPINNER = 15,
+    WWT_DROPDOWN = 16,
+    WWT_VIEWPORT = 17,
+    WWT_18,
+    WWT_GROUPBOX = 19,
+    WWT_CAPTION = 20,
+    WWT_CLOSEBOX = 21,
+    WWT_SCROLL = 22,
+    WWT_CHECKBOX = 23,
+    WWT_24,
+    WWT_25,
+    WWT_TEXT_BOX = 27,
+    WWT_LAST = 26,
 } WINDOW_WIDGET_TYPES;
-#define WIDGETS_END		WWT_LAST, 0, 0, 0, 0, 0, 0, 0
+#define WIDGETS_END     WWT_LAST, 0, 0, 0, 0, 0, 0, 0
 
 enum {
-	SCROLL_HORIZONTAL = (1 << 0),
-	SCROLL_VERTICAL = (1 << 1),
-	SCROLL_BOTH = SCROLL_HORIZONTAL | SCROLL_VERTICAL
+    SCROLL_HORIZONTAL = (1 << 0),
+    SCROLL_VERTICAL = (1 << 1),
+    SCROLL_BOTH = SCROLL_HORIZONTAL | SCROLL_VERTICAL
 };
 
 void widget_scroll_update_thumbs(rct_window *w, rct_widgetindex widget_index);
