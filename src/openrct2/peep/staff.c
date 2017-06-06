@@ -214,142 +214,145 @@ static money32 staff_hire_new_staff_member(uint8 staff_type, uint8 flags, sint16
 		return MONEY32_UNDEFINED;
 	}
 
-	sint32 newStaffId = i;
-	const rct_sprite_bounds *spriteBounds;
-	rct_peep *newPeep = &(create_sprite(flags)->peep);
+	if (!(flags & GAME_COMMAND_FLAG_APPLY))
+	{
+		sint32 newStaffId = i;
+		const rct_sprite_bounds *spriteBounds;
+		rct_peep *newPeep = &(create_sprite(flags)->peep);
 
-	if (newPeep == NULL) {
-		gGameCommandErrorText = STR_TOO_MANY_PEOPLE_IN_GAME;
-		return MONEY32_UNDEFINED;
-	}
+		if (newPeep == NULL) {
+			gGameCommandErrorText = STR_TOO_MANY_PEOPLE_IN_GAME;
+			return MONEY32_UNDEFINED;
+		}
 
-	if (flags == 0) {
-		sprite_remove((rct_sprite *)newPeep);
-	} else {
-		move_sprite_to_list((rct_sprite *)newPeep, SPRITE_LIST_PEEP * 2);
+		if (flags == 0) {
+			sprite_remove((rct_sprite *)newPeep);
+		} else {
+			move_sprite_to_list((rct_sprite *)newPeep, SPRITE_LIST_PEEP * 2);
 
-		newPeep->sprite_identifier = 1;
-		newPeep->window_invalidate_flags = 0;
-		newPeep->action = PEEP_ACTION_NONE_2;
-		newPeep->special_sprite = 0;
-		newPeep->action_sprite_image_offset = 0;
-		newPeep->no_action_frame_no = 0;
-		newPeep->action_sprite_type = 0;
-		newPeep->var_C4 = 0;
-		newPeep->type = PEEP_TYPE_STAFF;
-		newPeep->outside_of_park = 0;
-		newPeep->peep_flags = 0;
-		newPeep->paid_to_enter = 0;
-		newPeep->paid_on_rides = 0;
-		newPeep->paid_on_food = 0;
-		newPeep->paid_on_souvenirs = 0;
+			newPeep->sprite_identifier = 1;
+			newPeep->window_invalidate_flags = 0;
+			newPeep->action = PEEP_ACTION_NONE_2;
+			newPeep->special_sprite = 0;
+			newPeep->action_sprite_image_offset = 0;
+			newPeep->no_action_frame_no = 0;
+			newPeep->action_sprite_type = 0;
+			newPeep->var_C4 = 0;
+			newPeep->type = PEEP_TYPE_STAFF;
+			newPeep->outside_of_park = 0;
+			newPeep->peep_flags = 0;
+			newPeep->paid_to_enter = 0;
+			newPeep->paid_on_rides = 0;
+			newPeep->paid_on_food = 0;
+			newPeep->paid_on_souvenirs = 0;
 
-		if (staff_type == STAFF_TYPE_HANDYMAN)
-			newPeep->staff_orders = STAFF_ORDERS_SWEEPING |
-									STAFF_ORDERS_WATER_FLOWERS |
-									STAFF_ORDERS_EMPTY_BINS;
-		else if (staff_type == STAFF_TYPE_MECHANIC)
-			newPeep->staff_orders = STAFF_ORDERS_INSPECT_RIDES |
-									STAFF_ORDERS_FIX_RIDES;
-		else
-			newPeep->staff_orders = 0;
+			if (staff_type == STAFF_TYPE_HANDYMAN)
+				newPeep->staff_orders = STAFF_ORDERS_SWEEPING |
+										STAFF_ORDERS_WATER_FLOWERS |
+										STAFF_ORDERS_EMPTY_BINS;
+			else if (staff_type == STAFF_TYPE_MECHANIC)
+				newPeep->staff_orders = STAFF_ORDERS_INSPECT_RIDES |
+										STAFF_ORDERS_FIX_RIDES;
+			else
+				newPeep->staff_orders = 0;
 
-		uint16 idSearchSpriteIndex;
-		rct_peep *idSearchPeep;
+			uint16 idSearchSpriteIndex;
+			rct_peep *idSearchPeep;
 
-		// We search for the first available id for a given staff type
-		uint32 newStaffIndex = 0;
-		for (;;) {
-			bool found = false;
-			++newStaffIndex;
+			// We search for the first available id for a given staff type
+			uint32 newStaffIndex = 0;
+			for (;;) {
+				bool found = false;
+				++newStaffIndex;
 
-			FOR_ALL_STAFF(idSearchSpriteIndex, idSearchPeep) {
-				if (idSearchPeep->staff_type != staff_type)
-					continue;
+				FOR_ALL_STAFF(idSearchSpriteIndex, idSearchPeep) {
+					if (idSearchPeep->staff_type != staff_type)
+						continue;
 
-				if (idSearchPeep->id == newStaffIndex) {
-					found = true;
-					break;
+					if (idSearchPeep->id == newStaffIndex) {
+						found = true;
+						break;
+					}
 				}
+
+				if (!found)
+					break;
 			}
 
-			if (!found)
-				break;
+			newPeep->id = newStaffIndex;
+			newPeep->staff_type = staff_type;
+
+			static const rct_string_id staffNames[] = {
+				STR_HANDYMAN_X,
+				STR_MECHANIC_X,
+				STR_SECURITY_GUARD_X,
+				STR_ENTERTAINER_X,
+			};
+
+			/* rct2: 0x009929FC */
+			static const uint8 spriteTypes[] = {
+				PEEP_SPRITE_TYPE_HANDYMAN,
+				PEEP_SPRITE_TYPE_MECHANIC,
+				PEEP_SPRITE_TYPE_SECURITY,
+				PEEP_SPRITE_TYPE_ENTERTAINER_PANDA,
+			};
+
+			uint8 sprite_type = spriteTypes[staff_type];
+			if (staff_type == STAFF_TYPE_ENTERTAINER)
+			{
+				sprite_type = PEEP_SPRITE_TYPE_ENTERTAINER_PANDA + entertainerType;
+			}
+			newPeep->name_string_idx = staffNames[staff_type];
+			newPeep->sprite_type = sprite_type;
+
+			spriteBounds = g_peep_animation_entries[sprite_type].sprite_bounds;
+			newPeep->sprite_width = spriteBounds->sprite_width;
+			newPeep->sprite_height_negative = spriteBounds->sprite_height_negative;
+			newPeep->sprite_height_positive = spriteBounds->sprite_height_positive;
+
+			if (autoposition) {
+				staff_autoposition_new_staff_member(newPeep);
+			} else {
+				newPeep->state = PEEP_STATE_PICKED;
+
+				sprite_move(newPeep->x, newPeep->y, newPeep->z, (rct_sprite *)newPeep);
+				invalidate_sprite_2((rct_sprite *)newPeep);
+			}
+
+			newPeep->time_in_park = gDateMonthsElapsed;
+			newPeep->pathfind_goal.x = 0xFF;
+			newPeep->pathfind_goal.y = 0xFF;
+			newPeep->pathfind_goal.z = 0xFF;
+			newPeep->pathfind_goal.direction = 0xFF;
+
+			uint8 colour = staff_get_colour(staff_type);
+			newPeep->tshirt_colour = colour;
+			newPeep->trousers_colour = colour;
+
+			// Staff energy determines their walking speed
+			newPeep->energy = 0x60;
+			newPeep->energy_growth_rate = 0x60;
+			newPeep->var_E2 = 0;
+
+			peep_update_name_sort(newPeep);
+
+			newPeep->staff_id = newStaffId;
+
+			gStaffModes[newStaffId] = STAFF_MODE_WALK;
+
+			for (i = 0; i < 128; i++) {
+				uint32 *addr = (uint32*)((uintptr_t)gStaffPatrolAreas + (newStaffId << 9) + i * 4);
+				*addr = 0;
+			}
 		}
 
-		newPeep->id = newStaffIndex;
-		newPeep->staff_type = staff_type;
-
-		static const rct_string_id staffNames[] = {
-			STR_HANDYMAN_X,
-			STR_MECHANIC_X,
-			STR_SECURITY_GUARD_X,
-			STR_ENTERTAINER_X,
-		};
-
-		/* rct2: 0x009929FC */
-		static const uint8 spriteTypes[] = {
-			PEEP_SPRITE_TYPE_HANDYMAN,
-			PEEP_SPRITE_TYPE_MECHANIC,
-			PEEP_SPRITE_TYPE_SECURITY,
-			PEEP_SPRITE_TYPE_ENTERTAINER_PANDA,
-		};
-
-		uint8 sprite_type = spriteTypes[staff_type];
-		if (staff_type == STAFF_TYPE_ENTERTAINER)
-		{
-			sprite_type = PEEP_SPRITE_TYPE_ENTERTAINER_PANDA + entertainerType;
-		}
-		newPeep->name_string_idx = staffNames[staff_type];
-		newPeep->sprite_type = sprite_type;
-
-		spriteBounds = g_peep_animation_entries[sprite_type].sprite_bounds;
-		newPeep->sprite_width = spriteBounds->sprite_width;
-		newPeep->sprite_height_negative = spriteBounds->sprite_height_negative;
-		newPeep->sprite_height_positive = spriteBounds->sprite_height_positive;
-
-		if (autoposition) {
-			staff_autoposition_new_staff_member(newPeep);
-		} else {
-			newPeep->state = PEEP_STATE_PICKED;
-
-			sprite_move(newPeep->x, newPeep->y, newPeep->z, (rct_sprite *)newPeep);
-			invalidate_sprite_2((rct_sprite *)newPeep);
+		if ((staff_type == STAFF_TYPE_HANDYMAN) && gConfigGeneral.handymen_mow_default) {
+			uint8 new_orders = newPeep->staff_orders | STAFF_ORDERS_MOWING;
+			game_do_command(newPeep->x, ((sint32)new_orders << 8) | 1, newPeep->y, newPeep->sprite_index, GAME_COMMAND_SET_STAFF_ORDER, 0, 0);
 		}
 
-		newPeep->time_in_park = gDateMonthsElapsed;
-		newPeep->pathfind_goal.x = 0xFF;
-		newPeep->pathfind_goal.y = 0xFF;
-		newPeep->pathfind_goal.z = 0xFF;
-		newPeep->pathfind_goal.direction = 0xFF;
-
-		uint8 colour = staff_get_colour(staff_type);
-		newPeep->tshirt_colour = colour;
-		newPeep->trousers_colour = colour;
-
-		// Staff energy determines their walking speed
-		newPeep->energy = 0x60;
-		newPeep->energy_growth_rate = 0x60;
-		newPeep->var_E2 = 0;
-
-		peep_update_name_sort(newPeep);
-
-		newPeep->staff_id = newStaffId;
-
-		gStaffModes[newStaffId] = STAFF_MODE_WALK;
-
-		for (i = 0; i < 128; i++) {
-			uint32 *addr = (uint32*)((uintptr_t)gStaffPatrolAreas + (newStaffId << 9) + i * 4);
-			*addr = 0;
-		}
+		*newPeep_sprite_index = newPeep->sprite_index;
 	}
-
-	if ((staff_type == STAFF_TYPE_HANDYMAN) && gConfigGeneral.handymen_mow_default) {
-		uint8 new_orders = newPeep->staff_orders | STAFF_ORDERS_MOWING;
-		game_do_command(newPeep->x, ((sint32)new_orders << 8) | 1, newPeep->y, newPeep->sprite_index, GAME_COMMAND_SET_STAFF_ORDER, 0, 0);
-	}
-
-	*newPeep_sprite_index = newPeep->sprite_index;
 	return 0;
 }
 
