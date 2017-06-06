@@ -491,7 +491,7 @@ static void window_ride_construction_update_map_selection();
 static void window_ride_construction_update_possible_ride_configurations();
 static void window_ride_construction_update_widgets(rct_window *w);
 static void window_ride_construction_select_map_tiles(rct_ride *ride, sint32 trackType, sint32 trackDirection, sint32 x, sint32 y);
-money32 sub_6CA162(sint32 rideIndex, sint32 trackType, sint32 trackDirection, sint32 edxRS16, sint32 x, sint32 y, sint32 z);
+money32 place_provisional_track_piece(sint32 rideIndex, sint32 trackType, sint32 trackDirection, sint32 edxRS16, sint32 x, sint32 y, sint32 z);
 static void window_ride_construction_show_special_track_dropdown(rct_window *w, rct_widget *widget);
 static void ride_selected_track_set_seat_rotation(sint32 seatRotation);
 static void loc_6C7502(sint32 al);
@@ -2752,7 +2752,7 @@ static void window_ride_construction_update_enabled_track_pieces()
  *
  *  rct2: 0x006CA162
  */
-money32 sub_6CA162(sint32 rideIndex, sint32 trackType, sint32 trackDirection, sint32 edxRS16, sint32 x, sint32 y, sint32 z)
+money32 place_provisional_track_piece(sint32 rideIndex, sint32 trackType, sint32 trackDirection, sint32 edxRS16, sint32 x, sint32 y, sint32 z)
 {
 	rct_ride *ride;
 	money32 result;
@@ -2818,7 +2818,7 @@ void sub_6C94D8()
 			if (sub_6CA2DF(&type, &direction, &rideIndex, &edxRS16, &x, &y, &z, NULL)) {
 				ride_construction_remove_ghosts();
 			} else {
-				_currentTrackPrice = sub_6CA162(rideIndex, type, direction, edxRS16, x, y, z);
+				_currentTrackPrice = place_provisional_track_piece(rideIndex, type, direction, edxRS16, x, y, z);
 				window_ride_construction_update_active_elements();
 			}
 		}
@@ -3730,7 +3730,7 @@ void ride_construction_toolupdate_construct(sint32 screenX, sint32 screenY)
 	if (ride->type == RIDE_TYPE_MAZE) {
 		for (;;) {
 			sub_6CA2DF(&trackType, &trackDirection, &rideIndex, &edxRS16, &x, &y, &z, NULL);
-			_currentTrackPrice = sub_6CA162(rideIndex, trackType, trackDirection, edxRS16, x, y, z);
+			_currentTrackPrice = place_provisional_track_piece(rideIndex, trackType, trackDirection, edxRS16, x, y, z);
 			if (_currentTrackPrice != MONEY32_UNDEFINED)
 				break;
 
@@ -3753,7 +3753,7 @@ void ride_construction_toolupdate_construct(sint32 screenX, sint32 screenY)
 
 	for (;;) {
 		sub_6CA2DF(&trackType, &trackDirection, &rideIndex, &edxRS16, &x, &y, &z, NULL);
-		_currentTrackPrice = sub_6CA162(rideIndex, trackType, trackDirection, edxRS16, x, y, z);
+		_currentTrackPrice = place_provisional_track_piece(rideIndex, trackType, trackDirection, edxRS16, x, y, z);
 		if (_currentTrackPrice != MONEY32_UNDEFINED)
 			break;
 

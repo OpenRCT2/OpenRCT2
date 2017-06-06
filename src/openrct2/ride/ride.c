@@ -217,7 +217,7 @@ static void ride_update_vehicle_colours(sint32 rideIndex);
 static void ride_set_vehicle_colours_to_random_preset(rct_ride *ride, uint8 preset_index);
 void loc_6DDF9C(rct_ride *ride, rct_map_element *mapElement);
 bool sub_6CA2DF(sint32 *trackType, sint32 *trackDirection, sint32 *rideIndex, sint32 *edxRS16, sint32 *x, sint32 *y, sint32 *z, sint32 *properties);
-money32 sub_6CA162(sint32 rideIndex, sint32 trackType, sint32 trackDirection, sint32 edxRS16, sint32 x, sint32 y, sint32 z);
+money32 place_provisional_track_piece(sint32 rideIndex, sint32 trackType, sint32 trackDirection, sint32 edxRS16, sint32 x, sint32 y, sint32 z);
 
 rct_ride *get_ride(sint32 index)
 {
@@ -1336,7 +1336,7 @@ void ride_restore_provisional_track_piece()
 		if (sub_6CA2DF(&type, &direction, &rideIndex, &edxRS16, &x, &y, &z, NULL)) {
 			ride_construction_remove_ghosts();
 		} else {
-			_currentTrackPrice = sub_6CA162(rideIndex, type, direction, edxRS16, x, y, z);
+			_currentTrackPrice = place_provisional_track_piece(rideIndex, type, direction, edxRS16, x, y, z);
 			window_ride_construction_update_active_elements();
 		}
 	}
