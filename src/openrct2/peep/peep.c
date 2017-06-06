@@ -7846,7 +7846,9 @@ void peep_set_map_tooltip(rct_peep *peep)
 	}
 }
 
-
+/**
+*  rct2: 0x00693BAB
+*/
 void peep_switch_to_next_action_sprite_type(rct_peep* peep) {
 	// TBD: Add nextActionSpriteType as function parameter and make peep->next_action_sprite_type obsolete?
 	uint8 nextActionSpriteType = peep->next_action_sprite_type;
