@@ -18,6 +18,7 @@
 #include <stdarg.h>
 #include <stdio.h>
 #include "diagnostic.h"
+#include "platform/platform.h"
 
 static bool _log_location_enabled = true;
 bool _log_levels[DIAGNOSTIC_LEVEL_COUNT] = { true, true, true, false, true };
@@ -40,6 +41,9 @@ void diagnostic_log(DiagnosticLevel diagnosticLevel, const char *format, ...)
 
 	stream = stderr;
 
+	// timestamp
+	printLocalDateTime(stream);
+	
 	// Level
 	fprintf(stream, "%s: ", _level_strings[diagnosticLevel]);
 
@@ -62,6 +66,9 @@ void diagnostic_log_with_location(DiagnosticLevel diagnosticLevel, const char *f
 
 	stream = stderr;
 
+	// timestamp                                                                                                                                                                                        
+	printLocalDateTime(stream);
+	
 	// Level and source code information
 	if (_log_location_enabled)
 		fprintf(stream, "%s[%s:%d (%s)]: ", _level_strings[diagnosticLevel], file, line, function);
