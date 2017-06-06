@@ -1635,14 +1635,26 @@ void game_handle_edge_scroll()
 	else if (cursorState->y >= context_get_height() - 1)
 		scrollY = 1;
 
+	//get the x and y for the viewport, with the "scroll distance" already added to it
+	sint16 x = mainWindow->viewport->view_width / 2 + mainWindow->saved_view_x+ scrollX * (12 << mainWindow->viewport->zoom);
+	sint16 y = mainWindow->viewport->view_height / 2 + mainWindow->saved_view_y+ scrollY * (12 << mainWindow->viewport->zoom);
+	sint16 z;
+	sub_689174(&x, &y, &z);
+	
 	// Scroll viewport
 	if (scrollX != 0) {
-		mainWindow->saved_view_x += scrollX * (12 << mainWindow->viewport->zoom);
-		_inputFlags |= INPUT_FLAG_VIEWPORT_SCROLLING;
+		//check to see if the "x + scroll distance" is inside the boundary, if so, we move the viewport
+		if (x >= MAP_MINIMUM_X_Y && x <= gMapSizeMinus2) {
+			mainWindow->saved_view_x += scrollX * (12 << mainWindow->viewport->zoom);
+			_inputFlags |= INPUT_FLAG_VIEWPORT_SCROLLING;
+		}
 	}
 	if (scrollY != 0) {
-		mainWindow->saved_view_y += scrollY * (12 << mainWindow->viewport->zoom);
-		_inputFlags |= INPUT_FLAG_VIEWPORT_SCROLLING;
+		//check to see if the "y + scroll distance" is inside the boundary, if so, we move the viewport
+		if (y >= MAP_MINIMUM_X_Y && y <= gMapSizeMinus2) {
+			mainWindow->saved_view_y += scrollY * (12 << mainWindow->viewport->zoom);
+			_inputFlags |= INPUT_FLAG_VIEWPORT_SCROLLING;
+		}
 	}
 }
 
@@ -1707,14 +1719,26 @@ void game_handle_key_scroll()
 		}
 	}
 
+	//get the x and y for the viewport, with the "scroll distance" already added to it
+	sint16 x = mainWindow->viewport->view_width / 2 + mainWindow->saved_view_x+ scrollX * (12 << mainWindow->viewport->zoom);
+	sint16 y = mainWindow->viewport->view_height / 2 + mainWindow->saved_view_y+ scrollY * (12 << mainWindow->viewport->zoom);
+	sint16 z;
+	sub_689174(&x, &y, &z);
+	
 	// Scroll viewport
 	if (scrollX != 0) {
-		mainWindow->saved_view_x += scrollX * (12 << mainWindow->viewport->zoom);
-		_inputFlags |= INPUT_FLAG_VIEWPORT_SCROLLING;
+		//check to see if the "x + scroll distance" is inside the boundary, if so, we move the viewport
+		if (x >= MAP_MINIMUM_X_Y && x <= gMapSizeMinus2) {
+			mainWindow->saved_view_x += scrollX * (12 << mainWindow->viewport->zoom);
+			_inputFlags |= INPUT_FLAG_VIEWPORT_SCROLLING;
+		}
 	}
 	if (scrollY != 0) {
-		mainWindow->saved_view_y += scrollY * (12 << mainWindow->viewport->zoom);
-		_inputFlags |= INPUT_FLAG_VIEWPORT_SCROLLING;
+		//check to see if the "y + scroll distance" is inside the boundary, if so, we move the viewport
+		if (y >= MAP_MINIMUM_X_Y && y <= gMapSizeMinus2) {
+			mainWindow->saved_view_y += scrollY * (12 << mainWindow->viewport->zoom);
+			_inputFlags |= INPUT_FLAG_VIEWPORT_SCROLLING;
+		}
 	}
 }
 
