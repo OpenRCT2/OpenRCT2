@@ -502,6 +502,8 @@ static void viewport_surface_draw_land_side_top(enum edge_t edge, uint8 height, 
 		return;
 	}
 
+	assert(terrain < countof(_terrainEdgeSpriteIds));
+
 	if (!(gCurrentViewportFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE)) {
 		uint8 incline = (regs.cl - regs.al) + 1;
 
