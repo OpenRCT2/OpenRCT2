@@ -463,7 +463,7 @@ uint32 duck_get_frame_image(const rct_duck * duck, sint32 direction);
 void money_effect_create(money32 value);
 void money_effect_create_at(money32 value, sint32 x, sint32 y, sint32 z, bool vertical);
 void money_effect_update(rct_money_effect *moneyEffect);
-rct_string_id money_effect_get_string_id(const rct_money_effect * sprite);
+rct_string_id money_effect_get_string_id(const rct_money_effect * sprite, money32 * outValue);
 
 ///////////////////////////////////////////////////////////////
 // Crash particles

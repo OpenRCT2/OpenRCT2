@@ -48,7 +48,7 @@ void money_effect_create_at(money32 value, sint32 x, sint32 y, sint32 z, bool ve
 	moneyEffect->move_delay = 0;
 
 	// Construct string to display
-	rct_string_id stringId = money_effect_get_string_id(moneyEffect);
+	rct_string_id stringId = money_effect_get_string_id(moneyEffect, &value);
 	char buffer[128];
 	format_string(buffer, 128, stringId, &value);
 
@@ -126,7 +126,7 @@ void money_effect_update(rct_money_effect *moneyEffect)
 	sprite_remove((rct_sprite*)moneyEffect);
 }
 
-rct_string_id money_effect_get_string_id(const rct_money_effect * sprite)
+rct_string_id money_effect_get_string_id(const rct_money_effect * sprite, money32 * outValue)
 {
 	bool vertical = (sprite->vertical != 0);
 	rct_string_id spentStringId = vertical ? STR_MONEY_EFFECT_SPEND_HIGHP : STR_MONEY_EFFECT_SPEND;
@@ -137,5 +137,6 @@ rct_string_id money_effect_get_string_id(const rct_money_effect * sprite)
 		value *= -1;
 		stringId = spentStringId;
 	}
+	if (outValue != NULL) *outValue = value;
 	return stringId;
 }
