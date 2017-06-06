@@ -261,14 +261,14 @@ static sint32 editor_load_landscape_from_sc4(const char *path)
  */
 static sint32 editor_read_s6(const char *path)
 {
-    bool loadResult = false;
+    park_load_result* loadResult = { 0 };
     const char *extension = path_get_extension(path);
     if (_stricmp(extension, ".sc6") == 0) {
         loadResult = scenario_load(path);
     } else if (_stricmp(extension, ".sv6") == 0) {
         loadResult = game_load_sv6_path(path);
     }
-    if (!loadResult) {
+    if (loadResult->error != PARK_LOAD_ERROR_NONE) {
         return 0;
     }
 

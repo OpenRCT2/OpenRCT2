@@ -21,6 +21,7 @@
 #include "../management/finance.h"
 #include "../management/research.h"
 #include "../object.h"
+#include "../park_load_result_types.h"
 #include "../rct12.h"
 #include "../rct2.h"
 #include "../rct2/addresses.h"
@@ -389,7 +390,7 @@ extern uint32 gLastAutoSaveUpdate;
 
 extern const char *_scenarioFileName;
 
-sint32 scenario_load(const char *path);
+park_load_result *scenario_load(const char *path);
 sint32 scenario_load_and_play_from_path(const char *path);
 void scenario_begin();
 void scenario_update();

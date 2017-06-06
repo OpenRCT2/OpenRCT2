@@ -20,6 +20,7 @@
 #include "rct2/addresses.h"
 #include "common.h"
 #include "scenario/scenario.h"
+#include "park_load_result_types.h"
 
 enum GAME_COMMAND {
     GAME_COMMAND_SET_RIDE_APPEARANCE,
@@ -120,6 +121,12 @@ enum {
     ERROR_TYPE_FILE_LOAD = 255
 };
 
+enum PARK_LOAD_ERROR {
+    PARK_LOAD_ERROR_NONE,
+    PARK_LOAD_ERROR_BAD_OBJECTS,
+    PARK_LOAD_ERROR_UNKNOWN = 255
+};
+
 typedef void (GAME_COMMAND_POINTER)(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp);
 
 typedef void (GAME_COMMAND_CALLBACK_POINTER)(sint32 eax, sint32 ebx, sint32 ecx, sint32 edx, sint32 esi, sint32 edi, sint32 ebp);
@@ -170,7 +177,7 @@ sint32 game_do_command_p(sint32 command, sint32 *eax, sint32 *ebx, sint32 *ecx, 
 void game_log_multiplayer_command(int command, int *eax, int* ebx, int* ecx, int* edx, int* edi, int* ebp);
 
 void game_load_or_quit_no_save_prompt();
-bool game_load_sv6_path(const char * path);
+park_load_result * game_load_sv6_path(const char * path);
 bool game_load_save(const utf8 *path);
 void game_load_init();
 void game_pause_toggle(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *edx, sint32 *esi, sint32 *edi, sint32 *ebp);

@@ -93,9 +93,19 @@ sint32 scenario_load_and_play_from_path(const char *path)
     window_close_construction_windows();
 
     uint32 extension = get_file_extension_type(path);
+    park_load_result* result;
     if (extension == FILE_EXTENSION_SC6) {
-        if (!scenario_load(path))
+        result = scenario_load(path);
+        if (result->error != PARK_LOAD_ERROR_NONE)
+        {
+            if (result->error == PARK_LOAD_ERROR_BAD_OBJECTS)
+            {
+                // The path needs to be duplicated as it's a const here
+                // which the window function doesn't like
+                window_object_load_error_open(strndup(path, strnlen(path, MAX_PATH)), result->object_validity);
+            }
             return 0;
+        }
     }
     else if (extension == FILE_EXTENSION_SC4) {
         if (!rct1_load_scenario(path))

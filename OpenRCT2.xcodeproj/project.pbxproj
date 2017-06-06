@@ -471,6 +471,8 @@
 		F7D774AC1EC6741D00BE6EBC /* language in CopyFiles */ = {isa = PBXBuildFile; fileRef = D4EC48E41C2637710024B507 /* language */; };
 		F7D774AD1EC6741D00BE6EBC /* shaders in CopyFiles */ = {isa = PBXBuildFile; fileRef = D43407E11D0E14CE00C2B3D4 /* shaders */; };
 		F7D774AE1EC6741D00BE6EBC /* title in CopyFiles */ = {isa = PBXBuildFile; fileRef = D4EC48E51C2637710024B507 /* title */; };
+		F7FFCDAA1F02FD8E0078BFFB /* object_load_error.c in Sources */ = {isa = PBXBuildFile; fileRef = F7FFCDA91F02FD8E0078BFFB /* object_load_error.c */; };
+		F7FFCDAC1F02FF570078BFFB /* object_load_error.c in Sources */ = {isa = PBXBuildFile; fileRef = F7FFCDA91F02FD8E0078BFFB /* object_load_error.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1354,6 +1356,8 @@
 		F7CB864C1EEDA1A80030C877 /* WindowManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WindowManager.h; sourceTree = "<group>"; };
 		F7D7747E1EC61E5100BE6EBC /* UiContext.macOS.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = UiContext.macOS.mm; sourceTree = "<group>"; usesTabs = 0; };
 		F7D774841EC66CD700BE6EBC /* OpenRCT2-cli */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "OpenRCT2-cli"; sourceTree = BUILT_PRODUCTS_DIR; };
+		F7FFCDA91F02FD8E0078BFFB /* object_load_error.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = object_load_error.c; sourceTree = "<group>"; };
+		F7FFCDAB1F02FEC00078BFFB /* park_load_result_types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = park_load_result_types.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1776,6 +1780,7 @@
 				F76C84371EC4E7CC00FA49E2 /* object_list.h */,
 				F76C84381EC4E7CC00FA49E2 /* OpenRCT2.cpp */,
 				F76C84391EC4E7CC00FA49E2 /* OpenRCT2.h */,
+				F7FFCDAB1F02FEC00078BFFB /* park_load_result_types.h */,
 				F76C84511EC4E7CC00FA49E2 /* ParkImporter.cpp */,
 				F76C84521EC4E7CC00FA49E2 /* ParkImporter.h */,
 				F76C84641EC4E7CC00FA49E2 /* PlatformEnvironment.cpp */,
@@ -2425,6 +2430,7 @@
 				F76C85321EC4E7CD00FA49E2 /* new_ride.c */,
 				F76C85331EC4E7CD00FA49E2 /* news.c */,
 				F76C85341EC4E7CD00FA49E2 /* news_options.c */,
+				F7FFCDA91F02FD8E0078BFFB /* object_load_error.c */,
 				F76C85351EC4E7CD00FA49E2 /* options.c */,
 				F76C85361EC4E7CD00FA49E2 /* park.c */,
 				F76C85371EC4E7CD00FA49E2 /* player.c */,
@@ -3014,6 +3020,7 @@
 				F76C888C1EC5324E00FA49E2 /* UiContext.cpp in Sources */,
 				F76C888D1EC5324E00FA49E2 /* UiContext.Linux.cpp in Sources */,
 				F76C888E1EC5324E00FA49E2 /* UiContext.Win32.cpp in Sources */,
+				F7FFCDAA1F02FD8E0078BFFB /* object_load_error.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3021,6 +3028,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F7FFCDAC1F02FF570078BFFB /* object_load_error.c in Sources */,
 				F7CB864E1EEDA2050030C877 /* DummyWindowManager.cpp in Sources */,
 				F775F5381EE3725C001F00E7 /* DummyAudioContext.cpp in Sources */,
 				F775F5351EE35A89001F00E7 /* DummyUiContext.cpp in Sources */,

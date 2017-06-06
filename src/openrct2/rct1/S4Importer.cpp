@@ -125,16 +125,16 @@ private:
     uint8 _researchRideTypeUsed[128];
 
 public:
-    void Load(const utf8 * path) override
+    park_load_result* Load(const utf8 * path) override
     {
         const utf8 * extension = Path::GetExtension(path);
         if (String::Equals(extension, ".sc4", true))
         {
-            LoadScenario(path);
+            return LoadScenario(path);
         }
         else if (String::Equals(extension, ".sv4", true))
         {
-            LoadSavedGame(path);
+            return LoadSavedGame(path);
         }
         else
         {
@@ -142,22 +142,27 @@ public:
         }
     }
 
-    void LoadSavedGame(const utf8 * path) override
+    park_load_result* LoadSavedGame(const utf8 * path) override
     {
         auto fs = FileStream(path, FILE_MODE_OPEN);
-        LoadFromStream(&fs, false);
+        park_load_result* result = LoadFromStream(&fs, false);
         _s4Path = path;
+        return result;
     }
 
-    void LoadScenario(const utf8 * path) override
+    park_load_result* LoadScenario(const utf8 * path) override
     {
         auto fs = FileStream(path, FILE_MODE_OPEN);
-        LoadFromStream(&fs, true);
+        park_load_result* result = LoadFromStream(&fs, true);
         _s4Path = path;
+        return result;
     }
 
-    void LoadFromStream(IStream * stream, bool isScenario) override
+    park_load_result* LoadFromStream(IStream * stream, bool isScenario) override
     {
+        park_load_result* result = Memory::Allocate<park_load_result>(sizeof(park_load_result));
+        result->error = PARK_LOAD_ERROR_UNKNOWN;
+
         size_t dataSize = stream->GetLength() - stream->GetPosition();
         std::unique_ptr<uint8> data = std::unique_ptr<uint8>(stream->ReadArray<uint8>(dataSize));
         std::unique_ptr<uint8> decodedData = std::unique_ptr<uint8>(Memory::Allocate<uint8>(sizeof(rct1_s4)));
@@ -182,6 +187,8 @@ public:
         {
             throw Exception("Unable to decode park.");
         }
+        result->error = PARK_LOAD_ERROR_NONE;
+        return result;
     }
 
     void Import() override

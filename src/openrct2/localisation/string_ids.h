@@ -3791,6 +3791,15 @@ enum {
 
     STR_NOT_ENOUGH_ROLLER_COASTERS = 6122,
 
+    STR_OBJECT_LOAD_ERROR_TITLE = 6123,
+    STR_OBJECT_NAME = 6124,
+    STR_OBJECT_TYPE = 6125,
+    STR_UNKNOWN_OBJECT_TYPE = 6126,
+    STR_OBJECT_ERROR_WINDOW_FILE = 6127,
+    STR_OBJECT_ERROR_WINDOW_EXPLANATION = 6128,
+    STR_COPY_SELECTED = 6129,
+    STR_COPY_ALL = 6130,
+
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     STR_COUNT = 32768
 };

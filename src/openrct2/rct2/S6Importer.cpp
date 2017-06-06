@@ -24,6 +24,7 @@
 #include "../network/network.h"
 #include "../object/ObjectManager.h"
 #include "../object/ObjectRepository.h"
+#include "../object/ObjectManager.h"
 #include "../ParkImporter.h"
 #include "../rct12/SawyerChunkReader.h"
 #include "../rct12/SawyerEncoding.h"
@@ -80,16 +81,16 @@ public:
         Memory::Set(&_s6, 0, sizeof(_s6));
     }
 
-    void Load(const utf8 * path) override
+    park_load_result* Load(const utf8 * path) override
     {
         const utf8 * extension = Path::GetExtension(path);
         if (String::Equals(extension, ".sc6", true))
         {
-            LoadScenario(path);
+            return LoadScenario(path);
         }
         else if (String::Equals(extension, ".sv6", true))
         {
-            LoadSavedGame(path);
+            return LoadSavedGame(path);
         }
         else
         {
@@ -97,22 +98,29 @@ public:
         }
     }
 
-    void LoadSavedGame(const utf8 * path) override
+    park_load_result* LoadSavedGame(const utf8 * path) override
     {
         auto fs = FileStream(path, FILE_MODE_OPEN);
-        LoadFromStream(&fs, false);
+        park_load_result* result =  LoadFromStream(&fs, false);
         _s6Path = path;
+
+        return result;
     }
 
-    void LoadScenario(const utf8 * path) override
+    park_load_result* LoadScenario(const utf8 * path) override
     {
         auto fs = FileStream(path, FILE_MODE_OPEN);
-        LoadFromStream(&fs, true);
+        park_load_result* result = LoadFromStream(&fs, true);
         _s6Path = path;
+        
+        return result;
     }
 
-    void LoadFromStream(IStream * stream, bool isScenario) override
+    park_load_result* LoadFromStream(IStream * stream, bool isScenario) override
     {
+        park_load_result* result = Memory::Allocate<park_load_result>(sizeof(park_load_result));
+        result->error = PARK_LOAD_ERROR_UNKNOWN;
+
         if (isScenario && !gConfigGeneral.allow_loading_with_incorrect_checksum && !SawyerEncoding::ValidateChecksum(stream))
         {
             throw IOException("Invalid checksum.");
@@ -166,6 +174,19 @@ public:
             chunkReader.ReadChunk(&_s6.map_elements, sizeof(_s6.map_elements));
             chunkReader.ReadChunk(&_s6.next_free_map_element_pointer_index, 3048816);
         }
+
+        object_validity_result* object_result = _objectManager->GetInvalidObjects(_s6.objects);
+        
+        result->object_validity = object_result;
+        if (object_result->invalid_object_count > 0)
+        {
+            result->error = PARK_LOAD_ERROR_BAD_OBJECTS;
+        }
+        else
+        {
+            result->error = PARK_LOAD_ERROR_NONE;
+        }
+        return result;
     }
 
     bool GetDetails(scenario_index_entry * dst) override
@@ -418,23 +439,28 @@ IParkImporter * ParkImporter::CreateS6(IObjectRepository * objectRepository, IOb
 
 extern "C"
 {
-    bool game_load_sv6_path(const char * path)
+    park_load_result* game_load_sv6_path(const char * path)
     {
-        bool result     = false;
+        park_load_result* result = {};
         auto s6Importer = new S6Importer(GetObjectRepository(), GetObjectManager());
         try
         {
-            s6Importer->LoadSavedGame(path);
-            s6Importer->Import();
+            result = s6Importer->LoadSavedGame(path);
 
-            game_fix_save_vars();
-            sprite_position_tween_reset();
-            result = true;
+            // We mustn't import if there's something
+            // wrong with the park data
+            if (result->error == PARK_LOAD_ERROR_NONE)
+            {
+                s6Importer->Import();
+
+                game_fix_save_vars();
+                sprite_position_tween_reset();
+            }
         }
         catch (const ObjectLoadException &)
         {
             gErrorType     = ERROR_TYPE_FILE_LOAD;
-            gErrorStringId = STR_GAME_SAVE_FAILED;
+            gErrorStringId = STR_FILE_CONTAINS_INVALID_DATA;
         }
         catch (const IOException &)
         {
@@ -448,8 +474,11 @@ extern "C"
         }
         delete s6Importer;
 
-        gScreenAge          = 0;
-        gLastAutoSaveUpdate = AUTOSAVE_PAUSE;
+        if (result->error == PARK_LOAD_ERROR_NONE)
+        {
+            gScreenAge          = 0;
+            gLastAutoSaveUpdate = AUTOSAVE_PAUSE;
+        }
         return result;
     }
 
@@ -458,18 +487,20 @@ extern "C"
      *  rct2: 0x00676053
      * scenario (ebx)
      */
-    sint32 scenario_load(const char * path)
+    park_load_result *scenario_load(const char * path)
     {
-        bool result     = false;
+        park_load_result* result = {};
         auto s6Importer = new S6Importer(GetObjectRepository(), GetObjectManager());
         try
         {
-            s6Importer->LoadScenario(path);
-            s6Importer->Import();
+            result = s6Importer->LoadScenario(path);
+            if (result->error != PARK_LOAD_ERROR_NONE)
+            {
+                s6Importer->Import();
 
-            game_fix_save_vars();
-            sprite_position_tween_reset();
-            result = true;
+                game_fix_save_vars();
+                sprite_position_tween_reset();
+            }
         }
         catch (const ObjectLoadException &)
         {
@@ -487,9 +518,11 @@ extern "C"
             gErrorStringId = STR_FILE_CONTAINS_INVALID_DATA;
         }
         delete s6Importer;
-
-        gScreenAge          = 0;
-        gLastAutoSaveUpdate = AUTOSAVE_PAUSE;
+        if (result->error != PARK_LOAD_ERROR_NONE)
+        {
+            gScreenAge = 0;
+            gLastAutoSaveUpdate = AUTOSAVE_PAUSE;
+        }
         return result;
     }
 }

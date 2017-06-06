@@ -639,6 +639,11 @@ public:
         }
     }
 
+    bool SetClipboardText(const utf8* target) override
+    {
+        return (SDL_SetClipboardText(target) == 0);
+    }
+
 
 private:
     void OnResize(sint32 width, sint32 height)

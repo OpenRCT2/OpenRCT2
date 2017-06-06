@@ -9,6 +9,7 @@ Includes all git commit authors. Aliases are GitHub user names.
 * Lewis Fox (LRFLEW) - Developer, macOS management
 * Marijn van der Werf (marijnvdwerf) - Developer
 * (zsilencer) - Developer
+* Richard Jenkins (rwjuk) - Developer, issue management
 
 ## Implementation (RCT2)
 * Ted John (IntelOrca)

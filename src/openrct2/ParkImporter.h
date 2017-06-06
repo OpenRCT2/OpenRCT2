@@ -19,6 +19,15 @@
 #include "common.h"
 
 #ifdef __cplusplus
+extern "C"
+{
+#endif
+#include "park_load_result_types.h"
+#ifdef __cplusplus
+}
+#endif
+
+#ifdef __cplusplus
 
 #include <string>
 #include "scenario/ScenarioRepository.h"
@@ -34,10 +43,10 @@ interface IParkImporter
 {
 public:
     virtual ~IParkImporter() = default;
-    virtual void Load(const utf8 * path) abstract;
-    virtual void LoadSavedGame(const utf8 * path) abstract;
-    virtual void LoadScenario(const utf8 * path) abstract;
-    virtual void LoadFromStream(IStream * stream, bool isScenario) abstract;
+    virtual park_load_result * Load(const utf8 * path) abstract;
+    virtual park_load_result * LoadSavedGame(const utf8 * path) abstract;
+    virtual park_load_result * LoadScenario(const utf8 * path) abstract;
+    virtual park_load_result * LoadFromStream(IStream * stream, bool isScenario) abstract;
     virtual void Import() abstract;
     virtual bool GetDetails(scenario_index_entry * dst) abstract;
 };

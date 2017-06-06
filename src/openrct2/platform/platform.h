@@ -109,6 +109,7 @@ sint32 platform_enumerate_directories_begin(const utf8 *directory);
 bool platform_enumerate_directories_next(sint32 handle, utf8 *path);
 void platform_enumerate_directories_end(sint32 handle);
 void platform_init_window_icon();
+bool platform_place_string_on_clipboard(utf8* target);
 
 // Returns the bitmask of the GetLogicalDrives function for windows, 0 for other systems
 sint32 platform_get_drives();

@@ -804,7 +804,8 @@ datetime64 platform_get_datetime_now_utc()
     return utcNow;
 }
 
-utf8* platform_get_username() {
+utf8* platform_get_username()
+{
     static char username[UNLEN + 1];
 
     DWORD usernameLength = UNLEN + 1;

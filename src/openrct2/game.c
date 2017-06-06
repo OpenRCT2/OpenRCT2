@@ -1094,18 +1094,20 @@ bool game_load_save(const utf8 *path)
     safe_strcpy(gScenarioSavePath, path, MAX_PATH);
 
     uint32 extension_type = get_file_extension_type(path);
-    bool result = false;
+    park_load_result* result = {0};
+    bool load_success = false;
     if (extension_type == FILE_EXTENSION_SV6) {
         result = game_load_sv6_path(path);
-        if (result)
+        load_success = (result->error == PARK_LOAD_ERROR_NONE);
+        if (load_success)
             gFirstTimeSaving = false;
     } else if (extension_type == FILE_EXTENSION_SV4) {
-        result = rct1_load_saved_game(path);
-        if (result)
+        load_success = rct1_load_saved_game(path);
+        if (load_success)
             gFirstTimeSaving = true;
     }
 
-    if (result) {
+    if (load_success) {
         if (network_get_mode() == NETWORK_MODE_CLIENT) {
             network_close();
         }
@@ -1120,9 +1122,16 @@ bool game_load_save(const utf8 *path)
 
         return true;
     } else {
-        // If loading the SV6 or SV4 failed, the current park state will be corrupted
-        // so just go back to the title screen.
-        title_load();
+        if (result->error == PARK_LOAD_ERROR_BAD_OBJECTS)
+        {
+            // The path needs to be duplicated as it's a const here
+            // which the window function doesn't like
+            window_object_load_error_open(strndup(path, strnlen(path, MAX_PATH)), result->object_validity);
+        } else { 
+            // If loading the SV6 or SV4 failed for a reason other than invalid objects
+            // the current park state will be corrupted so just go back to the title screen.
+            title_load();
+        }
         return false;
     }
 }
