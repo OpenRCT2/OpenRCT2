@@ -68,6 +68,7 @@ interface IPlatformEnvironment
 {
     virtual ~IPlatformEnvironment() = default;
 
+    virtual std::string GetDirectoryPath(DIRBASE base) const abstract;
     virtual std::string GetDirectoryPath(DIRBASE base, DIRID did) const abstract;
     virtual std::string GetFilePath(PATHID pathid) const abstract;
 };

@@ -282,6 +282,13 @@ namespace OpenRCT2
             basePaths[(size_t)DIRBASE::USER] = std::string(path);
 
             IPlatformEnvironment * env = CreatePlatformEnvironment(basePaths);
+
+            // Log base paths
+            log_verbose("DIRBASE::RCT1    : %s", env->GetDirectoryPath(DIRBASE::RCT1).c_str());
+            log_verbose("DIRBASE::RCT2    : %s", env->GetDirectoryPath(DIRBASE::RCT2).c_str());
+            log_verbose("DIRBASE::OPENRCT2: %s", env->GetDirectoryPath(DIRBASE::OPENRCT2).c_str());
+            log_verbose("DIRBASE::USER    : %s", env->GetDirectoryPath(DIRBASE::USER).c_str());
+
             return env;
         }
 

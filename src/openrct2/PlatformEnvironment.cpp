@@ -25,7 +25,7 @@ extern "C"
     #include "platform/platform.h"
 }
 
-class PlatformEnvironment : public IPlatformEnvironment
+class PlatformEnvironment final : public IPlatformEnvironment
 {
 private:
     std::string _basePath[DIRBASE_COUNT];
@@ -39,9 +39,14 @@ public:
         }
     }
 
+    std::string GetDirectoryPath(DIRBASE base) const override
+    {
+        return _basePath[(size_t)base];
+    }
+
     std::string GetDirectoryPath(DIRBASE base, DIRID did) const override
     {
-        const utf8 * basePath = _basePath[(size_t)base].c_str();
+        auto basePath = GetDirectoryPath(base);
         const utf8 * directoryName;
         switch (base) {
         default:
@@ -55,10 +60,7 @@ public:
             break;
         }
 
-        utf8 path[260];
-        String::Set(path, sizeof(path), basePath);
-        Path::Append(path, sizeof(path), directoryName);
-        return std::string(path);
+        return Path::Combine(basePath, directoryName);
     }
 
     std::string GetFilePath(PATHID pathid) const override
