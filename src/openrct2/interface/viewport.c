@@ -250,6 +250,9 @@ void viewport_adjust_for_map_height(sint16* x, sint16* y, sint16 *z)
 	*z = height;
 }
 
+/*
+*  rct2: 0x006E7FF3
+*/
 static void viewport_redraw_after_shift(rct_drawpixelinfo *dpi, rct_window *window, rct_viewport *viewport, sint32 x, sint32 y)
 {
 	// sub-divide by intersecting windows

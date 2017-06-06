@@ -1392,6 +1392,10 @@ static uint8 peep_get_action_sprite_type(rct_peep* peep)
 	}
 }
 
+
+/*
+*  rct2: 0x00693B58
+*/
 void peep_update_current_action_sprite_type(rct_peep* peep){
 	if (peep->sprite_type >= countof(g_peep_animation_entries)) {
 		return;

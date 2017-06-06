@@ -1400,6 +1400,9 @@ void ride_construction_remove_ghosts()
 	}
 }
 
+/*
+*  rct2: 0x006C9627
+*/
 void ride_construction_invalidate_current_track()
 {
 	sint32 x, y, z;
