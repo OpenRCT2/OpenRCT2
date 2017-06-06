@@ -16,6 +16,7 @@
 
 #include "cheats.h"
 #include "config/Config.h"
+#include "editor.h"
 #include "game.h"
 #include "interface/window.h"
 #include "localisation/date.h"
@@ -24,6 +25,7 @@
 #include "util/util.h"
 #include "world/Climate.h"
 #include "world/footpath.h"
+#include "world/map.h"
 #include "world/scenery.h"
 #include "world/sprite.h"
 
@@ -428,6 +430,62 @@ static void cheat_set_staff_speed(uint8 value)
 	}
 }
 
+static void cheat_own_all_land()
+{
+	sint32 min = 32;
+	sint32 max = gMapSizeUnits - 32;
+	for (sint32 y = min; y <= max; y += 32) {
+		for (sint32 x = min; x <= max; x += 32) {
+			rct_map_element * surfaceElement = map_get_surface_element_at(x >> 5, y >> 5);
+
+			// Ignore already owned tiles.
+			if (surfaceElement->properties.surface.ownership & OWNERSHIP_OWNED)
+				continue;
+
+			sint32 base_z = surfaceElement->base_height;
+			rct_map_element * mapElement = map_get_first_element_at(x >> 5, y >> 5);
+			sint32 destOwnership = OWNERSHIP_OWNED;
+			
+			do {
+				sint32 type = map_element_get_type(mapElement);
+				if (type == MAP_ELEMENT_TYPE_PATH ||
+					(type == MAP_ELEMENT_TYPE_ENTRANCE && mapElement->properties.entrance.type == ENTRANCE_TYPE_PARK_ENTRANCE)) {
+					destOwnership = OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED;
+					// Do not own construction rights if too high/below surface
+					if (mapElement->base_height - 3 > base_z ||
+						mapElement->base_height < base_z) {
+						destOwnership = 0;
+						break;
+					}
+				}
+			} while (!map_element_is_last_for_tile(mapElement++));
+
+			// only own tiles that were not set to 0
+			if (destOwnership != 0) {
+				surfaceElement->properties.surface.ownership |= destOwnership;
+				update_park_fences_around_tile(x, y);
+				uint16 baseHeight = surfaceElement->base_height * 8;
+				map_invalidate_tile(x, y, baseHeight, baseHeight + 16);
+			}
+		}
+	}
+
+	// Completely unown peep spawn points
+	for (sint32 i = 0; i < MAX_PEEP_SPAWNS; i++) {
+		sint32 x = gPeepSpawns[i].x;
+		sint32 y = gPeepSpawns[i].y;
+		if (x != PEEP_SPAWN_UNDEFINED) {
+			rct_map_element * surfaceElement = map_get_surface_element_at(x >> 5, y >> 5);
+			surfaceElement->properties.surface.ownership = 0;
+			update_park_fences_around_tile(x, y);
+			uint16 baseHeight = surfaceElement->base_height * 8;
+			map_invalidate_tile(x, y, baseHeight, baseHeight + 16);
+		}
+	}
+
+	map_count_remaining_land_rights();
+}
+
 #pragma endregion
 
 void game_command_cheat(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp)
@@ -479,6 +537,7 @@ void game_command_cheat(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint
 			case CHEAT_SETFORCEDPARKRATING: if(*edx > -1) { park_rating_spinner_value = *edx; } set_forced_park_rating(*edx); break;
 			case CHEAT_RESETDATE: date_reset(); window_invalidate_by_class(WC_BOTTOM_TOOLBAR); break;
 			case CHEAT_ALLOW_ARBITRARY_RIDE_TYPE_CHANGES: gCheatsAllowArbitraryRideTypeChanges = *edx != 0; window_invalidate_by_class(WC_RIDE); break;
+			case CHEAT_OWNALLLAND: cheat_own_all_land(); break;
 		}
 		if (network_get_mode() == NETWORK_MODE_NONE) {
 			config_save_default();

@@ -1,5 +1,6 @@
 0.0.8 (in development)
 ------------------------------------------------------------------------
+- Feature: [#5056] Add cheat to own all land.
 - Feature: [#5133] Add option to display guest expenditure (as seen in RCTC).
 - Feature: OpenRCT2 now starts up on the display it was last shown on.
 - Improved: Mouse can now be dragged to select scenery when saving track designs

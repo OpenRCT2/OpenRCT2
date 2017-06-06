@@ -3726,6 +3726,8 @@ enum {
 	STR_MONEY_EFFECT_RECEIVE_HIGHP = 6062,
 	STR_MONEY_EFFECT_SPEND_HIGHP = 6063,
 
+	STR_CHEAT_OWN_ALL_LAND = 6064,
+
 	// Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
 	STR_COUNT = 32768
 };
