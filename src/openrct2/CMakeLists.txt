@@ -226,9 +226,8 @@ if (NOT DISABLE_TTF AND UNIX AND NOT APPLE)
     target_include_directories(${PROJECT} PRIVATE ${FONTCONFIG_INCLUDE_DIRS})
 endif ()
 
-# macOS builds fail on the use of tmpnam otherwise (#4959)
 if(APPLE)
-    set(COMMON_COMPILE_OPTIONS "${COMMON_COMPILE_OPTIONS} -Wno-error=deprecated-declarations -Wno-error=objc-method-access")
+    set(COMMON_COMPILE_OPTIONS "${COMMON_COMPILE_OPTIONS} -Wno-error=objc-method-access")
 endif()
 
 # Compiler flags
