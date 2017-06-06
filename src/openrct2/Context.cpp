@@ -49,6 +49,7 @@ extern "C"
     #include "intro.h"
     #include "localisation/localisation.h"
     #include "network/http.h"
+    #include "network/network.h"
     #include "object_list.h"
     #include "rct1.h"
     #include "rct2.h"
@@ -218,6 +219,7 @@ namespace OpenRCT2
             }
 
             http_init();
+            network_set_env(_env);
             theme_manager_initialise();
 
             rct2_interop_setup_hooks();

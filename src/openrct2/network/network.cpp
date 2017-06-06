@@ -16,6 +16,7 @@
 
 #include "../core/Guard.hpp"
 #include "../OpenRCT2.h"
+#include "../PlatformEnvironment.h"
 
 extern "C" {
 	#include "../platform/platform.h"
@@ -125,6 +126,11 @@ Network::~Network()
 	Close();
 }
 
+void Network::SetEnvironment(IPlatformEnvironment * env)
+{
+	_env = env;
+}
+
 bool Network::Init()
 {
 	if (!InitialiseWSA()) {
@@ -211,8 +217,8 @@ bool Network::BeginClient(const char* host, uint16 port)
 	status = NETWORK_STATUS_CONNECTING;
 	_lastConnectStatus = SOCKET_STATUS_CLOSED;
 
-	BeginChatLog(_chatLogDirectory, _chatLogFilenameFormat);
-	BeginServerLog(_serverLogDirectory, gConfigNetwork.server_name, _serverLogFilenameFormat);
+	BeginChatLog();
+	BeginServerLog();
 
 	utf8 keyPath[MAX_PATH];
 	network_get_private_key_path(keyPath, sizeof(keyPath), gConfigNetwork.player_name);
@@ -315,8 +321,8 @@ bool Network::BeginServer(uint16 port, const char* address)
 
 	cheats_reset();
 	LoadGroups();
-	BeginChatLog(_chatLogDirectory, _chatLogFilenameFormat);
-	BeginServerLog(_serverLogDirectory, ServerName, _serverLogFilenameFormat);
+	BeginChatLog();
+	BeginServerLog();
 
 	NetworkPlayer *player = AddPlayer(gConfigNetwork.player_name, "");
 	player->Flags |= NETWORK_PLAYER_FLAG_ISSERVER;
@@ -827,108 +833,95 @@ void Network::LoadGroups()
 	group_list.at(0)->ActionsAllowed.fill(0xFF);
 }
 
-std::string Network::BeginLog(const char* directory, const char* filename_format)
+std::string Network::BeginLog(const std::string &directory, const std::string &filenameFormat)
 {
-	utf8 filename[32];
+	utf8 filename[256];
 	time_t timer;
-	struct tm * tmInfo;
 	time(&timer);
-	tmInfo = localtime(&timer);
-	strftime(filename, sizeof(filename), filename_format, tmInfo);
+	auto tmInfo = localtime(&timer);
+	if (strftime(filename, sizeof(filename), filenameFormat.c_str(), tmInfo) == 0) {
+		throw std::runtime_error("strftime failed");
+	}
 
-	utf8 path[MAX_PATH];
-	platform_get_user_directory(path, directory, sizeof(path));
-	Path::Append(path, sizeof(path), filename);
-
-	return std::string(path);
+	return Path::Combine(directory, filename);
 }
 
-void Network::AppendLog(const utf8 *logPath, const utf8 *text)
+void Network::AppendLog(const std::string &logPath, const std::string &s)
 {
-	utf8 directory[MAX_PATH];
-	Path::GetDirectory(directory, sizeof(directory), logPath);
-	if (platform_ensure_directory_exists(directory)) {
+	std::string directory = Path::GetDirectory(logPath);
+	if (platform_ensure_directory_exists(directory.c_str())) {
 		try
 		{
-			_chatLogStream = new FileStream(chatLogPath, FILE_MODE_APPEND);
-            _logStream = SDL_RWFromFile(logPath, "a");
-		if (_logStream != nullptr) {
+			auto fs = FileStream(logPath, FILE_MODE_APPEND);
+
 			utf8 buffer[256];
 			time_t timer;
-			struct tm * tmInfo;
 			time(&timer);
-			tmInfo = localtime(&timer);
-			strftime(buffer, sizeof(buffer), "[%Y/%m/%d %H:%M:%S] ", tmInfo);
+			auto tmInfo = localtime(&timer);
+			if (strftime(buffer, sizeof(buffer), "[%Y/%m/%d %H:%M:%S] ", tmInfo) != 0) {
+				String::Append(buffer, sizeof(buffer), s.c_str());
+				utf8_remove_formatting(buffer, false);
+				String::Append(buffer, sizeof(buffer), PLATFORM_NEWLINE);
 
-			String::Append(buffer, sizeof(buffer), text);
-			utf8_remove_formatting(buffer, false);
-			String::Append(buffer, sizeof(buffer), PLATFORM_NEWLINE);
-
-			_chatLogStream->Write(buffer, strlen(buffer));
-			delete _chatLogStream;
-			_chatLogStream = nullptr;
+				fs.Write(buffer, strlen(buffer));
+			}
 		}
-		catch (const Exception &)
+		catch (const Exception &ex)
 		{
-			SDL_RWwrite(_logStream, buffer, strlen(buffer), 1);
-			SDL_RWclose(_logStream);
+			log_error("%s", ex.GetMessage());
 		}
 	}
 }
 
-void Network::BeginChatLog(const char* directory, const char* filename_format)
+void Network::BeginChatLog()
 {
-	_chatLogPath = BeginLog(directory, filename_format);
+	auto directory = _env->GetDirectoryPath(DIRBASE::USER, DIRID::LOG_CHAT);
+	_chatLogPath = BeginLog(directory, _chatLogFilenameFormat);
 }
 
-void Network::AppendChatLog(const utf8 *text)
+void Network::AppendChatLog(const std::string &s)
 {
-	if (!gConfigNetwork.log_chat) {
-		return;
+	if (gConfigNetwork.log_chat) {
+		AppendLog(_chatLogPath, s);
 	}
-
-	AppendLog(_chatLogPath.c_str(), text);
 }
 
 void Network::CloseChatLog()
 {
 }
 
-void Network::BeginServerLog(const char* directory, std::string server_name, const char* filename_format)
+void Network::BeginServerLog()
 {
-	server_name.append(filename_format);
-	char* filename = (char *) server_name.c_str();
-	_serverLogPath = BeginLog(directory, filename);
+	auto directory = _env->GetDirectoryPath(DIRBASE::USER, DIRID::LOG_SERVER);
+	_serverLogPath = BeginLog(directory, (ServerName + _serverLogFilenameFormat));
 
 	// Log server start event
-	char log_msg[256];
+	utf8 logMessage[256];
 	if (GetMode() == NETWORK_MODE_CLIENT) {
-		format_string(log_msg, 256, STR_LOG_CLIENT_STARTED, NULL);
+		format_string(logMessage, sizeof(logMessage), STR_LOG_CLIENT_STARTED, NULL);
 	} else if (GetMode() == NETWORK_MODE_SERVER) {
-		format_string(log_msg, 256, STR_LOG_SERVER_STARTED, NULL);
+		format_string(logMessage, sizeof(logMessage), STR_LOG_SERVER_STARTED, NULL);
 	}
-	AppendServerLog(log_msg);
+	AppendServerLog(logMessage);
 }
 
-void Network::AppendServerLog(const utf8 *text)
+void Network::AppendServerLog(const std::string &s)
 {
-	if (!gConfigNetwork.log_server_actions) {
-		return;
+	if (gConfigNetwork.log_server_actions) {
+		AppendLog(_serverLogPath.c_str(), s);
 	}
-
-	AppendLog(_serverLogPath.c_str(), text);
 }
 
 void Network::CloseServerLog()
 {
 	// Log server stopped event
-	char log_msg[256];
+	char logMessage[256];
 	if (GetMode() == NETWORK_MODE_CLIENT) {
-		format_string(log_msg, 256, STR_LOG_CLIENT_STOPPED, NULL);
+		format_string(logMessage, sizeof(logMessage), STR_LOG_CLIENT_STOPPED, NULL);
 	} else if (GetMode() == NETWORK_MODE_SERVER) {
-		format_string(log_msg, 256, STR_LOG_SERVER_STOPPED, NULL);
+		format_string(logMessage, sizeof(logMessage), STR_LOG_SERVER_STOPPED, NULL);
 	}
-	AppendServerLog(log_msg);
+	AppendServerLog(logMessage);
 }
 
 void Network::Client_Send_TOKEN()
@@ -2196,9 +2189,9 @@ void Network::Client_Handle_GAMEINFO(NetworkConnection& connection, NetworkPacke
 	network_chat_show_server_greeting();
 }
 
-sint32 network_init()
+void network_set_env(void * env)
 {
-	return gNetwork.Init();
+	gNetwork.SetEnvironment((IPlatformEnvironment *)env);
 }
 
 void network_close()
@@ -2867,6 +2860,7 @@ sint32 network_get_pickup_peep_old_x(uint8 playerid) { return _pickup_peep_old_x
 void network_send_chat(const char* text) {}
 void network_send_password(const char* password) {}
 void network_close() {}
+void network_set_env(void * env) {}
 void network_shutdown_client() {}
 void network_set_password(const char* password) {}
 uint8 network_get_current_player_id() { return 0; }
