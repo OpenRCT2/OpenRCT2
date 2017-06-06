@@ -22,38 +22,38 @@
 #include "../common.h"
 
 typedef enum http_data_type_T {
-	HTTP_DATA_NONE,
-	HTTP_DATA_RAW,
-	HTTP_DATA_JSON
+    HTTP_DATA_NONE,
+    HTTP_DATA_RAW,
+    HTTP_DATA_JSON
 } http_data_type;
 
 typedef struct http_request_t {
-	void *tag;
-	const char *method;
-	const char *url;
-	http_data_type type;
-	size_t size;
-	union {
-		const json_t *root;
-		char* body;
-	};
+    void *tag;
+    const char *method;
+    const char *url;
+    http_data_type type;
+    size_t size;
+    union {
+        const json_t *root;
+        char* body;
+    };
 } http_request_t;
 
 typedef struct http_response_t {
-	void *tag;
-	sint32 status_code;
-	http_data_type type;
-	size_t size;
-	union {
-		json_t *root;
-		char* body;
-	};
+    void *tag;
+    sint32 status_code;
+    http_data_type type;
+    size_t size;
+    union {
+        json_t *root;
+        char* body;
+    };
 } http_response_t;
 
-#define HTTP_METHOD_GET		"GET"
-#define HTTP_METHOD_POST	"POST"
-#define HTTP_METHOD_PUT		"PUT"
-#define HTTP_METHOD_DELETE	"DELETE"
+#define HTTP_METHOD_GET     "GET"
+#define HTTP_METHOD_POST    "POST"
+#define HTTP_METHOD_PUT     "PUT"
+#define HTTP_METHOD_DELETE  "DELETE"
 
 void http_request_async(const http_request_t *request, void (*callback)(http_response_t*));
 void http_request_dispose(http_response_t *response);

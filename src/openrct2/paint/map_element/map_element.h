@@ -23,27 +23,27 @@
 
 typedef enum edge_t
 {
-	EDGE_NE = (1 << 0),
-	EDGE_SE = (1 << 1),
-	EDGE_SW = (1 << 2),
-	EDGE_NW = (1 << 3),
-	EDGE_BOTTOMLEFT = EDGE_SW,
-	EDGE_BOTTOMRIGHT = EDGE_SE,
-	EDGE_TOPLEFT = EDGE_NW,
-	EDGE_TOPRIGHT = EDGE_NE
+    EDGE_NE = (1 << 0),
+    EDGE_SE = (1 << 1),
+    EDGE_SW = (1 << 2),
+    EDGE_NW = (1 << 3),
+    EDGE_BOTTOMLEFT = EDGE_SW,
+    EDGE_BOTTOMRIGHT = EDGE_SE,
+    EDGE_TOPLEFT = EDGE_NW,
+    EDGE_TOPRIGHT = EDGE_NE
 } edge_t;
 
 enum
 {
-	SEGMENT_B4 = (1 << 0), // 0
-	SEGMENT_CC = (1 << 1), // 6
-	SEGMENT_BC = (1 << 2), // 2
-	SEGMENT_D4 = (1 << 3), // 8
-	SEGMENT_C0 = (1 << 4), // 3
-	SEGMENT_D0 = (1 << 5), // 7
-	SEGMENT_B8 = (1 << 6), // 1
-	SEGMENT_C8 = (1 << 7), // 5
-	SEGMENT_C4 = (1 << 8), // 4
+    SEGMENT_B4 = (1 << 0), // 0
+    SEGMENT_CC = (1 << 1), // 6
+    SEGMENT_BC = (1 << 2), // 2
+    SEGMENT_D4 = (1 << 3), // 8
+    SEGMENT_C0 = (1 << 4), // 3
+    SEGMENT_D0 = (1 << 5), // 7
+    SEGMENT_B8 = (1 << 6), // 1
+    SEGMENT_C8 = (1 << 7), // 5
+    SEGMENT_C4 = (1 << 8), // 4
 };
 
 extern const sint32 SEGMENTS_ALL;
@@ -51,33 +51,33 @@ extern const uint16 segment_offsets[9];
 
 enum
 {
-	TUNNEL_0 = 0,
-	TUNNEL_1 = 1,
-	TUNNEL_2 = 2,
-	TUNNEL_3 = 3,
-	TUNNEL_4 = 4,
-	TUNNEL_5 = 5,
-	TUNNEL_6 = 6,
-	TUNNEL_7 = 7,
-	TUNNEL_8 = 8,
-	TUNNEL_9 = 9,
-	TUNNEL_10 = 0x0A,
-	TUNNEL_11 = 0x0B,
-	TUNNEL_12 = 0x0C,
-	TUNNEL_13 = 0x0D,
-	TUNNEL_14 = 0x0E,
-	TUNNEL_15 = 0x0F,
+    TUNNEL_0 = 0,
+    TUNNEL_1 = 1,
+    TUNNEL_2 = 2,
+    TUNNEL_3 = 3,
+    TUNNEL_4 = 4,
+    TUNNEL_5 = 5,
+    TUNNEL_6 = 6,
+    TUNNEL_7 = 7,
+    TUNNEL_8 = 8,
+    TUNNEL_9 = 9,
+    TUNNEL_10 = 0x0A,
+    TUNNEL_11 = 0x0B,
+    TUNNEL_12 = 0x0C,
+    TUNNEL_13 = 0x0D,
+    TUNNEL_14 = 0x0E,
+    TUNNEL_15 = 0x0F,
 };
 
 typedef struct tunnel_entry {
-	uint8 height;
-	uint8 type;
+    uint8 height;
+    uint8 type;
 } tunnel_entry;
 
 enum
 {
-	G141E9DB_FLAG_1 = 1,
-	G141E9DB_FLAG_2 = 2,
+    G141E9DB_FLAG_1 = 1,
+    G141E9DB_FLAG_2 = 2,
 };
 
 #define TUNNEL_MAX_COUNT 65
@@ -94,16 +94,16 @@ extern tunnel_entry gRightTunnels[TUNNEL_MAX_COUNT];
 extern uint8 gRightTunnelCount;
 extern uint8 gVerticalTunnelHeight;
 #else
-#define g141E9DB					RCT2_GLOBAL(0x0141E9DB, uint8)
-#define gUnk141E9DC					RCT2_GLOBAL(0x0141E9DC, uint16)
-#define gPaintMapPosition					RCT2_GLOBAL(0x009DE574, rct_xy16)
-#define gDidPassSurface				RCT2_GLOBAL(0x009DE57C, bool)
-#define gSurfaceElement				RCT2_GLOBAL(0x009E3250, rct_map_element *)
-#define gLeftTunnels				RCT2_ADDRESS(0x009E3138, tunnel_entry)
-#define gLeftTunnelCount			RCT2_GLOBAL(0x0141F56A, uint8)
-#define gRightTunnels				RCT2_ADDRESS(0x009E30B6, tunnel_entry)
-#define gRightTunnelCount			RCT2_GLOBAL(0x0141F56B, uint8)
-#define gVerticalTunnelHeight		RCT2_GLOBAL(0x009E323C, uint8)
+#define g141E9DB                    RCT2_GLOBAL(0x0141E9DB, uint8)
+#define gUnk141E9DC                 RCT2_GLOBAL(0x0141E9DC, uint16)
+#define gPaintMapPosition                   RCT2_GLOBAL(0x009DE574, rct_xy16)
+#define gDidPassSurface             RCT2_GLOBAL(0x009DE57C, bool)
+#define gSurfaceElement             RCT2_GLOBAL(0x009E3250, rct_map_element *)
+#define gLeftTunnels                RCT2_ADDRESS(0x009E3138, tunnel_entry)
+#define gLeftTunnelCount            RCT2_GLOBAL(0x0141F56A, uint8)
+#define gRightTunnels               RCT2_ADDRESS(0x009E30B6, tunnel_entry)
+#define gRightTunnelCount           RCT2_GLOBAL(0x0141F56B, uint8)
+#define gVerticalTunnelHeight       RCT2_GLOBAL(0x009E323C, uint8)
 #endif
 
 #ifdef __TESTPAINT__

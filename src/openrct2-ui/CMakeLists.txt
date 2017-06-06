@@ -52,7 +52,7 @@ target_link_libraries(${PROJECT} "libopenrct2"
                                  ${SPEEX_LIBRARIES})
 
 if (APPLE)
-	target_link_libraries(${PROJECT} "-framework Cocoa")
+    target_link_libraries(${PROJECT} "-framework Cocoa")
 endif ()
 
 if (NOT DISABLE_OPENGL)

@@ -36,7 +36,7 @@ private:
     GLuint _vbo;
     GLuint _vao;
 
-	GLuint _sourceFramebuffer = 0;
+    GLuint _sourceFramebuffer = 0;
 
 public:
     FillRectShader();
@@ -51,7 +51,7 @@ public:
 
     void Draw(sint32 left, sint32 top, sint32 right, sint32 bottom);
 
-	GLuint GetSourceFramebuffer() const;
+    GLuint GetSourceFramebuffer() const;
 
 private:
     void GetLocations();

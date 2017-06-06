@@ -20,16 +20,16 @@
 #include "../common.h"
 
 enum {
-	WATER_FLAGS_ALLOW_DUCKS = (1 << 0)
+    WATER_FLAGS_ALLOW_DUCKS = (1 << 0)
 };
 
 #pragma pack(push, 1)
 typedef struct rct_water_type {
-	rct_string_id string_idx;	// 0x00
-	uint32 image_id;			// 0x02
-	uint32 palette_index_1;		// 0x06
-	uint32 palette_index_2;		// 0x0A
-	uint16 flags;				// 0x0E
+    rct_string_id string_idx;   // 0x00
+    uint32 image_id;            // 0x02
+    uint32 palette_index_1;     // 0x06
+    uint32 palette_index_2;     // 0x0A
+    uint16 flags;               // 0x0E
 } rct_water_type;
 assert_struct_size(rct_water_type, 16);
 #pragma pack(pop)

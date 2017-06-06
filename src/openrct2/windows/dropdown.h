@@ -24,8 +24,8 @@
 
 enum
 {
-	DROPDOWN_FLAG_CUSTOM_HEIGHT = (1 << 6),
-	DROPDOWN_FLAG_STAY_OPEN = (1 << 7)
+    DROPDOWN_FLAG_CUSTOM_HEIGHT = (1 << 6),
+    DROPDOWN_FLAG_STAY_OPEN = (1 << 7)
 };
 
 extern sint32 gAppropriateImageDropdownItemsPerRow[];

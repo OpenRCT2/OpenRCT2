@@ -21,122 +21,122 @@
 #include "ride.h"
 
 typedef struct ride_component_name {
-	rct_string_id singular;
-	rct_string_id plural;
-	rct_string_id capitalised;
-	rct_string_id capitalised_plural;
-	rct_string_id count;
-	rct_string_id count_plural;
-	rct_string_id number;
+    rct_string_id singular;
+    rct_string_id plural;
+    rct_string_id capitalised;
+    rct_string_id capitalised_plural;
+    rct_string_id count;
+    rct_string_id count_plural;
+    rct_string_id number;
 } ride_component_name;
 
 typedef enum  {
-	RIDE_COMPONENT_TYPE_TRAIN,
-	RIDE_COMPONENT_TYPE_BOAT,
-	RIDE_COMPONENT_TYPE_TRACK,
-	RIDE_COMPONENT_TYPE_DOCKING_PLATFORM,
-	RIDE_COMPONENT_TYPE_STATION,
-	RIDE_COMPONENT_TYPE_CAR,
-	RIDE_COMPONENT_TYPE_BUILDING,
-	RIDE_COMPONENT_TYPE_STRUCTURE,
-	RIDE_COMPONENT_TYPE_SHIP,
-	RIDE_COMPONENT_TYPE_CABIN,
-	RIDE_COMPONENT_TYPE_WHEEL,
-	RIDE_COMPONENT_TYPE_RING,
-	RIDE_COMPONENT_TYPE_PLAYER,
-	RIDE_COMPONENT_TYPE_COURSE,
-	RIDE_COMPONENT_TYPE_COUNT
+    RIDE_COMPONENT_TYPE_TRAIN,
+    RIDE_COMPONENT_TYPE_BOAT,
+    RIDE_COMPONENT_TYPE_TRACK,
+    RIDE_COMPONENT_TYPE_DOCKING_PLATFORM,
+    RIDE_COMPONENT_TYPE_STATION,
+    RIDE_COMPONENT_TYPE_CAR,
+    RIDE_COMPONENT_TYPE_BUILDING,
+    RIDE_COMPONENT_TYPE_STRUCTURE,
+    RIDE_COMPONENT_TYPE_SHIP,
+    RIDE_COMPONENT_TYPE_CABIN,
+    RIDE_COMPONENT_TYPE_WHEEL,
+    RIDE_COMPONENT_TYPE_RING,
+    RIDE_COMPONENT_TYPE_PLAYER,
+    RIDE_COMPONENT_TYPE_COURSE,
+    RIDE_COMPONENT_TYPE_COUNT
 } ride_component_type;
 
 typedef struct rct_ride_name_convention {
-	ride_component_type vehicle;
-	ride_component_type structure;
-	ride_component_type station;
+    ride_component_type vehicle;
+    ride_component_type structure;
+    ride_component_type station;
 } rct_ride_name_convention;
 
 typedef struct rct_ride_name {
-	rct_string_id name;
-	rct_string_id description;
+    rct_string_id name;
+    rct_string_id description;
 } rct_ride_name;
 
 typedef struct rct_ride_entrance_definition {
-	uint32 sprite_index;
-	uint16 height;
-	uint16 scrolling_mode;
-	uint32 base_image_id;
-	rct_string_id string_id;
-	uint16 colour_use_flags;
+    uint32 sprite_index;
+    uint16 height;
+    uint16 scrolling_mode;
+    uint32 base_image_id;
+    rct_string_id string_id;
+    uint16 colour_use_flags;
 } rct_ride_entrance_definition;
 
 typedef struct rct_shop_item_string_types {
-	rct_string_id price_label;		// Balloon price:
-	rct_string_id singular;			// Balloon
-	rct_string_id plural;			// Balloons
-	rct_string_id indefinite;		// a Balloon
-	rct_string_id display;			// "Diamond Heights" Balloon
+    rct_string_id price_label;      // Balloon price:
+    rct_string_id singular;         // Balloon
+    rct_string_id plural;           // Balloons
+    rct_string_id indefinite;       // a Balloon
+    rct_string_id display;          // "Diamond Heights" Balloon
 } rct_shop_item_string_types;
 
 typedef struct rct_ride_data_4 {
-	uint8 price;
-	uint8 price_secondary;
-	uint16 flags;
-	uint8 default_music;
-	uint8 alternate_type;
-	uint8 pad[2];
+    uint8 price;
+    uint8 price_secondary;
+    uint16 flags;
+    uint8 default_music;
+    uint8 alternate_type;
+    uint8 pad[2];
 } rct_ride_data_4;
 
 typedef struct ride_cost {
-	uint16 track_price;
-	uint16 support_price;
+    uint16 track_price;
+    uint16 support_price;
 } ride_cost;
 
 typedef struct rct_ride_data_5 {
-	uint8 max_height;
-	uint8 clearance_height;
-	sint8 z_offset;
-	uint8 max_friction;
-	uint8 z;
-	uint8 price;
-	uint8 bonus_value;		// Deprecated. Use rideBonusValue instead
-	uint8 pad;
+    uint8 max_height;
+    uint8 clearance_height;
+    sint8 z_offset;
+    uint8 max_friction;
+    uint8 z;
+    uint8 price;
+    uint8 bonus_value;      // Deprecated. Use rideBonusValue instead
+    uint8 pad;
 } rct_ride_data_5;
 
 typedef struct rct_ride_lift_data {
-	uint8 sound_id;
-	uint8 minimum_speed;
-	uint8 maximum_speed;
+    uint8 sound_id;
+    uint8 minimum_speed;
+    uint8 maximum_speed;
 } rct_ride_lift_data;
 
 enum {
-	RIDE_TYPE_FLAG4_0 = (1 << 0),
-	RIDE_TYPE_FLAG4_MUSIC_ON_DEFAULT = (1 << 1),
-	RIDE_TYPE_FLAG4_ALLOW_MUSIC = (1 << 2),
-	RIDE_TYPE_FLAG4_HAS_ALTERNATIVE_TRACK_TYPE = (1 << 3),	// Used by the Flying RC, Lay-down RC, Multi-dimension RC
-	RIDE_TYPE_FLAG4_PEEP_CHECK_GFORCES = (1 << 4),
-	RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT = (1 << 5),
-	RIDE_TYPE_FLAG4_ALLOW_MORE_VEHICLES_THAN_STATION_FITS = (1 << 6),
-	RIDE_TYPE_FLAG4_HAS_AIR_TIME = (1 << 7),
-	RIDE_TYPE_FLAG4_SINGLE_SESSION = (1 << 8),
-	RIDE_TYPE_FLAG4_ALLOW_MULTIPLE_CIRCUITS = (1 << 9),
-	RIDE_TYPE_FLAG4_ALLOW_CABLE_LIFT_HILL = (1 << 10),
-	RIDE_TYPE_FLAG4_SHOW_IN_TRACK_DESIGNER = (1 << 11),
-	RIDE_TYPE_FLAG4_TRANSPORT_RIDE = (1 << 12),
-	RIDE_TYPE_FLAG4_INTERESTING_TO_LOOK_AT = (1 << 13),
-	RIDE_TYPE_FLAG4_SLIGHTLY_INTERESTING_TO_LOOK_AT = (1 << 14),
-	RIDE_TYPE_FLAG4_START_CONSTRUCTION_INVERTED = (1 << 15), // This is only set on the Flying RC and its alternative type.
+    RIDE_TYPE_FLAG4_0 = (1 << 0),
+    RIDE_TYPE_FLAG4_MUSIC_ON_DEFAULT = (1 << 1),
+    RIDE_TYPE_FLAG4_ALLOW_MUSIC = (1 << 2),
+    RIDE_TYPE_FLAG4_HAS_ALTERNATIVE_TRACK_TYPE = (1 << 3),  // Used by the Flying RC, Lay-down RC, Multi-dimension RC
+    RIDE_TYPE_FLAG4_PEEP_CHECK_GFORCES = (1 << 4),
+    RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT = (1 << 5),
+    RIDE_TYPE_FLAG4_ALLOW_MORE_VEHICLES_THAN_STATION_FITS = (1 << 6),
+    RIDE_TYPE_FLAG4_HAS_AIR_TIME = (1 << 7),
+    RIDE_TYPE_FLAG4_SINGLE_SESSION = (1 << 8),
+    RIDE_TYPE_FLAG4_ALLOW_MULTIPLE_CIRCUITS = (1 << 9),
+    RIDE_TYPE_FLAG4_ALLOW_CABLE_LIFT_HILL = (1 << 10),
+    RIDE_TYPE_FLAG4_SHOW_IN_TRACK_DESIGNER = (1 << 11),
+    RIDE_TYPE_FLAG4_TRANSPORT_RIDE = (1 << 12),
+    RIDE_TYPE_FLAG4_INTERESTING_TO_LOOK_AT = (1 << 13),
+    RIDE_TYPE_FLAG4_SLIGHTLY_INTERESTING_TO_LOOK_AT = (1 << 14),
+    RIDE_TYPE_FLAG4_START_CONSTRUCTION_INVERTED = (1 << 15), // This is only set on the Flying RC and its alternative type.
 };
 
 enum {
-	RIDE_TYPE_NO_ALTERNATIVES = 0,
-	RIDE_TYPE_ALTERNATIVE_TRACK_PIECES = 1,	// Dinghy slide and Water Coaster
-	RIDE_TYPE_ALTERNATIVE_TRACK_TYPE = 2,	// Flying RC, Lay-down RC, Multi-dimension RC
+    RIDE_TYPE_NO_ALTERNATIVES = 0,
+    RIDE_TYPE_ALTERNATIVE_TRACK_PIECES = 1, // Dinghy slide and Water Coaster
+    RIDE_TYPE_ALTERNATIVE_TRACK_TYPE = 2,   // Flying RC, Lay-down RC, Multi-dimension RC
 };
 
 typedef struct rct_shop_item_stats {
-	uint16 cost;
-	uint16 base_value;
-	uint16 hot_value;
-	uint16 cold_value;
+    uint16 cost;
+    uint16 base_value;
+    uint16 hot_value;
+    uint16 cold_value;
 } rct_shop_item_stats;
 
 extern const bool hasRunningTrack[RIDE_TYPE_COUNT];

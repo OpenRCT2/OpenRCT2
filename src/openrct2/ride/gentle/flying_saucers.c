@@ -22,18 +22,18 @@
 
 enum
 {
-	SPR_FLYING_SAUCERS_FLOOR = 21920,
-	SPR_FLYING_SAUCERS_FENCE_NE = 21921,
-	SPR_FLYING_SAUCERS_FENCE_SE = 21922,
-	SPR_FLYING_SAUCERS_FENCE_SW = 21923,
-	SPR_FLYING_SAUCERS_FENCE_NW = 21924,
+    SPR_FLYING_SAUCERS_FLOOR = 21920,
+    SPR_FLYING_SAUCERS_FENCE_NE = 21921,
+    SPR_FLYING_SAUCERS_FENCE_SE = 21922,
+    SPR_FLYING_SAUCERS_FENCE_SW = 21923,
+    SPR_FLYING_SAUCERS_FENCE_NW = 21924,
 };
 
 static const uint32 flying_saucers_fence_sprites[] = {
-	SPR_FLYING_SAUCERS_FENCE_NE,
-	SPR_FLYING_SAUCERS_FENCE_SE,
-	SPR_FLYING_SAUCERS_FENCE_SW,
-	SPR_FLYING_SAUCERS_FENCE_NW,
+    SPR_FLYING_SAUCERS_FENCE_NE,
+    SPR_FLYING_SAUCERS_FENCE_SE,
+    SPR_FLYING_SAUCERS_FENCE_SW,
+    SPR_FLYING_SAUCERS_FENCE_NW,
 };
 
 /**
@@ -41,21 +41,21 @@ static const uint32 flying_saucers_fence_sprites[] = {
  */
 static void paint_flying_saucers(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
-	uint8 relativeTrackSequence = track_map_4x4[direction][trackSequence];
+    uint8 relativeTrackSequence = track_map_4x4[direction][trackSequence];
 
-	sint32 edges = edges_4x4[relativeTrackSequence];
-	rct_ride * ride = get_ride(rideIndex);
-	rct_xy16 position = {gPaintMapPosition.x, gPaintMapPosition.y};
+    sint32 edges = edges_4x4[relativeTrackSequence];
+    rct_ride * ride = get_ride(rideIndex);
+    rct_xy16 position = {gPaintMapPosition.x, gPaintMapPosition.y};
 
-	wooden_a_supports_paint_setup(direction & 1, 0, height, gTrackColours[SCHEME_MISC], NULL);
+    wooden_a_supports_paint_setup(direction & 1, 0, height, gTrackColours[SCHEME_MISC], NULL);
 
-	uint32 imageId = SPR_FLYING_SAUCERS_FLOOR | gTrackColours[SCHEME_TRACK];
-	sub_98197C(imageId, 0, 0, 30, 30, 1, height, 1, 1, height, get_current_rotation());
+    uint32 imageId = SPR_FLYING_SAUCERS_FLOOR | gTrackColours[SCHEME_TRACK];
+    sub_98197C(imageId, 0, 0, 30, 30, 1, height, 1, 1, height, get_current_rotation());
 
-	track_paint_util_paint_fences(edges, position, mapElement, ride, gTrackColours[SCHEME_TRACK], height, flying_saucers_fence_sprites, get_current_rotation());
+    track_paint_util_paint_fences(edges, position, mapElement, ride, gTrackColours[SCHEME_TRACK], height, flying_saucers_fence_sprites, get_current_rotation());
 
-	paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
-	paint_util_set_general_support_height(height + 48, 0x20);
+    paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
+    paint_util_set_general_support_height(height + 48, 0x20);
 }
 
 /**
@@ -63,9 +63,9 @@ static void paint_flying_saucers(uint8 rideIndex, uint8 trackSequence, uint8 dir
  */
 TRACK_PAINT_FUNCTION get_track_paint_function_flying_saucers(sint32 trackType, sint32 direction)
 {
-	if (trackType != FLAT_TRACK_ELEM_4_X_4) {
-		return NULL;
-	}
+    if (trackType != FLAT_TRACK_ELEM_4_X_4) {
+        return NULL;
+    }
 
-	return paint_flying_saucers;
+    return paint_flying_saucers;
 }

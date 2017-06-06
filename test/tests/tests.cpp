@@ -6,7 +6,7 @@
 #include <openrct2/core/Guard.hpp>
 
 int main(int argc, char * * argv)
-{ 
+{
     // Abort on an assertions so the tests do not hang
     Guard::SetAssertBehaviour(ASSERT_BEHAVIOUR::ABORT);
 

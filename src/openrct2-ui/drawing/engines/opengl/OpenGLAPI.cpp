@@ -63,7 +63,7 @@ static const char * TryLoadAllProcAddresses()
     SetupOpenGLFunction(glEnd);
     SetupOpenGLFunction(glGenTextures);
     SetupOpenGLFunction(glGetError);
-	SetupOpenGLFunction(glPixelStorei);
+    SetupOpenGLFunction(glPixelStorei);
     SetupOpenGLFunction(glReadPixels);
     SetupOpenGLFunction(glTexImage2D);
     SetupOpenGLFunction(glTexParameteri);

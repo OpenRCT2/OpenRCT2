@@ -23,7 +23,7 @@
 #ifdef NO_RCT2
 extern paint_struct * gWoodenSupportsPrependTo;
 #else
-#define gWoodenSupportsPrependTo		RCT2_GLOBAL(0x009DEA58, paint_struct *)
+#define gWoodenSupportsPrependTo        RCT2_GLOBAL(0x009DEA58, paint_struct *)
 #endif
 
 bool wooden_a_supports_paint_setup(sint32 supportType, sint32 special, sint32 height, uint32 imageColourFlags, bool* underground);

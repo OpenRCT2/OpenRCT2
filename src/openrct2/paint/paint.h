@@ -34,17 +34,17 @@ typedef union paint_entry paint_entry;
 #pragma pack(push, 1)
 /* size 0x12 */
 struct attached_paint_struct {
-    uint32 image_id;		// 0x00
+    uint32 image_id;        // 0x00
     union {
         uint32 tertiary_colour;
         // If masked image_id is masked_id
         uint32 colour_image_id;
     };
-    uint16 x;		// 0x08
-    uint16 y;		// 0x0A
+    uint16 x;       // 0x08
+    uint16 y;       // 0x0A
     uint8 flags;    // 0x0C
     uint8 pad_0D;
-    attached_paint_struct* next;	//0x0E
+    attached_paint_struct* next;    //0x0E
 };
 #ifdef PLATFORM_32BIT
 // TODO: drop packing from this when all rendering is done.
@@ -53,32 +53,32 @@ assert_struct_size(attached_paint_struct, 0x12);
 
 /* size 0x34 */
 struct paint_struct {
-	uint32 image_id;		// 0x00
-	union {
-		uint32 tertiary_colour;	// 0x04
-		// If masked image_id is masked_id
-		uint32 colour_image_id;	// 0x04
-	};
-	uint16 bound_box_x;		// 0x08
-	uint16 bound_box_y;		// 0x0A
-	uint16 bound_box_z; // 0x0C
-	uint16 bound_box_z_end; // 0x0E
-	uint16 bound_box_x_end; // 0x10
-	uint16 bound_box_y_end; // 0x12
-	uint16 x;				// 0x14
-	uint16 y;				// 0x16
-	uint16 var_18;
-	uint8 flags;
-	uint8 var_1B;
-	attached_paint_struct* attached_ps;	//0x1C
-	paint_struct* var_20;
-	paint_struct* next_quadrant_ps; // 0x24
-	uint8 sprite_type;		//0x28
-	uint8 var_29;
-	uint16 pad_2A;
-	uint16 map_x;			// 0x2C
-	uint16 map_y;			// 0x2E
-	rct_map_element *mapElement; // 0x30 (or sprite pointer)
+    uint32 image_id;        // 0x00
+    union {
+        uint32 tertiary_colour; // 0x04
+        // If masked image_id is masked_id
+        uint32 colour_image_id; // 0x04
+    };
+    uint16 bound_box_x;     // 0x08
+    uint16 bound_box_y;     // 0x0A
+    uint16 bound_box_z; // 0x0C
+    uint16 bound_box_z_end; // 0x0E
+    uint16 bound_box_x_end; // 0x10
+    uint16 bound_box_y_end; // 0x12
+    uint16 x;               // 0x14
+    uint16 y;               // 0x16
+    uint16 var_18;
+    uint8 flags;
+    uint8 var_1B;
+    attached_paint_struct* attached_ps; //0x1C
+    paint_struct* var_20;
+    paint_struct* next_quadrant_ps; // 0x24
+    uint8 sprite_type;      //0x28
+    uint8 var_29;
+    uint16 pad_2A;
+    uint16 map_x;           // 0x2C
+    uint16 map_y;           // 0x2E
+    rct_map_element *mapElement; // 0x30 (or sprite pointer)
 };
 #ifdef PLATFORM_32BIT
 // TODO: drop packing from this when all rendering is done.
@@ -92,12 +92,12 @@ typedef struct paint_string_struct paint_string_struct;
 
 /* size 0x1E */
 struct paint_string_struct {
-	rct_string_id string_id;		// 0x00
-	paint_string_struct *next;		// 0x02
-	uint16 x;						// 0x06
-	uint16 y;						// 0x08
-	uint32 args[4];					// 0x0A
-	uint8 *y_offsets;				// 0x1A
+    rct_string_id string_id;        // 0x00
+    paint_string_struct *next;      // 0x02
+    uint16 x;                       // 0x06
+    uint16 y;                       // 0x08
+    uint32 args[4];                 // 0x0A
+    uint8 *y_offsets;               // 0x1A
 };
 #ifdef PLATFORM_32BIT
 assert_struct_size(paint_string_struct, 0x1e);
@@ -105,26 +105,26 @@ assert_struct_size(paint_string_struct, 0x1e);
 #pragma pack(pop)
 
 union paint_entry{
-	paint_struct basic;
-	attached_paint_struct attached;
-	paint_string_struct string;
+    paint_struct basic;
+    attached_paint_struct attached;
+    paint_string_struct string;
 };
 
 typedef struct sprite_bb {
-	uint32 sprite_id;
-	rct_xyz16 offset;
-	rct_xyz16 bb_offset;
-	rct_xyz16 bb_size;
+    uint32 sprite_id;
+    rct_xyz16 offset;
+    rct_xyz16 bb_offset;
+    rct_xyz16 bb_size;
 } sprite_bb;
 
 enum PAINT_STRUCT_FLAGS {
-	PAINT_STRUCT_FLAG_IS_MASKED = (1 << 0)
+    PAINT_STRUCT_FLAG_IS_MASKED = (1 << 0)
 };
 
 typedef struct support_height {
-	uint16 height;
-	uint8 slope;
-	uint8 pad;
+    uint16 height;
+    uint8 slope;
+    uint8 pad;
 } support_height;
 
 #ifdef NO_RCT2
@@ -135,16 +135,16 @@ extern sint16 gUnk9DE56C;
 extern paint_entry gPaintStructs[4000];
 #else
 #define gPaintStructs RCT2_ADDRESS(0x00EE788C, paint_entry)
-#define g_currently_drawn_item	RCT2_GLOBAL(0x009DE578, void*)
-#define gEndOfPaintStructArray	RCT2_GLOBAL(0x00EE7880, paint_entry *)
-#define gUnk9DE568				RCT2_GLOBAL(0x009DE568, sint16)
-#define gUnk9DE56C				RCT2_GLOBAL(0x009DE56C, sint16)
+#define g_currently_drawn_item  RCT2_GLOBAL(0x009DE578, void*)
+#define gEndOfPaintStructArray  RCT2_GLOBAL(0x00EE7880, paint_entry *)
+#define gUnk9DE568              RCT2_GLOBAL(0x009DE568, sint16)
+#define gUnk9DE56C              RCT2_GLOBAL(0x009DE56C, sint16)
 #endif
 
 #ifndef NO_RCT2
-#define gPaintInteractionType		RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8)
-#define gSupportSegments			RCT2_ADDRESS(RCT2_ADDRESS_CURRENT_SUPPORT_SEGMENTS, support_height)
-#define gSupport					RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PAINT_TILE_MAX_HEIGHT, support_height)
+#define gPaintInteractionType       RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8)
+#define gSupportSegments            RCT2_ADDRESS(RCT2_ADDRESS_CURRENT_SUPPORT_SEGMENTS, support_height)
+#define gSupport                    RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PAINT_TILE_MAX_HEIGHT, support_height)
 #else
 extern uint8 gPaintInteractionType;
 extern support_height gSupportSegments[9];
@@ -180,16 +180,16 @@ void paint_draw_money_structs(rct_drawpixelinfo * dpi, paint_string_struct * ps)
 
 // TESTING
 #ifdef __TESTPAINT__
-	void testpaint_clear_ignore();
-	void testpaint_ignore(uint8 direction, uint8 trackSequence);
-	void testpaint_ignore_all();
-	bool testpaint_is_ignored(uint8 direction, uint8 trackSequence);
+    void testpaint_clear_ignore();
+    void testpaint_ignore(uint8 direction, uint8 trackSequence);
+    void testpaint_ignore_all();
+    bool testpaint_is_ignored(uint8 direction, uint8 trackSequence);
 
-	#define TESTPAINT_IGNORE(direction, trackSequence) testpaint_ignore(direction, trackSequence)
-	#define TESTPAINT_IGNORE_ALL() testpaint_ignore_all()
+    #define TESTPAINT_IGNORE(direction, trackSequence) testpaint_ignore(direction, trackSequence)
+    #define TESTPAINT_IGNORE_ALL() testpaint_ignore_all()
 #else
-	#define TESTPAINT_IGNORE(direction, trackSequence)
-	#define TESTPAINT_IGNORE_ALL()
+    #define TESTPAINT_IGNORE(direction, trackSequence)
+    #define TESTPAINT_IGNORE_ALL()
 #endif
 
 #endif

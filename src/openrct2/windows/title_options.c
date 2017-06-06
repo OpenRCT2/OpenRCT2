@@ -24,46 +24,46 @@
 #include "../rct2.h"
 
 enum WINDOW_TITLE_OPTIONS_WIDGET_IDX {
-	WIDX_OPTIONS,
+    WIDX_OPTIONS,
 };
 
 static rct_widget window_title_options_widgets[] = {
-	{ WWT_DROPDOWN_BUTTON, 2, 0, 79, 0, 11, STR_OPTIONS, STR_OPTIONS_TIP },
-	{ WIDGETS_END },
+    { WWT_DROPDOWN_BUTTON, 2, 0, 79, 0, 11, STR_OPTIONS, STR_OPTIONS_TIP },
+    { WIDGETS_END },
 };
 
 static void window_title_options_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_title_options_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
 static rct_window_event_list window_title_options_events = {
-	NULL,
-	window_title_options_mouseup,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	window_title_options_paint,
-	NULL
+    NULL,
+    window_title_options_mouseup,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    window_title_options_paint,
+    NULL
 };
 
 /**
@@ -71,31 +71,31 @@ static rct_window_event_list window_title_options_events = {
  */
 void window_title_options_open()
 {
-	rct_window * window = window_create(
-		context_get_width() - 80, 0,
-		80, 12,
-		&window_title_options_events,
-		WC_TITLE_OPTIONS,
-		WF_STICK_TO_BACK | WF_TRANSPARENT
-	);
-	window->widgets = window_title_options_widgets;
-	window->enabled_widgets |= (1ULL << WIDX_OPTIONS);
-	window_init_scroll_widgets(window);
+    rct_window * window = window_create(
+        context_get_width() - 80, 0,
+        80, 12,
+        &window_title_options_events,
+        WC_TITLE_OPTIONS,
+        WF_STICK_TO_BACK | WF_TRANSPARENT
+    );
+    window->widgets = window_title_options_widgets;
+    window->enabled_widgets |= (1ULL << WIDX_OPTIONS);
+    window_init_scroll_widgets(window);
 }
 
 static void window_title_options_mouseup(rct_window *w, rct_widgetindex widgetIndex)
 {
-	if (gIntroState != INTRO_STATE_NONE)
-		return;
+    if (gIntroState != INTRO_STATE_NONE)
+        return;
 
-	switch (widgetIndex) {
-	case WIDX_OPTIONS:
-		window_options_open();
-		break;
-	}
+    switch (widgetIndex) {
+    case WIDX_OPTIONS:
+        window_options_open();
+        break;
+    }
 }
 
 static void window_title_options_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
-	window_draw_widgets(w, dpi);
+    window_draw_widgets(w, dpi);
 }

@@ -24,37 +24,37 @@
 #include "../common.h"
 
 enum {
-	FONT_SIZE_TINY = 2,
-	FONT_SIZE_SMALL = 0,
-	FONT_SIZE_MEDIUM = 1,
-	FONT_SIZE_BIG = 3,
-	FONT_SIZE_COUNT = 4
+    FONT_SIZE_TINY = 2,
+    FONT_SIZE_SMALL = 0,
+    FONT_SIZE_MEDIUM = 1,
+    FONT_SIZE_BIG = 3,
+    FONT_SIZE_COUNT = 4
 };
 
 enum {
-	FONT_SPRITE_GLYPH_COUNT = 224,
-	FONT_SPRITE_BASE_MEDIUM_EXTRA_DARK = -2,
-	FONT_SPRITE_BASE_MEDIUM_DARK = -1,
+    FONT_SPRITE_GLYPH_COUNT = 224,
+    FONT_SPRITE_BASE_MEDIUM_EXTRA_DARK = -2,
+    FONT_SPRITE_BASE_MEDIUM_DARK = -1,
 
-	FONT_SPRITE_BASE_TINY = 448,
-	FONT_SPRITE_BASE_SMALL = 0,
-	FONT_SPRITE_BASE_MEDIUM = 224,
-	FONT_SPRITE_BASE_BIG = 672
+    FONT_SPRITE_BASE_TINY = 448,
+    FONT_SPRITE_BASE_SMALL = 0,
+    FONT_SPRITE_BASE_MEDIUM = 224,
+    FONT_SPRITE_BASE_BIG = 672
 };
 
 #ifndef NO_TTF
 typedef struct TTFFontDescriptor {
-	const utf8 *filename;
-	const utf8 *font_name;
-	sint32 ptSize;
-	sint32 offset_x;
-	sint32 offset_y;
-	sint32 line_height;
-	TTF_Font *font;
+    const utf8 *filename;
+    const utf8 *font_name;
+    sint32 ptSize;
+    sint32 offset_x;
+    sint32 offset_y;
+    sint32 line_height;
+    TTF_Font *font;
 } TTFFontDescriptor;
 
 typedef struct  TTFFontSetDescriptor {
-	TTFFontDescriptor size[FONT_SIZE_COUNT];
+    TTFFontDescriptor size[FONT_SIZE_COUNT];
 } TTFFontSetDescriptor;
 
 extern TTFFontSetDescriptor *gCurrentTTFFontSet;

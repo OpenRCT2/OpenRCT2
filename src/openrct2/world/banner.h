@@ -25,22 +25,22 @@
 
 #pragma pack(push, 1)
 typedef struct rct_banner {
-	uint8 type;
-	uint8 flags; // 0x01 bit 0 is no entry
-	rct_string_id string_idx; // 0x02
-	uint8 colour; // 0x04
-	uint8 text_colour; // 0x05
-	uint8 x; // 0x06
-	uint8 y; // 0x07
+    uint8 type;
+    uint8 flags; // 0x01 bit 0 is no entry
+    rct_string_id string_idx; // 0x02
+    uint8 colour; // 0x04
+    uint8 text_colour; // 0x05
+    uint8 x; // 0x06
+    uint8 y; // 0x07
 } rct_banner;
 assert_struct_size(rct_banner, 8);
 #pragma pack(pop)
 
 enum{
-	BANNER_FLAG_NO_ENTRY = (1 << 0),
-	BANNER_FLAG_IS_LARGE_SCENERY = (1 << 1),
-	BANNER_FLAG_LINKED_TO_RIDE = (1 << 2),
-	BANNER_FLAG_IS_WALL = (1 << 3)
+    BANNER_FLAG_NO_ENTRY = (1 << 0),
+    BANNER_FLAG_IS_LARGE_SCENERY = (1 << 1),
+    BANNER_FLAG_LINKED_TO_RIDE = (1 << 2),
+    BANNER_FLAG_IS_WALL = (1 << 3)
 };
 
 extern rct_banner gBanners[MAX_BANNERS];

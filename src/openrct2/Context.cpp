@@ -181,8 +181,8 @@ namespace OpenRCT2
 
             // TODO add configuration option to allow multiple instances
             // if (!gOpenRCT2Headless && !platform_lock_single_instance()) {
-            // 	log_fatal("OpenRCT2 is already running.");
-            // 	return false;
+            //  log_fatal("OpenRCT2 is already running.");
+            //  return false;
             // }
 
             _objectRepository = CreateObjectRepository(_env);

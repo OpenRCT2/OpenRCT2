@@ -21,25 +21,25 @@
 #include "ride.h"
 
 enum {
-	RIDE_RATING_STATION_FLAG_NO_ENTRANCE = 1 << 0
+    RIDE_RATING_STATION_FLAG_NO_ENTRANCE = 1 << 0
 };
 
 typedef struct rct_ride_rating_calc_data {
-	uint16	proximity_x;
-	uint16	proximity_y;
-	uint16	proximity_z;
-	uint16	proximity_start_x;
-	uint16	proximity_start_y;
-	uint16	proximity_start_z;
-	uint8	current_ride;
-	uint8	state;
-	uint8	proximity_track_type;
-	uint8	proximity_base_height;
-	uint16	proximity_total;
-	uint16	proximity_scores[26];
-	uint16	num_brakes;
-	uint16	num_reversers;
-	uint16	station_flags;
+    uint16  proximity_x;
+    uint16  proximity_y;
+    uint16  proximity_z;
+    uint16  proximity_start_x;
+    uint16  proximity_start_y;
+    uint16  proximity_start_z;
+    uint8   current_ride;
+    uint8   state;
+    uint8   proximity_track_type;
+    uint8   proximity_base_height;
+    uint16  proximity_total;
+    uint16  proximity_scores[26];
+    uint16  num_brakes;
+    uint16  num_reversers;
+    uint16  station_flags;
 } rct_ride_rating_calc_data;
 
 extern rct_ride_rating_calc_data gRideRatingsCalcData;

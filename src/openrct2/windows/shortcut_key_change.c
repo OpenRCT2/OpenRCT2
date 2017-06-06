@@ -26,17 +26,17 @@ extern const rct_string_id ShortcutStringIds[];
 #define WH 60
 
 enum WINDOW_SHORTCUT_CHANGE_WIDGET_IDX {
-	WIDX_BACKGROUND,
-	WIDX_TITLE,
-	WIDX_CLOSE,
+    WIDX_BACKGROUND,
+    WIDX_TITLE,
+    WIDX_CLOSE,
 };
 
 // 0x9DE4E0
 static rct_widget window_shortcut_change_widgets[] = {
-	{ WWT_FRAME,			0,	0,			WW - 1,	0,		WH - 1,		STR_NONE,					STR_NONE },
-	{ WWT_CAPTION,			0,	1,			WW - 2,	1,		14,			STR_SHORTCUT_CHANGE_TITLE,	STR_WINDOW_TITLE_TIP },
-	{ WWT_CLOSEBOX,			0,	WW-13,		WW - 3,	2,		13,			STR_CLOSE_X,				STR_CLOSE_WINDOW_TIP },
-	{ WIDGETS_END }
+    { WWT_FRAME,            0,  0,          WW - 1, 0,      WH - 1,     STR_NONE,                   STR_NONE },
+    { WWT_CAPTION,          0,  1,          WW - 2, 1,      14,         STR_SHORTCUT_CHANGE_TITLE,  STR_WINDOW_TITLE_TIP },
+    { WWT_CLOSEBOX,         0,  WW-13,      WW - 3, 2,      13,         STR_CLOSE_X,                STR_CLOSE_WINDOW_TIP },
+    { WIDGETS_END }
 };
 
 static void window_shortcut_change_mouseup(rct_window *w, rct_widgetindex widgetIndex);
@@ -44,46 +44,46 @@ static void window_shortcut_change_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
 // 0x9A3F7C
 static rct_window_event_list window_shortcut_change_events = {
-	NULL,
-	window_shortcut_change_mouseup,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	window_shortcut_change_paint,
-	NULL
+    NULL,
+    window_shortcut_change_mouseup,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    window_shortcut_change_paint,
+    NULL
 };
 
 void window_shortcut_change_open(sint32 selected_key){
-	// Move this to window_shortcut_change_open
-	window_close_by_class(WC_CHANGE_KEYBOARD_SHORTCUT);
-	// Save the item we are selecting for new window
-	gKeyboardShortcutChangeId = selected_key;
-	rct_window* w = window_create_centred(WW, WH, &window_shortcut_change_events, WC_CHANGE_KEYBOARD_SHORTCUT, 0);
+    // Move this to window_shortcut_change_open
+    window_close_by_class(WC_CHANGE_KEYBOARD_SHORTCUT);
+    // Save the item we are selecting for new window
+    gKeyboardShortcutChangeId = selected_key;
+    rct_window* w = window_create_centred(WW, WH, &window_shortcut_change_events, WC_CHANGE_KEYBOARD_SHORTCUT, 0);
 
-	w->widgets = window_shortcut_change_widgets;
-	w->enabled_widgets = (1ULL << WIDX_CLOSE);
-	window_init_scroll_widgets(w);
+    w->widgets = window_shortcut_change_widgets;
+    w->enabled_widgets = (1ULL << WIDX_CLOSE);
+    window_init_scroll_widgets(w);
 }
 
 /**
@@ -92,11 +92,11 @@ void window_shortcut_change_open(sint32 selected_key){
 */
 static void window_shortcut_change_mouseup(rct_window *w, rct_widgetindex widgetIndex)
 {
-	switch (widgetIndex){
-	case WIDX_CLOSE:
-		window_close(w);
-		break;
-	}
+    switch (widgetIndex){
+    case WIDX_CLOSE:
+        window_close(w);
+        break;
+    }
 }
 
 /**
@@ -105,11 +105,11 @@ static void window_shortcut_change_mouseup(rct_window *w, rct_widgetindex widget
 */
 static void window_shortcut_change_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
-	window_draw_widgets(w, dpi);
+    window_draw_widgets(w, dpi);
 
-	sint32 x = w->x + 125;
-	sint32 y = w->y + 30;
+    sint32 x = w->x + 125;
+    sint32 y = w->y + 30;
 
-	set_format_arg(0, rct_string_id, ShortcutStringIds[gKeyboardShortcutChangeId]);
-	gfx_draw_string_centred_wrapped(dpi, gCommonFormatArgs, x, y, 242, STR_SHORTCUT_CHANGE_PROMPT, COLOUR_BLACK);
+    set_format_arg(0, rct_string_id, ShortcutStringIds[gKeyboardShortcutChangeId]);
+    gfx_draw_string_centred_wrapped(dpi, gCommonFormatArgs, x, y, 242, STR_SHORTCUT_CHANGE_PROMPT, COLOUR_BLACK);
 }

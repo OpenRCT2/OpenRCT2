@@ -163,7 +163,7 @@ namespace OpenRCT2 { namespace Ui
                         break;
                     }
                 }
-                
+
                 // Convert to string
                 *output = std::string(outputBuffer.data(), outputLength);
             }
@@ -171,12 +171,12 @@ namespace OpenRCT2 { namespace Ui
             {
                 fflush(fpipe);
             }
-            
+
             // Return exit code
             return pclose(fpipe);
         }
     };
-    
+
     IPlatformUiContext * CreatePlatformUiContext()
     {
         return new macOSContext();

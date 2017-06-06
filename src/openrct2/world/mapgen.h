@@ -20,27 +20,27 @@
 #include "../common.h"
 
 typedef struct mapgen_settings {
-	// Base
-	sint32 mapSize;
-	sint32 height;
-	sint32 water_level;
-	sint32 floor;
-	sint32 wall;
+    // Base
+    sint32 mapSize;
+    sint32 height;
+    sint32 water_level;
+    sint32 floor;
+    sint32 wall;
 
-	// Features (e.g. tree, rivers, lakes etc.)
-	sint32 trees;
+    // Features (e.g. tree, rivers, lakes etc.)
+    sint32 trees;
 
-	// Simplex Noise Parameters
-	sint32 simplex_low;
-	sint32 simplex_high;
-	float simplex_base_freq;
-	sint32 simplex_octaves;
+    // Simplex Noise Parameters
+    sint32 simplex_low;
+    sint32 simplex_high;
+    float simplex_base_freq;
+    sint32 simplex_octaves;
 
-	// Height map settings
-	bool smooth;
-	bool smooth_height_map;
-	uint32 smooth_strength;
-	bool normalize_height;
+    // Height map settings
+    bool smooth;
+    bool smooth_height_map;
+    uint32 smooth_strength;
+    bool normalize_height;
 } mapgen_settings;
 
 void mapgen_generate_blank(mapgen_settings *settings);

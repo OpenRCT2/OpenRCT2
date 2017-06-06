@@ -20,156 +20,156 @@
 
 static void graph_draw_months_uint8(rct_drawpixelinfo *dpi, uint8 *history, sint32 count, sint32 baseX, sint32 baseY)
 {
-	sint32 i, x, y, yearOver32, currentMonth, currentDay;
+    sint32 i, x, y, yearOver32, currentMonth, currentDay;
 
-	currentMonth = date_get_month(gDateMonthsElapsed);
-	currentDay = gDateMonthTicks;
-	yearOver32 = (currentMonth * 4) + (currentDay >> 14) - 31;
-	x = baseX;
-	y = baseY;
-	for (i = count - 1; i >= 0; i--) {
-		if (history[i] != 0 && history[i] != 255 && yearOver32 % 4 == 0) {
-			// Draw month text
-			set_format_arg(0, uint32, DateGameShortMonthNames[((yearOver32 / 4) + 8) % 8]);
-			gfx_draw_string_centred(dpi, STR_GRAPH_LABEL, x, y - 10, COLOUR_BLACK, gCommonFormatArgs);
+    currentMonth = date_get_month(gDateMonthsElapsed);
+    currentDay = gDateMonthTicks;
+    yearOver32 = (currentMonth * 4) + (currentDay >> 14) - 31;
+    x = baseX;
+    y = baseY;
+    for (i = count - 1; i >= 0; i--) {
+        if (history[i] != 0 && history[i] != 255 && yearOver32 % 4 == 0) {
+            // Draw month text
+            set_format_arg(0, uint32, DateGameShortMonthNames[((yearOver32 / 4) + 8) % 8]);
+            gfx_draw_string_centred(dpi, STR_GRAPH_LABEL, x, y - 10, COLOUR_BLACK, gCommonFormatArgs);
 
-			// Draw month mark
-			gfx_fill_rect(dpi, x, y, x, y + 3, PALETTE_INDEX_10);
-		}
+            // Draw month mark
+            gfx_fill_rect(dpi, x, y, x, y + 3, PALETTE_INDEX_10);
+        }
 
-		yearOver32 = (yearOver32 + 1) % 32;
-		x += 6;
-	}
+        yearOver32 = (yearOver32 + 1) % 32;
+        x += 6;
+    }
 }
 
 static void graph_draw_line_a_uint8(rct_drawpixelinfo *dpi, uint8 *history, sint32 count, sint32 baseX, sint32 baseY)
 {
-	sint32 i, x, y, lastX, lastY;
-	lastX = -1;
-	lastY = -1;
-	x = baseX;
-	for (i = count - 1; i >= 0; i--) {
-		if (history[i] != 0 && history[i] != 255) {
-			y = baseY + ((255 - history[i]) * 100) / 256;
+    sint32 i, x, y, lastX, lastY;
+    lastX = -1;
+    lastY = -1;
+    x = baseX;
+    for (i = count - 1; i >= 0; i--) {
+        if (history[i] != 0 && history[i] != 255) {
+            y = baseY + ((255 - history[i]) * 100) / 256;
 
-			if (lastX != -1) {
-				gfx_draw_line(dpi, lastX + 1, lastY + 1, x + 1, y + 1, PALETTE_INDEX_10);
-				gfx_draw_line(dpi, lastX, lastY + 1, x, y + 1, PALETTE_INDEX_10);
-			}
-			if (i == 0)
-				gfx_fill_rect(dpi, x, y, x + 2, y + 2, PALETTE_INDEX_10);
+            if (lastX != -1) {
+                gfx_draw_line(dpi, lastX + 1, lastY + 1, x + 1, y + 1, PALETTE_INDEX_10);
+                gfx_draw_line(dpi, lastX, lastY + 1, x, y + 1, PALETTE_INDEX_10);
+            }
+            if (i == 0)
+                gfx_fill_rect(dpi, x, y, x + 2, y + 2, PALETTE_INDEX_10);
 
-			lastX = x;
-			lastY = y;
-		}
-		x += 6;
-	}
+            lastX = x;
+            lastY = y;
+        }
+        x += 6;
+    }
 }
 
 static void graph_draw_line_b_uint8(rct_drawpixelinfo *dpi, uint8 *history, sint32 count, sint32 baseX, sint32 baseY)
 {
-	sint32 i, x, y, lastX, lastY;
+    sint32 i, x, y, lastX, lastY;
 
-	lastX = -1;
-	lastY = -1;
-	x = baseX;
-	for (i = count - 1; i >= 0; i--) {
-		if (history[i] != 0 && history[i] != 255) {
-			y = baseY + ((255 - history[i]) * 100) / 256;
+    lastX = -1;
+    lastY = -1;
+    x = baseX;
+    for (i = count - 1; i >= 0; i--) {
+        if (history[i] != 0 && history[i] != 255) {
+            y = baseY + ((255 - history[i]) * 100) / 256;
 
-			if (lastX != -1)
-				gfx_draw_line(dpi, lastX, lastY, x, y, PALETTE_INDEX_21);
-			if (i == 0)
-				gfx_fill_rect(dpi, x - 1, y - 1, x + 1, y + 1, PALETTE_INDEX_21);
+            if (lastX != -1)
+                gfx_draw_line(dpi, lastX, lastY, x, y, PALETTE_INDEX_21);
+            if (i == 0)
+                gfx_fill_rect(dpi, x - 1, y - 1, x + 1, y + 1, PALETTE_INDEX_21);
 
-			lastX = x;
-			lastY = y;
-		}
-		x += 6;
-	}
+            lastX = x;
+            lastY = y;
+        }
+        x += 6;
+    }
 }
 
 void graph_draw_uint8(rct_drawpixelinfo *dpi, uint8 *history, sint32 count, sint32 baseX, sint32 baseY)
 {
-	graph_draw_months_uint8(dpi, history, count, baseX, baseY);
-	graph_draw_line_a_uint8(dpi, history, count, baseX, baseY);
-	graph_draw_line_b_uint8(dpi, history, count, baseX, baseY);
+    graph_draw_months_uint8(dpi, history, count, baseX, baseY);
+    graph_draw_line_a_uint8(dpi, history, count, baseX, baseY);
+    graph_draw_line_b_uint8(dpi, history, count, baseX, baseY);
 }
 
 static void graph_draw_months_money32(rct_drawpixelinfo *dpi, money32 *history, sint32 count, sint32 baseX, sint32 baseY)
 {
-	sint32 i, x, y, yearOver32, currentMonth, currentDay;
+    sint32 i, x, y, yearOver32, currentMonth, currentDay;
 
-	currentMonth = date_get_month(gDateMonthsElapsed);
-	currentDay = gDateMonthTicks;
-	yearOver32 = (currentMonth * 4) + (currentDay >> 14) - 31;
-	x = baseX;
-	y = baseY;
-	for (i = count - 1; i >= 0; i--) {
-		if (history[i] != 0x80000000 && yearOver32 % 4 == 0) {
-			// Draw month text
-			sint32 monthFormat = DateGameShortMonthNames[((yearOver32 / 4) + 8) % 8];
-			gfx_draw_string_centred(dpi, STR_GRAPH_LABEL, x, y - 10, COLOUR_BLACK, &monthFormat);
+    currentMonth = date_get_month(gDateMonthsElapsed);
+    currentDay = gDateMonthTicks;
+    yearOver32 = (currentMonth * 4) + (currentDay >> 14) - 31;
+    x = baseX;
+    y = baseY;
+    for (i = count - 1; i >= 0; i--) {
+        if (history[i] != 0x80000000 && yearOver32 % 4 == 0) {
+            // Draw month text
+            sint32 monthFormat = DateGameShortMonthNames[((yearOver32 / 4) + 8) % 8];
+            gfx_draw_string_centred(dpi, STR_GRAPH_LABEL, x, y - 10, COLOUR_BLACK, &monthFormat);
 
-			// Draw month mark
-			gfx_fill_rect(dpi, x, y, x, y + 3, PALETTE_INDEX_10);
-		}
+            // Draw month mark
+            gfx_fill_rect(dpi, x, y, x, y + 3, PALETTE_INDEX_10);
+        }
 
-		yearOver32 = (yearOver32 + 1) % 32;
-		x += 6;
-	}
+        yearOver32 = (yearOver32 + 1) % 32;
+        x += 6;
+    }
 }
 
 static void graph_draw_line_a_money32(rct_drawpixelinfo *dpi, money32 *history, sint32 count, sint32 baseX, sint32 baseY, sint32 modifier, sint32 offset)
 {
-	sint32 i, x, y, lastX, lastY;
-	lastX = -1;
-	lastY = -1;
-	x = baseX;
-	for (i = count - 1; i >= 0; i--) {
-		if (history[i] != 0x80000000) {
-			y = baseY + 170 - 6 - ((((history[i] >> modifier) + offset) * 170) / 256);
+    sint32 i, x, y, lastX, lastY;
+    lastX = -1;
+    lastY = -1;
+    x = baseX;
+    for (i = count - 1; i >= 0; i--) {
+        if (history[i] != 0x80000000) {
+            y = baseY + 170 - 6 - ((((history[i] >> modifier) + offset) * 170) / 256);
 
-			if (lastX != -1) {
-				gfx_draw_line(dpi, lastX + 1, lastY + 1, x + 1, y + 1, PALETTE_INDEX_10);
-				gfx_draw_line(dpi, lastX, lastY + 1, x, y + 1, PALETTE_INDEX_10);
-			}
-			if (i == 0)
-				gfx_fill_rect(dpi, x, y, x + 2, y + 2, PALETTE_INDEX_10);
+            if (lastX != -1) {
+                gfx_draw_line(dpi, lastX + 1, lastY + 1, x + 1, y + 1, PALETTE_INDEX_10);
+                gfx_draw_line(dpi, lastX, lastY + 1, x, y + 1, PALETTE_INDEX_10);
+            }
+            if (i == 0)
+                gfx_fill_rect(dpi, x, y, x + 2, y + 2, PALETTE_INDEX_10);
 
-			lastX = x;
-			lastY = y;
-		}
-		x += 6;
-	}
+            lastX = x;
+            lastY = y;
+        }
+        x += 6;
+    }
 }
 
 static void graph_draw_line_b_money32(rct_drawpixelinfo *dpi, money32 *history, sint32 count, sint32 baseX, sint32 baseY, sint32 modifier, sint32 offset)
 {
-	sint32 i, x, y, lastX, lastY;
+    sint32 i, x, y, lastX, lastY;
 
-	lastX = -1;
-	lastY = -1;
-	x = baseX;
-	for (i = count - 1; i >= 0; i--) {
-		if (history[i] != 0x80000000) {
-			y = baseY + 170 - 6 - ((((history[i] >> modifier) + offset) * 170) / 256);
+    lastX = -1;
+    lastY = -1;
+    x = baseX;
+    for (i = count - 1; i >= 0; i--) {
+        if (history[i] != 0x80000000) {
+            y = baseY + 170 - 6 - ((((history[i] >> modifier) + offset) * 170) / 256);
 
-			if (lastX != -1)
-				gfx_draw_line(dpi, lastX, lastY, x, y, PALETTE_INDEX_21);
-			if (i == 0)
-				gfx_fill_rect(dpi, x - 1, y - 1, x + 1, y + 1, PALETTE_INDEX_21);
+            if (lastX != -1)
+                gfx_draw_line(dpi, lastX, lastY, x, y, PALETTE_INDEX_21);
+            if (i == 0)
+                gfx_fill_rect(dpi, x - 1, y - 1, x + 1, y + 1, PALETTE_INDEX_21);
 
-			lastX = x;
-			lastY = y;
-		}
-		x += 6;
-	}
+            lastX = x;
+            lastY = y;
+        }
+        x += 6;
+    }
 }
 
 void graph_draw_money32(rct_drawpixelinfo *dpi, money32 *history, sint32 count, sint32 baseX, sint32 baseY, sint32 modifier, sint32 offset)
 {
-	graph_draw_months_money32(dpi, history, count, baseX, baseY);
-	graph_draw_line_a_money32(dpi, history, count, baseX, baseY, modifier, offset);
-	graph_draw_line_b_money32(dpi, history, count, baseX, baseY, modifier, offset);
+    graph_draw_months_money32(dpi, history, count, baseX, baseY);
+    graph_draw_line_a_money32(dpi, history, count, baseX, baseY, modifier, offset);
+    graph_draw_line_b_money32(dpi, history, count, baseX, baseY, modifier, offset);
 }

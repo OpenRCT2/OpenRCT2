@@ -22,42 +22,42 @@
 #include "../platform/platform.h"
 
 static rct_widget window_map_tooltip_widgets[] = {
-	{ WWT_IMGBTN, 0, 0, 199, 0, 29, 0xFFFFFFFF, STR_NONE },
-	{ WIDGETS_END }
+    { WWT_IMGBTN, 0, 0, 199, 0, 29, 0xFFFFFFFF, STR_NONE },
+    { WIDGETS_END }
 };
 
 static void window_map_tooltip_update(rct_window *w);
 static void window_map_tooltip_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
 static rct_window_event_list window_map_tooltip_events = {
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	window_map_tooltip_update,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	window_map_tooltip_paint,
-	NULL
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    window_map_tooltip_update,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    window_map_tooltip_paint,
+    NULL
 };
 
 #define MAP_TOOLTIP_ARGS
@@ -74,33 +74,33 @@ static void window_map_tooltip_open();
  */
 void window_map_tooltip_update_visibility()
 {
-	sint32 cursorX, cursorY;
+    sint32 cursorX, cursorY;
 
-	const CursorState * state = context_get_cursor_state();
-	cursorX = state->x;
-	cursorY = state->y;
+    const CursorState * state = context_get_cursor_state();
+    cursorX = state->x;
+    cursorY = state->y;
 
-	// Check for cursor movement
-	_cursorHoldDuration++;
-	if (abs(cursorX - _lastCursorX) > 5 || abs(cursorY - _lastCursorY) > 5 || (input_test_flag(INPUT_FLAG_5)))
-		_cursorHoldDuration = 0;
+    // Check for cursor movement
+    _cursorHoldDuration++;
+    if (abs(cursorX - _lastCursorX) > 5 || abs(cursorY - _lastCursorY) > 5 || (input_test_flag(INPUT_FLAG_5)))
+        _cursorHoldDuration = 0;
 
-	_lastCursorX = cursorX;
-	_lastCursorY = cursorY;
+    _lastCursorX = cursorX;
+    _lastCursorY = cursorY;
 
-	// Show or hide tooltip
-	rct_string_id stringId;
-	memcpy(&stringId, gMapTooltipFormatArgs, sizeof(rct_string_id));
+    // Show or hide tooltip
+    rct_string_id stringId;
+    memcpy(&stringId, gMapTooltipFormatArgs, sizeof(rct_string_id));
 
-	if (_cursorHoldDuration < 25 ||
-		stringId == STR_NONE ||
-		(input_test_place_object_modifier(PLACE_OBJECT_MODIFIER_COPY_Z | PLACE_OBJECT_MODIFIER_SHIFT_Z)) ||
-		window_find_by_class(WC_ERROR) != NULL
-	) {
-		window_close_by_class(WC_MAP_TOOLTIP);
-	} else {
-		window_map_tooltip_open();
-	}
+    if (_cursorHoldDuration < 25 ||
+        stringId == STR_NONE ||
+        (input_test_place_object_modifier(PLACE_OBJECT_MODIFIER_COPY_Z | PLACE_OBJECT_MODIFIER_SHIFT_Z)) ||
+        window_find_by_class(WC_ERROR) != NULL
+    ) {
+        window_close_by_class(WC_MAP_TOOLTIP);
+    } else {
+        window_map_tooltip_open();
+    }
 }
 
 /**
@@ -109,28 +109,28 @@ void window_map_tooltip_update_visibility()
  */
 static void window_map_tooltip_open()
 {
-	rct_window* w;
-	sint32 x, y, width, height;
+    rct_window* w;
+    sint32 x, y, width, height;
 
-	width = 200;
-	height = 44;
-	const CursorState * state = context_get_cursor_state();
-	x = state->x - (width / 2);
-	y = state->y + 15;
+    width = 200;
+    height = 44;
+    const CursorState * state = context_get_cursor_state();
+    x = state->x - (width / 2);
+    y = state->y + 15;
 
-	w = window_find_by_class(WC_MAP_TOOLTIP);
-	if (w == NULL) {
-		w = window_create(
-			x, y, width, height, &window_map_tooltip_events, WC_MAP_TOOLTIP, WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_NO_BACKGROUND
-		);
-		w->widgets = window_map_tooltip_widgets;
-	} else {
-		window_invalidate(w);
-		w->x = x;
-		w->y = y;
-		w->width = width;
-		w->height = height;
-	}
+    w = window_find_by_class(WC_MAP_TOOLTIP);
+    if (w == NULL) {
+        w = window_create(
+            x, y, width, height, &window_map_tooltip_events, WC_MAP_TOOLTIP, WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_NO_BACKGROUND
+        );
+        w->widgets = window_map_tooltip_widgets;
+    } else {
+        window_invalidate(w);
+        w->x = x;
+        w->y = y;
+        w->width = width;
+        w->height = height;
+    }
 }
 
 /**
@@ -139,7 +139,7 @@ static void window_map_tooltip_open()
  */
 static void window_map_tooltip_update(rct_window *w)
 {
-	window_invalidate(w);
+    window_invalidate(w);
 }
 
 /**
@@ -148,11 +148,11 @@ static void window_map_tooltip_update(rct_window *w)
  */
 static void window_map_tooltip_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
-	rct_string_id stringId;
-	memcpy(&stringId, gMapTooltipFormatArgs, sizeof(rct_string_id));
-	if (stringId == STR_NONE) {
-		return;
-	}
+    rct_string_id stringId;
+    memcpy(&stringId, gMapTooltipFormatArgs, sizeof(rct_string_id));
+    if (stringId == STR_NONE) {
+        return;
+    }
 
-	gfx_draw_string_centred_wrapped(dpi, gMapTooltipFormatArgs, w->x + (w->width / 2), w->y + (w->height / 2), w->width, STR_MAP_TOOLTIP_STRINGID, COLOUR_BLACK);
+    gfx_draw_string_centred_wrapped(dpi, gMapTooltipFormatArgs, w->x + (w->width / 2), w->y + (w->height / 2), w->width, STR_MAP_TOOLTIP_STRINGID, COLOUR_BLACK);
 }

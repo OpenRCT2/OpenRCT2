@@ -272,7 +272,7 @@ void fence_paint(uint8 direction, sint32 height, rct_map_element * map_element)
             offset = (rct_xyz16){0, 0, height};
             bounds = (rct_xyz16){1, 28, ah};
             boundsOffset = (rct_xyz16){1, 1, height + 1};
-			break;
+            break;
 
         case 1:
             if (map_element->type & 0x80) {

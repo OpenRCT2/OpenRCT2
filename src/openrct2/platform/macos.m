@@ -26,38 +26,38 @@
 
 void macos_disallow_automatic_window_tabbing()
 {
-	@autoreleasepool {
-		if ([NSWindow respondsToSelector:@selector(setAllowsAutomaticWindowTabbing:)]) {
-			[NSWindow setAllowsAutomaticWindowTabbing:NO];
-		}
-	}
+    @autoreleasepool {
+        if ([NSWindow respondsToSelector:@selector(setAllowsAutomaticWindowTabbing:)]) {
+            [NSWindow setAllowsAutomaticWindowTabbing:NO];
+        }
+    }
 }
 
 bool platform_check_steam_overlay_attached() {
-	STUB();
-	return false;
+    STUB();
+    return false;
 }
 
 void platform_get_exe_path(utf8 *outPath, size_t outSize)
 {
-	if (outSize == 0) return;
-	char exePath[MAX_PATH];
-	uint32_t size = MAX_PATH;
-	int result = _NSGetExecutablePath(exePath, &size);
-	if (result != 0) {
-		log_fatal("failed to get path");
-	}
-	exePath[MAX_PATH - 1] = '\0';
-	char *exeDelimiter = strrchr(exePath, *PATH_SEPARATOR);
-	if (exeDelimiter == NULL)
-	{
-		log_error("should never happen here");
-		outPath[0] = '\0';
-		return;
-	}
-	*exeDelimiter = '\0';
+    if (outSize == 0) return;
+    char exePath[MAX_PATH];
+    uint32_t size = MAX_PATH;
+    int result = _NSGetExecutablePath(exePath, &size);
+    if (result != 0) {
+        log_fatal("failed to get path");
+    }
+    exePath[MAX_PATH - 1] = '\0';
+    char *exeDelimiter = strrchr(exePath, *PATH_SEPARATOR);
+    if (exeDelimiter == NULL)
+    {
+        log_error("should never happen here");
+        outPath[0] = '\0';
+        return;
+    }
+    *exeDelimiter = '\0';
 
-	safe_strcpy(outPath, exePath, outSize);
+    safe_strcpy(outPath, exePath, outSize);
 }
 
 /**
@@ -66,18 +66,18 @@ void platform_get_exe_path(utf8 *outPath, size_t outSize)
  *   - ~/Library/Application Support/OpenRCT2
  */
 void platform_posix_sub_user_data_path(char *buffer, size_t size, const char *homedir) {
-	if (homedir == NULL)
-	{
-		log_fatal("Couldn't find user data directory");
-		exit(-1);
-		return;
-	}
+    if (homedir == NULL)
+    {
+        log_fatal("Couldn't find user data directory");
+        exit(-1);
+        return;
+    }
 
-	safe_strcpy(buffer, homedir, size);
-	safe_strcat_path(buffer, "Library", size);
-	safe_strcat_path(buffer, "Application Support", size);
-	safe_strcat_path(buffer, "OpenRCT2", size);
-	path_end_with_separator(buffer, size);
+    safe_strcpy(buffer, homedir, size);
+    safe_strcat_path(buffer, "Library", size);
+    safe_strcat_path(buffer, "Application Support", size);
+    safe_strcat_path(buffer, "OpenRCT2", size);
+    path_end_with_separator(buffer, size);
 }
 
 /**
@@ -87,147 +87,147 @@ void platform_posix_sub_user_data_path(char *buffer, size_t size, const char *ho
  *   - <Resources Folder>
  */
 void platform_posix_sub_resolve_openrct_data_path(utf8 *out, size_t size) {
-	@autoreleasepool
-	{
-		NSBundle *bundle = [NSBundle mainBundle];
-		if (bundle)
-		{
-			const utf8 *resources = bundle.resourcePath.UTF8String;
-			if (platform_directory_exists(resources))
-			{
-				out[0] = '\0';
-				safe_strcpy(out, resources, size);
-				return;
-			}
-		}
-	}
+    @autoreleasepool
+    {
+        NSBundle *bundle = [NSBundle mainBundle];
+        if (bundle)
+        {
+            const utf8 *resources = bundle.resourcePath.UTF8String;
+            if (platform_directory_exists(resources))
+            {
+                out[0] = '\0';
+                safe_strcpy(out, resources, size);
+                return;
+            }
+        }
+    }
 }
 
 void platform_show_messagebox(const char * message)
 {
-	@autoreleasepool
-	{
-		NSAlert *alert = [[[NSAlert alloc] init] autorelease];
-		[alert addButtonWithTitle:@"OK"];
-		alert.messageText = [NSString stringWithUTF8String:message];
-		[alert runModal];
-	}
+    @autoreleasepool
+    {
+        NSAlert *alert = [[[NSAlert alloc] init] autorelease];
+        [alert addButtonWithTitle:@"OK"];
+        alert.messageText = [NSString stringWithUTF8String:message];
+        [alert runModal];
+    }
 }
 
 utf8* macos_str_decomp_to_precomp(utf8 *input)
 {
-	@autoreleasepool
-	{
-		if (input == NULL) {
-			return NULL;
-		}
+    @autoreleasepool
+    {
+        if (input == NULL) {
+            return NULL;
+        }
 
-		NSString *inputDecomp = [NSString stringWithUTF8String:input];
-		return strdup([inputDecomp.precomposedStringWithCanonicalMapping cStringUsingEncoding:NSUTF8StringEncoding]);
-	}
+        NSString *inputDecomp = [NSString stringWithUTF8String:input];
+        return strdup([inputDecomp.precomposedStringWithCanonicalMapping cStringUsingEncoding:NSUTF8StringEncoding]);
+    }
 }
 
 bool platform_get_font_path(TTFFontDescriptor *font, utf8 *buffer, size_t size)
 {
-	@autoreleasepool
-	{
-		CTFontDescriptorRef fontRef = CTFontDescriptorCreateWithNameAndSize((CFStringRef)[NSString stringWithUTF8String:font->font_name], 0.0);
-		CFURLRef url = (CFURLRef)CTFontDescriptorCopyAttribute(fontRef, kCTFontURLAttribute);
-		if (url) {
-			NSString *fontPath = [NSString stringWithString:[(NSURL *)CFBridgingRelease(url) path]];
-			safe_strcpy(buffer, fontPath.UTF8String, size);
-			return true;
-		} else {
-			return false;
-		}
-	}
+    @autoreleasepool
+    {
+        CTFontDescriptorRef fontRef = CTFontDescriptorCreateWithNameAndSize((CFStringRef)[NSString stringWithUTF8String:font->font_name], 0.0);
+        CFURLRef url = (CFURLRef)CTFontDescriptorCopyAttribute(fontRef, kCTFontURLAttribute);
+        if (url) {
+            NSString *fontPath = [NSString stringWithString:[(NSURL *)CFBridgingRelease(url) path]];
+            safe_strcpy(buffer, fontPath.UTF8String, size);
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
 
 bool platform_has_matching_language(NSString *preferredLocale, uint16* languageIdentifier)
 {
-	@autoreleasepool
-	{
-		if ([preferredLocale isEqualToString:@"en"] || [preferredLocale isEqualToString:@"en-CA"]) {
-			*languageIdentifier = LANGUAGE_ENGLISH_US;
-			return YES;
-		}
+    @autoreleasepool
+    {
+        if ([preferredLocale isEqualToString:@"en"] || [preferredLocale isEqualToString:@"en-CA"]) {
+            *languageIdentifier = LANGUAGE_ENGLISH_US;
+            return YES;
+        }
 
-		if ([preferredLocale isEqualToString:@"zh-CN"]) {
-			*languageIdentifier = LANGUAGE_CHINESE_SIMPLIFIED;
-			return YES;
-		}
+        if ([preferredLocale isEqualToString:@"zh-CN"]) {
+            *languageIdentifier = LANGUAGE_CHINESE_SIMPLIFIED;
+            return YES;
+        }
 
-		if ([preferredLocale isEqualToString:@"zh-TW"]) {
-			*languageIdentifier = LANGUAGE_CHINESE_TRADITIONAL;
-			return YES;
-		}
+        if ([preferredLocale isEqualToString:@"zh-TW"]) {
+            *languageIdentifier = LANGUAGE_CHINESE_TRADITIONAL;
+            return YES;
+        }
 
-		// Find an exact match (language and region)
-		for (int i = 1; i < LANGUAGE_COUNT; i++) {
-			if([preferredLocale isEqualToString:[NSString stringWithUTF8String:LanguagesDescriptors[i].locale]]) {
-				*languageIdentifier = i;
-				return YES;
-			}
-		}
+        // Find an exact match (language and region)
+        for (int i = 1; i < LANGUAGE_COUNT; i++) {
+            if([preferredLocale isEqualToString:[NSString stringWithUTF8String:LanguagesDescriptors[i].locale]]) {
+                *languageIdentifier = i;
+                return YES;
+            }
+        }
 
 
-		// Only check for a matching language
-		NSString *languageCode = [[preferredLocale componentsSeparatedByString:@"-"] firstObject];
-		for (int i = 1; i < LANGUAGE_COUNT; i++) {
-			NSString *optionLanguageCode = [[[NSString stringWithUTF8String:LanguagesDescriptors[i].locale] componentsSeparatedByString:@"-"] firstObject];
-			if([languageCode isEqualToString:optionLanguageCode]) {
-				*languageIdentifier = i;
-				return YES;
-			}
-		}
+        // Only check for a matching language
+        NSString *languageCode = [[preferredLocale componentsSeparatedByString:@"-"] firstObject];
+        for (int i = 1; i < LANGUAGE_COUNT; i++) {
+            NSString *optionLanguageCode = [[[NSString stringWithUTF8String:LanguagesDescriptors[i].locale] componentsSeparatedByString:@"-"] firstObject];
+            if([languageCode isEqualToString:optionLanguageCode]) {
+                *languageIdentifier = i;
+                return YES;
+            }
+        }
 
-		return NO;
-	}
+        return NO;
+    }
 }
 
 uint16 platform_get_locale_language()
 {
-	@autoreleasepool
-	{
-		NSArray<NSString*> *preferredLanguages = [NSLocale preferredLanguages];
-		for (NSString *preferredLanguage in preferredLanguages) {
-			uint16 languageIdentifier;
-			if (platform_has_matching_language(preferredLanguage, &languageIdentifier)) {
-				return languageIdentifier;
-			}
-		}
+    @autoreleasepool
+    {
+        NSArray<NSString*> *preferredLanguages = [NSLocale preferredLanguages];
+        for (NSString *preferredLanguage in preferredLanguages) {
+            uint16 languageIdentifier;
+            if (platform_has_matching_language(preferredLanguage, &languageIdentifier)) {
+                return languageIdentifier;
+            }
+        }
 
-		// Fallback
-		return LANGUAGE_ENGLISH_UK;
-	}
+        // Fallback
+        return LANGUAGE_ENGLISH_UK;
+    }
 }
 
 uint8 platform_get_locale_currency()
 {
-	@autoreleasepool
-	{
-		NSString *currencyCode = [[NSLocale currentLocale] objectForKey:NSLocaleCurrencyCode];
-		return platform_get_currency_value(currencyCode.UTF8String);
-	}
+    @autoreleasepool
+    {
+        NSString *currencyCode = [[NSLocale currentLocale] objectForKey:NSLocaleCurrencyCode];
+        return platform_get_currency_value(currencyCode.UTF8String);
+    }
 }
 
 uint8 platform_get_locale_measurement_format()
 {
-	@autoreleasepool
-	{
-		NSNumber *metricSystem = [[NSLocale currentLocale] objectForKey:NSLocaleUsesMetricSystem];
+    @autoreleasepool
+    {
+        NSNumber *metricSystem = [[NSLocale currentLocale] objectForKey:NSLocaleUsesMetricSystem];
 
-		if (metricSystem.boolValue) {
-			return MEASUREMENT_FORMAT_METRIC;
-		}
+        if (metricSystem.boolValue) {
+            return MEASUREMENT_FORMAT_METRIC;
+        }
 
-		return MEASUREMENT_FORMAT_IMPERIAL;
-	}
+        return MEASUREMENT_FORMAT_IMPERIAL;
+    }
 }
 
 sint32 platform_get_non_window_flags()
 {
-	return SDL_WINDOW_MINIMIZED | SDL_WINDOW_FULLSCREEN | SDL_WINDOW_FULLSCREEN_DESKTOP;
+    return SDL_WINDOW_MINIMIZED | SDL_WINDOW_FULLSCREEN | SDL_WINDOW_FULLSCREEN_DESKTOP;
 }
 
 #endif
