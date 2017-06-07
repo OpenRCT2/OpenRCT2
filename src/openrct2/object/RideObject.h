@@ -29,6 +29,7 @@ private:
     rct_ride_entry              _legacyType = { 0 };
     vehicle_colour_preset_list  _presetColours = { 0 };
     sint8 *                     _peepLoadingPositions[4] = { nullptr };
+    uint16                      _peepLoadingPositionsCount[4] = { 0 };
 
 public:
     explicit RideObject(const rct_object_entry &entry) : Object(entry) { }
