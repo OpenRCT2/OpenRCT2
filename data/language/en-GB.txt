@@ -4180,7 +4180,7 @@ STR_5868    :{WINDOW_COLOUR_2}Provider E-mail: {BLACK}{STRING}
 STR_5869    :{WINDOW_COLOUR_2}Provider Website: {BLACK}{STRING}
 STR_5870    :{SMALLFONT}{BLACK}Show server information
 STR_5871    :Plants don't age
-STR_5872    :{SMALLFONT}{BLACK}Disable plant aging such that they don't wilt.
+STR_5872    :{SMALLFONT}{BLACK}Disable plant ageing such that they don't wilt.
 STR_5873    :Allow chain lifts on all track pieces
 STR_5874    :{SMALLFONT}{BLACK}Allows any piece of track to be made into a chain lift
 STR_5875    :Drawing Engine:
@@ -4409,6 +4409,8 @@ STR_6097    :{STRING} placed a track of ride '{STRING}'.
 STR_6098    :{STRING} removed a track of ride.
 STR_6099    :You connected to the server.
 STR_6100    :You disconnected from the server.
+STR_6101    :Rides don't decrease in value over time
+STR_6102    :{SMALLFONT}{BLACK}The value of a ride won't decrease over time, so guests will not suddenly think that a ride is too expensive.
 
 #############
 # Scenarios #
