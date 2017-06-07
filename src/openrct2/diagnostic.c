@@ -30,15 +30,25 @@ const char * _level_strings[] = {
     "INFO"
 };
 
+static FILE * diagnostic_get_stream(DiagnosticLevel level)
+{
+    switch (level) {
+    case DIAGNOSTIC_LEVEL_VERBOSE:
+    case DIAGNOSTIC_LEVEL_INFORMATION:
+        return stdout;
+    default:
+        return stderr;
+    }
+}
+
 void diagnostic_log(DiagnosticLevel diagnosticLevel, const char *format, ...)
 {
-    FILE *stream;
     va_list args;
 
     if (!_log_levels[diagnosticLevel])
         return;
 
-    stream = stderr;
+    FILE * stream = diagnostic_get_stream(diagnosticLevel);
 
     // Level
     fprintf(stream, "%s: ", _level_strings[diagnosticLevel]);
@@ -54,13 +64,12 @@ void diagnostic_log(DiagnosticLevel diagnosticLevel, const char *format, ...)
 
 void diagnostic_log_with_location(DiagnosticLevel diagnosticLevel, const char *file, const char *function, sint32 line, const char *format, ...)
 {
-    FILE *stream;
     va_list args;
 
     if (!_log_levels[diagnosticLevel])
         return;
 
-    stream = stderr;
+    FILE * stream = diagnostic_get_stream(diagnosticLevel);
 
     // Level and source code information
     if (_log_location_enabled)
