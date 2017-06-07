@@ -40,7 +40,6 @@ void WaterObject::Load()
     _legacyType.palette_index_2 = _legacyType.image_id + 4;
 
     load_palette();
-    gfx_invalidate_screen();
 }
 
 void WaterObject::Unload()

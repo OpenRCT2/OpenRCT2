@@ -152,7 +152,6 @@ void intro_update()
     case INTRO_STATE_FINISH:
         gIntroState = INTRO_STATE_NONE;
         load_palette();
-        gfx_invalidate_screen();
         audio_start_title_music();
         break;
     }

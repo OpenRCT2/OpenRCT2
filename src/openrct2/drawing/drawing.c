@@ -515,7 +515,8 @@ void gfx_transpose_palette(sint32 pal, uint8 product)
  *
  *  rct2: 0x006837E3
  */
-void load_palette(){
+void load_palette()
+{
     rct_water_type* water_type = (rct_water_type*)object_entry_groups[OBJECT_TYPE_WATER].chunks[0];
 
     uint32 palette = 0x5FC;
@@ -539,6 +540,7 @@ void load_palette(){
         dest_pointer += 4;
     }
     platform_update_palette(gGamePalette, 10, 236);
+    gfx_invalidate_screen();
 }
 
 /**

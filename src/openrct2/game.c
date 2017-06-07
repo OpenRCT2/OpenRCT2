@@ -1146,7 +1146,6 @@ void game_load_init()
     gWindowUpdateTicks = 0;
 
     load_palette();
-    gfx_invalidate_screen();
 
     if (!gOpenRCT2Headless) {
         window_tile_inspector_clear_clipboard();

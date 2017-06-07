@@ -96,7 +96,6 @@ void editor_load()
     rct_window *mainWindow = window_editor_main_open();
     window_set_location(mainWindow, 2400, 2400, 112);
     load_palette();
-    gfx_invalidate_screen();
     gScreenAge = 0;
 
     safe_strcpy(gScenarioName, language_get_string(STR_MY_NEW_SCENARIO), 64);
@@ -166,7 +165,6 @@ void trackdesigner_load()
     rct_window * mainWindow = window_editor_main_open();
     window_set_location(mainWindow, 2400, 2400, 112);
     load_palette();
-    gfx_invalidate_screen();
 }
 
 /**
@@ -188,7 +186,6 @@ void trackmanager_load()
     rct_window *mainWindow = window_editor_main_open();
     window_set_location(mainWindow, 2400, 2400, 112);
     load_palette();
-    gfx_invalidate_screen();
 }
 
 /**
@@ -437,7 +434,6 @@ static void editor_finalise_main_view()
     window_new_ride_init_vars();
     gWindowUpdateTicks = 0;
     load_palette();
-    gfx_invalidate_screen();
     window_tile_inspector_clear_clipboard();
 }
 

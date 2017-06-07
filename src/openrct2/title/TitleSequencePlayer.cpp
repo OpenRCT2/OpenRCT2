@@ -428,7 +428,6 @@ private:
         scenery_set_default_placement_configuration();
         news_item_init_queue();
         load_palette();
-        gfx_invalidate_screen();
         gScreenAge = 0;
         gGameSpeed = 1;
     }
