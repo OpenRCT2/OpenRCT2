@@ -20,6 +20,7 @@
 #include "../interface/window.h"
 #include "../localisation/localisation.h"
 #include "../object.h"
+#include "../OpenRCT2.h"
 #include "../platform/platform.h"
 #include "../rct2.h"
 #include "../world/water.h"
@@ -517,6 +518,10 @@ void gfx_transpose_palette(sint32 pal, uint8 product)
  */
 void load_palette()
 {
+    if (gOpenRCT2NoGraphics) {
+        return;
+    }
+
     rct_water_type* water_type = (rct_water_type*)object_entry_groups[OBJECT_TYPE_WATER].chunks[0];
 
     uint32 palette = 0x5FC;

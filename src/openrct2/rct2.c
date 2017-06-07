@@ -151,15 +151,18 @@ bool rct2_init()
 
     input_reset_place_obj_modifier();
 
-    if (!gfx_load_g1()) {
-        return false;
-    }
-    if (!gfx_load_g2()) {
-        return false;
-    }
-    gfx_load_csg();
+    if (!gOpenRCT2NoGraphics) {
+        if (!gfx_load_g1()) {
+            return false;
+        }
+        if (!gfx_load_g2()) {
+            return false;
+        }
+        gfx_load_csg();
 
-    font_sprite_initialise_characters();
+        font_sprite_initialise_characters();
+    }
+
     if (!gOpenRCT2Headless) {
         // platform_init();
         audio_init_ride_sounds_and_info();
@@ -169,11 +172,13 @@ bool rct2_init()
     game_init_all(150);
     if (!gOpenRCT2Headless)
         window_title_menu_open();
-    load_palette();
 
+    if (!gOpenRCT2NoGraphics) {
+        load_palette();
 #ifdef __ENABLE_LIGHTFX__
-    lightfx_init();
+        lightfx_init();
 #endif
+    }
 
     log_verbose("initialising game finished");
     return true;

@@ -38,6 +38,10 @@ enum
 
 void colours_init_maps()
 {
+    if (g1Elements == NULL) {
+        return;
+    }
+
     // Get colour maps from g1
     for (sint32 i = 0; i < 32; i++) {
         rct_g1_element *g1Element = &g1Elements[SPR_PALETTE_2_START + i];
