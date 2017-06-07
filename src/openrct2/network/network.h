@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -18,20 +18,20 @@
 #define _NETWORK_H_
 
 enum {
-	NETWORK_MODE_NONE,
-	NETWORK_MODE_CLIENT,
-	NETWORK_MODE_SERVER
+    NETWORK_MODE_NONE,
+    NETWORK_MODE_CLIENT,
+    NETWORK_MODE_SERVER
 };
 
 enum {
-	NETWORK_PLAYER_FLAG_ISSERVER = 1 << 0,
+    NETWORK_PLAYER_FLAG_ISSERVER = 1 << 0,
 };
 
 enum {
-	NETWORK_STATUS_NONE,
-	NETWORK_STATUS_READY,
-	NETWORK_STATUS_CONNECTING,
-	NETWORK_STATUS_CONNECTED
+    NETWORK_STATUS_NONE,
+    NETWORK_STATUS_READY,
+    NETWORK_STATUS_CONNECTING,
+    NETWORK_STATUS_CONNECTED
 };
 
 #define NETWORK_DEFAULT_PORT 11753
@@ -56,7 +56,7 @@ extern "C" {
 // This define specifies which version of network stream current build uses.
 // It is used for making sure only compatible builds get connected, even within
 // single OpenRCT2 version.
-#define NETWORK_STREAM_VERSION "22"
+#define NETWORK_STREAM_VERSION "9"
 #define NETWORK_STREAM_ID OPENRCT2_VERSION "-" NETWORK_STREAM_VERSION
 
 #ifdef __cplusplus
@@ -82,174 +82,188 @@ extern "C" {
 
 
 enum {
-	NETWORK_TICK_FLAG_CHECKSUMS = 1 << 0,
+    NETWORK_TICK_FLAG_CHECKSUMS = 1 << 0,
 };
 
-struct ObjectRepositoryItem;
+interface   IPlatformEnvironment;
+struct      ObjectRepositoryItem;
 
 class Network
 {
 public:
-	Network();
-	~Network();
-	bool Init();
-	void Close();
-	bool BeginClient(const char* host, uint16 port);
-	bool BeginServer(uint16 port, const char* address = NULL);
-	sint32 GetMode();
-	sint32 GetStatus();
-	sint32 GetAuthStatus();
-	uint32 GetServerTick();
-	uint8 GetPlayerID();
-	void Update();
-	std::vector<std::unique_ptr<NetworkPlayer>>::iterator GetPlayerIteratorByID(uint8 id);
-	NetworkPlayer* GetPlayerByID(uint8 id);
-	std::vector<std::unique_ptr<NetworkGroup>>::iterator GetGroupIteratorByID(uint8 id);
-	NetworkGroup* GetGroupByID(uint8 id);
-	static const char* FormatChat(NetworkPlayer* fromplayer, const char* text);
-	void SendPacketToClients(NetworkPacket& packet, bool front = false);
-	bool CheckSRAND(uint32 tick, uint32 srand0);
-	void KickPlayer(sint32 playerId);
-	void SetPassword(const char* password);
-	void ShutdownClient();
-	NetworkGroup* AddGroup();
-	void RemoveGroup(uint8 id);
-	uint8 GetDefaultGroup();
-	uint8 GetGroupIDByHash(const std::string &keyhash);
-	void SetDefaultGroup(uint8 id);
-	void SaveGroups();
-	void LoadGroups();
+    Network();
+    ~Network();
+    void SetEnvironment(IPlatformEnvironment * env);
+    bool Init();
+    void Close();
+    bool BeginClient(const char* host, uint16 port);
+    bool BeginServer(uint16 port, const char* address);
+    sint32 GetMode();
+    sint32 GetStatus();
+    sint32 GetAuthStatus();
+    uint32 GetServerTick();
+    uint8 GetPlayerID();
+    void Update();
+    std::vector<std::unique_ptr<NetworkPlayer>>::iterator GetPlayerIteratorByID(uint8 id);
+    NetworkPlayer* GetPlayerByID(uint8 id);
+    std::vector<std::unique_ptr<NetworkGroup>>::iterator GetGroupIteratorByID(uint8 id);
+    NetworkGroup* GetGroupByID(uint8 id);
+    static const char* FormatChat(NetworkPlayer* fromplayer, const char* text);
+    void SendPacketToClients(NetworkPacket& packet, bool front = false);
+    bool CheckSRAND(uint32 tick, uint32 srand0);
+    void KickPlayer(sint32 playerId);
+    void SetPassword(const char* password);
+    void ShutdownClient();
+    NetworkGroup* AddGroup();
+    void RemoveGroup(uint8 id);
+    uint8 GetDefaultGroup();
+    uint8 GetGroupIDByHash(const std::string &keyhash);
+    void SetDefaultGroup(uint8 id);
+    void SaveGroups();
+    void LoadGroups();
 
-	void BeginChatLog();
-	void AppendChatLog(const utf8 *text);
-	void CloseChatLog();
+    std::string BeginLog(const std::string &directory, const std::string &filenameFormat);
+    void AppendLog(const std::string &logPath, const std::string &s);
 
-	void Client_Send_TOKEN();
-	void Client_Send_AUTH(const char* name, const char* password, const char *pubkey, const char *sig, size_t sigsize);
-	void Client_Send_AUTH(const char* name, const char* password, const char *pubkey);
-	void Server_Send_AUTH(NetworkConnection& connection);
-	void Server_Send_TOKEN(NetworkConnection& connection);
-	void Server_Send_MAP(NetworkConnection* connection = nullptr);
-	void Client_Send_CHAT(const char* text);
-	void Server_Send_CHAT(const char* text);
-	void Client_Send_GAMECMD(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uint32 esi, uint32 edi, uint32 ebp, uint8 callback);
-	void Server_Send_GAMECMD(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uint32 esi, uint32 edi, uint32 ebp, uint8 playerid, uint8 callback);
-	void Server_Send_TICK();
-	void Server_Send_PLAYERLIST();
-	void Client_Send_PING();
-	void Server_Send_PING();
-	void Server_Send_PINGLIST();
-	void Server_Send_SETDISCONNECTMSG(NetworkConnection& connection, const char* msg);
-	void Server_Send_GAMEINFO(NetworkConnection& connection);
-	void Server_Send_SHOWERROR(NetworkConnection& connection, rct_string_id title, rct_string_id message);
-	void Server_Send_GROUPLIST(NetworkConnection& connection);
-	void Server_Send_EVENT_PLAYER_JOINED(const char *playerName);
-	void Server_Send_EVENT_PLAYER_DISCONNECTED(const char *playerName, const char *reason);
-	void Client_Send_GAMEINFO();
-	void Client_Send_OBJECTS(const std::vector<std::string> &objects);
-	void Server_Send_OBJECTS(NetworkConnection& connection, const std::vector<const ObjectRepositoryItem *> &objects) const;
+    void BeginChatLog();
+    void AppendChatLog(const std::string &s);
+    void CloseChatLog();
 
-	std::vector<std::unique_ptr<NetworkPlayer>> player_list;
-	std::vector<std::unique_ptr<NetworkGroup>> group_list;
-	NetworkKey _key;
-	std::vector<uint8> _challenge;
-	NetworkUserManager _userManager;
+    void BeginServerLog();
+    void AppendServerLog(const std::string &s);
+    void CloseServerLog();
 
-	std::string ServerName;
-	std::string ServerDescription;
-	std::string ServerGreeting;
-	std::string ServerProviderName;
-	std::string ServerProviderEmail;
-	std::string ServerProviderWebsite;
+    void Client_Send_TOKEN();
+    void Client_Send_AUTH(const char* name, const char* password, const char *pubkey, const char *sig, size_t sigsize);
+    void Client_Send_AUTH(const char* name, const char* password, const char *pubkey);
+    void Server_Send_AUTH(NetworkConnection& connection);
+    void Server_Send_TOKEN(NetworkConnection& connection);
+    void Server_Send_MAP(NetworkConnection* connection = nullptr);
+    void Client_Send_CHAT(const char* text);
+    void Server_Send_CHAT(const char* text);
+    void Client_Send_GAMECMD(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uint32 esi, uint32 edi, uint32 ebp, uint8 callback);
+    void Server_Send_GAMECMD(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uint32 esi, uint32 edi, uint32 ebp, uint8 playerid, uint8 callback);
+    void Server_Send_TICK();
+    void Server_Send_PLAYERLIST();
+    void Client_Send_PING();
+    void Server_Send_PING();
+    void Server_Send_PINGLIST();
+    void Server_Send_SETDISCONNECTMSG(NetworkConnection& connection, const char* msg);
+    void Server_Send_GAMEINFO(NetworkConnection& connection);
+    void Server_Send_SHOWERROR(NetworkConnection& connection, rct_string_id title, rct_string_id message);
+    void Server_Send_GROUPLIST(NetworkConnection& connection);
+    void Server_Send_EVENT_PLAYER_JOINED(const char *playerName);
+    void Server_Send_EVENT_PLAYER_DISCONNECTED(const char *playerName, const char *reason);
+    void Client_Send_GAMEINFO();
+    void Client_Send_OBJECTS(const std::vector<std::string> &objects);
+    void Server_Send_OBJECTS(NetworkConnection& connection, const std::vector<const ObjectRepositoryItem *> &objects) const;
 
-private:
-	bool ProcessConnection(NetworkConnection& connection);
-	void ProcessPacket(NetworkConnection& connection, NetworkPacket& packet);
-	void ProcessGameCommandQueue();
-	void AddClient(ITcpSocket * socket);
-	void RemoveClient(std::unique_ptr<NetworkConnection>& connection);
-	NetworkPlayer* AddPlayer(const utf8 *name, const std::string &keyhash);
-	std::string MakePlayerNameUnique(const std::string &name);
-	void PrintError();
-	const char* GetMasterServerUrl();
-	std::string GenerateAdvertiseKey();
-	void SetupDefaultGroups();
+    std::vector<std::unique_ptr<NetworkPlayer>> player_list;
+    std::vector<std::unique_ptr<NetworkGroup>> group_list;
+    NetworkKey _key;
+    std::vector<uint8> _challenge;
+    NetworkUserManager _userManager;
 
-	bool LoadMap(IStream * stream);
-	bool SaveMap(IStream * stream, const std::vector<const ObjectRepositoryItem *> &objects) const;
-
-	struct GameCommand
-	{
-		GameCommand(uint32 t, uint32* args, uint8 p, uint8 cb) {
-			tick = t; eax = args[0]; ebx = args[1]; ecx = args[2]; edx = args[3];
-			esi = args[4]; edi = args[5]; ebp = args[6]; playerid = p; callback = cb;
-		}
-		uint32 tick;
-		uint32 eax, ebx, ecx, edx, esi, edi, ebp;
-		uint8 playerid;
-		uint8 callback;
-		bool operator<(const GameCommand& comp) const {
-			return tick < comp.tick;
-		}
-	};
-
-	sint32 mode = NETWORK_MODE_NONE;
-	sint32 status = NETWORK_STATUS_NONE;
-	bool wsa_initialized = false;
-	ITcpSocket * listening_socket = nullptr;
-	uint16 listening_port = 0;
-	NetworkConnection server_connection;
-	SOCKET_STATUS _lastConnectStatus = SOCKET_STATUS_CLOSED;
-	uint32 last_tick_sent_time = 0;
-	uint32 last_ping_sent_time = 0;
-	uint32 server_tick = 0;
-	uint32 server_srand0 = 0;
-	uint32 server_srand0_tick = 0;
-	char server_sprite_hash[EVP_MAX_MD_SIZE + 1];
-	uint8 player_id = 0;
-	std::list<std::unique_ptr<NetworkConnection>> client_connection_list;
-	std::multiset<GameCommand> game_command_queue;
-	std::vector<uint8> chunk_buffer;
-	std::string _password;
-	bool _desynchronised = false;
-	INetworkServerAdvertiser * _advertiser = nullptr;
-	uint32 server_connect_time = 0;
-	uint8 default_group = 0;
-	IStream * _chatLogStream = nullptr;
-	std::string _chatLogPath;
-	uint32 game_commands_processed_this_tick = 0;
-
-	void UpdateServer();
-	void UpdateClient();
+    std::string ServerName;
+    std::string ServerDescription;
+    std::string ServerGreeting;
+    std::string ServerProviderName;
+    std::string ServerProviderEmail;
+    std::string ServerProviderWebsite;
 
 private:
-	std::vector<void (Network::*)(NetworkConnection& connection, NetworkPacket& packet)> client_command_handlers;
-	std::vector<void (Network::*)(NetworkConnection& connection, NetworkPacket& packet)> server_command_handlers;
-	void Client_Handle_AUTH(NetworkConnection& connection, NetworkPacket& packet);
-	void Server_Handle_AUTH(NetworkConnection& connection, NetworkPacket& packet);
-	void Server_Client_Joined(const char* name, const std::string &keyhash, NetworkConnection& connection);
-	void Client_Handle_MAP(NetworkConnection& connection, NetworkPacket& packet);
-	void Client_Handle_CHAT(NetworkConnection& connection, NetworkPacket& packet);
-	void Server_Handle_CHAT(NetworkConnection& connection, NetworkPacket& packet);
-	void Client_Handle_GAMECMD(NetworkConnection& connection, NetworkPacket& packet);
-	void Server_Handle_GAMECMD(NetworkConnection& connection, NetworkPacket& packet);
-	void Client_Handle_TICK(NetworkConnection& connection, NetworkPacket& packet);
-	void Client_Handle_PLAYERLIST(NetworkConnection& connection, NetworkPacket& packet);
-	void Client_Handle_PING(NetworkConnection& connection, NetworkPacket& packet);
-	void Server_Handle_PING(NetworkConnection& connection, NetworkPacket& packet);
-	void Client_Handle_PINGLIST(NetworkConnection& connection, NetworkPacket& packet);
-	void Client_Handle_SETDISCONNECTMSG(NetworkConnection& connection, NetworkPacket& packet);
-	void Client_Handle_GAMEINFO(NetworkConnection& connection, NetworkPacket& packet);
-	void Server_Handle_GAMEINFO(NetworkConnection& connection, NetworkPacket& packet);
-	void Client_Handle_SHOWERROR(NetworkConnection& connection, NetworkPacket& packet);
-	void Client_Handle_GROUPLIST(NetworkConnection& connection, NetworkPacket& packet);
-	void Client_Handle_EVENT(NetworkConnection& connection, NetworkPacket& packet);
-	void Client_Handle_TOKEN(NetworkConnection& connection, NetworkPacket& packet);
-	void Server_Handle_TOKEN(NetworkConnection& connection, NetworkPacket& packet);
-	void Client_Handle_OBJECTS(NetworkConnection& connection, NetworkPacket& packet);
-	void Server_Handle_OBJECTS(NetworkConnection& connection, NetworkPacket& packet);
+    bool ProcessConnection(NetworkConnection& connection);
+    void ProcessPacket(NetworkConnection& connection, NetworkPacket& packet);
+    void ProcessGameCommandQueue();
+    void AddClient(ITcpSocket * socket);
+    void RemoveClient(std::unique_ptr<NetworkConnection>& connection);
+    NetworkPlayer* AddPlayer(const utf8 *name, const std::string &keyhash);
+    std::string MakePlayerNameUnique(const std::string &name);
+    void PrintError();
+    const char* GetMasterServerUrl();
+    std::string GenerateAdvertiseKey();
+    void SetupDefaultGroups();
 
-	uint8 * save_for_network(size_t &out_size, const std::vector<const ObjectRepositoryItem *> &objects) const;
+    bool LoadMap(IStream * stream);
+    bool SaveMap(IStream * stream, const std::vector<const ObjectRepositoryItem *> &objects) const;
+
+    struct GameCommand
+    {
+        GameCommand(uint32 t, uint32* args, uint8 p, uint8 cb) {
+            tick = t; eax = args[0]; ebx = args[1]; ecx = args[2]; edx = args[3];
+            esi = args[4]; edi = args[5]; ebp = args[6]; playerid = p; callback = cb;
+        }
+        uint32 tick;
+        uint32 eax, ebx, ecx, edx, esi, edi, ebp;
+        uint8 playerid;
+        uint8 callback;
+        bool operator<(const GameCommand& comp) const {
+            return tick < comp.tick;
+        }
+    };
+
+    sint32 mode = NETWORK_MODE_NONE;
+    sint32 status = NETWORK_STATUS_NONE;
+    bool _closeLock = false;
+    bool _requireClose = false;
+    bool wsa_initialized = false;
+    ITcpSocket * listening_socket = nullptr;
+    uint16 listening_port = 0;
+    NetworkConnection * server_connection = nullptr;
+    SOCKET_STATUS _lastConnectStatus = SOCKET_STATUS_CLOSED;
+    uint32 last_tick_sent_time = 0;
+    uint32 last_ping_sent_time = 0;
+    uint32 server_tick = 0;
+    uint32 server_srand0 = 0;
+    uint32 server_srand0_tick = 0;
+    char server_sprite_hash[EVP_MAX_MD_SIZE + 1];
+    uint8 player_id = 0;
+    std::list<std::unique_ptr<NetworkConnection>> client_connection_list;
+    std::multiset<GameCommand> game_command_queue;
+    std::vector<uint8> chunk_buffer;
+    std::string _password;
+    bool _desynchronised = false;
+    INetworkServerAdvertiser * _advertiser = nullptr;
+    uint32 server_connect_time = 0;
+    uint8 default_group = 0;
+    uint32 game_commands_processed_this_tick = 0;
+    std::string _chatLogPath;
+    std::string _chatLogFilenameFormat = "%Y%m%d-%H%M%S.txt";
+    std::string _serverLogPath;
+    std::string _serverLogFilenameFormat = "-%Y%m%d-%H%M%S.txt";
+    IPlatformEnvironment * _env;
+
+    void UpdateServer();
+    void UpdateClient();
+
+private:
+    std::vector<void (Network::*)(NetworkConnection& connection, NetworkPacket& packet)> client_command_handlers;
+    std::vector<void (Network::*)(NetworkConnection& connection, NetworkPacket& packet)> server_command_handlers;
+    void Client_Handle_AUTH(NetworkConnection& connection, NetworkPacket& packet);
+    void Server_Handle_AUTH(NetworkConnection& connection, NetworkPacket& packet);
+    void Server_Client_Joined(const char* name, const std::string &keyhash, NetworkConnection& connection);
+    void Client_Handle_MAP(NetworkConnection& connection, NetworkPacket& packet);
+    void Client_Handle_CHAT(NetworkConnection& connection, NetworkPacket& packet);
+    void Server_Handle_CHAT(NetworkConnection& connection, NetworkPacket& packet);
+    void Client_Handle_GAMECMD(NetworkConnection& connection, NetworkPacket& packet);
+    void Server_Handle_GAMECMD(NetworkConnection& connection, NetworkPacket& packet);
+    void Client_Handle_TICK(NetworkConnection& connection, NetworkPacket& packet);
+    void Client_Handle_PLAYERLIST(NetworkConnection& connection, NetworkPacket& packet);
+    void Client_Handle_PING(NetworkConnection& connection, NetworkPacket& packet);
+    void Server_Handle_PING(NetworkConnection& connection, NetworkPacket& packet);
+    void Client_Handle_PINGLIST(NetworkConnection& connection, NetworkPacket& packet);
+    void Client_Handle_SETDISCONNECTMSG(NetworkConnection& connection, NetworkPacket& packet);
+    void Client_Handle_GAMEINFO(NetworkConnection& connection, NetworkPacket& packet);
+    void Server_Handle_GAMEINFO(NetworkConnection& connection, NetworkPacket& packet);
+    void Client_Handle_SHOWERROR(NetworkConnection& connection, NetworkPacket& packet);
+    void Client_Handle_GROUPLIST(NetworkConnection& connection, NetworkPacket& packet);
+    void Client_Handle_EVENT(NetworkConnection& connection, NetworkPacket& packet);
+    void Client_Handle_TOKEN(NetworkConnection& connection, NetworkPacket& packet);
+    void Server_Handle_TOKEN(NetworkConnection& connection, NetworkPacket& packet);
+    void Client_Handle_OBJECTS(NetworkConnection& connection, NetworkPacket& packet);
+    void Server_Handle_OBJECTS(NetworkConnection& connection, NetworkPacket& packet);
+
+    uint8 * save_for_network(size_t &out_size, const std::vector<const ObjectRepositoryItem *> &objects) const;
 };
 
 #endif // __cplusplus
@@ -260,11 +274,11 @@ private:
 #ifdef __cplusplus
 extern "C" {
 #endif // __cplusplus
-sint32 network_init();
+void network_set_env(void * env);
 void network_close();
 void network_shutdown_client();
 sint32 network_begin_client(const char *host, sint32 port);
-sint32 network_begin_server(sint32 port);
+sint32 network_begin_server(sint32 port, const char* address);
 
 sint32 network_get_mode();
 sint32 network_get_status();
@@ -314,6 +328,7 @@ void network_set_password(const char* password);
 
 void network_print_error();
 void network_append_chat_log(const utf8 *text);
+void network_append_server_log(const utf8 *text);
 const utf8 * network_get_server_name();
 const utf8 * network_get_server_description();
 const utf8 * network_get_server_greeting();

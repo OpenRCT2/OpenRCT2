@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -15,6 +15,7 @@
 #pragma endregion
 
 #include <algorithm>
+#include <chrono>
 #include <memory>
 #include <unordered_map>
 #include <vector>
@@ -28,7 +29,6 @@
 #include "../core/Memory.hpp"
 #include "../core/MemoryStream.h"
 #include "../core/Path.hpp"
-#include "../core/Stopwatch.hpp"
 #include "../core/String.hpp"
 #include "../PlatformEnvironment.h"
 #include "../rct12/SawyerChunkReader.h"
@@ -296,16 +296,17 @@ private:
         Console::WriteLine("Scanning %lu objects...", _queryDirectoryResult.TotalFiles);
         _numConflicts = 0;
 
-        auto stopwatch = Stopwatch();
-        stopwatch.Start();
+        auto startTime = std::chrono::high_resolution_clock::now();
 
         const std::string &rct2Path = _env->GetDirectoryPath(DIRBASE::RCT2, DIRID::OBJECT);
         const std::string &openrct2Path = _env->GetDirectoryPath(DIRBASE::USER, DIRID::OBJECT);
         ScanDirectory(rct2Path);
         ScanDirectory(openrct2Path);
 
-        stopwatch.Stop();
-        Console::WriteLine("Scanning complete in %.2f seconds.", stopwatch.GetElapsedMilliseconds() / 1000.0f);
+        auto endTime = std::chrono::high_resolution_clock::now();
+        std::chrono::duration<float> duration = endTime - startTime;
+
+        Console::WriteLine("Scanning complete in %.2f seconds.", duration.count());
         if (_numConflicts > 0)
         {
             Console::WriteLine("%d object conflicts found.", _numConflicts);
@@ -716,18 +717,28 @@ bool IsObjectCustom(const ObjectRepositoryItem * object)
 
 extern "C"
 {
-    rct_object_entry * object_list_find(rct_object_entry * entry)
+    const rct_object_entry * object_list_find(rct_object_entry * entry)
     {
-        IObjectRepository * objRepo = GetObjectRepository();
-        const ObjectRepositoryItem * item = objRepo->FindObject(entry);
-        return (rct_object_entry *)&item->ObjectEntry;
+        const rct_object_entry * result = nullptr;
+        auto objRepo = GetObjectRepository();
+        auto item = objRepo->FindObject(entry);
+        if (item != nullptr)
+        {
+            result = &item->ObjectEntry;
+        }
+        return result;
     }
 
-    rct_object_entry * object_list_find_by_name(const char * name)
+    const rct_object_entry * object_list_find_by_name(const char * name)
     {
-        IObjectRepository * objRepo = GetObjectRepository();
-        const ObjectRepositoryItem * item = objRepo->FindObject(name);
-        return (rct_object_entry *)&item->ObjectEntry;
+        const rct_object_entry * result = nullptr;
+        auto objRepo = GetObjectRepository();
+        auto item = objRepo->FindObject(name);
+        if (item != nullptr)
+        {
+            result = &item->ObjectEntry;
+        }
+        return result;
     }
 
     void object_list_load()

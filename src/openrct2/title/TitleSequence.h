@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -88,6 +88,11 @@ extern "C"
     void FreeTitleSequence(TitleSequence * seq);
 
     TitleSequenceParkHandle * TitleSequenceGetParkHandle(TitleSequence * seq, size_t index);
+
+    /**
+     * Close a title sequence park handle.
+     * The pointer to the handle is invalid after calling this function.
+     */
     void TitleSequenceCloseParkHandle(TitleSequenceParkHandle * handle);
     bool TileSequenceSave(TitleSequence * seq);
     bool TileSequenceAddPark(TitleSequence * seq, const utf8 * path, const utf8 * name);

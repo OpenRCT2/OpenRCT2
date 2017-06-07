@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -19,7 +19,7 @@
 #include "common.h"
 
 #define OPENRCT2_NAME               "OpenRCT2"
-#define OPENRCT2_VERSION            "0.0.7"
+#define OPENRCT2_VERSION            "0.0.8"
 
 #if defined(__amd64__) || defined(_M_AMD64)
     #define OPENRCT2_ARCHITECTURE       "x86-64"

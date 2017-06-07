@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -297,7 +297,7 @@ private:
             object->Unload();
             delete object;
 
-            // Because its possible to have the same loaded object for multiple
+            // Because it's possible to have the same loaded object for multiple
             // slots, we have to make sure find and set all of them to nullptr
             if (_loadedObjects != nullptr)
             {

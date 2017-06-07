@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -68,6 +68,7 @@ interface IPlatformEnvironment
 {
     virtual ~IPlatformEnvironment() = default;
 
+    virtual std::string GetDirectoryPath(DIRBASE base) const abstract;
     virtual std::string GetDirectoryPath(DIRBASE base, DIRID did) const abstract;
     virtual std::string GetFilePath(PATHID pathid) const abstract;
 };

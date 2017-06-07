@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -54,7 +54,7 @@ extern "C"
     TitleSequence * LoadTitleSequence(const utf8 * path)
     {
         size_t scriptLength;
-        char * script;
+        utf8 * script;
         std::vector<utf8 *> saves;
         bool isZip;
 
@@ -70,7 +70,7 @@ extern "C"
                 return nullptr;
             }
 
-            script = (char *)zip->GetFileData("script.txt", &scriptLength);
+            script = (utf8 *)zip->GetFileData("script.txt", &scriptLength);
             if (script == nullptr)
             {
                 Console::Error::WriteLine("Unable to open script.txt in '%s'", path);
@@ -88,7 +88,7 @@ extern "C"
             utf8 scriptPath[MAX_PATH];
             String::Set(scriptPath, sizeof(scriptPath), path);
             Path::Append(scriptPath, sizeof(scriptPath), "script.txt");
-            script = (char *)ReadScriptFile(scriptPath, &scriptLength);
+            script = (utf8 *)ReadScriptFile(scriptPath, &scriptLength);
             if (script == nullptr)
             {
                 Console::Error::WriteLine("Unable to open '%s'", scriptPath);
@@ -100,6 +100,7 @@ extern "C"
         }
 
         std::vector<TitleCommand> commands = LegacyScriptRead(script, scriptLength, saves);
+        Memory::Free(script);
 
         TitleSequence * seq = CreateTitleSequence();
         seq->Name = Path::GetFileNameWithoutExtension(path);
@@ -165,6 +166,7 @@ extern "C"
         {
             Memory::Free(handle->HintPath);
             delete ((IStream *)handle->Stream);
+            Memory::Free(handle);
         }
     }
 

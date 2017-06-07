@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -25,6 +25,7 @@ typedef struct GeneralConfiguration
     utf8 *      rct2_path;
 
     // Display
+    sint32      default_display;
     sint32      window_width;
     sint32      window_height;
     sint32      fullscreen_mode;
@@ -48,6 +49,7 @@ typedef struct GeneralConfiguration
     bool        render_weather_effects;
     bool        render_weather_gloom;
     bool        disable_lightning_effect;
+    bool        show_guest_purchases;
 
     // Localisation
     sint32      language;
@@ -136,6 +138,7 @@ typedef struct NetworkConfiguration
 {
     utf8 *      player_name;
     sint32      default_port;
+    char *      listen_address;
     utf8 *      default_password;
     bool        stay_connected;
     bool        advertise;
@@ -149,6 +152,7 @@ typedef struct NetworkConfiguration
     utf8 *      provider_website;
     bool        known_keys_only;
     bool        log_chat;
+    bool        log_server_actions;
 } NetworkConfiguration;
 
 typedef struct NotificationConfiguration

@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -19,7 +19,6 @@
 #include "network.h"
 #include "NetworkConnection.h"
 #include "../core/String.hpp"
-#include <SDL.h>
 
 extern "C"
 {
@@ -85,7 +84,7 @@ sint32 NetworkConnection::ReadPacket()
         }
         if (InboundPacket.BytesTransferred == sizeof(InboundPacket.Size) + InboundPacket.Size)
         {
-            _lastPacketTime = SDL_GetTicks();
+            _lastPacketTime = platform_get_ticks();
             return NETWORK_READPACKET_SUCCESS;
         }
     }
@@ -150,13 +149,13 @@ void NetworkConnection::SendQueuedPackets()
 
 void NetworkConnection::ResetLastPacketTime()
 {
-    _lastPacketTime = SDL_GetTicks();
+    _lastPacketTime = platform_get_ticks();
 }
 
 bool NetworkConnection::ReceivedPacketRecently()
 {
 #ifndef DEBUG
-    if (SDL_TICKS_PASSED(SDL_GetTicks(), _lastPacketTime + 7000))
+    if (platform_get_ticks() > _lastPacketTime + 7000)
     {
         return false;
     }

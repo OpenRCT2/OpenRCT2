@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -64,7 +64,7 @@ namespace Imaging
                 return false;
             }
 
-            // Setup png reading
+            // Setup PNG reading
             png_set_read_fn(png_ptr, &fs, PngReadData);
             png_set_sig_bytes(png_ptr, sig_read);
 

@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -42,7 +42,7 @@ void RideObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
 {
     stream->Seek(8, STREAM_SEEK_CURRENT);
     _legacyType.flags = stream->ReadValue<uint32>();
-    for (sint32 i = 0; i < 3; i++)
+    for (sint32 i = 0; i < MAX_RIDE_TYPES_PER_RIDE_ENTRY; i++)
     {
         _legacyType.ride_type[i] = stream->ReadValue<uint8>();
     }
@@ -239,7 +239,7 @@ void RideObject::Load()
                     image_index += b;
                 }
 
-                // Verticle
+                // Vertical
                 if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_VERTICAL_SLOPES)
                 {
                     vehicleEntry->var_28 = image_index;
@@ -395,7 +395,7 @@ const utf8 * RideObject::GetCapacity() const
 
 void RideObject::SetRepositoryItem(ObjectRepositoryItem * item) const
 {
-    for (sint32 i = 0; i < 3; i++)
+    for (sint32 i = 0; i < MAX_RIDE_TYPES_PER_RIDE_ENTRY; i++)
     {
         item->RideType[i] = _legacyType.ride_type[i];
     }
@@ -405,8 +405,7 @@ void RideObject::SetRepositoryItem(ObjectRepositoryItem * item) const
     }
 
     uint8 flags = 0;
-    if ((_legacyType.flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME) &&
-        !rideTypeShouldLoseSeparateFlag(&_legacyType))
+    if (_legacyType.flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE)
     {
         flags |= ORI_RIDE_FLAG_SEPARATE;
     }

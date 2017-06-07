@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -22,13 +22,13 @@
 #include "../common.h"
 
 enum {
-	X86_FLAG_CARRY = 1 << 0,
-	X86_FLAG_PARITY = 1 << 2,
+    X86_FLAG_CARRY = 1 << 0,
+    X86_FLAG_PARITY = 1 << 2,
 
-	X86_FLAG_ADJUST = 1 << 4,
+    X86_FLAG_ADJUST = 1 << 4,
 
-	X86_FLAG_ZERO = 1 << 6,
-	X86_FLAG_SIGN = 1 << 7,
+    X86_FLAG_ZERO = 1 << 6,
+    X86_FLAG_SIGN = 1 << 7,
 };
 
 typedef uint8 (hook_function)(registers *regs);

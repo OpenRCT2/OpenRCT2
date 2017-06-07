@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -17,13 +17,12 @@
 #ifndef _SAWYERCODING_H_
 #define _SAWYERCODING_H_
 
-#include <SDL.h>
 #include "../common.h"
 
 #pragma pack(push, 1)
 typedef struct sawyercoding_chunk_header {
-	uint8 encoding;
-	uint32 length;
+    uint8 encoding;
+    uint32 length;
 } sawyercoding_chunk_header;
 assert_struct_size(sawyercoding_chunk_header, 5);
 #pragma pack(pop)
@@ -31,22 +30,22 @@ assert_struct_size(sawyercoding_chunk_header, 5);
 extern bool gUseRLE;
 
 enum {
-	CHUNK_ENCODING_NONE,
-	CHUNK_ENCODING_RLE,
-	CHUNK_ENCODING_RLECOMPRESSED,
-	CHUNK_ENCODING_ROTATE
+    CHUNK_ENCODING_NONE,
+    CHUNK_ENCODING_RLE,
+    CHUNK_ENCODING_RLECOMPRESSED,
+    CHUNK_ENCODING_ROTATE
 };
 
 enum {
-	FILE_VERSION_MASK = (3 << 0),
-	FILE_VERSION_RCT1 = (0 << 0),
-	FILE_VERSION_RCT1_AA = (1 << 0),
-	FILE_VERSION_RCT1_LL = (2 << 0),
+    FILE_VERSION_MASK = (3 << 0),
+    FILE_VERSION_RCT1 = (0 << 0),
+    FILE_VERSION_RCT1_AA = (1 << 0),
+    FILE_VERSION_RCT1_LL = (2 << 0),
 
-	FILE_TYPE_MASK = (3 << 2),
-	FILE_TYPE_TD4 = (0 << 2),
-	FILE_TYPE_SV4 = (1 << 2),
-	FILE_TYPE_SC4 = (2 << 2)
+    FILE_TYPE_MASK = (3 << 2),
+    FILE_TYPE_TD4 = (0 << 2),
+    FILE_TYPE_SV4 = (1 << 2),
+    FILE_TYPE_SC4 = (2 << 2)
 };
 
 uint32 sawyercoding_calculate_checksum(const uint8* buffer, size_t length);

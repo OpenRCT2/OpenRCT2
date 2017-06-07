@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -24,8 +24,8 @@ extern const uint8 * Rotation2TimeToSpriteMaps[];
 extern const uint8 * Rotation3TimeToSpriteMaps[];
 
 typedef struct top_spin_time_to_sprite_map {
-	uint8 arm_rotation;
-	uint8 bank_rotation;
+    uint8 arm_rotation;
+    uint8 bank_rotation;
 } top_spin_time_to_sprite_map;
 
 extern const top_spin_time_to_sprite_map * TopSpinTimeToSpriteMaps[];

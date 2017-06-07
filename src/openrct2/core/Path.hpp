@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -23,6 +23,13 @@ namespace Path
 {
     utf8 * Append(utf8 * buffer, size_t bufferSize, const utf8 * src);
     std::string Combine(const std::string &a, const std::string &b);
+
+    template<typename... Args>
+    std::string Combine(const std::string &a, const std::string &b, Args... args)
+    {
+        return Combine(a, Combine(b, args...));
+    }
+
     std::string GetDirectory(const std::string &path);
     utf8 * GetDirectory(const utf8 * path);
     utf8 * GetDirectory(utf8 * buffer, size_t bufferSize, const utf8 * path);

@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -103,11 +103,11 @@ exitcode_t CommandLine::HandleCommandConvert(CommandLineArgEnumerator * enumerat
     WriteConvertFromAndToMessage(sourceFileType, destinationFileType);
 
     gOpenRCT2Headless = true;
-    if (!openrct2_initialise())
-    {
-        Console::Error::WriteLine("Error while initialising OpenRCT2.");
-        return EXITCODE_FAIL;
-    }
+    // if (!openrct2_initialise())
+    // {
+    //     Console::Error::WriteLine("Error while initialising OpenRCT2.");
+    //     return EXITCODE_FAIL;
+    // }
 
     try
     {

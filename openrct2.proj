@@ -19,7 +19,7 @@
     <TestConfig Condition="'$(Configuration)'=='DebugTests' OR '$(Configuration)'=='ReleaseTests'">true</TestConfig>
     <GIT_COMMIT_SHA1_SHORT Condition="'$(GIT_COMMIT_SHA1)'!=''">$(GIT_COMMIT_SHA1.Substring(0, 7))</GIT_COMMIT_SHA1_SHORT>
 
-    <Version>0.0.7</Version>
+    <Version>0.0.8</Version>
     <VersionExtra Condition="'$(GIT_BRANCH)'!=''">-$(GIT_BRANCH)-$(GIT_COMMIT_SHA1_SHORT)</VersionExtra>
     <VersionExtra Condition="'$(GIT_TAG)'!=''"></VersionExtra>
     <TargetLibsVersion>11</TargetLibsVersion>
@@ -189,7 +189,10 @@
   </Target>
 
   <Target Name="Test" DependsOnTargets="Build">
-    <Exec Command="$(TargetDir)tests\tests.exe" />
+    <Exec Command="$(TargetDir)tests\tests.exe &quot;--gtest_output=xml:$(ArtifactsDir)test-results.xml&quot;" />
+  </Target>
+  <Target Name="TestNoRCT2" DependsOnTargets="Build">
+    <Exec Command="$(TargetDir)tests\tests.exe &quot;--gtest_filter=-RideRatings*&quot; &quot;--gtest_output=xml:$(ArtifactsDir)test-results.xml&quot;" />
   </Target>
   <Target Name="TestPaint" DependsOnTargets="Build" Condition="'$(Platform)'=='Win32'">
     <Exec Command="$(TargetDir)testpaint\openrct2.exe" />
@@ -199,7 +202,7 @@
   <Target Name="g2" DependsOnTargets="Build" AfterTargets="Build" Inputs="@(g2Inputs)" Outputs="$(g2Output)"
           Condition="'$(TestConfig)'!='true'">
     <Message Text="Building g2.dat..." />
-    <Exec Command="&quot;$(OutputExe)&quot; sprite build &quot;$(g2Output)&quot; &quot;$(RootDir)resources\g2&quot;"
+    <Exec Command="&quot;$(OutputExe)&quot; sprite build &quot;$(g2Output)&quot; &quot;$(RootDir)resources\g2\sprites.json&quot;"
           StandardOutputImportance="low" />
   </Target>
 

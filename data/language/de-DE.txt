@@ -2747,7 +2747,7 @@ STR_2739    :Keine
 STR_2740    :RollerCoaster Tycoon 1
 STR_2741    :RollerCoaster Tycoon 2
 STR_2742    :css50.dat nicht gefunden
-STR_2743    :Kopieren Sie data\css17.dat aus Ihrem RCT1-Verzeichnis nach data\css50.dat in Ihrem RCT2-Verzeichnis oder versichern Sie sich, dass der Pfad zur RCT1-Installation in den Optionen korrekt angegeben ist.
+STR_2743    :Kopieren Sie 'data/css17.dat' aus Ihrem RCT1-Verzeichnis nach 'data/css50.dat' in Ihrem RCT2-Verzeichnis oder versichern Sie sich, dass der Pfad zur RCT1-Installation in den Optionen korrekt angegeben ist.
 STR_2744    :[
 STR_2745    :\
 STR_2746    :]

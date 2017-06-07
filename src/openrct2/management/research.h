@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -21,16 +21,16 @@
 
 #pragma pack(push, 1)
 typedef struct rct_research_item {
-	// Bit 16 (0: scenery entry, 1: ride entry)
-	sint32 entryIndex;
-	uint8 category;
+    // Bit 16 (0: scenery entry, 1: ride entry)
+    sint32 entryIndex;
+    uint8 category;
 } rct_research_item;
 assert_struct_size(rct_research_item, 5);
 #pragma pack(pop)
 
 enum{
-	RESEARCH_ENTRY_FLAG_SCENERY_SET_ALWAYS_RESEARCHED = (1 << 29),
-	RESEARCH_ENTRY_FLAG_RIDE_ALWAYS_RESEARCHED = (1 << 30),
+    RESEARCH_ENTRY_FLAG_SCENERY_SET_ALWAYS_RESEARCHED = (1 << 29),
+    RESEARCH_ENTRY_FLAG_RIDE_ALWAYS_RESEARCHED = (1 << 30),
 };
 
 // Everything before this point has been researched
@@ -40,29 +40,35 @@ enum{
 // Extra end of list entry. Unsure why?
 #define RESEARCHED_ITEMS_END_2 -3
 
+#define MAX_RESEARCH_ITEMS 500
+#define MAX_RESEARCHED_SCENERY_ITEMS 56
+#define MAX_RESEARCHED_RIDE_TYPES 8
+#define MAX_RESEARCHED_RIDE_ENTRIES 8
+#define MAX_RESEARCHED_TRACK_TYPES 128
+
 enum {
-	RESEARCH_FUNDING_NONE,
-	RESEARCH_FUNDING_MINIMUM,
-	RESEARCH_FUNDING_NORMAL,
-	RESEARCH_FUNDING_MAXIMUM
+    RESEARCH_FUNDING_NONE,
+    RESEARCH_FUNDING_MINIMUM,
+    RESEARCH_FUNDING_NORMAL,
+    RESEARCH_FUNDING_MAXIMUM
 };
 
 enum {
-	RESEARCH_STAGE_INITIAL_RESEARCH,
-	RESEARCH_STAGE_DESIGNING,
-	RESEARCH_STAGE_COMPLETING_DESIGN,
-	RESEARCH_STAGE_UNKNOWN,
-	RESEARCH_STAGE_FINISHED_ALL
+    RESEARCH_STAGE_INITIAL_RESEARCH,
+    RESEARCH_STAGE_DESIGNING,
+    RESEARCH_STAGE_COMPLETING_DESIGN,
+    RESEARCH_STAGE_UNKNOWN,
+    RESEARCH_STAGE_FINISHED_ALL
 };
 
 enum {
-	RESEARCH_CATEGORY_TRANSPORT,
-	RESEARCH_CATEGORY_GENTLE,
-	RESEARCH_CATEGORY_ROLLERCOASTER,
-	RESEARCH_CATEGORY_THRILL,
-	RESEARCH_CATEGORY_WATER,
-	RESEARCH_CATEGORY_SHOP,
-	RESEARCH_CATEGORY_SCENERYSET
+    RESEARCH_CATEGORY_TRANSPORT,
+    RESEARCH_CATEGORY_GENTLE,
+    RESEARCH_CATEGORY_ROLLERCOASTER,
+    RESEARCH_CATEGORY_THRILL,
+    RESEARCH_CATEGORY_WATER,
+    RESEARCH_CATEGORY_SHOP,
+    RESEARCH_CATEGORY_SCENERYSET
 };
 
 extern uint8 gResearchFundingLevel;
@@ -75,19 +81,19 @@ extern uint8 gResearchExpectedDay;
 extern uint8 gResearchNextCategory;
 extern uint32 gResearchNextItem;
 
-extern rct_research_item gResearchItems[500];
+extern rct_research_item gResearchItems[MAX_RESEARCH_ITEMS];
 extern uint8 gResearchUncompletedCategories;
-extern uint32 gResearchedRideTypes[8];
-extern uint32 gResearchedRideEntries[8];
-extern uint32 gResearchedTrackTypesA[128];
-extern uint32 gResearchedTrackTypesB[128];
-extern uint32 gResearchedSceneryItems[56];
+extern uint32 gResearchedRideTypes[MAX_RESEARCHED_RIDE_TYPES];
+extern uint32 gResearchedRideEntries[MAX_RESEARCHED_RIDE_ENTRIES];
+extern uint32 gResearchedTrackTypesA[MAX_RESEARCHED_TRACK_TYPES];
+extern uint32 gResearchedTrackTypesB[MAX_RESEARCHED_TRACK_TYPES];
+extern uint32 gResearchedSceneryItems[MAX_RESEARCHED_SCENERY_ITEMS];
 extern bool gSilentResearch;
 
 void research_reset_items();
 void research_update_uncompleted_types();
 void research_update();
-void sub_684AC3();
+void research_reset_current_item();
 void research_remove_non_separate_vehicle_types();
 void research_populate_list_random();
 void research_populate_list_researched();
@@ -104,7 +110,9 @@ void research_insert_scenery_group_entry(uint8 entryIndex, bool researched);
 
 bool ride_type_is_invented(sint32 rideType);
 bool ride_entry_is_invented(sint32 rideEntryIndex);
-bool track_type_is_invented(uint8 rideType, sint32 trackType);
+bool track_piece_is_available_for_ride_type(uint8 rideType, sint32 trackType);
 bool scenery_is_invented(uint16 sceneryItem);
+void reset_researched_scenery_items();
+void reset_researched_ride_types_and_entries();
 
 #endif

@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -468,7 +468,7 @@ private:
             std::vector<const char *> objects = RCT1::GetSceneryObjects(sceneryTheme);
             for (const char * objectName : objects)
             {
-                rct_object_entry * foundEntry = object_list_find_by_name(objectName);
+                const rct_object_entry * foundEntry = object_list_find_by_name(objectName);
                 if (foundEntry != nullptr)
                 {
                     uint8 objectType = foundEntry->flags & 0x0F;
@@ -675,7 +675,7 @@ private:
             std::string rideName = GetUserString(src->name);
             if (!rideName.empty())
             {
-                rct_string_id rideNameStringId = user_string_allocate(4, rideName.c_str());
+                rct_string_id rideNameStringId = user_string_allocate(USER_STRING_HIGH_ID_NUMBER, rideName.c_str());
                 if (rideNameStringId != 0)
                 {
                     dst->name = rideNameStringId;
@@ -1286,7 +1286,7 @@ private:
             std::string peepName = GetUserString(src->name_string_idx);
             if (!peepName.empty())
             {
-                rct_string_id peepNameStringId = user_string_allocate(4, peepName.c_str());
+                rct_string_id peepNameStringId = user_string_allocate(USER_STRING_HIGH_ID_NUMBER, peepName.c_str());
                 if (peepNameStringId != 0)
                 {
                     dst->name_string_idx = peepNameStringId;
@@ -1355,7 +1355,7 @@ private:
         dst->time_on_ride = src->time_on_ride;
         dst->days_in_queue = src->days_in_queue;
 
-        dst->interactionRideIndex = src->interactionRideIndex;
+        dst->interaction_ride_index = src->interaction_ride_index;
 
         dst->id = src->id;
         dst->cash_in_pocket = src->cash_in_pocket;
@@ -1417,9 +1417,16 @@ private:
 
         peep_update_name_sort(dst);
 
-        if (!dst->outside_of_park && dst->type == PEEP_TYPE_GUEST)
+        if (dst->type == PEEP_TYPE_GUEST)
         {
-            gNumGuestsInPark++;
+            if (dst->outside_of_park && dst->state != PEEP_STATE_LEAVING_PARK)
+            {
+                increment_guests_heading_for_park();
+            }
+            else
+            {
+                increment_guests_in_park();
+            }
         }
     }
 
@@ -1880,7 +1887,7 @@ private:
             }
         }
 
-        rct_string_id stringId = user_string_allocate(4, parkName.c_str());
+        rct_string_id stringId = user_string_allocate(USER_STRING_HIGH_ID_NUMBER, parkName.c_str());
         if (stringId != 0)
         {
             gParkName = stringId;
@@ -2331,7 +2338,7 @@ private:
             std::string bannerText = GetUserString(src->string_idx);
             if (!bannerText.empty())
             {
-                rct_string_id bannerTextStringId = user_string_allocate(128, bannerText.c_str());
+                rct_string_id bannerTextStringId = user_string_allocate(USER_STRING_DUPLICATION_PERMITTED, bannerText.c_str());
                 if (bannerTextStringId != 0)
                 {
                     dst->string_idx = bannerTextStringId;

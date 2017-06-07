@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -14,7 +14,11 @@
  *****************************************************************************/
 #pragma endregion
 
+#include <stdexcept>
+#include "../Context.h"
+#include "../ui/UiContext.h"
 #include "../core/Exception.hpp"
+#include "../core/Registration.hpp"
 #include "IDrawingContext.h"
 #include "IDrawingEngine.h"
 #include "NewDrawing.h"
@@ -29,8 +33,12 @@ extern "C"
     #include "../rct2.h"
 }
 
-static sint32           _drawingEngineType  = DRAWING_ENGINE_SOFTWARE;
-static IDrawingEngine * _drawingEngine      = nullptr;
+using namespace OpenRCT2;
+using namespace OpenRCT2::Drawing;
+using namespace OpenRCT2::Ui;
+
+static sint32                   _drawingEngineType  = DRAWING_ENGINE_SOFTWARE;
+static IDrawingEngine *         _drawingEngine      = nullptr;
 
 extern "C"
 {
@@ -69,20 +77,11 @@ extern "C"
     {
         assert(_drawingEngine == nullptr);
 
-        IDrawingEngine * drawingEngine = nullptr;
         _drawingEngineType = gConfigGeneral.drawing_engine;
-        switch (_drawingEngineType) {
-        case DRAWING_ENGINE_SOFTWARE:
-            drawingEngine = DrawingEngineFactory::CreateSoftware();
-            break;
-        case DRAWING_ENGINE_SOFTWARE_WITH_HARDWARE_DISPLAY:
-            drawingEngine = DrawingEngineFactory::CreateSoftwareWithHardwareDisplay();
-            break;
-        case DRAWING_ENGINE_OPENGL:
-            drawingEngine = DrawingEngineFactory::CreateOpenGL();
-            break;
-        }
 
+        IContext * context = GetContext();
+        IUiContext * uiContext = context->GetUiContext();
+        IDrawingEngine * drawingEngine = uiContext->CreateDrawingEngine((DRAWING_ENGINE_TYPE)_drawingEngineType);
         if (drawingEngine == nullptr)
         {
             if (_drawingEngineType == DRAWING_ENGINE_SOFTWARE)
@@ -105,7 +104,7 @@ extern "C"
         {
             try
             {
-                drawingEngine->Initialise(gWindow);
+                drawingEngine->Initialise(uiContext->GetWindow());
                 drawingEngine->SetUncappedFrameRate(gConfigGeneral.uncap_fps == 1);
                 _drawingEngine = drawingEngine;
             }
@@ -140,10 +139,12 @@ extern "C"
         {
             drawing_engine_init();
         }
-        _drawingEngine->Resize(gScreenWidth, gScreenHeight);
+
+        IUiContext * uiContext = GetContext()->GetUiContext();
+        _drawingEngine->Resize(uiContext->GetWidth(), uiContext->GetHeight());
     }
 
-    void drawing_engine_set_palette(SDL_Color * colours)
+    void drawing_engine_set_palette(const rct_palette_entry * colours)
     {
         if (_drawingEngine != nullptr)
         {

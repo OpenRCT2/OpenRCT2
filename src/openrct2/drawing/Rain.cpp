@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -25,6 +25,8 @@ extern "C"
 #include "IDrawingEngine.h"
 #include "Rain.h"
 #include "../core/Math.hpp"
+
+using namespace OpenRCT2::Drawing;
 
 typedef void (* DrawRainFunc)(IRainDrawer * rainDrawer, sint32 left, sint32 top, sint32 width, sint32 height);
 

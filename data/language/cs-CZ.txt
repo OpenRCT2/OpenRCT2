@@ -2750,7 +2750,7 @@ STR_2739    :Žádná
 STR_2740    :RollerCoaster Tycoon 1
 STR_2741    :RollerCoaster Tycoon 2
 STR_2742    :css50.dat nenalezen
-STR_2743    :Nakopírujte data\css17.dat z vaší instalace RCT1 do to data\css50.dat ve vaší instalaci RCT2.
+STR_2743    :Nakopírujte 'data/css17.dat' z vaší instalace RCT1 do 'data/css50.dat' ve vaší instalaci RCT2.
 STR_2744    :[
 STR_2745    :\
 STR_2746    :]
@@ -4145,7 +4145,7 @@ STR_5832    :{SMALLFONT}{BLACK}Výškové jednotky zobrazit pouze číslem, bez 
 STR_5833    :{SMALLFONT}{BLACK}Změní formát data
 STR_5834    :{SMALLFONT}{BLACK}Vyberte zvukové zařízení pro použití v OpenRCT2
 STR_5835    :{SMALLFONT}{BLACK}Zakázat zvuky, pokud herní okno přestane být aktivní
-STR_5836    :{SMALLFONT}{BLACK}Vyberte hudbu, která bude hrát na úvodní obrazovce.{NEWLINE}Výběr RCT1 znělky vyžaduje zkopírování a přejmenování 'data/css17.dat' ze složky RCT1 jako 'data/css50.dat' do vaší RCT2 složky.
+STR_5836    :{SMALLFONT}{BLACK}Vyberte hudbu, která bude hrát na úvodní obrazovce.{NEWLINE}Výběr RCT1 znělky vyžaduje zkopírování a přejmenování 'data/css17.dat' ze složky RCT1 jako 'data/css50.dat' do vaší RCT2 složky, nebo nastavení cesty k RCT1 v nastavení.
 STR_5837    :{SMALLFONT}{BLACK}Vytvořit a spravovat vlastní barevné palety UI
 STR_5838    :{SMALLFONT}{BLACK}Zobrazit samostatné tlačítko pro financí na nástrojové liště
 STR_5839    :{SMALLFONT}{BLACK}Zobrazit samostatné tlačítko pro výzkum a vývoj na nástrojové liště
@@ -4342,6 +4342,31 @@ STR_6029    :Stavba trati - odebrat aktivní část
 STR_6030    :{SMALLFONT}{BLACK}Výběr kulis. Klikněte na jakoukoliv kulisu na mapě pro postavení její kopie.
 STR_6031    :Popis serveru:
 STR_6032    :Uvítací zpráva serveru:
+STR_6033    :Cesta k RCT1 instalaci:
+STR_6035    :Prosím vyberte složku s RCT1
+STR_6036    :{SMALLFONT}{BLACK}Zrušit
+STR_6037    :Prosím vyberte správnou složku s RCT1
+STR_6038    :{SMALLFONT}{BLACK}Pokud máte nainstalovaný RCT1, použijte tuto volbu k nastavení cesty k RCT1 pro možnost nahrání scénářů, hudby a dalších.
+STR_6039    :{SMALLFONT}{BLACK}Rychle odebrat atrakci
+STR_6040    :Upravit nastavení scénáře
+STR_6041    :{BLACK}Nemáte najmuté žádné mechaniky!
+STR_6042    :Načíst výškovou mapu
+STR_6043    :Vybrat výškovou mapu
+STR_6044    :Vyhladit výškovou mapu
+STR_6045    :Síla
+STR_6046    :Normalizovat výškovou mapu
+STR_6047    :Vyhladit dlaždice
+STR_6048    :Chyba výškové mapy
+STR_6049    :Chyba při čtení PNG
+STR_6050    :Chyba při čtení bitmapy
+STR_6051    :Šířka a výška musí být stejné
+STR_6052    :Výšková mapa je moc velká a bude oříznuta
+STR_6053    :Výškovou mapu nelze normalizovat
+STR_6054    :Podporovány jsou pouze 24-bitové bitmapy
+STR_6055    :Soubor výškové mapy OpenRCT2
+STR_6056    :{SMALLFONT}{BLACK}Ztlumit
+STR_6057    :{SMALLFONT}{BLACK}Na nástrojové liště zobrazovat samostatné tlačítko "Ztlumit"
+STR_6058    :Ztlumit
 
 ###############################################################################
 ## RCT2 Objects
