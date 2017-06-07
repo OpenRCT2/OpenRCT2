@@ -71,6 +71,8 @@ bool TryClassifyFile(IStream * stream, ClassifiedFile * result)
 
 static bool TryClassifyAsS6(IStream * stream, ClassifiedFile * result)
 {
+    bool success = false;
+    uint64 originalPosition = stream->GetPosition();
     try
     {
         auto chunkReader = SawyerChunkReader(stream);
@@ -84,12 +86,13 @@ static bool TryClassifyAsS6(IStream * stream, ClassifiedFile * result)
             result->Type = FILE_TYPE::SCENARIO;
         }
         result->Version = s6Header.version;
-        return true;
+        success = true;
     }
     catch (Exception)
     {
     }
-    return false;
+    stream->SetPosition(originalPosition);
+    return success;
 }
 
 static bool TryClassifyAsS4(IStream * stream, ClassifiedFile * result)
