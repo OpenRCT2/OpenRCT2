@@ -2,6 +2,7 @@
 ------------------------------------------------------------------------
 - Feature: [#5056] Add cheat to own all land.
 - Feature: [#5133] Add option to display guest expenditure (as seen in RCTC).
+- Feature: [#5196] Add cheat to disable ride ageing.
 - Feature: OpenRCT2 now starts up on the display it was last shown on.
 - Improved: Mouse can now be dragged to select scenery when saving track designs
 - Fix: [#3178, #5456] Paths with non-ASCII characters not handled properly on macOS.
@@ -110,7 +111,7 @@ This is the first fully implemented version of OpenRCT2. RCT2.EXE is no longer r
 - Feature: Assymmetric-key-based authorisation and assignment storage.
 - Feature: Add Norwegian translation.
 - Feature: Add cheat to disable littering.
-- Feature: Add Cheat to disable plant aging.
+- Feature: Add Cheat to disable plant ageing.
 - Feature: Add Cheat that allows any track piece to use a chain lift.
 - Feature: Add Console command to set vehicle friction.
 - Feature: Add console command to set scenario initial cash.
