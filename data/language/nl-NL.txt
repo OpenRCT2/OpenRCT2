@@ -4359,6 +4359,48 @@ STR_6055    :Hoogtekaart voor OpenRCT2
 STR_6056    :{SMALLFONT}{BLACK}Dempen
 STR_6057    :{SMALLFONT}{BLACK}Toon een knop in de werkbalk om het geluid te dempen
 STR_6058    :Dempen
+STR_6059    :{RIGHTGUILLEMET}
+STR_6060    :Animatie tonen als bezoeker iets koopt
+STR_6061    :{SMALLFONT}{BLACK}Toont een geanimeerd bedrag{NEWLINE}als een bezoeker iets koopt.
+STR_6062    :{OUTLINE}{GREEN}+ {CURRENCY2DP}
+STR_6063    :{OUTLINE}{RED}- {CURRENCY2DP}
+STR_6064    :Land toe-eigenen
+STR_6065    :Spelersacties loggen
+STR_6066    :{SMALLFONT}{BLACK}Schrijft alle acties van spelers naar een logbestand in de gebruikersmap.
+STR_6067    :Server gestart.
+STR_6068    :Server afgesloten.
+STR_6069    :{STRING} is uit de server gezet door {STRING}.
+STR_6070    :{STRING} is in de groep '{STRING}' geplaatst door {STRING}.
+STR_6071    :{STRING} heeft de nieuwe spelersgroep '{STRING}' aangemaakt.
+STR_6072    :{STRING} heeft de spelersgroep '{String}' verwijderd.
+STR_6073    :{STRING} heeft de rechten van spelersgroep '{String}' aangepast.
+STR_6074    :{STRING} heeft de naam van spelersnaam '{String}' veranderd in '{String}'.
+STR_6075    :{STRING} heeft de standaardspelersgroep veranderd in '{String}'.
+STR_6076    :{STRING} heeft de cheat '{STRING}' gebruikt, ingeschakeld of uitgeschakeld.
+STR_6077    :Geld toevoegen
+STR_6078    :{STRING} heeft de attractie '{STRING}' aangemaakt.
+STR_6079    :{STRING} heeft de attractie '{STRING}' gesloopt.
+STR_6080    :{STRING} heeft het uiterlijk van de attractie '{STRING}' aangepast.
+STR_6081    :{STRING} heeft de attractie '{STRING}' gesloten.
+STR_6082    :{STRING} heeft de attractie '{STRING}' geopend.
+STR_6083    :{STRING} heeft de attractie '{STRING}' in testmodus gezet.
+STR_6084    :{STRING} heeft de voertuiginstellingen van de attractie '{STRING}' aangepast.
+STR_6085    :{STRING} heeft de attractieinstellingen van de attractie '{STRING}' aangepast.
+STR_6086    :{STRING} heeft de attractie '{STRING}' hernoemd naar '{STRING}'.
+STR_6087    :{STRING} heeft de prijs van de attractie '{STRING}' aangepast naar {STRING}.
+STR_6088    :{STRING} heeft de tweede prijs van de attractie '{STRING}' aangepast naar {STRING}.
+STR_6089    :{STRING} heeft het park hernoemd van '{STRING}' naar '{STRING}'.
+STR_6090    :{STRING} heeft het park geopend.
+STR_6091    :{STRING} heeft het park gesloten.
+STR_6092    :{STRING} heeft de entreeprijs aangepast naar {STRING}.
+STR_6093    :{STRING} heeft nieuw decor geplaatst.
+STR_6094    :{STRING} heeft decor verwijderd.
+STR_6095    :{STRING} heeft bestaand decor aangepast.
+STR_6096    :{STRING} heeft het opschrift van een bord of lichtkrant veranderd in '{STRING}'.
+STR_6097    :{STRING} heeft een baanonderdeel voor '{STRING}' geplaatst.
+STR_6098    :{STRING} heeft een baanonderdeel verwijderd.
+STR_6099    :Je verbond met de server.
+STR_6100    :Je verbrak de verbinding met de server.
 
 #############
 # Scenarios #

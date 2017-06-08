@@ -4350,6 +4350,65 @@ STR_6038    :{SMALLFONT}{BLACK}Si vous avez une installation de RCT1, définisse
 STR_6039    :{SMALLFONT}{BLACK}Démolir le manège rapidement.
 STR_6040    :Modifier les options de scénario. 
 STR_6041    :{BLACK}Pas de mécanicien à embaucher !
+STR_6042    :Charger champ de hauteur
+STR_6043    :Sélectionner champ de hauteur
+STR_6044    :Lisser champ de hauteur
+STR_6045    :Force
+STR_6046    :Normaliser le champ de hauteur
+STR_6047    :Lisser les cases
+STR_6048    :Erreur champ de hauteur
+STR_6049    :Erreur lors du chargement du PNG
+STR_6050    :Erreur lors du chargement du bitmap
+STR_6051    :La largeur et la hauteur doivent correspondre
+STR_6052    :Ce champ de hauteur est trop grand, et sera coupé
+STR_6053    :Ce champ de hauteur ne peut pas être normalisé
+STR_6054    :Seuls les bitmaps 24 bits sont supportés
+STR_6055    :Fichier Champ de hauteur OpenRCT2
+STR_6056    :{SMALLFONT}{BLACK}Muet
+STR_6057    :{SMALLFONT}{BLACK}Afficher un bouton séparer dans la barre d'outils pour la fonction Muet
+STR_6058    :Muet
+STR_6059    :{RIGHTGUILLEMET}
+STR_6060    :Afficher des animations d'achats des visiteurs
+STR_6061    :{SMALLFONT}{BLACK}Affiche un effet d'argent animé{NEWLINE}quand les visiteurs font des achats.
+STR_6062    :{OUTLINE}{GREEN}+ {CURRENCY2DP}
+STR_6063    :{OUTLINE}{RED}- {CURRENCY2DP}
+STR_6064    :Posséder tout le terrain
+STR_6065    :Journaliser les actions utilisateurs
+STR_6066    :{SMALLFONT}{BLACK}Journalise toutes les actions utilisateurs dans votre répertoire utilisateur.
+STR_6067    :Serveur démarré.
+STR_6068    :Serveur arrêté.
+STR_6069    :{STRING} a été expulsé(e) du serveur par {STRING}.
+STR_6070    :{STRING} fait maintenant parti(e) du groupe '{STRING}' par {STRING}.
+STR_6071    :{STRING} a créée le groupe de joueurs '{STRING}'.
+STR_6072    :{STRING} a supprimé le groupe de joueurs '{STRING}'.
+STR_6073    :{STRING} a changé les permissions du groupe de joueurs '{STRING}'.
+STR_6074    :{STRING} a changé le nom du groupe de joueurs '{STRING}' en '{STRING}'.
+STR_6075    :{STRING} a changé le groupe de joueurs par défaut à '{STRING}'.
+STR_6076    :{STRING} a utilisé/activé ou désactivé la triche '{STRING}'.
+STR_6077    :Ajouter argent
+STR_6078    :{STRING} a créée l'attraction '{STRING}'.
+STR_6079    :{STRING} a détruit l'attraction '{STRING}'.
+STR_6080    :{STRING} a changé l'apparence de l'attraction '{STRING}'.
+STR_6081    :{STRING} a fermé l'attraction '{STRING}'.
+STR_6082    :{STRING} a ouvert l'attraction '{STRING}' au public.
+STR_6083    :{STRING} a ouvert l'attraction '{STRING}' pour les tests.
+STR_6084    :{STRING} a changé les paramètres des véhicules de l'attraction '{STRING}'.
+STR_6085    :{STRING} a changé les paramètres de l'attraction '{STRING}'.
+STR_6086    :{STRING} a renommé l'attraction '{STRING}' à '{STRING}'.
+STR_6087    :{STRING} a changé le prix de l'attraction '{STRING}' à {STRING}
+STR_6088    :{STRING} a changé le prix secondaire de l'attraction '{STRING}' à {STRING}
+STR_6089    :{STRING} a renommé le park de '{STRING}' vers '{STRING}'.
+STR_6090    :{STRING} a ouvert le parc.
+STR_6091    :{STRING} a fermé le parc.
+STR_6092    :{STRING} a changé le prix du parc à {STRING}
+STR_6093    :{STRING} a placé du nouveau décor.
+STR_6094    :{STRING} a détruit du décor.
+STR_6095    :{STRING} a changé le décor.
+STR_6096    :{STRING} a définit le texte d'un panneau à '{STRING}'.
+STR_6097    :{STRING} a placé une pièce pour l'attraction '{STRING}'.
+STR_6098    :{STRING} a détruit une pièce d'attraction.
+STR_6099    :Vous êtes connecté(e) au serveur.
+STR_6100    :Vous êtes déconnecté(e) du serveur.
 
 #############
 # Scenarios #

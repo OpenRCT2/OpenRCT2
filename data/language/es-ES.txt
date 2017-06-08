@@ -4322,6 +4322,52 @@ STR_6051    :El ancho y la altura deben ser la misma.
 STR_6052    :El mapa de altura es muy grande, será cortado.
 STR_6053    :El mapa de altura no puede ser normalizado.
 STR_6054    :Sólo bitmaps de 24-bits son soportados
+STR_6055    :Mapa de altura de OpenRCT2
+STR_6056    :{SMALLFONT}{BLACK}Silenciar
+STR_6057    :{SMALLFONT}{BLACK}Mostrar un botón separado para la Opción "Silenciar" en la barra de herramientas.
+STR_6058    :Silenciar
+STR_6059    :{RIGHTGUILLEMET}
+STR_6060    :Mostrar compras de visitantes con animación
+STR_6061    :{SMALLFONT}{BLACK}Mostrar un efecto animado de dinero{NEWLINE}cuando los visitantes realizan compras.
+STR_6062    :{OUTLINE}{GREEN}+ {CURRENCY2DP}
+STR_6063    :{OUTLINE}{RED}- {CURRENCY2DP}
+STR_6064    :Adquirir todo el mapa
+STR_6065    :Registrar acciones de usuario.
+STR_6066    :{SMALLFONT}{BLACK}Registrar todas las acciones de los usuarios en archivos en tu directorio de usuario.
+STR_6067    :Servidor iniciado.
+STR_6068    :Servidor apagado.
+STR_6069    :{STRING} fue expulsado del servidor por {STRING}.
+STR_6070    :{STRING} fue establecido en el grupo '{STRING}' por {STRING}.
+STR_6071    :{STRING} creó un nuevo grupo '{STRING}'.
+STR_6072    :{STRING} eliminó el grupo '{String}'.
+STR_6073    :{STRING} editó los permisos del grupo '{String}'.
+STR_6074    :{STRING} cambió el nombre del grupo de '{String}' a '{String}'.
+STR_6075    :{STRING} cambió el grupo por defecto a '{String}'.
+STR_6076    :{STRING} usó/alternó el truco '{STRING}'.
+STR_6077    :Añadir Dinero
+STR_6078    :{STRING} creó la atracción '{STRING}'.
+STR_6079    :{STRING} demolió la atracción '{STRING}'.
+STR_6080    :{STRING} cambió la apariencia de la atracción '{STRING}'.
+STR_6081    :{STRING} cambió el estado de la atracción '{STRING}' a cerrado.
+STR_6082    :{STRING} cambió el estado de la atracción '{STRING}' a abierto.
+STR_6083    :{STRING} cambió el estado de la atracción '{STRING}' a en prueba.
+STR_6084    :{STRING} cambió la configuración de vehículo de la atracción '{STRING}'.
+STR_6085    :{STRING} cambió la configuración de atracción de la atracción '{STRING}'.
+STR_6086    :{STRING} renombró la atracción '{STRING}' a '{STRING}'.
+STR_6087    :{STRING} cambió el costo de la atracción '{STRING}' a {STRING}
+STR_6088    :{STRING} cambió el costo secundario de la atracción '{STRING}' a {STRING}
+STR_6089    :{STRING} renombró el parque de '{STRING}' a '{STRING}'.
+STR_6090    :{STRING} abrió el parque.
+STR_6091    :{STRING} cerró el parque.
+STR_6092    :{STRING} changed the park entrance fee to {STRING}
+STR_6093    :{STRING} colocó un nuevo escenario.
+STR_6094    :{STRING} removió escenario.
+STR_6095    :{STRING} editó escenario.
+STR_6096    :{STRING} estableció el nombre del letrero a '{STRING}'.
+STR_6097    :{STRING} colocó una pieza de vía de la atracción '{STRING}'.
+STR_6098    :{STRING} removió una pieza de la atracción.
+STR_6099    :Te has conectado al servidor.
+STR_6100    :Te has desconectado del servidor.
 
 ##############
 # Escenarios #
