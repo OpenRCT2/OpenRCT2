@@ -127,7 +127,7 @@ uint16 gLandRemainingConstructionSales;
 
 rct_xyz16 gCommandPosition;
 
-uint8 gUnk9E2E28;
+bool gMapLandRightsUpdateSuccess;
 
 static void map_update_grass_length(sint32 x, sint32 y, rct_map_element *mapElement);
 static void map_set_grass_length(sint32 x, sint32 y, rct_map_element *mapElement, sint32 length);
@@ -1805,12 +1805,11 @@ static money32 map_set_land_ownership(uint8 flags, sint16 x1, sint16 y1, sint16 
     y1 = clamp(32, y1, gMapSizeUnits - 32);
     x2 = clamp(32, x2, gMapSizeUnits - 32);
     y2 = clamp(32, y2, gMapSizeUnits - 32);
-    gUnk9E2E28 = 0;
+    gMapLandRightsUpdateSuccess = false;
     map_buy_land_rights(x1, y1, x2, y2, 6, flags | (newOwnership << 8));
 
-    if (!(gUnk9E2E28 & 1)) {
+    if (!gMapLandRightsUpdateSuccess)
         return 0;
-    }
 
     sint16 x = clamp(32, x1, gMapSizeUnits - 32);
     sint16 y = clamp(32, y1, gMapSizeUnits - 32);

@@ -977,7 +977,7 @@ static money32 map_buy_land_rights_for_tile(sint32 x, sint32 y, sint32 setting, 
         surfaceElement->properties.surface.ownership &= 0x0F;
         surfaceElement->properties.surface.ownership |= newOwnership;
         update_park_fences_around_tile(x, y);
-        gUnk9E2E28 |= 1;
+        gMapLandRightsUpdateSuccess = true;
         return 0;
     }
 }

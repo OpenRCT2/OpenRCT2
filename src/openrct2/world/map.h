@@ -410,7 +410,7 @@ extern uint16 gLandRemainingConstructionSales;
 
 extern rct_xyz16 gCommandPosition;
 
-extern uint8 gUnk9E2E28;
+extern bool gMapLandRightsUpdateSuccess;
 
 void map_init(sint32 size);
 void map_count_remaining_land_rights();
