@@ -29,6 +29,7 @@
     <ClCompile Include="audio\MemoryAudioSource.cpp" />
     <ClCompile Include="CursorData.cpp" />
     <ClCompile Include="CursorRepository.cpp" />
+    <ClCompile Include="drawing\engines\HardwareDisplayDrawingEngine.cpp" />
     <ClCompile Include="drawing\engines\opengl\CopyFramebufferShader.cpp" />
     <ClCompile Include="drawing\engines\opengl\DrawImageShader.cpp" />
     <ClCompile Include="drawing\engines\opengl\DrawLineShader.cpp" />
