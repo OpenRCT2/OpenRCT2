@@ -172,15 +172,44 @@ void chat_draw(rct_drawpixelinfo * dpi)
     }
 }
 
-void chat_history_add(const char *src)
+void chat_history_add(const char * src)
 {
+    size_t bufferSize = strlen(src) + 64;
+    utf8 * buffer = (utf8 *)calloc(1, bufferSize);
+
+    // Prepend colour marker (based on text, default to white)
+    const char * ch = src;
+    uint32 colour = FORMAT_WHITE;
+    uint32 codepoint;
+    while ((codepoint = utf8_get_next(ch, &ch)) != 0) {
+        if (utf8_is_colour_code(codepoint)) {
+            colour = codepoint;
+            break;
+        }
+    }
+    utf8_write_codepoint(buffer, colour);
+
+    // Prepend a timestamp
+    time_t timer;
+    time(&timer);
+    struct tm * tmInfo = localtime(&timer);
+
+    strcatftime(buffer, bufferSize, "[%H:%M] ", tmInfo);
+    safe_strcat(buffer, src, bufferSize);
+
+    // Add to history list
     sint32 index = _chatHistoryIndex % CHAT_HISTORY_SIZE;
     memset(_chatHistory[index], 0, CHAT_INPUT_SIZE);
-    memcpy(_chatHistory[index], src, min(strlen(src), CHAT_INPUT_SIZE - 1));
+    memcpy(_chatHistory[index], buffer, min(strlen(buffer), CHAT_INPUT_SIZE - 1));
     _chatHistoryTime[index] = platform_get_ticks();
     _chatHistoryIndex++;
-    Mixer_Play_Effect(SOUND_NEWS_ITEM, 0, SDL_MIX_MAXVOLUME, 0, 1.5f, true);
+
+    // Log to file (src only as logging does its own timestamp)
     network_append_chat_log(src);
+
+    free(buffer);
+
+    Mixer_Play_Effect(SOUND_NEWS_ITEM, 0, SDL_MIX_MAXVOLUME, 0, 1.5f, true);
 }
 
 void chat_input(sint32 c)

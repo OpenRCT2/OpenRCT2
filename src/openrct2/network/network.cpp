@@ -574,13 +574,9 @@ const char* Network::FormatChat(NetworkPlayer* fromplayer, const char* text)
     char* lineCh = formatted;
     formatted[0] = 0;
     if (fromplayer) {
-        time_t timer;
-        time(&timer);
-        auto tmInfo = localtime(&timer);
         lineCh = utf8_write_codepoint(lineCh, FORMAT_OUTLINE);
         lineCh = utf8_write_codepoint(lineCh, FORMAT_BABYBLUE);
-        lineCh += strftime(lineCh, sizeof(formatted) - (lineCh - formatted), "[%H:%M] ", tmInfo);
-        safe_strcat(lineCh, (const char *) fromplayer->Name.c_str(), sizeof(formatted) - (lineCh - formatted));
+        safe_strcpy(lineCh, (const char *) fromplayer->Name.c_str(), sizeof(formatted) - (lineCh - formatted));
         safe_strcat(lineCh, ": ", sizeof(formatted) - (lineCh - formatted));
         lineCh = strchr(lineCh, '\0');
     }
@@ -588,7 +584,6 @@ const char* Network::FormatChat(NetworkPlayer* fromplayer, const char* text)
     lineCh = utf8_write_codepoint(lineCh, FORMAT_WHITE);
     char* ptrtext = lineCh;
     safe_strcpy(lineCh, text, 800);
-
     utf8_remove_format_codes((utf8*)ptrtext, true);
     return formatted;
 }
