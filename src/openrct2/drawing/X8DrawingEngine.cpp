@@ -35,6 +35,7 @@ extern "C"
     #include "../platform/platform.h"
     #include "../rct2.h"
     #include "drawing.h"
+    #include "lightfx.h"
 }
 
 using namespace OpenRCT2;
@@ -135,6 +136,9 @@ void X8RainDrawer::Restore()
 X8DrawingEngine::X8DrawingEngine()
 {
     _drawingContext = new X8DrawingContext(this);
+#ifdef __ENABLE_LIGHTFX__
+    _lastLightFXenabled = (gConfigGeneral.enable_light_fx != 0);
+#endif
 }
 
 X8DrawingEngine::~X8DrawingEngine()
@@ -201,6 +205,14 @@ void X8DrawingEngine::Draw()
     }
     else
     {
+#ifdef __ENABLE_LIGHTFX__
+            // HACK we need to re-configure the bits if light fx has been enabled / disabled
+            if (_lastLightFXenabled != (gConfigGeneral.enable_light_fx != 0))
+            {
+                Resize(_width, _height);
+            }
+#endif
+
         _rainDrawer.SetDPI(&_bitsDPI);
         _rainDrawer.Restore();
 
@@ -343,6 +355,13 @@ void X8DrawingEngine::ConfigureBits(uint32 width, uint32 height, uint32 pitch)
     dpi->pitch = _pitch - width;
 
     ConfigureDirtyGrid();
+
+#ifdef __ENABLE_LIGHTFX__
+        if (gConfigGeneral.enable_light_fx)
+        {
+            lightfx_update_buffers(dpi);
+        }
+#endif
 }
 
 void X8DrawingEngine::ConfigureDirtyGrid()

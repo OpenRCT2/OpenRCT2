@@ -59,9 +59,9 @@ namespace OpenRCT2 { namespace Drawing
         void Restore();
     };
 
-    class X8DrawingEngine final : public IDrawingEngine
+    class X8DrawingEngine : public IDrawingEngine
     {
-    private:
+    protected:
         uint32  _width      = 0;
         uint32  _height     = 0;
         uint32  _pitch      = 0;
@@ -71,6 +71,10 @@ namespace OpenRCT2 { namespace Drawing
         DirtyGrid   _dirtyGrid  = { 0 };
 
         rct_drawpixelinfo _bitsDPI  = { 0 };
+
+#ifdef __ENABLE_LIGHTFX__
+        bool _lastLightFXenabled = false;
+#endif
 
         X8RainDrawer        _rainDrawer;
         X8DrawingContext *  _drawingContext;
@@ -94,8 +98,10 @@ namespace OpenRCT2 { namespace Drawing
 
         rct_drawpixelinfo * GetDPI();
 
-    private:
+    protected:
         void ConfigureBits(uint32 width, uint32 height, uint32 pitch);
+
+    private:
         void ConfigureDirtyGrid();
         static void ResetWindowVisbilities();
         void DrawAllDirtyBlocks();
