@@ -17,7 +17,15 @@
 #pragma once
 
 #include "common.h"
-#include "drawing/drawing.h"
+
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+    #include "drawing/drawing.h"
+#ifdef __cplusplus
+}
+#endif
 
 #ifdef __cplusplus
 

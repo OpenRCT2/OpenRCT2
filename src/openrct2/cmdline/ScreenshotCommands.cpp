@@ -14,11 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
-extern "C"
-{
-    #include "../interface/screenshot.h"
-}
-
+#include "../interface/Screenshot.h"
 #include "CommandLine.hpp"
 
 static exitcode_t HandleScreenshot(CommandLineArgEnumerator *argEnumerator);

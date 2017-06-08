@@ -14,19 +14,23 @@
  *****************************************************************************/
 #pragma endregion
 
-#ifndef _SCREENSHOT_H_
-#define _SCREENSHOT_H_
+#pragma once
 
-#include "../drawing/drawing.h"
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+    #include "../drawing/drawing.h"
 
-extern uint8 gScreenshotCountdown;
+    extern uint8 gScreenshotCountdown;
 
-void screenshot_check();
-sint32 screenshot_dump();
-sint32 screenshot_dump_png(rct_drawpixelinfo *dpi);
-sint32 screenshot_dump_png_32bpp(sint32 width, sint32 height, const void *pixels);
+    void screenshot_check();
+    sint32 screenshot_dump();
+    sint32 screenshot_dump_png(rct_drawpixelinfo *dpi);
+    sint32 screenshot_dump_png_32bpp(sint32 width, sint32 height, const void *pixels);
 
-void screenshot_giant();
-sint32 cmdline_for_screenshot(const char **argv, sint32 argc);
-
+    void screenshot_giant();
+    sint32 cmdline_for_screenshot(const char **argv, sint32 argc);
+#ifdef __cplusplus
+}
 #endif

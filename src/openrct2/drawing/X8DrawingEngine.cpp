@@ -20,6 +20,7 @@
 #include "../core/Guard.hpp"
 #include "../core/Math.hpp"
 #include "../core/Memory.hpp"
+#include "../interface/Screenshot.h"
 #include "IDrawingContext.h"
 #include "IDrawingEngine.h"
 #include "Rain.h"
@@ -28,7 +29,6 @@
 extern "C"
 {
     #include "../game.h"
-    #include "../interface/screenshot.h"
     #include "../interface/viewport.h"
     #include "../interface/window.h"
     #include "../intro.h"
