@@ -210,9 +210,8 @@ if (APPLE OR STATIC OR ${CMAKE_SYSTEM_NAME} MATCHES "BSD")
 endif()
 
 # Includes
-target_include_directories(${PROJECT} SYSTEM PRIVATE ${LIBZIP_INCLUDE_DIRS})
-target_include_directories(${PROJECT} PRIVATE ${SDL2_INCLUDE_DIRS}
-                                              ${JANSSON_INCLUDE_DIRS}
+target_include_directories(${PROJECT} SYSTEM PRIVATE ${SDL2_INCLUDE_DIRS} ${LIBZIP_INCLUDE_DIRS})
+target_include_directories(${PROJECT} PRIVATE ${JANSSON_INCLUDE_DIRS}
                                               ${SPEEX_INCLUDE_DIRS}
                                               ${PNG_INCLUDE_DIRS}
                                               ${ZLIB_INCLUDE_DIRS})
