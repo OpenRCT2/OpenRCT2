@@ -4369,6 +4369,45 @@ STR_6060    :손님의 돈 사용을 애니메이션 효과로 표시
 STR_6061    :{SMALLFONT}{BLACK}손님들이 돈을 사용하면{NEWLINE}움직이는 효과로 표시해줍니다.
 STR_6062    :{OUTLINE}{GREEN}+ {CURRENCY2DP}
 STR_6063    :{OUTLINE}{RED}- {CURRENCY2DP}
+STR_6064    :모든 땅 소유
+STR_6065    :유저 행동 기록
+STR_6066    :{SMALLFONT}{BLACK}모든 유저의 행동을 사용자 폴더에 파일로 기록합니다.
+STR_6067    :서버 시작됨
+STR_6068    :서버가 종료됨
+STR_6069    :{STRING}, {STRING}에 의해 서버에서 추방됨
+STR_6070    :{STRING}, 플레이어 그룹이 '{STRING}'에서 {STRING}(으)로 변경됨
+STR_6071    :{STRING}, 새 플레이어 그룹 '{STRING}' 생성
+STR_6072    :{STRING}, 플레이어 그룹 '{String}' 삭제
+STR_6073    :{STRING}, 플레이어 그룹 '{String}'의 권한을 수정
+STR_6074    :{STRING}, 플레이어 그룹 '{String}'의 이름을 '{String}'(으)로 변경
+STR_6075    :{STRING}, 기본 플레이어 그룹을 '{String}'(으)로 변경
+STR_6076    :{STRING}, '{STRING}' 치트 사용/토글
+STR_6077    :돈 추가
+STR_6078    :{STRING}, '{STRING}' 놀이기구를 생성
+STR_6079    :{STRING}, '{STRING}' 놀이기구를 파괴
+STR_6080    :{STRING}, '{STRING}' 놀이기구의 외관을 변경.
+STR_6081    :{STRING}, '{STRING}' 놀이기구를 닫음
+STR_6082    :{STRING}, '{STRING}' 놀이기구를 엶
+STR_6083    :{STRING}, '{STRING}' 놀이기구를 테스트함
+STR_6084    :{STRING}, '{STRING}' 놀이기구의 차량 설정을 변경함.
+STR_6085    :{STRING}, '{STRING}' 놀이기구의 설정을 변경함.
+STR_6086    :{STRING}, '{STRING}' 놀이기구의 이름을 '{STRING}'(으)로 변경.
+STR_6087    :{STRING}, '{STRING}' 놀이기구의 가격을 {STRING}(으)로 변경
+STR_6088    :{STRING}, '{STRING}' 놀이기구의 부가격을 {STRING}(으)로 변경
+STR_6089    :{STRING}, 공원 이름을 '{STRING}'에서 '{STRING}'(으)로 변경
+STR_6090    :{STRING}, 공원 문을 엶
+STR_6091    :{STRING}, 공원 문을 닫음
+STR_6092    :{STRING}, 공원 입장료를 {STRING}(으)로 변경
+STR_6093    :{STRING}, 오브젝트를 설치함
+STR_6094    :{STRING}, 오브젝트를 제거함
+STR_6095    :{STRING}, 오브젝트를 수정함
+STR_6096    :{STRING}, 팻말 내용을 '{STRING}'(으)로 설정함
+STR_6097    :{STRING}, '{STRING}' 놀이기구의 트랙을 설치함
+STR_6098    :{STRING}, 놀이기구 트랙을 제거함
+STR_6099    :서버에 접속하였습니다
+STR_6100    :서버와의 접속이 종료되었습니다
+STR_6101    :놀이기구 가치가 떨어지지 않게 만들기
+STR_6102    :{SMALLFONT}{BLACK}놀이기구의 가치가 시간이 지남에 따라 떨어지지 않게 만들어서, 손님들이 갑자기 놀이기구가 너무 비싸다고 생각하지 않도록 만듭니다.
 
 #############
 # Scenarios #
