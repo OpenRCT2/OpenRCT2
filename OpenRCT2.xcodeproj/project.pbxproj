@@ -21,6 +21,9 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		4C8B42701EEB1ABD00F015CA /* X8DrawingEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C8B426E1EEB1ABD00F015CA /* X8DrawingEngine.cpp */; };
+		4C8B42721EEB1AE400F015CA /* HardwareDisplayDrawingEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C8B42711EEB1AE400F015CA /* HardwareDisplayDrawingEngine.cpp */; };
+		4C8B42741EEB1B6F00F015CA /* Screenshot.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C8B42731EEB1B6F00F015CA /* Screenshot.cpp */; };
 		C606CCBE1DB4054000FE4015 /* compat.c in Sources */ = {isa = PBXBuildFile; fileRef = C606CCAB1DB4054000FE4015 /* compat.c */; };
 		C606CCBF1DB4054000FE4015 /* data.c in Sources */ = {isa = PBXBuildFile; fileRef = C606CCAC1DB4054000FE4015 /* data.c */; };
 		C606CCC01DB4054000FE4015 /* FunctionCall.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C606CCAE1DB4054000FE4015 /* FunctionCall.cpp */; };
@@ -126,7 +129,6 @@
 		F76C86161EC4E88300FA49E2 /* Fonts.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C83C31EC4E7CC00FA49E2 /* Fonts.cpp */; };
 		F76C86181EC4E88300FA49E2 /* graph.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C83C51EC4E7CC00FA49E2 /* graph.c */; };
 		F76C861A1EC4E88300FA49E2 /* keyboard_shortcut.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C83C71EC4E7CC00FA49E2 /* keyboard_shortcut.c */; };
-		F76C861C1EC4E88300FA49E2 /* screenshot.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C83C91EC4E7CC00FA49E2 /* screenshot.c */; };
 		F76C861E1EC4E88300FA49E2 /* Theme.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C83CB1EC4E7CC00FA49E2 /* Theme.cpp */; };
 		F76C86201EC4E88300FA49E2 /* viewport.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C83CD1EC4E7CC00FA49E2 /* viewport.c */; };
 		F76C86221EC4E88300FA49E2 /* viewport_interaction.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C83CF1EC4E7CC00FA49E2 /* viewport_interaction.c */; };
@@ -556,6 +558,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		4C8B426E1EEB1ABD00F015CA /* X8DrawingEngine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = X8DrawingEngine.cpp; sourceTree = "<group>"; };
+		4C8B426F1EEB1ABD00F015CA /* X8DrawingEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = X8DrawingEngine.h; sourceTree = "<group>"; };
+		4C8B42711EEB1AE400F015CA /* HardwareDisplayDrawingEngine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HardwareDisplayDrawingEngine.cpp; sourceTree = "<group>"; };
+		4C8B42731EEB1B6F00F015CA /* Screenshot.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Screenshot.cpp; sourceTree = "<group>"; };
 		C606CCAB1DB4054000FE4015 /* compat.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; lineEnding = 0; path = compat.c; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.c; };
 		C606CCAC1DB4054000FE4015 /* data.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; lineEnding = 0; path = data.c; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.c; };
 		C606CCAD1DB4054000FE4015 /* data.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = data.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
@@ -873,7 +879,6 @@
 		F76C83C61EC4E7CC00FA49E2 /* graph.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = graph.h; sourceTree = "<group>"; };
 		F76C83C71EC4E7CC00FA49E2 /* keyboard_shortcut.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = keyboard_shortcut.c; sourceTree = "<group>"; };
 		F76C83C81EC4E7CC00FA49E2 /* keyboard_shortcut.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = keyboard_shortcut.h; sourceTree = "<group>"; };
-		F76C83C91EC4E7CC00FA49E2 /* screenshot.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = screenshot.c; sourceTree = "<group>"; };
 		F76C83CA1EC4E7CC00FA49E2 /* screenshot.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = screenshot.h; sourceTree = "<group>"; };
 		F76C83CB1EC4E7CC00FA49E2 /* Theme.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Theme.cpp; sourceTree = "<group>"; };
 		F76C83CC1EC4E7CC00FA49E2 /* themes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = themes.h; sourceTree = "<group>"; };
@@ -1876,6 +1881,8 @@
 				F76C83AE1EC4E7CC00FA49E2 /* scrolling_text.c */,
 				F76C83AF1EC4E7CC00FA49E2 /* sprite.cpp */,
 				F76C83B01EC4E7CC00FA49E2 /* string.c */,
+				4C8B426E1EEB1ABD00F015CA /* X8DrawingEngine.cpp */,
+				4C8B426F1EEB1ABD00F015CA /* X8DrawingEngine.h */,
 			);
 			path = drawing;
 			sourceTree = "<group>";
@@ -1883,6 +1890,7 @@
 		F76C83BB1EC4E7CC00FA49E2 /* interface */ = {
 			isa = PBXGroup;
 			children = (
+				4C8B42731EEB1B6F00F015CA /* Screenshot.cpp */,
 				F76C83BC1EC4E7CC00FA49E2 /* chat.c */,
 				F76C83BD1EC4E7CC00FA49E2 /* chat.h */,
 				F76C83BE1EC4E7CC00FA49E2 /* colour.c */,
@@ -1896,7 +1904,6 @@
 				F76C83C61EC4E7CC00FA49E2 /* graph.h */,
 				F76C83C71EC4E7CC00FA49E2 /* keyboard_shortcut.c */,
 				F76C83C81EC4E7CC00FA49E2 /* keyboard_shortcut.h */,
-				F76C83C91EC4E7CC00FA49E2 /* screenshot.c */,
 				F76C83CA1EC4E7CC00FA49E2 /* screenshot.h */,
 				F76C83CB1EC4E7CC00FA49E2 /* Theme.cpp */,
 				F76C83CC1EC4E7CC00FA49E2 /* themes.h */,
@@ -2532,6 +2539,7 @@
 			children = (
 				F76C85901EC4E82600FA49E2 /* opengl */,
 				F76C858F1EC4E82600FA49E2 /* DrawingEngines.h */,
+				4C8B42711EEB1AE400F015CA /* HardwareDisplayDrawingEngine.cpp */,
 				F76C85A61EC4E82600FA49E2 /* SoftwareDrawingEngine.cpp */,
 			);
 			path = engines;
@@ -2917,8 +2925,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4C8B42741EEB1B6F00F015CA /* Screenshot.cpp in Sources */,
 				F76C88781EC5324E00FA49E2 /* AudioChannel.cpp in Sources */,
 				F76C88791EC5324E00FA49E2 /* AudioContext.cpp in Sources */,
+				4C8B42721EEB1AE400F015CA /* HardwareDisplayDrawingEngine.cpp in Sources */,
 				F76C887A1EC5324E00FA49E2 /* AudioMixer.cpp in Sources */,
 				F76C887B1EC5324E00FA49E2 /* FileAudioSource.cpp in Sources */,
 				F76C887C1EC5324E00FA49E2 /* MemoryAudioSource.cpp in Sources */,
@@ -2932,6 +2942,7 @@
 				F76C88811EC5324E00FA49E2 /* DrawLineShader.cpp in Sources */,
 				F76C88821EC5324E00FA49E2 /* FillRectShader.cpp in Sources */,
 				F76C88831EC5324E00FA49E2 /* OpenGLAPI.cpp in Sources */,
+				4C8B42701EEB1ABD00F015CA /* X8DrawingEngine.cpp in Sources */,
 				F76C88841EC5324E00FA49E2 /* OpenGLDrawingEngine.cpp in Sources */,
 				F76C88851EC5324E00FA49E2 /* OpenGLFramebuffer.cpp in Sources */,
 				F76C88861EC5324E00FA49E2 /* OpenGLShaderProgram.cpp in Sources */,
@@ -3005,7 +3016,6 @@
 				F76C86161EC4E88300FA49E2 /* Fonts.cpp in Sources */,
 				F76C86181EC4E88300FA49E2 /* graph.c in Sources */,
 				F76C861A1EC4E88300FA49E2 /* keyboard_shortcut.c in Sources */,
-				F76C861C1EC4E88300FA49E2 /* screenshot.c in Sources */,
 				F76C861E1EC4E88300FA49E2 /* Theme.cpp in Sources */,
 				F76C86201EC4E88300FA49E2 /* viewport.c in Sources */,
 				F76C86221EC4E88300FA49E2 /* viewport_interaction.c in Sources */,
