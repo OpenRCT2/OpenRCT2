@@ -313,7 +313,7 @@ private:
             for (size_t i = 0; i < numScenarios; i++)
             {
                 const scenario_index_entry * scenario = _scenarioRepository->GetByIndex(i);
-                if (scenario->source_index == sourceDesc.index)
+                if (scenario && scenario->source_index == sourceDesc.index)
                 {
                     path = scenario->path;
                     break;
