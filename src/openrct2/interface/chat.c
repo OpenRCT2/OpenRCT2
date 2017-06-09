@@ -177,17 +177,20 @@ void chat_history_add(const char * src)
     size_t bufferSize = strlen(src) + 64;
     utf8 * buffer = (utf8 *)calloc(1, bufferSize);
 
-    // Prepend colour marker (based on text, default to white)
+    // Find the start of the text (after format codes)
     const char * ch = src;
-    uint32 colour = FORMAT_WHITE;
+    const char * nextCh;
     uint32 codepoint;
-    while ((codepoint = utf8_get_next(ch, &ch)) != 0) {
-        if (utf8_is_colour_code(codepoint)) {
-            colour = codepoint;
+    while ((codepoint = utf8_get_next(ch, &nextCh)) != 0) {
+        if (!utf8_is_format_code(codepoint)) {
             break;
         }
+        ch = nextCh;
     }
-    utf8_write_codepoint(buffer, colour);
+    const char * srcText = ch;
+
+    // Copy format codes to buffer
+    memcpy(buffer, src, min(bufferSize, (size_t)(srcText - src)));
 
     // Prepend a timestamp
     time_t timer;
@@ -195,7 +198,7 @@ void chat_history_add(const char * src)
     struct tm * tmInfo = localtime(&timer);
 
     strcatftime(buffer, bufferSize, "[%H:%M] ", tmInfo);
-    safe_strcat(buffer, src, bufferSize);
+    safe_strcat(buffer, srcText, bufferSize);
 
     // Add to history list
     sint32 index = _chatHistoryIndex % CHAT_HISTORY_SIZE;
