@@ -59,6 +59,8 @@ namespace OpenRCT2 { namespace Drawing
         void Restore();
     };
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wsuggest-final-types"
     class X8DrawingEngine : public IDrawingEngine
     {
     protected:
@@ -107,6 +109,7 @@ namespace OpenRCT2 { namespace Drawing
         void DrawAllDirtyBlocks();
         void DrawDirtyBlocks(uint32 x, uint32 y, uint32 columns, uint32 rows);
     };
+#pragma GCC diagnostic pop
 
     class X8DrawingContext final : public IDrawingContext
     {

@@ -133,6 +133,9 @@ void X8RainDrawer::Restore()
     }
 }
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wsuggest-final-methods"
+
 X8DrawingEngine::X8DrawingEngine()
 {
     _drawingContext = new X8DrawingContext(this);
@@ -463,6 +466,8 @@ void X8DrawingEngine::DrawDirtyBlocks(uint32 x, uint32 y, uint32 columns, uint32
     // Draw region
     window_draw_all(&_bitsDPI, left, top, right, bottom);
 }
+
+#pragma GCC diagnostic pop
 
 X8DrawingContext::X8DrawingContext(X8DrawingEngine * engine)
 {
