@@ -215,19 +215,21 @@ void chat_history_add(const char * src)
     Mixer_Play_Effect(SOUND_NEWS_ITEM, 0, SDL_MIX_MAXVOLUME, 0, 1.5f, true);
 }
 
-void chat_input(sint32 c)
+void chat_input(CHAT_INPUT input)
 {
-    switch (c) {
-    case SDL_SCANCODE_RETURN:
+    switch (input) {
+    case CHAT_INPUT_SEND:
         if (strlen(_chatCurrentLine) > 0) {
             network_send_chat(_chatCurrentLine);
         }
         chat_clear_input();
         chat_close();
-        return;
-    case SDL_SCANCODE_ESCAPE:
+        break;
+    case CHAT_INPUT_CLOSE:
         chat_close();
-        return;
+        break;
+    default:
+        break;
     }
 }
 

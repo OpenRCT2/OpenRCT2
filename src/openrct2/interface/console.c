@@ -15,7 +15,6 @@
 #pragma endregion
 
 #include <stdarg.h>
-#include <SDL_scancode.h>
 
 #include "../config/Config.h"
 #include "../Context.h"
@@ -251,14 +250,14 @@ void console_draw(rct_drawpixelinfo *dpi)
     gfx_fill_rect(dpi, _consoleLeft, _consoleBottom - 0, _consoleRight, _consoleBottom - 0, PALETTE_INDEX_12);
 }
 
-void console_input(sint32 c)
+void console_input(CONSOLE_INPUT input)
 {
-    switch (c) {
-    case SDL_SCANCODE_ESCAPE:
+    switch (input) {
+    case CONSOLE_INPUT_LINE_CLEAR:
         console_clear_input();
         console_refresh_caret();
         break;
-    case SDL_SCANCODE_RETURN:
+    case CONSOLE_INPUT_LINE_EXECUTE:
         if (_consoleCurrentLine[0] != 0) {
             console_history_add(_consoleCurrentLine);
             console_execute(_consoleCurrentLine);
@@ -267,7 +266,7 @@ void console_input(sint32 c)
             console_refresh_caret();
         }
         break;
-    case SDL_SCANCODE_UP:
+    case CONSOLE_INPUT_HISTORY_PREVIOUS:
         if (_consoleHistoryIndex > 0) {
             _consoleHistoryIndex--;
             memcpy(_consoleCurrentLine, _consoleHistory[_consoleHistoryIndex], 256);
@@ -276,7 +275,7 @@ void console_input(sint32 c)
         _consoleTextInputSession->Length = utf8_length(_consoleTextInputSession->Buffer);
         _consoleTextInputSession->SelectionStart = strlen(_consoleCurrentLine);
         break;
-    case SDL_SCANCODE_DOWN:
+    case CONSOLE_INPUT_HISTORY_NEXT:
         if (_consoleHistoryIndex < _consoleHistoryCount - 1) {
             _consoleHistoryIndex++;
             memcpy(_consoleCurrentLine, _consoleHistory[_consoleHistoryIndex], 256);
@@ -287,6 +286,8 @@ void console_input(sint32 c)
             _consoleHistoryIndex = _consoleHistoryCount;
             console_clear_input();
         }
+        break;
+    default:
         break;
     }
 }
