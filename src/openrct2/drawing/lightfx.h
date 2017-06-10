@@ -19,7 +19,6 @@
 
 #ifdef __ENABLE_LIGHTFX__
 
-#include <SDL.h>
 #include "../common.h"
 #include "drawing.h"
 
@@ -67,7 +66,8 @@ uint32 lightfx_get_light_polution();
 
 void lightfx_apply_palette_filter(uint8 i, uint8 *r, uint8 *g, uint8 *b);
 void lightfx_render_to_texture(
-    struct SDL_Texture * texture,
+    void * dstPixels,
+    uint32 dstPitch,
     uint8 * bits,
     uint32 width,
     uint32 height,

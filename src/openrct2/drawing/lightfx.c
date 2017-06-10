@@ -997,7 +997,8 @@ static uint8 mix_light(uint32 a, uint32 b, uint32 intensity)
 }
 
 void lightfx_render_to_texture(
-    SDL_Texture * texture,
+    void * dstPixels,
+    uint32 dstPitch,
     uint8 * bits,
     uint32 width,
     uint32 height,
@@ -1014,31 +1015,26 @@ void lightfx_render_to_texture(
         return;
     }
 
-    void * pixels;
-    sint32 pitch;
-    if (SDL_LockTexture(texture, NULL, &pixels, &pitch) == 0) {
-        for (uint32 y = 0; y < height; y++) {
-            uintptr_t dstOffset = (uintptr_t)(y * pitch);
-            uint32 * dst = (uint32 *)((uintptr_t)pixels + dstOffset);
-            for (uint32 x = 0; x < width; x++) {
-                uint8 * src = &bits[y * width + x];
-                uint32 darkColour = palette[*src];
-                uint32 lightColour = lightPalette[*src];
-                uint8 lightIntensity = lightBits[y * width + x];
+    for (uint32 y = 0; y < height; y++) {
+        uintptr_t dstOffset = (uintptr_t)(y * dstPitch);
+        uint32 * dst = (uint32 *)((uintptr_t)dstPixels + dstOffset);
+        for (uint32 x = 0; x < width; x++) {
+            uint8 * src = &bits[y * width + x];
+            uint32 darkColour = palette[*src];
+            uint32 lightColour = lightPalette[*src];
+            uint8 lightIntensity = lightBits[y * width + x];
 
-                uint32 colour = 0;
-                if (lightIntensity == 0) {
-                    colour = darkColour;
-                } else {
-                    colour |= mix_light((darkColour >> 0) & 0xFF, (lightColour >> 0) & 0xFF, lightIntensity);
-                    colour |= mix_light((darkColour >> 8) & 0xFF, (lightColour >> 8) & 0xFF, lightIntensity) << 8;
-                    colour |= mix_light((darkColour >> 16) & 0xFF, (lightColour >> 16) & 0xFF, lightIntensity) << 16;
-                    colour |= mix_light((darkColour >> 24) & 0xFF, (lightColour >> 24) & 0xFF, lightIntensity) << 24;
-                }
-                *dst++ = colour;
+            uint32 colour = 0;
+            if (lightIntensity == 0) {
+                colour = darkColour;
+            } else {
+                colour |= mix_light((darkColour >> 0) & 0xFF, (lightColour >> 0) & 0xFF, lightIntensity);
+                colour |= mix_light((darkColour >> 8) & 0xFF, (lightColour >> 8) & 0xFF, lightIntensity) << 8;
+                colour |= mix_light((darkColour >> 16) & 0xFF, (lightColour >> 16) & 0xFF, lightIntensity) << 16;
+                colour |= mix_light((darkColour >> 24) & 0xFF, (lightColour >> 24) & 0xFF, lightIntensity) << 24;
             }
+            *dst++ = colour;
         }
-        SDL_UnlockTexture(texture);
     }
 }
 

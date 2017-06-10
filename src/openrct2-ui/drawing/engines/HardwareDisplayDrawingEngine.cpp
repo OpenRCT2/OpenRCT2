@@ -133,7 +133,13 @@ private:
 #ifdef __ENABLE_LIGHTFX__
         if (gConfigGeneral.enable_light_fx)
         {
-            lightfx_render_to_texture(_screenTexture, _bits, _width, _height, _paletteHWMapped, _lightPaletteHWMapped);
+            void * pixels;
+            sint32 pitch;
+            if (SDL_LockTexture(_screenTexture, NULL, &pixels, &pitch) == 0)
+            {
+                lightfx_render_to_texture(pixels, pitch, _bits, _width, _height, _paletteHWMapped, _lightPaletteHWMapped);
+                SDL_UnlockTexture(_screenTexture);
+            }
         }
         else
 #endif
