@@ -28,7 +28,6 @@
 #include <lmcons.h>
 #include <psapi.h>
 #include <shlobj.h>
-#include <SDL_syswm.h>
 #include <sys/stat.h>
 
 #include "../config/Config.h"

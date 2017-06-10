@@ -164,8 +164,6 @@ void platform_toggle_windowed_mode()
 
 void platform_refresh_video()
 {
-    SDL_SetHint(SDL_HINT_VIDEO_MINIMIZE_ON_FOCUS_LOSS, gConfigGeneral.minimize_fullscreen_focus_loss ? "1" : "0");
-
     drawing_engine_dispose();
     drawing_engine_init();
     drawing_engine_resize();
