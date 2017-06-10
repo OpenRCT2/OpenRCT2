@@ -181,7 +181,7 @@ extern "C"
         else if (gClimateCurrentWeatherEffect == 2)
         {
             // Create new thunder and lightning
-            uint32 randomNumber = util_rand();
+            uint32 randomNumber = scenario_rand();
             if ((randomNumber & 0xFFFF) <= 0x1B4)
             {
                 randomNumber >>= 16;
@@ -330,7 +330,7 @@ static void climate_update_lightning()
     _lightningTimer--;
     if (gClimateLightningFlash == 0)
     {
-        if ((util_rand() & 0xFFFF) <= 0x2000)
+        if ((scenario_rand() & 0xFFFF) <= 0x2000)
         {
             gClimateLightningFlash = 1;
         }
@@ -342,7 +342,7 @@ static void climate_update_thunder()
     _thunderTimer--;
     if (_thunderTimer == 0)
     {
-        uint32 randomNumber = util_rand();
+        uint32 randomNumber = scenario_rand();
         if (randomNumber & 0x10000)
         {
             if (_thunderStatus[0] == THUNDER_STATUS::NONE &&
