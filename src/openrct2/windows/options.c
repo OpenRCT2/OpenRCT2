@@ -1283,8 +1283,8 @@ static void window_options_dropdown(rct_window *w, rct_widgetindex widgetIndex, 
                     gConfigGeneral.fullscreen_width = resolution->Width;
                     gConfigGeneral.fullscreen_height = resolution->Height;
 
-                    if (gConfigGeneral.fullscreen_mode == SDL_WINDOW_FULLSCREEN)
-                        context_set_fullscreen_mode(SDL_WINDOW_FULLSCREEN);
+                    if (gConfigGeneral.fullscreen_mode == FULLSCREEN_MODE_FULLSCREEN)
+                        context_set_fullscreen_mode(FULLSCREEN_MODE_FULLSCREEN);
 
                     config_save_default();
                     gfx_invalidate_screen();
