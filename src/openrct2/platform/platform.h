@@ -191,9 +191,4 @@ void core_init();
     utf8* macos_str_decomp_to_precomp();
 #endif
 
-// On macOS the resizing behaviour effectively resizes the window in the same
-// way a normal drag would do, given constraints in the user desktop (e.g. the dock
-// positioning). So it follows that the finished window size should be saved.
-sint32 platform_get_non_window_flags();
-
 #endif

@@ -580,10 +580,14 @@ private:
 
         // Check if the window has been resized in windowed mode and update the config file accordingly
         // This is called in rct2_update and is only called after resizing a window has finished
-        sint32 nonWindowFlags = SDL_WINDOW_MAXIMIZED |
-                                SDL_WINDOW_MINIMIZED |
-                                SDL_WINDOW_FULLSCREEN |
-                                SDL_WINDOW_FULLSCREEN_DESKTOP;
+        sint32 nonWindowFlags =
+#ifndef __MACOSX__
+            SDL_WINDOW_MAXIMIZED |
+#endif
+            SDL_WINDOW_MINIMIZED |
+            SDL_WINDOW_FULLSCREEN |
+            SDL_WINDOW_FULLSCREEN_DESKTOP;
+
         if (!(flags & nonWindowFlags))
         {
             if (width != gConfigGeneral.window_width || height != gConfigGeneral.window_height)

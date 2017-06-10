@@ -264,9 +264,4 @@ bool platform_get_font_path(TTFFontDescriptor *font, utf8 *buffer, size_t size)
 }
 #endif // NO_TTF
 
-sint32 platform_get_non_window_flags()
-{
-    return SDL_WINDOW_MAXIMIZED | SDL_WINDOW_MINIMIZED | SDL_WINDOW_FULLSCREEN | SDL_WINDOW_FULLSCREEN_DESKTOP;
-}
-
 #endif
