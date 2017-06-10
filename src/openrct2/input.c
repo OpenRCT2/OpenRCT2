@@ -1397,6 +1397,28 @@ static void input_update_tooltip(rct_window *w, rct_widgetindex widgetIndex, sin
 
 #pragma region Keyboard input
 
+static void input_handle_console(sint32 key)
+{
+    CONSOLE_INPUT input = CONSOLE_INPUT_NONE;
+    switch (key) {
+    case SDL_SCANCODE_ESCAPE:
+        input = CONSOLE_INPUT_LINE_CLEAR;
+        break;
+    case SDL_SCANCODE_RETURN:
+        input = CONSOLE_INPUT_LINE_EXECUTE;
+        break;
+    case SDL_SCANCODE_UP:
+        input = CONSOLE_INPUT_HISTORY_PREVIOUS;
+        break;
+    case SDL_SCANCODE_DOWN:
+        input = CONSOLE_INPUT_HISTORY_NEXT;
+        break;
+    }
+    if (input != CONSOLE_INPUT_NONE) {
+        console_input(input);
+    }
+}
+
 /**
  *
  *  rct2: 0x006E3B43
@@ -1439,7 +1461,7 @@ void title_handle_keyboard_input()
             }
             continue;
         } else if (gConsoleOpen) {
-            console_input(key);
+            input_handle_console(key);
             continue;
         }
 
@@ -1515,7 +1537,7 @@ void game_handle_keyboard_input()
             }
             continue;
         } else if (gConsoleOpen) {
-            console_input(key);
+            input_handle_console(key);
             continue;
         } else if (gChatOpen) {
             chat_input(key);

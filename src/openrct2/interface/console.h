@@ -20,6 +20,15 @@
 #include "../common.h"
 #include "../drawing/drawing.h"
 
+typedef enum CONSOLE_INPUT
+{
+    CONSOLE_INPUT_NONE,
+    CONSOLE_INPUT_LINE_CLEAR,
+    CONSOLE_INPUT_LINE_EXECUTE,
+    CONSOLE_INPUT_HISTORY_PREVIOUS,
+    CONSOLE_INPUT_HISTORY_NEXT,
+} CONSOLE_INPUT;
+
 extern bool gConsoleOpen;
 
 void console_open();
@@ -29,7 +38,7 @@ void console_toggle();
 void console_update();
 void console_draw(rct_drawpixelinfo *dpi);
 
-void console_input(sint32 c);
+void console_input(CONSOLE_INPUT input);
 void console_write(const utf8 *src);
 void console_writeline(const utf8 *src);
 void console_writeline_error(const utf8 *src);
