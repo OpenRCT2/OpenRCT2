@@ -390,7 +390,8 @@ void rct2_update()
 
     // TODO: screenshot countdown process
 
-    network_update();
+	// this is called in game_update
+    //network_update();
 
     // check_cmdline_arg();
     // Screens

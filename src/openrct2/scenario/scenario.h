@@ -393,8 +393,18 @@ sint32 scenario_load(const char *path);
 sint32 scenario_load_and_play_from_path(const char *path);
 void scenario_begin();
 void scenario_update();
+
+#ifdef DEBUG_DESYNC 
+uint32 dbg_scenario_rand(const char *file, const char *function, const uint32 line, const void *data);
+#define scenario_rand() dbg_scenario_rand(__FILE__, __FUNCTION__, __LINE__, NULL)
+#define scenario_rand_data(data) dbg_scenario_rand(__FILE__, __FUNCTION__, __LINE__, data)
+void dbg_report_desync(uint32 tick, uint32 srand0, uint32 server_srand0, const char *clientHash, const char *serverHash);
+#else 
 uint32 scenario_rand();
+#endif
+
 uint32 scenario_rand_max(uint32 max);
+
 sint32 scenario_prepare_for_save();
 sint32 scenario_save(const utf8 * path, sint32 flags);
 void scenario_remove_trackless_rides(rct_s6_data *s6);

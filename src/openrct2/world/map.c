@@ -3659,7 +3659,8 @@ void map_update_tiles()
         }
 
         gGrassSceneryTileLoopPosition++;
-        gGrassSceneryTileLoopPosition &= 0xFFFF;
+		// Type is uint16, so why do we need this exactly?
+        //gGrassSceneryTileLoopPosition &= 0xFFFF;
     }
 }
 
@@ -3719,6 +3720,9 @@ static void map_update_grass_length(sint32 x, sint32 y, rct_map_element *mapElem
             mapElementAbove++;
             if (map_element_get_type(mapElementAbove) == MAP_ELEMENT_TYPE_WALL)
                 continue;
+			// Grass should not be affected by ghost elements.
+			if (map_element_is_ghost(mapElementAbove))
+				continue;
             if (z0 >= mapElementAbove->clearance_height)
                 continue;
             if (z1 < mapElementAbove->base_height)
