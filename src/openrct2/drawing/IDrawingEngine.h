@@ -51,7 +51,7 @@ namespace OpenRCT2 { namespace Drawing
     {
         virtual ~IDrawingEngine() { }
 
-        virtual void Initialise(SDL_Window * window)                abstract;
+        virtual void Initialise()                                   abstract;
         virtual void Resize(uint32 width, uint32 height)            abstract;
         virtual void SetPalette(const rct_palette_entry * colours)  abstract;
 

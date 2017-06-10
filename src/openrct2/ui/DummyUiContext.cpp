@@ -28,7 +28,7 @@ namespace OpenRCT2 { namespace Ui
     {
         void CreateWindow() override { }
         void CloseWindow() override { }
-        SDL_Window * GetWindow() override { return nullptr; }
+        void * GetWindow() override { return nullptr; }
         sint32 GetWidth() override { return 0; }
         sint32 GetHeight() override { return 0; }
         void SetFullscreenMode(FULLSCREEN_MODE mode) override { }

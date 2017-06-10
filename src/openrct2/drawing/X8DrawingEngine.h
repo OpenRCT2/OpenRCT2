@@ -85,7 +85,7 @@ namespace OpenRCT2 { namespace Drawing
         explicit X8DrawingEngine();
         ~X8DrawingEngine() override;
 
-        void Initialise(SDL_Window * window) override;
+        void Initialise() override;
         void Resize(uint32 width, uint32 height) override;
         void SetPalette(const rct_palette_entry * palette) override;
         void SetUncappedFrameRate(bool uncapped) override;

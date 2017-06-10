@@ -55,7 +55,7 @@ public:
     explicit HardwareDisplayDrawingEngine(IUiContext * uiContext)
         : _uiContext(uiContext)
     {
-        UNUSED(_uiContext); // Will be used in due course to retrieve window information
+        _window = (SDL_Window *)_uiContext->GetWindow();
     }
 
     ~HardwareDisplayDrawingEngine() override
@@ -65,10 +65,9 @@ public:
         SDL_DestroyRenderer(_sdlRenderer);
     }
 
-    void Initialise(SDL_Window * window) override
+    void Initialise() override
     {
-        _window = window;
-        _sdlRenderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+        _sdlRenderer = SDL_CreateRenderer(_window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
     }
 
     void Resize(uint32 width, uint32 height) override

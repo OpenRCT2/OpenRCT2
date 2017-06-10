@@ -102,7 +102,7 @@ public:
     }
 
     // Window
-    SDL_Window * GetWindow() override
+    void * GetWindow() override
     {
         return _window;
     }
