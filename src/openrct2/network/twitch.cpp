@@ -30,7 +30,6 @@
 #endif
 
 #include <vector>
-#include <SDL.h>
 #include "../core/Math.hpp"
 #include "../core/String.hpp"
 

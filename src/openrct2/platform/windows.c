@@ -28,7 +28,6 @@
 #include <lmcons.h>
 #include <psapi.h>
 #include <shlobj.h>
-#include <SDL_syswm.h>
 #include <sys/stat.h>
 
 #include "../config/Config.h"
@@ -1089,10 +1088,5 @@ bool platform_setup_uri_protocol()
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-
-sint32 platform_get_non_window_flags()
-{
-    return SDL_WINDOW_MAXIMIZED | SDL_WINDOW_MINIMIZED | SDL_WINDOW_FULLSCREEN | SDL_WINDOW_FULLSCREEN_DESKTOP;
-}
 
 #endif

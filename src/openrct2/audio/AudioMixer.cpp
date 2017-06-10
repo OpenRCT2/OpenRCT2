@@ -167,7 +167,7 @@ void Mixer_SetVolume(float volume)
 
 sint32 DStoMixerVolume(sint32 volume)
 {
-    return (sint32)(SDL_MIX_MAXVOLUME * (std::pow(10.0f, (float)volume / 2000)));
+    return (sint32)(MIXER_VOLUME_MAX * (std::pow(10.0f, (float)volume / 2000)));
 }
 
 float DStoMixerPan(sint32 pan)
