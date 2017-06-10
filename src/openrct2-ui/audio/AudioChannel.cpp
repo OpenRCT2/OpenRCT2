@@ -54,7 +54,7 @@ namespace OpenRCT2 { namespace Audio
         AudioChannelImpl()
         {
             SetRate(1);
-            SetVolume(SDL_MIX_MAXVOLUME);
+            SetVolume(MIXER_VOLUME_MAX);
             SetPan(0.5f);
         }
 
@@ -165,7 +165,7 @@ namespace OpenRCT2 { namespace Audio
 
         void SetVolume(sint32 volume) override
         {
-            _volume = Math::Clamp(0, volume, SDL_MIX_MAXVOLUME);
+            _volume = Math::Clamp(0, volume, MIXER_VOLUME_MAX);
         }
 
         float GetPan() const override

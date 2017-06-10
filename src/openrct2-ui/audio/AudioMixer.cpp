@@ -444,7 +444,7 @@ namespace OpenRCT2 { namespace Audio
             if (startVolume != endVolume)
             {
                 // Set to max since we are adjusting the volume ourselves
-                mixVolume = SDL_MIX_MAXVOLUME;
+                mixVolume = MIXER_VOLUME_MAX;
 
                 // Fade between volume levels to smooth out sound and minimize clicks from sudden volume changes
                 sint32 fadeLength = (sint32)len / _format.BytesPerSample();
@@ -494,6 +494,8 @@ namespace OpenRCT2 { namespace Audio
 
         static void EffectFadeS16(sint16 * data, sint32 length, sint32 startvolume, sint32 endvolume)
         {
+            static_assert(SDL_MIX_MAXVOLUME == MIXER_VOLUME_MAX, "Max volume differs between OpenRCT2 and SDL2");
+
             float startvolume_f = (float)startvolume / SDL_MIX_MAXVOLUME;
             float endvolume_f = (float)endvolume / SDL_MIX_MAXVOLUME;
             for (sint32 i = 0; i < length; i++)
@@ -505,6 +507,8 @@ namespace OpenRCT2 { namespace Audio
 
         static void EffectFadeU8(uint8* data, sint32 length, sint32 startvolume, sint32 endvolume)
         {
+            static_assert(SDL_MIX_MAXVOLUME == MIXER_VOLUME_MAX, "Max volume differs between OpenRCT2 and SDL2");
+
             float startvolume_f = (float)startvolume / SDL_MIX_MAXVOLUME;
             float endvolume_f = (float)endvolume / SDL_MIX_MAXVOLUME;
             for (sint32 i = 0; i < length; i++)
