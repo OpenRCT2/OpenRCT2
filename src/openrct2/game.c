@@ -21,7 +21,7 @@
 #include "editor.h"
 #include "game.h"
 #include "input.h"
-#include "interface/screenshot.h"
+#include "interface/Screenshot.h"
 #include "interface/viewport.h"
 #include "interface/widget.h"
 #include "interface/window.h"

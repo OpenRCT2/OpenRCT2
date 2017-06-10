@@ -17,19 +17,27 @@
 #include "../audio/audio.h"
 #include "../config/Config.h"
 #include "../Context.h"
-#include "../drawing/drawing.h"
-#include "../game.h"
 #include "../Imaging.h"
-#include "../intro.h"
-#include "../localisation/localisation.h"
 #include "../OpenRCT2.h"
-#include "../platform/platform.h"
-#include "../rct2.h"
-#include "../util/util.h"
-#include "../windows/error.h"
-#include "screenshot.h"
-#include "viewport.h"
+#include "Screenshot.h"
 
+extern "C"
+{
+    #include "../drawing/drawing.h"
+    #include "../game.h"
+    #include "../intro.h"
+    #include "../localisation/localisation.h"
+    #include "../platform/platform.h"
+    #include "../rct2.h"
+    #include "../util/util.h"
+    #include "../windows/error.h"
+    #include "viewport.h"
+}
+
+using namespace OpenRCT2;
+
+extern "C"
+{
 uint8 gScreenshotCountdown = 0;
 
 /**
@@ -211,7 +219,7 @@ void screenshot_giant()
     dpi.height = resolutionHeight;
     dpi.pitch = 0;
     dpi.zoom_level = 0;
-    dpi.bits = malloc(dpi.width * dpi.height);
+    dpi.bits = (uint8 *)malloc(dpi.width * dpi.height);
 
     viewport_render(&dpi, &viewport, 0, 0, viewport.width, viewport.height);
 
@@ -283,7 +291,9 @@ sint32 cmdline_for_screenshot(const char **argv, sint32 argc)
     }
 
     gOpenRCT2Headless = true;
-    // if (openrct2_initialise()) {
+    auto context = CreateContext();
+    if (context->Initialise())
+    {
         drawing_engine_init();
         rct2_open_file(inputPath);
 
@@ -357,7 +367,7 @@ sint32 cmdline_for_screenshot(const char **argv, sint32 argc)
         dpi.height = resolutionHeight;
         dpi.pitch = 0;
         dpi.zoom_level = 0;
-        dpi.bits = malloc(dpi.width * dpi.height);
+        dpi.bits = (uint8 *)malloc(dpi.width * dpi.height);
 
         viewport_render(&dpi, &viewport, 0, 0, viewport.width, viewport.height);
 
@@ -368,7 +378,9 @@ sint32 cmdline_for_screenshot(const char **argv, sint32 argc)
 
         free(dpi.bits);
         drawing_engine_dispose();
-    // }
-    // openrct2_dispose();
+    }
+    delete context;
     return 1;
+}
+
 }

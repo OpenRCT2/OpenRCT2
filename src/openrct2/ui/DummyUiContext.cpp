@@ -14,7 +14,10 @@
 *****************************************************************************/
 #pragma endregion
 
+#include "../drawing/X8DrawingEngine.h"
 #include "UiContext.h"
+
+using namespace OpenRCT2::Drawing;
 
 namespace OpenRCT2 { namespace Ui
 {
@@ -53,7 +56,10 @@ namespace OpenRCT2 { namespace Ui
         virtual void SetKeysPressed(uint32 keysym, uint8 scancode) override { }
 
         // Drawing
-        virtual Drawing::IDrawingEngine * CreateDrawingEngine(Drawing::DRAWING_ENGINE_TYPE type) override { return nullptr; }
+        virtual Drawing::IDrawingEngine * CreateDrawingEngine(Drawing::DRAWING_ENGINE_TYPE type) override
+        {
+            return new X8DrawingEngine();
+        }
 
         // Text input
         virtual bool IsTextInputActive() override { return false; }

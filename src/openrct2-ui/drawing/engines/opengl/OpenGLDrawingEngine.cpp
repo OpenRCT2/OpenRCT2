@@ -28,12 +28,11 @@
 #include <openrct2/drawing/IDrawingContext.h>
 #include <openrct2/drawing/IDrawingEngine.h>
 #include <openrct2/drawing/Rain.h>
-#include <openrct2/config/Config.h>
+#include <openrct2/interface/Screenshot.h>
 #include <openrct2/ui/UiContext.h>
 
 extern "C"
 {
-    #include <openrct2/interface/screenshot.h>
     #include <openrct2/interface/window.h>
     #include <openrct2/intro.h>
     #include <openrct2/drawing/drawing.h>

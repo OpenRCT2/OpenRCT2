@@ -20,7 +20,7 @@
 #include "../game.h"
 #include "../input.h"
 #include "../interface/chat.h"
-#include "../interface/screenshot.h"
+#include "../interface/Screenshot.h"
 #include "../localisation/localisation.h"
 #include "../network/network.h"
 #include "../platform/platform.h"
