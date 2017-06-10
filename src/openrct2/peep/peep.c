@@ -11351,10 +11351,10 @@ static void peep_easter_egg_peep_interactions(rct_peep *peep)
 static bool peep_should_watch_ride(rct_map_element *mapElement) {
     rct_ride *ride = get_ride(mapElement->properties.track.ride_index);
 
-	// In case of upcoming references we also have the check in here.
-	if (network_get_mode() != NETWORK_MODE_NONE) {
-		if (map_element_is_ghost(mapElement)) return false;
-	}
+    // In case of upcoming references we also have the check in here.
+    if (network_get_mode() != NETWORK_MODE_NONE) {
+        if (map_element_is_ghost(mapElement)) return false;
+    }
 
     if (gRideClassifications[ride->type] != RIDE_CLASS_RIDE) {
         return false;
@@ -11406,9 +11406,9 @@ static bool peep_find_ride_to_look_at(rct_peep *peep, uint8 edge, uint8 *rideToV
 
     mapElement = surfaceElement;
     do {
-		if (network_get_mode() != NETWORK_MODE_NONE) {
-			if (map_element_is_ghost(mapElement)) continue;
-		}
+        if (network_get_mode() != NETWORK_MODE_NONE) {
+            if (map_element_is_ghost(mapElement)) continue;
+        }
         if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_WALL) continue;
         if (map_element_get_direction(mapElement) != edge) continue;
         if (get_wall_entry(mapElement->properties.wall.type)->wall.flags2 & WALL_SCENERY_2_FLAG4) continue;
@@ -11430,9 +11430,9 @@ static bool peep_find_ride_to_look_at(rct_peep *peep, uint8 edge, uint8 *rideToV
 
     mapElement = surfaceElement;
     do {
-		if (network_get_mode() != NETWORK_MODE_NONE) {
-			if (map_element_is_ghost(mapElement)) continue;
-		}
+        if (network_get_mode() != NETWORK_MODE_NONE) {
+            if (map_element_is_ghost(mapElement)) continue;
+        }
         if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_WALL) continue;
         if ((map_element_get_direction(mapElement) ^ 0x2) != edge) continue;
         if (get_wall_entry(mapElement->properties.wall.type)->wall.flags2 & WALL_SCENERY_2_FLAG4) continue;
@@ -11447,9 +11447,9 @@ static bool peep_find_ride_to_look_at(rct_peep *peep, uint8 edge, uint8 *rideToV
     // TODO: Extract loop B
     mapElement = surfaceElement;
     do {
-		if (network_get_mode() != NETWORK_MODE_NONE) {
-			if (map_element_is_ghost(mapElement)) continue;
-		}
+        if (network_get_mode() != NETWORK_MODE_NONE) {
+            if (map_element_is_ghost(mapElement)) continue;
+        }
 
         if (mapElement->clearance_height + 1 < peep->next_z) continue;
         if (peep->next_z + 6 < mapElement->base_height) continue;
@@ -11480,9 +11480,9 @@ static bool peep_find_ride_to_look_at(rct_peep *peep, uint8 edge, uint8 *rideToV
     // TODO: Extract loop C
     mapElement = surfaceElement;
     do {
-		if (network_get_mode() != NETWORK_MODE_NONE) {
-			if (map_element_is_ghost(mapElement)) continue;
-		}
+        if (network_get_mode() != NETWORK_MODE_NONE) {
+            if (map_element_is_ghost(mapElement)) continue;
+        }
         if (mapElement->clearance_height + 1 < peep->next_z) continue;
         if (peep->next_z + 6 < mapElement->base_height) continue;
         if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_SURFACE) continue;
@@ -11510,9 +11510,9 @@ static bool peep_find_ride_to_look_at(rct_peep *peep, uint8 edge, uint8 *rideToV
     // TODO: extract loop A
     mapElement = surfaceElement;
     do {
-		if (network_get_mode() != NETWORK_MODE_NONE) {
-			if (map_element_is_ghost(mapElement)) continue;
-		}
+        if (network_get_mode() != NETWORK_MODE_NONE) {
+            if (map_element_is_ghost(mapElement)) continue;
+        }
         if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_WALL) continue;
         if ((map_element_get_direction(mapElement) ^ 0x2) != edge) continue;
         if (get_wall_entry(mapElement->properties.wall.type)->wall.flags2 & WALL_SCENERY_2_FLAG4) continue;
@@ -11526,9 +11526,9 @@ static bool peep_find_ride_to_look_at(rct_peep *peep, uint8 edge, uint8 *rideToV
     // TODO: Extract loop B
     mapElement = surfaceElement;
     do {
-		if (network_get_mode() != NETWORK_MODE_NONE) {
-			if (map_element_is_ghost(mapElement)) continue;
-		}
+        if (network_get_mode() != NETWORK_MODE_NONE) {
+            if (map_element_is_ghost(mapElement)) continue;
+        }
         if (mapElement->clearance_height + 1 < peep->next_z) continue;
         if (peep->next_z + 8 < mapElement->base_height) continue;
 
@@ -11558,9 +11558,9 @@ static bool peep_find_ride_to_look_at(rct_peep *peep, uint8 edge, uint8 *rideToV
     // TODO: Extract loop C
     mapElement = surfaceElement;
     do {
-		if (network_get_mode() != NETWORK_MODE_NONE) {
-			if (map_element_is_ghost(mapElement)) continue;
-		}
+        if (network_get_mode() != NETWORK_MODE_NONE) {
+            if (map_element_is_ghost(mapElement)) continue;
+        }
         if (mapElement->clearance_height + 1 < peep->next_z) continue;
         if (peep->next_z + 8 < mapElement->base_height) continue;
         if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_SURFACE) continue;
@@ -11587,9 +11587,9 @@ static bool peep_find_ride_to_look_at(rct_peep *peep, uint8 edge, uint8 *rideToV
     // TODO: extract loop A
     mapElement = surfaceElement;
     do {
-		if (network_get_mode() != NETWORK_MODE_NONE) {
-			if (map_element_is_ghost(mapElement)) continue;
-		}
+        if (network_get_mode() != NETWORK_MODE_NONE) {
+            if (map_element_is_ghost(mapElement)) continue;
+        }
         if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_WALL) continue;
         if ((map_element_get_direction(mapElement) ^ 0x2) != edge) continue;
         if (get_wall_entry(mapElement->properties.wall.type)->wall.flags2 & WALL_SCENERY_2_FLAG4) continue;
@@ -11603,9 +11603,9 @@ static bool peep_find_ride_to_look_at(rct_peep *peep, uint8 edge, uint8 *rideToV
     // TODO: Extract loop B
     mapElement = surfaceElement;
     do {
-		if (network_get_mode() != NETWORK_MODE_NONE) {
-			if (map_element_is_ghost(mapElement)) continue;
-		}
+        if (network_get_mode() != NETWORK_MODE_NONE) {
+            if (map_element_is_ghost(mapElement)) continue;
+        }
         if (mapElement->clearance_height + 1 < peep->next_z) continue;
         if (peep->next_z + 10 < mapElement->base_height) continue;
 

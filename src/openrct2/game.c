@@ -293,12 +293,12 @@ void game_update()
         numUpdates = clamp(1, numUpdates, 4);
     }
 
-	if (network_get_mode() == NETWORK_MODE_CLIENT && network_get_status() == NETWORK_STATUS_CONNECTED && network_get_authstatus() == NETWORK_AUTH_OK) {
-		if (network_get_server_tick() - gCurrentTicks >= 10) {
-			// Make sure client doesn't fall behind the server too much
-			numUpdates += 10;
-		}
-	}
+    if (network_get_mode() == NETWORK_MODE_CLIENT && network_get_status() == NETWORK_STATUS_CONNECTED && network_get_authstatus() == NETWORK_AUTH_OK) {
+        if (network_get_server_tick() - gCurrentTicks >= 10) {
+            // Make sure client doesn't fall behind the server too much
+            numUpdates += 10;
+        }
+    }
 
     if (game_is_paused()) {
         numUpdates = 0;
@@ -306,9 +306,9 @@ void game_update()
         // increment the map animation.
         map_animation_invalidate_all();
 
-		// Special case because we set numUpdates to 0, otherwise in game_logic_update.
-		game_handle_input();
-		network_update();
+        // Special case because we set numUpdates to 0, otherwise in game_logic_update.
+        game_handle_input();
+        network_update();
     }
 
     // Update the game one or more times
@@ -350,48 +350,48 @@ void game_logic_update()
     gInUpdateCode = true;
     ///////////////////////////
 
-	network_update();
+    network_update();
 
     if (network_get_mode() == NETWORK_MODE_CLIENT && network_get_status() == NETWORK_STATUS_CONNECTED && network_get_authstatus() == NETWORK_AUTH_OK) {
         // Can't be in sync with server, round trips won't work if we are at same level.
-		if (gCurrentTicks >= network_get_server_tick()) {
+        if (gCurrentTicks >= network_get_server_tick()) {
             // Don't run past the server
             return;
         }
     }
 
-	gScreenAge++;
-	if (gScreenAge == 0)
-		gScreenAge--;
+    gScreenAge++;
+    if (gScreenAge == 0)
+        gScreenAge--;
 
-	if (!gOpenRCT2Headless)
-	{
-		input_set_flag(INPUT_FLAG_VIEWPORT_SCROLLING, false);
+    if (!gOpenRCT2Headless)
+    {
+        input_set_flag(INPUT_FLAG_VIEWPORT_SCROLLING, false);
 
-		// the flickering frequency is reduced by 4, compared to the original
-		// it was done due to inability to reproduce original frequency
-		// and decision that the original one looks too fast
-		if (gCurrentTicks % 4 == 0)
-			gWindowMapFlashingFlags ^= (1 << 15);
+        // the flickering frequency is reduced by 4, compared to the original
+        // it was done due to inability to reproduce original frequency
+        // and decision that the original one looks too fast
+        if (gCurrentTicks % 4 == 0)
+            gWindowMapFlashingFlags ^= (1 << 15);
 
-		// Handle guest map flashing
-		gWindowMapFlashingFlags &= ~(1 << 1);
-		if (gWindowMapFlashingFlags & (1 << 0))
-			gWindowMapFlashingFlags |= (1 << 1);
-		gWindowMapFlashingFlags &= ~(1 << 0);
+        // Handle guest map flashing
+        gWindowMapFlashingFlags &= ~(1 << 1);
+        if (gWindowMapFlashingFlags & (1 << 0))
+            gWindowMapFlashingFlags |= (1 << 1);
+        gWindowMapFlashingFlags &= ~(1 << 0);
 
-		// Handle staff map flashing
-		gWindowMapFlashingFlags &= ~(1 << 3);
-		if (gWindowMapFlashingFlags & (1 << 2))
-			gWindowMapFlashingFlags |= (1 << 3);
-		gWindowMapFlashingFlags &= ~(1 << 2);
+        // Handle staff map flashing
+        gWindowMapFlashingFlags &= ~(1 << 3);
+        if (gWindowMapFlashingFlags & (1 << 2))
+            gWindowMapFlashingFlags |= (1 << 3);
+        gWindowMapFlashingFlags &= ~(1 << 2);
 
-		window_map_tooltip_update_visibility();
+        window_map_tooltip_update_visibility();
 
-		// Input
-		gUnk141F568 = gUnk13CA740;
-		game_handle_input();
-	}
+        // Input
+        gUnk141F568 = gUnk13CA740;
+        game_handle_input();
+    }
 
     sub_68B089();
     scenario_update();
@@ -437,13 +437,13 @@ void game_logic_update()
     }
 
     // Start autosave timer after update
-	if (gLastAutoSaveUpdate == AUTOSAVE_PAUSE) {
-		gLastAutoSaveUpdate = platform_get_ticks();
-	}
+    if (gLastAutoSaveUpdate == AUTOSAVE_PAUSE) {
+        gLastAutoSaveUpdate = platform_get_ticks();
+    }
 
-	gCurrentTicks++;
-	gScenarioTicks++;
-	gSavedAge++;
+    gCurrentTicks++;
+    gScenarioTicks++;
+    gSavedAge++;
 }
 
 /**
@@ -568,13 +568,13 @@ sint32 game_do_command_p(sint32 command, sint32 *eax, sint32 *ebx, sint32 *ecx, 
             }
 
             // Second call to actually perform the operation
-			new_game_command_table[command](eax, ebx, ecx, edx, esi, edi, ebp);
+            new_game_command_table[command](eax, ebx, ecx, edx, esi, edi, ebp);
 
             // Do the callback (required for multiplayer to work correctly), but only for top level commands
             if (gGameCommandNestLevel == 1) {
                 if (game_command_callback && !(flags & GAME_COMMAND_FLAG_GHOST)) 
-				{
-					game_command_callback(*eax, *ebx, *ecx, *edx, *esi, *edi, *ebp);
+                {
+                    game_command_callback(*eax, *ebx, *ecx, *edx, *esi, *edi, *ebp);
                     game_command_callback = 0;
                 }
             }
@@ -1411,7 +1411,7 @@ void game_load_or_quit_no_save_prompt()
  */
 void game_init_all(sint32 mapSize)
 {
-	gInUpdateCode = true;
+    gInUpdateCode = true;
 
     map_init(mapSize);
     park_init();
@@ -1426,9 +1426,9 @@ void game_init_all(sint32 mapSize)
     news_item_init_queue();
     user_string_clear_all();
 
-	gInUpdateCode = false;
+    gInUpdateCode = false;
 
-	window_new_ride_init_vars();
+    window_new_ride_init_vars();
     window_guest_list_init_vars_a();
     window_guest_list_init_vars_b();
     window_staff_list_init_vars();

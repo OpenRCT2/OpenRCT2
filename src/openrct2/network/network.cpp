@@ -612,15 +612,15 @@ bool Network::CheckSRAND(uint32 tick, uint32 srand0)
     }
 
     if (tick == server_srand0_tick) 
-	{
+    {
         server_srand0_tick = 0;
         // Check that the server and client sprite hashes match
-		const char *client_sprite_hash = sprite_checksum();
+        const char *client_sprite_hash = sprite_checksum();
         const bool sprites_mismatch = server_sprite_hash[0] != '\0' && strcmp(client_sprite_hash, server_sprite_hash);
         // Check PRNG values and sprite hashes, if exist
         if ((srand0 != server_srand0) || sprites_mismatch) {
 #ifdef DEBUG_DESYNC
-			dbg_report_desync(tick, srand0, server_srand0, client_sprite_hash, server_sprite_hash);
+            dbg_report_desync(tick, srand0, server_srand0, client_sprite_hash, server_sprite_hash);
 #endif
             return false;
         }
@@ -1318,11 +1318,11 @@ void Network::ProcessPacket(NetworkConnection& connection, NetworkPacket& packet
 void Network::ProcessGameCommandQueue()
 {
     while (game_command_queue.begin() != game_command_queue.end()) {
-		// If our tick is higher than the command tick we are in trouble.
-		assert(game_command_queue.begin()->tick >= gCurrentTicks);
+        // If our tick is higher than the command tick we are in trouble.
+        assert(game_command_queue.begin()->tick >= gCurrentTicks);
 
-		if (game_command_queue.begin()->tick != gCurrentTicks)
-			return;
+        if (game_command_queue.begin()->tick != gCurrentTicks)
+            return;
 
         // run all the game commands at the current tick
         const GameCommand& gc = (*game_command_queue.begin());
