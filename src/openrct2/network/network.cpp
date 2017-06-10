@@ -516,6 +516,8 @@ void Network::UpdateClient()
         }
 
         // Check synchronisation
+        ProcessGameCommandQueue();
+
         if (!_desynchronised && !CheckSRAND(gCurrentTicks, gScenarioSrand0)) {
             _desynchronised = true;
 
@@ -527,7 +529,6 @@ void Network::UpdateClient()
             }
         }
 
-        ProcessGameCommandQueue();
         break;
     }
     }
@@ -1130,7 +1131,7 @@ void Network::Server_Send_TICK()
     // but debug version can check more often.
     static sint32 checksum_counter = 0;
     checksum_counter++;
-    if (checksum_counter >= 100) {
+    if (checksum_counter >= 5) {
         checksum_counter = 0;
         flags |= NETWORK_TICK_FLAG_CHECKSUMS;
     }
