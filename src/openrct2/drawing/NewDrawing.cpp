@@ -104,7 +104,7 @@ extern "C"
         {
             try
             {
-                drawingEngine->Initialise(uiContext->GetWindow());
+                drawingEngine->Initialise();
                 drawingEngine->SetUncappedFrameRate(gConfigGeneral.uncap_fps == 1);
                 _drawingEngine = drawingEngine;
             }

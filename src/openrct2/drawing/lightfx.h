@@ -19,7 +19,6 @@
 
 #ifdef __ENABLE_LIGHTFX__
 
-#include <SDL.h>
 #include "../common.h"
 #include "drawing.h"
 
@@ -55,7 +54,7 @@ void lightfx_render_lights_to_frontbuffer();
 void lightfx_update_viewport_settings();
 
 void* lightfx_get_front_buffer();
-const SDL_Color * lightfx_get_palette();
+const rct_palette * lightfx_get_palette();
 
 void lightfx_add_3d_light(uint32 lightID, uint16 lightIDqualifier, sint16 x, sint16 y, uint16 z, uint8 lightType);
 
@@ -67,7 +66,8 @@ uint32 lightfx_get_light_polution();
 
 void lightfx_apply_palette_filter(uint8 i, uint8 *r, uint8 *g, uint8 *b);
 void lightfx_render_to_texture(
-    struct SDL_Texture * texture,
+    void * dstPixels,
+    uint32 dstPitch,
     uint8 * bits,
     uint32 width,
     uint32 height,

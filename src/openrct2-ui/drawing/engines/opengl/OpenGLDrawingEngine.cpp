@@ -250,7 +250,7 @@ public:
     OpenGLDrawingEngine(IUiContext * uiContext)
         : _uiContext(uiContext)
     {
-        UNUSED(_uiContext); // Will be used in due course to retrieve window information
+        _window = (SDL_Window *)_uiContext->GetWindow();
         _drawingContext = new OpenGLDrawingContext(this);
     }
 
@@ -266,10 +266,8 @@ public:
         SDL_GL_DeleteContext(_context);
     }
 
-    void Initialise(SDL_Window * window) override
+    void Initialise() override
     {
-        _window = window;
-
         OpenGLVersion requiredVersion = OPENGL_MINIMUM_REQUIRED_VERSION;
         SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
         SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, requiredVersion.Major);

@@ -55,7 +55,7 @@ public:
     explicit HardwareDisplayDrawingEngine(IUiContext * uiContext)
         : _uiContext(uiContext)
     {
-        UNUSED(_uiContext); // Will be used in due course to retrieve window information
+        _window = (SDL_Window *)_uiContext->GetWindow();
     }
 
     ~HardwareDisplayDrawingEngine() override
@@ -65,10 +65,9 @@ public:
         SDL_DestroyRenderer(_sdlRenderer);
     }
 
-    void Initialise(SDL_Window * window) override
+    void Initialise() override
     {
-        _window = window;
-        _sdlRenderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+        _sdlRenderer = SDL_CreateRenderer(_window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
     }
 
     void Resize(uint32 width, uint32 height) override
@@ -111,10 +110,11 @@ public:
 #ifdef __ENABLE_LIGHTFX__
             if (gConfigGeneral.enable_light_fx)
             {
-                const SDL_Color * lightPalette = lightfx_get_palette();
+                auto lightPalette = lightfx_get_palette();
                 for (sint32 i = 0; i < 256; i++)
                 {
-                    _lightPaletteHWMapped[i] = SDL_MapRGBA(_screenTextureFormat, lightPalette[i].r, lightPalette[i].g, lightPalette[i].b, lightPalette[i].a);
+                    auto src = &lightPalette->entries[i];
+                    _lightPaletteHWMapped[i] = SDL_MapRGBA(_screenTextureFormat, src->red, src->green, src->blue, src->alpha);
                 }
             }
 #endif
@@ -133,7 +133,13 @@ private:
 #ifdef __ENABLE_LIGHTFX__
         if (gConfigGeneral.enable_light_fx)
         {
-            lightfx_render_to_texture(_screenTexture, _bits, _width, _height, _paletteHWMapped, _lightPaletteHWMapped);
+            void * pixels;
+            sint32 pitch;
+            if (SDL_LockTexture(_screenTexture, NULL, &pixels, &pitch) == 0)
+            {
+                lightfx_render_to_texture(pixels, pitch, _bits, _width, _height, _paletteHWMapped, _lightPaletteHWMapped);
+                SDL_UnlockTexture(_screenTexture);
+            }
         }
         else
 #endif

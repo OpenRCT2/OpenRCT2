@@ -22,8 +22,6 @@
 #include "../Context.h"
 #include "../interface/Cursors.h"
 
-struct SDL_Window;
-
 namespace OpenRCT2
 {
     namespace Drawing
@@ -92,9 +90,9 @@ namespace OpenRCT2
             virtual ~IUiContext() = default;
 
             // Window
-            virtual void            CreateWindow() abstract;
-            virtual void            CloseWindow() abstract;
-            virtual SDL_Window *    GetWindow() abstract;
+            virtual void    CreateWindow() abstract;
+            virtual void    CloseWindow() abstract;
+            virtual void *  GetWindow() abstract;
             virtual sint32  GetWidth() abstract;
             virtual sint32  GetHeight() abstract;
             virtual void    SetFullscreenMode(FULLSCREEN_MODE mode) abstract;

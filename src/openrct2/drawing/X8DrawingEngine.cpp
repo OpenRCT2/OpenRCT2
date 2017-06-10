@@ -151,7 +151,7 @@ X8DrawingEngine::~X8DrawingEngine()
     delete [] _bits;
 }
 
-void X8DrawingEngine::Initialise(SDL_Window * window)
+void X8DrawingEngine::Initialise()
 {
 }
 

@@ -46,7 +46,7 @@ public:
     explicit SoftwareDrawingEngine(IUiContext * uiContext)
         : _uiContext(uiContext)
     {
-        UNUSED(_uiContext); // Will be used in due course to retrieve window information
+        _window = (SDL_Window *)_uiContext->GetWindow();
     }
 
     ~SoftwareDrawingEngine() override
@@ -56,9 +56,8 @@ public:
         SDL_FreePalette(_palette);
     }
 
-    void Initialise(SDL_Window * window) override
+    void Initialise() override
     {
-        _window = window;
     }
 
     void Resize(uint32 width, uint32 height) override
