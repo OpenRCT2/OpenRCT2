@@ -14,6 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
+#include <time.h>
 #include "../common.h"
 #include "../core/Guard.hpp"
 #include "../localisation/localisation.h"
@@ -531,3 +532,17 @@ money32 add_clamp_money32(money32 value, money32 value_to_add)
 }
 
 #undef add_clamp_body
+
+/**
+ * strftime wrapper which appends to an existing string.
+ */
+size_t strcatftime(char * buffer, size_t bufferSize, const char * format, const struct tm * tp)
+{
+    size_t stringLen = strnlen(buffer, bufferSize);
+    if (stringLen < bufferSize) {
+        char * dst = buffer + stringLen;
+        size_t dstMaxSize = bufferSize - stringLen;
+        return strftime(dst, dstMaxSize, format, tp);
+    }
+    return 0;
+}
