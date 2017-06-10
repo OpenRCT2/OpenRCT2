@@ -1419,6 +1419,22 @@ static void input_handle_console(sint32 key)
     }
 }
 
+static void input_handle_chat(sint32 key)
+{
+    CHAT_INPUT input = CHAT_INPUT_NONE;
+    switch (key) {
+    case SDL_SCANCODE_ESCAPE:
+        input = CHAT_INPUT_CLOSE;
+        break;
+    case SDL_SCANCODE_RETURN:
+        input = CHAT_INPUT_SEND;
+        break;
+    }
+    if (input != CHAT_INPUT_NONE) {
+        chat_input(input);
+    }
+}
+
 /**
  *
  *  rct2: 0x006E3B43
@@ -1540,7 +1556,7 @@ void game_handle_keyboard_input()
             input_handle_console(key);
             continue;
         } else if (gChatOpen) {
-            chat_input(key);
+            input_handle_chat(key);
             continue;
         }
 
