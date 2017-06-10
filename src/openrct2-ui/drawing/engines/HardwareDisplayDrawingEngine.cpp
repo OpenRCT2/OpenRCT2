@@ -110,10 +110,11 @@ public:
 #ifdef __ENABLE_LIGHTFX__
             if (gConfigGeneral.enable_light_fx)
             {
-                const SDL_Color * lightPalette = lightfx_get_palette();
+                auto lightPalette = lightfx_get_palette();
                 for (sint32 i = 0; i < 256; i++)
                 {
-                    _lightPaletteHWMapped[i] = SDL_MapRGBA(_screenTextureFormat, lightPalette[i].r, lightPalette[i].g, lightPalette[i].b, lightPalette[i].a);
+                    auto src = &lightPalette->entries[i];
+                    _lightPaletteHWMapped[i] = SDL_MapRGBA(_screenTextureFormat, src->red, src->green, src->blue, src->alpha);
                 }
             }
 #endif

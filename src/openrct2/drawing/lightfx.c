@@ -17,7 +17,6 @@
 #ifdef __ENABLE_LIGHTFX__
 
 #include "../common.h"
-#include <SDL.h>
 #include "../game.h"
 #include "../rct2.h"
 #include "../interface/viewport.h"
@@ -72,7 +71,7 @@ static uint8            _current_view_rotation_back     = 0;
 static uint8            _current_view_zoom_back         = 0;
 static uint8            _current_view_zoom_back_delay   = 0;
 
-static SDL_Color gPalette_light[256];
+static rct_palette gPalette_light;
 
 static uint8 soft_light(uint8 a, uint8 b);
 static uint8 lerp(uint8 a, uint8 b, float t);
@@ -610,9 +609,9 @@ void* lightfx_get_front_buffer()
     return _light_rendered_buffer_front;
 }
 
-const SDL_Color * lightfx_get_palette()
+const rct_palette * lightfx_get_palette()
 {
-    return gPalette_light;
+    return &gPalette_light;
 }
 
 void lightfx_add_3d_light(uint32 lightID, uint16 lightIDqualifier, sint16 x, sint16 y, uint16 z, uint8 lightType)
@@ -947,9 +946,11 @@ void lightfx_apply_palette_filter(uint8 i, uint8 *r, uint8 *g, uint8 *b)
         *r = (uint8)(min(255.0f, max(0.0f, (-overExpose + (float)(*r) * reduceColourNat * natLightR + envFog * fogR + addLightNatR))));
         *g = (uint8)(min(255.0f, max(0.0f, (-overExpose + (float)(*g) * reduceColourNat * natLightG + envFog * fogG + addLightNatG))));
         *b = (uint8)(min(255.0f, max(0.0f, (-overExpose + (float)(*b) * reduceColourNat * natLightB + envFog * fogB + addLightNatB))));
-        gPalette_light[i].r = (uint8)(min(0xFF, ((float)(*r) * reduceColourLit * boost + lightFog) * elecMultR));
-        gPalette_light[i].g = (uint8)(min(0xFF, ((float)(*g) * reduceColourLit * boost + lightFog) * elecMultG));
-        gPalette_light[i].b = (uint8)(min(0xFF, ((float)(*b) * reduceColourLit * boost + lightFog) * elecMultB));
+
+        rct_palette_entry * dstEntry = &gPalette_light.entries[i];
+        dstEntry->red = (uint8)(min(0xFF, ((float)(*r) * reduceColourLit * boost + lightFog) * elecMultR));
+        dstEntry->green = (uint8)(min(0xFF, ((float)(*g) * reduceColourLit * boost + lightFog) * elecMultG));
+        dstEntry->blue = (uint8)(min(0xFF, ((float)(*b) * reduceColourLit * boost + lightFog) * elecMultB));
     }
 }
 

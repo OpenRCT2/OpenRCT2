@@ -55,7 +55,7 @@ void lightfx_render_lights_to_frontbuffer();
 void lightfx_update_viewport_settings();
 
 void* lightfx_get_front_buffer();
-const SDL_Color * lightfx_get_palette();
+const rct_palette * lightfx_get_palette();
 
 void lightfx_add_3d_light(uint32 lightID, uint16 lightIDqualifier, sint16 x, sint16 y, uint16 z, uint8 lightType);
 
