@@ -437,8 +437,9 @@ void game_logic_update()
     }
 
     // Start autosave timer after update
-    if (gLastAutoSaveUpdate == AUTOSAVE_PAUSE)
-        gLastAutoSaveUpdate = platform_get_ticks();
+	if (gLastAutoSaveUpdate == AUTOSAVE_PAUSE) {
+		gLastAutoSaveUpdate = platform_get_ticks();
+	}
 
 	gCurrentTicks++;
 	gScenarioTicks++;
