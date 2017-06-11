@@ -36,6 +36,7 @@
 #include "../localisation/date.h"
 #include "../localisation/language.h"
 #include "../localisation/localisation.h"
+#include "../network/network.h"
 #include "../platform/platform.h"
 #include "../rct2.h"
 #include "../sprites.h"
@@ -1708,6 +1709,11 @@ static void window_options_invalidate(rct_window *w)
         break;
 
     case WINDOW_OPTIONS_PAGE_MISC:
+        // The real name setting of clients is fixed to that of the server
+        if (network_get_mode() == NETWORK_MODE_CLIENT) {
+            w->disabled_widgets |= (1ULL << WIDX_REAL_NAME_CHECKBOX);
+        }
+
         w->hold_down_widgets |= (1 << WIDX_WINDOW_LIMIT_UP) | (1 << WIDX_WINDOW_LIMIT_DOWN);
 
         // save plugin data checkbox: visible or not
