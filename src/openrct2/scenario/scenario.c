@@ -606,7 +606,7 @@ uint32 dbg_scenario_rand(const char *file, const char *function, const uint32 li
     }
     if (!gInUpdateCode) {
         log_warning("scenario_rand called from outside game update");
-        //assert(false);
+        assert(false);
     }
 #endif
 
