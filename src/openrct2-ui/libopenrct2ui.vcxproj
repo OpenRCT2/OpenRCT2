@@ -41,11 +41,15 @@
     <ClCompile Include="drawing\engines\opengl\SwapFramebuffer.cpp" />
     <ClCompile Include="drawing\engines\opengl\TextureCache.cpp" />
     <ClCompile Include="drawing\engines\SoftwareDrawingEngine.cpp" />
+    <ClCompile Include="input\KeyboardShortcuts.cpp" />
+    <ClCompile Include="input\keyboard_shortcut.c" />
     <ClCompile Include="TextComposition.cpp" />
     <ClCompile Include="Ui.cpp" />
     <ClCompile Include="UiContext.cpp" />
     <ClCompile Include="UiContext.Linux.cpp" />
     <ClCompile Include="UiContext.Win32.cpp" />
+    <ClCompile Include="windows\shortcut_keys.c" />
+    <ClCompile Include="windows\shortcut_key_change.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="audio\AudioContext.h" />
@@ -63,6 +67,8 @@
     <ClInclude Include="drawing\engines\opengl\OpenGLShaderProgram.h" />
     <ClInclude Include="drawing\engines\opengl\SwapFramebuffer.h" />
     <ClInclude Include="drawing\engines\opengl\TextureCache.h" />
+    <ClInclude Include="input\KeyboardShortcuts.h" />
+    <ClInclude Include="input\keyboard_shortcut.h" />
     <ClInclude Include="SDLException.h" />
     <ClInclude Include="TextComposition.h" />
     <ClInclude Include="Ui.h" />

@@ -23,7 +23,6 @@
 #include "interface/chat.h"
 #include "interface/console.h"
 #include "interface/Cursors.h"
-#include "interface/keyboard_shortcut.h"
 #include "interface/viewport.h"
 #include "interface/widget.h"
 #include "interface/window.h"
@@ -1485,14 +1484,14 @@ void title_handle_keyboard_input()
 
         w = window_find_by_class(WC_CHANGE_KEYBOARD_SHORTCUT);
         if (w != NULL) {
-            keyboard_shortcut_set(key);
+            // keyboard_shortcut_set(key);
         } else {
             w = window_find_by_class(WC_TEXTINPUT);
             if (w != NULL) {
                 window_text_input_key(w, key);
             }
             else if (!gUsingWidgetTextBox) {
-                keyboard_shortcut_handle(key);
+                // keyboard_shortcut_handle(key);
             }
         }
     }
@@ -1564,13 +1563,13 @@ void game_handle_keyboard_input()
 
         w = window_find_by_class(WC_CHANGE_KEYBOARD_SHORTCUT);
         if (w != NULL) {
-            keyboard_shortcut_set(key);
+            // keyboard_shortcut_set(key);
         } else {
             w = window_find_by_class(WC_TEXTINPUT);
             if (w != NULL) {
                 window_text_input_key(w, key);
             } else if (!gUsingWidgetTextBox) {
-                keyboard_shortcut_handle(key);
+                // keyboard_shortcut_handle(key);
             }
         }
     }
@@ -1706,44 +1705,44 @@ void game_handle_key_scroll()
     scrollX = 0;
     scrollY = 0;
 
-    const uint8 * keysState = context_get_keys_state();
-    for (sint32 shortcutId = SHORTCUT_SCROLL_MAP_UP; shortcutId <= SHORTCUT_SCROLL_MAP_RIGHT; shortcutId++) {
-        uint16 shortcutKey = gShortcutKeys[shortcutId];
-        uint8 scancode = shortcutKey & 0xFF;
-
-        if (shortcutKey == 0xFFFF) continue;
-        if (!keysState[scancode]) continue;
-
-        if (shortcutKey & SHIFT) {
-            if (!keysState[SDL_SCANCODE_LSHIFT] && !keysState[SDL_SCANCODE_RSHIFT]) continue;
-        }
-        if (shortcutKey & CTRL) {
-            if (!keysState[SDL_SCANCODE_LCTRL] && !keysState[SDL_SCANCODE_RCTRL]) continue;
-        }
-        if (shortcutKey & ALT) {
-            if (!keysState[SDL_SCANCODE_LALT] && !keysState[SDL_SCANCODE_RALT]) continue;
-        }
-#ifdef __MACOSX__
-        if (shortcutKey & CMD) {
-            if (!keysState[SDL_SCANCODE_LGUI] && !keysState[SDL_SCANCODE_RGUI]) continue;
-        }
-#endif
-
-        switch (shortcutId) {
-        case SHORTCUT_SCROLL_MAP_UP:
-            scrollY = -1;
-            break;
-        case SHORTCUT_SCROLL_MAP_LEFT:
-            scrollX = -1;
-            break;
-        case SHORTCUT_SCROLL_MAP_DOWN:
-            scrollY = 1;
-            break;
-        case SHORTCUT_SCROLL_MAP_RIGHT:
-            scrollX = 1;
-            break;
-        }
-    }
+//     const uint8 * keysState = context_get_keys_state();
+//     for (sint32 shortcutId = SHORTCUT_SCROLL_MAP_UP; shortcutId <= SHORTCUT_SCROLL_MAP_RIGHT; shortcutId++) {
+//         uint16 shortcutKey = gShortcutKeys[shortcutId];
+//         uint8 scancode = shortcutKey & 0xFF;
+// 
+//         if (shortcutKey == 0xFFFF) continue;
+//         if (!keysState[scancode]) continue;
+// 
+//         if (shortcutKey & SHIFT) {
+//             if (!keysState[SDL_SCANCODE_LSHIFT] && !keysState[SDL_SCANCODE_RSHIFT]) continue;
+//         }
+//         if (shortcutKey & CTRL) {
+//             if (!keysState[SDL_SCANCODE_LCTRL] && !keysState[SDL_SCANCODE_RCTRL]) continue;
+//         }
+//         if (shortcutKey & ALT) {
+//             if (!keysState[SDL_SCANCODE_LALT] && !keysState[SDL_SCANCODE_RALT]) continue;
+//         }
+// #ifdef __MACOSX__
+//         if (shortcutKey & CMD) {
+//             if (!keysState[SDL_SCANCODE_LGUI] && !keysState[SDL_SCANCODE_RGUI]) continue;
+//         }
+// #endif
+// 
+//         switch (shortcutId) {
+//         case SHORTCUT_SCROLL_MAP_UP:
+//             scrollY = -1;
+//             break;
+//         case SHORTCUT_SCROLL_MAP_LEFT:
+//             scrollX = -1;
+//             break;
+//         case SHORTCUT_SCROLL_MAP_DOWN:
+//             scrollY = 1;
+//             break;
+//         case SHORTCUT_SCROLL_MAP_RIGHT:
+//             scrollX = 1;
+//             break;
+//         }
+//     }
 
     // Scroll viewport
     if (scrollX != 0) {

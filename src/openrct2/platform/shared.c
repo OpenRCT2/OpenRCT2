@@ -27,7 +27,6 @@
 #include "../input.h"
 #include "../interface/console.h"
 #include "../interface/Cursors.h"
-#include "../interface/keyboard_shortcut.h"
 #include "../interface/window.h"
 #include "../localisation/currency.h"
 #include "../localisation/localisation.h"

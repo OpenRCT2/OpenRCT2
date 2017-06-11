@@ -57,7 +57,6 @@ extern "C" {
 #include "../game.h"
 #include "../interface/chat.h"
 #include "../interface/window.h"
-#include "../interface/keyboard_shortcut.h"
 #include "../localisation/date.h"
 #include "../localisation/localisation.h"
 #include "../management/finance.h"
@@ -2364,7 +2363,7 @@ void network_chat_show_connected_message()
 {
     char templateBuffer[128];
     char *templateString = templateBuffer;
-    keyboard_shortcut_format_string(templateBuffer, 128, gShortcutKeys[SHORTCUT_OPEN_CHAT_WINDOW]);
+    // keyboard_shortcuts_format_string(templateBuffer, sizeof(templateBuffer), SHORTCUT_OPEN_CHAT_WINDOW);
     utf8 buffer[256];
     NetworkPlayer server;
     server.Name = "Server";

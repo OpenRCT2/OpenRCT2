@@ -14,12 +14,12 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../config/Config.h"
-#include "../interface/window.h"
-#include "../interface/widget.h"
-#include "../localisation/localisation.h"
-#include "../platform/platform.h"
-#include "../interface/keyboard_shortcut.h"
+#include <openrct2/config/Config.h>
+#include <openrct2/interface/window.h>
+#include <openrct2/interface/widget.h>
+#include <openrct2/localisation/localisation.h>
+#include <openrct2/platform/platform.h>
+#include "../input/KeyboardShortcuts.h"
 
 #define WW 420
 #define WH 280
@@ -188,8 +188,8 @@ static void window_shortcut_mouseup(rct_window *w, rct_widgetindex widgetIndex)
         window_close(w);
         break;
     case WIDX_RESET:
-        config_reset_shortcut_keys();
-        config_shortcut_keys_save();
+        keyboard_shortcuts_reset();
+        keyboard_shortcuts_save();
         window_invalidate(w);
         break;
     }
@@ -289,7 +289,7 @@ static void window_shortcut_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, s
         }
 
         char templateString[128];
-        keyboard_shortcut_format_string(templateString, 128, gShortcutKeys[i]);
+        keyboard_shortcuts_format_string(templateString, 128, i);
 
         set_format_arg(0, rct_string_id, STR_SHORTCUT_ENTRY_FORMAT);
         set_format_arg(2, rct_string_id, ShortcutStringIds[i]);

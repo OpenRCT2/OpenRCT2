@@ -17,7 +17,7 @@
 #ifndef _INTERFACE_KEYBOARD_SHORTCUT_H_
 #define _INTERFACE_KEYBOARD_SHORTCUT_H_
 
-#include "../common.h"
+#include <openrct2/common.h>
 
 #define SHORTCUT_UNDEFINED 0xFFFF
 
@@ -28,10 +28,6 @@ void keyboard_shortcut_set(sint32 key);
 void keyboard_shortcut_handle(sint32 key);
 void keyboard_shortcut_handle_command(sint32 shortcutIndex);
 void keyboard_shortcut_format_string(char *buffer, size_t size, uint16 shortcutKey);
-
-void config_reset_shortcut_keys();
-bool config_shortcut_keys_load();
-bool config_shortcut_keys_save();
 
 typedef struct shortcut_entry {
     uint8 key;
@@ -107,6 +103,14 @@ enum {
     SHORTCUT_COUNT
 };
 
-extern uint16 gShortcutKeys[SHORTCUT_COUNT];
+#define SHIFT   0x100
+#define CTRL    0x200
+#define ALT     0x400
+#define CMD     0x800
+#ifdef __MACOSX__
+#define PLATFORM_MODIFIER CMD
+#else
+#define PLATFORM_MODIFIER CTRL
+#endif
 
 #endif
