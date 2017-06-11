@@ -154,11 +154,11 @@ static void ride_entrance_exit_paint(uint8 direction, sint32 height, rct_map_ele
             string_id = STR_RIDE_ENTRANCE_NAME;
         }
 
-        utf8 entrance_string[MAX_PATH];
+        utf8 entrance_string[256];
         if (gConfigGeneral.upper_case_banners) {
-            format_string_to_upper(entrance_string, MAX_PATH, string_id, gCommonFormatArgs);
+            format_string_to_upper(entrance_string, sizeof(entrance_string), string_id, gCommonFormatArgs);
         } else {
-            format_string(entrance_string, MAX_PATH, string_id, gCommonFormatArgs);
+            format_string(entrance_string, sizeof(entrance_string), string_id, gCommonFormatArgs);
         }
 
         gCurrentFontSpriteBase = FONT_SPRITE_BASE_TINY;
@@ -237,11 +237,11 @@ static void park_entrance_paint(uint8 direction, sint32 height, rct_map_element*
             park_text_id = STR_BANNER_TEXT_FORMAT;
         }
 
-        utf8 park_name[MAX_PATH];
+        utf8 park_name[256];
         if (gConfigGeneral.upper_case_banners) {
-            format_string_to_upper(park_name, MAX_PATH, park_text_id, gCommonFormatArgs);
+            format_string_to_upper(park_name, sizeof(park_name), park_text_id, gCommonFormatArgs);
         } else {
-            format_string(park_name, MAX_PATH, park_text_id, gCommonFormatArgs);
+            format_string(park_name, sizeof(park_name), park_text_id, gCommonFormatArgs);
         }
 
         gCurrentFontSpriteBase = FONT_SPRITE_BASE_TINY;

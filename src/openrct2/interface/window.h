@@ -25,7 +25,6 @@
 #include "../ride/track_design.h"
 #include "../ride/vehicle.h"
 #include "../scenario/scenario.h"
-#include "../scenario/ScenarioRepository.h"
 #include "../world/park.h"
 #include "colour.h"
 
@@ -34,6 +33,7 @@ union rct_window_event;
 struct track_design_file_ref;
 struct TitleSequence;
 struct TextInputSession;
+typedef struct scenario_index_entry scenario_index_entry;
 
 #define TEXT_INPUT_SIZE 1024
 #define TOP_TOOLBAR_HEIGHT 27
