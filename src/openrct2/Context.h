@@ -59,6 +59,8 @@ enum
 
 namespace OpenRCT2
 {
+    interface IPlatformEnvironment;
+
     namespace Audio
     {
         interface IAudioContext;
@@ -86,7 +88,7 @@ namespace OpenRCT2
     };
 
     IContext * CreateContext();
-    IContext * CreateContext(Audio::IAudioContext * audioContext, Ui::IUiContext * uiContext);
+    IContext * CreateContext(IPlatformEnvironment * env, Audio::IAudioContext * audioContext, Ui::IUiContext * uiContext);
     IContext * GetContext();
 }
 

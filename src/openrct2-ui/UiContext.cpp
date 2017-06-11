@@ -59,7 +59,8 @@ class UiContext final : public IUiContext
 private:
     constexpr static uint32 TOUCH_DOUBLE_TIMEOUT = 300;
 
-    IPlatformUiContext * const _platformUiContext;
+    IPlatformEnvironment * const    _env;
+    IPlatformUiContext * const      _platformUiContext;
 
     CursorRepository _cursorRepository;
 
@@ -84,14 +85,18 @@ private:
     float           _gestureRadius          = 0;
 
 public:
-    UiContext()
-        : _platformUiContext(CreatePlatformUiContext())
+    UiContext(IPlatformEnvironment * env)
+        : _env(env),
+          _platformUiContext(CreatePlatformUiContext())
     {
         if (SDL_Init(SDL_INIT_VIDEO) < 0)
         {
             SDLException::Throw("SDL_Init(SDL_INIT_VIDEO)");
         }
         _cursorRepository.LoadCursors();
+
+        // Temporary to prevent warning, will be used for keyboard shortcuts
+        UNUSED(_env);
     }
 
     ~UiContext() override
@@ -690,7 +695,7 @@ private:
     }
 };
 
-IUiContext * OpenRCT2::Ui::CreateUiContext()
+IUiContext * OpenRCT2::Ui::CreateUiContext(IPlatformEnvironment * env)
 {
-    return new UiContext();
+    return new UiContext(env);
 }

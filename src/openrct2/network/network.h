@@ -85,15 +85,19 @@ enum {
     NETWORK_TICK_FLAG_CHECKSUMS = 1 << 0,
 };
 
-interface   IPlatformEnvironment;
-struct      ObjectRepositoryItem;
+struct ObjectRepositoryItem;
+
+namespace OpenRCT2
+{
+    interface IPlatformEnvironment;
+}
 
 class Network
 {
 public:
     Network();
     ~Network();
-    void SetEnvironment(IPlatformEnvironment * env);
+    void SetEnvironment(OpenRCT2::IPlatformEnvironment * env);
     bool Init();
     void Close();
     bool BeginClient(const char* host, uint16 port);
@@ -231,7 +235,7 @@ private:
     std::string _chatLogFilenameFormat = "%Y%m%d-%H%M%S.txt";
     std::string _serverLogPath;
     std::string _serverLogFilenameFormat = "-%Y%m%d-%H%M%S.txt";
-    IPlatformEnvironment * _env;
+    OpenRCT2::IPlatformEnvironment * _env;
 
     void UpdateServer();
     void UpdateClient();

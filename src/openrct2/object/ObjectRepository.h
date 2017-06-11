@@ -32,9 +32,12 @@ extern "C"
 #endif
 
 #ifdef __cplusplus
-    interface   IPlatformEnvironment;
     interface   IStream;
     class       Object;
+    namespace OpenRCT2
+    {
+        interface IPlatformEnvironment;
+    }
 #else
     typedef struct Object Object;
 #endif
@@ -87,7 +90,7 @@ interface IObjectRepository
     virtual void                            WritePackedObjects(IStream * stream, std::vector<const ObjectRepositoryItem *> &objects) abstract;
 };
 
-IObjectRepository * CreateObjectRepository(IPlatformEnvironment * env);
+IObjectRepository * CreateObjectRepository(OpenRCT2::IPlatformEnvironment * env);
 IObjectRepository * GetObjectRepository();
 
 bool IsObjectCustom(const ObjectRepositoryItem * object);

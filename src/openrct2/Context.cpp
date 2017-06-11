@@ -70,11 +70,11 @@ namespace OpenRCT2
         constexpr static uint32 UPDATE_TIME_MS = 25;
 
         // Dependencies
-        IAudioContext * const _audioContext = nullptr;
-        IUiContext * const _uiContext       = nullptr;
+        IPlatformEnvironment * const    _env            = nullptr;
+        IAudioContext * const           _audioContext   = nullptr;
+        IUiContext * const              _uiContext      = nullptr;
 
         // Services
-        IPlatformEnvironment *      _env                    = nullptr;
         IObjectRepository *         _objectRepository       = nullptr;
         ITrackDesignRepository *    _trackDesignRepository  = nullptr;
         IScenarioRepository *       _scenarioRepository     = nullptr;
@@ -93,8 +93,9 @@ namespace OpenRCT2
         static Context * Instance;
 
     public:
-        Context(IAudioContext * audioContext, IUiContext * uiContext)
-            : _audioContext(audioContext),
+        Context(IPlatformEnvironment * env, IAudioContext * audioContext, IUiContext * uiContext)
+            : _env(env),
+              _audioContext(audioContext),
               _uiContext(uiContext)
         {
             Instance = this;
@@ -150,13 +151,6 @@ namespace OpenRCT2
 #endif // DISABLE_NETWORK
 
             crash_init();
-
-            // Sets up the environment OpenRCT2 is running in, e.g. directory paths
-            _env = SetupEnvironment();
-            if (_env == nullptr)
-            {
-                return false;
-            }
 
             if (!rct2_interop_setup_segment())
             {
@@ -237,64 +231,6 @@ namespace OpenRCT2
         }
 
     private:
-        IPlatformEnvironment * SetupEnvironment()
-        {
-            utf8 userPath[MAX_PATH];
-            platform_resolve_openrct_data_path();
-            platform_resolve_user_data_path();
-            platform_get_user_directory(userPath, NULL, sizeof(userPath));
-            if (!platform_ensure_directory_exists(userPath))
-            {
-                Console::Error::WriteLine("Could not create user directory (do you have write access to your documents folder?)");
-                return nullptr;
-            }
-            platform_get_exe_path(gExePath, sizeof(gExePath));
-            log_verbose("Setting exe path to %s", gExePath);
-
-            config_set_defaults();
-            if (!config_open_default())
-            {
-                if (!config_find_or_browse_install_directory())
-                {
-                    gConfigGeneral.last_run_version = String::Duplicate(OPENRCT2_VERSION);
-                    config_save_default();
-                    utf8 path[MAX_PATH];
-                    config_get_default_path(path, sizeof(path));
-                    Console::Error::WriteLine("An RCT2 install directory must be specified! Please edit \"game_path\" in %s.", path);
-                    return nullptr;
-                }
-                config_save_default();
-            }
-
-            if (!rct2_init_directories())
-            {
-                return nullptr;
-            }
-            if (!rct2_startup_checks())
-            {
-                return nullptr;
-            }
-
-            utf8 path[260];
-            std::string basePaths[4];
-            basePaths[(size_t)DIRBASE::RCT1] = String::ToStd(gConfigGeneral.rct1_path);
-            basePaths[(size_t)DIRBASE::RCT2] = String::ToStd(gConfigGeneral.rct2_path);
-            platform_get_openrct_data_path(path, sizeof(path));
-            basePaths[(size_t)DIRBASE::OPENRCT2] = std::string(path);
-            platform_get_user_directory(path, nullptr, sizeof(path));
-            basePaths[(size_t)DIRBASE::USER] = std::string(path);
-
-            IPlatformEnvironment * env = CreatePlatformEnvironment(basePaths);
-
-            // Log base paths
-            log_verbose("DIRBASE::RCT1    : %s", env->GetDirectoryPath(DIRBASE::RCT1).c_str());
-            log_verbose("DIRBASE::RCT2    : %s", env->GetDirectoryPath(DIRBASE::RCT2).c_str());
-            log_verbose("DIRBASE::OPENRCT2: %s", env->GetDirectoryPath(DIRBASE::OPENRCT2).c_str());
-            log_verbose("DIRBASE::USER    : %s", env->GetDirectoryPath(DIRBASE::USER).c_str());
-
-            return env;
-        }
-
         /**
          * Launches the game, after command line arguments have been parsed and processed.
          */
@@ -564,18 +500,20 @@ namespace OpenRCT2
 
     class PlainContext final : public Context
     {
-        std::unique_ptr<IAudioContext>  _audioContext;
-        std::unique_ptr<IUiContext>     _uiContext;
+        std::unique_ptr<IPlatformEnvironment>   _env;
+        std::unique_ptr<IAudioContext>          _audioContext;
+        std::unique_ptr<IUiContext>             _uiContext;
 
     public:
         PlainContext()
-            : PlainContext(CreateDummyAudioContext(), CreateDummyUiContext())
+            : PlainContext(CreatePlatformEnvironment(), CreateDummyAudioContext(), CreateDummyUiContext())
         {
         }
 
-        PlainContext(IAudioContext * audioContext, IUiContext * uiContext)
-            : Context(audioContext, uiContext)
+        PlainContext(IPlatformEnvironment * env, IAudioContext * audioContext, IUiContext * uiContext)
+            : Context(env, audioContext, uiContext)
         {
+            _env = std::unique_ptr<IPlatformEnvironment>(env);
             _audioContext = std::unique_ptr<IAudioContext>(audioContext);
             _uiContext = std::unique_ptr<IUiContext>(uiContext);
         }
@@ -588,9 +526,9 @@ namespace OpenRCT2
         return new PlainContext();
     }
 
-    IContext * CreateContext(Audio::IAudioContext * audioContext, IUiContext * uiContext)
+    IContext * CreateContext(IPlatformEnvironment * env, Audio::IAudioContext * audioContext, IUiContext * uiContext)
     {
-        return new Context(audioContext, uiContext);
+        return new Context(env, audioContext, uiContext);
     }
 
     IContext * GetContext()

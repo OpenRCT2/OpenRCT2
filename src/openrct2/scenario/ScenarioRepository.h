@@ -56,7 +56,10 @@ typedef struct scenario_index_entry
 
 #ifdef __cplusplus
 
-interface IPlatformEnvironment;
+namespace OpenRCT2
+{
+    interface IPlatformEnvironment;
+}
 
 interface IScenarioRepository
 {
@@ -75,7 +78,7 @@ interface IScenarioRepository
     virtual bool TryRecordHighscore(const utf8 * scenarioFileName, money32 companyValue, const utf8 * name) abstract;
 };
 
-IScenarioRepository * CreateScenarioRepository(IPlatformEnvironment * env);
+IScenarioRepository * CreateScenarioRepository(OpenRCT2::IPlatformEnvironment * env);
 IScenarioRepository * GetScenarioRepository();
 
 #endif

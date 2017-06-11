@@ -36,6 +36,8 @@ extern "C"
     #include "track_design.h"
 }
 
+using namespace OpenRCT2;
+
 #pragma pack(push, 1)
 struct TrackRepositoryHeader
 {
