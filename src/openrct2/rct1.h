@@ -1141,21 +1141,21 @@ enum {
 };
 
 enum {
-    RCT1_PARK_FLAGS_PARK_OPEN =                     (1 << 0),
-    RCT1_PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT =  (1 << 1),
-    RCT1_PARK_FLAGS_FORBID_LANDSCAPE_CHANGES =      (1 << 2),
-    RCT1_PARK_FLAGS_FORBID_TREE_REMOVAL =           (1 << 3),
-    RCT1_PARK_FLAGS_SHOW_REAL_GUEST_NAMES =         (1 << 4),
-    RCT1_PARK_FLAGS_FORBID_HIGH_CONSTRUCTION =      (1 << 5),   // Below tree height
-    RCT1_PARK_FLAGS_PREF_LESS_INTENSE_RIDES =       (1 << 6),
-    RCT1_PARK_FLAGS_FORBID_MARKETING_CAMPAIGN =     (1 << 7),
-    RCT1_PARK_FLAGS_ANTI_CHEAT_DEPRECATED =         (1 << 8),   // Not used anymore, used for cheat detection
-    RCT1_PARK_FLAGS_PREF_MORE_INTENSE_RIDES =       (1 << 9),
-    RCT1_PARK_FLAGS_NO_MONEY =                      (1 << 11),  // Used for both scenarios and saved games, unlike RCT2
-    RCT1_PARK_FLAGS_DIFFICULT_GUEST_GENERATION =    (1 << 12),
-    RCT1_PARK_FLAGS_PARK_ENTRY_LOCKED_AT_FREE =     (1 << 13),  // Off: rides and park entry chargeable. On: only rides chargeable.
-    RCT1_PARK_FLAGS_DIFFICULT_PARK_RATING =         (1 << 14),
-    RCT1_PARK_FLAGS_LOCK_REAL_NAMES_OPTION =        (1 << 15),
+    RCT1_PARK_FLAGS_PARK_OPEN =                         (1 << 0),
+    RCT1_PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT =      (1 << 1),
+    RCT1_PARK_FLAGS_FORBID_LANDSCAPE_CHANGES =          (1 << 2),
+    RCT1_PARK_FLAGS_FORBID_TREE_REMOVAL =               (1 << 3),
+    RCT1_PARK_FLAGS_SHOW_REAL_GUEST_NAMES =             (1 << 4),
+    RCT1_PARK_FLAGS_FORBID_HIGH_CONSTRUCTION =          (1 << 5),   // Below tree height
+    RCT1_PARK_FLAGS_PREF_LESS_INTENSE_RIDES =           (1 << 6),
+    RCT1_PARK_FLAGS_FORBID_MARKETING_CAMPAIGN =         (1 << 7),
+    RCT1_PARK_FLAGS_ANTI_CHEAT_DEPRECATED =             (1 << 8),   // Not used anymore, used for cheat detection
+    RCT1_PARK_FLAGS_PREF_MORE_INTENSE_RIDES =           (1 << 9),
+    RCT1_PARK_FLAGS_NO_MONEY =                          (1 << 11),  // Used for both scenarios and saved games, unlike RCT2
+    RCT1_PARK_FLAGS_DIFFICULT_GUEST_GENERATION =        (1 << 12),
+    RCT1_PARK_FLAGS_PARK_ENTRY_LOCKED_AT_FREE =         (1 << 13),  // Off: rides and park entry chargeable. On: only rides chargeable.
+    RCT1_PARK_FLAGS_DIFFICULT_PARK_RATING =             (1 << 14),
+    RCT1_PARK_FLAGS_LOCK_REAL_NAMES_OPTION_DEPRECATED = (1 << 15),  // Deprecated now we use a persistent 'real names' setting
 };
 
 enum {

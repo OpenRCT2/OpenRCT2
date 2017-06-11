@@ -1708,10 +1708,6 @@ static void window_options_invalidate(rct_window *w)
         break;
 
     case WINDOW_OPTIONS_PAGE_MISC:
-        // unknown park flag can disable real name checkbox
-        if (gParkFlags & PARK_FLAGS_LOCK_REAL_NAMES_OPTION)
-            w->disabled_widgets |= (1ULL << WIDX_REAL_NAME_CHECKBOX);
-
         w->hold_down_widgets |= (1 << WIDX_WINDOW_LIMIT_UP) | (1 << WIDX_WINDOW_LIMIT_DOWN);
 
         // save plugin data checkbox: visible or not
