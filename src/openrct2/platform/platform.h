@@ -19,8 +19,6 @@
 
 #include "../common.h"
 
-#include <SDL.h>
-
 #ifdef __WINDOWS__
 #include "../rct2.h"
     #ifndef HAVE_MATH_H
