@@ -97,6 +97,8 @@ void input_window_position_begin(rct_window *w, rct_widgetindex widgetIndex, sin
 void title_handle_keyboard_input();
 void game_handle_input();
 void game_handle_keyboard_input();
+void game_handle_edge_scroll();
+sint32 get_next_key();
 
 void store_mouse_input(sint32 state, sint32 x, sint32 y);
 
