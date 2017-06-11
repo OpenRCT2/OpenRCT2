@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include <string>
 #include "../common.h"
 
 extern "C"
@@ -37,6 +38,7 @@ namespace OpenRCT2
 
             virtual void HandleKeyboardShortcut(sint32 key) abstract;
             virtual void GetKeyboardMapScroll(const uint8 * keysState, sint32 * x, sint32 * y) abstract;
+            virtual std::string GetKeyboardShortcutString(sint32 shortcut) abstract;
         };
 
         IWindowManager * CreateDummyWindowManager();

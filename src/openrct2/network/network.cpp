@@ -14,9 +14,12 @@
  *****************************************************************************/
 #pragma endregion
 
+#include "../Context.h"
 #include "../core/Guard.hpp"
 #include "../OpenRCT2.h"
 #include "../PlatformEnvironment.h"
+#include "../ui/UiContext.h"
+#include "../ui/WindowManager.h"
 
 extern "C" {
     #include "../platform/platform.h"
@@ -2361,14 +2364,16 @@ const char* network_get_group_name(uint32 index)
 
 void network_chat_show_connected_message()
 {
-    char templateBuffer[128];
-    char *templateString = templateBuffer;
-    // keyboard_shortcuts_format_string(templateBuffer, sizeof(templateBuffer), SHORTCUT_OPEN_CHAT_WINDOW);
+    auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
+    std::string s = windowManager->GetKeyboardShortcutString(41 /* SHORTCUT_OPEN_CHAT_WINDOW */);
+    const char * sptr = s.c_str();
+
     utf8 buffer[256];
+    format_string(buffer, sizeof(buffer), STR_MULTIPLAYER_CONNECTED_CHAT_HINT, &sptr);
+
     NetworkPlayer server;
     server.Name = "Server";
-    format_string(buffer, 256, STR_MULTIPLAYER_CONNECTED_CHAT_HINT, &templateString);
-    const char *formatted = Network::FormatChat(&server, buffer);
+    const char * formatted = Network::FormatChat(&server, buffer);
     chat_history_add(formatted);
 }
 

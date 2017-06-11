@@ -49,6 +49,13 @@ public:
     {
         get_keyboard_map_scroll(keysState, x, y);
     }
+
+    std::string GetKeyboardShortcutString(sint32 shortcut) override
+    {
+        utf8 buffer[256];
+        keyboard_shortcuts_format_string(buffer, sizeof(buffer), shortcut);
+        return std::string(buffer);
+    }
 };
 
 IWindowManager * OpenRCT2::Ui::CreateWindowManager()
