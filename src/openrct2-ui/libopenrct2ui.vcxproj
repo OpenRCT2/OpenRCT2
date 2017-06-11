@@ -48,6 +48,7 @@
     <ClCompile Include="UiContext.cpp" />
     <ClCompile Include="UiContext.Linux.cpp" />
     <ClCompile Include="UiContext.Win32.cpp" />
+    <ClCompile Include="WindowManager.cpp" />
     <ClCompile Include="windows\shortcut_keys.c" />
     <ClCompile Include="windows\shortcut_key_change.c" />
   </ItemGroup>
@@ -72,6 +73,7 @@
     <ClInclude Include="TextComposition.h" />
     <ClInclude Include="Ui.h" />
     <ClInclude Include="UiContext.h" />
+    <ClInclude Include="WindowManager.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{8DD8AB7D-2EA6-44E3-8265-BAF08E832951}</ProjectGuid>

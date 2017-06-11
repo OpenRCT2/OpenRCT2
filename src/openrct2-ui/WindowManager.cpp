@@ -32,6 +32,23 @@ public:
             return nullptr;
         }
     }
+
+    void HandleKeyboardShortcut(sint32 key) override
+    {
+        rct_window * w = window_find_by_class(WC_CHANGE_KEYBOARD_SHORTCUT);
+        if (w != NULL) {
+            keyboard_shortcuts_set(key);
+            window_close_by_class(WC_CHANGE_KEYBOARD_SHORTCUT);
+            window_invalidate_by_class(WC_KEYBOARD_SHORTCUT_LIST);
+        } else {
+            keyboard_shortcut_handle(key);
+        }
+    }
+
+    void GetKeyboardMapScroll(const uint8 * keysState, sint32 * x, sint32 * y) override
+    {
+        get_keyboard_map_scroll(keysState, x, y);
+    }
 };
 
 IWindowManager * OpenRCT2::Ui::CreateWindowManager()

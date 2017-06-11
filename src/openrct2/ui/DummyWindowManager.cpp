@@ -21,6 +21,8 @@ namespace OpenRCT2 { namespace Ui
     class DummyWindowManager final : public IWindowManager
     {
         rct_window * OpenWindow(rct_windowclass wc) override { return nullptr; }
+        void HandleKeyboardShortcut(sint32 key) override { }
+        void GetKeyboardMapScroll(const uint8 * keysState, sint32 * x, sint32 * y) override { }
     };
 
     IWindowManager * CreateDummyWindowManager()

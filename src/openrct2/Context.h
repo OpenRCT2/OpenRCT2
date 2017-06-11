@@ -128,6 +128,8 @@ extern "C"
     bool context_has_focus();
     void context_set_cursor_trap(bool value);
     rct_window * context_open_window(rct_windowclass wc);
+    void context_handle_keyboard_shortcut(sint32 key);
+    void context_get_keyboard_map_scroll(const uint8 * keysState, sint32 * x, sint32 * y);
 #ifdef __cplusplus
 }
 #endif

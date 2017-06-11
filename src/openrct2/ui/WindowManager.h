@@ -34,6 +34,9 @@ namespace OpenRCT2
         {
             virtual ~IWindowManager() = default;
             virtual rct_window * OpenWindow(rct_windowclass wc) abstract;
+
+            virtual void HandleKeyboardShortcut(sint32 key) abstract;
+            virtual void GetKeyboardMapScroll(const uint8 * keysState, sint32 * x, sint32 * y) abstract;
         };
 
         IWindowManager * CreateDummyWindowManager();

@@ -1434,87 +1434,19 @@ static void input_handle_chat(sint32 key)
     }
 }
 
-/**
- *
- *  rct2: 0x006E3B43
- */
-void title_handle_keyboard_input()
+static void input_handle_keyboard(bool isTitle)
 {
-    rct_window *w;
-    sint32 key;
-
     if (gOpenRCT2Headless) {
         return;
     }
 
     if (!gConsoleOpen) {
-        // Handle modifier keys and key scrolling
-        gInputPlaceObjectModifier = PLACE_OBJECT_MODIFIER_NONE;
-        const uint8 * keysState = context_get_keys_state();
-        if (keysState[SDL_SCANCODE_LSHIFT] || keysState[SDL_SCANCODE_RSHIFT])
-            gInputPlaceObjectModifier |= PLACE_OBJECT_MODIFIER_SHIFT_Z;
-        if (keysState[SDL_SCANCODE_LCTRL] || keysState[SDL_SCANCODE_RCTRL])
-            gInputPlaceObjectModifier |= PLACE_OBJECT_MODIFIER_COPY_Z;
-        if (keysState[SDL_SCANCODE_LALT] || keysState[SDL_SCANCODE_RALT])
-            gInputPlaceObjectModifier |= 4;
-#ifdef __MACOSX__
-        if (keysState[SDL_SCANCODE_LGUI] || keysState[SDL_SCANCODE_RGUI]) {
-            gInputPlaceObjectModifier |= 8;
-        }
-#endif
-    }
-
-    while ((key = get_next_key()) != 0) {
-        if (key == 255)
-            continue;
-
-        // Reserve backtick for console
-        if (key == SDL_SCANCODE_GRAVE) {
-            if ((gConfigGeneral.debugging_tools && !context_is_input_active()) || gConsoleOpen) {
-                window_cancel_textbox();
-                console_toggle();
-            }
-            continue;
-        } else if (gConsoleOpen) {
-            input_handle_console(key);
-            continue;
-        }
-
-        key |= gInputPlaceObjectModifier << 8;
-
-        w = window_find_by_class(WC_CHANGE_KEYBOARD_SHORTCUT);
-        if (w != NULL) {
-            // keyboard_shortcut_set(key);
-        } else {
-            w = window_find_by_class(WC_TEXTINPUT);
-            if (w != NULL) {
-                window_text_input_key(w, key);
-            }
-            else if (!gUsingWidgetTextBox) {
-                // keyboard_shortcut_handle(key);
-            }
-        }
-    }
-}
-
-/**
- *
- *  rct2: 0x006E3B43
- */
-void game_handle_keyboard_input()
-{
-    rct_window *w;
-    sint32 key;
-
-    if (gOpenRCT2Headless) {
-        return;
-    }
-
-    if (!gConsoleOpen) {
-        // Handle mouse scrolling
-        if (_inputState == INPUT_STATE_NORMAL && gConfigGeneral.edge_scrolling) {
-            if (!(gInputPlaceObjectModifier & (PLACE_OBJECT_MODIFIER_SHIFT_Z | PLACE_OBJECT_MODIFIER_COPY_Z))) {
-                game_handle_edge_scroll();
+        if (!isTitle) {
+            // Handle mouse scrolling
+            if (_inputState == INPUT_STATE_NORMAL && gConfigGeneral.edge_scrolling) {
+                if (!(gInputPlaceObjectModifier & (PLACE_OBJECT_MODIFIER_SHIFT_Z | PLACE_OBJECT_MODIFIER_COPY_Z))) {
+                    game_handle_edge_scroll();
+                }
             }
         }
 
@@ -1535,11 +1467,13 @@ void game_handle_keyboard_input()
             gInputPlaceObjectModifier |= 8;
         }
 #endif
-        game_handle_key_scroll();
+        if (!isTitle) {
+            game_handle_key_scroll();
+        }
     }
 
-
     // Handle key input
+    sint32 key;
     while (!gOpenRCT2Headless && (key = get_next_key()) != 0) {
         if (key == 255)
             continue;
@@ -1554,25 +1488,38 @@ void game_handle_keyboard_input()
         } else if (gConsoleOpen) {
             input_handle_console(key);
             continue;
-        } else if (gChatOpen) {
+        } else if (!isTitle && gChatOpen) {
             input_handle_chat(key);
             continue;
         }
 
         key |= gInputPlaceObjectModifier << 8;
 
-        w = window_find_by_class(WC_CHANGE_KEYBOARD_SHORTCUT);
+        rct_window * w = window_find_by_class(WC_TEXTINPUT);
         if (w != NULL) {
-            // keyboard_shortcut_set(key);
-        } else {
-            w = window_find_by_class(WC_TEXTINPUT);
-            if (w != NULL) {
-                window_text_input_key(w, key);
-            } else if (!gUsingWidgetTextBox) {
-                // keyboard_shortcut_handle(key);
-            }
+            window_text_input_key(w, key);
+        } else if (!gUsingWidgetTextBox) {
+            context_handle_keyboard_shortcut(key);
         }
     }
+}
+
+/**
+ *
+ *  rct2: 0x006E3B43
+ */
+void title_handle_keyboard_input()
+{
+    input_handle_keyboard(true);
+}
+
+/**
+ *
+ *  rct2: 0x006E3B43
+ */
+void game_handle_keyboard_input()
+{
+    input_handle_keyboard(false);
 }
 
 /**
@@ -1704,45 +1651,8 @@ void game_handle_key_scroll()
 
     scrollX = 0;
     scrollY = 0;
-
-//     const uint8 * keysState = context_get_keys_state();
-//     for (sint32 shortcutId = SHORTCUT_SCROLL_MAP_UP; shortcutId <= SHORTCUT_SCROLL_MAP_RIGHT; shortcutId++) {
-//         uint16 shortcutKey = gShortcutKeys[shortcutId];
-//         uint8 scancode = shortcutKey & 0xFF;
-// 
-//         if (shortcutKey == 0xFFFF) continue;
-//         if (!keysState[scancode]) continue;
-// 
-//         if (shortcutKey & SHIFT) {
-//             if (!keysState[SDL_SCANCODE_LSHIFT] && !keysState[SDL_SCANCODE_RSHIFT]) continue;
-//         }
-//         if (shortcutKey & CTRL) {
-//             if (!keysState[SDL_SCANCODE_LCTRL] && !keysState[SDL_SCANCODE_RCTRL]) continue;
-//         }
-//         if (shortcutKey & ALT) {
-//             if (!keysState[SDL_SCANCODE_LALT] && !keysState[SDL_SCANCODE_RALT]) continue;
-//         }
-// #ifdef __MACOSX__
-//         if (shortcutKey & CMD) {
-//             if (!keysState[SDL_SCANCODE_LGUI] && !keysState[SDL_SCANCODE_RGUI]) continue;
-//         }
-// #endif
-// 
-//         switch (shortcutId) {
-//         case SHORTCUT_SCROLL_MAP_UP:
-//             scrollY = -1;
-//             break;
-//         case SHORTCUT_SCROLL_MAP_LEFT:
-//             scrollX = -1;
-//             break;
-//         case SHORTCUT_SCROLL_MAP_DOWN:
-//             scrollY = 1;
-//             break;
-//         case SHORTCUT_SCROLL_MAP_RIGHT:
-//             scrollX = 1;
-//             break;
-//         }
-//     }
+    const uint8 * keysState = context_get_keys_state();
+    context_get_keyboard_map_scroll(keysState, &scrollX, &scrollY);
 
     // Scroll viewport
     if (scrollX != 0) {

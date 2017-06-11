@@ -109,8 +109,6 @@ void KeyboardShortcuts::Set(sint32 key)
 
     // Map shortcut to this key
     _keys[gKeyboardShortcutChangeId] = key;
-    // window_close_by_class(WC_CHANGE_KEYBOARD_SHORTCUT);
-    // window_invalidate_by_class(WC_KEYBOARD_SHORTCUT_LIST);
     Save();
 }
 
@@ -160,6 +158,54 @@ std::string KeyboardShortcuts::GetShortcutString(sint32 shortcut) const
     return std::string(buffer);
 }
 
+void KeyboardShortcuts::GetKeyboardMapScroll(const uint8 * keysState, sint32 * x, sint32 * y) const
+{
+    for (sint32 shortcutId = SHORTCUT_SCROLL_MAP_UP; shortcutId <= SHORTCUT_SCROLL_MAP_RIGHT; shortcutId++)
+    {
+        uint16 shortcutKey = _keys[shortcutId];
+        uint8 scancode = shortcutKey & 0xFF;
+    
+        if (shortcutKey == 0xFFFF) continue;
+        if (!keysState[scancode]) continue;
+    
+        if (shortcutKey & SHIFT) {
+            if (!keysState[SDL_SCANCODE_LSHIFT] && !keysState[SDL_SCANCODE_RSHIFT]) continue;
+        }
+        if (shortcutKey & CTRL) {
+            if (!keysState[SDL_SCANCODE_LCTRL] && !keysState[SDL_SCANCODE_RCTRL]) continue;
+        }
+        if (shortcutKey & ALT) {
+            if (!keysState[SDL_SCANCODE_LALT] && !keysState[SDL_SCANCODE_RALT]) continue;
+        }
+#ifdef __MACOSX__
+        if (shortcutKey & CMD) {
+            if (!keysState[SDL_SCANCODE_LGUI] && !keysState[SDL_SCANCODE_RGUI]) continue;
+        }
+#endif
+        switch (shortcutId) {
+        case SHORTCUT_SCROLL_MAP_UP:
+            *x = 0;
+            *y = -1;
+            break;
+        case SHORTCUT_SCROLL_MAP_LEFT:
+            *x = -1;
+            *y = 0;
+            break;
+        case SHORTCUT_SCROLL_MAP_DOWN:
+            *x = 0;
+            *y = 1;
+            break;
+        case SHORTCUT_SCROLL_MAP_RIGHT:
+            *x = 1;
+            *y = 0;
+            break;
+        default:
+            *x = 0;
+            *y = 0;
+        }
+    }
+}
+
 extern "C"
 {
     void keyboard_shortcuts_reset()
@@ -191,6 +237,11 @@ extern "C"
     {
         auto str = _instance->GetShortcutString(shortcut);
         String::Set(buffer, bufferSize, str.c_str());
+    }
+
+    void get_keyboard_map_scroll(const uint8 * keysState, sint32 * x, sint32 * y)
+    {
+        _instance->GetKeyboardMapScroll(keysState, x, y);
     }
 }
 
