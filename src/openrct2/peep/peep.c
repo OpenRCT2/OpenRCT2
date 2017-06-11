@@ -11351,7 +11351,8 @@ static void peep_easter_egg_peep_interactions(rct_peep *peep)
 static bool peep_should_watch_ride(rct_map_element *mapElement) {
     rct_ride *ride = get_ride(mapElement->properties.track.ride_index);
 
-    // In case of upcoming references we also have the check in here.
+    // Ghosts are purely this-client-side and should not cause any interaction,
+    // as that may lead to a desync.
     if (network_get_mode() != NETWORK_MODE_NONE) {
         if (map_element_is_ghost(mapElement)) return false;
     }
@@ -11406,6 +11407,8 @@ static bool peep_find_ride_to_look_at(rct_peep *peep, uint8 edge, uint8 *rideToV
 
     mapElement = surfaceElement;
     do {
+        // Ghosts are purely this-client-side and should not cause any interaction,
+        // as that may lead to a desync.
         if (network_get_mode() != NETWORK_MODE_NONE) {
             if (map_element_is_ghost(mapElement)) continue;
         }
@@ -11430,6 +11433,8 @@ static bool peep_find_ride_to_look_at(rct_peep *peep, uint8 edge, uint8 *rideToV
 
     mapElement = surfaceElement;
     do {
+        // Ghosts are purely this-client-side and should not cause any interaction,
+        // as that may lead to a desync.
         if (network_get_mode() != NETWORK_MODE_NONE) {
             if (map_element_is_ghost(mapElement)) continue;
         }
@@ -11447,6 +11452,8 @@ static bool peep_find_ride_to_look_at(rct_peep *peep, uint8 edge, uint8 *rideToV
     // TODO: Extract loop B
     mapElement = surfaceElement;
     do {
+        // Ghosts are purely this-client-side and should not cause any interaction,
+        // as that may lead to a desync.
         if (network_get_mode() != NETWORK_MODE_NONE) {
             if (map_element_is_ghost(mapElement)) continue;
         }
@@ -11480,6 +11487,8 @@ static bool peep_find_ride_to_look_at(rct_peep *peep, uint8 edge, uint8 *rideToV
     // TODO: Extract loop C
     mapElement = surfaceElement;
     do {
+        // Ghosts are purely this-client-side and should not cause any interaction,
+        // as that may lead to a desync.
         if (network_get_mode() != NETWORK_MODE_NONE) {
             if (map_element_is_ghost(mapElement)) continue;
         }
@@ -11510,6 +11519,8 @@ static bool peep_find_ride_to_look_at(rct_peep *peep, uint8 edge, uint8 *rideToV
     // TODO: extract loop A
     mapElement = surfaceElement;
     do {
+        // Ghosts are purely this-client-side and should not cause any interaction,
+        // as that may lead to a desync.
         if (network_get_mode() != NETWORK_MODE_NONE) {
             if (map_element_is_ghost(mapElement)) continue;
         }
@@ -11526,6 +11537,8 @@ static bool peep_find_ride_to_look_at(rct_peep *peep, uint8 edge, uint8 *rideToV
     // TODO: Extract loop B
     mapElement = surfaceElement;
     do {
+        // Ghosts are purely this-client-side and should not cause any interaction,
+        // as that may lead to a desync.
         if (network_get_mode() != NETWORK_MODE_NONE) {
             if (map_element_is_ghost(mapElement)) continue;
         }
@@ -11558,6 +11571,8 @@ static bool peep_find_ride_to_look_at(rct_peep *peep, uint8 edge, uint8 *rideToV
     // TODO: Extract loop C
     mapElement = surfaceElement;
     do {
+        // Ghosts are purely this-client-side and should not cause any interaction,
+        // as that may lead to a desync.
         if (network_get_mode() != NETWORK_MODE_NONE) {
             if (map_element_is_ghost(mapElement)) continue;
         }
@@ -11587,6 +11602,8 @@ static bool peep_find_ride_to_look_at(rct_peep *peep, uint8 edge, uint8 *rideToV
     // TODO: extract loop A
     mapElement = surfaceElement;
     do {
+        // Ghosts are purely this-client-side and should not cause any interaction,
+        // as that may lead to a desync.
         if (network_get_mode() != NETWORK_MODE_NONE) {
             if (map_element_is_ghost(mapElement)) continue;
         }
@@ -11603,6 +11620,8 @@ static bool peep_find_ride_to_look_at(rct_peep *peep, uint8 edge, uint8 *rideToV
     // TODO: Extract loop B
     mapElement = surfaceElement;
     do {
+        // Ghosts are purely this-client-side and should not cause any interaction,
+        // as that may lead to a desync.
         if (network_get_mode() != NETWORK_MODE_NONE) {
             if (map_element_is_ghost(mapElement)) continue;
         }
