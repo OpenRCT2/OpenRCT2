@@ -1710,7 +1710,8 @@ static void window_options_invalidate(rct_window *w)
 
     case WINDOW_OPTIONS_PAGE_MISC:
         // The real name setting of clients is fixed to that of the server
-        if (network_get_mode() == NETWORK_MODE_CLIENT) {
+        // and the server cannot change the setting during gameplay to prevent desyncs
+        if (network_get_mode() != NETWORK_MODE_NONE) {
             w->disabled_widgets |= (1ULL << WIDX_REAL_NAME_CHECKBOX);
         }
 
