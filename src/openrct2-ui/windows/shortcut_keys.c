@@ -14,12 +14,12 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../config/Config.h"
-#include "../interface/window.h"
-#include "../interface/widget.h"
-#include "../localisation/localisation.h"
-#include "../platform/platform.h"
-#include "../interface/keyboard_shortcut.h"
+#include <openrct2/config/Config.h>
+#include <openrct2/interface/window.h>
+#include <openrct2/interface/widget.h>
+#include <openrct2/localisation/localisation.h>
+#include <openrct2/platform/platform.h>
+#include "../input/KeyboardShortcuts.h"
 
 #define WW 420
 #define WH 280
@@ -155,26 +155,25 @@ const rct_string_id ShortcutStringIds[] = {
  *
  *  rct2: 0x006E3884
  */
-void window_shortcut_keys_open()
+rct_window * window_shortcut_keys_open()
 {
-    rct_window* w;
+    rct_window * w = window_bring_to_front_by_class(WC_KEYBOARD_SHORTCUT_LIST);
+    if (w == NULL)
+    {
+        w = window_create_auto_pos(WW, WH, &window_shortcut_events, WC_KEYBOARD_SHORTCUT_LIST, WF_RESIZABLE);
 
-    w = window_bring_to_front_by_class(WC_KEYBOARD_SHORTCUT_LIST);
+        w->widgets = window_shortcut_widgets;
+        w->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_RESET);
+        window_init_scroll_widgets(w);
 
-    if (w) return;
-
-    w = window_create_auto_pos(WW, WH, &window_shortcut_events, WC_KEYBOARD_SHORTCUT_LIST, WF_RESIZABLE);
-
-    w->widgets = window_shortcut_widgets;
-    w->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_RESET);
-    window_init_scroll_widgets(w);
-
-    w->no_list_items = SHORTCUT_COUNT;
-    w->selected_list_item = -1;
-    w->min_width = WW;
-    w->min_height = WH;
-    w->max_width = WW_SC_MAX;
-    w->max_height = WH_SC_MAX;
+        w->no_list_items = SHORTCUT_COUNT;
+        w->selected_list_item = -1;
+        w->min_width = WW;
+        w->min_height = WH;
+        w->max_width = WW_SC_MAX;
+        w->max_height = WH_SC_MAX;
+    }
+    return w;
 }
 
 /**
@@ -188,8 +187,8 @@ static void window_shortcut_mouseup(rct_window *w, rct_widgetindex widgetIndex)
         window_close(w);
         break;
     case WIDX_RESET:
-        config_reset_shortcut_keys();
-        config_shortcut_keys_save();
+        keyboard_shortcuts_reset();
+        keyboard_shortcuts_save();
         window_invalidate(w);
         break;
     }
@@ -289,7 +288,7 @@ static void window_shortcut_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, s
         }
 
         char templateString[128];
-        keyboard_shortcut_format_string(templateString, 128, gShortcutKeys[i]);
+        keyboard_shortcuts_format_string(templateString, 128, i);
 
         set_format_arg(0, rct_string_id, STR_SHORTCUT_ENTRY_FORMAT);
         set_format_arg(2, rct_string_id, ShortcutStringIds[i]);

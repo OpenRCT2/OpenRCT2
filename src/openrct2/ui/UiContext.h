@@ -32,6 +32,8 @@ namespace OpenRCT2
 
     namespace Ui
     {
+        interface IWindowManager;
+
         enum class FULLSCREEN_MODE
         {
             WINDOWED,
@@ -126,6 +128,9 @@ namespace OpenRCT2
             virtual bool                IsTextInputActive() abstract;
             virtual TextInputSession *  StartTextInput(utf8 * buffer, size_t bufferSize) abstract;
             virtual void                StopTextInput() abstract;
+
+            // In-game UI
+            virtual IWindowManager *    GetWindowManager() abstract;
         };
 
         IUiContext * CreateDummyUiContext();

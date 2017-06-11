@@ -32,9 +32,11 @@
 #include <openrct2/Version.h>
 #include "CursorRepository.h"
 #include "drawing/engines/DrawingEngines.h"
+#include "input/KeyboardShortcuts.h"
 #include "SDLException.h"
 #include "TextComposition.h"
 #include "UiContext.h"
+#include "WindowManager.h"
 
 extern "C"
 {
@@ -45,6 +47,7 @@ extern "C"
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Drawing;
+using namespace OpenRCT2::Input;
 using namespace OpenRCT2::Ui;
 
 #ifdef __MACOSX__
@@ -59,8 +62,8 @@ class UiContext final : public IUiContext
 private:
     constexpr static uint32 TOUCH_DOUBLE_TIMEOUT = 300;
 
-    IPlatformEnvironment * const    _env;
     IPlatformUiContext * const      _platformUiContext;
+    IWindowManager * const          _windowManager;
 
     CursorRepository _cursorRepository;
 
@@ -76,27 +79,28 @@ private:
     bool _steamOverlayActive = false;
 
     // Input
-    TextComposition _textComposition;
-    CursorState     _cursorState            = { 0 };
-    uint32          _lastKeyPressed         = 0;
-    const uint8 *   _keysState              = nullptr;
-    uint8           _keysPressed[256]       = { 0 };
-    uint32          _lastGestureTimestamp   = 0;
-    float           _gestureRadius          = 0;
+    KeyboardShortcuts   _keyboardShortcuts;
+    TextComposition     _textComposition;
+    CursorState         _cursorState            = { 0 };
+    uint32              _lastKeyPressed         = 0;
+    const uint8 *       _keysState              = nullptr;
+    uint8               _keysPressed[256]       = { 0 };
+    uint32              _lastGestureTimestamp   = 0;
+    float               _gestureRadius          = 0;
 
 public:
     UiContext(IPlatformEnvironment * env)
-        : _env(env),
-          _platformUiContext(CreatePlatformUiContext())
+        : _platformUiContext(CreatePlatformUiContext()),
+          _windowManager(CreateWindowManager()),
+          _keyboardShortcuts(env)
     {
         if (SDL_Init(SDL_INIT_VIDEO) < 0)
         {
             SDLException::Throw("SDL_Init(SDL_INIT_VIDEO)");
         }
         _cursorRepository.LoadCursors();
-
-        // Temporary to prevent warning, will be used for keyboard shortcuts
-        UNUSED(_env);
+        _keyboardShortcuts.Reset();
+        _keyboardShortcuts.Load();
     }
 
     ~UiContext() override
@@ -563,6 +567,11 @@ public:
     std::string ShowDirectoryDialog(const std::string &title) override
     {
         return _platformUiContext->ShowDirectoryDialog(_window, title);
+    }
+
+    IWindowManager * GetWindowManager() override
+    {
+        return _windowManager;
     }
 
 private:

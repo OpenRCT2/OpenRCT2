@@ -28,7 +28,6 @@
 #include "input.h"
 #include "interface/chat.h"
 #include "interface/console.h"
-#include "interface/keyboard_shortcut.h"
 #include "interface/viewport.h"
 #include "intro.h"
 #include "localisation/date.h"
@@ -151,10 +150,7 @@ bool rct2_init()
     gScenarioTicks = 0;
     util_srand((uint32)time(0));
 
-    config_reset_shortcut_keys();
-    config_shortcut_keys_load();
     input_reset_place_obj_modifier();
-    // config_load();
 
     if (!gfx_load_g1()) {
         return false;

@@ -16,6 +16,7 @@
 
 #include "../drawing/X8DrawingEngine.h"
 #include "UiContext.h"
+#include "WindowManager.h"
 
 using namespace OpenRCT2::Drawing;
 
@@ -26,6 +27,10 @@ namespace OpenRCT2 { namespace Ui
     */
     class DummyUiContext final : public IUiContext
     {
+    private:
+        IWindowManager * const _windowManager = CreateDummyWindowManager();
+
+    public:
         void CreateWindow() override { }
         void CloseWindow() override { }
         void * GetWindow() override { return nullptr; }
@@ -39,32 +44,38 @@ namespace OpenRCT2 { namespace Ui
         void ProcessMessages() override { }
         void TriggerResize() override { }
 
-        virtual void ShowMessageBox(const std::string &message) override { }
-        virtual std::string ShowFileDialog(const FileDialogDesc &desc) override { return std::string(); }
-        virtual std::string ShowDirectoryDialog(const std::string &title) override { return std::string(); }
+        void ShowMessageBox(const std::string &message) override { }
+        std::string ShowFileDialog(const FileDialogDesc &desc) override { return std::string(); }
+        std::string ShowDirectoryDialog(const std::string &title) override { return std::string(); }
 
         // Input
-        virtual const CursorState * GetCursorState() override { return nullptr; }
-        virtual CURSOR_ID GetCursor() override { return CURSOR_ARROW; }
-        virtual void SetCursor(CURSOR_ID cursor) override { }
-        virtual void SetCursorVisible(bool value) override { }
-        virtual void GetCursorPosition(sint32 * x, sint32 * y) override { }
-        virtual void SetCursorPosition(sint32 x, sint32 y) override { }
-        virtual void SetCursorTrap(bool value) override { }
-        virtual const uint8 * GetKeysState() override { return nullptr; }
-        virtual const uint8 * GetKeysPressed() override { return nullptr; }
-        virtual void SetKeysPressed(uint32 keysym, uint8 scancode) override { }
+        const CursorState * GetCursorState() override { return nullptr; }
+        CURSOR_ID GetCursor() override { return CURSOR_ARROW; }
+        void SetCursor(CURSOR_ID cursor) override { }
+        void SetCursorVisible(bool value) override { }
+        void GetCursorPosition(sint32 * x, sint32 * y) override { }
+        void SetCursorPosition(sint32 x, sint32 y) override { }
+        void SetCursorTrap(bool value) override { }
+        const uint8 * GetKeysState() override { return nullptr; }
+        const uint8 * GetKeysPressed() override { return nullptr; }
+        void SetKeysPressed(uint32 keysym, uint8 scancode) override { }
 
         // Drawing
-        virtual Drawing::IDrawingEngine * CreateDrawingEngine(Drawing::DRAWING_ENGINE_TYPE type) override
+        Drawing::IDrawingEngine * CreateDrawingEngine(Drawing::DRAWING_ENGINE_TYPE type) override
         {
             return new X8DrawingEngine();
         }
 
         // Text input
-        virtual bool IsTextInputActive() override { return false; }
-        virtual TextInputSession * StartTextInput(utf8 * buffer, size_t bufferSize) override { return nullptr; }
-        virtual void StopTextInput() override { }
+        bool IsTextInputActive() override { return false; }
+        TextInputSession * StartTextInput(utf8 * buffer, size_t bufferSize) override { return nullptr; }
+        void StopTextInput() override { }
+
+        // In-game UI
+        IWindowManager * GetWindowManager() override
+        {
+            return _windowManager;
+        }
     };
 
     IUiContext * CreateDummyUiContext()

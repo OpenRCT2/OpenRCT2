@@ -91,7 +91,6 @@
 		F76C85C41EC4E88300FA49E2 /* Config.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C836E1EC4E7CC00FA49E2 /* Config.cpp */; };
 		F76C85C71EC4E88300FA49E2 /* IniReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C83711EC4E7CC00FA49E2 /* IniReader.cpp */; };
 		F76C85C91EC4E88300FA49E2 /* IniWriter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C83731EC4E7CC00FA49E2 /* IniWriter.cpp */; };
-		F76C85CB1EC4E88300FA49E2 /* KeyboardShortcuts.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C83751EC4E7CC00FA49E2 /* KeyboardShortcuts.cpp */; };
 		F76C85CC1EC4E88300FA49E2 /* Context.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C83761EC4E7CC00FA49E2 /* Context.cpp */; };
 		F76C85CF1EC4E88300FA49E2 /* Console.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C837A1EC4E7CC00FA49E2 /* Console.cpp */; };
 		F76C85D11EC4E88300FA49E2 /* Diagnostics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C837C1EC4E7CC00FA49E2 /* Diagnostics.cpp */; };
@@ -128,7 +127,6 @@
 		F76C86131EC4E88300FA49E2 /* console.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C83C01EC4E7CC00FA49E2 /* console.c */; };
 		F76C86161EC4E88300FA49E2 /* Fonts.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C83C31EC4E7CC00FA49E2 /* Fonts.cpp */; };
 		F76C86181EC4E88300FA49E2 /* graph.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C83C51EC4E7CC00FA49E2 /* graph.c */; };
-		F76C861A1EC4E88300FA49E2 /* keyboard_shortcut.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C83C71EC4E7CC00FA49E2 /* keyboard_shortcut.c */; };
 		F76C861E1EC4E88300FA49E2 /* Theme.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C83CB1EC4E7CC00FA49E2 /* Theme.cpp */; };
 		F76C86201EC4E88300FA49E2 /* viewport.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C83CD1EC4E7CC00FA49E2 /* viewport.c */; };
 		F76C86221EC4E88300FA49E2 /* viewport_interaction.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C83CF1EC4E7CC00FA49E2 /* viewport_interaction.c */; };
@@ -368,8 +366,6 @@
 		F76C87771EC4E88400FA49E2 /* scenery.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C853E1EC4E7CD00FA49E2 /* scenery.c */; };
 		F76C87781EC4E88400FA49E2 /* server_list.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C853F1EC4E7CD00FA49E2 /* server_list.cpp */; };
 		F76C87791EC4E88400FA49E2 /* server_start.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C85401EC4E7CD00FA49E2 /* server_start.c */; };
-		F76C877A1EC4E88400FA49E2 /* shortcut_key_change.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C85411EC4E7CD00FA49E2 /* shortcut_key_change.c */; };
-		F76C877B1EC4E88400FA49E2 /* shortcut_keys.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C85421EC4E7CD00FA49E2 /* shortcut_keys.c */; };
 		F76C877C1EC4E88400FA49E2 /* sign.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C85431EC4E7CD00FA49E2 /* sign.c */; };
 		F76C877D1EC4E88400FA49E2 /* staff.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C85441EC4E7CD00FA49E2 /* staff.c */; };
 		F76C877E1EC4E88400FA49E2 /* staff_fire_prompt.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C85451EC4E7CD00FA49E2 /* staff_fire_prompt.c */; };
@@ -438,6 +434,13 @@
 		F775F5351EE35A89001F00E7 /* DummyUiContext.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F775F5331EE35A6B001F00E7 /* DummyUiContext.cpp */; };
 		F775F5371EE3724F001F00E7 /* DummyAudioContext.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F775F5361EE3724F001F00E7 /* DummyAudioContext.cpp */; };
 		F775F5381EE3725C001F00E7 /* DummyAudioContext.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F775F5361EE3724F001F00E7 /* DummyAudioContext.cpp */; };
+		F7CB863F1EEDA0B50030C877 /* WindowManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F7CB863D1EEDA0B50030C877 /* WindowManager.cpp */; };
+		F7CB86431EEDA0F50030C877 /* shortcut_key_change.c in Sources */ = {isa = PBXBuildFile; fileRef = F7CB86411EEDA0F50030C877 /* shortcut_key_change.c */; };
+		F7CB86441EEDA0F50030C877 /* shortcut_keys.c in Sources */ = {isa = PBXBuildFile; fileRef = F7CB86421EEDA0F50030C877 /* shortcut_keys.c */; };
+		F7CB86491EEDA1330030C877 /* keyboard_shortcut.c in Sources */ = {isa = PBXBuildFile; fileRef = F7CB86461EEDA1330030C877 /* keyboard_shortcut.c */; };
+		F7CB864A1EEDA1330030C877 /* KeyboardShortcuts.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F7CB86471EEDA1330030C877 /* KeyboardShortcuts.cpp */; };
+		F7CB864D1EEDA1A80030C877 /* DummyWindowManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F7CB864B1EEDA1A80030C877 /* DummyWindowManager.cpp */; };
+		F7CB864E1EEDA2050030C877 /* DummyWindowManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F7CB864B1EEDA1A80030C877 /* DummyWindowManager.cpp */; };
 		F7D7747B1EC5EB6D00BE6EBC /* lay_down_roller_coaster.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84951EC4E7CC00FA49E2 /* lay_down_roller_coaster.c */; };
 		F7D7747F1EC61E5100BE6EBC /* UiContext.macOS.mm in Sources */ = {isa = PBXBuildFile; fileRef = F7D7747E1EC61E5100BE6EBC /* UiContext.macOS.mm */; };
 		F7D7748D1EC66F8600BE6EBC /* libopenrct2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F76C809A1EC4D9FA00FA49E2 /* libopenrct2.a */; };
@@ -798,7 +801,6 @@
 		F76C83721EC4E7CC00FA49E2 /* IniReader.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IniReader.hpp; sourceTree = "<group>"; };
 		F76C83731EC4E7CC00FA49E2 /* IniWriter.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IniWriter.cpp; sourceTree = "<group>"; };
 		F76C83741EC4E7CC00FA49E2 /* IniWriter.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IniWriter.hpp; sourceTree = "<group>"; };
-		F76C83751EC4E7CC00FA49E2 /* KeyboardShortcuts.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = KeyboardShortcuts.cpp; sourceTree = "<group>"; };
 		F76C83761EC4E7CC00FA49E2 /* Context.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Context.cpp; sourceTree = "<group>"; };
 		F76C83771EC4E7CC00FA49E2 /* Context.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Context.h; sourceTree = "<group>"; };
 		F76C83791EC4E7CC00FA49E2 /* Collections.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Collections.hpp; sourceTree = "<group>"; };
@@ -877,8 +879,6 @@
 		F76C83C41EC4E7CC00FA49E2 /* Fonts.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Fonts.h; sourceTree = "<group>"; };
 		F76C83C51EC4E7CC00FA49E2 /* graph.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = graph.c; sourceTree = "<group>"; };
 		F76C83C61EC4E7CC00FA49E2 /* graph.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = graph.h; sourceTree = "<group>"; };
-		F76C83C71EC4E7CC00FA49E2 /* keyboard_shortcut.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = keyboard_shortcut.c; sourceTree = "<group>"; };
-		F76C83C81EC4E7CC00FA49E2 /* keyboard_shortcut.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = keyboard_shortcut.h; sourceTree = "<group>"; };
 		F76C83CA1EC4E7CC00FA49E2 /* screenshot.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = screenshot.h; sourceTree = "<group>"; };
 		F76C83CB1EC4E7CC00FA49E2 /* Theme.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Theme.cpp; sourceTree = "<group>"; };
 		F76C83CC1EC4E7CC00FA49E2 /* themes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = themes.h; sourceTree = "<group>"; };
@@ -1228,8 +1228,6 @@
 		F76C853E1EC4E7CD00FA49E2 /* scenery.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = scenery.c; sourceTree = "<group>"; };
 		F76C853F1EC4E7CD00FA49E2 /* server_list.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = server_list.cpp; sourceTree = "<group>"; };
 		F76C85401EC4E7CD00FA49E2 /* server_start.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = server_start.c; sourceTree = "<group>"; };
-		F76C85411EC4E7CD00FA49E2 /* shortcut_key_change.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = shortcut_key_change.c; sourceTree = "<group>"; };
-		F76C85421EC4E7CD00FA49E2 /* shortcut_keys.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = shortcut_keys.c; sourceTree = "<group>"; };
 		F76C85431EC4E7CD00FA49E2 /* sign.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = sign.c; sourceTree = "<group>"; };
 		F76C85441EC4E7CD00FA49E2 /* staff.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = staff.c; sourceTree = "<group>"; };
 		F76C85451EC4E7CD00FA49E2 /* staff_fire_prompt.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = staff_fire_prompt.c; sourceTree = "<group>"; };
@@ -1331,6 +1329,15 @@
 		F775F5321EE35A48001F00E7 /* Ui.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Ui.h; sourceTree = "<group>"; };
 		F775F5331EE35A6B001F00E7 /* DummyUiContext.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DummyUiContext.cpp; sourceTree = "<group>"; };
 		F775F5361EE3724F001F00E7 /* DummyAudioContext.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DummyAudioContext.cpp; sourceTree = "<group>"; };
+		F7CB863D1EEDA0B50030C877 /* WindowManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WindowManager.cpp; sourceTree = "<group>"; };
+		F7CB863E1EEDA0B50030C877 /* WindowManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WindowManager.h; sourceTree = "<group>"; };
+		F7CB86411EEDA0F50030C877 /* shortcut_key_change.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = shortcut_key_change.c; path = windows/shortcut_key_change.c; sourceTree = "<group>"; };
+		F7CB86421EEDA0F50030C877 /* shortcut_keys.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = shortcut_keys.c; path = windows/shortcut_keys.c; sourceTree = "<group>"; };
+		F7CB86461EEDA1330030C877 /* keyboard_shortcut.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = keyboard_shortcut.c; path = input/keyboard_shortcut.c; sourceTree = "<group>"; };
+		F7CB86471EEDA1330030C877 /* KeyboardShortcuts.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = KeyboardShortcuts.cpp; path = input/KeyboardShortcuts.cpp; sourceTree = "<group>"; };
+		F7CB86481EEDA1330030C877 /* KeyboardShortcuts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KeyboardShortcuts.h; path = input/KeyboardShortcuts.h; sourceTree = "<group>"; };
+		F7CB864B1EEDA1A80030C877 /* DummyWindowManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DummyWindowManager.cpp; sourceTree = "<group>"; };
+		F7CB864C1EEDA1A80030C877 /* WindowManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WindowManager.h; sourceTree = "<group>"; };
 		F7D7747E1EC61E5100BE6EBC /* UiContext.macOS.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = UiContext.macOS.mm; sourceTree = "<group>"; usesTabs = 0; };
 		F7D774841EC66CD700BE6EBC /* OpenRCT2-cli */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "OpenRCT2-cli"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -1813,7 +1820,6 @@
 				F76C83721EC4E7CC00FA49E2 /* IniReader.hpp */,
 				F76C83731EC4E7CC00FA49E2 /* IniWriter.cpp */,
 				F76C83741EC4E7CC00FA49E2 /* IniWriter.hpp */,
-				F76C83751EC4E7CC00FA49E2 /* KeyboardShortcuts.cpp */,
 			);
 			path = config;
 			sourceTree = "<group>";
@@ -1902,8 +1908,6 @@
 				F76C83C41EC4E7CC00FA49E2 /* Fonts.h */,
 				F76C83C51EC4E7CC00FA49E2 /* graph.c */,
 				F76C83C61EC4E7CC00FA49E2 /* graph.h */,
-				F76C83C71EC4E7CC00FA49E2 /* keyboard_shortcut.c */,
-				F76C83C81EC4E7CC00FA49E2 /* keyboard_shortcut.h */,
 				F76C83CA1EC4E7CC00FA49E2 /* screenshot.h */,
 				F76C83CB1EC4E7CC00FA49E2 /* Theme.cpp */,
 				F76C83CC1EC4E7CC00FA49E2 /* themes.h */,
@@ -2340,6 +2344,8 @@
 		F76C85041EC4E7CD00FA49E2 /* ui */ = {
 			isa = PBXGroup;
 			children = (
+				F7CB864B1EEDA1A80030C877 /* DummyWindowManager.cpp */,
+				F7CB864C1EEDA1A80030C877 /* WindowManager.h */,
 				F775F5331EE35A6B001F00E7 /* DummyUiContext.cpp */,
 				F76C85051EC4E7CD00FA49E2 /* UiContext.h */,
 			);
@@ -2411,8 +2417,6 @@
 				F76C853E1EC4E7CD00FA49E2 /* scenery.c */,
 				F76C853F1EC4E7CD00FA49E2 /* server_list.cpp */,
 				F76C85401EC4E7CD00FA49E2 /* server_start.c */,
-				F76C85411EC4E7CD00FA49E2 /* shortcut_key_change.c */,
-				F76C85421EC4E7CD00FA49E2 /* shortcut_keys.c */,
 				F76C85431EC4E7CD00FA49E2 /* sign.c */,
 				F76C85441EC4E7CD00FA49E2 /* staff.c */,
 				F76C85451EC4E7CD00FA49E2 /* staff_fire_prompt.c */,
@@ -2492,21 +2496,25 @@
 		F76C85801EC4E82600FA49E2 /* openrct2-ui */ = {
 			isa = PBXGroup;
 			children = (
-				F775F5321EE35A48001F00E7 /* Ui.h */,
 				F76C85811EC4E82600FA49E2 /* audio */,
 				F76C858D1EC4E82600FA49E2 /* drawing */,
+				F7CB86451EEDA1200030C877 /* input */,
+				F7CB86401EEDA0E20030C877 /* windows */,
 				F76C858A1EC4E82600FA49E2 /* CursorData.cpp */,
 				F76C858B1EC4E82600FA49E2 /* CursorRepository.cpp */,
 				F76C858C1EC4E82600FA49E2 /* CursorRepository.h */,
 				F76C85A81EC4E82600FA49E2 /* SDLException.h */,
 				F76C85A91EC4E82600FA49E2 /* TextComposition.cpp */,
 				F76C85AA1EC4E82600FA49E2 /* TextComposition.h */,
+				F775F5321EE35A48001F00E7 /* Ui.h */,
 				F76C85AB1EC4E82600FA49E2 /* Ui.cpp */,
 				F76C85AC1EC4E82600FA49E2 /* UiContext.cpp */,
 				F76C85AD1EC4E82600FA49E2 /* UiContext.h */,
 				F76C85AE1EC4E82600FA49E2 /* UiContext.Linux.cpp */,
 				F7D7747E1EC61E5100BE6EBC /* UiContext.macOS.mm */,
 				F76C85AF1EC4E82600FA49E2 /* UiContext.Win32.cpp */,
+				F7CB863E1EEDA0B50030C877 /* WindowManager.h */,
+				F7CB863D1EEDA0B50030C877 /* WindowManager.cpp */,
 			);
 			name = "openrct2-ui";
 			path = "src/openrct2-ui";
@@ -2571,6 +2579,25 @@
 				F76C85A51EC4E82600FA49E2 /* TextureCache.h */,
 			);
 			path = opengl;
+			sourceTree = "<group>";
+		};
+		F7CB86401EEDA0E20030C877 /* windows */ = {
+			isa = PBXGroup;
+			children = (
+				F7CB86411EEDA0F50030C877 /* shortcut_key_change.c */,
+				F7CB86421EEDA0F50030C877 /* shortcut_keys.c */,
+			);
+			name = windows;
+			sourceTree = "<group>";
+		};
+		F7CB86451EEDA1200030C877 /* input */ = {
+			isa = PBXGroup;
+			children = (
+				F7CB86461EEDA1330030C877 /* keyboard_shortcut.c */,
+				F7CB86471EEDA1330030C877 /* KeyboardShortcuts.cpp */,
+				F7CB86481EEDA1330030C877 /* KeyboardShortcuts.h */,
+			);
+			name = input;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -2931,21 +2958,27 @@
 				4C8B42721EEB1AE400F015CA /* HardwareDisplayDrawingEngine.cpp in Sources */,
 				F76C887A1EC5324E00FA49E2 /* AudioMixer.cpp in Sources */,
 				F76C887B1EC5324E00FA49E2 /* FileAudioSource.cpp in Sources */,
+				F7CB864D1EEDA1A80030C877 /* DummyWindowManager.cpp in Sources */,
 				F76C887C1EC5324E00FA49E2 /* MemoryAudioSource.cpp in Sources */,
 				F76C887D1EC5324E00FA49E2 /* CursorData.cpp in Sources */,
 				F7D7747F1EC61E5100BE6EBC /* UiContext.macOS.mm in Sources */,
 				F76C887E1EC5324E00FA49E2 /* CursorRepository.cpp in Sources */,
 				F775F5341EE35A6B001F00E7 /* DummyUiContext.cpp in Sources */,
 				F76C887F1EC5324E00FA49E2 /* CopyFramebufferShader.cpp in Sources */,
+				F7CB864A1EEDA1330030C877 /* KeyboardShortcuts.cpp in Sources */,
+				F7CB86431EEDA0F50030C877 /* shortcut_key_change.c in Sources */,
 				F76C88801EC5324E00FA49E2 /* DrawImageShader.cpp in Sources */,
 				F775F5371EE3724F001F00E7 /* DummyAudioContext.cpp in Sources */,
 				F76C88811EC5324E00FA49E2 /* DrawLineShader.cpp in Sources */,
 				F76C88821EC5324E00FA49E2 /* FillRectShader.cpp in Sources */,
 				F76C88831EC5324E00FA49E2 /* OpenGLAPI.cpp in Sources */,
+				F7CB863F1EEDA0B50030C877 /* WindowManager.cpp in Sources */,
 				4C8B42701EEB1ABD00F015CA /* X8DrawingEngine.cpp in Sources */,
+				F7CB86491EEDA1330030C877 /* keyboard_shortcut.c in Sources */,
 				F76C88841EC5324E00FA49E2 /* OpenGLDrawingEngine.cpp in Sources */,
 				F76C88851EC5324E00FA49E2 /* OpenGLFramebuffer.cpp in Sources */,
 				F76C88861EC5324E00FA49E2 /* OpenGLShaderProgram.cpp in Sources */,
+				F7CB86441EEDA0F50030C877 /* shortcut_keys.c in Sources */,
 				F76C88871EC5324E00FA49E2 /* SwapFramebuffer.cpp in Sources */,
 				F76C88881EC5324E00FA49E2 /* TextureCache.cpp in Sources */,
 				F76C88891EC5324E00FA49E2 /* SoftwareDrawingEngine.cpp in Sources */,
@@ -2961,6 +2994,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F7CB864E1EEDA2050030C877 /* DummyWindowManager.cpp in Sources */,
 				F775F5381EE3725C001F00E7 /* DummyAudioContext.cpp in Sources */,
 				F775F5351EE35A89001F00E7 /* DummyUiContext.cpp in Sources */,
 				F7D7747B1EC5EB6D00BE6EBC /* lay_down_roller_coaster.c in Sources */,
@@ -2978,7 +3012,6 @@
 				F76C85C41EC4E88300FA49E2 /* Config.cpp in Sources */,
 				F76C85C71EC4E88300FA49E2 /* IniReader.cpp in Sources */,
 				F76C85C91EC4E88300FA49E2 /* IniWriter.cpp in Sources */,
-				F76C85CB1EC4E88300FA49E2 /* KeyboardShortcuts.cpp in Sources */,
 				F76C85CC1EC4E88300FA49E2 /* Context.cpp in Sources */,
 				F76C85CF1EC4E88300FA49E2 /* Console.cpp in Sources */,
 				F76C85D11EC4E88300FA49E2 /* Diagnostics.cpp in Sources */,
@@ -3015,7 +3048,6 @@
 				F76C86131EC4E88300FA49E2 /* console.c in Sources */,
 				F76C86161EC4E88300FA49E2 /* Fonts.cpp in Sources */,
 				F76C86181EC4E88300FA49E2 /* graph.c in Sources */,
-				F76C861A1EC4E88300FA49E2 /* keyboard_shortcut.c in Sources */,
 				F76C861E1EC4E88300FA49E2 /* Theme.cpp in Sources */,
 				F76C86201EC4E88300FA49E2 /* viewport.c in Sources */,
 				F76C86221EC4E88300FA49E2 /* viewport_interaction.c in Sources */,
@@ -3255,8 +3287,6 @@
 				F76C87771EC4E88400FA49E2 /* scenery.c in Sources */,
 				F76C87781EC4E88400FA49E2 /* server_list.cpp in Sources */,
 				F76C87791EC4E88400FA49E2 /* server_start.c in Sources */,
-				F76C877A1EC4E88400FA49E2 /* shortcut_key_change.c in Sources */,
-				F76C877B1EC4E88400FA49E2 /* shortcut_keys.c in Sources */,
 				F76C877C1EC4E88400FA49E2 /* sign.c in Sources */,
 				F76C877D1EC4E88400FA49E2 /* staff.c in Sources */,
 				F76C877E1EC4E88400FA49E2 /* staff_fire_prompt.c in Sources */,

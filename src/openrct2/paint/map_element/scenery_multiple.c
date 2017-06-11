@@ -262,8 +262,8 @@ void scenery_multiple_paint(uint8 direction, uint16 height, rct_map_element *map
             stringId = ride->name;
             set_format_arg(0, uint32, ride->name_arguments);
         }
-        utf8 signString[MAX_PATH];
-        format_string(signString, MAX_PATH, stringId, gCommonFormatArgs);
+        utf8 signString[256];
+        format_string(signString, sizeof(signString), stringId, gCommonFormatArgs);
         rct_large_scenery_text *text = entry->large_scenery.text;
         sint32 y_offset = (text->offset[(direction & 1)].y * 2);
         if (text->flags & LARGE_SCENERY_TEXT_FLAG_VERTICAL) {
@@ -352,12 +352,12 @@ void scenery_multiple_paint(uint8 direction, uint16 height, rct_map_element *map
         set_format_arg(0, rct_string_id, ride->name);
         set_format_arg(2, uint32, ride->name_arguments);
     }
-    utf8 signString[MAX_PATH];
+    utf8 signString[256];
     rct_string_id stringId = STR_SCROLLING_SIGN_TEXT;
     if (gConfigGeneral.upper_case_banners) {
-        format_string_to_upper(signString, MAX_PATH, stringId, gCommonFormatArgs);
+        format_string_to_upper(signString, sizeof(signString), stringId, gCommonFormatArgs);
     } else {
-        format_string(signString, MAX_PATH, stringId, gCommonFormatArgs);
+        format_string(signString, sizeof(signString), stringId, gCommonFormatArgs);
     }
 
     gCurrentFontSpriteBase = FONT_SPRITE_BASE_TINY;

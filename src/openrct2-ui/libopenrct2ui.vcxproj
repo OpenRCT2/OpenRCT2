@@ -41,11 +41,16 @@
     <ClCompile Include="drawing\engines\opengl\SwapFramebuffer.cpp" />
     <ClCompile Include="drawing\engines\opengl\TextureCache.cpp" />
     <ClCompile Include="drawing\engines\SoftwareDrawingEngine.cpp" />
+    <ClCompile Include="input\KeyboardShortcuts.cpp" />
+    <ClCompile Include="input\keyboard_shortcut.c" />
     <ClCompile Include="TextComposition.cpp" />
     <ClCompile Include="Ui.cpp" />
     <ClCompile Include="UiContext.cpp" />
     <ClCompile Include="UiContext.Linux.cpp" />
     <ClCompile Include="UiContext.Win32.cpp" />
+    <ClCompile Include="WindowManager.cpp" />
+    <ClCompile Include="windows\shortcut_keys.c" />
+    <ClCompile Include="windows\shortcut_key_change.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="audio\AudioContext.h" />
@@ -63,10 +68,12 @@
     <ClInclude Include="drawing\engines\opengl\OpenGLShaderProgram.h" />
     <ClInclude Include="drawing\engines\opengl\SwapFramebuffer.h" />
     <ClInclude Include="drawing\engines\opengl\TextureCache.h" />
+    <ClInclude Include="input\KeyboardShortcuts.h" />
     <ClInclude Include="SDLException.h" />
     <ClInclude Include="TextComposition.h" />
     <ClInclude Include="Ui.h" />
     <ClInclude Include="UiContext.h" />
+    <ClInclude Include="WindowManager.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{8DD8AB7D-2EA6-44E3-8265-BAF08E832951}</ProjectGuid>

@@ -14,11 +14,11 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../config/Config.h"
-#include "../interface/keyboard_shortcut.h"
-#include "../interface/window.h"
-#include "../interface/widget.h"
-#include "../localisation/localisation.h"
+#include <openrct2/config/Config.h>
+#include <openrct2/interface/window.h>
+#include <openrct2/interface/widget.h>
+#include <openrct2/localisation/localisation.h>
+#include "../input/KeyboardShortcuts.h"
 
 extern const rct_string_id ShortcutStringIds[];
 
@@ -74,16 +74,18 @@ static rct_window_event_list window_shortcut_change_events = {
     NULL
 };
 
-void window_shortcut_change_open(sint32 selected_key){
+rct_window * window_shortcut_change_open(sint32 selected_key)
+{
     // Move this to window_shortcut_change_open
     window_close_by_class(WC_CHANGE_KEYBOARD_SHORTCUT);
     // Save the item we are selecting for new window
     gKeyboardShortcutChangeId = selected_key;
-    rct_window* w = window_create_centred(WW, WH, &window_shortcut_change_events, WC_CHANGE_KEYBOARD_SHORTCUT, 0);
+    rct_window * w = window_create_centred(WW, WH, &window_shortcut_change_events, WC_CHANGE_KEYBOARD_SHORTCUT, 0);
 
     w->widgets = window_shortcut_change_widgets;
     w->enabled_widgets = (1ULL << WIDX_CLOSE);
     window_init_scroll_widgets(w);
+    return w;
 }
 
 /**

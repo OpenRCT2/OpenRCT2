@@ -738,7 +738,7 @@ static void window_options_mouseup(rct_window *w, rct_widgetindex widgetIndex)
     case WINDOW_OPTIONS_PAGE_CONTROLS_AND_INTERFACE:
         switch (widgetIndex) {
         case WIDX_HOTKEY_DROPDOWN:
-            window_shortcut_keys_open();
+            context_open_window(WC_KEYBOARD_SHORTCUT_LIST);
             break;
         case WIDX_SCREEN_EDGE_SCROLLING:
             gConfigGeneral.edge_scrolling ^= 1;
