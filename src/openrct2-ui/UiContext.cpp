@@ -36,6 +36,7 @@
 #include "SDLException.h"
 #include "TextComposition.h"
 #include "UiContext.h"
+#include "WindowManager.h"
 
 extern "C"
 {
@@ -62,6 +63,7 @@ private:
     constexpr static uint32 TOUCH_DOUBLE_TIMEOUT = 300;
 
     IPlatformUiContext * const      _platformUiContext;
+    IWindowManager * const          _windowManager;
 
     CursorRepository _cursorRepository;
 
@@ -89,6 +91,7 @@ private:
 public:
     UiContext(IPlatformEnvironment * env)
         : _platformUiContext(CreatePlatformUiContext()),
+          _windowManager(CreateWindowManager()),
           _keyboardShortcuts(env)
     {
         if (SDL_Init(SDL_INIT_VIDEO) < 0)
@@ -564,6 +567,11 @@ public:
     std::string ShowDirectoryDialog(const std::string &title) override
     {
         return _platformUiContext->ShowDirectoryDialog(_window, title);
+    }
+
+    IWindowManager * GetWindowManager() override
+    {
+        return _windowManager;
     }
 
 private:

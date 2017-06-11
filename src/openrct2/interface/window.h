@@ -702,8 +702,6 @@ void window_guest_list_open();
 void window_guest_list_open_with_filter(sint32 type, sint32 index);
 void window_map_open();
 void window_options_open();
-void window_shortcut_keys_open();
-void window_shortcut_change_open(sint32 selected_key);
 void window_guest_open(rct_peep* peep);
 rct_window *window_staff_open(rct_peep* peep);
 void window_staff_fire_prompt_open(rct_peep* peep);

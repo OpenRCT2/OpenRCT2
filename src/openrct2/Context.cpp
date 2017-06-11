@@ -37,6 +37,7 @@
 #include "scenario/ScenarioRepository.h"
 #include "title/TitleScreen.h"
 #include "title/TitleSequenceManager.h"
+#include "ui/WindowManager.h"
 #include "Version.h"
 
 extern "C"
@@ -650,6 +651,12 @@ extern "C"
     void context_set_cursor_trap(bool value)
     {
         GetContext()->GetUiContext()->SetCursorTrap(value);
+    }
+
+    rct_window * context_open_window(rct_windowclass wc)
+    {
+        auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
+        return windowManager->OpenWindow(wc);
     }
 
     bool platform_open_common_file_dialog(utf8 * outFilename, file_dialog_desc * desc, size_t outSize)

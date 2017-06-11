@@ -18,6 +18,16 @@
 
 #include "common.h"
 
+
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+    #include "interface/window.h"
+#ifdef __cplusplus
+}
+#endif
+
 typedef struct CursorState
 {
     sint32  x, y;
@@ -117,7 +127,7 @@ extern "C"
     sint32 context_get_height();
     bool context_has_focus();
     void context_set_cursor_trap(bool value);
-
+    rct_window * context_open_window(rct_windowclass wc);
 #ifdef __cplusplus
 }
 #endif
