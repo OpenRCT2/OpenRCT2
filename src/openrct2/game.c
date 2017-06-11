@@ -1110,9 +1110,9 @@ bool game_load_save(const utf8 *path)
             network_send_map();
         }
 
-		// This ensures that the newly loaded save reflects the user's
-		// 'show real names of guests' option, now that it's a global setting
-		peep_update_names(gConfigGeneral.show_real_names_of_guests);
+        // This ensures that the newly loaded save reflects the user's
+        // 'show real names of guests' option, now that it's a global setting
+        peep_update_names(gConfigGeneral.show_real_names_of_guests);
 
         return true;
     } else {
