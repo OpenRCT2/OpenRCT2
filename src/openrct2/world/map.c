@@ -3659,8 +3659,7 @@ void map_update_tiles()
         }
 
         gGrassSceneryTileLoopPosition++;
-        // Type is uint16, so why do we need this exactly?
-        //gGrassSceneryTileLoopPosition &= 0xFFFF;
+        gGrassSceneryTileLoopPosition &= 0xFFFF;
     }
 }
 
