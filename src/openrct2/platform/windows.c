@@ -51,8 +51,6 @@
 static utf8 _userDataDirectoryPath[MAX_PATH] = { 0 };
 static utf8 _openrctDataDirectoryPath[MAX_PATH] = { 0 };
 
-utf8 **windows_get_command_line_args(sint32 *outNumArgs);
-
 #define OPENRCT2_DLL_MODULE_NAME "openrct2.dll"
 
 static HMODULE _dllModule = NULL;
@@ -63,77 +61,6 @@ static HMODULE plaform_get_dll_module()
         _dllModule = GetModuleHandle(NULL);
     }
     return _dllModule;
-}
-
-#ifndef NO_RCT2
-
-/* DllMain is already defined in one of static libraries we implicitly depend
- * on (libcrypto), which is their bug really, but since we don't do anything in
- * here, just comment it out.
- */
-#ifndef __MINGW32__
-/**
- * Entry point for when the DLL is loaded. This will be removed when OpenRCT2 can be built as a stand alone application.
- */
-BOOL APIENTRY DllMain(HANDLE hModule, DWORD dwReason, LPVOID lpReserved)
-{
-    _dllModule = hModule;
-    return TRUE;
-}
-#endif // __MINGW32__
-
-/**
- * The function that is called directly from the host application (rct2.exe)'s WinMain. This will be removed when OpenRCT2 can
- * be built as a stand alone application.
- */
-__declspec(dllexport) sint32 StartOpenRCT(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, sint32 nCmdShow)
-{
-    sint32 argc;
-    char **argv;
-
-    if (_dllModule == NULL) {
-        _dllModule = GetModuleHandleA(OPENRCT2_DLL_MODULE_NAME);
-    }
-
-    core_init();
-
-    argv = (char**)windows_get_command_line_args(&argc);
-    sint32 exitCode = cmdline_run((const char **)argv, argc);
-
-    // Free argv
-    for (sint32 i = 0; i < argc; i++) {
-        free(argv[i]);
-    }
-    free(argv);
-
-    if (exitCode == 1) {
-        openrct2_launch();
-        exitCode = gExitCode;
-    }
-
-
-    exit(exitCode);
-}
-
-#endif // NO_RCT2
-
-utf8 **windows_get_command_line_args(int *outNumArgs)
-{
-    sint32 argc;
-
-    // Get command line arguments as widechar
-    LPWSTR commandLine = GetCommandLineW();
-    LPWSTR *argvW = CommandLineToArgvW(commandLine, &argc);
-
-    // Convert to UTF-8
-    utf8 **argvUtf8 = (utf8**)malloc(argc * sizeof(utf8*));
-    for (sint32 i = 0; i < argc; i++) {
-        argvUtf8[i] = widechar_to_utf8(argvW[i]);
-    }
-    LocalFree(argvW);
-
-    *outNumArgs = argc;
-    return argvUtf8;
 }
 
 void platform_get_date_local(rct2_date *out_date)
