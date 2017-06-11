@@ -420,13 +420,15 @@ extern "C"
      */
     void FASTCALL gfx_draw_sprite_software(rct_drawpixelinfo *dpi, sint32 image_id, sint32 x, sint32 y, uint32 tertiary_colour)
     {
-        uint8* palette_pointer = gfx_draw_sprite_get_palette(image_id, tertiary_colour);
-        if (image_id & IMAGE_TYPE_REMAP_2_PLUS) {
-            image_id |= IMAGE_TYPE_REMAP;
+        if (image_id != -1)
+        {
+            uint8* palette_pointer = gfx_draw_sprite_get_palette(image_id, tertiary_colour);
+            if (image_id & IMAGE_TYPE_REMAP_2_PLUS) {
+                image_id |= IMAGE_TYPE_REMAP;
+            }
+
+            gfx_draw_sprite_palette_set_software(dpi, image_id, x, y, palette_pointer, nullptr);
         }
-
-
-        gfx_draw_sprite_palette_set_software(dpi, image_id, x, y, palette_pointer, nullptr);
     }
 
     /*
@@ -444,6 +446,10 @@ extern "C"
         sint32 image_type = image_id & 0xE0000000;
 
         rct_g1_element *g1_source = gfx_get_g1_element(image_element);
+        if (g1_source == nullptr)
+        {
+            return;
+        }
 
         if (dpi->zoom_level != 0 && (g1_source->flags & G1_FLAG_HAS_ZOOM_SPRITE)) {
             rct_drawpixelinfo zoomed_dpi;
@@ -642,6 +648,11 @@ extern "C"
 
     rct_g1_element * gfx_get_g1_element(sint32 image_id)
     {
+        if (image_id == (-1 & 0x7FFFF))
+        {
+            return nullptr;
+        }
+
         if (image_id < SPR_G2_BEGIN)
         {
             return &g1Elements[image_id];
