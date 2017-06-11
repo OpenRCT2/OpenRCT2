@@ -14,16 +14,23 @@
  *****************************************************************************/
 #pragma endregion
 
+#include "config/Config.h"
+#include "core/Console.hpp"
 #include "core/Exception.hpp"
 #include "core/Guard.hpp"
 #include "core/Path.hpp"
 #include "core/String.hpp"
+#include "OpenRCT2.h"
 #include "PlatformEnvironment.h"
+#include "Version.h"
 
 extern "C"
 {
     #include "platform/platform.h"
+    #include "rct2.h"
 }
+
+using namespace OpenRCT2;
 
 class PlatformEnvironment final : public IPlatformEnvironment
 {
@@ -84,9 +91,67 @@ private:
     static const char * FileNames[];
 };
 
-IPlatformEnvironment * CreatePlatformEnvironment(DIRBASE_VALUES basePaths)
+IPlatformEnvironment * OpenRCT2::CreatePlatformEnvironment(DIRBASE_VALUES basePaths)
 {
     return new PlatformEnvironment(basePaths);
+}
+
+IPlatformEnvironment * OpenRCT2::CreatePlatformEnvironment()
+{
+    utf8 userPath[MAX_PATH];
+    platform_resolve_openrct_data_path();
+    platform_resolve_user_data_path();
+    platform_get_user_directory(userPath, NULL, sizeof(userPath));
+    if (!platform_ensure_directory_exists(userPath))
+    {
+        Console::Error::WriteLine("Could not create user directory (do you have write access to your documents folder?)");
+        return nullptr;
+    }
+    platform_get_exe_path(gExePath, sizeof(gExePath));
+    log_verbose("Setting exe path to %s", gExePath);
+
+    config_set_defaults();
+    if (!config_open_default())
+    {
+        if (!config_find_or_browse_install_directory())
+        {
+            gConfigGeneral.last_run_version = String::Duplicate(OPENRCT2_VERSION);
+            config_save_default();
+            utf8 path[MAX_PATH];
+            config_get_default_path(path, sizeof(path));
+            Console::Error::WriteLine("An RCT2 install directory must be specified! Please edit \"game_path\" in %s.", path);
+            return nullptr;
+        }
+        config_save_default();
+    }
+
+    if (!rct2_init_directories())
+    {
+        return nullptr;
+    }
+    if (!rct2_startup_checks())
+    {
+        return nullptr;
+    }
+
+    utf8 path[260];
+    std::string basePaths[4];
+    basePaths[(size_t)DIRBASE::RCT1] = String::ToStd(gConfigGeneral.rct1_path);
+    basePaths[(size_t)DIRBASE::RCT2] = String::ToStd(gConfigGeneral.rct2_path);
+    platform_get_openrct_data_path(path, sizeof(path));
+    basePaths[(size_t)DIRBASE::OPENRCT2] = std::string(path);
+    platform_get_user_directory(path, nullptr, sizeof(path));
+    basePaths[(size_t)DIRBASE::USER] = std::string(path);
+
+    IPlatformEnvironment * env = OpenRCT2::CreatePlatformEnvironment(basePaths);
+
+    // Log base paths
+    log_verbose("DIRBASE::RCT1    : %s", env->GetDirectoryPath(DIRBASE::RCT1).c_str());
+    log_verbose("DIRBASE::RCT2    : %s", env->GetDirectoryPath(DIRBASE::RCT2).c_str());
+    log_verbose("DIRBASE::OPENRCT2: %s", env->GetDirectoryPath(DIRBASE::OPENRCT2).c_str());
+    log_verbose("DIRBASE::USER    : %s", env->GetDirectoryPath(DIRBASE::USER).c_str());
+
+    return env;
 }
 
 const char * PlatformEnvironment::DirectoryNamesRCT2[] =

@@ -53,6 +53,8 @@ extern "C"
     #include "../util/util.h"
 }
 
+using namespace OpenRCT2;
+
 constexpr uint16 OBJECT_REPOSITORY_VERSION = 10;
 
 #pragma pack(push, 1)

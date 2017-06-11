@@ -17,6 +17,7 @@
 #include <openrct2/audio/AudioContext.h>
 #include <openrct2/Context.h>
 #include <openrct2/OpenRCT2.h>
+#include <openrct2/PlatformEnvironment.h>
 #include <openrct2/ui/UiContext.h>
 #include "audio/AudioContext.h"
 #include "Ui.h"
@@ -49,9 +50,10 @@ int main(int argc, char * * argv)
         else
         {
             // Run OpenRCT2 with a UI context
+            auto env = CreatePlatformEnvironment();
             auto audioContext = CreateAudioContext();
-            auto uiContext = CreateUiContext();
-            auto context = CreateContext(audioContext, uiContext);
+            auto uiContext = CreateUiContext(env);
+            auto context = CreateContext(env, audioContext, uiContext);
 
             context->RunOpenRCT2(argc, argv);
 

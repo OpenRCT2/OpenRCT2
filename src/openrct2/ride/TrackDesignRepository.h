@@ -28,7 +28,10 @@ typedef struct track_design_file_ref
 
 #include <string>
 
-interface IPlatformEnvironment;
+namespace OpenRCT2
+{
+    interface IPlatformEnvironment;
+}
 
 interface ITrackDesignRepository
 {
@@ -46,7 +49,7 @@ interface ITrackDesignRepository
     virtual std::string Install(const std::string &path) abstract;
 };
 
-ITrackDesignRepository * CreateTrackDesignRepository(IPlatformEnvironment * env);
+ITrackDesignRepository * CreateTrackDesignRepository(OpenRCT2::IPlatformEnvironment * env);
 ITrackDesignRepository * GetTrackDesignRepository();
 
 #endif

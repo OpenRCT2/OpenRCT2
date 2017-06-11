@@ -24,6 +24,7 @@ struct SDL_Window;
 namespace OpenRCT2
 {
     interface IContext;
+    interface IPlatformEnvironment;
 
     namespace Ui
     {
@@ -41,7 +42,7 @@ namespace OpenRCT2
             virtual std::string ShowDirectoryDialog(SDL_Window * window, const std::string &title) abstract;
         };
 
-        IUiContext * CreateUiContext();
+        IUiContext * CreateUiContext(IPlatformEnvironment * env);
         IPlatformUiContext * CreatePlatformUiContext();
     }
 }

@@ -39,6 +39,8 @@ extern "C"
     #include "scenario.h"
 }
 
+using namespace OpenRCT2;
+
 static sint32 ScenarioCategoryCompare(sint32 categoryA, sint32 categoryB)
 {
     if (categoryA == categoryB) return 0;
