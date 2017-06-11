@@ -14,7 +14,6 @@
  *****************************************************************************/
 #pragma endregion
 
-#include <SDL_keycode.h>
 #include "audio/audio.h"
 #include "config/Config.h"
 #include "Context.h"
@@ -88,10 +87,7 @@ void process_mouse_tool(sint32 x, sint32 y);
 void invalidate_scroll();
 static rct_mouse_data* get_mouse_input();
 void map_element_right_click(sint32 type, rct_map_element *mapElement, sint32 x, sint32 y);
-sint32 get_next_key();
 static void game_handle_input_mouse(sint32 x, sint32 y, sint32 state);
-void game_handle_edge_scroll();
-void game_handle_key_scroll();
 static void input_widget_left(sint32 x, sint32 y, rct_window *w, rct_widgetindex widgetIndex);
 void input_state_widget_pressed(sint32 x, sint32 y, sint32 state, rct_widgetindex widgetIndex, rct_window* w, rct_widget* widget);
 void set_cursor(uint8 cursor_id);
@@ -1396,121 +1392,13 @@ static void input_update_tooltip(rct_window *w, rct_widgetindex widgetIndex, sin
 
 #pragma region Keyboard input
 
-static void input_handle_console(sint32 key)
-{
-    CONSOLE_INPUT input = CONSOLE_INPUT_NONE;
-    switch (key) {
-    case SDL_SCANCODE_ESCAPE:
-        input = CONSOLE_INPUT_LINE_CLEAR;
-        break;
-    case SDL_SCANCODE_RETURN:
-        input = CONSOLE_INPUT_LINE_EXECUTE;
-        break;
-    case SDL_SCANCODE_UP:
-        input = CONSOLE_INPUT_HISTORY_PREVIOUS;
-        break;
-    case SDL_SCANCODE_DOWN:
-        input = CONSOLE_INPUT_HISTORY_NEXT;
-        break;
-    }
-    if (input != CONSOLE_INPUT_NONE) {
-        console_input(input);
-    }
-}
-
-static void input_handle_chat(sint32 key)
-{
-    CHAT_INPUT input = CHAT_INPUT_NONE;
-    switch (key) {
-    case SDL_SCANCODE_ESCAPE:
-        input = CHAT_INPUT_CLOSE;
-        break;
-    case SDL_SCANCODE_RETURN:
-        input = CHAT_INPUT_SEND;
-        break;
-    }
-    if (input != CHAT_INPUT_NONE) {
-        chat_input(input);
-    }
-}
-
-static void input_handle_keyboard(bool isTitle)
-{
-    if (gOpenRCT2Headless) {
-        return;
-    }
-
-    if (!gConsoleOpen) {
-        if (!isTitle) {
-            // Handle mouse scrolling
-            if (_inputState == INPUT_STATE_NORMAL && gConfigGeneral.edge_scrolling) {
-                if (!(gInputPlaceObjectModifier & (PLACE_OBJECT_MODIFIER_SHIFT_Z | PLACE_OBJECT_MODIFIER_COPY_Z))) {
-                    game_handle_edge_scroll();
-                }
-            }
-        }
-
-        // Handle modifier keys and key scrolling
-        gInputPlaceObjectModifier = PLACE_OBJECT_MODIFIER_NONE;
-        const uint8 * keysState = context_get_keys_state();
-        if (keysState[SDL_SCANCODE_LSHIFT] || keysState[SDL_SCANCODE_RSHIFT]) {
-            gInputPlaceObjectModifier |= PLACE_OBJECT_MODIFIER_SHIFT_Z;
-        }
-        if (keysState[SDL_SCANCODE_LCTRL] || keysState[SDL_SCANCODE_RCTRL]) {
-            gInputPlaceObjectModifier |= PLACE_OBJECT_MODIFIER_COPY_Z;
-        }
-        if (keysState[SDL_SCANCODE_LALT] || keysState[SDL_SCANCODE_RALT]) {
-            gInputPlaceObjectModifier |= 4;
-        }
-#ifdef __MACOSX__
-        if (keysState[SDL_SCANCODE_LGUI] || keysState[SDL_SCANCODE_RGUI]) {
-            gInputPlaceObjectModifier |= 8;
-        }
-#endif
-        if (!isTitle) {
-            game_handle_key_scroll();
-        }
-    }
-
-    // Handle key input
-    sint32 key;
-    while (!gOpenRCT2Headless && (key = get_next_key()) != 0) {
-        if (key == 255)
-            continue;
-
-        // Reserve backtick for console
-        if (key == SDL_SCANCODE_GRAVE) {
-            if ((gConfigGeneral.debugging_tools && !context_is_input_active()) || gConsoleOpen) {
-                window_cancel_textbox();
-                console_toggle();
-            }
-            continue;
-        } else if (gConsoleOpen) {
-            input_handle_console(key);
-            continue;
-        } else if (!isTitle && gChatOpen) {
-            input_handle_chat(key);
-            continue;
-        }
-
-        key |= gInputPlaceObjectModifier << 8;
-
-        rct_window * w = window_find_by_class(WC_TEXTINPUT);
-        if (w != NULL) {
-            window_text_input_key(w, key);
-        } else if (!gUsingWidgetTextBox) {
-            context_handle_keyboard_shortcut(key);
-        }
-    }
-}
-
 /**
  *
  *  rct2: 0x006E3B43
  */
 void title_handle_keyboard_input()
 {
-    input_handle_keyboard(true);
+    context_input_handle_keyboard(true);
 }
 
 /**
@@ -1519,7 +1407,7 @@ void title_handle_keyboard_input()
  */
 void game_handle_keyboard_input()
 {
-    input_handle_keyboard(false);
+    context_input_handle_keyboard(false);
 }
 
 /**
@@ -1618,41 +1506,6 @@ void game_handle_edge_scroll()
         scrollY = -1;
     else if (cursorState->y >= context_get_height() - 1)
         scrollY = 1;
-
-    // Scroll viewport
-    if (scrollX != 0) {
-        mainWindow->saved_view_x += scrollX * (12 << mainWindow->viewport->zoom);
-        _inputFlags |= INPUT_FLAG_VIEWPORT_SCROLLING;
-    }
-    if (scrollY != 0) {
-        mainWindow->saved_view_y += scrollY * (12 << mainWindow->viewport->zoom);
-        _inputFlags |= INPUT_FLAG_VIEWPORT_SCROLLING;
-    }
-}
-
-void game_handle_key_scroll()
-{
-    rct_window *mainWindow;
-    sint32 scrollX, scrollY;
-
-    mainWindow = window_get_main();
-    if (mainWindow == NULL)
-        return;
-    if ((mainWindow->flags & WF_NO_SCROLLING) || (gScreenFlags & (SCREEN_FLAGS_TRACK_MANAGER | SCREEN_FLAGS_TITLE_DEMO)))
-        return;
-    if (mainWindow->viewport == NULL)
-        return;
-
-    rct_window *textWindow;
-
-    textWindow = window_find_by_class(WC_TEXTINPUT);
-    if (textWindow || gUsingWidgetTextBox) return;
-    if (gChatOpen) return;
-
-    scrollX = 0;
-    scrollY = 0;
-    const uint8 * keysState = context_get_keys_state();
-    context_get_keyboard_map_scroll(keysState, &scrollX, &scrollY);
 
     // Scroll viewport
     if (scrollX != 0) {

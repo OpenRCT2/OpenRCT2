@@ -41,6 +41,7 @@
     <ClCompile Include="drawing\engines\opengl\SwapFramebuffer.cpp" />
     <ClCompile Include="drawing\engines\opengl\TextureCache.cpp" />
     <ClCompile Include="drawing\engines\SoftwareDrawingEngine.cpp" />
+    <ClCompile Include="input\input.c" />
     <ClCompile Include="input\KeyboardShortcuts.cpp" />
     <ClCompile Include="input\keyboard_shortcut.c" />
     <ClCompile Include="TextComposition.cpp" />
@@ -68,6 +69,7 @@
     <ClInclude Include="drawing\engines\opengl\OpenGLShaderProgram.h" />
     <ClInclude Include="drawing\engines\opengl\SwapFramebuffer.h" />
     <ClInclude Include="drawing\engines\opengl\TextureCache.h" />
+    <ClInclude Include="input\input.h" />
     <ClInclude Include="input\KeyboardShortcuts.h" />
     <ClInclude Include="SDLException.h" />
     <ClInclude Include="TextComposition.h" />

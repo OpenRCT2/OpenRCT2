@@ -15,6 +15,7 @@
 #pragma endregion
 
 #include <openrct2/ui/WindowManager.h>
+#include "input/input.h"
 #include "input/KeyboardShortcuts.h"
 #include "WindowManager.h"
 
@@ -33,21 +34,9 @@ public:
         }
     }
 
-    void HandleKeyboardShortcut(sint32 key) override
+    void HandleKeyboard(bool isTitle) override
     {
-        rct_window * w = window_find_by_class(WC_CHANGE_KEYBOARD_SHORTCUT);
-        if (w != NULL) {
-            keyboard_shortcuts_set(key);
-            window_close_by_class(WC_CHANGE_KEYBOARD_SHORTCUT);
-            window_invalidate_by_class(WC_KEYBOARD_SHORTCUT_LIST);
-        } else {
-            keyboard_shortcut_handle(key);
-        }
-    }
-
-    void GetKeyboardMapScroll(const uint8 * keysState, sint32 * x, sint32 * y) override
-    {
-        get_keyboard_map_scroll(keysState, x, y);
+        input_handle_keyboard(isTitle);
     }
 
     std::string GetKeyboardShortcutString(sint32 shortcut) override
