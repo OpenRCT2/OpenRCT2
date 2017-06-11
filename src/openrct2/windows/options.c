@@ -1713,6 +1713,7 @@ static void window_options_invalidate(rct_window *w)
         // and the server cannot change the setting during gameplay to prevent desyncs
         if (network_get_mode() != NETWORK_MODE_NONE) {
             w->disabled_widgets |= (1ULL << WIDX_REAL_NAME_CHECKBOX);
+            window_options_misc_widgets[WIDX_REAL_NAME_CHECKBOX].tooltip = STR_OPTION_DISABLED_DURING_NETWORK_PLAY;
         }
 
         w->hold_down_widgets |= (1 << WIDX_WINDOW_LIMIT_UP) | (1 << WIDX_WINDOW_LIMIT_DOWN);
