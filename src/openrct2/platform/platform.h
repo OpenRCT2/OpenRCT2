@@ -107,7 +107,6 @@ void platform_free();
 void platform_update_palette(const uint8 *colours, sint32 start_index, sint32 num_colours);
 void platform_toggle_windowed_mode();
 void platform_refresh_video();
-sint32 platform_scancode_to_rct_keycode(sint32 sdl_key);
 void platform_get_date_utc(rct2_date *out_date);
 void platform_get_time_utc(rct2_time *out_time);
 void platform_get_date_local(rct2_date *out_date);

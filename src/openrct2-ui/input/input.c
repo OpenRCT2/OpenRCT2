@@ -99,6 +99,19 @@ static void game_handle_key_scroll()
     }
 }
 
+static sint32 input_scancode_to_rct_keycode(sint32 sdl_key)
+{
+    char keycode = (char)SDL_GetKeyFromScancode((SDL_Scancode)sdl_key);
+
+    // Until we reshuffle the text files to use the new positions
+    // this will suffice to move the majority to the correct positions.
+    // Note any special buttons PgUp PgDwn are mapped wrong.
+    if (keycode >= 'a' && keycode <= 'z')
+        keycode = toupper(keycode);
+
+    return keycode;
+}
+
 void input_handle_keyboard(bool isTitle)
 {
     if (gOpenRCT2Headless) {
@@ -162,7 +175,8 @@ void input_handle_keyboard(bool isTitle)
 
         rct_window * w = window_find_by_class(WC_TEXTINPUT);
         if (w != NULL) {
-            window_text_input_key(w, key);
+            char keychar = input_scancode_to_rct_keycode(key & 0xFF);
+            window_text_input_key(w, keychar);
         } else if (!gUsingWidgetTextBox) {
             w = window_find_by_class(WC_CHANGE_KEYBOARD_SHORTCUT);
             if (w != NULL) {

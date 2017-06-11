@@ -25,7 +25,6 @@
 #include <sys/time.h>
 #include <pwd.h>
 #include <time.h>
-#include <SDL_syswm.h>
 #include "../config/Config.h"
 #include "../localisation/date.h"
 #include "../localisation/language.h"
