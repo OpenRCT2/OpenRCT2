@@ -823,9 +823,10 @@ static void window_options_mouseup(rct_window *w, rct_widgetindex widgetIndex)
             window_invalidate(w);
             break;
         case WIDX_REAL_NAME_CHECKBOX:
-            peep_update_names(
-                !(gParkFlags & PARK_FLAGS_SHOW_REAL_GUEST_NAMES)
-            );
+			gConfigGeneral.show_real_names_of_guests ^= 1;
+			config_save_default();
+			window_invalidate(w);
+			peep_update_names(gConfigGeneral.show_real_names_of_guests);
             break;
         case WIDX_SAVE_PLUGIN_DATA_CHECKBOX:
             gConfigGeneral.save_plugin_data ^= 1;
@@ -1716,7 +1717,7 @@ static void window_options_invalidate(rct_window *w)
         // save plugin data checkbox: visible or not
         window_options_misc_widgets[WIDX_SAVE_PLUGIN_DATA_CHECKBOX].type = WWT_CHECKBOX;
 
-        widget_set_checkbox_value(w, WIDX_REAL_NAME_CHECKBOX, gParkFlags & PARK_FLAGS_SHOW_REAL_GUEST_NAMES);
+        widget_set_checkbox_value(w, WIDX_REAL_NAME_CHECKBOX, gConfigGeneral.show_real_names_of_guests);
         widget_set_checkbox_value(w, WIDX_SAVE_PLUGIN_DATA_CHECKBOX, gConfigGeneral.save_plugin_data);
         widget_set_checkbox_value(w, WIDX_TEST_UNFINISHED_TRACKS, gConfigGeneral.test_unfinished_tracks);
         widget_set_checkbox_value(w, WIDX_AUTO_STAFF_PLACEMENT, gConfigGeneral.auto_staff_placement);
