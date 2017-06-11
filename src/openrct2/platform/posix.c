@@ -16,14 +16,17 @@
 
 #if defined(__unix__) || (defined(__APPLE__) && defined(__MACH__)) || defined(__FreeBSD__)
 
+#include <ctype.h>
 #include <dirent.h>
 #include <errno.h>
 #include <fnmatch.h>
+#include <fts.h>
 #include <libgen.h>
 #include <locale.h>
+#include <pwd.h>
+#include <sys/file.h>
 #include <sys/stat.h>
 #include <sys/time.h>
-#include <pwd.h>
 #include <time.h>
 #include "../config/Config.h"
 #include "../localisation/date.h"
@@ -31,12 +34,6 @@
 #include "../OpenRCT2.h"
 #include "../util/util.h"
 #include "platform.h"
-#include <dirent.h>
-#include <sys/time.h>
-#include <time.h>
-#include <fts.h>
-#include <sys/file.h>
-
 // The name of the mutex used to prevent multiple instances of the game from running
 #define SINGLE_INSTANCE_MUTEX_NAME "openrct2.lock"
 

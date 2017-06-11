@@ -16,6 +16,7 @@
 
 #pragma warning(disable : 4295) // 'identifier': array is too small to include a terminating null character
 
+#include <ctype.h>
 #include "../audio/audio.h"
 #include "../config/Config.h"
 #include "../Context.h"
