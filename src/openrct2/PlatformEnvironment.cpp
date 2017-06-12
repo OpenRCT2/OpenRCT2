@@ -85,6 +85,11 @@ public:
         return std::string(path);
     }
 
+    void SetBasePath(DIRBASE base, const std::string &path) override
+    {
+        _basePath[(size_t)base] = path;
+    }
+
 private:
     static const char * DirectoryNamesRCT2[];
     static const char * DirectoryNamesOpenRCT2[];
@@ -113,25 +118,7 @@ IPlatformEnvironment * OpenRCT2::CreatePlatformEnvironment()
     config_set_defaults();
     if (!config_open_default())
     {
-        if (!config_find_or_browse_install_directory())
-        {
-            gConfigGeneral.last_run_version = String::Duplicate(OPENRCT2_VERSION);
-            config_save_default();
-            utf8 path[MAX_PATH];
-            config_get_default_path(path, sizeof(path));
-            Console::Error::WriteLine("An RCT2 install directory must be specified! Please edit \"game_path\" in %s.", path);
-            return nullptr;
-        }
         config_save_default();
-    }
-
-    if (!rct2_init_directories())
-    {
-        return nullptr;
-    }
-    if (!rct2_startup_checks())
-    {
-        return nullptr;
     }
 
     utf8 path[260];
