@@ -203,6 +203,7 @@ namespace Config
             model->render_weather_effects = reader->GetBoolean("render_weather_effects", true);
             model->render_weather_gloom = reader->GetBoolean("render_weather_gloom", true);
             model->show_guest_purchases = reader->GetBoolean("show_guest_purchases", false);
+            model->show_real_names_of_guests = reader->GetBoolean("show_real_names_of_guests", true);
         }
     }
 
@@ -272,6 +273,7 @@ namespace Config
         writer->WriteBoolean("render_weather_effects", model->render_weather_effects);
         writer->WriteBoolean("render_weather_gloom", model->render_weather_gloom);
         writer->WriteBoolean("show_guest_purchases", model->show_guest_purchases);
+        writer->WriteBoolean("show_real_names_of_guests", model->show_real_names_of_guests);
     }
 
     static void ReadInterface(IIniReader * reader)

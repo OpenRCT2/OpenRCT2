@@ -1109,6 +1109,11 @@ bool game_load_save(const utf8 *path)
         if (network_get_mode() == NETWORK_MODE_SERVER) {
             network_send_map();
         }
+
+        // This ensures that the newly loaded save reflects the user's
+        // 'show real names of guests' option, now that it's a global setting
+        peep_update_names(gConfigGeneral.show_real_names_of_guests);
+
         return true;
     } else {
         // If loading the SV6 or SV4 failed, the current park state will be corrupted

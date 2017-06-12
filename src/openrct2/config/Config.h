@@ -86,6 +86,7 @@ typedef struct GeneralConfiguration
     bool        scenario_unlocking_enabled;
     bool        scenario_hide_mega_park;
     bool        steam_overlay_pause;
+    bool        show_real_names_of_guests;
 
     bool        confirmation_prompt;
     sint32      load_save_sort;

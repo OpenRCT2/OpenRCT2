@@ -4411,6 +4411,7 @@ STR_6099    :You connected to the server.
 STR_6100    :You disconnected from the server.
 STR_6101    :Rides don't decrease in value over time
 STR_6102    :{SMALLFONT}{BLACK}The value of a ride won't decrease over time, so guests will not suddenly think that a ride is too expensive.
+STR_6103    :{SMALLFONT}{BLACK}This option is disabled during network play.
 
 #############
 # Scenarios #

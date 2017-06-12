@@ -36,6 +36,7 @@
 #include "../localisation/date.h"
 #include "../localisation/language.h"
 #include "../localisation/localisation.h"
+#include "../network/network.h"
 #include "../platform/platform.h"
 #include "../rct2.h"
 #include "../sprites.h"
@@ -823,9 +824,10 @@ static void window_options_mouseup(rct_window *w, rct_widgetindex widgetIndex)
             window_invalidate(w);
             break;
         case WIDX_REAL_NAME_CHECKBOX:
-            peep_update_names(
-                !(gParkFlags & PARK_FLAGS_SHOW_REAL_GUEST_NAMES)
-            );
+            gConfigGeneral.show_real_names_of_guests ^= 1;
+            config_save_default();
+            window_invalidate(w);
+            peep_update_names(gConfigGeneral.show_real_names_of_guests);
             break;
         case WIDX_SAVE_PLUGIN_DATA_CHECKBOX:
             gConfigGeneral.save_plugin_data ^= 1;
@@ -1707,16 +1709,19 @@ static void window_options_invalidate(rct_window *w)
         break;
 
     case WINDOW_OPTIONS_PAGE_MISC:
-        // unknown park flag can disable real name checkbox
-        if (gParkFlags & PARK_FLAGS_LOCK_REAL_NAMES_OPTION)
+        // The real name setting of clients is fixed to that of the server
+        // and the server cannot change the setting during gameplay to prevent desyncs
+        if (network_get_mode() != NETWORK_MODE_NONE) {
             w->disabled_widgets |= (1ULL << WIDX_REAL_NAME_CHECKBOX);
+            window_options_misc_widgets[WIDX_REAL_NAME_CHECKBOX].tooltip = STR_OPTION_DISABLED_DURING_NETWORK_PLAY;
+        }
 
         w->hold_down_widgets |= (1 << WIDX_WINDOW_LIMIT_UP) | (1 << WIDX_WINDOW_LIMIT_DOWN);
 
         // save plugin data checkbox: visible or not
         window_options_misc_widgets[WIDX_SAVE_PLUGIN_DATA_CHECKBOX].type = WWT_CHECKBOX;
 
-        widget_set_checkbox_value(w, WIDX_REAL_NAME_CHECKBOX, gParkFlags & PARK_FLAGS_SHOW_REAL_GUEST_NAMES);
+        widget_set_checkbox_value(w, WIDX_REAL_NAME_CHECKBOX, gConfigGeneral.show_real_names_of_guests);
         widget_set_checkbox_value(w, WIDX_SAVE_PLUGIN_DATA_CHECKBOX, gConfigGeneral.save_plugin_data);
         widget_set_checkbox_value(w, WIDX_TEST_UNFINISHED_TRACKS, gConfigGeneral.test_unfinished_tracks);
         widget_set_checkbox_value(w, WIDX_AUTO_STAFF_PLACEMENT, gConfigGeneral.auto_staff_placement);
