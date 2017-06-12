@@ -520,8 +520,11 @@ void Network::UpdateClient()
         }
 
         // Check synchronisation
+        ProcessGameCommandQueue();
+
         if (!_desynchronised && !CheckSRAND(gCurrentTicks, gScenarioSrand0)) {
             _desynchronised = true;
+
             char str_desync[256];
             format_string(str_desync, 256, STR_MULTIPLAYER_DESYNC, NULL);
             window_network_status_open(str_desync, NULL);
@@ -530,7 +533,6 @@ void Network::UpdateClient()
             }
         }
 
-        ProcessGameCommandQueue();
         break;
     }
     }
@@ -614,12 +616,17 @@ bool Network::CheckSRAND(uint32 tick, uint32 srand0)
         return true;
     }
 
-    if (tick == server_srand0_tick) {
+    if (tick == server_srand0_tick) 
+    {
         server_srand0_tick = 0;
         // Check that the server and client sprite hashes match
-        const bool sprites_mismatch = server_sprite_hash[0] != '\0' && strcmp(sprite_checksum(), server_sprite_hash);
+        const char *client_sprite_hash = sprite_checksum();
+        const bool sprites_mismatch = server_sprite_hash[0] != '\0' && strcmp(client_sprite_hash, server_sprite_hash);
         // Check PRNG values and sprite hashes, if exist
         if ((srand0 != server_srand0) || sprites_mismatch) {
+#ifdef DEBUG_DESYNC
+            dbg_report_desync(tick, srand0, server_srand0, client_sprite_hash, server_sprite_hash);
+#endif
             return false;
         }
     }
@@ -1315,7 +1322,13 @@ void Network::ProcessPacket(NetworkConnection& connection, NetworkPacket& packet
 
 void Network::ProcessGameCommandQueue()
 {
-    while (game_command_queue.begin() != game_command_queue.end() && game_command_queue.begin()->tick == gCurrentTicks) {
+    while (game_command_queue.begin() != game_command_queue.end()) {
+        // If our tick is higher than the command tick we are in trouble.
+        assert(game_command_queue.begin()->tick >= gCurrentTicks);
+
+        if (game_command_queue.begin()->tick != gCurrentTicks)
+            return;
+
         // run all the game commands at the current tick
         const GameCommand& gc = (*game_command_queue.begin());
         if (GetPlayerID() == gc.playerid) {

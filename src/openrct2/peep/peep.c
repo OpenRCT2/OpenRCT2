@@ -174,6 +174,12 @@ static void peep_update_ride_inspected(sint32 rideIndex);
 
 bool loc_690FD0(rct_peep *peep, uint8 *rideToView, uint8 *rideSeatToView, rct_map_element *esi);
 
+#ifdef DEBUG_DESYNC 
+#define peep_rand() scenario_rand_data(peep)
+#else 
+#define peep_rand() scenario_rand() 
+#endif
+
 const char *gPeepEasterEggNames[] = {
     "MICHAEL SCHUMACHER",
     "JACQUES VILLENEUVE",
@@ -736,7 +742,7 @@ static void peep_decide_whether_to_leave_park(rct_peep *peep)
     }
 
     // Approx 95% chance of staying in the park
-    if ((scenario_rand() & 0xFFFF) > 3276) {
+    if ((peep_rand() & 0xFFFF) > 3276) {
         return;
     }
 
@@ -919,7 +925,7 @@ static void sub_68F41A(rct_peep *peep, sint32 index)
          * to reduce how often the content in this conditional
          * is executed to once every four calls. */
         if (peep->peep_flags & PEEP_FLAGS_CROWDED){
-            uint8 thought_type = crowded_thoughts[scenario_rand() & 0xF];
+            uint8 thought_type = crowded_thoughts[peep_rand() & 0xF];
             if (thought_type != PEEP_THOUGHT_TYPE_NONE){
                 peep_insert_new_thought(peep, thought_type, 0xFF);
             }
@@ -1016,7 +1022,7 @@ static void sub_68F41A(rct_peep *peep, sint32 index)
             }
         }
 
-        if ((scenario_rand() & 0xFFFF) <= ((peep->item_standard_flags & PEEP_ITEM_MAP) ? 8192U : 2184U)){
+        if ((peep_rand() & 0xFFFF) <= ((peep->item_standard_flags & PEEP_ITEM_MAP) ? 8192U : 2184U)){
             peep_pick_ride_to_go_on(peep);
         }
 
@@ -1072,7 +1078,7 @@ static void sub_68F41A(rct_peep *peep, sint32 index)
                 }
 
                 if (num_thoughts != 0){
-                    uint8 chosen_thought = possible_thoughts[scenario_rand() % num_thoughts];
+                    uint8 chosen_thought = possible_thoughts[peep_rand() % num_thoughts];
 
                     peep_insert_new_thought(peep, chosen_thought, 0xFF);
 
@@ -1214,7 +1220,7 @@ static void sub_68F41A(rct_peep *peep, sint32 index)
         if (peep->state == PEEP_STATE_WALKING &&
             peep->nausea_growth_rate >= 128){
 
-            if ((scenario_rand() & 0xFF) <= (uint8)((peep->nausea - 128) / 2)){
+            if ((peep_rand() & 0xFF) <= (uint8)((peep->nausea - 128) / 2)){
                 if (peep->action >= PEEP_ACTION_NONE_1){
                     peep->action = PEEP_ACTION_THROW_UP;
                     peep->action_frame = 0;
@@ -1623,7 +1629,7 @@ static sint32 peep_update_action(sint16* x, sint16* y, sint16* xy_distance, rct_
     // Create sick at location
     litter_create(peep->x, peep->y, peep->z, peep->sprite_direction, (peep->sprite_index & 1) ? LITTER_TYPE_SICK_ALT: LITTER_TYPE_SICK);
 
-    sint32 sound_id = SOUND_COUGH_1 + (scenario_rand() & 3);
+    sint32 sound_id = SOUND_COUGH_1 + (peep_rand() & 3);
     audio_play_sound_at_location(sound_id, peep->x, peep->y, peep->z);
 
     invalidate_sprite_2((rct_sprite*)peep);
@@ -1727,11 +1733,11 @@ void peep_update_sprite_type(rct_peep* peep)
 {
     if (
         peep->sprite_type == PEEP_SPRITE_TYPE_BALLOON &&
-        (scenario_rand() & 0xFFFF) <= 327
+        (peep_rand() & 0xFFFF) <= 327
     ) {
         bool isBalloonPopped = false;
         if (peep->x != SPRITE_LOCATION_NULL) {
-            if ((scenario_rand() & 0xFFFF) <= 13107) {
+            if ((peep_rand() & 0xFFFF) <= 13107) {
                 isBalloonPopped = true;
                 audio_play_sound_at_location(SOUND_BALLOON_POP, peep->x, peep->y, peep->z);
             }
@@ -2260,7 +2266,7 @@ static void peep_update_sitting(rct_peep* peep){
         }
 
         if (peep_has_food(peep)){
-            if ((scenario_rand() & 0xFFFF) > 1310){
+            if ((peep_rand() & 0xFFFF) > 1310){
                 peep_try_get_up_from_sitting(peep);
                 return;
             }
@@ -2272,7 +2278,7 @@ static void peep_update_sitting(rct_peep* peep){
             return;
         }
 
-        sint32 rand = scenario_rand();
+        sint32 rand = peep_rand();
         if ((rand & 0xFFFF) > 131){
             peep_try_get_up_from_sitting(peep);
             return;
@@ -2330,10 +2336,10 @@ void remove_peep_from_queue(rct_peep* peep)
  *  rct2: 0x00691C6E
  */
 static rct_vehicle* peep_choose_car_from_ride(rct_peep* peep, rct_ride* ride, uint8* car_array, uint8 car_array_size){
-    uint8 chosen_car = scenario_rand();
+    uint8 chosen_car = peep_rand();
     if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_G_FORCES)
         && ((chosen_car & 0xC) != 0xC)){
-        chosen_car = (scenario_rand() & 1) ? 0 : car_array_size - 1;
+        chosen_car = (peep_rand() & 1) ? 0 : car_array_size - 1;
     }
     else{
         chosen_car = (chosen_car * (uint16)car_array_size) >> 8;
@@ -2655,7 +2661,7 @@ static void peep_update_ride_sub_state_1(rct_peep* peep){
             y += TileDirectionDelta[direction_entrance].y;
 
             uint8 direction = direction_entrance * 4 + 11;
-            if (scenario_rand() & 0x40){
+            if (peep_rand() & 0x40){
                 direction += 4;
                 peep->maze_last_edge += 2;
             }
@@ -3583,7 +3589,7 @@ static void peep_update_ride_sub_state_14(rct_peep* peep){
         else if (peep->current_car++ != 0){
             if (ride->mode == RIDE_MODE_SINGLE_RIDE_PER_ADMISSION)
                 last_ride = 1;
-            if ((uint8)(peep->current_car - 1) > (scenario_rand() & 0xF))
+            if ((uint8)(peep->current_car - 1) > (peep_rand() & 0xF))
                 last_ride = 1;
         }
 
@@ -3846,7 +3852,7 @@ static void peep_update_ride_sub_state_17(rct_peep* peep){
 
     if (peep->action >= PEEP_ACTION_NONE_1){
         if (peep->energy > 64 &&
-            (scenario_rand() & 0xFFFF) <= 2427){
+            (peep_rand() & 0xFFFF) <= 2427){
 
             peep->action = PEEP_ACTION_JUMP;
             peep->action_frame = 0;
@@ -3898,7 +3904,7 @@ static void peep_update_ride_sub_state_17(rct_peep* peep){
     if (open_hedges == 0)
         open_hedges |= (1 << maze_last_edge);
 
-    uint8 chosen_edge = scenario_rand() & 0x3;
+    uint8 chosen_edge = peep_rand() & 0x3;
     while (!(open_hedges & (1 << chosen_edge))){
         chosen_edge = (chosen_edge + 1) & 3;
     }
@@ -4386,7 +4392,7 @@ static bool peep_update_fixing_sub_state_2345(bool firstRun, rct_peep *peep, rct
     if (!firstRun) {
         peep->sprite_direction = peep->direction << 3;
 
-        peep->action = (scenario_rand() & 1) ? PEEP_ACTION_STAFF_FIX_2 : PEEP_ACTION_STAFF_FIX;
+        peep->action = (peep_rand() & 1) ? PEEP_ACTION_STAFF_FIX_2 : PEEP_ACTION_STAFF_FIX;
         peep->action_sprite_image_offset = 0;
         peep->action_frame = 0;
         peep_update_current_action_sprite_type(peep);
@@ -4882,7 +4888,7 @@ static void peep_update_queuing(rct_peep* peep){
     peep_perform_next_action(peep);
     if (peep->action < 0xFE)return;
     if (peep->sprite_type == PEEP_SPRITE_TYPE_NORMAL) {
-        if (peep->time_in_queue >= 2000 && (0xFFFF & scenario_rand()) <= 119){
+        if (peep->time_in_queue >= 2000 && (0xFFFF & peep_rand()) <= 119){
             // Eat Food/Look at watch
             peep->action = PEEP_ACTION_EAT_FOOD;
             peep->action_frame = 0;
@@ -4890,7 +4896,7 @@ static void peep_update_queuing(rct_peep* peep){
             peep_update_current_action_sprite_type(peep);
             invalidate_sprite_2((rct_sprite*)peep);
         }
-        if (peep->time_in_queue >= 3500 && (0xFFFF & scenario_rand()) <= 93)
+        if (peep->time_in_queue >= 3500 && (0xFFFF & peep_rand()) <= 93)
         {
             //Create the I have been waiting in line ages thought
             peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_QUEUING_AGES, peep->current_ride);
@@ -4933,7 +4939,7 @@ static void peep_update_queuing(rct_peep* peep){
     }
     if (peep->time_in_queue < 4300) return;
 
-    if (peep->happiness <= 65 && (0xFFFF & scenario_rand()) < 2184){
+    if (peep->happiness <= 65 && (0xFFFF & peep_rand()) < 2184){
         //Give up queueing for the ride
         peep->sprite_direction ^= (1 << 4);
         invalidate_sprite_2((rct_sprite*)peep);
@@ -5270,7 +5276,7 @@ static void peep_update_watching(rct_peep* peep){
         }
         else{
             if (peep_has_food(peep)){
-                if ((scenario_rand() & 0xFFFF) <= 1310){
+                if ((peep_rand() & 0xFFFF) <= 1310){
                     peep->action = PEEP_ACTION_EAT_FOOD;
                     peep->action_frame = 0;
                     peep->action_sprite_image_offset = 0;
@@ -5280,7 +5286,7 @@ static void peep_update_watching(rct_peep* peep){
                 }
             }
 
-            if ((scenario_rand() & 0xFFFF) <= 655){
+            if ((peep_rand() & 0xFFFF) <= 655){
                 peep->action = PEEP_ACTION_TAKE_PHOTO;
                 peep->action_frame = 0;
                 peep->action_sprite_image_offset = 0;
@@ -5290,7 +5296,7 @@ static void peep_update_watching(rct_peep* peep){
             }
 
             if ((peep->standing_flags & 1)){
-                if ((scenario_rand() & 0xFFFF) <= 655){
+                if ((peep_rand() & 0xFFFF) <= 655){
                     peep->action = PEEP_ACTION_WAVE;
                     peep->action_frame = 0;
                     peep->action_sprite_image_offset = 0;
@@ -5380,7 +5386,7 @@ static sint32 peep_update_walking_find_bench(rct_peep* peep){
     sint32 edges = (map_element->properties.path.edges & 0xF) ^ 0xF;
     if (edges == 0) return 0;
 
-    uint8 chosen_edge = scenario_rand() & 0x3;
+    uint8 chosen_edge = peep_rand() & 0x3;
 
     for (; !(edges & (1 << chosen_edge));)chosen_edge = (chosen_edge + 1) & 0x3;
 
@@ -5405,7 +5411,7 @@ static sint32 peep_update_walking_find_bench(rct_peep* peep){
 
     free_edge ^= 0x3;
     if (!free_edge){
-        if (scenario_rand() & 0x8000000) free_edge = 1;
+        if (peep_rand() & 0x8000000) free_edge = 1;
     }
 
     peep->var_37 = ((free_edge & 1) << 2) | chosen_edge;
@@ -5463,7 +5469,7 @@ static sint32 peep_update_walking_find_bin(rct_peep* peep){
     sint32 edges = (map_element->properties.path.edges & 0xF) ^ 0xF;
     if (edges == 0) return 0;
 
-    uint8 chosen_edge = scenario_rand() & 0x3;
+    uint8 chosen_edge = peep_rand() & 0x3;
 
     // Note: Bin quantity is inverted 0 = full, 3 = empty
     uint8 bin_quantities = map_element->properties.path.addition_status;
@@ -5516,7 +5522,7 @@ static void peep_update_walking_break_scenery(rct_peep* peep){
         if ((peep->litter_count & 0xC0) != 0xC0 &&
             (peep->disgusting_count & 0xC0) != 0xC0) return;
 
-        if ((scenario_rand() & 0xFFFF) > 3276) return;
+        if ((peep_rand() & 0xFFFF) > 3276) return;
     }
 
     if (peep->next_var_29 & 0x18) return;
@@ -5793,7 +5799,7 @@ static void peep_update_using_bin(rct_peep* peep){
                 // OpenRCT2 modification: This previously used
                 // the tick count as a simple random function
                 // switched to scenario_rand as it is more reliable
-                if ((scenario_rand() & 7) == 0) space_left_in_bin--;
+                if ((peep_rand() & 7) == 0) space_left_in_bin--;
                 peep->item_standard_flags &= ~(1 << cur_container);
                 peep->window_invalidate_flags |= PEEP_INVALIDATE_PEEP_INVENTORY;
                 peep_update_sprite_type(peep);
@@ -5802,10 +5808,10 @@ static void peep_update_using_bin(rct_peep* peep){
             uint8 bp = item_standard_litter[cur_container];
 
             sint32 x, y;
-            x = peep->x + (scenario_rand() & 7) - 3;
-            y = peep->y + (scenario_rand() & 7) - 3;
+            x = peep->x + (peep_rand() & 7) - 3;
+            y = peep->y + (peep_rand() & 7) - 3;
 
-            litter_create(x, y, peep->z, scenario_rand() & 3, bp);
+            litter_create(x, y, peep->z, peep_rand() & 3, bp);
             peep->item_standard_flags &= ~(1 << cur_container);
             peep->window_invalidate_flags |= PEEP_INVALIDATE_PEEP_INVENTORY;
 
@@ -5823,7 +5829,7 @@ static void peep_update_using_bin(rct_peep* peep){
                 // OpenRCT2 modification: This previously used
                 // the tick count as a simple random function
                 // switched to scenario_rand as it is more reliable
-                if ((scenario_rand() & 7) == 0) space_left_in_bin--;
+                if ((peep_rand() & 7) == 0) space_left_in_bin--;
                 peep->item_extra_flags &= ~(1 << cur_container);
                 peep->window_invalidate_flags |= PEEP_INVALIDATE_PEEP_INVENTORY;
 
@@ -5833,10 +5839,10 @@ static void peep_update_using_bin(rct_peep* peep){
             uint8 bp = item_extra_litter[cur_container];
 
             sint32 x, y;
-            x = peep->x + (scenario_rand() & 7) - 3;
-            y = peep->y + (scenario_rand() & 7) - 3;
+            x = peep->x + (peep_rand() & 7) - 3;
+            y = peep->y + (peep_rand() & 7) - 3;
 
-            litter_create(x, y, peep->z, scenario_rand() & 3, bp);
+            litter_create(x, y, peep->z, peep_rand() & 3, bp);
             peep->item_extra_flags &= ~(1 << cur_container);
             peep->window_invalidate_flags |= PEEP_INVALIDATE_PEEP_INVENTORY;
 
@@ -6103,7 +6109,7 @@ static sint32 peep_update_patrolling_find_watering(rct_peep* peep){
     if (!(peep->staff_orders & STAFF_ORDERS_WATER_FLOWERS))
         return 0;
 
-    uint8 chosen_position = scenario_rand() & 7;
+    uint8 chosen_position = peep_rand() & 7;
     for (sint32 i = 0; i < 8; ++i, ++chosen_position){
         chosen_position &= 7;
 
@@ -6373,7 +6379,7 @@ static void peep_update_walking(rct_peep* peep){
 
     if (peep->peep_flags & PEEP_FLAGS_WAVING){
         if (peep->action >= PEEP_ACTION_NONE_1){
-            if ((0xFFFF & scenario_rand()) < 936){
+            if ((0xFFFF & peep_rand()) < 936){
                 invalidate_sprite_2((rct_sprite*)peep);
 
                 peep->action = PEEP_ACTION_WAVE_2;
@@ -6388,7 +6394,7 @@ static void peep_update_walking(rct_peep* peep){
 
     if (peep->peep_flags & PEEP_FLAGS_PHOTO){
         if (peep->action >= PEEP_ACTION_NONE_1){
-            if ((0xFFFF & scenario_rand()) < 936){
+            if ((0xFFFF & peep_rand()) < 936){
                 invalidate_sprite_2((rct_sprite*)peep);
 
                 peep->action = PEEP_ACTION_TAKE_PHOTO;
@@ -6403,7 +6409,7 @@ static void peep_update_walking(rct_peep* peep){
 
     if (peep->peep_flags & PEEP_FLAGS_PAINTING){
         if (peep->action >= PEEP_ACTION_NONE_1){
-            if ((0xFFFF & scenario_rand()) < 936){
+            if ((0xFFFF & peep_rand()) < 936){
                 invalidate_sprite_2((rct_sprite*)peep);
 
                 peep->action = PEEP_ACTION_DRAW_PICTURE;
@@ -6418,17 +6424,17 @@ static void peep_update_walking(rct_peep* peep){
 
     if (peep->peep_flags & PEEP_FLAGS_LITTER){
         if (!(peep->next_var_29 & 0x18)){
-            if ((0xFFFF & scenario_rand()) <= 4096){
+            if ((0xFFFF & peep_rand()) <= 4096){
                 static const uint8 litter_types[] = {
                     LITTER_TYPE_EMPTY_CAN,
                     LITTER_TYPE_RUBBISH,
                     LITTER_TYPE_EMPTY_BURGER_BOX,
                     LITTER_TYPE_EMPTY_CUP,
                 };
-                sint32 ebp = litter_types[scenario_rand() & 0x3];
-                sint32 x = peep->x + (scenario_rand() & 0x7) - 3;
-                sint32 y = peep->y + (scenario_rand() & 0x7) - 3;
-                sint32 direction = (scenario_rand() & 0x3);
+                sint32 ebp = litter_types[peep_rand() & 0x3];
+                sint32 x = peep->x + (peep_rand() & 0x7) - 3;
+                sint32 y = peep->y + (peep_rand() & 0x7) - 3;
+                sint32 direction = (peep_rand() & 0x3);
 
                 litter_create(x, y, peep->z, direction, ebp);
             }
@@ -6437,7 +6443,7 @@ static void peep_update_walking(rct_peep* peep){
     else if (peep_has_empty_container(peep)){
         if ((!(peep->next_var_29 & 0x18)) &&
             ((uint32)(peep->sprite_index & 0x1FF) == (gCurrentTicks & 0x1FF))&&
-            ((0xFFFF & scenario_rand()) <= 4096)){
+            ((0xFFFF & peep_rand()) <= 4096)){
 
             uint8 pos_stnd = 0;
             for (sint32 container = peep_empty_container_standard_flag(peep); pos_stnd < 32; pos_stnd++)
@@ -6462,9 +6468,9 @@ static void peep_update_walking(rct_peep* peep){
             peep->window_invalidate_flags |= PEEP_INVALIDATE_PEEP_INVENTORY;
             peep_update_sprite_type(peep);
 
-            sint32 x = peep->x + (scenario_rand() & 0x7) - 3;
-            sint32 y = peep->y + (scenario_rand() & 0x7) - 3;
-            sint32 direction = (scenario_rand() & 0x3);
+            sint32 x = peep->x + (peep_rand() & 0x7) - 3;
+            sint32 y = peep->y + (peep_rand() & 0x7) - 3;
+            sint32 direction = (peep_rand() & 0x3);
 
             litter_create(x, y, peep->z, direction, bp);
         }
@@ -6512,7 +6518,7 @@ static void peep_update_walking(rct_peep* peep){
 
     uint16 chance = peep_has_food(peep) ? 13107 : 2849;
 
-    if ((scenario_rand() & 0xFFFF) > chance)return;
+    if ((peep_rand() & 0xFFFF) > chance)return;
 
     if (peep->next_var_29 & 0x1C)return;
 
@@ -6540,7 +6546,7 @@ static void peep_update_walking(rct_peep* peep){
     sint32 edges = (map_element->properties.path.edges & 0xF) ^ 0xF;
     if (edges == 0) return;
 
-    uint8 chosen_edge = scenario_rand() & 0x3;
+    uint8 chosen_edge = peep_rand() & 0x3;
 
     for (; !(edges & (1 << chosen_edge));)chosen_edge = (chosen_edge + 1) & 3;
 
@@ -6565,7 +6571,7 @@ static void peep_update_walking(rct_peep* peep){
 
     if (!ebp)return;
 
-    uint8 chosen_position = scenario_rand() & 0x3;
+    uint8 chosen_position = peep_rand() & 0x3;
 
     for (; !(ebp & (1 << chosen_position));)chosen_position = (chosen_position + 1) & 3;
 
@@ -7150,7 +7156,7 @@ rct_peep *peep_generate(sint32 x, sint32 y, sint32 z)
     sprite_move(x, y, z, (rct_sprite*)peep);
     invalidate_sprite_2((rct_sprite*)peep);
 
-    peep->var_41 = (scenario_rand() & 0x1F) + 45;
+    peep->var_41 = (peep_rand() & 0x1F) + 45;
     peep->var_C4 = 0;
     peep->interaction_ride_index = 0xFF;
     peep->type = PEEP_TYPE_GUEST;
@@ -7158,7 +7164,7 @@ rct_peep *peep_generate(sint32 x, sint32 y, sint32 z)
     peep->thoughts->type = PEEP_THOUGHT_TYPE_NONE;
     peep->window_invalidate_flags = 0;
 
-    uint8 al = (scenario_rand() & 0x7) + 3;
+    uint8 al = (peep_rand() & 0x7) + 3;
     uint8 ah = min(al, 7) - 3;
 
     if (al >= 7) al = 15;
@@ -7175,7 +7181,7 @@ rct_peep *peep_generate(sint32 x, sint32 y, sint32 z)
 
     peep->intensity = (al << 4) | ah;
 
-    uint8 nausea_tolerance = scenario_rand() & 0x7;
+    uint8 nausea_tolerance = peep_rand() & 0x7;
     if (gParkFlags & PARK_FLAGS_PREF_MORE_INTENSE_RIDES){
         nausea_tolerance += 4;
     }
@@ -7191,7 +7197,7 @@ rct_peep *peep_generate(sint32 x, sint32 y, sint32 z)
     if (gGuestInitialHappiness == 0)
         peep->happiness = 128;
     /* Initial value will vary by -15..16 */
-    sint8 happiness_delta = (scenario_rand() & 0x1F) - 15;
+    sint8 happiness_delta = (peep_rand() & 0x1F) - 15;
     /* Adjust by the delta, clamping at min=0 and max=255. */
     peep->happiness = clamp(0, peep->happiness + happiness_delta, 255);
     peep->happiness_growth_rate = peep->happiness;
@@ -7203,7 +7209,7 @@ rct_peep *peep_generate(sint32 x, sint32 y, sint32 z)
      * to any value 0..255. */
     peep->hunger = gGuestInitialHunger;
     /* Initial value will vary by -15..16 */
-    sint8 hunger_delta = (scenario_rand() & 0x1F) - 15;
+    sint8 hunger_delta = (peep_rand() & 0x1F) - 15;
     /* Adjust by the delta, clamping at min=0 and max=255. */
     peep->hunger = clamp(0, peep->hunger + hunger_delta, 255);
 
@@ -7212,7 +7218,7 @@ rct_peep *peep_generate(sint32 x, sint32 y, sint32 z)
      * to any value 0..255. */
     peep->thirst = gGuestInitialThirst;
     /* Initial value will vary by -15..16 */
-    sint8 thirst_delta = (scenario_rand() & 0x1F) - 15;
+    sint8 thirst_delta = (peep_rand() & 0x1F) - 15;
     /* Adjust by the delta, clamping at min=0 and max=255. */
     peep->thirst = clamp(0, peep->thirst + thirst_delta, 0xFF);
 
@@ -7225,7 +7231,7 @@ rct_peep *peep_generate(sint32 x, sint32 y, sint32 z)
     peep->id = gNextGuestNumber++;
     peep->name_string_idx = STR_GUEST_X;
 
-    money32 cash = (scenario_rand() & 0x3) * 100 - 100 + gGuestInitialCash;
+    money32 cash = (peep_rand() & 0x3) * 100 - 100 + gGuestInitialCash;
     if (cash < 0) cash = 0;
 
     if (gGuestInitialCash == 0){
@@ -7265,15 +7271,15 @@ rct_peep *peep_generate(sint32 x, sint32 y, sint32 z)
     peep->angriness = 0;
     peep->var_F4 = 0;
 
-    uint8 tshirt_colour = scenario_rand() % countof(tshirt_colours);
+    uint8 tshirt_colour = peep_rand() % countof(tshirt_colours);
     peep->tshirt_colour = tshirt_colours[tshirt_colour];
 
-    uint8 trousers_colour = scenario_rand() % countof(trouser_colours);
+    uint8 trousers_colour = peep_rand() % countof(trouser_colours);
     peep->trousers_colour = trouser_colours[trousers_colour];
 
     /* It looks like 65 is about 50% energy level, so this initialises
      * a peep with approx 50%-100% energy. */
-    uint8 energy = (scenario_rand() & 0x3F) + 65;
+    uint8 energy = (peep_rand() & 0x3F) + 65;
     peep->energy = energy;
     peep->energy_growth_rate = energy;
 
@@ -8228,7 +8234,7 @@ static sint32 peep_footpath_move_forward(rct_peep* peep, sint16 x, sint16 y, rct
         if (peep->var_EF & 0x3E &&
             !(peep->var_EF & 0xC0)){
 
-            if ((scenario_rand() & 0xFFFF) <= 10922){
+            if ((peep_rand() & 0xFFFF) <= 10922){
                 peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_VANDALISM, 0xFF);
                 peep->happiness_growth_rate = max(0, peep->happiness_growth_rate - 17);
             }
@@ -8237,7 +8243,7 @@ static sint32 peep_footpath_move_forward(rct_peep* peep, sint16 x, sint16 y, rct
     }
 
     if (peep->var_EF & 0xC0 &&
-        (scenario_rand()&0xFFFF) <= 4369){
+        (peep_rand()&0xFFFF) <= 4369){
         peep->var_EF -= 0x40;
     }
 
@@ -8273,7 +8279,7 @@ static sint32 peep_footpath_move_forward(rct_peep* peep, sint16 x, sint16 y, rct
 
     if (crowded >= 10 &&
         peep->state == PEEP_STATE_WALKING &&
-        (scenario_rand() & 0xFFFF) <= 21845){
+        (peep_rand() & 0xFFFF) <= 21845){
 
         peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_CROWDED, 0xFF);
         peep->happiness_growth_rate = max(0, peep->happiness_growth_rate - 14);
@@ -8287,7 +8293,7 @@ static sint32 peep_footpath_move_forward(rct_peep* peep, sint16 x, sint16 y, rct
     peep->disgusting_count = disgusting_count | disgusting_time;
 
     if (disgusting_time & 0xC0 &&
-        (scenario_rand() & 0xFFFF) <= 4369){
+        (peep_rand() & 0xFFFF) <= 4369){
         // Reduce the disgusting time
         peep->disgusting_count -= 0x40;
     }
@@ -8298,7 +8304,7 @@ static sint32 peep_footpath_move_forward(rct_peep* peep, sint16 x, sint16 y, rct
         }
 
         if (total_sick >= 3 &&
-            (scenario_rand() & 0xFFFF) <= 10922){
+            (peep_rand() & 0xFFFF) <= 10922){
             peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_PATH_DISGUSTING, 0xFF);
             peep->happiness_growth_rate = max(0, peep->happiness_growth_rate - 17);
             // Reset disgusting time
@@ -8311,7 +8317,7 @@ static sint32 peep_footpath_move_forward(rct_peep* peep, sint16 x, sint16 y, rct
     peep->litter_count = litter_count | litter_time;
 
     if (litter_time & 0xC0 &&
-        (scenario_rand() & 0xFFFF) <= 4369){
+        (peep_rand() & 0xFFFF) <= 4369){
         // Reduce the litter time
         peep->litter_count -= 0x40;
     }
@@ -8322,7 +8328,7 @@ static sint32 peep_footpath_move_forward(rct_peep* peep, sint16 x, sint16 y, rct
         }
 
         if (total_litter >= 3 &&
-            (scenario_rand() & 0xFFFF) <= 10922){
+            (peep_rand() & 0xFFFF) <= 10922){
             peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_BAD_LITTER, 0xFF);
             peep->happiness_growth_rate = max(0, peep->happiness_growth_rate - 17);
             // Reset litter time
@@ -8549,7 +8555,7 @@ static sint32 peep_move_one_tile(uint8 direction, rct_peep* peep){
     peep->destination_y = y + 16;
     peep->destination_tolerence = 2;
     if (peep->state != PEEP_STATE_QUEUING){
-        peep->destination_tolerence = (scenario_rand() & 7) + 2;
+        peep->destination_tolerence = (peep_rand() & 7) + 2;
     }
     return 0;
 }
@@ -8562,7 +8568,7 @@ static sint32 guest_surface_path_finding(rct_peep* peep){
     sint16 x = peep->next_x;
     sint16 y = peep->next_y;
     sint16 z = peep->next_z;
-    uint8 randDirection = scenario_rand() & 3;
+    uint8 randDirection = peep_rand() & 3;
 
     if (!fence_in_the_way(x, y, z, z + 4, randDirection)){
         x += TileDirectionDelta[randDirection].x;
@@ -8577,7 +8583,7 @@ static sint32 guest_surface_path_finding(rct_peep* peep){
     }
 
     randDirection++;
-    uint8 rand_backwards = scenario_rand() & 1;
+    uint8 rand_backwards = peep_rand() & 1;
     if (rand_backwards){
         randDirection -= 2;
     }
@@ -8854,7 +8860,7 @@ static uint8 footpath_element_destination_in_direction(sint16 x, sint16 y, sint1
  *  rct2: 0x00695225
  */
 static sint32 guest_path_find_aimless(rct_peep* peep, uint8 edges){
-    if (scenario_rand() & 1){
+    if (peep_rand() & 1){
         // If possible go straight
         if (edges & (1 << peep->direction)){
             return peep_move_one_tile(peep->direction, peep);
@@ -8862,7 +8868,7 @@ static sint32 guest_path_find_aimless(rct_peep* peep, uint8 edges){
     }
 
     while (1){
-        uint8 direction = scenario_rand() & 3;
+        uint8 direction = peep_rand() & 3;
         // Otherwise go in a random direction allowed from the tile.
         if (edges & (1 << direction)){
             return peep_move_one_tile(direction, peep);
@@ -8880,7 +8886,7 @@ static uint8 peep_pathfind_get_max_number_junctions(rct_peep* peep){
 
     // PEEP_FLAGS_2? It's cleared here but not set anywhere!
     if ((peep->peep_flags & PEEP_FLAGS_2)){
-        if ((scenario_rand() & 0xFFFF) <= 7281)
+        if ((peep_rand() & 0xFFFF) <= 7281)
             peep->peep_flags &= ~PEEP_FLAGS_2;
 
         return 8;
@@ -10274,7 +10280,7 @@ static sint32 guest_path_finding(rct_peep* peep)
      * In principle, peeps with food are not paying as much attention to
      * where they are going and are consequently more like to walk up
      * dead end paths, paths to ride exits, etc. */
-    if (!peep_has_food(peep) && (scenario_rand() & 0xFFFF) >= 2184) {
+    if (!peep_has_food(peep) && (peep_rand() & 0xFFFF) >= 2184) {
         uint8 adjustedEdges = edges;
         for (sint32 chosenDirection = 0; chosenDirection < 4; chosenDirection++) {
             // If there is no path in that direction try another
@@ -10305,7 +10311,7 @@ static sint32 guest_path_finding(rct_peep* peep)
             if (peep_heading_for_ride_or_park_exit(peep)) {
                 probability = 9362;
             }
-            if ((scenario_rand() & 0xFFFF) < probability) {
+            if ((peep_rand() & 0xFFFF) < probability) {
                 peep_read_map(peep);
             }
         }
@@ -10829,7 +10835,7 @@ static bool peep_should_go_on_ride_again(rct_peep *peep, rct_ride *ride)
     if (peep->thirst < 20) return false;
     if (peep->balloon_colour > 170) return false;
 
-    uint8 r = (scenario_rand() & 0xFF);
+    uint8 r = (peep_rand() & 0xFF);
     if (r <= 128) {
         if (peep->no_of_rides > 7) return false;
         if (r > 64) return false;
@@ -10843,7 +10849,7 @@ static bool peep_should_preferred_intensity_increase(rct_peep *peep)
     if (gParkFlags & PARK_FLAGS_PREF_LESS_INTENSE_RIDES) return false;
     if (peep->happiness < 200) return false;
 
-    return (scenario_rand() & 0xFF) >= peep->intensity;
+    return (peep_rand() & 0xFF) >= peep->intensity;
 }
 
 static bool peep_really_liked_ride(rct_peep *peep, rct_ride *ride)
@@ -10897,7 +10903,7 @@ static void peep_on_exit_ride(rct_peep *peep, sint32 rideIndex)
     if (peep_really_liked_ride(peep, ride)) {
         peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_WAS_GREAT, rideIndex);
 
-        sint32 laugh = scenario_rand() & 7;
+        sint32 laugh = peep_rand() & 7;
         if (laugh < 3) {
             audio_play_sound_at_location(SOUND_LAUGH_1 + laugh, peep->x, peep->y, peep->z);
         }
@@ -10988,7 +10994,7 @@ static bool peep_decide_and_buy_item(rct_peep *peep, sint32 rideIndex, sint32 sh
             goto loc_69B119;
 
     if ((shopItem != SHOP_ITEM_MAP) && shop_item_is_souvenir(shopItem) && !has_voucher) {
-        if (((scenario_rand() & 0x7F) + 0x73) > peep->happiness)
+        if (((peep_rand() & 0x7F) + 0x73) > peep->happiness)
             return 0;
         else if (peep->no_of_rides < 3)
             return 0;
@@ -11028,7 +11034,7 @@ loc_69B119:
             if (peep->happiness >= 180)
                 value /= 2;
 
-            if (value > ((money16)(scenario_rand() & 0x07))) {
+            if (value > ((money16)(peep_rand() & 0x07))) {
                 // "I'm not paying that much for x"
                 uint8 thought_type = (shopItem >= 32 ? (PEEP_THOUGHT_TYPE_PHOTO2_MUCH + (shopItem - 32)) : (PEEP_THOUGHT_TYPE_BALLOON_MUCH + shopItem));
                 peep_insert_new_thought(peep, thought_type, rideIndex);
@@ -11040,7 +11046,7 @@ loc_69B119:
             value = max(8, value);
 
             if (!(gParkFlags & PARK_FLAGS_NO_MONEY)) {
-                if (value >= (money32)(scenario_rand() & 0x07)) {
+                if (value >= (money32)(peep_rand() & 0x07)) {
                     // "This x is a really good value"
                     uint8 thought_item = (shopItem >= 32 ? (PEEP_THOUGHT_TYPE_PHOTO2 + (shopItem - 32)) : (PEEP_THOUGHT_TYPE_BALLOON + shopItem));
                     peep_insert_new_thought(peep, thought_item, rideIndex);
@@ -11176,7 +11182,7 @@ static bool peep_should_use_cash_machine(rct_peep *peep, sint32 rideIndex)
     if (gParkFlags & PARK_FLAGS_NO_MONEY) return false;
     if (peep->peep_flags & PEEP_FLAGS_LEAVING_PARK) return false;
     if (peep->cash_in_pocket > MONEY(20,00)) return false;
-    if (115 + (scenario_rand() % 128) > peep->happiness) return false;
+    if (115 + (peep_rand() % 128) > peep->happiness) return false;
     if (peep->energy < 80) return false;
 
     rct_ride *ride = get_ride(rideIndex);
@@ -11321,7 +11327,7 @@ static void peep_easter_egg_peep_interactions(rct_peep *peep)
     }
 
     if (peep->peep_flags & PEEP_FLAGS_JOY) {
-        if (scenario_rand() <= 1456) {
+        if (peep_rand() <= 1456) {
             if (peep->action == PEEP_ACTION_NONE_1 || peep->action == PEEP_ACTION_NONE_2) {
                 peep->action = PEEP_ACTION_JOY;
                 peep->action_frame = 0;
@@ -11344,6 +11350,13 @@ static void peep_easter_egg_peep_interactions(rct_peep *peep)
  */
 static bool peep_should_watch_ride(rct_map_element *mapElement) {
     rct_ride *ride = get_ride(mapElement->properties.track.ride_index);
+
+    // Ghosts are purely this-client-side and should not cause any interaction,
+    // as that may lead to a desync.
+    if (network_get_mode() != NETWORK_MODE_NONE) {
+        if (map_element_is_ghost(mapElement)) return false;
+    }
+
     if (gRideClassifications[ride->type] != RIDE_CLASS_RIDE) {
         return false;
     }
@@ -11394,6 +11407,11 @@ static bool peep_find_ride_to_look_at(rct_peep *peep, uint8 edge, uint8 *rideToV
 
     mapElement = surfaceElement;
     do {
+        // Ghosts are purely this-client-side and should not cause any interaction,
+        // as that may lead to a desync.
+        if (network_get_mode() != NETWORK_MODE_NONE) {
+            if (map_element_is_ghost(mapElement)) continue;
+        }
         if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_WALL) continue;
         if (map_element_get_direction(mapElement) != edge) continue;
         if (get_wall_entry(mapElement->properties.wall.type)->wall.flags2 & WALL_SCENERY_2_FLAG4) continue;
@@ -11415,6 +11433,11 @@ static bool peep_find_ride_to_look_at(rct_peep *peep, uint8 edge, uint8 *rideToV
 
     mapElement = surfaceElement;
     do {
+        // Ghosts are purely this-client-side and should not cause any interaction,
+        // as that may lead to a desync.
+        if (network_get_mode() != NETWORK_MODE_NONE) {
+            if (map_element_is_ghost(mapElement)) continue;
+        }
         if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_WALL) continue;
         if ((map_element_get_direction(mapElement) ^ 0x2) != edge) continue;
         if (get_wall_entry(mapElement->properties.wall.type)->wall.flags2 & WALL_SCENERY_2_FLAG4) continue;
@@ -11429,6 +11452,12 @@ static bool peep_find_ride_to_look_at(rct_peep *peep, uint8 edge, uint8 *rideToV
     // TODO: Extract loop B
     mapElement = surfaceElement;
     do {
+        // Ghosts are purely this-client-side and should not cause any interaction,
+        // as that may lead to a desync.
+        if (network_get_mode() != NETWORK_MODE_NONE) {
+            if (map_element_is_ghost(mapElement)) continue;
+        }
+
         if (mapElement->clearance_height + 1 < peep->next_z) continue;
         if (peep->next_z + 6 < mapElement->base_height) continue;
 
@@ -11458,6 +11487,11 @@ static bool peep_find_ride_to_look_at(rct_peep *peep, uint8 edge, uint8 *rideToV
     // TODO: Extract loop C
     mapElement = surfaceElement;
     do {
+        // Ghosts are purely this-client-side and should not cause any interaction,
+        // as that may lead to a desync.
+        if (network_get_mode() != NETWORK_MODE_NONE) {
+            if (map_element_is_ghost(mapElement)) continue;
+        }
         if (mapElement->clearance_height + 1 < peep->next_z) continue;
         if (peep->next_z + 6 < mapElement->base_height) continue;
         if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_SURFACE) continue;
@@ -11485,6 +11519,11 @@ static bool peep_find_ride_to_look_at(rct_peep *peep, uint8 edge, uint8 *rideToV
     // TODO: extract loop A
     mapElement = surfaceElement;
     do {
+        // Ghosts are purely this-client-side and should not cause any interaction,
+        // as that may lead to a desync.
+        if (network_get_mode() != NETWORK_MODE_NONE) {
+            if (map_element_is_ghost(mapElement)) continue;
+        }
         if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_WALL) continue;
         if ((map_element_get_direction(mapElement) ^ 0x2) != edge) continue;
         if (get_wall_entry(mapElement->properties.wall.type)->wall.flags2 & WALL_SCENERY_2_FLAG4) continue;
@@ -11498,6 +11537,11 @@ static bool peep_find_ride_to_look_at(rct_peep *peep, uint8 edge, uint8 *rideToV
     // TODO: Extract loop B
     mapElement = surfaceElement;
     do {
+        // Ghosts are purely this-client-side and should not cause any interaction,
+        // as that may lead to a desync.
+        if (network_get_mode() != NETWORK_MODE_NONE) {
+            if (map_element_is_ghost(mapElement)) continue;
+        }
         if (mapElement->clearance_height + 1 < peep->next_z) continue;
         if (peep->next_z + 8 < mapElement->base_height) continue;
 
@@ -11527,6 +11571,11 @@ static bool peep_find_ride_to_look_at(rct_peep *peep, uint8 edge, uint8 *rideToV
     // TODO: Extract loop C
     mapElement = surfaceElement;
     do {
+        // Ghosts are purely this-client-side and should not cause any interaction,
+        // as that may lead to a desync.
+        if (network_get_mode() != NETWORK_MODE_NONE) {
+            if (map_element_is_ghost(mapElement)) continue;
+        }
         if (mapElement->clearance_height + 1 < peep->next_z) continue;
         if (peep->next_z + 8 < mapElement->base_height) continue;
         if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_SURFACE) continue;
@@ -11553,6 +11602,11 @@ static bool peep_find_ride_to_look_at(rct_peep *peep, uint8 edge, uint8 *rideToV
     // TODO: extract loop A
     mapElement = surfaceElement;
     do {
+        // Ghosts are purely this-client-side and should not cause any interaction,
+        // as that may lead to a desync.
+        if (network_get_mode() != NETWORK_MODE_NONE) {
+            if (map_element_is_ghost(mapElement)) continue;
+        }
         if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_WALL) continue;
         if ((map_element_get_direction(mapElement) ^ 0x2) != edge) continue;
         if (get_wall_entry(mapElement->properties.wall.type)->wall.flags2 & WALL_SCENERY_2_FLAG4) continue;
@@ -11566,6 +11620,11 @@ static bool peep_find_ride_to_look_at(rct_peep *peep, uint8 edge, uint8 *rideToV
     // TODO: Extract loop B
     mapElement = surfaceElement;
     do {
+        // Ghosts are purely this-client-side and should not cause any interaction,
+        // as that may lead to a desync.
+        if (network_get_mode() != NETWORK_MODE_NONE) {
+            if (map_element_is_ghost(mapElement)) continue;
+        }
         if (mapElement->clearance_height + 1 < peep->next_z) continue;
         if (peep->next_z + 10 < mapElement->base_height) continue;
 
@@ -11848,7 +11907,7 @@ static bool peep_should_go_on_ride(rct_peep *peep, sint32 rideIndex, sint32 entr
             // If the ride has not yet been rated and is capable of having g-forces,
             // there's a 90% chance that the peep will ignore it.
             if (!ride_has_ratings(ride) && (RideData4[ride->type].flags & RIDE_TYPE_FLAG4_PEEP_CHECK_GFORCES)) {
-                if ((scenario_rand() & 0xFFFF) > 0x1999U) {
+                if ((peep_rand() & 0xFFFF) > 0x1999U) {
                     peep_chose_not_to_go_on_ride(peep, rideIndex, peepAtRide, false);
                     return false;
                 }

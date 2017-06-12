@@ -78,6 +78,7 @@ Includes all git commit authors. Aliases are GitHub user names.
 * Marco Benzi Tobar (Lisergishnu)
 * Richard Jenkins (rwjuk)
 * (ceeac)
+* Matthias Moninger (Zeh Matt)
 
 ## Toolchain
 * (Balletie) - macOS

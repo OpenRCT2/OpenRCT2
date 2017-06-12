@@ -305,6 +305,10 @@ void game_update()
         // Update the animation list. Note this does not
         // increment the map animation.
         map_animation_invalidate_all();
+
+        // Special case because we set numUpdates to 0, otherwise in game_logic_update.
+        game_handle_input();
+        network_update();
     }
 
     // Update the game one or more times
@@ -337,6 +341,28 @@ void game_update()
     window_dispatch_update_all();
 
     gGameCommandNestLevel = 0;
+}
+
+void game_logic_update()
+{
+
+    ///////////////////////////
+    gInUpdateCode = true;
+    ///////////////////////////
+
+    network_update();
+
+    if (network_get_mode() == NETWORK_MODE_CLIENT && network_get_status() == NETWORK_STATUS_CONNECTED && network_get_authstatus() == NETWORK_AUTH_OK) {
+        // Can't be in sync with server, round trips won't work if we are at same level.
+        if (gCurrentTicks >= network_get_server_tick()) {
+            // Don't run past the server
+            return;
+        }
+    }
+
+    gScreenAge++;
+    if (gScreenAge == 0)
+        gScreenAge--;
 
     if (!gOpenRCT2Headless)
     {
@@ -366,25 +392,6 @@ void game_update()
         gUnk141F568 = gUnk13CA740;
         game_handle_input();
     }
-}
-
-void game_logic_update()
-{
-    ///////////////////////////
-    gInUpdateCode = true;
-    ///////////////////////////
-    network_update();
-    if (network_get_mode() == NETWORK_MODE_CLIENT && network_get_status() == NETWORK_STATUS_CONNECTED && network_get_authstatus() == NETWORK_AUTH_OK) {
-        if (gCurrentTicks >= network_get_server_tick()) {
-            // Don't run past the server
-            return;
-        }
-    }
-    gCurrentTicks++;
-    gScenarioTicks++;
-    gScreenAge++;
-    if (gScreenAge == 0)
-        gScreenAge--;
 
     sub_68B089();
     scenario_update();
@@ -403,6 +410,7 @@ void game_logic_update()
     ride_ratings_update_all();
     ride_measurements_update();
     news_item_update_current();
+
     ///////////////////////////
     gInUpdateCode = false;
     ///////////////////////////
@@ -412,8 +420,6 @@ void game_logic_update()
     peep_update_crowd_noise();
     climate_update_sound();
     editor_open_windows_for_current_step();
-
-    gSavedAge++;
 
     // Update windows
     //window_dispatch_update_all();
@@ -431,8 +437,13 @@ void game_logic_update()
     }
 
     // Start autosave timer after update
-    if (gLastAutoSaveUpdate == AUTOSAVE_PAUSE)
+    if (gLastAutoSaveUpdate == AUTOSAVE_PAUSE) {
         gLastAutoSaveUpdate = platform_get_ticks();
+    }
+
+    gCurrentTicks++;
+    gScenarioTicks++;
+    gSavedAge++;
 }
 
 /**
@@ -561,7 +572,8 @@ sint32 game_do_command_p(sint32 command, sint32 *eax, sint32 *ebx, sint32 *ecx, 
 
             // Do the callback (required for multiplayer to work correctly), but only for top level commands
             if (gGameCommandNestLevel == 1) {
-                if (game_command_callback && !(flags & GAME_COMMAND_FLAG_GHOST)) {
+                if (game_command_callback && !(flags & GAME_COMMAND_FLAG_GHOST)) 
+                {
                     game_command_callback(*eax, *ebx, *ecx, *edx, *esi, *edi, *ebp);
                     game_command_callback = 0;
                 }
@@ -1399,6 +1411,8 @@ void game_load_or_quit_no_save_prompt()
  */
 void game_init_all(sint32 mapSize)
 {
+    gInUpdateCode = true;
+
     map_init(mapSize);
     park_init();
     finance_init();
@@ -1411,6 +1425,8 @@ void game_init_all(sint32 mapSize)
     climate_reset(CLIMATE_COOL_AND_WET);
     news_item_init_queue();
     user_string_clear_all();
+
+    gInUpdateCode = false;
 
     window_new_ride_init_vars();
     window_guest_list_init_vars_a();
