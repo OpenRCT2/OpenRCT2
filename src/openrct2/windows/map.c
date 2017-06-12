@@ -34,7 +34,7 @@
 
 #define MAP_COLOUR_2(colourA, colourB) ((colourA << 8) | colourB)
 #define MAP_COLOUR(colour) MAP_COLOUR_2(colour, colour)
-#define FALLBACK_COLOUR(colour) ((colour << 24) || colour << 16)
+#define FALLBACK_COLOUR(colour) ((colour << 24) | colour << 16)
 
 #define MAP_WINDOW_MAP_SIZE (MAXIMUM_MAP_SIZE_TECHNICAL * 2)
 
@@ -1463,7 +1463,7 @@ static const uint16 ElementTypeMaskColour[] = {
 static const uint16 ElementTypeAddColour[] = {
     MAP_COLOUR(PALETTE_INDEX_0),                        // MAP_ELEMENT_TYPE_SURFACE
     MAP_COLOUR(PALETTE_INDEX_17),                       // MAP_ELEMENT_TYPE_PATH
-    MAP_COLOUR_2(PALETTE_INDEX_135, PALETTE_INDEX_0),   // MAP_ELEMENT_TYPE_TRACK
+    MAP_COLOUR_2(PALETTE_INDEX_183, PALETTE_INDEX_0),   // MAP_ELEMENT_TYPE_TRACK
     MAP_COLOUR_2(PALETTE_INDEX_0, PALETTE_INDEX_99),    // MAP_ELEMENT_TYPE_SCENERY
     MAP_COLOUR(PALETTE_INDEX_186),                      // MAP_ELEMENT_TYPE_ENTRANCE
     MAP_COLOUR(PALETTE_INDEX_0),                        // MAP_ELEMENT_TYPE_WALL
