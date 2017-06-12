@@ -19,6 +19,7 @@
 #include "../interface/widget.h"
 #include "../interface/window.h"
 #include "../localisation/localisation.h"
+#include "../OpenRCT2.h"
 #include "../platform/platform.h"
 #include "../rct2.h"
 #include "error.h"
