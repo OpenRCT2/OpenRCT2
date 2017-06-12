@@ -33,7 +33,7 @@
 #include "../rct2.h"
 #include "../ride/ride.h"
 #include "../ride/ride_data.h"
-#include "../ride/ride_group.h"
+#include "../ride/RideGroup.h"
 #include "../ride/track.h"
 #include "../ride/track_data.h"
 #include "../ride/track_design.h"

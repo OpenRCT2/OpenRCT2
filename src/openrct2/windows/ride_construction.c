@@ -34,7 +34,7 @@
 #include "../sprites.h"
 #include "../world/map.h"
 #include "../world/entrance.h"
-#include "../ride/ride_group.h"
+#include "../ride/RideGroup.h"
 
 #pragma region Widgets
 

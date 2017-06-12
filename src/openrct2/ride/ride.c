@@ -48,7 +48,7 @@
 #include "cable_lift.h"
 #include "ride.h"
 #include "ride_data.h"
-#include "ride_group.h"
+#include "RideGroup.h"
 #include "station.h"
 #include "track.h"
 #include "track_data.h"
@@ -6159,7 +6159,7 @@ static void ride_set_name_to_track_default(rct_ride *ride, rct_ride_entry * ride
 
     // This fixes the Hyper-Twister being displayed as the generic Steel Twister when not in select-by-track-type mode.
     if (!gConfigInterface.select_by_track_type && ride->type == RIDE_TYPE_TWISTER_ROLLER_COASTER && !(rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE)) {
-        name_args.type_name = ride_group_hyper_twister.naming.name;
+        name_args.type_name = STR_HYPER_TWISTER_GROUP;
     }
     else if (track_type_has_ride_groups(ride->type)) {
         ride_group * rideGroup = get_ride_group(ride->type, rideEntry);
@@ -6212,7 +6212,7 @@ rct_string_id get_friendly_track_type_name(uint8 trackType, rct_ride_entry * rid
 {
     if (!gConfigInterface.select_by_track_type) {
         if (trackType == RIDE_TYPE_TWISTER_ROLLER_COASTER) {
-            return ride_group_hyper_twister.naming.name;
+            return STR_HYPER_TWISTER_GROUP;
         } else {
             return RideNaming[trackType].name;
         }
@@ -6233,7 +6233,7 @@ rct_ride_name get_ride_naming(uint8 rideType, rct_ride_entry * rideEntry)
 {
     // This fixes the Hyper-Twister being displayed as the generic Steel Twister when not in select-by-track-type mode.
     if (!gConfigInterface.select_by_track_type && rideType == RIDE_TYPE_TWISTER_ROLLER_COASTER && !(rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE)) {
-        return ride_group_hyper_twister.naming;
+        return (rct_ride_name){ STR_HYPER_TWISTER_GROUP, STR_HYPER_TWISTER_GROUP_DESC };
     }
 
     if (track_type_has_ride_groups(rideType)) {

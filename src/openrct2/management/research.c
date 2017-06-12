@@ -26,7 +26,7 @@
 #include "../rct1.h"
 #include "../ride/ride.h"
 #include "../ride/ride_data.h"
-#include "../ride/ride_group.h"
+#include "../ride/RideGroup.h"
 #include "../ride/track_data.h"
 #include "../world/scenery.h"
 #include "news_item.h"

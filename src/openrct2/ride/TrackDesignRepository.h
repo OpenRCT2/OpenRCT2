@@ -17,14 +17,8 @@
 #pragma once
 
 #include "../common.h"
-#ifdef __cplusplus
-extern "C"
-{
-#endif
-#include "ride_group.h"
-#ifdef __cplusplus
-}
-#endif
+#include "RideGroup.h"
+
 
 typedef struct track_design_file_ref
 {

@@ -27,7 +27,7 @@
 #include "../rct1.h"
 #include "../ride/ride.h"
 #include "../ride/ride_data.h"
-#include "../ride/ride_group.h"
+#include "../ride/RideGroup.h"
 #include "../ride/track.h"
 #include "../ride/track_data.h"
 #include "../ride/track_design.h"
@@ -319,7 +319,7 @@ static void window_new_ride_populate_list()
                 nextListItem = window_new_ride_iterate_over_ride_group(rideType, 0, nextListItem);
             }
             else {
-                for (uint8 j = 0; j < 2; j++) {
+                for (uint8 j = 0; j < MAX_RIDE_GROUPS_PER_RIDE_TYPE; j++) {
                     nextListItem = window_new_ride_iterate_over_ride_group(rideType, j, nextListItem);
                 }
             }

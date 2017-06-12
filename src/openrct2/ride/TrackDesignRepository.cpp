@@ -24,6 +24,7 @@
 #include "../core/FileScanner.h"
 #include "../core/FileStream.hpp"
 #include "../core/Path.hpp"
+#include "RideGroup.h"
 #include "../core/String.hpp"
 #include "../object/ObjectRepository.h"
 #include "../object/RideObject.h"
@@ -33,7 +34,6 @@
 extern "C"
 {
     #include "../rct2.h"
-    #include "ride_group.h"
     #include "track_design.h"
 }
 

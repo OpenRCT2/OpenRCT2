@@ -20,6 +20,7 @@
 #include "../core/Util.hpp"
 #include "ObjectRepository.h"
 #include "RideObject.h"
+#include "../ride/RideGroup.h"
 
 extern "C"
 {
@@ -28,7 +29,6 @@ extern "C"
     #include "../localisation/localisation.h"
     #include "../rct1.h"
     #include "../ride/ride.h"
-    #include "../ride/ride_group.h"
     #include "../ride/track.h"
 }
 
@@ -415,19 +415,27 @@ void RideObject::SetRepositoryItem(ObjectRepositoryItem * item) const
     // Determines the ride group. Will fall back to 0 if there is none found.
     uint8 rideGroupIndex = 0;
 
-    ride_group * rideGroup = get_ride_group(rideTypeIdx, (rct_ride_entry *)&_legacyType);
-    for (uint8 i = rideGroupIndex + 1; i < 2; i++)
+    if (track_type_has_ride_groups(rideTypeIdx))
     {
-        ride_group * irg = ride_group_find(rideTypeIdx, i);
-
-        if (irg != NULL)
+        ride_group * rideGroup = get_ride_group(rideTypeIdx, (rct_ride_entry *)&_legacyType);
+        for (uint8 i = rideGroupIndex + 1; i < MAX_RIDE_GROUPS_PER_RIDE_TYPE; i++)
         {
-            if (ride_groups_are_equal(irg, rideGroup))
+            ride_group * irg = ride_group_find(rideTypeIdx, i);
+
+            if (irg != NULL)
             {
-                rideGroupIndex = i;
+                if (ride_groups_are_equal(irg, rideGroup))
+                {
+                    rideGroupIndex = i;
+                }
             }
         }
     }
+    else
+    {
+        rideGroupIndex = 0;
+    }
+
     item->RideFlags = (rideGroupIndex << 2) | flags;
 }
 
