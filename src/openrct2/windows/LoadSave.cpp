@@ -789,6 +789,7 @@ static void window_loadsave_select(rct_window *w, const char *path)
     case (LOADSAVETYPE_LOAD | LOADSAVETYPE_LANDSCAPE) :
         save_path(&gConfigGeneral.last_save_landscape_directory, pathBuffer);
         if (editor_load_landscape(pathBuffer)) {
+            safe_strcpy(gCurrentLoadedPath, pathBuffer, MAX_PATH);
             gfx_invalidate_screen();
             window_loadsave_invoke_callback(MODAL_RESULT_OK, pathBuffer);
         } else {
@@ -801,6 +802,7 @@ static void window_loadsave_select(rct_window *w, const char *path)
         save_path(&gConfigGeneral.last_save_landscape_directory, pathBuffer);
         safe_strcpy(gScenarioFileName, pathBuffer, sizeof(gScenarioFileName));
         if (scenario_save(pathBuffer, gConfigGeneral.save_plugin_data ? 3 : 2)) {
+            safe_strcpy(gCurrentLoadedPath, pathBuffer, MAX_PATH);
             window_close_by_class(WC_LOADSAVE);
             gfx_invalidate_screen();
             window_loadsave_invoke_callback(MODAL_RESULT_OK, pathBuffer);
