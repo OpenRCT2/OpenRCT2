@@ -73,6 +73,7 @@ namespace OpenRCT2
         virtual std::string GetDirectoryPath(DIRBASE base) const abstract;
         virtual std::string GetDirectoryPath(DIRBASE base, DIRID did) const abstract;
         virtual std::string GetFilePath(PATHID pathid) const abstract;
+        virtual void SetBasePath(DIRBASE base, const std::string &path) abstract;
     };
 
     IPlatformEnvironment * CreatePlatformEnvironment(DIRBASE_VALUES basePaths);

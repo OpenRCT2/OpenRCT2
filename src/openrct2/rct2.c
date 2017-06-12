@@ -195,7 +195,7 @@ sint32 rct2_init_directories()
             if (!config_find_or_browse_install_directory()) {
                 utf8 path[MAX_PATH];
                 config_get_default_path(path, sizeof(path));
-                log_fatal("Invalid RCT2 installation path. Please correct \"game_path\" in %s.", path);
+                fprintf(stderr, "An RCT2 install directory must be specified! Please edit \"game_path\" in %s.\n", path);
                 return 0;
             }
         }
