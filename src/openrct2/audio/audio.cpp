@@ -176,7 +176,7 @@ void audio_populate_devices()
         }
     }
 
-#ifndef __LINUX__
+#ifndef __linux__
     // The first device is always system default on Windows and macOS
     std::string defaultDevice = language_get_string(STR_OPTIONS_SOUND_VALUE_DEFAULT);
     devices.insert(devices.begin(), defaultDevice);

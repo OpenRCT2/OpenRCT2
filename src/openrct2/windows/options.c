@@ -1884,11 +1884,11 @@ static void window_options_paint(rct_window *w, rct_drawpixelinfo *dpi)
             audioDeviceStringId = STR_SOUND_NONE;
         } else {
             audioDeviceStringId = STR_STRING;
-#ifndef __LINUX__
+#ifndef __linux__
             if (gAudioCurrentDevice == 0) {
                 audioDeviceStringId = STR_OPTIONS_SOUND_VALUE_DEFAULT;
             }
-#endif // __LINUX__
+#endif // __linux__
             if (audioDeviceStringId == STR_STRING) {
                 audioDeviceName = gAudioDevices[gAudioCurrentDevice].name;
             }

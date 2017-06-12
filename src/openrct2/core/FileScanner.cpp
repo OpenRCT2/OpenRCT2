@@ -16,7 +16,7 @@
 
 #include "../common.h"
 
-#ifdef __WINDOWS__
+#ifdef _WIN32
     #define WIN32_LEAN_AND_MEAN
     #include <windows.h>
 #endif
@@ -26,7 +26,7 @@
     #include <sys/types.h>
     #include <sys/stat.h>
     #include <unistd.h>
-#elif defined(__WINDOWS__)
+#elif defined(_WIN32)
     extern "C" {
         // Windows needs this for widechar <-> utf8 conversion utils
         #include "../localisation/language.h"
@@ -227,7 +227,7 @@ protected:
 
 };
 
-#ifdef __WINDOWS__
+#ifdef _WIN32
 
 class FileScannerWindows final : public FileScannerBase
 {
@@ -286,7 +286,7 @@ private:
     }
 };
 
-#endif // __WINDOWS__
+#endif // _WIN32
 
 #if defined(__unix__) || (defined(__APPLE__) && defined(__MACH__))
 
@@ -362,7 +362,7 @@ private:
 
 IFileScanner * Path::ScanDirectory(const std::string &pattern, bool recurse)
 {
-#ifdef __WINDOWS__
+#ifdef _WIN32
     return new FileScannerWindows(pattern, recurse);
 #elif defined(__unix__) || (defined(__APPLE__) && defined(__MACH__))
     return new FileScannerUnix(pattern, recurse);

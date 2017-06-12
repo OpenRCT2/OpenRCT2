@@ -26,7 +26,7 @@ typedef struct rct2_install_info rct2_install_info;
 #define MAX_PATH 260
 #endif
 
-#ifdef __MACOSX__
+#ifdef __APPLE__
 #define KEYBOARD_PRIMARY_MODIFIER KMOD_GUI
 #else
 #define KEYBOARD_PRIMARY_MODIFIER KMOD_CTRL
@@ -36,7 +36,7 @@ typedef struct rct2_install_info rct2_install_info;
 
 #define TOUCH_DOUBLE_TIMEOUT 300
 
-#ifdef __WINDOWS__
+#ifdef _WIN32
 #define PATH_SEPARATOR "\\"
 #define PLATFORM_NEWLINE "\r\n"
 #else
@@ -48,7 +48,7 @@ typedef struct rct2_install_info rct2_install_info;
 #define CTRL 0x200
 #define ALT 0x400
 #define CMD 0x800
-#ifdef __MACOSX__
+#ifdef __APPLE__
     #define PLATFORM_MODIFIER CMD
 #else
     #define PLATFORM_MODIFIER CTRL
@@ -155,7 +155,7 @@ datetime64 platform_get_datetime_now_utc();
 void core_init();
 
 // Windows specific definitions
-#ifdef __WINDOWS__
+#ifdef _WIN32
     #ifndef WIN32_LEAN_AND_MEAN
         #define WIN32_LEAN_AND_MEAN
     #endif
@@ -169,14 +169,14 @@ void core_init();
     // This function cannot be marked as 'static', even though it may seem to be,
     // as it requires external linkage, which 'static' prevents
     __declspec(dllexport) sint32 StartOpenRCT(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, sint32 nCmdShow);
-#endif // __WINDOWS__
+#endif // _WIN32
 
-#if defined(__LINUX__) || defined(__MACOSX__) || defined(__FREEBSD__)
+#if defined(__unix__) || (defined(__APPLE__) && defined(__MACH__)) || defined(__FreeBSD__)
     void platform_posix_sub_user_data_path(char *buffer, size_t size, const char *homedir);
     void platform_posix_sub_resolve_openrct_data_path(utf8 *out, size_t size);
 #endif
 
-#ifdef __MACOSX__
+#if defined(__APPLE__) && defined(__MACH__)
     void macos_disallow_automatic_window_tabbing();
     utf8* macos_str_decomp_to_precomp();
 #endif

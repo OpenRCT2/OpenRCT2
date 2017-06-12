@@ -374,7 +374,7 @@ sint32 platform_enumerate_files_begin(const utf8 *pattern)
 // macOS uses decomposed Unicode strings (e.g. an 'e' and a combining accent) in filenames
 // This causes problems with the sprite font, as the font only contains precomposed characters
 // The block below converts all filename strings to their precomposed form, preventing mojibake
-#ifdef __MACOSX__
+#ifdef __APPLE__
                 utf8* precomp_path = macos_str_decomp_to_precomp(paths[idx]);
                 size_t precomp_len = sizeof(utf8) * min(MAX_PATH, strnlen(precomp_path, MAX_PATH) + 2);
                 paths[idx] = malloc(precomp_len);

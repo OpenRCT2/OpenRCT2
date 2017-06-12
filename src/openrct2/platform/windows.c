@@ -22,7 +22,7 @@
 
 #include "../common.h"
 
-#ifdef __WINDOWS__
+#ifdef _WIN32
 
 #include <windows.h>
 #include <lmcons.h>

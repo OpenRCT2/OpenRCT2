@@ -33,7 +33,7 @@ void http_dispose() { }
 #include "../core/String.hpp"
 #include "../Version.h"
 
-#ifdef __WINDOWS__
+#ifdef _WIN32
     // cURL includes windows.h, but we don't need all of it.
     #define WIN32_LEAN_AND_MEAN
 #endif

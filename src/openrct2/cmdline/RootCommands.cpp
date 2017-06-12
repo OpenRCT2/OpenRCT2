@@ -94,7 +94,7 @@ static exitcode_t HandleCommandJoin(CommandLineArgEnumerator * enumerator);
 static exitcode_t HandleCommandSetRCT2(CommandLineArgEnumerator * enumerator);
 static exitcode_t HandleCommandScanObjects(CommandLineArgEnumerator * enumerator);
 
-#if defined(__WINDOWS__) && !defined(__MINGW32__)
+#if defined(_WIN32) && !defined(__MINGW32__)
 
 static bool _removeShell = false;
 
@@ -131,7 +131,7 @@ const CommandLineCommand CommandLine::RootCommands[]
     DefineCommand("scan-objects", "<path>",             StandardOptions, HandleCommandScanObjects),
     DefineCommand("handle-uri", "openrct2://.../",      StandardOptions, CommandLine::HandleCommandUri),
 
-#if defined(__WINDOWS__) && !defined(__MINGW32__)
+#if defined(_WIN32) && !defined(__MINGW32__)
     DefineCommand("register-shell", "", RegisterShellOptions, HandleCommandRegisterShell),
 #endif
 
@@ -400,7 +400,7 @@ static exitcode_t HandleCommandScanObjects(CommandLineArgEnumerator * enumerator
     return EXITCODE_OK;
 }
 
-#if defined(__WINDOWS__) && !defined(__MINGW32__)
+#if defined(_WIN32) && !defined(__MINGW32__)
 static exitcode_t HandleCommandRegisterShell(CommandLineArgEnumerator * enumerator)
 {
     exitcode_t result = CommandLine::HandleCommandDefault();
@@ -419,7 +419,7 @@ static exitcode_t HandleCommandRegisterShell(CommandLineArgEnumerator * enumerat
     }
     return EXITCODE_OK;
 }
-#endif // defined(__WINDOWS__) && !defined(__MINGW32__)
+#endif // defined(_WIN32) && !defined(__MINGW32__)
 
 static void PrintAbout()
 {

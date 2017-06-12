@@ -88,7 +88,7 @@ namespace Path
             {
                 lastPathSeperator = ch;
             }
-#ifdef __WINDOWS__
+#ifdef _WIN32
             // Windows also allows forward slashes in paths
             else if (*ch == '/')
             {
@@ -174,7 +174,7 @@ namespace Path
 
     utf8 * GetAbsolute(utf8 *buffer, size_t bufferSize, const utf8 * relativePath)
     {
-#ifdef __WINDOWS__
+#ifdef _WIN32
         wchar_t * relativePathW = utf8_to_widechar(relativePath);
         wchar_t   absolutePathW[MAX_PATH];
         DWORD length = GetFullPathNameW(relativePathW, (DWORD)Util::CountOf(absolutePathW), absolutePathW, NULL);
@@ -213,7 +213,7 @@ namespace Path
     bool Equals(const utf8 * a, const utf8 * b)
     {
         bool ignoreCase = false;
-#ifdef __WINDOWS__
+#ifdef _WIN32
         ignoreCase = true;
 #endif
         return String::Equals(a, b, ignoreCase);

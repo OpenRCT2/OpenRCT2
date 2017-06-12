@@ -20,7 +20,7 @@
 
 #include "../common.h"
 
-#ifdef __WINDOWS__
+#ifdef _WIN32
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 #undef GetMessage
@@ -50,14 +50,14 @@ namespace Guard
 
     // The default behaviour when an assertion is raised.
     static ASSERT_BEHAVIOUR _assertBehaviour =
-#ifdef __WINDOWS__
+#ifdef _WIN32
         ASSERT_BEHAVIOUR::MESSAGE_BOX
 #else
         ASSERT_BEHAVIOUR::CASSERT
 #endif
         ;
 
-#ifdef __WINDOWS__
+#ifdef _WIN32
     static void GetAssertMessage(char * buffer, size_t bufferSize, const char * formattedMessage);
     static void ForceCrash();
 #endif
@@ -107,7 +107,7 @@ namespace Guard
         case ASSERT_BEHAVIOUR::CASSERT:
             assert(false);
             break;
-#ifdef __WINDOWS__
+#ifdef _WIN32
         case ASSERT_BEHAVIOUR::MESSAGE_BOX:
         {
             // Show message box if we are not building for testing
@@ -137,7 +137,7 @@ namespace Guard
         Assert_VA(false, message, args);
     }
 
-#ifdef __WINDOWS__
+#ifdef _WIN32
     static void GetAssertMessage(char * buffer, size_t bufferSize, const char * formattedMessage)
     {
         String::Set(buffer, bufferSize, ASSERTION_MESSAGE);
