@@ -19,15 +19,8 @@
 
 #include "../common.h"
 
-#ifdef __WINDOWS__
-#include "../rct2.h"
-    #ifndef HAVE_MATH_H
-        #define HAVE_MATH_H
-    #endif
-#endif // __WINDOWS__
-
-#include "../core/textinputbuffer.h"
-#include "../drawing/font.h"
+typedef struct TTFFontDescriptor TTFFontDescriptor;
+typedef struct rct2_install_info rct2_install_info;
 
 #ifndef MAX_PATH
 #define MAX_PATH 260
