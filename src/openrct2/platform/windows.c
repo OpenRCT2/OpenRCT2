@@ -34,6 +34,7 @@
 #include "../localisation/date.h"
 #include "../localisation/language.h"
 #include "../OpenRCT2.h"
+#include "../rct2.h"
 #include "../util/util.h"
 #include "../Version.h"
 #include "platform.h"

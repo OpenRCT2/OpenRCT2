@@ -14,27 +14,26 @@
  *****************************************************************************/
 #pragma endregion
 
+#include "../common.h"
+
+#ifdef _WIN32
+    #define WIN32_LEAN_AND_MEAN
+    #include <windows.h>
+#else
+    #include <unistd.h>
+#endif
+
 #include <stdlib.h>
 #include <time.h>
-#include "../audio/audio.h"
 #include "../config/Config.h"
 #include "../Context.h"
 #include "../drawing/drawing.h"
-#include "../drawing/IDrawingEngine.h"
 #include "../drawing/lightfx.h"
-#include "../editor.h"
 #include "../game.h"
-#include "../input.h"
-#include "../interface/console.h"
-#include "../interface/Cursors.h"
-#include "../interface/window.h"
 #include "../localisation/currency.h"
 #include "../localisation/localisation.h"
 #include "../OpenRCT2.h"
-#include "../rct2.h"
-#include "../title/TitleScreen.h"
 #include "../util/util.h"
-#include "../Version.h"
 #include "../world/Climate.h"
 #include "platform.h"
 
@@ -135,19 +134,6 @@ void platform_init()
     gPalette[255].blue = 255;
 }
 
-sint32 platform_scancode_to_rct_keycode(sint32 sdl_key)
-{
-    char keycode = (char)SDL_GetKeyFromScancode((SDL_Scancode)sdl_key);
-
-    // Until we reshuffle the text files to use the new positions
-    // this will suffice to move the majority to the correct positions.
-    // Note any special buttons PgUp PgDwn are mapped wrong.
-    if (keycode >= 'a' && keycode <= 'z')
-        keycode = toupper(keycode);
-
-    return keycode;
-}
-
 void platform_free()
 {
     // free(gKeysPressed);
@@ -188,7 +174,11 @@ uint32 platform_get_ticks()
 
 void platform_sleep(uint32 ms)
 {
-    SDL_Delay(ms);
+#ifdef _WIN32
+    Sleep(ms);
+#else
+    usleep(ms * 1000);
+#endif
 }
 
 uint8 platform_get_currency_value(const char *currCode) {

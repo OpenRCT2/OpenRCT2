@@ -19,17 +19,8 @@
 
 #include "../common.h"
 
-#include <SDL.h>
-
-#ifdef __WINDOWS__
-#include "../rct2.h"
-    #ifndef HAVE_MATH_H
-        #define HAVE_MATH_H
-    #endif
-#endif // __WINDOWS__
-
-#include "../core/textinputbuffer.h"
-#include "../drawing/font.h"
+typedef struct TTFFontDescriptor TTFFontDescriptor;
+typedef struct rct2_install_info rct2_install_info;
 
 #ifndef MAX_PATH
 #define MAX_PATH 260
@@ -107,7 +98,6 @@ void platform_free();
 void platform_update_palette(const uint8 *colours, sint32 start_index, sint32 num_colours);
 void platform_toggle_windowed_mode();
 void platform_refresh_video();
-sint32 platform_scancode_to_rct_keycode(sint32 sdl_key);
 void platform_get_date_utc(rct2_date *out_date);
 void platform_get_time_utc(rct2_time *out_time);
 void platform_get_date_local(rct2_date *out_date);
