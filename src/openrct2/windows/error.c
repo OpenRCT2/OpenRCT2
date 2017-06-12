@@ -103,6 +103,11 @@ void window_error_open(rct_string_id title, rct_string_id message)
 
     log_verbose("show error, %s", _window_error_text + 1);
 
+    // Don't do unnecessary work in headless. Also saves checking if cursor state is null.
+    if (gOpenRCT2Headless) {
+        return;
+    }
+
     // Check if there is any text to display
     if (dst == _window_error_text + 1)
         return;
