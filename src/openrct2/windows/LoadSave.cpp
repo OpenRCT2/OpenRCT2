@@ -705,7 +705,7 @@ static void window_loadsave_populate_list(rct_window *w, sint32 includeNewItem, 
                 listItem->type = TYPE_FILE;
                 listItem->date_modified = platform_file_get_modified_time(listItem->path);
                 // Mark if file is the currently loaded game
-                listItem->loaded = strcmp(listItem->path, gScenarioSavePath) == 0;
+                listItem->loaded = strcmp(listItem->path, gCurrentLoadedPath) == 0;
 
                 // Remove the extension (but only the first extension token)
                 safe_strcpy(listItem->name, fileInfo.path, sizeof(listItem->name));
@@ -765,6 +765,7 @@ static void window_loadsave_select(rct_window *w, const char *path)
     case (LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME) :
         save_path(&gConfigGeneral.last_save_game_directory, pathBuffer);
         safe_strcpy(gScenarioSavePath, pathBuffer, MAX_PATH);
+        safe_strcpy(gCurrentLoadedPath, pathBuffer, MAX_PATH);
         window_loadsave_invoke_callback(MODAL_RESULT_OK, pathBuffer);
         window_close_by_class(WC_LOADSAVE);
         gfx_invalidate_screen();
@@ -773,6 +774,7 @@ static void window_loadsave_select(rct_window *w, const char *path)
         save_path(&gConfigGeneral.last_save_game_directory, pathBuffer);
         if (scenario_save(pathBuffer, gConfigGeneral.save_plugin_data ? 1 : 0)) {
             safe_strcpy(gScenarioSavePath, pathBuffer, MAX_PATH);
+            safe_strcpy(gCurrentLoadedPath, pathBuffer, MAX_PATH);
             gFirstTimeSaving = false;
 
             window_close_by_class(WC_LOADSAVE);

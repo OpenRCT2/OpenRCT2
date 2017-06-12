@@ -71,6 +71,7 @@ bool gInUpdateCode = false;
 bool gInMapInitCode = false;
 sint32 gGameCommandNestLevel;
 bool gGameCommandIsNetworked;
+char gCurrentLoadedPath[MAX_PATH];
 
 uint8 gUnk13CA740;
 uint8 gUnk141F568;
@@ -1206,6 +1207,7 @@ void save_game()
         log_verbose("Saving to %s", gScenarioSavePath);
         if (scenario_save(gScenarioSavePath, 0x80000000 | (gConfigGeneral.save_plugin_data ? 1 : 0))) {
             log_verbose("Saved to %s", gScenarioSavePath);
+            safe_strcpy(gCurrentLoadedPath, gScenarioSavePath, MAX_PATH);
 
             // Setting screen age to zero, so no prompt will pop up when closing the
             // game shortly after saving.
