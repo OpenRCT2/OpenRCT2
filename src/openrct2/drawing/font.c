@@ -14,6 +14,10 @@
  *****************************************************************************/
 #pragma endregion
 
+#ifndef NO_TTF
+#include "../common.h"
+#include <SDL_ttf.h>
+#endif
 #include "../rct2/addresses.h"
 #include "../localisation/localisation.h"
 #include "../sprites.h"

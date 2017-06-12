@@ -18,7 +18,7 @@
 #define _DRAWING_FONT_H_
 
 #ifndef NO_TTF
-#include <SDL_ttf.h>
+typedef struct _TTF_Font TTF_Font;
 #endif // NO_TTF
 
 #include "../common.h"

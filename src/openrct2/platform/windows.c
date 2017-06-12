@@ -786,11 +786,6 @@ uint8 platform_get_locale_date_format()
     return DATE_FORMAT_DAY_MONTH_YEAR;
 }
 
-bool platform_check_steam_overlay_attached()
-{
-    return GetModuleHandle("GameOverlayRenderer.dll") != NULL;
-}
-
 char *strndup(const char *src, size_t size)
 {
     size_t len = strnlen(src, size);

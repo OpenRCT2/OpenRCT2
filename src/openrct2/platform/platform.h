@@ -147,8 +147,6 @@ uint8 platform_get_locale_date_format();
 bool platform_get_font_path(TTFFontDescriptor *font, utf8 *buffer, size_t size);
 #endif // NO_TTF
 
-bool platform_check_steam_overlay_attached();
-
 datetime64 platform_get_datetime_now_utc();
 
 // Called very early in the program before parsing commandline arguments.
