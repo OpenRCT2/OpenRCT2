@@ -38,16 +38,16 @@
 #endif
 
 // Platform
-#ifdef __WINDOWS__
+#ifdef _WIN32
     #define OPENRCT2_PLATFORM       "Windows"
 #endif
-#ifdef __LINUX__
+#ifdef __linux__
     #define OPENRCT2_PLATFORM       "Linux"
 #endif
-#ifdef __MACOSX__
+#if (defined(__APPLE__) && defined(__MACH__))
     #define OPENRCT2_PLATFORM       "macOS"
 #endif
-#ifdef __FREEBSD__
+#ifdef __FreeBSD__
     #define OPENRCT2_PLATFORM       "FreeBSD"
 #endif
 #ifndef OPENRCT2_PLATFORM

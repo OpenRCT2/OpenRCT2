@@ -14,6 +14,10 @@
  *****************************************************************************/
 #pragma endregion
 
+#ifndef NO_TTF
+#include "../common.h"
+#include <SDL_ttf.h>
+#endif
 #include "../interface/colour.h"
 #include "../interface/viewport.h"
 #include "../localisation/localisation.h"

@@ -18,19 +18,19 @@
 
 #include "../common.h"
 
-#if defined(__WINDOWS__)
+#if defined(_WIN32)
     #define WIN32_LEAN_AND_MEAN
     #include <windows.h>
 #endif
 
-#if defined(__unix__) || defined(__MACOSX__)
+#if defined(__unix__) || defined(__APPLE__)
     #include <sys/mman.h>
     #include <errno.h>
     #include <fcntl.h>
     #include <sys/types.h>
     #include <sys/stat.h>
     #include <unistd.h>
-#endif // defined(__unix__) || defined(__MACOSX__)
+#endif // defined(__unix__) || defined(__APPLE__)
 
 #include "../OpenRCT2.h"
 #include "../util/sawyercoding.h"
@@ -39,7 +39,7 @@
 #include "hook.h"
 #include "interop.h"
 
-#if defined(USE_MMAP) && (defined(__unix__) || defined(__MACOSX__)) && !defined(NO_RCT2)
+#if defined(USE_MMAP) && (defined(__unix__) || defined(__APPLE__)) && !defined(NO_RCT2)
     static sint32 fdData = -1;
 #endif
 #if !defined(NO_RCT2)
@@ -68,7 +68,7 @@ bool rct2_interop_setup_segment()
 #if !defined(NO_RCT2)
     UNUSED(segments);
 #endif
-#if defined(USE_MMAP) && (defined(__unix__) || defined(__MACOSX__)) && !defined(NO_RCT2)
+#if defined(USE_MMAP) && (defined(__unix__) || defined(__APPLE__)) && !defined(NO_RCT2)
     #define RDATA_OFFSET 0x004A4000
     #define DATASEG_OFFSET 0x005E2000
 
@@ -116,7 +116,7 @@ bool rct2_interop_setup_segment()
         perror("mmap");
         return false;
     }
-#endif // defined(USE_MMAP) && (defined(__unix__) || defined(__MACOSX__))
+#endif // defined(USE_MMAP) && (defined(__unix__) || defined(__APPLE__))
 
 #if defined(__unix__) && !defined(NO_RCT2)
     sint32 pageSize = getpagesize();
@@ -128,7 +128,7 @@ bool rct2_interop_setup_segment()
     if (err != 0)
     {
         err = errno;
-#ifdef __LINUX__
+#ifdef __linux__
         // On Linux ENOMEM means all requested range is unmapped
         if (err != ENOMEM)
         {
@@ -138,7 +138,7 @@ bool rct2_interop_setup_segment()
 #else
         pagesMissing = true;
         perror("mincore");
-#endif // __LINUX__
+#endif // __linux__
     } else {
         for (sint32 i = 0; i < numPages; i++)
         {
@@ -172,7 +172,7 @@ bool rct2_interop_setup_segment()
     }
 #endif // defined(__unix__)
 
-#if defined(USE_MMAP) && defined(__WINDOWS__)
+#if defined(USE_MMAP) && defined(_WIN32)
     segments = VirtualAlloc((void *)(GOOD_PLACE_FOR_DATA_SEGMENT), len, MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE);
     if ((uintptr_t)segments != GOOD_PLACE_FOR_DATA_SEGMENT) {
         log_error("VirtualAlloc, segments = %p, GetLastError = 0x%x", segments, GetLastError());
@@ -195,7 +195,7 @@ bool rct2_interop_setup_segment()
         return false;
     }
     fclose(file);
-#endif // defined(USE_MMAP) && defined(__WINDOWS__)
+#endif // defined(USE_MMAP) && defined(_WIN32)
 
 #if !defined(NO_RCT2) && defined(USE_MMAP)
     // Check that the expected data is at various addresses.
@@ -224,7 +224,7 @@ void rct2_interop_setup_hooks()
 
 void rct2_interop_dispose()
 {
-#if defined(USE_MMAP) && (defined(__unix__) || defined(__MACOSX__)) && !defined(NO_RCT2)
+#if defined(USE_MMAP) && (defined(__unix__) || defined(__APPLE__)) && !defined(NO_RCT2)
     munmap(segments, 12079104);
     close(fdData);
 #endif

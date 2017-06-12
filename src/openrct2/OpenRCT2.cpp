@@ -37,9 +37,7 @@ extern "C"
     utf8 gCustomRCT2DataPath[MAX_PATH] = { 0 };
     utf8 gCustomPassword[MAX_PATH] = { 0 };
 
-    // This should probably be changed later and allow a custom selection of things to initialise like SDL_INIT
     bool gOpenRCT2Headless = false;
-
     bool gOpenRCT2ShowChangelog;
     bool gOpenRCT2SilentBreakpad;
 

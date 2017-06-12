@@ -18,12 +18,12 @@
 
 #include <ctype.h>
 
-#ifdef __WINDOWS__
+#ifdef _WIN32
 #include <windows.h>
 #else
 #include <iconv.h>
 #include <errno.h>
-#endif // __WINDOWS__
+#endif // _WIN32
 
 #include "../config/Config.h"
 #include "../game.h"
@@ -1328,7 +1328,7 @@ utf8 *win1252_to_utf8_alloc(const char *src, size_t srcMaxSize)
 
 sint32 win1252_to_utf8(utf8string dst, const char *src, size_t srcLength, size_t maxBufferLength)
 {
-#ifdef __WINDOWS__
+#ifdef _WIN32
     utf16 stackBuffer[256];
     utf16 *heapBuffer = NULL;
     utf16 *intermediateBuffer = stackBuffer;
@@ -1396,7 +1396,7 @@ sint32 win1252_to_utf8(utf8string dst, const char *src, size_t srcLength, size_t
     //log_warning("converted %s of size %d, %d", dst, byte_diff, strlen(dst));
     sint32 result = byte_diff;
     free(buffer_orig);
-#endif // __WINDOWS__
+#endif // _WIN32
 
     return result;
 }

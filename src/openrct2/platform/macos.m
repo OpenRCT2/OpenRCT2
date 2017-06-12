@@ -33,11 +33,6 @@ void macos_disallow_automatic_window_tabbing()
     }
 }
 
-bool platform_check_steam_overlay_attached() {
-    STUB();
-    return false;
-}
-
 void platform_get_exe_path(utf8 *outPath, size_t outSize)
 {
     if (outSize == 0) return;
@@ -100,17 +95,6 @@ void platform_posix_sub_resolve_openrct_data_path(utf8 *out, size_t size) {
                 return;
             }
         }
-    }
-}
-
-void platform_show_messagebox(const char * message)
-{
-    @autoreleasepool
-    {
-        NSAlert *alert = [[[NSAlert alloc] init] autorelease];
-        [alert addButtonWithTitle:@"OK"];
-        alert.messageText = [NSString stringWithUTF8String:message];
-        [alert runModal];
     }
 }
 
@@ -223,11 +207,6 @@ uint8 platform_get_locale_measurement_format()
 
         return MEASUREMENT_FORMAT_IMPERIAL;
     }
-}
-
-sint32 platform_get_non_window_flags()
-{
-    return SDL_WINDOW_MINIMIZED | SDL_WINDOW_FULLSCREEN | SDL_WINDOW_FULLSCREEN_DESKTOP;
 }
 
 #endif

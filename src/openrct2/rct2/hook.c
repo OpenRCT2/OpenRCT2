@@ -18,11 +18,11 @@
 
 #ifndef NO_RCT2
 
-#ifdef __WINDOWS__
+#ifdef _WIN32
     #include <windows.h>
 #else
     #include <sys/mman.h>
-#endif // __WINDOWS__
+#endif // _WIN32
 
 #include "../platform/platform.h"
 #include "hook.h"
@@ -154,19 +154,19 @@ static void hookfunc(uintptr_t address, uintptr_t hookAddress, sint32 stacksize)
 
     data[i++] = 0xC3; // retn
 
-#ifdef __WINDOWS__
+#ifdef _WIN32
     WriteProcessMemory(GetCurrentProcess(), (LPVOID)address, data, i, 0);
 #else
     // We own the pages with PROT_WRITE | PROT_EXEC, we can simply just memcpy the data
     memcpy((void *)address, data, i);
-#endif // __WINDOWS__
+#endif // _WIN32
 }
 
 void addhook(uintptr_t address, hook_function *function)
 {
     if (!_hookTableAddress) {
         size_t size = _maxHooks * HOOK_BYTE_COUNT;
-#ifdef __WINDOWS__
+#ifdef _WIN32
         _hookTableAddress = VirtualAllocEx(GetCurrentProcess(), NULL, size, MEM_COMMIT, PAGE_EXECUTE_READWRITE);
 #else
         _hookTableAddress = mmap(NULL, size, PROT_EXEC | PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
@@ -175,7 +175,7 @@ void addhook(uintptr_t address, hook_function *function)
             perror("mmap");
             exit(1);
         }
-#endif // __WINDOWS__
+#endif // _WIN32
     }
     if (_hookTableOffset > _maxHooks) {
         return;
@@ -189,7 +189,7 @@ void addhook(uintptr_t address, hook_function *function)
     i += 4;
 
     data[i++] = 0xC3; // retn
-#ifdef __WINDOWS__
+#ifdef _WIN32
     WriteProcessMemory(GetCurrentProcess(), (LPVOID)address, data, i, 0);
 #else
     // We own the pages with PROT_WRITE | PROT_EXEC, we can simply just memcpy the data
@@ -206,7 +206,7 @@ void addhook(uintptr_t address, hook_function *function)
     {
         perror("mprotect");
     }
-#endif // __WINDOWS__
+#endif // _WIN32
     hookfunc(hookaddress, (uintptr_t)function, 0);
     _hookTableOffset++;
 }

@@ -21,6 +21,8 @@
 #include "../interface/colour.h"
 #include "font.h"
 
+typedef struct SDL_Surface SDL_Surface;
+
 // For g1 only enable packing when still relying on vanilla
 #ifndef NO_RCT2
 #pragma pack(push, 1)

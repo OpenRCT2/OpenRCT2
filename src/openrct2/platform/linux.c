@@ -18,7 +18,7 @@
 
 // Despite the name, this file contains support for more OSs besides Linux, provided the necessary ifdefs remain small.
 // Otherwise, they should be spun off into their own files.
-#if defined(__LINUX__) || defined(__FREEBSD__)
+#if defined(__linux__) || defined(__FREEBSD__)
 
 #ifdef __FREEBSD__
 #include <sys/sysctl.h>
@@ -42,7 +42,7 @@
 void platform_get_exe_path(utf8 *outPath, size_t outSize)
 {
     char exePath[MAX_PATH];
-#ifdef __LINUX__
+#ifdef __linux__
     ssize_t bytesRead;
     bytesRead = readlink("/proc/self/exe", exePath, MAX_PATH);
     if (bytesRead == -1) {

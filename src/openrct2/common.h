@@ -17,8 +17,6 @@
 #ifndef _COMMON_H_
 #define _COMMON_H_
 
-#include <SDL_platform.h>
-
 #ifndef _USE_MATH_DEFINES
 #define _USE_MATH_DEFINES
 #endif
@@ -52,7 +50,7 @@ typedef uint64_t uint64;
 typedef char utf8;
 typedef utf8* utf8string;
 typedef const utf8* const_utf8string;
-#ifdef __WINDOWS__
+#ifdef _WIN32
 typedef wchar_t utf16;
 typedef utf16* utf16string;
 #endif

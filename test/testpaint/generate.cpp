@@ -15,6 +15,7 @@
 #pragma endregion
 
 #include <algorithm>
+#include <cstdarg>
 #include <string>
 #include <vector>
 

@@ -62,7 +62,7 @@ extern "C"
         // Linux requires a restart. This could be improved in the future by recreating the window,
         // https://github.com/OpenRCT2/OpenRCT2/issues/2015
         bool requiresRestart = true;
-#ifdef __WINDOWS__
+#ifdef _WIN32
         if (dstEngine != DRAWING_ENGINE_OPENGL)
         {
             // Windows is apparently able to switch to hardware rendering on the fly although

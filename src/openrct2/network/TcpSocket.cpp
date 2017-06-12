@@ -54,7 +54,7 @@
     #define LAST_SOCKET_ERROR() errno
     #define closesocket close
     #define ioctlsocket ioctl
-    #if defined(__LINUX__)
+    #if defined(__linux__)
         #define FLAG_NO_PIPE MSG_NOSIGNAL
     #else
         #define FLAG_NO_PIPE 0
@@ -457,7 +457,7 @@ private:
 
     static bool SetNonBlocking(SOCKET socket, bool on)
     {
-#ifdef __WINDOWS__
+#ifdef _WIN32
         u_long nonBlocking = on;
         return ioctlsocket(socket, FIONBIO, &nonBlocking) == 0;
 #else
@@ -479,7 +479,7 @@ ITcpSocket * CreateTcpSocket()
 
 bool InitialiseWSA()
 {
-#ifdef __WINDOWS__
+#ifdef _WIN32
     if (!_wsaInitialised)
     {
         log_verbose("Initialising WSA");
@@ -499,7 +499,7 @@ bool InitialiseWSA()
 
 void DisposeWSA()
 {
-#ifdef __WINDOWS__
+#ifdef _WIN32
     if (_wsaInitialised)
     {
         WSACleanup();

@@ -41,7 +41,6 @@ enum DRAWING_ENGINE_FLAGS
 
 struct rct_drawpixelinfo;
 struct rct_palette_entry;
-struct SDL_Window;
 
 namespace OpenRCT2 { namespace Drawing
 {
