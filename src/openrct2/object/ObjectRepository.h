@@ -27,7 +27,7 @@ extern "C"
 {
 #endif
     #include "../object.h"
-    #include "ride.h"
+    #include "../ride/ride.h"
 #ifdef __cplusplus
 }
 #endif
