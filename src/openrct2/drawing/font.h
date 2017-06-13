@@ -17,10 +17,6 @@
 #ifndef _DRAWING_FONT_H_
 #define _DRAWING_FONT_H_
 
-#ifndef NO_TTF
-typedef struct _TTF_Font TTF_Font;
-#endif // NO_TTF
-
 #include "../common.h"
 
 enum {
@@ -43,6 +39,11 @@ enum {
 };
 
 #ifndef NO_TTF
+typedef struct FT_FaceRec_*  FT_Face;
+typedef struct TTFFont {
+    FT_Face face;
+} TTFFont;
+
 typedef struct TTFFontDescriptor {
     const utf8 *filename;
     const utf8 *font_name;
@@ -50,7 +51,7 @@ typedef struct TTFFontDescriptor {
     sint32 offset_x;
     sint32 offset_y;
     sint32 line_height;
-    TTF_Font *font;
+    TTFFont * font;
 } TTFFontDescriptor;
 
 typedef struct  TTFFontSetDescriptor {

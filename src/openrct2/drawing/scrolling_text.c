@@ -14,16 +14,13 @@
  *****************************************************************************/
 #pragma endregion
 
-#ifndef NO_TTF
-#include "../common.h"
-#include <SDL_ttf.h>
-#endif
 #include "../rct2/addresses.h"
 #include "../config/Config.h"
 #include "../interface/colour.h"
 #include "../localisation/localisation.h"
 #include "../sprites.h"
 #include "drawing.h"
+#include "ttf.h"
 
 #pragma pack(push, 1)
 /* size: 0xA12 */
@@ -1543,19 +1540,15 @@ void scrolling_text_set_bitmap_for_ttf(utf8 *text, sint32 scroll, uint8 *bitmap,
         colour = g1Elements[SPR_TEXT_PALETTE].offset[(colour - FORMAT_COLOUR_CODE_START) * 4];
     }
 
-    SDL_Surface *surface = ttf_surface_cache_get_or_add(fontDesc->font, text);
+    TTFSurface * surface = ttf_surface_cache_get_or_add(fontDesc->font, text);
     if (surface == NULL) {
-        return;
-    }
-
-    if (SDL_MUSTLOCK(surface) && SDL_LockSurface(surface) == -1) {
         return;
     }
 
     sint32 pitch = surface->pitch;
     sint32 width = surface->w;
     sint32 height = surface->h;
-    uint8 *src = surface->pixels;
+    const uint8 *src = surface->pixels;
 
     // Offset
     height -= 3;
@@ -1586,7 +1579,5 @@ void scrolling_text_set_bitmap_for_ttf(utf8 *text, sint32 scroll, uint8 *bitmap,
         x++;
         if (x >= width) x = 0;
     }
-
-    if (SDL_MUSTLOCK(surface)) SDL_UnlockSurface(surface);
 #endif // NO_TTF
 }

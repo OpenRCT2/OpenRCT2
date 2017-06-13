@@ -14,15 +14,12 @@
  *****************************************************************************/
 #pragma endregion
 
-#ifndef NO_TTF
-#include "../common.h"
-#include <SDL_ttf.h>
-#endif
 #include "../rct2/addresses.h"
 #include "../localisation/localisation.h"
 #include "../sprites.h"
 #include "drawing.h"
 #include "font.h"
+#include "ttf.h"
 
 static const sint32 SpriteFontLineHeight[] = { 6, 10, 10, 18 };
 
@@ -202,14 +199,14 @@ bool font_supports_string_ttf(const utf8 *text, sint32 fontSize)
 {
 #ifndef NO_TTF
     const utf8 *src = text;
-    const TTF_Font *font = gCurrentTTFFontSet->size[fontSize].font;
+    const TTFFont *font = gCurrentTTFFontSet->size[fontSize].font;
     if (font == NULL) {
         return false;
     }
 
     uint32 codepoint;
     while ((codepoint = utf8_get_next(src, &src)) != 0) {
-        bool supported = TTF_GlyphIsProvided(font, (uint16)codepoint);
+        bool supported = ttf_provides_glyph(font, codepoint);
         if (!supported) {
             return false;
         }
