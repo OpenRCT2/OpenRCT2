@@ -184,24 +184,19 @@ void KeyboardShortcuts::GetKeyboardMapScroll(const uint8 * keysState, sint32 * x
 #endif
         switch (shortcutId) {
         case SHORTCUT_SCROLL_MAP_UP:
-            *x = 0;
             *y = -1;
             break;
         case SHORTCUT_SCROLL_MAP_LEFT:
             *x = -1;
-            *y = 0;
             break;
         case SHORTCUT_SCROLL_MAP_DOWN:
-            *x = 0;
             *y = 1;
             break;
         case SHORTCUT_SCROLL_MAP_RIGHT:
             *x = 1;
-            *y = 0;
             break;
         default:
-            *x = 0;
-            *y = 0;
+            break;
         }
     }
 }
