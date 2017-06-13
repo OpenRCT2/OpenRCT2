@@ -14,7 +14,7 @@ STR_0009    :Mini-attrazione sospesa
 STR_0010    :Noleggio barche
 STR_0011    :Topo tutto matto
 STR_0012    :Corsa ad ostacoli
-STR_0013    :Attrazione su carrozza
+STR_0013    :Corsa in auto
 STR_0014    :Caduta libera con lancio
 STR_0015    :Ottovolante su bob
 STR_0016    :Torre d'osservazione
@@ -59,9 +59,9 @@ STR_0054    :Ottovolante di legno
 STR_0055    :Ottov. a frizione laterale
 STR_0056    :Topo tutto matto
 STR_0057    :Ottov. multi-dimensionale
-STR_0058    :Unknown Ride (38)
+STR_0058    :Attrazione sconosciuta (38)
 STR_0059    :Ottovolante aereo invertito
-STR_0060    :Unknown Ride (3A)
+STR_0060    :Attrazione sconosciuta (3A)
 STR_0061    :Virginia Reel
 STR_0062    :Barche con lo schizzo
 STR_0063    :Mini-elicotteri
@@ -588,18 +588,18 @@ STR_0583    :
 STR_0584    :Speciali biciclette viaggiano lungo un percorso a monorotaia di acciaio, spinte soltanto dalle pedalate dei passeggeri
 STR_0585    :I passeggeri viaggiano su coppie di sedili sospesi sotto al percorso, mentre viaggiano attraverso numerose inversioni e inclinazioni
 STR_0586    :Carrozze a forma di barca viaggiano lungo l'ottovolante, caratterizzato da ripide discese, curve avvitate e tuffi in sezioni acquatiche più tranquille.
-STR_0587    :After an exhilarating air-powered launch, the train speeds up a vertical track, over the top, and vertically down the other side to return to the station
-STR_0588    :Individual cars run beneath a zig-zagging track with hairpin turns and sharp drops
+STR_0587    :Dopo un euforico lancio ad aria compressa il treno sale lungo un tracciato verticale, fino alla vetta della collina, e poi giù in verticale dal lato opposto per far ritorno alla stazione
+STR_0588    :Carrozze singole corrono sotto a un percorso a zig-zag ricco di tornanti e cadute ripide
 STR_0589    :
 STR_0590    :I visitatori viaggiano in un sottomarino attraverso un percorso subacqueo
-STR_0591    :Raft-shaped boats gently meander around a river track
+STR_0591    :Imbarcazioni a forma di zattera serpeggiano lungo un percorso a fiume
 STR_0592    :
 STR_0593    :
 STR_0594    :
 STR_0595    :
 STR_0596    :
 STR_0597    :
-STR_0598    :Inverted roller coaster trains are accelerated out of the station to travel up a vertical spike of track, then reverse back through the station to travel backwards up another vertical spike of track
+STR_0598    :Treni dell'ottovolante invertito accelerano dalla stazione lungo un tratto in salita, per poi tornare indietro, attraversare la stazione e salire su un altro tratto di percorso
 STR_0599    :Un ottovolante compatto con carrozze individuali e rapide curve in discesa
 STR_0600    :I treni della miniera motorizzati scorrono lungo un percorso fluido e pieno di curve
 STR_0601    :
@@ -1521,32 +1521,32 @@ STR_1514    :{SMALLFONT}{OPENQUOTES}Bello scenario!{ENDQUOTES}
 STR_1515    :{SMALLFONT}{OPENQUOTES}Questo parco è davvero pulito e ordinato{ENDQUOTES}
 STR_1516    :{SMALLFONT}{OPENQUOTES}Le fontane zampillanti sono fantastiche{ENDQUOTES}
 STR_1517    :{SMALLFONT}{OPENQUOTES}La musica qui è gradevole{ENDQUOTES}
-STR_1518    :{SMALLFONT}{OPENQUOTES}Questo palloncino comprato da {STRINGID} vale quanto costa{ENDQUOTES}
-STR_1519    :{SMALLFONT}{OPENQUOTES}Questo peluche comprato da {STRINGID} vale quanto costa{ENDQUOTES}
-STR_1520    :{SMALLFONT}{OPENQUOTES}Questa mappa del parco comprata da {STRINGID} vale quanto costa{ENDQUOTES}
-STR_1521    :{SMALLFONT}{OPENQUOTES}Questa foto-in-corsa comprata da  {STRINGID} vale quanto costa{ENDQUOTES}
-STR_1522    :{SMALLFONT}{OPENQUOTES}Quest'ombrello comprato da {STRINGID} vale quanto costa{ENDQUOTES}
-STR_1523    :{SMALLFONT}{OPENQUOTES}Questa bevanda comprata da {STRINGID} vale quanto costa{ENDQUOTES}
-STR_1524    :{SMALLFONT}{OPENQUOTES}Questo panino comprato da {STRINGID} vale quanto costa{ENDQUOTES}
-STR_1525    :{SMALLFONT}{OPENQUOTES}Queste patatine comprate da {STRINGID} valgono quanto costa{ENDQUOTES}
-STR_1526    :{SMALLFONT}{OPENQUOTES}Questo gelato comprato da {STRINGID} vale quanto costa{ENDQUOTES}
-STR_1527    :{SMALLFONT}{OPENQUOTES}Questo zucchero filato comprato da {STRINGID} vale quanto costa{ENDQUOTES}
+STR_1518    :{SMALLFONT}{OPENQUOTES}Questo palloncino comprato da {STRINGID} costa davvero poco{ENDQUOTES}
+STR_1519    :{SMALLFONT}{OPENQUOTES}Questo peluche comprato da {STRINGID} costa davvero poco{ENDQUOTES}
+STR_1520    :{SMALLFONT}{OPENQUOTES}Questa mappa del parco comprata da {STRINGID} costa davvero poco{ENDQUOTES}
+STR_1521    :{SMALLFONT}{OPENQUOTES}Questa foto-in-corsa comprata da  {STRINGID} costa davvero poco{ENDQUOTES}
+STR_1522    :{SMALLFONT}{OPENQUOTES}Quest'ombrello comprato da {STRINGID} costa davvero poco{ENDQUOTES}
+STR_1523    :{SMALLFONT}{OPENQUOTES}Questa bevanda comprata da {STRINGID} costa davvero poco{ENDQUOTES}
+STR_1524    :{SMALLFONT}{OPENQUOTES}Questo panino comprato da {STRINGID} costa davvero poco{ENDQUOTES}
+STR_1525    :{SMALLFONT}{OPENQUOTES}Queste patatine comprate da {STRINGID} costano davvero poco{ENDQUOTES}
+STR_1526    :{SMALLFONT}{OPENQUOTES}Questo gelato comprato da {STRINGID} costa davvero poco{ENDQUOTES}
+STR_1527    :{SMALLFONT}{OPENQUOTES}Questo zucchero filato comprato da {STRINGID} costa davvero poco{ENDQUOTES}
 STR_1528    :
 STR_1529    :
 STR_1530    :
-STR_1531    :{SMALLFONT}{OPENQUOTES}Questa pizza comprata da {STRINGID} vale quanto costa{ENDQUOTES}
+STR_1531    :{SMALLFONT}{OPENQUOTES}Questa pizza comprata da {STRINGID} costa davvero poco{ENDQUOTES}
 STR_1532    :
-STR_1533    :{SMALLFONT}{OPENQUOTES}Questi pop-corn comprati da {STRINGID} valgono quanto costa{ENDQUOTES}
-STR_1534    :{SMALLFONT}{OPENQUOTES}Questo hot dog comprato da {STRINGID} vale quanto costa{ENDQUOTES}
-STR_1535    :{SMALLFONT}{OPENQUOTES}Questo tentacolo comprato da {STRINGID} vale quanto costa{ENDQUOTES}
-STR_1536    :{SMALLFONT}{OPENQUOTES}Questo cappellino comprato da {STRINGID} vale quanto costa{ENDQUOTES}
-STR_1537    :{SMALLFONT}{OPENQUOTES}Questa mela caramellata comprata da {STRINGID} vale quanto costa{ENDQUOTES}
-STR_1538    :{SMALLFONT}{OPENQUOTES}Questa maglietta comprata da {STRINGID} vale quanto costa{ENDQUOTES}
-STR_1539    :{SMALLFONT}{OPENQUOTES}Questa ciambella comprata da {STRINGID} vale quanto costa{ENDQUOTES}
-STR_1540    :{SMALLFONT}{OPENQUOTES}Questo caffè comprato da {STRINGID} vale quanto costa{ENDQUOTES}
+STR_1533    :{SMALLFONT}{OPENQUOTES}Questi pop-corn comprati da {STRINGID} costano davvero poco{ENDQUOTES}
+STR_1534    :{SMALLFONT}{OPENQUOTES}Questo hot dog comprato da {STRINGID} costa davvero poco{ENDQUOTES}
+STR_1535    :{SMALLFONT}{OPENQUOTES}Questo tentacolo comprato da {STRINGID} costa davvero poco{ENDQUOTES}
+STR_1536    :{SMALLFONT}{OPENQUOTES}Questo cappellino comprato da {STRINGID} costa davvero poco{ENDQUOTES}
+STR_1537    :{SMALLFONT}{OPENQUOTES}Questa mela caramellata comprata da {STRINGID} costa davvero poco{ENDQUOTES}
+STR_1538    :{SMALLFONT}{OPENQUOTES}Questa maglietta comprata da {STRINGID} costa davvero poco{ENDQUOTES}
+STR_1539    :{SMALLFONT}{OPENQUOTES}Questa ciambella comprata da {STRINGID} costa davvero poco{ENDQUOTES}
+STR_1540    :{SMALLFONT}{OPENQUOTES}Questo caffè comprato da {STRINGID} costa davvero poco{ENDQUOTES}
 STR_1541    :
-STR_1542    :{SMALLFONT}{OPENQUOTES}Questo pollo fritto comprato da {STRINGID} vale quanto costa{ENDQUOTES}
-STR_1543    :{SMALLFONT}{OPENQUOTES}Questa limonata comprata da {STRINGID} vale quanto costa{ENDQUOTES}
+STR_1542    :{SMALLFONT}{OPENQUOTES}Questo pollo fritto comprato da {STRINGID} costa davvero poco{ENDQUOTES}
+STR_1543    :{SMALLFONT}{OPENQUOTES}Questa limonata comprata da {STRINGID} costa davvero poco{ENDQUOTES}
 STR_1544    :
 STR_1545    :
 STR_1546    :
@@ -1555,59 +1555,59 @@ STR_1548    :
 STR_1549    :
 STR_1550    :{SMALLFONT}{OPENQUOTES}Wow!{ENDQUOTES}
 STR_1551    :{SMALLFONT}{OPENQUOTES}Ho la strana sensazione che qualcuno mi stia osservando{ENDQUOTES}
-STR_1552    :{SMALLFONT}{OPENQUOTES}Non pagherò quella cifra per un palloncino da {STRINGID}{ENDQUOTES}
-STR_1553    :{SMALLFONT}{OPENQUOTES}Non pagherò quella cifra per un peluche da {STRINGID}{ENDQUOTES}
-STR_1554    :{SMALLFONT}{OPENQUOTES}Non pagherò quella cifra per una mappa del parco da {STRINGID}{ENDQUOTES}
-STR_1555    :{SMALLFONT}{OPENQUOTES}Non pagherò quella cifra per una foto-in-corsa da {STRINGID}{ENDQUOTES}
-STR_1556    :{SMALLFONT}{OPENQUOTES}Non pagherò quella cifra per un ombrello da {STRINGID}{ENDQUOTES}
-STR_1557    :{SMALLFONT}{OPENQUOTES}Non pagherò quella cifra per una bevanda da {STRINGID}{ENDQUOTES}
-STR_1558    :{SMALLFONT}{OPENQUOTES}Non pagherò quella cifra per un panino da {STRINGID}{ENDQUOTES}
-STR_1559    :{SMALLFONT}{OPENQUOTES}Non pagherò quella cifra per delle patatine da {STRINGID}{ENDQUOTES}
-STR_1560    :{SMALLFONT}{OPENQUOTES}Non pagherò quella cifra per un gelato da {STRINGID}{ENDQUOTES}
-STR_1561    :{SMALLFONT}{OPENQUOTES}Non pagherò quella cifra per dello zucchero filato da {STRINGID}{ENDQUOTES}
+STR_1552    :{SMALLFONT}{OPENQUOTES}Non ho intenzione di pagare così tanto un palloncino da {STRINGID}{ENDQUOTES}
+STR_1553    :{SMALLFONT}{OPENQUOTES}Non ho intenzione di pagare così tanto un peluche da {STRINGID}{ENDQUOTES}
+STR_1554    :{SMALLFONT}{OPENQUOTES}Non ho intenzione di pagare così tanto una mappa del parco da {STRINGID}{ENDQUOTES}
+STR_1555    :{SMALLFONT}{OPENQUOTES}Non ho intenzione di pagare così tanto una foto-in-corsa da {STRINGID}{ENDQUOTES}
+STR_1556    :{SMALLFONT}{OPENQUOTES}Non ho intenzione di pagare così tanto un ombrello da {STRINGID}{ENDQUOTES}
+STR_1557    :{SMALLFONT}{OPENQUOTES}Non ho intenzione di pagare così tanto una bevanda da {STRINGID}{ENDQUOTES}
+STR_1558    :{SMALLFONT}{OPENQUOTES}Non ho intenzione di pagare così tanto un panino da {STRINGID}{ENDQUOTES}
+STR_1559    :{SMALLFONT}{OPENQUOTES}Non ho intenzione di pagare così tanto delle patatine da {STRINGID}{ENDQUOTES}
+STR_1560    :{SMALLFONT}{OPENQUOTES}Non ho intenzione di pagare così tanto un gelato da {STRINGID}{ENDQUOTES}
+STR_1561    :{SMALLFONT}{OPENQUOTES}Non ho intenzione di pagare così tanto dello zucchero filato da {STRINGID}{ENDQUOTES}
 STR_1562    :
 STR_1563    :
 STR_1564    :
-STR_1565    :{SMALLFONT}{OPENQUOTES}Non pagherò quella cifra per una pizza da {STRINGID}{ENDQUOTES}
+STR_1565    :{SMALLFONT}{OPENQUOTES}Non ho intenzione di pagare così tanto per una pizza da {STRINGID}{ENDQUOTES}
 STR_1566    :
-STR_1567    :{SMALLFONT}{OPENQUOTES}Non pagherò quella cifra per dei pop-corn da {STRINGID}{ENDQUOTES}
-STR_1568    :{SMALLFONT}{OPENQUOTES}Non pagherò quella cifra per un hot dog da {STRINGID}{ENDQUOTES}
-STR_1569    :{SMALLFONT}{OPENQUOTES}Non pagherò quella cifra per un tentacolo da {STRINGID}{ENDQUOTES}
-STR_1570    :{SMALLFONT}{OPENQUOTES}Non pagherò quella cifra per un cappellino da {STRINGID}{ENDQUOTES}
-STR_1571    :{SMALLFONT}{OPENQUOTES}Non pagherò quella cifra per una mela caramellata da {STRINGID}{ENDQUOTES}
-STR_1572    :{SMALLFONT}{OPENQUOTES}Non pagherò quella cifra per una maglietta da {STRINGID}{ENDQUOTES}
-STR_1573    :{SMALLFONT}{OPENQUOTES}Non pagherò quella cifra per una ciambella da {STRINGID}{ENDQUOTES}
-STR_1574    :{SMALLFONT}{OPENQUOTES}Non pagherò quella cifra per un caffè da {STRINGID}{ENDQUOTES}
+STR_1567    :{SMALLFONT}{OPENQUOTES}Non ho intenzione di pagare così tanto dei pop-corn da {STRINGID}{ENDQUOTES}
+STR_1568    :{SMALLFONT}{OPENQUOTES}Non ho intenzione di pagare così tanto un hot dog da {STRINGID}{ENDQUOTES}
+STR_1569    :{SMALLFONT}{OPENQUOTES}Non ho intenzione di pagare così tanto un tentacolo da {STRINGID}{ENDQUOTES}
+STR_1570    :{SMALLFONT}{OPENQUOTES}Non ho intenzione di pagare così tanto un cappellino da {STRINGID}{ENDQUOTES}
+STR_1571    :{SMALLFONT}{OPENQUOTES}Non ho intenzione di pagare così tanto una mela caramellata da {STRINGID}{ENDQUOTES}
+STR_1572    :{SMALLFONT}{OPENQUOTES}Non ho intenzione di pagare così tanto una maglietta da {STRINGID}{ENDQUOTES}
+STR_1573    :{SMALLFONT}{OPENQUOTES}Non ho intenzione di pagare così tanto una ciambella da {STRINGID}{ENDQUOTES}
+STR_1574    :{SMALLFONT}{OPENQUOTES}Non ho intenzione di pagare così tanto un caffè da {STRINGID}{ENDQUOTES}
 STR_1575    :
-STR_1576    :{SMALLFONT}{OPENQUOTES}Non pagherò quella cifra per del pollo fritto da {STRINGID}{ENDQUOTES}
-STR_1577    :{SMALLFONT}{OPENQUOTES}Non pagherò quella cifra per della limonata da {STRINGID}{ENDQUOTES}
+STR_1576    :{SMALLFONT}{OPENQUOTES}Non ho intenzione di pagare così tanto del pollo fritto da {STRINGID}{ENDQUOTES}
+STR_1577    :{SMALLFONT}{OPENQUOTES}Non ho intenzione di pagare così tanto della limonata da {STRINGID}{ENDQUOTES}
 STR_1578    :
 STR_1579    :
 STR_1580    :
 STR_1581    :
 STR_1582    :
 STR_1583    :
-STR_1584    :{SMALLFONT}{OPENQUOTES}Questa foto-in-corsa comprata da {STRINGID} vale quanto costa{ENDQUOTES}
-STR_1585    :{SMALLFONT}{OPENQUOTES}Questa foto-in-corsa comprata da {STRINGID} vale quanto costa{ENDQUOTES}
-STR_1586    :{SMALLFONT}{OPENQUOTES}Questa foto-in-corsa comprata da {STRINGID} vale quanto costa{ENDQUOTES}
-STR_1587    :{SMALLFONT}{OPENQUOTES}Questo biscottino comprato da {STRINGID} vale quanto costa{ENDQUOTES}
-STR_1588    :{SMALLFONT}{OPENQUOTES}Questa cioccolata calda comprata da {STRINGID} vale quanto costa{ENDQUOTES}
-STR_1589    :{SMALLFONT}{OPENQUOTES}Questo tè freddo comprato da {STRINGID} vale quanto costa{ENDQUOTES}
-STR_1590    :{SMALLFONT}{OPENQUOTES}Questa torta a ciambella comprata da {STRINGID} vale quanto costa{ENDQUOTES}
-STR_1591    :{SMALLFONT}{OPENQUOTES}Questi occhiali da sole comprati da {STRINGID} vale quanto costa{ENDQUOTES}
-STR_1592    :{SMALLFONT}{OPENQUOTES}Questi spaghetti al ragù comprati da {STRINGID} vale quanto costa{ENDQUOTES}
-STR_1593    :{SMALLFONT}{OPENQUOTES}Questi spaghetti di riso fritto comprati da {STRINGID} vale quanto costa{ENDQUOTES}
-STR_1594    :{SMALLFONT}{OPENQUOTES}Questa zuppa di wonton comprata da {STRINGID} vale quanto costa{ENDQUOTES}
-STR_1595    :{SMALLFONT}{OPENQUOTES}Queste polpette in salsa comprate da {STRINGID} vale quanto costa{ENDQUOTES}
-STR_1596    :{SMALLFONT}{OPENQUOTES}Questo succo di frutta comprato da {STRINGID} vale quanto costa{ENDQUOTES}
-STR_1597    :{SMALLFONT}{OPENQUOTES}Questo latte di soia comprato da {STRINGID} vale quanto costa{ENDQUOTES}
-STR_1598    :{SMALLFONT}{OPENQUOTES}Questo sujongkwa {STRINGID} vale quanto costa{ENDQUOTES}
-STR_1599    :{SMALLFONT}{OPENQUOTES}Questo sandwich comprato da {STRINGID} vale quanto costa{ENDQUOTES}
-STR_1600    :{SMALLFONT}{OPENQUOTES}Questo biscotto comprato da {STRINGID} vale quanto costa{ENDQUOTES}
+STR_1584    :{SMALLFONT}{OPENQUOTES}Questa foto-in-corsa comprata da {STRINGID} costa davvero poco{ENDQUOTES}
+STR_1585    :{SMALLFONT}{OPENQUOTES}Questa foto-in-corsa comprata da {STRINGID} costa davvero poco{ENDQUOTES}
+STR_1586    :{SMALLFONT}{OPENQUOTES}Questa foto-in-corsa comprata da {STRINGID} costa davvero poco{ENDQUOTES}
+STR_1587    :{SMALLFONT}{OPENQUOTES}Questo biscottino comprato da {STRINGID} costa davvero poco{ENDQUOTES}
+STR_1588    :{SMALLFONT}{OPENQUOTES}Questa cioccolata calda comprata da {STRINGID} costa davvero poco{ENDQUOTES}
+STR_1589    :{SMALLFONT}{OPENQUOTES}Questo tè freddo comprato da {STRINGID} costa davvero poco{ENDQUOTES}
+STR_1590    :{SMALLFONT}{OPENQUOTES}Questa torta a ciambella comprata da {STRINGID} costa davvero poco{ENDQUOTES}
+STR_1591    :{SMALLFONT}{OPENQUOTES}Questi occhiali da sole comprati da {STRINGID} costa davvero poco{ENDQUOTES}
+STR_1592    :{SMALLFONT}{OPENQUOTES}Questi spaghetti al ragù comprati da {STRINGID} costa davvero poco{ENDQUOTES}
+STR_1593    :{SMALLFONT}{OPENQUOTES}Questi spaghetti di riso fritto comprati da {STRINGID} costa davvero poco{ENDQUOTES}
+STR_1594    :{SMALLFONT}{OPENQUOTES}Questa zuppa di wonton comprata da {STRINGID} costa davvero poco{ENDQUOTES}
+STR_1595    :{SMALLFONT}{OPENQUOTES}Queste polpette in salsa comprate da {STRINGID} costa davvero poco{ENDQUOTES}
+STR_1596    :{SMALLFONT}{OPENQUOTES}Questo succo di frutta comprato da {STRINGID} costa davvero poco{ENDQUOTES}
+STR_1597    :{SMALLFONT}{OPENQUOTES}Questo latte di soia comprato da {STRINGID} costa davvero poco{ENDQUOTES}
+STR_1598    :{SMALLFONT}{OPENQUOTES}Questo sujongkwa {STRINGID} costa davvero poco{ENDQUOTES}
+STR_1599    :{SMALLFONT}{OPENQUOTES}Questo sandwich comprato da {STRINGID} costa davvero poco{ENDQUOTES}
+STR_1600    :{SMALLFONT}{OPENQUOTES}Questo biscotto comprato da {STRINGID} costa davvero poco{ENDQUOTES}
 STR_1601    :
 STR_1602    :
 STR_1603    :
-STR_1604    :{SMALLFONT}{OPENQUOTES}Queste salsicce comprate da {STRINGID} valgono il loro prezzo{ENDQUOTES}
+STR_1604    :{SMALLFONT}{OPENQUOTES}Queste salsicce comprate da {STRINGID} costano davvero poco{ENDQUOTES}
 STR_1605    :
 STR_1606    :
 STR_1607    :
@@ -1619,27 +1619,27 @@ STR_1612    :
 STR_1613    :
 STR_1614    :
 STR_1615    :
-STR_1616    :{SMALLFONT}{OPENQUOTES}Non pagherò quel prezzo per una foto-in-corsa da {STRINGID}{ENDQUOTES}
-STR_1617    :{SMALLFONT}{OPENQUOTES}Non pagherò quel prezzo per una foto-in-corsa da {STRINGID}{ENDQUOTES}
-STR_1618    :{SMALLFONT}{OPENQUOTES}Non pagherò quel prezzo per una foto-in-corsa da {STRINGID}{ENDQUOTES}
-STR_1619    :{SMALLFONT}{OPENQUOTES}Non pagherò quel prezzo per un biscottino da {STRINGID}{ENDQUOTES}
-STR_1620    :{SMALLFONT}{OPENQUOTES}Non pagherò quel prezzo per una cioccolata calda da {STRINGID}{ENDQUOTES}
-STR_1621    :{SMALLFONT}{OPENQUOTES}Non pagherò quel prezzo per del tè freddo da {STRINGID}{ENDQUOTES}
-STR_1622    :{SMALLFONT}{OPENQUOTES}Non pagherò quel prezzo per una torta a ciambella da {STRINGID}{ENDQUOTES}
-STR_1623    :{SMALLFONT}{OPENQUOTES}Non pagherò quel prezzo per un paio di occhiali da sole da {STRINGID}{ENDQUOTES}
-STR_1624    :{SMALLFONT}{OPENQUOTES}Non pagherò quel prezzo per degli spaghetti al ragù da {STRINGID}{ENDQUOTES}
-STR_1625    :{SMALLFONT}{OPENQUOTES}Non pagherò quel prezzo per degli spaghetti di riso fritto da {STRINGID}{ENDQUOTES}
-STR_1626    :{SMALLFONT}{OPENQUOTES}Non pagherò quel prezzo per della zuppa di wonton da {STRINGID}{ENDQUOTES}
-STR_1627    :{SMALLFONT}{OPENQUOTES}Non pagherò quel prezzo per delle polpette in salsa da {STRINGID}{ENDQUOTES}
-STR_1628    :{SMALLFONT}{OPENQUOTES}Non pagherò quel prezzo per un succo di frutta da {STRINGID}{ENDQUOTES}
-STR_1629    :{SMALLFONT}{OPENQUOTES}Non pagherò quel prezzo per del latte di soia da {STRINGID}{ENDQUOTES}
-STR_1630    :{SMALLFONT}{OPENQUOTES}Non pagherò quel prezzo per un sujongkwa da {STRINGID}{ENDQUOTES}
-STR_1631    :{SMALLFONT}{OPENQUOTES}Non pagherò quel prezzo per un sandwich da {STRINGID}{ENDQUOTES}
-STR_1632    :{SMALLFONT}{OPENQUOTES}Non pagherò quel prezzo per un biscotto da {STRINGID}{ENDQUOTES}
+STR_1616    :{SMALLFONT}{OPENQUOTES}Non ho intenzione di pagare così tanto una foto-in-corsa da {STRINGID}{ENDQUOTES}
+STR_1617    :{SMALLFONT}{OPENQUOTES}Non ho intenzione di pagare così tanto una foto-in-corsa da {STRINGID}{ENDQUOTES}
+STR_1618    :{SMALLFONT}{OPENQUOTES}Non ho intenzione di pagare così tanto una foto-in-corsa da {STRINGID}{ENDQUOTES}
+STR_1619    :{SMALLFONT}{OPENQUOTES}Non ho intenzione di pagare così tanto un biscottino da {STRINGID}{ENDQUOTES}
+STR_1620    :{SMALLFONT}{OPENQUOTES}Non ho intenzione di pagare così tanto una cioccolata calda da {STRINGID}{ENDQUOTES}
+STR_1621    :{SMALLFONT}{OPENQUOTES}Non ho intenzione di pagare così tanto del tè freddo da {STRINGID}{ENDQUOTES}
+STR_1622    :{SMALLFONT}{OPENQUOTES}Non ho intenzione di pagare così tanto una torta a ciambella da {STRINGID}{ENDQUOTES}
+STR_1623    :{SMALLFONT}{OPENQUOTES}Non ho intenzione di pagare così tanto un paio di occhiali da sole da {STRINGID}{ENDQUOTES}
+STR_1624    :{SMALLFONT}{OPENQUOTES}Non ho intenzione di pagare così tanto degli spaghetti al ragù da {STRINGID}{ENDQUOTES}
+STR_1625    :{SMALLFONT}{OPENQUOTES}Non ho intenzione di pagare così tanto degli spaghetti di riso fritto da {STRINGID}{ENDQUOTES}
+STR_1626    :{SMALLFONT}{OPENQUOTES}Non ho intenzione di pagare così tanto della zuppa di wonton da {STRINGID}{ENDQUOTES}
+STR_1627    :{SMALLFONT}{OPENQUOTES}Non ho intenzione di pagare così tanto delle polpette in salsa da {STRINGID}{ENDQUOTES}
+STR_1628    :{SMALLFONT}{OPENQUOTES}Non ho intenzione di pagare così tanto un succo di frutta da {STRINGID}{ENDQUOTES}
+STR_1629    :{SMALLFONT}{OPENQUOTES}Non ho intenzione di pagare così tanto del latte di soia da {STRINGID}{ENDQUOTES}
+STR_1630    :{SMALLFONT}{OPENQUOTES}Non ho intenzione di pagare così tanto un sujongkwa da {STRINGID}{ENDQUOTES}
+STR_1631    :{SMALLFONT}{OPENQUOTES}Non ho intenzione di pagare così tanto un sandwich da {STRINGID}{ENDQUOTES}
+STR_1632    :{SMALLFONT}{OPENQUOTES}Non ho intenzione di pagare così tanto un biscotto da {STRINGID}{ENDQUOTES}
 STR_1633    :
 STR_1634    :
 STR_1635    :
-STR_1636    :{SMALLFONT}{OPENQUOTES}Non pagherò quel prezzo per delle salsicce da {STRINGID}{ENDQUOTES}
+STR_1636    :{SMALLFONT}{OPENQUOTES}Non ho intenzione di pagare così tanto delle salsicce da {STRINGID}{ENDQUOTES}
 STR_1637    :
 STR_1638    :
 STR_1639    :
@@ -1654,7 +1654,6 @@ STR_1647    :
 STR_1648    :{SMALLFONT}{OPENQUOTES}Aiuto! Voglio scendere!{ENDQUOTES}
 STR_1649    :{SMALLFONT}{OPENQUOTES}Sto finendo i soldi!{ENDQUOTES}
 STR_1650    :{SMALLFONT}{OPENQUOTES}Wow! Presto ci sarà una nuova attrazione!{ENDQUOTES}
-# Two removed inside jokes about Intamin and Phoenix
 STR_1651    :<removed string - do not use>
 STR_1652    :<removed string - do not use>
 STR_1653    :{SMALLFONT}{OPENQUOTES}...e qui siamo su {STRINGID}!{ENDQUOTES}
@@ -4370,6 +4369,50 @@ STR_6055    :File di heightmap di OpenRCT2
 STR_6056    :{SMALLFONT}{BLACK}Muto
 STR_6057    :{SMALLFONT}{BLACK}Mostra un bottone separato per l'opzione Muto nella barra degli strumenti
 STR_6058    :Muto
+STR_6059    :{RIGHTGUILLEMET}
+STR_6060    :Mostra animazione per acquisti dei visitatori
+STR_6061    :{SMALLFONT}{BLACK}Mostra l'effetto dei soldi animato{NEWLINE}quando i visitatori effettuano acquisti.
+STR_6062    :{OUTLINE}{GREEN}+ {CURRENCY2DP}
+STR_6063    :{OUTLINE}{RED}- {CURRENCY2DP}
+STR_6064    :Possiedi tutto il terreno
+STR_6065    :Registra azioni degli utenti
+STR_6066    :{SMALLFONT}{BLACK}Crea un log di tutte le azioni degli utenti nella propria cartella utente.
+STR_6067    :Server avviato.
+STR_6068    :Server fermato.
+STR_6069    :{STRING} è stato escluso dal server da {STRING}.
+STR_6070    :{STRING} è stato impostato nel gruppo "{STRING}" da {STRING}.
+STR_6071    :{STRING} ha creato il nuovo gruppo di giocatori "{STRING}".
+STR_6072    :{STRING} ha eliminato il gruppo di giocatori "{String}".
+STR_6073    :{STRING} ha modificato i permessi per il gruppo di giocatori "{String}".
+STR_6074    :{STRING} ha rinominato il gruppo di giocatori da "{String}" a "{String}".
+STR_6075    :{STRING} ha cambiato il gruppo di giocatori predefinito in "{String}".
+STR_6076    :{STRING} ha usato/disattivato il trucco "{STRING}".
+STR_6077    :Aggiungi soldi
+STR_6078    :{STRING} ha creato l'attrazione "{STRING}".
+STR_6079    :{STRING} ha demolito l'attrazione "{STRING}".
+STR_6080    :{STRING} ha cambiato l'aspetto dell'attrazione "{STRING}".
+STR_6081    :{STRING} ha cambiato lo stato dell'attrazione "{STRING}" a chiuso.
+STR_6082    :{STRING} ha cambiato lo stato dell'attrazione "{STRING}" ad aperto.
+STR_6083    :{STRING} ha cambiato lo stato dell'attrazione "{STRING}" a test.
+STR_6084    :{STRING} ha cambiato le impostazioni veicolo dell'attrazione "{STRING}".
+STR_6085    :{STRING} ha cambiato le impostazioni dell'attrazione "{STRING}".
+STR_6086    :{STRING} ha rinominato l'attrazione "{STRING}" in "{STRING}".
+STR_6087    :{STRING} ha cambiato il prezzo dell'attrazione "{STRING}" a {STRING}
+STR_6088    :{STRING} ha cambiato il prezzo secondario dell'attrazione "{STRING}" a {STRING}
+STR_6089    :{STRING} ha rinominato il parco da "{STRING}" a "{STRING}".
+STR_6090    :{STRING} ha aperto il parco.
+STR_6091    :{STRING} ha chiuso il parco.
+STR_6092    :{STRING} ha cambiato il prezzo di ingresso al parco a {STRING}
+STR_6093    :{STRING} ha piazzato del nuovo scenario.
+STR_6094    :{STRING} ha eliminato dello scenario.
+STR_6095    :{STRING} ha modificato lo scenario.
+STR_6096    :{STRING} ha impostato il cartello a "{STRING}".
+STR_6097    :{STRING} ha piazzato un tratto di percorso "{STRING}".
+STR_6098    :{STRING} ha rimosso un tratto di percorso.
+STR_6099    :Connesso al server.
+STR_6100    :Disconnesso dal server.
+STR_6101    :Le attrazioni non perdono valore con il tempo
+STR_6102    :{SMALLFONT}{BLACK}Il valore delle attrazioni non calerà con il tempo, in modo che i visitatori non pensino improvvisamente che il costo dell'attrazione sia troppo alto.
 
 
 #############

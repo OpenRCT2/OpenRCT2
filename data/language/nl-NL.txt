@@ -4403,7 +4403,7 @@ STR_6099    :Je verbond met de server.
 STR_6100    :Je verbrak de verbinding met de server.
 STR_6101    :Attracties verliezen geen waarde
 STR_6102    :{SMALLFONT}{BLACK}Voorkomt dat attracties waarde verliezen, waardoor bezoekers er minder voor willen betalen. 
-
+STR_6103    :{SMALLFONT}{BLACK}Deze optie is niet aan te passen tijdens multiplayer.
 
 #############
 # Scenarios #
