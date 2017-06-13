@@ -2748,8 +2748,8 @@ static void window_ride_construction_update_enabled_track_pieces()
     sint32 rideType = (_currentTrackAlternative & RIDE_TYPE_ALTERNATIVE_TRACK_TYPE) ? RideData4[ride->type].alternate_type : ride->type;
     if (!gConfigInterface.select_by_track_type)
     {
-    _enabledRidePieces.ab = rideEntry->enabledTrackPieces & RideTypePossibleTrackConfigurations[rideType];
-}
+        _enabledRidePieces.ab = rideEntry->enabledTrackPieces & RideTypePossibleTrackConfigurations[rideType];
+    }
     else
     {
         if (track_type_has_ride_groups(rideType))

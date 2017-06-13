@@ -87,10 +87,10 @@ public:
         /*.naming =*/ { STR_MIDI_COASTER_GROUP, STR_MIDI_COASTER_GROUP_DESC },
     };
 
-    ride_group corkscrew_rc_groups[2] = { ride_group_corkscrew_rc, ride_group_hypercoaster };
-    ride_group junior_rc_groups[2] = { ride_group_junior_rc, ride_group_midi_coaster };
-    ride_group car_ride_groups[2] = { ride_group_car_ride, ride_group_monster_trucks };
-    ride_group twister_rc_groups[2] = { ride_group_steel_twister_rc, ride_group_hyper_twister };
+    ride_group corkscrew_rc_groups[MAX_RIDE_GROUPS_PER_RIDE_TYPE] = { ride_group_corkscrew_rc, ride_group_hypercoaster };
+    ride_group junior_rc_groups[MAX_RIDE_GROUPS_PER_RIDE_TYPE] = { ride_group_junior_rc, ride_group_midi_coaster };
+    ride_group car_ride_groups[MAX_RIDE_GROUPS_PER_RIDE_TYPE] = { ride_group_car_ride, ride_group_monster_trucks };
+    ride_group twister_rc_groups[MAX_RIDE_GROUPS_PER_RIDE_TYPE] = { ride_group_steel_twister_rc, ride_group_hyper_twister };
 
     ride_group * GetRideGroup(uint8 trackType, rct_ride_entry * rideEntry) const override
     {
