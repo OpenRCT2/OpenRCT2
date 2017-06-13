@@ -383,7 +383,7 @@ extern char gScenarioDetails[256];
 extern char gScenarioCompletedBy[32];
 extern char gScenarioSavePath[260];
 extern char gScenarioExpansionPacks[3256];
-extern sint32 gFirstTimeSave;
+extern bool gFirstTimeSaving;
 extern uint16 gSavedAge;
 extern uint32 gLastAutoSaveUpdate;
 

@@ -1777,7 +1777,7 @@ void Network::Client_Handle_MAP(NetworkConnection& connection, NetworkPacket& pa
             server_srand0_tick = 0;
             // window_network_status_open("Loaded new map from network");
             _desynchronised = false;
-            gFirstTimeSave = 1;
+            gFirstTimeSaving = true;
 
             // Notify user he is now online and which shortcut key enables chat
             network_chat_show_connected_message();
