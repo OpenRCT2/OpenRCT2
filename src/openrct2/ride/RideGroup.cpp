@@ -30,69 +30,68 @@ extern "C"
 
 class RideGroup final : public IRideGroup
 {
-private:
-    static constexpr ride_group ride_group_corkscrew_rc = {
+public:
+    ride_group ride_group_corkscrew_rc = {
         .track_type = RIDE_TYPE_CORKSCREW_ROLLER_COASTER,
         .maximum_height = 28,
         .available_track_pieces = (1ULL << TRACK_STRAIGHT) | (1ULL << TRACK_STATION_END) | (1ULL << TRACK_LIFT_HILL) | (1ULL << TRACK_FLAT_ROLL_BANKING) | (1ULL << TRACK_VERTICAL_LOOP) | (1ULL << TRACK_SLOPE) | (1ULL << TRACK_SLOPE_STEEP) | (1ULL << TRACK_SLOPE_CURVE) | (1ULL << TRACK_SLOPE_CURVE_STEEP) | (1ULL << TRACK_S_BEND) | (1ULL << TRACK_CURVE_SMALL) | (1ULL << TRACK_CURVE) | (1ULL << TRACK_HALF_LOOP) | (1ULL << TRACK_CORKSCREW) | (1ULL << TRACK_HELIX_SMALL) | (1ULL << TRACK_BRAKES) | (1ULL << TRACK_ON_RIDE_PHOTO) | (1ULL << TRACK_BLOCK_BRAKES) | (1ULL << TRACK_BOOSTER),
         .naming = { STR_CORKSCREW_RC_GROUP, STR_CORKSCREW_RC_GROUP_DESC },
     };
 
-    static constexpr ride_group ride_group_hypercoaster = {
+    ride_group ride_group_hypercoaster = {
         .track_type = RIDE_TYPE_CORKSCREW_ROLLER_COASTER,
         .maximum_height = 45,
         .available_track_pieces = (1ULL << TRACK_STRAIGHT) | (1ULL << TRACK_STATION_END) | (1ULL << TRACK_LIFT_HILL) | (1ULL << TRACK_FLAT_ROLL_BANKING) | (1ULL << TRACK_SLOPE) | (1ULL << TRACK_SLOPE_STEEP) | (1ULL << TRACK_SLOPE_CURVE) | (1ULL << TRACK_SLOPE_CURVE_STEEP) | (1ULL << TRACK_S_BEND) | (1ULL << TRACK_CURVE_SMALL) | (1ULL << TRACK_CURVE) | (1ULL << TRACK_HELIX_SMALL) | (1ULL << TRACK_BRAKES) | (1ULL << TRACK_ON_RIDE_PHOTO) | (1ULL << TRACK_BLOCK_BRAKES) | (1ULL << TRACK_SLOPE_STEEP_LONG),
         .naming = { STR_HYPERCOASTER_GROUP, STR_HYPERCOASTER_GROUP_DESC },
     };
 
-    static constexpr ride_group ride_group_car_ride = {
+    ride_group ride_group_car_ride = {
         .track_type = RIDE_TYPE_CAR_RIDE,
         .maximum_height = 6,
         .available_track_pieces = (1ULL << TRACK_STRAIGHT) | (1ULL << TRACK_STATION_END) | (1ULL << TRACK_SLOPE) | (1ULL << TRACK_CURVE_VERY_SMALL) | (1ULL << TRACK_CURVE_SMALL) | (1ULL << TRACK_SPINNING_TUNNEL),
         .naming = { STR_CAR_RIDE_GROUP, STR_CAR_RIDE_GROUP_DESC },
     };
 
-    static constexpr ride_group ride_group_monster_trucks = {
+    ride_group ride_group_monster_trucks = {
         .track_type = RIDE_TYPE_CAR_RIDE,
         .maximum_height = 18,
         .available_track_pieces = (1ULL << TRACK_STRAIGHT) | (1ULL << TRACK_STATION_END) | (1ULL << TRACK_SLOPE) | (1ULL << TRACK_SLOPE_STEEP) | (1ULL << TRACK_CURVE_VERY_SMALL) | (1ULL << TRACK_CURVE_SMALL) | (1ULL << TRACK_RAPIDS),
         .naming = { STR_MONSTER_TRUCKS_GROUP, STR_MONSTER_TRUCKS_GROUP_DESC },
     };
 
-    static constexpr ride_group ride_group_steel_twister_rc = {
+    ride_group ride_group_steel_twister_rc = {
         .track_type = RIDE_TYPE_TWISTER_ROLLER_COASTER,
         .maximum_height = 34,
         .available_track_pieces = (1ULL << TRACK_FLAT) | (1ULL << TRACK_STRAIGHT) | (1ULL << TRACK_STATION_END) | (1ULL << TRACK_LIFT_HILL) | (1ULL << TRACK_FLAT_ROLL_BANKING) | (1ULL << TRACK_VERTICAL_LOOP) | (1ULL << TRACK_SLOPE) | (1ULL << TRACK_SLOPE_STEEP) | (1ULL << TRACK_SLOPE_CURVE) | (1ULL << TRACK_SLOPE_CURVE_STEEP) | (1ULL << TRACK_S_BEND) | (1ULL << TRACK_CURVE_SMALL) | (1ULL << TRACK_CURVE) | (1ULL << TRACK_HALF_LOOP) | (1ULL << TRACK_CORKSCREW) | (1ULL << TRACK_HELIX_SMALL) | (1ULL << TRACK_BRAKES) | (1ULL << TRACK_ON_RIDE_PHOTO) | (1ULL << TRACK_SLOPE_VERTICAL) | (1ULL << TRACK_BARREL_ROLL) | (1ULL << TRACK_POWERED_LIFT) | (1ULL << TRACK_HALF_LOOP_LARGE) | (1ULL << TRACK_SLOPE_CURVE_BANKED) | (1ULL << TRACK_BLOCK_BRAKES) | (1ULL << TRACK_SLOPE_ROLL_BANKING) | (1ULL << TRACK_SLOPE_STEEP_LONG) | (1ULL << TRACK_CURVE_VERTICAL) | (1ULL << TRACK_QUARTER_LOOP) | (1ULL << TRACK_BOOSTER),
         .naming = { STR_STEEL_TWISTER_GROUP, STR_STEEL_TWISTER_GROUP_DESC },
     };
 
-    static constexpr ride_group ride_group_hyper_twister = {
+    ride_group ride_group_hyper_twister = {
         .track_type = RIDE_TYPE_TWISTER_ROLLER_COASTER,
         .maximum_height = 54,
         .available_track_pieces = (1ULL << TRACK_FLAT) | (1ULL << TRACK_STRAIGHT) | (1ULL << TRACK_STATION_END) | (1ULL << TRACK_LIFT_HILL) | (1ULL << TRACK_FLAT_ROLL_BANKING) | (1ULL << TRACK_SLOPE) | (1ULL << TRACK_SLOPE_STEEP) | (1ULL << TRACK_SLOPE_CURVE) | (1ULL << TRACK_SLOPE_CURVE_STEEP) | (1ULL << TRACK_S_BEND) | (1ULL << TRACK_CURVE_SMALL) | (1ULL << TRACK_CURVE) | (1ULL << TRACK_HELIX_SMALL) | (1ULL << TRACK_BRAKES) | (1ULL << TRACK_ON_RIDE_PHOTO) | (1ULL << TRACK_POWERED_LIFT) | (1ULL << TRACK_SLOPE_CURVE_BANKED) | (1ULL << TRACK_BLOCK_BRAKES) | (1ULL << TRACK_SLOPE_ROLL_BANKING) | (1ULL << TRACK_SLOPE_STEEP_LONG),
         .naming = { STR_HYPER_TWISTER_GROUP, STR_HYPER_TWISTER_GROUP_DESC },
     };
 
-    static constexpr ride_group ride_group_junior_rc = {
+    ride_group ride_group_junior_rc = {
         .track_type = RIDE_TYPE_JUNIOR_ROLLER_COASTER,
         .maximum_height = 12,
         .available_track_pieces = (1ULL << TRACK_STRAIGHT) | (1ULL << TRACK_STATION_END) | (1ULL << TRACK_LIFT_HILL) | (1ULL << TRACK_LIFT_HILL_CURVE) | (1ULL << TRACK_FLAT_ROLL_BANKING) | (1ULL << TRACK_SLOPE) | (1ULL << TRACK_SLOPE_LONG) | (1ULL << TRACK_SLOPE_CURVE) | (1ULL << TRACK_S_BEND) | (1ULL << TRACK_CURVE_SMALL) | (1ULL << TRACK_CURVE) | (1ULL << TRACK_HELIX_SMALL) | (1ULL << TRACK_BRAKES) | (1ULL << TRACK_BLOCK_BRAKES) | (1ULL << TRACK_BOOSTER),
         .naming = { STR_JUNIOR_RC_GROUP, STR_JUNIOR_RC_GROUP_DESC },
     };
 
-    static constexpr ride_group ride_group_midi_coaster = {
+    ride_group ride_group_midi_coaster = {
         .track_type = RIDE_TYPE_JUNIOR_ROLLER_COASTER,
         .maximum_height = 15,
         .available_track_pieces = (1ULL << TRACK_STRAIGHT) | (1ULL << TRACK_STATION_END) | (1ULL << TRACK_LIFT_HILL) | (1ULL << TRACK_LIFT_HILL_CURVE) | (1ULL << TRACK_FLAT_ROLL_BANKING) | (1ULL << TRACK_SLOPE) | (1ULL << TRACK_SLOPE_STEEP) | (1ULL << TRACK_SLOPE_LONG) | (1ULL << TRACK_SLOPE_CURVE) | (1ULL << TRACK_S_BEND) | (1ULL << TRACK_CURVE_SMALL) | (1ULL << TRACK_CURVE) | (1ULL << TRACK_HELIX_SMALL) | (1ULL << TRACK_BRAKES) | (1ULL << TRACK_BLOCK_BRAKES) | (1ULL << TRACK_BOOSTER),
         .naming = { STR_MIDI_COASTER_GROUP, STR_MIDI_COASTER_GROUP_DESC },
     };
 
-    static constexpr ride_group corkscrew_rc_groups[2] = { ride_group_corkscrew_rc, ride_group_hypercoaster };
-    static constexpr ride_group junior_rc_groups[2] = { ride_group_junior_rc, ride_group_midi_coaster };
-    static constexpr ride_group car_ride_groups[2] = { ride_group_car_ride, ride_group_monster_trucks };
-    static constexpr ride_group twister_rc_groups[2] = { ride_group_steel_twister_rc, ride_group_hyper_twister };
+    ride_group corkscrew_rc_groups[2] = { ride_group_corkscrew_rc, ride_group_hypercoaster };
+    ride_group junior_rc_groups[2] = { ride_group_junior_rc, ride_group_midi_coaster };
+    ride_group car_ride_groups[2] = { ride_group_car_ride, ride_group_monster_trucks };
+    ride_group twister_rc_groups[2] = { ride_group_steel_twister_rc, ride_group_hyper_twister };
 
-public:
     ride_group * GetRideGroup(uint8 trackType, rct_ride_entry * rideEntry) const override
     {
         switch (trackType) {
@@ -201,8 +200,7 @@ public:
     }
 };
 
-static std::unique_ptr<RideGroup> _rideGroupClass;
-
+static std::unique_ptr<RideGroup> _rideGroupClass = std::unique_ptr<RideGroup>(new RideGroup());
 IRideGroup * GetRideGroupClass()
 {
     return _rideGroupClass.get();
