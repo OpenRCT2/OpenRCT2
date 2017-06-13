@@ -34,7 +34,7 @@
 #include "ride.h"
 #include "ride_data.h"
 #include "ride_ratings.h"
-#include "RideGroup.h"
+#include "RideGroupManager.h"
 #include "station.h"
 #include "track.h"
 #include "track_data.h"
@@ -1244,7 +1244,7 @@ static money32 track_place(sint32 rideIndex, sint32 type, sint32 originX, sint32
                 uint16 maxHeight;
                 if (gConfigInterface.select_by_track_type) {
                     if (track_type_has_ride_groups(ride->type)) {
-                        ride_group * rideGroup = get_ride_group(ride->type, rideEntry);
+                        const ride_group * rideGroup = get_ride_group(ride->type, rideEntry);
                         maxHeight = rideGroup->maximum_height;
                     } else {
                         maxHeight = RideData5[ride->type].max_height;

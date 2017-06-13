@@ -624,7 +624,7 @@ static void track_list_load_designs(ride_list_item item)
         _trackDesignsCount = track_repository_get_items_for_ride(&_trackDesigns, item.type, entryPtr);
     } else {
         rct_ride_entry *rideEntry = get_ride_entry(item.entry_index);
-        ride_group * rideGroup = get_ride_group(item.type, rideEntry);
+        const ride_group * rideGroup = get_ride_group(item.type, rideEntry);
         _trackDesignsCount = track_repository_get_items_for_ride_group(&_trackDesigns, item.type, rideGroup);
     }
 }

@@ -33,7 +33,7 @@
 #include "../rct2.h"
 #include "../ride/ride.h"
 #include "../ride/ride_data.h"
-#include "../ride/RideGroup.h"
+#include "../ride/RideGroupManager.h"
 #include "../ride/track.h"
 #include "../ride/track_data.h"
 #include "../ride/track_design.h"
@@ -2630,7 +2630,7 @@ static void window_ride_vehicle_mousedown(rct_widgetindex widgetIndex, rct_windo
     rct_widget *dropdownWidget = widget - 1;
     rct_ride *ride;
     rct_ride_entry *rideEntry, *currentRideEntry;
-    ride_group * rideGroup, * currentRideGroup;
+    const ride_group * rideGroup, * currentRideGroup;
     sint32 numItems, rideEntryIndex, selectedIndex, rideTypeIterator, rideTypeIteratorMax;
     uint8 *rideEntryIndexPtr;
     bool selectionShouldBeExpanded;

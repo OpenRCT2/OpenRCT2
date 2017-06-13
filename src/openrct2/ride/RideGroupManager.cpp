@@ -15,7 +15,7 @@
 #pragma endregion
 
 #include <memory>
-#include "RideGroup.h"
+#include "RideGroupManager.h"
 #include "../config/Config.h"
 
 extern "C"
@@ -28,7 +28,7 @@ extern "C"
     #include "track_data.h"
 }
 
-class RideGroup final : public IRideGroup
+class RideGroupManager final : public IRideGroupManager
 {
 public:
     ride_group ride_group_corkscrew_rc = {
@@ -92,7 +92,7 @@ public:
     ride_group car_ride_groups[MAX_RIDE_GROUPS_PER_RIDE_TYPE] = { ride_group_car_ride, ride_group_monster_trucks };
     ride_group twister_rc_groups[MAX_RIDE_GROUPS_PER_RIDE_TYPE] = { ride_group_steel_twister_rc, ride_group_hyper_twister };
 
-    ride_group * GetRideGroup(uint8 trackType, rct_ride_entry * rideEntry) const override
+    const ride_group * GetRideGroup(uint8 trackType, rct_ride_entry * rideEntry) const override
     {
         switch (trackType) {
             case RIDE_TYPE_CORKSCREW_ROLLER_COASTER:
@@ -163,7 +163,7 @@ public:
         return rideGroup;
     }
 
-    bool RideGroupsAreEqual(ride_group * a, ride_group * b) const override
+    bool RideGroupsAreEqual(const ride_group * a, const ride_group * b) const override
     {
         if (a != NULL && b != NULL && (a->naming.name == b->naming.name && a->naming.description == b->naming.description))
         {
@@ -172,7 +172,7 @@ public:
         return false;
     }
 
-    bool RideGroupIsInvented(ride_group * rideGroup) const override
+    bool RideGroupIsInvented(const ride_group * rideGroup) const override
     {
         if (!ride_type_is_invented(rideGroup->track_type))
             return false;
@@ -187,7 +187,7 @@ public:
                 continue;
 
             rct_ride_entry *rideEntry = get_ride_entry(rideEntryIndex);
-            ride_group * rideEntryRideGroup = GetRideGroup(rideGroup->track_type, rideEntry);
+            const ride_group * rideEntryRideGroup = GetRideGroup(rideGroup->track_type, rideEntry);
 
             if (!RideGroupsAreEqual(rideGroup, rideEntryRideGroup))
                 continue;
@@ -200,40 +200,40 @@ public:
     }
 };
 
-static std::unique_ptr<RideGroup> _rideGroupClass = std::unique_ptr<RideGroup>(new RideGroup());
-IRideGroup * GetRideGroupClass()
+static std::unique_ptr<RideGroupManager> _rideGroupManager = std::unique_ptr<RideGroupManager>(new RideGroupManager());
+IRideGroupManager * GetRideGroupManager()
 {
-    return _rideGroupClass.get();
+    return _rideGroupManager.get();
 }
 
 extern "C"
 {
-    ride_group * get_ride_group(uint8 trackType, rct_ride_entry * rideEntry)
+    const ride_group * get_ride_group(uint8 trackType, rct_ride_entry * rideEntry)
     {
-        IRideGroup * rideGroupClass = GetRideGroupClass();
-        return rideGroupClass->GetRideGroup(trackType, rideEntry);
+        const IRideGroupManager * rideGroupManager = GetRideGroupManager();
+        return rideGroupManager->GetRideGroup(trackType, rideEntry);
     }
 
     bool track_type_has_ride_groups(uint8 trackType)
     {
-        IRideGroup * rideGroupClass = GetRideGroupClass();
-        return rideGroupClass->TrackTypeHasRideGroups(trackType);
+        const IRideGroupManager * rideGroupManager = GetRideGroupManager();
+        return rideGroupManager->TrackTypeHasRideGroups(trackType);
     }
 
     ride_group * ride_group_find(uint8 rideType, uint8 index)
     {
-        IRideGroup * rideGroupClass = GetRideGroupClass();
-        return rideGroupClass->RideGroupFind(rideType, index);
+        const IRideGroupManager * rideGroupManager = GetRideGroupManager();
+        return rideGroupManager->RideGroupFind(rideType, index);
     }
 
-    bool ride_groups_are_equal(ride_group * a, ride_group * b)
+    bool ride_groups_are_equal(const ride_group * a, const ride_group * b)
     {
-        IRideGroup * rideGroupClass = GetRideGroupClass();
-        return rideGroupClass->RideGroupsAreEqual(a, b);
+        const IRideGroupManager * rideGroupManager = GetRideGroupManager();
+        return rideGroupManager->RideGroupsAreEqual(a, b);
     }
-    bool ride_group_is_invented(ride_group * rideGroup)
+    bool ride_group_is_invented(const ride_group * rideGroup)
     {
-        IRideGroup * rideGroupClass = GetRideGroupClass();
-        return rideGroupClass->RideGroupIsInvented(rideGroup);
+        const IRideGroupManager * rideGroupManager = GetRideGroupManager();
+        return rideGroupManager->RideGroupIsInvented(rideGroup);
     }
 }

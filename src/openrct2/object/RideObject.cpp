@@ -20,7 +20,7 @@
 #include "../core/Util.hpp"
 #include "ObjectRepository.h"
 #include "RideObject.h"
-#include "../ride/RideGroup.h"
+#include "../ride/RideGroupManager.h"
 
 extern "C"
 {
@@ -415,7 +415,7 @@ void RideObject::SetRepositoryItem(ObjectRepositoryItem * item) const
     // Determines the ride group. Will fall back to 0 if there is none found.
     uint8 rideGroupIndex = 0;
 
-    ride_group * rideGroup = get_ride_group(rideTypeIdx, (rct_ride_entry *)&_legacyType);
+    const ride_group * rideGroup = get_ride_group(rideTypeIdx, (rct_ride_entry *)&_legacyType);
     
     // If the ride group is NULL, the track type does not have ride groups.
     if (rideGroup != NULL)

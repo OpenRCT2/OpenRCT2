@@ -34,7 +34,7 @@
 #include "../sprites.h"
 #include "../world/map.h"
 #include "../world/entrance.h"
-#include "../ride/RideGroup.h"
+#include "../ride/RideGroupManager.h"
 
 #pragma region Widgets
 
@@ -2754,7 +2754,7 @@ static void window_ride_construction_update_enabled_track_pieces()
     {
         if (track_type_has_ride_groups(rideType))
         {
-            ride_group * rideGroup = get_ride_group(rideType, rideEntry);
+            const ride_group * rideGroup = get_ride_group(rideType, rideEntry);
             _enabledRidePieces.ab = rideGroup->available_track_pieces;
         }
         else

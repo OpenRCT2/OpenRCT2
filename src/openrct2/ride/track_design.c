@@ -1452,8 +1452,8 @@ static money32 place_track_design(sint16 x, sint16 y, sint16 z, uint8 flags, uin
                 {
                     continue;
                 }
-                
-                ride_group * irg = get_ride_group(td6->type, ire);
+
+                const ride_group * irg = get_ride_group(td6->type, ire);
                 if (ride_groups_are_equal(td6RideGroup, irg))
                 {
                     entryIndex = *rei;

@@ -26,7 +26,7 @@
 #include "../rct1.h"
 #include "../ride/ride.h"
 #include "../ride/ride_data.h"
-#include "../ride/RideGroup.h"
+#include "../ride/RideGroupManager.h"
 #include "../ride/track_data.h"
 #include "../world/scenery.h"
 #include "news_item.h"
@@ -182,7 +182,6 @@ void research_finish_item(sint32 entryIndex)
 
     if (entryIndex >= 0x10000) {
         // Ride
-        rct_string_id availabilityString;
         sint32 base_ride_type = (entryIndex >> 8) & 0xFF;
         sint32 rideEntryIndex = entryIndex & 0xFF;
         rct_ride_entry *rideEntry = get_ride_entry(rideEntryIndex);
@@ -191,11 +190,12 @@ void research_finish_item(sint32 entryIndex)
         {
             bool ride_group_was_invented_before = false;
             bool track_type_was_invented_before = ride_type_is_invented(base_ride_type);
+            rct_string_id availabilityString;
 
             // Determine if the ride group this entry belongs to was invented before.
             if (gConfigInterface.select_by_track_type && track_type_has_ride_groups(base_ride_type))
             {
-                ride_group * rideGroup = get_ride_group(base_ride_type, rideEntry);
+                const ride_group * rideGroup = get_ride_group(base_ride_type, rideEntry);
                 
                 if (ride_group_is_invented(rideGroup))
                 {
@@ -229,9 +229,16 @@ void research_finish_item(sint32 entryIndex)
             {
                 availabilityString = STR_NEWS_ITEM_RESEARCH_NEW_RIDE_AVAILABLE;
 
-                set_format_arg(0, rct_string_id, ((rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME)) ?
-                               rideEntry->name : get_friendly_track_type_name(base_ride_type, rideEntry));    // Makes sure the correct track name is displayed,
-                                                                                                              // e.g. Hyper-Twister instead of Steel Twister.
+                if (rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME)
+                {
+                    set_format_arg(0, rct_string_id, rideEntry->name);
+                }
+                else
+                {
+                    // Makes sure the correct track name is displayed,
+                    // e.g. Hyper-Twister instead of Steel Twister.
+                    set_format_arg(0, rct_string_id, get_friendly_track_type_name(base_ride_type, rideEntry));
+                }
             }
             else
             {

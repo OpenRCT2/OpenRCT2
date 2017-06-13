@@ -27,7 +27,7 @@
 #include "../rct1.h"
 #include "../ride/ride.h"
 #include "../ride/ride_data.h"
-#include "../ride/RideGroup.h"
+#include "../ride/RideGroupManager.h"
 #include "../ride/track.h"
 #include "../ride/track_data.h"
 #include "../ride/track_design.h"
@@ -362,8 +362,8 @@ static ride_list_item * window_new_ride_iterate_over_ride_group(uint8 rideType, 
 
         if (track_type_has_ride_groups(rideType))
         {
-            ride_group * rideEntryRideGroup = get_ride_group(rideType, rideEntry);
-            ride_group * rideGroup = ride_group_find(rideType, rideGroupIndex);
+            const ride_group * rideEntryRideGroup = get_ride_group(rideType, rideEntry);
+            const ride_group * rideGroup = ride_group_find(rideType, rideGroupIndex);
 			
 			if (!ride_groups_are_equal(rideEntryRideGroup, rideGroup))
                 continue;
@@ -541,11 +541,11 @@ void window_new_ride_focus(ride_list_item rideItem)
     // In this case, select the first entry that belongs to the same ride group.
     if (!entryFound && gConfigInterface.select_by_track_type)
     {
-        ride_group * rideGroup = get_ride_group(rideTypeIndex, rideEntry);
+        const ride_group * rideGroup = get_ride_group(rideTypeIndex, rideEntry);
 
         for (ride_list_item *listItem = _windowNewRideListItems; listItem->type != RIDE_TYPE_NULL; listItem++) {
             if (listItem->type == rideItem.type) {
-                ride_group * irg = get_ride_group(rideTypeIndex, rideEntry);
+                const ride_group * irg = get_ride_group(rideTypeIndex, rideEntry);
 
                 if (!track_type_has_ride_groups(rideTypeIndex) || ride_groups_are_equal(rideGroup, irg)) {
                     _windowNewRideHighlightedItem[0] = rideItem;
@@ -919,7 +919,7 @@ static sint32 get_num_track_designs(ride_list_item item)
 
     if (rideEntry != NULL && track_type_has_ride_groups(item.type))
     {
-        ride_group * rideGroup = get_ride_group(item.type, rideEntry);
+        const ride_group * rideGroup = get_ride_group(item.type, rideEntry);
         return (sint32)track_repository_get_count_for_ride_group(item.type, rideGroup);
     }
 

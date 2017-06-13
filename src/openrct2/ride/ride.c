@@ -48,7 +48,7 @@
 #include "cable_lift.h"
 #include "ride.h"
 #include "ride_data.h"
-#include "RideGroup.h"
+#include "RideGroupManager.h"
 #include "station.h"
 #include "track.h"
 #include "track_data.h"
@@ -6169,7 +6169,7 @@ static void ride_set_name_to_track_default(rct_ride *ride, rct_ride_entry * ride
         name_args.type_name = STR_HYPER_TWISTER_GROUP;
     }
     else if (track_type_has_ride_groups(ride->type)) {
-        ride_group * rideGroup = get_ride_group(ride->type, rideEntry);
+        const ride_group * rideGroup = get_ride_group(ride->type, rideEntry);
         name_args.type_name = rideGroup->naming.name;
     } else {
         name_args.type_name = RideNaming[ride->type].name;
@@ -6225,7 +6225,7 @@ rct_string_id get_friendly_track_type_name(uint8 trackType, rct_ride_entry * rid
         }
     } else {
         if (track_type_has_ride_groups(trackType)) {
-            ride_group * rideGroup = get_ride_group(trackType, rideEntry);
+            const ride_group * rideGroup = get_ride_group(trackType, rideEntry);
             return rideGroup->naming.name;
         } else {
             return RideNaming[trackType].name;
@@ -6244,7 +6244,7 @@ rct_ride_name get_ride_naming(uint8 rideType, rct_ride_entry * rideEntry)
     }
 
     if (track_type_has_ride_groups(rideType)) {
-        ride_group * rideGroup = get_ride_group(rideType, rideEntry);
+        const ride_group * rideGroup = get_ride_group(rideType, rideEntry);
         return rideGroup->naming;
     }
     else if (!(rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME) || rideTypeShouldLoseSeparateFlag(rideEntry)) {

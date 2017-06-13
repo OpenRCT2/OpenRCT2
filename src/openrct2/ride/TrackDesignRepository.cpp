@@ -24,7 +24,7 @@
 #include "../core/FileScanner.h"
 #include "../core/FileStream.hpp"
 #include "../core/Path.hpp"
-#include "RideGroup.h"
+#include "RideGroupManager.h"
 #include "../core/String.hpp"
 #include "../object/ObjectRepository.h"
 #include "../object/RideObject.h"
@@ -105,9 +105,9 @@ public:
     size_t GetCountForObjectEntry(uint8 rideType, const std::string &entry) const override
     {
         size_t count = 0;
-        IObjectRepository * repo = GetObjectRepository();
+        const IObjectRepository * repo = GetObjectRepository();
 
-        for (const auto item : _items)
+        for (const auto &item : _items)
         {
             if (item.RideType != rideType)
             {
@@ -131,12 +131,12 @@ public:
         return count;
     }
 
-    size_t GetCountForRideGroup(uint8 rideType, ride_group * rideGroup) const override
+    size_t GetCountForRideGroup(uint8 rideType, const ride_group * rideGroup) const override
     {
         size_t count = 0;
-        IObjectRepository * repo = GetObjectRepository();
+        const IObjectRepository * repo = GetObjectRepository();
 
-        for (const auto item : _items)
+        for (const auto &item : _items)
         {
             if (item.RideType != rideType)
             {
@@ -165,9 +165,9 @@ public:
     size_t GetItemsForObjectEntry(track_design_file_ref * * outRefs, uint8 rideType, const std::string &entry) const override
     {
         std::vector<track_design_file_ref> refs;
-        IObjectRepository * repo = GetObjectRepository();
+        const IObjectRepository * repo = GetObjectRepository();
 
-        for (const auto item : _items)
+        for (const auto &item : _items)
         {
             if (item.RideType != rideType)
             {
@@ -196,12 +196,12 @@ public:
         return refs.size();
     }
 
-    size_t GetItemsForRideGroup(track_design_file_ref **outRefs, uint8 rideType, ride_group * rideGroup) const override
+    size_t GetItemsForRideGroup(track_design_file_ref **outRefs, uint8 rideType, const ride_group * rideGroup) const override
     {
         std::vector<track_design_file_ref> refs;
-        IObjectRepository * repo = GetObjectRepository();
+        const IObjectRepository * repo = GetObjectRepository();
 
-        for (const auto item : _items)
+        for (const auto &item : _items)
         {
             if (item.RideType != rideType)
             {
@@ -481,7 +481,7 @@ extern "C"
         return repo->GetCountForObjectEntry(rideType, String::ToStd(entry));
     }
 
-    size_t track_repository_get_count_for_ride_group(uint8 rideType, ride_group * rideGroup)
+    size_t track_repository_get_count_for_ride_group(uint8 rideType, const ride_group * rideGroup)
     {
         ITrackDesignRepository * repo = GetTrackDesignRepository();
         return repo->GetCountForRideGroup(rideType, rideGroup);
@@ -493,7 +493,7 @@ extern "C"
         return repo->GetItemsForObjectEntry(outRefs, rideType, String::ToStd(entry));
     }
 
-    size_t track_repository_get_items_for_ride_group(track_design_file_ref * * outRefs, uint8 rideType, ride_group * rideGroup)
+    size_t track_repository_get_items_for_ride_group(track_design_file_ref * * outRefs, uint8 rideType, const ride_group * rideGroup)
     {
         ITrackDesignRepository * repo = GetTrackDesignRepository();
         return repo->GetItemsForRideGroup(outRefs, rideType, rideGroup);

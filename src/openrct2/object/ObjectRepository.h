@@ -63,7 +63,6 @@ typedef struct ObjectRepositoryItem
         {
             uint16             NumThemeObjects;
             rct_object_entry * ThemeObjects;
-            uint8              Pad;
         };
     };
 } ObjectRepositoryItem;

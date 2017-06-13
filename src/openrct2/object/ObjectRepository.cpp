@@ -480,7 +480,6 @@ private:
             {
                 item.ThemeObjects[i] = stream->ReadValue<rct_object_entry>();
             }
-            item.Pad = stream->ReadValue<uint8>();
             break;
         }
         return item;
@@ -511,7 +510,6 @@ private:
             {
                 stream->WriteValue<rct_object_entry>(item.ThemeObjects[i]);
             }
-            stream->WriteValue<uint8>(0);
             break;
         }
     }

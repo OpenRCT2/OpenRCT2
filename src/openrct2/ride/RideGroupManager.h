@@ -36,25 +36,25 @@ typedef struct ride_group {
 } ride_group;
 
 #ifdef __cplusplus
-interface IRideGroup
+interface IRideGroupManager
 {
-    virtual ride_group * GetRideGroup(uint8 trackType, rct_ride_entry * rideEntry) const abstract;
+    virtual const ride_group * GetRideGroup(uint8 trackType, rct_ride_entry * rideEntry) const abstract;
     virtual bool TrackTypeHasRideGroups(uint8 trackType) const abstract;
     virtual ride_group * RideGroupFind(uint8 rideType, uint8 index) const abstract;
-    virtual bool RideGroupsAreEqual(ride_group * a, ride_group * b) const abstract;
-    virtual bool RideGroupIsInvented(ride_group * rideGroup) const abstract;
+    virtual bool RideGroupsAreEqual(const ride_group * a, const ride_group * b) const abstract;
+    virtual bool RideGroupIsInvented(const ride_group * rideGroup) const abstract;
 };
 
-IRideGroup * GetRideGroupClass();
+IRideGroupManager * GetRideGroupManager();
 
 extern "C"
 {
 #endif
-    ride_group * get_ride_group(uint8 trackType, rct_ride_entry * rideEntry);
+    const ride_group * get_ride_group(uint8 trackType, rct_ride_entry * rideEntry);
     bool track_type_has_ride_groups(uint8 trackType);
     ride_group * ride_group_find(uint8 rideType, uint8 index);
-    bool ride_groups_are_equal(ride_group * a, ride_group * b);
-    bool ride_group_is_invented(ride_group * rideGroup);
+    bool ride_groups_are_equal(const ride_group * a, const ride_group * b);
+    bool ride_group_is_invented(const ride_group * rideGroup);
 #ifdef __cplusplus
 }
 #endif
