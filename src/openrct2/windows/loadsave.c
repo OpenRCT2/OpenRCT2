@@ -761,7 +761,7 @@ static void window_loadsave_select(rct_window *w, const char *path)
         save_path(&gConfigGeneral.last_save_game_directory, pathBuffer);
         if (scenario_save(pathBuffer, gConfigGeneral.save_plugin_data ? 1 : 0)) {
             safe_strcpy(gScenarioSavePath, pathBuffer, MAX_PATH);
-            gFirstTimeSave = 0;
+            gFirstTimeSaving = false;
 
             window_close_by_class(WC_LOADSAVE);
             gfx_invalidate_screen();

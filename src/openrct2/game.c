@@ -1098,7 +1098,7 @@ bool game_load_save(const utf8 *path)
     } else if (extension_type == FILE_EXTENSION_SV4) {
         result = rct1_load_saved_game(path);
         if (result)
-            gFirstTimeSave = 1;
+            gFirstTimeSaving = true;
     }
 
     if (result) {
@@ -1189,7 +1189,7 @@ void reset_all_sprite_quadrant_placements()
 
 void save_game()
 {
-    if (!gFirstTimeSave) {
+    if (!gFirstTimeSaving) {
         log_verbose("Saving to %s", gScenarioSavePath);
         if (scenario_save(gScenarioSavePath, 0x80000000 | (gConfigGeneral.save_plugin_data ? 1 : 0))) {
             log_verbose("Saved to %s", gScenarioSavePath);
@@ -1374,7 +1374,7 @@ bool game_load_save_or_scenario(const utf8 * path)
 static void game_load_or_quit_no_save_prompt_callback(sint32 result, const utf8 * path)
 {
     if (result == MODAL_RESULT_OK && game_load_save_or_scenario(path)) {
-        gFirstTimeSave = 0;
+        gFirstTimeSaving = false;
     }
 }
 
@@ -1402,7 +1402,7 @@ void game_load_or_quit_no_save_prompt()
             input_set_flag(INPUT_FLAG_5, false);
         }
         gGameSpeed = 1;
-        gFirstTimeSave = 1;
+        gFirstTimeSaving = true;
         title_load();
         break;
     default:

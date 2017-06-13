@@ -333,7 +333,7 @@ bool rct2_open_file(const char *path)
     if (_stricmp(extension, "sv6") == 0) {
         safe_strcpy((char*)gRCT2AddressSavedGamesPath2, path, sizeof(gRCT2AddressSavedGamesPath2));
         if (game_load_save(path)) {
-            gFirstTimeSave = 0;
+            gFirstTimeSaving = false;
             return true;
         }
     } else if (_stricmp(extension, "sc6") == 0) {

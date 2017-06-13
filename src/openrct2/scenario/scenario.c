@@ -66,7 +66,7 @@ char gScenarioDetails[256];
 char gScenarioCompletedBy[32];
 char gScenarioSavePath[MAX_PATH];
 char gScenarioExpansionPacks[3256];
-sint32 gFirstTimeSave = 1;
+bool gFirstTimeSaving = true;
 uint16 gSavedAge;
 uint32 gLastAutoSaveUpdate = 0;
 
@@ -117,7 +117,7 @@ sint32 scenario_load_and_play_from_path(const char *path)
     }
     _scenarioFileName = path_get_filename(_scenarioPath);
 
-    gFirstTimeSave = 1;
+    gFirstTimeSaving = true;
 
     log_verbose("starting scenario, %s", path);
     scenario_begin();
