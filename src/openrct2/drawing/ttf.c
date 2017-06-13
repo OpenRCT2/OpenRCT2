@@ -19,6 +19,7 @@
 #include <ft2build.h>
 #include FT_FREETYPE_H
 
+#include "../localisation/localisation.h"
 #include "../platform/platform.h"
 #include "../rct2.h"
 #include "ttf.h"
@@ -286,25 +287,100 @@ bool ttf_provides_glyph(const TTFFont * font, codepoint_t codepoint)
     return FT_Get_Char_Index(font->face, codepoint) != 0;
 }
 
-static void ttf_get_size(TTFFont * font, const utf8 * text, sint32 * width, sint32 * height)
+static void ttf_get_size(TTFFont * font, const utf8 * text, sint32 * outWidth, sint32 * outHeight)
 {
-    *width = 128;
-    *height = 32;
+    sint32 width = 0;
+    sint32 height = 0;
+
+    FT_GlyphSlot slot = font->face->glyph;
+    const utf8 * ch = text;
+    codepoint_t cp;
+    while ((cp = utf8_get_next(ch, &ch)) != 0)
+    {
+        FT_Error error = FT_Load_Char(font->face, cp, FT_LOAD_RENDER);
+        if (error == 0)
+        {
+            FT_Bitmap * bmp = &slot->bitmap;
+            width += slot->advance.x >> 6;
+            height = max(height, (sint32)bmp->rows);
+        }
+    }
+
+    *outWidth = width;
+    *outHeight = height;
+}
+
+static void ttf_render_char(void * dst, sint32 dstX, sint32 dstY, sint32 dstMaxWidth, sint32 dstMaxHeight, sint32 dstPitch,
+                            const void * src, sint32 srcX, sint32 srcY, sint32 srcWidth, sint32 srcHeight, sint32 srcPitch)
+{
+    for (sint32 y = 0; y < srcHeight; y++)
+    {
+        for (sint32 x = 0; x < srcWidth; x++)
+        {
+            sint32 dstX2 = dstX + x;
+            sint32 dstY2 = dstY + y;
+            if (dstX2 >= 0 && dstY2 >= 0 && dstX2 < dstMaxWidth && dstY2 < dstMaxHeight)
+            {
+                uint8 * srcB = (uint8 *)((uintptr_t)src + x + (y * srcPitch));
+                uint8 * dstB = (uint8 *)((uintptr_t)dst + dstX2 + (dstY2 * dstPitch));
+                *dstB = *srcB;
+            }
+        }
+    }
+
+    // sint32 cols = min(srcWidth, dstMaxWidth - srcX);
+    // sint32 rows = min(srcHeight, dstMaxHeight - dstY);
+    // for (sint32 y = 0; y < rows; y++)
+    // {
+    //     uintptr_t srcI = (uintptr_t)src + (y * srcPitch);
+    //     uintptr_t dstI = (uintptr_t)dst + ((dstY + y) * dstPitch) + dstX;
+    // 
+    //     assert(srcI >= (uintptr_t)src && srcI < ((uintptr_t)src + (srcWidth * srcHeight)));
+    //     assert(dstI >= (uintptr_t)dst && dstI < ((uintptr_t)dst + (dstMaxWidth * dstMaxHeight)));
+    //     memcpy((void *)dstI, (const void *)srcI, cols);
+    // }
 }
 
 static TTFSurface * ttf_render(TTFFont * font, const utf8 * text)
 {
-    sint32 width = 128;
-    sint32 height = 32;
+    // Calculate the size
+    sint32 width;
+    sint32 height;
+    ttf_get_size(font, text, &width, &height);
+    sint32 pitch = width;
+
+    // Allocate pixels
     uint8 * pixels = (uint8 *)malloc(width * height);
     memset(pixels, 0, width * height);
+
+    // Draw to them
+    sint32 left = 0;
+    sint32 top = 0;
+    FT_GlyphSlot slot = font->face->glyph;
+    const utf8 * ch = text;
+    codepoint_t cp;
+    while ((cp = utf8_get_next(ch, &ch)) != 0)
+    {
+        FT_Error error = FT_Load_Char(font->face, cp, FT_LOAD_RENDER);
+        if (error == 0)
+        {
+            FT_Bitmap * bmp = &slot->bitmap;
+
+            ttf_render_char(pixels,
+                            left,
+                            top,
+                            width, height, pitch,
+                            bmp->buffer, 0, 0, bmp->width, bmp->rows, bmp->pitch);
+            left += slot->advance.x >> 6;
+        }
+    }
 
     TTFSurface * surface = (TTFSurface *)malloc(sizeof(TTFSurface));
     surface->w = width;
     surface->h = height;
-    surface->pitch = width;
+    surface->pitch = pitch;
     surface->pixels = pixels;
-    return NULL;
+    return surface;
 }
 
 static void ttf_free_surface(TTFSurface * surface)
