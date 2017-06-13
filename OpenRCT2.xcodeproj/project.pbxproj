@@ -1639,7 +1639,7 @@
 				D497D0791C20FD52002BF46A /* Products */,
 			);
 			sourceTree = "<group>";
-			usesTabs = 1;
+			usesTabs = 0;
 		};
 		D497D0791C20FD52002BF46A /* Products */ = {
 			isa = PBXGroup;
