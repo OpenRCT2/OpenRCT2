@@ -1095,6 +1095,8 @@ bool game_load_save(const utf8 *path)
     bool result = false;
     if (extension_type == FILE_EXTENSION_SV6) {
         result = game_load_sv6_path(path);
+        if (result)
+            gFirstTimeSaving = false;
     } else if (extension_type == FILE_EXTENSION_SV4) {
         result = rct1_load_saved_game(path);
         if (result)
@@ -1373,8 +1375,8 @@ bool game_load_save_or_scenario(const utf8 * path)
 
 static void game_load_or_quit_no_save_prompt_callback(sint32 result, const utf8 * path)
 {
-    if (result == MODAL_RESULT_OK && game_load_save_or_scenario(path)) {
-        gFirstTimeSaving = false;
+    if (result == MODAL_RESULT_OK) {
+        game_load_save_or_scenario(path);
     }
 }
 
