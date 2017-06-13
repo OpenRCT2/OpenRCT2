@@ -434,7 +434,7 @@ void RideObject::SetRepositoryItem(ObjectRepositoryItem * item) const
         }
     }
     
-    item->RideFlags = (rideGroupIndex << 2) | flags;
+    item->RideGroupIndex = rideGroupIndex;
 }
 
 void RideObject::ReadLegacyVehicle(IReadObjectContext * context, IStream * stream, rct_ride_entry_vehicle * vehicle)
