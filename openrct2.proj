@@ -16,7 +16,6 @@
   <PropertyGroup>
     <Configuration Condition="'$(Configuration)'==''">Debug</Configuration>
     <Platform Condition="'$(PLATFORM)'==''">x64</Platform>
-    <TestConfig Condition="'$(Configuration)'=='DebugTests' OR '$(Configuration)'=='ReleaseTests'">true</TestConfig>
     <GIT_COMMIT_SHA1_SHORT Condition="'$(GIT_COMMIT_SHA1)'!=''">$(GIT_COMMIT_SHA1.Substring(0, 7))</GIT_COMMIT_SHA1_SHORT>
 
     <Version>0.0.8</Version>
@@ -76,8 +75,8 @@
   <ItemGroup>
     <g2Inputs Include="$(RootDir)resources\g2\*" />
     <SignItems Include="$(OutputExe)" />
-    <SignItems Include="$(OutputDll)" />
     <SignItems Include="$(OutputCom)" />
+    <SignItems Include="$(OutputDll)" />
   </ItemGroup>
 
   <ItemGroup Label="Symbol Items">
@@ -143,7 +142,6 @@
       <SlnProperties>$(SlnProperties);Configuration=$(Configuration)</SlnProperties>
     </PropertyGroup>
     <ItemGroup>
-      <CleanItems Condition="'$(Platform)'=='Win32'" Include="$(OutputExe)" />
       <CleanItems Include="$(OutputCom)" />
       <CleanItems Include="$(g2Output)" />
       <CleanItems Include="$(ArtifactsDir)openrct2-installer-$(Configuration)-$(Platform)*.exe" />
@@ -162,7 +160,6 @@
       <BuildString Condition="'$(GIT_BRANCH)'!=''">$(BuildString) ($(GIT_BRANCH))</BuildString>
     </PropertyGroup>
     <ItemGroup>
-      <CopyItems Condition="'$(Platform)'=='Win32'" Include="$(RootDir)openrct2.exe" />
       <DataItems Include="$(RootDir)data\**\*" />
     </ItemGroup>
     <Message Condition="'$(BuildString)'!=''" Text="Building $(BuildString)" Importance="high" />
