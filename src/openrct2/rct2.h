@@ -164,7 +164,6 @@ extern uint8 gSavePromptMode;
 
 extern char gRCT2AddressAppPath[];
 extern char gRCT2AddressSavedGamesPath[];
-extern char gRCT2AddressSavedGamesPath2[];
 extern char gRCT2AddressScenariosPath[];
 extern char gRCT2AddressLandscapesPath[];
 extern char gRCT2AddressObjectDataPath[];
