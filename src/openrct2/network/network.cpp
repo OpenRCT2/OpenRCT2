@@ -388,6 +388,7 @@ uint8 Network::GetPlayerID()
 void Network::Update()
 {
     _closeLock = true;
+    assert(gInUpdateCode == false);
 
     switch (GetMode()) {
     case NETWORK_MODE_SERVER:

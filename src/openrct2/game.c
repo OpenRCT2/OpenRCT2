@@ -345,11 +345,6 @@ void game_update()
 
 void game_logic_update()
 {
-
-    ///////////////////////////
-    gInUpdateCode = true;
-    ///////////////////////////
-
     network_update();
 
     if (network_get_mode() == NETWORK_MODE_CLIENT && network_get_status() == NETWORK_STATUS_CONNECTED && network_get_authstatus() == NETWORK_AUTH_OK) {
@@ -359,6 +354,12 @@ void game_logic_update()
             return;
         }
     }
+
+    ///////////////////////////
+    // network_update() when downloaded a map will call game_init_all(), which
+    // leaves gInUpdateCode false. Don't call network_update() when in update code.
+    gInUpdateCode = true;
+    ///////////////////////////
 
     gScreenAge++;
     if (gScreenAge == 0)
