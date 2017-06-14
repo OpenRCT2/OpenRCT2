@@ -292,11 +292,11 @@ rct_scenery_set_entry *get_scenery_group_entry(sint32 entryIndex)
 sint32 get_scenery_id_from_entry_index(uint8 objectType, sint32 entryIndex)
 {
     switch (objectType) {
-    case OBJECT_TYPE_SMALL_SCENERY: return entryIndex;
-    case OBJECT_TYPE_PATH_BITS:     return entryIndex + 0x100;
-    case OBJECT_TYPE_WALLS:         return entryIndex + 0x200;
-    case OBJECT_TYPE_LARGE_SCENERY: return entryIndex + 0x300;
-    case OBJECT_TYPE_BANNERS:       return entryIndex + 0x400;
+    case OBJECT_TYPE_SMALL_SCENERY: return entryIndex + SCENERY_SMALL_SCENERY_ID_MIN;
+    case OBJECT_TYPE_PATH_BITS:     return entryIndex + SCENERY_PATH_SCENERY_ID_MIN;
+    case OBJECT_TYPE_WALLS:         return entryIndex + SCENERY_WALLS_ID_MIN;
+    case OBJECT_TYPE_LARGE_SCENERY: return entryIndex + SCENERY_LARGE_SCENERY_ID_MIN;
+    case OBJECT_TYPE_BANNERS:       return entryIndex + SCENERY_BANNERS_ID_MIN;
     default:                        return -1;
     }
 }
