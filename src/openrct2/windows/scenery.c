@@ -259,7 +259,7 @@ void init_scenery()
     }
 
     // small scenery
-    for (uint16 sceneryId = 0; sceneryId < 0xFC; sceneryId++) {
+    for (uint16 sceneryId = SCENERY_SMALL_SCENERY_ID_MIN; sceneryId < SCENERY_SMALL_SCENERY_ID_MAX; sceneryId++) {
         if (get_small_scenery_entry(sceneryId) == (rct_scenery_entry *)-1)
             continue;
 
@@ -268,8 +268,8 @@ void init_scenery()
     }
 
     // large scenery
-    for (sint32 sceneryId = 0x300; sceneryId < 0x380; sceneryId++) {
-        sint32 largeSceneryIndex = sceneryId - 0x300;
+    for (sint32 sceneryId = SCENERY_LARGE_SCENERY_ID_MIN; sceneryId < SCENERY_LARGE_SCENERY_ID_MAX; sceneryId++) {
+        sint32 largeSceneryIndex = sceneryId - SCENERY_LARGE_SCENERY_ID_MIN;
 
         if (get_large_scenery_entry(largeSceneryIndex) == (rct_scenery_entry *)-1)
             continue;
@@ -279,8 +279,8 @@ void init_scenery()
     }
 
     // walls
-    for (sint32 sceneryId = 0x200; sceneryId < 0x280; sceneryId++) {
-        sint32 wallSceneryIndex = sceneryId - 0x200;
+    for (sint32 sceneryId = SCENERY_WALLS_ID_MIN; sceneryId < SCENERY_WALLS_ID_MAX; sceneryId++) {
+        sint32 wallSceneryIndex = sceneryId - SCENERY_WALLS_ID_MIN;
 
         if (get_wall_entry(wallSceneryIndex) == (rct_scenery_entry *)-1)
             continue;
@@ -290,8 +290,8 @@ void init_scenery()
     }
 
     // banners
-    for (sint32 sceneryId = 0x400; sceneryId < 0x420; sceneryId++) {
-        sint32 bannerIndex = sceneryId - 0x400;
+    for (sint32 sceneryId = SCENERY_BANNERS_ID_MIN; sceneryId < SCENERY_BANNERS_ID_MAX; sceneryId++) {
+        sint32 bannerIndex = sceneryId - SCENERY_BANNERS_ID_MIN;
 
         if (get_banner_entry(bannerIndex) == (rct_scenery_entry *)-1)
             continue;
@@ -301,8 +301,8 @@ void init_scenery()
     }
 
     // path bits
-    for (sint32 sceneryId = 0x100; sceneryId < 0x10F; sceneryId++) {
-        sint32 pathBitIndex = sceneryId - 0x100;
+    for (sint32 sceneryId = SCENERY_PATH_SCENERY_ID_MIN; sceneryId < SCENERY_PATH_SCENERY_ID_MAX; sceneryId++) {
+        sint32 pathBitIndex = sceneryId - SCENERY_PATH_SCENERY_ID_MIN;
 
         if (get_footpath_item_entry(pathBitIndex) == (rct_scenery_entry *)-1)
             continue;
@@ -1134,24 +1134,24 @@ void window_scenery_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 sc
         rct_scenery_entry* sceneryEntry;
         rct_drawpixelinfo clipdpi;
         if (clip_drawpixelinfo(&clipdpi, dpi, left + 1, top + 1, SCENERY_BUTTON_WIDTH - 2, SCENERY_BUTTON_HEIGHT - 2)) {
-            if (currentSceneryGlobalId >= 0x400) {
-                sceneryEntry = get_banner_entry(currentSceneryGlobalId - 0x400);
+            if (currentSceneryGlobalId >= SCENERY_BANNERS_ID_MIN) {
+                sceneryEntry = get_banner_entry(currentSceneryGlobalId - SCENERY_BANNERS_ID_MIN);
                 uint32 imageId = sceneryEntry->image + gWindowSceneryRotation * 2;
                 imageId |= (gWindowSceneryPrimaryColour << 19) | 0x20000000;
 
                 gfx_draw_sprite(&clipdpi, imageId, 0x21, 0x28, w->colours[1]);
                 gfx_draw_sprite(&clipdpi, imageId + 1, 0x21, 0x28, w->colours[1]);
             }
-            else if (currentSceneryGlobalId >= 0x300) {
-                sceneryEntry = get_large_scenery_entry(currentSceneryGlobalId - 0x300);
+            else if (currentSceneryGlobalId >= SCENERY_LARGE_SCENERY_ID_MIN) {
+                sceneryEntry = get_large_scenery_entry(currentSceneryGlobalId - SCENERY_LARGE_SCENERY_ID_MIN);
                 uint32 imageId = sceneryEntry->image + gWindowSceneryRotation;
                 imageId |= (gWindowSceneryPrimaryColour << 19) | 0x20000000;
                 imageId |= (gWindowScenerySecondaryColour << 24) | 0x80000000;
 
                 gfx_draw_sprite(&clipdpi, imageId, 0x21, 0, w->colours[1]);
             }
-            else if (currentSceneryGlobalId >= 0x200) {
-                sceneryEntry = get_wall_entry(currentSceneryGlobalId - 0x200);
+            else if (currentSceneryGlobalId >= SCENERY_WALLS_ID_MIN) {
+                sceneryEntry = get_wall_entry(currentSceneryGlobalId - SCENERY_WALLS_ID_MIN);
                 uint32 imageId = sceneryEntry->image;
                 uint8 tertiaryColour = w->colours[1];
                 uint16 spriteTop = (sceneryEntry->wall.height * 2) + 0x32;
@@ -1185,8 +1185,8 @@ void window_scenery_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 sc
                     }
                 }
             }
-            else if (currentSceneryGlobalId >= 0x100) {
-                sceneryEntry = get_footpath_item_entry(currentSceneryGlobalId - 0x100);
+            else if (currentSceneryGlobalId >= SCENERY_PATH_SCENERY_ID_MIN) {
+                sceneryEntry = get_footpath_item_entry(currentSceneryGlobalId - SCENERY_PATH_SCENERY_ID_MIN);
                 uint32 imageId = sceneryEntry->image;
 
                 gfx_draw_sprite(&clipdpi, imageId, 0x0B, 0x10, w->colours[1]);
