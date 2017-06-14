@@ -551,7 +551,7 @@ void research_populate_list_random()
         sint32 researched = (scenario_rand() & 0xFF) > 128;
         for (sint32 j = 0; j < MAX_RIDE_TYPES_PER_RIDE_ENTRY; j++) {
             sint32 rideType = rideEntry->ride_type[j];
-            if (rideType != 255)
+            if (rideType != RIDE_TYPE_NULL)
                 research_insert(researched, 0x10000 | (rideType << 8) | i, rideEntry->category[0]);
         }
     }
@@ -577,7 +577,7 @@ void research_populate_list_researched()
 
         for (sint32 j = 0; j < MAX_RIDE_TYPES_PER_RIDE_ENTRY; j++) {
             sint32 rideType = rideEntry->ride_type[j];
-            if (rideType != 255)
+            if (rideType != RIDE_TYPE_NULL)
                 research_insert(true, 0x10000 | (rideType << 8) | i, rideEntry->category[0]);
         }
     }
@@ -639,7 +639,7 @@ void research_insert_ride_entry(uint8 entryIndex, bool researched)
     uint8 category = rideEntry->category[0];
     for (sint32 i = 0; i < MAX_RIDE_TYPES_PER_RIDE_ENTRY; i++) {
         uint8 rideType = rideEntry->ride_type[i];
-        if (rideType != 255) {
+        if (rideType != RIDE_TYPE_NULL) {
             research_insert(researched, 0x10000 | (rideType << 8) | entryIndex, category);
         }
     }

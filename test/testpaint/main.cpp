@@ -466,7 +466,7 @@ int main(int argc, char *argv[]) {
     }
 
     for (uint8 rideType = 0; rideType < RIDE_TYPE_COUNT; rideType++) {
-        if (specificRideType != 0xFF && rideType != specificRideType) {
+        if (specificRideType != RIDE_TYPE_NULL && rideType != specificRideType) {
             continue;
         }
 

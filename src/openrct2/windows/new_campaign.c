@@ -208,8 +208,12 @@ static void window_new_campaign_get_shop_items()
     //
     numItems = 0;
     for (i = 0; i < 64; i++)
+    {
         if (items & (1LL << i))
+        {
             window_new_campaign_shop_items[numItems++] = i;
+        }
+    }
     window_new_campaign_shop_items[numItems] = 255;
 }
 

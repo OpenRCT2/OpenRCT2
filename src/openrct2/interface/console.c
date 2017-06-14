@@ -1129,7 +1129,7 @@ static sint32 cc_load_object(const utf8 **argv, sint32 argc) {
 
             for (sint32 j = 0; j < MAX_RIDE_TYPES_PER_RIDE_ENTRY; j++) {
                 rideType = rideEntry->ride_type[j];
-                if (rideType != 255)
+                if (rideType != RIDE_TYPE_NULL)
                     research_insert(true, 0x10000 | (rideType << 8) | groupIndex, rideEntry->category[0]);
             }
 
