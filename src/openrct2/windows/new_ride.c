@@ -426,7 +426,7 @@ static void window_new_ride_scroll_to_focused_ride(rct_window *w)
     sint32 focusRideType = _windowNewRideHighlightedItem[_windowNewRideCurrentTab].ride_type_and_entry;
     sint32 count = 0, row = 0;
     ride_list_item *listItem = _windowNewRideListItems;
-    while (listItem->type != 255 || listItem->entry_index != 255) {
+    while (listItem->type != RIDE_TYPE_NULL || listItem->entry_index != 255) {
         if (listItem->type == focusRideType) {
             row = count / 5;
             break;
@@ -730,7 +730,7 @@ static void window_new_ride_scrollgetsize(rct_window *w, sint32 scrollIndex, sin
     ride_list_item *listItem = _windowNewRideListItems;
 
     sint32 count = 0;
-    while (listItem->type != 255 || listItem->entry_index != 255) {
+    while (listItem->type != RIDE_TYPE_NULL || listItem->entry_index != 255) {
         count++;
         listItem++;
     }
@@ -746,7 +746,7 @@ static void window_new_ride_scrollmousedown(rct_window *w, sint32 scrollIndex, s
     ride_list_item item;
 
     item = window_new_ride_scroll_get_ride_list_item_at(w, x, y);
-    if (item.type == 255 && item.entry_index == 255)
+    if (item.type == RIDE_TYPE_NULL && item.entry_index == 255)
         return;
 
     _windowNewRideHighlightedItem[_windowNewRideCurrentTab] = item;
@@ -821,7 +821,7 @@ static void window_new_ride_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
     if (_windowNewRideCurrentTab != WINDOW_NEW_RIDE_PAGE_RESEARCH) {
         ride_list_item item = { .ride_type_and_entry = w->new_ride.highlighted_ride_id };
-        if (item.type != 255 || item.entry_index != 255)
+        if (item.type != RIDE_TYPE_NULL || item.entry_index != 255)
             window_new_ride_paint_ride_information(w, dpi, item, w->x + 3, w->y + w->height - 52, w->width - 6);
     } else {
         window_research_development_page_paint(w, dpi, WIDX_CURRENTLY_IN_DEVELOPMENT_GROUP);
@@ -842,7 +842,7 @@ static void window_new_ride_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, s
     sint32 x = 1;
     sint32 y = 1;
     ride_list_item *listItem = _windowNewRideListItems;
-    while (listItem->type != 255 || listItem->entry_index != 255) {
+    while (listItem->type != RIDE_TYPE_NULL || listItem->entry_index != 255) {
         rct_ride_entry *rideEntry;
         // Draw flat button rectangle
         sint32 flags = 0;
@@ -894,7 +894,7 @@ static ride_list_item window_new_ride_scroll_get_ride_list_item_at(rct_window *w
     sint32 index = column + (row * 5);
 
     ride_list_item *listItem = _windowNewRideListItems;
-    while (listItem->type != 255 || listItem->entry_index != 255) {
+    while (listItem->type != RIDE_TYPE_NULL || listItem->entry_index != 255) {
         if (index-- == 0)
             return *listItem;
         listItem++;
@@ -995,7 +995,7 @@ static void window_new_ride_paint_ride_information(rct_window *w, rct_drawpixeli
 static void window_new_ride_select(rct_window *w)
 {
     ride_list_item item = { .ride_type_and_entry = w->new_ride.selected_ride_id };
-    if (item.type == 255)
+    if (item.type == RIDE_TYPE_NULL)
         return;
 
     window_close(w);

@@ -498,7 +498,7 @@ private:
             {
                 stream->WriteValue<uint8>(item.RideCategory[i]);
             }
-            for (sint32 i = 0; i < 3; i++)
+            for (sint32 i = 0; i < MAX_RIDE_TYPES_PER_RIDE_ENTRY; i++)
             {
                 stream->WriteValue<uint8>(item.RideType[i]);
             }

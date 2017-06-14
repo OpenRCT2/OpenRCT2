@@ -79,16 +79,10 @@ void RideObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
     GetStringTable()->Read(context, stream, OBJ_STRING_ID_DESCRIPTION);
 
     // Add boosters if the track type is eligible
-    for (sint32 i = 0; i < 3; i++)
+    for (sint32 i = 0; i < MAX_RIDE_TYPES_PER_RIDE_ENTRY; i++)
     {
-        if (
-            _legacyType.ride_type[i] == RIDE_TYPE_LOOPING_ROLLER_COASTER ||
-            _legacyType.ride_type[i] == RIDE_TYPE_CORKSCREW_ROLLER_COASTER ||
-            _legacyType.ride_type[i] == RIDE_TYPE_TWISTER_ROLLER_COASTER ||
-            _legacyType.ride_type[i] == RIDE_TYPE_VERTICAL_DROP_ROLLER_COASTER ||
-            _legacyType.ride_type[i] == RIDE_TYPE_GIGA_COASTER ||
-            _legacyType.ride_type[i] == RIDE_TYPE_JUNIOR_ROLLER_COASTER
-        ) {
+        if (ride_type_supports_boosters(_legacyType.ride_type[i]))
+        {
             _legacyType.enabledTrackPieces |= (1ULL << TRACK_BOOSTER);
         }
     }
