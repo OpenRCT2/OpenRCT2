@@ -38,6 +38,8 @@ typedef struct ride_group {
 #ifdef __cplusplus
 interface IRideGroupManager
 {
+    virtual ~IRideGroupManager() { }
+
     virtual const ride_group * GetRideGroup(uint8 trackType, rct_ride_entry * rideEntry) const abstract;
     virtual bool TrackTypeHasRideGroups(uint8 trackType) const abstract;
     virtual ride_group * RideGroupFind(uint8 rideType, uint8 index) const abstract;
