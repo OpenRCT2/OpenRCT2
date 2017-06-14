@@ -359,10 +359,11 @@ void window_research_development_page_paint(rct_window *w, rct_drawpixelinfo *dp
             if (gResearchProgressStage != RESEARCH_STAGE_DESIGNING) {
                 uint32 typeId = gResearchNextItem;
                 if (typeId >= 0x10000) {
+                    uint8 baseRideType = (typeId >> 8) & 0xFF;
                     rct_ride_entry *rideEntry = get_ride_entry(typeId & 0xFF);
                     stringId = (rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME) ?
                         rideEntry->name :
-                        ((typeId >> 8) & 0xFF) + 2;
+                        get_friendly_track_type_name(baseRideType, rideEntry); // Makes sure the correct track name is displayed, e.g. Hyper-Twister instead of Steel Twister.
                 } else {
                     stringId = get_scenery_group_entry(typeId)->name;
                 }

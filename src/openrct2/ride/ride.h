@@ -80,16 +80,27 @@ typedef struct vehicle_colour_preset_list {
 } vehicle_colour_preset_list;
 assert_struct_size(vehicle_colour_preset_list, (1 + 256 * 3));
 
+typedef struct rct_ride_name {
+    rct_string_id name;
+    rct_string_id description;
+} rct_ride_name;
+assert_struct_size(rct_ride_name, 4);
+
 /**
  * Ride type structure.
  * size: unknown
  */
 typedef struct rct_ride_entry {
-    rct_string_id name;                                 // 0x000
-    rct_string_id description;                          // 0x002
+    union {
+        rct_ride_name naming;
+        struct {
+            rct_string_id name;                         // 0x000
+            rct_string_id description;                  // 0x002
+        };
+    };
     uint32 images_offset;                               // 0x004
     uint32 flags;                                       // 0x008
-    uint8 ride_type[MAX_RIDE_TYPES_PER_RIDE_ENTRY]; // 0x00C
+    uint8 ride_type[MAX_RIDE_TYPES_PER_RIDE_ENTRY];     // 0x00C
     uint8 min_cars_in_train;                            // 0x00F
     uint8 max_cars_in_train;                            // 0x010
     uint8 cars_per_flat_ride;                           // 0x011
@@ -370,6 +381,12 @@ typedef struct track_begin_end {
 #ifdef PLATFORM_32BIT
 assert_struct_size(track_begin_end, 36);
 #endif
+
+typedef struct ride_name_args {
+    uint16 type_name;
+    uint16 number;
+} ride_name_args;
+assert_struct_size(ride_name_args, 4);
 
 #pragma pack(pop)
 
@@ -1053,6 +1070,8 @@ void game_command_set_ride_setting(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32
 sint32 ride_get_refund_price(sint32 ride_id);
 bool shop_item_is_photo(sint32 shopItem);
 bool shop_item_has_common_price(sint32 shopItem);
+rct_string_id get_friendly_track_type_name(uint8 trackType, rct_ride_entry * rideEntry);
+rct_ride_name get_ride_naming(uint8 rideType, rct_ride_entry * rideEntry);
 void game_command_create_ride(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *edx, sint32 *esi, sint32 *edi, sint32 *ebp);
 void game_command_callback_ride_construct_new(sint32 eax, sint32 ebx, sint32 ecx, sint32 edx, sint32 esi, sint32 edi, sint32 ebp);
 void game_command_callback_ride_construct_placed_front(sint32 eax, sint32 ebx, sint32 ecx, sint32 edx, sint32 esi, sint32 edi, sint32 ebp);
@@ -1165,5 +1184,7 @@ bool ride_has_adjacent_station(rct_ride *ride);
 bool ride_has_ratings(const rct_ride * ride);
 
 const char * ride_type_get_enum_name(sint32 rideType);
+
+uint8 ride_entry_get_first_non_null_ride_type(rct_ride_entry * rideEntry);
 
 #endif

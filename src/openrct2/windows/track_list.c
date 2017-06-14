@@ -345,10 +345,10 @@ static void window_track_list_invalidate(rct_window *w)
 {
     rct_string_id stringId = STR_NONE;
     rct_ride_entry *entry = get_ride_entry(_window_track_list_item.entry_index);
+
     if (entry != NULL && entry != (rct_ride_entry*)-1) {
-        stringId = entry->name;
-        if (!(entry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME) || rideTypeShouldLoseSeparateFlag(entry))
-            stringId = _window_track_list_item.type + 2;
+        rct_ride_name rideName = get_ride_naming(_window_track_list_item.type, entry);
+        stringId = rideName.name;
     }
 
     set_format_arg(0, rct_string_id, stringId);
@@ -611,16 +611,22 @@ static void window_track_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi,
 
 static void track_list_load_designs(ride_list_item item)
 {
-    char entry[9];
-    const char *entryPtr = NULL;
-    if (item.type < 0x80) {
-        rct_ride_entry *rideEntry = get_ride_entry(item.entry_index);
-        if ((rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE) && !rideTypeShouldLoseSeparateFlag(rideEntry)) {
-            get_ride_entry_name(entry, item.entry_index);
-            entryPtr = entry;
+    if (!track_type_has_ride_groups(item.type)) {
+        char entry[9];
+        const char *entryPtr = NULL;
+        if (item.type < 0x80) {
+            rct_ride_entry *rideEntry = get_ride_entry(item.entry_index);
+            if ((rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE) && !rideTypeShouldLoseSeparateFlag(rideEntry)) {
+                get_ride_entry_name(entry, item.entry_index);
+                entryPtr = entry;
+            }
         }
+        _trackDesignsCount = track_repository_get_items_for_ride(&_trackDesigns, item.type, entryPtr);
+    } else {
+        rct_ride_entry *rideEntry = get_ride_entry(item.entry_index);
+        const ride_group * rideGroup = get_ride_group(item.type, rideEntry);
+        _trackDesignsCount = track_repository_get_items_for_ride_group(&_trackDesigns, item.type, rideGroup);
     }
-    _trackDesignsCount = track_repository_get_items_for_ride(&_trackDesigns, item.type, entryPtr);
 }
 
 static bool track_list_load_design_for_preview(utf8 *path)

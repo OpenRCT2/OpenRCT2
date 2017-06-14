@@ -27,6 +27,7 @@ extern "C"
 {
 #endif
     #include "../object.h"
+    #include "../ride/ride.h"
 #ifdef __cplusplus
 }
 #endif
@@ -55,7 +56,8 @@ typedef struct ObjectRepositoryItem
         {
             uint8   RideFlags;
             uint8   RideCategory[2];
-            uint8   RideType[3];
+            uint8   RideType[MAX_RIDE_TYPES_PER_RIDE_ENTRY];
+            uint8   RideGroupIndex;
         };
         struct
         {

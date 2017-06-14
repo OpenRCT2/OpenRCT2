@@ -27,6 +27,7 @@
 #include "../rct1.h"
 #include "../ride/ride.h"
 #include "../ride/ride_data.h"
+#include "../ride/RideGroupManager.h"
 #include "../ride/track.h"
 #include "../ride/track_data.h"
 #include "../ride/track_design.h"
@@ -263,6 +264,7 @@ static void window_new_ride_refresh_widget_sizing(rct_window *w);
 static ride_list_item window_new_ride_scroll_get_ride_list_item_at(rct_window *w, sint32 x, sint32 y);
 static void window_new_ride_paint_ride_information(rct_window *w, rct_drawpixelinfo *dpi, ride_list_item item, sint32 x, sint32 y, sint32 width);
 static void window_new_ride_select(rct_window *w);
+static ride_list_item * window_new_ride_iterate_over_ride_group(uint8 rideType, uint8 rideGroupIndex, ride_list_item * nextListItem);
 
 static ride_list_item _lastTrackDesignCountRideType;
 static sint32 _lastTrackDesignCount;
@@ -311,63 +313,14 @@ static void window_new_ride_populate_list()
                 continue;
         }
 
-        char preferredVehicleName[9];
-        safe_strcpy(preferredVehicleName, "        ", sizeof(preferredVehicleName));
-
         if (ride_type_is_invented(rideType)) {
-            sint32 dh = 0;
-            uint8 *rideEntryIndexPtr = get_ride_entry_indices_for_ride_type(rideType);
-
-            // For each ride entry for this ride type
-            while (*rideEntryIndexPtr != 255) {
-                uint8 rideEntryIndex = *rideEntryIndexPtr++;
-                char rideEntryName[9];
-                memcpy(rideEntryName,object_entry_groups[OBJECT_TYPE_RIDE].entries[rideEntryIndex].name,8);
-                rideEntryName[8]=0;
-
-                // Skip if vehicle type is not invented yet
-                if (!ride_entry_is_invented(rideEntryIndex))
-                    continue;
-
-                // Ride entries
-                rct_ride_entry *rideEntry = get_ride_entry(rideEntryIndex);
-
-                // Check if ride is in this category
-                if (!gConfigInterface.select_by_track_type && (currentCategory != rideEntry->category[0] && currentCategory != rideEntry->category[1]))
-                    continue;
-
-                // Skip if the vehicle isn't the preferred vehicle for this generic track type
-                if (gConfigInterface.select_by_track_type && (!(rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE) || rideTypeShouldLoseSeparateFlag(rideEntry))) {
-                    if (strcmp(preferredVehicleName, "        \0") == 0) {
-                        safe_strcpy(preferredVehicleName, rideEntryName, sizeof(preferredVehicleName));
-                        preferredVehicleName[8] = 0;
-                    } else {
-                        if (vehicle_preference_compare(rideType, preferredVehicleName, rideEntryName) == 1) {
-                            safe_strcpy(preferredVehicleName, rideEntryName, sizeof(preferredVehicleName));
-                            preferredVehicleName[8] = 0;
-                        } else {
-                            continue;
-                        }
-                    }
-                }
-
-                if ((rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE) && !rideTypeShouldLoseSeparateFlag(rideEntry)) {
-                    dh &= ~4;
-                    nextListItem->type = rideType;
-                    nextListItem->entry_index = rideEntryIndex;
-                    nextListItem++;
-                } else if (!(dh & 1)) {
-                    dh |= 5;
-                    nextListItem->type = rideType;
-                    nextListItem->entry_index = rideEntryIndex;
-                    nextListItem++;
-                } else if (dh & 4) {
-                    if (rideType == rideEntry->ride_type[0]) {
-                        nextListItem--;
-                        nextListItem->type = rideType;
-                        nextListItem->entry_index = rideEntryIndex;
-                        nextListItem++;
-                    }
+    
+            if (!track_type_has_ride_groups(rideType)) {
+                nextListItem = window_new_ride_iterate_over_ride_group(rideType, 0, nextListItem);
+            }
+            else {
+                for (uint8 j = 0; j < MAX_RIDE_GROUPS_PER_RIDE_TYPE; j++) {
+                    nextListItem = window_new_ride_iterate_over_ride_group(rideType, j, nextListItem);
                 }
             }
         }
@@ -376,6 +329,85 @@ static void window_new_ride_populate_list()
     nextListItem->type = 255;
     nextListItem->entry_index = 255;
     _trackSelectionByType = gConfigInterface.select_by_track_type;
+}
+
+static ride_list_item * window_new_ride_iterate_over_ride_group(uint8 rideType, uint8 rideGroupIndex, ride_list_item * nextListItem)
+{
+    uint8 currentCategory = _windowNewRideCurrentTab;
+    
+    bool buttonForRideTypeCreated = false;
+    bool allowDrawingOverLastButton = false;
+    uint8 *rideEntryIndexPtr = get_ride_entry_indices_for_ride_type(rideType);
+
+    char preferredVehicleName[9];
+    safe_strcpy(preferredVehicleName, "        ", sizeof(preferredVehicleName));
+
+    // For each ride entry for this ride type
+    while (*rideEntryIndexPtr != 255) {
+        uint8 rideEntryIndex = *rideEntryIndexPtr++;
+        char rideEntryName[9];
+        memcpy(rideEntryName,object_entry_groups[OBJECT_TYPE_RIDE].entries[rideEntryIndex].name,8);
+        rideEntryName[8]=0;
+
+        // Skip if vehicle type is not invented yet
+        if (!ride_entry_is_invented(rideEntryIndex))
+            continue;
+
+        // Ride entries
+        rct_ride_entry *rideEntry = get_ride_entry(rideEntryIndex);
+
+        // Check if ride is in this category
+        if (!gConfigInterface.select_by_track_type && (currentCategory != rideEntry->category[0] && currentCategory != rideEntry->category[1]))
+            continue;
+
+        if (track_type_has_ride_groups(rideType))
+        {
+            const ride_group * rideEntryRideGroup = get_ride_group(rideType, rideEntry);
+            const ride_group * rideGroup = ride_group_find(rideType, rideGroupIndex);
+			
+			if (!ride_groups_are_equal(rideEntryRideGroup, rideGroup))
+                continue;
+        }
+        
+        // Skip if the vehicle isn't the preferred vehicle for this generic track type
+        if (gConfigInterface.select_by_track_type && (!(rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE) || rideTypeShouldLoseSeparateFlag(rideEntry))) {
+            if (strcmp(preferredVehicleName, "        \0") == 0) {
+                safe_strcpy(preferredVehicleName, rideEntryName, sizeof(preferredVehicleName));
+                preferredVehicleName[8] = 0;
+            } else {
+                if (vehicle_preference_compare(rideType, preferredVehicleName, rideEntryName) == 1) {
+                    safe_strcpy(preferredVehicleName, rideEntryName, sizeof(preferredVehicleName));
+                    preferredVehicleName[8] = 0;
+                } else {
+                    continue;
+                }
+            }
+        }
+
+        // Determines how and where to draw a button for this ride type/vehicle.
+        if ((rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE) && !rideTypeShouldLoseSeparateFlag(rideEntry)) { // Separate, draw apart
+            allowDrawingOverLastButton = false;
+            nextListItem->type = rideType;
+            nextListItem->entry_index = rideEntryIndex;
+            nextListItem++;
+        } else if (!buttonForRideTypeCreated) { // Non-separate, draw-apart
+            // Draw apart
+            buttonForRideTypeCreated = true;
+            allowDrawingOverLastButton = true;
+            nextListItem->type = rideType;
+            nextListItem->entry_index = rideEntryIndex;
+            nextListItem++;
+        } else if (allowDrawingOverLastButton) { // Non-separate, draw over previous
+            if (rideType == rideEntry->ride_type[0]) {
+                nextListItem--;
+                nextListItem->type = rideType;
+                nextListItem->entry_index = rideEntryIndex;
+                nextListItem++;
+            }
+        }
+    }
+
+    return nextListItem;
 }
 
 /**
@@ -477,27 +509,52 @@ rct_window *window_new_ride_open_research()
 void window_new_ride_focus(ride_list_item rideItem)
 {
     rct_window *w;
-    rct_ride_entry *rideType;
+    rct_ride_entry *rideEntry;
+    bool entryFound = false;
+    // Find the first non-null ride type index.
 
     w = window_find_by_class(WC_CONSTRUCT_RIDE);
     if (w == NULL)
         return;
 
-    rideType = get_ride_entry(rideItem.entry_index);
+    rideEntry = get_ride_entry(rideItem.entry_index);
+    uint8 rideTypeIndex = ride_entry_get_first_non_null_ride_type(rideEntry);
 
-    if(!gConfigInterface.select_by_track_type)
-        window_new_ride_set_page(w, rideType->category[0]);
-    else
-        window_new_ride_set_page(w, gRideCategories[rideType->ride_type[0]]);
+    if(!gConfigInterface.select_by_track_type) {
+        window_new_ride_set_page(w, rideEntry->category[0]);
+    }
+    else {
+        window_new_ride_set_page(w, gRideCategories[rideTypeIndex]);
+    }
 
-    ride_list_item *listItem = _windowNewRideListItems;
-    while (listItem->type != RIDE_TYPE_NULL) {
+    for (ride_list_item *listItem = _windowNewRideListItems; listItem->type != RIDE_TYPE_NULL; listItem++) {
         if (listItem->type == rideItem.type && listItem->entry_index == rideItem.entry_index) {
             _windowNewRideHighlightedItem[0] = rideItem;
             w->new_ride.highlighted_ride_id = rideItem.ride_type_and_entry;
             window_new_ride_scroll_to_focused_ride(w);
+            entryFound = true;
+            break;
         }
-        listItem++;
+    }
+
+    // If this entry was not found it was most likely hidden due to it not being the preferential type.
+    // In this case, select the first entry that belongs to the same ride group.
+    if (!entryFound && gConfigInterface.select_by_track_type)
+    {
+        const ride_group * rideGroup = get_ride_group(rideTypeIndex, rideEntry);
+
+        for (ride_list_item *listItem = _windowNewRideListItems; listItem->type != RIDE_TYPE_NULL; listItem++) {
+            if (listItem->type == rideItem.type) {
+                const ride_group * irg = get_ride_group(rideTypeIndex, rideEntry);
+
+                if (!track_type_has_ride_groups(rideTypeIndex) || ride_groups_are_equal(rideGroup, irg)) {
+                    _windowNewRideHighlightedItem[0] = rideItem;
+                    w->new_ride.highlighted_ride_id = rideItem.ride_type_and_entry;
+                    window_new_ride_scroll_to_focused_ride(w);
+                    break;
+                }
+            }
+        }
     }
 }
 
@@ -850,12 +907,20 @@ static sint32 get_num_track_designs(ride_list_item item)
 {
     char entry[9];
     const char *entryPtr = NULL;
+    rct_ride_entry * rideEntry = NULL;
+
     if (item.type < 0x80) {
-        rct_ride_entry *rideEntry = get_ride_entry(item.entry_index);
+        rideEntry = get_ride_entry(item.entry_index);
         if ((rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE) && !rideTypeShouldLoseSeparateFlag(rideEntry)) {
             get_ride_entry_name(entry, item.entry_index);
             entryPtr = entry;
         }
+    }
+
+    if (rideEntry != NULL && track_type_has_ride_groups(item.type))
+    {
+        const ride_group * rideGroup = get_ride_group(item.type, rideEntry);
+        return (sint32)track_repository_get_count_for_ride_group(item.type, rideGroup);
     }
 
     return (sint32)track_repository_get_count_for_ride(item.type, entryPtr);
@@ -868,17 +933,12 @@ static sint32 get_num_track_designs(ride_list_item item)
 static void window_new_ride_paint_ride_information(rct_window *w, rct_drawpixelinfo *dpi, ride_list_item item, sint32 x, sint32 y, sint32 width)
 {
     rct_ride_entry *rideEntry = get_ride_entry(item.entry_index);
+    rct_ride_name rideNaming;
 
     // Ride name and description
-    rct_string_id rideName = rideEntry->name;
-    rct_string_id rideDescription = rideEntry->description;
-    if (!(rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME) || rideTypeShouldLoseSeparateFlag(rideEntry)) {
-        rideName = RideNaming[item.type].name;
-        rideDescription = RideNaming[item.type].description;
-    }
-
-    set_format_arg(0, rct_string_id, rideName);
-    set_format_arg(2, rct_string_id, rideDescription);
+    rideNaming = get_ride_naming(item.type , rideEntry);
+    set_format_arg(0, rct_string_id, rideNaming.name);
+    set_format_arg(2, rct_string_id, rideNaming.description);
     gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, x, y, width, STR_NEW_RIDE_NAME_AND_DESCRIPTION, COLOUR_BLACK);
 
     // Number of designs available

@@ -34,6 +34,7 @@
 #include "ride.h"
 #include "ride_data.h"
 #include "ride_ratings.h"
+#include "RideGroupManager.h"
 #include "station.h"
 #include "track.h"
 #include "track_data.h"
@@ -1239,10 +1240,24 @@ static money32 track_place(sint32 rideIndex, sint32 type, sint32 originX, sint32
         if (!gCheatsDisableSupportLimits){
             sint32 ride_height = clearanceZ - mapElement->base_height;
             if (ride_height >= 0) {
-                sint32 maxHeight = rideEntry->max_height;
-                if (maxHeight == 0) {
-                    maxHeight = RideData5[ride->type].max_height;
+
+                uint16 maxHeight;
+                if (gConfigInterface.select_by_track_type) {
+                    if (track_type_has_ride_groups(ride->type)) {
+                        const ride_group * rideGroup = get_ride_group(ride->type, rideEntry);
+                        maxHeight = rideGroup->maximum_height;
+                    } else {
+                        maxHeight = RideData5[ride->type].max_height;
+                    }
+                } else {
+                    maxHeight = rideEntry->max_height;
+                    // If a rideEntry specifies 0 as max height, it means OpenRCT2
+                    // should fall back on the default for the track type.
+                    if (maxHeight == 0) {
+                        maxHeight = RideData5[ride->type].max_height;
+                    }
                 }
+
                 ride_height /= 2;
                 if (ride_height > maxHeight && !byte_9D8150) {
                     gGameCommandErrorText = STR_TOO_HIGH_FOR_SUPPORTS;

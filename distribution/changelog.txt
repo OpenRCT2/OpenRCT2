@@ -3,6 +3,7 @@
 - Feature: [#5056] Add cheat to own all land.
 - Feature: [#5133] Add option to display guest expenditure (as seen in RCTC).
 - Feature: [#5196] Add cheat to disable ride ageing.
+- Feature: [#5504] Group vehicles into ride groups
 - Feature: [#5576] Add a persistent 'display real names of guests' setting.
 - Feature: OpenRCT2 now starts up on the display it was last shown on.
 - Improved: Mouse can now be dragged to select scenery when saving track designs

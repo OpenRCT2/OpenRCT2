@@ -26,6 +26,7 @@
 #include "../rct1.h"
 #include "../ride/ride.h"
 #include "../ride/ride_data.h"
+#include "../ride/RideGroupManager.h"
 #include "../ride/track_data.h"
 #include "../world/scenery.h"
 #include "news_item.h"
@@ -184,15 +185,31 @@ void research_finish_item(sint32 entryIndex)
         sint32 base_ride_type = (entryIndex >> 8) & 0xFF;
         sint32 rideEntryIndex = entryIndex & 0xFF;
         rct_ride_entry *rideEntry = get_ride_entry(rideEntryIndex);
+
         if (rideEntry != NULL && rideEntry != (rct_ride_entry *)-1 && base_ride_type != RIDE_TYPE_NULL)
         {
+            bool ride_group_was_invented_before = false;
+            bool track_type_was_invented_before = ride_type_is_invented(base_ride_type);
+            rct_string_id availabilityString;
+
+            // Determine if the ride group this entry belongs to was invented before.
+            if (gConfigInterface.select_by_track_type && track_type_has_ride_groups(base_ride_type))
+            {
+                const ride_group * rideGroup = get_ride_group(base_ride_type, rideEntry);
+                
+                if (ride_group_is_invented(rideGroup))
+                {
+                    ride_group_was_invented_before = true;
+                }
+            }
+            
             ride_type_set_invented(base_ride_type);
             openrct2_assert(base_ride_type < countof(RideTypePossibleTrackConfigurations), "Invalid base_ride_type = %d", base_ride_type);
 
             ride_entry_set_invented(rideEntryIndex);
 
             if (!(rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE)) {
-                for (sint32 i = 0; i < 128; i++) {
+                for (sint32 i = 0; i < MAX_RESEARCHED_TRACK_TYPES; i++) {
                     rct_ride_entry *rideEntry2 = get_ride_entry(i);
                     if (rideEntry2 == (rct_ride_entry*)-1)
                         continue;
@@ -208,12 +225,51 @@ void research_finish_item(sint32 entryIndex)
                 }
             }
 
-            set_format_arg(0, rct_string_id, ((rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME)) ?
-                rideEntry->name : RideNaming[base_ride_type].name);
+            if (!gConfigInterface.select_by_track_type)
+            {
+                availabilityString = STR_NEWS_ITEM_RESEARCH_NEW_RIDE_AVAILABLE;
+
+                if (rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME)
+                {
+                    set_format_arg(0, rct_string_id, rideEntry->name);
+                }
+                else
+                {
+                    // Makes sure the correct track name is displayed,
+                    // e.g. Hyper-Twister instead of Steel Twister.
+                    set_format_arg(0, rct_string_id, get_friendly_track_type_name(base_ride_type, rideEntry));
+                }
+            }
+            else
+            {
+                // If a vehicle should be listed separately (maze, mini golf, flat rides, shops)
+                if (!rideTypeShouldLoseSeparateFlag(rideEntry))
+                {
+                    availabilityString = STR_NEWS_ITEM_RESEARCH_NEW_RIDE_AVAILABLE;
+                    set_format_arg(0, rct_string_id, rideEntry->name);
+                }
+                // If a vehicle is the first to be invented for its ride group, show the ride group name.
+                else if (!track_type_was_invented_before || (track_type_has_ride_groups(base_ride_type) && !ride_group_was_invented_before))
+                {
+                    rct_ride_name naming = get_ride_naming(base_ride_type, rideEntry);
+                    availabilityString = STR_NEWS_ITEM_RESEARCH_NEW_RIDE_AVAILABLE;
+                    set_format_arg(0, rct_string_id, naming.name);
+                }
+                // If the vehicle should not be listed separately and it isn't the first to be invented for its ride group,
+                // report it as a new vehicle for the existing ride group.
+                else
+                {
+                    availabilityString = STR_NEWS_ITEM_RESEARCH_NEW_VEHICLE_AVAILABLE;
+                    rct_ride_name baseRideNaming = get_ride_naming(base_ride_type, rideEntry);
+
+                    set_format_arg(0, rct_string_id, baseRideNaming.name);
+                    set_format_arg(2, rct_string_id, rideEntry->name);
+                }
+            }
 
             if (!gSilentResearch) {
                 if (gConfigNotifications.ride_researched) {
-                    news_item_add_to_queue(NEWS_ITEM_RESEARCH, STR_NEWS_ITEM_RESEARCH_NEW_RIDE_AVAILABLE, entryIndex);
+                    news_item_add_to_queue(NEWS_ITEM_RESEARCH, availabilityString, entryIndex);
                 }
             }
 

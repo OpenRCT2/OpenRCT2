@@ -48,6 +48,7 @@
 #include "cable_lift.h"
 #include "ride.h"
 #include "ride_data.h"
+#include "RideGroupManager.h"
 #include "station.h"
 #include "track.h"
 #include "track_data.h"
@@ -218,6 +219,9 @@ static void ride_set_vehicle_colours_to_random_preset(rct_ride *ride, uint8 pres
 void loc_6DDF9C(rct_ride *ride, rct_map_element *mapElement);
 bool sub_6CA2DF(sint32 *trackType, sint32 *trackDirection, sint32 *rideIndex, sint32 *edxRS16, sint32 *x, sint32 *y, sint32 *z, sint32 *properties);
 money32 place_provisional_track_piece(sint32 rideIndex, sint32 trackType, sint32 trackDirection, sint32 edxRS16, sint32 x, sint32 y, sint32 z);
+static void ride_set_name_to_track_default(rct_ride * ride, rct_ride_entry * rideEntry);
+static void ride_set_name_to_vehicle_default(rct_ride * ride, rct_ride_entry * rideEntry);
+
 
 rct_ride *get_ride(sint32 index)
 {
@@ -5923,7 +5927,6 @@ money32 ride_create_command(sint32 type, sint32 subType, sint32 flags, uint8 *ou
  */
 static money32 ride_create(sint32 type, sint32 subType, sint32 flags, sint32 *outRideIndex, sint32 *outRideColour)
 {
-    char rideNameBuffer[256];
     rct_ride *ride;
     rct_ride_entry *rideEntry;
     sint32 rideIndex, rideEntryIndex;
@@ -5938,7 +5941,14 @@ static money32 ride_create(sint32 type, sint32 subType, sint32 flags, sint32 *ou
         uint8 *availableRideEntries = get_ride_entry_indices_for_ride_type(type);
         for (uint8 *rei = availableRideEntries; *rei != 255; rei++) {
             rideEntry = get_ride_entry(*rei);
-            if ((rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME) && !rideTypeShouldLoseSeparateFlag(rideEntry)) {
+            
+            // Can happen in select-by-track-type mode
+            if (!ride_entry_is_invented(*rei))
+            {
+                continue;
+            }
+            
+            if (!(rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME) || rideTypeShouldLoseSeparateFlag(rideEntry)) {
                 subType = *rei;
                 goto foundRideEntry;
             }
@@ -5989,51 +5999,13 @@ foundRideEntry:
     ride_set_colour_preset(ride, *outRideColour & 0xFF);
     ride->overall_view = 0xFFFF;
 
-#pragma pack(push, 1)
-    struct {
-        uint16 type_name;
-        uint16 number;
-    } name_args;
-    assert_struct_size(name_args, 4);
-#pragma pack(pop)
-
     // Ride name
     if (rideEntryIndex == 255) {
-    useDefaultName:
-        ride->name = STR_NONE;
-        name_args.type_name = 2 + ride->type;
-        name_args.number = 0;
-        do {
-            name_args.number++;
-            format_string(rideNameBuffer, 256, 1, &name_args);
-        } while (ride_name_exists(rideNameBuffer));
-        ride->name = 1;
-        ride->name_arguments_type_name = name_args.type_name;
-        ride->name_arguments_number = name_args.number;
+        ride_set_name_to_track_default(ride, rideEntry);
+    } else if (!(rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME) || rideTypeShouldLoseSeparateFlag(rideEntry)) {
+        ride_set_name_to_track_default(ride, rideEntry);
     } else {
-        if (!(rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME) || rideTypeShouldLoseSeparateFlag(rideEntry)) {
-            goto useDefaultName;
-        }
-        ride->name = 1;
-        ride->name_arguments_type_name = rideEntry->name;
-        rct_string_id rideNameStringId = 0;
-        name_args.type_name = rideEntry->name;
-        name_args.number = 0;
-
-        do {
-            name_args.number++;
-            format_string(rideNameBuffer, 256, ride->name, &name_args);
-        } while (ride_name_exists(rideNameBuffer));
-
-        ride->name_arguments_type_name = name_args.type_name;
-        ride->name_arguments_number = name_args.number;
-
-        rideNameStringId = user_string_allocate(USER_STRING_HIGH_ID_NUMBER | USER_STRING_DUPLICATION_PERMITTED, rideNameBuffer);
-        if (rideNameStringId != 0) {
-            ride->name = rideNameStringId;
-        } else {
-            goto useDefaultName;
-        }
+        ride_set_name_to_vehicle_default(ride, rideEntry);
     }
 
     for (size_t i = 0; i < 4; i++) {
@@ -6183,6 +6155,104 @@ foundRideEntry:
     gCommandExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
     gCommandPosition.x = 0x8000;
     return 0;
+}
+
+static void ride_set_name_to_track_default(rct_ride *ride, rct_ride_entry * rideEntry)
+{
+    char rideNameBuffer[256];
+    ride_name_args name_args;
+
+    ride->name = STR_NONE;
+
+    // This fixes the Hyper-Twister being displayed as the generic Steel Twister when not in select-by-track-type mode.
+    if (!gConfigInterface.select_by_track_type && ride->type == RIDE_TYPE_TWISTER_ROLLER_COASTER && !(rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE)) {
+        name_args.type_name = STR_HYPER_TWISTER_GROUP;
+    }
+    else if (track_type_has_ride_groups(ride->type)) {
+        const ride_group * rideGroup = get_ride_group(ride->type, rideEntry);
+        name_args.type_name = rideGroup->naming.name;
+    } else {
+        name_args.type_name = RideNaming[ride->type].name;
+    }
+
+    name_args.number = 0;
+    do {
+        name_args.number++;
+        format_string(rideNameBuffer, 256, 1, &name_args);
+    } while (ride_name_exists(rideNameBuffer));
+    ride->name = 1;
+    ride->name_arguments_type_name = name_args.type_name;
+    ride->name_arguments_number = name_args.number;
+}
+
+static void ride_set_name_to_vehicle_default(rct_ride * ride, rct_ride_entry * rideEntry)
+{
+    char rideNameBuffer[256];
+    ride_name_args name_args;
+
+    ride->name = 1;
+    ride->name_arguments_type_name = rideEntry->name;
+    rct_string_id rideNameStringId = 0;
+    name_args.type_name = rideEntry->name;
+    name_args.number = 0;
+
+    do {
+        name_args.number++;
+        format_string(rideNameBuffer, 256, ride->name, &name_args);
+    } while (ride_name_exists(rideNameBuffer));
+
+    ride->name_arguments_type_name = name_args.type_name;
+    ride->name_arguments_number = name_args.number;
+
+    rideNameStringId = user_string_allocate(USER_STRING_HIGH_ID_NUMBER | USER_STRING_DUPLICATION_PERMITTED, rideNameBuffer);
+    if (rideNameStringId != 0) {
+        ride->name = rideNameStringId;
+    } else {
+        ride_set_name_to_track_default(ride, rideEntry);
+    }
+}
+
+/**
+ * This will return the name of the track type or ride group, as seen in the research window.
+ */
+rct_string_id get_friendly_track_type_name(uint8 trackType, rct_ride_entry * rideEntry)
+{
+    if (!gConfigInterface.select_by_track_type) {
+        if (trackType == RIDE_TYPE_TWISTER_ROLLER_COASTER) {
+            return STR_HYPER_TWISTER_GROUP;
+        } else {
+            return RideNaming[trackType].name;
+        }
+    } else {
+        if (track_type_has_ride_groups(trackType)) {
+            const ride_group * rideGroup = get_ride_group(trackType, rideEntry);
+            return rideGroup->naming.name;
+        } else {
+            return RideNaming[trackType].name;
+        }
+    }
+}
+
+/**
+ * This will return the name of the ride, as seen in the New Ride window.
+ */
+rct_ride_name get_ride_naming(uint8 rideType, rct_ride_entry * rideEntry)
+{
+    // This fixes the Hyper-Twister being displayed as the generic Steel Twister when not in select-by-track-type mode.
+    if (!gConfigInterface.select_by_track_type && rideType == RIDE_TYPE_TWISTER_ROLLER_COASTER && !(rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE)) {
+        return (rct_ride_name){ STR_HYPER_TWISTER_GROUP, STR_HYPER_TWISTER_GROUP_DESC };
+    }
+
+    if (track_type_has_ride_groups(rideType)) {
+        const ride_group * rideGroup = get_ride_group(rideType, rideEntry);
+        return rideGroup->naming;
+    }
+    else if (!(rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME) || rideTypeShouldLoseSeparateFlag(rideEntry)) {
+        return RideNaming[rideType];
+    }
+    else {
+        return rideEntry->naming;
+    }
 }
 
 /**
@@ -7436,7 +7506,7 @@ uint8 ride_entry_get_vehicle_at_position(sint32 rideEntryIndex,sint32 numCarsPer
     }
 }
 
-//Finds track pieces that a given ride entry doesn't have the sprites for
+// Finds track pieces that a given ride entry has sprites for
 uint64 ride_entry_get_supported_track_pieces(rct_ride_entry* rideEntry)
 {
     uint64 supportedPieces = 0xFFFFFFFFFFFFFFFFULL;
@@ -8193,19 +8263,13 @@ void ride_reset_all_names()
     sint32 i;
     rct_ride *ride;
     char rideNameBuffer[256];
+    ride_name_args name_args;
 
     FOR_ALL_RIDES(i, ride)
     {
         ride->name = STR_NONE;
 
-#pragma pack(push, 1)
-        struct {
-            uint16 type_name;
-            uint16 number;
-        } name_args;
-        assert_struct_size(name_args, 4);
-#pragma pack(pop)
-        name_args.type_name = 2 + ride->type;
+        name_args.type_name = RideNaming[ride->type].name;
         name_args.number = 0;
         do {
             name_args.number++;
@@ -8499,4 +8563,20 @@ const char * ride_type_get_enum_name(sint32 rideType)
     };
 
     return RideTypeEnumNames[rideType];
+}
+
+/**
+ *  Searches for a non-null ride type in a ride entry.
+ *  If none is found, it will still return RIDE_TYPE_NULL.
+ */
+uint8 ride_entry_get_first_non_null_ride_type(rct_ride_entry * rideEntry)
+{
+    for (uint8 i = 0; i < MAX_RIDE_TYPES_PER_RIDE_ENTRY; i++)
+    {
+        if (rideEntry->ride_type[i] != RIDE_TYPE_NULL)
+        {
+            return rideEntry->ride_type[i];
+        }
+    }
+   return RIDE_TYPE_NULL;
 }

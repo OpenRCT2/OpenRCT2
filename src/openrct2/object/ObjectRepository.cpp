@@ -55,7 +55,7 @@ extern "C"
 
 using namespace OpenRCT2;
 
-constexpr uint16 OBJECT_REPOSITORY_VERSION = 10;
+constexpr uint16 OBJECT_REPOSITORY_VERSION = 11;
 
 #pragma pack(push, 1)
 struct ObjectRepositoryHeader
@@ -467,10 +467,11 @@ private:
             {
                 item.RideCategory[i] = stream->ReadValue<uint8>();
             }
-            for (sint32 i = 0; i < 3; i++)
+            for (sint32 i = 0; i < MAX_RIDE_TYPES_PER_RIDE_ENTRY; i++)
             {
                 item.RideType[i] = stream->ReadValue<uint8>();
             }
+            item.RideGroupIndex = stream->ReadValue<uint8>();
             break;
         case OBJECT_TYPE_SCENERY_SETS:
             item.NumThemeObjects = stream->ReadValue<uint16>();
@@ -501,6 +502,7 @@ private:
             {
                 stream->WriteValue<uint8>(item.RideType[i]);
             }
+            stream->WriteValue<uint8>(item.RideGroupIndex);
             break;
         case OBJECT_TYPE_SCENERY_SETS:
             stream->WriteValue<uint16>(item.NumThemeObjects);

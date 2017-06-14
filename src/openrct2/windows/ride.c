@@ -33,6 +33,7 @@
 #include "../rct2.h"
 #include "../ride/ride.h"
 #include "../ride/ride_data.h"
+#include "../ride/RideGroupManager.h"
 #include "../ride/track.h"
 #include "../ride/track_data.h"
 #include "../ride/track_design.h"
@@ -1477,8 +1478,6 @@ static rct_window *window_ride_open(sint32 rideIndex)
 {
     rct_window *w;
     rct_ride *ride;
-    uint8 *rideEntryIndexPtr;
-    sint32 numSubTypes;
 
     w = window_create_auto_pos(316, 207, window_ride_page_events[0], WC_RIDE, WF_10 | WF_RESIZABLE);
     w->widgets = window_ride_page_widgets[WINDOW_RIDE_PAGE_MAIN];
@@ -1499,14 +1498,6 @@ static rct_window *window_ride_open(sint32 rideIndex)
 
     ride = get_ride(rideIndex);
     _rideType = ride->type;
-    numSubTypes = 0;
-    rideEntryIndexPtr = get_ride_entry_indices_for_ride_type(ride->type);
-    for (; *rideEntryIndexPtr != 0xFF; rideEntryIndexPtr++) {
-        if (ride_entry_is_invented(*rideEntryIndexPtr)) {
-            numSubTypes++;
-        }
-    }
-    w->var_496 = numSubTypes;
 
     window_ride_update_overall_view((uint8) rideIndex);
 
@@ -2639,6 +2630,7 @@ static void window_ride_vehicle_mousedown(rct_widgetindex widgetIndex, rct_windo
     rct_widget *dropdownWidget = widget - 1;
     rct_ride *ride;
     rct_ride_entry *rideEntry, *currentRideEntry;
+    const ride_group * rideGroup, * currentRideGroup;
     sint32 numItems, rideEntryIndex, selectedIndex, rideTypeIterator, rideTypeIteratorMax;
     uint8 *rideEntryIndexPtr;
     bool selectionShouldBeExpanded;
@@ -2675,7 +2667,7 @@ static void window_ride_vehicle_mousedown(rct_widgetindex widgetIndex, rct_windo
             for (uint8 *currentRideEntryIndex = rideEntryIndexPtr; *currentRideEntryIndex != 0xFF && numItems <= 63; currentRideEntryIndex++) {
                 rideEntryIndex = *currentRideEntryIndex;
                 currentRideEntry = get_ride_entry(rideEntryIndex);
-                // Skip if vehicle has the same track type, but not same subtype, unless subtype switching is enabled
+                // Skip if vehicle wants to be separate, unless subtype switching is enabled
                 if ((currentRideEntry->flags & (RIDE_ENTRY_FLAG_SEPARATE_RIDE | RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME)) && !(gConfigInterface.select_by_track_type || selectionShouldBeExpanded))
                     continue;
 
@@ -2683,6 +2675,16 @@ static void window_ride_vehicle_mousedown(rct_widgetindex widgetIndex, rct_windo
                 if (!ride_entry_is_invented(rideEntryIndex))
                     continue;
 
+                // Skip if vehicle does not belong to the same ride group
+                if (track_type_has_ride_groups(ride->type) && !selectionShouldBeExpanded)
+                {
+                    rideGroup = get_ride_group(ride->type, rideEntry);
+                    currentRideGroup = get_ride_group(ride->type, currentRideEntry);
+                    
+                    if (!ride_groups_are_equal(rideGroup, currentRideGroup))
+                        continue;
+                }
+                
                 if (ride->subtype == rideEntryIndex)
                     selectedIndex = numItems;
 
@@ -2785,7 +2787,7 @@ static void window_ride_vehicle_invalidate(rct_window *w)
     // Vehicle type
     window_ride_vehicle_widgets[WIDX_VEHICLE_TYPE].text = rideEntry->name;
     // Always show a dropdown button when changing subtypes is allowed
-    if ((w->var_496 <= 1 || (rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE)) && !(gConfigInterface.select_by_track_type || gCheatsShowVehiclesFromOtherTrackTypes)) {
+    if ((rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE) && !(gConfigInterface.select_by_track_type || gCheatsShowVehiclesFromOtherTrackTypes)) {
         window_ride_vehicle_widgets[WIDX_VEHICLE_TYPE].type = WWT_14;
         window_ride_vehicle_widgets[WIDX_VEHICLE_TYPE_DROPDOWN].type = WWT_EMPTY;
         w->enabled_widgets &= ~(1 << WIDX_VEHICLE_TYPE);
@@ -2889,7 +2891,7 @@ static void window_ride_vehicle_paint(rct_window *w, rct_drawpixelinfo *dpi)
     }
     y += 5;
 
-    if ((!(rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE) || rideTypeShouldLoseSeparateFlag(rideEntry)) && w->var_496 > 1) {
+    if (!(rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE) || rideTypeShouldLoseSeparateFlag(rideEntry)) {
         // Excitement Factor
         factor = rideEntry->excitement_multipler;
         if (factor > 0) {

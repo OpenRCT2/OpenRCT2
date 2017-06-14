@@ -22,6 +22,7 @@
 #include "../management/finance.h"
 #include "../network/network.h"
 #include "../object/ObjectManager.h"
+#include "../object/ObjectRepository.h"
 #include "../rct1.h"
 #include "../rct1/Tables.h"
 #include "../util/sawyercoding.h"
@@ -1379,7 +1380,11 @@ static bool track_design_place_preview(rct_track_td6 *td6, money32 *cost, uint8 
     gParkFlags = backup_park_flags;
 
     if (resultCost != MONEY32_UNDEFINED) {
-        if (!find_object_in_entry_group(&td6->vehicle_object, &entry_type, &entry_index)){
+        if (!find_object_in_entry_group(&td6->vehicle_object, &entry_type, &entry_index)) {
+            *flags |= TRACK_DESIGN_FLAG_VEHICLE_UNAVAILABLE;
+        }
+        else if (!ride_entry_is_invented(entry_index))
+        {
             *flags |= TRACK_DESIGN_FLAG_VEHICLE_UNAVAILABLE;
         }
 
@@ -1421,6 +1426,41 @@ static money32 place_track_design(sint16 x, sint16 y, sint16 z, uint8 flags, uin
     uint8 entryType, entryIndex;
     if (!find_object_in_entry_group(rideEntryObject, &entryType, &entryIndex)) {
         entryIndex = 0xFF;
+    }
+    // Force a fallback if the entry is not invented yet a td6 of it is selected, which can happen in select-by-track-type mode.
+    else if (!ride_entry_is_invented(entryIndex))
+    {
+        entryIndex = 0xFF;
+    }
+    
+    // The rest of the cases are handled by the code in ride_create()
+    if (track_type_has_ride_groups(td6->type) && entryIndex == 0xFF)
+    {
+        const ObjectRepositoryItem * ori = object_repository_find_object_by_name(rideEntryObject->name);
+        if (ori != NULL)
+        {
+            uint8 rideGroupIndex = ori->RideGroupIndex;
+            ride_group * td6RideGroup = ride_group_find(td6->type, rideGroupIndex);
+            rct_ride_entry * ire;
+            
+            uint8 *availableRideEntries = get_ride_entry_indices_for_ride_type(td6->type);
+            for (uint8 *rei = availableRideEntries; *rei != 255; rei++)
+            {
+                ire = get_ride_entry(*rei);
+                
+                if (!ride_entry_is_invented(*rei))
+                {
+                    continue;
+                }
+
+                const ride_group * irg = get_ride_group(td6->type, ire);
+                if (ride_groups_are_equal(td6RideGroup, irg))
+                {
+                    entryIndex = *rei;
+                    break;
+                }
+            }
+        }
     }
 
     uint8 rideIndex;
