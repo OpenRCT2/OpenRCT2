@@ -671,6 +671,11 @@ extern "C"
         windowManager->HandleKeyboard(isTitle);
     }
 
+    bool context_read_bmp(void * * outPixels, uint32 * outWidth, uint32 * outHeight, const utf8 * path)
+    {
+        return GetContext()->GetUiContext()->ReadBMP(outPixels, outWidth, outHeight, std::string(path));
+    }
+
     bool platform_open_common_file_dialog(utf8 * outFilename, file_dialog_desc * desc, size_t outSize)
     {
         try

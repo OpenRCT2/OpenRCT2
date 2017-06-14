@@ -131,6 +131,11 @@ namespace OpenRCT2
 
             // In-game UI
             virtual IWindowManager *    GetWindowManager() abstract;
+
+            // Misc.
+            // HACK: This should either be implemented ourselves in libopenrct2
+            //       or the mapgen height map code is moved to libopenrct2ui.
+            virtual bool                ReadBMP(void * * outPixels, uint32 * outWidth, uint32 * outHeight, const std::string &path) abstract;
         };
 
         IUiContext * CreateDummyUiContext();

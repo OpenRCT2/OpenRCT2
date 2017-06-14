@@ -16,7 +16,8 @@
 
 #include "../common.h"
 #include <math.h>
-#include <SDL.h>
+
+#include "../Context.h"
 #include "../Imaging.h"
 #include "../core/Guard.hpp"
 #include "../game.h"
@@ -805,31 +806,13 @@ bool mapgen_load_heightmap(const utf8 *path)
         pitch = width * numChannels;
     }
     else if (strcicmp(extension, ".bmp") == 0) {
-        SDL_Surface *bitmap = SDL_LoadBMP(path);
-        if (bitmap == NULL) {
-            log_warning("Failed to load bitmap: %s", SDL_GetError());
-            window_error_open(STR_HEIGHT_MAP_ERROR, STR_ERROR_READING_BITMAP);
+        if (!context_read_bmp((void *)&pixels, &width, &height, path)) {
+            // ReadBMP contains window_error_open calls
             return false;
         }
 
-        width = bitmap->w;
-        height = bitmap->h;
-        numChannels = bitmap->format->BytesPerPixel;
-        pitch = bitmap->pitch;
-
-        if (numChannels < 3 || bitmap->format->BitsPerPixel < 24)
-        {
-            window_error_open(STR_HEIGHT_MAP_ERROR, STR_ERROR_24_BIT_BITMAP);
-            SDL_FreeSurface(bitmap);
-            return false;
-        }
-
-        // Copy pixels over, then discard the surface
-        SDL_LockSurface(bitmap);
-        pixels = malloc(height * bitmap->pitch);
-        memcpy(pixels, bitmap->pixels, height * bitmap->pitch);
-        SDL_UnlockSurface(bitmap);
-        SDL_FreeSurface(bitmap);
+        numChannels = 4;
+        pitch = width * numChannels;
     }
     else
     {

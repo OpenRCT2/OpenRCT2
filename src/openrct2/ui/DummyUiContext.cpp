@@ -76,6 +76,9 @@ namespace OpenRCT2 { namespace Ui
         {
             return _windowManager;
         }
+
+        // Misc
+        bool ReadBMP(void * * outPixels, uint32 * outWidth, uint32 * outHeight, const std::string &path) override { return false; }
     };
 
     IUiContext * CreateDummyUiContext()
