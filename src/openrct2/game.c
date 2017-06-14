@@ -858,7 +858,6 @@ void pause_toggle()
     window_invalidate_by_class(WC_TOP_TOOLBAR);
     if (gGamePaused & GAME_PAUSED_NORMAL) {
         audio_pause_sounds();
-        audio_unpause_sounds();
     } else {
         audio_unpause_sounds();
     }
