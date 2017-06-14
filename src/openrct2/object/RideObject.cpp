@@ -429,6 +429,7 @@ void RideObject::SetRepositoryItem(ObjectRepositoryItem * item) const
                 if (ride_groups_are_equal(irg, rideGroup))
                 {
                     rideGroupIndex = i;
+                    break;
                 }
             }
         }
