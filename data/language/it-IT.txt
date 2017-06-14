@@ -533,76 +533,76 @@ STR_0528    :I passeggeri viaggiano su canotti gonfiabili lungo un tortuoso perc
 STR_0529    :Il treno della miniera è una montagna russa a tema fatta in acciaio realizzata per ricordare una vecchia ferrovia
 STR_0530    :Le carrozze pendono da un cavo d'acciaio che fa avanti e indietro per tutto il tracciato
 STR_0531    :Un ottovolante compatto su un tracciato d'acciaio nel quale i treni viaggiano lungo avvitamenti e inversioni
-STR_0532    :
-STR_0533    :
+STR_0532    :Il labirinto è costituito da siepi o muri alti due metri, e al suo interno i visitatori cercano la via d'uscita
+STR_0533    :Un edificio di legno con una scala interna e uno scivolo a spirale esterno, da discendere utilizzando appositi tappetini
 STR_0534    :Go-kart a motore a benzina guidati dai visitatori
 STR_0535    :Delle barche a forma di tronchi viaggiano lungo un canale d'acqua, schizzando i passeggeri mentre volano giù per ripide discese
 STR_0536    :Delle barche rotonde scorrono lungo un largo canale d'acqua, schizzando attraverso cascate e spaventando i passeggeri con delle rapide schiumose
-STR_0537    :
-STR_0538    :
-STR_0539    :
-STR_0540    :
-STR_0541    :
-STR_0542    :
-STR_0543    :
-STR_0544    :
-STR_0545    :
-STR_0546    :
-STR_0547    :
-STR_0548    :
-STR_0549    :
-STR_0550    :
-STR_0551    :
-STR_0552    :
-STR_0553    :
+STR_0537    :Autoscontri con veicoli guidabili
+STR_0538    :Nave dei pirati grande
+STR_0539    :La nave è appesa a un braccio dotato di un contrappeso al lato opposto, e oscilla in un intero giro a 360 gradi
+STR_0540    :Un chiosco presso il quale i visitatori acquistano cibo
+STR_0541    :<removed string - do not use>
+STR_0542    :Un chiosco presso il quale i visitatori acquistano bevande
+STR_0543    :<removed string - do not use>
+STR_0544    :Un chiosco che vende souvenir
+STR_0545    :Una tradizionale giostra, con cavalli di legno scolpiti a mano
+STR_0546    :<removed string - do not use>
+STR_0547    :Un chiosco presso il quale i visitatori acquisiscono mappe del parco e ombrelli
+STR_0548    :Un bagno pubblico
+STR_0549    :Una grande ruota con sedili aperti
+STR_0550    :I visitatori guardano un film all'interno del simulatore, il quale si muove e ruota tramite un braccio idraulico
+STR_0551    :Un cinema che proietta film in 3D all'interno di un edificio a forma di globo
+STR_0552    :I passeggeri si trovano su una imbarcazione appesa a grandi bracci rotanti, che la muovono avanti e indietro, e a testa in giù
+STR_0553    :Anelli che ruotano su tutti gli assi permettono ai passeggeri di roteare in ogni direzione
 STR_0554    :La carrozza acquista velocità a partire dalla stazione attraverso un lungo tratto pianeggiante grazie a dei motori a induzione lineare, quindi percorre una salita ripida per poi scendere in caduta libera e tornare alla stazione
 STR_0555    :Gli ospiti della attrazione usano l'ascensore su una torre verticale per andare da un livello all'altro
 STR_0556    :Carrelli molto larghi discendono lungo un percorso completamente verticale, per far vivere un'incredibile esperienza di caduta libera
-STR_0557    :
-STR_0558    :
-STR_0559    :
-STR_0560    :
-STR_0561    :
+STR_0557    :Un Bancomat che permette ai visitatori al verde di prelevare ulteriore denaro
+STR_0558    :Coppie di passeggeri su sedili doppi ruotano lungo le estremità di tre lunghi bracci rotanti
+STR_0559    :Un largo edificio tematizzato che contiene corridoi paurosi e stanze spaventose
+STR_0560    :Un posto nel quale i visitatori nauseati possono guarire più velocemente
+STR_0561    :Spettacolo circense di animali all'interno di un tendone
 STR_0562    :Carrelli a motore viaggiano lungo un tracciato su più livelli attraversando scenari spaventosi ed effetti speciali
 STR_0563    :Seduti comodamente - il solo limite è che si può effettuare un solo giro alla volta - i passeggeri sperimentano dolci discese e numerose curve, provando una piacevole sensazione di assenza di peso
 STR_0564    :Quest'attrazione, in cui si viaggia lungo un tracciato di legno, è veloce, ricca di imprevisti, rumorosa e dà al passeggero la sensazione di essere senza controllo, oltre che quella di una grande libertà
 STR_0565    :Un semplice ottovolante di legno, adatto solo a curve e declivi  lenti, in cui le carrozze sono tenute in pista solo dalla frizione delle ruote sui i bordi della pista e dalla gravità
 STR_0566    :Carrozze individuali sfrecciano per uno stretto percorso a zig-zag con curve molto strette e corte e ripide discese
 STR_0567    :Seduti su sedili sospesi a entrambi i lati del tracciato, i passeggeri vengono capovolti mentre si tuffano per rapide discese e sperimentano numerose inversioni 
-STR_0568    :
+STR_0568    :<removed string - do not use>
 STR_0569    :I passeggeri, cinti da speciali imbracature al di sotto il tracciato, sperimentano la sensazione del volo quando vengono fatti oscillare nell'aria
-STR_0570    :
+STR_0570    :<removed string - do not use>
 STR_0571    :Carrelli circolari ruotano su sé stessi mentre viaggiano lungo il percorso di legno a zig-zag
 STR_0572    :Barche molto capienti viaggiano lungo un ampio canale d'acqua, trasportate in salita da una catena e lasciate accelerare lungo rapide discese in modo da bagnare i passeggeri con un grande spruzzo
 STR_0573    :Carrelli a motore a forma di elicottero viaggiano lungo un percorso di acciaio, controllati dai pedali dei passeggeri
 STR_0574    :I passeggeri, mantenuti orizzontali tramite uno speciale sistema di ritenuta, viaggiano lungo un tracciato tortuoso e numerose inversioni, sia supini che rivolti verso il terreno
 STR_0575    :Dei treni elettrici sospesi sotto una singola rotaia trasportano i passeggeri per tutto il parco
-STR_0576    :
+STR_0576    :<removed string - do not use>
 STR_0577    :Carrelli corrono lungo tracciati di legno, ruotando su sé stessi in speciali sezioni di inversione
 STR_0578    :Le carrozze corrono per il tracciato caratterizzato da vari giri,  ripide discese e curve ondulanti
-STR_0579    :
+STR_0579    :Un tranquillo gioco di golf in miniatura
 STR_0580    :Un gigante ottovolante di acciaio in grado di offrire morbide cadute e risalite a più di 90 metri di altezza
 STR_0581    :Un anello di sedie è posizionato in cima alla torre mentre ruota piano, quindi precipita fermandosi gentilmente alla base tramite freni magnetici
-STR_0582    :
-STR_0583    :
+STR_0582    :Veicoli galleggianti liberamente guidabili
+STR_0583    :Un edificio contenente stanze distorte e corridoi ad angolo che disorientano i visitatori che vi camminano all'interno
 STR_0584    :Speciali biciclette viaggiano lungo un percorso a monorotaia di acciaio, spinte soltanto dalle pedalate dei passeggeri
 STR_0585    :I passeggeri viaggiano su coppie di sedili sospesi sotto al percorso, mentre viaggiano attraverso numerose inversioni e inclinazioni
 STR_0586    :Carrozze a forma di barca viaggiano lungo l'ottovolante, caratterizzato da ripide discese, curve avvitate e tuffi in sezioni acquatiche più tranquille.
 STR_0587    :Dopo un euforico lancio ad aria compressa il treno sale lungo un tracciato verticale, fino alla vetta della collina, e poi giù in verticale dal lato opposto per far ritorno alla stazione
 STR_0588    :Carrozze singole corrono sotto a un percorso a zig-zag ricco di tornanti e cadute ripide
-STR_0589    :
+STR_0589    :Una grande carrozza a forma di tappeto volante si muove su e giù su quattro bracci
 STR_0590    :I visitatori viaggiano in un sottomarino attraverso un percorso subacqueo
 STR_0591    :Imbarcazioni a forma di zattera serpeggiano lungo un percorso a fiume
-STR_0592    :
-STR_0593    :
-STR_0594    :
-STR_0595    :
-STR_0596    :
-STR_0597    :
+STR_0592    :<removed string - do not use>
+STR_0593    :Una ruota con navicelle che inizia a girare e successivamente si piega tramite un braccio di supporto
+STR_0594    :<removed string - do not use>
+STR_0595    :<removed string - do not use>
+STR_0596    :<removed string - do not use>
+STR_0597    :<removed string - do not use>
 STR_0598    :Treni dell'ottovolante invertito accelerano dalla stazione lungo un tratto in salita, per poi tornare indietro, attraversare la stazione e salire su un altro tratto di percorso
 STR_0599    :Un ottovolante compatto con carrozze individuali e rapide curve in discesa
 STR_0600    :I treni della miniera motorizzati scorrono lungo un percorso fluido e pieno di curve
-STR_0601    :
+STR_0601    :<removed string - do not use>
 STR_0602    :I treni dell'ottovolante sono spinti fuori dalla stazione tramite motori a induzione lineare per correre lungo avvitamenti e inversioni
 STR_0603    :Visitatore {INT32}
 STR_0604    :Visitatore {INT32}
@@ -4413,6 +4413,7 @@ STR_6099    :Connesso al server.
 STR_6100    :Disconnesso dal server.
 STR_6101    :Le attrazioni non perdono valore con il tempo
 STR_6102    :{SMALLFONT}{BLACK}Il valore delle attrazioni non calerà con il tempo, in modo che i visitatori non pensino improvvisamente che il costo dell'attrazione sia troppo alto.
+STR_6103    :{SMALLFONT}{BLACK}Questa opzione è disabilitata durante il gioco online.
 
 
 #############
