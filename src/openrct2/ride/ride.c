@@ -1090,8 +1090,12 @@ void ride_clear_for_construction(sint32 rideIndex)
     ride->lifecycle_flags &= ~(RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN);
     ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
 
-    // Fixes another MP desync where it left the rating set to the previous run causing peeps to pick different rides.
-    invalidate_test_results(rideIndex);
+    // Open circuit rides will go directly into building mode where it would normally clear the stats,
+    // however this causes desyncs since its directly ran from the panel and other clients would not get it.
+    // So we have it in here since this function will be called on all clients and shall only be invalidated in multiplayer.
+    if (network_get_mode() != NETWORK_MODE_NONE) {
+        invalidate_test_results(rideIndex);
+    }
 
     ride_remove_cable_lift(ride);
     ride_remove_vehicles(ride);
