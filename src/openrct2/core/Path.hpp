@@ -25,7 +25,7 @@ namespace Path
     std::string Combine(const std::string &a, const std::string &b);
 
     template<typename... Args>
-    std::string Combine(const std::string &a, const std::string &b, Args... args)
+    static std::string Combine(const std::string &a, const std::string &b, Args... args)
     {
         return Combine(a, Combine(b, args...));
     }
