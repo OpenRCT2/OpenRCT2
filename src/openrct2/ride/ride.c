@@ -1090,9 +1090,9 @@ void ride_clear_for_construction(sint32 rideIndex)
     ride->lifecycle_flags &= ~(RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN);
     ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
 
-    // Open circuit rides will go directly into building mode where it would normally clear the stats,
-    // however this causes desyncs since its directly ran from the panel and other clients would not get it.
-    // So we have it in here since this function will be called on all clients and shall only be invalidated in multiplayer.
+    // Open circuit rides will go directly into building mode (creating ghosts) where it would normally clear the stats,
+    // however this causes desyncs since it's directly run from the window and other clients would not get it.
+    // To prevent these problem, unconditionally invalidate the test results on all clients in multiplayer games.
     if (network_get_mode() != NETWORK_MODE_NONE) {
         invalidate_test_results(rideIndex);
     }
