@@ -626,7 +626,13 @@ bool Network::CheckSRAND(uint32 tick, uint32 srand0)
         // Check PRNG values and sprite hashes, if exist
         if ((srand0 != server_srand0) || sprites_mismatch) {
 #ifdef DEBUG_DESYNC
-            dbg_report_desync(tick, srand0, server_srand0, client_sprite_hash, server_sprite_hash);
+            scenario_log("!! DESYNC !! Tick: %d, Client Hash: %s, Server Hash: %s, Client Rand: %08X, Server Rand: %08X - %s\n",
+                    tick,
+                    client_sprite_hash,
+                    ((server_sprite_hash[0] != '\0') ? server_sprite_hash : "<NONE:0>"),
+                    srand0,
+                    server_srand0,
+                    (sprites_mismatch ? "Sprite hash mismatch" : "Scenario rand mismatch"));
 #endif
             return false;
         }
@@ -1136,7 +1142,12 @@ void Network::Server_Send_TICK()
     // but debug version can check more often.
     static sint32 checksum_counter = 0;
     checksum_counter++;
+#ifdef DEBUG_DESYNC 
+    // Check every tick in debug version.
+    if (checksum_counter >= 1) {
+#else
     if (checksum_counter >= 100) {
+#endif
         checksum_counter = 0;
         flags |= NETWORK_TICK_FLAG_CHECKSUMS;
     }

@@ -564,36 +564,23 @@ static sint32 scenario_create_ducks()
     return 1;
 }
 
-/**
- *
- *  rct2: 0x006E37D2
- *
- * @return eax
- */
-#ifndef DEBUG_DESYNC 
-uint32 scenario_rand()
-#else
-static FILE *fp = NULL;
-static const char *realm = "LC";
-
-uint32 dbg_scenario_rand(const char *file, const char *function, const uint32 line, const void *data)
-#endif
-{
-    uint32 originalSrand0 = gScenarioSrand0;
-    gScenarioSrand0 += ror32(gScenarioSrand1 ^ 0x1234567F, 7);
-    gScenarioSrand1 = ror32(originalSrand0, 3);
-
 #ifdef DEBUG_DESYNC
+
+void dbg_scenario_log(const char *file, const uint32 line, const char *fmt, ...)
+{
+    static FILE *fp = NULL;
+    static const char *realm = "LC";
+
     if (fp == NULL)
     {
         if (network_get_mode() == NETWORK_MODE_SERVER)
         {
-            fp = fopen("server_rand.txt", "wt");
+            fp = fopen("sc_server.txt", "wt");
             realm = "SV";
         }
         else if (network_get_mode() == NETWORK_MODE_CLIENT)
         {
-            fp = fopen("client_rand.txt", "wt");
+            fp = fopen("sc_client.txt", "wt");
             realm = "CL";
         }
         else
@@ -604,10 +591,62 @@ uint32 dbg_scenario_rand(const char *file, const char *function, const uint32 li
             realm = "LC";
         }
     }
-    if (fp)
+    bool logOutput = false;
+    if (network_get_mode() == NETWORK_MODE_SERVER)
     {
-        fprintf(fp, "Tick: %d, Rand: %08X - REF: %s:%u %s (%p)\n", gCurrentTicks, gScenarioSrand1, file, line, function, data);
+        logOutput = true;
     }
+    else if (network_get_mode() == NETWORK_MODE_CLIENT)
+    {
+        if (network_get_status() == NETWORK_STATUS_CONNECTED && network_get_authstatus() == NETWORK_AUTH_OK)
+            logOutput = true;
+    }
+
+    if (fp && logOutput)
+    {
+        va_list va;
+        va_start(va, fmt);
+        fprintf(fp, "[%s:%u] ", file, line);
+        vfprintf(fp, fmt, va);
+        va_end(va);
+    }
+}
+
+#endif
+
+/**
+ *
+ *  rct2: 0x006E37D2
+ *
+ * @return eax
+ */
+#ifndef DEBUG_DESYNC 
+uint32 scenario_rand()
+#else
+uint32 dbg_scenario_rand(const char *file, const char *function, const uint32 line, const void *data)
+#endif
+{
+    uint32 originalSrand0 = gScenarioSrand0;
+    gScenarioSrand0 += ror32(gScenarioSrand1 ^ 0x1234567F, 7);
+    gScenarioSrand1 = ror32(originalSrand0, 3);
+
+#ifdef DEBUG_DESYNC
+ 
+    bool printLog = true;
+    if (network_get_mode() == NETWORK_MODE_CLIENT)
+    {
+        if (network_get_status() == NETWORK_STATUS_CONNECTED && network_get_authstatus() == NETWORK_AUTH_OK)
+        {
+            printLog = true;
+        }
+        else
+            printLog = false;
+    }
+
+    if (printLog) {
+        scenario_log("Tick: %d, Rand: %08X - REF: %s:%u %s (%p)\n", gCurrentTicks, gScenarioSrand1, file, line, function, data);
+    }
+
     if (!gInUpdateCode) {
         log_warning("scenario_rand called from outside game update");
         assert(false);
@@ -616,37 +655,6 @@ uint32 dbg_scenario_rand(const char *file, const char *function, const uint32 li
 
     return gScenarioSrand1;
 }
-
-#ifdef DEBUG_DESYNC 
-void dbg_report_desync(uint32 tick, uint32 srand0, uint32 server_srand0, const char *clientHash, const char *serverHash)
-{
-    if (fp == NULL)
-    {
-        if (network_get_mode() == NETWORK_MODE_SERVER)
-        {
-            fp = fopen("server_rand.txt", "wt");
-            realm = "SV";
-        }
-        else if (network_get_mode() == NETWORK_MODE_CLIENT)
-        {
-            fp = fopen("client_rand.txt", "wt");
-            realm = "CL";
-        }
-    }
-    if (fp)
-    {
-        const bool sprites_mismatch = serverHash[0] != '\0' && strcmp(clientHash, serverHash);
-
-        fprintf(fp, "[%s] !! DESYNC !! Tick: %d, Client Hash: %s, Server Hash: %s, Client Rand: %08X, Server Rand: %08X - %s\n", realm, 
-                tick, 
-                clientHash, 
-                ( (serverHash[0] != '\0') ? serverHash : "<NONE:0>" ),
-                srand0,
-                server_srand0,
-                (sprites_mismatch ? "Sprite hash mismatch" : "scenario rand mismatch"));
-    }
-}
-#endif
 
 uint32 scenario_rand_max(uint32 max)
 {

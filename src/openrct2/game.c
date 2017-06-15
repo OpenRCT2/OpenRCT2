@@ -345,6 +345,8 @@ void game_update()
 
 void game_logic_update()
 {
+    scenario_log("game_logic_update Tick: %08X\n", gCurrentTicks);
+
     network_update();
 
     if (network_get_mode() == NETWORK_MODE_CLIENT && network_get_status() == NETWORK_STATUS_CONNECTED && network_get_authstatus() == NETWORK_AUTH_OK) {

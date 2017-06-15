@@ -334,6 +334,7 @@ static money32 footpath_element_update(sint32 x, sint32 y, rct_map_element *mapE
 
 static money32 footpath_place_real(sint32 type, sint32 x, sint32 y, sint32 z, sint32 slope, sint32 flags, uint8 pathItemType)
 {
+    scenario_log("%s\n", __FUNCTION__);
     rct_map_element *mapElement;
 
     gCommandExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
@@ -346,8 +347,19 @@ static money32 footpath_place_real(sint32 type, sint32 x, sint32 y, sint32 z, si
         return MONEY32_UNDEFINED;
     }
 
-    if (flags & GAME_COMMAND_FLAG_APPLY)
-        footpath_interrupt_peeps(x, y, z * 8);
+    if ((flags & GAME_COMMAND_FLAG_APPLY)) {
+        if (network_get_mode() != NETWORK_MODE_NONE) {
+            // I'm not entirely sure if this is a bug or wanted feature that ghost pieces are able to interrupt peeps.
+            // So in network mode we check for the specific flag and make sure its not a ghost piece, otherwise we get desyncs.
+            if ((flags & GAME_COMMAND_FLAG_7) && !(flags & GAME_COMMAND_FLAG_GHOST)) {
+                footpath_interrupt_peeps(x, y, z * 8);
+            }
+        }
+        else {
+            footpath_interrupt_peeps(x, y, z * 8);
+        }
+        
+    }
 
     gFootpathPrice = 0;
     gFootpathGroundFlags = 0;
@@ -411,6 +423,7 @@ static void remove_banners_at_element(sint32 x, sint32 y, rct_map_element* mapEl
 
 money32 footpath_remove_real(sint32 x, sint32 y, sint32 z, sint32 flags)
 {
+    scenario_log("%s\n", __FUNCTION__);
     rct_map_element *mapElement;
 
     gCommandExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
@@ -481,6 +494,8 @@ void game_command_place_footpath(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *
 
 static money32 footpath_place_from_track(sint32 type, sint32 x, sint32 y, sint32 z, sint32 slope, sint32 edges, sint32 flags)
 {
+    scenario_log("%s\n", __FUNCTION__);
+
     rct_map_element *mapElement;
 
     gCommandExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
@@ -829,6 +844,8 @@ void footpath_remove_litter(sint32 x, sint32 y, sint32 z)
  */
 void footpath_interrupt_peeps(sint32 x, sint32 y, sint32 z)
 {
+    scenario_log("%s\n", __FUNCTION__);
+
     uint16 spriteIndex = sprite_get_first_in_quadrant(x, y);
     while (spriteIndex != SPRITE_INDEX_NULL) {
         rct_peep *peep = &get_sprite(spriteIndex)->peep;
@@ -1143,6 +1160,8 @@ static void loc_6A6D7E(
     sint32 initialX, sint32 initialY, sint32 z, sint32 direction, rct_map_element *initialMapElement,
     sint32 flags, bool query, rct_neighbour_list *neighbourList
 ) {
+    scenario_log("%s\n", __FUNCTION__);
+
     sint32 x = initialX + TileDirectionDelta[direction].x;
     sint32 y = initialY + TileDirectionDelta[direction].y;
     if (((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode) && map_is_edge(x, y)) {
