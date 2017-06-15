@@ -14,6 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
+#ifndef __ANDROID__
 #include <zip.h>
 #include "IStream.hpp"
 #include "MemoryStream.h"
@@ -159,3 +160,5 @@ namespace Zip
         return result;
     }
 }
+
+# endif

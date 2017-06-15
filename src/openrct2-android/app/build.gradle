@@ -1,0 +1,102 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 25
+    buildToolsVersion '25.0.2'
+
+    defaultConfig {
+        applicationId 'website.openrct2'
+        minSdkVersion 16
+        targetSdkVersion 25
+
+        versionCode 2
+        versionName '0.0.8'
+
+        externalNativeBuild {
+            cmake {
+                arguments '-DANDROID_STL=c++_shared'
+                targets 'openrct2', 'openrct2-ui'
+            }
+        }
+    }
+
+    signingConfigs {
+        debug {
+            storeFile file('external/debug.keystore')
+        }
+    }
+
+    buildTypes {
+        debug {
+            applicationIdSuffix '.debug'
+            versionNameSuffix '-DEBUG'
+        }
+        pr {
+            applicationIdSuffix '.debug'
+            signingConfig signingConfigs.debug
+        }
+        develop {
+            applicationIdSuffix '.develop'
+            versionNameSuffix '-DEVELOP'
+            signingConfig signingConfigs.debug
+        }
+        release {
+            signingConfig signingConfigs.debug
+        }
+    }
+
+    externalNativeBuild {
+        cmake {
+            path 'src/main/CMakeLists.txt'
+        }
+    }
+
+    productFlavors {
+        arm7 {
+            ndk {
+                abiFilters 'armeabi-v7a'
+            }
+        }
+        arm {
+            ndk {
+                abiFilters 'armeabi-v7a', 'arm64-v8a'
+            }
+        }
+        x86 {
+            ndk {
+                abiFilters 'x86', 'x86_64'
+            }
+        }
+    }
+}
+
+apply plugin: 'de.undercouch.download'
+
+android.applicationVariants.all { variant ->
+    variant.mergeAssets.doLast {
+        copy {
+            from '../../../data'
+            into "$variant.mergeAssets.outputDir/data"
+        }
+        download {
+            src 'https://github.com/marijnvdwerf/openrct2-dependencies-android/releases/download/v0.7/g2.dat'
+            dest "$variant.mergeAssets.outputDir/data"
+        }
+        download {
+            src 'https://github.com/OpenRCT2/title-sequences/releases/download/v0.0.5/title-sequence-v0.0.5.zip'
+            dest new File(buildDir, 'title-sequence.zip')
+        }
+        copy {
+            from zipTree(new File(buildDir, 'title-sequence.zip'))
+            into "$variant.mergeAssets.outputDir/data/title"
+        }
+    }
+}
+
+dependencies {
+    compile 'commons-io:commons-io:2.5'
+    compile 'com.android.support:appcompat-v7:25.3.1'
+    compile 'com.google.android.gms:play-services-analytics:10.2.1'
+}
+
+apply plugin: 'com.google.gms.google-services'
