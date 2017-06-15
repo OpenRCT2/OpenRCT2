@@ -1111,8 +1111,6 @@ void ride_clear_for_construction(sint32 rideIndex)
  */
 void ride_remove_peeps(sint32 rideIndex)
 {
-    scenario_log("%s\n", __FUNCTION__);
-
     rct_ride *ride = get_ride(rideIndex);
 
     // Find first station
@@ -2572,7 +2570,6 @@ static void ride_mechanic_status_update(sint32 rideIndex, sint32 mechanicStatus)
  */
 static void ride_call_mechanic(sint32 rideIndex, rct_peep *mechanic, sint32 forInspection)
 {
-    scenario_log("%s\n", __FUNCTION__);
     rct_ride *ride;
 
     ride = get_ride(rideIndex);
@@ -5742,8 +5739,6 @@ sint32 ride_get_refund_price(sint32 ride_id)
  */
 static void ride_stop_peeps_queuing(sint32 rideIndex)
 {
-    scenario_log("%s\n", __FUNCTION__);
-
     uint16 spriteIndex;
     rct_peep *peep;
 

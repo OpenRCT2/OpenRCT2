@@ -37,13 +37,6 @@ enum {
 #define NETWORK_DEFAULT_PORT 11753
 #define MAX_SERVER_DESCRIPTION_LENGTH 256
 
-// Defines the amount of ticks to pass by before generating and sending the sprite/rand checksum.
-#ifdef DEBUG_DESYNC 
-#define NETWORK_CHECKSUM_CYCLE 1
-#else 
-#define NETWORK_CHECKSUM_CYCLE 100
-#endif 
-
 #ifdef __cplusplus
 extern "C" {
 #endif // __cplusplus

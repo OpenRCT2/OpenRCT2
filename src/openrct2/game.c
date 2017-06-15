@@ -345,15 +345,6 @@ void game_update()
 
 void game_logic_update()
 {
-#ifdef DEBUG_DESYNC 
-    static uint32 lastTick = -1;
-    if (lastTick != gCurrentTicks)
-    {
-        scenario_log("game_logic_update Tick: %08X\n", gCurrentTicks);
-        lastTick = gCurrentTicks;
-    }
-#endif
-
     network_update();
 
     if (network_get_mode() == NETWORK_MODE_CLIENT && network_get_status() == NETWORK_STATUS_CONNECTED && network_get_authstatus() == NETWORK_AUTH_OK) {

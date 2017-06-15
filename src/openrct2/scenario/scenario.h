@@ -398,13 +398,10 @@ void scenario_update();
 uint32 dbg_scenario_rand(const char *file, const char *function, const uint32 line, const void *data);
 #define scenario_rand() dbg_scenario_rand(__FILE__, __FUNCTION__, __LINE__, NULL)
 #define scenario_rand_data(data) dbg_scenario_rand(__FILE__, __FUNCTION__, __LINE__, data)
-void dbg_scenario_log(const char *file, const uint32 line, const char *fmt, ...);
-#define scenario_log(fmt, ...) dbg_scenario_log(__FILE__, __LINE__, fmt, __VA_ARGS__)
+void dbg_report_desync(uint32 tick, uint32 srand0, uint32 server_srand0, const char *clientHash, const char *serverHash);
 #else 
 uint32 scenario_rand();
-#define scenario_log(fmt, ...)
 #endif
-
 
 uint32 scenario_rand_max(uint32 max);
 

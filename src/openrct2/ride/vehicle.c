@@ -3538,7 +3538,6 @@ static void vehicle_update_arriving(rct_vehicle* vehicle)
  *  rct2: 0x006D9002
  */
 static void vehicle_update_unloading_passengers(rct_vehicle* vehicle) {
-    scenario_log("%s\n", __FUNCTION__);
     if (vehicle->sub_state == 0) {
         if (!vehicle_open_restraints(vehicle)) {
             vehicle->sub_state = 1;
