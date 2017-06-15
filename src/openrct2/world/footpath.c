@@ -347,18 +347,8 @@ static money32 footpath_place_real(sint32 type, sint32 x, sint32 y, sint32 z, si
         return MONEY32_UNDEFINED;
     }
 
-    if ((flags & GAME_COMMAND_FLAG_APPLY)) {
-        if (network_get_mode() != NETWORK_MODE_NONE) {
-            // I'm not entirely sure if this is a bug or wanted feature that ghost pieces are able to interrupt peeps.
-            // So in network mode we check for the specific flag and make sure its not a ghost piece, otherwise we get desyncs.
-            if ((flags & GAME_COMMAND_FLAG_7) && !(flags & GAME_COMMAND_FLAG_GHOST)) {
-                footpath_interrupt_peeps(x, y, z * 8);
-            }
-        }
-        else {
-            footpath_interrupt_peeps(x, y, z * 8);
-        }
-        
+    if ((flags & GAME_COMMAND_FLAG_APPLY) && (flags & GAME_COMMAND_FLAG_7) && !(flags & GAME_COMMAND_FLAG_GHOST)) {
+        footpath_interrupt_peeps(x, y, z * 8);
     }
 
     gFootpathPrice = 0;
