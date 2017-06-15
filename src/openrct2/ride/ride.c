@@ -1099,7 +1099,7 @@ void ride_clear_for_construction(sint32 rideIndex)
 
     ride_remove_cable_lift(ride);
     ride_remove_vehicles(ride);
-    
+
     w = window_find_by_number(WC_RIDE, rideIndex);
     if (w != NULL)
         window_event_resize_call(w);

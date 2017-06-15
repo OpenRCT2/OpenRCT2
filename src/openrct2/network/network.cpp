@@ -1142,12 +1142,7 @@ void Network::Server_Send_TICK()
     // but debug version can check more often.
     static sint32 checksum_counter = 0;
     checksum_counter++;
-#ifdef DEBUG_DESYNC 
-    // Check every tick in debug version.
-    if (checksum_counter >= 1) {
-#else
-    if (checksum_counter >= 100) {
-#endif
+    if (checksum_counter >= NETWORK_CHECKSUM_CYCLE) {
         checksum_counter = 0;
         flags |= NETWORK_TICK_FLAG_CHECKSUMS;
     }
