@@ -1090,9 +1090,12 @@ void ride_clear_for_construction(sint32 rideIndex)
     ride->lifecycle_flags &= ~(RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN);
     ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
 
+    // Fixes another MP desync where it left the rating set to the previous run causing peeps to pick different rides.
+    invalidate_test_results(rideIndex);
+
     ride_remove_cable_lift(ride);
     ride_remove_vehicles(ride);
-
+    
     w = window_find_by_number(WC_RIDE, rideIndex);
     if (w != NULL)
         window_event_resize_call(w);
@@ -1104,7 +1107,7 @@ void ride_clear_for_construction(sint32 rideIndex)
  */
 void ride_remove_peeps(sint32 rideIndex)
 {
-	scenario_log("%s\n", __FUNCTION__);
+    scenario_log("%s\n", __FUNCTION__);
 
     rct_ride *ride = get_ride(rideIndex);
 
@@ -2565,7 +2568,7 @@ static void ride_mechanic_status_update(sint32 rideIndex, sint32 mechanicStatus)
  */
 static void ride_call_mechanic(sint32 rideIndex, rct_peep *mechanic, sint32 forInspection)
 {
-	scenario_log("%s\n", __FUNCTION__);
+    scenario_log("%s\n", __FUNCTION__);
     rct_ride *ride;
 
     ride = get_ride(rideIndex);
@@ -5735,7 +5738,7 @@ sint32 ride_get_refund_price(sint32 ride_id)
  */
 static void ride_stop_peeps_queuing(sint32 rideIndex)
 {
-	scenario_log("%s\n", __FUNCTION__);
+    scenario_log("%s\n", __FUNCTION__);
 
     uint16 spriteIndex;
     rct_peep *peep;

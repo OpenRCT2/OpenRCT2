@@ -1875,9 +1875,10 @@ void peep_pickup(rct_peep* peep)
 
 void peep_pickup_abort(rct_peep* peep, sint32 old_x)
 {
-    scenario_log("%s(%08X)\n", __FUNCTION__, peep->id);
     if (!peep)
         return;
+
+    scenario_log("%s(%08X)\n", __FUNCTION__, peep->id);
 
     if (peep->state != PEEP_STATE_PICKED)
         return;
@@ -7861,7 +7862,7 @@ static sint32 peep_should_find_bench(rct_peep* peep){
  */
 void peep_insert_new_thought(rct_peep *peep, uint8 thought_type, uint8 thought_arguments)
 {
-    scenario_log("%s(%08X)\n", __FUNCTION__, peep->id);
+    scenario_log("%s(%08X, %02X, %02X)\n", __FUNCTION__, peep->id, thought_type, thought_arguments);
 
     uint8 action = PeepThoughtToActionMap[thought_type].action;
     if (action != 0xFF && peep->action >= 254){
@@ -7945,7 +7946,7 @@ static void peep_stop_purchase_thought(rct_peep* peep, uint8 ride_type){
 
 void peep_set_map_tooltip(rct_peep *peep)
 {
-    scenario_log("%s(%08X)\n", __FUNCTION__, peep->id);
+    //scenario_log("%s(%08X)\n", __FUNCTION__, peep->id);
 
     if (peep->type == PEEP_TYPE_GUEST) {
         set_map_tooltip_format_arg(0, rct_string_id, (peep->peep_flags & PEEP_FLAGS_TRACKING) ? STR_TRACKED_GUEST_MAP_TIP : STR_GUEST_MAP_TIP);
@@ -8529,6 +8530,8 @@ static sint32 peep_interact_with_path(rct_peep* peep, sint16 x, sint16 y, rct_ma
             // Peep has decided not to go on the ride.
             return peep_return_to_center_of_tile(peep);
         }
+
+        scenario_log("Peep(%08X) decided for ride: %08X\n", peep->id, rideIndex);
 
         // Peep has decided to go on the ride at the queue.
         // Set the following so the peep will correctly walk up
@@ -11513,7 +11516,9 @@ static void peep_easter_egg_peep_interactions(rct_peep *peep)
  * @return (CF)
  */
 static bool peep_should_watch_ride(rct_map_element *mapElement) {
+    
     rct_ride *ride = get_ride(mapElement->properties.track.ride_index);
+    scenario_log("%s\n", __FUNCTION__);
 
     // Ghosts are purely this-client-side and should not cause any interaction,
     // as that may lead to a desync.
@@ -11896,8 +11901,18 @@ static void peep_reset_ride_heading(rct_peep *peep)
  */
 static bool peep_should_go_on_ride(rct_peep *peep, sint32 rideIndex, sint32 entranceNum, sint32 flags)
 {
-    scenario_log("%s(%08X)\n", __FUNCTION__, peep->id);
     rct_ride *ride = get_ride(rideIndex);
+    money16 ridePrice = ride_get_price(ride);
+
+    scenario_log("%s(%08X, %08X, %08X, %08X) Rating: %04X, Status: %02X, Price: %04X, Nausea: %04X\n", __FUNCTION__, 
+                 peep->id, 
+                 rideIndex, 
+                 entranceNum, 
+                 flags,
+                 ride->excitement,
+                 ride->status,
+                 ridePrice,
+                 ride->nausea);
 
     // Indicates if the peep is about to enter a queue (as opposed to entering an entrance directly from a path)
     bool peepAtQueue = flags & PEEP_RIDE_DECISION_AT_QUEUE;
@@ -11967,7 +11982,6 @@ static bool peep_should_go_on_ride(rct_peep *peep, sint32 rideIndex, sint32 entr
 
         // Assuming the queue conditions are met, peeps will always go on free transport rides.
         // Ride ratings, recent crashes and weather will all be ignored.
-        money16 ridePrice = ride_get_price(ride);
         if (!(RideData4[ride->type].flags & RIDE_TYPE_FLAG4_TRANSPORT_RIDE) || ride->value == 0xFFFF || ridePrice != 0) {
             if (peep->previous_ride == rideIndex) {
                 peep_chose_not_to_go_on_ride(peep, rideIndex, peepAtRide, false);
@@ -12278,7 +12292,7 @@ static void peep_pick_ride_to_go_on(rct_peep *peep)
         // Consider rides that peep hasn't been on yet
         sint32 i;
         FOR_ALL_RIDES(i, ride) {
-            if (!peep_has_ridden(peep, i)) {
+            if (!peep_has_ridden(peep, i) && ride->status == RIDE_STATUS_OPEN) {
                 _peepRideConsideration[i >> 5] |= (1u << (i & 0x1F));
             }
         }
@@ -12340,7 +12354,14 @@ static void peep_pick_ride_to_go_on(rct_peep *peep)
         }
     }
     if (mostExcitingRideIndex == -1)
+    {
+        scenario_log("Peep(%08X) found no exciting ride\n", peep->id);
         return;
+    }
+    else
+    {
+        scenario_log("Peep(%08X) selected ride: %08X\n", mostExcitingRideIndex);
+    }
 
     // Head to that ride
     peep->guest_heading_to_ride_id = mostExcitingRideIndex;

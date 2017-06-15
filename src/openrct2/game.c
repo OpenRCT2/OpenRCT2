@@ -345,7 +345,14 @@ void game_update()
 
 void game_logic_update()
 {
-    scenario_log("game_logic_update Tick: %08X\n", gCurrentTicks);
+#ifdef DEBUG_DESYNC 
+    static uint32 lastTick = -1;
+    if (lastTick != gCurrentTicks)
+    {
+        scenario_log("game_logic_update Tick: %08X\n", gCurrentTicks);
+        lastTick = gCurrentTicks;
+    }
+#endif
 
     network_update();
 
