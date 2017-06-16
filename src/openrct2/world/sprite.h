@@ -387,7 +387,7 @@ enum {
 enum {
     SPRITE_FLAGS_IS_CRASHED_VEHICLE_SPRITE = 1 << 7,
     SPRITE_FLAGS_PEEP_VISIBLE = 1 << 8, // Peep is eligible to show in summarized guest list window (is inside park?)
-    SPRITE_FLAGS_PEEP_FLASHING = 1 << 9, // Peep belongs to highlighted group (flashes red on map)
+    SPRITE_FLAGS_PEEP_FLASHING = 1 << 9, // Deprecated: Use sprite_set_flashing/sprite_get_flashing instead.
 };
 
 enum {

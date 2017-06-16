@@ -30,13 +30,13 @@
 uint16 gSpriteListHead[6];
 uint16 gSpriteListCount[6];
 static rct_sprite _spriteList[MAX_SPRITES];
-static bool _spriteFlashingList[MAX_SPRITES];
 #else
 uint16 *gSpriteListHead = RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LISTS_HEAD, uint16);
 uint16 *gSpriteListCount = RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LISTS_COUNT, uint16);
 static rct_sprite *_spriteList = RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite);
-static bool _spriteFlashingList = RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LISTS_COUNT, bool);
 #endif
+
+static bool _spriteFlashingList[MAX_SPRITES];
 
 #define SPATIAL_INDEX_LOCATION_NULL 0x10000
 
