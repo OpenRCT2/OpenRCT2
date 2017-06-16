@@ -26,12 +26,6 @@ typedef struct rct2_install_info rct2_install_info;
 #define MAX_PATH 260
 #endif
 
-#ifdef __APPLE__
-#define KEYBOARD_PRIMARY_MODIFIER KMOD_GUI
-#else
-#define KEYBOARD_PRIMARY_MODIFIER KMOD_CTRL
-#endif
-
 #define INVALID_HANDLE -1
 
 #define TOUCH_DOUBLE_TIMEOUT 300
