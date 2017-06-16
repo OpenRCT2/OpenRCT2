@@ -361,7 +361,7 @@ void game_logic_update()
     gInUpdateCode = true;
     ///////////////////////////
 
-	//////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////
     // Separated out processing commands in network_update which could call scenario_rand where gInUpdateCode is false.
     // All commands that are received are first queued and then executed where gInUpdateCode is set to true.
     network_process_game_commands();
