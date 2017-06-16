@@ -12103,7 +12103,7 @@ static void peep_pick_ride_to_go_on(rct_peep *peep)
         // Consider rides that peep hasn't been on yet
         sint32 i;
         FOR_ALL_RIDES(i, ride) {
-            if (!peep_has_ridden(peep, i) && ride->status == RIDE_STATUS_OPEN) {
+            if (!peep_has_ridden(peep, i)) {
                 _peepRideConsideration[i >> 5] |= (1u << (i & 0x1F));
             }
         }
