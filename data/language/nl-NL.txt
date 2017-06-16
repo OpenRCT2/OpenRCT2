@@ -4404,6 +4404,23 @@ STR_6100    :Je verbrak de verbinding met de server.
 STR_6101    :Attracties verliezen geen waarde
 STR_6102    :{SMALLFONT}{BLACK}Voorkomt dat attracties waarde verliezen, waardoor bezoekers er minder voor willen betalen. 
 STR_6103    :{SMALLFONT}{BLACK}Deze optie is niet aan te passen tijdens multiplayer.
+STR_6104    :Stalen schroefachtbaan
+STR_6105    :Hypercoaster
+STR_6106    :Autorondrit
+STR_6107    :Monstertrucks
+STR_6108    :Stalen twisterachtbaan
+STR_6109    :Hyper-twister
+STR_6110    :Juniorachtbaan
+STR_6111    :Midi-achtbaan
+STR_6112    :Een compacte stalen achtbaan waar de trein door schroeven en loopings gaat.
+STR_6113    :Een achtbaan zonder omkeringen met grote heuvels, een hoge snelheid, en comfortabele treinen met enkel schootbeugels.
+STR_6114    :Bezoekers rijden langzaam over een baan in aangedreven karretjes.
+STR_6115    :Gigantische elektrische 4x4-trucks die steile hellingen kunnen nemen.
+STR_6116    :Brede achtbaantrein die langs de soepele stalen baan glijdt en door diverse soorten omkeringen gaat.
+STR_6117    :Bezoekers zitten in comfortabele treinen met enkel een schootbeugel en gaan soepel door grote afdalingen en kronkelende stukken baan, met veel 'airtime' in de heuvels.
+STR_6118    :Een rustige achtbaan voor bezoekers die nog niet in engere attracties durven.
+STR_6119    :Goedkoop en makkelijk te bouwen, maar kan niet zo hoog gebouwd worden.
+STR_6120    :{BABYBLUE}Nieuw voertuig beschikbaar voor {STRINGID}:{NEWLINE}{STRINGID}
 
 #############
 # Scenarios #
