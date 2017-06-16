@@ -346,7 +346,7 @@ static money32 footpath_place_real(sint32 type, sint32 x, sint32 y, sint32 z, si
         return MONEY32_UNDEFINED;
     }
 
-    if (flags & GAME_COMMAND_FLAG_APPLY)
+    if ((flags & GAME_COMMAND_FLAG_APPLY) && !(flags & GAME_COMMAND_FLAG_GHOST))
         footpath_interrupt_peeps(x, y, z * 8);
 
     gFootpathPrice = 0;
