@@ -602,7 +602,7 @@ void Network::SendPacketToClients(NetworkPacket& packet, bool front, bool gameCm
         if (gameCmd) {
             // If marked as game command we can not send the packet to connections that are not fully connected.
             // Sending the packet would cause the client to store a command that is behind the tick where he starts,
-            // which would be essentially never executed. The clients do not require commands before the map is loaded.
+            // which would be essentially never executed. The clients do not require commands before the server has not sent the map data.
             if ((*it)->Player == nullptr) {
                 continue;
             }
