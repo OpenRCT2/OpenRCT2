@@ -24,20 +24,6 @@
 #include <jni.h>
 #include <SDL.h>
 
-//int mbtowc(wchar_t *__restrict pwc, const char *__restrict s, size_t n) {
-//    static mbstate_t mbs;
-//    size_t rval;
-//    if (s == NULL) {
-//        /* No support for state dependent encodings. */
-//        memset(&mbs, 0, sizeof(mbs));
-//        return (0);
-//    }
-//    rval = mbrtowc(pwc, s, n, &mbs);
-//    if (rval == (size_t) -1 || rval == (size_t) -2)
-//        return (-1);
-//    return ((int) rval);
-//}
-
 void platform_get_exe_path(utf8 *outPath, size_t outSize)
 {
     safe_strcpy(outPath, "/sdcard/openrct2", outSize);
