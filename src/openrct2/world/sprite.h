@@ -475,5 +475,8 @@ void crash_splash_update(rct_crash_splash *splash);
 
 const char *sprite_checksum();
 
+void sprite_set_flashing(rct_sprite *sprite, bool flashing);
+bool sprite_get_flashing(rct_sprite *sprite);
+
 #endif
 

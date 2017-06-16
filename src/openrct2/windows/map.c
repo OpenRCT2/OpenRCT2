@@ -1079,7 +1079,8 @@ static void window_map_paint_peep_overlay(rct_drawpixelinfo *dpi)
 
             colour = PALETTE_INDEX_20;
 
-        if ((peep->flags & SPRITE_FLAGS_PEEP_FLASHING) != 0) {
+        //if ((peep->flags & SPRITE_FLAGS_PEEP_FLASHING) != 0) {
+		if (sprite_get_flashing(get_sprite(peep->sprite_index))) {
             if (peep->type == PEEP_TYPE_STAFF) {
                 if ((gWindowMapFlashingFlags & (1 << 3)) != 0) {
                     colour = PALETTE_INDEX_138;

@@ -706,14 +706,14 @@ static void window_guest_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi,
 
         // For each guest
         FOR_ALL_GUESTS(spriteIndex, peep) {
-            peep->flags &= ~(SPRITE_FLAGS_PEEP_FLASHING);
+            sprite_set_flashing(get_sprite(peep->sprite_index), false);
             if (peep->outside_of_park != 0)
                 continue;
             if (_window_guest_list_selected_filter != -1) {
                 if (window_guest_list_is_peep_in_filter(peep))
                     continue;
                 gWindowMapFlashingFlags |= (1 << 0);
-                peep->flags |= SPRITE_FLAGS_PEEP_FLASHING;
+                sprite_set_flashing(get_sprite(peep->sprite_index), true);
             }
             if (_window_guest_list_tracking_only && !(peep->peep_flags & PEEP_FLAGS_TRACKING))
                 continue;
