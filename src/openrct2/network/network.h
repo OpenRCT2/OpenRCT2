@@ -113,7 +113,7 @@ public:
     std::vector<std::unique_ptr<NetworkGroup>>::iterator GetGroupIteratorByID(uint8 id);
     NetworkGroup* GetGroupByID(uint8 id);
     static const char* FormatChat(NetworkPlayer* fromplayer, const char* text);
-    void SendPacketToClients(NetworkPacket& packet, bool front = false);
+    void SendPacketToClients(NetworkPacket& packet, bool front = false, bool gameCmd = false);
     bool CheckSRAND(uint32 tick, uint32 srand0);
     void KickPlayer(sint32 playerId);
     void SetPassword(const char* password);

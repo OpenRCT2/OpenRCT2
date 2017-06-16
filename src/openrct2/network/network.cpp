@@ -595,9 +595,18 @@ const char* Network::FormatChat(NetworkPlayer* fromplayer, const char* text)
     return formatted;
 }
 
-void Network::SendPacketToClients(NetworkPacket& packet, bool front)
+void Network::SendPacketToClients(NetworkPacket& packet, bool front, bool gameCmd)
 {
     for (auto it = client_connection_list.begin(); it != client_connection_list.end(); it++) {
+
+        if (gameCmd) {
+            // If marked as game command we can not send the packet to connections that are not fully connected.
+            // Sending the packet would cause the client to store a command that is behind the tick where he starts,
+            // which would be essentially never executed. The clients do not require commands before the map is loaded.
+            if ((*it)->Player == nullptr) {
+                continue;
+            }
+        }
         (*it)->QueuePacket(NetworkPacket::Duplicate(packet), front);
     }
 }
@@ -1122,7 +1131,7 @@ void Network::Server_Send_GAMECMD(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx
     std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
     *packet << (uint32)NETWORK_COMMAND_GAMECMD << (uint32)gCurrentTicks << eax << (ebx | GAME_COMMAND_FLAG_NETWORKED)
             << ecx << edx << esi << edi << ebp << playerid << callback;
-    SendPacketToClients(*packet);
+    SendPacketToClients(*packet, false, true);
 }
 
 void Network::Server_Send_TICK()
