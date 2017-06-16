@@ -237,10 +237,6 @@ void scenario_begin()
     safe_strcat_path(gScenarioSavePath, parkName, sizeof(gScenarioSavePath));
     path_append_extension(gScenarioSavePath, ".sv6", sizeof(gScenarioSavePath));
 
-    safe_strcpy(gRCT2AddressSavedGamesPath2, gRCT2AddressSavedGamesPath, MAX_PATH);
-    safe_strcat_path(gRCT2AddressSavedGamesPath2, gScenarioSavePath, MAX_PATH);
-    path_append_extension(gRCT2AddressSavedGamesPath2, ".SV6", MAX_PATH);
-
     gCurrentExpenditure = 0;
     gCurrentProfit = 0;
     gWeeklyProfitAverageDividend = 0;
