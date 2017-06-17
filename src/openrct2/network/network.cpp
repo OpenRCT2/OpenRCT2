@@ -582,18 +582,18 @@ const char* Network::FormatChat(NetworkPlayer* fromplayer, const char* text)
 
 void Network::SendPacketToClients(NetworkPacket& packet, bool front, bool gameCmd)
 {
-	for (auto it = client_connection_list.begin(); it != client_connection_list.end(); it++) {
+    for (auto it = client_connection_list.begin(); it != client_connection_list.end(); it++) {
 
-		if (gameCmd) {
-			// If marked as game command we can not send the packet to connections that are not fully connected.
-			// Sending the packet would cause the client to store a command that is behind the tick where he starts,
-			// which would be essentially never executed. The clients do not require commands before the server has not sent the map data.
-			if ((*it)->Player == nullptr) {
-				continue;
-			}
-		}
-		(*it)->QueuePacket(NetworkPacket::Duplicate(packet), front);
-	}
+        if (gameCmd) {
+            // If marked as game command we can not send the packet to connections that are not fully connected.
+            // Sending the packet would cause the client to store a command that is behind the tick where he starts,
+            // which would be essentially never executed. The clients do not require commands before the server has not sent the map data.
+            if ((*it)->Player == nullptr) {
+                continue;
+            }
+        }
+        (*it)->QueuePacket(NetworkPacket::Duplicate(packet), front);
+    }
 }
 
 bool Network::CheckSRAND(uint32 tick, uint32 srand0)
@@ -1324,7 +1324,15 @@ void Network::ProcessGameCommandQueue()
 
         // If our tick is higher than the command tick we are in trouble.
         if (mode == NETWORK_MODE_CLIENT) {
-            assert(game_command_queue.begin()->tick >= gCurrentTicks);
+
+            if (game_command_queue.begin()->tick < gCurrentTicks) {
+                // Having old command from a tick where we have not been fully connected,
+                // the command is useless for us so lets ditch it.
+                game_command_queue.erase(game_command_queue.begin());
+
+                // At this point we should not return, would add the possibility to skip commands this tick.
+                continue;
+            }
 
             if (game_command_queue.begin()->tick != gCurrentTicks)
                 return;
@@ -1342,7 +1350,7 @@ void Network::ProcessGameCommandQueue()
             flags |= GAME_COMMAND_FLAG_NETWORKED;
 
         money32 cost = game_do_command(gc.eax, flags, gc.ecx, gc.edx, gc.esi, gc.edi, gc.ebp);
-            
+
         if (cost != MONEY32_UNDEFINED)
         {
             game_commands_processed_this_tick++;
@@ -1366,7 +1374,7 @@ void Network::ProcessGameCommandQueue()
                 Server_Send_GAMECMD(gc.eax, gc.ebx, gc.ecx, gc.edx, gc.esi, gc.edi, gc.ebp, gc.playerid, gc.callback);
             }
         }
-        
+
         game_command_queue.erase(game_command_queue.begin());
     }
 
