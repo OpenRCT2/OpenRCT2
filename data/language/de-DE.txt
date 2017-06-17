@@ -4341,6 +4341,20 @@ STR_6038    :{SMALLFONT}{BLACK}Falls Sie RCT1 installiert haben, setzen Sie dies
 STR_6039    :{SMALLFONT}{BLACK}Schnellabriss
 STR_6040    :Bearbeite Szenariooptionen
 STR_6041    :{BLACK}Es sind keine Mechaniker eingestellt! 
+STR_6042    :Höhenkarte laden
+STR_6043    :Höhenkarte auswählen
+STR_6044    :Höhenkarte glätten
+STR_6045    :Stärke
+STR_6046    :Höhenkarte normalisieren
+STR_6047    :Kacheln glätten
+STR_6048    :Fehler beim Verarbeiten der Höhenkarte
+STR_6049    :Fehler beim Lesen der PNG-Datei
+STR_6050    :Fehler beim Lesen der Bitmap-Datei
+STR_6051    :Die Höhe und Breite müssen übereinstimmen
+STR_6052    :Die Höhenkarte ist zu groß und wird zugeschnitten
+STR_6053    :Die Höhenkarte kann nicht normalisiert werden
+STR_6054    :Es werden nur Bitmaps mit einer Farbtiefe von 24-Bit unterstützt
+STR_6055    :Höhenkarte für OpenRCT2
 
 #############
 # Scenarios #
