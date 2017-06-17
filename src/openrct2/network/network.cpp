@@ -1338,8 +1338,9 @@ void Network::ProcessGameCommandQueue()
                 continue;
             }
 
+            // exit the game command processing loop to still have a chance at finding desync.
             if (game_command_queue.begin()->tick != gCurrentTicks)
-                return;
+                break;
         }
 
         if (GetPlayerID() == gc.playerid) {
