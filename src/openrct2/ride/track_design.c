@@ -1432,7 +1432,7 @@ static money32 place_track_design(sint16 x, sint16 y, sint16 z, uint8 flags, uin
     {
         entryIndex = 0xFF;
     }
-    
+
     // The rest of the cases are handled by the code in ride_create()
     if (track_type_has_ride_groups(td6->type) && entryIndex == 0xFF)
     {
@@ -1442,12 +1442,12 @@ static money32 place_track_design(sint16 x, sint16 y, sint16 z, uint8 flags, uin
             uint8 rideGroupIndex = ori->RideGroupIndex;
             ride_group * td6RideGroup = ride_group_find(td6->type, rideGroupIndex);
             rct_ride_entry * ire;
-            
+
             uint8 *availableRideEntries = get_ride_entry_indices_for_ride_type(td6->type);
             for (uint8 *rei = availableRideEntries; *rei != 255; rei++)
             {
                 ire = get_ride_entry(*rei);
-                
+
                 if (!ride_entry_is_invented(*rei))
                 {
                     continue;

@@ -5948,13 +5948,13 @@ static money32 ride_create(sint32 type, sint32 subType, sint32 flags, sint32 *ou
         uint8 *availableRideEntries = get_ride_entry_indices_for_ride_type(type);
         for (uint8 *rei = availableRideEntries; *rei != 255; rei++) {
             rideEntry = get_ride_entry(*rei);
-            
+
             // Can happen in select-by-track-type mode
             if (!ride_entry_is_invented(*rei))
             {
                 continue;
             }
-            
+
             if (!(rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME) || rideTypeShouldLoseSeparateFlag(rideEntry)) {
                 subType = *rei;
                 goto foundRideEntry;

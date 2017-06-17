@@ -164,10 +164,10 @@ void KeyboardShortcuts::GetKeyboardMapScroll(const uint8 * keysState, sint32 * x
     {
         uint16 shortcutKey = _keys[shortcutId];
         uint8 scancode = shortcutKey & 0xFF;
-    
+
         if (shortcutKey == 0xFFFF) continue;
         if (!keysState[scancode]) continue;
-    
+
         if (shortcutKey & SHIFT) {
             if (!keysState[SDL_SCANCODE_LSHIFT] && !keysState[SDL_SCANCODE_RSHIFT]) continue;
         }

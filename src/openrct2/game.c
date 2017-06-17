@@ -573,7 +573,7 @@ sint32 game_do_command_p(sint32 command, sint32 *eax, sint32 *ebx, sint32 *ecx, 
 
             // Do the callback (required for multiplayer to work correctly), but only for top level commands
             if (gGameCommandNestLevel == 1) {
-                if (game_command_callback && !(flags & GAME_COMMAND_FLAG_GHOST)) 
+                if (game_command_callback && !(flags & GAME_COMMAND_FLAG_GHOST))
                 {
                     game_command_callback(*eax, *ebx, *ecx, *edx, *esi, *edi, *ebp);
                     game_command_callback = 0;

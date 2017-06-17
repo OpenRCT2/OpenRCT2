@@ -174,10 +174,10 @@ static void peep_update_ride_inspected(sint32 rideIndex);
 
 bool loc_690FD0(rct_peep *peep, uint8 *rideToView, uint8 *rideSeatToView, rct_map_element *esi);
 
-#ifdef DEBUG_DESYNC 
+#ifdef DEBUG_DESYNC
 #define peep_rand() scenario_rand_data(peep)
-#else 
-#define peep_rand() scenario_rand() 
+#else
+#define peep_rand() scenario_rand()
 #endif
 
 const char *gPeepEasterEggNames[] = {

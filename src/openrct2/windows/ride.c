@@ -2680,11 +2680,11 @@ static void window_ride_vehicle_mousedown(rct_widgetindex widgetIndex, rct_windo
                 {
                     rideGroup = get_ride_group(ride->type, rideEntry);
                     currentRideGroup = get_ride_group(ride->type, currentRideEntry);
-                    
+
                     if (!ride_groups_are_equal(rideGroup, currentRideGroup))
                         continue;
                 }
-                
+
                 if (ride->subtype == rideEntryIndex)
                     selectedIndex = numItems;
 

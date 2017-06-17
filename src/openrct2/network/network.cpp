@@ -626,7 +626,7 @@ bool Network::CheckSRAND(uint32 tick, uint32 srand0)
         return true;
     }
 
-    if (tick == server_srand0_tick) 
+    if (tick == server_srand0_tick)
     {
         server_srand0_tick = 0;
         // Check that the server and client sprite hashes match
