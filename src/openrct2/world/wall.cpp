@@ -332,7 +332,7 @@ static money32 WallPlace(uint8 wallType,
     }
 
     if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) &&
-        !(flags & GAME_COMMAND_FLAG_7) &&
+        !(flags & GAME_COMMAND_FLAG_PATH_SCENERY) &&
         !gCheatsSandboxMode)
     {
 
@@ -503,7 +503,7 @@ static money32 WallPlace(uint8 wallType,
     clearanceHeight += wallEntry->wall.height;
 
     bool wallAcrossTrack = false;
-    if (!(flags & GAME_COMMAND_FLAG_7) && !gCheatsDisableClearanceChecks)
+    if (!(flags & GAME_COMMAND_FLAG_PATH_SCENERY) && !gCheatsDisableClearanceChecks)
     {
         if (!WallCheckObstruction(wallEntry,
                                   position.x,
