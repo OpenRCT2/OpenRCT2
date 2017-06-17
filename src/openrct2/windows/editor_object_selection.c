@@ -1693,10 +1693,7 @@ static void window_editor_object_selection_manage_tracks()
     for (; ((intptr_t)object_entry_groups[0].chunks[entry_index]) == -1; ++entry_index);
 
     rct_ride_entry* ride_entry = get_ride_entry(entry_index);
-    uint8* ride_type_array = &ride_entry->ride_type[0];
-
-    sint32 ride_type;
-    for (sint32 i = 0; (ride_type = ride_type_array[i]) == 0xFF; i++) { }
+    uint8 ride_type = ride_entry_get_first_non_null_ride_type(ride_entry);
 
     ride_list_item item = { ride_type, entry_index };
     // track_load_list(item);
@@ -1726,8 +1723,9 @@ static void editor_load_selected_objects()
                     uint8 objectType = entry->flags & 0x0F;
                     uint8 entryIndex = object_manager_get_loaded_object_entry_index(loadedObject);
                     if (objectType == OBJECT_TYPE_RIDE) {
-                        rct_ride_entry *rideType = get_ride_entry(entryIndex);
-                        research_insert(1, 0x10000 | (rideType->ride_type[0] << 8) | entryIndex, rideType->category[0]);
+                        rct_ride_entry *rideEntry = get_ride_entry(entryIndex);
+                        uint8 rideType = ride_entry_get_first_non_null_ride_type(rideEntry);
+                        research_insert(1, 0x10000 | (rideType << 8) | entryIndex, rideEntry->category[0]);
                     }
                     else if (objectType == OBJECT_TYPE_SCENERY_SETS) {
                         research_insert(1, entryIndex, RESEARCH_CATEGORY_SCENERYSET);
