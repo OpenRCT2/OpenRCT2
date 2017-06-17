@@ -179,7 +179,7 @@ public:
 
         uint8 *rideEntryIndexPtr = get_ride_entry_indices_for_ride_type(rideGroup->track_type);
 
-        while (*rideEntryIndexPtr != 255)
+        while (*rideEntryIndexPtr != RIDE_ENTRY_INDEX_NULL)
         {
             uint8 rideEntryIndex = *rideEntryIndexPtr++;
 

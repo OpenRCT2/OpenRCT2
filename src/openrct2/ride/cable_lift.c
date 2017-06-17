@@ -33,7 +33,7 @@ rct_vehicle *cable_lift_segment_create(sint32 rideIndex, sint32 x, sint32 y, sin
     rct_vehicle *current = &(create_sprite(1)->vehicle);
     current->sprite_identifier = SPRITE_IDENTIFIER_VEHICLE;
     current->ride = rideIndex;
-    current->ride_subtype = 0xFF;
+    current->ride_subtype = RIDE_ENTRY_INDEX_NULL;
     if (head) {
         move_sprite_to_list((rct_sprite*)current, SPRITE_LIST_TRAIN * 2);
         ride->cable_lift = current->sprite_index;
