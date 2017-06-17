@@ -23,6 +23,7 @@
 #include "vehicle.h"
 
 #define MAX_RIDE_TYPES_PER_RIDE_ENTRY   3
+#define RIDE_ENTRY_INDEX_NULL           255
 typedef fixed16_2dp ride_rating;
 
 // Convenience function for writing ride ratings. The result is a 16 bit signed

@@ -2348,7 +2348,7 @@ void vehicle_paint(rct_vehicle *vehicle, sint32 imageDirection)
         return;
     }
 
-    if (vehicle->ride_subtype == 0xFF) {
+    if (vehicle->ride_subtype == RIDE_ENTRY_INDEX_NULL) {
         vehicleEntry = &CableLiftVehicle;
     } else {
         rideEntry = get_ride_entry(vehicle->ride_subtype);

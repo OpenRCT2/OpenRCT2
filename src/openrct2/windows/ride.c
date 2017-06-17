@@ -2664,7 +2664,7 @@ static void window_ride_vehicle_mousedown(rct_widgetindex widgetIndex, rct_windo
 
             rideEntryIndexPtr = get_ride_entry_indices_for_ride_type(rideTypeIterator);
 
-            for (uint8 *currentRideEntryIndex = rideEntryIndexPtr; *currentRideEntryIndex != 0xFF && numItems <= 63; currentRideEntryIndex++) {
+            for (uint8 *currentRideEntryIndex = rideEntryIndexPtr; *currentRideEntryIndex != RIDE_ENTRY_INDEX_NULL && numItems <= 63; currentRideEntryIndex++) {
                 rideEntryIndex = *currentRideEntryIndex;
                 currentRideEntry = get_ride_entry(rideEntryIndex);
                 // Skip if vehicle wants to be separate, unless subtype switching is enabled

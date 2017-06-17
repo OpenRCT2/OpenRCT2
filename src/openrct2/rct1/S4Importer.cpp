@@ -1799,7 +1799,7 @@ private:
                 {
                     // No vehicles found so just add the default for this ride
                     uint8 rideEntryIndex = _rideTypeToRideEntryMap[rct1RideType];
-                    Guard::Assert(rideEntryIndex != 255, "rideEntryIndex was 255");
+                    Guard::Assert(rideEntryIndex != RIDE_ENTRY_INDEX_NULL, "rideEntryIndex was RIDE_ENTRY_INDEX_NULL");
                     if (!_researchRideEntryUsed[rideEntryIndex])
                     {
                         _researchRideEntryUsed[rideEntryIndex] = true;

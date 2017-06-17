@@ -4778,7 +4778,7 @@ static void ride_create_vehicles_find_first_block(rct_ride *ride, rct_xy_element
 static bool ride_create_vehicles(rct_ride *ride, sint32 rideIndex, rct_xy_element *element, sint32 isApplying)
 {
     ride_update_max_vehicles(rideIndex);
-    if (ride->subtype == 0xFF) {
+    if (ride->subtype == RIDE_ENTRY_INDEX_NULL) {
         return true;
     }
 
@@ -5944,9 +5944,9 @@ static money32 ride_create(sint32 type, sint32 subType, sint32 flags, sint32 *ou
         return MONEY32_UNDEFINED;
     }
 
-    if (subType == 255) {
+    if (subType == RIDE_ENTRY_INDEX_NULL) {
         uint8 *availableRideEntries = get_ride_entry_indices_for_ride_type(type);
-        for (uint8 *rei = availableRideEntries; *rei != 255; rei++) {
+        for (uint8 *rei = availableRideEntries; *rei != RIDE_ENTRY_INDEX_NULL; rei++) {
             rideEntry = get_ride_entry(*rei);
 
             // Can happen in select-by-track-type mode
@@ -5961,7 +5961,7 @@ static money32 ride_create(sint32 type, sint32 subType, sint32 flags, sint32 *ou
             }
         }
         subType = availableRideEntries[0];
-        if (subType == 255) {
+        if (subType == RIDE_ENTRY_INDEX_NULL) {
             return MONEY32_UNDEFINED;
         }
     }
@@ -6007,7 +6007,7 @@ foundRideEntry:
     ride->overall_view = 0xFFFF;
 
     // Ride name
-    if (rideEntryIndex == 255) {
+    if (rideEntryIndex == RIDE_ENTRY_INDEX_NULL) {
         ride_set_name_to_track_default(ride, rideEntry);
     } else if (!(rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME) || rideTypeShouldLoseSeparateFlag(rideEntry)) {
         ride_set_name_to_track_default(ride, rideEntry);
@@ -7608,7 +7608,7 @@ foundTrack:
 void ride_update_max_vehicles(sint32 rideIndex)
 {
     rct_ride *ride = get_ride(rideIndex);
-    if (ride->subtype == 0xFF)
+    if (ride->subtype == RIDE_ENTRY_INDEX_NULL)
         return;
 
     rct_ride_entry *rideEntry = get_ride_entry(ride->subtype);
@@ -7799,7 +7799,7 @@ static bool ride_is_vehicle_type_valid(rct_ride *ride, uint8 inputRideEntryIndex
         }
 
         uint8 *rideEntryIndexPtr = get_ride_entry_indices_for_ride_type(rideTypeIterator);
-        for (uint8 *currentRideEntryIndex = rideEntryIndexPtr; *currentRideEntryIndex != 0xFF; currentRideEntryIndex++) {
+        for (uint8 *currentRideEntryIndex = rideEntryIndexPtr; *currentRideEntryIndex != RIDE_ENTRY_INDEX_NULL; currentRideEntryIndex++) {
             uint8 rideEntryIndex = *currentRideEntryIndex;
             if (rideEntryIndex == inputRideEntryIndex) {
                 if (!ride_entry_is_invented(rideEntryIndex)) {

@@ -1329,7 +1329,7 @@ static bool track_design_place_preview(rct_track_td6 *td6, money32 *cost, uint8 
 
     uint8 entry_type, entry_index;
     if (!find_object_in_entry_group(&td6->vehicle_object, &entry_type, &entry_index)) {
-        entry_index = 0xFF;
+        entry_index = RIDE_ENTRY_INDEX_NULL;
     }
 
     uint8 rideIndex;
@@ -1444,7 +1444,7 @@ static money32 place_track_design(sint16 x, sint16 y, sint16 z, uint8 flags, uin
             rct_ride_entry * ire;
 
             uint8 *availableRideEntries = get_ride_entry_indices_for_ride_type(td6->type);
-            for (uint8 *rei = availableRideEntries; *rei != 255; rei++)
+            for (uint8 *rei = availableRideEntries; *rei != RIDE_ENTRY_INDEX_NULL; rei++)
             {
                 ire = get_ride_entry(*rei);
 

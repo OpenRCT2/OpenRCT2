@@ -699,7 +699,7 @@ void lightfx_add_lights_magic_vehicles()
 
         rct_vehicle *mother_vehicle = vehicle;
 
-        if (mother_vehicle->ride_subtype == 0xFF) {
+        if (mother_vehicle->ride_subtype == RIDE_ENTRY_INDEX_NULL) {
             continue;
         }
 
