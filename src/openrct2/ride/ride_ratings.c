@@ -339,7 +339,7 @@ static void ride_ratings_begin_proximity_loop()
         return;
     }
 
-    for (sint32 i = 0; i < 4; i++) {
+    for (sint32 i = 0; i < RCT12_MAX_STATIONS_PER_RIDE; i++) {
         if (ride->station_starts[i] != 0xFFFF) {
             gRideRatingsCalcData.station_flags &= ~RIDE_RATING_STATION_FLAG_NO_ENTRANCE;
             if (ride->entrances[i] == 0xFFFF) {
@@ -1248,7 +1248,7 @@ static sint32 ride_ratings_get_scenery_score(rct_ride *ride)
 {
     sint32 i;
     uint16 stationXY;
-    for (i = 0; i < 4; i++) {
+    for (i = 0; i < RCT12_MAX_STATIONS_PER_RIDE; i++) {
         stationXY = ride->station_starts[i];
         if (stationXY != 0xFFFF)
             break;

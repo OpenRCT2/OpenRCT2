@@ -10363,7 +10363,7 @@ static sint32 guest_path_finding(rct_peep* peep)
     sint32 numEntranceStations = 0;
     uint8 entranceStations = 0;
 
-    for (uint8 stationNum = 0; stationNum < 4; ++stationNum){
+    for (uint8 stationNum = 0; stationNum < RCT12_MAX_STATIONS_PER_RIDE; ++stationNum){
         if (ride->entrances[stationNum] == 0xFFFF) // stationNum has no entrance (so presumably an exit only station).
             continue;
 

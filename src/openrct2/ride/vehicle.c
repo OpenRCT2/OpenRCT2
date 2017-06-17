@@ -8499,7 +8499,7 @@ loc_6DCE68:
     regs.al = vehicle->track_x >> 5;
     regs.ah = vehicle->track_y >> 5;
     regs.dl = vehicle->track_z >> 3;
-    for (sint32 i = 0; i < 4; i++) {
+    for (sint32 i = 0; i < RCT12_NUM_COLOUR_SCHEMES; i++) {
         if ((uint16)regs.ax != ride->station_starts[i]) {
             continue;
         }

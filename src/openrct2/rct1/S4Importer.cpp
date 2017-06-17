@@ -889,7 +889,7 @@ private:
         }
         else
         {
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < RCT12_NUM_COLOUR_SCHEMES; i++)
             {
                 dst->track_colour_main[i] = RCT1::GetColour(src->track_colour_main[i]);
                 dst->track_colour_additional[i] = RCT1::GetColour(src->track_colour_additional[i]);

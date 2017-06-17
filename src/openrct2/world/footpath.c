@@ -1483,7 +1483,7 @@ void footpath_update_queue_chains()
             continue;
         }
 
-        for (sint32 i = 0; i < 4; i++) {
+        for (sint32 i = 0; i < RCT12_MAX_STATIONS_PER_RIDE; i++) {
             if (ride->entrances[i] == 0xFFFF) {
                 continue;
             }
