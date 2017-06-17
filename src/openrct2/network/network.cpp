@@ -519,21 +519,6 @@ void Network::UpdateClient()
             }
             Close();
         }
-
-        // Check synchronisation
-        ProcessGameCommandQueue();
-
-        if (!_desynchronised && !CheckSRAND(gCurrentTicks, gScenarioSrand0)) {
-            _desynchronised = true;
-
-            char str_desync[256];
-            format_string(str_desync, 256, STR_MULTIPLAYER_DESYNC, NULL);
-            window_network_status_open(str_desync, NULL);
-            if (!gConfigNetwork.stay_connected) {
-                Close();
-            }
-        }
-
         break;
     }
     }
@@ -1330,8 +1315,89 @@ void Network::ProcessPacket(NetworkConnection& connection, NetworkPacket& packet
     packet.Clear();
 }
 
-=======
+void Network::ProcessGameCommandQueue()
+{
+    while (game_command_queue.begin() != game_command_queue.end()) {
 
+        // run all the game commands at the current tick
+        const GameCommand& gc = (*game_command_queue.begin());
+
+        // If our tick is higher than the command tick we are in trouble.
+        if (mode == NETWORK_MODE_CLIENT) {
+
+            if (game_command_queue.begin()->tick < gCurrentTicks) {
+                // Having old command from a tick where we have not been fully connected,
+                // the command is useless for us so lets ditch it.
+                game_command_queue.erase(game_command_queue.begin());
+
+                // At this point we should not return, would add the possibility to skip commands this tick.
+                continue;
+            }
+
+            if (game_command_queue.begin()->tick != gCurrentTicks)
+                return;
+        }
+
+        if (GetPlayerID() == gc.playerid) {
+            game_command_callback = game_command_callback_get_callback(gc.callback);
+        }
+
+        game_command_playerid = gc.playerid;
+
+        sint32 command = gc.esi;
+        sint32 flags = gc.ebx;
+        if (mode == NETWORK_MODE_SERVER)
+            flags |= GAME_COMMAND_FLAG_NETWORKED;
+
+        money32 cost = game_do_command(gc.eax, flags, gc.ecx, gc.edx, gc.esi, gc.edi, gc.ebp);
+            
+        if (cost != MONEY32_UNDEFINED)
+        {
+            game_commands_processed_this_tick++;
+            NetworkPlayer* player = GetPlayerByID(gc.playerid);
+            if (!player)
+                return;
+
+            player->LastAction = NetworkActions::FindCommand(command);
+            player->LastActionTime = gc.tick;
+            player->AddMoneySpent(cost);
+
+            if (mode == NETWORK_MODE_SERVER) {
+
+                if (command == GAME_COMMAND_PLACE_SCENERY) {
+                    player->LastPlaceSceneryTime = player->LastActionTime;
+                }
+                else if (command == GAME_COMMAND_DEMOLISH_RIDE) {
+                    player->LastDemolishRideTime = player->LastActionTime;
+                }
+
+                Server_Send_GAMECMD(gc.eax, gc.ebx, gc.ecx, gc.edx, gc.esi, gc.edi, gc.ebp, gc.playerid, gc.callback);
+            }
+        }
+        
+        game_command_queue.erase(game_command_queue.begin());
+    }
+
+    // Check synchronisation
+    if (mode == NETWORK_MODE_CLIENT && !_desynchronised && !CheckSRAND(gCurrentTicks, gScenarioSrand0)) {
+        _desynchronised = true;
+
+        char str_desync[256];
+        format_string(str_desync, 256, STR_MULTIPLAYER_DESYNC, NULL);
+        window_network_status_open(str_desync, NULL);
+        if (!gConfigNetwork.stay_connected) {
+            Close();
+        }
+    }
+
+    if (mode == NETWORK_MODE_SERVER)
+    {
+        for (const auto& it : client_connection_list)
+        {
+            it->SendQueuedPackets();
+        }
+    }
+}
 
 void Network::AddClient(ITcpSocket * socket)
 {
@@ -1987,26 +2053,8 @@ void Network::Server_Handle_GAMECMD(NetworkConnection& connection, NetworkPacket
         return;
     }
 
-    // Set this to reference inside of game command functions
-    game_command_playerid = playerid;
-    // Run game command, and if it is successful send to clients
-    money32 cost = game_do_command(args[0], args[1] | GAME_COMMAND_FLAG_NETWORKED, args[2], args[3], args[4], args[5], args[6]);
-    if (cost == MONEY32_UNDEFINED) {
-        return;
-    }
-
-    connection.Player->LastAction = NetworkActions::FindCommand(commandCommand);
-    connection.Player->LastActionTime = platform_get_ticks();
-    connection.Player->AddMoneySpent(cost);
-
-    if (commandCommand == GAME_COMMAND_PLACE_SCENERY) {
-        connection.Player->LastPlaceSceneryTime = connection.Player->LastActionTime;
-    }
-    else if (commandCommand == GAME_COMMAND_DEMOLISH_RIDE) {
-        connection.Player->LastDemolishRideTime = connection.Player->LastActionTime;
-    }
-
-    Server_Send_GAMECMD(args[0], args[1], args[2], args[3], args[4], args[5], args[6], playerid, callback);
+    GameCommand gc = GameCommand(tick, args, playerid, callback);
+    game_command_queue.insert(gc);
 }
 
 void Network::Client_Handle_TICK(NetworkConnection& connection, NetworkPacket& packet)
@@ -2224,6 +2272,11 @@ sint32 network_begin_server(sint32 port, const char* address)
 void network_update()
 {
     gNetwork.Update();
+}
+
+void network_process_game_commands()
+{
+    gNetwork.ProcessGameCommandQueue();
 }
 
 sint32 network_get_mode()
