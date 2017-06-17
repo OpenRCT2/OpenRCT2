@@ -2017,7 +2017,7 @@ void Network::Server_Handle_GAMECMD(NetworkConnection& connection, NetworkPacket
 
     uint32 ticks = platform_get_ticks(); //tick count is different by time last_action_time is set, keep same value.
 
-    // Check if player's group permission allows command to run
+                                         // Check if player's group permission allows command to run
     NetworkGroup* group = GetGroupByID(connection.Player->Group);
     if (!group || (group && !group->CanPerformCommand(commandCommand))) {
         Server_Send_SHOWERROR(connection, STR_CANT_DO_THIS, STR_PERMISSION_DENIED);
@@ -2032,7 +2032,7 @@ void Network::Server_Handle_GAMECMD(NetworkConnection& connection, NetworkPacket
             ticks - connection.Player->LastPlaceSceneryTime < ACTION_COOLDOWN_TIME_PLACE_SCENERY &&
             // In case platform_get_ticks() wraps after ~49 days, ignore larger logged times.
             ticks > connection.Player->LastPlaceSceneryTime
-        ) {
+            ) {
             if (!(group->CanPerformCommand(MISC_COMMAND_TOGGLE_SCENERY_CLUSTER))) {
                 Server_Send_SHOWERROR(connection, STR_CANT_DO_THIS, STR_NETWORK_ACTION_RATE_LIMIT_MESSAGE);
                 return;
@@ -2046,38 +2046,20 @@ void Network::Server_Handle_GAMECMD(NetworkConnection& connection, NetworkPacket
             ticks - connection.Player->LastDemolishRideTime < ACTION_COOLDOWN_TIME_DEMOLISH_RIDE &&
             // In case platform_get_ticks() wraps after ~49 days, ignore larger logged times.
             ticks > connection.Player->LastDemolishRideTime
-        ) {
+            ) {
             Server_Send_SHOWERROR(connection, STR_CANT_DO_THIS, STR_NETWORK_ACTION_RATE_LIMIT_MESSAGE);
             return;
         }
     }
     // Don't let clients send pause or quit
     else if (commandCommand == GAME_COMMAND_TOGGLE_PAUSE ||
-        commandCommand == GAME_COMMAND_LOAD_OR_QUIT
-    ) {
+             commandCommand == GAME_COMMAND_LOAD_OR_QUIT
+             ) {
         return;
     }
 
-    // Set this to reference inside of game command functions
-    game_command_playerid = playerid;
-    // Run game command, and if it is successful send to clients
-    money32 cost = game_do_command(args[0], args[1] | GAME_COMMAND_FLAG_NETWORKED, args[2], args[3], args[4], args[5], args[6]);
-    if (cost == MONEY32_UNDEFINED) {
-        return;
-    }
-
-    connection.Player->LastAction = NetworkActions::FindCommand(commandCommand);
-    connection.Player->LastActionTime = platform_get_ticks();
-    connection.Player->AddMoneySpent(cost);
-
-    if (commandCommand == GAME_COMMAND_PLACE_SCENERY) {
-        connection.Player->LastPlaceSceneryTime = connection.Player->LastActionTime;
-    }
-    else if (commandCommand == GAME_COMMAND_DEMOLISH_RIDE) {
-        connection.Player->LastDemolishRideTime = connection.Player->LastActionTime;
-    }
-
-    Server_Send_GAMECMD(args[0], args[1], args[2], args[3], args[4], args[5], args[6], playerid, callback);
+    GameCommand gc = GameCommand(tick, args, playerid, callback);
+    game_command_queue.insert(gc);
 }
 
 void Network::Client_Handle_TICK(NetworkConnection& connection, NetworkPacket& packet)
