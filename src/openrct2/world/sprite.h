@@ -387,7 +387,7 @@ enum {
 enum {
     SPRITE_FLAGS_IS_CRASHED_VEHICLE_SPRITE = 1 << 7,
     SPRITE_FLAGS_PEEP_VISIBLE = 1 << 8, // Peep is eligible to show in summarized guest list window (is inside park?)
-    SPRITE_FLAGS_PEEP_FLASHING = 1 << 9, // Peep belongs to highlighted group (flashes red on map)
+    SPRITE_FLAGS_PEEP_FLASHING = 1 << 9, // Deprecated: Use sprite_set_flashing/sprite_get_flashing instead.
 };
 
 enum {
@@ -474,6 +474,9 @@ void crash_splash_create(sint32 x, sint32 y, sint32 z);
 void crash_splash_update(rct_crash_splash *splash);
 
 const char *sprite_checksum();
+
+void sprite_set_flashing(rct_sprite *sprite, bool flashing);
+bool sprite_get_flashing(rct_sprite *sprite);
 
 #endif
 

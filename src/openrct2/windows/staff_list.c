@@ -323,12 +323,10 @@ void window_staff_list_update(rct_window *w)
             rct_peep * peep;
             gWindowMapFlashingFlags |= (1 << 2);
             FOR_ALL_STAFF(spriteIndex, peep) {
-                // TODO When possible, do not modify the peep state as it shows up as a
-                //      multiplayer desynchronisation
-                peep->flags &= ~(SPRITE_FLAGS_PEEP_FLASHING);
+                sprite_set_flashing((rct_sprite*)peep, false);
 
                 if (peep->staff_type == _windowStaffListSelectedTab) {
-                    peep->flags |= SPRITE_FLAGS_PEEP_FLASHING;
+                    sprite_set_flashing((rct_sprite*)peep, true);
                 }
             }
         }

@@ -36,7 +36,6 @@ void sprite_paint_setup(const uint16 eax, const uint16 ecx) {
 
     if (gTrackDesignSaveMode) return;
 
-
     if (gCurrentViewportFlags & VIEWPORT_FLAG_INVISIBLE_SPRITES) return;
 
     dpi = unk_140E9A8;
