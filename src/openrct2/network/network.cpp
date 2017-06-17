@@ -2017,7 +2017,7 @@ void Network::Server_Handle_GAMECMD(NetworkConnection& connection, NetworkPacket
 
     uint32 ticks = platform_get_ticks(); //tick count is different by time last_action_time is set, keep same value.
 
-                                         // Check if player's group permission allows command to run
+    // Check if player's group permission allows command to run
     NetworkGroup* group = GetGroupByID(connection.Player->Group);
     if (!group || (group && !group->CanPerformCommand(commandCommand))) {
         Server_Send_SHOWERROR(connection, STR_CANT_DO_THIS, STR_PERMISSION_DENIED);
@@ -2054,7 +2054,7 @@ void Network::Server_Handle_GAMECMD(NetworkConnection& connection, NetworkPacket
     // Don't let clients send pause or quit
     else if (commandCommand == GAME_COMMAND_TOGGLE_PAUSE ||
              commandCommand == GAME_COMMAND_LOAD_OR_QUIT
-             ) {
+    ) {
         return;
     }
 
