@@ -338,7 +338,7 @@ sint32 ride_get_count()
 sint32 ride_get_total_queue_length(rct_ride *ride)
 {
     sint32 i, queueLength = 0;
-    for (i = 0; i < 4; i++)
+    for (i = 0; i < RCT12_MAX_STATIONS_PER_RIDE; i++)
         if (ride->entrances[i] != 0xFFFF)
             queueLength += ride->queue_length[i];
     return queueLength;
@@ -347,7 +347,7 @@ sint32 ride_get_total_queue_length(rct_ride *ride)
 sint32 ride_get_max_queue_time(rct_ride *ride)
 {
     sint32 i, queueTime = 0;
-    for (i = 0; i < 4; i++)
+    for (i = 0; i < RCT12_MAX_STATIONS_PER_RIDE; i++)
         if (ride->entrances[i] != 0xFFFF)
             queueTime = max(queueTime, ride->queue_time[i]);
     return queueTime;
@@ -1069,7 +1069,7 @@ static void ride_remove_vehicles(rct_ride *ride)
             ride->vehicles[i] = SPRITE_INDEX_NULL;
         }
 
-        for (size_t i = 0; i < 4; i++)
+        for (size_t i = 0; i < RCT12_MAX_STATIONS_PER_RIDE; i++)
             ride->train_at_station[i] = 255;
     }
 }
@@ -1115,7 +1115,7 @@ void ride_remove_peeps(sint32 rideIndex)
 
     // Find first station
     sint32 stationIndex = -1;
-    for (sint32 i = 0; i < 4; i++) {
+    for (sint32 i = 0; i < RCT12_MAX_STATIONS_PER_RIDE; i++) {
         if (ride->station_starts[i] != 0xFFFF) {
             stationIndex = i;
             break;
@@ -1988,7 +1988,7 @@ static void ride_update(sint32 rideIndex)
 
     // Update stations
     if (ride->type != RIDE_TYPE_MAZE)
-        for (sint32 i = 0; i < 4; i++)
+        for (sint32 i = 0; i < RCT12_MAX_STATIONS_PER_RIDE; i++)
             ride_update_station(ride, i);
 
     // Update financial statistics
@@ -2154,7 +2154,7 @@ static void ride_spiral_slide_update(rct_ride *ride)
 
     const uint8 current_rotation = get_current_rotation();
     // Invalidate something related to station start
-    for (sint32 i = 0; i < 4; i++) {
+    for (sint32 i = 0; i < RCT12_MAX_STATIONS_PER_RIDE; i++) {
         if (ride->station_starts[i] == 0xFFFF)
             continue;
 
@@ -2221,7 +2221,7 @@ static void ride_inspection_update(rct_ride *ride)
     ride->lifecycle_flags |= RIDE_LIFECYCLE_DUE_INSPECTION;
     ride->mechanic_status = RIDE_MECHANIC_STATUS_CALLING;
     ride->inspection_station = 0;
-    for (i = 0; i < 4; i++) {
+    for (i = 0; i < RCT12_MAX_STATIONS_PER_RIDE; i++) {
         if (ride->exits[i] != 0xFFFF) {
             ride->inspection_station = i;
             break;
@@ -2395,7 +2395,7 @@ void ride_prepare_breakdown(sint32 rideIndex, sint32 breakdownReason)
     case BREAKDOWN_SAFETY_CUT_OUT:
     case BREAKDOWN_CONTROL_FAILURE:
         // Inspect first station with an exit
-        for (i = 0; i < 4; i++) {
+        for (i = 0; i < RCT12_MAX_STATIONS_PER_RIDE; i++) {
             if (ride->exits[i] != 0xFFFF) {
                 ride->inspection_station = i;
                 break;
@@ -2436,7 +2436,7 @@ void ride_prepare_breakdown(sint32 rideIndex, sint32 breakdownReason)
     case BREAKDOWN_BRAKES_FAILURE:
         // Original code generates a random number but does not use it
         // Unsure if this was supposed to choose a random station (or random station with an exit)
-        for (i = 0; i < 4; i++) {
+        for (i = 0; i < RCT12_MAX_STATIONS_PER_RIDE; i++) {
             ride->inspection_station = i;
             if (ride->exits[i] != 0xFFFF)
                 break;
@@ -3201,7 +3201,7 @@ static sint32 ride_entrance_exit_is_reachable(uint16 coordinate, rct_ride* ride,
 
 static void ride_entrance_exit_connected(rct_ride* ride, sint32 ride_idx)
 {
-    for (sint32 i = 0; i < 4; ++i) {
+    for (sint32 i = 0; i < RCT12_MAX_STATIONS_PER_RIDE; ++i) {
         uint16 station_start = ride->station_starts[i],
             entrance = ride->entrances[i],
             exit = ride->exits[i];
@@ -3967,7 +3967,7 @@ void game_command_set_ride_setting(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32
 static sint32 ride_mode_check_valid_station_numbers(rct_ride *ride)
 {
     uint8 no_stations = 0;
-    for (uint8 station_index = 0; station_index < 4; ++station_index){
+    for (uint8 station_index = 0; station_index < RCT12_MAX_STATIONS_PER_RIDE; ++station_index){
         if (ride->station_starts[station_index] != 0xFFFF)no_stations++;
     }
 
@@ -4000,7 +4000,7 @@ static sint32 ride_mode_check_valid_station_numbers(rct_ride *ride)
  */
 static sint32 ride_mode_check_station_present(rct_ride* ride){
     sint32 stationIndex = -1;
-    for (sint32 i = 0; i < 4; i++) {
+    for (sint32 i = 0; i < RCT12_MAX_STATIONS_PER_RIDE; i++) {
         if (ride->station_starts[i] != 0xFFFF) {
             stationIndex = i;
             break;
@@ -4036,7 +4036,7 @@ static sint32 ride_check_for_entrance_exit(sint32 rideIndex)
     sint32 i;
     uint8 entrance = 0;
     uint8 exit = 0;
-    for (i = 0; i < 4; i++) {
+    for (i = 0; i < RCT12_MAX_STATIONS_PER_RIDE; i++) {
         if (ride->station_starts[i] == 0xFFFF)
             continue;
 
@@ -4077,7 +4077,7 @@ static void sub_6B5952(sint32 rideIndex)
 {
     rct_ride *ride = get_ride(rideIndex);
 
-    for (sint32 i = 0; i < 4; i++) {
+    for (sint32 i = 0; i < RCT12_MAX_STATIONS_PER_RIDE; i++) {
         uint16 xy = ride->entrances[i];
         if (xy == 0xFFFF)
             continue;
@@ -4342,7 +4342,7 @@ static void ride_set_maze_entrance_exit_points(rct_ride *ride)
 
     // Create a list of all the entrance and exit positions
     uint16 *position = positions;
-    for (sint32 i = 0; i < 4; i++) {
+    for (sint32 i = 0; i < RCT12_MAX_STATIONS_PER_RIDE; i++) {
         if (ride->entrances[i] != 0xFFFF) {
             *position++ = ride->entrances[i];
         }
@@ -4821,7 +4821,7 @@ static bool ride_create_vehicles(rct_ride *ride, sint32 rideIndex, rct_xy_elemen
     // Initialise station departs
 // 006DDDD0:
     ride->lifecycle_flags |= RIDE_LIFECYCLE_ON_TRACK;
-    for (sint32 i = 0; i < 4; i++) {
+    for (sint32 i = 0; i < RCT12_MAX_STATIONS_PER_RIDE; i++) {
         ride->station_depart[i] = (ride->station_depart[i] & 0x80) | 1;
     }
 
@@ -4911,7 +4911,7 @@ static bool ride_initialise_cable_lift_track(rct_ride *ride, bool isApplying)
 {
     uint16 xy;
     sint32 stationIndex;
-    for (stationIndex = 0; stationIndex < 4; stationIndex++) {
+    for (stationIndex = 0; stationIndex < RCT12_MAX_STATIONS_PER_RIDE; stationIndex++) {
         xy = ride->station_starts[stationIndex];
         if (xy != 0xFFFF) break;
         if (stationIndex == 3) {
@@ -5091,7 +5091,7 @@ static void loc_6B51C0(sint32 rideIndex)
 
     sint8 entranceOrExit = -1;
     sint32 i;
-    for (i = 0; i < 4; i++) {
+    for (i = 0; i < RCT12_MAX_STATIONS_PER_RIDE; i++) {
         if (ride->station_starts[i] == 0xFFFF)
             continue;
 
@@ -5847,7 +5847,7 @@ static void ride_set_colour_preset(rct_ride *ride, uint8 index) {
 
     colourPresets = &RideColourPresets[ride->type];
     colours = &colourPresets->list[index];
-    for (sint32 i = 0; i < 4; i++) {
+    for (sint32 i = 0; i < RCT12_MAX_STATIONS_PER_RIDE; i++) {
         ride->track_colour_main[i] = colours->main;
         ride->track_colour_additional[i] = colours->additional;
         ride->track_colour_supports[i] = colours->supports;
@@ -6015,7 +6015,7 @@ foundRideEntry:
         ride_set_name_to_vehicle_default(ride, rideEntry);
     }
 
-    for (size_t i = 0; i < 4; i++) {
+    for (size_t i = 0; i < RCT12_MAX_STATIONS_PER_RIDE; i++) {
         ride->station_starts[i] = 0xFFFF;
         ride->entrances[i] = 0xFFFF;
         ride->exits[i] = 0xFFFF;
@@ -7205,7 +7205,7 @@ void ride_get_entrance_or_exit_position_from_screen_position(sint32 screenX, sin
             direction = mapX < 0 ? 0 : 2;
         }
 
-        for (sint32 i = 0; i < 4; i++) {
+        for (sint32 i = 0; i < RCT12_MAX_STATIONS_PER_RIDE; i++) {
             mapX = _unkF44188.x + TileDirectionDelta[direction].x;
             mapY = _unkF44188.y + TileDirectionDelta[direction].y;
             if (mapX >= 0 && mapY >= 0 && mapX < (256 * 32) && mapY < (256 * 32)) {
@@ -7359,7 +7359,7 @@ bool ride_are_all_possible_entrances_and_exits_built(rct_ride *ride)
     if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_SHOP))
         return true;
 
-    for (sint32 i = 0; i < 4; i++) {
+    for (sint32 i = 0; i < RCT12_MAX_STATIONS_PER_RIDE; i++) {
         if (ride->station_starts[i] == 0xFFFF) continue;
         if (ride->entrances[i] == 0xFFFF) {
             gGameCommandErrorText = STR_ENTRANCE_NOT_YET_BUILT;
@@ -7539,7 +7539,7 @@ uint64 ride_entry_get_supported_track_pieces(rct_ride_entry* rideEntry)
 static sint32 ride_get_smallest_station_length(rct_ride *ride)
 {
     uint32 result = -1;
-    for (sint32 i = 0; i < 4; i++) {
+    for (sint32 i = 0; i < RCT12_MAX_STATIONS_PER_RIDE; i++) {
         if (ride->station_starts[i] != 0xFFFF) {
             result = min(result, (uint32)(ride->station_length[i]));
         }
@@ -7558,7 +7558,7 @@ static sint32 ride_get_track_length(rct_ride *ride)
     track_circuit_iterator it;
     sint32 x, y, z, trackType, rideIndex, result;
 
-    for (sint32 i = 0; i < 4; i++) {
+    for (sint32 i = 0; i < RCT12_MAX_STATIONS_PER_RIDE; i++) {
         uint16 xy = ride->station_starts[i];
         if (xy == 0xFFFF)
             continue;
@@ -7949,7 +7949,7 @@ void sub_6CB945(sint32 rideIndex)
 {
     rct_ride* ride = get_ride(rideIndex);
     if (ride->type != RIDE_TYPE_MAZE) {
-        for (uint8 stationId = 0; stationId < 4; ++stationId) {
+        for (uint8 stationId = 0; stationId < RCT12_MAX_STATIONS_PER_RIDE; ++stationId) {
             if (ride->station_starts[stationId] == 0xFFFF)
                 continue;
 
@@ -8029,7 +8029,7 @@ void sub_6CB945(sint32 rideIndex)
 
     uint16 locations[9];
     uint16 *locationList = locations;
-    for (uint8 stationId = 0; stationId < 4; ++stationId) {
+    for (uint8 stationId = 0; stationId < RCT12_MAX_STATIONS_PER_RIDE; ++stationId) {
         if (ride->entrances[stationId] != 0xFFFF) {
             *locationList++ = ride->entrances[stationId];
             ride->entrances[stationId] = 0xFFFF;
