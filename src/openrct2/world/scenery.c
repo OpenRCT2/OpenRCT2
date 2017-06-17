@@ -19,6 +19,7 @@
 #include "../localisation/localisation.h"
 #include "../scenario/scenario.h"
 #include "../cheats.h"
+#include "../network/network.h"
 #include "../object_list.h"
 #include "Climate.h"
 #include "Fountain.h"
@@ -80,6 +81,14 @@ void scenery_update_tile(sint32 x, sint32 y)
 
     mapElement = map_get_first_element_at(x >> 5, y >> 5);
     do {
+        // Ghosts are purely this-client-side and should not cause any interaction,
+        // as that may lead to a desync.
+        if (network_get_mode() != NETWORK_MODE_NONE)
+        {
+            if (map_element_is_ghost(mapElement))
+                continue;
+        }
+
         if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_SCENERY) {
             scenery_update_age(x, y, mapElement);
         } else if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_PATH) {
@@ -123,7 +132,13 @@ void scenery_update_age(sint32 x, sint32 y, rct_map_element *mapElement)
     // Check map elements above, presumably to see if map element is blocked from rain
     mapElementAbove = mapElement;
     while (!(mapElementAbove->flags & 7)) {
+
         mapElementAbove++;
+
+        // Ghosts are purely this-client-side and should not cause any interaction,
+        // as that may lead to a desync.
+        if (map_element_is_ghost(mapElementAbove))
+            continue;
 
         switch (map_element_get_type(mapElementAbove)) {
         case MAP_ELEMENT_TYPE_SCENERY_MULTIPLE:

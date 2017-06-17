@@ -1330,54 +1330,8 @@ void Network::ProcessPacket(NetworkConnection& connection, NetworkPacket& packet
     packet.Clear();
 }
 
-void Network::ProcessGameCommandQueue()
-{
-    while (game_command_queue.begin() != game_command_queue.end()) {
+=======
 
-        // run all the game commands at the current tick
-        const GameCommand& gc = (*game_command_queue.begin());
-
-        // If our tick is higher than the command tick we are in trouble.
-        if (mode == NETWORK_MODE_CLIENT) {
-
-            if (game_command_queue.begin()->tick < gCurrentTicks) {
-                // Having old command from a tick where we have not been active yet or malicious server,
-                // the command is useless so lets not keep it.
-                game_command_queue.erase(game_command_queue.begin());
-
-                log_warning("Discarding game command from tick behind current tick, CMD: %08X, CMD Tick: %08X, Current Tick: %08X\n",
-							gc.esi,
-                            gc.tick,
-                            gCurrentTicks);
-
-                // At this point we should not return, would add the possibility to skip commands this tick.
-                continue;
-            }
-
-            if (game_command_queue.begin()->tick != gCurrentTicks)
-                return;
-        }
-
-        // run all the game commands at the current tick
-        if (GetPlayerID() == gc.playerid) {
-            game_command_callback = game_command_callback_get_callback(gc.callback);
-        }
-
-        game_command_playerid = gc.playerid;
-        sint32 command = gc.esi;
-        money32 cost = game_do_command_p(command, (sint32*)&gc.eax, (sint32*)&gc.ebx, (sint32*)&gc.ecx, (sint32*)&gc.edx, (sint32*)&gc.esi, (sint32*)&gc.edi, (sint32*)&gc.ebp);
-        if (cost != MONEY32_UNDEFINED) {
-            game_commands_processed_this_tick++;
-            NetworkPlayer* player = GetPlayerByID(gc.playerid);
-            if (player) {
-                player->LastAction = NetworkActions::FindCommand(command);
-                player->LastActionTime = platform_get_ticks();
-                player->AddMoneySpent(cost);
-            }
-        }
-        game_command_queue.erase(game_command_queue.begin());
-    }
-}
 
 void Network::AddClient(ITcpSocket * socket)
 {

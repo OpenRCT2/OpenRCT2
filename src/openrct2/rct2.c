@@ -117,7 +117,6 @@ uint8 gSavePromptMode;
 
 char gRCT2AddressAppPath[MAX_PATH];
 char gRCT2AddressSavedGamesPath[MAX_PATH];
-char gRCT2AddressSavedGamesPath2[MAX_PATH];
 char gRCT2AddressScenariosPath[MAX_PATH];
 char gRCT2AddressLandscapesPath[MAX_PATH];
 char gRCT2AddressObjectDataPath[MAX_PATH];
@@ -224,8 +223,6 @@ sint32 rct2_init_directories()
     safe_strcpy(gRCT2AddressTracksPath, gRCT2AddressAppPath, sizeof(gRCT2AddressTracksPath));
     safe_strcat_path(gRCT2AddressTracksPath, "Tracks", sizeof(gRCT2AddressTracksPath));
     safe_strcat_path(gRCT2AddressTracksPath, "*.TD?", sizeof(gRCT2AddressTracksPath));
-
-    safe_strcpy(gRCT2AddressSavedGamesPath2, gRCT2AddressSavedGamesPath, sizeof(gRCT2AddressSavedGamesPath2));
     return 1;
 }
 
@@ -331,7 +328,6 @@ bool rct2_open_file(const char *path)
     extension++;
 
     if (_stricmp(extension, "sv6") == 0) {
-        safe_strcpy((char*)gRCT2AddressSavedGamesPath2, path, sizeof(gRCT2AddressSavedGamesPath2));
         if (game_load_save(path)) {
             gFirstTimeSaving = false;
             return true;

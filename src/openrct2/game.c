@@ -1091,8 +1091,6 @@ bool game_load_save(const utf8 *path)
 {
     log_verbose("loading saved game, %s", path);
 
-    safe_strcpy((char*)gRCT2AddressSavedGamesPath2, path, MAX_PATH);
-
     safe_strcpy(gScenarioSavePath, path, MAX_PATH);
 
     uint32 extension_type = get_file_extension_type(path);
