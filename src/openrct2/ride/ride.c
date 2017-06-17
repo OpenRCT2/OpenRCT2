@@ -6007,12 +6007,13 @@ foundRideEntry:
     ride->overall_view = 0xFFFF;
 
     // Ride name
-    if (rideEntryIndex == RIDE_ENTRY_INDEX_NULL) {
+    if (rideEntryIndex == RIDE_ENTRY_INDEX_NULL)
+    {
         ride_set_name_to_track_default(ride, rideEntry);
-    } else if (!(rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME) || rideTypeShouldLoseSeparateFlag(rideEntry)) {
-        ride_set_name_to_track_default(ride, rideEntry);
-    } else {
-        ride_set_name_to_vehicle_default(ride, rideEntry);
+    }
+    else
+    {
+        ride_set_name_to_default(ride, rideEntry);
     }
 
     for (size_t i = 0; i < RCT12_MAX_STATIONS_PER_RIDE; i++) {
@@ -6162,6 +6163,15 @@ foundRideEntry:
     gCommandExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
     gCommandPosition.x = 0x8000;
     return 0;
+}
+
+void ride_set_name_to_default(rct_ride * ride, rct_ride_entry * rideEntry)
+{
+    if (!(rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME) || rideTypeShouldLoseSeparateFlag(rideEntry)) {
+        ride_set_name_to_track_default(ride, rideEntry);
+    } else {
+        ride_set_name_to_vehicle_default(ride, rideEntry);
+    }
 }
 
 static void ride_set_name_to_track_default(rct_ride *ride, rct_ride_entry * rideEntry)

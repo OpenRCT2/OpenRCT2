@@ -684,11 +684,7 @@ private:
         }
         if (dst->name == 0)
         {
-            dst->name = 1;
-
-            uint16 * args = (uint16*)&dst->name_arguments;
-            args[0] = 2 + dst->type;
-            args[1] = src->name_argument_number;
+            ride_set_name_to_default(dst, rideEntry);
         }
 
         dst->status = src->status;
