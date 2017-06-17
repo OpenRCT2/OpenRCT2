@@ -1322,7 +1322,6 @@ void Network::ProcessGameCommandQueue()
         // run all the game commands at the current tick
         const GameCommand& gc = (*game_command_queue.begin());
 
-        // If our tick is higher than the command tick we are in trouble.
         if (mode == NETWORK_MODE_CLIENT) {
 
             if (game_command_queue.begin()->tick < gCurrentTicks) {
@@ -2032,7 +2031,7 @@ void Network::Server_Handle_GAMECMD(NetworkConnection& connection, NetworkPacket
             ticks - connection.Player->LastPlaceSceneryTime < ACTION_COOLDOWN_TIME_PLACE_SCENERY &&
             // In case platform_get_ticks() wraps after ~49 days, ignore larger logged times.
             ticks > connection.Player->LastPlaceSceneryTime
-            ) {
+        ) {
             if (!(group->CanPerformCommand(MISC_COMMAND_TOGGLE_SCENERY_CLUSTER))) {
                 Server_Send_SHOWERROR(connection, STR_CANT_DO_THIS, STR_NETWORK_ACTION_RATE_LIMIT_MESSAGE);
                 return;
@@ -2046,7 +2045,7 @@ void Network::Server_Handle_GAMECMD(NetworkConnection& connection, NetworkPacket
             ticks - connection.Player->LastDemolishRideTime < ACTION_COOLDOWN_TIME_DEMOLISH_RIDE &&
             // In case platform_get_ticks() wraps after ~49 days, ignore larger logged times.
             ticks > connection.Player->LastDemolishRideTime
-            ) {
+        ) {
             Server_Send_SHOWERROR(connection, STR_CANT_DO_THIS, STR_NETWORK_ACTION_RATE_LIMIT_MESSAGE);
             return;
         }
