@@ -314,7 +314,7 @@ static void window_new_ride_populate_list()
         }
 
         if (ride_type_is_invented(rideType)) {
-    
+
             if (!track_type_has_ride_groups(rideType)) {
                 nextListItem = window_new_ride_iterate_over_ride_group(rideType, 0, nextListItem);
             }
@@ -326,7 +326,7 @@ static void window_new_ride_populate_list()
         }
     }
 
-    nextListItem->type = 255;
+    nextListItem->type = RIDE_TYPE_NULL;
     nextListItem->entry_index = 255;
     _trackSelectionByType = gConfigInterface.select_by_track_type;
 }
@@ -334,7 +334,7 @@ static void window_new_ride_populate_list()
 static ride_list_item * window_new_ride_iterate_over_ride_group(uint8 rideType, uint8 rideGroupIndex, ride_list_item * nextListItem)
 {
     uint8 currentCategory = _windowNewRideCurrentTab;
-    
+
     bool buttonForRideTypeCreated = false;
     bool allowDrawingOverLastButton = false;
     uint8 *rideEntryIndexPtr = get_ride_entry_indices_for_ride_type(rideType);
@@ -368,7 +368,7 @@ static ride_list_item * window_new_ride_iterate_over_ride_group(uint8 rideType, 
 			if (!ride_groups_are_equal(rideEntryRideGroup, rideGroup))
                 continue;
         }
-        
+
         // Skip if the vehicle isn't the preferred vehicle for this generic track type
         if (gConfigInterface.select_by_track_type && (!(rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE) || rideTypeShouldLoseSeparateFlag(rideEntry))) {
             if (strcmp(preferredVehicleName, "        \0") == 0) {
@@ -477,7 +477,7 @@ rct_window *window_new_ride_open()
 
     w->frame_no = 0;
     w->new_ride.selected_ride_id = -1;
-    _lastTrackDesignCountRideType.type = 255;
+    _lastTrackDesignCountRideType.type = RIDE_TYPE_NULL;
     _lastTrackDesignCountRideType.entry_index = 255;
     w->new_ride.highlighted_ride_id = _windowNewRideHighlightedItem[_windowNewRideCurrentTab].ride_type_and_entry;
     if (w->new_ride.highlighted_ride_id == -1)
@@ -880,7 +880,7 @@ static void window_new_ride_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, s
 static ride_list_item window_new_ride_scroll_get_ride_list_item_at(rct_window *w, sint32 x, sint32 y)
 {
     ride_list_item result;
-    result.type = 255;
+    result.type = RIDE_TYPE_NULL;
     result.entry_index = 255;
 
     if (--x < 0 || --y < 0)
