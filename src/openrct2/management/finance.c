@@ -126,8 +126,11 @@ void finance_pay_research()
 void finance_pay_interest()
 {
     money32 current_loan = gBankLoan;
-    sint16 current_interest = gBankLoanInterestRate;
-    money32 tempcost = (current_loan * 5 * current_interest) >> 14; // (5 * interest) / 2^14 is pretty close to
+    uint8 current_interest = gBankLoanInterestRate;
+
+    // This variable uses the 64-bit type as the line below can involve multiplying very large numbers
+    // that will overflow money32 (e.g. in the Alton Towers RCT1 scenario)
+    money64 tempcost = (current_loan * 5 * current_interest) >> 14; // (5 * interest) / 2^14 is pretty close to
 
     if (gParkFlags & PARK_FLAGS_NO_MONEY)
         return;
