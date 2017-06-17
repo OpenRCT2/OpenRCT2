@@ -158,7 +158,7 @@ static void loc_6A6620(sint32 flags, sint32 x, sint32 y, rct_map_element *mapEle
         mapElement = map_get_footpath_element(x / 32, y / 32, z);
     }
 
-    if (!(flags & GAME_COMMAND_FLAG_7))
+    if (!(flags & GAME_COMMAND_FLAG_PATH_SCENERY))
         footpath_connect_edges(x, y, mapElement, flags);
 
     footpath_update_queue_chains();
@@ -220,7 +220,7 @@ static money32 footpath_element_insert(sint32 type, sint32 x, sint32 y, sint32 z
 
         footpath_queue_chain_reset();
 
-        if (!(flags & GAME_COMMAND_FLAG_7))
+        if (!(flags & GAME_COMMAND_FLAG_PATH_SCENERY))
             footpath_remove_edges_at(x, y, mapElement);
 
         if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !(flags & GAME_COMMAND_FLAG_GHOST))
@@ -318,7 +318,7 @@ static money32 footpath_element_update(sint32 x, sint32 y, rct_map_element *mapE
     if (flags & GAME_COMMAND_FLAG_APPLY) {
         footpath_queue_chain_reset();
 
-        if (!(flags & GAME_COMMAND_FLAG_7))
+        if (!(flags & GAME_COMMAND_FLAG_PATH_SCENERY))
             footpath_remove_edges_at(x, y, mapElement);
 
         mapElement->properties.path.type = (mapElement->properties.path.type & 0x0F) | (type << 4);

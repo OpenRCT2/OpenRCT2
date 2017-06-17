@@ -1659,7 +1659,7 @@ static void window_top_toolbar_scenery_tool_down(sint16 x, sint16 y, rct_window 
     }
     case SCENERY_TYPE_PATH_ITEM:
     {
-        sint32 flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_7 | (parameter_1 & 0xFF00);
+        sint32 flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_PATH_SCENERY | (parameter_1 & 0xFF00);
 
         gGameCommandErrorTitle = STR_CANT_POSITION_THIS_HERE;
         sint32 cost = game_do_command(gridX, flags, gridY, parameter_2, GAME_COMMAND_PLACE_PATH, parameter_3, 0);
@@ -2264,7 +2264,7 @@ static money32 try_place_ghost_scenery(rct_xy16 map_tile, uint32 parameter_1, ui
                 GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED |
                 GAME_COMMAND_FLAG_5 |
                 GAME_COMMAND_FLAG_GHOST |
-                GAME_COMMAND_FLAG_7
+                GAME_COMMAND_FLAG_PATH_SCENERY
             ),
             map_tile.y,
             parameter_2,

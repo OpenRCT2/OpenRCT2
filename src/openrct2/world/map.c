@@ -2647,7 +2647,7 @@ static sint32 map_place_scenery_clear_func(rct_map_element** map_element, sint32
     if (map_element_get_type(*map_element) != MAP_ELEMENT_TYPE_SCENERY)
         return 1;
 
-    if (!(flags & GAME_COMMAND_FLAG_7))
+    if (!(flags & GAME_COMMAND_FLAG_PATH_SCENERY))
         return 1;
 
     rct_scenery_entry* scenery = get_small_scenery_entry((*map_element)->properties.scenery.type);

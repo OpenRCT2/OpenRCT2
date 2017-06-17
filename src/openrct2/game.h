@@ -104,7 +104,7 @@ enum {
     GAME_COMMAND_FLAG_4 = (1 << 4),
     GAME_COMMAND_FLAG_5 = (1 << 5),
     GAME_COMMAND_FLAG_GHOST = (1 << 6),
-    GAME_COMMAND_FLAG_7 = (1 << 7),
+    GAME_COMMAND_FLAG_PATH_SCENERY = (1 << 7),
     GAME_COMMAND_FLAG_NETWORKED = (1u << 31) // Game command is coming from network
 };
 
