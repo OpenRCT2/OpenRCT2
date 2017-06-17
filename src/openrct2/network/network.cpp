@@ -1325,14 +1325,14 @@ void Network::ProcessGameCommandQueue()
         // If our tick is higher than the command tick we are in trouble.
         if (mode == NETWORK_MODE_CLIENT) {
 
-            if (game_command_queue.begin()->tick < gCurrentTicks) {
-                // Having old command from a tick where we have not been fully connected,
-                // the command is useless for us so lets ditch it.
-                game_command_queue.erase(game_command_queue.begin());
+			if (game_command_queue.begin()->tick < gCurrentTicks) {
+				// Having old command from a tick where we have not been fully connected,
+				// the command is useless for us so lets ditch it.
+				game_command_queue.erase(game_command_queue.begin());
 
-                // At this point we should not return, would add the possibility to skip commands this tick.
-                continue;
-            }
+				// At this point we should not return, would add the possibility to skip commands this tick.
+				continue;
+			}
 
             if (game_command_queue.begin()->tick != gCurrentTicks)
                 return;
@@ -1350,7 +1350,7 @@ void Network::ProcessGameCommandQueue()
             flags |= GAME_COMMAND_FLAG_NETWORKED;
 
         money32 cost = game_do_command(gc.eax, flags, gc.ecx, gc.edx, gc.esi, gc.edi, gc.ebp);
-
+            
         if (cost != MONEY32_UNDEFINED)
         {
             game_commands_processed_this_tick++;
@@ -1374,7 +1374,7 @@ void Network::ProcessGameCommandQueue()
                 Server_Send_GAMECMD(gc.eax, gc.ebx, gc.ecx, gc.edx, gc.esi, gc.edi, gc.ebp, gc.playerid, gc.callback);
             }
         }
-
+        
         game_command_queue.erase(game_command_queue.begin());
     }
 

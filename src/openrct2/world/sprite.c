@@ -36,6 +36,8 @@ uint16 *gSpriteListCount = RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LISTS_COUNT, uint16)
 static rct_sprite *_spriteList = RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite);
 #endif
 
+static bool _spriteFlashingList[MAX_SPRITES];
+
 #define SPATIAL_INDEX_LOCATION_NULL 0x10000
 
 uint16 gSpriteSpatialIndex[0x10001];
@@ -126,6 +128,7 @@ void reset_sprite_list()
     for (sint32 i = 0; i < NUM_SPRITE_LISTS; i++) {
         gSpriteListHead[i] = SPRITE_INDEX_NULL;
         gSpriteListCount[i] = 0;
+        _spriteFlashingList[i] = false;
     }
 
     rct_sprite* previous_spr = (rct_sprite*)SPRITE_INDEX_NULL;
@@ -145,6 +148,7 @@ void reset_sprite_list()
             spr->unknown.previous = SPRITE_INDEX_NULL;
             gSpriteListHead[SPRITE_LIST_NULL] = i;
         }
+        _spriteFlashingList[i] = false;
         previous_spr = spr;
         spr++;
     }
@@ -207,6 +211,7 @@ const char * sprite_checksum()
         {
             rct_sprite copy = *sprite;
             copy.unknown.sprite_left = copy.unknown.sprite_right = copy.unknown.sprite_top = copy.unknown.sprite_bottom = 0;
+
             if (EVP_DigestUpdate(gHashCTX, &copy, sizeof(rct_sprite)) <= 0)
             {
                 openrct2_assert(false, "Failed to update digest");
@@ -256,6 +261,7 @@ void sprite_clear_all_unused()
         sprite->previous = previousSpriteIndex;
         sprite->linked_list_type_offset = SPRITE_LIST_NULL * 2;
         sprite->sprite_index = spriteIndex;
+        _spriteFlashingList[spriteIndex] = false;
         spriteIndex = nextSpriteIndex;
     }
 }
@@ -267,6 +273,7 @@ static void sprite_reset(rct_unk_sprite *sprite)
     uint16 next = sprite->next;
     uint16 prev = sprite->previous;
     uint16 sprite_index = sprite->sprite_index;
+    _spriteFlashingList[sprite_index] = false;
 
     memset(sprite, 0, sizeof(rct_sprite));
 
@@ -589,6 +596,7 @@ void sprite_remove(rct_sprite *sprite)
     move_sprite_to_list(sprite, SPRITE_LIST_NULL * 2);
     user_string_free(sprite->unknown.name_string_idx);
     sprite->unknown.sprite_identifier = SPRITE_IDENTIFIER_NULL;
+    _spriteFlashingList[sprite->unknown.sprite_index] = false;
 
     size_t quadrantIndex = GetSpatialIndexOffset(sprite->unknown.x, sprite->unknown.y);
     uint16 *spriteIndex = &gSpriteSpatialIndex[quadrantIndex];
@@ -778,4 +786,16 @@ void sprite_position_tween_reset()
         _spritelocations1[i].z =
         _spritelocations2[i].z = sprite->unknown.z;
     }
+}
+
+void sprite_set_flashing(rct_sprite *sprite, bool flashing)
+{
+    assert(sprite->unknown.sprite_index < MAX_SPRITES);
+    _spriteFlashingList[sprite->unknown.sprite_index] = flashing;
+}
+
+bool sprite_get_flashing(rct_sprite *sprite)
+{
+    assert(sprite->unknown.sprite_index < MAX_SPRITES);
+    return _spriteFlashingList[sprite->unknown.sprite_index];
 }
