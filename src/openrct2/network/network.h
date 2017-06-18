@@ -56,7 +56,7 @@ extern "C" {
 // This define specifies which version of network stream current build uses.
 // It is used for making sure only compatible builds get connected, even within
 // single OpenRCT2 version.
-#define NETWORK_STREAM_VERSION "15"
+#define NETWORK_STREAM_VERSION "16"
 #define NETWORK_STREAM_ID OPENRCT2_VERSION "-" NETWORK_STREAM_VERSION
 
 #ifdef __cplusplus
@@ -108,6 +108,7 @@ public:
     uint32 GetServerTick();
     uint8 GetPlayerID();
     void Update();
+    void ProcessGameCommandQueue();
     std::vector<std::unique_ptr<NetworkPlayer>>::iterator GetPlayerIteratorByID(uint8 id);
     NetworkPlayer* GetPlayerByID(uint8 id);
     std::vector<std::unique_ptr<NetworkGroup>>::iterator GetGroupIteratorByID(uint8 id);
@@ -178,7 +179,6 @@ public:
 private:
     bool ProcessConnection(NetworkConnection& connection);
     void ProcessPacket(NetworkConnection& connection, NetworkPacket& packet);
-    void ProcessGameCommandQueue();
     void AddClient(ITcpSocket * socket);
     void RemoveClient(std::unique_ptr<NetworkConnection>& connection);
     NetworkPlayer* AddPlayer(const utf8 *name, const std::string &keyhash);
@@ -287,6 +287,7 @@ sint32 network_begin_server(sint32 port, const char* address);
 sint32 network_get_mode();
 sint32 network_get_status();
 void network_update();
+void network_process_game_commands();
 sint32 network_get_authstatus();
 uint32 network_get_server_tick();
 uint8 network_get_current_player_id();
