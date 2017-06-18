@@ -194,7 +194,7 @@ static rct_track_td6 * track_design_open_from_td4(uint8 *src, size_t srcLength)
 
     // Track colours
     if (version == 0) {
-        for (sint32 i = 0; i < 4; i++) {
+        for (sint32 i = 0; i < RCT12_NUM_COLOUR_SCHEMES; i++) {
             td6->track_spine_colour[i] = rct1_get_colour(td4->track_spine_colour_v0);
             td6->track_rail_colour[i] = rct1_get_colour(td4->track_rail_colour_v0);
             td6->track_support_colour[i] = rct1_get_colour(td4->track_support_colour_v0);
@@ -211,7 +211,7 @@ static rct_track_td6 * track_design_open_from_td4(uint8 *src, size_t srcLength)
             }
         }
     } else {
-        for (sint32 i = 0; i < 4; i++) {
+        for (sint32 i = 0; i < RCT12_NUM_COLOUR_SCHEMES; i++) {
             td6->track_spine_colour[i] = rct1_get_colour(td4->track_spine_colour[i]);
             td6->track_rail_colour[i] = rct1_get_colour(td4->track_rail_colour[i]);
             td6->track_support_colour[i] = rct1_get_colour(td4->track_support_colour[i]);
@@ -1329,7 +1329,7 @@ static bool track_design_place_preview(rct_track_td6 *td6, money32 *cost, uint8 
 
     uint8 entry_type, entry_index;
     if (!find_object_in_entry_group(&td6->vehicle_object, &entry_type, &entry_index)) {
-        entry_index = 0xFF;
+        entry_index = RIDE_ENTRY_INDEX_NULL;
     }
 
     uint8 rideIndex;
@@ -1349,7 +1349,7 @@ static bool track_design_place_preview(rct_track_td6 *td6, money32 *cost, uint8 
 
     ride->entrance_style = td6->entrance_style;
 
-    for (sint32 i = 0; i < 4; i++) {
+    for (sint32 i = 0; i < RCT12_NUM_COLOUR_SCHEMES; i++) {
         ride->track_colour_main[i] = td6->track_spine_colour[i];
         ride->track_colour_additional[i] = td6->track_rail_colour[i];
         ride->track_colour_supports[i] = td6->track_support_colour[i];
@@ -1432,7 +1432,7 @@ static money32 place_track_design(sint16 x, sint16 y, sint16 z, uint8 flags, uin
     {
         entryIndex = 0xFF;
     }
-    
+
     // The rest of the cases are handled by the code in ride_create()
     if (track_type_has_ride_groups(td6->type) && entryIndex == 0xFF)
     {
@@ -1442,12 +1442,12 @@ static money32 place_track_design(sint16 x, sint16 y, sint16 z, uint8 flags, uin
             uint8 rideGroupIndex = ori->RideGroupIndex;
             ride_group * td6RideGroup = ride_group_find(td6->type, rideGroupIndex);
             rct_ride_entry * ire;
-            
+
             uint8 *availableRideEntries = get_ride_entry_indices_for_ride_type(td6->type);
-            for (uint8 *rei = availableRideEntries; *rei != 255; rei++)
+            for (uint8 *rei = availableRideEntries; *rei != RIDE_ENTRY_INDEX_NULL; rei++)
             {
                 ire = get_ride_entry(*rei);
-                
+
                 if (!ride_entry_is_invented(*rei))
                 {
                     continue;
@@ -1533,7 +1533,7 @@ static money32 place_track_design(sint16 x, sint16 y, sint16 z, uint8 flags, uin
 
     ride->entrance_style = td6->entrance_style;
 
-    for (sint32 i = 0; i < 4; i++) {
+    for (sint32 i = 0; i < RCT12_NUM_COLOUR_SCHEMES; i++) {
         ride->track_colour_main[i] = td6->track_spine_colour[i];
         ride->track_colour_additional[i] = td6->track_rail_colour[i];
         ride->track_colour_supports[i] = td6->track_support_colour[i];

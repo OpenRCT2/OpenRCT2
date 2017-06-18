@@ -327,7 +327,7 @@ static void window_new_ride_populate_list()
     }
 
     nextListItem->type = RIDE_TYPE_NULL;
-    nextListItem->entry_index = 255;
+    nextListItem->entry_index = RIDE_ENTRY_INDEX_NULL;
     _trackSelectionByType = gConfigInterface.select_by_track_type;
 }
 
@@ -343,7 +343,7 @@ static ride_list_item * window_new_ride_iterate_over_ride_group(uint8 rideType, 
     safe_strcpy(preferredVehicleName, "        ", sizeof(preferredVehicleName));
 
     // For each ride entry for this ride type
-    while (*rideEntryIndexPtr != 255) {
+    while (*rideEntryIndexPtr != RIDE_ENTRY_INDEX_NULL) {
         uint8 rideEntryIndex = *rideEntryIndexPtr++;
         char rideEntryName[9];
         memcpy(rideEntryName,object_entry_groups[OBJECT_TYPE_RIDE].entries[rideEntryIndex].name,8);
@@ -364,7 +364,7 @@ static ride_list_item * window_new_ride_iterate_over_ride_group(uint8 rideType, 
         {
             const ride_group * rideEntryRideGroup = get_ride_group(rideType, rideEntry);
             const ride_group * rideGroup = ride_group_find(rideType, rideGroupIndex);
-			
+
 			if (!ride_groups_are_equal(rideEntryRideGroup, rideGroup))
                 continue;
         }
@@ -478,7 +478,7 @@ rct_window *window_new_ride_open()
     w->frame_no = 0;
     w->new_ride.selected_ride_id = -1;
     _lastTrackDesignCountRideType.type = RIDE_TYPE_NULL;
-    _lastTrackDesignCountRideType.entry_index = 255;
+    _lastTrackDesignCountRideType.entry_index = RIDE_ENTRY_INDEX_NULL;
     w->new_ride.highlighted_ride_id = _windowNewRideHighlightedItem[_windowNewRideCurrentTab].ride_type_and_entry;
     if (w->new_ride.highlighted_ride_id == -1)
         w->new_ride.highlighted_ride_id = _windowNewRideListItems[0].ride_type_and_entry;
@@ -881,7 +881,7 @@ static ride_list_item window_new_ride_scroll_get_ride_list_item_at(rct_window *w
 {
     ride_list_item result;
     result.type = RIDE_TYPE_NULL;
-    result.entry_index = 255;
+    result.entry_index = RIDE_ENTRY_INDEX_NULL;
 
     if (--x < 0 || --y < 0)
         return result;

@@ -684,11 +684,7 @@ private:
         }
         if (dst->name == 0)
         {
-            dst->name = 1;
-
-            uint16 * args = (uint16*)&dst->name_arguments;
-            args[0] = 2 + dst->type;
-            args[1] = src->name_argument_number;
+            ride_set_name_to_default(dst, rideEntry);
         }
 
         dst->status = src->status;
@@ -889,7 +885,7 @@ private:
         }
         else
         {
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < RCT12_NUM_COLOUR_SCHEMES; i++)
             {
                 dst->track_colour_main[i] = RCT1::GetColour(src->track_colour_main[i]);
                 dst->track_colour_additional[i] = RCT1::GetColour(src->track_colour_additional[i]);
@@ -1799,7 +1795,7 @@ private:
                 {
                     // No vehicles found so just add the default for this ride
                     uint8 rideEntryIndex = _rideTypeToRideEntryMap[rct1RideType];
-                    Guard::Assert(rideEntryIndex != 255, "rideEntryIndex was 255");
+                    Guard::Assert(rideEntryIndex != RIDE_ENTRY_INDEX_NULL, "rideEntryIndex was RIDE_ENTRY_INDEX_NULL");
                     if (!_researchRideEntryUsed[rideEntryIndex])
                     {
                         _researchRideEntryUsed[rideEntryIndex] = true;

@@ -4414,6 +4414,23 @@ STR_6100    :Disconnesso dal server.
 STR_6101    :Le attrazioni non perdono valore con il tempo
 STR_6102    :{SMALLFONT}{BLACK}Il valore delle attrazioni non calerà con il tempo, in modo che i visitatori non pensino improvvisamente che il costo dell'attrazione sia troppo alto.
 STR_6103    :{SMALLFONT}{BLACK}Questa opzione è disabilitata durante il gioco online.
+STR_6104    :Ottovolante ad avvitamento
+STR_6105    :Hypercoaster
+STR_6106    :Corsa in auto
+STR_6107    :Monster truck
+STR_6108    :Ottovolante ad avvitamento in acciaio
+STR_6109    :Ottovolante grande ad avvitamento
+STR_6110    :Ottovolante per giovanissimi
+STR_6111    :Ottovolante Midi
+STR_6112    :Un ottovolante di acciaio compatto, nel quale i treni viaggiano attraverso avvitamenti e inversioni
+STR_6113    :Un ottovolante molto alto ma privo di inversioni, con grandi cadute, un'alta velocità e comodi treni dotati di una barra di protezione sul bacino
+STR_6114    :I passeggeri viaggiano con tranquillità su un tracciato a bordo di veicoli motorizzati
+STR_6115    :Enormi camion 4x4 motorizzati, in grado di scalare ripide salite
+STR_6116    :Un ottovolante molto largo che scorre lungo un percorso di acciaio, passando attraverso numerosi tipi di inversioni
+STR_6117    :I passeggeri, seduti su confortevoli treni e protetti soltanto da barre di protezione sul bacino, viaggiano lungo discese e avvitamenti, provando la sensazione di sollevarsi dal sedile
+STR_6118    :Un ottovolante tranquillo per i visitatori che non hanno ancora il coraggio di provare le attrazioni più estreme
+STR_6119    :Un piccolo ed economico ottovolante, la cui altezza è limitata
+STR_6120    :{BABYBLUE}È disponibile un nuovo veicolo per {STRINGID}:{NEWLINE}{STRINGID}
 
 
 #############

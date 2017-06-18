@@ -174,10 +174,10 @@ static void peep_update_ride_inspected(sint32 rideIndex);
 
 bool loc_690FD0(rct_peep *peep, uint8 *rideToView, uint8 *rideSeatToView, rct_map_element *esi);
 
-#ifdef DEBUG_DESYNC 
+#ifdef DEBUG_DESYNC
 #define peep_rand() scenario_rand_data(peep)
-#else 
-#define peep_rand() scenario_rand() 
+#else
+#define peep_rand() scenario_rand()
 #endif
 
 const char *gPeepEasterEggNames[] = {
@@ -10363,7 +10363,7 @@ static sint32 guest_path_finding(rct_peep* peep)
     sint32 numEntranceStations = 0;
     uint8 entranceStations = 0;
 
-    for (uint8 stationNum = 0; stationNum < 4; ++stationNum){
+    for (uint8 stationNum = 0; stationNum < RCT12_MAX_STATIONS_PER_RIDE; ++stationNum){
         if (ride->entrances[stationNum] == 0xFFFF) // stationNum has no entrance (so presumably an exit only station).
             continue;
 

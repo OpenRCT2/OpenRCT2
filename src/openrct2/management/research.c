@@ -196,13 +196,13 @@ void research_finish_item(sint32 entryIndex)
             if (gConfigInterface.select_by_track_type && track_type_has_ride_groups(base_ride_type))
             {
                 const ride_group * rideGroup = get_ride_group(base_ride_type, rideEntry);
-                
+
                 if (ride_group_is_invented(rideGroup))
                 {
                     ride_group_was_invented_before = true;
                 }
             }
-            
+
             ride_type_set_invented(base_ride_type);
             openrct2_assert(base_ride_type < countof(RideTypePossibleTrackConfigurations), "Invalid base_ride_type = %d", base_ride_type);
 

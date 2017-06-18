@@ -7223,7 +7223,7 @@ static void sub_6DBF3E(rct_vehicle *vehicle)
 {
     rct_ride_entry_vehicle *vehicleEntry = vehicle_get_vehicle_entry(vehicle);
 
-    vehicle->acceleration = (uint32)((sint32)vehicle->acceleration / _vehicleUnkF64E10);
+    vehicle->acceleration = vehicle->acceleration / _vehicleUnkF64E10;
     if (vehicle->var_CD == 2) {
         return;
     }
@@ -7938,7 +7938,7 @@ loc_6DBA33:;
     }
 
     // loc_6DBE3F
-    if ((sint32)vehicle->remaining_distance >= 0) {
+    if (vehicle->remaining_distance >= 0) {
         return true;
     }
     regs.ebx = dword_9A2970[regs.ebx];
@@ -8016,10 +8016,10 @@ loc_6DC40E:
     _vehicleUnkF64E10 = 1;
     vehicle->acceleration = dword_9A2970[vehicle->vehicle_sprite_type];
     vehicle->remaining_distance = _vehicleVelocityF64E0C + vehicle->remaining_distance;
-    if ((sint32)vehicle->remaining_distance < 0) {
+    if (vehicle->remaining_distance < 0) {
         goto loc_6DCA7A;
     }
-    if ((sint32)vehicle->remaining_distance < 0x368A) {
+    if (vehicle->remaining_distance < 0x368A) {
         goto loc_6DCE02;
     }
     vehicle->var_B8 &= ~(1 << 1);
@@ -8260,7 +8260,7 @@ loc_6DC743:
     }
     regs.ebx = 0x368A;
     vehicle->remaining_distance -= regs.ebx;
-    if ((sint32)vehicle->remaining_distance < 0) {
+    if (vehicle->remaining_distance < 0) {
         vehicle->remaining_distance = 0;
     }
 
@@ -8290,12 +8290,12 @@ loc_6DC743:
 loc_6DC985:
     regs.ebx = 0;
     vehicle->remaining_distance -= 0x368A;
-    if ((sint32)vehicle->remaining_distance < 0) {
+    if (vehicle->remaining_distance < 0) {
         vehicle->remaining_distance = 0;
     }
 
 loc_6DC99A:
-    if ((sint32)vehicle->remaining_distance < 0x368A) {
+    if (vehicle->remaining_distance < 0x368A) {
         goto loc_6DCDE4;
     }
     vehicle->acceleration = dword_9A2970[vehicle->vehicle_sprite_type];
@@ -8398,7 +8398,7 @@ loc_6DCC2C:
     }
     regs.ebx = 0x368A;
     vehicle->remaining_distance -= regs.ebx;
-    if ((sint32)vehicle->remaining_distance < 0) {
+    if (vehicle->remaining_distance < 0) {
         vehicle->remaining_distance = 0;
     }
 
@@ -8499,7 +8499,7 @@ loc_6DCE68:
     regs.al = vehicle->track_x >> 5;
     regs.ah = vehicle->track_y >> 5;
     regs.dl = vehicle->track_z >> 3;
-    for (sint32 i = 0; i < 4; i++) {
+    for (sint32 i = 0; i < RCT12_NUM_COLOUR_SCHEMES; i++) {
         if ((uint16)regs.ax != ride->station_starts[i]) {
             continue;
         }

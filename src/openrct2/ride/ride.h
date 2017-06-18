@@ -23,6 +23,7 @@
 #include "vehicle.h"
 
 #define MAX_RIDE_TYPES_PER_RIDE_ENTRY   3
+#define RIDE_ENTRY_INDEX_NULL           255
 typedef fixed16_2dp ride_rating;
 
 // Convenience function for writing ride ratings. The result is a 16 bit signed
@@ -1081,6 +1082,7 @@ void game_command_demolish_ride(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *e
 void game_command_set_ride_appearance(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *edx, sint32 *esi, sint32 *edi, sint32 *ebp);
 void game_command_set_ride_price(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *edx, sint32 *esi, sint32 *edi, sint32 *ebp);
 money32 ride_create_command(sint32 type, sint32 subType, sint32 flags, uint8 *outRideIndex, uint8 *outRideColour);
+void ride_set_name_to_default(rct_ride * ride, rct_ride_entry * rideEntry);
 
 void ride_clear_for_construction(sint32 rideIndex);
 void ride_entrance_exit_place_provisional_ghost();

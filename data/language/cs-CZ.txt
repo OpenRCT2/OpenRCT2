@@ -4367,6 +4367,68 @@ STR_6055    :Soubor výškové mapy OpenRCT2
 STR_6056    :{SMALLFONT}{BLACK}Ztlumit
 STR_6057    :{SMALLFONT}{BLACK}Na nástrojové liště zobrazovat samostatné tlačítko "Ztlumit"
 STR_6058    :Ztlumit
+STR_6059    :{RIGHTGUILLEMET}
+STR_6060    :Povolit animaci při nákupu návštěvníků
+STR_6061    :{SMALLFONT}{BLACK}Zobrazit animovaný efekt peněz, když návštěvníci platí.
+STR_6062    :{OUTLINE}{GREEN}+ {CURRENCY2DP}
+STR_6063    :{OUTLINE}{RED}- {CURRENCY2DP}
+STR_6064    :Vlastnit všechny pozemky
+STR_6065    :Ukládat aktivitu uživatele
+STR_6066    :{SMALLFONT}{BLACK}Ukládat aktivitu uživatelů do souborů ve Vašem domovském adresáři.
+STR_6067    :Server spuštěn.
+STR_6068    :Server zastaven.
+STR_6069    :Uživatel {STRING} byl vyhozen ze hry uživatelem {STRING}.
+STR_6070    :Uživatel {STRING} byl přidán do skupiny '{STRING}' uživatelem {STRING}.
+STR_6071    :Uživatel {STRING} vytvořil novou skupinu '{STRING}'.
+STR_6072    :Uživatel {STRING} smazal skupinu '{String}'.
+STR_6073    :Uživatel {STRING} upravil oprávnění skupiny '{String}'.
+STR_6074    :Uživatel {STRING} změnil název skupiny z '{String}' na '{String}'.
+STR_6075    :Uživatel {STRING} nastavil výchozí skupinu na '{String}'.
+STR_6076    :Uživatel {STRING} použil/přepnul cheat '{STRING}'.
+STR_6077    :Přidat peníze
+STR_6078    :Uživatel {STRING} vytvořil atrakci '{STRING}'.
+STR_6079    :Uživatel {STRING} zboural atrakci '{STRING}'.
+STR_6080    :Uživatel {STRING} změnil vzhled atrakce '{STRING}'.
+STR_6081    :Uživatel {STRING} nastavil stav atrakce '{STRING}' na zavřeno.
+STR_6082    :Uživatel {STRING} nastavil stav atrakce '{STRING}' na otevřeno.
+STR_6083    :Uživatel {STRING} nastavil stav atrakce '{STRING}' na testování.
+STR_6084    :Uživatel {STRING} změnil nastavení vozů atrakce '{STRING}'.
+STR_6085    :Uživatel {STRING} změnil nastavení jízdy atrakce '{STRING}'.
+STR_6086    :Uživatel {STRING} přejmenoval atrakci '{STRING}' na '{STRING}'.
+STR_6087    :Uživatel {STRING} nastavil cenu vstupenky atrakce '{STRING}' na {STRING}
+STR_6088    :Uživatel {STRING} nastavil sekundární cenu vstupenky atrakce '{STRING}' na {STRING}
+STR_6089    :Uživatel {STRING} přejmenoval park z '{STRING}' na '{STRING}'.
+STR_6090    :Uživatel {STRING} otevřel park.
+STR_6091    :Uživatel {STRING} zavřel park.
+STR_6092    :Uživatel {STRING} nastavil vstupné do parku na {STRING}
+STR_6093    :Uživatel {STRING} umístil novou kulisu.
+STR_6094    :Uživatel {STRING} odstranil kulisu.
+STR_6095    :Uživatel {STRING} upravil krajinu.
+STR_6096    :Uživatel {STRING} nastavil nápis na ceduli na '{STRING}'.
+STR_6097    :Uživatel {STRING} umístil část trati atrakce '{STRING}'.
+STR_6098    :Uživatel {STRING} odebral část trati.
+STR_6099    :Připojili jste se na server.
+STR_6100    :Odpojili jste se od serveru.
+STR_6101    :Hodnota atrakcí časem nedegraduje
+STR_6102    :{SMALLFONT}{BLACK}Hodnota atrakce nebude s postupem času klesat, takže návštěvníci nebudou najednou mít pocit, že je vstupné moc drahé.
+STR_6103    :{SMALLFONT}{BLACK}Tato volba není ve hře více hráčů dostupná.
+STR_6104    :Vývrtková horská dráha
+STR_6105    :Hyper horská dráha
+STR_6106    :Autodráha
+STR_6107    :Monster Trucks
+STR_6108    :Ocelová horská
+STR_6109    :Hyper-Twister
+STR_6110    :Dorostenecká horská dráha
+STR_6111    :Ocelová mini horská dráha
+STR_6112    :Malá ocelová horská dráha, na které vlak projíždí smyčky a vývrtky
+STR_6113    :Vysoká horská dráha s dlouhými pády, velkou rychlostí a pohodlnými vlaky, kde se jezdí s opěrkou v klíně
+STR_6114    :Návštěvníci jedou pomalu ve vozidlech po postavené dráze.
+STR_6115    :Obří auta s pohonem 4x4, které jsou schopna vyjíždět velmi strmé svahy
+STR_6116    :Široká ocelová horská dráha, na které vozy jedou po hladkých kolejnicích skrze propletenou dráhu
+STR_6117    :Horská dráha s dlouhými pády, velkou rychlostí a pohodlnými vlaky, kde se jezdí s opěrkou v klíně, která přelétává vrcholky kopců
+STR_6118    :Pozvolná horská dráha pro ty kdo se zatím neodvažují na větší dráhy
+STR_6119    :Levná horská dráha, kterou lze snadno postavit - má však omezenou maximální výšku
+STR_6120    :{BABYBLUE}Nové vozy dostupné pro {STRINGID}:{NEWLINE}{STRINGID}
 
 ###############################################################################
 ## RCT2 Objects

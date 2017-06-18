@@ -2664,7 +2664,7 @@ static void window_ride_vehicle_mousedown(rct_widgetindex widgetIndex, rct_windo
 
             rideEntryIndexPtr = get_ride_entry_indices_for_ride_type(rideTypeIterator);
 
-            for (uint8 *currentRideEntryIndex = rideEntryIndexPtr; *currentRideEntryIndex != 0xFF && numItems <= 63; currentRideEntryIndex++) {
+            for (uint8 *currentRideEntryIndex = rideEntryIndexPtr; *currentRideEntryIndex != RIDE_ENTRY_INDEX_NULL && numItems <= 63; currentRideEntryIndex++) {
                 rideEntryIndex = *currentRideEntryIndex;
                 currentRideEntry = get_ride_entry(rideEntryIndex);
                 // Skip if vehicle wants to be separate, unless subtype switching is enabled
@@ -2680,11 +2680,11 @@ static void window_ride_vehicle_mousedown(rct_widgetindex widgetIndex, rct_windo
                 {
                     rideGroup = get_ride_group(ride->type, rideEntry);
                     currentRideGroup = get_ride_group(ride->type, currentRideEntry);
-                    
+
                     if (!ride_groups_are_equal(rideGroup, currentRideGroup))
                         continue;
                 }
-                
+
                 if (ride->subtype == rideEntryIndex)
                     selectedIndex = numItems;
 
@@ -4147,7 +4147,7 @@ static void window_ride_colour_mousedown(rct_widgetindex widgetIndex, rct_window
 
     switch (widgetIndex) {
     case WIDX_TRACK_COLOUR_SCHEME_DROPDOWN:
-        for (i = 0; i < 4; i++) {
+        for (i = 0; i < RCT12_NUM_COLOUR_SCHEMES; i++) {
             gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
             gDropdownItemsArgs[i] = ColourSchemeNames[i];
         }

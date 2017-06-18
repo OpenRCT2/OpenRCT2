@@ -4367,6 +4367,69 @@ STR_6055    :Arquivo OpenRCT2 de altura de mapa
 STR_6056    :{SMALLFONT}{BLACK}Mudo
 STR_6057    :{SMALLFONT}{BLACK}Mostrar na barra de ferramentas um botão separado para a opção Mudo
 STR_6058    :Mudo
+STR_6059    :{RIGHTGUILLEMET}
+STR_6060    :Mostrar compras do visitante como animação
+STR_6061    :{SMALLFONT}{BLACK}Mostra efeito animado de dinheiro{NEWLINE}quando visitantes fazem compras.
+STR_6062    :{OUTLINE}{GREEN}+ {CURRENCY2DP}
+STR_6063    :{OUTLINE}{RED}- {CURRENCY2DP}
+STR_6064    :Own all land
+STR_6065    :Registrar ações do usuário
+STR_6066    :{SMALLFONT}{BLACK}Registra todas as ações do usuário em arquivos no diretório do usuário.
+STR_6067    :Servidor iniciado.
+STR_6068    :Servidor desligado.
+STR_6069    :{STRING} foi chutado do servidor por {STRING}.
+STR_6070    :{STRING} foi definido para grupo'{STRING}' por {STRING}.
+STR_6071    :{STRING} criou novo grupo de jogadores '{STRING}'.
+STR_6072    :{STRING} deletou grupo de jogadores '{String}'.
+STR_6073    :{STRING} editou permissões para grupo de jogadores '{String}'.
+STR_6074    :{STRING} mudou nome do grupo de jogadores de '{String}' para '{String}'.
+STR_6075    :{STRING} mudou grupo de jogadores padrão para '{String}'.
+STR_6076    :{STRING} usou/alternou trapaça '{STRING}'.
+STR_6077    :Adicionar Dinheiro
+STR_6078    :{STRING} criou atração '{STRING}'.
+STR_6079    :{STRING} demoliu atração '{STRING}'.
+STR_6080    :{STRING} mudou aparência da atração '{STRING}'.
+STR_6081    :{STRING} mudou o status da atração '{STRING}' para fechado.
+STR_6082    :{STRING} mudou o status da atração '{STRING}' para aberto.
+STR_6083    :{STRING} mudou o status da atração '{STRING}' para testando.
+STR_6084    :{STRING} mudou configurações de veículo da atração '{STRING}'.
+STR_6085    :{STRING} mudou configurações de atração da atração '{STRING}'.
+STR_6086    :{STRING} renomeou atração de '{STRING}' para '{STRING}'.
+STR_6087    :{STRING} mudou preço da atração '{STRING}' para {STRING}
+STR_6088    :{STRING} mudou preço secundário da atração '{STRING}' para {STRING}
+STR_6089    :{STRING} renomeou o parque de '{STRING}' para '{STRING}'.
+STR_6090    :{STRING} abriu o parque.
+STR_6091    :{STRING} fechou o parque.
+STR_6092    :{STRING} mudou taxa de entrada do parque para {STRING}
+STR_6093    :{STRING} colocou novo cenário.
+STR_6094    :{STRING} removeu cenário.
+STR_6095    :{STRING} editou cenário.
+STR_6096    :{STRING} definiu nome da placa para '{STRING}'.
+STR_6097    :{STRING} adicionou uma pista da atração '{STRING}'.
+STR_6098    :{STRING} removeu uma pista da atração.
+STR_6099    :Você conectou ao servidor.
+STR_6100    :Você desconectou do servidor.
+STR_6101    :Atrações não perdem valor ao longo do tempo
+STR_6102    :{SMALLFONT}{BLACK}O valor de uma atração não diminuirá com o tempo, então visitantes não pensarão de repente que uma atração é muito cara.
+STR_6103    :{SMALLFONT}{BLACK}Esta opção é desabilitada durante jogo de rede.
+STR_6104    :Montanha-Russa Parafuso
+STR_6105    :Hipermontanha
+STR_6106    :Passeio de carro
+STR_6107    :Caminhões Monstruosos
+STR_6108    :Tornado de Aço
+STR_6109    :Hiper-Tornado
+STR_6110    :Montanha-Russa Júnior
+STR_6111    :Montanha-Russa Midi
+STR_6112    :Uma montanha russa de aço compacta onde trens viajam por parafusos e loops
+STR_6113    :Uma montanha russa alta que não inverte com grandes quedas, alta velocidade, e trens confortáveis com apenas uma trava de colo
+STR_6114    :Passageiros viajam devagar em veículos eletrizados ao longo de uma rota baseada em pista
+STR_6115    :Gigantes caminhões 4x4 eletrizados que podem subir colinas íngrimes
+STR_6116    :Trens largos de montanha russa deslizam ao longo de um trilho suave de aço, viajando por uma variedade de inversões
+STR_6117    :Sentados em trens confortáveis com apenas trava de colo, passageiros se divertem em gigantes quedas suaves e trilhos torcidos, bem como muitos "tempos no ar" pelas colinas.
+STR_6118    :Uma montanha russa suave para pessoas que ainda não criaram coragem para encarar atrações maiores
+STR_6119    :Uma montanha russa barata e fácil de construir, mas com um limite de altura
+STR_6120    :{BABYBLUE}Novo veículo disponível agora para {STRINGID}:{NEWLINE}{STRINGID}
+
 
 #############
 # Scenarios #
@@ -4814,8 +4877,20 @@ STR_DTLS    :
 # Rides/attractions # 
 #####################
 
+#RCT2
+[TOPSP1]
+STR_NAME    :Top Spin
+STR_DESC    :Passageiros brincam numa gôndola suspensa por grandes braços rotatórios, rodando de pernas para o ar para frente e para trás 
+STR_CPTY    :8 passageiros
+
 #WW
 [CONDORRD]
 STR_NAME    :Condor
-STR_DESC    :Montando em arreios especiais sob a pista, os passageiros experimentarão a sensação de voar pelo ar em uma estrutura na forma de Condor
+STR_DESC    :Montando em travas especiais sob a pista, os passageiros experimentarão a sensação de voar pelo ar em uma estrutura na forma de Condor
 STR_CPTY    :4 passageiros por carro
+
+#WW
+[CONGAEEL]
+STR_NAME    :Montanha-Russa Enguia Conger
+STR_DESC    :Uma montanha russa de aço compacta onde trens com formato de enguia viajam por parafusos e loops
+STR_CPTY    :4 passengers por carro
