@@ -148,6 +148,7 @@ extern uint8 gGamePaused;
 extern sint32 gGameSpeed;
 extern float gDayNightCycle;
 extern bool gInUpdateCode;
+extern bool gInMapInitCode;
 extern sint32 gGameCommandNestLevel;
 extern bool gGameCommandIsNetworked;
 

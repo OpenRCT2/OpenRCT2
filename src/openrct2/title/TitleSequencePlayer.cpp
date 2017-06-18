@@ -197,6 +197,8 @@ public:
         }
 
         // Keep updating until we reach target position
+        gInUpdateCode = true;
+
         while (_position < targetPosition)
         {
             if (Update())
@@ -208,6 +210,8 @@ public:
                 break;
             }
         }
+
+        gInUpdateCode = false;
 
         _waitCounter = 0;
     }

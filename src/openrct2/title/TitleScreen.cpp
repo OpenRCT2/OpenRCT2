@@ -168,6 +168,8 @@ extern "C"
 
     void title_update()
     {
+        gInUpdateCode = true;
+
         screenshot_check();
         title_handle_keyboard_input();
 
@@ -196,6 +198,8 @@ extern "C"
         gSavedAge++;
 
         game_handle_input();
+
+        gInUpdateCode = false;
     }
 
     void DrawOpenRCT2(rct_drawpixelinfo * dpi, sint32 x, sint32 y)
