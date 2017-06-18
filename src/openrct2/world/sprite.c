@@ -212,6 +212,12 @@ const char * sprite_checksum()
             rct_sprite copy = *sprite;
             copy.unknown.sprite_left = copy.unknown.sprite_right = copy.unknown.sprite_top = copy.unknown.sprite_bottom = 0;
 
+            if (copy.unknown.sprite_identifier == SPRITE_IDENTIFIER_PEEP) {
+                // We set this to 0 because as soon the client selects a guest the window will remove the
+                // invalidation flags causing the sprite checksum to be different than on server, the flag does not affect game state.
+                copy.peep.window_invalidate_flags = 0;
+            }
+
             if (EVP_DigestUpdate(gHashCTX, &copy, sizeof(rct_sprite)) <= 0)
             {
                 openrct2_assert(false, "Failed to update digest");
