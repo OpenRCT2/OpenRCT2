@@ -649,6 +649,13 @@ static void shortcut_ride_construction_demolish_current()
     window_ride_construction_keyboard_shortcut_demolish_current();
 }
 
+static void shortcut_load_game()
+{
+    if (!(gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER))) {
+        game_do_command(0, 1, 0, 0, GAME_COMMAND_LOAD_OR_QUIT, 0, 0);
+    }
+}
+
 static const shortcut_action shortcut_table[SHORTCUT_COUNT] = {
     shortcut_close_top_most_window,
     shortcut_close_all_floating_windows,
@@ -714,6 +721,7 @@ static const shortcut_action shortcut_table[SHORTCUT_COUNT] = {
     shortcut_ride_construction_next_track,
     shortcut_ride_construction_build_current,
     shortcut_ride_construction_demolish_current,
+    shortcut_load_game,
 };
 
 #pragma endregion
