@@ -14,24 +14,25 @@
  *****************************************************************************/
 #pragma endregion
 
-#pragma once
+#include "../interface/Screenshot.h"
+#include "CommandLine.hpp"
 
-#ifdef __cplusplus
-extern "C"
+static exitcode_t HandleBenchGfx(CommandLineArgEnumerator *argEnumerator);
+
+const CommandLineCommand CommandLine::BenchGfxCommands[]
 {
-#endif
-    #include "../drawing/drawing.h"
+    // Main commands
+    DefineCommand("", "<file> [iterations count]", nullptr, HandleBenchGfx),
+    CommandTableEnd
+};
 
-    extern uint8 gScreenshotCountdown;
-
-    void screenshot_check();
-    sint32 screenshot_dump();
-    sint32 screenshot_dump_png(rct_drawpixelinfo *dpi);
-    sint32 screenshot_dump_png_32bpp(sint32 width, sint32 height, const void *pixels);
-
-    void screenshot_giant();
-    sint32 cmdline_for_screenshot(const char **argv, sint32 argc);
-    sint32 cmdline_for_gfxbench(const char **argv, sint32 argc);
-#ifdef __cplusplus
+static exitcode_t HandleBenchGfx(CommandLineArgEnumerator *argEnumerator)
+{
+    const char * * argv = (const char * *)argEnumerator->GetArguments() + argEnumerator->GetIndex();
+    sint32 argc = argEnumerator->GetCount() - argEnumerator->GetIndex();
+    sint32 result = cmdline_for_gfxbench(argv, argc);
+    if (result < 0) {
+        return EXITCODE_FAIL;
+    }
+    return EXITCODE_OK;
 }
-#endif
