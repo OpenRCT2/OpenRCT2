@@ -40,7 +40,7 @@ enum{
 
 #define CAMPAIGN_ACTIVE_FLAG (1 << 7)
 
-extern const money16 AdvertisingCampaignPricePerWeek[6];
+extern const money16 AdvertisingCampaignPricePerWeek[ADVERTISING_CAMPAIGN_COUNT];
 extern uint8 gMarketingCampaignDaysLeft[20];
 extern uint8 gMarketingCampaignRideIndex[22];
 
