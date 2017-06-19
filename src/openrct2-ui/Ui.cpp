@@ -64,3 +64,13 @@ int main(int argc, char * * argv)
     }
     return gExitCode;
 }
+
+
+#ifdef __ANDROID__
+extern "C" {
+int SDL_main(int argc, char *argv[])
+{
+    return main(argc, argv);
+}
+}
+#endif

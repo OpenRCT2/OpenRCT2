@@ -86,6 +86,42 @@ matrix:
               curl -o - -v --form "key=$OPENRCT2_ORG_TOKEN" --form "fileName=OpenRCT2-${OPENRCT2_VERSION}${FILENAME_PART}-macos.zip" --form "version=${OPENRCT2_VERSION}" --form "gitHash=$TRAVIS_COMMIT" --form "gitBranch=$PUSH_BRANCH" --form "flavourId=3" --form "file=@openrct2-macos.zip" "https://openrct2.org/altapi/?command=push-build"; else
               curl --progress-bar --upload-file openrct2-macos.zip https://transfer.sh/openrct2-macos.zip -o link && cat link;
               fi
+        - os: linux
+          language: android
+          dist: precise
+          before_install: []
+          addons:
+            apt:
+              sources:
+                - ubuntu-toolchain-r-test
+              packages:
+              - libstdc++6-4.7-dev
+          android:
+            components:
+              - build-tools-25.0.2
+          jdk: oraclejdk8
+          before_script:
+            - pushd ~
+            - wget https://dl.google.com/android/repository/sdk-tools-linux-3859397.zip
+            - unzip -qo sdk-tools-linux-3859397.zip
+            - rm -Rf "$ANDROID_HOME/tools"
+            - mv tools "$ANDROID_HOME/tools"
+            - popd
+            - 'echo "count=0" >  ~/.android/repositories.cfg'
+            - '"$ANDROID_HOME/tools/bin/sdkmanager" --list'
+            - 'echo y | "$ANDROID_HOME/tools/bin/sdkmanager" platform-tools'
+            - 'echo y | "$ANDROID_HOME/tools/bin/sdkmanager" "platforms;android-25"'
+            - 'echo y | "$ANDROID_HOME/tools/bin/sdkmanager" "cmake;3.6.3155560"'
+            - '"$ANDROID_HOME/tools/bin/sdkmanager" ndk-bundle'
+            - '"$ANDROID_HOME/tools/bin/sdkmanager" --list'
+            - 'export ANDROID_NDK_HOME="$ANDROID_HOME/ndk-bundle"'
+            - 'cd src/openrct2-android'
+            - TERM=dumb # Makes Gradle use 'boring' output
+          script:
+            - './gradlew app:assemblePR'
+          after_success:
+            - curl --progress-bar --upload-file app/build/outputs/apk/app-arm-pr.apk https://transfer.sh/openrct2-android-arm.apk -o link && cat link
+            - curl --progress-bar --upload-file app/build/outputs/apk/app-x86-pr.apk https://transfer.sh/openrct2-android-x86.apk -o link && cat link
         # Following entries used to be included in testing, but they only proved useful while changing things in CMake setup.
         # They are meant to be used when there are changes to CMakeLists.txt
         # - os: linux

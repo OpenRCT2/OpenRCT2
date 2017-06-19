@@ -14,7 +14,7 @@
 *****************************************************************************/
 #pragma endregion
 
-#ifdef __linux__
+#if defined(__linux__) && !defined(__ANDROID__)
 
 #include <dlfcn.h>
 #include <sstream>

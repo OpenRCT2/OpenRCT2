@@ -144,6 +144,8 @@ extern "C"
                     handle->Stream = zip->GetFileStream(filename);
                     handle->HintPath = String::Duplicate(filename);
                     delete zip;
+                } else {
+                    Console::Error::WriteLine("Failed to open zipped path '%s' from zip '%s'", filename, seq->Path);
                 }
             }
             else

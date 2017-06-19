@@ -28,9 +28,17 @@
 #elif defined(__aarch64__)
     #define OPENRCT2_ARCHITECTURE       "AArch64"
 #elif defined(__arm__) || defined(_M_ARM)
-    #define OPENRCT2_ARCHITECTURE       "ARMv7"
+    #if defined(__ARM_ARCH_7A__)
+        #define OPENRCT2_ARCHITECTURE   "arm-v7a"
+    #else
+        #define OPENRCT2_ARCHITECTURE   "arm"
+    #endif
 #elif defined(__powerpc__) || defined(_M_PPC)
     #define OPENRCT2_ARCHITECTURE       "PowerPC"
+#elif defined(__mips64)
+    #define OPENRCT2_ARCHITECTURE       "mips64"
+#elif defined(__mips__)
+    #define OPENRCT2_ARCHITECTURE       "mips"
 #endif
 
 #ifndef OPENRCT2_ARCHITECTURE
@@ -41,7 +49,7 @@
 #ifdef _WIN32
     #define OPENRCT2_PLATFORM       "Windows"
 #endif
-#ifdef __linux__
+#if defined(__linux__) && !defined(__ANDROID__)
     #define OPENRCT2_PLATFORM       "Linux"
 #endif
 #if (defined(__APPLE__) && defined(__MACH__))
@@ -49,6 +57,9 @@
 #endif
 #ifdef __FreeBSD__
     #define OPENRCT2_PLATFORM       "FreeBSD"
+#endif
+#ifdef __ANDROID__
+    #define OPENRCT2_PLATFORM       "Android"
 #endif
 #ifndef OPENRCT2_PLATFORM
     #error Unknown platform!

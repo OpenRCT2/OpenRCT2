@@ -138,6 +138,8 @@ bool platform_get_font_path(TTFFontDescriptor *font, utf8 *buffer, size_t size);
 
 datetime64 platform_get_datetime_now_utc();
 
+float platform_get_default_scale();
+
 // Called very early in the program before parsing commandline arguments.
 void core_init();
 
@@ -158,7 +160,7 @@ void core_init();
     __declspec(dllexport) sint32 StartOpenRCT(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, sint32 nCmdShow);
 #endif // _WIN32
 
-#if defined(__unix__) || (defined(__APPLE__) && defined(__MACH__)) || defined(__FreeBSD__)
+#if defined(__unix__) || (defined(__APPLE__) && defined(__MACH__)) || defined(__FreeBSD__) || defined(__ANDROID__)
     void platform_posix_sub_user_data_path(char *buffer, size_t size, const char *homedir);
     void platform_posix_sub_resolve_openrct_data_path(utf8 *out, size_t size);
 #endif
