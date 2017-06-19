@@ -947,17 +947,17 @@ static money32 map_buy_land_rights_for_tile(sint32 x, sint32 y, sint32 setting, 
             return MONEY32_UNDEFINED;
         }
 
+        uint8 newOwnership = (flags & 0xFF00) >> 4;
+        if (newOwnership == (surfaceElement->properties.surface.ownership & 0xF0)) {
+            return 0;
+        }
+
         rct_map_element* mapElement = map_get_first_element_at(x / 32, y / 32);
         do {
             if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_ENTRANCE){
                 return 0;
             }
         } while (!map_element_is_last_for_tile(mapElement++));
-
-        uint8 newOwnership = (flags & 0xFF00) >> 4;
-        if (newOwnership == (surfaceElement->properties.surface.ownership & 0xF0)) {
-            return 0;
-        }
 
         if (!(flags & GAME_COMMAND_FLAG_APPLY)) {
             return gLandPrice;
