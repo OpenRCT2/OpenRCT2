@@ -6,6 +6,7 @@
 - Feature: [#5504] Group vehicles into ride groups
 - Feature: [#5576] Add a persistent 'display real names of guests' setting.
 - Feature: OpenRCT2 now starts up on the display it was last shown on.
+- Feature: [#5611] Add support for Android
 - Improved: Mouse can now be dragged to select scenery when saving track designs
 - Fix: [#837] Can't move windows on title screen to where the toolbar would be
 - Fix: [#3178, #5456] Paths with non-ASCII characters not handled properly on macOS.
@@ -16,7 +17,9 @@
 - Fix: [#5009] Ride rating calculations can overflow
 - Fix: Non-invented vehicles can be used via track designs in select-by-track-type mode.
 - Fix: Track components added by OpenRCT2 are now usable in older scenarios.
+- Technical: [#5047] Add ride ratings tests
 - Technical: [#5458] Begin offering headless build with reduced compile- and run-time dependencies
+- Technical: Fix many desync sources
 
 0.0.7 (2017-05-03)
 ------------------------------------------------------------------------
