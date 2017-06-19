@@ -51,11 +51,11 @@ uint16 platform_get_locale_language() {
 }
 
 uint8 platform_get_locale_currency() {
-	return platform_get_currency_value(NULL);
+    return platform_get_currency_value(NULL);
 }
 
 uint8 platform_get_locale_measurement_format() {
-	return MEASUREMENT_FORMAT_METRIC;
+    return MEASUREMENT_FORMAT_METRIC;
 }
 
 float platform_get_default_scale() {
