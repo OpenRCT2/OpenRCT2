@@ -1625,7 +1625,7 @@ private:
             gWeeklyProfitHistory[i] = _s4.weekly_profit_history[i];
         }
 
-        for (size_t i = 0; i < 14 * 16; i++)
+        for (size_t i = 0; i < EXPENDITURE_TABLE_TOTAL_COUNT; i++)
         {
             gExpenditureTable[i] = _s4.expenditure[i];
         }

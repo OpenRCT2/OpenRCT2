@@ -671,7 +671,7 @@ static void window_finances_summary_paint(rct_window *w, rct_drawpixelinfo *dpi)
     y += 14;
 
     // Expenditure / Income row labels
-    for (i = 0; i < 14; i++) {
+    for (i = 0; i < RCT_EXPENDITURE_TYPE_COUNT; i++) {
         // Darken every even row
         if (i % 2 == 0)
             gfx_fill_rect(dpi, x, y, x + 513 - 2, y + 9, ColourMapA[w->colours[1]].lighter | 0x1000000);
@@ -706,7 +706,7 @@ static void window_finances_summary_paint(rct_window *w, rct_drawpixelinfo *dpi)
         // Month expenditures
         money32 profit = 0;
         money32 *expenditures = &gExpenditureTable[i * RCT_EXPENDITURE_TYPE_COUNT];
-        for (j = 0; j < 14; j++) {
+        for (j = 0; j < RCT_EXPENDITURE_TYPE_COUNT; j++) {
             money32 expenditure = expenditures[j];
             if (expenditure != 0) {
                 profit += expenditure;
