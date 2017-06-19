@@ -79,7 +79,7 @@ android.applicationVariants.all { variant ->
             into "$variant.mergeAssets.outputDir/data"
         }
         download {
-            src 'https://github.com/marijnvdwerf/openrct2-dependencies-android/releases/download/v0.7/g2.dat'
+            src 'https://github.com/OpenRCT2/openrct2-dependencies-android/releases/download/v0.7/g2.dat'
             dest "$variant.mergeAssets.outputDir/data"
         }
         download {
