@@ -4419,7 +4419,7 @@ STR_6107    :Monster Trucks
 STR_6108    :Steel Twister
 STR_6109    :Hyper-Twister
 STR_6110    :Junior Roller Coaster
-STR_6111    :Midi Coaster
+STR_6111    :Classic Mini Roller Coaster
 STR_6112    :A compact steel-tracked roller coaster where the train travels through corkscrews and loops
 STR_6113    :A tall non-inverting roller coaster with large drops, high speed, and comfortable trains with only lap bar restraints
 STR_6114    :Riders travel slowly in powered vehicles along a track-based route
