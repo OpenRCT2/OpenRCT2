@@ -37,3 +37,6 @@ captures/
 
 # Keystore files
 *.jks
+
+# NDK
+.externalNativeBuild/
