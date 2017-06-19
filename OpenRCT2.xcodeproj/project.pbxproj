@@ -73,6 +73,7 @@
 		D45A395E1CF300AF00659A24 /* libSDL2.dylib in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D45A38B81CF3006400659A24 /* libSDL2.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		D45A395F1CF300AF00659A24 /* libspeexdsp.dylib in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D45A38B91CF3006400659A24 /* libspeexdsp.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		D47304D51C4FF8250015C0EA /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D47304D41C4FF8250015C0EA /* libz.tbd */; };
+		D48AFDB71EF78DBF0081C644 /* BenchGfxCommmands.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D48AFDB61EF78DBF0081C644 /* BenchGfxCommmands.cpp */; };
 		D4A8B4B41DB41873007A2F29 /* libpng16.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D4A8B4B31DB41873007A2F29 /* libpng16.dylib */; };
 		D4A8B4B51DB4188D007A2F29 /* libpng16.dylib in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D4A8B4B31DB41873007A2F29 /* libpng16.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		D4EC48E61C2637710024B507 /* g2.dat in Resources */ = {isa = PBXBuildFile; fileRef = D4EC48E31C2637710024B507 /* g2.dat */; };
@@ -772,6 +773,7 @@
 		D45A39581CF3007A00659A24 /* speexdsp_types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = speexdsp_types.h; sourceTree = "<group>"; };
 		D47304D41C4FF8250015C0EA /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		D4895D321C23EFDD000CD788 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = distribution/macos/Info.plist; sourceTree = SOURCE_ROOT; };
+		D48AFDB61EF78DBF0081C644 /* BenchGfxCommmands.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BenchGfxCommmands.cpp; sourceTree = "<group>"; };
 		D497D0781C20FD52002BF46A /* OpenRCT2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OpenRCT2.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D4A8B4B31DB41873007A2F29 /* libpng16.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libpng16.dylib; sourceTree = "<group>"; };
 		D4EC48E31C2637710024B507 /* g2.dat */ = {isa = PBXFileReference; lastKnownFileType = file; name = g2.dat; path = data/g2.dat; sourceTree = SOURCE_ROOT; };
@@ -1805,6 +1807,7 @@
 		F76C83621EC4E7CC00FA49E2 /* cmdline */ = {
 			isa = PBXGroup;
 			children = (
+				D48AFDB61EF78DBF0081C644 /* BenchGfxCommmands.cpp */,
 				F76C83631EC4E7CC00FA49E2 /* CommandLine.cpp */,
 				F76C83641EC4E7CC00FA49E2 /* CommandLine.hpp */,
 				F76C83651EC4E7CC00FA49E2 /* ConvertCommand.cpp */,
@@ -3030,6 +3033,7 @@
 				F76C85D41EC4E88300FA49E2 /* File.cpp in Sources */,
 				F76C85D61EC4E88300FA49E2 /* FileScanner.cpp in Sources */,
 				F76C85D91EC4E88300FA49E2 /* Guard.cpp in Sources */,
+				D48AFDB71EF78DBF0081C644 /* BenchGfxCommmands.cpp in Sources */,
 				F76C85DB1EC4E88300FA49E2 /* IStream.cpp in Sources */,
 				F76C85DD1EC4E88300FA49E2 /* Json.cpp in Sources */,
 				F76C85E11EC4E88300FA49E2 /* MemoryStream.cpp in Sources */,
