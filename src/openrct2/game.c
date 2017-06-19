@@ -65,6 +65,7 @@ uint8 gGamePaused = 0;
 sint32 gGameSpeed = 1;
 float gDayNightCycle = 0;
 bool gInUpdateCode = false;
+bool gInMapInitCode = false;
 sint32 gGameCommandNestLevel;
 bool gGameCommandIsNetworked;
 
@@ -279,6 +280,8 @@ void update_palette_effects()
 
 void game_update()
 {
+    gInUpdateCode = true;
+
     sint32 i, numUpdates;
 
     // 0x006E3AEC // screen_game_process_mouse_input();
@@ -307,8 +310,37 @@ void game_update()
         map_animation_invalidate_all();
 
         // Special case because we set numUpdates to 0, otherwise in game_logic_update.
-        game_handle_input();
         network_update();
+    }
+
+    if (!gOpenRCT2Headless)
+    {
+        input_set_flag(INPUT_FLAG_VIEWPORT_SCROLLING, false);
+
+        // the flickering frequency is reduced by 4, compared to the original
+        // it was done due to inability to reproduce original frequency
+        // and decision that the original one looks too fast
+        if (gCurrentTicks % 4 == 0)
+            gWindowMapFlashingFlags ^= (1 << 15);
+
+        // Handle guest map flashing
+        gWindowMapFlashingFlags &= ~(1 << 1);
+        if (gWindowMapFlashingFlags & (1 << 0))
+            gWindowMapFlashingFlags |= (1 << 1);
+        gWindowMapFlashingFlags &= ~(1 << 0);
+
+        // Handle staff map flashing
+        gWindowMapFlashingFlags &= ~(1 << 3);
+        if (gWindowMapFlashingFlags & (1 << 2))
+            gWindowMapFlashingFlags |= (1 << 3);
+        gWindowMapFlashingFlags &= ~(1 << 2);
+
+        window_map_tooltip_update_visibility();
+
+        // Input
+        gUnk141F568 = gUnk13CA740;
+
+        game_handle_input();
     }
 
     // Update the game one or more times
@@ -341,6 +373,7 @@ void game_update()
     window_dispatch_update_all();
 
     gGameCommandNestLevel = 0;
+    gInUpdateCode = false;
 }
 
 void game_logic_update()
@@ -355,48 +388,9 @@ void game_logic_update()
         }
     }
 
-    ///////////////////////////
-    // network_update() when downloaded a map will call game_init_all(), which
-    // leaves gInUpdateCode false. Don't call network_update() when in update code.
-    gInUpdateCode = true;
-    ///////////////////////////
-
-    // Separated out processing commands in network_update which could call scenario_rand where gInUpdateCode is false.
-    // All commands that are received are first queued and then executed where gInUpdateCode is set to true.
-    network_process_game_commands();
-
     gScreenAge++;
     if (gScreenAge == 0)
         gScreenAge--;
-
-    if (!gOpenRCT2Headless)
-    {
-        input_set_flag(INPUT_FLAG_VIEWPORT_SCROLLING, false);
-
-        // the flickering frequency is reduced by 4, compared to the original
-        // it was done due to inability to reproduce original frequency
-        // and decision that the original one looks too fast
-        if (gCurrentTicks % 4 == 0)
-            gWindowMapFlashingFlags ^= (1 << 15);
-
-        // Handle guest map flashing
-        gWindowMapFlashingFlags &= ~(1 << 1);
-        if (gWindowMapFlashingFlags & (1 << 0))
-            gWindowMapFlashingFlags |= (1 << 1);
-        gWindowMapFlashingFlags &= ~(1 << 0);
-
-        // Handle staff map flashing
-        gWindowMapFlashingFlags &= ~(1 << 3);
-        if (gWindowMapFlashingFlags & (1 << 2))
-            gWindowMapFlashingFlags |= (1 << 3);
-        gWindowMapFlashingFlags &= ~(1 << 2);
-
-        window_map_tooltip_update_visibility();
-
-        // Input
-        gUnk141F568 = gUnk13CA740;
-        game_handle_input();
-    }
 
     sub_68B089();
     scenario_update();
@@ -415,10 +409,6 @@ void game_logic_update()
     ride_ratings_update_all();
     ride_measurements_update();
     news_item_update_current();
-
-    ///////////////////////////
-    gInUpdateCode = false;
-    ///////////////////////////
 
     map_animation_invalidate_all();
     vehicle_sounds_update();
@@ -1420,7 +1410,7 @@ void game_load_or_quit_no_save_prompt()
  */
 void game_init_all(sint32 mapSize)
 {
-    gInUpdateCode = true;
+    gInMapInitCode = true;
 
     map_init(mapSize);
     park_init();
@@ -1435,7 +1425,7 @@ void game_init_all(sint32 mapSize)
     news_item_init_queue();
     user_string_clear_all();
 
-    gInUpdateCode = false;
+    gInMapInitCode = false;
 
     window_new_ride_init_vars();
     window_guest_list_init_vars_a();

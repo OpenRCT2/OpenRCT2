@@ -604,7 +604,7 @@ uint32 dbg_scenario_rand(const char *file, const char *function, const uint32 li
     {
         fprintf(fp, "Tick: %d, Rand: %08X - REF: %s:%u %s (%p)\n", gCurrentTicks, gScenarioSrand1, file, line, function, data);
     }
-    if (!gInUpdateCode) {
+    if (!gInUpdateCode && !gInMapInitCode) {
         log_warning("scenario_rand called from outside game update");
         assert(false);
     }
