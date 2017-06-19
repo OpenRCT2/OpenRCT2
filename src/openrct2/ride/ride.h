@@ -19,6 +19,7 @@
 
 #include "../common.h"
 #include "../peep/peep.h"
+#include "../rct12.h"
 #include "../world/map.h"
 #include "vehicle.h"
 
@@ -167,16 +168,16 @@ typedef struct rct_ride {
         };
     };
     uint16 overall_view;            // 0x050 00XX = X, XX00 = Y (* 32 + 16)
-    uint16 station_starts[4];       // 0x052
-    uint8 station_heights[4];       // 0x05A
-    uint8 station_length[4];        // 0x05E
-    uint8 station_depart[4];        // 0x062
+    uint16 station_starts[RCT12_MAX_STATIONS_PER_RIDE];       // 0x052
+    uint8 station_heights[RCT12_MAX_STATIONS_PER_RIDE];       // 0x05A
+    uint8 station_length[RCT12_MAX_STATIONS_PER_RIDE];        // 0x05E
+    uint8 station_depart[RCT12_MAX_STATIONS_PER_RIDE];        // 0x062
     // ride->vehicle index for current train waiting for passengers
     // at station
-    uint8 train_at_station[4];      // 0x066
-    uint16 entrances[4];            // 0x06A
-    uint16 exits[4];                // 0x072
-    uint16 last_peep_in_queue[4];   // 0x07A
+    uint8 train_at_station[RCT12_MAX_STATIONS_PER_RIDE];      // 0x066
+    uint16 entrances[RCT12_MAX_STATIONS_PER_RIDE];            // 0x06A
+    uint16 exits[RCT12_MAX_STATIONS_PER_RIDE];                // 0x072
+    uint16 last_peep_in_queue[RCT12_MAX_STATIONS_PER_RIDE];   // 0x07A
     uint8 pad_082[4];               // Used to be number of peeps in queue in RCT1, but this has moved.
     uint16 vehicles[32];            // 0x086 Points to the first car in the train
     uint8 depart_flags;             // 0x0C6
@@ -216,8 +217,8 @@ typedef struct rct_ride {
     uint8 current_test_segment;     // 0x0E0
     uint8 average_speed_test_timeout;   // 0x0E1
     uint8 pad_0E2[0x2];
-    sint32 length[4];               // 0x0E4
-    uint16 time[4];                 // 0x0F4
+    sint32 length[RCT12_MAX_STATIONS_PER_RIDE];               // 0x0E4
+    uint16 time[RCT12_MAX_STATIONS_PER_RIDE];                 // 0x0F4
     fixed16_2dp max_positive_vertical_g;    // 0x0FC
     fixed16_2dp max_negative_vertical_g;    // 0x0FE
     fixed16_2dp max_lateral_g;      // 0x100
@@ -325,10 +326,10 @@ typedef struct rct_ride {
     uint8 connected_message_throttle;   // 0x1AF
     money32 income_per_hour;        // 0x1B0
     money32 profit;                 // 0x1B4
-    uint8 queue_time[4];            // 0x1B8
-    uint8 track_colour_main[4];     // 0x1BC
-    uint8 track_colour_additional[4];   // 0x1C0
-    uint8 track_colour_supports[4]; // 0x1C4
+    uint8 queue_time[RCT12_MAX_STATIONS_PER_RIDE];            // 0x1B8
+    uint8 track_colour_main[RCT12_NUM_COLOUR_SCHEMES];     // 0x1BC
+    uint8 track_colour_additional[RCT12_NUM_COLOUR_SCHEMES];   // 0x1C0
+    uint8 track_colour_supports[RCT12_NUM_COLOUR_SCHEMES]; // 0x1C4
     uint8 music;                    // 0x1C8
     uint8 entrance_style;           // 0x1C9
     uint16 vehicle_change_timeout;  // 0x1CA
@@ -345,7 +346,7 @@ typedef struct rct_ride {
     uint8 cable_lift_z;             // 0x1FC
     uint8 pad_1FD;
     uint16 cable_lift;              // 0x1FE
-    uint16 queue_length[4];         // 0x200
+    uint16 queue_length[RCT12_MAX_STATIONS_PER_RIDE];         // 0x200
     uint8 pad_208[0x58];
 } rct_ride;
 assert_struct_size(rct_ride, 0x260);
