@@ -212,7 +212,7 @@ static void window_land_mousedown(rct_widgetindex widgetIndex, rct_window*w, rct
     sint32 defaultIndex = -1;
     switch (widgetIndex) {
     case WIDX_FLOOR:
-        for (i = 0; i < 14; i++) {
+        for (i = 0; i < TERRAIN_COUNT_REGULAR; i++) {
             gDropdownItemsFormat[i] = -1;
             gDropdownItemsArgs[i] = SPR_FLOOR_TEXTURE_GRASS + FloorTextureOrder[i];
             if (FloorTextureOrder[i] == _selectedFloorTexture)
@@ -223,14 +223,14 @@ static void window_land_mousedown(rct_widgetindex widgetIndex, rct_window*w, rct
             widget->bottom - widget->top,
             w->colours[2],
             0,
-            14,
+            TERRAIN_COUNT_REGULAR,
             47, 36,
-            gAppropriateImageDropdownItemsPerRow[14]
+            gAppropriateImageDropdownItemsPerRow[TERRAIN_COUNT_REGULAR]
         );
         gDropdownDefaultIndex = defaultIndex;
         break;
     case WIDX_WALL:
-        for (i = 0; i < 4; i++) {
+        for (i = 0; i < TERRAIN_EDGE_COUNT; i++) {
             gDropdownItemsFormat[i] = -1;
             gDropdownItemsArgs[i] = SPR_WALL_TEXTURE_ROCK + WallTextureOrder[i];
             if (WallTextureOrder[i] == _selectedWallTexture)
@@ -241,9 +241,9 @@ static void window_land_mousedown(rct_widgetindex widgetIndex, rct_window*w, rct
             widget->bottom - widget->top,
             w->colours[2],
             0,
-            4,
+            TERRAIN_EDGE_COUNT,
             47, 36,
-            gAppropriateImageDropdownItemsPerRow[4]
+            gAppropriateImageDropdownItemsPerRow[TERRAIN_EDGE_COUNT]
         );
         gDropdownDefaultIndex = defaultIndex;
         break;
