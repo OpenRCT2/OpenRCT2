@@ -25,6 +25,7 @@
 #include "../management/news_item.h"
 #include "../OpenRCT2.h"
 #include "../platform/platform.h"
+#include "../rct12.h"
 #include "../rct2/hook.h"
 #include "../scenario/scenario.h"
 #include "../world/map_animation.h"
@@ -668,7 +669,7 @@ static void vehicle_invalidate(rct_vehicle *vehicle)
 static void vehicle_update_sound_params(rct_vehicle* vehicle)
 {
     if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && (!(gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) || gS6Info.editor_step == EDITOR_STEP_ROLLERCOASTER_DESIGNER)) {
-        if (vehicle->sound1_id != (uint8)-1 || vehicle->sound2_id != (uint8)-1) {
+        if (vehicle->sound1_id != RCT12_SOUND_ID_NULL || vehicle->sound2_id != RCT12_SOUND_ID_NULL) {
             if (vehicle->sprite_left != (sint16)(uint16)0x8000) {
                 sint16 x = g_music_tracking_viewport->view_x;
                 sint16 y = g_music_tracking_viewport->view_y;
@@ -818,19 +819,19 @@ void vehicle_sounds_update()
             }
             for(sint32 i = 0; i < countof(gVehicleSoundList); i++){
                 rct_vehicle_sound* vehicle_sound = &gVehicleSoundList[i];
-                if (vehicle_sound->id != (uint16)-1) {
+                if (vehicle_sound->id != SOUND_ID_NULL) {
                     for (rct_vehicle_sound_params* vehicle_sound_params = &gVehicleSoundParamsList[0]; vehicle_sound_params != gVehicleSoundParamsListEnd; vehicle_sound_params++) {
                         if (vehicle_sound->id == vehicle_sound_params->id) {
                             goto label26;
                         }
                     }
-                    if (vehicle_sound->sound1_id != (uint16)-1) {
+                    if (vehicle_sound->sound1_id != SOUND_ID_NULL) {
                         Mixer_Stop_Channel(vehicle_sound->sound1_channel);
                     }
-                    if (vehicle_sound->sound2_id != (uint16)-1) {
+                    if (vehicle_sound->sound2_id != SOUND_ID_NULL) {
                         Mixer_Stop_Channel(vehicle_sound->sound2_channel);
                     }
-                    vehicle_sound->id = (uint16)-1;
+                    vehicle_sound->id = SOUND_ID_NULL;
                 }
             label26:
                 ;
@@ -900,7 +901,7 @@ void vehicle_sounds_update()
                     if (vehicle_sound >= &gVehicleSoundList[countof(gVehicleSoundList)]) {
                         vehicle_sound = &gVehicleSoundList[0];
                         sint32 i = 0;
-                        while (vehicle_sound->id != (uint16)-1) {
+                        while (vehicle_sound->id != SOUND_ID_NULL) {
                             vehicle_sound++;
                             i++;
                             if (i >= countof(gVehicleSoundList)) {
@@ -909,8 +910,8 @@ void vehicle_sounds_update()
                             }
                         }
                         vehicle_sound->id = vehicle_sound_params->id;
-                        vehicle_sound->sound1_id = (uint16)-1;
-                        vehicle_sound->sound2_id = (uint16)-1;
+                        vehicle_sound->sound1_id = SOUND_ID_NULL;
+                        vehicle_sound->sound2_id = SOUND_ID_NULL;
                         vehicle_sound->volume = 0x30;
                         break;
                     }
@@ -940,13 +941,13 @@ void vehicle_sounds_update()
                 if (volume < -10000) {
                     volume = -10000;
                 }
-                if (sprite->vehicle.sound1_id == (uint8)-1) {
-                    if (vehicle_sound->sound1_id != (uint16)-1) {
-                        vehicle_sound->sound1_id = -1;
+                if (sprite->vehicle.sound1_id == RCT12_SOUND_ID_NULL) {
+                    if (vehicle_sound->sound1_id != SOUND_ID_NULL) {
+                        vehicle_sound->sound1_id = SOUND_ID_NULL;
                         Mixer_Stop_Channel(vehicle_sound->sound1_channel);
                     }
                 } else {
-                    if (vehicle_sound->sound1_id == (uint16)-1) {
+                    if (vehicle_sound->sound1_id == SOUND_ID_NULL) {
                         goto label69;
                     }
                     if (sprite->vehicle.sound1_id != vehicle_sound->sound1_id) {
@@ -992,12 +993,12 @@ void vehicle_sounds_update()
                     volume = -10000;
                 }
                 if (sprite->vehicle.sound2_id == (uint8)-1) {
-                    if (vehicle_sound->sound2_id != (uint16)-1) {
+                    if (vehicle_sound->sound2_id != SOUND_ID_NULL) {
                         vehicle_sound->sound2_id = -1;
                         Mixer_Stop_Channel(vehicle_sound->sound2_channel);
                     }
                 } else {
-                    if (vehicle_sound->sound2_id == (uint16)-1) {
+                    if (vehicle_sound->sound2_id == SOUND_ID_NULL) {
                         goto label93;
                     }
                     if (sprite->vehicle.sound2_id != vehicle_sound->sound2_id) {
@@ -7519,7 +7520,7 @@ loc_6DAEB9:
     }
     else if (track_element_is_booster(ride->type, trackType)) {
         regs.eax = get_booster_speed(ride->type, (vehicle->brake_speed << 16));
-      
+
         if (regs.eax > _vehicleVelocityF64E08) {
             vehicle->acceleration = RideProperties[ride->type].booster_acceleration << 16; //_vehicleVelocityF64E08 * 1.2;
         }

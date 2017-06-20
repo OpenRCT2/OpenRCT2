@@ -4502,8 +4502,8 @@ static rct_vehicle *vehicle_create_car(
     vehicle->var_BA = 0;
     vehicle->var_B6 = 0;
     vehicle->var_B8 = 0;
-    vehicle->sound1_id = 0xFF;
-    vehicle->sound2_id = 0xFF;
+    vehicle->sound1_id = RCT12_SOUND_ID_NULL;
+    vehicle->sound2_id = RCT12_SOUND_ID_NULL;
     vehicle->next_vehicle_on_train = SPRITE_INDEX_NULL;
     vehicle->var_C4 = 0;
     vehicle->var_C5 = 0;

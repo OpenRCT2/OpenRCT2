@@ -29,6 +29,7 @@ extern "C"
 #define NUM_DEFAULT_MUSIC_TRACKS    46
 #define AUDIO_PLAY_AT_CENTRE        0x8000
 #define AUDIO_PLAY_AT_LOCATION      0x8001
+#define SOUND_ID_NULL               0xFFFF
 
 typedef struct audio_device
 {
