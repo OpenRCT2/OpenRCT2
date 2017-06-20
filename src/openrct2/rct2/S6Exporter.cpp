@@ -52,6 +52,7 @@ extern "C"
     #include "../world/Climate.h"
     #include "../world/map_animation.h"
     #include "../world/park.h"
+    #include "../world/sprite.h"
 }
 
 S6Exporter::S6Exporter()
@@ -178,6 +179,13 @@ void S6Exporter::Export()
     memcpy(_s6.map_elements, gMapElements, sizeof(_s6.map_elements));
 
     _s6.next_free_map_element_pointer_index = gNextFreeMapElementPointerIndex;
+    // Sprites needs to be reset before they get used.
+    // Might as well reset them in here to zero out the space and improve
+    // compression ratios. Especially useful for multiplayer servers that
+    // use zlib on the sent stream.
+    {
+        reset_empty_sprites();
+    }
     for (sint32 i = 0; i < MAX_SPRITES; i++)
     {
         memcpy(&_s6.sprites[i], get_sprite(i), sizeof(rct_sprite));

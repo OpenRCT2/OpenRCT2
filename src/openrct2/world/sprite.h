@@ -419,6 +419,7 @@ extern uint16 *gSpriteListCount;
 extern uint16 gSpriteSpatialIndex[0x10001];
 
 rct_sprite *create_sprite(uint8 bl);
+void reset_empty_sprites();
 void reset_sprite_list();
 void reset_sprite_spatial_index();
 void sprite_clear_all_unused();
