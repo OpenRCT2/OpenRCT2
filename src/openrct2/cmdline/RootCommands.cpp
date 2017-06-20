@@ -138,6 +138,7 @@ const CommandLineCommand CommandLine::RootCommands[]
     // Sub-commands
     DefineSubCommand("screenshot", CommandLine::ScreenshotCommands),
     DefineSubCommand("sprite",     CommandLine::SpriteCommands    ),
+    DefineSubCommand("benchgfx",   CommandLine::BenchGfxCommands  ),
 
     CommandTableEnd
 };

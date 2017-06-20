@@ -14,9 +14,11 @@
  *****************************************************************************/
 #pragma endregion
 
+#include <chrono>
 #include "../audio/audio.h"
 #include "../config/Config.h"
 #include "../Context.h"
+#include "../core/Console.hpp"
 #include "../Imaging.h"
 #include "../OpenRCT2.h"
 #include "Screenshot.h"
@@ -243,6 +245,97 @@ void screenshot_giant()
     set_format_arg(0, rct_string_id, STR_STRING);
     set_format_arg(2, char *, path_get_filename(path));
     window_error_open(STR_SCREENSHOT_SAVED_AS, STR_NONE);
+}
+
+sint32 cmdline_for_gfxbench(const char **argv, sint32 argc)
+{
+    if (argc != 1 && argc != 2) {
+        printf("Usage: openrct2 benchgfx <file> [<iteration_count>]\n");
+        return -1;
+    }
+
+    sint32 iteration_count = 40;
+    if (argc == 2)
+    {
+        iteration_count = atoi(argv[1]);
+    }
+
+    sint32 resolutionWidth, resolutionHeight, customX = 0, customY = 0;
+
+    const char *inputPath = argv[0];
+
+    gOpenRCT2Headless = true;
+    auto context = CreateContext();
+    if (context->Initialise())
+    {
+        drawing_engine_init();
+        rct2_open_file(inputPath);
+
+        gIntroState = INTRO_STATE_NONE;
+        gScreenFlags = SCREEN_FLAGS_PLAYING;
+
+        sint32 mapSize = gMapSize;
+        resolutionWidth = (mapSize * 32 * 2);
+        resolutionHeight = (mapSize * 32 * 1);
+
+        resolutionWidth += 8;
+        resolutionHeight += 128;
+
+        rct_viewport viewport;
+        viewport.x = 0;
+        viewport.y = 0;
+        viewport.width = resolutionWidth;
+        viewport.height = resolutionHeight;
+        viewport.view_width = viewport.width;
+        viewport.view_height = viewport.height;
+        viewport.var_11 = 0;
+        viewport.flags = 0;
+
+        customX = (mapSize / 2) * 32 + 16;
+        customY = (mapSize / 2) * 32 + 16;
+
+        sint32 x = 0, y = 0;
+        sint32 z = map_element_height(customX, customY) & 0xFFFF;
+        x = customY - customX;
+        y = ((customX + customY) / 2) - z;
+
+        viewport.view_x = x - ((viewport.view_width) / 2);
+        viewport.view_y = y - ((viewport.view_height) / 2);
+        viewport.zoom = 0;
+        gCurrentRotation = 0;
+
+        // Ensure sprites appear regardless of rotation
+        reset_all_sprite_quadrant_placements();
+
+        rct_drawpixelinfo dpi;
+        dpi.x = 0;
+        dpi.y = 0;
+        dpi.width = resolutionWidth;
+        dpi.height = resolutionHeight;
+        dpi.pitch = 0;
+        dpi.bits = (uint8 *)malloc(dpi.width * dpi.height);
+
+        auto startTime = std::chrono::high_resolution_clock::now();
+        for (sint32 i = 0; i < iteration_count; i++)
+        {
+            // Render at various zoom levels
+            dpi.zoom_level = i & 3;
+            viewport_render(&dpi, &viewport, 0, 0, viewport.width, viewport.height);
+        }
+        auto endTime = std::chrono::high_resolution_clock::now();
+        std::chrono::duration<float> duration = endTime - startTime;
+        char engine_name[128];
+        rct_string_id engine_id = DrawingEngineStringIds[drawing_engine_get_type()];
+        format_string(engine_name, sizeof(engine_name), engine_id, nullptr);
+        Console::WriteLine("Rendering %d times with drawing engine %s took %.2f seconds.",
+                           iteration_count, engine_name,
+                           duration.count());
+
+        free(dpi.bits);
+        drawing_engine_dispose();
+    }
+    delete context;
+    return 1;
 }
 
 sint32 cmdline_for_screenshot(const char **argv, sint32 argc)
