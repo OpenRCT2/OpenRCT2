@@ -272,7 +272,7 @@ void sprite_clear_all_unused()
     }
 }
 
-static void sprite_reset(rct_unk_sprite *sprite)
+void sprite_reset(rct_unk_sprite *sprite)
 {
     // Need to retain how the sprite is linked in lists
     uint8 llto = sprite->linked_list_type_offset;
