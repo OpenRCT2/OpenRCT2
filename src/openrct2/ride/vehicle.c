@@ -7516,14 +7516,8 @@ loc_6DAEB9:
         }
     }
     else if (track_element_is_booster(ride->type, trackType)) {
-        if (ride->type == RIDE_TYPE_GIGA_COASTER) {
-            regs.eax = (vehicle->brake_speed << 17);
-        } else if (ride-> type == RIDE_TYPE_JUNIOR_ROLLER_COASTER) {
-            regs.eax = (vehicle->brake_speed << 15);
-        } else {
-            regs.eax = (vehicle->brake_speed << 16);
-        }
-
+        regs.eax = get_booster_speed(ride->type, (vehicle->brake_speed << 16));
+      
         if (regs.eax > _vehicleVelocityF64E08) {
             vehicle->acceleration = RideProperties[ride->type].booster_acceleration << 16; //_vehicleVelocityF64E08 * 1.2;
         }
@@ -7874,13 +7868,7 @@ loc_6DBA33:;
     }
 
     if (track_element_is_booster(ride->type, trackType)) {
-        if (ride->type == RIDE_TYPE_GIGA_COASTER) {
-            regs.eax = (vehicle->brake_speed << 17);
-        } else if (ride-> type == RIDE_TYPE_JUNIOR_ROLLER_COASTER) {
-            regs.eax = (vehicle->brake_speed << 15);
-        } else {
-            regs.eax = (vehicle->brake_speed << 16);
-        }
+        regs.eax = get_booster_speed(ride->type, (vehicle->brake_speed << 16));
 
         if (regs.eax < _vehicleVelocityF64E08) {
             regs.eax = RideProperties[ride->type].booster_acceleration << 16;

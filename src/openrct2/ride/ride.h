@@ -919,6 +919,7 @@ typedef struct rct_ride_properties {
     uint8 max_brakes_speed;
     uint8 powered_lift_acceleration;
     uint8 booster_acceleration;
+    sint8 booster_speed_factor; // The factor to shift the raw booster speed with
 } rct_ride_properties;
 
 extern const rct_ride_properties RideProperties[RIDE_TYPE_COUNT];
@@ -1193,5 +1194,6 @@ const char * ride_type_get_enum_name(sint32 rideType);
 
 uint8 ride_entry_get_first_non_null_ride_type(rct_ride_entry * rideEntry);
 bool ride_type_supports_boosters(uint8 rideType);
+uint16 get_booster_speed(uint8 rideType, uint16 rawSpeed);
 
 #endif
