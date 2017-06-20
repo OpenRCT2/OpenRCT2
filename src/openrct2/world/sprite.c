@@ -272,7 +272,7 @@ void sprite_clear_all_unused()
     }
 }
 
-void sprite_reset(rct_unk_sprite *sprite)
+static void sprite_reset(rct_unk_sprite *sprite)
 {
     // Need to retain how the sprite is linked in lists
     uint8 llto = sprite->linked_list_type_offset;
@@ -287,6 +287,22 @@ void sprite_reset(rct_unk_sprite *sprite)
     sprite->next = next;
     sprite->previous = prev;
     sprite->sprite_index = sprite_index;
+}
+
+// Resets all sprites in SPRITE_LIST_NULL list
+void reset_empty_sprites()
+{
+    uint16 spriteIndex;
+    spriteIndex = gSpriteListHead[SPRITE_LIST_NULL];
+    while (spriteIndex != SPRITE_INDEX_NULL)
+    {
+        rct_unk_sprite *sprite = &(get_sprite(spriteIndex))->unknown;
+        spriteIndex = sprite->next;
+        if (sprite->sprite_identifier == SPRITE_IDENTIFIER_NULL)
+        {
+            sprite_reset(sprite);
+        }
+    }
 }
 
 /*

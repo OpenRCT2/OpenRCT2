@@ -184,14 +184,7 @@ void S6Exporter::Export()
     // compression ratios. Especially useful for multiplayer servers that
     // use zlib on the sent stream.
     {
-        uint16 spriteIndex;
-        spriteIndex = gSpriteListHead[SPRITE_LIST_NULL];
-        while (spriteIndex != SPRITE_INDEX_NULL)
-        {
-            rct_unk_sprite *sprite = &(get_sprite(spriteIndex))->unknown;
-            spriteIndex = sprite->next;
-            sprite_reset(sprite);
-        }
+        reset_empty_sprites();
     }
     for (sint32 i = 0; i < MAX_SPRITES; i++)
     {
