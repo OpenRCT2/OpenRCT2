@@ -286,6 +286,12 @@ void console_input(CONSOLE_INPUT input)
             console_clear_input();
         }
         break;
+    case CONSOLE_INPUT_SCROLL_PREVIOUS:
+        console_scroll(1);
+        break;
+    case CONSOLE_INPUT_SCROLL_NEXT:
+        console_scroll(-1);
+        break;
     default:
         break;
     }

@@ -43,6 +43,12 @@ static void input_handle_console(sint32 key)
     case SDL_SCANCODE_DOWN:
         input = CONSOLE_INPUT_HISTORY_NEXT;
         break;
+    case SDL_SCANCODE_PAGEUP:
+        input = CONSOLE_INPUT_SCROLL_PREVIOUS;
+        break;
+    case SDL_SCANCODE_PAGEDOWN:
+        input = CONSOLE_INPUT_SCROLL_NEXT;
+        break;
     }
     if (input != CONSOLE_INPUT_NONE) {
         console_input(input);
