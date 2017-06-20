@@ -20,7 +20,9 @@
 #include "../common.h"
 #include "../interface/window.h"
 
-#define DROPDOWN_SEPARATOR 0
+#define DROPDOWN_SEPARATOR            0
+#define DROPDOWN_FORMAT_COLOUR_PICKER 0xFFFE
+#define DROPDOWN_FORMAT_LAND_PICKER   0xFFFF
 
 enum
 {

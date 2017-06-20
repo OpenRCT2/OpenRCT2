@@ -323,10 +323,10 @@ static void window_dropdown_paint(rct_window *w, rct_drawpixelinfo *dpi)
             }
 
             item = gDropdownItemsFormat[i];
-            if (item == (uint16)-1 || item == (uint16)-2) {
+            if (item == DROPDOWN_FORMAT_LAND_PICKER || item == DROPDOWN_FORMAT_COLOUR_PICKER) {
                 // Image item
                 image = (uint32)gDropdownItemsArgs[i];
-                if (item == (uint16)-2 && highlightedIndex == i)
+                if (item == DROPDOWN_FORMAT_COLOUR_PICKER && highlightedIndex == i)
                     image++;
 
                 gfx_draw_sprite(
@@ -391,41 +391,20 @@ sint32 dropdown_index_from_point(sint32 x, sint32 y, rct_window *w)
     return dropdown_index;
 }
 
+/**
+ *  rct2: 0x006ED43D
+ */
 void window_dropdown_show_colour(rct_window *w, rct_widget *widget, uint8 dropdownColour, uint8 selectedColour)
 {
-    window_dropdown_show_colour_available(w, widget, dropdownColour, selectedColour, 0xFFFFFFFF);
-}
-
-/**
- *
- *  rct2: 0x006ED43D
- * al: dropdown colour
- * ah: selected colour
- * esi: window
- * edi: widget
- * ebp: unknown
- */
-void window_dropdown_show_colour_available(rct_window *w, rct_widget *widget, uint8 dropdownColour, uint8 selectedColour,
-    uint32 availableColours)
-{
-    sint32 i, numItems;
-
-    // Count number of available colours
-    numItems = 0;
-    for (i = 0; i < 32; i++)
-        if (availableColours & (1 << i))
-            numItems++;
-
     sint32 defaultIndex = -1;
     // Set items
-    for (i = 0; i < 32; i++) {
-        if (availableColours & (1 << i)) {
-            if (selectedColour == i)
-                defaultIndex = i;
+    for (uint64 i = 0; i < COLOUR_COUNT; i++)
+    {
+        if (selectedColour == i)
+            defaultIndex = i;
 
-            gDropdownItemsFormat[i] = 0xFFFE;
-            gDropdownItemsArgs[i] = ((uint64)i << 32) | (0x20000000 | (i << 19) | SPR_PALETTE_BTN);
-        }
+        gDropdownItemsFormat[i] = DROPDOWN_FORMAT_COLOUR_PICKER;
+        gDropdownItemsArgs[i] = (i << 32) | (0x20000000 | (i << 19) | SPR_PALETTE_BTN);
     }
 
     // Show dropdown
@@ -435,10 +414,10 @@ void window_dropdown_show_colour_available(rct_window *w, rct_widget *widget, ui
         widget->bottom - widget->top + 1,
         dropdownColour,
         DROPDOWN_FLAG_STAY_OPEN,
-        numItems,
+        COLOUR_COUNT,
         12,
         12,
-        gAppropriateImageDropdownItemsPerRow[numItems]
+        gAppropriateImageDropdownItemsPerRow[COLOUR_COUNT]
     );
 
     gDropdownIsColour = true;
