@@ -385,7 +385,7 @@ bool NetworkKey::Sign(const uint8 * md, const size_t len, char ** signature, siz
 
     uint8 * sig;
     /* Allocate memory for the signature based on size in slen */
-    if ((sig = (unsigned char*)OPENSSL_malloc((sint32)(sizeof(unsigned char) * (*out_size)))) == NULL)
+    if ((sig = (unsigned char*)malloc((sint32)(sizeof(unsigned char) * (*out_size)))) == NULL)
     {
         log_error("Failed to crypto-allocate space for signature");
         EVP_MD_CTX_destroy(mdctx);
@@ -395,12 +395,12 @@ bool NetworkKey::Sign(const uint8 * md, const size_t len, char ** signature, siz
     if (1 != EVP_DigestSignFinal(mdctx, sig, out_size)) {
         log_error("Failed to finalise signature");
         EVP_MD_CTX_destroy(mdctx);
-        OPENSSL_free(sig);
+        free(sig);
         return false;
     }
     *signature = new char[*out_size];
     memcpy(*signature, sig, *out_size);
-    OPENSSL_free(sig);
+    free(sig);
     EVP_MD_CTX_destroy(mdctx);
 
     return true;
