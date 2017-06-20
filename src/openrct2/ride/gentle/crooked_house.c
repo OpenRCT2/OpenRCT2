@@ -51,7 +51,7 @@ static void paint_crooked_house_structure(uint8 direction, uint8 x_offset, uint8
     rct_ride_entry *ride_type = get_ride_entry(ride->subtype);
 
     if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK) {
-        if (ride->vehicles[0] != (uint16)-1) {
+        if (ride->vehicles[0] != SPRITE_INDEX_NULL) {
             rct_sprite *sprite = get_sprite(ride->vehicles[0]);
             gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_SPRITE;
             g_currently_drawn_item = sprite;

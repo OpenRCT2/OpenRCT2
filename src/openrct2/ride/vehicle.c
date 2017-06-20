@@ -761,7 +761,7 @@ sint32 sub_6BC2F3(rct_vehicle* vehicle)
     rct_vehicle* vehicle_temp = vehicle;
     do {
         result += vehicle_temp->friction;
-    } while (vehicle_temp->next_vehicle_on_train != (uint16)-1 && (vehicle_temp = GET_VEHICLE(vehicle_temp->next_vehicle_on_train)) != NULL);
+    } while (vehicle_temp->next_vehicle_on_train != SPRITE_INDEX_NULL && (vehicle_temp = GET_VEHICLE(vehicle_temp->next_vehicle_on_train)) != NULL);
     sint32 v4 = vehicle->velocity;
     if (v4 < 0) {
         v4 = -v4;

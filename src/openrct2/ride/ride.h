@@ -23,6 +23,9 @@
 #include "vehicle.h"
 
 #define MAX_RIDE_TYPES_PER_RIDE_ENTRY   3
+// The max number of different types of vehicle.
+// Examples of vehicles here are the locomotive, tender and carriage of the Miniature Railway.
+#define MAX_VEHICLES_PER_RIDE_ENTRY     4
 #define RIDE_ENTRY_INDEX_NULL           255
 typedef fixed16_2dp ride_rating;
 
@@ -118,7 +121,7 @@ typedef struct rct_ride_entry {
     uint8 rear_vehicle;                                 // 0x017
     uint8 third_vehicle;                                // 0x018
     uint8 pad_019;                                      // 0x019
-    rct_ride_entry_vehicle vehicles[4];                 // 0x01A
+    rct_ride_entry_vehicle vehicles[MAX_VEHICLES_PER_RIDE_ENTRY];                 // 0x01A
     vehicle_colour_preset_list *vehicle_preset_list;    // 0x1AE
     sint8 excitement_multipler;                         // 0x1B2
     sint8 intensity_multipler;                          // 0x1B3
