@@ -696,7 +696,7 @@ static void window_mapgen_base_mousedown(rct_widgetindex widgetIndex, rct_window
         break;
     case WIDX_FLOOR_TEXTURE:
         for (i = 0; i < TERRAIN_COUNT_REGULAR; i++) {
-            gDropdownItemsFormat[i] = -1;
+            gDropdownItemsFormat[i] = DROPDOWN_FORMAT_LAND_PICKER;
             gDropdownItemsArgs[i] = SPR_FLOOR_TEXTURE_GRASS + FloorTextureOrder[i];
             if (FloorTextureOrder[i] == _floorTexture)
                 defaultIndex = i;
@@ -714,7 +714,7 @@ static void window_mapgen_base_mousedown(rct_widgetindex widgetIndex, rct_window
         break;
     case WIDX_WALL_TEXTURE:
         for (i = 0; i < TERRAIN_EDGE_COUNT; i++) {
-            gDropdownItemsFormat[i] = -1;
+            gDropdownItemsFormat[i] = DROPDOWN_FORMAT_LAND_PICKER;
             gDropdownItemsArgs[i] = SPR_WALL_TEXTURE_ROCK + WallTextureOrder[i];
             if (WallTextureOrder[i] == _wallTexture)
                 defaultIndex = i;
@@ -1015,7 +1015,7 @@ static void window_mapgen_simplex_mousedown(rct_widgetindex widgetIndex, rct_win
         break;
     case WIDX_SIMPLEX_FLOOR_TEXTURE:
         for (i = 0; i < TERRAIN_COUNT_REGULAR; i++) {
-            gDropdownItemsFormat[i] = -1;
+            gDropdownItemsFormat[i] = DROPDOWN_FORMAT_LAND_PICKER;
             gDropdownItemsArgs[i] = SPR_FLOOR_TEXTURE_GRASS + FloorTextureOrder[i];
             if (FloorTextureOrder[i] == _floorTexture)
                 defaultIndex = i;
@@ -1033,7 +1033,7 @@ static void window_mapgen_simplex_mousedown(rct_widgetindex widgetIndex, rct_win
         break;
     case WIDX_SIMPLEX_WALL_TEXTURE:
         for (i = 0; i < TERRAIN_EDGE_COUNT; i++) {
-            gDropdownItemsFormat[i] = -1;
+            gDropdownItemsFormat[i] = DROPDOWN_FORMAT_LAND_PICKER;
             gDropdownItemsArgs[i] = SPR_WALL_TEXTURE_ROCK + WallTextureOrder[i];
             if (WallTextureOrder[i] == _wallTexture)
                 defaultIndex = i;

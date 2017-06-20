@@ -1211,7 +1211,7 @@ void input_state_widget_pressed(sint32 x, sint32 y, sint32 state, rct_widgetinde
                         goto dropdown_cleanup;
                     }
 
-                    if (gDropdownItemsFormat[dropdown_index] == 0) {
+                    if (gDropdownItemsFormat[dropdown_index] == DROPDOWN_SEPARATOR) {
                         goto dropdown_cleanup;
                     }
                 }
@@ -1346,7 +1346,7 @@ void input_state_widget_pressed(sint32 x, sint32 y, sint32 state, rct_widgetinde
             return;
         }
 
-        if (gDropdownItemsFormat[dropdown_index] == 0) {
+        if (gDropdownItemsFormat[dropdown_index] == DROPDOWN_SEPARATOR) {
             return;
         }
 
