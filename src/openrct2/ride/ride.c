@@ -8611,3 +8611,16 @@ bool ride_type_supports_boosters(uint8 rideType)
     }
     return false;
 }
+
+uint16 get_booster_speed(uint8 rideType, uint16 rawSpeed)
+{
+    sint8 shiftFactor = RideProperties[rideType].booster_speed_factor;
+    if (shiftFactor > 0)
+    {
+        return (rawSpeed << shiftFactor);
+    }
+    else
+    {
+        return (rawSpeed >> abs(shiftFactor));
+    }
+}
