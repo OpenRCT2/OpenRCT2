@@ -1363,7 +1363,7 @@ static money32 track_place(sint32 rideIndex, sint32 type, sint32 originX, sint32
             map_animation_create(MAP_ANIMATION_TYPE_TRACK_SPINNINGTUNNEL, x, y, mapElement->base_height);
             break;
         }
-        if (type == TRACK_ELEM_BRAKES || type == TRACK_ELEM_BOOSTER) {
+        if (track_element_has_speed_setting(type)) {
             mapElement->properties.track.sequence = (properties_1 >> 1) << 4;
         }
         else {
@@ -2260,4 +2260,25 @@ bool track_element_is_covered(sint32 trackElementType)
     default:
         return false;
     }
+}
+
+bool track_element_is_booster(uint8 rideType, uint8 trackType)
+{
+    // Boosters share their ID with the Spinning Control track.
+    if (rideType != RIDE_TYPE_WILD_MOUSE && trackType == TRACK_ELEM_BOOSTER)
+    {
+        return true;
+    }
+    return false;
+}
+
+bool track_element_has_speed_setting(uint8 trackType)
+{
+    // This does not check if the element is really a Spinning Control track instead of a booster,
+    // but this does not cause problems.
+    if (trackType == TRACK_ELEM_BRAKES || trackType == TRACK_ELEM_BOOSTER)
+    {
+        return true;
+    }
+    return false;
 }

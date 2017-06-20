@@ -2489,7 +2489,7 @@ void window_ride_construction_update_active_elements()
         sint32 z = _currentTrackBeginZ;
         if (!sub_6C683D(&x, &y, &z, _currentTrackPieceDirection & 3, _currentTrackPieceType, 0, &mapElement, 0)) {
             _selectedTrackType = mapElement->properties.track.type;
-            if (mapElement->properties.track.type == TRACK_ELEM_BRAKES || mapElement->properties.track.type == TRACK_ELEM_BOOSTER)
+            if (track_element_has_speed_setting(mapElement->properties.track.type))
                 _currentBrakeSpeed2 = (mapElement->properties.track.sequence >> 4) << 1;
             _currentSeatRotationAngle = mapElement->properties.track.colour >> 4;
         }
@@ -2714,7 +2714,7 @@ bool sub_6CA2DF(sint32 *_trackType, sint32 *_trackDirection, sint32 *_rideIndex,
     }
 
 
-    if (trackType == TRACK_ELEM_BRAKES || trackType == TRACK_ELEM_BOOSTER) {
+    if (track_element_has_speed_setting(trackType)) {
         properties = _currentBrakeSpeed2;
     } else {
         properties = _currentSeatRotationAngle << 12;
@@ -3293,7 +3293,8 @@ static void window_ride_construction_update_widgets(rct_window *w)
     window_ride_construction_widgets[WIDX_O_TRACK].type = WWT_EMPTY;
 
     bool brakesSelected = _selectedTrackType == TRACK_ELEM_BRAKES || _currentTrackCurve == (0x100 | TRACK_ELEM_BRAKES);
-    _boosterTrackSelected = ride->type != RIDE_TYPE_WILD_MOUSE && (_selectedTrackType == TRACK_ELEM_BOOSTER || _currentTrackCurve == (0x100 | TRACK_ELEM_BOOSTER));
+    _boosterTrackSelected = track_element_is_booster(ride->type, _selectedTrackType) ||
+        (ride->type != RIDE_TYPE_WILD_MOUSE && _currentTrackCurve == (0x100 | TRACK_ELEM_BOOSTER));
 
     if (!brakesSelected && !_boosterTrackSelected) {
         if (is_track_enabled(TRACK_FLAT_ROLL_BANKING)) {

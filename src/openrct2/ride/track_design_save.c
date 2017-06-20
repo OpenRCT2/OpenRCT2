@@ -1004,7 +1004,7 @@ static bool track_design_save_to_td6_for_tracked_ride(uint8 rideIndex, rct_track
         }
 
         uint8 bh;
-        if (track->type == TRACK_ELEM_BRAKES || track->type == TRACK_ELEM_BOOSTER) {
+        if (track_element_has_speed_setting(track->type)) {
             bh = trackElement.element->properties.track.sequence >> 4;
         } else {
             bh = trackElement.element->properties.track.colour >> 4;

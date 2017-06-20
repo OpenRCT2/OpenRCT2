@@ -7515,7 +7515,7 @@ loc_6DAEB9:
             }
         }
     }
-    else if (trackType == TRACK_ELEM_BOOSTER && ride->type != RIDE_TYPE_WILD_MOUSE) {
+    else if (track_element_is_booster(ride->type, trackType)) {
         if (ride->type == RIDE_TYPE_GIGA_COASTER) {
             regs.eax = (vehicle->brake_speed << 17);
         } else if (ride-> type == RIDE_TYPE_JUNIOR_ROLLER_COASTER) {
@@ -7873,8 +7873,7 @@ loc_6DBA33:;
         }
     }
 
-    // Boosters share their ID with the Spinning Control track.
-    if (trackType == TRACK_ELEM_BOOSTER && ride->type != RIDE_TYPE_WILD_MOUSE) {
+    if (track_element_is_booster(ride->type, trackType)) {
         if (ride->type == RIDE_TYPE_GIGA_COASTER) {
             regs.eax = (vehicle->brake_speed << 17);
         } else if (ride-> type == RIDE_TYPE_JUNIOR_ROLLER_COASTER) {
