@@ -4419,7 +4419,7 @@ STR_6107    :Monster Trucks
 STR_6108    :Ocelová horská
 STR_6109    :Hyper-Twister
 STR_6110    :Dorostenecká horská dráha
-STR_6111    :Ocelová mini horská dráha
+STR_6111    :Klasická malá horská dráha
 STR_6112    :Malá ocelová horská dráha, na které vlak projíždí smyčky a vývrtky
 STR_6113    :Vysoká horská dráha s dlouhými pády, velkou rychlostí a pohodlnými vlaky, kde se jezdí s opěrkou v klíně
 STR_6114    :Návštěvníci jedou pomalu ve vozidlech po postavené dráze.
