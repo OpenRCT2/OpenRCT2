@@ -58,6 +58,7 @@
     <ClCompile Include="LanguagePackTest.cpp" />
     <ClCompile Include="IniReaderTest.cpp" />
     <ClCompile Include="IniWriterTest.cpp" />
+    <ClCompile Include="MultiLaunch.cpp" />
     <ClCompile Include="RideRatings.cpp" />
     <ClCompile Include="sawyercoding_test.cpp" />
     <ClCompile Include="$(GtestDir)\src\gtest-all.cc" />
