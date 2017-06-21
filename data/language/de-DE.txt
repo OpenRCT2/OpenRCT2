@@ -4355,6 +4355,14 @@ STR_6052    :Die Höhenkarte ist zu groß und wird zugeschnitten
 STR_6053    :Die Höhenkarte kann nicht normalisiert werden
 STR_6054    :Es werden nur Bitmaps mit einer Farbtiefe von 24-Bit unterstützt
 STR_6055    :Höhenkarte für OpenRCT2
+STR_6056    :{SMALLFONT}{BLACK}Ton ein-/ausschalten
+STR_6057    :{SMALLFONT}{BLACK}Zeigt für die Stummschaltung in der Symbolleiste eine gesonderte{NEWLINE}Schaltfläche an
+STR_6058    :Stummschaltung
+STR_6059    :{RIGHTGUILLEMET}
+STR_6060    :Besucherkäufe als Animation anzeigen
+STR_6061    :{SMALLFONT}{BLACK}Ein animierter Geldeffekt wird angezeigt, wenn Besucher Käufe tätigen
+STR_6062    :{OUTLINE}{GREEN}+ {CURRENCY2DP}
+STR_6063    :{OUTLINE}{RED}- {CURRENCY2DP}
 
 #############
 # Scenarios #
