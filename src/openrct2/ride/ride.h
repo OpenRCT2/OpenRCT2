@@ -1194,6 +1194,6 @@ const char * ride_type_get_enum_name(sint32 rideType);
 
 uint8 ride_entry_get_first_non_null_ride_type(rct_ride_entry * rideEntry);
 bool ride_type_supports_boosters(uint8 rideType);
-uint16 get_booster_speed(uint8 rideType, uint16 rawSpeed);
+sint32 get_booster_speed(uint8 rideType, sint32 rawSpeed);
 
 #endif
