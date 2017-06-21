@@ -530,8 +530,7 @@ static void dispose_server_entry_list()
         for (sint32 i = 0; i < _numServerEntries; i++) {
             dispose_server_entry(&_serverEntries[i]);
         }
-        free(_serverEntries);
-        _serverEntries = NULL;
+        SafeFree(_serverEntries);
     }
     _numServerEntries = 0;
 }

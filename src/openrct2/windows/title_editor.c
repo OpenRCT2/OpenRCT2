@@ -291,8 +291,7 @@ static void window_title_editor_close(rct_window *w)
     _isSequencePlaying = false;
     _sequenceName = NULL;
 
-    free(_renameSavePath);
-    _renameSavePath = NULL;
+    SafeFree(_renameSavePath);
 }
 
 static void window_title_editor_mouseup(rct_window *w, rct_widgetindex widgetIndex)

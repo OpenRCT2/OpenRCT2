@@ -2039,8 +2039,7 @@ static void window_options_text_input(rct_window *w, rct_widgetindex widgetIndex
         return;
 
     if (widgetIndex == WIDX_CHANNEL_BUTTON) {
-        if (gConfigTwitch.channel != NULL)
-            free(gConfigTwitch.channel);
+        free(gConfigTwitch.channel);
         gConfigTwitch.channel = _strdup(text);
         config_save_default();
     }

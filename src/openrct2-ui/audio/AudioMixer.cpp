@@ -58,8 +58,7 @@ namespace OpenRCT2 { namespace Audio
 
         void Free()
         {
-            Memory::Free(_data);
-            _data = nullptr;
+            SafeFree(_data);
             _capacity = 0;
         }
 

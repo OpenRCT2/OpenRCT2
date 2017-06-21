@@ -720,8 +720,7 @@ static void window_loadsave_invoke_callback(sint32 result, const utf8 * path)
 
 static void save_path(utf8 **config_str, const char *path)
 {
-    if (*config_str != NULL)
-        free(*config_str);
+    free(*config_str);
     *config_str = path_get_directory(path);
     config_save_default();
 }
