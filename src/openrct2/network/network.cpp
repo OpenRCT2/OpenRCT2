@@ -2696,6 +2696,11 @@ void game_command_kick_player(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *edx
 {
     uint8 playerid = (uint8)*eax;
     NetworkPlayer* player = gNetwork.GetPlayerByID(playerid);
+    if (player == nullptr) {
+        // Player might be already removed by the PLAYERLIST command, need to refactor non-game commands executing too early.
+        return;
+    }
+
     if (player && player->Flags & NETWORK_PLAYER_FLAG_ISSERVER) {
         gGameCommandErrorTitle = STR_CANT_KICK_THE_HOST;
         gGameCommandErrorText = STR_NONE;
