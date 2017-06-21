@@ -4434,7 +4434,8 @@ static void vehicle_update_crooked_house_operating(rct_vehicle* vehicle) {
     if (_vehicleBreakdown == 0)
         return;
 
-    if ((uint16)(vehicle->current_time + 1) >  RideCrookedHouseLength[vehicle->sub_state]) {
+    // Originally used an array of size 1 at 0x009A0AC4 and passed the sub state into it.
+    if ((uint16)(vehicle->current_time + 1) >  600) {
         vehicle->status = VEHICLE_STATUS_ARRIVING;
         vehicle_invalidate_window(vehicle);
         vehicle->sub_state = 0;
@@ -4453,17 +4454,17 @@ static void vehicle_update_top_spin_operating(rct_vehicle* vehicle) {
     if (_vehicleBreakdown == 0)
         return;
 
-    const top_spin_time_to_sprite_map * edi = TopSpinTimeToSpriteMaps[vehicle->sub_state];
-    uint8 al = edi[vehicle->current_time + 1].arm_rotation;
-    if (al != 0xFF) {
+    const top_spin_time_to_sprite_map * sprite_map = TopSpinTimeToSpriteMaps[vehicle->sub_state];
+    uint8 rotation = sprite_map[vehicle->current_time + 1].arm_rotation;
+    if (rotation != 0xFF) {
         vehicle->current_time = vehicle->current_time + 1;
-        if (al != vehicle->vehicle_sprite_type) {
-            vehicle->vehicle_sprite_type = al;
+        if (rotation != vehicle->vehicle_sprite_type) {
+            vehicle->vehicle_sprite_type = rotation;
             vehicle_invalidate(vehicle);
         }
-        al = edi[vehicle->current_time].bank_rotation;
-        if (al != vehicle->bank_rotation) {
-            vehicle->bank_rotation = al;
+        rotation = sprite_map[vehicle->current_time].bank_rotation;
+        if (rotation != vehicle->bank_rotation) {
+            vehicle->bank_rotation = rotation;
             vehicle_invalidate(vehicle);
         }
         return;
