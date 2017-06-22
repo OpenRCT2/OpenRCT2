@@ -16,6 +16,7 @@
 
 #include "../Context.h"
 #include "../input.h"
+#include "../interface/land_tool.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
 #include "../localisation/localisation.h"
@@ -23,9 +24,6 @@
 #include "../sprites.h"
 #include "../world/map.h"
 #include "../world/scenery.h"
-
-#define MINIMUM_TOOL_SIZE 1
-#define MAXIMUM_TOOL_SIZE 64
 
 enum WINDOW_CLEAR_SCENERY_WIDGET_IDX {
     WIDX_BACKGROUND,
@@ -112,6 +110,7 @@ void window_clear_scenery_open()
     window_init_scroll_widgets(window);
     window_push_others_below(window);
 
+    gLandToolSize = 2;
     gClearSceneryCost = MONEY32_UNDEFINED;
 
     gClearSmallScenery = true;
@@ -220,8 +219,7 @@ static void window_clear_scenery_invalidate(rct_window *w)
         (gClearFootpath     ? (1 << WIDX_FOOTPATH)      : 0);
 
     // Update the preview image (for tool sizes up to 7)
-    window_clear_scenery_widgets[WIDX_PREVIEW].image = gLandToolSize <= 7 ?
-        SPR_LAND_TOOL_SIZE_0 + gLandToolSize : 0xFFFFFFFF;
+    window_clear_scenery_widgets[WIDX_PREVIEW].image = land_tool_size_to_sprite_index(gLandToolSize);
 }
 
 /**
@@ -237,7 +235,7 @@ static void window_clear_scenery_paint(rct_window *w, rct_drawpixelinfo *dpi)
     // Draw number for tool sizes bigger than 7
     x = w->x + (window_clear_scenery_widgets[WIDX_PREVIEW].left + window_clear_scenery_widgets[WIDX_PREVIEW].right) / 2;
     y = w->y + (window_clear_scenery_widgets[WIDX_PREVIEW].top + window_clear_scenery_widgets[WIDX_PREVIEW].bottom) / 2;
-    if (gLandToolSize > 7) {
+    if (gLandToolSize > MAX_TOOL_SIZE_WITH_SPRITE) {
         gfx_draw_string_centred(dpi, STR_LAND_TOOL_SIZE_VALUE, x, y - 2, COLOUR_BLACK, &gLandToolSize);
     }
 

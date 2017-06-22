@@ -22,6 +22,7 @@
 #include "../game.h"
 #include "../input.h"
 #include "../interface/console.h"
+#include "../interface/land_tool.h"
 #include "../interface/Screenshot.h"
 #include "../interface/viewport.h"
 #include "../interface/widget.h"
@@ -1785,10 +1786,7 @@ static void top_toolbar_tool_update_scenery_clear(sint16 x, sint16 y){
         state_changed++;
     }
 
-    sint16 tool_size = gLandToolSize;
-    if (tool_size == 0)
-        tool_size = 1;
-
+    sint16 tool_size = max(1, gLandToolSize);
     sint16 tool_length = (tool_size - 1) * 32;
 
     // Move to tool bottom left
@@ -1865,10 +1863,7 @@ static void top_toolbar_tool_update_land_paint(sint16 x, sint16 y){
         state_changed++;
     }
 
-    sint16 tool_size = gLandToolSize;
-    if (tool_size == 0)
-        tool_size = 1;
-
+    sint16 tool_size = max(1, gLandToolSize);
     sint16 tool_length = (tool_size - 1) * 32;
 
     // Move to tool bottom left
@@ -2146,10 +2141,7 @@ static void top_toolbar_tool_update_water(sint16 x, sint16 y){
         state_changed++;
     }
 
-    sint16 tool_size = gLandToolSize;
-    if (tool_size == 0)
-        tool_size = 1;
-
+    sint16 tool_size = max(1, gLandToolSize);
     sint16 tool_length = (tool_size - 1) * 32;
 
     // Move to tool bottom left
@@ -3300,7 +3292,6 @@ void toggle_land_window(rct_window *topToolbar, rct_widgetindex widgetIndex)
         show_gridlines();
         tool_set(topToolbar, widgetIndex, TOOL_DIG_DOWN);
         input_set_flag(INPUT_FLAG_6, true);
-        gLandToolSize = 1;
         window_land_open();
     }
 }
@@ -3317,7 +3308,6 @@ void toggle_clear_scenery_window(rct_window *topToolbar, rct_widgetindex widgetI
         show_gridlines();
         tool_set(topToolbar, widgetIndex, TOOL_CROSSHAIR);
         input_set_flag(INPUT_FLAG_6, true);
-        gLandToolSize = 2;
         window_clear_scenery_open();
     }
 }
@@ -3334,7 +3324,6 @@ void toggle_water_window(rct_window *topToolbar, rct_widgetindex widgetIndex)
         show_gridlines();
         tool_set(topToolbar, widgetIndex, TOOL_WATER_DOWN);
         input_set_flag(INPUT_FLAG_6, true);
-        gLandToolSize = 1;
         window_water_open();
     }
 }
