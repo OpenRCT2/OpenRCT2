@@ -18,6 +18,7 @@
 #include "../cheats.h"
 #include "../game.h"
 #include "../input.h"
+#include "../interface/land_tool.h"
 #include "../interface/viewport.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
@@ -28,9 +29,6 @@
 #include "../world/footpath.h"
 #include "../world/scenery.h"
 #include "error.h"
-
-#define MINIMUM_TOOL_SIZE 1
-#define MAXIMUM_TOOL_SIZE 64
 
 #define MAP_COLOUR_2(colourA, colourB) ((colourA << 8) | colourB)
 #define MAP_COLOUR(colour) MAP_COLOUR_2(colour, colour)
@@ -803,9 +801,7 @@ static void window_map_invalidate(rct_window *w)
                 for (i = 0; i < 4; i++)
                     w->widgets[WIDX_LAND_OWNED_CHECKBOX + i].type = WWT_CHECKBOX;
 
-                w->widgets[WIDX_LAND_TOOL].image = gLandToolSize <= 7 ?
-                    SPR_LAND_TOOL_SIZE_0 + gLandToolSize :
-                    0xFFFFFFFF;
+                w->widgets[WIDX_LAND_TOOL].image = land_tool_size_to_sprite_index(gLandToolSize);
             }
         } else {
             // if no tool is active: show the default scenario editor buttons
@@ -827,7 +823,7 @@ static void window_map_paint(rct_window *w, rct_drawpixelinfo *dpi)
     sint32 y = w->y + (window_map_widgets[WIDX_LAND_TOOL].top + window_map_widgets[WIDX_LAND_TOOL].bottom) / 2;
 
     // Draw land tool size
-    if (widget_is_active_tool(w, WIDX_SET_LAND_RIGHTS) && gLandToolSize > 7) {
+    if (widget_is_active_tool(w, WIDX_SET_LAND_RIGHTS) && gLandToolSize > MAX_TOOL_SIZE_WITH_SPRITE) {
         gfx_draw_string_centred(dpi, STR_LAND_TOOL_SIZE_VALUE, x, y - 2, COLOUR_BLACK, &gLandToolSize);
     }
     y = w->y + window_map_widgets[WIDX_LAND_TOOL].bottom + 5;

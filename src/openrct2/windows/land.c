@@ -16,6 +16,7 @@
 
 #include "../Context.h"
 #include "../input.h"
+#include "../interface/land_tool.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
 #include "../localisation/localisation.h"
@@ -24,8 +25,7 @@
 #include "../world/map.h"
 #include "dropdown.h"
 
-#define MINIMUM_TOOL_SIZE 1
-#define MAXIMUM_TOOL_SIZE 64
+
 
 enum WINDOW_LAND_WIDGET_IDX {
     WIDX_BACKGROUND,
@@ -100,18 +100,6 @@ static rct_window_event_list window_land_events = {
     NULL
 };
 
-static char FloorTextureOrder[] = {
-    TERRAIN_SAND_DARK, TERRAIN_SAND_LIGHT,  TERRAIN_DIRT,      TERRAIN_GRASS_CLUMPS, TERRAIN_GRASS,
-    TERRAIN_ROCK,      TERRAIN_SAND,        TERRAIN_MARTIAN,   TERRAIN_CHECKERBOARD, TERRAIN_ICE,
-    TERRAIN_GRID_RED,  TERRAIN_GRID_YELLOW, TERRAIN_GRID_BLUE, TERRAIN_GRID_GREEN
-};
-
-static char WallTextureOrder[] = {
-    TERRAIN_EDGE_ROCK,       TERRAIN_EDGE_WOOD_RED,
-    TERRAIN_EDGE_WOOD_BLACK, TERRAIN_EDGE_ICE,
-    0, 0
-};
-
 sint32 _selectedFloorTexture;
 sint32 _selectedWallTexture;
 
@@ -141,6 +129,7 @@ void window_land_open()
     window_init_scroll_widgets(window);
     window_push_others_below(window);
 
+    gLandToolSize = 1;
     gLandToolTerrainSurface = 255;
     gLandToolTerrainEdge = 255;
     gLandMountainMode = false;
@@ -208,44 +197,12 @@ static void window_land_mouseup(rct_window *w, rct_widgetindex widgetIndex)
  */
 static void window_land_mousedown(rct_widgetindex widgetIndex, rct_window*w, rct_widget* widget)
 {
-    sint32 i;
-    sint32 defaultIndex = -1;
     switch (widgetIndex) {
     case WIDX_FLOOR:
-        for (i = 0; i < TERRAIN_COUNT_REGULAR; i++) {
-            gDropdownItemsFormat[i] = DROPDOWN_FORMAT_LAND_PICKER;
-            gDropdownItemsArgs[i] = SPR_FLOOR_TEXTURE_GRASS + FloorTextureOrder[i];
-            if (FloorTextureOrder[i] == _selectedFloorTexture)
-                defaultIndex = i;
-        }
-        window_dropdown_show_image(
-            w->x + widget->left, w->y + widget->top,
-            widget->bottom - widget->top,
-            w->colours[2],
-            0,
-            TERRAIN_COUNT_REGULAR,
-            47, 36,
-            gAppropriateImageDropdownItemsPerRow[TERRAIN_COUNT_REGULAR]
-        );
-        gDropdownDefaultIndex = defaultIndex;
+        land_tool_show_surface_style_dropdown(w, widget, _selectedFloorTexture);
         break;
     case WIDX_WALL:
-        for (i = 0; i < TERRAIN_EDGE_COUNT; i++) {
-            gDropdownItemsFormat[i] = DROPDOWN_FORMAT_LAND_PICKER;
-            gDropdownItemsArgs[i] = SPR_WALL_TEXTURE_ROCK + WallTextureOrder[i];
-            if (WallTextureOrder[i] == _selectedWallTexture)
-                defaultIndex = i;
-        }
-        window_dropdown_show_image(
-            w->x + widget->left, w->y + widget->top,
-            widget->bottom - widget->top,
-            w->colours[2],
-            0,
-            TERRAIN_EDGE_COUNT,
-            47, 36,
-            gAppropriateImageDropdownItemsPerRow[TERRAIN_EDGE_COUNT]
-        );
-        gDropdownDefaultIndex = defaultIndex;
+        land_tool_show_edge_style_dropdown(w, widget, _selectedWallTexture);
         break;
     case WIDX_PREVIEW:
         window_land_inputsize(w);
@@ -351,9 +308,7 @@ static void window_land_invalidate(rct_window *w)
     window_land_widgets[WIDX_FLOOR].image = SPR_FLOOR_TEXTURE_GRASS + _selectedFloorTexture;
     window_land_widgets[WIDX_WALL].image = SPR_WALL_TEXTURE_ROCK + _selectedWallTexture;
     // Update the preview image (for tool sizes up to 7)
-    window_land_widgets[WIDX_PREVIEW].image = gLandToolSize <= 7 ?
-        SPR_LAND_TOOL_SIZE_0 + gLandToolSize :
-        0xFFFFFFFF;
+    window_land_widgets[WIDX_PREVIEW].image = land_tool_size_to_sprite_index(gLandToolSize);
 }
 
 /**
@@ -369,7 +324,7 @@ static void window_land_paint(rct_window *w, rct_drawpixelinfo *dpi)
     window_draw_widgets(w, dpi);
 
     // Draw number for tool sizes bigger than 7
-    if (gLandToolSize > 7) {
+    if (gLandToolSize > MAX_TOOL_SIZE_WITH_SPRITE) {
         x = w->x + (previewWidget->left + previewWidget->right) / 2;
         y = w->y + (previewWidget->top + previewWidget->bottom) / 2;
         gfx_draw_string_centred(dpi, STR_LAND_TOOL_SIZE_VALUE, x, y - 2, COLOUR_BLACK, &gLandToolSize);

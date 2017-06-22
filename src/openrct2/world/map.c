@@ -113,15 +113,7 @@ bool gClearSmallScenery;
 bool gClearLargeScenery;
 bool gClearFootpath;
 
-uint16 gLandToolSize;
-money32 gLandToolRaiseCost;
-money32 gLandToolLowerCost;
-uint8 gLandToolTerrainSurface;
-uint8 gLandToolTerrainEdge;
-money32 gWaterToolRaiseCost;
-money32 gWaterToolLowerCost;
 money32 gLandRightsCost;
-
 uint16 gLandRemainingOwnershipSales;
 uint16 gLandRemainingConstructionSales;
 

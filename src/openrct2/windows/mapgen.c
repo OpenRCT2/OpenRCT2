@@ -16,6 +16,7 @@
 
 #include "../localisation/localisation.h"
 #include "../input.h"
+#include "../interface/land_tool.h"
 #include "../interface/widget.h"
 #include "../interface/viewport.h"
 #include "../interface/window.h"
@@ -541,18 +542,6 @@ static void window_mapgen_set_pressed_tab(rct_window *w);
 static void window_mapgen_anchor_border_widgets(rct_window *w);
 static void window_mapgen_draw_tab_images(rct_drawpixelinfo *dpi, rct_window *w);
 
-static char FloorTextureOrder[] = {
-    TERRAIN_SAND_DARK, TERRAIN_SAND_LIGHT,  TERRAIN_DIRT,      TERRAIN_GRASS_CLUMPS, TERRAIN_GRASS,
-    TERRAIN_ROCK,      TERRAIN_SAND,        TERRAIN_MARTIAN,   TERRAIN_CHECKERBOARD, TERRAIN_ICE,
-    TERRAIN_GRID_RED,  TERRAIN_GRID_YELLOW, TERRAIN_GRID_BLUE, TERRAIN_GRID_GREEN
-};
-
-static char WallTextureOrder[] = {
-    TERRAIN_EDGE_ROCK,       TERRAIN_EDGE_WOOD_RED,
-    TERRAIN_EDGE_WOOD_BLACK, TERRAIN_EDGE_ICE,
-    0, 0
-};
-
 static sint32 _mapSize = 150;
 static sint32 _baseHeight = 12;
 static sint32 _waterLevel = 6;
@@ -667,8 +656,6 @@ static void window_mapgen_base_mouseup(rct_window *w, rct_widgetindex widgetInde
 
 static void window_mapgen_base_mousedown(rct_widgetindex widgetIndex, rct_window *w, rct_widget* widget)
 {
-    sint32 i;
-    sint32 defaultIndex = -1;
     switch (widgetIndex) {
     case WIDX_MAP_SIZE_UP:
         _mapSize = min(_mapSize + 1, MAXIMUM_MAP_SIZE_TECHNICAL);
@@ -695,40 +682,10 @@ static void window_mapgen_base_mousedown(rct_widgetindex widgetIndex, rct_window
         window_invalidate(w);
         break;
     case WIDX_FLOOR_TEXTURE:
-        for (i = 0; i < TERRAIN_COUNT_REGULAR; i++) {
-            gDropdownItemsFormat[i] = DROPDOWN_FORMAT_LAND_PICKER;
-            gDropdownItemsArgs[i] = SPR_FLOOR_TEXTURE_GRASS + FloorTextureOrder[i];
-            if (FloorTextureOrder[i] == _floorTexture)
-                defaultIndex = i;
-        }
-        window_dropdown_show_image(
-            w->x + widget->left, w->y + widget->top,
-            widget->bottom - widget->top,
-            w->colours[2],
-            0,
-            TERRAIN_COUNT_REGULAR,
-            47, 36,
-            gAppropriateImageDropdownItemsPerRow[TERRAIN_COUNT_REGULAR]
-        );
-        gDropdownDefaultIndex = defaultIndex;
+        land_tool_show_surface_style_dropdown(w, widget, _floorTexture);
         break;
     case WIDX_WALL_TEXTURE:
-        for (i = 0; i < TERRAIN_EDGE_COUNT; i++) {
-            gDropdownItemsFormat[i] = DROPDOWN_FORMAT_LAND_PICKER;
-            gDropdownItemsArgs[i] = SPR_WALL_TEXTURE_ROCK + WallTextureOrder[i];
-            if (WallTextureOrder[i] == _wallTexture)
-                defaultIndex = i;
-        }
-        window_dropdown_show_image(
-            w->x + widget->left, w->y + widget->top,
-            widget->bottom - widget->top,
-            w->colours[2],
-            0,
-            TERRAIN_EDGE_COUNT,
-            47, 36,
-            gAppropriateImageDropdownItemsPerRow[TERRAIN_EDGE_COUNT]
-        );
-        gDropdownDefaultIndex = defaultIndex;
+        land_tool_show_edge_style_dropdown(w, widget, _wallTexture);
         break;
     }
 }
@@ -962,8 +919,6 @@ static void window_mapgen_simplex_mouseup(rct_window *w, rct_widgetindex widgetI
 
 static void window_mapgen_simplex_mousedown(rct_widgetindex widgetIndex, rct_window *w, rct_widget* widget)
 {
-    sint32 i;
-    sint32 defaultIndex = -1;
     switch (widgetIndex) {
     case WIDX_SIMPLEX_LOW_UP:
         _simplex_low = min(_simplex_low + 1, 24);
@@ -1014,40 +969,10 @@ static void window_mapgen_simplex_mousedown(rct_widgetindex widgetIndex, rct_win
         window_invalidate(w);
         break;
     case WIDX_SIMPLEX_FLOOR_TEXTURE:
-        for (i = 0; i < TERRAIN_COUNT_REGULAR; i++) {
-            gDropdownItemsFormat[i] = DROPDOWN_FORMAT_LAND_PICKER;
-            gDropdownItemsArgs[i] = SPR_FLOOR_TEXTURE_GRASS + FloorTextureOrder[i];
-            if (FloorTextureOrder[i] == _floorTexture)
-                defaultIndex = i;
-        }
-        window_dropdown_show_image(
-            w->x + widget->left, w->y + widget->top,
-            widget->bottom - widget->top,
-            w->colours[2],
-            0,
-            TERRAIN_COUNT_REGULAR,
-            47, 36,
-            gAppropriateImageDropdownItemsPerRow[TERRAIN_COUNT_REGULAR]
-            );
-        gDropdownDefaultIndex = defaultIndex;
+        land_tool_show_surface_style_dropdown(w, widget, _floorTexture);
         break;
     case WIDX_SIMPLEX_WALL_TEXTURE:
-        for (i = 0; i < TERRAIN_EDGE_COUNT; i++) {
-            gDropdownItemsFormat[i] = DROPDOWN_FORMAT_LAND_PICKER;
-            gDropdownItemsArgs[i] = SPR_WALL_TEXTURE_ROCK + WallTextureOrder[i];
-            if (WallTextureOrder[i] == _wallTexture)
-                defaultIndex = i;
-        }
-        window_dropdown_show_image(
-            w->x + widget->left, w->y + widget->top,
-            widget->bottom - widget->top,
-            w->colours[2],
-            0,
-            TERRAIN_EDGE_COUNT,
-            47, 36,
-            gAppropriateImageDropdownItemsPerRow[TERRAIN_EDGE_COUNT]
-            );
-        gDropdownDefaultIndex = defaultIndex;
+        land_tool_show_edge_style_dropdown(w, widget, _wallTexture);
         break;
     }
 }

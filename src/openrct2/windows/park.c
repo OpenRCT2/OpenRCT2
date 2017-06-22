@@ -21,6 +21,7 @@
 #include "../localisation/localisation.h"
 #include "../input.h"
 #include "../interface/graph.h"
+#include "../interface/land_tool.h"
 #include "../interface/viewport.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
@@ -1154,7 +1155,6 @@ void toggle_land_rights_window(rct_window *parkWindow, rct_widgetindex widgetInd
         show_gridlines();
         tool_set(parkWindow, widgetIndex, TOOL_UP_ARROW);
         input_set_flag(INPUT_FLAG_6, true);
-        gLandToolSize = 1;
         window_land_rights_open();
     }
 }

@@ -17,6 +17,7 @@
 #include "../Context.h"
 #include "../game.h"
 #include "../input.h"
+#include "../interface/land_tool.h"
 #include "../interface/viewport.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
@@ -24,9 +25,6 @@
 #include "../rct2.h"
 #include "../sprites.h"
 #include "../world/map.h"
-
-#define MINIMUM_TOOL_SIZE 1
-#define MAXIMUM_TOOL_SIZE 64
 
 enum WINDOW_WATER_WIDGET_IDX {
     WIDX_BACKGROUND,
@@ -110,6 +108,7 @@ void window_land_rights_open()
     LandRightsMode = true;
     window->pressed_widgets = (1 << WIDX_BUY_LAND_RIGHTS);
 
+    gLandToolSize = 1;
     gWaterToolRaiseCost = MONEY32_UNDEFINED;
     gWaterToolLowerCost = MONEY32_UNDEFINED;
 
@@ -211,10 +210,7 @@ static void window_land_rights_invalidate(rct_window *w)
     w->pressed_widgets &= ~(1 << (!LandRightsMode ? WIDX_BUY_LAND_RIGHTS : WIDX_BUY_CONSTRUCTION_RIGHTS));
 
     // Update the preview image
-    // TODO: Don't apply addition to images
-    window_land_rights_widgets[WIDX_PREVIEW].image = gLandToolSize <= 7 ?
-        SPR_LAND_TOOL_SIZE_0 + gLandToolSize :
-        0xFFFFFFFF;
+    window_land_rights_widgets[WIDX_PREVIEW].image = land_tool_size_to_sprite_index(gLandToolSize);
 
     // Disable ownership and/or construction buying functions if there are no tiles left for sale
     if (gLandRemainingOwnershipSales == 0) {
@@ -243,7 +239,7 @@ static void window_land_rights_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
     window_draw_widgets(w, dpi);
     // Draw number for tool sizes bigger than 7
-    if (gLandToolSize > 7) {
+    if (gLandToolSize > MAX_TOOL_SIZE_WITH_SPRITE) {
         gfx_draw_string_centred(dpi, STR_LAND_TOOL_SIZE_VALUE, x, y - 2, COLOUR_BLACK, &gLandToolSize);
     }
 
