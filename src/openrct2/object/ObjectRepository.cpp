@@ -754,17 +754,6 @@ extern "C"
         objectManager->UnloadAll();
     }
 
-    bool object_load_entries(rct_object_entry * entries)
-    {
-        log_verbose("loading required objects");
-
-        IObjectManager * objectManger = GetObjectManager();
-        bool result = objectManger->LoadObjects(entries, OBJECT_ENTRY_COUNT);
-
-        log_verbose("finished loading required objects");
-        return result;
-    }
-
     void * object_repository_load_object(const rct_object_entry * objectEntry)
     {
         Object * object = nullptr;

@@ -23,6 +23,8 @@
 #include <string>
 #include "scenario/ScenarioRepository.h"
 
+interface IObjectManager;
+interface IObjectRepository;
 interface IStream;
 
 /**
@@ -44,7 +46,7 @@ namespace ParkImporter
 {
     IParkImporter * Create(const std::string &hintPath);
     IParkImporter * CreateS4();
-    IParkImporter * CreateS6();
+    IParkImporter * CreateS6(IObjectRepository * objectRepository, IObjectManager * objectManager);
 
     bool ExtensionIsRCT1(const std::string &extension);
     bool ExtensionIsScenario(const std::string &extension);

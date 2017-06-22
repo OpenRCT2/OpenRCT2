@@ -22,6 +22,7 @@
 #include "../core/String.hpp"
 #include "../management/award.h"
 #include "../network/network.h"
+#include "../object/ObjectManager.h"
 #include "../object/ObjectRepository.h"
 #include "../ParkImporter.h"
 #include "../rct12/SawyerChunkReader.h"
@@ -64,12 +65,17 @@ public:
 class S6Importer final : public IParkImporter
 {
 private:
+    IObjectRepository * const   _objectRepository;
+    IObjectManager * const      _objectManager;
+
     const utf8 *    _s6Path = nullptr;
     rct_s6_data     _s6;
     uint8           _gameVersion = 0;
 
 public:
-    S6Importer()
+    S6Importer(IObjectRepository * objectRepository, IObjectManager * objectManager)
+        : _objectRepository(objectRepository),
+          _objectManager(objectManager)
     {
         Memory::Set(&_s6, 0, sizeof(_s6));
     }
@@ -134,10 +140,9 @@ public:
 
         // Read packed objects
         // TODO try to contain this more and not store objects until later
-        IObjectRepository * objectRepo = GetObjectRepository();
         for (uint16 i = 0; i < _s6.header.num_packed_objects; i++)
         {
-            objectRepo->ExportPackedObject(stream);
+            _objectRepository->ExportPackedObject(stream);
         }
 
         if (isScenario)
@@ -390,7 +395,7 @@ public:
         // pad_13CE778
 
         // Fix and set dynamic variables
-        if (!object_load_entries(_s6.objects))
+        if (!_objectManager->LoadObjects(_s6.objects, OBJECT_ENTRY_COUNT))
         {
             throw ObjectLoadException();
         }
@@ -406,9 +411,9 @@ public:
     }
 };
 
-IParkImporter * ParkImporter::CreateS6()
+IParkImporter * ParkImporter::CreateS6(IObjectRepository * objectRepository, IObjectManager * objectManager)
 {
-    return new S6Importer();
+    return new S6Importer(objectRepository, objectManager);
 }
 
 extern "C"
@@ -416,7 +421,7 @@ extern "C"
     bool game_load_sv6_path(const char * path)
     {
         bool result     = false;
-        auto s6Importer = new S6Importer();
+        auto s6Importer = new S6Importer(GetObjectRepository(), GetObjectManager());
         try
         {
             s6Importer->LoadSavedGame(path);
@@ -456,7 +461,7 @@ extern "C"
     sint32 scenario_load(const char * path)
     {
         bool result     = false;
-        auto s6Importer = new S6Importer();
+        auto s6Importer = new S6Importer(GetObjectRepository(), GetObjectManager());
         try
         {
             s6Importer->LoadScenario(path);

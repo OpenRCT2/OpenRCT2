@@ -17,6 +17,8 @@
 #include <memory>
 #include "core/Path.hpp"
 #include "core/String.hpp"
+#include "object/ObjectManager.h"
+#include "object/ObjectRepository.h"
 #include "ParkImporter.h"
 
 namespace ParkImporter
@@ -31,7 +33,7 @@ namespace ParkImporter
         }
         else
         {
-            parkImporter = CreateS6();
+            parkImporter = CreateS6(GetObjectRepository(), GetObjectManager());
         }
         return parkImporter;
     }
