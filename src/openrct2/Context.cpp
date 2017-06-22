@@ -28,6 +28,7 @@
 #include "core/String.hpp"
 #include "FileClassifier.h"
 #include "network/network.h"
+#include "object/ObjectManager.h"
 #include "object/ObjectRepository.h"
 #include "OpenRCT2.h"
 #include "ParkImporter.h"
@@ -77,6 +78,7 @@ namespace OpenRCT2
 
         // Services
         IObjectRepository *         _objectRepository       = nullptr;
+        IObjectManager *            _objectManager          = nullptr;
         ITrackDesignRepository *    _trackDesignRepository  = nullptr;
         IScenarioRepository *       _scenarioRepository     = nullptr;
 
@@ -188,6 +190,7 @@ namespace OpenRCT2
             // }
 
             _objectRepository = CreateObjectRepository(_env);
+            _objectManager = CreateObjectManager(_objectRepository);
             _trackDesignRepository = CreateTrackDesignRepository(_env);
             _scenarioRepository = CreateScenarioRepository(_env);
 

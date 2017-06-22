@@ -33,8 +33,9 @@ extern "C"
 
 #ifdef __cplusplus
 
-class   Object;
-struct  ObjectRepositoryItem;
+interface   IObjectRepository;
+class       Object;
+struct      ObjectRepositoryItem;
 
 interface IObjectManager
 {
@@ -54,6 +55,7 @@ interface IObjectManager
     virtual std::vector<const ObjectRepositoryItem *> GetPackableObjects() abstract;
 };
 
+IObjectManager * CreateObjectManager(IObjectRepository * objectRepository);
 IObjectManager * GetObjectManager();
 
 #endif
