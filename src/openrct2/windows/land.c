@@ -197,8 +197,6 @@ static void window_land_mouseup(rct_window *w, rct_widgetindex widgetIndex)
  */
 static void window_land_mousedown(rct_widgetindex widgetIndex, rct_window*w, rct_widget* widget)
 {
-    sint32 i;
-    sint32 defaultIndex = -1;
     switch (widgetIndex) {
     case WIDX_FLOOR:
         land_tool_show_surface_style_dropdown(w, widget, _selectedFloorTexture);

@@ -919,8 +919,6 @@ static void window_mapgen_simplex_mouseup(rct_window *w, rct_widgetindex widgetI
 
 static void window_mapgen_simplex_mousedown(rct_widgetindex widgetIndex, rct_window *w, rct_widget* widget)
 {
-    sint32 i;
-    sint32 defaultIndex = -1;
     switch (widgetIndex) {
     case WIDX_SIMPLEX_LOW_UP:
         _simplex_low = min(_simplex_low + 1, 24);
