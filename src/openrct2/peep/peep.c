@@ -171,6 +171,7 @@ static bool peep_update_fixing_sub_state_12(bool firstRun, rct_peep *peep, rct_r
 static bool peep_update_fixing_sub_state_13(bool firstRun, sint32 steps, rct_peep *peep, rct_ride *ride);
 static bool peep_update_fixing_sub_state_14(bool firstRun, rct_peep *peep, rct_ride *ride);
 static void peep_update_ride_inspected(sint32 rideIndex);
+static void peep_release_balloon(rct_peep *peep, sint16 spawn_height);
 
 bool loc_690FD0(rct_peep *peep, uint8 *rideToView, uint8 *rideSeatToView, rct_map_element *esi);
 
@@ -2109,15 +2110,7 @@ static void peep_update_falling(rct_peep* peep){
                         invalidate_sprite_2((rct_sprite*)peep);
                         sprite_move(peep->x, peep->y, height, (rct_sprite*)peep);
                         // Drop balloon if held
-                        if (peep->item_standard_flags & PEEP_ITEM_BALLOON) {
-                            peep->item_standard_flags &= ~PEEP_ITEM_BALLOON;
-
-                            if (peep->sprite_type == PEEP_SPRITE_TYPE_BALLOON && peep->x != MAP_LOCATION_NULL) {
-                                create_balloon(peep->x, peep->y, height, peep->balloon_colour, false);
-                                peep->window_invalidate_flags |= PEEP_INVALIDATE_PEEP_INVENTORY;
-                                peep_update_sprite_type(peep);
-                            }
-                        }
+                        peep_release_balloon(peep, height); 
 
                         peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_DROWNING, -1);
 
@@ -7005,14 +6998,7 @@ void peep_applause()
             continue;
 
         // Release balloon
-        if (peep->item_standard_flags & PEEP_ITEM_BALLOON) {
-            peep->item_standard_flags &= ~PEEP_ITEM_BALLOON;
-            if (peep->x != MAP_LOCATION_NULL) {
-                create_balloon(peep->x, peep->y, peep->z + 9, peep->balloon_colour, false);
-                peep->window_invalidate_flags |= PEEP_INVALIDATE_PEEP_INVENTORY;
-                peep_update_sprite_type(peep);
-            }
-        }
+        peep_release_balloon(peep, peep->z + 9);
 
         // Clap
         if ((peep->state == PEEP_STATE_WALKING || peep->state == PEEP_STATE_QUEUING) && peep->action >= 254) {
@@ -12930,5 +12916,20 @@ void decrement_guests_heading_for_park(){
         gNumGuestsHeadingForPark--;
     } else {
         log_error("Attempt to decrement guests heading for park below zero.");
+    }
+}
+
+static void peep_release_balloon(rct_peep *peep, sint16 spawn_height) {
+
+    if (peep->item_standard_flags & PEEP_ITEM_BALLOON)
+    {
+        peep->item_standard_flags &= ~PEEP_ITEM_BALLOON;
+
+        if (peep->sprite_type == PEEP_SPRITE_TYPE_BALLOON && peep->x != MAP_LOCATION_NULL)
+        {
+            create_balloon(peep->x, peep->y, spawn_height, peep->balloon_colour, false);
+            peep->window_invalidate_flags |= PEEP_INVALIDATE_PEEP_INVENTORY;
+            peep_update_sprite_type(peep);
+        }
     }
 }
