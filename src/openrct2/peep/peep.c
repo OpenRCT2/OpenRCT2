@@ -171,6 +171,7 @@ static bool peep_update_fixing_sub_state_12(bool firstRun, rct_peep *peep, rct_r
 static bool peep_update_fixing_sub_state_13(bool firstRun, sint32 steps, rct_peep *peep, rct_ride *ride);
 static bool peep_update_fixing_sub_state_14(bool firstRun, rct_peep *peep, rct_ride *ride);
 static void peep_update_ride_inspected(sint32 rideIndex);
+static void peep_release_balloon(rct_peep *peep);
 
 bool loc_690FD0(rct_peep *peep, uint8 *rideToView, uint8 *rideSeatToView, rct_map_element *esi);
 
@@ -2109,7 +2110,7 @@ static void peep_update_falling(rct_peep* peep){
                         invalidate_sprite_2((rct_sprite*)peep);
                         sprite_move(peep->x, peep->y, height, (rct_sprite*)peep);
                         // Drop balloon if held
-                        release_balloon(peep); 
+                        peep_release_balloon(peep); 
 
                         peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_DROWNING, -1);
 
@@ -6997,7 +6998,7 @@ void peep_applause()
             continue;
 
         // Release balloon
-        release_balloon(peep);
+        peep_release_balloon(peep);
 
         // Clap
         if ((peep->state == PEEP_STATE_WALKING || peep->state == PEEP_STATE_QUEUING) && peep->action >= 254) {
@@ -12918,7 +12919,7 @@ void decrement_guests_heading_for_park(){
     }
 }
 
-void release_balloon(rct_peep *peep) {
+static void peep_release_balloon(rct_peep *peep) {
     if (peep->item_standard_flags & PEEP_ITEM_BALLOON)
     {
         peep->item_standard_flags &= ~PEEP_ITEM_BALLOON;

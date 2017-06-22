@@ -786,6 +786,4 @@ void increment_guests_heading_for_park();
 void decrement_guests_in_park();
 void decrement_guests_heading_for_park();
 
-void release_balloon(rct_peep *peep);
-
 #endif
