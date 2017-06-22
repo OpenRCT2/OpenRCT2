@@ -547,16 +547,14 @@ private:
 
 static std::unique_ptr<ObjectManager> _objectManager;
 
+IObjectManager * CreateObjectManager(IObjectRepository * objectRepository)
+{
+    _objectManager = std::unique_ptr<ObjectManager>(new ObjectManager(objectRepository));
+    return _objectManager.get();
+}
+
 IObjectManager * GetObjectManager()
 {
-    if (_objectManager == nullptr)
-    {
-        IObjectRepository * objectRepository = GetObjectRepository();
-        if (objectRepository != nullptr)
-        {
-            _objectManager = std::unique_ptr<ObjectManager>(new ObjectManager(objectRepository));
-        }
-    }
     return _objectManager.get();
 }
 
