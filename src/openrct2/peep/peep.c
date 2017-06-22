@@ -2109,15 +2109,7 @@ static void peep_update_falling(rct_peep* peep){
                         invalidate_sprite_2((rct_sprite*)peep);
                         sprite_move(peep->x, peep->y, height, (rct_sprite*)peep);
                         // Drop balloon if held
-                        if (peep->item_standard_flags & PEEP_ITEM_BALLOON) {
-                            peep->item_standard_flags &= ~PEEP_ITEM_BALLOON;
-
-                            if (peep->sprite_type == PEEP_SPRITE_TYPE_BALLOON && peep->x != MAP_LOCATION_NULL) {
-                                create_balloon(peep->x, peep->y, height, peep->balloon_colour, false);
-                                peep->window_invalidate_flags |= PEEP_INVALIDATE_PEEP_INVENTORY;
-                                peep_update_sprite_type(peep);
-                            }
-                        }
+                        release_balloon(peep); 
 
                         peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_DROWNING, -1);
 
@@ -7005,14 +6997,7 @@ void peep_applause()
             continue;
 
         // Release balloon
-        if (peep->item_standard_flags & PEEP_ITEM_BALLOON) {
-            peep->item_standard_flags &= ~PEEP_ITEM_BALLOON;
-            if (peep->x != MAP_LOCATION_NULL) {
-                create_balloon(peep->x, peep->y, peep->z + 9, peep->balloon_colour, false);
-                peep->window_invalidate_flags |= PEEP_INVALIDATE_PEEP_INVENTORY;
-                peep_update_sprite_type(peep);
-            }
-        }
+        release_balloon(peep);
 
         // Clap
         if ((peep->state == PEEP_STATE_WALKING || peep->state == PEEP_STATE_QUEUING) && peep->action >= 254) {
@@ -12930,5 +12915,19 @@ void decrement_guests_heading_for_park(){
         gNumGuestsHeadingForPark--;
     } else {
         log_error("Attempt to decrement guests heading for park below zero.");
+    }
+}
+
+void release_balloon(rct_peep *peep) {
+    if (peep->item_standard_flags & PEEP_ITEM_BALLOON)
+    {
+        peep->item_standard_flags &= ~PEEP_ITEM_BALLOON;
+
+        if (peep->sprite_type == PEEP_SPRITE_TYPE_BALLOON && peep->x != MAP_LOCATION_NULL)
+        {
+            create_balloon(peep->x, peep->y, peep->z + 10, peep->balloon_colour, false);
+            peep->window_invalidate_flags |= PEEP_INVALIDATE_PEEP_INVENTORY;
+            peep_update_sprite_type(peep);
+        }
     }
 }
