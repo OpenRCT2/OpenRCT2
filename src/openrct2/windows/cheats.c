@@ -244,7 +244,7 @@ static rct_widget window_cheats_misc_widgets[] = {
     { WWT_CLOSEBOX,         1,      XPL(1),                 WPL(1),                 YPL(1),         HPL(1),         STR_CHEAT_PARK_PARAMETERS,          STR_CHEAT_PARK_PARAMETERS_TIP },        // Park parameters
     { WWT_CLOSEBOX,         1,      XPL(0),                 WPL(0),                 YPL(2),         HPL(2),         STR_CHEAT_SANDBOX_MODE,             STR_CHEAT_SANDBOX_MODE_TIP },           // Sandbox mode (edit land ownership in-game)
     { WWT_CLOSEBOX,         1,      XPL(1),                 WPL(1),                 YPL(2),         HPL(2),         STR_CHEAT_RESET_DATE,               STR_NONE },                             // Reset date
-    { WWT_CLOSEBOX,         1,      XPL(0),                 WPL(0),                 YPL(3),         HPL(3),         STR_CHEAT_OWN_ALL_LAND,         STR_NONE },                             // Own all land
+    { WWT_CLOSEBOX,         1,      XPL(0),                 WPL(0),                 YPL(3),         HPL(3),         STR_CHEAT_OWN_ALL_LAND,             STR_CHEAT_OWN_ALL_LAND_TIP },           // Own all land
     { WWT_CHECKBOX,         1,      XPL(0),                 OWPL,                   YPL(4),         OHPL(4),        STR_CHEAT_UNLOCK_PRICES,            STR_CHEAT_UNLOCK_PRICES_TIP },          // Unlock all prices
     { WWT_CHECKBOX,         1,      XPL(0),                 WPL(0),                 YPL(5),         HPL(5),         STR_FORCE_PARK_RATING,              STR_NONE },                             // Force park rating
     { WWT_SPINNER,          1,      XPL(1),                 WPL(1) - 10,            YPL(5) + 2,     HPL(5) - 3,     STR_NONE,                           STR_NONE },                             // park rating
