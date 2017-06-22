@@ -311,6 +311,8 @@ void game_update()
 
         // Special case because we set numUpdates to 0, otherwise in game_logic_update.
         network_update();
+
+        network_process_game_commands();
     }
 
     if (!gOpenRCT2Headless)
