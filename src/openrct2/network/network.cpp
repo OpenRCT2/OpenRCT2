@@ -1869,7 +1869,8 @@ bool Network::LoadMap(IStream * stream)
     bool result = false;
     try
     {
-        auto importer = std::unique_ptr<IParkImporter>(ParkImporter::CreateS6());
+        auto importer = std::unique_ptr<IParkImporter>(
+            ParkImporter::CreateS6(GetObjectRepository(), GetObjectManager()));
         importer->LoadFromStream(stream, false);
         importer->Import();
 

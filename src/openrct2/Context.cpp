@@ -455,7 +455,7 @@ namespace OpenRCT2
                     }
                     else
                     {
-                        parkImporter.reset(ParkImporter::CreateS6());
+                        parkImporter.reset(ParkImporter::CreateS6(_objectRepository, _objectManager));
                     }
 
                     if (info.Type == FILE_TYPE::SAVED_GAME)
