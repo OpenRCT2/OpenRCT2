@@ -89,8 +89,7 @@ public:
                 uint64 readBytes = zip_fread(zipFile, data, dataSize);
                 if (readBytes != dataSize)
                 {
-                    Memory::Free(data);
-                    data = nullptr;
+                    SafeFree(data);
                     dataSize = 0;
                 }
                 zip_fclose(zipFile);

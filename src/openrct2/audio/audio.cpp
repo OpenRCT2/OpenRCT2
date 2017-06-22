@@ -158,11 +158,7 @@ void audio_init()
 
 void audio_populate_devices()
 {
-    if (gAudioDevices != nullptr)
-    {
-        Memory::Free(gAudioDevices);
-        gAudioDevices = nullptr;
-    }
+    SafeFree(gAudioDevices);
 
     IAudioContext * audioContext = OpenRCT2::GetContext()->GetAudioContext();
     std::vector<std::string> devices = audioContext->GetOutputDevices();

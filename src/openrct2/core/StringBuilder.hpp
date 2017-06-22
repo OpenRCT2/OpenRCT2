@@ -107,11 +107,7 @@ public:
     {
         _length = 0;
         _capacity = 0;
-        if (_buffer != nullptr)
-        {
-            Memory::Free(_buffer);
-            _buffer = nullptr;
-        }
+        SafeFree(_buffer);
     }
 
     /**
