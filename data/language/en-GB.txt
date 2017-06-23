@@ -4429,6 +4429,7 @@ STR_6117    :Sitting in comfortable trains with only simple lap restraints rider
 STR_6118    :A gentle roller coaster for people who haven't yet got the courage to face the larger rides
 STR_6119    :A cheap and easy to build roller coaster, but with a limited height
 STR_6120    :{BABYBLUE}New vehicle now available for {STRINGID}:{NEWLINE}{STRINGID}
+STR_6121    :{SMALLFONT}{BLACK}Extends the park's land rights all the way to the edges of the map
 
 
 #############

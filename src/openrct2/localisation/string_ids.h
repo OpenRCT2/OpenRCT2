@@ -3786,6 +3786,8 @@ enum {
     STR_MIDI_COASTER_GROUP_DESC = 6119,
 
     STR_NEWS_ITEM_RESEARCH_NEW_VEHICLE_AVAILABLE = 6120,
+    
+    STR_CHEAT_OWN_ALL_LAND_TIP = 6121,
 
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     STR_COUNT = 32768
