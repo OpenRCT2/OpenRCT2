@@ -635,6 +635,11 @@ static sint32 track_design_place_scenery(rct_td6_scenery_element *scenery_start,
                     }
                 }
                 sint32 z;
+                const uint32 flags = GAME_COMMAND_FLAG_APPLY |
+                    GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED |
+                    GAME_COMMAND_FLAG_5 |
+                    GAME_COMMAND_FLAG_GHOST;
+
                 switch (entry_type) {
                 case OBJECT_TYPE_SMALL_SCENERY:
                     //bl
@@ -654,11 +659,10 @@ static sint32 track_design_place_scenery(rct_td6_scenery_element *scenery_start,
                     {
                         bh &= 0x3F;
                     }
-
                     z = (scenery->z * 8 + originZ) / 8;
                     game_do_command(
                         mapCoord.x,
-                        0x69 | bh << 8,
+                        flags | bh << 8,
                         mapCoord.y,
                         (entry_index << 8) | z,
                         GAME_COMMAND_REMOVE_SCENERY,
@@ -669,7 +673,7 @@ static sint32 track_design_place_scenery(rct_td6_scenery_element *scenery_start,
                     z = (scenery->z * 8 + originZ) / 8;
                     game_do_command(
                         mapCoord.x,
-                        0x69 | (((rotation + scenery->flags) & 0x3) << 8),
+                        flags | (((rotation + scenery->flags) & 0x3) << 8),
                         mapCoord.y,
                         z,
                         GAME_COMMAND_REMOVE_LARGE_SCENERY,
@@ -680,7 +684,7 @@ static sint32 track_design_place_scenery(rct_td6_scenery_element *scenery_start,
                     z = (scenery->z * 8 + originZ) / 8;
                     game_do_command(
                         mapCoord.x,
-                        0x69,
+                        flags,
                         mapCoord.y,
                         (z << 8) | ((rotation + scenery->flags) & 0x3),
                         GAME_COMMAND_REMOVE_WALL,
@@ -689,7 +693,11 @@ static sint32 track_design_place_scenery(rct_td6_scenery_element *scenery_start,
                     break;
                 case OBJECT_TYPE_PATHS:
                     z = (scenery->z * 8 + originZ) / 8;
-                    footpath_remove(mapCoord.x, mapCoord.y, z, 0x69);
+                    footpath_remove(
+                        mapCoord.x,
+                        mapCoord.y,
+                        z,
+                        flags);
                     break;
                 }
             }

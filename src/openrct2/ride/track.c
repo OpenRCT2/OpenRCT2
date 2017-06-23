@@ -1397,7 +1397,7 @@ static money32 track_place(sint32 rideIndex, sint32 type, sint32 originX, sint32
             mapElement = surfaceElement;
         }
 
-        if (!gCheatsDisableClearanceChecks || !(flags & (1 << 6))) {
+        if (!gCheatsDisableClearanceChecks || !(flags & GAME_COMMAND_FLAG_GHOST)) {
             footpath_connect_edges(x, y, mapElement, flags);
         }
         map_invalidate_tile_full(x, y);
