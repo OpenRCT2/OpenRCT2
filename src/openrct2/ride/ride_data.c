@@ -1320,7 +1320,7 @@ const rct_ride_data_5 RideData5[RIDE_TYPE_COUNT] = {
     {   25,     24,     9,      18,     11,     50,     90,     0   },  // RIDE_TYPE_STAND_UP_ROLLER_COASTER
     {   24,     40,     29,     26,     8,      50,     90,     0   },  // RIDE_TYPE_SUSPENDED_SWINGING_COASTER
     {   38,     40,     29,     27,     8,      50,     100,    0   },  // RIDE_TYPE_INVERTED_ROLLER_COASTER
-    {   15,     24,     4,      10,     7,      40,     60,     0   },  // RIDE_TYPE_JUNIOR_ROLLER_COASTER
+    {   15,     24,     4,      18,     7,      40,     60,     0   },  // RIDE_TYPE_JUNIOR_ROLLER_COASTER
     {   7,      32,     5,      39,     9,      50,     50,     0   },  // RIDE_TYPE_MINIATURE_RAILWAY
     {   8,      32,     8,      78,     9,      50,     60,     0   },  // RIDE_TYPE_MONORAIL
     {   10,     24,     24,     3,      8,      40,     50,     0   },  // RIDE_TYPE_MINI_SUSPENDED_COASTER
