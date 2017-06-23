@@ -77,16 +77,6 @@ void RideObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
 
     GetStringTable()->Read(context, stream, OBJ_STRING_ID_NAME);
     GetStringTable()->Read(context, stream, OBJ_STRING_ID_DESCRIPTION);
-
-    // Add boosters if the track type is eligible
-    for (sint32 i = 0; i < MAX_RIDE_TYPES_PER_RIDE_ENTRY; i++)
-    {
-        if (ride_type_supports_boosters(_legacyType.ride_type[i]))
-        {
-            _legacyType.enabledTrackPieces |= (1ULL << TRACK_BOOSTER);
-        }
-    }
-
     GetStringTable()->Read(context, stream, OBJ_STRING_ID_CAPACITY);
 
     // Read preset colours, by default there are 32
@@ -133,7 +123,7 @@ void RideObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
         context->LogError(OBJECT_ERROR_INVALID_PROPERTY, "Nausea multiplier too high.");
     }
 
-    PerformRCT1CompatibilityFixes();
+    PerformFixes();
 }
 
 void RideObject::Load()
@@ -480,10 +470,27 @@ void RideObject::ReadLegacyVehicle(IReadObjectContext * context, IStream * strea
     stream->Seek(4, STREAM_SEEK_CURRENT);
 }
 
-void RideObject::PerformRCT1CompatibilityFixes()
+void RideObject::PerformFixes()
 {
-    if (String::Equals(GetIdentifier(), "RCKC    ")) {
-        // The rocket cars could take 3 cars per train in RCT1. Restore this.
+    std::string identifier = GetIdentifier();
+    
+    // Add boosters if the track type is eligible
+    for (sint32 i = 0; i < MAX_RIDE_TYPES_PER_RIDE_ENTRY; i++)
+    {
+        if (ride_type_supports_boosters(_legacyType.ride_type[i]))
+        {
+            _legacyType.enabledTrackPieces |= (1ULL << TRACK_BOOSTER);
+        }
+    }
+    
+    // The rocket cars could take 3 cars per train in RCT1. Restore this.
+    if (String::Equals(identifier, "RCKC    "))
+    {
         _legacyType.max_cars_in_train = 3 + _legacyType.zero_cars;
+    }
+    // Wacky World Crocodile Ride (a log flume vehicle) is incorrectly locked to 5 cars.
+    else if (String::Equals(identifier, "CROCFLUM"))
+    {
+        _legacyType.cars_per_flat_ride = 0xFF;
     }
 }
