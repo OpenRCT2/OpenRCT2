@@ -8,6 +8,7 @@
 - Feature: OpenRCT2 now starts up on the display it was last shown on.
 - Feature: [#5611] Add support for Android
 - Improved: Mouse can now be dragged to select scenery when saving track designs
+- Fix: [#739] Crocodile Ride (Log Flume) never allows more than five boats
 - Fix: [#837] Can't move windows on title screen to where the toolbar would be
 - Fix: [#3178, #5456] Paths with non-ASCII characters not handled properly on macOS.
 - Fix: [#3681] Steel Twister rollercoaster always shows all track designs
