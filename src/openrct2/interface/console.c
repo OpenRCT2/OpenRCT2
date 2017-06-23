@@ -262,6 +262,7 @@ void console_input(CONSOLE_INPUT input)
             console_clear_input();
             console_refresh_caret();
         }
+        _consoleScrollPos = 0;
         break;
     case CONSOLE_INPUT_HISTORY_PREVIOUS:
         if (_consoleHistoryIndex > 0) {
