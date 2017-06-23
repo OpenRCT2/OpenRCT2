@@ -337,7 +337,7 @@ static rct_widget window_options_misc_widgets[] = {
     { WWT_SPINNER,          1,  155,    299,    249,    260,    STR_NONE,                                   STR_NONE },                                         // Window limit
     { WWT_DROPDOWN_BUTTON,  1,  288,    298,    250,    254,    STR_NUMERIC_UP,                             STR_NONE },                                         // Window limit up
     { WWT_DROPDOWN_BUTTON,  1,  288,    298,    255,    259,    STR_NUMERIC_DOWN,                           STR_NONE },                                         // Window limit down
-    { WWT_12,               1,  10,     142,    264,    275,    STR_PATH_TO_RCT1,                           STR_PATH_TO_RCT1_TIP },                             // RCT 1 path text
+    { WWT_12,               1,  10,     298,    264,    275,    STR_PATH_TO_RCT1,                           STR_PATH_TO_RCT1_TIP },                             // RCT 1 path text
     { WWT_DROPDOWN_BUTTON,  1,  10,     289,    278,    289,    STR_NONE,                                   STR_STRING_TOOLTIP },                               // RCT 1 path button
     { WWT_DROPDOWN_BUTTON,  1,  289,    299,    278,    289,    STR_CLOSE_X,                                STR_PATH_TO_RCT1_CLEAR_TIP },                       // RCT 1 path clear button
     { WIDGETS_END },
