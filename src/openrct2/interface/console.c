@@ -70,7 +70,6 @@ static sint32 _consoleHistoryCount = 0;
 
 static void console_invalidate();
 static void console_write_prompt();
-static void console_update_scroll();
 static void console_clear_input();
 static void console_history_add(const utf8 *src);
 static void console_write_all_commands();
@@ -90,7 +89,6 @@ void console_open()
     gConsoleOpen = true;
     _consoleScrollPos = 0;
     console_refresh_caret();
-    console_update_scroll();
     _consoleTextInputSession = context_start_text_input(_consoleCurrentLine, sizeof(_consoleCurrentLine));
 }
 
@@ -319,7 +317,6 @@ void console_write(const utf8 *src)
     }
     safe_strcpy(_consoleBufferPointer, src, charactersRemainingInBuffer);
     _consoleBufferPointer += charactersToWrite;
-    console_update_scroll();
 }
 
 void console_writeline(const utf8 *src)
@@ -363,22 +360,6 @@ double console_parse_double(const utf8 *src, bool *valid) {
     double value;
     value = strtod(src, &end); *valid = (*end == '\0');
     return value;
-}
-
-static void console_update_scroll()
-{
-    /*sint32 lines = 0;
-    sint32 maxLines = ((_consoleBottom - 22 - _consoleTop) / 10) - 1;
-    char *ch = strchr(_consoleBuffer, 0);
-    while (ch > _consoleBuffer && lines < maxLines) {
-        ch--;
-        if (*ch == '\n')
-            lines++;
-    }
-
-    if (*ch == '\n')
-        ch++;
-    _consoleViewBufferStart = ch;*/
 }
 
 void console_scroll(sint32 delta)
