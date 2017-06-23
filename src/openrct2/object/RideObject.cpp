@@ -59,7 +59,7 @@ void RideObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
     _legacyType.rear_vehicle = stream->ReadValue<uint8>();
     _legacyType.third_vehicle = stream->ReadValue<uint8>();
     _legacyType.pad_019 = stream->ReadValue<uint8>();
-    for (sint32 i = 0; i < 4; i++)
+    for (sint32 i = 0; i < MAX_VEHICLES_PER_RIDE_ENTRY; i++)
     {
         rct_ride_entry_vehicle * entry = &_legacyType.vehicles[i];
         ReadLegacyVehicle(context, stream, entry);
@@ -106,7 +106,7 @@ void RideObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
     }
 
     // Read peep loading positions
-    for (sint32 i = 0; i < 4; i++)
+    for (sint32 i = 0; i < MAX_VEHICLES_PER_RIDE_ENTRY; i++)
     {
         uint16 numPeepLoadingPositions = stream->ReadValue<uint8>();
         if (numPeepLoadingPositions == 255)
