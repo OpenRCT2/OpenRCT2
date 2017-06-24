@@ -1,3 +1,9 @@
+/**
+ * The following code is from SDL2_ttf (2 Jan 2017).
+ * Taking just what was needed for OpenRCT2 with all SDL2 calls
+ * removed.
+ */
+
 /*
 SDL_ttf:  A companion library to SDL for working with TrueType (tm) fonts
 Copyright (C) 2001-2017 Sam Lantinga <slouken@libsdl.org>
@@ -30,9 +36,6 @@ misrepresented as being the original software.
 #include FT_STROKER_H
 #include FT_GLYPH_H
 #include FT_TRUETYPE_IDS_H
-
-#include "SDL.h"
-#include "SDL_endian.h"
 
 #include "ttf.h"
 
@@ -80,7 +83,7 @@ typedef struct cached_glyph {
     int maxy;
     int yoffset;
     int advance;
-    Uint16 cached;
+    uint16 cached;
 } c_glyph;
 
 /* The structure used to hold internal font information */
@@ -115,7 +118,7 @@ struct _TTF_Font {
     c_glyph cache[257]; /* 257 is a prime */
 
                         /* We are responsible for closing the font stream */
-    SDL_RWops *src;
+    FILE *src;
     int freesrc;
     FT_Open_Args args;
 
@@ -142,7 +145,7 @@ static FT_Library library;
 static int TTF_initialized = 0;
 static int TTF_byteswapped = 0;
 
-#define TTF_SetError    SDL_SetError
+#define TTF_SetError    log_error
 
 #define TTF_CHECKPOINTER(p, errval)                 \
     if ( !TTF_initialized ) {                   \
@@ -218,12 +221,12 @@ static int TTF_Glyph_strikethrough_top_row(TTF_Font *font, c_glyph *glyph)
     return TTF_strikethrough_top_row(font) - font->ascent + glyph->maxy;
 }
 
-static void TTF_initLineMectrics(const TTF_Font *font, const TTFSurface *textbuf, const int row, Uint8 **pdst, int *pheight)
+static void TTF_initLineMectrics(const TTF_Font *font, const TTFSurface *textbuf, const int row, uint8 **pdst, int *pheight)
 {
-    Uint8 *dst;
+    uint8 *dst;
     int height;
 
-    dst = (Uint8 *)textbuf->pixels;
+    dst = (uint8 *)textbuf->pixels;
     if (row > 0) {
         dst += row * textbuf->pitch;
     }
@@ -244,8 +247,8 @@ outline into account.
 static void TTF_drawLine_Solid(const TTF_Font *font, const TTFSurface *textbuf, const int row)
 {
     int line;
-    Uint8 *dst_check = (Uint8*)textbuf->pixels + textbuf->pitch * textbuf->h;
-    Uint8 *dst;
+    uint8 *dst_check = (uint8*)textbuf->pixels + textbuf->pitch * textbuf->h;
+    uint8 *dst;
     int height;
 
     TTF_initLineMectrics(font, textbuf, row, &dst, &height);
@@ -323,17 +326,26 @@ static unsigned long RWread(
     unsigned long count
 )
 {
-    SDL_RWops *src;
+    FILE *src;
 
-    src = (SDL_RWops *)stream->descriptor.pointer;
-    SDL_RWseek(src, (int)offset, RW_SEEK_SET);
+    src = (FILE *)stream->descriptor.pointer;
+    fseek(src, (int)offset, SEEK_SET);
     if (count == 0) {
         return 0;
     }
-    return (unsigned long)SDL_RWread(src, buffer, 1, (int)count);
+    return (unsigned long)fread(buffer, 1, (int)count, src);
 }
 
-TTF_Font* TTF_OpenFontIndexRW(SDL_RWops *src, int freesrc, int ptsize, long index)
+static size_t fsize(FILE * file)
+{
+    size_t origPos = ftell(file);
+    fseek(file, 0, SEEK_END);
+    size_t size = ftell(file);
+    fseek(file, (long)origPos, SEEK_SET);
+    return size;
+}
+
+TTF_Font* TTF_OpenFontIndexRW(FILE *src, int freesrc, int ptsize, long index)
 {
     TTF_Font* font;
     FT_Error error;
@@ -341,13 +353,13 @@ TTF_Font* TTF_OpenFontIndexRW(SDL_RWops *src, int freesrc, int ptsize, long inde
     FT_Fixed scale;
     FT_Stream stream;
     FT_CharMap found;
-    Sint64 position;
+    sint64 position;
     int i;
 
     if (!TTF_initialized) {
         TTF_SetError("Library not initialized");
         if (src && freesrc) {
-            SDL_RWclose(src);
+            fclose(src);
         }
         return NULL;
     }
@@ -358,40 +370,40 @@ TTF_Font* TTF_OpenFontIndexRW(SDL_RWops *src, int freesrc, int ptsize, long inde
     }
 
     /* Check to make sure we can seek in this stream */
-    position = SDL_RWtell(src);
+    position = ftell(src);
     if (position < 0) {
         TTF_SetError("Can't seek in stream");
         if (freesrc) {
-            SDL_RWclose(src);
+            fclose(src);
         }
         return NULL;
     }
 
-    font = (TTF_Font*)SDL_malloc(sizeof *font);
+    font = (TTF_Font*)malloc(sizeof *font);
     if (font == NULL) {
         TTF_SetError("Out of memory");
         if (freesrc) {
-            SDL_RWclose(src);
+            fclose(src);
         }
         return NULL;
     }
-    SDL_memset(font, 0, sizeof(*font));
+    memset(font, 0, sizeof(*font));
 
     font->src = src;
     font->freesrc = freesrc;
 
-    stream = (FT_Stream)SDL_malloc(sizeof(*stream));
+    stream = (FT_Stream)malloc(sizeof(*stream));
     if (stream == NULL) {
         TTF_SetError("Out of memory");
         TTF_CloseFont(font);
         return NULL;
     }
-    SDL_memset(stream, 0, sizeof(*stream));
+    memset(stream, 0, sizeof(*stream));
 
     stream->read = RWread;
     stream->descriptor.pointer = src;
     stream->pos = (unsigned long)position;
-    stream->size = (unsigned long)(SDL_RWsize(src) - position);
+    stream->size = (unsigned long)(fsize(src) - position);
 
     font->args.flags = FT_OPEN_STREAM;
     font->args.stream = stream;
@@ -503,14 +515,14 @@ TTF_Font* TTF_OpenFontIndexRW(SDL_RWops *src, int freesrc, int ptsize, long inde
     return font;
 }
 
-TTF_Font* TTF_OpenFontRW(SDL_RWops *src, int freesrc, int ptsize)
+TTF_Font* TTF_OpenFontRW(FILE *src, int freesrc, int ptsize)
 {
     return TTF_OpenFontIndexRW(src, freesrc, ptsize, 0);
 }
 
 TTF_Font* TTF_OpenFontIndex(const char *file, int ptsize, long index)
 {
-    SDL_RWops *rw = SDL_RWFromFile(file, "rb");
+    FILE *rw = fopen(file, "rb");
     if (rw == NULL) {
         return NULL;
     }
@@ -527,11 +539,11 @@ static void Flush_Glyph(c_glyph* glyph)
     glyph->stored = 0;
     glyph->index = 0;
     if (glyph->bitmap.buffer) {
-        SDL_free(glyph->bitmap.buffer);
+        free(glyph->bitmap.buffer);
         glyph->bitmap.buffer = 0;
     }
     if (glyph->pixmap.buffer) {
-        SDL_free(glyph->pixmap.buffer);
+        free(glyph->pixmap.buffer);
         glyph->pixmap.buffer = 0;
     }
     glyph->cached = 0;
@@ -550,7 +562,7 @@ static void Flush_Cache(TTF_Font* font)
     }
 }
 
-static FT_Error Load_Glyph(TTF_Font* font, Uint16 ch, c_glyph* cached, int want)
+static FT_Error Load_Glyph(TTF_Font* font, uint16 ch, c_glyph* cached, int want)
 {
     FT_Face face;
     FT_Error error;
@@ -609,7 +621,7 @@ static FT_Error Load_Glyph(TTF_Font* font, Uint16 ch, c_glyph* cached, int want)
             cached->maxx += font->glyph_overhang;
         }
         if (TTF_HANDLE_STYLE_ITALIC(font)) {
-            cached->maxx += (int)SDL_ceil(font->glyph_italics);
+            cached->maxx += (int)ceil(font->glyph_italics);
         }
         cached->stored |= CACHED_METRICS;
     }
@@ -668,7 +680,7 @@ static FT_Error Load_Glyph(TTF_Font* font, Uint16 ch, c_glyph* cached, int want)
         else {
             dst = &cached->pixmap;
         }
-        SDL_memcpy(dst, src, sizeof(*dst));
+        memcpy(dst, src, sizeof(*dst));
 
         /* FT_Render_Glyph() and .fon fonts always generate a
         * two-color (black and white) glyphslot surface, even
@@ -697,17 +709,17 @@ static FT_Error Load_Glyph(TTF_Font* font, Uint16 ch, c_glyph* cached, int want)
             dst->width += bump;
         }
         if (TTF_HANDLE_STYLE_ITALIC(font)) {
-            int bump = (int)SDL_ceil(font->glyph_italics);
+            int bump = (int)ceil(font->glyph_italics);
             dst->pitch += bump;
             dst->width += bump;
         }
 
         if (dst->rows != 0) {
-            dst->buffer = (unsigned char *)SDL_malloc(dst->pitch * dst->rows);
+            dst->buffer = (unsigned char *)malloc(dst->pitch * dst->rows);
             if (!dst->buffer) {
                 return FT_Err_Out_Of_Memory;
             }
-            SDL_memset(dst->buffer, 0, dst->pitch * dst->rows);
+            memset(dst->buffer, 0, dst->pitch * dst->rows);
 
             for (i = 0; i < src->rows; i++) {
                 int soffset = i * src->pitch;
@@ -827,7 +839,7 @@ static FT_Error Load_Glyph(TTF_Font* font, Uint16 ch, c_glyph* cached, int want)
                     }
                 }
                 else {
-                    SDL_memcpy(dst->buffer + doffset,
+                    memcpy(dst->buffer + doffset,
                         src->buffer + soffset, src->pitch);
                 }
             }
@@ -839,11 +851,11 @@ static FT_Error Load_Glyph(TTF_Font* font, Uint16 ch, c_glyph* cached, int want)
             int col;
             int offset;
             int pixel;
-            Uint8* pixmap;
+            uint8* pixmap;
 
             /* The pixmap is a little hard, we have to add and clamp */
             for (row = dst->rows - 1; row >= 0; --row) {
-                pixmap = (Uint8*)dst->buffer + row * dst->pitch;
+                pixmap = (uint8*)dst->buffer + row * dst->pitch;
                 for (offset = 1; offset <= font->glyph_overhang; ++offset) {
                     for (col = dst->width - 1; col > 0; --col) {
                         if (mono) {
@@ -854,7 +866,7 @@ static FT_Error Load_Glyph(TTF_Font* font, Uint16 ch, c_glyph* cached, int want)
                             if (pixel > NUM_GRAYS - 1) {
                                 pixel = NUM_GRAYS - 1;
                             }
-                            pixmap[col] = (Uint8)pixel;
+                            pixmap[col] = (uint8)pixel;
                         }
                     }
                 }
@@ -881,7 +893,7 @@ static FT_Error Load_Glyph(TTF_Font* font, Uint16 ch, c_glyph* cached, int want)
     return 0;
 }
 
-static FT_Error Find_Glyph(TTF_Font* font, Uint16 ch, int want)
+static FT_Error Find_Glyph(TTF_Font* font, uint16 ch, int want)
 {
     int retval = 0;
     int hsize = sizeof(font->cache) / sizeof(font->cache[0]);
@@ -906,17 +918,17 @@ void TTF_CloseFont(TTF_Font* font)
             FT_Done_Face(font->face);
         }
         if (font->args.stream) {
-            SDL_free(font->args.stream);
+            free(font->args.stream);
         }
         if (font->freesrc) {
-            SDL_RWclose(font->src);
+            fclose(font->src);
         }
-        SDL_free(font);
+        free(font);
     }
 }
 
 /* Gets the number of bytes used by a null terminated UCS2 string */
-static size_t UCS2_len(const Uint16 *text)
+static size_t UCS2_len(const uint16 *text)
 {
     size_t count = 0;
     while (*text++) {
@@ -926,10 +938,10 @@ static size_t UCS2_len(const Uint16 *text)
 }
 
 /* Convert a Latin-1 string to a UTF-8 string */
-static void LATIN1_to_UTF8(const char *src, Uint8 *dst)
+static void LATIN1_to_UTF8(const char *src, uint8 *dst)
 {
     while (*src) {
-        Uint8 ch = *(Uint8*)src++;
+        uint8 ch = *(uint8*)src++;
         if (ch <= 0x7F) {
             *dst++ = ch;
         }
@@ -942,12 +954,12 @@ static void LATIN1_to_UTF8(const char *src, Uint8 *dst)
 }
 
 /* Convert a UCS-2 string to a UTF-8 string */
-static void UCS2_to_UTF8(const Uint16 *src, Uint8 *dst)
+static void UCS2_to_UTF8(const uint16 *src, uint8 *dst)
 {
     int swapped = TTF_byteswapped;
 
     while (*src) {
-        Uint16 ch = *(Uint16*)src++;
+        uint16 ch = *(uint16*)src++;
         if (ch == UNICODE_BOM_NATIVE) {
             swapped = 0;
             continue;
@@ -957,19 +969,20 @@ static void UCS2_to_UTF8(const Uint16 *src, Uint8 *dst)
             continue;
         }
         if (swapped) {
-            ch = SDL_Swap16(ch);
+            ch = (ch & 0xFF) << 8 ||
+                 ((ch & 0xFF00) >> 8);
         }
         if (ch <= 0x7F) {
-            *dst++ = (Uint8)ch;
+            *dst++ = (uint8)ch;
         }
         else if (ch <= 0x7FF) {
-            *dst++ = 0xC0 | (Uint8)((ch >> 6) & 0x1F);
-            *dst++ = 0x80 | (Uint8)(ch & 0x3F);
+            *dst++ = 0xC0 | (uint8)((ch >> 6) & 0x1F);
+            *dst++ = 0x80 | (uint8)(ch & 0x3F);
         }
         else {
-            *dst++ = 0xE0 | (Uint8)((ch >> 12) & 0x0F);
-            *dst++ = 0x80 | (Uint8)((ch >> 6) & 0x3F);
-            *dst++ = 0x80 | (Uint8)(ch & 0x3F);
+            *dst++ = 0xE0 | (uint8)((ch >> 12) & 0x0F);
+            *dst++ = 0x80 | (uint8)((ch >> 6) & 0x3F);
+            *dst++ = 0x80 | (uint8)(ch & 0x3F);
         }
     }
     *dst = '\0';
@@ -977,13 +990,13 @@ static void UCS2_to_UTF8(const Uint16 *src, Uint8 *dst)
 
 /* Gets a unicode value from a UTF-8 encoded string and advance the string */
 #define UNKNOWN_UNICODE 0xFFFD
-static Uint32 UTF8_getch(const char **src, size_t *srclen)
+static uint32 UTF8_getch(const char **src, size_t *srclen)
 {
-    const Uint8 *p = *(const Uint8**)src;
+    const uint8 *p = *(const uint8**)src;
     size_t left = 0;
-    SDL_bool overlong = SDL_FALSE;
-    SDL_bool underflow = SDL_FALSE;
-    Uint32 ch = UNKNOWN_UNICODE;
+    bool overlong = false;
+    bool underflow = false;
+    uint32 ch = UNKNOWN_UNICODE;
 
     if (*srclen == 0) {
         return UNKNOWN_UNICODE;
@@ -991,51 +1004,51 @@ static Uint32 UTF8_getch(const char **src, size_t *srclen)
     if (p[0] >= 0xFC) {
         if ((p[0] & 0xFE) == 0xFC) {
             if (p[0] == 0xFC && (p[1] & 0xFC) == 0x80) {
-                overlong = SDL_TRUE;
+                overlong = true;
             }
-            ch = (Uint32)(p[0] & 0x01);
+            ch = (uint32)(p[0] & 0x01);
             left = 5;
         }
     }
     else if (p[0] >= 0xF8) {
         if ((p[0] & 0xFC) == 0xF8) {
             if (p[0] == 0xF8 && (p[1] & 0xF8) == 0x80) {
-                overlong = SDL_TRUE;
+                overlong = true;
             }
-            ch = (Uint32)(p[0] & 0x03);
+            ch = (uint32)(p[0] & 0x03);
             left = 4;
         }
     }
     else if (p[0] >= 0xF0) {
         if ((p[0] & 0xF8) == 0xF0) {
             if (p[0] == 0xF0 && (p[1] & 0xF0) == 0x80) {
-                overlong = SDL_TRUE;
+                overlong = true;
             }
-            ch = (Uint32)(p[0] & 0x07);
+            ch = (uint32)(p[0] & 0x07);
             left = 3;
         }
     }
     else if (p[0] >= 0xE0) {
         if ((p[0] & 0xF0) == 0xE0) {
             if (p[0] == 0xE0 && (p[1] & 0xE0) == 0x80) {
-                overlong = SDL_TRUE;
+                overlong = true;
             }
-            ch = (Uint32)(p[0] & 0x0F);
+            ch = (uint32)(p[0] & 0x0F);
             left = 2;
         }
     }
     else if (p[0] >= 0xC0) {
         if ((p[0] & 0xE0) == 0xC0) {
             if ((p[0] & 0xDE) == 0xC0) {
-                overlong = SDL_TRUE;
+                overlong = true;
             }
-            ch = (Uint32)(p[0] & 0x1F);
+            ch = (uint32)(p[0] & 0x1F);
             left = 1;
         }
     }
     else {
         if ((p[0] & 0x80) == 0x00) {
-            ch = (Uint32)p[0];
+            ch = (uint32)p[0];
         }
     }
     ++*src;
@@ -1053,7 +1066,7 @@ static Uint32 UTF8_getch(const char **src, size_t *srclen)
         --left;
     }
     if (left > 0) {
-        underflow = SDL_TRUE;
+        underflow = true;
     }
     /* Technically overlong sequences are invalid and should not be interpreted.
     However, it doesn't cause a security risk here and I don't see any harm in
@@ -1125,7 +1138,7 @@ int TTF_GlyphIsProvided(const TTF_Font *font, codepoint_t ch)
     return(FT_Get_Char_Index(font->face, ch));
 }
 
-int TTF_GlyphMetrics(TTF_Font *font, Uint16 ch,
+int TTF_GlyphMetrics(TTF_Font *font, uint16 ch,
     int* minx, int* maxx, int* miny, int* maxy, int* advance)
 {
     FT_Error error;
@@ -1160,25 +1173,6 @@ int TTF_GlyphMetrics(TTF_Font *font, Uint16 ch,
     return 0;
 }
 
-int TTF_SizeText(TTF_Font *font, const char *text, int *w, int *h)
-{
-    int status = -1;
-    Uint8 *utf8;
-
-    TTF_CHECKPOINTER(text, -1);
-
-    utf8 = SDL_stack_alloc(Uint8, SDL_strlen(text) * 2 + 1);
-    if (utf8) {
-        LATIN1_to_UTF8(text, utf8);
-        status = TTF_SizeUTF8(font, (char *)utf8, w, h);
-        SDL_stack_free(utf8);
-    }
-    else {
-        SDL_OutOfMemory();
-    }
-    return status;
-}
-
 int TTF_SizeUTF8(TTF_Font *font, const char *text, int *w, int *h)
 {
     int status;
@@ -1208,10 +1202,10 @@ int TTF_SizeUTF8(TTF_Font *font, const char *text, int *w, int *h)
     }
 
     /* Load each character and sum it's bounding box */
-    textlen = SDL_strlen(text);
+    textlen = strlen(text);
     x = 0;
     while (textlen > 0) {
-        Uint16 c = UTF8_getch(&text, &textlen);
+        uint16 c = UTF8_getch(&text, &textlen);
         if (c == UNICODE_BOM_NATIVE || c == UNICODE_BOM_SWAPPED) {
             continue;
         }
@@ -1299,36 +1293,17 @@ int TTF_SizeUTF8(TTF_Font *font, const char *text, int *w, int *h)
     return status;
 }
 
-int TTF_SizeUNICODE(TTF_Font *font, const Uint16 *text, int *w, int *h)
-{
-    int status = -1;
-    Uint8 *utf8;
-
-    TTF_CHECKPOINTER(text, -1);
-
-    utf8 = SDL_stack_alloc(Uint8, UCS2_len(text) * 3 + 1);
-    if (utf8) {
-        UCS2_to_UTF8(text, utf8);
-        status = TTF_SizeUTF8(font, (char *)utf8, w, h);
-        SDL_stack_free(utf8);
-    }
-    else {
-        SDL_OutOfMemory();
-    }
-    return status;
-}
-
 TTFSurface *TTF_RenderUTF8_Solid(TTF_Font *font,
     const char *text, uint32 colour)
 {
-    SDL_bool first;
+    bool first;
     int xstart;
     int width;
     int height;
     TTFSurface* textbuf;
-    Uint8* src;
-    Uint8* dst;
-    Uint8 *dst_check;
+    uint8* src;
+    uint8* dst;
+    uint8 *dst_check;
     int row, col;
     c_glyph *glyph;
 
@@ -1358,17 +1333,17 @@ TTFSurface *TTF_RenderUTF8_Solid(TTF_Font *font,
 
     /* Adding bound checking to avoid all kinds of memory corruption errors
     that may occur. */
-    dst_check = (Uint8*)textbuf->pixels + textbuf->pitch * textbuf->h;
+    dst_check = (uint8*)textbuf->pixels + textbuf->pitch * textbuf->h;
 
     /* check kerning */
     use_kerning = FT_HAS_KERNING(font->face) && font->kerning;
 
     /* Load and render each character */
-    textlen = SDL_strlen(text);
-    first = SDL_TRUE;
+    textlen = strlen(text);
+    first = true;
     xstart = 0;
     while (textlen > 0) {
-        Uint16 c = UTF8_getch(&text, &textlen);
+        uint16 c = UTF8_getch(&text, &textlen);
         if (c == UNICODE_BOM_NATIVE || c == UNICODE_BOM_SWAPPED) {
             continue;
         }
@@ -1397,7 +1372,7 @@ TTFSurface *TTF_RenderUTF8_Solid(TTF_Font *font,
         if (first && (glyph->minx < 0)) {
             xstart -= glyph->minx;
         }
-        first = SDL_FALSE;
+        first = false;
 
         for (row = 0; row < current->rows; ++row) {
             /* Make sure we don't go either over, or under the
@@ -1408,7 +1383,7 @@ TTFSurface *TTF_RenderUTF8_Solid(TTF_Font *font,
             if (row + glyph->yoffset >= textbuf->h) {
                 continue;
             }
-            dst = (Uint8*)textbuf->pixels +
+            dst = (uint8*)textbuf->pixels +
                 (row + glyph->yoffset) * textbuf->pitch +
                 xstart + glyph->minx;
             src = current->buffer + row * current->pitch;
@@ -1439,15 +1414,15 @@ TTFSurface *TTF_RenderUTF8_Solid(TTF_Font *font,
     return textbuf;
 }
 
-static SDL_bool CharacterIsDelimiter(char c, const char *delimiters)
+static bool CharacterIsDelimiter(char c, const char *delimiters)
 {
     while (*delimiters) {
         if (c == *delimiters) {
-            return SDL_TRUE;
+            return true;
         }
         ++delimiters;
     }
-    return SDL_FALSE;
+    return false;
 }
 
 void TTF_SetFontStyle(TTF_Font* font, int style)
@@ -1526,7 +1501,7 @@ int TTF_GetFontKerningSize(TTF_Font* font, int prev_index, int index)
     return (delta.x >> 6);
 }
 
-int TTF_GetFontKerningSizeGlyphs(TTF_Font *font, Uint16 previous_ch, Uint16 ch)
+int TTF_GetFontKerningSizeGlyphs(TTF_Font *font, uint16 previous_ch, uint16 ch)
 {
     int error;
     int glyph_index, prev_index;
