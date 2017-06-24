@@ -74,6 +74,7 @@ static rct_widget window_ride_list_widgets[] = {
 
 static bool _quickDemolishMode = false;
 
+static void window_ride_list_close(rct_window *w);
 static void window_ride_list_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_ride_list_resize(rct_window *w);
 static void window_ride_list_mousedown(rct_widgetindex widgetIndex, rct_window*w, rct_widget* widget);
@@ -88,7 +89,7 @@ static void window_ride_list_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_ride_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 scrollIndex);
 
 static rct_window_event_list window_ride_list_events = {
-    NULL,
+    window_ride_list_close,
     window_ride_list_mouseup,
     window_ride_list_resize,
     window_ride_list_mousedown,
@@ -192,6 +193,8 @@ static void window_ride_list_refresh_list(rct_window *w);
 static void window_ride_list_close_all(rct_window *w);
 static void window_ride_list_open_all(rct_window *w);
 
+static void window_quickdemolish_prompt_open();
+
 /**
  *
  *  rct2: 0x006B30BC
@@ -234,6 +237,11 @@ void window_ride_list_open()
     _quickDemolishMode = false;
 }
 
+static void window_ride_list_close(rct_window *w)
+{
+    window_close_by_class(WC_QUICKDEMOLISH_PROMPT);
+}
+
 /**
  *
  *  rct2: 0x006B3511
@@ -270,8 +278,8 @@ static void window_ride_list_mouseup(rct_window *w, rct_widgetindex widgetIndex)
         window_ride_list_open_all(w);
         break;
     case WIDX_QUICK_DEMOLISH:
-        if (network_get_mode() != NETWORK_MODE_CLIENT) {
-            _quickDemolishMode = !_quickDemolishMode;
+        if (network_get_mode() != NETWORK_MODE_CLIENT && !_quickDemolishMode) {
+            window_quickdemolish_prompt_open();
         }
         else {
             _quickDemolishMode = false;
@@ -945,3 +953,100 @@ static void window_ride_list_open_all(rct_window *w)
         ride_set_status(i, RIDE_STATUS_OPEN);
     }
 }
+
+#pragma region Quick demolish prompt
+
+#define QUICKDEMOLISH_WW 300
+#define QUICKDEMOLISH_WH 100
+
+enum {
+    WIDX_QUICKDEMOLISH_BACKGROUND,
+    WIDX_QUICKDEMOLISH_TITLE,
+    WIDX_QUICKDEMOLISH_CLOSE,
+    WIDX_QUICKDEMOLISH_ENABLE,
+    WIDX_QUICKDEMOLISH_CANCEL
+};
+
+static rct_widget window_quickdemolish_prompt_widgets[] = {
+    { WWT_FRAME,            0, 0,                     QUICKDEMOLISH_WW - 1,   0,                      QUICKDEMOLISH_WH - 1,   STR_NONE,                           STR_NONE },
+    { WWT_CAPTION,          0, 1,                     QUICKDEMOLISH_WW - 2,   1,                      14,                     STR_QUICK_DEMOLISH_PROMPT_TITLE,    STR_WINDOW_TITLE_TIP },
+    { WWT_CLOSEBOX,         0, QUICKDEMOLISH_WW - 13, QUICKDEMOLISH_WW - 3,   2,                      13,                     STR_CLOSE_X,                        STR_CLOSE_WINDOW_TIP },
+    { WWT_DROPDOWN_BUTTON,  0, 10,                    94,                     QUICKDEMOLISH_WH - 20,  QUICKDEMOLISH_WH - 9,   STR_QUICK_DEMOLISH_PROMPT_CONFIRM,  STR_NONE },
+    { WWT_DROPDOWN_BUTTON,  0, QUICKDEMOLISH_WW - 95, QUICKDEMOLISH_WW - 11,  QUICKDEMOLISH_WH - 20,  QUICKDEMOLISH_WH - 9,   STR_SAVE_PROMPT_CANCEL,             STR_NONE },
+    { WIDGETS_END }
+};
+
+static void window_quickdemolish_prompt_mouseup(rct_window *w, rct_widgetindex widgetIndex);
+static void window_quickdemolish_prompt_paint(rct_window *w, rct_drawpixelinfo *dpi);
+
+static rct_window_event_list window_quickdemolish_prompt_events = {
+    NULL,
+    window_quickdemolish_prompt_mouseup,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    window_quickdemolish_prompt_paint,
+    NULL
+};
+
+static void window_quickdemolish_prompt_open()
+{
+    rct_window *w;
+
+    window_close_by_class(WC_QUICKDEMOLISH_PROMPT);
+
+    w = window_create_centred(QUICKDEMOLISH_WW, QUICKDEMOLISH_WH, &window_quickdemolish_prompt_events, WC_QUICKDEMOLISH_PROMPT, WF_TRANSPARENT);
+    w->widgets = window_quickdemolish_prompt_widgets;
+    w->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_QUICKDEMOLISH_CANCEL) | (1 << WIDX_QUICKDEMOLISH_ENABLE);
+    window_init_scroll_widgets(w);
+}
+
+static void window_quickdemolish_prompt_mouseup(rct_window *w, rct_widgetindex widgetIndex)
+{
+   switch (widgetIndex) {
+    case WIDX_QUICKDEMOLISH_ENABLE:
+        _quickDemolishMode = true;
+        window_invalidate_by_class(WC_RIDE_LIST);
+        window_close(w);
+        break;
+    case WIDX_QUICKDEMOLISH_CANCEL:
+    case WIDX_QUICKDEMOLISH_CLOSE:
+        _quickDemolishMode = false;
+        window_invalidate_by_class(WC_RIDE_LIST);
+        window_close(w);
+        break;
+    }
+}
+
+static void window_quickdemolish_prompt_paint(rct_window *w, rct_drawpixelinfo *dpi)
+{
+    window_draw_widgets(w, dpi);
+
+    sint32 x = w->x + w->width / 2;
+    sint32 y = w->y + (w->height / 2) - 10;
+    gfx_draw_string_centred_wrapped(dpi, gCommonFormatArgs, x, y, w->width - 8, STR_QUICK_DEMOLISH_PROMPT_DESCRIPTION, COLOUR_BLACK);
+}
+
+
+#pragma endregion
