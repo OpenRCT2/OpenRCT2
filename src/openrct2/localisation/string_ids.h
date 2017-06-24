@@ -3792,8 +3792,7 @@ enum {
     STR_QUICK_DEMOLISH_PROMPT_TITLE = 6122,
     STR_QUICK_DEMOLISH_PROMPT_DESCRIPTION = 6123,
     STR_QUICK_DEMOLISH_PROMPT_CONFIRM = 6124,
-    STR_QUICK_DEMOLISH_PROMPT_CANCEL = 6125,
-    STR_THEMES_WINDOW_QUICK_DEMOLISH_PROMPT = 6126,
+    STR_THEMES_WINDOW_QUICK_DEMOLISH_PROMPT = 6125,
 
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     STR_COUNT = 32768

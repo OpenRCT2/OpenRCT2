@@ -4433,8 +4433,7 @@ STR_6121    :{SMALLFONT}{BLACK}Extends the park's land rights all the way to the
 STR_6122    :Enable quick demolish mode?
 STR_6123    :{WINDOW_COLOUR_1}This mode allows demolishing rides by pressing their name in the ride list. Are you sure you wish to enable this?{NEWLINE}{NEWLINE}Once a ride is demolished, it cannot be undone.
 STR_6124    :Confirm
-STR_6125    :Cancel
-STR_6126    :Quick demolish prompt
+STR_6125    :Quick demolish prompt
 
 #############
 # Scenarios #
