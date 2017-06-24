@@ -4334,6 +4334,7 @@ STR_6030    :{SMALLFONT}{BLACK}Landschaftsauswahl. Wählen Sie ein Landschaftsel
 STR_6031    :Serverbeschreibung:
 STR_6032    :Serverbegrüßung:
 STR_6033    :Pfad zur RCT1-Installation:
+STR_6034    :{SMALLFONT}{BLACK}{STRING}
 STR_6035    :Bitte wählen Sie ein RCT1-Verzeichnis
 STR_6036    :{SMALLFONT}{BLACK}Leeren
 STR_6037    :Bitte wählen Sie ein valides RCT1-Verzeichnis

@@ -4342,6 +4342,7 @@ STR_6030    :{SMALLFONT}{BLACK}Pyntvelger. Klikk hvilken som helst pynt på kart
 STR_6031    :Serverbeskrivelse:
 STR_6032    :Server-velkomstbeskjed:
 STR_6033    :Sti til RCT1 insallasjonsmappe:
+STR_6034    :{SMALLFONT}{BLACK}{STRING}
 STR_6035    :Velg din RCT1-mappe
 STR_6036    :{SMALLFONT}{BLACK}Visk ut
 STR_6037    :Vennligst velg en gyldig RCT1 mappe

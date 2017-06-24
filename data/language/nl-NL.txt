@@ -4335,6 +4335,7 @@ STR_6030    :{SMALLFONT}{BLACK}Decorselector. Klik op een al geplaatst decorstuk
 STR_6031    :Serverbeschrijving:
 STR_6032    :Welkomstboodschap:
 STR_6033    :Locatie RCT1-bestanden:
+STR_6034    :{SMALLFONT}{BLACK}{STRING}
 STR_6035    :Selecteer de map waar je RCT1-bestanden staan
 STR_6036    :{SMALLFONT}{BLACK}Wissen
 STR_6037    :Selecteer een geldige RCT1-map.

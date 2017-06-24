@@ -4340,6 +4340,7 @@ STR_6030    :{SMALLFONT}{BLACK}오브젝트 스포이드 기능입니다. 지도
 STR_6031    :서버 설명:
 STR_6032    :서버 인사말:
 STR_6033    :RCT1 설치 경로:
+STR_6034    :{SMALLFONT}{BLACK}{STRING}
 STR_6035    :RCT1이 설치된 폴더를 선택하세요
 STR_6036    :{SMALLFONT}{BLACK}초기화
 STR_6037    :RCT1이 설치된 폴더를 올바르게 선택해주세요

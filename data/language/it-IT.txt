@@ -4345,6 +4345,7 @@ STR_6030    :{SMALLFONT}{BLACK}Contagocce scenario. Fare clic su un qualsiasi el
 STR_6031    :Descrizione server:
 STR_6032    :Messaggio di benvenuto server:
 STR_6033    :Cartella di RCT1:
+STR_6034    :{SMALLFONT}{BLACK}{STRING}
 STR_6035    :Selezionare la cartella di installazione di RCT1
 STR_6036    :{SMALLFONT}{BLACK}Pulisci
 STR_6037    :Selezionare una cartella di installazione di RCT1 valida

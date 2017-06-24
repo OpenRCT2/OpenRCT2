@@ -4343,6 +4343,7 @@ STR_6030    :{SMALLFONT}{BLACK}Výběr kulis. Klikněte na jakoukoliv kulisu na 
 STR_6031    :Popis serveru:
 STR_6032    :Uvítací zpráva serveru:
 STR_6033    :Cesta k RCT1 instalaci:
+STR_6034    :{SMALLFONT}{BLACK}{STRING}
 STR_6035    :Prosím vyberte složku s RCT1
 STR_6036    :{SMALLFONT}{BLACK}Zrušit
 STR_6037    :Prosím vyberte správnou složku s RCT1
