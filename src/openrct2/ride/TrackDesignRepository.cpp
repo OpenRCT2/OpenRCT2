@@ -119,7 +119,7 @@ public:
             {
                 const ObjectRepositoryItem * ori = repo->FindObject(item.ObjectEntry.c_str());
 
-                if (gConfigInterface.select_by_track_type || !(ori->RideFlags & ORI_RIDE_FLAG_SEPARATE))
+                if (gConfigInterface.select_by_track_type || ori == nullptr || !(ori->RideFlags & ORI_RIDE_FLAG_SEPARATE))
                     entryIsNotSeparate = true;
             }
 
@@ -144,7 +144,8 @@ public:
             }
 
             const ObjectRepositoryItem * ori = repo->FindObject(item.ObjectEntry.c_str());
-            ride_group * itemRideGroup = ride_group_find(rideType, ori->RideGroupIndex);
+            uint8 rideGroupIndex = (ori != nullptr) ? ori->RideGroupIndex : 0;
+            ride_group * itemRideGroup = ride_group_find(rideType, rideGroupIndex);
 
             if (itemRideGroup != NULL && ride_groups_are_equal(itemRideGroup, rideGroup))
             {
@@ -179,7 +180,7 @@ public:
             {
                 const ObjectRepositoryItem * ori = repo->FindObject(item.ObjectEntry.c_str());
 
-                if (gConfigInterface.select_by_track_type || !(ori->RideFlags & ORI_RIDE_FLAG_SEPARATE))
+                if (gConfigInterface.select_by_track_type || ori == nullptr || !(ori->RideFlags & ORI_RIDE_FLAG_SEPARATE))
                     entryIsNotSeparate = true;
             }
 
@@ -209,7 +210,8 @@ public:
             }
 
             const ObjectRepositoryItem * ori = repo->FindObject(item.ObjectEntry.c_str());
-            ride_group * itemRideGroup = ride_group_find(rideType, ori->RideGroupIndex);
+            uint8 rideGroupIndex = (ori != nullptr) ? ori->RideGroupIndex : 0;
+            ride_group * itemRideGroup = ride_group_find(rideType, rideGroupIndex);
 
             if (itemRideGroup != NULL && ride_groups_are_equal(itemRideGroup, rideGroup))
             {
