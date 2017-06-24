@@ -1312,7 +1312,7 @@ sint32 place_virtual_track(rct_track_td6 *td6, uint8 bl, uint8 rideIndex, sint32
     }
 
     if (bl == 3) {
-	return _trackDesignPlaceZ -_trackDesignPlaceSceneryZ;
+	 return _trackDesignPlaceZ -_trackDesignPlaceSceneryZ;
     }
     return _trackDesignPlaceCost;
 }
