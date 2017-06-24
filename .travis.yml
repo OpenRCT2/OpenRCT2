@@ -1,6 +1,8 @@
 language: c
 
 before_install:
+    # Android jobs are triggered from cron and overwrite `before_script` part
+    - if [[ "$TRAVIS_EVENT_TYPE" == "cron" ]] ; then exit 0 ; fi
     - if [[ $TRAVIS_REPO_SLUG == "OpenRCT2/OpenRCT2" ]] && [[ $TRAVIS_PULL_REQUEST != "false" ]] && [[ $TRAVIS_BRANCH == "master" ]]; then echo "Pull requests to master branch are not allowed!" ; exit 1 ; fi
     - if [[ $TRAVIS_OS_NAME == "linux" ]]; then bash scripts/linux/install.sh; export OPENRCT_MAKE_OPTS="-j2 -k all openrct2-cli" ; fi
     - if [[ $TRAVIS_OS_NAME == "osx" ]]; then sudo gem install xcpretty-travis-formatter; fi
@@ -20,6 +22,8 @@ matrix:
             - OPENRCT2_CMAKE_OPTS="-DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_INSTALL_PREFIX=OpenRCT2 -DPORTABLE=ON -DDISABLE_RCT2_TESTS=on" TARGET=ubuntu_amd64
             - secure: "S3u2VCE2Vy8KNXoeh+DhnzjCmgTX0r95uEZrXDU+IKANOOCKn7Dg4OFDZE3LY/i1y2/EUDpnR5yLC38Ks795EUP/sv/OoMl4tjQ20yERjqWh+gcIRrgx7SdVabuAh3t4aBdaLD4Pfnj5avxeCt6rL7yGnj0wdbrbJSBZPsgSnuQ="
           after_success:
+            # Android jobs are triggered from cron and overwrite `after_sucess` part
+            - if [[ "$TRAVIS_EVENT_TYPE" == "cron" ]] ; then exit 0 ; fi
             - sudo chown -R $USER build
             - cd build
               # make install is done inside docker
@@ -41,6 +45,8 @@ matrix:
             - OPENRCT2_CMAKE_OPTS="-DFORCE32=ON -DDISABLE_RCT2=OFF -DCMAKE_INSTALL_PREFIX=OpenRCT2 -DDISABLE_RCT2_TESTS=on" TARGET=ubuntu_i686
             - secure: "S3u2VCE2Vy8KNXoeh+DhnzjCmgTX0r95uEZrXDU+IKANOOCKn7Dg4OFDZE3LY/i1y2/EUDpnR5yLC38Ks795EUP/sv/OoMl4tjQ20yERjqWh+gcIRrgx7SdVabuAh3t4aBdaLD4Pfnj5avxeCt6rL7yGnj0wdbrbJSBZPsgSnuQ="
           after_success:
+            # Android jobs are triggered from cron and overwrite `after_sucess` part
+            - if [[ "$TRAVIS_EVENT_TYPE" == "cron" ]] ; then exit 0 ; fi
             - sudo chown -R $USER build
             - cd build
               # make install is done inside docker
@@ -76,6 +82,8 @@ matrix:
           env:
             - secure: "OXn/i72FxW/oh6RGlaN+gHSbkt1ToFe36etaiDOsJQznt6fe9CpFdnE8U1XBHlGokcEjbGNErRU7CFDKYHQuGrPZyHXwgqG2/0emIqFaFt5ti5ypyYKf5qH9x1LLLfdZxDyHkxXdlJ7Etxbp3G7qrV8CGRQiYRNHm1f98AmuufE="
           after_success:
+            # Android jobs are triggered from cron and overwrite `after_sucess` part
+            - if [[ "$TRAVIS_EVENT_TYPE" == "cron" ]] ; then exit 0 ; fi
             - cd build/Release
             - zip -r openrct2-macos.zip OpenRCT2.app
             - if [[ "z${TRAVIS_TAG}" != "z" ]] ; then
@@ -101,6 +109,8 @@ matrix:
               - build-tools-25.0.2
           jdk: oraclejdk8
           before_script:
+            # Only run Android jobs when triggered from cron, otherwise skip
+            - if [[ "$TRAVIS_EVENT_TYPE" != "cron" ]] ; then exit 0 ; fi
             - pushd ~
             - wget https://dl.google.com/android/repository/sdk-tools-linux-3859397.zip
             - unzip -qo sdk-tools-linux-3859397.zip
@@ -118,8 +128,12 @@ matrix:
             - 'cd src/openrct2-android'
             - TERM=dumb # Makes Gradle use 'boring' output
           script:
+            # Only run Android jobs when triggered from cron, otherwise skip
+            - if [[ "$TRAVIS_EVENT_TYPE" != "cron" ]] ; then exit 0 ; fi
             - './gradlew app:assemblePR'
           after_success:
+            # Only run Android jobs when triggered from cron, otherwise skip
+            - if [[ "$TRAVIS_EVENT_TYPE" != "cron" ]] ; then exit 0 ; fi
             - curl --progress-bar --upload-file app/build/outputs/apk/app-arm-pr.apk https://transfer.sh/openrct2-android-arm.apk -o link && cat link
             - curl --progress-bar --upload-file app/build/outputs/apk/app-x86-pr.apk https://transfer.sh/openrct2-android-x86.apk -o link && cat link
         # Following entries used to be included in testing, but they only proved useful while changing things in CMake setup.
@@ -140,6 +154,8 @@ matrix:
         #   env: OPENRCT2_CMAKE_OPTS="-DDISABLE_HTTP_TWITCH=ON -DCMAKE_TOOLCHAIN_FILE=../CMakeLists_mingw.txt" TARGET=windows
 
 script:
+    # Android jobs are triggered from cron and overwrite `script` part
+    - if [[ "$TRAVIS_EVENT_TYPE" == "cron" ]] ; then exit 0 ; fi
     - if [[ $TRAVIS_OS_NAME == "linux" ]]; then bash scripts/linux/build.sh ; fi
     - if [[ $TRAVIS_OS_NAME == "osx" ]]; then set -o pipefail && xcodebuild | xcpretty -f `xcpretty-travis-formatter`; fi
 
