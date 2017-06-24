@@ -23,7 +23,7 @@ TEST(MultiLaunchTest, all)
     gOpenRCT2Headless = true;
 
     core_init();
-    for (int i = 0; i < 10; i++)
+    for (int i = 0; i < 3; i++)
     {
         auto context = CreateContext();
         bool initialised = context->Initialise();
