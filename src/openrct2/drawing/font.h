@@ -39,11 +39,8 @@ enum {
 };
 
 #ifndef NO_TTF
-typedef struct FT_FaceRec_*  FT_Face;
-typedef struct TTFFont {
-    FT_Face face;
-} TTFFont;
 
+typedef struct _TTF_Font TTF_Font;
 typedef struct TTFFontDescriptor {
     const utf8 *filename;
     const utf8 *font_name;
@@ -51,7 +48,7 @@ typedef struct TTFFontDescriptor {
     sint32 offset_x;
     sint32 offset_y;
     sint32 line_height;
-    TTFFont * font;
+    TTF_Font * font;
 } TTFFontDescriptor;
 
 typedef struct  TTFFontSetDescriptor {

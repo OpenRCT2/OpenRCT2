@@ -25,7 +25,6 @@
 #include "ttf.h"
 
 static bool _ttfInitialised = false;
-static FT_Library _ftLibrary;
 
 #define TTF_SURFACE_CACHE_SIZE 256
 #define TTF_GETWIDTH_CACHE_SIZE 1024
@@ -33,7 +32,7 @@ static FT_Library _ftLibrary;
 typedef struct ttf_cache_entry
 {
     TTFSurface *    surface;
-    TTFFont *       font;
+    TTF_Font *      font;
     utf8 *          text;
     uint32          lastUseTick;
 } ttf_cache_entry;
@@ -41,7 +40,7 @@ typedef struct ttf_cache_entry
 typedef struct ttf_getwidth_cache_entry
 {
     uint32      width;
-    TTFFont *   font;
+    TTF_Font *  font;
     utf8 *      text;
     uint32      lastUseTick;
 } ttf_getwidth_cache_entry;
@@ -56,21 +55,19 @@ static sint32 _ttfGetWidthCacheCount = 0;
 static sint32 _ttfGetWidthCacheHitCount = 0;
 static sint32 _ttfGetWidthCacheMissCount = 0;
 
-static TTFFont * ttf_open_font(const utf8 * fontPath, sint32 ptSize);
-static void ttf_close_font(TTFFont * font);
-static uint32 ttf_surface_cache_hash(TTFFont * font, const utf8 * text);
+static TTF_Font * ttf_open_font(const utf8 * fontPath, sint32 ptSize);
+static void ttf_close_font(TTF_Font * font);
+static uint32 ttf_surface_cache_hash(TTF_Font * font, const utf8 * text);
 static void ttf_surface_cache_dispose(ttf_cache_entry * entry);
 static void ttf_surface_cache_dispose_all();
 static void ttf_getwidth_cache_dispose_all();
-static void ttf_get_size(TTFFont * font, const utf8 * text, sint32 * width, sint32 * height);
-static TTFSurface * ttf_render(TTFFont * font, const utf8 * text);
-static void ttf_free_surface(TTFSurface * surface);
+static bool ttf_get_size(TTF_Font * font, const utf8 * text, sint32 * width, sint32 * height);
+static TTFSurface * ttf_render(TTF_Font * font, const utf8 * text);
 
 bool ttf_initialise()
 {
     if (!_ttfInitialised) {
-        FT_Error error = FT_Init_FreeType(&_ftLibrary);
-        if (error != 0) {
+        if (TTF_Init() != 0) {
             log_error("Couldn't initialise FreeType engine");
             return false;
         }
@@ -110,37 +107,22 @@ void ttf_dispose()
             }
         }
 
-        FT_Done_FreeType(_ftLibrary);
+        TTF_Quit();
         _ttfInitialised = false;
     }
 }
 
-static TTFFont * ttf_open_font(const utf8 * fontPath, sint32 ptSize)
+static TTF_Font * ttf_open_font(const utf8 * fontPath, sint32 ptSize)
 {
-    TTFFont * font = malloc(sizeof(TTFFont));
-    if (font != NULL) {
-        FT_Error error = FT_New_Face(_ftLibrary, fontPath, 0, &font->face);
-        if (error != 0) {
-            ttf_close_font(font);
-            return NULL;
-        }
-
-        error = FT_Set_Char_Size(font->face, 0, ptSize * 64, 0, 0);
-        if (error != 0) {
-            ttf_close_font(font);
-            return NULL;
-        }
-    }
-    return font;
+    return TTF_OpenFont(fontPath, ptSize);
 }
 
-static void ttf_close_font(TTFFont * font)
+static void ttf_close_font(TTF_Font * font)
 {
-    FT_Done_Face(font->face);
-    free(font);
+    TTF_CloseFont(font);
 }
 
-static uint32 ttf_surface_cache_hash(TTFFont *font, const utf8 *text)
+static uint32 ttf_surface_cache_hash(TTF_Font *font, const utf8 *text)
 {
     uint32 hash = (uint32)((((uintptr_t)font * 23) ^ 0xAAAAAAAA) & 0xFFFFFFFF);
     for (const utf8 *ch = text; *ch != 0; ch++) {
@@ -169,7 +151,7 @@ static void ttf_surface_cache_dispose_all()
     }
 }
 
-TTFSurface * ttf_surface_cache_get_or_add(TTFFont * font, const utf8 * text)
+TTFSurface * ttf_surface_cache_get_or_add(TTF_Font * font, const utf8 * text)
 {
     ttf_cache_entry *entry;
 
@@ -234,7 +216,7 @@ static void ttf_getwidth_cache_dispose_all()
     }
 }
 
-uint32 ttf_getwidth_cache_get_or_add(TTFFont * font, const utf8 * text)
+uint32 ttf_getwidth_cache_get_or_add(TTF_Font * font, const utf8 * text)
 {
     ttf_getwidth_cache_entry *entry;
 
@@ -282,108 +264,22 @@ TTFFontDescriptor * ttf_get_font_from_sprite_base(uint16 spriteBase)
     return &gCurrentTTFFontSet->size[font_get_size_from_sprite_base(spriteBase)];
 }
 
-bool ttf_provides_glyph(const TTFFont * font, codepoint_t codepoint)
+bool ttf_provides_glyph(const TTF_Font * font, codepoint_t codepoint)
 {
-    return FT_Get_Char_Index(font->face, codepoint) != 0;
+    return TTF_GlyphIsProvided(font, codepoint);
 }
 
-static void ttf_get_size(TTFFont * font, const utf8 * text, sint32 * outWidth, sint32 * outHeight)
+static bool ttf_get_size(TTF_Font * font, const utf8 * text, sint32 * outWidth, sint32 * outHeight)
 {
-    sint32 width = 0;
-    sint32 height = 0;
-
-    FT_GlyphSlot slot = font->face->glyph;
-    const utf8 * ch = text;
-    codepoint_t cp;
-    while ((cp = utf8_get_next(ch, &ch)) != 0)
-    {
-        FT_Error error = FT_Load_Char(font->face, cp, FT_LOAD_RENDER);
-        if (error == 0)
-        {
-            FT_Bitmap * bmp = &slot->bitmap;
-            width += slot->advance.x >> 6;
-            height = max(height, (sint32)bmp->rows);
-        }
-    }
-
-    *outWidth = width;
-    *outHeight = height;
+    return TTF_SizeUTF8(font, text, outWidth, outHeight);
 }
 
-static void ttf_render_char(void * dst, sint32 dstX, sint32 dstY, sint32 dstMaxWidth, sint32 dstMaxHeight, sint32 dstPitch,
-                            const void * src, sint32 srcX, sint32 srcY, sint32 srcWidth, sint32 srcHeight, sint32 srcPitch)
+static TTFSurface * ttf_render(TTF_Font * font, const utf8 * text)
 {
-    for (sint32 y = 0; y < srcHeight; y++)
-    {
-        for (sint32 x = 0; x < srcWidth; x++)
-        {
-            sint32 dstX2 = dstX + x;
-            sint32 dstY2 = dstY + y;
-            if (dstX2 >= 0 && dstY2 >= 0 && dstX2 < dstMaxWidth && dstY2 < dstMaxHeight)
-            {
-                uint8 * srcB = (uint8 *)((uintptr_t)src + x + (y * srcPitch));
-                uint8 * dstB = (uint8 *)((uintptr_t)dst + dstX2 + (dstY2 * dstPitch));
-                *dstB = *srcB;
-            }
-        }
-    }
-
-    // sint32 cols = min(srcWidth, dstMaxWidth - srcX);
-    // sint32 rows = min(srcHeight, dstMaxHeight - dstY);
-    // for (sint32 y = 0; y < rows; y++)
-    // {
-    //     uintptr_t srcI = (uintptr_t)src + (y * srcPitch);
-    //     uintptr_t dstI = (uintptr_t)dst + ((dstY + y) * dstPitch) + dstX;
-    // 
-    //     assert(srcI >= (uintptr_t)src && srcI < ((uintptr_t)src + (srcWidth * srcHeight)));
-    //     assert(dstI >= (uintptr_t)dst && dstI < ((uintptr_t)dst + (dstMaxWidth * dstMaxHeight)));
-    //     memcpy((void *)dstI, (const void *)srcI, cols);
-    // }
+    return TTF_RenderUTF8_Solid(font, text, 0x000000FF);
 }
 
-static TTFSurface * ttf_render(TTFFont * font, const utf8 * text)
-{
-    // Calculate the size
-    sint32 width;
-    sint32 height;
-    ttf_get_size(font, text, &width, &height);
-    sint32 pitch = width;
-
-    // Allocate pixels
-    uint8 * pixels = (uint8 *)malloc(width * height);
-    memset(pixels, 0, width * height);
-
-    // Draw to them
-    sint32 left = 0;
-    sint32 top = 0;
-    FT_GlyphSlot slot = font->face->glyph;
-    const utf8 * ch = text;
-    codepoint_t cp;
-    while ((cp = utf8_get_next(ch, &ch)) != 0)
-    {
-        FT_Error error = FT_Load_Char(font->face, cp, FT_LOAD_RENDER);
-        if (error == 0)
-        {
-            FT_Bitmap * bmp = &slot->bitmap;
-
-            ttf_render_char(pixels,
-                            left,
-                            top,
-                            width, height, pitch,
-                            bmp->buffer, 0, 0, bmp->width, bmp->rows, bmp->pitch);
-            left += slot->advance.x >> 6;
-        }
-    }
-
-    TTFSurface * surface = (TTFSurface *)malloc(sizeof(TTFSurface));
-    surface->w = width;
-    surface->h = height;
-    surface->pitch = pitch;
-    surface->pixels = pixels;
-    return surface;
-}
-
-static void ttf_free_surface(TTFSurface * surface)
+void ttf_free_surface(TTFSurface * surface)
 {
     free((void *)surface->pixels);
     free(surface);

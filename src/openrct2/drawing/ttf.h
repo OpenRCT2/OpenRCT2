@@ -31,8 +31,18 @@ typedef struct TTFSurface {
 } TTFSurface;
 
 TTFFontDescriptor * ttf_get_font_from_sprite_base(uint16 spriteBase);
-TTFSurface * ttf_surface_cache_get_or_add(TTFFont * font, const utf8 * text);
-uint32 ttf_getwidth_cache_get_or_add(TTFFont * font, const utf8 * text);
-bool ttf_provides_glyph(const TTFFont * font, codepoint_t codepoint);
+TTFSurface * ttf_surface_cache_get_or_add(TTF_Font * font, const utf8 * text);
+uint32 ttf_getwidth_cache_get_or_add(TTF_Font * font, const utf8 * text);
+bool ttf_provides_glyph(const TTF_Font * font, codepoint_t codepoint);
+void ttf_free_surface(TTFSurface * surface);
+
+// TTF_SDLPORT
+int TTF_Init(void);
+TTF_Font * TTF_OpenFont(const char *file, int ptsize);
+int TTF_GlyphIsProvided(const TTF_Font *font, codepoint_t ch);
+int TTF_SizeUTF8(TTF_Font *font, const char *text, int *w, int *h);
+TTFSurface * TTF_RenderUTF8_Solid(TTF_Font *font, const char *text, uint32 colour);
+void TTF_CloseFont(TTF_Font *font);
+void TTF_Quit(void);
 
 #endif // NO_TTF

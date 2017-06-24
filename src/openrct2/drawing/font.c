@@ -199,7 +199,7 @@ bool font_supports_string_ttf(const utf8 *text, sint32 fontSize)
 {
 #ifndef NO_TTF
     const utf8 *src = text;
-    const TTFFont *font = gCurrentTTFFontSet->size[fontSize].font;
+    const TTF_Font *font = gCurrentTTFFontSet->size[fontSize].font;
     if (font == NULL) {
         return false;
     }
