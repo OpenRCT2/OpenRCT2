@@ -143,7 +143,6 @@ struct _TTF_Font {
 /* The FreeType font engine/library */
 static FT_Library library;
 static int TTF_initialized = 0;
-static int TTF_byteswapped = 0;
 
 #define TTF_SetError    log_error
 
@@ -261,15 +260,6 @@ static void TTF_drawLine_Solid(const TTF_Font *font, const TTFSurface *textbuf, 
     }
 }
 
-/* This function tells the library whether UNICODE text is generally
-byteswapped.  A UNICODE BOM character at the beginning of a string
-will override this setting for that string.
-*/
-void TTF_ByteSwappedUNICODE(int swapped)
-{
-    TTF_byteswapped = swapped;
-}
-
 static void TTF_SetFTError(const char *msg, FT_Error error)
 {
 #ifdef USE_FREETYPE_ERRORS
@@ -345,7 +335,7 @@ static size_t fsize(FILE * file)
     return size;
 }
 
-TTF_Font* TTF_OpenFontIndexRW(FILE *src, int freesrc, int ptsize, long index)
+static TTF_Font* TTF_OpenFontIndexRW(FILE *src, int freesrc, int ptsize, long index)
 {
     TTF_Font* font;
     FT_Error error;
@@ -515,12 +505,12 @@ TTF_Font* TTF_OpenFontIndexRW(FILE *src, int freesrc, int ptsize, long index)
     return font;
 }
 
-TTF_Font* TTF_OpenFontRW(FILE *src, int freesrc, int ptsize)
+static TTF_Font* TTF_OpenFontRW(FILE *src, int freesrc, int ptsize)
 {
     return TTF_OpenFontIndexRW(src, freesrc, ptsize, 0);
 }
 
-TTF_Font* TTF_OpenFontIndex(const char *file, int ptsize, long index)
+static TTF_Font* TTF_OpenFontIndex(const char *file, int ptsize, long index)
 {
     FILE *rw = fopen(file, "rb");
     if (rw == NULL) {
@@ -927,67 +917,6 @@ void TTF_CloseFont(TTF_Font* font)
     }
 }
 
-/* Gets the number of bytes used by a null terminated UCS2 string */
-static size_t UCS2_len(const uint16 *text)
-{
-    size_t count = 0;
-    while (*text++) {
-        ++count;
-    }
-    return count * sizeof(*text);
-}
-
-/* Convert a Latin-1 string to a UTF-8 string */
-static void LATIN1_to_UTF8(const char *src, uint8 *dst)
-{
-    while (*src) {
-        uint8 ch = *(uint8*)src++;
-        if (ch <= 0x7F) {
-            *dst++ = ch;
-        }
-        else {
-            *dst++ = 0xC0 | ((ch >> 6) & 0x1F);
-            *dst++ = 0x80 | (ch & 0x3F);
-        }
-    }
-    *dst = '\0';
-}
-
-/* Convert a UCS-2 string to a UTF-8 string */
-static void UCS2_to_UTF8(const uint16 *src, uint8 *dst)
-{
-    int swapped = TTF_byteswapped;
-
-    while (*src) {
-        uint16 ch = *(uint16*)src++;
-        if (ch == UNICODE_BOM_NATIVE) {
-            swapped = 0;
-            continue;
-        }
-        if (ch == UNICODE_BOM_SWAPPED) {
-            swapped = 1;
-            continue;
-        }
-        if (swapped) {
-            ch = (ch & 0xFF) << 8 ||
-                 ((ch & 0xFF00) >> 8);
-        }
-        if (ch <= 0x7F) {
-            *dst++ = (uint8)ch;
-        }
-        else if (ch <= 0x7FF) {
-            *dst++ = 0xC0 | (uint8)((ch >> 6) & 0x1F);
-            *dst++ = 0x80 | (uint8)(ch & 0x3F);
-        }
-        else {
-            *dst++ = 0xE0 | (uint8)((ch >> 12) & 0x0F);
-            *dst++ = 0x80 | (uint8)((ch >> 6) & 0x3F);
-            *dst++ = 0x80 | (uint8)(ch & 0x3F);
-        }
-    }
-    *dst = '\0';
-}
-
 /* Gets a unicode value from a UTF-8 encoded string and advance the string */
 #define UNKNOWN_UNICODE 0xFFFD
 static uint32 UTF8_getch(const char **src, size_t *srclen)
@@ -995,6 +924,7 @@ static uint32 UTF8_getch(const char **src, size_t *srclen)
     const uint8 *p = *(const uint8**)src;
     size_t left = 0;
     bool overlong = false;
+    UNUSED(overlong);
     bool underflow = false;
     uint32 ch = UNKNOWN_UNICODE;
 
@@ -1083,94 +1013,9 @@ static uint32 UTF8_getch(const char **src, size_t *srclen)
     return ch;
 }
 
-int TTF_FontHeight(const TTF_Font *font)
-{
-    return(font->height);
-}
-
-int TTF_FontAscent(const TTF_Font *font)
-{
-    return(font->ascent);
-}
-
-int TTF_FontDescent(const TTF_Font *font)
-{
-    return(font->descent);
-}
-
-int TTF_FontLineSkip(const TTF_Font *font)
-{
-    return(font->lineskip);
-}
-
-int TTF_GetFontKerning(const TTF_Font *font)
-{
-    return(font->kerning);
-}
-
-void TTF_SetFontKerning(TTF_Font *font, int allowed)
-{
-    font->kerning = allowed;
-}
-
-long TTF_FontFaces(const TTF_Font *font)
-{
-    return(font->face->num_faces);
-}
-
-int TTF_FontFaceIsFixedWidth(const TTF_Font *font)
-{
-    return(FT_IS_FIXED_WIDTH(font->face));
-}
-
-char *TTF_FontFaceFamilyName(const TTF_Font *font)
-{
-    return(font->face->family_name);
-}
-
-char *TTF_FontFaceStyleName(const TTF_Font *font)
-{
-    return(font->face->style_name);
-}
-
 int TTF_GlyphIsProvided(const TTF_Font *font, codepoint_t ch)
 {
     return(FT_Get_Char_Index(font->face, ch));
-}
-
-int TTF_GlyphMetrics(TTF_Font *font, uint16 ch,
-    int* minx, int* maxx, int* miny, int* maxy, int* advance)
-{
-    FT_Error error;
-
-    error = Find_Glyph(font, ch, CACHED_METRICS);
-    if (error) {
-        TTF_SetFTError("Couldn't find glyph", error);
-        return -1;
-    }
-
-    if (minx) {
-        *minx = font->current->minx;
-    }
-    if (maxx) {
-        *maxx = font->current->maxx;
-        if (TTF_HANDLE_STYLE_BOLD(font)) {
-            *maxx += font->glyph_overhang;
-        }
-    }
-    if (miny) {
-        *miny = font->current->miny;
-    }
-    if (maxy) {
-        *maxy = font->current->maxy;
-    }
-    if (advance) {
-        *advance = font->current->advance;
-        if (TTF_HANDLE_STYLE_BOLD(font)) {
-            *advance += font->glyph_overhang;
-        }
-    }
-    return 0;
 }
 
 int TTF_SizeUTF8(TTF_Font *font, const char *text, int *w, int *h)
@@ -1425,60 +1270,6 @@ static bool CharacterIsDelimiter(char c, const char *delimiters)
     return false;
 }
 
-void TTF_SetFontStyle(TTF_Font* font, int style)
-{
-    int prev_style = font->style;
-    font->style = style | font->face_style;
-
-    /* Flush the cache if the style has changed.
-    * Ignore UNDERLINE which does not impact glyph drawning.
-    * */
-    if ((font->style | TTF_STYLE_NO_GLYPH_CHANGE) != (prev_style | TTF_STYLE_NO_GLYPH_CHANGE)) {
-        Flush_Cache(font);
-    }
-}
-
-int TTF_GetFontStyle(const TTF_Font* font)
-{
-    return font->style;
-}
-
-void TTF_SetFontOutline(TTF_Font* font, int outline)
-{
-    font->outline = outline;
-    Flush_Cache(font);
-}
-
-int TTF_GetFontOutline(const TTF_Font* font)
-{
-    return font->outline;
-}
-
-void TTF_SetFontHinting(TTF_Font* font, int hinting)
-{
-    if (hinting == TTF_HINTING_LIGHT)
-        font->hinting = FT_LOAD_TARGET_LIGHT;
-    else if (hinting == TTF_HINTING_MONO)
-        font->hinting = FT_LOAD_TARGET_MONO;
-    else if (hinting == TTF_HINTING_NONE)
-        font->hinting = FT_LOAD_NO_HINTING;
-    else
-        font->hinting = 0;
-
-    Flush_Cache(font);
-}
-
-int TTF_GetFontHinting(const TTF_Font* font)
-{
-    if (font->hinting == FT_LOAD_TARGET_LIGHT)
-        return TTF_HINTING_LIGHT;
-    else if (font->hinting == FT_LOAD_TARGET_MONO)
-        return TTF_HINTING_MONO;
-    else if (font->hinting == FT_LOAD_NO_HINTING)
-        return TTF_HINTING_NONE;
-    return 0;
-}
-
 void TTF_Quit(void)
 {
     if (TTF_initialized) {
@@ -1486,53 +1277,4 @@ void TTF_Quit(void)
             FT_Done_FreeType(library);
         }
     }
-}
-
-int TTF_WasInit(void)
-{
-    return TTF_initialized;
-}
-
-/* don't use this function. It's just here for binary compatibility. */
-int TTF_GetFontKerningSize(TTF_Font* font, int prev_index, int index)
-{
-    FT_Vector delta;
-    FT_Get_Kerning(font->face, prev_index, index, ft_kerning_default, &delta);
-    return (delta.x >> 6);
-}
-
-int TTF_GetFontKerningSizeGlyphs(TTF_Font *font, uint16 previous_ch, uint16 ch)
-{
-    int error;
-    int glyph_index, prev_index;
-    FT_Vector delta;
-
-    if (ch == UNICODE_BOM_NATIVE || ch == UNICODE_BOM_SWAPPED) {
-        return 0;
-    }
-
-    if (previous_ch == UNICODE_BOM_NATIVE || previous_ch == UNICODE_BOM_SWAPPED) {
-        return 0;
-    }
-
-    error = Find_Glyph(font, ch, CACHED_METRICS);
-    if (error) {
-        TTF_SetFTError("Couldn't find glyph", error);
-        return -1;
-    }
-    glyph_index = font->current->index;
-
-    error = Find_Glyph(font, previous_ch, CACHED_METRICS);
-    if (error) {
-        TTF_SetFTError("Couldn't find glyph", error);
-        return -1;
-    }
-    prev_index = font->current->index;
-
-    error = FT_Get_Kerning(font->face, prev_index, glyph_index, ft_kerning_default, &delta);
-    if (error) {
-        TTF_SetFTError("Couldn't get glyph kerning", error);
-        return -1;
-    }
-    return (delta.x >> 6);
 }
