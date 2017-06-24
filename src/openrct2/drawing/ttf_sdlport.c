@@ -4,6 +4,8 @@
  * removed.
  */
 
+#ifndef NO_TTF
+
 /*
 SDL_ttf:  A companion library to SDL for working with TrueType (tm) fonts
 Copyright (C) 2001-2017 Sam Lantinga <slouken@libsdl.org>
@@ -1278,3 +1280,5 @@ void TTF_Quit(void)
         }
     }
 }
+
+#endif

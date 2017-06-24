@@ -688,8 +688,6 @@ typedef struct text_draw_info {
     const sint8 *y_offset;
 } text_draw_info;
 
-#ifndef NO_TTF
-
 static void ttf_draw_character_sprite(rct_drawpixelinfo *dpi, sint32 codepoint, text_draw_info *info)
 {
     sint32 characterWidth = font_sprite_get_codepoint_width(info->font_sprite_base, codepoint);
@@ -718,6 +716,8 @@ static void ttf_draw_string_raw_sprite(rct_drawpixelinfo *dpi, const utf8 *text,
         ttf_draw_character_sprite(dpi, codepoint, info);
     };
 }
+
+#ifndef NO_TTF
 
 static void ttf_draw_string_raw_ttf(rct_drawpixelinfo *dpi, const utf8 *text, text_draw_info *info)
 {
