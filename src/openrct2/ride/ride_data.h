@@ -103,7 +103,7 @@ typedef struct rct_ride_lift_data {
 } rct_ride_lift_data;
 
 enum {
-    RIDE_TYPE_FLAG4_0 = (1 << 0),
+    RIDE_TYPE_FLAG4_ALLOW_DOORS_ON_TRACK = (1 << 0),
     RIDE_TYPE_FLAG4_MUSIC_ON_DEFAULT = (1 << 1),
     RIDE_TYPE_FLAG4_ALLOW_MUSIC = (1 << 2),
     RIDE_TYPE_FLAG4_HAS_ALTERNATIVE_TRACK_TYPE = (1 << 3),  // Used by the Flying RC, Lay-down RC, Multi-dimension RC

@@ -914,7 +914,7 @@ static bool track_remove_station_element(sint32 x, sint32 y, sint32 z, sint32 di
     return true;
 }
 
-static money32 track_place(sint32 rideIndex, sint32 type, sint32 originX, sint32 originY, sint32 originZ, sint32 direction, sint32 properties_1, sint32 properties_2, sint32 properties_3, sint32 edx_flags, sint32 flags)
+static money32 track_place(sint32 rideIndex, sint32 type, sint32 originX, sint32 originY, sint32 originZ, sint32 direction, sint32 properties_1, sint32 properties_2, sint32 properties_3, sint32 liftHillAndAlternativeState, sint32 flags)
 {
     rct_ride *ride = get_ride(rideIndex);
     if (ride == NULL)
@@ -972,7 +972,7 @@ static money32 track_place(sint32 rideIndex, sint32 type, sint32 originX, sint32
                 return MONEY32_UNDEFINED;
             }
         }
-        if ((edx_flags & (1 << 0)) && !(enabledTrackPieces & (1ULL << TRACK_LIFT_HILL_STEEP)) && !gCheatsEnableChainLiftOnAllTrack) {
+        if ((liftHillAndAlternativeState & CONSTRUCTION_LIFT_HILL_SELECTED) && !(enabledTrackPieces & (1ULL << TRACK_LIFT_HILL_STEEP)) && !gCheatsEnableChainLiftOnAllTrack) {
             if (TrackFlags[type] & TRACK_ELEM_FLAG_0400) {
                 gGameCommandErrorText = STR_TOO_STEEP_FOR_LIFT_HILL;
                 return MONEY32_UNDEFINED;
@@ -1306,7 +1306,7 @@ static money32 track_place(sint32 rideIndex, sint32 type, sint32 originX, sint32
             case TRACK_ELEM_60_DEG_UP_TO_FLAT:
             case TRACK_ELEM_DIAG_25_DEG_UP_TO_FLAT:
             case TRACK_ELEM_DIAG_60_DEG_UP_TO_FLAT:
-                if (!(edx_flags & 1))
+                if (!(liftHillAndAlternativeState & CONSTRUCTION_LIFT_HILL_SELECTED))
                     break;
                 //Fall Through
             case TRACK_ELEM_CABLE_LIFT_HILL:
@@ -1336,7 +1336,7 @@ static money32 track_place(sint32 rideIndex, sint32 type, sint32 originX, sint32
 
         uint8 map_type = direction;
         map_type |= MAP_ELEMENT_TYPE_TRACK;
-        if (edx_flags & 1){
+        if (liftHillAndAlternativeState & CONSTRUCTION_LIFT_HILL_SELECTED){
             map_type |= (1 << 7);
         }
         mapElement->type = map_type;
@@ -1371,8 +1371,8 @@ static money32 track_place(sint32 rideIndex, sint32 type, sint32 originX, sint32
         }
 
         uint8 colour = properties_2;
-        if (edx_flags & (1 << 1)){
-            colour |= (1 << 2);
+        if (liftHillAndAlternativeState & RIDE_TYPE_ALTERNATIVE_TRACK_TYPE){
+            colour |= TRACK_ELEMENT_COLOUR_FLAG_INVERTED;
         }
         mapElement->properties.track.colour |= colour;
 
@@ -2201,7 +2201,7 @@ sint32 track_get_actual_bank(rct_map_element *mapElement, sint32 bank)
 sint32 track_get_actual_bank_2(sint32 rideType, sint32 trackColour, sint32 bank)
 {
     if (RideData4[rideType].flags & RIDE_TYPE_FLAG4_HAS_ALTERNATIVE_TRACK_TYPE) {
-        if (trackColour & 4) {
+        if (trackColour & TRACK_ELEMENT_COLOUR_FLAG_INVERTED) {
             if (bank == TRACK_BANK_NONE) {
                 bank = TRACK_BANK_UPSIDE_DOWN;
             } else if (bank == TRACK_BANK_UPSIDE_DOWN) {

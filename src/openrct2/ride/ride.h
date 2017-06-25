@@ -942,6 +942,8 @@ extern const rct_ride_properties RideProperties[RIDE_TYPE_COUNT];
 #define TURN_MASK_3_ELEMENTS    0x0700
 #define TURN_MASK_4_PLUS_ELEMENTS 0xF800
 
+#define CONSTRUCTION_LIFT_HILL_SELECTED 1
+
 /** Helper macros until rides are stored in this module. */
 rct_ride *get_ride(sint32 index);
 rct_ride_entry *get_ride_entry(sint32 index);
