@@ -411,38 +411,6 @@ sint32 check_file_paths()
     return 1;
 }
 
-void rct2_update()
-{
-    sint32 tickCount = platform_get_ticks();
-    gTicksSinceLastUpdate = min(tickCount - gLastTickCount, 500);
-    gLastTickCount = tickCount;
-    if (game_is_not_paused()) {
-        gPaletteEffectFrame += gTicksSinceLastUpdate;
-    }
-
-    date_update_real_time_of_day();
-
-    // TODO: screenshot countdown process
-
-    // network_update() is called in game_update
-
-    // check_cmdline_arg();
-    // Screens
-    if (gIntroState != INTRO_STATE_NONE) {
-        intro_update();
-    } else if ((gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) && !gOpenRCT2Headless) {
-        title_update();
-    } else {
-        game_update();
-    }
-
-    //stop_completed_sounds(); // removes other sounds that are no longer playing in directsound
-
-    twitch_update();
-    chat_update();
-    console_update();
-}
-
 /**
  *
  *  rct2: 0x00674E6C

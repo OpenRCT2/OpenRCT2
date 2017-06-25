@@ -63,7 +63,6 @@
 #define NUMBER_OF_AUTOSAVES_TO_KEEP 9
 
 uint16 gTicksSinceLastUpdate;
-uint32 gLastTickCount;
 uint8 gGamePaused = 0;
 sint32 gGameSpeed = 1;
 float gDayNightCycle = 0;

@@ -48,11 +48,13 @@ extern "C"
     #include "editor.h"
     #include "game.h"
     #include "interface/chat.h"
+    #include "interface/console.h"
     #include "interface/themes.h"
     #include "intro.h"
     #include "localisation/localisation.h"
     #include "network/http.h"
     #include "network/network.h"
+    #include "network/twitch.h"
     #include "object_list.h"
     #include "platform/platform.h"
     #include "rct1.h"
@@ -80,9 +82,10 @@ namespace OpenRCT2
         ITrackDesignRepository *    _trackDesignRepository = nullptr;
         IScenarioRepository *       _scenarioRepository = nullptr;
 
-        bool _isWindowMinimised = false;
-        uint32 _lastTick = 0;
-        uint32 _accumulator = 0;
+        bool    _isWindowMinimised = false;
+        uint32  _lastTick = 0;
+        uint32  _accumulator = 0;
+        uint32  _lastUpdateTick = 0;
 
         /** If set, will end the OpenRCT2 game loop. Intentially private to this module so that the flag can not be set back to false. */
         bool _finished = false;
@@ -178,7 +181,7 @@ namespace OpenRCT2
 
             if (!gOpenRCT2Headless)
             {
-                GetContext()->GetUiContext()->CreateWindow();
+                _uiContext->CreateWindow();
             }
 
             // TODO add configuration option to allow multiple instances
@@ -404,7 +407,7 @@ namespace OpenRCT2
             _lastTick = currentTick;
             _accumulator += elapsed;
 
-            GetContext()->GetUiContext()->ProcessMessages();
+            _uiContext->ProcessMessages();
 
             if (_accumulator < UPDATE_TIME_MS)
             {
@@ -414,7 +417,7 @@ namespace OpenRCT2
 
             _accumulator -= UPDATE_TIME_MS;
 
-            rct2_update();
+            Update();
             if (!_isWindowMinimised && !gOpenRCT2Headless)
             {
                 platform_draw();
@@ -442,7 +445,7 @@ namespace OpenRCT2
             _lastTick = currentTick;
             _accumulator += elapsed;
 
-            GetContext()->GetUiContext()->ProcessMessages();
+            _uiContext->ProcessMessages();
 
             while (_accumulator >= UPDATE_TIME_MS)
             {
@@ -450,7 +453,7 @@ namespace OpenRCT2
                 if(draw)
                     sprite_position_tween_store_a();
 
-                rct2_update();
+                Update();
 
                 _accumulator -= UPDATE_TIME_MS;
 
@@ -468,6 +471,37 @@ namespace OpenRCT2
 
                 sprite_position_tween_restore();
             }
+        }
+
+        void Update()
+        {
+            uint32 currentUpdateTick = platform_get_ticks();
+            gTicksSinceLastUpdate = std::min<uint32>(currentUpdateTick - _lastUpdateTick, 500);
+            _lastUpdateTick = currentUpdateTick;
+            
+            if (game_is_not_paused())
+            {
+                gPaletteEffectFrame += gTicksSinceLastUpdate;
+            }
+
+            date_update_real_time_of_day();
+
+            if (gIntroState != INTRO_STATE_NONE)
+            {
+                intro_update();
+            }
+            else if ((gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) && !gOpenRCT2Headless)
+            {
+                title_update();
+            }
+            else
+            {
+                game_update();
+            }
+
+            twitch_update();
+            chat_update();
+            console_update();
         }
 
         bool OpenParkAutoDetectFormat(IStream * stream)

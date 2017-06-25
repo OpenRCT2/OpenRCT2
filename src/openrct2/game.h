@@ -143,7 +143,6 @@ extern uint32 gCurrentTicks;
 #endif
 
 extern uint16 gTicksSinceLastUpdate;
-extern uint32 gLastTickCount;
 extern uint8 gGamePaused;
 extern sint32 gGameSpeed;
 extern float gDayNightCycle;
