@@ -213,7 +213,7 @@ sint32 calculate_park_rating()
         sint32 num_lost_guests;
 
         // -150 to +3 based on a range of guests from 0 to 2000
-        result -= 150 - (Math::Min((uint16)2000, gNumGuestsInPark) / 13);
+        result -= 150 - (std::min<sint16>(2000, gNumGuestsInPark) / 13);
 
         // Find the number of happy peeps and the number of peeps who can't find the park exit
         num_happy_peeps = 0;
@@ -231,7 +231,7 @@ sint32 calculate_park_rating()
         result -= 500;
 
         if (gNumGuestsInPark > 0)
-            result += 2 * Math::Min(250, (num_happy_peeps * 300) / gNumGuestsInPark);
+            result += 2 * std::min(250, (num_happy_peeps * 300) / gNumGuestsInPark);
 
         // Up to 25 guests can be lost without affecting the park rating.
         if (num_lost_guests > 25)
@@ -281,13 +281,13 @@ sint32 calculate_park_rating()
                 average_intensity = -average_intensity;
             }
 
-            average_excitement = Math::Min((average_excitement / 2), 50);
-            average_intensity = Math::Min((average_intensity / 2), 50);
+            average_excitement = std::min(average_excitement / 2, 50);
+            average_intensity = std::min(average_intensity / 2, 50);
             result += 100 - average_excitement - average_intensity;
         }
 
-        total_ride_excitement = Math::Min(1000, total_ride_excitement);
-        total_ride_intensity = Math::Min(1000, total_ride_intensity);
+        total_ride_excitement = std::min<sint16>(1000, total_ride_excitement);
+        total_ride_intensity = std::min<sint16>(1000, total_ride_intensity);
         result -= 200 - ((total_ride_excitement + total_ride_intensity) / 10);
     }
 
@@ -305,7 +305,7 @@ sint32 calculate_park_rating()
             if (litter->creationTick - gScenarioTicks >= 7680)
                 num_litter++;
         }
-        result -= 600 - (4 * (150 - Math::Min((sint16)150, num_litter)));
+        result -= 600 - (4 * (150 - std::min<sint16>(150, num_litter)));
     }
 
     result -= gParkRatingCasualtyPenalty;
@@ -407,7 +407,7 @@ static sint32 park_calculate_guest_generation_probability()
 
     // If difficult guest generation, extra guests are available for good rides
     if (gParkFlags & PARK_FLAGS_DIFFICULT_GUEST_GENERATION) {
-        suggestedMaxGuests = Math::Min(suggestedMaxGuests, 1000);
+        suggestedMaxGuests = std::min(suggestedMaxGuests, 1000);
         FOR_ALL_RIDES(i, ride) {
             if (ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)
                 continue;
@@ -430,12 +430,12 @@ static sint32 park_calculate_guest_generation_probability()
         }
     }
 
-    suggestedMaxGuests = Math::Min(suggestedMaxGuests, 65535);
+    suggestedMaxGuests = std::min(suggestedMaxGuests, 65535);
     gTotalRideValueForMoney = totalRideValueForMoney;
     _suggestedGuestMaximum = suggestedMaxGuests;
 
     // Begin with 50 + park rating
-    probability = 50 + Math::Clamp(0u, gParkRating - 200u, 650u);
+    probability = 50 + Math::Clamp(0, gParkRating - 200, 650);
 
     // The more guests, the lower the chance of a new one
     sint32 numGuests = gNumGuestsInPark + gNumGuestsHeadingForPark;
@@ -623,7 +623,7 @@ void park_update_histories()
     // Update guests in park history
     for (sint32 i = 31; i > 0; i--)
         gGuestsInParkHistory[i] = gGuestsInParkHistory[i - 1];
-    gGuestsInParkHistory[0] = Math::Min(guestsInPark, 5000) / 20;
+    gGuestsInParkHistory[0] = std::min(guestsInPark, 5000) / 20;
     window_invalidate_by_class(WC_PARK_INFORMATION);
 
     // Update current cash history
@@ -1035,4 +1035,41 @@ bool park_entry_price_unlocked()
         return true;
     }
     return false;
+}
+
+using namespace OpenRCT2;
+
+uint16 Park::GetParkRating() const
+{
+    return gParkRating;
+}
+
+money32 Park::GetParkValue() const
+{
+    return gParkValue;
+}
+
+money32 Park::GetCompanyValue() const
+{
+    return gCompanyValue;
+}
+
+void Park::Update()
+{
+    park_update();
+}
+
+sint32 Park::CalculateParkRating() const
+{
+    return calculate_park_rating();
+}
+
+money32 Park::CalculateParkValue() const
+{
+    return calculate_park_value();
+}
+
+money32 Park::CalculateCompanyValue() const
+{
+    return calculate_company_value();
 }

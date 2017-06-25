@@ -14,10 +14,10 @@
  *****************************************************************************/
 #pragma endregion
 
-#ifndef _PARK_H_
-#define _PARK_H_
+#pragma once
 
 #include "../common.h"
+#include "Map.h"
 
 #define DECRYPT_MONEY(money) ((money32)rol32((money) ^ 0xF4EC9621, 13))
 #define ENCRYPT_MONEY(money) ((money32)(ror32((money), 13) ^ 0xF4EC9621))
@@ -48,6 +48,24 @@ enum : uint32
     PARK_FLAGS_SIX_FLAGS_DEPRECATED = (1 << 19), // Not used anymore
     PARK_FLAGS_UNLOCK_ALL_PRICES = (1u << 31), // OpenRCT2 only!
 };
+
+namespace OpenRCT2
+{
+    class Park final
+    {
+    public:
+        uint16  GetParkRating() const;
+        money32 GetParkValue() const;
+        money32 GetCompanyValue() const;
+
+        void Update();
+
+    private:
+        sint32  CalculateParkRating() const;
+        money32 CalculateParkValue() const;
+        money32 CalculateCompanyValue() const;
+    };
+}
 
 enum
 {
@@ -117,5 +135,3 @@ money16 park_get_entrance_fee();
 
 bool park_ride_prices_unlocked();
 bool park_entry_price_unlocked();
-
-#endif
