@@ -1220,7 +1220,7 @@ void window_staff_viewport_init(rct_window* w){
     rct_peep* peep = GET_PEEP(w->number);
 
     if (peep->state == PEEP_STATE_PICKED){
-        focus.sprite_id = -1;
+        focus.sprite_id = SPR_NONE;
     }
     else{
         focus.type |= VIEWPORT_FOCUS_TYPE_SPRITE | VIEWPORT_FOCUS_TYPE_COORDINATE;

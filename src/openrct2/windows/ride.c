@@ -1777,7 +1777,7 @@ static void window_ride_init_viewport(rct_window *w)
     focus.coordinate.x = 0;
     focus.coordinate.y = 0;
     focus.coordinate.z = 0;
-    focus.sprite.sprite_id = -1;
+    focus.sprite.sprite_id = SPR_NONE;
     focus.coordinate.zoom = 0;
     focus.coordinate.rotation = get_current_rotation();
     focus.coordinate.width = 0;
