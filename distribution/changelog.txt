@@ -18,6 +18,7 @@
 - Fix: [#4055] Sort rides by track type: Sorting rule is not really clear (inconsistent?)
 - Fix: [#5400] New Ride window does not focus properly on newly invented ride.
 - Fix: [#5009] Ride rating calculations can overflow
+- Fix: [#5489] Sprite index crash for car view on car ride.
 - Fix: Non-invented vehicles can be used via track designs in select-by-track-type mode.
 - Fix: Track components added by OpenRCT2 are now usable in older scenarios.
 - Technical: [#5047] Add ride ratings tests
