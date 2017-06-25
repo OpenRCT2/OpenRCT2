@@ -26,7 +26,6 @@
 #include "../rct2.h"
 #include "../ride/ride_data.h"
 #include "../ride/track_data.h"
-#include "../sprites.h"
 #include "../world/banner.h"
 #include "../world/Climate.h"
 #include "../world/entrance.h"
@@ -193,7 +192,7 @@ void viewport_create(rct_window *w, sint32 x, sint32 y, sint32 width, sint32 hei
         center_z = center_sprite->unknown.z;
     }
     else{
-        w->viewport_target_sprite = SPR_NONE;
+        w->viewport_target_sprite = SPRITE_INDEX_NULL;
     }
 
     sint32 view_x, view_y;
@@ -520,7 +519,7 @@ void viewport_update_position(rct_window *window)
     rct_viewport* viewport = window->viewport;
     if (!viewport)return;
 
-    if (window->viewport_target_sprite != SPR_NONE) {
+    if (window->viewport_target_sprite != SPRITE_INDEX_NULL) {
         viewport_update_sprite_follow(window);
         return;
     }
@@ -605,7 +604,7 @@ void viewport_update_position(rct_window *window)
 
 void viewport_update_sprite_follow(rct_window *window)
 {
-    if (window->viewport_target_sprite != SPR_NONE && window->viewport) {
+    if (window->viewport_target_sprite != SPRITE_INDEX_NULL && window->viewport) {
         rct_sprite* sprite = get_sprite(window->viewport_target_sprite);
 
         sint32 height = (map_element_height(0xFFFF & sprite->unknown.x, 0xFFFF & sprite->unknown.y) & 0xFFFF) - 16;

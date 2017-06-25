@@ -34,7 +34,6 @@
 #include "../platform/platform.h"
 #include "../rct1.h"
 #include "../ride/ride.h"
-#include "../sprites.h"
 #include "../util/sawyercoding.h"
 #include "../util/util.h"
 #include "../world/Climate.h"
@@ -148,7 +147,7 @@ void scenario_begin()
     game_create_windows();
     mainWindow = window_get_main();
 
-    mainWindow->viewport_target_sprite = SPR_NONE;
+    mainWindow->viewport_target_sprite = SPRITE_INDEX_NULL;
     mainWindow->saved_view_x = gSavedViewX;
     mainWindow->saved_view_y = gSavedViewY;
 

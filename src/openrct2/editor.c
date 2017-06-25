@@ -33,7 +33,6 @@
 #include "rct2/addresses.h"
 #include "ride/ride.h"
 #include "scenario/scenario.h"
-#include "sprites.h"
 #include "util/sawyercoding.h"
 #include "util/util.h"
 #include "world/Climate.h"
@@ -409,7 +408,7 @@ static void editor_finalise_main_view()
     rct_window *w = window_get_main();
     rct_viewport *viewport = w->viewport;
 
-    w->viewport_target_sprite = SPR_NONE;
+    w->viewport_target_sprite = SPRITE_INDEX_NULL;
     w->saved_view_x = gSavedViewX;
     w->saved_view_y = gSavedViewY;
     gCurrentRotation = gSavedViewRotation;

@@ -719,7 +719,7 @@ void window_guest_viewport_init(rct_window* w){
     rct_peep* peep = GET_PEEP(w->number);
 
     if (peep->state == PEEP_STATE_PICKED){
-        focus.sprite.sprite_id = SPR_NONE;
+        focus.sprite.sprite_id = SPRITE_INDEX_NULL;
     }
     else{
         uint8 final_check = 1;

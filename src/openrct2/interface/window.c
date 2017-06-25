@@ -27,7 +27,6 @@
 #include "../localisation/localisation.h"
 #include "../localisation/string_ids.h"
 #include "../platform/platform.h"
-#include "../sprites.h"
 #include "../world/map.h"
 #include "../world/sprite.h"
 #include "viewport.h"
@@ -1403,7 +1402,7 @@ void window_scroll_to_location(rct_window *w, sint32 x, sint32 y, sint32 z)
             }
         }
         // rct2: 0x006E7C76
-        if (w->viewport_target_sprite == SPR_NONE) {
+        if (w->viewport_target_sprite == SPRITE_INDEX_NULL) {
             if (!(w->flags & WF_NO_SCROLLING)) {
                 w->saved_view_x = map_coordinate.x - (sint16)(w->viewport->view_width * window_scroll_locations[i][0]);
                 w->saved_view_y = map_coordinate.y - (sint16)(w->viewport->view_height * window_scroll_locations[i][1]);
