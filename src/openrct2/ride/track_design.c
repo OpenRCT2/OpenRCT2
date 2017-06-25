@@ -59,7 +59,7 @@ static uint8 _trackDesignPlaceOperation;
 static bool _trackDesignDontPlaceScenery;
 static money32 _trackDesignPlaceCost;
 static sint16 _trackDesignPlaceZ;
-static sint16 word_F44129;
+static sint16 _trackDesignPlaceSceneryZ;
 
 static rct_track_td6 *track_design_open_from_buffer(uint8 *src, size_t srcLength);
 static map_backup *track_design_preview_backup_map();
@@ -696,8 +696,8 @@ static sint32 track_design_place_scenery(rct_td6_scenery_element *scenery_start,
 
             if (_trackDesignPlaceOperation == PTD_OPERATION_GET_PLACE_Z) {
                 sint32 z = scenery->z * 8 + _trackDesignPlaceZ;
-                if (z < word_F44129) {
-                    word_F44129 = z;
+                if (z < _trackDesignPlaceSceneryZ) {
+                    _trackDesignPlaceSceneryZ = z;
                 }
             }
 
@@ -1281,7 +1281,7 @@ sint32 place_virtual_track(rct_track_td6 *td6, uint8 bl, uint8 rideIndex, sint32
     gTrackPreviewMin = (rct_xyz16){ x, y, z };
     gTrackPreviewMax = (rct_xyz16){ x, y, z };
 
-    word_F44129 = 0;
+    _trackDesignPlaceSceneryZ = 0;
     uint8 track_place_success = 0;
     if (td6->type == RIDE_TYPE_MAZE) {
         track_place_success = track_design_place_maze(td6, x, y, z, rideIndex);
@@ -1311,8 +1311,11 @@ sint32 place_virtual_track(rct_track_td6 *td6, uint8 bl, uint8 rideIndex, sint32
         map_invalidate_map_selection_tiles();
     }
 
-    if (bl == 3) {
-        return _trackDesignPlaceZ;
+    if (bl == 3)
+    {
+        // Change from vanilla: originally, _trackDesignPlaceSceneryZ was not subtracted
+        // from _trackDesignPlaceZ, causing bug #259.
+        return _trackDesignPlaceZ - _trackDesignPlaceSceneryZ;
     }
     return _trackDesignPlaceCost;
 }
@@ -1368,7 +1371,7 @@ static bool track_design_place_preview(rct_track_td6 *td6, money32 *cost, uint8 
         *flags |= TRACK_DESIGN_FLAG_HAS_SCENERY;
     }
 
-    z += 16 - word_F44129;
+    z += 16 - _trackDesignPlaceSceneryZ;
 
     sint32 operation = PTD_OPERATION_GET_COST;
     if (byte_F4414E & BYTE_F4414E_SCENERY_UNAVAILABLE) {
