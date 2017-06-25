@@ -104,7 +104,11 @@ set(LANGUAGEPACK_TEST_SOURCES
         "${ROOT_DIR}/src/openrct2/localisation/LanguagePack.cpp"
         )
 add_executable(test_languagepack ${LANGUAGEPACK_TEST_SOURCES})
-target_link_libraries(test_languagepack ${GTEST_LIBRARIES} test-common dl z SDL2)
+if (UNIX AND NOT ${CMAKE_SYSTEM_NAME} MATCHES "BSD")
+    # Include libdl for dlopen
+    set(LDL dl)
+endif ()
+target_link_libraries(test_languagepack ${GTEST_LIBRARIES} test-common ${LDL} z SDL2)
 add_test(NAME languagepack COMMAND test_languagepack)
 
 # INI test
@@ -117,7 +121,7 @@ set(INI_TEST_SOURCES
         "${ROOT_DIR}/src/openrct2/core/MemoryStream.cpp"
         )
 add_executable(test_ini ${INI_TEST_SOURCES})
-target_link_libraries(test_ini ${GTEST_LIBRARIES} test-common dl z)
+target_link_libraries(test_ini ${GTEST_LIBRARIES} test-common ${LDL} z)
 add_test(NAME ini COMMAND test_ini)
 
 # String test
@@ -125,7 +129,7 @@ set(STRING_TEST_SOURCES
         "${CMAKE_CURRENT_LIST_DIR}/StringTest.cpp"
         )
 add_executable(test_string ${STRING_TEST_SOURCES})
-target_link_libraries(test_string ${GTEST_LIBRARIES} test-common dl z)
+target_link_libraries(test_string ${GTEST_LIBRARIES} test-common ${LDL} z)
 add_test(NAME string COMMAND test_string)
 
 if (NOT DISABLE_RCT2_TESTS)
@@ -133,13 +137,13 @@ if (NOT DISABLE_RCT2_TESTS)
     set(RIDE_RATINGS_TEST_SOURCES "${CMAKE_CURRENT_LIST_DIR}/RideRatings.cpp"
                                   "${CMAKE_CURRENT_LIST_DIR}/TestData.cpp")
     add_executable(test_ride_ratings ${RIDE_RATINGS_TEST_SOURCES})
-    target_link_libraries(test_ride_ratings ${GTEST_LIBRARIES} libopenrct2 dl z)
+    target_link_libraries(test_ride_ratings ${GTEST_LIBRARIES} libopenrct2 ${LDL} z)
     add_test(NAME ride_ratings COMMAND test_ride_ratings)
 
     # Multi-launch test
     set(MULTILAUNCH_TEST_SOURCES "${CMAKE_CURRENT_LIST_DIR}/MultiLaunch.cpp"
                                  "${CMAKE_CURRENT_LIST_DIR}/TestData.cpp")
     add_executable(test_multilaunch ${MULTILAUNCH_TEST_SOURCES})
-    target_link_libraries(test_multilaunch ${GTEST_LIBRARIES} libopenrct2 dl z)
+    target_link_libraries(test_multilaunch ${GTEST_LIBRARIES} libopenrct2 ${LDL} z)
     add_test(NAME multilaunch COMMAND test_multilaunch)
 endif ()
