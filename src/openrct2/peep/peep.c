@@ -8649,7 +8649,7 @@ static sint32 path_get_permitted_edges(rct_map_element *mapElement)
     return banner_clear_path_edges(mapElement, mapElement->properties.path.edges) & 0x0F;
 }
 
-static bool is_valid_path_z_and_direction(rct_map_element *mapElement, sint32 currentZ, sint32 currentDirection)
+bool is_valid_path_z_and_direction(rct_map_element *mapElement, sint32 currentZ, sint32 currentDirection)
 {
     if (footpath_element_is_sloped(mapElement)) {
         sint32 slopeDirection = footpath_element_get_slope_direction(mapElement);
@@ -9112,9 +9112,13 @@ static void peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_peep
             z = mapElement->base_height;
 
             if (footpath_element_is_wide(mapElement)) {
-                searchResult = PATH_SEARCH_WIDE;
-                found = true;
-                break;
+                /* Check if staff can ignore this wide flag. */
+                if (!staff_can_ignore_wide_flag(peep, x, y, z, mapElement))
+                {
+                    searchResult = PATH_SEARCH_WIDE;
+                    found = true;
+                    break;
+                }
             }
 
             searchResult = PATH_SEARCH_THIN;
@@ -9216,32 +9220,17 @@ static void peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_peep
 
         /* If this is a wide path the search ends here. */
         if (searchResult == PATH_SEARCH_WIDE) {
-            /* Ignore Wide paths as continuing paths UNLESS:
-             * 1. the current path is also Wide, OR
-             * 2. peep is a mechanic and the wide path is on the
-             *   edge of their patrol zone.
-             *
-             * Case 1 permits a peep currently on a wide path to
+            /* Ignore Wide paths as continuing paths UNLESS
+             * the current path is also Wide.
+             * This permits a peep currently on a wide path to
              * cross other wide paths to reach a thin path.
-             * Case 2 permits mechanics with a patrol zone to
-             * cross wide paths at the zone edge - wide paths could
-             * otherwise fence a mechanic into one part of their
-             * patrol zone.
              *
-             * So, if the current path is also wide or on the edge
-             * of a mechanic's patrol zone the goal could still be
-             * reachable from here.
+             * So, if the current path is also wide the goal could
+             * still be reachable from here.
              * If the search result is better than the best so far
              * (in the parameters), then update the parameters with
              * this search before continuing to the next map element. */
-            if ((
-                // Case 1 as described above.
-                footpath_element_is_wide(currentMapElement) ||
-                ( // Case 2 as described above.
-                    peep->type == PEEP_TYPE_STAFF &&
-                    peep->staff_type == STAFF_TYPE_MECHANIC &&
-                    staff_is_location_on_patrol_edge(peep, x, y))
-                ) &&
+            if (footpath_element_is_wide(currentMapElement) &&
                 (new_score < *endScore || (new_score == *endScore && counter < *endSteps ))) {
                 // Update the search results
                 *endScore = new_score;
