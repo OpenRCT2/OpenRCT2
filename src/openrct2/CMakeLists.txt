@@ -4,9 +4,6 @@ if (CMAKE_BINARY_DIR STREQUAL CMAKE_SOURCE_DIR)
     message(FATAL_ERROR "Building in-source is not supported! Create a build dir and remove ${CMAKE_SOURCE_DIR}/CMakeCache.txt")
 endif ()
 
-# CMake dependencies
-include(FindPkgConfig)
-
 # Options
 option(STATIC "Create a static build.")
 option(USE_MMAP "Use mmap to try loading rct2's data segment into memory.")
@@ -55,9 +52,6 @@ if (NOT DISABLE_NETWORK)
     find_package(OpenSSL 1.0.0 REQUIRED)
 endif ()
 
-# Third party libraries (which we want to eventually remove from libopenrct2)
-PKG_CHECK_MODULES(SDL2 REQUIRED sdl2)
-PKG_CHECK_MODULES(SPEEX REQUIRED speexdsp)
 if (NOT DISABLE_TTF)
     if (UNIX AND NOT APPLE)
         PKG_CHECK_MODULES(FONTCONFIG REQUIRED fontconfig)
@@ -150,16 +144,12 @@ endif ()
 
 # Libraries
 if (STATIC)
-    target_link_libraries(${PROJECT} ${SDL2_STATIC_LIBRARIES}
-                                     ${JANSSON_STATIC_LIBRARIES}
-                                     ${SPEEX_STATIC_LIBRARIES}
+    target_link_libraries(${PROJECT} ${JANSSON_STATIC_LIBRARIES}
                                      ${PNG_STATIC_LIBRARIES}
                                      ${ZLIB_STATIC_LIBRARIES}
                                      ${LIBZIP_STATIC_LIBRARIES})
 else ()
-    target_link_libraries(${PROJECT} ${SDL2_LIBRARIES}
-                                     ${JANSSON_LIBRARIES}
-                                     ${SPEEX_LIBRARIES}
+    target_link_libraries(${PROJECT} ${JANSSON_LIBRARIES}
                                      ${PNG_LIBRARIES}
                                      ${ZLIB_LIBRARIES}
                                      ${LIBZIP_LIBRARIES})
@@ -204,10 +194,7 @@ endif()
 
 # Includes
 target_include_directories(${PROJECT} SYSTEM PRIVATE ${LIBZIP_INCLUDE_DIRS})
-target_include_directories(${PROJECT} PRIVATE ${SDL2_INCLUDE_DIRS}
-                                              ${FREETYPE_INCLUDE_DIRS}
-                                              ${JANSSON_INCLUDE_DIRS}
-                                              ${SPEEX_INCLUDE_DIRS}
+target_include_directories(${PROJECT} PRIVATE ${JANSSON_INCLUDE_DIRS}
                                               ${PNG_INCLUDE_DIRS}
                                               ${ZLIB_INCLUDE_DIRS})
 if (NOT DISABLE_HTTP_TWITCH OR NOT DISABLE_NETWORK)
@@ -216,8 +203,11 @@ endif ()
 if (NOT DISABLE_NETWORK)
     target_include_directories(${PROJECT} PUBLIC ${OPENSSL_INCLUDE_DIR})
 endif ()
-if (NOT DISABLE_TTF AND UNIX AND NOT APPLE)
-    target_include_directories(${PROJECT} PRIVATE ${FONTCONFIG_INCLUDE_DIRS})
+if (NOT DISABLE_TTF)
+    target_include_directories(${PROJECT} PRIVATE ${FREETYPE_INCLUDE_DIRS})
+    if (UNIX AND NOT APPLE)
+        target_include_directories(${PROJECT} PRIVATE ${FONTCONFIG_INCLUDE_DIRS})
+    endif ()
 endif ()
 
 if(APPLE)
