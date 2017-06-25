@@ -1306,7 +1306,7 @@ static money32 track_place(sint32 rideIndex, sint32 type, sint32 originX, sint32
             case TRACK_ELEM_60_DEG_UP_TO_FLAT:
             case TRACK_ELEM_DIAG_25_DEG_UP_TO_FLAT:
             case TRACK_ELEM_DIAG_60_DEG_UP_TO_FLAT:
-                if (!(liftHillAndAlternativeState & 1))
+                if (!(liftHillAndAlternativeState & CONSTRUCTION_LIFT_HILL_SELECTED))
                     break;
                 //Fall Through
             case TRACK_ELEM_CABLE_LIFT_HILL:
@@ -1336,7 +1336,7 @@ static money32 track_place(sint32 rideIndex, sint32 type, sint32 originX, sint32
 
         uint8 map_type = direction;
         map_type |= MAP_ELEMENT_TYPE_TRACK;
-        if (liftHillAndAlternativeState & 1){
+        if (liftHillAndAlternativeState & CONSTRUCTION_LIFT_HILL_SELECTED){
             map_type |= (1 << 7);
         }
         mapElement->type = map_type;
@@ -1371,8 +1371,8 @@ static money32 track_place(sint32 rideIndex, sint32 type, sint32 originX, sint32
         }
 
         uint8 colour = properties_2;
-        if (liftHillAndAlternativeState & (1 << 1)){
-            colour |= (1 << 2);
+        if (liftHillAndAlternativeState & RIDE_TYPE_ALTERNATIVE_TRACK_TYPE){
+            colour |= TRACK_ELEMENT_COLOUR_FLAG_INVERTED;
         }
         mapElement->properties.track.colour |= colour;
 
