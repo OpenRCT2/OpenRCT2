@@ -58,6 +58,7 @@
 		C64FDAA71D6D9A2100F259B9 /* boat_ride.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F9031CDBC3B7009F9BFC /* boat_ride.c */; };
 		C64FDAA81D6D9A2100F259B9 /* dingy_slide.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F9041CDBC3B7009F9BFC /* dingy_slide.c */; };
 		C64FDAA91D6D9A2100F259B9 /* log_flume.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F9051CDBC3B7009F9BFC /* log_flume.c */; };
+		C6CB94F21EFFBF860065888F /* libfreetype.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D45A38B41CF3006400659A24 /* libfreetype.dylib */; };
 		C6E96E361E0408B40076A04F /* libzip.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C6E96E351E0408B40076A04F /* libzip.dylib */; };
 		C6E96E371E040E040076A04F /* libzip.dylib in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C6E96E351E0408B40076A04F /* libzip.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		D41B73EF1C2101890080A7B9 /* libcurl.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D41B73EE1C2101890080A7B9 /* libcurl.tbd */; };
@@ -66,7 +67,6 @@
 		D43407E21D0E14CE00C2B3D4 /* shaders in Resources */ = {isa = PBXBuildFile; fileRef = D43407E11D0E14CE00C2B3D4 /* shaders */; };
 		D45A38BC1CF3006400659A24 /* libcrypto.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D45A38B31CF3006400659A24 /* libcrypto.dylib */; };
 		D45A38BE1CF3006400659A24 /* libjansson.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D45A38B51CF3006400659A24 /* libjansson.dylib */; };
-		D45A38C01CF3006400659A24 /* libSDL2_ttf.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D45A38B71CF3006400659A24 /* libSDL2_ttf.dylib */; };
 		D45A38C11CF3006400659A24 /* libSDL2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D45A38B81CF3006400659A24 /* libSDL2.dylib */; };
 		D45A38C21CF3006400659A24 /* libspeexdsp.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D45A38B91CF3006400659A24 /* libspeexdsp.dylib */; };
 		D45A39591CF300AF00659A24 /* libcrypto.dylib in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D45A38B31CF3006400659A24 /* libcrypto.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
@@ -466,8 +466,6 @@
 		F7D7749B1EC6705F00BE6EBC /* libspeexdsp.dylib in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D45A38B91CF3006400659A24 /* libspeexdsp.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		F7D7749C1EC6705F00BE6EBC /* libzip.dylib in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C6E96E351E0408B40076A04F /* libzip.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		F7D7749E1EC6713200BE6EBC /* Cli.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C857D1EC4E80E00FA49E2 /* Cli.cpp */; };
-		F7D7749F1EC6714C00BE6EBC /* libSDL2_ttf.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D45A38B71CF3006400659A24 /* libSDL2_ttf.dylib */; };
-		F7D774A01EC6714C00BE6EBC /* libSDL2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D45A38B81CF3006400659A24 /* libSDL2.dylib */; };
 		F7D774A11EC6715C00BE6EBC /* libSDL2_ttf.dylib in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D45A38B71CF3006400659A24 /* libSDL2_ttf.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		F7D774A21EC6715C00BE6EBC /* libSDL2.dylib in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D45A38B81CF3006400659A24 /* libSDL2.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		F7D774AC1EC6741D00BE6EBC /* language in CopyFiles */ = {isa = PBXBuildFile; fileRef = D4EC48E41C2637710024B507 /* language */; };
@@ -1378,7 +1376,7 @@
 				D45A38BE1CF3006400659A24 /* libjansson.dylib in Frameworks */,
 				D4A8B4B41DB41873007A2F29 /* libpng16.dylib in Frameworks */,
 				D45A38C11CF3006400659A24 /* libSDL2.dylib in Frameworks */,
-				D45A38C01CF3006400659A24 /* libSDL2_ttf.dylib in Frameworks */,
+				C6CB94F21EFFBF860065888F /* libfreetype.dylib in Frameworks */,
 				D45A38C21CF3006400659A24 /* libspeexdsp.dylib in Frameworks */,
 				C6E96E361E0408B40076A04F /* libzip.dylib in Frameworks */,
 			);
@@ -1396,8 +1394,6 @@
 				F7D774921EC66FBA00BE6EBC /* libfreetype.dylib in Frameworks */,
 				F7D774931EC66FBA00BE6EBC /* libjansson.dylib in Frameworks */,
 				F7D774941EC66FBA00BE6EBC /* libpng16.dylib in Frameworks */,
-				F7D774A01EC6714C00BE6EBC /* libSDL2.dylib in Frameworks */,
-				F7D7749F1EC6714C00BE6EBC /* libSDL2_ttf.dylib in Frameworks */,
 				F7D774951EC66FBA00BE6EBC /* libspeexdsp.dylib in Frameworks */,
 				F7D774961EC66FBA00BE6EBC /* libzip.dylib in Frameworks */,
 			);
