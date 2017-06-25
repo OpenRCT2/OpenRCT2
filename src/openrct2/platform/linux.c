@@ -18,7 +18,7 @@
 
 // Despite the name, this file contains support for more OSs besides Linux, provided the necessary ifdefs remain small.
 // Otherwise, they should be spun off into their own files.
-#if (defined(__linux__) || defined(__FREEBSD__)) && !defined(__ANDROID__)
+#if (defined(__linux__) || defined(__FREEBSD__) || defined(__OpenBSD__)) && !defined(__ANDROID__)
 
 #ifdef __FREEBSD__
 #include <sys/sysctl.h>
@@ -56,6 +56,8 @@ void platform_get_exe_path(utf8 *outPath, size_t outSize)
         log_fatal("failed to get process path");
 
     }
+#elif defined(__OpenBSD__)
+    strlcpy(exePath, "/usr/local/bin/", sizeof(exePath));
 #else
 #error "Platform does not support full path exe retrieval"
 #endif

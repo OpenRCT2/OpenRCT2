@@ -1372,7 +1372,7 @@ sint32 win1252_to_utf8(utf8string dst, const char *src, size_t srcLength, size_t
     //log_warning("converting %s of size %d", src, srcLength);
     char *buffer_conv = strndup(src, srcLength);
     char *buffer_orig = buffer_conv;
-    const char *to_charset = "UTF8";
+    const char *to_charset = "UTF-8";
     const char *from_charset = "CP1252";
     iconv_t cd = iconv_open(to_charset, from_charset);
     if ((iconv_t)-1 == cd)
