@@ -135,56 +135,6 @@ void rct2_quit()
     window_save_prompt_open();
 }
 
-void rct2_dispose()
-{
-    object_manager_unload_all_objects();
-    gfx_object_check_all_images_freed();
-    gfx_unload_g2();
-    gfx_unload_g1();
-}
-
-bool rct2_init()
-{
-    log_verbose("initialising game");
-
-    gScenarioTicks = 0;
-    util_srand((uint32)time(0));
-
-    input_reset_place_obj_modifier();
-
-    if (!gOpenRCT2NoGraphics) {
-        if (!gfx_load_g1()) {
-            return false;
-        }
-        if (!gfx_load_g2()) {
-            return false;
-        }
-        gfx_load_csg();
-
-        font_sprite_initialise_characters();
-    }
-
-    if (!gOpenRCT2Headless) {
-        // platform_init();
-        audio_init_ride_sounds_and_info();
-    }
-    viewport_init_all();
-
-    game_init_all(150);
-    if (!gOpenRCT2Headless)
-        window_title_menu_open();
-
-    if (!gOpenRCT2NoGraphics) {
-        load_palette();
-#ifdef __ENABLE_LIGHTFX__
-        lightfx_init();
-#endif
-    }
-
-    log_verbose("initialising game finished");
-    return true;
-}
-
 /**
  *
  *  rct2: 0x00683499

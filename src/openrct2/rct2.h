@@ -172,7 +172,6 @@ extern char gRCT2AddressTracksPath[];
 bool rct2_init();
 sint32 rct2_init_directories();
 sint32 rct2_startup_checks();
-void rct2_dispose();
 void substitute_path(char *dest, size_t size, const char *path, const char *filename);
 sint32 check_mutex();
 sint32 check_file_paths();

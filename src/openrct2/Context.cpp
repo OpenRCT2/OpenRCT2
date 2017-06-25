@@ -45,8 +45,10 @@ extern "C"
 {
     #include "audio/audio.h"
     #include "config/Config.h"
+    #include "drawing/lightfx.h"
     #include "editor.h"
     #include "game.h"
+    #include "input.h"
     #include "interface/chat.h"
     #include "interface/console.h"
     #include "interface/themes.h"
@@ -60,6 +62,7 @@ extern "C"
     #include "rct1.h"
     #include "rct2.h"
     #include "rct2/interop.h"
+    #include "util/util.h"
 }
 
 using namespace OpenRCT2;
@@ -110,7 +113,10 @@ namespace OpenRCT2
             network_close();
             http_dispose();
             language_close_all();
-            rct2_dispose();
+            object_manager_unload_all_objects();
+            gfx_object_check_all_images_freed();
+            gfx_unload_g2();
+            gfx_unload_g1();
             config_release();
 #ifndef DISABLE_NETWORK
             EVP_MD_CTX_destroy(gHashCTX);
@@ -222,26 +228,48 @@ namespace OpenRCT2
             {
                 audio_init();
                 audio_populate_devices();
+                audio_init_ride_sounds_and_info();
             }
 
             http_init();
             network_set_env(_env);
+            chat_init();
             theme_manager_initialise();
+            rct2_copy_original_user_files_over();
 
             rct2_interop_setup_hooks();
 
-            if (!rct2_init())
+            if (!gOpenRCT2NoGraphics)
             {
-                return false;
+                LoadBaseGraphics();
+#ifdef __ENABLE_LIGHTFX__
+                lightfx_init();
+#endif
             }
-
-            chat_init();
-
-            rct2_copy_original_user_files_over();
+            gScenarioTicks = 0;
+            util_srand((uint32)time(0));
+            input_reset_place_obj_modifier();
+            viewport_init_all();
+            game_init_all(150);
             return true;
         }
 
     private:
+        bool LoadBaseGraphics()
+        {
+            if (!gfx_load_g1())
+            {
+                return false;
+            }
+            if (!gfx_load_g2())
+            {
+                return false;
+            }
+            gfx_load_csg();
+            font_sprite_initialise_characters();
+            return true;
+        }
+
         /**
          * Launches the game, after command line arguments have been parsed and processed.
          */
