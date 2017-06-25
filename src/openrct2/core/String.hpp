@@ -16,7 +16,7 @@
 
 #pragma once
 
-#include <stdarg.h>
+#include <cstdarg>
 #include <string>
 #include <vector>
 #include "../common.h"
