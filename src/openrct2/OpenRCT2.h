@@ -19,14 +19,10 @@
 #include "common.h"
 #include "core/Guard.hpp"
 
-#ifdef __cplusplus
-extern "C"
-{
-#endif
-    #include "platform/platform.h"
-    #undef CreateWindow
-#ifdef __cplusplus
-}
+// Defining MAX_PATH temporarily until the paths below can be removed
+// Saves us from importing system headers in a header file.
+#ifndef MAX_PATH
+#define MAX_PATH 260
 #endif
 
 #ifndef DISABLE_NETWORK

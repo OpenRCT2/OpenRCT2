@@ -28,6 +28,7 @@
 
 extern "C"
 {
+    #include "../platform/platform.h"
     #include "../rct2/addresses.h"
     #include "../util/util.h"
     #include "drawing.h"

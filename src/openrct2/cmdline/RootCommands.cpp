@@ -22,6 +22,7 @@ extern "C"
 {
     #include "../config/Config.h"
     #include "../platform/crash.h"
+    #include "../platform/platform.h"
 }
 
 #include "../core/Console.hpp"

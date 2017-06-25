@@ -16,8 +16,12 @@
 
 #include <sstream>
 #include "../core/FileStream.hpp"
-#include "../platform/platform.h"
 #include "IniWriter.hpp"
+
+extern "C"
+{
+    #include "../platform/platform.h"
+}
 
 class IniWriter final : public IIniWriter
 {

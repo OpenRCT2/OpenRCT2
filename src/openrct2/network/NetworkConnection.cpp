@@ -23,6 +23,7 @@
 extern "C"
 {
     #include "../localisation/localisation.h"
+    #include "../platform/platform.h"
 }
 
 constexpr size_t NETWORK_DISCONNECT_REASON_BUFFER_SIZE = 256;

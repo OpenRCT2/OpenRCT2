@@ -18,8 +18,11 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+
 #include <windows.h>
 #include <shellapi.h>
+#undef CreateWindow
+
 #include <openrct2/audio/AudioContext.h>
 #include <openrct2/Context.h>
 #include <openrct2/OpenRCT2.h>

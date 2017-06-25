@@ -23,6 +23,11 @@
 #include "Ui.h"
 #include "UiContext.h"
 
+extern "C"
+{
+    #include <openrct2/platform/platform.h>
+}
+
 using namespace OpenRCT2;
 using namespace OpenRCT2::Audio;
 using namespace OpenRCT2::Ui;

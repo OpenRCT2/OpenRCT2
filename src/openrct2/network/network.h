@@ -42,7 +42,6 @@ extern "C" {
 #endif // __cplusplus
 #include "../common.h"
 #include "../game.h"
-#include "../platform/platform.h"
 #include "../localisation/string_ids.h"
 #ifdef __cplusplus
 }

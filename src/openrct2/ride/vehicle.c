@@ -24,6 +24,7 @@
 #include "../localisation/localisation.h"
 #include "../management/news_item.h"
 #include "../OpenRCT2.h"
+#include "../platform/platform.h"
 #include "../rct2/hook.h"
 #include "../scenario/scenario.h"
 #include "../world/map_animation.h"

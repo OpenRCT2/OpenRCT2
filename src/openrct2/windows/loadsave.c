@@ -23,6 +23,7 @@
 #include "../interface/window.h"
 #include "../localisation/localisation.h"
 #include "../network/network.h"
+#include "../platform/platform.h"
 #include "../scenario/scenario.h"
 #include "../title/TitleScreen.h"
 #include "../util/util.h"

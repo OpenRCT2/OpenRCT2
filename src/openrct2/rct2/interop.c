@@ -33,6 +33,7 @@
 #endif // defined(__unix__) || defined(__APPLE__)
 
 #include "../OpenRCT2.h"
+#include "../platform/platform.h"
 #include "../util/sawyercoding.h"
 #include "../util/util.h"
 #include "addresses.h"

@@ -3,7 +3,11 @@
 #include "openrct2/config/ConfigEnum.hpp"
 #include "openrct2/config/IniWriter.hpp"
 #include "openrct2/core/MemoryStream.h"
-#include "openrct2/platform/platform.h"
+
+extern "C"
+{
+    #include "openrct2/platform/platform.h"
+}
 
 class IniWriterTest : public testing::Test
 {
