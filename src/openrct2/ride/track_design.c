@@ -1311,8 +1311,11 @@ sint32 place_virtual_track(rct_track_td6 *td6, uint8 bl, uint8 rideIndex, sint32
         map_invalidate_map_selection_tiles();
     }
 
-    if (bl == 3) {
-         return _trackDesignPlaceZ - _trackDesignPlaceSceneryZ;
+    if (bl == 3)
+    {
+        // Change from vanilla: originally, _trackDesignPlaceSceneryZ was not subtracted
+        // from _trackDesignPlaceZ, causing bug #259.
+        return _trackDesignPlaceZ - _trackDesignPlaceSceneryZ;
     }
     return _trackDesignPlaceCost;
 }
