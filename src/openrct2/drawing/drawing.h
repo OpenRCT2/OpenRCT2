@@ -21,8 +21,6 @@
 #include "../interface/colour.h"
 #include "font.h"
 
-typedef struct SDL_Surface SDL_Surface;
-
 // For g1 only enable packing when still relying on vanilla
 #ifndef NO_RCT2
 #pragma pack(push, 1)
@@ -360,13 +358,6 @@ void gfx_draw_string_centred_wrapped_partial(rct_drawpixelinfo *dpi, sint32 x, s
 void gfx_draw_string_with_y_offsets(rct_drawpixelinfo *dpi, const utf8 *text, sint32 colour, sint32 x, sint32 y, const sint8 *yOffsets, bool forceSpriteFont);
 sint32 gfx_clip_string(char* buffer, sint32 width);
 void shorten_path(utf8 *buffer, size_t bufferSize, const utf8 *path, sint32 availableWidth);
-#ifndef NO_TTF
-SDL_Surface *ttf_surface_cache_get_or_add(TTF_Font *font, const utf8 *text);
-TTFFontDescriptor *ttf_get_font_from_sprite_base(uint16 spriteBase);
-#endif // NO_TTF
-
-bool ttf_initialise();
-void ttf_dispose();
 
 // scrolling text
 void scrolling_text_initialise_bitmaps();

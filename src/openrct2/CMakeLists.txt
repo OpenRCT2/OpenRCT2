@@ -14,7 +14,7 @@ option(DISABLE_RCT2 "Build a standalone version, without using code and data seg
 
 option(DISABLE_HTTP_TWITCH "Disable HTTP and Twitch support.")
 option(DISABLE_NETWORK "Disable multiplayer functionality. Mainly for testing.")
-option(DISABLE_TTF "Disable support for TTF provided by SDL2_ttf.")
+option(DISABLE_TTF "Disable support for TTF provided by freetype2.")
 option(ENABLE_LIGHTFX "Enable lighting effects." ON)
 
 if (NOT DISABLE_RCT2)
@@ -59,14 +59,10 @@ endif ()
 PKG_CHECK_MODULES(SDL2 REQUIRED sdl2)
 PKG_CHECK_MODULES(SPEEX REQUIRED speexdsp)
 if (NOT DISABLE_TTF)
-    if (STATIC)
-        # FreeType is required by SDL2_ttf, but not wired up properly in package
-        PKG_CHECK_MODULES(FREETYPE REQUIRED freetype2)
-    endif ()
     if (UNIX AND NOT APPLE)
         PKG_CHECK_MODULES(FONTCONFIG REQUIRED fontconfig)
     endif ()
-    PKG_CHECK_MODULES(SDL2_TTF REQUIRED SDL2_ttf)
+    PKG_CHECK_MODULES(FREETYPE REQUIRED freetype2)
 endif ()
 
 # Sources
@@ -189,13 +185,12 @@ endif ()
 
 if (NOT DISABLE_TTF)
     if (STATIC)
-        target_link_libraries(${PROJECT} ${FREETYPE_STATIC_LIBRARIES}
-                                         ${SDL2_TTF_STATIC_LIBRARIES})
+        target_link_libraries(${PROJECT} ${FREETYPE_STATIC_LIBRARIES})
         if (UNIX AND NOT APPLE)
             target_link_libraries(${PROJECT} ${FONTCONFIG_STATIC_LIBRARIES})
         endif ()
     else ()
-        target_link_libraries(${PROJECT} ${SDL2_TTF_LIBRARIES})
+        target_link_libraries(${PROJECT} ${FREETYPE_LIBRARIES})
         if (UNIX AND NOT APPLE)
             target_link_libraries(${PROJECT} ${FONTCONFIG_LIBRARIES})
         endif ()
@@ -210,6 +205,7 @@ endif()
 # Includes
 target_include_directories(${PROJECT} SYSTEM PRIVATE ${LIBZIP_INCLUDE_DIRS})
 target_include_directories(${PROJECT} PRIVATE ${SDL2_INCLUDE_DIRS}
+                                              ${FREETYPE_INCLUDE_DIRS}
                                               ${JANSSON_INCLUDE_DIRS}
                                               ${SPEEX_INCLUDE_DIRS}
                                               ${PNG_INCLUDE_DIRS}

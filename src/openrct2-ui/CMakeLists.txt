@@ -48,7 +48,6 @@ add_executable(${PROJECT} ${OPENRCT2_UI_SOURCES} ${OPENRCT2_UI_M_SOURCES} ${OPEN
 
 target_link_libraries(${PROJECT} "libopenrct2"
                                  ${SDL2_LIBRARIES}
-                                 ${SDL2_TTF_LIBRARIES}
                                  ${SPEEX_LIBRARIES})
 
 if (APPLE)
