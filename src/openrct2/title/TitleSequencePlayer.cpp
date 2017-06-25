@@ -35,6 +35,7 @@ extern "C"
     #include "../interface/viewport.h"
     #include "../interface/window.h"
     #include "../management/news_item.h"
+    #include "../sprites.h"
     #include "../world/scenery.h"
 }
 
@@ -401,7 +402,7 @@ private:
     void PrepareParkForPlayback()
     {
         rct_window * w = window_get_main();
-        w->viewport_target_sprite = -1;
+        w->viewport_target_sprite = SPR_NONE;
         w->saved_view_x = gSavedViewX;
         w->saved_view_y = gSavedViewY;
 

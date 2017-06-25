@@ -15,23 +15,24 @@
 #pragma endregion
 
 #include "../audio/audio.h"
+#include "../config/Config.h"
 #include "../Context.h"
 #include "../core/Guard.hpp"
 #include "../drawing/drawing.h"
 #include "../editor.h"
 #include "../game.h"
 #include "../input.h"
-#include "../interface/themes.h"
 #include "../interface/Cursors.h"
+#include "../interface/themes.h"
 #include "../localisation/localisation.h"
 #include "../localisation/string_ids.h"
 #include "../platform/platform.h"
+#include "../sprites.h"
 #include "../world/map.h"
 #include "../world/sprite.h"
 #include "viewport.h"
 #include "widget.h"
 #include "window.h"
-#include "../config/Config.h"
 
 #define RCT2_FIRST_WINDOW       (g_window_list)
 #define RCT2_LAST_WINDOW        (gWindowNextSlot - 1)
@@ -1402,7 +1403,7 @@ void window_scroll_to_location(rct_window *w, sint32 x, sint32 y, sint32 z)
             }
         }
         // rct2: 0x006E7C76
-        if (w->viewport_target_sprite == -1) {
+        if (w->viewport_target_sprite == SPR_NONE) {
             if (!(w->flags & WF_NO_SCROLLING)) {
                 w->saved_view_x = map_coordinate.x - (sint16)(w->viewport->view_width * window_scroll_locations[i][0]);
                 w->saved_view_y = map_coordinate.y - (sint16)(w->viewport->view_height * window_scroll_locations[i][1]);

@@ -238,8 +238,8 @@ void viewport_adjust_for_map_height(sint16* x, sint16* y, sint16 *z)
         // of the map. This can happen when the height is larger than the map size.
         sint16 max = gMapSizeMinus2;
         if (pos.x > max && pos.y > max) {
-            sint32 x_corr[] = { -1, 1, 1, -1 };
-            sint32 y_corr[] = { -1, -1, 1, 1 };
+            static const sint32 x_corr[] = { -1, 1, 1, -1 };
+            static const sint32 y_corr[] = { -1, -1, 1, 1 };
             pos.x += x_corr[rotation] * height;
             pos.y += y_corr[rotation] * height;
         }
@@ -520,7 +520,7 @@ void viewport_update_position(rct_window *window)
     rct_viewport* viewport = window->viewport;
     if (!viewport)return;
 
-    if (window->viewport_target_sprite != -1) {
+    if (window->viewport_target_sprite != SPR_NONE) {
         viewport_update_sprite_follow(window);
         return;
     }
@@ -605,7 +605,7 @@ void viewport_update_position(rct_window *window)
 
 void viewport_update_sprite_follow(rct_window *window)
 {
-    if (window->viewport_target_sprite != -1 && window->viewport){
+    if (window->viewport_target_sprite != SPR_NONE && window->viewport) {
         rct_sprite* sprite = get_sprite(window->viewport_target_sprite);
 
         sint32 height = (map_element_height(0xFFFF & sprite->unknown.x, 0xFFFF & sprite->unknown.y) & 0xFFFF) - 16;

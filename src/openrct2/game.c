@@ -43,6 +43,7 @@
 #include "ride/track_design.h"
 #include "ride/vehicle.h"
 #include "scenario/scenario.h"
+#include "sprites.h"
 #include "title/TitleScreen.h"
 #include "util/sawyercoding.h"
 #include "util/util.h"
@@ -1133,7 +1134,7 @@ void game_load_init()
     game_create_windows();
     mainWindow = window_get_main();
 
-    mainWindow->viewport_target_sprite = -1;
+    mainWindow->viewport_target_sprite = SPR_NONE;
     mainWindow->saved_view_x = gSavedViewX;
     mainWindow->saved_view_y = gSavedViewY;
     uint8 zoomDifference = gSavedViewZoom - mainWindow->viewport->zoom;
