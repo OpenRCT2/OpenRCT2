@@ -8,9 +8,6 @@ if (PORTABLE)
     set(CMAKE_INSTALL_RPATH "$ORIGIN")
 endif ()
 
-# CMake dependencies
-include(FindPkgConfig)
-
 # Sources
 file(GLOB_RECURSE OPENRCT2_CLI_SOURCES
     "${CMAKE_CURRENT_LIST_DIR}/*.c"
