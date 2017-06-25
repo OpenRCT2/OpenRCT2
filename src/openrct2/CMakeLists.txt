@@ -56,7 +56,6 @@ if (NOT DISABLE_NETWORK)
 endif ()
 
 # Third party libraries (which we want to eventually remove from libopenrct2)
-PKG_CHECK_MODULES(SDL2 REQUIRED sdl2)
 PKG_CHECK_MODULES(SPEEX REQUIRED speexdsp)
 if (NOT DISABLE_TTF)
     if (UNIX AND NOT APPLE)
@@ -150,15 +149,13 @@ endif ()
 
 # Libraries
 if (STATIC)
-    target_link_libraries(${PROJECT} ${SDL2_STATIC_LIBRARIES}
-                                     ${JANSSON_STATIC_LIBRARIES}
+    target_link_libraries(${PROJECT} ${JANSSON_STATIC_LIBRARIES}
                                      ${SPEEX_STATIC_LIBRARIES}
                                      ${PNG_STATIC_LIBRARIES}
                                      ${ZLIB_STATIC_LIBRARIES}
                                      ${LIBZIP_STATIC_LIBRARIES})
 else ()
-    target_link_libraries(${PROJECT} ${SDL2_LIBRARIES}
-                                     ${JANSSON_LIBRARIES}
+    target_link_libraries(${PROJECT} ${JANSSON_LIBRARIES}
                                      ${SPEEX_LIBRARIES}
                                      ${PNG_LIBRARIES}
                                      ${ZLIB_LIBRARIES}
@@ -204,8 +201,7 @@ endif()
 
 # Includes
 target_include_directories(${PROJECT} SYSTEM PRIVATE ${LIBZIP_INCLUDE_DIRS})
-target_include_directories(${PROJECT} PRIVATE ${SDL2_INCLUDE_DIRS}
-                                              ${FREETYPE_INCLUDE_DIRS}
+target_include_directories(${PROJECT} PRIVATE ${FREETYPE_INCLUDE_DIRS}
                                               ${JANSSON_INCLUDE_DIRS}
                                               ${SPEEX_INCLUDE_DIRS}
                                               ${PNG_INCLUDE_DIRS}

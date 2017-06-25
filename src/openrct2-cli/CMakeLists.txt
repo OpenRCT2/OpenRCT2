@@ -11,9 +11,6 @@ endif ()
 # CMake dependencies
 include(FindPkgConfig)
 
-# Third party libraries (which we want to eventually remove from openrct2-cli)
-PKG_CHECK_MODULES(SDL2 REQUIRED sdl2)
-
 # Sources
 file(GLOB_RECURSE OPENRCT2_CLI_SOURCES
     "${CMAKE_CURRENT_LIST_DIR}/*.c"
@@ -29,8 +26,7 @@ add_executable(${PROJECT} EXCLUDE_FROM_ALL ${OPENRCT2_CLI_SOURCES})
 target_link_libraries(${PROJECT} "libopenrct2")
 
 # Includes
-target_include_directories(${PROJECT} PRIVATE "${CMAKE_CURRENT_LIST_DIR}/.."
-                                              ${SDL2_INCLUDE_DIRS})
+target_include_directories(${PROJECT} PRIVATE "${CMAKE_CURRENT_LIST_DIR}/..")
 
 # Compiler flags
 if (FORCE32)
