@@ -4430,6 +4430,7 @@ STR_6117    :Horská dráha s dlouhými pády, velkou rychlostí a pohodlnými v
 STR_6118    :Pozvolná horská dráha pro ty kdo se zatím neodvažují na větší dráhy
 STR_6119    :Levná horská dráha, kterou lze snadno postavit - má však omezenou maximální výšku
 STR_6120    :{BABYBLUE}Nové vozy dostupné pro {STRINGID}:{NEWLINE}{STRINGID}
+STR_6121    :{SMALLFONT}{BLACK}Zajistí práva pro všechny pozemky na mapě
 
 ###############################################################################
 ## RCT2 Objects
