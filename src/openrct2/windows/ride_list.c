@@ -1019,6 +1019,7 @@ static void window_quickdemolish_prompt_open()
     w = window_create_centred(QUICKDEMOLISH_WW, QUICKDEMOLISH_WH, &window_quickdemolish_prompt_events, WC_QUICKDEMOLISH_PROMPT, WF_TRANSPARENT);
     w->widgets = window_quickdemolish_prompt_widgets;
     w->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_QUICKDEMOLISH_CANCEL) | (1 << WIDX_QUICKDEMOLISH_ENABLE);
+    w->colours[0] = TRANSLUCENT(COLOUR_BORDEAUX_RED);
     window_init_scroll_widgets(w);
 }
 
