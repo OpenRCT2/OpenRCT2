@@ -2811,7 +2811,7 @@ static void peep_go_to_ride_exit(rct_peep* peep, rct_ride* ride, sint16 x, sint1
     sprite_move(x, y, z, (rct_sprite*)peep);
     invalidate_sprite_2((rct_sprite*)peep);
 
-    assert(peep->current_ride_station < 4);
+    assert(peep->current_ride_station < RCT12_MAX_STATIONS_PER_RIDE);
     x = ride->exits[peep->current_ride_station] & 0xFF;
     y = ride->exits[peep->current_ride_station] >> 8;
     x *= 32;
@@ -3135,7 +3135,7 @@ static void peep_update_ride_sub_state_7(rct_peep* peep){
 
     if (!(vehicle_entry->flags_b & VEHICLE_ENTRY_FLAG_B_10)){
         sint16 x, y, z;
-        assert(peep->current_ride_station < 4);
+        assert(peep->current_ride_station < RCT12_MAX_STATIONS_PER_RIDE);
         x = ride->exits[peep->current_ride_station] & 0xFF;
         y = ride->exits[peep->current_ride_station] >> 8;
         z = ride->station_heights[peep->current_ride_station];
