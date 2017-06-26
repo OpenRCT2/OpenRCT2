@@ -1416,12 +1416,12 @@ void window_scroll_to_location(rct_window *w, sint32 x, sint32 y, sint32 z)
  *
  *  rct2: 0x00688956
  */
-static void call_event_unknown_14_on_all_windows()
+static void call_event_viewport_rotate_on_all_windows()
 {
     rct_window *w;
 
     for (w = RCT2_NEW_WINDOW - 1; w >= g_window_list; w--)
-        window_event_unknown_14_call(w);
+        window_event_viewport_rotate_call(w);
 }
 
 /**
@@ -1469,7 +1469,7 @@ void window_rotate_camera(rct_window *w, sint32 direction)
 
     window_invalidate(w);
 
-    call_event_unknown_14_on_all_windows();
+    call_event_viewport_rotate_on_all_windows();
     reset_all_sprite_quadrant_placements();
 }
 
@@ -2032,10 +2032,10 @@ void window_event_textinput_call(rct_window *w, rct_widgetindex widgetIndex, cha
         w->event_handlers->text_input(w, widgetIndex, text);
 }
 
-void window_event_unknown_14_call(rct_window *w)
+void window_event_viewport_rotate_call(rct_window *w)
 {
-    if (w->event_handlers->unknown_14 != NULL)
-        w->event_handlers->unknown_14(w);
+    if (w->event_handlers->viewport_rotate != NULL)
+        w->event_handlers->viewport_rotate(w);
 }
 
 void window_event_unknown_15_call(rct_window *w, sint32 scrollIndex, sint32 scrollAreaType)

@@ -79,7 +79,7 @@ static void window_banner_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_banner_mousedown(rct_widgetindex widgetIndex, rct_window*w, rct_widget* widget);
 static void window_banner_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex);
 static void window_banner_textinput(rct_window *w, rct_widgetindex widgetIndex, char *text);
-static void window_banner_unknown_14(rct_window *w);
+static void window_banner_viewport_rotate(rct_window *w);
 static void window_banner_invalidate(rct_window *w);
 static void window_banner_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
@@ -104,7 +104,7 @@ static rct_window_event_list window_banner_events = {
     NULL,
     NULL,
     window_banner_textinput,
-    window_banner_unknown_14,
+    window_banner_viewport_rotate,
     NULL,
     NULL,
     NULL,
@@ -343,7 +343,7 @@ static void window_banner_paint(rct_window *w, rct_drawpixelinfo *dpi)
  *
  *  rct2: 0x6BA7B5
  */
-static void window_banner_unknown_14(rct_window *w)
+static void window_banner_viewport_rotate(rct_window *w)
 {
     rct_viewport* view = w->viewport;
     w->viewport = 0;
