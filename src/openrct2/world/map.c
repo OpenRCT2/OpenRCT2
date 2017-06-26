@@ -3168,11 +3168,16 @@ void game_command_place_large_scenery(sint32* eax, sint32* ebx, sint32* ecx, sin
 
 sint32 map_get_station(rct_map_element *mapElement)
 {
-    sint32 station = (mapElement->properties.track.sequence & 0x70) >> 4;
-
     // prevent out of bounds access
-    clamp(0, station, RCT12_MAX_STATIONS_PER_RIDE - 1);
-    return station;
+    sint32 station = (mapElement->properties.track.sequence & SEQUENCE_GET_STATION) >> 4;
+    sint32 clamped_station = clamp(0, station, RCT12_MAX_STATIONS_PER_RIDE - 1);
+    if (clamped_station != station)
+    {
+        log_error("Invalid savestate corrected: current_station-value clamped to %d (was %d)", clamped_station, station);
+        mapElement->properties.track.sequence &= 0x8F;
+        mapElement->properties.track.sequence |= clamped_station << 4;
+    }
+    return clamped_station;
 }
 
 /**
@@ -4714,7 +4719,7 @@ rct_map_element *map_get_track_element_at_of_type_seq(sint32 x, sint32 y, sint32
         if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_TRACK) continue;
         if (mapElement->base_height != z) continue;
         if (mapElement->properties.track.type != trackType) continue;
-        if ((mapElement->properties.track.sequence & 0x0F) != sequence) continue;
+        if ((mapElement->properties.track.sequence & SEQUENCE_NUMBER) != sequence) continue;
 
         return mapElement;
     } while (!map_element_is_last_for_tile(mapElement++));
