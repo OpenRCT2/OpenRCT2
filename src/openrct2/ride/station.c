@@ -281,7 +281,7 @@ static void ride_invalidate_station_start(rct_ride *ride, sint32 stationIndex, s
     if (mapElement == NULL)
         return;
 
-    mapElement->properties.track.sequence &= SEQUENCE_GET_STATION;
+    mapElement->properties.track.sequence &= (SEQUENCE_GET_STATION | SEQUENCE_NUMBER);
     if (dl != 0)
         mapElement->properties.track.sequence |= SEQUENCE_HAS_GREEN_LIGHT;
 
