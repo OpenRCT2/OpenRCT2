@@ -3358,17 +3358,6 @@ bool clear_scenery_tool_is_active()
     return true;
 }
 
-bool land_rights_tool_is_active()
-{
-    if (!(input_test_flag(INPUT_FLAG_TOOL_ACTIVE)))
-        return false;
-    if (gCurrentToolWidget.window_classification != WC_PARK_INFORMATION)
-        return false;
-    if (gCurrentToolWidget.widget_index != WIDX_PARK)
-        return false;
-    return true;
-}
-
 /**
  *
  *  rct2: 0x0066DB3D

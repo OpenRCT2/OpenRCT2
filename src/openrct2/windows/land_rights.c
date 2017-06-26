@@ -58,6 +58,12 @@ static void window_land_rights_invalidate(rct_window *w);
 static void window_land_rights_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_land_rights_textinput(rct_window *w, rct_widgetindex widgetIndex, char *text);
 static void window_land_rights_inputsize(rct_window *w);
+static void window_land_rights_toolupdate(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y);
+static void window_land_rights_tooldown(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y);
+static void window_land_rights_tooldrag(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y);
+static void window_land_rights_toolabort(rct_window *w, rct_widgetindex widgetIndex);
+static bool land_rights_tool_is_active();
+
 
 static rct_window_event_list window_land_rights_events = {
     window_land_rights_close,
@@ -69,11 +75,11 @@ static rct_window_event_list window_land_rights_events = {
     window_land_rights_update,
     NULL,
     NULL,
+    window_land_rights_toolupdate,
+    window_land_rights_tooldown,
+    window_land_rights_tooldrag,
     NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    window_land_rights_toolabort,
     NULL,
     NULL,
     NULL,
@@ -90,6 +96,12 @@ static rct_window_event_list window_land_rights_events = {
     NULL
 };
 
+#define LAND_RIGHTS_MODE_BUY_CONSTRUCTION_RIGHTS 0
+#define LAND_RIGHTS_MODE_BUY_LAND 1
+
+static uint8 _landRightsMode;
+static money32 _landRightsCost;
+
 void window_land_rights_open()
 {
     rct_window* window;
@@ -97,7 +109,7 @@ void window_land_rights_open()
     // Check if window is already open
     if (window_find_by_class(WC_LAND_RIGHTS) != NULL)
         return;
-
+    
     window = window_create(context_get_width() - 98, 29, 98, 94, &window_land_rights_events, WC_LAND_RIGHTS, 0);
     window->widgets = window_land_rights_widgets;
     window->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_DECREMENT) | (1 << WIDX_INCREMENT) | (1 << WIDX_PREVIEW) |
@@ -105,13 +117,15 @@ void window_land_rights_open()
     window_init_scroll_widgets(window);
     window_push_others_below(window);
 
-    LandRightsMode = true;
+    _landRightsMode = LAND_RIGHTS_MODE_BUY_LAND;
     window->pressed_widgets = (1 << WIDX_BUY_LAND_RIGHTS);
 
     gLandToolSize = 1;
-    gWaterToolRaiseCost = MONEY32_UNDEFINED;
-    gWaterToolLowerCost = MONEY32_UNDEFINED;
 
+    show_gridlines();
+    tool_set(window, WIDX_BUY_LAND_RIGHTS, TOOL_UP_ARROW);
+    input_set_flag(INPUT_FLAG_6, true);
+    
     show_land_rights();
 
     if (gLandRemainingConstructionSales == 0) {
@@ -138,14 +152,14 @@ static void window_land_rights_mouseup(rct_window *w, rct_widgetindex widgetInde
         break;
     case WIDX_DECREMENT:
         // Decrement land rights tool size
-        gLandToolSize = max(MINIMUM_TOOL_SIZE, gLandToolSize-1);
+        gLandToolSize = max(MINIMUM_TOOL_SIZE, gLandToolSize - 1);
 
         // Invalidate the window
         window_invalidate(w);
         break;
     case WIDX_INCREMENT:
         // Decrement land rights tool size
-        gLandToolSize = min(MAXIMUM_TOOL_SIZE, gLandToolSize+1);
+        gLandToolSize = min(MAXIMUM_TOOL_SIZE, gLandToolSize + 1);
 
         // Invalidate the window
         window_invalidate(w);
@@ -154,18 +168,22 @@ static void window_land_rights_mouseup(rct_window *w, rct_widgetindex widgetInde
         window_land_rights_inputsize(w);
         break;
     case WIDX_BUY_LAND_RIGHTS:
-        if (!LandRightsMode) {
-            LandRightsMode = true;
+        if (_landRightsMode != LAND_RIGHTS_MODE_BUY_LAND)
+        {
+            _landRightsMode = LAND_RIGHTS_MODE_BUY_LAND;
             hide_construction_rights();
             show_land_rights();
+            tool_set(w, WIDX_BUY_LAND_RIGHTS, TOOL_UP_ARROW);
             window_invalidate(w);
         }
         break;
     case WIDX_BUY_CONSTRUCTION_RIGHTS:
-        if (LandRightsMode) {
-            LandRightsMode = false;
+        if (_landRightsMode != LAND_RIGHTS_MODE_BUY_CONSTRUCTION_RIGHTS)
+        {
+            _landRightsMode = LAND_RIGHTS_MODE_BUY_CONSTRUCTION_RIGHTS;
             hide_land_rights();
             show_construction_rights();
+            tool_set(w, WIDX_BUY_CONSTRUCTION_RIGHTS, TOOL_UP_ARROW);
             window_invalidate(w);
         }
         break;
@@ -206,8 +224,8 @@ static void window_land_rights_update(rct_window *w)
 static void window_land_rights_invalidate(rct_window *w)
 {
     // Set the preview image button to be pressed down
-    w->pressed_widgets |= (1 << WIDX_PREVIEW) | (1 << (LandRightsMode ? WIDX_BUY_LAND_RIGHTS : WIDX_BUY_CONSTRUCTION_RIGHTS));
-    w->pressed_widgets &= ~(1 << (!LandRightsMode ? WIDX_BUY_LAND_RIGHTS : WIDX_BUY_CONSTRUCTION_RIGHTS));
+    w->pressed_widgets |= (1 << WIDX_PREVIEW) | (1 << ((_landRightsMode == LAND_RIGHTS_MODE_BUY_LAND) ? WIDX_BUY_LAND_RIGHTS : WIDX_BUY_CONSTRUCTION_RIGHTS));
+    w->pressed_widgets &= ~(1 << ((_landRightsMode == LAND_RIGHTS_MODE_BUY_CONSTRUCTION_RIGHTS) ? WIDX_BUY_LAND_RIGHTS : WIDX_BUY_CONSTRUCTION_RIGHTS));
 
     // Update the preview image
     window_land_rights_widgets[WIDX_PREVIEW].image = land_tool_size_to_sprite_index(gLandToolSize);
@@ -246,9 +264,196 @@ static void window_land_rights_paint(rct_window *w, rct_drawpixelinfo *dpi)
     // Draw cost amount
     x = (window_land_rights_widgets[WIDX_PREVIEW].left + window_land_rights_widgets[WIDX_PREVIEW].right) / 2 + w->x;
     y = window_land_rights_widgets[WIDX_PREVIEW].bottom + w->y + 32;
-    if (gLandRightsCost != MONEY32_UNDEFINED &&
-        gLandRightsCost != 0
+    if (_landRightsCost != MONEY32_UNDEFINED &&
+        _landRightsCost != 0
     ) {
-        gfx_draw_string_centred(dpi, STR_COST_AMOUNT, x, y, COLOUR_BLACK, &gLandRightsCost);
+        gfx_draw_string_centred(dpi, STR_COST_AMOUNT, x, y, COLOUR_BLACK, &_landRightsCost);
     }
+}
+
+static void window_land_rights_tool_update_land_rights(sint16 x, sint16 y)
+{
+    map_invalidate_selection_rect();
+    gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
+    
+    rct_xy16 mapTile = { 0 };
+    screen_get_map_xy(x, y, &mapTile.x, &mapTile.y, NULL);
+    
+    if (mapTile.x == MAP_LOCATION_NULL) {
+        if (_landRightsCost != MONEY32_UNDEFINED) {
+            _landRightsCost = MONEY32_UNDEFINED;
+            window_invalidate_by_class(WC_CLEAR_SCENERY);
+        }
+        return;
+    }
+    
+    uint8 state_changed = 0;
+    
+    if (!(gMapSelectFlags & MAP_SELECT_FLAG_ENABLE)) {
+        gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
+        state_changed++;
+    }
+    
+    if (gMapSelectType != MAP_SELECT_TYPE_FULL) {
+        gMapSelectType = MAP_SELECT_TYPE_FULL;
+        state_changed++;
+    }
+    
+    sint16 tool_size = gLandToolSize;
+    if (tool_size == 0)
+        tool_size = 1;
+    
+    sint16 tool_length = (tool_size - 1) * 32;
+    
+    // Move to tool bottom left
+    mapTile.x -= (tool_size - 1) * 16;
+    mapTile.y -= (tool_size - 1) * 16;
+    mapTile.x &= 0xFFE0;
+    mapTile.y &= 0xFFE0;
+    
+    if (gMapSelectPositionA.x != mapTile.x){
+        gMapSelectPositionA.x = mapTile.x;
+        state_changed++;
+    }
+    
+    if (gMapSelectPositionA.y != mapTile.y){
+        gMapSelectPositionA.y = mapTile.y;
+        state_changed++;
+    }
+    
+    mapTile.x += tool_length;
+    mapTile.y += tool_length;
+    
+    if (gMapSelectPositionB.x != mapTile.x){
+        gMapSelectPositionB.x = mapTile.x;
+        state_changed++;
+    }
+    
+    if (gMapSelectPositionB.y != mapTile.y){
+        gMapSelectPositionB.y = mapTile.y;
+        state_changed++;
+    }
+    
+    map_invalidate_selection_rect();
+    if (!state_changed)
+        return;
+    
+    _landRightsCost = game_do_command(
+        gMapSelectPositionA.x,
+        0x4,
+        gMapSelectPositionA.y,
+        (_landRightsMode == LAND_RIGHTS_MODE_BUY_LAND) ? 0 : 2,
+        GAME_COMMAND_BUY_LAND_RIGHTS,
+        gMapSelectPositionB.x,
+        gMapSelectPositionB.y);
+}
+
+/**
+ *
+ *  rct2: 0x0066822A
+ */
+static void window_land_rights_toolabort(rct_window *w, rct_widgetindex widgetIndex)
+{
+    hide_gridlines();
+    if (_landRightsMode == LAND_RIGHTS_MODE_BUY_LAND)
+    {
+        hide_land_rights();
+    }
+    else
+    {
+        hide_construction_rights();
+    }
+}
+
+/**
+ *
+ *  rct2: 0x006681D1
+ */
+static void window_land_rights_toolupdate(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y)
+{
+    window_land_rights_tool_update_land_rights(x, y);
+}
+
+/**
+ *
+ *  rct2: 0x006681E6
+ */
+static void window_land_rights_tooldown(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y)
+{
+    if (_landRightsMode == LAND_RIGHTS_MODE_BUY_LAND)
+    {
+        if (x != MAP_LOCATION_NULL)
+        {
+            gGameCommandErrorTitle = STR_CANT_BUY_LAND;
+            game_do_command(
+                gMapSelectPositionA.x,
+                1,
+                gMapSelectPositionA.y,
+                0,
+                GAME_COMMAND_BUY_LAND_RIGHTS,
+                gMapSelectPositionB.x,
+                gMapSelectPositionB.y);
+        }
+    }
+    else
+    {
+        if (x != MAP_LOCATION_NULL)
+        {
+            gGameCommandErrorTitle = STR_CANT_BUY_CONSTRUCTION_RIGHTS_HERE;
+            game_do_command(
+                gMapSelectPositionA.x,
+                1,
+                gMapSelectPositionA.y,
+                2,
+                GAME_COMMAND_BUY_LAND_RIGHTS,
+                gMapSelectPositionB.x,
+                gMapSelectPositionB.y);
+        }
+    }
+}
+
+/**
+ *
+ *  rct2: 0x006681FB
+ */
+static void window_land_rights_tooldrag(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y)
+{
+    if (_landRightsMode == LAND_RIGHTS_MODE_BUY_LAND) {
+        if (x != MAP_LOCATION_NULL)
+        {
+            gGameCommandErrorTitle = STR_CANT_BUY_LAND;
+            game_do_command(
+                gMapSelectPositionA.x,
+                1,
+                gMapSelectPositionA.y,
+                0,
+                GAME_COMMAND_BUY_LAND_RIGHTS,
+                gMapSelectPositionB.x,
+                gMapSelectPositionB.y);
+        }
+    }
+    else
+    {
+        if (x != MAP_LOCATION_NULL)
+        {
+            gGameCommandErrorTitle = STR_CANT_BUY_CONSTRUCTION_RIGHTS_HERE;
+            game_do_command(
+                gMapSelectPositionA.x,
+                1,
+                gMapSelectPositionA.y,
+                2,
+                GAME_COMMAND_BUY_LAND_RIGHTS,
+                gMapSelectPositionB.x,
+                gMapSelectPositionB.y);
+        }
+    }
+}
+
+static bool land_rights_tool_is_active()
+{
+    if (!(input_test_flag(INPUT_FLAG_TOOL_ACTIVE)))
+        return false;
+    if (gCurrentToolWidget.window_classification != WC_LAND_RIGHTS)
+        return false;
+    return true;
 }

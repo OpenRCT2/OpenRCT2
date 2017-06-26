@@ -108,12 +108,10 @@ uint32 gNextFreeMapElementPointerIndex;
 
 bool gLandMountainMode;
 bool gLandPaintMode;
-bool LandRightsMode;
 bool gClearSmallScenery;
 bool gClearLargeScenery;
 bool gClearFootpath;
 
-money32 gLandRightsCost;
 uint16 gLandRemainingOwnershipSales;
 uint16 gLandRemainingConstructionSales;
 

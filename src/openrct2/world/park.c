@@ -1040,7 +1040,7 @@ void game_command_buy_land_rights(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 
         (*ecx & 0xFFFF),
         (*edi & 0xFFFF),
         (*ebp & 0xFFFF),
-        (*edx & 0xFF00) >> 8,
+        (*edx & 0x00FF),
         flags
     );
 

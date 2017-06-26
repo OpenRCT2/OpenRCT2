@@ -839,7 +839,6 @@ bool window_is_visible(rct_window* w);
 bool land_tool_is_active();
 bool water_tool_is_active();
 bool clear_scenery_tool_is_active();
-bool land_rights_tool_is_active();
 bool scenery_tool_is_active();
 
 //Cheat: in-game land ownership editor
