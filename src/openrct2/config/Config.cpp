@@ -18,6 +18,7 @@
 #include "../Context.h"
 #include "../core/Console.hpp"
 #include "../core/Exception.hpp"
+#include "../core/File.h"
 #include "../core/FileStream.hpp"
 #include "../core/Memory.hpp"
 #include "../core/Path.hpp"
@@ -622,7 +623,7 @@ extern "C"
 
     bool config_open(const utf8 * path)
     {
-        if (!platform_file_exists(path))
+        if (!File::Exists(path))
         {
             return false;
         }
