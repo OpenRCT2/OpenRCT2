@@ -61,6 +61,9 @@
 #ifdef __ANDROID__
     #define OPENRCT2_PLATFORM       "Android"
 #endif
+#ifdef __OpenBSD__
+    #define OPENRCT2_PLATFORM       "OpenBSD"
+#endif
 #ifndef OPENRCT2_PLATFORM
     #error Unknown platform!
 #endif

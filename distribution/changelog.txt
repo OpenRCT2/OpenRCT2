@@ -7,6 +7,7 @@
 - Feature: [#5576] Add a persistent 'display real names of guests' setting.
 - Feature: OpenRCT2 now starts up on the display it was last shown on.
 - Feature: [#5611] Add support for Android
+- Feature: [#5706] Add support for OpenBSD
 - Improved: Construction rights can now be placed on park entrances.
 - Improved: Mouse can now be dragged to select scenery when saving track designs
 - Fix: [#259] Money making glitch involving swamps (original bug)

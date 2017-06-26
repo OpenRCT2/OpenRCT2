@@ -116,7 +116,7 @@ public:
     {
 #if defined(_MSC_VER)
         return _ftelli64(_file);
-#elif (defined(__APPLE__) && defined(__MACH__)) || defined(__ANDROID__)
+#elif (defined(__APPLE__) && defined(__MACH__)) || defined(__ANDROID__) || defined(__OpenBSD__)
         return ftello(_file);
 #else
         return ftello64(_file);
@@ -142,7 +142,7 @@ public:
             _fseeki64(_file, offset, SEEK_END);
             break;
         }
-#elif (defined(__APPLE__) && defined(__MACH__)) || defined(__ANDROID__)
+#elif (defined(__APPLE__) && defined(__MACH__)) || defined(__ANDROID__) || defined(__OpenBSD__)
         switch (origin) {
         case STREAM_SEEK_BEGIN:
             fseeko(_file, offset, SEEK_SET);

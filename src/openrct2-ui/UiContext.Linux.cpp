@@ -14,7 +14,7 @@
 *****************************************************************************/
 #pragma endregion
 
-#if defined(__linux__) && !defined(__ANDROID__)
+#if (defined(__linux__) || defined(__OpenBSD__)) && !defined(__ANDROID__)
 
 #include <dlfcn.h>
 #include <sstream>
@@ -50,6 +50,7 @@ namespace OpenRCT2 { namespace Ui
 
         bool IsSteamOverlayAttached() override
         {
+#ifdef __linux__
             // See http://syprog.blogspot.ru/2011/12/listing-loaded-shared-objects-in-linux.html
             struct lmap
             {
@@ -84,6 +85,9 @@ namespace OpenRCT2 { namespace Ui
                 dlclose(processHandle);
             }
             return result;
+#else
+            return false; // Needed for OpenBSD, likely all other Unixes.
+#endif
         }
 
         void ShowMessageBox(SDL_Window * window, const std::string &message) override
@@ -351,4 +355,4 @@ namespace OpenRCT2 { namespace Ui
     }
 } }
 
-#endif // __linux__
+#endif // __linux__ || __OpenBSD__

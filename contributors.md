@@ -57,6 +57,7 @@ Includes all git commit authors. Aliases are GitHub user names.
 * Hielke Morsink (Broxzier) - Tile inspector, heightmap loader, misc.
 * Joël Troch (JoelTroch) - Keyboard shortcuts for ride construction.
 * Thomas Delebo (delebota) - Misc.
+* Brian Callahan (ibara) - OpenBSD port.
 
 ## Bug fixes
 * (halfbro)
