@@ -191,6 +191,7 @@ exitcode_t CommandLine::HandleCommandDefault()
     }
 
     gOpenRCT2Headless = _headless;
+    gOpenRCT2NoGraphics = _headless;
     gOpenRCT2SilentBreakpad = _silentBreakpad || _headless;
 
     if (_userDataPath != nullptr)

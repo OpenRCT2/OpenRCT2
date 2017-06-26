@@ -34,6 +34,7 @@ int main(int argc, char * * argv)
     if (runGame == 1)
     {
         gOpenRCT2Headless = true;
+        gOpenRCT2NoGraphics = true;
 
         // Run OpenRCT2 with a plain context
         auto context = CreateContext();

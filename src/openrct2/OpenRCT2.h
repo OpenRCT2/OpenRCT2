@@ -53,6 +53,7 @@ extern "C"
     extern utf8 gCustomRCT2DataPath[MAX_PATH];
     extern utf8 gCustomPassword[MAX_PATH];
     extern bool gOpenRCT2Headless;
+    extern bool gOpenRCT2NoGraphics;
     extern bool gOpenRCT2ShowChangelog;
 
 #ifndef DISABLE_NETWORK
