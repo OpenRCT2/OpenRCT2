@@ -622,6 +622,11 @@ extern "C"
 
     bool config_open(const utf8 * path)
     {
+        if (!platform_file_exists(path))
+        {
+            return false;
+        }
+
         config_release();
         return Config::ReadFile(path);
     }
