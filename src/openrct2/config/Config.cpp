@@ -347,7 +347,7 @@ namespace Config
             // If the `player_name` setting is missing or equal to the empty string
             // use the logged-in user's username instead
             utf8* playerName = reader->GetCString("player_name", "");
-            if (String::Compare(playerName, "") == 0)
+            if (String::IsNullOrEmpty(playerName))
             {
                 playerName = String::Duplicate(platform_get_username());
                 if (playerName == nullptr)
