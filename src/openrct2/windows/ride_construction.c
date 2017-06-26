@@ -4077,7 +4077,6 @@ void game_command_callback_place_ride_entrance_or_exit(sint32 eax, sint32 ebx, s
         }
     } else {
         gRideEntranceExitPlaceType ^= 1;
-        window_invalidate_by_class(77);
         gCurrentToolWidget.widget_index = (gRideEntranceExitPlaceType == ENTRANCE_TYPE_RIDE_ENTRANCE) ?
             WIDX_ENTRANCE : WIDX_EXIT;
     }
