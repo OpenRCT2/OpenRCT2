@@ -322,7 +322,7 @@ static bool map_animation_invalidate_track_onridephoto(sint32 x, sint32 y, sint3
             if (game_is_paused()) {
                 return false;
             }
-            if (mapElement->properties.track.sequence & SEQUENCE_30) {
+            if (mapElement->properties.track.sequence & SEQUENCE_TAKING_PHOTO) {
                 mapElement->properties.track.sequence -= SEQUENCE_10;
                 return false;
             } else {
