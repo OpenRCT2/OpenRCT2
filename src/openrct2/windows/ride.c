@@ -529,7 +529,7 @@ static void window_ride_main_mousedown(rct_widgetindex widgetIndex, rct_window *
 static void window_ride_main_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex);
 static void window_ride_main_update(rct_window *w);
 static void window_ride_main_textinput(rct_window *w, rct_widgetindex widgetIndex, char *text);
-static void window_ride_main_unknown_14(rct_window *w);
+static void window_ride_main_viewport_rotate(rct_window *w);
 static void window_ride_main_invalidate(rct_window *w);
 static void window_ride_main_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
@@ -639,7 +639,7 @@ static rct_window_event_list window_ride_main_events = {
     NULL,
     NULL,
     window_ride_main_textinput,
-    window_ride_main_unknown_14,
+    window_ride_main_viewport_rotate,
     NULL,
     NULL,
     NULL,
@@ -2275,7 +2275,7 @@ static void window_ride_main_textinput(rct_window *w, rct_widgetindex widgetInde
  *
  *  rct2: 0x006AF55A
  */
-static void window_ride_main_unknown_14(rct_window *w)
+static void window_ride_main_viewport_rotate(rct_window *w)
 {
     window_ride_init_viewport(w);
 }

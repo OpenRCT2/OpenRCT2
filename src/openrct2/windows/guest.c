@@ -181,7 +181,7 @@ void window_guest_overview_resize(rct_window *w);
 void window_guest_overview_mouse_up(rct_window *w, rct_widgetindex widgetIndex);
 void window_guest_overview_paint(rct_window *w, rct_drawpixelinfo *dpi);
 void window_guest_overview_invalidate(rct_window *w);
-void window_guest_overview_unknown_14(rct_window *w);
+void window_guest_overview_viewport_rotate(rct_window *w);
 void window_guest_overview_update(rct_window* w);
 void window_guest_overview_text_input(rct_window *w, rct_widgetindex widgetIndex, char *text);
 void window_guest_overview_tool_update(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y);
@@ -242,7 +242,7 @@ static rct_window_event_list window_guest_overview_events = {
     NULL,
     NULL,
     window_guest_overview_text_input,
-    window_guest_overview_unknown_14,
+    window_guest_overview_viewport_rotate,
     NULL,
     NULL,
     NULL,
@@ -697,7 +697,7 @@ void window_guest_set_page(rct_window* w, sint32 page){
     if (listen && w->viewport) w->viewport->flags |= VIEWPORT_FLAG_SOUND_ON;
 }
 
-void window_guest_overview_unknown_14(rct_window *w)
+void window_guest_overview_viewport_rotate(rct_window *w)
 {
     window_guest_viewport_init(w);
 }

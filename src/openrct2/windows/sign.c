@@ -60,7 +60,7 @@ static void window_sign_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_sign_mousedown(rct_widgetindex widgetIndex, rct_window*w, rct_widget* widget);
 static void window_sign_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex);
 static void window_sign_textinput(rct_window *w, rct_widgetindex widgetIndex, char *text);
-static void window_sign_unknown_14(rct_window *w);
+static void window_sign_viewport_rotate(rct_window *w);
 static void window_sign_invalidate(rct_window *w);
 static void window_sign_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
@@ -87,7 +87,7 @@ static rct_window_event_list window_sign_events = {
     NULL,
     NULL,
     window_sign_textinput,
-    window_sign_unknown_14,
+    window_sign_viewport_rotate,
     NULL,
     NULL,
     NULL,
@@ -123,7 +123,7 @@ static rct_window_event_list window_sign_small_events = {
     NULL,
     NULL,
     window_sign_textinput,
-    window_sign_unknown_14,
+    window_sign_viewport_rotate,
     NULL,
     NULL,
     NULL,
@@ -361,7 +361,7 @@ static void window_sign_paint(rct_window *w, rct_drawpixelinfo *dpi)
  *
  *  rct2: 0x6B9A6C, 0x6E6424
  */
-static void window_sign_unknown_14(rct_window *w)
+static void window_sign_viewport_rotate(rct_window *w)
 {
     rct_viewport* view = w->viewport;
     w->viewport = 0;
