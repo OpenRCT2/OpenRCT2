@@ -22,9 +22,11 @@
 #include "ui/UiContext.h"
 #include "core/Console.hpp"
 #include "core/File.h"
+#include "core/FileScanner.h"
 #include "core/FileStream.hpp"
 #include "core/Guard.hpp"
 #include "core/MemoryStream.h"
+#include "core/Path.hpp"
 #include "core/String.hpp"
 #include "FileClassifier.h"
 #include "network/network.h"
@@ -235,7 +237,7 @@ namespace OpenRCT2
             network_set_env(_env);
             chat_init();
             theme_manager_initialise();
-            rct2_copy_original_user_files_over();
+            CopyOriginalUserFilesOver();
 
             rct2_interop_setup_hooks();
 
@@ -597,6 +599,58 @@ namespace OpenRCT2
                 Console::Error::WriteLine("Unable to detect file type.");
             }
             return false;
+        }
+
+        /**
+        * Copy saved games and landscapes to user directory
+        */
+        void CopyOriginalUserFilesOver()
+        {
+            CopyOriginalUserFilesOver(DIRID::SAVE, "*.sv6");
+            CopyOriginalUserFilesOver(DIRID::LANDSCAPE, "*.sc6");
+        }
+
+        void CopyOriginalUserFilesOver(DIRID dirid, const std::string &pattern)
+        {
+            auto src = _env->GetDirectoryPath(DIRBASE::RCT2, dirid);
+            auto dst = _env->GetDirectoryPath(DIRBASE::USER, dirid);
+            CopyOriginalUserFilesOver(src, dst, pattern);
+        }
+
+        void CopyOriginalUserFilesOver(const std::string &srcRoot, const std::string &dstRoot, const std::string &pattern)
+        {
+            log_verbose("CopyOriginalUserFilesOver('%s', '%s', '%s')", srcRoot.c_str(), dstRoot.c_str(), pattern.c_str());
+
+            auto scanPattern = Path::Combine(srcRoot, pattern);
+            auto scanner = Path::ScanDirectory(scanPattern, true);
+            while (scanner->Next())
+            {
+                auto src = std::string(scanner->GetPath());
+                auto dst = Path::Combine(dstRoot, scanner->GetPathRelative());
+                auto dstDirectory = Path::GetDirectory(dst);
+
+                // Create the directory if necessary
+                if (!platform_directory_exists(dstDirectory.c_str()))
+                {
+                    Console::WriteLine("Creating directory '%s'", dstDirectory.c_str());
+                    if (!platform_ensure_directory_exists(dstDirectory.c_str()))
+                    {
+                        Console::Error::WriteLine("Could not create directory %s.", dstDirectory.c_str());
+                        break;
+                    }
+                }
+
+                // Only copy the file if it doesn't already exist
+                if (!File::Exists(dst))
+                {
+                    Console::WriteLine("Copying '%s' to '%s'", src.c_str(), dst.c_str());
+                    if (!File::Copy(src, dst, false))
+                    {
+                        Console::Error::WriteLine("Failed to copy '%s' to '%s'", src.c_str(), dst.c_str());
+                    }
+                }
+            }
+            delete scanner;
         }
     };
 
