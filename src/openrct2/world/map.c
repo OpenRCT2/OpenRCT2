@@ -3168,7 +3168,11 @@ void game_command_place_large_scenery(sint32* eax, sint32* ebx, sint32* ecx, sin
 
 sint32 map_get_station(rct_map_element *mapElement)
 {
-    return (mapElement->properties.track.sequence & 0x70) >> 4;
+    sint32 station = (mapElement->properties.track.sequence & 0x70) >> 4;
+
+    // prevent out of bounds access
+    clamp(0, station, RCT12_MAX_STATIONS_PER_RIDE - 1);
+    return station;
 }
 
 /**
