@@ -307,7 +307,7 @@ void track_paint_util_draw_station_impl(uint8 rideIndex, uint8 trackSequence, ui
     rct_xy16 position = {gPaintMapPosition.x, gPaintMapPosition.y};
     rct_ride * ride = get_ride(rideIndex);
     const rct_ride_entrance_definition * entranceStyle = &RideEntranceDefinitions[ride->entrance_style];
-    const bool hasGreenLight = (bool) (mapElement->properties.track.sequence & 0x80);
+    const bool hasGreenLight = (bool) (mapElement->properties.track.sequence & SEQUENCE_HAS_GREEN_LIGHT);
 
     bool hasFence;
     uint32 imageId;
@@ -441,7 +441,7 @@ void track_paint_util_draw_station_inverted(uint8 rideIndex, uint8 trackSequence
     rct_xy16 position = {gPaintMapPosition.x, gPaintMapPosition.y};
     rct_ride * ride = get_ride(rideIndex);
     const rct_ride_entrance_definition * entranceStyle = &RideEntranceDefinitions[ride->entrance_style];
-    const bool hasGreenLight = (bool) (mapElement->properties.track.sequence & 0x80);
+    const bool hasGreenLight = (bool) (mapElement->properties.track.sequence & SEQUENCE_HAS_GREEN_LIGHT);
 
     bool hasFence;
     uint32 imageId;
@@ -1634,7 +1634,7 @@ void track_paint_util_onride_photo_small_paint(uint8 direction, sint32 height, r
         { SPR_ON_RIDE_PHOTO_SIGN_SMALL_SE_NW, SPR_ON_RIDE_PHOTO_CAMERA_SMALL_E, SPR_ON_RIDE_PHOTO_CAMERA_FLASH_SMALL_E },
     };
 
-    bool takingPhoto = (mapElement->properties.track.sequence & 0xF0) != 0;
+    bool takingPhoto = (mapElement->properties.track.sequence & SEQUENCE_TAKING_PHOTO) != 0;
     uint32 imageId = imageIds[direction][0] | gTrackColours[SCHEME_MISC];
     uint32 flashImageId = imageIds[direction][takingPhoto ? 2 : 1] | gTrackColours[SCHEME_MISC];
     switch (direction) {
@@ -1671,7 +1671,7 @@ void track_paint_util_onride_photo_paint(uint8 direction, sint32 height, rct_map
         { SPR_ON_RIDE_PHOTO_SIGN_SE_NW, SPR_ON_RIDE_PHOTO_CAMERA_E, SPR_ON_RIDE_PHOTO_CAMERA_FLASH_E },
     };
 
-    bool takingPhoto = (mapElement->properties.track.sequence & 0xF0) != 0;
+    bool takingPhoto = (mapElement->properties.track.sequence & SEQUENCE_TAKING_PHOTO) != 0;
     uint32 imageId = imageIds[direction][0] | gTrackColours[SCHEME_MISC];
     uint32 flashImageId = imageIds[direction][takingPhoto ? 2 : 1] | gTrackColours[SCHEME_MISC];
     switch (direction) {
@@ -1757,7 +1757,7 @@ void track_paint(uint8 direction, sint32 height, rct_map_element *mapElement)
 
     if (!gTrackDesignSaveMode || rideIndex == gTrackDesignSaveRideIndex) {
         sint32 trackType = mapElement->properties.track.type;
-        sint32 trackSequence = mapElement->properties.track.sequence & 0x0F;
+        sint32 trackSequence = mapElement->properties.track.sequence & SEQUENCE_NUMBER;
         sint32 trackColourScheme = mapElement->properties.track.colour & 3;
 
         if ((gCurrentViewportFlags & VIEWPORT_FLAG_TRACK_HEIGHTS) && dpi->zoom_level == 0) {
