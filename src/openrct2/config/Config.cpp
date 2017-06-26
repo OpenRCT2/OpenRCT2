@@ -352,7 +352,7 @@ namespace Config
                 playerName = String::Duplicate(platform_get_username());
                 if (playerName == nullptr)
                 {
-                    playerName = "Player";
+                    playerName = String::Duplicate("Player");
                 }
             }
 
