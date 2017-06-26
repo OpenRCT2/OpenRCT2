@@ -1219,7 +1219,7 @@ static bool track_design_place_ride(rct_track_td6 *td6, sint16 x, sint16 y, sint
                     if (map_element_get_type(map_element) != MAP_ELEMENT_TYPE_TRACK) continue;
                     if (map_element->base_height != z) continue;
 
-                    sint32 di = (map_element->properties.track.sequence >> 4) & 0x07;
+                    sint32 di = (map_element->properties.track.sequence & SEQUENCE_GET_STATION) >> 4;
                     uint8 bl = 1;
                     if (_trackDesignPlaceOperation == PTD_OPERATION_GET_COST) bl = 41;
                     if (_trackDesignPlaceOperation == PTD_OPERATION_4) bl = 105;

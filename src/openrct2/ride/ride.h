@@ -912,6 +912,15 @@ enum {
     TRACK_SELECTION_FLAG_RECHECK          = 1 << 3,
 };
 
+enum {
+    SEQUENCE_NUMBER = 0xF,
+    SEQUENCE_10 = 0x10,
+    SEQUENCE_30 = 0x30,
+    SEQUENCE_GET_STATION = 0x70,
+    SEQUENCE_HAS_GREEN_LIGHT = 0x80,
+    SEQUENCE_TAKING_PHOTO = 0xF0,
+};
+
 typedef struct rct_ride_properties {
     uint32 flags;
     uint8 min_value;

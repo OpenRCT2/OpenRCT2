@@ -602,7 +602,7 @@ sint32 tile_inspector_track_base_height_offset(sint32 x, sint32 y, sint32 elemen
         uint8 rideIndex = trackElement->properties.track.ride_index;
         rct_ride* ride = get_ride(rideIndex);
         const rct_preview_track* trackBlock = get_track_def_from_ride(ride, type);
-        trackBlock += trackElement->properties.track.sequence & 0x0F;
+        trackBlock += trackElement->properties.track.sequence & SEQUENCE_NUMBER;
 
         uint8 originDirection = map_element_get_direction(trackElement);
         switch (originDirection)
@@ -669,7 +669,7 @@ sint32 tile_inspector_track_base_height_offset(sint32 x, sint32 y, sint32 elemen
                 if ((mapElement->type & MAP_ELEMENT_DIRECTION_MASK) != rotation)
                     continue;
 
-                if ((mapElement->properties.track.sequence & 0x0F) != trackBlock->index)
+                if ((mapElement->properties.track.sequence & SEQUENCE_NUMBER) != trackBlock->index)
                     continue;
 
                 if (mapElement->properties.track.type != type)
@@ -734,7 +734,7 @@ sint32 tile_inspector_track_set_chain(sint32 x, sint32 y, sint32 elementIndex, b
         uint8 rideIndex = trackElement->properties.track.ride_index;
         rct_ride* ride = get_ride(rideIndex);
         const rct_preview_track* trackBlock = get_track_def_from_ride(ride, type);
-        trackBlock += trackElement->properties.track.sequence & 0x0F;
+        trackBlock += trackElement->properties.track.sequence & SEQUENCE_NUMBER;
 
         uint8 originDirection = map_element_get_direction(trackElement);
         switch (originDirection)
@@ -801,7 +801,7 @@ sint32 tile_inspector_track_set_chain(sint32 x, sint32 y, sint32 elementIndex, b
                 if ((mapElement->type & MAP_ELEMENT_DIRECTION_MASK) != rotation)
                     continue;
 
-                if ((mapElement->properties.track.sequence & 0x0F) != trackBlock->index)
+                if ((mapElement->properties.track.sequence & SEQUENCE_NUMBER) != trackBlock->index)
                     continue;
 
                 if (mapElement->properties.track.type != type)

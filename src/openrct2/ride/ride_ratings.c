@@ -199,7 +199,7 @@ static void ride_ratings_update_state_2()
         if (mapElement->base_height != z)
             continue;
 
-        if (trackType == 255 || ((mapElement->properties.track.sequence & 0x0F) == 0 && trackType == mapElement->properties.track.type)) {
+        if (trackType == 255 || ((mapElement->properties.track.sequence & SEQUENCE_NUMBER) == 0 && trackType == mapElement->properties.track.type)) {
             if (trackType == TRACK_ELEM_END_STATION) {
                 sint32 entranceIndex = map_get_station(mapElement);
                 gRideRatingsCalcData.station_flags &= ~RIDE_RATING_STATION_FLAG_NO_ENTRANCE;
@@ -537,7 +537,7 @@ static void ride_ratings_score_close_proximity(rct_map_element *inputMapElement)
         {
             sint32 trackType = mapElement->properties.track.type;
             if (trackType == TRACK_ELEM_LEFT_VERTICAL_LOOP || trackType == TRACK_ELEM_RIGHT_VERTICAL_LOOP) {
-                sint32 sequence = mapElement->properties.track.sequence & 0x0F;
+                sint32 sequence = mapElement->properties.track.sequence & SEQUENCE_NUMBER;
                 if (sequence == 3 || sequence == 6) {
                     if (mapElement->base_height - inputMapElement->clearance_height <= 10) {
                         proximity_score_increment(PROXIMITY_THROUGH_VERTICAL_LOOP);
