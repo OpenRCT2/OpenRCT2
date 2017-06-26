@@ -109,7 +109,7 @@ void window_land_rights_open()
     // Check if window is already open
     if (window_find_by_class(WC_LAND_RIGHTS) != NULL)
         return;
-    
+
     window = window_create(context_get_width() - 98, 29, 98, 94, &window_land_rights_events, WC_LAND_RIGHTS, 0);
     window->widgets = window_land_rights_widgets;
     window->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_DECREMENT) | (1 << WIDX_INCREMENT) | (1 << WIDX_PREVIEW) |
@@ -125,7 +125,7 @@ void window_land_rights_open()
     show_gridlines();
     tool_set(window, WIDX_BUY_LAND_RIGHTS, TOOL_UP_ARROW);
     input_set_flag(INPUT_FLAG_6, true);
-    
+
     show_land_rights();
 
     if (gLandRemainingConstructionSales == 0) {
@@ -275,10 +275,10 @@ static void window_land_rights_tool_update_land_rights(sint16 x, sint16 y)
 {
     map_invalidate_selection_rect();
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
-    
+
     rct_xy16 mapTile = { 0 };
     screen_get_map_xy(x, y, &mapTile.x, &mapTile.y, NULL);
-    
+
     if (mapTile.x == MAP_LOCATION_NULL) {
         if (_landRightsCost != MONEY32_UNDEFINED) {
             _landRightsCost = MONEY32_UNDEFINED;
@@ -286,58 +286,58 @@ static void window_land_rights_tool_update_land_rights(sint16 x, sint16 y)
         }
         return;
     }
-    
+
     uint8 state_changed = 0;
-    
+
     if (!(gMapSelectFlags & MAP_SELECT_FLAG_ENABLE)) {
         gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
         state_changed++;
     }
-    
+
     if (gMapSelectType != MAP_SELECT_TYPE_FULL) {
         gMapSelectType = MAP_SELECT_TYPE_FULL;
         state_changed++;
     }
-    
+
     sint16 tool_size = gLandToolSize;
     if (tool_size == 0)
         tool_size = 1;
-    
+
     sint16 tool_length = (tool_size - 1) * 32;
-    
+
     // Move to tool bottom left
     mapTile.x -= (tool_size - 1) * 16;
     mapTile.y -= (tool_size - 1) * 16;
     mapTile.x &= 0xFFE0;
     mapTile.y &= 0xFFE0;
-    
+
     if (gMapSelectPositionA.x != mapTile.x){
         gMapSelectPositionA.x = mapTile.x;
         state_changed++;
     }
-    
+
     if (gMapSelectPositionA.y != mapTile.y){
         gMapSelectPositionA.y = mapTile.y;
         state_changed++;
     }
-    
+
     mapTile.x += tool_length;
     mapTile.y += tool_length;
-    
+
     if (gMapSelectPositionB.x != mapTile.x){
         gMapSelectPositionB.x = mapTile.x;
         state_changed++;
     }
-    
+
     if (gMapSelectPositionB.y != mapTile.y){
         gMapSelectPositionB.y = mapTile.y;
         state_changed++;
     }
-    
+
     map_invalidate_selection_rect();
     if (!state_changed)
         return;
-    
+
     _landRightsCost = game_do_command(
         gMapSelectPositionA.x,
         GAME_COMMAND_FLAG_2,
