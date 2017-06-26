@@ -384,7 +384,7 @@ void audio_init_ride_sounds(sint32 device)
     for (sint32 i = 0; i < AUDIO_MAX_VEHICLE_SOUNDS; i++)
     {
         rct_vehicle_sound * vehicleSound = &gVehicleSoundList[i];
-        vehicleSound->id = 0xFFFF;
+        vehicleSound->id = SOUND_ID_NULL;
     }
 
     gAudioCurrentDevice = device;
@@ -443,14 +443,14 @@ void audio_stop_vehicle_sounds()
     for (size_t i = 0; i < Util::CountOf(gVehicleSoundList); i++)
     {
         rct_vehicle_sound * vehicleSound = &gVehicleSoundList[i];
-        if (vehicleSound->id != 0xFFFF)
+        if (vehicleSound->id != SOUND_ID_NULL)
         {
-            vehicleSound->id = 0xFFFF;
-            if (vehicleSound->sound1_id != 0xFFFF)
+            vehicleSound->id = SOUND_ID_NULL;
+            if (vehicleSound->sound1_id != SOUND_ID_NULL)
             {
                 Mixer_Stop_Channel(vehicleSound->sound1_channel);
             }
-            if (vehicleSound->sound2_id != 0xFFFF)
+            if (vehicleSound->sound2_id != SOUND_ID_NULL)
             {
                 Mixer_Stop_Channel(vehicleSound->sound2_channel);
             }

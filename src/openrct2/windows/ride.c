@@ -529,7 +529,7 @@ static void window_ride_main_mousedown(rct_widgetindex widgetIndex, rct_window *
 static void window_ride_main_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex);
 static void window_ride_main_update(rct_window *w);
 static void window_ride_main_textinput(rct_window *w, rct_widgetindex widgetIndex, char *text);
-static void window_ride_main_unknown_14(rct_window *w);
+static void window_ride_main_viewport_rotate(rct_window *w);
 static void window_ride_main_invalidate(rct_window *w);
 static void window_ride_main_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
@@ -639,7 +639,7 @@ static rct_window_event_list window_ride_main_events = {
     NULL,
     NULL,
     window_ride_main_textinput,
-    window_ride_main_unknown_14,
+    window_ride_main_viewport_rotate,
     NULL,
     NULL,
     NULL,
@@ -1789,9 +1789,13 @@ static void window_ride_init_viewport(rct_window *w)
         rct_ride_entry* ride_entry = get_ride_entry_by_ride(ride);
         if (ride_entry && ride_entry->tab_vehicle != 0){
             rct_vehicle* vehicle = GET_VEHICLE(focus.sprite.sprite_id);
-            focus.sprite.sprite_id = vehicle->next_vehicle_on_train;
+            if (vehicle->next_vehicle_on_train != SPRITE_INDEX_NULL) {
+                focus.sprite.sprite_id = vehicle->next_vehicle_on_train;
+            }
         }
-        focus.sprite.type |= 0xC0;
+        if (focus.sprite.sprite_id != SPRITE_INDEX_NULL) {
+            focus.sprite.type |= VIEWPORT_FOCUS_TYPE_SPRITE;
+        }
     }
     else if (eax >= ride->num_vehicles && eax < (ride->num_vehicles + ride->num_stations)){
         sint32 stationIndex = -1;
@@ -1807,7 +1811,7 @@ static void window_ride_init_viewport(rct_window *w)
         focus.coordinate.x = (eax & 0xFF) << 5;
         focus.coordinate.y = (eax & 0xFF00) >> 3;
         focus.coordinate.z = ride->station_heights[stationIndex] << 3;
-        focus.sprite.type |= 0x40;
+        focus.sprite.type |= VIEWPORT_FOCUS_TYPE_COORDINATE;
     }
     else{
         if (eax > 0){
@@ -1821,7 +1825,7 @@ static void window_ride_init_viewport(rct_window *w)
         focus.coordinate.z = view->z;
         focus.coordinate.zoom = view->zoom;
 
-        focus.sprite.type |= 0x40;
+        focus.sprite.type |= VIEWPORT_FOCUS_TYPE_COORDINATE;
     }
     focus.coordinate.var_480 = w->viewport_focus_coordinates.var_480;
 
@@ -2271,7 +2275,7 @@ static void window_ride_main_textinput(rct_window *w, rct_widgetindex widgetInde
  *
  *  rct2: 0x006AF55A
  */
-static void window_ride_main_unknown_14(rct_window *w)
+static void window_ride_main_viewport_rotate(rct_window *w)
 {
     window_ride_init_viewport(w);
 }

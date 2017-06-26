@@ -217,8 +217,8 @@ static void ride_update(sint32 rideIndex);
 static void ride_update_vehicle_colours(sint32 rideIndex);
 static void ride_set_vehicle_colours_to_random_preset(rct_ride *ride, uint8 preset_index);
 void loc_6DDF9C(rct_ride *ride, rct_map_element *mapElement);
-bool sub_6CA2DF(sint32 *trackType, sint32 *trackDirection, sint32 *rideIndex, sint32 *edxRS16, sint32 *x, sint32 *y, sint32 *z, sint32 *properties);
-money32 place_provisional_track_piece(sint32 rideIndex, sint32 trackType, sint32 trackDirection, sint32 edxRS16, sint32 x, sint32 y, sint32 z);
+bool sub_6CA2DF(sint32 *trackType, sint32 *trackDirection, sint32 *rideIndex, sint32 *_liftHillAndAlternativeState, sint32 *x, sint32 *y, sint32 *z, sint32 *properties);
+money32 place_provisional_track_piece(sint32 rideIndex, sint32 trackType, sint32 trackDirection, sint32 liftHillAndAlternativeState, sint32 x, sint32 y, sint32 z);
 static void ride_set_name_to_track_default(rct_ride * ride, rct_ride_entry * rideEntry);
 static void ride_set_name_to_vehicle_default(rct_ride * ride, rct_ride_entry * rideEntry);
 
@@ -1343,11 +1343,11 @@ sint32 sub_6C683D(sint32* x, sint32* y, sint32* z, sint32 direction, sint32 type
 void ride_restore_provisional_track_piece()
 {
     if (_currentTrackSelectionFlags & TRACK_SELECTION_FLAG_TRACK) {
-        sint32 x, y, z, direction, type, rideIndex, edxRS16;
-        if (sub_6CA2DF(&type, &direction, &rideIndex, &edxRS16, &x, &y, &z, NULL)) {
+        sint32 x, y, z, direction, type, rideIndex, liftHillAndAlternativeState;
+        if (sub_6CA2DF(&type, &direction, &rideIndex, &liftHillAndAlternativeState, &x, &y, &z, NULL)) {
             ride_construction_remove_ghosts();
         } else {
-            _currentTrackPrice = place_provisional_track_piece(rideIndex, type, direction, edxRS16, x, y, z);
+            _currentTrackPrice = place_provisional_track_piece(rideIndex, type, direction, liftHillAndAlternativeState, x, y, z);
             window_ride_construction_update_active_elements();
         }
     }
@@ -4502,8 +4502,8 @@ static rct_vehicle *vehicle_create_car(
     vehicle->var_BA = 0;
     vehicle->var_B6 = 0;
     vehicle->var_B8 = 0;
-    vehicle->sound1_id = 0xFF;
-    vehicle->sound2_id = 0xFF;
+    vehicle->sound1_id = RCT12_SOUND_ID_NULL;
+    vehicle->sound2_id = RCT12_SOUND_ID_NULL;
     vehicle->next_vehicle_on_train = SPRITE_INDEX_NULL;
     vehicle->var_C4 = 0;
     vehicle->var_C5 = 0;

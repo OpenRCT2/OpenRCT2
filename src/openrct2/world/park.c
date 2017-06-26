@@ -947,17 +947,26 @@ static money32 map_buy_land_rights_for_tile(sint32 x, sint32 y, sint32 setting, 
             return MONEY32_UNDEFINED;
         }
 
-        rct_map_element* mapElement = map_get_first_element_at(x / 32, y / 32);
-        do {
-            if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_ENTRANCE){
-                return 0;
-            }
-        } while (!map_element_is_last_for_tile(mapElement++));
-
         uint8 newOwnership = (flags & 0xFF00) >> 4;
         if (newOwnership == (surfaceElement->properties.surface.ownership & 0xF0)) {
             return 0;
         }
+
+        rct_map_element* mapElement = map_get_first_element_at(x / 32, y / 32);
+        do {
+            if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_ENTRANCE) {
+                // Do not allow ownership of park entrance.
+                if (newOwnership == OWNERSHIP_OWNED || newOwnership == OWNERSHIP_AVAILABLE)
+                    return 0;
+                // Allow construction rights available / for sale on park entrances on surface.
+                // There is no need to check the height if newOwnership is 0 (unowned and no rights available).
+                if ((newOwnership == OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED ||
+                     newOwnership == OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE) &&
+                    (mapElement->base_height - 3 > surfaceElement->base_height ||
+                     mapElement->base_height < surfaceElement->base_height))
+                    return 0;
+            }
+        } while (!map_element_is_last_for_tile(mapElement++));
 
         if (!(flags & GAME_COMMAND_FLAG_APPLY)) {
             return gLandPrice;

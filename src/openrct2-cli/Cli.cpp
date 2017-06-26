@@ -17,6 +17,11 @@
 #include <openrct2/Context.h>
 #include <openrct2/OpenRCT2.h>
 
+extern "C"
+{
+    #include <openrct2/platform/platform.h>
+}
+
 using namespace OpenRCT2;
 
 /**
@@ -29,6 +34,7 @@ int main(int argc, char * * argv)
     if (runGame == 1)
     {
         gOpenRCT2Headless = true;
+        gOpenRCT2NoGraphics = true;
 
         // Run OpenRCT2 with a plain context
         auto context = CreateContext();

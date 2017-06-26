@@ -18,6 +18,7 @@
 #include "../core/Memory.hpp"
 #include "../core/String.hpp"
 #include "../core/Util.hpp"
+#include "../OpenRCT2.h"
 #include "ObjectRepository.h"
 #include "RideObject.h"
 #include "../ride/RideGroupManager.h"
@@ -330,7 +331,9 @@ void RideObject::Load()
                     num_images *= 2;
                 }
 
-                set_vehicle_type_image_max_sizes(vehicleEntry, num_images);
+                if (!gOpenRCT2NoGraphics) {
+                    set_vehicle_type_image_max_sizes(vehicleEntry, num_images);
+                }
             }
             vehicleEntry->peep_loading_positions = _peepLoadingPositions[i];
 #ifdef NO_RCT2

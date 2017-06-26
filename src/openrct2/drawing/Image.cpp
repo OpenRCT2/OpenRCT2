@@ -19,6 +19,7 @@
 #include "../core/Console.hpp"
 #include "../core/Guard.hpp"
 #include "../core/Memory.hpp"
+#include "../OpenRCT2.h"
 
 extern "C"
 {
@@ -208,7 +209,7 @@ extern "C"
 {
     uint32 gfx_object_allocate_images(const rct_g1_element * images, uint32 count)
     {
-        if (count == 0)
+        if (count == 0 || gOpenRCT2NoGraphics)
         {
             return INVALID_IMAGE_ID;
         }

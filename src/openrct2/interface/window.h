@@ -172,7 +172,7 @@ typedef struct rct_window_event_list {
     void (*scroll_mousedrag)(struct rct_window*, sint32, sint32, sint32);
     void (*scroll_mouseover)(struct rct_window*, sint32, sint32, sint32);
     void (*text_input)(struct rct_window*, rct_widgetindex, char*);
-    void (*unknown_14)(struct rct_window*);
+    void (*viewport_rotate)(struct rct_window*);
     void (*unknown_15)(struct rct_window*, sint32, sint32);
     void (*tooltip)(struct rct_window*, rct_widgetindex, rct_string_id*);
     void (*cursor)(struct rct_window*, rct_widgetindex, sint32, sint32, sint32*);
@@ -340,7 +340,7 @@ typedef enum {
     WE_SCROLL_MOUSEDRAG = 17,
     WE_SCROLL_MOUSEOVER = 18,
     WE_TEXT_INPUT = 19,
-    WE_UNKNOWN_14 = 20,
+    WE_VIEWPORT_ROTATE = 20,
     WE_UNKNOWN_15 = 21, // scroll mouse move?
     WE_TOOLTIP = 22,
     WE_CURSOR = 23,
@@ -814,7 +814,7 @@ void window_event_scroll_mousedown_call(rct_window* w, sint32 scrollIndex, sint3
 void window_event_scroll_mousedrag_call(rct_window* w, sint32 scrollIndex, sint32 x, sint32 y);
 void window_event_scroll_mouseover_call(rct_window* w, sint32 scrollIndex, sint32 x, sint32 y);
 void window_event_textinput_call(rct_window *w, rct_widgetindex widgetIndex, char *text);
-void window_event_unknown_14_call(rct_window* w);
+void window_event_viewport_rotate_call(rct_window* w);
 void window_event_unknown_15_call(rct_window* w, sint32 scrollIndex, sint32 scrollAreaType);
 rct_string_id window_event_tooltip_call(rct_window* w, rct_widgetindex widgetIndex);
 sint32 window_event_cursor_call(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y);

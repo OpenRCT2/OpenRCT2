@@ -412,6 +412,7 @@ static void remove_banners_at_element(sint32 x, sint32 y, rct_map_element* mapEl
 money32 footpath_remove_real(sint32 x, sint32 y, sint32 z, sint32 flags)
 {
     rct_map_element *mapElement;
+    rct_map_element *footpathElement = NULL;
 
     gCommandExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
     gCommandPosition.x = x + 16;
@@ -423,7 +424,7 @@ money32 footpath_remove_real(sint32 x, sint32 y, sint32 z, sint32 flags)
         return MONEY32_UNDEFINED;
     }
 
-    if (flags & GAME_COMMAND_FLAG_APPLY) {
+    if ((flags & GAME_COMMAND_FLAG_APPLY) && !(flags & GAME_COMMAND_FLAG_GHOST)) {
         footpath_interrupt_peeps(x, y, z * 8);
         footpath_remove_litter(x, y, z * 8);
     }
@@ -441,19 +442,35 @@ money32 footpath_remove_real(sint32 x, sint32 y, sint32 z, sint32 flags)
             network_set_player_last_action_coord(network_get_player_index(game_command_playerid), coord);
         }
 
-        footpath_queue_chain_reset();
-        remove_banners_at_element(x, y, mapElement);
-        footpath_remove_edges_at(x, y, mapElement);
-        map_invalidate_tile_full(x, y);
-        map_element_remove(mapElement);
-        footpath_update_queue_chains();
+        // If the ghost flag is present we have to make sure to only delete ghost footpaths as they may be
+        // at the same origin.
+        if ((flags & GAME_COMMAND_FLAG_GHOST) && map_element_is_ghost(mapElement) == false) {
+            while (!map_element_is_last_for_tile(mapElement++)) {
+                if (mapElement->type != MAP_ELEMENT_TYPE_PATH && !map_element_is_ghost(mapElement)) {
+                    continue;
+                }
+                footpathElement = mapElement;
+                break;
+            }
+        } else {
+            footpathElement = mapElement;
+        }
+
+        if (footpathElement != NULL) {
+            footpath_queue_chain_reset();
+            remove_banners_at_element(x, y, footpathElement);
+            footpath_remove_edges_at(x, y, footpathElement);
+            map_invalidate_tile_full(x, y);
+            map_element_remove(footpathElement);
+            footpath_update_queue_chains();
+        }
     }
 
     money32 cost = -MONEY(10,00);
 
-    bool isNotOwnedByPark = (flags & (1 << 5));
+    bool isNotOwnedByPark = (flags & GAME_COMMAND_FLAG_5);
     bool moneyDisabled = (gParkFlags & PARK_FLAGS_NO_MONEY);
-    bool isGhost = (mapElement == NULL) || (map_element_is_ghost(mapElement));
+    bool isGhost = (footpathElement == NULL) || (map_element_is_ghost(footpathElement));
 
     if (isNotOwnedByPark || moneyDisabled || isGhost) {
         cost = 0;

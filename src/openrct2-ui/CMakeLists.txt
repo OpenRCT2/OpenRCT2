@@ -1,4 +1,4 @@
-# CMAKE project for openrct2-cli (UI build of OpenRCT2)
+# CMAKE project for openrct2-ui (UI build of OpenRCT2)
 cmake_minimum_required(VERSION 2.6)
 if (CMAKE_BINARY_DIR STREQUAL CMAKE_SOURCE_DIR)
     message(FATAL_ERROR "Building in-source is not supported! Create a build dir and remove ${CMAKE_SOURCE_DIR}/CMakeCache.txt")
@@ -10,9 +10,6 @@ option(DISABLE_OPENGL "Disable OpenGL support.")
 if (PORTABLE)
     set(CMAKE_INSTALL_RPATH "$ORIGIN")
 endif ()
-
-# CMake dependencies
-include(FindPkgConfig)
 
 # Third party libraries
 PKG_CHECK_MODULES(SDL2 REQUIRED sdl2)
@@ -48,7 +45,6 @@ add_executable(${PROJECT} ${OPENRCT2_UI_SOURCES} ${OPENRCT2_UI_M_SOURCES} ${OPEN
 
 target_link_libraries(${PROJECT} "libopenrct2"
                                  ${SDL2_LIBRARIES}
-                                 ${SDL2_TTF_LIBRARIES}
                                  ${SPEEX_LIBRARIES})
 
 if (APPLE)

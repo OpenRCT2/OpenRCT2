@@ -22,6 +22,7 @@
 #include "Imaging.h"
 #include "localisation/localisation.h"
 #include "OpenRCT2.h"
+#include "platform/platform.h"
 #include "util/util.h"
 
 #define MODE_DEFAULT 0

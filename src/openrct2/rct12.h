@@ -26,6 +26,7 @@
 #define RCT12_MAX_PEEP_SPAWNS       2
 #define RCT12_MAX_PARK_ENTRANCES    4
 #define RCT12_NUM_COLOUR_SCHEMES    4
+#define RCT12_SOUND_ID_NULL         0xFF
 
 #pragma pack(push, 1)
 

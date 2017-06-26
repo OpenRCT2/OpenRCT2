@@ -14,6 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
+#include "../rct12.h"
 #include "../world/sprite.h"
 #include "cable_lift.h"
 #include "ride.h"
@@ -57,8 +58,8 @@ rct_vehicle *cable_lift_segment_create(sint32 rideIndex, sint32 x, sint32 y, sin
     current->var_BA = 0;
     current->var_B6 = 0;
     current->var_B8 = 0;
-    current->sound1_id = 0xFF;
-    current->sound2_id = 0xFF;
+    current->sound1_id = RCT12_SOUND_ID_NULL;
+    current->sound2_id = RCT12_SOUND_ID_NULL;
     current->var_C4 = 0;
     current->var_C5 = 0;
     current->var_C8 = 0;

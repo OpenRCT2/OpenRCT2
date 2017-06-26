@@ -4422,7 +4422,7 @@ STR_6107    :Monster truck
 STR_6108    :Ottovolante ad avvitamento in acciaio
 STR_6109    :Ottovolante grande ad avvitamento
 STR_6110    :Ottovolante per giovanissimi
-STR_6111    :Ottovolante Midi
+STR_6111    :Mini-ottovolante classico
 STR_6112    :Un ottovolante di acciaio compatto, nel quale i treni viaggiano attraverso avvitamenti e inversioni
 STR_6113    :Un ottovolante molto alto ma privo di inversioni, con grandi cadute, un'alta velocità e comodi treni dotati di una barra di protezione sul bacino
 STR_6114    :I passeggeri viaggiano con tranquillità su un tracciato a bordo di veicoli motorizzati
@@ -4432,6 +4432,7 @@ STR_6117    :I passeggeri, seduti su confortevoli treni e protetti soltanto da b
 STR_6118    :Un ottovolante tranquillo per i visitatori che non hanno ancora il coraggio di provare le attrazioni più estreme
 STR_6119    :Un piccolo ed economico ottovolante, la cui altezza è limitata
 STR_6120    :{BABYBLUE}È disponibile un nuovo veicolo per {STRINGID}:{NEWLINE}{STRINGID}
+STR_6121    :{SMALLFONT}{BLACK}Estende i terreni di proprietà del parco fino ai bordi della mappa
 
 
 #############

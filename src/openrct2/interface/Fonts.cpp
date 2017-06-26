@@ -14,16 +14,17 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../common.h"
+#include "../config/Config.h"
 #include "../core/Console.hpp"
 #include "../core/String.hpp"
 #include "../localisation/LanguagePack.h"
 #include "Fonts.h"
 
-extern "C" {
-#include "../config/Config.h"
-#include "../drawing/drawing.h"
-#include "../localisation/language.h"
+extern "C"
+{
+    #include "../drawing/drawing.h"
+    #include "../drawing/ttf.h"
+    #include "../localisation/language.h"
 }
 
 #ifndef NO_TTF

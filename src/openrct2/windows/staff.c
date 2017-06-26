@@ -142,7 +142,7 @@ void window_staff_overview_tool_update(rct_window* w, rct_widgetindex widgetInde
 void window_staff_overview_tool_down(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y);
 void window_staff_overview_tool_abort(rct_window *w, rct_widgetindex widgetIndex);
 void window_staff_overview_text_input(rct_window *w, rct_widgetindex widgetIndex, char *text);
-void window_staff_overview_unknown_14(rct_window *w);
+void window_staff_overview_viewport_rotate(rct_window *w);
 
 void window_staff_options_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 void window_staff_options_update(rct_window* w);
@@ -183,7 +183,7 @@ static rct_window_event_list window_staff_overview_events = {
     NULL,
     NULL,
     window_staff_overview_text_input,
-    window_staff_overview_unknown_14,
+    window_staff_overview_viewport_rotate,
     NULL,
     NULL,
     NULL,
@@ -1201,7 +1201,7 @@ void window_staff_overview_text_input(rct_window *w, rct_widgetindex widgetIndex
  *
  *  rct2: 0x006BE5FC
  */
-void window_staff_overview_unknown_14(rct_window *w)
+void window_staff_overview_viewport_rotate(rct_window *w)
 {
     window_staff_viewport_init(w);
 }

@@ -84,7 +84,7 @@ static bool WallCheckObstructionWithTrack(rct_scenery_entry * wall,
     }
 
     // The following code checks if a door is allowed on the track
-    if (!(RideData4[ride->type].flags & RIDE_TYPE_FLAG4_0))
+    if (!(RideData4[ride->type].flags & RIDE_TYPE_FLAG4_ALLOW_DOORS_ON_TRACK))
     {
         return false;
     }

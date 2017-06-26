@@ -10573,7 +10573,7 @@ static void peep_spend_money(rct_peep *peep, money16 *peep_expend_type, money32 
     if (gConfigGeneral.show_guest_purchases && !(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)) {
         // HACK Currently disabled for multiplayer due to limitation of all sprites
         //      needing to be synchronised
-        if (network_get_mode() == NETWORK_MODE_NONE) {
+        if (network_get_mode() == NETWORK_MODE_NONE && !gOpenRCT2Headless) {
             money_effect_create_at(amount, peep->x, peep->y, peep->z, true);
         }
     }

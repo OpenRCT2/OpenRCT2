@@ -7,6 +7,8 @@
 - Feature: [#5576] Add a persistent 'display real names of guests' setting.
 - Feature: OpenRCT2 now starts up on the display it was last shown on.
 - Feature: [#5611] Add support for Android
+- Feature: [#5706] Add support for OpenBSD
+- Improved: Construction rights can now be placed on park entrances.
 - Improved: Mouse can now be dragged to select scenery when saving track designs
 - Fix: [#259] Money making glitch involving swamps (original bug)
 - Fix: [#739] Crocodile Ride (Log Flume) never allows more than five boats (original bug)
@@ -18,6 +20,7 @@
 - Fix: [#4055] Sort rides by track type: Sorting rule is not really clear (inconsistent?)
 - Fix: [#5400] New Ride window does not focus properly on newly invented ride.
 - Fix: [#5009] Ride rating calculations can overflow
+- Fix: [#5489] Sprite index crash for car view on car ride.
 - Fix: Non-invented vehicles can be used via track designs in select-by-track-type mode.
 - Fix: Track components added by OpenRCT2 are now usable in older scenarios.
 - Technical: [#5047] Add ride ratings tests
