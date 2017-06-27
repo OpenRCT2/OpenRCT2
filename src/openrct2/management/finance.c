@@ -125,7 +125,7 @@ void finance_pay_interest()
     if (gParkFlags & PARK_FLAGS_NO_MONEY)
         return;
 
-    // convert gBankLoan to 64-bit type as the line below would cause signed integer overflow when gBankLoan >= ((1 << 31) * 5 * gBankLoanInterestRate)
+    // convert gBankLoan to 64-bit type as the line below would cause signed integer overflow when gBankLoan >= ((1 << 31) / (5 * gBankLoanInterestRate))
     // (possible e.g. in the Alton Towers RCT1 scenario or in sandbox scenarios that allow loans)
     money64 currentLoan = gBankLoan;
     money32 interestToPay = (currentLoan * 5 * gBankLoanInterestRate) >> 14;
