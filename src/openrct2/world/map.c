@@ -1445,6 +1445,52 @@ static sint32 map_set_land_height_clear_func(rct_map_element** map_element, sint
     return 1;
 }
 
+static sint32 map_get_corner_height(sint32 z, sint32 slope, sint32 direction)
+{
+    switch (direction) {
+    case 0:
+        if (slope & 1) {
+            z += 2;
+            if (slope == 27) {
+                z += 2;
+            }
+        }
+        break;
+    case 1:
+        if (slope & 2) {
+            z += 2;
+            if (slope == 23) {
+                z += 2;
+            }
+        }
+        break;
+    case 2:
+        if (slope & 4) {
+            z += 2;
+            if (slope == 30) {
+                z += 2;
+            }
+        }
+        break;
+    case 3:
+        if (slope & 8) {
+            z += 2;
+            if (slope == 29) {
+                z += 2;
+            }
+        }
+        break;
+    }
+    return z;
+}
+
+static sint32 map_element_get_corner_height(rct_map_element *mapElement, sint32 direction)
+{
+    sint32 z = mapElement->base_height;
+    sint32 slope = mapElement->properties.surface.slope & MAP_ELEMENT_SLOPE_MASK;
+    return map_get_corner_height(z, slope, direction);
+}
+
 static money32 map_set_land_height(sint32 flags, sint32 x, sint32 y, sint32 height, sint32 style, sint32 selectionType)
 {
     rct_map_element *mapElement;
@@ -1498,7 +1544,6 @@ static money32 map_set_land_height(sint32 flags, sint32 x, sint32 y, sint32 heig
         if(!gCheatsDisableClearanceChecks)
             wall_remove_at(x, y, height * 8 - 16, height * 8 + 32);
     }
-    cost += MONEY(20, 0);
 
     if (!gCheatsDisableClearanceChecks) {
         //Check for obstructing scenery
@@ -1610,6 +1655,12 @@ static money32 map_set_land_height(sint32 flags, sint32 x, sint32 y, sint32 heig
                 return MONEY32_UNDEFINED;
             }
         } while (!map_element_is_last_for_tile(mapElement++));
+    }
+
+    for (int i = 0; i < 4; i += 1) {
+        int cornerHeight = map_element_get_corner_height(surfaceElement, i);
+        cornerHeight -= map_get_corner_height(height, style & MAP_ELEMENT_SLOPE_MASK, i);
+        cost += MONEY(abs(cornerHeight) * 5 / 2, 0);
     }
 
     if(flags & GAME_COMMAND_FLAG_APPLY)
@@ -2033,52 +2084,6 @@ void game_command_lower_land(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx,
         *ebp >> 16,
         *edi & 0xFFFF
     );
-}
-
-static sint32 map_get_corner_height(sint32 z, sint32 slope, sint32 direction)
-{
-    switch (direction) {
-    case 0:
-        if (slope & 1) {
-            z += 2;
-            if (slope == 27) {
-                z += 2;
-            }
-        }
-        break;
-    case 1:
-        if (slope & 2) {
-            z += 2;
-            if (slope == 23) {
-                z += 2;
-            }
-        }
-        break;
-    case 2:
-        if (slope & 4) {
-            z += 2;
-            if (slope == 30) {
-                z += 2;
-            }
-        }
-        break;
-    case 3:
-        if (slope & 8) {
-            z += 2;
-            if (slope == 29) {
-                z += 2;
-            }
-        }
-        break;
-    }
-    return z;
-}
-
-static sint32 map_element_get_corner_height(rct_map_element *mapElement, sint32 direction)
-{
-    sint32 z = mapElement->base_height;
-    sint32 slope = mapElement->properties.surface.slope & MAP_ELEMENT_SLOPE_MASK;
-    return map_get_corner_height(z, slope, direction);
 }
 
 /**
