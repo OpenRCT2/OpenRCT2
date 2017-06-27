@@ -94,11 +94,11 @@ void finance_payment(money32 amount, rct_expenditure_type type)
  */
 void finance_pay_wages()
 {
-    rct_peep* peep;
-    uint16 spriteIndex;
-
     if (gParkFlags & PARK_FLAGS_NO_MONEY)
         return;
+
+    rct_peep* peep;
+    uint16 spriteIndex;
 
     FOR_ALL_STAFF(spriteIndex, peep)
         finance_payment(wage_table[peep->staff_type] / 4, RCT_EXPENDITURE_TYPE_WAGES);
@@ -110,13 +110,10 @@ void finance_pay_wages()
 **/
 void finance_pay_research()
 {
-    uint8 level;
-
     if (gParkFlags & PARK_FLAGS_NO_MONEY)
         return;
 
-    level = gResearchFundingLevel;
-    finance_payment(research_cost_table[level] / 4, RCT_EXPENDITURE_TYPE_RESEARCH);
+    finance_payment(research_cost_table[gResearchFundingLevel] / 4, RCT_EXPENDITURE_TYPE_RESEARCH);
 }
 
 /**
@@ -125,17 +122,14 @@ void finance_pay_research()
  */
 void finance_pay_interest()
 {
-    money32 current_loan = gBankLoan;
-    uint8 current_interest = gBankLoanInterestRate;
-
-    // This variable uses the 64-bit type as the line below can involve multiplying very large numbers
-    // that will overflow money32 (e.g. in the Alton Towers RCT1 scenario)
-    money64 tempcost = (current_loan * 5 * current_interest) >> 14; // (5 * interest) / 2^14 is pretty close to
-
     if (gParkFlags & PARK_FLAGS_NO_MONEY)
         return;
 
-    finance_payment(tempcost, RCT_EXPENDITURE_TYPE_INTEREST);
+    // convert gBankLoan to 64-bit type as the line below would cause signed integer overflow when gBankLoan >= ((1 << 31) / (5 * gBankLoanInterestRate))
+    // (possible e.g. in the Alton Towers RCT1 scenario or in sandbox scenarios that allow loans)
+    money64 currentLoan = gBankLoan;
+    money32 interestToPay = (currentLoan * 5 * gBankLoanInterestRate) >> 14;
+    finance_payment(interestToPay, RCT_EXPENDITURE_TYPE_INTEREST);
 }
 
 /**
