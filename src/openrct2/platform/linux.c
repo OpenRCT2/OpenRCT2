@@ -18,9 +18,9 @@
 
 // Despite the name, this file contains support for more OSs besides Linux, provided the necessary ifdefs remain small.
 // Otherwise, they should be spun off into their own files.
-#if (defined(__linux__) || defined(__FREEBSD__) || defined(__OpenBSD__)) && !defined(__ANDROID__)
+#if (defined(__linux__) || defined(__FreeBSD__) || defined(__OpenBSD__)) && !defined(__ANDROID__)
 
-#ifdef __FREEBSD__
+#ifdef __FreeBSD__
 #include <sys/sysctl.h>
 #endif
 
@@ -49,7 +49,7 @@ void platform_get_exe_path(utf8 *outPath, size_t outSize)
         log_fatal("failed to read /proc/self/exe");
     }
     exePath[bytesRead - 1] = '\0';
-#elif defined(__FREEBSD__)
+#elif defined(__FreeBSD__)
     size_t exeLen = sizeof(exePath);
     const sint32 mib[] = { CTL_KERN, KERN_PROC, KERN_PROC_PATHNAME, -1 };
     if (sysctl(mib, 4, exePath, &exeLen, NULL, 0) == -1) {

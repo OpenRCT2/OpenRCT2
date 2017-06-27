@@ -14,7 +14,7 @@
 *****************************************************************************/
 #pragma endregion
 
-#if (defined(__linux__) || defined(__OpenBSD__)) && !defined(__ANDROID__)
+#if (defined(__linux__) || defined(__OpenBSD__) || defined(__FreeBSD__)) && !defined(__ANDROID__)
 
 #include <dlfcn.h>
 #include <sstream>
