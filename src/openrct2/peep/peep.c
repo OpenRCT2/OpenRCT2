@@ -9000,6 +9000,9 @@ static bool path_is_thin_junction(rct_map_element *path, sint16 x, sint16 y, uin
 static void peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_peep *peep, rct_map_element *currentMapElement, bool inPatrolArea, uint8 counter, uint16 *endScore, sint32 test_edge, uint8 *endJunctions, rct_xyz8 junctionList[16], uint8 directionList[16], rct_xyz8 *endXYZ, uint8 *endSteps) {
     uint8 searchResult = PATH_SEARCH_FAILED;
 
+    bool currentElementIsWide = (footpath_element_is_wide(currentMapElement) &&
+                !staff_can_ignore_wide_flag(peep, x, y, z, currentMapElement));
+
     x += TileDirectionDelta[test_edge].x;
     y += TileDirectionDelta[test_edge].y;
 
@@ -9221,7 +9224,7 @@ static void peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_peep
         /* If this is a wide path the search ends here. */
         if (searchResult == PATH_SEARCH_WIDE) {
             /* Ignore Wide paths as continuing paths UNLESS
-             * the current path is also Wide.
+             * the current path is also Wide (and, for staff, not ignored).
              * This permits a peep currently on a wide path to
              * cross other wide paths to reach a thin path.
              *
@@ -9230,7 +9233,7 @@ static void peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_peep
              * If the search result is better than the best so far
              * (in the parameters), then update the parameters with
              * this search before continuing to the next map element. */
-            if (footpath_element_is_wide(currentMapElement) &&
+            if (currentElementIsWide &&
                 (new_score < *endScore || (new_score == *endScore && counter < *endSteps ))) {
                 // Update the search results
                 *endScore = new_score;
