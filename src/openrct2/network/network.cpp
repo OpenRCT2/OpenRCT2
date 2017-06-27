@@ -1363,7 +1363,7 @@ void Network::ProcessGameCommandQueue()
                 return;
 
             player->LastAction = NetworkActions::FindCommand(command);
-            player->LastActionTime = gc.tick;
+            player->LastActionTime = platform_get_ticks();
             player->AddMoneySpent(cost);
 
             if (mode == NETWORK_MODE_SERVER) {
