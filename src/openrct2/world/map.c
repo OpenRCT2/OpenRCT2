@@ -2035,10 +2035,8 @@ void game_command_lower_land(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx,
     );
 }
 
-static sint32 map_element_get_corner_height(rct_map_element *mapElement, sint32 direction)
+static sint32 map_get_corner_height(sint32 z, sint32 slope, sint32 direction)
 {
-    sint32 z = mapElement->base_height;
-    sint32 slope = mapElement->properties.surface.slope & MAP_ELEMENT_SLOPE_MASK;
     switch (direction) {
     case 0:
         if (slope & 1) {
@@ -2074,6 +2072,13 @@ static sint32 map_element_get_corner_height(rct_map_element *mapElement, sint32 
         break;
     }
     return z;
+}
+
+static sint32 map_element_get_corner_height(rct_map_element *mapElement, sint32 direction)
+{
+    sint32 z = mapElement->base_height;
+    sint32 slope = mapElement->properties.surface.slope & MAP_ELEMENT_SLOPE_MASK;
+    return map_get_corner_height(z, slope, direction);
 }
 
 /**
@@ -2155,14 +2160,8 @@ static money32 smooth_land(sint32 flags, sint32 centreX, sint32 centreY, sint32 
     }
 
     money32 totalCost = 0;
-
-    // First raise / lower the centre tile
     money32 result;
     commandType = command < 0x7FFF ? GAME_COMMAND_RAISE_LAND : GAME_COMMAND_LOWER_LAND;
-    result = game_do_command(centreX, flags, centreY, mapLeftRight, commandType, command & 0x7FFF, mapTopBottom);
-    if (result != MONEY32_UNDEFINED) {
-        totalCost += result;
-    }
 
     rct_map_element *mapElement = map_get_surface_element_at(mapLeft >> 5, mapTop >> 5);
     if (mapElement == NULL)
@@ -2179,14 +2178,66 @@ static money32 smooth_land(sint32 flags, sint32 centreX, sint32 centreY, sint32 
         network_set_player_last_action_coord(network_get_player_index(game_command_playerid), coord);
     }
 
-    // Flatten the edited part
-    if (fullTile) {
-        sint32 slope = mapElement->properties.surface.slope & MAP_ELEMENT_SLOPE_MASK;
-        if (slope != 0) {
-            commandType = command > 0x7FFF ? GAME_COMMAND_RAISE_LAND : GAME_COMMAND_LOWER_LAND;
-            result = game_do_command(centreX, flags, centreY, mapLeftRight, commandType, MAP_SELECT_TYPE_FULL, mapTopBottom);
-            if (result != MONEY32_UNDEFINED) {
-                totalCost += result;
+    uint8 maxHeight = 0;
+    uint8 minHeight = 0xFF;
+    uint32 newBaseZ = 0;
+    uint32 newSlope = 0;
+
+    // Predict the land height for future use
+    if (fullTile)
+    {
+        // Find lowest map element in selection
+        for (sint32 yi = mapTop; yi <= mapBottom; yi += 32) {
+            for (sint32 xi = mapLeft; xi <= mapRight; xi += 32) {
+                rct_map_element *map_element = map_get_surface_element_at(xi / 32, yi / 32);
+                if (map_element != NULL && minHeight > map_element->base_height) {
+                    minHeight = map_element->base_height;
+                }
+            }
+        }
+
+        // Find highest map element in selection
+        for (sint32 yi = mapTop; yi <= mapBottom; yi += 32) {
+            for (sint32 xi = mapLeft; xi <= mapRight; xi += 32) {
+                rct_map_element *map_element = map_get_surface_element_at(xi / 32, yi / 32);
+                if (map_element != NULL) {
+                    uint8 base_height = map_element->base_height;
+                    if (map_element->properties.surface.slope & 0xF)
+                        base_height += 2;
+                    if (map_element->properties.surface.slope & 0x10)
+                        base_height += 2;
+                    if (maxHeight < base_height)
+                        maxHeight = base_height;
+                }
+            }
+        }
+
+        if (commandType == GAME_COMMAND_RAISE_LAND) {
+            minHeight += 2;
+            maxHeight += 2;
+        }
+        else {
+            maxHeight -= 2;
+            minHeight -= 2;
+        }
+    }
+    else
+    {
+        // One corner tile selected
+        newBaseZ = mapElement->base_height;
+        newSlope = mapElement->properties.surface.slope & MAP_ELEMENT_SLOPE_MASK;
+        if (commandType == GAME_COMMAND_RAISE_LAND) {
+            newSlope = map_element_raise_styles[command & 0xFF][newSlope];
+            if (newSlope & 0x20) {
+                newBaseZ += 2;
+                newSlope &= ~0x20;
+            }
+        }
+        else {
+            newSlope = map_element_lower_styles[command & 0xFF][newSlope];
+            if (newSlope & 0x20) {
+                newBaseZ -= 2;
+                newSlope &= ~0x20;
             }
         }
     }
@@ -2206,7 +2257,9 @@ static money32 smooth_land(sint32 flags, sint32 centreX, sint32 centreY, sint32 
 
         // Corner (North-West)
         mapElement = map_get_surface_element_at(mapLeft >> 5, mapTop >> 5);
-        sint32 z = map_element_get_corner_height(mapElement, 2);
+        sint32 z = clamp(minHeight, map_element_get_corner_height(mapElement, 2), maxHeight);
+        if (!fullTile)
+            z = map_get_corner_height(newBaseZ, newSlope, 2);
         result = smooth_land_tile(0, flags, x, y, z, minZ);
         if (result != MONEY32_UNDEFINED) {
             totalCost += result;
@@ -2218,7 +2271,9 @@ static money32 smooth_land(sint32 flags, sint32 centreX, sint32 centreY, sint32 
             sint32 y2 = clamp(mapTop, y, mapBottom);
             mapElement = map_get_surface_element_at(mapLeft >> 5, y2 >> 5);
             if (y >= mapTop) {
-                z = map_element_get_corner_height(mapElement, 3);
+                z = clamp(minHeight, map_element_get_corner_height(mapElement, 3), maxHeight);
+                if (!fullTile)
+                    z = map_get_corner_height(newBaseZ, newSlope, 3);
                 result = smooth_land_tile((y <= mapBottom) ? 0 : 1, flags, x, y, z, minZ);
                 if (result != MONEY32_UNDEFINED) {
                     totalCost += result;
@@ -2232,7 +2287,9 @@ static money32 smooth_land(sint32 flags, sint32 centreX, sint32 centreY, sint32 
                 }
             }
             if (y <= mapBottom) {
-                z = map_element_get_corner_height(mapElement, 2);
+                z = clamp(minHeight, map_element_get_corner_height(mapElement, 2), maxHeight);
+                if (!fullTile)
+                    z = map_get_corner_height(newBaseZ, newSlope, 2);
                 result = smooth_land_tile((y >= mapTop) ? 1 : 0, flags, x, y, z, minZ);
                 if (result != MONEY32_UNDEFINED) {
                     totalCost += result;
@@ -2244,7 +2301,9 @@ static money32 smooth_land(sint32 flags, sint32 centreX, sint32 centreY, sint32 
 
         // Corner (South-West)
         mapElement = map_get_surface_element_at(mapLeft >> 5, mapBottom >> 5);
-        z = map_element_get_corner_height(mapElement, 3);
+        z = clamp(minHeight, map_element_get_corner_height(mapElement, 3), maxHeight);
+        if (!fullTile)
+            z = map_get_corner_height(newBaseZ, newSlope, 3);
         result = smooth_land_tile(1, flags, x, y, z, minZ);
         if (result != MONEY32_UNDEFINED) {
             totalCost += result;
@@ -2256,7 +2315,9 @@ static money32 smooth_land(sint32 flags, sint32 centreX, sint32 centreY, sint32 
             sint32 x2 = clamp(mapLeft, x, mapRight);
             mapElement = map_get_surface_element_at(x2 >> 5, mapBottom >> 5);
             if (x >= mapLeft) {
-                z = map_element_get_corner_height(mapElement, 0);
+                z = clamp(minHeight, map_element_get_corner_height(mapElement, 0), maxHeight);
+                if (!fullTile)
+                    z = map_get_corner_height(newBaseZ, newSlope, 0);
                 result = smooth_land_tile((x <= mapRight) ? 1 : 2, flags, x, y, z, minZ);
                 if (result != MONEY32_UNDEFINED) {
                     totalCost += result;
@@ -2270,7 +2331,9 @@ static money32 smooth_land(sint32 flags, sint32 centreX, sint32 centreY, sint32 
                 }
             }
             if (x <= mapRight) {
-                z = map_element_get_corner_height(mapElement, 3);
+                z = clamp(minHeight, map_element_get_corner_height(mapElement, 3), maxHeight);
+                if (!fullTile)
+                    z = map_get_corner_height(newBaseZ, newSlope, 3);
                 result = smooth_land_tile((x >= mapLeft) ? 2 : 1, flags, x, y, z, minZ);
                 if (result != MONEY32_UNDEFINED) {
                     totalCost += result;
@@ -2281,7 +2344,9 @@ static money32 smooth_land(sint32 flags, sint32 centreX, sint32 centreY, sint32 
 
         // Corner (South-East)
         mapElement = map_get_surface_element_at(mapRight >> 5, mapBottom >> 5);
-        z = map_element_get_corner_height(mapElement, 0);
+        z = clamp(minHeight, map_element_get_corner_height(mapElement, 0), maxHeight);
+        if (!fullTile)
+            z = map_get_corner_height(newBaseZ, newSlope, 0);
         result = smooth_land_tile(2, flags, x, y, z, minZ);
         if (result != MONEY32_UNDEFINED) {
             totalCost += result;
@@ -2293,7 +2358,9 @@ static money32 smooth_land(sint32 flags, sint32 centreX, sint32 centreY, sint32 
             sint32 y2 = clamp(mapTop, y, mapBottom);
             mapElement = map_get_surface_element_at(mapRight >> 5, y2 >> 5);
             if (y <= mapBottom) {
-                z = map_element_get_corner_height(mapElement, 1);
+                z = clamp(minHeight, map_element_get_corner_height(mapElement, 1), maxHeight);
+                if (!fullTile)
+                    z = map_get_corner_height(newBaseZ, newSlope, 1);
                 result = smooth_land_tile((y >= mapTop) ? 2 : 3, flags, x, y, z, minZ);
                 if (result != MONEY32_UNDEFINED) {
                     totalCost += result;
@@ -2307,7 +2374,9 @@ static money32 smooth_land(sint32 flags, sint32 centreX, sint32 centreY, sint32 
                 }
             }
             if (y >= mapTop) {
-                z = map_element_get_corner_height(mapElement, 0);
+                z = clamp(minHeight, map_element_get_corner_height(mapElement, 0), maxHeight);
+                if (!fullTile)
+                    z = map_get_corner_height(newBaseZ, newSlope, 0);
                 result = smooth_land_tile((y <= mapBottom) ? 3 : 2, flags, x, y, z, minZ);
                 if (result != MONEY32_UNDEFINED) {
                     totalCost += result;
@@ -2319,7 +2388,9 @@ static money32 smooth_land(sint32 flags, sint32 centreX, sint32 centreY, sint32 
 
         // Corner (North-East)
         mapElement = map_get_surface_element_at(mapRight >> 5, mapTop >> 5);
-        z = map_element_get_corner_height(mapElement, 1);
+        z = clamp(minHeight, map_element_get_corner_height(mapElement, 1), maxHeight);
+        if (!fullTile)
+            z = map_get_corner_height(newBaseZ, newSlope, 1);
         result = smooth_land_tile(3, flags, x, y, z, minZ);
         if (result != MONEY32_UNDEFINED) {
             totalCost += result;
@@ -2331,7 +2402,9 @@ static money32 smooth_land(sint32 flags, sint32 centreX, sint32 centreY, sint32 
             sint32 x2 = clamp(mapLeft, x, mapRight);
             mapElement = map_get_surface_element_at(x2 >> 5, mapTop >> 5);
             if (x <= mapRight) {
-                z = map_element_get_corner_height(mapElement, 2);
+                z = clamp(minHeight, map_element_get_corner_height(mapElement, 2), maxHeight);
+                if (!fullTile)
+                    z = map_get_corner_height(newBaseZ, newSlope, 2);
                 result = smooth_land_tile((x >= mapLeft) ? 3 : 0, flags, x, y, z, minZ);
                 if (result != MONEY32_UNDEFINED) {
                     totalCost += result;
@@ -2345,7 +2418,9 @@ static money32 smooth_land(sint32 flags, sint32 centreX, sint32 centreY, sint32 
                 }
             }
             if (x >= mapLeft) {
-                z = map_element_get_corner_height(mapElement, 1);
+                z = clamp(minHeight, map_element_get_corner_height(mapElement, 1), maxHeight);
+                if (!fullTile)
+                    z = map_get_corner_height(newBaseZ, newSlope, 1);
                 result = smooth_land_tile((x <= mapRight) ? 0 : 3, flags, x, y, z, minZ);
                 if (result != MONEY32_UNDEFINED) {
                     totalCost += result;
@@ -2356,11 +2431,17 @@ static money32 smooth_land(sint32 flags, sint32 centreX, sint32 centreY, sint32 
         }
     }
 
+    // Finally raise / lower the centre tile
+    result = game_do_command(centreX, flags, centreY, mapLeftRight, commandType, command & 0x7FFF, mapTopBottom);
+    if (result != MONEY32_UNDEFINED) {
+        totalCost += result;
+    }
+
     gCommandExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
     gCommandPosition.x = centreX;
     gCommandPosition.y = centreY;
     gCommandPosition.z = centreZ;
-    return totalCost * 4;
+    return totalCost;
 }
 
 /**
