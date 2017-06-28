@@ -1,4 +1,4 @@
-![logo](https://raw.githubusercontent.com/OpenRCT2/OpenRCT2/develop/resources/logo/icon_x256.png)![text](http://imgh.us/openrct2logo.svg)
+![logo](https://raw.githubusercontent.com/OpenRCT2/OpenRCT2/develop/resources/logo/icon_x256.png)
 
 ---
 
