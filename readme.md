@@ -12,10 +12,12 @@ If you want to help *make* the game, join the developer channel.
 
 If you need help, or want to talk to the developers, or just want to stay up to date, join the non-developer channel for your language.
 
-| Language | Non Developer | Developer |
-|----------|---------------|-----------|
-| English | [![Gitter](https://img.shields.io/badge/gitter-general-blue.svg)](https://gitter.im/OpenRCT2/OpenRCT2/non-dev) | [![Gitter](https://img.shields.io/badge/gitter-development-yellowgreen.svg)](https://gitter.im/OpenRCT2/OpenRCT2) |
-| Nederlands | [![Gitter](https://img.shields.io/badge/gitter-general-blue.svg)](https://gitter.im/OpenRCT2/OpenRCT2/Nederlands) | |
+If you want to help translate the game to your language, please stop by the Localisation channel.
+
+| Language | Non Developer | Developer | Localisation |
+|----------|---------------|-----------|--------------|
+| English | [![Gitter](https://img.shields.io/badge/gitter-general-blue.svg)](https://gitter.im/OpenRCT2/OpenRCT2/non-dev) | [![Gitter](https://img.shields.io/badge/gitter-development-yellowgreen.svg)](https://gitter.im/OpenRCT2/OpenRCT2) | [![Gitter](https://img.shields.io/badge/gitter-localisation-green.svg)](https://gitter.im/OpenRCT2/Localisation) |
+| Nederlands | [![Gitter](https://img.shields.io/badge/gitter-general-blue.svg)](https://gitter.im/OpenRCT2/OpenRCT2/Nederlands) | | |
 
 
 # Contents
