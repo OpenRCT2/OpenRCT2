@@ -8,9 +8,9 @@ An open-source re-implementation of RollerCoaster Tycoon 2. A construction and m
 | **develop** | [![AppVeyor](https://ci.appveyor.com/api/projects/status/7efnemxhon6i5n34/branch/develop?svg=true)](https://ci.appveyor.com/project/IntelOrca/openrct2-ject9) | [![Travis CI](https://travis-ci.org/OpenRCT2/OpenRCT2.svg?branch=develop)](https://travis-ci.org/OpenRCT2/OpenRCT2) | [![OpenRCT2.org](https://img.shields.io/badge/develop-v0.0.8-blue.svg)](https://openrct2.org/downloads/develop/latest) |
 
 ### Chat
-If you want to help *make* the game, join the Developer Channel for your Language.
+If you want to help *make* the game, join the developer channel.
 
-If you need help, or want to talk to the developers, or just want to stay up to date, join the Non Developer channels.
+If you need help, or want to talk to the developers, or just want to stay up to date, join the non-developer channel for your language.
 
 | Language | Non Developer | Developer |
 |----------|---------------|-----------|
@@ -48,7 +48,7 @@ Some Linux distributions offer native packages already. These packages are usual
 * Ubuntu PPA: [`master` branch](https://launchpad.net/~openrct2/+archive/ubuntu/master) and [`develop` branch](https://launchpad.net/~openrct2/+archive/ubuntu/nightly) (`develop` branch builds are temporarily on hold due to [missing functionality in bzr](https://bugs.launchpad.net/ubuntu/+source/bzr-git/+bug/1084403))
 * openSUSE OBS: [games/openrct2](https://software.opensuse.org/download.html?project=games&package=openrct2)
 
-* Some \*BSD operating systems offer native packages. These packages are usually third-party, but we're trying to resolve issues they are facing.
+Some \*BSD operating systems offer native packages. These packages are usually third-party, but we're trying to resolve issues they are facing.
 * OpenBSD: [games/openrct2](http://openports.se/games/openrct2)
 # 3 Building the game
 
