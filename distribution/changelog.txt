@@ -11,6 +11,7 @@
 - Improved: Construction rights can now be placed on park entrances.
 - Improved: Mouse can now be dragged to select scenery when saving track designs
 - Fix: [#259] Money making glitch involving swamps (original bug)
+- Fix: [#441] Construction rights over entrance path erased
 - Fix: [#739] Crocodile Ride (Log Flume) never allows more than five boats (original bug)
 - Fix: [#837] Can't move windows on title screen to where the toolbar would be
 - Fix: [#1705] Time Twister's Medieval entrance has incorrect scrolling (original bug)
