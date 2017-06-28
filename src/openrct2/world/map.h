@@ -391,14 +391,11 @@ extern uint32 gNextFreeMapElementPointerIndex;
 extern bool gLandMountainMode;
 // Used in the land tool window to allow dragging and changing land styles
 extern bool gLandPaintMode;
-// Used in the land rights tool window to either buy land rights or construction rights
-extern bool LandRightsMode;
 // Used in the clear scenery tool
 extern bool gClearSmallScenery;
 extern bool gClearLargeScenery;
 extern bool gClearFootpath;
 
-extern money32 gLandRightsCost;
 extern uint16 gLandRemainingOwnershipSales;
 extern uint16 gLandRemainingConstructionSales;
 

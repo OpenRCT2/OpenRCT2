@@ -67,7 +67,6 @@ enum WINDOW_PARK_WIDGET_IDX {
     WIDX_STATUS,
     WIDX_OPEN_OR_CLOSE,
     WIDX_BUY_LAND_RIGHTS,
-    //WIDX_BUY_CONSTRUCTION_RIGHTS,
     WIDX_LOCATE,
     WIDX_RENAME,
     WIDX_CLOSE_LIGHT,
@@ -102,7 +101,6 @@ static rct_widget window_park_entrance_widgets[] = {
     { WWT_12,               1,  3,      204,    161,    171,    0xFFFFFFFF,                     STR_NONE },                         // status
     { WWT_FLATBTN,          1,  205,    228,    49,     72,     0xFFFFFFFF,                     STR_OPEN_OR_CLOSE_PARK_TIP },       // open / close
     { WWT_FLATBTN,          1,  205,    228,    73,     96,     SPR_BUY_LAND_RIGHTS,            STR_BUY_LAND_AND_CONSTRUCTION_RIGHTS_TIP },         // buy land rights
-    //{ WWT_FLATBTN,            1,  205,    228,    97,     120,    SPR_BUY_CONSTRUCTION_RIGHTS,    STR_BUY_CONSTRUCTION_RIGHTS_TIP },  // buy construction rights
     { WWT_FLATBTN,          1,  205,    228,    97,     120,    SPR_LOCATE,                     STR_LOCATE_SUBJECT_TIP },           // locate
     { WWT_FLATBTN,          1,  205,    228,    121,    144,    SPR_RENAME,                     STR_NAME_PARK_TIP },                // rename
     { WWT_IMGBTN,           1,  210,    223,    51,     65,     SPR_G2_RCT1_CLOSE_BUTTON_0,     STR_CLOSE_PARK_TIP },
@@ -165,14 +163,9 @@ static void window_park_entrance_resize(rct_window *w);
 static void window_park_entrance_mousedown(rct_widgetindex widgetIndex, rct_window*w, rct_widget* widget);
 static void window_park_entrance_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex);
 static void window_park_entrance_update(rct_window *w);
-static void window_park_entrance_toolupdate(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y);
-static void window_park_entrance_tooldown(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y);
-static void window_park_entrance_tooldrag(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y);
-static void window_park_entrance_toolabort(rct_window *w, rct_widgetindex widgetIndex);
 static void window_park_entrance_textinput(rct_window *w, rct_widgetindex widgetIndex, char *text);
 static void window_park_entrance_invalidate(rct_window *w);
 static void window_park_entrance_paint(rct_window *w, rct_drawpixelinfo *dpi);
-void toggle_land_rights_window(rct_window *parkWindow, rct_widgetindex widgetIndex);
 
 static void window_park_rating_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_park_rating_resize(rct_window *w);
@@ -222,11 +215,11 @@ static rct_window_event_list window_park_entrance_events = {
     window_park_entrance_update,
     NULL,
     NULL,
-    window_park_entrance_toolupdate,
-    window_park_entrance_tooldown,
-    window_park_entrance_tooldrag,
     NULL,
-    window_park_entrance_toolabort,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
     NULL,
     NULL,
     NULL,
@@ -454,7 +447,6 @@ static uint32 window_park_page_enabled_widgets[] = {
     (1 << WIDX_TAB_7) |
     (1 << WIDX_OPEN_OR_CLOSE) |
     (1 << WIDX_BUY_LAND_RIGHTS) |
-    //(1 << WIDX_BUY_CONSTRUCTION_RIGHTS) |
     (1 << WIDX_LOCATE) |
     (1 << WIDX_RENAME) |
     (1 << WIDX_CLOSE_LIGHT) |
@@ -662,10 +654,8 @@ static void window_park_entrance_mouseup(rct_window *w, rct_widgetindex widgetIn
         window_park_set_page(w, widgetIndex - WIDX_TAB_1);
         break;
     case WIDX_BUY_LAND_RIGHTS:
-        toggle_land_rights_window(w, WIDX_BUY_LAND_RIGHTS);
+        window_land_rights_open();
         break;
-    // case WIDX_BUY_CONSTRUCTION_RIGHTS:
-    //  break;
     case WIDX_LOCATE:
         window_scroll_to_viewport(w);
         break;
@@ -751,201 +741,6 @@ static void window_park_entrance_update(rct_window *w)
 {
     w->frame_no++;
     widget_invalidate(w, WIDX_TAB_1);
-}
-
-
-static void window_park_entrance_tool_update_land_rights(sint16 x, sint16 y)
-{
-    map_invalidate_selection_rect();
-    gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
-
-    rct_xy16 mapTile = { 0 };
-    screen_get_map_xy(x, y, &mapTile.x, &mapTile.y, NULL);
-
-    if (mapTile.x == MAP_LOCATION_NULL) {
-        if (gLandRightsCost != MONEY32_UNDEFINED) {
-            gLandRightsCost = MONEY32_UNDEFINED;
-            window_invalidate_by_class(WC_CLEAR_SCENERY);
-        }
-        return;
-    }
-
-    uint8 state_changed = 0;
-
-    if (!(gMapSelectFlags & MAP_SELECT_FLAG_ENABLE)) {
-        gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
-        state_changed++;
-    }
-
-    if (gMapSelectType != MAP_SELECT_TYPE_FULL) {
-        gMapSelectType = MAP_SELECT_TYPE_FULL;
-        state_changed++;
-    }
-
-    sint16 tool_size = gLandToolSize;
-    if (tool_size == 0)
-        tool_size = 1;
-
-    sint16 tool_length = (tool_size - 1) * 32;
-
-    // Move to tool bottom left
-    mapTile.x -= (tool_size - 1) * 16;
-    mapTile.y -= (tool_size - 1) * 16;
-    mapTile.x &= 0xFFE0;
-    mapTile.y &= 0xFFE0;
-
-    if (gMapSelectPositionA.x != mapTile.x){
-        gMapSelectPositionA.x = mapTile.x;
-        state_changed++;
-    }
-
-    if (gMapSelectPositionA.y != mapTile.y){
-        gMapSelectPositionA.y = mapTile.y;
-        state_changed++;
-    }
-
-    mapTile.x += tool_length;
-    mapTile.y += tool_length;
-
-    if (gMapSelectPositionB.x != mapTile.x){
-        gMapSelectPositionB.x = mapTile.x;
-        state_changed++;
-    }
-
-    if (gMapSelectPositionB.y != mapTile.y){
-        gMapSelectPositionB.y = mapTile.y;
-        state_changed++;
-    }
-
-    map_invalidate_selection_rect();
-    if (!state_changed)
-        return;
-
-    gLandRightsCost = game_do_command(
-        gMapSelectPositionA.x,
-        0x4,
-        gMapSelectPositionA.y,
-        LandRightsMode ? 0x00E : 0x20F,
-        GAME_COMMAND_BUY_LAND_RIGHTS,
-        gMapSelectPositionB.x,
-        gMapSelectPositionB.y
-    );
-}
-
-/**
- *
- *  rct2: 0x006681D1
- */
-static void window_park_entrance_toolupdate(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y)
-{
-    switch (widgetIndex){
-    case WIDX_BUY_LAND_RIGHTS:
-        window_park_entrance_tool_update_land_rights(x, y);
-        break;
-    }
-}
-
-/**
- *
- *  rct2: 0x006681E6
- */
-static void window_park_entrance_tooldown(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y)
-{
-    switch (widgetIndex){
-    case WIDX_BUY_LAND_RIGHTS:
-        if (LandRightsMode) {
-            if (x != MAP_LOCATION_NULL) {
-                gGameCommandErrorTitle = STR_CANT_BUY_LAND;
-                game_do_command(
-                    gMapSelectPositionA.x,
-                    1,
-                    gMapSelectPositionA.y,
-                    0x00E,
-                    GAME_COMMAND_BUY_LAND_RIGHTS,
-                    gMapSelectPositionB.x,
-                    gMapSelectPositionB.y
-                    );
-            }
-        }
-        else {
-            if (x != MAP_LOCATION_NULL) {
-                gGameCommandErrorTitle = STR_CANT_BUY_CONSTRUCTION_RIGHTS_HERE;
-                game_do_command(
-                    gMapSelectPositionA.x,
-                    1,
-                    gMapSelectPositionA.y,
-                    0x20F,
-                    GAME_COMMAND_BUY_LAND_RIGHTS,
-                    gMapSelectPositionB.x,
-                    gMapSelectPositionB.y
-                    );
-            }
-        }
-        break;
-    }
-}
-
-/**
- *
- *  rct2: 0x006681FB
- */
-static void window_park_entrance_tooldrag(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y)
-{
-    rct_window* w2 = window_find_by_number(0xB, 0);
-
-    if (!w2) {
-        switch (widgetIndex){
-        case WIDX_BUY_LAND_RIGHTS:
-            if (LandRightsMode) {
-                if (x != MAP_LOCATION_NULL) {
-                    gGameCommandErrorTitle = STR_CANT_BUY_LAND;
-                    game_do_command(
-                        gMapSelectPositionA.x,
-                        1,
-                        gMapSelectPositionA.y,
-                        0x00E,
-                        GAME_COMMAND_BUY_LAND_RIGHTS,
-                        gMapSelectPositionB.x,
-                        gMapSelectPositionB.y
-                        );
-                }
-            }
-            else {
-                if (x != MAP_LOCATION_NULL) {
-                    gGameCommandErrorTitle = STR_CANT_BUY_CONSTRUCTION_RIGHTS_HERE;
-                    game_do_command(
-                        gMapSelectPositionA.x,
-                        1,
-                        gMapSelectPositionA.y,
-                        0x20F,
-                        GAME_COMMAND_BUY_LAND_RIGHTS,
-                        gMapSelectPositionB.x,
-                        gMapSelectPositionB.y
-                        );
-                }
-            }
-            break;
-        }
-    }
-}
-
-/**
- *
- *  rct2: 0x0066822A
- */
-static void window_park_entrance_toolabort(rct_window *w, rct_widgetindex widgetIndex)
-{
-    if (widgetIndex == WIDX_BUY_LAND_RIGHTS) {
-        hide_gridlines();
-        if (LandRightsMode)
-            hide_land_rights();
-        else
-            hide_construction_rights();
-    }
-    //else if (widgetIndex == WIDX_BUY_CONSTRUCTION_RIGHTS) {
-    //  hide_gridlines();
-    //  hide_construction_rights();
-    //}
 }
 
 /**
@@ -1143,20 +938,6 @@ static void window_park_init_viewport(rct_window *w)
     if (w->viewport != NULL)
         w->viewport->flags = viewportFlags;
     window_invalidate(w);
-}
-
-void toggle_land_rights_window(rct_window *parkWindow, rct_widgetindex widgetIndex)
-{
-    if ((input_test_flag(INPUT_FLAG_TOOL_ACTIVE)) && gCurrentToolWidget.window_classification == WC_PARK_INFORMATION &&
-        gCurrentToolWidget.widget_index == WIDX_BUY_LAND_RIGHTS) {
-        tool_cancel();
-    }
-    else {
-        show_gridlines();
-        tool_set(parkWindow, widgetIndex, TOOL_UP_ARROW);
-        input_set_flag(INPUT_FLAG_6, true);
-        window_land_rights_open();
-    }
 }
 
 #pragma endregion

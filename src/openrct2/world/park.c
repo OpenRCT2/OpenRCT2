@@ -875,7 +875,7 @@ static money32 map_buy_land_rights_for_tile(sint32 x, sint32 y, sint32 setting, 
         return MONEY32_UNDEFINED;
 
     switch (setting) {
-    case 0:
+    case BUY_LAND_RIGHTS_FLAG_BUY_LAND: // 0
         if ((surfaceElement->properties.surface.ownership & OWNERSHIP_OWNED) != 0) { // If the land is already owned
             return 0;
         }
@@ -889,13 +889,13 @@ static money32 map_buy_land_rights_for_tile(sint32 x, sint32 y, sint32 setting, 
             update_park_fences_around_tile(x, y);
         }
         return gLandPrice;
-    case 1:
+    case BUY_LAND_RIGHTS_FLAG_UNOWN_TILE: // 1
         if (flags & GAME_COMMAND_FLAG_APPLY) {
             surfaceElement->properties.surface.ownership &= ~(OWNERSHIP_OWNED | OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED);
             update_park_fences_around_tile(x, y);
         }
         return 0;
-    case 2:
+    case BUY_LAND_RIGHTS_FLAG_BUY_CONSTRUCTION_RIGHTS: // 2
         if ((surfaceElement->properties.surface.ownership & (OWNERSHIP_OWNED | OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED)) != 0) { // If the land or construction rights are already owned
             return 0;
         }
@@ -911,21 +911,21 @@ static money32 map_buy_land_rights_for_tile(sint32 x, sint32 y, sint32 setting, 
             map_invalidate_tile(x, y, baseHeight, baseHeight + 16);
         }
         return gConstructionRightsPrice;
-    case 3:
+    case BUY_LAND_RIGHTS_FLAG_UNOWN_CONSTRUCTION_RIGHTS: // 3
         if (flags & GAME_COMMAND_FLAG_APPLY) {
             surfaceElement->properties.surface.ownership &= ~OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED;
             uint16 baseHeight = surfaceElement->base_height * 8;
             map_invalidate_tile(x, y, baseHeight, baseHeight + 16);
         }
         return 0;
-    case 4:
+    case BUY_LAND_RIGHTS_FLAG_SET_FOR_SALE: // 4
         if (flags & GAME_COMMAND_FLAG_APPLY) {
             surfaceElement->properties.surface.ownership |= OWNERSHIP_AVAILABLE;
             uint16 baseHeight = surfaceElement->base_height * 8;
             map_invalidate_tile(x, y, baseHeight, baseHeight + 16);
         }
         return 0;
-    case 5:
+    case BUY_LAND_RIGHTS_FLAG_SET_CONSTRUCTION_RIGHTS_FOR_SALE: // 5
         if (flags & GAME_COMMAND_FLAG_APPLY) {
             surfaceElement->properties.surface.ownership |= OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE;
             uint16 baseHeight = surfaceElement->base_height * 8;
@@ -1040,7 +1040,7 @@ void game_command_buy_land_rights(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 
         (*ecx & 0xFFFF),
         (*edi & 0xFFFF),
         (*ebp & 0xFFFF),
-        (*edx & 0xFF00) >> 8,
+        (*edx & 0x00FF),
         flags
     );
 

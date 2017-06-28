@@ -625,7 +625,7 @@ void game_command_edit_scenario_options(sint32* eax, sint32* ebx, sint32* ecx, s
         gLandPrice = clamp(MONEY(5, 00), *edx, MONEY(200, 00));
         break;
     case EDIT_SCENARIOOPTIONS_SETCOSTTOBUYCONSTRUCTIONRIGHTS:
-        gLandRightsCost = clamp(MONEY(5,00), *edx, MONEY(200,00));
+        gConstructionRightsPrice = clamp(MONEY(5,00), *edx, MONEY(200,00));
         break;
     case EDIT_SCENARIOOPTIONS_SETPARKCHARGEMETHOD:
         if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) {
