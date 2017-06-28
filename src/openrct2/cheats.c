@@ -445,25 +445,10 @@ static void cheat_own_all_land()
                 continue;
 
             sint32 base_z = surfaceElement->base_height;
-            rct_map_element * mapElement = map_get_first_element_at(x >> 5, y >> 5);
-            sint32 destOwnership = OWNERSHIP_OWNED;
-
-            do {
-                sint32 type = map_element_get_type(mapElement);
-                if (type == MAP_ELEMENT_TYPE_PATH ||
-                    (type == MAP_ELEMENT_TYPE_ENTRANCE && mapElement->properties.entrance.type == ENTRANCE_TYPE_PARK_ENTRANCE)) {
-                    destOwnership = OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED;
-                    // Do not own construction rights if too high/below surface
-                    if (mapElement->base_height - 3 > base_z ||
-                        mapElement->base_height < base_z) {
-                        destOwnership = 0;
-                        break;
-                    }
-                }
-            } while (!map_element_is_last_for_tile(mapElement++));
+            sint32 destOwnership = check_max_allowable_land_rights_for_tile(x >> 5, y >> 5, base_z);
 
             // only own tiles that were not set to 0
-            if (destOwnership != 0) {
+            if (destOwnership != OWNERSHIP_UNOWNED) {
                 surfaceElement->properties.surface.ownership |= destOwnership;
                 update_park_fences_around_tile(x, y);
                 uint16 baseHeight = surfaceElement->base_height * 8;
@@ -478,7 +463,7 @@ static void cheat_own_all_land()
         sint32 y = gPeepSpawns[i].y;
         if (x != PEEP_SPAWN_UNDEFINED) {
             rct_map_element * surfaceElement = map_get_surface_element_at(x >> 5, y >> 5);
-            surfaceElement->properties.surface.ownership = 0;
+            surfaceElement->properties.surface.ownership = OWNERSHIP_UNOWNED;
             update_park_fences_around_tile(x, y);
             uint16 baseHeight = surfaceElement->base_height * 8;
             map_invalidate_tile(x, y, baseHeight, baseHeight + 16);
