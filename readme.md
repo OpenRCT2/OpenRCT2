@@ -1,11 +1,23 @@
+![logo](https://raw.githubusercontent.com/OpenRCT2/OpenRCT2/develop/resources/logo/icon_x256.png)![text](http://imgh.us/openrct2logo.svg)
+
+---
+
 # OpenRCT2
 An open-source re-implementation of RollerCoaster Tycoon 2. A construction and management simulation video game that simulates amusement park management.
+
+---
+
+![screenshot](https://i.imgur.com/e2mOsmW.png)
+
+---
 
 ### Build Status
 |             | Windows | Linux / Mac | Download |
 |-------------|---------|-------------|----------|
 | **master**  | [![AppVeyor](https://ci.appveyor.com/api/projects/status/7efnemxhon6i5n34/branch/master?svg=true)](https://ci.appveyor.com/project/IntelOrca/openrct2-ject9) | [![Travis CI](https://travis-ci.org/OpenRCT2/OpenRCT2.svg?branch=master)](https://travis-ci.org/OpenRCT2/OpenRCT2) | [![OpenRCT2.org](https://img.shields.io/badge/master-v0.0.7-green.svg)](https://openrct2.org/downloads/master/latest) |
 | **develop** | [![AppVeyor](https://ci.appveyor.com/api/projects/status/7efnemxhon6i5n34/branch/develop?svg=true)](https://ci.appveyor.com/project/IntelOrca/openrct2-ject9) | [![Travis CI](https://travis-ci.org/OpenRCT2/OpenRCT2.svg?branch=develop)](https://travis-ci.org/OpenRCT2/OpenRCT2) | [![OpenRCT2.org](https://img.shields.io/badge/develop-v0.0.8-blue.svg)](https://openrct2.org/downloads/develop/latest) |
+
+---
 
 ### Chat
 If you want to help *make* the game, join the developer channel.
@@ -19,6 +31,7 @@ If you want to help translate the game to your language, please stop by the Loca
 | English | [![Gitter](https://img.shields.io/badge/gitter-general-blue.svg)](https://gitter.im/OpenRCT2/OpenRCT2/non-dev) | [![Gitter](https://img.shields.io/badge/gitter-development-yellowgreen.svg)](https://gitter.im/OpenRCT2/OpenRCT2) | [![Gitter](https://img.shields.io/badge/gitter-localisation-green.svg)](https://gitter.im/OpenRCT2/Localisation) |
 | Nederlands | [![Gitter](https://img.shields.io/badge/gitter-general-blue.svg)](https://gitter.im/OpenRCT2/OpenRCT2/Nederlands) | | |
 
+---
 
 # Contents
 - 1 - [Introduction](#1-introduction)
@@ -65,6 +78,8 @@ OpenRCT2 requires original files of RollerCoaster Tycoon 2 to play. It can be bo
   - Windows 10 SDK (10.0.14393.0)
 - [7-Zip](http://www.7-zip.org/) (for deployment only)
 - [NSIS](http://nsis.sourceforge.net/) (for deployment only)
+
+---
 
 ### macOS:
 - Xcode 8
@@ -138,6 +153,8 @@ make
 ```
 Detailed instructions can be found on our [wiki](https://github.com/OpenRCT2/OpenRCT2/wiki/Building-OpenRCT2-on-Linux).
 
+---
+
 # 4 Contributing
 OpenRCT2 uses the [gitflow workflow](https://www.atlassian.com/git/tutorials/comparing-workflows#gitflow-workflow). If you are implementing a new feature or logic from the original game, please branch off and perform pull requests to ```develop```. If you are fixing a bug for the next release, please branch off and perform pull requests to the correct release branch. ```master``` only contains tagged releases, you should never branch off this.
 
@@ -152,8 +169,12 @@ Please talk to the OpenRCT2 team first before starting to develop a new feature.
 ## 4.3 Translation
 You can translate the game into other languages by editing the language files in ```data/language``` directory. Please join discussions and submit pull requests to [OpenRCT2/Localisation](https://github.com/OpenRCT2/Localisation).
 
+---
+
 # 5 Licence
 **OpenRCT2** is licensed under the GNU General Public License version 3.
+
+---
 
 # 6 More information
 - [GitHub](https://github.com/OpenRCT2/OpenRCT2)
