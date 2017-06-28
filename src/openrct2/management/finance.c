@@ -125,17 +125,18 @@ void finance_pay_research()
  */
 void finance_pay_interest()
 {
-    money32 current_loan = gBankLoan;
-    uint8 current_interest = gBankLoanInterestRate;
-
-    // This variable uses the 64-bit type as the line below can involve multiplying very large numbers
-    // that will overflow money32 (e.g. in the Alton Towers RCT1 scenario)
-    money64 tempcost = (current_loan * 5 * current_interest) >> 14; // (5 * interest) / 2^14 is pretty close to
+    // This variable uses the 64-bit type as the computation below can involve multiplying very large numbers
+    // that will overflow money32 if the loan is greater than (1 << 31) / (5 * current_interest_rate)
+    money64 current_loan = gBankLoan;
+    uint8 current_interest_rate = gBankLoanInterestRate;
+    money32 interest_to_pay;
 
     if (gParkFlags & PARK_FLAGS_NO_MONEY)
         return;
 
-    finance_payment(tempcost, RCT_EXPENDITURE_TYPE_INTEREST);
+    interest_to_pay = (current_loan * 5 * current_interest_rate) >> 14;
+
+    finance_payment(interest_to_pay, RCT_EXPENDITURE_TYPE_INTEREST);
 }
 
 /**
