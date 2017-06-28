@@ -1,7 +1,3 @@
-![logo](https://raw.githubusercontent.com/OpenRCT2/OpenRCT2/develop/resources/logo/icon_x256.png)
-
----
-
 # OpenRCT2
 An open-source re-implementation of RollerCoaster Tycoon 2. A construction and management simulation video game that simulates amusement park management.
 
@@ -20,9 +16,11 @@ An open-source re-implementation of RollerCoaster Tycoon 2. A construction and m
 ---
 
 ### Chat
+You only need a GitHub or Twitter account to access these channels.
+
 If you want to help *make* the game, join the developer channel.
 
-If you need help, or want to talk to the developers, or just want to stay up to date, join the non-developer channel for your language.
+If you need help, want to talk to the developers, or just want to stay up to date then join the non-developer channel for your language.
 
 If you want to help translate the game to your language, please stop by the Localisation channel.
 
