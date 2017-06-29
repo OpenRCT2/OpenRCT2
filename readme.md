@@ -3,7 +3,7 @@ An open-source re-implementation of RollerCoaster Tycoon 2. A construction and m
 
 ---
 
-![screenshot](https://i.imgur.com/e2mOsmW.png)
+![OpenRCT2.org Group Park 5](https://i.imgur.com/6eMxD0m.png)
 
 ---
 
