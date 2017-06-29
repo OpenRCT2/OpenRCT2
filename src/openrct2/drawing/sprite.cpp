@@ -649,6 +649,8 @@ extern "C"
 
     rct_g1_element * gfx_get_g1_element(sint32 image_id)
     {
+        openrct2_assert(!gOpenRCT2NoGraphics, "gfx_get_g1_element called on headless instance");
+
         if (image_id == (-1 & 0x7FFFF))
         {
             return nullptr;

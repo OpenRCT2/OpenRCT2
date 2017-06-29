@@ -17,6 +17,7 @@
 #include "../localisation/localisation.h"
 #include "../interface/viewport.h"
 #include "../interface/window.h"
+#include "../OpenRCT2.h"
 #include "sprite.h"
 
 static const rct_xy16 _moneyEffectMoveOffset[] = {
@@ -47,13 +48,17 @@ void money_effect_create_at(money32 value, sint32 x, sint32 y, sint32 z, bool ve
     moneyEffect->num_movements = 0;
     moneyEffect->move_delay = 0;
 
-    // Construct string to display
-    rct_string_id stringId = money_effect_get_string_id(moneyEffect, &value);
-    char buffer[128];
-    format_string(buffer, 128, stringId, &value);
+    sint16 offsetX = 0;
+    if (!gOpenRCT2NoGraphics) {
+        // Construct string to display
+        rct_string_id stringId = money_effect_get_string_id(moneyEffect, &value);
+        char buffer[128];
+        format_string(buffer, 128, stringId, &value);
+        gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
+        offsetX = -(gfx_get_string_width(buffer) / 2);
+    }
+    moneyEffect->offset_x = offsetX;
 
-    gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
-    moneyEffect->offset_x = -(gfx_get_string_width(buffer) / 2);
     moneyEffect->wiggle = 0;
 }
 
