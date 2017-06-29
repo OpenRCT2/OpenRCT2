@@ -599,7 +599,7 @@ sint32 game_do_command_p(sint32 command, sint32 *eax, sint32 *ebx, sint32 *ecx, 
                 finance_payment(cost, gCommandExpenditureType);
                 if (gUnk141F568 == gUnk13CA740) {
                     // Create a +/- money text effect
-                    if (cost != 0)
+                    if (cost != 0 && game_is_not_paused())
                         money_effect_create(cost);
                 }
             }
