@@ -513,7 +513,7 @@ static void window_ride_list_invalidate(rct_window *w)
         sint32 i;
         rct_ride *ride;
         FOR_ALL_RIDES(i, ride) {
-            if (w->page != gRideClassifications[ride->type])
+            if (w->page != gRideClassifications[ride->type] || !ride_has_any_track_elements(i))
                 continue;
             if (ride->status == RIDE_STATUS_OPEN) {
                 if (allOpen == -1) allOpen = true;
@@ -737,7 +737,7 @@ static void window_ride_list_refresh_list(rct_window *w)
 
     countA = countB = 0;
     FOR_ALL_RIDES(i, ride) {
-        if (w->page != gRideClassifications[ride->type])
+        if (w->page != gRideClassifications[ride->type] || !ride_has_any_track_elements(i))
             continue;
 
         countA++;
@@ -756,7 +756,7 @@ static void window_ride_list_refresh_list(rct_window *w)
     w->no_list_items = countA;
     sint32 list_index = 0;
     FOR_ALL_RIDES(i, ride) {
-        if (w->page != gRideClassifications[ride->type])
+        if (w->page != gRideClassifications[ride->type] || !ride_has_any_track_elements(i))
             continue;
 
         w->list_item_positions[list_index] = i;
@@ -914,7 +914,7 @@ static void window_ride_list_close_all(rct_window *w)
     rct_ride *ride;
 
     FOR_ALL_RIDES(i, ride) {
-        if (w->page != gRideClassifications[ride->type])
+        if (w->page != gRideClassifications[ride->type] || !ride_has_any_track_elements(i))
             continue;
         if (ride->status == RIDE_STATUS_CLOSED)
             continue;
@@ -933,7 +933,7 @@ static void window_ride_list_open_all(rct_window *w)
     rct_ride *ride;
 
     FOR_ALL_RIDES(i, ride) {
-        if (w->page != gRideClassifications[ride->type])
+        if (w->page != gRideClassifications[ride->type] || !ride_has_any_track_elements(i))
             continue;
         if (ride->status == RIDE_STATUS_OPEN)
             continue;
