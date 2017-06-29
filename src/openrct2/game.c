@@ -48,6 +48,7 @@
 #include "util/util.h"
 #include "windows/error.h"
 #include "windows/tooltip.h"
+#include "world/banner.h"
 #include "world/Climate.h"
 #include "world/entrance.h"
 #include "world/footpath.h"
@@ -1077,6 +1078,9 @@ void game_fix_save_vars() {
             }
         }
     }
+
+    // Fix banner list pointing to NULL map elements
+    banner_reset_broken_index();
 }
 
 /**

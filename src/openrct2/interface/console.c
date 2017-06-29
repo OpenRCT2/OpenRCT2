@@ -38,7 +38,6 @@
 #include "../util/sawyercoding.h"
 #include "../util/util.h"
 #include "../Version.h"
-#include "../world/banner.h"
 #include "../world/Climate.h"
 #include "../world/park.h"
 #include "../world/scenery.h"
@@ -1177,12 +1176,6 @@ static sint32 cc_reset_user_strings(const utf8 **argv, sint32 argc)
     return 0;
 }
 
-static sint32 cc_fix_banner_count(const utf8 **argv, sint32 argc)
-{
-    banner_reset_broken_index();
-    return 0;
-}
-
 static sint32 cc_open(const utf8 **argv, sint32 argc) {
     if (argc > 0) {
         bool title = (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) != 0;
@@ -1282,7 +1275,6 @@ console_command console_command_table[] = {
     { "object_count", cc_object_count, "Shows the number of objects of each type in the scenario.", "object_count" },
     { "twitch", cc_twitch, "Twitch API" },
     { "reset_user_strings", cc_reset_user_strings, "Resets all user-defined strings, to fix incorrectly occurring 'Chosen name in use already' errors.", "reset_user_strings" },
-    { "fix_banner_count", cc_fix_banner_count, "Fixes incorrectly appearing 'Too many banners' error by marking every banner entry without a map element as null.", "fix_banner_count" },
     { "rides", cc_rides, "Ride management.", "rides <subcommand>" },
     { "staff", cc_staff, "Staff management.", "staff <subcommand>"},
 };
