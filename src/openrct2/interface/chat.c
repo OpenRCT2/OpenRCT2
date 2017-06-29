@@ -212,7 +212,7 @@ void chat_history_add(const char * src)
 
     free(buffer);
 
-    Mixer_Play_Effect(SOUND_NEWS_ITEM, 0, MIXER_VOLUME_MAX, 0, 1.5f, true);
+    Mixer_Play_Effect(SOUND_NEWS_ITEM, 0, MIXER_VOLUME_MAX, 0.5f, 1.5f, true);
 }
 
 void chat_input(CHAT_INPUT input)
