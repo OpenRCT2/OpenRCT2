@@ -98,6 +98,7 @@ private:
     const utf8 * _s4Path = nullptr;
     rct1_s4      _s4 = { 0 };
     uint8        _gameVersion = 0;
+    uint8        _parkValueConversionFactor = 0;
 
     // Lists of dynamic object entries
     EntryList _rideEntries;
@@ -259,9 +260,30 @@ public:
         return result;
     }
 
-    sint32 CorrectRCT1ParkValue(sint32 oldParkValue)
+    sint32 CorrectRCT1ParkValue(money32 oldParkValue)
     {
-        return oldParkValue * 10;
+        if (oldParkValue == MONEY32_UNDEFINED)
+        {
+            return MONEY32_UNDEFINED;
+        }
+
+        if (_parkValueConversionFactor == 0)
+        {
+            if (_s4.park_value != 0)
+            {
+                // Use the ratio between the old and new park value to calcute the ratio to
+                // use for the park value history and the goal.
+                _parkValueConversionFactor = (calculate_park_value() * 10) / _s4.park_value;
+            }
+            else
+            {
+                // In new games, the park value isn't set.
+                _parkValueConversionFactor = 100;
+
+            }
+        }
+
+        return (oldParkValue * _parkValueConversionFactor) / 10;
     }
 
 private:
@@ -1621,7 +1643,7 @@ private:
         for (size_t i = 0; i < 128; i++)
         {
             gCashHistory[i] = _s4.cash_history[i];
-            gParkValueHistory[i] = _s4.park_value_history[i];
+            gParkValueHistory[i] = CorrectRCT1ParkValue(_s4.park_value_history[i]);
             gWeeklyProfitHistory[i] = _s4.weekly_profit_history[i];
         }
 
