@@ -320,8 +320,16 @@ static void window_loadsave_mouseup(rct_window *w, rct_widgetindex widgetIndex)
         window_text_input_raw_open(w, WIDX_NEW_FOLDER, STR_NONE, STR_FILEBROWSER_FOLDER_NAME_PROMPT, nullptr, 64);
         break;
     case WIDX_BROWSE:
-        if (browse(isSave, path, sizeof(path)))
+        if (browse(isSave, path, sizeof(path))) {
             window_loadsave_select(w, path);
+        }
+        else {
+            // If user cancels file dialog, refresh list
+            safe_strcpy(path, _directory, sizeof(path));
+            window_loadsave_populate_list(w, isSave, path, _extension);
+            window_init_scroll_widgets(w);
+            w->no_list_items = _listItemsCount;
+        }
         break;
     case WIDX_SORT_NAME:
         if (gConfigGeneral.load_save_sort == SORT_NAME_ASCENDING){
