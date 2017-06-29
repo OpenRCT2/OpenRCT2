@@ -405,7 +405,7 @@ uint32 scenario_rand();
 
 uint32 scenario_rand_max(uint32 max);
 
-sint32 scenario_prepare_for_save();
+bool scenario_prepare_for_save();
 sint32 scenario_save(const utf8 * path, sint32 flags);
 void scenario_remove_trackless_rides(rct_s6_data *s6);
 void scenario_fix_ghosts(rct_s6_data *s6);

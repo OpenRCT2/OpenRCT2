@@ -945,7 +945,7 @@ static money32 track_place(sint32 rideIndex, sint32 type, sint32 originX, sint32
     uint64 enabledTrackPieces = rideEntry->enabledTrackPieces & RideTypePossibleTrackConfigurations[ride->type];
     uint32 rideTypeFlags = RideProperties[ride->type].flags;
 
-    if ((ride->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK) && type == 1) {
+    if ((ride->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK) && type == TRACK_ELEM_END_STATION) {
         gGameCommandErrorText = STR_NOT_ALLOWED_TO_MODIFY_STATION;
         return MONEY32_UNDEFINED;
     }
@@ -1508,7 +1508,7 @@ static money32 track_remove(uint8 type, uint8 sequence, sint16 originX, sint16 o
         return MONEY32_UNDEFINED;
     }
 
-    if (mapElement->flags & (1 << 6)){
+    if (mapElement->flags & MAP_ELEMENT_FLAG_INDESTRUCTIBLE_TRACK_PIECE){
         gGameCommandErrorText = STR_YOU_ARE_NOT_ALLOWED_TO_REMOVE_THIS_SECTION;
         return MONEY32_UNDEFINED;
     }

@@ -660,38 +660,78 @@ uint32 scenario_rand_max(uint32 max)
  * Prepare rides, for the finish five rollercoasters objective.
  *  rct2: 0x006788F7
  */
-static void scenario_prepare_rides_for_save()
+static bool scenario_prepare_rides_for_save()
 {
     sint32 isFiveCoasterObjective = gScenarioObjectiveType == OBJECTIVE_FINISH_5_ROLLERCOASTERS;
+    sint32 i;
+    rct_ride * ride;
+    uint8 rcs = 0;
 
-    // Set all existing track to be indestructible
+    FOR_ALL_RIDES(i, ride)
+    {
+        const rct_ride_entry * rideEntry = get_ride_entry(ride->subtype);
+        
+        // If there are more than 5 roller coasters, only mark the first five.
+        if (isFiveCoasterObjective &&
+            rideEntry != NULL &&
+            ((rideEntry->category[0] == RIDE_GROUP_ROLLERCOASTER || rideEntry->category[1] == RIDE_GROUP_ROLLERCOASTER) &&
+             rcs < 5))
+        {
+            ride->lifecycle_flags |= RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK;
+            rcs++;
+        }
+        else
+        {
+            ride->lifecycle_flags &= ~RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK;
+        }
+    }
+
+    if (isFiveCoasterObjective && rcs < 5)
+    {
+        gGameCommandErrorText = STR_NOT_ENOUGH_ROLLER_COASTERS;
+        return false;
+    }
+
+    bool markTrackAsIndestructible;
     map_element_iterator it;
     map_element_iterator_begin(&it);
-    do {
-        if (map_element_get_type(it.element) == MAP_ELEMENT_TYPE_TRACK) {
-            if (isFiveCoasterObjective)
-                it.element->flags |= 0x40;
-            else
-                it.element->flags &= ~0x40;
-        }
-    } while (map_element_iterator_next(&it));
+    do
+    {
+        if (map_element_get_type(it.element) == MAP_ELEMENT_TYPE_TRACK)
+        {
+            markTrackAsIndestructible = false;
 
-    // Set all existing rides to have indestructible track
-    sint32 i;
-    rct_ride *ride;
-    FOR_ALL_RIDES(i, ride) {
-        if (isFiveCoasterObjective)
-            ride->lifecycle_flags |= RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK;
-        else
-            ride->lifecycle_flags &= ~RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK;
+            if (isFiveCoasterObjective)
+            {
+                ride = get_ride(it.element->properties.track.ride_index);
+
+                // In the previous step, this flag was set on the first five roller coasters.
+                if (ride != NULL && ride->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK)
+                {
+                    markTrackAsIndestructible = true;
+                }
+            }
+
+            if (markTrackAsIndestructible)
+            {
+                it.element->flags |= MAP_ELEMENT_FLAG_INDESTRUCTIBLE_TRACK_PIECE;
+            }
+            else
+            {
+                it.element->flags &= ~MAP_ELEMENT_FLAG_INDESTRUCTIBLE_TRACK_PIECE;
+            }
+        }
     }
+    while (map_element_iterator_next(&it));
+
+    return true;
 }
 
 /**
  *
  *  rct2: 0x006726C7
  */
-sint32 scenario_prepare_for_save()
+bool scenario_prepare_for_save()
 {
     gS6Info.entry.flags = 255;
 
@@ -712,7 +752,11 @@ sint32 scenario_prepare_for_save()
     gS6Info.objective_arg_2 = gScenarioObjectiveCurrency;
     gS6Info.objective_arg_3 = gScenarioObjectiveNumGuests;
 
-    scenario_prepare_rides_for_save();
+    // This can return false if the goal is 'Finish 5 roller coaster' and there are too few.
+    if (!scenario_prepare_rides_for_save())
+    {
+        return false;
+    }
 
     if (gScenarioObjectiveType == OBJECTIVE_GUESTS_AND_RATING)
         gParkFlags |= PARK_FLAGS_PARK_OPEN;
@@ -720,7 +764,7 @@ sint32 scenario_prepare_for_save()
     // Fix #2385: saved scenarios did not initialise temperatures to selected climate
     climate_reset(gClimate);
 
-    return 1;
+    return true;
 }
 
 /**
@@ -972,15 +1016,25 @@ static void scenario_objective_check_finish_5_rollercoasters()
 {
     money32 objectiveRideExcitement = gScenarioObjectiveCurrency;
 
-    // ORIGINAL BUG?:
-    // This does not check if the rides are even rollercoasters nevermind the right rollercoasters to be finished.
-    // It also did not exclude null rides.
+    // Originally, this did not check for null rides, neither did it check if
+    // the rides are even rollercoasters, never mind the right rollercoasters to be finished.
     sint32 i;
-    rct_ride* ride;
+    rct_ride * ride;
     sint32 rcs = 0;
     FOR_ALL_RIDES(i, ride)
-        if (ride->status != RIDE_STATUS_CLOSED && ride->excitement >= objectiveRideExcitement)
+    {
+        const rct_ride_entry * rideEntry = get_ride_entry(ride->subtype);
+        if (rideEntry == NULL)
+        {
+            continue;
+        }
+
+        if (ride->status != RIDE_STATUS_CLOSED &&
+            ride->excitement >= objectiveRideExcitement &&
+            (ride->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK) && // Set on partially finished coasters
+            (rideEntry->category[0] == RIDE_GROUP_ROLLERCOASTER || rideEntry->category[1] == RIDE_GROUP_ROLLERCOASTER))
             rcs++;
+    }
 
     if (rcs >= 5)
         scenario_success();
