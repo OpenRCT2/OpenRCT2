@@ -989,7 +989,7 @@ static money32 map_buy_land_rights_for_tile(sint32 x, sint32 y, sint32 setting, 
         gMapLandRightsUpdateSuccess = true;
         return 0;
     default:
-        log_warning("Tried calling map_buy_land_rights_for_tile() with in incorrect setting!");
+        log_warning("Tried calling map_buy_land_rights_for_tile() with an incorrect setting!");
         assert(false);
     }
 }
