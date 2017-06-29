@@ -932,7 +932,7 @@ static money32 map_buy_land_rights_for_tile(sint32 x, sint32 y, sint32 setting, 
             map_invalidate_tile(x, y, baseHeight, baseHeight + 16);
         }
         return 0;
-    default:
+    case BUY_LAND_RIGHTS_FLAG_SET_OWNERSHIP_WITH_CHECKS:
         if (!(gScreenFlags & SCREEN_FLAGS_EDITOR) && !gCheatsSandboxMode) {
             return MONEY32_UNDEFINED;
         }
@@ -988,6 +988,9 @@ static money32 map_buy_land_rights_for_tile(sint32 x, sint32 y, sint32 setting, 
         update_park_fences_around_tile(x, y);
         gMapLandRightsUpdateSuccess = true;
         return 0;
+    default:
+        log_warning("Tried calling map_buy_land_rights_for_tile() with an incorrect setting!");
+        assert(false);
     }
 }
 

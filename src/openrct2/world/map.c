@@ -1796,7 +1796,7 @@ static money32 map_set_land_ownership(uint8 flags, sint16 x1, sint16 y1, sint16 
     x2 = clamp(32, x2, gMapSizeUnits - 32);
     y2 = clamp(32, y2, gMapSizeUnits - 32);
     gMapLandRightsUpdateSuccess = false;
-    map_buy_land_rights(x1, y1, x2, y2, 6, flags | (newOwnership << 8));
+    map_buy_land_rights(x1, y1, x2, y2, BUY_LAND_RIGHTS_FLAG_SET_OWNERSHIP_WITH_CHECKS, flags | (newOwnership << 8));
 
     if (!gMapLandRightsUpdateSuccess)
         return 0;
@@ -3818,7 +3818,7 @@ void map_remove_out_of_range_elements()
     for (sint32 y = 0; y < (MAXIMUM_MAP_SIZE_TECHNICAL * 32); y += 32) {
         for (sint32 x = 0; x < (MAXIMUM_MAP_SIZE_TECHNICAL * 32); x += 32) {
             if (x == 0 || y == 0 || x >= mapMaxXY || y >= mapMaxXY) {
-                map_buy_land_rights(x, y, x, y, 1, GAME_COMMAND_FLAG_APPLY);
+                map_buy_land_rights(x, y, x, y, BUY_LAND_RIGHTS_FLAG_UNOWN_TILE, GAME_COMMAND_FLAG_APPLY);
                 clear_elements_at(x, y);
             }
         }
@@ -4828,4 +4828,36 @@ uint32 map_get_available_peep_spawn_index_list(uint32* peepSpawnIndexList)
         }
     }
     return numSpawns;
+}
+
+uint16 check_max_allowable_land_rights_for_tile(uint8 x, uint8 y, uint8 base_z)
+{
+    rct_map_element * mapElement = map_get_first_element_at(x, y);
+    uint16 destOwnership = OWNERSHIP_OWNED;
+
+    // Sometimes done deliberately.
+    if (mapElement == NULL)
+    {
+        return OWNERSHIP_OWNED;
+    }
+
+    do
+    {
+        sint32 type = map_element_get_type(mapElement);
+        if (type == MAP_ELEMENT_TYPE_PATH ||
+            (type == MAP_ELEMENT_TYPE_ENTRANCE && mapElement->properties.entrance.type == ENTRANCE_TYPE_PARK_ENTRANCE))
+        {
+            destOwnership = OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED;
+            // Do not own construction rights if too high/below surface
+            if (mapElement->base_height - 3 > base_z ||
+                mapElement->base_height < base_z)
+            {
+                destOwnership = OWNERSHIP_UNOWNED;
+                break;
+            }
+        }
+    }
+    while (!map_element_is_last_for_tile(mapElement++));
+
+    return destOwnership;
 }

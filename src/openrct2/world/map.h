@@ -198,6 +198,7 @@ enum {
 };
 
 enum {
+    OWNERSHIP_UNOWNED = 0,
     OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED = (1 << 4),
     OWNERSHIP_OWNED = (1 << 5),
     OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE = (1 << 6),
@@ -552,5 +553,6 @@ uint8 wall_element_get_secondary_colour(rct_map_element * wallElement);
 void wall_element_set_secondary_colour(rct_map_element * wallElement, uint8 secondaryColour);
 
 uint32 map_get_available_peep_spawn_index_list(uint32* peepSpawnIndexList);
+uint16 check_max_allowable_land_rights_for_tile(uint8 x, uint8 y, uint8 base_z);
 
 #endif

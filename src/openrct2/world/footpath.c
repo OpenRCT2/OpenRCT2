@@ -1526,9 +1526,36 @@ void footpath_update_queue_chains()
  *
  *  rct2: 0x0069ADBD
  */
-static void footpath_unown(sint32 x, sint32 y, rct_map_element *pathElement)
+static void footpath_fix_ownership(sint32 x, sint32 y, rct_map_element *pathElement)
 {
-    map_buy_land_rights(x, y, x, y, 6, 1);
+    const rct_map_element * surfaceElement = map_get_surface_element_at(x >> 5, y >> 5);
+    uint16 ownership;
+
+    // Unlikely to be NULL unless deliberate.
+    if (surfaceElement != NULL)
+    {
+        // If the tile is not safe to own construction rights of, erase them.
+        if (check_max_allowable_land_rights_for_tile(x >> 5, y >> 5, surfaceElement->base_height) == OWNERSHIP_UNOWNED)
+        {
+            ownership = OWNERSHIP_UNOWNED;
+        }
+        // If the tile is safe to own construction rights of, do not erase contruction rights.
+        else
+        {
+            ownership = surfaceElement->properties.surface.ownership;
+            // You can't own the entrance path.
+            if (ownership == OWNERSHIP_OWNED || ownership == OWNERSHIP_AVAILABLE)
+            {
+                ownership = OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED;
+            }
+        }
+    }
+    else
+    {
+        ownership = OWNERSHIP_UNOWNED;
+    }
+
+    map_buy_land_rights(x, y, x, y, BUY_LAND_RIGHTS_FLAG_SET_OWNERSHIP_WITH_CHECKS, (ownership << 4) | GAME_COMMAND_FLAG_APPLY);
 }
 
 static bool get_next_direction(sint32 edges, sint32 *direction)
@@ -1588,7 +1615,7 @@ static sint32 footpath_is_connected_to_map_edge_recurse(
         }
 
         if (flags & (1 << 5)) {
-            footpath_unown(x, y, mapElement);
+            footpath_fix_ownership(x, y, mapElement);
         }
         edges = mapElement->properties.path.edges & 0x0F;
         direction ^= 2;
