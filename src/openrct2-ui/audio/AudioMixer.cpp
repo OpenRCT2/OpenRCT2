@@ -348,14 +348,15 @@ namespace OpenRCT2 { namespace Audio
             // Apply effects
             if (rate != 1)
             {
-                sint32 srcSamples = (sint32)(bufferLen / byteRate);
-                sint32 dstSamples = numSamples;
+                sint32 inRate = (sint32)(bufferLen / byteRate);
+                sint32 outRate = numSamples;
                 if (bytesRead != readLength)
                {
-                    srcSamples = _format.freq;
-                    dstSamples = _format.freq * (1 / rate);
+                    inRate = _format.freq;
+                    outRate = _format.freq * (1 / rate);
                 }
-                bufferLen = ApplyResample(channel, buffer, srcSamples, dstSamples);
+                _effectBuffer.EnsureCapacity(length);
+                bufferLen = ApplyResample(channel, buffer, (sint32)(bufferLen / byteRate), numSamples, inRate, outRate);
                 buffer = _effectBuffer.GetData();
             }
 
@@ -374,7 +375,7 @@ namespace OpenRCT2 { namespace Audio
          * Resample the given buffer into _effectBuffer.
          * Assumes that srcBuffer is the same format as _format.
          */
-        size_t ApplyResample(ISDLAudioChannel * channel, const void * srcBuffer, sint32 srcSamples, sint32 dstSamples)
+        size_t ApplyResample(ISDLAudioChannel * channel, const void * srcBuffer, sint32 srcSamples, sint32 dstSamples, sint32 inRate, sint32 outRate)
         {
             sint32 byteRate = _format.GetByteRate();
 
@@ -385,11 +386,7 @@ namespace OpenRCT2 { namespace Audio
                 resampler = speex_resampler_init(_format.channels, _format.freq, _format.freq, 0, 0);
                 channel->SetResampler(resampler);
             }
-            speex_resampler_set_rate(resampler, srcSamples, dstSamples);
-
-            // Ensure destination buffer is large enough
-            size_t effectBufferReqLen  = dstSamples * byteRate;
-            _effectBuffer.EnsureCapacity(effectBufferReqLen);
+            speex_resampler_set_rate(resampler, inRate, outRate);
 
             uint32 inLen = srcSamples;
             uint32 outLen = dstSamples;
