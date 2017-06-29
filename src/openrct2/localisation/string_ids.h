@@ -3789,6 +3789,8 @@ enum {
     
     STR_CHEAT_OWN_ALL_LAND_TIP = 6121,
 
+    STR_NOT_ENOUGH_ROLLER_COASTERS = 6122,
+
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     STR_COUNT = 32768
 };

@@ -440,62 +440,58 @@ static void window_editor_objective_options_main_resize(rct_window *w)
 
 static void window_editor_objective_options_show_objective_dropdown(rct_window *w)
 {
-    sint32 i, numItems, objectiveType;
+    sint32 numItems = 0, objectiveType;
     rct_widget *dropdownWidget;
     uint32 parkFlags;
 
     dropdownWidget = &w->widgets[WIDX_OBJECTIVE];
     parkFlags = gParkFlags;
-    numItems = 0;
 
-    if (!(parkFlags & PARK_FLAGS_NO_MONEY_SCENARIO)) {
-        numItems += 2;
+    gDropdownItemsFormat[numItems] = STR_DROPDOWN_MENU_LABEL;
+    gDropdownItemsArgs[numItems] = STR_OBJECTIVE_DROPDOWN_HAVE_FUN;
+    numItems++;
+
+    if (!(parkFlags & PARK_FLAGS_NO_MONEY_SCENARIO))
+    {
+        gDropdownItemsFormat[numItems] = STR_DROPDOWN_MENU_LABEL;
+        gDropdownItemsArgs[numItems] = STR_OBJECTIVE_DROPDOWN_NUMBER_OF_GUESTS_AT_A_GIVEN_DATE;
+        numItems++;
+
+        gDropdownItemsFormat[numItems] = STR_DROPDOWN_MENU_LABEL;
+        gDropdownItemsArgs[numItems] = STR_OBJECTIVE_DROPDOWN_MONTHLY_PROFIT_FROM_FOOD_MERCHANDISE;
+        numItems++;
+
+        gDropdownItemsFormat[numItems] = STR_DROPDOWN_MENU_LABEL;
+        gDropdownItemsArgs[numItems] = STR_OBJECTIVE_DROPDOWN_REPAY_LOAN_AND_ACHIEVE_A_GIVEN_PARK_VALUE;
+        numItems++;
+
+        gDropdownItemsFormat[numItems] = STR_DROPDOWN_MENU_LABEL;
+        gDropdownItemsArgs[numItems] = STR_OBJECTIVE_DROPDOWN_PARK_VALUE_AT_A_GIVEN_DATE;
+        numItems++;
+
         if (parkFlags & PARK_FLAGS_PARK_FREE_ENTRY)
+        {
+            gDropdownItemsFormat[numItems] = STR_DROPDOWN_MENU_LABEL;
+            gDropdownItemsArgs[numItems] = STR_OBJECTIVE_DROPDOWN_MONTHLY_INCOME_FROM_RIDE_TICKETS;
             numItems++;
-    }
-
-    numItems += 5;
-
-    i = 0;
-    gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
-    gDropdownItemsArgs[i] = STR_OBJECTIVE_DROPDOWN_HAVE_FUN;
-    i++;
-
-    if (!(parkFlags & PARK_FLAGS_NO_MONEY_SCENARIO)) {
-        gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
-        gDropdownItemsArgs[i] = STR_OBJECTIVE_DROPDOWN_NUMBER_OF_GUESTS_AT_A_GIVEN_DATE;
-        i++;
-        gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
-        gDropdownItemsArgs[i] = STR_OBJECTIVE_DROPDOWN_MONTHLY_PROFIT_FROM_FOOD_MERCHANDISE;
-        i++;
-        gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
-        gDropdownItemsArgs[i] = STR_OBJECTIVE_DROPDOWN_REPAY_LOAN_AND_ACHIEVE_A_GIVEN_PARK_VALUE;
-        i++;
-        gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
-        gDropdownItemsArgs[i] = STR_OBJECTIVE_DROPDOWN_PARK_VALUE_AT_A_GIVEN_DATE;
-        i++;
-        if (parkFlags & PARK_FLAGS_PARK_FREE_ENTRY) {
-            gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
-            gDropdownItemsArgs[i] = STR_OBJECTIVE_DROPDOWN_MONTHLY_INCOME_FROM_RIDE_TICKETS;
-            i++;
         }
     }
 
-    gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
-    gDropdownItemsArgs[i] = STR_OBJECTIVE_DROPDOWN_NUMBER_OF_GUESTS_IN_PARK;
-    i++;
+    gDropdownItemsFormat[numItems] = STR_DROPDOWN_MENU_LABEL;
+    gDropdownItemsArgs[numItems] = STR_OBJECTIVE_DROPDOWN_NUMBER_OF_GUESTS_IN_PARK;
+    numItems++;
 
-    gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
-    gDropdownItemsArgs[i] = STR_OBJECTIVE_DROPDOWN_BUILD_10_ROLLER_COASTERS;
-    i++;
+    gDropdownItemsFormat[numItems] = STR_DROPDOWN_MENU_LABEL;
+    gDropdownItemsArgs[numItems] = STR_OBJECTIVE_DROPDOWN_BUILD_10_ROLLER_COASTERS;
+    numItems++;
 
-    gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
-    gDropdownItemsArgs[i] = STR_OBJECTIVE_DROPDOWN_BUILD_10_ROLLER_COASTERS_OF_A_GIVEN_LENGTH;
-    i++;
+    gDropdownItemsFormat[numItems] = STR_DROPDOWN_MENU_LABEL;
+    gDropdownItemsArgs[numItems] = STR_OBJECTIVE_DROPDOWN_BUILD_10_ROLLER_COASTERS_OF_A_GIVEN_LENGTH;
+    numItems++;
 
-    gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
-    gDropdownItemsArgs[i] = STR_OBJECTIVE_DROPDOWN_FINISH_BUILDING_5_ROLLER_COASTERS;
-    i++;
+    gDropdownItemsFormat[numItems] = STR_DROPDOWN_MENU_LABEL;
+    gDropdownItemsArgs[numItems] = STR_OBJECTIVE_DROPDOWN_FINISH_BUILDING_5_ROLLER_COASTERS;
+    numItems++;
 
     window_dropdown_show_text_custom_width(
         w->x + dropdownWidget->left,
@@ -509,9 +505,11 @@ static void window_editor_objective_options_show_objective_dropdown(rct_window *
     );
 
     objectiveType = gScenarioObjectiveType;
-    for (i = 0; i < numItems; i++) {
-        if (gDropdownItemsArgs[i] - STR_OBJECTIVE_DROPDOWN_NONE == objectiveType) {
-            dropdown_set_checked(i, true);
+    for (sint32 j = 0; j < numItems; j++)
+    {
+        if (gDropdownItemsArgs[j] - STR_OBJECTIVE_DROPDOWN_NONE == objectiveType)
+        {
+            dropdown_set_checked(j, true);
             break;
         }
     }
