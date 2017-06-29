@@ -34,11 +34,11 @@
 #include "error.h"
 #include "dropdown.h"
 
-#define MONEY_DEFAULT MONEY(5000,00)
-#define MONEY_INCREMENT_DIV MONEY(1000,00)
+#define CHEATS_MONEY_DEFAULT MONEY(5000,00)
+#define CHEATS_MONEY_INCREMENT_DIV MONEY(1000,00)
 #define MONEY_DIGITS 14
 static utf8 _moneySpinnerText[MONEY_DIGITS];
-static money32 _moneySpinnerValue = MONEY_DEFAULT;
+static money32 _moneySpinnerValue = CHEATS_MONEY_DEFAULT;
 
 enum {
     WINDOW_CHEATS_PAGE_MONEY,
@@ -503,11 +503,11 @@ static void window_cheats_money_mousedown(rct_widgetindex widgetIndex, rct_windo
 {
     switch (widgetIndex) {
     case WIDX_MONEY_SPINNER_INCREMENT:
-        _moneySpinnerValue = add_clamp_money32(MONEY_INCREMENT_DIV * (_moneySpinnerValue / MONEY_INCREMENT_DIV), MONEY_INCREMENT_DIV);
+        _moneySpinnerValue = add_clamp_money32(CHEATS_MONEY_INCREMENT_DIV * (_moneySpinnerValue / CHEATS_MONEY_INCREMENT_DIV), CHEATS_MONEY_INCREMENT_DIV);
         widget_invalidate_by_class(WC_CHEATS, WIDX_MONEY_SPINNER);
         break;
     case WIDX_MONEY_SPINNER_DECREMENT:
-        _moneySpinnerValue = add_clamp_money32(MONEY_INCREMENT_DIV * (_moneySpinnerValue / MONEY_INCREMENT_DIV), -MONEY_INCREMENT_DIV);
+        _moneySpinnerValue = add_clamp_money32(CHEATS_MONEY_INCREMENT_DIV * (_moneySpinnerValue / CHEATS_MONEY_INCREMENT_DIV), -CHEATS_MONEY_INCREMENT_DIV);
         widget_invalidate_by_class(WC_CHEATS, WIDX_MONEY_SPINNER);
         break;
     case WIDX_ADD_MONEY:
@@ -590,7 +590,7 @@ static void window_cheats_money_mouseup(rct_window *w, rct_widgetindex widgetInd
         game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_SETMONEY, _moneySpinnerValue, GAME_COMMAND_CHEAT, 0, 0);
         break;
     case WIDX_CLEAR_LOAN:
-        game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_CLEARLOAN, CHEATS_MONEY_INCREMENT, GAME_COMMAND_CHEAT, 0, 0);
+        game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_CLEARLOAN, CHEATS_MONEY_DEFAULT, GAME_COMMAND_CHEAT, 0, 0);
         break;
     }
 }
