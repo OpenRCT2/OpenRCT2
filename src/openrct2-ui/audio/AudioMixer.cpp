@@ -350,6 +350,11 @@ namespace OpenRCT2 { namespace Audio
             {
                 sint32 srcSamples = (sint32)(bufferLen / byteRate);
                 sint32 dstSamples = numSamples;
+                if (bytesRead != readLength)
+               {
+                    srcSamples = _format.freq;
+                    dstSamples = _format.freq * (1 / rate);
+                }
                 bufferLen = ApplyResample(channel, buffer, srcSamples, dstSamples);
                 buffer = _effectBuffer.GetData();
             }
