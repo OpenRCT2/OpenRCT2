@@ -102,6 +102,7 @@ static void TryLoadSequence()
         _sequencePlayer->Eject();
         gTitleCurrentSequence = UINT16_MAX;
         _loadedTitleSequenceId = UINT16_MAX;
+        game_init_all(150);
     }
 }
 
