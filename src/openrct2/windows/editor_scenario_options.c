@@ -499,17 +499,30 @@ static void window_editor_scenario_options_financial_mouseup(rct_window *w, rct_
         window_editor_scenario_options_set_page(w, widgetIndex - WIDX_TAB_1);
         break;
     case WIDX_NO_MONEY:
+    {
+        sint32 newMoneySetting;
+
+        if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
+        {
+            newMoneySetting = (gParkFlags & PARK_FLAGS_NO_MONEY_SCENARIO) ? 0 : 1;
+        }
+        else
+        {
+            newMoneySetting = (gParkFlags & PARK_FLAGS_NO_MONEY) ? 0 : 1;
+        }
+
         game_do_command(
             0,
             GAME_COMMAND_FLAG_APPLY,
             EDIT_SCENARIOOPTIONS_SETNOMONEY,
-            gParkFlags & PARK_FLAGS_NO_MONEY ? 0 : 1,
+            newMoneySetting,
             GAME_COMMAND_EDIT_SCENARIO_OPTIONS,
             0,
             0
         );
         window_invalidate(w);
         break;
+    }
     case WIDX_FORBID_MARKETING:
         game_do_command(
             0,

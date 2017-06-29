@@ -546,7 +546,7 @@ void game_command_edit_scenario_options(sint32* eax, sint32* ebx, sint32* ecx, s
                 gParkFlags |= PARK_FLAGS_NO_MONEY_SCENARIO;
             }
             else {
-                gParkFlags &= PARK_FLAGS_NO_MONEY_SCENARIO;
+                gParkFlags &= ~PARK_FLAGS_NO_MONEY_SCENARIO;
             }
         }
         else {
