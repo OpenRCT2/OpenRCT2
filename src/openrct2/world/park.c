@@ -991,6 +991,7 @@ static money32 map_buy_land_rights_for_tile(sint32 x, sint32 y, sint32 setting, 
     default:
         log_warning("Tried calling map_buy_land_rights_for_tile() with an incorrect setting!");
         assert(false);
+        return MONEY32_UNDEFINED;
     }
 }
 
