@@ -34,8 +34,8 @@
 #include "error.h"
 #include "dropdown.h"
 
-#define CHEATS_MONEY_DEFAULT MONEY(5000,00)
-#define CHEATS_MONEY_INCREMENT_DIV MONEY(1000,00)
+#define CHEATS_MONEY_DEFAULT MONEY(10000,00)
+#define CHEATS_MONEY_INCREMENT_DIV MONEY(5000,00)
 static utf8 _moneySpinnerText[MONEY_STRING_MAXLENGTH];
 static money32 _moneySpinnerValue = CHEATS_MONEY_DEFAULT;
 
