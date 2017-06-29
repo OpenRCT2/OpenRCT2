@@ -19,6 +19,13 @@
 
 #include "object.h"
 
+enum PARK_LOAD_ERROR {
+    PARK_LOAD_ERROR_NONE,
+    PARK_LOAD_ERROR_BAD_OBJECTS,
+    PARK_LOAD_ERROR_INVALID_EXTENSION,
+    PARK_LOAD_ERROR_UNKNOWN = 255
+};
+
 typedef struct object_validity_result
 {
     uint16 invalid_object_count;

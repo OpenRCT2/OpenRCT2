@@ -18,8 +18,10 @@
 #include <time.h>
 #include "../common.h"
 #include "../core/Guard.hpp"
+#include "../interface/window.h"
 #include "../localisation/localisation.h"
 #include "../platform/platform.h"
+#include "../title/TitleScreen.h"
 #include "util.h"
 #include "zlib.h"
 
@@ -546,4 +548,20 @@ size_t strcatftime(char * buffer, size_t bufferSize, const char * format, const 
         return strftime(dst, dstMaxSize, format, tp);
     }
     return 0;
+}
+
+void handle_park_load_failure(park_load_result* result, const utf8* path)
+{
+    if (result->error == PARK_LOAD_ERROR_BAD_OBJECTS)
+    {
+        // The path needs to be duplicated as it's a const here
+        // which the window function doesn't like
+        window_object_load_error_open(strndup(path, strnlen(path, MAX_PATH)), result->object_validity);
+    }
+    else if (result->error != PARK_LOAD_ERROR_NONE) {
+        // If loading the SV6 or SV4 failed for a reason other than invalid objects
+        // the current park state will be corrupted so just go back to the title screen.
+        title_load();
+    }
+    SafeFree(result);
 }

@@ -121,12 +121,6 @@ enum {
     ERROR_TYPE_FILE_LOAD = 255
 };
 
-enum PARK_LOAD_ERROR {
-    PARK_LOAD_ERROR_NONE,
-    PARK_LOAD_ERROR_BAD_OBJECTS,
-    PARK_LOAD_ERROR_UNKNOWN = 255
-};
-
 typedef void (GAME_COMMAND_POINTER)(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp);
 
 typedef void (GAME_COMMAND_CALLBACK_POINTER)(sint32 eax, sint32 ebx, sint32 ecx, sint32 edx, sint32 esi, sint32 edi, sint32 ebp);

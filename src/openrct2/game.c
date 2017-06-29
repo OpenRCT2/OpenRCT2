@@ -1119,19 +1119,9 @@ bool game_load_save(const utf8 *path)
         // This ensures that the newly loaded save reflects the user's
         // 'show real names of guests' option, now that it's a global setting
         peep_update_names(gConfigGeneral.show_real_names_of_guests);
-
         return true;
     } else {
-        if (result->error == PARK_LOAD_ERROR_BAD_OBJECTS)
-        {
-            // The path needs to be duplicated as it's a const here
-            // which the window function doesn't like
-            window_object_load_error_open(strndup(path, strnlen(path, MAX_PATH)), result->object_validity);
-        } else { 
-            // If loading the SV6 or SV4 failed for a reason other than invalid objects
-            // the current park state will be corrupted so just go back to the title screen.
-            title_load();
-        }
+        handle_park_load_failure(result, path);
         return false;
     }
 }
@@ -1372,6 +1362,7 @@ void rct2_exit()
 
 bool game_load_save_or_scenario(const utf8 * path)
 {
+    park_load_result* result;
     uint32 extension = get_file_extension_type(path);
     switch (extension) {
     case FILE_EXTENSION_SV4:
@@ -1379,7 +1370,8 @@ bool game_load_save_or_scenario(const utf8 * path)
         return game_load_save(path);
     case FILE_EXTENSION_SC4:
     case FILE_EXTENSION_SC6:
-        return scenario_load_and_play_from_path(path);
+        result = scenario_load_and_play_from_path(path);
+        return (result->error == PARK_LOAD_ERROR_NONE);
     }
     return false;
 }

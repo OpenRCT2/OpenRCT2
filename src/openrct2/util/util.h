@@ -19,6 +19,7 @@
 
 #include <time.h>
 #include "../common.h"
+#include "../park_load_result_types.h"
 
 sint32 squaredmetres_to_squaredfeet(sint32 squaredMetres);
 sint32 metres_to_feet(sint32 metres);
@@ -65,4 +66,5 @@ money32 add_clamp_money32(money32 value, money32 value_to_add);
 
 size_t strcatftime(char * buffer, size_t bufferSize, const char * format, const struct tm * tp);
 
+void handle_park_load_failure(park_load_result* result, const utf8* path);
 #endif

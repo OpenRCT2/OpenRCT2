@@ -98,25 +98,25 @@ public:
         }
     }
 
-    park_load_result* LoadSavedGame(const utf8 * path) override
+    park_load_result* LoadSavedGame(const utf8 * path, bool skipObjectCheck = false) override
     {
         auto fs = FileStream(path, FILE_MODE_OPEN);
-        park_load_result* result =  LoadFromStream(&fs, false);
+        park_load_result* result =  LoadFromStream(&fs, false, skipObjectCheck);
         _s6Path = path;
 
         return result;
     }
 
-    park_load_result* LoadScenario(const utf8 * path) override
+    park_load_result* LoadScenario(const utf8 * path, bool skipObjectCheck = false) override
     {
         auto fs = FileStream(path, FILE_MODE_OPEN);
-        park_load_result* result = LoadFromStream(&fs, true);
+        park_load_result* result = LoadFromStream(&fs, true, skipObjectCheck);
         _s6Path = path;
         
         return result;
     }
 
-    park_load_result* LoadFromStream(IStream * stream, bool isScenario) override
+    park_load_result* LoadFromStream(IStream * stream, bool isScenario, bool skipObjectCheck = false) override
     {
         park_load_result* result = Memory::Allocate<park_load_result>(sizeof(park_load_result));
         result->error = PARK_LOAD_ERROR_UNKNOWN;
@@ -487,14 +487,14 @@ extern "C"
      *  rct2: 0x00676053
      * scenario (ebx)
      */
-    park_load_result *scenario_load(const char * path)
+    park_load_result* scenario_load(const char * path)
     {
         park_load_result* result = {};
         auto s6Importer = new S6Importer(GetObjectRepository(), GetObjectManager());
         try
         {
             result = s6Importer->LoadScenario(path);
-            if (result->error != PARK_LOAD_ERROR_NONE)
+            if (result->error == PARK_LOAD_ERROR_NONE)
             {
                 s6Importer->Import();
 

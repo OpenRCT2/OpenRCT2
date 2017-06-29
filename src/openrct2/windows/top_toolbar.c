@@ -519,9 +519,8 @@ static void window_top_toolbar_mousedown(rct_widgetindex widgetIndex, rct_window
 
 static void window_top_toolbar_scenarioselect_callback(const utf8 *path)
 {
-    if (!scenario_load_and_play_from_path(path)) {
-        title_load();
-    }
+    park_load_result *result = scenario_load_and_play_from_path(path);
+    handle_park_load_failure(result, path);
 }
 
 /**

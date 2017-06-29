@@ -339,8 +339,13 @@ bool rct2_open_file(const char *path)
         }
     } else if (_stricmp(extension, "sc6") == 0) {
         // TODO scenario install
-        if (scenario_load_and_play_from_path(path)) {
+        park_load_result *result = scenario_load_and_play_from_path(path);
+        if (result->error == PARK_LOAD_ERROR_NONE) {
             return true;
+        }
+        else {
+            handle_park_load_failure(result, path);
+            return false;
         }
     } else if (_stricmp(extension, "td6") == 0 || _stricmp(extension, "td4") == 0) {
         // TODO track design install

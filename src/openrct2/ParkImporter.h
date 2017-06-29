@@ -44,9 +44,9 @@ interface IParkImporter
 public:
     virtual ~IParkImporter() = default;
     virtual park_load_result * Load(const utf8 * path) abstract;
-    virtual park_load_result * LoadSavedGame(const utf8 * path) abstract;
-    virtual park_load_result * LoadScenario(const utf8 * path) abstract;
-    virtual park_load_result * LoadFromStream(IStream * stream, bool isScenario) abstract;
+    virtual park_load_result * LoadSavedGame(const utf8 * path, bool skipObjectCheck = false) abstract;
+    virtual park_load_result * LoadScenario(const utf8 * path, bool skipObjectCheck = false) abstract;
+    virtual park_load_result * LoadFromStream(IStream * stream, bool isScenario, bool skipObjectCheck = false) abstract;
     virtual void Import() abstract;
     virtual bool GetDetails(scenario_index_entry * dst) abstract;
 };

@@ -27,6 +27,7 @@
 #include "../core/String.hpp"
 #include "../core/Util.hpp"
 #include "../object/ObjectManager.h"
+#include "../object/ObjectRepository.h"
 #include "../ParkImporter.h"
 #include "../scenario/ScenarioSources.h"
 #include "Tables.h"
@@ -142,23 +143,23 @@ public:
         }
     }
 
-    park_load_result* LoadSavedGame(const utf8 * path) override
+    park_load_result* LoadSavedGame(const utf8 * path, bool skipObjectCheck = false) override
     {
         auto fs = FileStream(path, FILE_MODE_OPEN);
-        park_load_result* result = LoadFromStream(&fs, false);
+        park_load_result* result = LoadFromStream(&fs, false, skipObjectCheck);
         _s4Path = path;
         return result;
     }
 
-    park_load_result* LoadScenario(const utf8 * path) override
+    park_load_result* LoadScenario(const utf8 * path, bool skipObjectCheck = false) override
     {
         auto fs = FileStream(path, FILE_MODE_OPEN);
-        park_load_result* result = LoadFromStream(&fs, true);
+        park_load_result* result = LoadFromStream(&fs, true, skipObjectCheck);
         _s4Path = path;
         return result;
     }
 
-    park_load_result* LoadFromStream(IStream * stream, bool isScenario) override
+    park_load_result* LoadFromStream(IStream * stream, bool isScenario, bool skipObjectCheck = false) override
     {
         park_load_result* result = Memory::Allocate<park_load_result>(sizeof(park_load_result));
         result->error = PARK_LOAD_ERROR_UNKNOWN;
@@ -182,12 +183,28 @@ public:
         {
             Memory::Copy<void>(&_s4, decodedData.get(), sizeof(rct1_s4));
             _s4Path = "";
+
+            if (!skipObjectCheck)
+            {
+                InitialiseEntryMaps();
+                CreateAvailableObjectMappings();
+                object_validity_result* object_result = GetInvalidObjects();
+
+                result->object_validity = object_result;
+                if (object_result->invalid_object_count > 0)
+                {
+                    result->error = PARK_LOAD_ERROR_BAD_OBJECTS;
+                }
+            }
+            else
+            {
+                result->error = PARK_LOAD_ERROR_NONE;
+            }
         }
         else
         {
             throw Exception("Unable to decode park.");
         }
-        result->error = PARK_LOAD_ERROR_NONE;
         return result;
     }
 
@@ -309,6 +326,7 @@ private:
         Memory::Set(_pathAdditionTypeToEntryMap, 255, sizeof(_pathAdditionTypeToEntryMap));
         Memory::Set(_sceneryThemeTypeToEntryMap, 255, sizeof(_sceneryThemeTypeToEntryMap));
 
+        InitialiseEntryMaps();
         uint16 mapSize = _s4.map_size == 0 ? 128 : _s4.map_size;
 
         // Do map initialisation, same kind of stuff done when loading scenario editor
@@ -317,6 +335,18 @@ private:
         gS6Info.editor_step = EDITOR_STEP_OBJECT_SELECTION;
         gParkFlags |= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
         gS6Info.category = SCENARIO_CATEGORY_OTHER;
+    }
+
+    void InitialiseEntryMaps()
+    {
+        Memory::Set(_rideTypeToRideEntryMap, 255, sizeof(_rideTypeToRideEntryMap));
+        Memory::Set(_vehicleTypeToRideEntryMap, 255, sizeof(_vehicleTypeToRideEntryMap));
+        Memory::Set(_smallSceneryTypeToEntryMap, 255, sizeof(_smallSceneryTypeToEntryMap));
+        Memory::Set(_largeSceneryTypeToEntryMap, 255, sizeof(_largeSceneryTypeToEntryMap));
+        Memory::Set(_wallTypeToEntryMap, 255, sizeof(_wallTypeToEntryMap));
+        Memory::Set(_pathTypeToEntryMap, 255, sizeof(_pathTypeToEntryMap));
+        Memory::Set(_pathAdditionTypeToEntryMap, 255, sizeof(_pathAdditionTypeToEntryMap));
+        Memory::Set(_sceneryThemeTypeToEntryMap, 255, sizeof(_sceneryThemeTypeToEntryMap));
     }
 
     /**
@@ -1725,6 +1755,73 @@ private:
         }
     }
 
+    object_validity_result* GetInvalidObjects()
+    {
+        object_validity_result* result = Memory::Allocate<object_validity_result>(sizeof(object_validity_result));
+        uint16 invalidObjectCount = 0;
+        rct_object_entry * * invalidEntries = Memory::AllocateArray<rct_object_entry *>(OBJECT_ENTRY_COUNT);
+
+        result->invalid_object_count = invalidObjectCount;
+        result->invalid_objects = invalidEntries;
+        
+        GetInvalidObjects(OBJECT_TYPE_RIDE, _rideEntries.GetEntries(), *result);
+        GetInvalidObjects(OBJECT_TYPE_SMALL_SCENERY, _smallSceneryEntries.GetEntries(), *result);
+        GetInvalidObjects(OBJECT_TYPE_LARGE_SCENERY, _largeSceneryEntries.GetEntries(), *result);
+        GetInvalidObjects(OBJECT_TYPE_WALLS, _wallEntries.GetEntries(), *result);
+        GetInvalidObjects(OBJECT_TYPE_PATHS, _pathEntries.GetEntries(), *result);
+        GetInvalidObjects(OBJECT_TYPE_PATH_BITS, _pathAdditionEntries.GetEntries(), *result);
+        GetInvalidObjects(OBJECT_TYPE_SCENERY_SETS, _sceneryGroupEntries.GetEntries(), *result);
+        GetInvalidObjects(OBJECT_TYPE_BANNERS, std::vector<const char *>({
+            "BN1     ",
+            "BN2     ",
+            "BN3     ",
+            "BN4     ",
+            "BN5     ",
+            "BN6     ",
+            "BN7     ",
+            "BN8     ",
+            "BN9     "
+        }), *result);
+        GetInvalidObjects(OBJECT_TYPE_PARK_ENTRANCE, std::vector<const char *>({ "PKENT1  " }), *result);
+        GetInvalidObjects(OBJECT_TYPE_WATER, _waterEntry.GetEntries(), *result);
+
+        return result;
+    }
+
+    void GetInvalidObjects(uint8 objectType, const std::vector<const char *> &entries, object_validity_result &result)
+    {
+        IObjectRepository * objectRepository = GetObjectRepository();
+        for (const char * objectName : entries)
+        {
+            rct_object_entry entry;
+            entry.flags = 0x00008000 + objectType;
+            Memory::Copy(entry.name, objectName, 8);
+            entry.checksum = 0;
+            
+            const ObjectRepositoryItem * ori = nullptr;
+            ori = objectRepository->FindObject(&entry);
+            if (ori == nullptr)
+            {
+                rct_object_entry * invalid_entry = Memory::Allocate<rct_object_entry>(sizeof(rct_object_entry));
+                invalid_entry->flags = entry.flags;
+                Memory::Copy(invalid_entry->name, objectName, 8);
+                result.invalid_objects[result.invalid_object_count++] = invalid_entry;
+            }
+            else
+            {
+                Object * object = objectRepository->LoadObject(ori);
+                if (object == nullptr && objectType != OBJECT_TYPE_SCENERY_SETS)
+                {
+                    rct_object_entry * invalid_entry = Memory::Allocate<rct_object_entry>(sizeof(rct_object_entry));
+                    invalid_entry->flags = entry.flags;
+                    Memory::Copy(invalid_entry->name, objectName, 8);
+                    result.invalid_objects[result.invalid_object_count++] = invalid_entry;
+                }
+                SafeFree(object);
+            }
+        }
+    }
+
     void ImportMapElements()
     {
         Memory::Copy(gMapElements, _s4.map_elements, RCT1_MAX_MAP_ELEMENTS * sizeof(rct_map_element));
@@ -2568,37 +2665,44 @@ IParkImporter * ParkImporter::CreateS4()
 /////////////////////////////////////////
 extern "C"
 {
-    bool rct1_load_saved_game(const utf8 * path)
+    park_load_result* rct1_load_saved_game(const utf8 * path)
     {
-        bool result;
+        park_load_result* result = {};
 
         auto s4Importer = new S4Importer();
         try
         {
-            s4Importer->LoadSavedGame(path);
-            s4Importer->Import();
-            result = true;
+            result = s4Importer->LoadSavedGame(path);
+            if (result->error == PARK_LOAD_ERROR_NONE)
+            {
+                s4Importer->Import();
+            }
+            
         } catch (const Exception &)
         {
-            result = false;
+            result = {};
+            result->error = PARK_LOAD_ERROR_UNKNOWN;
         }
         delete s4Importer;
         return result;
     }
 
-    bool rct1_load_scenario(const utf8 * path)
+    park_load_result* rct1_load_scenario(const utf8 * path)
     {
-        bool result;
+        park_load_result* result = {};
 
         auto s4Importer = new S4Importer();
         try
         {
-            s4Importer->LoadScenario(path);
-            s4Importer->Import();
-            result = true;
+            result = s4Importer->LoadSavedGame(path);
+            if (result->error == PARK_LOAD_ERROR_NONE)
+            {
+                s4Importer->Import();
+            }
         } catch (const Exception &)
         {
-            result = false;
+            result = {};
+            result->error = PARK_LOAD_ERROR_UNKNOWN;
         }
         delete s4Importer;
         return result;
