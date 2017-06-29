@@ -557,10 +557,12 @@ void sprite_move(sint16 x, sint16 y, sint16 z, rct_sprite *sprite)
     size_t currentIndex = GetSpatialIndexOffset(sprite->unknown.x, sprite->unknown.y);
     if (newIndex != currentIndex) {
         uint16 *spriteIndex = &gSpriteSpatialIndex[currentIndex];
-        rct_sprite *sprite2 = get_sprite(*spriteIndex);
-        while (sprite != sprite2) {
-            spriteIndex = &sprite2->unknown.next_in_quadrant;
-            sprite2 = get_sprite(*spriteIndex);
+        if (*spriteIndex != SPRITE_INDEX_NULL) {
+            rct_sprite *sprite2 = get_sprite(*spriteIndex);
+            while (sprite != sprite2) {
+                spriteIndex = &sprite2->unknown.next_in_quadrant;
+                sprite2 = get_sprite(*spriteIndex);
+            }
         }
         *spriteIndex = sprite->unknown.next_in_quadrant;
 
