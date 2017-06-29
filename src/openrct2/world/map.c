@@ -4835,6 +4835,12 @@ uint16 check_max_allowable_land_rights_for_tile(uint8 x, uint8 y, uint8 base_z)
     rct_map_element * mapElement = map_get_first_element_at(x, y);
     uint16 destOwnership = OWNERSHIP_OWNED;
 
+    // Sometimes done deliberately.
+    if (mapElement == NULL)
+    {
+        return OWNERSHIP_OWNED;
+    }
+
     do
     {
         sint32 type = map_element_get_type(mapElement);
