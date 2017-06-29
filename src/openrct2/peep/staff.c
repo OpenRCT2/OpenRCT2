@@ -623,6 +623,140 @@ sint32 staff_is_location_in_patrol(rct_peep *staff, sint32 x, sint32 y)
     return staff_is_location_in_patrol_area(staff, x, y);
 }
 
+sint32 staff_is_location_on_patrol_edge(rct_peep *mechanic, sint32 x, sint32 y)
+{
+    // Check whether the location x,y is inside and on the edge of the
+    // patrol zone for mechanic.
+    sint32 onZoneEdge = 0;
+    sint32 neighbourDir = 0;
+    while (!onZoneEdge && neighbourDir <= 7) {
+        sint32 neighbourX = x + TileDirectionDelta[neighbourDir].x;
+        sint32 neighbourY = y + TileDirectionDelta[neighbourDir].y;
+        onZoneEdge = !staff_is_location_in_patrol(mechanic, neighbourX, neighbourY);
+        neighbourDir++;
+    }
+    return onZoneEdge;
+}
+
+
+sint32 staff_can_ignore_wide_flag(rct_peep *staff, sint32 x, sint32 y, uint8 z, rct_map_element *path)
+{
+    /* Wide flags can potentially wall off parts of a staff patrol zone
+     * for the heuristic search.
+     * This function provide doors through such "walls" by defining
+     * the conditions under which staff can ignore the wide path flag. */
+    /* Staff can ignore the wide flag on a path on the edge of the patrol
+     * zone based on its adjacent tiles that are also in the patrol zone
+     * but not on the patrol zone edge:
+     * Basic points of interest are:
+     * - how many such tiles there are;
+     * - whether there are connected paths on those tiles;
+     * - whether the conected paths have the wide flag set.
+     * If there are no such tiles, the path is a concave corner of
+     * the patrol zone and the wide flag can be ignored.
+     * If there is one such tile, the path is on a straight side of the
+     * patrol zone. If this one tile is either a connected wide path or
+     * not a connected path, the wide flag can be ignored.
+     * If there are two such tiles, the path is a convex corner of the
+     * patrol zone. If at most one of these tiles is a connected path or
+     * both of these tiles are connected wide paths, the wide flag can be
+     * ignored. */
+
+    if (staff->type != PEEP_TYPE_STAFF)
+        return 0;
+
+    if (!staff_is_location_on_patrol_edge(staff, x, y))
+    {
+        return 0;
+    }
+
+    /* Check the connected adjacent paths that are also inside the patrol
+     * zone but are not on the patrol zone edge have the wide flag set. */
+    uint8 total = 0;
+    uint8 pathcount = 0;
+    uint8 widecount = 0;
+    for (sint32 adjac_dir = 0; adjac_dir <= 3; adjac_dir++)
+    {
+        sint32 adjac_x = x + TileDirectionDelta[adjac_dir].x;
+        sint32 adjac_y = y + TileDirectionDelta[adjac_dir].y;
+        uint8 adjac_z = z;
+
+        /* Ignore adjacent tiles outside the patrol zone. */
+        if (!staff_is_location_in_patrol(staff, adjac_x, adjac_y))
+            continue;
+
+        /* Ignore adjacent tiles on the patrol zone edge. */
+        if (staff_is_location_on_patrol_edge(staff, adjac_x, adjac_y))
+            continue;
+
+        /* Adjacent tile is inside the patrol zone but not on the
+         * patrol zone edge. */
+        total++;
+
+        /* Check if path has an edge in adjac_dir */
+        if (!(path->properties.path.edges & (1u << adjac_dir)))
+        {
+            continue;
+        }
+
+        if (footpath_element_is_sloped(path)) {
+            if (footpath_element_get_slope_direction(path) == adjac_dir) {
+                adjac_z = z + 2;
+            }
+        }
+
+        /* Search through all adjacent map elements */
+        rct_map_element *test_element = map_get_first_element_at(adjac_x / 32, adjac_y / 32);
+        bool pathfound = false;
+        bool widefound = false;
+        do {
+            if (map_element_get_type(test_element) != MAP_ELEMENT_TYPE_PATH)
+            {
+                continue;
+            }
+
+            /* test_element is a path */
+            if (!is_valid_path_z_and_direction(test_element, adjac_z, adjac_dir)) continue;
+
+            /* test_element is a connected path */
+            if (!pathfound)
+            {
+                pathfound = true;
+                pathcount++;
+            }
+
+            if (footpath_element_is_wide(test_element))
+            {
+                if (!widefound)
+                {
+                    widefound = true;
+                    widecount++;
+                }
+            }
+        } while (!map_element_is_last_for_tile(test_element++));
+    }
+
+    switch (total)
+    {
+        case 0: /* Concave corner */
+            return 1;
+            break;
+        case 1: /* Straight side */
+        case 2: /* Convex corner */
+            if (pathcount <= total - 1 || widecount == total)
+            {
+                return 1;
+            }
+            else
+            {
+                return 0;
+            }
+            break;
+        default:
+            return 0;
+    }
+}
+
 /**
  *
  *  rct2: 0x006C095B

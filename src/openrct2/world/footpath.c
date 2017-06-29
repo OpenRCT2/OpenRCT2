@@ -1454,9 +1454,9 @@ void footpath_chain_ride_queue(sint32 rideIndex, sint32 entranceIndex, sint32 x,
 
     if (rideIndex != 255 && lastPathElement != NULL) {
         if (footpath_element_is_queue(lastPathElement)) {
-            lastPathElement->properties.path.type |= (1 << 3);
-            lastPathElement->type &= 0x3F;
-            lastPathElement->type |= lastPathDirection << 6;
+            lastPathElement->properties.path.type |= (1 << 3); // Set the ride sign flag
+            lastPathElement->type &= 0x3F; // Clear the ride sign direction
+            lastPathElement->type |= lastPathDirection << 6; // set the ride sign direction
 
             map_animation_create(
                 MAP_ANIMATION_TYPE_QUEUE_BANNER,

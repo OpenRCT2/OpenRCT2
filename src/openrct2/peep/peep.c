@@ -8357,22 +8357,15 @@ static sint32 peep_interact_with_path(rct_peep* peep, sint16 x, sint16 y, rct_ma
 
         uint8 rideIndex = map_element->properties.path.ride_index;
 
-        // Check if this queue path tile is connected to a ride.
-        if (rideIndex == 0xFF){
-            // Queue is not connected to a ride.
-            peep->interaction_ride_index = 0xFF;
-            return peep_footpath_move_forward(peep, x, y, map_element, vandalism_present);
-        }
-
-        // Queue is connected to a ride.
         if (peep->state == PEEP_STATE_QUEUING){
             // Check if this queue is connected to the ride the
             // peep is queuing for, i.e. the player hasn't edited
-            // the queue.
+            // the queue, rebuilt the ride, etc.
             if (peep->current_ride == rideIndex){
                 return peep_footpath_move_forward(peep, x, y, map_element, vandalism_present);
             }
-            // Queue got disconnected from the ride.
+            // Queue got disconnected from the original ride.
+            peep->interaction_ride_index = 0xFF;
             remove_peep_from_queue(peep);
             peep_decrement_num_riders(peep);
             peep->state = PEEP_STATE_1;
@@ -8380,29 +8373,27 @@ static sint32 peep_interact_with_path(rct_peep* peep, sint16 x, sint16 y, rct_ma
             return peep_footpath_move_forward(peep, x, y, map_element, vandalism_present);
         }
 
-        // One of two cases applies here:
-        // 1. Peep is in the ride queue but no longer queuing.
-        //    This usually means the ride was closed.
-        // 2. Peep is walking up to the queue entrance from
-        //    a normal path tile.
+        // Peep is not queuing.
+        peep->var_F4 = 0;
+        uint8 stationNum = (map_element->properties.path.additions & 0x70) >> 4;
 
-        if (peep->interaction_ride_index == rideIndex){
-            // Case 1 above applies, so walk the queue.
+        if ((map_element->properties.path.type & (1 << 3)) // Queue has the ride sign on it
+            && (((map_element->type & (3 << 6)) >> 6) == ((peep->direction)^2)) // Ride sign is facing the direction the peep is walking
+            ) {
+            /* Peep is approaching the entrance of a ride queue.
+             * Decide whether to go on the ride. */
+            if (!peep_should_go_on_ride(peep, rideIndex, stationNum, PEEP_RIDE_DECISION_AT_QUEUE)){
+                // Peep has decided not to go on the ride.
+                return peep_return_to_center_of_tile(peep);
+            }
+        }
+        else {
+            /* Peep is approaching a queue tile without a ride
+             * sign facing the peep. */
             return peep_footpath_move_forward(peep, x, y, map_element, vandalism_present);
         }
 
-        // Case 2 above applies - decide whether to go on the ride.
-        peep->var_F4 = 0;
-        uint8 stationNum = (map_element->properties.path.additions & 0x70) >> 4;
-        if (!peep_should_go_on_ride(peep, rideIndex, stationNum, PEEP_RIDE_DECISION_AT_QUEUE)){
-            // Peep has decided not to go on the ride.
-            return peep_return_to_center_of_tile(peep);
-        }
-
         // Peep has decided to go on the ride at the queue.
-        // Set the following so the peep will correctly walk up
-        // and back down the queue if the ride is closed
-        // while they are queuing.
         peep->interaction_ride_index = rideIndex;
         rct_ride* ride = get_ride(rideIndex);
 
@@ -8658,7 +8649,7 @@ static sint32 path_get_permitted_edges(rct_map_element *mapElement)
     return banner_clear_path_edges(mapElement, mapElement->properties.path.edges) & 0x0F;
 }
 
-static bool is_valid_path_z_and_direction(rct_map_element *mapElement, sint32 currentZ, sint32 currentDirection)
+bool is_valid_path_z_and_direction(rct_map_element *mapElement, sint32 currentZ, sint32 currentDirection)
 {
     if (footpath_element_is_sloped(mapElement)) {
         sint32 slopeDirection = footpath_element_get_slope_direction(mapElement);
@@ -9009,6 +9000,9 @@ static bool path_is_thin_junction(rct_map_element *path, sint16 x, sint16 y, uin
 static void peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_peep *peep, rct_map_element *currentMapElement, bool inPatrolArea, uint8 counter, uint16 *endScore, sint32 test_edge, uint8 *endJunctions, rct_xyz8 junctionList[16], uint8 directionList[16], rct_xyz8 *endXYZ, uint8 *endSteps) {
     uint8 searchResult = PATH_SEARCH_FAILED;
 
+    bool currentElementIsWide = (footpath_element_is_wide(currentMapElement) &&
+                !staff_can_ignore_wide_flag(peep, x, y, z, currentMapElement));
+
     x += TileDirectionDelta[test_edge].x;
     y += TileDirectionDelta[test_edge].y;
 
@@ -9121,28 +9115,9 @@ static void peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_peep
             z = mapElement->base_height;
 
             if (footpath_element_is_wide(mapElement)) {
-                if (peep->type == PEEP_TYPE_STAFF && peep->staff_type == STAFF_TYPE_MECHANIC) {
-                    // Check whether the tile is not on the
-                    // edge of the mechanic patrol zone.
-                    bool onZoneEdge = false;
-                    int neighbourDir = 0;
-                    while (!onZoneEdge && neighbourDir <= 7) {
-                        int neighbourX = x + TileDirectionDelta[neighbourDir].x;
-                        int neighbourY = y + TileDirectionDelta[neighbourDir].y;
-                        onZoneEdge = !staff_is_location_in_patrol(peep, neighbourX, neighbourY);
-                        neighbourDir++;
-                    }
-                    // Wide paths not on the edge of the
-                    // mechanic patrol zone are observed.
-                    if (!onZoneEdge) {
-                        searchResult = PATH_SEARCH_WIDE;
-                        found = true;
-                        break;
-                    }
-                    // Wide path flag for path tiles on the
-                    // edge of the mechanic patrol zone are
-                    // ignored.
-                } else {
+                /* Check if staff can ignore this wide flag. */
+                if (!staff_can_ignore_wide_flag(peep, x, y, z, mapElement))
+                {
                     searchResult = PATH_SEARCH_WIDE;
                     found = true;
                     break;
@@ -9248,14 +9223,17 @@ static void peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_peep
 
         /* If this is a wide path the search ends here. */
         if (searchResult == PATH_SEARCH_WIDE) {
-            /* Ignore Wide paths as continuing paths UNLESS the current path is also Wide.
-             * i.e. search across wide paths from a wide path to get onto a thin path,
-             * thereafter stay on thin paths. */
-            /* So, if the current path is also wide the goal could still
-             * be reachable from here.
-             * If the search result is better than the best so far (in the parameters),
-             * then update the parameters with this search before continuing to the next map element. */
-            if (footpath_element_is_wide(currentMapElement) &&
+            /* Ignore Wide paths as continuing paths UNLESS
+             * the current path is also Wide (and, for staff, not ignored).
+             * This permits a peep currently on a wide path to
+             * cross other wide paths to reach a thin path.
+             *
+             * So, if the current path is also wide the goal could
+             * still be reachable from here.
+             * If the search result is better than the best so far
+             * (in the parameters), then update the parameters with
+             * this search before continuing to the next map element. */
+            if (currentElementIsWide &&
                 (new_score < *endScore || (new_score == *endScore && counter < *endSteps ))) {
                 // Update the search results
                 *endScore = new_score;
