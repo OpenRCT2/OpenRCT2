@@ -197,15 +197,15 @@ enum {
     TRACK_ELEM_FLAG_TURN_SLOPED = (1 << 4),
     TRACK_ELEM_FLAG_DOWN = (1 << 5),
     TRACK_ELEM_FLAG_UP = (1 << 6),
-    TRACK_ELEM_FLAG_INVERSION = (1 << 7),
-    TRACK_ELEM_FLAG_0100 = (1 << 8),
+    TRACK_ELEM_FLAG_NORMAL_TO_INVERSION = (1 << 7),
+    TRACK_ELEM_FLAG_STARTS_AT_HALF_HEIGHT = (1 << 8),
     TRACK_ELEM_FLAG_ONLY_ABOVE_GROUND = (1 << 9),
-    TRACK_ELEM_FLAG_0400 = (1 << 10),
+    TRACK_ELEM_FLAG_IS_STEEP_UP = (1 << 10), // Used to allow steep backwards lifts on roller coasters that do not allow steep forward lift hills
     TRACK_ELEM_FLAG_HELIX = (1 << 11),
-    TRACK_ELEM_FLAG_1000 = (1 << 12),
+    TRACK_ELEM_FLAG_ALLOW_LIFT_HILL = (1 << 12),
     TRACK_ELEM_FLAG_CURVE_ALLOWS_LIFT = (1 << 13),
-    TRACK_ELEM_FLAG_4000 = (1 << 14),
-    TRACK_ELEM_FLAG_8000 = (1 << 15),
+    TRACK_ELEM_FLAG_INVERSION_TO_NORMAL = (1 << 14),
+    TRACK_ELEM_FLAG_BANKED = (1 << 15), // Also set on Spinning Tunnel and Log Flume reverser, probably to save a flag.
 };
 
 enum {

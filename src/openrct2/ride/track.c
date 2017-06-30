@@ -972,8 +972,9 @@ static money32 track_place(sint32 rideIndex, sint32 type, sint32 originX, sint32
                 return MONEY32_UNDEFINED;
             }
         }
+        // Backwards steep lift hills are allowed, even on roller coasters that do not support forwards steep lift hills.
         if ((liftHillAndAlternativeState & CONSTRUCTION_LIFT_HILL_SELECTED) && !(enabledTrackPieces & (1ULL << TRACK_LIFT_HILL_STEEP)) && !gCheatsEnableChainLiftOnAllTrack) {
-            if (TrackFlags[type] & TRACK_ELEM_FLAG_0400) {
+            if (TrackFlags[type] & TRACK_ELEM_FLAG_IS_STEEP_UP) {
                 gGameCommandErrorText = STR_TOO_STEEP_FOR_LIFT_HILL;
                 return MONEY32_UNDEFINED;
             }
@@ -1026,7 +1027,7 @@ static money32 track_place(sint32 rideIndex, sint32 type, sint32 originX, sint32
     const uint16 *trackFlags = (rideTypeFlags & RIDE_TYPE_FLAG_FLAT_RIDE) ?
         FlatTrackFlags :
         TrackFlags;
-    if (trackFlags[type] & TRACK_ELEM_FLAG_0100) {
+    if (trackFlags[type] & TRACK_ELEM_FLAG_STARTS_AT_HALF_HEIGHT) {
         if ((originZ & 0x0F) != 8) {
             gGameCommandErrorText = STR_CONSTRUCTION_ERR_UNKNOWN;
             return MONEY32_UNDEFINED;

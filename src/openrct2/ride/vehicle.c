@@ -1464,7 +1464,7 @@ static void vehicle_update_measurements(rct_vehicle *vehicle)
             ride->start_drop_height = vehicle->z / 8;
         }
 
-        if (track_flags & TRACK_ELEM_FLAG_INVERSION){
+        if (track_flags & TRACK_ELEM_FLAG_NORMAL_TO_INVERSION){
             uint8 inversions = ride->inversions & 0x1F;
             if (inversions != 0x1F)
                 inversions++;

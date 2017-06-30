@@ -4168,7 +4168,7 @@ static bool ride_check_track_contains_inversions(rct_xy_element *input, rct_xy_e
     track_circuit_iterator_begin(&it, *input);
     while (track_circuit_iterator_next(&it)) {
         sint32 trackType = it.current.element->properties.track.type;
-        if (TrackFlags[trackType] & TRACK_ELEM_FLAG_4000) {
+        if (TrackFlags[trackType] & TRACK_ELEM_FLAG_INVERSION_TO_NORMAL) {
             *output = it.current;
             return true;
         }
@@ -4199,7 +4199,7 @@ static bool ride_check_track_contains_banked(rct_xy_element *input, rct_xy_eleme
     track_circuit_iterator_begin(&it, *input);
     while (track_circuit_iterator_next(&it)) {
         sint32 trackType = output->element->properties.track.type;
-        if (TrackFlags[trackType] & TRACK_ELEM_FLAG_8000) {
+        if (TrackFlags[trackType] & TRACK_ELEM_FLAG_BANKED) {
             *output = it.current;
             return true;
         }
