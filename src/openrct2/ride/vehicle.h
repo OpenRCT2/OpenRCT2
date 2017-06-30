@@ -92,16 +92,16 @@ typedef struct rct_vehicle {
     uint16 next;                    // 0x04
     uint16 previous;                // 0x06
     uint8 linked_list_type_offset;  // 0x08 Valid values are SPRITE_LINKEDLIST_OFFSET_...
-    // Height from center of sprite to bottom
+    // Height from centre of sprite to bottom
     uint8 sprite_height_negative;   // 0x09
     uint16 sprite_index;            // 0x0A
     uint16 flags;           // 0x0C
     sint16 x;                       // 0x0E
     sint16 y;                       // 0x10
     sint16 z;                       // 0x12
-    // Width from center of sprite to edge
+    // Width from centre of sprite to edge
     uint8 sprite_width;             // 0x14
-    // Height from center of sprite to top
+    // Height from centre of sprite to top
     uint8 sprite_height_positive;   // 0x15
     sint16 sprite_left;             // 0x16
     sint16 sprite_top;              // 0x18

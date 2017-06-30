@@ -116,8 +116,8 @@ extern uint32 gCurrentViewportFlags;
 #endif
 
 void viewport_init_all();
-void center_2d_coordinates(sint32 x, sint32 y, sint32 z, sint32* out_x, sint32* out_y, rct_viewport* viewport);
-void viewport_create(rct_window *w, sint32 x, sint32 y, sint32 width, sint32 height, sint32 zoom, sint32 center_x, sint32 center_y, sint32 center_z, char flags, sint16 sprite);
+void centre_2d_coordinates(sint32 x, sint32 y, sint32 z, sint32 * out_x, sint32 * out_y, rct_viewport * viewport);
+void viewport_create(rct_window *w, sint32 x, sint32 y, sint32 width, sint32 height, sint32 zoom, sint32 centre_x, sint32 centre_y, sint32 centre_z, char flags, sint16 sprite);
 void viewport_update_pointers();
 void viewport_update_position(rct_window *window);
 void viewport_update_sprite_follow(rct_window *window);

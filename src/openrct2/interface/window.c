@@ -57,7 +57,7 @@ uint16 gWindowMapFlashingFlags;
 colour_t gCurrentWindowColours[4];
 
 // converted from uint16 values at 0x009A41EC - 0x009A4230
-// these are percentage coordinates of the viewport to center to, if a window is obscuring a location, the next is tried
+// these are percentage coordinates of the viewport to centre to, if a window is obscuring a location, the next is tried
 float window_scroll_locations[][2] = {
     {0.5f,      0.5f},
     {0.75f,     0.5f},
@@ -1460,7 +1460,7 @@ void window_rotate_camera(rct_window *w, sint32 direction)
     gCurrentRotation = (get_current_rotation() + direction) & 3;
 
     sint32 new_x, new_y;
-    center_2d_coordinates(x, y, z, &new_x, &new_y, viewport);
+    centre_2d_coordinates(x, y, z, &new_x, &new_y, viewport);
 
     w->saved_view_x = new_x;
     w->saved_view_y = new_y;
@@ -1485,7 +1485,7 @@ void window_viewport_get_map_coords_by_cursor(rct_window *w, sint16 *map_x, sint
     // Get viewport coordinates centring around the tile.
     sint32 base_height = map_element_height(*map_x, *map_y);
     sint32 dest_x, dest_y;
-    center_2d_coordinates(*map_x, *map_y, base_height, &dest_x, &dest_y, w->viewport);
+    centre_2d_coordinates(*map_x, *map_y, base_height, &dest_x, &dest_y, w->viewport);
 
     // Rebase mouse position onto centre of window, and compensate for zoom level.
     sint32 rebased_x = ((w->width >> 1) - mouse_x) * (1 << w->viewport->zoom),
@@ -1501,7 +1501,7 @@ void window_viewport_centre_tile_around_cursor(rct_window *w, sint16 map_x, sint
     // Get viewport coordinates centring around the tile.
     sint32 dest_x, dest_y;
     sint32 base_height = map_element_height(map_x, map_y);
-    center_2d_coordinates(map_x, map_y, base_height, &dest_x, &dest_y, w->viewport);
+    centre_2d_coordinates(map_x, map_y, base_height, &dest_x, &dest_y, w->viewport);
 
     // Get mouse position to offset against.
     sint32 mouse_x, mouse_y;

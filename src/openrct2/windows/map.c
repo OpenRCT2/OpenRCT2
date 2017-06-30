@@ -176,7 +176,7 @@ static uint8 (*_mapImageData)[MAP_WINDOW_MAP_SIZE][MAP_WINDOW_MAP_SIZE];
 static sint32 _nextPeepSpawnIndex = 0;
 
 static void window_map_init_map();
-static void window_map_center_on_view_point();
+static void window_map_centre_on_view_point();
 static void window_map_show_default_scenario_editor_buttons(rct_window *w);
 static void window_map_draw_tab_images(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_map_paint_peep_overlay(rct_drawpixelinfo *dpi);
@@ -250,7 +250,7 @@ void window_map_open()
 
     window_map_init_map();
     gWindowSceneryRotation = 0;
-    window_map_center_on_view_point();
+    window_map_centre_on_view_point();
 
     // Reset land tool size
     gLandToolSize = 1;
@@ -267,7 +267,7 @@ void window_map_reset()
     }
 
     window_map_init_map();
-    window_map_center_on_view_point();
+    window_map_centre_on_view_point();
 }
 
 /**
@@ -431,7 +431,7 @@ static void window_map_update(rct_window *w)
     if (get_current_rotation() != w->map.rotation) {
         w->map.rotation = get_current_rotation();
         window_map_init_map();
-        window_map_center_on_view_point();
+        window_map_centre_on_view_point();
     }
 
     for (sint32 i = 0; i < 16; i++)
@@ -913,7 +913,7 @@ static void window_map_init_map()
  *
  *  rct2: 0x0068C990
  */
-static void window_map_center_on_view_point()
+static void window_map_centre_on_view_point()
 {
     rct_window *w = window_get_main();
     rct_window *w_map;
@@ -929,7 +929,7 @@ static void window_map_center_on_view_point()
 
     rct_xy16 offset = MiniMapOffsets[get_current_rotation()];
 
-    // calculate center view point of viewport and transform it to minimap coordinates
+    // calculate centre view point of viewport and transform it to minimap coordinates
 
     cx = ((w->viewport->view_width >> 1) + w->viewport->view_x) >> 5;
     dx = ((w->viewport->view_height >> 1) + w->viewport->view_y) >> 4;
@@ -1401,7 +1401,7 @@ static void map_window_increase_map_size()
     gMapSizeMaxXY = ((gMapSize - 1) * 32) - 1;
     map_extend_boundary_surface();
     window_map_init_map();
-    window_map_center_on_view_point();
+    window_map_centre_on_view_point();
     gfx_invalidate_screen();
 }
 
@@ -1422,7 +1422,7 @@ static void map_window_decrease_map_size()
     gMapSizeMaxXY = ((gMapSize - 1) * 32) - 1;
     map_remove_out_of_range_elements();
     window_map_init_map();
-    window_map_center_on_view_point();
+    window_map_centre_on_view_point();
     gfx_invalidate_screen();
 }
 

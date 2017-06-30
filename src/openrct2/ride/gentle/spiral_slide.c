@@ -22,19 +22,19 @@
 
 enum {
     SPIRAL_SLIDE_LEFT_R0 = 20548,
-    SPIRAL_SLIDE_CENTER_R0 = 20549,
+    SPIRAL_SLIDE_CENTRE_R0 = 20549,
     SPIRAL_SLIDE_RIGHT_R0 = 20550,
 
     SPIRAL_SLIDE_LEFT_R1 = 20551,
-    SPIRAL_SLIDE_CENTER_R1 = 20552,
+    SPIRAL_SLIDE_CENTRE_R1 = 20552,
     SPIRAL_SLIDE_RIGHT_R1 = 20553,
 
     SPIRAL_SLIDE_LEFT_R2 = 20554,
-    SPIRAL_SLIDE_CENTER_R2 = 20555,
+    SPIRAL_SLIDE_CENTRE_R2 = 20555,
     SPIRAL_SLIDE_RIGHT_R2 = 20556,
 
     SPIRAL_SLIDE_LEFT_R3 = 20557,
-    SPIRAL_SLIDE_CENTER_R3 = 20558,
+    SPIRAL_SLIDE_CENTRE_R3 = 20558,
     SPIRAL_SLIDE_RIGHT_R3 = 20559,
 
     SPIRAL_SLIDE_INSIDE_R1 = 20560,
@@ -88,16 +88,16 @@ static void spiral_slide_paint_tile_front(uint8 rideIndex, uint8 trackSequence, 
     }
 
     if (direction == 0) {
-        image_id = SPIRAL_SLIDE_CENTER_R0 | gTrackColours[SCHEME_TRACK];
+        image_id = SPIRAL_SLIDE_CENTRE_R0 | gTrackColours[SCHEME_TRACK];
         sub_98197C(image_id, 16, 16, 16, 8, 108, height, 0, 8, height + 3, get_current_rotation());
     } else if (direction == 1) {
-        image_id = SPIRAL_SLIDE_CENTER_R1 | gTrackColours[SCHEME_TRACK];
+        image_id = SPIRAL_SLIDE_CENTRE_R1 | gTrackColours[SCHEME_TRACK];
         sub_98197C(image_id, 16, 16, 2, 16, 108, height, 14, 0, height + 3, get_current_rotation());
     } else if (direction == 2) {
-        image_id = SPIRAL_SLIDE_CENTER_R2 | gTrackColours[SCHEME_TRACK];
+        image_id = SPIRAL_SLIDE_CENTRE_R2 | gTrackColours[SCHEME_TRACK];
         sub_98197C(image_id, 16, 16, 16, 2, 108, height, 0, 14, height + 3, get_current_rotation());
     } else if (direction == 3) {
-        image_id = SPIRAL_SLIDE_CENTER_R3 | gTrackColours[SCHEME_TRACK];
+        image_id = SPIRAL_SLIDE_CENTRE_R3 | gTrackColours[SCHEME_TRACK];
         sub_98197C(image_id, 16, 16, 8, 16, 108, height, 8, 0, height + 3, get_current_rotation());
     }
 

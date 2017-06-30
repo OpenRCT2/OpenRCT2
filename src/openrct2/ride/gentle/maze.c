@@ -31,14 +31,14 @@ enum {
 };
 
 enum {
-    SPR_MAZE_OFFSET_WALL_CENTER = 0,
+    SPR_MAZE_OFFSET_WALL_CENTRE = 0,
     SPR_MAZE_OFFSET_WALL_INNER_NE_SW,
     SPR_MAZE_OFFSET_WALL_INNER_NW_SE,
     SPR_MAZE_OFFSET_WALL_TOP_LEFT,
     SPR_MAZE_OFFSET_WALL_TOP_RIGHT,
     SPR_MAZE_OFFSET_WALL_BOTTOM_RIGHT,
     SPR_MAZE_OFFSET_WALL_BOTTOM_LEFT,
-    SPR_MAZE_OFFSET_COLUMN_CENTER,
+    SPR_MAZE_OFFSET_COLUMN_CENTRE,
     SPR_MAZE_OFFSET_COLUMN_TOP_RIGHT,
     SPR_MAZE_OFFSET_COLUMN_TOP_LEFT,
     SPR_MAZE_OFFSET_COLUMN_BOTTOM_LEFT,
@@ -73,7 +73,7 @@ static void maze_paint_setup(uint8 rideIndex, uint8 trackSequence, uint8 directi
     base_image_id |= gTrackColours[SCHEME_MISC];
 
 
-    image_id = base_image_id + SPR_MAZE_OFFSET_WALL_CENTER;
+    image_id = base_image_id + SPR_MAZE_OFFSET_WALL_CENTRE;
     if (maze_entry & (1 << 3))
         sub_98197C(image_id, 2, 2, 10, 10, 9, height, 3, 3, height + 2, rotation);
 
@@ -166,7 +166,7 @@ static void maze_paint_setup(uint8 rideIndex, uint8 trackSequence, uint8 directi
 
 
     if (maze_entry & (1 << 2 | 1 << 6 | 1 << 10 | 1 << 14)) {
-        sub_98197C(base_image_id + SPR_MAZE_OFFSET_COLUMN_CENTER, 14, 14, 2, 2, 8, height, 15, 15, height + 2, rotation);
+        sub_98197C(base_image_id + SPR_MAZE_OFFSET_COLUMN_CENTRE, 14, 14, 2, 2, 8, height, 15, 15, height + 2, rotation);
 
         paint_util_set_segment_support_height(SEGMENT_C4, height + 12, 0x20);
     }

@@ -613,7 +613,7 @@ static void window_player_update_viewport(rct_window *w, bool scroll)
         rct_xyz16 coord = network_get_player_last_action_coord(playerIndex);
         if (coord.x != 0 || coord.y != 0 || coord.z != 0) {
             sint32 viewX, viewY;
-            center_2d_coordinates(coord.x, coord.y, coord.z, &viewX, &viewY, viewport);
+            centre_2d_coordinates(coord.x, coord.y, coord.z, &viewX, &viewY, viewport);
 
             // Don't scroll if the view was originally undefined
             if (w->var_492 == -1) {

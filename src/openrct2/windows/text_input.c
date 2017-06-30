@@ -127,7 +127,7 @@ void window_text_input_open(rct_window* call_w, rct_widgetindex call_widget, rct
 
     sint32 height = no_lines * 10 + WH;
 
-    // Window will be in the center of the screen
+    // Window will be in the centre of the screen
     rct_window* w = window_create_centred(
         WW,
         height,
@@ -188,7 +188,7 @@ void window_text_input_raw_open(rct_window* call_w, rct_widgetindex call_widget,
 
     sint32 height = no_lines * 10 + WH;
 
-    // Window will be in the center of the screen
+    // Window will be in the centre of the screen
     rct_window* w = window_create_centred(
         WW,
         height,
