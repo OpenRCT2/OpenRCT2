@@ -290,6 +290,8 @@ private:
     void Initialise()
     {
         _gameVersion = sawyercoding_detect_rct1_version(_s4.game_version) & FILE_VERSION_MASK;
+        // Avoid reusing the value used for last import
+        _parkValueConversionFactor = 0;
 
         Memory::Set(_rideTypeToRideEntryMap,     255, sizeof(_rideTypeToRideEntryMap));
         Memory::Set(_vehicleTypeToRideEntryMap,  255, sizeof(_vehicleTypeToRideEntryMap));
