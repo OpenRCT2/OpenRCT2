@@ -2680,18 +2680,18 @@ bool sub_6CA2DF(sint32 *_trackType, sint32 *_trackDirection, sint32 *_rideIndex,
     }
 
 
-    bool do_loc_6CAF26 = false;
+    bool turnOffLiftHill = false;
     if (!(_enabledRidePieces & (1ULL << TRACK_LIFT_HILL_CURVE))) {
         if (TrackFlags[trackType] & TRACK_ELEM_FLAG_CURVE_ALLOWS_LIFT) {
-            do_loc_6CAF26 = true;
+            turnOffLiftHill = true;
         }
     }
 
-    if (!(TrackFlags[trackType] & TRACK_ELEM_FLAG_1000)) {
-        do_loc_6CAF26 = true;
+    if (!(TrackFlags[trackType] & TRACK_ELEM_FLAG_ALLOW_LIFT_HILL)) {
+        turnOffLiftHill = true;
     }
 
-    if (do_loc_6CAF26 && !gCheatsEnableChainLiftOnAllTrack) {
+    if (turnOffLiftHill && !gCheatsEnableChainLiftOnAllTrack) {
         liftHillAndAlternativeState &= ~CONSTRUCTION_LIFT_HILL_SELECTED;
         _currentTrackLiftHill &= ~CONSTRUCTION_LIFT_HILL_SELECTED;
 
