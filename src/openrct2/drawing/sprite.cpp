@@ -21,6 +21,7 @@
 #include "../core/File.h"
 #include "../core/FileStream.hpp"
 #include "../core/Memory.hpp"
+#include "../core/Path.hpp"
 #include "../core/Util.hpp"
 #include "../OpenRCT2.h"
 #include "../sprites.h"
@@ -188,6 +189,37 @@ extern "C"
         return false;
     }
 
+    static utf8 * gfx_get_csg_header_path()
+    {
+        char path[MAX_PATH];
+        safe_strcpy(path, gConfigGeneral.rct1_path, sizeof(path));
+        safe_strcat_path(path, "Data", sizeof(path));
+        safe_strcat_path(path, "csg1i.dat", sizeof(path));
+        return String::Duplicate(Path::ResolveCasing(path));
+    }
+
+    static utf8 * gfx_get_csg_data_path()
+    {
+        // csg1.1 and csg1.dat are the same file.
+        // In the CD version, it's called csg1.1 on the CD and csg1.dat on the disk.
+        // In the GOG version, it's always called csg1.1.
+        // In the Steam version, it's always called csg1.dat.
+        char path[MAX_PATH];
+        safe_strcpy(path, gConfigGeneral.rct1_path, sizeof(path));
+        safe_strcat_path(path, "Data", sizeof(path));
+        safe_strcat_path(path, "csg1.1", sizeof(path));
+
+        auto fixedPath = Path::ResolveCasing(path);
+        if (fixedPath.empty())
+        {
+            safe_strcpy(path, gConfigGeneral.rct1_path, sizeof(path));
+            safe_strcat_path(path, "Data", sizeof(path));
+            safe_strcat_path(path, "csg1.dat", sizeof(path));
+            fixedPath = Path::ResolveCasing(path);
+        }
+        return String::Duplicate(fixedPath);
+    }
+
     bool gfx_load_csg()
     {
         log_verbose("gfx_load_csg()");
@@ -198,31 +230,12 @@ extern "C"
             return false;
         }
 
-        char pathHeader[MAX_PATH];
-        safe_strcpy(pathHeader, gConfigGeneral.rct1_path, sizeof(pathHeader));
-        safe_strcat_path(pathHeader, "Data", sizeof(pathHeader));
-        safe_strcat_path(pathHeader, "csg1i.dat", sizeof(pathHeader));
-
-        // csg1.1 and csg1.dat are the same file.
-        // In the CD version, it's called csg1.1 on the CD and csg1.dat on the disk.
-        // In the GOG version, it's always called csg1.1.
-        // In the Steam version, it's always called csg1.dat.
-        char pathData[MAX_PATH];
-        safe_strcpy(pathData, gConfigGeneral.rct1_path, sizeof(pathData));
-        safe_strcat_path(pathData, "Data", sizeof(pathData));
-        safe_strcat_path(pathData, "csg1.1", sizeof(pathData));
-
-        if (!File::Exists(pathData))
-        {
-            safe_strcpy(pathData, gConfigGeneral.rct1_path, sizeof(pathData));
-            safe_strcat_path(pathData, "Data", sizeof(pathData));
-            safe_strcat_path(pathData, "csg1.dat", sizeof(pathData));
-        }
-
+        auto pathHeaderPath = std::unique_ptr<utf8>(gfx_get_csg_header_path());
+        auto pathDataPath = std::unique_ptr<utf8>(gfx_get_csg_data_path());
         try
         {
-            auto fileHeader = FileStream(pathHeader, FILE_MODE_OPEN);
-            auto fileData = FileStream(pathData, FILE_MODE_OPEN);
+            auto fileHeader = FileStream(pathHeaderPath.get(), FILE_MODE_OPEN);
+            auto fileData = FileStream(pathDataPath.get(), FILE_MODE_OPEN);
             size_t fileHeaderSize = fileHeader.GetLength();
             size_t fileDataSize = fileData.GetLength();
 
