@@ -53,6 +53,7 @@ void KeyboardShortcuts::Reset()
 bool KeyboardShortcuts::Load()
 {
     bool result = false;
+    Reset();
     try
     {
         std::string path = _env->GetFilePath(PATHID::CONFIG_KEYBOARD);
@@ -62,7 +63,9 @@ bool KeyboardShortcuts::Load()
             uint16 version = fs.ReadValue<uint16>();
             if (version == KeyboardShortcuts::CURRENT_FILE_VERSION)
             {
-                for (sint32 i = 0; i < SHORTCUT_COUNT; i++)
+                sint32 numShortcutsInFile = (fs.GetLength() - sizeof(uint16)) / sizeof(uint16);
+                sint32 numShortcutsToRead = std::min<sint32>(SHORTCUT_COUNT, numShortcutsInFile);
+                for (sint32 i = 0; i < numShortcutsToRead; i++)
                 {
                     _keys[i] = fs.ReadValue<uint16>();
                 }
