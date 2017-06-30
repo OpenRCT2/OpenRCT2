@@ -4431,6 +4431,7 @@ STR_6118    :Pozvolná horská dráha pro ty kdo se zatím neodvažují na vět�
 STR_6119    :Levná horská dráha, kterou lze snadno postavit - má však omezenou maximální výšku
 STR_6120    :{BABYBLUE}Nové vozy dostupné pro {STRINGID}:{NEWLINE}{STRINGID}
 STR_6121    :{SMALLFONT}{BLACK}Zajistí práva pro všechny pozemky na mapě
+STR_6122    :Ve scénáři není dostatečný počet horských drah!
 
 ###############################################################################
 ## RCT2 Objects

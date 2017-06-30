@@ -2863,7 +2863,7 @@ STR_2857    :{WINDOW_COLOUR_2}(Druk op een toets of muisknop om de controle over
 STR_2858    :Kan marketingcampagne niet starten...
 STR_2859    :OpenRCT2 draait al
 STR_2860    :Credits voor Infogrames Interactive...
-STR_2861    :{WINDOW_COLOUR_2}In licentie geven aan Infogrames Interactive Inc.
+STR_2861    :{WINDOW_COLOUR_2}In licentie gegeven aan {NEWLINE}Infogrames Interactive Inc.
 STR_2862    :Muziekdankwoord...
 STR_2863    :Muziekdankwoord
 STR_2864    :{WINDOW_COLOUR_2}March - Children of the Regiment:   (Fucik) geen copyright
@@ -4422,6 +4422,8 @@ STR_6117    :Bezoekers zitten in comfortabele treinen met enkel een schootbeugel
 STR_6118    :Een rustige achtbaan voor bezoekers die nog niet in engere attracties durven.
 STR_6119    :Goedkoop en makkelijk te bouwen, maar kan niet zo hoog gebouwd worden.
 STR_6120    :{BABYBLUE}Nieuw voertuig beschikbaar voor {STRINGID}:{NEWLINE}{STRINGID}
+STR_6121    :{SMALLFONT}{BLACK}Neem al het land op de kaart in bezit
+STR_6122    :Er zijn te weinig achtbanen in het scenario!
 
 #############
 # Scenarios #
