@@ -103,7 +103,7 @@ void viewport_init_all()
 }
 
 /**
- * Converts between 3d point of a sprite to 2d coordinates for centering on that
+ * Converts between 3d point of a sprite to 2d coordinates for centring on that
  * sprite
  *  rct2: 0x006EB0C1
  * x : ax
@@ -112,7 +112,7 @@ void viewport_init_all()
  * out_x : ax
  * out_y : bx
  */
-void center_2d_coordinates(sint32 x, sint32 y, sint32 z, sint32* out_x, sint32* out_y, rct_viewport* viewport){
+void centre_2d_coordinates(sint32 x, sint32 y, sint32 z, sint32 * out_x, sint32 * out_y, rct_viewport * viewport){
     sint32 start_x = x;
 
     rct_xyz16 coord_3d = {
@@ -146,14 +146,14 @@ void center_2d_coordinates(sint32 x, sint32 y, sint32 z, sint32* out_x, sint32* 
 *  width:  bx
 *  height: ebx (top 16)
 *  zoom:   cl (8 bits)
-*  center_x: edx lower 16 bits
-*  center_y: edx upper 16 bits
-*  center_z: ecx upper 16 bits
+*  centre_x: edx lower 16 bits
+*  centre_y: edx upper 16 bits
+*  centre_z: ecx upper 16 bits
 *  sprite: edx lower 16 bits
 *  flags:  edx top most 2 bits 0b_X1 for zoom clear see below for 2nd bit.
 *  w:      esi
 */
-void viewport_create(rct_window *w, sint32 x, sint32 y, sint32 width, sint32 height, sint32 zoom, sint32 center_x, sint32 center_y, sint32 center_z, char flags, sint16 sprite)
+void viewport_create(rct_window *w, sint32 x, sint32 y, sint32 width, sint32 height, sint32 zoom, sint32 centre_x, sint32 centre_y, sint32 centre_z, char flags, sint16 sprite)
 {
     rct_viewport* viewport = NULL;
     for (sint32 i = 0; i < MAX_VIEWPORT_COUNT; i++) {
@@ -187,17 +187,17 @@ void viewport_create(rct_window *w, sint32 x, sint32 y, sint32 width, sint32 hei
 
     if (flags & VIEWPORT_FOCUS_TYPE_SPRITE){
         w->viewport_target_sprite = sprite;
-        rct_sprite* center_sprite = get_sprite(sprite);
-        center_x = center_sprite->unknown.x;
-        center_y = center_sprite->unknown.y;
-        center_z = center_sprite->unknown.z;
+        rct_sprite* centre_sprite = get_sprite(sprite);
+        centre_x = centre_sprite->unknown.x;
+        centre_y = centre_sprite->unknown.y;
+        centre_z = centre_sprite->unknown.z;
     }
     else{
         w->viewport_target_sprite = SPR_NONE;
     }
 
     sint32 view_x, view_y;
-    center_2d_coordinates(center_x, center_y, center_z, &view_x, &view_y, viewport);
+    centre_2d_coordinates(centre_x, centre_y, centre_z, &view_x, &view_y, viewport);
 
     w->saved_view_x = view_x;
     w->saved_view_y = view_y;
@@ -560,7 +560,7 @@ void viewport_update_position(rct_window *window)
         // function up.
         sint32 zz = map_element_height(x & 0xFFFF, y & 0xFFFF);
         sint32 _2d_x, _2d_y;
-        center_2d_coordinates(x, y, zz, &_2d_x, &_2d_y, viewport);
+        centre_2d_coordinates(x, y, zz, &_2d_x, &_2d_y, viewport);
 
         if (at_map_edge_x)
             window->saved_view_x = _2d_x;
@@ -613,10 +613,11 @@ void viewport_update_sprite_follow(rct_window *window)
 
         viewport_set_underground_flag(underground, window, window->viewport);
 
-        sint32 center_x, center_y;
-        center_2d_coordinates(sprite->unknown.x, sprite->unknown.y, sprite->unknown.z, &center_x, &center_y, window->viewport);
+        sint32 centre_x, centre_y;
+        centre_2d_coordinates(sprite->unknown.x, sprite->unknown.y, sprite->unknown.z, &centre_x, &centre_y,
+                              window->viewport);
 
-        viewport_move(center_x, center_y, window, window->viewport);
+        viewport_move(centre_x, centre_y, window, window->viewport);
     }
 }
 
@@ -784,10 +785,10 @@ void screen_pos_to_map_pos(sint16 *x, sint16 *y, sint32 *direction)
         return;
 
     sint32 my_direction;
-    sint32 dist_from_center_x = abs(*x % 32);
-    sint32 dist_from_center_y = abs(*y % 32);
-    if (dist_from_center_x > 8 && dist_from_center_x < 24 &&
-        dist_from_center_y > 8 && dist_from_center_y < 24) {
+    sint32 dist_from_centre_x = abs(*x % 32);
+    sint32 dist_from_centre_y = abs(*y % 32);
+    if (dist_from_centre_x > 8 && dist_from_centre_x < 24 &&
+        dist_from_centre_y > 8 && dist_from_centre_y < 24) {
         my_direction = 4;
     } else {
         sint16 mod_x = *x & 0x1F;

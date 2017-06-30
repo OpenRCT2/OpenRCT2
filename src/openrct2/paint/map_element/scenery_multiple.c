@@ -116,7 +116,7 @@ static void scenery_multiple_sign_paint_line(const utf8 *str, rct_large_scenery_
     sint32 x_offset = text->offset[(direction & 1)].x;
     sint32 acc = y_offset * ((direction & 1) ? -1 : 1);
     if (!(text->flags & LARGE_SCENERY_TEXT_FLAG_VERTICAL)) {
-        // sign is horizontal, center text:
+        // sign is horizontal, centre text:
         x_offset -= (width / 2);
         acc -= (width / 2);
     }

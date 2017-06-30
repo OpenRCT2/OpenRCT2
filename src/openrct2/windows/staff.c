@@ -915,7 +915,7 @@ void window_staff_overview_paint(rct_window *w, rct_drawpixelinfo *dpi)
         }
     }
 
-    // Draw the centered label
+    // Draw the centred label
     uint32 argument1, argument2;
     rct_peep* peep = GET_PEEP(w->number);
     get_arguments_from_action(peep, &argument1, &argument2);
