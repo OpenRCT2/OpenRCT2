@@ -162,7 +162,7 @@ public:
     park_load_result* LoadFromStream(IStream * stream, bool isScenario, bool skipObjectCheck = false) override
     {
         park_load_result* result = Memory::Allocate<park_load_result>(sizeof(park_load_result));
-        result->error = PARK_LOAD_ERROR_UNKNOWN;
+        result->error = PARK_LOAD_ERROR_NONE;
 
         size_t dataSize = stream->GetLength() - stream->GetPosition();
         std::unique_ptr<uint8> data = std::unique_ptr<uint8>(stream->ReadArray<uint8>(dataSize));
@@ -195,10 +195,6 @@ public:
                 {
                     result->error = PARK_LOAD_ERROR_BAD_OBJECTS;
                 }
-            }
-            else
-            {
-                result->error = PARK_LOAD_ERROR_NONE;
             }
         }
         else
