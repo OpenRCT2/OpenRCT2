@@ -25,6 +25,7 @@
 - Fix: [#4055] Sort rides by track type: Sorting rule is not really clear (inconsistent?)
 - Fix: [#5400] New Ride window does not focus properly on newly invented ride.
 - Fix: [#5009] Ride rating calculations can overflow
+- Fix: [#5253] RCT1 park value conversion factor too high
 - Fix: [#5489] Sprite index crash for car view on car ride.
 - Fix: [#5730] Unable to uncheck 'No money' in the Scenario Editor.
 - Fix: Non-invented vehicles can be used via track designs in select-by-track-type mode.
