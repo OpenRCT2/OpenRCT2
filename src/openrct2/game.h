@@ -180,6 +180,7 @@ bool game_is_paused();
 bool game_is_not_paused();
 void save_game();
 void save_game_as();
+void handle_park_load_failure(park_load_result* result, const utf8* path);
 void rct2_exit();
 void rct2_exit_reason(rct_string_id title, rct_string_id body);
 void game_autosave();
