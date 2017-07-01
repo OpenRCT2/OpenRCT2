@@ -237,8 +237,8 @@ void viewport_adjust_for_map_height(sint16* x, sint16* y, sint16 *z)
         // of the map. This can happen when the height is larger than the map size.
         sint16 max = gMapSizeMinus2;
         if (pos.x > max && pos.y > max) {
-            static const sint32 x_corr[] = { -1, 1, 1, -1 };
-            static const sint32 y_corr[] = { -1, -1, 1, 1 };
+            sint32 x_corr[] = { -1, 1, 1, -1 };
+            sint32 y_corr[] = { -1, -1, 1, 1 };
             pos.x += x_corr[rotation] * height;
             pos.y += y_corr[rotation] * height;
         }
