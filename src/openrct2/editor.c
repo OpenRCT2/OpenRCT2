@@ -14,36 +14,36 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "rct2/addresses.h"
 #include "audio/audio.h"
 #include "drawing/drawing.h"
 #include "editor.h"
 #include "game.h"
-#include "interface/window.h"
 #include "interface/viewport.h"
+#include "interface/window.h"
 #include "localisation/date.h"
 #include "localisation/localisation.h"
 #include "management/finance.h"
 #include "management/news_item.h"
+#include "network/network.h"
 #include "object.h"
 #include "object/ObjectManager.h"
 #include "peep/staff.h"
 #include "platform/platform.h"
 #include "rct1.h"
+#include "rct2/addresses.h"
 #include "ride/ride.h"
 #include "ParkImporter.h"
 #include "scenario/scenario.h"
 #include "util/sawyercoding.h"
 #include "util/util.h"
-#include "world/banner.h"
 #include "world/Climate.h"
-#include "world/footpath.h"
+#include "world/banner.h"
 #include "world/entrance.h"
+#include "world/footpath.h"
 #include "world/map.h"
 #include "world/park.h"
 #include "world/scenery.h"
 #include "world/sprite.h"
-#include "network/network.h"
 
 uint8 _editorSelectedRides[128];
 uint8 _editorSelectedSmallScenery[252];
@@ -411,7 +411,7 @@ static void editor_finalise_main_view()
     rct_window *w = window_get_main();
     rct_viewport *viewport = w->viewport;
 
-    w->viewport_target_sprite = -1;
+    w->viewport_target_sprite = SPRITE_INDEX_NULL;
     w->saved_view_x = gSavedViewX;
     w->saved_view_y = gSavedViewY;
     gCurrentRotation = gSavedViewRotation;

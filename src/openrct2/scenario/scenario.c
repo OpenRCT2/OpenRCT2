@@ -43,9 +43,9 @@
 #include "../world/scenery.h"
 #include "../world/sprite.h"
 #include "../world/water.h"
-#include "scenario.h"
 #include "ScenarioRepository.h"
 #include "ScenarioSources.h"
+#include "scenario.h"
 
 const rct_string_id ScenarioCategoryStringIds[SCENARIO_CATEGORY_COUNT] = {
     STR_BEGINNER_PARKS,
@@ -151,7 +151,7 @@ void scenario_begin()
     game_create_windows();
     mainWindow = window_get_main();
 
-    mainWindow->viewport_target_sprite = -1;
+    mainWindow->viewport_target_sprite = SPRITE_INDEX_NULL;
     mainWindow->saved_view_x = gSavedViewX;
     mainWindow->saved_view_y = gSavedViewY;
 

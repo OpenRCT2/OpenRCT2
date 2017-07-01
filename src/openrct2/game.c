@@ -1154,7 +1154,7 @@ void game_load_init()
     game_create_windows();
     mainWindow = window_get_main();
 
-    mainWindow->viewport_target_sprite = -1;
+    mainWindow->viewport_target_sprite = SPRITE_INDEX_NULL;
     mainWindow->saved_view_x = gSavedViewX;
     mainWindow->saved_view_y = gSavedViewY;
     uint8 zoomDifference = gSavedViewZoom - mainWindow->viewport->zoom;

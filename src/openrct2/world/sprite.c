@@ -166,7 +166,7 @@ void reset_sprite_list()
  */
 void reset_sprite_spatial_index()
 {
-    memset(gSpriteSpatialIndex, -1, sizeof(gSpriteSpatialIndex));
+    memset(gSpriteSpatialIndex, SPRITE_INDEX_NULL, sizeof(gSpriteSpatialIndex));
     for (size_t i = 0; i < MAX_SPRITES; i++) {
         rct_sprite *spr = get_sprite(i);
         if (spr->unknown.sprite_identifier != SPRITE_IDENTIFIER_NULL) {

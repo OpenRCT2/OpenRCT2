@@ -404,7 +404,7 @@ private:
     void PrepareParkForPlayback()
     {
         rct_window * w = window_get_main();
-        w->viewport_target_sprite = -1;
+        w->viewport_target_sprite = SPRITE_INDEX_NULL;
         w->saved_view_x = gSavedViewX;
         w->saved_view_y = gSavedViewY;
 
