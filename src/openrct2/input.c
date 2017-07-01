@@ -1250,11 +1250,13 @@ void input_state_widget_pressed(sint32 x, sint32 y, sint32 state, rct_widgetinde
         dropdown_cleanup:
             window_close_by_class(WC_DROPDOWN);
         }
+            
+        _inputState = INPUT_STATE_NORMAL;
+            
         if (state == MOUSE_STATE_RIGHT_PRESS) {
             return;
         }
-
-        _inputState = INPUT_STATE_NORMAL;
+            
         gTooltipTimeout = 0;
         gTooltipWidget.widget_index = cursor_widgetIndex;
 
