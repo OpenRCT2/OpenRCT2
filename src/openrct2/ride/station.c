@@ -322,3 +322,15 @@ rct_map_element *ride_get_station_exit_element(rct_ride *ride, sint32 x, sint32 
 
     return NULL;
 }
+
+sint32 ride_get_first_valid_station_exit(rct_ride * ride)
+{
+    for (sint32 i = 0; i < MAX_STATIONS; i++)
+    {
+        if (ride->exits[i] != 0xFFFF)
+        {
+            return i;
+        }
+    }
+    return -1;
+}

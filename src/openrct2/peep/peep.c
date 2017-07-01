@@ -31,6 +31,7 @@
 #include "../rct2.h"
 #include "../ride/ride.h"
 #include "../ride/ride_data.h"
+#include "../ride/station.h"
 #include "../ride/track.h"
 #include "../scenario/scenario.h"
 #include "../sprites.h"
@@ -2777,10 +2778,21 @@ static void peep_update_ride_sub_state_1(rct_peep* peep){
         return;
     }
 
+    sint8 load_position = 0;
 #ifdef NO_RCT2
-    assert(peep->current_seat < vehicle_type->peep_loading_positions_count);
+    // Safe, in case current seat > number of loading positions
+    uint16 numSeatPositions = vehicle_type->peep_loading_positions_count;
+    if (numSeatPositions != 0) {
+        size_t loadPositionIndex = numSeatPositions - 1;
+        if (peep->current_seat < numSeatPositions) {
+            loadPositionIndex = peep->current_seat;
+        }
+        load_position = vehicle_type->peep_loading_positions[loadPositionIndex];
+    }
+#else
+    // Unsafe as we don't know the number of loading positions
+    load_position = vehicle_type->peep_loading_positions[peep->current_seat];
 #endif
-    sint8 load_position = vehicle_type->peep_loading_positions[peep->current_seat];
 
     switch (vehicle->sprite_direction / 8){
     case 0:
@@ -3128,6 +3140,14 @@ static void peep_update_ride_sub_state_7(rct_peep* peep){
     vehicle->friction -= peep->var_41;
     invalidate_sprite_2((rct_sprite*)vehicle);
 
+    if (ride_station >= 4) {
+        // HACK #5658: Some parks have hacked rides which end up in this state
+        sint32 bestStationIndex = ride_get_first_valid_station_exit(ride);
+        if (bestStationIndex == -1) {
+            bestStationIndex = 0;
+        }
+        ride_station = bestStationIndex;
+    }
     peep->current_ride_station = ride_station;
 
     rct_ride_entry* ride_entry = get_ride_entry(vehicle->ride_subtype);
