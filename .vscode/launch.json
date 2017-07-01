@@ -31,7 +31,7 @@
             "type": "cppdbg",
             "request": "attach",
             "program": "${workspaceRoot}/bin/openrct2",
-            "processId": "${command.pickProcess}",
+            "processId": "${command:pickProcess}",
             "setupCommands": [
                 {
                     "text": "-enable-pretty-printing"
