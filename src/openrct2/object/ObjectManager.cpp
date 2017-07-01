@@ -36,8 +36,8 @@ extern "C"
 class ObjectManager final : public IObjectManager
 {
 private:
-    IObjectRepository * _objectRepository;
-    Object * *          _loadedObjects = nullptr;
+    IObjectRepository *         _objectRepository;
+    Object * *                  _loadedObjects = nullptr;
 
 public:
     explicit ObjectManager(IObjectRepository * objectRepository)
@@ -438,6 +438,49 @@ private:
         return entryIndex;
     }
 
+    rct_object_entry* DuplicateObjectEntry(const rct_object_entry* original)
+    {
+        rct_object_entry * duplicate = Memory::Allocate<rct_object_entry>(sizeof(rct_object_entry));
+        duplicate->checksum = original->checksum;
+        strncpy(duplicate->name, original->name, 8);
+        duplicate->flags = original->flags;
+        return duplicate;
+    }
+
+    std::vector<rct_object_entry> GetInvalidObjects(const rct_object_entry * entries) override
+    {
+        std::vector<rct_object_entry> invalidEntries;
+        invalidEntries.reserve(OBJECT_ENTRY_COUNT);
+        for (sint32 i = 0; i < OBJECT_ENTRY_COUNT; i++)
+        {
+            const rct_object_entry * entry = &entries[i];
+            const ObjectRepositoryItem * ori = nullptr;
+            if (!object_entry_is_empty(entry))
+            {
+                ori = _objectRepository->FindObject(entry);
+                if (ori == nullptr)
+                {
+                    invalidEntries.push_back(*entry);
+                }
+                else
+                {
+                    Object * loadedObject = nullptr;
+                    loadedObject = ori->LoadedObject;
+                    if (loadedObject == nullptr)
+                    {
+                        loadedObject = _objectRepository->LoadObject(ori);
+                        if (loadedObject == nullptr)
+                        {
+                            invalidEntries.push_back(*entry);
+                        }
+                        delete loadedObject;
+                    }
+                }
+            }
+        }
+        return invalidEntries;
+    }
+
     bool GetRequiredObjects(const rct_object_entry * entries,
                             const ObjectRepositoryItem * * requiredObjects,
                             size_t * outNumRequiredObjects)
@@ -519,14 +562,14 @@ private:
         return loadedObject;
     }
 
-    static void ReportMissingObject(const rct_object_entry * entry)
+    void ReportMissingObject(const rct_object_entry * entry)
     {
         utf8 objName[9] = { 0 };
         Memory::Copy(objName, entry->name, 8);
         Console::Error::WriteLine("[%s] Object not found.", objName);
     }
 
-    static void ReportObjectLoadProblem(const rct_object_entry * entry)
+    void ReportObjectLoadProblem(const rct_object_entry * entry)
     {
         utf8 objName[9] = { 0 };
         Memory::Copy(objName, entry->name, 8);

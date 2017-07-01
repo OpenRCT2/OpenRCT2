@@ -170,7 +170,7 @@ sint32 game_do_command_p(sint32 command, sint32 *eax, sint32 *ebx, sint32 *ecx, 
 void game_log_multiplayer_command(int command, int *eax, int* ebx, int* ecx, int* edx, int* edi, int* ebp);
 
 void game_load_or_quit_no_save_prompt();
-bool game_load_sv6_path(const char * path);
+ParkLoadResult * game_load_sv6_path(const char * path);
 bool game_load_save(const utf8 *path);
 void game_load_init();
 void game_pause_toggle(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *edx, sint32 *esi, sint32 *edi, sint32 *ebp);
@@ -179,6 +179,7 @@ bool game_is_paused();
 bool game_is_not_paused();
 void save_game();
 void save_game_as();
+void handle_park_load_failure(const ParkLoadResult * result, const utf8 * path);
 void rct2_exit();
 void rct2_exit_reason(rct_string_id title, rct_string_id body);
 void game_autosave();

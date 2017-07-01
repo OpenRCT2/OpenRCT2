@@ -31,6 +31,8 @@
 #include "../world/map_animation.h"
 #include "../world/sprite.h"
 
+typedef struct ParkLoadResult ParkLoadResult;
+
 #pragma pack(push, 1)
 /**
  * SV6/SC6 header chunk
@@ -389,8 +391,8 @@ extern uint32 gLastAutoSaveUpdate;
 
 extern const char *_scenarioFileName;
 
-sint32 scenario_load(const char *path);
-sint32 scenario_load_and_play_from_path(const char *path);
+ParkLoadResult * scenario_load(const char *path);
+ParkLoadResult * scenario_load_and_play_from_path(const char *path);
 void scenario_begin();
 void scenario_update();
 

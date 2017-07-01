@@ -79,6 +79,9 @@ namespace OpenRCT2 { namespace Ui
 
         // Misc
         bool ReadBMP(void * * outPixels, uint32 * outWidth, uint32 * outHeight, const std::string &path) override { return false; }
+
+        // Clipboard
+        bool SetClipboardText(const utf8* target) override { return false; }
     };
 
     IUiContext * CreateDummyUiContext()

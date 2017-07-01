@@ -22,8 +22,10 @@
 #include "../interface/widget.h"
 #include "../interface/window.h"
 #include "../localisation/localisation.h"
+#include "../ParkImporter.h"
 #include "../sprites.h"
 #include "../title/TitleScreen.h"
+#include "../util/util.h"
 #include "dropdown.h"
 
 enum {
@@ -128,9 +130,9 @@ void window_title_menu_open()
 
 static void window_title_menu_scenarioselect_callback(const utf8 *path)
 {
-    if (!scenario_load_and_play_from_path(path)) {
-        title_load();
-    }
+    ParkLoadResult * result = scenario_load_and_play_from_path(path);
+    handle_park_load_failure(result, path);
+    ParkLoadResult_Delete(result);
 }
 
 static void window_title_menu_mouseup(rct_window *w, rct_widgetindex widgetIndex)

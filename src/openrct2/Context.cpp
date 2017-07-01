@@ -718,4 +718,9 @@ extern "C"
             return nullptr;
         }
     }
+
+    bool platform_place_string_on_clipboard(utf8* target)
+    {
+        return GetContext()->GetUiContext()->SetClipboardText(target);
+    }
 }

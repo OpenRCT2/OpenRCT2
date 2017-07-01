@@ -322,7 +322,7 @@ private:
                 try
                 {
                     auto s4Importer = std::unique_ptr<IParkImporter>(ParkImporter::CreateS4());
-                    s4Importer->LoadScenario(path.c_str());
+                    s4Importer->LoadScenario(path.c_str(), true);
                     if (s4Importer->GetDetails(entry))
                     {
                         String::Set(entry->path, sizeof(entry->path), path.c_str());

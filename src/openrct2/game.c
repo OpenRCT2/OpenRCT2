@@ -33,6 +33,7 @@
 #include "network/network.h"
 #include "object.h"
 #include "OpenRCT2.h"
+#include "ParkImporter.h"
 #include "peep/peep.h"
 #include "peep/staff.h"
 #include "platform/platform.h"
@@ -1094,18 +1095,21 @@ bool game_load_save(const utf8 *path)
     safe_strcpy(gScenarioSavePath, path, MAX_PATH);
 
     uint32 extension_type = get_file_extension_type(path);
-    bool result = false;
+    ParkLoadResult * result = NULL;
+    bool load_success = false;
     if (extension_type == FILE_EXTENSION_SV6) {
         result = game_load_sv6_path(path);
-        if (result)
+        load_success = (ParkLoadResult_GetError(result) == PARK_LOAD_ERROR_OK);
+        if (load_success)
             gFirstTimeSaving = false;
     } else if (extension_type == FILE_EXTENSION_SV4) {
         result = rct1_load_saved_game(path);
-        if (result)
+        load_success = (ParkLoadResult_GetError(result) == PARK_LOAD_ERROR_OK);
+        if (load_success)
             gFirstTimeSaving = true;
     }
 
-    if (result) {
+    if (load_success) {
         if (network_get_mode() == NETWORK_MODE_CLIENT) {
             network_close();
         }
@@ -1117,13 +1121,26 @@ bool game_load_save(const utf8 *path)
         // This ensures that the newly loaded save reflects the user's
         // 'show real names of guests' option, now that it's a global setting
         peep_update_names(gConfigGeneral.show_real_names_of_guests);
-
         return true;
     } else {
-        // If loading the SV6 or SV4 failed, the current park state will be corrupted
-        // so just go back to the title screen.
-        title_load();
+        handle_park_load_failure(result, path);
         return false;
+    }
+}
+
+void handle_park_load_failure(const ParkLoadResult * result, const utf8 * path)
+{
+    if (ParkLoadResult_GetError(result) == PARK_LOAD_ERROR_MISSING_OBJECTS)
+    {
+        // The path needs to be duplicated as it's a const here
+        // which the window function doesn't like
+        window_object_load_error_open(strndup(path, strnlen(path, MAX_PATH)),
+                                      ParkLoadResult_GetMissingObjectsCount(result),
+                                      ParkLoadResult_GetMissingObjects(result));
+    } else if (ParkLoadResult_GetError(result) != PARK_LOAD_ERROR_OK) {
+        // If loading the SV6 or SV4 failed for a reason other than invalid objects
+        // the current park state will be corrupted so just go back to the title screen.
+        title_load();
     }
 }
 
@@ -1370,7 +1387,12 @@ bool game_load_save_or_scenario(const utf8 * path)
         return game_load_save(path);
     case FILE_EXTENSION_SC4:
     case FILE_EXTENSION_SC6:
-        return scenario_load_and_play_from_path(path);
+    {
+        ParkLoadResult * result = scenario_load_and_play_from_path(path);
+        bool success = (ParkLoadResult_GetError(result) == PARK_LOAD_ERROR_OK);
+        ParkLoadResult_Delete(result);
+        return success;
+    }
     }
     return false;
 }

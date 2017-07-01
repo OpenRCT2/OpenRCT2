@@ -30,6 +30,7 @@
 #include "../localisation/localisation.h"
 #include "../network/network.h"
 #include "../network/twitch.h"
+#include "../ParkImporter.h"
 #include "../peep/staff.h"
 #include "../scenario/scenario.h"
 #include "../sprites.h"
@@ -519,9 +520,9 @@ static void window_top_toolbar_mousedown(rct_widgetindex widgetIndex, rct_window
 
 static void window_top_toolbar_scenarioselect_callback(const utf8 *path)
 {
-    if (!scenario_load_and_play_from_path(path)) {
-        title_load();
-    }
+    ParkLoadResult * result = scenario_load_and_play_from_path(path);
+    handle_park_load_failure(result, path);
+    ParkLoadResult_Delete(result);
 }
 
 /**

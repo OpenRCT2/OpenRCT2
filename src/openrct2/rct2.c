@@ -38,6 +38,7 @@
 #include "object.h"
 #include "object/ObjectManager.h"
 #include "OpenRCT2.h"
+#include "ParkImporter.h"
 #include "peep/staff.h"
 #include "platform/platform.h"
 #include "rct1.h"
@@ -339,8 +340,14 @@ bool rct2_open_file(const char *path)
         }
     } else if (_stricmp(extension, "sc6") == 0) {
         // TODO scenario install
-        if (scenario_load_and_play_from_path(path)) {
+        ParkLoadResult * result = scenario_load_and_play_from_path(path);
+        if (ParkLoadResult_GetError(result) == PARK_LOAD_ERROR_OK) {
+            ParkLoadResult_Delete(result);
             return true;
+        } else {
+            handle_park_load_failure(result, path);
+            ParkLoadResult_Delete(result);
+            return false;
         }
     } else if (_stricmp(extension, "td6") == 0 || _stricmp(extension, "td4") == 0) {
         // TODO track design install

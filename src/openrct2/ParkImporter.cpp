@@ -21,6 +21,65 @@
 #include "object/ObjectRepository.h"
 #include "ParkImporter.h"
 
+ParkLoadResult::ParkLoadResult(PARK_LOAD_ERROR error)
+    : Error(error)
+{
+}
+
+ParkLoadResult::ParkLoadResult(PARK_LOAD_ERROR error, const std::vector<rct_object_entry> &missingObjects)
+    : Error(error),
+      MissingObjects(missingObjects)
+{
+}
+
+ParkLoadResult ParkLoadResult::CreateOK()
+{
+    return ParkLoadResult(PARK_LOAD_ERROR::PARK_LOAD_ERROR_OK);
+}
+
+ParkLoadResult ParkLoadResult::CreateInvalidExtension()
+{
+    return ParkLoadResult(PARK_LOAD_ERROR::PARK_LOAD_ERROR_INVALID_EXTENSION);
+}
+
+ParkLoadResult ParkLoadResult::CreateMissingObjects(const std::vector<rct_object_entry> &missingObjects)
+{
+    return ParkLoadResult(PARK_LOAD_ERROR::PARK_LOAD_ERROR_MISSING_OBJECTS, missingObjects);
+}
+
+ParkLoadResult ParkLoadResult::CreateUnknown()
+{
+    return ParkLoadResult(PARK_LOAD_ERROR::PARK_LOAD_ERROR_UNKNOWN);
+}
+
+extern "C"
+{
+    PARK_LOAD_ERROR ParkLoadResult_GetError(const ParkLoadResult * t)
+    {
+        return t->Error;
+    }
+
+    size_t ParkLoadResult_GetMissingObjectsCount(const ParkLoadResult * t)
+    {
+        return t->MissingObjects.size();
+    }
+
+    const rct_object_entry * ParkLoadResult_GetMissingObjects(const ParkLoadResult * t)
+    {
+        return t->MissingObjects.data();
+    }
+
+    void ParkLoadResult_Delete(ParkLoadResult * t)
+    {
+        delete t;
+    }
+
+    ParkLoadResult * ParkLoadResult_CreateInvalidExtension()
+    {
+        return new ParkLoadResult(ParkLoadResult::CreateInvalidExtension());
+    }
+}
+
 namespace ParkImporter
 {
     IParkImporter * Create(const std::string &hintPath)
