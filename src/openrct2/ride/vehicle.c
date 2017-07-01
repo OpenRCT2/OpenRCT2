@@ -8293,7 +8293,7 @@ loc_6DC99A:
     goto loc_6DC462;
 
 loc_6DC9BC:
-    _vehicleMotionTrackFlags |= 0x20;
+    _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_5;
     regs.eax = vehicle->remaining_distance + 1;
     _vehicleVelocityF64E0C -= regs.eax;
     vehicle->remaining_distance -= regs.eax;

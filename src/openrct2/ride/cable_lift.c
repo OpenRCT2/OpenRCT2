@@ -224,7 +224,7 @@ static bool sub_6DF01A_loop(rct_vehicle* vehicle) {
         uint8 trackType = vehicle->track_type >> 2;
         if (trackType == TRACK_ELEM_CABLE_LIFT_HILL &&
             vehicle->track_progress == 160) {
-            _vehicleMotionTrackFlags |= (1 << 1);
+            _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_1;
         }
 
         uint16 trackProgress = vehicle->track_progress + 1;
@@ -342,7 +342,7 @@ static bool sub_6DF21B_loop(rct_vehicle* vehicle) {
             vehicle->track_type |= output.begin_element->properties.track.type << 2;
 
             if (output.begin_element->properties.track.type == TRACK_ELEM_END_STATION) {
-                _vehicleMotionTrackFlags = (1 << 0);
+                _vehicleMotionTrackFlags = VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_AT_STATION;
             }
 
             moveInfo = vehicle_get_move_info(vehicle->var_CD, vehicle->track_type, 0);
@@ -426,7 +426,7 @@ sint32 cable_lift_update_track_motion(rct_vehicle *cableLift)
                         break;
                     }
                     else {
-                        _vehicleMotionTrackFlags |= (1 << 5);
+                        _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_5;
                         _vehicleVelocityF64E0C -= vehicle->remaining_distance - 13962;
                         vehicle->remaining_distance = 13962;
                         vehicle->acceleration += dword_9A2970[vehicle->vehicle_sprite_type];
@@ -439,7 +439,7 @@ sint32 cable_lift_update_track_motion(rct_vehicle *cableLift)
                         break;
                     }
                     else {
-                        _vehicleMotionTrackFlags |= (1 << 5);
+                        _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_5;
                         _vehicleVelocityF64E0C -= vehicle->remaining_distance + 1;
                         vehicle->remaining_distance = -1;
                         vehicle->acceleration += dword_9A2970[vehicle->vehicle_sprite_type];

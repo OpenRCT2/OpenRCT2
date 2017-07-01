@@ -4868,7 +4868,7 @@ void loc_6DDF9C(rct_ride *ride, rct_map_element *mapElement)
         vehicle_update_track_motion(train, NULL);
 
         do {
-            mapElement->flags |= (1 << 5);
+            mapElement->flags |= MAP_ELEMENT_FLAG_BLOCK_BRAKE_CLOSED;
             car = train;
             while (true) {
                 car->velocity = 0;
@@ -4882,9 +4882,9 @@ void loc_6DDF9C(rct_ride *ride, rct_map_element *mapElement)
                 }
                 car = GET_VEHICLE(spriteIndex);
             }
-        } while (!(vehicle_update_track_motion(train, NULL) & 0x400));
+        } while (!(vehicle_update_track_motion(train, NULL) & VEHICLE_UPDATE_MOTION_TRACK_FLAG_10));
 
-        mapElement->flags |= (1 << 5);
+        mapElement->flags |= MAP_ELEMENT_FLAG_BLOCK_BRAKE_CLOSED;
         car = train;
         while (true) {
             car->update_flags &= ~VEHICLE_UPDATE_FLAG_1;
