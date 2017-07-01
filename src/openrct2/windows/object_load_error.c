@@ -21,7 +21,6 @@
 #include "../object.h"
 #include "../platform/platform.h"
 #include "../sprites.h"
-#include "../util/util.h"
 
 enum WINDOW_OBJECT_LOAD_ERROR_WIDGET_IDX {
     WIDX_BACKGROUND,
@@ -91,7 +90,7 @@ static rct_window_event_list window_object_load_error_events = {
     window_object_load_error_scrollpaint
 };
 
-rct_object_entry * * invalid_entries = NULL;
+rct_object_entry * invalid_entries = NULL;
 sint32 highlighted_index = -1;
 utf8* file_path = NULL;
 
@@ -168,20 +167,20 @@ static utf8* combine_object_names(rct_window *w)
     for (uint16 i = 0; i < w->no_list_items; i++) {
         cur_len += (8 + line_sep_len);
         assert(cur_len < buffer_len);
-        strncat(buffer, invalid_entries[i]->name, 8);
+        strncat(buffer, invalid_entries[i].name, 8);
         strncat(buffer, PLATFORM_NEWLINE, line_sep_len);
     }
     return buffer;
 }
 
-rct_window *window_object_load_error_open(utf8* path, object_validity_result* result)
+rct_window * window_object_load_error_open(utf8 * path, size_t numMissingObjects, const rct_object_entry * missingObjects)
 {
-    rct_window* window;
-
-    invalid_entries = result->invalid_objects;
+    size_t missingObjectsSize = numMissingObjects * sizeof(rct_object_entry);
+    invalid_entries = malloc(missingObjectsSize);
+    memcpy(invalid_entries, missingObjects, missingObjectsSize);
 
     // Check if window is already open
-    window = window_bring_to_front_by_class(WC_OBJECT_LOAD_ERROR);
+    rct_window * window = window_bring_to_front_by_class(WC_OBJECT_LOAD_ERROR);
     if (window == NULL) {
         window = window_create_centred(
             WW,
@@ -201,7 +200,7 @@ rct_window *window_object_load_error_open(utf8* path, object_validity_result* re
     }
 
     // Refresh list items and path
-    window->no_list_items = result->invalid_object_count;
+    window->no_list_items = (uint16)numMissingObjects;
     file_path = path;
 
     window_invalidate(window);
@@ -232,7 +231,7 @@ static void window_object_load_error_mouseup(rct_window *w, rct_widgetindex widg
             break;
         case WIDX_COPY_CURRENT:
             if (w->selected_list_item > -1) {
-                selected_name = strndup(invalid_entries[w->selected_list_item]->name, 8);
+                selected_name = strndup(invalid_entries[w->selected_list_item].name, 8);
                 platform_place_string_on_clipboard(selected_name);
                 SafeFree(selected_name);
             }
@@ -296,7 +295,6 @@ static void window_object_load_error_paint(rct_window *w, rct_drawpixelinfo *dpi
 
 static void window_object_load_error_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 scrollIndex)
 {
-
     gfx_fill_rect(dpi, dpi->x, dpi->y, dpi->x + dpi->width - 1, dpi->y + dpi->height - 1, ColourMapA[w->colours[1]].mid_light);
     const sint32 list_width = w->widgets[WIDX_SCROLL].right - w->widgets[WIDX_SCROLL].left;
 
@@ -317,12 +315,10 @@ static void window_object_load_error_scrollpaint(rct_window *w, rct_drawpixelinf
             gfx_fill_rect(dpi, 0, y, list_width, y + LIST_ITEM_HEIGHT - 1, ColourMapA[w->colours[1]].lighter | 0x1000000);
 
         // Draw the actual object entry's name...
-        gfx_draw_string(dpi, strndup(invalid_entries[i]->name, 8), COLOUR_DARK_GREEN, 5, y);
+        gfx_draw_string(dpi, strndup(invalid_entries[i].name, 8), COLOUR_DARK_GREEN, 5, y);
 
         // ... and type
-        rct_string_id type = get_object_type_string(invalid_entries[i]);
+        rct_string_id type = get_object_type_string(&invalid_entries[i]);
         gfx_draw_string_left(dpi, type, NULL, COLOUR_DARK_GREEN, (WW - 5) / 3 + 1, y);
     }
-    
-
 }

@@ -31,6 +31,7 @@
 #include "platform/platform.h"
 #include "rct1.h"
 #include "ride/ride.h"
+#include "ParkImporter.h"
 #include "scenario/scenario.h"
 #include "util/sawyercoding.h"
 #include "util/util.h"
@@ -261,16 +262,18 @@ static sint32 editor_load_landscape_from_sc4(const char *path)
  */
 static sint32 editor_read_s6(const char *path)
 {
-    park_load_result* loadResult = { 0 };
+    ParkLoadResult * loadResult = NULL;
     const char *extension = path_get_extension(path);
     if (_stricmp(extension, ".sc6") == 0) {
         loadResult = scenario_load(path);
     } else if (_stricmp(extension, ".sv6") == 0) {
         loadResult = game_load_sv6_path(path);
     }
-    if (loadResult->error != PARK_LOAD_ERROR_NONE) {
+    if (ParkLoadResult_GetError(loadResult) != PARK_LOAD_ERROR_OK) {
+        ParkLoadResult_Delete(loadResult);
         return 0;
     }
+    ParkLoadResult_Delete(loadResult);
 
     editor_clear_map_for_editing(true);
 

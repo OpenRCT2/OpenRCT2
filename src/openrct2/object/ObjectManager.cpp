@@ -447,10 +447,10 @@ private:
         return duplicate;
     }
 
-    object_validity_result* GetInvalidObjects(const rct_object_entry * entries) override
+    std::vector<rct_object_entry> GetInvalidObjects(const rct_object_entry * entries) override
     {
-        uint16 invalidObjectCount = 0;
-        rct_object_entry * * invalidEntries = Memory::AllocateArray<rct_object_entry *>(OBJECT_ENTRY_COUNT);
+        std::vector<rct_object_entry> invalidEntries;
+        invalidEntries.reserve(OBJECT_ENTRY_COUNT);
         for (sint32 i = 0; i < OBJECT_ENTRY_COUNT; i++)
         {
             const rct_object_entry * entry = &entries[i];
@@ -460,7 +460,7 @@ private:
                 ori = _objectRepository->FindObject(entry);
                 if (ori == nullptr)
                 {
-                    invalidEntries[invalidObjectCount++] = DuplicateObjectEntry(entry);
+                    invalidEntries.push_back(*entry);
                 }
                 else
                 {
@@ -471,16 +471,14 @@ private:
                         loadedObject = _objectRepository->LoadObject(ori);
                         if (loadedObject == nullptr)
                         {
-                            invalidEntries[invalidObjectCount++] = DuplicateObjectEntry(entry);
+                            invalidEntries.push_back(*entry);
                         }
+                        delete loadedObject;
                     }
                 }
             }
         }
-        object_validity_result* result = Memory::Allocate<object_validity_result>(sizeof(object_validity_result));
-        result->invalid_object_count = invalidObjectCount;
-        result->invalid_objects = invalidEntries;
-        return result;
+        return invalidEntries;
     }
 
     bool GetRequiredObjects(const rct_object_entry * entries,

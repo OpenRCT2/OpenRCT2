@@ -20,7 +20,6 @@
 #include "management/award.h"
 #include "management/news_item.h"
 #include "management/research.h"
-#include "park_load_result_types.h"
 #include "rct12.h"
 #include "rct2.h"
 #include "ride/ride.h"
@@ -34,6 +33,8 @@
 #define RCT1_MAX_MAP_SIZE             128
 #define RCT1_MAX_RIDES_IN_PARK        128
 #define RCT1_RESEARCH_FLAGS_SEPARATOR 0xFF
+
+typedef struct ParkLoadResult ParkLoadResult;
 
 #pragma pack(push, 1)
 typedef struct rct1_entrance {
@@ -1210,8 +1211,8 @@ extern const uint8 gRideCategories[RIDE_TYPE_COUNT];
 sint32 vehicle_preference_compare(uint8 rideType, const char * a, const char * b);
 bool rideTypeShouldLoseSeparateFlag(const rct_ride_entry *rideEntry);
 
-park_load_result * rct1_load_saved_game(const char *path);
-park_load_result * rct1_load_scenario(const char *path);
+ParkLoadResult * rct1_load_saved_game(const char *path);
+ParkLoadResult * rct1_load_scenario(const char *path);
 
 colour_t rct1_get_colour(colour_t colour);
 

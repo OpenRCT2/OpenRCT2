@@ -26,6 +26,7 @@
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
 #include "../core/Util.hpp"
+#include "../object/Object.h"
 #include "../object/ObjectManager.h"
 #include "../object/ObjectRepository.h"
 #include "../ParkImporter.h"
@@ -126,7 +127,7 @@ private:
     uint8 _researchRideTypeUsed[128];
 
 public:
-    park_load_result* Load(const utf8 * path) override
+    ParkLoadResult Load(const utf8 * path) override
     {
         const utf8 * extension = Path::GetExtension(path);
         if (String::Equals(extension, ".sc4", true))
@@ -143,27 +144,24 @@ public:
         }
     }
 
-    park_load_result* LoadSavedGame(const utf8 * path, bool skipObjectCheck = false) override
+    ParkLoadResult LoadSavedGame(const utf8 * path, bool skipObjectCheck = false) override
     {
         auto fs = FileStream(path, FILE_MODE_OPEN);
-        park_load_result* result = LoadFromStream(&fs, false, skipObjectCheck);
+        auto result = LoadFromStream(&fs, false, skipObjectCheck);
         _s4Path = path;
         return result;
     }
 
-    park_load_result* LoadScenario(const utf8 * path, bool skipObjectCheck = false) override
+    ParkLoadResult LoadScenario(const utf8 * path, bool skipObjectCheck = false) override
     {
         auto fs = FileStream(path, FILE_MODE_OPEN);
-        park_load_result* result = LoadFromStream(&fs, true, skipObjectCheck);
+        auto result = LoadFromStream(&fs, true, skipObjectCheck);
         _s4Path = path;
         return result;
     }
 
-    park_load_result* LoadFromStream(IStream * stream, bool isScenario, bool skipObjectCheck = false) override
+    ParkLoadResult LoadFromStream(IStream * stream, bool isScenario, bool skipObjectCheck = false) override
     {
-        park_load_result* result = Memory::Allocate<park_load_result>(sizeof(park_load_result));
-        result->error = PARK_LOAD_ERROR_NONE;
-
         size_t dataSize = stream->GetLength() - stream->GetPosition();
         std::unique_ptr<uint8> data = std::unique_ptr<uint8>(stream->ReadArray<uint8>(dataSize));
         std::unique_ptr<uint8> decodedData = std::unique_ptr<uint8>(Memory::Allocate<uint8>(sizeof(rct1_s4)));
@@ -188,12 +186,11 @@ public:
             {
                 InitialiseEntryMaps();
                 CreateAvailableObjectMappings();
-                object_validity_result* object_result = GetInvalidObjects();
 
-                result->object_validity = object_result;
-                if (object_result->invalid_object_count > 0)
+                auto missingObjects = GetInvalidObjects();
+                if (missingObjects.size() > 0)
                 {
-                    result->error = PARK_LOAD_ERROR_BAD_OBJECTS;
+                    return ParkLoadResult::CreateMissingObjects(missingObjects);
                 }
             }
         }
@@ -201,7 +198,7 @@ public:
         {
             throw Exception("Unable to decode park.");
         }
-        return result;
+        return ParkLoadResult::CreateOK();
     }
 
     void Import() override
@@ -1751,22 +1748,16 @@ private:
         }
     }
 
-    object_validity_result* GetInvalidObjects()
+    std::vector<rct_object_entry> GetInvalidObjects()
     {
-        object_validity_result* result = Memory::Allocate<object_validity_result>(sizeof(object_validity_result));
-        uint16 invalidObjectCount = 0;
-        rct_object_entry * * invalidEntries = Memory::AllocateArray<rct_object_entry *>(OBJECT_ENTRY_COUNT);
-
-        result->invalid_object_count = invalidObjectCount;
-        result->invalid_objects = invalidEntries;
-        
-        GetInvalidObjects(OBJECT_TYPE_RIDE, _rideEntries.GetEntries(), *result);
-        GetInvalidObjects(OBJECT_TYPE_SMALL_SCENERY, _smallSceneryEntries.GetEntries(), *result);
-        GetInvalidObjects(OBJECT_TYPE_LARGE_SCENERY, _largeSceneryEntries.GetEntries(), *result);
-        GetInvalidObjects(OBJECT_TYPE_WALLS, _wallEntries.GetEntries(), *result);
-        GetInvalidObjects(OBJECT_TYPE_PATHS, _pathEntries.GetEntries(), *result);
-        GetInvalidObjects(OBJECT_TYPE_PATH_BITS, _pathAdditionEntries.GetEntries(), *result);
-        GetInvalidObjects(OBJECT_TYPE_SCENERY_SETS, _sceneryGroupEntries.GetEntries(), *result);
+        std::vector<rct_object_entry> missingObjects;
+        GetInvalidObjects(OBJECT_TYPE_RIDE, _rideEntries.GetEntries(), missingObjects);
+        GetInvalidObjects(OBJECT_TYPE_SMALL_SCENERY, _smallSceneryEntries.GetEntries(), missingObjects);
+        GetInvalidObjects(OBJECT_TYPE_LARGE_SCENERY, _largeSceneryEntries.GetEntries(), missingObjects);
+        GetInvalidObjects(OBJECT_TYPE_WALLS, _wallEntries.GetEntries(), missingObjects);
+        GetInvalidObjects(OBJECT_TYPE_PATHS, _pathEntries.GetEntries(), missingObjects);
+        GetInvalidObjects(OBJECT_TYPE_PATH_BITS, _pathAdditionEntries.GetEntries(), missingObjects);
+        GetInvalidObjects(OBJECT_TYPE_SCENERY_SETS, _sceneryGroupEntries.GetEntries(), missingObjects);
         GetInvalidObjects(OBJECT_TYPE_BANNERS, std::vector<const char *>({
             "BN1     ",
             "BN2     ",
@@ -1777,14 +1768,13 @@ private:
             "BN7     ",
             "BN8     ",
             "BN9     "
-        }), *result);
-        GetInvalidObjects(OBJECT_TYPE_PARK_ENTRANCE, std::vector<const char *>({ "PKENT1  " }), *result);
-        GetInvalidObjects(OBJECT_TYPE_WATER, _waterEntry.GetEntries(), *result);
-
-        return result;
+        }), missingObjects);
+        GetInvalidObjects(OBJECT_TYPE_PARK_ENTRANCE, std::vector<const char *>({ "PKENT1  " }), missingObjects);
+        GetInvalidObjects(OBJECT_TYPE_WATER, _waterEntry.GetEntries(), missingObjects);
+        return missingObjects;
     }
 
-    void GetInvalidObjects(uint8 objectType, const std::vector<const char *> &entries, object_validity_result &result)
+    void GetInvalidObjects(uint8 objectType, const std::vector<const char *> &entries, std::vector<rct_object_entry> &missingObjects)
     {
         IObjectRepository * objectRepository = GetObjectRepository();
         for (const char * objectName : entries)
@@ -1794,26 +1784,19 @@ private:
             Memory::Copy(entry.name, objectName, 8);
             entry.checksum = 0;
             
-            const ObjectRepositoryItem * ori = nullptr;
-            ori = objectRepository->FindObject(&entry);
+            const ObjectRepositoryItem * ori = objectRepository->FindObject(&entry);
             if (ori == nullptr)
             {
-                rct_object_entry * invalid_entry = Memory::Allocate<rct_object_entry>(sizeof(rct_object_entry));
-                invalid_entry->flags = entry.flags;
-                Memory::Copy(invalid_entry->name, objectName, 8);
-                result.invalid_objects[result.invalid_object_count++] = invalid_entry;
+                missingObjects.push_back(entry);
             }
             else
             {
                 Object * object = objectRepository->LoadObject(ori);
                 if (object == nullptr && objectType != OBJECT_TYPE_SCENERY_SETS)
                 {
-                    rct_object_entry * invalid_entry = Memory::Allocate<rct_object_entry>(sizeof(rct_object_entry));
-                    invalid_entry->flags = entry.flags;
-                    Memory::Copy(invalid_entry->name, objectName, 8);
-                    result.invalid_objects[result.invalid_object_count++] = invalid_entry;
+                    missingObjects.push_back(entry);
                 }
-                SafeFree(object);
+                delete object;
             }
         }
     }
@@ -2661,46 +2644,43 @@ IParkImporter * ParkImporter::CreateS4()
 /////////////////////////////////////////
 extern "C"
 {
-    park_load_result* rct1_load_saved_game(const utf8 * path)
+    ParkLoadResult * rct1_load_saved_game(const utf8 * path)
     {
-        park_load_result* result = {};
-
-        auto s4Importer = new S4Importer();
+        ParkLoadResult * result = nullptr;
+        auto s4Importer = std::make_unique<S4Importer>();
         try
         {
-            result = s4Importer->LoadSavedGame(path);
-            if (result->error == PARK_LOAD_ERROR_NONE)
+            result = new ParkLoadResult(s4Importer->LoadSavedGame(path));
+            if (result->Error == PARK_LOAD_ERROR_OK)
             {
                 s4Importer->Import();
             }
-            
-        } catch (const Exception &)
-        {
-            result = {};
-            result->error = PARK_LOAD_ERROR_UNKNOWN;
         }
-        delete s4Importer;
+        catch (const Exception &)
+        {
+            delete result;
+            result = new ParkLoadResult(ParkLoadResult::CreateUnknown());
+        }
         return result;
     }
 
-    park_load_result* rct1_load_scenario(const utf8 * path)
+    ParkLoadResult * rct1_load_scenario(const utf8 * path)
     {
-        park_load_result* result = {};
-
-        auto s4Importer = new S4Importer();
+        ParkLoadResult * result = nullptr;
+        auto s4Importer = std::make_unique<S4Importer>();
         try
         {
-            result = s4Importer->LoadSavedGame(path);
-            if (result->error == PARK_LOAD_ERROR_NONE)
+            result = new ParkLoadResult(s4Importer->LoadSavedGame(path));
+            if (result->Error == PARK_LOAD_ERROR_OK)
             {
                 s4Importer->Import();
             }
-        } catch (const Exception &)
-        {
-            result = {};
-            result->error = PARK_LOAD_ERROR_UNKNOWN;
         }
-        delete s4Importer;
+        catch (const Exception &)
+        {
+            delete result;
+            result = new ParkLoadResult(ParkLoadResult::CreateUnknown());
+        }
         return result;
     }
 

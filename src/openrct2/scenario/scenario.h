@@ -21,7 +21,6 @@
 #include "../management/finance.h"
 #include "../management/research.h"
 #include "../object.h"
-#include "../park_load_result_types.h"
 #include "../rct12.h"
 #include "../rct2.h"
 #include "../rct2/addresses.h"
@@ -31,6 +30,8 @@
 #include "../world/map.h"
 #include "../world/map_animation.h"
 #include "../world/sprite.h"
+
+typedef struct ParkLoadResult ParkLoadResult;
 
 #pragma pack(push, 1)
 /**
@@ -390,8 +391,8 @@ extern uint32 gLastAutoSaveUpdate;
 
 extern const char *_scenarioFileName;
 
-park_load_result *scenario_load(const char *path);
-park_load_result *scenario_load_and_play_from_path(const char *path);
+ParkLoadResult * scenario_load(const char *path);
+ParkLoadResult * scenario_load_and_play_from_path(const char *path);
 void scenario_begin();
 void scenario_update();
 

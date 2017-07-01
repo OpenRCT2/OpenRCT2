@@ -21,6 +21,7 @@
 #include "../interface/window.h"
 #include "../localisation/localisation.h"
 #include "../network/network.h"
+#include "../ParkImporter.h"
 #include "../platform/platform.h"
 #include "../sprites.h"
 #include "../title/TitleScreen.h"
@@ -165,14 +166,14 @@ static void window_server_start_close(rct_window *w)
 
 static void window_server_start_scenarioselect_callback(const utf8 *path)
 {
-    park_load_result* result;
     network_set_password(_password);
-    result = scenario_load_and_play_from_path(path);
-    if (result->error == PARK_LOAD_ERROR_NONE) {
+    ParkLoadResult * result = scenario_load_and_play_from_path(path);
+    if (ParkLoadResult_GetError(result) == PARK_LOAD_ERROR_OK) {
         network_begin_server(gConfigNetwork.default_port, gConfigNetwork.listen_address);
     } else {
         handle_park_load_failure(result, path);
     }
+    ParkLoadResult_Delete(result);
 }
 
 static void window_server_start_loadsave_callback(sint32 result, const utf8 * path)

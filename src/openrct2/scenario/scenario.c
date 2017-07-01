@@ -30,6 +30,7 @@
 #include "../object.h"
 #include "../object_list.h"
 #include "../OpenRCT2.h"
+#include "../ParkImporter.h"
 #include "../peep/staff.h"
 #include "../platform/platform.h"
 #include "../rct1.h"
@@ -88,28 +89,24 @@ money32 gScenarioCompanyValueRecord;
 static sint32 scenario_create_ducks();
 static void scenario_objective_check();
 
-park_load_result* scenario_load_and_play_from_path(const char *path)
+ParkLoadResult * scenario_load_and_play_from_path(const char * path)
 {
     window_close_construction_windows();
 
     uint32 extension = get_file_extension_type(path);
-    park_load_result* result = malloc(sizeof(park_load_result));
+    ParkLoadResult * result = NULL;
     if (extension == FILE_EXTENSION_SC6) {
         result = scenario_load(path);
-        if (result->error != PARK_LOAD_ERROR_NONE)
-        {
+        if (ParkLoadResult_GetError(result) != PARK_LOAD_ERROR_OK) {
             return result;
         }
-    }
-    else if (extension == FILE_EXTENSION_SC4) {
+    } else if (extension == FILE_EXTENSION_SC4) {
         result = rct1_load_scenario(path);
-        if (result->error != PARK_LOAD_ERROR_NONE)
-        {
+        if (ParkLoadResult_GetError(result) != PARK_LOAD_ERROR_OK) {
             return result;
         }
-    }
-    else {
-        result->error = PARK_LOAD_ERROR_INVALID_EXTENSION;
+    } else {
+        result = ParkLoadResult_CreateInvalidExtension();
         return result;
     }
 

@@ -22,19 +22,44 @@
 extern "C"
 {
 #endif
-#include "park_load_result_types.h"
+    #include "object.h"
 #ifdef __cplusplus
 }
 #endif
 
+typedef enum PARK_LOAD_ERROR
+{
+    PARK_LOAD_ERROR_OK,
+    PARK_LOAD_ERROR_MISSING_OBJECTS,
+    PARK_LOAD_ERROR_INVALID_EXTENSION,
+    PARK_LOAD_ERROR_UNKNOWN = 255
+} PARK_LOAD_ERROR;
+
 #ifdef __cplusplus
 
 #include <string>
+#include <vector>
 #include "scenario/ScenarioRepository.h"
 
 interface IObjectManager;
 interface IObjectRepository;
 interface IStream;
+
+struct ParkLoadResult final
+{
+public:
+    const PARK_LOAD_ERROR               Error;
+    const std::vector<rct_object_entry> MissingObjects;
+
+    static ParkLoadResult CreateOK();
+    static ParkLoadResult CreateInvalidExtension();
+    static ParkLoadResult CreateMissingObjects(const std::vector<rct_object_entry> &missingObjects);
+    static ParkLoadResult CreateUnknown();
+
+private:
+    ParkLoadResult(PARK_LOAD_ERROR error);
+    ParkLoadResult(PARK_LOAD_ERROR error, const std::vector<rct_object_entry> &missingObjects);
+};
 
 /**
  * Interface to import scenarios and saved games.
@@ -43,10 +68,12 @@ interface IParkImporter
 {
 public:
     virtual ~IParkImporter() = default;
-    virtual park_load_result * Load(const utf8 * path) abstract;
-    virtual park_load_result * LoadSavedGame(const utf8 * path, bool skipObjectCheck = false) abstract;
-    virtual park_load_result * LoadScenario(const utf8 * path, bool skipObjectCheck = false) abstract;
-    virtual park_load_result * LoadFromStream(IStream * stream, bool isScenario, bool skipObjectCheck = false) abstract;
+
+    virtual ParkLoadResult  Load(const utf8 * path) abstract;
+    virtual ParkLoadResult  LoadSavedGame(const utf8 * path, bool skipObjectCheck = false) abstract;
+    virtual ParkLoadResult  LoadScenario(const utf8 * path, bool skipObjectCheck = false) abstract;
+    virtual ParkLoadResult  LoadFromStream(IStream * stream, bool isScenario, bool skipObjectCheck = false) abstract;
+
     virtual void Import() abstract;
     virtual bool GetDetails(scenario_index_entry * dst) abstract;
 };
@@ -61,6 +88,10 @@ namespace ParkImporter
     bool ExtensionIsScenario(const std::string &extension);
 }
 
+#else
+
+typedef struct ParkLoadResult ParkLoadResult;
+
 #endif
 
 #ifdef __cplusplus
@@ -70,6 +101,11 @@ extern "C"
     void park_importer_load_from_stream(void * stream, const utf8 * hintPath);
     bool park_importer_extension_is_scenario(const utf8 * extension);
 
+    PARK_LOAD_ERROR             ParkLoadResult_GetError(const ParkLoadResult * t);
+    size_t                      ParkLoadResult_GetMissingObjectsCount(const ParkLoadResult * t);
+    const rct_object_entry *    ParkLoadResult_GetMissingObjects(const ParkLoadResult * t);
+    void                        ParkLoadResult_Delete(ParkLoadResult * t);
+    ParkLoadResult *            ParkLoadResult_CreateInvalidExtension();
 #ifdef __cplusplus
 }
 #endif

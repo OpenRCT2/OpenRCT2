@@ -19,7 +19,6 @@
 
 #include <time.h>
 #include "../common.h"
-#include "../park_load_result_types.h"
 
 sint32 squaredmetres_to_squaredfeet(sint32 squaredMetres);
 sint32 metres_to_feet(sint32 metres);

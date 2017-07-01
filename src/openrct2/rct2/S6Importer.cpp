@@ -81,7 +81,7 @@ public:
         Memory::Set(&_s6, 0, sizeof(_s6));
     }
 
-    park_load_result* Load(const utf8 * path) override
+    ParkLoadResult Load(const utf8 * path) override
     {
         const utf8 * extension = Path::GetExtension(path);
         if (String::Equals(extension, ".sc6", true))
@@ -98,29 +98,24 @@ public:
         }
     }
 
-    park_load_result* LoadSavedGame(const utf8 * path, bool skipObjectCheck = false) override
+    ParkLoadResult LoadSavedGame(const utf8 * path, bool skipObjectCheck = false) override
     {
         auto fs = FileStream(path, FILE_MODE_OPEN);
-        park_load_result* result =  LoadFromStream(&fs, false, skipObjectCheck);
+        auto result = LoadFromStream(&fs, false, skipObjectCheck);
         _s6Path = path;
-
         return result;
     }
 
-    park_load_result* LoadScenario(const utf8 * path, bool skipObjectCheck = false) override
+    ParkLoadResult LoadScenario(const utf8 * path, bool skipObjectCheck = false) override
     {
         auto fs = FileStream(path, FILE_MODE_OPEN);
-        park_load_result* result = LoadFromStream(&fs, true, skipObjectCheck);
+        auto result = LoadFromStream(&fs, true, skipObjectCheck);
         _s6Path = path;
-        
         return result;
     }
 
-    park_load_result* LoadFromStream(IStream * stream, bool isScenario, bool skipObjectCheck = false) override
+    ParkLoadResult LoadFromStream(IStream * stream, bool isScenario, bool skipObjectCheck = false) override
     {
-        park_load_result* result = Memory::Allocate<park_load_result>(sizeof(park_load_result));
-        result->error = PARK_LOAD_ERROR_UNKNOWN;
-
         if (isScenario && !gConfigGeneral.allow_loading_with_incorrect_checksum && !SawyerEncoding::ValidateChecksum(stream))
         {
             throw IOException("Invalid checksum.");
@@ -175,18 +170,12 @@ public:
             chunkReader.ReadChunk(&_s6.next_free_map_element_pointer_index, 3048816);
         }
 
-        object_validity_result* object_result = _objectManager->GetInvalidObjects(_s6.objects);
-        
-        result->object_validity = object_result;
-        if (object_result->invalid_object_count > 0)
+        auto missingObjects = _objectManager->GetInvalidObjects(_s6.objects);
+        if (missingObjects.size() > 0)
         {
-            result->error = PARK_LOAD_ERROR_BAD_OBJECTS;
+            return ParkLoadResult::CreateMissingObjects(missingObjects);
         }
-        else
-        {
-            result->error = PARK_LOAD_ERROR_NONE;
-        }
-        return result;
+        return ParkLoadResult::CreateOK();
     }
 
     bool GetDetails(scenario_index_entry * dst) override
@@ -439,17 +428,17 @@ IParkImporter * ParkImporter::CreateS6(IObjectRepository * objectRepository, IOb
 
 extern "C"
 {
-    park_load_result* game_load_sv6_path(const char * path)
+    ParkLoadResult * game_load_sv6_path(const char * path)
     {
-        park_load_result* result = {};
+        ParkLoadResult * result = nullptr;
         auto s6Importer = new S6Importer(GetObjectRepository(), GetObjectManager());
         try
         {
-            result = s6Importer->LoadSavedGame(path);
+            result = new ParkLoadResult(s6Importer->LoadSavedGame(path));
 
             // We mustn't import if there's something
             // wrong with the park data
-            if (result->error == PARK_LOAD_ERROR_NONE)
+            if (result->Error == PARK_LOAD_ERROR_OK)
             {
                 s6Importer->Import();
 
@@ -474,7 +463,11 @@ extern "C"
         }
         delete s6Importer;
 
-        if (result->error == PARK_LOAD_ERROR_NONE)
+        if (result == nullptr)
+        {
+            result = new ParkLoadResult(ParkLoadResult::CreateUnknown());
+        }
+        if (result->Error == PARK_LOAD_ERROR_OK)
         {
             gScreenAge          = 0;
             gLastAutoSaveUpdate = AUTOSAVE_PAUSE;
@@ -487,14 +480,14 @@ extern "C"
      *  rct2: 0x00676053
      * scenario (ebx)
      */
-    park_load_result* scenario_load(const char * path)
+    ParkLoadResult * scenario_load(const char * path)
     {
-        park_load_result* result = {};
+        ParkLoadResult * result = nullptr;
         auto s6Importer = new S6Importer(GetObjectRepository(), GetObjectManager());
         try
         {
-            result = s6Importer->LoadScenario(path);
-            if (result->error == PARK_LOAD_ERROR_NONE)
+            result = new ParkLoadResult(s6Importer->LoadScenario(path));
+            if (result->Error == PARK_LOAD_ERROR_OK)
             {
                 s6Importer->Import();
 
@@ -518,7 +511,12 @@ extern "C"
             gErrorStringId = STR_FILE_CONTAINS_INVALID_DATA;
         }
         delete s6Importer;
-        if (result->error != PARK_LOAD_ERROR_NONE)
+
+        if (result == nullptr)
+        {
+            result = new ParkLoadResult(ParkLoadResult::CreateUnknown());
+        }
+        if (result->Error != PARK_LOAD_ERROR_OK)
         {
             gScreenAge = 0;
             gLastAutoSaveUpdate = AUTOSAVE_PAUSE;

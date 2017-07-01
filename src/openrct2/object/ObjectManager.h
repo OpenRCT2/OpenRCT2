@@ -27,7 +27,6 @@ extern "C"
 {
 #endif
     #include "../object.h"
-    #include "../park_load_result_types.h"
 #ifdef __cplusplus
 }
 #endif
@@ -42,10 +41,10 @@ interface IObjectManager
 {
     virtual ~IObjectManager() { }
 
-    virtual Object *                    GetLoadedObject(size_t index) abstract;
-    virtual Object *                    GetLoadedObject(const rct_object_entry * entry) abstract;
-    virtual uint8                       GetLoadedObjectEntryIndex(const Object * object) abstract;
-    virtual object_validity_result*      GetInvalidObjects(const rct_object_entry * entries) abstract;
+    virtual Object *                        GetLoadedObject(size_t index) abstract;
+    virtual Object *                        GetLoadedObject(const rct_object_entry * entry) abstract;
+    virtual uint8                           GetLoadedObjectEntryIndex(const Object * object) abstract;
+    virtual std::vector<rct_object_entry>   GetInvalidObjects(const rct_object_entry * entries) abstract;
 
     virtual Object *    LoadObject(const rct_object_entry * entry) abstract;
     virtual bool        LoadObjects(const rct_object_entry * entries, size_t count) abstract;

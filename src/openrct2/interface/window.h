@@ -767,7 +767,7 @@ rct_window *window_mapgen_open();
 rct_window *window_loadsave_open(sint32 type, char *defaultName);
 rct_window *window_changelog_open();
 void window_debug_paint_open();
-rct_window *window_object_load_error_open(utf8* path, object_validity_result* result);
+rct_window * window_object_load_error_open(utf8 * path, size_t numMissingObjects, const rct_object_entry * missingObjects);
 
 rct_window * window_editor_main_open();
 void window_editor_bottom_toolbar_open();
