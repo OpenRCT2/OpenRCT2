@@ -195,7 +195,11 @@ extern "C"
         safe_strcpy(path, gConfigGeneral.rct1_path, sizeof(path));
         safe_strcat_path(path, "Data", sizeof(path));
         safe_strcat_path(path, "csg1i.dat", sizeof(path));
-        return String::Duplicate(Path::ResolveCasing(path));
+
+        auto fixedPath = Path::ResolveCasing(path);
+        utf8 * fixedPathC = new utf8[fixedPath.size() + 1];
+        Memory::Copy(fixedPathC, fixedPath.data(), fixedPath.size() + 1);
+        return fixedPathC;
     }
 
     static utf8 * gfx_get_csg_data_path()
@@ -217,7 +221,10 @@ extern "C"
             safe_strcat_path(path, "csg1.dat", sizeof(path));
             fixedPath = Path::ResolveCasing(path);
         }
-        return String::Duplicate(fixedPath);
+
+        utf8 * fixedPathC = new utf8[fixedPath.size() + 1];
+        Memory::Copy(fixedPathC, fixedPath.data(), fixedPath.size() + 1);
+        return fixedPathC;
     }
 
     bool gfx_load_csg()
@@ -230,8 +237,8 @@ extern "C"
             return false;
         }
 
-        auto pathHeaderPath = std::unique_ptr<utf8>(gfx_get_csg_header_path());
-        auto pathDataPath = std::unique_ptr<utf8>(gfx_get_csg_data_path());
+        auto pathHeaderPath = std::unique_ptr<utf8[]>(gfx_get_csg_header_path());
+        auto pathDataPath = std::unique_ptr<utf8[]>(gfx_get_csg_data_path());
         try
         {
             auto fileHeader = FileStream(pathHeaderPath.get(), FILE_MODE_OPEN);
