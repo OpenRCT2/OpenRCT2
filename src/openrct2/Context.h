@@ -100,6 +100,11 @@ namespace OpenRCT2
     IContext * CreateContext();
     IContext * CreateContext(IPlatformEnvironment * env, Audio::IAudioContext * audioContext, Ui::IUiContext * uiContext);
     IContext * GetContext();
+
+    // The game update inverval in milliseconds, (1000 / 40fps) = 25ms
+    constexpr uint32 UPDATE_TIME_MS = 25;
+    // The number of logical update / ticks per second.
+    constexpr uint32 UPDATE_FPS = 40;
 }
 
 #endif // __cplusplus

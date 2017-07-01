@@ -16,6 +16,7 @@
 
 #include <memory>
 #include "../common.h"
+#include "../Context.h"
 #include "../core/Console.hpp"
 #include "../core/Exception.hpp"
 #include "../core/Guard.hpp"
@@ -37,6 +38,8 @@ extern "C"
     #include "../management/news_item.h"
     #include "../world/scenery.h"
 }
+
+using namespace OpenRCT2;
 
 class TitleSequencePlayer final : public ITitleSequencePlayer
 {
@@ -244,7 +247,7 @@ private:
             _waitCounter = 1;
             break;
         case TITLE_SCRIPT_WAIT:
-            _waitCounter = command->Seconds * 32;
+            _waitCounter = command->Seconds * UPDATE_FPS;
             break;
         case TITLE_SCRIPT_LOADMM:
         {

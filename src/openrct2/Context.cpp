@@ -69,9 +69,6 @@ namespace OpenRCT2
     class Context : public IContext
     {
     private:
-        // The game update inverval in milliseconds, (1000 / 40fps) = 25ms
-        constexpr static uint32 UPDATE_TIME_MS = 25;
-
         // Dependencies
         IPlatformEnvironment * const    _env            = nullptr;
         IAudioContext * const           _audioContext   = nullptr;
