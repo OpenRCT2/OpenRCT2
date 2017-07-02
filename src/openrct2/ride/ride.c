@@ -353,6 +353,46 @@ sint32 ride_get_max_queue_time(rct_ride *ride)
     return queueTime;
 }
 
+rct_peep * ride_get_queue_head_guest(rct_ride * ride, sint32 stationIndex)
+{
+    rct_peep * peep;
+    rct_peep * result = NULL;
+    uint16 spriteIndex = ride->last_peep_in_queue[stationIndex];
+    while ((peep = try_get_guest(spriteIndex)) != NULL) {
+        spriteIndex = peep->next_in_queue;
+        result = peep;
+    }
+    return result;
+}
+
+static void ride_update_queue_length(rct_ride * ride, sint32 stationIndex)
+{
+    uint16 count = 0;
+    rct_peep * peep;
+    uint16 spriteIndex = ride->last_peep_in_queue[stationIndex];
+    while ((peep = try_get_guest(spriteIndex)) != NULL) {
+        spriteIndex = peep->next_in_queue;
+        count++;
+    }
+    ride->queue_length[stationIndex] = count;
+}
+
+void ride_queue_insert_guest_at_front(rct_ride * ride, sint32 stationIndex, rct_peep * peep)
+{
+    assert(ride != NULL);
+    assert(stationIndex < MAX_STATIONS);
+    assert(peep != NULL);
+
+    peep->next_in_queue = SPRITE_INDEX_NULL;
+    rct_peep * queueHeadGuest = ride_get_queue_head_guest(ride, peep->current_ride_station);
+    if (queueHeadGuest == NULL) {
+        ride->last_peep_in_queue[peep->current_ride_station] = peep->sprite_index;
+    } else {
+        queueHeadGuest->next_in_queue = peep->sprite_index;
+    }
+    ride_update_queue_length(ride, peep->current_ride_station);
+}
+
 /**
  *
  *  rct2: 0x006AC916

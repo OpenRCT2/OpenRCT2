@@ -713,6 +713,7 @@ extern rct_xyz16 gPeepPathFindGoalPosition;
 extern bool gPeepPathFindIgnoreForeignQueues;
 extern uint8 gPeepPathFindQueueRideIndex;
 
+rct_peep * try_get_guest(uint16 spriteIndex);
 sint32 peep_get_staff_count();
 sint32 peep_can_be_picked_up(rct_peep* peep);
 void peep_update_all();
