@@ -2395,7 +2395,7 @@ STR_2389    :{BLACK}Bauen Sie Ihre(n) beste(n) {STRINGID}!
 STR_2390    :{BLACK}Mindestens 10 verschiedene Achterbahntypen in Ihrem Park zu betreiben, wobei jeder einen Nervenkitzelwert von mindestens 6,00 aufweisen muss
 STR_2391    :{BLACK}Mindestens {COMMA16} Parkbesucher zu erreichen. Die Parkbewertung darf zu keinem Zeitpunkt unter 700 fallen!
 STR_2392    :{BLACK}Monatliche Einkünfte durch Fahrttickets von mindestens {POP16}{POP16}{CURRENCY} zu erreichen
-STR_2393    :{BLACK}Mindestens 10 verschiedene Achterbahntypen in Ihrem Park zu betreiben, wobei jeder eine Mindestlänge von {LENGTH} und einen Nervenkitzelwert von mindestens 7.00 aufweisen muss
+STR_2393    :{BLACK}Mindestens 10 verschiedene Achterbahntypen in Ihrem Park zu betreiben, wobei jeder eine Mindestlänge von {LENGTH} und einen Nervenkitzelwert von mindestens 7,00 aufweisen muss
 STR_2394    :{BLACK}Alle 5 bereits teilweise gebauten Achterbahnen fertigzustellen, damit sie jeweils einen Nervenkitzelwert von {POP16}{POP16}{COMMA2DP32} erzielen
 STR_2395    :{BLACK}Ihr Darlehen zurückzuzahlen und einen Verkehrswert von mindestens {POP16}{POP16}{CURRENCY} zu erreichen
 STR_2396    :{BLACK}Einen monatlichen Gewinn durch Speisen, Getränke und Werbeartikeln von mindestens {POP16}{POP16}{CURRENCY} zu erzielen
@@ -4421,6 +4421,8 @@ STR_6117    :Die Fahrgäste sitzen in komfortablen Wagen mit einfachen Beckenhal
 STR_6118    :Eine gemäßigte Achterbahn für Leute, die noch nicht den Mut für längere Bahnen haben
 STR_6119    :Eine günstige und einfach zu bauende Achterbahn, jedoch mit begrenzter Höhe
 STR_6120    :{BABYBLUE}Neues Fahrzeug für {STRINGID} ist jetzt verfügbar:{NEWLINE}{STRINGID}
+STR_6121    :{SMALLFONT}{BLACK}Erweitert die Landrechte des Parks{NEWLINE}bis zum Rand der Karte
+STR_6122    :Dieses Szenario enthält zu wenige Achterbahnen!
 
 #############
 # Scenarios #
