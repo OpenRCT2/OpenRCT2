@@ -256,6 +256,12 @@ namespace OpenRCT2
             return true;
         }
 
+        void Open(const std::string &path) final override
+        {
+            auto fs = FileStream(path, FILE_MODE_OPEN);
+            OpenParkAutoDetectFormat(&fs, path);
+        }
+
     private:
         bool LoadBaseGraphics()
         {
@@ -293,7 +299,6 @@ namespace OpenRCT2
                 break;
             case STARTUP_ACTION_OPEN:
             {
-                bool parkLoaded = false;
                 // A path that includes "://" is illegal with all common filesystems, so it is almost certainly a URL
                 // This way all cURL supported protocols, like http, ftp, scp and smb are automatically handled
                 if (strstr(gOpenRCT2StartupActionPath, "://") != nullptr)
@@ -309,18 +314,27 @@ namespace OpenRCT2
                     }
 
                     auto ms = MemoryStream(data, dataSize, MEMORY_ACCESS::OWNER);
-                    parkLoaded = OpenParkAutoDetectFormat(&ms);
+                    if (!OpenParkAutoDetectFormat(&ms, gOpenRCT2StartupActionPath))
+                    {
+                        Console::Error::WriteLine("Failed to load '%s'", gOpenRCT2StartupActionPath);
+                        title_load();
+                        break;
+                    }
 #endif
                 }
                 else
                 {
-                    parkLoaded = rct2_open_file(gOpenRCT2StartupActionPath);
-                }
-
-                if (!parkLoaded)
-                {
-                    Console::Error::WriteLine("Failed to load '%s'", gOpenRCT2StartupActionPath);
-                    break;
+                    try
+                    {
+                        Open(gOpenRCT2StartupActionPath);
+                    }
+                    catch (const std::exception &ex)
+                    {
+                        Console::Error::WriteLine("Failed to load '%s'", gOpenRCT2StartupActionPath);
+                        Console::Error::WriteLine("%s", ex.what());
+                        title_load();
+                        break;
+                    }
                 }
 
                 gScreenFlags = SCREEN_FLAGS_PLAYING;
@@ -534,7 +548,7 @@ namespace OpenRCT2
             console_update();
         }
 
-        bool OpenParkAutoDetectFormat(IStream * stream)
+        bool OpenParkAutoDetectFormat(IStream * stream, const std::string &path)
         {
             ClassifiedFile info;
             if (TryClassifyFile(stream, &info))
@@ -552,41 +566,27 @@ namespace OpenRCT2
                         parkImporter.reset(ParkImporter::CreateS6(_objectRepository, _objectManager));
                     }
 
-                    if (info.Type == FILE_TYPE::SAVED_GAME)
+                    auto result = parkImporter->LoadFromStream(stream, false);
+                    if (result.Error == PARK_LOAD_ERROR_OK)
                     {
-                        try
+                        parkImporter->Import();
+                        game_fix_save_vars();
+                        sprite_position_tween_reset();
+                        gScreenAge = 0;
+                        gLastAutoSaveUpdate = AUTOSAVE_PAUSE;
+                        if (info.Type == FILE_TYPE::SAVED_GAME)
                         {
-                            parkImporter->LoadFromStream(stream, false);
-                            parkImporter->Import();
-                            game_fix_save_vars();
-                            sprite_position_tween_reset();
-                            gScreenAge = 0;
-                            gLastAutoSaveUpdate = AUTOSAVE_PAUSE;
                             game_load_init();
-                            return true;
                         }
-                        catch (const Exception &)
+                        else
                         {
-                            Console::Error::WriteLine("Error loading saved game.");
+                            scenario_begin();
                         }
+                        return true;
                     }
                     else
                     {
-                        try
-                        {
-                            parkImporter->LoadFromStream(stream, true);
-                            parkImporter->Import();
-                            game_fix_save_vars();
-                            sprite_position_tween_reset();
-                            gScreenAge = 0;
-                            gLastAutoSaveUpdate = AUTOSAVE_PAUSE;
-                            scenario_begin();
-                            return true;
-                        }
-                        catch (const Exception &)
-                        {
-                            Console::Error::WriteLine("Error loading scenario.");
-                        }
+                        handle_park_load_failure_with_title_opt(&result, path.c_str(), true);
                     }
                 }
                 else

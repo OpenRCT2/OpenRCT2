@@ -177,8 +177,6 @@ sint32 check_files_integrity();
 const char *get_file_path(sint32 pathId);
 void rct2_quit();
 
-bool rct2_open_file(const char *path);
-
 uint32 get_file_extension_type(const utf8 *path);
 
 #ifdef __cplusplus
