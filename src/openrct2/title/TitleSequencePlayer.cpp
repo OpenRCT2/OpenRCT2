@@ -247,7 +247,7 @@ private:
             _waitCounter = 1;
             break;
         case TITLE_SCRIPT_WAIT:
-            _waitCounter = command->Seconds * UPDATE_FPS;
+            _waitCounter = Math::Min<sint32>(1, Math::Ceil<sint32>(command->Seconds / UPDATE_TIME_MS));
             break;
         case TITLE_SCRIPT_LOADMM:
         {

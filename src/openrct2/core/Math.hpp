@@ -48,4 +48,11 @@ namespace Math
         if (x > 0) return 1;
         return 0;
     }
+	
+    template<typename T>
+    static T Ceil(T a)
+    {
+        return (std::ceil)(a);
+    }
+
 }
