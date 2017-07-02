@@ -192,18 +192,6 @@ void substitute_path(char *dest, size_t size, const char *path, const char *file
     safe_strcpy(dest, filename, size - written);
 }
 
-/**
- *
- *  rct2: 0x00674B42
- */
-sint32 rct2_startup_checks()
-{
-    if (!check_file_paths())
-        return 0;
-
-    return 1;
-}
-
 void rct2_draw(rct_drawpixelinfo *dpi)
 {
     if (gIntroState != INTRO_STATE_NONE) {
@@ -273,20 +261,6 @@ static void rct2_draw_fps(rct_drawpixelinfo *dpi)
 
     // Make area dirty so the text doesn't get drawn over the last
     gfx_set_dirty_blocks(x - 16, y - 4, gLastDrawStringX + 16, 16);
-}
-
-/**
- *
- *  rct2: 0x00674C95
- */
-sint32 check_file_paths()
-{
-    for (sint32 pathId = 0; pathId < PATH_ID_END; pathId++) {
-        if (!check_file_path(pathId)) {
-            return 0;
-        }
-    }
-    return 1;
 }
 
 /**

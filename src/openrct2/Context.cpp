@@ -181,7 +181,7 @@ namespace OpenRCT2
                 config_save_default();
             }
 
-            if (!rct2_init_directories() || !rct2_startup_checks())
+            if (!rct2_init_directories())
             {
                 return false;
             }
