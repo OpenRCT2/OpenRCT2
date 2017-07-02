@@ -14,6 +14,10 @@
  *****************************************************************************/
 #pragma endregion
 
+#ifndef _WIN32
+    #include <dirent.h>
+#endif
+
 extern "C"
 {
     #include "../platform/platform.h"
@@ -21,6 +25,7 @@ extern "C"
     #include "../util/util.h"
 }
 
+#include "File.h"
 #include "Math.hpp"
 #include "Memory.hpp"
 #include "Path.hpp"
@@ -217,5 +222,46 @@ namespace Path
         ignoreCase = true;
 #endif
         return String::Equals(a, b, ignoreCase);
+    }
+
+    std::string ResolveCasing(const std::string &path)
+    {
+        std::string result;
+        if (File::Exists(path))
+        {
+            // Windows is case insensitive so it will exist and that is all that matters
+            // for now. We can properly resolve the casing if we ever need to.
+            result = path;
+        }
+#ifndef _WIN32
+        else
+        {
+            std::string fileName = Path::GetFileName(path);
+            std::string directory = Path::GetDirectory(path);
+
+            struct dirent * * files;
+            auto count = scandir(directory.c_str(), &files, nullptr, alphasort);
+            if (count != -1)
+            {
+                // Find a file which matches by name (case insensitive)
+                for (sint32 i = 0; i < count; i++)
+                {
+                    if (String::Equals(files[i]->d_name, fileName.c_str(), true))
+                    {
+                        result = Path::Combine(directory, std::string(files[i]->d_name));
+                        break;
+                    }
+                }
+
+                // Free memory
+                for (sint32 i = 0; i < count; i++)
+                {
+                    free(files[i]);
+                }
+                free(files);
+            }
+        }
+#endif
+        return result;
     }
 }
