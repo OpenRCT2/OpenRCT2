@@ -46,7 +46,7 @@ enum {
 
 static void window_themes_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_themes_resize(rct_window *w);
-static void window_themes_mousedown(rct_widgetindex widgetIndex, rct_window*w, rct_widget* widget);
+static void window_themes_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget);
 static void window_themes_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex);
 static void window_themes_update(rct_window *w);
 static void window_themes_scrollgetsize(rct_window *w, sint32 scrollIndex, sint32 *width, sint32 *height);
@@ -461,7 +461,7 @@ static void window_themes_resize(rct_window *w)
     }
 }
 
-static void window_themes_mousedown(rct_widgetindex widgetIndex, rct_window* w, rct_widget* widget)
+static void window_themes_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget)
 {
     sint16 newSelectedTab;
     sint32 num_items;

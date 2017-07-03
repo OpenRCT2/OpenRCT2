@@ -458,7 +458,7 @@ static rct_map_element tileInspectorCopiedElement;
 
 static void window_tile_inspector_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_tile_inspector_resize(rct_window *w);
-static void window_tile_inspector_mousedown(rct_widgetindex widgetIndex, rct_window *w, rct_widget* widget);
+static void window_tile_inspector_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget);
 static void window_tile_inspector_update(rct_window *w);
 static void window_tile_inspector_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex);
 static void window_tile_inspector_tool_update(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y);
@@ -1169,7 +1169,7 @@ static void window_tile_inspector_resize(rct_window *w)
     }
 }
 
-static void window_tile_inspector_mousedown(rct_widgetindex widgetIndex, rct_window *w, rct_widget* widget)
+static void window_tile_inspector_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget)
 {
     switch (w->page) {
     case TILE_INSPECTOR_PAGE_WALL:

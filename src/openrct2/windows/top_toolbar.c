@@ -222,7 +222,7 @@ static rct_widget window_top_toolbar_widgets[] = {
 };
 
 static void window_top_toolbar_mouseup(rct_window *w, rct_widgetindex widgetIndex);
-static void window_top_toolbar_mousedown(rct_widgetindex widgetIndex, rct_window*w, rct_widget* widget);
+static void window_top_toolbar_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget);
 static void window_top_toolbar_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex);
 static void window_top_toolbar_tool_update(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y);
 static void window_top_toolbar_tool_down(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y);
@@ -379,7 +379,7 @@ static void window_top_toolbar_mouseup(rct_window *w, rct_widgetindex widgetInde
  *
  *  rct2: 0x0066CA3B
  */
-static void window_top_toolbar_mousedown(rct_widgetindex widgetIndex, rct_window*w, rct_widget* widget)
+static void window_top_toolbar_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget)
 {
     sint32 numItems;
 

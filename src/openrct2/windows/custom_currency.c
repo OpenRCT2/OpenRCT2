@@ -51,7 +51,7 @@ rct_widget window_custom_currency_widgets[] = {
 };
 
 
-static void custom_currency_window_mousedown(rct_widgetindex widgetIndex, rct_window *w, rct_widget *widget);
+static void custom_currency_window_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget *widget);
 static void custom_currency_window_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void custom_currency_window_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex);
 static void custom_currency_window_text_input(struct rct_window *w, rct_widgetindex widgetIndex, char *text);
@@ -125,7 +125,7 @@ void custom_currency_window_open()
 
 
 
-static void custom_currency_window_mousedown(rct_widgetindex widgetIndex, rct_window *w, rct_widget *widget)
+static void custom_currency_window_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget *widget)
 {
     widget = &w->widgets[widgetIndex - 1];
 

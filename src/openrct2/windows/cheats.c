@@ -296,8 +296,8 @@ static rct_widget *window_cheats_page_widgets[] = {
 };
 
 static void window_cheats_money_mouseup(rct_window *w, rct_widgetindex widgetIndex);
-static void window_cheats_money_mousedown(rct_widgetindex widgetIndex, rct_window *w, rct_widget* widget);
-static void window_cheats_misc_mousedown(rct_widgetindex widgetIndex, rct_window *w, rct_widget* widget);
+static void window_cheats_money_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget);
+static void window_cheats_misc_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget);
 static void window_cheats_misc_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex);
 static void window_cheats_guests_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_cheats_misc_mouseup(rct_window *w, rct_widgetindex widgetIndex);
@@ -499,7 +499,7 @@ void window_cheats_open()
     park_rating_spinner_value = get_forced_park_rating() >= 0 ? get_forced_park_rating() : 999;
 }
 
-static void window_cheats_money_mousedown(rct_widgetindex widgetIndex, rct_window *w, rct_widget* widget)
+static void window_cheats_money_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget)
 {
     switch (widgetIndex) {
     case WIDX_MONEY_SPINNER_INCREMENT:
@@ -516,7 +516,7 @@ static void window_cheats_money_mousedown(rct_widgetindex widgetIndex, rct_windo
     }
 }
 
-static void window_cheats_misc_mousedown(rct_widgetindex widgetIndex, rct_window *w, rct_widget* widget)
+static void window_cheats_misc_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget)
 {
     switch (widgetIndex) {
     case WIDX_INCREASE_PARK_RATING:

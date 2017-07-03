@@ -103,7 +103,7 @@ static rct_widget window_title_command_editor_widgets[] = {
 };
 
 static void window_title_command_editor_mouseup(rct_window *w, rct_widgetindex widgetIndex);
-static void window_title_command_editor_mousedown(rct_widgetindex widgetIndex, rct_window*w, rct_widget* widget);
+static void window_title_command_editor_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget);
 static void window_title_command_editor_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex);
 static void window_title_command_editor_update(rct_window *w);
 static void window_title_command_editor_invalidate(rct_window *w);
@@ -311,7 +311,7 @@ static void window_title_command_editor_mouseup(rct_window *w, rct_widgetindex w
     }
 }
 
-static void window_title_command_editor_mousedown(rct_widgetindex widgetIndex, rct_window* w, rct_widget* widget)
+static void window_title_command_editor_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget)
 {
     widget--;
     switch (widgetIndex) {

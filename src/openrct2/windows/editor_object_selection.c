@@ -189,7 +189,7 @@ static rct_widget window_editor_object_selection_widgets[] = {
 static void window_editor_object_selection_close(rct_window *w);
 static void window_editor_object_selection_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_editor_object_selection_resize(rct_window *w);
-static void window_editor_object_selection_mousedown(rct_widgetindex widgetIndex, rct_window*w, rct_widget* widget);
+static void window_editor_object_selection_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget);
 static void window_editor_object_selection_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex);
 static void window_editor_object_selection_update(rct_window *w);
 static void window_editor_object_selection_scrollgetsize(rct_window *w, sint32 scrollIndex, sint32 *width, sint32 *height);
@@ -897,7 +897,7 @@ static void window_editor_object_selection_resize(rct_window *w)
     window_set_resize(w, 600, 400, 1200, 1000);
 }
 
-void window_editor_object_selection_mousedown(rct_widgetindex widgetIndex, rct_window*w, rct_widget* widget)
+void window_editor_object_selection_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget)
 {
     sint32 num_items;
 

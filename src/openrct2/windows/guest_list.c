@@ -90,7 +90,7 @@ static rct_widget window_guest_list_widgets[] = {
 
 static void window_guest_list_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_guest_list_resize(rct_window *w);
-static void window_guest_list_mousedown(rct_widgetindex widgetIndex, rct_window*w, rct_widget* widget);
+static void window_guest_list_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget);
 static void window_guest_list_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex);
 static void window_guest_list_update(rct_window *w);
 static void window_guest_list_scrollgetsize(rct_window *w, sint32 scrollIndex, sint32 *width, sint32 *height);
@@ -347,7 +347,7 @@ static void window_guest_list_resize(rct_window *w)
  *
  *  rct2: 0x00699AC4
  */
-static void window_guest_list_mousedown(rct_widgetindex widgetIndex, rct_window*w, rct_widget* widget)
+static void window_guest_list_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget)
 {
     sint32 i;
     switch (widgetIndex) {

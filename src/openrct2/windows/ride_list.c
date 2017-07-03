@@ -76,7 +76,7 @@ static bool _quickDemolishMode = false;
 
 static void window_ride_list_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_ride_list_resize(rct_window *w);
-static void window_ride_list_mousedown(rct_widgetindex widgetIndex, rct_window*w, rct_widget* widget);
+static void window_ride_list_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget);
 static void window_ride_list_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex);
 static void window_ride_list_update(rct_window *w);
 static void window_ride_list_scrollgetsize(rct_window *w, sint32 scrollIndex, sint32 *width, sint32 *height);
@@ -312,7 +312,7 @@ static void window_ride_list_resize(rct_window *w)
  *
  *  rct2: 0x006B3532
  */
-static void window_ride_list_mousedown(rct_widgetindex widgetIndex, rct_window*w, rct_widget* widget)
+static void window_ride_list_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget)
 {
     if (widgetIndex == WIDX_OPEN_CLOSE_ALL) {
         gDropdownItemsFormat[0] = STR_CLOSE_ALL;

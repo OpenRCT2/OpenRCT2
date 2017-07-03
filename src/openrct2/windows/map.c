@@ -119,7 +119,7 @@ static const uint16 RideKeyColours[] = {
 static void window_map_close(rct_window *w);
 static void window_map_resize(rct_window *w);
 static void window_map_mouseup(rct_window *w, rct_widgetindex widgetIndex);
-static void window_map_mousedown(rct_widgetindex widgetIndex, rct_window*w, rct_widget* widget);
+static void window_map_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget);
 static void window_map_update(rct_window *w);
 static void window_map_toolupdate(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y);
 static void window_map_tooldown(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y);
@@ -410,7 +410,7 @@ static void window_map_resize(rct_window *w)
  *
  *  rct2: 0x0068D040
  */
-static void window_map_mousedown(rct_widgetindex widgetIndex, rct_window *w, rct_widget *widget)
+static void window_map_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget *widget)
 {
     switch (widgetIndex) {
     case WIDX_MAP_SIZE_SPINNER_UP:

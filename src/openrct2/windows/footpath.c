@@ -97,7 +97,7 @@ static rct_widget window_footpath_widgets[] = {
 
 static void window_footpath_close(rct_window *w);
 static void window_footpath_mouseup(rct_window *w, rct_widgetindex widgetIndex);
-static void window_footpath_mousedown(rct_widgetindex widgetIndex, rct_window *w, rct_widget *widget);
+static void window_footpath_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget *widget);
 static void window_footpath_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex);
 static void window_footpath_update(rct_window *w);
 static void window_footpath_toolupdate(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y);
@@ -336,7 +336,7 @@ static void window_footpath_mouseup(rct_window *w, rct_widgetindex widgetIndex)
  *
  *  rct2: 0x006A7EC5
  */
-static void window_footpath_mousedown(rct_widgetindex widgetIndex, rct_window*w, rct_widget* widget)
+static void window_footpath_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget)
 {
     switch (widgetIndex) {
     case WIDX_FOOTPATH_TYPE:

@@ -89,7 +89,7 @@ static rct_widget window_maze_construction_widgets[] = {
 static void window_maze_construction_close(rct_window *w);
 static void window_maze_construction_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_maze_construction_resize(rct_window *w);
-static void window_maze_construction_mousedown(rct_widgetindex widgetIndex, rct_window *w, rct_widget *widget);
+static void window_maze_construction_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget *widget);
 static void window_maze_construction_update(rct_window *w);
 static void window_maze_construction_toolupdate(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y);
 static void window_maze_construction_tooldown(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y);
@@ -270,7 +270,7 @@ static void window_maze_construction_resize(rct_window *w)
  *
  *  rct2: 0x006CD48C
  */
-static void window_maze_construction_mousedown(rct_widgetindex widgetIndex, rct_window *w, rct_widget *widget)
+static void window_maze_construction_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget *widget)
 {
     switch (widgetIndex) {
     case WIDX_MAZE_BUILD_MODE:
