@@ -334,6 +334,10 @@ static money32 staff_hire_new_staff_member(uint8 staff_type, uint8 flags, sint16
             newPeep->energy_growth_rate = 0x60;
             newPeep->var_E2 = 0;
 
+            if (gParkFlags & PARK_FLAGS_SHOW_REAL_STAFF_NAMES)
+            {
+                peep_give_real_name(newPeep);
+            }
             peep_update_name_sort(newPeep);
 
             newPeep->staff_id = newStaffId;
@@ -1611,4 +1615,46 @@ sint32 staff_get_available_entertainer_costume_list(uint8 * costumeList)
         }
     }
     return numCostumes;
+}
+
+void staff_update_names(bool realNames)
+{
+    if (realNames) {
+        gParkFlags |= PARK_FLAGS_SHOW_REAL_STAFF_NAMES;
+        rct_peep *peep;
+        uint16 spriteIndex;
+        FOR_ALL_STAFF(spriteIndex, peep) {
+            //If the staff peep doesn't have a custon name
+            if (peep->name_string_idx == STR_HANDYMAN_X     ||
+                peep->name_string_idx == STR_MECHANIC_X     ||
+                peep->name_string_idx == STR_ENTERTAINER_X  ||
+                peep->name_string_idx == STR_SECURITY_GUARD_X) {
+
+                // Currently gives each staff type the same
+                // name in order due to the way their id's are set
+                peep_give_real_name(peep);
+                }
+        }
+    } else {
+        gParkFlags &= ~PARK_FLAGS_SHOW_REAL_STAFF_NAMES;
+        rct_peep *peep;
+        uint16 spriteIndex;
+        FOR_ALL_STAFF(spriteIndex, peep) {
+            //If the staff peep has a name, change the name to format of
+            //'Handyman X' for example
+            if (peep->name_string_idx >= 0xA000 && peep->name_string_idx < 0xE000) {
+                if (peep->staff_type == STAFF_TYPE_HANDYMAN)
+                    peep->name_string_idx = STR_HANDYMAN_X;
+                else if (peep->staff_type == STAFF_TYPE_MECHANIC)
+                    peep->name_string_idx = STR_MECHANIC_X;
+                else if (peep->staff_type == STAFF_TYPE_ENTERTAINER)
+                    peep->name_string_idx = STR_ENTERTAINER_X;
+                else if (peep->staff_type == STAFF_TYPE_SECURITY)
+                    peep->name_string_idx = STR_SECURITY_GUARD_X;
+            }
+        }
+    }
+
+    peep_sort();
+    gfx_invalidate_screen();
 }
