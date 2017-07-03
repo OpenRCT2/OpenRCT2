@@ -334,13 +334,13 @@ static money32 staff_hire_new_staff_member(uint8 staff_type, uint8 flags, sint16
             newPeep->energy_growth_rate = 0x60;
             newPeep->var_E2 = 0;
 
+            newPeep->staff_id = newStaffId;
+
             if (gParkFlags & PARK_FLAGS_SHOW_REAL_STAFF_NAMES)
             {
                 peep_give_real_name(newPeep);
             }
             peep_update_name_sort(newPeep);
-
-            newPeep->staff_id = newStaffId;
 
             gStaffModes[newStaffId] = STAFF_MODE_WALK;
 
