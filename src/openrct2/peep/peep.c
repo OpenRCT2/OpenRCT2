@@ -155,7 +155,6 @@ static sint32 peep_get_height_on_slope(rct_peep *peep, sint32 x, sint32 y);
 static void peep_pick_ride_to_go_on(rct_peep *peep);
 static void peep_head_for_nearest_ride_type(rct_peep *peep, sint32 rideType);
 static void peep_head_for_nearest_ride_with_flags(rct_peep *peep, sint32 rideTypeFlags);
-static void peep_give_real_name(rct_peep *peep);
 static sint32 guest_surface_path_finding(rct_peep* peep);
 static void peep_read_map(rct_peep *peep);
 static bool peep_heading_for_ride_or_park_exit(rct_peep *peep);
@@ -7295,7 +7294,7 @@ rct_peep *peep_generate(sint32 x, sint32 y, sint32 z)
     return peep;
 }
 
-/**
+/**T
 * rct2: 0x00698B0D
 * peep.sprite_index (eax)
 * thought.type (ebx)
@@ -12379,7 +12378,7 @@ static void peep_head_for_nearest_ride_with_flags(rct_peep *peep, sint32 rideTyp
  *
  *  rct2: 0x0069C483
  */
-static void peep_give_real_name(rct_peep *peep)
+void peep_give_real_name(rct_peep *peep)
 {
     // Generate a name_string_idx from the peep id using bit twiddling
     uint16 ax = (uint16)(peep->id + 0xF0B);
