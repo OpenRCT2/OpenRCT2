@@ -228,6 +228,7 @@ void window_ride_list_open()
         window->min_height = 240;
         window->max_width = 400;
         window->max_height = 700;
+        window_ride_list_refresh_list(window);
     }
     _window_ride_list_information_type = INFORMATION_TYPE_STATUS;
     window->list_information_type = 0;
@@ -298,7 +299,12 @@ static void window_ride_list_resize(rct_window *w)
         w->height = w->min_height;
     }
 
-    window_ride_list_refresh_list(w);
+    // Refreshing the list can be a very intensive operation
+    // owing to its use of ride_has_any_track_elements().
+    // This makes sure it's only refreshed every 64 ticks.
+    if (!(gCurrentTicks & 0x3f)) {
+        window_ride_list_refresh_list(w);
+    }
 }
 
 /**
@@ -513,7 +519,7 @@ static void window_ride_list_invalidate(rct_window *w)
         sint32 i;
         rct_ride *ride;
         FOR_ALL_RIDES(i, ride) {
-            if (w->page != gRideClassifications[ride->type] || !ride_has_any_track_elements(i))
+            if (w->page != gRideClassifications[ride->type])
                 continue;
             if (ride->status == RIDE_STATUS_OPEN) {
                 if (allOpen == -1) allOpen = true;
@@ -731,33 +737,18 @@ static void window_ride_list_draw_tab_images(rct_drawpixelinfo *dpi, rct_window 
  */
 static void window_ride_list_refresh_list(rct_window *w)
 {
-    sint32 i, countA, countB;
+    sint32 i;
     rct_ride *ride, *otherRide;
     char bufferA[128], bufferB[128];
+    sint32 list_index = 0;
 
-    countA = countB = 0;
     FOR_ALL_RIDES(i, ride) {
-        if (w->page != gRideClassifications[ride->type] || !ride_has_any_track_elements(i))
+        if (w->page != gRideClassifications[ride->type] || (ride->status == RIDE_STATUS_CLOSED && !ride_has_any_track_elements(i)))
             continue;
 
-        countA++;
         if (ride->window_invalidate_flags & RIDE_INVALIDATE_RIDE_LIST) {
             ride->window_invalidate_flags &= ~RIDE_INVALIDATE_RIDE_LIST;
-            countB++;
         }
-    }
-
-    if (countB != 0)
-        window_invalidate(w);
-
-    if (countA == w->no_list_items)
-        return;
-
-    w->no_list_items = countA;
-    sint32 list_index = 0;
-    FOR_ALL_RIDES(i, ride) {
-        if (w->page != gRideClassifications[ride->type] || !ride_has_any_track_elements(i))
-            continue;
 
         w->list_item_positions[list_index] = i;
         sint32 current_list_position = list_index;
@@ -904,6 +895,7 @@ static void window_ride_list_refresh_list(rct_window *w)
         list_index++;
     }
 
+    w->no_list_items = list_index;
     w->selected_list_item = -1;
     window_invalidate(w);
 }
@@ -914,7 +906,7 @@ static void window_ride_list_close_all(rct_window *w)
     rct_ride *ride;
 
     FOR_ALL_RIDES(i, ride) {
-        if (w->page != gRideClassifications[ride->type] || !ride_has_any_track_elements(i))
+        if (w->page != gRideClassifications[ride->type])
             continue;
         if (ride->status == RIDE_STATUS_CLOSED)
             continue;
@@ -933,7 +925,7 @@ static void window_ride_list_open_all(rct_window *w)
     rct_ride *ride;
 
     FOR_ALL_RIDES(i, ride) {
-        if (w->page != gRideClassifications[ride->type] || !ride_has_any_track_elements(i))
+        if (w->page != gRideClassifications[ride->type])
             continue;
         if (ride->status == RIDE_STATUS_OPEN)
             continue;
