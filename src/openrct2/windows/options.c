@@ -48,7 +48,6 @@
 #include "dropdown.h"
 #include "error.h"
 
-//be sure to remove this/get a better solution
 enum WINDOW_OPTIONS_PAGE {
     WINDOW_OPTIONS_PAGE_DISPLAY,
     WINDOW_OPTIONS_PAGE_RENDERING,

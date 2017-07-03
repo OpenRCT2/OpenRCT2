@@ -7294,7 +7294,7 @@ rct_peep *peep_generate(sint32 x, sint32 y, sint32 z)
     return peep;
 }
 
-/**T
+/**
 * rct2: 0x00698B0D
 * peep.sprite_index (eax)
 * thought.type (ebx)
