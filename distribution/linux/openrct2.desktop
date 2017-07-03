@@ -2,7 +2,7 @@
 [Desktop Entry]
 Type=Application
 Version=1.0
-Exec=openrct2
+Exec=openrct2 %u
 Icon=openrct2
 Name=OpenRCT2
 GenericName=Theme park management game
