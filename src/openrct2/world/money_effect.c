@@ -33,6 +33,9 @@ static const rct_xy16 _moneyEffectMoveOffset[] = {
  */
 void money_effect_create_at(money32 value, sint32 x, sint32 y, sint32 z, bool vertical)
 {
+    if (value == MONEY(0,00))
+        return;
+
     rct_money_effect * moneyEffect = (rct_money_effect *)create_sprite(2);
     if (moneyEffect == NULL)
         return;
