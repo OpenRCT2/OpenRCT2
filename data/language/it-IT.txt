@@ -4433,6 +4433,7 @@ STR_6118    :Un ottovolante tranquillo per i visitatori che non hanno ancora il 
 STR_6119    :Un piccolo ed economico ottovolante, la cui altezza è limitata
 STR_6120    :{BABYBLUE}È disponibile un nuovo veicolo per {STRINGID}:{NEWLINE}{STRINGID}
 STR_6121    :{SMALLFONT}{BLACK}Estende i terreni di proprietà del parco fino ai bordi della mappa
+STR_6122    :Non ci sono abbastanza ottovolanti in questo scenario!
 
 
 #############
