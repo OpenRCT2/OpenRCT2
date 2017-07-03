@@ -12381,7 +12381,13 @@ static void peep_head_for_nearest_ride_with_flags(rct_peep *peep, sint32 rideTyp
 void peep_give_real_name(rct_peep *peep)
 {
     // Generate a name_string_idx from the peep id using bit twiddling
-    uint16 ax = (uint16)(peep->id + 0xF0B);
+    uint16 ax;
+    if (peep->type == PEEP_TYPE_GUEST) {
+        ax = (uint16)(peep->id + 0xF0B);
+    } else {
+        ax = (uint16)(peep->staff_id + 0xF0B);
+    }
+   // uint16 ax = (uint16)(peep->id + 0xF0B);
     uint16 dx = 0;
     dx |= ((ax & 0x400) ? 1 : 0) << 13;
     dx |= ((ax & 0x2000) ? 1 : 0) << 12;
