@@ -136,6 +136,7 @@ ParkLoadResult * scenario_load_and_play_from_path(const char * path)
     // This ensures that the newly loaded scenario reflects the user's
     // 'show real names of guests' option, now that it's a global setting
     peep_update_names(gConfigGeneral.show_real_names_of_guests);
+    staff_update_names(gConfigGeneral.show_real_names_of_staff);
     return result;
 }
 
