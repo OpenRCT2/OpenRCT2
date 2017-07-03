@@ -1177,7 +1177,7 @@ void input_state_widget_pressed(sint32 x, sint32 y, sint32 state, rct_widgetinde
             _clickRepeatTicks++;
 
             // Handle click repeat
-            if (_clickRepeatTicks >= 16 && (_clickRepeatTicks & 3) != 0) {
+            if (_clickRepeatTicks >= 16 && (_clickRepeatTicks & 3) == 0) {
                 if (w->hold_down_widgets & (1ULL << widgetIndex)) {
                     window_event_mouse_down_call(w, widgetIndex);
                 }
