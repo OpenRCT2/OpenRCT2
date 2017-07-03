@@ -2670,7 +2670,7 @@ extern "C"
         auto s4Importer = std::make_unique<S4Importer>();
         try
         {
-            result = new ParkLoadResult(s4Importer->LoadSavedGame(path));
+            result = new ParkLoadResult(s4Importer->LoadScenario(path));
             if (result->Error == PARK_LOAD_ERROR_OK)
             {
                 s4Importer->Import();
