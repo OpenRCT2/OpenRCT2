@@ -1629,10 +1629,9 @@ void staff_update_names(bool realNames)
                 peep->name_string_idx == STR_MECHANIC_X     ||
                 peep->name_string_idx == STR_ENTERTAINER_X  ||
                 peep->name_string_idx == STR_SECURITY_GUARD_X) {
-
-                // Currently gives each staff type the same
-                // name in order due to the way their id's are set
-                peep_give_real_name(peep);
+                    // Currently gives each staff type the same
+                    // name in order due to the way their id's are set
+                    peep_give_real_name(peep);
                 }
         }
     } else {
