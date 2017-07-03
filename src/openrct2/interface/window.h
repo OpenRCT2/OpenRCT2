@@ -155,7 +155,7 @@ typedef struct rct_window_event_list {
     void (*close)(struct rct_window*);
     void (*mouse_up)(struct rct_window*, rct_widgetindex);
     void (*resize)(struct rct_window*);
-    void (*mouse_down)(rct_widgetindex, struct rct_window*, rct_widget*);
+    void (*mouse_down)(struct rct_window*, rct_widgetindex, rct_widget*);
     void (*dropdown)(struct rct_window*, rct_widgetindex, sint32);
     void (*unknown_05)(struct rct_window*);
     void (*update)(struct rct_window*);
