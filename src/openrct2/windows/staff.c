@@ -132,7 +132,7 @@ void window_staff_viewport_init(rct_window* w);
 void window_staff_overview_close(rct_window *w);
 void window_staff_overview_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 void window_staff_overview_resize(rct_window *w);
-void window_staff_overview_mousedown(rct_widgetindex widgetIndex, rct_window* w, rct_widget* widget);
+void window_staff_overview_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget);
 void window_staff_overview_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex);
 void window_staff_overview_update(rct_window* w);
 void window_staff_overview_invalidate(rct_window *w);
@@ -149,7 +149,7 @@ void window_staff_options_update(rct_window* w);
 void window_staff_options_invalidate(rct_window *w);
 void window_staff_options_paint(rct_window *w, rct_drawpixelinfo *dpi);
 void window_staff_options_tab_paint(rct_window* w, rct_drawpixelinfo* dpi);
-void window_staff_options_mousedown(rct_widgetindex widgetIndex, rct_window* w, rct_widget* widget);
+void window_staff_options_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget);
 void window_staff_options_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex);
 
 void window_staff_stats_mouseup(rct_window *w, rct_widgetindex widgetIndex);
@@ -535,7 +535,7 @@ void window_staff_overview_resize(rct_window *w)
  * Handle the dropdown of patrol button.
  *  rct2: 0x006BDF98
  */
-void window_staff_overview_mousedown(rct_widgetindex widgetIndex, rct_window* w, rct_widget* widget)
+void window_staff_overview_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget)
 {
     if (widgetIndex != WIDX_PATROL) {
         return;
@@ -1278,7 +1278,7 @@ void window_staff_viewport_init(rct_window* w){
 * Handle the costume of staff member.
 * rct2: 0x006BE802
 */
-void window_staff_options_mousedown(rct_widgetindex widgetIndex, rct_window* w, rct_widget* widget)
+void window_staff_options_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget)
 {
     if (widgetIndex != WIDX_COSTUME_BTN) {
         return;

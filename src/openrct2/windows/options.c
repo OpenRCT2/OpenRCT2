@@ -408,7 +408,7 @@ static void window_options_update_height_markers();
 
 static void window_options_close(rct_window *w);
 static void window_options_mouseup(rct_window *w, rct_widgetindex widgetIndex);
-static void window_options_mousedown(rct_widgetindex widgetIndex, rct_window*w, rct_widget* widget);
+static void window_options_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget);
 static void window_options_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex);
 static void window_options_update(rct_window *w);
 static void window_options_invalidate(rct_window *w);
@@ -941,7 +941,7 @@ static void window_options_mouseup(rct_window *w, rct_widgetindex widgetIndex)
 *
 *  rct2: 0x006BB01B
 */
-static void window_options_mousedown(rct_widgetindex widgetIndex, rct_window*w, rct_widget* widget)
+static void window_options_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget)
 {
     uint32 num_items;
 

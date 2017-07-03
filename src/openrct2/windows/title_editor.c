@@ -47,7 +47,7 @@ enum WINDOW_TITLE_EDITOR_TAB {
 static void window_title_editor_close(rct_window *w);
 static void window_title_editor_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_title_editor_resize(rct_window *w);
-static void window_title_editor_mousedown(rct_widgetindex widgetIndex, rct_window*w, rct_widget* widget);
+static void window_title_editor_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget);
 static void window_title_editor_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex);
 static void window_title_editor_update(rct_window *w);
 static void window_title_editor_scrollgetsize(rct_window *w, sint32 scrollIndex, sint32 *width, sint32 *height);
@@ -481,7 +481,7 @@ static void window_title_editor_resize(rct_window *w)
     }
 }
 
-static void window_title_editor_mousedown(rct_widgetindex widgetIndex, rct_window* w, rct_widget* widget)
+static void window_title_editor_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget)
 {
     switch (widgetIndex) {
     case WIDX_TITLE_EDITOR_PRESETS_TAB:

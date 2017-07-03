@@ -109,7 +109,7 @@ static void window_research_development_invalidate(rct_window *w);
 static void window_research_development_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
 static void window_research_funding_mouseup(rct_window *w, rct_widgetindex widgetIndex);
-static void window_research_funding_mousedown(rct_widgetindex widgetIndex, rct_window*w, rct_widget* widget);
+static void window_research_funding_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget);
 static void window_research_funding_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex);
 static void window_research_funding_update(rct_window *w);
 static void window_research_funding_invalidate(rct_window *w);
@@ -458,7 +458,7 @@ static void window_research_funding_mouseup(rct_window *w, rct_widgetindex widge
  *
  *  rct2: 0x0069DB66
  */
-static void window_research_funding_mousedown(rct_widgetindex widgetIndex, rct_window *w, rct_widget* widget)
+static void window_research_funding_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget)
 {
     rct_widget *dropdownWidget;
     sint32 i;

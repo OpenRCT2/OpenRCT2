@@ -76,7 +76,7 @@ rct_widget window_banner_widgets[] = {
 };
 
 static void window_banner_mouseup(rct_window *w, rct_widgetindex widgetIndex);
-static void window_banner_mousedown(rct_widgetindex widgetIndex, rct_window*w, rct_widget* widget);
+static void window_banner_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget);
 static void window_banner_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex);
 static void window_banner_textinput(rct_window *w, rct_widgetindex widgetIndex, char *text);
 static void window_banner_viewport_rotate(rct_window *w);
@@ -223,7 +223,7 @@ static void window_banner_mouseup(rct_window *w, rct_widgetindex widgetIndex)
  *
  *  rct2: 0x6ba4ff
  */
-static void window_banner_mousedown(rct_widgetindex widgetIndex, rct_window*w, rct_widget* widget)
+static void window_banner_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget)
 {
     rct_banner* banner = &gBanners[w->number];
 

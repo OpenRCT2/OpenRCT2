@@ -57,7 +57,7 @@ rct_widget window_sign_widgets[] = {
 };
 
 static void window_sign_mouseup(rct_window *w, rct_widgetindex widgetIndex);
-static void window_sign_mousedown(rct_widgetindex widgetIndex, rct_window*w, rct_widget* widget);
+static void window_sign_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget);
 static void window_sign_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex);
 static void window_sign_textinput(rct_window *w, rct_widgetindex widgetIndex, char *text);
 static void window_sign_viewport_rotate(rct_window *w);
@@ -269,7 +269,7 @@ static void window_sign_mouseup(rct_window *w, rct_widgetindex widgetIndex)
  *
  *  rct2: 0x6B9784
   & 0x6E6164 */
-static void window_sign_mousedown(rct_widgetindex widgetIndex, rct_window*w, rct_widget* widget)
+static void window_sign_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget)
 {
     switch (widgetIndex) {
     case WIDX_MAIN_COLOUR:

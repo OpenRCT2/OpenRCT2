@@ -44,7 +44,7 @@ bool _quick_fire_mode = false;
 static void window_staff_list_close(rct_window *w);
 static void window_staff_list_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_staff_list_resize(rct_window *w);
-static void window_staff_list_mousedown(rct_widgetindex widgetIndex, rct_window*w, rct_widget* widget);
+static void window_staff_list_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget);
 static void window_staff_list_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex);
 static void window_staff_list_update(rct_window *w);
 static void window_staff_list_tooldown(rct_window *w, rct_widgetindex widgetIndex, sint32 x, sint32 y);
@@ -269,7 +269,7 @@ static void window_staff_list_resize(rct_window *w)
 *
 *  rct2: 0x006BD971
 */
-static void window_staff_list_mousedown(rct_widgetindex widgetIndex, rct_window* w, rct_widget* widget)
+static void window_staff_list_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget)
 {
     sint16 newSelectedTab;
 

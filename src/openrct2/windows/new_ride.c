@@ -202,7 +202,7 @@ static rct_widget window_new_ride_widgets[] = {
 #pragma region Events
 
 static void window_new_ride_mouseup(rct_window *w, rct_widgetindex widgetIndex);
-static void window_new_ride_mousedown(rct_widgetindex widgetIndex, rct_window *w, rct_widget *widget);
+static void window_new_ride_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget *widget);
 static void window_new_ride_update(rct_window *w);
 static void window_new_ride_scrollgetsize(rct_window *w, sint32 scrollIndex, sint32 *width, sint32 *height);
 static void window_new_ride_scrollmousedown(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y);
@@ -694,7 +694,7 @@ static void window_new_ride_mouseup(rct_window *w, rct_widgetindex widgetIndex)
  *
  *  rct2: 0x006B6B4F
  */
-static void window_new_ride_mousedown(rct_widgetindex widgetIndex, rct_window *w, rct_widget *widget)
+static void window_new_ride_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget *widget)
 {
     if (widgetIndex >= WIDX_TAB_1 && widgetIndex <= WIDX_TAB_7)
         window_new_ride_set_page(w, widgetIndex - WIDX_TAB_1);

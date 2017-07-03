@@ -130,7 +130,7 @@ static rct_widget *window_editor_objective_options_widgets[] = {
 
 static void window_editor_objective_options_main_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_editor_objective_options_main_resize(rct_window *w);
-static void window_editor_objective_options_main_mousedown(rct_widgetindex widgetIndex, rct_window*w, rct_widget* widget);
+static void window_editor_objective_options_main_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget);
 static void window_editor_objective_options_main_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex);
 static void window_editor_objective_options_main_update(rct_window *w);
 static void window_editor_objective_options_main_textinput(rct_window *w, rct_widgetindex widgetIndex, char *text);
@@ -683,7 +683,7 @@ static void window_editor_objective_options_arg_2_decrease(rct_window *w)
  *
  *  rct2: 0x00671A0D
  */
-static void window_editor_objective_options_main_mousedown(rct_widgetindex widgetIndex, rct_window *w, rct_widget* widget)
+static void window_editor_objective_options_main_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget)
 {
     switch (widgetIndex) {
     case WIDX_OBJECTIVE_DROPDOWN:

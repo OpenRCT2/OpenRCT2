@@ -57,7 +57,7 @@ static rct_widget window_new_campaign_widgets[] = {
 
 
 static void window_new_campaign_mouseup(rct_window *w, rct_widgetindex widgetIndex);
-static void window_new_campaign_mousedown(rct_widgetindex widgetIndex, rct_window*w, rct_widget* widget);
+static void window_new_campaign_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget);
 static void window_new_campaign_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex);
 static void window_new_campaign_invalidate(rct_window *w);
 static void window_new_campaign_paint(rct_window *w, rct_drawpixelinfo *dpi);
@@ -237,7 +237,7 @@ static void window_new_campaign_mouseup(rct_window *w, rct_widgetindex widgetInd
  *
  *  rct2: 0x0069E51C
  */
-static void window_new_campaign_mousedown(rct_widgetindex widgetIndex, rct_window *w, rct_widget* widget)
+static void window_new_campaign_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget)
 {
     rct_widget *dropdownWidget;
 

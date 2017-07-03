@@ -64,7 +64,7 @@ enum {
 static void window_scenery_close(rct_window *w);
 static void window_scenery_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_scenery_resize(rct_window *w);
-static void window_scenery_mousedown(rct_widgetindex widgetIndex, rct_window* w, rct_widget* widget);
+static void window_scenery_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget);
 static void window_scenery_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex);
 static void window_scenery_update(rct_window *w);
 static void window_scenery_event_07(rct_window *w);
@@ -667,7 +667,7 @@ static void window_scenery_resize(rct_window *w)
  *
  *  rct2: 0x006E1A25
  */
-static void window_scenery_mousedown(rct_widgetindex widgetIndex, rct_window* w, rct_widget* widget) {
+static void window_scenery_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget) {
     switch (widgetIndex) {
     case WIDX_SCENERY_PRIMARY_COLOUR_BUTTON:
         window_dropdown_show_colour(w, widget, w->colours[1], gWindowSceneryPrimaryColour);

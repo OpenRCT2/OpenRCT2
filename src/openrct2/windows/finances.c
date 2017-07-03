@@ -198,7 +198,7 @@ static rct_widget *window_finances_page_widgets[] = {
 #pragma region Events
 
 static void window_finances_summary_mouseup(rct_window *w, rct_widgetindex widgetIndex);
-static void window_finances_summary_mousedown(rct_widgetindex widgetIndex, rct_window*w, rct_widget* widget);
+static void window_finances_summary_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget);
 static void window_finances_summary_update(rct_window *w);
 static void window_finances_summary_invalidate(rct_window *w);
 static void window_finances_summary_paint(rct_window *w, rct_drawpixelinfo *dpi);
@@ -224,7 +224,7 @@ static void window_finances_marketing_invalidate(rct_window *w);
 static void window_finances_marketing_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
 static void window_finances_research_mouseup(rct_window *w, rct_widgetindex widgetIndex);
-static void window_finances_research_mousedown(rct_widgetindex widgetIndex, rct_window*w, rct_widget* widget);
+static void window_finances_research_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget);
 static void window_finances_research_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex);
 static void window_finances_research_update(rct_window *w);
 static void window_finances_research_invalidate(rct_window *w);
@@ -605,7 +605,7 @@ static void window_finances_summary_mouseup(rct_window *w, rct_widgetindex widge
  *
  *  rct2: 0x0069CAB0
  */
-static void window_finances_summary_mousedown(rct_widgetindex widgetIndex, rct_window*w, rct_widget* widget)
+static void window_finances_summary_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget)
 {
     money32 newLoan;
 
@@ -1268,7 +1268,7 @@ static void window_finances_research_mouseup(rct_window *w, rct_widgetindex widg
  *
  *  rct2: 0x0069DB66
  */
-static void window_finances_research_mousedown(rct_widgetindex widgetIndex, rct_window *w, rct_widget* widget)
+static void window_finances_research_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget)
 {
     rct_widget *dropdownWidget;
     sint32 i;

@@ -132,7 +132,7 @@ static void window_multiplayer_players_scrollpaint(rct_window *w, rct_drawpixeli
 
 static void window_multiplayer_groups_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_multiplayer_groups_resize(rct_window *w);
-static void window_multiplayer_groups_mousedown(rct_widgetindex widgetIndex, rct_window* w, rct_widget* widget);
+static void window_multiplayer_groups_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget);
 static void window_multiplayer_groups_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex);
 static void window_multiplayer_groups_update(rct_window *w);
 static void window_multiplayer_groups_scrollgetsize(rct_window *w, sint32 scrollIndex, sint32 *width, sint32 *height);
@@ -701,7 +701,7 @@ static void window_multiplayer_groups_resize(rct_window *w)
     window_invalidate(w);
 }
 
-static void window_multiplayer_groups_mousedown(rct_widgetindex widgetIndex, rct_window* w, rct_widget* widget)
+static void window_multiplayer_groups_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget)
 {
     switch (widgetIndex) {
     case WIDX_DEFAULT_GROUP_DROPDOWN:

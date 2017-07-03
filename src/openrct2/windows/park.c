@@ -160,7 +160,7 @@ static rct_widget *window_park_page_widgets[] = {
 static void window_park_entrance_close(rct_window *w);
 static void window_park_entrance_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_park_entrance_resize(rct_window *w);
-static void window_park_entrance_mousedown(rct_widgetindex widgetIndex, rct_window*w, rct_widget* widget);
+static void window_park_entrance_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget);
 static void window_park_entrance_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex);
 static void window_park_entrance_update(rct_window *w);
 static void window_park_entrance_textinput(rct_window *w, rct_widgetindex widgetIndex, char *text);
@@ -181,7 +181,7 @@ static void window_park_guests_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
 static void window_park_price_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_park_price_resize(rct_window *w);
-static void window_park_price_mousedown(rct_widgetindex widgetIndex, rct_window*w, rct_widget* widget);
+static void window_park_price_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget);
 static void window_park_price_update(rct_window *w);
 static void window_park_price_invalidate(rct_window *w);
 static void window_park_price_paint(rct_window *w, rct_drawpixelinfo *dpi);
@@ -687,7 +687,7 @@ static void window_park_entrance_resize(rct_window *w)
  *
  *  rct2: 0x006681BF
  */
-static void window_park_entrance_mousedown(rct_widgetindex widgetIndex, rct_window*w, rct_widget* widget)
+static void window_park_entrance_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget)
 {
     if (widgetIndex == WIDX_OPEN_OR_CLOSE) {
         gDropdownItemsFormat[0] = STR_DROPDOWN_MENU_LABEL;
@@ -1198,7 +1198,7 @@ static void window_park_price_resize(rct_window *w)
  *
  *  rct2: 0x0066902C
  */
-static void window_park_price_mousedown(rct_widgetindex widgetIndex, rct_window*w, rct_widget* widget)
+static void window_park_price_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget)
 {
     sint32 newFee;
 

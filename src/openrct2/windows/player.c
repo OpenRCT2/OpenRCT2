@@ -93,7 +93,7 @@ rct_widget *window_player_page_widgets[] = {
 void window_player_overview_close(rct_window *w);
 void window_player_overview_mouse_up(rct_window *w, rct_widgetindex widgetIndex);
 void window_player_overview_resize(rct_window *w);
-void window_player_overview_mouse_down(rct_widgetindex widgetIndex, rct_window *w, rct_widget *widget);
+void window_player_overview_mouse_down(rct_window *w, rct_widgetindex widgetIndex, rct_widget *widget);
 void window_player_overview_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex);
 void window_player_overview_update(rct_window* w);
 void window_player_overview_invalidate(rct_window *w);
@@ -297,7 +297,7 @@ void window_player_overview_mouse_up(rct_window *w, rct_widgetindex widgetIndex)
     }
 }
 
-void window_player_overview_mouse_down(rct_widgetindex widgetIndex, rct_window *w, rct_widget *widget)
+void window_player_overview_mouse_down(rct_window *w, rct_widgetindex widgetIndex, rct_widget *widget)
 {
     switch(widgetIndex){
     case WIDX_GROUP_DROPDOWN:
