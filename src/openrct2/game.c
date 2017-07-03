@@ -1120,7 +1120,10 @@ bool game_load_save(const utf8 *path)
 
         // This ensures that the newly loaded save reflects the user's
         // 'show real names of guests' option, now that it's a global setting
+
         peep_update_names(gConfigGeneral.show_real_names_of_guests);
+        staff_update_names(gConfigGeneral.show_real_names_of_staff);
+
         return true;
     } else {
         handle_park_load_failure(result, path);
