@@ -204,7 +204,7 @@ static void window_footpath_construct();
 static void window_footpath_remove();
 static void window_footpath_set_enabled_and_pressed_widgets();
 static void footpath_get_next_path_info(sint32 *type, sint32 *x, sint32 *y, sint32 *z, sint32 *slope);
-static void footpath_select_default();
+static bool footpath_select_default();
 
 /**
  *
@@ -212,6 +212,20 @@ static void footpath_select_default();
  */
 void window_footpath_open()
 {
+    // If a restricted path was selected when the game is no longer in Sandbox mode, reset it
+    rct_footpath_entry *pathEntry = get_footpath_entry(gFootpathSelectedId);
+    if (pathEntry != (rct_footpath_entry*)-1 && (pathEntry->flags & FOOTPATH_ENTRY_FLAG_SHOW_ONLY_IN_SCENARIO_EDITOR) && !gCheatsSandboxMode) {
+        pathEntry = (rct_footpath_entry*)-1;
+    }
+
+    // Select the default path if we don't have one
+    if (pathEntry == (rct_footpath_entry*)-1) {
+        if (!footpath_select_default()) {
+            // No path objects to select from, don't open window
+            return;
+        }
+    }
+
     // Check if window is already open
     rct_window *window = window_bring_to_front_by_class(WC_FOOTPATH);
     if (window != NULL)
@@ -246,17 +260,6 @@ void window_footpath_open()
     window_init_scroll_widgets(window);
     window_push_others_right(window);
     show_gridlines();
-
-    // If a restricted path was selected when the game is no longer in Sandbox mode, reset it
-    rct_footpath_entry *pathEntry = get_footpath_entry(gFootpathSelectedId);
-    if (pathEntry != (rct_footpath_entry*)-1 && (pathEntry->flags & FOOTPATH_ENTRY_FLAG_SHOW_ONLY_IN_SCENARIO_EDITOR) && !gCheatsSandboxMode) {
-        pathEntry = (rct_footpath_entry*)-1;
-    }
-
-    // Select the default path if we don't have one
-    if (pathEntry == (rct_footpath_entry*)-1) {
-        footpath_select_default();
-    }
 
     tool_cancel();
     gFootpathConstructionMode = PATH_CONSTRUCTION_MODE_LAND;
@@ -1145,19 +1148,25 @@ static void footpath_get_next_path_info(sint32 *type, sint32 *x, sint32 *y, sint
     }
 }
 
-static void footpath_select_default()
+static bool footpath_select_default()
 {
     // Select first available footpath
-    gFootpathSelectedId = 0;
+    sint32 footpathId = -1;
     for (sint32 i = 0; i < object_entry_group_counts[OBJECT_TYPE_PATHS]; i++) {
         rct_footpath_entry *pathEntry = get_footpath_entry(i);
         if (pathEntry != (rct_footpath_entry*)-1) {
-            gFootpathSelectedId = i;
+            footpathId = i;
 
             // Prioritise non-restricted path
             if (!(pathEntry->flags & FOOTPATH_ENTRY_FLAG_SHOW_ONLY_IN_SCENARIO_EDITOR)) {
                 break;
             }
         }
+    }
+    if (footpathId == -1) {
+        return false;
+    } else {
+        gFootpathSelectedId = footpathId;
+        return true;
     }
 }
