@@ -1932,7 +1932,7 @@ void window_event_resize_call(rct_window *w)
 void window_event_mouse_down_call(rct_window *w, rct_widgetindex widgetIndex)
 {
     if (w->event_handlers->mouse_down != NULL)
-        w->event_handlers->mouse_down(widgetIndex, w, &w->widgets[widgetIndex]);
+        w->event_handlers->mouse_down(w, widgetIndex, &w->widgets[widgetIndex]);
 }
 
 void window_event_dropdown_call(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex)
