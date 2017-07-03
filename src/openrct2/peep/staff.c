@@ -1624,11 +1624,12 @@ void staff_update_names(bool realNames)
         rct_peep *peep;
         uint16 spriteIndex;
         FOR_ALL_STAFF(spriteIndex, peep) {
+            rct_string_id name_string = peep->name_string_idx;
             //If the staff peep doesn't have a custon name
-            if (peep->name_string_idx == STR_HANDYMAN_X     ||
-                peep->name_string_idx == STR_MECHANIC_X     ||
-                peep->name_string_idx == STR_ENTERTAINER_X  ||
-                peep->name_string_idx == STR_SECURITY_GUARD_X) {
+            if (name_string == STR_HANDYMAN_X     ||
+                name_string == STR_MECHANIC_X     ||
+                name_string == STR_ENTERTAINER_X  ||
+                name_string == STR_SECURITY_GUARD_X) {
                     // Currently gives each staff type the same
                     // name in order due to the way their id's are set
                     peep_give_real_name(peep);
@@ -1642,13 +1643,14 @@ void staff_update_names(bool realNames)
             //If the staff peep has a name, change the name to format of
             //'Handyman X' for example
             if (peep->name_string_idx >= 0xA000 && peep->name_string_idx < 0xE000) {
-                if (peep->staff_type == STAFF_TYPE_HANDYMAN)
+                uint8 staff_type_temp = peep->staff_type;
+                if (staff_type_temp == STAFF_TYPE_HANDYMAN)
                     peep->name_string_idx = STR_HANDYMAN_X;
-                else if (peep->staff_type == STAFF_TYPE_MECHANIC)
+                else if (staff_type_temp == STAFF_TYPE_MECHANIC)
                     peep->name_string_idx = STR_MECHANIC_X;
-                else if (peep->staff_type == STAFF_TYPE_ENTERTAINER)
+                else if (staff_type_temp == STAFF_TYPE_ENTERTAINER)
                     peep->name_string_idx = STR_ENTERTAINER_X;
-                else if (peep->staff_type == STAFF_TYPE_SECURITY)
+                else if (staff_type_temp == STAFF_TYPE_SECURITY)
                     peep->name_string_idx = STR_SECURITY_GUARD_X;
             }
         }
