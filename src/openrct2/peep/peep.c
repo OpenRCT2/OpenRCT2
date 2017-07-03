@@ -518,6 +518,15 @@ static const rct_xy16 SpiralSlideWalkingPath[64] = {
     {   0,  32 },
 };
 
+rct_peep * try_get_guest(uint16 spriteIndex)
+{
+    rct_sprite * sprite = try_get_sprite(spriteIndex);
+    if (sprite == NULL) return NULL;
+    if (sprite->unknown.sprite_identifier != SPRITE_IDENTIFIER_PEEP) return NULL;
+    if (sprite->peep.type != PEEP_TYPE_GUEST) return NULL;
+    return &sprite->peep;
+}
+
 sint32 peep_get_staff_count()
 {
     uint16 spriteIndex;
@@ -2921,7 +2930,8 @@ static void peep_update_ride_sub_state_2_enter_ride(rct_peep* peep, rct_ride* ri
  *
  *  rct2: 0x00691FD4
  */
-static void peep_update_ride_sub_state_2_rejoin_queue(rct_peep* peep, rct_ride* ride){
+static void peep_update_ride_sub_state_2_rejoin_queue(rct_peep* peep, rct_ride* ride)
+{
     sint16 x, y, z;
     x = ride->entrances[peep->current_ride_station] & 0xFF;
     y = ride->entrances[peep->current_ride_station] >> 8;
@@ -2945,23 +2955,9 @@ static void peep_update_ride_sub_state_2_rejoin_queue(rct_peep* peep, rct_ride* 
     peep->sub_state = 0;
     peep_window_state_update(peep);
 
-    peep->next_in_queue = SPRITE_INDEX_NULL;
-
-    ride->queue_length[peep->current_ride_station]++;
-
-    uint16 current_last = ride->last_peep_in_queue[peep->current_ride_station];
-    if (current_last == SPRITE_INDEX_NULL) {
-        ride->last_peep_in_queue[peep->current_ride_station] = peep->sprite_index;
-        return;
-    }
-
-    rct_peep* queue_peep;
-    for (queue_peep = GET_PEEP(current_last);
-        queue_peep->next_in_queue != SPRITE_INDEX_NULL;
-        queue_peep = GET_PEEP(queue_peep->next_in_queue));
-
-    queue_peep->next_in_queue = peep->sprite_index;
+    ride_queue_insert_guest_at_front(ride, peep->current_ride_station, peep);
 }
+
 /**
  *
  *  rct2: 0x00691E42
