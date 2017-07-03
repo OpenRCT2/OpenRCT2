@@ -2531,8 +2531,8 @@ STR_2523    :Show map
 STR_2524    :Screenshot
 ### The following need to be reordered to match SDL_keycode layout.
 STR_2525    :???
-STR_2526    :???
-STR_2527    :???
+STR_2526    :Show 'real' names of staff
+STR_2527    :{SMALLFONT}{BLACK}Toggle between showing 'real' names of staff and staff numbers
 STR_2528    :???
 STR_2529    :???
 STR_2530    :???
