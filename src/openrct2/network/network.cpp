@@ -1906,6 +1906,7 @@ bool Network::LoadMap(IStream * stream)
         gCheatsAllowArbitraryRideTypeChanges = stream->ReadValue<uint8>() != 0;
         gCheatsDisableRideValueAging = stream->ReadValue<uint8>() != 0;
         gConfigGeneral.show_real_names_of_guests = stream->ReadValue<uint8>() != 0;
+        gConfigGeneral.show_real_names_of_staff = stream->ReadValue<uint8>() != 0;
 
         gLastAutoSaveUpdate = AUTOSAVE_PAUSE;
         result = true;
@@ -1953,6 +1954,7 @@ bool Network::SaveMap(IStream * stream, const std::vector<const ObjectRepository
         stream->WriteValue<uint8>(gCheatsAllowArbitraryRideTypeChanges);
         stream->WriteValue<uint8>(gCheatsDisableRideValueAging);
         stream->WriteValue<uint8>(gConfigGeneral.show_real_names_of_guests);
+        stream->WriteValue<uint8>(gConfigGeneral.show_real_names_of_staff);
 
         result = true;
     }
