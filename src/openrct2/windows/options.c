@@ -560,7 +560,7 @@ static uint64 window_options_page_enabled_widgets[] = {
     (1 << WIDX_WINDOW_LIMIT) |
     (1 << WIDX_WINDOW_LIMIT_UP) |
     (1 << WIDX_WINDOW_LIMIT_DOWN) |
-    (1ULL << WIDX_PATH_TO_RCT1_BUTTON) |
+    (1 << WIDX_PATH_TO_RCT1_BUTTON) |
     (1ULL << WIDX_PATH_TO_RCT1_CLEAR) |
     (1ULL << WIDX_STAFF_REAL_NAME_CHECKBOX),
 
