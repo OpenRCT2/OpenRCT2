@@ -357,6 +357,10 @@ namespace Config
                 }
             }
 
+            // Trim any whitespace before or after the player's name,
+            // to avoid people pretending to be someone else
+            playerName = String::Trim(playerName);
+
             auto model = &gConfigNetwork;
             model->player_name = playerName;
             model->default_port = reader->GetSint32("default_port", NETWORK_DEFAULT_PORT);
