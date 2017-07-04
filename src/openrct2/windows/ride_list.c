@@ -249,6 +249,7 @@ static void window_ride_list_mouseup(rct_window *w, rct_widgetindex widgetIndex)
         w->list_information_type = _window_ride_list_information_type;
         w->no_list_items = 0;
         w->selected_list_item = -1;
+        window_ride_list_refresh_list(w);
         break;
     case WIDX_TAB_1:
     case WIDX_TAB_2:
@@ -261,7 +262,7 @@ static void window_ride_list_mouseup(rct_window *w, rct_widgetindex widgetIndex)
             if (w->page != PAGE_RIDES && _window_ride_list_information_type > INFORMATION_TYPE_RUNNING_COST) {
                 _window_ride_list_information_type = INFORMATION_TYPE_STATUS;
             }
-            window_invalidate(w);
+            window_ride_list_refresh_list(w);
         }
         break;
     case WIDX_CLOSE_LIGHT:
