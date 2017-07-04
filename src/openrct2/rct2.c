@@ -334,9 +334,16 @@ bool rct2_open_file(const char *path)
     extension++;
 
     if (_stricmp(extension, "sv6") == 0) {
-        if (game_load_save(path)) {
+        ParkLoadResult * result = game_load_sv6_path(path);
+        if (ParkLoadResult_GetError(result) == PARK_LOAD_ERROR_OK) {
+            ParkLoadResult_Delete(result);
             gFirstTimeSaving = false;
             return true;
+        }
+        else {
+            handle_park_load_failure_with_title_opt(result, path, true);
+            ParkLoadResult_Delete(result);
+            return false;
         }
     } else if (_stricmp(extension, "sc6") == 0) {
         // TODO scenario install
@@ -345,7 +352,7 @@ bool rct2_open_file(const char *path)
             ParkLoadResult_Delete(result);
             return true;
         } else {
-            handle_park_load_failure(result, path);
+            handle_park_load_failure_with_title_opt(result, path, true);
             ParkLoadResult_Delete(result);
             return false;
         }
@@ -353,14 +360,28 @@ bool rct2_open_file(const char *path)
         // TODO track design install
         return true;
     } else if (_stricmp(extension, "sv4") == 0) {
-        if (rct1_load_saved_game(path)) {
+        ParkLoadResult * result = rct1_load_saved_game(path);
+        if (ParkLoadResult_GetError(result) == PARK_LOAD_ERROR_OK) {
+            ParkLoadResult_Delete(result);
             game_load_init();
             return true;
         }
+        else {
+            handle_park_load_failure_with_title_opt(result, path, true);
+            ParkLoadResult_Delete(result);
+            return false;
+        }
     } else if (_stricmp(extension, "sc4") == 0) {
-        if (rct1_load_scenario(path)) {
+        ParkLoadResult * result = rct1_load_scenario(path);
+        if (ParkLoadResult_GetError(result) == PARK_LOAD_ERROR_OK) {
+            ParkLoadResult_Delete(result);
             scenario_begin();
             return true;
+        }
+        else {
+            handle_park_load_failure_with_title_opt(result, path, true);
+            ParkLoadResult_Delete(result);
+            return false;
         }
     }
 

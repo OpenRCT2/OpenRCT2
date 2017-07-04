@@ -287,7 +287,6 @@ namespace OpenRCT2
                 if (!parkLoaded)
                 {
                     Console::Error::WriteLine("Failed to load '%s'", gOpenRCT2StartupActionPath);
-                    title_load();
                     break;
                 }
 
