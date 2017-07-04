@@ -12385,6 +12385,7 @@ void peep_give_real_name(rct_peep *peep)
     if (peep->type == PEEP_TYPE_GUEST) {
         ax = (uint16)(peep->id + 0xF0B);
     } else {
+        //Use staff id since peep->id would overlap with other staff types
         ax = (uint16)(peep->staff_id + 0xF0B);
     }
    // uint16 ax = (uint16)(peep->id + 0xF0B);
