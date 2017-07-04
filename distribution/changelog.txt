@@ -22,6 +22,7 @@
 - Fix: [#3178, #5456] Paths with non-ASCII characters not handled properly on macOS.
 - Fix: [#3479] Building in pause mode creates too many floating numbers, crashing the game
 - Fix: [#3681] Steel Twister rollercoaster always shows all track designs
+- Fix: [#3846, #5749] Crash when testing coaster with a diagonal lift in block brake mode
 - Fix: [#4054] Sorting rides by track type: Misleading research messages
 - Fix: [#4055] Sort rides by track type: Sorting rule is not really clear (inconsistent?)
 - Fix: [#5009] Ride rating calculations can overflow
