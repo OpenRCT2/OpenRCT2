@@ -4419,7 +4419,7 @@ STR_6107    :Caminhões Monstruosos
 STR_6108    :Tornado de Aço
 STR_6109    :Hiper-Tornado
 STR_6110    :Montanha-Russa Júnior
-STR_6111    :Montanha-Russa Midi
+STR_6111    :Mini Montanha-Russa Clássica
 STR_6112    :Uma montanha russa de aço compacta onde trens viajam por parafusos e loops
 STR_6113    :Uma montanha russa alta que não inverte com grandes quedas, alta velocidade, e trens confortáveis com apenas uma trava de colo
 STR_6114    :Passageiros viajam devagar em veículos eletrizados ao longo de uma rota baseada em pista
@@ -4429,7 +4429,16 @@ STR_6117    :Sentados em trens confortáveis com apenas trava de colo, passageir
 STR_6118    :Uma montanha russa suave para pessoas que ainda não criaram coragem para encarar atrações maiores
 STR_6119    :Uma montanha russa barata e fácil de construir, mas com um limite de altura
 STR_6120    :{BABYBLUE}Novo veículo disponível agora para {STRINGID}:{NEWLINE}{STRINGID}
-
+STR_6121    :{SMALLFONT}{BLACK}Extende o direito de terreno do parque até a borda do mapa
+STR_6122    :Não há montanhas-russas suficientes neste cenário!
+STR_6123    :Erro ao carregar objetos para o parque
+STR_6124    :Nome do objeto
+STR_6125    :Tipo do objeto
+STR_6126    :Tipo desconhecido
+STR_6127    :Arquivo: {STRING}
+STR_6128    :O arquivo não pode ser carregado pois alguns dos objetos referência dele estão faltando ou corrompidos. Uma lista desses objetos está disponível abaixo.
+STR_6129    :Copiar itens selecionados para o clipboard
+STR_6130    :Copiar lista inteira para o clipboard
 
 #############
 # Scenarios #

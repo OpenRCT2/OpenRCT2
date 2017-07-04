@@ -1,3 +1,4 @@
+# Everyone is allowed to edit this document to benefit the language.
 # STR_XXXX part is read and XXXX becomes the string id number.
 # Everything after the colon and before the new line will be saved as the string.
 # Use # at the beginning of a line to leave a comment.
@@ -54,7 +55,7 @@ STR_0049    :Spökhuset
 STR_0050    :Första Hjälpen
 STR_0051    :Cirkusföreställning
 STR_0052    :Spöktåget
-STR_0053    :Hyper-snurr berg- och dalbana
+STR_0053    :Hyper- och dalbana
 STR_0054    :Berg- och dalbana i trä
 STR_0055    :Sidofriktion berg- och dalbana
 STR_0056    :Vilda Musen
@@ -71,7 +72,7 @@ STR_0066    :Okänd Åktur (40)
 STR_0067    :Vändberg- och dalbana
 STR_0068    :Skruvbana
 STR_0069    :Mini Golf
-STR_0070    :Giga-banan
+STR_0070    :Giga- och dalbana
 STR_0071    :Roto-Fall
 STR_0072    :Flygande Tefat
 STR_0073    :Lustiga Huset
@@ -1778,7 +1779,7 @@ STR_1773    :Bara en fotosektion tillåten per åktur
 STR_1774    :Bara en uppskjutskulle tillåten per åktur
 STR_1775    :Av
 STR_1776    :På
-STR_1777    :{WINDOW_COLOUR_2}Musik
+STR_1777    :{WINDOW_COLOUR_2}Åkturs-musik
 STR_1778    :{STRINGID} - - 
 STR_1779    :{INLINE_SPRITE}{254}{19}{00}{00} Pandadräkt
 STR_1780    :{INLINE_SPRITE}{255}{19}{00}{00} Tigerdräkt
@@ -1850,7 +1851,7 @@ STR_1845    :{MONTHYEAR}
 STR_1846    :{COMMA16} gäster
 STR_1847    :{INLINE_SPRITE}{11}{20}{00}{00}{COMMA16} gäster
 STR_1848    :{INLINE_SPRITE}{10}{20}{00}{00}{COMMA16} gäster
-STR_1849    :{WINDOW_COLOUR_2}Spela musik
+STR_1849    :{WINDOW_COLOUR_2}Spela musik{MOVE_X}{138}Tema till dekorationer	
 STR_1850    :{SMALLFONT}{BLACK}Välj om musik ska spelas på denna åktur
 STR_1851    :{WINDOW_COLOUR_2}Underhållskostnad: {BLACK}{CURRENCY2DP} per timme
 STR_1852    :{WINDOW_COLOUR_2}Underhållskostnad: {BLACK}Okänd
@@ -3016,40 +3017,40 @@ STR_3008    :{PEARLAQUA}ABC
 STR_3009    :{PALESILVER}ABC
 STR_3010    :Kan inte ladda fil...
 STR_3011    :Filen innehåller ogiltig data
-STR_3012    :Dodgems beat (Dodgems beat)
-STR_3013    :Marknadsplatsorgel (Fairground organ)
-STR_3014    :Romarriket (Roman fanfare)
-STR_3015    :Kina-Town (Oriental Style)
-STR_3016    :Det okända.. (Martian Style)
-STR_3017    :Djungelboken (Jungle drums)
-STR_3018    :Pyramiderna (Egyptian Style)
-STR_3019    :Leklandet (Toyland Style)
+STR_3012    :Diskoteket{MOVE_X}{150}Abstrakt tema
+STR_3013    :Hästarnas vaggvisa
+STR_3014    :Romarriket{MOVE_X}{150}Romanskt tema
+STR_3015    :Chinatown{MOVE_X}{150}Pagod-tema
+STR_3016    :Det okända...{MOVE_X}{150}Rymd- och marstema
+STR_3017    :Djungelboken{MOVE_X}{150}Djungeltema
+STR_3018    :Pyramiderna{MOVE_X}{150}Egyptiskt tema
+STR_3019    :Leklandet{MOVE_X}{150}Underlandstema
 STR_3020    :
-STR_3021    :Rymden (Space Style)
-STR_3022    :Skräcken (Horror Style)
-STR_3023    :Techno (Techno Style)
-STR_3024    :Mysteriet (Gentle Style)
-STR_3025    :Sommartider (Summer Style)
-STR_3026    :Älven (Water Style)
-STR_3027    :Vilda västern (Wild west Style)
-STR_3028    :Jurassic world (Jurassic Style)
-STR_3029    :Rocka! (Rock 1)
-STR_3030    :Glade-Chapplie's Piano (Ragtime)
-STR_3031    :Fantasin (Fantasy Style)
-STR_3032    :Rockare! (Rock 2)
-STR_3033    :Istiden (Ice style)
-STR_3034    :Snön faller (Snow style)
-STR_3035    :Egen musik 1 (Custom music 1)
-STR_3036    :Egen musik 2 (Custom music 2)
-STR_3037    :Medeltidsmarknaden (Medieval style)
-STR_3038    :Stadslivet (Urban style)
-STR_3039    :Ljusa orgeln (Organ style)
-STR_3040    :Pumpande Mekare (Mechanical style)
-STR_3041    :Luftäventyr (Modern style)
-STR_3042    :Sjörövare (Pirates style)
-STR_3043    :Rockande! (Rock 3)
-STR_3044    :Gottegris (Candy style)
-STR_3045    :{SMALLFONT}{BLACK}Välj musikstil som ska spelas
+STR_3021    :Mörkret{MOVE_X}{150}Rymd- och marstema
+STR_3022    :Frankenstein{MOVE_X}{150}Spök- och kräldjurstema
+STR_3023    :Raveparty{MOVE_X}{150}Abstrakt tema
+STR_3024    :Mysteriet
+STR_3025    :Sommartider
+STR_3026    :Älven{MOVE_X}{150}Vattentema
+STR_3027    :Skjutande Cowboys{MOVE_X}{150}Vilda västern-tema
+STR_3028    :Jurassic Park{MOVE_X}{150}Jurassic-tema
+STR_3029    :Rocka!
+STR_3030    :Glade-Chapplie's piano
+STR_3031    :Ljuva drömmar
+STR_3032    :Rockare!
+STR_3033    :Istiden{MOVE_X}{150}Snö- och istema
+STR_3034    :Pudrade bergstoppar{MOVE_X}{150}Snö- och istema
+STR_3035    :Egen musik 1
+STR_3036    :Egen musik 2
+STR_3037    :Medeltidsmarknaden{MOVE_X}{150}Medeltidstema
+STR_3038    :Stadslivet{MOVE_X}{150}Stadstema
+STR_3039    :Kyrkans orgeln
+STR_3040    :Pumpande mekaniker{MOVE_X}{150}Mekaniktema
+STR_3041    :Luftäventyr
+STR_3042    :Sjörövare{MOVE_X}{150}Pirattema
+STR_3043    :Rockande!
+STR_3044    :Gottegris{MOVE_X}{150}Godislandstema
+STR_3045    :{SMALLFONT}{BLACK}Välj musikstil som ska spelas{NEWLINE}Teman på sånger och dekorationer går mixa utan problem
 STR_3046    :Denna åktur kan inte modifieras
 STR_3047    :Lokala myndigheter har förbjudit rivning och modifikation av denna Åktur
 STR_3048    :Kampanjer är förbjudna av lokala myndigheter
@@ -3612,7 +3613,7 @@ STR_5273    :{SMALLFONT}{BLACK}Stora Dekorationer
 STR_5274    :{SMALLFONT}{BLACK}Gångväg
 STR_5275    :Sök efter Objekt
 STR_5276    :Skriv in namnet på objektet du letar efter
-STR_5277    :Återbetala
+STR_5277    :Rensa
 STR_5278    :Sandlådeläge
 STR_5279    :Sandlådeläge av
 STR_5280    :{SMALLFONT}{BLACK}Tillåter ändring vid köp av mark genom Kartfönstret och andra inställningar som normalt är begränsat till Scenarioredigeraren
@@ -3792,7 +3793,7 @@ STR_5453    :Välj en annan åktur
 STR_5454    :Lås upp FPS
 STR_5455    :Aktivera Sandlådeläge
 STR_5456    :Placera föremål på varandra
-STR_5457    :Avaktivera Stödpelares Gränser
+STR_5457    :Ingen gräns för stödpelare
 STR_5458    :Rotera medurs
 STR_5459    :Rotera moturs
 STR_5460    :Rotera vyn moturs
@@ -4164,7 +4165,7 @@ STR_5856    :{SMALLFONT}{BLACK}Sätter spelets upplösning när du spelar i full
 STR_5857    :{SMALLFONT}{BLACK}Spelinställningar
 STR_5858    :{SMALLFONT}{BLACK}Använd GPU för grafiken istället för CPU. Ökar kompatibiliteten med skärminspelningsprogram som till exempel Fraps{NEWLINE}Kan försämra prestandan lite grand
 STR_5859    :{SMALLFONT}{BLACK}Aktiverar 'frame tweening' för en visuellt mjukare spelupplevelse.{NEWLINE}Om avaktiverad kommer spelet köras i 40 fps.
-STR_5860    :Växla mellan spelets originala/omskrivna spår på karuseller
+STR_5860    :Växla original/omskrivna koden för texturer 
 STR_5861    :Nyckelverifiering misslyckades.
 STR_5862    :Blockera okända spelare.
 STR_5863    :{SMALLFONT}{BLACK}Tillåt endast spelare med kända nycklar att ansluta.
@@ -4293,7 +4294,7 @@ STR_5985    :Ny mapp
 STR_5986    :Skriv in namnet på den nya mappen.
 STR_5987    :Kan inte skapa mappen
 STR_5988    :{SMALLFONT}{BLACK}Ingen mer mark till salu
-STR_5989    :{SMALLFONT}{BLACK}Inga mer bygglov till salu
+STR_5989    :{SMALLFONT}{BLACK}Inget mer bygglov till salu
 STR_5990    :{SMALLFONT}{BLACK}Ingen mer mark eller bygglov till salu
 STR_5991    :Kan inte klistra in ämnet...
 STR_5992    :Kartan har nått sin gräns
@@ -4301,8 +4302,8 @@ STR_5993    :{SMALLFONT}{BLACK}Kopiera valda ämne
 STR_5994    :{SMALLFONT}{BLACK}Klistra in kopierat ämne
 STR_5995    :Booster
 STR_5996    :Booster hastighet
-STR_5997    :Lägg till/Välj summa pengar
-STR_5998    :Lägg till summa pengar
+STR_5997    :Addera/Välj summa pengar
+STR_5998    :Addera pengar
 STR_5999    :Välj summa pengar
 STR_6000    :Skriv in nytt värde
 STR_6001    :Aktivera ljuseffekter (experiment)
@@ -4310,10 +4311,10 @@ STR_6002    :{SMALLFONT}{BLACK}Lampor och åkturer kommer lysa upp i natten.{NEW
 STR_6003    :Avskärnings-vy
 STR_6004    :Avskärnings-vy
 STR_6005    :Aktivera Avskärnings-vy
-STR_6006    :{SMALLFONT}{BLACK}Avskärnings-vyn kommer endast visa element på eller under den avskurna höjden
-STR_6007    :Avskärnings-höjd
+STR_6006    :{SMALLFONT}{BLACK}Avskärnings-vyn kommer endast visa element på eller under den avskurna höjden, allt ovanför blir dolt
+STR_6007    :Höjd
 STR_6008    :{SMALLFONT}{BLACK}Klicka för att växla råa-värden<->värden i måttenheter
-STR_6009    :{SMALLFONT}{BLACK}Välj avskärnings-höjd
+STR_6009    :{SMALLFONT}{BLACK}Välj höjd på avskärning
 STR_6010    :{COMMA2DP32}m
 STR_6011    :{COMMA1DP16}ft
 STR_6012    :{COMMA1DP16}
@@ -4327,7 +4328,7 @@ STR_6019    :Åkturkonstruktion - Sväng höger
 STR_6020    :Åkturkonstruktion - Rakt spår
 STR_6021    :Åkturkonstruktion - Lutning nedåt
 STR_6022    :Åkturkonstruktion - Lutning uppåt
-STR_6023    :Åkturkonstruktion - Växla kjedjelyft
+STR_6023    :Åkturkonstruktion - Växla lyftkjedjor
 STR_6024    :Åkturkonstruktion - Lutning vänster
 STR_6025    :Åkturkonstruktion - Lutning höger
 STR_6026    :Åkturkonstruktion - Föregående spår
@@ -4342,7 +4343,7 @@ STR_6034    :{SMALLFONT}{BLACK}{STRING}
 STR_6035    :Vänligen välj installationsmappen för RCT1
 STR_6036    :{SMALLFONT}{BLACK}Rensa
 STR_6037    :Vänligen välj en giltig sökväg till RCT1-mappen
-STR_6038    :{SMALLFONT}{BLACK}Om du har RCT1-installerat, navigera till den mappen för att ladda scenarion, music, m.m.
+STR_6038    :{SMALLFONT}{BLACK}Om du har RCT1-installerat, navigera till den mappen för att ladda scenarion, musik, m.m.
 STR_6039    :{SMALLFONT}{BLACK}Demolera attraktioner snabbt
 STR_6040    :Redigera scenario-inställningar
 STR_6041    :{BLACK}Inga mekaniker är anställda!
@@ -4363,6 +4364,78 @@ STR_6055    :OpenRCT2 Höjdkart-filer
 STR_6056    :{SMALLFONT}{BLACK}Tysta
 STR_6057    :{SMALLFONT}{BLACK}Visa en knapp för att 'Tysta' spelet i verktygsfältet
 STR_6058    :Tysta
+STR_6059    :{RIGHTGUILLEMET}
+STR_6060    :Visa animation när gäster spenderar pengar
+STR_6061    :{SMALLFONT}{BLACK}Visar en animerad effekt när gästerna gör ett köp.
+STR_6062    :{OUTLINE}{GREEN}+ {CURRENCY2DP}
+STR_6063    :{OUTLINE}{RED}- {CURRENCY2DP}
+STR_6064    :Ta all mark
+STR_6065    :Logga handlingar på användare
+STR_6066    :{SMALLFONT}{BLACK}Loggar allt användarna gör i multiplayer till filer i 'dina dokument'
+STR_6067    :Server startade.
+STR_6068    :Server avslutades.
+STR_6069    :{STRING} vart kickad från servern av {STRING}.
+STR_6070    :{STRING} fick grupp-behörigheten '{STRING}' av {STRING}.
+STR_6071    :{STRING} skapade en ny grupp-behörighet '{STRING}'.
+STR_6072    :{STRING} tog bort grupp-behörigheten '{String}'.
+STR_6073    :{STRING} redigerade behörigheterna på gruppen '{String}'.
+STR_6074    :{STRING} ändrade namn på grupp-behörigheten '{String}' till '{String}'.
+STR_6075    :{STRING} ändrade standardgruppen till '{String}'.
+STR_6076    :{STRING} använde/växlade fusk '{STRING}'.
+STR_6077    :Pengarna ändrades
+STR_6078    :{STRING} skapade åktur '{STRING}'.
+STR_6079    :{STRING} demolerade åktur '{STRING}'.
+STR_6080    :{STRING} ändrade utseendet på åktur '{STRING}'.
+STR_6081    :{STRING} ändrade status på åktur '{STRING}' till stängd.
+STR_6082    :{STRING} ändrade status på åktur '{STRING}' till öppen.
+STR_6083    :{STRING} ändrade status på åktur '{STRING}' till testa.
+STR_6084    :{STRING} ändrade vagnarnas inställningar på åktur '{STRING}'.
+STR_6085    :{STRING} ändrade inställningar på åkturen '{STRING}'.
+STR_6086    :{STRING} döpte om åktur '{STRING}' till '{STRING}'.
+STR_6087    :{STRING} ändrade priset på åktur '{STRING}' till {STRING}
+STR_6088    :{STRING} ändrade sekundära priset på åktur '{STRING}' till {STRING}
+STR_6089    :{STRING} ändrade parkens namn från '{STRING}' till '{STRING}'.
+STR_6090    :{STRING} öppnade parken.
+STR_6091    :{STRING} stängde parken.
+STR_6092    :{STRING} ändrade parkens biljettpris till {STRING}
+STR_6093    :{STRING} placerade en ny dekoration.
+STR_6094    :{STRING} tog bort dekoration.
+STR_6095    :{STRING} redigerade dekoration.
+STR_6096    :{STRING} valde namn '{STRING}' på en skylt .
+STR_6097    :{STRING} placerade ett spår på åkturen '{STRING}'.
+STR_6098    :{STRING} tog bort ett spår av en åktur.
+STR_6099    :Du anslöt till servern.
+STR_6100    :Du lämnade servern.
+STR_6101    :Åkturer minskar aldrig i värde 
+STR_6102    :{SMALLFONT}{BLACK}Värdet på åkturer minskar inte vid längre perioder, så gäster kommer inte tycka den helt plötsligt är för dyr.
+STR_6103    :{SMALLFONT}{BLACK}Denna inställning är avaktiverad i multiplayer.
+STR_6104    :Korkskruvs berg- och dalbana
+STR_6105    :Hyper berg- och dalbana
+STR_6106    :Bilåktur
+STR_6107    :Monster Truckar
+STR_6108    :Snurr berg- och dalbana
+STR_6109    :Hyper berg- och dalbana
+STR_6110    :Junior berg- och dalbana
+STR_6111    :Klassisk mini berg- och dalbana
+STR_6112    :En kompakt stål berg- och dalbana där tågen åker längs korkskruvar och loopar
+STR_6113    :En hög berg- och dalbana som inte vänder på sig med stora dropp, höga hastigheter, och bekväma tåg med endast säkerhetsbygel runt midjan
+STR_6114    :Passagerare åker sakta i motoriserade fordon på en spår-baserad väg
+STR_6115    :Motoriserade gigantiska 4 x 4 truckar som kan klättra över stora stockar
+STR_6116    :Bred berg- och dalbana tåg som glider efter ett mjukt stålspår, rusande genom en variation av inversioner
+STR_6117    :Sittandes i bekväma vagnar med endast säkerhetsbygel runt midjan njuter passagerare av enorma nedförsbackar och spännande svängar, samt mycket tid flygandes över topparna
+STR_6118    :En snäll berg- och dalbana för de som inte har mod nog att utmana större åkturer
+STR_6119    :En simpel och billig berg- och dalbana, men med en begränsad höjd
+STR_6120    :{BABYBLUE}Nya fordon är nu tillgängliga för {STRINGID}:{NEWLINE}{STRINGID}
+STR_6121    :{SMALLFONT}{BLACK}Utökar marken i parken hela vägen till kanterna av kartan
+STR_6122    :Det finns inte nog många berg- och dalbanor i detta scenario!
+STR_6123    :Fel vid inläsning av objekt för parken
+STR_6124    :Objektnamn
+STR_6125    :Objekttyp
+STR_6126    :Okänd typ
+STR_6127    :Fil: {STRING}
+STR_6128    :Filen kunde inte laddas eftersom objekt som filen hänvisar till saknas eller är skadade. En lista med dessa objekt visas nedanför.
+STR_6129    :Kopiera valda föremål till urklipp
+STR_6130    :Kopiera hela listan till urklipp
 
 #############
 # Scenarion #
@@ -4816,5 +4889,15 @@ STR_NAME    :Kondorhjulet
 STR_DESC    :Åkandes i speciella byglar under spåret känner passagerarna känslan av flygning när de sveper genom luften i kondorformade vagnar
 STR_CPTY    :4 passagerare per vagn
 
+##############
+# RCT Object #
+##############
+
+[SCGWWEST]
+STR_NAME    :Vilda västern-tema
+
+[SCGGIANT]
+STR_NAME    :Jätte trädgårds-tema
 
 #Maintainer: Nubbie
+#Everyone is allowed to edit this document
