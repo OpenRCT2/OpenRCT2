@@ -5541,6 +5541,10 @@ void game_command_set_ride_status(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 
             if (constructionWindow != NULL) {
                 window_close(constructionWindow);
             }
+        } else {
+            // #5787: We need to make sure ghost elements are removed before validating
+            //        the track.
+            ride_construction_remove_ghosts();
         }
 
         if (targetStatus == RIDE_STATUS_TESTING) {

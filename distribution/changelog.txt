@@ -118,6 +118,7 @@
 - Fix: [#5096] Failure to open parks with out of bounds sprite coordinates.
 - Fix: [#5114] Some entertainer costumes never select-able.
 - Fix: [#5381] Game crashes in scenario editor when scenery or pathing is clicked on when no objects loaded.
+- Fix: [#5787] Opening an incomplete ride moves the viewport to unrelated place.
 
 0.0.5 (2016-12-27)
 ------------------------------------------------------------------------
