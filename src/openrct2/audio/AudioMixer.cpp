@@ -85,25 +85,34 @@ void Mixer_Stop_Channel(void * channel)
 void Mixer_Channel_Volume(void * channel, sint32 volume)
 {
     IAudioMixer * audioMixer = GetMixer();
-    audioMixer->Lock();
-    static_cast<IAudioChannel*>(channel)->SetVolume(volume);
-    audioMixer->Unlock();
+    if (audioMixer != nullptr)
+    {
+        audioMixer->Lock();
+        static_cast<IAudioChannel*>(channel)->SetVolume(volume);
+        audioMixer->Unlock();
+    }
 }
 
 void Mixer_Channel_Pan(void * channel, float pan)
 {
     IAudioMixer * audioMixer = GetMixer();
-    audioMixer->Lock();
-    static_cast<IAudioChannel*>(channel)->SetPan(pan);
-    audioMixer->Unlock();
+    if (audioMixer != nullptr)
+    {
+        audioMixer->Lock();
+        static_cast<IAudioChannel*>(channel)->SetPan(pan);
+        audioMixer->Unlock();
+    }
 }
 
 void Mixer_Channel_Rate(void* channel, double rate)
 {
     IAudioMixer * audioMixer = GetMixer();
-    audioMixer->Lock();
-    static_cast<IAudioChannel*>(channel)->SetRate(rate);
-    audioMixer->Unlock();
+    if (audioMixer != nullptr)
+    {
+        audioMixer->Lock();
+        static_cast<IAudioChannel*>(channel)->SetRate(rate);
+        audioMixer->Unlock();
+    }
 }
 
 sint32 Mixer_Channel_IsPlaying(void * channel)
@@ -130,27 +139,30 @@ void * Mixer_Play_Music(sint32 pathId, sint32 loop, sint32 streaming)
 {
     IAudioChannel * channel = nullptr;
     IAudioMixer * mixer = GetMixer();
-    if (streaming)
+    if (mixer != nullptr)
     {
-        const utf8 * path = get_file_path(pathId);
-
-        IAudioContext * audioContext = GetContext()->GetAudioContext();
-        IAudioSource * source = audioContext->CreateStreamFromWAV(path);
-        if (source != nullptr)
+        if (streaming)
         {
-            channel = mixer->Play(source, loop, false, true);
-            if (channel == nullptr)
+            const utf8 * path = get_file_path(pathId);
+
+            IAudioContext * audioContext = GetContext()->GetAudioContext();
+            IAudioSource * source = audioContext->CreateStreamFromWAV(path);
+            if (source != nullptr)
             {
-                delete source;
+                channel = mixer->Play(source, loop, false, true);
+                if (channel == nullptr)
+                {
+                    delete source;
+                }
             }
         }
-    }
-    else
-    {
-        if (mixer->LoadMusic(pathId))
+        else
         {
-            IAudioSource * source = mixer->GetMusicSource(pathId);
-            channel = mixer->Play(source, MIXER_LOOP_INFINITE, false, false);
+            if (mixer->LoadMusic(pathId))
+            {
+                IAudioSource * source = mixer->GetMusicSource(pathId);
+                channel = mixer->Play(source, MIXER_LOOP_INFINITE, false, false);
+            }
         }
     }
     if (channel != nullptr)
