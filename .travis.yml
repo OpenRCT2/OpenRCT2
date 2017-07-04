@@ -109,8 +109,8 @@ matrix:
               - build-tools-25.0.2
           jdk: oraclejdk8
           before_script:
-            # Only run Android jobs when triggered from cron, otherwise skip
-            - if [[ "$TRAVIS_EVENT_TYPE" != "cron" ]] ; then exit 0 ; fi
+            # Only run Android jobs when triggered from cron or on tag, otherwise skip
+            - if [[ "$TRAVIS_EVENT_TYPE" != "cron" ]] && [[ "z${TRAVIS_TAG}" == "z" ]] ; then exit 0 ; fi
             - pushd ~
             - wget https://dl.google.com/android/repository/sdk-tools-linux-3859397.zip
             - unzip -qo sdk-tools-linux-3859397.zip
@@ -128,12 +128,12 @@ matrix:
             - 'cd src/openrct2-android'
             - TERM=dumb # Makes Gradle use 'boring' output
           script:
-            # Only run Android jobs when triggered from cron, otherwise skip
-            - if [[ "$TRAVIS_EVENT_TYPE" != "cron" ]] ; then exit 0 ; fi
+            # Only run Android jobs when triggered from cron or on tag, otherwise skip
+            - if [[ "$TRAVIS_EVENT_TYPE" != "cron" ]] && [[ "z${TRAVIS_TAG}" == "z" ]] ; then exit 0 ; fi
             - './gradlew app:assemblePR'
           after_success:
-            # Only run Android jobs when triggered from cron, otherwise skip
-            - if [[ "$TRAVIS_EVENT_TYPE" != "cron" ]] ; then exit 0 ; fi
+            # Only run Android jobs when triggered from cron or on tag, otherwise skip
+            - if [[ "$TRAVIS_EVENT_TYPE" != "cron" ]] && [[ "z${TRAVIS_TAG}" == "z" ]] ; then exit 0 ; fi
             - curl --progress-bar --upload-file app/build/outputs/apk/app-arm-pr.apk https://transfer.sh/openrct2-android-arm.apk -o link && cat link
             - curl --progress-bar --upload-file app/build/outputs/apk/app-x86-pr.apk https://transfer.sh/openrct2-android-x86.apk -o link && cat link
         # Following entries used to be included in testing, but they only proved useful while changing things in CMake setup.
