@@ -1128,10 +1128,15 @@ bool game_load_save(const utf8 *path)
     }
 }
 
-void handle_park_load_failure(const ParkLoadResult * result, const utf8 * path)
+void handle_park_load_failure_with_title_opt(const ParkLoadResult * result, const utf8 * path, bool loadTitleFirst)
 {
     if (ParkLoadResult_GetError(result) == PARK_LOAD_ERROR_MISSING_OBJECTS)
     {
+        // This option is used when loading parks from the command line
+        // to ensure that the title sequence loads before the window
+        if (loadTitleFirst) {
+            title_load();
+        }
         // The path needs to be duplicated as it's a const here
         // which the window function doesn't like
         window_object_load_error_open(strndup(path, strnlen(path, MAX_PATH)),
@@ -1142,6 +1147,11 @@ void handle_park_load_failure(const ParkLoadResult * result, const utf8 * path)
         // the current park state will be corrupted so just go back to the title screen.
         title_load();
     }
+}
+
+void handle_park_load_failure(const ParkLoadResult * result, const utf8 * path)
+{
+    handle_park_load_failure_with_title_opt(result, path, false);
 }
 
 void game_load_init()
