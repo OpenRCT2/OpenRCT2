@@ -265,6 +265,7 @@ static void window_object_load_error_select_element_from_list(rct_window *w, sin
     else {
         w->selected_list_item = index;
     }
+    widget_invalidate(w, WIDX_SCROLL);
 }
 
 static void window_object_load_error_scrollmousedown(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y)
