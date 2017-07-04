@@ -37,6 +37,7 @@
 #include "../localisation/language.h"
 #include "../localisation/localisation.h"
 #include "../network/network.h"
+#include "../peep/staff.h"
 #include "../platform/platform.h"
 #include "../rct2.h"
 #include "../sprites.h"
@@ -177,6 +178,7 @@ enum WINDOW_OPTIONS_WIDGET_IDX {
     WIDX_PATH_TO_RCT1_TEXT,
     WIDX_PATH_TO_RCT1_BUTTON,
     WIDX_PATH_TO_RCT1_CLEAR,
+    WIDX_STAFF_REAL_NAME_CHECKBOX,
 
     // Twitch
     WIDX_CHANNEL_BUTTON = WIDX_PAGE_START,
@@ -340,6 +342,7 @@ static rct_widget window_options_misc_widgets[] = {
     { WWT_12,               1,  10,     298,    264,    275,    STR_PATH_TO_RCT1,                           STR_PATH_TO_RCT1_TIP },                             // RCT 1 path text
     { WWT_DROPDOWN_BUTTON,  1,  10,     289,    278,    289,    STR_NONE,                                   STR_STRING_TOOLTIP },                               // RCT 1 path button
     { WWT_DROPDOWN_BUTTON,  1,  289,    299,    278,    289,    STR_CLOSE_X,                                STR_PATH_TO_RCT1_CLEAR_TIP },                       // RCT 1 path clear button
+    { WWT_CHECKBOX,         2,  10,     299,    293,    304,    STR_STAFF_REAL_NAME,                        STR_STAFF_REAL_NAME_TIP },                          // Show 'real' names of staff
     { WIDGETS_END },
 };
 
@@ -558,7 +561,8 @@ static uint64 window_options_page_enabled_widgets[] = {
     (1 << WIDX_WINDOW_LIMIT_UP) |
     (1 << WIDX_WINDOW_LIMIT_DOWN) |
     (1 << WIDX_PATH_TO_RCT1_BUTTON) |
-    (1ULL << WIDX_PATH_TO_RCT1_CLEAR),
+    (1ULL << WIDX_PATH_TO_RCT1_CLEAR) |
+    (1ULL << WIDX_STAFF_REAL_NAME_CHECKBOX),
 
     MAIN_OPTIONS_ENABLED_WIDGETS |
     (1 << WIDX_CHANNEL_BUTTON) |
@@ -828,6 +832,12 @@ static void window_options_mouseup(rct_window *w, rct_widgetindex widgetIndex)
             config_save_default();
             window_invalidate(w);
             peep_update_names(gConfigGeneral.show_real_names_of_guests);
+            break;
+        case WIDX_STAFF_REAL_NAME_CHECKBOX:
+            gConfigGeneral.show_real_names_of_staff ^= 1;
+            config_save_default();
+            window_invalidate(w);
+            staff_update_names(gConfigGeneral.show_real_names_of_staff);
             break;
         case WIDX_SAVE_PLUGIN_DATA_CHECKBOX:
             gConfigGeneral.save_plugin_data ^= 1;
@@ -1714,6 +1724,9 @@ static void window_options_invalidate(rct_window *w)
         if (network_get_mode() != NETWORK_MODE_NONE) {
             w->disabled_widgets |= (1ULL << WIDX_REAL_NAME_CHECKBOX);
             window_options_misc_widgets[WIDX_REAL_NAME_CHECKBOX].tooltip = STR_OPTION_DISABLED_DURING_NETWORK_PLAY;
+
+            w->disabled_widgets |= (1ULL << WIDX_STAFF_REAL_NAME_CHECKBOX);
+            window_options_misc_widgets[WIDX_STAFF_REAL_NAME_CHECKBOX].tooltip = STR_OPTION_DISABLED_DURING_NETWORK_PLAY;
         }
 
         w->hold_down_widgets |= (1 << WIDX_WINDOW_LIMIT_UP) | (1 << WIDX_WINDOW_LIMIT_DOWN);
@@ -1722,6 +1735,7 @@ static void window_options_invalidate(rct_window *w)
         window_options_misc_widgets[WIDX_SAVE_PLUGIN_DATA_CHECKBOX].type = WWT_CHECKBOX;
 
         widget_set_checkbox_value(w, WIDX_REAL_NAME_CHECKBOX, gConfigGeneral.show_real_names_of_guests);
+        widget_set_checkbox_value(w, WIDX_STAFF_REAL_NAME_CHECKBOX, gConfigGeneral.show_real_names_of_staff);
         widget_set_checkbox_value(w, WIDX_SAVE_PLUGIN_DATA_CHECKBOX, gConfigGeneral.save_plugin_data);
         widget_set_checkbox_value(w, WIDX_TEST_UNFINISHED_TRACKS, gConfigGeneral.test_unfinished_tracks);
         widget_set_checkbox_value(w, WIDX_AUTO_STAFF_PLACEMENT, gConfigGeneral.auto_staff_placement);
@@ -1752,6 +1766,7 @@ static void window_options_invalidate(rct_window *w)
         window_options_misc_widgets[WIDX_WINDOW_LIMIT_DOWN].type = WWT_DROPDOWN_BUTTON;
         window_options_misc_widgets[WIDX_PATH_TO_RCT1_BUTTON].type = WWT_DROPDOWN_BUTTON;
         window_options_misc_widgets[WIDX_PATH_TO_RCT1_CLEAR].type = WWT_DROPDOWN_BUTTON;
+        window_options_misc_widgets[WIDX_STAFF_REAL_NAME_CHECKBOX].type = WWT_CHECKBOX;
         break;
 
     case WINDOW_OPTIONS_PAGE_TWITCH:

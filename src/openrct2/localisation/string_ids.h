@@ -1962,9 +1962,8 @@ enum {
     STR_SHORTCUT_SHOW_MAP = 2523,
     STR_SHORTCUT_SCREENSHOT = 2524,
     STR_SHORTCUT_KEY_UNKNOWN = 2525,
-// STR_2525    :???
-// STR_2526    :???
-// STR_2527    :???
+    STR_STAFF_REAL_NAME = 2526,
+    STR_STAFF_REAL_NAME_TIP = 2527,
 // STR_2528    :???
 // STR_2529    :???
 // STR_2530    :???

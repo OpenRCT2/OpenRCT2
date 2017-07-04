@@ -205,6 +205,7 @@ namespace Config
             model->render_weather_gloom = reader->GetBoolean("render_weather_gloom", true);
             model->show_guest_purchases = reader->GetBoolean("show_guest_purchases", false);
             model->show_real_names_of_guests = reader->GetBoolean("show_real_names_of_guests", true);
+            model->show_real_names_of_staff = reader->GetBoolean("show_real_names_of_staff", false);
         }
     }
 
@@ -275,6 +276,7 @@ namespace Config
         writer->WriteBoolean("render_weather_gloom", model->render_weather_gloom);
         writer->WriteBoolean("show_guest_purchases", model->show_guest_purchases);
         writer->WriteBoolean("show_real_names_of_guests", model->show_real_names_of_guests);
+        writer->WriteBoolean("show_real_names_of_staff", model->show_real_names_of_staff);
     }
 
     static void ReadInterface(IIniReader * reader)
