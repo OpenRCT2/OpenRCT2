@@ -4756,7 +4756,6 @@ static void ride_create_vehicles_find_first_block(rct_ride *ride, rct_xy_element
 
     sint32 x = firstX;
     sint32 y = firstY;
-    sint32 z = firstZ;
     rct_map_element *trackElement = firstElement;
     track_begin_end trackBeginEnd;
     while (track_block_get_previous(x, y, trackElement, &trackBeginEnd)) {
@@ -4780,20 +4779,22 @@ static void ride_create_vehicles_find_first_block(rct_ride *ride, rct_xy_element
             break;
         case TRACK_ELEM_DIAG_25_DEG_UP_TO_FLAT:
         case TRACK_ELEM_DIAG_60_DEG_UP_TO_FLAT:
+        case TRACK_ELEM_DIAG_25_DEG_UP:
+        case TRACK_ELEM_DIAG_60_DEG_UP:
             if (track_element_is_lift_hill(trackElement)) {
                 rct_map_element *mapElement = map_get_first_element_at(x >> 5, y >> 5);
                 do {
                     if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_TRACK) continue;
-                    if (mapElement->base_height != z) continue;
                     if ((mapElement->properties.track.sequence & 0x0F) != 0) continue;
-                    if (mapElement->properties.track.type != trackType) continue;
                     break;
                 } while (!map_element_is_last_for_tile(mapElement++));
-
-                outXYElement->x = x;
-                outXYElement->y = y;
-                outXYElement->element = mapElement;
-                return;
+                if (mapElement->properties.track.type == TRACK_ELEM_DIAG_25_DEG_UP_TO_FLAT ||
+                    mapElement->properties.track.type == TRACK_ELEM_DIAG_60_DEG_UP_TO_FLAT) {
+                    outXYElement->x = x;
+                    outXYElement->y = y;
+                    outXYElement->element = mapElement;
+                    return;
+                }
             }
             break;
         case TRACK_ELEM_END_STATION:
