@@ -2,7 +2,10 @@ language: c
 
 before_install:
     # Android jobs are triggered from cron and overwrite `before_script` part
-    - if [[ "$TRAVIS_EVENT_TYPE" == "cron" ]] ; then exit 0 ; fi
+    - if [[ "$TRAVIS_EVENT_TYPE" == "cron" ]] ; then echo Exiting early from cron job ; exit 0 ; fi
+    - if [[ "z$OPENRCT2_ORG_TOKEN" != "z" && "$TRAVIS_PULL_REQUEST" == "false" && ("${TRAVIS_BRANCH}" =~ ^(develop|push/) || "z${TRAVIS_TAG}" != "z") ]] ; then
+      echo "This build will get pushed!" ; echo "tag = ${TRAVIS_TAG}" ; echo "branch = ${TRAVIS_BRANCH}" ;
+      fi
     - if [[ $TRAVIS_REPO_SLUG == "OpenRCT2/OpenRCT2" ]] && [[ $TRAVIS_PULL_REQUEST != "false" ]] && [[ $TRAVIS_BRANCH == "master" ]]; then echo "Pull requests to master branch are not allowed!" ; exit 1 ; fi
     - if [[ $TRAVIS_OS_NAME == "linux" ]]; then bash scripts/linux/install.sh; export OPENRCT_MAKE_OPTS="-j2 -k all openrct2-cli" ; fi
     - if [[ $TRAVIS_OS_NAME == "osx" ]]; then sudo gem install xcpretty-travis-formatter; fi
