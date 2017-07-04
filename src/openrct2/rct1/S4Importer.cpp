@@ -1779,6 +1779,7 @@ private:
             if (ori == nullptr)
             {
                 missingObjects.push_back(entry);
+                Console::Error::WriteLine("[%s] Object not found.", objectName);
             }
             else
             {
@@ -1786,6 +1787,7 @@ private:
                 if (object == nullptr && objectType != OBJECT_TYPE_SCENERY_SETS)
                 {
                     missingObjects.push_back(entry);
+                    Console::Error::WriteLine("[%s] Object could not be loaded.", objectName);
                 }
                 delete object;
             }

@@ -461,6 +461,7 @@ private:
                 if (ori == nullptr)
                 {
                     invalidEntries.push_back(*entry);
+                    ReportMissingObject(entry);
                 }
                 else
                 {
@@ -472,6 +473,7 @@ private:
                         if (loadedObject == nullptr)
                         {
                             invalidEntries.push_back(*entry);
+                            ReportObjectLoadProblem(entry);
                         }
                         delete loadedObject;
                     }
