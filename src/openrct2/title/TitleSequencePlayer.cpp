@@ -247,8 +247,7 @@ private:
             _waitCounter = 1;
             break;
         case TITLE_SCRIPT_WAIT:
-		
-			// The waitCounter is measured in 25-ms game ticks. Previously it was seconds * 40 ticks/second, now it is ms / 25 ms/tick
+            // The waitCounter is measured in 25-ms game ticks. Previously it was seconds * 40 ticks/second, now it is ms / 25 ms/tick
             _waitCounter = Math::Min<sint32>(1, command->Seconds / UPDATE_TIME_MS);
             break;
         case TITLE_SCRIPT_LOADMM:
