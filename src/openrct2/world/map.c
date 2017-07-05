@@ -2810,7 +2810,7 @@ void game_command_place_scenery(sint32* eax, sint32* ebx, sint32* ecx, sint32* e
         }
     }
 
-    if(!gCheatsDisableClearanceChecks && !(scenery_entry->small_scenery.flags & SMALL_SCENERY_FLAG18)){
+    if(!gCheatsDisableClearanceChecks && !(scenery_entry->small_scenery.flags & SMALL_SCENERY_FLAG_STACKABLE)){
         if(isOnWater){
             gGameCommandErrorText = STR_CAN_ONLY_BUILD_THIS_ON_LAND;
             *ebx = MONEY32_UNDEFINED;
@@ -2838,7 +2838,7 @@ void game_command_place_scenery(sint32* eax, sint32* ebx, sint32* ecx, sint32* e
     }
 
     if (!gCheatsDisableSupportLimits &&
-        !(scenery_entry->small_scenery.flags & SMALL_SCENERY_FLAG18) &&
+        !(scenery_entry->small_scenery.flags & SMALL_SCENERY_FLAG_STACKABLE) &&
         supportsRequired) {
 
         if(!isOnWater){

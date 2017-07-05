@@ -1135,7 +1135,7 @@ static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid
     if (scenery_type == 0){
         rct_scenery_entry* scenery_entry = get_small_scenery_entry(selected_scenery);
 
-        if (scenery_entry->small_scenery.flags & SMALL_SCENERY_FLAG18){
+        if (scenery_entry->small_scenery.flags & SMALL_SCENERY_FLAG_STACKABLE){
             type = 1;
         }
     }
