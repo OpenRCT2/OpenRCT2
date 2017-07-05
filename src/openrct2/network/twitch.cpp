@@ -535,7 +535,7 @@ namespace Twitch
 
         // Set buffer to the next word / token and skip
         char buffer[32];
-        const char * ch = strchrm(message, " \t");
+        const char * ch = strpbrk(message, " \t");
         safe_strcpy(buffer, message, Math::Min(sizeof(buffer), (size_t)(ch - message + 1)));
         ch = strskipwhitespace(ch);
 
@@ -546,7 +546,7 @@ namespace Twitch
             bool handled = false;
 
             if (gPeepwatchEnable) {
-                const char * nameEnd = strchrm(ch, ":");
+                const char * nameEnd = strpbrk(ch, ":");
 
                 if (nameEnd) {
                     char giverName[256];
@@ -554,7 +554,7 @@ namespace Twitch
 
                     const char *actionStart = strskipwhitespace(nameEnd + 1);
 
-                    const char * ch2 = strchrm(actionStart, " \t");
+                    const char * ch2 = strpbrk(actionStart, " \t");
 
                     safe_strcpy(buffer, actionStart, Math::Min(sizeof(buffer), (size_t)(ch2 - actionStart + 1)));
                     ch2 = strskipwhitespace(ch2);

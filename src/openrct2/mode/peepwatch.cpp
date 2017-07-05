@@ -14,6 +14,8 @@
 *****************************************************************************/
 #pragma endregion
 
+#pragma clang diagnostic ignored "-Wunused-variable"
+
 extern "C"
 {
 #include "./peepwatch.h"
@@ -25,9 +27,9 @@ void peepwatch_update() { }
 
 #else
 
-#include "../core/List.hpp"
 #include "../core/Math.hpp"
 #include "../core/String.hpp"
+#include "../config/Config.h"
 #include <string> 
 #include <sstream> 
 #include <locale> 
@@ -35,8 +37,6 @@ void peepwatch_update() { }
 
 extern "C"
 {
-#include "../addresses.h"
-#include "../config.h"
 #include "../drawing/drawing.h"
 #include "../game.h"
 #include "../interface/console.h"
@@ -51,6 +51,7 @@ extern "C"
 #include "../management/marketing.h"
 #include "../cheats.h"
 #include "../network/twitch.h"
+#include "../platform/platform.h"
 }
 
 #include "../core/FileStream.hpp"
@@ -159,7 +160,7 @@ namespace Peepwatch
 		float		ExcitementGoodwill;
 
 		void Reset() {
-			ZeroMemory(this, sizeof(WatchedPeep));
+			Memory::Set(this, 0, sizeof(WatchedPeep));
 		}
 	};
 
@@ -179,7 +180,7 @@ namespace Peepwatch
 	static float				_watchingPositionPreviousTarget[3];
 	static float				_watchingPositionDelta[3];
 
-	static List<WatchedPeep>	_watchedPeeps;
+	static std::vector<WatchedPeep>	_watchedPeeps;
 
 	static const uint8			RidePenaltyCount = 128;
 
@@ -240,7 +241,7 @@ namespace Peepwatch
 	static void RichPeepState(char*, rct_peep*);
 
 	static void UpdateStep() {
-		List<WatchedPeep>::iterator it = _watchedPeeps.begin();
+		std::vector<WatchedPeep>::iterator it = _watchedPeeps.begin();
 		while (it != _watchedPeeps.end()) {
 			rct_peep *peep = GET_PEEP(it->SpriteId);
 
@@ -260,11 +261,11 @@ namespace Peepwatch
 		}
 
 		if ((_updateTickNumber % 500) == 0) {
-			if (_watchedPeeps.GetCount() >= (uint32)_totalTrackCount) {
-				_watchedPeeps.RemoveAt(_watchedPeeps.GetCount() - 1);
+			if (_watchedPeeps.size() >= (uint32)_totalTrackCount) {
+				_watchedPeeps.pop_back();
 			}
 		}
-		if ((_updateTickNumber % 25) == 0 && _watchedPeeps.GetCount() < (uint32)_totalTrackCount) {
+		if ((_updateTickNumber % 25) == 0 && _watchedPeeps.size() < (uint32)_totalTrackCount) {
 			AddNewWatchedPeep();
 		}
 
@@ -274,7 +275,7 @@ namespace Peepwatch
 			m.FollowWeight = 0.0f;
 		}
 
-		if (_watchedPeeps.GetCount() > 0) {
+		if (_watchedPeeps.size() > 0) {
 			_watchedPeeps[0].FollowWeight = 1.0f;
 		}
 
@@ -309,9 +310,9 @@ namespace Peepwatch
 
 		uint16 sprite_index;
 
-		sprite_index = gSpriteListHead[SPRITE_LIST_VEHICLE];
+		sprite_index = gSpriteListHead[SPRITE_LIST_TRAIN];
 		while (sprite_index != SPRITE_INDEX_NULL) {
-			rct_vehicle *vehicle	= &(g_sprite_list[sprite_index].vehicle);
+			rct_vehicle *vehicle	= &(get_sprite(sprite_index)->vehicle);
 			rct_ride	*ride		= get_ride(vehicle->ride);
 
 			if (vehicle->status == VEHICLE_STATUS_CRASHED) {
@@ -501,10 +502,10 @@ namespace Peepwatch
 			}
 		}
 
-		for (uint32 i = 0; i < _watchedPeeps.GetCount(); i++) {
+		for (uint32 i = 0; i < _watchedPeeps.size(); i++) {
 			WatchedPeep &firstPeep = _watchedPeeps[i];
 
-			for (uint32 j = i + 1; j < _watchedPeeps.GetCount(); j++) {
+			for (uint32 j = i + 1; j < _watchedPeeps.size(); j++) {
 				WatchedPeep &peep = _watchedPeeps[j];
 
 				float	offset[3];
@@ -514,7 +515,7 @@ namespace Peepwatch
 
 				float distance = sqrt(offset[0] * offset[0] + offset[1] * offset[1] + offset[2] * offset[2]);
 
-				float relevance = max(0.0f, 500.0f - distance) / 500.0f;
+				float relevance = Math::Max(0.0f, 500.0f - distance) / 500.0f;
 
 				firstPeep.ExcitementContinuous	+= relevance * relevance * 5.0f;
 				peep.ExcitementContinuous		+= relevance * relevance * 5.0f;
@@ -532,7 +533,7 @@ namespace Peepwatch
 							fPeep->action = PEEP_ACTION_JOY;
 							fPeep->action_frame = 0;
 							fPeep->action_sprite_image_offset = 0;
-							sub_693B58(fPeep);
+							peep_update_current_action_sprite_type(fPeep);
 							invalidate_sprite_2((rct_sprite*)fPeep);
 							firstPeep.GreetTimeout = 200;
 						}
@@ -543,7 +544,7 @@ namespace Peepwatch
 							fPeep->action = PEEP_ACTION_JOY;
 							fPeep->action_frame = 0;
 							fPeep->action_sprite_image_offset = 0;
-							sub_693B58(fPeep);
+							peep_update_current_action_sprite_type(fPeep);
 							invalidate_sprite_2((rct_sprite*)fPeep);
 							peep.GreetTimeout = 200;
 						}
@@ -557,7 +558,7 @@ namespace Peepwatch
 			m.ExcitementSort		= m.ExcitementEffective + m.ExcitementAudienceParticipation;
 		}
 
-		if (_watchedPeeps.GetCount() > 0) {
+		if (_watchedPeeps.size() > 0) {
 			_watchedPeeps[0].ExcitementSort		+= 4.0f;
 		}
 	}
@@ -574,11 +575,11 @@ namespace Peepwatch
 		int		matchBegins		= -1;
 		int		matchContains	= -1;
 
-		for (uint32 i = 0; i < _watchedPeeps.GetCount(); i++) {
+		for (uint32 i = 0; i < _watchedPeeps.size(); i++) {
 			rct_peep *peep = GET_PEEP(_watchedPeeps[i].SpriteId);
 
 			utf8 peepNameBuf[256];
-			format_string(peepNameBuf, peep->name_string_idx, &peep->id);
+			format_string(peepNameBuf, sizeof(peepNameBuf), peep->name_string_idx, &peep->id);
 
 			if (String::Equals(peepNameBuf, lookup, true)) {
 				return (int)i;
@@ -614,7 +615,7 @@ namespace Peepwatch
 		rct_ride *ride;
 		FOR_ALL_RIDES(index, ride) {
 			utf8 rideNameBuf[256];
-			format_string(rideNameBuf, ride->name, &ride->name_arguments);
+			format_string(rideNameBuf, sizeof(rideNameBuf), ride->name, &ride->name_arguments);
 
 		//	std::stringstream stream;
 		//	stream << "Trying " << index << ": " << rideNameBuf;
@@ -702,7 +703,7 @@ namespace Peepwatch
 	static void UpdateStepSort() {
 		// Just a dumb sort
 
-		for (int i = _watchedPeeps.GetCount() - 1; i > 0; i--) {
+		for (int i = _watchedPeeps.size() - 1; i > 0; i--) {
 			if (_watchedPeeps[i].ExcitementSort < _watchedPeeps[i-1].ExcitementSort)
 				continue;
 
@@ -776,7 +777,7 @@ namespace Peepwatch
 
 	static void AddNewWatchedPeep()
 	{
-		sint16		countOverall	= -(sint16)(_watchedPeeps.GetCount());
+		sint16		countOverall	= -(sint16)(_watchedPeeps.size());
 		sint16		countTwitch		= 0;
 
 		for (WatchedPeep &m : _watchedPeeps) {
@@ -846,7 +847,7 @@ namespace Peepwatch
 		newPeep.DefaultTrouserColour	= peep->trousers_colour;
 		newPeep.DefaultUmbrellaColour	= peep->umbrella_colour;
 
-		_watchedPeeps.Add(newPeep);
+		_watchedPeeps.push_back(newPeep);
 	}
 
 	static void UpdatePeepFlash()
@@ -1003,7 +1004,7 @@ namespace Peepwatch
 		set_format_arg(4, uint32, argument2);
 		set_format_arg(8, uint16, 0);
 
-		format_string(tmp, STR_BLACK_STRING, gCommonFormatArgs);
+		format_string(tmp, sizeof(tmp), STR_BLACK_STRING, gCommonFormatArgs);
 
 		std::stringstream stream;
 
@@ -1015,14 +1016,14 @@ namespace Peepwatch
 			if (int drink = peep_get_drink(peep)) {
 				window_guest_inventory_format_item(peep, drink);
 
-				format_string(tmp, STR_PEEPWATCH_DRINKING, gCommonFormatArgs);
+				format_string(tmp, sizeof(tmp), STR_PEEPWATCH_DRINKING, gCommonFormatArgs);
 
 				stream << tmp;
 			}
 			else if (int food = peep_get_foodstuff(peep)) {
 				window_guest_inventory_format_item(peep, food);
 
-				format_string(tmp, STR_PEEPWATCH_EATING, gCommonFormatArgs);
+				format_string(tmp, sizeof(tmp), STR_PEEPWATCH_EATING, gCommonFormatArgs);
 
 				stream << tmp;
 			}
@@ -1038,8 +1039,8 @@ namespace Peepwatch
 		std::stringstream out;
 		utf8 tmp[1000];
 
-		if (_watchedPeeps.GetCount() == 0) {
-			format_string(tmp, STR_PEEPWATCH_NOBODY_IS_HERE, 0);
+		if (_watchedPeeps.size() == 0) {
+			format_string(tmp, sizeof(tmp), STR_PEEPWATCH_NOBODY_IS_HERE, 0);
 			out << tmp;
 		}
 		else {
@@ -1048,7 +1049,7 @@ namespace Peepwatch
 
 			set_format_arg(0, uint16, peep->name_string_idx);
 			set_format_arg(2, uint32, peep->id);
-			format_string(tmp, STR_PEEPWATCH_WATCHING, gCommonFormatArgs);
+			format_string(tmp, sizeof(tmp), STR_PEEPWATCH_WATCHING, gCommonFormatArgs);
 
 			out << tmp << " -- ";
 
@@ -1056,11 +1057,8 @@ namespace Peepwatch
 			out << tmp;
 		}
 
-		SDL_RWops *file = SDL_RWFromFile(_ioCurrentName, "w+");
-		if (file) {
-			SDL_RWwrite(file, out.str().c_str(), out.str().length(), 1);
-			SDL_RWclose(file);
-		}
+		auto fs = FileStream(_ioCurrentName, FILE_MODE_WRITE);
+		fs.WriteString(out.str());
 	}
 
 	static void UpdateFileCurrentThought()
@@ -1071,8 +1069,8 @@ namespace Peepwatch
 
 		std::stringstream out;
 
-		if (_watchedPeeps.GetCount() == 0) {
-			format_string(tmp, STR_PEEPWATCH_NOBODY_IS_HERE, 0);
+		if (_watchedPeeps.size() == 0) {
+			format_string(tmp, sizeof(tmp), STR_PEEPWATCH_NOBODY_IS_HERE, 0);
 			out << tmp;
 		}
 		else {
@@ -1092,34 +1090,26 @@ namespace Peepwatch
 				}
 			}
 			if (i != PEEP_MAX_THOUGHTS) {
-				get_arguments_from_thought(peep->thoughts[i], &argument1, &argument2);
-
-				set_format_arg(0, uint32, argument1);
-				set_format_arg(4, uint32, argument2);
-				set_format_arg(8, uint16, 0);
-
-				format_string(tmp, STR_PEEPWATCH_THOUGHT, gCommonFormatArgs);
+				peep_thought_set_format_args(&peep->thoughts[i]);
+				format_string(tmp, sizeof(tmp), STR_PEEPWATCH_THOUGHT, gCommonFormatArgs);
 				out << (tmp + 1);
 			}
 			else {
 				if (watch.PeopleAheadInCue > 0) {
 					set_format_arg(0, uint16, watch.PeopleAheadInCue);
-					format_string(tmp, STR_PEEPWATCH_PEEPS_AHEAD, gCommonFormatArgs);
+					format_string(tmp, sizeof(tmp), STR_PEEPWATCH_PEEPS_AHEAD, gCommonFormatArgs);
 					out << tmp;
 				}
 				if (watch.DistanceToTarget > 0.0f) {
 					set_format_arg(0, sint16, (sint16)(watch.DistanceToTarget) >> 4);
-					format_string(tmp, STR_PEEPWATCH_DISTANCE, gCommonFormatArgs);
+					format_string(tmp, sizeof(tmp), STR_PEEPWATCH_DISTANCE, gCommonFormatArgs);
 					out << tmp;
 				}
 			}
 		}
 
-		SDL_RWops *file = SDL_RWFromFile(_ioCurrentThought, "w+");
-		if (file) {
-			SDL_RWwrite(file, out.str().c_str(), out.str().length(), 1);
-			SDL_RWclose(file);
-		}
+		auto fs = FileStream(_ioCurrentThought, FILE_MODE_WRITE);
+		fs.WriteString(out.str());
 	}
 
 	static void UpdateFileCurrentState()
@@ -1130,8 +1120,8 @@ namespace Peepwatch
 
 		std::stringstream out;
 
-		if (_watchedPeeps.GetCount() == 0) {
-			format_string(tmp, STR_PEEPWATCH_NOBODY_IS_HERE, 0);
+		if (_watchedPeeps.size() == 0) {
+			format_string(tmp, sizeof(tmp), STR_PEEPWATCH_NOBODY_IS_HERE, 0);
 			out << tmp;
 		}
 		else {
@@ -1154,14 +1144,14 @@ namespace Peepwatch
 					happiness /= 255;
 
 					set_format_arg(0, uint16, (uint16)(happiness));
-					format_string(tmp, STR_PEEPWATCH_SHOW_HAPPY, gCommonFormatArgs);
+					format_string(tmp, sizeof(tmp), STR_PEEPWATCH_SHOW_HAPPY, gCommonFormatArgs);
 					out << tmp << "\r\n";
 
 					energy *= 100;
 					energy /= 255;
 
 					set_format_arg(0, uint16, (uint16)(energy));
-					format_string(tmp, STR_PEEPWATCH_SHOW_ENERGY, gCommonFormatArgs);
+					format_string(tmp, sizeof(tmp), STR_PEEPWATCH_SHOW_ENERGY, gCommonFormatArgs);
 					out << tmp << "\r\n";
 
 					if (hunger > 190)
@@ -1175,7 +1165,7 @@ namespace Peepwatch
 					hunger /= 255;
 
 					set_format_arg(0, uint16, (uint16)(hunger));
-					format_string(tmp, STR_PEEPWATCH_SHOW_HUNGER, gCommonFormatArgs);
+					format_string(tmp, sizeof(tmp), STR_PEEPWATCH_SHOW_HUNGER, gCommonFormatArgs);
 					out << tmp << "\r\n";
 
 					if (thirst > 190)
@@ -1189,7 +1179,7 @@ namespace Peepwatch
 					thirst /= 255;
 
 					set_format_arg(0, uint16, (uint16)(thirst));
-					format_string(tmp, STR_PEEPWATCH_SHOW_THIRST, gCommonFormatArgs);
+					format_string(tmp, sizeof(tmp), STR_PEEPWATCH_SHOW_THIRST, gCommonFormatArgs);
 					out << tmp << "\r\n";
 
 					nausea -= 32;
@@ -1200,7 +1190,7 @@ namespace Peepwatch
 					nausea /= 255;
 
 					set_format_arg(0, uint16, (uint16)(nausea));
-					format_string(tmp, STR_PEEPWATCH_SHOW_NAUSEA, gCommonFormatArgs);
+					format_string(tmp, sizeof(tmp), STR_PEEPWATCH_SHOW_NAUSEA, gCommonFormatArgs);
 					out << tmp << "\r\n";
 
 					bathroom -= 32;
@@ -1211,7 +1201,7 @@ namespace Peepwatch
 					bathroom /= 255;
 
 					set_format_arg(0, uint16, (uint16)(bathroom));
-					format_string(tmp, STR_PEEPWATCH_SHOW_BATHROOM, gCommonFormatArgs);
+					format_string(tmp, sizeof(tmp), STR_PEEPWATCH_SHOW_BATHROOM, gCommonFormatArgs);
 					out << tmp;
 
 					break;
@@ -1222,52 +1212,52 @@ namespace Peepwatch
 
 					set_format_arg(0, money32, (money32)(money));
 					set_format_arg(4, money32, (money32)(spent));
-					format_string(tmp, STR_PEEPWATCH_SHOW_CASH, gCommonFormatArgs);
+					format_string(tmp, sizeof(tmp), STR_PEEPWATCH_SHOW_CASH, gCommonFormatArgs);
 					out << tmp << "\r\n";
 
 					if (peep->paid_to_enter > 0) {
 						set_format_arg(0, money32, (money32)(peep->paid_to_enter));
-						format_string(tmp, STR_PEEPWATCH_SHOW_ENTRANCE, gCommonFormatArgs);
+						format_string(tmp, sizeof(tmp), STR_PEEPWATCH_SHOW_ENTRANCE, gCommonFormatArgs);
 						out << tmp << "\r\n";
 					}
 
 					set_format_arg(0, uint16, (uint16)(peep->no_of_rides));
 					if (peep->paid_on_rides == 0) {
-						format_string(tmp, STR_PEEPWATCH_SHOW_RIDES_FREE, gCommonFormatArgs);
+						format_string(tmp, sizeof(tmp), STR_PEEPWATCH_SHOW_RIDES_FREE, gCommonFormatArgs);
 					}
 					else {
 						set_format_arg(2, money32, (money32)(peep->paid_on_rides));
-						format_string(tmp, STR_PEEPWATCH_SHOW_RIDES, gCommonFormatArgs);
+						format_string(tmp, sizeof(tmp), STR_PEEPWATCH_SHOW_RIDES, gCommonFormatArgs);
 					}
 					out << tmp << "\r\n";
 
 					set_format_arg(0, uint16, (uint16)(peep->no_of_food));
 					if (peep->paid_on_souvenirs == 0) {
-						format_string(tmp, STR_PEEPWATCH_SHOW_FOOD_FREE, gCommonFormatArgs);
+						format_string(tmp, sizeof(tmp), STR_PEEPWATCH_SHOW_FOOD_FREE, gCommonFormatArgs);
 					}
 					else {
 						set_format_arg(2, money32, (money32)(peep->paid_on_food));
-						format_string(tmp, STR_PEEPWATCH_SHOW_FOOD, gCommonFormatArgs);
+						format_string(tmp, sizeof(tmp), STR_PEEPWATCH_SHOW_FOOD, gCommonFormatArgs);
 					}
 					out << tmp << "\r\n";
 
 					set_format_arg(0, uint16, (uint16)(peep->no_of_drinks));
 					if (peep->paid_on_drink == 0) {
-						format_string(tmp, STR_PEEPWATCH_SHOW_DRINKS_FREE, gCommonFormatArgs);
+						format_string(tmp, sizeof(tmp), STR_PEEPWATCH_SHOW_DRINKS_FREE, gCommonFormatArgs);
 					}
 					else {
 						set_format_arg(2, money32, (money32)(peep->paid_on_drink));
-						format_string(tmp, STR_PEEPWATCH_SHOW_DRINKS, gCommonFormatArgs);
+						format_string(tmp, sizeof(tmp), STR_PEEPWATCH_SHOW_DRINKS, gCommonFormatArgs);
 					}
 					out << tmp << "\r\n";
 						
 					set_format_arg(0, uint16, (uint16)(peep->no_of_souvenirs));
 					if (peep->paid_on_souvenirs == 0) {
-						format_string(tmp, STR_PEEPWATCH_SHOW_SOUVENIRS_FREE, gCommonFormatArgs);
+						format_string(tmp, sizeof(tmp), STR_PEEPWATCH_SHOW_SOUVENIRS_FREE, gCommonFormatArgs);
 					}
 					else {
 						set_format_arg(2, money32, (money32)(peep->paid_on_souvenirs));
-						format_string(tmp, STR_PEEPWATCH_SHOW_SOUVENIRS, gCommonFormatArgs);
+						format_string(tmp, sizeof(tmp), STR_PEEPWATCH_SHOW_SOUVENIRS, gCommonFormatArgs);
 					}
 					out << tmp;
 
@@ -1279,13 +1269,13 @@ namespace Peepwatch
 						eax >>= 11;
 
 						set_format_arg(0, uint16, (uint16)(eax));
-						format_string(tmp, STR_PEEPWATCH_SHOW_TIME_IN_PARK, gCommonFormatArgs);
+						format_string(tmp, sizeof(tmp), STR_PEEPWATCH_SHOW_TIME_IN_PARK, gCommonFormatArgs);
 						out << tmp;
 					}
 					break;
 				}
 				case 2: {
-					format_string(tmp, STR_PEEPWATCH_ITEM_LIST_HEADER, gCommonFormatArgs);
+					format_string(tmp, sizeof(tmp), STR_PEEPWATCH_ITEM_LIST_HEADER, gCommonFormatArgs);
 					out << tmp << "\r\n";
 
 					bool first = true;
@@ -1300,12 +1290,12 @@ namespace Peepwatch
 						}
 
 						rct_string_id stringId = window_guest_inventory_format_item(peep, item);
-						format_string(tmp, STR_PEEPWATCH_ITEM_LIST_ITEM, gCommonFormatArgs);
+						format_string(tmp, sizeof(tmp), STR_PEEPWATCH_ITEM_LIST_ITEM, gCommonFormatArgs);
 						out << tmp;
 					}
 
 					if (first) {
-						format_string(tmp, STR_PEEPWATCH_ITEM_LIST_NOTHING, gCommonFormatArgs);
+						format_string(tmp, sizeof(tmp), STR_PEEPWATCH_ITEM_LIST_NOTHING, gCommonFormatArgs);
 						out << tmp << "\r\n";
 					}
 
@@ -1314,11 +1304,8 @@ namespace Peepwatch
 			}
 		}
 
-		SDL_RWops *file = SDL_RWFromFile(_ioCurrentState, "w+");
-		if (file) {
-			SDL_RWwrite(file, out.str().c_str(), out.str().length(), 1);
-			SDL_RWclose(file);
-		}
+		auto fs = FileStream(_ioCurrentState, FILE_MODE_WRITE);
+		fs.WriteString(out.str());
 	}
 
 	static void UpdateFileAllPeeps()
@@ -1330,22 +1317,22 @@ namespace Peepwatch
 
 		std::stringstream out;
 
-		if (_watchedPeeps.GetCount() == 0) {
-			format_string(tmp, STR_PEEPWATCH_NOBODY_IS_HERE, 0);
+		if (_watchedPeeps.size() == 0) {
+			format_string(tmp, sizeof(tmp), STR_PEEPWATCH_NOBODY_IS_HERE, 0);
 		}
 		else {
-			format_string(star, STR_PEEPWATCH_IMPORTANCE_STAR, 0);
-			format_string(finger, STR_PEEPWATCH_IMPORTANCE_PUSH, 0);
+			format_string(star, sizeof(star), STR_PEEPWATCH_IMPORTANCE_STAR, 0);
+			format_string(finger, sizeof(finger), STR_PEEPWATCH_IMPORTANCE_PUSH, 0);
 
 			int index = 0;
 
-			format_string(tmp, STR_PEEPWATCH_GUEST_LIST_HEADER, 0);
+			format_string(tmp, sizeof(tmp), STR_PEEPWATCH_GUEST_LIST_HEADER, 0);
 			out << tmp << "\r\n";
 
 			for (WatchedPeep &watch : _watchedPeeps) {
 				rct_peep	*peep = GET_PEEP(watch.SpriteId);
 
-				format_string(tmp, peep->name_string_idx, &peep->id);
+				format_string(tmp, sizeof(tmp), peep->name_string_idx, &peep->id);
 				out << tmp << " ";
 
 				float watchSort = watch.ExcitementSort - watch.ExcitementAudienceParticipation;
@@ -1381,13 +1368,9 @@ namespace Peepwatch
 				uint32 argument1, argument2;
 
 				if (i != PEEP_MAX_THOUGHTS) {
-					get_arguments_from_thought(peep->thoughts[i], &argument1, &argument2);
+					peep_thought_set_format_args(&peep->thoughts[i]);
 
-					set_format_arg(0, uint32, argument1);
-					set_format_arg(4, uint32, argument2);
-					set_format_arg(8, uint16, 0);
-
-					format_string(tmp, STR_PEEPWATCH_THOUGHT, gCommonFormatArgs);
+					format_string(tmp, sizeof(tmp), STR_PEEPWATCH_THOUGHT, gCommonFormatArgs);
 					out << (tmp+1);
 				}
 				else {
@@ -1396,12 +1379,12 @@ namespace Peepwatch
 
 					if (watch.PeopleAheadInCue > 0) {
 						set_format_arg(0, uint16, watch.PeopleAheadInCue);
-						format_string(tmp, STR_PEEPWATCH_PEEPS_AHEAD_SHORT, gCommonFormatArgs);
+						format_string(tmp, sizeof(tmp), STR_PEEPWATCH_PEEPS_AHEAD_SHORT, gCommonFormatArgs);
 						out << " " << tmp;
 					}
 					if (watch.DistanceToTarget > 0.0f) {
 						set_format_arg(0, sint16, (sint16)(watch.DistanceToTarget) >> 4);
-						format_string(tmp, STR_PEEPWATCH_DISTANCE_SHORT, gCommonFormatArgs);
+						format_string(tmp, sizeof(tmp), STR_PEEPWATCH_DISTANCE_SHORT, gCommonFormatArgs);
 						out << " " << tmp;
 					}
 				}
@@ -1409,11 +1392,8 @@ namespace Peepwatch
 			}
 		}
 
-		SDL_RWops *file = SDL_RWFromFile(_ioAllPeeps, "w+");
-		if (file) {
-			SDL_RWwrite(file, out.str().c_str(), out.str().length(), 1);
-			SDL_RWclose(file);
-		}
+		auto fs = FileStream(_ioAllPeeps, FILE_MODE_WRITE);
+		fs.WriteString(out.str());
 	}
 
 	static void Begin()
@@ -1427,7 +1407,7 @@ namespace Peepwatch
 		else {
 			news_item_add_to_queue(NEWS_ITEM_AWARD, STR_PEEPWATCH_ENABLE_MAINTENANCE_OFF, 0);
 		}
-		_updateLastTick = SDL_GetTicks();
+		_updateLastTick = platform_get_ticks();
 
 		_updateTickNumber					= 0;
 		_updateStepTickLeft					= 0;
@@ -1440,20 +1420,20 @@ namespace Peepwatch
 		_watchingPositionPreviousTarget[0]	= 0.0f;
 		_watchingPositionPreviousTarget[1]	= 0.0f;
 		_watchingPositionPreviousTarget[2]	= 0.0f;
-		_watchedPeeps.Clear();
+		_watchedPeeps.clear();
 
 		_rideBasePenaltyIndex			= 0;
 		memset(_rideBasePenalties, 0xFFFFFFFF, sizeof(uint8) * 128 / 4);
 		_rideTypePenaltyIndex			= 0;
 		memset(_rideTypePenalties, 0xFFFFFFFF, sizeof(uint8) * 128 / 4);
 
-		platform_get_user_directory(_ioCurrentName, NULL);
+		platform_get_user_directory(_ioCurrentName, NULL, MAX_PATH);
 		safe_strcat(_ioCurrentName, "peepwatch_current.txt", MAX_PATH);
-		platform_get_user_directory(_ioCurrentThought, NULL);
+		platform_get_user_directory(_ioCurrentThought, NULL, MAX_PATH);
 		safe_strcat(_ioCurrentThought, "peepwatch_thought.txt", MAX_PATH);
-		platform_get_user_directory(_ioCurrentState, NULL);
+		platform_get_user_directory(_ioCurrentState, NULL, MAX_PATH);
 		safe_strcat(_ioCurrentState, "peepwatch_state.txt", MAX_PATH);
-		platform_get_user_directory(_ioAllPeeps, NULL);
+		platform_get_user_directory(_ioAllPeeps, NULL, MAX_PATH);
 		safe_strcat(_ioAllPeeps, "peepwatch_allpeeps.txt", MAX_PATH);
 	}
 
@@ -1469,11 +1449,11 @@ namespace Peepwatch
 
 			if (_updateLastTick == 0) {
 				Begin();
-				_updateLastTick = SDL_GetTicks();
+				_updateLastTick = platform_get_ticks();
 				return;
 			}
 
-			uint32 currentTime = SDL_GetTicks();
+			uint32 currentTime = platform_get_ticks();
 			uint32 timeSinceLastTick = currentTime - _updateLastTick;
 			_updateStepTickLeft		+= timeSinceLastTick;
 			_updateLastTick			= currentTime;
