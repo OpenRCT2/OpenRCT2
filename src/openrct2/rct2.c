@@ -392,7 +392,7 @@ bool rct2_open_file(const char *path)
             return false;
         }
     }
-
+    title_load();
     return false;
 }
 
