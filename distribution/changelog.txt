@@ -26,6 +26,7 @@
 - Fix: [#3846, #5749] Crash when testing coaster with a diagonal lift in block brake mode
 - Fix: [#4054] Sorting rides by track type: Misleading research messages
 - Fix: [#4055] Sort rides by track type: Sorting rule is not really clear (inconsistent?)
+- Fix: [#4512] Invisible map edge tiles corrupted
 - Fix: [#5009] Ride rating calculations can overflow
 - Fix: [#5253] RCT1 park value conversion factor too high
 - Fix: [#5400] New Ride window does not focus properly on newly invented ride.
