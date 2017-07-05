@@ -262,6 +262,10 @@ void sprite_clear_all_unused()
         sprite_reset(sprite);
         sprite->linked_list_type_offset = SPRITE_LIST_NULL * 2;
 
+        // This shouldn't be necessary, as sprite_reset() preserves the index
+        // but it has been left in as a safety net in case the index isn't set correctly
+        sprite->sprite_index = spriteIndex;
+
         // sprite->next_in_quadrant will only end up as zero owing to corruption
         // most likely due to previous builds not preserving it when resetting sprites
         // We reset it to SPRITE_INDEX_NULL to prevent cycles in the sprite lists
