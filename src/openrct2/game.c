@@ -53,6 +53,7 @@
 #include "world/Climate.h"
 #include "world/entrance.h"
 #include "world/footpath.h"
+#include "world/map.h"
 #include "world/map_animation.h"
 #include "world/park.h"
 #include "world/scenery.h"
@@ -1025,8 +1026,8 @@ void game_convert_strings_to_rct2(rct_s6_data *s6)
 
 // OpenRCT2 workaround to recalculate some values which are saved redundantly in the save to fix corrupted files.
 // For example recalculate guest count by looking at all the guests instead of trusting the value in the file.
-void game_fix_save_vars() {
-
+void game_fix_save_vars()
+{
     // Recalculates peep count after loading a save to fix corrupted files
     rct_peep* peep;
     uint16 spriteIndex;
@@ -1041,6 +1042,7 @@ void game_fix_save_vars() {
     peep_sort();
 
     // Fixes broken saves where a surface element could be null
+    // and broken saves with incorrect invisible map border tiles
     for (sint32 y = 0; y < 256; y++) {
         for (sint32 x = 0; x < 256; x++) {
             rct_map_element *mapElement = map_get_surface_element_at(x, y);
@@ -1053,6 +1055,15 @@ void game_fix_save_vars() {
                     log_error("Unable to fix: Map element limit reached.");
                     return;
                 }
+            }
+
+            // Fix the invisible border tiles.
+            // At this point, we can be sure that mapElement is not NULL.
+            if (x == 0 || x == gMapSize - 1 || y == 0 || y == gMapSize -1)
+            {
+                mapElement->base_height = 2;
+                mapElement->clearance_height = 2;
+                mapElement->properties.surface.slope = 0;
             }
         }
     }
