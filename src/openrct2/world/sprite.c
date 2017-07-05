@@ -259,15 +259,13 @@ void sprite_clear_all_unused()
     spriteIndex = gSpriteListHead[SPRITE_LIST_NULL];
     while (spriteIndex != SPRITE_INDEX_NULL) {
         sprite = &get_sprite(spriteIndex)->unknown;
-        nextSpriteIndex = sprite->next;
-        previousSpriteIndex = sprite->previous;
-        memset(sprite, 0, sizeof(rct_sprite));
-        sprite->sprite_identifier = SPRITE_IDENTIFIER_NULL;
-        sprite->next = nextSpriteIndex;
-        sprite->previous = previousSpriteIndex;
+        sprite_reset(sprite);
         sprite->linked_list_type_offset = SPRITE_LIST_NULL * 2;
-        sprite->sprite_index = spriteIndex;
-        sprite->next_in_quadrant = (sprite->next_in_quadrant == 0) ? SPRITE_INDEX_NULL : sprite->next_in_quadrant;
+
+        // sprite->next_in_quadrant will only end up as zero owing to corruption
+        // most likely due to previous builds not preserving it when resetting sprites
+        // We reset it to SPRITE_INDEX_NULL to prevent cycles in the sprite lists
+        if (sprite->next_in_quadrant == 0) { sprite->next_in_quadrant = SPRITE_INDEX_NULL; }
         _spriteFlashingList[spriteIndex] = false;
         spriteIndex = nextSpriteIndex;
     }
@@ -290,6 +288,7 @@ static void sprite_reset(rct_unk_sprite *sprite)
     sprite->next_in_quadrant = next_in_quadrant;
     sprite->previous = prev;
     sprite->sprite_index = sprite_index;
+    sprite->sprite_identifier = SPRITE_IDENTIFIER_NULL;
 }
 
 // Resets all sprites in SPRITE_LIST_NULL list
@@ -827,7 +826,7 @@ bool sprite_get_flashing(rct_sprite *sprite)
     return _spriteFlashingList[sprite->unknown.sprite_index];
 }
 
-static bool sprite_is_in_cycle(uint16 sprite_idx, bool fix)
+static bool sprite_is_in_cycle(uint16 sprite_idx)
 {
     if (sprite_idx == SPRITE_INDEX_NULL)
     {
@@ -856,19 +855,13 @@ static bool sprite_is_in_cycle(uint16 sprite_idx, bool fix)
         if (fast == slow)
         {
             cycled = true;
-            if (fix)
-            {
-                rct_sprite * spr = get_sprite(sprite_idx);
-                // There may be a better solution than simply setting this to 0xFFFF
-                spr->unknown.next = SPRITE_INDEX_NULL;
-            }
             break;
         }
     }
     return cycled;
 }
 
-static bool sprite_is_in_cycle_quadrant(uint16 sprite_idx, bool fix)
+static bool sprite_is_in_quadrant_cycle(uint16 sprite_idx)
 {
     if (sprite_idx == SPRITE_INDEX_NULL)
     {
@@ -897,13 +890,6 @@ static bool sprite_is_in_cycle_quadrant(uint16 sprite_idx, bool fix)
         if (fast == slow)
         {
             cycled = true;
-            if (fix)
-            {
-                rct_sprite * spr = get_sprite(sprite_idx);
-
-                // There may be a better solution than simply setting this to 0xFFFF
-                spr->unknown.next_in_quadrant = SPRITE_INDEX_NULL;
-            }
             break;
         }
     }
@@ -912,8 +898,15 @@ static bool sprite_is_in_cycle_quadrant(uint16 sprite_idx, bool fix)
 
 bool check_for_sprite_list_cycles(bool fix)
 {
-    for (sint32 i = 0; i < 6; i++) {
+    for (sint32 i = 0; i < NUM_SPRITE_LISTS; i++) {
         if (sprite_is_in_cycle(gSpriteListHead[i], fix)) {
+            if (fix)
+            {
+                rct_sprite * spr = get_sprite(gSpriteListHead[i]);
+
+                // There may be a better solution than simply setting this to 0xFFFF
+                spr->unknown.next = SPRITE_INDEX_NULL;
+            }
             return true;
         }
     }
@@ -922,8 +915,15 @@ bool check_for_sprite_list_cycles(bool fix)
 
 bool check_for_spatial_index_cycles(bool fix)
 {
-    for (size_t i = 0; i < 0x10000; i++) {
-        if (sprite_is_in_cycle_quadrant(gSpriteSpatialIndex[i], fix)) {
+    for (sint32 i = 0; i < SPATIAL_INDEX_LOCATION_NULL; i++) {
+        if (sprite_is_in_quadrant_cycle(gSpriteSpatialIndex[i])) {
+            if (fix)
+            {
+                rct_sprite * spr = get_sprite(gSpriteSpatialIndex[i]);
+
+                // There may be a better solution than simply setting this to 0xFFFF
+                spr->unknown.next_in_quadrant = SPRITE_INDEX_NULL;
+            }
             return true;
         }
     }
