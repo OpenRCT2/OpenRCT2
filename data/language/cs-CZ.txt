@@ -4432,6 +4432,14 @@ STR_6119    :Levná horská dráha, kterou lze snadno postavit - má však omeze
 STR_6120    :{BABYBLUE}Nové vozy dostupné pro {STRINGID}:{NEWLINE}{STRINGID}
 STR_6121    :{SMALLFONT}{BLACK}Zajistí práva pro všechny pozemky na mapě
 STR_6122    :Ve scénáři není dostatečný počet horských drah!
+STR_6123    :Nepodařilo se načíst objekty parku
+STR_6124    :Název objektu
+STR_6125    :Typ objektu
+STR_6126    :Neznámý typ
+STR_6127    :Soubor: {STRING}
+STR_6128    :Soubor se nepodařilo načíst, protože využívá objekty, z nichž některé jsou porušené nebo zcela chybí. Seznam takových objektů je k dispozici níže.
+STR_6129    :Kopírovat vybrané do schránky
+STR_6130    :Kopírovat celý seznam do schránky
 
 ###############################################################################
 ## RCT2 Objects

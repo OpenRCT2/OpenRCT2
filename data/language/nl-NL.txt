@@ -4424,6 +4424,14 @@ STR_6119    :Goedkoop en makkelijk te bouwen, maar kan niet zo hoog gebouwd word
 STR_6120    :{BABYBLUE}Nieuw voertuig beschikbaar voor {STRINGID}:{NEWLINE}{STRINGID}
 STR_6121    :{SMALLFONT}{BLACK}Neem al het land op de kaart in bezit
 STR_6122    :Er zijn te weinig achtbanen in het scenario!
+STR_6123    :Fout bij het laden van objecten in het park
+STR_6124    :Objectnaam
+STR_6125    :Objecttype
+STR_6126    :Onbekend type
+STR_6127    :Bestand: {STRING}
+STR_6128    :Het bestand kon niet geladen worden omdat sommige objecten waar het naar verwijst beschadigd zijn of ontbreken. Hieronder staat een lijst van deze objecten.
+STR_6129    :Selectie naar klembord kopiëren
+STR_6130    :Hele lijst naar klembord kopiëren
 
 #############
 # Scenarios #
