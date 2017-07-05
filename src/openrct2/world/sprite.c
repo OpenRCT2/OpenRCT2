@@ -247,34 +247,6 @@ const char * sprite_checksum()
 
 #endif // DISABLE_NETWORK
 
-/**
- * Clears all the unused sprite memory to zero. Probably so that it can be compressed better when saving.
- *  rct2: 0x0069EBA4
- */
-void sprite_clear_all_unused()
-{
-    rct_unk_sprite *sprite;
-    uint16 spriteIndex, nextSpriteIndex, previousSpriteIndex;
-
-    spriteIndex = gSpriteListHead[SPRITE_LIST_NULL];
-    while (spriteIndex != SPRITE_INDEX_NULL) {
-        sprite = &get_sprite(spriteIndex)->unknown;
-        sprite_reset(sprite);
-        sprite->linked_list_type_offset = SPRITE_LIST_NULL * 2;
-
-        // This shouldn't be necessary, as sprite_reset() preserves the index
-        // but it has been left in as a safety net in case the index isn't set correctly
-        sprite->sprite_index = spriteIndex;
-
-        // sprite->next_in_quadrant will only end up as zero owing to corruption
-        // most likely due to previous builds not preserving it when resetting sprites
-        // We reset it to SPRITE_INDEX_NULL to prevent cycles in the sprite lists
-        if (sprite->next_in_quadrant == 0) { sprite->next_in_quadrant = SPRITE_INDEX_NULL; }
-        _spriteFlashingList[spriteIndex] = false;
-        spriteIndex = nextSpriteIndex;
-    }
-}
-
 static void sprite_reset(rct_unk_sprite *sprite)
 {
     // Need to retain how the sprite is linked in lists
@@ -293,6 +265,35 @@ static void sprite_reset(rct_unk_sprite *sprite)
     sprite->previous = prev;
     sprite->sprite_index = sprite_index;
     sprite->sprite_identifier = SPRITE_IDENTIFIER_NULL;
+}
+
+/**
+* Clears all the unused sprite memory to zero. Probably so that it can be compressed better when saving.
+*  rct2: 0x0069EBA4
+*/
+void sprite_clear_all_unused()
+{
+    rct_unk_sprite *sprite;
+    uint16 spriteIndex, nextSpriteIndex;
+
+    spriteIndex = gSpriteListHead[SPRITE_LIST_NULL];
+    while (spriteIndex != SPRITE_INDEX_NULL) {
+        sprite = &get_sprite(spriteIndex)->unknown;
+        nextSpriteIndex = sprite->next;
+        sprite_reset(sprite);
+        sprite->linked_list_type_offset = SPRITE_LIST_NULL * 2;
+
+        // This shouldn't be necessary, as sprite_reset() preserves the index
+        // but it has been left in as a safety net in case the index isn't set correctly
+        sprite->sprite_index = spriteIndex;
+
+        // sprite->next_in_quadrant will only end up as zero owing to corruption
+        // most likely due to previous builds not preserving it when resetting sprites
+        // We reset it to SPRITE_INDEX_NULL to prevent cycles in the sprite lists
+        if (sprite->next_in_quadrant == 0) { sprite->next_in_quadrant = SPRITE_INDEX_NULL; }
+        _spriteFlashingList[spriteIndex] = false;
+        spriteIndex = nextSpriteIndex;
+    }
 }
 
 // Resets all sprites in SPRITE_LIST_NULL list
