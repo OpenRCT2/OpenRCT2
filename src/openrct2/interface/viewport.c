@@ -707,8 +707,12 @@ void viewport_paint(rct_viewport* viewport, rct_drawpixelinfo* dpi, sint16 left,
     dpi1.pitch = (dpi->width + dpi->pitch) - (width >> viewport->zoom);
     dpi1.zoom_level = viewport->zoom;
 
+    // make sure, the compare operation is done in sint16 to avoid the loop becoming an infiniteloop.
+    // this as well as the [x += 32] in the loop causes signed integer overflow -> undefined behaviour.
+    sint16 rightBorder = dpi1.x + dpi1.width;
+
     // Splits the area into 32 pixel columns and renders them
-    for (x = floor2(dpi1.x, 32); x < dpi1.x + dpi1.width; x += 32) {
+    for (x = floor2(dpi1.x, 32); x < rightBorder; x += 32) {
         rct_drawpixelinfo dpi2 = dpi1;
         if (x >= dpi2.x) {
             sint16 leftPitch = x - dpi2.x;
