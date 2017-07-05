@@ -1129,21 +1129,20 @@ static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid
     }
 
     uint8 scenery_type = selected_scenery >> 8;
-    // Not sure what this type is yet.
-    uint8 type = 0;
+    bool can_raise_item = false;
 
     if (scenery_type == 0){
         rct_scenery_entry* scenery_entry = get_small_scenery_entry(selected_scenery);
 
         if (scenery_entry->small_scenery.flags & SMALL_SCENERY_FLAG_STACKABLE){
-            type = 1;
+            can_raise_item = true;
         }
     }
     else if (scenery_type == 2 || scenery_type == 3){
-        type = 1;
+        can_raise_item = true;
     }
 
-    if (type == 0 && !gCheatsDisableSupportLimits) {
+    if (!can_raise_item && !gCheatsDisableSupportLimits) {
         gSceneryCtrlPressed = false;
         gSceneryShiftPressed = false;
     } else {
