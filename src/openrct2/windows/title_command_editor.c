@@ -42,6 +42,7 @@ TITLE_COMMAND_ORDER window_title_command_editor_orders[] = {
     { TITLE_SCRIPT_ZOOM,        STR_TITLE_EDITOR_COMMAND_TYPE_ZOOM, STR_TITLE_EDITOR_ARGUMENT_ZOOM_LEVEL },
     { TITLE_SCRIPT_SPEED,       STR_TITLE_EDITOR_COMMAND_TYPE_SPEED, STR_TITLE_EDITOR_ARGUMENT_SPEED },
     { TITLE_SCRIPT_WAIT,        STR_TITLE_EDITOR_COMMAND_TYPE_WAIT, STR_TITLE_EDITOR_ARGUMENT_WAIT_SECONDS },
+    { TITLE_SCRIPT_WAIT,        STR_TITLE_EDITOR_COMMAND_TYPE_WAIT, STR_TITLE_EDITOR_ARGUMENT_WAIT_SECONDS },
     { TITLE_SCRIPT_RESTART,     STR_TITLE_EDITOR_RESTART, STR_NONE },
     { TITLE_SCRIPT_END,         STR_TITLE_EDITOR_END, STR_NONE },
 };
@@ -402,8 +403,8 @@ static void window_title_command_editor_dropdown(rct_window *w, rct_widgetindex 
             command.Speed = 1;
             break;
         case TITLE_SCRIPT_WAIT:
-            command.Seconds = 10;
-            snprintf(textbox1Buffer, BUF_SIZE, "%d", command.Seconds);
+            command.Milliseconds = 10000;
+            snprintf(textbox1Buffer, BUF_SIZE, "%d", command.Milliseconds);
             break;
         case TITLE_SCRIPT_LOAD:
             command.SaveIndex = 0;

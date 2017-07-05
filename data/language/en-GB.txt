@@ -1,4 +1,4 @@
-# STR_XXXX part is read and XXXX becomes the string id number.
+﻿# STR_XXXX part is read and XXXX becomes the string id number.
 # Everything after the colon and before the new line will be saved as the string.
 # Use # at the beginning of a line to leave a comment.
 STR_0000    :
@@ -3768,7 +3768,7 @@ STR_5426    :End
 STR_5427    :Coordinates:
 STR_5428    :Anticlockwise rotations:
 STR_5429    :Zoom level:
-STR_5430    :Seconds to wait:
+STR_5430    :Milliseconds to wait:
 STR_5431    :Save to load:
 STR_5432    :Command:
 STR_5433    :Title Sequences
