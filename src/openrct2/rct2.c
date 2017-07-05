@@ -338,6 +338,14 @@ bool rct2_open_file(const char *path)
         if (ParkLoadResult_GetError(result) == PARK_LOAD_ERROR_OK) {
             ParkLoadResult_Delete(result);
             gFirstTimeSaving = false;
+            if (network_get_mode() == NETWORK_MODE_CLIENT) {
+                network_close();
+            }
+            game_load_init();
+            if (network_get_mode() == NETWORK_MODE_SERVER) {
+                network_send_map();
+            }
+            peep_update_names(gConfigGeneral.show_real_names_of_guests);
             return true;
         }
         else {

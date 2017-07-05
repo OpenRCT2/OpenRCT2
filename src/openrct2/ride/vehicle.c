@@ -802,7 +802,7 @@ void vehicle_sounds_update()
             }
         }
         g_music_tracking_viewport = viewport;
-        if (viewport != (rct_viewport*)-1) {
+        if (viewport != NULL && viewport != (rct_viewport*)-1) {
             if (window) {
                 gWindowAudioExclusive = window;
                 gVolumeAdjustZoom = 0;

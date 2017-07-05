@@ -561,6 +561,9 @@ void sprite_move(sint16 x, sint16 y, sint16 z, rct_sprite *sprite)
             rct_sprite *sprite2 = get_sprite(*spriteIndex);
             while (sprite != sprite2) {
                 spriteIndex = &sprite2->unknown.next_in_quadrant;
+                if (*spriteIndex == SPRITE_INDEX_NULL) {
+                    break;
+                }
                 sprite2 = get_sprite(*spriteIndex);
             }
         }
