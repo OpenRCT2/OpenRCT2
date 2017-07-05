@@ -267,6 +267,7 @@ void sprite_clear_all_unused()
         sprite->previous = previousSpriteIndex;
         sprite->linked_list_type_offset = SPRITE_LIST_NULL * 2;
         sprite->sprite_index = spriteIndex;
+        sprite->next_in_quadrant = (sprite->next_in_quadrant == 0) ? SPRITE_INDEX_NULL : sprite->next_in_quadrant;
         _spriteFlashingList[spriteIndex] = false;
         spriteIndex = nextSpriteIndex;
     }
@@ -277,6 +278,7 @@ static void sprite_reset(rct_unk_sprite *sprite)
     // Need to retain how the sprite is linked in lists
     uint8 llto = sprite->linked_list_type_offset;
     uint16 next = sprite->next;
+    uint16 next_in_quadrant = sprite->next_in_quadrant;
     uint16 prev = sprite->previous;
     uint16 sprite_index = sprite->sprite_index;
     _spriteFlashingList[sprite_index] = false;
@@ -285,6 +287,7 @@ static void sprite_reset(rct_unk_sprite *sprite)
 
     sprite->linked_list_type_offset = llto;
     sprite->next = next;
+    sprite->next_in_quadrant = next_in_quadrant;
     sprite->previous = prev;
     sprite->sprite_index = sprite_index;
 }
@@ -822,4 +825,107 @@ bool sprite_get_flashing(rct_sprite *sprite)
 {
     assert(sprite->unknown.sprite_index < MAX_SPRITES);
     return _spriteFlashingList[sprite->unknown.sprite_index];
+}
+
+static bool sprite_is_in_cycle(uint16 sprite_idx, bool fix)
+{
+    if (sprite_idx == SPRITE_INDEX_NULL)
+    {
+        return false;
+    }
+    const rct_sprite * fast = get_sprite(sprite_idx);
+    const rct_sprite * slow = fast;
+    bool increment_slow = false;
+    bool cycled = false;
+    while (fast->unknown.sprite_index != SPRITE_INDEX_NULL)
+    {
+        // increment fast every time, unless reached the end
+        if (fast->unknown.next == SPRITE_INDEX_NULL)
+        {
+            break;
+        }
+        else {
+            fast = get_sprite(fast->unknown.next);
+        }
+        // increment slow only every second iteration
+        if (increment_slow)
+        {
+            slow = get_sprite(slow->unknown.next);
+        }
+        increment_slow = !increment_slow;
+        if (fast == slow)
+        {
+            cycled = true;
+            if (fix)
+            {
+                rct_sprite * spr = get_sprite(sprite_idx);
+                // There may be a better solution than simply setting this to 0xFFFF
+                spr->unknown.next = SPRITE_INDEX_NULL;
+            }
+            break;
+        }
+    }
+    return cycled;
+}
+
+static bool sprite_is_in_cycle_quadrant(uint16 sprite_idx, bool fix)
+{
+    if (sprite_idx == SPRITE_INDEX_NULL)
+    {
+        return false;
+    }
+    const rct_sprite * fast = get_sprite(sprite_idx);
+    const rct_sprite * slow = fast;
+    bool increment_slow = false;
+    bool cycled = false;
+    while (fast->unknown.sprite_index != SPRITE_INDEX_NULL)
+    {
+        // increment fast every time, unless reached the end
+        if (fast->unknown.next_in_quadrant == SPRITE_INDEX_NULL)
+        {
+            break;
+        }
+        else {
+            fast = get_sprite(fast->unknown.next_in_quadrant);
+        }
+        // increment slow only every second iteration
+        if (increment_slow)
+        {
+            slow = get_sprite(slow->unknown.next_in_quadrant);
+        }
+        increment_slow = !increment_slow;
+        if (fast == slow)
+        {
+            cycled = true;
+            if (fix)
+            {
+                rct_sprite * spr = get_sprite(sprite_idx);
+
+                // There may be a better solution than simply setting this to 0xFFFF
+                spr->unknown.next_in_quadrant = SPRITE_INDEX_NULL;
+            }
+            break;
+        }
+    }
+    return cycled;
+}
+
+bool check_for_sprite_list_cycles(bool fix)
+{
+    for (sint32 i = 0; i < 6; i++) {
+        if (sprite_is_in_cycle(gSpriteListHead[i], fix)) {
+            return true;
+        }
+    }
+    return false;
+}
+
+bool check_for_spatial_index_cycles(bool fix)
+{
+    for (size_t i = 0; i < 0x10000; i++) {
+        if (sprite_is_in_cycle_quadrant(gSpriteSpatialIndex[i], fix)) {
+            return true;
+        }
+    }
+    return false;
 }
