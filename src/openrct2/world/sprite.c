@@ -831,7 +831,7 @@ bool sprite_get_flashing(rct_sprite *sprite)
     return _spriteFlashingList[sprite->unknown.sprite_index];
 }
 
-static bool sprite_is_in_cycle(uint16 sprite_idx)
+static rct_sprite * find_sprite_list_cycle(uint16 sprite_idx)
 {
     if (sprite_idx == SPRITE_INDEX_NULL)
     {
@@ -840,7 +840,7 @@ static bool sprite_is_in_cycle(uint16 sprite_idx)
     const rct_sprite * fast = get_sprite(sprite_idx);
     const rct_sprite * slow = fast;
     bool increment_slow = false;
-    bool cycled = false;
+    rct_sprite * cycle_start = NULL;
     while (fast->unknown.sprite_index != SPRITE_INDEX_NULL)
     {
         // increment fast every time, unless reached the end
@@ -859,14 +859,14 @@ static bool sprite_is_in_cycle(uint16 sprite_idx)
         increment_slow = !increment_slow;
         if (fast == slow)
         {
-            cycled = true;
+            cycle_start = get_sprite(slow->unknown.sprite_index);
             break;
         }
     }
-    return cycled;
+    return cycle_start;
 }
 
-static bool sprite_is_in_quadrant_cycle(uint16 sprite_idx)
+static rct_sprite * find_sprite_quadrant_cycle(uint16 sprite_idx)
 {
     if (sprite_idx == SPRITE_INDEX_NULL)
     {
@@ -875,7 +875,7 @@ static bool sprite_is_in_quadrant_cycle(uint16 sprite_idx)
     const rct_sprite * fast = get_sprite(sprite_idx);
     const rct_sprite * slow = fast;
     bool increment_slow = false;
-    bool cycled = false;
+    rct_sprite * cycle_start = NULL;
     while (fast->unknown.sprite_index != SPRITE_INDEX_NULL)
     {
         // increment fast every time, unless reached the end
@@ -894,23 +894,23 @@ static bool sprite_is_in_quadrant_cycle(uint16 sprite_idx)
         increment_slow = !increment_slow;
         if (fast == slow)
         {
-            cycled = true;
+            cycle_start = get_sprite(slow->unknown.sprite_index);
             break;
         }
     }
-    return cycled;
+    return cycle_start;
 }
 
 bool check_for_sprite_list_cycles(bool fix)
 {
     for (sint32 i = 0; i < NUM_SPRITE_LISTS; i++) {
-        if (sprite_is_in_cycle(gSpriteListHead[i])) {
+        rct_sprite * cycle_start = find_sprite_list_cycle(gSpriteListHead[i]);
+        if (cycle_start != NULL) 
+        {
             if (fix)
             {
-                rct_sprite * spr = get_sprite(gSpriteListHead[i]);
-
                 // There may be a better solution than simply setting this to 0xFFFF
-                spr->unknown.next = SPRITE_INDEX_NULL;
+                cycle_start->unknown.next = SPRITE_INDEX_NULL;
             }
             return true;
         }
@@ -921,13 +921,13 @@ bool check_for_sprite_list_cycles(bool fix)
 bool check_for_spatial_index_cycles(bool fix)
 {
     for (sint32 i = 0; i < SPATIAL_INDEX_LOCATION_NULL; i++) {
-        if (sprite_is_in_quadrant_cycle(gSpriteSpatialIndex[i])) {
+        rct_sprite * cycle_start = find_sprite_quadrant_cycle(gSpriteSpatialIndex[i]);
+        if (cycle_start != NULL)
+        {
             if (fix)
             {
-                rct_sprite * spr = get_sprite(gSpriteSpatialIndex[i]);
-
                 // There may be a better solution than simply setting this to 0xFFFF
-                spr->unknown.next_in_quadrant = SPRITE_INDEX_NULL;
+                cycle_start->unknown.next_in_quadrant = SPRITE_INDEX_NULL;
             }
             return true;
         }
