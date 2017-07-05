@@ -903,7 +903,7 @@ static bool sprite_is_in_quadrant_cycle(uint16 sprite_idx)
 bool check_for_sprite_list_cycles(bool fix)
 {
     for (sint32 i = 0; i < NUM_SPRITE_LISTS; i++) {
-        if (sprite_is_in_cycle(gSpriteListHead[i], fix)) {
+        if (sprite_is_in_cycle(gSpriteListHead[i])) {
             if (fix)
             {
                 rct_sprite * spr = get_sprite(gSpriteListHead[i]);
