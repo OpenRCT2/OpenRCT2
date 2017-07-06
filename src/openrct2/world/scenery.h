@@ -53,7 +53,7 @@ typedef enum {
     SMALL_SCENERY_FLAG_FULL_TILE = (1 << 0),                    // 0x1
     SMALL_SCENERY_FLAG_VOFFSET_CENTRE = (1 << 1),               // 0x2
     SMALL_SCENERY_FLAG_REQUIRE_FLAT_SURFACE = (1 << 2),         // 0x4
-    SMALL_SCENERY_FLAG4 = (1 << 3),                             // 0x8
+    SMALL_SCENERY_FLAG_ROTATABLE = (1 << 3),                    // 0x8; when set, user can set rotation, otherwise rotation is automatic
     SMALL_SCENERY_FLAG_ANIMATED = (1 << 4),                     // 0x10
     SMALL_SCENERY_FLAG6 = (1 << 5),                             // 0x20
     SMALL_SCENERY_FLAG_CAN_BE_WATERED = (1 << 6),               // 0x40
