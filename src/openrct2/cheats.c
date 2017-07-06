@@ -51,6 +51,7 @@ bool gCheatsDisablePlantAging = false;
 bool gCheatsEnableChainLiftOnAllTrack = false;
 bool gCheatsAllowArbitraryRideTypeChanges = false;
 bool gCheatsDisableRideValueAging = false;
+bool gCheatsIgnoreResearchStatus = false;
 
 sint32 park_rating_spinner_value;
 
@@ -527,6 +528,7 @@ void game_command_cheat(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint
             case CHEAT_ALLOW_ARBITRARY_RIDE_TYPE_CHANGES: gCheatsAllowArbitraryRideTypeChanges = *edx != 0; window_invalidate_by_class(WC_RIDE); break;
             case CHEAT_OWNALLLAND: cheat_own_all_land(); break;
             case CHEAT_DISABLERIDEVALUEAGING: gCheatsDisableRideValueAging = *edx != 0; break;
+            case CHEAT_IGNORERESEARCHSTATUS: gCheatsIgnoreResearchStatus = *edx != 0; break;
         }
         if (network_get_mode() == NETWORK_MODE_NONE) {
             config_save_default();
@@ -558,6 +560,7 @@ void cheats_reset()
     gCheatsDisablePlantAging = false;
     gCheatsAllowArbitraryRideTypeChanges = false;
     gCheatsDisableRideValueAging = false;
+    gCheatsIgnoreResearchStatus = false;
 }
 
 //Generates the string to print for the server log when a cheat is used.
@@ -764,6 +767,7 @@ const char* cheats_get_cheat_string(int cheat, int edx, int edi) {
         case CHEAT_SETMONEY: return language_get_string(STR_SET_MONEY);
         case CHEAT_OWNALLLAND: return language_get_string(STR_CHEAT_OWN_ALL_LAND);
         case CHEAT_DISABLERIDEVALUEAGING: return language_get_string(STR_CHEAT_DISABLE_RIDE_VALUE_AGING);
+        case CHEAT_IGNORERESEARCHSTATUS: return language_get_string(STR_CHEAT_IGNORE_RESEARCH_STATUS);
     }
 
     return "";

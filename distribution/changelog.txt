@@ -1,5 +1,6 @@
 0.1.1 (in development)
 ------------------------------------------------------------------------
+- Feature: [#5815] Add cheat to ignore research status and access rides/scenery not yet invented.
 - Feature: [#5877] Allow up to 16 stations to be synchronised
 - Fix: [#3589] Crash due to invalid footpathEntry in path_paint
 - Fix: [#4455] Crash in window_sign_invalidate due to original bug

@@ -3801,6 +3801,9 @@ enum {
     STR_COPY_ALL = 6130,
     STR_OBJECT_SOURCE = 6131,
 
+    STR_CHEAT_IGNORE_RESEARCH_STATUS = 6132,
+    STR_CHEAT_IGNORE_RESEARCH_STATUS_TIP = 6133,
+
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     STR_COUNT = 32768
 };
