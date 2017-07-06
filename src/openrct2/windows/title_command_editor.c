@@ -256,7 +256,13 @@ static void window_title_command_editor_mouseup(rct_window *w, rct_widgetindex w
         window_close(w);
         break;
     case WIDX_TEXTBOX_FULL:
-        window_start_textbox(w, widgetIndex, STR_STRING, textbox1Buffer, 4);
+        if (command.Type == TITLE_SCRIPT_WAIT) {
+            window_start_textbox(w, widgetIndex, STR_STRING, textbox1Buffer, 5);
+        }
+        else {
+            // Currently the only other commands that use this textbox are Rotate and Zoom which have a maximum of 3.
+            window_start_textbox(w, widgetIndex, STR_STRING, textbox1Buffer, 2);
+        }
         break;
     case WIDX_TEXTBOX_X:
         window_start_textbox(w, widgetIndex, STR_STRING, textbox1Buffer, 4);
@@ -447,7 +453,8 @@ static void window_title_command_editor_textinput(rct_window * w, rct_widgetinde
                     if (value > 3) value = 3;
                 }
                 else if (command.Type == TITLE_SCRIPT_WAIT) {
-                    if (value < 1) value = 100;
+                    if (value < 100) value = 100;
+                    if (value > 65000) value = 65000;
                 }
                 command.Rotations = (uint8)value;
             }
