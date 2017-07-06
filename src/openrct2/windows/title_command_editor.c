@@ -449,10 +449,10 @@ static void window_title_command_editor_textinput(rct_window * w, rct_widgetinde
     case WIDX_TEXTBOX_FULL:
         if (text == NULL) {
             if (*end == '\0') {
-                if (command.Type == TITLE_SCRIPT_ROTATE) {
+                if (command.Type == TITLE_SCRIPT_ZOOM) {
                     if (value > 3) value = 3;
                 }
-                else if (command.Type == TITLE_SCRIPT_ZOOM) {
+                else if (command.Type == TITLE_SCRIPT_ROTATE) {
                     if (value < 1) value = 1;
                     if (value > 3) value = 3;
                 }
