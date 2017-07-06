@@ -839,8 +839,15 @@ STR_0834    :{SMALLFONT}{BLACK}Opciones de juego
 STR_0835    :Falló la inicialización del juego
 STR_0836    :No se ha podido iniciar el juego en estado minimizado
 STR_0837    :No se ha podido iniciar el sistema gráfico
+STR_0838    :<removed string - do not use>
 STR_0839    :{UINT16} x {UINT16}
 STR_0840    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{UINT16} x {UINT16}
+STR_0841    :<removed string - do not use>
+STR_0842    :<removed string - do not use>
+STR_0843    :<removed string - do not use>
+STR_0844    :<removed string - do not use>
+STR_0845    :<removed string - do not use>
+STR_0846    :<removed string - do not use>
 # The following six strings were used for display resolutions, but have been replaced.
 STR_0847    :Sobre 'OpenRCT2'
 STR_0848    :RollerCoaster Tycoon 2
@@ -885,6 +892,7 @@ STR_0886    :Salir del juego
 STR_0887    :Salir del editor de escenarios
 STR_0888    :Salir del editor de Montañas Rusas
 STR_0889    :Salir del editor de Vías
+STR_0890    :<removed string - do not use>
 STR_0891    :Tomar captura de pantalla
 STR_0892    :Captura de pantalla guardada como '{STRINGID}'
 STR_0893    :¡No se pudo tomar la Captura de pantalla!
@@ -1645,6 +1653,8 @@ STR_1647    :
 STR_1648    :{SMALLFONT}{OPENQUOTES}¡Ayuda! ¡Bájame!{ENDQUOTES}
 STR_1649    :{SMALLFONT}{OPENQUOTES}¡Me estoy quedando sin dinero!{ENDQUOTES}
 STR_1650    :{SMALLFONT}{OPENQUOTES}¡Wow! ¡Están construyendo una nueva atracción!{ENDQUOTES}
+STR_1651    :<removed string - do not use>
+STR_1652    :<removed string - do not use>
 STR_1653    :{SMALLFONT}{OPENQUOTES}... ¡y aquí estamos en {STRINGID}!{ENDQUOTES}
 STR_1654    :{WINDOW_COLOUR_2}Pensamientos recientes:
 STR_1655    :{SMALLFONT}{BLACK}Construir camino a nivel del suelo.
@@ -1884,6 +1894,8 @@ STR_1888    :{WINDOW_COLOUR_2}Tiempo desde la última inspección: {BLACK}más d
 STR_1889    :{WINDOW_COLOUR_2}Tiempo averiado: {MOVE_X}{255}{BLACK}{COMMA16}%
 STR_1890    :{SMALLFONT}{BLACK}Selecciona con qué frecuencia un mecánico debe inspeccionar esta atracción
 STR_1891    :¡Ningún {STRINGID} en el parque todavía!
+STR_1892    :<removed string - do not use>
+STR_1893    :<removed string - do not use>
 STR_1894    :{WINDOW_COLOUR_2}{STRINGID} vendidos: {BLACK}{COMMA32}
 STR_1895    :{SMALLFONT}{BLACK}Construir nueva atracción
 STR_1896    :{WINDOW_COLOUR_2}Gastos/Ingresos
@@ -2307,6 +2319,10 @@ STR_2313    :{WINDOW_COLOUR_2}Nivel de náuseas: {BLACK}{COMMA2DP32} (aprox.)
 STR_2314    :{WINDOW_COLOUR_2}Longitud de vía: {BLACK}{STRINGID}
 STR_2315    :{WINDOW_COLOUR_2}Coste: {BLACK}alrededor de {CURRENCY}
 STR_2316    :{WINDOW_COLOUR_2}Espacio requerido: {BLACK}{COMMA16} x {COMMA16} bloques
+STR_2317    :<removed string - do not use>
+STR_2318    :<removed string - do not use>
+STR_2319    :<removed string - do not use>
+STR_2320    :<removed string - do not use>
 STR_2321    :{WINDOW_COLOUR_2}Número de atracciones: {BLACK}{COMMA16}
 STR_2322    :{WINDOW_COLOUR_2}Empleados: {BLACK}{COMMA16}
 STR_2323    :{WINDOW_COLOUR_2}Extensión del parque: {BLACK}{COMMA32}m{SQUARED}
@@ -2423,6 +2439,12 @@ STR_2433    :{BLACK}Cupones para {STRINGID} gratis
 STR_2434    :{BLACK}Campaña de publicidad de {STRINGID}
 STR_2435    :{BLACK}Campaña de publicidad de {STRINGID}
 STR_2436    :1 semana
+STR_2437    :<removed string - do not use>
+STR_2438    :<removed string - do not use>
+STR_2439    :<removed string - do not use>
+STR_2440    :<removed string - do not use>
+STR_2441    :<removed string - do not use>
+STR_2442    :<removed string - do not use>
 STR_2443    :{WINDOW_COLOUR_2}Coste por semana: {BLACK}{CURRENCY2DP}
 STR_2444    :{WINDOW_COLOUR_2}Coste total: {BLACK}{CURRENCY2DP}
 STR_2445    :Lanzar esta campaña de márketing
@@ -2662,6 +2684,8 @@ STR_2678    :???
 STR_2679    :???
 STR_2680    :Investigación Completa
 STR_2681    :{MEDIUMFONT}{BLACK}Incrementa tu dinero en {CURRENCY}
+STR_2682    :<removed string - do not use>
+STR_2683    :<removed string - do not use>
 STR_2684    :{SMALLFONT}{BLACK}Llega un gran grupo de visitantes
 STR_2685    :Simplex Noise Parameters
 STR_2686    :Bajo:
@@ -2740,7 +2764,10 @@ STR_2758    :Forzar tormenta
 STR_2759    :Zero Clearance
 # New strings used in the cheats window previously these were ???
 STR_2760    :+{CURRENCY}
+STR_2761    :<removed string - do not use>
+STR_2762    :<removed string - do not use>
 STR_2763    :???
+STR_2764    :<removed string - do not use>
 STR_2765    :Grupo de visitantes
 STR_2766    :Ganar escenario
 STR_2767    :Mantener clima
@@ -2946,6 +2973,8 @@ STR_2965    :{WINDOW_COLOUR_2}
 STR_2966    :
 STR_2967    :
 STR_2968    :
+STR_2969    :<removed string - do not use>
+STR_2970    :<removed string - do not use>
 STR_2971    :Esquema de color principal
 STR_2972    :Esquema de color alternativo 1
 STR_2973    :Esquema de color alternativo 2
@@ -3136,6 +3165,7 @@ STR_3157    :mapa
 STR_3158    :gráfica
 STR_3159    :lista
 STR_3160    :{SMALLFONT}{BLACK}Selecciona el número de circuitos por paseo.
+STR_3161    :<removed string - do not use>
 STR_3162    :No se puede asignar memoria suficiente
 STR_3163    :Instalar nuevo dato: 
 STR_3164    :{BLACK}{COMMA16} seleccionados (máximo {COMMA16})
@@ -3311,6 +3341,7 @@ STR_3333    :Exportar complementos al guardar el juego
 STR_3334    :{SMALLFONT}{BLACK}Selecciona si los complementos adicionales (datos no distribuídos con el juego principal) utilizados en un escenario deben exportarse al guardar el juego, lo que permite que otros jugadores que no tengan esos complementos puedan abrirlo.
 STR_3335    :Diseñador de Montañas Rusas - Selecciona el tipo de Atracción y Vehículo
 STR_3336    :Gestor de Diseños de vías - Elige tipo de atracción 
+STR_3337    :<removed string - do not use>
 STR_3338    :{BLACK}Recorrido personalizado
 STR_3339    :{BLACK}{COMMA16} diseño disponible, o recorrido personalizado
 STR_3340    :{BLACK}{COMMA16} diseños disponibles, o recorrido personalizado
@@ -3335,6 +3366,8 @@ STR_3358    :No se puede eliminar el diseño da vía...
 STR_3359    :{BLACK}Sin diseños de vías para esta atracción
 STR_3360    :¡Advertencia!
 STR_3361    :Demasiados diseños de vía - Algunos no se listarán.
+STR_3362    :<removed string - do not use>
+STR_3363    :<removed string - do not use>
 STR_3364    :Avanzado
 STR_3365    :{SMALLFONT}{BLACK}Permitir la selección de escenario además de grupos de escenarios.
 STR_3366    :{BLACK}= Atracción
@@ -3426,6 +3459,7 @@ STR_5120    :Finanzas
 STR_5121    :Investigación
 STR_5122    :Selecciona atracciones por tipo (como en RCT1)
 STR_5123    :Renueva atracciones
+STR_5124    :<removed string - do not use>
 STR_5125    :Todo editable
 STR_5126    :Música aleatoria
 STR_5127    :{SMALLFONT}{BLACK}Pintar el terreno en lugar de cambiar la elevación mientras se arrastra.
@@ -3795,6 +3829,7 @@ STR_5490    :Silenciar al perder el foco
 STR_5491    :Lista de inventos
 STR_5492    :Opciones de escenario
 STR_5493    :Enviar mensaje
+STR_5494    :<removed string - do not use>
 STR_5495    :Lista de jugadores
 STR_5496    :Jugador:
 STR_5497    :Ping:
@@ -4129,6 +4164,7 @@ STR_5856    :{SMALLFONT}{BLACK}Establece la resolución del juego usada en el mo
 STR_5857    :{SMALLFONT}{BLACK}Opciones del juego
 STR_5858    :{SMALLFONT}{BLACK}Utilizar el GPU para la visualización en lugar del CPU. Esto mejora la compatibilidad con el software para la captura de pantalla. Esto puede disminuir ligeramente el rendimiento del juego.
 STR_5859    :{SMALLFONT}{BLACK}Permite la interpolación de{NEWLINE}los FPS (Fotograma por segundo) para un juego visualmente más suave. Si se encuentra desactivado el juego funcionará a 40 FPS como máximo.
+STR_5860    :Cambiar dibujado vía orig./decomp.
 STR_5861    :Error en la comprobación de la clave.
 STR_5862    :Bloquear jugadores desconocidos.
 STR_5863    :{SMALLFONT}{BLACK}Sólo se permite unirse a jugadores con claves conocidas.
@@ -4302,6 +4338,7 @@ STR_6030    :{SMALLFONT}{BLACK}Selector de Escenario. Haz clic en cualquier esce
 STR_6031    :Descripción Servidor:
 STR_6032    :Msg. de Bienvenida:
 STR_6033    :Ruta de Instalación RCT1:
+STR_6034    :{SMALLFONT}{BLACK}{STRING}
 STR_6035    :Por favor selecciona la carpeta de RCT1
 STR_6036    :{SMALLFONT}{BLACK}Borrar
 STR_6037    :Por favor selecciona una carpeta válida con una instalación de RCT1

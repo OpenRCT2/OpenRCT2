@@ -3172,7 +3172,7 @@ STR_3156    :
 STR_3157    :kartta
 STR_3158    :graph
 STR_3159    :lista
-
+STR_3160    :{SMALLFONT}{BLACK}Select the number of circuits per ride
 STR_3161    :<not used anymore>
 STR_3162    :Unable to allocate enough memory
 STR_3163    :Installing new data: 
