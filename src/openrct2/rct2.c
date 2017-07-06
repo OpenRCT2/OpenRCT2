@@ -329,6 +329,7 @@ bool rct2_open_file(const char *path)
 {
     char *extension = strrchr(path, '.');
     if (extension == NULL) {
+        title_load();
         return false;
     }
     extension++;
