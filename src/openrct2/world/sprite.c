@@ -913,7 +913,7 @@ static bool index_is_in_spatial_list(uint16 index, sint32 quadrant)
     return false;
 }
 
-bool check_for_sprite_list_cycles(bool fix)
+sint32 check_for_sprite_list_cycles(bool fix)
 {
     for (sint32 i = 0; i < NUM_SPRITE_LISTS; i++) {
         rct_sprite * cycle_start = find_sprite_list_cycle(gSpriteListHead[i]);
@@ -945,13 +945,13 @@ bool check_for_sprite_list_cycles(bool fix)
                 }
 
             }
-            return true;
+            return i;
         }
     }
-    return false;
+    return -1;
 }
 
-bool check_for_spatial_index_cycles(bool fix)
+sint32 check_for_spatial_index_cycles(bool fix)
 {
     for (sint32 i = 0; i < SPATIAL_INDEX_LOCATION_NULL; i++) {
         rct_sprite * cycle_start = find_sprite_quadrant_cycle(gSpriteSpatialIndex[i]);
@@ -977,8 +977,8 @@ bool check_for_spatial_index_cycles(bool fix)
                     cycle_start = spr;
                 }
             }
-            return true;
+            return i;
         }
     }
-    return false;
+    return -1;
 }

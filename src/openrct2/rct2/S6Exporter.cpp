@@ -152,7 +152,10 @@ void S6Exporter::Save(IStream * stream, bool isScenario)
 
 void S6Exporter::Export()
 {
-    openrct2_assert(!(check_for_spatial_index_cycles(false) || check_for_sprite_list_cycles(false)), "A sprite cycle exists.");
+    sint32 spatial_cycle = check_for_spatial_index_cycles(false);
+    sint32 regular_cycle = check_for_sprite_list_cycles(false);
+    openrct2_assert(spatial_cycle == -1, "Sprite cycle exists in spatial list %d", spatial_cycle);
+    openrct2_assert(regular_cycle == -1, "Sprite cycle exists in regular list %d", regular_cycle);
     _s6.info = gS6Info;
     uint32 researchedTrackPiecesA[128];
     uint32 researchedTrackPiecesB[128];
