@@ -76,7 +76,7 @@ typedef enum {
     SMALL_SCENERY_FLAG23 = (1 << 23),                           // 0x800000
     SMALL_SCENERY_FLAG24 = (1 << 24),                           // 0x1000000
     SMALL_SCENERY_FLAG25 = (1 << 25),                           // 0x2000000
-    SMALL_SCENERY_FLAG26 = (1 << 26),                           // 0x4000000
+    SMALL_SCENERY_FLAG_PAINT_SUPPORTS = (1 << 26),              // 0x4000000; used for scenery items which are support structures
     SMALL_SCENERY_FLAG27 = (1 << 27),                           // 0x8000000
 } SMALL_SCENERY_FLAGS;
 

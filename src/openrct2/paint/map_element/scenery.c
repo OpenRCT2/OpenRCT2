@@ -264,7 +264,7 @@ void scenery_paint(uint8 direction, sint32 height, rct_map_element* mapElement) 
                 ax = 49;
             }
             uint32 supportImageColourFlags = 0x20000000;
-            if (entry->small_scenery.flags & SMALL_SCENERY_FLAG26) {
+            if (entry->small_scenery.flags & SMALL_SCENERY_FLAG_PAINT_SUPPORTS) {
                 supportImageColourFlags = ((mapElement->properties.scenery.colour_1 & 0x1F) << 19) | 0x20000000;
             }
             if (dword_F64EB0 != 0) {
