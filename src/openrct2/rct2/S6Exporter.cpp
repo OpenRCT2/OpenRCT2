@@ -184,9 +184,7 @@ void S6Exporter::Export()
     // Might as well reset them in here to zero out the space and improve
     // compression ratios. Especially useful for multiplayer servers that
     // use zlib on the sent stream.
-    {
-        reset_empty_sprites();
-    }
+    sprite_clear_all_unused();
     for (sint32 i = 0; i < MAX_SPRITES; i++)
     {
         memcpy(&_s6.sprites[i], get_sprite(i), sizeof(rct_sprite));
