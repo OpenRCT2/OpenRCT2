@@ -256,7 +256,7 @@ void scenery_paint(uint8 direction, sint32 height, rct_map_element* mapElement) 
     }
     // 6E0556: Draw supports:
     if (mapElement->properties.scenery.colour_1 & 0x20) {
-        if (!(entry->small_scenery.flags & SMALL_SCENERY_FLAG20)) {
+        if (!(entry->small_scenery.flags & SMALL_SCENERY_FLAG_NO_SUPPORTS)) {
             sint32 ax = 0;
             sint32 supportHeight = height;
             if (supportHeight & 0xF) {
