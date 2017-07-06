@@ -478,7 +478,6 @@ const char *sprite_checksum();
 
 void sprite_set_flashing(rct_sprite *sprite, bool flashing);
 bool sprite_get_flashing(rct_sprite *sprite);
-bool check_for_sprite_list_cycles(bool fix);
-bool check_for_spatial_index_cycles(bool fix);
+
 #endif
 
