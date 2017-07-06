@@ -257,7 +257,7 @@ static void window_title_command_editor_mouseup(rct_window *w, rct_widgetindex w
         break;
     case WIDX_TEXTBOX_FULL:
         if (command.Type == TITLE_SCRIPT_WAIT) {
-            window_start_textbox(w, widgetIndex, STR_STRING, textbox1Buffer, 5);
+            window_start_textbox(w, widgetIndex, STR_STRING, textbox1Buffer, 6);
         }
         else {
             // Currently the only other commands that use this textbox are Rotate and Zoom which have a maximum of 3.
