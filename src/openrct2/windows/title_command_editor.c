@@ -438,7 +438,7 @@ static void window_title_command_editor_textinput(rct_window * w, rct_widgetinde
     char * end;
     sint32 value = strtol(widgetIndex != WIDX_TEXTBOX_Y ? textbox1Buffer : textbox2Buffer, &end, 10);
     if (value < 0) value = 0;
-    if (value > 255) value = 255;
+    if (value > 255 && command.Type != TITLE_SCRIPT_WAIT) value = 255;
     switch (widgetIndex) {
     case WIDX_TEXTBOX_FULL:
         if (text == NULL) {
@@ -447,7 +447,7 @@ static void window_title_command_editor_textinput(rct_window * w, rct_widgetinde
                     if (value > 3) value = 3;
                 }
                 else if (command.Type == TITLE_SCRIPT_WAIT) {
-                    if (value < 1) value = 1;
+                    if (value < 1) value = 100;
                 }
                 command.Rotations = (uint8)value;
             }
