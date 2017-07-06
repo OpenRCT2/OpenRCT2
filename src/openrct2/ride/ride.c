@@ -1097,7 +1097,7 @@ static void ride_remove_vehicles(rct_ride *ride)
         ride->lifecycle_flags &= ~RIDE_LIFECYCLE_ON_TRACK;
         ride->lifecycle_flags &= ~(RIDE_LIFECYCLE_TEST_IN_PROGRESS | RIDE_LIFECYCLE_HAS_STALLED_VEHICLE);
 
-        for (size_t i = 0; i < 32; i++) {
+        for (size_t i = 0; i < MAX_VEHICLES_PER_RIDE; i++) {
             uint16 spriteIndex = ride->vehicles[i];
             while (spriteIndex != SPRITE_INDEX_NULL) {
                 rct_vehicle *vehicle = GET_VEHICLE(spriteIndex);
@@ -4714,7 +4714,7 @@ static void vehicle_create_trains(sint32 rideIndex, sint32 x, sint32 y, sint32 z
 
         // Add train to ride vehicle list
         move_sprite_to_list((rct_sprite*)train.head, SPRITE_LIST_TRAIN * 2);
-        for (sint32 i = 0; i < 32; i++) {
+        for (sint32 i = 0; i < MAX_VEHICLES_PER_RIDE; i++) {
             if (ride->vehicles[i] == SPRITE_INDEX_NULL) {
                 ride->vehicles[i] = train.head->sprite_index;
                 break;
@@ -6065,7 +6065,7 @@ foundRideEntry:
         ride->queue_time[i] = 0;
     }
 
-    for (size_t i = 0; i < 32; i++) {
+    for (size_t i = 0; i < MAX_VEHICLES_PER_RIDE; i++) {
         ride->vehicles[i] = SPRITE_INDEX_NULL;
     }
 
@@ -7492,7 +7492,7 @@ static void ride_update_vehicle_colours(sint32 rideIndex)
         gfx_invalidate_screen();
     }
 
-    for (sint32 i = 0; i < 32; i++) {
+    for (sint32 i = 0; i < MAX_VEHICLES_PER_RIDE; i++) {
         sint32 carIndex = 0;
         uint16 spriteIndex = ride->vehicles[i];
         rct_vehicle_colour colours = { 0 };
@@ -8667,5 +8667,34 @@ sint32 get_booster_speed(uint8 rideType, sint32 rawSpeed)
     else
     {
         return (rawSpeed >> abs(shiftFactor));
+    }
+}
+
+void fix_invalid_vehicle_sprite_sizes()
+{
+    rct_ride *ride;
+    uint16 i;
+    FOR_ALL_RIDES(i, ride)
+    {
+        for (uint16 j = 0; j < MAX_VEHICLES_PER_RIDE; j++) {
+            uint16 rideSpriteIndex = ride->vehicles[j];
+            while (rideSpriteIndex != SPRITE_INDEX_NULL) {
+                rct_vehicle *vehicle = GET_VEHICLE(rideSpriteIndex);
+                rct_ride_entry_vehicle *vehicleEntry = vehicle_get_vehicle_entry(vehicle);
+                if (vehicle->sprite_width == 0)
+                {
+                    vehicle->sprite_width = vehicleEntry->sprite_width;
+                }
+                if (vehicle->sprite_height_negative == 0)
+                {
+                    vehicle->sprite_height_negative = vehicleEntry->sprite_height_negative;
+                }
+                if (vehicle->sprite_height_positive == 0)
+                {
+                    vehicle->sprite_height_positive = vehicleEntry->sprite_height_positive;
+                }
+                rideSpriteIndex = vehicle->next_vehicle_on_train;
+            }
+        }
     }
 }

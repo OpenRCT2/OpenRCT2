@@ -769,7 +769,7 @@ private:
         {
             dst->vehicles[i] = src->vehicles[i];
         }
-        for (sint32 i = RCT1_MAX_TRAINS_PER_RIDE; i < 32; i++)
+        for (sint32 i = RCT1_MAX_TRAINS_PER_RIDE; i < MAX_VEHICLES_PER_RIDE; i++)
         {
             dst->vehicles[i] = SPRITE_INDEX_NULL;
         }
