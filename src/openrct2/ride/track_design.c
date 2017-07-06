@@ -1394,7 +1394,7 @@ static bool track_design_place_preview(rct_track_td6 *td6, money32 *cost, uint8 
         if (!find_object_in_entry_group(&td6->vehicle_object, &entry_type, &entry_index)) {
             *flags |= TRACK_DESIGN_FLAG_VEHICLE_UNAVAILABLE;
         }
-        else if (!ride_entry_is_invented(entry_index))
+        else if (!ride_entry_is_invented(entry_index) && !gCheatsIgnoreResearchStatus)
         {
             *flags |= TRACK_DESIGN_FLAG_VEHICLE_UNAVAILABLE;
         }
@@ -1439,7 +1439,7 @@ static money32 place_track_design(sint16 x, sint16 y, sint16 z, uint8 flags, uin
         entryIndex = 0xFF;
     }
     // Force a fallback if the entry is not invented yet a td6 of it is selected, which can happen in select-by-track-type mode.
-    else if (!ride_entry_is_invented(entryIndex))
+    else if (!ride_entry_is_invented(entryIndex) && !gCheatsIgnoreResearchStatus)
     {
         entryIndex = 0xFF;
     }
@@ -1459,7 +1459,7 @@ static money32 place_track_design(sint16 x, sint16 y, sint16 z, uint8 flags, uin
             {
                 ire = get_ride_entry(*rei);
 
-                if (!ride_entry_is_invented(*rei))
+                if (!ride_entry_is_invented(*rei) && !gCheatsIgnoreResearchStatus)
                 {
                     continue;
                 }
