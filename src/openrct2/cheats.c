@@ -759,6 +759,9 @@ const char* cheats_get_cheat_string(int cheat, int edx, int edi) {
         }
         case CHEAT_RESETDATE: return language_get_string(STR_CHEAT_RESET_DATE);
         case CHEAT_ALLOW_ARBITRARY_RIDE_TYPE_CHANGES: return language_get_string(STR_CHEAT_ALLOW_ARBITRARY_RIDE_TYPE_CHANGES);
+        case CHEAT_SETMONEY: return language_get_string(STR_SET_MONEY);
+        case CHEAT_OWNALLLAND: return language_get_string(STR_CHEAT_OWN_ALL_LAND);
+        case CHEAT_DISABLERIDEVALUEAGING: return language_get_string(STR_CHEAT_DISABLE_RIDE_VALUE_AGING);
     }
 
     return "";
