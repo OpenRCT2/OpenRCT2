@@ -901,16 +901,65 @@ static rct_sprite * find_sprite_quadrant_cycle(uint16 sprite_idx)
     return cycle_start;
 }
 
+static bool index_is_in_list(uint16 index, enum SPRITE_LIST sl)
+{
+    uint16 sprite_index = gSpriteListHead[sl];
+    while (sprite_index != SPRITE_INDEX_NULL)
+    {
+        if (sprite_index == index)
+        {
+            return true;
+        }
+        sprite_index = get_sprite(sprite_index)->unknown.next;
+    }
+    return false;
+}
+
+static bool index_is_in_spatial_list(uint16 index, sint32 quadrant)
+{
+    uint16 sprite_index = gSpriteSpatialIndex[quadrant];
+    while (sprite_index != SPRITE_INDEX_NULL)
+    {
+        if (sprite_index == index)
+        {
+            return true;
+        }
+        sprite_index = get_sprite(sprite_index)->unknown.next_in_quadrant;
+    }
+    return false;
+}
+
 bool check_for_sprite_list_cycles(bool fix)
 {
     for (sint32 i = 0; i < NUM_SPRITE_LISTS; i++) {
         rct_sprite * cycle_start = find_sprite_list_cycle(gSpriteListHead[i]);
-        if (cycle_start != NULL) 
+        if (cycle_start != NULL)
         {
             if (fix)
             {
-                // There may be a better solution than simply setting this to 0xFFFF
+                // Fix head list, but only in reverse order
+                // This is likely not needed, but just in case
+                get_sprite(gSpriteListHead[i])->unknown.previous = SPRITE_INDEX_NULL;
+
+                // Store the leftover part of cycle to be fixed
+                uint16 cycle_next = cycle_start->unknown.next;
+
+                // Break the cycle
                 cycle_start->unknown.next = SPRITE_INDEX_NULL;
+
+                // Now re-add remainder of the cycle back to list, safely.
+                // Add each sprite to the list until we encounter one that is already part of the list.
+                while (!index_is_in_list(cycle_next, i))
+                {
+                    rct_sprite * spr = get_sprite(cycle_next);
+
+                    cycle_start->unknown.next = cycle_next;
+                    spr->unknown.previous = cycle_start->unknown.sprite_index;
+                    cycle_next = spr->unknown.next;
+                    spr->unknown.next = SPRITE_INDEX_NULL;
+                    cycle_start = spr;
+                }
+
             }
             return true;
         }
@@ -926,8 +975,23 @@ bool check_for_spatial_index_cycles(bool fix)
         {
             if (fix)
             {
-                // There may be a better solution than simply setting this to 0xFFFF
+                // Store the leftover part of cycle to be fixed
+                uint16 cycle_next = cycle_start->unknown.next_in_quadrant;
+
+                // Break the cycle
                 cycle_start->unknown.next_in_quadrant = SPRITE_INDEX_NULL;
+
+                // Now re-add remainder of the cycle back to list, safely.
+                // Add each sprite to the list until we encounter one that is already part of the list.
+                while (!index_is_in_list(cycle_next, i))
+                {
+                    rct_sprite * spr = get_sprite(cycle_next);
+
+                    cycle_start->unknown.next_in_quadrant = cycle_next;
+                    cycle_next = spr->unknown.next_in_quadrant;
+                    spr->unknown.next_in_quadrant = SPRITE_INDEX_NULL;
+                    cycle_start = spr;
+                }
             }
             return true;
         }
