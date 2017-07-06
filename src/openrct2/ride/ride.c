@@ -8681,6 +8681,15 @@ void fix_invalid_vehicle_sprite_sizes()
             while (rideSpriteIndex != SPRITE_INDEX_NULL) {
                 rct_vehicle *vehicle = GET_VEHICLE(rideSpriteIndex);
                 rct_ride_entry_vehicle *vehicleEntry = vehicle_get_vehicle_entry(vehicle);
+
+                if (vehicle == NULL ||
+                    vehicle == (rct_vehicle*)-1 ||
+                    vehicleEntry == NULL ||
+                    vehicleEntry == (rct_ride_entry_vehicle*)-1)
+                {
+                    continue;
+                }
+
                 if (vehicle->sprite_width == 0)
                 {
                     vehicle->sprite_width = vehicleEntry->sprite_width;
