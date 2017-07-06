@@ -556,6 +556,7 @@ void cheats_reset()
     gCheatsFreezeClimate = false;
     gCheatsDisablePlantAging = false;
     gCheatsAllowArbitraryRideTypeChanges = false;
+    gCheatsDisableRideValueAging = false;
 }
 
 //Generates the string to print for the server log when a cheat is used.
