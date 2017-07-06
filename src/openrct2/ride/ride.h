@@ -27,6 +27,7 @@
 // The max number of different types of vehicle.
 // Examples of vehicles here are the locomotive, tender and carriage of the Miniature Railway.
 #define MAX_VEHICLES_PER_RIDE_ENTRY     4
+#define MAX_VEHICLES_PER_RIDE           32
 #define RIDE_ENTRY_INDEX_NULL           255
 typedef fixed16_2dp ride_rating;
 
@@ -179,7 +180,7 @@ typedef struct rct_ride {
     uint16 exits[RCT12_MAX_STATIONS_PER_RIDE];                // 0x072
     uint16 last_peep_in_queue[RCT12_MAX_STATIONS_PER_RIDE];   // 0x07A
     uint8 pad_082[4];               // Used to be number of peeps in queue in RCT1, but this has moved.
-    uint16 vehicles[32];            // 0x086 Points to the first car in the train
+    uint16 vehicles[MAX_VEHICLES_PER_RIDE];            // 0x086 Points to the first car in the train
     uint8 depart_flags;             // 0x0C6
 
     // Not sure if these should be uint or sint.
@@ -1199,5 +1200,6 @@ const char * ride_type_get_enum_name(sint32 rideType);
 uint8 ride_entry_get_first_non_null_ride_type(rct_ride_entry * rideEntry);
 bool ride_type_supports_boosters(uint8 rideType);
 sint32 get_booster_speed(uint8 rideType, sint32 rawSpeed);
+void fix_invalid_vehicle_sprite_sizes();
 
 #endif

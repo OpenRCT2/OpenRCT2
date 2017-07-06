@@ -1851,6 +1851,9 @@ void Network::Client_Handle_MAP(NetworkConnection& connection, NetworkPacket& pa
 
             // Notify user he is now online and which shortcut key enables chat
             network_chat_show_connected_message();
+
+            // Fix invalid vehicle sprite sizes, thus preventing visual corruption of sprites
+            fix_invalid_vehicle_sprite_sizes();
         }
         else
         {

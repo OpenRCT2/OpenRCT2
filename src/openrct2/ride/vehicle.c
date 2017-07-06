@@ -1938,7 +1938,7 @@ static void vehicle_update_waiting_for_passengers(rct_vehicle* vehicle){
 
         if (ride->depart_flags & RIDE_DEPART_LEAVE_WHEN_ANOTHER_ARRIVES){
 
-            for (sint32 i = 0; i < 32; ++i){
+            for (sint32 i = 0; i < MAX_VEHICLES_PER_RIDE; ++i){
                 uint16 train_id = ride->vehicles[i];
                 if (train_id == SPRITE_INDEX_NULL)
                     continue;

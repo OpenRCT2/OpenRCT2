@@ -1093,6 +1093,10 @@ void game_fix_save_vars()
 
     // Fix banner list pointing to NULL map elements
     banner_reset_broken_index();
+
+    // Fix invalid vehicle sprite sizes, thus preventing visual corruption of sprites
+    fix_invalid_vehicle_sprite_sizes();
+
 }
 
 /**
