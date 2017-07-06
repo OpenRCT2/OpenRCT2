@@ -449,7 +449,6 @@ extern "C"
         }
 
         map_reorganise_elements();
-        sprite_clear_all_unused();
         viewport_set_saved_view();
 
         bool result     = false;
