@@ -417,6 +417,12 @@ public:
         // We try to fix the cycles on import, hence the 'true' parameter
         check_for_sprite_list_cycles(true);
         check_for_spatial_index_cycles(true);
+        sint32 disjoint_sprites_count = fix_disjoint_sprites();
+        // This one is less harmful, no need to assert for it ~janisozaur
+        if (disjoint_sprites_count > 0)
+        {
+            log_error("Found %d disjoint null sprites", disjoint_sprites_count);
+        }
     }
 
     void Initialise()

@@ -951,6 +951,50 @@ sint32 check_for_sprite_list_cycles(bool fix)
     return -1;
 }
 
+/**
+ * Finds and fixes null sprites that are not reachable via SPRITE_LIST_NULL list.
+ *
+ * @return count of disjoint sprites found
+ */
+sint32 fix_disjoint_sprites()
+{
+    // Find reachable sprites
+    bool reachable[MAX_SPRITES] = {};
+    uint16 sprite_idx = gSpriteListHead[SPRITE_LIST_NULL];
+    rct_sprite * null_list_tail = NULL;
+    while (sprite_idx != SPRITE_INDEX_NULL)
+    {
+        reachable[sprite_idx] = true;
+        // cache the tail, so we don't have to walk the list twice
+        null_list_tail = get_sprite(sprite_idx);
+        sprite_idx = null_list_tail->unknown.next;
+    }
+
+    sint32 count = 0;
+
+    // Find all null sprites
+    for (sprite_idx = 0; sprite_idx < MAX_SPRITES; sprite_idx++)
+    {
+        rct_sprite * spr = get_sprite(sprite_idx);
+        if (spr->unknown.sprite_identifier == SPRITE_IDENTIFIER_NULL)
+        {
+            openrct2_assert(null_list_tail != NULL, "Null list is empty, yet found null sprites");
+            spr->unknown.sprite_index = sprite_idx;
+            if (!reachable[sprite_idx])
+            {
+                // Add the sprite directly to the list
+                null_list_tail->unknown.next = sprite_idx;
+                spr->unknown.next = SPRITE_INDEX_NULL;
+                spr->unknown.previous = null_list_tail->unknown.sprite_index;
+                null_list_tail = spr;
+                count++;
+                reachable[sprite_idx] = true;
+            }
+        }
+    }
+    return count;
+}
+
 sint32 check_for_spatial_index_cycles(bool fix)
 {
     for (sint32 i = 0; i < SPATIAL_INDEX_LOCATION_NULL; i++) {

@@ -154,8 +154,14 @@ void S6Exporter::Export()
 {
     sint32 spatial_cycle = check_for_spatial_index_cycles(false);
     sint32 regular_cycle = check_for_sprite_list_cycles(false);
+    sint32 disjoint_sprites_count = fix_disjoint_sprites();
     openrct2_assert(spatial_cycle == -1, "Sprite cycle exists in spatial list %d", spatial_cycle);
     openrct2_assert(regular_cycle == -1, "Sprite cycle exists in regular list %d", regular_cycle);
+    // This one is less harmful, no need to assert for it ~janisozaur
+    if (disjoint_sprites_count > 0)
+    {
+        log_error("Found %d disjoint null sprites", disjoint_sprites_count);
+    }
     _s6.info = gS6Info;
     uint32 researchedTrackPiecesA[128];
     uint32 researchedTrackPiecesB[128];
