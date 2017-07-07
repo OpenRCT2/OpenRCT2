@@ -260,7 +260,7 @@ static void window_title_command_editor_mouseup(rct_window *w, rct_widgetindex w
             window_start_textbox(w, widgetIndex, STR_STRING, textbox1Buffer, 6);
         }
         else {
-            // Currently the only other commands that use this textbox are Rotate and Zoom which have a maximum of 3.
+            // Currently the only other commands that use this textbox are Rotate and Zoom which have a maximum allowed value of 3.
             window_start_textbox(w, widgetIndex, STR_STRING, textbox1Buffer, 2);
         }
         break;
@@ -444,23 +444,23 @@ static void window_title_command_editor_textinput(rct_window * w, rct_widgetinde
     char * end;
     sint32 value = strtol(widgetIndex != WIDX_TEXTBOX_Y ? textbox1Buffer : textbox2Buffer, &end, 10);
     if (value < 0) value = 0;
+    // The Wait command is the only one with an order of magnitude greater than 255.
     if (value > 255 && command.Type != TITLE_SCRIPT_WAIT) value = 255;
     switch (widgetIndex) {
     case WIDX_TEXTBOX_FULL:
         if (text == NULL) {
-            if (*end == '\0') {
-                if (command.Type == TITLE_SCRIPT_ZOOM) {
-                    if (value > 3) value = 3;
-                }
-                else if (command.Type == TITLE_SCRIPT_ROTATE) {
-                    if (value < 1) value = 1;
-                    if (value > 3) value = 3;
-                }
-                else if (command.Type == TITLE_SCRIPT_WAIT) {
+            if (*end == '\0')
+                if (command.Type == TITLE_SCRIPT_WAIT) {
                     if (value < 100) value = 100;
                     if (value > 65000) value = 65000;
+                    command.Rotations = (uint16)value;
                 }
-                command.Rotations = (uint8)value;
+                else {
+                    // Both Rotate and Zoom have a maximum value of 3, but Rotate has a min value of 1 not 0.
+                    if (value > 3) value = 3;
+                    if (value < 1 && command.Type == TITLE_SCRIPT_ROTATE) value = 1;
+                    command.Rotations = (uint8)value;
+                }
             }
             snprintf(textbox1Buffer, BUF_SIZE, "%d", command.Rotations);
             window_invalidate(w);
