@@ -30,7 +30,8 @@
 #include "dropdown.h"
 
 typedef struct TITLE_COMMAND_ORDER {
-    uint8 command;
+    // originally a uint8, but the new millisecond wait times require a uint16.
+    uint16 command;
     rct_string_id nameStringId;
     rct_string_id descStringId;
 } TITLE_COMMAND_ORDER;
@@ -256,11 +257,11 @@ static void window_title_command_editor_mouseup(rct_window *w, rct_widgetindex w
         window_close(w);
         break;
     case WIDX_TEXTBOX_FULL:
+        // The only commands that use TEXTBOX_FULL currently are Wait, Rotate, and Zoom. Rotate and Zoom have single-digit maximum values, while Wait has 5-digit maximum values.
         if (command.Type == TITLE_SCRIPT_WAIT) {
             window_start_textbox(w, widgetIndex, STR_STRING, textbox1Buffer, 6);
         }
         else {
-            // Currently the only other commands that use this textbox are Rotate and Zoom which have a maximum allowed value of 3.
             window_start_textbox(w, widgetIndex, STR_STRING, textbox1Buffer, 2);
         }
         break;
@@ -444,7 +445,7 @@ static void window_title_command_editor_textinput(rct_window * w, rct_widgetinde
     char * end;
     sint32 value = strtol(widgetIndex != WIDX_TEXTBOX_Y ? textbox1Buffer : textbox2Buffer, &end, 10);
     if (value < 0) value = 0;
-    // The Wait command is the only one with an order of magnitude greater than 255.
+    // The Wait command is the only one with acceptable values greater than 255.
     if (value > 255 && command.Type != TITLE_SCRIPT_WAIT) value = 255;
     switch (widgetIndex) {
     case WIDX_TEXTBOX_FULL:
