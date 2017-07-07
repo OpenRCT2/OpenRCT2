@@ -244,7 +244,7 @@ void window_title_command_editor_open(TitleSequence * sequence, sint32 index, bo
     case TITLE_SCRIPT_ROTATE:
     case TITLE_SCRIPT_ZOOM:
     case TITLE_SCRIPT_WAIT:
-        snprintf(textbox1Buffer, BUF_SIZE, "%d", command.Rotations);
+        snprintf(textbox1Buffer, BUF_SIZE, "%d", command.Milliseconds);
         break;
     }
 }
@@ -454,16 +454,17 @@ static void window_title_command_editor_textinput(rct_window * w, rct_widgetinde
                 if (command.Type == TITLE_SCRIPT_WAIT) {
                     if (value < 100) value = 100;
                     if (value > 65000) value = 65000;
-                    command.Rotations = (uint16)value;
+                    command.Milliseconds = (uint16)value;
+                    snprintf(textbox1Buffer, BUF_SIZE, "%d", command.Milliseconds);
                 }
                 else {
                     // Both Rotate and Zoom have a maximum value of 3, but Rotate has a min value of 1 not 0.
                     if (value > 3) value = 3;
                     if (value < 1 && command.Type == TITLE_SCRIPT_ROTATE) value = 1;
                     command.Rotations = (uint8)value;
+                    snprintf(textbox1Buffer, BUF_SIZE, "%d", command.Rotations);
                 }
             }
-            snprintf(textbox1Buffer, BUF_SIZE, "%d", command.Rotations);
             window_invalidate(w);
         } else {
             safe_strcpy(textbox1Buffer, text, sizeof(textbox1Buffer));
