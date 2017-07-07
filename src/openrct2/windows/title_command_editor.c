@@ -450,7 +450,7 @@ static void window_title_command_editor_textinput(rct_window * w, rct_widgetinde
     switch (widgetIndex) {
     case WIDX_TEXTBOX_FULL:
         if (text == NULL) {
-            if (*end == '\0')
+            if (*end == '\0') {
                 if (command.Type == TITLE_SCRIPT_WAIT) {
                     if (value < 100) value = 100;
                     if (value > 65000) value = 65000;
