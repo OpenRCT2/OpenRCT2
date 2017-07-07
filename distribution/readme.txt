@@ -1,5 +1,5 @@
-Last updated:    2017-05-03
-Release version: 0.0.8.0
+Last updated:    2017-07-07
+Release version: 0.1.0
 ------------------------------------------------------------------------
 
 
@@ -57,19 +57,18 @@ following information in your bug report:
  * Platform (Windows, Linux, FreeBSD, ...) and compiler (including version) if
    you compiled OpenRCT2 yourself.
  * The processor architecture of your OS (32 bits Windows, 64 bits Windows,
-   Linux on an ARM, Mac OS X on a PowerPC, ...)
+   Android on an ARM, Linux on a PowerPC, ...)
  * The language and culture your operating system is using.
  * Attach a saved game *and* a screenshot if possible
  * If this bug only occurred recently please note the last version without
    the bug and the first version including the bug. That way we can fix it
    quicker by looking at the changes made.
- * Attach crash.dmp, crash.log and crash.sav. These files are usually created
-   next to your openrct2.cfg. The crash handler will tell you the location.
+ * Attach a crash dump (if your game crashed or froze).
 
 3.0) Supported platforms
 ---- -------------------
 OpenRCT2 is currently supported on Windows Vista and above, many distributions of
-Linux, macOS, and OS X 10.7 or higher. OpenRCT2 will only work on
+Linux, macOS 10.9 or higher, Android, FreeBSD and OpenBSD. OpenRCT2 will only work on
 little-endian architectures.
 Further instructions can be found on GitHub.
 
@@ -134,7 +133,7 @@ information about the project, its roadmap and how to compile the source code.
 6.0) Translation
 ---- -----------
 For more information about the game's translation and how to contribute, please
-visit the GitHub page and wiki at (https://github.com/OpenRCT2/OpenRCT2).
+visit the GitHub page and wiki at (https://github.com/OpenRCT2/Localisation).
 
 7.0) Troubleshooting
 ---- ---------------
@@ -156,7 +155,7 @@ libcURL  | MIT (or Modified BSD-style) licence.
 libspeex | BSD-style licence.
 libpng   | libpng licence.
 libzip   | BSD 3 clause licence.
-OpenSSL  | Apache Licence 1.0
+OpenSSL  | OpenSSL Licence
 SDL2     | zlib licence.
 SDL2 TTF | zlib licence.
 zlib     | zlib licence.
