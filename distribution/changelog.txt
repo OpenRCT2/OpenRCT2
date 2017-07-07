@@ -1,4 +1,4 @@
-0.0.8 (in development)
+0.1.0 (in development)
 ------------------------------------------------------------------------
 - Feature: [#1399 (partial), #5177] Add window that displays any missing/corrupt objects when loading a park
 - Feature: [#5056] Add cheat to own all land.
