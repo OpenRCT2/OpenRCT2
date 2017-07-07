@@ -419,7 +419,6 @@ extern uint16 *gSpriteListCount;
 extern uint16 gSpriteSpatialIndex[0x10001];
 
 rct_sprite *create_sprite(uint8 bl);
-void reset_empty_sprites();
 void reset_sprite_list();
 void reset_sprite_spatial_index();
 void sprite_clear_all_unused();
@@ -478,6 +477,8 @@ const char *sprite_checksum();
 
 void sprite_set_flashing(rct_sprite *sprite, bool flashing);
 bool sprite_get_flashing(rct_sprite *sprite);
-
+sint32 check_for_sprite_list_cycles(bool fix);
+sint32 check_for_spatial_index_cycles(bool fix);
+sint32 fix_disjoint_sprites();
 #endif
 

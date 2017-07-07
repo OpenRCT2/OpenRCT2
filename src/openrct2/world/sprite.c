@@ -247,36 +247,12 @@ const char * sprite_checksum()
 
 #endif // DISABLE_NETWORK
 
-/**
- * Clears all the unused sprite memory to zero. Probably so that it can be compressed better when saving.
- *  rct2: 0x0069EBA4
- */
-void sprite_clear_all_unused()
-{
-    rct_unk_sprite *sprite;
-    uint16 spriteIndex, nextSpriteIndex, previousSpriteIndex;
-
-    spriteIndex = gSpriteListHead[SPRITE_LIST_NULL];
-    while (spriteIndex != SPRITE_INDEX_NULL) {
-        sprite = &get_sprite(spriteIndex)->unknown;
-        nextSpriteIndex = sprite->next;
-        previousSpriteIndex = sprite->previous;
-        memset(sprite, 0, sizeof(rct_sprite));
-        sprite->sprite_identifier = SPRITE_IDENTIFIER_NULL;
-        sprite->next = nextSpriteIndex;
-        sprite->previous = previousSpriteIndex;
-        sprite->linked_list_type_offset = SPRITE_LIST_NULL * 2;
-        sprite->sprite_index = spriteIndex;
-        _spriteFlashingList[spriteIndex] = false;
-        spriteIndex = nextSpriteIndex;
-    }
-}
-
 static void sprite_reset(rct_unk_sprite *sprite)
 {
     // Need to retain how the sprite is linked in lists
     uint8 llto = sprite->linked_list_type_offset;
     uint16 next = sprite->next;
+    uint16 next_in_quadrant = sprite->next_in_quadrant;
     uint16 prev = sprite->previous;
     uint16 sprite_index = sprite->sprite_index;
     _spriteFlashingList[sprite_index] = false;
@@ -285,23 +261,38 @@ static void sprite_reset(rct_unk_sprite *sprite)
 
     sprite->linked_list_type_offset = llto;
     sprite->next = next;
+    sprite->next_in_quadrant = next_in_quadrant;
     sprite->previous = prev;
     sprite->sprite_index = sprite_index;
+    sprite->sprite_identifier = SPRITE_IDENTIFIER_NULL;
 }
 
-// Resets all sprites in SPRITE_LIST_NULL list
-void reset_empty_sprites()
+/**
+* Clears all the unused sprite memory to zero. Probably so that it can be compressed better when saving.
+*  rct2: 0x0069EBA4
+*/
+void sprite_clear_all_unused()
 {
-    uint16 spriteIndex;
+    rct_unk_sprite *sprite;
+    uint16 spriteIndex, nextSpriteIndex;
+
     spriteIndex = gSpriteListHead[SPRITE_LIST_NULL];
-    while (spriteIndex != SPRITE_INDEX_NULL)
-    {
-        rct_unk_sprite *sprite = &(get_sprite(spriteIndex))->unknown;
-        spriteIndex = sprite->next;
-        if (sprite->sprite_identifier == SPRITE_IDENTIFIER_NULL)
-        {
-            sprite_reset(sprite);
-        }
+    while (spriteIndex != SPRITE_INDEX_NULL) {
+        sprite = &get_sprite(spriteIndex)->unknown;
+        nextSpriteIndex = sprite->next;
+        sprite_reset(sprite);
+        sprite->linked_list_type_offset = SPRITE_LIST_NULL * 2;
+
+        // This shouldn't be necessary, as sprite_reset() preserves the index
+        // but it has been left in as a safety net in case the index isn't set correctly
+        sprite->sprite_index = spriteIndex;
+
+        // sprite->next_in_quadrant will only end up as zero owing to corruption
+        // most likely due to previous builds not preserving it when resetting sprites
+        // We reset it to SPRITE_INDEX_NULL to prevent cycles in the sprite lists
+        if (sprite->next_in_quadrant == 0) { sprite->next_in_quadrant = SPRITE_INDEX_NULL; }
+        _spriteFlashingList[spriteIndex] = false;
+        spriteIndex = nextSpriteIndex;
     }
 }
 
@@ -825,4 +816,216 @@ bool sprite_get_flashing(rct_sprite *sprite)
 {
     assert(sprite->unknown.sprite_index < MAX_SPRITES);
     return _spriteFlashingList[sprite->unknown.sprite_index];
+}
+
+static rct_sprite * find_sprite_list_cycle(uint16 sprite_idx)
+{
+    if (sprite_idx == SPRITE_INDEX_NULL)
+    {
+        return false;
+    }
+    const rct_sprite * fast = get_sprite(sprite_idx);
+    const rct_sprite * slow = fast;
+    bool increment_slow = false;
+    rct_sprite * cycle_start = NULL;
+    while (fast->unknown.sprite_index != SPRITE_INDEX_NULL)
+    {
+        // increment fast every time, unless reached the end
+        if (fast->unknown.next == SPRITE_INDEX_NULL)
+        {
+            break;
+        }
+        else {
+            fast = get_sprite(fast->unknown.next);
+        }
+        // increment slow only every second iteration
+        if (increment_slow)
+        {
+            slow = get_sprite(slow->unknown.next);
+        }
+        increment_slow = !increment_slow;
+        if (fast == slow)
+        {
+            cycle_start = get_sprite(slow->unknown.sprite_index);
+            break;
+        }
+    }
+    return cycle_start;
+}
+
+static rct_sprite * find_sprite_quadrant_cycle(uint16 sprite_idx)
+{
+    if (sprite_idx == SPRITE_INDEX_NULL)
+    {
+        return false;
+    }
+    const rct_sprite * fast = get_sprite(sprite_idx);
+    const rct_sprite * slow = fast;
+    bool increment_slow = false;
+    rct_sprite * cycle_start = NULL;
+    while (fast->unknown.sprite_index != SPRITE_INDEX_NULL)
+    {
+        // increment fast every time, unless reached the end
+        if (fast->unknown.next_in_quadrant == SPRITE_INDEX_NULL)
+        {
+            break;
+        }
+        else {
+            fast = get_sprite(fast->unknown.next_in_quadrant);
+        }
+        // increment slow only every second iteration
+        if (increment_slow)
+        {
+            slow = get_sprite(slow->unknown.next_in_quadrant);
+        }
+        increment_slow = !increment_slow;
+        if (fast == slow)
+        {
+            cycle_start = get_sprite(slow->unknown.sprite_index);
+            break;
+        }
+    }
+    return cycle_start;
+}
+
+static bool index_is_in_list(uint16 index, enum SPRITE_LIST sl)
+{
+    uint16 sprite_index = gSpriteListHead[sl];
+    while (sprite_index != SPRITE_INDEX_NULL)
+    {
+        if (sprite_index == index)
+        {
+            return true;
+        }
+        sprite_index = get_sprite(sprite_index)->unknown.next;
+    }
+    return false;
+}
+
+static bool index_is_in_spatial_list(uint16 index, sint32 quadrant)
+{
+    uint16 sprite_index = gSpriteSpatialIndex[quadrant];
+    while (sprite_index != SPRITE_INDEX_NULL)
+    {
+        if (sprite_index == index)
+        {
+            return true;
+        }
+        sprite_index = get_sprite(sprite_index)->unknown.next_in_quadrant;
+    }
+    return false;
+}
+
+sint32 check_for_sprite_list_cycles(bool fix)
+{
+    for (sint32 i = 0; i < NUM_SPRITE_LISTS; i++) {
+        rct_sprite * cycle_start = find_sprite_list_cycle(gSpriteListHead[i]);
+        if (cycle_start != NULL)
+        {
+            if (fix)
+            {
+                // Fix head list, but only in reverse order
+                // This is likely not needed, but just in case
+                get_sprite(gSpriteListHead[i])->unknown.previous = SPRITE_INDEX_NULL;
+
+                // Store the leftover part of cycle to be fixed
+                uint16 cycle_next = cycle_start->unknown.next;
+
+                // Break the cycle
+                cycle_start->unknown.next = SPRITE_INDEX_NULL;
+
+                // Now re-add remainder of the cycle back to list, safely.
+                // Add each sprite to the list until we encounter one that is already part of the list.
+                while (!index_is_in_list(cycle_next, i))
+                {
+                    rct_sprite * spr = get_sprite(cycle_next);
+
+                    cycle_start->unknown.next = cycle_next;
+                    spr->unknown.previous = cycle_start->unknown.sprite_index;
+                    cycle_next = spr->unknown.next;
+                    spr->unknown.next = SPRITE_INDEX_NULL;
+                    cycle_start = spr;
+                }
+
+            }
+            return i;
+        }
+    }
+    return -1;
+}
+
+/**
+ * Finds and fixes null sprites that are not reachable via SPRITE_LIST_NULL list.
+ *
+ * @return count of disjoint sprites found
+ */
+sint32 fix_disjoint_sprites()
+{
+    // Find reachable sprites
+    bool reachable[MAX_SPRITES] = { false };
+    uint16 sprite_idx = gSpriteListHead[SPRITE_LIST_NULL];
+    rct_sprite * null_list_tail = NULL;
+    while (sprite_idx != SPRITE_INDEX_NULL)
+    {
+        reachable[sprite_idx] = true;
+        // cache the tail, so we don't have to walk the list twice
+        null_list_tail = get_sprite(sprite_idx);
+        sprite_idx = null_list_tail->unknown.next;
+    }
+
+    sint32 count = 0;
+
+    // Find all null sprites
+    for (sprite_idx = 0; sprite_idx < MAX_SPRITES; sprite_idx++)
+    {
+        rct_sprite * spr = get_sprite(sprite_idx);
+        if (spr->unknown.sprite_identifier == SPRITE_IDENTIFIER_NULL)
+        {
+            openrct2_assert(null_list_tail != NULL, "Null list is empty, yet found null sprites");
+            spr->unknown.sprite_index = sprite_idx;
+            if (!reachable[sprite_idx])
+            {
+                // Add the sprite directly to the list
+                null_list_tail->unknown.next = sprite_idx;
+                spr->unknown.next = SPRITE_INDEX_NULL;
+                spr->unknown.previous = null_list_tail->unknown.sprite_index;
+                null_list_tail = spr;
+                count++;
+                reachable[sprite_idx] = true;
+            }
+        }
+    }
+    return count;
+}
+
+sint32 check_for_spatial_index_cycles(bool fix)
+{
+    for (sint32 i = 0; i < SPATIAL_INDEX_LOCATION_NULL; i++) {
+        rct_sprite * cycle_start = find_sprite_quadrant_cycle(gSpriteSpatialIndex[i]);
+        if (cycle_start != NULL)
+        {
+            if (fix)
+            {
+                // Store the leftover part of cycle to be fixed
+                uint16 cycle_next = cycle_start->unknown.next_in_quadrant;
+
+                // Break the cycle
+                cycle_start->unknown.next_in_quadrant = SPRITE_INDEX_NULL;
+
+                // Now re-add remainder of the cycle back to list, safely.
+                // Add each sprite to the list until we encounter one that is already part of the list.
+                while (!index_is_in_list(cycle_next, i))
+                {
+                    rct_sprite * spr = get_sprite(cycle_next);
+
+                    cycle_start->unknown.next_in_quadrant = cycle_next;
+                    cycle_next = spr->unknown.next_in_quadrant;
+                    spr->unknown.next_in_quadrant = SPRITE_INDEX_NULL;
+                    cycle_start = spr;
+                }
+            }
+            return i;
+        }
+    }
+    return -1;
 }
