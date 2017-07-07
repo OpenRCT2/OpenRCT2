@@ -30,7 +30,8 @@
 #include "dropdown.h"
 
 typedef struct TITLE_COMMAND_ORDER {
-    uint8 command;
+    // originally a uint8, but the new millisecond wait times require a uint16.
+    uint16 command;
     rct_string_id nameStringId;
     rct_string_id descStringId;
 } TITLE_COMMAND_ORDER;
@@ -242,8 +243,10 @@ void window_title_command_editor_open(TitleSequence * sequence, sint32 index, bo
         break;
     case TITLE_SCRIPT_ROTATE:
     case TITLE_SCRIPT_ZOOM:
-    case TITLE_SCRIPT_WAIT:
         snprintf(textbox1Buffer, BUF_SIZE, "%d", command.Rotations);
+        break;
+    case TITLE_SCRIPT_WAIT:
+        snprintf(textbox1Buffer, BUF_SIZE, "%d", command.Milliseconds);
         break;
     }
 }
@@ -256,7 +259,13 @@ static void window_title_command_editor_mouseup(rct_window *w, rct_widgetindex w
         window_close(w);
         break;
     case WIDX_TEXTBOX_FULL:
-        window_start_textbox(w, widgetIndex, STR_STRING, textbox1Buffer, 4);
+        // The only commands that use TEXTBOX_FULL currently are Wait, Rotate, and Zoom. Rotate and Zoom have single-digit maximum values, while Wait has 5-digit maximum values.
+        if (command.Type == TITLE_SCRIPT_WAIT) {
+            window_start_textbox(w, widgetIndex, STR_STRING, textbox1Buffer, 6);
+        }
+        else {
+            window_start_textbox(w, widgetIndex, STR_STRING, textbox1Buffer, 2);
+        }
         break;
     case WIDX_TEXTBOX_X:
         window_start_textbox(w, widgetIndex, STR_STRING, textbox1Buffer, 4);
@@ -402,8 +411,8 @@ static void window_title_command_editor_dropdown(rct_window *w, rct_widgetindex 
             command.Speed = 1;
             break;
         case TITLE_SCRIPT_WAIT:
-            command.Seconds = 10;
-            snprintf(textbox1Buffer, BUF_SIZE, "%d", command.Seconds);
+            command.Milliseconds = 10000;
+            snprintf(textbox1Buffer, BUF_SIZE, "%d", command.Milliseconds);
             break;
         case TITLE_SCRIPT_LOAD:
             command.SaveIndex = 0;
@@ -438,20 +447,26 @@ static void window_title_command_editor_textinput(rct_window * w, rct_widgetinde
     char * end;
     sint32 value = strtol(widgetIndex != WIDX_TEXTBOX_Y ? textbox1Buffer : textbox2Buffer, &end, 10);
     if (value < 0) value = 0;
-    if (value > 255) value = 255;
+    // The Wait command is the only one with acceptable values greater than 255.
+    if (value > 255 && command.Type != TITLE_SCRIPT_WAIT) value = 255;
     switch (widgetIndex) {
     case WIDX_TEXTBOX_FULL:
         if (text == NULL) {
             if (*end == '\0') {
-                if (command.Type == TITLE_SCRIPT_ROTATE || command.Type == TITLE_SCRIPT_ZOOM) {
+                if (command.Type == TITLE_SCRIPT_WAIT) {
+                    if (value < 100) value = 100;
+                    if (value > 65000) value = 65000;
+                    command.Milliseconds = (uint16)value;
+                    snprintf(textbox1Buffer, BUF_SIZE, "%d", command.Milliseconds);
+                }
+                else {
+                    // Both Rotate and Zoom have a maximum value of 3, but Rotate has a min value of 1 not 0.
                     if (value > 3) value = 3;
+                    if (value < 1 && command.Type == TITLE_SCRIPT_ROTATE) value = 1;
+                    command.Rotations = (uint8)value;
+                    snprintf(textbox1Buffer, BUF_SIZE, "%d", command.Rotations);
                 }
-                else if (command.Type == TITLE_SCRIPT_WAIT) {
-                    if (value < 1) value = 1;
-                }
-                command.Rotations = (uint8)value;
             }
-            snprintf(textbox1Buffer, BUF_SIZE, "%d", command.Rotations);
             window_invalidate(w);
         } else {
             safe_strcpy(textbox1Buffer, text, sizeof(textbox1Buffer));

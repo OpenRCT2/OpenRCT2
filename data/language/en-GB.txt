@@ -3762,13 +3762,13 @@ STR_5420    :Rotate{MOVE_X}{87}{COMMA16}
 STR_5421    :Zoom
 STR_5422    :Zoom{MOVE_X}{87}{COMMA16}
 STR_5423    :Wait
-STR_5424    :Wait{MOVE_X}{87}{COMMA16}
+STR_5424    :Wait{MOVE_X}{87}{UINT16}
 STR_5425    :Restart
 STR_5426    :End
 STR_5427    :Coordinates:
 STR_5428    :Anticlockwise rotations:
 STR_5429    :Zoom level:
-STR_5430    :Seconds to wait:
+STR_5430    :Milliseconds to wait:
 STR_5431    :Save to load:
 STR_5432    :Command:
 STR_5433    :Title Sequences

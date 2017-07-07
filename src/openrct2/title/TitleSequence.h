@@ -31,7 +31,7 @@ typedef struct TitleCommand
         uint8 Rotations;    // ROTATE (counter-clockwise)
         uint8 Zoom;         // ZOOM
         uint8 Speed;        // SPEED
-        uint8 Seconds;      // WAIT
+        uint16 Milliseconds;      // WAIT
     };
 } TitleCommand;
 

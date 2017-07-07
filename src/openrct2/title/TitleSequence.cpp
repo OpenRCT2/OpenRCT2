@@ -446,7 +446,7 @@ static std::vector<TitleCommand> LegacyScriptRead(utf8 * script, size_t scriptLe
             else if (_stricmp(token, "WAIT") == 0)
             {
                 command.Type = TITLE_SCRIPT_WAIT;
-                command.Seconds = atoi(part1) & 0xFF;
+                command.Milliseconds = atoi(part1) & 0xFFFF;
             }
             else if (_stricmp(token, "RESTART") == 0)
             {
@@ -595,7 +595,7 @@ static utf8 * LegacyScriptWrite(TitleSequence * seq)
             sb.Append(buffer);
             break;
         case TITLE_SCRIPT_WAIT:
-            String::Format(buffer, sizeof(buffer), "WAIT %u", command->Seconds);
+            String::Format(buffer, sizeof(buffer), "WAIT %u", command->Milliseconds);
             sb.Append(buffer);
             break;
         case TITLE_SCRIPT_RESTART:

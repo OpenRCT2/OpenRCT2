@@ -68,8 +68,8 @@
     <GtestVersion>1.8.0</GtestVersion>
     <GtestUrl>https://github.com/google/googletest/archive/release-1.8.0.zip</GtestUrl>
     <GtestSha1>667f873ab7a4d246062565fad32fb6d8e203ee73</GtestSha1>
-    <TitleSequencesUrl>https://github.com/OpenRCT2/title-sequences/releases/download/v0.0.5/title-sequence-v0.0.5.zip</TitleSequencesUrl>
-    <TitleSequencesSha1>79ffb2585d12abcbfce205d7696e3472a504b005</TitleSequencesSha1>
+    <TitleSequencesUrl>https://github.com/OpenRCT2/title-sequences/releases/download/v0.1.0/title-sequence-v0.1.0.zip</TitleSequencesUrl>
+    <TitleSequencesSha1>b587d83de508d0b104d14c599b76f8565900fce0</TitleSequencesSha1>
   </PropertyGroup>
 
   <ItemGroup>
