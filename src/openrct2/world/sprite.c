@@ -959,7 +959,7 @@ sint32 check_for_sprite_list_cycles(bool fix)
 sint32 fix_disjoint_sprites()
 {
     // Find reachable sprites
-    bool reachable[MAX_SPRITES] = {};
+    bool reachable[MAX_SPRITES] = { false };
     uint16 sprite_idx = gSpriteListHead[SPRITE_LIST_NULL];
     rct_sprite * null_list_tail = NULL;
     while (sprite_idx != SPRITE_INDEX_NULL)
