@@ -891,7 +891,7 @@ static void window_title_editor_scrollpaint_commands(rct_window *w, rct_drawpixe
             break;
         case TITLE_SCRIPT_WAIT:
             commandName = STR_TITLE_EDITOR_COMMAND_WAIT;
-            set_format_arg(0, uint32, command->Milliseconds);
+            set_format_arg(0, uint16, command->Milliseconds);
             break;
         case TITLE_SCRIPT_RESTART:
             commandName = STR_TITLE_EDITOR_RESTART;
