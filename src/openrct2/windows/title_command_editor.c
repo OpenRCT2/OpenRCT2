@@ -242,6 +242,8 @@ void window_title_command_editor_open(TitleSequence * sequence, sint32 index, bo
         snprintf(textbox2Buffer, BUF_SIZE, "%d", command.Y);
         break;
     case TITLE_SCRIPT_ROTATE:
+        snprintf(textbox1Buffer, BUF_SIZE, "%d", command.Rotations);
+        break;
     case TITLE_SCRIPT_ZOOM:
     case TITLE_SCRIPT_WAIT:
         snprintf(textbox1Buffer, BUF_SIZE, "%d", command.Milliseconds);
