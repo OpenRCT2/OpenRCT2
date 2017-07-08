@@ -127,8 +127,6 @@ typedef struct tm tm_t;
 
 void print_launch_information();
 
-static void rct2_draw_fps(rct_drawpixelinfo *dpi);
-
 void rct2_quit()
 {
     gSavePromptMode = PM_QUIT;
@@ -190,77 +188,6 @@ void substitute_path(char *dest, size_t size, const char *path, const char *file
         ++written;
     }
     safe_strcpy(dest, filename, size - written);
-}
-
-void rct2_draw(rct_drawpixelinfo *dpi)
-{
-    if (gIntroState != INTRO_STATE_NONE) {
-        return;
-    }
-
-    // redraw_rain();
-    // window_update_all();
-    // gfx_invalidate_pickedup_peep();
-    // gfx_draw_pickedup_peep();
-    // update_rain_animation();
-    update_palette_effects();
-
-    chat_draw(dpi);
-    console_draw(dpi);
-
-    if ((gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) && !gTitleHideVersionInfo) {
-        DrawOpenRCT2(dpi, 0, context_get_height() - 20);
-    }
-
-    if (gConfigGeneral.show_fps) {
-        rct2_draw_fps(dpi);
-    }
-
-    gCurrentDrawCount++;
-}
-
-static time_t _lastSecond;
-static sint32 _currentFPS;
-static sint32 _frames;
-
-static void rct2_measure_fps()
-{
-    _frames++;
-
-    time_t currentTime = time(NULL);
-
-    if (currentTime != _lastSecond) {
-        _currentFPS = _frames;
-        _frames = 0;
-    }
-
-    _lastSecond = currentTime;
-}
-
-static void rct2_draw_fps(rct_drawpixelinfo *dpi)
-{
-    sint32 x = context_get_width() / 2;
-    sint32 y = 2;
-
-    // Measure FPS
-    rct2_measure_fps();
-
-    // Format string
-    utf8 buffer[64];
-    utf8 *ch = buffer;
-    ch = utf8_write_codepoint(ch, FORMAT_MEDIUMFONT);
-    ch = utf8_write_codepoint(ch, FORMAT_OUTLINE);
-    ch = utf8_write_codepoint(ch, FORMAT_WHITE);
-
-    snprintf(ch, 64 - (ch - buffer), "%d", _currentFPS);
-
-    // Draw Text
-    sint32 stringWidth = gfx_get_string_width(buffer);
-    x = x - (stringWidth / 2);
-    gfx_draw_string(dpi, buffer, 0, x, y);
-
-    // Make area dirty so the text doesn't get drawn over the last
-    gfx_set_dirty_blocks(x - 16, y - 4, gLastDrawStringX + 16, 16);
 }
 
 /**

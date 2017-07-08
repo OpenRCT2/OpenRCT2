@@ -20,118 +20,134 @@
 #include "IDrawingContext.h"
 #include "IDrawingEngine.h"
 
-namespace OpenRCT2 { namespace Drawing
+namespace OpenRCT2
 {
-    class X8DrawingContext;
-
-    struct DirtyGrid
+    namespace Paint
     {
-        uint32  BlockShiftX;
-        uint32  BlockShiftY;
-        uint32  BlockWidth;
-        uint32  BlockHeight;
-        uint32  BlockColumns;
-        uint32  BlockRows;
-        uint8 * Blocks;
-    };
+        class Painter;
+    }
 
-    class X8RainDrawer final : public IRainDrawer
+    namespace Ui
     {
-    private:
-        struct RainPixel
+        interface IUiContext;
+    }
+
+    namespace Drawing
+    {
+        class X8DrawingContext;
+
+        struct DirtyGrid
         {
-            uint32 Position;
-            uint8  Colour;
+            uint32  BlockShiftX;
+            uint32  BlockShiftY;
+            uint32  BlockWidth;
+            uint32  BlockHeight;
+            uint32  BlockColumns;
+            uint32  BlockRows;
+            uint8 * Blocks;
         };
 
-        static constexpr uint32 MaxRainPixels = 0xFFFE;
+        class X8RainDrawer final : public IRainDrawer
+        {
+        private:
+            struct RainPixel
+            {
+                uint32 Position;
+                uint8  Colour;
+            };
 
-        size_t              _rainPixelsCapacity = MaxRainPixels;
-        uint32              _rainPixelsCount    = 0;
-        RainPixel *         _rainPixels         = nullptr;
-        rct_drawpixelinfo * _screenDPI          = nullptr;
+            static constexpr uint32 MaxRainPixels = 0xFFFE;
 
-    public:
-        X8RainDrawer();
-        ~X8RainDrawer();
-        void SetDPI(rct_drawpixelinfo * dpi);
-        void Draw(sint32 x, sint32 y, sint32 width, sint32 height, sint32 xStart, sint32 yStart) override;
-        void Restore();
-    };
+            size_t              _rainPixelsCapacity = MaxRainPixels;
+            uint32              _rainPixelsCount    = 0;
+            RainPixel *         _rainPixels         = nullptr;
+            rct_drawpixelinfo * _screenDPI          = nullptr;
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wsuggest-final-types"
-    class X8DrawingEngine : public IDrawingEngine
-    {
-    protected:
-        uint32  _width      = 0;
-        uint32  _height     = 0;
-        uint32  _pitch      = 0;
-        size_t  _bitsSize   = 0;
-        uint8 * _bits       = nullptr;
+        public:
+            X8RainDrawer();
+            ~X8RainDrawer();
+            void SetDPI(rct_drawpixelinfo * dpi);
+            void Draw(sint32 x, sint32 y, sint32 width, sint32 height, sint32 xStart, sint32 yStart) override;
+            void Restore();
+        };
 
-        DirtyGrid   _dirtyGrid  = { 0 };
+    #pragma GCC diagnostic push
+    #pragma GCC diagnostic ignored "-Wsuggest-final-types"
+        class X8DrawingEngine : public IDrawingEngine
+        {
+        private:
+            Paint::Painter * _painter  = nullptr;
 
-        rct_drawpixelinfo _bitsDPI  = { 0 };
+        protected:
+            uint32  _width      = 0;
+            uint32  _height     = 0;
+            uint32  _pitch      = 0;
+            size_t  _bitsSize   = 0;
+            uint8 * _bits       = nullptr;
 
-#ifdef __ENABLE_LIGHTFX__
-        bool _lastLightFXenabled = false;
-#endif
+            DirtyGrid   _dirtyGrid  = { 0 };
 
-        X8RainDrawer        _rainDrawer;
-        X8DrawingContext *  _drawingContext;
+            rct_drawpixelinfo _bitsDPI  = { 0 };
 
-    public:
-        explicit X8DrawingEngine();
-        ~X8DrawingEngine() override;
+    #ifdef __ENABLE_LIGHTFX__
+            bool _lastLightFXenabled = false;
+    #endif
 
-        void Initialise() override;
-        void Resize(uint32 width, uint32 height) override;
-        void SetPalette(const rct_palette_entry * palette) override;
-        void SetUncappedFrameRate(bool uncapped) override;
-        void Invalidate(sint32 left, sint32 top, sint32 right, sint32 bottom) override;
-        void Draw() override;
-        void CopyRect(sint32 x, sint32 y, sint32 width, sint32 height, sint32 dx, sint32 dy) override;
-        sint32 Screenshot() override;
-        IDrawingContext * GetDrawingContext(rct_drawpixelinfo * dpi) override;
-        rct_drawpixelinfo * GetDrawingPixelInfo() override;
-        DRAWING_ENGINE_FLAGS GetFlags() override;
-        void InvalidateImage(uint32 image) override;
+            X8RainDrawer        _rainDrawer;
+            X8DrawingContext *  _drawingContext;
 
-        rct_drawpixelinfo * GetDPI();
+        public:
+            explicit X8DrawingEngine(Ui::IUiContext * uiContext);
+            ~X8DrawingEngine() override;
 
-    protected:
-        void ConfigureBits(uint32 width, uint32 height, uint32 pitch);
+            void Initialise() override;
+            void Resize(uint32 width, uint32 height) override;
+            void SetPalette(const rct_palette_entry * palette) override;
+            void SetUncappedFrameRate(bool uncapped) override;
+            void Invalidate(sint32 left, sint32 top, sint32 right, sint32 bottom) override;
+            void Draw() override;
+            void CopyRect(sint32 x, sint32 y, sint32 width, sint32 height, sint32 dx, sint32 dy) override;
+            sint32 Screenshot() override;
+            IDrawingContext * GetDrawingContext(rct_drawpixelinfo * dpi) override;
+            rct_drawpixelinfo * GetDrawingPixelInfo() override;
+            DRAWING_ENGINE_FLAGS GetFlags() override;
+            void InvalidateImage(uint32 image) override;
 
-    private:
-        void ConfigureDirtyGrid();
-        static void ResetWindowVisbilities();
-        void DrawAllDirtyBlocks();
-        void DrawDirtyBlocks(uint32 x, uint32 y, uint32 columns, uint32 rows);
-    };
-#pragma GCC diagnostic pop
+            rct_drawpixelinfo * GetDPI();
 
-    class X8DrawingContext final : public IDrawingContext
-    {
-    private:
-        X8DrawingEngine *   _engine = nullptr;
-        rct_drawpixelinfo * _dpi    = nullptr;
+        protected:
+            void ConfigureBits(uint32 width, uint32 height, uint32 pitch);
 
-    public:
-        explicit X8DrawingContext(X8DrawingEngine * engine);
-        ~X8DrawingContext() override;
+        private:
+            void ConfigureDirtyGrid();
+            static void ResetWindowVisbilities();
+            void DrawAllDirtyBlocks();
+            void DrawDirtyBlocks(uint32 x, uint32 y, uint32 columns, uint32 rows);
+        };
+    #pragma GCC diagnostic pop
 
-        IDrawingEngine * GetEngine() override;
+        class X8DrawingContext final : public IDrawingContext
+        {
+        private:
+            X8DrawingEngine *   _engine = nullptr;
+            rct_drawpixelinfo * _dpi    = nullptr;
 
-        void Clear(uint8 paletteIndex) override;
-        void FillRect(uint32 colour, sint32 x, sint32 y, sint32 w, sint32 h) override;
-        void FilterRect(FILTER_PALETTE_ID palette, sint32 left, sint32 top, sint32 right, sint32 bottom) override;
-        void DrawLine(uint32 colour, sint32 x1, sint32 y1, sint32 x2, sint32 y2) override;
-        void DrawSprite(uint32 image, sint32 x, sint32 y, uint32 tertiaryColour) override;
-        void DrawSpriteRawMasked(sint32 x, sint32 y, uint32 maskImage, uint32 colourImage) override;
-        void DrawSpriteSolid(uint32 image, sint32 x, sint32 y, uint8 colour) override;
-        void DrawGlyph(uint32 image, sint32 x, sint32 y, uint8 * palette) override;
+        public:
+            explicit X8DrawingContext(X8DrawingEngine * engine);
+            ~X8DrawingContext() override;
 
-        void SetDPI(rct_drawpixelinfo * dpi);
-    };
-} }
+            IDrawingEngine * GetEngine() override;
+
+            void Clear(uint8 paletteIndex) override;
+            void FillRect(uint32 colour, sint32 x, sint32 y, sint32 w, sint32 h) override;
+            void FilterRect(FILTER_PALETTE_ID palette, sint32 left, sint32 top, sint32 right, sint32 bottom) override;
+            void DrawLine(uint32 colour, sint32 x1, sint32 y1, sint32 x2, sint32 y2) override;
+            void DrawSprite(uint32 image, sint32 x, sint32 y, uint32 tertiaryColour) override;
+            void DrawSpriteRawMasked(sint32 x, sint32 y, uint32 maskImage, uint32 colourImage) override;
+            void DrawSpriteSolid(uint32 image, sint32 x, sint32 y, uint8 colour) override;
+            void DrawGlyph(uint32 image, sint32 x, sint32 y, uint8 * palette) override;
+
+            void SetDPI(rct_drawpixelinfo * dpi);
+        };
+    }
+}

@@ -29,6 +29,7 @@
 #include <openrct2/drawing/IDrawingEngine.h>
 #include <openrct2/drawing/Rain.h>
 #include <openrct2/interface/Screenshot.h>
+#include <openrct2/paint/Painter.h>
 #include <openrct2/ui/UiContext.h>
 
 extern "C"
@@ -52,6 +53,7 @@ extern "C"
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Drawing;
+using namespace OpenRCT2::Paint;
 using namespace OpenRCT2::Ui;
 
 struct OpenGLVersion
@@ -228,6 +230,7 @@ private:
     IUiContext * const  _uiContext  = nullptr;
     SDL_Window *        _window     = nullptr;
     SDL_GLContext       _context    = nullptr;
+    Painter             _painter;
 
     uint32  _width      = 0;
     uint32  _height     = 0;
@@ -248,7 +251,8 @@ public:
     vec4f     GLPalette[256];
 
     OpenGLDrawingEngine(IUiContext * uiContext)
-        : _uiContext(uiContext)
+        : _uiContext(uiContext),
+          _painter(uiContext)
     {
         _window = (SDL_Window *)_uiContext->GetWindow();
         _drawingContext = new OpenGLDrawingContext(this);
@@ -349,7 +353,7 @@ public:
             _drawingContext->FlushCommandBuffers();
             _swapFramebuffer->SwapCopy();
 
-            rct2_draw(&_bitsDPI);
+            _painter.Paint(&_bitsDPI);
         }
 
         _drawingContext->FlushCommandBuffers();

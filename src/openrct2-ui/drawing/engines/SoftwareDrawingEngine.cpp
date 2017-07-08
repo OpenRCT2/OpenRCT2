@@ -44,7 +44,8 @@ private:
 
 public:
     explicit SoftwareDrawingEngine(IUiContext * uiContext)
-        : _uiContext(uiContext)
+        : X8DrawingEngine(uiContext),
+          _uiContext(uiContext)
     {
         _window = (SDL_Window *)_uiContext->GetWindow();
     }

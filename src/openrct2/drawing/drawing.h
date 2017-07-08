@@ -363,8 +363,6 @@ void shorten_path(utf8 *buffer, size_t bufferSize, const utf8 *path, sint32 avai
 void scrolling_text_initialise_bitmaps();
 sint32 scrolling_text_setup(rct_string_id stringId, uint16 scroll, uint16 scrollingMode);
 
-void rct2_draw(rct_drawpixelinfo *dpi);
-
 #include "NewDrawing.h"
 
 #endif

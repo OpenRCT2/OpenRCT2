@@ -21,6 +21,7 @@
 #include "../core/Math.hpp"
 #include "../core/Memory.hpp"
 #include "../interface/Screenshot.h"
+#include "../paint/Painter.h"
 #include "IDrawingContext.h"
 #include "IDrawingEngine.h"
 #include "Rain.h"
@@ -40,6 +41,7 @@ extern "C"
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Drawing;
+using namespace OpenRCT2::Paint;
 using namespace OpenRCT2::Ui;
 
 X8RainDrawer::X8RainDrawer()
@@ -136,9 +138,10 @@ void X8RainDrawer::Restore()
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wsuggest-final-methods"
 
-X8DrawingEngine::X8DrawingEngine()
+X8DrawingEngine::X8DrawingEngine(Ui::IUiContext * uiContext)
 {
     _drawingContext = new X8DrawingContext(this);
+    _painter = new Painter(uiContext);
 #ifdef __ENABLE_LIGHTFX__
     _lastLightFXenabled = (gConfigGeneral.enable_light_fx != 0);
 #endif
@@ -146,6 +149,7 @@ X8DrawingEngine::X8DrawingEngine()
 
 X8DrawingEngine::~X8DrawingEngine()
 {
+    delete _painter;
     delete _drawingContext;
     delete [] _dirtyGrid.Blocks;
     delete [] _bits;
@@ -234,7 +238,7 @@ void X8DrawingEngine::Draw()
 
         DrawRain(&_bitsDPI, &_rainDrawer);
 
-        rct2_draw(&_bitsDPI);
+        _painter->Paint(&_bitsDPI);
     }
 }
 
