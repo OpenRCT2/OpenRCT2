@@ -162,7 +162,7 @@ public:
                     SkipToNextLoadCommand();
                     if (_position == entryPosition)
                     {
-                        Console::Error::WriteLine("Unable to load any parks within title sequence.");
+                        Console::Error::WriteLine("Unable to load any parks from %s.", _sequence->Name);
                         return false;
                     }
                 }
