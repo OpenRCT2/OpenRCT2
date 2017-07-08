@@ -3764,7 +3764,7 @@ STR_5420    :旋轉{MOVE_X}{87}{COMMA16}
 STR_5421    :放大
 STR_5422    :放大{MOVE_X}{87}{COMMA16}
 STR_5423    :等候
-STR_5424    :等候{MOVE_X}{87}{COMMA16}
+STR_5424    :等候{MOVE_X}{87}{UINT16}
 STR_5425    :重新開始
 STR_5426    :結束
 STR_5427    :座標:

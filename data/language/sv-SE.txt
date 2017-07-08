@@ -3760,13 +3760,13 @@ STR_5420    :Rotera{MOVE_X}{87}{COMMA16}
 STR_5421    :Zooma
 STR_5422    :Zooma{MOVE_X}{87}{COMMA16}
 STR_5423    :Vänta
-STR_5424    :Vänta{MOVE_X}{87}{COMMA16}
+STR_5424    :Vänta{MOVE_X}{87}{UINT16}
 STR_5425    :Börja om
 STR_5426    :Slut
 STR_5427    :Koordinater:
 STR_5428    :Moturs rotation:
 STR_5429    :Zoomnivå:
-STR_5430    :Sekunder att vänta:
+STR_5430    :Millisekunder att vänta:
 STR_5431    :Sparfil att ladda:
 STR_5432    :Kommando:
 STR_5433    :Titelsekvens

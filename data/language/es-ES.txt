@@ -3759,7 +3759,7 @@ STR_5420    :Rotar{MOVE_X}{87}{COMMA16}
 STR_5421    :Enfocar
 STR_5422    :Enfocar{MOVE_X}{87}{COMMA16}
 STR_5423    :Esperar
-STR_5424    :Esperar{MOVE_X}{87}{COMMA16}
+STR_5424    :Esperar{MOVE_X}{87}{UINT16}
 STR_5425    :Reiniciar
 STR_5426    :Fin
 STR_5427    :Coordenadas:

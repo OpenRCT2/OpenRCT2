@@ -3757,7 +3757,7 @@ STR_5420    :Draai{MOVE_X}{87}{COMMA16}
 STR_5421    :Zoom
 STR_5422    :Zoom{MOVE_X}{87}{COMMA16}
 STR_5423    :Wacht
-STR_5424    :Wacht{MOVE_X}{87}{COMMA16}
+STR_5424    :Wacht{MOVE_X}{87}{UINT16}
 STR_5425    :Herstarten
 STR_5426    :Einde
 STR_5427    :Coördinaten:

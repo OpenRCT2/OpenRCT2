@@ -3768,7 +3768,7 @@ STR_5420    :Rotate{MOVE_X}{87}{COMMA16}
 STR_5421    :放大
 STR_5422    :放大{MOVE_X}{87}{COMMA16}
 STR_5423    :等待
-STR_5424    :等待{MOVE_X}{87}{COMMA16}
+STR_5424    :等待{MOVE_X}{87}{UINT16}
 STR_5425    :重新开始
 STR_5426    :结束
 STR_5427    :坐标:

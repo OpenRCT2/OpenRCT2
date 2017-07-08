@@ -3765,7 +3765,7 @@ STR_5420    :Ruota{MOVE_X}{87}{COMMA16}
 STR_5421    :Zoom
 STR_5422    :Zoom{MOVE_X}{87}{COMMA16}
 STR_5423    :Aspetta
-STR_5424    :Aspetta{MOVE_X}{87}{COMMA16}
+STR_5424    :Aspetta{MOVE_X}{87}{UINT16}
 STR_5425    :Riavvia
 STR_5426    :Fine
 STR_5427    :Coordinate:

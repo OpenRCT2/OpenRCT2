@@ -3762,7 +3762,7 @@ STR_5420    :Rotacionar{MOVE_X}{87}{COMMA16}
 STR_5421    :Ampliar
 STR_5422    :Ampliar{MOVE_X}{87}{COMMA16}
 STR_5423    :Aguardar
-STR_5424    :Aguardar{MOVE_X}{87}{COMMA16}
+STR_5424    :Aguardar{MOVE_X}{87}{UINT16}
 STR_5425    :Reiniciar
 STR_5426    :Fim
 STR_5427    :Cordenadas:

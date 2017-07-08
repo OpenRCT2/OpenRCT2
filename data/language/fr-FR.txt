@@ -3763,7 +3763,7 @@ STR_5420    :Tourner{MOVE_X}{87}{COMMA16}
 STR_5421    :Zoomer
 STR_5422    :Zoomer{MOVE_X}{87}{COMMA16}
 STR_5423    :Attendre
-STR_5424    :Attendre{MOVE_X}{87}{COMMA16}
+STR_5424    :Attendre{MOVE_X}{87}{UINT16}
 STR_5425    :Redémarrer
 STR_5426    :Fin
 STR_5427    :Coordonnées :

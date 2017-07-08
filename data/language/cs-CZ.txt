@@ -3764,7 +3764,7 @@ STR_5420    :Otočit{MOVE_X}{87}{COMMA16}
 STR_5421    :Přiblížit
 STR_5422    :Přiblížit{MOVE_X}{87}{COMMA16}
 STR_5423    :Čekat
-STR_5424    :Čekat{MOVE_X}{87}{COMMA16}
+STR_5424    :Čekat{MOVE_X}{87}{UINT16}
 STR_5425    :Restart
 STR_5426    :Konec
 STR_5427    :Souřadnice:

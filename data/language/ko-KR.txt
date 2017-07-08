@@ -3761,7 +3761,7 @@ STR_5420    :{MOVE_X}{87}{COMMA16} 회전
 STR_5421    :확대
 STR_5422    :{MOVE_X}{87}{COMMA16} 확대
 STR_5423    :기다림
-STR_5424    :{MOVE_X}{87}{COMMA16} 동안 기다림
+STR_5424    :{MOVE_X}{87}{UINT16} 동안 기다림
 STR_5425    :재시작
 STR_5426    :끝
 STR_5427    :좌표:

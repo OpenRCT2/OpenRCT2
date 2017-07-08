@@ -3766,7 +3766,7 @@ STR_5420    :Käännä{MOVE_X}{87}{COMMA16}
 STR_5421    :Zoom
 STR_5422    :Zoom{MOVE_X}{87}{COMMA16}
 STR_5423    :Odota
-STR_5424    :Odota{MOVE_X}{87}{COMMA16}
+STR_5424    :Odota{MOVE_X}{87}{UINT16}
 STR_5425    :Uudelleen käynnistä
 STR_5426    :Lopeta
 STR_5427    :Koordinaatit:

@@ -3762,7 +3762,7 @@ STR_5420    :Gira{MOVE_X}{87}{COMMA16}
 STR_5421    :Enfoca
 STR_5422    :Enfoca{MOVE_X}{87}{COMMA16}
 STR_5423    :Espera
-STR_5424    :Espera{MOVE_X}{87}{COMMA16}
+STR_5424    :Espera{MOVE_X}{87}{UINT16}
 STR_5425    :Torna a començar
 STR_5426    :Acaba
 STR_5427    :Coordenades:
