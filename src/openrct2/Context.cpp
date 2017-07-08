@@ -124,7 +124,6 @@ namespace OpenRCT2
             EVP_MD_CTX_destroy(gHashCTX);
 #endif // DISABLE_NETWORK
             rct2_interop_dispose();
-            platform_free();
             Instance = nullptr;
         }
 
@@ -464,7 +463,7 @@ namespace OpenRCT2
             Update();
             if (!_isWindowMinimised && !gOpenRCT2Headless)
             {
-                platform_draw();
+                drawing_engine_draw();
             }
         }
 
@@ -511,7 +510,7 @@ namespace OpenRCT2
                 const float alpha = (float)_accumulator / UPDATE_TIME_MS;
                 sprite_position_tween_all(alpha);
 
-                platform_draw();
+                drawing_engine_draw();
 
                 sprite_position_tween_restore();
             }
