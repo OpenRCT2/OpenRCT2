@@ -2202,6 +2202,9 @@ static void ride_spiral_slide_update(rct_ride *ride)
         sint32 y = ride->station_starts[i] >> 8;
 
         rct_map_element *mapElement = ride_get_station_start_track_element(ride, i);
+        if (mapElement == NULL)
+            return;
+
         sint32 rotation = map_element_get_direction(mapElement);
         x *= 32;
         y *= 32;
