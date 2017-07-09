@@ -510,7 +510,7 @@ static money32 footpath_place_from_track(sint32 type, sint32 x, sint32 y, sint32
         return MONEY32_UNDEFINED;
     }
 
-    if (flags & GAME_COMMAND_FLAG_APPLY)
+    if ((flags & GAME_COMMAND_FLAG_APPLY) && !(flags & GAME_COMMAND_FLAG_GHOST))
         footpath_interrupt_peeps(x, y, z * 8);
 
     gFootpathPrice = 0;
@@ -1251,7 +1251,7 @@ static void loc_6A6D7E(
                 footpath_queue_chain_push(mapElement->properties.path.ride_index);
             }
         }
-        if (!(flags & 0x48)) {
+        if (!(flags & (GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED))) {
             footpath_interrupt_peeps(x, y, mapElement->base_height * 8);
         }
         map_invalidate_element(x, y, mapElement);
