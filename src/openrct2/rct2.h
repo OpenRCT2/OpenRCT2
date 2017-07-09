@@ -160,11 +160,6 @@ extern uint32 gScreenAge;
 extern uint8 gSavePromptMode;
 
 extern char gRCT2AddressAppPath[];
-extern char gRCT2AddressSavedGamesPath[];
-extern char gRCT2AddressScenariosPath[];
-extern char gRCT2AddressLandscapesPath[];
-extern char gRCT2AddressObjectDataPath[];
-extern char gRCT2AddressTracksPath[];
 
 bool rct2_init();
 sint32 rct2_init_directories();

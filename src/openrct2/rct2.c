@@ -117,15 +117,6 @@ uint32 gScreenAge;
 uint8 gSavePromptMode;
 
 char gRCT2AddressAppPath[MAX_PATH];
-char gRCT2AddressSavedGamesPath[MAX_PATH];
-char gRCT2AddressScenariosPath[MAX_PATH];
-char gRCT2AddressLandscapesPath[MAX_PATH];
-char gRCT2AddressObjectDataPath[MAX_PATH];
-char gRCT2AddressTracksPath[MAX_PATH];
-
-typedef struct tm tm_t;
-
-void print_launch_information();
 
 void rct2_quit()
 {
@@ -139,8 +130,6 @@ void rct2_quit()
  */
 sint32 rct2_init_directories()
 {
-    // windows_get_registry_install_info((rct2_install_info*)0x009AA10C, "RollerCoaster Tycoon 2 Setup", "MS Sans Serif", 0);
-
     if (str_is_null_or_empty(gCustomRCT2DataPath)) {
         // check install directory
         if (gConfigGeneral.rct2_path == NULL || !platform_original_game_data_exists(gConfigGeneral.rct2_path)) {
@@ -158,25 +147,6 @@ sint32 rct2_init_directories()
     }
     path_end_with_separator(gRCT2AddressAppPath, sizeof(gRCT2AddressAppPath));
 
-    safe_strcpy(gRCT2AddressSavedGamesPath, gRCT2AddressAppPath, sizeof(gRCT2AddressSavedGamesPath));
-    safe_strcat_path(gRCT2AddressSavedGamesPath, "Saved Games", sizeof(gRCT2AddressSavedGamesPath));
-    path_end_with_separator(gRCT2AddressSavedGamesPath, sizeof(gRCT2AddressSavedGamesPath));
-
-    safe_strcpy(gRCT2AddressScenariosPath, gRCT2AddressAppPath, sizeof(gRCT2AddressScenariosPath));
-    safe_strcat_path(gRCT2AddressScenariosPath, "Scenarios", sizeof(gRCT2AddressScenariosPath));
-    safe_strcat_path(gRCT2AddressScenariosPath, "*.SC6", sizeof(gRCT2AddressScenariosPath));
-
-    safe_strcpy(gRCT2AddressLandscapesPath, gRCT2AddressAppPath, sizeof(gRCT2AddressLandscapesPath));
-    safe_strcat_path(gRCT2AddressLandscapesPath, "Landscapes", sizeof(gRCT2AddressLandscapesPath));
-    safe_strcat_path(gRCT2AddressLandscapesPath, "*.SC6", sizeof(gRCT2AddressLandscapesPath));
-
-    safe_strcpy(gRCT2AddressObjectDataPath, gRCT2AddressAppPath, sizeof(gRCT2AddressObjectDataPath));
-    safe_strcat_path(gRCT2AddressObjectDataPath, "ObjData", sizeof(gRCT2AddressObjectDataPath));
-    safe_strcat_path(gRCT2AddressObjectDataPath, "*.DAT", sizeof(gRCT2AddressObjectDataPath));
-
-    safe_strcpy(gRCT2AddressTracksPath, gRCT2AddressAppPath, sizeof(gRCT2AddressTracksPath));
-    safe_strcat_path(gRCT2AddressTracksPath, "Tracks", sizeof(gRCT2AddressTracksPath));
-    safe_strcat_path(gRCT2AddressTracksPath, "*.TD?", sizeof(gRCT2AddressTracksPath));
     return 1;
 }
 
