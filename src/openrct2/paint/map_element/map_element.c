@@ -337,15 +337,19 @@ static void sub_68B3FB(sint32 x, sint32 y)
 void paint_util_push_tunnel_left(uint16 height, uint8 type)
 {
     gLeftTunnels[gLeftTunnelCount] = (tunnel_entry){.height = (height / 16), .type = type};
-    gLeftTunnels[gLeftTunnelCount + 1] = (tunnel_entry){0xFF, 0xFF};
-    gLeftTunnelCount++;
+    if (gLeftTunnelCount < TUNNEL_MAX_COUNT - 1) {
+        gLeftTunnels[gLeftTunnelCount + 1] = (tunnel_entry) {0xFF, 0xFF};
+        gLeftTunnelCount++;
+    }
 }
 
 void paint_util_push_tunnel_right(uint16 height, uint8 type)
 {
     gRightTunnels[gRightTunnelCount] = (tunnel_entry){.height = (height / 16), .type = type};
-    gRightTunnels[gRightTunnelCount + 1] = (tunnel_entry){0xFF, 0xFF};
-    gRightTunnelCount++;
+    if (gRightTunnelCount < TUNNEL_MAX_COUNT - 1) {
+        gRightTunnels[gRightTunnelCount + 1] = (tunnel_entry) {0xFF, 0xFF};
+        gRightTunnelCount++;
+    }
 }
 
 void paint_util_set_vertical_tunnel(uint16 height)
