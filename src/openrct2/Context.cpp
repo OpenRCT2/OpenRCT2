@@ -70,19 +70,19 @@ namespace OpenRCT2
     {
     private:
         // Dependencies
-        IPlatformEnvironment * const    _env            = nullptr;
-        IAudioContext * const           _audioContext   = nullptr;
-        IUiContext * const              _uiContext      = nullptr;
+        IPlatformEnvironment * const    _env = nullptr;
+        IAudioContext * const           _audioContext = nullptr;
+        IUiContext * const              _uiContext = nullptr;
 
         // Services
-        IObjectRepository *         _objectRepository       = nullptr;
-        IObjectManager *            _objectManager          = nullptr;
-        ITrackDesignRepository *    _trackDesignRepository  = nullptr;
-        IScenarioRepository *       _scenarioRepository     = nullptr;
+        IObjectRepository *         _objectRepository = nullptr;
+        IObjectManager *            _objectManager = nullptr;
+        ITrackDesignRepository *    _trackDesignRepository = nullptr;
+        IScenarioRepository *       _scenarioRepository = nullptr;
 
         bool _isWindowMinimised = false;
         uint32 _lastTick = 0;
-        uint32 _uncapTick = 0;
+        uint32 _accumulator = 0;
 
         /** If set, will end the OpenRCT2 game loop. Intentially private to this module so that the flag can not be set back to false. */
         bool _finished = false;
@@ -315,7 +315,7 @@ namespace OpenRCT2
                     }
                     network_begin_server(gNetworkStartPort, gNetworkStartAddress);
                 }
-#endif // DISABLE_NETWORK
+ #endif // DISABLE_NETWORK
                 break;
             }
             case STARTUP_ACTION_EDIT:
@@ -344,6 +344,15 @@ namespace OpenRCT2
             RunGameLoop();
         }
 
+        bool ShouldRunVariableFrame()
+        {
+            if (!gConfigGeneral.uncap_fps) return false;
+            if (gGameSpeed > 4) return false;
+            if (gOpenRCT2Headless) return false;
+            if (_uiContext->IsMinimised()) return false;
+            return true;
+        }
+
         /**
         * Run the main game loop until the finished flag is set.
         */
@@ -351,9 +360,21 @@ namespace OpenRCT2
         {
             log_verbose("begin openrct2 loop");
             _finished = false;
+
+            bool variableFrame = ShouldRunVariableFrame();
+            bool useVariableFrame;
+
             do
             {
-                if (ShouldRunVariableFrame())
+                useVariableFrame = ShouldRunVariableFrame();
+                // Make sure we catch the state change and reset it.
+                if (variableFrame != useVariableFrame)
+                {
+                    _lastTick = 0;
+                    variableFrame = useVariableFrame;
+                }
+
+                if (useVariableFrame)
                 {
                     RunVariableFrame();
                 }
@@ -365,32 +386,32 @@ namespace OpenRCT2
             log_verbose("finish openrct2 loop");
         }
 
-        bool ShouldRunVariableFrame()
-        {
-            if (!gConfigGeneral.uncap_fps) return false;
-            if (gGameSpeed > 4) return false;
-            if (gOpenRCT2Headless) return false;
-            if (_uiContext->IsMinimised()) return false;
-            return true;
-        }
-
         void RunFixedFrame()
         {
-            _uncapTick = 0;
             uint32 currentTick = platform_get_ticks();
-            uint32 ticksElapsed = currentTick - _lastTick;
-            if (ticksElapsed < UPDATE_TIME_MS)
-            {
-                platform_sleep(UPDATE_TIME_MS - ticksElapsed);
-                _lastTick += UPDATE_TIME_MS;
-            }
-            else
+
+            if (_lastTick == 0)
             {
                 _lastTick = currentTick;
             }
+
+            uint32 elapsed = currentTick - _lastTick;
+
+            _lastTick = currentTick;
+            _accumulator += elapsed;
+
             GetContext()->GetUiContext()->ProcessMessages();
+
+            if (_accumulator < UPDATE_TIME_MS)
+            {
+                platform_sleep(UPDATE_TIME_MS - _accumulator - 1);
+                return;
+            }
+
+            _accumulator -= UPDATE_TIME_MS;
+
             rct2_update();
-            if (!_isWindowMinimised)
+            if (!_isWindowMinimised && !gOpenRCT2Headless)
             {
                 platform_draw();
             }
@@ -399,42 +420,49 @@ namespace OpenRCT2
         void RunVariableFrame()
         {
             uint32 currentTick = platform_get_ticks();
-            if (_uncapTick == 0)
+
+            bool draw = !_isWindowMinimised && !gOpenRCT2Headless;
+
+            if (_lastTick == 0)
             {
-                _uncapTick = currentTick;
                 sprite_position_tween_reset();
+                _lastTick = currentTick;
             }
 
-            // Limit number of updates per loop (any long pauses or debugging can make this update for a very long time)
-            if (currentTick - _uncapTick > UPDATE_TIME_MS * 60)
-            {
-                _uncapTick = currentTick - UPDATE_TIME_MS - 1;
-            }
+            uint32 elapsed = currentTick - _lastTick;
+
+            if (elapsed > UPDATE_TIME_MS)
+                elapsed = UPDATE_TIME_MS;
+
+            _lastTick = currentTick;
+            _accumulator += elapsed;
 
             GetContext()->GetUiContext()->ProcessMessages();
 
-            while (_uncapTick <= currentTick && currentTick - _uncapTick > UPDATE_TIME_MS)
+            while (_accumulator >= UPDATE_TIME_MS)
             {
                 // Get the original position of each sprite
-                sprite_position_tween_store_a();
+                if(draw)
+                    sprite_position_tween_store_a();
 
-                // Update the game so the sprite positions update
                 rct2_update();
 
-                // Get the next position of each sprite
-                sprite_position_tween_store_b();
+                _accumulator -= UPDATE_TIME_MS;
 
-                _uncapTick += UPDATE_TIME_MS;
+                // Get the next position of each sprite
+                if(draw)
+                    sprite_position_tween_store_b();
             }
 
-            // Tween the position of each sprite from the last position to the new position based on the time between the last
-            // tick and the next tick.
-            float nudge = 1 - ((float)(currentTick - _uncapTick) / UPDATE_TIME_MS);
-            sprite_position_tween_all(nudge);
+            if (draw)
+            {
+                const float alpha = (float)_accumulator / UPDATE_TIME_MS;
+                sprite_position_tween_all(alpha);
 
-            platform_draw();
+                platform_draw();
 
-            sprite_position_tween_restore();
+                sprite_position_tween_restore();
+            }
         }
 
         bool OpenParkAutoDetectFormat(IStream * stream)

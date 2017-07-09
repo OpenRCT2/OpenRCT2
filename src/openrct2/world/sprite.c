@@ -758,8 +758,10 @@ void sprite_position_tween_store_b()
     store_sprite_locations(_spritelocations2);
 }
 
-void sprite_position_tween_all(float nudge)
+void sprite_position_tween_all(float alpha)
 {
+    const float inv = (1.0f - alpha);
+
     for (uint16 i = 0; i < MAX_SPRITES; i++) {
         rct_sprite * sprite = get_sprite(i);
         if (sprite_should_tween(sprite)) {
@@ -767,9 +769,9 @@ void sprite_position_tween_all(float nudge)
             rct_xyz16 posB = _spritelocations2[i];
 
             sprite_set_coordinates(
-                posB.x + (sint16)((posA.x - posB.x) * nudge),
-                posB.y + (sint16)((posA.y - posB.y) * nudge),
-                posB.z + (sint16)((posA.z - posB.z) * nudge),
+                posB.x * alpha + posA.x * inv,
+                posB.y * alpha + posA.y * inv,
+                posB.z * alpha + posA.z * inv,
                 sprite
             );
             invalidate_sprite_2(sprite);
