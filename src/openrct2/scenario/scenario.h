@@ -389,7 +389,7 @@ extern bool gFirstTimeSaving;
 extern uint16 gSavedAge;
 extern uint32 gLastAutoSaveUpdate;
 
-extern const char *_scenarioFileName;
+extern char gScenarioFileName[260];
 
 ParkLoadResult * scenario_load(const char *path);
 ParkLoadResult * scenario_load_and_play_from_path(const char *path);
@@ -411,7 +411,6 @@ bool scenario_prepare_for_save();
 sint32 scenario_save(const utf8 * path, sint32 flags);
 void scenario_remove_trackless_rides(rct_s6_data *s6);
 void scenario_fix_ghosts(rct_s6_data *s6);
-void scenario_set_filename(const char *value);
 void scenario_failure();
 void scenario_success();
 void scenario_success_submit_name(const char *name);

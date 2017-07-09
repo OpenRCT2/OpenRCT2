@@ -180,16 +180,6 @@ sint32 rct2_init_directories()
     return 1;
 }
 
-void substitute_path(char *dest, size_t size, const char *path, const char *filename)
-{
-    size_t written = 0;
-    while (*path != '*' && *path != '\0' && written < size) {
-        *dest++ = *path++;
-        ++written;
-    }
-    safe_strcpy(dest, filename, size - written);
-}
-
 /**
  *
  *  rct2: 0x00674E6C
