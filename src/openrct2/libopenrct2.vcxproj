@@ -30,9 +30,6 @@
     <ConfigurationType>StaticLibrary</ConfigurationType>
   </PropertyGroup>
   <Import Project="..\..\openrct2.common.props" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <TargetName>openrct2</TargetName>
-  </PropertyGroup>
   <ItemDefinitionGroup>
     <ClCompile>
       <PreprocessorDefinitions>__ENABLE_LIGHTFX__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
