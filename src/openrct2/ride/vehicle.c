@@ -7706,6 +7706,9 @@ static bool vehicle_update_track_motion_backwards_get_new_track(rct_vehicle *veh
         0
         );
 
+    if (mapElement == NULL)
+        return false;
+
     bool nextTileBackwards = true;
     sint32 direction;
 //loc_6DBB08:;
