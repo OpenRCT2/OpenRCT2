@@ -312,6 +312,8 @@ static bool map_animation_invalidate_track_onridephoto(sint32 x, sint32 y, sint3
 
     mapElement = map_get_first_element_at(x >> 5, y >> 5);
     do {
+        if (mapElement == NULL)
+            break;
         if (mapElement->base_height != baseZ)
             continue;
         if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_TRACK)
