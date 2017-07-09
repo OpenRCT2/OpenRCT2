@@ -33,6 +33,7 @@
 - Fix: [#5489] Sprite index crash for car view on car ride.
 - Fix: [#5730] Unable to uncheck 'No money' in the Scenario Editor.
 - Fix: [#5750] Game freezes when ride queue linked list is corrupted.
+- Fix: [#5819] Vertical multi-dimension coaster tunnels drawn incorrectly
 - Fix: Non-invented vehicles can be used via track designs in select-by-track-type mode.
 - Fix: Track components added by OpenRCT2 are now usable in older scenarios.
 - Technical: [#5047] Add ride ratings tests
