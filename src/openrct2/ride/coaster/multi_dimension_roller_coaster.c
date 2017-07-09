@@ -4209,7 +4209,7 @@ static void multi_dimension_rc_track_60_deg_up_to_90_deg_up(uint8 rideIndex, uin
             if (direction == 0 || direction == 3) {
                 paint_util_push_tunnel_rotated(direction, height - 8, TUNNEL_4);
             }
-            paint_util_set_vertical_tunnel(height + 48);
+            paint_util_set_vertical_tunnel(height + 56);
             paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
             paint_util_set_general_support_height(height + 72, 0x20);
             break;
