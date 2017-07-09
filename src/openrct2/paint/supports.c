@@ -926,11 +926,6 @@ bool metal_b_supports_paint_setup(uint8 supportType, uint8 segment, sint32 speci
             }
         }
 
-        segment = ebp;
-
-        // save ebp
-        // save supportType
-
         ebp = _97AF32[baseIndex + segment * 8 + 1];
         if (ebp >= 4) {
             return true; // STC
