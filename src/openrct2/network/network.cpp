@@ -418,9 +418,8 @@ void Network::UpdateServer()
     }
 
     uint32 ticks = platform_get_ticks();
-    if (ticks > last_tick_sent_time + 25) {
-        Server_Send_TICK();
-    }
+    Server_Send_TICK();
+
     if (ticks > last_ping_sent_time + 3000) {
         Server_Send_PING();
         Server_Send_PINGLIST();
