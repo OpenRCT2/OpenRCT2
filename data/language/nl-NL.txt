@@ -3763,7 +3763,7 @@ STR_5426    :Einde
 STR_5427    :Coördinaten:
 STR_5428    :Aant. draaiingen tegen de klok:
 STR_5429    :Zoomniveau:
-STR_5430    :Te wachten seconden:
+STR_5430    :Te wachten milliseconden:
 STR_5431    :Te laden opgeslagen spel:
 STR_5432    :Commando:
 STR_5433    :Titelpresentaties

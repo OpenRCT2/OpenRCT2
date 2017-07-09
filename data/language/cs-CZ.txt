@@ -3770,7 +3770,7 @@ STR_5426    :Konec
 STR_5427    :Souřadnice:
 STR_5428    :Počet otočení proti směru hod.ruč.:
 STR_5429    :Úroveň přiblížení:
-STR_5430    :Délka čekání (v sekundách):
+STR_5430    :Délka čekání (v milisekundách):
 STR_5431    :Uložená hra k načtení:
 STR_5432    :Příkaz:
 STR_5433    :Herní sekvence
