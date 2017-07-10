@@ -154,9 +154,22 @@ extern "C"
                 String::Set(absolutePath, sizeof(absolutePath), seq->Path);
                 Path::Append(absolutePath, sizeof(absolutePath), filename);
 
-                handle = Memory::Allocate<TitleSequenceParkHandle>();
-                handle->Stream = new FileStream(absolutePath, FILE_MODE_OPEN);
-                handle->HintPath = String::Duplicate(filename);
+                FileStream* fileStream = nullptr;
+                try
+                {
+                    fileStream = new FileStream(absolutePath, FILE_MODE_OPEN);
+                }
+                catch (const IOException& exception)
+                {
+                    Console::Error::WriteLine(exception.GetMessage());
+                }
+
+                if (fileStream != nullptr)
+                {
+                    handle = Memory::Allocate<TitleSequenceParkHandle>();
+                    handle->Stream = fileStream;
+                    handle->HintPath = String::Duplicate(filename);
+                }
             }
         }
         return handle;
