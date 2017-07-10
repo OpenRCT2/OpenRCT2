@@ -49,6 +49,11 @@
     mach_timebase_info_data_t _mach_base_info = { 0 };
 #endif
 
+#ifdef _WIN32 
+static uint32 _frequency = 0;
+static LARGE_INTEGER _entryTimestamp;
+#endif
+
 typedef void(*update_palette_func)(const uint8*, sint32, sint32);
 
 rct_palette_entry gPalette[256];
@@ -156,10 +161,26 @@ void platform_refresh_video()
     gfx_invalidate_screen();
 }
 
+static void platform_ticks_init()
+{
+#ifdef _WIN32 
+    LARGE_INTEGER freq;
+    QueryPerformanceFrequency(&freq);
+    _frequency = (uint32)(freq.QuadPart / 1000);
+    QueryPerformanceCounter(&_entryTimestamp);
+#endif
+}
+
 uint32 platform_get_ticks()
 {
 #ifdef _WIN32
-    return GetTickCount();
+    LARGE_INTEGER pfc;
+    QueryPerformanceCounter(&pfc);
+
+    LARGE_INTEGER runningDelta;
+    runningDelta.QuadPart = pfc.QuadPart - _entryTimestamp.QuadPart;
+
+    return (uint32)(runningDelta.QuadPart / _frequency);
 #elif defined(__APPLE__) && (__ENVIRONMENT_MAC_OS_X_VERSION_MIN_REQUIRED__ < 101200)
     return (uint32)(((mach_absolute_time() * _mach_base_info.numer) / _mach_base_info.denom) / 1000000);
 #else
@@ -208,6 +229,7 @@ void core_init()
     {
         initialised = true;
 
+        platform_ticks_init();
         bitcount_init();
 
 #if defined(__APPLE__) && (__ENVIRONMENT_MAC_OS_X_VERSION_MIN_REQUIRED__ < 101200)
