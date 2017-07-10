@@ -8,7 +8,6 @@
 - Feature: [#5576] Add a persistent 'display real names of guests' setting.
 - Feature: [#5611] Add support for Android
 - Feature: [#5706] Add support for OpenBSD
-- Feature: [#5755] Title sequence wait periods use milliseconds
 - Feature: OpenRCT2 now starts up on the display it was last shown on.
 - Feature: Park entrance fee can now be set to amounts up to £200.
 - Improved: Construction rights can now be placed on park entrances.
@@ -40,6 +39,7 @@
 - Fix: Track components added by OpenRCT2 are now usable in older scenarios.
 - Technical: [#5047] Add ride ratings tests
 - Technical: [#5458] Begin offering headless build with reduced compile- and run-time dependencies
+- Technical: [#5755] Title sequence wait periods use milliseconds
 - Technical: Fix many desync sources
 
 0.0.7 (2017-05-03)
