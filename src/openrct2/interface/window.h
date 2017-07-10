@@ -497,6 +497,7 @@ enum {
 #define WC_TOP_TOOLBAR__WIDX_WATER                      9
 #define WC_TOP_TOOLBAR__WIDX_SCENERY                    10
 #define WC_TOP_TOOLBAR__WIDX_PATH                       11
+#define WC_TOP_TOOLBAR__WIDX_CLEAR_SCENERY              17
 #define WC_RIDE_CONSTRUCTION__WIDX_CONSTRUCT            23
 #define WC_RIDE_CONSTRUCTION__WIDX_ENTRANCE             29
 #define WC_RIDE_CONSTRUCTION__WIDX_EXIT                 30
