@@ -4442,6 +4442,7 @@ STR_6130    :Copy entire list to clipboard
 STR_6131    :Object source
 STR_6132    :Ignore research status
 STR_6133    :{SMALLFONT}{BLACK}Access rides and scenery that have not yet been invented
+STR_6134    :Clear Scenery
 
 #############
 # Scenarios #
