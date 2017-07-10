@@ -39,6 +39,7 @@
 - Fix: Track components added by OpenRCT2 are now usable in older scenarios.
 - Technical: [#5047] Add ride ratings tests
 - Technical: [#5458] Begin offering headless build with reduced compile- and run-time dependencies
+- Technical: [#5755] Title sequence wait periods use milliseconds
 - Technical: Fix many desync sources
 
 0.0.7 (2017-05-03)
