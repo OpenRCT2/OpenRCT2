@@ -264,7 +264,7 @@ namespace OpenRCT2
     private:
         bool LoadBaseGraphics()
         {
-            if (!gfx_load_g1())
+            if (!gfx_load_g1(_env))
             {
                 return false;
             }
