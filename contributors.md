@@ -81,6 +81,7 @@ Includes all git commit authors. Aliases are GitHub user names.
 * Richard Jenkins (rwjuk)
 * (ceeac)
 * Matthias Moninger (Zeh Matt)
+* Tomas Dittmann (Chaosmeister)
 
 ## Toolchain
 * (Balletie) - macOS
