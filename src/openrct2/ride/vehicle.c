@@ -7460,6 +7460,7 @@ loc_6DB41D:
     }
 
     trackType = mapElement->properties.track.type;
+    rideType = get_ride(mapElement->properties.track.ride_index)->type;
     if (trackType != TRACK_ELEM_BRAKES) {
         vehicle->target_seat_rotation = mapElement->properties.track.colour >> 4;
     }
