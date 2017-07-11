@@ -27,7 +27,7 @@ extern "C"
 extern rct_string_id DrawingEngineStringIds[3];
 
 sint32 drawing_engine_get_type();
-bool drawing_engine_requires_restart(sint32 srcEngine, sint32 dstEngine);
+bool drawing_engine_requires_new_window(sint32 srcEngine, sint32 dstEngine);
 void drawing_engine_init();
 void drawing_engine_resize();
 void drawing_engine_set_palette(const rct_palette_entry * colours);

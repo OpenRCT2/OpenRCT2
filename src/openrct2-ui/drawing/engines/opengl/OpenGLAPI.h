@@ -198,4 +198,6 @@ namespace OpenGLState
 {
     extern uint16 ActiveTexture;
     extern GLuint CurrentProgram;
+
+    void Reset();
 }

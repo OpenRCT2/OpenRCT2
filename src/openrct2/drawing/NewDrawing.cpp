@@ -57,20 +57,18 @@ extern "C"
         return _drawingEngineType;
     }
 
-    bool drawing_engine_requires_restart(sint32 srcEngine, sint32 dstEngine)
+    bool drawing_engine_requires_new_window(sint32 srcEngine, sint32 dstEngine)
     {
-        // Linux requires a restart. This could be improved in the future by recreating the window,
-        // https://github.com/OpenRCT2/OpenRCT2/issues/2015
-        bool requiresRestart = true;
 #ifdef _WIN32
-        if (dstEngine != DRAWING_ENGINE_OPENGL)
+        if (srcEngine != DRAWING_ENGINE_OPENGL && dstEngine != DRAWING_ENGINE_OPENGL)
         {
             // Windows is apparently able to switch to hardware rendering on the fly although
             // using the same window in an unaccelerated and accelerated context is unsupported by SDL2
-            requiresRestart = false;
+            return false;
         }
 #endif
-        return requiresRestart;
+
+        return true;
     }
 
     void drawing_engine_init()
@@ -135,13 +133,11 @@ extern "C"
 
     void drawing_engine_resize()
     {
-        if (_drawingEngine == nullptr)
+        if (_drawingEngine != nullptr)
         {
-            drawing_engine_init();
+            IUiContext * uiContext = GetContext()->GetUiContext();
+            _drawingEngine->Resize(uiContext->GetWidth(), uiContext->GetHeight());
         }
-
-        IUiContext * uiContext = GetContext()->GetUiContext();
-        _drawingEngine->Resize(uiContext->GetWidth(), uiContext->GetHeight());
     }
 
     void drawing_engine_set_palette(const rct_palette_entry * colours)

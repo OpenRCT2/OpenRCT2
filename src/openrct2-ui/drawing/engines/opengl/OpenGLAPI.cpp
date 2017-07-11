@@ -121,8 +121,14 @@ static const char * TryLoadAllProcAddresses()
 
 namespace OpenGLState
 {
-    uint16 ActiveTexture = UINT16_MAX;
-    GLuint CurrentProgram = UINT32_MAX;
+    uint16 ActiveTexture;
+    GLuint CurrentProgram;
+
+    void Reset()
+    {
+        ActiveTexture = UINT16_MAX;
+        CurrentProgram = UINT32_MAX;
+    }
 }
 
 void OpenGLAPI::SetTexture(uint16 index, GLenum type, GLuint texture)
@@ -136,6 +142,8 @@ void OpenGLAPI::SetTexture(uint16 index, GLenum type, GLuint texture)
 
 bool OpenGLAPI::Initialise()
 {
+    OpenGLState::Reset();
+
 #ifdef OPENGL_NO_LINK
     const char * failedProcName = TryLoadAllProcAddresses();
     if (failedProcName != nullptr)

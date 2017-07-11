@@ -94,6 +94,7 @@ namespace OpenRCT2
             // Window
             virtual void    CreateWindow() abstract;
             virtual void    CloseWindow() abstract;
+            virtual void    RecreateWindow() abstract;
             virtual void *  GetWindow() abstract;
             virtual sint32  GetWidth() abstract;
             virtual sint32  GetHeight() abstract;

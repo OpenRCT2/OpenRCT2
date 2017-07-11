@@ -663,6 +663,11 @@ extern "C"
         return GetContext()->GetUiContext()->SetFullscreenMode((FULLSCREEN_MODE)mode);
     }
 
+    void context_recreate_window()
+    {
+        GetContext()->GetUiContext()->RecreateWindow();
+    }
+
     sint32 context_get_resolutions(Resolution * * outResolutions)
     {
         auto resolutions = GetContext()->GetUiContext()->GetFullscreenResolutions();

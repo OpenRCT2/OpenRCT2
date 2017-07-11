@@ -33,6 +33,7 @@ namespace OpenRCT2 { namespace Ui
     public:
         void CreateWindow() override { }
         void CloseWindow() override { }
+        void RecreateWindow() override { }
         void * GetWindow() override { return nullptr; }
         sint32 GetWidth() override { return 0; }
         sint32 GetHeight() override { return 0; }

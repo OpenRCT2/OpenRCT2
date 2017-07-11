@@ -86,7 +86,7 @@ void platform_draw_require_end();
 void platform_free();
 void platform_update_palette(const uint8 *colours, sint32 start_index, sint32 num_colours);
 void platform_toggle_windowed_mode();
-void platform_refresh_video();
+void platform_refresh_video(bool recreate_window);
 void platform_get_date_utc(rct2_date *out_date);
 void platform_get_time_utc(rct2_time *out_time);
 void platform_get_date_local(rct2_date *out_date);

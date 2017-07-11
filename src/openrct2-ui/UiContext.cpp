@@ -516,44 +516,28 @@ public:
         sint32 x = SDL_WINDOWPOS_UNDEFINED_DISPLAY(defaultDisplay);
         sint32 y = SDL_WINDOWPOS_UNDEFINED_DISPLAY(defaultDisplay);
 
-        // Get saved window size
-        sint32 width = gConfigGeneral.window_width;
-        sint32 height = gConfigGeneral.window_height;
-        if (width <= 0) width = 640;
-        if (height <= 0) height = 480;
-
-        // Create window in window first rather than fullscreen so we have the display the window is on first
-        uint32 flags = SDL_WINDOW_RESIZABLE;
-        if (gConfigGeneral.drawing_engine == DRAWING_ENGINE_OPENGL)
-        {
-            flags |= SDL_WINDOW_OPENGL;
-        }
-
-        _window = SDL_CreateWindow(OPENRCT2_NAME, x, y, width, height, flags);
-        if (_window == nullptr)
-        {
-            SDLException::Throw("SDL_CreateWindow(...)");
-        }
-
-        SDL_SetWindowMinimumSize(_window, 720, 480);
-        SetCursorTrap(gConfigGeneral.trap_cursor);
-        _platformUiContext->SetWindowIcon(_window);
-
-        // Initialise the surface, palette and draw buffer
-        OnResize(width, height);
-
-        UpdateFullscreenResolutions();
-        SetFullscreenMode((FULLSCREEN_MODE)gConfigGeneral.fullscreen_mode);
+        CreateWindow(x, y);
 
         // Check if steam overlay renderer is loaded into the process
         _steamOverlayActive = _platformUiContext->IsSteamOverlayAttached();
-        TriggerResize();
     }
 
     void CloseWindow() override
     {
         drawing_engine_dispose();
         SDL_DestroyWindow(_window);
+        _window = nullptr;
+    }
+
+    void RecreateWindow() override
+    {
+        // Use the position of the current window for the new window
+        sint32 x, y;
+        SDL_SetWindowFullscreen(_window, 0);
+        SDL_GetWindowPosition(_window, &x, &y);
+
+        CloseWindow();
+        CreateWindow(x, y);
     }
 
     void ShowMessageBox(const std::string &message) override
@@ -646,6 +630,41 @@ public:
 
 
 private:
+    void CreateWindow(sint32 x, sint32 y)
+    {
+        // Get saved window size
+        sint32 width = gConfigGeneral.window_width;
+        sint32 height = gConfigGeneral.window_height;
+        if (width <= 0) width = 640;
+        if (height <= 0) height = 480;
+
+        // Create window in window first rather than fullscreen so we have the display the window is on first
+        uint32 flags = SDL_WINDOW_RESIZABLE;
+        if (gConfigGeneral.drawing_engine == DRAWING_ENGINE_OPENGL)
+        {
+            flags |= SDL_WINDOW_OPENGL;
+        }
+
+        _window = SDL_CreateWindow(OPENRCT2_NAME, x, y, width, height, flags);
+        if (_window == nullptr)
+        {
+            SDLException::Throw("SDL_CreateWindow(...)");
+        }
+
+        SDL_SetWindowMinimumSize(_window, 720, 480);
+        SetCursorTrap(gConfigGeneral.trap_cursor);
+        _platformUiContext->SetWindowIcon(_window);
+
+        // Initialise the surface, palette and draw buffer
+        drawing_engine_init();
+        OnResize(width, height);
+
+        UpdateFullscreenResolutions();
+        SetFullscreenMode((FULLSCREEN_MODE)gConfigGeneral.fullscreen_mode);
+
+        TriggerResize();
+    }
+
     void OnResize(sint32 width, sint32 height)
     {
         // Scale the native window size to the game's canvas size
