@@ -7469,7 +7469,7 @@ loc_6DB41D:
     if (trackType == TRACK_ELEM_ON_RIDE_PHOTO) {
         vehicle_trigger_on_ride_photo(vehicle, mapElement);
     }
-    if (trackType == TRACK_ELEM_ROTATION_CONTROL_TOGGLE) {
+    if (trackType == TRACK_ELEM_ROTATION_CONTROL_TOGGLE && rideType == RIDE_TYPE_WILD_MOUSE) {
         vehicle->update_flags ^= VEHICLE_UPDATE_FLAG_13;
     }
     if (vehicleEntry->flags_a & VEHICLE_ENTRY_FLAG_A_8) {
