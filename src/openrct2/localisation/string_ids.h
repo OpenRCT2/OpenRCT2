@@ -3799,6 +3799,7 @@ enum {
     STR_OBJECT_ERROR_WINDOW_EXPLANATION = 6128,
     STR_COPY_SELECTED = 6129,
     STR_COPY_ALL = 6130,
+    STR_OBJECT_SOURCE = 6131,
 
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     STR_COUNT = 32768
