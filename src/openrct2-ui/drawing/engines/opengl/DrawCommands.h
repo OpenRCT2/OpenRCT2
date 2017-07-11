@@ -35,13 +35,4 @@ struct DrawLineCommand {
     sint32 pos[4];
 };
 
-struct DrawImageCommand {
-    uint32 flags;
-    vec4f colour;
-    sint32 clip[4];
-    CachedTextureInfo texMask;
-    CachedTextureInfo texColour;
-    CachedTextureInfo texPalette;
-    sint32 bounds[4];
-    bool mask;
-};
+typedef DrawImageInstance DrawImageCommand;
