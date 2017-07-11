@@ -396,6 +396,10 @@ namespace OpenRCT2
             }
 
             uint32 elapsed = currentTick - _lastTick;
+            if (elapsed > UPDATE_TIME_MS)
+            {
+                elapsed = UPDATE_TIME_MS;
+            }
 
             _lastTick = currentTick;
             _accumulator += elapsed;
@@ -430,9 +434,10 @@ namespace OpenRCT2
             }
 
             uint32 elapsed = currentTick - _lastTick;
-
             if (elapsed > UPDATE_TIME_MS)
+            {
                 elapsed = UPDATE_TIME_MS;
+            }
 
             _lastTick = currentTick;
             _accumulator += elapsed;
