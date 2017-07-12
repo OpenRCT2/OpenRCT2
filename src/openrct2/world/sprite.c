@@ -767,7 +767,9 @@ void sprite_position_tween_all(float alpha)
         if (sprite_should_tween(sprite)) {
             rct_xyz16 posA = _spritelocations1[i];
             rct_xyz16 posB = _spritelocations2[i];
-
+            if (posA.x == posB.x && posA.y == posB.y && posA.z == posB.z) {
+                continue;
+            }
             sprite_set_coordinates(
                 posB.x * alpha + posA.x * inv,
                 posB.y * alpha + posA.y * inv,
