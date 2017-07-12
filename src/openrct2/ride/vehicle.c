@@ -2299,9 +2299,9 @@ typedef struct rct_synchronised_vehicle {
 assert_struct_size(rct_synchronised_vehicle, 4);
 #pragma pack(pop)
 
-#define SYNCHRONISED_VEHICLE_COUNT 8
+#define SYNCHRONISED_VEHICLE_COUNT 16
 
-// 8 synchronised vehicle info
+// Synchronised vehicle info
 rct_synchronised_vehicle _synchronisedVehicles[SYNCHRONISED_VEHICLE_COUNT] = { 0 };
 
 static rct_synchronised_vehicle* _lastSynchronisedVehicle = NULL;
