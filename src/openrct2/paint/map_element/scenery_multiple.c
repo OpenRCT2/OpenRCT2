@@ -188,6 +188,9 @@ void scenery_multiple_paint(uint8 direction, uint16 height, rct_map_element *map
     gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_LARGE_SCENERY;
     uint32 ebp = mapElement->properties.scenerymultiple.type >> 10;
     rct_scenery_entry *entry = get_large_scenery_entry(mapElement->properties.scenerymultiple.type & 0x3FF);
+    if (entry == (void*)-1)
+        return;
+
     uint32 image_id = (ebp << 2) + entry->image + 4 + direction;
     rct_large_scenery_tile *tile = &entry->large_scenery.tiles[ebp];
     uint32 dword_F4387C = 0;
