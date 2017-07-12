@@ -3794,14 +3794,15 @@ static void window_ride_maintenance_dropdown(rct_window *w, rct_widgetindex widg
                     break;
                 for (sint32 i = 0; i < ride->num_vehicles; ++i) {
                     uint16 spriteId = ride->vehicles[i];
-                    do {
+                    while (spriteId != SPRITE_INDEX_NULL) {
                         vehicle = GET_VEHICLE(spriteId);
                         vehicle->update_flags &= ~(
                             VEHICLE_UPDATE_FLAG_BROKEN_CAR |
                             VEHICLE_UPDATE_FLAG_7 |
                             VEHICLE_UPDATE_FLAG_BROKEN_TRAIN
                             );
-                    } while ((spriteId = vehicle->next_vehicle_on_train) != 0xFFFF);
+                        spriteId = vehicle->next_vehicle_on_train;
+                    }
                 }
                 break;
             case BREAKDOWN_RESTRAINTS_STUCK_CLOSED:
