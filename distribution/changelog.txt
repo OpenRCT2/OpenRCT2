@@ -21,6 +21,7 @@
 - Fix: [#837] Can't move windows on title screen to where the toolbar would be (original bug)
 - Fix: [#1705] Time Twister's Medieval entrance has incorrect scrolling (original bug)
 - Fix: [#3178, #5456] Paths with non-ASCII characters not handled properly on macOS.
+- Fix: [#3346] Crash when extra long train breaks down at the back
 - Fix: [#3479] Building in pause mode creates too many floating numbers, crashing the game
 - Fix: [#3565] Multiplayer server crash
 - Fix: [#3681] Steel Twister rollercoaster always shows all track designs

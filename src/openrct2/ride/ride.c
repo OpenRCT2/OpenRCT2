@@ -2412,6 +2412,18 @@ static sint32 ride_get_new_breakdown_problem(rct_ride *ride)
     return BREAKDOWN_BRAKES_FAILURE;
 }
 
+static void choose_random_train_to_breakdown_safe(rct_ride * ride)
+{
+    ride->broken_vehicle = scenario_rand() % ride->num_vehicles;
+
+    // Prevent crash caused by accessing SPRITE_INDEX_NULL on hacked rides.
+    // This should probably be cleaned up on import instead.
+    while (ride->vehicles[ride->broken_vehicle] == SPRITE_INDEX_NULL && ride->broken_vehicle != 0)
+    {
+        --ride->broken_vehicle;
+    }
+}
+
 /**
  *
  *  rct2: 0x006B7348
@@ -2450,7 +2462,7 @@ void ride_prepare_breakdown(sint32 rideIndex, sint32 breakdownReason)
     case BREAKDOWN_DOORS_STUCK_CLOSED:
     case BREAKDOWN_DOORS_STUCK_OPEN:
         // Choose a random train and car
-        ride->broken_vehicle = scenario_rand() % ride->num_vehicles;
+        choose_random_train_to_breakdown_safe(ride);
         ride->broken_car = scenario_rand() % ride->num_cars_per_train;
 
         // Set flag on broken car
@@ -2469,7 +2481,7 @@ void ride_prepare_breakdown(sint32 rideIndex, sint32 breakdownReason)
         break;
     case BREAKDOWN_VEHICLE_MALFUNCTION:
         // Choose a random train
-        ride->broken_vehicle = scenario_rand() % ride->num_vehicles;
+        choose_random_train_to_breakdown_safe(ride);
         ride->broken_car = 0;
 
         // Set flag on broken train, first car
