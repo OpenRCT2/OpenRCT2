@@ -1,3 +1,6 @@
+0.1.0 (in development)
+------------------------------------------------------------------------
+
 0.1.0 (2017-07-12)
 ------------------------------------------------------------------------
 - Feature: [#1399 (partial), #5177] Add window that displays any missing/corrupt objects when loading a park
