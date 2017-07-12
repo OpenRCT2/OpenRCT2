@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -29,6 +29,7 @@
 extern "C"
 {
     #include "../localisation/localisation.h"
+    #include "../platform/platform.h"
 }
 
 namespace TitleSequenceManager
@@ -267,7 +268,7 @@ namespace TitleSequenceManager
         if (item.PredefinedIndex != PREDEFINED_INDEX_CUSTOM)
         {
             rct_string_id stringId = PredefinedSequences[item.PredefinedIndex].StringId;
-            item.Name = String::Duplicate(language_get_string(stringId));
+            item.Name = language_get_string(stringId);
         }
         item.IsZip = isZip;
         _items.push_back(item);

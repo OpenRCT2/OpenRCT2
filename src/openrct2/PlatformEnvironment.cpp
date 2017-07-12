@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -14,18 +14,25 @@
  *****************************************************************************/
 #pragma endregion
 
+#include "config/Config.h"
+#include "core/Console.hpp"
 #include "core/Exception.hpp"
 #include "core/Guard.hpp"
 #include "core/Path.hpp"
 #include "core/String.hpp"
+#include "OpenRCT2.h"
 #include "PlatformEnvironment.h"
+#include "Version.h"
 
 extern "C"
 {
     #include "platform/platform.h"
+    #include "rct2.h"
 }
 
-class PlatformEnvironment : public IPlatformEnvironment
+using namespace OpenRCT2;
+
+class PlatformEnvironment final : public IPlatformEnvironment
 {
 private:
     std::string _basePath[DIRBASE_COUNT];
@@ -39,9 +46,14 @@ public:
         }
     }
 
+    std::string GetDirectoryPath(DIRBASE base) const override
+    {
+        return _basePath[(size_t)base];
+    }
+
     std::string GetDirectoryPath(DIRBASE base, DIRID did) const override
     {
-        const utf8 * basePath = _basePath[(size_t)base].c_str();
+        auto basePath = GetDirectoryPath(base);
         const utf8 * directoryName;
         switch (base) {
         default:
@@ -55,10 +67,7 @@ public:
             break;
         }
 
-        utf8 path[260];
-        String::Set(path, sizeof(path), basePath);
-        Path::Append(path, sizeof(path), directoryName);
-        return std::string(path);
+        return Path::Combine(basePath, directoryName);
     }
 
     std::string GetFilePath(PATHID pathid) const override
@@ -76,15 +85,60 @@ public:
         return std::string(path);
     }
 
+    void SetBasePath(DIRBASE base, const std::string &path) override
+    {
+        _basePath[(size_t)base] = path;
+    }
+
 private:
     static const char * DirectoryNamesRCT2[];
     static const char * DirectoryNamesOpenRCT2[];
     static const char * FileNames[];
 };
 
-IPlatformEnvironment * CreatePlatformEnvironment(DIRBASE_VALUES basePaths)
+IPlatformEnvironment * OpenRCT2::CreatePlatformEnvironment(DIRBASE_VALUES basePaths)
 {
     return new PlatformEnvironment(basePaths);
+}
+
+IPlatformEnvironment * OpenRCT2::CreatePlatformEnvironment()
+{
+    utf8 userPath[MAX_PATH];
+    platform_resolve_openrct_data_path();
+    platform_resolve_user_data_path();
+    platform_get_user_directory(userPath, NULL, sizeof(userPath));
+    if (!platform_ensure_directory_exists(userPath))
+    {
+        Console::Error::WriteLine("Could not create user directory (do you have write access to your documents folder?)");
+        return nullptr;
+    }
+    platform_get_exe_path(gExePath, sizeof(gExePath));
+    log_verbose("Setting exe path to %s", gExePath);
+
+    config_set_defaults();
+    if (!config_open_default())
+    {
+        config_save_default();
+    }
+
+    utf8 path[260];
+    std::string basePaths[4];
+    basePaths[(size_t)DIRBASE::RCT1] = String::ToStd(gConfigGeneral.rct1_path);
+    basePaths[(size_t)DIRBASE::RCT2] = String::ToStd(gConfigGeneral.rct2_path);
+    platform_get_openrct_data_path(path, sizeof(path));
+    basePaths[(size_t)DIRBASE::OPENRCT2] = std::string(path);
+    platform_get_user_directory(path, nullptr, sizeof(path));
+    basePaths[(size_t)DIRBASE::USER] = std::string(path);
+
+    IPlatformEnvironment * env = OpenRCT2::CreatePlatformEnvironment(basePaths);
+
+    // Log base paths
+    log_verbose("DIRBASE::RCT1    : %s", env->GetDirectoryPath(DIRBASE::RCT1).c_str());
+    log_verbose("DIRBASE::RCT2    : %s", env->GetDirectoryPath(DIRBASE::RCT2).c_str());
+    log_verbose("DIRBASE::OPENRCT2: %s", env->GetDirectoryPath(DIRBASE::OPENRCT2).c_str());
+    log_verbose("DIRBASE::USER    : %s", env->GetDirectoryPath(DIRBASE::USER).c_str());
+
+    return env;
 }
 
 const char * PlatformEnvironment::DirectoryNamesRCT2[] =

@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -17,8 +17,6 @@
 #ifndef _COMMON_H_
 #define _COMMON_H_
 
-#include <SDL_platform.h>
-
 #ifndef _USE_MATH_DEFINES
 #define _USE_MATH_DEFINES
 #endif
@@ -31,6 +29,7 @@
 #include <assert.h>
 #include <limits.h>
 #include <math.h>
+#include <stddef.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -51,7 +50,7 @@ typedef uint64_t uint64;
 typedef char utf8;
 typedef utf8* utf8string;
 typedef const utf8* const_utf8string;
-#ifdef __WINDOWS__
+#ifdef _WIN32
 typedef wchar_t utf16;
 typedef utf16* utf16string;
 #endif
@@ -59,14 +58,14 @@ typedef utf16* utf16string;
 typedef uint32 codepoint_t;
 typedef uint8 colour_t;
 
-#define rol8(x, shift)		(((uint8)(x) << (shift)) | ((uint8)(x) >> (8 - (shift))))
-#define ror8(x, shift)		(((uint8)(x) >> (shift)) | ((uint8)(x) << (8 - (shift))))
-#define rol16(x, shift)		(((uint16)(x) << (shift)) | ((uint16)(x) >> (16 - (shift))))
-#define ror16(x, shift)		(((uint16)(x) >> (shift)) | ((uint16)(x) << (16 - (shift))))
-#define rol32(x, shift)		(((uint32)(x) << (shift)) | ((uint32)(x) >> (32 - (shift))))
-#define ror32(x, shift)		(((uint32)(x) >> (shift)) | ((uint32)(x) << (32 - (shift))))
-#define rol64(x, shift)		(((uint64)(x) << (shift)) | ((uint32)(x) >> (64 - (shift))))
-#define ror64(x, shift)		(((uint64)(x) >> (shift)) | ((uint32)(x) << (64 - (shift))))
+#define rol8(x, shift)      (((uint8)(x) << (shift)) | ((uint8)(x) >> (8 - (shift))))
+#define ror8(x, shift)      (((uint8)(x) >> (shift)) | ((uint8)(x) << (8 - (shift))))
+#define rol16(x, shift)     (((uint16)(x) << (shift)) | ((uint16)(x) >> (16 - (shift))))
+#define ror16(x, shift)     (((uint16)(x) >> (shift)) | ((uint16)(x) << (16 - (shift))))
+#define rol32(x, shift)     (((uint32)(x) << (shift)) | ((uint32)(x) >> (32 - (shift))))
+#define ror32(x, shift)     (((uint32)(x) >> (shift)) | ((uint32)(x) << (32 - (shift))))
+#define rol64(x, shift)     (((uint64)(x) << (shift)) | ((uint32)(x) >> (64 - (shift))))
+#define ror64(x, shift)     (((uint64)(x) >> (shift)) | ((uint32)(x) << (64 - (shift))))
 
 #ifndef __cplusplus
 // in C++ you should be using Math::Min and Math::Max
@@ -77,16 +76,16 @@ typedef uint8 colour_t;
 #define max(a,b)            (((a) > (b)) ? (a) : (b))
 #endif
 
-#define sgn(x)				((x > 0) ? 1 : ((x < 0) ? -1 : 0))
-#define clamp(l, x, h)		(min(h, max(l, x)))
+#define sgn(x)              ((x > 0) ? 1 : ((x < 0) ? -1 : 0))
+#define clamp(l, x, h)      (min(h, max(l, x)))
 
 #endif // __cplusplus
 
 // Rounds an integer down to the given power of 2. y must be a power of 2.
-#define floor2(x, y)		((x) & (~((y) - 1)))
+#define floor2(x, y)        ((x) & (~((y) - 1)))
 
 // Rounds an integer up to the given power of 2. y must be a power of 2.
-#define ceil2(x, y)			(((x) + (y) - 1) & (~((y) - 1)))
+#define ceil2(x, y)         (((x) + (y) - 1) & (~((y) - 1)))
 
 
 #ifndef __cplusplus
@@ -107,9 +106,9 @@ typedef uint8 colour_t;
 // based on http://lxr.free-electrons.com/source/include/linux/kernel.h#L54
 #define countof(arr) (sizeof(arr) / sizeof((arr)[0]) + __must_be_array(arr))
 #elif defined (_MSC_VER)
-#define countof(arr)			_countof(arr)
+#define countof(arr)            _countof(arr)
 #else
-#define countof(arr)			(sizeof(arr) / sizeof((arr)[0]))
+#define countof(arr)            (sizeof(arr) / sizeof((arr)[0]))
 #endif // __GNUC__
 #endif // __cplusplus
 
@@ -145,7 +144,7 @@ char *strndup(const char *src, size_t size);
 #define MAP_ANONYMOUS MAP_ANON
 #endif
 
-#define OPENRCT2_MASTER_SERVER_URL	"https://servers.openrct2.website"
+#define OPENRCT2_MASTER_SERVER_URL  "https://servers.openrct2.website"
 
 // Time (represented as number of 100-nanosecond intervals since 0001-01-01T00:00:00Z)
 typedef uint64 datetime64;
@@ -159,23 +158,25 @@ typedef sint16 fixed16_1dp;
 typedef sint16 fixed16_2dp;
 typedef sint32 fixed32_1dp;
 typedef sint32 fixed32_2dp;
+typedef sint64 fixed64_1dp;
 
 // Money is stored as a multiple of 0.10.
 typedef fixed8_1dp money8;
 typedef fixed16_1dp money16;
 typedef fixed32_1dp money32;
+typedef fixed64_1dp money64;
 
 // Construct a fixed point number. For example, to create the value 3.65 you
 // would write FIXED_2DP(3,65)
-#define FIXED_XDP(x, whole, fraction)	((whole) * (10 * x) + (fraction))
-#define FIXED_1DP(whole, fraction)		FIXED_XDP(1, whole, fraction)
-#define FIXED_2DP(whole, fraction)		FIXED_XDP(10, whole, fraction)
+#define FIXED_XDP(x, whole, fraction)   ((whole) * (10 * x) + (fraction))
+#define FIXED_1DP(whole, fraction)      FIXED_XDP(1, whole, fraction)
+#define FIXED_2DP(whole, fraction)      FIXED_XDP(10, whole, fraction)
 
 // Construct a money value in the format MONEY(10,70) to represent 10.70. Fractional part must be two digits.
-#define MONEY(whole, fraction)			((whole) * 10 + ((fraction) / 10))
+#define MONEY(whole, fraction)          ((whole) * 10 + ((fraction) / 10))
 
-#define MONEY_FREE						MONEY(0,00)
-#define MONEY32_UNDEFINED				((money32)0x80000000)
+#define MONEY_FREE                      MONEY(0,00)
+#define MONEY32_UNDEFINED               ((money32)0x80000000)
 
 typedef void (EMPTY_ARGS_VOID_POINTER)();
 typedef uint16 rct_string_id;
@@ -186,7 +187,7 @@ typedef uint16 rct_string_id;
 #define SafeDeleteArray(x) do { delete[] (x); (x) = nullptr; } while (0)
 
 #ifndef interface
-	#define interface struct
+    #define interface struct
 #endif
 #define abstract = 0
 
@@ -197,9 +198,9 @@ typedef uint16 rct_string_id;
 #endif
 
 #if defined(__LP64__) || defined(_WIN64)
-	#define PLATFORM_64BIT
+    #define PLATFORM_64BIT
 #else
-	#define PLATFORM_32BIT
+    #define PLATFORM_32BIT
 #endif
 
 // C99's restrict keywords guarantees the pointer in question, for the whole of its lifetime,
@@ -207,37 +208,37 @@ typedef uint16 rct_string_id;
 // aliasing the same memory area. Using it lets compiler generate better code. If your compiler
 // does not support it, feel free to drop it, at some performance hit.
 #ifdef __cplusplus
-	#ifdef _MSC_VER
-		#define RESTRICT __restrict
-	#else
-		#define RESTRICT __restrict__
-	#endif
+    #ifdef _MSC_VER
+        #define RESTRICT __restrict
+    #else
+        #define RESTRICT __restrict__
+    #endif
 #else
-	#ifdef _MSC_VER
-		#define RESTRICT __restrict
-	#else
-		#define RESTRICT restrict
-	#endif
+    #ifdef _MSC_VER
+        #define RESTRICT __restrict
+    #else
+        #define RESTRICT restrict
+    #endif
 #endif
 #ifndef RESTRICT
-	#define RESTRICT
+    #define RESTRICT
 #endif
 
 #define assert_struct_size(x, y) static_assert(sizeof(x) == (y), "Improper struct size")
 
 #ifdef PLATFORM_X86
-	#ifndef FASTCALL
-		#ifdef __GNUC__
-			#define FASTCALL __attribute__((fastcall))
-		#elif defined(_MSC_VER)
-			#define FASTCALL __fastcall
-		#else
-			#pragma message "Not using fastcall calling convention, please check your compiler support"
-			#define FASTCALL
-		#endif
-	#endif // FASTCALL
+    #ifndef FASTCALL
+        #ifdef __GNUC__
+            #define FASTCALL __attribute__((fastcall))
+        #elif defined(_MSC_VER)
+            #define FASTCALL __fastcall
+        #else
+            #pragma message "Not using fastcall calling convention, please check your compiler support"
+            #define FASTCALL
+        #endif
+    #endif // FASTCALL
 #else // PLATFORM_X86
-	#define FASTCALL
+    #define FASTCALL
 #endif // PLATFORM_X86
 
 /**
@@ -245,54 +246,54 @@ typedef uint16 rct_string_id;
  */
 #pragma pack(push, 1)
 typedef struct registers {
-	union {
-		sint32 eax;
-		sint16 ax;
-		struct {
-			char al;
-			char ah;
-		};
-	};
-	union {
-		sint32 ebx;
-		sint16 bx;
-		struct {
-			char bl;
-			char bh;
-		};
-	};
-	union {
-		sint32 ecx;
-		sint16 cx;
-		struct {
-			char cl;
-			char ch;
-		};
-	};
-	union {
-		sint32 edx;
-		sint16 dx;
-		struct {
-			char dl;
-			char dh;
-		};
-	};
-	union {
-		sint32 esi;
-		sint16 si;
-	};
-	union {
-		sint32 edi;
-		sint16 di;
-	};
-	union {
-		sint32 ebp;
-		sint16 bp;
-	};
+    union {
+        sint32 eax;
+        sint16 ax;
+        struct {
+            char al;
+            char ah;
+        };
+    };
+    union {
+        sint32 ebx;
+        sint16 bx;
+        struct {
+            char bl;
+            char bh;
+        };
+    };
+    union {
+        sint32 ecx;
+        sint16 cx;
+        struct {
+            char cl;
+            char ch;
+        };
+    };
+    union {
+        sint32 edx;
+        sint16 dx;
+        struct {
+            char dl;
+            char dh;
+        };
+    };
+    union {
+        sint32 esi;
+        sint16 si;
+    };
+    union {
+        sint32 edi;
+        sint16 di;
+    };
+    union {
+        sint32 ebp;
+        sint16 bp;
+    };
 } registers;
 assert_struct_size(registers, 7 * 4);
 #pragma pack(pop)
 
-#define UNUSED(x) ((void)(x))
+#define UNUSED(x)  ((void)(x))
 
 #endif

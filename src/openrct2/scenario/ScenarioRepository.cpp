@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -38,6 +38,8 @@ extern "C"
     #include "../rct2.h"
     #include "scenario.h"
 }
+
+using namespace OpenRCT2;
 
 static sint32 ScenarioCategoryCompare(sint32 categoryA, sint32 categoryB)
 {
@@ -320,7 +322,7 @@ private:
                 try
                 {
                     auto s4Importer = std::unique_ptr<IParkImporter>(ParkImporter::CreateS4());
-                    s4Importer->LoadScenario(path.c_str());
+                    s4Importer->LoadScenario(path.c_str(), true);
                     if (s4Importer->GetDetails(entry))
                     {
                         String::Set(entry->path, sizeof(entry->path), path.c_str());

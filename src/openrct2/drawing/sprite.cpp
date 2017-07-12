@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -16,20 +16,27 @@
 
 #include <memory>
 #include "../common.h"
+#include "../config/Config.h"
+#include "../Context.h"
 #include "../core/File.h"
 #include "../core/FileStream.hpp"
 #include "../core/Memory.hpp"
+#include "../core/Path.hpp"
 #include "../core/Util.hpp"
 #include "../OpenRCT2.h"
 #include "../sprites.h"
+#include "../ui/UiContext.h"
 
 extern "C"
 {
-    #include "../config/Config.h"
+    #include "../platform/platform.h"
     #include "../rct2/addresses.h"
     #include "../util/util.h"
     #include "drawing.h"
 }
+
+using namespace OpenRCT2;
+using namespace OpenRCT2::Ui;
 
 extern "C"
 {
@@ -116,7 +123,8 @@ extern "C"
             log_fatal("Unable to load g1 graphics");
             if (!gOpenRCT2Headless)
             {
-                platform_show_messagebox("Unable to load g1.dat. Your RollerCoaster Tycoon 2 path may be incorrectly set.");
+                IUiContext * uiContext = GetContext()->GetUiContext();
+                uiContext->ShowMessageBox("Unable to load g1.dat. Your RollerCoaster Tycoon 2 path may be incorrectly set.");
             }
             return false;
         }
@@ -174,10 +182,49 @@ extern "C"
             log_fatal("Unable to load g2 graphics");
             if (!gOpenRCT2Headless)
             {
-                platform_show_messagebox("Unable to load g2.dat");
+                IUiContext * uiContext = GetContext()->GetUiContext();
+                uiContext->ShowMessageBox("Unable to load g2.dat");
             }
         }
         return false;
+    }
+
+    static utf8 * gfx_get_csg_header_path()
+    {
+        char path[MAX_PATH];
+        safe_strcpy(path, gConfigGeneral.rct1_path, sizeof(path));
+        safe_strcat_path(path, "Data", sizeof(path));
+        safe_strcat_path(path, "csg1i.dat", sizeof(path));
+
+        auto fixedPath = Path::ResolveCasing(path);
+        utf8 * fixedPathC = new utf8[fixedPath.size() + 1];
+        Memory::Copy(fixedPathC, fixedPath.data(), fixedPath.size() + 1);
+        return fixedPathC;
+    }
+
+    static utf8 * gfx_get_csg_data_path()
+    {
+        // csg1.1 and csg1.dat are the same file.
+        // In the CD version, it's called csg1.1 on the CD and csg1.dat on the disk.
+        // In the GOG version, it's always called csg1.1.
+        // In the Steam version, it's always called csg1.dat.
+        char path[MAX_PATH];
+        safe_strcpy(path, gConfigGeneral.rct1_path, sizeof(path));
+        safe_strcat_path(path, "Data", sizeof(path));
+        safe_strcat_path(path, "csg1.1", sizeof(path));
+
+        auto fixedPath = Path::ResolveCasing(path);
+        if (fixedPath.empty())
+        {
+            safe_strcpy(path, gConfigGeneral.rct1_path, sizeof(path));
+            safe_strcat_path(path, "Data", sizeof(path));
+            safe_strcat_path(path, "csg1.dat", sizeof(path));
+            fixedPath = Path::ResolveCasing(path);
+        }
+
+        utf8 * fixedPathC = new utf8[fixedPath.size() + 1];
+        Memory::Copy(fixedPathC, fixedPath.data(), fixedPath.size() + 1);
+        return fixedPathC;
     }
 
     bool gfx_load_csg()
@@ -190,31 +237,12 @@ extern "C"
             return false;
         }
 
-        char pathHeader[MAX_PATH];
-        safe_strcpy(pathHeader, gConfigGeneral.rct1_path, sizeof(pathHeader));
-        safe_strcat_path(pathHeader, "Data", sizeof(pathHeader));
-        safe_strcat_path(pathHeader, "csg1i.dat", sizeof(pathHeader));
-
-        // csg1.1 and csg1.dat are the same file.
-        // In the CD version, it's called csg1.1 on the CD and csg1.dat on the disk.
-        // In the GOG version, it's always called csg1.1.
-        // In the Steam version, it's always called csg1.dat.
-        char pathData[MAX_PATH];
-        safe_strcpy(pathData, gConfigGeneral.rct1_path, sizeof(pathData));
-        safe_strcat_path(pathData, "Data", sizeof(pathData));
-        safe_strcat_path(pathData, "csg1.1", sizeof(pathData));
-
-        if (!File::Exists(pathData))
-        {
-            safe_strcpy(pathData, gConfigGeneral.rct1_path, sizeof(pathData));
-            safe_strcat_path(pathData, "Data", sizeof(pathData));
-            safe_strcat_path(pathData, "csg1.dat", sizeof(pathData));
-        }
-
+        auto pathHeaderPath = std::unique_ptr<utf8[]>(gfx_get_csg_header_path());
+        auto pathDataPath = std::unique_ptr<utf8[]>(gfx_get_csg_data_path());
         try
         {
-            auto fileHeader = FileStream(pathHeader, FILE_MODE_OPEN);
-            auto fileData = FileStream(pathData, FILE_MODE_OPEN);
+            auto fileHeader = FileStream(pathHeaderPath.get(), FILE_MODE_OPEN);
+            auto fileData = FileStream(pathDataPath.get(), FILE_MODE_OPEN);
             size_t fileHeaderSize = fileHeader.GetLength();
             size_t fileDataSize = fileData.GetLength();
 
@@ -281,7 +309,7 @@ extern "C"
         if (image_type & IMAGE_TYPE_REMAP){
             assert(palette_pointer != nullptr);
 
-            //image with remaps
+            // Image with remaps
             for (; height > 0; height -= zoom_amount){
                 uint8* next_source_pointer = source_pointer + source_line_width;
                 uint8* next_dest_pointer = dest_pointer + dest_line_width;
@@ -299,10 +327,10 @@ extern "C"
             return;
         }
 
-        //Image is Transparent. It only uses source pointer for
-        //telling if it needs to be drawn not for colour. Colour provided
-        //by the palette pointer.
-        if (image_type & IMAGE_TYPE_TRANSPARENT){//Not tested
+        // Image is transparent. It only uses source pointer for
+        // telling if it needs to be drawn not for colour. Colour provided
+        // by the palette pointer.
+        if (image_type & IMAGE_TYPE_TRANSPARENT){ // Not tested
             assert(palette_pointer != nullptr);
             for (; height > 0; height -= zoom_amount){
                 uint8* next_source_pointer = source_pointer + source_line_width;
@@ -323,8 +351,8 @@ extern "C"
             return;
         }
 
-        //Basic bitmap no fancy stuff
-        if (!(source_image->flags & G1_FLAG_BMP)){//Not tested
+        // Basic bitmap no fancy stuff
+        if (!(source_image->flags & G1_FLAG_BMP)){ // Not tested
             for (; height > 0; height -= zoom_amount){
                 uint8* next_source_pointer = source_pointer + source_line_width;
                 uint8* next_dest_pointer = dest_pointer + dest_line_width;
@@ -339,7 +367,7 @@ extern "C"
             return;
         }
 
-        //Basic bitmap with no draw pixels
+        // Basic bitmap with no draw pixels
         for (; height > 0; height -= zoom_amount){
             uint8* next_source_pointer = source_pointer + source_line_width;
             uint8* next_dest_pointer = dest_pointer + dest_line_width;
@@ -413,13 +441,15 @@ extern "C"
      */
     void FASTCALL gfx_draw_sprite_software(rct_drawpixelinfo *dpi, sint32 image_id, sint32 x, sint32 y, uint32 tertiary_colour)
     {
-        uint8* palette_pointer = gfx_draw_sprite_get_palette(image_id, tertiary_colour);
-        if (image_id & IMAGE_TYPE_REMAP_2_PLUS) {
-            image_id |= IMAGE_TYPE_REMAP;
+        if (image_id != -1)
+        {
+            uint8* palette_pointer = gfx_draw_sprite_get_palette(image_id, tertiary_colour);
+            if (image_id & IMAGE_TYPE_REMAP_2_PLUS) {
+                image_id |= IMAGE_TYPE_REMAP;
+            }
+
+            gfx_draw_sprite_palette_set_software(dpi, image_id, x, y, palette_pointer, nullptr);
         }
-
-
-        gfx_draw_sprite_palette_set_software(dpi, image_id, x, y, palette_pointer, nullptr);
     }
 
     /*
@@ -437,6 +467,10 @@ extern "C"
         sint32 image_type = image_id & 0xE0000000;
 
         rct_g1_element *g1_source = gfx_get_g1_element(image_element);
+        if (g1_source == nullptr)
+        {
+            return;
+        }
 
         if (dpi->zoom_level != 0 && (g1_source->flags & G1_FLAG_HAS_ZOOM_SPRITE)) {
             rct_drawpixelinfo zoomed_dpi;
@@ -455,7 +489,7 @@ extern "C"
             return;
         }
 
-        //Its used super often so we will define it to a separate variable.
+        // Its used super often so we will define it to a separate variable.
         sint32 zoom_level = dpi->zoom_level;
         sint32 zoom_mask = 0xFFFFFFFF << zoom_level;
 
@@ -464,9 +498,9 @@ extern "C"
             y -= ~zoom_mask;
         }
 
-        //This will be the height of the drawn image
+        // This will be the height of the drawn image
         sint32 height = g1_source->height;
-        //This is the start y coordinate on the destination
+        // This is the start y coordinate on the destination
         sint16 dest_start_y = y + g1_source->y_offset;
 
         // For whatever reason the RLE version does not use
@@ -481,16 +515,16 @@ extern "C"
         sint32 source_start_y = 0;
 
         if (dest_start_y < 0){
-            //If the destination y is negative reduce the height of the
-            //image as we will cut off the bottom
+            // If the destination y is negative reduce the height of the
+            // image as we will cut off the bottom
             height += dest_start_y;
-            //If the image is no longer visible nothing to draw
+            // If the image is no longer visible nothing to draw
             if (height <= 0){
                 return;
             }
-            //The source image will start a further up the image
+            // The source image will start a further up the image
             source_start_y -= dest_start_y;
-            //The destination start is now reset to 0
+            // The destination start is now reset to 0
             dest_start_y = 0;
         }
         else{
@@ -503,33 +537,33 @@ extern "C"
         sint32 dest_end_y = dest_start_y + height;
 
         if (dest_end_y > dpi->height){
-            //If the destination y is outside of the drawing
-            //image reduce the height of the image
+            // If the destination y is outside of the drawing
+            // image reduce the height of the image
             height -= dest_end_y - dpi->height;
         }
-        //If the image no longer has anything to draw
+        // If the image no longer has anything to draw
         if (height <= 0)return;
 
         dest_start_y >>= zoom_level;
 
-        //This will be the width of the drawn image
+        // This will be the width of the drawn image
         sint32 width = g1_source->width;
-        //This is the source start x coordinate
+        // This is the source start x coordinate
         sint32 source_start_x = 0;
-        //This is the destination start x coordinate
+        // This is the destination start x coordinate
         sint16 dest_start_x = ((x + g1_source->x_offset + ~zoom_mask)&zoom_mask) - dpi->x;
 
         if (dest_start_x < 0){
-            //If the destination is negative reduce the width
-            //image will cut off the side
+            // If the destination is negative reduce the width
+            // image will cut off the side
             width += dest_start_x;
-            //If there is no image to draw
+            // If there is no image to draw
             if (width <= 0){
                 return;
             }
-            //The source start will also need to cut off the side
+            // The source start will also need to cut off the side
             source_start_x -= dest_start_x;
-            //Reset the destination to 0
+            // Reset the destination to 0
             dest_start_x = 0;
         }
         else{
@@ -541,27 +575,27 @@ extern "C"
         sint32 dest_end_x = dest_start_x + width;
 
         if (dest_end_x > dpi->width){
-            //If the destination x is outside of the drawing area
-            //reduce the image width.
+            // If the destination x is outside of the drawing area
+            // reduce the image width.
             width -= dest_end_x - dpi->width;
-            //If there is no image to draw.
+            // If there is no image to draw.
             if (width <= 0)return;
         }
 
         dest_start_x >>= zoom_level;
 
         uint8* dest_pointer = (uint8*)dpi->bits;
-        //Move the pointer to the start point of the destination
+        // Move the pointer to the start point of the destination
         dest_pointer += ((dpi->width >> zoom_level) + dpi->pitch) * dest_start_y + dest_start_x;
 
         if (g1_source->flags & G1_FLAG_RLE_COMPRESSION){
-            //We have to use a different method to move the source pointer for
-            //rle encoded sprites so that will be handled within this function
+            // We have to use a different method to move the source pointer for
+            // rle encoded sprites so that will be handled within this function
             gfx_rle_sprite_to_buffer(g1_source->offset, dest_pointer, palette_pointer, dpi, image_type, source_start_y, height, source_start_x, width);
             return;
         }
         uint8* source_pointer = g1_source->offset;
-        //Move the pointer to the start point of the source
+        // Move the pointer to the start point of the source
         source_pointer += g1_source->width*source_start_y + source_start_x;
 
         if (!(g1_source->flags & G1_FLAG_1)) {
@@ -585,7 +619,7 @@ extern "C"
         assert(imgColour->flags & G1_FLAG_BMP);
 
         if (dpi->zoom_level != 0) {
-            // TODO implement other zoom levels (probably not used though)
+            // TODO: Implement other zoom levels (probably not used though)
             assert(false);
             return;
         }
@@ -635,6 +669,13 @@ extern "C"
 
     rct_g1_element * gfx_get_g1_element(sint32 image_id)
     {
+        openrct2_assert(!gOpenRCT2NoGraphics, "gfx_get_g1_element called on headless instance");
+
+        if (image_id == (-1 & 0x7FFFF))
+        {
+            return nullptr;
+        }
+
         if (image_id < SPR_G2_BEGIN)
         {
             return &g1Elements[image_id];

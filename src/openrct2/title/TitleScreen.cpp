@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -15,6 +15,8 @@
 #pragma endregion
 
 #include "../core/Console.hpp"
+#include "../Context.h"
+#include "../interface/Screenshot.h"
 #include "../network/network.h"
 #include "../OpenRCT2.h"
 #include "../scenario/ScenarioRepository.h"
@@ -30,7 +32,6 @@ extern "C"
     #include "../drawing/drawing.h"
     #include "../game.h"
     #include "../input.h"
-    #include "../interface/screenshot.h"
     #include "../interface/viewport.h"
     #include "../interface/window.h"
     #include "../localisation/localisation.h"
@@ -101,6 +102,7 @@ static void TryLoadSequence()
         _sequencePlayer->Eject();
         gTitleCurrentSequence = UINT16_MAX;
         _loadedTitleSequenceId = UINT16_MAX;
+        game_init_all(150);
     }
 }
 
@@ -161,12 +163,14 @@ extern "C"
         window_title_exit_open();
         window_title_options_open();
         window_title_logo_open();
-        window_resize_gui(gScreenWidth, gScreenHeight);
+        window_resize_gui(context_get_width(), context_get_height());
         gTitleHideVersionInfo = false;
     }
 
     void title_update()
     {
+        gInUpdateCode = true;
+
         screenshot_check();
         title_handle_keyboard_input();
 
@@ -195,6 +199,8 @@ extern "C"
         gSavedAge++;
 
         game_handle_input();
+
+        gInUpdateCode = false;
     }
 
     void DrawOpenRCT2(rct_drawpixelinfo * dpi, sint32 x, sint32 y)

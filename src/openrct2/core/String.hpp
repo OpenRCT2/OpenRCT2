@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include <cstdarg>
 #include <string>
 #include <vector>
 #include "../common.h"
@@ -24,8 +25,10 @@ namespace String
 {
     constexpr const utf8 * Empty = "";
 
-    std::string ToStd(const utf8 * str);
-    std::string StdFormat(const utf8 * format, ...);
+    std::string     ToStd(const utf8 * str);
+    std::string     StdFormat(const utf8 * format, ...);
+    std::string     ToUtf8(const std::wstring &s);
+    std::wstring    ToUtf16(const std::string &s);
 
     bool   IsNullOrEmpty(const utf8 * str);
     sint32 Compare(const std::string &a, const std::string &b, bool ignoreCase = false);

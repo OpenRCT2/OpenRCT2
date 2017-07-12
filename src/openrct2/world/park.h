@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -25,24 +25,35 @@
 
 
 enum {
-	PARK_FLAGS_PARK_OPEN = (1 << 0),
-	PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT = (1 << 1),
-	PARK_FLAGS_FORBID_LANDSCAPE_CHANGES = (1 << 2),
-	PARK_FLAGS_FORBID_TREE_REMOVAL = (1 << 3),
-	PARK_FLAGS_SHOW_REAL_GUEST_NAMES = (1 << 4),
-	PARK_FLAGS_FORBID_HIGH_CONSTRUCTION = (1 << 5), // below tree height
-	PARK_FLAGS_PREF_LESS_INTENSE_RIDES = (1 << 6),
-	PARK_FLAGS_FORBID_MARKETING_CAMPAIGN = (1 << 7),
-	PARK_FLAGS_ANTI_CHEAT_DEPRECATED = (1 << 8), // Not used anymore, used for cheat detection
-	PARK_FLAGS_PREF_MORE_INTENSE_RIDES = (1 << 9),
-	PARK_FLAGS_NO_MONEY = (1 << 11),
-	PARK_FLAGS_DIFFICULT_GUEST_GENERATION = (1 << 12),
-	PARK_FLAGS_PARK_FREE_ENTRY = (1 << 13),
-	PARK_FLAGS_DIFFICULT_PARK_RATING = (1 << 14),
-	PARK_FLAGS_LOCK_REAL_NAMES_OPTION = (1 << 15),
-	PARK_FLAGS_NO_MONEY_SCENARIO = (1 << 17),  // equivalent to PARK_FLAGS_NO_MONEY, but used in scenario editor
-	PARK_FLAGS_SPRITES_INITIALISED = (1 << 18), // After a scenario is loaded this prevents edits in the scenario editor
-	PARK_FLAGS_SIX_FLAGS_DEPRECATED = (1 << 19) // Not used anymore
+    PARK_FLAGS_PARK_OPEN = (1 << 0),
+    PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT = (1 << 1),
+    PARK_FLAGS_FORBID_LANDSCAPE_CHANGES = (1 << 2),
+    PARK_FLAGS_FORBID_TREE_REMOVAL = (1 << 3),
+    PARK_FLAGS_SHOW_REAL_GUEST_NAMES = (1 << 4),
+    PARK_FLAGS_FORBID_HIGH_CONSTRUCTION = (1 << 5), // below tree height
+    PARK_FLAGS_PREF_LESS_INTENSE_RIDES = (1 << 6),
+    PARK_FLAGS_FORBID_MARKETING_CAMPAIGN = (1 << 7),
+    PARK_FLAGS_ANTI_CHEAT_DEPRECATED = (1 << 8), // Not used anymore, used for cheat detection
+    PARK_FLAGS_PREF_MORE_INTENSE_RIDES = (1 << 9),
+    PARK_FLAGS_NO_MONEY = (1 << 11),
+    PARK_FLAGS_DIFFICULT_GUEST_GENERATION = (1 << 12),
+    PARK_FLAGS_PARK_FREE_ENTRY = (1 << 13),
+    PARK_FLAGS_DIFFICULT_PARK_RATING = (1 << 14),
+    PARK_FLAGS_LOCK_REAL_NAMES_OPTION_DEPRECATED = (1 << 15), // Deprecated now we use a persistent 'real names' setting
+    PARK_FLAGS_NO_MONEY_SCENARIO = (1 << 17),  // equivalent to PARK_FLAGS_NO_MONEY, but used in scenario editor
+    PARK_FLAGS_SPRITES_INITIALISED = (1 << 18), // After a scenario is loaded this prevents edits in the scenario editor
+    PARK_FLAGS_SIX_FLAGS_DEPRECATED = (1 << 19) // Not used anymore
+};
+
+enum
+{
+    BUY_LAND_RIGHTS_FLAG_BUY_LAND,
+    BUY_LAND_RIGHTS_FLAG_UNOWN_TILE,
+    BUY_LAND_RIGHTS_FLAG_BUY_CONSTRUCTION_RIGHTS,
+    BUY_LAND_RIGHTS_FLAG_UNOWN_CONSTRUCTION_RIGHTS,
+    BUY_LAND_RIGHTS_FLAG_SET_FOR_SALE,
+    BUY_LAND_RIGHTS_FLAG_SET_CONSTRUCTION_RIGHTS_FOR_SALE,
+    BUY_LAND_RIGHTS_FLAG_SET_OWNERSHIP_WITH_CHECKS, // Used in scenario editor
 };
 
 extern rct_string_id gParkName;
@@ -83,6 +94,7 @@ rct_peep * park_generate_new_guest();
 void park_update();
 void park_update_histories();
 void update_park_fences(sint32 x, sint32 y);
+void update_park_fences_around_tile(sint32 x, sint32 y);
 
 uint8 calculate_guest_initial_happiness(uint8 percentage);
 

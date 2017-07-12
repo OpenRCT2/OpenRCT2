@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -84,7 +84,7 @@ static bool WallCheckObstructionWithTrack(rct_scenery_entry * wall,
     }
 
     // The following code checks if a door is allowed on the track
-    if (!(RideData4[ride->type].flags & RIDE_TYPE_FLAG4_0))
+    if (!(RideData4[ride->type].flags & RIDE_TYPE_FLAG4_ALLOW_DOORS_ON_TRACK))
     {
         return false;
     }
@@ -332,7 +332,7 @@ static money32 WallPlace(uint8 wallType,
     }
 
     if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) &&
-        !(flags & GAME_COMMAND_FLAG_7) &&
+        !(flags & GAME_COMMAND_FLAG_PATH_SCENERY) &&
         !gCheatsSandboxMode)
     {
 
@@ -503,7 +503,7 @@ static money32 WallPlace(uint8 wallType,
     clearanceHeight += wallEntry->wall.height;
 
     bool wallAcrossTrack = false;
-    if (!(flags & GAME_COMMAND_FLAG_7) && !gCheatsDisableClearanceChecks)
+    if (!(flags & GAME_COMMAND_FLAG_PATH_SCENERY) && !gCheatsDisableClearanceChecks)
     {
         if (!WallCheckObstruction(wallEntry,
                                   position.x,

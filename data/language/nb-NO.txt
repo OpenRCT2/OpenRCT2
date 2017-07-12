@@ -3762,7 +3762,7 @@ STR_5420    :Rotate{MOVE_X}{87}{COMMA16}
 STR_5421    :Zoom
 STR_5422    :Zoom{MOVE_X}{87}{COMMA16}
 STR_5423    :Wait
-STR_5424    :Wait{MOVE_X}{87}{COMMA16}
+STR_5424    :Wait{MOVE_X}{87}{UINT16}
 STR_5425    :Restart
 STR_5426    :End
 STR_5427    :Coordinates:
@@ -4342,6 +4342,7 @@ STR_6030    :{SMALLFONT}{BLACK}Pyntvelger. Klikk hvilken som helst pynt på kart
 STR_6031    :Serverbeskrivelse:
 STR_6032    :Server-velkomstbeskjed:
 STR_6033    :Sti til RCT1 insallasjonsmappe:
+STR_6034    :{SMALLFONT}{BLACK}{STRING}
 STR_6035    :Velg din RCT1-mappe
 STR_6036    :{SMALLFONT}{BLACK}Visk ut
 STR_6037    :Vennligst velg en gyldig RCT1 mappe
@@ -4362,6 +4363,11 @@ STR_6051    :Bredden og høyden må være like
 STR_6052    :Høydekartet er for stort og vil bli kuttet av
 STR_6053    :Høydekartet kunne ikke normaliseres
 STR_6054    :Kun 24-bit bitmaps er støttet
+STR_6055    :OpenRCT2 høydekartfil
+STR_6056    :{SMALLFONT}{BLACK}Demp lyd
+STR_6057    :{SMALLFONT}{BLACK}Show a separate button for the Mute Option in the toolbar
+STR_6057    :{SMALLFONT}{BLACK}Vis en separat knapp for lyddemping i verktøylinjen
+STR_6058    :Demp lyd
 
 #############
 # Scenarios #

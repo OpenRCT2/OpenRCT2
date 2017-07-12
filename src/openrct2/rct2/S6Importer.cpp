@@ -22,7 +22,9 @@
 #include "../core/String.hpp"
 #include "../management/award.h"
 #include "../network/network.h"
+#include "../object/ObjectManager.h"
 #include "../object/ObjectRepository.h"
+#include "../object/ObjectManager.h"
 #include "../ParkImporter.h"
 #include "../rct12/SawyerChunkReader.h"
 #include "../rct12/SawyerEncoding.h"
@@ -64,26 +66,31 @@ public:
 class S6Importer final : public IParkImporter
 {
 private:
+    IObjectRepository * const   _objectRepository;
+    IObjectManager * const      _objectManager;
+
     const utf8 *    _s6Path = nullptr;
     rct_s6_data     _s6;
     uint8           _gameVersion = 0;
 
 public:
-    S6Importer()
+    S6Importer(IObjectRepository * objectRepository, IObjectManager * objectManager)
+        : _objectRepository(objectRepository),
+          _objectManager(objectManager)
     {
         Memory::Set(&_s6, 0, sizeof(_s6));
     }
 
-    void Load(const utf8 * path) override
+    ParkLoadResult Load(const utf8 * path) override
     {
         const utf8 * extension = Path::GetExtension(path);
         if (String::Equals(extension, ".sc6", true))
         {
-            LoadScenario(path);
+            return LoadScenario(path);
         }
         else if (String::Equals(extension, ".sv6", true))
         {
-            LoadSavedGame(path);
+            return LoadSavedGame(path);
         }
         else
         {
@@ -91,21 +98,23 @@ public:
         }
     }
 
-    void LoadSavedGame(const utf8 * path) override
+    ParkLoadResult LoadSavedGame(const utf8 * path, bool skipObjectCheck = false) override
     {
         auto fs = FileStream(path, FILE_MODE_OPEN);
-        LoadFromStream(&fs, false);
+        auto result = LoadFromStream(&fs, false, skipObjectCheck);
         _s6Path = path;
+        return result;
     }
 
-    void LoadScenario(const utf8 * path) override
+    ParkLoadResult LoadScenario(const utf8 * path, bool skipObjectCheck = false) override
     {
         auto fs = FileStream(path, FILE_MODE_OPEN);
-        LoadFromStream(&fs, true);
+        auto result = LoadFromStream(&fs, true, skipObjectCheck);
         _s6Path = path;
+        return result;
     }
 
-    void LoadFromStream(IStream * stream, bool isScenario) override
+    ParkLoadResult LoadFromStream(IStream * stream, bool isScenario, bool skipObjectCheck = false) override
     {
         if (isScenario && !gConfigGeneral.allow_loading_with_incorrect_checksum && !SawyerEncoding::ValidateChecksum(stream))
         {
@@ -134,10 +143,9 @@ public:
 
         // Read packed objects
         // TODO try to contain this more and not store objects until later
-        IObjectRepository * objectRepo = GetObjectRepository();
         for (uint16 i = 0; i < _s6.header.num_packed_objects; i++)
         {
-            objectRepo->ExportPackedObject(stream);
+            _objectRepository->ExportPackedObject(stream);
         }
 
         if (isScenario)
@@ -161,6 +169,13 @@ public:
             chunkReader.ReadChunk(&_s6.map_elements, sizeof(_s6.map_elements));
             chunkReader.ReadChunk(&_s6.next_free_map_element_pointer_index, 3048816);
         }
+
+        auto missingObjects = _objectManager->GetInvalidObjects(_s6.objects);
+        if (missingObjects.size() > 0)
+        {
+            return ParkLoadResult::CreateMissingObjects(missingObjects);
+        }
+        return ParkLoadResult::CreateOK();
     }
 
     bool GetDetails(scenario_index_entry * dst) override
@@ -212,8 +227,8 @@ public:
         // pad_01357400
         memcpy(gResearchedRideTypes, _s6.researched_ride_types, sizeof(_s6.researched_ride_types));
         memcpy(gResearchedRideEntries, _s6.researched_ride_entries, sizeof(_s6.researched_ride_entries));
-        memcpy(gResearchedTrackTypesA, _s6.researched_track_types_a, sizeof(_s6.researched_track_types_a));
-        memcpy(gResearchedTrackTypesB, _s6.researched_track_types_b, sizeof(_s6.researched_track_types_b));
+        // _s6.researched_track_types_a
+        // _s6.researched_track_types_b
 
         gNumGuestsInPark         = _s6.guests_in_park;
         gNumGuestsHeadingForPark = _s6.guests_heading_for_park;
@@ -390,7 +405,7 @@ public:
         // pad_13CE778
 
         // Fix and set dynamic variables
-        if (!object_load_entries(_s6.objects))
+        if (!_objectManager->LoadObjects(_s6.objects, OBJECT_ENTRY_COUNT))
         {
             throw ObjectLoadException();
         }
@@ -398,6 +413,16 @@ public:
         map_update_tile_pointers();
         game_convert_strings_to_utf8();
         map_count_remaining_land_rights();
+
+        // We try to fix the cycles on import, hence the 'true' parameter
+        check_for_sprite_list_cycles(true);
+        check_for_spatial_index_cycles(true);
+        sint32 disjoint_sprites_count = fix_disjoint_sprites();
+        // This one is less harmful, no need to assert for it ~janisozaur
+        if (disjoint_sprites_count > 0)
+        {
+            log_error("Found %d disjoint null sprites", disjoint_sprites_count);
+        }
     }
 
     void Initialise()
@@ -406,30 +431,35 @@ public:
     }
 };
 
-IParkImporter * ParkImporter::CreateS6()
+IParkImporter * ParkImporter::CreateS6(IObjectRepository * objectRepository, IObjectManager * objectManager)
 {
-    return new S6Importer();
+    return new S6Importer(objectRepository, objectManager);
 }
 
 extern "C"
 {
-    bool game_load_sv6_path(const char * path)
+    ParkLoadResult * game_load_sv6_path(const char * path)
     {
-        bool result     = false;
-        auto s6Importer = new S6Importer();
+        ParkLoadResult * result = nullptr;
+        auto s6Importer = new S6Importer(GetObjectRepository(), GetObjectManager());
         try
         {
-            s6Importer->LoadSavedGame(path);
-            s6Importer->Import();
+            result = new ParkLoadResult(s6Importer->LoadSavedGame(path));
 
-            game_fix_save_vars();
-            sprite_position_tween_reset();
-            result = true;
+            // We mustn't import if there's something
+            // wrong with the park data
+            if (result->Error == PARK_LOAD_ERROR_OK)
+            {
+                s6Importer->Import();
+
+                game_fix_save_vars();
+                sprite_position_tween_reset();
+            }
         }
         catch (const ObjectLoadException &)
         {
             gErrorType     = ERROR_TYPE_FILE_LOAD;
-            gErrorStringId = STR_GAME_SAVE_FAILED;
+            gErrorStringId = STR_FILE_CONTAINS_INVALID_DATA;
         }
         catch (const IOException &)
         {
@@ -443,8 +473,15 @@ extern "C"
         }
         delete s6Importer;
 
-        gScreenAge          = 0;
-        gLastAutoSaveUpdate = AUTOSAVE_PAUSE;
+        if (result == nullptr)
+        {
+            result = new ParkLoadResult(ParkLoadResult::CreateUnknown());
+        }
+        if (result->Error == PARK_LOAD_ERROR_OK)
+        {
+            gScreenAge          = 0;
+            gLastAutoSaveUpdate = AUTOSAVE_PAUSE;
+        }
         return result;
     }
 
@@ -453,18 +490,20 @@ extern "C"
      *  rct2: 0x00676053
      * scenario (ebx)
      */
-    sint32 scenario_load(const char * path)
+    ParkLoadResult * scenario_load(const char * path)
     {
-        bool result     = false;
-        auto s6Importer = new S6Importer();
+        ParkLoadResult * result = nullptr;
+        auto s6Importer = new S6Importer(GetObjectRepository(), GetObjectManager());
         try
         {
-            s6Importer->LoadScenario(path);
-            s6Importer->Import();
+            result = new ParkLoadResult(s6Importer->LoadScenario(path));
+            if (result->Error == PARK_LOAD_ERROR_OK)
+            {
+                s6Importer->Import();
 
-            game_fix_save_vars();
-            sprite_position_tween_reset();
-            result = true;
+                game_fix_save_vars();
+                sprite_position_tween_reset();
+            }
         }
         catch (const ObjectLoadException &)
         {
@@ -483,8 +522,15 @@ extern "C"
         }
         delete s6Importer;
 
-        gScreenAge          = 0;
-        gLastAutoSaveUpdate = AUTOSAVE_PAUSE;
+        if (result == nullptr)
+        {
+            result = new ParkLoadResult(ParkLoadResult::CreateUnknown());
+        }
+        if (result->Error != PARK_LOAD_ERROR_OK)
+        {
+            gScreenAge = 0;
+            gLastAutoSaveUpdate = AUTOSAVE_PAUSE;
+        }
         return result;
     }
 }

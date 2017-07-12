@@ -2395,7 +2395,7 @@ STR_2389    :{BLACK}Bauen Sie Ihre(n) beste(n) {STRINGID}!
 STR_2390    :{BLACK}Mindestens 10 verschiedene Achterbahntypen in Ihrem Park zu betreiben, wobei jeder einen Nervenkitzelwert von mindestens 6,00 aufweisen muss
 STR_2391    :{BLACK}Mindestens {COMMA16} Parkbesucher zu erreichen. Die Parkbewertung darf zu keinem Zeitpunkt unter 700 fallen!
 STR_2392    :{BLACK}Monatliche Einkünfte durch Fahrttickets von mindestens {POP16}{POP16}{CURRENCY} zu erreichen
-STR_2393    :{BLACK}Mindestens 10 verschiedene Achterbahntypen in Ihrem Park zu betreiben, wobei jeder eine Mindestlänge von {LENGTH} und einen Nervenkitzelwert von mindestens 7.00 aufweisen muss
+STR_2393    :{BLACK}Mindestens 10 verschiedene Achterbahntypen in Ihrem Park zu betreiben, wobei jeder eine Mindestlänge von {LENGTH} und einen Nervenkitzelwert von mindestens 7,00 aufweisen muss
 STR_2394    :{BLACK}Alle 5 bereits teilweise gebauten Achterbahnen fertigzustellen, damit sie jeweils einen Nervenkitzelwert von {POP16}{POP16}{COMMA2DP32} erzielen
 STR_2395    :{BLACK}Ihr Darlehen zurückzuzahlen und einen Verkehrswert von mindestens {POP16}{POP16}{CURRENCY} zu erreichen
 STR_2396    :{BLACK}Einen monatlichen Gewinn durch Speisen, Getränke und Werbeartikeln von mindestens {POP16}{POP16}{CURRENCY} zu erzielen
@@ -2747,7 +2747,7 @@ STR_2739    :Keine
 STR_2740    :RollerCoaster Tycoon 1
 STR_2741    :RollerCoaster Tycoon 2
 STR_2742    :css50.dat nicht gefunden
-STR_2743    :Kopieren Sie data\css17.dat aus Ihrem RCT1-Verzeichnis nach data\css50.dat in Ihrem RCT2-Verzeichnis oder versichern Sie sich, dass der Pfad zur RCT1-Installation in den Optionen korrekt angegeben ist.
+STR_2743    :Kopieren Sie 'data/css17.dat' aus Ihrem RCT1-Verzeichnis nach 'data/css50.dat' in Ihrem RCT2-Verzeichnis oder versichern Sie sich, dass der Pfad zur RCT1-Installation in den Optionen korrekt angegeben ist.
 STR_2744    :[
 STR_2745    :\
 STR_2746    :]
@@ -3758,7 +3758,7 @@ STR_5420    :Drehen{MOVE_X}{87}{COMMA16}
 STR_5421    :Zoom
 STR_5422    :Zoom{MOVE_X}{87}{COMMA16}
 STR_5423    :Warten
-STR_5424    :Warten{MOVE_X}{87}{COMMA16}
+STR_5424    :Warten{MOVE_X}{87}{UINT16}
 STR_5425    :Neustart
 STR_5426    :Ende
 STR_5427    :Koordinaten:
@@ -4334,6 +4334,7 @@ STR_6030    :{SMALLFONT}{BLACK}Landschaftsauswahl. Wählen Sie ein Landschaftsel
 STR_6031    :Serverbeschreibung:
 STR_6032    :Serverbegrüßung:
 STR_6033    :Pfad zur RCT1-Installation:
+STR_6034    :{SMALLFONT}{BLACK}{STRING}
 STR_6035    :Bitte wählen Sie ein RCT1-Verzeichnis
 STR_6036    :{SMALLFONT}{BLACK}Leeren
 STR_6037    :Bitte wählen Sie ein valides RCT1-Verzeichnis
@@ -4341,6 +4342,87 @@ STR_6038    :{SMALLFONT}{BLACK}Falls Sie RCT1 installiert haben, setzen Sie dies
 STR_6039    :{SMALLFONT}{BLACK}Schnellabriss
 STR_6040    :Bearbeite Szenariooptionen
 STR_6041    :{BLACK}Es sind keine Mechaniker eingestellt! 
+STR_6042    :Höhenkarte laden
+STR_6043    :Höhenkarte auswählen
+STR_6044    :Höhenkarte glätten
+STR_6045    :Stärke
+STR_6046    :Höhenkarte normalisieren
+STR_6047    :Kacheln glätten
+STR_6048    :Fehler beim Verarbeiten der Höhenkarte
+STR_6049    :Fehler beim Lesen der PNG-Datei
+STR_6050    :Fehler beim Lesen der Bitmap-Datei
+STR_6051    :Die Höhe und Breite müssen übereinstimmen
+STR_6052    :Die Höhenkarte ist zu groß und wird zugeschnitten
+STR_6053    :Die Höhenkarte kann nicht normalisiert werden
+STR_6054    :Es werden nur Bitmaps mit einer Farbtiefe von 24-Bit unterstützt
+STR_6055    :Höhenkarte für OpenRCT2
+STR_6056    :{SMALLFONT}{BLACK}Ton ein-/ausschalten
+STR_6057    :{SMALLFONT}{BLACK}Zeigt für die Stummschaltung in der Symbolleiste eine gesonderte{NEWLINE}Schaltfläche an
+STR_6058    :Stummschaltung
+STR_6059    :{RIGHTGUILLEMET}
+STR_6060    :Besucherkäufe als Animation anzeigen
+STR_6061    :{SMALLFONT}{BLACK}Ein animierter Geldeffekt wird angezeigt, wenn Besucher Käufe tätigen
+STR_6062    :{OUTLINE}{GREEN}+ {CURRENCY2DP}
+STR_6063    :{OUTLINE}{RED}- {CURRENCY2DP}
+STR_6064    :Alles Land besitzen
+STR_6065    :Benutzeraktionen protokollieren
+STR_6066    :{SMALLFONT}{BLACK}Speichert alle Benutzeraktionen in{NEWLINE}Ihrem Benutzerverzeichnis
+STR_6067    :Server gestartet.
+STR_6068    :Server heruntergefahren.
+STR_6069    :{STRING} wurde von {STRING} vom Server gekickt.
+STR_6070    :{STRING} wurde der Gruppe '{STRING}' von {STRING} zugewiesen.
+STR_6071    :{STRING} hat die neue Gruppe '{STRING}' erstellt.
+STR_6072    :{STRING} hat die Gruppe '{String}' gelöscht.
+STR_6073    :{STRING} hat die Berechtigungen der Gruppe '{String}' bearbeitet.
+STR_6074    :{STRING} hat den Namen der Gruppe von '{String}' zu '{String}' geändert.
+STR_6075    :{STRING} hat '{String}' als Standardgruppe festgelegt.
+STR_6076    :{STRING} hat den Cheat '{STRING}' verwendet.
+STR_6077    :Geld hinzufügen
+STR_6078    :{STRING} hat die Attraktion '{STRING}' erstellt.
+STR_6079    :{STRING} hat die Attraktion '{STRING}' abgerissen.
+STR_6080    :{STRING} hat das Aussehen der Attraktion '{STRING}' verändert.
+STR_6081    :{STRING} hat den Status der Attraktion '{STRING}' auf geschlossen geändert.
+STR_6082    :{STRING} hat den Status der Attraktion '{STRING}' auf geöffnet geändert.
+STR_6083    :{STRING} hat den Status der Attraktion '{STRING}' auf testen geändert.
+STR_6084    :{STRING} hat die Fahrzeugeinstellungen der Attraktion '{STRING}' geändert.
+STR_6085    :{STRING} hat die Attraktionseinstellungen der Attraktion '{STRING}' geändert.
+STR_6086    :{STRING} hat die Attraktion '{STRING}' in '{STRING}' umbenannt.
+STR_6087    :{STRING} hat den Preis der Attraktion '{STRING}' auf {STRING} geändert.
+STR_6088    :{STRING} hat den Sekundärpreis der Attraktion '{STRING}' auf {STRING} geändert.
+STR_6089    :{STRING} hat den Park von '{STRING}' in '{STRING}' umbenannt.
+STR_6090    :{STRING} hat den Park geöffnet.
+STR_6091    :{STRING} hat den Park geschlossen.
+STR_6092    :{STRING} hat den Parkeintrittspreis auf {STRING} geändert.
+STR_6093    :{STRING} hat neue Szenerie platziert.
+STR_6094    :{STRING} hat Szenerie entfernt.
+STR_6095    :{STRING} hat Szenerie bearbeitet.
+STR_6096    :{STRING} hat einen Schildnamen auf '{STRING}' festgelegt.
+STR_6097    :{STRING} hat ein Streckenstück der Attraktion '{STRING}' platziert.
+STR_6098    :{STRING} hat ein Streckenstück einer Attraktion entfernt.
+STR_6099    :Sie haben sich mit dem Server verbunden.
+STR_6100    :Sie haben die Verbindung mit dem Server getrennt.
+STR_6101    :Attrakt. verlieren keinen Wert über Zeit
+STR_6102    :{SMALLFONT}{BLACK}Der Wert einer Attraktion wird mit der Zeit nicht sinken, sodass Besucher eine Attraktion nicht mehr plötzlich als{NEWLINE}zu teuer empfinden
+STR_6103    :{SMALLFONT}{BLACK}Diese Option ist im Mehrspielermodus deaktiviert
+STR_6104    :Korkenzieher-Achterbahn
+STR_6105    :Hyper-Achterbahn
+STR_6106    :Wagenbahn
+STR_6107    :Monster-Trucks
+STR_6108    :Stahl-Twister
+STR_6109    :Hyper-Twister
+STR_6110    :Kinder-Achterbahn
+STR_6111    :Klassische Miniachterbahn
+STR_6112    :Eine kompakte Stahlachterbahn, bei der der Zug durch Schrauben und Schleifen fährt
+STR_6113    :Eine große, nicht umgekehrte Achterbahn mit großen Gefällen, hoher Geschwindigkeit und komfortablen Zügen, die lediglich Beckenhalterungen aufweisen
+STR_6114    :Die Passagiere sitzen in langsam angetriebenen Wagen auf einer Schienenstrecke
+STR_6115    :Angetriebene, gigantische Trucks mit Allradantrieb, die steile Hänge bezwingen können
+STR_6116    :Breite Achterbahnzüge gleiten auf glatten Stahlschienen mit verdrehter Streckenführung
+STR_6117    :Die Fahrgäste sitzen in komfortablen Wagen mit einfachen Beckenhalterungen, in denen sie gigantische, gemäßigte Gefälle erleben, aber auch viel Zeit oben `in der Luft' verbringen
+STR_6118    :Eine gemäßigte Achterbahn für Leute, die noch nicht den Mut für längere Bahnen haben
+STR_6119    :Eine günstige und einfach zu bauende Achterbahn, jedoch mit begrenzter Höhe
+STR_6120    :{BABYBLUE}Neues Fahrzeug für {STRINGID} ist jetzt verfügbar:{NEWLINE}{STRINGID}
+STR_6121    :{SMALLFONT}{BLACK}Erweitert die Landrechte des Parks{NEWLINE}bis zum Rand der Karte
+STR_6122    :Dieses Szenario enthält zu wenige Achterbahnen!
 
 #############
 # Scenarios #

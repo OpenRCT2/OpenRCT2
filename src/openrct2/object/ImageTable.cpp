@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -17,6 +17,7 @@
 #include "../core/Console.hpp"
 #include "../core/IStream.hpp"
 #include "../core/Memory.hpp"
+#include "../OpenRCT2.h"
 #include "ImageTable.h"
 #include "Object.h"
 
@@ -29,6 +30,11 @@ ImageTable::~ImageTable()
 
 void ImageTable::Read(IReadObjectContext * context, IStream * stream)
 {
+    if (gOpenRCT2NoGraphics)
+    {
+        return;
+    }
+
     try
     {
         uint32 numImages = stream->ReadValue<uint32>();

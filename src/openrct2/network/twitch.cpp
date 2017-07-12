@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -30,7 +30,6 @@
 #endif
 
 #include <vector>
-#include <SDL.h>
 #include "../core/Math.hpp"
 #include "../core/String.hpp"
 
@@ -43,6 +42,7 @@ extern "C"
     #include "../localisation/localisation.h"
     #include "../management/news_item.h"
     #include "../peep/peep.h"
+    #include "../platform/platform.h"
     #include "../rct2.h"
     #include "../util/util.h"
     #include "../world/sprite.h"
@@ -142,7 +142,7 @@ namespace Twitch
             switch (_twitchState) {
             case TWITCH_STATE_LEFT:
             {
-                uint32 currentTime = SDL_GetTicks();
+                uint32 currentTime = platform_get_ticks();
                 uint32 timeSinceLastPulse = currentTime - _twitchLastPulseTick;
                 if (_twitchLastPulseTick == 0 || timeSinceLastPulse > PulseTime)
                 {
@@ -153,7 +153,7 @@ namespace Twitch
             }
             case TWITCH_STATE_JOINED:
             {
-                uint32 currentTime = SDL_GetTicks();
+                uint32 currentTime = platform_get_ticks();
                 uint32 timeSinceLastPulse = currentTime - _twitchLastPulseTick;
                 if (_twitchLastPulseTick == 0 || timeSinceLastPulse > PulseTime) {
                     _twitchLastPulseTick = currentTime;
@@ -490,7 +490,7 @@ namespace Twitch
                 if (!is_user_string_id(peep->name_string_idx) && !(peep->peep_flags & PEEP_FLAGS_LEAVING_PARK))
                 {
                     // Rename peep and add flags
-                    rct_string_id newStringId = user_string_allocate(4, member->Name);
+                    rct_string_id newStringId = user_string_allocate(USER_STRING_HIGH_ID_NUMBER, member->Name);
                     if (newStringId != 0)
                     {
                         peep->name_string_idx = newStringId;

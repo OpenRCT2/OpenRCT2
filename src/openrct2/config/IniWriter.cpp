@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -16,8 +16,12 @@
 
 #include <sstream>
 #include "../core/FileStream.hpp"
-#include "../platform/platform.h"
 #include "IniWriter.hpp"
+
+extern "C"
+{
+    #include "../platform/platform.h"
+}
 
 class IniWriter final : public IIniWriter
 {

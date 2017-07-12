@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -27,14 +27,18 @@ extern "C"
 {
 #endif
     #include "../object.h"
+    #include "../ride/ride.h"
 #ifdef __cplusplus
 }
 #endif
 
 #ifdef __cplusplus
-    interface   IPlatformEnvironment;
     interface   IStream;
     class       Object;
+    namespace OpenRCT2
+    {
+        interface IPlatformEnvironment;
+    }
 #else
     typedef struct Object Object;
 #endif
@@ -52,7 +56,8 @@ typedef struct ObjectRepositoryItem
         {
             uint8   RideFlags;
             uint8   RideCategory[2];
-            uint8   RideType[3];
+            uint8   RideType[MAX_RIDE_TYPES_PER_RIDE_ENTRY];
+            uint8   RideGroupIndex;
         };
         struct
         {
@@ -87,7 +92,7 @@ interface IObjectRepository
     virtual void                            WritePackedObjects(IStream * stream, std::vector<const ObjectRepositoryItem *> &objects) abstract;
 };
 
-IObjectRepository * CreateObjectRepository(IPlatformEnvironment * env);
+IObjectRepository * CreateObjectRepository(OpenRCT2::IPlatformEnvironment * env);
 IObjectRepository * GetObjectRepository();
 
 bool IsObjectCustom(const ObjectRepositoryItem * object);

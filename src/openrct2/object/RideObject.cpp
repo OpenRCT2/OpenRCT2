@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -18,8 +18,10 @@
 #include "../core/Memory.hpp"
 #include "../core/String.hpp"
 #include "../core/Util.hpp"
+#include "../OpenRCT2.h"
 #include "ObjectRepository.h"
 #include "RideObject.h"
+#include "../ride/RideGroupManager.h"
 
 extern "C"
 {
@@ -27,6 +29,7 @@ extern "C"
     #include "../drawing/drawing.h"
     #include "../localisation/localisation.h"
     #include "../rct1.h"
+    #include "../ride/ride.h"
     #include "../ride/track.h"
 }
 
@@ -42,7 +45,7 @@ void RideObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
 {
     stream->Seek(8, STREAM_SEEK_CURRENT);
     _legacyType.flags = stream->ReadValue<uint32>();
-    for (sint32 i = 0; i < 3; i++)
+    for (sint32 i = 0; i < MAX_RIDE_TYPES_PER_RIDE_ENTRY; i++)
     {
         _legacyType.ride_type[i] = stream->ReadValue<uint8>();
     }
@@ -57,7 +60,7 @@ void RideObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
     _legacyType.rear_vehicle = stream->ReadValue<uint8>();
     _legacyType.third_vehicle = stream->ReadValue<uint8>();
     _legacyType.pad_019 = stream->ReadValue<uint8>();
-    for (sint32 i = 0; i < 4; i++)
+    for (sint32 i = 0; i < MAX_VEHICLES_PER_RIDE_ENTRY; i++)
     {
         rct_ride_entry_vehicle * entry = &_legacyType.vehicles[i];
         ReadLegacyVehicle(context, stream, entry);
@@ -75,30 +78,6 @@ void RideObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
 
     GetStringTable()->Read(context, stream, OBJ_STRING_ID_NAME);
     GetStringTable()->Read(context, stream, OBJ_STRING_ID_DESCRIPTION);
-
-    // TODO: Move to its own function when ride construction window is merged.
-    if (gConfigInterface.select_by_track_type)
-    {
-        _legacyType.enabledTrackPieces = 0xFFFFFFFFFFFFFFFF;
-    }
-    else
-    {
-        // When not in select by track type mode, add boosters if the track type is eligible
-        for (sint32 i = 0; i < 3; i++)
-        {
-            if (_legacyType.ride_type[i] == RIDE_TYPE_LOOPING_ROLLER_COASTER ||
-                _legacyType.ride_type[i] == RIDE_TYPE_CORKSCREW_ROLLER_COASTER ||
-                _legacyType.ride_type[i] == RIDE_TYPE_TWISTER_ROLLER_COASTER ||
-                _legacyType.ride_type[i] == RIDE_TYPE_VERTICAL_DROP_ROLLER_COASTER ||
-                _legacyType.ride_type[i] == RIDE_TYPE_GIGA_COASTER ||
-                _legacyType.ride_type[i] == RIDE_TYPE_JUNIOR_ROLLER_COASTER)
-            {
-
-                _legacyType.enabledTrackPieces |= (1ULL << TRACK_BOOSTER);
-            }
-        }
-    }
-
     GetStringTable()->Read(context, stream, OBJ_STRING_ID_CAPACITY);
 
     // Read preset colours, by default there are 32
@@ -118,7 +97,7 @@ void RideObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
     }
 
     // Read peep loading positions
-    for (sint32 i = 0; i < 4; i++)
+    for (sint32 i = 0; i < MAX_VEHICLES_PER_RIDE_ENTRY; i++)
     {
         uint16 numPeepLoadingPositions = stream->ReadValue<uint8>();
         if (numPeepLoadingPositions == 255)
@@ -126,6 +105,7 @@ void RideObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
             numPeepLoadingPositions = stream->ReadValue<uint16>();
         }
         _peepLoadingPositions[i] = stream->ReadArray<sint8>(numPeepLoadingPositions);
+        _peepLoadingPositionsCount[i] = numPeepLoadingPositions;
     }
 
     GetImageTable()->Read(context, stream);
@@ -144,7 +124,7 @@ void RideObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
         context->LogError(OBJECT_ERROR_INVALID_PROPERTY, "Nausea multiplier too high.");
     }
 
-    PerformRCT1CompatibilityFixes();
+    PerformFixes();
 }
 
 void RideObject::Load()
@@ -239,7 +219,7 @@ void RideObject::Load()
                     image_index += b;
                 }
 
-                // Verticle
+                // Vertical
                 if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_VERTICAL_SLOPES)
                 {
                     vehicleEntry->var_28 = image_index;
@@ -351,9 +331,14 @@ void RideObject::Load()
                     num_images *= 2;
                 }
 
-                set_vehicle_type_image_max_sizes(vehicleEntry, num_images);
+                if (!gOpenRCT2NoGraphics) {
+                    set_vehicle_type_image_max_sizes(vehicleEntry, num_images);
+                }
             }
             vehicleEntry->peep_loading_positions = _peepLoadingPositions[i];
+#ifdef NO_RCT2
+            vehicleEntry->peep_loading_positions_count = _peepLoadingPositionsCount[i];
+#endif
         }
     }
 }
@@ -395,7 +380,7 @@ const utf8 * RideObject::GetCapacity() const
 
 void RideObject::SetRepositoryItem(ObjectRepositoryItem * item) const
 {
-    for (sint32 i = 0; i < 3; i++)
+    for (sint32 i = 0; i < MAX_RIDE_TYPES_PER_RIDE_ENTRY; i++)
     {
         item->RideType[i] = _legacyType.ride_type[i];
     }
@@ -405,12 +390,39 @@ void RideObject::SetRepositoryItem(ObjectRepositoryItem * item) const
     }
 
     uint8 flags = 0;
-    if ((_legacyType.flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME) &&
-        !rideTypeShouldLoseSeparateFlag(&_legacyType))
+    if (_legacyType.flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE)
     {
         flags |= ORI_RIDE_FLAG_SEPARATE;
     }
     item->RideFlags = flags;
+
+    // Find the first non-null ride type, to be used when checking the ride group
+    uint8 rideTypeIdx = ride_entry_get_first_non_null_ride_type((rct_ride_entry *)&_legacyType);
+
+    // Determines the ride group. Will fall back to 0 if there is none found.
+    uint8 rideGroupIndex = 0;
+
+    const ride_group * rideGroup = get_ride_group(rideTypeIdx, (rct_ride_entry *)&_legacyType);
+
+    // If the ride group is NULL, the track type does not have ride groups.
+    if (rideGroup != NULL)
+    {
+        for (uint8 i = rideGroupIndex + 1; i < MAX_RIDE_GROUPS_PER_RIDE_TYPE; i++)
+        {
+            ride_group * irg = ride_group_find(rideTypeIdx, i);
+
+            if (irg != NULL)
+            {
+                if (ride_groups_are_equal(irg, rideGroup))
+                {
+                    rideGroupIndex = i;
+                    break;
+                }
+            }
+        }
+    }
+
+    item->RideGroupIndex = rideGroupIndex;
 }
 
 void RideObject::ReadLegacyVehicle(IReadObjectContext * context, IStream * stream, rct_ride_entry_vehicle * vehicle)
@@ -461,10 +473,27 @@ void RideObject::ReadLegacyVehicle(IReadObjectContext * context, IStream * strea
     stream->Seek(4, STREAM_SEEK_CURRENT);
 }
 
-void RideObject::PerformRCT1CompatibilityFixes()
+void RideObject::PerformFixes()
 {
-    if (String::Equals(GetIdentifier(), "RCKC    ")) {
-        // The rocket cars could take 3 cars per train in RCT1. Restore this.
+    std::string identifier = GetIdentifier();
+    
+    // Add boosters if the track type is eligible
+    for (sint32 i = 0; i < MAX_RIDE_TYPES_PER_RIDE_ENTRY; i++)
+    {
+        if (ride_type_supports_boosters(_legacyType.ride_type[i]))
+        {
+            _legacyType.enabledTrackPieces |= (1ULL << TRACK_BOOSTER);
+        }
+    }
+    
+    // The rocket cars could take 3 cars per train in RCT1. Restore this.
+    if (String::Equals(identifier, "RCKC    "))
+    {
         _legacyType.max_cars_in_train = 3 + _legacyType.zero_cars;
+    }
+    // Wacky World Crocodile Ride (a log flume vehicle) is incorrectly locked to 5 cars.
+    else if (String::Equals(identifier, "CROCFLUM"))
+    {
+        _legacyType.cars_per_flat_ride = 0xFF;
     }
 }

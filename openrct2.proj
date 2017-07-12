@@ -16,13 +16,12 @@
   <PropertyGroup>
     <Configuration Condition="'$(Configuration)'==''">Debug</Configuration>
     <Platform Condition="'$(PLATFORM)'==''">x64</Platform>
-    <TestConfig Condition="'$(Configuration)'=='DebugTests' OR '$(Configuration)'=='ReleaseTests'">true</TestConfig>
     <GIT_COMMIT_SHA1_SHORT Condition="'$(GIT_COMMIT_SHA1)'!=''">$(GIT_COMMIT_SHA1.Substring(0, 7))</GIT_COMMIT_SHA1_SHORT>
 
-    <Version>0.0.7</Version>
+    <Version>0.0.8</Version>
     <VersionExtra Condition="'$(GIT_BRANCH)'!=''">-$(GIT_BRANCH)-$(GIT_COMMIT_SHA1_SHORT)</VersionExtra>
     <VersionExtra Condition="'$(GIT_TAG)'!=''"></VersionExtra>
-    <TargetLibsVersion>11</TargetLibsVersion>
+    <TargetLibsVersion>12</TargetLibsVersion>
 
     <!-- Set dynamic OpenRCT2 #defines -->
     <OPENRCT2_CL_ADDITIONALOPTIONS Condition="'$(BUILD_SERVER)'!=''">/D "OPENRCT2_BUILD_SERVER=\"$(BUILD_SERVER)\"" $(OPENRCT2_CL_ADDITIONALOPTIONS)</OPENRCT2_CL_ADDITIONALOPTIONS>
@@ -65,19 +64,19 @@
   <PropertyGroup>
     <DependenciesCheckFile>$(RootDir).dependencies</DependenciesCheckFile>
     <LibsUrl>https://github.com/OpenRCT2/Dependencies/releases/download/v$(TargetLibsVersion)/openrct2-libs-vs2015.zip</LibsUrl>
-    <LibsSha1>f088adcd12450c2672f78679ea5d1fbffc28fd22</LibsSha1>
+    <LibsSha1>f845fe2fad0a1dece905c42ac4cfc1234ec447a7</LibsSha1>
     <GtestVersion>1.8.0</GtestVersion>
     <GtestUrl>https://github.com/google/googletest/archive/release-1.8.0.zip</GtestUrl>
     <GtestSha1>667f873ab7a4d246062565fad32fb6d8e203ee73</GtestSha1>
-    <TitleSequencesUrl>https://github.com/OpenRCT2/title-sequences/releases/download/v0.0.5/title-sequence-v0.0.5.zip</TitleSequencesUrl>
-    <TitleSequencesSha1>79ffb2585d12abcbfce205d7696e3472a504b005</TitleSequencesSha1>
+    <TitleSequencesUrl>https://github.com/OpenRCT2/title-sequences/releases/download/v0.1.0/title-sequence-v0.1.0.zip</TitleSequencesUrl>
+    <TitleSequencesSha1>b587d83de508d0b104d14c599b76f8565900fce0</TitleSequencesSha1>
   </PropertyGroup>
 
   <ItemGroup>
     <g2Inputs Include="$(RootDir)resources\g2\*" />
     <SignItems Include="$(OutputExe)" />
-    <SignItems Include="$(OutputDll)" />
     <SignItems Include="$(OutputCom)" />
+    <SignItems Include="$(OutputDll)" />
   </ItemGroup>
 
   <ItemGroup Label="Symbol Items">
@@ -143,7 +142,6 @@
       <SlnProperties>$(SlnProperties);Configuration=$(Configuration)</SlnProperties>
     </PropertyGroup>
     <ItemGroup>
-      <CleanItems Condition="'$(Platform)'=='Win32'" Include="$(OutputExe)" />
       <CleanItems Include="$(OutputCom)" />
       <CleanItems Include="$(g2Output)" />
       <CleanItems Include="$(ArtifactsDir)openrct2-installer-$(Configuration)-$(Platform)*.exe" />
@@ -162,15 +160,11 @@
       <BuildString Condition="'$(GIT_BRANCH)'!=''">$(BuildString) ($(GIT_BRANCH))</BuildString>
     </PropertyGroup>
     <ItemGroup>
-      <CopyItems Condition="'$(Platform)'=='Win32'" Include="$(RootDir)openrct2.exe" />
       <DataItems Include="$(RootDir)data\**\*" />
     </ItemGroup>
     <Message Condition="'$(BuildString)'!=''" Text="Building $(BuildString)" Importance="high" />
     <Copy SourceFiles="@(CopyItems)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
     <Copy SourceFiles="@(DataItems)" DestinationFolder="$(TargetDir)data\%(RecursiveDir)" SkipUnchangedFiles="true" />
-
-    <!-- tests -->
-    <Copy SourceFiles="@(CopyItems)" DestinationFolder="$(TargetDir)testpaint\" />
   </Target>
 
   <Target Name="Build">
@@ -189,17 +183,17 @@
   </Target>
 
   <Target Name="Test" DependsOnTargets="Build">
-    <Exec Command="$(TargetDir)tests\tests.exe" />
+    <Exec Command="$(TargetDir)tests\tests.exe &quot;--gtest_output=xml:$(ArtifactsDir)test-results.xml&quot;" />
   </Target>
-  <Target Name="TestPaint" DependsOnTargets="Build" Condition="'$(Platform)'=='Win32'">
-    <Exec Command="$(TargetDir)testpaint\openrct2.exe" />
+  <Target Name="TestNoRCT2" DependsOnTargets="Build">
+    <Exec Command="$(TargetDir)tests\tests.exe &quot;--gtest_filter=-RideRatings*:MultiLaunch*&quot; &quot;--gtest_output=xml:$(ArtifactsDir)test-results.xml&quot;" />
   </Target>
 
   <!-- Target to build g2.dat containing OpenRCT2 sprites -->
   <Target Name="g2" DependsOnTargets="Build" AfterTargets="Build" Inputs="@(g2Inputs)" Outputs="$(g2Output)"
           Condition="'$(TestConfig)'!='true'">
     <Message Text="Building g2.dat..." />
-    <Exec Command="&quot;$(OutputExe)&quot; sprite build &quot;$(g2Output)&quot; &quot;$(RootDir)resources\g2&quot;"
+    <Exec Command="&quot;$(OutputExe)&quot; sprite build &quot;$(g2Output)&quot; &quot;$(RootDir)resources\g2\sprites.json&quot;"
           StandardOutputImportance="low" />
   </Target>
 

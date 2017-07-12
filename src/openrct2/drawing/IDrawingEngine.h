@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -18,14 +18,13 @@
 
 #include "../common.h"
 
-#include <SDL_video.h>
-
 enum DRAWING_ENGINE
 {
     DRAWING_ENGINE_NONE = -1,
     DRAWING_ENGINE_SOFTWARE,
     DRAWING_ENGINE_SOFTWARE_WITH_HARDWARE_DISPLAY,
     DRAWING_ENGINE_OPENGL,
+    DRAWING_ENGINE_COUNT,
 };
 
 enum DRAWING_ENGINE_FLAGS
@@ -41,47 +40,45 @@ enum DRAWING_ENGINE_FLAGS
 #ifdef __cplusplus
 
 struct rct_drawpixelinfo;
-interface IDrawingContext;
+struct rct_palette_entry;
 
-interface IDrawingEngine
+namespace OpenRCT2 { namespace Drawing
 {
-    virtual ~IDrawingEngine() { }
+    interface IDrawingContext;
 
-    virtual void Initialise(SDL_Window * window)     abstract;
-    virtual void Resize(uint32 width, uint32 height) abstract;
-    virtual void SetPalette(SDL_Color * colours)     abstract;
+    interface IDrawingEngine
+    {
+        virtual ~IDrawingEngine() { }
 
-    virtual void SetUncappedFrameRate(bool uncapped) abstract;
+        virtual void Initialise()                                   abstract;
+        virtual void Resize(uint32 width, uint32 height)            abstract;
+        virtual void SetPalette(const rct_palette_entry * colours)  abstract;
 
-    virtual void    Invalidate(sint32 left, sint32 top, sint32 right, sint32 bottom) abstract;
-    virtual void    Draw() abstract;
-    virtual void    CopyRect(sint32 x, sint32 y, sint32 width, sint32 height, sint32 dx, sint32 dy) abstract;
-    virtual sint32  Screenshot() abstract;
+        virtual void SetUncappedFrameRate(bool uncapped) abstract;
 
-    virtual IDrawingContext *   GetDrawingContext(rct_drawpixelinfo * dpi) abstract;
-    virtual rct_drawpixelinfo * GetDrawingPixelInfo() abstract;
+        virtual void    Invalidate(sint32 left, sint32 top, sint32 right, sint32 bottom) abstract;
+        virtual void    Draw() abstract;
+        virtual void    CopyRect(sint32 x, sint32 y, sint32 width, sint32 height, sint32 dx, sint32 dy) abstract;
+        virtual sint32  Screenshot() abstract;
 
-    virtual DRAWING_ENGINE_FLAGS GetFlags() abstract;
+        virtual IDrawingContext *   GetDrawingContext(rct_drawpixelinfo * dpi) abstract;
+        virtual rct_drawpixelinfo * GetDrawingPixelInfo() abstract;
 
-    virtual void InvalidateImage(uint32 image) abstract;
-};
+        virtual DRAWING_ENGINE_FLAGS GetFlags() abstract;
 
-namespace DrawingEngineFactory
-{
-    IDrawingEngine * CreateSoftware();
-    IDrawingEngine * CreateSoftwareWithHardwareDisplay();
-    IDrawingEngine * CreateOpenGL();
-}
+        virtual void InvalidateImage(uint32 image) abstract;
+    };
 
-interface IRainDrawer
-{
-    virtual ~IRainDrawer() { }
-    virtual void Draw(sint32 x,
-                      sint32 y,
-                      sint32 width,
-                      sint32 height,
-                      sint32 xStart,
-                      sint32 yStart) abstract;
-};
+    interface IRainDrawer
+    {
+        virtual ~IRainDrawer() { }
+        virtual void Draw(sint32 x,
+            sint32 y,
+            sint32 width,
+            sint32 height,
+            sint32 xStart,
+            sint32 yStart) abstract;
+    };
+} }
 
 #endif

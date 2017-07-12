@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -519,7 +519,7 @@ namespace CommandLine
 
     static bool HandleSpecialArgument(const char * argument)
     {
-#ifdef __MACOSX__
+#ifdef __APPLE__
         if (String::Equals(argument, "-NSDocumentRevisionsDebugMode"))
         {
             return true;
@@ -568,6 +568,12 @@ extern "C"
         argEnumerator.TryPop();
 
         const CommandLineCommand * command = CommandLine::FindCommandFor(CommandLine::RootCommands, &argEnumerator);
+
+        if (command == nullptr)
+        {
+            return EXITCODE_FAIL;
+        }
+
         if (command->Options != nullptr)
         {
             auto argEnumeratorForOptions = CommandLineArgEnumerator(argEnumerator);
@@ -576,6 +582,7 @@ extern "C"
                 return EXITCODE_FAIL;
             }
         }
+
         if (command == CommandLine::RootCommands && command->Func == nullptr)
         {
             return CommandLine::HandleCommandDefault();

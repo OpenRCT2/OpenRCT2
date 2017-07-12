@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -20,45 +20,48 @@
 #include "../common.h"
 #include "peep.h"
 
-#define STAFF_MAX_COUNT		200
-#define STAFF_TYPE_COUNT	4
+#define STAFF_MAX_COUNT     200
+#define STAFF_TYPE_COUNT    4
 
 enum STAFF_MODE {
-	STAFF_MODE_NONE,
-	STAFF_MODE_WALK,
-	STAFF_MODE_PATROL = 3
+    STAFF_MODE_NONE,
+    STAFF_MODE_WALK,
+    STAFF_MODE_PATROL = 3
 };
 
 enum STAFF_TYPE {
-	STAFF_TYPE_HANDYMAN,
-	STAFF_TYPE_MECHANIC,
-	STAFF_TYPE_SECURITY,
-	STAFF_TYPE_ENTERTAINER
+    STAFF_TYPE_HANDYMAN,
+    STAFF_TYPE_MECHANIC,
+    STAFF_TYPE_SECURITY,
+    STAFF_TYPE_ENTERTAINER
 };
 
 enum STAFF_ORDERS{
-	STAFF_ORDERS_SWEEPING = (1 << 0),
-	STAFF_ORDERS_WATER_FLOWERS = (1 << 1),
-	STAFF_ORDERS_EMPTY_BINS = (1 << 2),
-	STAFF_ORDERS_MOWING = (1 << 3),
-	STAFF_ORDERS_INSPECT_RIDES = (1 << 0),
-	STAFF_ORDERS_FIX_RIDES = (1 << 1)
+    STAFF_ORDERS_SWEEPING = (1 << 0),
+    STAFF_ORDERS_WATER_FLOWERS = (1 << 1),
+    STAFF_ORDERS_EMPTY_BINS = (1 << 2),
+    STAFF_ORDERS_MOWING = (1 << 3),
+    STAFF_ORDERS_INSPECT_RIDES = (1 << 0),
+    STAFF_ORDERS_FIX_RIDES = (1 << 1)
 };
 
 enum ENTERTAINER_COSTUME {
-	ENTERTAINER_COSTUME_PANDA,
-	ENTERTAINER_COSTUME_TIGER,
-	ENTERTAINER_COSTUME_ELEPHANT,
-	ENTERTAINER_COSTUME_ROMAN,
-	ENTERTAINER_COSTUME_GORILLA,
-	ENTERTAINER_COSTUME_SNOWMAN,
-	ENTERTAINER_COSTUME_KNIGHT,
-	ENTERTAINER_COSTUME_ASTRONAUT,
-	ENTERTAINER_COSTUME_BANDIT,
-	ENTERTAINER_COSTUME_SHERIFF,
-	ENTERTAINER_COSTUME_PIRATE,
-	ENTERTAINER_COSTUME_COUNT,
+    ENTERTAINER_COSTUME_PANDA,
+    ENTERTAINER_COSTUME_TIGER,
+    ENTERTAINER_COSTUME_ELEPHANT,
+    ENTERTAINER_COSTUME_ROMAN,
+    ENTERTAINER_COSTUME_GORILLA,
+    ENTERTAINER_COSTUME_SNOWMAN,
+    ENTERTAINER_COSTUME_KNIGHT,
+    ENTERTAINER_COSTUME_ASTRONAUT,
+    ENTERTAINER_COSTUME_BANDIT,
+    ENTERTAINER_COSTUME_SHERIFF,
+    ENTERTAINER_COSTUME_PIRATE,
+
+    ENTERTAINER_COSTUME_COUNT
 };
+
+extern const rct_string_id StaffCostumeNames[ENTERTAINER_COSTUME_COUNT];
 
 extern uint32 gStaffPatrolAreas[204 * 128];
 extern uint8 gStaffModes[204];
@@ -81,6 +84,8 @@ void update_staff_colour(uint8 staffType, uint16 colour);
 uint16 hire_new_staff_member(uint8 staffType);
 void staff_update_greyed_patrol_areas();
 sint32 staff_is_location_in_patrol(rct_peep *mechanic, sint32 x, sint32 y);
+sint32 staff_is_location_on_patrol_edge(rct_peep *mechanic, sint32 x, sint32 y);
+sint32 staff_can_ignore_wide_flag(rct_peep *mechanic, sint32 x, sint32 y, uint8 z, rct_map_element *path);
 sint32 staff_path_finding(rct_peep* peep);
 void staff_reset_stats();
 bool staff_is_patrol_area_set(sint32 staffIndex, sint32 x, sint32 y);

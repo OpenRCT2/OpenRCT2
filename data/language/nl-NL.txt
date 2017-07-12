@@ -1800,7 +1800,7 @@ STR_1796    :Is defect en moet worden gerepareerd
 STR_1797    :Deze optie kan niet worden aangepast bij deze attractie
 STR_1798    :Draaikolk
 STR_1799    :{POP16}{POP16}{POP16}{POP16}{POP16}{CURRENCY2DP}
-STR_1800    :Veiligheidsvergrendeling
+STR_1800    :Noodstop
 STR_1801    :Veiligheidsbeugel gaat niet open
 STR_1802    :Veiligheidsbeugel gaat niet dicht
 STR_1803    :Deuren gaan niet open
@@ -2863,7 +2863,7 @@ STR_2857    :{WINDOW_COLOUR_2}(Druk op een toets of muisknop om de controle over
 STR_2858    :Kan marketingcampagne niet starten...
 STR_2859    :OpenRCT2 draait al
 STR_2860    :Credits voor Infogrames Interactive...
-STR_2861    :{WINDOW_COLOUR_2}In licentie geven aan Infogrames Interactive Inc.
+STR_2861    :{WINDOW_COLOUR_2}In licentie gegeven aan {NEWLINE}Infogrames Interactive Inc.
 STR_2862    :Muziekdankwoord...
 STR_2863    :Muziekdankwoord
 STR_2864    :{WINDOW_COLOUR_2}March - Children of the Regiment:   (Fucik) geen copyright
@@ -3275,10 +3275,10 @@ STR_3269    :Verbied veranderen landschap
 STR_3270    :{SMALLFONT}{BLACK}Verbied het veranderen van het landschap
 STR_3271    :Verbied hoog bouwen
 STR_3272    :{SMALLFONT}{BLACK}Verbied bouwen boven boomhoogte
-STR_3273    :Hogere moeilijkheid parkwaardering
-STR_3274    :{SMALLFONT}{BLACK}Maak het krijgen van een goede parkwaardering uitdagender
-STR_3275    :Hogere moeilijkheid bezoekersgeneratie
-STR_3276    :{SMALLFONT}{BLACK}Maak het moeilijker om bezoekers aan te trekken
+STR_3273    :Hogere eisen voor goede parkwaardering
+STR_3274    :{SMALLFONT}{BLACK}Maakt het krijgen van een goede parkwaardering uitdagender
+STR_3275    :Hogere eisen voor trekken bezoekers
+STR_3276    :{SMALLFONT}{BLACK}Maakt het moeilijker om bezoekers aan te trekken
 STR_3277    :{WINDOW_COLOUR_2}Prijs landaankoop:
 STR_3278    :{WINDOW_COLOUR_2}Prijs bouwrechten:
 STR_3279    :Gratis entree / Per rit betalen
@@ -3757,13 +3757,13 @@ STR_5420    :Draai{MOVE_X}{87}{COMMA16}
 STR_5421    :Zoom
 STR_5422    :Zoom{MOVE_X}{87}{COMMA16}
 STR_5423    :Wacht
-STR_5424    :Wacht{MOVE_X}{87}{COMMA16}
+STR_5424    :Wacht{MOVE_X}{87}{UINT16}
 STR_5425    :Herstarten
 STR_5426    :Einde
 STR_5427    :Coördinaten:
 STR_5428    :Aant. draaiingen tegen de klok:
 STR_5429    :Zoomniveau:
-STR_5430    :Te wachten seconden:
+STR_5430    :Te wachten milliseconden:
 STR_5431    :Te laden opgeslagen spel:
 STR_5432    :Commando:
 STR_5433    :Titelpresentaties
@@ -4335,6 +4335,7 @@ STR_6030    :{SMALLFONT}{BLACK}Decorselector. Klik op een al geplaatst decorstuk
 STR_6031    :Serverbeschrijving:
 STR_6032    :Welkomstboodschap:
 STR_6033    :Locatie RCT1-bestanden:
+STR_6034    :{SMALLFONT}{BLACK}{STRING}
 STR_6035    :Selecteer de map waar je RCT1-bestanden staan
 STR_6036    :{SMALLFONT}{BLACK}Wissen
 STR_6037    :Selecteer een geldige RCT1-map.
@@ -4356,6 +4357,81 @@ STR_6052    :De hoogtekaart is te groot en zal worden bijgesneden
 STR_6053    :De hoogtekaart kan niet worden genormaliseerd
 STR_6054    :Alleen 24-bit bitmaps worden ondersteund
 STR_6055    :Hoogtekaart voor OpenRCT2
+STR_6056    :{SMALLFONT}{BLACK}Dempen
+STR_6057    :{SMALLFONT}{BLACK}Toon een knop in de werkbalk om het geluid te dempen
+STR_6058    :Dempen
+STR_6059    :{RIGHTGUILLEMET}
+STR_6060    :Animatie tonen als bezoeker iets koopt
+STR_6061    :{SMALLFONT}{BLACK}Toont een geanimeerd bedrag{NEWLINE}als een bezoeker iets koopt.
+STR_6062    :{OUTLINE}{GREEN}+ {CURRENCY2DP}
+STR_6063    :{OUTLINE}{RED}- {CURRENCY2DP}
+STR_6064    :Land toe-eigenen
+STR_6065    :Spelersacties loggen
+STR_6066    :{SMALLFONT}{BLACK}Schrijft alle acties van spelers naar een logbestand in de gebruikersmap.
+STR_6067    :Server gestart.
+STR_6068    :Server afgesloten.
+STR_6069    :{STRING} is uit de server gezet door {STRING}.
+STR_6070    :{STRING} is in de groep '{STRING}' geplaatst door {STRING}.
+STR_6071    :{STRING} heeft de nieuwe spelersgroep '{STRING}' aangemaakt.
+STR_6072    :{STRING} heeft de spelersgroep '{String}' verwijderd.
+STR_6073    :{STRING} heeft de rechten van spelersgroep '{String}' aangepast.
+STR_6074    :{STRING} heeft de naam van spelersnaam '{String}' veranderd in '{String}'.
+STR_6075    :{STRING} heeft de standaardspelersgroep veranderd in '{String}'.
+STR_6076    :{STRING} heeft de cheat '{STRING}' gebruikt, ingeschakeld of uitgeschakeld.
+STR_6077    :Geld toevoegen
+STR_6078    :{STRING} heeft de attractie '{STRING}' aangemaakt.
+STR_6079    :{STRING} heeft de attractie '{STRING}' gesloopt.
+STR_6080    :{STRING} heeft het uiterlijk van de attractie '{STRING}' aangepast.
+STR_6081    :{STRING} heeft de attractie '{STRING}' gesloten.
+STR_6082    :{STRING} heeft de attractie '{STRING}' geopend.
+STR_6083    :{STRING} heeft de attractie '{STRING}' in testmodus gezet.
+STR_6084    :{STRING} heeft de voertuiginstellingen van de attractie '{STRING}' aangepast.
+STR_6085    :{STRING} heeft de attractieinstellingen van de attractie '{STRING}' aangepast.
+STR_6086    :{STRING} heeft de attractie '{STRING}' hernoemd naar '{STRING}'.
+STR_6087    :{STRING} heeft de prijs van de attractie '{STRING}' aangepast naar {STRING}.
+STR_6088    :{STRING} heeft de tweede prijs van de attractie '{STRING}' aangepast naar {STRING}.
+STR_6089    :{STRING} heeft het park hernoemd van '{STRING}' naar '{STRING}'.
+STR_6090    :{STRING} heeft het park geopend.
+STR_6091    :{STRING} heeft het park gesloten.
+STR_6092    :{STRING} heeft de entreeprijs aangepast naar {STRING}.
+STR_6093    :{STRING} heeft nieuw decor geplaatst.
+STR_6094    :{STRING} heeft decor verwijderd.
+STR_6095    :{STRING} heeft bestaand decor aangepast.
+STR_6096    :{STRING} heeft het opschrift van een bord of lichtkrant veranderd in '{STRING}'.
+STR_6097    :{STRING} heeft een baanonderdeel voor '{STRING}' geplaatst.
+STR_6098    :{STRING} heeft een baanonderdeel verwijderd.
+STR_6099    :Je verbond met de server.
+STR_6100    :Je verbrak de verbinding met de server.
+STR_6101    :Attracties verliezen geen waarde
+STR_6102    :{SMALLFONT}{BLACK}Voorkomt dat attracties waarde verliezen, waardoor bezoekers er minder voor willen betalen. 
+STR_6103    :{SMALLFONT}{BLACK}Deze optie is niet aan te passen tijdens multiplayer.
+STR_6104    :Stalen schroefachtbaan
+STR_6105    :Hypercoaster
+STR_6106    :Autorondrit
+STR_6107    :Monstertrucks
+STR_6108    :Stalen twisterachtbaan
+STR_6109    :Hyper-twister
+STR_6110    :Juniorachtbaan
+STR_6111    :Klassieke mini-achtbaan
+STR_6112    :Een compacte stalen achtbaan waar de trein door schroeven en loopings gaat.
+STR_6113    :Een achtbaan zonder omkeringen met grote heuvels, een hoge snelheid, en comfortabele treinen met enkel schootbeugels.
+STR_6114    :Bezoekers rijden langzaam over een baan in aangedreven karretjes.
+STR_6115    :Gigantische elektrische 4x4-trucks die steile hellingen kunnen nemen.
+STR_6116    :Brede achtbaantrein die langs de soepele stalen baan glijdt en door diverse soorten omkeringen gaat.
+STR_6117    :Bezoekers zitten in comfortabele treinen met enkel een schootbeugel en gaan soepel door grote afdalingen en kronkelende stukken baan, met veel 'airtime' in de heuvels.
+STR_6118    :Een rustige achtbaan voor bezoekers die nog niet in engere attracties durven.
+STR_6119    :Goedkoop en makkelijk te bouwen, maar kan niet zo hoog gebouwd worden.
+STR_6120    :{BABYBLUE}Nieuw voertuig beschikbaar voor {STRINGID}:{NEWLINE}{STRINGID}
+STR_6121    :{SMALLFONT}{BLACK}Neem al het land op de kaart in bezit
+STR_6122    :Er zijn te weinig achtbanen in het scenario!
+STR_6123    :Fout bij het laden van objecten in het park
+STR_6124    :Objectnaam
+STR_6125    :Objecttype
+STR_6126    :Onbekend type
+STR_6127    :Bestand: {STRING}
+STR_6128    :Het bestand kon niet geladen worden omdat sommige objecten waar het naar verwijst beschadigd zijn of ontbreken. Hieronder staat een lijst van deze objecten.
+STR_6129    :Selectie naar klembord kopiëren
+STR_6130    :Hele lijst naar klembord kopiëren
 
 #############
 # Scenarios #
@@ -5907,7 +5983,7 @@ STR_DESC    :Omgekeerde achtbaantrein bestaande uit karretjes in de vorm van een
 STR_CPTY    :4 passagiers per karretje
 
 [VEKVAMP]
-STR_NAME    :Karretjes zonder bodem
+STR_NAME    :Karretjes zonder vloer
 STR_DESC    :Omgekeerde achtbaantrein bestaande uit stoeltjesliftachtige karretjes die vrijuit kunnen schommelen als de trein door een bocht gaat.
 STR_CPTY    :2 passagiers per karretje
 
@@ -6176,8 +6252,8 @@ STR_DESC    :Passagiers staan in de brede achtbaantrein met speciaal ontworpen b
 STR_CPTY    :4 passagiers per karretje
 
 [BMFL]
-STR_NAME    :Achtbaan zonder bodem
-STR_DESC    :Brede achtbaantreinen zonder bodem, die de passagiers het gevoel geeft in de open lucht te zijn terwijl ze langs de kronkelende baan en door meerdere omkeringen glijden.
+STR_NAME    :Achtbaan zonder vloer
+STR_DESC    :Brede achtbaantreinen zonder vloer, die de passagiers het gevoel geeft in de open lucht te zijn terwijl ze langs de kronkelende baan en door meerdere omkeringen glijden.
 STR_CPTY    :4 passagiers per karretje
 
 [GOLTR]

@@ -9,6 +9,7 @@ Includes all git commit authors. Aliases are GitHub user names.
 * Lewis Fox (LRFLEW) - Developer, macOS management
 * Marijn van der Werf (marijnvdwerf) - Developer
 * (zsilencer) - Developer
+* Richard Jenkins (rwjuk) - Developer, issue management
 
 ## Implementation (RCT2)
 * Ted John (IntelOrca)
@@ -48,7 +49,7 @@ Includes all git commit authors. Aliases are GitHub user names.
 * Robert Jordan (trigger-death) - UI theming, title sequence editor, misc.
 * Aaron van Geffen (AaronVanGeffen) - scenario select screen, font detection, misc.
 * Michał Janiszewski (janisozaur) - Linux port, crash handling, security, misc.
-* Kelson Blakewood (spacek531) - title sequence for 0.0.4 and 0.0.5/0.0.6
+* Kelson Blakewood (spacek531) - title sequences for 0.0.4, 0.0.5/0.0.6/0.0.7, and 0.1.0; title sequences using milliseconds
 * Hugo Wallenburg (Goddesen) - Misc.
 * Matte Andersson (Nubbie) - Misc, UX
 * Daniel Trujillo Viedma (gDanix) - Custom currency.
@@ -57,6 +58,7 @@ Includes all git commit authors. Aliases are GitHub user names.
 * Hielke Morsink (Broxzier) - Tile inspector, heightmap loader, misc.
 * Joël Troch (JoelTroch) - Keyboard shortcuts for ride construction.
 * Thomas Delebo (delebota) - Misc.
+* Brian Callahan (ibara) - OpenBSD port.
 
 ## Bug fixes
 * (halfbro)
@@ -77,6 +79,9 @@ Includes all git commit authors. Aliases are GitHub user names.
 * Jake Breen (Haekb)
 * Marco Benzi Tobar (Lisergishnu)
 * Richard Jenkins (rwjuk)
+* (ceeac)
+* Matthias Moninger (Zeh Matt)
+* Tomas Dittmann (Chaosmeister)
 
 ## Toolchain
 * (Balletie) - macOS
@@ -109,6 +114,7 @@ Includes all git commit authors. Aliases are GitHub user names.
 * Finnish - (DJHasis), (Zode), (TheWing)
 * French - (fbourigault), Joël Troch (JoelTroch), Michael Steenbeek (Gymnasiast), Romain Vigier (rvgr),  (AziasYur), Hugo Courtial (s0r00t), David Delobel (incyclum)
 * German - (danidoedel), (atmaxinger), (Yepoleb), Daniel Kessel (dkessel), Leon (AllGoodNamesAreTaken), (raidcookie)
+* Italian - Luca Andrea Rossi (LucaRed)
 * Japanese - Aaron van Geffen (AaronVanGeffen), Nick Hall (nickhall), (jhako), Harry Lam (daihakken)
 * Korean - "TELK" (telk5093), (NeverDruid); small fixes: (kexplo)
 * Polish - Adrian Wielgosik (adrian17), (lopezloo), Michał Janiszewski (janisozaur)

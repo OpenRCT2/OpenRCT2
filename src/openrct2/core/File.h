@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -17,6 +17,7 @@
 #pragma once
 
 #include <string>
+#include <vector>
 #include "../common.h"
 
 namespace File
@@ -27,4 +28,5 @@ namespace File
     bool Move(const std::string &srcPath, const std::string &dstPath);
     void * ReadAllBytes(const std::string &path, size_t * length);
     void WriteAllBytes(const std::string &path, const void * buffer, size_t length);
+    std::vector<std::string> ReadAllLines(const std::string &path);
 }

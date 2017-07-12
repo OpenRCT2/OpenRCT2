@@ -1,12 +1,13 @@
 # OPENRCT2
 
-sdl
+/sdl
 
 # Compiled dll
 openrct2.dll
 
 # Distribution
 distribution/windows/*.exe
+distribution/android/*/external/
 
 # Build artifacts
 artifacts
@@ -294,7 +295,10 @@ data/g2.dat
 ## Visual Studio Code
 #########################
 .vscode/*
-!.vscode/settings.json
+.vscode/settings.json
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
+
+# Cmake
+cmake-build-debug/

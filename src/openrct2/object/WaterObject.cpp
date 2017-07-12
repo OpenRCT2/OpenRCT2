@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -15,6 +15,7 @@
 #pragma endregion
 
 #include "../core/IStream.hpp"
+#include "../OpenRCT2.h"
 #include "WaterObject.h"
 
 extern "C"
@@ -40,7 +41,6 @@ void WaterObject::Load()
     _legacyType.palette_index_2 = _legacyType.image_id + 4;
 
     load_palette();
-    gfx_invalidate_screen();
 }
 
 void WaterObject::Unload()

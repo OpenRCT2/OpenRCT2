@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -54,7 +54,7 @@ extern "C"
     TitleSequence * LoadTitleSequence(const utf8 * path)
     {
         size_t scriptLength;
-        char * script;
+        utf8 * script;
         std::vector<utf8 *> saves;
         bool isZip;
 
@@ -70,7 +70,7 @@ extern "C"
                 return nullptr;
             }
 
-            script = (char *)zip->GetFileData("script.txt", &scriptLength);
+            script = (utf8 *)zip->GetFileData("script.txt", &scriptLength);
             if (script == nullptr)
             {
                 Console::Error::WriteLine("Unable to open script.txt in '%s'", path);
@@ -88,7 +88,7 @@ extern "C"
             utf8 scriptPath[MAX_PATH];
             String::Set(scriptPath, sizeof(scriptPath), path);
             Path::Append(scriptPath, sizeof(scriptPath), "script.txt");
-            script = (char *)ReadScriptFile(scriptPath, &scriptLength);
+            script = (utf8 *)ReadScriptFile(scriptPath, &scriptLength);
             if (script == nullptr)
             {
                 Console::Error::WriteLine("Unable to open '%s'", scriptPath);
@@ -100,6 +100,7 @@ extern "C"
         }
 
         std::vector<TitleCommand> commands = LegacyScriptRead(script, scriptLength, saves);
+        Memory::Free(script);
 
         TitleSequence * seq = CreateTitleSequence();
         seq->Name = Path::GetFileNameWithoutExtension(path);
@@ -143,6 +144,8 @@ extern "C"
                     handle->Stream = zip->GetFileStream(filename);
                     handle->HintPath = String::Duplicate(filename);
                     delete zip;
+                } else {
+                    Console::Error::WriteLine("Failed to open zipped path '%s' from zip '%s'", filename, seq->Path);
                 }
             }
             else
@@ -165,6 +168,7 @@ extern "C"
         {
             Memory::Free(handle->HintPath);
             delete ((IStream *)handle->Stream);
+            Memory::Free(handle);
         }
     }
 
@@ -442,7 +446,7 @@ static std::vector<TitleCommand> LegacyScriptRead(utf8 * script, size_t scriptLe
             else if (_stricmp(token, "WAIT") == 0)
             {
                 command.Type = TITLE_SCRIPT_WAIT;
-                command.Seconds = atoi(part1) & 0xFF;
+                command.Milliseconds = atoi(part1) & 0xFFFF;
             }
             else if (_stricmp(token, "RESTART") == 0)
             {
@@ -591,7 +595,7 @@ static utf8 * LegacyScriptWrite(TitleSequence * seq)
             sb.Append(buffer);
             break;
         case TITLE_SCRIPT_WAIT:
-            String::Format(buffer, sizeof(buffer), "WAIT %u", command->Seconds);
+            String::Format(buffer, sizeof(buffer), "WAIT %u", command->Milliseconds);
             sb.Append(buffer);
             break;
         case TITLE_SCRIPT_RESTART:

@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -22,40 +22,40 @@
 #include "../object.h"
 
 enum {
-	PROVISIONAL_PATH_FLAG_SHOW_ARROW = (1 << 0),
-	PROVISIONAL_PATH_FLAG_1 = (1 << 1),
-	PROVISIONAL_PATH_FLAG_2 = (1 << 2),
+    PROVISIONAL_PATH_FLAG_SHOW_ARROW = (1 << 0),
+    PROVISIONAL_PATH_FLAG_1 = (1 << 1),
+    PROVISIONAL_PATH_FLAG_2 = (1 << 2),
 };
 
 #pragma pack(push, 1)
 typedef struct rct_footpath_entry {
-	rct_string_id string_idx;	// 0x00
-	uint32 image;				// 0x02
-	uint32 bridge_image;		// 0x06
-	uint8 support_type;			// 0x0A
-	uint8 flags;				// 0x0B
-	uint8 scrolling_mode;		// 0x0C
+    rct_string_id string_idx;   // 0x00
+    uint32 image;               // 0x02
+    uint32 bridge_image;        // 0x06
+    uint8 support_type;         // 0x0A
+    uint8 flags;                // 0x0B
+    uint8 scrolling_mode;       // 0x0C
 } rct_footpath_entry;
 assert_struct_size(rct_footpath_entry, 13);
 #pragma pack(pop)
 
 enum {
-	FOOTPATH_ENTRY_SUPPORT_TYPE_POLE = 0,
-	FOOTPATH_ENTRY_SUPPORT_TYPE_BOX = 1,
-	FOOTPATH_ENTRY_SUPPORT_TYPE_COUNT
+    FOOTPATH_ENTRY_SUPPORT_TYPE_POLE = 0,
+    FOOTPATH_ENTRY_SUPPORT_TYPE_BOX = 1,
+    FOOTPATH_ENTRY_SUPPORT_TYPE_COUNT
 };
 
 enum {
-	FOOTPATH_ENTRY_FLAG_HAS_SUPPORT_BASE_SPRITE = (1 << 0),
-	FOOTPATH_ENTRY_FLAG_HAS_PATH_BASE_SPRITE = (1 << 1), //When elevated
-	FOOTPATH_ENTRY_FLAG_SHOW_ONLY_IN_SCENARIO_EDITOR = (1 << 2),
+    FOOTPATH_ENTRY_FLAG_HAS_SUPPORT_BASE_SPRITE = (1 << 0),
+    FOOTPATH_ENTRY_FLAG_HAS_PATH_BASE_SPRITE = (1 << 1), // When elevated
+    FOOTPATH_ENTRY_FLAG_SHOW_ONLY_IN_SCENARIO_EDITOR = (1 << 2),
 };
 
 enum {
-	FOOTPATH_SEARCH_SUCCESS,
-	FOOTPATH_SEARCH_NOT_FOUND,
-	FOOTPATH_SEARCH_INCOMPLETE,
-	FOOTPATH_SEARCH_TOO_COMPLEX
+    FOOTPATH_SEARCH_SUCCESS,
+    FOOTPATH_SEARCH_NOT_FOUND,
+    FOOTPATH_SEARCH_INCOMPLETE,
+    FOOTPATH_SEARCH_TOO_COMPLEX
 };
 
 extern uint8 gFootpathProvisionalFlags;
@@ -87,7 +87,7 @@ void footpath_get_coordinates_from_pos(sint32 screenX, sint32 screenY, sint32 *x
 void footpath_bridge_get_info_from_pos(sint32 screenX, sint32 screenY, sint32 *x, sint32 *y, sint32 *direction, rct_map_element **mapElement);
 void footpath_remove_litter(sint32 x, sint32 y, sint32 z);
 void footpath_connect_edges(sint32 x, sint32 y, rct_map_element *mapElement, sint32 flags);
-void sub_6A759F();
+void footpath_update_queue_chains();
 bool fence_in_the_way(sint32 x, sint32 y, sint32 z0, sint32 z1, sint32 direction);
 void footpath_chain_ride_queue(sint32 rideIndex, sint32 entranceIndex, sint32 x, sint32 y, rct_map_element *mapElement, sint32 direction);
 void footpath_update_path_wide_flags(sint32 x, sint32 y);

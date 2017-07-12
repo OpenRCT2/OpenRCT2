@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -16,6 +16,7 @@
 
 #include <memory>
 #include "../common.h"
+#include "../Context.h"
 #include "../core/Console.hpp"
 #include "../core/Exception.hpp"
 #include "../core/Guard.hpp"
@@ -37,6 +38,8 @@ extern "C"
     #include "../management/news_item.h"
     #include "../world/scenery.h"
 }
+
+using namespace OpenRCT2;
 
 class TitleSequencePlayer final : public ITitleSequencePlayer
 {
@@ -159,7 +162,7 @@ public:
                     SkipToNextLoadCommand();
                     if (_position == entryPosition)
                     {
-                        Console::Error::WriteLine("Unable to load any parks within title sequence.");
+                        Console::Error::WriteLine("Unable to load any parks from %s.", _sequence->Name);
                         return false;
                     }
                 }
@@ -197,6 +200,8 @@ public:
         }
 
         // Keep updating until we reach target position
+        gInUpdateCode = true;
+
         while (_position < targetPosition)
         {
             if (Update())
@@ -208,6 +213,8 @@ public:
                 break;
             }
         }
+
+        gInUpdateCode = false;
 
         _waitCounter = 0;
     }
@@ -240,7 +247,8 @@ private:
             _waitCounter = 1;
             break;
         case TITLE_SCRIPT_WAIT:
-            _waitCounter = command->Seconds * 32;
+            // The waitCounter is measured in 25-ms game ticks. Previously it was seconds * 40 ticks/second, now it is ms / 25 ms/tick
+            _waitCounter = Math::Max<sint32>(1, command->Milliseconds / UPDATE_TIME_MS);
             break;
         case TITLE_SCRIPT_LOADMM:
         {
@@ -313,7 +321,7 @@ private:
             for (size_t i = 0; i < numScenarios; i++)
             {
                 const scenario_index_entry * scenario = _scenarioRepository->GetByIndex(i);
-                if (scenario->source_index == sourceDesc.index)
+                if (scenario && scenario->source_index == sourceDesc.index)
                 {
                     path = scenario->path;
                     break;
@@ -397,7 +405,7 @@ private:
     void PrepareParkForPlayback()
     {
         rct_window * w = window_get_main();
-        w->viewport_target_sprite = -1;
+        w->viewport_target_sprite = SPRITE_INDEX_NULL;
         w->saved_view_x = gSavedViewX;
         w->saved_view_y = gSavedViewY;
 
@@ -428,7 +436,6 @@ private:
         scenery_set_default_placement_configuration();
         news_item_init_queue();
         load_palette();
-        gfx_invalidate_screen();
         gScreenAge = 0;
         gGameSpeed = 1;
     }
@@ -447,13 +454,13 @@ private:
             sint32 z = map_element_height(x, y);
             window_set_location(w, x, y, z);
             viewport_update_position(w);
-        }
 
-        // Save known tile position in case of window resize
-        _lastScreenWidth = gScreenWidth;
-        _lastScreenHeight = gScreenHeight;
-        _viewCentreLocation.x = x;
-        _viewCentreLocation.y = y;
+            // Save known tile position in case of window resize
+            _lastScreenWidth = w->width;
+            _lastScreenHeight = w->height;
+            _viewCentreLocation.x = x;
+            _viewCentreLocation.y = y;
+        }
     }
 
     /**
@@ -461,10 +468,14 @@ private:
      */
     void FixViewLocation()
     {
-        if (gScreenWidth != _lastScreenWidth ||
-            gScreenHeight != _lastScreenHeight)
+        rct_window * w = window_get_main();
+        if (w != nullptr)
         {
-            SetViewLocation(_viewCentreLocation.x, _viewCentreLocation.y);
+            if (w->width != _lastScreenWidth ||
+                w->height != _lastScreenHeight)
+            {
+                SetViewLocation(_viewCentreLocation.x, _viewCentreLocation.y);
+            }
         }
     }
 };

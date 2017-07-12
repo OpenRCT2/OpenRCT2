@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -22,28 +22,28 @@
 
 // First 0xF of rct_object_entry->flags
 typedef enum{
-	OBJECT_TYPE_RIDE,
-	OBJECT_TYPE_SMALL_SCENERY,
-	OBJECT_TYPE_LARGE_SCENERY,
-	OBJECT_TYPE_WALLS,
-	OBJECT_TYPE_BANNERS,
-	OBJECT_TYPE_PATHS,
-	OBJECT_TYPE_PATH_BITS,
-	OBJECT_TYPE_SCENERY_SETS,
-	OBJECT_TYPE_PARK_ENTRANCE,
-	OBJECT_TYPE_WATER,
-	OBJECT_TYPE_SCENARIO_TEXT
+    OBJECT_TYPE_RIDE,
+    OBJECT_TYPE_SMALL_SCENERY,
+    OBJECT_TYPE_LARGE_SCENERY,
+    OBJECT_TYPE_WALLS,
+    OBJECT_TYPE_BANNERS,
+    OBJECT_TYPE_PATHS,
+    OBJECT_TYPE_PATH_BITS,
+    OBJECT_TYPE_SCENERY_SETS,
+    OBJECT_TYPE_PARK_ENTRANCE,
+    OBJECT_TYPE_WATER,
+    OBJECT_TYPE_SCENARIO_TEXT
 }OBJECT_TYPE;
 
 typedef enum{
-	OBJECT_SELECTION_FLAG_SELECTED = (1 << 0),
-	OBJECT_SELECTION_FLAG_2 = (1 << 1),
-	OBJECT_SELECTION_FLAG_IN_USE = (1 << 2),
-	// OBJECT_SELECTION_FLAG_REQUIRED = (1 << 3),				// Unused feature
-	OBJECT_SELECTION_FLAG_ALWAYS_REQUIRED = (1 << 4),
-	OBJECT_SELECTION_FLAG_6 = (1 << 5),
-	OBJECT_SELECTION_FLAG_7 = (1 << 6),
-	OBJECT_SELECTION_FLAG_8 = (1 << 7),
+    OBJECT_SELECTION_FLAG_SELECTED = (1 << 0),
+    OBJECT_SELECTION_FLAG_2 = (1 << 1),
+    OBJECT_SELECTION_FLAG_IN_USE = (1 << 2),
+    // OBJECT_SELECTION_FLAG_REQUIRED = (1 << 3),               // Unused feature
+    OBJECT_SELECTION_FLAG_ALWAYS_REQUIRED = (1 << 4),
+    OBJECT_SELECTION_FLAG_6 = (1 << 5),
+    OBJECT_SELECTION_FLAG_7 = (1 << 6),
+    OBJECT_SELECTION_FLAG_8 = (1 << 7),
 }OBJECT_SELECTION_FLAGS;
 
 #define OBJECT_ENTRY_GROUP_COUNT 11
@@ -55,9 +55,9 @@ typedef enum{
  * size: 0x10
  */
 typedef struct rct_object_entry {
-	uint32 flags;
-	char name[8];
-	uint32 checksum;
+    uint32 flags;
+    char name[8];
+    uint32 checksum;
 } rct_object_entry;
 assert_struct_size(rct_object_entry, 0x10);
 
@@ -66,15 +66,15 @@ assert_struct_size(rct_object_entry, 0x10);
  * size: 0x14
  */
 typedef struct rct_object_entry_extended {
-	union {
-		rct_object_entry entry;
-		struct {
-			uint32 flags;
-			char name[8];
-			uint32 checksum;
-			uint32 chunk_size;
-		};
-	};
+    union {
+        rct_object_entry entry;
+        struct {
+            uint32 flags;
+            char name[8];
+            uint32 checksum;
+            uint32 chunk_size;
+        };
+    };
 } rct_object_entry_extended;
 assert_struct_size(rct_object_entry_extended, 0x14);
 
@@ -82,23 +82,23 @@ extern sint32 object_entry_group_counts[];
 extern sint32 object_entry_group_encoding[];
 
 typedef struct rct_object_entry_group {
-	void **chunks;
-	rct_object_entry_extended *entries;
+    void **chunks;
+    rct_object_entry_extended *entries;
 } rct_object_entry_group;
 #ifdef PLATFORM_32BIT
 assert_struct_size(rct_object_entry_group, 8);
 #endif
 
 typedef struct rct_ride_filters {
-	uint8 category[2];
-	uint8 ride_type;
+    uint8 category[2];
+    uint8 ride_type;
 } rct_ride_filters;
 assert_struct_size(rct_ride_filters, 3);
 
 typedef struct rct_object_filters {
-	union {
-		rct_ride_filters ride;
-	};
+    union {
+        rct_ride_filters ride;
+    };
 } rct_object_filters;
 assert_struct_size(rct_object_filters, 3);
 #pragma pack(pop)
@@ -106,7 +106,6 @@ assert_struct_size(rct_object_filters, 3);
 extern const rct_object_entry_group object_entry_groups[];
 
 void object_list_load();
-bool object_load_entries(rct_object_entry* entries);
 
 bool object_entry_is_empty(const rct_object_entry *entry);
 bool object_entry_compare(const rct_object_entry *a, const rct_object_entry *b);
@@ -114,8 +113,8 @@ sint32 object_calculate_checksum(const rct_object_entry * entry, const void * da
 sint32 find_object_in_entry_group(const rct_object_entry* entry, uint8* entry_type, uint8* entry_index);
 void object_create_identifier_name(char* string_buffer, size_t size, const rct_object_entry* object);
 
-rct_object_entry *object_list_find_by_name(const char *name);
-rct_object_entry *object_list_find(rct_object_entry *entry);
+const rct_object_entry * object_list_find_by_name(const char *name);
+const rct_object_entry * object_list_find(rct_object_entry *entry);
 
 void object_entry_get_name(utf8 * buffer, size_t bufferSize, const rct_object_entry * entry);
 void object_entry_get_name_fixed(utf8 * buffer, size_t bufferSize, const rct_object_entry * entry);

@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -59,6 +59,12 @@ wchar_t encoding_convert_big5_to_unicode(wchar_t big5);
 #define MAX_USER_STRINGS 1024
 #define USER_STRING_MAX_LENGTH 32
 
+// Constants used by user_string_allocate
+enum {
+    USER_STRING_HIGH_ID_NUMBER = 1 << 2,
+    USER_STRING_DUPLICATION_PERMITTED = 1 << 7
+};
+
 // Real name data
 extern const char real_name_initials[16];
 extern const char *real_names[1024];
@@ -81,15 +87,15 @@ extern const rct_string_id DateGameShortMonthNames[MONTH_COUNT];
 
 static inline void set_format_arg_body(uint8 *args, size_t offset, uintptr_t value, size_t size)
 {
-	memcpy(args + offset, &value, size);
+    memcpy(args + offset, &value, size);
 }
 
-#define set_format_arg(offset, type, value)	\
-	do { static_assert(sizeof(type) <= sizeof(uintptr_t), "Type too large"); \
-	set_format_arg_body(gCommonFormatArgs, offset, (uintptr_t)value, sizeof(type)); } while (0)
+#define set_format_arg(offset, type, value) \
+    do { static_assert(sizeof(type) <= sizeof(uintptr_t), "Type too large"); \
+    set_format_arg_body(gCommonFormatArgs, offset, (uintptr_t)value, sizeof(type)); } while (0)
 
 #define set_map_tooltip_format_arg(offset, type, value) \
-	do { static_assert(sizeof(type) <= sizeof(uintptr_t), "Type too large"); \
-	set_format_arg_body(gMapTooltipFormatArgs, offset, (uintptr_t)value, sizeof(type)); } while (0)
+    do { static_assert(sizeof(type) <= sizeof(uintptr_t), "Type too large"); \
+    set_format_arg_body(gMapTooltipFormatArgs, offset, (uintptr_t)value, sizeof(type)); } while (0)
 
 #endif

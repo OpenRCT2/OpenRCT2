@@ -1,0 +1,281 @@
+[
+    {
+        "path": "logo.png"
+    },
+    {
+        "path": "logo_text.png"
+    },
+    {
+        "path": "icons/fast_forward.png"
+    },
+    {
+        "path": "icons/game_speed_indicator.png"
+    },
+    {
+        "path": "icons/game_speed_indicator_double.png"
+    },
+    {
+        "path": "icons/twitch.png"
+    },
+    {
+        "path": "icons/map_gen_land.png"
+    },
+    {
+        "path": "7.png"
+    },
+    {
+        "path": "icons/zoom_in.png"
+    },
+    {
+        "path": "icons/zoom_in_background.png"
+    },
+    {
+        "path": "icons/zoom_out.png"
+    },
+    {
+        "path": "icons/zoom_out_background.png"
+    },
+    {
+        "path": "icons/map_gen_trees.png"
+    },
+    {
+        "path": "icons/map_gen_noise.png"
+    },
+    {
+        "path": "icons/large_scenery.png"
+    },
+    {
+        "path": "icons/small_scenery.png"
+    },
+    {
+        "path": "icons/paths.png"
+    },
+    {
+        "path": "icons/rct1_close_off.png"
+    },
+    {
+        "path": "icons/rct1_close_off_pressed.png"
+    },
+    {
+        "path": "icons/rct1_close_on.png"
+    },
+    {
+        "path": "icons/rct1_close_off_pressed.png"
+    },
+    {
+        "path": "icons/rct1_test_off.png"
+    },
+    {
+        "path": "icons/rct1_test_off_pressed.png"
+    },
+    {
+        "path": "icons/rct1_test_on.png"
+    },
+    {
+        "path": "icons/rct1_test_on_pressed.png"
+    },
+    {
+        "path": "icons/rct1_open_off.png"
+    },
+    {
+        "path": "icons/rct1_open_off_pressed.png"
+    },
+    {
+        "path": "icons/rct1_open_on.png"
+    },
+    {
+        "path": "icons/rct1_open_on_pressed.png"
+    },
+    {
+        "path": "icons/29.png"
+    },
+    {
+        "path": "icons/30.png"
+    },
+    {
+        "path": "icons/31.png"
+    },
+    {
+        "path": "icons/32.png"
+    },
+    {
+        "path": "icons/cheats.png"
+    },
+    {
+        "path": "track/junior/flat_to_steep_1.png"
+    },
+    {
+        "path": "track/junior/flat_to_steep_2_1.png"
+    },
+    {
+        "path": "track/junior/flat_to_steep_3_1.png"
+    },
+    {
+        "path": "track/junior/flat_to_steep_4.png"
+    },
+    {
+        "path": "track/junior/flat_to_steep_2_2.png"
+    },
+    {
+        "path": "track/junior/flat_to_steep_3_2.png"
+    },
+    {
+        "path": "track/junior/steep_to_flat_1.png"
+    },
+    {
+        "path": "track/junior/steep_to_flat_2_1.png"
+    },
+    {
+        "path": "track/junior/steep_to_flat_3_1.png"
+    },
+    {
+        "path": "track/junior/steep_to_flat_4.png"
+    },
+    {
+        "path": "track/junior/steep_to_flat_2_2.png"
+    },
+    {
+        "path": "track/junior/steep_to_flat_3_2.png"
+    },
+    {
+        "path": "track/junior/flat_to_steep_lift_1.png"
+    },
+    {
+        "path": "track/junior/flat_to_steep_lift_2_1.png"
+    },
+    {
+        "path": "track/junior/flat_to_steep_lift_3_1.png"
+    },
+    {
+        "path": "track/junior/flat_to_steep_lift_4.png"
+    },
+    {
+        "path": "track/junior/flat_to_steep_lift_2_2.png"
+    },
+    {
+        "path": "track/junior/flat_to_steep_lift_3_2.png"
+    },
+    {
+        "path": "track/junior/steep_to_flat_lift_1.png"
+    },
+    {
+        "path": "track/junior/steep_to_flat_lift_2_1.png"
+    },
+    {
+        "path": "track/junior/steep_to_flat_lift_3_1.png"
+    },
+    {
+        "path": "track/junior/steep_to_flat_lift_4.png"
+    },
+    {
+        "path": "track/junior/steep_to_flat_lift_2_2.png"
+    },
+    {
+        "path": "track/junior/steep_to_flat_lift_3_2.png"
+    },
+    {
+        "path": "icons/58.png"
+    },
+    {
+        "path": "icons/server_password.png"
+    },
+    {
+        "path": "icons/multiplayer.png"
+    },
+    {
+        "path": "track/junior/flat_to_steep_diagonal_1.png"
+    },
+    {
+        "path": "track/junior/flat_to_steep_diagonal_2.png"
+    },
+    {
+        "path": "track/junior/flat_to_steep_diagonal_3.png"
+    },
+    {
+        "path": "track/junior/flat_to_steep_diagonal_4.png"
+    },
+    {
+        "path": "track/junior/steep_to_flat_diagonal_1.png"
+    },
+    {
+        "path": "track/junior/steep_to_flat_diagonal_2.png"
+    },
+    {
+        "path": "track/junior/steep_to_flat_diagonal_3.png"
+    },
+    {
+        "path": "track/junior/steep_to_flat_diagonal_4.png"
+    },
+    {
+        "path": "track/junior/flat_to_steep_diagonal_lift_1.png"
+    },
+    {
+        "path": "track/junior/flat_to_steep_diagonal_lift_2.png"
+    },
+    {
+        "path": "track/junior/flat_to_steep_diagonal_lift_3.png"
+    },
+    {
+        "path": "track/junior/flat_to_steep_diagonal_lift_4.png"
+    },
+    {
+        "path": "track/junior/steep_to_flat_diagonal_lift_1.png"
+    },
+    {
+        "path": "track/junior/steep_to_flat_diagonal_lift_2.png"
+    },
+    {
+        "path": "track/junior/steep_to_flat_diagonal_lift_3.png"
+    },
+    {
+        "path": "track/junior/steep_to_flat_diagonal_lift_4.png"
+    },
+    {
+        "path": "icons/sort.png"
+    },
+    {
+        "path": "icons/copy.png"
+    },
+    {
+        "path": "icons/paste.png"
+    },
+    {
+        "path": "icons/tab_disabled.png"
+    },
+    {
+        "path": "track/intamin/booster_1.png"
+    },
+    {
+        "path": "track/intamin/booster_2.png"
+    },
+    {
+        "path": "track/bm/booster_1.png"
+    },
+    {
+        "path": "track/bm/booster_2.png"
+    },
+    {
+        "path": "track/junior/booster_1.png"
+    },
+    {
+        "path": "track/junior/booster_2.png"
+    },
+    {
+        "path": "icons/mute.png"
+    },
+    {
+        "path": "icons/mute_pressed.png"
+    },
+    {
+        "path": "icons/unmute.png"
+    },
+    {
+        "path": "icons/unmute_pressed.png"
+    },
+    {
+        "path": "track/mini/booster_1.png"
+    },
+    {
+        "path": "track/mini/booster_2.png"
+    }
+]

@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -25,6 +25,8 @@
 #define RCT12_MAX_STATIONS_PER_RIDE 4
 #define RCT12_MAX_PEEP_SPAWNS       2
 #define RCT12_MAX_PARK_ENTRANCES    4
+#define RCT12_NUM_COLOUR_SCHEMES    4
+#define RCT12_SOUND_ID_NULL         0xFF
 
 #pragma pack(push, 1)
 

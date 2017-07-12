@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -14,6 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
+#ifndef __ANDROID__
 #include <zip.h>
 #include "IStream.hpp"
 #include "MemoryStream.h"
@@ -88,8 +89,7 @@ public:
                 uint64 readBytes = zip_fread(zipFile, data, dataSize);
                 if (readBytes != dataSize)
                 {
-                    Memory::Free(data);
-                    data = nullptr;
+                    SafeFree(data);
                     dataSize = 0;
                 }
                 zip_fclose(zipFile);
@@ -159,3 +159,5 @@ namespace Zip
         return result;
     }
 }
+
+# endif

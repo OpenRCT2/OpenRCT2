@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -135,7 +135,7 @@ static money32 BannerSetColour(sint16 x, sint16 y, uint8 baseHeight, uint8 direc
     {
         return MONEY32_UNDEFINED;
     }
-    
+
 
     if (flags & GAME_COMMAND_FLAG_APPLY)
     {
@@ -325,7 +325,7 @@ static money32 BannerSetName(uint8 bannerIndex,
     dst = utf8_write_codepoint(dst, FORMAT_COLOUR_CODE_START + banner->text_colour);
     String::Set(dst, 256, newName, 32);
 
-    rct_string_id stringId = user_string_allocate(128, buffer);
+    rct_string_id stringId = user_string_allocate(USER_STRING_DUPLICATION_PERMITTED, buffer);
     if (stringId != 0)
     {
         rct_string_id prevStringId = banner->string_idx;
@@ -392,7 +392,7 @@ static money32 BannerSetStyle(uint8 bannerIndex, uint8 colour, uint8 textColour,
         utf8_insert_codepoint(buffer, colourCodepoint);
     }
 
-    rct_string_id stringId = user_string_allocate(128, buffer);
+    rct_string_id stringId = user_string_allocate(USER_STRING_DUPLICATION_PERMITTED, buffer);
     if (stringId != 0)
     {
         rct_string_id prevStringId = banner->string_idx;
@@ -425,7 +425,7 @@ static uint8 BannerGetNewIndex() {
     return BANNER_NULL;
 }
 
-extern "C" 
+extern "C"
 {
     /**
      *

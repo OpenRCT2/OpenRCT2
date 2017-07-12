@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -19,7 +19,7 @@
 #include "common.h"
 
 #define OPENRCT2_NAME               "OpenRCT2"
-#define OPENRCT2_VERSION            "0.0.7"
+#define OPENRCT2_VERSION            "0.0.8"
 
 #if defined(__amd64__) || defined(_M_AMD64)
     #define OPENRCT2_ARCHITECTURE       "x86-64"
@@ -28,9 +28,17 @@
 #elif defined(__aarch64__)
     #define OPENRCT2_ARCHITECTURE       "AArch64"
 #elif defined(__arm__) || defined(_M_ARM)
-    #define OPENRCT2_ARCHITECTURE       "ARMv7"
+    #if defined(__ARM_ARCH_7A__)
+        #define OPENRCT2_ARCHITECTURE   "arm-v7a"
+    #else
+        #define OPENRCT2_ARCHITECTURE   "arm"
+    #endif
 #elif defined(__powerpc__) || defined(_M_PPC)
     #define OPENRCT2_ARCHITECTURE       "PowerPC"
+#elif defined(__mips64)
+    #define OPENRCT2_ARCHITECTURE       "mips64"
+#elif defined(__mips__)
+    #define OPENRCT2_ARCHITECTURE       "mips"
 #endif
 
 #ifndef OPENRCT2_ARCHITECTURE
@@ -38,17 +46,23 @@
 #endif
 
 // Platform
-#ifdef __WINDOWS__
+#ifdef _WIN32
     #define OPENRCT2_PLATFORM       "Windows"
 #endif
-#ifdef __LINUX__
+#if defined(__linux__) && !defined(__ANDROID__)
     #define OPENRCT2_PLATFORM       "Linux"
 #endif
-#ifdef __MACOSX__
+#if (defined(__APPLE__) && defined(__MACH__))
     #define OPENRCT2_PLATFORM       "macOS"
 #endif
-#ifdef __FREEBSD__
+#ifdef __FreeBSD__
     #define OPENRCT2_PLATFORM       "FreeBSD"
+#endif
+#ifdef __ANDROID__
+    #define OPENRCT2_PLATFORM       "Android"
+#endif
+#ifdef __OpenBSD__
+    #define OPENRCT2_PLATFORM       "OpenBSD"
 #endif
 #ifndef OPENRCT2_PLATFORM
     #error Unknown platform!

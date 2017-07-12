@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -17,13 +17,17 @@
 #include <algorithm>
 #include <memory>
 #include <vector>
+#include "../config/Config.h"
 #include "../core/Collections.hpp"
 #include "../core/Console.hpp"
 #include "../core/File.h"
 #include "../core/FileScanner.h"
 #include "../core/FileStream.hpp"
 #include "../core/Path.hpp"
+#include "RideGroupManager.h"
 #include "../core/String.hpp"
+#include "../object/ObjectRepository.h"
+#include "../object/RideObject.h"
 #include "../PlatformEnvironment.h"
 #include "TrackDesignRepository.h"
 
@@ -32,6 +36,8 @@ extern "C"
     #include "../rct2.h"
     #include "track_design.h"
 }
+
+using namespace OpenRCT2;
 
 #pragma pack(push, 1)
 struct TrackRepositoryHeader
@@ -90,13 +96,34 @@ public:
         return _items.size();
     }
 
+    /**
+     *
+     * @param rideType
+     * @param entry The entry name to count the track list of. Leave empty to count track list for the non-separated types (e.g. Hyper-Twister, Car Ride)
+     * @return
+     */
     size_t GetCountForObjectEntry(uint8 rideType, const std::string &entry) const override
     {
         size_t count = 0;
-        for (const auto item : _items)
+        const IObjectRepository * repo = GetObjectRepository();
+
+        for (const auto &item : _items)
         {
-            if (item.RideType == rideType &&
-                (entry.empty() || String::Equals(item.ObjectEntry, entry, true)))
+            if (item.RideType != rideType)
+            {
+                continue;
+            }
+
+            bool entryIsNotSeparate = false;
+            if (entry.empty())
+            {
+                const ObjectRepositoryItem * ori = repo->FindObject(item.ObjectEntry.c_str());
+
+                if (gConfigInterface.select_by_track_type || ori == nullptr || !(ori->RideFlags & ORI_RIDE_FLAG_SEPARATE))
+                    entryIsNotSeparate = true;
+            }
+
+            if (entryIsNotSeparate || String::Equals(item.ObjectEntry, entry, true))
             {
                 count++;
             }
@@ -104,13 +131,89 @@ public:
         return count;
     }
 
+    size_t GetCountForRideGroup(uint8 rideType, const ride_group * rideGroup) const override
+    {
+        size_t count = 0;
+        const IObjectRepository * repo = GetObjectRepository();
+
+        for (const auto &item : _items)
+        {
+            if (item.RideType != rideType)
+            {
+                continue;
+            }
+
+            const ObjectRepositoryItem * ori = repo->FindObject(item.ObjectEntry.c_str());
+            uint8 rideGroupIndex = (ori != nullptr) ? ori->RideGroupIndex : 0;
+            ride_group * itemRideGroup = ride_group_find(rideType, rideGroupIndex);
+
+            if (itemRideGroup != NULL && ride_groups_are_equal(itemRideGroup, rideGroup))
+            {
+                count++;
+            }
+        }
+
+        return count;
+    }
+
+    /**
+     *
+     * @param outRefs
+     * @param rideType
+     * @param entry The entry name to build a track list for. Leave empty to build track list for the non-separated types (e.g. Hyper-Twister, Car Ride)
+     * @return
+     */
     size_t GetItemsForObjectEntry(track_design_file_ref * * outRefs, uint8 rideType, const std::string &entry) const override
     {
         std::vector<track_design_file_ref> refs;
-        for (const auto item : _items)
+        const IObjectRepository * repo = GetObjectRepository();
+
+        for (const auto &item : _items)
         {
-            if (item.RideType == rideType &&
-                (entry.empty() || String::Equals(item.ObjectEntry, entry, true)))
+            if (item.RideType != rideType)
+            {
+                continue;
+            }
+
+            bool entryIsNotSeparate = false;
+            if (entry.empty())
+            {
+                const ObjectRepositoryItem * ori = repo->FindObject(item.ObjectEntry.c_str());
+
+                if (gConfigInterface.select_by_track_type || ori == nullptr || !(ori->RideFlags & ORI_RIDE_FLAG_SEPARATE))
+                    entryIsNotSeparate = true;
+            }
+
+            if (entryIsNotSeparate || String::Equals(item.ObjectEntry, entry, true))
+            {
+                track_design_file_ref ref;
+                ref.name = String::Duplicate(GetNameFromTrackPath(item.Path));
+                ref.path = String::Duplicate(item.Path);
+                refs.push_back(ref);
+            }
+        }
+
+        *outRefs = Collections::ToArray(refs);
+        return refs.size();
+    }
+
+    size_t GetItemsForRideGroup(track_design_file_ref **outRefs, uint8 rideType, const ride_group * rideGroup) const override
+    {
+        std::vector<track_design_file_ref> refs;
+        const IObjectRepository * repo = GetObjectRepository();
+
+        for (const auto &item : _items)
+        {
+            if (item.RideType != rideType)
+            {
+                continue;
+            }
+
+            const ObjectRepositoryItem * ori = repo->FindObject(item.ObjectEntry.c_str());
+            uint8 rideGroupIndex = (ori != nullptr) ? ori->RideGroupIndex : 0;
+            ride_group * itemRideGroup = ride_group_find(rideType, rideGroupIndex);
+
+            if (itemRideGroup != NULL && ride_groups_are_equal(itemRideGroup, rideGroup))
             {
                 track_design_file_ref ref;
                 ref.name = String::Duplicate(GetNameFromTrackPath(item.Path));
@@ -380,10 +483,22 @@ extern "C"
         return repo->GetCountForObjectEntry(rideType, String::ToStd(entry));
     }
 
+    size_t track_repository_get_count_for_ride_group(uint8 rideType, const ride_group * rideGroup)
+    {
+        ITrackDesignRepository * repo = GetTrackDesignRepository();
+        return repo->GetCountForRideGroup(rideType, rideGroup);
+    }
+
     size_t track_repository_get_items_for_ride(track_design_file_ref * * outRefs, uint8 rideType, const utf8 * entry)
     {
         ITrackDesignRepository * repo = GetTrackDesignRepository();
         return repo->GetItemsForObjectEntry(outRefs, rideType, String::ToStd(entry));
+    }
+
+    size_t track_repository_get_items_for_ride_group(track_design_file_ref * * outRefs, uint8 rideType, const ride_group * rideGroup)
+    {
+        ITrackDesignRepository * repo = GetTrackDesignRepository();
+        return repo->GetItemsForRideGroup(outRefs, rideType, rideGroup);
     }
 
     bool track_repository_delete(const utf8 * path)

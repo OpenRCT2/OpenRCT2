@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -14,14 +14,13 @@
  *****************************************************************************/
 #pragma endregion
 
-#include <SDL_platform.h>
 #include "crash.h"
 
 #ifdef USE_BREAKPAD
 #include <memory>
 #include <stdio.h>
 
-#if defined(__WINDOWS__)
+#if defined(_WIN32)
     #include <breakpad/client/windows/handler/exception_handler.h>
     #include <string>
     #include <ShlObj.h>

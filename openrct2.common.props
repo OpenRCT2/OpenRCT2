@@ -16,6 +16,7 @@
     <OutDir>$(SolutionDir)bin\</OutDir>
     <IntDir>$(SolutionDir)obj\$(ProjectName)\$(Configuration)_$(Platform)\</IntDir>
     <TargetName>$(ProjectName)</TargetName>
+    <ShowAllFiles>true</ShowAllFiles>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)'=='Debug'">
     <UseDebugLibraries>true</UseDebugLibraries>
@@ -27,8 +28,9 @@
 
   <ItemDefinitionGroup>
     <ClCompile>
-      <DisableSpecificWarnings>4091;4100;4132;4200;4201;4204;4206;4221;4244;4245;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <DisableSpecificWarnings>4068;4091;4100;4132;4200;4201;4204;4206;4221;4244;4245;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <!-- Warnings:
+             C4068: unknown pragma
              C4091: 'keyword': ignored on left of 'type' when no variable is declared
              C4100: 'identifier': unreferenced formal parameter
              C4132: 'identifier': const object should be initialized
@@ -41,7 +43,7 @@
              C4245: 'conversion_type': conversion from 'type1' to 'type2', signed/unsigned mismatch
       -->
       <WarningLevel>Level4</WarningLevel>
-      <PreprocessorDefinitions>OPENGL_NO_LINK;_CRT_SECURE_NO_WARNINGS;_USE_MATH_DEFINES;CURL_STATICLIB;SDL_MAIN_HANDLED;_WINSOCK_DEPRECATED_NO_WARNINGS;ZIP_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NO_RCT2;OPENGL_NO_LINK;_CRT_SECURE_NO_WARNINGS;_USE_MATH_DEFINES;CURL_STATICLIB;SDL_MAIN_HANDLED;_WINSOCK_DEPRECATED_NO_WARNINGS;ZIP_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <TreatWarningAsError>true</TreatWarningAsError>
@@ -82,13 +84,6 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
-  </ItemDefinitionGroup>
-
-  <!-- Debug|Win32 is reserved for RCT2 interop builds, this means it has to be a DLL -->
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'!='Debug|Win32'">
-    <ClCompile>
-      <PreprocessorDefinitions>NO_RCT2;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-    </ClCompile>
   </ItemDefinitionGroup>
 
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />

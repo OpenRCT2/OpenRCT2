@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -174,7 +174,7 @@ void fence_paint(uint8 direction, sint32 height, rct_map_element * map_element)
         dword_141F710 = construction_markers[gConfigGeneral.construction_marker_colour];
     }
 
-    // save map_element
+    // Save map_element
 
     uint8 ah = sceneryEntry->wall.height * 8 - 2;
 
@@ -272,7 +272,7 @@ void fence_paint(uint8 direction, sint32 height, rct_map_element * map_element)
             offset = (rct_xyz16){0, 0, height};
             bounds = (rct_xyz16){1, 28, ah};
             boundsOffset = (rct_xyz16){1, 1, height + 1};
-			break;
+            break;
 
         case 1:
             if (map_element->type & 0x80) {
@@ -369,12 +369,12 @@ void fence_paint(uint8 direction, sint32 height, rct_map_element * map_element)
         set_format_arg(2, uint32, ride->name_arguments);
     }
 
-    utf8 signString[MAX_PATH];
+    utf8 signString[256];
     rct_string_id stringId = STR_SCROLLING_SIGN_TEXT;
     if (gConfigGeneral.upper_case_banners) {
-        format_string_to_upper(signString, MAX_PATH, stringId, gCommonFormatArgs);
+        format_string_to_upper(signString, sizeof(signString), stringId, gCommonFormatArgs);
     } else {
-        format_string(signString, MAX_PATH, stringId, gCommonFormatArgs);
+        format_string(signString, sizeof(signString), stringId, gCommonFormatArgs);
     }
 
     gCurrentFontSpriteBase = FONT_SPRITE_BASE_TINY;

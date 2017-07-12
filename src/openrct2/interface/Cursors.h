@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -53,7 +53,7 @@ enum CURSOR_ID
 
 #ifdef __cplusplus
 
-namespace Cursors
+namespace OpenRCT2 { namespace Ui
 {
     struct CursorData
     {
@@ -65,27 +65,6 @@ namespace Cursors
         uint8 Data[32 * 4];
         uint8 Mask[32 * 4];
     };
+} }
 
-    const CursorData * GetCursorData(CURSOR_ID cursorId);
-
-    void        Initialise();
-    void        Dispose();
-    CURSOR_ID   GetCurrentCursor();
-    void        SetCurrentCursor(CURSOR_ID cursorId);
-}
-
-#endif
-
-#ifdef __cplusplus
-extern "C"
-{
-#endif
-
-    void    cursors_initialise();
-    void    cursors_dispose();
-    sint32     cursors_getcurrentcursor();
-    void    cursors_setcurrentcursor(sint32 cursorId);
-
-#ifdef __cplusplus
-}
 #endif

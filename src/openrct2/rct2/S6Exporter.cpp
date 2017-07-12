@@ -18,6 +18,7 @@
 #include "../core/FileStream.hpp"
 #include "../core/IStream.hpp"
 #include "../core/String.hpp"
+#include "../core/Util.hpp"
 #include "../management/award.h"
 #include "../object/Object.h"
 #include "../object/ObjectManager.h"
@@ -44,12 +45,14 @@ extern "C"
     #include "../rct2.h"
     #include "../ride/ride.h"
     #include "../ride/ride_ratings.h"
+    #include "../ride/track_data.h"
     #include "../scenario/scenario.h"
     #include "../util/sawyercoding.h"
     #include "../util/util.h"
     #include "../world/Climate.h"
     #include "../world/map_animation.h"
     #include "../world/park.h"
+    #include "../world/sprite.h"
 }
 
 S6Exporter::S6Exporter()
@@ -149,7 +152,19 @@ void S6Exporter::Save(IStream * stream, bool isScenario)
 
 void S6Exporter::Export()
 {
+    sint32 spatial_cycle = check_for_spatial_index_cycles(false);
+    sint32 regular_cycle = check_for_sprite_list_cycles(false);
+    sint32 disjoint_sprites_count = fix_disjoint_sprites();
+    openrct2_assert(spatial_cycle == -1, "Sprite cycle exists in spatial list %d", spatial_cycle);
+    openrct2_assert(regular_cycle == -1, "Sprite cycle exists in regular list %d", regular_cycle);
+    // This one is less harmful, no need to assert for it ~janisozaur
+    if (disjoint_sprites_count > 0)
+    {
+        log_error("Found %d disjoint null sprites", disjoint_sprites_count);
+    }
     _s6.info = gS6Info;
+    uint32 researchedTrackPiecesA[128];
+    uint32 researchedTrackPiecesB[128];
 
     for (sint32 i = 0; i < OBJECT_ENTRY_COUNT; i++)
     {
@@ -174,6 +189,11 @@ void S6Exporter::Export()
     memcpy(_s6.map_elements, gMapElements, sizeof(_s6.map_elements));
 
     _s6.next_free_map_element_pointer_index = gNextFreeMapElementPointerIndex;
+    // Sprites needs to be reset before they get used.
+    // Might as well reset them in here to zero out the space and improve
+    // compression ratios. Especially useful for multiplayer servers that
+    // use zlib on the sent stream.
+    sprite_clear_all_unused();
     for (sint32 i = 0; i < MAX_SPRITES; i++)
     {
         memcpy(&_s6.sprites[i], get_sprite(i), sizeof(rct_sprite));
@@ -201,8 +221,13 @@ void S6Exporter::Export()
     // pad_01357400
     memcpy(_s6.researched_ride_types, gResearchedRideTypes, sizeof(_s6.researched_ride_types));
     memcpy(_s6.researched_ride_entries, gResearchedRideEntries, sizeof(_s6.researched_ride_entries));
-    memcpy(_s6.researched_track_types_a, gResearchedTrackTypesA, sizeof(_s6.researched_track_types_a));
-    memcpy(_s6.researched_track_types_b, gResearchedTrackTypesB, sizeof(_s6.researched_track_types_b));
+    // Not used by OpenRCT2 any more, but left in to keep RCT2 export working.
+    for (uint8 i = 0; i < Util::CountOf(RideTypePossibleTrackConfigurations); i++) {
+        researchedTrackPiecesA[i] = (RideTypePossibleTrackConfigurations[i]         ) & 0xFFFFFFFFULL;
+        researchedTrackPiecesB[i] = (RideTypePossibleTrackConfigurations[i] >> 32ULL) & 0xFFFFFFFFULL;
+    }
+    memcpy(_s6.researched_track_types_a, researchedTrackPiecesA, sizeof(_s6.researched_track_types_a));
+    memcpy(_s6.researched_track_types_b, researchedTrackPiecesB, sizeof(_s6.researched_track_types_b));
 
     _s6.guests_in_park          = gNumGuestsInPark;
     _s6.guests_heading_for_park = gNumGuestsHeadingForPark;
@@ -431,8 +456,6 @@ extern "C"
         }
 
         map_reorganise_elements();
-        sprite_clear_all_unused();
-
         viewport_set_saved_view();
 
         bool result     = false;

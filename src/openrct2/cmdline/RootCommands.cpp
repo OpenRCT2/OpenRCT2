@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -22,6 +22,7 @@ extern "C"
 {
     #include "../config/Config.h"
     #include "../platform/crash.h"
+    #include "../platform/platform.h"
 }
 
 #include "../core/Console.hpp"
@@ -44,8 +45,10 @@ extern "C"
 sint32  gNetworkStart = NETWORK_MODE_NONE;
 char gNetworkStartHost[128];
 sint32  gNetworkStartPort = NETWORK_DEFAULT_PORT;
+char* gNetworkStartAddress = nullptr;
 
 static uint32 _port            = 0;
+static char*  _address         = nullptr;
 #endif
 
 static bool   _help            = false;
@@ -72,6 +75,7 @@ static const CommandLineOptionDefinition StandardOptions[]
     { CMDLINE_TYPE_SWITCH,  &_headless,        NAC, "headless",          "run " OPENRCT2_NAME " headless" IMPLIES_SILENT_BREAKPAD     },
 #ifndef DISABLE_NETWORK
     { CMDLINE_TYPE_INTEGER, &_port,            NAC, "port",              "port to use for hosting or joining a server"                },
+    { CMDLINE_TYPE_STRING,  &_address,         NAC, "address",           "address to listen on when hosting a server"                 },
 #endif
     { CMDLINE_TYPE_STRING,  &_password,        NAC, "password",          "password needed to join the server"                         },
     { CMDLINE_TYPE_STRING,  &_userDataPath,    NAC, "user-data-path",    "path to the user data directory (containing config.ini)"    },
@@ -91,7 +95,7 @@ static exitcode_t HandleCommandJoin(CommandLineArgEnumerator * enumerator);
 static exitcode_t HandleCommandSetRCT2(CommandLineArgEnumerator * enumerator);
 static exitcode_t HandleCommandScanObjects(CommandLineArgEnumerator * enumerator);
 
-#if defined(__WINDOWS__) && !defined(__MINGW32__)
+#if defined(_WIN32) && !defined(__MINGW32__)
 
 static bool _removeShell = false;
 
@@ -128,13 +132,14 @@ const CommandLineCommand CommandLine::RootCommands[]
     DefineCommand("scan-objects", "<path>",             StandardOptions, HandleCommandScanObjects),
     DefineCommand("handle-uri", "openrct2://.../",      StandardOptions, CommandLine::HandleCommandUri),
 
-#if defined(__WINDOWS__) && !defined(__MINGW32__)
+#if defined(_WIN32) && !defined(__MINGW32__)
     DefineCommand("register-shell", "", RegisterShellOptions, HandleCommandRegisterShell),
 #endif
 
     // Sub-commands
     DefineSubCommand("screenshot", CommandLine::ScreenshotCommands),
     DefineSubCommand("sprite",     CommandLine::SpriteCommands    ),
+    DefineSubCommand("benchgfx",   CommandLine::BenchGfxCommands  ),
 
     CommandTableEnd
 };
@@ -186,6 +191,7 @@ exitcode_t CommandLine::HandleCommandDefault()
     }
 
     gOpenRCT2Headless = _headless;
+    gOpenRCT2NoGraphics = _headless;
     gOpenRCT2SilentBreakpad = _silentBreakpad || _headless;
 
     if (_userDataPath != nullptr)
@@ -287,6 +293,8 @@ exitcode_t HandleCommandHost(CommandLineArgEnumerator * enumerator)
 
     gNetworkStart = NETWORK_MODE_SERVER;
     gNetworkStartPort = _port;
+    gNetworkStartAddress = _address;
+
     return EXITCODE_CONTINUE;
 }
 
@@ -389,13 +397,13 @@ static exitcode_t HandleCommandScanObjects(CommandLineArgEnumerator * enumerator
         return result;
     }
 
-    IPlatformEnvironment * env = OpenRCT2::SetupEnvironment();
-    IObjectRepository * objectRepository = CreateObjectRepository(env);
-    objectRepository->Construct();
+    // IPlatformEnvironment * env = OpenRCT2::SetupEnvironment();
+    // IObjectRepository * objectRepository = CreateObjectRepository(env);
+    // objectRepository->Construct();
     return EXITCODE_OK;
 }
 
-#if defined(__WINDOWS__) && !defined(__MINGW32__)
+#if defined(_WIN32) && !defined(__MINGW32__)
 static exitcode_t HandleCommandRegisterShell(CommandLineArgEnumerator * enumerator)
 {
     exitcode_t result = CommandLine::HandleCommandDefault();
@@ -414,7 +422,7 @@ static exitcode_t HandleCommandRegisterShell(CommandLineArgEnumerator * enumerat
     }
     return EXITCODE_OK;
 }
-#endif // defined(__WINDOWS__) && !defined(__MINGW32__)
+#endif // defined(_WIN32) && !defined(__MINGW32__)
 
 static void PrintAbout()
 {

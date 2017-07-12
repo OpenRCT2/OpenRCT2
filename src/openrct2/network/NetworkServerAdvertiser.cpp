@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -29,6 +29,7 @@ extern "C"
     #include "../localisation/date.h"
     #include "../management/finance.h"
     #include "../peep/peep.h"
+    #include "../platform/platform.h"
     #include "../util/util.h"
     #include "../world/map.h"
     #include "../world/park.h"
@@ -77,13 +78,13 @@ public:
     {
         switch (_status) {
         case ADVERTISE_STATUS_UNREGISTERED:
-            if (_lastAdvertiseTime == 0 || SDL_TICKS_PASSED(SDL_GetTicks(), _lastAdvertiseTime + MASTER_SERVER_REGISTER_TIME))
+            if (_lastAdvertiseTime == 0 || platform_get_ticks() > _lastAdvertiseTime + MASTER_SERVER_REGISTER_TIME)
             {
                 SendRegistration();
             }
             break;
         case ADVERTISE_STATUS_REGISTERED:
-            if (SDL_TICKS_PASSED(SDL_GetTicks(), _lastHeartbeatTime + MASTER_SERVER_HEARTBEAT_TIME))
+            if (platform_get_ticks() > _lastHeartbeatTime + MASTER_SERVER_HEARTBEAT_TIME)
             {
                 SendHeartbeat();
             }
@@ -97,7 +98,7 @@ public:
 private:
     void SendRegistration()
     {
-        _lastAdvertiseTime = SDL_GetTicks();
+        _lastAdvertiseTime = platform_get_ticks();
 
         // Send the registration request
         http_request_t request = { 0 };
@@ -139,7 +140,7 @@ private:
         request.root = jsonBody;
         request.type = HTTP_DATA_JSON;
 
-        _lastHeartbeatTime = SDL_GetTicks();
+        _lastHeartbeatTime = platform_get_ticks();
         http_request_async(&request, [](http_response_t *response) -> void
         {
             if (response == nullptr)

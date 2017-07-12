@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -46,8 +46,8 @@ bool GeneralSupportHeightCall::FindMostCommonSupportCall(SupportCall calls[4], S
     if (map.size() == 2) {
         for (auto &&item : map) {
             if (item.second == 3) {
-				(*out) = item.first;
-				return true;
+                (*out) = item.first;
+                return true;
             }
         }
 

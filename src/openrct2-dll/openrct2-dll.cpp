@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -18,9 +18,22 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+
 #include <windows.h>
 #include <shellapi.h>
+#undef CreateWindow
+
+#include <openrct2/audio/AudioContext.h>
+#include <openrct2/Context.h>
 #include <openrct2/OpenRCT2.h>
+#include <openrct2/ui/UiContext.h>
+#include <openrct2-ui/audio/AudioContext.h>
+#include <openrct2-ui/Ui.h>
+#include <openrct2-ui/UiContext.h>
+
+using namespace OpenRCT2;
+using namespace OpenRCT2::Audio;
+using namespace OpenRCT2::Ui;
 
 #define DLLEXPORT extern "C" __declspec(dllexport)
 
@@ -37,7 +50,8 @@ DLLEXPORT int LaunchOpenRCT2(int argc, wchar_t * * argvW)
         return -1;
     }
 
-    int exitCode = RunOpenRCT2(argc, argv);
+    int exitCode = NormalisedMain(argc, argv);
+
     FreeCommandLineArgs(argc, argv);
     return exitCode;
 }

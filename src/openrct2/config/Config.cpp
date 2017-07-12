@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -15,8 +15,10 @@
 #pragma endregion
 
 #include <memory>
+#include "../Context.h"
 #include "../core/Console.hpp"
 #include "../core/Exception.hpp"
+#include "../core/File.h"
 #include "../core/FileStream.hpp"
 #include "../core/Memory.hpp"
 #include "../core/Path.hpp"
@@ -25,6 +27,7 @@
 #include "../interface/window.h"
 #include "../network/network.h"
 #include "../OpenRCT2.h"
+#include "../ui/UiContext.h"
 #include "Config.h"
 #include "IniReader.hpp"
 #include "IniWriter.hpp"
@@ -37,6 +40,9 @@ extern "C"
     #include "../platform/platform.h"
     #include "../scenario/scenario.h"
 }
+
+using namespace OpenRCT2;
+using namespace OpenRCT2::Ui;
 
 namespace Config
 {
@@ -155,6 +161,7 @@ namespace Config
             model->window_height = reader->GetSint32("window_height", -1);
             model->window_snap_proximity = reader->GetSint32("window_snap_proximity", 5);
             model->window_width = reader->GetSint32("window_width", -1);
+            model->default_display = reader->GetSint32("default_display", 0);
             model->drawing_engine = reader->GetEnum<sint32>("drawing_engine", DRAWING_ENGINE_SOFTWARE, Enum_DrawingEngine);
             model->uncap_fps = reader->GetBoolean("uncap_fps", false);
 
@@ -171,7 +178,7 @@ namespace Config
             model->load_save_sort = reader->GetSint32("load_save_sort", SORT_NAME_ASCENDING);
             model->minimize_fullscreen_focus_loss = reader->GetBoolean("minimize_fullscreen_focus_loss", true);
 
-             //Default config setting is false until the games canvas can be separated from the effect
+            // Default config setting is false until the games canvas can be separated from the effect
             model->day_night_cycle = reader->GetBoolean("day_night_cycle", false);
 
             model->enable_light_fx = reader->GetBoolean("enable_light_fx", false);
@@ -179,7 +186,7 @@ namespace Config
             model->disable_lightning_effect = reader->GetBoolean("disable_lightning_effect", false);
             model->allow_loading_with_incorrect_checksum = reader->GetBoolean("allow_loading_with_incorrect_checksum", true);
             model->steam_overlay_pause = reader->GetBoolean("steam_overlay_pause", true);
-            model->window_scale = reader->GetFloat("window_scale", 1.0f);
+            model->window_scale = reader->GetFloat("window_scale", platform_get_default_scale());
             model->scale_quality = reader->GetSint32("scale_quality", 1);
             model->use_nn_at_integer_scales = reader->GetBoolean("use_nn_at_integer_scales", true);
             model->show_fps = reader->GetBoolean("show_fps", false);
@@ -196,6 +203,8 @@ namespace Config
             model->zoom_to_cursor = reader->GetBoolean("zoom_to_cursor", true);
             model->render_weather_effects = reader->GetBoolean("render_weather_effects", true);
             model->render_weather_gloom = reader->GetBoolean("render_weather_gloom", true);
+            model->show_guest_purchases = reader->GetBoolean("show_guest_purchases", false);
+            model->show_real_names_of_guests = reader->GetBoolean("show_real_names_of_guests", true);
         }
     }
 
@@ -228,6 +237,7 @@ namespace Config
         writer->WriteSint32("window_height", model->window_height);
         writer->WriteSint32("window_snap_proximity", model->window_snap_proximity);
         writer->WriteSint32("window_width", model->window_width);
+        writer->WriteSint32("default_display", model->default_display);
         writer->WriteEnum<sint32>("drawing_engine", model->drawing_engine, Enum_DrawingEngine);
         writer->WriteBoolean("uncap_fps", model->uncap_fps);
         writer->WriteBoolean("test_unfinished_tracks", model->test_unfinished_tracks);
@@ -263,6 +273,8 @@ namespace Config
         writer->WriteBoolean("zoom_to_cursor", model->zoom_to_cursor);
         writer->WriteBoolean("render_weather_effects", model->render_weather_effects);
         writer->WriteBoolean("render_weather_gloom", model->render_weather_gloom);
+        writer->WriteBoolean("show_guest_purchases", model->show_guest_purchases);
+        writer->WriteBoolean("show_real_names_of_guests", model->show_real_names_of_guests);
     }
 
     static void ReadInterface(IIniReader * reader)
@@ -333,9 +345,22 @@ namespace Config
     {
         if (reader->ReadSection("network"))
         {
+            // If the `player_name` setting is missing or equal to the empty string
+            // use the logged-in user's username instead
+            utf8* playerName = reader->GetCString("player_name", "");
+            if (String::IsNullOrEmpty(playerName))
+            {
+                playerName = String::Duplicate(platform_get_username());
+                if (playerName == nullptr)
+                {
+                    playerName = String::Duplicate("Player");
+                }
+            }
+
             auto model = &gConfigNetwork;
-            model->player_name = reader->GetCString("player_name", "Player");
+            model->player_name = playerName;
             model->default_port = reader->GetSint32("default_port", NETWORK_DEFAULT_PORT);
+            model->listen_address = reader->GetCString("listen_address", "");
             model->default_password = reader->GetCString("default_password", nullptr);
             model->stay_connected = reader->GetBoolean("stay_connected", true);
             model->advertise = reader->GetBoolean("advertise", true);
@@ -349,6 +374,7 @@ namespace Config
             model->provider_website = reader->GetCString("provider_website", nullptr);
             model->known_keys_only = reader->GetBoolean("known_keys_only", false);
             model->log_chat = reader->GetBoolean("log_chat", false);
+            model->log_server_actions = reader->GetBoolean("log_server_actions", false);
         }
     }
 
@@ -358,6 +384,7 @@ namespace Config
         writer->WriteSection("network");
         writer->WriteString("player_name", model->player_name);
         writer->WriteSint32("default_port", model->default_port);
+        writer->WriteString("listen_address", model->listen_address);
         writer->WriteString("default_password", model->default_password);
         writer->WriteBoolean("stay_connected", model->stay_connected);
         writer->WriteBoolean("advertise", model->advertise);
@@ -371,6 +398,7 @@ namespace Config
         writer->WriteString("provider_website", model->provider_website);
         writer->WriteBoolean("known_keys_only", model->known_keys_only);
         writer->WriteBoolean("log_chat", model->log_chat);
+        writer->WriteBoolean("log_server_actions", model->log_server_actions);
     }
 
     static void ReadNotifications(IIniReader * reader)
@@ -607,6 +635,11 @@ extern "C"
 
     bool config_open(const utf8 * path)
     {
+        if (!File::Exists(path))
+        {
+            return false;
+        }
+
         config_release();
         return Config::ReadFile(path);
     }
@@ -686,26 +719,36 @@ extern "C"
             {
                 return false;
             }
-            while (1)
+
+            try
             {
-                platform_show_messagebox("OpenRCT2 needs files from the original RollerCoaster Tycoon 2 in order to work. Please select the directory where you installed RollerCoaster Tycoon 2.");
-                utf8 * installPath = platform_open_directory_browser("Please select your RCT2 directory");
-                if (installPath == nullptr)
+                while (true)
                 {
-                    return false;
+                    IUiContext * uiContext = GetContext()->GetUiContext();
+                    uiContext->ShowMessageBox("OpenRCT2 needs files from the original RollerCoaster Tycoon 2 in order to work. Please select the directory where you installed RollerCoaster Tycoon 2.");
+
+                    std::string installPath = uiContext->ShowDirectoryDialog("Please select your RCT2 directory");
+                    if (installPath.empty())
+                    {
+                        return false;
+                    }
+
+                    Memory::Free(gConfigGeneral.rct2_path);
+                    gConfigGeneral.rct2_path = String::Duplicate(installPath.c_str());
+
+                    if (platform_original_game_data_exists(installPath.c_str()))
+                    {
+                        return true;
+                    }
+
+                    std::string message = String::StdFormat("Could not find %s" PATH_SEPARATOR "Data" PATH_SEPARATOR "g1.dat at this path", installPath.c_str());
+                    uiContext->ShowMessageBox(message);
                 }
-
-                Memory::Free(gConfigGeneral.rct2_path);
-                gConfigGeneral.rct2_path = installPath;
-
-                if (platform_original_game_data_exists(installPath))
-                {
-                    return true;
-                }
-
-                utf8 message[MAX_PATH];
-                snprintf(message, MAX_PATH, "Could not find %s" PATH_SEPARATOR "Data" PATH_SEPARATOR "g1.dat at this path", installPath);
-                platform_show_messagebox(message);
+            }
+            catch (const std::exception &ex)
+            {
+                Console::Error::WriteLine(ex.what());
+                return false;
             }
         }
         return true;

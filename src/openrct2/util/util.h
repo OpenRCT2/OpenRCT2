@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -17,6 +17,7 @@
 #ifndef _UTIL_H_
 #define _UTIL_H_
 
+#include <time.h>
 #include "../common.h"
 
 sint32 squaredmetres_to_squaredfeet(sint32 squaredMetres);
@@ -61,5 +62,7 @@ sint8 add_clamp_sint8(sint8 value, sint8 value_to_add);
 sint16 add_clamp_sint16(sint16 value, sint16 value_to_add);
 sint32 add_clamp_sint32(sint32 value, sint32 value_to_add);
 money32 add_clamp_money32(money32 value, money32 value_to_add);
+
+size_t strcatftime(char * buffer, size_t bufferSize, const char * format, const struct tm * tp);
 
 #endif

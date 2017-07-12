@@ -1,4 +1,4 @@
-#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2017 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -14,16 +14,17 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../common.h"
+#include "../config/Config.h"
 #include "../core/Console.hpp"
 #include "../core/String.hpp"
 #include "../localisation/LanguagePack.h"
 #include "Fonts.h"
 
-extern "C" {
-#include "../config/Config.h"
-#include "../drawing/drawing.h"
-#include "../localisation/language.h"
+extern "C"
+{
+    #include "../drawing/drawing.h"
+    #include "../drawing/ttf.h"
+    #include "../localisation/language.h"
 }
 
 #ifndef NO_TTF
@@ -89,7 +90,7 @@ const language_descriptor LanguagesDescriptors[LANGUAGE_COUNT] = {
     { "ru-RU", "Russian", "Russian", FONT(&TTFFontArial), RCT2_LANGUAGE_ID_ENGLISH_UK },      // LANGUAGE_RUSSIAN
     { "cs-CZ", "Czech", "Czech", FONT(&TTFFontArial), RCT2_LANGUAGE_ID_ENGLISH_UK },          // LANGUAGE_CZECH
     { "ja-JP", "Japanese", "Japanese", FONT(&TTFFontMSGothic), RCT2_LANGUAGE_ID_ENGLISH_UK }, // LANGUAGE_JAPANESE
-    { "nb-NO", "Norwegian", "Norsk", FONT_OPENRCT2_SPRITE, RCT2_LANGUAGE_ID_ENGLISH_UK },    // LANGUAGE_NORWEGIAN
+    { "nb-NO", "Norwegian", "Norsk", FONT_OPENRCT2_SPRITE, RCT2_LANGUAGE_ID_ENGLISH_UK },     // LANGUAGE_NORWEGIAN
     { "ca-ES", "Catalan", u8"Català", FONT_OPENRCT2_SPRITE, RCT2_LANGUAGE_ID_SPANISH },       // LANGUAGE_CATALAN
 };
 

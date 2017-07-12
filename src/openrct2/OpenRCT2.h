@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -19,13 +19,10 @@
 #include "common.h"
 #include "core/Guard.hpp"
 
-#ifdef __cplusplus
-extern "C"
-{
-#endif
-    #include "platform/platform.h"
-#ifdef __cplusplus
-}
+// Defining MAX_PATH temporarily until the paths below can be removed
+// Saves us from importing system headers in a header file.
+#ifndef MAX_PATH
+#define MAX_PATH 260
 #endif
 
 #ifndef DISABLE_NETWORK
@@ -39,17 +36,6 @@ enum STARTUP_ACTION
     STARTUP_ACTION_OPEN,
     STARTUP_ACTION_EDIT
 };
-
-#ifdef __cplusplus
-
-interface IPlatformEnvironment;
-
-namespace OpenRCT2
-{
-    IPlatformEnvironment * SetupEnvironment();
-}
-
-#endif
 
 #ifdef __cplusplus
 extern "C"
@@ -67,6 +53,7 @@ extern "C"
     extern utf8 gCustomRCT2DataPath[MAX_PATH];
     extern utf8 gCustomPassword[MAX_PATH];
     extern bool gOpenRCT2Headless;
+    extern bool gOpenRCT2NoGraphics;
     extern bool gOpenRCT2ShowChangelog;
 
 #ifndef DISABLE_NETWORK
@@ -77,19 +64,13 @@ extern "C"
     extern sint32 gNetworkStart;
     extern char gNetworkStartHost[128];
     extern sint32 gNetworkStartPort;
+    extern char* gNetworkStartAddress;
 #endif
 
     void openrct2_write_full_version_info(utf8 * buffer, size_t bufferSize);
-    bool openrct2_initialise();
-    void openrct2_launch();
-    void openrct2_dispose();
     void openrct2_finish();
 
     sint32 cmdline_run(const char * * argv, sint32 argc);
-
-#ifdef __WINDOWS__
-    int RunOpenRCT2(int argc, char * * argv);
-#endif
 
 #ifdef __cplusplus
 }

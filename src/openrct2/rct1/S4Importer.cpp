@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -26,7 +26,9 @@
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
 #include "../core/Util.hpp"
+#include "../object/Object.h"
 #include "../object/ObjectManager.h"
+#include "../object/ObjectRepository.h"
 #include "../ParkImporter.h"
 #include "../scenario/ScenarioSources.h"
 #include "Tables.h"
@@ -98,6 +100,7 @@ private:
     const utf8 * _s4Path = nullptr;
     rct1_s4      _s4 = { 0 };
     uint8        _gameVersion = 0;
+    uint8        _parkValueConversionFactor = 0;
 
     // Lists of dynamic object entries
     EntryList _rideEntries;
@@ -124,16 +127,16 @@ private:
     uint8 _researchRideTypeUsed[128];
 
 public:
-    void Load(const utf8 * path) override
+    ParkLoadResult Load(const utf8 * path) override
     {
         const utf8 * extension = Path::GetExtension(path);
         if (String::Equals(extension, ".sc4", true))
         {
-            LoadScenario(path);
+            return LoadScenario(path);
         }
         else if (String::Equals(extension, ".sv4", true))
         {
-            LoadSavedGame(path);
+            return LoadSavedGame(path);
         }
         else
         {
@@ -141,21 +144,23 @@ public:
         }
     }
 
-    void LoadSavedGame(const utf8 * path) override
+    ParkLoadResult LoadSavedGame(const utf8 * path, bool skipObjectCheck = false) override
     {
         auto fs = FileStream(path, FILE_MODE_OPEN);
-        LoadFromStream(&fs, false);
+        auto result = LoadFromStream(&fs, false, skipObjectCheck);
         _s4Path = path;
+        return result;
     }
 
-    void LoadScenario(const utf8 * path) override
+    ParkLoadResult LoadScenario(const utf8 * path, bool skipObjectCheck = false) override
     {
         auto fs = FileStream(path, FILE_MODE_OPEN);
-        LoadFromStream(&fs, true);
+        auto result = LoadFromStream(&fs, true, skipObjectCheck);
         _s4Path = path;
+        return result;
     }
 
-    void LoadFromStream(IStream * stream, bool isScenario) override
+    ParkLoadResult LoadFromStream(IStream * stream, bool isScenario, bool skipObjectCheck = false) override
     {
         size_t dataSize = stream->GetLength() - stream->GetPosition();
         std::unique_ptr<uint8> data = std::unique_ptr<uint8>(stream->ReadArray<uint8>(dataSize));
@@ -176,11 +181,24 @@ public:
         {
             Memory::Copy<void>(&_s4, decodedData.get(), sizeof(rct1_s4));
             _s4Path = "";
+
+            if (!skipObjectCheck)
+            {
+                InitialiseEntryMaps();
+                CreateAvailableObjectMappings();
+
+                auto missingObjects = GetInvalidObjects();
+                if (missingObjects.size() > 0)
+                {
+                    return ParkLoadResult::CreateMissingObjects(missingObjects);
+                }
+            }
         }
         else
         {
             throw Exception("Unable to decode park.");
         }
+        return ParkLoadResult::CreateOK();
     }
 
     void Import() override
@@ -259,25 +277,40 @@ public:
         return result;
     }
 
-    sint32 CorrectRCT1ParkValue(sint32 oldParkValue)
+    sint32 CorrectRCT1ParkValue(money32 oldParkValue)
     {
-        return oldParkValue * 10;
+        if (oldParkValue == MONEY32_UNDEFINED)
+        {
+            return MONEY32_UNDEFINED;
+        }
+
+        if (_parkValueConversionFactor == 0)
+        {
+            if (_s4.park_value != 0)
+            {
+                // Use the ratio between the old and new park value to calcute the ratio to
+                // use for the park value history and the goal.
+                _parkValueConversionFactor = (calculate_park_value() * 10) / _s4.park_value;
+            }
+            else
+            {
+                // In new games, the park value isn't set.
+                _parkValueConversionFactor = 100;
+
+            }
+        }
+
+        return (oldParkValue * _parkValueConversionFactor) / 10;
     }
 
 private:
     void Initialise()
     {
         _gameVersion = sawyercoding_detect_rct1_version(_s4.game_version) & FILE_VERSION_MASK;
+        // Avoid reusing the value used for last import
+        _parkValueConversionFactor = 0;
 
-        Memory::Set(_rideTypeToRideEntryMap,     255, sizeof(_rideTypeToRideEntryMap));
-        Memory::Set(_vehicleTypeToRideEntryMap,  255, sizeof(_vehicleTypeToRideEntryMap));
-        Memory::Set(_smallSceneryTypeToEntryMap, 255, sizeof(_smallSceneryTypeToEntryMap));
-        Memory::Set(_largeSceneryTypeToEntryMap, 255, sizeof(_largeSceneryTypeToEntryMap));
-        Memory::Set(_wallTypeToEntryMap,         255, sizeof(_wallTypeToEntryMap));
-        Memory::Set(_pathTypeToEntryMap,         255, sizeof(_pathTypeToEntryMap));
-        Memory::Set(_pathAdditionTypeToEntryMap, 255, sizeof(_pathAdditionTypeToEntryMap));
-        Memory::Set(_sceneryThemeTypeToEntryMap, 255, sizeof(_sceneryThemeTypeToEntryMap));
-
+        InitialiseEntryMaps();
         uint16 mapSize = _s4.map_size == 0 ? 128 : _s4.map_size;
 
         // Do map initialisation, same kind of stuff done when loading scenario editor
@@ -286,6 +319,18 @@ private:
         gS6Info.editor_step = EDITOR_STEP_OBJECT_SELECTION;
         gParkFlags |= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
         gS6Info.category = SCENARIO_CATEGORY_OTHER;
+    }
+
+    void InitialiseEntryMaps()
+    {
+        Memory::Set(_rideTypeToRideEntryMap, 255, sizeof(_rideTypeToRideEntryMap));
+        Memory::Set(_vehicleTypeToRideEntryMap, 255, sizeof(_vehicleTypeToRideEntryMap));
+        Memory::Set(_smallSceneryTypeToEntryMap, 255, sizeof(_smallSceneryTypeToEntryMap));
+        Memory::Set(_largeSceneryTypeToEntryMap, 255, sizeof(_largeSceneryTypeToEntryMap));
+        Memory::Set(_wallTypeToEntryMap, 255, sizeof(_wallTypeToEntryMap));
+        Memory::Set(_pathTypeToEntryMap, 255, sizeof(_pathTypeToEntryMap));
+        Memory::Set(_pathAdditionTypeToEntryMap, 255, sizeof(_pathAdditionTypeToEntryMap));
+        Memory::Set(_sceneryThemeTypeToEntryMap, 255, sizeof(_sceneryThemeTypeToEntryMap));
     }
 
     /**
@@ -468,7 +513,7 @@ private:
             std::vector<const char *> objects = RCT1::GetSceneryObjects(sceneryTheme);
             for (const char * objectName : objects)
             {
-                rct_object_entry * foundEntry = object_list_find_by_name(objectName);
+                const rct_object_entry * foundEntry = object_list_find_by_name(objectName);
                 if (foundEntry != nullptr)
                 {
                     uint8 objectType = foundEntry->flags & 0x0F;
@@ -675,7 +720,7 @@ private:
             std::string rideName = GetUserString(src->name);
             if (!rideName.empty())
             {
-                rct_string_id rideNameStringId = user_string_allocate(4, rideName.c_str());
+                rct_string_id rideNameStringId = user_string_allocate(USER_STRING_HIGH_ID_NUMBER, rideName.c_str());
                 if (rideNameStringId != 0)
                 {
                     dst->name = rideNameStringId;
@@ -684,11 +729,7 @@ private:
         }
         if (dst->name == 0)
         {
-            dst->name = 1;
-
-            uint16 * args = (uint16*)&dst->name_arguments;
-            args[0] = 2 + dst->type;
-            args[1] = src->name_argument_number;
+            ride_set_name_to_default(dst, rideEntry);
         }
 
         dst->status = src->status;
@@ -728,7 +769,7 @@ private:
         {
             dst->vehicles[i] = src->vehicles[i];
         }
-        for (sint32 i = RCT1_MAX_TRAINS_PER_RIDE; i < 32; i++)
+        for (sint32 i = RCT1_MAX_TRAINS_PER_RIDE; i < MAX_VEHICLES_PER_RIDE; i++)
         {
             dst->vehicles[i] = SPRITE_INDEX_NULL;
         }
@@ -889,7 +930,7 @@ private:
         }
         else
         {
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < RCT12_NUM_COLOUR_SCHEMES; i++)
             {
                 dst->track_colour_main[i] = RCT1::GetColour(src->track_colour_main[i]);
                 dst->track_colour_additional[i] = RCT1::GetColour(src->track_colour_additional[i]);
@@ -1087,8 +1128,8 @@ private:
         dst->var_BF = src->var_BF;
         dst->var_B6 = src->var_B6;
         dst->var_B8 = src->var_B8;
-        dst->sound1_id = 0xFF;
-        dst->sound2_id = 0xFF;
+        dst->sound1_id = RCT12_SOUND_ID_NULL;
+        dst->sound2_id = RCT12_SOUND_ID_NULL;
         dst->var_C0 = src->var_C0;
         dst->var_C4 = src->var_C4;
         dst->var_C5 = src->var_C5;
@@ -1286,7 +1327,7 @@ private:
             std::string peepName = GetUserString(src->name_string_idx);
             if (!peepName.empty())
             {
-                rct_string_id peepNameStringId = user_string_allocate(4, peepName.c_str());
+                rct_string_id peepNameStringId = user_string_allocate(USER_STRING_HIGH_ID_NUMBER, peepName.c_str());
                 if (peepNameStringId != 0)
                 {
                     dst->name_string_idx = peepNameStringId;
@@ -1355,7 +1396,7 @@ private:
         dst->time_on_ride = src->time_on_ride;
         dst->days_in_queue = src->days_in_queue;
 
-        dst->interactionRideIndex = src->interactionRideIndex;
+        dst->interaction_ride_index = src->interaction_ride_index;
 
         dst->id = src->id;
         dst->cash_in_pocket = src->cash_in_pocket;
@@ -1417,9 +1458,16 @@ private:
 
         peep_update_name_sort(dst);
 
-        if (!dst->outside_of_park && dst->type == PEEP_TYPE_GUEST)
+        if (dst->type == PEEP_TYPE_GUEST)
         {
-            gNumGuestsInPark++;
+            if (dst->outside_of_park && dst->state != PEEP_STATE_LEAVING_PARK)
+            {
+                increment_guests_heading_for_park();
+            }
+            else
+            {
+                increment_guests_in_park();
+            }
         }
     }
 
@@ -1618,11 +1666,11 @@ private:
         for (size_t i = 0; i < 128; i++)
         {
             gCashHistory[i] = _s4.cash_history[i];
-            gParkValueHistory[i] = _s4.park_value_history[i];
+            gParkValueHistory[i] = CorrectRCT1ParkValue(_s4.park_value_history[i]);
             gWeeklyProfitHistory[i] = _s4.weekly_profit_history[i];
         }
 
-        for (size_t i = 0; i < 14 * 16; i++)
+        for (size_t i = 0; i < EXPENDITURE_TABLE_TOTAL_COUNT; i++)
         {
             gExpenditureTable[i] = _s4.expenditure[i];
         }
@@ -1688,6 +1736,61 @@ private:
             }
 
             entryIndex++;
+        }
+    }
+
+    std::vector<rct_object_entry> GetInvalidObjects()
+    {
+        std::vector<rct_object_entry> missingObjects;
+        GetInvalidObjects(OBJECT_TYPE_RIDE, _rideEntries.GetEntries(), missingObjects);
+        GetInvalidObjects(OBJECT_TYPE_SMALL_SCENERY, _smallSceneryEntries.GetEntries(), missingObjects);
+        GetInvalidObjects(OBJECT_TYPE_LARGE_SCENERY, _largeSceneryEntries.GetEntries(), missingObjects);
+        GetInvalidObjects(OBJECT_TYPE_WALLS, _wallEntries.GetEntries(), missingObjects);
+        GetInvalidObjects(OBJECT_TYPE_PATHS, _pathEntries.GetEntries(), missingObjects);
+        GetInvalidObjects(OBJECT_TYPE_PATH_BITS, _pathAdditionEntries.GetEntries(), missingObjects);
+        GetInvalidObjects(OBJECT_TYPE_SCENERY_SETS, _sceneryGroupEntries.GetEntries(), missingObjects);
+        GetInvalidObjects(OBJECT_TYPE_BANNERS, std::vector<const char *>({
+            "BN1     ",
+            "BN2     ",
+            "BN3     ",
+            "BN4     ",
+            "BN5     ",
+            "BN6     ",
+            "BN7     ",
+            "BN8     ",
+            "BN9     "
+        }), missingObjects);
+        GetInvalidObjects(OBJECT_TYPE_PARK_ENTRANCE, std::vector<const char *>({ "PKENT1  " }), missingObjects);
+        GetInvalidObjects(OBJECT_TYPE_WATER, _waterEntry.GetEntries(), missingObjects);
+        return missingObjects;
+    }
+
+    void GetInvalidObjects(uint8 objectType, const std::vector<const char *> &entries, std::vector<rct_object_entry> &missingObjects)
+    {
+        IObjectRepository * objectRepository = GetObjectRepository();
+        for (const char * objectName : entries)
+        {
+            rct_object_entry entry;
+            entry.flags = 0x00008000 + objectType;
+            Memory::Copy(entry.name, objectName, 8);
+            entry.checksum = 0;
+            
+            const ObjectRepositoryItem * ori = objectRepository->FindObject(&entry);
+            if (ori == nullptr)
+            {
+                missingObjects.push_back(entry);
+                Console::Error::WriteLine("[%s] Object not found.", objectName);
+            }
+            else
+            {
+                Object * object = objectRepository->LoadObject(ori);
+                if (object == nullptr && objectType != OBJECT_TYPE_SCENERY_SETS)
+                {
+                    missingObjects.push_back(entry);
+                    Console::Error::WriteLine("[%s] Object could not be loaded.", objectName);
+                }
+                delete object;
+            }
         }
     }
 
@@ -1792,7 +1895,7 @@ private:
                 {
                     // No vehicles found so just add the default for this ride
                     uint8 rideEntryIndex = _rideTypeToRideEntryMap[rct1RideType];
-                    Guard::Assert(rideEntryIndex != 255, "rideEntryIndex was 255");
+                    Guard::Assert(rideEntryIndex != RIDE_ENTRY_INDEX_NULL, "rideEntryIndex was RIDE_ENTRY_INDEX_NULL");
                     if (!_researchRideEntryUsed[rideEntryIndex])
                     {
                         _researchRideEntryUsed[rideEntryIndex] = true;
@@ -1880,7 +1983,7 @@ private:
             }
         }
 
-        rct_string_id stringId = user_string_allocate(4, parkName.c_str());
+        rct_string_id stringId = user_string_allocate(USER_STRING_HIGH_ID_NUMBER, parkName.c_str());
         if (stringId != 0)
         {
             gParkName = stringId;
@@ -2331,7 +2434,7 @@ private:
             std::string bannerText = GetUserString(src->string_idx);
             if (!bannerText.empty())
             {
-                rct_string_id bannerTextStringId = user_string_allocate(128, bannerText.c_str());
+                rct_string_id bannerTextStringId = user_string_allocate(USER_STRING_DUPLICATION_PERMITTED, bannerText.c_str());
                 if (bannerTextStringId != 0)
                 {
                     dst->string_idx = bannerTextStringId;
@@ -2534,39 +2637,43 @@ IParkImporter * ParkImporter::CreateS4()
 /////////////////////////////////////////
 extern "C"
 {
-    bool rct1_load_saved_game(const utf8 * path)
+    ParkLoadResult * rct1_load_saved_game(const utf8 * path)
     {
-        bool result;
-
-        auto s4Importer = new S4Importer();
+        ParkLoadResult * result = nullptr;
+        auto s4Importer = std::make_unique<S4Importer>();
         try
         {
-            s4Importer->LoadSavedGame(path);
-            s4Importer->Import();
-            result = true;
-        } catch (const Exception &)
-        {
-            result = false;
+            result = new ParkLoadResult(s4Importer->LoadSavedGame(path));
+            if (result->Error == PARK_LOAD_ERROR_OK)
+            {
+                s4Importer->Import();
+            }
         }
-        delete s4Importer;
+        catch (const Exception &)
+        {
+            delete result;
+            result = new ParkLoadResult(ParkLoadResult::CreateUnknown());
+        }
         return result;
     }
 
-    bool rct1_load_scenario(const utf8 * path)
+    ParkLoadResult * rct1_load_scenario(const utf8 * path)
     {
-        bool result;
-
-        auto s4Importer = new S4Importer();
+        ParkLoadResult * result = nullptr;
+        auto s4Importer = std::make_unique<S4Importer>();
         try
         {
-            s4Importer->LoadScenario(path);
-            s4Importer->Import();
-            result = true;
-        } catch (const Exception &)
-        {
-            result = false;
+            result = new ParkLoadResult(s4Importer->LoadScenario(path));
+            if (result->Error == PARK_LOAD_ERROR_OK)
+            {
+                s4Importer->Import();
+            }
         }
-        delete s4Importer;
+        catch (const Exception &)
+        {
+            delete result;
+            result = new ParkLoadResult(ParkLoadResult::CreateUnknown());
+        }
         return result;
     }
 

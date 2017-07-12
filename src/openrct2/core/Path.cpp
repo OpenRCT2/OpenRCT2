@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -14,6 +14,10 @@
  *****************************************************************************/
 #pragma endregion
 
+#ifndef _WIN32
+    #include <dirent.h>
+#endif
+
 extern "C"
 {
     #include "../platform/platform.h"
@@ -21,6 +25,7 @@ extern "C"
     #include "../util/util.h"
 }
 
+#include "File.h"
 #include "Math.hpp"
 #include "Memory.hpp"
 #include "Path.hpp"
@@ -44,7 +49,10 @@ namespace Path
 
     std::string GetDirectory(const std::string &path)
     {
-        return GetDirectory(path.c_str());
+        const utf8* directory = GetDirectory(path.c_str());
+        std::string result(directory);
+        Memory::Free(directory);
+        return result;
     }
 
     utf8 * GetDirectory(const utf8 * path)
@@ -85,7 +93,7 @@ namespace Path
             {
                 lastPathSeperator = ch;
             }
-#ifdef __WINDOWS__
+#ifdef _WIN32
             // Windows also allows forward slashes in paths
             else if (*ch == '/')
             {
@@ -171,7 +179,7 @@ namespace Path
 
     utf8 * GetAbsolute(utf8 *buffer, size_t bufferSize, const utf8 * relativePath)
     {
-#ifdef __WINDOWS__
+#ifdef _WIN32
         wchar_t * relativePathW = utf8_to_widechar(relativePath);
         wchar_t   absolutePathW[MAX_PATH];
         DWORD length = GetFullPathNameW(relativePathW, (DWORD)Util::CountOf(absolutePathW), absolutePathW, NULL);
@@ -210,9 +218,50 @@ namespace Path
     bool Equals(const utf8 * a, const utf8 * b)
     {
         bool ignoreCase = false;
-#ifdef __WINDOWS__
+#ifdef _WIN32
         ignoreCase = true;
 #endif
         return String::Equals(a, b, ignoreCase);
+    }
+
+    std::string ResolveCasing(const std::string &path)
+    {
+        std::string result;
+        if (File::Exists(path))
+        {
+            // Windows is case insensitive so it will exist and that is all that matters
+            // for now. We can properly resolve the casing if we ever need to.
+            result = path;
+        }
+#ifndef _WIN32
+        else
+        {
+            std::string fileName = Path::GetFileName(path);
+            std::string directory = Path::GetDirectory(path);
+
+            struct dirent * * files;
+            auto count = scandir(directory.c_str(), &files, nullptr, alphasort);
+            if (count != -1)
+            {
+                // Find a file which matches by name (case insensitive)
+                for (sint32 i = 0; i < count; i++)
+                {
+                    if (String::Equals(files[i]->d_name, fileName.c_str(), true))
+                    {
+                        result = Path::Combine(directory, std::string(files[i]->d_name));
+                        break;
+                    }
+                }
+
+                // Free memory
+                for (sint32 i = 0; i < count; i++)
+                {
+                    free(files[i]);
+                }
+                free(files);
+            }
+        }
+#endif
+        return result;
     }
 }
