@@ -214,8 +214,10 @@ static void park_entrance_paint(uint8 direction, sint32 height, rct_map_element*
 
     switch (part_index){
     case 0:
-        image_id = (path_entry->image + 5 * (1 + (direction & 1))) | ghost_id;
-            sub_98197C(image_id, 0, 0, 32, 0x1C, 0, height, 0, 2, height, get_current_rotation());
+        if (path_entry != (void*)-1) {
+            image_id = (path_entry->image + 5 * (1 + (direction & 1))) | ghost_id;
+                sub_98197C(image_id, 0, 0, 32, 0x1C, 0, height, 0, 2, height, get_current_rotation());
+        }
 
         entrance = (rct_entrance_type*)object_entry_groups[OBJECT_TYPE_PARK_ENTRANCE].chunks[0];
         image_id = (entrance->image_id + direction * 3) | ghost_id;

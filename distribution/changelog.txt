@@ -1,6 +1,9 @@
 0.1.1 (in development)
 ------------------------------------------------------------------------
 
+- Fix: [#3589] Crash due to invalid footpathEntry in path_paint
+- Fix: [#4931] Crash in path_paint - footpathentry was null
+
 0.1.0 (2017-07-12)
 ------------------------------------------------------------------------
 - Feature: [#1399 (partial), #5177] Add window that displays any missing/corrupt objects when loading a park

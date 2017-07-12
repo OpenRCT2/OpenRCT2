@@ -765,12 +765,15 @@ void path_paint(uint8 direction, uint16 height, rct_map_element * map_element)
     }
 
     uint8 pathType = (map_element->properties.path.type & 0xF0) >> 4;
-    rct_footpath_entry * footpathEntry = gFootpathEntries[pathType];
+    rct_footpath_entry * footpathEntry = get_footpath_entry(pathType);
 
-    if (footpathEntry->support_type == FOOTPATH_ENTRY_SUPPORT_TYPE_POLE) {
-        path_paint_pole_support(map_element, height, footpathEntry, word_F3F038, imageFlags, sceneryImageFlags);
-    } else {
-        path_paint_box_support(map_element, height, footpathEntry, word_F3F038, imageFlags, sceneryImageFlags);
+    if (footpathEntry != (void*)-1) {
+        if (footpathEntry->support_type == FOOTPATH_ENTRY_SUPPORT_TYPE_POLE) {
+            path_paint_pole_support(map_element, height, footpathEntry, word_F3F038, imageFlags, sceneryImageFlags);
+        }
+        else {
+            path_paint_box_support(map_element, height, footpathEntry, word_F3F038, imageFlags, sceneryImageFlags);
+        }
     }
 
 #ifdef __ENABLE_LIGHTFX__
