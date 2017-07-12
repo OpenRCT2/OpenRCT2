@@ -59,11 +59,16 @@ void main()
     {
         texel = uPalette[texture(uTexture, vec3(fTexColourCoords, float(fTexColourAtlas))).r];
     }
-    vec4 mask = uPalette[texture(uTexture, vec3(fTexMaskCoords, float(fTexMaskAtlas))).r];
 
     if (fMask != 0)
     {
-        oColour = texel * mask;
+        float mask = texture(uTexture, vec3(fTexMaskCoords, float(fTexMaskAtlas))).r;
+        if ( mask == 0.0 )
+        {
+            discard;
+        }
+
+        oColour = texel;
     }
     else
     {
