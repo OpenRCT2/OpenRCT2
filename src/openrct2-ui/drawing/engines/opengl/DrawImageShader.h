@@ -34,6 +34,14 @@ struct DrawImageInstance {
     vec4f colour;
     vec4i bounds;
     sint32 mask;
+
+    enum
+    {
+        FLAG_COLOUR              = (1 << 0),
+        FLAG_REMAP               = (1 << 1),
+        FLAG_TRANSPARENT         = (1 << 2),
+        FLAG_TRANSPARENT_SPECIAL = (1 << 3),
+    };
 };
 
 class DrawImageShader final : public OpenGLShaderProgram

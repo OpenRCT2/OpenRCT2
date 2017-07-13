@@ -786,14 +786,6 @@ void OpenGLDrawingContext::DrawSprite(uint32 image, sint32 x, sint32 y, uint32 t
 
     DrawImageCommand command;
 
-    command.flags = special << 2;
-    if (image & IMAGE_TYPE_TRANSPARENT) {
-        command.flags |= (1 << 3);
-    }
-    else if (image & (IMAGE_TYPE_REMAP_2_PLUS | IMAGE_TYPE_REMAP)) {
-        command.flags |= (1 << 1);
-    }
-
     command.clip = { _clipLeft, _clipTop, _clipRight, _clipBottom };
     command.texColourAtlas = texture.index;
     command.texColourBounds = texture.normalizedBounds;
@@ -809,6 +801,21 @@ void OpenGLDrawingContext::DrawSprite(uint32 image, sint32 x, sint32 y, uint32 t
     command.colour = { 0.0f, 0.0f, 0.0f };
     command.bounds = { left, top, right, bottom };
     command.mask = 0;
+    command.flags = 0;
+
+    if (special)
+    {
+        command.flags |= DrawImageCommand::FLAG_TRANSPARENT_SPECIAL;
+    }
+
+    if (image & IMAGE_TYPE_TRANSPARENT)
+    {
+        command.flags |= DrawImageCommand::FLAG_TRANSPARENT;
+    }
+    else if (image & (IMAGE_TYPE_REMAP_2_PLUS | IMAGE_TYPE_REMAP))
+    {
+        command.flags |= DrawImageCommand::FLAG_REMAP;
+    }
 
     _commandBuffers.images.emplace_back(std::move(command));
 }
@@ -921,7 +928,7 @@ void OpenGLDrawingContext::DrawSpriteSolid(uint32 image, sint32 x, sint32 y, uin
         (texture.normalizedBounds.z - texture.normalizedBounds.x) / (float)(texture.bounds.z - texture.bounds.x),
         (texture.normalizedBounds.w - texture.normalizedBounds.y) / (float)(texture.bounds.w - texture.bounds.y)
     };
-    command.flags = 1;
+    command.flags = DrawImageCommand::FLAG_COLOUR;
     command.colour = paletteColour;
     command.bounds = { left, top, right, bottom };
     command.mask = 0;
