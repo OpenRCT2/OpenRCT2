@@ -82,6 +82,7 @@ Includes all git commit authors. Aliases are GitHub user names.
 * (ceeac)
 * Matthias Moninger (Zeh Matt)
 * Tomas Dittmann (Chaosmeister)
+* William Wallace (Willox)
 
 ## Toolchain
 * (Balletie) - macOS
