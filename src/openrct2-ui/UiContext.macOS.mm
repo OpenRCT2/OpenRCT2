@@ -118,14 +118,14 @@ namespace OpenRCT2 { namespace Ui
                 panel.canChooseFiles = false;
                 panel.canChooseDirectories = true;
                 panel.allowsMultipleSelection = false;
-                utf8 *url = NULL;
                 if ([panel runModal] == NSFileHandlingPanelOKButton)
                 {
                     NSString *selectedPath = panel.URL.path;
                     const char *path = selectedPath.UTF8String;
-                    url = _strdup(path);
+                    return path;
+                } else {
+                    return "";
                 }
-                return url;
             }
         }
 
