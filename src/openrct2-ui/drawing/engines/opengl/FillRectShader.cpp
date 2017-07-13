@@ -43,8 +43,6 @@ FillRectShader::~FillRectShader()
 {
     glDeleteBuffers(1, &_vbo);
     glDeleteVertexArrays(1, &_vao);
-
-    glBindVertexArray(_vao);
 }
 
 void FillRectShader::GetLocations()

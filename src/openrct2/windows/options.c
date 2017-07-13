@@ -639,7 +639,7 @@ static void window_options_mouseup(rct_window *w, rct_widgetindex widgetIndex)
             break;
         case WIDX_MINIMIZE_FOCUS_LOSS:
             gConfigGeneral.minimize_fullscreen_focus_loss ^= 1;
-            platform_refresh_video();
+            platform_refresh_video(false);
             config_save_default();
             window_invalidate(w);
             break;
@@ -1308,11 +1308,8 @@ static void window_options_dropdown(rct_window *w, rct_widgetindex widgetIndex, 
                 sint32 dstEngine = dropdownIndex;
 
                 gConfigGeneral.drawing_engine = (uint8)dstEngine;
-                if (drawing_engine_requires_restart(srcEngine, dstEngine)) {
-                    window_error_open(STR_RESTART_REQUIRED, STR_NONE);
-                } else {
-                    platform_refresh_video();
-                }
+                bool recreate_window = drawing_engine_requires_new_window(srcEngine, dstEngine);
+                platform_refresh_video(recreate_window);
                 config_save_default();
                 window_invalidate(w);
             }

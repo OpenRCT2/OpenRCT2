@@ -152,11 +152,19 @@ void platform_toggle_windowed_mode()
     config_save_default();
 }
 
-void platform_refresh_video()
+void platform_refresh_video(bool recreate_window)
 {
-    drawing_engine_dispose();
-    drawing_engine_init();
-    drawing_engine_resize();
+    if (recreate_window)
+    {
+        context_recreate_window();
+    }
+    else
+    {
+        drawing_engine_dispose();
+        drawing_engine_init();
+        drawing_engine_resize();
+    }
+
     drawing_engine_set_palette(gPalette);
     gfx_invalidate_screen();
 }
