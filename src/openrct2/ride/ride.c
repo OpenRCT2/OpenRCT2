@@ -3149,6 +3149,8 @@ static sint32 ride_get_unused_preset_vehicle_colour(uint8 ride_type, uint8 ride_
         return 0;
     }
     vehicle_colour_preset_list *presetList = rideEntry->vehicle_preset_list;
+    if (presetList->count == 0)
+        return 0;
     if (presetList->count == 255)
         return 255;
 
@@ -3173,7 +3175,7 @@ static void ride_set_vehicle_colours_to_random_preset(rct_ride *ride, uint8 pres
     rct_ride_entry *rideEntry = get_ride_entry(ride->subtype);
     vehicle_colour_preset_list *presetList = rideEntry->vehicle_preset_list;
 
-    if (presetList->count != 255) {
+    if (presetList->count != 0 && presetList->count != 255) {
         assert(preset_index < presetList->count);
 
         ride->colour_scheme_type = RIDE_COLOUR_SCHEME_ALL_SAME;
@@ -3183,7 +3185,8 @@ static void ride_set_vehicle_colours_to_random_preset(rct_ride *ride, uint8 pres
         ride->vehicle_colours_extended[0] = preset->additional_2;
     } else {
         ride->colour_scheme_type = RIDE_COLOUR_SCHEME_DIFFERENT_PER_TRAIN;
-        for (sint32 i = 0; i < 32; i++) {
+        sint32 count = min(presetList->count, 32);
+        for (sint32 i = 0; i < count; i++) {
             vehicle_colour *preset = &presetList->list[i];
             ride->vehicle_colours[i].body_colour = preset->main;
             ride->vehicle_colours[i].trim_colour = preset->additional_1;
@@ -5897,16 +5900,17 @@ static sint32 ride_get_random_colour_preset_index(uint8 ride_type)
  *
  *  Based on rct2: 0x006B4776
  */
-static void ride_set_colour_preset(rct_ride *ride, uint8 index) {
-    const track_colour_preset_list *colourPresets;
-    const track_colour *colours;
-
-    colourPresets = &RideColourPresets[ride->type];
-    colours = &colourPresets->list[index];
+static void ride_set_colour_preset(rct_ride *ride, uint8 index)
+{
+    const track_colour_preset_list * colourPresets = &RideColourPresets[ride->type];
+    track_colour colours = { COLOUR_BLACK, COLOUR_BLACK, COLOUR_BLACK };
+    if (index < colourPresets->count) {
+        colours = colourPresets->list[index];
+    }
     for (sint32 i = 0; i < RCT12_MAX_STATIONS_PER_RIDE; i++) {
-        ride->track_colour_main[i] = colours->main;
-        ride->track_colour_additional[i] = colours->additional;
-        ride->track_colour_supports[i] = colours->supports;
+        ride->track_colour_main[i] = colours.main;
+        ride->track_colour_additional[i] = colours.additional;
+        ride->track_colour_supports[i] = colours.supports;
     }
     ride->colour_scheme_type = 0;
 }
