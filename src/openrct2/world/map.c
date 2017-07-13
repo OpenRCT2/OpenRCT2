@@ -2220,18 +2220,10 @@ static money32 smooth_land(sint32 flags, sint32 centreX, sint32 centreY, sint32 
         if (commandType == GAME_COMMAND_RAISE_LAND) {
             minHeight += 2;
             maxHeight += 2;
-            if (minHeight > MAXIMUM_LAND_HEIGHT) {
-                gGameCommandErrorText = STR_TOO_HIGH;
-                return MONEY32_UNDEFINED;
-            }
         }
         else {
             maxHeight -= 2;
             minHeight -= 2;
-            if (maxHeight < MINIMUM_LAND_HEIGHT) {
-                gGameCommandErrorText = STR_TOO_LOW;
-                return MONEY32_UNDEFINED;
-            }
         }
     }
     else
@@ -2245,10 +2237,6 @@ static money32 smooth_land(sint32 flags, sint32 centreX, sint32 centreY, sint32 
                 newBaseZ += 2;
                 newSlope &= ~0x20;
             }
-			if (map_get_corner_height(newBaseZ, newSlope, command & 0xFF) > MAXIMUM_LAND_HEIGHT) {
-				gGameCommandErrorText = STR_TOO_HIGH;
-				return MONEY32_UNDEFINED;
-			}
         }
         else {
             newSlope = map_element_lower_styles[command & 0xFF][newSlope];
@@ -2256,10 +2244,6 @@ static money32 smooth_land(sint32 flags, sint32 centreX, sint32 centreY, sint32 
                 newBaseZ -= 2;
                 newSlope &= ~0x20;
             }
-			if (newBaseZ < MINIMUM_LAND_HEIGHT) {
-				gGameCommandErrorText = STR_TOO_LOW;
-				return MONEY32_UNDEFINED;
-			}
         }
     }
 
@@ -2456,6 +2440,8 @@ static money32 smooth_land(sint32 flags, sint32 centreX, sint32 centreY, sint32 
     result = game_do_command(centreX, flags, centreY, mapLeftRight, commandType, command & 0x7FFF, mapTopBottom);
     if (result != MONEY32_UNDEFINED) {
         totalCost += result;
+    } else {
+        return MONEY32_UNDEFINED;
     }
 
     gCommandExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
