@@ -786,6 +786,14 @@ void OpenGLDrawingContext::DrawSprite(uint32 image, sint32 x, sint32 y, uint32 t
 
     DrawImageCommand command;
 
+    command.flags = special << 2;
+    if (image & IMAGE_TYPE_TRANSPARENT) {
+        command.flags |= (1 << 3);
+    }
+    else if (image & (IMAGE_TYPE_REMAP_2_PLUS | IMAGE_TYPE_REMAP)) {
+        command.flags |= (1 << 1);
+    }
+
     command.clip = { _clipLeft, _clipTop, _clipRight, _clipBottom };
     command.texColourAtlas = texture.index;
     command.texColourBounds = texture.normalizedBounds;
@@ -798,7 +806,6 @@ void OpenGLDrawingContext::DrawSprite(uint32 image, sint32 x, sint32 y, uint32 t
         (texture2.normalizedBounds.z - texture2.normalizedBounds.x) / (float)(texture2.bounds.z - texture2.bounds.x),
         (texture2.normalizedBounds.w - texture2.normalizedBounds.y) / (float)(texture2.bounds.w - texture2.bounds.y)
     };
-    command.flags = (!!(image & IMAGE_TYPE_TRANSPARENT) << 3) | (!!(image & (IMAGE_TYPE_REMAP_2_PLUS | IMAGE_TYPE_REMAP)) << 1) | (special << 2);
     command.colour = { 0.0f, 0.0f, 0.0f };
     command.bounds = { left, top, right, bottom };
     command.mask = 0;
