@@ -7,6 +7,7 @@
 - Fix: [#5858] Crash when using custom ride with no colour presets.
 - Fix: [#5872] Incorrect OpenGL rendering of masked sprites
 - Improved: [#5859] OpenGL rendering performance
+- Improved: [#5863] Switching drawing engines no longer requires the application to restart.
 
 0.1.0 (2017-07-12)
 ------------------------------------------------------------------------
