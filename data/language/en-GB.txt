@@ -535,7 +535,7 @@ STR_0530    :Cars hang from a steel cable which runs continuously from one end o
 STR_0531    :A compact steel-tracked roller coaster where the train travels through corkscrews and loops
 STR_0532    :Maze is constructed from 6-foot tall hedges or walls, and guests wander around the maze leaving only when they find the exit
 STR_0533    :Wooden building with an internal staircase and an external spiral slide for use with slide mats
-STR_0534    :Self-drive petrol-engined go karts
+STR_0534    :Self-drive petrol-engine go karts
 STR_0535    :Log-shaped boats travel along a water channel, splashing down steep slopes to soak the riders
 STR_0536    :Circular boats meander along a wide water channel, splashing through waterfalls and thrilling riders through foaming rapids
 STR_0537    :Self-drive electric dodgem cars
@@ -2355,7 +2355,7 @@ STR_2347    :{RED}{STRINGID} has drowned!
 STR_2348    :{SMALLFONT}{BLACK}Show statistics for this staff member
 STR_2349    :{WINDOW_COLOUR_2}Wages: {BLACK}{CURRENCY} per month
 STR_2350    :{WINDOW_COLOUR_2}Employed: {BLACK}{MONTHYEAR}
-STR_2351    :{WINDOW_COLOUR_2}Lawns mown: {BLACK}{COMMA16}
+STR_2351    :{WINDOW_COLOUR_2}Lawns mowed: {BLACK}{COMMA16}
 STR_2352    :{WINDOW_COLOUR_2}Gardens watered: {BLACK}{COMMA16}
 STR_2353    :{WINDOW_COLOUR_2}Litter swept: {BLACK}{COMMA16}
 STR_2354    :{WINDOW_COLOUR_2}Bins emptied: {BLACK}{COMMA16}
@@ -4424,7 +4424,7 @@ STR_6112    :A compact steel-tracked roller coaster where the train travels thro
 STR_6113    :A tall non-inverting roller coaster with large drops, high speed, and comfortable trains with only lap bar restraints
 STR_6114    :Riders travel slowly in powered vehicles along a track-based route
 STR_6115    :Powered giant 4 x 4 trucks which can climb steep slopes
-STR_6116    :Wide roller coaster trains glide along smooth steel track, traveling through a variety of inversions
+STR_6116    :Wide roller coaster trains glide along smooth steel track, travelling through a variety of inversions
 STR_6117    :Sitting in comfortable trains with only simple lap restraints riders enjoy giant smooth drops and twisting track as well as plenty of 'air time' over the hills
 STR_6118    :A gentle roller coaster for people who haven't yet got the courage to face the larger rides
 STR_6119    :A cheap and easy to build roller coaster, but with a limited height
@@ -4654,7 +4654,7 @@ STR_DTLS    :Develop this Roman-themed park by adding rides and roller coasters
 <Swamp Cove>
 STR_SCNR    :Swamp Cove
 STR_PARK    :Swamp Cove
-STR_DTLS    :Built partly on a series of small islands, this park already has a pair of large roller coasters as its centerpiece
+STR_DTLS    :Built partly on a series of small islands, this park already has a pair of large roller coasters as its centrepiece
 
 <Adrenaline Heights>
 STR_SCNR    :Adrenaline Heights
@@ -4684,7 +4684,7 @@ STR_DTLS    :The local authority will not allow any kind of advertising or promo
 <Giggle Downs>
 STR_SCNR    :Giggle Downs
 STR_PARK    :Giggle Downs
-STR_DTLS    :A four lane steeplechase ride is the centerpiece of this expanding park
+STR_DTLS    :A four lane steeplechase ride is the centrepiece of this expanding park
 
 <Mineral Park>
 STR_SCNR    :Mineral Park
@@ -4781,7 +4781,7 @@ STR_DTLS    :This historical park is only allowed to build older-styled rides
 <Icarus Park>
 STR_SCNR    :Icarus Park
 STR_PARK    :Icarus Park
-STR_DTLS    :Develop this alien park to maximize its profit
+STR_DTLS    :Develop this alien park to maximise its profit
 
 <Sunny Swamps>
 STR_SCNR    :Sunny Swamps
