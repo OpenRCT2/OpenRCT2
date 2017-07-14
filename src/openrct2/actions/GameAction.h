@@ -53,7 +53,7 @@ public:
     * Reads the game action directly from the given stream. Used for
     * sending across the network in multiplayer.
     */
-    virtual void Deserialise(IStream * stream)
+    virtual void Deserialise(IStream * stream) override
     {
         stream->Read(&_playerId);
     }
@@ -62,7 +62,7 @@ public:
     * Writes the game action directly to the given stream. Used for
     * sending across the network in multiplayer.
     */
-    virtual void Serialise(IStream * stream) const
+    virtual void Serialise(IStream * stream) const override
     {
         stream->Write(&_playerId);
     }
@@ -70,12 +70,12 @@ public:
     /**
     * Query the result of the game action without changing the game state.
     */
-    virtual GameActionResult Query(uint32 flags = 0) const abstract;
+    virtual GameActionResult Query(uint32 flags = 0) const override abstract;
 
     /**
     * Apply the game action and change the game state.
     */
-    virtual GameActionResult Execute(uint32 flags = 0) const abstract;
+    virtual GameActionResult Execute(uint32 flags = 0) const override abstract;
 };
 
 namespace GameActions
