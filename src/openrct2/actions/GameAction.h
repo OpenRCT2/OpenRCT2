@@ -16,119 +16,83 @@
 
 #pragma once
 
-#include <functional>
-#include "../common.h"
-#include "../core/IStream.hpp"
-
-extern "C"
-{
-    #include "../game.h"
-    #include "../world/map.h"
-}
-
-/**
- * Common error codes for game actions.
- */
-enum class GA_ERROR : uint16
-{
-    OK,
-    INVALID_PARAMETERS,
-    DISALLOWED,
-    GAME_PAUSED,
-    INSUFFICIENT_FUNDS,
-    NOT_IN_EDITOR_MODE,
-
-    NOT_OWNED,
-    TOO_LOW,
-    TOO_HIGH,
-    NO_CLEARANCE,
-    ITEM_ALREADY_PLACED,
-
-    NO_FREE_ELEMENTS,
-
-    UNKNOWN = UINT16_MAX,
-};
-
-namespace GA_FLAGS
-{
-    constexpr uint16 ALLOW_WHILE_PAUSED = 1 << 0;
-    constexpr uint16 CLIENT_ONLY        = 1 << 1;
-    constexpr uint16 EDITOR_ONLY		= 1 << 2;
-}
-
-/**
- * Represents the result of a game action query or execution.
- */
-struct GameActionResult
-{
-    GA_ERROR        Error = GA_ERROR::OK;
-    rct_string_id   ErrorTitle = (rct_string_id)-1;
-    rct_string_id   ErrorMessage = (rct_string_id)-1;
-    uint8           ErrorMessageArgs[8] = { 0 };
-    rct_xyz32       Position = { 0 };
-    money32         Cost = 0;
-    uint16          ExpenditureType = 0;
-    void *          Tag = nullptr;
-
-    GameActionResult();
-    GameActionResult(GA_ERROR error, rct_string_id message);
-};
-
-/**
- * Represents an action that changes the state of the game. Can be serialised and
- * deserialised into a stream.
- */
-interface IGameAction
-{
-    virtual ~IGameAction() = default;
-
-    /**
-     * Gets the GA_FLAGS flags that are enabled for this game action.
-     */
-    virtual uint16 GetFlags() const abstract;
-
-    virtual uint32 GetType() const abstract;
-    /**
-     * Reads the game action directly from the given stream. Used for
-     * sending across the network in multiplayer.
-     */
-    virtual void Deserialise(IStream * stream) abstract;
-
-    /**
-     * Writes the game action directly to the given stream. Used for
-     * sending across the network in multiplayer.
-     */
-    virtual void Serialise(IStream * stream) const abstract;
-
-    /**
-     * Query the result of the game action without changing the game state.
-     */
-    virtual GameActionResult Query(uint32 flags = 0) const abstract;
-
-    /**
-     * Apply the game action and change the game state.
-     */
-    virtual GameActionResult Execute(uint32 flags = 0) const abstract;
-};
+#include "IGameAction.h"
 
 typedef IGameAction *(*GameActionFactory)();
 using GameActionCallback = std::function<void(GameActionResult)>;
 
+template<uint32 _TYPE, uint16 _FLAGS>
+struct GameAction : public IGameAction
+{
+public:
+    constexpr static uint32 Type = _TYPE;
+    constexpr static uint16 Flags = _FLAGS;
+
+private:
+    uint32 _playerId;
+
+public:
+    GameAction() : _playerId(0)
+    {
+    }
+
+    /**
+    * Gets the GA_FLAGS flags that are enabled for this game action.
+    */
+    virtual uint16 GetFlags() const override
+    {
+        return Flags;
+    }
+
+    virtual uint32 GetType() const override
+    {
+        return Type;
+    }
+
+    /**
+    * Reads the game action directly from the given stream. Used for
+    * sending across the network in multiplayer.
+    */
+    virtual void Deserialise(IStream * stream)
+    {
+        stream->Read(&_playerId);
+    }
+
+    /**
+    * Writes the game action directly to the given stream. Used for
+    * sending across the network in multiplayer.
+    */
+    virtual void Serialise(IStream * stream) const
+    {
+        stream->Write(&_playerId);
+    }
+
+    /**
+    * Query the result of the game action without changing the game state.
+    */
+    virtual GameActionResult Query(uint32 flags = 0) const abstract;
+
+    /**
+    * Apply the game action and change the game state.
+    */
+    virtual GameActionResult Execute(uint32 flags = 0) const abstract;
+};
+
 namespace GameActions
 {
-    GameActionFactory   Register(uint32 id, GameActionFactory action);
-    IGameAction *       Create(uint32 id);
-    GameActionResult    Query(const IGameAction * action, uint32 flags = 0);
-    GameActionResult    Execute(const IGameAction * action, uint32 flags = 0, GameActionCallback callback = nullptr);
+GameActionFactory   Register(uint32 id, GameActionFactory action);
+IGameAction *       Create(uint32 id);
+GameActionResult    Query(const IGameAction * action, uint32 flags = 0);
+GameActionResult    Execute(const IGameAction * action, uint32 flags = 0, GameActionCallback callback = nullptr);
 
-    template<typename T>
-    static GameActionFactory Register(uint32 id)
+template<typename T>
+static GameActionFactory Register()
+{
+    GameActionFactory factory = []() -> IGameAction *
     {
-        GameActionFactory factory = []() -> IGameAction *
-        {
-            return new T();
-        };
-        Register(id, factory);
-        return factory;
-    }
+        return new T();
+    };
+    Register(T::Type, factory);
+    return factory;
+}
 }

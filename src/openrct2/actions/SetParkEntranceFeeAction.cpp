@@ -25,20 +25,10 @@ extern "C"
     #include "../world/park.h"
 }
 
-class SetParkEntranceFeeAction : public IGameAction
+struct SetParkEntranceFeeAction : public GameAction<GAME_COMMAND_SET_PARK_ENTRANCE_FEE, GA_FLAGS::ALLOW_WHILE_PAUSED>
 {
 public:
     money16 Fee;
-
-    uint16 GetFlags() const override
-    {
-        return GA_FLAGS::ALLOW_WHILE_PAUSED;
-    }
-
-    uint32 GetType() const override
-    {
-        return GAME_COMMAND_SET_PARK_ENTRANCE_FEE;
-    }
 
     void Deserialise(IStream * stream) override
     {
@@ -73,7 +63,7 @@ public:
     }
 };
 
-static auto Factory UNUSED_ATTR = GameActions::Register<SetParkEntranceFeeAction>(GAME_COMMAND_SET_PARK_ENTRANCE_FEE);
+static auto Factory UNUSED_ATTR = GameActions::Register<SetParkEntranceFeeAction>();
 
 extern "C"
 {
