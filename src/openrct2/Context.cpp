@@ -643,6 +643,12 @@ namespace OpenRCT2
 
 #ifndef __EMSCRIPTEN__
             _variableFrame = ShouldRunVariableFrame();
+
+            window_close(window_find_by_class(WC_TITLE_LOGO));
+            window_close(window_find_by_class(WC_TITLE_OPTIONS));
+            window_close(window_find_by_class(WC_TITLE_MENU));
+            window_close(window_find_by_class(WC_TITLE_EXIT));
+            title_set_hide_version_info(true);
             do
             {
                 RunFrame();
