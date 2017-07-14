@@ -161,12 +161,6 @@ static void platform_ticks_init()
     _frequency = (uint32)(freq.QuadPart / 1000);
     QueryPerformanceCounter(&_entryTimestamp);
 #endif
-	struct timespec ts;
-	if (clock_gettime(CLOCK_MONOTONIC, &ts) != 0) {
-		log_fatal("clock_gettime failed");
-		exit(-1);
-	}
-	_ticks = (uint32)(ts.tv_sec * 1000 + ts.tv_nsec / 1000000);
 }
 
 uint32 platform_get_ticks()
