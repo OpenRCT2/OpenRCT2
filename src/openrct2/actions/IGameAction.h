@@ -108,4 +108,6 @@ public:
     * Apply the game action and change the game state.
     */
     virtual GameActionResult Execute(uint32 flags = 0) const abstract;
+    
+    virtual ~IGameAction() {};
 };
