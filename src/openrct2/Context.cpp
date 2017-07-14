@@ -680,6 +680,7 @@ namespace OpenRCT2
 
         void RunFixedFrame()
         {
+            platform_advance_ticks();
             uint32 currentTick = platform_get_ticks();
 
             if (_lastTick == 0)

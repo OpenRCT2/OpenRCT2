@@ -146,6 +146,13 @@ void platform_refresh_video(bool recreate_window)
     gfx_invalidate_screen();
 }
 
+static uint32 _ticks = 0;
+
+void platform_advance_ticks()
+{
+    _ticks += 25;
+}
+
 static void platform_ticks_init()
 {
 #ifdef _WIN32
@@ -154,29 +161,17 @@ static void platform_ticks_init()
     _frequency = (uint32)(freq.QuadPart / 1000);
     QueryPerformanceCounter(&_entryTimestamp);
 #endif
+	struct timespec ts;
+	if (clock_gettime(CLOCK_MONOTONIC, &ts) != 0) {
+		log_fatal("clock_gettime failed");
+		exit(-1);
+	}
+	_ticks = (uint32)(ts.tv_sec * 1000 + ts.tv_nsec / 1000000);
 }
 
 uint32 platform_get_ticks()
 {
-#ifdef _WIN32
-    LARGE_INTEGER pfc;
-    QueryPerformanceCounter(&pfc);
-
-    LARGE_INTEGER runningDelta;
-    runningDelta.QuadPart = pfc.QuadPart - _entryTimestamp.QuadPart;
-
-    return (uint32)(runningDelta.QuadPart / _frequency);
-#elif defined(__APPLE__) && (__ENVIRONMENT_MAC_OS_X_VERSION_MIN_REQUIRED__ < 101200)
-    return (uint32)(((mach_absolute_time() * _mach_base_info.numer) / _mach_base_info.denom) / 1000000);
-#else
-    struct timespec ts;
-    if (clock_gettime(CLOCK_MONOTONIC, &ts) != 0)
-    {
-        log_fatal("clock_gettime failed");
-        exit(-1);
-    }
-    return (uint32)(ts.tv_sec * 1000 + ts.tv_nsec / 1000000);
-#endif
+    return _ticks;
 }
 
 void platform_sleep(uint32 ms)
