@@ -1128,7 +1128,7 @@ void Network::Client_Send_GAME_ACTION(const IGameAction *action, uint32 flags = 
 	MemoryStream stream;
 	action->Serialise(&stream);
 	packet->Write((uint8*)stream.GetData(), stream.GetLength());
-	server_connection.QueuePacket(std::move(packet));
+	server_connection->QueuePacket(std::move(packet));
 }
 
 void Network::Server_Send_GAME_ACTION(const IGameAction *action, uint32 flags = 0)
@@ -1364,7 +1364,7 @@ void Network::ProcessGameCommandQueue()
             if (game_command_queue.begin()->tick != gCurrentTicks)
                 break;
         }
-        if (gc.actionType != 0xFFFFFFFF) {
+        if (gc.actionType != UINT32_MAX) {
             IGameAction * action = GameActions::Create(gc.actionType);
             uint32 flags = gc.parameters->ReadValue<uint32>();
             action->Deserialise(gc.parameters);
