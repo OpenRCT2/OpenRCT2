@@ -33,23 +33,13 @@ struct PlaceParkEntranceGameActionResult : public GameActionResult {
 	}
 };
 
-class PlaceParkEntranceAction : public IGameAction
+struct PlaceParkEntranceAction : public GameAction<GAME_COMMAND_PLACE_PARK_ENTRANCE, GA_FLAGS::EDITOR_ONLY>
 {
 public:
 	sint16 x;
 	sint16 y;
 	sint16 z;
 	uint8 direction;
-
-	uint16 GetFlags() const override
-	{
-		return GA_FLAGS::EDITOR_ONLY;
-	}
-
-	uint32 GetType() const override
-	{
-		return GAME_COMMAND_PLACE_PARK_ENTRANCE;
-	}
 
 	void Deserialise(IStream * stream) override
 	{
@@ -223,7 +213,7 @@ public:
 	}
 };
 
-static auto Factory UNUSED_ATTR = GameActions::Register<PlaceParkEntranceAction>(GAME_COMMAND_PLACE_PARK_ENTRANCE);
+static auto Factory UNUSED_ATTR = GameActions::Register<PlaceParkEntranceAction>();
 
 extern "C"
 {
