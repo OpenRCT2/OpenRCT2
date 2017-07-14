@@ -535,7 +535,7 @@ STR_0530    :Cars hang from a steel cable which runs continuously from one end o
 STR_0531    :A compact steel-tracked roller coaster where the train travels through corkscrews and loops
 STR_0532    :Maze is constructed from 6-foot tall hedges or walls, and guests wander around the maze leaving only when they find the exit
 STR_0533    :Wooden building with an internal staircase and an external spiral slide for use with slide mats
-STR_0534    :Self-drive petrol-engine go karts
+STR_0534    :Self-drive petrol-engined go karts
 STR_0535    :Log-shaped boats travel along a water channel, splashing down steep slopes to soak the riders
 STR_0536    :Circular boats meander along a wide water channel, splashing through waterfalls and thrilling riders through foaming rapids
 STR_0537    :Self-drive electric dodgem cars
@@ -2355,7 +2355,7 @@ STR_2347    :{RED}{STRINGID} has drowned!
 STR_2348    :{SMALLFONT}{BLACK}Show statistics for this staff member
 STR_2349    :{WINDOW_COLOUR_2}Wages: {BLACK}{CURRENCY} per month
 STR_2350    :{WINDOW_COLOUR_2}Employed: {BLACK}{MONTHYEAR}
-STR_2351    :{WINDOW_COLOUR_2}Lawns mowed: {BLACK}{COMMA16}
+STR_2351    :{WINDOW_COLOUR_2}Lawns mown: {BLACK}{COMMA16}
 STR_2352    :{WINDOW_COLOUR_2}Gardens watered: {BLACK}{COMMA16}
 STR_2353    :{WINDOW_COLOUR_2}Litter swept: {BLACK}{COMMA16}
 STR_2354    :{WINDOW_COLOUR_2}Bins emptied: {BLACK}{COMMA16}
