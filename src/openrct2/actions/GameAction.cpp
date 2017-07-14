@@ -23,6 +23,7 @@
 
 extern "C"
 {
+    #include "../platform/platform.h"
     #include "../localisation/localisation.h"
     #include "../windows/error.h"
     #include "../world/park.h"
@@ -110,6 +111,8 @@ namespace GameActions
 
     GameActionResult Execute(const IGameAction * action, uint32 flags, GameActionCallback callback)
     {
+        log_info("[%s] GameAction::Execute\n", network_get_mode() == NETWORK_MODE_CLIENT ? "cl" : "sv");
+
         Guard::ArgumentNotNull(action);
 
         uint16 actionFlags = action->GetFlags();
@@ -155,7 +158,7 @@ namespace GameActions
             // Allow autosave to commence
             if (gLastAutoSaveUpdate == AUTOSAVE_PAUSE)
             {
-                gLastAutoSaveUpdate = SDL_GetTicks();
+                gLastAutoSaveUpdate = platform_get_ticks();
             }
         }
 
