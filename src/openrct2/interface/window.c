@@ -2162,6 +2162,13 @@ void window_resize_gui(sint32 width, sint32 height)
         titleWind->y = height - 142;
     }
 
+    rct_window *tabsDemo = window_find_by_class(WC_WIDGETS_TABS);
+    if (tabsDemo != NULL) {
+        tabsDemo->x = (width - tabsDemo->width) / 2;
+        tabsDemo->y = (height - tabsDemo->height) / 2;
+    }
+
+
     rct_window *exitWind = window_find_by_class(WC_TITLE_EXIT);
     if (exitWind != NULL) {
         exitWind->x = width - 40;
