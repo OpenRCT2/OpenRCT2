@@ -53,7 +53,7 @@ static rct_widget window_land_rights_widgets[] = {
 
 static void window_land_rights_close(rct_window *w);
 static void window_land_rights_mouseup(rct_window *w, rct_widgetindex widgetIndex);
-static void window_land_rights_mousedown(rct_widgetindex widgetIndex, rct_window *w, rct_widget *widget);
+static void window_land_rights_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget *widget);
 static void window_land_rights_update(rct_window *w);
 static void window_land_rights_invalidate(rct_window *w);
 static void window_land_rights_paint(rct_window *w, rct_drawpixelinfo *dpi);
@@ -178,7 +178,7 @@ static void window_land_rights_mouseup(rct_window *w, rct_widgetindex widgetInde
     }
 }
 
-static void window_land_rights_mousedown(rct_widgetindex widgetIndex, rct_window *w, rct_widget *widget)
+static void window_land_rights_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget *widget)
 {
     switch (widgetIndex) {
     case WIDX_DECREMENT:

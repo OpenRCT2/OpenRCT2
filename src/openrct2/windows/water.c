@@ -47,7 +47,7 @@ static rct_widget window_water_widgets[] = {
 
 static void window_water_close(rct_window *w);
 static void window_water_mouseup(rct_window *w, rct_widgetindex widgetIndex);
-static void window_water_mousedown(rct_widgetindex widgetIndex, rct_window *w, rct_widget *widget);
+static void window_water_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget *widget);
 static void window_water_update(rct_window *w);
 static void window_water_invalidate(rct_window *w);
 static void window_water_paint(rct_window *w, rct_drawpixelinfo *dpi);
@@ -144,7 +144,7 @@ static void window_water_mouseup(rct_window *w, rct_widgetindex widgetIndex)
     }
 }
 
-static void window_water_mousedown(rct_widgetindex widgetIndex, rct_window *w, rct_widget* widget)
+static void window_water_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget)
 {
     switch (widgetIndex) {
     case WIDX_DECREMENT:
