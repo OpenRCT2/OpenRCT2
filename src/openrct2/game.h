@@ -159,7 +159,9 @@ void game_reduce_game_speed();
 
 void game_create_windows();
 void game_update();
+bool game_logic_begin();
 void game_logic_update();
+void game_logic_finish();
 void reset_all_sprite_quadrant_placements();
 void update_palette_effects();
 

@@ -21,27 +21,51 @@
 typedef IGameAction *(*GameActionFactory)();
 using GameActionCallback = std::function<void(GameActionResult)>;
 
-template<uint32 _TYPE, uint16 _FLAGS>
+template<uint32 _TYPE, uint16 _ACTFLAGS>
 struct GameAction : public IGameAction
 {
 public:
     constexpr static uint32 Type = _TYPE;
-    constexpr static uint16 Flags = _FLAGS;
+    constexpr static uint16 ActionFlags = _ACTFLAGS;
 
 private:
-    uint32 _playerId;
+    uint32 _playerId;   // Callee
+    uint32 _flags;      // GAME_COMMAND_FLAGS
 
 public:
-    GameAction() : _playerId(0)
+    GameAction() : _playerId(0), _flags(0)
     {
+    }
+
+    virtual void SetPlayer(uint32 playerId) override
+    {
+        _playerId = playerId;
+    }
+
+    virtual uint32 GetPlayer() const override
+    {
+        return _playerId;
     }
 
     /**
     * Gets the GA_FLAGS flags that are enabled for this game action.
     */
-    virtual uint16 GetFlags() const override
+    virtual uint16 GetActionFlags() const override
     {
-        return Flags;
+        return ActionFlags;
+    }
+
+    /**
+    * Currently used for GAME_COMMAND_FLAGS, needs refactoring once everything is replaced.
+    */
+    virtual uint32 GetFlags() const override
+    {
+        return _flags;
+    }
+
+    virtual uint32 SetFlags(uint32 flags) override
+    {
+        return _flags = flags;
     }
 
     virtual uint32 GetType() const override
@@ -49,41 +73,29 @@ public:
         return Type;
     }
 
-    /**
-    * Reads the game action directly from the given stream. Used for
-    * sending across the network in multiplayer.
-    */
-    virtual void Deserialise(IStream * stream) override
+    virtual void Serialise(DataSerialiser& stream)
     {
-        stream->Read(&_playerId);
-    }
-
-    /**
-    * Writes the game action directly to the given stream. Used for
-    * sending across the network in multiplayer.
-    */
-    virtual void Serialise(IStream * stream) const override
-    {
-        stream->Write(&_playerId);
+        stream << _flags;
+        stream << _playerId;
     }
 
     /**
     * Query the result of the game action without changing the game state.
     */
-    virtual GameActionResult Query(uint32 flags = 0) const override abstract;
+    virtual GameActionResult Query() const abstract;
 
     /**
     * Apply the game action and change the game state.
     */
-    virtual GameActionResult Execute(uint32 flags = 0) const override abstract;
+    virtual GameActionResult Execute() const abstract;
 };
 
 namespace GameActions
 {
 GameActionFactory   Register(uint32 id, GameActionFactory action);
 IGameAction *       Create(uint32 id);
-GameActionResult    Query(const IGameAction * action, uint32 flags = 0);
-GameActionResult    Execute(const IGameAction * action, uint32 flags = 0, GameActionCallback callback = nullptr);
+GameActionResult    Query(const IGameAction * action);
+GameActionResult    Execute(IGameAction * action);
 
 template<typename T>
 static GameActionFactory Register()

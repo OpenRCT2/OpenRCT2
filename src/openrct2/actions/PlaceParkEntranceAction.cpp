@@ -41,23 +41,12 @@ public:
 	sint16 z;
 	uint8 direction;
 
-	void Deserialise(IStream * stream) override
+	void Serialise(DataSerialiser& stream) override
 	{
-		x = stream->ReadValue<sint16>(); 
-		y = stream->ReadValue<sint16>();
-		z = stream->ReadValue<sint16>();
-		direction = stream->ReadValue<uint8>();
+        stream << x << y << z << direction;
 	}
 
-	void Serialise(IStream * stream) const override
-	{
-		stream->WriteValue(x);
-		stream->WriteValue(y);
-		stream->WriteValue(z);
-		stream->WriteValue(direction);
-	}
-
-	GameActionResult Query(uint32 flags = 0) const override
+	GameActionResult Query() const override
 	{
 		if (!(gScreenFlags & SCREEN_FLAGS_EDITOR) && !gCheatsSandboxMode)
 		{
@@ -129,8 +118,10 @@ public:
 		return GameActionResult();
 	}
 
-	GameActionResult Execute(uint32 flags = 0) const override
+	GameActionResult Execute() const override
 	{
+        uint32 flags = GetFlags();
+
 		gCommandExpenditureType = RCT_EXPENDITURE_TYPE_LAND_PURCHASE;
 
 		gCommandPosition.x = x;
@@ -257,12 +248,15 @@ extern "C"
 	money32 park_entrance_place_ghost(sint32 x, sint32 y, sint32 z, sint32 direction)
 	{
 		park_entrance_remove_ghost();
+
 		auto gameAction = PlaceParkEntranceAction();
 		gameAction.x = x;
 		gameAction.y = y;
 		gameAction.z = z;
 		gameAction.direction = direction;
-		auto result = GameActions::Execute(&gameAction, GAME_COMMAND_FLAG_GHOST);
+        gameAction.SetFlags(GAME_COMMAND_FLAG_GHOST);
+
+		auto result = GameActions::Execute(&gameAction);
 		if (result.Error == GA_ERROR::OK)
 		{
 			gParkEntranceGhostPosition.x = x;

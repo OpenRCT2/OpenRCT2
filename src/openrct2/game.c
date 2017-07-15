@@ -348,21 +348,16 @@ void game_update()
     }
 
     // Update the game one or more times
-    for (i = 0; i < numUpdates; i++) {
+    for (i = 0; i < numUpdates; i++)
+    {
         game_logic_update();
+    }
 
-        if (gGameSpeed > 1)
-            continue;
-
-        if (input_get_state() == INPUT_STATE_RESET ||
-            input_get_state() == INPUT_STATE_NORMAL
+    if (input_get_state() == INPUT_STATE_RESET ||
+        input_get_state() == INPUT_STATE_NORMAL
         ) {
-            if (input_test_flag(INPUT_FLAG_VIEWPORT_SCROLLING)) {
-                input_set_flag(INPUT_FLAG_VIEWPORT_SCROLLING, false);
-                break;
-            }
-        } else {
-            break;
+        if (input_test_flag(INPUT_FLAG_VIEWPORT_SCROLLING)) {
+            input_set_flag(INPUT_FLAG_VIEWPORT_SCROLLING, false);
         }
     }
 
@@ -382,6 +377,10 @@ void game_update()
 
 void game_logic_update()
 {
+    gScreenAge++;
+    if (gScreenAge == 0)
+        gScreenAge--;
+
     network_update();
 
     if (network_get_mode() == NETWORK_MODE_CLIENT && network_get_status() == NETWORK_STATUS_CONNECTED && network_get_authstatus() == NETWORK_AUTH_OK) {
@@ -392,14 +391,17 @@ void game_logic_update()
         }
     }
 
-    // Separated out processing commands in network_update which could call scenario_rand where gInUpdateCode is false.
-    // All commands that are received are first queued and then executed where gInUpdateCode is set to true.
-    network_process_game_commands();
-
-    gScreenAge++;
-    if (gScreenAge == 0)
-        gScreenAge--;
-
+    if (network_get_mode() == NETWORK_MODE_SERVER)
+    {
+        // Send current tick out.
+        network_send_tick();
+    }
+    else if (network_get_mode() == NETWORK_MODE_CLIENT)
+    {
+        // Check desync.
+        network_check_desynchronization();
+    }
+    
     sub_68B089();
     scenario_update();
     climate_update();
@@ -443,6 +445,12 @@ void game_logic_update()
     if (gLastAutoSaveUpdate == AUTOSAVE_PAUSE) {
         gLastAutoSaveUpdate = platform_get_ticks();
     }
+
+    // Separated out processing commands in network_update which could call scenario_rand where gInUpdateCode is false.
+    // All commands that are received are first queued and then executed where gInUpdateCode is set to true.
+    network_process_game_commands();
+
+    network_flush();
 
     gCurrentTicks++;
     gScenarioTicks++;

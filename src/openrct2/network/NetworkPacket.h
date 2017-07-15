@@ -19,6 +19,7 @@
 #include <memory>
 #include <vector>
 #include "NetworkTypes.h"
+#include "../core/DataSerialiser.h"
 #include "../common.h"
 
 class NetworkPacket final
@@ -64,6 +65,12 @@ public:
         T swapped = ByteSwapBE(value);
         uint8 * bytes = (uint8 *)&swapped;
         Data->insert(Data->end(), bytes, bytes + sizeof(value));
+        return *this;
+    }
+
+    NetworkPacket& operator<<(DataSerialiser& data)
+    {
+        Write((const uint8_t*)data.GetStream().GetData(), data.GetStream().GetLength());
         return *this;
     }
 };

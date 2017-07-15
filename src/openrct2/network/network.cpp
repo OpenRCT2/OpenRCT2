@@ -99,6 +99,7 @@ Network::Network()
     status = NETWORK_STATUS_NONE;
     last_tick_sent_time = 0;
     last_ping_sent_time = 0;
+    _commandIndex = 0;
     client_command_handlers.resize(NETWORK_COMMAND_MAX, 0);
     client_command_handlers[NETWORK_COMMAND_AUTH] = &Network::Client_Handle_AUTH;
     client_command_handlers[NETWORK_COMMAND_MAP] = &Network::Client_Handle_MAP;
@@ -217,6 +218,8 @@ bool Network::BeginClient(const char* host, uint16 port)
         return false;
 
     mode = NETWORK_MODE_CLIENT;
+
+    log_info("Connecting to %s:%u\n", host, port);
 
     assert(server_connection->Socket == nullptr);
     server_connection->Socket = CreateTcpSocket();
@@ -408,6 +411,21 @@ void Network::Update()
     }
 }
 
+void Network::Flush()
+{
+    if (GetMode() == NETWORK_MODE_CLIENT)
+    {
+        server_connection->SendQueuedPackets();
+    }
+    else
+    {
+        for (auto& it : client_connection_list)
+        {
+            it->SendQueuedPackets();
+        }
+    }
+}
+
 void Network::UpdateServer()
 {
     auto it = client_connection_list.begin();
@@ -421,9 +439,6 @@ void Network::UpdateServer()
     }
 
     uint32 ticks = platform_get_ticks();
-    if (ticks > last_tick_sent_time + 25) {
-        Server_Send_TICK();
-    }
     if (ticks > last_ping_sent_time + 3000) {
         Server_Send_PING();
         Server_Send_PINGLIST();
@@ -627,7 +642,23 @@ bool Network::CheckSRAND(uint32 tick, uint32 srand0)
             return false;
         }
     }
+
     return true;
+}
+
+void Network::CheckDesynchronizaton()
+{
+    // Check synchronisation
+    if (GetMode() == NETWORK_MODE_CLIENT && !_desynchronised && !CheckSRAND(gCurrentTicks, gScenarioSrand0)) {
+        _desynchronised = true;
+
+        char str_desync[256];
+        format_string(str_desync, 256, STR_MULTIPLAYER_DESYNC, NULL);
+        window_network_status_open(str_desync, NULL);
+        if (!gConfigNetwork.stay_connected) {
+            Close();
+        }
+    }
 }
 
 void Network::KickPlayer(sint32 playerId)
@@ -1121,29 +1152,40 @@ void Network::Server_Send_GAMECMD(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx
     SendPacketToClients(*packet, false, true);
 }
 
-void Network::Client_Send_GAME_ACTION(const IGameAction *action, uint32 flags = 0)
+void Network::Client_Send_GAME_ACTION(const IGameAction *action)
 {
 	std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
-	*packet << (uint32)NETWORK_COMMAND_GAME_ACTION << (uint32)gCurrentTicks << action->GetType() << flags;
-	MemoryStream stream;
-	action->Serialise(&stream);
-	packet->Write((uint8*)stream.GetData(), stream.GetLength());
+
+    DataSerialiser stream(true);
+    action->Serialise(stream);
+
+	*packet << (uint32)NETWORK_COMMAND_GAME_ACTION << (uint32)gCurrentTicks << action->GetType() << stream;
+
 	server_connection->QueuePacket(std::move(packet));
 }
 
-void Network::Server_Send_GAME_ACTION(const IGameAction *action, uint32 flags = 0)
+void Network::Server_Send_GAME_ACTION(const IGameAction *action)
 {
 	std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
-	*packet << (uint32)NETWORK_COMMAND_GAME_ACTION << (uint32)gCurrentTicks << action->GetType() << gNetwork.GetPlayerID() << flags;
-	MemoryStream stream;
-	action->Serialise(&stream);
-	packet->Write((uint8*)stream.GetData(), stream.GetLength());
+
+    DataSerialiser stream(true);
+    action->Serialise(stream);
+
+	*packet << (uint32)NETWORK_COMMAND_GAME_ACTION << (uint32)gCurrentTicks << action->GetType() << stream;
+
 	SendPacketToClients(*packet);
 }
 
 void Network::Server_Send_TICK()
 {
-    last_tick_sent_time = platform_get_ticks();
+    uint32 ticks = platform_get_ticks();
+    if (ticks < last_tick_sent_time + 25)
+    {
+        return;
+    }
+
+    last_tick_sent_time = ticks;
+
     std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
     *packet << (uint32)NETWORK_COMMAND_TICK << (uint32)gCurrentTicks << (uint32)gScenarioSrand0;
     uint32 flags = 0;
@@ -1364,20 +1406,26 @@ void Network::ProcessGameCommandQueue()
             if (game_command_queue.begin()->tick != gCurrentTicks)
                 break;
         }
-        if (gc.actionType != UINT32_MAX) {
-            IGameAction * action = GameActions::Create(gc.actionType);
-            uint32 flags = gc.parameters->ReadValue<uint32>();
-            action->Deserialise(gc.parameters);
-            GameActionResult result = GameActions::Execute(action, flags | GAME_COMMAND_FLAG_NETWORKED);
-            if (result.Error != GA_ERROR::OK)
+
+        if (gc.action != nullptr) {
+
+            IGameAction *action = gc.action;
+            action->SetFlags(action->GetFlags() | GAME_COMMAND_FLAG_NETWORKED);
+
+            Guard::Assert(action != nullptr);
+
+            GameActionResult result = GameActions::Execute(action);
+            if (result.Error == GA_ERROR::OK)
             {
                 game_commands_processed_this_tick++;
                 NetworkPlayer* player = GetPlayerByID(gc.playerid);
                 if (player) {
-                    player->LastAction = NetworkActions::FindCommand(gc.actionType);
+                    player->LastAction = NetworkActions::FindCommand(action->GetType());
                     player->LastActionTime = platform_get_ticks();
                     player->AddMoneySpent(result.Cost);
                 }
+
+                Server_Send_GAME_ACTION(action);
             }
         }
         else {
@@ -1420,26 +1468,22 @@ void Network::ProcessGameCommandQueue()
         }
         game_command_queue.erase(game_command_queue.begin());
     }
+}
 
-    // Check synchronisation
-    if (mode == NETWORK_MODE_CLIENT && !_desynchronised && !CheckSRAND(gCurrentTicks, gScenarioSrand0)) {
-        _desynchronised = true;
+void Network::EnqueueGameAction(const IGameAction *action)
+{
+    MemoryStream stream;
+    DataSerialiser dsOut(true, stream);
+    action->Serialise(dsOut);
 
-        char str_desync[256];
-        format_string(str_desync, 256, STR_MULTIPLAYER_DESYNC, NULL);
-        window_network_status_open(str_desync, NULL);
-        if (!gConfigNetwork.stay_connected) {
-            Close();
-        }
-    }
+    IGameAction *ga = GameActions::Create(action->GetType());
+    stream.SetPosition(0);
+    DataSerialiser dsIn(false, stream);
+    ga->Serialise(dsIn);
 
-    if (mode == NETWORK_MODE_SERVER)
-    {
-        for (const auto& it : client_connection_list)
-        {
-            it->SendQueuedPackets();
-        }
-    }
+    GameCommand gc(gCurrentTicks, ga);
+    gc.commandIndex = _commandIndex++;
+    game_command_queue.insert(gc);
 }
 
 void Network::AddClient(ITcpSocket * socket)
@@ -2038,38 +2082,51 @@ void Network::Client_Handle_GAMECMD(NetworkConnection& connection, NetworkPacket
     packet >> tick >> args[0] >> args[1] >> args[2] >> args[3] >> args[4] >> args[5] >> args[6] >> playerid >> callback;
 
     GameCommand gc(tick, args, playerid, callback);
+    gc.commandIndex = _commandIndex++;
     game_command_queue.insert(gc);
 }
+
 void Network::Client_Handle_GAME_ACTION(NetworkConnection& connection, NetworkPacket& packet)
 {
 	uint32 tick;
 	uint32 type;
-	uint8 playerid;
-	packet >> tick >> type >> playerid;
+	packet >> tick >> type;
+
 	MemoryStream stream;
 	size_t size = packet.Size - packet.BytesRead;
 	stream.WriteArray(packet.Read(size), size);
 	stream.SetPosition(0);
-	GameCommand gc(tick, type, stream, playerid);
+
+    DataSerialiser ds(false, stream);
+
+    IGameAction *action = GameActions::Create(type);
+    if (!action)
+    {
+        // TODO: Handle error.
+    }
+    action->Serialise(ds);
+
+	GameCommand gc(tick, action);
+    gc.commandIndex = _commandIndex++;
 	game_command_queue.insert(gc);
 }
 
 void Network::Server_Handle_GAME_ACTION(NetworkConnection& connection, NetworkPacket& packet)
 {
 	uint32 tick;
-	uint32 commandType;
+	uint32 type;
 
 	if (!connection.Player) {
 		return;
 	}
 
-	packet >> tick >> commandType;
+	packet >> tick >> type;
 
 	//tick count is different by time last_action_time is set, keep same value
 	// Check if player's group permission allows command to run
 	uint32 ticks = platform_get_ticks();
 	NetworkGroup* group = GetGroupByID(connection.Player->Group);
-	if (!group || (group && !group->CanPerformCommand(commandType))) {
+	if (!group || (group && !group->CanPerformCommand(type))) {
 		Server_Send_SHOWERROR(connection, STR_CANT_DO_THIS, STR_PERMISSION_DENIED);
 		return;
 	}
@@ -2077,7 +2134,7 @@ void Network::Server_Handle_GAME_ACTION(NetworkConnection& connection, NetworkPa
 	// In case someone modifies the code / memory to enable cluster build,
 	// require a small delay in between placing scenery to provide some security, as
 	// cluster mode is a for loop that runs the place_scenery code multiple times.
-	if (commandType == GAME_COMMAND_PLACE_SCENERY) {
+	if (type == GAME_COMMAND_PLACE_SCENERY) {
 		if (
 			ticks - connection.Player->LastPlaceSceneryTime < ACTION_COOLDOWN_TIME_PLACE_SCENERY &&
 			// Incase platform_get_ticks() wraps after ~49 days, ignore larger logged times.
@@ -2091,7 +2148,7 @@ void Network::Server_Handle_GAME_ACTION(NetworkConnection& connection, NetworkPa
 	}
 	// This is to prevent abuse of demolishing rides. Anyone that is not the server
 	// host will have to wait a small amount of time in between deleting rides.
-	else if (commandType == GAME_COMMAND_DEMOLISH_RIDE) {
+	else if (type == GAME_COMMAND_DEMOLISH_RIDE) {
 		if (
 			ticks - connection.Player->LastDemolishRideTime < ACTION_COOLDOWN_TIME_DEMOLISH_RIDE &&
 			// Incase platform_get_ticks()() wraps after ~49 days, ignore larger logged times.
@@ -2102,39 +2159,31 @@ void Network::Server_Handle_GAME_ACTION(NetworkConnection& connection, NetworkPa
 		}
 	}
 	// Don't let clients send pause or quit
-	else if (commandType == GAME_COMMAND_TOGGLE_PAUSE ||
-		commandType == GAME_COMMAND_LOAD_OR_QUIT
+	else if (type == GAME_COMMAND_TOGGLE_PAUSE ||
+             type == GAME_COMMAND_LOAD_OR_QUIT
 		) {
 		return;
 	}
 
-	// Set this to reference inside of game command functions
-	game_command_playerid = connection.Player->Id;
 	// Run game command, and if it is successful send to clients
-	auto ga = GameActions::Create(commandType);
-	MemoryStream stream;
-	size_t size = packet.Size - packet.BytesRead;
-	stream.WriteArray(packet.Read(size), size);
-	stream.SetPosition(0);
-	uint32 flags = stream.ReadValue<uint32>();
-	ga->Deserialise(&stream);
-	auto result = GameActions::Execute(ga, GAME_COMMAND_FLAG_NETWORKED | flags);
-	if (result.Error != GA_ERROR::OK) {
-		return;
-	}
+    IGameAction *ga = GameActions::Create(type);
+    if (!ga)
+    {
+        // TODO: Handle error.
+    }
 
-	connection.Player->LastAction = NetworkActions::FindCommand(commandType);
-	connection.Player->LastActionTime = platform_get_ticks();
-	connection.Player->AddMoneySpent(result.Cost);
+    DataSerialiser stream(false);
+    size_t size = packet.Size - packet.BytesRead;
+    stream.GetStream().WriteArray(packet.Read(size), size);
+    stream.GetStream().SetPosition(0);
 
-	if (commandType == GAME_COMMAND_PLACE_SCENERY) {
-		connection.Player->LastPlaceSceneryTime = connection.Player->LastActionTime;
-	}
-	else if (commandType == GAME_COMMAND_DEMOLISH_RIDE) {
-		connection.Player->LastDemolishRideTime = connection.Player->LastActionTime;
-	}
+    ga->Serialise(stream);
+    // Set player to sender, should be 0 if sent from client.
+    ga->SetPlayer(connection.Player->Id);
 
-	Server_Send_GAME_ACTION(ga, flags);
+    GameCommand gc(tick, ga);
+    gc.commandIndex = _commandIndex++;
+    game_command_queue.insert(gc);
 }
 
 void Network::Server_Handle_GAMECMD(NetworkConnection& connection, NetworkPacket& packet)
@@ -2198,6 +2247,7 @@ void Network::Server_Handle_GAMECMD(NetworkConnection& connection, NetworkPacket
     }
 
     GameCommand gc = GameCommand(tick, args, playerid, callback);
+    gc.commandIndex = _commandIndex++;
     game_command_queue.insert(gc);
 }
 
@@ -2423,6 +2473,11 @@ void network_process_game_commands()
     gNetwork.ProcessGameCommandQueue();
 }
 
+void network_flush()
+{
+    gNetwork.Flush();
+}
+
 sint32 network_get_mode()
 {
     return gNetwork.GetMode();
@@ -2431,6 +2486,16 @@ sint32 network_get_mode()
 sint32 network_get_status()
 {
     return gNetwork.GetStatus();
+}
+
+void network_check_desynchronization()
+{
+    return gNetwork.CheckDesynchronizaton();
+}
+
+void network_send_tick()
+{
+    gNetwork.Server_Send_TICK();
 }
 
 sint32 network_get_authstatus()
@@ -2943,16 +3008,21 @@ void network_send_chat(const char* text)
     }
 }
 
-void network_send_game_action(const IGameAction *action, uint32 flags = 0)
+void network_send_game_action(const IGameAction *action)
 {
 	switch (gNetwork.GetMode()) {
 	case NETWORK_MODE_SERVER:
-		gNetwork.Server_Send_GAME_ACTION(action, flags);
+		gNetwork.Server_Send_GAME_ACTION(action);
 		break;
 	case NETWORK_MODE_CLIENT:
-		gNetwork.Client_Send_GAME_ACTION(action, flags);
+		gNetwork.Client_Send_GAME_ACTION(action);
 		break;
 	}
+}
+
+void network_enqueue_game_action(const IGameAction *action)
+{
+    gNetwork.EnqueueGameAction(action);
 }
 
 void network_send_gamecmd(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uint32 esi, uint32 edi, uint32 ebp, uint8 callback)
@@ -3045,7 +3115,7 @@ sint32 network_get_status() { return NETWORK_STATUS_NONE; }
 sint32 network_get_authstatus() { return NETWORK_AUTH_NONE; }
 uint32 network_get_server_tick() { return gCurrentTicks; }
 void network_send_gamecmd(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uint32 esi, uint32 edi, uint32 ebp, uint8 callback) {}
-void network_send_game_action(const IGameAction *action, uint32 flags = 0) {}
+void network_send_game_action(const IGameAction *action) {}
 void network_send_map() {}
 void network_update() {}
 void network_process_game_commands() {}
