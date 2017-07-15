@@ -496,4 +496,11 @@ void RideObject::PerformFixes()
     {
         _legacyType.cars_per_flat_ride = 0xFF;
     }
+    else if (String::Equals(identifier, "ZLDB    ") ||
+             String::Equals(identifier, "ZLOG    ") ||
+             String::Equals(identifier, "ZPANDA  ") ||
+             String::Equals(identifier, "WHICGRUB"))
+    {
+        _legacyType.enabledTrackPieces &= ~(1ULL << TRACK_SLOPE_STEEP);
+    }
 }
