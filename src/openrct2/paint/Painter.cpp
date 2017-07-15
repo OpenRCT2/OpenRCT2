@@ -15,6 +15,7 @@
 #pragma endregion
 
 #include "../config/Config.h"
+#include "../drawing/IDrawingEngine.h"
 #include "../title/TitleScreen.h"
 #include "../ui/UiContext.h"
 #include "Painter.h"
@@ -30,6 +31,7 @@ extern "C"
 }
 
 using namespace OpenRCT2;
+using namespace OpenRCT2::Drawing;
 using namespace OpenRCT2::Paint;
 using namespace OpenRCT2::Ui;
 
@@ -38,28 +40,36 @@ Painter::Painter(IUiContext * uiContext)
 {
 }
 
-void Painter::Paint(rct_drawpixelinfo * dpi)
+void Painter::Paint(IDrawingEngine * de)
 {
+    auto dpi = de->GetDrawingPixelInfo();
     if (gIntroState != INTRO_STATE_NONE)
     {
-        return;
+        intro_draw(dpi);
     }
-
-    update_palette_effects();
-
-    chat_draw(dpi);
-    console_draw(dpi);
-
-    if ((gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) && !gTitleHideVersionInfo)
+    else
     {
-        DrawOpenRCT2(dpi, 0, _uiContext->GetHeight() - 20);
+        de->PaintWindows();
+
+        update_palette_effects();
+        chat_draw(dpi);
+        console_draw(dpi);
+
+        if ((gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) && !gTitleHideVersionInfo)
+        {
+            DrawOpenRCT2(dpi, 0, _uiContext->GetHeight() - 20);
+        }
+
+        gfx_draw_pickedup_peep(dpi);
+        gfx_invalidate_pickedup_peep();
+
+        de->PaintRain();
     }
 
     if (gConfigGeneral.show_fps)
     {
         PaintFPS(dpi);
     }
-
     gCurrentDrawCount++;
 }
 

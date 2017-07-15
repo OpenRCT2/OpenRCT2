@@ -122,9 +122,8 @@ public:
         }
     }
 
-    void Draw() override
+    void EndDraw() override
     {
-        X8DrawingEngine::Draw();
         Display();
     }
 

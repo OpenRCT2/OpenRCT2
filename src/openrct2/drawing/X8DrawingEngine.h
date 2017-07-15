@@ -22,11 +22,6 @@
 
 namespace OpenRCT2
 {
-    namespace Paint
-    {
-        class Painter;
-    }
-
     namespace Ui
     {
         interface IUiContext;
@@ -75,9 +70,6 @@ namespace OpenRCT2
     #pragma GCC diagnostic ignored "-Wsuggest-final-types"
         class X8DrawingEngine : public IDrawingEngine
         {
-        private:
-            Paint::Painter * _painter  = nullptr;
-
         protected:
             uint32  _width      = 0;
             uint32  _height     = 0;
@@ -105,7 +97,10 @@ namespace OpenRCT2
             void SetPalette(const rct_palette_entry * palette) override;
             void SetUncappedFrameRate(bool uncapped) override;
             void Invalidate(sint32 left, sint32 top, sint32 right, sint32 bottom) override;
-            void Draw() override;
+            void BeginDraw() override;
+            void EndDraw() override;
+            void PaintWindows() override;
+            void PaintRain() override;
             void CopyRect(sint32 x, sint32 y, sint32 width, sint32 height, sint32 dx, sint32 dy) override;
             sint32 Screenshot() override;
             IDrawingContext * GetDrawingContext(rct_drawpixelinfo * dpi) override;

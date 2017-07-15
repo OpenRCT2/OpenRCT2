@@ -21,7 +21,6 @@
 #include "../core/Math.hpp"
 #include "../core/Memory.hpp"
 #include "../interface/Screenshot.h"
-#include "../paint/Painter.h"
 #include "IDrawingContext.h"
 #include "IDrawingEngine.h"
 #include "Rain.h"
@@ -41,7 +40,6 @@ extern "C"
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Drawing;
-using namespace OpenRCT2::Paint;
 using namespace OpenRCT2::Ui;
 
 X8RainDrawer::X8RainDrawer()
@@ -141,7 +139,6 @@ void X8RainDrawer::Restore()
 X8DrawingEngine::X8DrawingEngine(Ui::IUiContext * uiContext)
 {
     _drawingContext = new X8DrawingContext(this);
-    _painter = new Painter(uiContext);
 #ifdef __ENABLE_LIGHTFX__
     _lastLightFXenabled = (gConfigGeneral.enable_light_fx != 0);
 #endif
@@ -149,7 +146,6 @@ X8DrawingEngine::X8DrawingEngine(Ui::IUiContext * uiContext)
 
 X8DrawingEngine::~X8DrawingEngine()
 {
-    delete _painter;
     delete _drawingContext;
     delete [] _dirtyGrid.Blocks;
     delete [] _bits;
@@ -204,42 +200,43 @@ void X8DrawingEngine::Invalidate(sint32 left, sint32 top, sint32 right, sint32 b
     }
 }
 
-void X8DrawingEngine::Draw()
+void X8DrawingEngine::BeginDraw()
 {
-    if (gIntroState != INTRO_STATE_NONE)
-    {
-        intro_draw(&_bitsDPI);
-    }
-    else
+    if (gIntroState == INTRO_STATE_NONE)
     {
 #ifdef __ENABLE_LIGHTFX__
-            // HACK we need to re-configure the bits if light fx has been enabled / disabled
-            if (_lastLightFXenabled != (gConfigGeneral.enable_light_fx != 0))
-            {
-                Resize(_width, _height);
-            }
+        // HACK we need to re-configure the bits if light fx has been enabled / disabled
+        if (_lastLightFXenabled != (gConfigGeneral.enable_light_fx != 0))
+        {
+            Resize(_width, _height);
+        }
 #endif
-
         _rainDrawer.SetDPI(&_bitsDPI);
         _rainDrawer.Restore();
-
-        ResetWindowVisbilities();
-
-        // Redraw dirty regions before updating the viewports, otherwise
-        // when viewports get panned, they copy dirty pixels
-        DrawAllDirtyBlocks();
-
-        window_update_all_viewports();
-        DrawAllDirtyBlocks();
-        window_update_all();
-
-        gfx_draw_pickedup_peep(&_bitsDPI);
-        gfx_invalidate_pickedup_peep();
-
-        DrawRain(&_bitsDPI, &_rainDrawer);
-
-        _painter->Paint(&_bitsDPI);
     }
+}
+
+void X8DrawingEngine::EndDraw()
+{
+}
+
+void X8DrawingEngine::PaintWindows()
+{
+    ResetWindowVisbilities();
+
+    // Redraw dirty regions before updating the viewports, otherwise
+    // when viewports get panned, they copy dirty pixels
+    DrawAllDirtyBlocks();
+    window_update_all_viewports();
+    DrawAllDirtyBlocks();
+
+    // TODO move this out from drawing
+    window_update_all();
+}
+
+void X8DrawingEngine::PaintRain()
+{
+    DrawRain(&_bitsDPI, &_rainDrawer);
 }
 
 void X8DrawingEngine::CopyRect(sint32 x, sint32 y, sint32 width, sint32 height, sint32 dx, sint32 dy)

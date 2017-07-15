@@ -21,6 +21,11 @@ struct rct_drawpixelinfo;
 
 namespace OpenRCT2
 {
+    namespace Drawing
+    {
+        interface IDrawingEngine;
+    }
+
     namespace Ui
     {
         interface IUiContext;
@@ -39,7 +44,7 @@ namespace OpenRCT2
 
         public:
             Painter(Ui::IUiContext * uiContext);
-            void Paint(rct_drawpixelinfo * dpi);
+            void Paint(Drawing::IDrawingEngine * de);
 
         private:
             void PaintFPS(rct_drawpixelinfo * dpi);

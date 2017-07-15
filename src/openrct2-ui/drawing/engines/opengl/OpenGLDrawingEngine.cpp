@@ -29,7 +29,6 @@
 #include <openrct2/drawing/IDrawingEngine.h>
 #include <openrct2/drawing/Rain.h>
 #include <openrct2/interface/Screenshot.h>
-#include <openrct2/paint/Painter.h>
 #include <openrct2/ui/UiContext.h>
 
 extern "C"
@@ -53,7 +52,6 @@ extern "C"
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Drawing;
-using namespace OpenRCT2::Paint;
 using namespace OpenRCT2::Ui;
 
 struct OpenGLVersion
@@ -230,7 +228,6 @@ private:
     IUiContext * const  _uiContext  = nullptr;
     SDL_Window *        _window     = nullptr;
     SDL_GLContext       _context    = nullptr;
-    Painter             _painter;
 
     uint32  _width      = 0;
     uint32  _height     = 0;
@@ -251,8 +248,7 @@ public:
     vec4f     GLPalette[256];
 
     OpenGLDrawingEngine(IUiContext * uiContext)
-        : _uiContext(uiContext),
-          _painter(uiContext)
+        : _uiContext(uiContext)
     {
         _window = (SDL_Window *)_uiContext->GetWindow();
         _drawingContext = new OpenGLDrawingContext(this);
@@ -334,39 +330,40 @@ public:
     {
     }
 
-    void Draw() override
+    void BeginDraw() override
     {
         assert(_screenFramebuffer != nullptr);
         assert(_swapFramebuffer != nullptr);
 
         _swapFramebuffer->Bind();
+    }
 
-        if (gIntroState != INTRO_STATE_NONE) {
-            intro_draw(&_bitsDPI);
-        } else {
-            window_update_all_viewports();
-            window_draw_all(&_bitsDPI, 0, 0, _width, _height);
-            window_update_all();
-
-            gfx_draw_pickedup_peep(&_bitsDPI);
-
-            _drawingContext->FlushCommandBuffers();
-            _swapFramebuffer->SwapCopy();
-
-            _painter.Paint(&_bitsDPI);
-        }
-
+    void EndDraw() override
+    {
         _drawingContext->FlushCommandBuffers();
 
         // Scale up to window
         _screenFramebuffer->Bind();
         _copyFramebufferShader->Use();
-        _copyFramebufferShader->SetTexture(_swapFramebuffer->GetTargetFramebuffer()
-                                                           ->GetTexture());
+        _copyFramebufferShader->SetTexture(_swapFramebuffer->GetTargetFramebuffer()->GetTexture());
         _copyFramebufferShader->Draw();
 
         CheckGLError();
         Display();
+    }
+
+    void PaintWindows() override
+    {
+        window_update_all_viewports();
+        window_draw_all(&_bitsDPI, 0, 0, _width, _height);
+
+        // TODO move this out from drawing
+        window_update_all();
+    }
+
+    void PaintRain() override
+    {
+        // Not implemented
     }
 
     sint32 Screenshot() override
