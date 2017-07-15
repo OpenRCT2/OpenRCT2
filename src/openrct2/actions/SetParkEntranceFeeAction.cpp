@@ -30,17 +30,12 @@ struct SetParkEntranceFeeAction : public GameAction<GAME_COMMAND_SET_PARK_ENTRAN
 public:
     money16 Fee;
 
-    void Deserialise(IStream * stream) override
+    void Serialise(DataSerialiser& stream) override
     {
-        Fee = stream->ReadValue<money16>();
+        stream << Fee;
     }
 
-    void Serialise(IStream * stream) const override
-    {
-        stream->WriteValue(Fee);
-    }
-
-    GameActionResult Query(uint32 flags = 0) const override
+    GameActionResult Query() const override
     {
         bool noMoney = (gParkFlags & PARK_FLAGS_NO_MONEY) != 0;
         bool forceFreeEntry = (gParkFlags & PARK_FLAGS_PARK_FREE_ENTRY) && !gCheatsUnlockAllPrices;
@@ -55,7 +50,7 @@ public:
         return GameActionResult();
     }
 
-    GameActionResult Execute(uint32 flags = 0) const override
+    GameActionResult Execute() const override
     {
         gParkEntranceFee = Fee;
         window_invalidate_by_class(WC_PARK_INFORMATION);

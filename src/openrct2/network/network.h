@@ -110,7 +110,9 @@ public:
     uint32 GetServerTick();
     uint8 GetPlayerID();
     void Update();
+    void Flush();
     void ProcessGameCommandQueue();
+    void EnqueueGameAction(const IGameAction *action);
     std::vector<std::unique_ptr<NetworkPlayer>>::iterator GetPlayerIteratorByID(uint8 id);
     NetworkPlayer* GetPlayerByID(uint8 id);
     std::vector<std::unique_ptr<NetworkGroup>>::iterator GetGroupIteratorByID(uint8 id);
@@ -118,6 +120,7 @@ public:
     static const char* FormatChat(NetworkPlayer* fromplayer, const char* text);
     void SendPacketToClients(NetworkPacket& packet, bool front = false, bool gameCmd = false);
     bool CheckSRAND(uint32 tick, uint32 srand0);
+    void CheckDesynchronizaton();
     void KickPlayer(sint32 playerId);
     void SetPassword(const char* password);
     void ShutdownClient();
@@ -150,8 +153,8 @@ public:
     void Server_Send_CHAT(const char* text);
     void Client_Send_GAMECMD(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uint32 esi, uint32 edi, uint32 ebp, uint8 callback);
     void Server_Send_GAMECMD(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uint32 esi, uint32 edi, uint32 ebp, uint8 playerid, uint8 callback);
-    void Client_Send_GAME_ACTION(const IGameAction *action, uint32 flags);
-    void Server_Send_GAME_ACTION(const IGameAction *action, uint32 flags);
+    void Client_Send_GAME_ACTION(const IGameAction *action);
+    void Server_Send_GAME_ACTION(const IGameAction *action);
     void Server_Send_TICK();
     void Server_Send_PLAYERLIST();
     void Client_Send_PING();
@@ -200,26 +203,21 @@ private:
         GameCommand(uint32 t, uint32* args, uint8 p, uint8 cb) {
             tick = t; eax = args[0]; ebx = args[1]; ecx = args[2]; edx = args[3];
             esi = args[4]; edi = args[5]; ebp = args[6]; playerid = p; callback = cb;
-            actionType = 0xFFFFFFFF;
+            action = nullptr;
         }
 
-        GameCommand(uint32 t, uint32 aType, MemoryStream const &stream, uint8 p)
+        GameCommand(uint32 t, IGameAction *ga)
         {
-            tick = t; playerid = p; actionType = aType;
-            // Note this will leak memory. Do something about this
-            parameters = new MemoryStream(stream);
+            tick = t;
+            action = ga;
         }
 
         GameCommand(const GameCommand &source) {
             tick = source.tick;
             playerid = source.playerid;
-            actionType = source.actionType;
+            action = source.action;
             callback = source.callback;
-            if (actionType != 0xFFFFFFFF)
-            {
-                parameters = new MemoryStream(*source.parameters);
-            }
-            else
+            if (action == nullptr)
             {
                 eax = source.eax;
                 ebx = source.ebx;
@@ -233,17 +231,16 @@ private:
 
         ~GameCommand()
         {
-            delete parameters;
         }
 
         uint32 tick;
         uint32 eax, ebx, ecx, edx, esi, edi, ebp;
-        uint32 actionType = 0xFFFFFFFF;
-        MemoryStream *parameters = nullptr;
+        IGameAction *action;
         uint8 playerid;
         uint8 callback;
+        uint32 commandIndex;
         bool operator<(const GameCommand& comp) const {
-            return tick < comp.tick;
+            return tick < comp.tick && commandIndex < comp.commandIndex;
         }
     };
 
@@ -272,6 +269,7 @@ private:
     uint32 server_connect_time = 0;
     uint8 default_group = 0;
     uint32 game_commands_processed_this_tick = 0;
+    uint32 _commandIndex;
     std::string _chatLogPath;
     std::string _chatLogFilenameFormat = "%Y%m%d-%H%M%S.txt";
     std::string _serverLogPath;
@@ -329,8 +327,12 @@ sint32 network_begin_server(sint32 port, const char* address);
 
 sint32 network_get_mode();
 sint32 network_get_status();
+void network_check_desynchronization();
+void network_send_tick();
 void network_update();
 void network_process_game_commands();
+void network_flush();
+
 sint32 network_get_authstatus();
 uint32 network_get_server_tick();
 uint8 network_get_current_player_id();
@@ -370,7 +372,8 @@ sint32 network_get_pickup_peep_old_x(uint8 playerid);
 void network_send_map();
 void network_send_chat(const char* text);
 void network_send_gamecmd(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uint32 esi, uint32 edi, uint32 ebp, uint8 callback);
-void network_send_game_action(const IGameAction *action, uint32 flags);
+void network_send_game_action(const IGameAction *action);
+void network_enqueue_game_action(const IGameAction *action);
 void network_send_password(const char* password);
 
 void network_set_password(const char* password);
