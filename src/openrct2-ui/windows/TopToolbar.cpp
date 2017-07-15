@@ -1178,9 +1178,9 @@ static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid
         gSceneryShiftPressed = false;
     }
     else {
-        if (!gSceneryCtrlPressed) {
-            if (input_test_place_object_modifier(PLACE_OBJECT_MODIFIER_COPY_Z)) {
-                // CTRL pressed
+        if (input_test_place_object_modifier(PLACE_OBJECT_MODIFIER_COPY_Z)) {
+            if (!gSceneryCtrlPressed) {
+                // Initial CTRL press
                 rct_tile_element* tile_element;
                 uint16 flags =
                     VIEWPORT_INTERACTION_MASK_TERRAIN &
@@ -1199,33 +1199,31 @@ static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid
             }
         }
         else {
-            if (!(input_test_place_object_modifier(PLACE_OBJECT_MODIFIER_COPY_Z))) {
-                // CTRL not pressed
-                gSceneryCtrlPressed = false;
-            }
+            // CTRL released
+            gSceneryCtrlPressed = false;
         }
 
-        if (!gSceneryShiftPressed) {
-            if (input_test_place_object_modifier(PLACE_OBJECT_MODIFIER_SHIFT_Z)) {
-                // SHIFT pressed
+        if (input_test_place_object_modifier(PLACE_OBJECT_MODIFIER_SHIFT_Z)) {
+            if (!gSceneryShiftPressed) {
+                // Initial SHIFT press
                 gSceneryShiftPressed = true;
                 gSceneryShiftPressX = x;
                 gSceneryShiftPressY = y;
                 gSceneryShiftPressZOffset = 0;
             }
+            else {
+                if (input_test_place_object_modifier(PLACE_OBJECT_MODIFIER_SHIFT_Z)) {
+                    // SHIFT is being held
+                    gSceneryShiftPressZOffset = (gSceneryShiftPressY - y + 4) & 0xFFF8;
+
+                    x = gSceneryShiftPressX;
+                    y = gSceneryShiftPressY;
+                }
+            }
         }
         else {
-            if (input_test_place_object_modifier(PLACE_OBJECT_MODIFIER_SHIFT_Z)) {
-                // SHIFT pressed
-                gSceneryShiftPressZOffset = (gSceneryShiftPressY - y + 4) & 0xFFF8;
-
-                x = gSceneryShiftPressX;
-                y = gSceneryShiftPressY;
-            }
-            else {
-                // SHIFT not pressed
-                gSceneryShiftPressed = false;
-            }
+            // SHIFT released
+            gSceneryShiftPressed = false;
         }
     }
 
@@ -1234,101 +1232,47 @@ static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid
     {
         // Small scenery
         rct_scenery_entry* scenery = get_small_scenery_entry(selected_scenery);
-        if (!scenery_small_entry_has_flag(scenery, SMALL_SCENERY_FLAG_FULL_TILE))
-        {
-            uint8 cl = 0;
+        bool is_full_tile = scenery_small_entry_has_flag(scenery, SMALL_SCENERY_FLAG_FULL_TILE);
+        uint8 cl = 0;
 
-            // If CTRL not pressed
-            if (!gSceneryCtrlPressed) {
+        // If CTRL not pressed
+        if (!gSceneryCtrlPressed) {
+            if (!is_full_tile) {
                 screen_get_map_xy_quadrant(x, y, grid_x, grid_y, &cl);
 
                 if (*grid_x == LOCATION_NULL)
                     return;
 
                 gSceneryPlaceZ = 0;
-
-                // If SHIFT pressed
-                if (gSceneryShiftPressed) {
-                    rct_tile_element* tile_element = map_get_surface_element_at(*grid_x / 32, *grid_y / 32);
-
-                    if (tile_element == nullptr) {
-                        *grid_x = LOCATION_NULL;
-                        return;
-                    }
-
-                    sint16 z = (tile_element->base_height * 8) & 0xFFF0;
-                    z += gSceneryShiftPressZOffset;
-
-                    z = Math::Max<sint16>(z, 16);
-
-                    gSceneryPlaceZ = z;
-                }
             }
             else {
-                sint16 z = gSceneryCtrlPressZ;
+                uint16 flags =
+                    VIEWPORT_INTERACTION_MASK_TERRAIN &
+                    VIEWPORT_INTERACTION_MASK_WATER;
+                sint32 interaction_type = 0;
+                rct_map_element* map_element;
 
-                screen_get_map_xy_quadrant_with_z(x, y, z, grid_x, grid_y, &cl);
+                get_map_coordinates_from_pos(x, y, flags, grid_x, grid_y, &interaction_type, &map_element, NULL);
 
-                // If SHIFT pressed
-                if (gSceneryShiftPressed) {
-                    z += gSceneryShiftPressZOffset;
+                if (interaction_type == VIEWPORT_INTERACTION_ITEM_NONE) {
+                    *grid_x = MAP_LOCATION_NULL;
+                    return;
                 }
 
-                z = Math::Max<sint16>(z, 16);
+                gSceneryPlaceZ = 0;
 
-                gSceneryPlaceZ = z;
-            }
-
-            if (*grid_x == LOCATION_NULL)
-                return;
-
-            uint8 rotation = gWindowSceneryRotation;
-
-            if (!scenery_small_entry_has_flag(scenery, SMALL_SCENERY_FLAG_ROTATABLE))
-            {
-                rotation = util_rand() & 0xFF;
-            }
-
-            rotation -= get_current_rotation();
-            rotation &= 0x3;
-
-            // Also places it in lower but think thats for clobbering
-            *parameter_1 = (selected_scenery & 0xFF) << 8;
-            *parameter_2 = (cl ^ (1 << 1)) | (gWindowSceneryPrimaryColour << 8);
-            *parameter_3 = rotation | (gWindowScenerySecondaryColour << 16);
-
-            if (gConfigGeneral.use_virtual_floor)
-            {
-                virtual_floor_set_height(gSceneryPlaceZ);
-            }
-
-            return;
-        }
-
-        // If CTRL not pressed
-        if (!gSceneryCtrlPressed) {
-            uint16 flags =
-                VIEWPORT_INTERACTION_MASK_TERRAIN &
-                VIEWPORT_INTERACTION_MASK_WATER;
-            sint32 interaction_type = 0;
-            rct_tile_element* tile_element;
-
-            get_map_coordinates_from_pos(x, y, flags, grid_x, grid_y, &interaction_type, &tile_element, nullptr);
-
-            if (interaction_type == VIEWPORT_INTERACTION_ITEM_NONE) {
-                *grid_x = LOCATION_NULL;
-                return;
-            }
-
-            gSceneryPlaceZ = 0;
-            uint16 water_height = surface_get_water_height(tile_element);
-            if (water_height != 0) {
-                gSceneryPlaceZ = water_height * 16;
+                // TODO Some reason this code is not used on quarter-tile scenery, which doesn't make sense.
+                // It places items on top of water surfaces when you're not holding ctrl or shift. Is there any
+                // sort of quarter-tile scenery that would be commonly placed below water surfaces?
+                uint16 water_height = map_element->properties.surface.terrain & MAP_ELEMENT_WATER_HEIGHT_MASK;
+                if (water_height != 0) {
+                    gSceneryPlaceZ = water_height * 16;
+                }
             }
 
             // If SHIFT pressed
             if (gSceneryShiftPressed) {
-                tile_element = map_get_surface_element_at(*grid_x / 32, *grid_y / 32);
+                rct_tile_element* tile_element = map_get_surface_element_at(*grid_x / 32, *grid_y / 32);
 
                 if (tile_element == nullptr) {
                     *grid_x = LOCATION_NULL;
@@ -1345,7 +1289,12 @@ static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid
         }
         else {
             sint16 z = gSceneryCtrlPressZ;
-            screen_get_map_xy_with_z(x, y, z, grid_x, grid_y);
+            if (!is_full_tile) {
+                screen_get_map_xy_quadrant_with_z(x, y, z, grid_x, grid_y, &cl);
+            }
+            else {
+                screen_get_map_xy_with_z(x, y, z, grid_x, grid_y);
+            }
 
             // If SHIFT pressed
             if (gSceneryShiftPressed) {
@@ -1374,7 +1323,12 @@ static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid
 
         // Also places it in lower but think thats for clobbering
         *parameter_1 = (selected_scenery & 0xFF) << 8;
-        *parameter_2 = 0 | (gWindowSceneryPrimaryColour << 8);
+        if (is_full_tile) {
+            *parameter_2 = 0 | (gWindowSceneryPrimaryColour << 8);
+        }
+        else {
+            *parameter_2 = (cl ^ (1 << 1)) | (gWindowSceneryPrimaryColour << 8);
+        }
         *parameter_3 = rotation | (gWindowScenerySecondaryColour << 16);
         break;
     }
