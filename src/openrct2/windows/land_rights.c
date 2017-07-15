@@ -53,6 +53,7 @@ static rct_widget window_land_rights_widgets[] = {
 
 static void window_land_rights_close(rct_window *w);
 static void window_land_rights_mouseup(rct_window *w, rct_widgetindex widgetIndex);
+static void window_land_rights_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget *widget);
 static void window_land_rights_update(rct_window *w);
 static void window_land_rights_invalidate(rct_window *w);
 static void window_land_rights_paint(rct_window *w, rct_drawpixelinfo *dpi);
@@ -69,7 +70,7 @@ static rct_window_event_list window_land_rights_events = {
     window_land_rights_close,
     window_land_rights_mouseup,
     NULL,
-    NULL,
+    window_land_rights_mousedown,
     NULL,
     NULL,
     window_land_rights_update,
@@ -114,6 +115,7 @@ void window_land_rights_open()
     window->widgets = window_land_rights_widgets;
     window->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_DECREMENT) | (1 << WIDX_INCREMENT) | (1 << WIDX_PREVIEW) |
         (1 << WIDX_BUY_LAND_RIGHTS) | (1 << WIDX_BUY_CONSTRUCTION_RIGHTS);
+    window->hold_down_widgets = (1 << WIDX_INCREMENT) | (1 << WIDX_DECREMENT);
     window_init_scroll_widgets(window);
     window_push_others_below(window);
 
@@ -150,20 +152,6 @@ static void window_land_rights_mouseup(rct_window *w, rct_widgetindex widgetInde
     case WIDX_CLOSE:
         window_close(w);
         break;
-    case WIDX_DECREMENT:
-        // Decrement land rights tool size
-        gLandToolSize = max(MINIMUM_TOOL_SIZE, gLandToolSize - 1);
-
-        // Invalidate the window
-        window_invalidate(w);
-        break;
-    case WIDX_INCREMENT:
-        // Decrement land rights tool size
-        gLandToolSize = min(MAXIMUM_TOOL_SIZE, gLandToolSize + 1);
-
-        // Invalidate the window
-        window_invalidate(w);
-        break;
     case WIDX_PREVIEW:
         window_land_rights_inputsize(w);
         break;
@@ -186,6 +174,26 @@ static void window_land_rights_mouseup(rct_window *w, rct_widgetindex widgetInde
             tool_set(w, WIDX_BUY_CONSTRUCTION_RIGHTS, TOOL_UP_ARROW);
             window_invalidate(w);
         }
+        break;
+    }
+}
+
+static void window_land_rights_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget *widget)
+{
+    switch (widgetIndex) {
+    case WIDX_DECREMENT:
+        // Decrement land rights tool size
+        gLandToolSize = max(MINIMUM_TOOL_SIZE, gLandToolSize - 1);
+
+        // Invalidate the window
+        window_invalidate(w);
+        break;
+    case WIDX_INCREMENT:
+        // Decrement land rights tool size
+        gLandToolSize = min(MAXIMUM_TOOL_SIZE, gLandToolSize + 1);
+
+        // Invalidate the window
+        window_invalidate(w);
         break;
     }
 }
@@ -216,6 +224,7 @@ static void window_land_rights_inputsize(rct_window *w)
 
 static void window_land_rights_update(rct_window *w)
 {
+    w->frame_no++;
     // Close window if another tool is open
     if (!land_rights_tool_is_active())
         window_close(w);

@@ -47,6 +47,7 @@ static rct_widget window_water_widgets[] = {
 
 static void window_water_close(rct_window *w);
 static void window_water_mouseup(rct_window *w, rct_widgetindex widgetIndex);
+static void window_water_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget *widget);
 static void window_water_update(rct_window *w);
 static void window_water_invalidate(rct_window *w);
 static void window_water_paint(rct_window *w, rct_drawpixelinfo *dpi);
@@ -57,7 +58,7 @@ static rct_window_event_list window_water_events = {
     window_water_close,
     window_water_mouseup,
     NULL,
-    NULL,
+    window_water_mousedown,
     NULL,
     NULL,
     window_water_update,
@@ -107,6 +108,7 @@ void window_water_open()
     );
     window->widgets = window_water_widgets;
     window->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_DECREMENT) | (1 << WIDX_INCREMENT) | (1 << WIDX_PREVIEW);
+    window->hold_down_widgets = (1 << WIDX_INCREMENT) | (1 << WIDX_DECREMENT);
     window_init_scroll_widgets(window);
     window_push_others_below(window);
 
@@ -136,22 +138,28 @@ static void window_water_mouseup(rct_window *w, rct_widgetindex widgetIndex)
     case WIDX_CLOSE:
         window_close(w);
         break;
+    case WIDX_PREVIEW:
+        window_water_inputsize(w);
+        break;
+    }
+}
+
+static void window_water_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget)
+{
+    switch (widgetIndex) {
     case WIDX_DECREMENT:
         // Decrement land tool size
-        gLandToolSize = max(MINIMUM_TOOL_SIZE, gLandToolSize-1);
+        gLandToolSize = max(MINIMUM_TOOL_SIZE, gLandToolSize - 1);
 
         // Invalidate the window
         window_invalidate(w);
         break;
     case WIDX_INCREMENT:
         // Increment land tool size
-        gLandToolSize = min(MAXIMUM_TOOL_SIZE, gLandToolSize+1);
+        gLandToolSize = min(MAXIMUM_TOOL_SIZE, gLandToolSize + 1);
 
         // Invalidate the window
         window_invalidate(w);
-        break;
-    case WIDX_PREVIEW:
-        window_water_inputsize(w);
         break;
     }
 }

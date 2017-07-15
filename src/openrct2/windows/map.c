@@ -242,7 +242,9 @@ void window_map_open()
 
     w->hold_down_widgets =
         (1 << WIDX_MAP_SIZE_SPINNER_UP) |
-        (1 << WIDX_MAP_SIZE_SPINNER_DOWN);
+        (1 << WIDX_MAP_SIZE_SPINNER_DOWN) |
+        (1 << WIDX_LAND_TOOL_LARGER) |
+        (1 << WIDX_LAND_TOOL_SMALLER);
 
     window_init_scroll_widgets(w);
 
@@ -337,18 +339,6 @@ static void window_map_mouseup(rct_window *w, rct_widgetindex widgetIndex)
 
         window_invalidate(w);
         break;
-    case WIDX_LAND_TOOL_SMALLER:
-        // Decrement land ownership tool size
-        gLandToolSize = max(MINIMUM_TOOL_SIZE, gLandToolSize-1);
-
-        window_invalidate(w);
-        break;
-    case WIDX_LAND_TOOL_LARGER:
-        // Increment land ownership tool size
-        gLandToolSize = min(MAXIMUM_TOOL_SIZE, gLandToolSize+1);
-
-        window_invalidate(w);
-        break;
     case WIDX_BUILD_PARK_ENTRANCE:
         window_invalidate(w);
         if (tool_set(w, widgetIndex, TOOL_UP_ARROW))
@@ -418,6 +408,18 @@ static void window_map_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct
         break;
     case WIDX_MAP_SIZE_SPINNER_DOWN:
         map_window_decrease_map_size();
+        break;
+    case WIDX_LAND_TOOL_SMALLER:
+        // Decrement land ownership tool size
+        gLandToolSize = max(MINIMUM_TOOL_SIZE, gLandToolSize - 1);
+
+        window_invalidate(w);
+        break;
+    case WIDX_LAND_TOOL_LARGER:
+        // Increment land ownership tool size
+        gLandToolSize = min(MAXIMUM_TOOL_SIZE, gLandToolSize + 1);
+
+        window_invalidate(w);
         break;
     }
 }

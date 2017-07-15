@@ -126,6 +126,7 @@ void window_land_open()
         (1 << WIDX_MOUNTAINMODE) |
         (1 << WIDX_PAINTMODE) |
         (1 << WIDX_PREVIEW);
+    window->hold_down_widgets = (1 << WIDX_DECREMENT) | (1 << WIDX_INCREMENT);
     window_init_scroll_widgets(window);
     window_push_others_below(window);
 
@@ -161,20 +162,6 @@ static void window_land_mouseup(rct_window *w, rct_widgetindex widgetIndex)
     case WIDX_CLOSE:
         window_close(w);
         break;
-    case WIDX_DECREMENT:
-        // Decrement land tool size
-        gLandToolSize = max(MINIMUM_TOOL_SIZE, gLandToolSize-1);
-
-        // Invalidate the window
-        window_invalidate(w);
-        break;
-    case WIDX_INCREMENT:
-        // Increment land tool size
-        gLandToolSize = min(MAXIMUM_TOOL_SIZE, gLandToolSize+1);
-
-        // Invalidate the window
-        window_invalidate(w);
-        break;
     case WIDX_MOUNTAINMODE:
         gLandMountainMode ^= 1;
         gLandPaintMode = 0;
@@ -206,6 +193,20 @@ static void window_land_mousedown(rct_window *w, rct_widgetindex widgetIndex, rc
         break;
     case WIDX_PREVIEW:
         window_land_inputsize(w);
+        break;
+    case WIDX_DECREMENT:
+        // Decrement land tool size
+        gLandToolSize = max(MINIMUM_TOOL_SIZE, gLandToolSize - 1);
+
+        // Invalidate the window
+        window_invalidate(w);
+        break;
+    case WIDX_INCREMENT:
+        // Increment land tool size
+        gLandToolSize = min(MAXIMUM_TOOL_SIZE, gLandToolSize + 1);
+
+        // Invalidate the window
+        window_invalidate(w);
         break;
     }
 }

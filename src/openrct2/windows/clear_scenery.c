@@ -54,6 +54,7 @@ rct_widget window_clear_scenery_widgets[] = {
 
 static void window_clear_scenery_close(rct_window *w);
 static void window_clear_scenery_mouseup(rct_window *w, rct_widgetindex widgetIndex);
+static void window_clear_scenery_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget *widget);
 static void window_clear_scenery_update(rct_window *w);
 static void window_clear_scenery_invalidate(rct_window *w);
 static void window_clear_scenery_paint(rct_window *w, rct_drawpixelinfo *dpi);
@@ -64,7 +65,7 @@ static rct_window_event_list window_clear_scenery_events = {
     window_clear_scenery_close,
     window_clear_scenery_mouseup,
     NULL,
-    NULL,
+    window_clear_scenery_mousedown,
     NULL,
     NULL,
     window_clear_scenery_update,
@@ -107,6 +108,7 @@ void window_clear_scenery_open()
     window->widgets = window_clear_scenery_widgets;
     window->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_INCREMENT) | (1 << WIDX_DECREMENT) | (1 << WIDX_PREVIEW) |
         (1 << WIDX_SMALL_SCENERY) | (1 << WIDX_LARGE_SCENERY) | (1 << WIDX_FOOTPATH);
+    window->hold_down_widgets = (1 << WIDX_INCREMENT) | (1 << WIDX_DECREMENT);
     window_init_scroll_widgets(window);
     window_push_others_below(window);
 
@@ -139,20 +141,6 @@ static void window_clear_scenery_mouseup(rct_window *w, rct_widgetindex widgetIn
     case WIDX_CLOSE:
         window_close(w);
         break;
-    case WIDX_DECREMENT:
-        // Decrement land tool size, if it stays within the limit
-        gLandToolSize = max(MINIMUM_TOOL_SIZE, gLandToolSize - 1);
-
-        // Invalidate the window
-        window_invalidate(w);
-        break;
-    case WIDX_INCREMENT:
-        // Increment land tool size, if it stays within the limit
-        gLandToolSize = min(MAXIMUM_TOOL_SIZE, gLandToolSize + 1);
-
-        // Invalidate the window
-        window_invalidate(w);
-        break;
     case WIDX_PREVIEW:
         window_clear_scenery_inputsize(w);
         break;
@@ -166,6 +154,26 @@ static void window_clear_scenery_mouseup(rct_window *w, rct_widgetindex widgetIn
         break;
     case WIDX_FOOTPATH:
         gClearFootpath ^= 1;
+        window_invalidate(w);
+        break;
+    }
+}
+
+static void window_clear_scenery_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget *widget)
+{
+    switch (widgetIndex) {
+    case WIDX_DECREMENT:
+        // Decrement land tool size, if it stays within the limit
+        gLandToolSize = max(MINIMUM_TOOL_SIZE, gLandToolSize - 1);
+
+        // Invalidate the window
+        window_invalidate(w);
+        break;
+    case WIDX_INCREMENT:
+        // Increment land tool size, if it stays within the limit
+        gLandToolSize = min(MAXIMUM_TOOL_SIZE, gLandToolSize + 1);
+
+        // Invalidate the window
         window_invalidate(w);
         break;
     }
@@ -201,6 +209,7 @@ static void window_clear_scenery_inputsize(rct_window *w)
  */
 static void window_clear_scenery_update(rct_window *w)
 {
+    w->frame_no++;
     // Close window if another tool is open
     if (!clear_scenery_tool_is_active())
         window_close(w);
