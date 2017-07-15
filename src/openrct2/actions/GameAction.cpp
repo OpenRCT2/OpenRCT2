@@ -82,12 +82,12 @@ namespace GameActions
         return false;
     }
 
-    GameActionResult Query(const IGameAction * action, uint32 flags)
+    GameActionResult Query(const IGameAction * action)
     {
         Guard::ArgumentNotNull(action);
 
         GameActionResult result;
-        uint16 actionFlags = action->GetFlags();
+        uint16 actionFlags = action->GetActionFlags();
         if (!CheckActionInPausedMode(actionFlags))
         {
             result.Error = GA_ERROR::GAME_PAUSED;
@@ -95,7 +95,7 @@ namespace GameActions
         }
         else
         {
-            result = action->Query(flags);
+            result = action->Query();
             if (result.Error == GA_ERROR::OK)
             {
                 if (!CheckActionAffordability(&result))
@@ -109,35 +109,43 @@ namespace GameActions
         return result;
     }
 
-    GameActionResult Execute(const IGameAction * action, uint32 flags, GameActionCallback callback)
+    GameActionResult Execute(IGameAction * action)
     {
         log_info("[%s] GameAction::Execute\n", network_get_mode() == NETWORK_MODE_CLIENT ? "cl" : "sv");
 
         Guard::ArgumentNotNull(action);
 
-        uint16 actionFlags = action->GetFlags();
-        GameActionResult result = Query(action, flags);
+        uint16 actionFlags = action->GetActionFlags();
+        uint32 flags = action->GetFlags();
+
+        GameActionResult result = Query(action);
         if (result.Error == GA_ERROR::OK)
         {
             // Networked games send actions to the server to be run
-            if (network_get_mode() != NETWORK_MODE_NONE)
+            if (network_get_mode() == NETWORK_MODE_CLIENT)
             {
-                // Action has come from server.
+                // As a client we have to wait or send it first.
                 if (!(actionFlags & GA_FLAGS::CLIENT_ONLY) && !(flags & GAME_COMMAND_FLAG_GHOST) && !(flags & GAME_COMMAND_FLAG_NETWORKED))
                 {
-                    network_send_game_action(action, flags);
-                    if (network_get_mode() == NETWORK_MODE_CLIENT) {
-                        // Client sent the command to the server, do not run it locally, just return.  It will run when server sends it
-                        //game_command_callback = 0;
-                        // Decrement nest count
-                        //gGameCommandNestLevel--;
-                        return result;
-                    }
+                    network_send_game_action(action);
+
+                    return result;
+                }
+            }
+            else if (network_get_mode() == NETWORK_MODE_SERVER)
+            {
+                // If player is the server it would execute right away as where clients execute the commands
+                // at the beginning of the frame, so we have to put them into the queue.
+                if (!(actionFlags & GA_FLAGS::CLIENT_ONLY) && !(flags & GAME_COMMAND_FLAG_GHOST) && !(flags & GAME_COMMAND_FLAG_NETWORKED))
+                {
+                    network_enqueue_game_action(action);
+
+                    return result;
                 }
             }
 
             // Execute the action, changing the game state
-            result = action->Execute(flags);
+            result = action->Execute();
 
             // Update money balance
             if (!(gParkFlags & PARK_FLAGS_NO_MONEY) && result.Cost != 0)
@@ -148,10 +156,13 @@ namespace GameActions
 
             if (!(actionFlags & GA_FLAGS::CLIENT_ONLY))
             {
-                if (network_get_mode() == NETWORK_MODE_SERVER)
+                if (network_get_mode() == NETWORK_MODE_SERVER && result.Error == GA_ERROR::OK)
                 {
-                    // network_set_player_last_action(network_get_player_index(network_get_current_player_id()), command);
-                    // network_add_player_money_spent(network_get_current_player_id(), cost);
+                    uint32 playerId = action->GetPlayer();
+
+                    network_set_player_last_action(network_get_player_index(playerId), action->GetType());
+                    if(result.Cost != 0)
+                        network_add_player_money_spent(playerId, result.Cost);
                 }
             }
 
@@ -163,10 +174,12 @@ namespace GameActions
         }
 
         // Call callback for asynchronous events
+        /*
         if (callback != nullptr)
         {
             callback(result);
         }
+        */
 
         if (result.Error != GA_ERROR::OK && !(flags & GAME_COMMAND_FLAG_GHOST))
         {

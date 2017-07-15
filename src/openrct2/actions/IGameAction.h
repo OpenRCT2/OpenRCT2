@@ -19,6 +19,7 @@
 #include <functional>
 #include "../common.h"
 #include "../core/IStream.hpp"
+#include "../core/DataSerialiser.h"
 
 extern "C"
 {
@@ -84,30 +85,42 @@ public:
     /**
     * Gets the GA_FLAGS flags that are enabled for this game action.
     */
-    virtual uint16 GetFlags() const abstract;
+    virtual uint16 GetActionFlags() const abstract;
+
+    /**
+    * Currently used for GAME_COMMAND_FLAGS, needs refactoring once everything is replaced.
+    */
+    virtual uint32 GetFlags() const abstract;
+    virtual uint32 SetFlags(uint32 flags) abstract;
 
     virtual uint32 GetType() const abstract;
-    /**
-    * Reads the game action directly from the given stream. Used for
-    * sending across the network in multiplayer.
-    */
-    virtual void Deserialise(IStream * stream) abstract;
 
     /**
-    * Writes the game action directly to the given stream. Used for
+    * Gets/Sets player who owns this action, 0 if server or local client.
+    */
+    virtual void SetPlayer(uint32 playerId) abstract;
+    virtual uint32 GetPlayer() const abstract;
+
+    /**
+    * Writes or reads the game action directly to the given stream. Used for
     * sending across the network in multiplayer.
     */
-    virtual void Serialise(IStream * stream) const abstract;
+    virtual void Serialise(DataSerialiser& stream) abstract;
+
+    // Helper function, allows const Objects to still serialize into DataSerialiser while being const.
+    void Serialise(DataSerialiser& stream) const
+    {
+        return const_cast<IGameAction&>(*this).Serialise(stream);
+    }
 
     /**
     * Query the result of the game action without changing the game state.
     */
-    virtual GameActionResult Query(uint32 flags = 0) const abstract;
+    virtual GameActionResult Query() const abstract;
 
     /**
     * Apply the game action and change the game state.
     */
-    virtual GameActionResult Execute(uint32 flags = 0) const abstract;
-    
     virtual ~IGameAction() {};
+    virtual GameActionResult Execute() const abstract;
 };
