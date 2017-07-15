@@ -941,7 +941,7 @@ void window_scenery_invalidate(rct_window *w)
             }
 
             rct_scenery_entry* sceneryEntry = get_small_scenery_entry(tabSelectedSceneryId);
-            if (sceneryEntry->small_scenery.flags & SMALL_SCENERY_FLAG4) {
+            if (sceneryEntry->small_scenery.flags & SMALL_SCENERY_FLAG_ROTATABLE) {
                 window_scenery_widgets[WIDX_SCENERY_ROTATE_OBJECTS_BUTTON].type = WWT_FLATBTN;
             }
         }

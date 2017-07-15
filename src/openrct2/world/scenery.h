@@ -53,7 +53,7 @@ typedef enum {
     SMALL_SCENERY_FLAG_FULL_TILE = (1 << 0),                    // 0x1
     SMALL_SCENERY_FLAG_VOFFSET_CENTRE = (1 << 1),               // 0x2
     SMALL_SCENERY_FLAG_REQUIRE_FLAT_SURFACE = (1 << 2),         // 0x4
-    SMALL_SCENERY_FLAG4 = (1 << 3),                             // 0x8
+    SMALL_SCENERY_FLAG_ROTATABLE = (1 << 3),                    // 0x8; when set, user can set rotation, otherwise rotation is automatic
     SMALL_SCENERY_FLAG_ANIMATED = (1 << 4),                     // 0x10
     SMALL_SCENERY_FLAG6 = (1 << 5),                             // 0x20
     SMALL_SCENERY_FLAG_CAN_BE_WATERED = (1 << 6),               // 0x40
@@ -67,16 +67,16 @@ typedef enum {
     SMALL_SCENERY_FLAG15 = (1 << 14),                           // 0x4000
     SMALL_SCENERY_FLAG16 = (1 << 15),                           // 0x8000
     SMALL_SCENERY_FLAG17 = (1 << 16),                           // 0x10000
-    SMALL_SCENERY_FLAG18 = (1 << 17),                           // 0x20000
+    SMALL_SCENERY_FLAG_STACKABLE = (1 << 17),                   // 0x20000; means scenery item can be placed in the air and over water
     SMALL_SCENERY_FLAG_ALLOW_WALLS = (1 << 18),                 // 0x40000
     SMALL_SCENERY_FLAG_HAS_SECONDARY_COLOUR = (1 << 19),        // 0x80000
-    SMALL_SCENERY_FLAG20 = (1 << 20),                           // 0x100000
+    SMALL_SCENERY_FLAG_NO_SUPPORTS = (1 << 20),                 // 0x100000
     SMALL_SCENERY_FLAG21 = (1 << 21),                           // 0x200000
     SMALL_SCENERY_FLAG22 = (1 << 22),                           // 0x400000
     SMALL_SCENERY_FLAG23 = (1 << 23),                           // 0x800000
     SMALL_SCENERY_FLAG24 = (1 << 24),                           // 0x1000000
     SMALL_SCENERY_FLAG25 = (1 << 25),                           // 0x2000000
-    SMALL_SCENERY_FLAG26 = (1 << 26),                           // 0x4000000
+    SMALL_SCENERY_FLAG_PAINT_SUPPORTS = (1 << 26),              // 0x4000000; used for scenery items which are support structures
     SMALL_SCENERY_FLAG27 = (1 << 27),                           // 0x8000000
 } SMALL_SCENERY_FLAGS;
 

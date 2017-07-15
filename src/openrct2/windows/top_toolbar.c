@@ -1122,31 +1122,30 @@ static void scenery_eyedropper_tool_down(sint16 x, sint16 y, rct_widgetindex wid
 static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid_x, sint16* grid_y, uint32* parameter_1, uint32* parameter_2, uint32* parameter_3){
     rct_window* w = window_find_by_class(WC_SCENERY);
 
-    if (w == NULL)
-    {
-        *grid_x = 0x8000;
+    if (w == NULL) {
+        *grid_x = MAP_LOCATION_NULL;
         return;
     }
 
     uint8 scenery_type = selected_scenery >> 8;
-    // Not sure what this type is yet.
-    uint8 type = 0;
+    bool can_raise_item = false;
 
-    if (scenery_type == 0){
+    if (scenery_type == SCENERY_TYPE_SMALL) {
         rct_scenery_entry* scenery_entry = get_small_scenery_entry(selected_scenery);
 
-        if (scenery_entry->small_scenery.flags & SMALL_SCENERY_FLAG18){
-            type = 1;
+        if (scenery_entry->small_scenery.flags & SMALL_SCENERY_FLAG_STACKABLE) {
+            can_raise_item = true;
         }
     }
-    else if (scenery_type == 2 || scenery_type == 3){
-        type = 1;
+    else if (scenery_type == SCENERY_TYPE_WALL || scenery_type == SCENERY_TYPE_LARGE) {
+        can_raise_item = true;
     }
 
-    if (type == 0 && !gCheatsDisableSupportLimits) {
+    if (!can_raise_item && !gCheatsDisableSupportLimits) {
         gSceneryCtrlPressed = false;
         gSceneryShiftPressed = false;
-    } else {
+    }
+    else {
         if (!gSceneryCtrlPressed) {
             if (input_test_place_object_modifier(PLACE_OBJECT_MODIFIER_COPY_Z)) {
                 // CTRL pressed
@@ -1161,12 +1160,13 @@ static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid
                 sint32 interaction_type;
                 get_map_coordinates_from_pos(x, y, flags, NULL, NULL, &interaction_type, &map_element, NULL);
 
-                if (interaction_type != VIEWPORT_INTERACTION_ITEM_NONE){
+                if (interaction_type != VIEWPORT_INTERACTION_ITEM_NONE) {
                     gSceneryCtrlPressed = true;
                     gSceneryCtrlPressZ = map_element->base_height * 8;
                 }
             }
-        } else {
+        }
+        else {
             if (!(input_test_place_object_modifier(PLACE_OBJECT_MODIFIER_COPY_Z))) {
                 // CTRL not pressed
                 gSceneryCtrlPressed = false;
@@ -1182,26 +1182,27 @@ static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid
                 gSceneryShiftPressZOffset = 0;
             }
         }
-        else{
+        else {
             if (input_test_place_object_modifier(PLACE_OBJECT_MODIFIER_SHIFT_Z)) {
                 // SHIFT pressed
                 gSceneryShiftPressZOffset = (gSceneryShiftPressY - y + 4) & 0xFFF8;
 
                 x = gSceneryShiftPressX;
                 y = gSceneryShiftPressY;
-            } else {
+            }
+            else {
                 // SHIFT not pressed
                 gSceneryShiftPressed = false;
             }
         }
     }
 
-    switch (scenery_type){
-    case 0:
+    switch (scenery_type) {
+    case SCENERY_TYPE_SMALL:
     {
         // Small scenery
         rct_scenery_entry* scenery = get_small_scenery_entry(selected_scenery);
-        if (!(scenery->small_scenery.flags & SMALL_SCENERY_FLAG_FULL_TILE)){
+        if (!(scenery->small_scenery.flags & SMALL_SCENERY_FLAG_FULL_TILE)) {
             uint8 cl = 0;
 
             // If CTRL not pressed
@@ -1215,25 +1216,22 @@ static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid
 
                 // If SHIFT pressed
                 if (gSceneryShiftPressed) {
-
                     rct_map_element* map_element = map_get_surface_element_at(*grid_x / 32, *grid_y / 32);
 
-                    if (map_element == NULL){
-                        *grid_x = 0x8000;
+                    if (map_element == NULL) {
+                        *grid_x = MAP_LOCATION_NULL;
                         return;
                     }
 
                     sint16 z = (map_element->base_height * 8) & 0xFFF0;
                     z += gSceneryShiftPressZOffset;
 
-                    if (z < 16){
-                        z = 16;
-                    }
+                    z = max(z, 16);
 
                     gSceneryPlaceZ = z;
                 }
             }
-            else{
+            else {
                 sint16 z = gSceneryCtrlPressZ;
 
                 screen_get_map_xy_quadrant_with_z(x, y, z, grid_x, grid_y, &cl);
@@ -1243,9 +1241,7 @@ static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid
                     z += gSceneryShiftPressZOffset;
                 }
 
-                if (z < 16){
-                    z = 16;
-                }
+                z = max(z, 16);
 
                 gSceneryPlaceZ = z;
             }
@@ -1255,7 +1251,7 @@ static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid
 
             uint8 rotation = gWindowSceneryRotation;
 
-            if (!(scenery->small_scenery.flags & SMALL_SCENERY_FLAG4)){
+            if (!(scenery->small_scenery.flags & SMALL_SCENERY_FLAG_ROTATABLE)) {
                 rotation = util_rand() & 0xFF;
             }
 
@@ -1279,15 +1275,14 @@ static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid
 
             get_map_coordinates_from_pos(x, y, flags, grid_x, grid_y, &interaction_type, &map_element, NULL);
 
-            if (interaction_type == VIEWPORT_INTERACTION_ITEM_NONE)
-            {
-                *grid_x = 0x8000;
+            if (interaction_type == VIEWPORT_INTERACTION_ITEM_NONE) {
+                *grid_x = MAP_LOCATION_NULL;
                 return;
             }
 
             gSceneryPlaceZ = 0;
             uint16 water_height = map_element->properties.surface.terrain & MAP_ELEMENT_WATER_HEIGHT_MASK;
-            if (water_height != 0){
+            if (water_height != 0) {
                 gSceneryPlaceZ = water_height * 16;
             }
 
@@ -1295,22 +1290,20 @@ static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid
             if (gSceneryShiftPressed) {
                 map_element = map_get_surface_element_at(*grid_x / 32, *grid_y / 32);
 
-                if (map_element == NULL){
-                    *grid_x = 0x8000;
+                if (map_element == NULL) {
+                    *grid_x = MAP_LOCATION_NULL;
                     return;
                 }
 
                 sint16 z = (map_element->base_height * 8) & 0xFFF0;
                 z += gSceneryShiftPressZOffset;
 
-                if (z < 16){
-                    z = 16;
-                }
+                z = max(z, 16);
 
                 gSceneryPlaceZ = z;
             }
         }
-        else{
+        else {
             sint16 z = gSceneryCtrlPressZ;
             screen_get_map_xy_with_z(x, y, z, grid_x, grid_y);
 
@@ -1319,9 +1312,7 @@ static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid
                 z += gSceneryShiftPressZOffset;
             }
 
-            if (z < 16){
-                z = 16;
-            }
+            z = max(z, 16);
 
             gSceneryPlaceZ = z;
         }
@@ -1333,7 +1324,7 @@ static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid
         *grid_y &= 0xFFE0;
         uint8 rotation = gWindowSceneryRotation;
 
-        if (!(scenery->small_scenery.flags & SMALL_SCENERY_FLAG4)){
+        if (!(scenery->small_scenery.flags & SMALL_SCENERY_FLAG_ROTATABLE)) {
             rotation = util_rand() & 0xFF;
         }
 
@@ -1346,10 +1337,9 @@ static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid
         *parameter_3 = rotation | (gWindowScenerySecondaryColour << 16);
         break;
     }
-    case 1:
+    case SCENERY_TYPE_PATH_ITEM:
     {
         // Path bits
-
         uint16 flags =
             VIEWPORT_INTERACTION_MASK_FOOTPATH &
             VIEWPORT_INTERACTION_MASK_FOOTPATH_ITEM;
@@ -1358,21 +1348,20 @@ static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid
 
         get_map_coordinates_from_pos(x, y, flags, grid_x, grid_y, &interaction_type, &map_element, NULL);
 
-        if (interaction_type == VIEWPORT_INTERACTION_ITEM_NONE)
-        {
-            *grid_x = 0x8000;
+        if (interaction_type == VIEWPORT_INTERACTION_ITEM_NONE) {
+            *grid_x = MAP_LOCATION_NULL;
             return;
         }
 
         *parameter_1 = 0 | ((map_element->properties.path.type & 0x7) << 8);
         *parameter_2 = map_element->base_height | ((map_element->properties.path.type >> 4) << 8);
-        if (map_element->type & 1){
-            *parameter_2 |= 0x8000;
+        if (map_element->type & 1) {
+            *parameter_2 |= MAP_LOCATION_NULL;
         }
         *parameter_3 = (selected_scenery & 0xFF) + 1;
         break;
     }
-    case 2:
+    case SCENERY_TYPE_WALL:
     {
         // Walls
         uint8 cl;
@@ -1389,22 +1378,20 @@ static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid
             if (gSceneryShiftPressed) {
                 rct_map_element* map_element = map_get_surface_element_at(*grid_x / 32, *grid_y / 32);
 
-                if (map_element == NULL){
-                    *grid_x = 0x8000;
+                if (map_element == NULL) {
+                    *grid_x = MAP_LOCATION_NULL;
                     return;
                 }
 
                 sint16 z = (map_element->base_height * 8) & 0xFFF0;
                 z += gSceneryShiftPressZOffset;
 
-                if (z < 16){
-                    z = 16;
-                }
+                z = max(z, 16);
 
                 gSceneryPlaceZ = z;
             }
         }
-        else{
+        else {
             sint16 z = gSceneryCtrlPressZ;
             screen_get_map_xy_side_with_z(x, y, z, grid_x, grid_y, &cl);
 
@@ -1413,9 +1400,7 @@ static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid
                 z += gSceneryShiftPressZOffset;
             }
 
-            if (z < 16){
-                z = 16;
-            }
+            z = max(z, 16);
 
             gSceneryPlaceZ = z;
         }
@@ -1430,10 +1415,9 @@ static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid
         *parameter_3 = 0;
         break;
     }
-    case 3:
+    case SCENERY_TYPE_LARGE:
     {
         // Large scenery
-
         // If CTRL not pressed
         if (!gSceneryCtrlPressed) {
             sub_68A15E(x, y, grid_x, grid_y, NULL, NULL);
@@ -1447,22 +1431,20 @@ static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid
             if (gSceneryShiftPressed) {
                 rct_map_element* map_element = map_get_surface_element_at(*grid_x / 32, *grid_y / 32);
 
-                if (map_element == NULL){
-                    *grid_x = 0x8000;
+                if (map_element == NULL) {
+                    *grid_x = MAP_LOCATION_NULL;
                     return;
                 }
 
                 sint16 z = (map_element->base_height * 8) & 0xFFF0;
                 z += gSceneryShiftPressZOffset;
 
-                if (z < 16){
-                    z = 16;
-                }
+                z = max(z, 16);
 
                 gSceneryPlaceZ = z;
             }
         }
-        else{
+        else {
             sint16 z = gSceneryCtrlPressZ;
             screen_get_map_xy_with_z(x, y, z, grid_x, grid_y);
 
@@ -1471,9 +1453,7 @@ static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid
                 z += gSceneryShiftPressZOffset;
             }
 
-            if (z < 16){
-                z = 16;
-            }
+            z = max(z, 16);
 
             gSceneryPlaceZ = z;
         }
@@ -1493,10 +1473,9 @@ static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid
         *parameter_3 = selected_scenery & 0xFF;
         break;
     }
-    case 4:
+    case SCENERY_TYPE_BANNER:
     {
         // Banner
-
         uint16 flags =
             VIEWPORT_INTERACTION_MASK_FOOTPATH &
             VIEWPORT_INTERACTION_MASK_FOOTPATH_ITEM;
@@ -1505,9 +1484,8 @@ static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid
 
         get_map_coordinates_from_pos(x, y, flags, grid_x, grid_y, &interaction_type, &map_element, NULL);
 
-        if (interaction_type == VIEWPORT_INTERACTION_ITEM_NONE)
-        {
-            *grid_x = 0x8000;
+        if (interaction_type == VIEWPORT_INTERACTION_ITEM_NONE) {
+            *grid_x = MAP_LOCATION_NULL;
             return;
         }
 
@@ -1517,8 +1495,8 @@ static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid
 
         sint16 z = map_element->base_height;
 
-        if (map_element->properties.path.type & (1 << 2)){
-            if (rotation != ((map_element->properties.path.type & 3) ^ 2)){
+        if (map_element->properties.path.type & (1 << 2)) {
+            if (rotation != ((map_element->properties.path.type & 3) ^ 2)) {
                 z += 2;
             }
         }
@@ -1595,7 +1573,7 @@ static void window_top_toolbar_scenery_tool_down(sint16 x, sint16 y, rct_window 
                 cur_grid_x += ((util_rand() % 16) - 8) * 32;
                 cur_grid_y += ((util_rand() % 16) - 8) * 32;
 
-                if (!(scenery->small_scenery.flags & SMALL_SCENERY_FLAG4)){
+                if (!(scenery->small_scenery.flags & SMALL_SCENERY_FLAG_ROTATABLE)){
                     gSceneryPlaceRotation = (gSceneryPlaceRotation + 1) & 3;
                 }
             }
