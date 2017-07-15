@@ -119,7 +119,7 @@ static void window_publisher_credits_mouseup(rct_window *w, rct_widgetindex widg
 */
 static void window_publisher_credits_scrollgetsize(rct_window *w, sint32 scrollIndex, sint32 *width, sint32 *height)
 {
-    *height = 820;
+    *height = 350;
 }
 
 /**
