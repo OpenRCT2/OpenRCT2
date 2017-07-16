@@ -24,6 +24,7 @@
 #include "core/File.h"
 #include "core/FileStream.hpp"
 #include "core/Guard.hpp"
+#include "core/Math.hpp"
 #include "core/MemoryStream.h"
 #include "core/String.hpp"
 #include "FileClassifier.h"
@@ -315,7 +316,7 @@ namespace OpenRCT2
                     }
                     network_begin_server(gNetworkStartPort, gNetworkStartAddress);
                 }
- #endif // DISABLE_NETWORK
+#endif // DISABLE_NETWORK
                 break;
             }
             case STARTUP_ACTION_EDIT:
@@ -396,23 +397,18 @@ namespace OpenRCT2
             }
 
             uint32 elapsed = currentTick - _lastTick;
-            if (elapsed > UPDATE_TIME_MS)
-            {
-                elapsed = UPDATE_TIME_MS;
-            }
-
             _lastTick = currentTick;
-            _accumulator += elapsed;
+            _accumulator = Math::Min(_accumulator + elapsed, (uint32)GAME_UPDATE_MAX_THRESHOLD);
 
             GetContext()->GetUiContext()->ProcessMessages();
 
-            if (_accumulator < UPDATE_TIME_MS)
+            if (_accumulator < GAME_UPDATE_TIME_MS)
             {
-                platform_sleep(UPDATE_TIME_MS - _accumulator - 1);
+                platform_sleep(GAME_UPDATE_TIME_MS - _accumulator - 1);
                 return;
             }
 
-            _accumulator -= UPDATE_TIME_MS;
+            _accumulator -= GAME_UPDATE_TIME_MS;
 
             rct2_update();
             if (!_isWindowMinimised && !gOpenRCT2Headless)
@@ -434,17 +430,13 @@ namespace OpenRCT2
             }
 
             uint32 elapsed = currentTick - _lastTick;
-            if (elapsed > UPDATE_TIME_MS)
-            {
-                elapsed = UPDATE_TIME_MS;
-            }
 
             _lastTick = currentTick;
-            _accumulator += elapsed;
+            _accumulator = Math::Min(_accumulator + elapsed, (uint32)GAME_UPDATE_MAX_THRESHOLD);
 
             GetContext()->GetUiContext()->ProcessMessages();
 
-            while (_accumulator >= UPDATE_TIME_MS)
+            while (_accumulator >= GAME_UPDATE_TIME_MS)
             {
                 // Get the original position of each sprite
                 if(draw)
@@ -452,7 +444,7 @@ namespace OpenRCT2
 
                 rct2_update();
 
-                _accumulator -= UPDATE_TIME_MS;
+                _accumulator -= GAME_UPDATE_TIME_MS;
 
                 // Get the next position of each sprite
                 if(draw)
@@ -461,7 +453,7 @@ namespace OpenRCT2
 
             if (draw)
             {
-                const float alpha = (float)_accumulator / UPDATE_TIME_MS;
+                const float alpha = (float)_accumulator / GAME_UPDATE_TIME_MS;
                 sprite_position_tween_all(alpha);
 
                 platform_draw();
