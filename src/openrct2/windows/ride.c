@@ -2132,6 +2132,27 @@ static void window_ride_show_open_dropdown(rct_window *w, rct_widget *widget)
     gDropdownDefaultIndex = highlightedIndex;
 }
 
+static void window_ride_show_ride_type_dropdown(rct_window *w, rct_widget *widget)
+{
+    assert(_rideType == clamp(0, _rideType, RIDE_TYPE_COUNT));
+
+    for (sint32 i = 0; i < RIDE_TYPE_COUNT; i++) {
+        gDropdownItemsFormat[i] = RideNaming[i].name;
+    }
+    
+    window_dropdown_show_text(
+        w->x + widget->left,
+        w->y + widget->top,
+        widget->bottom - widget->top + 1,
+        w->colours[1],
+        DROPDOWN_FLAG_STAY_OPEN,
+        RIDE_TYPE_COUNT
+    );
+
+    gDropdownHighlightedIndex = _rideType;
+    gDropdownDefaultIndex = _rideType;
+}
+
 /**
  *
  *  rct2: 0x006AF1BD
@@ -2145,12 +2166,15 @@ static void window_ride_main_mousedown(rct_window *w, rct_widgetindex widgetInde
     case WIDX_OPEN:
         window_ride_show_open_dropdown(w, widget);
         break;
+    case WIDX_RIDE_TYPE:
+        window_ride_show_ride_type_dropdown(w, widget);
+        break;
     case WIDX_RIDE_TYPE_INCREASE:
         _rideType = min(RIDE_TYPE_COUNT - 1, _rideType + 1);
         widget_invalidate(w, WIDX_RIDE_TYPE);
         break;
     case WIDX_RIDE_TYPE_DECREASE:
-        _rideType = max(0, _rideType -1);
+        _rideType = max(0, _rideType - 1);
         widget_invalidate(w, WIDX_RIDE_TYPE);
         break;
     case WIDX_RIDE_TYPE_APPLY:
@@ -2216,6 +2240,11 @@ static void window_ride_main_dropdown(rct_window *w, rct_widgetindex widgetIndex
         set_format_arg(8, uint32, ride->name_arguments);
         ride_set_status(w->number, status);
         break;
+    case WIDX_RIDE_TYPE:
+        if (dropdownIndex != -1 && dropdownIndex < RIDE_TYPE_COUNT) {
+            _rideType = clamp(0, dropdownIndex, RIDE_TYPE_COUNT - 1);
+            widget_invalidate(w, WIDX_RIDE_TYPE);
+        }
     }
 }
 
