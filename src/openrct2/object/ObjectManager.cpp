@@ -19,6 +19,7 @@
 #include <unordered_set>
 #include "../core/Console.hpp"
 #include "../core/Memory.hpp"
+#include "../localisation/string_ids.h"
 #include "FootpathItemObject.h"
 #include "LargeSceneryObject.h"
 #include "Object.h"
@@ -230,6 +231,21 @@ public:
             }
         }
         return objects;
+    }
+
+    static rct_string_id GetObjectSourceGameString(const rct_object_entry * entry)
+    {
+        uint8 source = (entry->flags & 0xF0) >> 4;
+        switch (source) {
+            case OBJECT_SOURCE_RCT2:
+                return STR_ROLLERCOASTER_TYCOON_2_DROPDOWN;
+            case OBJECT_SOURCE_WACKY_WORLDS:
+                return STR_OBJECT_FILTER_WW;
+            case OBJECT_SOURCE_TIME_TWISTER:
+                return STR_OBJECT_FILTER_TT;
+            default:
+                return STR_OBJECT_FILTER_CUSTOM;
+        }
     }
 
 private:
@@ -647,5 +663,10 @@ extern "C"
         {
             objectManager->UnloadAll();
         }
+    }
+
+    rct_string_id object_manager_get_source_game_string(const rct_object_entry * entry)
+    {
+        return ObjectManager::GetObjectSourceGameString(entry);
     }
 }

@@ -325,23 +325,7 @@ static void window_object_load_error_scrollpaint(rct_window *w, rct_drawpixelinf
         gfx_draw_string(dpi, strndup(invalid_entries[i].name, 8), COLOUR_DARK_GREEN, NAME_COL_LEFT, y);
 
         // ... source game ...
-        uint8 source = (invalid_entries[i].flags & 0xF0) >> 4;
-        rct_string_id sourceStringId;
-
-        switch (source) {
-            case 8:
-                sourceStringId = STR_ROLLERCOASTER_TYCOON_2_DROPDOWN;
-                break;
-            case 1:
-                sourceStringId = STR_OBJECT_FILTER_WW;
-                break;
-            case 2:
-                sourceStringId = STR_OBJECT_FILTER_TT;
-                break;
-            default:
-                sourceStringId = STR_OBJECT_FILTER_CUSTOM;
-                break;
-        }
+        rct_string_id sourceStringId = object_manager_get_source_game_string(&invalid_entries[i]);
         gfx_draw_string_left(dpi, sourceStringId, NULL, COLOUR_DARK_GREEN, SOURCE_COL_LEFT, y);
 
         // ... and type
