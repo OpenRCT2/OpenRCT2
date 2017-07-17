@@ -203,7 +203,7 @@ static void ride_ratings_update_state_2()
             if (trackType == TRACK_ELEM_END_STATION) {
                 sint32 entranceIndex = map_get_station(mapElement);
                 gRideRatingsCalcData.station_flags &= ~RIDE_RATING_STATION_FLAG_NO_ENTRANCE;
-                if (ride->entrances[entranceIndex] == 0xFFFF) {
+                if (ride->entrances[entranceIndex].xy == RCT_XY8_UNDEFINED) {
                     gRideRatingsCalcData.station_flags |= RIDE_RATING_STATION_FLAG_NO_ENTRANCE;
                 }
             }
@@ -342,7 +342,7 @@ static void ride_ratings_begin_proximity_loop()
     for (sint32 i = 0; i < RCT12_MAX_STATIONS_PER_RIDE; i++) {
         if (ride->station_starts[i] != 0xFFFF) {
             gRideRatingsCalcData.station_flags &= ~RIDE_RATING_STATION_FLAG_NO_ENTRANCE;
-            if (ride->entrances[i] == 0xFFFF) {
+            if (ride->entrances[i].xy == RCT_XY8_UNDEFINED) {
                 gRideRatingsCalcData.station_flags |= RIDE_RATING_STATION_FLAG_NO_ENTRANCE;
             }
 
@@ -1257,7 +1257,7 @@ static sint32 ride_ratings_get_scenery_score(rct_ride *ride)
         return 0;
 
     if (ride->type == RIDE_TYPE_MAZE)
-        stationXY = ride->entrances[0];
+        stationXY = ride->entrances[0].xy;
 
     sint32 x = stationXY & 0xFF;
     sint32 y = stationXY >> 8;

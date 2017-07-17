@@ -1243,7 +1243,7 @@ static void vehicle_update_measurements(rct_vehicle *vehicle)
     }
 
     uint8 stationId = ride->current_test_station;
-    if (ride->entrances[stationId] != 0xFFFF){
+    if (ride->entrances[stationId].xy != RCT_XY8_UNDEFINED){
         uint8 test_segment = ride->current_test_segment;
 
         ride->average_speed_test_timeout++;
@@ -1299,7 +1299,7 @@ static void vehicle_update_measurements(rct_vehicle *vehicle)
         ride->cur_test_track_z = vehicle->track_z / 8;
         ride->cur_test_track_location.xy = map_location;
 
-        if (ride->entrances[ride->current_test_station] == 0xFFFF)
+        if (ride->entrances[ride->current_test_station].xy == RCT_XY8_UNDEFINED)
             return;
 
         uint16 track_elem_type = vehicle->track_type / 4;
@@ -1484,7 +1484,7 @@ static void vehicle_update_measurements(rct_vehicle *vehicle)
 
     }
 
-    if (ride->entrances[ride->current_test_station] == 0xFFFF)
+    if (ride->entrances[ride->current_test_station].xy == RCT_XY8_UNDEFINED)
         return;
 
     sint16 x, y;
@@ -1864,7 +1864,7 @@ static void vehicle_update_waiting_for_passengers(rct_vehicle* vehicle){
         if (vehicle_open_restraints(vehicle))
             return;
 
-        if (ride->entrances[vehicle->current_station] == 0xFFFF){
+        if (ride->entrances[vehicle->current_station].xy == RCT_XY8_UNDEFINED){
             ride->train_at_station[vehicle->current_station] = 0xFF;
             vehicle->sub_state = 2;
             return;

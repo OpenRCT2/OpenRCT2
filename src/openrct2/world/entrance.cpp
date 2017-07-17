@@ -331,7 +331,7 @@ static money32 RideEntranceExitPlace(sint16 x,
                 requiresRemove = true;
             }
         }
-        else if (ride->entrances[stationNum] != 0xFFFF)
+        else if (ride->entrances[stationNum].xy != RCT_XY8_UNDEFINED)
         {
             if (flags & GAME_COMMAND_FLAG_GHOST)
             {
@@ -339,8 +339,8 @@ static money32 RideEntranceExitPlace(sint16 x,
                 return MONEY32_UNDEFINED;
             }
 
-            removeCoord.x = (ride->entrances[stationNum] & 0xFF) * 32;
-            removeCoord.y = ((ride->entrances[stationNum] >> 8) & 0xFF) * 32;
+            removeCoord.x = ride->entrances[stationNum].x * 32;
+            removeCoord.y = ride->entrances[stationNum].y * 32;
             requiresRemove = true;
         }
 
@@ -425,7 +425,8 @@ static money32 RideEntranceExitPlace(sint16 x,
             }
             else
             {
-                ride->entrances[stationNum] = (x / 32) | (y / 32 << 8);
+                ride->entrances[stationNum].x = x / 32;
+                ride->entrances[stationNum].y = y / 32;
                 ride->last_peep_in_queue[stationNum] = SPRITE_INDEX_NULL;
                 ride->queue_length[stationNum] = 0;
 
@@ -543,7 +544,7 @@ static money32 RideEntranceExitRemove(sint16 x, sint16 y, uint8 rideIndex, uint8
         }
         else
         {
-            ride->entrances[stationNum] = 0xFFFF;
+            ride->entrances[stationNum].xy = RCT_XY8_UNDEFINED;
         }
 
         footpath_update_queue_chains();
