@@ -187,7 +187,7 @@ rct_window * window_object_load_error_open(utf8 * path, size_t numMissingObjects
             WH,
             &window_object_load_error_events,
             WC_OBJECT_LOAD_ERROR,
-            WF_STICK_TO_FRONT
+            0
         );
 
         window->widgets = window_object_load_error_widgets;
