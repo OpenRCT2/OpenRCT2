@@ -174,7 +174,8 @@ static void cheat_renew_rides()
         // Set build date to current date (so the ride is brand new)
         ride->build_date = gDateMonthsElapsed;
         // Set reliability to 100
-        ride->reliability = (100 << 8);
+        ride->reliability = 100;
+        ride->reliability_countdown = 255;
     }
     window_invalidate_by_class(WC_RIDE);
 }

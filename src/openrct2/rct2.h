@@ -19,6 +19,8 @@
 
 #include "common.h"
 
+#define RCT2_MAX_CARS_PER_TRAIN 32
+
 typedef struct rct2_install_info {
     uint32 installLevel;
     char title[260];

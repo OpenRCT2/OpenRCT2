@@ -2334,7 +2334,7 @@ static void ride_breakdown_update(sint32 rideIndex)
 
     // Calculate breakdown probability?
     sint32 unreliabilityAccumulator = ride->unreliability_factor + get_age_penalty(ride);
-    ride->reliability = max(0, ride->reliability - unreliabilityAccumulator);
+    ride->reliability_composed = max(0, ride->reliability_composed - unreliabilityAccumulator);
     ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAINTENANCE;
 
     // Random probability of a breakdown. Roughly this is 1 in
@@ -2406,7 +2406,7 @@ static sint32 ride_get_new_breakdown_problem(rct_ride *ride)
         return -1;
 
     monthsOld = gDateMonthsElapsed - ride->build_date;
-    if (monthsOld < 16 || ride->reliability > (50 << 8))
+    if (monthsOld < 16 || ride->reliability > 50)
         return -1;
 
     return BREAKDOWN_BRAKES_FAILURE;
@@ -6192,7 +6192,8 @@ foundRideEntry:
 
     ride->breakdown_reason = 255;
     ride->upkeep_cost = (money16)-1;
-    ride->reliability = 0x64FF;
+    ride->reliability = 100;
+    ride->reliability_countdown = 255;
     ride->unreliability_factor = 1;
     ride->inspection_interval = RIDE_INSPECTION_EVERY_30_MINUTES;
     ride->last_inspection = 0;
@@ -7496,8 +7497,8 @@ void ride_fix_breakdown(sint32 rideIndex, sint32 reliabilityIncreaseFactor)
         }
     }
 
-    uint8 unreliability = 100 - ((ride->reliability >> 8) & 0xFF);
-    ride->reliability += reliabilityIncreaseFactor * (unreliability / 2);
+    uint8 unreliability = 100 - ride->reliability;
+    ride->reliability_composed += reliabilityIncreaseFactor * (unreliability / 2);
 }
 
 /**
@@ -7529,8 +7530,8 @@ static void ride_update_vehicle_colours(sint32 rideIndex)
                 coloursExtended = ride->vehicle_colours_extended[i];
                 break;
             case RIDE_COLOUR_SCHEME_DIFFERENT_PER_CAR:
-                colours = ride->vehicle_colours[carIndex > 31 ? 31 : carIndex];
-                coloursExtended = ride->vehicle_colours_extended[carIndex > 31 ? 31 : carIndex];
+                colours = ride->vehicle_colours[max(carIndex, RCT2_MAX_CARS_PER_TRAIN - 1)];
+                coloursExtended = ride->vehicle_colours_extended[max(carIndex, RCT2_MAX_CARS_PER_TRAIN - 1)];
                 break;
             }
 
