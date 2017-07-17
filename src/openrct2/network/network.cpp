@@ -99,7 +99,8 @@ Network::Network()
     status = NETWORK_STATUS_NONE;
     last_tick_sent_time = 0;
     last_ping_sent_time = 0;
-    _commandIndex = 0;
+    _commandId = 0;
+    _actionId = 0;
     client_command_handlers.resize(NETWORK_COMMAND_MAX, 0);
     client_command_handlers[NETWORK_COMMAND_AUTH] = &Network::Client_Handle_AUTH;
     client_command_handlers[NETWORK_COMMAND_MAP] = &Network::Client_Handle_MAP;
@@ -1156,6 +1157,16 @@ void Network::Client_Send_GAME_ACTION(const IGameAction *action)
 {
 	std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
 
+    uint32_t networkId = 0;
+    networkId = ++_actionId;
+
+    // I know its ugly, want basic functionality for now.
+    const_cast<IGameAction*>(action)->SetNetworkId(networkId);
+    if(action->GetCallback())
+    {
+        _gameActionCallbacks.insert(std::make_pair(networkId, action->GetCallback()));
+    }
+
     DataSerialiser stream(true);
     action->Serialise(stream);
 
@@ -1477,12 +1488,14 @@ void Network::EnqueueGameAction(const IGameAction *action)
     action->Serialise(dsOut);
 
     IGameAction *ga = GameActions::Create(action->GetType());
+    ga->SetCallback(action->GetCallback());
+
     stream.SetPosition(0);
     DataSerialiser dsIn(false, stream);
     ga->Serialise(dsIn);
 
     GameCommand gc(gCurrentTicks, ga);
-    gc.commandIndex = _commandIndex++;
+    gc.commandIndex = _commandId++;
     game_command_queue.insert(gc);
 }
 
@@ -2082,7 +2095,7 @@ void Network::Client_Handle_GAMECMD(NetworkConnection& connection, NetworkPacket
     packet >> tick >> args[0] >> args[1] >> args[2] >> args[3] >> args[4] >> args[5] >> args[6] >> playerid >> callback;
 
     GameCommand gc(tick, args, playerid, callback);
-    gc.commandIndex = _commandIndex++;
+    gc.commandIndex = _commandId++;
     game_command_queue.insert(gc);
 }
 
@@ -2106,8 +2119,16 @@ void Network::Client_Handle_GAME_ACTION(NetworkConnection& connection, NetworkPa
     }
     action->Serialise(ds);
 
+    auto itr = _gameActionCallbacks.find(action->GetNetworkId());
+    if (itr != _gameActionCallbacks.end())
+    {
+        action->SetCallback(itr->second);
+
+        _gameActionCallbacks.erase(itr);
+    }
+
 	GameCommand gc(tick, action);
-    gc.commandIndex = _commandIndex++;
+    gc.commandIndex = _commandId++;
 	game_command_queue.insert(gc);
 }
 
@@ -2182,7 +2203,7 @@ void Network::Server_Handle_GAME_ACTION(NetworkConnection& connection, NetworkPa
     ga->SetPlayer(connection.Player->Id);
 
     GameCommand gc(tick, ga);
-    gc.commandIndex = _commandIndex++;
+    gc.commandIndex = _commandId++;
     game_command_queue.insert(gc);
 }
 
@@ -2247,7 +2268,7 @@ void Network::Server_Handle_GAMECMD(NetworkConnection& connection, NetworkPacket
     }
 
     GameCommand gc = GameCommand(tick, args, playerid, callback);
-    gc.commandIndex = _commandIndex++;
+    gc.commandIndex = _commandId++;
     game_command_queue.insert(gc);
 }
 

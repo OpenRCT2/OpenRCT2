@@ -68,6 +68,7 @@ typedef struct IGameAction IGameAction;
 #include <memory>
 #include <string>
 #include <vector>
+#include <functional>
 #include <map>
 #include <openssl/evp.h>
 #include "../core/Json.hpp"
@@ -174,6 +175,7 @@ public:
     std::vector<std::unique_ptr<NetworkGroup>> group_list;
     NetworkKey _key;
     std::vector<uint8> _challenge;
+    std::map<uint32, std::function<void()>> _gameActionCallbacks;
     NetworkUserManager _userManager;
 
     std::string ServerName;
@@ -269,7 +271,8 @@ private:
     uint32 server_connect_time = 0;
     uint8 default_group = 0;
     uint32 game_commands_processed_this_tick = 0;
-    uint32 _commandIndex;
+    uint32 _commandId;
+    uint32 _actionId;
     std::string _chatLogPath;
     std::string _chatLogFilenameFormat = "%Y%m%d-%H%M%S.txt";
     std::string _serverLogPath;

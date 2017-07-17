@@ -14,6 +14,8 @@
  *****************************************************************************/
 #pragma endregion
 
+#pragma once
+
 #include "../core/MemoryStream.h"
 #include "../localisation/string_ids.h"
 #include "GameAction.h"
@@ -58,21 +60,3 @@ public:
     }
 };
 
-static auto Factory UNUSED_ATTR = GameActions::Register<SetParkEntranceFeeAction>();
-
-extern "C"
-{
-    void park_set_entrance_fee(money32 value)
-    {
-        auto gameAction = SetParkEntranceFeeAction();
-        gameAction.Fee = (money16)value;
-        GameActions::Execute(&gameAction);
-    }
-
-    void game_command_set_park_entrance_fee(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp)
-    {
-        auto gameAction = SetParkEntranceFeeAction();
-        gameAction.Fee = (*edi & 0xFFFF);
-        GameActions::Execute(&gameAction);
-    }
-}
