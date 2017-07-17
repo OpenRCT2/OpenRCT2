@@ -23,11 +23,10 @@ extern "C" {
 #include "IGameAction.h"
 
 typedef IGameAction *(*GameActionFactory)();
-using GameActionCallback = std::function<void(GameActionResult)>;
 
 template<uint32 _TYPE, uint16 _ACTFLAGS>
 struct GameAction : public IGameAction
-{
+{    
 public:
     constexpr static uint32 Type = _TYPE;
     constexpr static uint16 ActionFlags = _ACTFLAGS;
@@ -36,7 +35,7 @@ private:
     uint32 _playerId;   // Callee
     uint32 _flags;      // GAME_COMMAND_FLAGS
     uint32 _networkId;
-    std::function<void()> _callback;
+    GameActionCallback_t _callback;
 
 public:
     GameAction() : _playerId(0), _flags(0), _networkId(0)
@@ -79,12 +78,12 @@ public:
         return Type;
     }
 
-    virtual void SetCallback(const std::function<void()>& cb)
+    virtual void SetCallback(const GameActionCallback_t& cb)
     {
         _callback = cb;
     }
 
-    virtual const std::function<void()>& GetCallback() const
+    virtual const GameActionCallback_t& GetCallback() const
     {
         return _callback;
     }

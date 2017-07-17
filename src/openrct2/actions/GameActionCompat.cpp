@@ -1,5 +1,6 @@
 #include "PlaceParkEntranceAction.hpp"
 #include "SetParkEntranceFeeAction.hpp"
+#include "RideCreateAction.hpp"
 
 extern "C"
 {
@@ -70,10 +71,6 @@ extern "C"
     {
         auto gameAction = SetParkEntranceFeeAction();
         gameAction.Fee = (money16)value;
-        gameAction.SetCallback([]()
-        {
-            log_info("GameAction Callback executed");
-        });
         GameActions::Execute(&gameAction);
     }
 
@@ -84,4 +81,39 @@ extern "C"
         GameActions::Execute(&gameAction);
     }
 #pragma endregion
+
+#pragma region RideCreateAction
+    /**
+    *
+    *  rct2: 0x006B4800
+    */
+    void ride_construct_new(ride_list_item listItem)
+    {
+        auto gameAction = RideCreateAction();
+        gameAction.rideType = listItem.type;
+        gameAction.rideSubType = listItem.entry_index;
+        gameAction.SetCallback([](const IGameAction *ga, GameActionResult& res)
+        {
+            if (res.Error != GA_ERROR::OK)
+                return;
+
+            ride_construct(static_cast<RideCreateGameActionResult&>(res).RideIndex());
+        });
+
+        GameActions::Execute(&gameAction);
+    }
+
+    /**
+    *
+    *  rct2: 0x006B3F0F
+    */
+    void game_command_create_ride(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *edx, sint32 *esi, sint32 *edi, sint32 *ebp)
+    {
+        ride_list_item tmp;
+        tmp.ride_type_and_entry = (uint16)*edx;
+        ride_construct_new(tmp);
+    }
+
+#pragma endregion
+
 }

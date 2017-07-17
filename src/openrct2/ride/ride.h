@@ -1021,6 +1021,8 @@ extern sint32 gRideRemoveTrackPieceCallbackType;
 
 extern uint8 gLastEntranceStyle;
 
+sint32 ride_get_empty_slot();
+sint32 ride_get_default_mode(Ride *ride);
 sint32 ride_get_count();
 sint32 ride_get_total_queue_length(Ride *ride);
 sint32 ride_get_max_queue_time(Ride *ride);
@@ -1050,6 +1052,8 @@ sint32 ride_get_total_time(Ride *ride);
 sint32 ride_can_have_multiple_circuits(Ride *ride);
 track_colour ride_get_track_colour(Ride *ride, sint32 colourScheme);
 vehicle_colour ride_get_vehicle_colour(Ride *ride, sint32 vehicleIndex);
+sint32 ride_get_unused_preset_vehicle_colour(uint8 ride_type, uint8 ride_sub_type);
+void ride_set_vehicle_colours_to_random_preset(Ride *ride, uint8 preset_index);
 rct_ride_entry *get_ride_entry_by_ride(Ride *ride);
 uint8 *get_ride_entry_indices_for_ride_type(uint8 rideType);
 void reset_type_to_ride_entry_index_map();
@@ -1073,6 +1077,10 @@ void ride_set_name(sint32 rideIndex, const char *name);
 void game_command_set_ride_name(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *edx, sint32 *esi, sint32 *edi, sint32 *ebp);
 void game_command_set_ride_setting(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *edx, sint32 *esi, sint32 *edi, sint32 *ebp);
 sint32 ride_get_refund_price(sint32 ride_id);
+sint32 ride_get_random_colour_preset_index(uint8 ride_type);
+void ride_set_colour_preset(Ride *ride, uint8 index);
+money32 ride_get_common_price(Ride *forRide);
+money32 shop_item_get_common_price(Ride *forRide, sint32 shopItem);
 bool shop_item_is_photo(sint32 shopItem);
 bool shop_item_has_common_price(sint32 shopItem);
 rct_ride_name get_ride_naming(uint8 rideType, rct_ride_entry * rideEntry);
