@@ -3804,6 +3804,9 @@ enum {
     STR_SERVER_LIST_MASTER_SERVER_FAILED = 6151,
     STR_SERVER_LIST_INVALID_RESPONSE_JSON_ARRAY = 6152,
 
+    STR_TITLE_EDITOR_COMMAND_TYPE_FOLLOW = 6153,
+    STR_TITLE_COMMAND_EDITOR_SELECT_SPRITE = 6154,
+
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     STR_COUNT = 32768
 };

@@ -608,6 +608,10 @@ static utf8 * LegacyScriptWrite(TitleSequence * seq)
             String::Format(buffer, sizeof(buffer), "ZOOM %u", command->Zoom);
             sb.Append(buffer);
             break;
+        case TITLE_SCRIPT_FOLLOW:
+            String::Format(buffer, sizeof(buffer), "FOLLOW %u", command->SpriteIndex);
+            sb.Append(buffer);
+            break;
         case TITLE_SCRIPT_SPEED:
             String::Format(buffer, sizeof(buffer), "SPEED %u", command->Speed);
             sb.Append(buffer);
