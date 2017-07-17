@@ -863,7 +863,7 @@ static bool track_design_save_to_td6_for_maze(uint8 rideIndex, rct_track_td6 *td
     }
 
     rct_ride *ride = get_ride(rideIndex);
-    uint16 location = ride->entrances[0];
+    uint16 location = ride->entrances[0].xy;
 
     if (location == 0xFFFF) {
         gGameCommandErrorText = STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY;
@@ -1049,12 +1049,12 @@ static bool track_design_save_to_td6_for_tracked_ride(uint8 rideIndex, rct_track
 
             uint16 location;
             if (i == 0) {
-                location = ride->entrances[station_index];
+                location = ride->entrances[station_index].xy;
             } else {
                 location = ride->exits[station_index];
             }
 
-            if (location == 0xFFFF) {
+            if (location == RCT_XY8_UNDEFINED) {
                 continue;
             }
 

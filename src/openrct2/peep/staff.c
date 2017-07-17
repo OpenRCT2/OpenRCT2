@@ -1161,8 +1161,8 @@ static uint8 staff_mechanic_direction_surface(rct_peep* peep) {
         rct_ride* ride = get_ride(peep->current_ride);
 
         uint16 location = ride->exits[peep->current_ride_station];
-        if (location == 0xFFFF) {
-            location = ride->entrances[peep->current_ride_station];
+        if (location == RCT_XY8_UNDEFINED) {
+            location = ride->entrances[peep->current_ride_station].xy;
         }
 
         rct_xy16 chosenTile = {
@@ -1249,8 +1249,8 @@ static uint8 staff_mechanic_direction_path(rct_peep* peep, uint8 validDirections
         /* Find location of the exit for the target ride station
          * or if the ride has no exit, the entrance. */
         uint16 location = ride->exits[peep->current_ride_station];
-        if (location == 0xFFFF) {
-            location = ride->entrances[peep->current_ride_station];
+        if (location == RCT_XY8_UNDEFINED) {
+            location = ride->entrances[peep->current_ride_station].xy;
         }
 
         rct_xy16 chosenTile = {

@@ -2386,8 +2386,8 @@ static void peep_choose_seat_from_car(rct_peep* peep, rct_ride* ride, rct_vehicl
  *  rct2: 0x00691D27
  */
 static void peep_go_to_ride_entrance(rct_peep* peep, rct_ride* ride){
-    sint32 x = ride->entrances[peep->current_ride_station] & 0xFF;
-    sint32 y = ride->entrances[peep->current_ride_station] >> 8;
+    sint32 x = ride->entrances[peep->current_ride_station].x;
+    sint32 y = ride->entrances[peep->current_ride_station].y;
     sint32 z = ride->station_heights[peep->current_ride_station];
 
     rct_map_element* map_element = ride_get_station_exit_element(ride, x, y, z);
@@ -2647,8 +2647,8 @@ static void peep_update_ride_sub_state_1(rct_peep* peep){
 
     if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_NO_VEHICLES))
     {
-        x = ride->entrances[peep->current_ride_station] & 0xFF;
-        y = ride->entrances[peep->current_ride_station] >> 8;
+        x = ride->entrances[peep->current_ride_station].x;
+        y = ride->entrances[peep->current_ride_station].y;
         z = ride->station_heights[peep->current_ride_station];
 
         rct_map_element* map_element = ride_get_station_exit_element(ride, x, y, z);
@@ -2724,8 +2724,8 @@ static void peep_update_ride_sub_state_1(rct_peep* peep){
     rct_ride_entry_vehicle* vehicle_type = &ride_entry->vehicles[vehicle->vehicle_type];
 
     if (vehicle_type->flags_b & VEHICLE_ENTRY_FLAG_B_10){
-        x = ride->entrances[peep->current_ride_station] & 0xFF;
-        y = ride->entrances[peep->current_ride_station] >> 8;
+        x = ride->entrances[peep->current_ride_station].x;
+        y = ride->entrances[peep->current_ride_station].y;
         z = ride->station_heights[peep->current_ride_station];
 
         rct_map_element* map_element = ride_get_station_exit_element(ride, x, y, z);
@@ -2933,8 +2933,8 @@ static void peep_update_ride_sub_state_2_enter_ride(rct_peep* peep, rct_ride* ri
 static void peep_update_ride_sub_state_2_rejoin_queue(rct_peep* peep, rct_ride* ride)
 {
     sint16 x, y, z;
-    x = ride->entrances[peep->current_ride_station] & 0xFF;
-    y = ride->entrances[peep->current_ride_station] >> 8;
+    x = ride->entrances[peep->current_ride_station].x;
+    y = ride->entrances[peep->current_ride_station].y;
     z = ride->station_heights[peep->current_ride_station];
 
     rct_map_element* map_element = ride_get_station_exit_element(ride, x, y, z);
@@ -4703,10 +4703,10 @@ static bool peep_update_fixing_sub_state_12(bool firstRun, rct_peep *peep, rct_r
 
     if (!firstRun) {
         uint16 stationPosition = ride->exits[peep->current_ride_station];
-        if (stationPosition == 0xFFFF) {
-            stationPosition = ride->entrances[peep->current_ride_station];
+        if (stationPosition == RCT_XY8_UNDEFINED) {
+            stationPosition = ride->entrances[peep->current_ride_station].xy;
 
-            if (stationPosition == 0xFFFF) {
+            if (stationPosition == RCT_XY8_UNDEFINED) {
                 return true;
             }
         }
@@ -4784,10 +4784,10 @@ static bool peep_update_fixing_sub_state_14(bool firstRun, rct_peep *peep, rct_r
 
     if (!firstRun) {
         uint16 exitPosition = ride->exits[peep->current_ride_station];
-        if (exitPosition == 0xFFFF) {
-            exitPosition = ride->entrances[peep->current_ride_station];
+        if (exitPosition == RCT_XY8_UNDEFINED) {
+            exitPosition = ride->entrances[peep->current_ride_station].xy;
 
-            if (exitPosition == 0xFFFF) {
+            if (exitPosition == RCT_XY8_UNDEFINED) {
                 peep_decrement_num_riders(peep);
                 peep->state = 0;
                 peep_window_state_update(peep);
@@ -10344,14 +10344,14 @@ static sint32 guest_path_finding(rct_peep* peep)
     uint8 entranceStations = 0;
 
     for (uint8 stationNum = 0; stationNum < RCT12_MAX_STATIONS_PER_RIDE; ++stationNum){
-        if (ride->entrances[stationNum] == 0xFFFF) // stationNum has no entrance (so presumably an exit only station).
+        if (ride->entrances[stationNum].xy == RCT_XY8_UNDEFINED) // stationNum has no entrance (so presumably an exit only station).
             continue;
 
         numEntranceStations++;
         entranceStations |= (1 << stationNum);
 
-        sint16 stationX = (ride->entrances[stationNum] & 0xFF) * 32;
-        sint16 stationY = (ride->entrances[stationNum] & 0xFF00) / 8;
+        sint16 stationX = (ride->entrances[stationNum]).x * 32;
+        sint16 stationY = (ride->entrances[stationNum]).y * 32;
         uint16 dist = abs(stationX - peep->next_x) + abs(stationY - peep->next_y);
 
         if (dist < closestDist){
@@ -10390,7 +10390,7 @@ static sint32 guest_path_finding(rct_peep* peep)
     if (numEntranceStations == 0)
         entranceXY = ride->station_starts[closestStationNum]; // closestStationNum is always 0 here.
     else
-        entranceXY = ride->entrances[closestStationNum];
+        entranceXY = ride->entrances[closestStationNum].xy;
 
     x = (entranceXY & 0xFF) * 32;
     y = (entranceXY & 0xFF00) / 8;

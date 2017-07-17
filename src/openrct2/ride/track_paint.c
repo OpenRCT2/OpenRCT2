@@ -231,7 +231,7 @@ bool track_paint_util_has_fence(enum edge_t edge, rct_xy16 position, rct_map_ele
 
     sint32 entranceId = map_get_station(mapElement);
 
-    return (ride->entrances[entranceId] != entranceLoc && ride->exits[entranceId] != entranceLoc);
+    return (ride->entrances[entranceId].xy != entranceLoc && ride->exits[entranceId] != entranceLoc);
 }
 
 void track_paint_util_paint_floor(uint8 edges, uint32 colourFlags, uint16 height, const uint32 floorSprites[4], uint8 rotation)
