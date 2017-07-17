@@ -52,8 +52,21 @@ namespace GameActions
         return factory;
     }
 
+    void Initialize()
+    {
+        static bool initialized = false;
+        if (initialized)
+            return;
+
+        Register();
+
+        initialized = true;
+    }
+
     IGameAction * Create(uint32 id)
     {
+        Initialize();
+
         IGameAction * result = nullptr;
         if (id < Util::CountOf(_actions))
         {
@@ -109,10 +122,8 @@ namespace GameActions
         return result;
     }
 
-    GameActionResult Execute(IGameAction * action)
+    GameActionResult Execute(const IGameAction * action)
     {
-        log_info("[%s] GameAction::Execute\n", network_get_mode() == NETWORK_MODE_CLIENT ? "cl" : "sv");
-
         Guard::ArgumentNotNull(action);
 
         uint16 actionFlags = action->GetActionFlags();
@@ -127,6 +138,8 @@ namespace GameActions
                 // As a client we have to wait or send it first.
                 if (!(actionFlags & GA_FLAGS::CLIENT_ONLY) && !(flags & GAME_COMMAND_FLAG_GHOST) && !(flags & GAME_COMMAND_FLAG_NETWORKED))
                 {
+                    log_info("[%s] GameAction::Execute\n", "cl");
+
                     network_send_game_action(action);
 
                     return result;
@@ -138,11 +151,14 @@ namespace GameActions
                 // at the beginning of the frame, so we have to put them into the queue.
                 if (!(actionFlags & GA_FLAGS::CLIENT_ONLY) && !(flags & GAME_COMMAND_FLAG_GHOST) && !(flags & GAME_COMMAND_FLAG_NETWORKED))
                 {
+                    log_info("[%s] GameAction::Execute\n", "sv-cl");
                     network_enqueue_game_action(action);
 
                     return result;
                 }
             }
+
+            log_info("[%s] GameAction::Execute\n", "sv");
 
             // Execute the action, changing the game state
             result = action->Execute();
@@ -174,12 +190,11 @@ namespace GameActions
         }
 
         // Call callback for asynchronous events
-        /*
-        if (callback != nullptr)
+        const std::function<void()>& cb = action->GetCallback();
+        if (cb)
         {
-            callback(result);
+            cb();
         }
-        */
 
         if (result.Error != GA_ERROR::OK && !(flags & GAME_COMMAND_FLAG_GHOST))
         {
