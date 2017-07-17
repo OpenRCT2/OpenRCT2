@@ -3935,7 +3935,7 @@ static void window_ride_maintenance_paint(rct_window *w, rct_drawpixelinfo *dpi)
     x = w->x + widget->left + 4;
     y = w->y + widget->top + 4;
 
-    uint16 reliability = ride->reliability >> 8;
+    uint16 reliability = ride->reliability_percentage;
     gfx_draw_string_left(dpi, STR_RELIABILITY_LABEL_1757, &reliability, COLOUR_BLACK, x, y);
     window_ride_maintenance_draw_bar(w, dpi, x + 103, y, max(10, reliability), COLOUR_BRIGHT_GREEN);
     y += 11;

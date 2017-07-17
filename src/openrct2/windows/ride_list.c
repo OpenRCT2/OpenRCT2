@@ -677,7 +677,7 @@ static void window_ride_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, 
             }
             break;
         case INFORMATION_TYPE_RELIABILITY:
-            set_format_arg(2, uint16, ride->reliability >> 8);
+            set_format_arg(2, uint16, ride->reliability_percentage);
             formatSecondary = STR_RELIABILITY_LABEL;
             break;
         case INFORMATION_TYPE_DOWN_TIME:
@@ -867,7 +867,7 @@ static void window_ride_list_refresh_list(rct_window *w)
         case INFORMATION_TYPE_RELIABILITY:
             while (--current_list_position >= 0) {
                 otherRide = get_ride(w->list_item_positions[current_list_position]);
-                if (ride->reliability >> 8 <= otherRide->reliability >> 8)
+                if (ride->reliability_percentage <= otherRide->reliability_percentage)
                     break;
 
                 window_bubble_list_item(w, current_list_position);
