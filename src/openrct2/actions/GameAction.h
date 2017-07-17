@@ -16,6 +16,10 @@
 
 #pragma once
 
+extern "C" {
+#include "../platform/platform.h"
+}
+
 #include "IGameAction.h"
 
 typedef IGameAction *(*GameActionFactory)();
@@ -31,9 +35,11 @@ public:
 private:
     uint32 _playerId;   // Callee
     uint32 _flags;      // GAME_COMMAND_FLAGS
+    uint32 _networkId;
+    std::function<void()> _callback;
 
 public:
-    GameAction() : _playerId(0), _flags(0)
+    GameAction() : _playerId(0), _flags(0), _networkId(0)
     {
     }
 
@@ -73,8 +79,29 @@ public:
         return Type;
     }
 
+    virtual void SetCallback(const std::function<void()>& cb)
+    {
+        _callback = cb;
+    }
+
+    virtual const std::function<void()>& GetCallback() const
+    {
+        return _callback;
+    }
+
+    virtual void SetNetworkId(uint32_t id)
+    {
+        _networkId = id;
+    }
+
+    virtual uint32 GetNetworkId() const
+    {
+        return _networkId;
+    }
+
     virtual void Serialise(DataSerialiser& stream)
     {
+        stream << _networkId;
         stream << _flags;
         stream << _playerId;
     }
@@ -92,10 +119,13 @@ public:
 
 namespace GameActions
 {
-GameActionFactory   Register(uint32 id, GameActionFactory action);
+void                Initialize();
+void                Register();
 IGameAction *       Create(uint32 id);
 GameActionResult    Query(const IGameAction * action);
-GameActionResult    Execute(IGameAction * action);
+GameActionResult    Execute(const IGameAction * action);
+
+GameActionFactory   Register(uint32 id, GameActionFactory action);
 
 template<typename T>
 static GameActionFactory Register()
