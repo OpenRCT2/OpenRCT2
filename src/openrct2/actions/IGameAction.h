@@ -101,6 +101,12 @@ public:
     virtual void SetPlayer(uint32 playerId) abstract;
     virtual uint32 GetPlayer() const abstract;
 
+    virtual void SetCallback(const std::function<void()>& cb) abstract;
+    virtual const std::function<void()>& GetCallback() const abstract;
+
+    virtual void SetNetworkId(uint32_t id) abstract;
+    virtual uint32 GetNetworkId() const abstract;
+
     /**
     * Writes or reads the game action directly to the given stream. Used for
     * sending across the network in multiplayer.
