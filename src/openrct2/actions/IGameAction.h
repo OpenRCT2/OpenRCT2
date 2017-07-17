@@ -69,11 +69,13 @@ struct GameActionResult
     rct_xyz32       Position = { 0 };
     money32         Cost = 0;
     uint16          ExpenditureType = 0;
-    void *          Tag = nullptr;
+    uint64          Results[4];
 
     GameActionResult();
     GameActionResult(GA_ERROR error, rct_string_id message);
 };
+
+typedef std::function<void(const struct IGameAction*, GameActionResult&)> GameActionCallback_t;
 
 /**
 * Represents an action that changes the state of the game. Can be serialised and
@@ -101,8 +103,8 @@ public:
     virtual void SetPlayer(uint32 playerId) abstract;
     virtual uint32 GetPlayer() const abstract;
 
-    virtual void SetCallback(const std::function<void()>& cb) abstract;
-    virtual const std::function<void()>& GetCallback() const abstract;
+    virtual void SetCallback(const GameActionCallback_t& cb) abstract;
+    virtual const GameActionCallback_t& GetCallback() const abstract;
 
     virtual void SetNetworkId(uint32_t id) abstract;
     virtual uint32 GetNetworkId() const abstract;

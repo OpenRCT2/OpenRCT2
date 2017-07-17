@@ -190,10 +190,10 @@ namespace GameActions
         }
 
         // Call callback for asynchronous events
-        const std::function<void()>& cb = action->GetCallback();
+        const GameActionCallback_t& cb = action->GetCallback();
         if (cb)
         {
-            cb();
+            cb(action, result);
         }
 
         if (result.Error != GA_ERROR::OK && !(flags & GAME_COMMAND_FLAG_GHOST))
