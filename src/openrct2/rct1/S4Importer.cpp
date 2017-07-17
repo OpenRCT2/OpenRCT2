@@ -833,7 +833,9 @@ private:
         dst->inspection_interval = src->inspection_interval;
         dst->last_inspection = src->last_inspection;
         dst->reliability = src->reliability;
+        dst->reliability_countdown = src->reliability_countdown;
         dst->unreliability_factor = src->unreliability_factor;
+        dst->downtime = src->downtime;
         dst->breakdown_reason = src->breakdown_reason;
         dst->mechanic_status = src->mechanic_status;
         dst->mechanic = src->mechanic;
