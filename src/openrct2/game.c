@@ -81,7 +81,7 @@ uint32 gCurrentTicks;
 GAME_COMMAND_CALLBACK_POINTER* game_command_callback = 0;
 GAME_COMMAND_CALLBACK_POINTER* game_command_callback_table[] = {
     0,
-    game_command_callback_ride_construct_new,
+    0,
     game_command_callback_ride_construct_placed_front,
     game_command_callback_ride_construct_placed_back,
     game_command_callback_ride_remove_track_piece,

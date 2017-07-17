@@ -82,7 +82,7 @@ typedef struct IGameAction IGameAction;
 #include "NetworkServerAdvertiser.h"
 #include "NetworkUser.h"
 #include "TcpSocket.h"
-
+#include "../actions/IGameAction.h"
 
 enum {
     NETWORK_TICK_FLAG_CHECKSUMS = 1 << 0,
@@ -175,7 +175,7 @@ public:
     std::vector<std::unique_ptr<NetworkGroup>> group_list;
     NetworkKey _key;
     std::vector<uint8> _challenge;
-    std::map<uint32, std::function<void()>> _gameActionCallbacks;
+    std::map<uint32, GameActionCallback_t> _gameActionCallbacks;
     NetworkUserManager _userManager;
 
     std::string ServerName;

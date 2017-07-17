@@ -207,6 +207,7 @@ static void ride_call_closest_mechanic(sint32 rideIndex);
 static void ride_call_mechanic(sint32 rideIndex, rct_peep *mechanic, sint32 forInspection);
 static void ride_chairlift_update(rct_ride *ride);
 static void ride_entrance_exit_connected(rct_ride* ride, sint32 ride_idx);
+static void ride_set_name_to_vehicle_default(rct_ride * ride, rct_ride_entry * rideEntry);
 static sint32 ride_get_new_breakdown_problem(rct_ride *ride);
 static void ride_inspection_update(rct_ride *ride);
 static void ride_mechanic_status_update(sint32 rideIndex, sint32 mechanicStatus);
@@ -215,13 +216,9 @@ static void ride_shop_connected(rct_ride* ride, sint32 ride_idx);
 static void ride_spiral_slide_update(rct_ride *ride);
 static void ride_update(sint32 rideIndex);
 static void ride_update_vehicle_colours(sint32 rideIndex);
-static void ride_set_vehicle_colours_to_random_preset(rct_ride *ride, uint8 preset_index);
 void loc_6DDF9C(rct_ride *ride, rct_map_element *mapElement);
 bool sub_6CA2DF(sint32 *trackType, sint32 *trackDirection, sint32 *rideIndex, sint32 *_liftHillAndAlternativeState, sint32 *x, sint32 *y, sint32 *z, sint32 *properties);
 money32 place_provisional_track_piece(sint32 rideIndex, sint32 trackType, sint32 trackDirection, sint32 liftHillAndAlternativeState, sint32 x, sint32 y, sint32 z);
-static void ride_set_name_to_track_default(rct_ride * ride, rct_ride_entry * rideEntry);
-static void ride_set_name_to_vehicle_default(rct_ride * ride, rct_ride_entry * rideEntry);
-
 
 rct_ride *get_ride(sint32 index)
 {
@@ -1021,33 +1018,6 @@ static rct_window *ride_create_or_find_construction_window(sint32 rideIndex)
     }
 
     return w;
-}
-
-static sint32 ride_create_ride(ride_list_item listItem)
-{
-    sint32 eax, ebx, ecx, edx, esi, edi, ebp;
-    edx = listItem.ride_type_and_entry;
-    eax = 0;
-    ecx = 0;
-    ebx = GAME_COMMAND_FLAG_APPLY;
-    edi = 0;
-    esi = GAME_COMMAND_CREATE_RIDE;
-    ebp = 0;
-
-    gGameCommandErrorTitle = STR_CANT_CREATE_NEW_RIDE_ATTRACTION;
-
-    game_do_command_p(esi, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-    return ebx == MONEY32_UNDEFINED ? -1 : edi;
-}
-
-/**
- *
- *  rct2: 0x006B4800
- */
-void ride_construct_new(ride_list_item listItem)
-{
-    game_command_callback = game_command_callback_ride_construct_new;
-    ride_create_ride(listItem);
 }
 
 /**
@@ -3125,7 +3095,7 @@ static bool ride_does_vehicle_colour_exist(uint8 ride_sub_type, vehicle_colour *
     return true;
 }
 
-static sint32 ride_get_unused_preset_vehicle_colour(uint8 ride_type, uint8 ride_sub_type)
+sint32 ride_get_unused_preset_vehicle_colour(uint8 ride_type, uint8 ride_sub_type)
 {
     if (ride_sub_type >= 128)
     {
@@ -3158,7 +3128,7 @@ static sint32 ride_get_unused_preset_vehicle_colour(uint8 ride_type, uint8 ride_
  *
  *  rct2: 0x006DE52C
  */
-static void ride_set_vehicle_colours_to_random_preset(rct_ride *ride, uint8 preset_index)
+void ride_set_vehicle_colours_to_random_preset(rct_ride *ride, uint8 preset_index)
 {
     rct_ride_entry *rideEntry = get_ride_entry(ride->subtype);
     vehicle_colour_preset_list *presetList = rideEntry->vehicle_preset_list;
@@ -5801,7 +5771,7 @@ static void ride_stop_peeps_queuing(sint32 rideIndex)
     }
 }
 
-static sint32 ride_get_empty_slot()
+sint32 ride_get_empty_slot()
 {
     for (sint32 i = 0; i < MAX_RIDES; i++) {
         rct_ride *ride = get_ride(i);
@@ -5812,7 +5782,7 @@ static sint32 ride_get_empty_slot()
     return -1;
 }
 
-static sint32 ride_get_default_mode(rct_ride *ride)
+sint32 ride_get_default_mode(rct_ride *ride)
 {
     const rct_ride_entry *rideEntry = get_ride_entry(ride->subtype);
     const uint8 *availableModes = RideAvailableModes;
@@ -5860,7 +5830,7 @@ static bool ride_name_exists(char *name)
  *
  *  Based on rct2: 0x006B4776
  */
-static sint32 ride_get_random_colour_preset_index(uint8 ride_type)
+sint32 ride_get_random_colour_preset_index(uint8 ride_type)
 {
     if (ride_type >= 128)
     {
@@ -5885,7 +5855,7 @@ static sint32 ride_get_random_colour_preset_index(uint8 ride_type)
  *
  *  Based on rct2: 0x006B4776
  */
-static void ride_set_colour_preset(rct_ride *ride, uint8 index)
+void ride_set_colour_preset(rct_ride *ride, uint8 index)
 {
     const track_colour_preset_list * colourPresets = &RideColourPresets[ride->type];
     track_colour colours = { COLOUR_BLACK, COLOUR_BLACK, COLOUR_BLACK };
@@ -5900,7 +5870,7 @@ static void ride_set_colour_preset(rct_ride *ride, uint8 index)
     ride->colour_scheme_type = 0;
 }
 
-static money32 ride_get_common_price(rct_ride *forRide)
+money32 ride_get_common_price(rct_ride *forRide)
 {
     rct_ride *ride;
     sint32 i;
@@ -5914,7 +5884,7 @@ static money32 ride_get_common_price(rct_ride *forRide)
     return MONEY32_UNDEFINED;
 }
 
-static money32 shop_item_get_common_price(rct_ride *forRide, sint32 shopItem)
+money32 shop_item_get_common_price(rct_ride *forRide, sint32 shopItem)
 {
     rct_ride_entry *rideEntry;
     rct_ride *ride;
@@ -5973,243 +5943,6 @@ money32 ride_create_command(sint32 type, sint32 subType, sint32 flags, uint8 *ou
     return cost;
 }
 
-/**
- *
- *  rct2: 0x006B3F0F
- */
-static money32 ride_create(sint32 type, sint32 subType, sint32 flags, sint32 *outRideIndex, sint32 *outRideColour)
-{
-    rct_ride *ride;
-    rct_ride_entry *rideEntry;
-    sint32 rideIndex, rideEntryIndex;
-
-    if (type >= RIDE_TYPE_COUNT)
-    {
-        log_warning("Invalid request for ride type %u", type);
-        return MONEY32_UNDEFINED;
-    }
-
-    if (subType == RIDE_ENTRY_INDEX_NULL) {
-        uint8 *availableRideEntries = get_ride_entry_indices_for_ride_type(type);
-        for (uint8 *rei = availableRideEntries; *rei != RIDE_ENTRY_INDEX_NULL; rei++) {
-            rideEntry = get_ride_entry(*rei);
-
-            // Can happen in select-by-track-type mode
-            if (!ride_entry_is_invented(*rei))
-            {
-                continue;
-            }
-
-            if (!(rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME) || rideTypeShouldLoseSeparateFlag(rideEntry)) {
-                subType = *rei;
-                goto foundRideEntry;
-            }
-        }
-        subType = availableRideEntries[0];
-        if (subType == RIDE_ENTRY_INDEX_NULL) {
-            return MONEY32_UNDEFINED;
-        }
-    }
-
-foundRideEntry:
-    rideEntryIndex = subType;
-    rideIndex = ride_get_empty_slot();
-    if (subType >= 128)
-    {
-        log_warning("Invalid request for ride entry %u", subType);
-        return MONEY32_UNDEFINED;
-    }
-    if (rideIndex == -1) {
-        gGameCommandErrorText = STR_TOO_MANY_RIDES;
-        return MONEY32_UNDEFINED;
-    }
-    *outRideIndex = rideIndex;
-
-    // Ride/vehicle colour is calculated before applying to ensure
-    // correct colour is passed over the network.
-    if (!(flags & GAME_COMMAND_FLAG_APPLY) && !(flags & GAME_COMMAND_FLAG_NETWORKED)) {
-        *outRideColour =
-            ride_get_random_colour_preset_index(type) |
-            (ride_get_unused_preset_vehicle_colour(type, subType) << 8);
-    }
-
-    if (!(flags & GAME_COMMAND_FLAG_APPLY)) {
-        gCommandExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
-        gCommandPosition.x = 0x8000;
-        return 0;
-    }
-
-    ride = get_ride(rideIndex);
-    rideEntry = get_ride_entry(rideEntryIndex);
-    if (rideEntry == (rct_ride_entry *)-1)
-    {
-        log_warning("Invalid request for ride %u", rideIndex);
-        return MONEY32_UNDEFINED;
-    }
-    ride->type = type;
-    ride->subtype = rideEntryIndex;
-    ride_set_colour_preset(ride, *outRideColour & 0xFF);
-    ride->overall_view.xy = RCT_XY8_UNDEFINED;
-
-    // Ride name
-    if (rideEntryIndex == RIDE_ENTRY_INDEX_NULL)
-    {
-        ride_set_name_to_track_default(ride, rideEntry);
-    }
-    else
-    {
-        ride_set_name_to_default(ride, rideEntry);
-    }
-
-    for (size_t i = 0; i < MAX_STATIONS; i++) {
-        ride->station_starts[i].xy = RCT_XY8_UNDEFINED;
-        ride->entrances[i].xy = RCT_XY8_UNDEFINED;
-        ride->exits[i].xy = RCT_XY8_UNDEFINED;
-        ride->train_at_station[i] = 255;
-        ride->queue_time[i] = 0;
-    }
-
-    for (size_t i = 0; i < MAX_VEHICLES_PER_RIDE; i++) {
-        ride->vehicles[i] = SPRITE_INDEX_NULL;
-    }
-
-    ride->status = RIDE_STATUS_CLOSED;
-    ride->lifecycle_flags = 0;
-    ride->vehicle_change_timeout = 0;
-    ride->num_stations = 0;
-    ride->num_vehicles = 1;
-    ride->proposed_num_vehicles = 32;
-    ride->max_trains = 32;
-    ride->num_cars_per_train = 1;
-    ride->proposed_num_cars_per_train = 12;
-    ride->min_waiting_time = 10;
-    ride->max_waiting_time = 60;
-    ride->depart_flags = RIDE_DEPART_WAIT_FOR_MINIMUM_LENGTH | 3;
-    if (RideData4[ride->type].flags & RIDE_TYPE_FLAG4_MUSIC_ON_DEFAULT) {
-        ride->lifecycle_flags |= RIDE_LIFECYCLE_MUSIC;
-    }
-    ride->music = RideData4[ride->type].default_music;
-
-    const rct_ride_properties rideProperties = RideProperties[ride->type];
-    ride->operation_option = (rideProperties.min_value * 3 + rideProperties.max_value) / 4;
-
-    ride->lift_hill_speed = RideLiftData[ride->type].minimum_speed;
-
-    ride->measurement_index = 255;
-    ride->excitement = (ride_rating)-1;
-    ride->cur_num_customers = 0;
-    ride->num_customers_timeout = 0;
-    ride->chairlift_bullwheel_rotation = 0;
-
-    ride->price = 0;
-    ride->price_secondary = 0;
-    if (!(gParkFlags & PARK_FLAGS_NO_MONEY)) {
-        ride->price = RideData4[ride->type].price;
-        ride->price_secondary = RideData4[ride->type].price_secondary;
-
-        if (rideEntry->shop_item == SHOP_ITEM_NONE) {
-            if (!(gParkFlags & PARK_FLAGS_PARK_FREE_ENTRY) && !gCheatsUnlockAllPrices) {
-                ride->price = 0;
-            }
-        } else {
-            ride->price = DefaultShopItemPrice[rideEntry->shop_item];
-        }
-        if (rideEntry->shop_item_secondary != SHOP_ITEM_NONE) {
-            ride->price_secondary = DefaultShopItemPrice[rideEntry->shop_item_secondary];
-        }
-
-        if (gScenarioObjectiveType == OBJECTIVE_BUILD_THE_BEST) {
-            ride->price = 0;
-        }
-
-        if (ride->type == RIDE_TYPE_TOILETS) {
-            if (shop_item_has_common_price(SHOP_ITEM_ADMISSION)) {
-                money32 price = ride_get_common_price(ride);
-                if (price != MONEY32_UNDEFINED) {
-                    ride->price = (money16)price;
-                }
-            }
-        }
-
-        if (rideEntry->shop_item != SHOP_ITEM_NONE) {
-            if (shop_item_has_common_price(rideEntry->shop_item)) {
-                money32 price = shop_item_get_common_price(ride, rideEntry->shop_item);
-                if (price != MONEY32_UNDEFINED) {
-                    ride->price = (money16)price;
-                }
-            }
-        }
-
-        if (rideEntry->shop_item_secondary != SHOP_ITEM_NONE) {
-            if (shop_item_has_common_price(rideEntry->shop_item_secondary)) {
-                money32 price = shop_item_get_common_price(ride, rideEntry->shop_item_secondary);
-                if (price != MONEY32_UNDEFINED) {
-                    ride->price_secondary = (money16)price;
-                }
-            }
-        }
-
-        // Set the on-ride photo price, whether the ride has one or not (except shops).
-        if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_SHOP) && shop_item_has_common_price(SHOP_ITEM_PHOTO)) {
-            money32 price = shop_item_get_common_price(ride, SHOP_ITEM_PHOTO);
-            if (price != MONEY32_UNDEFINED) {
-                ride->price_secondary = (money16)price;
-            }
-        }
-    }
-
-    memset(ride->num_customers, 0, sizeof(ride->num_customers));
-    ride->value = 0xFFFF;
-    ride->satisfaction = 255;
-    ride->satisfaction_time_out = 0;
-    ride->satisfaction_next = 0;
-    ride->popularity = 255;
-    ride->popularity_time_out = 0;
-    ride->popularity_next = 0;
-    ride->window_invalidate_flags = 0;
-    ride->total_customers = 0;
-    ride->total_profit = 0;
-    ride->num_riders = 0;
-    ride->slide_in_use = 0;
-    ride->maze_tiles = 0;
-    ride->build_date = gDateMonthsElapsed;
-    ride->music_tune_id = 255;
-
-    ride->breakdown_reason = 255;
-    ride->upkeep_cost = (money16)-1;
-    ride->reliability = RIDE_INITIAL_RELIABILITY;
-    ride->unreliability_factor = 1;
-    ride->inspection_interval = RIDE_INSPECTION_EVERY_30_MINUTES;
-    ride->last_inspection = 0;
-    ride->downtime = 0;
-    memset(ride->downtime_history, 0, sizeof(ride->downtime_history));
-    ride->no_primary_items_sold = 0;
-    ride->no_secondary_items_sold = 0;
-    ride->last_crash_type = RIDE_CRASH_TYPE_NONE;
-    ride->income_per_hour = MONEY32_UNDEFINED;
-    ride->profit = MONEY32_UNDEFINED;
-    ride->connected_message_throttle = 0;
-    ride->entrance_style = RIDE_ENTRANCE_STYLE_PLAIN;
-    ride->num_block_brakes = 0;
-    ride->guests_favourite = 0;
-
-    ride->num_circuits = 1;
-    ride->mode = ride_get_default_mode(ride);
-    ride->min_max_cars_per_train = (rideEntry->min_cars_in_train << 4) | rideEntry->max_cars_in_train;
-    ride_set_vehicle_colours_to_random_preset(ride, 0xFF & (*outRideColour >> 8));
-    window_invalidate_by_class(WC_RIDE_LIST);
-
-    // Log ride creation
-    if (network_get_mode() == NETWORK_MODE_SERVER) {
-        int ebp = 1;
-        game_log_multiplayer_command(GAME_COMMAND_CREATE_RIDE, 0, 0, 0, &rideIndex, 0, &ebp);
-    }
-
-    gCommandExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
-    gCommandPosition.x = 0x8000;
-    return 0;
-}
-
 void ride_set_name_to_default(rct_ride * ride, rct_ride_entry * rideEntry)
 {
     if (!(rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME) || rideTypeShouldLoseSeparateFlag(rideEntry)) {
@@ -6219,7 +5952,7 @@ void ride_set_name_to_default(rct_ride * ride, rct_ride_entry * rideEntry)
     }
 }
 
-static void ride_set_name_to_track_default(rct_ride *ride, rct_ride_entry * rideEntry)
+void ride_set_name_to_track_default(rct_ride *ride, rct_ride_entry * rideEntry)
 {
     char rideNameBuffer[256];
     ride_name_args name_args;
@@ -6315,22 +6048,6 @@ rct_ride_name get_ride_naming(uint8 rideType, rct_ride_entry * rideEntry)
     else {
         return rideEntry->naming;
     }
-}
-
-/**
- *
- *  rct2: 0x006B3F0F
- */
-void game_command_create_ride(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *edx, sint32 *esi, sint32 *edi, sint32 *ebp)
-{
-    *ebx = ride_create(*edx & 0xFF, (*edx >> 8) & 0xFF, *ebx, edi, eax);
-}
-
-void game_command_callback_ride_construct_new(sint32 eax, sint32 ebx, sint32 ecx, sint32 edx, sint32 esi, sint32 edi, sint32 ebp)
-{
-    sint32 rideIndex = edi;
-    if (rideIndex != -1)
-        ride_construct(rideIndex);
 }
 
 /**

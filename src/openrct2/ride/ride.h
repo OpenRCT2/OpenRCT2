@@ -1028,6 +1028,8 @@ extern sint32 gRideRemoveTrackPieceCallbackType;
 
 extern uint8 gLastEntranceStyle;
 
+sint32 ride_get_empty_slot();
+sint32 ride_get_default_mode(rct_ride *ride);
 sint32 ride_get_count();
 sint32 ride_get_total_queue_length(rct_ride *ride);
 sint32 ride_get_max_queue_time(rct_ride *ride);
@@ -1057,6 +1059,8 @@ sint32 ride_get_total_time(rct_ride *ride);
 sint32 ride_can_have_multiple_circuits(rct_ride *ride);
 track_colour ride_get_track_colour(rct_ride *ride, sint32 colourScheme);
 vehicle_colour ride_get_vehicle_colour(rct_ride *ride, sint32 vehicleIndex);
+sint32 ride_get_unused_preset_vehicle_colour(uint8 ride_type, uint8 ride_sub_type);
+void ride_set_vehicle_colours_to_random_preset(rct_ride *ride, uint8 preset_index);
 rct_ride_entry *get_ride_entry_by_ride(rct_ride *ride);
 uint8 *get_ride_entry_indices_for_ride_type(uint8 rideType);
 void reset_type_to_ride_entry_index_map();
@@ -1080,6 +1084,10 @@ void ride_set_name(sint32 rideIndex, const char *name);
 void game_command_set_ride_name(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *edx, sint32 *esi, sint32 *edi, sint32 *ebp);
 void game_command_set_ride_setting(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *edx, sint32 *esi, sint32 *edi, sint32 *ebp);
 sint32 ride_get_refund_price(sint32 ride_id);
+sint32 ride_get_random_colour_preset_index(uint8 ride_type);
+void ride_set_colour_preset(rct_ride *ride, uint8 index);
+money32 ride_get_common_price(rct_ride *forRide);
+money32 shop_item_get_common_price(rct_ride *forRide, sint32 shopItem);
 bool shop_item_is_photo(sint32 shopItem);
 bool shop_item_has_common_price(sint32 shopItem);
 rct_string_id get_friendly_track_type_name(uint8 trackType, rct_ride_entry * rideEntry);
@@ -1094,7 +1102,7 @@ void game_command_set_ride_appearance(sint32 *eax, sint32 *ebx, sint32 *ecx, sin
 void game_command_set_ride_price(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *edx, sint32 *esi, sint32 *edi, sint32 *ebp);
 money32 ride_create_command(sint32 type, sint32 subType, sint32 flags, uint8 *outRideIndex, uint8 *outRideColour);
 void ride_set_name_to_default(rct_ride * ride, rct_ride_entry * rideEntry);
-
+void ride_set_name_to_track_default(rct_ride *ride, rct_ride_entry * rideEntry);
 void ride_clear_for_construction(sint32 rideIndex);
 void ride_entrance_exit_place_provisional_ghost();
 void ride_entrance_exit_remove_ghost();
