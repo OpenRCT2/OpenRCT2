@@ -289,6 +289,9 @@ private:
         case TITLE_SCRIPT_SPEED:
             gGameSpeed = Math::Clamp<uint8>(1, command->Speed, 4);
             break;
+        case TITLE_SCRIPT_FOLLOW:
+            FollowSprite(command->SpriteIndex);
+            break;
         case TITLE_SCRIPT_RESTART:
             Reset();
             break;
@@ -376,6 +379,14 @@ private:
             {
                 window_rotate_camera(w, 1);
             }
+        }
+    }
+
+    void FollowSprite(uint16 SpriteIndex) {
+        rct_window *const MainWindow = window_get_main();
+        if (MainWindow != nullptr)
+        {
+            MainWindow->viewport_target_sprite = SpriteIndex;
         }
     }
 
@@ -536,6 +547,9 @@ private:
             _lastScreenHeight = w->height;
             _viewCentreLocation.x = x;
             _viewCentreLocation.y = y;
+
+            // Stop following sprites
+            w->viewport_target_sprite = SPRITE_INDEX_NULL;
         }
     }
 
