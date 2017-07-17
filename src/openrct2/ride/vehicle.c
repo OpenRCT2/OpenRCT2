@@ -2099,7 +2099,7 @@ static void vehicle_update_waiting_to_depart(rct_vehicle* vehicle) {
                 }
             }
             else {
-                if (ride->exits[vehicle->current_station] != 0xFFFF) {
+                if (ride->exits[vehicle->current_station].xy != RCT_XY8_UNDEFINED) {
                     vehicle->status = VEHICLE_STATUS_UNLOADING_PASSENGERS;
                     vehicle->sub_state = 0;
                     vehicle_invalidate_window(vehicle);
@@ -2113,7 +2113,7 @@ static void vehicle_update_waiting_to_depart(rct_vehicle* vehicle) {
                 curVehicle = GET_VEHICLE(spriteId);
 
                 if (curVehicle->num_peeps != 0) {
-                    if (ride->exits[vehicle->current_station] != 0xFFFF) {
+                    if (ride->exits[vehicle->current_station].xy != RCT_XY8_UNDEFINED) {
                         vehicle->status = VEHICLE_STATUS_UNLOADING_PASSENGERS;
                         vehicle->sub_state = 0;
                         vehicle_invalidate_window(vehicle);
@@ -3572,7 +3572,7 @@ static void vehicle_update_unloading_passengers(rct_vehicle* vehicle) {
         }
     }
     else {
-        if (ride->exits[vehicle->current_station] == 0xFFFF) {
+        if (ride->exits[vehicle->current_station].xy == RCT_XY8_UNDEFINED) {
             if (vehicle->sub_state != 1)
                 return;
 

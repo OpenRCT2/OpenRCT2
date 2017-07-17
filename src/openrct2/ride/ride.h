@@ -177,7 +177,7 @@ typedef struct rct_ride {
     // at station
     uint8 train_at_station[RCT12_MAX_STATIONS_PER_RIDE];      // 0x066
     rct_xy8 entrances[RCT12_MAX_STATIONS_PER_RIDE];        // 0x06A
-    uint16 exits[RCT12_MAX_STATIONS_PER_RIDE];                // 0x072
+    rct_xy8 exits[RCT12_MAX_STATIONS_PER_RIDE];                // 0x072
     uint16 last_peep_in_queue[RCT12_MAX_STATIONS_PER_RIDE];   // 0x07A
     uint8 pad_082[4];               // Used to be number of peeps in queue in RCT1, but this has moved.
     uint16 vehicles[MAX_VEHICLES_PER_RIDE];            // 0x086 Points to the first car in the train
