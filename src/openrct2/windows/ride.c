@@ -2491,7 +2491,7 @@ static rct_string_id window_ride_get_status_station(rct_window *w, void *argumen
     if (ride->status == RIDE_STATUS_CLOSED) {
         if (ride->entrances[stationIndex].xy == RCT_XY8_UNDEFINED)
             stringId = STR_NO_ENTRANCE;
-        else if (ride->exits[stationIndex] == 0xFFFF)
+        else if (ride->exits[stationIndex].xy == RCT_XY8_UNDEFINED)
             stringId = STR_NO_EXIT;
     } else {
         if (ride->entrances[stationIndex].xy == RCT_XY8_UNDEFINED)

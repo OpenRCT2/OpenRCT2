@@ -756,7 +756,7 @@ private:
 
             dst->train_at_station[i] = src->station_depart[i];
 
-            dst->entrances[i].xy = src->entrance[i];
+            dst->entrances[i] = src->entrance[i];
             dst->exits[i] = src->exit[i];
             dst->queue_time[i] = src->queue_time[i];
             dst->last_peep_in_queue[i] = src->last_peep_in_queue[i];

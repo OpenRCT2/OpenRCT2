@@ -72,8 +72,8 @@ typedef struct rct1_ride {
     uint8 station_length[RCT12_MAX_STATIONS_PER_RIDE];
     uint8 station_light[RCT12_MAX_STATIONS_PER_RIDE];
     uint8 station_depart[RCT12_MAX_STATIONS_PER_RIDE];
-    uint16 entrance[RCT12_MAX_STATIONS_PER_RIDE];
-    uint16 exit[RCT12_MAX_STATIONS_PER_RIDE];
+    rct_xy8 entrance[RCT12_MAX_STATIONS_PER_RIDE];
+    rct_xy8 exit[RCT12_MAX_STATIONS_PER_RIDE];
     uint16 last_peep_in_queue[RCT12_MAX_STATIONS_PER_RIDE];
     uint8 num_peeps_in_queue[RCT12_MAX_STATIONS_PER_RIDE];
     uint16 vehicles[RCT1_MAX_TRAINS_PER_RIDE];

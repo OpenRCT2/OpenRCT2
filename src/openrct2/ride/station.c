@@ -327,7 +327,7 @@ sint32 ride_get_first_valid_station_exit(rct_ride * ride)
 {
     for (sint32 i = 0; i < MAX_STATIONS; i++)
     {
-        if (ride->exits[i] != 0xFFFF)
+        if (ride->exits[i].xy != RCT_XY8_UNDEFINED)
         {
             return i;
         }

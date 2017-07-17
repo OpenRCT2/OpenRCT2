@@ -2832,9 +2832,9 @@ static void peep_go_to_ride_exit(rct_peep* peep, rct_ride* ride, sint16 x, sint1
     sprite_move(x, y, z, (rct_sprite*)peep);
     invalidate_sprite_2((rct_sprite*)peep);
 
-    assert(peep->current_ride_station < 4);
-    x = ride->exits[peep->current_ride_station] & 0xFF;
-    y = ride->exits[peep->current_ride_station] >> 8;
+    assert(peep->current_ride_station < RCT12_MAX_STATIONS_PER_RIDE);
+    x = ride->exits[peep->current_ride_station].x;
+    y = ride->exits[peep->current_ride_station].y;
     x *= 32;
     y *= 32;
     x += 16;
@@ -3151,9 +3151,9 @@ static void peep_update_ride_sub_state_7(rct_peep* peep){
 
     if (!(vehicle_entry->flags_b & VEHICLE_ENTRY_FLAG_B_10)){
         sint16 x, y, z;
-        assert(peep->current_ride_station < 4);
-        x = ride->exits[peep->current_ride_station] & 0xFF;
-        y = ride->exits[peep->current_ride_station] >> 8;
+        assert(peep->current_ride_station < RCT12_MAX_STATIONS_PER_RIDE);
+        x = ride->exits[peep->current_ride_station].x;
+        y = ride->exits[peep->current_ride_station].y;
         z = ride->station_heights[peep->current_ride_station];
 
         rct_map_element* map_element = ride_get_station_exit_element(ride, x, y, z);
@@ -3241,8 +3241,8 @@ static void peep_update_ride_sub_state_7(rct_peep* peep){
     }
 
     sint16 x, y, z;
-    x = ride->exits[peep->current_ride_station] & 0xFF;
-    y = ride->exits[peep->current_ride_station] >> 8;
+    x = ride->exits[peep->current_ride_station].x;
+    y = ride->exits[peep->current_ride_station].y;
     z = ride->station_heights[peep->current_ride_station];
 
     rct_map_element* map_element = ride_get_station_exit_element(ride, x, y, z);
@@ -3316,8 +3316,8 @@ static void peep_update_ride_sub_state_7(rct_peep* peep){
 static void peep_update_ride_prepare_for_state_9(rct_peep* peep){
     rct_ride* ride = get_ride(peep->current_ride);
 
-    sint16 x = ride->exits[peep->current_ride_station] & 0xFF;
-    sint16 y = ride->exits[peep->current_ride_station] >> 8;
+    sint16 x = ride->exits[peep->current_ride_station].x;
+    sint16 y = ride->exits[peep->current_ride_station].y;
     sint16 z = ride->station_heights[peep->current_ride_station];
 
     rct_map_element* map_element = ride_get_station_exit_element(ride, x, y, z);
@@ -3533,8 +3533,8 @@ static void peep_update_ride_sub_state_13(rct_peep* peep){
 
     peep->var_37 |= 3;
 
-    x = ride->exits[peep->current_ride_station] & 0xFF;
-    y = ride->exits[peep->current_ride_station] >> 8;
+    x = ride->exits[peep->current_ride_station].x;
+    y = ride->exits[peep->current_ride_station].y;
     sint16 z = ride->station_heights[peep->current_ride_station];
 
     rct_map_element* map_element = ride_get_station_exit_element(ride, x, y, z);
@@ -3603,8 +3603,8 @@ static void peep_update_ride_sub_state_14(rct_peep* peep){
         }
 
         if (last_ride){
-            x = ride->exits[peep->current_ride_station] & 0xFF;
-            y = ride->exits[peep->current_ride_station] >> 8;
+            x = ride->exits[peep->current_ride_station].x;
+            y = ride->exits[peep->current_ride_station].y;
             sint16 z = ride->station_heights[peep->current_ride_station];
 
             rct_map_element* map_element = ride_get_station_exit_element(ride, x, y, z);
@@ -3794,8 +3794,8 @@ static void peep_update_ride_sub_state_16(rct_peep* peep){
 
     peep->var_37 |= 3;
 
-    x = ride->exits[peep->current_ride_station] & 0xFF;
-    y = ride->exits[peep->current_ride_station] >> 8;
+    x = ride->exits[peep->current_ride_station].x;
+    y = ride->exits[peep->current_ride_station].y;
     sint16 z = ride->station_heights[peep->current_ride_station];
 
     rct_map_element* map_element = ride_get_station_exit_element(ride, x, y, z);
@@ -4702,17 +4702,17 @@ static bool peep_update_fixing_sub_state_12(bool firstRun, rct_peep *peep, rct_r
     sint16 x, y, tmp_xy_distance;
 
     if (!firstRun) {
-        uint16 stationPosition = ride->exits[peep->current_ride_station];
-        if (stationPosition == RCT_XY8_UNDEFINED) {
-            stationPosition = ride->entrances[peep->current_ride_station].xy;
+        rct_xy8 stationPosition = ride->exits[peep->current_ride_station];
+        if (stationPosition.xy == RCT_XY8_UNDEFINED) {
+            stationPosition = ride->entrances[peep->current_ride_station];
 
-            if (stationPosition == RCT_XY8_UNDEFINED) {
+            if (stationPosition.xy == RCT_XY8_UNDEFINED) {
                 return true;
             }
         }
 
-        uint16 stationX = (stationPosition & 0xFF) * 32;
-        uint16 stationY = (stationPosition >> 8) * 32;
+        uint16 stationX = stationPosition.x * 32;
+        uint16 stationY = stationPosition.y * 32;
 
         stationX += 16;
         stationY += 16;
@@ -4783,11 +4783,11 @@ static bool peep_update_fixing_sub_state_14(bool firstRun, rct_peep *peep, rct_r
     sint16 x, y, xy_distance;
 
     if (!firstRun) {
-        uint16 exitPosition = ride->exits[peep->current_ride_station];
-        if (exitPosition == RCT_XY8_UNDEFINED) {
-            exitPosition = ride->entrances[peep->current_ride_station].xy;
+        rct_xy8 exitPosition = ride->exits[peep->current_ride_station];
+        if (exitPosition.xy == RCT_XY8_UNDEFINED) {
+            exitPosition = ride->entrances[peep->current_ride_station];
 
-            if (exitPosition == RCT_XY8_UNDEFINED) {
+            if (exitPosition.xy == RCT_XY8_UNDEFINED) {
                 peep_decrement_num_riders(peep);
                 peep->state = 0;
                 peep_window_state_update(peep);
@@ -4795,8 +4795,8 @@ static bool peep_update_fixing_sub_state_14(bool firstRun, rct_peep *peep, rct_r
             }
         }
 
-        uint16 exitX = (exitPosition & 0xFF) * 32;
-        uint16 exitY = (exitPosition >> 8) * 32;
+        uint16 exitX = exitPosition.x * 32;
+        uint16 exitY = exitPosition.y * 32;
 
         exitX += 16;
         exitY += 16;
@@ -5882,7 +5882,8 @@ static void peep_update_heading_to_inspect(rct_peep* peep){
         return;
     }
 
-    if (ride->exits[peep->current_ride_station] == 0xFFFF){
+    if (ride->exits[peep->current_ride_station].xy == RCT_XY8_UNDEFINED)
+    {
         ride->lifecycle_flags &= ~RIDE_LIFECYCLE_DUE_INSPECTION;
         peep_decrement_num_riders(peep);
         peep->state = PEEP_STATE_FALLING;
@@ -5939,7 +5940,10 @@ static void peep_update_heading_to_inspect(rct_peep* peep){
             return;
 
         if (_unk_F1EE18 & F1EE18_RIDE_ENTRANCE) {
-            if (ride->exits[exit_index] != 0xFFFF)return;
+            if (ride->exits[exit_index].xy != RCT_XY8_UNDEFINED)
+            {
+                return;
+            }
         }
 
         uint8 direction = map_element->type & MAP_ELEMENT_DIRECTION_MASK;
@@ -6056,7 +6060,10 @@ static void peep_update_answering(rct_peep* peep){
             return;
 
         if (_unk_F1EE18 & F1EE18_RIDE_ENTRANCE) {
-            if (ride->exits[exit_index] != 0xFFFF)return;
+            if (ride->exits[exit_index].xy != RCT_XY8_UNDEFINED)
+            {
+                return;
+            }
         }
 
         uint8 direction = map_element->type & MAP_ELEMENT_DIRECTION_MASK;

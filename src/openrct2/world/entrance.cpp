@@ -318,7 +318,7 @@ static money32 RideEntranceExitPlace(sint16 x,
 
         if (isExit)
         {
-            if (ride->exits[stationNum] != 0xFFFF)
+            if (ride->exits[stationNum].xy != RCT_XY8_UNDEFINED)
             {
                 if (flags & GAME_COMMAND_FLAG_GHOST)
                 {
@@ -326,8 +326,8 @@ static money32 RideEntranceExitPlace(sint16 x,
                     return MONEY32_UNDEFINED;
                 }
 
-                removeCoord.x = (ride->exits[stationNum] & 0xFF) * 32;
-                removeCoord.y = ((ride->exits[stationNum] >> 8) & 0xFF) * 32;
+                removeCoord.x = ride->exits[stationNum].x * 32;
+                removeCoord.y = ride->exits[stationNum].y * 32;
                 requiresRemove = true;
             }
         }
@@ -421,7 +421,8 @@ static money32 RideEntranceExitPlace(sint16 x,
 
             if (isExit)
             {
-                ride->exits[stationNum] = (x / 32) | (y / 32 << 8);
+                ride->exits[stationNum].x = x / 32;
+                ride->exits[stationNum].y = y / 32;
             }
             else
             {
@@ -540,7 +541,7 @@ static money32 RideEntranceExitRemove(sint16 x, sint16 y, uint8 rideIndex, uint8
 
         if (isExit)
         {
-            ride->exits[stationNum] = 0xFFFF;
+            ride->exits[stationNum].xy = RCT_XY8_UNDEFINED;
         }
         else
         {
