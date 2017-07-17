@@ -30,11 +30,12 @@ typedef struct TitleCommand
             uint8 X;
             uint8 Y;
         };
-        uint8 Rotations;    // ROTATE (counter-clockwise)
-        uint8 Zoom;         // ZOOM
-        uint8 Speed;        // SPEED
-        uint16 Milliseconds;      // WAIT
-        utf8 Scenario[TITLE_COMMAND_SCENARIO_LENGTH];        // LOADSC
+        uint8  Rotations;                                // ROTATE (counter-clockwise)
+        uint8  Zoom;                                     // ZOOM
+        uint16 SpriteIndex;                              // FOLLOW
+        uint8  Speed;                                    // SPEED
+        uint16 Milliseconds;                             // WAIT
+        utf8   Scenario[TITLE_COMMAND_SCENARIO_LENGTH];  // LOADSC
     };
 } TitleCommand;
 
@@ -66,6 +67,7 @@ enum TITLE_SCRIPT
     TITLE_SCRIPT_LOCATION,
     TITLE_SCRIPT_ROTATE,
     TITLE_SCRIPT_ZOOM,
+    TITLE_SCRIPT_FOLLOW,
     TITLE_SCRIPT_RESTART,
     TITLE_SCRIPT_LOAD,
     TITLE_SCRIPT_END,
