@@ -311,8 +311,8 @@ typedef struct rct_ride {
     {
         struct
         {
-            // Starts at 100 and decreases from there.
             uint8 reliability_countdown;                            // 0x196
+            // Starts at 100 and decreases from there.
             uint8 reliability;                                      // 0x197
         };
         uint16 reliability_composed;                                // 0x196
