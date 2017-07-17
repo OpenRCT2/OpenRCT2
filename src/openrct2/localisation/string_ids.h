@@ -3831,6 +3831,9 @@ enum {
     STR_TITLE_COMMAND_EDITOR_NO_SCENARIO_SELECTED = 6180,
     STR_TITLE_COMMAND_EDITOR_MISSING_SCENARIO = 6181,
 
+    STR_TITLE_EDITOR_COMMAND_TYPE_FOLLOW = 6182,
+    STR_TITLE_COMMAND_EDITOR_SELECT_SPRITE = 6183,
+
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     STR_COUNT = 32768
 };

@@ -4488,6 +4488,8 @@ STR_6178    :Load{MOVE_X}{87}{RED}Missing scenario
 STR_6179    :Select
 STR_6180    :No scenario selected
 STR_6181    :{RED}Missing scenario
+STR_6182    :Follow sprite
+STR_6183    :Select sprite
 
 #############
 # Scenarios #
