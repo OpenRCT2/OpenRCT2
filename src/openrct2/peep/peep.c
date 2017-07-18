@@ -2687,8 +2687,8 @@ static void peep_update_ride_sub_state_1(rct_peep* peep){
             return;
         }
 
-        x = ride->station_starts[peep->current_ride_station] & 0xFF;
-        y = ride->station_starts[peep->current_ride_station] >> 8;
+        x = ride->station_starts[peep->current_ride_station].x;
+        y = ride->station_starts[peep->current_ride_station].y;
 
         map_element = ride_get_station_start_track_element(ride, peep->current_ride_station);
 
@@ -2732,8 +2732,8 @@ static void peep_update_ride_sub_state_1(rct_peep* peep){
 
         uint8 direction_entrance = (map_element == NULL ? 0 : map_element->type & MAP_ELEMENT_DIRECTION_MASK);
 
-        x = ride->station_starts[peep->current_ride_station] & 0xFF;
-        y = ride->station_starts[peep->current_ride_station] >> 8;
+        x = ride->station_starts[peep->current_ride_station].x;
+        y = ride->station_starts[peep->current_ride_station].y;
 
         map_element = ride_get_station_start_track_element(ride, peep->current_ride_station);
 
@@ -3249,8 +3249,8 @@ static void peep_update_ride_sub_state_7(rct_peep* peep){
 
     uint8 exit_direction = (map_element == NULL ? 0 : map_element->type & MAP_ELEMENT_DIRECTION_MASK);
 
-    x = ride->station_starts[peep->current_ride_station] & 0xFF;
-    y = ride->station_starts[peep->current_ride_station] >> 8;
+    x = ride->station_starts[peep->current_ride_station].x;
+    y = ride->station_starts[peep->current_ride_station].y;
 
     map_element = ride_get_station_start_track_element(ride, peep->current_ride_station);
 
@@ -3445,8 +3445,8 @@ static void peep_update_ride_sub_state_12(rct_peep* peep){
 
     rct_vehicle* vehicle = GET_VEHICLE(ride->vehicles[peep->current_train]);
 
-    x = ride->station_starts[peep->current_ride_station] & 0xFF;
-    y = ride->station_starts[peep->current_ride_station] >> 8;
+    x = ride->station_starts[peep->current_ride_station].x;
+    y = ride->station_starts[peep->current_ride_station].y;
 
     x *= 32;
     y *= 32;
@@ -3507,8 +3507,8 @@ static void peep_update_ride_sub_state_13(rct_peep* peep){
         peep->var_37--;
         rct_vehicle* vehicle = GET_VEHICLE(ride->vehicles[peep->current_train]);
 
-        x = ride->station_starts[peep->current_ride_station] & 0xFF;
-        y = ride->station_starts[peep->current_ride_station] >> 8;
+        x = ride->station_starts[peep->current_ride_station].x;
+        y = ride->station_starts[peep->current_ride_station].y;
 
         x *= 32;
         y *= 32;
@@ -3612,8 +3612,8 @@ static void peep_update_ride_sub_state_14(rct_peep* peep){
             uint8 exit_direction = (map_element == NULL ? 0 : map_element->type & MAP_ELEMENT_DIRECTION_MASK);
 
             peep->var_37 = (exit_direction * 4) | (peep->var_37 & 0x30) |  1;
-            x = ride->station_starts[peep->current_ride_station] & 0xFF;
-            y = ride->station_starts[peep->current_ride_station] >> 8;
+            x = ride->station_starts[peep->current_ride_station].x;
+            y = ride->station_starts[peep->current_ride_station].y;
 
             x *= 32;
             y *= 32;
@@ -3631,8 +3631,8 @@ static void peep_update_ride_sub_state_14(rct_peep* peep){
     }
     peep->var_37++;
 
-    x = ride->station_starts[peep->current_ride_station] & 0xFF;
-    y = ride->station_starts[peep->current_ride_station] >> 8;
+    x = ride->station_starts[peep->current_ride_station].x;
+    y = ride->station_starts[peep->current_ride_station].y;
 
     x *= 32;
     y *= 32;
@@ -3694,8 +3694,8 @@ static void peep_update_ride_sub_state_15(rct_peep* peep){
             return;
         case 3:
         {
-            sint16 x = ride->station_starts[peep->current_ride_station] & 0xFF;
-            sint16 y = ride->station_starts[peep->current_ride_station] >> 8;
+            sint16 x = ride->station_starts[peep->current_ride_station].x;
+            sint16 y = ride->station_starts[peep->current_ride_station].y;
 
             x *= 32;
             y *= 32;
@@ -3735,8 +3735,8 @@ static void peep_update_ride_sub_state_15(rct_peep* peep){
 
     peep->var_37 = (peep->var_37 * 4 & 0x30) + 2;
 
-    x = ride->station_starts[peep->current_ride_station] & 0xFF;
-    y = ride->station_starts[peep->current_ride_station] >> 8;
+    x = ride->station_starts[peep->current_ride_station].x;
+    y = ride->station_starts[peep->current_ride_station].y;
 
     x *= 32;
     y *= 32;
@@ -3775,8 +3775,8 @@ static void peep_update_ride_sub_state_16(rct_peep* peep){
         }
 
         peep->var_37--;
-        x = ride->station_starts[peep->current_ride_station] & 0xFF;
-        y = ride->station_starts[peep->current_ride_station] >> 8;
+        x = ride->station_starts[peep->current_ride_station].x;
+        y = ride->station_starts[peep->current_ride_station].y;
 
         x *= 32;
         y *= 32;
@@ -4483,14 +4483,14 @@ static bool peep_update_fixing_sub_state_7(bool firstRun, rct_peep *peep, rct_ri
             return true;
         }
 
-        uint16 stationPosition = ride->station_starts[peep->current_ride_station];
-        if (stationPosition == 0xFFFF) {
+        rct_xy8 stationPosition = ride->station_starts[peep->current_ride_station];
+        if (stationPosition.xy == RCT_XY8_UNDEFINED) {
             return true;
         }
 
         uint8 stationZ = ride->station_heights[peep->current_ride_station];
-        uint16 stationX = (stationPosition & 0xFF) * 32;
-        uint16 stationY = (stationPosition >> 8) * 32;
+        uint16 stationX = stationPosition.x * 32;
+        uint16 stationY = stationPosition.y * 32;
 
         rct_map_element *mapElement = map_get_track_element_at(stationX, stationY, stationZ);
         if (mapElement == NULL) {
@@ -4563,16 +4563,16 @@ static bool peep_update_fixing_sub_state_9(bool firstRun, rct_peep *peep, rct_ri
             return true;
         }
 
-        uint16 stationPosition = ride->station_starts[peep->current_ride_station];
-        if (stationPosition == 0xFFFF) {
+        rct_xy8 stationPosition = ride->station_starts[peep->current_ride_station];
+        if (stationPosition.xy == RCT_XY8_UNDEFINED) {
             return true;
         }
 
         uint8 stationZ = ride->station_heights[peep->current_ride_station];
 
         rct_xy_element input;
-        input.x = (stationPosition & 0xFF) * 32;
-        input.y = (stationPosition >> 8) * 32;
+        input.x = stationPosition.x * 32;
+        input.y = stationPosition.y * 32;
         input.element = map_get_track_element_at_from_ride(input.x, input.y, stationZ, peep->current_ride);
         if (input.element == NULL) {
             return true;
@@ -10393,14 +10393,14 @@ static sint32 guest_path_finding(rct_peep* peep)
         closestStationNum = bitscanforward(entranceStations);
     }
 
-    uint16 entranceXY;
+    rct_xy8 entranceXY;
     if (numEntranceStations == 0)
         entranceXY = ride->station_starts[closestStationNum]; // closestStationNum is always 0 here.
     else
-        entranceXY = ride->entrances[closestStationNum].xy;
+        entranceXY = ride->entrances[closestStationNum];
 
-    x = (entranceXY & 0xFF) * 32;
-    y = (entranceXY & 0xFF00) / 8;
+    x = entranceXY.x * 32;
+    y = entranceXY.y * 32;
     z = ride->station_heights[closestStationNum];
 
     get_ride_queue_end(&x, &y, &z);
@@ -12249,8 +12249,8 @@ static void peep_head_for_nearest_ride_type(rct_peep *peep, sint32 rideType)
     sint32 closestRideDistance = INT_MAX;
     for (sint32 i = 0; i < numPotentialRides; i++) {
         ride = get_ride(potentialRides[i]);
-        sint32 rideX = (ride->station_starts[0] & 0xFF) * 32;
-        sint32 rideY = (ride->station_starts[0] >> 8) * 32;
+        sint32 rideX = ride->station_starts[0].x * 32;
+        sint32 rideY = ride->station_starts[0].y * 32;
         sint32 distance = abs(rideX - peep->x) + abs(rideY - peep->y);
         if (distance < closestRideDistance) {
             closestRideIndex = potentialRides[i];
@@ -12356,8 +12356,8 @@ static void peep_head_for_nearest_ride_with_flags(rct_peep *peep, sint32 rideTyp
     sint32 closestRideDistance = INT_MAX;
     for (sint32 i = 0; i < numPotentialRides; i++) {
         ride = get_ride(potentialRides[i]);
-        sint32 rideX = (ride->station_starts[0] & 0xFF) * 32;
-        sint32 rideY = (ride->station_starts[0] >> 8) * 32;
+        sint32 rideX = ride->station_starts[0].x * 32;
+        sint32 rideY = ride->station_starts[0].y * 32;
         sint32 distance = abs(rideX - peep->x) + abs(rideY - peep->y);
         if (distance < closestRideDistance) {
             closestRideIndex = potentialRides[i];

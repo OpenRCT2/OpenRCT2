@@ -170,7 +170,7 @@ typedef struct rct_ride {
         };
     };
     rct_xy8 overall_view;                                           // 0x050
-    uint16 station_starts[RCT12_MAX_STATIONS_PER_RIDE];             // 0x052
+    rct_xy8 station_starts[RCT12_MAX_STATIONS_PER_RIDE];            // 0x052
     uint8 station_heights[RCT12_MAX_STATIONS_PER_RIDE];             // 0x05A
     uint8 station_length[RCT12_MAX_STATIONS_PER_RIDE];              // 0x05E
     uint8 station_depart[RCT12_MAX_STATIONS_PER_RIDE];              // 0x062

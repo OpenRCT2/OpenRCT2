@@ -2388,9 +2388,9 @@ static bool vehicle_can_depart_synchronised(rct_vehicle *vehicle)
 {
     rct_ride *ride = get_ride(vehicle->ride);
     sint32 station = vehicle->current_station;
-    uint16 xy = ride->station_starts[station];
-    sint32 x = (xy & 0xFF) * 32;
-    sint32 y = (xy >> 8) * 32;
+    rct_xy8 location = ride->station_starts[station];
+    sint32 x = location.x * 32;
+    sint32 y = location.y * 32;
     sint32 z = ride->station_heights[station];
 
     rct_map_element *mapElement = map_get_track_element_at(x, y, z);
@@ -2415,8 +2415,8 @@ static bool vehicle_can_depart_synchronised(rct_vehicle *vehicle)
     }
 
     // Reset back to starting tile.
-    x = (xy & 0xFF) * 32;
-    y = (xy >> 8) * 32;
+    x = location.x * 32;
+    y = location.y * 32;
 
     // Other search direction.
     direction = (direction ^ 2) & 3;
@@ -8494,7 +8494,7 @@ loc_6DCE68:
     regs.ah = vehicle->track_y >> 5;
     regs.dl = vehicle->track_z >> 3;
     for (sint32 i = 0; i < RCT12_MAX_STATIONS_PER_RIDE; i++) {
-        if ((uint16)regs.ax != ride->station_starts[i]) {
+        if ((uint16)regs.ax != ride->station_starts[i].xy) {
             continue;
         }
         if ((uint16)regs.dl != ride->station_heights[i]) {

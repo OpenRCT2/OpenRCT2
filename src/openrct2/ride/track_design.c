@@ -1672,7 +1672,7 @@ static money32 place_maze_design(uint8 flags, uint8 rideIndex, uint16 mazeEntry,
 
         ride->maze_tiles++;
         ride->station_heights[0] = mapElement->base_height;
-        ride->station_starts[0] = 0;
+        ride->station_starts[0].xy = 0;
         if (ride->maze_tiles == 1) {
             ride->overall_view.x = fx / 32;
             ride->overall_view.y = fy / 32;
