@@ -1037,13 +1037,13 @@ void vehicle_visual_mini_golf_player(sint32 x, sint32 imageDirection, sint32 y, 
         return;
     }
 
-    rct_ride_entry *rideType = get_ride_entry(get_ride(vehicle->ride)->subtype);
+    rct_ride_entry *rideEntry = get_ride_entry(get_ride(vehicle->ride)->subtype);
     rct_sprite *sprite = get_sprite(vehicle->peep[0]);
 
     uint8 frame = mini_golf_peep_animation_frames[vehicle->mini_golf_current_animation][vehicle->var_C5];
     uint32 ebx = (frame << 2) + (imageDirection >> 3);
 
-    uint32 image_id = rideType->vehicles[0].base_image_id + 1 + ebx;
+    uint32 image_id = rideEntry->vehicles[0].base_image_id + 1 + ebx;
     uint32 peep_palette = sprite->peep.tshirt_colour << 19 | sprite->peep.trousers_colour << 24 | 0x0A0000000;
     sub_98197C(image_id | peep_palette, 0, 0, 1, 1, 11, z, 0, 0, z + 5, get_current_rotation());
 }
@@ -1067,9 +1067,8 @@ void vehicle_visual_mini_golf_ball(sint32 x, sint32 imageDirection, sint32 y, si
     }
 
     rct_ride *ride = get_ride(vehicle->ride);
-    rct_ride_entry *rideType = get_ride_entry(ride->subtype);
-    //log_info("base_image_id: %d, image_id: %d", rideType->vehicles[0].base_image_id, rideType->vehicles[0].base_image_id & 0x7FFFF);
+    rct_ride_entry *rideEntry = get_ride_entry(ride->subtype);
 
-    uint32 image_id = rideType->vehicles[0].base_image_id;
+    uint32 image_id = rideEntry->vehicles[0].base_image_id;
     sub_98197C(image_id, 0, 0, 1, 1, 0, z, 0, 0, z + 3, get_current_rotation());
 }

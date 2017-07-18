@@ -664,7 +664,7 @@ static bool scenario_prepare_rides_for_save()
         // If there are more than 5 roller coasters, only mark the first five.
         if (isFiveCoasterObjective &&
             rideEntry != NULL &&
-            ((rideEntry->category[0] == RIDE_GROUP_ROLLERCOASTER || rideEntry->category[1] == RIDE_GROUP_ROLLERCOASTER) &&
+            ((rideEntry->category[0] == RIDE_CATEGORY_ROLLERCOASTER || rideEntry->category[1] == RIDE_CATEGORY_ROLLERCOASTER) &&
              rcs < 5))
         {
             ride->lifecycle_flags |= RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK;
@@ -907,7 +907,7 @@ static void scenario_objective_check_10_rollercoasters()
         }
 
         if (rideType != NULL &&
-            (rideType->category[0] == RIDE_GROUP_ROLLERCOASTER || rideType->category[1] == RIDE_GROUP_ROLLERCOASTER) &&
+            (rideType->category[0] == RIDE_CATEGORY_ROLLERCOASTER || rideType->category[1] == RIDE_CATEGORY_ROLLERCOASTER) &&
             ride->status == RIDE_STATUS_OPEN &&
             ride->excitement >= RIDE_RATING(6,00) && type_already_counted[subtype_id] == 0){
             type_already_counted[subtype_id]++;
@@ -987,7 +987,7 @@ static void scenario_objective_check_10_rollercoasters_length()
         if (rideType == NULL) {
             continue;
         }
-        if ((rideType->category[0] == RIDE_GROUP_ROLLERCOASTER || rideType->category[1] == RIDE_GROUP_ROLLERCOASTER) &&
+        if ((rideType->category[0] == RIDE_CATEGORY_ROLLERCOASTER || rideType->category[1] == RIDE_CATEGORY_ROLLERCOASTER) &&
             ride->status == RIDE_STATUS_OPEN &&
             ride->excitement >= RIDE_RATING(7,00) && type_already_counted[subtype_id] == 0){
 
@@ -1022,7 +1022,7 @@ static void scenario_objective_check_finish_5_rollercoasters()
         if (ride->status != RIDE_STATUS_CLOSED &&
             ride->excitement >= objectiveRideExcitement &&
             (ride->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK) && // Set on partially finished coasters
-            (rideEntry->category[0] == RIDE_GROUP_ROLLERCOASTER || rideEntry->category[1] == RIDE_GROUP_ROLLERCOASTER))
+            (rideEntry->category[0] == RIDE_CATEGORY_ROLLERCOASTER || rideEntry->category[1] == RIDE_CATEGORY_ROLLERCOASTER))
             rcs++;
     }
 

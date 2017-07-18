@@ -6248,7 +6248,7 @@ static void ride_set_name_to_track_default(rct_ride *ride, rct_ride_entry * ride
     if (!gConfigInterface.select_by_track_type && ride->type == RIDE_TYPE_TWISTER_ROLLER_COASTER && !(rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE)) {
         name_args.type_name = STR_HYPER_TWISTER_GROUP;
     }
-    else if (track_type_has_ride_groups(ride->type)) {
+    else if (ride_type_has_ride_groups(ride->type)) {
         const ride_group * rideGroup = get_ride_group(ride->type, rideEntry);
         name_args.type_name = rideGroup->naming.name;
     } else {
@@ -6304,7 +6304,7 @@ rct_string_id get_friendly_track_type_name(uint8 trackType, rct_ride_entry * rid
             return RideNaming[trackType].name;
         }
     } else {
-        if (track_type_has_ride_groups(trackType)) {
+        if (ride_type_has_ride_groups(trackType)) {
             const ride_group * rideGroup = get_ride_group(trackType, rideEntry);
             return rideGroup->naming.name;
         } else {
@@ -6323,7 +6323,7 @@ rct_ride_name get_ride_naming(uint8 rideType, rct_ride_entry * rideEntry)
         return (rct_ride_name){ STR_HYPER_TWISTER_GROUP, STR_HYPER_TWISTER_GROUP_DESC };
     }
 
-    if (track_type_has_ride_groups(rideType)) {
+    if (ride_type_has_ride_groups(rideType)) {
         const ride_group * rideGroup = get_ride_group(rideType, rideEntry);
         return rideGroup->naming;
     }

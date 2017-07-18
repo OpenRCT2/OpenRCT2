@@ -1445,7 +1445,7 @@ static money32 place_track_design(sint16 x, sint16 y, sint16 z, uint8 flags, uin
     }
 
     // The rest of the cases are handled by the code in ride_create()
-    if (track_type_has_ride_groups(td6->type) && entryIndex == 0xFF)
+    if (ride_type_has_ride_groups(td6->type) && entryIndex == 0xFF)
     {
         const ObjectRepositoryItem * ori = object_repository_find_object_by_name(rideEntryObject->name);
         if (ori != NULL)
