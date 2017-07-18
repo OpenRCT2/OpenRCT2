@@ -3226,13 +3226,13 @@ void ride_check_all_reachable()
  *  rct2: 0x006B7C59
  * @return 1 if the coordinate is reachable or has no entrance, 0 otherwise
  */
-static sint32 ride_entrance_exit_is_reachable(uint16 coordinate, rct_ride* ride, sint32 index)
+static sint32 ride_entrance_exit_is_reachable(rct_xy8 coordinates, rct_ride* ride, sint32 index)
 {
     sint32 x, y, z;
     rct_map_element *mapElement;
 
-    x = coordinate & 0xFF;
-    y = (coordinate >> 8) & 0xFF;
+    x = coordinates.x;
+    y = coordinates.y;
     z = ride->station_heights[index];
     mapElement = map_get_first_element_at(x, y);
 
@@ -3266,7 +3266,7 @@ static void ride_entrance_exit_connected(rct_ride* ride, sint32 ride_idx)
 
         if (station_start.xy == RCT_XY8_UNDEFINED )
             continue;
-        if (entrance.xy != RCT_XY8_UNDEFINED && !ride_entrance_exit_is_reachable(entrance.xy, ride, i)) {
+        if (entrance.xy != RCT_XY8_UNDEFINED && !ride_entrance_exit_is_reachable(entrance, ride, i)) {
             // name of ride is parameter of the format string
             set_format_arg(0, rct_string_id, ride->name);
             set_format_arg(2, uint32, ride->name_arguments);
@@ -3276,7 +3276,7 @@ static void ride_entrance_exit_connected(rct_ride* ride, sint32 ride_idx)
             ride->connected_message_throttle = 3;
         }
 
-        if (exit.xy != RCT_XY8_UNDEFINED && !ride_entrance_exit_is_reachable(exit.xy, ride, i)) {
+        if (exit.xy != RCT_XY8_UNDEFINED && !ride_entrance_exit_is_reachable(exit, ride, i)) {
             // name of ride is parameter of the format string
             set_format_arg(0, rct_string_id, ride->name);
             set_format_arg(2, uint32, ride->name_arguments);
