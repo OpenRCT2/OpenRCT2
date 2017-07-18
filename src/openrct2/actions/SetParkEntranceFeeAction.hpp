@@ -34,6 +34,8 @@ public:
 
     void Serialise(DataSerialiser& stream) override
     {
+        GameAction::Serialise(stream);
+
         stream << Fee;
     }
 
