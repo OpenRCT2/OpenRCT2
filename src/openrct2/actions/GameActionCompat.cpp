@@ -1,6 +1,7 @@
 #include "PlaceParkEntranceAction.hpp"
 #include "SetParkEntranceFeeAction.hpp"
 #include "RideCreateAction.hpp"
+#include "RideSetStatus.hpp"
 
 extern "C"
 {
@@ -116,4 +117,26 @@ extern "C"
 
 #pragma endregion
 
+#pragma region RideSetStatusAction
+
+    void ride_set_status(sint32 rideIndex, sint32 status)
+    {
+        game_do_command(0, GAME_COMMAND_FLAG_APPLY, 0, rideIndex | (status << 8), GAME_COMMAND_SET_RIDE_STATUS, 0, 0);
+
+        auto gameAction = RideSetStatusAction();
+        gameAction.RideIndex = rideIndex;
+        gameAction.Status = status;
+
+        GameActions::Execute(&gameAction);
+    }
+
+    /**
+    *
+    *  rct2: 0x006B4EA6
+    */
+    void game_command_set_ride_status(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *edx, sint32 *esi, sint32 *edi, sint32 *ebp)
+    {
+    }
+
+#pragma endregion
 }
