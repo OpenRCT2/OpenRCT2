@@ -4439,6 +4439,42 @@ STR_6127    :File: {STRING}
 STR_6128    :The file could not be loaded as some of the objects referenced in it are missing or corrupt. A list of these objects is given below.
 STR_6129    :Copy selected item to clipboard
 STR_6130    :Copy entire list to clipboard
+STR_6200    :Enable Peepwatch
+STR_6201    :Now Peepwatching -- Park Mainenance is OFF
+STR_6202    :Now Peepwatching -- Park Mainenance is ON
+STR_6203    :Watching {STRINGID}
+STR_6204    : (eating {STRINGID})
+STR_6205    : (drinking {STRINGID})
+STR_6206    :Nobody is here...
+STR_6207    :No longer Peepwatching
+STR_6208    :{COMMA16}% Happy
+STR_6209    :{COMMA16}% Energy
+STR_6210    :{COMMA16}% Hunger
+STR_6211    :{COMMA16}% Thirst
+STR_6212    :{COMMA16}% Nausea
+STR_6213    :{COMMA16}% Bathroom
+STR_6214    :Items:
+STR_6215    :Guests:
+STR_6216    :★
+STR_6217    :☆
+STR_6218    :Peeps ahead in queue: {COMMA16}
+STR_6219    :Distance: {LENGTH}
+STR_6220    :({COMMA16})
+STR_6221    :({LENGTH})
+STR_6222    :{STRINGID}
+STR_6223    :{CURRENCY2DP} (spent: {CURRENCY2DP})
+STR_6224    :Rides: {COMMA16}× ({CURRENCY2DP})
+STR_6225    :Food: {COMMA16}× ({CURRENCY2DP})
+STR_6226    :Drinks: {COMMA16}× ({CURRENCY2DP})
+STR_6227    :Souvenirs: {COMMA16}× ({CURRENCY2DP})
+STR_6228    :{COMMA16} minutes in park
+STR_6229    :Nothing Yet
+STR_6230    :Rides: {COMMA16}×
+STR_6231    :Food: {COMMA16}×
+STR_6232    :Drinks: {COMMA16}×
+STR_6233    :Souvenirs: {COMMA16}×
+STR_6234    :Entrance: {CURRENCY2DP}
+STR_6235    :{STRINGID}
 
 #############
 # Scenarios #

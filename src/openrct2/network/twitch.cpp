@@ -48,6 +48,9 @@ extern "C"
     #include "../world/sprite.h"
     #include "http.h"
     #include "twitch.h"
+#ifdef STOUT_PEEPWATCH_EXPERIMENT
+	#include "../mode/peepwatch.h"
+#endif
 }
 
 bool gTwitchEnable = false;
@@ -530,10 +533,45 @@ namespace Twitch
         // Skip '!'
         message++;
 
-        // Check that command is "news"
-        const char *ch, *cmd;
-        for (ch = message, cmd = "news"; *cmd != '\0'; ++ch, ++cmd) {
-            if (*ch != *cmd) return;
+        // Set buffer to the next word / token and skip
+        char buffer[32];
+        const char * ch = strpbrk(message, " \t");
+        safe_strcpy(buffer, message, Math::Min(sizeof(buffer), (size_t)(ch - message + 1)));
+        ch = strskipwhitespace(ch);
+
+        // Check what the word / token is
+        if (String::Equals(buffer, "news", true)) {
+
+#ifdef STOUT_PEEPWATCH_EXPERIMENT
+            bool handled = false;
+
+            if (gPeepwatchEnable) {
+                const char * nameEnd = strpbrk(ch, ":");
+
+                if (nameEnd) {
+                    char giverName[256];
+                    safe_strcpy(giverName, ch, Math::Min(sizeof(buffer), (size_t)(nameEnd - ch + 1)));
+
+                    const char *actionStart = strskipwhitespace(nameEnd + 1);
+
+                    const char * ch2 = strpbrk(actionStart, " \t");
+
+                    safe_strcpy(buffer, actionStart, Math::Min(sizeof(buffer), (size_t)(ch2 - actionStart + 1)));
+                    ch2 = strskipwhitespace(ch2);
+
+                    if (String::Equals(buffer, "peepwatch", true)) {
+                        peepwatch_handleCommand(giverName, ch2);
+                        handled = true;
+                    }
+                }
+            }
+
+            if (!handled) {
+                DoChatMessageNews(ch);
+            }
+#else
+            DoChatMessageNews(ch);
+#endif
         }
 
         if (!isspace(*ch)) return;

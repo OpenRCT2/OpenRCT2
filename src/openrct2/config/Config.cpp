@@ -513,6 +513,24 @@ namespace Config
         writer->WriteSint32("height_big", model->height_big);
     }
 
+    static void ReadPeepWatch(IIniReader * reader)
+    {
+        if (reader->ReadSection("peepwatch"))
+        {
+            auto model = &gConfigPeepwatch;
+            model->enable_maintain_park = reader->GetBoolean("enable_maintain_park", false);
+            model->max_follow = reader->GetSint32("max_following", 12);
+        }
+    }
+
+    static void WritePeepWatch(IIniWriter * writer)
+    {
+        auto model = &gConfigPeepwatch;
+        writer->WriteSection("peepwatch");
+        writer->WriteBoolean("enable_maintain_park", model->enable_maintain_park);
+        writer->WriteSint32("max_following", model->max_follow);
+    }
+
     static bool SetDefaults()
     {
         try
@@ -525,6 +543,7 @@ namespace Config
             ReadNotifications(reader.get());
             ReadTwitch(reader.get());
             ReadFont(reader.get());
+            ReadPeepWatch(reader.get());
             return true;
         }
         catch (const Exception &)
@@ -546,6 +565,7 @@ namespace Config
             ReadNotifications(reader.get());
             ReadTwitch(reader.get());
             ReadFont(reader.get());
+            ReadPeepWatch(reader.get());
             return true;
         }
         catch (const Exception &)
@@ -567,6 +587,7 @@ namespace Config
             WriteNotifications(writer.get());
             WriteTwitch(writer.get());
             WriteFont(writer.get());
+            WritePeepWatch(writer.get());
             return true;
         }
         catch (const Exception &ex)
@@ -626,6 +647,7 @@ extern "C"
     NetworkConfiguration         gConfigNetwork;
     NotificationConfiguration    gConfigNotifications;
     FontConfiguration            gConfigFonts;
+    PeepWatchConfiguration       gConfigPeepwatch;
 
     void config_set_defaults()
     {

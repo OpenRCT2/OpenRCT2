@@ -41,6 +41,10 @@
 #include "../world/scenery.h"
 #include "dropdown.h"
 
+#ifdef STOUT_PEEPWATCH_EXPERIMENT
+	#include "../mode/peepwatch.h"
+#endif
+
 enum {
     WIDX_PAUSE,
     WIDX_FILE_MENU,
@@ -93,7 +97,12 @@ typedef enum {
     DDIDX_QUIT_TO_MENU = 10,
     DDIDX_EXIT_OPENRCT2 = 11,
     // separator
+#ifndef STOUT_PEEPWATCH_EXPERIMENT
     DDIDX_ENABLE_TWITCH = 13
+#else
+    DDIDX_ENABLE_PEEPWATCH = 13,
+    DDIDX_ENABLE_TWITCH = 14
+#endif
 } FILE_MENU_DDIDX;
 
 typedef enum {
@@ -426,15 +435,25 @@ static void window_top_toolbar_mousedown(rct_window *w, rct_widgetindex widgetIn
             gDropdownItemsFormat[11] = STR_EXIT_OPENRCT2;
             numItems = 12;
 
-        #ifndef DISABLE_TWITCH
+#ifdef STOUT_PEEPWATCH_EXPERIMENT
+            gDropdownItemsFormat[numItems++] = STR_EMPTY;
+            gDropdownItemsFormat[numItems] = STR_TOGGLE_OPTION;
+            gDropdownItemsArgs[numItems++] = STR_PEEPWATCH_TOGGLE;
+#else
+    #ifndef DISABLE_TWITCH
+            if (gConfigTwitch.channel != NULL && gConfigTwitch.channel[0] != 0) {
+                gDropdownItemsFormat[numItems++] = 0;
+            }
+    #endif
+#endif
+
+#ifndef DISABLE_TWITCH
             if (gConfigTwitch.channel != NULL && gConfigTwitch.channel[0] != 0) {
                 _menuDropdownIncludesTwitch = true;
-                gDropdownItemsFormat[12] = STR_EMPTY;
-                gDropdownItemsFormat[DDIDX_ENABLE_TWITCH] = STR_TOGGLE_OPTION;
-                gDropdownItemsArgs[DDIDX_ENABLE_TWITCH] = STR_TWITCH_ENABLE;
-                numItems = 14;
+                gDropdownItemsFormat[numItems] = STR_TOGGLE_OPTION;
+                gDropdownItemsArgs[numItems++] = STR_TWITCH_ENABLE;
             }
-        #endif
+#endif
         }
         window_dropdown_show_text(
             w->x + widget->left,
@@ -445,10 +464,21 @@ static void window_top_toolbar_mousedown(rct_window *w, rct_widgetindex widgetIn
             numItems
         );
 
-#ifndef DISABLE_TWITCH
+#ifndef STOUT_PEEPWATCH_EXPERIMENT
+    #ifndef DISABLE_TWITCH
         if (_menuDropdownIncludesTwitch && gTwitchEnable) {
             dropdown_set_checked(DDIDX_ENABLE_TWITCH, true);
         }
+    #endif
+#else
+    #ifndef DISABLE_TWITCH
+        if (gPeepwatchEnable) {
+            dropdown_set_checked(13, true);
+        }
+        if (_menuDropdownIncludesTwitch && gTwitchEnable) {
+            dropdown_set_checked(14, true);
+        }
+    #endif
 #endif
         break;
     case WIDX_CHEATS:
@@ -589,6 +619,11 @@ static void window_top_toolbar_dropdown(rct_window *w, rct_widgetindex widgetInd
 #ifndef DISABLE_TWITCH
         case DDIDX_ENABLE_TWITCH:
             gTwitchEnable = !gTwitchEnable;
+            break;
+#endif
+#ifdef STOUT_PEEPWATCH_EXPERIMENT
+        case DDIDX_ENABLE_PEEPWATCH:
+            gPeepwatchEnable = !gPeepwatchEnable;
             break;
 #endif
         }
