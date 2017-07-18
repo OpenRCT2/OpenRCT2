@@ -2660,21 +2660,21 @@ static void ride_call_closest_mechanic(sint32 rideIndex)
 rct_peep *ride_find_closest_mechanic(rct_ride *ride, sint32 forInspection)
 {
     sint32 x, y, z, stationIndex;
-    uint16 xy;
+    rct_xy8 location;
     rct_map_element *mapElement;
 
     // Get either exit position or entrance position if there is no exit
     stationIndex = ride->inspection_station;
-    xy = ride->exits[stationIndex].xy;
-    if (xy == RCT_XY8_UNDEFINED) {
-        xy = ride->entrances[stationIndex].xy;
-        if (xy == RCT_XY8_UNDEFINED)
+    location = ride->exits[stationIndex];
+    if (location.xy == RCT_XY8_UNDEFINED) {
+        location = ride->entrances[stationIndex];
+        if (location.xy == RCT_XY8_UNDEFINED)
             return NULL;
     }
 
     // Get station start track element and position
-    x = xy & 0xFF;
-    y = xy >> 8;
+    x = location.x;
+    y = location.y;
     z = ride->station_heights[stationIndex];
     mapElement = ride_get_station_exit_element(ride, x, y, z);
     if (mapElement == NULL)
@@ -4139,12 +4139,12 @@ static void sub_6B5952(sint32 rideIndex)
     rct_ride *ride = get_ride(rideIndex);
 
     for (sint32 i = 0; i < RCT12_MAX_STATIONS_PER_RIDE; i++) {
-        uint16 xy = ride->entrances[i].xy;
-        if (xy == RCT_XY8_UNDEFINED)
+        rct_xy8 location = ride->entrances[i];
+        if (location.xy == RCT_XY8_UNDEFINED)
             continue;
 
-        sint32 x = (xy & 0xFF) * 32;
-        sint32 y = (xy >> 8) * 32;
+        sint32 x = location.x * 32;
+        sint32 y = location.y * 32;
         sint32 z = ride->station_heights[i];
 
         rct_map_element *mapElement = map_get_first_element_at(x / 32, y / 32);
