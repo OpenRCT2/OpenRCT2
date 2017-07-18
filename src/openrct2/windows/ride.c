@@ -1862,7 +1862,7 @@ static void window_ride_init_viewport(rct_window *w)
     w->viewport_focus_coordinates.height = w->height;
 
     //rct2: 0x006aec9c only used here so brought it into the function
-    if (!w->viewport && ride->overall_view != 0xFFFF){
+    if (!w->viewport && ride->overall_view.xy != RCT_XY8_UNDEFINED){
         rct_widget* view_widget = &w->widgets[WIDX_VIEWPORT];
 
         sint32 x = view_widget->left + 1 + w->x;
