@@ -130,13 +130,7 @@ typedef struct rct_ride_entry {
     sint8 intensity_multipler;                          // 0x1B3
     sint8 nausea_multipler;                             // 0x1B4
     uint8 max_height;                                   // 0x1B5
-    union {
-        uint64 enabledTrackPieces;                      // 0x1B6
-        struct {
-            uint32 enabledTrackPiecesA;                 // 0x1B6
-            uint32 enabledTrackPiecesB;                 // 0x1BA
-        };
-    };
+    uint64 enabledTrackPieces;                          // 0x1B6
     uint8 category[2];                                  // 0x1BE
     uint8 shop_item;                                    // 0x1C0
     uint8 shop_item_secondary;                          // 0x1C1
