@@ -54,6 +54,8 @@ public:
 
     void Serialise(DataSerialiser& stream) override
     {
+        GameAction::Serialise(stream);
+
         stream << rideType << rideSubType;
     }
 
@@ -280,8 +282,9 @@ public:
         ride_set_vehicle_colours_to_random_preset(ride, 0xFF & (res.RideColor() >> 8));
         window_invalidate_by_class(WC_RIDE_LIST);
 
-        gCommandExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
-        gCommandPosition.x = (uint16)0x8000;
+        res.ExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
+        res.Position.x = (uint16)0x8000;
+
         return res;
     }
 };

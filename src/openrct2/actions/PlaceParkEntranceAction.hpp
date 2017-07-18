@@ -45,6 +45,8 @@ public:
 
 	void Serialise(DataSerialiser& stream) override
 	{
+        GameAction::Serialise(stream);
+
         stream << x << y << z << direction;
 	}
 
