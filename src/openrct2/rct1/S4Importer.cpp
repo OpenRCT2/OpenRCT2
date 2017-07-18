@@ -1012,19 +1012,6 @@ private:
         }
     }
 
-    void FixNumPeepsInQueue()
-    {
-        sint32 i;
-        rct_ride *ride;
-        FOR_ALL_RIDES(i, ride)
-        {
-            for (sint32 stationIndex = 0; stationIndex < RCT12_MAX_STATIONS_PER_RIDE; stationIndex++)
-            {
-                ride->queue_length[stationIndex] = 0;
-            }
-        }
-    }
-
     void ImportRideMeasurements()
     {
         for (sint32 i = 0; i < MAX_RIDE_MEASUREMENTS; i++)

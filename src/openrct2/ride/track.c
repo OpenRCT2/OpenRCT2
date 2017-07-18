@@ -646,15 +646,9 @@ static bool track_add_station_element(sint32 x, sint32 y, sint32 z, sint32 direc
             gGameCommandErrorText = STR_NO_MORE_STATIONS_ALLOWED_ON_THIS_RIDE;
             return false;
         }
-        if (flags & GAME_COMMAND_FLAG_APPLY) {
-            sint32 stationIndex = -1;
-            for (sint32 i = 0; i < MAX_STATIONS; i++) {
-                if (ride->station_starts[i].xy == RCT_XY8_UNDEFINED) {
-                    stationIndex = i;
-                    break;
-                }
-            }
-
+        if (flags & GAME_COMMAND_FLAG_APPLY)
+        {
+            sint8 stationIndex = ride_get_first_valid_station_start(ride);
             assert(stationIndex != -1);
 
             ride->station_starts[stationIndex].x = (x >> 5);
@@ -732,15 +726,9 @@ static bool track_add_station_element(sint32 x, sint32 y, sint32 z, sint32 direc
             stationElement = find_station_element(x, y, z, direction, rideIndex);
             if (stationElement != NULL) {
                 sint32 targetTrackType;
-                if (x == stationX1 && y == stationY1) {
-                    sint32 stationIndex = -1;
-                    for (sint32 i = 0; i < MAX_STATIONS; i++) {
-                        if (ride->station_starts[i].xy == RCT_XY8_UNDEFINED) {
-                            stationIndex = i;
-                            break;
-                        }
-                    }
-
+                if (x == stationX1 && y == stationY1)
+                {
+                    sint8 stationIndex = ride_get_first_valid_station_start(ride);
                     assert(stationIndex != -1);
 
                     ride->station_starts[stationIndex].x = (x >> 5);
@@ -860,16 +848,10 @@ static bool track_remove_station_element(sint32 x, sint32 y, sint32 z, sint32 di
             stationElement = find_station_element(x, y, z, direction, rideIndex);
             if (stationElement != NULL) {
                 sint32 targetTrackType;
-                if (x == stationX1 && y == stationY1) {
+                if (x == stationX1 && y == stationY1)
+                {
                 loc_6C4BF5:;
-                    sint32 stationIndex = -1;
-                    for (sint32 i = 0; i < MAX_STATIONS; i++) {
-                        if (ride->station_starts[i].xy == RCT_XY8_UNDEFINED) {
-                            stationIndex = i;
-                            break;
-                        }
-                    }
-
+                    sint8 stationIndex = ride_get_first_valid_station_start(ride);
                     assert(stationIndex != -1);
 
                     ride->station_starts[stationIndex].x = (x >> 5);

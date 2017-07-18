@@ -2832,7 +2832,7 @@ static void peep_go_to_ride_exit(rct_peep* peep, rct_ride* ride, sint16 x, sint1
     sprite_move(x, y, z, (rct_sprite*)peep);
     invalidate_sprite_2((rct_sprite*)peep);
 
-    assert(peep->current_ride_station < RCT12_MAX_STATIONS_PER_RIDE);
+    assert(peep->current_ride_station < MAX_STATIONS);
     x = ride->exits[peep->current_ride_station].x;
     y = ride->exits[peep->current_ride_station].y;
     x *= 32;
@@ -3136,7 +3136,7 @@ static void peep_update_ride_sub_state_7(rct_peep* peep){
     vehicle->friction -= peep->var_41;
     invalidate_sprite_2((rct_sprite*)vehicle);
 
-    if (ride_station >= 4) {
+    if (ride_station >= MAX_STATIONS) {
         // HACK #5658: Some parks have hacked rides which end up in this state
         sint32 bestStationIndex = ride_get_first_valid_station_exit(ride);
         if (bestStationIndex == -1) {
@@ -3151,7 +3151,7 @@ static void peep_update_ride_sub_state_7(rct_peep* peep){
 
     if (!(vehicle_entry->flags_b & VEHICLE_ENTRY_FLAG_B_10)){
         sint16 x, y, z;
-        assert(peep->current_ride_station < RCT12_MAX_STATIONS_PER_RIDE);
+        assert(peep->current_ride_station < MAX_STATIONS);
         x = ride->exits[peep->current_ride_station].x;
         y = ride->exits[peep->current_ride_station].y;
         z = ride->station_heights[peep->current_ride_station];
@@ -10350,7 +10350,7 @@ static sint32 guest_path_finding(rct_peep* peep)
     sint32 numEntranceStations = 0;
     uint8 entranceStations = 0;
 
-    for (uint8 stationNum = 0; stationNum < RCT12_MAX_STATIONS_PER_RIDE; ++stationNum){
+    for (uint8 stationNum = 0; stationNum < MAX_STATIONS; ++stationNum){
         if (ride->entrances[stationNum].xy == RCT_XY8_UNDEFINED) // stationNum has no entrance (so presumably an exit only station).
             continue;
 
