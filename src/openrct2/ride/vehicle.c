@@ -3881,9 +3881,9 @@ static void vehicle_update_motion_boat_hire(rct_vehicle *vehicle)
                 break;
             }
 
-            sint32 bx = floor2(x, 32);
-            sint32 dx = floor2(y, 32);
-            if (bx != vehicle->track_x || dx != vehicle->track_y) {
+            sint32 flooredX = floor2(x, 32);
+            sint32 flooredY = floor2(y, 32);
+            if (flooredX != vehicle->track_x || flooredY != vehicle->track_y) {
                 if (vehicle_is_boat_on_water(vehicle, x, y)) {
                 // loc_6DA939:
                     rct_ride *ride = get_ride(vehicle->ride);
@@ -3892,8 +3892,8 @@ static void vehicle_update_motion_boat_hire(rct_vehicle *vehicle)
                     if (vehicle->sub_state != 1) {
                         do_loc_6DAA97 = true;
                     } else {
-                        uint16 xy = (((dx >> 5) << 8) | (bx >> 5));
-                        if (xy != ride->boat_hire_return_position.xy) {
+                        if (ride->boat_hire_return_position.x != (flooredX / 32) || ride->boat_hire_return_position.y != (flooredY / 32))
+                        {
                             do_loc_6DAA97 = true;
                         }
                     }
@@ -3910,7 +3910,7 @@ static void vehicle_update_motion_boat_hire(rct_vehicle *vehicle)
                     if (!(ride->boat_hire_return_direction & 1)) {
                         uint16 bp = y & 0x1F;
                         if (bp == 16) {
-                            loc_6DA9F9(vehicle, x, y, bx, dx);
+                            loc_6DA9F9(vehicle, x, y, flooredX, flooredY);
                             break;
                         }
                         if (bp <= 16) {
@@ -3924,7 +3924,7 @@ static void vehicle_update_motion_boat_hire(rct_vehicle *vehicle)
                     // loc_6DA9A2:
                         uint16 bp = x & 0x1F;
                         if (bp == 16) {
-                            loc_6DA9F9(vehicle, x, y, bx, dx);
+                            loc_6DA9F9(vehicle, x, y, flooredX, flooredY);
                             break;
                         }
                         if (bp <= 16) {
@@ -3944,8 +3944,8 @@ static void vehicle_update_motion_boat_hire(rct_vehicle *vehicle)
                     }
                     break;
                 }
-                vehicle->track_x = bx;
-                vehicle->track_y = dx;
+                vehicle->track_x = flooredX;
+                vehicle->track_y = flooredY;
             }
 
             vehicle->remaining_distance -= Unk9A36C4[edi].distance;
@@ -7796,18 +7796,18 @@ static bool vehicle_update_track_motion_backwards_get_new_track(rct_vehicle *veh
     vehicle->track_z = z;
 
     if (vehicle->var_CD != 0 &&
-        vehicle->var_CD < 5
-        ) {
-        uint16 xy = (x >> 5) | ((y >> 5) << 8);
-        if (ride->chairlift_bullwheel_location[1].xy == xy &&
-            ride->chairlift_bullwheel_z[1] == (z >> 3)
-            ) {
+        vehicle->var_CD < 5)
+    {
+        if (ride->chairlift_bullwheel_location[1].x == (x >> 5) &&
+            ride->chairlift_bullwheel_location[1].y == (y >> 5) &&
+            ride->chairlift_bullwheel_z[1] == (z >> 3))
+        {
             vehicle->var_CD = 3;
         }
-        else if (
-            ride->chairlift_bullwheel_location[0].xy == xy &&
-            ride->chairlift_bullwheel_z[1] == (z >> 3)
-            ) {
+        else if (ride->chairlift_bullwheel_location[0].x == (x >> 5) &&
+                 ride->chairlift_bullwheel_location[0].y == (y >> 5) &&
+                 ride->chairlift_bullwheel_z[1] == (z >> 3))
+        {
             vehicle->var_CD = 4;
         }
     }
