@@ -92,9 +92,9 @@ public:
     ride_group car_ride_groups[MAX_RIDE_GROUPS_PER_RIDE_TYPE] = { ride_group_car_ride, ride_group_monster_trucks };
     ride_group twister_rc_groups[MAX_RIDE_GROUPS_PER_RIDE_TYPE] = { ride_group_steel_twister_rc, ride_group_hyper_twister };
 
-    const ride_group * GetRideGroup(uint8 trackType, rct_ride_entry * rideEntry) const override
+    const ride_group * GetRideGroup(uint8 rideType, rct_ride_entry * rideEntry) const override
     {
-        switch (trackType) {
+        switch (rideType) {
             case RIDE_TYPE_CORKSCREW_ROLLER_COASTER:
                 if (rideEntry->enabledTrackPieces & (1ULL << TRACK_VERTICAL_LOOP))
                     return (ride_group *) &ride_group_corkscrew_rc;
@@ -120,13 +120,13 @@ public:
         }
     }
 
-    bool RideTypeHasRideGroups(uint8 trackType) const override
+    bool RideTypeHasRideGroups(uint8 rideType) const override
     {
         if (!gConfigInterface.select_by_track_type) {
             return false;
         }
 
-        switch (trackType)
+        switch (rideType)
         {
             case RIDE_TYPE_CORKSCREW_ROLLER_COASTER:
             case RIDE_TYPE_JUNIOR_ROLLER_COASTER:
@@ -208,16 +208,16 @@ IRideGroupManager * GetRideGroupManager()
 
 extern "C"
 {
-    const ride_group * get_ride_group(uint8 trackType, rct_ride_entry * rideEntry)
+    const ride_group * get_ride_group(uint8 rideType, rct_ride_entry * rideEntry)
     {
         const IRideGroupManager * rideGroupManager = GetRideGroupManager();
-        return rideGroupManager->GetRideGroup(trackType, rideEntry);
+        return rideGroupManager->GetRideGroup(rideType, rideEntry);
     }
 
-    bool ride_type_has_ride_groups(uint8 trackType)
+    bool ride_type_has_ride_groups(uint8 rideType)
     {
         const IRideGroupManager * rideGroupManager = GetRideGroupManager();
-        return rideGroupManager->RideTypeHasRideGroups(trackType);
+        return rideGroupManager->RideTypeHasRideGroups(rideType);
     }
 
     ride_group * ride_group_find(uint8 rideType, uint8 index)

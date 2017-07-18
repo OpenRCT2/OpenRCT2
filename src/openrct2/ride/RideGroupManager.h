@@ -52,8 +52,8 @@ IRideGroupManager * GetRideGroupManager();
 extern "C"
 {
 #endif
-    const ride_group * get_ride_group(uint8 trackType, rct_ride_entry * rideEntry);
-    bool ride_type_has_ride_groups(uint8 trackType);
+    const ride_group * get_ride_group(uint8 rideType, rct_ride_entry * rideEntry);
+    bool ride_type_has_ride_groups(uint8 rideType);
     ride_group * ride_group_find(uint8 rideType, uint8 index);
     bool ride_groups_are_equal(const ride_group * a, const ride_group * b);
     bool ride_group_is_invented(const ride_group * rideGroup);
