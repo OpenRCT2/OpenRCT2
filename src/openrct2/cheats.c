@@ -22,6 +22,7 @@
 #include "localisation/localisation.h"
 #include "management/finance.h"
 #include "network/network.h"
+#include "ride/station.h"
 #include "util/util.h"
 #include "world/Climate.h"
 #include "world/footpath.h"
@@ -369,7 +370,7 @@ static void cheat_remove_all_guests()
     {
         ride->num_riders = 0;
 
-        for (size_t stationIndex = 0; stationIndex < RCT12_MAX_STATIONS_PER_RIDE; stationIndex++)
+        for (size_t stationIndex = 0; stationIndex < MAX_STATIONS; stationIndex++)
         {
             ride->queue_length[stationIndex] = 0;
             ride->last_peep_in_queue[stationIndex] = SPRITE_INDEX_NULL;
