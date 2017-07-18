@@ -1317,7 +1317,7 @@ static money32 track_place(sint32 rideIndex, sint32 type, sint32 originX, sint32
         }
 
         entranceDirections = 0;
-        if (ride->overall_view != 0xFFFF){
+        if (ride->overall_view.xy != RCT_XY8_UNDEFINED){
             if (!(flags & GAME_COMMAND_FLAG_5)){
                 if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE)) {
                     entranceDirections = FlatRideTrackSequenceProperties[type][0];
@@ -1327,8 +1327,9 @@ static money32 track_place(sint32 rideIndex, sint32 type, sint32 originX, sint32
                 }
             }
         }
-        if (entranceDirections & TRACK_SEQUENCE_FLAG_ORIGIN || ride->overall_view == 0xFFFF){
-            ride->overall_view = (x >> 5) | (y << 3);
+        if (entranceDirections & TRACK_SEQUENCE_FLAG_ORIGIN || ride->overall_view.xy == RCT_XY8_UNDEFINED){
+            ride->overall_view.x = x / 32;
+            ride->overall_view.y = y / 32;
         }
 
         mapElement = map_element_insert(x / 32, y / 32, baseZ, bl & 0xF);
@@ -1879,7 +1880,8 @@ static money32 set_maze_track(uint16 x, uint8 flags, uint8 direction, uint16 y, 
 
         if (direction == 4) {
             if (!(flags & GAME_COMMAND_FLAG_GHOST)) {
-                ride->overall_view = (flooredX >> 5) | (flooredY << 3);
+                ride->overall_view.x = flooredX / 32;
+                ride->overall_view.y = flooredY / 32;
             }
         }
     }

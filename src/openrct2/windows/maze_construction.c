@@ -180,7 +180,7 @@ static void window_maze_construction_close(rct_window *w)
 
     uint8 rideIndex = _currentRideIndex;
     rct_ride* ride = get_ride(rideIndex);
-    if (ride->overall_view == 0xFFFF) {
+    if (ride->overall_view.xy == RCT_XY8_UNDEFINED) {
         sint32 savedPausedState = gGamePaused;
         gGamePaused = 0;
         game_do_command(0, GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED, 0, rideIndex, GAME_COMMAND_DEMOLISH_RIDE, 0, 0);

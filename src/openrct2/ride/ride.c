@@ -3991,10 +3991,10 @@ static money32 ride_set_setting(uint8 rideIndex, uint8 setting, uint8 value, uin
     }
 
     if (flags & GAME_COMMAND_FLAG_APPLY) {
-        if (ride->overall_view != (uint16)-1) {
+        if (ride->overall_view.xy != RCT_XY8_UNDEFINED) {
             rct_xyz16 coord;
-            coord.x = (ride->overall_view & 0xFF) * 32 + 16;
-            coord.y = (ride->overall_view >> 8) * 32 + 16;
+            coord.x = ride->overall_view.x * 32 + 16;
+            coord.y = ride->overall_view.y * 32 + 16;
             coord.z = map_element_height(coord.x, coord.y);
             network_set_player_last_action_coord(network_get_player_index(game_command_playerid), coord);
         }
@@ -5517,10 +5517,10 @@ void game_command_set_ride_status(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 
     }
 
     if (*ebx & GAME_COMMAND_FLAG_APPLY) {
-        if (ride->overall_view != (uint16)-1) {
+        if (ride->overall_view.xy != RCT_XY8_UNDEFINED) {
             rct_xyz16 coord;
-            coord.x = (ride->overall_view & 0xFF) * 32 + 16;
-            coord.y = (ride->overall_view >> 8) * 32 + 16;
+            coord.x = ride->overall_view.x * 32 + 16;
+            coord.y = ride->overall_view.y * 32 + 16;
             coord.z = map_element_height(coord.x, coord.y);
             network_set_player_last_action_coord(network_get_player_index(game_command_playerid), coord);
         }
@@ -5680,10 +5680,10 @@ void game_command_set_ride_name(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *e
             network_append_server_log(log_msg);
         }
 
-        if (ride->overall_view != (uint16)-1) {
+        if (ride->overall_view.xy != RCT_XY8_UNDEFINED) {
             rct_xyz16 coord;
-            coord.x = (ride->overall_view & 0xFF) * 32 + 16;
-            coord.y = (ride->overall_view >> 8) * 32 + 16;
+            coord.x = ride->overall_view.x * 32 + 16;
+            coord.y = ride->overall_view.y * 32 + 16;
             coord.z = map_element_height(coord.x, coord.y);
             network_set_player_last_action_coord(network_get_player_index(game_command_playerid), coord);
         }
@@ -6064,7 +6064,7 @@ foundRideEntry:
     ride->type = type;
     ride->subtype = rideEntryIndex;
     ride_set_colour_preset(ride, *outRideColour & 0xFF);
-    ride->overall_view = 0xFFFF;
+    ride->overall_view.xy = RCT_XY8_UNDEFINED;
 
     // Ride name
     if (rideEntryIndex == RIDE_ENTRY_INDEX_NULL)
@@ -6469,9 +6469,9 @@ void game_command_demolish_ride(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *e
         return;
     }
     sint32 x = 0, y = 0, z = 0;
-    if(ride->overall_view != (uint16)-1){
-        x = ((ride->overall_view & 0xFF) * 32) + 16;
-        y = ((ride->overall_view >> 8) * 32) + 16;
+    if(ride->overall_view.xy != RCT_XY8_UNDEFINED){
+        x = (ride->overall_view.x * 32) + 16;
+        y = (ride->overall_view.y * 32) + 16;
         z = map_element_height(x, y);
         gCommandPosition.x = x;
         gCommandPosition.y = y;
@@ -6483,10 +6483,10 @@ void game_command_demolish_ride(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *e
         return;
     }else{
         if(*ebx & GAME_COMMAND_FLAG_APPLY){
-            if (ride->overall_view != (uint16)-1) {
+            if (ride->overall_view.xy != RCT_XY8_UNDEFINED) {
                 rct_xyz16 coord;
-                coord.x = (ride->overall_view & 0xFF) * 32 + 16;
-                coord.y = (ride->overall_view >> 8) * 32 + 16;
+                coord.x = ride->overall_view.x * 32 + 16;
+                coord.y = ride->overall_view.y * 32 + 16;
                 coord.z = map_element_height(coord.x, coord.y);
                 network_set_player_last_action_coord(network_get_player_index(game_command_playerid), coord);
             }
@@ -6619,10 +6619,10 @@ void game_command_set_ride_appearance(sint32 *eax, sint32 *ebx, sint32 *ecx, sin
     }
 
     if (apply && gGameCommandNestLevel == 1) {
-        if (ride->overall_view != (uint16)-1) {
+        if (ride->overall_view.xy != RCT_XY8_UNDEFINED) {
             rct_xyz16 coord;
-            coord.x = (ride->overall_view & 0xFF) * 32 + 16;
-            coord.y = (ride->overall_view >> 8) * 32 + 16;
+            coord.x = ride->overall_view.x * 32 + 16;
+            coord.y = ride->overall_view.y * 32 + 16;
             coord.z = map_element_height(coord.x, coord.y);
             network_set_player_last_action_coord(network_get_player_index(game_command_playerid), coord);
         }
@@ -6763,10 +6763,10 @@ void game_command_set_ride_price(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *
     if (flags & GAME_COMMAND_FLAG_APPLY) {
         uint32 shop_item;
 
-        if (ride->overall_view != (uint16)-1) {
+        if (ride->overall_view.xy != RCT_XY8_UNDEFINED) {
             rct_xyz16 coord;
-            coord.x = (ride->overall_view & 0xFF) * 32 + 16;
-            coord.y = (ride->overall_view >> 8) * 32 + 16;
+            coord.x = ride->overall_view.x * 32 + 16;
+            coord.y = ride->overall_view.y * 32 + 16;
             coord.z = map_element_height(coord.x, coord.y);
             network_set_player_last_action_coord(network_get_player_index(game_command_playerid), coord);
         }
@@ -7977,10 +7977,10 @@ static money32 ride_set_vehicles(uint8 rideIndex, uint8 setting, uint8 value, ui
     ride->num_circuits = 1;
     ride_update_max_vehicles(rideIndex);
 
-    if (ride->overall_view != (uint16)-1) {
+    if (ride->overall_view.xy != RCT_XY8_UNDEFINED) {
         rct_xyz16 coord;
-        coord.x = (ride->overall_view & 0xFF) * 32 + 16;
-        coord.y = (ride->overall_view >> 8) * 32 + 16;
+        coord.x = ride->overall_view.x * 32 + 16;
+        coord.y = ride->overall_view.y * 32 + 16;
         coord.z = map_element_height(coord.x, coord.y);
         network_set_player_last_action_coord(network_get_player_index(game_command_playerid), coord);
     }

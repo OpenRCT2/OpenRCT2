@@ -742,8 +742,8 @@ void window_guest_viewport_init(rct_window* w){
         }
         if (peep->x == SPRITE_LOCATION_NULL && final_check){
             rct_ride *ride = get_ride(peep->current_ride);
-            sint32 x = (ride->overall_view & 0xFF) * 32 + 16;
-            sint32 y = (ride->overall_view >> 8) * 32 + 16;
+            sint32 x = ride->overall_view.x * 32 + 16;
+            sint32 y = ride->overall_view.y * 32 + 16;
             sint32 height = map_element_height(x, y);
             height += 32;
             focus.coordinate.x = x;
