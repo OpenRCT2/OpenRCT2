@@ -1069,6 +1069,8 @@ void ride_measurements_update();
 rct_ride_measurement *ride_get_measurement(sint32 rideIndex, rct_string_id *message);
 void ride_breakdown_add_news_item(sint32 rideIndex);
 rct_peep *ride_find_closest_mechanic(rct_ride *ride, sint32 forInspection);
+sint32 ride_is_valid_for_open(sint32 rideIndex, sint32 goingToBeOpen, sint32 isApplying);
+sint32 ride_is_valid_for_test(sint32 rideIndex, sint32 goingToBeOpen, sint32 isApplying);
 sint32 ride_initialise_construction_window(sint32 rideIndex);
 void ride_construction_invalidate_current_track();
 sint32 sub_6C683D(sint32* x, sint32* y, sint32* z, sint32 direction, sint32 type, uint16 extra_params, rct_map_element** output_element, uint16 flags);

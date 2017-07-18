@@ -5181,7 +5181,7 @@ static rct_map_element *loc_6B4F6B(sint32 rideIndex, sint32 x, sint32 y)
     return NULL;
 }
 
-static sint32 ride_is_valid_for_test(sint32 rideIndex, sint32 goingToBeOpen, sint32 isApplying)
+sint32 ride_is_valid_for_test(sint32 rideIndex, sint32 goingToBeOpen, sint32 isApplying)
 {
     sint32 stationIndex;
     rct_ride *ride;
@@ -5310,7 +5310,7 @@ static sint32 ride_is_valid_for_test(sint32 rideIndex, sint32 goingToBeOpen, sin
  *
  *  rct2: 0x006B4EEA
  */
-static sint32 ride_is_valid_for_open(sint32 rideIndex, sint32 goingToBeOpen, sint32 isApplying)
+sint32 ride_is_valid_for_open(sint32 rideIndex, sint32 goingToBeOpen, sint32 isApplying)
 {
     sint32 stationIndex;
     rct_ride *ride;
@@ -5436,111 +5436,6 @@ static sint32 ride_is_valid_for_open(sint32 rideIndex, sint32 goingToBeOpen, sin
     }
 
     return 1;
-}
-
-void ride_set_status(sint32 rideIndex, sint32 status)
-{
-    game_do_command(0, GAME_COMMAND_FLAG_APPLY, 0, rideIndex | (status << 8), GAME_COMMAND_SET_RIDE_STATUS, 0, 0);
-}
-
-/**
- *
- *  rct2: 0x006B4EA6
- */
-void game_command_set_ride_status(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *edx, sint32 *esi, sint32 *edi, sint32 *ebp)
-{
-    sint32 rideIndex, targetStatus;
-    rct_ride *ride;
-
-    rideIndex = *edx & 0xFF;
-    if (rideIndex >= MAX_RIDES)
-    {
-        log_warning("Invalid game command for ride %u", rideIndex);
-        *ebx = MONEY32_UNDEFINED;
-        return;
-    }
-    targetStatus = (*edx >> 8) & 0xFF;
-
-    gCommandExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_RUNNING_COSTS;
-
-    ride = get_ride(rideIndex);
-    if (ride->type == RIDE_TYPE_NULL)
-    {
-        log_warning("Invalid game command for ride %u", rideIndex);
-        *ebx = MONEY32_UNDEFINED;
-        return;
-    }
-
-    if (*ebx & GAME_COMMAND_FLAG_APPLY) {
-        if (ride->overall_view.xy != RCT_XY8_UNDEFINED) {
-            rct_xyz16 coord;
-            coord.x = ride->overall_view.x * 32 + 16;
-            coord.y = ride->overall_view.y * 32 + 16;
-            coord.z = map_element_height(coord.x, coord.y);
-            network_set_player_last_action_coord(network_get_player_index(game_command_playerid), coord);
-        }
-    }
-
-    switch (targetStatus) {
-    case RIDE_STATUS_CLOSED:
-        if (*ebx & GAME_COMMAND_FLAG_APPLY) {
-            if (ride->status == targetStatus) {
-                if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)) {
-                    ride->lifecycle_flags &= ~RIDE_LIFECYCLE_CRASHED;
-                    ride_clear_for_construction(rideIndex);
-                    ride_remove_peeps(rideIndex);
-                }
-            }
-
-            ride->status = RIDE_STATUS_CLOSED;
-            ride->lifecycle_flags &= ~RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING;
-            ride->race_winner = SPRITE_INDEX_NULL;
-            ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
-            window_invalidate_by_number(WC_RIDE, rideIndex);
-        }
-        *ebx = 0;
-        return;
-    case RIDE_STATUS_TESTING:
-    case RIDE_STATUS_OPEN:
-        if (ride->status == targetStatus) {
-            *ebx = 0;
-            return;
-        }
-
-        if (*ebx & GAME_COMMAND_FLAG_APPLY) {
-            // Fix #3183: Make sure we close the construction window so the ride finishes any editing code before opening
-            //            otherwise vehicles get added to the ride incorrectly (such as to a ghost station)
-            rct_window *constructionWindow = window_find_by_number(WC_RIDE_CONSTRUCTION, rideIndex);
-            if (constructionWindow != NULL) {
-                window_close(constructionWindow);
-            }
-        } else {
-            // #5787: We need to make sure ghost elements are removed before validating
-            //        the track.
-            ride_construction_remove_ghosts();
-        }
-
-        if (targetStatus == RIDE_STATUS_TESTING) {
-            if (!ride_is_valid_for_test(rideIndex, targetStatus == RIDE_STATUS_OPEN, *ebx & GAME_COMMAND_FLAG_APPLY)) {
-                *ebx = MONEY32_UNDEFINED;
-                return;
-            }
-        }
-        else if (!ride_is_valid_for_open(rideIndex, targetStatus == RIDE_STATUS_OPEN, *ebx & GAME_COMMAND_FLAG_APPLY)) {
-            *ebx = MONEY32_UNDEFINED;
-            return;
-        }
-
-        if (*ebx & GAME_COMMAND_FLAG_APPLY) {
-            ride->race_winner = SPRITE_INDEX_NULL;
-            ride->status = targetStatus;
-            ride_get_measurement(rideIndex, NULL);
-            ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
-            window_invalidate_by_number(WC_RIDE, rideIndex);
-        }
-        *ebx = 0;
-        return;
-    }
 }
 
 void ride_set_name(sint32 rideIndex, const char *name)
