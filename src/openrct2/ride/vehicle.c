@@ -657,6 +657,14 @@ static const struct { sint8 x, y, z; } SteamParticleOffsets[] = {
     {  -8,  -4, 17 }
 };
 
+rct_vehicle * try_get_vehicle(uint16 spriteIndex)
+{
+    rct_sprite * sprite = try_get_sprite(spriteIndex);
+    if (sprite == NULL) return NULL;
+    if (sprite->unknown.sprite_identifier != SPRITE_IDENTIFIER_VEHICLE) return NULL;
+    return &sprite->vehicle;
+}
+
 static void vehicle_invalidate(rct_vehicle *vehicle)
 {
     invalidate_sprite_2((rct_sprite*)vehicle);

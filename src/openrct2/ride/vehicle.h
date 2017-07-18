@@ -369,6 +369,7 @@ enum {
 #define VEHICLE_SEAT_PAIR_FLAG  0x80
 #define VEHICLE_SEAT_NUM_MASK   0x7F
 
+rct_vehicle * try_get_vehicle(uint16 spriteIndex);
 void vehicle_update_all();
 sint32 sub_6BC2F3(rct_vehicle* vehicle);
 void vehicle_sounds_update();

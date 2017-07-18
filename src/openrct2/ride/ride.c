@@ -8706,13 +8706,13 @@ void fix_invalid_vehicle_sprite_sizes()
         for (uint16 j = 0; j < MAX_VEHICLES_PER_RIDE; j++) {
             uint16 rideSpriteIndex = ride->vehicles[j];
             while (rideSpriteIndex != SPRITE_INDEX_NULL) {
-                rct_vehicle *vehicle = GET_VEHICLE(rideSpriteIndex);
-                rct_ride_entry_vehicle *vehicleEntry = vehicle_get_vehicle_entry(vehicle);
+                rct_vehicle * vehicle = try_get_vehicle(rideSpriteIndex);
+                if (vehicle == NULL) {
+                    break;
+                }
 
-                if (vehicle == NULL ||
-                    vehicleEntry == NULL ||
-                    vehicleEntry == (rct_ride_entry_vehicle*)-1)
-                {
+                rct_ride_entry_vehicle * vehicleEntry = vehicle_get_vehicle_entry(vehicle);
+                if (vehicleEntry == NULL || vehicleEntry == (rct_ride_entry_vehicle*)-1) {
                     break;
                 }
 
