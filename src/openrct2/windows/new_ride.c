@@ -315,7 +315,7 @@ static void window_new_ride_populate_list()
 
         if (ride_type_is_invented(rideType)) {
 
-            if (!track_type_has_ride_groups(rideType)) {
+            if (!ride_type_has_ride_groups(rideType)) {
                 nextListItem = window_new_ride_iterate_over_ride_group(rideType, 0, nextListItem);
             }
             else {
@@ -360,7 +360,7 @@ static ride_list_item * window_new_ride_iterate_over_ride_group(uint8 rideType, 
         if (!gConfigInterface.select_by_track_type && (currentCategory != rideEntry->category[0] && currentCategory != rideEntry->category[1]))
             continue;
 
-        if (track_type_has_ride_groups(rideType))
+        if (ride_type_has_ride_groups(rideType))
         {
             const ride_group * rideEntryRideGroup = get_ride_group(rideType, rideEntry);
             const ride_group * rideGroup = ride_group_find(rideType, rideGroupIndex);
@@ -547,7 +547,7 @@ void window_new_ride_focus(ride_list_item rideItem)
             if (listItem->type == rideItem.type) {
                 const ride_group * irg = get_ride_group(rideTypeIndex, rideEntry);
 
-                if (!track_type_has_ride_groups(rideTypeIndex) || ride_groups_are_equal(rideGroup, irg)) {
+                if (!ride_type_has_ride_groups(rideTypeIndex) || ride_groups_are_equal(rideGroup, irg)) {
                     _windowNewRideHighlightedItem[0] = rideItem;
                     w->new_ride.highlighted_ride_id = rideItem.ride_type_and_entry;
                     window_new_ride_scroll_to_focused_ride(w);
@@ -917,7 +917,7 @@ static sint32 get_num_track_designs(ride_list_item item)
         }
     }
 
-    if (rideEntry != NULL && track_type_has_ride_groups(item.type))
+    if (rideEntry != NULL && ride_type_has_ride_groups(item.type))
     {
         const ride_group * rideGroup = get_ride_group(item.type, rideEntry);
         return (sint32)track_repository_get_count_for_ride_group(item.type, rideGroup);

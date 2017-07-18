@@ -611,7 +611,7 @@ static void window_track_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi,
 
 static void track_list_load_designs(ride_list_item item)
 {
-    if (!track_type_has_ride_groups(item.type)) {
+    if (!ride_type_has_ride_groups(item.type)) {
         char entry[9];
         const char *entryPtr = NULL;
         if (item.type < 0x80) {

@@ -26,11 +26,11 @@ static void paint_twist_structure(rct_ride * ride, uint8 direction, sint8 xOffse
 {
     rct_map_element * savedMapElement = g_currently_drawn_item;
 
-    rct_ride_entry * rideType = get_ride_entry(ride->subtype);
+    rct_ride_entry * rideEntry = get_ride_entry(ride->subtype);
     rct_vehicle * vehicle = NULL;
 
     height += 7;
-    uint32 baseImageId = rideType->vehicles[0].base_image_id;
+    uint32 baseImageId = rideEntry->vehicles[0].base_image_id;
 
     if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK
         && ride->vehicles[0] != SPRITE_INDEX_NULL) {
