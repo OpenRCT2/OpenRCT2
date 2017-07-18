@@ -19,6 +19,7 @@
 #include <openrct2/core/Memory.hpp>
 #include <openrct2-ui/windows/Window.h>
 
+#include <openrct2/core/Util.hpp>
 #include <openrct2/game.h>
 #include <openrct2/input.h>
 #include <openrct2/interface/themes.h>
@@ -48,8 +49,7 @@ static TITLE_COMMAND_ORDER _window_title_command_editor_orders[] = {
     { TITLE_SCRIPT_END,         STR_TITLE_EDITOR_END,                   STR_NONE },
 };
 
-// Basically countof(window_title_command_editor_orders)
-#define NUM_COMMANDS (sizeof(_window_title_command_editor_orders) / sizeof(_window_title_command_editor_orders[0]))
+#define NUM_COMMANDS Util::CountOf(_window_title_command_editor_orders)
 
 enum WINDOW_WATER_WIDGET_IDX {
     WIDX_BACKGROUND,
@@ -349,7 +349,7 @@ static void window_title_command_editor_mousedown(rct_window *w, rct_widgetindex
     switch (widgetIndex) {
     case WIDX_COMMAND_DROPDOWN:
     {
-        sint32 numItems = NUM_COMMANDS;
+        sint32 numItems = (sint32)NUM_COMMANDS;
         for (sint32 i = 0; i < numItems; i++) {
             gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
             gDropdownItemsArgs[i] = _window_title_command_editor_orders[i].nameStringId;
