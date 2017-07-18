@@ -177,6 +177,7 @@ void TitleScreen::CreateWindows()
     context_open_window(WC_TITLE_OPTIONS);
     context_open_window(WC_TITLE_LOGO);
     window_widgets_tabs_open();
+    window_flexbox_open();
     window_resize_gui(context_get_width(), context_get_height());
     _hideVersionInfo = false;
 }

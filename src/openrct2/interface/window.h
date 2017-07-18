@@ -497,6 +497,7 @@ enum {
     WC_CONSOLE = 224,
 
     WC_WIDGETS_TABS,
+    WC_WIDGETS_YOGA,
 
     WC_NULL = 255,
 };
@@ -712,6 +713,7 @@ void window_close_construction_windows();
 void window_update_viewport_ride_music();
 
 // Open window functions
+void window_flexbox_open();
 void window_relocate_windows(sint32 width, sint32 height);
 void window_resize_gui(sint32 width, sint32 height);
 void window_resize_gui_scenario_editor(sint32 width, sint32 height);

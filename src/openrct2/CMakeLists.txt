@@ -14,6 +14,43 @@ option(DISABLE_NETWORK "Disable multiplayer functionality. Mainly for testing.")
 option(DISABLE_TTF "Disable support for TTF provided by freetype2.")
 option(ENABLE_LIGHTFX "Enable lighting effects." ON)
 
+
+include(ExternalProject)
+
+ExternalProject_Add(
+        yoga-distribution2
+        URL https://github.com/facebook/yoga/archive/1.5.0.zip
+        URL_HASH SHA1=457db0c256c18ed3893e9cb4fb298c991025dd84
+        TIMEOUT 10
+        CONFIGURE_COMMAND ""
+        BUILD_COMMAND ""
+        INSTALL_COMMAND ""
+        PREFIX "${CMAKE_SOURCE_DIR}/libs/yoga"
+)
+
+ExternalProject_Get_Property(yoga-distribution2 SOURCE_DIR)
+# Specify include dir
+set(YOGA_DISTRIB_SOURCE_DIR "${SOURCE_DIR}")
+
+ExternalProject_Add_Step(yoga-distribution2 stub
+        DEPENDEES download
+        BYPRODUCTS
+        ${YOGA_DISTRIB_SOURCE_DIR}/yoga/YGEnums.c
+        ${YOGA_DISTRIB_SOURCE_DIR}/yoga/YGNodeList.c
+        ${YOGA_DISTRIB_SOURCE_DIR}/yoga/Yoga.c)
+
+
+
+add_library(yoga
+        SHARED
+        ${YOGA_DISTRIB_SOURCE_DIR}/yoga/YGEnums.c
+        ${YOGA_DISTRIB_SOURCE_DIR}/yoga/YGNodeList.c
+        ${YOGA_DISTRIB_SOURCE_DIR}/yoga/Yoga.c
+        )
+add_dependencies(yoga yoga-distribution2)
+target_include_directories(yoga INTERFACE ${YOGA_DISTRIB_SOURCE_DIR}/yoga)
+#include_directories(${YOGA_DISTRIB_SOURCE_DIR}/yoga/)
+
 if (NOT DISABLE_RCT2)
     if (WIN32)
         message(FATAL_ERROR "DISABLE_RCT2 not supported for Windows")
@@ -152,8 +189,14 @@ else ()
     target_link_libraries(${PROJECT} ${JANSSON_LIBRARIES}
                                      ${PNG_LIBRARIES}
                                      ${ZLIB_LIBRARIES}
-                                     ${LIBZIP_LIBRARIES})
+                                     ${LIBZIP_LIBRARIES}
+            yoga)
 endif ()
+
+
+
+find_library(CAIRO_LIBS cairo)
+target_link_libraries(${PROJECT} ${CAIRO_LIBS})
 
 if (UNIX AND NOT ${CMAKE_SYSTEM_NAME} MATCHES "BSD")
     # Include libdl for dlopen
