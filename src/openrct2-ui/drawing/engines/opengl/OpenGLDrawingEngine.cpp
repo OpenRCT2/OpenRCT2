@@ -330,39 +330,40 @@ public:
     {
     }
 
-    void Draw() override
+    void BeginDraw() override
     {
         assert(_screenFramebuffer != nullptr);
         assert(_swapFramebuffer != nullptr);
 
         _swapFramebuffer->Bind();
+    }
 
-        if (gIntroState != INTRO_STATE_NONE) {
-            intro_draw(&_bitsDPI);
-        } else {
-            window_update_all_viewports();
-            window_draw_all(&_bitsDPI, 0, 0, _width, _height);
-            window_update_all();
-
-            gfx_draw_pickedup_peep(&_bitsDPI);
-
-            _drawingContext->FlushCommandBuffers();
-            _swapFramebuffer->SwapCopy();
-
-            rct2_draw(&_bitsDPI);
-        }
-
+    void EndDraw() override
+    {
         _drawingContext->FlushCommandBuffers();
 
         // Scale up to window
         _screenFramebuffer->Bind();
         _copyFramebufferShader->Use();
-        _copyFramebufferShader->SetTexture(_swapFramebuffer->GetTargetFramebuffer()
-                                                           ->GetTexture());
+        _copyFramebufferShader->SetTexture(_swapFramebuffer->GetTargetFramebuffer()->GetTexture());
         _copyFramebufferShader->Draw();
 
         CheckGLError();
         Display();
+    }
+
+    void PaintWindows() override
+    {
+        window_update_all_viewports();
+        window_draw_all(&_bitsDPI, 0, 0, _width, _height);
+
+        // TODO move this out from drawing
+        window_update_all();
+    }
+
+    void PaintRain() override
+    {
+        // Not implemented
     }
 
     sint32 Screenshot() override

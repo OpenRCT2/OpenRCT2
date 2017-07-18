@@ -67,6 +67,8 @@ enum
 
 #ifdef __cplusplus
 
+#include <string>
+
 namespace OpenRCT2
 {
     interface IPlatformEnvironment;
@@ -94,6 +96,7 @@ namespace OpenRCT2
         virtual sint32 RunOpenRCT2(int argc, char * * argv) abstract;
 
         virtual bool Initialise() abstract;
+        virtual void Open(const std::string &path) abstract;
         virtual void Finish() abstract;
     };
 

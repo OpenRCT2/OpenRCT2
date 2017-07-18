@@ -14,24 +14,41 @@
  *****************************************************************************/
 #pragma endregion
 
-#pragma once
+#include <time.h>
+#include "../common.h"
 
-#ifdef __cplusplus
-extern "C"
+struct rct_drawpixelinfo;
+
+namespace OpenRCT2
 {
-#endif
-    #include "../drawing/drawing.h"
+    namespace Drawing
+    {
+        interface IDrawingEngine;
+    }
 
-    extern bool gTitleHideVersionInfo;
-    extern uint16 gTitleCurrentSequence;
+    namespace Ui
+    {
+        interface IUiContext;
+    }
 
-    void title_load();
-    void title_create_windows();
-    void title_update();
-    void DrawOpenRCT2(rct_drawpixelinfo *dpi, sint32 x, sint32 y);
+    namespace Paint
+    {
+        class Painter final
+        {
+        private:
+            Ui::IUiContext * const _uiContext;
 
-    void * title_get_sequence_player();
-    void title_sequence_change_preset(sint32 preset);
-#ifdef __cplusplus
+            time_t  _lastSecond = 0;
+            sint32  _currentFPS = 0;
+            sint32  _frames     = 0;
+
+        public:
+            Painter(Ui::IUiContext * uiContext);
+            void Paint(Drawing::IDrawingEngine * de);
+
+        private:
+            void PaintFPS(rct_drawpixelinfo * dpi);
+            void MeasureFPS();
+        };
+    }
 }
-#endif

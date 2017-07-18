@@ -64,7 +64,7 @@ namespace OpenRCT2 { namespace Ui
         // Drawing
         Drawing::IDrawingEngine * CreateDrawingEngine(Drawing::DRAWING_ENGINE_TYPE type) override
         {
-            return new X8DrawingEngine();
+            return new X8DrawingEngine(this);
         }
 
         // Text input

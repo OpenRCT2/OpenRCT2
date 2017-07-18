@@ -342,7 +342,7 @@ void S6Exporter::Export()
         _s6.park_entrance_z[i]         = gParkEntrances[i].z;
         _s6.park_entrance_direction[i] = gParkEntrances[i].direction;
     }
-    safe_strcpy(_s6.scenario_filename, _scenarioFileName, sizeof(_s6.scenario_filename));
+    safe_strcpy(_s6.scenario_filename, gScenarioFileName, sizeof(_s6.scenario_filename));
     memcpy(_s6.saved_expansion_pack_names, gScenarioExpansionPacks, sizeof(_s6.saved_expansion_pack_names));
     memcpy(_s6.banners, gBanners, sizeof(_s6.banners));
     memcpy(_s6.custom_strings, gUserStrings, sizeof(_s6.custom_strings));
@@ -403,7 +403,7 @@ void S6Exporter::Export()
     _s6.wide_path_tile_loop_y = gWidePathTileLoopY;
     // pad_13CE778
 
-    String::Set(_s6.scenario_filename, sizeof(_s6.scenario_filename), _scenarioFileName);
+    String::Set(_s6.scenario_filename, sizeof(_s6.scenario_filename), gScenarioFileName);
 
     if (RemoveTracklessRides)
     {

@@ -683,7 +683,6 @@ private:
         gfx_invalidate_screen();
 
         // Check if the window has been resized in windowed mode and update the config file accordingly
-        // This is called in rct2_update and is only called after resizing a window has finished
         sint32 nonWindowFlags =
 #ifndef __MACOSX__
             SDL_WINDOW_MAXIMIZED |

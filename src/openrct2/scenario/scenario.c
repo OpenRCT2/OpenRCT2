@@ -58,9 +58,6 @@ const rct_string_id ScenarioCategoryStringIds[SCENARIO_CATEGORY_COUNT] = {
     STR_BUILD_YOUR_OWN_PARKS,
 };
 
-static char _scenarioPath[MAX_PATH];
-const char *_scenarioFileName = "";
-
 rct_s6_info gS6Info;
 char gScenarioName[64];
 char gScenarioDetails[256];
@@ -85,6 +82,8 @@ money32 gScenarioObjectiveCurrency;
 uint16 gScenarioParkRatingWarningDays;
 money32 gScenarioCompletedCompanyValue;
 money32 gScenarioCompanyValueRecord;
+
+char gScenarioFileName[MAX_PATH];
 
 static sint32 scenario_create_ducks();
 static void scenario_objective_check();
@@ -113,14 +112,7 @@ ParkLoadResult * scenario_load_and_play_from_path(const char * path)
     reset_sprite_spatial_index();
     reset_all_sprite_quadrant_placements();
 
-    size_t len = strnlen(path, MAX_PATH) + 1;
-    safe_strcpy(_scenarioPath, path, len);
-    if (len - 1 == MAX_PATH)
-    {
-        _scenarioPath[MAX_PATH - 1] = '\0';
-        log_warning("truncated string %s", _scenarioPath);
-    }
-    _scenarioFileName = path_get_filename(_scenarioPath);
+    safe_strcpy(gScenarioFileName, path_get_filename(path), sizeof(gScenarioFileName));
 
     gFirstTimeSaving = true;
 
@@ -288,12 +280,6 @@ static void scenario_end()
     window_park_objective_open();
 }
 
-void scenario_set_filename(const char *value)
-{
-    substitute_path(_scenarioPath, sizeof(_scenarioPath), gRCT2AddressScenariosPath, value);
-    _scenarioFileName = path_get_filename(_scenarioPath);
-}
-
 /**
  *
  *  rct2: 0x0066A752
@@ -315,7 +301,7 @@ void scenario_success()
     gScenarioCompletedCompanyValue = companyValue;
     peep_applause();
 
-    if (scenario_repository_try_record_highscore(_scenarioFileName, companyValue, NULL))
+    if (scenario_repository_try_record_highscore(gScenarioFileName, companyValue, NULL))
     {
         // Allow name entry
         gParkFlags |= PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT;
@@ -330,7 +316,7 @@ void scenario_success()
  */
 void scenario_success_submit_name(const char *name)
 {
-    if (scenario_repository_try_record_highscore(_scenarioFileName, gScenarioCompanyValueRecord, name))
+    if (scenario_repository_try_record_highscore(gScenarioFileName, gScenarioCompanyValueRecord, name))
     {
         safe_strcpy(gScenarioCompletedBy, name, 32);
     }

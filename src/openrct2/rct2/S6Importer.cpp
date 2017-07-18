@@ -343,7 +343,7 @@ public:
             gParkEntrances[i].z         = _s6.park_entrance_z[i];
             gParkEntrances[i].direction = _s6.park_entrance_direction[i];
         }
-        scenario_set_filename(_s6.scenario_filename);
+        String::Set(gScenarioFileName, sizeof(gScenarioFileName), _s6.scenario_filename);
         memcpy(gScenarioExpansionPacks, _s6.saved_expansion_pack_names, sizeof(_s6.saved_expansion_pack_names));
         memcpy(gBanners, _s6.banners, sizeof(_s6.banners));
         memcpy(gUserStrings, _s6.custom_strings, sizeof(_s6.custom_strings));

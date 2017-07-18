@@ -57,7 +57,10 @@ namespace OpenRCT2 { namespace Drawing
         virtual void SetUncappedFrameRate(bool uncapped) abstract;
 
         virtual void    Invalidate(sint32 left, sint32 top, sint32 right, sint32 bottom) abstract;
-        virtual void    Draw() abstract;
+        virtual void    BeginDraw() abstract;
+        virtual void    EndDraw() abstract;
+        virtual void    PaintWindows() abstract;
+        virtual void    PaintRain() abstract;
         virtual void    CopyRect(sint32 x, sint32 y, sint32 width, sint32 height, sint32 dx, sint32 dy) abstract;
         virtual sint32  Screenshot() abstract;
 

@@ -311,7 +311,7 @@ void gfx_fill_rect_inset(rct_drawpixelinfo* dpi, sint16 left, sint16 top, sint16
 void gfx_filter_rect(rct_drawpixelinfo *dpi, sint32 left, sint32 top, sint32 right, sint32 bottom, FILTER_PALETTE_ID palette);
 
 // sprite
-bool gfx_load_g1();
+bool gfx_load_g1(void * platformEnvironment);
 bool gfx_load_g2();
 bool gfx_load_csg();
 void gfx_unload_g1();
@@ -362,8 +362,6 @@ void shorten_path(utf8 *buffer, size_t bufferSize, const utf8 *path, sint32 avai
 // scrolling text
 void scrolling_text_initialise_bitmaps();
 sint32 scrolling_text_setup(rct_string_id stringId, uint16 scroll, uint16 scrollingMode);
-
-void rct2_draw(rct_drawpixelinfo *dpi);
 
 #include "NewDrawing.h"
 

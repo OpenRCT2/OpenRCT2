@@ -53,7 +53,8 @@ private:
 
 public:
     explicit HardwareDisplayDrawingEngine(IUiContext * uiContext)
-        : _uiContext(uiContext)
+        : X8DrawingEngine(uiContext),
+          _uiContext(uiContext)
     {
         _window = (SDL_Window *)_uiContext->GetWindow();
     }
@@ -121,9 +122,8 @@ public:
         }
     }
 
-    void Draw() override
+    void EndDraw() override
     {
-        X8DrawingEngine::Draw();
         Display();
     }
 
