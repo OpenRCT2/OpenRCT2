@@ -617,10 +617,11 @@ static rct_map_element *find_station_element(sint32 x, sint32 y, sint32 z, sint3
 
 static void ride_remove_station(rct_ride *ride, sint32 x, sint32 y, sint32 z)
 {
-    uint16 xy = (x >> 5) | ((y >> 5) << 8);
-    for (sint32 i = 0; i < MAX_STATIONS; i++) {
-        if (ride->station_starts[i] == xy && ride->station_heights[i] == z) {
-            ride->station_starts[i] = 0xFFFF;
+    for (sint32 i = 0; i < MAX_STATIONS; i++)
+    {
+        if (ride->station_starts[i].x == (x >> 5) && ride->station_starts[i].y == (y >> 5) && ride->station_heights[i] == z)
+        {
+            ride->station_starts[i].xy = RCT_XY8_UNDEFINED;
             ride->num_stations--;
             break;
         }
@@ -648,7 +649,7 @@ static bool track_add_station_element(sint32 x, sint32 y, sint32 z, sint32 direc
         if (flags & GAME_COMMAND_FLAG_APPLY) {
             sint32 stationIndex = -1;
             for (sint32 i = 0; i < MAX_STATIONS; i++) {
-                if (ride->station_starts[i] == 0xFFFF) {
+                if (ride->station_starts[i].xy == RCT_XY8_UNDEFINED) {
                     stationIndex = i;
                     break;
                 }
@@ -656,7 +657,8 @@ static bool track_add_station_element(sint32 x, sint32 y, sint32 z, sint32 direc
 
             assert(stationIndex != -1);
 
-            ride->station_starts[stationIndex] = (x >> 5) | ((y >> 5) << 8);
+            ride->station_starts[stationIndex].x = (x >> 5);
+            ride->station_starts[stationIndex].y = (y >> 5);
             ride->station_heights[stationIndex] = z;
             ride->station_depart[stationIndex] = 1;
             ride->station_length[stationIndex] = 0;
@@ -733,7 +735,7 @@ static bool track_add_station_element(sint32 x, sint32 y, sint32 z, sint32 direc
                 if (x == stationX1 && y == stationY1) {
                     sint32 stationIndex = -1;
                     for (sint32 i = 0; i < MAX_STATIONS; i++) {
-                        if (ride->station_starts[i] == 0xFFFF) {
+                        if (ride->station_starts[i].xy == RCT_XY8_UNDEFINED) {
                             stationIndex = i;
                             break;
                         }
@@ -741,8 +743,8 @@ static bool track_add_station_element(sint32 x, sint32 y, sint32 z, sint32 direc
 
                     assert(stationIndex != -1);
 
-                    uint16 xy = (x >> 5) | ((y >> 5) << 8);
-                    ride->station_starts[stationIndex] = xy;
+                    ride->station_starts[stationIndex].x = (x >> 5);
+                    ride->station_starts[stationIndex].y = (y >> 5);
                     ride->station_heights[stationIndex] = z;
                     ride->station_depart[stationIndex] = 1;
                     ride->station_length[stationIndex] = stationLength;
@@ -862,7 +864,7 @@ static bool track_remove_station_element(sint32 x, sint32 y, sint32 z, sint32 di
                 loc_6C4BF5:;
                     sint32 stationIndex = -1;
                     for (sint32 i = 0; i < MAX_STATIONS; i++) {
-                        if (ride->station_starts[i] == 0xFFFF) {
+                        if (ride->station_starts[i].xy == RCT_XY8_UNDEFINED) {
                             stationIndex = i;
                             break;
                         }
@@ -870,8 +872,8 @@ static bool track_remove_station_element(sint32 x, sint32 y, sint32 z, sint32 di
 
                     assert(stationIndex != -1);
 
-                    uint16 xy = (x >> 5) | ((y >> 5) << 8);
-                    ride->station_starts[stationIndex] = xy;
+                    ride->station_starts[stationIndex].x = (x >> 5);
+                    ride->station_starts[stationIndex].y = (y >> 5);
                     ride->station_heights[stationIndex] = z;
                     ride->station_depart[stationIndex] = 1;
                     ride->station_length[stationIndex] = stationLength != 0 ? stationLength : byte_F441D1;
@@ -1876,7 +1878,7 @@ static money32 set_maze_track(uint16 x, uint8 flags, uint8 direction, uint16 y, 
 
         ride->maze_tiles++;
         ride->station_heights[0] = mapElement->base_height;
-        ride->station_starts[0] = 0;
+        ride->station_starts[0].xy = 0;
 
         if (direction == 4) {
             if (!(flags & GAME_COMMAND_FLAG_GHOST)) {

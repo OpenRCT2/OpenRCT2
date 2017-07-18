@@ -67,7 +67,7 @@ typedef struct rct1_ride {
     uint16 name_argument_ride;                              // 0x024
     uint16 name_argument_number;                            // 0x026
     rct_xy8 overall_view;                                   // 0x028
-    uint16 station_starts[RCT12_MAX_STATIONS_PER_RIDE];     // 0x02A
+    rct_xy8 station_starts[RCT12_MAX_STATIONS_PER_RIDE];    // 0x02A
     uint8 station_height[RCT12_MAX_STATIONS_PER_RIDE];      // 0x032
     uint8 station_length[RCT12_MAX_STATIONS_PER_RIDE];      // 0x036
     uint8 station_light[RCT12_MAX_STATIONS_PER_RIDE];       // 0x03A

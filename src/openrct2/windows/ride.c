@@ -1579,9 +1579,12 @@ rct_window *window_ride_open_station(sint32 rideIndex, sint32 stationIndex)
     window_init_scroll_widgets(w);
 
     // View
-    for (i = stationIndex; i >= 0; i--) {
-        if (ride->station_starts[i] == 0xFFFF)
+    for (i = stationIndex; i >= 0; i--)
+    {
+        if (ride->station_starts[i].xy == RCT_XY8_UNDEFINED)
+        {
             stationIndex--;
+        }
     }
 
     w->ride.view = 1 + ride->num_vehicles + stationIndex;
@@ -1802,14 +1805,16 @@ static void window_ride_init_viewport(rct_window *w)
         sint32 count = eax - ride->num_vehicles;
         do {
             stationIndex++;
-            if (ride->station_starts[stationIndex] != 0xFFFF)
+            if (ride->station_starts[stationIndex].xy != RCT_XY8_UNDEFINED)
+            {
                 count--;
+            }
         } while (count >= 0);
 
-        eax = ride->station_starts[stationIndex];
+        rct_xy8 location = ride->station_starts[stationIndex];
 
-        focus.coordinate.x = (eax & 0xFF) << 5;
-        focus.coordinate.y = (eax & 0xFF00) >> 3;
+        focus.coordinate.x = location.x * 32;
+        focus.coordinate.y = location.y * 32;
         focus.coordinate.z = ride->station_heights[stationIndex] << 3;
         focus.sprite.type |= VIEWPORT_FOCUS_TYPE_COORDINATE;
     }
@@ -2483,7 +2488,7 @@ static rct_string_id window_ride_get_status_station(rct_window *w, void *argumen
 
     do {
         stationIndex++;
-        if (ride->station_starts[stationIndex] != 0xFFFF)
+        if (ride->station_starts[stationIndex].xy != RCT_XY8_UNDEFINED)
             count--;
     } while (count >= 0);
 
