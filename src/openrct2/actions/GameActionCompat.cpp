@@ -36,7 +36,7 @@ extern "C"
                                           sint32* edi,
                                           sint32* ebp)
     {
-        Guard::Assert(false, "GAME_COMMAND_PLACE_PARK_ENTRANCE DEPRECIATED");
+        Guard::Assert(false, "GAME_COMMAND_PLACE_PARK_ENTRANCE DEPRECATED");
     }
 
     /**
@@ -110,9 +110,7 @@ extern "C"
     */
     void game_command_create_ride(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *edx, sint32 *esi, sint32 *edi, sint32 *ebp)
     {
-        ride_list_item tmp;
-        tmp.ride_type_and_entry = (uint16)*edx;
-        ride_construct_new(tmp);
+        Guard::Assert(false, "GAME_COMMAND_CREATE_RIDE DEPRECATED");
     }
 
 #pragma endregion
@@ -121,8 +119,6 @@ extern "C"
 
     void ride_set_status(sint32 rideIndex, sint32 status)
     {
-        game_do_command(0, GAME_COMMAND_FLAG_APPLY, 0, rideIndex | (status << 8), GAME_COMMAND_SET_RIDE_STATUS, 0, 0);
-
         auto gameAction = RideSetStatusAction();
         gameAction.RideIndex = rideIndex;
         gameAction.Status = status;
@@ -136,6 +132,7 @@ extern "C"
     */
     void game_command_set_ride_status(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *edx, sint32 *esi, sint32 *edi, sint32 *ebp)
     {
+        Guard::Assert(false, "GAME_COMMAND_SET_RIDE_STATUS DEPRECATED");
     }
 
 #pragma endregion
