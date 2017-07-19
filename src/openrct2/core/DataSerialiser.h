@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include <type_traits>
 #include "DataSerialiserTraits.h"
 
 class DataSerialiser 
