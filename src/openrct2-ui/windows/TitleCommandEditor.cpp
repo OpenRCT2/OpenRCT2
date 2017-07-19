@@ -68,7 +68,7 @@ enum WINDOW_WATER_WIDGET_IDX {
     WIDX_GET,
     WIDX_SELECT_SCENARIO,
     WIDX_SELECT_SPRITE,
-    WIDX_SPRITE_INDEX,
+    WIDX_VIEWPORT,
     WIDX_OKAY,
     WIDX_CANCEL
 };
@@ -106,7 +106,7 @@ static rct_widget window_title_command_editor_widgets[] = {
     { WWT_DROPDOWN_BUTTON,      1,  WS+WHA+12,  WW-WS-1,    BY2-14, BY2-3,  STR_TITLE_COMMAND_EDITOR_ACTION_SELECT_SCENARIO,                    STR_NONE }, // Select scenario
 
     { WWT_DROPDOWN_BUTTON,      1,  WS,         WW-WS-1,    BY2-14, BY2-3,  STR_TITLE_COMMAND_EDITOR_SELECT_SPRITE, STR_NONE }, // Select sprite
-    { WWT_SPINNER,              1,  WS,         WW-WS-1,    BY2,    BY2+11, (uint32) SPR_NONE,          STR_NONE }, // Sprite index
+    { WWT_VIEWPORT,             1, WS,          WW-WS - 1,  BY2,    BY2+22, STR_NONE,                   STR_NONE }, // Viewport
 
     { WWT_DROPDOWN_BUTTON,      1,  10,         80,         WH-21,  WH-10,  STR_OK,                     STR_NONE }, // OKAY
     { WWT_DROPDOWN_BUTTON,      1,  WW-80,      WW-10,      WH-21,  WH-10,  STR_CANCEL,                 STR_NONE }, // Cancel
@@ -265,6 +265,9 @@ void window_title_command_editor_open(TitleSequence * sequence, sint32 index, bo
         (1 << WIDX_OKAY) |
         (1 << WIDX_CANCEL);
     window_init_scroll_widgets(window);
+
+    rct_widget *const viewportWidget = &window_title_command_editor_widgets[WIDX_VIEWPORT];
+    viewport_create(window, window->x + viewportWidget->left, window->y + viewportWidget->top, viewportWidget->right - viewportWidget->left, viewportWidget->bottom - viewportWidget->top, 0, 0, 0, 0, 0, -1);
 
     _window_title_command_editor_index = index;
     _window_title_command_editor_insert = insert;
@@ -624,6 +627,8 @@ static void window_title_command_editor_tool_down(rct_window * w, rct_widgetinde
     if (info.type == VIEWPORT_INTERACTION_ITEM_SPRITE)
     {
         command.SpriteIndex = info.sprite->unknown.sprite_index;
+        w->viewport_target_sprite = command.SpriteIndex;
+        w->viewport->flags |= VIEWPORT_FOCUS_TYPE_SPRITE;
         tool_cancel();
         window_invalidate(w);
     }
@@ -641,7 +646,7 @@ static void window_title_command_editor_invalidate(rct_window * w)
     window_title_command_editor_widgets[WIDX_GET].type = WWT_EMPTY;
     window_title_command_editor_widgets[WIDX_SELECT_SCENARIO].type = WWT_EMPTY;
     window_title_command_editor_widgets[WIDX_SELECT_SPRITE].type = WWT_EMPTY;
-    window_title_command_editor_widgets[WIDX_SPRITE_INDEX].type = WWT_EMPTY;
+    window_title_command_editor_widgets[WIDX_VIEWPORT].type = WWT_EMPTY;
     switch (command.Type)
     {
     case TITLE_SCRIPT_LOAD:
@@ -668,7 +673,7 @@ static void window_title_command_editor_invalidate(rct_window * w)
         break;
     case TITLE_SCRIPT_FOLLOW:
         window_title_command_editor_widgets[WIDX_SELECT_SPRITE].type = WWT_DROPDOWN_BUTTON;
-        window_title_command_editor_widgets[WIDX_SPRITE_INDEX].type = WWT_SPINNER;
+        window_title_command_editor_widgets[WIDX_VIEWPORT].type = WWT_VIEWPORT;
         // Draw button pressed while the tool is active
         w->pressed_widgets &= ~(1 << WIDX_SELECT_SPRITE);
         if (sprite_selector_tool_is_active())
@@ -717,14 +722,7 @@ static void window_title_command_editor_paint(rct_window * w, rct_drawpixelinfo 
     }
     if (command.Type == TITLE_SCRIPT_FOLLOW)
     {
-        sint32 value = command.SpriteIndex;
-        gfx_draw_string_left(
-            dpi,
-            STR_FORMAT_INTEGER,
-            &value,
-            w->colours[1],
-            w->x + w->widgets[WIDX_SPRITE_INDEX].left + 1,
-            w->y + w->widgets[WIDX_SPRITE_INDEX].top);
+        window_draw_viewport(dpi, w);
     }
     else if (command.Type == TITLE_SCRIPT_LOAD)
     {
