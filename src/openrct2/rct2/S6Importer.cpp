@@ -451,7 +451,6 @@ public:
         for (uint8 i = 0; i < RCT2_MAX_CARS_PER_TRAIN; i ++)
         {
             dst->vehicle_colours[i] = src->vehicle_colours[i];
-
         }
 
         // pad_046;
