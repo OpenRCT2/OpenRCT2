@@ -438,7 +438,7 @@ public:
         }
     }
 
-    void ImportRide(rct_ride * dst, rct_ride * src)
+    void ImportRide(rct_ride * dst, const rct_ride * src)
     {
         memset(dst, 0, sizeof(rct_ride));
 
