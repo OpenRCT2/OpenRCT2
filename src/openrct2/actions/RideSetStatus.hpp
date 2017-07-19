@@ -65,10 +65,10 @@ public:
             return GameActionResult(GA_ERROR::INVALID_PARAMETERS, STR_INVALID_SELECTION_OF_OBJECTS);
         }
 
-        if (ride->overall_view != (uint16)-1) 
+        if (ride->overall_view.xy != RCT_XY8_UNDEFINED) 
         {
-            res.Position.x = (ride->overall_view & 0xFF) * 32 + 16;
-            res.Position.y = (ride->overall_view >> 8) * 32 + 16;
+            res.Position.x = ride->overall_view.x * 32 + 16;
+            res.Position.y = ride->overall_view.y * 32 + 16;
             res.Position.z = map_element_height(res.Position.x, res.Position.y);
         }
 
