@@ -131,7 +131,7 @@ public:
         ride->type = rideType;
         ride->subtype = rideEntryIndex;
         ride_set_colour_preset(ride, res.RideColor() & 0xFF);
-        ride->overall_view = 0xFFFF;
+        ride->overall_view.xy = RCT_XY8_UNDEFINED;
 
         // Ride name
         if (rideEntryIndex == RIDE_ENTRY_INDEX_NULL)
@@ -144,9 +144,9 @@ public:
         }
 
         for (size_t i = 0; i < RCT12_MAX_STATIONS_PER_RIDE; i++) {
-            ride->station_starts[i] = 0xFFFF;
-            ride->entrances[i] = 0xFFFF;
-            ride->exits[i] = 0xFFFF;
+            ride->station_starts[i].xy = RCT_XY8_UNDEFINED;
+            ride->entrances[i].xy = RCT_XY8_UNDEFINED;
+            ride->exits[i].xy = RCT_XY8_UNDEFINED;
             ride->train_at_station[i] = 255;
             ride->queue_time[i] = 0;
         }
