@@ -648,7 +648,7 @@ static bool track_add_station_element(sint32 x, sint32 y, sint32 z, sint32 direc
         }
         if (flags & GAME_COMMAND_FLAG_APPLY)
         {
-            sint8 stationIndex = ride_get_first_valid_station_start(ride);
+            sint8 stationIndex = ride_get_first_empty_station_start(ride);
             assert(stationIndex != -1);
 
             ride->station_starts[stationIndex].x = (x >> 5);
@@ -728,7 +728,7 @@ static bool track_add_station_element(sint32 x, sint32 y, sint32 z, sint32 direc
                 sint32 targetTrackType;
                 if (x == stationX1 && y == stationY1)
                 {
-                    sint8 stationIndex = ride_get_first_valid_station_start(ride);
+                    sint8 stationIndex = ride_get_first_empty_station_start(ride);
                     assert(stationIndex != -1);
 
                     ride->station_starts[stationIndex].x = (x >> 5);
@@ -851,7 +851,7 @@ static bool track_remove_station_element(sint32 x, sint32 y, sint32 z, sint32 di
                 if (x == stationX1 && y == stationY1)
                 {
                 loc_6C4BF5:;
-                    sint8 stationIndex = ride_get_first_valid_station_start(ride);
+                    sint8 stationIndex = ride_get_first_empty_station_start(ride);
                     assert(stationIndex != -1);
 
                     ride->station_starts[stationIndex].x = (x >> 5);
