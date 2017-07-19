@@ -346,3 +346,15 @@ sint8 ride_get_first_valid_station_start(const rct_ride *ride)
     }
     return -1;
 }
+
+sint8 ride_get_first_empty_station_start(const rct_ride *ride)
+{
+    for (sint32 i = 0; i < MAX_STATIONS; i++)
+    {
+        if (ride->station_starts[i].xy == RCT_XY8_UNDEFINED)
+        {
+            return i;
+        }
+    }
+    return -1;
+}
