@@ -5892,7 +5892,7 @@ static void ride_set_colour_preset(rct_ride *ride, uint8 index)
     if (index < colourPresets->count) {
         colours = colourPresets->list[index];
     }
-    for (sint32 i = 0; i < MAX_STATIONS; i++) {
+    for (sint32 i = 0; i < RCT12_NUM_COLOUR_SCHEMES; i++) {
         ride->track_colour_main[i] = colours.main;
         ride->track_colour_additional[i] = colours.additional;
         ride->track_colour_supports[i] = colours.supports;
@@ -8503,7 +8503,7 @@ bool ride_has_adjacent_station(rct_ride *ride)
 
     /* Loop through all of the ride stations, checking for an
      * adjacent station on either side. */
-    for (sint32 stationNum = 0; stationNum <= 3; stationNum++) {
+    for (sint32 stationNum = 0; stationNum < MAX_STATIONS; stationNum++) {
         if (ride->station_starts[stationNum].xy != RCT_XY8_UNDEFINED) {
             /* Get the map element for the station start. */
             uint16 stationX = ride->station_starts[stationNum].x * 32;
