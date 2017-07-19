@@ -348,7 +348,7 @@ public:
         memcpy(gBanners, _s6.banners, sizeof(_s6.banners));
         memcpy(gUserStrings, _s6.custom_strings, sizeof(_s6.custom_strings));
         gCurrentTicks = _s6.game_ticks_1;
-        //memcpy(gRideList, _s6.rides, sizeof(_s6.rides));
+
         ImportRides();
 
         gSavedAge          = _s6.saved_age;
@@ -434,7 +434,6 @@ public:
             if (_s6.rides[index].type != RIDE_TYPE_NULL)
             {
                 ImportRide(get_ride(index), &_s6.rides[index]);
-
             }
         }
     }
