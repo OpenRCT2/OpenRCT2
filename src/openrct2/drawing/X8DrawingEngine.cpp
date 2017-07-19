@@ -713,13 +713,11 @@ void X8DrawingContext::FilterRect(FILTER_PALETTE_ID palette, sint32 left, sint32
     // Fill the rectangle with the colours from the colour table
     for (sint32 i = 0; i < height >> dpi->zoom_level; i++)
     {
-        uint8 * nextdst = dst + (dpi->width >> dpi->zoom_level) + dpi->pitch;
+        uint8 * nextdst = dst + ((dpi->width >> dpi->zoom_level) + dpi->pitch) * i;
         for (sint32 j = 0; j < (width >> dpi->zoom_level); j++)
         {
-            *dst = g1Bits[*dst];
-            dst++;
+            *(nextdst + j) = g1Bits[*(nextdst + j)];
         }
-        dst = nextdst;
     }
 }
 
