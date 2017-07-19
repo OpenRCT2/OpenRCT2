@@ -607,17 +607,17 @@ private:
     }
 };
 
-static std::unique_ptr<ObjectManager> _objectManager;
+static ObjectManager * _objectManager = nullptr;
 
 IObjectManager * CreateObjectManager(IObjectRepository * objectRepository)
 {
-    _objectManager = std::unique_ptr<ObjectManager>(new ObjectManager(objectRepository));
-    return _objectManager.get();
+    _objectManager = new ObjectManager(objectRepository);
+    return _objectManager;
 }
 
 IObjectManager * GetObjectManager()
 {
-    return _objectManager.get();
+    return _objectManager;
 }
 
 extern "C"

@@ -88,6 +88,7 @@ namespace OpenRCT2
         ITrackDesignRepository *    _trackDesignRepository = nullptr;
         IScenarioRepository *       _scenarioRepository = nullptr;
 
+        bool    _initialised = false;
         bool    _isWindowMinimised = false;
         uint32  _lastTick = 0;
         uint32  _accumulator = 0;
@@ -125,6 +126,12 @@ namespace OpenRCT2
             EVP_MD_CTX_destroy(gHashCTX);
 #endif // DISABLE_NETWORK
             rct2_interop_dispose();
+
+            delete _scenarioRepository;
+            delete _trackDesignRepository;
+            delete _objectManager;
+            delete _objectRepository;
+
             Instance = nullptr;
         }
 
@@ -157,6 +164,12 @@ namespace OpenRCT2
 
         bool Initialise() final override
         {
+            if (_initialised)
+            {
+                throw std::runtime_error("Context already initialised.");
+            }
+            _initialised = true;
+
 #ifndef DISABLE_NETWORK
             gHashCTX = EVP_MD_CTX_create();
             Guard::Assert(gHashCTX != nullptr, "EVP_MD_CTX_create failed");
