@@ -27,25 +27,31 @@ enum WINDOW_OBJECT_LOAD_ERROR_WIDGET_IDX {
     WIDX_TITLE,
     WIDX_CLOSE,
     WIDX_COLUMN_OBJECT_NAME,
+    WIDX_COLUMN_OBJECT_SOURCE,
     WIDX_COLUMN_OBJECT_TYPE,
     WIDX_SCROLL,
     WIDX_COPY_CURRENT,
     WIDX_COPY_ALL
 };
 
-#define WW 400
+#define WW 450
 #define WH 400
+#define WW_LESS_PADDING (WW - 5)
+#define NAME_COL_LEFT 4
+#define SOURCE_COL_LEFT ((WW_LESS_PADDING / 4) + 1)
+#define TYPE_COL_LEFT (5 * WW_LESS_PADDING / 8 + 1)
 #define LIST_ITEM_HEIGHT 10
 
 rct_widget window_object_load_error_widgets[] = {
-    { WWT_FRAME,             0, 0,                WW - 1,         0,          WH - 1,     STR_NONE,                       STR_NONE },                // Background
-    { WWT_CAPTION,           0, 1,                WW - 2,         1,          14,         STR_OBJECT_LOAD_ERROR_TITLE,    STR_WINDOW_TITLE_TIP },    // Title bar
-    { WWT_CLOSEBOX,          0, WW - 13,          WW - 3,         2,          13,         STR_CLOSE_X,                    STR_CLOSE_WINDOW_TIP },    // Close button
-    { WWT_13,                0, 4,                (WW - 5) / 3,   57,         68,         STR_OBJECT_NAME,                STR_NONE },                // 'Object name' header
-    { WWT_13,                0, (WW - 5) / 3 + 1, WW - 5 - 1,     57,         68,         STR_OBJECT_TYPE,                STR_NONE },                // 'Object type' header
-    { WWT_SCROLL,            0, 4,                WW - 5,         68,         WH - 40,    SCROLL_VERTICAL,                STR_NONE },                // Scrollable list area
-    { WWT_CLOSEBOX,          0, 20,               200,            WW - 32,    WW - 12,    STR_COPY_SELECTED,              STR_NONE },                // Copy selected btn
-    { WWT_CLOSEBOX,          0, 200,              370,            WW - 32,    WW - 12,    STR_COPY_ALL,                   STR_NONE },                // Copy all btn
+    { WWT_FRAME,             0, 0,               WW - 1,                0,          WH - 1,     STR_NONE,                       STR_NONE },                // Background
+    { WWT_CAPTION,           0, 1,               WW - 2,                1,          14,         STR_OBJECT_LOAD_ERROR_TITLE,    STR_WINDOW_TITLE_TIP },    // Title bar
+    { WWT_CLOSEBOX,          0, WW - 13,         WW - 3,                2,          13,         STR_CLOSE_X,                    STR_CLOSE_WINDOW_TIP },    // Close button
+    { WWT_13,                0, NAME_COL_LEFT,   SOURCE_COL_LEFT - 1,   57,         68,         STR_OBJECT_NAME,                STR_NONE },                // 'Object name' header
+    { WWT_13,                0, SOURCE_COL_LEFT, TYPE_COL_LEFT - 1,     57,         68,         STR_OBJECT_SOURCE,              STR_NONE },                // 'Object source' header
+    { WWT_13,                0, TYPE_COL_LEFT,   WW_LESS_PADDING - 1,   57,         68,         STR_OBJECT_TYPE,                STR_NONE },                // 'Object type' header
+    { WWT_SCROLL,            0, 4,               WW_LESS_PADDING,       68,         WH - 40,    SCROLL_VERTICAL,                STR_NONE },                // Scrollable list area
+    { WWT_CLOSEBOX,          0, 45,              225,                   WH - 32,    WH - 12,    STR_COPY_SELECTED,              STR_NONE },                // Copy selected btn
+    { WWT_CLOSEBOX,          0, 225,             395,                   WH - 32,    WH - 12,    STR_COPY_ALL,                   STR_NONE },                // Copy all btn
     { WIDGETS_END },
 };
 
@@ -316,10 +322,14 @@ static void window_object_load_error_scrollpaint(rct_window *w, rct_drawpixelinf
             gfx_fill_rect(dpi, 0, y, list_width, y + LIST_ITEM_HEIGHT - 1, ColourMapA[w->colours[1]].lighter | 0x1000000);
 
         // Draw the actual object entry's name...
-        gfx_draw_string(dpi, strndup(invalid_entries[i].name, 8), COLOUR_DARK_GREEN, 5, y);
+        gfx_draw_string(dpi, strndup(invalid_entries[i].name, 8), COLOUR_DARK_GREEN, NAME_COL_LEFT, y);
+
+        // ... source game ...
+        rct_string_id sourceStringId = object_manager_get_source_game_string(&invalid_entries[i]);
+        gfx_draw_string_left(dpi, sourceStringId, NULL, COLOUR_DARK_GREEN, SOURCE_COL_LEFT, y);
 
         // ... and type
         rct_string_id type = get_object_type_string(&invalid_entries[i]);
-        gfx_draw_string_left(dpi, type, NULL, COLOUR_DARK_GREEN, (WW - 5) / 3 + 1, y);
+        gfx_draw_string_left(dpi, type, NULL, COLOUR_DARK_GREEN, TYPE_COL_LEFT, y);
     }
 }
