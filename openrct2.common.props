@@ -76,7 +76,7 @@
       <SDLCheck />
       <OmitFramePointers />
       <BufferSecurityCheck>false</BufferSecurityCheck>
-      <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
     </ClCompile>
     <Link>
