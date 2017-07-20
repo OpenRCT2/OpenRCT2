@@ -17,6 +17,8 @@
 #pragma once
 
 #include <functional>
+#include <memory>
+
 #include "../common.h"
 #include "../core/IStream.hpp"
 #include "../core/DataSerialiser.h"
@@ -62,6 +64,8 @@ constexpr uint16 EDITOR_ONLY = 1 << 2;
 */
 struct GameActionResult
 {
+    typedef std::unique_ptr<GameActionResult> Ptr;
+
     GA_ERROR        Error = GA_ERROR::OK;
     rct_string_id   ErrorTitle = (rct_string_id)-1;
     rct_string_id   ErrorMessage = (rct_string_id)-1;
@@ -70,23 +74,12 @@ struct GameActionResult
     money32         Cost = 0;
     uint16          ExpenditureType = 0;
 
-    union
-    {
-        sint8       _sint8;
-        sint16      _sint16;
-        sint32      _sint32;
-        sint64      _sint64;
-        uint8       _uint8;
-        uint16      _uint16;
-        uint32      _uint32;
-        uint64      _uint64;
-    } Results[4];
-
     GameActionResult();
     GameActionResult(GA_ERROR error, rct_string_id message);
+    GameActionResult(const GameActionResult&) = delete;
 };
 
-typedef std::function<void(const struct IGameAction*, GameActionResult&)> GameActionCallback_t;
+typedef std::function<void(const struct IGameAction*, const GameActionResult::Ptr&)> GameActionCallback_t;
 
 /**
 * Represents an action that changes the state of the game. Can be serialised and
@@ -95,6 +88,8 @@ typedef std::function<void(const struct IGameAction*, GameActionResult&)> GameAc
 struct IGameAction
 {
 public:
+    typedef std::unique_ptr<IGameAction> Ptr;
+
     /**
     * Gets the GA_FLAGS flags that are enabled for this game action.
     */
@@ -135,11 +130,11 @@ public:
     /**
     * Query the result of the game action without changing the game state.
     */
-    virtual GameActionResult Query() const abstract;
+    virtual GameActionResult::Ptr Query() const abstract;
 
     /**
     * Apply the game action and change the game state.
     */
     virtual ~IGameAction() {};
-    virtual GameActionResult Execute() const abstract;
+    virtual GameActionResult::Ptr Execute() const abstract;
 };

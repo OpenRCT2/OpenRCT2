@@ -20,6 +20,7 @@ extern "C" {
 #include "../platform/platform.h"
 }
 
+#include <memory>
 #include "IGameAction.h"
 
 typedef IGameAction *(*GameActionFactory)();
@@ -108,21 +109,21 @@ public:
     /**
     * Query the result of the game action without changing the game state.
     */
-    virtual GameActionResult Query() const override abstract;
+    virtual GameActionResult::Ptr Query() const override abstract;
 
     /**
     * Apply the game action and change the game state.
     */
-    virtual GameActionResult Execute() const override abstract;
+    virtual GameActionResult::Ptr Execute() const override abstract;
 };
 
 namespace GameActions
 {
 void                Initialize();
 void                Register();
-IGameAction *       Create(uint32 id);
-GameActionResult    Query(const IGameAction * action);
-GameActionResult    Execute(const IGameAction * action);
+IGameAction::Ptr       Create(uint32 id);
+GameActionResult::Ptr    Query(const IGameAction * action);
+GameActionResult::Ptr    Execute(const IGameAction * action);
 
 GameActionFactory   Register(uint32 id, GameActionFactory action);
 

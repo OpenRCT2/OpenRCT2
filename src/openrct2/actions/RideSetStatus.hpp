@@ -42,34 +42,34 @@ public:
         stream << Status;
     }
 
-    GameActionResult Query() const override
+    GameActionResult::Ptr Query() const override
     {
         if (RideIndex >= MAX_RIDES)
         {
             log_warning("Invalid game command for ride %u", RideIndex);
-            return GameActionResult(GA_ERROR::INVALID_PARAMETERS, STR_INVALID_SELECTION_OF_OBJECTS);
+            return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_INVALID_SELECTION_OF_OBJECTS);
         }
-        return GameActionResult();
+        return std::make_unique<GameActionResult>();
     }
 
-    GameActionResult Execute() const override
+    GameActionResult::Ptr Execute() const override
     {
-        GameActionResult res;
-        res.ExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_RUNNING_COSTS;
+        GameActionResult::Ptr res = std::make_unique<GameActionResult>();
+        res->ExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_RUNNING_COSTS;
 
         rct_ride *ride = get_ride(RideIndex);
 
         if (ride->type == RIDE_TYPE_NULL)
         {
             log_warning("Invalid game command for ride %u", RideIndex);
-            return GameActionResult(GA_ERROR::INVALID_PARAMETERS, STR_INVALID_SELECTION_OF_OBJECTS);
+            return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_INVALID_SELECTION_OF_OBJECTS);
         }
 
         if (ride->overall_view.xy != RCT_XY8_UNDEFINED) 
         {
-            res.Position.x = ride->overall_view.x * 32 + 16;
-            res.Position.y = ride->overall_view.y * 32 + 16;
-            res.Position.z = map_element_height(res.Position.x, res.Position.y);
+            res->Position.x = ride->overall_view.x * 32 + 16;
+            res->Position.y = ride->overall_view.y * 32 + 16;
+            res->Position.z = map_element_height(res->Position.x, res->Position.y);
         }
 
         switch (Status) 
@@ -126,6 +126,6 @@ public:
             Guard::Assert(false, "Invalid status passed: %u", Status);
         }
 
-        return GameActionResult();
+        return res;
     }
 };
