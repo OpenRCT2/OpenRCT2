@@ -15,6 +15,11 @@
 #pragma endregion
 
 #include <memory>
+
+#ifdef __SSE4_1__
+#include <immintrin.h>
+#endif
+
 #include "../common.h"
 #include "../config/Config.h"
 #include "../Context.h"
@@ -151,6 +156,66 @@ static void read_and_convert_gxdat(IStream * stream, size_t count, bool is_rctc,
         }
     }
     Memory::Free(g1Elements32);
+}
+
+static void mask_scalar(sint32 width, sint32 height, const uint8 * RESTRICT maskSrc, const uint8 * RESTRICT colourSrc,
+                        uint8 * RESTRICT dst, sint32 maskWrap, sint32 colourWrap, sint32 dstWrap)
+{
+    for (sint32 yy = 0; yy < height; yy++)
+    {
+        for (sint32 xx = 0; xx < width; xx++)
+        {
+            uint8 colour = (*colourSrc) & (*maskSrc);
+            if (colour != 0)
+            {
+                *dst = colour;
+            }
+
+            maskSrc++;
+            colourSrc++;
+            dst++;
+        }
+        maskSrc += maskWrap;
+        colourSrc += colourWrap;
+        dst += dstWrap;
+    }
+}
+
+static void mask_sse4_1(sint32 width, sint32 height, const uint8 * RESTRICT maskSrc, const uint8 * RESTRICT colourSrc,
+                        uint8 * RESTRICT dst, sint32 maskWrap, sint32 colourWrap, sint32 dstWrap)
+{
+#ifdef __SSE4_1__
+    const __m128i zero128 = {};
+    for (sint32 yy = 0; yy < height; yy++)
+    {
+        sint32 colourStep = yy * (colourWrap + 32);
+        sint32 maskStep   = yy * (maskWrap + 32);
+        sint32 dstStep    = yy * (dstWrap + 32);
+
+        // first half
+        const __m128i colour1   = _mm_lddqu_si128((const __m128i *)(colourSrc + colourStep));
+        const __m128i mask1     = _mm_lddqu_si128((const __m128i *)(maskSrc + maskStep));
+        const __m128i dest1     = _mm_lddqu_si128((const __m128i *)(dst + dstStep));
+        const __m128i mc1       = _mm_and_si128(colour1, mask1);
+        const __m128i saturate1 = _mm_cmpeq_epi8(mc1, zero128);
+        // _mm_blendv_epi8 is SSE4.1
+        const __m128i blended1 = _mm_blendv_epi8(mc1, dest1, saturate1);
+
+        // second half
+        const __m128i colour2   = _mm_lddqu_si128((const __m128i *)(colourSrc + 16 + colourStep));
+        const __m128i mask2     = _mm_lddqu_si128((const __m128i *)(maskSrc + 16 + maskStep));
+        const __m128i dest2     = _mm_lddqu_si128((const __m128i *)(dst + 16 + dstStep));
+        const __m128i mc2       = _mm_and_si128(colour2, mask2);
+        const __m128i saturate2 = _mm_cmpeq_epi8(mc2, zero128);
+        // _mm_blendv_epi8 is SSE4.1
+        const __m128i blended2 = _mm_blendv_epi8(mc2, dest2, saturate2);
+
+        _mm_storeu_si128((__m128i *)(dst + dstStep), blended1);
+        _mm_storeu_si128((__m128i *)(dst + 16 + dstStep), blended2);
+    }
+#else
+    openrct2_assert(false, "This build does not support SSE4.1, but ended up calling it");
+#endif // __SSE4_1__
 }
 
 extern "C"
@@ -718,28 +783,23 @@ extern "C"
         sint32 skipX = left - x;
         sint32 skipY = top - y;
 
-        uint8 *maskSrc = imgMask->offset + (skipY * imgMask->width) + skipX;
-        uint8 *colourSrc = imgColour->offset + (skipY * imgColour->width) + skipX;
-        uint8 *dst = dpi->bits + (left - dpi->x) + ((top - dpi->y) * (dpi->width + dpi->pitch));
+        uint8 const * maskSrc   = imgMask->offset + (skipY * imgMask->width) + skipX;
+        uint8 const * colourSrc = imgColour->offset + (skipY * imgColour->width) + skipX;
+        uint8       * dst       = dpi->bits + (left - dpi->x) + ((top - dpi->y) * (dpi->width + dpi->pitch));
 
-        sint32 maskWrap = imgMask->width - width;
+        sint32 maskWrap   = imgMask->width - width;
         sint32 colourWrap = imgColour->width - width;
-        sint32 dstWrap = ((dpi->width + dpi->pitch) - width);
-        for (sint32 yy = top; yy < bottom; yy++) {
-            for (sint32 xx = left; xx < right; xx++) {
-                uint8 colour = (*colourSrc) & (*maskSrc);
-                if (colour != 0) {
-                    *dst = colour;
-                }
+        sint32 dstWrap    = ((dpi->width + dpi->pitch) - width);
 
-                maskSrc++;
-                colourSrc++;
-                dst++;
-            }
-            maskSrc += maskWrap;
-            colourSrc += colourWrap;
-            dst += dstWrap;
+#ifdef __SSE4_1__
+        if (width == 32)
+        {
+            mask_sse4_1(width, height, maskSrc, colourSrc, dst, maskWrap, colourWrap, dstWrap);
         }
+        else
+#endif // __SSE4_1__
+       // fallback scalar code
+            mask_scalar(width, height, maskSrc, colourSrc, dst, maskWrap, colourWrap, dstWrap);
     }
 
     const rct_g1_element * gfx_get_g1_element(sint32 image_id)
