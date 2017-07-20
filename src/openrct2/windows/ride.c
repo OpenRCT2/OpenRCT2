@@ -3622,18 +3622,18 @@ static void window_ride_locate_mechanic(rct_window *w)
  *
  *  rct2: 0x006B7D08
  */
-static void window_ride_maintenance_draw_bar(rct_window *w, rct_drawpixelinfo *dpi, sint32 x, sint32 y, sint32 value, sint32 unk)
+static void window_ride_maintenance_draw_bar(rct_window *w, rct_drawpixelinfo *dpi, sint32 x, sint32 y, sint32 value, sint32 colour)
 {
     gfx_fill_rect_inset(dpi, x, y, x + 149, y + 8, w->colours[1], INSET_RECT_F_30);
-    if (unk & (1u << 31)) {
-        unk &= ~(1u << 31);
+    if (colour & BAR_BLINK) {
+        colour &= ~BAR_BLINK;
         if (game_is_not_paused() && (gCurrentTicks & 8))
             return;
     }
 
     value = ((186 * ((value * 2) & 0xFF)) >> 8) & 0xFF;
     if (value > 2) {
-        gfx_fill_rect_inset(dpi, x + 2, y + 1, x + value + 1, y + 7, unk, 0);
+        gfx_fill_rect_inset(dpi, x + 2, y + 1, x + value + 1, y + 7, colour, 0);
     }
 }
 

@@ -68,8 +68,6 @@ enum WINDOW_GUEST_WIDGET_IDX {
     WIDX_RIDE_SCROLL = 10
 };
 
-#define BAR_BLINK (1u << 31)
-
 validate_global_widx(WC_PEEP, WIDX_ACTION_LBL);
 
 rct_widget window_guest_overview_widgets[] = {
