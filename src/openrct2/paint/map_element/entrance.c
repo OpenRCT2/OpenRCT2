@@ -72,9 +72,9 @@ static void ride_entrance_exit_paint(uint8 direction, sint32 height, rct_map_ele
 
     uint8 colour_1, colour_2;
     uint32 transparant_image_id = 0, image_id = 0;
-    if (style->base_image_id & 0x40000000) {
+    if (style->base_image_id & IMAGE_TYPE_TRANSPARENT) {
         colour_1 = GlassPaletteIds[ride->track_colour_main[0]];
-        transparant_image_id = (colour_1 << 19) | 0x40000000;
+        transparant_image_id = (colour_1 << 19) | IMAGE_TYPE_TRANSPARENT;
     }
 
     colour_1 = ride->track_colour_main[0];

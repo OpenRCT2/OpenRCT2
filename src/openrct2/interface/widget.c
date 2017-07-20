@@ -861,8 +861,8 @@ static void widget_draw_image(rct_drawpixelinfo *dpi, rct_window *w, rct_widgeti
             // ?
         }
 
-        if (image & 0x40000000)
-            image &= ~0x40000000;
+        if (image & IMAGE_TYPE_TRANSPARENT)
+            image &= ~IMAGE_TYPE_TRANSPARENT;
         else
             image |= colour << 19;
 

@@ -628,7 +628,7 @@ bool track_paint_util_draw_station_covers_2(enum edge_t edge, bool hasFence, con
         imageOffset += SPR_STATION_COVER_OFFSET_TALL;
     }
 
-    if (baseImageId & 0x40000000) {
+    if (baseImageId & IMAGE_TYPE_TRANSPARENT) {
         imageId = (baseImageId & 0xBFFFFFFF) + imageOffset;
         sub_98197C(imageId, (sint8)offset.x, (sint8)offset.y, bounds.x, bounds.y, (sint8)bounds.z, offset.z, boundsOffset.x, boundsOffset.y, boundsOffset.z, get_current_rotation());
 

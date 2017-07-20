@@ -4622,8 +4622,8 @@ static void window_ride_colour_paint(rct_window *w, rct_drawpixelinfo *dpi)
                 const rct_ride_entrance_definition *entranceStyle = &RideEntranceDefinitions[ride->entrance_style];
 
                 sint32 terniaryColour = 0;
-                if (entranceStyle->base_image_id & 0x40000000) {
-                    terniaryColour = 0x40000000 | (GlassPaletteIds[trackColour.main] << 19);
+                if (entranceStyle->base_image_id & IMAGE_TYPE_TRANSPARENT) {
+                    terniaryColour = IMAGE_TYPE_TRANSPARENT | (GlassPaletteIds[trackColour.main] << 19);
                 }
 
                 sint32 spriteIndex = (trackColour.additional << 24) | (trackColour.main << 19);

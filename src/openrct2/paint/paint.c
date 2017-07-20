@@ -991,7 +991,7 @@ static uint32 paint_ps_colourify_image(uint32 imageId, uint8 spriteType, uint32 
 {
     if (viewFlags & VIEWPORT_FLAG_SEETHROUGH_RIDES) {
         if (spriteType == VIEWPORT_INTERACTION_ITEM_RIDE) {
-            if (!(imageId & 0x40000000)) {
+            if (!(imageId & IMAGE_TYPE_TRANSPARENT)) {
                 imageId &= 0x7FFFF;
                 imageId |= 0x41880000;
             }
@@ -999,7 +999,7 @@ static uint32 paint_ps_colourify_image(uint32 imageId, uint8 spriteType, uint32 
     }
     if (viewFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE) {
         if (spriteType == VIEWPORT_INTERACTION_ITEM_WALL) {
-            if (!(imageId & 0x40000000)) {
+            if (!(imageId & IMAGE_TYPE_TRANSPARENT)) {
                 imageId &= 0x7FFFF;
                 imageId |= 0x41880000;
             }
@@ -1010,7 +1010,7 @@ static uint32 paint_ps_colourify_image(uint32 imageId, uint8 spriteType, uint32 
         case VIEWPORT_INTERACTION_ITEM_FOOTPATH:
         case VIEWPORT_INTERACTION_ITEM_FOOTPATH_ITEM:
         case VIEWPORT_INTERACTION_ITEM_BANNER:
-            if (!(imageId & 0x40000000)) {
+            if (!(imageId & IMAGE_TYPE_TRANSPARENT)) {
                 imageId &= 0x7FFFF;
                 imageId |= 0x41880000;
             }
@@ -1022,7 +1022,7 @@ static uint32 paint_ps_colourify_image(uint32 imageId, uint8 spriteType, uint32 
         case VIEWPORT_INTERACTION_ITEM_SCENERY:
         case VIEWPORT_INTERACTION_ITEM_LARGE_SCENERY:
         case VIEWPORT_INTERACTION_ITEM_WALL:
-            if (!(imageId & 0x40000000)) {
+            if (!(imageId & IMAGE_TYPE_TRANSPARENT)) {
                 imageId &= 0x7FFFF;
                 imageId |= 0x41880000;
             }

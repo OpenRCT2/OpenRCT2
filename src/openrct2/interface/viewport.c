@@ -1048,7 +1048,7 @@ static bool sub_679236_679662_679B0D_679FF1(uint32 ebx, rct_g1_element *image, u
         return (al2 != 0);
     }
 
-    if (ebx & 0x40000000) {
+    if (ebx & IMAGE_TYPE_TRANSPARENT) {
         return false;
     }
 

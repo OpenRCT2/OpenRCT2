@@ -885,7 +885,7 @@ static void window_park_init_viewport(rct_window *w)
             z = gParkEntrances[i].z + 32;
             r = get_current_rotation();
 
-            xy = 0x40000000 | (y << 16) | x;
+            xy = IMAGE_TYPE_TRANSPARENT | (y << 16) | x;
             zr = (z << 16) | (r << 8);
             break;
         }
