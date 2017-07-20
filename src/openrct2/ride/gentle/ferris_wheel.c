@@ -86,7 +86,7 @@ static void paint_ferris_wheel_structure(uint8 rideIndex, uint8 direction, sint8
 
     uint32 imageColourFlags = gTrackColours[SCHEME_MISC];
     if (imageColourFlags == IMAGE_TYPE_REMAP) {
-        imageColourFlags = ride->vehicle_colours[0].body_colour << 19 | ride->vehicle_colours[0].trim_colour << 24 | IMAGE_TYPE_REMAP | IMAGE_TYPE_REMAP_2_PLUS;
+        imageColourFlags = SPRITE_ID_PALETTE_COLOUR_2(ride->vehicle_colours[0].body_colour, ride->vehicle_colours[0].trim_colour);
     }
 
     ferris_wheel_bound_box boundBox = ferris_wheel_data[direction];
@@ -111,7 +111,7 @@ static void paint_ferris_wheel_structure(uint8 rideIndex, uint8 direction, sint8
             }
 
             sint32 frameNum = (vehicle->vehicle_sprite_type + i * 4) % 128;
-            imageColourFlags = vehicle->peep_tshirt_colours[i] << 19 | vehicle->peep_tshirt_colours[i + 1] << 24 | IMAGE_TYPE_REMAP | IMAGE_TYPE_REMAP_2_PLUS;
+            imageColourFlags = SPRITE_ID_PALETTE_COLOUR_2(vehicle->peep_tshirt_colours[i], vehicle->peep_tshirt_colours[i + 1]);
             imageId = (baseImageId + 32 + direction * 128 + frameNum) | imageColourFlags;
             sub_98199C(imageId, xOffset, yOffset, boundBox.length_x, boundBox.length_y, 127, height, boundBox.offset_x, boundBox.offset_y, height, get_current_rotation());
         }

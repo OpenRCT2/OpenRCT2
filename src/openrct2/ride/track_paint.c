@@ -1772,8 +1772,8 @@ void track_paint(uint8 direction, sint32 height, rct_map_element *mapElement)
         }
 
         gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
-        gTrackColours[SCHEME_TRACK] = (ride->track_colour_main[trackColourScheme] << 19) | (ride->track_colour_additional[trackColourScheme] << 24) | IMAGE_TYPE_REMAP | IMAGE_TYPE_REMAP_2_PLUS;
-        gTrackColours[SCHEME_SUPPORTS] = (ride->track_colour_supports[trackColourScheme] << 19) | IMAGE_TYPE_REMAP;
+        gTrackColours[SCHEME_TRACK] = SPRITE_ID_PALETTE_COLOUR_2(ride->track_colour_main[trackColourScheme], ride->track_colour_additional[trackColourScheme]);
+        gTrackColours[SCHEME_SUPPORTS] = SPRITE_ID_PALETTE_COLOUR_1(ride->track_colour_supports[trackColourScheme]);
         gTrackColours[SCHEME_MISC] = IMAGE_TYPE_REMAP;
         gTrackColours[SCHEME_3] = 0x20C00000;
         if (mapElement->type & MAP_ELEMENT_TYPE_FLAG_HIGHLIGHT) {

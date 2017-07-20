@@ -97,7 +97,7 @@ static void paint_swinging_inverter_ship_structure(rct_ride * ride, uint8 direct
 
     uint32 colourFlags = gTrackColours[SCHEME_MISC];
     if (colourFlags == IMAGE_TYPE_REMAP) {
-        colourFlags = ride->vehicle_colours[0].body_colour << 19 | ride->vehicle_colours[0].trim_colour << 24 | IMAGE_TYPE_REMAP | IMAGE_TYPE_REMAP_2_PLUS;
+        colourFlags = SPRITE_ID_PALETTE_COLOUR_2(ride->vehicle_colours[0].body_colour, ride->vehicle_colours[0].trim_colour);
     }
 
     swinging_inverter_ship_bound_box boundBox = swinging_inverter_ship_bounds[direction];

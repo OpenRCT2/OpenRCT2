@@ -105,7 +105,7 @@ static void paint_pirate_ship_structure(rct_ride * ride, uint8 direction, sint8 
 
     uint32 imageColourFlags = gTrackColours[SCHEME_MISC];
     if (imageColourFlags == IMAGE_TYPE_REMAP) {
-        imageColourFlags = ride->vehicle_colours[0].body_colour << 19 | ride->vehicle_colours[0].trim_colour << 24 | IMAGE_TYPE_REMAP | IMAGE_TYPE_REMAP_2_PLUS;
+        imageColourFlags = SPRITE_ID_PALETTE_COLOUR_2(ride->vehicle_colours[0].body_colour, ride->vehicle_colours[0].trim_colour);
     }
 
     pirate_ship_bound_box bounds = pirate_ship_data[direction];
@@ -129,7 +129,7 @@ static void paint_pirate_ship_structure(rct_ride * ride, uint8 direction, sint8 
             }
 
             sint32 frameNum = offset + (direction >> 1);
-            imageColourFlags = vehicle->peep_tshirt_colours[peep] << 19 | vehicle->peep_tshirt_colours[peep + 1] << 24 | IMAGE_TYPE_REMAP | IMAGE_TYPE_REMAP_2_PLUS;
+            imageColourFlags = SPRITE_ID_PALETTE_COLOUR_2(vehicle->peep_tshirt_colours[peep], vehicle->peep_tshirt_colours[peep + 1]);
             imageId = (baseImageId + frameNum) | imageColourFlags;
             sub_98199C(imageId, xOffset, yOffset, bounds.length_x, bounds.length_y, 80, height, bounds.offset_x, bounds.offset_y, height, get_current_rotation());
 
@@ -140,7 +140,7 @@ static void paint_pirate_ship_structure(rct_ride * ride, uint8 direction, sint8 
             }
 
             frameNum = offset + ((direction >> 1) ^ 1);
-            imageColourFlags = vehicle->peep_tshirt_colours[peep] << 19 | vehicle->peep_tshirt_colours[peep + 1] << 24 | IMAGE_TYPE_REMAP | IMAGE_TYPE_REMAP_2_PLUS;
+            imageColourFlags = SPRITE_ID_PALETTE_COLOUR_2(vehicle->peep_tshirt_colours[peep], vehicle->peep_tshirt_colours[peep + 1]);
             imageId = (baseImageId + frameNum) | imageColourFlags;
             sub_98199C(imageId, xOffset, yOffset, bounds.length_x, bounds.length_y, 80, height, bounds.offset_x, bounds.offset_y, height, get_current_rotation());
 

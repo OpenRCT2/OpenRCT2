@@ -827,7 +827,7 @@ static void window_top_toolbar_paint(rct_window *w, rct_drawpixelinfo *dpi)
         imgId = SPR_TOOLBAR_STAFF;
         if (widget_is_pressed(w, WIDX_STAFF))
             imgId++;
-        imgId |= (gStaffHandymanColour << 19) | IMAGE_TYPE_REMAP | IMAGE_TYPE_REMAP_2_PLUS | (gStaffMechanicColour << 24);
+        imgId |= SPRITE_ID_PALETTE_COLOUR_2(gStaffHandymanColour, gStaffMechanicColour);
         gfx_draw_sprite(dpi, imgId, x, y, 0);
     }
 

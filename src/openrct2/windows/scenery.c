@@ -951,11 +951,11 @@ void window_scenery_invalidate(rct_window *w)
     }
 
     window_scenery_widgets[WIDX_SCENERY_PRIMARY_COLOUR_BUTTON].image =
-        (gWindowSceneryPrimaryColour << 19) | IMAGE_TYPE_REMAP | IMAGE_TYPE_TRANSPARENT | SPR_PALETTE_BTN;
+        SPRITE_ID_PALETTE_COLOUR_1(gWindowSceneryPrimaryColour) | IMAGE_TYPE_TRANSPARENT | SPR_PALETTE_BTN;
     window_scenery_widgets[WIDX_SCENERY_SECONDARY_COLOUR_BUTTON].image =
-        (gWindowScenerySecondaryColour << 19) | IMAGE_TYPE_REMAP | IMAGE_TYPE_TRANSPARENT | SPR_PALETTE_BTN;
+        SPRITE_ID_PALETTE_COLOUR_1(gWindowScenerySecondaryColour) | IMAGE_TYPE_TRANSPARENT | SPR_PALETTE_BTN;
     window_scenery_widgets[WIDX_SCENERY_TERTIARY_COLOUR_BUTTON].image =
-        (gWindowSceneryTertiaryColour << 19) | IMAGE_TYPE_REMAP | IMAGE_TYPE_TRANSPARENT | SPR_PALETTE_BTN;
+        SPRITE_ID_PALETTE_COLOUR_1(gWindowSceneryTertiaryColour) | IMAGE_TYPE_TRANSPARENT | SPR_PALETTE_BTN;
 
     window_scenery_widgets[WIDX_SCENERY_PRIMARY_COLOUR_BUTTON].type = WWT_EMPTY;
     window_scenery_widgets[WIDX_SCENERY_SECONDARY_COLOUR_BUTTON].type = WWT_EMPTY;

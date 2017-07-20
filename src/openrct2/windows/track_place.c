@@ -463,7 +463,7 @@ static void window_track_place_paint(rct_window *w, rct_drawpixelinfo *dpi)
         substituteElement->x_offset = 0;
         substituteElement->y_offset = 0;
         substituteElement->flags = 0;
-        gfx_draw_sprite(&clippedDpi, 0 | IMAGE_TYPE_REMAP | NOT_TRANSLUCENT(w->colours[0]) << 19, 0, 0, 0);
+        gfx_draw_sprite(&clippedDpi, SPRITE_ID_PALETTE_COLOUR_1(NOT_TRANSLUCENT(w->colours[0])), 0, 0, 0);
         *substituteElement = tmpElement;
     }
 

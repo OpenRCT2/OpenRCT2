@@ -1008,27 +1008,27 @@ void window_staff_overview_tab_paint(rct_window* w, rct_drawpixelinfo* dpi)
     }
     ebx += eax;
 
-    sint32 sprite_id = ebx | (peep->tshirt_colour << 19) | (peep->trousers_colour << 24) | IMAGE_TYPE_REMAP | IMAGE_TYPE_REMAP_2_PLUS;
+    sint32 sprite_id = ebx | SPRITE_ID_PALETTE_COLOUR_2(peep->tshirt_colour , peep->trousers_colour);
     gfx_draw_sprite(&clip_dpi, sprite_id, x, y, 0);
 
     // If holding a balloon
     if (ebx >= 0x2A1D && ebx < 0x2A3D){
         ebx += 32;
-        ebx |= (peep->balloon_colour << 19) | IMAGE_TYPE_REMAP;
+        ebx |= SPRITE_ID_PALETTE_COLOUR_1(peep->balloon_colour);
         gfx_draw_sprite(&clip_dpi, ebx, x, y, 0);
     }
 
     // If holding umbrella
     if (ebx >= 0x2BBD && ebx < 0x2BDD){
         ebx += 32;
-        ebx |= (peep->umbrella_colour << 19) | IMAGE_TYPE_REMAP;
+        ebx |= SPRITE_ID_PALETTE_COLOUR_1(peep->umbrella_colour);
         gfx_draw_sprite(&clip_dpi, ebx, x, y, 0);
     }
 
     // If wearing hat
     if (ebx >= 0x29DD && ebx < 0x29FD){
         ebx += 32;
-        ebx |= (peep->hat_colour << 19) | IMAGE_TYPE_REMAP;
+        ebx |= SPRITE_ID_PALETTE_COLOUR_1(peep->hat_colour);
         gfx_draw_sprite(&clip_dpi, ebx, x, y, 0);
     }
 }

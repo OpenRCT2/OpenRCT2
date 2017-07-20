@@ -508,7 +508,7 @@ void window_staff_list_invalidate(rct_window *w)
     if (tabIndex < 3) {
         window_staff_list_widgets[WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER].type = WWT_COLOURBTN;
         window_staff_list_widgets[WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER].image =
-            ((uint32)staff_get_colour(tabIndex) << 19) | IMAGE_TYPE_REMAP | IMAGE_TYPE_TRANSPARENT | SPR_PALETTE_BTN;
+            SPRITE_ID_PALETTE_COLOUR_1((uint32)staff_get_colour(tabIndex)) | IMAGE_TYPE_TRANSPARENT | SPR_PALETTE_BTN;
     }
     if (_quick_fire_mode)
         w->pressed_widgets |= (1ULL << WIDX_STAFF_LIST_QUICK_FIRE);
@@ -551,8 +551,7 @@ void window_staff_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
     // Handymen tab image
     i = (selectedTab == 0 ? (w->list_information_type & ~3) : 0);
     i += g_peep_animation_entries[PEEP_SPRITE_TYPE_HANDYMAN].sprite_animation->base_image + 1;
-    i |= IMAGE_TYPE_REMAP;
-    i |= gStaffHandymanColour << 19;
+    i |= SPRITE_ID_PALETTE_COLOUR_1(gStaffHandymanColour);
     gfx_draw_sprite(
         dpi,
         i,
@@ -563,8 +562,7 @@ void window_staff_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
     // Mechanic tab image
     i = (selectedTab == 1 ? (w->list_information_type & ~3) : 0);
     i += g_peep_animation_entries[PEEP_SPRITE_TYPE_MECHANIC].sprite_animation->base_image + 1;
-    i |= IMAGE_TYPE_REMAP;
-    i |= gStaffMechanicColour << 19;
+    i |= SPRITE_ID_PALETTE_COLOUR_1(gStaffMechanicColour);
     gfx_draw_sprite(
         dpi,
         i,
@@ -575,8 +573,7 @@ void window_staff_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
     // Security tab image
     i = (selectedTab == 2 ? (w->list_information_type & ~3) : 0);
     i += g_peep_animation_entries[PEEP_SPRITE_TYPE_SECURITY].sprite_animation->base_image + 1;
-    i |= IMAGE_TYPE_REMAP;
-    i |= gStaffSecurityColour << 19;
+    i |= SPRITE_ID_PALETTE_COLOUR_1(gStaffSecurityColour);
     gfx_draw_sprite(
         dpi,
         i,

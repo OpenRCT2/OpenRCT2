@@ -119,10 +119,9 @@ static void paint_magic_carpet_vehicle(rct_ride *ride, uint8 direction, uint32 s
 
     // Vehicle
     uint32 imageColourFlags = gTrackColours[SCHEME_MISC];
-    if (imageColourFlags == IMAGE_TYPE_REMAP) {
-        imageColourFlags = IMAGE_TYPE_REMAP | IMAGE_TYPE_REMAP_2_PLUS |
-            (ride->vehicle_colours[0].trim_colour << 24) |
-            (ride->vehicle_colours[0].body_colour << 19);
+    if (imageColourFlags == IMAGE_TYPE_REMAP)
+    {
+        imageColourFlags = SPRITE_ID_PALETTE_COLOUR_2(ride->vehicle_colours[0].body_colour, ride->vehicle_colours[0].trim_colour);
     }
 
     sint8 directionalOffset = MagicCarpetOscillationXY[swingImageId];

@@ -4041,7 +4041,7 @@ const uint8 window_ride_entrance_style_list[] = {
 
 static uint32 window_ride_get_colour_button_image(sint32 colour)
 {
-    return IMAGE_TYPE_REMAP | IMAGE_TYPE_TRANSPARENT | (colour << 19) | SPR_PALETTE_BTN;
+    return IMAGE_TYPE_TRANSPARENT | SPRITE_ID_PALETTE_COLOUR_1(colour) | SPR_PALETTE_BTN;
 }
 
 static sint32 window_ride_has_track_colour(rct_ride *ride, sint32 trackColour)
@@ -4579,16 +4579,14 @@ static void window_ride_colour_paint(rct_window *w, rct_drawpixelinfo *dpi)
         } else {
             sint32 spriteIndex = TrackColourPreviews[ride->type].track;
             if (spriteIndex != 0) {
-                spriteIndex |= (trackColour.additional << 24) | (trackColour.main << 19);
-                spriteIndex |= IMAGE_TYPE_REMAP | IMAGE_TYPE_REMAP_2_PLUS;
+                spriteIndex |= SPRITE_ID_PALETTE_COLOUR_2(trackColour.main, trackColour.additional);
                 gfx_draw_sprite(dpi, spriteIndex, x, y, 0);
             }
 
             // Supports
             spriteIndex = TrackColourPreviews[ride->type].supports;
             if (spriteIndex != 0) {
-                spriteIndex |= trackColour.supports << 19;
-                spriteIndex |= IMAGE_TYPE_REMAP;
+                spriteIndex |= SPRITE_ID_PALETTE_COLOUR_1(trackColour.supports);
                 gfx_draw_sprite(dpi, spriteIndex, x, y, 0);
             }
         }
@@ -4598,8 +4596,7 @@ static void window_ride_colour_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
         uint8 shopItem = rideEntry->shop_item_secondary == 255 ? rideEntry->shop_item : rideEntry->shop_item_secondary;
         sint32 spriteIndex = ShopItemImage[shopItem];
-        spriteIndex |= ride->track_colour_main[0] << 19;
-        spriteIndex |= IMAGE_TYPE_REMAP;
+        spriteIndex |= SPRITE_ID_PALETTE_COLOUR_1(ride->track_colour_main[0]);
 
         gfx_draw_sprite(dpi, spriteIndex, x, y, 0);
     }
@@ -4626,8 +4623,7 @@ static void window_ride_colour_paint(rct_window *w, rct_drawpixelinfo *dpi)
                     terniaryColour = IMAGE_TYPE_TRANSPARENT | (GlassPaletteIds[trackColour.main] << 19);
                 }
 
-                sint32 spriteIndex = (trackColour.additional << 24) | (trackColour.main << 19);
-                spriteIndex |= IMAGE_TYPE_REMAP | IMAGE_TYPE_REMAP_2_PLUS;
+                sint32 spriteIndex = SPRITE_ID_PALETTE_COLOUR_2(trackColour.main, trackColour.additional);
                 spriteIndex += RideEntranceDefinitions[ride->entrance_style].sprite_index;
 
                 // Back

@@ -847,27 +847,27 @@ static void window_guest_overview_tab_paint(rct_window* w, rct_drawpixelinfo* dp
     }
     ebx += eax;
 
-    sint32 sprite_id = ebx | (peep->tshirt_colour << 19) | (peep->trousers_colour << 24) | IMAGE_TYPE_REMAP | IMAGE_TYPE_REMAP_2_PLUS;
+    sint32 sprite_id = ebx | SPRITE_ID_PALETTE_COLOUR_2(peep->tshirt_colour, peep->trousers_colour);
     gfx_draw_sprite(&clip_dpi, sprite_id, x, y, 0);
 
     // If holding a balloon
     if (ebx >= 0x2A1D && ebx < 0x2A3D){
         ebx += 32;
-        ebx |= (peep->balloon_colour << 19) | IMAGE_TYPE_REMAP;
+        ebx |= SPRITE_ID_PALETTE_COLOUR_1(peep->balloon_colour);
         gfx_draw_sprite(&clip_dpi, ebx, x, y, 0);
     }
 
     // If holding umbrella
     if (ebx >= 0x2BBD && ebx < 0x2BDD){
         ebx += 32;
-        ebx |= (peep->umbrella_colour << 19) | IMAGE_TYPE_REMAP;
+        ebx |= SPRITE_ID_PALETTE_COLOUR_1(peep->umbrella_colour);
         gfx_draw_sprite(&clip_dpi, ebx, x, y, 0);
     }
 
     // If wearing hat
     if (ebx >= 0x29DD && ebx < 0x29FD){
         ebx += 32;
-        ebx |= (peep->hat_colour << 19) | IMAGE_TYPE_REMAP;
+        ebx |= SPRITE_ID_PALETTE_COLOUR_1(peep->hat_colour);
         gfx_draw_sprite(&clip_dpi, ebx, x, y, 0);
     }
 }
@@ -2034,7 +2034,7 @@ static rct_string_id window_guest_inventory_format_item(rct_peep *peep, sint32 i
     // Special overrides
     switch (item) {
     case SHOP_ITEM_BALLOON:
-        set_format_arg(0, uint32, IMAGE_TYPE_REMAP | (peep->balloon_colour << 19) | ShopItemImage[item]);
+        set_format_arg(0, uint32, SPRITE_ID_PALETTE_COLOUR_1(peep->balloon_colour) | ShopItemImage[item]);
         break;
     case SHOP_ITEM_PHOTO:
         ride = get_ride(peep->photo1_ride_ref);
@@ -2042,7 +2042,7 @@ static rct_string_id window_guest_inventory_format_item(rct_peep *peep, sint32 i
         set_format_arg(8, uint32, ride->name_arguments);
         break;
     case SHOP_ITEM_UMBRELLA:
-        set_format_arg(0, uint32, IMAGE_TYPE_REMAP | (peep->umbrella_colour << 19) | ShopItemImage[item]);
+        set_format_arg(0, uint32, SPRITE_ID_PALETTE_COLOUR_1(peep->umbrella_colour) | ShopItemImage[item]);
         break;
     case SHOP_ITEM_VOUCHER:
         switch (peep->voucher_type) {
@@ -2069,10 +2069,10 @@ static rct_string_id window_guest_inventory_format_item(rct_peep *peep, sint32 i
         }
         break;
     case SHOP_ITEM_HAT:
-        set_format_arg(0, uint32, IMAGE_TYPE_REMAP | (peep->hat_colour << 19) | ShopItemImage[item]);
+        set_format_arg(0, uint32, SPRITE_ID_PALETTE_COLOUR_1(peep->hat_colour) | ShopItemImage[item]);
         break;
     case SHOP_ITEM_TSHIRT:
-        set_format_arg(0, uint32, IMAGE_TYPE_REMAP | (peep->tshirt_colour << 19) | ShopItemImage[item]);
+        set_format_arg(0, uint32, SPRITE_ID_PALETTE_COLOUR_1(peep->tshirt_colour) | ShopItemImage[item]);
         break;
     case SHOP_ITEM_PHOTO2:
         ride = get_ride(peep->photo2_ride_ref);

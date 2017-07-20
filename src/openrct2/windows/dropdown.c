@@ -404,7 +404,7 @@ void window_dropdown_show_colour(rct_window *w, rct_widget *widget, uint8 dropdo
             defaultIndex = i;
 
         gDropdownItemsFormat[i] = DROPDOWN_FORMAT_COLOUR_PICKER;
-        gDropdownItemsArgs[i] = (i << 32) | (IMAGE_TYPE_REMAP | (i << 19) | SPR_PALETTE_BTN);
+        gDropdownItemsArgs[i] = (i << 32) | (SPRITE_ID_PALETTE_COLOUR_1(i) | SPR_PALETTE_BTN);
     }
 
     // Show dropdown

@@ -837,9 +837,9 @@ void window_themes_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 scr
                 gfx_draw_string_left(dpi, theme_desc_get_name(wc), NULL, w->colours[1], 2, y + 4);
 
                 uint8 colour = theme_get_colour(wc, j);
-                uint32 image = ((colour & ~COLOUR_FLAG_TRANSLUCENT) << 19) | IMAGE_TYPE_REMAP | IMAGE_TYPE_TRANSPARENT | SPR_PALETTE_BTN;
+                uint32 image = SPRITE_ID_PALETTE_COLOUR_1(colour & ~COLOUR_FLAG_TRANSLUCENT) | IMAGE_TYPE_TRANSPARENT | SPR_PALETTE_BTN;
                 if (i == _colour_index_1 && j == _colour_index_2) {
-                    image = ((colour & ~COLOUR_FLAG_TRANSLUCENT) << 19) | IMAGE_TYPE_REMAP | IMAGE_TYPE_TRANSPARENT | SPR_PALETTE_BTN_PRESSED;
+                    image = SPRITE_ID_PALETTE_COLOUR_1(colour & ~COLOUR_FLAG_TRANSLUCENT) | IMAGE_TYPE_TRANSPARENT | SPR_PALETTE_BTN_PRESSED;
                 }
                 gfx_draw_sprite(dpi, image, _button_offset_x + 12 * j, y + _button_offset_y, 0);
 
