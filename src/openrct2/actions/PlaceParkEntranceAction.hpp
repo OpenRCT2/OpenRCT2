@@ -28,8 +28,10 @@ extern "C"
 #include "../world/footpath.h"
 }
 
-struct PlaceParkEntranceGameActionResult : public GameActionResult {
-	PlaceParkEntranceGameActionResult(GA_ERROR error, rct_string_id message) :GameActionResult(error, message)
+struct PlaceParkEntranceGameActionResult : public GameActionResult 
+{
+    PlaceParkEntranceGameActionResult() : GameActionResult(GA_ERROR::OK, 0) {}
+	PlaceParkEntranceGameActionResult(GA_ERROR error, rct_string_id message) : GameActionResult(error, message)
 	{
 		ErrorTitle = STR_CANT_BUILD_PARK_ENTRANCE_HERE;
 	}
@@ -50,11 +52,11 @@ public:
         stream << x << y << z << direction;
 	}
 
-	GameActionResult Query() const override
+	GameActionResult::Ptr Query() const override
 	{
 		if (!(gScreenFlags & SCREEN_FLAGS_EDITOR) && !gCheatsSandboxMode)
 		{
-			return PlaceParkEntranceGameActionResult(GA_ERROR::NOT_IN_EDITOR_MODE, STR_NONE);
+			return std::make_unique<PlaceParkEntranceGameActionResult>(GA_ERROR::NOT_IN_EDITOR_MODE, STR_NONE);
 		}
 
 		gCommandExpenditureType = RCT_EXPENDITURE_TYPE_LAND_PURCHASE;
@@ -65,12 +67,12 @@ public:
 
 		if (!map_check_free_elements_and_reorganise(3))
 		{
-			return PlaceParkEntranceGameActionResult(GA_ERROR::NO_FREE_ELEMENTS, STR_NONE);
+			return std::make_unique<PlaceParkEntranceGameActionResult>(GA_ERROR::NO_FREE_ELEMENTS, STR_NONE);
 		}
 
 		if (x <= 32 || y <= 32 || x >= (gMapSizeUnits - 32) || y >= (gMapSizeUnits - 32))
 		{
-			return PlaceParkEntranceGameActionResult(GA_ERROR::INVALID_PARAMETERS, STR_TOO_CLOSE_TO_EDGE_OF_MAP);
+			return std::make_unique<PlaceParkEntranceGameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_TOO_CLOSE_TO_EDGE_OF_MAP);
 		}
 
 		sint8 entranceNum = -1;
@@ -85,7 +87,7 @@ public:
 
 		if (entranceNum == -1)
 		{
-			return PlaceParkEntranceGameActionResult(GA_ERROR::INVALID_PARAMETERS, STR_ERR_TOO_MANY_PARK_ENTRANCES);
+			return std::make_unique<PlaceParkEntranceGameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_ERR_TOO_MANY_PARK_ENTRANCES);
 		}
 
 		sint8 zLow = z * 2;
@@ -108,7 +110,7 @@ public:
 			{
 				if (!map_can_construct_at(entranceLoc.x, entranceLoc.y, zLow, zHigh, 0xF))
 				{
-					return PlaceParkEntranceGameActionResult(GA_ERROR::NO_CLEARANCE, STR_NONE);
+					return std::make_unique<PlaceParkEntranceGameActionResult>(GA_ERROR::NO_CLEARANCE, STR_NONE);
 				}
 			}
 
@@ -116,13 +118,14 @@ public:
 			rct_map_element* entranceElement = map_get_park_entrance_element_at(entranceLoc.x, entranceLoc.y, zLow, false);
 			if (entranceElement != NULL)
 			{
-				return PlaceParkEntranceGameActionResult(GA_ERROR::ITEM_ALREADY_PLACED, STR_NONE);
+				return std::make_unique<PlaceParkEntranceGameActionResult>(GA_ERROR::ITEM_ALREADY_PLACED, STR_NONE);
 			}
 		}
-		return GameActionResult();
+
+		return std::make_unique<PlaceParkEntranceGameActionResult>();
 	}
 
-	GameActionResult Execute() const override
+	GameActionResult::Ptr Execute() const override
 	{
         uint32 flags = GetFlags();
 
@@ -204,6 +207,7 @@ public:
 				map_animation_create(MAP_ANIMATION_TYPE_PARK_ENTRANCE, entranceLoc.x, entranceLoc.y, zLow);
 			}
 		}
-		return GameActionResult();
+
+		return std::make_unique<PlaceParkEntranceGameActionResult>();
 	}
 };

@@ -39,26 +39,26 @@ public:
         stream << Fee;
     }
 
-    GameActionResult Query() const override
+    GameActionResult::Ptr Query() const override
     {
         bool noMoney = (gParkFlags & PARK_FLAGS_NO_MONEY) != 0;
         bool forceFreeEntry = (gParkFlags & PARK_FLAGS_PARK_FREE_ENTRY) && !gCheatsUnlockAllPrices;
         if (noMoney || forceFreeEntry)
         {
-            return GameActionResult(GA_ERROR::DISALLOWED, STR_NONE);
+            return std::make_unique<GameActionResult>(GA_ERROR::DISALLOWED, STR_NONE);
         }
         if (Fee < MONEY_FREE || Fee > MONEY(100,00))
         {
-            return GameActionResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
+            return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
         }
-        return GameActionResult();
+        return std::make_unique<GameActionResult>();
     }
 
-    GameActionResult Execute() const override
+    GameActionResult::Ptr Execute() const override
     {
         gParkEntranceFee = Fee;
         window_invalidate_by_class(WC_PARK_INFORMATION);
-        return GameActionResult();
+        return std::make_unique<GameActionResult>();
     }
 };
 
