@@ -933,7 +933,7 @@ extern const rct_ride_properties RideProperties[RIDE_TYPE_COUNT];
 
 #define MAX_RIDE_MEASUREMENTS 8
 #define RIDE_VALUE_UNDEFINED 0xFFFF
-#define RIDE_INITIAL_RELIABILITY ((100 << 8) | - 1)
+#define RIDE_INITIAL_RELIABILITY ((100 << 8) | 0xFF) // Upper byte is percentage, lower byte is "decimal".
 
 #define STATION_DEPART_FLAG (1 << 7)
 #define STATION_DEPART_MASK (~STATION_DEPART_FLAG)
