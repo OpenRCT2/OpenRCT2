@@ -1340,7 +1340,8 @@ static void window_guest_stats_bars_paint(sint32 value, sint32 x, sint32 y, rct_
     gfx_fill_rect_inset(dpi, x + 0x3A, y + 1, x + 0x3A + 0x79, y + 9, w->colours[1], INSET_RECT_F_30);
 
     sint32 blink_flag = colour & BAR_BLINK;
-    colour &= ~(1u << 0x1F);
+    colour &= ~BAR_BLINK;
+
     if (!blink_flag ||
         game_is_paused() ||
         (gCurrentTicks & 8) == 0)

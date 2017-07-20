@@ -426,7 +426,7 @@ static void window_game_bottom_toolbar_draw_park_rating(rct_drawpixelinfo *dpi, 
 
     bar_width = (factor * (92 + WIDTH_MOD)) / 255;
     gfx_fill_rect_inset(dpi, x + 1, y + 1, x + (92 + WIDTH_MOD), y + 9, w->colours[1], INSET_RECT_F_30);
-    if (!(colour & 0x80000000) || game_is_paused() || (gCurrentTicks & 8)) {
+    if (!(colour & IMAGE_TYPE_REMAP_2_PLUS) || game_is_paused() || (gCurrentTicks & 8)) {
         if (bar_width > 2)
             gfx_fill_rect_inset(dpi, x + 2, y + 2, x + bar_width - 1, y + 8, colour & 0x7FFFFFFF, 0);
     }
