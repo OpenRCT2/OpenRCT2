@@ -710,11 +710,14 @@ void X8DrawingContext::FilterRect(FILTER_PALETTE_ID palette, sint32 left, sint32
     rct_g1_element * g1Element = &g1Elements[g1Index];
     uint8 *          g1Bits = g1Element->offset;
 
+    const sint32 scaled_width = width >> dpi->zoom_level;
+    const sint32 step = ((dpi->width >> dpi->zoom_level) + dpi->pitch);
+
     // Fill the rectangle with the colours from the colour table
     for (sint32 i = 0; i < height >> dpi->zoom_level; i++)
     {
-        uint8 * nextdst = dst + ((dpi->width >> dpi->zoom_level) + dpi->pitch) * i;
-        for (sint32 j = 0; j < (width >> dpi->zoom_level); j++)
+        uint8 * nextdst = dst + step * i;
+        for (sint32 j = 0; j < scaled_width; j++)
         {
             *(nextdst + j) = g1Bits[*(nextdst + j)];
         }
