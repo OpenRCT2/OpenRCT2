@@ -3135,6 +3135,10 @@ sint32 network_get_mode() { return NETWORK_MODE_NONE; }
 sint32 network_get_status() { return NETWORK_STATUS_NONE; }
 sint32 network_get_authstatus() { return NETWORK_AUTH_NONE; }
 uint32 network_get_server_tick() { return gCurrentTicks; }
+void network_flush() {}
+void network_send_tick() {}
+void network_check_desynchronization() {}
+void network_enqueue_game_action(const IGameAction *action) {}
 void network_send_gamecmd(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uint32 esi, uint32 edi, uint32 ebp, uint8 callback) {}
 void network_send_game_action(const IGameAction *action) {}
 void network_send_map() {}
