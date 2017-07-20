@@ -37,12 +37,12 @@ struct RideCreateGameActionResult : public GameActionResult {
 
     sint32& RideIndex()
     {
-        return reinterpret_cast<sint32&>(Results[0]);
+        return Results[0]._sint32;
     }
 
     uint32& RideColor()
     {
-        return reinterpret_cast<uint32&>(Results[1]);
+        return Results[1]._uint32;
     }
 };
 

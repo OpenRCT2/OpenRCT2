@@ -56,9 +56,9 @@ public:
     DataSerialiser& operator<<(T& data)
     {
         if (_isSaving)
-            DataSerializerTraits<std::remove_const<T>::type>::encode(_activeStream, data);
+            DataSerializerTraits<T>::encode(_activeStream, data);
         else 
-            DataSerializerTraits<std::remove_const<T>::type>::decode(_activeStream, data);
+            DataSerializerTraits<T>::decode(_activeStream, data);
         return *this;
     }
 };
