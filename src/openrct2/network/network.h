@@ -202,33 +202,18 @@ private:
 
     struct GameCommand
     {
-        GameCommand(uint32 t, uint32* args, uint8 p, uint8 cb) {
+        GameCommand(uint32 t, uint32* args, uint8 p, uint8 cb, uint32 id) {
             tick = t; eax = args[0]; ebx = args[1]; ecx = args[2]; edx = args[3];
             esi = args[4]; edi = args[5]; ebp = args[6]; playerid = p; callback = cb;
             action = nullptr;
+            commandIndex = id;
         }
 
-        GameCommand(uint32 t, IGameAction *ga)
+        GameCommand(uint32 t, std::unique_ptr<IGameAction>&& ga, uint32 id)
         {
             tick = t;
-            action = ga;
-        }
-
-        GameCommand(const GameCommand &source) {
-            tick = source.tick;
-            playerid = source.playerid;
-            action = source.action;
-            callback = source.callback;
-            if (action == nullptr)
-            {
-                eax = source.eax;
-                ebx = source.ebx;
-                ecx = source.ecx;
-                edx = source.edx;
-                esi = source.esi;
-                edi = source.edi;
-                ebp = source.ebp;
-            }
+            action = std::move(ga);
+            commandIndex = id;
         }
 
         ~GameCommand()
@@ -237,7 +222,7 @@ private:
 
         uint32 tick;
         uint32 eax, ebx, ecx, edx, esi, edi, ebp;
-        IGameAction *action;
+        IGameAction::Ptr action;
         uint8 playerid;
         uint8 callback;
         uint32 commandIndex;
