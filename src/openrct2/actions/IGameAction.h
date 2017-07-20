@@ -69,7 +69,18 @@ struct GameActionResult
     rct_xyz32       Position = { 0 };
     money32         Cost = 0;
     uint16          ExpenditureType = 0;
-    uint64          Results[4];
+
+    union
+    {
+        sint8       _sint8;
+        sint16      _sint16;
+        sint32      _sint32;
+        sint64      _sint64;
+        uint8       _uint8;
+        uint16      _uint16;
+        uint32      _uint32;
+        uint64      _uint64;
+    } Results[4];
 
     GameActionResult();
     GameActionResult(GA_ERROR error, rct_string_id message);
