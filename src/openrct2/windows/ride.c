@@ -4477,10 +4477,7 @@ static void window_ride_colour_invalidate(rct_window *w)
         for (sint32 i = 0; i < ride->num_cars_per_train; i++) {
             uint8 vehicleTypeIndex = ride_entry_get_vehicle_at_position(ride->subtype, ride->num_cars_per_train, i);
 
-            colourFlags |= rideEntry->vehicles[vehicleTypeIndex].flags_b;
-            colourFlags = ror32(colourFlags, 16);
-            colourFlags |= rideEntry->vehicles[vehicleTypeIndex].flags_a;
-            colourFlags = ror32(colourFlags, 16);
+            colourFlags |= (rideEntry->vehicles[vehicleTypeIndex].flags_a << 16) | rideEntry->vehicles[vehicleTypeIndex].flags_b;
         }
 
         // Additional colours
