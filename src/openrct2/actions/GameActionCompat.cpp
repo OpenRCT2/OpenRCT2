@@ -14,7 +14,7 @@ extern "C"
         gameAction.z = z;
         gameAction.direction = direction;
         auto result = GameActions::Execute(&gameAction);
-        if (result.Error == GA_ERROR::OK)
+        if (result->Error == GA_ERROR::OK)
         {
             return 0;
         }
@@ -55,7 +55,7 @@ extern "C"
         gameAction.SetFlags(GAME_COMMAND_FLAG_GHOST);
 
         auto result = GameActions::Execute(&gameAction);
-        if (result.Error == GA_ERROR::OK)
+        if (result->Error == GA_ERROR::OK)
         {
             gParkEntranceGhostPosition.x = x;
             gParkEntranceGhostPosition.y = y;
@@ -63,7 +63,7 @@ extern "C"
             gParkEntranceGhostDirection = direction;
             gParkEntranceGhostExists = true;
         }
-        return result.Cost;
+        return result->Cost;
     }
 #pragma endregion
 
@@ -93,12 +93,12 @@ extern "C"
         auto gameAction = RideCreateAction();
         gameAction.rideType = listItem.type;
         gameAction.rideSubType = listItem.entry_index;
-        gameAction.SetCallback([](const IGameAction *ga, GameActionResult& res)
+        gameAction.SetCallback([](const IGameAction *ga, const GameActionResult::Ptr& res)
         {
-            if (res.Error != GA_ERROR::OK)
+            if (res->Error != GA_ERROR::OK)
                 return;
 
-            ride_construct(static_cast<RideCreateGameActionResult&>(res).RideIndex());
+            ride_construct(static_cast<const RideCreateGameActionResult*>(res.get())->rideIndex);
         });
 
         GameActions::Execute(&gameAction);

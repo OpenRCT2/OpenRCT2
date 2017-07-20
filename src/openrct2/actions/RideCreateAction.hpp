@@ -32,18 +32,11 @@ extern "C"
 }
 
 struct RideCreateGameActionResult : public GameActionResult {
-    RideCreateGameActionResult() {}
+    RideCreateGameActionResult() : GameActionResult(GA_ERROR::OK, 0) {}
     RideCreateGameActionResult(GA_ERROR error, rct_string_id message) : GameActionResult(error, message) {}
 
-    sint32& RideIndex()
-    {
-        return Results[0]._sint32;
-    }
-
-    uint32& RideColor()
-    {
-        return Results[1]._uint32;
-    }
+    sint32 rideIndex;
+    uint32 rideColor;
 };
 
 struct RideCreateAction : public GameAction<GAME_COMMAND_CREATE_RIDE, GA_FLAGS::ALLOW_WHILE_PAUSED>
@@ -59,19 +52,19 @@ public:
         stream << rideType << rideSubType;
     }
 
-    GameActionResult Query() const override
+    GameActionResult::Ptr Query() const override
     {
         if (rideType >= RIDE_TYPE_COUNT)
         {
-            return RideCreateGameActionResult(GA_ERROR::INVALID_PARAMETERS, STR_INVALID_RIDE_TYPE);
+            return std::make_unique<RideCreateGameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_INVALID_RIDE_TYPE);
         }
 
-        return GameActionResult();
+        return std::make_unique<RideCreateGameActionResult>();
     }
 
-    GameActionResult Execute() const override
+    GameActionResult::Ptr Execute() const override
     {
-        RideCreateGameActionResult res;
+        auto res = std::make_unique<RideCreateGameActionResult>();
 
         rct_ride *ride;
         rct_ride_entry *rideEntry;
@@ -99,38 +92,45 @@ public:
             {
                 subType = availableRideEntries[0];
                 if (subType == RIDE_ENTRY_INDEX_NULL) {
-                    return RideCreateGameActionResult(GA_ERROR::INVALID_PARAMETERS, STR_INVALID_RIDE_TYPE);
+                    res->Error = GA_ERROR::INVALID_PARAMETERS;
+                    res->ErrorMessage = STR_INVALID_RIDE_TYPE;
+                    return res;
                 }
             }
         }
 
-        rideEntryIndex = subType;
-        rideIndex = ride_get_empty_slot();
-
         if (subType >= 128)
         {
-            return RideCreateGameActionResult(GA_ERROR::INVALID_PARAMETERS, STR_INVALID_RIDE_TYPE);
+            res->Error = GA_ERROR::INVALID_PARAMETERS;
+            res->ErrorMessage = STR_INVALID_RIDE_TYPE;
+            return res;
         }
 
+        rideEntryIndex = subType;
+        rideIndex = ride_get_empty_slot();
         if (rideIndex == -1) 
         {
-            return RideCreateGameActionResult(GA_ERROR::DISALLOWED, STR_TOO_MANY_RIDES);
+            res->Error = GA_ERROR::DISALLOWED;
+            res->ErrorMessage = STR_TOO_MANY_RIDES;
+            return res;
         }
 
-        res.RideIndex() = rideIndex;
-        res.RideColor() = ride_get_random_colour_preset_index(rideType) | (ride_get_unused_preset_vehicle_colour(rideType, subType) << 8);
+        res->rideIndex = rideIndex;
+        res->rideColor = ride_get_random_colour_preset_index(rideType) | (ride_get_unused_preset_vehicle_colour(rideType, subType) << 8);
 
         ride = get_ride(rideIndex);
         rideEntry = get_ride_entry(rideEntryIndex);
         if (rideEntry == (rct_ride_entry *)-1)
         {
             log_warning("Invalid request for ride %u", rideIndex);
-            return RideCreateGameActionResult(GA_ERROR::UNKNOWN, STR_UNKNOWN_OBJECT_TYPE);
+            res->Error = GA_ERROR::UNKNOWN;
+            res->ErrorMessage = STR_UNKNOWN_OBJECT_TYPE;
+            return res;
         }
 
         ride->type = rideType;
         ride->subtype = rideEntryIndex;
-        ride_set_colour_preset(ride, res.RideColor() & 0xFF);
+        ride_set_colour_preset(ride, res->rideColor & 0xFF);
         ride->overall_view.xy = RCT_XY8_UNDEFINED;
 
         // Ride name
@@ -279,11 +279,11 @@ public:
         ride->num_circuits = 1;
         ride->mode = ride_get_default_mode(ride);
         ride->min_max_cars_per_train = (rideEntry->min_cars_in_train << 4) | rideEntry->max_cars_in_train;
-        ride_set_vehicle_colours_to_random_preset(ride, 0xFF & (res.RideColor() >> 8));
+        ride_set_vehicle_colours_to_random_preset(ride, 0xFF & (res->rideColor >> 8));
         window_invalidate_by_class(WC_RIDE_LIST);
 
-        res.ExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
-        res.Position.x = (uint16)0x8000;
+        res->ExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
+        res->Position.x = (uint16)0x8000;
 
         return res;
     }

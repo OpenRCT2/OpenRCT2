@@ -63,7 +63,7 @@ namespace GameActions
         initialized = true;
     }
 
-    IGameAction * Create(uint32 id)
+    std::unique_ptr<IGameAction> Create(uint32 id)
     {
         Initialize();
 
@@ -76,7 +76,7 @@ namespace GameActions
                 result = factory();
             }
         }
-        return result;
+        return std::unique_ptr<IGameAction>(result);
     }
 
     static bool CheckActionInPausedMode(uint32 actionFlags)
@@ -95,42 +95,43 @@ namespace GameActions
         return false;
     }
 
-    GameActionResult Query(const IGameAction * action)
+    GameActionResult::Ptr Query(const IGameAction * action)
     {
         Guard::ArgumentNotNull(action);
 
-        GameActionResult result;
         uint16 actionFlags = action->GetActionFlags();
         if (!CheckActionInPausedMode(actionFlags))
         {
-            result.Error = GA_ERROR::GAME_PAUSED;
-            result.ErrorMessage = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
+            GameActionResult::Ptr result = std::make_unique<GameActionResult>();
+
+            result->Error = GA_ERROR::GAME_PAUSED;
+            result->ErrorMessage = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
+
+            return result;
         }
-        else
+
+        auto result = action->Query();
+        if (result->Error == GA_ERROR::OK)
         {
-            result = action->Query();
-            if (result.Error == GA_ERROR::OK)
+            if (!CheckActionAffordability(result.get()))
             {
-                if (!CheckActionAffordability(&result))
-                {
-                    result.Error = GA_ERROR::INSUFFICIENT_FUNDS;
-                    result.ErrorMessage = STR_NOT_ENOUGH_CASH_REQUIRES;
-                    set_format_arg_on(result.ErrorMessageArgs, 0, uint32, result.Cost);
-                }
+                result->Error = GA_ERROR::INSUFFICIENT_FUNDS;
+                result->ErrorMessage = STR_NOT_ENOUGH_CASH_REQUIRES;
+                set_format_arg_on(result->ErrorMessageArgs, 0, uint32, result->Cost);
             }
         }
         return result;
     }
 
-    GameActionResult Execute(const IGameAction * action)
+    GameActionResult::Ptr Execute(const IGameAction * action)
     {
         Guard::ArgumentNotNull(action);
 
         uint16 actionFlags = action->GetActionFlags();
         uint32 flags = action->GetFlags();
 
-        GameActionResult result = Query(action);
-        if (result.Error == GA_ERROR::OK)
+        GameActionResult::Ptr result = Query(action);
+        if (result->Error == GA_ERROR::OK)
         {
             // Networked games send actions to the server to be run
             if (network_get_mode() == NETWORK_MODE_CLIENT)
@@ -164,21 +165,21 @@ namespace GameActions
             result = action->Execute();
 
             // Update money balance
-            if (!(gParkFlags & PARK_FLAGS_NO_MONEY) && result.Cost != 0)
+            if (!(gParkFlags & PARK_FLAGS_NO_MONEY) && result->Cost != 0)
             {
-                finance_payment(result.Cost, result.ExpenditureType);
-                money_effect_create(result.Cost);
+                finance_payment(result->Cost, result->ExpenditureType);
+                money_effect_create(result->Cost);
             }
 
             if (!(actionFlags & GA_FLAGS::CLIENT_ONLY))
             {
-                if (network_get_mode() == NETWORK_MODE_SERVER && result.Error == GA_ERROR::OK)
+                if (network_get_mode() == NETWORK_MODE_SERVER && result->Error == GA_ERROR::OK)
                 {
                     uint32 playerId = action->GetPlayer();
 
                     network_set_player_last_action(network_get_player_index(playerId), action->GetType());
-                    if(result.Cost != 0)
-                        network_add_player_money_spent(playerId, result.Cost);
+                    if(result->Cost != 0)
+                        network_add_player_money_spent(playerId, result->Cost);
                 }
             }
 
@@ -196,11 +197,11 @@ namespace GameActions
             cb(action, result);
         }
 
-        if (result.Error != GA_ERROR::OK && !(flags & GAME_COMMAND_FLAG_GHOST))
+        if (result->Error != GA_ERROR::OK && !(flags & GAME_COMMAND_FLAG_GHOST))
         {
             // Show the error box
-            Memory::Copy(gCommonFormatArgs, result.ErrorMessageArgs, sizeof(result.ErrorMessageArgs));
-            window_error_open(result.ErrorTitle, result.ErrorMessage);
+            Memory::Copy(gCommonFormatArgs, result->ErrorMessageArgs, sizeof(result->ErrorMessageArgs));
+            window_error_open(result->ErrorTitle, result->ErrorMessage);
         }
         return result;
     }

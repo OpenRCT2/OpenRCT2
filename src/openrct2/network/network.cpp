@@ -1420,20 +1420,20 @@ void Network::ProcessGameCommandQueue()
 
         if (gc.action != nullptr) {
 
-            IGameAction *action = gc.action;
+            IGameAction *action = gc.action.get();
             action->SetFlags(action->GetFlags() | GAME_COMMAND_FLAG_NETWORKED);
 
             Guard::Assert(action != nullptr);
 
-            GameActionResult result = GameActions::Execute(action);
-            if (result.Error == GA_ERROR::OK)
+            GameActionResult::Ptr result = GameActions::Execute(action);
+            if (result->Error == GA_ERROR::OK)
             {
                 game_commands_processed_this_tick++;
                 NetworkPlayer* player = GetPlayerByID(gc.playerid);
                 if (player) {
                     player->LastAction = NetworkActions::FindCommand(action->GetType());
                     player->LastActionTime = platform_get_ticks();
-                    player->AddMoneySpent(result.Cost);
+                    player->AddMoneySpent(result->Cost);
                 }
 
                 Server_Send_GAME_ACTION(action);
@@ -1487,16 +1487,14 @@ void Network::EnqueueGameAction(const IGameAction *action)
     DataSerialiser dsOut(true, stream);
     action->Serialise(dsOut);
 
-    IGameAction *ga = GameActions::Create(action->GetType());
+    std::unique_ptr<IGameAction> ga = GameActions::Create(action->GetType());
     ga->SetCallback(action->GetCallback());
 
     stream.SetPosition(0);
     DataSerialiser dsIn(false, stream);
     ga->Serialise(dsIn);
 
-    GameCommand gc(gCurrentTicks, ga);
-    gc.commandIndex = _commandId++;
-    game_command_queue.insert(gc);
+    game_command_queue.emplace(gCurrentTicks, std::move(ga), _commandId++);
 }
 
 void Network::AddClient(ITcpSocket * socket)
@@ -2094,9 +2092,7 @@ void Network::Client_Handle_GAMECMD(NetworkConnection& connection, NetworkPacket
     uint8 callback;
     packet >> tick >> args[0] >> args[1] >> args[2] >> args[3] >> args[4] >> args[5] >> args[6] >> playerid >> callback;
 
-    GameCommand gc(tick, args, playerid, callback);
-    gc.commandIndex = _commandId++;
-    game_command_queue.insert(gc);
+    game_command_queue.emplace(tick, args, playerid, callback, _commandId++);
 }
 
 void Network::Client_Handle_GAME_ACTION(NetworkConnection& connection, NetworkPacket& packet)
@@ -2112,7 +2108,7 @@ void Network::Client_Handle_GAME_ACTION(NetworkConnection& connection, NetworkPa
 
     DataSerialiser ds(false, stream);
 
-    IGameAction *action = GameActions::Create(type);
+    IGameAction::Ptr action = GameActions::Create(type);
     if (!action)
     {
         // TODO: Handle error.
@@ -2127,9 +2123,7 @@ void Network::Client_Handle_GAME_ACTION(NetworkConnection& connection, NetworkPa
         _gameActionCallbacks.erase(itr);
     }
 
-	GameCommand gc(tick, action);
-    gc.commandIndex = _commandId++;
-	game_command_queue.insert(gc);
+	game_command_queue.emplace(tick, std::move(action), _commandId++);
 }
 
 void Network::Server_Handle_GAME_ACTION(NetworkConnection& connection, NetworkPacket& packet)
@@ -2187,7 +2181,7 @@ void Network::Server_Handle_GAME_ACTION(NetworkConnection& connection, NetworkPa
 	}
 
 	// Run game command, and if it is successful send to clients
-    IGameAction *ga = GameActions::Create(type);
+    IGameAction::Ptr ga = GameActions::Create(type);
     if (!ga)
     {
         // TODO: Handle error.
@@ -2202,9 +2196,7 @@ void Network::Server_Handle_GAME_ACTION(NetworkConnection& connection, NetworkPa
     // Set player to sender, should be 0 if sent from client.
     ga->SetPlayer(connection.Player->Id);
 
-    GameCommand gc(tick, ga);
-    gc.commandIndex = _commandId++;
-    game_command_queue.insert(gc);
+    game_command_queue.emplace(tick, std::move(ga), _commandId++);
 }
 
 void Network::Server_Handle_GAMECMD(NetworkConnection& connection, NetworkPacket& packet)
@@ -2267,9 +2259,7 @@ void Network::Server_Handle_GAMECMD(NetworkConnection& connection, NetworkPacket
         return;
     }
 
-    GameCommand gc = GameCommand(tick, args, playerid, callback);
-    gc.commandIndex = _commandId++;
-    game_command_queue.insert(gc);
+    game_command_queue.emplace(tick, args, playerid, callback, _commandId++);
 }
 
 void Network::Client_Handle_TICK(NetworkConnection& connection, NetworkPacket& packet)
