@@ -209,7 +209,7 @@ void vehicle_visual_virginia_reel(sint32 x, sint32 imageDirection, sint32 y, sin
     baseImage_id += vehicleEntry->base_image_id;
 
     const vehicle_boundbox *bb = &_virginiaReelBoundbox[j];
-    image_id = baseImage_id | SPRITE_ID_PALETTE_COLOUR_2(vehicle->colours.body_colour, vehicle->colours.trim_colour << 24);
+    image_id = baseImage_id | SPRITE_ID_PALETTE_COLOUR_2(vehicle->colours.body_colour, vehicle->colours.trim_colour);
     sub_98197C(image_id, 0, 0, bb->length_x, bb->length_y, bb->length_z, z, bb->offset_x, bb->offset_y, bb->offset_z + z, rotation);
 
     if (unk_140E9A8->zoom_level < 2 && vehicle->num_peeps > 0) {
