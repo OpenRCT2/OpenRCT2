@@ -49,8 +49,8 @@ static void paint_twist_structure(rct_ride * ride, uint8 direction, sint8 xOffse
 
 
     uint32 imageColourFlags = gTrackColours[SCHEME_MISC];
-    if (imageColourFlags == 0x20000000) {
-        imageColourFlags = ride->vehicle_colours[0].body_colour << 19 | ride->vehicle_colours[0].trim_colour << 24 | 0xA0000000;
+    if (imageColourFlags == IMAGE_TYPE_REMAP) {
+        imageColourFlags = ride->vehicle_colours[0].body_colour << 19 | ride->vehicle_colours[0].trim_colour << 24 | IMAGE_TYPE_REMAP | IMAGE_TYPE_REMAP_2_PLUS;
     }
 
     uint32 structureFrameNum = frameNum % 24;
@@ -64,7 +64,7 @@ static void paint_twist_structure(rct_ride * ride, uint8 direction, sint8 xOffse
         && vehicle != NULL) {
 
         for (sint32 i = 0; i < vehicle->num_peeps; i += 2) {
-            imageColourFlags = vehicle->peep_tshirt_colours[i] << 19 | vehicle->peep_tshirt_colours[i + 1] << 24 | 0xA0000000;
+            imageColourFlags = vehicle->peep_tshirt_colours[i] << 19 | vehicle->peep_tshirt_colours[i + 1] << 24 | IMAGE_TYPE_REMAP | IMAGE_TYPE_REMAP_2_PLUS;
 
             uint32 peepFrameNum = (frameNum + i * 12) % 216;
             imageId = (baseImageId + 24 + peepFrameNum) | imageColourFlags;

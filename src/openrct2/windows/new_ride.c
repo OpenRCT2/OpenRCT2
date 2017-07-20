@@ -182,13 +182,13 @@ static rct_widget window_new_ride_widgets[] = {
     { WWT_CAPTION,          0,  1,      599,    1,      14,     0xFFFFFFFF,                             STR_WINDOW_TITLE_TIP                },
     { WWT_CLOSEBOX,         0,  588,    598,    2,      13,     STR_CLOSE_X,                            STR_CLOSE_WINDOW_TIP                },
     { WWT_RESIZE,           1,  0,      600,    43,     369,    0xFFFFFFFF,                             STR_NONE                            },
-    { WWT_TAB,              1,  3,      33,     17,     43,     0x20000000 | SPR_TAB,                   STR_TRANSPORT_RIDES_TIP             },
-    { WWT_TAB,              1,  34,     64,     17,     43,     0x20000000 | SPR_TAB,                   STR_GENTLE_RIDES_TIP                },
-    { WWT_TAB,              1,  65,     95,     17,     43,     0x20000000 | SPR_TAB,                   STR_ROLLER_COASTERS_TIP             },
-    { WWT_TAB,              1,  96,     126,    17,     43,     0x20000000 | SPR_TAB,                   STR_THRILL_RIDES_TIP                },
-    { WWT_TAB,              1,  127,    157,    17,     43,     0x20000000 | SPR_TAB,                   STR_WATER_RIDES_TIP                 },
-    { WWT_TAB,              1,  158,    188,    17,     43,     0x20000000 | SPR_TAB,                   STR_SHOPS_STALLS_TIP                },
-    { WWT_TAB,              1,  189,    219,    17,     43,     0x20000000 | SPR_TAB,                   STR_RESEARCH_AND_DEVELOPMENT_TIP    },
+    { WWT_TAB,              1,  3,      33,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,                   STR_TRANSPORT_RIDES_TIP             },
+    { WWT_TAB,              1,  34,     64,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,                   STR_GENTLE_RIDES_TIP                },
+    { WWT_TAB,              1,  65,     95,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,                   STR_ROLLER_COASTERS_TIP             },
+    { WWT_TAB,              1,  96,     126,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,                   STR_THRILL_RIDES_TIP                },
+    { WWT_TAB,              1,  127,    157,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,                   STR_WATER_RIDES_TIP                 },
+    { WWT_TAB,              1,  158,    188,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,                   STR_SHOPS_STALLS_TIP                },
+    { WWT_TAB,              1,  189,    219,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,                   STR_RESEARCH_AND_DEVELOPMENT_TIP    },
     { WWT_SCROLL,           1,  3,      597,    46,     317,    SCROLL_VERTICAL,                                    STR_NONE                            },
     { WWT_GROUPBOX,         2,  3,      292,    47,     116,    STR_CURRENTLY_IN_DEVELOPMENT,           STR_NONE                            },
     { WWT_GROUPBOX,         2,  3,      292,    124,    188,    STR_LAST_DEVELOPMENT,                   STR_NONE                            },
@@ -662,9 +662,9 @@ static void window_new_ride_draw_tab_image(rct_drawpixelinfo *dpi, rct_window *w
 
 static void window_new_ride_draw_tab_images(rct_drawpixelinfo *dpi, rct_window *w)
 {
-    window_new_ride_draw_tab_image(dpi, w, WINDOW_NEW_RIDE_PAGE_TRANSPORT, 0x20000000 | SPR_TAB_RIDES_TRANSPORT_0);
+    window_new_ride_draw_tab_image(dpi, w, WINDOW_NEW_RIDE_PAGE_TRANSPORT, IMAGE_TYPE_REMAP | SPR_TAB_RIDES_TRANSPORT_0);
     window_new_ride_draw_tab_image(dpi, w, WINDOW_NEW_RIDE_PAGE_GENTLE, SPR_TAB_RIDES_GENTLE_0);
-    window_new_ride_draw_tab_image(dpi, w, WINDOW_NEW_RIDE_PAGE_ROLLER_COASTER, 0x20000000 | SPR_TAB_RIDES_ROLLER_COASTERS_0);
+    window_new_ride_draw_tab_image(dpi, w, WINDOW_NEW_RIDE_PAGE_ROLLER_COASTER, IMAGE_TYPE_REMAP | SPR_TAB_RIDES_ROLLER_COASTERS_0);
     window_new_ride_draw_tab_image(dpi, w, WINDOW_NEW_RIDE_PAGE_THRILL, SPR_TAB_RIDES_THRILL_0);
     window_new_ride_draw_tab_image(dpi, w, WINDOW_NEW_RIDE_PAGE_WATER, SPR_TAB_RIDES_WATER_0);
     window_new_ride_draw_tab_image(dpi, w, WINDOW_NEW_RIDE_PAGE_SHOP, SPR_TAB_RIDES_SHOP_0);

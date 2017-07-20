@@ -87,13 +87,13 @@ enum WINDOW_PARK_WIDGET_IDX {
     { WWT_CAPTION,          0,  1,      228,    1,      14,     STR_STRINGID,                   STR_WINDOW_TITLE_TIP },         /* title bar          */    \
     { WWT_CLOSEBOX,         0,  217,    227,    2,      13,     STR_CLOSE_X,                    STR_CLOSE_WINDOW_TIP },         /* close x button     */    \
     { WWT_RESIZE,           1,  0,      229,    43,     173,    0xFFFFFFFF,                     STR_NONE },                     /* tab content panel  */    \
-    { WWT_TAB,              1,  3,      33,     17,     43,     0x20000000 | SPR_TAB,           STR_PARK_ENTRANCE_TAB_TIP },    /* tab 1              */    \
-    { WWT_TAB,              1,  34,     64,     17,     43,     0x20000000 | SPR_TAB,           STR_PARK_RATING_TAB_TIP },      /* tab 2              */    \
-    { WWT_TAB,              1,  65,     95,     17,     43,     0x20000000 | SPR_TAB,           STR_PARK_GUESTS_TAB_TIP },      /* tab 3              */    \
-    { WWT_TAB,              1,  96,     126,    17,     43,     0x20000000 | SPR_TAB,           STR_PARK_PRICE_TAB_TIP },       /* tab 4              */    \
-    { WWT_TAB,              1,  127,    157,    17,     43,     0x20000000 | SPR_TAB,           STR_PARK_STATS_TAB_TIP },       /* tab 5              */    \
-    { WWT_TAB,              1,  158,    188,    17,     43,     0x20000000 | SPR_TAB,           STR_PARK_OBJECTIVE_TAB_TIP },   /* tab 6              */    \
-    { WWT_TAB,              1,  189,    219,    17,     43,     0x20000000 | SPR_TAB,           STR_PARK_AWARDS_TAB_TIP }       /* tab 7              */
+    { WWT_TAB,              1,  3,      33,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,           STR_PARK_ENTRANCE_TAB_TIP },    /* tab 1              */    \
+    { WWT_TAB,              1,  34,     64,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,           STR_PARK_RATING_TAB_TIP },      /* tab 2              */    \
+    { WWT_TAB,              1,  65,     95,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,           STR_PARK_GUESTS_TAB_TIP },      /* tab 3              */    \
+    { WWT_TAB,              1,  96,     126,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,           STR_PARK_PRICE_TAB_TIP },       /* tab 4              */    \
+    { WWT_TAB,              1,  127,    157,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,           STR_PARK_STATS_TAB_TIP },       /* tab 5              */    \
+    { WWT_TAB,              1,  158,    188,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,           STR_PARK_OBJECTIVE_TAB_TIP },   /* tab 6              */    \
+    { WWT_TAB,              1,  189,    219,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,           STR_PARK_AWARDS_TAB_TIP }       /* tab 7              */
 
 static rct_widget window_park_entrance_widgets[] = {
     MAIN_PARK_WIDGETS,

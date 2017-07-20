@@ -50,7 +50,7 @@ static rct_widget window_editor_inventions_list_widgets[] = {
     { WWT_CAPTION,          0,  1,      598,    1,      14,     STR_INVENTION_LIST,     STR_WINDOW_TITLE_TIP    },
     { WWT_CLOSEBOX,         0,  587,    597,    2,      13,     STR_CLOSE_X,            STR_CLOSE_WINDOW_TIP    },
     { WWT_RESIZE,           1,  0,      599,    43,     399,    STR_NONE,               STR_NONE                },
-    { WWT_TAB,              1,  3,      33,     17,     43,     0x20000000 | SPR_TAB,   STR_NONE                },
+    { WWT_TAB,              1,  3,      33,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_NONE                },
     { WWT_SCROLL,           1,  4,      371,    56,     175,    SCROLL_VERTICAL,        STR_NONE                },
     { WWT_SCROLL,           1,  4,      371,    189,    396,    SCROLL_VERTICAL,        STR_NONE                },
     { WWT_FLATBTN,          1,  431,    544,    106,    219,    0xFFFFFFFF,             STR_NONE                },

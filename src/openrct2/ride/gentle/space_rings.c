@@ -64,8 +64,8 @@ static void paint_space_rings_structure(rct_ride * ride, uint8 direction,  uint3
             vehicleIndex = 0;
         }
 
-        if (imageColourFlags == 0x20000000) {
-            imageColourFlags = ride->vehicle_colours[vehicleIndex].body_colour << 19 | ride->vehicle_colours[0].trim_colour << 24 | 0xA0000000;
+        if (imageColourFlags == IMAGE_TYPE_REMAP) {
+            imageColourFlags = ride->vehicle_colours[vehicleIndex].body_colour << 19 | ride->vehicle_colours[0].trim_colour << 24 | IMAGE_TYPE_REMAP | IMAGE_TYPE_REMAP_2_PLUS;
         }
 
         uint32 imageId = (baseImageId + frameNum) | imageColourFlags;
@@ -73,7 +73,7 @@ static void paint_space_rings_structure(rct_ride * ride, uint8 direction,  uint3
 
         if (vehicle != NULL && vehicle->num_peeps > 0) {
             rct_peep * rider = GET_PEEP(vehicle->peep[0]);
-            imageColourFlags = rider->tshirt_colour << 19 | rider->trousers_colour << 24 | 0xA0000000;
+            imageColourFlags = rider->tshirt_colour << 19 | rider->trousers_colour << 24 | IMAGE_TYPE_REMAP | IMAGE_TYPE_REMAP_2_PLUS;
             imageId = ((baseImageId & 0x7FFFF) + 352 + frameNum) | imageColourFlags;
             sub_98199C(imageId, 0, 0, 20, 20, 23, height, -10, -10, height, get_current_rotation());
         }

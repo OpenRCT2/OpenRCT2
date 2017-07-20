@@ -70,7 +70,7 @@ void banner_paint(uint8 direction, sint32 height, rct_map_element* map_element)
     else{
         image_id |=
             (gBanners[map_element->properties.banner.index].colour << 19) |
-            0x20000000;
+            IMAGE_TYPE_REMAP;
     }
 
     sub_98197C(image_id, 0, 0, 1, 1, 0x15, height, boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ, get_current_rotation());

@@ -119,8 +119,8 @@ static void paint_magic_carpet_vehicle(rct_ride *ride, uint8 direction, uint32 s
 
     // Vehicle
     uint32 imageColourFlags = gTrackColours[SCHEME_MISC];
-    if (imageColourFlags == 0x20000000) {
-        imageColourFlags = 0xA0000000 |
+    if (imageColourFlags == IMAGE_TYPE_REMAP) {
+        imageColourFlags = IMAGE_TYPE_REMAP | IMAGE_TYPE_REMAP_2_PLUS |
             (ride->vehicle_colours[0].trim_colour << 24) |
             (ride->vehicle_colours[0].body_colour << 19);
     }
@@ -141,7 +141,7 @@ static void paint_magic_carpet_vehicle(rct_ride *ride, uint8 direction, uint32 s
     if (dpi->zoom_level <= 1 && (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK)) {
         rct_vehicle *vehicle = get_first_vehicle(ride);
         if (vehicle != NULL) {
-            uint32 baseImageId = 0xA0000000 | (vehicleImageId + 4);
+            uint32 baseImageId = IMAGE_TYPE_REMAP | IMAGE_TYPE_REMAP_2_PLUS | (vehicleImageId + 4);
             for (uint8 peepIndex = 0; peepIndex < vehicle->num_peeps; peepIndex += 2) {
                 uint32 imageId = baseImageId + (peepIndex * 2);
                 imageId |= (vehicle->peep_tshirt_colours[peepIndex + 0] << 19);

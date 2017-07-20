@@ -77,12 +77,12 @@ rct_widget window_guest_overview_widgets[] = {
     {WWT_CAPTION,  0, 1,   190, 1,   14,  STR_STRINGID,         STR_WINDOW_TITLE_TIP},      // Title
     {WWT_CLOSEBOX, 0, 179, 189, 2,   13,  STR_CLOSE_X,          STR_CLOSE_WINDOW_TIP},      // Close x button
     {WWT_RESIZE,   1, 0,   191, 43,  156, 0xFFFFFFFF, STR_NONE},                            // Resize
-    {WWT_TAB,      1, 3,   33,  17,  43,  0x20000000 | SPR_TAB, STR_SHOW_GUEST_VIEW_TIP},           // Tab 1
-    {WWT_TAB,      1, 73,  64,  17,  43,  0x20000000 | SPR_TAB, STR_SHOW_GUEST_NEEDS_TIP},          // Tab 2
-    {WWT_TAB,      1, 65,  95,  17,  43,  0x20000000 | SPR_TAB, STR_SHOW_GUEST_VISITED_RIDES_TIP},  // Tab 3
-    {WWT_TAB,      1, 96,  126, 17,  43,  0x20000000 | SPR_TAB, STR_SHOW_GUEST_FINANCE_TIP},        // Tab 4
-    {WWT_TAB,      1, 127, 157, 17,  43,  0x20000000 | SPR_TAB, STR_SHOW_GUEST_THOUGHTS_TIP},       // Tab 5
-    {WWT_TAB,      1, 158, 188, 17,  43,  0x20000000 | SPR_TAB, STR_SHOW_GUEST_ITEMS_TIP},          // Tab 6
+    {WWT_TAB,      1, 3,   33,  17,  43,  IMAGE_TYPE_REMAP | SPR_TAB, STR_SHOW_GUEST_VIEW_TIP},           // Tab 1
+    {WWT_TAB,      1, 73,  64,  17,  43,  IMAGE_TYPE_REMAP | SPR_TAB, STR_SHOW_GUEST_NEEDS_TIP},          // Tab 2
+    {WWT_TAB,      1, 65,  95,  17,  43,  IMAGE_TYPE_REMAP | SPR_TAB, STR_SHOW_GUEST_VISITED_RIDES_TIP},  // Tab 3
+    {WWT_TAB,      1, 96,  126, 17,  43,  IMAGE_TYPE_REMAP | SPR_TAB, STR_SHOW_GUEST_FINANCE_TIP},        // Tab 4
+    {WWT_TAB,      1, 127, 157, 17,  43,  IMAGE_TYPE_REMAP | SPR_TAB, STR_SHOW_GUEST_THOUGHTS_TIP},       // Tab 5
+    {WWT_TAB,      1, 158, 188, 17,  43,  IMAGE_TYPE_REMAP | SPR_TAB, STR_SHOW_GUEST_ITEMS_TIP},          // Tab 6
     {WWT_12,       1, 3,   166, 45,  56,  0xFFFFFFFF, STR_NONE},                // Label Thought marquee
     {WWT_VIEWPORT, 1, 3,   166, 57,  143, 0xFFFFFFFF, STR_NONE},                // Viewport
     {WWT_12,       1, 3,   166, 144, 154, 0xFFFFFFFF, STR_NONE},                // Label Action
@@ -98,12 +98,12 @@ rct_widget window_guest_stats_widgets[] = {
     {WWT_CAPTION,  0, 1,   190, 1,  14, STR_STRINGID,         STR_WINDOW_TITLE_TIP},
     {WWT_CLOSEBOX, 0, 179, 189, 2,  13, STR_CLOSE_X,          STR_CLOSE_WINDOW_TIP},
     {WWT_RESIZE,   1, 0,   191, 43, 156, STR_NONE, STR_NONE},
-    {WWT_TAB,      1, 3,   33,  17, 43, 0x20000000 | SPR_TAB, STR_SHOW_GUEST_VIEW_TIP},
-    {WWT_TAB,      1, 34,  64,  17, 43, 0x20000000 | SPR_TAB, STR_SHOW_GUEST_NEEDS_TIP},
-    {WWT_TAB,      1, 65,  95,  17, 43, 0x20000000 | SPR_TAB, STR_SHOW_GUEST_VISITED_RIDES_TIP},
-    {WWT_TAB,      1, 96,  126, 17, 43, 0x20000000 | SPR_TAB, STR_SHOW_GUEST_FINANCE_TIP},
-    {WWT_TAB,      1, 127, 157, 17, 43, 0x20000000 | SPR_TAB, STR_SHOW_GUEST_THOUGHTS_TIP},
-    {WWT_TAB,      1, 158, 188, 17, 43, 0x20000000 | SPR_TAB, STR_SHOW_GUEST_ITEMS_TIP},
+    {WWT_TAB,      1, 3,   33,  17, 43, IMAGE_TYPE_REMAP | SPR_TAB, STR_SHOW_GUEST_VIEW_TIP},
+    {WWT_TAB,      1, 34,  64,  17, 43, IMAGE_TYPE_REMAP | SPR_TAB, STR_SHOW_GUEST_NEEDS_TIP},
+    {WWT_TAB,      1, 65,  95,  17, 43, IMAGE_TYPE_REMAP | SPR_TAB, STR_SHOW_GUEST_VISITED_RIDES_TIP},
+    {WWT_TAB,      1, 96,  126, 17, 43, IMAGE_TYPE_REMAP | SPR_TAB, STR_SHOW_GUEST_FINANCE_TIP},
+    {WWT_TAB,      1, 127, 157, 17, 43, IMAGE_TYPE_REMAP | SPR_TAB, STR_SHOW_GUEST_THOUGHTS_TIP},
+    {WWT_TAB,      1, 158, 188, 17, 43, IMAGE_TYPE_REMAP | SPR_TAB, STR_SHOW_GUEST_ITEMS_TIP},
     {WIDGETS_END},
 };
 
@@ -112,12 +112,12 @@ rct_widget window_guest_rides_widgets[] = {
     {WWT_CAPTION,  0, 1,   190, 1,  14,  STR_STRINGID,         STR_WINDOW_TITLE_TIP},
     {WWT_CLOSEBOX, 0, 179, 189, 2,  13,  STR_CLOSE_X,          STR_CLOSE_WINDOW_TIP},
     {WWT_RESIZE,   1, 0,   191, 43, 156, STR_NONE, STR_NONE},
-    {WWT_TAB,      1, 3,   33,  17, 43,  0x20000000 | SPR_TAB, STR_SHOW_GUEST_VIEW_TIP},
-    {WWT_TAB,      1, 34,  64,  17, 43,  0x20000000 | SPR_TAB, STR_SHOW_GUEST_NEEDS_TIP},
-    {WWT_TAB,      1, 65,  95,  17, 43,  0x20000000 | SPR_TAB, STR_SHOW_GUEST_VISITED_RIDES_TIP},
-    {WWT_TAB,      1, 96,  126, 17, 43,  0x20000000 | SPR_TAB, STR_SHOW_GUEST_FINANCE_TIP},
-    {WWT_TAB,      1, 127, 157, 17, 43,  0x20000000 | SPR_TAB, STR_SHOW_GUEST_THOUGHTS_TIP},
-    {WWT_TAB,      1, 158, 188, 17, 43,  0x20000000 | SPR_TAB, STR_SHOW_GUEST_ITEMS_TIP},
+    {WWT_TAB,      1, 3,   33,  17, 43,  IMAGE_TYPE_REMAP | SPR_TAB, STR_SHOW_GUEST_VIEW_TIP},
+    {WWT_TAB,      1, 34,  64,  17, 43,  IMAGE_TYPE_REMAP | SPR_TAB, STR_SHOW_GUEST_NEEDS_TIP},
+    {WWT_TAB,      1, 65,  95,  17, 43,  IMAGE_TYPE_REMAP | SPR_TAB, STR_SHOW_GUEST_VISITED_RIDES_TIP},
+    {WWT_TAB,      1, 96,  126, 17, 43,  IMAGE_TYPE_REMAP | SPR_TAB, STR_SHOW_GUEST_FINANCE_TIP},
+    {WWT_TAB,      1, 127, 157, 17, 43,  IMAGE_TYPE_REMAP | SPR_TAB, STR_SHOW_GUEST_THOUGHTS_TIP},
+    {WWT_TAB,      1, 158, 188, 17, 43,  IMAGE_TYPE_REMAP | SPR_TAB, STR_SHOW_GUEST_ITEMS_TIP},
     {WWT_SCROLL,   1, 3,   188, 57, 143, SCROLL_VERTICAL,  STR_NONE},
     {WIDGETS_END},
 };
@@ -127,12 +127,12 @@ rct_widget window_guest_finance_widgets[] = {
     {WWT_CAPTION,  0, 1,   190, 1,  14, STR_STRINGID,         STR_WINDOW_TITLE_TIP},
     {WWT_CLOSEBOX, 0, 179, 189, 2,  13, STR_CLOSE_X,          STR_CLOSE_WINDOW_TIP},
     {WWT_RESIZE,   1, 0,   191, 43, 156, STR_NONE, STR_NONE},
-    {WWT_TAB,      1, 3,   33,  17, 43, 0x20000000 | SPR_TAB, STR_SHOW_GUEST_VIEW_TIP},
-    {WWT_TAB,      1, 34,  64,  17, 43, 0x20000000 | SPR_TAB, STR_SHOW_GUEST_NEEDS_TIP},
-    {WWT_TAB,      1, 65,  95,  17, 43, 0x20000000 | SPR_TAB, STR_SHOW_GUEST_VISITED_RIDES_TIP},
-    {WWT_TAB,      1, 96,  126, 17, 43, 0x20000000 | SPR_TAB, STR_SHOW_GUEST_FINANCE_TIP},
-    {WWT_TAB,      1, 127, 157, 17, 43, 0x20000000 | SPR_TAB, STR_SHOW_GUEST_THOUGHTS_TIP},
-    {WWT_TAB,      1, 158, 188, 17, 43, 0x20000000 | SPR_TAB, STR_SHOW_GUEST_ITEMS_TIP},
+    {WWT_TAB,      1, 3,   33,  17, 43, IMAGE_TYPE_REMAP | SPR_TAB, STR_SHOW_GUEST_VIEW_TIP},
+    {WWT_TAB,      1, 34,  64,  17, 43, IMAGE_TYPE_REMAP | SPR_TAB, STR_SHOW_GUEST_NEEDS_TIP},
+    {WWT_TAB,      1, 65,  95,  17, 43, IMAGE_TYPE_REMAP | SPR_TAB, STR_SHOW_GUEST_VISITED_RIDES_TIP},
+    {WWT_TAB,      1, 96,  126, 17, 43, IMAGE_TYPE_REMAP | SPR_TAB, STR_SHOW_GUEST_FINANCE_TIP},
+    {WWT_TAB,      1, 127, 157, 17, 43, IMAGE_TYPE_REMAP | SPR_TAB, STR_SHOW_GUEST_THOUGHTS_TIP},
+    {WWT_TAB,      1, 158, 188, 17, 43, IMAGE_TYPE_REMAP | SPR_TAB, STR_SHOW_GUEST_ITEMS_TIP},
     {WIDGETS_END},
 };
 
@@ -141,12 +141,12 @@ rct_widget window_guest_thoughts_widgets[] = {
     {WWT_CAPTION,  0, 1,   190, 1,  14, STR_STRINGID,         STR_WINDOW_TITLE_TIP},
     {WWT_CLOSEBOX, 0, 179, 189, 2,  13, STR_CLOSE_X,          STR_CLOSE_WINDOW_TIP},
     {WWT_RESIZE,   1, 0,   191, 43, 156, STR_NONE, STR_NONE},
-    {WWT_TAB,      1, 3,   33,  17, 43, 0x20000000 | SPR_TAB, STR_SHOW_GUEST_VIEW_TIP},
-    {WWT_TAB,      1, 34,  64,  17, 43, 0x20000000 | SPR_TAB, STR_SHOW_GUEST_NEEDS_TIP},
-    {WWT_TAB,      1, 65,  95,  17, 43, 0x20000000 | SPR_TAB, STR_SHOW_GUEST_VISITED_RIDES_TIP},
-    {WWT_TAB,      1, 96,  126, 17, 43, 0x20000000 | SPR_TAB, STR_SHOW_GUEST_FINANCE_TIP},
-    {WWT_TAB,      1, 127, 157, 17, 43, 0x20000000 | SPR_TAB, STR_SHOW_GUEST_THOUGHTS_TIP},
-    {WWT_TAB,      1, 158, 188, 17, 43, 0x20000000 | SPR_TAB, STR_SHOW_GUEST_ITEMS_TIP},
+    {WWT_TAB,      1, 3,   33,  17, 43, IMAGE_TYPE_REMAP | SPR_TAB, STR_SHOW_GUEST_VIEW_TIP},
+    {WWT_TAB,      1, 34,  64,  17, 43, IMAGE_TYPE_REMAP | SPR_TAB, STR_SHOW_GUEST_NEEDS_TIP},
+    {WWT_TAB,      1, 65,  95,  17, 43, IMAGE_TYPE_REMAP | SPR_TAB, STR_SHOW_GUEST_VISITED_RIDES_TIP},
+    {WWT_TAB,      1, 96,  126, 17, 43, IMAGE_TYPE_REMAP | SPR_TAB, STR_SHOW_GUEST_FINANCE_TIP},
+    {WWT_TAB,      1, 127, 157, 17, 43, IMAGE_TYPE_REMAP | SPR_TAB, STR_SHOW_GUEST_THOUGHTS_TIP},
+    {WWT_TAB,      1, 158, 188, 17, 43, IMAGE_TYPE_REMAP | SPR_TAB, STR_SHOW_GUEST_ITEMS_TIP},
     {WIDGETS_END},
 };
 
@@ -155,12 +155,12 @@ rct_widget window_guest_inventory_widgets[] = {
     {WWT_CAPTION,  0, 1,   190, 1,  14, STR_STRINGID,         STR_WINDOW_TITLE_TIP},
     {WWT_CLOSEBOX, 0, 179, 189, 2,  13, STR_CLOSE_X,          STR_CLOSE_WINDOW_TIP},
     {WWT_RESIZE,   1, 0,   191, 43, 156, STR_NONE, STR_NONE},
-    {WWT_TAB,      1, 3,   33,  17, 43, 0x20000000 | SPR_TAB, STR_SHOW_GUEST_VIEW_TIP},
-    {WWT_TAB,      1, 34,  64,  17, 43, 0x20000000 | SPR_TAB, STR_SHOW_GUEST_NEEDS_TIP},
-    {WWT_TAB,      1, 65,  95,  17, 43, 0x20000000 | SPR_TAB, STR_SHOW_GUEST_VISITED_RIDES_TIP},
-    {WWT_TAB,      1, 96,  126, 17, 43, 0x20000000 | SPR_TAB, STR_SHOW_GUEST_FINANCE_TIP},
-    {WWT_TAB,      1, 127, 157, 17, 43, 0x20000000 | SPR_TAB, STR_SHOW_GUEST_THOUGHTS_TIP},
-    {WWT_TAB,      1, 158, 188, 17, 43, 0x20000000 | SPR_TAB, STR_SHOW_GUEST_ITEMS_TIP},
+    {WWT_TAB,      1, 3,   33,  17, 43, IMAGE_TYPE_REMAP | SPR_TAB, STR_SHOW_GUEST_VIEW_TIP},
+    {WWT_TAB,      1, 34,  64,  17, 43, IMAGE_TYPE_REMAP | SPR_TAB, STR_SHOW_GUEST_NEEDS_TIP},
+    {WWT_TAB,      1, 65,  95,  17, 43, IMAGE_TYPE_REMAP | SPR_TAB, STR_SHOW_GUEST_VISITED_RIDES_TIP},
+    {WWT_TAB,      1, 96,  126, 17, 43, IMAGE_TYPE_REMAP | SPR_TAB, STR_SHOW_GUEST_FINANCE_TIP},
+    {WWT_TAB,      1, 127, 157, 17, 43, IMAGE_TYPE_REMAP | SPR_TAB, STR_SHOW_GUEST_THOUGHTS_TIP},
+    {WWT_TAB,      1, 158, 188, 17, 43, IMAGE_TYPE_REMAP | SPR_TAB, STR_SHOW_GUEST_ITEMS_TIP},
     {WIDGETS_END},
 };
 
@@ -849,27 +849,27 @@ static void window_guest_overview_tab_paint(rct_window* w, rct_drawpixelinfo* dp
     }
     ebx += eax;
 
-    sint32 sprite_id = ebx | (peep->tshirt_colour << 19) | (peep->trousers_colour << 24) | 0xA0000000;
+    sint32 sprite_id = ebx | (peep->tshirt_colour << 19) | (peep->trousers_colour << 24) | IMAGE_TYPE_REMAP | IMAGE_TYPE_REMAP_2_PLUS;
     gfx_draw_sprite(&clip_dpi, sprite_id, x, y, 0);
 
     // If holding a balloon
     if (ebx >= 0x2A1D && ebx < 0x2A3D){
         ebx += 32;
-        ebx |= (peep->balloon_colour << 19) | 0x20000000;
+        ebx |= (peep->balloon_colour << 19) | IMAGE_TYPE_REMAP;
         gfx_draw_sprite(&clip_dpi, ebx, x, y, 0);
     }
 
     // If holding umbrella
     if (ebx >= 0x2BBD && ebx < 0x2BDD){
         ebx += 32;
-        ebx |= (peep->umbrella_colour << 19) | 0x20000000;
+        ebx |= (peep->umbrella_colour << 19) | IMAGE_TYPE_REMAP;
         gfx_draw_sprite(&clip_dpi, ebx, x, y, 0);
     }
 
     // If wearing hat
     if (ebx >= 0x29DD && ebx < 0x29FD){
         ebx += 32;
-        ebx |= (peep->hat_colour << 19) | 0x20000000;
+        ebx |= (peep->hat_colour << 19) | IMAGE_TYPE_REMAP;
         gfx_draw_sprite(&clip_dpi, ebx, x, y, 0);
     }
 }
@@ -1208,7 +1208,7 @@ void window_guest_overview_tool_update(rct_window* w, rct_widgetindex widgetInde
     uint32 imageId = g_peep_animation_entries[peep->sprite_type].sprite_animation[PEEP_ACTION_SPRITE_TYPE_UI].base_image;
     imageId += w->picked_peep_frame >> 2;
 
-    imageId |= (peep->tshirt_colour << 19) | (peep->trousers_colour << 24) | 0xA0000000;
+    imageId |= (peep->tshirt_colour << 19) | (peep->trousers_colour << 24) | IMAGE_TYPE_REMAP | IMAGE_TYPE_REMAP_2_PLUS;
     gPickupPeepImage = imageId;
 }
 
@@ -2036,7 +2036,7 @@ static rct_string_id window_guest_inventory_format_item(rct_peep *peep, sint32 i
     // Special overrides
     switch (item) {
     case SHOP_ITEM_BALLOON:
-        set_format_arg(0, uint32, 0x20000000 | (peep->balloon_colour << 19) | ShopItemImage[item]);
+        set_format_arg(0, uint32, IMAGE_TYPE_REMAP | (peep->balloon_colour << 19) | ShopItemImage[item]);
         break;
     case SHOP_ITEM_PHOTO:
         ride = get_ride(peep->photo1_ride_ref);
@@ -2044,7 +2044,7 @@ static rct_string_id window_guest_inventory_format_item(rct_peep *peep, sint32 i
         set_format_arg(8, uint32, ride->name_arguments);
         break;
     case SHOP_ITEM_UMBRELLA:
-        set_format_arg(0, uint32, 0x20000000 | (peep->umbrella_colour << 19) | ShopItemImage[item]);
+        set_format_arg(0, uint32, IMAGE_TYPE_REMAP | (peep->umbrella_colour << 19) | ShopItemImage[item]);
         break;
     case SHOP_ITEM_VOUCHER:
         switch (peep->voucher_type) {
@@ -2071,10 +2071,10 @@ static rct_string_id window_guest_inventory_format_item(rct_peep *peep, sint32 i
         }
         break;
     case SHOP_ITEM_HAT:
-        set_format_arg(0, uint32, 0x20000000 | (peep->hat_colour << 19) | ShopItemImage[item]);
+        set_format_arg(0, uint32, IMAGE_TYPE_REMAP | (peep->hat_colour << 19) | ShopItemImage[item]);
         break;
     case SHOP_ITEM_TSHIRT:
-        set_format_arg(0, uint32, 0x20000000 | (peep->tshirt_colour << 19) | ShopItemImage[item]);
+        set_format_arg(0, uint32, IMAGE_TYPE_REMAP | (peep->tshirt_colour << 19) | ShopItemImage[item]);
         break;
     case SHOP_ITEM_PHOTO2:
         ride = get_ride(peep->photo2_ride_ref);

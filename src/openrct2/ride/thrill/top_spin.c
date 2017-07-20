@@ -84,9 +84,9 @@ static void top_spin_paint_vehicle(sint8 al, sint8 cl, uint8 rideIndex, uint8 di
     uint8 lengthY = 24;
 
     uint32 image_id = gTrackColours[SCHEME_MISC];
-    if (image_id == 0x20000000) {
+    if (image_id == IMAGE_TYPE_REMAP) {
         image_id =
-            0xA0000000 |
+            IMAGE_TYPE_REMAP | IMAGE_TYPE_REMAP_2_PLUS |
             (ride->track_colour_main[0] << 19) |
             (ride->track_colour_supports[0] << 24);
     }
@@ -99,9 +99,9 @@ static void top_spin_paint_vehicle(sint8 al, sint8 cl, uint8 rideIndex, uint8 di
     sub_98197C(image_id, al, cl, lengthX, lengthY, 90, height, boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ, rotation);
 
     image_id = gTrackColours[SCHEME_MISC];
-    if (image_id == 0x20000000) {
+    if (image_id == IMAGE_TYPE_REMAP) {
         image_id =
-            0xA0000000 |
+            IMAGE_TYPE_REMAP | IMAGE_TYPE_REMAP_2_PLUS |
             (ride->track_colour_main[0] << 19) |
             (ride->track_colour_additional[0] << 24);
     }
@@ -139,9 +139,9 @@ static void top_spin_paint_vehicle(sint8 al, sint8 cl, uint8 rideIndex, uint8 di
     }
 
     image_id = gTrackColours[SCHEME_MISC];
-    if (image_id == 0x20000000) {
+    if (image_id == IMAGE_TYPE_REMAP) {
         image_id =
-            0xA0000000 |
+            IMAGE_TYPE_REMAP | IMAGE_TYPE_REMAP_2_PLUS |
             (ride->vehicle_colours[0].body_colour << 19) |
             (ride->vehicle_colours[0].trim_colour << 24);
     }
@@ -179,7 +179,7 @@ static void top_spin_paint_vehicle(sint8 al, sint8 cl, uint8 rideIndex, uint8 di
             (vehicle->peep_tshirt_colours[0] << 19) |
             (vehicle->peep_tshirt_colours[1] << 24);
         image_id += seatImageId;
-        image_id += 0xA0000000;
+        image_id += IMAGE_TYPE_REMAP | IMAGE_TYPE_REMAP_2_PLUS;
         image_id += 76;
 
         sub_98199C(image_id, (sint8) seatCoords.x, (sint8) seatCoords.y, lengthX, lengthY, 90, seatCoords.z, boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ, rotation);
@@ -189,7 +189,7 @@ static void top_spin_paint_vehicle(sint8 al, sint8 cl, uint8 rideIndex, uint8 di
                 (vehicle->peep_tshirt_colours[2] << 19) |
                 (vehicle->peep_tshirt_colours[3] << 24);
             image_id += seatImageId;
-            image_id += 0xA0000000;
+            image_id += IMAGE_TYPE_REMAP | IMAGE_TYPE_REMAP_2_PLUS;
             image_id += 152;
 
             sub_98199C(image_id, (sint8) seatCoords.x, (sint8) seatCoords.y, lengthX, lengthY, 90, seatCoords.z, boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ, rotation);
@@ -200,7 +200,7 @@ static void top_spin_paint_vehicle(sint8 al, sint8 cl, uint8 rideIndex, uint8 di
                 (vehicle->peep_tshirt_colours[4] << 19) |
                 (vehicle->peep_tshirt_colours[5] << 24);
             image_id += seatImageId;
-            image_id += 0xA0000000;
+            image_id += IMAGE_TYPE_REMAP | IMAGE_TYPE_REMAP_2_PLUS;
             image_id += 228;
 
             sub_98199C(image_id, (sint8) seatCoords.x, (sint8) seatCoords.y, lengthX, lengthY, 90, seatCoords.z, boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ, rotation);
@@ -211,7 +211,7 @@ static void top_spin_paint_vehicle(sint8 al, sint8 cl, uint8 rideIndex, uint8 di
                 (vehicle->peep_tshirt_colours[6] << 19) |
                 (vehicle->peep_tshirt_colours[7] << 24);
             image_id += seatImageId;
-            image_id += 0xA0000000;
+            image_id += IMAGE_TYPE_REMAP | IMAGE_TYPE_REMAP_2_PLUS;
             image_id += 304;
 
             sub_98199C(image_id, (sint8) seatCoords.x, (sint8) seatCoords.y, lengthX, lengthY, 90, seatCoords.z, boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ, rotation);
@@ -219,9 +219,9 @@ static void top_spin_paint_vehicle(sint8 al, sint8 cl, uint8 rideIndex, uint8 di
     }
 
     image_id = gTrackColours[SCHEME_MISC];
-    if (image_id == 0x20000000) {
+    if (image_id == IMAGE_TYPE_REMAP) {
         image_id =
-            0xA0000000 |
+            IMAGE_TYPE_REMAP | IMAGE_TYPE_REMAP_2_PLUS |
             (ride->track_colour_main[0] << 19) |
             (ride->track_colour_additional[0] << 24);
     }
@@ -235,9 +235,9 @@ static void top_spin_paint_vehicle(sint8 al, sint8 cl, uint8 rideIndex, uint8 di
     sub_98199C(image_id, al, cl, lengthX, lengthY, 90, height, boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ, rotation);
 
     image_id = gTrackColours[SCHEME_MISC];
-    if (image_id == 0x20000000) {
+    if (image_id == IMAGE_TYPE_REMAP) {
         image_id =
-            0xA0000000 |
+            IMAGE_TYPE_REMAP | IMAGE_TYPE_REMAP_2_PLUS |
             (ride->track_colour_main[0] << 19) |
             (ride->track_colour_supports[0] << 24);
     }

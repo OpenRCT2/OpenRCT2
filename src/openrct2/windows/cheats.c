@@ -184,10 +184,10 @@ enum WINDOW_CHEATS_WIDGET_IDX {
     { WWT_CAPTION,          0,  1,          WW - 2, 1,      14,         STR_CHEAT_TITLE,        STR_WINDOW_TITLE_TIP },     /* title bar            */ \
     { WWT_CLOSEBOX,         0,  WW - 13,    WW - 3, 2,      13,         STR_CLOSE_X,            STR_CLOSE_WINDOW_TIP },     /* close x button       */ \
     { WWT_IMGBTN,           1,  0,          WW - 1, 43,     WH - 1,     0xFFFFFFFF,             STR_NONE },                 /* tab content panel    */ \
-    { WWT_TAB,              1,  3,          33,     17,     43,         0x20000000 | SPR_TAB,   STR_FINANCIAL_CHEATS_TIP }, /* tab 1                */ \
-    { WWT_TAB,              1,  34,         64,     17,     43,         0x20000000 | SPR_TAB,   STR_GUEST_CHEATS_TIP },     /* tab 2                */ \
-    { WWT_TAB,              1,  65,         95,     17,     43,         0x20000000 | SPR_TAB,   STR_PARK_CHEATS_TIP },      /* tab 3                */ \
-    { WWT_TAB,              1,  96,         126,    17,     43,         0x20000000 | SPR_TAB,   STR_RIDE_CHEATS_TIP }       /* tab 4                */
+    { WWT_TAB,              1,  3,          33,     17,     43,         IMAGE_TYPE_REMAP | SPR_TAB,   STR_FINANCIAL_CHEATS_TIP }, /* tab 1                */ \
+    { WWT_TAB,              1,  34,         64,     17,     43,         IMAGE_TYPE_REMAP | SPR_TAB,   STR_GUEST_CHEATS_TIP },     /* tab 2                */ \
+    { WWT_TAB,              1,  65,         95,     17,     43,         IMAGE_TYPE_REMAP | SPR_TAB,   STR_PARK_CHEATS_TIP },      /* tab 3                */ \
+    { WWT_TAB,              1,  96,         126,    17,     43,         IMAGE_TYPE_REMAP | SPR_TAB,   STR_RIDE_CHEATS_TIP }       /* tab 4                */
 
 static rct_widget window_cheats_money_widgets[] = {
     MAIN_CHEATS_WIDGETS,

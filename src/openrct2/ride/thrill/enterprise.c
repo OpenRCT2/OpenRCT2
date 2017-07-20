@@ -45,8 +45,8 @@ static void paint_enterprise_structure(rct_ride * ride, sint8 xOffset, sint8 yOf
     }
 
     uint32 imageColourFlags = gTrackColours[SCHEME_MISC];
-    if (imageColourFlags == 0x20000000) {
-        imageColourFlags = ride->vehicle_colours[0].body_colour << 19 | ride->vehicle_colours[0].trim_colour << 24 | 0xA0000000;
+    if (imageColourFlags == IMAGE_TYPE_REMAP) {
+        imageColourFlags = ride->vehicle_colours[0].body_colour << 19 | ride->vehicle_colours[0].trim_colour << 24 | IMAGE_TYPE_REMAP | IMAGE_TYPE_REMAP_2_PLUS;
     }
 
     uint32 imageId = (baseImageId + imageOffset) | imageColourFlags;
@@ -65,7 +65,7 @@ static void paint_enterprise_structure(rct_ride * ride, sint8 xOffset, sint8 yOf
 
             uint32 peepFrameOffset = ((imageOffset % 4) * 4 + (i * 4) % 15) & 0x0F;
             uint32 ax = (imageOffset & 0xFFFFFFFC) << 2;
-            imageId = (baseImageId + 196 + peepFrameOffset + ax) | vehicle->peep_tshirt_colours[i] << 19 | 0x20000000;
+            imageId = (baseImageId + 196 + peepFrameOffset + ax) | vehicle->peep_tshirt_colours[i] << 19 | IMAGE_TYPE_REMAP;
             sub_98199C(imageId, xOffset, yOffset, 24, 24, 48, height, 0, 0, height, get_current_rotation());
         }
     }

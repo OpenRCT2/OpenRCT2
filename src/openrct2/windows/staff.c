@@ -72,10 +72,10 @@ rct_widget window_staff_overview_widgets[] = {
     { WWT_CAPTION,  0, 1,       WW - 2,     1,          14,     STR_STRINGID,           STR_WINDOW_TITLE_TIP }, // Title
     { WWT_CLOSEBOX, 0, WW - 13, WW - 3,     2,          13,     STR_CLOSE_X,            STR_CLOSE_WINDOW_TIP }, // Close x button
     { WWT_RESIZE,   1, 0,       WW - 1,     43,         WH - 1, 0xFFFFFFFF,             STR_NONE },             // Resize
-    { WWT_TAB,      1, 3,       33,         17,         43,     0x20000000 | SPR_TAB,   STR_STAFF_OVERVIEW_TIP },// Tab 1
-    { WWT_TAB,      1, 34,      64,         17,         43,     0x20000000 | SPR_TAB,   STR_STAFF_OPTIONS_TIP}, // Tab 2
-    { WWT_TAB,      1, 65,      95,         17,         43,     0x20000000 | SPR_TAB,   STR_STAFF_STATS_TIP},   // Tab 3
-    { WWT_TAB,      1, 96,      126,        17,         43,     0x20000000 | SPR_TAB,   STR_NONE},              // Tab 4
+    { WWT_TAB,      1, 3,       33,         17,         43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_STAFF_OVERVIEW_TIP },// Tab 1
+    { WWT_TAB,      1, 34,      64,         17,         43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_STAFF_OPTIONS_TIP}, // Tab 2
+    { WWT_TAB,      1, 65,      95,         17,         43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_STAFF_STATS_TIP},   // Tab 3
+    { WWT_TAB,      1, 96,      126,        17,         43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_NONE},              // Tab 4
     { WWT_VIEWPORT, 1, 3,       WW - 26,    47,         WH - 14,0xFFFFFFFF,             STR_NONE},              // Viewport
     { WWT_12,       1, 3,       WW - 26,    WH - 13,    WH - 3, 0xFFFFFFFF,             STR_NONE },             // Label at bottom of viewport
     { WWT_FLATBTN,  1, WW - 25, WW - 2,     45,         68,     SPR_PICKUP_BTN,         STR_PICKUP_TIP},        // Pickup Button
@@ -92,10 +92,10 @@ rct_widget window_staff_options_widgets[] = {
     { WWT_CAPTION,          0, 1,       WW - 2, 1,      14,     STR_STRINGID,           STR_WINDOW_TITLE_TIP }, // Title
     { WWT_CLOSEBOX,         0, WW - 13, WW - 3, 2,      13,     STR_CLOSE_X,            STR_CLOSE_WINDOW_TIP }, // Close x button
     { WWT_RESIZE,           1, 0,       WW - 1, 43,     WH - 1, 0xFFFFFFFF,             STR_NONE },             // Resize
-    { WWT_TAB,              1, 3,       33,     17,     43,     0x20000000 | SPR_TAB,   STR_STAFF_OVERVIEW_TIP },// Tab 1
-    { WWT_TAB,              1, 34,      64,     17,     43,     0x20000000 | SPR_TAB,   STR_STAFF_OPTIONS_TIP}, // Tab 2
-    { WWT_TAB,              1, 65,      95,     17,     43,     0x20000000 | SPR_TAB,   STR_STAFF_STATS_TIP},   // Tab 3
-    { WWT_TAB,              1, 96,      126,    17,     43,     0x20000000 | SPR_TAB,   STR_NONE},              // Tab 4
+    { WWT_TAB,              1, 3,       33,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_STAFF_OVERVIEW_TIP },// Tab 1
+    { WWT_TAB,              1, 34,      64,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_STAFF_OPTIONS_TIP}, // Tab 2
+    { WWT_TAB,              1, 65,      95,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_STAFF_STATS_TIP},   // Tab 3
+    { WWT_TAB,              1, 96,      126,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_NONE},              // Tab 4
     { WWT_CHECKBOX,         1, 5,       WW - 6, 50,     61,     0xFFFFFFFF,             STR_NONE},              // Checkbox 1
     { WWT_CHECKBOX,         1, 5,       WW - 6, 67,     78,     0xFFFFFFFF,             STR_NONE },             // Checkbox 2
     { WWT_CHECKBOX,         1, 5,       WW - 6, 84,     95,     0xFFFFFFFF,             STR_NONE},              // Checkbox 3
@@ -111,10 +111,10 @@ rct_widget window_staff_stats_widgets[] = {
     { WWT_CAPTION,  0, 1,       WW - 2, 1,  14,     STR_STRINGID,           STR_WINDOW_TITLE_TIP }, // Title
     { WWT_CLOSEBOX, 0, WW - 13, WW - 3, 2,  13,     STR_CLOSE_X,            STR_CLOSE_WINDOW_TIP }, // Close x button
     { WWT_RESIZE,   1, 0,       WW - 1, 43, WH - 1, 0xFFFFFFFF,             STR_NONE },             // Resize
-    { WWT_TAB,      1, 3,       33,     17, 43,     0x20000000 | SPR_TAB,   STR_STAFF_OVERVIEW_TIP },// Tab 1
-    { WWT_TAB,      1, 34,      64,     17, 43,     0x20000000 | SPR_TAB,   STR_STAFF_OPTIONS_TIP}, // Tab 2
-    { WWT_TAB,      1, 65,      95,     17, 43,     0x20000000 | SPR_TAB,   STR_STAFF_STATS_TIP},   // Tab 3
-    { WWT_TAB,      1, 96,      126,    17, 43,     0x20000000 | SPR_TAB,   STR_NONE},              // Tab 4
+    { WWT_TAB,      1, 3,       33,     17, 43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_STAFF_OVERVIEW_TIP },// Tab 1
+    { WWT_TAB,      1, 34,      64,     17, 43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_STAFF_OPTIONS_TIP}, // Tab 2
+    { WWT_TAB,      1, 65,      95,     17, 43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_STAFF_STATS_TIP},   // Tab 3
+    { WWT_TAB,      1, 96,      126,    17, 43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_NONE},              // Tab 4
     { WIDGETS_END },
 };
 
@@ -1008,27 +1008,27 @@ void window_staff_overview_tab_paint(rct_window* w, rct_drawpixelinfo* dpi)
     }
     ebx += eax;
 
-    sint32 sprite_id = ebx | (peep->tshirt_colour << 19) | (peep->trousers_colour << 24) | 0xA0000000;
+    sint32 sprite_id = ebx | (peep->tshirt_colour << 19) | (peep->trousers_colour << 24) | IMAGE_TYPE_REMAP | IMAGE_TYPE_REMAP_2_PLUS;
     gfx_draw_sprite(&clip_dpi, sprite_id, x, y, 0);
 
     // If holding a balloon
     if (ebx >= 0x2A1D && ebx < 0x2A3D){
         ebx += 32;
-        ebx |= (peep->balloon_colour << 19) | 0x20000000;
+        ebx |= (peep->balloon_colour << 19) | IMAGE_TYPE_REMAP;
         gfx_draw_sprite(&clip_dpi, ebx, x, y, 0);
     }
 
     // If holding umbrella
     if (ebx >= 0x2BBD && ebx < 0x2BDD){
         ebx += 32;
-        ebx |= (peep->umbrella_colour << 19) | 0x20000000;
+        ebx |= (peep->umbrella_colour << 19) | IMAGE_TYPE_REMAP;
         gfx_draw_sprite(&clip_dpi, ebx, x, y, 0);
     }
 
     // If wearing hat
     if (ebx >= 0x29DD && ebx < 0x29FD){
         ebx += 32;
-        ebx |= (peep->hat_colour << 19) | 0x20000000;
+        ebx |= (peep->hat_colour << 19) | IMAGE_TYPE_REMAP;
         gfx_draw_sprite(&clip_dpi, ebx, x, y, 0);
     }
 }
@@ -1135,7 +1135,7 @@ void window_staff_overview_tool_update(rct_window* w, rct_widgetindex widgetInde
     uint32 imageId = g_peep_animation_entries[peep->sprite_type].sprite_animation[PEEP_ACTION_SPRITE_TYPE_UI].base_image;
     imageId += w->picked_peep_frame >> 2;
 
-    imageId |= (peep->tshirt_colour << 19) | (peep->trousers_colour << 24) | 0xA0000000;
+    imageId |= (peep->tshirt_colour << 19) | (peep->trousers_colour << 24) | IMAGE_TYPE_REMAP | IMAGE_TYPE_REMAP_2_PLUS;
     gPickupPeepImage = imageId;
 }
 

@@ -82,8 +82,8 @@ static rct_widget window_guest_list_widgets[] = {
     { WWT_DROPDOWN_BUTTON,  1,  284,    294,    60, 69,     STR_DROPDOWN_GLYPH,     STR_INFORMATION_TYPE_TIP },     // information type dropdown button
     { WWT_FLATBTN,          1,  297,    320,    46, 69,     SPR_MAP,                STR_SHOW_GUESTS_ON_MAP_TIP },   // map
     { WWT_FLATBTN,          1,  321,    344,    46, 69,     SPR_TRACK_PEEP,         STR_TRACKED_GUESTS_ONLY_TIP },  // tracking
-    { WWT_TAB,              1,  3,      33,     17, 43,     0x20000000 | SPR_TAB,   STR_INDIVIDUAL_GUESTS_TIP },    // tab 1
-    { WWT_TAB,              1,  34,     64,     17, 43,     0x20000000 | SPR_TAB,   STR_SUMMARISED_GUESTS_TIP },    // tab 2
+    { WWT_TAB,              1,  3,      33,     17, 43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_INDIVIDUAL_GUESTS_TIP },    // tab 1
+    { WWT_TAB,              1,  34,     64,     17, 43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_SUMMARISED_GUESTS_TIP },    // tab 2
     { WWT_SCROLL,           1,  3,      346,    72, 326,    SCROLL_BOTH,            STR_NONE },                     // guest list
     { WIDGETS_END },
 };

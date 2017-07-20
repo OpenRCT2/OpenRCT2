@@ -912,7 +912,7 @@ static void vehicle_sprite_paint(rct_vehicle *vehicle, sint32 ebx, sint32 ecx, s
         baseImage_id += vehicleEntry->no_vehicle_images;
         for (sint32 i = 0; i < 8; i++){
             if (vehicle->num_peeps > (i * 2) && vehicleEntry->no_seating_rows > i) {
-                image_id = baseImage_id | (vehicle->peep_tshirt_colours[i * 2] << 19) | (vehicle->peep_tshirt_colours[(i * 2) + 1] << 24) | 0xA0000000;
+                image_id = baseImage_id | (vehicle->peep_tshirt_colours[i * 2] << 19) | (vehicle->peep_tshirt_colours[(i * 2) + 1] << 24) | IMAGE_TYPE_REMAP | IMAGE_TYPE_REMAP_2_PLUS;
                 if (i == 0 && vehicleEntry->flags_b & VEHICLE_ENTRY_FLAG_B_8) {
                     image_id += (vehicleEntry->no_vehicle_images * vehicle->var_C5);
                 }

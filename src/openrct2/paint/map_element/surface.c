@@ -236,10 +236,10 @@ const uint32 dword_97B750[][2] = {
     {SPR_TERRAIN_CHECKERBOARD,                                   SPR_TERRAIN_CHECKERBOARD_GRID},
     {SPR_TERRAIN_GRASS_CLUMPS,                                   SPR_TERRAIN_GRASS_CLUMPS_GRID},
     {SPR_TERRAIN_ICE,                                            SPR_TERRAIN_ICE_GRID},
-    {SPR_TERRAIN_GRID | COLOUR_BRIGHT_RED << 19 | 0x20000000,    SPR_TERRAIN_GRID_GRID | COLOUR_BRIGHT_RED << 19 | 0x20000000},
-    {SPR_TERRAIN_GRID | COLOUR_YELLOW << 19 | 0x20000000,        SPR_TERRAIN_GRID_GRID | COLOUR_YELLOW << 19 | 0x20000000},
-    {SPR_TERRAIN_GRID | COLOUR_BRIGHT_PURPLE << 19 | 0x20000000, SPR_TERRAIN_GRID_GRID | COLOUR_BRIGHT_PURPLE << 19 | 0x20000000},
-    {SPR_TERRAIN_GRID | COLOUR_BRIGHT_GREEN << 19 | 0x20000000,  SPR_TERRAIN_GRID_GRID | COLOUR_BRIGHT_GREEN << 19 | 0x20000000},
+    {SPR_TERRAIN_GRID | COLOUR_BRIGHT_RED << 19 | IMAGE_TYPE_REMAP,    SPR_TERRAIN_GRID_GRID | COLOUR_BRIGHT_RED << 19 | IMAGE_TYPE_REMAP},
+    {SPR_TERRAIN_GRID | COLOUR_YELLOW << 19 | IMAGE_TYPE_REMAP,        SPR_TERRAIN_GRID_GRID | COLOUR_YELLOW << 19 | IMAGE_TYPE_REMAP},
+    {SPR_TERRAIN_GRID | COLOUR_BRIGHT_PURPLE << 19 | IMAGE_TYPE_REMAP, SPR_TERRAIN_GRID_GRID | COLOUR_BRIGHT_PURPLE << 19 | IMAGE_TYPE_REMAP},
+    {SPR_TERRAIN_GRID | COLOUR_BRIGHT_GREEN << 19 | IMAGE_TYPE_REMAP,  SPR_TERRAIN_GRID_GRID | COLOUR_BRIGHT_GREEN << 19 | IMAGE_TYPE_REMAP},
     {SPR_TERRAIN_SAND_RED,                                       SPR_TERRAIN_SAND_RED_GRID},
     {SPR_TERRAIN_SAND,                                           SPR_TERRAIN_SAND_GRID},
     {SPR_TERRAIN_CHECKERBOARD_INVERTED,                          SPR_TERRAIN_CHECKERBOARD_INVERTED_GRID},
@@ -254,10 +254,10 @@ const uint32 dword_97B7C8[] = {
     SPR_TERRAIN_CHECKERBOARD_UNDERGROUND,
     SPR_TERRAIN_GRASS_CLUMPS_UNDERGROUND,
     SPR_TERRAIN_ICE_UNDERGROUND,
-    SPR_TERRAIN_GRID_UNDERGROUND | COLOUR_BRIGHT_RED << 19 | 0x20000000,
-    SPR_TERRAIN_GRID_UNDERGROUND | COLOUR_YELLOW << 19 | 0x20000000,
-    SPR_TERRAIN_GRID_UNDERGROUND | COLOUR_BRIGHT_PURPLE << 19 | 0x20000000,
-    SPR_TERRAIN_GRID_UNDERGROUND | COLOUR_BRIGHT_GREEN << 19 | 0x20000000,
+    SPR_TERRAIN_GRID_UNDERGROUND | COLOUR_BRIGHT_RED << 19 | IMAGE_TYPE_REMAP,
+    SPR_TERRAIN_GRID_UNDERGROUND | COLOUR_YELLOW << 19 | IMAGE_TYPE_REMAP,
+    SPR_TERRAIN_GRID_UNDERGROUND | COLOUR_BRIGHT_PURPLE << 19 | IMAGE_TYPE_REMAP,
+    SPR_TERRAIN_GRID_UNDERGROUND | COLOUR_BRIGHT_GREEN << 19 | IMAGE_TYPE_REMAP,
     SPR_TERRAIN_SAND_RED_UNDERGROUND,
     SPR_TERRAIN_SAND_UNDERGROUND,
     SPR_TERRAIN_CHECKERBOARD_INVERTED_UNDERGROUND,
@@ -1149,7 +1149,7 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
         uint8 staffType = staffIndex & 0x7FFF;
         sint16 x = gPaintMapPosition.x, y = gPaintMapPosition.y;
 
-        uint32 image_id = 0x20000000;
+        uint32 image_id = IMAGE_TYPE_REMAP;
         uint8 patrolColour = 7;
 
         if (!is_staff_list) {
@@ -1232,13 +1232,13 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
                 // Walls
                 // loc_661089:
                 uint32 eax = ((((mapSelectionType - 9) + rotation) & 3) + 0x21) << 19;
-                uint32 image_id = (SPR_TERRAIN_SELECTION_EDGE + byte_97B444[surfaceShape]) | eax | 0x20000000;
+                uint32 image_id = (SPR_TERRAIN_SELECTION_EDGE + byte_97B444[surfaceShape]) | eax | IMAGE_TYPE_REMAP;
                 paint_attach_to_previous_ps(image_id, 0, 0);
             } else if (mapSelectionType >= MAP_SELECT_TYPE_QUARTER_0) {
                 // loc_661051:(no jump)
                 // Selection split into four quarter segments
                 uint32 eax = ((((mapSelectionType - MAP_SELECT_TYPE_QUARTER_0) + rotation) & 3) + 0x27) << 19;
-                uint32 image_id = (SPR_TERRAIN_SELECTION_QUARTER + byte_97B444[surfaceShape]) | eax | 0x20000000;
+                uint32 image_id = (SPR_TERRAIN_SELECTION_QUARTER + byte_97B444[surfaceShape]) | eax | IMAGE_TYPE_REMAP;
                 paint_attach_to_previous_ps(image_id, 0, 0);
             } else if (mapSelectionType <= MAP_SELECT_TYPE_FULL) {
                 // Corners
@@ -1248,7 +1248,7 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
                 }
 
                 eax = (eax + 0x21) << 19;
-                uint32 image_id = (SPR_TERRAIN_SELECTION_CORNER + byte_97B444[surfaceShape]) | eax | 0x20000000;
+                uint32 image_id = (SPR_TERRAIN_SELECTION_CORNER + byte_97B444[surfaceShape]) | eax | IMAGE_TYPE_REMAP;
                 paint_attach_to_previous_ps(image_id, 0, 0);
             } else {
                 sint32 local_surfaceShape = surfaceShape;
@@ -1296,7 +1296,7 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
                 colours = COLOUR_GREY << 24 | COLOUR_SATURATED_GREEN << 19;
             }
 
-            uint32 image_id = (SPR_TERRAIN_SELECTION_CORNER + byte_97B444[surfaceShape]) | colours | 0x20000000;
+            uint32 image_id = (SPR_TERRAIN_SELECTION_CORNER + byte_97B444[surfaceShape]) | colours | IMAGE_TYPE_REMAP;
             paint_attach_to_previous_ps(image_id, 0, 0);
             break;
         }

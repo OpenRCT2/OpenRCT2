@@ -37,8 +37,8 @@ static void paint_3d_cinema_structure(uint8 rideIndex, uint8 direction, sint8 xO
     }
 
     uint32 imageColourFlags = gTrackColours[SCHEME_MISC];
-    if (imageColourFlags == 0x20000000) {
-        imageColourFlags = ride->vehicle_colours[0].body_colour << 19 | ride->vehicle_colours[0].trim_colour << 24 | 0xA0000000;
+    if (imageColourFlags == IMAGE_TYPE_REMAP) {
+        imageColourFlags = ride->vehicle_colours[0].body_colour << 19 | ride->vehicle_colours[0].trim_colour << 24 | IMAGE_TYPE_REMAP | IMAGE_TYPE_REMAP_2_PLUS;
     }
 
     uint32 imageId = (rideEntry->vehicles[0].base_image_id + direction) | imageColourFlags;
