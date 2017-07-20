@@ -42,12 +42,12 @@ public:
     {
     }
 
-    virtual void SetPlayer(uint32 playerId) override
+    virtual void SetPlayer(uint32 playerId) override final
     {
         _playerId = playerId;
     }
 
-    virtual uint32 GetPlayer() const override
+    virtual uint32 GetPlayer() const override final
     {
         return _playerId;
     }
@@ -55,7 +55,7 @@ public:
     /**
     * Gets the GA_FLAGS flags that are enabled for this game action.
     */
-    virtual uint16 GetActionFlags() const override
+    virtual uint16 GetActionFlags() const override final
     {
         return ActionFlags;
     }
@@ -63,42 +63,42 @@ public:
     /**
     * Currently used for GAME_COMMAND_FLAGS, needs refactoring once everything is replaced.
     */
-    virtual uint32 GetFlags() const override
+    virtual uint32 GetFlags() const override final
     {
         return _flags;
     }
 
-    virtual uint32 SetFlags(uint32 flags) override
+    virtual uint32 SetFlags(uint32 flags) override final
     {
         return _flags = flags;
     }
 
-    virtual uint32 GetType() const override
+    virtual uint32 GetType() const override final
     {
         return Type;
     }
 
-    virtual void SetCallback(const GameActionCallback_t& cb)
+    virtual void SetCallback(const GameActionCallback_t& cb) override final
     {
         _callback = cb;
     }
 
-    virtual const GameActionCallback_t& GetCallback() const
+    virtual const GameActionCallback_t& GetCallback() const override final
     {
         return _callback;
     }
 
-    virtual void SetNetworkId(uint32_t id)
+    virtual void SetNetworkId(uint32_t id) override final
     {
         _networkId = id;
     }
 
-    virtual uint32 GetNetworkId() const
+    virtual uint32 GetNetworkId() const override final
     {
         return _networkId;
     }
 
-    virtual void Serialise(DataSerialiser& stream)
+    virtual void Serialise(DataSerialiser& stream) override
     {
         stream << _networkId;
         stream << _flags;
@@ -108,12 +108,12 @@ public:
     /**
     * Query the result of the game action without changing the game state.
     */
-    virtual GameActionResult Query() const abstract;
+    virtual GameActionResult Query() const override abstract;
 
     /**
     * Apply the game action and change the game state.
     */
-    virtual GameActionResult Execute() const abstract;
+    virtual GameActionResult Execute() const override abstract;
 };
 
 namespace GameActions
