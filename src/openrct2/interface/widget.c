@@ -857,7 +857,7 @@ static void widget_draw_image(rct_drawpixelinfo *dpi, rct_window *w, rct_widgeti
         colour = ColourMapA[NOT_TRANSLUCENT(colour)].mid_light;
         gfx_draw_sprite_solid(dpi, image, l, t, colour);
     } else {
-        if (image & 0x80000000) {
+        if (image & IMAGE_TYPE_REMAP_2_PLUS) {
             // ?
         }
 

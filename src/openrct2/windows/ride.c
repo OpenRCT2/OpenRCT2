@@ -1320,7 +1320,7 @@ static void window_ride_draw_tab_vehicle(rct_drawpixelinfo *dpi, rct_window *w)
         spriteIndex *= rideVehicleEntry->var_16;
         spriteIndex += rideVehicleEntry->base_image_id;
         spriteIndex |= (vehicleColour.additional_1 << 24) | (vehicleColour.main << 19);
-        spriteIndex |= 0x80000000;
+        spriteIndex |= IMAGE_TYPE_REMAP_2_PLUS;
 
         gfx_draw_sprite(&clipDPI, spriteIndex, x, y, vehicleColour.additional_2);
     }
@@ -2987,7 +2987,7 @@ static void window_ride_vehicle_scrollpaint(rct_window *w, rct_drawpixelinfo *dp
             spriteIndex *= rideVehicleEntry->var_16;
             spriteIndex += rideVehicleEntry->base_image_id;
             spriteIndex |= (vehicleColour.additional_1 << 24) | (vehicleColour.main << 19);
-            spriteIndex |= 0x80000000;
+            spriteIndex |= IMAGE_TYPE_REMAP_2_PLUS;
 
             nextSpriteToDraw->x = x;
             nextSpriteToDraw->y = y;
@@ -4676,7 +4676,7 @@ static void window_ride_colour_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi
     spriteIndex *= rideVehicleEntry->var_16;
     spriteIndex += rideVehicleEntry->base_image_id;
     spriteIndex |= (vehicleColour.additional_1 << 24) | (vehicleColour.main << 19);
-    spriteIndex |= 0x80000000;
+    spriteIndex |= IMAGE_TYPE_REMAP_2_PLUS;
     gfx_draw_sprite(dpi, spriteIndex, x, y, vehicleColour.additional_2);
 }
 
