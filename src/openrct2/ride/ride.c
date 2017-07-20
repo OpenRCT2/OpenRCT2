@@ -2331,7 +2331,7 @@ static void ride_breakdown_update(sint32 rideIndex)
     //
     // a 0.8% chance, less the breakdown factor which accumulates as the game
     // continues.
-    if ((ride->reliability_percentage == 0 || (sint32)(scenario_rand() & 0x2FFFFF) <= 1 + RIDE_INITIAL_RELIABILITY - ride->reliability_percentage)
+    if ((ride->reliability == 0 || (sint32)(scenario_rand() & 0x2FFFFF) <= 1 + RIDE_INITIAL_RELIABILITY - ride->reliability)
             && !gCheatsDisableAllBreakdowns) {
         sint32 breakdownReason = ride_get_new_breakdown_problem(ride);
         if (breakdownReason != -1)
