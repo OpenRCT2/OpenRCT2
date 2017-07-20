@@ -491,7 +491,7 @@ void RideObject::PerformFixes()
     {
         _legacyType.max_cars_in_train = 3 + _legacyType.zero_cars;
     }
-    // Wacky World Crocodile Ride (a log flume vehicle) is incorrectly locked to 5 cars.
+    // Wacky Worlds' Crocodile Ride (a log flume vehicle) is incorrectly locked to 5 cars.
     else if (String::Equals(identifier, "CROCFLUM"))
     {
         _legacyType.cars_per_flat_ride = 0xFF;
