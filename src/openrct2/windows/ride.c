@@ -4041,7 +4041,7 @@ const uint8 window_ride_entrance_style_list[] = {
 
 static uint32 window_ride_get_colour_button_image(sint32 colour)
 {
-    return 0x60000000 | (colour << 19) | SPR_PALETTE_BTN;
+    return IMAGE_TYPE_REMAP | IMAGE_TYPE_TRANSPARENT | (colour << 19) | SPR_PALETTE_BTN;
 }
 
 static sint32 window_ride_has_track_colour(rct_ride *ride, sint32 trackColour)

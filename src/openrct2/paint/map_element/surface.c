@@ -1384,7 +1384,7 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
                 image_offset = byte_97B740[surfaceShape & 0xF];
             }
 
-            sint32 image_id = (SPR_WATER_MASK + image_offset) | 0x60000000 | PALETTE_WATER << 19;
+            sint32 image_id = (SPR_WATER_MASK + image_offset) | IMAGE_TYPE_REMAP | IMAGE_TYPE_TRANSPARENT | PALETTE_WATER << 19;
             sub_98196C(image_id, 0, 0, 32, 32, -1, waterHeight, rotation);
 
             paint_attach_to_previous_ps(SPR_WATER_OVERLAY + image_offset, 0, 0);

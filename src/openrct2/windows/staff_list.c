@@ -508,7 +508,7 @@ void window_staff_list_invalidate(rct_window *w)
     if (tabIndex < 3) {
         window_staff_list_widgets[WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER].type = WWT_COLOURBTN;
         window_staff_list_widgets[WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER].image =
-            ((uint32)staff_get_colour(tabIndex) << 19) | 0x60000000 | SPR_PALETTE_BTN;
+            ((uint32)staff_get_colour(tabIndex) << 19) | IMAGE_TYPE_REMAP | IMAGE_TYPE_TRANSPARENT | SPR_PALETTE_BTN;
     }
     if (_quick_fire_mode)
         w->pressed_widgets |= (1ULL << WIDX_STAFF_LIST_QUICK_FIRE);

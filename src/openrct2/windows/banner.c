@@ -322,7 +322,7 @@ static void window_banner_invalidate(rct_window *w)
             (1ULL<<WIDX_TEXT_COLOUR_DROPDOWN_BUTTON);
     }
 
-    colour_btn->image = (banner->colour << 19) | 0x60000000 | SPR_PALETTE_BTN;
+    colour_btn->image = (banner->colour << 19) | IMAGE_TYPE_REMAP | IMAGE_TYPE_TRANSPARENT | SPR_PALETTE_BTN;
 
     rct_widget* drop_down_widget = &window_banner_widgets[WIDX_TEXT_COLOUR_DROPDOWN];
     drop_down_widget->text = BannerColouredTextFormats[banner->text_colour];
