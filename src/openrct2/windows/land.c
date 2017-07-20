@@ -51,8 +51,8 @@ static rct_widget window_land_widgets[] = {
     { WWT_FLATBTN,  1,  55, 78, 19, 42,         SPR_PAINTBRUSH,                         STR_DISABLE_ELEVATION },        // paint mode
 
     { WWT_IMGBTN,   0,  27, 70, 48, 79,         SPR_LAND_TOOL_SIZE_0,                   STR_NONE },                     // preview box
-    { WWT_TRNBTN,   1,  28, 43, 49, 64,         0x20000000 | SPR_LAND_TOOL_DECREASE,    STR_ADJUST_SMALLER_LAND_TIP },  // decrement size
-    { WWT_TRNBTN,   1,  54, 69, 63, 78,         0x20000000 | SPR_LAND_TOOL_INCREASE,    STR_ADJUST_LARGER_LAND_TIP },   // increment size
+    { WWT_TRNBTN,   1,  28, 43, 49, 64,         IMAGE_TYPE_REMAP | SPR_LAND_TOOL_DECREASE,    STR_ADJUST_SMALLER_LAND_TIP },  // decrement size
+    { WWT_TRNBTN,   1,  54, 69, 63, 78,         IMAGE_TYPE_REMAP | SPR_LAND_TOOL_INCREASE,    STR_ADJUST_LARGER_LAND_TIP },   // increment size
 
     { WWT_FLATBTN,  1,  2,  48, 106,    141,    0xFFFFFFFF,                             STR_CHANGE_BASE_LAND_TIP },     // floor texture
     { WWT_FLATBTN,  1,  49, 95, 106,    141,    0xFFFFFFFF,                             STR_CHANGE_VERTICAL_LAND_TIP }, // wall texture

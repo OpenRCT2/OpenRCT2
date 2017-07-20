@@ -496,6 +496,7 @@ void RideObject::PerformFixes()
     {
         _legacyType.cars_per_flat_ride = 0xFF;
     }
+    // All vanilla/WW/OCC Junior RC vehicles incorrectly have this flag set
     else if (String::Equals(identifier, "ZLDB    ") ||
              String::Equals(identifier, "ZLOG    ") ||
              String::Equals(identifier, "ZPANDA  ") ||

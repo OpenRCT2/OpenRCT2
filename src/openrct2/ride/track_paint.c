@@ -616,7 +616,7 @@ bool track_paint_util_draw_station_covers_2(enum edge_t edge, bool hasFence, con
             break;
     }
 
-    if (gTrackColours[SCHEME_MISC] != 0x20000000) {
+    if (gTrackColours[SCHEME_MISC] != IMAGE_TYPE_REMAP) {
         baseImageId &= 0x7FFFF;
     }
 
@@ -628,7 +628,7 @@ bool track_paint_util_draw_station_covers_2(enum edge_t edge, bool hasFence, con
         imageOffset += SPR_STATION_COVER_OFFSET_TALL;
     }
 
-    if (baseImageId & 0x40000000) {
+    if (baseImageId & IMAGE_TYPE_TRANSPARENT) {
         imageId = (baseImageId & 0xBFFFFFFF) + imageOffset;
         sub_98197C(imageId, (sint8)offset.x, (sint8)offset.y, bounds.x, bounds.y, (sint8)bounds.z, offset.z, boundsOffset.x, boundsOffset.y, boundsOffset.z, get_current_rotation());
 
@@ -1772,9 +1772,9 @@ void track_paint(uint8 direction, sint32 height, rct_map_element *mapElement)
         }
 
         gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
-        gTrackColours[SCHEME_TRACK] = (ride->track_colour_main[trackColourScheme] << 19) | (ride->track_colour_additional[trackColourScheme] << 24) | 0xA0000000;
-        gTrackColours[SCHEME_SUPPORTS] = (ride->track_colour_supports[trackColourScheme] << 19) | 0x20000000;
-        gTrackColours[SCHEME_MISC] = 0x20000000;
+        gTrackColours[SCHEME_TRACK] = SPRITE_ID_PALETTE_COLOUR_2(ride->track_colour_main[trackColourScheme], ride->track_colour_additional[trackColourScheme]);
+        gTrackColours[SCHEME_SUPPORTS] = SPRITE_ID_PALETTE_COLOUR_1(ride->track_colour_supports[trackColourScheme]);
+        gTrackColours[SCHEME_MISC] = IMAGE_TYPE_REMAP;
         gTrackColours[SCHEME_3] = 0x20C00000;
         if (mapElement->type & MAP_ELEMENT_TYPE_FLAG_HIGHLIGHT) {
             gTrackColours[SCHEME_TRACK] = 0x21600000;

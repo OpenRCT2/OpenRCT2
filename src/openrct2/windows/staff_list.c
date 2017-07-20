@@ -115,10 +115,10 @@ static rct_widget window_staff_list_widgets[] = {
     { WWT_CAPTION,          0,  1,          318,        1,      14,     STR_STAFF,              STR_WINDOW_TITLE_TIP },             // title bar
     { WWT_CLOSEBOX,         0,  307,        317,        2,      13,     STR_CLOSE_X,            STR_CLOSE_WINDOW_TIP },             // close button
     { WWT_RESIZE,           1,  0,          319,        43,     269,    0xFFFFFFFF,         STR_NONE },                         // tab content panel
-    { WWT_TAB,              1,  3,          33,         17,     43,     0x20000000 | SPR_TAB,   STR_STAFF_HANDYMEN_TAB_TIP },       // handymen tab
-    { WWT_TAB,              1,  34,         64,         17,     43,     0x20000000 | SPR_TAB,   STR_STAFF_MECHANICS_TAB_TIP },      // mechanics tab
-    { WWT_TAB,              1,  65,         95,         17,     43,     0x20000000 | SPR_TAB,   STR_STAFF_SECURITY_TAB_TIP },       // security guards tab
-    { WWT_TAB,              1,  96,         126,        17,     43,     0x20000000 | SPR_TAB,   STR_STAFF_ENTERTAINERS_TAB_TIP },   // entertainers tab
+    { WWT_TAB,              1,  3,          33,         17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_STAFF_HANDYMEN_TAB_TIP },       // handymen tab
+    { WWT_TAB,              1,  34,         64,         17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_STAFF_MECHANICS_TAB_TIP },      // mechanics tab
+    { WWT_TAB,              1,  65,         95,         17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_STAFF_SECURITY_TAB_TIP },       // security guards tab
+    { WWT_TAB,              1,  96,         126,        17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_STAFF_ENTERTAINERS_TAB_TIP },   // entertainers tab
     { WWT_SCROLL,           1,  3,          316,        72,     266,    SCROLL_BOTH,            STR_NONE },                         // staff list
     { WWT_COLOURBTN,        1,  130,        141,        58,     69,     STR_NONE,               STR_UNIFORM_COLOUR_TIP },           // uniform colour picker
     { WWT_DROPDOWN_BUTTON,  0,  WW - 155,   WW - 11,    17,     29,     STR_NONE,               STR_HIRE_STAFF_TIP },               // hire button
@@ -508,7 +508,7 @@ void window_staff_list_invalidate(rct_window *w)
     if (tabIndex < 3) {
         window_staff_list_widgets[WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER].type = WWT_COLOURBTN;
         window_staff_list_widgets[WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER].image =
-            ((uint32)staff_get_colour(tabIndex) << 19) | 0x60000000 | SPR_PALETTE_BTN;
+            SPRITE_ID_PALETTE_COLOUR_1((uint32)staff_get_colour(tabIndex)) | IMAGE_TYPE_TRANSPARENT | SPR_PALETTE_BTN;
     }
     if (_quick_fire_mode)
         w->pressed_widgets |= (1ULL << WIDX_STAFF_LIST_QUICK_FIRE);
@@ -551,8 +551,7 @@ void window_staff_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
     // Handymen tab image
     i = (selectedTab == 0 ? (w->list_information_type & ~3) : 0);
     i += g_peep_animation_entries[PEEP_SPRITE_TYPE_HANDYMAN].sprite_animation->base_image + 1;
-    i |= 0x20000000;
-    i |= gStaffHandymanColour << 19;
+    i |= SPRITE_ID_PALETTE_COLOUR_1(gStaffHandymanColour);
     gfx_draw_sprite(
         dpi,
         i,
@@ -563,8 +562,7 @@ void window_staff_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
     // Mechanic tab image
     i = (selectedTab == 1 ? (w->list_information_type & ~3) : 0);
     i += g_peep_animation_entries[PEEP_SPRITE_TYPE_MECHANIC].sprite_animation->base_image + 1;
-    i |= 0x20000000;
-    i |= gStaffMechanicColour << 19;
+    i |= SPRITE_ID_PALETTE_COLOUR_1(gStaffMechanicColour);
     gfx_draw_sprite(
         dpi,
         i,
@@ -575,8 +573,7 @@ void window_staff_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
     // Security tab image
     i = (selectedTab == 2 ? (w->list_information_type & ~3) : 0);
     i += g_peep_animation_entries[PEEP_SPRITE_TYPE_SECURITY].sprite_animation->base_image + 1;
-    i |= 0x20000000;
-    i |= gStaffSecurityColour << 19;
+    i |= SPRITE_ID_PALETTE_COLOUR_1(gStaffSecurityColour);
     gfx_draw_sprite(
         dpi,
         i,

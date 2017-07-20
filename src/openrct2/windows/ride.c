@@ -196,16 +196,16 @@ enum {
     { WWT_CAPTION,          0,  1,      314,    1,      14,     STR_RIDE_WINDOW_TITLE,          STR_WINDOW_TITLE_TIP                        }, \
     { WWT_CLOSEBOX,         0,  303,    313,    2,      13,     STR_CLOSE_X,                    STR_CLOSE_WINDOW_TIP                        }, \
     { WWT_RESIZE,           1,  0,      315,    43,     179,    0xFFFFFFFF,                     STR_NONE                                    }, \
-    { WWT_TAB,              1,  3,      33,     17,     43,     0x20000000 | SPR_TAB,           STR_VIEW_OF_RIDE_ATTRACTION_TIP             }, \
-    { WWT_TAB,              1,  34,     64,     17,     46,     0x20000000 | SPR_TAB,           STR_VEHICLE_DETAILS_AND_OPTIONS_TIP         }, \
-    { WWT_TAB,              1,  65,     95,     17,     43,     0x20000000 | SPR_TAB,           STR_OPERATING_OPTIONS_TIP                   }, \
-    { WWT_TAB,              1,  96,     126,    17,     43,     0x20000000 | SPR_TAB,           STR_MAINTENANCE_OPTIONS_TIP                 }, \
-    { WWT_TAB,              1,  127,    157,    17,     43,     0x20000000 | SPR_TAB,           STR_COLOUR_SCHEME_OPTIONS_TIP               }, \
-    { WWT_TAB,              1,  158,    188,    17,     43,     0x20000000 | SPR_TAB,           STR_SOUND_AND_MUSIC_OPTIONS_TIP             }, \
-    { WWT_TAB,              1,  189,    219,    17,     43,     0x20000000 | SPR_TAB,           STR_MEASUREMENTS_AND_TEST_DATA_TIP          }, \
-    { WWT_TAB,              1,  220,    250,    17,     43,     0x20000000 | SPR_TAB,           STR_GRAPHS_TIP                              }, \
-    { WWT_TAB,              1,  251,    281,    17,     43,     0x20000000 | SPR_TAB,           STR_INCOME_AND_COSTS_TIP                    }, \
-    { WWT_TAB,              1,  282,    312,    17,     43,     0x20000000 | SPR_TAB,           STR_CUSTOMER_INFORMATION_TIP                }
+    { WWT_TAB,              1,  3,      33,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,           STR_VIEW_OF_RIDE_ATTRACTION_TIP             }, \
+    { WWT_TAB,              1,  34,     64,     17,     46,     IMAGE_TYPE_REMAP | SPR_TAB,           STR_VEHICLE_DETAILS_AND_OPTIONS_TIP         }, \
+    { WWT_TAB,              1,  65,     95,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,           STR_OPERATING_OPTIONS_TIP                   }, \
+    { WWT_TAB,              1,  96,     126,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,           STR_MAINTENANCE_OPTIONS_TIP                 }, \
+    { WWT_TAB,              1,  127,    157,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,           STR_COLOUR_SCHEME_OPTIONS_TIP               }, \
+    { WWT_TAB,              1,  158,    188,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,           STR_SOUND_AND_MUSIC_OPTIONS_TIP             }, \
+    { WWT_TAB,              1,  189,    219,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,           STR_MEASUREMENTS_AND_TEST_DATA_TIP          }, \
+    { WWT_TAB,              1,  220,    250,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,           STR_GRAPHS_TIP                              }, \
+    { WWT_TAB,              1,  251,    281,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,           STR_INCOME_AND_COSTS_TIP                    }, \
+    { WWT_TAB,              1,  282,    312,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,           STR_CUSTOMER_INFORMATION_TIP                }
 
 // 0x009ADC34
 static rct_widget window_ride_main_widgets[] = {
@@ -3622,18 +3622,18 @@ static void window_ride_locate_mechanic(rct_window *w)
  *
  *  rct2: 0x006B7D08
  */
-static void window_ride_maintenance_draw_bar(rct_window *w, rct_drawpixelinfo *dpi, sint32 x, sint32 y, sint32 value, sint32 unk)
+static void window_ride_maintenance_draw_bar(rct_window *w, rct_drawpixelinfo *dpi, sint32 x, sint32 y, sint32 value, sint32 colour)
 {
     gfx_fill_rect_inset(dpi, x, y, x + 149, y + 8, w->colours[1], INSET_RECT_F_30);
-    if (unk & (1u << 31)) {
-        unk &= ~(1u << 31);
+    if (colour & BAR_BLINK) {
+        colour &= ~BAR_BLINK;
         if (game_is_not_paused() && (gCurrentTicks & 8))
             return;
     }
 
     value = ((186 * ((value * 2) & 0xFF)) >> 8) & 0xFF;
     if (value > 2) {
-        gfx_fill_rect_inset(dpi, x + 2, y + 1, x + value + 1, y + 7, unk, 0);
+        gfx_fill_rect_inset(dpi, x + 2, y + 1, x + value + 1, y + 7, colour, 0);
     }
 }
 
@@ -3927,7 +3927,7 @@ static void window_ride_maintenance_paint(rct_window *w, rct_drawpixelinfo *dpi)
     rct_widget *widget = &window_ride_maintenance_widgets[WIDX_LOCATE_MECHANIC];
     sint32 x = w->x + widget->left;
     sint32 y = w->y + widget->top;
-    gfx_draw_sprite(dpi, (gStaffMechanicColour << 24) | 0xA0000000 | SPR_MECHANIC, x, y, 0);
+    gfx_draw_sprite(dpi, (gStaffMechanicColour << 24) | IMAGE_TYPE_REMAP | IMAGE_TYPE_REMAP_2_PLUS | SPR_MECHANIC, x, y, 0);
 
     // Inspection label
     widget = &window_ride_maintenance_widgets[WIDX_INSPECTION_INTERVAL];
@@ -4041,7 +4041,7 @@ const uint8 window_ride_entrance_style_list[] = {
 
 static uint32 window_ride_get_colour_button_image(sint32 colour)
 {
-    return 0x60000000 | (colour << 19) | SPR_PALETTE_BTN;
+    return IMAGE_TYPE_TRANSPARENT | SPRITE_ID_PALETTE_COLOUR_1(colour) | SPR_PALETTE_BTN;
 }
 
 static sint32 window_ride_has_track_colour(rct_ride *ride, sint32 trackColour)
@@ -4579,16 +4579,14 @@ static void window_ride_colour_paint(rct_window *w, rct_drawpixelinfo *dpi)
         } else {
             sint32 spriteIndex = TrackColourPreviews[ride->type].track;
             if (spriteIndex != 0) {
-                spriteIndex |= (trackColour.additional << 24) | (trackColour.main << 19);
-                spriteIndex |= 0xA0000000;
+                spriteIndex |= SPRITE_ID_PALETTE_COLOUR_2(trackColour.main, trackColour.additional);
                 gfx_draw_sprite(dpi, spriteIndex, x, y, 0);
             }
 
             // Supports
             spriteIndex = TrackColourPreviews[ride->type].supports;
             if (spriteIndex != 0) {
-                spriteIndex |= trackColour.supports << 19;
-                spriteIndex |= 0x20000000;
+                spriteIndex |= SPRITE_ID_PALETTE_COLOUR_1(trackColour.supports);
                 gfx_draw_sprite(dpi, spriteIndex, x, y, 0);
             }
         }
@@ -4598,8 +4596,7 @@ static void window_ride_colour_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
         uint8 shopItem = rideEntry->shop_item_secondary == 255 ? rideEntry->shop_item : rideEntry->shop_item_secondary;
         sint32 spriteIndex = ShopItemImage[shopItem];
-        spriteIndex |= ride->track_colour_main[0] << 19;
-        spriteIndex |= 0x20000000;
+        spriteIndex |= SPRITE_ID_PALETTE_COLOUR_1(ride->track_colour_main[0]);
 
         gfx_draw_sprite(dpi, spriteIndex, x, y, 0);
     }
@@ -4622,12 +4619,11 @@ static void window_ride_colour_paint(rct_window *w, rct_drawpixelinfo *dpi)
                 const rct_ride_entrance_definition *entranceStyle = &RideEntranceDefinitions[ride->entrance_style];
 
                 sint32 terniaryColour = 0;
-                if (entranceStyle->base_image_id & 0x40000000) {
-                    terniaryColour = 0x40000000 | (GlassPaletteIds[trackColour.main] << 19);
+                if (entranceStyle->base_image_id & IMAGE_TYPE_TRANSPARENT) {
+                    terniaryColour = IMAGE_TYPE_TRANSPARENT | (GlassPaletteIds[trackColour.main] << 19);
                 }
 
-                sint32 spriteIndex = (trackColour.additional << 24) | (trackColour.main << 19);
-                spriteIndex |= 0xA0000000;
+                sint32 spriteIndex = SPRITE_ID_PALETTE_COLOUR_2(trackColour.main, trackColour.additional);
                 spriteIndex += RideEntranceDefinitions[ride->entrance_style].sprite_index;
 
                 // Back

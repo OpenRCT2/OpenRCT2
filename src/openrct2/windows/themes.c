@@ -121,15 +121,15 @@ static rct_widget window_themes_widgets[] = {
     { WWT_CAPTION,          0,  1,      318,    1,      14,     STR_THEMES_TITLE,                               STR_WINDOW_TITLE_TIP },                 // title bar
     { WWT_CLOSEBOX,         0,  307,    317,    2,      13,     STR_CLOSE_X,                                    STR_CLOSE_WINDOW_TIP },                 // close button
     { WWT_RESIZE,           1,  0,      319,    43,     106,    0xFFFFFFFF,                                 STR_NONE },                             // tab content panel
-    { WWT_TAB,              1,  3,      33,     17,     43,     0x20000000 | SPR_TAB,                           STR_THEMES_TAB_SETTINGS_TIP },          // settings tab
-    { WWT_TAB,              1,  34,     64,     17,     43,     0x20000000 | SPR_TAB,                           STR_THEMES_TAB_MAIN_TIP },              // main ui tab
-    { WWT_TAB,              1,  65,     95,     17,     43,     0x20000000 | SPR_TAB,                           STR_THEMES_TAB_PARK_TIP },              // park tab
-    { WWT_TAB,              1,  96,     126,    17,     43,     0x20000000 | SPR_TAB,                           STR_THEMES_TAB_TOOLS_TIP },             // tools tab
-    { WWT_TAB,              1,  127,    157,    17,     43,     0x20000000 | SPR_TAB,                           STR_THEMES_TAB_RIDES_AND_GUESTS_TIP },  // rides and peeps tab
-    { WWT_TAB,              1,  158,    188,    17,     43,     0x20000000 | SPR_TAB,                           STR_THEMES_TAB_EDITORS_TIP },           // editors tab
-    { WWT_TAB,              1,  189,    219,    17,     43,     0x20000000 | SPR_TAB,                           STR_THEMES_TAB_MISC_TIP },              // misc tab
-    { WWT_TAB,              1,  220,    250,    17,     43,     0x20000000 | SPR_TAB,                           STR_THEMES_TAB_PROMPTS_TIP },           // prompts tab
-    { WWT_TAB,              1,  251,    281,    17,     43,     0x20000000 | SPR_TAB,                           STR_THEMES_TAB_FEATURES_TIP },          // features tab
+    { WWT_TAB,              1,  3,      33,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,                           STR_THEMES_TAB_SETTINGS_TIP },          // settings tab
+    { WWT_TAB,              1,  34,     64,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,                           STR_THEMES_TAB_MAIN_TIP },              // main ui tab
+    { WWT_TAB,              1,  65,     95,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,                           STR_THEMES_TAB_PARK_TIP },              // park tab
+    { WWT_TAB,              1,  96,     126,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,                           STR_THEMES_TAB_TOOLS_TIP },             // tools tab
+    { WWT_TAB,              1,  127,    157,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,                           STR_THEMES_TAB_RIDES_AND_GUESTS_TIP },  // rides and peeps tab
+    { WWT_TAB,              1,  158,    188,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,                           STR_THEMES_TAB_EDITORS_TIP },           // editors tab
+    { WWT_TAB,              1,  189,    219,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,                           STR_THEMES_TAB_MISC_TIP },              // misc tab
+    { WWT_TAB,              1,  220,    250,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,                           STR_THEMES_TAB_PROMPTS_TIP },           // prompts tab
+    { WWT_TAB,              1,  251,    281,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,                           STR_THEMES_TAB_FEATURES_TIP },          // features tab
     { WWT_DROPDOWN,         1,  125,    299,    60,     71,     STR_NONE,                                       STR_NONE },                             // Preset colour schemes
     { WWT_DROPDOWN_BUTTON,  1,  288,    298,    61,     70,     STR_DROPDOWN_GLYPH,                             STR_NONE },
     { WWT_DROPDOWN_BUTTON,  1,  10,     100,    82,     93,     STR_TITLE_EDITOR_ACTION_DUPLICATE,              STR_THEMES_ACTION_DUPLICATE_TIP },      // Duplicate button
@@ -837,9 +837,9 @@ void window_themes_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 scr
                 gfx_draw_string_left(dpi, theme_desc_get_name(wc), NULL, w->colours[1], 2, y + 4);
 
                 uint8 colour = theme_get_colour(wc, j);
-                uint32 image = ((colour & ~COLOUR_FLAG_TRANSLUCENT) << 19) | 0x60000000 | SPR_PALETTE_BTN;
+                uint32 image = SPRITE_ID_PALETTE_COLOUR_1(colour & ~COLOUR_FLAG_TRANSLUCENT) | IMAGE_TYPE_TRANSPARENT | SPR_PALETTE_BTN;
                 if (i == _colour_index_1 && j == _colour_index_2) {
-                    image = ((colour & ~COLOUR_FLAG_TRANSLUCENT) << 19) | 0x60000000 | SPR_PALETTE_BTN_PRESSED;
+                    image = SPRITE_ID_PALETTE_COLOUR_1(colour & ~COLOUR_FLAG_TRANSLUCENT) | IMAGE_TYPE_TRANSPARENT | SPR_PALETTE_BTN_PRESSED;
                 }
                 gfx_draw_sprite(dpi, image, _button_offset_x + 12 * j, y + _button_offset_y, 0);
 

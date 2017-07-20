@@ -118,7 +118,7 @@ void scenery_paint(uint8 direction, sint32 height, rct_map_element* mapElement) 
         }
     }
     if (entry->small_scenery.flags & SMALL_SCENERY_FLAG_HAS_PRIMARY_COLOUR) {
-        baseImageid |= ((mapElement->properties.scenery.colour_1 & 0x1F) << 19) | 0x20000000;
+        baseImageid |= ((mapElement->properties.scenery.colour_1 & 0x1F) << 19) | IMAGE_TYPE_REMAP;
         if (entry->small_scenery.flags & SMALL_SCENERY_FLAG_HAS_SECONDARY_COLOUR) {
             baseImageid |= ((mapElement->properties.scenery.colour_2 & 0x1F) << 24) | IMAGE_TYPE_REMAP_2_PLUS;
         }
@@ -238,7 +238,7 @@ void scenery_paint(uint8 direction, sint32 height, rct_map_element* mapElement) 
                     image_id += 4;
                 }
                 if (entry->small_scenery.flags & SMALL_SCENERY_FLAG_HAS_PRIMARY_COLOUR) {
-                    image_id |= ((mapElement->properties.scenery.colour_1 & 0x1F) << 19) | 0x20000000;
+                    image_id |= ((mapElement->properties.scenery.colour_1 & 0x1F) << 19) | IMAGE_TYPE_REMAP;
                     if (entry->small_scenery.flags & SMALL_SCENERY_FLAG_HAS_SECONDARY_COLOUR) {
                         image_id |= ((mapElement->properties.scenery.colour_2 & 0x1F) << 24) | IMAGE_TYPE_REMAP_2_PLUS;
                     }
@@ -263,9 +263,9 @@ void scenery_paint(uint8 direction, sint32 height, rct_map_element* mapElement) 
                 supportHeight &= 0xFFFFFFF0;
                 ax = 49;
             }
-            uint32 supportImageColourFlags = 0x20000000;
+            uint32 supportImageColourFlags = IMAGE_TYPE_REMAP;
             if (entry->small_scenery.flags & SMALL_SCENERY_FLAG_PAINT_SUPPORTS) {
-                supportImageColourFlags = ((mapElement->properties.scenery.colour_1 & 0x1F) << 19) | 0x20000000;
+                supportImageColourFlags = ((mapElement->properties.scenery.colour_1 & 0x1F) << 19) | IMAGE_TYPE_REMAP;
             }
             if (dword_F64EB0 != 0) {
                 supportImageColourFlags = dword_F64EB0;

@@ -560,25 +560,25 @@ static void window_game_bottom_toolbar_draw_news_item(rct_drawpixelinfo *dpi, rc
         image_id_base++;
 
         uint32 image_id = image_id_base;
-        image_id |= 0xA0000000 | (peep->tshirt_colour << 19) | (peep->trousers_colour << 24);
+        image_id |= SPRITE_ID_PALETTE_COLOUR_2(peep->tshirt_colour, peep->trousers_colour);
 
         gfx_draw_sprite(&cliped_dpi, image_id, clip_x, clip_y, 0);
 
         if (image_id_base >= 0x2A1D && image_id_base < 0x2A3D){
             image_id_base += 32;
-            image_id_base |= 0x20000000 | (peep->balloon_colour << 19);
+            image_id_base |= SPRITE_ID_PALETTE_COLOUR_1(peep->balloon_colour);
 
             gfx_draw_sprite(&cliped_dpi, image_id_base, clip_x, clip_y, 0);
         }
         else if (image_id_base >= 0x2BBD && image_id_base < 0x2BDD){
             image_id_base += 32;
-            image_id_base |= 0x20000000 | (peep->umbrella_colour << 19);
+            image_id_base |= SPRITE_ID_PALETTE_COLOUR_1(peep->umbrella_colour);
 
             gfx_draw_sprite(&cliped_dpi, image_id_base, clip_x, clip_y, 0);
         }
         else if (image_id_base >= 0x29DD && image_id_base < 0x29FD){
             image_id_base += 32;
-            image_id_base |= 0x20000000 | (peep->hat_colour << 19);
+            image_id_base |= SPRITE_ID_PALETTE_COLOUR_1(peep->hat_colour);
 
             gfx_draw_sprite(&cliped_dpi, image_id_base, clip_x, clip_y, 0);
         }

@@ -746,7 +746,7 @@ void X8DrawingContext::DrawSpriteSolid(uint32 image, sint32 x, sint32 y, uint8 c
     palette[0] = 0;
 
     image &= 0x7FFFF;
-    gfx_draw_sprite_palette_set_software(_dpi, image | 0x20000000, x, y, palette, nullptr);
+    gfx_draw_sprite_palette_set_software(_dpi, image | IMAGE_TYPE_REMAP, x, y, palette, nullptr);
 }
 
 void X8DrawingContext::DrawGlyph(uint32 image, sint32 x, sint32 y, uint8 * palette)

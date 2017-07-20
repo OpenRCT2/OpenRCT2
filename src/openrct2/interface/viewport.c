@@ -1039,7 +1039,7 @@ static bool sub_679236_679662_679B0D_679FF1(uint32 ebx, rct_g1_element *image, u
         return false;
     }
 
-    if (ebx & 0x20000000) {
+    if (ebx & IMAGE_TYPE_REMAP) {
         uint8 *ebx_palette = unk_9ABDA4;
 
         uint8 al = *esi;
@@ -1048,7 +1048,7 @@ static bool sub_679236_679662_679B0D_679FF1(uint32 ebx, rct_g1_element *image, u
         return (al2 != 0);
     }
 
-    if (ebx & 0x40000000) {
+    if (ebx & IMAGE_TYPE_TRANSPARENT) {
         return false;
     }
 
@@ -1302,8 +1302,8 @@ static bool sub_679074(rct_drawpixelinfo *dpi, sint32 imageId, sint16 x, sint16 
 static bool sub_679023(rct_drawpixelinfo *dpi, sint32 imageId, sint32 x, sint32 y)
 {
     imageId &= 0xBFFFFFFF;
-    if (imageId & 0x20000000) {
-        gUnkEDF81C = 0x20000000;
+    if (imageId & IMAGE_TYPE_REMAP) {
+        gUnkEDF81C = IMAGE_TYPE_REMAP;
         sint32 index = (imageId >> 19) & 0x7F;
         if (imageId & IMAGE_TYPE_REMAP_2_PLUS) {
             index &= 0x1F;

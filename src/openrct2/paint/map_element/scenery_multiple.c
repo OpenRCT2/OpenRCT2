@@ -40,7 +40,7 @@ static void scenery_multiple_paint_supports(uint8 direction, uint16 height, rct_
         ax = 49;
     }
 
-    sint32 supportImageColourFlags = 0x20000000;
+    sint32 supportImageColourFlags = IMAGE_TYPE_REMAP;
 
     if (dword_F4387C) {
         supportImageColourFlags = dword_F4387C;
@@ -194,7 +194,7 @@ void scenery_multiple_paint(uint8 direction, uint16 height, rct_map_element *map
     uint32 image_id = (ebp << 2) + entry->image + 4 + direction;
     rct_large_scenery_tile *tile = &entry->large_scenery.tiles[ebp];
     uint32 dword_F4387C = 0;
-    image_id |= ((mapElement->properties.scenerymultiple.colour[0] & 0x1F) << 19) | ((mapElement->properties.scenerymultiple.colour[1] & 0x1F) << 24) | 0xA0000000;
+    image_id |= ((mapElement->properties.scenerymultiple.colour[0] & 0x1F) << 19) | ((mapElement->properties.scenerymultiple.colour[1] & 0x1F) << 24) | IMAGE_TYPE_REMAP | IMAGE_TYPE_REMAP_2_PLUS;
     rct_xyz16 boxlength;
     rct_xyz16 boxoffset;
     if (gTrackDesignSaveMode) {
@@ -256,7 +256,7 @@ void scenery_multiple_paint(uint8 direction, uint16 height, rct_map_element *map
         if (dword_F4387C) {
             textColour = COLOUR_GREY;
         }
-        textColour = (textColour << 19) | 0x20000000;
+        textColour = (textColour << 19) | IMAGE_TYPE_REMAP;
         uint32 bannerIndex = (mapElement->type & 0xC0) | ((mapElement->properties.scenerymultiple.colour[0] & 0xE0) >> 2) | ((mapElement->properties.scenerymultiple.colour[1] & 0xE0) >> 5);
         rct_banner *banner = &gBanners[bannerIndex];
         rct_string_id stringId = banner->string_idx;

@@ -84,11 +84,8 @@ static void top_spin_paint_vehicle(sint8 al, sint8 cl, uint8 rideIndex, uint8 di
     uint8 lengthY = 24;
 
     uint32 image_id = gTrackColours[SCHEME_MISC];
-    if (image_id == 0x20000000) {
-        image_id =
-            0xA0000000 |
-            (ride->track_colour_main[0] << 19) |
-            (ride->track_colour_supports[0] << 24);
+    if (image_id == IMAGE_TYPE_REMAP) {
+        image_id = SPRITE_ID_PALETTE_COLOUR_2(ride->track_colour_main[0], ride->track_colour_supports[0]);
     }
 
     const uint8 rotation = get_current_rotation();
@@ -99,11 +96,8 @@ static void top_spin_paint_vehicle(sint8 al, sint8 cl, uint8 rideIndex, uint8 di
     sub_98197C(image_id, al, cl, lengthX, lengthY, 90, height, boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ, rotation);
 
     image_id = gTrackColours[SCHEME_MISC];
-    if (image_id == 0x20000000) {
-        image_id =
-            0xA0000000 |
-            (ride->track_colour_main[0] << 19) |
-            (ride->track_colour_additional[0] << 24);
+    if (image_id == IMAGE_TYPE_REMAP) {
+        image_id = SPRITE_ID_PALETTE_COLOUR_2(ride->track_colour_main[0], ride->track_colour_additional[0]);
     }
 
     sint32 var_1F = armRotation;
@@ -139,11 +133,8 @@ static void top_spin_paint_vehicle(sint8 al, sint8 cl, uint8 rideIndex, uint8 di
     }
 
     image_id = gTrackColours[SCHEME_MISC];
-    if (image_id == 0x20000000) {
-        image_id =
-            0xA0000000 |
-            (ride->vehicle_colours[0].body_colour << 19) |
-            (ride->vehicle_colours[0].trim_colour << 24);
+    if (image_id == IMAGE_TYPE_REMAP) {
+        image_id = SPRITE_ID_PALETTE_COLOUR_2(ride->vehicle_colours[0].body_colour, ride->vehicle_colours[0].trim_colour);
     }
     image_id += seatImageId;
 
@@ -174,56 +165,37 @@ static void top_spin_paint_vehicle(sint8 al, sint8 cl, uint8 rideIndex, uint8 di
     sub_98199C(image_id, (sint8) seatCoords.x, (sint8) seatCoords.y, lengthX, lengthY, 90, seatCoords.z, boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ, rotation);
 
     rct_drawpixelinfo* dpi = unk_140E9A8;
-    if (dpi->zoom_level < 2 && vehicle != NULL && vehicle->num_peeps != 0) {
-        image_id =
-            (vehicle->peep_tshirt_colours[0] << 19) |
-            (vehicle->peep_tshirt_colours[1] << 24);
-        image_id += seatImageId;
-        image_id += 0xA0000000;
-        image_id += 76;
+    if (dpi->zoom_level < 2 && vehicle != NULL && vehicle->num_peeps != 0)
+    {
+        image_id = (seatImageId + (1 * 76)) | SPRITE_ID_PALETTE_COLOUR_2(vehicle->peep_tshirt_colours[0], vehicle->peep_tshirt_colours[1]);
 
         sub_98199C(image_id, (sint8) seatCoords.x, (sint8) seatCoords.y, lengthX, lengthY, 90, seatCoords.z, boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ, rotation);
 
-        if (vehicle->num_peeps > 2) {
-            image_id =
-                (vehicle->peep_tshirt_colours[2] << 19) |
-                (vehicle->peep_tshirt_colours[3] << 24);
-            image_id += seatImageId;
-            image_id += 0xA0000000;
-            image_id += 152;
+        if (vehicle->num_peeps > 2)
+        {
+            image_id = (seatImageId + (2 * 76)) | SPRITE_ID_PALETTE_COLOUR_2(vehicle->peep_tshirt_colours[2], vehicle->peep_tshirt_colours[3]);
 
             sub_98199C(image_id, (sint8) seatCoords.x, (sint8) seatCoords.y, lengthX, lengthY, 90, seatCoords.z, boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ, rotation);
         }
 
-        if (vehicle->num_peeps > 4) {
-            image_id =
-                (vehicle->peep_tshirt_colours[4] << 19) |
-                (vehicle->peep_tshirt_colours[5] << 24);
-            image_id += seatImageId;
-            image_id += 0xA0000000;
-            image_id += 228;
+        if (vehicle->num_peeps > 4)
+        {
+            image_id = (seatImageId + (3 * 76)) | SPRITE_ID_PALETTE_COLOUR_2(vehicle->peep_tshirt_colours[4], vehicle->peep_tshirt_colours[5]);
 
             sub_98199C(image_id, (sint8) seatCoords.x, (sint8) seatCoords.y, lengthX, lengthY, 90, seatCoords.z, boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ, rotation);
         }
 
-        if (vehicle->num_peeps > 6) {
-            image_id =
-                (vehicle->peep_tshirt_colours[6] << 19) |
-                (vehicle->peep_tshirt_colours[7] << 24);
-            image_id += seatImageId;
-            image_id += 0xA0000000;
-            image_id += 304;
+        if (vehicle->num_peeps > 6)
+        {
+            image_id = (seatImageId + (4 * 76)) | SPRITE_ID_PALETTE_COLOUR_2(vehicle->peep_tshirt_colours[6], vehicle->peep_tshirt_colours[7]);
 
             sub_98199C(image_id, (sint8) seatCoords.x, (sint8) seatCoords.y, lengthX, lengthY, 90, seatCoords.z, boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ, rotation);
         }
     }
 
     image_id = gTrackColours[SCHEME_MISC];
-    if (image_id == 0x20000000) {
-        image_id =
-            0xA0000000 |
-            (ride->track_colour_main[0] << 19) |
-            (ride->track_colour_additional[0] << 24);
+    if (image_id == IMAGE_TYPE_REMAP) {
+        image_id = SPRITE_ID_PALETTE_COLOUR_2(ride->track_colour_main[0], ride->track_colour_additional[0]);
     }
 
     image_id += var_1F;
@@ -235,11 +207,9 @@ static void top_spin_paint_vehicle(sint8 al, sint8 cl, uint8 rideIndex, uint8 di
     sub_98199C(image_id, al, cl, lengthX, lengthY, 90, height, boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ, rotation);
 
     image_id = gTrackColours[SCHEME_MISC];
-    if (image_id == 0x20000000) {
-        image_id =
-            0xA0000000 |
-            (ride->track_colour_main[0] << 19) |
-            (ride->track_colour_supports[0] << 24);
+    if (image_id == IMAGE_TYPE_REMAP)
+    {
+        image_id = SPRITE_ID_PALETTE_COLOUR_2(ride->track_colour_main[0], ride->track_colour_supports[0]);
     }
 
     image_id += (direction & 1) << 1;
