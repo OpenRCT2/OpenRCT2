@@ -1305,7 +1305,7 @@ static bool sub_679023(rct_drawpixelinfo *dpi, sint32 imageId, sint32 x, sint32 
     if (imageId & 0x20000000) {
         gUnkEDF81C = 0x20000000;
         sint32 index = (imageId >> 19) & 0x7F;
-        if (imageId & 0x80000000) {
+        if (imageId & IMAGE_TYPE_REMAP_2_PLUS) {
             index &= 0x1F;
         }
         sint32 g1Index = palette_to_g1_offset[index];

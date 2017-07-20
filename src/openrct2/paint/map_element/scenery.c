@@ -120,7 +120,7 @@ void scenery_paint(uint8 direction, sint32 height, rct_map_element* mapElement) 
     if (entry->small_scenery.flags & SMALL_SCENERY_FLAG_HAS_PRIMARY_COLOUR) {
         baseImageid |= ((mapElement->properties.scenery.colour_1 & 0x1F) << 19) | 0x20000000;
         if (entry->small_scenery.flags & SMALL_SCENERY_FLAG_HAS_SECONDARY_COLOUR) {
-            baseImageid |= ((mapElement->properties.scenery.colour_2 & 0x1F) << 24) | 0x80000000;
+            baseImageid |= ((mapElement->properties.scenery.colour_2 & 0x1F) << 24) | IMAGE_TYPE_REMAP_2_PLUS;
         }
     }
     if (dword_F64EB0 != 0) {
@@ -240,7 +240,7 @@ void scenery_paint(uint8 direction, sint32 height, rct_map_element* mapElement) 
                 if (entry->small_scenery.flags & SMALL_SCENERY_FLAG_HAS_PRIMARY_COLOUR) {
                     image_id |= ((mapElement->properties.scenery.colour_1 & 0x1F) << 19) | 0x20000000;
                     if (entry->small_scenery.flags & SMALL_SCENERY_FLAG_HAS_SECONDARY_COLOUR) {
-                        image_id |= ((mapElement->properties.scenery.colour_2 & 0x1F) << 24) | 0x80000000;
+                        image_id |= ((mapElement->properties.scenery.colour_2 & 0x1F) << 24) | IMAGE_TYPE_REMAP_2_PLUS;
                     }
                 }
                 if (dword_F64EB0 != 0) {

@@ -44,7 +44,7 @@ static void shop_paint_setup(uint8 rideIndex, uint8 trackSequence, uint8 directi
     }
 
     uint32 imageId = gTrackColours[SCHEME_TRACK];
-    if (imageId & 0x80000000) {
+    if (imageId & IMAGE_TYPE_REMAP_2_PLUS) {
         imageId &= 0x60FFFFFF;
     }
     imageId += firstVehicleEntry->base_image_id;

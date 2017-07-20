@@ -4881,7 +4881,7 @@ static void vehicle_update_sound(rct_vehicle *vehicle)
         break;
 
     default:
-        if ((vehicleEntry->flags_b & VEHICLE_ENTRY_FLAG_B_4)) {
+        if ((vehicleEntry->flags_b & VEHICLE_ENTRY_FLAG_B_RIDERS_SCREAM)) {
             screamId = vehicle_update_scream_sound(vehicle);
             if (screamId == NO_SCREAM)
                 screamId = 255;
@@ -5830,7 +5830,7 @@ static void vehicle_update_track_motion_up_stop_check(rct_vehicle *vehicle)
     sint32 verticalG, lateralG;
 
     // No up stops (coaster types)
-    if (vehicleEntry->flags_a & VEHICLE_ENTRY_FLAG_A_1) {
+    if (vehicleEntry->flags_a & VEHICLE_ENTRY_FLAG_A_NO_UPSTOP_WHEELS) {
         sint32 trackType = vehicle->track_type >> 2;
         if (!track_element_is_covered(trackType)) {
             vehicle_get_g_forces(vehicle, &verticalG, &lateralG);
@@ -5849,7 +5849,7 @@ static void vehicle_update_track_motion_up_stop_check(rct_vehicle *vehicle)
                 _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_DERAILED;
             }
         }
-    } else if (vehicleEntry->flags_a & VEHICLE_ENTRY_FLAG_A_2) {
+    } else if (vehicleEntry->flags_a & VEHICLE_ENTRY_FLAG_A_NO_UPSTOP_BOBSLEIGH) {
         // No up stops bobsleigh type
         sint32 trackType = vehicle->track_type >> 2;
         if (!track_element_is_covered(trackType)) {
@@ -7353,7 +7353,7 @@ static bool vehicle_update_track_motion_forwards_get_new_track(rct_vehicle *vehi
     // TODO check if getting the vehicle entry again is necessary
     rct_ride_entry_vehicle* vehicleEntry = vehicle_get_vehicle_entry(vehicle);
 
-    if (vehicleEntry->flags_a & VEHICLE_ENTRY_FLAG_A_8) {
+    if (vehicleEntry->flags_a & VEHICLE_ENTRY_FLAG_A_ALLOW_DOORS) {
         vehicle_update_scenery_door(vehicle);
     }
 
@@ -7482,7 +7482,7 @@ loc_6DB41D:
     if (trackType == TRACK_ELEM_ROTATION_CONTROL_TOGGLE && rideType == RIDE_TYPE_WILD_MOUSE) {
         vehicle->update_flags ^= VEHICLE_UPDATE_FLAG_13;
     }
-    if (vehicleEntry->flags_a & VEHICLE_ENTRY_FLAG_A_8) {
+    if (vehicleEntry->flags_a & VEHICLE_ENTRY_FLAG_A_ALLOW_DOORS) {
         vehicle_update_handle_scenery_door(vehicle);
     }
     return true;

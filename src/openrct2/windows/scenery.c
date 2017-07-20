@@ -1150,7 +1150,7 @@ void window_scenery_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 sc
                 sceneryEntry = get_large_scenery_entry(currentSceneryGlobalId - SCENERY_LARGE_SCENERY_ID_MIN);
                 uint32 imageId = sceneryEntry->image + gWindowSceneryRotation;
                 imageId |= (gWindowSceneryPrimaryColour << 19) | 0x20000000;
-                imageId |= (gWindowScenerySecondaryColour << 24) | 0x80000000;
+                imageId |= (gWindowScenerySecondaryColour << 24) | IMAGE_TYPE_REMAP_2_PLUS;
 
                 gfx_draw_sprite(&clipdpi, imageId, 0x21, 0, w->colours[1]);
             }
@@ -1164,7 +1164,7 @@ void window_scenery_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 sc
                     imageId |= (gWindowSceneryPrimaryColour << 19) | 0x20000000;
 
                     if (sceneryEntry->wall.flags & WALL_SCENERY_HAS_SECONDARY_COLOUR) {
-                        imageId |= (gWindowScenerySecondaryColour << 24) | 0x80000000;
+                        imageId |= (gWindowScenerySecondaryColour << 24) | IMAGE_TYPE_REMAP_2_PLUS;
                     }
                     gfx_draw_sprite(&clipdpi, imageId, 0x2F, spriteTop, tertiaryColour);
 
@@ -1175,7 +1175,7 @@ void window_scenery_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 sc
                     imageId |= (gWindowSceneryPrimaryColour << 19) | 0x20000000;
 
                     if (sceneryEntry->wall.flags & WALL_SCENERY_HAS_SECONDARY_COLOUR) {
-                        imageId |= (gWindowScenerySecondaryColour << 24) | 0x80000000;
+                        imageId |= (gWindowScenerySecondaryColour << 24) | IMAGE_TYPE_REMAP_2_PLUS;
 
                         if (sceneryEntry->wall.flags & WALL_SCENERY_HAS_TERNARY_COLOUR) {
                             imageId &= 0xDFFFFFFF;
@@ -1203,7 +1203,7 @@ void window_scenery_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 sc
                     imageId |= (gWindowSceneryPrimaryColour << 19) | 0x20000000;
 
                     if (sceneryEntry->small_scenery.flags & SMALL_SCENERY_FLAG_HAS_SECONDARY_COLOUR) {
-                        imageId |= (gWindowScenerySecondaryColour << 24) | 0x80000000;
+                        imageId |= (gWindowScenerySecondaryColour << 24) | IMAGE_TYPE_REMAP_2_PLUS;
                     }
                 }
 

@@ -68,6 +68,8 @@ enum WINDOW_GUEST_WIDGET_IDX {
     WIDX_RIDE_SCROLL = 10
 };
 
+#define BAR_BLINK (1u << 31)
+
 validate_global_widx(WC_PEEP, WIDX_ACTION_LBL);
 
 rct_widget window_guest_overview_widgets[] = {
@@ -1329,7 +1331,7 @@ void window_guest_stats_invalidate(rct_window *w)
 *
 *  rct2: 0x0066ECC1
 *
-*  ebp: colour, contains flag 0x80000000 for blinking
+*  ebp: colour, contains flag BAR_BLINK for blinking
 */
 static void window_guest_stats_bars_paint(sint32 value, sint32 x, sint32 y, rct_window *w, rct_drawpixelinfo *dpi, sint32 colour){
     value *= 0x76;
@@ -1337,8 +1339,9 @@ static void window_guest_stats_bars_paint(sint32 value, sint32 x, sint32 y, rct_
 
     gfx_fill_rect_inset(dpi, x + 0x3A, y + 1, x + 0x3A + 0x79, y + 9, w->colours[1], INSET_RECT_F_30);
 
-    sint32 blink_flag = colour & (1u << 0x1F); //0x80000000
-    colour &= ~(1u << 0x1F);
+    sint32 blink_flag = colour & BAR_BLINK;
+    colour &= ~BAR_BLINK;
+
     if (!blink_flag ||
         game_is_paused() ||
         (gCurrentTicks & 8) == 0)
@@ -1380,7 +1383,7 @@ void window_guest_stats_paint(rct_window *w, rct_drawpixelinfo *dpi)
     if (happiness < 10)happiness = 10;
     sint32 ebp = COLOUR_BRIGHT_GREEN;
     if (happiness < 50){
-        ebp |= 0x80000000;
+        ebp |= BAR_BLINK;
     }
     window_guest_stats_bars_paint(happiness, x, y, w, dpi, ebp);
 
@@ -1391,7 +1394,7 @@ void window_guest_stats_paint(rct_window *w, rct_drawpixelinfo *dpi)
     sint32 energy = ((peep->energy - 32) * 85) / 32;
     ebp = COLOUR_BRIGHT_GREEN;
     if (energy < 50){
-        ebp |= 0x80000000;
+        ebp |= BAR_BLINK;
     }
     if (energy < 10)energy = 10;
     window_guest_stats_bars_paint(energy, x, y, w, dpi, ebp);
@@ -1411,7 +1414,7 @@ void window_guest_stats_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
     ebp = COLOUR_BRIGHT_RED;
     if (hunger > 170){
-        ebp |= 0x80000000;
+        ebp |= BAR_BLINK;
     }
     window_guest_stats_bars_paint(hunger, x, y, w, dpi, ebp);
 
@@ -1430,7 +1433,7 @@ void window_guest_stats_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
     ebp = COLOUR_BRIGHT_RED;
     if (thirst > 170){
-        ebp |= 0x80000000;
+        ebp |= BAR_BLINK;
     }
     window_guest_stats_bars_paint(thirst, x, y, w, dpi, ebp);
 
@@ -1446,7 +1449,7 @@ void window_guest_stats_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
     ebp = COLOUR_BRIGHT_RED;
     if (nausea > 120){
-        ebp |= 0x80000000;
+        ebp |= BAR_BLINK;
     }
     window_guest_stats_bars_paint(nausea, x, y, w, dpi, ebp);
 
@@ -1464,7 +1467,7 @@ void window_guest_stats_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
     ebp = COLOUR_BRIGHT_RED;
     if (bathroom > 160){
-        ebp |= 0x80000000;
+        ebp |= BAR_BLINK;
     }
     window_guest_stats_bars_paint(bathroom, x, y, w, dpi, ebp);
 

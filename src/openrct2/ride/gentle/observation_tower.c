@@ -52,7 +52,7 @@ void vehicle_visual_observation_tower(sint32 x, sint32 imageDirection, sint32 y,
         baseImage_id = (vehicle->var_C5 * 2) + vehicleEntry->base_image_id + 8;
     }
 
-    image_id = baseImage_id | (vehicle->colours.body_colour << 19) | (vehicle->colours.trim_colour << 24) | 0x80000000;
+    image_id = baseImage_id | (vehicle->colours.body_colour << 19) | (vehicle->colours.trim_colour << 24) | IMAGE_TYPE_REMAP_2_PLUS;
     paint_struct* ps = sub_98197C(image_id, 0, 0, 2, 2, 41, z, -11, -11, z + 1, get_current_rotation());
     if (ps != NULL) {
         ps->tertiary_colour = vehicle->colours_extended;

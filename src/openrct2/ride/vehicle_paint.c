@@ -902,7 +902,7 @@ static void vehicle_sprite_paint(rct_vehicle *vehicle, sint32 ebx, sint32 ecx, s
         baseImage_id += vehicle->var_C5;
     }
     uint32 rotation = get_current_rotation();
-    sint32 image_id = baseImage_id | (vehicle->colours.body_colour << 19) | (vehicle->colours.trim_colour << 24) | 0x80000000;
+    sint32 image_id = baseImage_id | (vehicle->colours.body_colour << 19) | (vehicle->colours.trim_colour << 24) | IMAGE_TYPE_REMAP_2_PLUS;
     paint_struct* ps = sub_98197C(image_id, 0, 0, bb.length_x, bb.length_y, bb.length_z, z, bb.offset_x, bb.offset_y, bb.offset_z + z, rotation);
     if (ps != NULL) {
         ps->tertiary_colour = vehicle->colours_extended;
@@ -913,7 +913,7 @@ static void vehicle_sprite_paint(rct_vehicle *vehicle, sint32 ebx, sint32 ecx, s
         for (sint32 i = 0; i < 8; i++){
             if (vehicle->num_peeps > (i * 2) && vehicleEntry->no_seating_rows > i) {
                 image_id = baseImage_id | (vehicle->peep_tshirt_colours[i * 2] << 19) | (vehicle->peep_tshirt_colours[(i * 2) + 1] << 24) | 0xA0000000;
-                if (i == 0 && vehicleEntry->flags_b & VEHICLE_ENTRY_FLAG_A_8) {
+                if (i == 0 && vehicleEntry->flags_b & VEHICLE_ENTRY_FLAG_B_8) {
                     image_id += (vehicleEntry->no_vehicle_images * vehicle->var_C5);
                 }
                 sub_98199C(image_id, 0, 0,  bb.length_x, bb.length_y, bb.length_z, z, bb.offset_x, bb.offset_y, bb.offset_z + z, rotation);

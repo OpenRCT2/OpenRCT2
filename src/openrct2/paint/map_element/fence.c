@@ -151,7 +151,7 @@ void fence_paint(uint8 direction, sint32 height, rct_map_element * map_element)
 
     if (sceneryEntry->wall.flags & WALL_SCENERY_HAS_SECONDARY_COLOUR) {
         uint8 secondaryColour = wall_element_get_secondary_colour(map_element);
-        imageColourFlags |= secondaryColour << 24 | 0x80000000;
+        imageColourFlags |= secondaryColour << 24 | IMAGE_TYPE_REMAP_2_PLUS;
     }
 
     uint32 tertiaryColour = 0;

@@ -1320,7 +1320,7 @@ static void window_ride_draw_tab_vehicle(rct_drawpixelinfo *dpi, rct_window *w)
         spriteIndex *= rideVehicleEntry->var_16;
         spriteIndex += rideVehicleEntry->base_image_id;
         spriteIndex |= (vehicleColour.additional_1 << 24) | (vehicleColour.main << 19);
-        spriteIndex |= 0x80000000;
+        spriteIndex |= IMAGE_TYPE_REMAP_2_PLUS;
 
         gfx_draw_sprite(&clipDPI, spriteIndex, x, y, vehicleColour.additional_2);
     }
@@ -2987,7 +2987,7 @@ static void window_ride_vehicle_scrollpaint(rct_window *w, rct_drawpixelinfo *dp
             spriteIndex *= rideVehicleEntry->var_16;
             spriteIndex += rideVehicleEntry->base_image_id;
             spriteIndex |= (vehicleColour.additional_1 << 24) | (vehicleColour.main << 19);
-            spriteIndex |= 0x80000000;
+            spriteIndex |= IMAGE_TYPE_REMAP_2_PLUS;
 
             nextSpriteToDraw->x = x;
             nextSpriteToDraw->y = y;
@@ -4473,21 +4473,27 @@ static void window_ride_colour_invalidate(rct_window *w)
         window_ride_colour_widgets[WIDX_VEHICLE_MAIN_COLOUR].type = WWT_COLOURBTN;
         window_ride_colour_widgets[WIDX_VEHICLE_MAIN_COLOUR].image = window_ride_get_colour_button_image(vehicleColour.main);
 
-        uint32 colourFlags = 0;
+        bool allowChangingAdditionalColour1 = false;
+        bool allowChangingAdditionalColour2 = false;
+
         for (sint32 i = 0; i < ride->num_cars_per_train; i++) {
             uint8 vehicleTypeIndex = ride_entry_get_vehicle_at_position(ride->subtype, ride->num_cars_per_train, i);
 
-            colourFlags |= rideEntry->vehicles[vehicleTypeIndex].flags_b;
-            colourFlags = ror32(colourFlags, 16);
-            colourFlags |= rideEntry->vehicles[vehicleTypeIndex].flags_a;
-            colourFlags = ror32(colourFlags, 16);
+            if (rideEntry->vehicles[vehicleTypeIndex].flags_b & VEHICLE_ENTRY_FLAG_B_ENABLE_ADDITIONAL_COLOUR_1)
+            {
+                allowChangingAdditionalColour1 = true;
+            }
+            if (rideEntry->vehicles[vehicleTypeIndex].flags_a & VEHICLE_ENTRY_FLAG_A_ENABLE_ADDITIONAL_COLOUR_2)
+            {
+                allowChangingAdditionalColour2 = true;
+            }
         }
 
         // Additional colours
-        if (colourFlags & 1) {
+        if (allowChangingAdditionalColour1) {
             window_ride_colour_widgets[WIDX_VEHICLE_ADDITIONAL_COLOUR_1].type = WWT_COLOURBTN;
             window_ride_colour_widgets[WIDX_VEHICLE_ADDITIONAL_COLOUR_1].image = window_ride_get_colour_button_image(vehicleColour.additional_1);
-            if (colourFlags & 0x2000000) {
+            if (allowChangingAdditionalColour2) {
                 window_ride_colour_widgets[WIDX_VEHICLE_ADDITIONAL_COLOUR_2].type = WWT_COLOURBTN;
                 window_ride_colour_widgets[WIDX_VEHICLE_ADDITIONAL_COLOUR_2].image = window_ride_get_colour_button_image(vehicleColour.additional_2);
             } else {
@@ -4676,7 +4682,7 @@ static void window_ride_colour_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi
     spriteIndex *= rideVehicleEntry->var_16;
     spriteIndex += rideVehicleEntry->base_image_id;
     spriteIndex |= (vehicleColour.additional_1 << 24) | (vehicleColour.main << 19);
-    spriteIndex |= 0x80000000;
+    spriteIndex |= IMAGE_TYPE_REMAP_2_PLUS;
     gfx_draw_sprite(dpi, spriteIndex, x, y, vehicleColour.additional_2);
 }
 
