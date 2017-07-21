@@ -141,12 +141,12 @@ public:
 
 typedef IGameAction *(*GameActionFactory)();
 
-template<uint32 _TYPE, uint16 _ACTFLAGS>
+template<uint32 TType, uint16 TActionFlags>
 struct GameAction : public IGameAction
 {    
 public:
-    constexpr static uint32 Type = _TYPE;
-    constexpr static uint16 ActionFlags = _ACTFLAGS;
+    constexpr static uint32 Type = TType;
+    constexpr static uint16 ActionFlags = TActionFlags;
 
 private:
     uint32 _playerId;   // Callee
@@ -235,22 +235,21 @@ public:
 
 namespace GameActions
 {
-void                Initialize();
-void                Register();
-IGameAction::Ptr       Create(uint32 id);
-GameActionResult::Ptr    Query(const IGameAction * action);
-GameActionResult::Ptr    Execute(const IGameAction * action);
+    void                    Initialize();
+    void                    Register();
+    IGameAction::Ptr        Create(uint32 id);
+    GameActionResult::Ptr   Query(const IGameAction * action);
+    GameActionResult::Ptr   Execute(const IGameAction * action);
+    GameActionFactory       Register(uint32 id, GameActionFactory action);
 
-GameActionFactory   Register(uint32 id, GameActionFactory action);
-
-template<typename T>
-static GameActionFactory Register()
-{
-    GameActionFactory factory = []() -> IGameAction *
+    template<typename T>
+    static GameActionFactory Register()
     {
-        return new T();
-    };
-    Register(T::Type, factory);
-    return factory;
-}
+        GameActionFactory factory = []() -> IGameAction *
+        {
+            return new T();
+        };
+        Register(T::Type, factory);
+        return factory;
+    }
 }
