@@ -63,11 +63,11 @@ namespace GameActions
         initialized = true;
     }
 
-    std::unique_ptr<IGameAction> Create(uint32 id)
+    std::unique_ptr<GameAction> Create(uint32 id)
     {
         Initialize();
 
-        IGameAction * result = nullptr;
+        GameAction * result = nullptr;
         if (id < Util::CountOf(_actions))
         {
             GameActionFactory factory = _actions[id];
@@ -76,7 +76,7 @@ namespace GameActions
                 result = factory();
             }
         }
-        return std::unique_ptr<IGameAction>(result);
+        return std::unique_ptr<GameAction>(result);
     }
 
     static bool CheckActionInPausedMode(uint32 actionFlags)
@@ -95,7 +95,7 @@ namespace GameActions
         return false;
     }
 
-    GameActionResult::Ptr Query(const IGameAction * action)
+    GameActionResult::Ptr Query(const GameAction * action)
     {
         Guard::ArgumentNotNull(action);
 
@@ -123,7 +123,7 @@ namespace GameActions
         return result;
     }
 
-    GameActionResult::Ptr Execute(const IGameAction * action)
+    GameActionResult::Ptr Execute(const GameAction * action)
     {
         Guard::ArgumentNotNull(action);
 
@@ -191,7 +191,7 @@ namespace GameActions
         }
 
         // Call callback for asynchronous events
-        const GameActionCallback_t& cb = action->GetCallback();
+        const GameAction::GameActionCallback_t& cb = action->GetCallback();
         if (cb)
         {
             cb(action, result);
