@@ -19,6 +19,11 @@
 
 #include "common.h"
 
+#define RCT2_MAX_RIDES_IN_PARK   255
+#define RCT2_MAX_STAFF           204
+#define RCT2_MAX_BANNERS_IN_PARK 250
+#define RCT2_MAX_CARS_PER_TRAIN  32
+
 typedef struct rct2_install_info {
     uint32 installLevel;
     char title[260];
@@ -153,9 +158,6 @@ enum {
 extern "C" {
 #endif
 
-
-extern const char * const RCT2FilePaths[PATH_ID_END];
-
 extern uint32 gCurrentDrawCount;
 
 extern uint8 gScreenFlags;
@@ -163,29 +165,15 @@ extern uint32 gScreenAge;
 extern uint8 gSavePromptMode;
 
 extern char gRCT2AddressAppPath[];
-extern char gRCT2AddressSavedGamesPath[];
-extern char gRCT2AddressScenariosPath[];
-extern char gRCT2AddressLandscapesPath[];
-extern char gRCT2AddressObjectDataPath[];
-extern char gRCT2AddressTracksPath[];
 
 bool rct2_init();
 sint32 rct2_init_directories();
-sint32 rct2_startup_checks();
-void rct2_dispose();
-void rct2_update();
-void substitute_path(char *dest, size_t size, const char *path, const char *filename);
 sint32 check_mutex();
-sint32 check_file_paths();
-bool check_file_path(sint32 pathId);
 sint32 check_files_integrity();
 const char *get_file_path(sint32 pathId);
 void rct2_quit();
 
-bool rct2_open_file(const char *path);
-
 uint32 get_file_extension_type(const utf8 *path);
-void rct2_copy_original_user_files_over();
 
 #ifdef __cplusplus
 }

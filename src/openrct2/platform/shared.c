@@ -58,13 +58,6 @@ typedef void(*update_palette_func)(const uint8*, sint32, sint32);
 
 rct_palette_entry gPalette[256];
 
-void platform_draw()
-{
-    if (!gOpenRCT2Headless) {
-        drawing_engine_draw();
-    }
-}
-
 static uint8 soft_light(uint8 a, uint8 b)
 {
     float fa = a / 255.0f;
@@ -123,25 +116,6 @@ void platform_update_palette(const uint8* colours, sint32 start_index, sint32 nu
     if (!gOpenRCT2Headless) {
         drawing_engine_set_palette(gPalette);
     }
-}
-
-void platform_init()
-{
-    // gKeysPressed = malloc(sizeof(uint8) * 256);
-    // memset(gKeysPressed, 0, sizeof(uint8) * 256);
-
-    // Set the highest palette entry to white.
-    // This fixes a bug with the TT:rainbow road due to the
-    // image not using the correct white palette entry.
-    gPalette[255].alpha = 0;
-    gPalette[255].red = 255;
-    gPalette[255].green = 255;
-    gPalette[255].blue = 255;
-}
-
-void platform_free()
-{
-    // free(gKeysPressed);
 }
 
 void platform_toggle_windowed_mode()

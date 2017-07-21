@@ -189,11 +189,11 @@ void research_finish_item(sint32 entryIndex)
         if (rideEntry != NULL && rideEntry != (rct_ride_entry *)-1 && base_ride_type != RIDE_TYPE_NULL)
         {
             bool ride_group_was_invented_before = false;
-            bool track_type_was_invented_before = ride_type_is_invented(base_ride_type);
+            bool ride_type_was_invented_before = ride_type_is_invented(base_ride_type);
             rct_string_id availabilityString;
 
             // Determine if the ride group this entry belongs to was invented before.
-            if (gConfigInterface.select_by_track_type && track_type_has_ride_groups(base_ride_type))
+            if (gConfigInterface.select_by_track_type && ride_type_has_ride_groups(base_ride_type))
             {
                 const ride_group * rideGroup = get_ride_group(base_ride_type, rideEntry);
 
@@ -249,7 +249,7 @@ void research_finish_item(sint32 entryIndex)
                     set_format_arg(0, rct_string_id, rideEntry->name);
                 }
                 // If a vehicle is the first to be invented for its ride group, show the ride group name.
-                else if (!track_type_was_invented_before || (track_type_has_ride_groups(base_ride_type) && !ride_group_was_invented_before))
+                else if (!ride_type_was_invented_before || (ride_type_has_ride_groups(base_ride_type) && !ride_group_was_invented_before))
                 {
                     rct_ride_name naming = get_ride_naming(base_ride_type, rideEntry);
                     availabilityString = STR_NEWS_ITEM_RESEARCH_NEW_RIDE_AVAILABLE;

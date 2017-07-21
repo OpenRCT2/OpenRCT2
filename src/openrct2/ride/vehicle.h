@@ -222,15 +222,15 @@ typedef struct rct_vehicle_info {
 
 enum {
     VEHICLE_ENTRY_FLAG_A_0 = 1 << 0,
-    VEHICLE_ENTRY_FLAG_A_1 = 1 << 1,
-    VEHICLE_ENTRY_FLAG_A_2 = 1 << 2,
+    VEHICLE_ENTRY_FLAG_A_NO_UPSTOP_WHEELS = 1 << 1,
+    VEHICLE_ENTRY_FLAG_A_NO_UPSTOP_BOBSLEIGH = 1 << 2,
     VEHICLE_ENTRY_FLAG_A_MINI_GOLF = 1 << 3,
     VEHICLE_ENTRY_FLAG_A_4 = 1 << 4,
     VEHICLE_ENTRY_FLAG_A_5 = 1 << 5,
     VEHICLE_ENTRY_FLAG_A_6 = 1 << 6,
     VEHICLE_ENTRY_FLAG_A_7 = 1 << 7,
-    VEHICLE_ENTRY_FLAG_A_8 = 1 << 8,
-    VEHICLE_ENTRY_FLAG_A_9 = 1 << 9,
+    VEHICLE_ENTRY_FLAG_A_ALLOW_DOORS = 1 << 8,
+    VEHICLE_ENTRY_FLAG_A_ENABLE_ADDITIONAL_COLOUR_2 = 1 << 9,
     VEHICLE_ENTRY_FLAG_A_10 = 1 << 10,
     VEHICLE_ENTRY_FLAG_A_11 = 1 << 11,
     VEHICLE_ENTRY_FLAG_A_12 = 1 << 12,
@@ -240,11 +240,11 @@ enum {
 };
 
 enum {
-    VEHICLE_ENTRY_FLAG_B_0 = 1 << 0,
+    VEHICLE_ENTRY_FLAG_B_ENABLE_ADDITIONAL_COLOUR_1 = 1 << 0,
     VEHICLE_ENTRY_FLAG_B_SWINGING = 1 << 1,
     VEHICLE_ENTRY_FLAG_B_SPINNING = 1 << 2,
     VEHICLE_ENTRY_FLAG_B_3 = 1 << 3,
-    VEHICLE_ENTRY_FLAG_B_4 = 1 << 4,
+    VEHICLE_ENTRY_FLAG_B_RIDERS_SCREAM = 1 << 4,
     VEHICLE_ENTRY_FLAG_B_5 = 1 << 5,
     VEHICLE_ENTRY_FLAG_B_6 = 1 << 6,
     VEHICLE_ENTRY_FLAG_B_7 = 1 << 7,
@@ -369,6 +369,7 @@ enum {
 #define VEHICLE_SEAT_PAIR_FLAG  0x80
 #define VEHICLE_SEAT_NUM_MASK   0x7F
 
+rct_vehicle * try_get_vehicle(uint16 spriteIndex);
 void vehicle_update_all();
 sint32 sub_6BC2F3(rct_vehicle* vehicle);
 void vehicle_sounds_update();

@@ -22,6 +22,7 @@
 #include "ride.h"
 #include "ride_data.h"
 #include "ride_ratings.h"
+#include "station.h"
 #include "track.h"
 
 enum {
@@ -203,7 +204,7 @@ static void ride_ratings_update_state_2()
             if (trackType == TRACK_ELEM_END_STATION) {
                 sint32 entranceIndex = map_get_station(mapElement);
                 gRideRatingsCalcData.station_flags &= ~RIDE_RATING_STATION_FLAG_NO_ENTRANCE;
-                if (ride->entrances[entranceIndex] == 0xFFFF) {
+                if (ride->entrances[entranceIndex].xy == RCT_XY8_UNDEFINED) {
                     gRideRatingsCalcData.station_flags |= RIDE_RATING_STATION_FLAG_NO_ENTRANCE;
                 }
             }
@@ -339,15 +340,15 @@ static void ride_ratings_begin_proximity_loop()
         return;
     }
 
-    for (sint32 i = 0; i < RCT12_MAX_STATIONS_PER_RIDE; i++) {
-        if (ride->station_starts[i] != 0xFFFF) {
+    for (sint32 i = 0; i < MAX_STATIONS; i++) {
+        if (ride->station_starts[i].xy != RCT_XY8_UNDEFINED) {
             gRideRatingsCalcData.station_flags &= ~RIDE_RATING_STATION_FLAG_NO_ENTRANCE;
-            if (ride->entrances[i] == 0xFFFF) {
+            if (ride->entrances[i].xy == RCT_XY8_UNDEFINED) {
                 gRideRatingsCalcData.station_flags |= RIDE_RATING_STATION_FLAG_NO_ENTRANCE;
             }
 
-            sint32 x = (ride->station_starts[i] & 0xFF) * 32;
-            sint32 y = (ride->station_starts[i] >> 8) * 32;
+            sint32 x = ride->station_starts[i].x * 32;
+            sint32 y = ride->station_starts[i].y * 32;
             sint32 z = ride->station_heights[i] * 8;
 
             gRideRatingsCalcData.proximity_x = x;
@@ -1246,26 +1247,32 @@ static rating_tuple ride_ratings_get_drop_ratings(rct_ride *ride)
  */
 static sint32 ride_ratings_get_scenery_score(rct_ride *ride)
 {
-    sint32 i;
-    uint16 stationXY;
-    for (i = 0; i < RCT12_MAX_STATIONS_PER_RIDE; i++) {
-        stationXY = ride->station_starts[i];
-        if (stationXY != 0xFFFF)
-            break;
-    }
-    if (i == 4)
+    sint8 i = ride_get_first_valid_station_start(ride);
+    rct_xy8 location;
+
+    if (i == -1)
+    {
         return 0;
+    }
 
     if (ride->type == RIDE_TYPE_MAZE)
-        stationXY = ride->entrances[0];
+    {
+        location = ride->entrances[0];
+    }
+    else
+    {
+        location = ride->station_starts[i];
+    }
 
-    sint32 x = stationXY & 0xFF;
-    sint32 y = stationXY >> 8;
+    sint32 x = location.x;
+    sint32 y = location.y;
     sint32 z = map_element_height(x * 32, y * 32) & 0xFFFF;
 
     // Check if station is underground, returns a fixed mediocre score since you can't have scenery underground
     if (z > ride->station_heights[i] * 8)
+    {
         return 40;
+    }
 
     // Count surrounding scenery items
     sint32 numSceneryItems = 0;

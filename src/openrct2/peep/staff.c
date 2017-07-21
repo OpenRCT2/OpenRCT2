@@ -1160,14 +1160,14 @@ static uint8 staff_mechanic_direction_surface(rct_peep* peep) {
 
         rct_ride* ride = get_ride(peep->current_ride);
 
-        uint16 location = ride->exits[peep->current_ride_station];
-        if (location == 0xFFFF) {
+        rct_xy8 location = ride->exits[peep->current_ride_station];
+        if (location.xy == RCT_XY8_UNDEFINED) {
             location = ride->entrances[peep->current_ride_station];
         }
 
         rct_xy16 chosenTile = {
-            .x = (location & 0xFF) * 32,
-            .y = (location >> 8) * 32
+            .x = location.x * 32,
+            .y = location.y * 32
         };
 
         sint16 x_diff = chosenTile.x - peep->x;
@@ -1248,14 +1248,14 @@ static uint8 staff_mechanic_direction_path(rct_peep* peep, uint8 validDirections
 
         /* Find location of the exit for the target ride station
          * or if the ride has no exit, the entrance. */
-        uint16 location = ride->exits[peep->current_ride_station];
-        if (location == 0xFFFF) {
+        rct_xy8 location = ride->exits[peep->current_ride_station];
+        if (location.xy == RCT_XY8_UNDEFINED) {
             location = ride->entrances[peep->current_ride_station];
         }
 
         rct_xy16 chosenTile = {
-            .x = (location & 0xFF) * 32,
-            .y = (location >> 8) * 32
+            .x = location.x * 32,
+            .y = location.y * 32
         };
 
         gPeepPathFindGoalPosition.x = chosenTile.x;

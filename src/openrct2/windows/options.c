@@ -191,10 +191,10 @@ enum WINDOW_OPTIONS_WIDGET_IDX {
 #define WH          332
 
 #ifndef DISABLE_TWITCH
-    #define TWITCH_TAB_SPRITE   0x20000000 | SPR_TAB
+    #define TWITCH_TAB_SPRITE   IMAGE_TYPE_REMAP | SPR_TAB
     #define TWITCH_TAB_COLOUR   1
 #else
-    #define TWITCH_TAB_SPRITE   0x20000000 | SPR_G2_TAB_DISABLED
+    #define TWITCH_TAB_SPRITE   IMAGE_TYPE_REMAP | SPR_G2_TAB_DISABLED
     #define TWITCH_TAB_COLOUR   0
 #endif
 
@@ -203,12 +203,12 @@ enum WINDOW_OPTIONS_WIDGET_IDX {
     { WWT_CAPTION,          0,  1,      WW-2,   1,      14,     STR_OPTIONS_TITLE,      STR_WINDOW_TITLE_TIP }, \
     { WWT_CLOSEBOX,         0,  WW-13,  WW-3,   2,      13,     STR_CLOSE_X,            STR_CLOSE_WINDOW_TIP }, \
     { WWT_RESIZE,           1,  0,      WW-1,   43,     WH-1,   0xFFFFFFFF,             STR_NONE }, \
-    { WWT_TAB,              1,  3,      33,     17,     43,     0x20000000 | SPR_TAB,   STR_OPTIONS_DISPLAY_TIP }, \
-    { WWT_TAB,              1,  34,     64,     17,     43,     0x20000000 | SPR_TAB,   STR_OPTIONS_RENDERING_TIP }, \
-    { WWT_TAB,              1,  65,     95,     17,     43,     0x20000000 | SPR_TAB,   STR_OPTIONS_CULTURE_TIP }, \
-    { WWT_TAB,              1,  96,     126,    17,     43,     0x20000000 | SPR_TAB,   STR_OPTIONS_AUDIO_TIP }, \
-    { WWT_TAB,              1,  127,    157,    17,     43,     0x20000000 | SPR_TAB,   STR_OPTIONS_CONTROLS_AND_INTERFACE_TIP }, \
-    { WWT_TAB,              1,  158,    188,    17,     43,     0x20000000 | SPR_TAB,   STR_OPTIONS_MISCELLANEOUS_TIP }, \
+    { WWT_TAB,              1,  3,      33,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_OPTIONS_DISPLAY_TIP }, \
+    { WWT_TAB,              1,  34,     64,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_OPTIONS_RENDERING_TIP }, \
+    { WWT_TAB,              1,  65,     95,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_OPTIONS_CULTURE_TIP }, \
+    { WWT_TAB,              1,  96,     126,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_OPTIONS_AUDIO_TIP }, \
+    { WWT_TAB,              1,  127,    157,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_OPTIONS_CONTROLS_AND_INTERFACE_TIP }, \
+    { WWT_TAB,              1,  158,    188,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_OPTIONS_MISCELLANEOUS_TIP }, \
     { WWT_TAB,              TWITCH_TAB_COLOUR,  189,    219,    17,     43,     TWITCH_TAB_SPRITE,      STR_OPTIONS_TWITCH_TIP }
 
 static rct_widget window_options_display_widgets[] = {

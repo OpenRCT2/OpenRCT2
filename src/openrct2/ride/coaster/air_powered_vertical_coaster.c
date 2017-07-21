@@ -172,7 +172,7 @@ static uint32 air_powered_vertical_rc_get_support_colour()
 {
     uint32 colourFlags = gTrackColours[SCHEME_SUPPORTS];
     uint32 trackColour = gTrackColours[SCHEME_TRACK];
-    if (trackColour & 0x80000000) {
+    if (trackColour & IMAGE_TYPE_REMAP_2_PLUS) {
         colourFlags |= (trackColour & 0x9F000000);
     }
     return colourFlags;

@@ -248,7 +248,7 @@ sint32 viewport_interaction_get_item_right(sint32 x, sint32 y, viewport_interact
 
         stationIndex = map_get_station(mapElement);
         for (i = stationIndex; i >= 0; i--)
-            if (ride->station_starts[i] == 0xFFFF)
+            if (ride->station_starts[i].xy == RCT_XY8_UNDEFINED)
                 stationIndex--;
         stationIndex++;
         set_map_tooltip_format_arg(12, uint16, stationIndex);

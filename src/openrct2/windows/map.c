@@ -74,8 +74,8 @@ static rct_widget window_map_widgets[] = {
     { WWT_CAPTION,          0,  1,      243,    1,      14,     STR_MAP_LABEL,                          STR_WINDOW_TITLE_TIP },
     { WWT_CLOSEBOX,         0,  232,    242,    2,      13,     STR_CLOSE_X,                            STR_CLOSE_WINDOW_TIP },
     { WWT_RESIZE,           1,  0,      244,    43,     257,    STR_NONE,                               STR_NONE },
-    { WWT_COLOURBTN,        1,  3,      33,     17,     43,     0x20000000 | SPR_TAB,                   STR_SHOW_PEOPLE_ON_MAP_TIP },
-    { WWT_COLOURBTN,        1,  34,     64,     17,     43,     0x20000000 | SPR_TAB,                   STR_SHOW_RIDES_STALLS_ON_MAP_TIP },
+    { WWT_COLOURBTN,        1,  3,      33,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,                   STR_SHOW_PEOPLE_ON_MAP_TIP },
+    { WWT_COLOURBTN,        1,  34,     64,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,                   STR_SHOW_RIDES_STALLS_ON_MAP_TIP },
     { WWT_SCROLL,           1,  3,      241,    46,     225,    SCROLL_BOTH,                            STR_NONE },
     { WWT_SPINNER,          1,  104,    198,    229,    240,    STR_MAP_SIZE_VALUE,                     STR_NONE },
     { WWT_DROPDOWN_BUTTON,  1,  187,    197,    230,    234,    STR_NUMERIC_UP,                         STR_NONE },
@@ -84,8 +84,8 @@ static rct_widget window_map_widgets[] = {
     { WWT_FLATBTN,          1,  4,      27,     1,      24,     SPR_PARK_ENTRANCE,                      STR_BUILD_PARK_ENTRANCE_TIP },
     { WWT_FLATBTN,          1,  28,     51,     1,      24,     SPR_NONE,                               STR_SET_STARTING_POSITIONS_TIP },
     { WWT_IMGBTN,           1,  4,      47,     17,     48,     SPR_LAND_TOOL_SIZE_0,                   STR_NONE },
-    { WWT_TRNBTN,           1,  5,      20,     18,     33,     0x20000000 | SPR_LAND_TOOL_DECREASE,    STR_ADJUST_SMALLER_LAND_TIP },
-    { WWT_TRNBTN,           1,  31,     46,     32,     47,     0x20000000 | SPR_LAND_TOOL_INCREASE,    STR_ADJUST_LARGER_LAND_TIP },
+    { WWT_TRNBTN,           1,  5,      20,     18,     33,     IMAGE_TYPE_REMAP | SPR_LAND_TOOL_DECREASE,    STR_ADJUST_SMALLER_LAND_TIP },
+    { WWT_TRNBTN,           1,  31,     46,     32,     47,     IMAGE_TYPE_REMAP | SPR_LAND_TOOL_INCREASE,    STR_ADJUST_LARGER_LAND_TIP },
     { WWT_CHECKBOX,         1,  58,     241,    197,    208,    STR_LAND_OWNED,                         STR_SET_LAND_TO_BE_OWNED_TIP },
     { WWT_CHECKBOX,         1,  58,     241,    197,    208,    STR_CONSTRUCTION_RIGHTS_OWNED,          STR_SET_CONSTRUCTION_RIGHTS_TO_BE_OWNED_TIP },
     { WWT_CHECKBOX,         1,  58,     241,    197,    208,    STR_LAND_SALE,                          STR_SET_LAND_TO_BE_AVAILABLE_TIP },
@@ -834,7 +834,7 @@ static void window_map_paint(rct_window *w, rct_drawpixelinfo *dpi)
     if (w->widgets[WIDX_PEOPLE_STARTING_POSITION].type != WWT_EMPTY) {
         x = w->x + w->widgets[WIDX_PEOPLE_STARTING_POSITION].left + 12;
         y = w->y + w->widgets[WIDX_PEOPLE_STARTING_POSITION].top + 18;
-        gfx_draw_sprite(dpi, 0xA0000000 | (COLOUR_LIGHT_BROWN << 24) | (COLOUR_BRIGHT_RED << 19) | SPR_6410, x, y, 0);
+        gfx_draw_sprite(dpi, IMAGE_TYPE_REMAP | IMAGE_TYPE_REMAP_2_PLUS | (COLOUR_LIGHT_BROWN << 24) | (COLOUR_BRIGHT_RED << 19) | SPR_6410, x, y, 0);
     }
 
     if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode) {
@@ -1377,7 +1377,7 @@ static void window_map_set_peep_spawn_tool_down(sint32 x, sint32 y)
     }
     if (peepSpawnIndex == -1) {
         peepSpawnIndex = _nextPeepSpawnIndex;
-        _nextPeepSpawnIndex = (peepSpawnIndex + 1) % (MAX_PEEP_SPAWNS + 1);
+        _nextPeepSpawnIndex = (peepSpawnIndex + 1) % MAX_PEEP_SPAWNS;
     }
     gPeepSpawns[peepSpawnIndex].x = mapX;
     gPeepSpawns[peepSpawnIndex].y = mapY;

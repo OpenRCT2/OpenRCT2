@@ -32,7 +32,7 @@ static void ride_invalidate_station_start(rct_ride *ride, sint32 stationIndex, s
  */
 void ride_update_station(rct_ride *ride, sint32 stationIndex)
 {
-    if (ride->station_starts[stationIndex] == 0xFFFF)
+    if (ride->station_starts[stationIndex].xy == RCT_XY8_UNDEFINED)
         return;
 
     switch (ride->mode) {
@@ -273,8 +273,8 @@ static void ride_invalidate_station_start(rct_ride *ride, sint32 stationIndex, s
     sint32 x, y;
     rct_map_element *mapElement;
 
-    x = (ride->station_starts[stationIndex] & 0xFF) * 32;
-    y = (ride->station_starts[stationIndex] >> 8) * 32;
+    x = ride->station_starts[stationIndex].x * 32;
+    y = ride->station_starts[stationIndex].y * 32;
     mapElement = ride_get_station_start_track_element(ride, stationIndex);
 
     // If no station track found return
@@ -294,8 +294,8 @@ rct_map_element *ride_get_station_start_track_element(rct_ride *ride, sint32 sta
     sint32 x, y, z;
     rct_map_element *mapElement;
 
-    x = ride->station_starts[stationIndex] & 0xFF;
-    y = ride->station_starts[stationIndex] >> 8;
+    x = ride->station_starts[stationIndex].x;
+    y = ride->station_starts[stationIndex].y;
     z = ride->station_heights[stationIndex];
 
     // Find the station track element
@@ -327,7 +327,31 @@ sint32 ride_get_first_valid_station_exit(rct_ride * ride)
 {
     for (sint32 i = 0; i < MAX_STATIONS; i++)
     {
-        if (ride->exits[i] != 0xFFFF)
+        if (ride->exits[i].xy != RCT_XY8_UNDEFINED)
+        {
+            return i;
+        }
+    }
+    return -1;
+}
+
+sint8 ride_get_first_valid_station_start(const rct_ride *ride)
+{
+    for (sint32 i = 0; i < MAX_STATIONS; i++)
+    {
+        if (ride->station_starts[i].xy != RCT_XY8_UNDEFINED)
+        {
+            return i;
+        }
+    }
+    return -1;
+}
+
+sint8 ride_get_first_empty_station_start(const rct_ride *ride)
+{
+    for (sint32 i = 0; i < MAX_STATIONS; i++)
+    {
+        if (ride->station_starts[i].xy == RCT_XY8_UNDEFINED)
         {
             return i;
         }

@@ -754,7 +754,7 @@ static void window_loadsave_select(rct_window *w, const char *path)
         save_path(&gConfigGeneral.last_save_game_directory, pathBuffer);
         safe_strcpy(gScenarioSavePath, pathBuffer, MAX_PATH);
         window_loadsave_invoke_callback(MODAL_RESULT_OK, pathBuffer);
-        window_close(w);
+        window_close_by_class(WC_LOADSAVE);
         gfx_invalidate_screen();
         break;
     case (LOADSAVETYPE_SAVE | LOADSAVETYPE_GAME) :
@@ -785,7 +785,7 @@ static void window_loadsave_select(rct_window *w, const char *path)
         break;
     case (LOADSAVETYPE_SAVE | LOADSAVETYPE_LANDSCAPE) :
         save_path(&gConfigGeneral.last_save_landscape_directory, pathBuffer);
-        scenario_set_filename(pathBuffer);
+        safe_strcpy(gScenarioFileName, pathBuffer, sizeof(gScenarioFileName));
         if (scenario_save(pathBuffer, gConfigGeneral.save_plugin_data ? 3 : 2)) {
             window_close_by_class(WC_LOADSAVE);
             gfx_invalidate_screen();
@@ -801,7 +801,7 @@ static void window_loadsave_select(rct_window *w, const char *path)
         sint32 parkFlagsBackup = gParkFlags;
         gParkFlags &= ~PARK_FLAGS_SPRITES_INITIALISED;
         gS6Info.editor_step = 255;
-        scenario_set_filename(pathBuffer);
+        safe_strcpy(gScenarioFileName, pathBuffer, sizeof(gScenarioFileName));
         sint32 success = scenario_save(pathBuffer, gConfigGeneral.save_plugin_data ? 3 : 2);
         gParkFlags = parkFlagsBackup;
 

@@ -21,7 +21,8 @@
 #include "drawing/drawing.h"
 
 // First 0xF of rct_object_entry->flags
-typedef enum{
+typedef enum
+{
     OBJECT_TYPE_RIDE,
     OBJECT_TYPE_SMALL_SCENERY,
     OBJECT_TYPE_LARGE_SCENERY,
@@ -33,9 +34,10 @@ typedef enum{
     OBJECT_TYPE_PARK_ENTRANCE,
     OBJECT_TYPE_WATER,
     OBJECT_TYPE_SCENARIO_TEXT
-}OBJECT_TYPE;
+} OBJECT_TYPE;
 
-typedef enum{
+typedef enum
+{
     OBJECT_SELECTION_FLAG_SELECTED = (1 << 0),
     OBJECT_SELECTION_FLAG_2 = (1 << 1),
     OBJECT_SELECTION_FLAG_IN_USE = (1 << 2),
@@ -44,7 +46,15 @@ typedef enum{
     OBJECT_SELECTION_FLAG_6 = (1 << 5),
     OBJECT_SELECTION_FLAG_7 = (1 << 6),
     OBJECT_SELECTION_FLAG_8 = (1 << 7),
-}OBJECT_SELECTION_FLAGS;
+} OBJECT_SELECTION_FLAGS;
+
+typedef enum
+{
+    OBJECT_SOURCE_CUSTOM,
+    OBJECT_SOURCE_WACKY_WORLDS,
+    OBJECT_SOURCE_TIME_TWISTER,
+    OBJECT_SOURCE_RCT2 = 8
+} OBJECT_SOURCE_GAME;
 
 #define OBJECT_ENTRY_GROUP_COUNT 11
 #define OBJECT_ENTRY_COUNT 721

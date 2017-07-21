@@ -2739,7 +2739,7 @@ static void window_ride_construction_update_enabled_track_pieces()
     }
     else
     {
-        if (track_type_has_ride_groups(rideType))
+        if (ride_type_has_ride_groups(rideType))
         {
             const ride_group * rideGroup = get_ride_group(rideType, rideEntry);
             _enabledRidePieces = rideGroup->available_track_pieces;

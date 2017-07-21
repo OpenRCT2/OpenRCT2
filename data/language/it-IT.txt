@@ -3771,7 +3771,7 @@ STR_5426    :Fine
 STR_5427    :Coordinate:
 STR_5428    :Rotazione Antiorario:
 STR_5429    :Livello di Zoom:
-STR_5430    :Secondi di attesa:
+STR_5430    :Tempo in millisecondi:
 STR_5431    :Salvataggio da caricare:
 STR_5432    :Comando:
 STR_5433    :Sequenza Titoli
@@ -4434,6 +4434,14 @@ STR_6119    :Un piccolo ed economico ottovolante, la cui altezza è limitata
 STR_6120    :{BABYBLUE}È disponibile un nuovo veicolo per {STRINGID}:{NEWLINE}{STRINGID}
 STR_6121    :{SMALLFONT}{BLACK}Estende i terreni di proprietà del parco fino ai bordi della mappa
 STR_6122    :Non ci sono abbastanza ottovolanti in questo scenario!
+STR_6123    :Errore nel caricamento degli oggetti per il parco
+STR_6124    :Nome oggetto
+STR_6125    :Tipo oggetto
+STR_6126    :Tipo sconosciuto
+STR_6127    :File: {STRING}
+STR_6128    :Non è stato possibile caricare il file perché alcuni riferimenti ad oggetti presenti sono corrotti o mancanti. Una lista di tali oggetti è riportata qui di seguito.
+STR_6129    :Copia oggetto selezionato
+STR_6130    :Copia l'intera lista di oggetti
 
 
 #############

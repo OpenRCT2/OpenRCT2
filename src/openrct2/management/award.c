@@ -150,15 +150,15 @@ static sint32 award_is_deserved_best_rollercoasters(sint32 awardType, sint32 act
 {
     sint32 i, rollerCoasters;
     rct_ride *ride;
-    rct_ride_entry *rideType;
+    rct_ride_entry *rideEntry;
 
     rollerCoasters = 0;
     FOR_ALL_RIDES(i, ride) {
-        rideType = get_ride_entry(ride->subtype);
-        if (rideType == NULL) {
+        rideEntry = get_ride_entry(ride->subtype);
+        if (rideEntry == NULL) {
             continue;
         }
-        if (rideType->category[0] != RIDE_GROUP_ROLLERCOASTER && rideType->category[1] != RIDE_GROUP_ROLLERCOASTER)
+        if (rideEntry->category[0] != RIDE_CATEGORY_ROLLERCOASTER && rideEntry->category[1] != RIDE_CATEGORY_ROLLERCOASTER)
             continue;
 
         if (ride->status != RIDE_STATUS_OPEN || (ride->lifecycle_flags & RIDE_LIFECYCLE_CRASHED))
@@ -298,7 +298,7 @@ static sint32 award_is_deserved_best_food(sint32 awardType, sint32 activeAwardTy
     sint32 i, hungryPeeps, shops, uniqueShops;
     uint64 shopTypes;
     rct_ride *ride;
-    rct_ride_entry *rideType;
+    rct_ride_entry *rideEntry;
     uint16 spriteIndex;
     rct_peep *peep;
 
@@ -315,12 +315,12 @@ static sint32 award_is_deserved_best_food(sint32 awardType, sint32 activeAwardTy
             continue;
 
         shops++;
-        rideType = get_ride_entry(ride->subtype);
-        if (rideType == NULL) {
+        rideEntry = get_ride_entry(ride->subtype);
+        if (rideEntry == NULL) {
             continue;
         }
-        if (!(shopTypes & (1ULL << rideType->shop_item))) {
-            shopTypes |= (1ULL << rideType->shop_item);
+        if (!(shopTypes & (1ULL << rideEntry->shop_item))) {
+            shopTypes |= (1ULL << rideEntry->shop_item);
             uniqueShops++;
         }
     }
@@ -347,7 +347,7 @@ static sint32 award_is_deserved_worst_food(sint32 awardType, sint32 activeAwardT
     sint32 i, hungryPeeps, shops, uniqueShops;
     uint64 shopTypes;
     rct_ride *ride;
-    rct_ride_entry *rideType;
+    rct_ride_entry *rideEntry;
     uint16 spriteIndex;
     rct_peep *peep;
 
@@ -364,12 +364,12 @@ static sint32 award_is_deserved_worst_food(sint32 awardType, sint32 activeAwardT
             continue;
 
         shops++;
-        rideType = get_ride_entry(ride->subtype);
-        if (rideType == NULL) {
+        rideEntry = get_ride_entry(ride->subtype);
+        if (rideEntry == NULL) {
             continue;
         }
-        if (!(shopTypes & (1ULL << rideType->shop_item))) {
-            shopTypes |= (1ULL << rideType->shop_item);
+        if (!(shopTypes & (1ULL << rideEntry->shop_item))) {
+            shopTypes |= (1ULL << rideEntry->shop_item);
             uniqueShops++;
         }
     }
@@ -460,15 +460,15 @@ static sint32 award_is_deserved_best_water_rides(sint32 awardType, sint32 active
 {
     sint32 i, waterRides;
     rct_ride *ride;
-    rct_ride_entry *rideType;
+    rct_ride_entry *rideEntry;
 
     waterRides = 0;
     FOR_ALL_RIDES(i, ride) {
-        rideType = get_ride_entry(ride->subtype);
-        if (rideType == NULL) {
+        rideEntry = get_ride_entry(ride->subtype);
+        if (rideEntry == NULL) {
             continue;
         }
-        if (rideType->category[0] != RIDE_GROUP_WATER && rideType->category[1] != RIDE_GROUP_WATER)
+        if (rideEntry->category[0] != RIDE_CATEGORY_WATER && rideEntry->category[1] != RIDE_CATEGORY_WATER)
             continue;
 
         if (ride->status != RIDE_STATUS_OPEN || (ride->lifecycle_flags & RIDE_LIFECYCLE_CRASHED))
@@ -563,15 +563,15 @@ static sint32 award_is_deserved_best_gentle_rides(sint32 awardType, sint32 activ
 {
     sint32 i, gentleRides;
     rct_ride *ride;
-    rct_ride_entry *rideType;
+    rct_ride_entry *rideEntry;
 
     gentleRides = 0;
     FOR_ALL_RIDES(i, ride) {
-        rideType = get_ride_entry(ride->subtype);
-        if (rideType == NULL) {
+        rideEntry = get_ride_entry(ride->subtype);
+        if (rideEntry == NULL) {
             continue;
         }
-        if (rideType->category[0] != RIDE_GROUP_GENTLE && rideType->category[1] != RIDE_GROUP_GENTLE)
+        if (rideEntry->category[0] != RIDE_CATEGORY_GENTLE && rideEntry->category[1] != RIDE_CATEGORY_GENTLE)
             continue;
 
         if (ride->status != RIDE_STATUS_OPEN || (ride->lifecycle_flags & RIDE_LIFECYCLE_CRASHED))

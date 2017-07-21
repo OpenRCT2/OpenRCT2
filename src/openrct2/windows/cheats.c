@@ -34,11 +34,10 @@
 #include "error.h"
 #include "dropdown.h"
 
-#define MONEY_DEFAULT MONEY(5000,00)
-#define MONEY_INCREMENT_DIV MONEY(1000,00)
-#define MONEY_DIGITS 14
-static utf8 _moneySpinnerText[MONEY_DIGITS];
-static money32 _moneySpinnerValue = MONEY_DEFAULT;
+#define CHEATS_MONEY_DEFAULT MONEY(10000,00)
+#define CHEATS_MONEY_INCREMENT_DIV MONEY(5000,00)
+static utf8 _moneySpinnerText[MONEY_STRING_MAXLENGTH];
+static money32 _moneySpinnerValue = CHEATS_MONEY_DEFAULT;
 
 enum {
     WINDOW_CHEATS_PAGE_MONEY,
@@ -185,10 +184,10 @@ enum WINDOW_CHEATS_WIDGET_IDX {
     { WWT_CAPTION,          0,  1,          WW - 2, 1,      14,         STR_CHEAT_TITLE,        STR_WINDOW_TITLE_TIP },     /* title bar            */ \
     { WWT_CLOSEBOX,         0,  WW - 13,    WW - 3, 2,      13,         STR_CLOSE_X,            STR_CLOSE_WINDOW_TIP },     /* close x button       */ \
     { WWT_IMGBTN,           1,  0,          WW - 1, 43,     WH - 1,     0xFFFFFFFF,             STR_NONE },                 /* tab content panel    */ \
-    { WWT_TAB,              1,  3,          33,     17,     43,         0x20000000 | SPR_TAB,   STR_FINANCIAL_CHEATS_TIP }, /* tab 1                */ \
-    { WWT_TAB,              1,  34,         64,     17,     43,         0x20000000 | SPR_TAB,   STR_GUEST_CHEATS_TIP },     /* tab 2                */ \
-    { WWT_TAB,              1,  65,         95,     17,     43,         0x20000000 | SPR_TAB,   STR_PARK_CHEATS_TIP },      /* tab 3                */ \
-    { WWT_TAB,              1,  96,         126,    17,     43,         0x20000000 | SPR_TAB,   STR_RIDE_CHEATS_TIP }       /* tab 4                */
+    { WWT_TAB,              1,  3,          33,     17,     43,         IMAGE_TYPE_REMAP | SPR_TAB,   STR_FINANCIAL_CHEATS_TIP }, /* tab 1                */ \
+    { WWT_TAB,              1,  34,         64,     17,     43,         IMAGE_TYPE_REMAP | SPR_TAB,   STR_GUEST_CHEATS_TIP },     /* tab 2                */ \
+    { WWT_TAB,              1,  65,         95,     17,     43,         IMAGE_TYPE_REMAP | SPR_TAB,   STR_PARK_CHEATS_TIP },      /* tab 3                */ \
+    { WWT_TAB,              1,  96,         126,    17,     43,         IMAGE_TYPE_REMAP | SPR_TAB,   STR_RIDE_CHEATS_TIP }       /* tab 4                */
 
 static rct_widget window_cheats_money_widgets[] = {
     MAIN_CHEATS_WIDGETS,
@@ -503,11 +502,11 @@ static void window_cheats_money_mousedown(rct_window *w, rct_widgetindex widgetI
 {
     switch (widgetIndex) {
     case WIDX_MONEY_SPINNER_INCREMENT:
-        _moneySpinnerValue = add_clamp_money32(MONEY_INCREMENT_DIV * (_moneySpinnerValue / MONEY_INCREMENT_DIV), MONEY_INCREMENT_DIV);
+        _moneySpinnerValue = add_clamp_money32(CHEATS_MONEY_INCREMENT_DIV * (_moneySpinnerValue / CHEATS_MONEY_INCREMENT_DIV), CHEATS_MONEY_INCREMENT_DIV);
         widget_invalidate_by_class(WC_CHEATS, WIDX_MONEY_SPINNER);
         break;
     case WIDX_MONEY_SPINNER_DECREMENT:
-        _moneySpinnerValue = add_clamp_money32(MONEY_INCREMENT_DIV * (_moneySpinnerValue / MONEY_INCREMENT_DIV), -MONEY_INCREMENT_DIV);
+        _moneySpinnerValue = add_clamp_money32(CHEATS_MONEY_INCREMENT_DIV * (_moneySpinnerValue / CHEATS_MONEY_INCREMENT_DIV), -CHEATS_MONEY_INCREMENT_DIV);
         widget_invalidate_by_class(WC_CHEATS, WIDX_MONEY_SPINNER);
         break;
     case WIDX_ADD_MONEY:
@@ -583,14 +582,14 @@ static void window_cheats_money_mouseup(rct_window *w, rct_widgetindex widgetInd
         game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_NOMONEY, gParkFlags & PARK_FLAGS_NO_MONEY ? 0 : 1, GAME_COMMAND_CHEAT, 0, 0);
         break;
     case WIDX_MONEY_SPINNER:
-        money_to_string(_moneySpinnerValue, _moneySpinnerText, MONEY_DIGITS);
-        window_text_input_raw_open(w, WIDX_MONEY_SPINNER, STR_ENTER_NEW_VALUE, STR_ENTER_NEW_VALUE, _moneySpinnerText, MONEY_DIGITS);
+        money_to_string(_moneySpinnerValue, _moneySpinnerText, MONEY_STRING_MAXLENGTH);
+        window_text_input_raw_open(w, WIDX_MONEY_SPINNER, STR_ENTER_NEW_VALUE, STR_ENTER_NEW_VALUE, _moneySpinnerText, MONEY_STRING_MAXLENGTH);
         break;
     case WIDX_SET_MONEY:
         game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_SETMONEY, _moneySpinnerValue, GAME_COMMAND_CHEAT, 0, 0);
         break;
     case WIDX_CLEAR_LOAN:
-        game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_CLEARLOAN, CHEATS_MONEY_INCREMENT, GAME_COMMAND_CHEAT, 0, 0);
+        game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_CLEARLOAN, CHEATS_MONEY_DEFAULT, GAME_COMMAND_CHEAT, 0, 0);
         break;
     }
 }
