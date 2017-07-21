@@ -284,33 +284,6 @@ void scenario_set_filename(const char *value)
 {
     substitute_path(_scenarioPath, sizeof(_scenarioPath), gRCT2AddressScenariosPath, value);
     _scenarioFileName = path_get_filename(_scenarioPath);
-
-	// Quick and dirty way of toggling unlock all price cheat automatically (only works on imported RCT1 scenarios for now)
-	// There is likely a much better way of doing this
-	// numbering is misleading, they aren't actually laid out in this exact order (ScenarioSources.h line 60 and below helps)
-	if ((strcmp(_scenarioFileName, "ALTON1.SC4") == 0) || (strcmp(_scenarioFileName, "FORT1.SC4") == 0))
-	{
-		gCheatsUnlockAllPrices = true;
-	}
-
-	else if ((_scenarioFileName[0] == 's' || _scenarioFileName[0] == 'S') && (_scenarioFileName[1] == 'c' || _scenarioFileName[1] == 'C'))
-	{
-		if (_scenarioFileName[3] == '.' || _scenarioFileName[2] == '1' || _scenarioFileName[2] == '4' || _scenarioFileName[2] == '5' || _scenarioFileName[2] == '6')
-		{
-			gCheatsUnlockAllPrices = true;
-		}
-		else if (_scenarioFileName[2] == '2')
-		{
-			if (_scenarioFileName[3] == '0' || _scenarioFileName[3] == '1')
-			{
-				gCheatsUnlockAllPrices = true;
-			}
-		}
-	}
-	else
-	{
-		gCheatsUnlockAllPrices = false;
-	}
 }
 
 /**
