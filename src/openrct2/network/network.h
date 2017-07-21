@@ -175,7 +175,7 @@ public:
     std::vector<std::unique_ptr<NetworkGroup>> group_list;
     NetworkKey _key;
     std::vector<uint8> _challenge;
-    std::map<uint32, GameAction::GameActionCallback_t> _gameActionCallbacks;
+    std::map<uint32, GameAction::Callback_t> _gameActionCallbacks;
     NetworkUserManager _userManager;
 
     std::string ServerName;
