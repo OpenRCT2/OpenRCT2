@@ -50,7 +50,7 @@ extern "C" {
 #include "../Version.h"
 #include "NetworkTypes.h"
 
-typedef struct IGameAction IGameAction;
+typedef struct GameAction GameAction;
 
 #ifndef DISABLE_NETWORK
 
@@ -113,7 +113,7 @@ public:
     void Update();
     void Flush();
     void ProcessGameCommandQueue();
-    void EnqueueGameAction(const IGameAction *action);
+    void EnqueueGameAction(const GameAction *action);
     std::vector<std::unique_ptr<NetworkPlayer>>::iterator GetPlayerIteratorByID(uint8 id);
     NetworkPlayer* GetPlayerByID(uint8 id);
     std::vector<std::unique_ptr<NetworkGroup>>::iterator GetGroupIteratorByID(uint8 id);
@@ -154,8 +154,8 @@ public:
     void Server_Send_CHAT(const char* text);
     void Client_Send_GAMECMD(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uint32 esi, uint32 edi, uint32 ebp, uint8 callback);
     void Server_Send_GAMECMD(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uint32 esi, uint32 edi, uint32 ebp, uint8 playerid, uint8 callback);
-    void Client_Send_GAME_ACTION(const IGameAction *action);
-    void Server_Send_GAME_ACTION(const IGameAction *action);
+    void Client_Send_GAME_ACTION(const GameAction *action);
+    void Server_Send_GAME_ACTION(const GameAction *action);
     void Server_Send_TICK();
     void Server_Send_PLAYERLIST();
     void Client_Send_PING();
@@ -175,7 +175,7 @@ public:
     std::vector<std::unique_ptr<NetworkGroup>> group_list;
     NetworkKey _key;
     std::vector<uint8> _challenge;
-    std::map<uint32, GameActionCallback_t> _gameActionCallbacks;
+    std::map<uint32, GameAction::GameActionCallback_t> _gameActionCallbacks;
     NetworkUserManager _userManager;
 
     std::string ServerName;
@@ -209,7 +209,7 @@ private:
             commandIndex = id;
         }
 
-        GameCommand(uint32 t, std::unique_ptr<IGameAction>&& ga, uint32 id)
+        GameCommand(uint32 t, std::unique_ptr<GameAction>&& ga, uint32 id)
         {
             tick = t;
             action = std::move(ga);
@@ -222,7 +222,7 @@ private:
 
         uint32 tick;
         uint32 eax, ebx, ecx, edx, esi, edi, ebp;
-        IGameAction::Ptr action;
+        GameAction::Ptr action;
         uint8 playerid;
         uint8 callback;
         uint32 commandIndex;
@@ -360,8 +360,8 @@ sint32 network_get_pickup_peep_old_x(uint8 playerid);
 void network_send_map();
 void network_send_chat(const char* text);
 void network_send_gamecmd(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uint32 esi, uint32 edi, uint32 ebp, uint8 callback);
-void network_send_game_action(const IGameAction *action);
-void network_enqueue_game_action(const IGameAction *action);
+void network_send_game_action(const GameAction *action);
+void network_enqueue_game_action(const GameAction *action);
 void network_send_password(const char* password);
 
 void network_set_password(const char* password);

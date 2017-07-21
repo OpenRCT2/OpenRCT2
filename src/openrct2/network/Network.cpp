@@ -1153,7 +1153,7 @@ void Network::Server_Send_GAMECMD(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx
     SendPacketToClients(*packet, false, true);
 }
 
-void Network::Client_Send_GAME_ACTION(const IGameAction *action)
+void Network::Client_Send_GAME_ACTION(const GameAction *action)
 {
     std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
 
@@ -1161,7 +1161,7 @@ void Network::Client_Send_GAME_ACTION(const IGameAction *action)
     networkId = ++_actionId;
 
     // I know its ugly, want basic functionality for now.
-    const_cast<IGameAction*>(action)->SetNetworkId(networkId);
+    const_cast<GameAction*>(action)->SetNetworkId(networkId);
     if(action->GetCallback())
     {
         _gameActionCallbacks.insert(std::make_pair(networkId, action->GetCallback()));
@@ -1175,7 +1175,7 @@ void Network::Client_Send_GAME_ACTION(const IGameAction *action)
     server_connection->QueuePacket(std::move(packet));
 }
 
-void Network::Server_Send_GAME_ACTION(const IGameAction *action)
+void Network::Server_Send_GAME_ACTION(const GameAction *action)
 {
     std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
 
@@ -1420,7 +1420,7 @@ void Network::ProcessGameCommandQueue()
 
         if (gc.action != nullptr) {
 
-            IGameAction *action = gc.action.get();
+            GameAction *action = gc.action.get();
             action->SetFlags(action->GetFlags() | GAME_COMMAND_FLAG_NETWORKED);
 
             Guard::Assert(action != nullptr);
@@ -1481,13 +1481,13 @@ void Network::ProcessGameCommandQueue()
     }
 }
 
-void Network::EnqueueGameAction(const IGameAction *action)
+void Network::EnqueueGameAction(const GameAction *action)
 {
     MemoryStream stream;
     DataSerialiser dsOut(true, stream);
     action->Serialise(dsOut);
 
-    std::unique_ptr<IGameAction> ga = GameActions::Create(action->GetType());
+    std::unique_ptr<GameAction> ga = GameActions::Create(action->GetType());
     ga->SetCallback(action->GetCallback());
 
     stream.SetPosition(0);
@@ -2131,7 +2131,7 @@ void Network::Client_Handle_GAME_ACTION(NetworkConnection& connection, NetworkPa
 
     DataSerialiser ds(false, stream);
 
-    IGameAction::Ptr action = GameActions::Create(type);
+    GameAction::Ptr action = GameActions::Create(type);
     if (!action)
     {
         // TODO: Handle error.
@@ -2204,7 +2204,7 @@ void Network::Server_Handle_GAME_ACTION(NetworkConnection& connection, NetworkPa
     }
 
     // Run game command, and if it is successful send to clients
-    IGameAction::Ptr ga = GameActions::Create(type);
+    GameAction::Ptr ga = GameActions::Create(type);
     if (!ga)
     {
         // TODO: Handle error.
@@ -3083,7 +3083,7 @@ void network_send_chat(const char* text)
     }
 }
 
-void network_send_game_action(const IGameAction *action)
+void network_send_game_action(const GameAction *action)
 {
     switch (gNetwork.GetMode()) {
     case NETWORK_MODE_SERVER:
@@ -3095,7 +3095,7 @@ void network_send_game_action(const IGameAction *action)
     }
 }
 
-void network_enqueue_game_action(const IGameAction *action)
+void network_enqueue_game_action(const GameAction *action)
 {
     gNetwork.EnqueueGameAction(action);
 }
@@ -3192,9 +3192,9 @@ uint32 network_get_server_tick() { return gCurrentTicks; }
 void network_flush() {}
 void network_send_tick() {}
 void network_check_desynchronization() {}
-void network_enqueue_game_action(const IGameAction *action) {}
+void network_enqueue_game_action(const GameAction *action) {}
 void network_send_gamecmd(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uint32 esi, uint32 edi, uint32 ebp, uint8 callback) {}
-void network_send_game_action(const IGameAction *action) {}
+void network_send_game_action(const GameAction *action) {}
 void network_send_map() {}
 void network_update() {}
 void network_process_game_commands() {}
