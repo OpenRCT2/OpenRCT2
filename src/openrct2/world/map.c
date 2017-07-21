@@ -1750,6 +1750,49 @@ void game_command_set_land_ownership(sint32 *eax, sint32 *ebx, sint32 *ecx, sint
     }
 }
 
+static uint8 map_get_lowest_land_height(sint32 xMin, sint32 xMax, sint32 yMin, sint32 yMax)
+{
+    xMin = max(xMin, 32);
+    yMin = max(yMin, 32);
+    xMax = min(xMax, gMapSizeMaxXY);
+    yMax = min(yMax, gMapSizeMaxXY);
+
+    uint8 min_height = 0xFF;
+    for (sint32 yi = yMin; yi <= yMax; yi += 32) {
+        for (sint32 xi = xMin; xi <= xMax; xi += 32) {
+            rct_map_element *map_element = map_get_surface_element_at(xi / 32, yi / 32);
+            if (map_element != NULL && min_height > map_element->base_height) {
+                min_height = map_element->base_height;
+            }
+        }
+    }
+    return min_height;
+}
+
+static uint8 map_get_highest_land_height(sint32 xMin, sint32 xMax, sint32 yMin, sint32 yMax)
+{
+    xMin = max(xMin, 32);
+    yMin = max(yMin, 32);
+    xMax = min(xMax, gMapSizeMaxXY);
+    yMax = min(yMax, gMapSizeMaxXY);
+
+    uint8 max_height = 0;
+    for (sint32 yi = yMin; yi <= yMax; yi += 32) {
+        for (sint32 xi = xMin; xi <= xMax; xi += 32) {
+            rct_map_element *map_element = map_get_surface_element_at(xi / 32, yi / 32);
+            if (map_element != NULL) {
+                uint8 base_height = map_element->base_height;
+                if (map_element->properties.surface.slope & 0xF)
+                    base_height += 2;
+                if (map_element->properties.surface.slope & 0x10)
+                    base_height += 2;
+                if (max_height < base_height)
+                    max_height = base_height;
+            }
+        }
+    }
+    return max_height;
+}
 
 static money32 raise_land(sint32 flags, sint32 x, sint32 y, sint32 z, sint32 ax, sint32 ay, sint32 bx, sint32 by, sint32 selectionType)
 {
@@ -1765,22 +1808,7 @@ static money32 raise_land(sint32 flags, sint32 x, sint32 y, sint32 z, sint32 ax,
         audio_play_sound_at_location(SOUND_PLACE_ITEM, x, y, z);
     }
 
-    uint8 min_height = 0xFF;
-
-    ax = max(ax, 32);
-    ay = max(ay, 32);
-    bx = min(bx, gMapSizeMaxXY);
-    by = min(by, gMapSizeMaxXY);
-
-    // find lowest map element in selection
-    for (sint32 yi = ay; yi <= by; yi += 32) {
-        for (sint32 xi = ax; xi <= bx; xi += 32) {
-            rct_map_element *map_element = map_get_surface_element_at(xi / 32, yi / 32);
-            if (map_element != NULL && min_height > map_element->base_height) {
-                min_height = map_element->base_height;
-            }
-        }
-    }
+    uint8 min_height = map_get_lowest_land_height(ax, bx, ay, by);
 
     for (sint32 yi = ay; yi <= by; yi += 32) {
         for (sint32 xi = ax; xi <= bx; xi += 32) {
@@ -1827,28 +1855,7 @@ static money32 lower_land(sint32 flags, sint32 x, sint32 y, sint32 z, sint32 ax,
         return MONEY32_UNDEFINED;
     }
 
-    uint8 max_height = 0;
-
-    ax = max(ax, 32);
-    ay = max(ay, 32);
-    bx = min(bx, gMapSizeMaxXY);
-    by = min(by, gMapSizeMaxXY);
-
-    // find highest map element in selection
-    for (sint32 yi = ay; yi <= by; yi += 32) {
-        for (sint32 xi = ax; xi <= bx; xi += 32) {
-            rct_map_element *map_element = map_get_surface_element_at(xi / 32, yi / 32);
-            if (map_element != NULL) {
-                uint8 base_height = map_element->base_height;
-                if (map_element->properties.surface.slope & 0xF)
-                    base_height += 2;
-                if (map_element->properties.surface.slope & 0x10)
-                    base_height += 2;
-                if (max_height < base_height)
-                    max_height = base_height;
-            }
-        }
-    }
+    uint8 max_height = map_get_highest_land_height(ax, bx, ay, by);
 
     for (sint32 yi = ay; yi <= by; yi += 32) {
         for (sint32 xi = ax; xi <= bx; xi += 32) {
@@ -2191,31 +2198,8 @@ static money32 smooth_land(sint32 flags, sint32 centreX, sint32 centreY, sint32 
     // Predict the land height for future use
     if (fullTile)
     {
-        // Find lowest map element in selection
-        for (sint32 yi = mapTop; yi <= mapBottom; yi += 32) {
-            for (sint32 xi = mapLeft; xi <= mapRight; xi += 32) {
-                rct_map_element *map_element = map_get_surface_element_at(xi / 32, yi / 32);
-                if (map_element != NULL && minHeight > map_element->base_height) {
-                    minHeight = map_element->base_height;
-                }
-            }
-        }
-
-        // Find highest map element in selection
-        for (sint32 yi = mapTop; yi <= mapBottom; yi += 32) {
-            for (sint32 xi = mapLeft; xi <= mapRight; xi += 32) {
-                rct_map_element *map_element = map_get_surface_element_at(xi / 32, yi / 32);
-                if (map_element != NULL) {
-                    uint8 base_height = map_element->base_height;
-                    if (map_element->properties.surface.slope & 0xF)
-                        base_height += 2;
-                    if (map_element->properties.surface.slope & 0x10)
-                        base_height += 2;
-                    if (maxHeight < base_height)
-                        maxHeight = base_height;
-                }
-            }
-        }
+        minHeight = map_get_lowest_land_height(mapLeft, mapRight, mapTop, mapBottom);
+        maxHeight = map_get_highest_land_height(mapLeft, mapRight, mapTop, mapBottom);
 
         if (commandType == GAME_COMMAND_RAISE_LAND) {
             minHeight += 2;
