@@ -71,6 +71,7 @@ typedef struct IGameAction IGameAction;
 #include <functional>
 #include <map>
 #include <openssl/evp.h>
+#include "../actions/GameAction.h"
 #include "../core/Json.hpp"
 #include "../core/Nullable.hpp"
 #include "../core/MemoryStream.h"
@@ -82,7 +83,6 @@ typedef struct IGameAction IGameAction;
 #include "NetworkServerAdvertiser.h"
 #include "NetworkUser.h"
 #include "TcpSocket.h"
-#include "../actions/IGameAction.h"
 
 enum {
     NETWORK_TICK_FLAG_CHECKSUMS = 1 << 0,
