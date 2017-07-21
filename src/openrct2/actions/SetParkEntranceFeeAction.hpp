@@ -27,7 +27,7 @@ extern "C"
     #include "../world/park.h"
 }
 
-struct SetParkEntranceFeeAction : public GameActionBase<GAME_COMMAND_SET_PARK_ENTRANCE_FEE, GA_FLAGS::ALLOW_WHILE_PAUSED>
+struct SetParkEntranceFeeAction : public GameActionBase<GAME_COMMAND_SET_PARK_ENTRANCE_FEE, GA_FLAGS::ALLOW_WHILE_PAUSED, GameActionResult>
 {
 public:
     money16 Fee;

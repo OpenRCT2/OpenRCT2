@@ -83,7 +83,7 @@ struct GameAction
 {
 public:
     typedef std::unique_ptr<GameAction> Ptr;
-    typedef std::function<void(const struct GameAction *, const GameActionResult::Ptr&)> GameActionCallback_t;
+    typedef std::function<void(const struct GameAction *, const GameActionResult *)> Callback_t;
 
 private:
     uint32 const _type;
@@ -92,7 +92,7 @@ private:
     uint32 _playerId    = 0;    // Callee
     uint32 _flags       = 0;    // GAME_COMMAND_FLAGS
     uint32 _networkId   = 0;
-    GameActionCallback_t _callback;
+    Callback_t _callback;
 
 public:
     GameAction(uint32 type, uint16 actionFlags)
@@ -137,12 +137,12 @@ public:
         return _type;
     }
 
-    void SetCallback(const GameActionCallback_t& cb)
+    void SetCallback(Callback_t cb)
     {
         _callback = cb;
     }
 
-    const GameActionCallback_t& GetCallback() const
+    const Callback_t & GetCallback() const
     {
         return _callback;
     }
@@ -181,7 +181,7 @@ public:
     virtual GameActionResult::Ptr Execute() const abstract;
 };
 
-template<uint32 TType, uint16 TActionFlags>
+template<uint32 TType, uint16 TActionFlags, typename TResultType>
 struct GameActionBase : GameAction
 {
 public:
@@ -190,6 +190,14 @@ public:
     GameActionBase()
         : GameAction(TYPE, TActionFlags)
     {
+    }
+
+    void SetCallback(std::function<void(const struct GameAction *, const TResultType *)> typedCallback)
+    {
+        GameAction::SetCallback([typedCallback](const GameAction * ga, const GameActionResult * result)
+        {
+            typedCallback(ga, static_cast<const TResultType *>(result));
+        });
     }
 };
 
