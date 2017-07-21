@@ -57,7 +57,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\resources\resource.h" />
-    <ClInclude Include="core\DataSerialiser.h" />
+    <ClInclude Include="**\*.h" />
     <ClInclude Include="**\*.hpp" />
   </ItemGroup>
   <ItemGroup>
