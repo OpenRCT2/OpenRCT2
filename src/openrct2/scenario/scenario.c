@@ -91,7 +91,6 @@ static void scenario_objective_check();
 ParkLoadResult * scenario_load_and_play_from_path(const char * path)
 {
     window_close_construction_windows();
-	cheats_reset();
 
     uint32 extension = get_file_extension_type(path);
     ParkLoadResult * result = NULL;
@@ -110,7 +109,6 @@ ParkLoadResult * scenario_load_and_play_from_path(const char * path)
         return result;
     }
 
-	
     reset_sprite_spatial_index();
     reset_all_sprite_quadrant_placements();
 
@@ -135,7 +133,6 @@ ParkLoadResult * scenario_load_and_play_from_path(const char * path)
 
 void scenario_begin()
 {
-	
     rct_window *mainWindow;
 
     audio_stop_title_music();
