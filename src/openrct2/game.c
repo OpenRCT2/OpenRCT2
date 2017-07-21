@@ -1128,6 +1128,34 @@ bool game_load_save(const utf8 *path)
             network_close();
         }
         game_load_init();
+
+		// Quick and dirty way of toggling unlock all price cheat automatically (only works on imported RCT1 scenarios for now)
+		// There is likely a much better way of doing this
+		// numbering is misleading, they aren't actually laid out in this exact order (ScenarioSources.h line 60 and below helps)
+		if ((strcmp(gScenarioFileName, "ALTON1.SC4") == 0) || (strcmp(gScenarioFileName, "FORT1.SC4") == 0))
+		{
+			gCheatsUnlockAllPrices = true;
+		}
+
+		else if ((gScenarioFileName[0] == 's' || gScenarioFileName[0] == 'S') && (gScenarioFileName[1] == 'c' || gScenarioFileName[1] == 'C'))
+		{
+			if (gScenarioFileName[3] == '.' || gScenarioFileName[2] == '1' || gScenarioFileName[2] == '4' || gScenarioFileName[2] == '5' || gScenarioFileName[2] == '6')
+			{
+				gCheatsUnlockAllPrices = true;
+			}
+			else if (gScenarioFileName[2] == '2')
+			{
+				if (gScenarioFileName[3] == '0' || gScenarioFileName[3] == '1')
+				{
+					gCheatsUnlockAllPrices = true;
+				}
+			}
+		}
+		else
+		{
+			gCheatsUnlockAllPrices = false;
+		}
+
         if (network_get_mode() == NETWORK_MODE_SERVER) {
             network_send_map();
         }
