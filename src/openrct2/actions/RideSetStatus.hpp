@@ -72,11 +72,12 @@ public:
             res->Position.z = map_element_height(res->Position.x, res->Position.y);
         }
 
-        switch (Status) 
-        {
+        switch (Status) {
         case RIDE_STATUS_CLOSED:
-            if (ride->status == Status) {
-                if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)) {
+            if (ride->status == Status)
+            {
+                if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN))
+                {
                     ride->lifecycle_flags &= ~RIDE_LIFECYCLE_CRASHED;
                     ride_clear_for_construction(RideIndex);
                     ride_remove_peeps(RideIndex);
@@ -88,7 +89,7 @@ public:
             ride->race_winner = SPRITE_INDEX_NULL;
             ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
             window_invalidate_by_number(WC_RIDE, RideIndex);
-            return res;
+            break;
         case RIDE_STATUS_TESTING:
         case RIDE_STATUS_OPEN:
             {
@@ -100,32 +101,36 @@ public:
                 // Fix #3183: Make sure we close the construction window so the ride finishes any editing code before opening
                 //            otherwise vehicles get added to the ride incorrectly (such as to a ghost station)
                 rct_window *constructionWindow = window_find_by_number(WC_RIDE_CONSTRUCTION, RideIndex);
-                if (constructionWindow != NULL) {
+                if (constructionWindow != nullptr)
+                {
                     window_close(constructionWindow);
                 }
 
-                if (Status == RIDE_STATUS_TESTING) {
-                    if (!ride_is_valid_for_test(RideIndex, Status == RIDE_STATUS_OPEN, 1)) {
+                if (Status == RIDE_STATUS_TESTING)
+                {
+                    if (!ride_is_valid_for_test(RideIndex, Status == RIDE_STATUS_OPEN, 1))
+                    {
                         //*ebx = MONEY32_UNDEFINED;
                         return res;
                     }
                 }
-                else if (!ride_is_valid_for_open(RideIndex, Status == RIDE_STATUS_OPEN, 1)) {
+                else if (!ride_is_valid_for_open(RideIndex, Status == RIDE_STATUS_OPEN, 1))
+                {
                     //*ebx = MONEY32_UNDEFINED;
                     return res;
                 }
 
                 ride->race_winner = SPRITE_INDEX_NULL;
                 ride->status = Status;
-                ride_get_measurement(RideIndex, NULL);
+                ride_get_measurement(RideIndex, nullptr);
                 ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
                 window_invalidate_by_number(WC_RIDE, RideIndex);
+                break;
             }
-            return res;
         default:
             Guard::Assert(false, "Invalid status passed: %u", Status);
+            break;
         }
-
         return res;
     }
 };

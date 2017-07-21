@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include "../core/Memory.hpp"
 #include "../core/MemoryStream.h"
 #include "../localisation/string_ids.h"
 #include "GameAction.h"
@@ -31,7 +32,8 @@ extern "C"
     #include "../ride/ride.h"
 }
 
-struct RideCreateGameActionResult : public GameActionResult {
+struct RideCreateGameActionResult : public GameActionResult
+{
     RideCreateGameActionResult() : GameActionResult(GA_ERROR::OK, 0) {}
     RideCreateGameActionResult(GA_ERROR error, rct_string_id message) : GameActionResult(error, message) {}
 
@@ -64,17 +66,15 @@ public:
 
     GameActionResult::Ptr Execute() const override
     {
+        rct_ride_entry * rideEntry;
         auto res = std::make_unique<RideCreateGameActionResult>();
 
-        rct_ride *ride;
-        rct_ride_entry *rideEntry;
-        sint32 rideIndex, rideEntryIndex;
         sint32 subType = rideSubType;
-
         if (subType == RIDE_ENTRY_INDEX_NULL)
         {
             uint8 *availableRideEntries = get_ride_entry_indices_for_ride_type(rideType);
-            for (uint8 *rei = availableRideEntries; *rei != RIDE_ENTRY_INDEX_NULL; rei++) {
+            for (uint8 *rei = availableRideEntries; *rei != RIDE_ENTRY_INDEX_NULL; rei++)
+            {
                 rideEntry = get_ride_entry(*rei);
 
                 // Can happen in select-by-track-type mode
@@ -83,7 +83,8 @@ public:
                     continue;
                 }
 
-                if (!(rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME) || rideTypeShouldLoseSeparateFlag(rideEntry)) {
+                if (!(rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME) || rideTypeShouldLoseSeparateFlag(rideEntry))
+                {
                     subType = *rei;
                     break;
                 }
@@ -91,7 +92,8 @@ public:
             if (subType == RIDE_ENTRY_INDEX_NULL)
             {
                 subType = availableRideEntries[0];
-                if (subType == RIDE_ENTRY_INDEX_NULL) {
+                if (subType == RIDE_ENTRY_INDEX_NULL)
+                {
                     res->Error = GA_ERROR::INVALID_PARAMETERS;
                     res->ErrorMessage = STR_INVALID_RIDE_TYPE;
                     return res;
@@ -106,8 +108,8 @@ public:
             return res;
         }
 
-        rideEntryIndex = subType;
-        rideIndex = ride_get_empty_slot();
+        sint32 rideEntryIndex = subType;
+        sint32 rideIndex = ride_get_empty_slot();
         if (rideIndex == -1) 
         {
             res->Error = GA_ERROR::DISALLOWED;
@@ -118,9 +120,9 @@ public:
         res->rideIndex = rideIndex;
         res->rideColor = ride_get_random_colour_preset_index(rideType) | (ride_get_unused_preset_vehicle_colour(rideType, subType) << 8);
 
-        ride = get_ride(rideIndex);
+        auto ride = get_ride(rideIndex);
         rideEntry = get_ride_entry(rideEntryIndex);
-        if (rideEntry == (rct_ride_entry *)-1)
+        if (rideEntry == nullptr || rideEntry == (rct_ride_entry *)-1)
         {
             log_warning("Invalid request for ride %u", rideIndex);
             res->Error = GA_ERROR::UNKNOWN;
@@ -143,7 +145,8 @@ public:
             ride_set_name_to_default(ride, rideEntry);
         }
 
-        for (size_t i = 0; i < RCT12_MAX_STATIONS_PER_RIDE; i++) {
+        for (size_t i = 0; i < RCT12_MAX_STATIONS_PER_RIDE; i++)
+        {
             ride->station_starts[i].xy = RCT_XY8_UNDEFINED;
             ride->entrances[i].xy = RCT_XY8_UNDEFINED;
             ride->exits[i].xy = RCT_XY8_UNDEFINED;
@@ -151,7 +154,8 @@ public:
             ride->queue_time[i] = 0;
         }
 
-        for (size_t i = 0; i < MAX_VEHICLES_PER_RIDE; i++) {
+        for (size_t i = 0; i < MAX_VEHICLES_PER_RIDE; i++)
+        {
             ride->vehicles[i] = SPRITE_INDEX_NULL;
         }
 
@@ -167,12 +171,13 @@ public:
         ride->min_waiting_time = 10;
         ride->max_waiting_time = 60;
         ride->depart_flags = RIDE_DEPART_WAIT_FOR_MINIMUM_LENGTH | 3;
-        if (RideData4[ride->type].flags & RIDE_TYPE_FLAG4_MUSIC_ON_DEFAULT) {
+        if (RideData4[ride->type].flags & RIDE_TYPE_FLAG4_MUSIC_ON_DEFAULT)
+        {
             ride->lifecycle_flags |= RIDE_LIFECYCLE_MUSIC;
         }
         ride->music = RideData4[ride->type].default_music;
 
-        const rct_ride_properties rideProperties = RideProperties[ride->type];
+        auto rideProperties = RideProperties[ride->type];
         ride->operation_option = (rideProperties.min_value * 3 + rideProperties.max_value) / 4;
 
         ride->lift_hill_speed = RideLiftData[ride->type].minimum_speed;
@@ -185,63 +190,80 @@ public:
 
         ride->price = 0;
         ride->price_secondary = 0;
-        if (!(gParkFlags & PARK_FLAGS_NO_MONEY)) {
+        if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
+        {
             ride->price = RideData4[ride->type].price;
             ride->price_secondary = RideData4[ride->type].price_secondary;
 
-            if (rideEntry->shop_item == SHOP_ITEM_NONE) {
-                if (!(gParkFlags & PARK_FLAGS_PARK_FREE_ENTRY) && !gCheatsUnlockAllPrices) {
+            if (rideEntry->shop_item == SHOP_ITEM_NONE)
+            {
+                if (!(gParkFlags & PARK_FLAGS_PARK_FREE_ENTRY) && !gCheatsUnlockAllPrices)
+                {
                     ride->price = 0;
                 }
             }
-            else {
+            else
+            {
                 ride->price = DefaultShopItemPrice[rideEntry->shop_item];
             }
-            if (rideEntry->shop_item_secondary != SHOP_ITEM_NONE) {
+            if (rideEntry->shop_item_secondary != SHOP_ITEM_NONE)
+            {
                 ride->price_secondary = DefaultShopItemPrice[rideEntry->shop_item_secondary];
             }
 
-            if (gScenarioObjectiveType == OBJECTIVE_BUILD_THE_BEST) {
+            if (gScenarioObjectiveType == OBJECTIVE_BUILD_THE_BEST)
+            {
                 ride->price = 0;
             }
 
-            if (ride->type == RIDE_TYPE_TOILETS) {
-                if (shop_item_has_common_price(SHOP_ITEM_ADMISSION)) {
+            if (ride->type == RIDE_TYPE_TOILETS)
+            {
+                if (shop_item_has_common_price(SHOP_ITEM_ADMISSION))
+                {
                     money32 price = ride_get_common_price(ride);
-                    if (price != MONEY32_UNDEFINED) {
+                    if (price != MONEY32_UNDEFINED)
+                    {
                         ride->price = (money16)price;
                     }
                 }
             }
 
-            if (rideEntry->shop_item != SHOP_ITEM_NONE) {
-                if (shop_item_has_common_price(rideEntry->shop_item)) {
+            if (rideEntry->shop_item != SHOP_ITEM_NONE)
+            {
+                if (shop_item_has_common_price(rideEntry->shop_item))
+                {
                     money32 price = shop_item_get_common_price(ride, rideEntry->shop_item);
-                    if (price != MONEY32_UNDEFINED) {
+                    if (price != MONEY32_UNDEFINED)
+                    {
                         ride->price = (money16)price;
                     }
                 }
             }
 
-            if (rideEntry->shop_item_secondary != SHOP_ITEM_NONE) {
-                if (shop_item_has_common_price(rideEntry->shop_item_secondary)) {
+            if (rideEntry->shop_item_secondary != SHOP_ITEM_NONE)
+            {
+                if (shop_item_has_common_price(rideEntry->shop_item_secondary))
+                {
                     money32 price = shop_item_get_common_price(ride, rideEntry->shop_item_secondary);
-                    if (price != MONEY32_UNDEFINED) {
+                    if (price != MONEY32_UNDEFINED)
+                    {
                         ride->price_secondary = (money16)price;
                     }
                 }
             }
 
             // Set the on-ride photo price, whether the ride has one or not (except shops).
-            if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_SHOP) && shop_item_has_common_price(SHOP_ITEM_PHOTO)) {
+            if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_SHOP) && shop_item_has_common_price(SHOP_ITEM_PHOTO))
+            {
                 money32 price = shop_item_get_common_price(ride, SHOP_ITEM_PHOTO);
-                if (price != MONEY32_UNDEFINED) {
+                if (price != MONEY32_UNDEFINED)
+                {
                     ride->price_secondary = (money16)price;
                 }
             }
         }
 
-        memset(ride->num_customers, 0, sizeof(ride->num_customers));
+        Memory::Set(ride->num_customers, 0, sizeof(ride->num_customers));
         ride->value = 0xFFFF;
         ride->satisfaction = 255;
         ride->satisfaction_time_out = 0;
