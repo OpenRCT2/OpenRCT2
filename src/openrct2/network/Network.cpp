@@ -1150,7 +1150,7 @@ void Network::Server_Send_GAMECMD(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx
 
 void Network::Client_Send_GAME_ACTION(const IGameAction *action)
 {
-	std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
+    std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
 
     uint32_t networkId = 0;
     networkId = ++_actionId;
@@ -1165,21 +1165,21 @@ void Network::Client_Send_GAME_ACTION(const IGameAction *action)
     DataSerialiser stream(true);
     action->Serialise(stream);
 
-	*packet << (uint32)NETWORK_COMMAND_GAME_ACTION << (uint32)gCurrentTicks << action->GetType() << stream;
+    *packet << (uint32)NETWORK_COMMAND_GAME_ACTION << (uint32)gCurrentTicks << action->GetType() << stream;
 
-	server_connection->QueuePacket(std::move(packet));
+    server_connection->QueuePacket(std::move(packet));
 }
 
 void Network::Server_Send_GAME_ACTION(const IGameAction *action)
 {
-	std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
+    std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
 
     DataSerialiser stream(true);
     action->Serialise(stream);
 
-	*packet << (uint32)NETWORK_COMMAND_GAME_ACTION << (uint32)gCurrentTicks << action->GetType() << stream;
+    *packet << (uint32)NETWORK_COMMAND_GAME_ACTION << (uint32)gCurrentTicks << action->GetType() << stream;
 
-	SendPacketToClients(*packet);
+    SendPacketToClients(*packet);
 }
 
 void Network::Server_Send_TICK()
@@ -2115,14 +2115,14 @@ void Network::Client_Handle_GAMECMD(NetworkConnection& connection, NetworkPacket
 
 void Network::Client_Handle_GAME_ACTION(NetworkConnection& connection, NetworkPacket& packet)
 {
-	uint32 tick;
-	uint32 type;
-	packet >> tick >> type;
+    uint32 tick;
+    uint32 type;
+    packet >> tick >> type;
 
-	MemoryStream stream;
-	size_t size = packet.Size - packet.BytesRead;
-	stream.WriteArray(packet.Read(size), size);
-	stream.SetPosition(0);
+    MemoryStream stream;
+    size_t size = packet.Size - packet.BytesRead;
+    stream.WriteArray(packet.Read(size), size);
+    stream.SetPosition(0);
 
     DataSerialiser ds(false, stream);
 
@@ -2141,64 +2141,64 @@ void Network::Client_Handle_GAME_ACTION(NetworkConnection& connection, NetworkPa
         _gameActionCallbacks.erase(itr);
     }
 
-	game_command_queue.emplace(tick, std::move(action), _commandId++);
+    game_command_queue.emplace(tick, std::move(action), _commandId++);
 }
 
 void Network::Server_Handle_GAME_ACTION(NetworkConnection& connection, NetworkPacket& packet)
 {
-	uint32 tick;
-	uint32 type;
+    uint32 tick;
+    uint32 type;
 
-	if (!connection.Player) {
-		return;
-	}
+    if (!connection.Player) {
+        return;
+    }
 
-	packet >> tick >> type;
+    packet >> tick >> type;
 
-	//tick count is different by time last_action_time is set, keep same value
-	// Check if player's group permission allows command to run
-	uint32 ticks = platform_get_ticks();
-	NetworkGroup* group = GetGroupByID(connection.Player->Group);
-	if (!group || (group && !group->CanPerformCommand(type))) {
-		Server_Send_SHOWERROR(connection, STR_CANT_DO_THIS, STR_PERMISSION_DENIED);
-		return;
-	}
+    //tick count is different by time last_action_time is set, keep same value
+    // Check if player's group permission allows command to run
+    uint32 ticks = platform_get_ticks();
+    NetworkGroup* group = GetGroupByID(connection.Player->Group);
+    if (!group || (group && !group->CanPerformCommand(type))) {
+        Server_Send_SHOWERROR(connection, STR_CANT_DO_THIS, STR_PERMISSION_DENIED);
+        return;
+    }
 
-	// In case someone modifies the code / memory to enable cluster build,
-	// require a small delay in between placing scenery to provide some security, as
-	// cluster mode is a for loop that runs the place_scenery code multiple times.
-	if (type == GAME_COMMAND_PLACE_SCENERY) {
-		if (
-			ticks - connection.Player->LastPlaceSceneryTime < ACTION_COOLDOWN_TIME_PLACE_SCENERY &&
-			// Incase platform_get_ticks() wraps after ~49 days, ignore larger logged times.
-			ticks > connection.Player->LastPlaceSceneryTime
-			) {
-			if (!(group->CanPerformCommand(MISC_COMMAND_TOGGLE_SCENERY_CLUSTER))) {
-				Server_Send_SHOWERROR(connection, STR_CANT_DO_THIS, STR_NETWORK_ACTION_RATE_LIMIT_MESSAGE);
-				return;
-			}
-		}
-	}
-	// This is to prevent abuse of demolishing rides. Anyone that is not the server
-	// host will have to wait a small amount of time in between deleting rides.
-	else if (type == GAME_COMMAND_DEMOLISH_RIDE) {
-		if (
-			ticks - connection.Player->LastDemolishRideTime < ACTION_COOLDOWN_TIME_DEMOLISH_RIDE &&
-			// Incase platform_get_ticks()() wraps after ~49 days, ignore larger logged times.
-			ticks > connection.Player->LastDemolishRideTime
-			) {
-			Server_Send_SHOWERROR(connection, STR_CANT_DO_THIS, STR_NETWORK_ACTION_RATE_LIMIT_MESSAGE);
-			return;
-		}
-	}
-	// Don't let clients send pause or quit
-	else if (type == GAME_COMMAND_TOGGLE_PAUSE ||
+    // In case someone modifies the code / memory to enable cluster build,
+    // require a small delay in between placing scenery to provide some security, as
+    // cluster mode is a for loop that runs the place_scenery code multiple times.
+    if (type == GAME_COMMAND_PLACE_SCENERY) {
+        if (
+            ticks - connection.Player->LastPlaceSceneryTime < ACTION_COOLDOWN_TIME_PLACE_SCENERY &&
+            // Incase platform_get_ticks() wraps after ~49 days, ignore larger logged times.
+            ticks > connection.Player->LastPlaceSceneryTime
+            ) {
+            if (!(group->CanPerformCommand(MISC_COMMAND_TOGGLE_SCENERY_CLUSTER))) {
+                Server_Send_SHOWERROR(connection, STR_CANT_DO_THIS, STR_NETWORK_ACTION_RATE_LIMIT_MESSAGE);
+                return;
+            }
+        }
+    }
+    // This is to prevent abuse of demolishing rides. Anyone that is not the server
+    // host will have to wait a small amount of time in between deleting rides.
+    else if (type == GAME_COMMAND_DEMOLISH_RIDE) {
+        if (
+            ticks - connection.Player->LastDemolishRideTime < ACTION_COOLDOWN_TIME_DEMOLISH_RIDE &&
+            // Incase platform_get_ticks()() wraps after ~49 days, ignore larger logged times.
+            ticks > connection.Player->LastDemolishRideTime
+            ) {
+            Server_Send_SHOWERROR(connection, STR_CANT_DO_THIS, STR_NETWORK_ACTION_RATE_LIMIT_MESSAGE);
+            return;
+        }
+    }
+    // Don't let clients send pause or quit
+    else if (type == GAME_COMMAND_TOGGLE_PAUSE ||
              type == GAME_COMMAND_LOAD_OR_QUIT
-		) {
-		return;
-	}
+        ) {
+        return;
+    }
 
-	// Run game command, and if it is successful send to clients
+    // Run game command, and if it is successful send to clients
     IGameAction::Ptr ga = GameActions::Create(type);
     if (!ga)
     {
@@ -3080,14 +3080,14 @@ void network_send_chat(const char* text)
 
 void network_send_game_action(const IGameAction *action)
 {
-	switch (gNetwork.GetMode()) {
-	case NETWORK_MODE_SERVER:
-		gNetwork.Server_Send_GAME_ACTION(action);
-		break;
-	case NETWORK_MODE_CLIENT:
-		gNetwork.Client_Send_GAME_ACTION(action);
-		break;
-	}
+    switch (gNetwork.GetMode()) {
+    case NETWORK_MODE_SERVER:
+        gNetwork.Server_Send_GAME_ACTION(action);
+        break;
+    case NETWORK_MODE_CLIENT:
+        gNetwork.Client_Send_GAME_ACTION(action);
+        break;
+    }
 }
 
 void network_enqueue_game_action(const IGameAction *action)
