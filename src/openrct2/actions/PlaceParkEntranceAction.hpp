@@ -22,13 +22,13 @@
 
 extern "C"
 {
-#include "../cheats.h"
-#include "../world/entrance.h"
-#include "../world/park.h"
-#include "../world/footpath.h"
+    #include "../cheats.h"
+    #include "../world/entrance.h"
+    #include "../world/park.h"
+    #include "../world/footpath.h"
 }
 
-struct PlaceParkEntranceGameActionResult : public GameActionResult 
+struct PlaceParkEntranceGameActionResult : public GameActionResult
 {
     PlaceParkEntranceGameActionResult() : GameActionResult(GA_ERROR::OK, 0) {}
     PlaceParkEntranceGameActionResult(GA_ERROR error, rct_string_id message) : GameActionResult(error, message)
