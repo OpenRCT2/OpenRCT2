@@ -191,10 +191,10 @@ namespace GameActions
         }
 
         // Call callback for asynchronous events
-        const GameAction::GameActionCallback_t& cb = action->GetCallback();
-        if (cb)
+        auto cb = action->GetCallback();
+        if (cb != nullptr)
         {
-            cb(action, result);
+            cb(action, result.get());
         }
 
         if (result->Error != GA_ERROR::OK && !(flags & GAME_COMMAND_FLAG_GHOST))

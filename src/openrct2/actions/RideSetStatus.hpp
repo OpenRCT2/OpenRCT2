@@ -28,7 +28,7 @@ extern "C"
     #include "../ride/ride.h"
 }
 
-struct RideSetStatusAction : public GameActionBase<GAME_COMMAND_SET_RIDE_STATUS, GA_FLAGS::ALLOW_WHILE_PAUSED>
+struct RideSetStatusAction : public GameActionBase<GAME_COMMAND_SET_RIDE_STATUS, GA_FLAGS::ALLOW_WHILE_PAUSED, GameActionResult>
 {
 public:
     uint8 RideIndex;

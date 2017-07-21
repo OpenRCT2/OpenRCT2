@@ -37,7 +37,7 @@ struct PlaceParkEntranceGameActionResult : public GameActionResult
     }
 };
 
-struct PlaceParkEntranceAction : public GameActionBase<GAME_COMMAND_PLACE_PARK_ENTRANCE, GA_FLAGS::EDITOR_ONLY>
+struct PlaceParkEntranceAction : public GameActionBase<GAME_COMMAND_PLACE_PARK_ENTRANCE, GA_FLAGS::EDITOR_ONLY, PlaceParkEntranceGameActionResult>
 {
 public:
     sint16 x;
