@@ -31,183 +31,183 @@ extern "C"
 struct PlaceParkEntranceGameActionResult : public GameActionResult 
 {
     PlaceParkEntranceGameActionResult() : GameActionResult(GA_ERROR::OK, 0) {}
-	PlaceParkEntranceGameActionResult(GA_ERROR error, rct_string_id message) : GameActionResult(error, message)
-	{
-		ErrorTitle = STR_CANT_BUILD_PARK_ENTRANCE_HERE;
-	}
+    PlaceParkEntranceGameActionResult(GA_ERROR error, rct_string_id message) : GameActionResult(error, message)
+    {
+        ErrorTitle = STR_CANT_BUILD_PARK_ENTRANCE_HERE;
+    }
 };
 
 struct PlaceParkEntranceAction : public GameAction<GAME_COMMAND_PLACE_PARK_ENTRANCE, GA_FLAGS::EDITOR_ONLY>
 {
 public:
-	sint16 x;
-	sint16 y;
-	sint16 z;
-	uint8 direction;
+    sint16 x;
+    sint16 y;
+    sint16 z;
+    uint8 direction;
 
-	void Serialise(DataSerialiser& stream) override
-	{
+    void Serialise(DataSerialiser& stream) override
+    {
         GameAction::Serialise(stream);
 
         stream << x << y << z << direction;
-	}
+    }
 
-	GameActionResult::Ptr Query() const override
-	{
-		if (!(gScreenFlags & SCREEN_FLAGS_EDITOR) && !gCheatsSandboxMode)
-		{
-			return std::make_unique<PlaceParkEntranceGameActionResult>(GA_ERROR::NOT_IN_EDITOR_MODE, STR_NONE);
-		}
+    GameActionResult::Ptr Query() const override
+    {
+        if (!(gScreenFlags & SCREEN_FLAGS_EDITOR) && !gCheatsSandboxMode)
+        {
+            return std::make_unique<PlaceParkEntranceGameActionResult>(GA_ERROR::NOT_IN_EDITOR_MODE, STR_NONE);
+        }
 
-		gCommandExpenditureType = RCT_EXPENDITURE_TYPE_LAND_PURCHASE;
+        gCommandExpenditureType = RCT_EXPENDITURE_TYPE_LAND_PURCHASE;
 
-		gCommandPosition.x = x;
-		gCommandPosition.y = y;
-		gCommandPosition.z = z * 16;
+        gCommandPosition.x = x;
+        gCommandPosition.y = y;
+        gCommandPosition.z = z * 16;
 
-		if (!map_check_free_elements_and_reorganise(3))
-		{
-			return std::make_unique<PlaceParkEntranceGameActionResult>(GA_ERROR::NO_FREE_ELEMENTS, STR_NONE);
-		}
+        if (!map_check_free_elements_and_reorganise(3))
+        {
+            return std::make_unique<PlaceParkEntranceGameActionResult>(GA_ERROR::NO_FREE_ELEMENTS, STR_NONE);
+        }
 
-		if (x <= 32 || y <= 32 || x >= (gMapSizeUnits - 32) || y >= (gMapSizeUnits - 32))
-		{
-			return std::make_unique<PlaceParkEntranceGameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_TOO_CLOSE_TO_EDGE_OF_MAP);
-		}
+        if (x <= 32 || y <= 32 || x >= (gMapSizeUnits - 32) || y >= (gMapSizeUnits - 32))
+        {
+            return std::make_unique<PlaceParkEntranceGameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_TOO_CLOSE_TO_EDGE_OF_MAP);
+        }
 
-		sint8 entranceNum = -1;
-		for (uint8 i = 0; i < MAX_PARK_ENTRANCES; ++i)
-		{
-			if (gParkEntrances[i].x == MAP_LOCATION_NULL)
-			{
-				entranceNum = i;
-				break;
-			}
-		}
+        sint8 entranceNum = -1;
+        for (uint8 i = 0; i < MAX_PARK_ENTRANCES; ++i)
+        {
+            if (gParkEntrances[i].x == MAP_LOCATION_NULL)
+            {
+                entranceNum = i;
+                break;
+            }
+        }
 
-		if (entranceNum == -1)
-		{
-			return std::make_unique<PlaceParkEntranceGameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_ERR_TOO_MANY_PARK_ENTRANCES);
-		}
+        if (entranceNum == -1)
+        {
+            return std::make_unique<PlaceParkEntranceGameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_ERR_TOO_MANY_PARK_ENTRANCES);
+        }
 
-		sint8 zLow = z * 2;
-		sint8 zHigh = zLow + 12;
-		rct_xy16 entranceLoc = { x, y };
-		for (uint8 index = 0; index < 3; index++)
-		{
-			if (index == 1)
-			{
-				entranceLoc.x += TileDirectionDelta[(direction - 1) & 0x3].x;
-				entranceLoc.y += TileDirectionDelta[(direction - 1) & 0x3].y;
-			}
-			else if (index == 2)
-			{
-				entranceLoc.x += TileDirectionDelta[(direction + 1) & 0x3].x * 2;
-				entranceLoc.y += TileDirectionDelta[(direction + 1) & 0x3].y * 2;
-			}
+        sint8 zLow = z * 2;
+        sint8 zHigh = zLow + 12;
+        rct_xy16 entranceLoc = { x, y };
+        for (uint8 index = 0; index < 3; index++)
+        {
+            if (index == 1)
+            {
+                entranceLoc.x += TileDirectionDelta[(direction - 1) & 0x3].x;
+                entranceLoc.y += TileDirectionDelta[(direction - 1) & 0x3].y;
+            }
+            else if (index == 2)
+            {
+                entranceLoc.x += TileDirectionDelta[(direction + 1) & 0x3].x * 2;
+                entranceLoc.y += TileDirectionDelta[(direction + 1) & 0x3].y * 2;
+            }
 
-			if (!gCheatsDisableClearanceChecks)
-			{
-				if (!map_can_construct_at(entranceLoc.x, entranceLoc.y, zLow, zHigh, 0xF))
-				{
-					return std::make_unique<PlaceParkEntranceGameActionResult>(GA_ERROR::NO_CLEARANCE, STR_NONE);
-				}
-			}
+            if (!gCheatsDisableClearanceChecks)
+            {
+                if (!map_can_construct_at(entranceLoc.x, entranceLoc.y, zLow, zHigh, 0xF))
+                {
+                    return std::make_unique<PlaceParkEntranceGameActionResult>(GA_ERROR::NO_CLEARANCE, STR_NONE);
+                }
+            }
 
-			// Check that entrance element does not already exist at this location
-			rct_map_element* entranceElement = map_get_park_entrance_element_at(entranceLoc.x, entranceLoc.y, zLow, false);
-			if (entranceElement != NULL)
-			{
-				return std::make_unique<PlaceParkEntranceGameActionResult>(GA_ERROR::ITEM_ALREADY_PLACED, STR_NONE);
-			}
-		}
+            // Check that entrance element does not already exist at this location
+            rct_map_element* entranceElement = map_get_park_entrance_element_at(entranceLoc.x, entranceLoc.y, zLow, false);
+            if (entranceElement != NULL)
+            {
+                return std::make_unique<PlaceParkEntranceGameActionResult>(GA_ERROR::ITEM_ALREADY_PLACED, STR_NONE);
+            }
+        }
 
-		return std::make_unique<PlaceParkEntranceGameActionResult>();
-	}
+        return std::make_unique<PlaceParkEntranceGameActionResult>();
+    }
 
-	GameActionResult::Ptr Execute() const override
-	{
+    GameActionResult::Ptr Execute() const override
+    {
         uint32 flags = GetFlags();
 
-		gCommandExpenditureType = RCT_EXPENDITURE_TYPE_LAND_PURCHASE;
+        gCommandExpenditureType = RCT_EXPENDITURE_TYPE_LAND_PURCHASE;
 
-		gCommandPosition.x = x;
-		gCommandPosition.y = y;
-		gCommandPosition.z = z * 16;
+        gCommandPosition.x = x;
+        gCommandPosition.y = y;
+        gCommandPosition.z = z * 16;
 
-		sint8 entranceNum = -1;
-		for (uint8 i = 0; i < MAX_PARK_ENTRANCES; ++i)
-		{
-			if (gParkEntrances[i].x == MAP_LOCATION_NULL)
-			{
-				entranceNum = i;
-				break;
-			}
-		}
+        sint8 entranceNum = -1;
+        for (uint8 i = 0; i < MAX_PARK_ENTRANCES; ++i)
+        {
+            if (gParkEntrances[i].x == MAP_LOCATION_NULL)
+            {
+                entranceNum = i;
+                break;
+            }
+        }
 
-		Guard::Assert(entranceNum != -1);
+        Guard::Assert(entranceNum != -1);
 
-		gParkEntrances[entranceNum].x = x;
-		gParkEntrances[entranceNum].y = y;
-		gParkEntrances[entranceNum].z = z * 16;
-		gParkEntrances[entranceNum].direction = direction;
+        gParkEntrances[entranceNum].x = x;
+        gParkEntrances[entranceNum].y = y;
+        gParkEntrances[entranceNum].z = z * 16;
+        gParkEntrances[entranceNum].direction = direction;
 
-		sint8 zLow = z * 2;
-		sint8 zHigh = zLow + 12;
-		rct_xy16 entranceLoc = { x, y };
-		for (uint8 index = 0; index < 3; index++)
-		{
-			if (index == 1)
-			{
-				entranceLoc.x += TileDirectionDelta[(direction - 1) & 0x3].x;
-				entranceLoc.y += TileDirectionDelta[(direction - 1) & 0x3].y;
-			}
-			else if (index == 2)
-			{
-				entranceLoc.x += TileDirectionDelta[(direction + 1) & 0x3].x * 2;
-				entranceLoc.y += TileDirectionDelta[(direction + 1) & 0x3].y * 2;
-			}
+        sint8 zLow = z * 2;
+        sint8 zHigh = zLow + 12;
+        rct_xy16 entranceLoc = { x, y };
+        for (uint8 index = 0; index < 3; index++)
+        {
+            if (index == 1)
+            {
+                entranceLoc.x += TileDirectionDelta[(direction - 1) & 0x3].x;
+                entranceLoc.y += TileDirectionDelta[(direction - 1) & 0x3].y;
+            }
+            else if (index == 2)
+            {
+                entranceLoc.x += TileDirectionDelta[(direction + 1) & 0x3].x * 2;
+                entranceLoc.y += TileDirectionDelta[(direction + 1) & 0x3].y * 2;
+            }
 
-			if (!(flags & GAME_COMMAND_FLAG_GHOST))
-			{
-				rct_map_element* surfaceElement = map_get_surface_element_at(entranceLoc.x / 32, entranceLoc.y / 32);
-				surfaceElement->properties.surface.ownership = 0;
-			}
+            if (!(flags & GAME_COMMAND_FLAG_GHOST))
+            {
+                rct_map_element* surfaceElement = map_get_surface_element_at(entranceLoc.x / 32, entranceLoc.y / 32);
+                surfaceElement->properties.surface.ownership = 0;
+            }
 
-			rct_map_element* newElement = map_element_insert(entranceLoc.x / 32, entranceLoc.y / 32, zLow, 0xF);
-			Guard::Assert(newElement != NULL);
-			newElement->clearance_height = zHigh;
+            rct_map_element* newElement = map_element_insert(entranceLoc.x / 32, entranceLoc.y / 32, zLow, 0xF);
+            Guard::Assert(newElement != NULL);
+            newElement->clearance_height = zHigh;
 
-			if (flags & GAME_COMMAND_FLAG_GHOST)
-			{
-				newElement->flags |= MAP_ELEMENT_FLAG_GHOST;
-			}
+            if (flags & GAME_COMMAND_FLAG_GHOST)
+            {
+                newElement->flags |= MAP_ELEMENT_FLAG_GHOST;
+            }
 
-			newElement->type = MAP_ELEMENT_TYPE_ENTRANCE;
-			newElement->type |= direction;
-			newElement->properties.entrance.index = index;
-			newElement->properties.entrance.type = ENTRANCE_TYPE_PARK_ENTRANCE;
-			newElement->properties.entrance.path_type = gFootpathSelectedId;
+            newElement->type = MAP_ELEMENT_TYPE_ENTRANCE;
+            newElement->type |= direction;
+            newElement->properties.entrance.index = index;
+            newElement->properties.entrance.type = ENTRANCE_TYPE_PARK_ENTRANCE;
+            newElement->properties.entrance.path_type = gFootpathSelectedId;
 
-			if (!(flags & GAME_COMMAND_FLAG_GHOST))
-			{
-				footpath_connect_edges(entranceLoc.x, entranceLoc.y, newElement, 1);
-			}
+            if (!(flags & GAME_COMMAND_FLAG_GHOST))
+            {
+                footpath_connect_edges(entranceLoc.x, entranceLoc.y, newElement, 1);
+            }
 
-			update_park_fences(entranceLoc.x, entranceLoc.y);
-			update_park_fences(entranceLoc.x - 32, entranceLoc.y);
-			update_park_fences(entranceLoc.x + 32, entranceLoc.y);
-			update_park_fences(entranceLoc.x, entranceLoc.y - 32);
-			update_park_fences(entranceLoc.x, entranceLoc.y + 32);
+            update_park_fences(entranceLoc.x, entranceLoc.y);
+            update_park_fences(entranceLoc.x - 32, entranceLoc.y);
+            update_park_fences(entranceLoc.x + 32, entranceLoc.y);
+            update_park_fences(entranceLoc.x, entranceLoc.y - 32);
+            update_park_fences(entranceLoc.x, entranceLoc.y + 32);
 
-			map_invalidate_tile(entranceLoc.x, entranceLoc.y, newElement->base_height * 8, newElement->clearance_height * 8);
+            map_invalidate_tile(entranceLoc.x, entranceLoc.y, newElement->base_height * 8, newElement->clearance_height * 8);
 
-			if (index == 0)
-			{
-				map_animation_create(MAP_ANIMATION_TYPE_PARK_ENTRANCE, entranceLoc.x, entranceLoc.y, zLow);
-			}
-		}
+            if (index == 0)
+            {
+                map_animation_create(MAP_ANIMATION_TYPE_PARK_ENTRANCE, entranceLoc.x, entranceLoc.y, zLow);
+            }
+        }
 
-		return std::make_unique<PlaceParkEntranceGameActionResult>();
-	}
+        return std::make_unique<PlaceParkEntranceGameActionResult>();
+    }
 };
