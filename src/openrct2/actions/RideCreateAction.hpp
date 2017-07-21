@@ -41,7 +41,7 @@ struct RideCreateGameActionResult : public GameActionResult
     uint32 rideColor;
 };
 
-struct RideCreateAction : public GameAction<GAME_COMMAND_CREATE_RIDE, GA_FLAGS::ALLOW_WHILE_PAUSED>
+struct RideCreateAction : public GameActionBase<GAME_COMMAND_CREATE_RIDE, GA_FLAGS::ALLOW_WHILE_PAUSED>
 {
 public:
     sint32 rideType;

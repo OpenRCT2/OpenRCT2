@@ -109,7 +109,7 @@ extern "C"
         auto gameAction = RideCreateAction();
         gameAction.rideType = listItem.type;
         gameAction.rideSubType = listItem.entry_index;
-        gameAction.SetCallback([](const IGameAction *ga, const GameActionResult::Ptr& res)
+        gameAction.SetCallback([](const GameAction *ga, const GameActionResult::Ptr& res)
         {
             if (res->Error != GA_ERROR::OK)
                 return;
