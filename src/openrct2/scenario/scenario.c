@@ -280,12 +280,15 @@ static void scenario_end()
     window_park_objective_open();
 }
 
+<<<<<<< HEAD
 void scenario_set_filename(const char *value)
 {
     substitute_path(_scenarioPath, sizeof(_scenarioPath), gRCT2AddressScenariosPath, value);
     _scenarioFileName = path_get_filename(_scenarioPath);
 }
 
+=======
+>>>>>>> refs/remotes/OpenRCT2/develop
 /**
  *
  *  rct2: 0x0066A752
