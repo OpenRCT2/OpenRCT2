@@ -22,10 +22,10 @@
 
 extern "C"
 {
-#include "../cheats.h"
-#include "../interface/window.h"
-#include "../world/park.h"
-#include "../ride/ride.h"
+    #include "../cheats.h"
+    #include "../interface/window.h"
+    #include "../world/park.h"
+    #include "../ride/ride.h"
 }
 
 struct RideSetStatusAction : public GameAction<GAME_COMMAND_SET_RIDE_STATUS, GA_FLAGS::ALLOW_WHILE_PAUSED>

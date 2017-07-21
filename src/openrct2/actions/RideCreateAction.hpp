@@ -22,13 +22,13 @@
 
 extern "C"
 {
-#include "../localisation/date.h"
-#include "../cheats.h"
-#include "../interface/window.h"
-#include "../world/park.h"
-#include "../rct1.h"
-#include "../ride/ride_data.h"
-#include "../ride/ride.h"
+    #include "../localisation/date.h"
+    #include "../cheats.h"
+    #include "../interface/window.h"
+    #include "../world/park.h"
+    #include "../rct1.h"
+    #include "../ride/ride_data.h"
+    #include "../ride/ride.h"
 }
 
 struct RideCreateGameActionResult : public GameActionResult {
