@@ -604,17 +604,17 @@ private:
     }
 };
 
-static std::unique_ptr<ScenarioRepository> _scenarioRepository;
+static ScenarioRepository * _scenarioRepository;
 
 IScenarioRepository * CreateScenarioRepository(IPlatformEnvironment * env)
 {
-    _scenarioRepository = std::unique_ptr<ScenarioRepository>(new ScenarioRepository(env));
-    return _scenarioRepository.get();
+    _scenarioRepository = new ScenarioRepository(env);
+    return _scenarioRepository;
 }
 
 IScenarioRepository * GetScenarioRepository()
 {
-    return _scenarioRepository.get();
+    return _scenarioRepository;
 }
 
 extern "C"

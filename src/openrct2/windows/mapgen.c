@@ -116,10 +116,10 @@ enum {
     { WWT_CAPTION,  0,  1,          WW - 2, 1,  14,     STR_MAPGEN_WINDOW_TITLE,    STR_WINDOW_TITLE_TIP }, /* WIDX_TITLE */ \
     { WWT_CLOSEBOX, 0,  WW - 13,    WW - 3, 2,  13,     STR_CLOSE_X,                STR_CLOSE_WINDOW_TIP }, /* WIDX_CLOSE */ \
     { WWT_RESIZE,   1,  0,          299,    43, WH - 2, 0xFFFFFFFF,                 STR_NONE },             /* WIDX_PAGE_BACKGROUND */ \
-    { WWT_TAB,      1,  3,          33,     17, 43,     0x20000000 | SPR_TAB,       STR_NONE },             /* WIDX_TAB_1 */ \
-    { WWT_TAB,      1,  34,         64,     17, 43,     0x20000000 | SPR_TAB,       STR_NONE },             /* WIDX_TAB_2 */ \
-    { WWT_TAB,      1,  65,         95,     17, 43,     0x20000000 | SPR_TAB,       STR_NONE },             /* WIDX_TAB_3 */ \
-    { WWT_TAB,      1,  96,         126,    17, 43,     0x20000000 | SPR_TAB,       STR_NONE }              /* WIDX_TAB_4 */
+    { WWT_TAB,      1,  3,          33,     17, 43,     IMAGE_TYPE_REMAP | SPR_TAB,       STR_NONE },             /* WIDX_TAB_1 */ \
+    { WWT_TAB,      1,  34,         64,     17, 43,     IMAGE_TYPE_REMAP | SPR_TAB,       STR_NONE },             /* WIDX_TAB_2 */ \
+    { WWT_TAB,      1,  65,         95,     17, 43,     IMAGE_TYPE_REMAP | SPR_TAB,       STR_NONE },             /* WIDX_TAB_3 */ \
+    { WWT_TAB,      1,  96,         126,    17, 43,     IMAGE_TYPE_REMAP | SPR_TAB,       STR_NONE }              /* WIDX_TAB_4 */
 
 static rct_widget MapWidgets[] = {
     SHARED_WIDGETS,

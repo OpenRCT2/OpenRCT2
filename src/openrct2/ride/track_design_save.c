@@ -863,18 +863,18 @@ static bool track_design_save_to_td6_for_maze(uint8 rideIndex, rct_track_td6 *td
     }
 
     rct_ride *ride = get_ride(rideIndex);
-    uint16 location = ride->entrances[0];
+    rct_xy8 location = ride->entrances[0];
 
-    if (location == 0xFFFF) {
+    if (location.xy == RCT_XY8_UNDEFINED) {
         gGameCommandErrorText = STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY;
         SafeFree(td6->maze_elements);
         return false;
     }
 
-    sint16 x = (location & 0xFF) * 32;
-    sint16 y = ((location & 0xFF00) >> 8) * 32;
+    sint16 x = location.x * 32;
+    sint16 y = location.y * 32;
 
-    mapElement = map_get_first_element_at(x >> 5, y >> 5);
+    mapElement = map_get_first_element_at(location.x, location.y);
     do {
         if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_ENTRANCE) continue;
         if (mapElement->properties.entrance.type != ENTRANCE_TYPE_RIDE_ENTRANCE) continue;
@@ -891,15 +891,15 @@ static bool track_design_save_to_td6_for_maze(uint8 rideIndex, rct_track_td6 *td
     numMazeElements++;
 
     location = ride->exits[0];
-    if (location == 0xFFFF) {
+    if (location.xy == RCT_XY8_UNDEFINED) {
         gGameCommandErrorText = STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY;
         SafeFree(td6->maze_elements);
         return 0;
     }
 
-    x = (location & 0xFF) * 32;
-    y = ((location & 0xFF00) >> 8) * 32;
-    mapElement = map_get_first_element_at(x >> 5, y >> 5);
+    x = location.x * 32;
+    y = location.y * 32;
+    mapElement = map_get_first_element_at(location.x, location.y);
     do {
         if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_ENTRANCE) continue;
         if (mapElement->properties.entrance.type != ENTRANCE_TYPE_RIDE_EXIT) continue;
@@ -1047,19 +1047,19 @@ static bool track_design_save_to_td6_for_tracked_ride(uint8 rideIndex, rct_track
         for (sint32 station_index = 0; station_index < RCT12_MAX_STATIONS_PER_RIDE; station_index++) {
             z = ride->station_heights[station_index];
 
-            uint16 location;
+            rct_xy8 location;
             if (i == 0) {
                 location = ride->entrances[station_index];
             } else {
                 location = ride->exits[station_index];
             }
 
-            if (location == 0xFFFF) {
+            if (location.xy == RCT_XY8_UNDEFINED) {
                 continue;
             }
 
-            sint16 x = (location & 0xFF) * 32;
-            sint16 y = ((location & 0xFF00) >> 8) * 32;
+            sint16 x = location.x * 32;
+            sint16 y = location.y * 32;
 
             rct_map_element *map_element = map_get_first_element_at(x >> 5, y >> 5);
             do {

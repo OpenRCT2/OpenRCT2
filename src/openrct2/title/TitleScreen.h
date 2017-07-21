@@ -16,12 +16,12 @@
 
 #pragma once
 
-#include "../drawing/drawing.h"
-
 #ifdef __cplusplus
 extern "C"
 {
 #endif
+    #include "../drawing/drawing.h"
+
     extern bool gTitleHideVersionInfo;
     extern uint16 gTitleCurrentSequence;
 

@@ -1445,7 +1445,7 @@ static money32 place_track_design(sint16 x, sint16 y, sint16 z, uint8 flags, uin
     }
 
     // The rest of the cases are handled by the code in ride_create()
-    if (track_type_has_ride_groups(td6->type) && entryIndex == 0xFF)
+    if (ride_type_has_ride_groups(td6->type) && entryIndex == 0xFF)
     {
         const ObjectRepositoryItem * ori = object_repository_find_object_by_name(rideEntryObject->name);
         if (ori != NULL)
@@ -1672,9 +1672,10 @@ static money32 place_maze_design(uint8 flags, uint8 rideIndex, uint16 mazeEntry,
 
         ride->maze_tiles++;
         ride->station_heights[0] = mapElement->base_height;
-        ride->station_starts[0] = 0;
+        ride->station_starts[0].xy = 0;
         if (ride->maze_tiles == 1) {
-            ride->overall_view = (fx >> 5) | ((fy >> 5) << 8);
+            ride->overall_view.x = fx / 32;
+            ride->overall_view.y = fy / 32;
         }
     }
 

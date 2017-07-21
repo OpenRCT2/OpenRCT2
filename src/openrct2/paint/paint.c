@@ -732,15 +732,18 @@ void paint_generate_structs(rct_drawpixelinfo * dpi)
     }
 }
 
-static void paint_arrange_structs_helper(paint_struct * ps_next, uint16 ax, uint8 flag)
+static paint_struct * paint_arrange_structs_helper(paint_struct * ps_next, uint16 ax, uint8 flag)
 {
     paint_struct * ps;
     paint_struct * ps_temp;
     do {
         ps = ps_next;
         ps_next = ps_next->next_quadrant_ps;
-        if (ps_next == NULL) return;
+        if (ps_next == NULL) return ps;
     } while (ax > ps_next->var_18);
+
+    // Cache the last visited node so we don't have to walk the whole list again
+    paint_struct * ps_cache = ps;
 
     ps_temp = ps;
     do {
@@ -763,8 +766,8 @@ static void paint_arrange_structs_helper(paint_struct * ps_next, uint16 ax, uint
     while (true) {
         while (true) {
             ps_next = ps->next_quadrant_ps;
-            if (ps_next == NULL) return;
-            if (ps_next->var_1B & (1 << 7)) return;
+            if (ps_next == NULL) return ps_cache;
+            if (ps_next->var_1B & (1 << 7)) return ps_cache;
             if (ps_next->var_1B & (1 << 0)) break;
             ps = ps_next;
         }
@@ -857,11 +860,11 @@ paint_struct paint_arrange_structs()
             }
         } while (++quadrantIndex <= _paintQuadrantFrontIndex);
 
-        paint_arrange_structs_helper(&psHead, _paintQuadrantBackIndex & 0xFFFF, 1 << 1);
+        paint_struct * ps_cache = paint_arrange_structs_helper(&psHead, _paintQuadrantBackIndex & 0xFFFF, 1 << 1);
 
         quadrantIndex = _paintQuadrantBackIndex;
         while (++quadrantIndex < _paintQuadrantFrontIndex) {
-            paint_arrange_structs_helper(&psHead, quadrantIndex & 0xFFFF, 0);
+            ps_cache = paint_arrange_structs_helper(ps_cache, quadrantIndex & 0xFFFF, 0);
         }
     }
     return psHead;
@@ -988,7 +991,7 @@ static uint32 paint_ps_colourify_image(uint32 imageId, uint8 spriteType, uint32 
 {
     if (viewFlags & VIEWPORT_FLAG_SEETHROUGH_RIDES) {
         if (spriteType == VIEWPORT_INTERACTION_ITEM_RIDE) {
-            if (!(imageId & 0x40000000)) {
+            if (!(imageId & IMAGE_TYPE_TRANSPARENT)) {
                 imageId &= 0x7FFFF;
                 imageId |= 0x41880000;
             }
@@ -996,7 +999,7 @@ static uint32 paint_ps_colourify_image(uint32 imageId, uint8 spriteType, uint32 
     }
     if (viewFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE) {
         if (spriteType == VIEWPORT_INTERACTION_ITEM_WALL) {
-            if (!(imageId & 0x40000000)) {
+            if (!(imageId & IMAGE_TYPE_TRANSPARENT)) {
                 imageId &= 0x7FFFF;
                 imageId |= 0x41880000;
             }
@@ -1007,7 +1010,7 @@ static uint32 paint_ps_colourify_image(uint32 imageId, uint8 spriteType, uint32 
         case VIEWPORT_INTERACTION_ITEM_FOOTPATH:
         case VIEWPORT_INTERACTION_ITEM_FOOTPATH_ITEM:
         case VIEWPORT_INTERACTION_ITEM_BANNER:
-            if (!(imageId & 0x40000000)) {
+            if (!(imageId & IMAGE_TYPE_TRANSPARENT)) {
                 imageId &= 0x7FFFF;
                 imageId |= 0x41880000;
             }
@@ -1019,7 +1022,7 @@ static uint32 paint_ps_colourify_image(uint32 imageId, uint8 spriteType, uint32 
         case VIEWPORT_INTERACTION_ITEM_SCENERY:
         case VIEWPORT_INTERACTION_ITEM_LARGE_SCENERY:
         case VIEWPORT_INTERACTION_ITEM_WALL:
-            if (!(imageId & 0x40000000)) {
+            if (!(imageId & IMAGE_TYPE_TRANSPARENT)) {
                 imageId &= 0x7FFFF;
                 imageId |= 0x41880000;
             }

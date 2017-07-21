@@ -196,16 +196,16 @@ enum {
     { WWT_CAPTION,          0,  1,      314,    1,      14,     STR_RIDE_WINDOW_TITLE,          STR_WINDOW_TITLE_TIP                        }, \
     { WWT_CLOSEBOX,         0,  303,    313,    2,      13,     STR_CLOSE_X,                    STR_CLOSE_WINDOW_TIP                        }, \
     { WWT_RESIZE,           1,  0,      315,    43,     179,    0xFFFFFFFF,                     STR_NONE                                    }, \
-    { WWT_TAB,              1,  3,      33,     17,     43,     0x20000000 | SPR_TAB,           STR_VIEW_OF_RIDE_ATTRACTION_TIP             }, \
-    { WWT_TAB,              1,  34,     64,     17,     46,     0x20000000 | SPR_TAB,           STR_VEHICLE_DETAILS_AND_OPTIONS_TIP         }, \
-    { WWT_TAB,              1,  65,     95,     17,     43,     0x20000000 | SPR_TAB,           STR_OPERATING_OPTIONS_TIP                   }, \
-    { WWT_TAB,              1,  96,     126,    17,     43,     0x20000000 | SPR_TAB,           STR_MAINTENANCE_OPTIONS_TIP                 }, \
-    { WWT_TAB,              1,  127,    157,    17,     43,     0x20000000 | SPR_TAB,           STR_COLOUR_SCHEME_OPTIONS_TIP               }, \
-    { WWT_TAB,              1,  158,    188,    17,     43,     0x20000000 | SPR_TAB,           STR_SOUND_AND_MUSIC_OPTIONS_TIP             }, \
-    { WWT_TAB,              1,  189,    219,    17,     43,     0x20000000 | SPR_TAB,           STR_MEASUREMENTS_AND_TEST_DATA_TIP          }, \
-    { WWT_TAB,              1,  220,    250,    17,     43,     0x20000000 | SPR_TAB,           STR_GRAPHS_TIP                              }, \
-    { WWT_TAB,              1,  251,    281,    17,     43,     0x20000000 | SPR_TAB,           STR_INCOME_AND_COSTS_TIP                    }, \
-    { WWT_TAB,              1,  282,    312,    17,     43,     0x20000000 | SPR_TAB,           STR_CUSTOMER_INFORMATION_TIP                }
+    { WWT_TAB,              1,  3,      33,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,           STR_VIEW_OF_RIDE_ATTRACTION_TIP             }, \
+    { WWT_TAB,              1,  34,     64,     17,     46,     IMAGE_TYPE_REMAP | SPR_TAB,           STR_VEHICLE_DETAILS_AND_OPTIONS_TIP         }, \
+    { WWT_TAB,              1,  65,     95,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,           STR_OPERATING_OPTIONS_TIP                   }, \
+    { WWT_TAB,              1,  96,     126,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,           STR_MAINTENANCE_OPTIONS_TIP                 }, \
+    { WWT_TAB,              1,  127,    157,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,           STR_COLOUR_SCHEME_OPTIONS_TIP               }, \
+    { WWT_TAB,              1,  158,    188,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,           STR_SOUND_AND_MUSIC_OPTIONS_TIP             }, \
+    { WWT_TAB,              1,  189,    219,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,           STR_MEASUREMENTS_AND_TEST_DATA_TIP          }, \
+    { WWT_TAB,              1,  220,    250,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,           STR_GRAPHS_TIP                              }, \
+    { WWT_TAB,              1,  251,    281,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,           STR_INCOME_AND_COSTS_TIP                    }, \
+    { WWT_TAB,              1,  282,    312,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,           STR_CUSTOMER_INFORMATION_TIP                }
 
 // 0x009ADC34
 static rct_widget window_ride_main_widgets[] = {
@@ -1320,7 +1320,7 @@ static void window_ride_draw_tab_vehicle(rct_drawpixelinfo *dpi, rct_window *w)
         spriteIndex *= rideVehicleEntry->var_16;
         spriteIndex += rideVehicleEntry->base_image_id;
         spriteIndex |= (vehicleColour.additional_1 << 24) | (vehicleColour.main << 19);
-        spriteIndex |= 0x80000000;
+        spriteIndex |= IMAGE_TYPE_REMAP_2_PLUS;
 
         gfx_draw_sprite(&clipDPI, spriteIndex, x, y, vehicleColour.additional_2);
     }
@@ -1579,9 +1579,12 @@ rct_window *window_ride_open_station(sint32 rideIndex, sint32 stationIndex)
     window_init_scroll_widgets(w);
 
     // View
-    for (i = stationIndex; i >= 0; i--) {
-        if (ride->station_starts[i] == 0xFFFF)
+    for (i = stationIndex; i >= 0; i--)
+    {
+        if (ride->station_starts[i].xy == RCT_XY8_UNDEFINED)
+        {
             stationIndex--;
+        }
     }
 
     w->ride.view = 1 + ride->num_vehicles + stationIndex;
@@ -1802,14 +1805,16 @@ static void window_ride_init_viewport(rct_window *w)
         sint32 count = eax - ride->num_vehicles;
         do {
             stationIndex++;
-            if (ride->station_starts[stationIndex] != 0xFFFF)
+            if (ride->station_starts[stationIndex].xy != RCT_XY8_UNDEFINED)
+            {
                 count--;
+            }
         } while (count >= 0);
 
-        eax = ride->station_starts[stationIndex];
+        rct_xy8 location = ride->station_starts[stationIndex];
 
-        focus.coordinate.x = (eax & 0xFF) << 5;
-        focus.coordinate.y = (eax & 0xFF00) >> 3;
+        focus.coordinate.x = location.x * 32;
+        focus.coordinate.y = location.y * 32;
         focus.coordinate.z = ride->station_heights[stationIndex] << 3;
         focus.sprite.type |= VIEWPORT_FOCUS_TYPE_COORDINATE;
     }
@@ -1862,7 +1867,7 @@ static void window_ride_init_viewport(rct_window *w)
     w->viewport_focus_coordinates.height = w->height;
 
     //rct2: 0x006aec9c only used here so brought it into the function
-    if (!w->viewport && ride->overall_view != 0xFFFF){
+    if (!w->viewport && ride->overall_view.xy != RCT_XY8_UNDEFINED){
         rct_widget* view_widget = &w->widgets[WIDX_VIEWPORT];
 
         sint32 x = view_widget->left + 1 + w->x;
@@ -2483,18 +2488,18 @@ static rct_string_id window_ride_get_status_station(rct_window *w, void *argumen
 
     do {
         stationIndex++;
-        if (ride->station_starts[stationIndex] != 0xFFFF)
+        if (ride->station_starts[stationIndex].xy != RCT_XY8_UNDEFINED)
             count--;
     } while (count >= 0);
 
     // Entrance / exit
     if (ride->status == RIDE_STATUS_CLOSED) {
-        if (ride->entrances[stationIndex] == 0xFFFF)
+        if (ride->entrances[stationIndex].xy == RCT_XY8_UNDEFINED)
             stringId = STR_NO_ENTRANCE;
-        else if (ride->exits[stationIndex] == 0xFFFF)
+        else if (ride->exits[stationIndex].xy == RCT_XY8_UNDEFINED)
             stringId = STR_NO_EXIT;
     } else {
-        if (ride->entrances[stationIndex] == 0xFFFF)
+        if (ride->entrances[stationIndex].xy == RCT_XY8_UNDEFINED)
             stringId = STR_EXIT_ONLY;
     }
 
@@ -2680,7 +2685,7 @@ static void window_ride_vehicle_mousedown(rct_window *w, rct_widgetindex widgetI
                     continue;
 
                 // Skip if vehicle does not belong to the same ride group
-                if (track_type_has_ride_groups(ride->type) && !selectionShouldBeExpanded)
+                if (ride_type_has_ride_groups(ride->type) && !selectionShouldBeExpanded)
                 {
                     rideGroup = get_ride_group(ride->type, rideEntry);
                     currentRideGroup = get_ride_group(ride->type, currentRideEntry);
@@ -2982,7 +2987,7 @@ static void window_ride_vehicle_scrollpaint(rct_window *w, rct_drawpixelinfo *dp
             spriteIndex *= rideVehicleEntry->var_16;
             spriteIndex += rideVehicleEntry->base_image_id;
             spriteIndex |= (vehicleColour.additional_1 << 24) | (vehicleColour.main << 19);
-            spriteIndex |= 0x80000000;
+            spriteIndex |= IMAGE_TYPE_REMAP_2_PLUS;
 
             nextSpriteToDraw->x = x;
             nextSpriteToDraw->y = y;
@@ -3371,7 +3376,7 @@ static void window_ride_operating_invalidate(rct_window *w)
         );
 
     // Lift hill speed
-    if ((rideEntry->enabledTrackPiecesA & (1UL << TRACK_LIFT_HILL)) &&
+    if ((rideEntry->enabledTrackPieces & (1ULL << TRACK_LIFT_HILL)) &&
             track_piece_is_available_for_ride_type(ride->type, TRACK_LIFT_HILL)) {
         window_ride_operating_widgets[WIDX_LIFT_HILL_SPEED_LABEL].type = WWT_24;
         window_ride_operating_widgets[WIDX_LIFT_HILL_SPEED].type = WWT_SPINNER;
@@ -3617,18 +3622,18 @@ static void window_ride_locate_mechanic(rct_window *w)
  *
  *  rct2: 0x006B7D08
  */
-static void window_ride_maintenance_draw_bar(rct_window *w, rct_drawpixelinfo *dpi, sint32 x, sint32 y, sint32 value, sint32 unk)
+static void window_ride_maintenance_draw_bar(rct_window *w, rct_drawpixelinfo *dpi, sint32 x, sint32 y, sint32 value, sint32 colour)
 {
     gfx_fill_rect_inset(dpi, x, y, x + 149, y + 8, w->colours[1], INSET_RECT_F_30);
-    if (unk & (1u << 31)) {
-        unk &= ~(1u << 31);
+    if (colour & BAR_BLINK) {
+        colour &= ~BAR_BLINK;
         if (game_is_not_paused() && (gCurrentTicks & 8))
             return;
     }
 
     value = ((186 * ((value * 2) & 0xFF)) >> 8) & 0xFF;
     if (value > 2) {
-        gfx_fill_rect_inset(dpi, x + 2, y + 1, x + value + 1, y + 7, unk, 0);
+        gfx_fill_rect_inset(dpi, x + 2, y + 1, x + value + 1, y + 7, colour, 0);
     }
 }
 
@@ -3922,7 +3927,7 @@ static void window_ride_maintenance_paint(rct_window *w, rct_drawpixelinfo *dpi)
     rct_widget *widget = &window_ride_maintenance_widgets[WIDX_LOCATE_MECHANIC];
     sint32 x = w->x + widget->left;
     sint32 y = w->y + widget->top;
-    gfx_draw_sprite(dpi, (gStaffMechanicColour << 24) | 0xA0000000 | SPR_MECHANIC, x, y, 0);
+    gfx_draw_sprite(dpi, (gStaffMechanicColour << 24) | IMAGE_TYPE_REMAP | IMAGE_TYPE_REMAP_2_PLUS | SPR_MECHANIC, x, y, 0);
 
     // Inspection label
     widget = &window_ride_maintenance_widgets[WIDX_INSPECTION_INTERVAL];
@@ -3935,7 +3940,7 @@ static void window_ride_maintenance_paint(rct_window *w, rct_drawpixelinfo *dpi)
     x = w->x + widget->left + 4;
     y = w->y + widget->top + 4;
 
-    uint16 reliability = ride->reliability >> 8;
+    uint16 reliability = ride->reliability_percentage;
     gfx_draw_string_left(dpi, STR_RELIABILITY_LABEL_1757, &reliability, COLOUR_BLACK, x, y);
     window_ride_maintenance_draw_bar(w, dpi, x + 103, y, max(10, reliability), COLOUR_BRIGHT_GREEN);
     y += 11;
@@ -4036,7 +4041,7 @@ const uint8 window_ride_entrance_style_list[] = {
 
 static uint32 window_ride_get_colour_button_image(sint32 colour)
 {
-    return 0x60000000 | (colour << 19) | SPR_PALETTE_BTN;
+    return IMAGE_TYPE_TRANSPARENT | SPRITE_ID_PALETTE_COLOUR_1(colour) | SPR_PALETTE_BTN;
 }
 
 static sint32 window_ride_has_track_colour(rct_ride *ride, sint32 trackColour)
@@ -4468,21 +4473,27 @@ static void window_ride_colour_invalidate(rct_window *w)
         window_ride_colour_widgets[WIDX_VEHICLE_MAIN_COLOUR].type = WWT_COLOURBTN;
         window_ride_colour_widgets[WIDX_VEHICLE_MAIN_COLOUR].image = window_ride_get_colour_button_image(vehicleColour.main);
 
-        uint32 colourFlags = 0;
+        bool allowChangingAdditionalColour1 = false;
+        bool allowChangingAdditionalColour2 = false;
+
         for (sint32 i = 0; i < ride->num_cars_per_train; i++) {
             uint8 vehicleTypeIndex = ride_entry_get_vehicle_at_position(ride->subtype, ride->num_cars_per_train, i);
 
-            colourFlags |= rideEntry->vehicles[vehicleTypeIndex].flags_b;
-            colourFlags = ror32(colourFlags, 16);
-            colourFlags |= rideEntry->vehicles[vehicleTypeIndex].flags_a;
-            colourFlags = ror32(colourFlags, 16);
+            if (rideEntry->vehicles[vehicleTypeIndex].flags_b & VEHICLE_ENTRY_FLAG_B_ENABLE_ADDITIONAL_COLOUR_1)
+            {
+                allowChangingAdditionalColour1 = true;
+            }
+            if (rideEntry->vehicles[vehicleTypeIndex].flags_a & VEHICLE_ENTRY_FLAG_A_ENABLE_ADDITIONAL_COLOUR_2)
+            {
+                allowChangingAdditionalColour2 = true;
+            }
         }
 
         // Additional colours
-        if (colourFlags & 1) {
+        if (allowChangingAdditionalColour1) {
             window_ride_colour_widgets[WIDX_VEHICLE_ADDITIONAL_COLOUR_1].type = WWT_COLOURBTN;
             window_ride_colour_widgets[WIDX_VEHICLE_ADDITIONAL_COLOUR_1].image = window_ride_get_colour_button_image(vehicleColour.additional_1);
-            if (colourFlags & 0x2000000) {
+            if (allowChangingAdditionalColour2) {
                 window_ride_colour_widgets[WIDX_VEHICLE_ADDITIONAL_COLOUR_2].type = WWT_COLOURBTN;
                 window_ride_colour_widgets[WIDX_VEHICLE_ADDITIONAL_COLOUR_2].image = window_ride_get_colour_button_image(vehicleColour.additional_2);
             } else {
@@ -4568,16 +4579,14 @@ static void window_ride_colour_paint(rct_window *w, rct_drawpixelinfo *dpi)
         } else {
             sint32 spriteIndex = TrackColourPreviews[ride->type].track;
             if (spriteIndex != 0) {
-                spriteIndex |= (trackColour.additional << 24) | (trackColour.main << 19);
-                spriteIndex |= 0xA0000000;
+                spriteIndex |= SPRITE_ID_PALETTE_COLOUR_2(trackColour.main, trackColour.additional);
                 gfx_draw_sprite(dpi, spriteIndex, x, y, 0);
             }
 
             // Supports
             spriteIndex = TrackColourPreviews[ride->type].supports;
             if (spriteIndex != 0) {
-                spriteIndex |= trackColour.supports << 19;
-                spriteIndex |= 0x20000000;
+                spriteIndex |= SPRITE_ID_PALETTE_COLOUR_1(trackColour.supports);
                 gfx_draw_sprite(dpi, spriteIndex, x, y, 0);
             }
         }
@@ -4587,8 +4596,7 @@ static void window_ride_colour_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
         uint8 shopItem = rideEntry->shop_item_secondary == 255 ? rideEntry->shop_item : rideEntry->shop_item_secondary;
         sint32 spriteIndex = ShopItemImage[shopItem];
-        spriteIndex |= ride->track_colour_main[0] << 19;
-        spriteIndex |= 0x20000000;
+        spriteIndex |= SPRITE_ID_PALETTE_COLOUR_1(ride->track_colour_main[0]);
 
         gfx_draw_sprite(dpi, spriteIndex, x, y, 0);
     }
@@ -4611,12 +4619,11 @@ static void window_ride_colour_paint(rct_window *w, rct_drawpixelinfo *dpi)
                 const rct_ride_entrance_definition *entranceStyle = &RideEntranceDefinitions[ride->entrance_style];
 
                 sint32 terniaryColour = 0;
-                if (entranceStyle->base_image_id & 0x40000000) {
-                    terniaryColour = 0x40000000 | (GlassPaletteIds[trackColour.main] << 19);
+                if (entranceStyle->base_image_id & IMAGE_TYPE_TRANSPARENT) {
+                    terniaryColour = IMAGE_TYPE_TRANSPARENT | (GlassPaletteIds[trackColour.main] << 19);
                 }
 
-                sint32 spriteIndex = (trackColour.additional << 24) | (trackColour.main << 19);
-                spriteIndex |= 0xA0000000;
+                sint32 spriteIndex = SPRITE_ID_PALETTE_COLOUR_2(trackColour.main, trackColour.additional);
                 spriteIndex += RideEntranceDefinitions[ride->entrance_style].sprite_index;
 
                 // Back
@@ -4671,7 +4678,7 @@ static void window_ride_colour_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi
     spriteIndex *= rideVehicleEntry->var_16;
     spriteIndex += rideVehicleEntry->base_image_id;
     spriteIndex |= (vehicleColour.additional_1 << 24) | (vehicleColour.main << 19);
-    spriteIndex |= 0x80000000;
+    spriteIndex |= IMAGE_TYPE_REMAP_2_PLUS;
     gfx_draw_sprite(dpi, spriteIndex, x, y, vehicleColour.additional_2);
 }
 

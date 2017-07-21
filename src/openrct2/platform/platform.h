@@ -80,10 +80,6 @@ typedef struct file_dialog_desc {
 } file_dialog_desc;
 
 // Platform shared definitions
-void platform_init();
-void platform_draw();
-void platform_draw_require_end();
-void platform_free();
 void platform_update_palette(const uint8 *colours, sint32 start_index, sint32 num_colours);
 void platform_toggle_windowed_mode();
 void platform_refresh_video(bool recreate_window);
@@ -108,7 +104,6 @@ void platform_enumerate_files_end(sint32 handle);
 sint32 platform_enumerate_directories_begin(const utf8 *directory);
 bool platform_enumerate_directories_next(sint32 handle, utf8 *path);
 void platform_enumerate_directories_end(sint32 handle);
-void platform_init_window_icon();
 bool platform_place_string_on_clipboard(utf8* target);
 
 // Returns the bitmask of the GetLogicalDrives function for windows, 0 for other systems

@@ -617,10 +617,11 @@ static rct_map_element *find_station_element(sint32 x, sint32 y, sint32 z, sint3
 
 static void ride_remove_station(rct_ride *ride, sint32 x, sint32 y, sint32 z)
 {
-    uint16 xy = (x >> 5) | ((y >> 5) << 8);
-    for (sint32 i = 0; i < MAX_STATIONS; i++) {
-        if (ride->station_starts[i] == xy && ride->station_heights[i] == z) {
-            ride->station_starts[i] = 0xFFFF;
+    for (sint32 i = 0; i < MAX_STATIONS; i++)
+    {
+        if (ride->station_starts[i].x == (x >> 5) && ride->station_starts[i].y == (y >> 5) && ride->station_heights[i] == z)
+        {
+            ride->station_starts[i].xy = RCT_XY8_UNDEFINED;
             ride->num_stations--;
             break;
         }
@@ -645,18 +646,13 @@ static bool track_add_station_element(sint32 x, sint32 y, sint32 z, sint32 direc
             gGameCommandErrorText = STR_NO_MORE_STATIONS_ALLOWED_ON_THIS_RIDE;
             return false;
         }
-        if (flags & GAME_COMMAND_FLAG_APPLY) {
-            sint32 stationIndex = -1;
-            for (sint32 i = 0; i < MAX_STATIONS; i++) {
-                if (ride->station_starts[i] == 0xFFFF) {
-                    stationIndex = i;
-                    break;
-                }
-            }
-
+        if (flags & GAME_COMMAND_FLAG_APPLY)
+        {
+            sint8 stationIndex = ride_get_first_empty_station_start(ride);
             assert(stationIndex != -1);
 
-            ride->station_starts[stationIndex] = (x >> 5) | ((y >> 5) << 8);
+            ride->station_starts[stationIndex].x = (x >> 5);
+            ride->station_starts[stationIndex].y = (y >> 5);
             ride->station_heights[stationIndex] = z;
             ride->station_depart[stationIndex] = 1;
             ride->station_length[stationIndex] = 0;
@@ -730,19 +726,13 @@ static bool track_add_station_element(sint32 x, sint32 y, sint32 z, sint32 direc
             stationElement = find_station_element(x, y, z, direction, rideIndex);
             if (stationElement != NULL) {
                 sint32 targetTrackType;
-                if (x == stationX1 && y == stationY1) {
-                    sint32 stationIndex = -1;
-                    for (sint32 i = 0; i < MAX_STATIONS; i++) {
-                        if (ride->station_starts[i] == 0xFFFF) {
-                            stationIndex = i;
-                            break;
-                        }
-                    }
-
+                if (x == stationX1 && y == stationY1)
+                {
+                    sint8 stationIndex = ride_get_first_empty_station_start(ride);
                     assert(stationIndex != -1);
 
-                    uint16 xy = (x >> 5) | ((y >> 5) << 8);
-                    ride->station_starts[stationIndex] = xy;
+                    ride->station_starts[stationIndex].x = (x >> 5);
+                    ride->station_starts[stationIndex].y = (y >> 5);
                     ride->station_heights[stationIndex] = z;
                     ride->station_depart[stationIndex] = 1;
                     ride->station_length[stationIndex] = stationLength;
@@ -858,20 +848,14 @@ static bool track_remove_station_element(sint32 x, sint32 y, sint32 z, sint32 di
             stationElement = find_station_element(x, y, z, direction, rideIndex);
             if (stationElement != NULL) {
                 sint32 targetTrackType;
-                if (x == stationX1 && y == stationY1) {
+                if (x == stationX1 && y == stationY1)
+                {
                 loc_6C4BF5:;
-                    sint32 stationIndex = -1;
-                    for (sint32 i = 0; i < MAX_STATIONS; i++) {
-                        if (ride->station_starts[i] == 0xFFFF) {
-                            stationIndex = i;
-                            break;
-                        }
-                    }
-
+                    sint8 stationIndex = ride_get_first_empty_station_start(ride);
                     assert(stationIndex != -1);
 
-                    uint16 xy = (x >> 5) | ((y >> 5) << 8);
-                    ride->station_starts[stationIndex] = xy;
+                    ride->station_starts[stationIndex].x = (x >> 5);
+                    ride->station_starts[stationIndex].y = (y >> 5);
                     ride->station_heights[stationIndex] = z;
                     ride->station_depart[stationIndex] = 1;
                     ride->station_length[stationIndex] = stationLength != 0 ? stationLength : byte_F441D1;
@@ -1244,7 +1228,7 @@ static money32 track_place(sint32 rideIndex, sint32 type, sint32 originX, sint32
 
                 uint16 maxHeight;
                 if (gConfigInterface.select_by_track_type) {
-                    if (track_type_has_ride_groups(ride->type)) {
+                    if (ride_type_has_ride_groups(ride->type)) {
                         const ride_group * rideGroup = get_ride_group(ride->type, rideEntry);
                         maxHeight = rideGroup->maximum_height;
                     } else {
@@ -1317,7 +1301,7 @@ static money32 track_place(sint32 rideIndex, sint32 type, sint32 originX, sint32
         }
 
         entranceDirections = 0;
-        if (ride->overall_view != 0xFFFF){
+        if (ride->overall_view.xy != RCT_XY8_UNDEFINED){
             if (!(flags & GAME_COMMAND_FLAG_5)){
                 if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE)) {
                     entranceDirections = FlatRideTrackSequenceProperties[type][0];
@@ -1327,8 +1311,9 @@ static money32 track_place(sint32 rideIndex, sint32 type, sint32 originX, sint32
                 }
             }
         }
-        if (entranceDirections & TRACK_SEQUENCE_FLAG_ORIGIN || ride->overall_view == 0xFFFF){
-            ride->overall_view = (x >> 5) | (y << 3);
+        if (entranceDirections & TRACK_SEQUENCE_FLAG_ORIGIN || ride->overall_view.xy == RCT_XY8_UNDEFINED){
+            ride->overall_view.x = x / 32;
+            ride->overall_view.y = y / 32;
         }
 
         mapElement = map_element_insert(x / 32, y / 32, baseZ, bl & 0xF);
@@ -1875,11 +1860,12 @@ static money32 set_maze_track(uint16 x, uint8 flags, uint8 direction, uint16 y, 
 
         ride->maze_tiles++;
         ride->station_heights[0] = mapElement->base_height;
-        ride->station_starts[0] = 0;
+        ride->station_starts[0].xy = 0;
 
         if (direction == 4) {
             if (!(flags & GAME_COMMAND_FLAG_GHOST)) {
-                ride->overall_view = (flooredX >> 5) | (flooredY << 3);
+                ride->overall_view.x = flooredX / 32;
+                ride->overall_view.y = flooredY / 32;
             }
         }
     }

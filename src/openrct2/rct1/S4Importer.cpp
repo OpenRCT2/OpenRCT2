@@ -834,6 +834,7 @@ private:
         dst->last_inspection = src->last_inspection;
         dst->reliability = src->reliability;
         dst->unreliability_factor = src->unreliability_factor;
+        dst->downtime = src->downtime;
         dst->breakdown_reason = src->breakdown_reason;
         dst->mechanic_status = src->mechanic_status;
         dst->mechanic = src->mechanic;
@@ -1007,19 +1008,6 @@ private:
                 {
                     ride->vehicles[j] = spriteIndexMap[originalIndex];
                 }
-            }
-        }
-    }
-
-    void FixNumPeepsInQueue()
-    {
-        sint32 i;
-        rct_ride *ride;
-        FOR_ALL_RIDES(i, ride)
-        {
-            for (sint32 stationIndex = 0; stationIndex < RCT12_MAX_STATIONS_PER_RIDE; stationIndex++)
-            {
-                ride->queue_length[stationIndex] = 0;
             }
         }
     }

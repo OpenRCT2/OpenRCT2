@@ -20,6 +20,7 @@
 #include "../network/network.h"
 #include "../object_list.h"
 #include "../rct2.h"
+#include "../ride/station.h"
 #include "../ride/track.h"
 #include "../ride/track_data.h"
 #include "../util/util.h"
@@ -1500,13 +1501,13 @@ void footpath_update_queue_chains()
             continue;
         }
 
-        for (sint32 i = 0; i < RCT12_MAX_STATIONS_PER_RIDE; i++) {
-            if (ride->entrances[i] == 0xFFFF) {
+        for (sint32 i = 0; i < MAX_STATIONS; i++) {
+            if (ride->entrances[i].xy == RCT_XY8_UNDEFINED) {
                 continue;
             }
 
-            uint8 x = ride->entrances[i] & 0xFF;
-            uint8 y = ride->entrances[i] >> 8;
+            uint8 x = ride->entrances[i].x;
+            uint8 y = ride->entrances[i].y;
             uint8 z = ride->station_heights[i];
 
             rct_map_element *mapElement = map_get_first_element_at(x, y);

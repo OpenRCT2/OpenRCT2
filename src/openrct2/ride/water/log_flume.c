@@ -628,7 +628,7 @@ static void paint_log_flume_track_right_quarter_turn_3_tiles(uint8 rideIndex, ui
 
 static void paint_log_flume_track_on_ride_photo(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
-    uint32 imageId = SPR_STATION_BASE_D | 0x20000000;
+    uint32 imageId = SPR_STATION_BASE_D | IMAGE_TYPE_REMAP;
     sub_98196C(imageId, 0, 0, 32, 32, 1, height, get_current_rotation());
 
     if (direction & 1) {

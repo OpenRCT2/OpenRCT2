@@ -63,7 +63,6 @@
 #define NUMBER_OF_AUTOSAVES_TO_KEEP 9
 
 uint16 gTicksSinceLastUpdate;
-uint32 gLastTickCount;
 uint8 gGamePaused = 0;
 sint32 gGameSpeed = 1;
 float gDayNightCycle = 0;
@@ -295,8 +294,8 @@ void game_update()
     if (gGameSpeed > 1) {
         numUpdates = 1 << (gGameSpeed - 1);
     } else {
-        numUpdates = gTicksSinceLastUpdate / 31;
-        numUpdates = clamp(1, numUpdates, 4);
+        numUpdates = gTicksSinceLastUpdate / GAME_UPDATE_TIME_MS;
+        numUpdates = clamp(1, numUpdates, GAME_MAX_UPDATES);
     }
 
     if (network_get_mode() == NETWORK_MODE_CLIENT && network_get_status() == NETWORK_STATUS_CONNECTED && network_get_authstatus() == NETWORK_AUTH_OK) {

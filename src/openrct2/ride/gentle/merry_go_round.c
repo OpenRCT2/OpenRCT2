@@ -39,10 +39,10 @@ static void paint_merry_go_round_structure(uint8 rideIndex, uint8 direction, sin
     height += 7;
 
     rct_ride * ride = get_ride(rideIndex);
-    rct_ride_entry * ride_type = get_ride_entry(ride->subtype);
+    rct_ride_entry * rideEntry = get_ride_entry(ride->subtype);
     rct_vehicle * vehicle = NULL;
 
-    uint32 baseImageId = ride_type->vehicles[0].base_image_id;
+    uint32 baseImageId = rideEntry->vehicles[0].base_image_id;
 
     if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK
         && ride->vehicles[0] != SPRITE_INDEX_NULL) {
@@ -66,8 +66,8 @@ static void paint_merry_go_round_structure(uint8 rideIndex, uint8 direction, sin
     uint32 imageOffset = rotationOffset & 0x1F;
 
     uint32 imageColourFlags = gTrackColours[SCHEME_MISC];
-    if (imageColourFlags == 0x20000000) {
-        imageColourFlags = ride->vehicle_colours[0].body_colour << 19 | ride->vehicle_colours[0].trim_colour << 24 | 0xA0000000;
+    if (imageColourFlags == IMAGE_TYPE_REMAP) {
+        imageColourFlags = SPRITE_ID_PALETTE_COLOUR_2(ride->vehicle_colours[0].body_colour , ride->vehicle_colours[0].trim_colour);
     }
 
     uint32 imageId = (baseImageId + imageOffset) | imageColourFlags;
@@ -90,7 +90,7 @@ static void paint_merry_go_round_structure(uint8 rideIndex, uint8 direction, sin
                 continue;
             }
 
-            imageColourFlags = vehicle->peep_tshirt_colours[peep] << 19 | vehicle->peep_tshirt_colours[peep + 1] << 24 | 0x0A0000000;
+            imageColourFlags = SPRITE_ID_PALETTE_COLOUR_2(vehicle->peep_tshirt_colours[peep], vehicle->peep_tshirt_colours[peep + 1]);
             imageId = (baseImageId + 32 + imageOffset) | imageColourFlags;
             sub_98199C(imageId, xOffset, yOffset, 24, 24, 48, height, xOffset + 16, yOffset + 16, height, get_current_rotation());
         }

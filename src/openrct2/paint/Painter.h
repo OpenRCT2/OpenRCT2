@@ -14,19 +14,41 @@
  *****************************************************************************/
 #pragma endregion
 
-#ifndef _RIDE_STATION_H_
-#define _RIDE_STATION_H_
-
+#include <time.h>
 #include "../common.h"
-#include "../world/map.h"
-#include "ride.h"
 
-#define MAX_STATIONS 4
+struct rct_drawpixelinfo;
 
-void ride_update_station(rct_ride *ride, sint32 stationIndex);
-sint32 ride_get_first_valid_station_exit(rct_ride * ride);
-sint8 ride_get_first_valid_station_start(const rct_ride *ride);
-sint8 ride_get_first_empty_station_start(const rct_ride *ride);
+namespace OpenRCT2
+{
+    namespace Drawing
+    {
+        interface IDrawingEngine;
+    }
 
+    namespace Ui
+    {
+        interface IUiContext;
+    }
 
-#endif
+    namespace Paint
+    {
+        class Painter final
+        {
+        private:
+            Ui::IUiContext * const _uiContext;
+
+            time_t  _lastSecond = 0;
+            sint32  _currentFPS = 0;
+            sint32  _frames     = 0;
+
+        public:
+            Painter(Ui::IUiContext * uiContext);
+            void Paint(Drawing::IDrawingEngine * de);
+
+        private:
+            void PaintFPS(rct_drawpixelinfo * dpi);
+            void MeasureFPS();
+        };
+    }
+}

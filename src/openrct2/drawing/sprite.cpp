@@ -24,6 +24,7 @@
 #include "../core/Path.hpp"
 #include "../core/Util.hpp"
 #include "../OpenRCT2.h"
+#include "../PlatformEnvironment.h"
 #include "../sprites.h"
 #include "../ui/UiContext.h"
 
@@ -88,12 +89,15 @@ extern "C"
      *
      *  rct2: 0x00678998
      */
-    bool gfx_load_g1()
+    bool gfx_load_g1(void * platformEnvironment)
     {
-        log_verbose("gfx_load_g1()");
+        auto env = (IPlatformEnvironment *)platformEnvironment;
+
+        log_verbose("gfx_load_g1(...)");
         try
         {
-            auto fs = FileStream(get_file_path(PATH_ID_G1), FILE_MODE_OPEN);
+            auto path = Path::Combine(env->GetDirectoryPath(DIRBASE::RCT2, DIRID::DATA), "g1.dat");
+            auto fs = FileStream(path, FILE_MODE_OPEN);
             rct_g1_header header = fs.ReadValue<rct_g1_header>();
 
             /* number of elements is stored in g1.dat, but because the entry

@@ -26,11 +26,11 @@ static void paint_twist_structure(rct_ride * ride, uint8 direction, sint8 xOffse
 {
     rct_map_element * savedMapElement = g_currently_drawn_item;
 
-    rct_ride_entry * rideType = get_ride_entry(ride->subtype);
+    rct_ride_entry * rideEntry = get_ride_entry(ride->subtype);
     rct_vehicle * vehicle = NULL;
 
     height += 7;
-    uint32 baseImageId = rideType->vehicles[0].base_image_id;
+    uint32 baseImageId = rideEntry->vehicles[0].base_image_id;
 
     if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK
         && ride->vehicles[0] != SPRITE_INDEX_NULL) {
@@ -49,8 +49,9 @@ static void paint_twist_structure(rct_ride * ride, uint8 direction, sint8 xOffse
 
 
     uint32 imageColourFlags = gTrackColours[SCHEME_MISC];
-    if (imageColourFlags == 0x20000000) {
-        imageColourFlags = ride->vehicle_colours[0].body_colour << 19 | ride->vehicle_colours[0].trim_colour << 24 | 0xA0000000;
+    if (imageColourFlags == IMAGE_TYPE_REMAP)
+    {
+        imageColourFlags = SPRITE_ID_PALETTE_COLOUR_2(ride->vehicle_colours[0].body_colour, ride->vehicle_colours[0].trim_colour);
     }
 
     uint32 structureFrameNum = frameNum % 24;
@@ -64,7 +65,7 @@ static void paint_twist_structure(rct_ride * ride, uint8 direction, sint8 xOffse
         && vehicle != NULL) {
 
         for (sint32 i = 0; i < vehicle->num_peeps; i += 2) {
-            imageColourFlags = vehicle->peep_tshirt_colours[i] << 19 | vehicle->peep_tshirt_colours[i + 1] << 24 | 0xA0000000;
+            imageColourFlags = SPRITE_ID_PALETTE_COLOUR_2(vehicle->peep_tshirt_colours[i], vehicle->peep_tshirt_colours[i + 1]);
 
             uint32 peepFrameNum = (frameNum + i * 12) % 216;
             imageId = (baseImageId + 24 + peepFrameNum) | imageColourFlags;

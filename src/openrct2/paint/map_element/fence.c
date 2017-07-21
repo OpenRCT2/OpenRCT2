@@ -146,12 +146,12 @@ void fence_paint(uint8 direction, sint32 height, rct_map_element * map_element)
 
 
     sint32 primaryColour = map_element->properties.wall.colour_1 & 0x1F;
-    uint32 imageColourFlags = primaryColour << 19 | 0x20000000;
+    uint32 imageColourFlags = primaryColour << 19 | IMAGE_TYPE_REMAP;
     uint32 dword_141F718 = imageColourFlags + 0x23800006;
 
     if (sceneryEntry->wall.flags & WALL_SCENERY_HAS_SECONDARY_COLOUR) {
         uint8 secondaryColour = wall_element_get_secondary_colour(map_element);
-        imageColourFlags |= secondaryColour << 24 | 0x80000000;
+        imageColourFlags |= secondaryColour << 24 | IMAGE_TYPE_REMAP_2_PLUS;
     }
 
     uint32 tertiaryColour = 0;

@@ -136,7 +136,7 @@ void X8RainDrawer::Restore()
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wsuggest-final-methods"
 
-X8DrawingEngine::X8DrawingEngine()
+X8DrawingEngine::X8DrawingEngine(Ui::IUiContext * uiContext)
 {
     _drawingContext = new X8DrawingContext(this);
 #ifdef __ENABLE_LIGHTFX__
@@ -200,42 +200,43 @@ void X8DrawingEngine::Invalidate(sint32 left, sint32 top, sint32 right, sint32 b
     }
 }
 
-void X8DrawingEngine::Draw()
+void X8DrawingEngine::BeginDraw()
 {
-    if (gIntroState != INTRO_STATE_NONE)
-    {
-        intro_draw(&_bitsDPI);
-    }
-    else
+    if (gIntroState == INTRO_STATE_NONE)
     {
 #ifdef __ENABLE_LIGHTFX__
-            // HACK we need to re-configure the bits if light fx has been enabled / disabled
-            if (_lastLightFXenabled != (gConfigGeneral.enable_light_fx != 0))
-            {
-                Resize(_width, _height);
-            }
+        // HACK we need to re-configure the bits if light fx has been enabled / disabled
+        if (_lastLightFXenabled != (gConfigGeneral.enable_light_fx != 0))
+        {
+            Resize(_width, _height);
+        }
 #endif
-
         _rainDrawer.SetDPI(&_bitsDPI);
         _rainDrawer.Restore();
-
-        ResetWindowVisbilities();
-
-        // Redraw dirty regions before updating the viewports, otherwise
-        // when viewports get panned, they copy dirty pixels
-        DrawAllDirtyBlocks();
-
-        window_update_all_viewports();
-        DrawAllDirtyBlocks();
-        window_update_all();
-
-        gfx_draw_pickedup_peep(&_bitsDPI);
-        gfx_invalidate_pickedup_peep();
-
-        DrawRain(&_bitsDPI, &_rainDrawer);
-
-        rct2_draw(&_bitsDPI);
     }
+}
+
+void X8DrawingEngine::EndDraw()
+{
+}
+
+void X8DrawingEngine::PaintWindows()
+{
+    ResetWindowVisbilities();
+
+    // Redraw dirty regions before updating the viewports, otherwise
+    // when viewports get panned, they copy dirty pixels
+    DrawAllDirtyBlocks();
+    window_update_all_viewports();
+    DrawAllDirtyBlocks();
+
+    // TODO move this out from drawing
+    window_update_all();
+}
+
+void X8DrawingEngine::PaintRain()
+{
+    DrawRain(&_bitsDPI, &_rainDrawer);
 }
 
 void X8DrawingEngine::CopyRect(sint32 x, sint32 y, sint32 width, sint32 height, sint32 dx, sint32 dy)
@@ -709,16 +710,17 @@ void X8DrawingContext::FilterRect(FILTER_PALETTE_ID palette, sint32 left, sint32
     rct_g1_element * g1Element = &g1Elements[g1Index];
     uint8 *          g1Bits = g1Element->offset;
 
+    const sint32 scaled_width = width >> dpi->zoom_level;
+    const sint32 step = ((dpi->width >> dpi->zoom_level) + dpi->pitch);
+
     // Fill the rectangle with the colours from the colour table
     for (sint32 i = 0; i < height >> dpi->zoom_level; i++)
     {
-        uint8 * nextdst = dst + (dpi->width >> dpi->zoom_level) + dpi->pitch;
-        for (sint32 j = 0; j < (width >> dpi->zoom_level); j++)
+        uint8 * nextdst = dst + step * i;
+        for (sint32 j = 0; j < scaled_width; j++)
         {
-            *dst = g1Bits[*dst];
-            dst++;
+            *(nextdst + j) = g1Bits[*(nextdst + j)];
         }
-        dst = nextdst;
     }
 }
 
@@ -744,7 +746,7 @@ void X8DrawingContext::DrawSpriteSolid(uint32 image, sint32 x, sint32 y, uint8 c
     palette[0] = 0;
 
     image &= 0x7FFFF;
-    gfx_draw_sprite_palette_set_software(_dpi, image | 0x20000000, x, y, palette, nullptr);
+    gfx_draw_sprite_palette_set_software(_dpi, image | IMAGE_TYPE_REMAP, x, y, palette, nullptr);
 }
 
 void X8DrawingContext::DrawGlyph(uint32 image, sint32 x, sint32 y, uint8 * palette)

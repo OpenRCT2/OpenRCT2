@@ -33,7 +33,7 @@ const char gVersionInfoFull[] =
 #ifdef OPENRCT2_BUILD_SERVER
     " provided by " OPENRCT2_BUILD_SERVER
 #endif
-#ifdef DEBUG
+#ifndef NDEBUG
     " (DEBUG)"
 #endif
     ;
