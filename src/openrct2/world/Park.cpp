@@ -545,30 +545,6 @@ static void park_generate_new_guests()
     }
 }
 
-/**
- *
- *  rct2: 0x006674F7
- */
-void park_update()
-{
-    if (gScreenFlags & (SCREEN_FLAGS_SCENARIO_EDITOR | SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER))
-        return;
-
-    // Every 5 seconds approximately
-    if (gCurrentTicks % 512 == 0) {
-        gParkRating = calculate_park_rating();
-        gParkValue = calculate_park_value();
-        gCompanyValue = calculate_company_value();
-        window_invalidate_by_class(WC_FINANCES);
-        _guestGenerationProbability = park_calculate_guest_generation_probability();
-        auto intent = Intent(INTENT_ACTION_UPDATE_PARK_RATING);
-        context_broadcast_intent(&intent);
-    }
-
-    // Generate new guests
-    park_generate_new_guests();
-}
-
 uint8 calculate_guest_initial_happiness(uint8 percentage) {
     if (percentage < 15) {
         // There is a minimum of 15% happiness
@@ -1039,6 +1015,21 @@ bool park_entry_price_unlocked()
 
 using namespace OpenRCT2;
 
+static Park * _singleton = nullptr;
+
+Park::Park()
+{
+    _singleton = this;
+}
+
+Park::~Park()
+{
+    if (_singleton == this)
+    {
+        _singleton = nullptr;
+    }
+}
+
 uint16 Park::GetParkRating() const
 {
     return gParkRating;
@@ -1056,7 +1047,19 @@ money32 Park::GetCompanyValue() const
 
 void Park::Update()
 {
-    park_update();
+    // Every 5 seconds approximately
+    if (gCurrentTicks % 512 == 0)
+    {
+        gParkRating = CalculateParkRating();
+        gParkValue = CalculateParkValue();
+        gCompanyValue = CalculateCompanyValue();
+        _guestGenerationProbability = park_calculate_guest_generation_probability();
+        window_invalidate_by_class(WC_FINANCES);
+        auto intent = Intent(INTENT_ACTION_UPDATE_PARK_RATING);
+        context_broadcast_intent(&intent);
+    }
+
+    park_generate_new_guests();
 }
 
 sint32 Park::CalculateParkRating() const

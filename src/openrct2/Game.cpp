@@ -111,6 +111,8 @@ rct_string_id gGameCommandErrorText;
 uint8         gErrorType;
 rct_string_id gErrorStringId;
 
+using namespace OpenRCT2;
+
 sint32 game_command_callback_get_index(GAME_COMMAND_CALLBACK_POINTER * callback)
 {
     for (uint32 i = 0; i < Util::CountOf(game_command_callback_table); i++)
@@ -489,7 +491,7 @@ void game_logic_update()
     vehicle_update_all();
     sprite_misc_update_all();
     ride_update_all();
-    park_update();
+    GetContext()->GetPark()->Update();
     research_update();
     ride_ratings_update_all();
     ride_measurements_update();
