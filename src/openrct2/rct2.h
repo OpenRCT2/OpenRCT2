@@ -154,6 +154,10 @@ enum {
     FILE_EXTENSION_TD6,
 };
 
+enum {
+    RCT2_PARK_FLAGS_PARK_ENTRY_LOCKED_AT_FREE = (1 << 13),  // Off: rides and park entry chargeable. On: only rides chargeable.
+};
+
 #ifdef __cplusplus
 extern "C" {
 #endif
