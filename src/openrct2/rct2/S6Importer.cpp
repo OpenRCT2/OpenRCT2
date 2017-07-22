@@ -217,7 +217,7 @@ public:
         gBankLoan        = _s6.current_loan;
         gParkFlags       = _s6.park_flags;
         gParkEntranceFee = _s6.park_entrance_fee;
-        // Loopy Landscape parks can set a flag to lock the entry price to free. 
+        // Loopy Landscape and RCT2 parks can set a flag to lock the entry price to free. 
         // If this flag is not set, the player can ask money for both rides and entry.
         if (!(_s6.park_flags & RCT2_PARK_FLAGS_PARK_ENTRY_LOCKED_AT_FREE))
         {
