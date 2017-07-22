@@ -2245,6 +2245,47 @@ static void bobsleigh_rc_track_block_brakes(uint8 rideIndex, uint8 trackSequence
     paint_util_set_general_support_height(height + 32, 0x20);
 }
 
+static void bobsleigh_rc_track_on_ride_photo(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+{
+    switch (direction)
+    {
+        case 0:
+            sub_98196C_rotated(direction, IMAGE_TYPE_REMAP | SPR_METAL_PLATE, 0, 0, 32, 32, 1, height);
+            metal_a_supports_paint_setup(METAL_SUPPORTS_TUBES, 5, 0, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(METAL_SUPPORTS_TUBES, 8, 0, height, gTrackColours[SCHEME_SUPPORTS]);
+            sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 14572, 0, 0, 32, 20, 0, height, 0, 6, height + 3);
+            sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 14574, 0, 0, 32, 20, 0, height, 0, 6, height + 3);
+            break;
+        case 1:
+            sub_98196C_rotated(direction, IMAGE_TYPE_REMAP | SPR_METAL_PLATE, 0, 0, 32, 32, 1, height);
+            metal_a_supports_paint_setup(METAL_SUPPORTS_TUBES, 6, 0, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(METAL_SUPPORTS_TUBES, 7, 0, height, gTrackColours[SCHEME_SUPPORTS]);
+            sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 14573, 0, 0, 32, 20, 0, height, 0, 6, height + 3);
+            sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 14575, 0, 0, 32, 20, 0, height, 0, 6, height + 3);
+            break;
+        case 2:
+            sub_98196C_rotated(direction, IMAGE_TYPE_REMAP | SPR_METAL_PLATE, 0, 0, 32, 32, 1, height);
+            metal_a_supports_paint_setup(METAL_SUPPORTS_TUBES, 5, 0, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(METAL_SUPPORTS_TUBES, 8, 0, height, gTrackColours[SCHEME_SUPPORTS]);
+            sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 14572, 0, 0, 32, 20, 0, height, 0, 6, height + 3);
+            sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 14574, 0, 0, 32, 20, 0, height, 0, 6, height + 3);
+
+            break;
+        case 3:
+            sub_98196C_rotated(direction, IMAGE_TYPE_REMAP | SPR_METAL_PLATE, 0, 0, 32, 32, 1, height);
+            metal_a_supports_paint_setup(METAL_SUPPORTS_TUBES, 6, 0, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(METAL_SUPPORTS_TUBES, 7, 0, height, gTrackColours[SCHEME_SUPPORTS]);
+            sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 14573, 0, 0, 32, 20, 0, height, 0, 6, height + 3);
+            sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 14575, 0, 0, 32, 20, 0, height, 0, 6, height + 3);
+
+            break;
+    }
+    track_paint_util_onride_photo_paint(direction, height + 3, mapElement);
+    paint_util_push_tunnel_rotated(direction, height, TUNNEL_6);
+    paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
+    paint_util_set_general_support_height(height + 48, 0x20);
+}
+
 TRACK_PAINT_FUNCTION get_track_paint_function_bobsleigh_rc(sint32 trackType, sint32 direction)
 {
     switch (trackType) {
@@ -2334,6 +2375,9 @@ TRACK_PAINT_FUNCTION get_track_paint_function_bobsleigh_rc(sint32 trackType, sin
         return bobsleigh_rc_track_brakes;
     case TRACK_ELEM_BLOCK_BRAKES:
         return bobsleigh_rc_track_block_brakes;
+
+    case TRACK_ELEM_ON_RIDE_PHOTO:
+        return bobsleigh_rc_track_on_ride_photo;
     }
     return NULL;
 }
