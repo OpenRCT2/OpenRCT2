@@ -2038,12 +2038,12 @@ private:
         // Flags
         gParkFlags = _s4.park_flags;
         gParkFlags &= ~PARK_FLAGS_ANTI_CHEAT_DEPRECATED;
+        // Loopy Landscape parks can set a flag to lock the entry price to free. 
+        // If this flag is not set, the player can ask money for both rides and entry.
         if (!(_s4.park_flags & RCT1_PARK_FLAGS_PARK_ENTRY_LOCKED_AT_FREE))
         {
             gCheatsUnlockAllPrices = true;
         }
-        // Loopy Landscape parks can set a flag to lock the entry price to free. 
-        // If this flag is not set, the player can ask money for both rides and entry.
         else
         {
             gCheatsUnlockAllPrices = false;
