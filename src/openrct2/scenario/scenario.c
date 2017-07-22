@@ -95,8 +95,6 @@ ParkLoadResult * scenario_load_and_play_from_path(const char * path)
     uint32 extension = get_file_extension_type(path);
     ParkLoadResult * result = NULL;
 
-	cheats_reset();
-
     if (extension == FILE_EXTENSION_SC6) {
         result = scenario_load(path);
         if (ParkLoadResult_GetError(result) != PARK_LOAD_ERROR_OK) {
