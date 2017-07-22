@@ -509,7 +509,7 @@ public:
         for (uint8 i = 0; i < RCT12_MAX_STATIONS_PER_RIDE; i++)
         {
             dst->length[i] = src->length[i];
-            dst->time[i] = src->length[i];
+            dst->time[i] = src->time[i];
         }
 
         dst->max_positive_vertical_g = src->max_positive_vertical_g;
