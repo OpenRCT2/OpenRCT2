@@ -1229,7 +1229,7 @@ static void window_options_mousedown(rct_window *w, rct_widgetindex widgetIndex,
                 num_items
             );
 
-            dropdown_set_checked(gTitleCurrentSequence, true);
+            dropdown_set_checked(title_get_current_sequence(), true);
             break;
         case WIDX_DEFAULT_INSPECTION_INTERVAL_DROPDOWN:
             for (size_t i = 0; i < 7; i++) {
@@ -1471,7 +1471,7 @@ static void window_options_dropdown(rct_window *w, rct_widgetindex widgetIndex, 
             }
             break;
         case WIDX_TITLE_SEQUENCE_DROPDOWN:
-            if (dropdownIndex != gTitleCurrentSequence) {
+            if (dropdownIndex != title_get_current_sequence()) {
                 title_sequence_change_preset(dropdownIndex);
                 config_save_default();
                 window_invalidate(w);
@@ -1952,7 +1952,7 @@ static void window_options_paint(rct_window *w, rct_drawpixelinfo *dpi)
             w->y + window_options_misc_widgets[WIDX_AUTOSAVE].top
         );
 
-        const utf8 * name = title_sequence_manager_get_name(gTitleCurrentSequence);
+        const utf8 * name = title_sequence_manager_get_name(title_get_current_sequence());
         set_format_arg(0, uintptr_t, (uintptr_t)name);
         gfx_draw_string_left(dpi, STR_TITLE_SEQUENCE, w, w->colours[1], w->x + 10, w->y + window_options_misc_widgets[WIDX_TITLE_SEQUENCE].top + 1);
         gfx_draw_string_left_clipped(

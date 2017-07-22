@@ -88,6 +88,9 @@ namespace OpenRCT2
         ITrackDesignRepository *    _trackDesignRepository = nullptr;
         IScenarioRepository *       _scenarioRepository = nullptr;
 
+        // Game states
+        TitleScreen * _titleScreen = nullptr;
+
         bool    _initialised = false;
         bool    _isWindowMinimised = false;
         uint32  _lastTick = 0;
@@ -126,6 +129,8 @@ namespace OpenRCT2
             EVP_MD_CTX_destroy(gHashCTX);
 #endif // DISABLE_NETWORK
             rct2_interop_dispose();
+
+            delete _titleScreen;
 
             delete _scenarioRepository;
             delete _trackDesignRepository;
@@ -266,6 +271,8 @@ namespace OpenRCT2
             input_reset_place_obj_modifier();
             viewport_init_all();
             game_init_all(150);
+
+            _titleScreen = new TitleScreen();
             return true;
         }
 
@@ -540,7 +547,7 @@ namespace OpenRCT2
             }
             else if ((gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) && !gOpenRCT2Headless)
             {
-                title_update();
+                _titleScreen->Update();
             }
             else
             {
