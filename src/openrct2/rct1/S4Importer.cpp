@@ -2038,10 +2038,17 @@ private:
         // Flags
         gParkFlags = _s4.park_flags;
         gParkFlags &= ~PARK_FLAGS_ANTI_CHEAT_DEPRECATED;
+        // Loopy Landscape parks can set a flag to lock the entry price to free. 
+        // If this flag is not set, the player can ask money for both rides and entry.
         if (!(_s4.park_flags & RCT1_PARK_FLAGS_PARK_ENTRY_LOCKED_AT_FREE))
         {
             gCheatsUnlockAllPrices = true;
         }
+        else
+        {
+            gCheatsUnlockAllPrices = false;
+        }
+
         // RCT2 uses two flags for no money (due to the scenario editor). RCT1 used only one.
         // Copy its value to make no money scenarios such as Arid Heights work properly.
         if (_s4.park_flags & RCT1_PARK_FLAGS_NO_MONEY)
