@@ -2042,7 +2042,8 @@ private:
         {
             gCheatsUnlockAllPrices = true;
         }
-        // Default Loopy Landscapes to unlock all prices being false
+        // Loopy Landscape parks can set a flag to lock the entry price to free. 
+        // If this flag is not set, the player can ask money for both rides and entry.
         else
         {
             gCheatsUnlockAllPrices = false;
