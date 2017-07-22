@@ -17,6 +17,7 @@
 #include "../config/Config.h"
 #include "../Context.h"
 #include "../core/Console.hpp"
+#include "../GameState.h"
 #include "../interface/Screenshot.h"
 #include "../network/network.h"
 #include "../OpenRCT2.h"
@@ -35,10 +36,13 @@
 #include "../interface/Window.h"
 #include "../localisation/Localisation.h"
 
+using namespace OpenRCT2;
+
 // TODO Remove when no longer required.
 static TitleScreen * _singleton = nullptr;
 
-TitleScreen::TitleScreen()
+TitleScreen::TitleScreen(GameState * gameState)
+    : _gameState(gameState)
 {
     _singleton = this;
 }
@@ -170,7 +174,7 @@ void TitleScreen::Update()
         }
         for (sint32 i = 0; i < numUpdates; i++)
         {
-            game_logic_update();
+            _gameState->UpdateLogic();
         }
         update_palette_effects();
         // update_rain_animation();
@@ -224,7 +228,7 @@ void TitleScreen::TitleInitialise()
     if (_sequencePlayer == nullptr)
     {
         IScenarioRepository * scenarioRepository = GetScenarioRepository();
-        _sequencePlayer = CreateTitleSequencePlayer(scenarioRepository);
+        _sequencePlayer = CreateTitleSequencePlayer(scenarioRepository, _gameState);
     }
     size_t seqId = title_get_config_sequence();
     if (seqId == SIZE_MAX)

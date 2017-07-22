@@ -71,6 +71,7 @@ enum
 namespace OpenRCT2
 {
     interface IPlatformEnvironment;
+    class GameState;
     class Park;
 
     namespace Audio
@@ -102,6 +103,7 @@ namespace OpenRCT2
 
         virtual std::shared_ptr<Audio::IAudioContext> GetAudioContext() abstract;
         virtual std::shared_ptr<Ui::IUiContext> GetUiContext() abstract;
+        virtual GameState * GetGameState() abstract;
         virtual Park * GetPark() abstract;
         virtual std::shared_ptr<IPlatformEnvironment> GetPlatformEnvironment() abstract;
         virtual Localisation::LocalisationService& GetLocalisationService() abstract;
