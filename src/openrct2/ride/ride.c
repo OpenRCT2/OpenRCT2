@@ -3360,7 +3360,7 @@ static void ride_track_set_map_tooltip(rct_map_element *mapElement)
     set_map_tooltip_format_arg(4, uint32, ride->name_arguments);
 
     rct_string_id formatSecondary;
-    sint32 arg1;
+    sint32 arg1 = 0;
     ride_get_status(rideIndex, &formatSecondary, &arg1);
     set_map_tooltip_format_arg(8, rct_string_id, formatSecondary);
     set_map_tooltip_format_arg(10, uint32, arg1);
