@@ -565,36 +565,36 @@ sint32 string_get_height_raw(char *buffer)
         char c = *ch++;
         switch (c) {
         case FORMAT_NEWLINE:
-            if (fontBase <= 224) {
+            if (fontBase == FONT_SPRITE_BASE_SMALL || fontBase == FONT_SPRITE_BASE_MEDIUM) {
                 height += 10;
                 break;
-            } else if (fontBase == 448) {
+            } else if (fontBase == FONT_SPRITE_BASE_TINY) {
                 height += 6;
                 break;
             }
             height += 18;
             break;
         case FORMAT_NEWLINE_SMALLER:
-            if (fontBase <= 224) {
+            if (fontBase == FONT_SPRITE_BASE_SMALL || fontBase == FONT_SPRITE_BASE_MEDIUM) {
                 height += 5;
                 break;
-            } else if (fontBase == 448) {
+            } else if (fontBase == FONT_SPRITE_BASE_TINY) {
                 height += 3;
                 break;
             }
             height += 9;
             break;
         case FORMAT_TINYFONT:
-            fontBase = 448;
+            fontBase = FONT_SPRITE_BASE_TINY;
             break;
         case FORMAT_BIGFONT:
-            fontBase = 672;
+            fontBase = FONT_SPRITE_BASE_BIG;
             break;
         case FORMAT_MEDIUMFONT:
-            fontBase = 224;
+            fontBase = FONT_SPRITE_BASE_MEDIUM;
             break;
         case FORMAT_SMALLFONT:
-            fontBase = 0;
+            fontBase = FONT_SPRITE_BASE_SMALL;
             break;
         default:
             if (c >= 32) continue;
@@ -851,8 +851,8 @@ static const utf8 *ttf_process_format_code(rct_drawpixelinfo *dpi, const utf8 *t
         memcpy(info->palette + 5, &(g1Element->offset[250]), 2);
         break;
     }
-    case 3:
-    case 4:
+    case FORMAT_3:
+    case FORMAT_4:
         nextCh++;
         break;
     case FORMAT_NEWLINE:
@@ -864,13 +864,13 @@ static const utf8 *ttf_process_format_code(rct_drawpixelinfo *dpi, const utf8 *t
         info->y += font_get_line_height_small(info->font_sprite_base);
         break;
     case FORMAT_TINYFONT:
-        info->font_sprite_base = 448;
+        info->font_sprite_base = FONT_SPRITE_BASE_TINY;
         break;
     case FORMAT_SMALLFONT:
-        info->font_sprite_base = 0;
+        info->font_sprite_base = FONT_SPRITE_BASE_SMALL;
         break;
     case FORMAT_MEDIUMFONT:
-        info->font_sprite_base = 224;
+        info->font_sprite_base = FONT_SPRITE_BASE_MEDIUM;
         break;
     case FORMAT_BIGFONT:
         info->font_sprite_base = 672;
@@ -899,7 +899,7 @@ static const utf8 *ttf_process_format_code(rct_drawpixelinfo *dpi, const utf8 *t
         colour_char_window(gCurrentWindowColours[2], &flags, info->palette);
         break;
     }
-    case 0x10:
+    case FORMAT_16:
         break;
     case FORMAT_INLINE_SPRITE:
     {
