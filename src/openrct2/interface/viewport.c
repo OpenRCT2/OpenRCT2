@@ -1482,7 +1482,7 @@ static rct_viewport *viewport_find_from_point(sint32 screenX, sint32 screenY)
 void screen_get_map_xy(sint32 screenX, sint32 screenY, sint16 *x, sint16 *y, rct_viewport **viewport) {
     sint16 my_x, my_y;
     sint32 interactionType;
-    rct_viewport *myViewport;
+    rct_viewport *myViewport = NULL;
     get_map_coordinates_from_pos(screenX, screenY, VIEWPORT_INTERACTION_MASK_TERRAIN, &my_x, &my_y, &interactionType, NULL, &myViewport);
     if (interactionType == VIEWPORT_INTERACTION_ITEM_NONE) {
         *x = 0x8000;

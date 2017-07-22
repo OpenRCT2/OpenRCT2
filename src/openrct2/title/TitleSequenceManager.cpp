@@ -315,6 +315,9 @@ extern "C"
     const utf8 * title_sequence_manager_get_path(size_t index)
     {
         auto item = TitleSequenceManager::GetItem(index);
+        if (item == nullptr) {
+            return nullptr;
+        }
         const utf8 * name = item->Path.c_str();
         return name;
     }
@@ -322,6 +325,9 @@ extern "C"
     const utf8 * title_sequence_manager_get_config_id(size_t index)
     {
         auto item = TitleSequenceManager::GetItem(index);
+        if (item == nullptr) {
+            return nullptr;
+        }
         const utf8 * name = item->Name.c_str();
         const utf8 * filename = Path::GetFileName(item->Path.c_str());
         for (const auto &pseq : TitleSequenceManager::PredefinedSequences)
@@ -337,6 +343,9 @@ extern "C"
     uint16 title_sequence_manager_get_predefined_index(size_t index)
     {
         auto item = TitleSequenceManager::GetItem(index);
+        if (item == nullptr) {
+            return 0;
+        }
         uint16 predefinedIndex = item->PredefinedIndex;
         return predefinedIndex;
     }
