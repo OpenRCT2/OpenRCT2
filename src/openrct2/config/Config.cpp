@@ -347,13 +347,13 @@ namespace Config
         {
             // If the `player_name` setting is missing or equal to the empty string
             // use the logged-in user's username instead
-            utf8* playerName = reader->GetCString("player_name", "");
-            if (String::IsNullOrEmpty(playerName))
+            auto playerName = reader->GetString("player_name", "");
+            if (playerName.empty())
             {
-                playerName = String::Duplicate(platform_get_username());
-                if (playerName == nullptr)
+                playerName = String::ToStd(platform_get_username());
+                if (playerName.empty())
                 {
-                    playerName = String::Duplicate("Player");
+                    playerName = "Player";
                 }
             }
 
@@ -362,7 +362,7 @@ namespace Config
             playerName = String::Trim(playerName);
 
             auto model = &gConfigNetwork;
-            model->player_name = playerName;
+            model->player_name = String::Duplicate(playerName);
             model->default_port = reader->GetSint32("default_port", NETWORK_DEFAULT_PORT);
             model->listen_address = reader->GetCString("listen_address", "");
             model->default_password = reader->GetCString("default_password", nullptr);
