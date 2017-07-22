@@ -51,6 +51,12 @@ struct attached_paint_struct {
 assert_struct_size(attached_paint_struct, 0x12);
 #endif
 
+enum PAINT_QUADRANT_FLAGS {
+    PAINT_QUADRANT_FLAG_IDENTICAL = (1 << 0),
+    PAINT_QUADRANT_FLAG_BIGGER = (1 << 7),
+    PAINT_QUADRANT_FLAG_NEXT = (1 << 1),
+};
+
 /* size 0x34 */
 struct paint_struct {
     uint32 image_id;        // 0x00
@@ -67,9 +73,9 @@ struct paint_struct {
     uint16 bound_box_y_end; // 0x12
     uint16 x;               // 0x14
     uint16 y;               // 0x16
-    uint16 var_18;
+    uint16 quadrant_index;
     uint8 flags;
-    uint8 var_1B;
+    uint8 quadrant_flags;
     attached_paint_struct* attached_ps; //0x1C
     paint_struct* var_20;
     paint_struct* next_quadrant_ps; // 0x24
