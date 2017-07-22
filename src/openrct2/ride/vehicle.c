@@ -4832,7 +4832,7 @@ static void vehicle_update_sound(rct_vehicle *vehicle)
     // frictionVolume (bl) should be set before hand
     uint8 frictionVolume = 255, frictionId = 255;
     // bh screamVolume should be set before hand
-    uint8 screamId, screamVolume = 255;
+    uint8 screamId = 255, screamVolume = 255;
     uint16 soundIdVolume;
 
     ride = get_ride(vehicle->ride);
@@ -4892,12 +4892,13 @@ static void vehicle_update_sound(rct_vehicle *vehicle)
 
     loc_6D7A97:
         vehicle->scream_sound_id = 255;
-        assert(ride->type < countof(RideLiftData));
-        // Get lift hill sound
-        screamId = RideLiftData[ride->type].sound_id;
-        screamVolume = 243;
-        if (!(vehicle->var_B8 & 2))
-            screamId = 255;
+        if (ride->type < countof(RideLiftData)) {
+            // Get lift hill sound
+            screamId = RideLiftData[ride->type].sound_id;
+            screamVolume = 243;
+            if (!(vehicle->var_B8 & 2))
+                screamId = 255;
+        }
     }
 
     // Friction sound

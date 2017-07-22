@@ -184,7 +184,7 @@ void window_sign_open(rct_windownumber number)
 
     w->list_information_type = map_element->properties.scenerymultiple.colour[0] & 0x1F;
     w->var_492 = map_element->properties.scenerymultiple.colour[1] & 0x1F;
-    w->var_48C = map_element->properties.scenerymultiple.type;
+    w->var_48C = map_element->properties.scenerymultiple.type & MAP_ELEMENT_LARGE_TYPE_MASK;
 
     view_x += 16;
     view_y += 16;

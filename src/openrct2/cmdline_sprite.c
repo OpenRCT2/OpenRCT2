@@ -791,7 +791,7 @@ sint32 cmdline_for_sprite(const char **argv, sint32 argc)
         fprintf(stdout, "Finished\n");
         return 1;
     } else {
-        fprintf(stderr, "Unknown sprite command.");
+        fprintf(stderr, "Unknown sprite command.\n");
         return 1;
     }
 }
