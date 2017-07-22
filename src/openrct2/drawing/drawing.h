@@ -343,28 +343,34 @@ void FASTCALL gfx_draw_sprite_palette_set_software(rct_drawpixelinfo *dpi, sint3
 void FASTCALL gfx_draw_sprite_raw_masked_software(rct_drawpixelinfo *dpi, sint32 x, sint32 y, sint32 maskImage, sint32 colourImage);
 
 // string
-sint32 clip_text(char *buffer, sint32 width);
+void gfx_draw_string(rct_drawpixelinfo *dpi, char *buffer, uint8 colour, sint32 x, sint32 y);
+
+void gfx_draw_string_left(rct_drawpixelinfo *dpi, rct_string_id format, void *args, uint8 colour, sint32 x, sint32 y);
+void gfx_draw_string_centred(rct_drawpixelinfo *dpi, rct_string_id format, sint32 x, sint32 y, uint8 colour, void *args);
+void gfx_draw_string_right(rct_drawpixelinfo *dpi, rct_string_id format, void *args, uint8 colour, sint32 x, sint32 y);
+
+void draw_string_left_underline(rct_drawpixelinfo *dpi, rct_string_id format, void *args, uint8 colour, sint32 x, sint32 y);
+void draw_string_centred_underline(rct_drawpixelinfo *dpi, rct_string_id format, void *args, uint8 colour, sint32 x, sint32 y);
+void draw_string_right_underline(rct_drawpixelinfo *dpi, rct_string_id format, void *args, uint8 colour, sint32 x, sint32 y);
+
+void gfx_draw_string_left_clipped(rct_drawpixelinfo *dpi, rct_string_id format, void *args, uint8 colour, sint32 x, sint32 y, sint32 width);
+void gfx_draw_string_centred_clipped(rct_drawpixelinfo *dpi, rct_string_id format, void *args, uint8 colour, sint32 x, sint32 y, sint32 width);
+
+sint32 gfx_draw_string_left_wrapped(rct_drawpixelinfo *dpi, void *args, sint32 x, sint32 y, sint32 width, rct_string_id format, uint8 colour);
+sint32 gfx_draw_string_centred_wrapped(rct_drawpixelinfo *dpi, void *args, sint32 x, sint32 y, sint32 width, rct_string_id format, uint8 colour);
+
+void gfx_draw_string_left_centred(rct_drawpixelinfo *dpi, rct_string_id format, void *args, sint32 colour, sint32 x, sint32 y);
+void draw_string_centred_raw(rct_drawpixelinfo *dpi, sint32 x, sint32 y, sint32 numLines, char *text);
+void gfx_draw_string_centred_wrapped_partial(rct_drawpixelinfo *dpi, sint32 x, sint32 y, sint32 width, sint32 colour, rct_string_id format, void *args, sint32 ticks);
+void gfx_draw_string_with_y_offsets(rct_drawpixelinfo *dpi, const utf8 *text, sint32 colour, sint32 x, sint32 y, const sint8 *yOffsets, bool forceSpriteFont);
+
 sint32 gfx_wrap_string(char* buffer, sint32 width, sint32* num_lines, sint32* font_height);
 sint32 gfx_get_string_width(const utf8 * buffer);
 sint32 gfx_get_string_width_new_lined(char* buffer);
-void gfx_draw_string(rct_drawpixelinfo *dpi, char *buffer, sint32 colour, sint32 x, sint32 y);
-void gfx_draw_string_left(rct_drawpixelinfo *dpi, rct_string_id format, void *args, sint32 colour, sint32 x, sint32 y);
-void gfx_draw_string_left_clipped(rct_drawpixelinfo *dpi, rct_string_id format, void *args, sint32 colour, sint32 x, sint32 y, sint32 width);
-sint32 gfx_draw_string_left_wrapped(rct_drawpixelinfo *dpi, void *args, sint32 x, sint32 y, sint32 width, rct_string_id format, sint32 colour);
-void draw_string_left_underline(rct_drawpixelinfo *dpi, rct_string_id format, void *args, sint32 colour, sint32 x, sint32 y);
-void gfx_draw_string_left_centred(rct_drawpixelinfo *dpi, rct_string_id format, void *args, sint32 colour, sint32 x, sint32 y);
-void gfx_draw_string_centred(rct_drawpixelinfo *dpi, rct_string_id format, sint32 x, sint32 y, sint32 colour, void *args);
-void gfx_draw_string_centred_clipped(rct_drawpixelinfo *dpi, rct_string_id format, void *args, sint32 colour, sint32 x, sint32 y, sint32 width);
-void draw_string_centred_underline(rct_drawpixelinfo *dpi, rct_string_id format, void *args, sint32 colour, sint32 x, sint32 y);
-sint32 gfx_draw_string_centred_wrapped(rct_drawpixelinfo *dpi, void *args, sint32 x, sint32 y, sint32 width, rct_string_id format, sint32 colour);
-void draw_string_centred_raw(rct_drawpixelinfo *dpi, sint32 x, sint32 y, sint32 numLines, char *text);
-void gfx_draw_string_right(rct_drawpixelinfo *dpi, rct_string_id format, void *args, sint32 colour, sint32 x, sint32 y);
-void draw_string_right_underline(rct_drawpixelinfo *dpi, rct_string_id format, void *args, sint32 colour, sint32 x, sint32 y);
 sint32 string_get_height_raw(char *buffer);
-void gfx_draw_string_centred_wrapped_partial(rct_drawpixelinfo *dpi, sint32 x, sint32 y, sint32 width, sint32 colour, rct_string_id format, void *args, sint32 ticks);
-void gfx_draw_string_with_y_offsets(rct_drawpixelinfo *dpi, const utf8 *text, sint32 colour, sint32 x, sint32 y, const sint8 *yOffsets, bool forceSpriteFont);
 sint32 gfx_clip_string(char* buffer, sint32 width);
 void shorten_path(utf8 *buffer, size_t bufferSize, const utf8 *path, sint32 availableWidth);
+void ttf_draw_string(rct_drawpixelinfo *dpi, char *text, sint32 colour, sint32 x, sint32 y);
 
 typedef struct paint_session paint_session;
 
