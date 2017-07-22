@@ -1128,7 +1128,6 @@ bool game_load_save(const utf8 *path)
             network_close();
         }
         game_load_init();
-
         if (network_get_mode() == NETWORK_MODE_SERVER) {
             network_send_map();
         }

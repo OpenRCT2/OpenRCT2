@@ -2042,11 +2042,11 @@ private:
         {
             gCheatsUnlockAllPrices = true;
         }
-		// Default Loopy Landscapes to unlock all prices being false
-		else
-		{
-			gCheatsUnlockAllPrices = false;
-		}
+        // Default Loopy Landscapes to unlock all prices being false
+        else
+        {
+            gCheatsUnlockAllPrices = false;
+        }
 
         // RCT2 uses two flags for no money (due to the scenario editor). RCT1 used only one.
         // Copy its value to make no money scenarios such as Arid Heights work properly.

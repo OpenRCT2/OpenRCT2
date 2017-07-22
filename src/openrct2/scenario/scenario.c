@@ -94,7 +94,6 @@ ParkLoadResult * scenario_load_and_play_from_path(const char * path)
 
     uint32 extension = get_file_extension_type(path);
     ParkLoadResult * result = NULL;
-
     if (extension == FILE_EXTENSION_SC6) {
         result = scenario_load(path);
         if (ParkLoadResult_GetError(result) != PARK_LOAD_ERROR_OK) {
@@ -135,8 +134,6 @@ ParkLoadResult * scenario_load_and_play_from_path(const char * path)
 void scenario_begin()
 {
     rct_window *mainWindow;
-
-	
 
     audio_stop_title_music();
 
