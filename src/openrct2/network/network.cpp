@@ -1478,7 +1478,7 @@ NetworkPlayer* Network::AddPlayer(const utf8 *name, const std::string &keyhash)
             if (networkUser == nullptr) {
                 player->Group = GetDefaultGroup();
                 if (!String::IsNullOrEmpty(name)) {
-                    player->SetName(MakePlayerNameUnique(std::string(name)));
+                    player->SetName(MakePlayerNameUnique(String::Trim(std::string(name))));
                 }
             } else {
                 player->Group = networkUser->GroupId.GetValueOrDefault(GetDefaultGroup());
@@ -1488,7 +1488,7 @@ NetworkPlayer* Network::AddPlayer(const utf8 *name, const std::string &keyhash)
             player = std::unique_ptr<NetworkPlayer>(new NetworkPlayer); // change to make_unique in c++14
             player->Id = newid;
             player->Group = GetDefaultGroup();
-            player->SetName(name);
+            player->SetName(String::Trim(std::string(name)));
         }
 
         addedplayer = player.get();
