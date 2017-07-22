@@ -214,7 +214,7 @@ static void shortcut_remove_top_bottom_toolbar_toggle()
             window_close(window_find_by_class(WC_TITLE_OPTIONS));
             window_close(window_find_by_class(WC_TITLE_MENU));
             window_close(window_find_by_class(WC_TITLE_EXIT));
-            gTitleHideVersionInfo = true;
+            title_set_hide_version_info(true);
         } else {
             title_create_windows();
         }

@@ -14,8 +14,9 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../core/Console.hpp"
+#include "../config/Config.h"
 #include "../Context.h"
+#include "../core/Console.hpp"
 #include "../interface/Screenshot.h"
 #include "../network/network.h"
 #include "../OpenRCT2.h"
@@ -28,36 +29,159 @@
 extern "C"
 {
     #include "../audio/audio.h"
-    #include "../config/Config.h"
     #include "../drawing/drawing.h"
     #include "../game.h"
     #include "../input.h"
     #include "../interface/viewport.h"
     #include "../interface/window.h"
     #include "../localisation/localisation.h"
-    #include "../management/news_item.h"
-    #include "../peep/staff.h"
-    #include "../world/Climate.h"
-    #include "../world/scenery.h"
 }
 
-extern "C"
+// TODO Remove when no longer required.
+static TitleScreen * _singleton;
+
+TitleScreen::TitleScreen()
 {
-    bool gTitleHideVersionInfo = false;
-    uint16 gTitleCurrentSequence;
+    _singleton = this;
 }
 
-static uint16                   _loadedTitleSequenceId = UINT16_MAX;
-static ITitleSequencePlayer *   _sequencePlayer = nullptr;
+TitleScreen::~TitleScreen()
+{
+    _singleton = nullptr;
+}
 
-static void TitleInitialise();
-static void TryLoadSequence();
+ITitleSequencePlayer * TitleScreen::GetSequencePlayer()
+{
+    return _sequencePlayer;
+}
+
+uint16 TitleScreen::GetCurrentSequence()
+{
+    return _currentSequence;
+}
+
+void TitleScreen::SetCurrentSequence(uint16 value)
+{
+    _currentSequence = value;
+}
+
+bool TitleScreen::ShouldHideVersionInfo()
+{
+    return _hideVersionInfo;
+}
+
+void TitleScreen::SetHideVersionInfo(bool value)
+{
+    _hideVersionInfo = value;
+}
+
+void TitleScreen::Load()
+{
+    log_verbose("TitleScreen::Load()");
+
+    if (game_is_paused())
+    {
+        pause_toggle();
+    }
+
+    gScreenFlags = SCREEN_FLAGS_TITLE_DEMO;
+    gScreenAge = 0;
+
+    network_close();
+    audio_stop_all_music_and_sounds();
+    game_init_all(150);
+    viewport_init_all();
+    window_main_open();
+    CreateWindows();
+    TitleInitialise();
+    audio_start_title_music();
+
+    if (gOpenRCT2ShowChangelog)
+    {
+        gOpenRCT2ShowChangelog = false;
+        window_changelog_open();
+    }
+
+    if (_sequencePlayer != nullptr)
+    {
+        _sequencePlayer->Reset();
+
+        // Force the title sequence to load / update so we
+        // don't see a blank screen for a split second.
+        TryLoadSequence();
+        _sequencePlayer->Update();
+    }
+
+    log_verbose("TitleScreen::Load() finished");
+}
+
+void TitleScreen::Update()
+{
+    gInUpdateCode = true;
+
+    screenshot_check();
+    title_handle_keyboard_input();
+
+    if (game_is_not_paused())
+    {
+        TryLoadSequence();
+        _sequencePlayer->Update();
+
+        sint32 numUpdates = 1;
+        if (gGameSpeed > 1) {
+            numUpdates = 1 << (gGameSpeed - 1);
+        }
+        for (sint32 i = 0; i < numUpdates; i++)
+        {
+            game_logic_update();
+        }
+        update_palette_effects();
+        // update_rain_animation();
+    }
+
+    input_set_flag(INPUT_FLAG_VIEWPORT_SCROLLING, false);
+
+    window_map_tooltip_update_visibility();
+    window_dispatch_update_all();
+
+    gSavedAge++;
+
+    game_handle_input();
+
+    gInUpdateCode = false;
+}
+
+void TitleScreen::ChangeSequence(sint32 preset)
+{
+    sint32 count = (sint32)title_sequence_manager_get_count();
+    if (preset < 0 || preset >= count)
+    {
+        return;
+    }
+
+    const utf8 * configId = title_sequence_manager_get_config_id(preset);
+    SafeFree(gConfigInterface.current_title_sequence_preset);
+    gConfigInterface.current_title_sequence_preset = _strdup(configId);
+
+    _currentSequence = preset;
+    window_invalidate_all();
+}
 
 /**
- *
- *  rct2: 0x00678680
+ * Creates the windows shown on the title screen; New game, load game,
+ * tutorial, toolbox and exit.
  */
-static void TitleInitialise()
+void TitleScreen::CreateWindows()
+{
+    window_title_menu_open();
+    window_title_exit_open();
+    window_title_options_open();
+    window_title_logo_open();
+    window_resize_gui(context_get_width(), context_get_height());
+    _hideVersionInfo = false;
+}
+
+void TitleScreen::TitleInitialise()
 {
     if (_sequencePlayer == nullptr)
     {
@@ -77,30 +201,30 @@ static void TitleInitialise()
     TryLoadSequence();
 }
 
-static void TryLoadSequence()
+void TitleScreen::TryLoadSequence()
 {
-    if (_loadedTitleSequenceId != gTitleCurrentSequence)
+    if (_loadedTitleSequenceId != _currentSequence)
     {
         uint16 numSequences = (uint16)TitleSequenceManager::GetCount();
         if (numSequences > 0)
         {
-            uint16 targetSequence = gTitleCurrentSequence;
+            uint16 targetSequence = _currentSequence;
             do
             {
                 if (_sequencePlayer->Begin(targetSequence) && _sequencePlayer->Update())
                 {
                     _loadedTitleSequenceId = targetSequence;
-                    gTitleCurrentSequence = targetSequence;
+                    _currentSequence = targetSequence;
                     gfx_invalidate_screen();
                     return;
                 }
                 targetSequence = (targetSequence + 1) % numSequences;
             }
-            while (targetSequence != gTitleCurrentSequence);
+            while (targetSequence != _currentSequence);
         }
         Console::Error::WriteLine("Unable to play any title sequences.");
         _sequencePlayer->Eject();
-        gTitleCurrentSequence = UINT16_MAX;
+        _currentSequence = UINT16_MAX;
         _loadedTitleSequenceId = UINT16_MAX;
         game_init_all(150);
     }
@@ -108,99 +232,74 @@ static void TryLoadSequence()
 
 extern "C"
 {
-    /**
-     *
-     *  rct2: 0x0068E8DA
-     */
     void title_load()
     {
-        log_verbose("loading title");
-
-        if (gGamePaused & GAME_PAUSED_NORMAL)
-            pause_toggle();
-
-        gScreenFlags = SCREEN_FLAGS_TITLE_DEMO;
-
-#ifndef DISABLE_NETWORK
-        network_close();
-#endif
-        audio_stop_all_music_and_sounds();
-        game_init_all(150);
-        viewport_init_all();
-        window_main_open();
-        title_create_windows();
-        TitleInitialise();
-        gfx_invalidate_screen();
-        audio_start_title_music();
-        gScreenAge = 0;
-
-        if (gOpenRCT2ShowChangelog) {
-            gOpenRCT2ShowChangelog = false;
-            window_changelog_open();
-        }
-
-        if (_sequencePlayer != nullptr)
+        if (_singleton != nullptr)
         {
-            _sequencePlayer->Reset();
-
-            // Force the title sequence to load / update so we
-            // don't see a blank screen for a split second.
-            TryLoadSequence();
-            _sequencePlayer->Update();
+            _singleton->Load();
         }
-
-        log_verbose("loading title finished");
     }
 
-    /**
-     * Creates the windows shown on the title screen; New game, load game,
-     * tutorial, toolbox and exit.
-     *  rct2: 0x0066B5C0 (part of 0x0066B3E8)
-     */
     void title_create_windows()
     {
-        window_title_menu_open();
-        window_title_exit_open();
-        window_title_options_open();
-        window_title_logo_open();
-        window_resize_gui(context_get_width(), context_get_height());
-        gTitleHideVersionInfo = false;
+        if (_singleton != nullptr)
+        {
+            _singleton->CreateWindows();
+        }
     }
 
-    void title_update()
+    void * title_get_sequence_player()
     {
-        gInUpdateCode = true;
-
-        screenshot_check();
-        title_handle_keyboard_input();
-
-        if (game_is_not_paused())
+        void * result = nullptr;
+        if (_singleton != nullptr)
         {
-            TryLoadSequence();
-            _sequencePlayer->Update();
-
-            sint32 numUpdates = 1;
-            if (gGameSpeed > 1) {
-                numUpdates = 1 << (gGameSpeed - 1);
-            }
-            for (sint32 i = 0; i < numUpdates; i++)
-            {
-                game_logic_update();
-            }
-            update_palette_effects();
-            // update_rain_animation();
+            result = _singleton->GetSequencePlayer();
         }
+        return result;
+    }
 
-        input_set_flag(INPUT_FLAG_VIEWPORT_SCROLLING, false);
+    void title_sequence_change_preset(sint32 preset)
+    {
+        if (_singleton != nullptr)
+        {
+            _singleton->ChangeSequence(preset);
+        }
+    }
 
-        window_map_tooltip_update_visibility();
-        window_dispatch_update_all();
+    bool title_should_hide_version_info()
+    {
+        bool result = false;
+        if (_singleton != nullptr)
+        {
+            result = _singleton->ShouldHideVersionInfo();
+        }
+        return result;
+    }
 
-        gSavedAge++;
+    void title_set_hide_version_info(bool value)
+    {
+        if (_singleton != nullptr)
+        {
+            _singleton->SetHideVersionInfo(value);
+        }
+    }
 
-        game_handle_input();
+    uint16 title_get_current_sequence()
+    {
+        uint16 result = 0;
+        if (_singleton != nullptr)
+        {
+            result = _singleton->GetCurrentSequence();
+        }
+        return result;
+    }
 
-        gInUpdateCode = false;
+    void title_set_current_sequence(uint16 value)
+    {
+        if (_singleton != nullptr)
+        {
+            _singleton->SetCurrentSequence(value);
+        }
     }
 
     void DrawOpenRCT2(rct_drawpixelinfo * dpi, sint32 x, sint32 y)
@@ -220,25 +319,5 @@ extern "C"
         // Write platform information
         snprintf(ch, 256 - (ch - buffer), "%s (%s)", OPENRCT2_PLATFORM, OPENRCT2_ARCHITECTURE);
         gfx_draw_string(dpi, buffer, COLOUR_BLACK, x + 5, y + 5);
-    }
-
-    void * title_get_sequence_player()
-    {
-        return _sequencePlayer;
-    }
-
-    void title_sequence_change_preset(sint32 preset)
-    {
-        sint32 count = (sint32)title_sequence_manager_get_count();
-        if (preset < 0 || preset >= count) {
-            return;
-        }
-
-        const utf8 * configId = title_sequence_manager_get_config_id(preset);
-        SafeFree(gConfigInterface.current_title_sequence_preset);
-        gConfigInterface.current_title_sequence_preset = _strdup(configId);
-
-        gTitleCurrentSequence = preset;
-        window_invalidate_all();
     }
 }

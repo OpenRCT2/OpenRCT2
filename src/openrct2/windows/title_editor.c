@@ -448,13 +448,13 @@ static void window_title_editor_mouseup(rct_window *w, rct_widgetindex widgetInd
         break;
     case WIDX_TITLE_EDITOR_STOP:
         if (_isSequencePlaying) {
-            gTitleCurrentSequence = 0;
+            title_set_current_sequence(0);
             _isSequencePlaying = false;
         }
         break;
     case WIDX_TITLE_EDITOR_PLAY:
         if (!_isSequencePlaying && (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)) {
-            gTitleCurrentSequence = (uint16)_selectedTitleSequence;
+            title_set_current_sequence((uint16)_selectedTitleSequence);
             _isSequencePlaying = true;
         }
         break;
