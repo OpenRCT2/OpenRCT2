@@ -580,7 +580,7 @@ void Park::Initialise()
 
 void Park::Update(const Date &date)
 {
-    // Every 5 seconds approximately
+    // Every ~13 seconds
     if (gCurrentTicks % 512 == 0)
     {
         gParkRating = CalculateParkRating();
@@ -594,15 +594,17 @@ void Park::Update(const Date &date)
         auto intent = Intent(INTENT_ACTION_UPDATE_PARK_RATING);
         context_broadcast_intent(&intent);
     }
-
-    // Every week
-    if (date.IsWeekStart())
+    // Every ~102 seconds
+    if (gCurrentTicks % 4096 == 0)
     {
-        UpdateHistories();
         gParkSize = CalculateParkSize();
         window_invalidate_by_class(WC_PARK_INFORMATION);
     }
-
+    // Every new week
+    if (date.IsWeekStart())
+    {
+        UpdateHistories();
+    }
     GenerateGuests();
 }
 
