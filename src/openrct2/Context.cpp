@@ -577,7 +577,7 @@ namespace OpenRCT2
                         parkImporter.reset(ParkImporter::CreateS6(_objectRepository, _objectManager));
                     }
 
-                    auto result = parkImporter->LoadFromStream(stream, false);
+                    auto result = parkImporter->LoadFromStream(stream, info.Type == FILE_TYPE::SCENARIO);
                     if (result.Error == PARK_LOAD_ERROR_OK)
                     {
                         parkImporter->Import();
