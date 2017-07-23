@@ -4381,7 +4381,8 @@ static void ride_set_boat_hire_return_point(rct_ride *ride, rct_xy_element *star
  */
 static void ride_set_maze_entrance_exit_points(rct_ride *ride)
 {
-    uint16 positions[9];
+    // Needs room for an entrance and an exit per station, plus one position for the list terminator.
+    uint16 positions[(MAX_STATIONS * 2) + 1];
 
     // Create a list of all the entrance and exit positions
     uint16 *position = positions;
@@ -8085,7 +8086,8 @@ void sub_6CB945(sint32 rideIndex)
         }
     }
 
-    uint16 locations[9];
+    // Needs room for an entrance and an exit per station, plus one position for the list terminator.
+    uint16 locations[(MAX_STATIONS * 2) + 1];
     uint16 *locationList = locations;
     for (uint8 stationId = 0; stationId < MAX_STATIONS; ++stationId) {
         if (ride->entrances[stationId].xy != RCT_XY8_UNDEFINED) {
