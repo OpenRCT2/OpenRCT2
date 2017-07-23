@@ -192,171 +192,6 @@ sint32 park_calculate_size()
 
 /**
  *
- *  rct2: 0x00669EAA
- */
-sint32 calculate_park_rating()
-{
-    if (_forcedParkRating >= 0)
-        return _forcedParkRating;
-
-    sint32 result;
-
-    result = 1150;
-    if (gParkFlags & PARK_FLAGS_DIFFICULT_PARK_RATING)
-        result = 1050;
-
-    // Guests
-    {
-        rct_peep* peep;
-        uint16 spriteIndex;
-        sint32 num_happy_peeps;
-        sint32 num_lost_guests;
-
-        // -150 to +3 based on a range of guests from 0 to 2000
-        result -= 150 - (std::min<sint16>(2000, gNumGuestsInPark) / 13);
-
-        // Find the number of happy peeps and the number of peeps who can't find the park exit
-        num_happy_peeps = 0;
-        num_lost_guests = 0;
-        FOR_ALL_GUESTS(spriteIndex, peep) {
-            if (peep->outside_of_park != 0)
-                continue;
-            if (peep->happiness > 128)
-                num_happy_peeps++;
-            if ((peep->peep_flags & PEEP_FLAGS_LEAVING_PARK) && (peep->peep_is_lost_countdown < 90))
-                num_lost_guests++;
-        }
-
-        // Peep happiness -500 to +0
-        result -= 500;
-
-        if (gNumGuestsInPark > 0)
-            result += 2 * std::min(250, (num_happy_peeps * 300) / gNumGuestsInPark);
-
-        // Up to 25 guests can be lost without affecting the park rating.
-        if (num_lost_guests > 25)
-            result -= (num_lost_guests - 25) * 7;
-    }
-
-    // Rides
-    {
-        sint32 i;
-        sint32 total_ride_uptime = 0, total_ride_intensity = 0, total_ride_excitement = 0;
-        sint32 num_rides, num_exciting_rides = 0;
-        Ride* ride;
-
-        num_rides = 0;
-        FOR_ALL_RIDES(i, ride)
-        {
-            total_ride_uptime += 100 - ride->downtime;
-
-            if (ride->excitement != RIDE_RATING_UNDEFINED)
-            {
-                total_ride_excitement += ride->excitement / 8;
-                total_ride_intensity += ride->intensity / 8;
-                num_exciting_rides++;
-            }
-            num_rides++;
-        }
-        result -= 200;
-        if (num_rides > 0)
-            result += (total_ride_uptime / num_rides) * 2;
-
-        result -= 100;
-
-        if (num_exciting_rides > 0)
-        {
-            sint32 average_excitement = total_ride_excitement / num_exciting_rides;
-            sint32 average_intensity = total_ride_intensity / num_exciting_rides;
-
-            average_excitement -= 46;
-            if (average_excitement < 0)
-            {
-                average_excitement = -average_excitement;
-            }
-
-            average_intensity -= 65;
-            if (average_intensity < 0)
-            {
-                average_intensity = -average_intensity;
-            }
-
-            average_excitement = std::min(average_excitement / 2, 50);
-            average_intensity = std::min(average_intensity / 2, 50);
-            result += 100 - average_excitement - average_intensity;
-        }
-
-        total_ride_excitement = std::min<sint16>(1000, total_ride_excitement);
-        total_ride_intensity = std::min<sint16>(1000, total_ride_intensity);
-        result -= 200 - ((total_ride_excitement + total_ride_intensity) / 10);
-    }
-
-    // Litter
-    {
-        rct_litter* litter;
-        uint16 sprite_idx;
-        sint16 num_litter;
-
-        num_litter = 0;
-        for (sprite_idx = gSpriteListHead[SPRITE_LIST_LITTER]; sprite_idx != SPRITE_INDEX_NULL; sprite_idx = litter->next) {
-            litter = &(get_sprite(sprite_idx)->litter);
-
-            // Ignore recently dropped litter
-            if (litter->creationTick - gScenarioTicks >= 7680)
-                num_litter++;
-        }
-        result -= 600 - (4 * (150 - std::min<sint16>(150, num_litter)));
-    }
-
-    result -= gParkRatingCasualtyPenalty;
-    result = Math::Clamp(0, result, 999);
-    return result;
-}
-
-static money32 calculate_ride_value(Ride *ride)
-{
-    if (ride->type == RIDE_TYPE_NULL)
-        return 0;
-    if (ride->value == RIDE_VALUE_UNDEFINED)
-        return 0;
-
-    // Fair value * (...)
-    return (ride->value * 10) * (ride_customers_in_last_5_minutes(ride) + rideBonusValue[ride->type] * 4);
-}
-
-/**
- *
- *  rct2: 0x0066A3F6
- */
-money32 calculate_park_value()
-{
-
-    // Sum ride values
-    money32 result = 0;
-    for (sint32 i = 0; i < 255; i++) {
-        Ride* ride = get_ride(i);
-        result += calculate_ride_value(ride);
-    }
-
-    // +7.00 per guest
-    result += gNumGuestsInPark * MONEY(7, 00);
-
-    return result;
-}
-
-/**
- * Calculate the company value.
- * Cash + Park Value - Loan
- *
- *  rct2: 0x0066A498
- */
-money32 calculate_company_value()
-{
-    return gCash + gParkValue - gBankLoan;
-}
-
-/**
- *
  *  rct2: 0x00667104
  */
 void reset_park_entry()
@@ -489,59 +324,6 @@ static uint32 get_random_peep_spawn_index()
     }
     else {
         return 0;
-    }
-}
-
-rct_peep *park_generate_new_guest()
-{
-    rct_peep *peep = nullptr;
-    PeepSpawn spawn = gPeepSpawns[get_random_peep_spawn_index()];
-
-    if (spawn.x != 0xFFFF) {
-        spawn.direction ^= 2;
-        peep = peep_generate(spawn.x, spawn.y, spawn.z);
-        if (peep != nullptr) {
-            peep->sprite_direction = spawn.direction << 3;
-
-            // Get the centre point of the tile the peep is on
-            peep->destination_x = (peep->x & 0xFFE0) + 16;
-            peep->destination_y = (peep->y & 0xFFE0) + 16;
-
-            peep->destination_tolerance = 5;
-            peep->direction = spawn.direction;
-            peep->var_37 = 0;
-            peep->state = PEEP_STATE_ENTERING_PARK;
-        }
-    }
-
-    return peep;
-}
-
-static rct_peep *park_generate_new_guest_due_to_campaign(sint32 campaign)
-{
-    rct_peep *peep = park_generate_new_guest();
-    if (peep != nullptr)
-        marketing_set_guest_campaign(peep, campaign);
-    return peep;
-}
-
-static void park_generate_new_guests()
-{
-    // Generate a new guest for some probability
-    if ((sint32)(scenario_rand() & 0xFFFF) < _guestGenerationProbability) {
-        sint32 difficultGeneration = (gParkFlags & PARK_FLAGS_DIFFICULT_GUEST_GENERATION) != 0;
-        if (!difficultGeneration || _suggestedGuestMaximum + 150 >= gNumGuestsInPark)
-            park_generate_new_guest();
-    }
-
-    // Extra guests generated by advertising campaigns
-    sint32 campaign;
-    for (campaign = 0; campaign < ADVERTISING_CAMPAIGN_COUNT; campaign++) {
-        if (gMarketingCampaignDaysLeft[campaign] != 0) {
-            // Random chance of guest generation
-            if ((sint32)(scenario_rand() & 0xFFFF) < marketing_get_campaign_guest_generation_probability(campaign))
-                park_generate_new_guest_due_to_campaign(campaign);
-        }
     }
 }
 
@@ -1058,21 +840,250 @@ void Park::Update()
         auto intent = Intent(INTENT_ACTION_UPDATE_PARK_RATING);
         context_broadcast_intent(&intent);
     }
-
-    park_generate_new_guests();
+    GenerateGuests();
 }
 
 sint32 Park::CalculateParkRating() const
 {
-    return calculate_park_rating();
+    if (_forcedParkRating >= 0)
+    {
+        return _forcedParkRating;
+    }
+
+    sint32 result = 1150;
+    if (gParkFlags & PARK_FLAGS_DIFFICULT_PARK_RATING)
+    {
+        result = 1050;
+    }
+
+    // Guests
+    {
+        // -150 to +3 based on a range of guests from 0 to 2000
+        result -= 150 - (std::min<sint16>(2000, gNumGuestsInPark) / 13);
+
+        // Find the number of happy peeps and the number of peeps who can't find the park exit
+        sint32 happyGuestCount = 0;
+        sint32 lostGuestCount = 0;
+        uint16 spriteIndex;
+        rct_peep * peep;
+        FOR_ALL_GUESTS(spriteIndex, peep)
+        {
+            if (peep->outside_of_park == 0)
+            {
+                if (peep->happiness > 128)
+                {
+                    happyGuestCount++;
+                }
+                if ((peep->peep_flags & PEEP_FLAGS_LEAVING_PARK) &&
+                    (peep->peep_is_lost_countdown < 90))
+                {
+                    lostGuestCount++;
+                }
+            }
+        }
+
+        // Peep happiness -500 to +0
+        result -= 500;
+        if (gNumGuestsInPark > 0)
+        {
+            result += 2 * std::min(250, (happyGuestCount * 300) / gNumGuestsInPark);
+        }
+
+        // Up to 25 guests can be lost without affecting the park rating.
+        if (lostGuestCount > 25)
+        {
+            result -= (lostGuestCount - 25) * 7;
+        }
+    }
+
+    // Rides
+    {
+        sint32 rideCount = 0;
+        sint32 excitingRideCount = 0;
+        sint32 totalRideUptime = 0;
+        sint32 totalRideIntensity = 0;
+        sint32 totalRideExcitement = 0;
+
+        sint32 i;
+        Ride * ride;
+        FOR_ALL_RIDES(i, ride)
+        {
+            totalRideUptime += 100 - ride->downtime;
+            if (ride->excitement != RIDE_RATING_UNDEFINED)
+            {
+                totalRideExcitement += ride->excitement / 8;
+                totalRideIntensity += ride->intensity / 8;
+                excitingRideCount++;
+            }
+            rideCount++;
+        }
+        result -= 200;
+        if (rideCount > 0)
+        {
+            result += (totalRideUptime / rideCount) * 2;
+        }
+        result -= 100;
+        if (excitingRideCount > 0)
+        {
+            sint32 averageExcitement = totalRideExcitement / excitingRideCount;
+            sint32 averageIntensity = totalRideIntensity / excitingRideCount;
+
+            averageExcitement -= 46;
+            if (averageExcitement < 0)
+            {
+                averageExcitement = -averageExcitement;
+            }
+
+            averageIntensity -= 65;
+            if (averageIntensity < 0)
+            {
+                averageIntensity = -averageIntensity;
+            }
+
+            averageExcitement = std::min(averageExcitement / 2, 50);
+            averageIntensity = std::min(averageIntensity / 2, 50);
+            result += 100 - averageExcitement - averageIntensity;
+        }
+
+        totalRideExcitement = std::min<sint16>(1000, totalRideExcitement);
+        totalRideIntensity = std::min<sint16>(1000, totalRideIntensity);
+        result -= 200 - ((totalRideExcitement + totalRideIntensity) / 10);
+    }
+
+    // Litter
+    {
+        rct_litter * litter;
+        sint32 litterCount = 0;
+        for (uint16 spriteIndex = gSpriteListHead[SPRITE_LIST_LITTER]; spriteIndex != SPRITE_INDEX_NULL; spriteIndex = litter->next)
+        {
+            litter = &(get_sprite(spriteIndex)->litter);
+
+            // Ignore recently dropped litter
+            if (litter->creationTick - gScenarioTicks >= 7680)
+            {
+                litterCount++;
+            }
+        }
+        result -= 600 - (4 * (150 - std::min<sint32>(150, litterCount)));
+    }
+
+    result -= gParkRatingCasualtyPenalty;
+    result = Math::Clamp(0, result, 999);
+    return result;
 }
 
 money32 Park::CalculateParkValue() const
 {
-    return calculate_park_value();
+    money32 result = 0;
+
+    // Sum ride values
+    for (sint32 i = 0; i < MAX_RIDES; i++)
+    {
+        auto ride = get_ride(i);
+        result += CalculateRideValue(ride);
+    }
+
+    // +7.00 per guest
+    result += gNumGuestsInPark * MONEY(7, 00);
+
+    return result;
+}
+
+money32 Park::CalculateRideValue(const Ride * ride) const
+{
+    money32 result = 0;
+    if (ride->type != RIDE_TYPE_NULL &&
+        ride->value != RIDE_VALUE_UNDEFINED)
+    {
+        // Fair value * (...)
+        result = (ride->value * 10) * (ride_customers_in_last_5_minutes(ride) + rideBonusValue[ride->type] * 4);
+    }
+    return result;
 }
 
 money32 Park::CalculateCompanyValue() const
 {
-    return calculate_company_value();
+    return finance_get_current_cash() + gParkValue - gBankLoan;
+}
+
+void Park::GenerateGuests()
+{
+    // Generate a new guest for some probability
+    if ((sint32)(scenario_rand() & 0xFFFF) < _guestGenerationProbability)
+    {
+        bool difficultGeneration = (gParkFlags & PARK_FLAGS_DIFFICULT_GUEST_GENERATION) != 0;
+        if (!difficultGeneration || _suggestedGuestMaximum + 150 >= gNumGuestsInPark)
+        {
+            park_generate_new_guest();
+        }
+    }
+
+    // Extra guests generated by advertising campaigns
+    for (sint32 campaign = 0; campaign < ADVERTISING_CAMPAIGN_COUNT; campaign++)
+    {
+        if (gMarketingCampaignDaysLeft[campaign] != 0)
+        {
+            // Random chance of guest generation
+            if ((sint32)(scenario_rand() & 0xFFFF) < marketing_get_campaign_guest_generation_probability(campaign))
+            {
+                GenerateGuestFromCampaign(campaign);
+            }
+        }
+    }
+}
+
+rct_peep * Park::GenerateGuestFromCampaign(sint32 campaign)
+{
+    auto peep = GenerateGuest();
+    if (peep != nullptr)
+    {
+        marketing_set_guest_campaign(peep, campaign);
+    }
+    return peep;
+}
+
+rct_peep * Park::GenerateGuest()
+{
+    rct_peep * peep = nullptr;
+    PeepSpawn spawn = gPeepSpawns[get_random_peep_spawn_index()];
+
+    if (spawn.x != PEEP_SPAWN_UNDEFINED)
+    {
+        spawn.direction ^= 2;
+        peep = peep_generate(spawn.x, spawn.y, spawn.z);
+        if (peep != nullptr)
+        {
+            peep->sprite_direction = spawn.direction << 3;
+
+            // Get the centre point of the tile the peep is on
+            peep->destination_x = (peep->x & 0xFFE0) + 16;
+            peep->destination_y = (peep->y & 0xFFE0) + 16;
+
+            peep->destination_tolerance = 5;
+            peep->direction = spawn.direction;
+            peep->var_37 = 0;
+            peep->state = PEEP_STATE_ENTERING_PARK;
+        }
+    }
+    return peep;
+}
+
+sint32 calculate_park_rating()
+{
+    return _singleton->CalculateParkRating();
+}
+
+money32 calculate_park_value()
+{
+    return _singleton->CalculateParkValue();
+}
+
+money32 calculate_company_value()
+{
+    return _singleton->CalculateCompanyValue();
+}
+
+rct_peep * park_generate_new_guest()
+{
+    return _singleton->GenerateGuest();
 }

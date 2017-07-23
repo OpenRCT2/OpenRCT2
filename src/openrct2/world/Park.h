@@ -17,6 +17,7 @@
 #pragma once
 
 #include "../common.h"
+#include "../ride/Ride.h"
 #include "Map.h"
 
 #define DECRYPT_MONEY(money) ((money32)rol32((money) ^ 0xF4EC9621, 13))
@@ -49,6 +50,9 @@ enum : uint32
     PARK_FLAGS_UNLOCK_ALL_PRICES = (1u << 31), // OpenRCT2 only!
 };
 
+struct rct_peep;
+struct rct_ride;
+
 namespace OpenRCT2
 {
     class Park final
@@ -63,10 +67,17 @@ namespace OpenRCT2
 
         void Update();
 
-    private:
         sint32  CalculateParkRating() const;
         money32 CalculateParkValue() const;
         money32 CalculateCompanyValue() const;
+
+        rct_peep *  GenerateGuest();
+
+    private:
+        money32 CalculateRideValue(const Ride * ride) const;
+
+        void        GenerateGuests();
+        rct_peep *  GenerateGuestFromCampaign(sint32 campaign);
     };
 }
 
