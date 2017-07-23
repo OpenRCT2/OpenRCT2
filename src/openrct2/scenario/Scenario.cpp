@@ -345,8 +345,6 @@ static void scenario_week_update()
                 break;
         }
     }
-    park_update_histories();
-    park_calculate_size();
 }
 
 static void scenario_fortnight_update()

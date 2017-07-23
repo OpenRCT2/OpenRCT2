@@ -139,7 +139,6 @@ money32 calculate_company_value();
 void reset_park_entry();
 rct_peep * park_generate_new_guest();
 
-void park_update_histories();
 void update_park_fences(sint32 x, sint32 y);
 void update_park_fences_around_tile(sint32 x, sint32 y);
 
