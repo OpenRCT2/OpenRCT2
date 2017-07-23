@@ -73,6 +73,8 @@ namespace OpenRCT2
 
         rct_peep *  GenerateGuest();
 
+        void UpdateHistories();
+
     private:
         money32 CalculateRideValue(const Ride * ride) const;
 

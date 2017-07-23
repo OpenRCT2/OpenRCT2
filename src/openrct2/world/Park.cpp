@@ -351,65 +351,6 @@ uint8 calculate_guest_initial_happiness(uint8 percentage) {
     return 40; // This is the lowest possible value
 }
 
-/**
- *
- *  rct2: 0x0066A231
- */
-void park_update_histories()
-{
-    sint32 guestsInPark = gNumGuestsInPark;
-    sint32 lastGuestsInPark = gNumGuestsInParkLastWeek;
-    gNumGuestsInParkLastWeek = guestsInPark;
-    auto intent = Intent(INTENT_ACTION_UPDATE_GUEST_COUNT);
-    context_broadcast_intent(&intent);
-
-    sint32 changeInGuestsInPark = guestsInPark - lastGuestsInPark;
-    sint32 guestChangeModifier = 1;
-    if (changeInGuestsInPark > -20) {
-        guestChangeModifier++;
-        if (changeInGuestsInPark < 20)
-            guestChangeModifier = 0;
-    }
-    gGuestChangeModifier = guestChangeModifier;
-
-    // Update park rating history
-    for (sint32 i = 31; i > 0; i--)
-        gParkRatingHistory[i] = gParkRatingHistory[i - 1];
-    gParkRatingHistory[0] = calculate_park_rating() / 4;
-    window_invalidate_by_class(WC_PARK_INFORMATION);
-
-    // Update guests in park history
-    for (sint32 i = 31; i > 0; i--)
-        gGuestsInParkHistory[i] = gGuestsInParkHistory[i - 1];
-    gGuestsInParkHistory[0] = std::min(guestsInPark, 5000) / 20;
-    window_invalidate_by_class(WC_PARK_INFORMATION);
-
-    // Update current cash history
-    for (sint32 i = 127; i > 0; i--)
-        gCashHistory[i] = gCashHistory[i - 1];
-    gCashHistory[0] = gCash - gBankLoan;
-    window_invalidate_by_class(WC_FINANCES);
-
-    // Update weekly profit history
-    money32 currentWeeklyProfit = gWeeklyProfitAverageDividend;
-    if (gWeeklyProfitAverageDivisor != 0) {
-        currentWeeklyProfit /= gWeeklyProfitAverageDivisor;
-    }
-
-    for (sint32 i = 127; i > 0; i--)
-        gWeeklyProfitHistory[i] = gWeeklyProfitHistory[i - 1];
-    gWeeklyProfitHistory[0] = currentWeeklyProfit;
-
-    gWeeklyProfitAverageDividend = 0;
-    gWeeklyProfitAverageDivisor = 0;
-    window_invalidate_by_class(WC_FINANCES);
-
-    // Update park value history
-    for (sint32 i = 127; i > 0; i--)
-        gParkValueHistory[i] = gParkValueHistory[i - 1];
-    gParkValueHistory[0] = gParkValue;
-}
-
 void park_set_open(sint32 open)
 {
     game_do_command(0, GAME_COMMAND_FLAG_APPLY, 0, open << 8, GAME_COMMAND_SET_PARK_OPEN, 0, 0);
@@ -1066,6 +1007,56 @@ rct_peep * Park::GenerateGuest()
         }
     }
     return peep;
+}
+
+template<typename T, size_t TSize>
+static void HistoryPushRecord(T history[TSize], T newItem)
+{
+    for (size_t i = TSize - 1; i > 0; i--)
+    {
+        history[i] = history[i - 1];
+    }
+    history[0] = newItem;
+}
+
+void Park::UpdateHistories()
+{
+    uint8 guestChangeModifier = 1;
+    sint32 changeInGuestsInPark = (sint32)gNumGuestsInPark - (sint32)gNumGuestsInParkLastWeek;
+    if (changeInGuestsInPark > -20)
+    {
+        guestChangeModifier++;
+        if (changeInGuestsInPark < 20)
+        {
+            guestChangeModifier = 0;
+        }
+    }
+    gGuestChangeModifier = guestChangeModifier;
+    gNumGuestsInParkLastWeek = gNumGuestsInPark;
+
+    // Update park rating, guests in park and current cash history
+    HistoryPushRecord<uint8, 32>(gParkRatingHistory, calculate_park_rating() / 4);
+    HistoryPushRecord<uint8, 32>(gGuestsInParkHistory, std::min<uint16>(gNumGuestsInPark, 5000) / 20);
+    HistoryPushRecord<money32, 128>(gCashHistory, finance_get_current_cash() - gBankLoan);
+
+    // Update weekly profit history
+    money32 currentWeeklyProfit = gWeeklyProfitAverageDividend;
+    if (gWeeklyProfitAverageDivisor != 0)
+    {
+        currentWeeklyProfit /= gWeeklyProfitAverageDivisor;
+    }
+    HistoryPushRecord<money32, 128>(gWeeklyProfitHistory, currentWeeklyProfit);
+    gWeeklyProfitAverageDividend = 0;
+    gWeeklyProfitAverageDivisor = 0;
+
+    // Update park value history
+    HistoryPushRecord<money32, 128>(gParkValueHistory, gParkValue);
+
+    // Invalidate relevant windows
+    auto intent = Intent(INTENT_ACTION_UPDATE_GUEST_COUNT);
+    context_broadcast_intent(&intent);
+    window_invalidate_by_class(WC_PARK_INFORMATION);
+    window_invalidate_by_class(WC_FINANCES);
 }
 
 sint32 calculate_park_rating()
