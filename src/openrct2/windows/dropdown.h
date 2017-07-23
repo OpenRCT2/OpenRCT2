@@ -23,6 +23,7 @@
 #define DROPDOWN_SEPARATOR            0
 #define DROPDOWN_FORMAT_COLOUR_PICKER 0xFFFE
 #define DROPDOWN_FORMAT_LAND_PICKER   0xFFFF
+#define DROPDOWN_ITEMS_MAX_SIZE       64
 
 enum
 {
@@ -33,8 +34,8 @@ enum
 extern sint32 gAppropriateImageDropdownItemsPerRow[];
 
 extern sint32 gDropdownNumItems;
-extern rct_string_id gDropdownItemsFormat[64];
-extern sint64 gDropdownItemsArgs[64];
+extern rct_string_id gDropdownItemsFormat[DROPDOWN_ITEMS_MAX_SIZE];
+extern sint64 gDropdownItemsArgs[DROPDOWN_ITEMS_MAX_SIZE];
 extern uint64 gDropdownItemsChecked;
 extern uint64 gDropdownItemsDisabled;
 extern bool gDropdownIsColour;

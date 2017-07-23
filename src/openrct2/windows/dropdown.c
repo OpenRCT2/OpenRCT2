@@ -46,8 +46,8 @@ sint32 _dropdown_item_width;
 sint32 _dropdown_item_height;
 
 sint32 gDropdownNumItems;
-rct_string_id gDropdownItemsFormat[64];
-sint64 gDropdownItemsArgs[64];
+rct_string_id gDropdownItemsFormat[DROPDOWN_ITEMS_MAX_SIZE];
+sint64 gDropdownItemsArgs[DROPDOWN_ITEMS_MAX_SIZE];
 uint64 gDropdownItemsChecked;
 uint64 gDropdownItemsDisabled;
 bool gDropdownIsColour;
@@ -337,7 +337,7 @@ static void window_dropdown_paint(rct_window *w, rct_drawpixelinfo *dpi)
                 );
             } else {
                 // Text item
-                if (i < 64) {
+                if (i < DROPDOWN_ITEMS_MAX_SIZE) {
                     if (dropdown_is_checked(i)) {
                         item++;
                     }
@@ -348,7 +348,7 @@ static void window_dropdown_paint(rct_window *w, rct_drawpixelinfo *dpi)
                 if (i == highlightedIndex)
                     colour = COLOUR_WHITE;
                 if (dropdown_is_disabled(i))
-                    if (i < 64)
+                    if (i < DROPDOWN_ITEMS_MAX_SIZE)
                         colour = NOT_TRANSLUCENT(w->colours[0]) | COLOUR_FLAG_INSET;
 
                 // Draw item string
