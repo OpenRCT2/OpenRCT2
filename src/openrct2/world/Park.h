@@ -67,12 +67,18 @@ namespace OpenRCT2
 
         void Update();
 
-        sint32  CalculateParkRating() const;
-        money32 CalculateParkValue() const;
-        money32 CalculateCompanyValue() const;
+        sint32          CalculateParkSize() const;
+        sint32          CalculateParkRating() const;
+        money32         CalculateParkValue() const;
+        money32         CalculateCompanyValue() const;
+        money16         CalculateTotalRideValue() const;
+        uint32          CalculateSuggestedMaxGuests() const;
+        uint32          CalculateGuestGenerationProbability() const;
+        static uint8    CalculateGuestInitialHappiness(uint8 percentage);
 
         rct_peep *  GenerateGuest();
 
+        void ResetHistories();
         void UpdateHistories();
 
     private:

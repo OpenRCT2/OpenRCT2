@@ -153,45 +153,6 @@ void park_init()
 
 /**
  *
- *  rct2: 0x0066729F
- */
-void park_reset_history()
-{
-    for (sint32 i = 0; i < 32; i++) {
-        gParkRatingHistory[i] = 255;
-        gGuestsInParkHistory[i] = 255;
-    }
-}
-
-/**
- *
- *  rct2: 0x0066A348
- */
-sint32 park_calculate_size()
-{
-    sint32 tiles;
-    tile_element_iterator it;
-
-    tiles = 0;
-    tile_element_iterator_begin(&it);
-    do {
-        if (it.element->GetType() == TILE_ELEMENT_TYPE_SURFACE) {
-            if (it.element->properties.surface.ownership & (OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED | OWNERSHIP_OWNED)) {
-                tiles++;
-            }
-        }
-    } while (tile_element_iterator_next(&it));
-
-    if (tiles != gParkSize) {
-        gParkSize = tiles;
-        window_invalidate_by_class(WC_PARK_INFORMATION);
-    }
-
-    return tiles;
-}
-
-/**
- *
  *  rct2: 0x00667104
  */
 void reset_park_entry()
@@ -201,115 +162,6 @@ void reset_park_entry()
     for (sint32 i = 0; i < MAX_PEEP_SPAWNS; i++) {
         gPeepSpawns[i].x = PEEP_SPAWN_UNDEFINED;
     }
-}
-
-/**
- * Calculates the probability of a new guest. Also sets total ride value and suggested guest maximum.
- * Total ride value should probably be set elsewhere, as it's not just used for guest generation.
- * Suggested guest maximum should probably be an output result, not a global.
- * @returns A probability out of 65535
- *  rct2: 0x0066730A
- */
-static sint32 park_calculate_guest_generation_probability()
-{
-    uint32 probability;
-    sint32 i, suggestedMaxGuests;
-    money16 totalRideValueForMoney;
-    Ride *ride;
-
-    // Calculate suggested guest maximum (based on ride type) and total ride value
-    suggestedMaxGuests = 0;
-    totalRideValueForMoney = 0;
-    FOR_ALL_RIDES(i, ride) {
-        if (ride->status != RIDE_STATUS_OPEN)
-            continue;
-        if (ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)
-            continue;
-        if (ride->lifecycle_flags & RIDE_LIFECYCLE_CRASHED)
-            continue;
-
-        // Add guest score for ride type
-        suggestedMaxGuests += rideBonusValue[ride->type];
-
-        // Add ride value
-        if (ride->value != RIDE_VALUE_UNDEFINED) {
-            money16 rideValueForMoney = (money16)(ride->value - ride->price);
-            if (rideValueForMoney > 0) {
-                totalRideValueForMoney += rideValueForMoney * 2;
-            }
-        }
-    }
-
-    // If difficult guest generation, extra guests are available for good rides
-    if (gParkFlags & PARK_FLAGS_DIFFICULT_GUEST_GENERATION) {
-        suggestedMaxGuests = std::min(suggestedMaxGuests, 1000);
-        FOR_ALL_RIDES(i, ride) {
-            if (ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)
-                continue;
-            if (ride->lifecycle_flags & RIDE_LIFECYCLE_CRASHED)
-                continue;
-
-            if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_TRACK))
-                continue;
-            if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_DATA_LOGGING))
-                continue;
-            if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
-                continue;
-            if (ride->length[0] < (600 << 16))
-                continue;
-            if (ride->excitement < RIDE_RATING(6,00))
-                continue;
-
-            // Bonus guests for good ride
-            suggestedMaxGuests += rideBonusValue[ride->type] * 2;
-        }
-    }
-
-    suggestedMaxGuests = std::min(suggestedMaxGuests, 65535);
-    gTotalRideValueForMoney = totalRideValueForMoney;
-    _suggestedGuestMaximum = suggestedMaxGuests;
-
-    // Begin with 50 + park rating
-    probability = 50 + Math::Clamp(0, gParkRating - 200, 650);
-
-    // The more guests, the lower the chance of a new one
-    sint32 numGuests = gNumGuestsInPark + gNumGuestsHeadingForPark;
-    if (numGuests > suggestedMaxGuests) {
-        probability /= 4;
-
-        // Even lower for difficult guest generation
-        if (gParkFlags & PARK_FLAGS_DIFFICULT_GUEST_GENERATION)
-            probability /= 4;
-    }
-
-    // Reduces chance for any more than 7000 guests
-    if (numGuests > 7000)
-        probability /= 4;
-
-    // Penalty for overpriced entrance fee relative to total ride value
-    money16 entranceFee = park_get_entrance_fee();
-    if (entranceFee > totalRideValueForMoney) {
-        probability /= 4;
-
-        // Extra penalty for very overpriced entrance fee
-        if (entranceFee / 2 > totalRideValueForMoney)
-            probability /= 4;
-    }
-
-    // Reward or penalties for park awards
-    for (i = 0; i < MAX_AWARDS; i++) {
-        Award *award = &gCurrentAwards[i];
-        if (award->Time == 0)
-            continue;
-
-        // +/- 0.25% of the probability
-        if (award_is_positive(award->Type))
-            probability += probability / 4;
-        else
-            probability -= probability / 4;
-    }
-
-    return probability;
 }
 
 /**
@@ -325,30 +177,6 @@ static uint32 get_random_peep_spawn_index()
     else {
         return 0;
     }
-}
-
-uint8 calculate_guest_initial_happiness(uint8 percentage) {
-    if (percentage < 15) {
-        // There is a minimum of 15% happiness
-        percentage = 15;
-    }
-    else if (percentage > 98) {
-        // There is a maximum of 98% happiness
-        percentage = 98;
-    }
-
-    /* The percentages follow this sequence:
-        15 17 18 20 21 23 25 26 28 29 31 32 34 36 37 39 40 42 43 45 47 48 50 51 53...
-
-        This sequence can be defined as PI*(9+n)/2 (the value is floored)
-        */
-    uint8 n;
-    for (n = 1; n < 55; n++) {
-        if ((3.14159*(9 + n)) / 2 >= percentage) {
-            return (9 + n) * 4;
-        }
-    }
-    return 40; // This is the lowest possible value
 }
 
 void park_set_open(sint32 open)
@@ -683,7 +511,6 @@ void game_command_buy_land_rights(
     }
 }
 
-
 void set_forced_park_rating(sint32 rating)
 {
     _forcedParkRating = rating;
@@ -776,12 +603,40 @@ void Park::Update()
         gParkRating = CalculateParkRating();
         gParkValue = CalculateParkValue();
         gCompanyValue = CalculateCompanyValue();
-        _guestGenerationProbability = park_calculate_guest_generation_probability();
+        gTotalRideValueForMoney = CalculateTotalRideValue();
+        _suggestedGuestMaximum = CalculateSuggestedMaxGuests();
+        _guestGenerationProbability = CalculateGuestGenerationProbability();
+
         window_invalidate_by_class(WC_FINANCES);
         auto intent = Intent(INTENT_ACTION_UPDATE_PARK_RATING);
         context_broadcast_intent(&intent);
     }
     GenerateGuests();
+}
+
+sint32 Park::CalculateParkSize() const
+{
+    sint32 tiles;
+    tile_element_iterator it;
+
+    tiles = 0;
+    tile_element_iterator_begin(&it);
+    do {
+        if (it.element->GetType() == TILE_ELEMENT_TYPE_SURFACE)
+        {
+            if (it.element->properties.surface.ownership & (OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED | OWNERSHIP_OWNED))
+            {
+                tiles++;
+            }
+        }
+    } while (tile_element_iterator_next(&it));
+
+    if (tiles != gParkSize) {
+        gParkSize = tiles;
+        window_invalidate_by_class(WC_PARK_INFORMATION);
+    }
+
+    return tiles;
 }
 
 sint32 Park::CalculateParkRating() const
@@ -947,6 +802,145 @@ money32 Park::CalculateCompanyValue() const
     return finance_get_current_cash() + gParkValue - gBankLoan;
 }
 
+money16 Park::CalculateTotalRideValue() const
+{
+    money16 totalRideValue = 0;
+    sint32 i;
+    Ride * ride;
+    FOR_ALL_RIDES(i, ride)
+    {
+        if (ride->status != RIDE_STATUS_OPEN) continue;
+        if (ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN) continue;
+        if (ride->lifecycle_flags & RIDE_LIFECYCLE_CRASHED) continue;
+
+        // Add ride value
+        if (ride->value != RIDE_VALUE_UNDEFINED)
+        {
+            money16 rideValue = (money16)(ride->value - ride->price);
+            if (rideValue > 0)
+            {
+                totalRideValue += rideValue * 2;
+            }
+        }
+    }
+    return totalRideValue;
+}
+
+uint32 Park::CalculateSuggestedMaxGuests() const
+{
+    uint32 suggestedMaxGuests = 0;
+
+    // TODO combine the two ride loops
+    sint32 i;
+    Ride * ride;
+    FOR_ALL_RIDES(i, ride)
+    {
+        if (ride->status != RIDE_STATUS_OPEN) continue;
+        if (ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN) continue;
+        if (ride->lifecycle_flags & RIDE_LIFECYCLE_CRASHED) continue;
+
+        // Add guest score for ride type
+        suggestedMaxGuests += rideBonusValue[ride->type];
+    }
+
+    // If difficult guest generation, extra guests are available for good rides
+    if (gParkFlags & PARK_FLAGS_DIFFICULT_GUEST_GENERATION)
+    {
+        suggestedMaxGuests = std::min<uint32>(suggestedMaxGuests, 1000);
+        FOR_ALL_RIDES(i, ride)
+        {
+            if (ride->lifecycle_flags & RIDE_LIFECYCLE_CRASHED) continue;
+            if (ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN) continue;
+            if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED)) continue;
+            if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_TRACK)) continue;
+            if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_DATA_LOGGING)) continue;
+            if (ride->length[0] < (600 << 16)) continue;
+            if (ride->excitement < RIDE_RATING(6, 00)) continue;
+
+            // Bonus guests for good ride
+            suggestedMaxGuests += rideBonusValue[ride->type] * 2;
+        }
+    }
+
+    suggestedMaxGuests = std::min<uint32>(suggestedMaxGuests, 65535);
+    return suggestedMaxGuests;
+}
+
+uint32 Park::CalculateGuestGenerationProbability() const
+{
+    // Begin with 50 + park rating
+    uint32 probability = 50 + Math::Clamp(0, gParkRating - 200, 650);
+
+    // The more guests, the lower the chance of a new one
+    sint32 numGuests = gNumGuestsInPark + gNumGuestsHeadingForPark;
+    if (numGuests > _suggestedGuestMaximum)
+    {
+        probability /= 4;
+        // Even lower for difficult guest generation
+        if (gParkFlags & PARK_FLAGS_DIFFICULT_GUEST_GENERATION)
+        {
+            probability /= 4;
+        }
+    }
+
+    // Reduces chance for any more than 7000 guests
+    if (numGuests > 7000)
+    {
+        probability /= 4;
+    }
+
+    // Penalty for overpriced entrance fee relative to total ride value
+    money16 entranceFee = park_get_entrance_fee();
+    if (entranceFee > gTotalRideValueForMoney)
+    {
+        probability /= 4;
+        // Extra penalty for very overpriced entrance fee
+        if (entranceFee / 2 > gTotalRideValueForMoney)
+        {
+            probability /= 4;
+        }
+    }
+
+    // Reward or penalties for park awards
+    for (size_t i = 0; i < MAX_AWARDS; i++)
+    {
+        const auto award = &gCurrentAwards[i];
+        if (award->Time != 0)
+        {
+            // +/- 0.25% of the probability
+            if (award_is_positive(award->Type))
+            {
+                probability += probability / 4;
+            }
+            else
+            {
+                probability -= probability / 4;
+            }
+        }
+    }
+
+    return probability;
+}
+
+uint8 Park::CalculateGuestInitialHappiness(uint8 percentage)
+{
+    percentage = Math::Clamp<uint8>(15, percentage, 98);
+
+    // The percentages follow this sequence:
+    //   15 17 18 20 21 23 25 26 28 29 31 32 34 36 37 39 40 42 43 45 47 48 50 51 53...
+    // This sequence can be defined as PI*(9+n)/2 (the value is floored)
+    for (uint8 n = 1; n < 55; n++)
+    {
+        if ((3.14159 * (9 + n)) / 2 >= percentage)
+        {
+            return (9 + n) * 4;
+        }
+    }
+
+    // This is the lowest possible value:
+    return 40;
+}
+
 void Park::GenerateGuests()
 {
     // Generate a new guest for some probability
@@ -1019,6 +1013,15 @@ static void HistoryPushRecord(T history[TSize], T newItem)
     history[0] = newItem;
 }
 
+void Park::ResetHistories()
+{
+    for (size_t i = 0; i < 32; i++)
+    {
+        gParkRatingHistory[i] = 255;
+        gGuestsInParkHistory[i] = 255;
+    }
+}
+
 void Park::UpdateHistories()
 {
     uint8 guestChangeModifier = 1;
@@ -1059,6 +1062,17 @@ void Park::UpdateHistories()
     window_invalidate_by_class(WC_FINANCES);
 }
 
+sint32 park_calculate_size()
+{
+    auto tiles = _singleton->CalculateParkSize();
+    if (tiles != gParkSize)
+    {
+        gParkSize = tiles;
+        window_invalidate_by_class(WC_PARK_INFORMATION);
+    }
+    return tiles;
+}
+
 sint32 calculate_park_rating()
 {
     return _singleton->CalculateParkRating();
@@ -1077,4 +1091,19 @@ money32 calculate_company_value()
 rct_peep * park_generate_new_guest()
 {
     return _singleton->GenerateGuest();
+}
+
+void park_update_histories()
+{
+    _singleton->UpdateHistories();
+}
+
+void park_reset_history()
+{
+    _singleton->ResetHistories();
+}
+
+uint8 calculate_guest_initial_happiness(uint8 percentage)
+{
+    return Park::CalculateGuestInitialHappiness(percentage);
 }
