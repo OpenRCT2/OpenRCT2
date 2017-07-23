@@ -106,7 +106,6 @@ namespace OpenRCT2
 
         // Game states
         std::unique_ptr<TitleScreen> _titleScreen;
-        std::unique_ptr<Park> _park;
         std::unique_ptr<GameState> _gameState;
 
         sint32 _drawingEngineType = DRAWING_ENGINE_SOFTWARE;
@@ -171,11 +170,6 @@ namespace OpenRCT2
         GameState * GetGameState() override
         {
             return _gameState.get();
-        }
-
-        Park * GetPark() override
-        {
-            return _park.get();
         }
 
         std::shared_ptr<IPlatformEnvironment> GetPlatformEnvironment() override
@@ -459,7 +453,6 @@ namespace OpenRCT2
 
             _gameState = std::make_unique<GameState>();
             _titleScreen = std::make_unique<TitleScreen>(_gameState.get());
-            _park = std::make_unique<Park>();
             return true;
         }
 

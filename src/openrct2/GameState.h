@@ -16,16 +16,25 @@
 
 #pragma once
 
+#include <memory>
+
 namespace OpenRCT2
 {
+    class Park;
+
     /**
      * Class to update the state of the map and park.
      */
-    class GameState
+    class GameState final
     {
     private:
+        std::unique_ptr<Park> _park;
 
     public:
+        GameState();
+
+        Park * GetPark() { return _park.get(); }
+
         void Update();
         void UpdateLogic();
     };

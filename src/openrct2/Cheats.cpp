@@ -269,7 +269,7 @@ static void cheat_clear_loan()
 
 static void cheat_generate_guests(sint32 count)
 {
-    auto park = GetContext()->GetPark();
+    auto park = GetContext()->GetGameState()->GetPark();
     for (sint32 i = 0; i < count; i++)
         park->GenerateGuest();
 

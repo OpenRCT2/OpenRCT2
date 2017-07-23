@@ -33,6 +33,11 @@
 
 using namespace OpenRCT2;
 
+GameState::GameState()
+{
+    _park = std::make_unique<Park>();
+}
+
 void GameState::Update()
 {
     gInUpdateCode = true;
@@ -190,7 +195,12 @@ void GameState::UpdateLogic()
     vehicle_update_all();
     sprite_misc_update_all();
     ride_update_all();
-    GetContext()->GetPark()->Update();
+
+    if (!(gScreenFlags & (SCREEN_FLAGS_SCENARIO_EDITOR | SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)))
+    {
+        _park->Update();
+    }
+
     research_update();
     ride_ratings_update_all();
     ride_measurements_update();

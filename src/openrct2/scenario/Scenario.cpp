@@ -110,7 +110,7 @@ void scenario_begin()
     if (gScenarioObjectiveType != OBJECTIVE_NONE && !gLoadKeepWindowsOpen)
         context_open_window_view(WV_PARK_OBJECTIVE);
 
-    auto park = GetContext()->GetPark();
+    auto park = GetContext()->GetGameState()->GetPark();
     gParkRating = park->CalculateParkRating();
     gParkValue = park->CalculateParkValue();
     gCompanyValue = park->CalculateCompanyValue();

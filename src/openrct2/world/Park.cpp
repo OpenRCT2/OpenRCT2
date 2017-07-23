@@ -444,7 +444,7 @@ void game_command_buy_land_rights(
 void set_forced_park_rating(sint32 rating)
 {
     _forcedParkRating = rating;
-    auto park = GetContext()->GetPark();
+    auto park = GetContext()->GetGameState()->GetPark();
     gParkRating = park->CalculateParkRating();
     auto intent = Intent(INTENT_ACTION_UPDATE_PARK_RATING);
     context_broadcast_intent(&intent);
@@ -579,10 +579,6 @@ void Park::Initialise()
 
 void Park::Update()
 {
-    // TODO: move when GameState class is introduced.
-    if (gScreenFlags & (SCREEN_FLAGS_SCENARIO_EDITOR | SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER))
-        return;
-
     // Every 5 seconds approximately
     if (gCurrentTicks % 512 == 0)
     {
@@ -1058,12 +1054,12 @@ void Park::UpdateHistories()
 
 sint32 park_is_open()
 {
-    return GetContext()->GetPark()->IsOpen();
+    return GetContext()->GetGameState()->GetPark()->IsOpen();
 }
 
 void park_init()
 {
-    auto park = GetContext()->GetPark();
+    auto park = GetContext()->GetGameState()->GetPark();
     if (park == nullptr)
     {
         return;
@@ -1073,7 +1069,7 @@ void park_init()
 
 sint32 park_calculate_size()
 {
-    auto tiles = GetContext()->GetPark()->CalculateParkSize();
+    auto tiles = GetContext()->GetGameState()->GetPark()->CalculateParkSize();
     if (tiles != gParkSize)
     {
         gParkSize = tiles;
