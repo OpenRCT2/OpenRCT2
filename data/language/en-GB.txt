@@ -4440,6 +4440,8 @@ STR_6128    :The file could not be loaded as some of the objects referenced in i
 STR_6129    :Copy selected item to clipboard
 STR_6130    :Copy entire list to clipboard
 STR_6131    :Object source
+STR_6132    :Ignore research status
+STR_6133    :{SMALLFONT}{BLACK}Access rides and scenery that have not yet been invented
 
 #############
 # Scenarios #

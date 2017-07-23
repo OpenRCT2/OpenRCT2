@@ -313,7 +313,7 @@ static void window_new_ride_populate_list()
                 continue;
         }
 
-        if (ride_type_is_invented(rideType)) {
+        if (ride_type_is_invented(rideType) || gCheatsIgnoreResearchStatus) {
 
             if (!ride_type_has_ride_groups(rideType)) {
                 nextListItem = window_new_ride_iterate_over_ride_group(rideType, 0, nextListItem);
@@ -350,7 +350,7 @@ static ride_list_item * window_new_ride_iterate_over_ride_group(uint8 rideType, 
         rideEntryName[8]=0;
 
         // Skip if vehicle type is not invented yet
-        if (!ride_entry_is_invented(rideEntryIndex))
+        if (!ride_entry_is_invented(rideEntryIndex) && !gCheatsIgnoreResearchStatus)
             continue;
 
         // Ride entries

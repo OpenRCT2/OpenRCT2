@@ -193,7 +193,7 @@ void window_scenery_update_scroll(rct_window *w);
  */
 static void init_scenery_entry(rct_scenery_entry *sceneryEntry, sint32 index, uint8 sceneryTabId)
 {
-    if (scenery_is_invented(index)) {
+    if (scenery_is_invented(index) || gCheatsIgnoreResearchStatus) {
         if (sceneryTabId != 0xFF) {
             for (sint32 i = 0; i < SCENERY_ENTRIES_BY_TAB; i++) {
                 if (window_scenery_tab_entries[sceneryTabId][i] == -1)
@@ -249,7 +249,7 @@ void init_scenery()
         sint32 sceneryTabEntryCount = 0;
         for (sint32 i = 0; i < scenerySetEntry->entry_count; i++) {
             uint16 sceneryEntryId = scenerySetEntry->scenery_entries[i];
-            if (scenery_is_invented(sceneryEntryId)) {
+            if (scenery_is_invented(sceneryEntryId) || gCheatsIgnoreResearchStatus) {
                 window_scenery_tab_entries[scenerySetIndex][sceneryTabEntryCount] = sceneryEntryId;
                 window_scenery_tab_entries[scenerySetIndex][++sceneryTabEntryCount] = -1;
             } else {
