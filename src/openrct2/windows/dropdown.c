@@ -24,6 +24,9 @@
 #include "../sprites.h"
 #include "dropdown.h"
 
+// The maximum number of rows to list before items overflow into new columns
+#define DROPDOWN_TEXT_MAX_ROWS 32
+
 sint32 gAppropriateImageDropdownItemsPerRow[] = {
     1, 1, 1, 1, 2, 2, 3, 3, 4,
     3, 5, 4, 4, 5, 5, 5, 4, 5,
@@ -44,6 +47,7 @@ sint32 _dropdown_num_columns;
 sint32 _dropdown_num_rows;
 sint32 _dropdown_item_width;
 sint32 _dropdown_item_height;
+bool _dropdown_list_vertically;
 
 sint32 gDropdownNumItems;
 rct_string_id gDropdownItemsFormat[DROPDOWN_ITEMS_MAX_SIZE];
@@ -165,15 +169,16 @@ void window_dropdown_show_text_custom_width(sint32 x, sint32 y, sint32 extray, u
         input_set_flag(INPUT_FLAG_DROPDOWN_STAY_OPEN, true);
 
     window_dropdown_close();
-    _dropdown_num_columns = 1;
+    
+    // Set and calculate num items, rows and columns
     _dropdown_item_width = width;
-    _dropdown_item_height = 10;
-    if (flags & DROPDOWN_FLAG_CUSTOM_HEIGHT)
-        _dropdown_item_height = custom_height;
-
-    // Set the widgets
+    _dropdown_item_height = (flags & DROPDOWN_FLAG_CUSTOM_HEIGHT) ? custom_height : 10;
     gDropdownNumItems = (sint32)num_items;
-    _dropdown_num_rows = (sint32)num_items;
+    _dropdown_num_columns = (gDropdownNumItems + DROPDOWN_TEXT_MAX_ROWS - 1) / DROPDOWN_TEXT_MAX_ROWS;
+    _dropdown_num_rows = (gDropdownNumItems + _dropdown_num_columns - 1) / _dropdown_num_columns;
+    
+    // Text dropdowns are listed horizontally
+    _dropdown_list_vertically = true;
 
     width = _dropdown_item_width * _dropdown_num_columns + 3;
     sint32 height = _dropdown_item_height * _dropdown_num_rows + 3;
@@ -184,8 +189,8 @@ void window_dropdown_show_text_custom_width(sint32 x, sint32 y, sint32 extray, u
     if (y + height > screenHeight)
         y = max(0, screenHeight - height);
 
-    window_dropdown_widgets[WIDX_BACKGROUND].bottom = (sint16)(_dropdown_item_height * num_items + 3);
-    window_dropdown_widgets[WIDX_BACKGROUND].right = (sint16)(_dropdown_item_width + 3);
+    window_dropdown_widgets[WIDX_BACKGROUND].right = width;
+    window_dropdown_widgets[WIDX_BACKGROUND].bottom = height;
 
     // Create the window
     w = window_create(
@@ -245,6 +250,9 @@ void window_dropdown_show_image(sint32 x, sint32 y, sint32 extray, uint8 colour,
     if (gDropdownNumItems % _dropdown_num_columns != 0)
         _dropdown_num_rows++;
 
+    // image dropdowns are listed horizontally
+    _dropdown_list_vertically = false;
+
     // Calculate position and size
     width = _dropdown_item_width * _dropdown_num_columns + 3;
     height = _dropdown_item_height * _dropdown_num_rows + 3;
@@ -294,8 +302,14 @@ static void window_dropdown_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
     sint32 highlightedIndex = gDropdownHighlightedIndex;
     for (sint32 i = 0; i < gDropdownNumItems; i++) {
-        cell_x = i % _dropdown_num_columns;
-        cell_y = i / _dropdown_num_columns;
+        if (_dropdown_list_vertically) {
+            cell_x = i / _dropdown_num_rows;
+            cell_y = i % _dropdown_num_rows;
+        }
+        else {
+            cell_x = i % _dropdown_num_columns;
+            cell_y = i / _dropdown_num_columns;
+        }
 
         if (gDropdownItemsFormat[i] == DROPDOWN_SEPARATOR) {
             l = w->x + 2 + (cell_x * _dropdown_item_width);
@@ -385,7 +399,12 @@ sint32 dropdown_index_from_point(sint32 x, sint32 y, rct_window *w)
     sint32 row_no = top / _dropdown_item_height;
     if (row_no >= _dropdown_num_rows) return -1;
 
-    sint32 dropdown_index = row_no * _dropdown_num_columns + column_no;
+    sint32 dropdown_index;
+    if (_dropdown_list_vertically)
+        dropdown_index = column_no * _dropdown_num_rows + row_no;
+    else
+        dropdown_index = row_no * _dropdown_num_columns + column_no;
+
     if (dropdown_index >= gDropdownNumItems) return -1;
 
     return dropdown_index;
