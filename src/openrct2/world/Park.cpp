@@ -599,7 +599,7 @@ void Park::Update()
         gParkRating = CalculateParkRating();
         gParkValue = CalculateParkValue();
         gCompanyValue = CalculateCompanyValue();
-        gTotalRideValueForMoney = CalculateTotalRideValue();
+        gTotalRideValueForMoney = CalculateTotalRideValueForMoney();
         _suggestedGuestMaximum = CalculateSuggestedMaxGuests();
         _guestGenerationProbability = CalculateGuestGenerationProbability();
 
@@ -787,7 +787,6 @@ money32 Park::CalculateRideValue(const Ride * ride) const
     if (ride->type != RIDE_TYPE_NULL &&
         ride->value != RIDE_VALUE_UNDEFINED)
     {
-        // Fair value * (...)
         result = (ride->value * 10) * (ride_customers_in_last_5_minutes(ride) + rideBonusValue[ride->type] * 4);
     }
     return result;
@@ -798,7 +797,7 @@ money32 Park::CalculateCompanyValue() const
     return finance_get_current_cash() + gParkValue - gBankLoan;
 }
 
-money16 Park::CalculateTotalRideValue() const
+money16 Park::CalculateTotalRideValueForMoney() const
 {
     money16 totalRideValue = 0;
     sint32 i;
