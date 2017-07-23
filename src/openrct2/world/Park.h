@@ -61,10 +61,13 @@ namespace OpenRCT2
         Park();
         ~Park();
 
+        bool IsOpen() const;
+
         uint16  GetParkRating() const;
         money32 GetParkValue() const;
         money32 GetCompanyValue() const;
 
+        void Initialise();
         void Update();
 
         sint32          CalculateParkSize() const;
