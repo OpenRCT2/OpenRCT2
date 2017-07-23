@@ -165,7 +165,7 @@ enum {
     SPR_STATION_BASE_B_NW_SE = 22429,
     SPR_STATION_BASE_C_SW_NE = 22430,
     SPR_STATION_BASE_C_NW_SE = 22431,
-    SPR_STATION_BASE_D = 22432,
+    SPR_STATION_BASE_D = 22432, // Metal plate without borders, used for some stations and for the on-ride photo segment.
 
     SPR_ON_RIDE_PHOTO_CAMERA_SMALL_N = 23485,
     SPR_ON_RIDE_PHOTO_CAMERA_SMALL_E = 23486,
