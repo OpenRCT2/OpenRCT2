@@ -397,7 +397,6 @@ void scenario_update()
 {
     if (gScreenFlags == SCREEN_FLAGS_PLAYING)
     {
-        date_update();
         if (date_is_day_start(gDateMonthTicks))
         {
             scenario_day_update();

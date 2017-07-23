@@ -55,6 +55,8 @@ struct rct_ride;
 
 namespace OpenRCT2
 {
+    class Date;
+
     class Park final
     {
     public:
@@ -65,7 +67,7 @@ namespace OpenRCT2
         money32 GetCompanyValue() const;
 
         void Initialise();
-        void Update();
+        void Update(const Date &date);
 
         sint32          CalculateParkSize() const;
         sint32          CalculateParkRating() const;

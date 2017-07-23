@@ -17,6 +17,7 @@
 #pragma once
 
 #include <memory>
+#include "Date.h"
 
 namespace OpenRCT2
 {
@@ -29,10 +30,12 @@ namespace OpenRCT2
     {
     private:
         std::unique_ptr<Park> _park;
+        Date                  _date;
 
     public:
         GameState();
 
+        Date * GetDate() { return &_date; }
         Park * GetPark() { return _park.get(); }
 
         void Update();
