@@ -3734,7 +3734,7 @@ STR_5396    :{SMALLFONT}{BLACK}Titelsequenz neu laden, falls sie außerhalb des 
 STR_5397    :Kann nur im Titelbildschirm verwendet werden
 STR_5398    :Titelsequenz kann, während sie läuft, nicht geändert werden
 STR_5399    :Titelsequenz stoppen, um das Bearbeiten fortzusetzen
-STR_5400    :Diese Titelsequenz kann nicht geändert werden
+STR_5400    :Diese Titelsequenz kann{NEWLINE}nicht geändert werden
 STR_5401    :Erstellen Sie eine neue Titelsequenz, um sie zu bearbeiten
 STR_5402    :Titelsequenz konnte nicht geladen werden
 STR_5403    :Möglicherweise kein `Laden'-Befehl, `Warten'-Befehl oder ein ungültiger Spielstand vorhanden
@@ -3764,7 +3764,7 @@ STR_5426    :Ende
 STR_5427    :Koordinaten:
 STR_5428    :Drehungen gegen Uhrzeigersinn:
 STR_5429    :Zoomstufe:
-STR_5430    :Zu wartende Sekunden:
+STR_5430    :Zu wartende Millisekunden:
 STR_5431    :Zu ladender Spielstand:
 STR_5432    :Befehl:
 STR_5433    :Titelsequenzen
@@ -4423,6 +4423,13 @@ STR_6119    :Eine günstige und einfach zu bauende Achterbahn, jedoch mit begren
 STR_6120    :{BABYBLUE}Neues Fahrzeug für {STRINGID} ist jetzt verfügbar:{NEWLINE}{STRINGID}
 STR_6121    :{SMALLFONT}{BLACK}Erweitert die Landrechte des Parks{NEWLINE}bis zum Rand der Karte
 STR_6122    :Dieses Szenario enthält zu wenige Achterbahnen!
+STR_6124    :Objektname
+STR_6125    :Objekttyp
+STR_6126    :Unbekannter Typ
+STR_6127    :Datei: {STRING}
+STR_6128    :Die Datei konnte aufgrund fehlender oder beschädigter Objekte nicht geladen werden. Eine Liste dieser Elemente ist nachstehend aufgeführt.
+STR_6129    :Ausgewählte Elemente kopieren
+STR_6130    :Vollständige Liste kopieren
 
 #############
 # Scenarios #
