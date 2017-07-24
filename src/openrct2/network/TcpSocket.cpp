@@ -147,6 +147,12 @@ public:
             log_error("IPV6_V6ONLY failed. %d", LAST_SOCKET_ERROR());
         }
 
+        value = 1;
+        if (setsockopt(_socket, SOL_SOCKET, SO_REUSEADDR, (const char*)&value, sizeof(value)) != 0)
+        {
+            log_error("SO_REUSEADDR failed. %d", LAST_SOCKET_ERROR());
+        }
+
         try
         {
             // Bind to address:port and listen
