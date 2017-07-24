@@ -47,7 +47,7 @@
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <AdditionalOptions>/utf-8 /std:c++latest</AdditionalOptions>
+      <AdditionalOptions>/utf-8 /std:c++latest /permissive-</AdditionalOptions>
     </ClCompile>
     <Link>
       <AdditionalDependencies>imm32.lib;version.lib;winmm.lib;crypt32.lib;%(AdditionalDependencies)</AdditionalDependencies>
