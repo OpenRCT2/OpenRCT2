@@ -23,7 +23,7 @@ STR_0018    :Dinghy Slide
 STR_0019    :Mine Train Coaster
 STR_0020    :Chairlift
 STR_0021    :Corkscrew Roller Coaster
-STR_0022    :Maze
+STR_0022    :متاهة
 STR_0023    :Spiral Slide
 STR_0024    :Go Karts
 STR_0025    :Log Flume
@@ -35,14 +35,14 @@ STR_0030    :Food Stall
 STR_0031    :Unknown Stall (1D)
 STR_0032    :Drink Stall
 STR_0033    :Unknown Stall (1F)
-STR_0034    :Shop
+STR_0034    :متجر
 STR_0035    :Carousel
 STR_0036    :Unknown Stall (22)
 STR_0037    :Information Kiosk
-STR_0038    :Restroom
+STR_0038    :غرفة إستراحة
 STR_0039    :Ferris Wheel
 STR_0040    :Motion Simulator
-STR_0041    :3D Theater
+STR_0041    :سينما ثري دي
 STR_0042    :Top Spin
 STR_0043    :Space Rings
 STR_0044    :Reverse Freefall Coaster
@@ -52,7 +52,7 @@ STR_0047    :ATM
 STR_0048    :Twist
 STR_0049    :Haunted House
 STR_0050    :First Aid Room
-STR_0051    :Circus Show
+STR_0051    :عرض السيرك
 STR_0052    :Tunnel Of Horror
 STR_0053    :Steel Twister Roller Coaster
 STR_0054    :Wooden Roller Coaster
@@ -85,7 +85,7 @@ STR_0080    :Submarine Ride
 STR_0081    :River Rafts
 STR_0082    :Unknown Ride (50)
 STR_0083    :Enterprise
-STR_0084    :Unknown Ride (52)
+STR_0084    :رحلة غير معروفة (52)
 STR_0085    :Unknown Ride (53)
 STR_0086    :Unknown Ride (54)
 STR_0087    :Unknown Ride (55)
@@ -834,14 +834,14 @@ STR_0829    :{SMALLFONT}{BLACK}Window title - Drag this to move window
 STR_0830    :{SMALLFONT}{BLACK}Zoom view in
 STR_0831    :{SMALLFONT}{BLACK}Zoom view out
 STR_0832    :{SMALLFONT}{BLACK}Rotate view 90{DEGREE} clockwise
-STR_0833    :{SMALLFONT}{BLACK}Pause game
+STR_0833    :{SMALLFONT}{BLACK}إيقاف مؤقت للعبة
 STR_0834    :{SMALLFONT}{BLACK}Disk and game options
-STR_0835    :Game initialization failed
+STR_0835    :إطلاق اللعبة  فشل
 STR_0836    :Unable to start game in a minimized state
 STR_0837    :Unable to initialize graphics system
 STR_0839    :{UINT16} x {UINT16}
 STR_0840    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{UINT16} x {UINT16}
-STR_0847    :About 'OpenRCT2'
+STR_0847    :عن 'OpenRCT2'
 STR_0848    :RollerCoaster Tycoon 2
 STR_0849    :{WINDOW_COLOUR_2}Version 2.01.028
 STR_0850    :{WINDOW_COLOUR_2}Copyright {COPYRIGHT} 2002 Chris Sawyer, all rights reserved
@@ -850,7 +850,7 @@ STR_0852    :{WINDOW_COLOUR_2}Graphics by Simon Foster
 STR_0853    :{WINDOW_COLOUR_2}Sound and music by Allister Brimble
 STR_0854    :{WINDOW_COLOUR_2}Additional sounds recorded by David Ellis
 STR_0855    :{WINDOW_COLOUR_2}Representation by Jacqui Lyons at Marjacq Ltd.
-STR_0856    :{WINDOW_COLOUR_2}Thanks to:
+STR_0856    :{WINDOW_COLOUR_2}شكراً إلي:
 STR_0857    :{WINDOW_COLOUR_2}Peter James Adcock, Joe Booth, and John Wardley
 STR_0858    :{WINDOW_COLOUR_2}
 STR_0859    :{WINDOW_COLOUR_2}
@@ -871,21 +871,21 @@ STR_0873    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
 STR_0874    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
 STR_0875    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
 STR_0876    :{BLACK}{DOWN}
-STR_0877    :Too low !
-STR_0878    :Too high !
+STR_0877    :منخفض للغاية !
+STR_0878    :مرتفع للغاية !
 STR_0879    :Can't lower land here...
 STR_0880    :Can't raise land here...
 STR_0881    :Object in the way
-STR_0882    :Load Game
-STR_0883    :Save Game
+STR_0882    :تحميل لعبة
+STR_0883    :حفظ اللعبة
 STR_0884    :Load Landscape
 STR_0885    :Save Landscape
-STR_0886    :Quit Game
+STR_0886    :خروج من اللعبة
 STR_0887    :Quit Scenario Editor
 STR_0888    :Quit Roller Coaster Designer
 STR_0889    :Quit Track Designs Manager
 STR_0890    :<removed string - do not use>
-STR_0891    :Screenshot
+STR_0891    :لقطة شاشة
 STR_0892    :Screenshot saved to disk as '{STRINGID}'
 STR_0893    :Screenshot failed !
 STR_0894    :Landscape data area full !
@@ -936,15 +936,15 @@ STR_0938    :{SMALLFONT}{BLACK}Adjust land height and slope
 STR_0939    :Underground/Inside View
 STR_0942    :See-Through Rides
 STR_0943    :See-Through Scenery
-STR_0944    :Save
-STR_0945    :Don't Save
-STR_0946    :Cancel
+STR_0944    :حفظ
+STR_0945    :لا تحفظ
+STR_0946    :إلغاء
 STR_0947    :Save this before loading ?
 STR_0948    :Save this before quitting ?
 STR_0949    :Save this before quitting ?
-STR_0950    :Load Game
-STR_0951    :Quit Game
-STR_0952    :Quit Game
+STR_0950    :تحميل اللعبة
+STR_0951    :خروج من اللعبة
+STR_0952    :خروج من اللعبة
 STR_0953    :Load Landscape
 STR_0954    :
 STR_0955    :{SMALLFONT}{BLACK}Select seat rotation angle for this track section
@@ -964,8 +964,8 @@ STR_0968    :+360{DEGREE}
 STR_0969    :+405{DEGREE}
 STR_0970    :+450{DEGREE}
 STR_0971    :+495{DEGREE}
-STR_0972    :Cancel
-STR_0973    :OK
+STR_0972    :إلغاء
+STR_0973    :حسناً
 STR_0974    :Rides
 STR_0975    :Shops and Stalls
 STR_0976    :Restrooms and Information Kiosks
@@ -975,7 +975,7 @@ STR_0979    :New Roller Coasters
 STR_0980    :New Thrill Rides
 STR_0981    :New Water Rides
 STR_0982    :New Shops & Stalls
-STR_0983    :Research & Development
+STR_0983    :البحث والتطوير
 STR_0984    :{WINDOW_COLOUR_2}{UP}{BLACK}  {CURRENCY2DP}
 STR_0985    :{WINDOW_COLOUR_2}{DOWN}{BLACK}  {CURRENCY2DP}
 STR_0986    :{BLACK}{CURRENCY2DP}
@@ -986,7 +986,7 @@ STR_0990    :{SMALLFONT}{BLACK}Construction
 STR_0991    :Station platform
 STR_0992    :{SMALLFONT}{BLACK}Demolish entire ride/attraction
 STR_0993    :Demolish ride/attraction
-STR_0994    :Demolish
+STR_0994    :تدمير
 STR_0995    :{WINDOW_COLOUR_1}Are you sure you want to completely demolish {STRINGID}?
 STR_0996    :Overall view
 STR_0997    :{SMALLFONT}{BLACK}View selection
@@ -1003,10 +1003,10 @@ STR_1007    :Unable to create enough vehicles
 STR_1008    :{SMALLFONT}{BLACK}Open, close, or test ride/attraction
 STR_1009    :{SMALLFONT}{BLACK}Open or close all rides/attractions
 STR_1010    :{SMALLFONT}{BLACK}Open or close park
-STR_1011    :Close all
-STR_1012    :Open all
-STR_1013    :Close park
-STR_1014    :Open park
+STR_1011    :إغلاق الكل
+STR_1012    :فتح الكل
+STR_1013    :إغلاق الحديقة
+STR_1014    :فتح الحديقة
 STR_1015    :Unable to operate with more than one station platform in this mode
 STR_1016    :Unable to operate with less than two stations in this mode
 STR_1017    :Can't change operating mode...
@@ -1039,7 +1039,7 @@ STR_1043    :OpenRCT2 لعبة محفوظة
 STR_1044    :OpenRCT2 ملف مشهد
 STR_1045    :OpenRCT2 Landscape File
 STR_1046    :OpenRCT2 Track Design File
-STR_1047    :Game save failed!
+STR_1047    :حفظ اللعبة فشل!
 STR_1048    :حفظ المشهد فشل!
 STR_1049    :Landscape save failed!
 STR_1050    :Failed to load...{NEWLINE}File contains invalid data!
@@ -1116,9 +1116,9 @@ STR_1120    :Traveling at {VELOCITY}
 STR_1121    :يتوقف
 STR_1122    :Waiting for passengers
 STR_1123    :Waiting to start
-STR_1124    :Starting
+STR_1124    :يبدء
 STR_1125    :Operating
-STR_1126    :Stopping
+STR_1126    :يتوقف
 STR_1127    :Unloading passengers
 STR_1128    :Stopped by block brakes
 STR_1129    :All vehicles in same colors
@@ -1138,8 +1138,8 @@ STR_1142    :{MOVE_X}{SMALLFONT}{STRINGID}
 STR_1143    :{RIGHTGUILLEMET}{MOVE_X}{SMALLFONT}{STRINGID}
 STR_1144    :Can't build/move entrance for this ride/attraction...
 STR_1145    :Can't build/move exit for this ride/attraction...
-STR_1146    :Entrance not yet built
-STR_1147    :Exit not yet built
+STR_1146    :المدخل لم يبني بعد
+STR_1147    :المخرج لم يبني بعد
 STR_1148    :Quarter load
 STR_1149    :Half load
 STR_1150    :Three-quarter load
@@ -1175,7 +1175,7 @@ STR_1179    :Footpath in the way
 STR_1180    :لا يمكن بناء هذا تحت الماء!
 STR_1181    :Footpaths
 STR_1182    :النوع
-STR_1183    :Direction
+STR_1183    :الإتجاه
 STR_1184    :Slope
 STR_1185    :{SMALLFONT}{BLACK}Direction
 STR_1186    :{SMALLFONT}{BLACK}Slope down
@@ -1187,9 +1187,9 @@ STR_1191    :{BLACK}{STRINGID}
 STR_1192    :{OUTLINE}{RED}{STRINGID}
 STR_1193    :{WINDOW_COLOUR_2}{STRINGID}
 STR_1194    :مُغلق
-STR_1195    :Test Run
+STR_1195    :تجربة تشغيل
 STR_1196    :مفتوح
-STR_1197    :Broken Down
+STR_1197    :تعطلت
 STR_1198    :تحطم!
 STR_1199    :{COMMA16} person on ride
 STR_1200    :{COMMA16} people on ride
@@ -1389,7 +1389,7 @@ STR_1393    :{SMALLFONT}{BLACK}Vehicle details and options
 STR_1394    :{SMALLFONT}{BLACK}Operating options
 STR_1395    :{SMALLFONT}{BLACK}Maintenance options
 STR_1396    :{SMALLFONT}{BLACK}Color scheme options
-STR_1397    :{SMALLFONT}{BLACK}Sound & music options
+STR_1397    :{SMALLFONT}{BLACK}إعدادات الصوت والموسيقي
 STR_1398    :{SMALLFONT}{BLACK}Measurements and test data
 STR_1399    :{SMALLFONT}{BLACK}Graphs
 STR_1400    :مدخل
@@ -1430,8 +1430,8 @@ STR_1434    :يرسم
 STR_1435    :On {STRINGID}
 STR_1436    :In {STRINGID}
 STR_1437    :At {STRINGID}
-STR_1438    :Sitting
-STR_1439    :(select location)
+STR_1438    :جالس
+STR_1439    :(حدد المكان)
 STR_1440    :Mowing grass
 STR_1441    :Sweeping footpath
 STR_1442    :Emptying litter bin
@@ -1655,16 +1655,16 @@ STR_1658    :{WINDOW_COLOUR_2}intensity: {BLACK}less than {COMMA16}
 STR_1659    :{WINDOW_COLOUR_2}intensity: {BLACK}between {COMMA16} and {COMMA16}
 STR_1660    :{WINDOW_COLOUR_2}intensity: {BLACK}more than {COMMA16}
 STR_1661    :{WINDOW_COLOUR_2}Nausea tolerance: {BLACK}{STRINGID}
-STR_1662    :{WINDOW_COLOUR_2}Happiness:
+STR_1662    :{WINDOW_COLOUR_2}السعادة:
 STR_1663    :{WINDOW_COLOUR_2}Nausea:
-STR_1664    :{WINDOW_COLOUR_2}Energy:
-STR_1665    :{WINDOW_COLOUR_2}Hunger:
-STR_1666    :{WINDOW_COLOUR_2}Thirst:
-STR_1667    :{WINDOW_COLOUR_2}Bathroom:
+STR_1664    :{WINDOW_COLOUR_2}الطاقة:
+STR_1665    :{WINDOW_COLOUR_2}الجوع:
+STR_1666    :{WINDOW_COLOUR_2}العطش:
+STR_1667    :{WINDOW_COLOUR_2}حمام:
 STR_1668    :{WINDOW_COLOUR_2}Satisfaction: {BLACK}Unknown
 STR_1669    :{WINDOW_COLOUR_2}Satisfaction: {BLACK}{COMMA16}%
 STR_1670    :{WINDOW_COLOUR_2}Total customers: {BLACK}{COMMA32}
-STR_1671    :{WINDOW_COLOUR_2}Total profit: {BLACK}{CURRENCY2DP}
+STR_1671    :{WINDOW_COLOUR_2}الربح الكلي: {BLACK}{CURRENCY2DP}
 STR_1672    :مكابح
 STR_1673    :Spinning Control Toggle Track
 STR_1674    :سرعة الكبح
@@ -1722,8 +1722,8 @@ STR_1725    :لا يمكن شراء الأرض...
 STR_1726    :الأرض ليست للبيع!
 STR_1727    :Construction rights not for sale!
 STR_1728    :Can't buy construction rights here...
-STR_1729    :Land not owned by park!
-STR_1730    :{RED}Closed - - 
+STR_1729    :الأرض ليست مملوكة للحديقة!
+STR_1730    :{RED}مغلقة - - 
 STR_1731    :{WHITE}{STRINGID} - - 
 STR_1732    :إبني
 STR_1733    :الوضع
@@ -1768,8 +1768,8 @@ STR_1771    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COM
 STR_1772    :{COMMA16}
 STR_1773    :Only one on-ride photo section allowed per ride
 STR_1774    :Only one cable lift hill allowed per ride
-STR_1775    :Off
-STR_1776    :On
+STR_1775    :إيقاف
+STR_1776    :تشغيل
 STR_1777    :{WINDOW_COLOUR_2}Ride music
 STR_1778    :{STRINGID} - - 
 STR_1779    :{INLINE_SPRITE}{254}{19}{00}{00} Panda costume
@@ -1872,13 +1872,13 @@ STR_1875    :{BLACK} {SPRITE}{BLACK} {STRINGID}
 STR_1876    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{251}{19}{00}{00}Inspect Rides
 STR_1877    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{252}{19}{00}{00}Fix Rides
 STR_1878    :{WINDOW_COLOUR_2}Inspection:
-STR_1879    :Every 10 minutes
-STR_1880    :Every 20 minutes
-STR_1881    :Every 30 minutes
-STR_1882    :Every 45 minutes
-STR_1883    :Every hour
-STR_1884    :Every 2 hours
-STR_1885    :Never
+STR_1879    :كل 10 دقائق
+STR_1880    :كل 20 دقيقة
+STR_1881    :كل 30 دقيقة
+STR_1882    :كل 45 دقيقة
+STR_1883    :كل ساعة
+STR_1884    :كل ساعتين
+STR_1885    :أبداً
 STR_1886    :Inspecting {STRINGID}
 STR_1887    :{WINDOW_COLOUR_2}Time since last inspection: {BLACK}{COMMA16} minutes
 STR_1888    :{WINDOW_COLOUR_2}Time since last inspection: {BLACK}more than 4 hours
@@ -1898,9 +1898,9 @@ STR_1903    :{WINDOW_COLOUR_2}Shop sales
 STR_1904    :{WINDOW_COLOUR_2}Shop stock
 STR_1905    :{WINDOW_COLOUR_2}Food/drink sales
 STR_1906    :{WINDOW_COLOUR_2}Food/drink stock
-STR_1907    :{WINDOW_COLOUR_2}Staff wages
-STR_1908    :{WINDOW_COLOUR_2}Marketing
-STR_1909    :{WINDOW_COLOUR_2}Research
+STR_1907    :{WINDOW_COLOUR_2}أجور العمال
+STR_1908    :{WINDOW_COLOUR_2}التسويق
+STR_1909    :{WINDOW_COLOUR_2}التطوير
 STR_1910    :{WINDOW_COLOUR_2}Loan interest
 STR_1911    :{BLACK} at {COMMA16}% per year
 STR_1912    :{MONTH}
@@ -1910,7 +1910,7 @@ STR_1915    :{RED}{CURRENCY2DP}
 STR_1916    :{WINDOW_COLOUR_2}Loan:
 STR_1917    :{POP16}{POP16}{POP16}{CURRENCY}
 STR_1918    :Can't borrow any more money!
-STR_1919    :Not enough cash available!
+STR_1919    :لا يوجد مال كافي!
 STR_1920    :Can't pay back loan!
 STR_1921    :{SMALLFONT}{BLACK}Start a new game
 STR_1922    :{SMALLFONT}{BLACK}Continue playing a saved game
@@ -2005,21 +2005,21 @@ STR_2010    :قهوة
 STR_2011    :كأس فارغ
 STR_2012    :Fried Chicken
 STR_2013    :ليمونضة
-STR_2014    :Empty Box
-STR_2015    :Empty Bottle
+STR_2014    :صندوق فارغ
+STR_2015    :زجاجة فارغة
 STR_2016    :بلونات
 STR_2017    :Cuddly Toys
-STR_2018    :Park Maps
+STR_2018    :خريطة الحديقة
 STR_2019    :On-Ride Photos
 STR_2020    :Umbrellas
 STR_2021    :Drinks
 STR_2022    :Burgers
 STR_2023    :Fries
-STR_2024    :Ice Creams
-STR_2025    :Cotton Candy
-STR_2026    :Empty Cans
-STR_2027    :Trash
-STR_2028    :Empty Burger Boxes
+STR_2024    :أيس كريم
+STR_2025    :غزل البنات
+STR_2026    :كانز فارغ
+STR_2027    :قمامة
+STR_2028    :صناديق برغر فارغة
 STR_2029    :Pizzas
 STR_2030    :Vouchers
 STR_2031    :Popcorn
