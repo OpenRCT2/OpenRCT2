@@ -1207,7 +1207,7 @@ void input_state_widget_pressed(sint32 x, sint32 y, sint32 state, rct_widgetinde
                         goto dropdown_cleanup;
                     }
 
-                    if (dropdown_index < DROPDOWN_ITEMS_MAX_SIZE && gDropdownItemsDisabled & (1ULL << dropdown_index)) {
+                    if (dropdown_index < DROPDOWN_ITEMS_MAX_SIZE && dropdown_is_disabled(dropdown_index)) {
                         goto dropdown_cleanup;
                     }
 
@@ -1344,7 +1344,7 @@ void input_state_widget_pressed(sint32 x, sint32 y, sint32 state, rct_widgetinde
             window_tooltip_show(colourTooltips[dropdown_index], x, y);
         }
 
-        if (dropdown_index < DROPDOWN_ITEMS_MAX_SIZE && gDropdownItemsDisabled & (1ULL << dropdown_index)) {
+        if (dropdown_index < DROPDOWN_ITEMS_MAX_SIZE && dropdown_is_disabled(dropdown_index)) {
             return;
         }
 
