@@ -1292,7 +1292,7 @@ void window_staff_options_mousedown(rct_window *w, rct_widgetindex widgetIndex, 
     sint32 numCostumes = staff_get_available_entertainer_costume_list(_availableCostumes);
     for (sint32 i = 0; i < numCostumes; i++) {
         uint8 costume = _availableCostumes[i];
-        if (costume == peep->sprite_type) {
+        if (peep->sprite_type == PEEP_SPRITE_TYPE_ENTERTAINER_PANDA + costume) {
             checkedIndex = i;
         }
         gDropdownItemsArgs[i] = StaffCostumeNames[costume];
