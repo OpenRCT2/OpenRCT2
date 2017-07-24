@@ -555,7 +555,7 @@ void window_staff_overview_mousedown(rct_window *w, rct_widgetindex widgetIndex,
 
     // Disable clear patrol area if no area is set.
     if (!(gStaffModes[peep->staff_id] & 2)) {
-        gDropdownItemsDisabled |= (1ULL << 1);
+        dropdown_set_disabled(1, true);
     }
 }
 
@@ -1285,7 +1285,7 @@ void window_staff_options_mousedown(rct_window *w, rct_widgetindex widgetIndex, 
     }
 
     rct_peep* peep = GET_PEEP(w->number);
-    sint32 itemsChecked = 0;
+    sint32 checkedIndex = -1;
     //This will be moved below where Items Checked is when all
     //of dropdown related functions are finished. This prevents
     //the dropdown from not working on first click.
@@ -1293,7 +1293,7 @@ void window_staff_options_mousedown(rct_window *w, rct_widgetindex widgetIndex, 
     for (sint32 i = 0; i < numCostumes; i++) {
         uint8 costume = _availableCostumes[i];
         if (costume == peep->sprite_type) {
-            itemsChecked = 1 << i;
+            checkedIndex = i;
         }
         gDropdownItemsArgs[i] = StaffCostumeNames[costume];
         gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
@@ -1309,7 +1309,10 @@ void window_staff_options_mousedown(rct_window *w, rct_widgetindex widgetIndex, 
     window_dropdown_show_text_custom_width(x, y, extray, w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, numCostumes, width);
 
     // See above note.
-    gDropdownItemsChecked = itemsChecked;
+    if (checkedIndex != -1)
+    {
+        dropdown_set_checked(checkedIndex, true);
+    }
 }
 
 /**

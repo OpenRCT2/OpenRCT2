@@ -2043,11 +2043,12 @@ static void window_ride_show_view_dropdown(rct_window *w, rct_widget *widget)
     }
 
     // Set highlighted item
-    if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK)) {
-        sint32 j = 2;
-        for (sint32 i = 0; i < ride->num_vehicles; i++) {
-            gDropdownItemsDisabled |= j;
-            j <<= 1;
+    if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK))
+    {
+        for (sint32 i = 0; i < ride->num_vehicles; i++)
+        {
+            // The +1 is to skip 'Overall view'
+            dropdown_set_disabled(i + 1, true);;
         }
     }
 
@@ -3757,7 +3758,7 @@ static void window_ride_maintenance_mousedown(rct_window *w, rct_widgetindex wid
             }
 
             if ((ride->lifecycle_flags & RIDE_LIFECYCLE_BREAKDOWN_PENDING) == 0) {
-                gDropdownItemsDisabled = (1 << 0);
+                dropdown_set_disabled(0, true);
             }
         }
         break;
@@ -4140,7 +4141,7 @@ static void window_ride_colour_mousedown(rct_window *w, rct_widgetindex widgetIn
     vehicle_colour vehicleColour;
     rct_widget *dropdownWidget;
     rct_ride_entry *rideEntry;
-    sint32 i, numItems;
+    sint32 i, numItems, checkedIndex;
     rct_string_id stringId;
 
     ride = get_ride(w->number);
@@ -4197,16 +4198,15 @@ static void window_ride_colour_mousedown(rct_window *w, rct_widgetindex widgetIn
         dropdown_set_checked(ride->track_colour_supports[colourSchemeIndex], true);
         break;
     case WIDX_ENTRANCE_STYLE_DROPDOWN:
-        gDropdownItemsChecked = 0;
+        checkedIndex = -1;
         for (i = 0; i < countof(window_ride_entrance_style_list); i++) {
             gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
             gDropdownItemsArgs[i] = RideEntranceDefinitions[window_ride_entrance_style_list[i]].string_id;
 
             if (ride->entrance_style == window_ride_entrance_style_list[i]) {
-                dropdown_set_checked(i, true);
+                checkedIndex = i;
             }
         }
-        uint64 checked = gDropdownItemsChecked;
 
         window_dropdown_show_text_custom_width(
             w->x + dropdownWidget->left,
@@ -4219,7 +4219,11 @@ static void window_ride_colour_mousedown(rct_window *w, rct_widgetindex widgetIn
             widget->right - dropdownWidget->left
         );
 
-        gDropdownItemsChecked = checked;
+
+        if (checkedIndex != -1)
+        {
+            dropdown_set_checked(checkedIndex, true);
+        }
         break;
     case WIDX_VEHICLE_COLOUR_SCHEME_DROPDOWN:
         for (i = 0; i < 3; i++) {
@@ -5066,7 +5070,9 @@ static void window_ride_measurements_mousedown(rct_window *w, rct_widgetindex wi
     );
     gDropdownDefaultIndex = 0;
     if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
-        gDropdownItemsDisabled |= 2;
+    {
+        dropdown_set_disabled(1, true);
+    }
 }
 
 /**

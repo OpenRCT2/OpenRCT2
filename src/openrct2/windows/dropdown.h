@@ -36,8 +36,6 @@ extern sint32 gAppropriateImageDropdownItemsPerRow[];
 extern sint32 gDropdownNumItems;
 extern rct_string_id gDropdownItemsFormat[DROPDOWN_ITEMS_MAX_SIZE];
 extern sint64 gDropdownItemsArgs[DROPDOWN_ITEMS_MAX_SIZE];
-extern uint64 gDropdownItemsChecked;
-extern uint64 gDropdownItemsDisabled;
 extern bool gDropdownIsColour;
 extern sint32 gDropdownLastColourHover;
 extern sint32 gDropdownHighlightedIndex;

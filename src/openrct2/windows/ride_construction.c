@@ -3578,7 +3578,13 @@ static void window_ride_construction_show_special_track_dropdown(rct_window *w, 
         widget->right - widget->left
     );
 
-    gDropdownItemsDisabled = _currentDisabledSpecialTrackPieces;
+    for (sint32 i = 0; i < 32; i++)
+    {
+        if (_currentDisabledSpecialTrackPieces & (1 << i))
+        {
+            dropdown_set_disabled(i, true);
+        }
+    }
     gDropdownDefaultIndex = defaultIndex;
 }
 

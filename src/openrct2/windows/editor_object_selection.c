@@ -901,8 +901,6 @@ void window_editor_object_selection_mousedown(rct_window *w, rct_widgetindex wid
 {
     sint32 num_items;
 
-    //widget = &w->widgets[widgetIndex - 1];
-
     switch (widgetIndex) {
     case WIDX_FILTER_DROPDOWN:
 
@@ -935,7 +933,14 @@ void window_editor_object_selection_mousedown(rct_window *w, rct_widgetindex wid
             num_items
             );
 
-        gDropdownItemsChecked = _filter_flags & 0xF;
+        for (sint32 i = 0; i < 4; i++)
+        {
+            if (_filter_flags & (1 << i))
+            {
+                dropdown_set_checked(i, true);
+            }
+        }
+
         if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)) {
             dropdown_set_checked(DDIX_FILTER_SELECTED, _FILTER_SELECTED);
             dropdown_set_checked(DDIX_FILTER_NONSELECTED, _FILTER_NONSELECTED);
