@@ -3,9 +3,9 @@
 ###########################################
 
 $nottesting = (${env:Configuration} -notlike "*tests")
-# Only deploy from VS2015 for now.
-$notvs2017 = (${env:APPVEYOR_JOB_NAME} -notlike "*2017*")
-if ($nottesting -and $notvs2017)
+# Only deploy from VS2017 for now.
+$notvs2015 = (${env:APPVEYOR_JOB_NAME} -notlike "*2015*")
+if ($nottesting -and $notvs2015)
 {
     # Check if OpenRCT2.org API security token is available
     if (${env:OPENRCT2_ORG_TOKEN})
