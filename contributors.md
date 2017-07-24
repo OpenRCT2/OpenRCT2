@@ -15,6 +15,7 @@ Includes all git commit authors. Aliases are GitHub user names.
 The following people are not part of the project team, but have been contributing for a long time.
 * Hielke Morsink (Broxzier)
 * Matte Andersson (Nubbie)
+* Kenton Boadway (PFCKrutonium)
 * (wolfreak99)
 
 ## Implementation (RCT2)
