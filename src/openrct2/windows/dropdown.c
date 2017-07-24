@@ -52,8 +52,8 @@ bool _dropdown_list_vertically;
 sint32 gDropdownNumItems;
 rct_string_id gDropdownItemsFormat[DROPDOWN_ITEMS_MAX_SIZE];
 sint64 gDropdownItemsArgs[DROPDOWN_ITEMS_MAX_SIZE];
-static uint64 _dropdownItemsChecked;
-static uint64 _dropdownItemsDisabled;
+static bool _dropdownItemsChecked[DROPDOWN_ITEMS_MAX_SIZE];
+static bool _dropdownItemsDisabled[DROPDOWN_ITEMS_MAX_SIZE];
 bool gDropdownIsColour;
 sint32 gDropdownLastColourHover;
 sint32 gDropdownHighlightedIndex;
@@ -61,30 +61,22 @@ sint32 gDropdownDefaultIndex;
 
 bool dropdown_is_checked(sint32 index)
 {
-    return _dropdownItemsChecked & (1ULL << index);
+    return _dropdownItemsChecked[index];
 }
 
 bool dropdown_is_disabled(sint32 index)
 {
-    return _dropdownItemsDisabled & (1ULL << index);
+    return _dropdownItemsDisabled[index];
 }
 
 void dropdown_set_checked(sint32 index, bool value)
 {
-    if (value) {
-        _dropdownItemsChecked |= 1ULL << index;
-    } else {
-        _dropdownItemsChecked &= ~(1ULL << index);
-    }
+    _dropdownItemsChecked[index] = value;
 }
 
 void dropdown_set_disabled(sint32 index, bool value)
 {
-    if (value) {
-        _dropdownItemsDisabled |= 1ULL << index;
-    } else {
-        _dropdownItemsDisabled &= ~(1ULL << index);
-    }
+    _dropdownItemsDisabled[index] = value;
 }
 
 static void window_dropdown_paint(rct_window *w, rct_drawpixelinfo *dpi);
@@ -208,8 +200,8 @@ void window_dropdown_show_text_custom_width(sint32 x, sint32 y, sint32 extray, u
 
     // Input state
     gDropdownHighlightedIndex = -1;
-    _dropdownItemsDisabled = 0;
-    _dropdownItemsChecked = 0;
+    memset(_dropdownItemsDisabled, 0, sizeof(_dropdownItemsDisabled));
+    memset(_dropdownItemsChecked, 0, sizeof(_dropdownItemsChecked));
     gDropdownIsColour = false;
     gDropdownDefaultIndex = -1;
     input_set_state(INPUT_STATE_DROPDOWN_ACTIVE);
@@ -282,8 +274,8 @@ void window_dropdown_show_image(sint32 x, sint32 y, sint32 extray, uint8 colour,
 
     // Input state
     gDropdownHighlightedIndex = -1;
-    _dropdownItemsDisabled = 0;
-    _dropdownItemsChecked = 0;
+    memset(_dropdownItemsDisabled, 0, sizeof(_dropdownItemsDisabled));
+    memset(_dropdownItemsChecked, 0, sizeof(_dropdownItemsChecked));
     gDropdownIsColour = false;
     gDropdownDefaultIndex = -1;
     input_set_state(INPUT_STATE_DROPDOWN_ACTIVE);
