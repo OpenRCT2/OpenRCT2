@@ -2145,23 +2145,16 @@ static void window_ride_main_mousedown(rct_window *w, rct_widgetindex widgetInde
         window_ride_show_open_dropdown(w, widget);
         break;
     case WIDX_RIDE_TYPE_INCREASE:
-        if (_rideType >= 90) {
-            _rideType = 90;
-        } else {
-            _rideType++;
-        }
+        _rideType = min(RIDE_TYPE_COUNT - 1, _rideType + 1);
         widget_invalidate(w, WIDX_RIDE_TYPE);
         break;
     case WIDX_RIDE_TYPE_DECREASE:
-        if (_rideType == 0) {
-            _rideType = 0;
-        } else {
-            _rideType--;
-        }
+        _rideType = max(0, _rideType -1);
         widget_invalidate(w, WIDX_RIDE_TYPE);
         break;
     case WIDX_RIDE_TYPE_APPLY:
-        if (_rideType <= 90) {
+        if (_rideType < RIDE_TYPE_COUNT)
+        {
             set_operating_setting(w->number, RIDE_SETTING_RIDE_TYPE, _rideType);
         }
         window_invalidate_all();
@@ -2648,14 +2641,14 @@ static void window_ride_vehicle_mousedown(rct_window *w, rct_widgetindex widgetI
     rideEntry = get_ride_entry_by_ride(ride);
 
     if(gCheatsShowVehiclesFromOtherTrackTypes && !(ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE) || ride->type==RIDE_TYPE_MAZE || ride->type==RIDE_TYPE_MINI_GOLF)) {
-        selectionShouldBeExpanded=true;
-        rideTypeIterator=0;
-        rideTypeIteratorMax=90;
+        selectionShouldBeExpanded = true;
+        rideTypeIterator = 0;
+        rideTypeIteratorMax = RIDE_TYPE_COUNT - 1;
     }
     else {
-        selectionShouldBeExpanded=false;
-        rideTypeIterator=ride->type;
-        rideTypeIteratorMax=ride->type;
+        selectionShouldBeExpanded = false;
+        rideTypeIterator = ride->type;
+        rideTypeIteratorMax = ride->type;
     }
 
     switch (widgetIndex) {
@@ -2663,17 +2656,17 @@ static void window_ride_vehicle_mousedown(rct_window *w, rct_widgetindex widgetI
         selectedIndex = -1;
         numItems = 0;
 
-        // Dropdowns with more items start acting weird, so cap it to 63.
-        for (; rideTypeIterator<=rideTypeIteratorMax && numItems<=63; rideTypeIterator++) {
+        // Dropdowns with more items start acting weird, so cap it.
+        for (; rideTypeIterator <= rideTypeIteratorMax && numItems < DROPDOWN_ITEMS_MAX_SIZE; rideTypeIterator++) {
 
             if(selectionShouldBeExpanded && ride_type_has_flag(rideTypeIterator, RIDE_TYPE_FLAG_FLAT_RIDE))
                 continue;
-            if(selectionShouldBeExpanded && (rideTypeIterator==RIDE_TYPE_MAZE || rideTypeIterator==RIDE_TYPE_MINI_GOLF))
+            if(selectionShouldBeExpanded && (rideTypeIterator == RIDE_TYPE_MAZE || rideTypeIterator == RIDE_TYPE_MINI_GOLF))
                 continue;
 
             rideEntryIndexPtr = get_ride_entry_indices_for_ride_type(rideTypeIterator);
 
-            for (uint8 *currentRideEntryIndex = rideEntryIndexPtr; *currentRideEntryIndex != RIDE_ENTRY_INDEX_NULL && numItems <= 63; currentRideEntryIndex++) {
+            for (uint8 *currentRideEntryIndex = rideEntryIndexPtr; *currentRideEntryIndex != RIDE_ENTRY_INDEX_NULL && numItems < DROPDOWN_ITEMS_MAX_SIZE; currentRideEntryIndex++) {
                 rideEntryIndex = *currentRideEntryIndex;
                 currentRideEntry = get_ride_entry(rideEntryIndex);
                 // Skip if vehicle wants to be separate, unless subtype switching is enabled
