@@ -28,6 +28,7 @@
 
   <ItemDefinitionGroup>
     <ClCompile>
+      <WarningLevel>Level4</WarningLevel>
       <DisableSpecificWarnings>4068;4091;4100;4132;4200;4201;4204;4206;4221;4244;4245;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <!-- Warnings:
              C4068: unknown pragma
@@ -42,19 +43,19 @@
              C4244: 'conversion_type': conversion from 'type1' to 'type2', possible loss of data
              C4245: 'conversion_type': conversion from 'type1' to 'type2', signed/unsigned mismatch
       -->
-      <WarningLevel>Level4</WarningLevel>
+      <TreatSpecificWarningsAsErrors>4263;4265;4548;4549;4555</TreatSpecificWarningsAsErrors>
+      <!-- Warnings, that have to be enabled manually:
+             C4263: 'function': member function does not override any base class virtual member function
+             C4265: 'class': class has virtual functions, but destructor is not virtual
+             C4548: expression before comma has no effect; expected expression with side-effect
+             C4549: 'operator': operator before comma has no effect; did you intend 'operator'?
+             C4555: expression has no effect; expected expression with side-effect
+      -->
       <PreprocessorDefinitions>NO_RCT2;OPENGL_NO_LINK;_CRT_SECURE_NO_WARNINGS;_USE_MATH_DEFINES;CURL_STATICLIB;SDL_MAIN_HANDLED;_WINSOCK_DEPRECATED_NO_WARNINGS;ZIP_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <!-- Warnings, that have to be enabled manually:
-             C4263:	'function': member function does not override any base class virtual member function
-             C4265:	'class': class has virtual functions, but destructor is not virtual
-             C4548:	expression before comma has no effect; expected expression with side-effect
-             C4549:	'operator': operator before comma has no effect; did you intend 'operator'?
-             C4555:	expression has no effect; expected expression with side-effect
-      -->
-      <AdditionalOptions>/utf-8 /std:c++latest /permissive- /we4263 /we4265 /we4548 /we4549 /we4555</AdditionalOptions>
+      <AdditionalOptions>/utf-8 /std:c++latest /permissive-</AdditionalOptions>
     </ClCompile>
     <Link>
       <AdditionalDependencies>imm32.lib;version.lib;winmm.lib;crypt32.lib;%(AdditionalDependencies)</AdditionalDependencies>
