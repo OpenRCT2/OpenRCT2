@@ -465,9 +465,11 @@ static constexpr const uint64 window_ride_page_enabled_widgets[] = {
         (1ULL << WIDX_GRAPH_VERTICAL) |
         (1ULL << WIDX_GRAPH_LATERAL),
     MAIN_RIDE_ENABLED_WIDGETS |
+        (1ULL << WIDX_PRIMARY_PRICE) |
         (1ULL << WIDX_PRIMARY_PRICE_INCREASE) |
         (1ULL << WIDX_PRIMARY_PRICE_DECREASE) |
         (1ULL << WIDX_PRIMARY_PRICE_SAME_THROUGHOUT_PARK) |
+        (1ULL << WIDX_SECONDARY_PRICE) |
         (1ULL << WIDX_SECONDARY_PRICE_INCREASE) |
         (1ULL << WIDX_SECONDARY_PRICE_DECREASE) |
         (1ULL << WIDX_SECONDARY_PRICE_SAME_THROUGHOUT_PARK),
@@ -591,6 +593,7 @@ static void window_ride_income_mouseup(rct_window *w, rct_widgetindex widgetInde
 static void window_ride_income_resize(rct_window *w);
 static void window_ride_income_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget *widget);
 static void window_ride_income_update(rct_window *w);
+static void window_ride_income_textinput(rct_window *w, rct_widgetindex widgetIndex, char *text);
 static void window_ride_income_invalidate(rct_window *w);
 static void window_ride_income_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static bool window_ride_income_can_modify_primary_price(rct_window* w);
@@ -881,7 +884,7 @@ static rct_window_event_list window_ride_income_events = {
     nullptr,
     nullptr,
     nullptr,
-    nullptr,
+    window_ride_income_textinput,
     nullptr,
     nullptr,
     nullptr,
@@ -5840,6 +5843,8 @@ static void window_ride_graphs_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi
 
 #pragma region Income
 
+static utf8 _moneyInputText[MONEY_STRING_MAXLENGTH];
+
 static void update_same_price_throughout_flags(uint32 shop_item)
 {
     uint32 newFlags;
@@ -5922,6 +5927,11 @@ static void window_ride_income_toggle_secondary_price(rct_window *w)
     game_do_command(0, 1, 0, (1 << 8) | w->number, GAME_COMMAND_SET_RIDE_PRICE, price, 0);
 }
 
+static void window_ride_income_set_primary_price(rct_window *w, money16 price)
+{
+    game_do_command(0, GAME_COMMAND_FLAG_APPLY, 0, w->number, GAME_COMMAND_SET_RIDE_PRICE, price, 0);
+}
+
 /**
  *
  *  rct2: 0x006AE1E4
@@ -5936,7 +5946,7 @@ static void window_ride_income_increase_primary_price(rct_window *w)
     if (price < MONEY(20, 00))
         price++;
 
-    game_do_command(0, 1, 0, w->number, GAME_COMMAND_SET_RIDE_PRICE, price, 0);
+    window_ride_income_set_primary_price(w, price);
 }
 
 /**
@@ -5953,7 +5963,19 @@ static void window_ride_income_decrease_primary_price(rct_window *w)
     if (price > MONEY(0, 00))
         price--;
 
-    game_do_command(0, 1, 0, w->number, GAME_COMMAND_SET_RIDE_PRICE, price, 0);
+    window_ride_income_set_primary_price(w, price);
+}
+
+static money16 window_ride_income_get_secondary_price(rct_window *w)
+{
+    Ride *ride = get_ride(w->number);
+    money16 price = ride->price_secondary;
+    return price;
+}
+
+static void window_ride_income_set_secondary_price(rct_window *w, money16 price)
+{
+    game_do_command(0, GAME_COMMAND_FLAG_APPLY, 0, (w->number & 0x00FF) | 0x0100, GAME_COMMAND_SET_RIDE_PRICE, price, 0);
 }
 
 static bool window_ride_income_can_modify_primary_price(rct_window* w)
@@ -5973,15 +5995,12 @@ static bool window_ride_income_can_modify_primary_price(rct_window* w)
  */
 static void window_ride_income_increase_secondary_price(rct_window *w)
 {
-    Ride *ride;
+    money16 price = window_ride_income_get_secondary_price(w);
 
-    ride = get_ride(w->number);
-
-    money16 price = ride->price_secondary;
     if (price < MONEY(20, 00))
         price++;
 
-    game_do_command(0, 1, 0, (w->number & 0x00FF) | 0x0100, GAME_COMMAND_SET_RIDE_PRICE, price, 0);
+    window_ride_income_set_secondary_price(w, price);
 }
 
 /**
@@ -5990,15 +6009,12 @@ static void window_ride_income_increase_secondary_price(rct_window *w)
  */
 static void window_ride_income_decrease_secondary_price(rct_window *w)
 {
-    Ride *ride;
-
-    ride = get_ride(w->number);
-
-    money16 price = ride->price_secondary;
+    money16 price = window_ride_income_get_secondary_price(w);
+    
     if (price > MONEY(0, 00))
         price--;
 
-    game_do_command(0, 1, 0, (w->number & 0x00FF) | 0x0100, GAME_COMMAND_SET_RIDE_PRICE, price, 0);
+    window_ride_income_set_secondary_price(w, price);
 }
 
 /**
@@ -6007,7 +6023,8 @@ static void window_ride_income_decrease_secondary_price(rct_window *w)
  */
 static void window_ride_income_mouseup(rct_window *w, rct_widgetindex widgetIndex)
 {
-    switch (widgetIndex) {
+    switch (widgetIndex)
+    {
     case WIDX_CLOSE:
         window_close(w);
         break;
@@ -6023,9 +6040,26 @@ static void window_ride_income_mouseup(rct_window *w, rct_widgetindex widgetInde
     case WIDX_TAB_10:
         window_ride_set_page(w, widgetIndex - WIDX_TAB_1);
         break;
+    case WIDX_PRIMARY_PRICE:
+        {
+            if (!window_ride_income_can_modify_primary_price(w))
+                return;
+
+            Ride* ride = get_ride(w->number);
+
+            money_to_string((money32)ride->price, _moneyInputText, MONEY_STRING_MAXLENGTH);
+            window_text_input_raw_open(w, WIDX_PRIMARY_PRICE, STR_ENTER_NEW_VALUE, STR_ENTER_NEW_VALUE, _moneyInputText, MONEY_STRING_MAXLENGTH);
+            break;
+        }
     case WIDX_PRIMARY_PRICE_SAME_THROUGHOUT_PARK:
         window_ride_income_toggle_primary_price(w);
         break;
+    case WIDX_SECONDARY_PRICE:{
+        money32 price32 = (money32)window_ride_income_get_secondary_price(w);
+
+        money_to_string(price32, _moneyInputText, MONEY_STRING_MAXLENGTH);
+        window_text_input_raw_open(w, WIDX_SECONDARY_PRICE, STR_ENTER_NEW_VALUE, STR_ENTER_NEW_VALUE, _moneyInputText, MONEY_STRING_MAXLENGTH);
+    }break;
     case WIDX_SECONDARY_PRICE_SAME_THROUGHOUT_PARK:
         window_ride_income_toggle_secondary_price(w);
         break;
@@ -6079,6 +6113,30 @@ static void window_ride_income_update(rct_window *w)
     if (ride->window_invalidate_flags & RIDE_INVALIDATE_RIDE_INCOME) {
         ride->window_invalidate_flags &= ~RIDE_INVALIDATE_RIDE_INCOME;
         window_invalidate(w);
+    }
+}
+
+static void window_ride_income_textinput(rct_window* w, rct_widgetindex widgetIndex, char* text)
+{
+    if ((widgetIndex != WIDX_PRIMARY_PRICE && widgetIndex != WIDX_SECONDARY_PRICE) || text == nullptr)
+        return;
+
+    money32 price = string_to_money(text);
+    if (price == MONEY32_UNDEFINED)
+    {
+        return;
+    }
+
+    price = Math::Clamp(MONEY(0, 00), price, MONEY(20, 00));
+    money16 price16 = (money16)price;
+
+    if (widgetIndex == WIDX_PRIMARY_PRICE)
+    {
+        window_ride_income_set_primary_price(w, price16);
+    }
+    else
+    {
+        window_ride_income_set_secondary_price(w, price16);
     }
 }
 
