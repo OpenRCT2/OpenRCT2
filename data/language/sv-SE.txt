@@ -4436,6 +4436,9 @@ STR_6127    :Fil: {STRING}
 STR_6128    :Filen kunde inte laddas eftersom objekt som filen hänvisar till saknas eller är skadade. En lista med dessa objekt visas nedanför.
 STR_6129    :Kopiera valda föremål till urklipp
 STR_6130    :Kopiera hela listan till urklipp
+STR_6131    :Källa för objektet
+STR_6132    :Ignorera forskning
+STR_6133    :{SMALLFONT}{BLACK}Ger tillgång till åkturer och dekorationer som inte har blivit uppfunna än
 
 #############
 # Scenarion #

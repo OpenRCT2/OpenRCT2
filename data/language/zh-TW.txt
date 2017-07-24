@@ -4389,46 +4389,46 @@ STR_6076    :{STRING} 使用/開啟了密技 '{STRING}'.
 STR_6077    :添加金錢
 STR_6078    :{STRING} 建造了遊樂設施 '{STRING}'.
 STR_6079    :{STRING} 拆除了遊樂設施 '{STRING}'.
-STR_6080    :{STRING} changed the appearance of ride '{STRING}'.
-STR_6081    :{STRING} changed the status of ride '{STRING}' to closed.
-STR_6082    :{STRING} changed the status of ride '{STRING}' to open.
-STR_6083    :{STRING} changed the status of ride '{STRING}' to testing.
-STR_6084    :{STRING} changed the vehicle settings of ride '{STRING}'.
-STR_6085    :{STRING} changed the ride settings of ride '{STRING}'.
-STR_6086    :{STRING} renamed the ride '{STRING}' to '{STRING}'.
-STR_6087    :{STRING} changed the price of ride '{STRING}' to {STRING}
-STR_6088    :{STRING} changed the secondary price of ride '{STRING}' to {STRING}
-STR_6089    :{STRING} renamed the park from '{STRING}' to '{STRING}'.
-STR_6090    :{STRING} opened the park.
-STR_6091    :{STRING} closed the park.
-STR_6092    :{STRING} changed the park entrance fee to {STRING}
-STR_6093    :{STRING} placed new scenery.
-STR_6094    :{STRING} removed scenery.
-STR_6095    :{STRING} edited scenery.
-STR_6096    :{STRING} set sign name to '{STRING}'.
-STR_6097    :{STRING} placed a track of ride '{STRING}'.
-STR_6098    :{STRING} removed a track of ride.
+STR_6080    :{STRING} 更改了遊樂設施 '{STRING}' 的外觀.
+STR_6081    :{STRING} 關閉了遊樂設施 '{STRING}'.
+STR_6082    :{STRING} 開啟了遊樂設施 '{STRING}'.
+STR_6083    :{STRING} 測試了遊樂設施 '{STRING}'.
+STR_6084    :{STRING} 更改了遊樂設施 '{STRING}' 的車輛設置.
+STR_6085    :{STRING} 更改了遊樂設施 '{STRING}' 的運行設置.
+STR_6086    :{STRING} 將遊樂設施 '{STRING}' 重命名至 '{STRING}'.
+STR_6087    :{STRING} 將遊樂設施 '{STRING}' 的價錢調整至 {STRING}
+STR_6088    :{STRING} 將遊樂設施 '{STRING}' 的額外價錢調整至 {STRING}
+STR_6089    :{STRING} 將樂園 '{STRING}' 重命名至 '{STRING}'.
+STR_6090    :{STRING} 開啟了樂園.
+STR_6091    :{STRING} 關啟了樂園.
+STR_6092    :{STRING} 將樂園的入場費調整至 {STRING}
+STR_6093    :{STRING} 放置了新的景物.
+STR_6094    :{STRING} 移除了景物.
+STR_6095    :{STRING} 修改了景物.
+STR_6096    :{STRING} 將橫額重命名至 '{STRING}'.
+STR_6097    :{STRING} 於遊樂設施'{STRING}' 中添加了路軌.
+STR_6098    :{STRING} 移除了某個遊樂設施中的路軌.
 STR_6099    :你已連接到伺服器.
 STR_6100    :你已由伺服器中斷線.
-STR_6101    :遊樂設施的價值不會因隨時間下降
-STR_6102    :{SMALLFONT}{BLACK}遊樂設施的價值再不會因隨時間下降, 因此遊客並不會突然有'不想花那麼多錢乘坐某個遊樂設施'的想法.
+STR_6101    :遊樂設施的價值不會因隨時間折舊
+STR_6102    :{SMALLFONT}{BLACK}遊樂設施的價值再不會因隨時間折舊, 因此遊客並不會突然有'不想花那麼多錢乘坐某個遊樂設施'的想法.
 STR_6103    :{SMALLFONT}{BLACK}此選項於多人模式下被禁用.
-STR_6104    :Corkscrew Roller Coaster
-STR_6105    :Hypercoaster
-STR_6106    :Car Ride
-STR_6107    :Monster Trucks
-STR_6108    :Steel Twister
-STR_6109    :Hyper-Twister
-STR_6110    :Junior Roller Coaster
-STR_6111    :Classic Mini Roller Coaster
-STR_6112    :A compact steel-tracked roller coaster where the train travels through corkscrews and loops
-STR_6113    :A tall non-inverting roller coaster with large drops, high speed, and comfortable trains with only lap bar restraints
-STR_6114    :Riders travel slowly in powered vehicles along a track-based route
-STR_6115    :Powered giant 4 x 4 trucks which can climb steep slopes
-STR_6116    :Wide roller coaster trains glide along smooth steel track, traveling through a variety of inversions
-STR_6117    :Sitting in comfortable trains with only simple lap restraints riders enjoy giant smooth drops and twisting track as well as plenty of 'air time' over the hills
-STR_6118    :A gentle roller coaster for people who haven't yet got the courage to face the larger rides
-STR_6119    :A cheap and easy to build roller coaster, but with a limited height
+STR_6104    :瓶塞鑽式雲霄飛車
+STR_6105    :超級雲霄飛車
+STR_6106    :自駕軌道車輛
+STR_6107    :怪獸卡車
+STR_6108    :鐵架旋轉式雲霄飛車
+STR_6109    :超級旋轉式
+STR_6110    :兒童雲霄飛車
+STR_6111    :經典式迷你雲霄飛車
+STR_6112    :一款列車會穿過螺旋及迴環的較小型雲霄飛車
+STR_6113    :一款又高速又巨大但不倒轉發車的雲霄飛車, 擁有很高的下落軌道, 舒適但只有簡單大腿式安全裝備的列車
+STR_6114    :乘客會坐在有動力的車輛內, 慢慢地依照軌道路線遊覽
+STR_6115    :有動力並可以駕駛於陡斜的斜坡上的4 x 4卡車
+STR_6116    :寬闊的雲霄飛車列車不費吹灰之力穿梭於順滑的金屬軌道上的各種倒轉軌道
+STR_6117    :乘客坐在舒適並只有簡單安全裝備的列車上享受巨大而順滑的下滑, 扭曲的軌道和充足的'空中'時間
+STR_6118    :一款較溫和的雲霄飛車, 設計給不敢乘坐雲霄飛車的乘客壯膽
+STR_6119    :一款便宜又易於建造的雲霄飛車, 但亦因此只有著高度的限制
 STR_6120    :{BABYBLUE}全新車廂種類可供使用於{STRINGID}:{NEWLINE}{STRINGID}
 STR_6121    :{SMALLFONT}{BLACK}擴張樂園的土地擁有權到整個地圖的邊界
 STR_6122    :此劇情沒有足夠的雲霄飛車!
@@ -4737,7 +4737,7 @@ STR_DTLS    :此樂園設定於一個沉睡火山口的湖之上
 <Vertigo Views>
 STR_SCNR    :Vertigo Views
 STR_PARK    :Vertigo Views
-STR_DTLS    :這個大型的樂園已經擁有一座很棒的Hyper式雲霄飛車, 但你的任務是要將他的利潤大幅增加
+STR_DTLS    :這個大型的樂園已經擁有一座很棒的超級雲霄飛車, 但你的任務是要將他的利潤大幅增加
 
 <Paradise Pier 2>
 STR_SCNR    :Paradise Pier 2
