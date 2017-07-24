@@ -370,6 +370,13 @@ void audio_init_ride_sounds_and_info()
                 {
                     rideMusicInfo->length = 0;
                 }
+                // FIX: Custom ones have no length set and while populating the combo box
+                //      they are ignored if 0.
+                if ((m == 36 || m == 37) && rideMusicInfo->length == 0)
+                {
+                    // Try to get it.
+                    rideMusicInfo->length = fs.GetLength();
+                }
             }
             catch (const Exception &)
             {
