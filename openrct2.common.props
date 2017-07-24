@@ -50,8 +50,11 @@
       <!-- Warnings, that have to be enabled manually:
              C4263:	'function': member function does not override any base class virtual member function
              C4265:	'class': class has virtual functions, but destructor is not virtual
+             C4548:	expression before comma has no effect; expected expression with side-effect
+             C4549:	'operator': operator before comma has no effect; did you intend 'operator'?
+             C4555:	expression has no effect; expected expression with side-effect
       -->
-      <AdditionalOptions>/utf-8 /std:c++latest /permissive- /we4263 /we4265</AdditionalOptions>
+      <AdditionalOptions>/utf-8 /std:c++latest /permissive- /we4263 /we4265 /we4548 /we4549 /we4555</AdditionalOptions>
     </ClCompile>
     <Link>
       <AdditionalDependencies>imm32.lib;version.lib;winmm.lib;crypt32.lib;%(AdditionalDependencies)</AdditionalDependencies>
