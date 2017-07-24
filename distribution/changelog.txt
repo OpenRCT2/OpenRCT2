@@ -2,6 +2,7 @@
 ------------------------------------------------------------------------
 - Feature: [#5815] Add cheat to ignore research status and access rides/scenery not yet invented.
 - Feature: [#5877] Allow up to 16 stations to be synchronised
+- Feature: [#5970] The Bobsleigh Roller Coaster now supports on-ride photos.
 - Fix: [#3589] Crash due to invalid footpathEntry in path_paint
 - Fix: [#4455] Crash in window_sign_invalidate due to original bug
 - Fix: [#4931] Crash in path_paint - footpathentry was null
@@ -11,7 +12,6 @@
 - Fix: [#5880] Leaving bumper cars without building causes assertion.
 - Fix: [#5920] Placing guest spawn doesn't do anything every 3rd click
 - Fix: [#5939] Crash when importing 'Six Flags Santa Fe'.
-- Feature: the Bobsleigh Roller Coaster now supports on-ride photos.
 - Improved: The land tool buttons can now be held down to increase/decrease size.
 - Improved: [#4301] Leading and trailing whitespace in player name is now removed.
 - Improved: [#5859] OpenGL rendering performance
