@@ -47,17 +47,17 @@
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <AdditionalOptions>/utf-8 /std:c++latest /permissive-</AdditionalOptions>
+      <!-- Warnings, that have to be enabled manually:
+             C4263:	'function': member function does not override any base class virtual member function
+             C4265:	'class': class has virtual functions, but destructor is not virtual
+      -->
+      <AdditionalOptions>/utf-8 /std:c++latest /permissive- /we4263 /we4265</AdditionalOptions>
     </ClCompile>
     <Link>
       <AdditionalDependencies>imm32.lib;version.lib;winmm.lib;crypt32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalDependencies Condition="'$(Platform)'=='Win32'">openrct2-libs-vs2015-x86.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalDependencies Condition="'$(Platform)'=='x64'">openrct2-libs-vs2015-x64.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <!-- Warnings, that have to be enabled manually:
-             C4263:	'function': member function does not override any base class virtual member function
-             C4265:	'class': class has virtual functions, but destructor is not virtual
-      -->
-      <AdditionalOptions>/OPT:NOLBR /ignore:4099 %(AdditionalOptions) /we4263 /we4265</AdditionalOptions>
+      <AdditionalOptions>/OPT:NOLBR /ignore:4099 %(AdditionalOptions)</AdditionalOptions>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)'=='Debug'">
