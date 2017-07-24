@@ -72,8 +72,6 @@ private:
     SDL_Window *    _window = nullptr;
     sint32          _width  = 0;
     sint32          _height = 0;
-    uint32          _windowFlags = 0;
-    uint32          _windowFlagsLastCheckTick = 0;
 
     bool _resolutionsAllowAnyAspectRatio = false;
     std::vector<Resolution> _fsResolutions;
@@ -782,14 +780,7 @@ private:
 
     uint32 GetWindowFlags()
     {
-        // Don't check if window is minimised too frequently (every second is fine)
-        uint32 tick = Platform::GetTicks();
-        if (tick > _windowFlagsLastCheckTick + 1000)
-        {
-            _windowFlags = SDL_GetWindowFlags(_window);
-            _windowFlagsLastCheckTick = tick;
-        }
-        return _windowFlags;
+        return SDL_GetWindowFlags(_window);
     }
 };
 
