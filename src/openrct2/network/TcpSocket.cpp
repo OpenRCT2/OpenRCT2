@@ -281,7 +281,10 @@ public:
 
                 fd_set writeFD;
                 FD_ZERO(&writeFD);
+#pragma warning(push)
+#pragma warning(disable : 4548) // expression before comma has no effect; expected expression with side-effect
                 FD_SET(_socket, &writeFD);
+#pragma warning(pop)
                 timeval timeout;
                 timeout.tv_sec = 0;
                 timeout.tv_usec = 0;
