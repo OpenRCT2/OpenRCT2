@@ -194,7 +194,6 @@ enum {
     PTD_OPERATION_4,
     PTD_OPERATION_GET_COST,
     PTD_OPERATION_CLEAR_OUTLINES,
-    PTD_OPERATION_DONT_PLACE_SCENERY = (1 << 7)
 };
 
 extern rct_track_td6 *gActiveTrackDesign;
@@ -215,7 +214,7 @@ void track_design_dispose(rct_track_td6 *td6);
 
 void track_design_mirror(rct_track_td6 *td6);
 
-sint32 place_virtual_track(rct_track_td6 *td6, uint8 bl, uint8 rideIndex, sint32 x, sint32 y, sint32 z);
+sint32 place_virtual_track(rct_track_td6 *td6, uint8 ptdOperation, bool placeScenery, uint8 rideIndex, sint32 x, sint32 y, sint32 z);
 
 void game_command_place_track_design(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp);
 void game_command_place_maze_design(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp);
