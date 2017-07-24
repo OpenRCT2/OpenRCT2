@@ -134,7 +134,7 @@ void object_create_identifier_name(char* string_buffer, size_t size, const rct_o
  * ecx = entry_type
  */
 sint32 find_object_in_entry_group(const rct_object_entry* entry, uint8* entry_type, uint8* entry_index){
-    if ((entry->flags & 0xF) >= _countof(object_entry_groups)) {
+    if ((entry->flags & 0xF) >= countof(object_entry_groups)) {
         return 0;
     }
     *entry_type = entry->flags & 0xF;
