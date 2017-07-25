@@ -7351,12 +7351,9 @@ static bool vehicle_update_track_motion_forwards_get_new_track(rct_vehicle *vehi
         }
     }
 
-    // TODO check if getting the vehicle entry again is necessary
-    rct_ride_entry_vehicle* vehicleEntry = vehicle_get_vehicle_entry(vehicle);
+    // Change from original: this used to check if the vehicle allowed doors.
+    vehicle_update_scenery_door(vehicle);
 
-    if (vehicleEntry->flags_a & VEHICLE_ENTRY_FLAG_A_ALLOW_DOORS) {
-        vehicle_update_scenery_door(vehicle);
-    }
 
     switch (vehicle->var_CD) {
     default:
@@ -7433,7 +7430,7 @@ loc_6DB41D:
     vehicle->track_z = regs.dx;
 
     // TODO check if getting the vehicle entry again is necessary
-    vehicleEntry = vehicle_get_vehicle_entry(vehicle);
+    rct_ride_entry_vehicle * vehicleEntry = vehicle_get_vehicle_entry(vehicle);
 
     if ((vehicleEntry->flags_b & VEHICLE_ENTRY_FLAG_B_14) && vehicle->var_CD < 7) {
         trackType = mapElement->properties.track.type;
@@ -7483,9 +7480,9 @@ loc_6DB41D:
     if (trackType == TRACK_ELEM_ROTATION_CONTROL_TOGGLE && rideType == RIDE_TYPE_WILD_MOUSE) {
         vehicle->update_flags ^= VEHICLE_UPDATE_FLAG_13;
     }
-    if (vehicleEntry->flags_a & VEHICLE_ENTRY_FLAG_A_ALLOW_DOORS) {
-        vehicle_update_handle_scenery_door(vehicle);
-    }
+    // Change from original: this used to check if the vehicle allowed doors.
+    vehicle_update_handle_scenery_door(vehicle);
+
     return true;
 }
 
