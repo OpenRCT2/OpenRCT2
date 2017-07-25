@@ -1225,7 +1225,7 @@ static bool track_design_place_ride(rct_track_td6 *td6, sint16 x, sint16 y, sint
                     if (map_element_get_type(map_element) != MAP_ELEMENT_TYPE_TRACK) continue;
                     if (map_element->base_height != z) continue;
 
-                    sint32 di = (map_element->properties.track.sequence >> 4) & 0x07;
+                    sint32 stationIndex = (map_element->properties.track.sequence & MAP_ELEM_TRACK_SEQUENCE_STATION_INDEX_MASK) >> 4;
                     uint8 bl = 1;
                     if (_trackDesignPlaceOperation == PTD_OPERATION_GET_COST)
                     {
@@ -1241,7 +1241,7 @@ static bool track_design_place_ride(rct_track_td6 *td6, sint16 x, sint16 y, sint
                     }
 
                     gGameCommandErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
-                    money32 cost = game_do_command(x, bl | (rotation << 8), y, rideIndex | (isExit << 8), GAME_COMMAND_PLACE_RIDE_ENTRANCE_OR_EXIT, di, 0);
+                    money32 cost = game_do_command(x, bl | (rotation << 8), y, rideIndex | (isExit << 8), GAME_COMMAND_PLACE_RIDE_ENTRANCE_OR_EXIT, stationIndex, 0);
                     _trackDesignPlaceCost += cost;
 
                     if (cost == MONEY32_UNDEFINED)

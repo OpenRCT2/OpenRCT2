@@ -6926,7 +6926,7 @@ static void loc_6DB481(rct_vehicle *vehicle)
  */
 static void vehicle_trigger_on_ride_photo(rct_vehicle *vehicle, rct_map_element *mapElement)
 {
-    mapElement->properties.track.sequence &= 0x0F;
+    mapElement->properties.track.sequence &= MAP_ELEM_TRACK_SEQUENCE_SEQUENCE_MASK;
     mapElement->properties.track.sequence |= 0x30;
     map_animation_create(
         MAP_ANIMATION_TYPE_TRACK_ONRIDEPHOTO,
@@ -7264,7 +7264,7 @@ static void sub_6DBF3E(rct_vehicle *vehicle)
     }
 
     if (_vehicleStationIndex == 0xFF) {
-        _vehicleStationIndex = (mapElement->properties.track.sequence >> 4) & 7;
+        _vehicleStationIndex = (mapElement->properties.track.sequence & MAP_ELEM_TRACK_SEQUENCE_STATION_INDEX_MASK) >> 4;
     }
 
     if (trackType == TRACK_ELEM_TOWER_BASE &&

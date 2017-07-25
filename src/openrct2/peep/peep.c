@@ -3176,7 +3176,7 @@ static void peep_update_ride_sub_state_7(rct_peep* peep){
                         break;
                 }
 
-                uint8 al = (inner_map->properties.track.sequence & 0x70) >> 4;
+                uint8 al = (inner_map->properties.track.sequence & MAP_ELEM_TRACK_SEQUENCE_STATION_INDEX_MASK) >> 4;
                 if (al == peep->current_ride_station)
                     break;
             }
