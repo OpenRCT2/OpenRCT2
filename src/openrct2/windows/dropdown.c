@@ -174,9 +174,15 @@ void window_dropdown_show_text_custom_width(sint32 x, sint32 y, sint32 extray, u
     _dropdown_item_width = width;
     _dropdown_item_height = (flags & DROPDOWN_FLAG_CUSTOM_HEIGHT) ? custom_height : 10;
     gDropdownNumItems = (sint32)num_items;
-    _dropdown_num_columns = (gDropdownNumItems + DROPDOWN_TEXT_MAX_ROWS - 1) / DROPDOWN_TEXT_MAX_ROWS;
-    _dropdown_num_columns = max(1, _dropdown_num_columns);
-    _dropdown_num_rows = (gDropdownNumItems + _dropdown_num_columns - 1) / _dropdown_num_columns;
+    // There must always be at least one column to prevent dividing by zero
+    if (gDropdownNumItems == 0) {
+        _dropdown_num_columns = 1;
+        _dropdown_num_rows = 0;
+    }
+    else {
+        _dropdown_num_columns = (gDropdownNumItems + DROPDOWN_TEXT_MAX_ROWS - 1) / DROPDOWN_TEXT_MAX_ROWS;
+        _dropdown_num_rows = (gDropdownNumItems + _dropdown_num_columns - 1) / _dropdown_num_columns;
+    }
     
     // Text dropdowns are listed horizontally
     _dropdown_list_vertically = true;
@@ -246,10 +252,17 @@ void window_dropdown_show_image(sint32 x, sint32 y, sint32 extray, uint8 colour,
     _dropdown_item_width = itemWidth;
     _dropdown_item_height = itemHeight;
     gDropdownNumItems = numItems;
-    _dropdown_num_columns = numColumns;
-    _dropdown_num_rows = gDropdownNumItems / _dropdown_num_columns;
-    if (gDropdownNumItems % _dropdown_num_columns != 0)
-        _dropdown_num_rows++;
+    // There must always be at least one column to prevent dividing by zero
+    if (gDropdownNumItems == 0) {
+        _dropdown_num_columns = 1;
+        _dropdown_num_rows = 0;
+    }
+    else {
+        _dropdown_num_columns = numColumns;
+        _dropdown_num_rows = gDropdownNumItems / _dropdown_num_columns;
+        if (gDropdownNumItems % _dropdown_num_columns != 0)
+            _dropdown_num_rows++;
+    }
 
     // image dropdowns are listed horizontally
     _dropdown_list_vertically = false;
