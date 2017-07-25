@@ -229,7 +229,7 @@ enum {
     VEHICLE_ENTRY_FLAG_A_5 = 1 << 5,
     VEHICLE_ENTRY_FLAG_A_6 = 1 << 6,
     VEHICLE_ENTRY_FLAG_A_7 = 1 << 7,
-    VEHICLE_ENTRY_FLAG_A_ALLOW_DOORS = 1 << 8,
+    VEHICLE_ENTRY_FLAG_A_ALLOW_DOORS_DEPRECATED = 1 << 8,       // Not used any more - every vehicle will now work with doors
     VEHICLE_ENTRY_FLAG_A_ENABLE_ADDITIONAL_COLOUR_2 = 1 << 9,
     VEHICLE_ENTRY_FLAG_A_10 = 1 << 10,
     VEHICLE_ENTRY_FLAG_A_11 = 1 << 11,
