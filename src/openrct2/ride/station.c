@@ -24,7 +24,7 @@ static void ride_update_station_bumpercar(rct_ride *ride, sint32 stationIndex);
 static void ride_update_station_normal(rct_ride *ride, sint32 stationIndex);
 static void ride_update_station_race(rct_ride *ride, sint32 stationIndex);
 static void ride_race_init_vehicle_speeds(rct_ride *ride);
-static void ride_invalidate_station_start(rct_ride *ride, sint32 stationIndex, sint32 dl);
+static void ride_invalidate_station_start(rct_ride *ride, sint32 stationIndex, bool greenLight);
 
 /**
  *
@@ -65,14 +65,14 @@ static void ride_update_station_blocksection(rct_ride *ride, sint32 stationIndex
     if ((ride->status == RIDE_STATUS_CLOSED && ride->num_riders == 0) || (mapElement != NULL && mapElement->flags & 0x20)) {
         ride->station_depart[stationIndex] &= ~STATION_DEPART_FLAG;
 
-        if ((ride->station_depart[stationIndex] & STATION_DEPART_FLAG) || (mapElement != NULL && (mapElement->properties.track.sequence & 0x80)))
-            ride_invalidate_station_start(ride, stationIndex, 0);
+        if ((ride->station_depart[stationIndex] & STATION_DEPART_FLAG) || (mapElement != NULL && (mapElement->properties.track.sequence & MAP_ELEM_TRACK_SEQUENCE_GREEN_LIGHT_MASK)))
+            ride_invalidate_station_start(ride, stationIndex, false);
     } else {
         if (!(ride->station_depart[stationIndex] & STATION_DEPART_FLAG)) {
             ride->station_depart[stationIndex] |= STATION_DEPART_FLAG;
-            ride_invalidate_station_start(ride, stationIndex, 1);
-        } else if (mapElement != NULL && mapElement->properties.track.sequence & 0x80) {
-            ride_invalidate_station_start(ride, stationIndex, 1);
+            ride_invalidate_station_start(ride, stationIndex, true);
+        } else if (mapElement != NULL && mapElement->properties.track.sequence & MAP_ELEM_TRACK_SEQUENCE_GREEN_LIGHT_MASK) {
+            ride_invalidate_station_start(ride, stationIndex, true);
         }
     }
 }
@@ -144,17 +144,17 @@ static void ride_update_station_normal(rct_ride *ride, sint32 stationIndex)
             time--;
 
         ride->station_depart[stationIndex] = time;
-        ride_invalidate_station_start(ride, stationIndex, 0);
+        ride_invalidate_station_start(ride, stationIndex, false);
     } else {
         if (time == 0) {
             ride->station_depart[stationIndex] |= STATION_DEPART_FLAG;
-            ride_invalidate_station_start(ride, stationIndex, 1);
+            ride_invalidate_station_start(ride, stationIndex, true);
         } else {
             if (time != 127 && !(gCurrentTicks & 31))
                 time--;
 
             ride->station_depart[stationIndex] = time;
-            ride_invalidate_station_start(ride, stationIndex, 0);
+            ride_invalidate_station_start(ride, stationIndex, false);
         }
     }
 }
@@ -171,7 +171,7 @@ static void ride_update_station_race(rct_ride *ride, sint32 stationIndex)
     ) {
         if (ride->station_depart[stationIndex] & STATION_DEPART_FLAG){
             ride->station_depart[stationIndex] &= ~STATION_DEPART_FLAG;
-            ride_invalidate_station_start(ride, stationIndex, 0);
+            ride_invalidate_station_start(ride, stationIndex, false);
         }
         return;
     }
@@ -192,7 +192,7 @@ static void ride_update_station_race(rct_ride *ride, sint32 stationIndex)
                 ride->lifecycle_flags &= ~RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING;
                 if (ride->station_depart[stationIndex] & STATION_DEPART_FLAG){
                     ride->station_depart[stationIndex] &= ~STATION_DEPART_FLAG;
-                    ride_invalidate_station_start(ride, stationIndex, 0);
+                    ride_invalidate_station_start(ride, stationIndex, false);
                 }
                 return;
             }
@@ -207,7 +207,7 @@ static void ride_update_station_race(rct_ride *ride, sint32 stationIndex)
             if (vehicle->status != VEHICLE_STATUS_WAITING_TO_DEPART && vehicle->status != VEHICLE_STATUS_DEPARTING) {
                 if (ride->station_depart[stationIndex] & STATION_DEPART_FLAG){
                     ride->station_depart[stationIndex] &= ~STATION_DEPART_FLAG;
-                    ride_invalidate_station_start(ride, stationIndex, 0);
+                    ride_invalidate_station_start(ride, stationIndex, false);
                 }
                 return;
             }
@@ -218,7 +218,7 @@ static void ride_update_station_race(rct_ride *ride, sint32 stationIndex)
         ride->lifecycle_flags |= RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING;
         if (!(ride->station_depart[stationIndex] & STATION_DEPART_FLAG)){
             ride->station_depart[stationIndex] |= STATION_DEPART_FLAG;
-            ride_invalidate_station_start(ride, stationIndex, 1);
+            ride_invalidate_station_start(ride, stationIndex, true);
         }
         ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
     }
@@ -268,7 +268,7 @@ static void ride_race_init_vehicle_speeds(rct_ride *ride)
  *
  *  rct2: 0x006AC2C7
  */
-static void ride_invalidate_station_start(rct_ride *ride, sint32 stationIndex, sint32 dl)
+static void ride_invalidate_station_start(rct_ride *ride, sint32 stationIndex, bool greenLight)
 {
     sint32 x, y;
     rct_map_element *mapElement;
@@ -281,9 +281,11 @@ static void ride_invalidate_station_start(rct_ride *ride, sint32 stationIndex, s
     if (mapElement == NULL)
         return;
 
-    mapElement->properties.track.sequence &= 0x7F;
-    if (dl != 0)
-        mapElement->properties.track.sequence |= 0x80;
+    mapElement->properties.track.sequence &= ~MAP_ELEM_TRACK_SEQUENCE_GREEN_LIGHT_MASK;
+    if (greenLight)
+    {
+        mapElement->properties.track.sequence |= MAP_ELEM_TRACK_SEQUENCE_GREEN_LIGHT;
+    }
 
     // Invalidate map tile
     map_invalidate_tile_zoom1(x, y, mapElement->base_height * 8, mapElement->clearance_height * 8);

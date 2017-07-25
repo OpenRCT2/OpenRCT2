@@ -555,7 +555,7 @@ bool track_block_get_next_from_zero(sint16 x, sint16 y, sint16 z_start, uint8 ri
         if (mapElement->properties.track.ride_index != rideIndex)
             continue;
 
-        if ((mapElement->properties.track.sequence & 0xF) != 0)
+        if ((mapElement->properties.track.sequence & MAP_ELEM_TRACK_SEQUENCE_SEQUENCE_MASK) != 0)
             continue;
 
         const rct_preview_track* nextTrackBlock = get_track_def_from_ride(ride, mapElement->properties.track.type);
@@ -599,7 +599,7 @@ bool track_block_get_next(rct_xy_element *input, rct_xy_element *output, sint32 
     rct_ride* ride = get_ride(rideIndex);
 
     const rct_preview_track* trackBlock = get_track_def_from_ride(ride, input->element->properties.track.type);
-    uint8 sequence = input->element->properties.track.sequence & 0xF;
+    uint8 sequence = input->element->properties.track.sequence & MAP_ELEM_TRACK_SEQUENCE_SEQUENCE_MASK;
     trackBlock += sequence;
 
     const rct_track_coordinates* trackCoordinate = get_track_coord_from_ride(ride, input->element->properties.track.type);
@@ -683,7 +683,7 @@ bool track_block_get_previous_from_zero(sint16 x, sint16 y, sint16 z, uint8 ride
         const rct_preview_track* nextTrackBlock = get_track_def_from_ride(ride, mapElement->properties.track.type);
         const rct_track_coordinates* nextTrackCoordinate = get_track_coord_from_ride(ride, mapElement->properties.track.type);
 
-        nextTrackBlock += mapElement->properties.track.sequence & 0xF;
+        nextTrackBlock += mapElement->properties.track.sequence & MAP_ELEM_TRACK_SEQUENCE_SEQUENCE_MASK;
         if ((nextTrackBlock + 1)->index != 255)
             continue;
 
@@ -759,7 +759,7 @@ bool track_block_get_previous(sint32 x, sint32 y, rct_map_element *mapElement, t
     rct_ride* ride = get_ride(rideIndex);
 
     const rct_preview_track* trackBlock = get_track_def_from_ride(ride, mapElement->properties.track.type);
-    uint8 sequence = mapElement->properties.track.sequence & 0xF;
+    uint8 sequence = mapElement->properties.track.sequence & MAP_ELEM_TRACK_SEQUENCE_SEQUENCE_MASK;
     trackBlock += sequence;
 
     const rct_track_coordinates* trackCoordinate = get_track_coord_from_ride(ride, mapElement->properties.track.type);
@@ -1258,7 +1258,7 @@ sint32 sub_6C683D(sint32* x, sint32* y, sint32* z, sint32 direction, sint32 type
             continue;
 
         successMapElement = mapElement;
-        if ((mapElement->properties.track.sequence & 0x0F) == 0)
+        if ((mapElement->properties.track.sequence & MAP_ELEM_TRACK_SEQUENCE_SEQUENCE_MASK) == 0)
             break;
     } while (!map_element_is_last_for_tile(mapElement++));
 
@@ -1269,7 +1269,7 @@ sint32 sub_6C683D(sint32* x, sint32* y, sint32* z, sint32 direction, sint32 type
     // Possibly z should be & 0xF8
     const rct_preview_track *trackBlock = get_track_def_from_ride_index(mapElement->properties.track.ride_index, type);
 
-    sint32 sequence = mapElement->properties.track.sequence & 0x0F;
+    sint32 sequence = mapElement->properties.track.sequence & MAP_ELEM_TRACK_SEQUENCE_SEQUENCE_MASK;
     uint8 mapDirection = mapElement->type & MAP_ELEMENT_DIRECTION_MASK;
 
     switch (mapDirection){
@@ -1330,7 +1330,7 @@ sint32 sub_6C683D(sint32* x, sint32* y, sint32* z, sint32 direction, sint32 type
             if ((mapElement->type & MAP_ELEMENT_DIRECTION_MASK) != direction)
                 continue;
 
-            if ((mapElement->properties.track.sequence & 0xF) != trackBlock[i].index)
+            if ((mapElement->properties.track.sequence & MAP_ELEM_TRACK_SEQUENCE_SEQUENCE_MASK) != trackBlock[i].index)
                 continue;
 
             if (type == mapElement->properties.track.type) {
@@ -1420,7 +1420,7 @@ void ride_remove_provisional_track_piece()
                 next_track.x,
                 105 | ((direction & 3) << 8),
                 next_track.y,
-                next_track.element->properties.track.type | ((next_track.element->properties.track.sequence & 0x0F) << 8),
+                next_track.element->properties.track.type | ((next_track.element->properties.track.sequence & MAP_ELEM_TRACK_SEQUENCE_SEQUENCE_MASK) << 8),
                 GAME_COMMAND_REMOVE_TRACK,
                 z,
                 0
@@ -4788,7 +4788,7 @@ static void ride_create_vehicles_find_first_block(rct_ride *ride, rct_xy_element
                 do {
                     if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_TRACK) continue;
                     if (mapElement->properties.track.type != trackType) continue;
-                    if ((mapElement->properties.track.sequence & 0x0F) != 0) continue;
+                    if ((mapElement->properties.track.sequence & MAP_ELEM_TRACK_SEQUENCE_SEQUENCE_MASK) != 0) continue;
                     if (mapElement->base_height != trackBeginEnd.begin_z / 8) continue;
                     outXYElement->x = trackBeginEnd.begin_x;
                     outXYElement->y = trackBeginEnd.begin_y;
@@ -5723,7 +5723,7 @@ sint32 ride_get_refund_price(sint32 ride_id)
                 x,
                 GAME_COMMAND_FLAG_APPLY | (rotation << 8),
                 y,
-                type | ((it.element->properties.track.sequence & 0xF) << 8),
+                type | ((it.element->properties.track.sequence & MAP_ELEM_TRACK_SEQUENCE_SEQUENCE_MASK) << 8),
                 GAME_COMMAND_REMOVE_TRACK,
                 z,
                 0);
@@ -7220,7 +7220,7 @@ void ride_get_entrance_or_exit_position_from_screen_position(sint32 screenX, sin
                     if (mapElement->properties.track.type == TRACK_ELEM_MAZE) {
                         gRideEntranceExitPlaceStationIndex = 0;
                     } else {
-                        gRideEntranceExitPlaceStationIndex = (mapElement->properties.track.sequence & 0x70) >> 4;
+                        gRideEntranceExitPlaceStationIndex = (mapElement->properties.track.sequence & MAP_ELEM_TRACK_SEQUENCE_STATION_INDEX_MASK) >> 4;
                     }
                 }
             }
@@ -7282,7 +7282,7 @@ void ride_get_entrance_or_exit_position_from_screen_position(sint32 screenX, sin
                         continue;
 
                     sint32 eax = (direction + 2 - mapElement->type) & MAP_ELEMENT_DIRECTION_MASK;
-                    if (FlatRideTrackSequenceProperties[mapElement->properties.track.type][mapElement->properties.track.sequence & 0x0F] & (1 << eax)) {
+                    if (FlatRideTrackSequenceProperties[mapElement->properties.track.type][mapElement->properties.track.sequence & MAP_ELEM_TRACK_SEQUENCE_SEQUENCE_MASK] & (1 << eax)) {
                         gRideEntranceExitPlaceDirection = direction ^ 2;
                         *outDirection = direction ^ 2;
                         return;
@@ -8034,7 +8034,7 @@ void sub_6CB945(sint32 rideIndex)
                     if (mapElement->base_height != location.z) continue;
                     if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_TRACK) continue;
                     if (mapElement->properties.track.ride_index != rideIndex) continue;
-                    if ((mapElement->properties.track.sequence & 0x0F) != 0) continue;
+                    if ((mapElement->properties.track.sequence & MAP_ELEM_TRACK_SEQUENCE_SEQUENCE_MASK) != 0) continue;
                     if (!(TrackSequenceProperties[mapElement->properties.track.type][0] & TRACK_SEQUENCE_FLAG_ORIGIN)) continue;
 
                     trackFound = true;
@@ -8045,7 +8045,7 @@ void sub_6CB945(sint32 rideIndex)
                     break;
                 }
 
-                mapElement->properties.track.sequence &= 0x8F;
+                mapElement->properties.track.sequence &= ~MAP_ELEM_TRACK_SEQUENCE_STATION_INDEX_MASK;
                 mapElement->properties.track.sequence |= (stationId << 4);
 
                 direction = map_element_get_direction(mapElement);
@@ -8080,7 +8080,7 @@ void sub_6CB945(sint32 rideIndex)
                     break;
                 }
 
-                mapElement->properties.track.sequence &= 0x8F;
+                mapElement->properties.track.sequence &= ~MAP_ELEM_TRACK_SEQUENCE_STATION_INDEX_MASK;
                 mapElement->properties.track.sequence |= (stationId << 4);
             }
         }
@@ -8142,7 +8142,7 @@ void sub_6CB945(sint32 rideIndex)
                 if (trackElement->base_height != mapElement->base_height) continue;
 
                 uint8 trackType = trackElement->properties.track.type;
-                uint8 trackSequence = trackElement->properties.track.sequence & 0xF;
+                uint8 trackSequence = trackElement->properties.track.sequence & MAP_ELEM_TRACK_SEQUENCE_SEQUENCE_MASK;
 
                 uint8 direction = (map_element_get_direction(mapElement) - map_element_get_direction(trackElement) + 2) & 3;
 
@@ -8152,7 +8152,7 @@ void sub_6CB945(sint32 rideIndex)
 
                 uint8 stationId = 0;
                 if (trackElement->properties.track.type != TRACK_ELEM_INVERTED_90_DEG_UP_TO_FLAT_QUARTER_LOOP) {
-                    stationId = (trackElement->properties.track.sequence >> 4) & 0x7;
+                    stationId = (trackElement->properties.track.sequence & MAP_ELEM_TRACK_SEQUENCE_STATION_INDEX_MASK) >> 4;
                 }
 
                 if (mapElement->properties.entrance.type == ENTRANCE_TYPE_RIDE_EXIT) {

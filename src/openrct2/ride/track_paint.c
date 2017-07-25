@@ -307,7 +307,7 @@ void track_paint_util_draw_station_impl(uint8 rideIndex, uint8 trackSequence, ui
     rct_xy16 position = {gPaintMapPosition.x, gPaintMapPosition.y};
     rct_ride * ride = get_ride(rideIndex);
     const rct_ride_entrance_definition * entranceStyle = &RideEntranceDefinitions[ride->entrance_style];
-    const bool hasGreenLight = (bool) (mapElement->properties.track.sequence & 0x80);
+    const bool hasGreenLight = (bool) (mapElement->properties.track.sequence & MAP_ELEM_TRACK_SEQUENCE_GREEN_LIGHT_MASK);
 
     bool hasFence;
     uint32 imageId;
@@ -441,7 +441,7 @@ void track_paint_util_draw_station_inverted(uint8 rideIndex, uint8 trackSequence
     rct_xy16 position = {gPaintMapPosition.x, gPaintMapPosition.y};
     rct_ride * ride = get_ride(rideIndex);
     const rct_ride_entrance_definition * entranceStyle = &RideEntranceDefinitions[ride->entrance_style];
-    const bool hasGreenLight = (bool) (mapElement->properties.track.sequence & 0x80);
+    const bool hasGreenLight = (bool) (mapElement->properties.track.sequence & MAP_ELEM_TRACK_SEQUENCE_GREEN_LIGHT_MASK);
 
     bool hasFence;
     uint32 imageId;
@@ -1757,7 +1757,7 @@ void track_paint(uint8 direction, sint32 height, rct_map_element *mapElement)
 
     if (!gTrackDesignSaveMode || rideIndex == gTrackDesignSaveRideIndex) {
         sint32 trackType = mapElement->properties.track.type;
-        sint32 trackSequence = mapElement->properties.track.sequence & 0x0F;
+        sint32 trackSequence = mapElement->properties.track.sequence & MAP_ELEM_TRACK_SEQUENCE_SEQUENCE_MASK;
         sint32 trackColourScheme = mapElement->properties.track.colour & 3;
 
         if ((gCurrentViewportFlags & VIEWPORT_FLAG_TRACK_HEIGHTS) && dpi->zoom_level == 0) {
