@@ -214,8 +214,9 @@ void scenery_paint(uint8 direction, sint32 height, rct_map_element* mapElement) 
                     image_id = (image_id & 0x7FFFF) | dword_F64EB0;
                 }
                 sub_98199C(image_id, x_offset, y_offset, boxlength.x, boxlength.y, boxlength.z - 1, height, boxoffset.x, boxoffset.y, boxoffset.z, rotation);
-            } else if (entry->small_scenery.flags & SMALL_SCENERY_FLAG_HAS_FRAME_OFFSETS)
-         {
+            }
+            else if (entry->small_scenery.flags & SMALL_SCENERY_FLAG_HAS_FRAME_OFFSETS)
+            {
                 sint32 frame = gCurrentTicks;
                 if (!(entry->small_scenery.flags & SMALL_SCENERY_FLAG_COG)) {
                     // 6E01F8:
@@ -245,7 +246,8 @@ void scenery_paint(uint8 direction, sint32 height, rct_map_element* mapElement) 
                 }
                 if (entry->small_scenery.flags & SMALL_SCENERY_FLAG_VISIBLE_WHEN_ZOOMED) {
                     sub_98197C(image_id, x_offset, y_offset, boxlength.x, boxlength.y, boxlength.z - 1, height, boxoffset.x, boxoffset.y, boxoffset.z, rotation);
-                } else {
+                }
+                else {
                     sub_98199C(image_id, x_offset, y_offset, boxlength.x, boxlength.y, boxlength.z - 1, height, boxoffset.x, boxoffset.y, boxoffset.z, rotation);
                 }
             }
