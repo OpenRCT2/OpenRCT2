@@ -107,7 +107,7 @@ assert_struct_size(paint_string_struct, 0x1e);
 #endif
 #pragma pack(pop)
 
-union paint_entry{
+union paint_entry {
     paint_struct basic;
     attached_paint_struct attached;
     paint_string_struct string;
@@ -119,6 +119,15 @@ typedef struct sprite_bb {
     rct_xyz16 bb_offset;
     rct_xyz16 bb_size;
 } sprite_bb;
+
+typedef struct paint_struct_bound_box {
+    uint16 x;
+    uint16 y;
+    uint16 z;
+    uint16 x_end;
+    uint16 y_end;
+    uint16 z_end;
+} paint_struct_bound_box;
 
 enum PAINT_STRUCT_FLAGS {
     PAINT_STRUCT_FLAG_IS_MASKED = (1 << 0)
@@ -220,6 +229,7 @@ void paint_floating_money_effect(money32 amount, rct_string_id string_id, sint16
 void paint_init(rct_drawpixelinfo * dpi);
 void paint_generate_structs(rct_drawpixelinfo * dpi);
 paint_struct paint_arrange_structs();
+paint_struct * paint_arrange_structs_helper(paint_struct * ps_next, uint16 quadrantIndex, uint8 flag);
 void paint_draw_structs(rct_drawpixelinfo * dpi, paint_struct * ps, uint32 viewFlags);
 void paint_draw_money_structs(rct_drawpixelinfo * dpi, paint_string_struct * ps);
 

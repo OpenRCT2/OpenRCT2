@@ -734,7 +734,7 @@ void paint_generate_structs(rct_drawpixelinfo * dpi)
     }
 }
 
-static paint_struct * paint_arrange_structs_helper(paint_struct * ps_next, uint16 quadrantIndex, uint8 flag)
+paint_struct * paint_arrange_structs_helper(paint_struct * ps_next, uint16 quadrantIndex, uint8 flag)
 {
     paint_struct * ps;
     paint_struct * ps_temp;
@@ -777,16 +777,7 @@ static paint_struct * paint_arrange_structs_helper(paint_struct * ps_next, uint1
         ps_next->quadrant_flags &= ~PAINT_QUADRANT_FLAG_IDENTICAL;
         ps_temp = ps;
 
-        typedef struct bound_box {
-            uint16 x;
-            uint16 y;
-            uint16 z;
-            uint16 x_end;
-            uint16 y_end;
-            uint16 z_end;
-        } bound_box;
-
-        bound_box initialBBox = {
+        const paint_struct_bound_box initialBBox = {
             .x = ps_next->bound_box_x,
             .y = ps_next->bound_box_y,
             .z = ps_next->bound_box_z,
@@ -803,26 +794,35 @@ static paint_struct * paint_arrange_structs_helper(paint_struct * ps_next, uint1
             if (ps_next->quadrant_flags & PAINT_QUADRANT_FLAG_BIGGER) break;
             if (!(ps_next->quadrant_flags & PAINT_QUADRANT_FLAG_NEXT)) continue;
 
+            const paint_struct_bound_box currentBBox = {
+                    .x = ps_next->bound_box_x,
+                    .y = ps_next->bound_box_y,
+                    .z = ps_next->bound_box_z,
+                    .x_end = ps_next->bound_box_x_end,
+                    .y_end = ps_next->bound_box_y_end,
+                    .z_end = ps_next->bound_box_z_end
+            };
+
             sint32 yes = 0;
             switch (rotation) {
             case 0:
-                if (initialBBox.z_end >= ps_next->bound_box_z && initialBBox.y_end >= ps_next->bound_box_y && initialBBox.x_end >= ps_next->bound_box_x
-                    && !(initialBBox.z < ps_next->bound_box_z_end && initialBBox.y < ps_next->bound_box_y_end && initialBBox.x < ps_next->bound_box_x_end))
+                if (initialBBox.z_end >= currentBBox.z && initialBBox.y_end >= currentBBox.y && initialBBox.x_end >= currentBBox.x
+                    && !(initialBBox.z < currentBBox.z_end && initialBBox.y < currentBBox.y_end && initialBBox.x < currentBBox.x_end))
                     yes = 1;
                 break;
             case 1:
-                if (initialBBox.z_end >= ps_next->bound_box_z && initialBBox.y_end >= ps_next->bound_box_y && initialBBox.x_end < ps_next->bound_box_x
-                    && !(initialBBox.z < ps_next->bound_box_z_end && initialBBox.y < ps_next->bound_box_y_end && initialBBox.x >= ps_next->bound_box_x_end))
+                if (initialBBox.z_end >= currentBBox.z && initialBBox.y_end >= currentBBox.y && initialBBox.x_end < currentBBox.x
+                    && !(initialBBox.z < currentBBox.z_end && initialBBox.y < currentBBox.y_end && initialBBox.x >= currentBBox.x_end))
                     yes = 1;
                 break;
             case 2:
-                if (initialBBox.z_end >= ps_next->bound_box_z && initialBBox.y_end < ps_next->bound_box_y && initialBBox.x_end < ps_next->bound_box_x
-                    && !(initialBBox.z < ps_next->bound_box_z_end && initialBBox.y >= ps_next->bound_box_y_end && initialBBox.x >= ps_next->bound_box_x_end))
+                if (initialBBox.z_end >= currentBBox.z && initialBBox.y_end < currentBBox.y && initialBBox.x_end < currentBBox.x
+                    && !(initialBBox.z < currentBBox.z_end && initialBBox.y >= currentBBox.y_end && initialBBox.x >= currentBBox.x_end))
                     yes = 1;
                 break;
             case 3:
-                if (initialBBox.z_end >= ps_next->bound_box_z && initialBBox.y_end < ps_next->bound_box_y && initialBBox.x_end >= ps_next->bound_box_x
-                    && !(initialBBox.z < ps_next->bound_box_z_end && initialBBox.y >= ps_next->bound_box_y_end && initialBBox.x < ps_next->bound_box_x_end))
+                if (initialBBox.z_end >= currentBBox.z && initialBBox.y_end < currentBBox.y && initialBBox.x_end >= currentBBox.x
+                    && !(initialBBox.z < currentBBox.z_end && initialBBox.y >= currentBBox.y_end && initialBBox.x < currentBBox.x_end))
                     yes = 1;
                 break;
             }
