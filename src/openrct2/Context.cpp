@@ -591,6 +591,8 @@ namespace OpenRCT2
                         }
                         else
                         {
+                            reset_sprite_spatial_index();
+                            reset_all_sprite_quadrant_placements();
                             scenario_begin();
                         }
                         return true;
