@@ -168,7 +168,7 @@ void window_sign_open(rct_windownumber number)
     while (1){
         if (map_element_get_type(map_element) == MAP_ELEMENT_TYPE_SCENERY_MULTIPLE) {
             rct_scenery_entry* scenery_entry = get_large_scenery_entry(map_element->properties.scenerymultiple.type & MAP_ELEMENT_LARGE_TYPE_MASK);
-            if (scenery_entry->large_scenery.var_11 != 0xFF){
+            if (scenery_entry->large_scenery.scrolling_mode != 0xFF){
                 sint32 id = (map_element->type & 0xC0) |
                     ((map_element->properties.scenerymultiple.colour[0] & 0xE0) >> 2) |
                     ((map_element->properties.scenerymultiple.colour[1] & 0xE0) >> 5);
@@ -231,7 +231,7 @@ static void window_sign_mouseup(rct_window *w, rct_widgetindex widgetIndex)
         while (1){
             if (map_element_get_type(map_element) == MAP_ELEMENT_TYPE_SCENERY_MULTIPLE) {
                 rct_scenery_entry* scenery_entry = get_large_scenery_entry(map_element->properties.scenerymultiple.type & MAP_ELEMENT_LARGE_TYPE_MASK);
-                if (scenery_entry->large_scenery.var_11 != 0xFF){
+                if (scenery_entry->large_scenery.scrolling_mode != 0xFF){
                     sint32 id = (map_element->type & 0xC0) |
                         ((map_element->properties.scenerymultiple.colour[0] & 0xE0) >> 2) |
                         ((map_element->properties.scenerymultiple.colour[1] & 0xE0) >> 5);

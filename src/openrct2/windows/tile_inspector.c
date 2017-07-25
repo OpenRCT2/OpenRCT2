@@ -1882,7 +1882,7 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
             // Banner info
             rct_scenery_entry *largeSceneryEntry = get_large_scenery_entry(mapElement->properties.scenerymultiple.type & MAP_ELEMENT_LARGE_TYPE_MASK);
-            if (largeSceneryEntry->large_scenery.var_11 != 0xFF) {
+            if (largeSceneryEntry->large_scenery.scrolling_mode != 0xFF) {
                 const sint32 bannerIndex = (mapElement->type & 0xC0) |
                     ((mapElement->properties.scenerymultiple.colour[0] & 0xE0) >> 2) |
                     ((mapElement->properties.scenerymultiple.colour[1] & 0xE0) >> 5);

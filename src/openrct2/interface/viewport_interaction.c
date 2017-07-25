@@ -265,7 +265,7 @@ sint32 viewport_interaction_get_item_right(sint32 x, sint32 y, viewport_interact
 
     case VIEWPORT_INTERACTION_ITEM_LARGE_SCENERY:
         sceneryEntry = get_large_scenery_entry(mapElement->properties.scenerymultiple.type & 0x3FF);
-        if (sceneryEntry->large_scenery.var_11 != 255) {
+        if (sceneryEntry->large_scenery.scrolling_mode != 255) {
             set_map_tooltip_format_arg(0, rct_string_id, STR_MAP_TOOLTIP_STRINGID_CLICK_TO_MODIFY);
             set_map_tooltip_format_arg(2, rct_string_id, sceneryEntry->name);
             return info->type;
@@ -515,7 +515,7 @@ static void viewport_interaction_remove_large_scenery(rct_map_element *mapElemen
 {
     rct_scenery_entry *sceneryEntry = get_large_scenery_entry(mapElement->properties.scenerymultiple.type & MAP_ELEMENT_LARGE_TYPE_MASK);
 
-    if (sceneryEntry->large_scenery.var_11 != 0xFF){
+    if (sceneryEntry->large_scenery.scrolling_mode != 0xFF){
         sint32 id = (mapElement->type & 0xC0) |
             ((mapElement->properties.scenerymultiple.colour[0] & 0xE0) >> 2) |
             ((mapElement->properties.scenerymultiple.colour[1] & 0xE0) >> 5);
