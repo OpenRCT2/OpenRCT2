@@ -53,13 +53,18 @@ rct_xyz16 gTrackPreviewMin;
 rct_xyz16 gTrackPreviewMax;
 rct_xyz16 gTrackPreviewOrigin;
 
-uint8 byte_F4414E;
 bool byte_9D8150;
 static uint8 _trackDesignPlaceOperation;
 static bool _trackDesignDontPlaceScenery;
 static money32 _trackDesignPlaceCost;
 static sint16 _trackDesignPlaceZ;
 static sint16 _trackDesignPlaceSceneryZ;
+
+// Previously all flags in byte_F4414E
+static bool _trackDesignPlaceStateEntranceExitPlaced = false;
+static bool _trackDesignPlaceStateSceneryUnavailable = false;
+static bool _trackDesignPlaceStateHasScenery = false;
+static bool _trackDesignPlaceStatePlaceScenery = true;
 
 static rct_track_td6 *track_design_open_from_buffer(uint8 *src, size_t srcLength);
 static map_backup *track_design_preview_backup_map();
@@ -553,10 +558,10 @@ static sint32 track_design_place_scenery(rct_td6_scenery_element *scenery_start,
 {
     for (uint8 mode = 0; mode <= 1; mode++) {
         if ((scenery_start->scenery_object.flags & 0xFF) != 0xFF) {
-            byte_F4414E |= BYTE_F4414E_HAS_SCENERY;
+            _trackDesignPlaceStateHasScenery = true;
         }
 
-        if (byte_F4414E & BYTE_F4414E_DONT_PLACE_SCENERY) {
+        if (!_trackDesignPlaceStatePlaceScenery) {
             continue;
         }
 
@@ -719,13 +724,14 @@ static sint32 track_design_place_scenery(rct_td6_scenery_element *scenery_start,
                 uint8 entry_type, entry_index;
                 if (!find_object_in_entry_group(&scenery->scenery_object, &entry_type, &entry_index)){
                     entry_type = scenery->scenery_object.flags & 0xF;
-                    if (entry_type != OBJECT_TYPE_PATHS){
-                        byte_F4414E |= BYTE_F4414E_SCENERY_UNAVAILABLE;
+                    if (entry_type != OBJECT_TYPE_PATHS)
+                    {
+                        _trackDesignPlaceStateSceneryUnavailable = true;
                         continue;
                     }
 
-                    if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER){
-                        byte_F4414E |= BYTE_F4414E_SCENERY_UNAVAILABLE;
+                    if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) {
+                        _trackDesignPlaceStateSceneryUnavailable = true;
                         continue;
                     }
 
@@ -741,7 +747,7 @@ static sint32 track_design_place_scenery(rct_td6_scenery_element *scenery_start,
                     }
 
                     if (entry_index == object_entry_group_counts[OBJECT_TYPE_PATHS]){
-                        byte_F4414E |= BYTE_F4414E_SCENERY_UNAVAILABLE;
+                        _trackDesignPlaceStateSceneryUnavailable = true;
                         continue;
                     }
                 }
@@ -884,7 +890,7 @@ static sint32 track_design_place_scenery(rct_td6_scenery_element *scenery_start,
                     }
                     break;
                 default:
-                    byte_F4414E |= BYTE_F4414E_SCENERY_UNAVAILABLE;
+                    _trackDesignPlaceStateSceneryUnavailable = true;
                     continue;
                     break;
                 }
@@ -958,7 +964,7 @@ static sint32 track_design_place_maze(rct_track_td6 *td6, sint16 x, sint16 y, si
                     cost = game_do_command(mapCoord.x, bl | rotation << 8, mapCoord.y, rideIndex, GAME_COMMAND_PLACE_RIDE_ENTRANCE_OR_EXIT, 0, 0);
                 }
                 if (cost != MONEY32_UNDEFINED){
-                    byte_F4414E |= BYTE_F4414E_ENTRANCE_EXIT_PLACED;
+                    _trackDesignPlaceStateEntranceExitPlaced = true;
                 }
                 break;
             case 0x80:
@@ -977,7 +983,7 @@ static sint32 track_design_place_maze(rct_track_td6 *td6, sint16 x, sint16 y, si
                     cost = game_do_command(mapCoord.x, bl | rotation << 8, mapCoord.y, rideIndex | (1 << 8), GAME_COMMAND_PLACE_RIDE_ENTRANCE_OR_EXIT, 0, 0);
                 }
                 if (cost != MONEY32_UNDEFINED){
-                    byte_F4414E |= BYTE_F4414E_ENTRANCE_EXIT_PLACED;
+                    _trackDesignPlaceStateEntranceExitPlaced = true;
                 }
                 break;
             default:
@@ -1249,7 +1255,7 @@ static bool track_design_place_ride(rct_track_td6 *td6, sint16 x, sint16 y, sint
                         _trackDesignPlaceCost = cost;
                         return 0;
                     }
-                    byte_F4414E |= BYTE_F4414E_ENTRANCE_EXIT_PLACED;
+                    _trackDesignPlaceStateEntranceExitPlaced = true;
                     break;
                 } while (!map_element_is_last_for_tile(map_element++));
             } else {
@@ -1268,7 +1274,7 @@ static bool track_design_place_ride(rct_track_td6 *td6, sint16 x, sint16 y, sint
                 else
                 {
                     _trackDesignPlaceCost += cost;
-                    byte_F4414E |= BYTE_F4414E_ENTRANCE_EXIT_PLACED;
+                    _trackDesignPlaceStateEntranceExitPlaced = true;
                 }
             }
             break;
@@ -1299,10 +1305,15 @@ static bool track_design_place_ride(rct_track_td6 *td6, sint16 x, sint16 y, sint
 */
 sint32 place_virtual_track(rct_track_td6 *td6, uint8 ptdOperation, bool placeScenery, uint8 rideIndex, sint32 x, sint32 y, sint32 z)
 {
-    byte_F4414E = (!placeScenery) ? BYTE_F4414E_DONT_PLACE_SCENERY : 0;
+    // Previously byte_F4414E was cleared here
+    _trackDesignPlaceStatePlaceScenery = placeScenery;
+    _trackDesignPlaceStateEntranceExitPlaced = false;
+    _trackDesignPlaceStateSceneryUnavailable = false;
+    _trackDesignPlaceStateHasScenery = false;
+
     _trackDesignPlaceOperation = ptdOperation;
     if (gTrackDesignSceneryToggle) {
-        byte_F4414E |= BYTE_F4414E_DONT_PLACE_SCENERY;
+        _trackDesignPlaceStatePlaceScenery = false;
     }
     _currentRideIndex = rideIndex;
 
@@ -1395,14 +1406,14 @@ static bool track_design_place_preview(rct_track_td6 *td6, money32 *cost, uint8 
     _currentTrackPieceDirection = 0;
     sint32 z = place_virtual_track(td6, PTD_OPERATION_GET_PLACE_Z, true, 0, mapSize, mapSize, 16);
 
-    if (byte_F4414E & BYTE_F4414E_HAS_SCENERY) {
+    if (_trackDesignPlaceStateHasScenery) {
         *flags |= TRACK_DESIGN_FLAG_HAS_SCENERY;
     }
 
     z += 16 - _trackDesignPlaceSceneryZ;
 
     bool placeScenery = true;
-    if (byte_F4414E & BYTE_F4414E_SCENERY_UNAVAILABLE) {
+    if (_trackDesignPlaceStateSceneryUnavailable) {
         placeScenery = false;
         *flags |= TRACK_DESIGN_FLAG_SCENERY_UNAVAILABLE;
     }
@@ -1513,7 +1524,7 @@ static money32 place_track_design(sint16 x, sint16 y, sint16 z, uint8 flags, uin
     if (!(flags & GAME_COMMAND_FLAG_APPLY)) {
         _trackDesignDontPlaceScenery = false;
         cost = place_virtual_track(td6, PTD_OPERATION_1, true, rideIndex, x, y, z);
-        if (byte_F4414E & BYTE_F4414E_SCENERY_UNAVAILABLE) {
+        if (_trackDesignPlaceStateSceneryUnavailable) {
             _trackDesignDontPlaceScenery = true;
             cost = place_virtual_track(td6, PTD_OPERATION_1, false, rideIndex, x, y, z);
         }
@@ -1907,6 +1918,11 @@ static void track_design_preview_clear_map()
         map_element->properties.surface.ownership = OWNERSHIP_OWNED;
     }
     map_update_tile_pointers();
+}
+
+bool track_design_are_entrance_and_exit_placed()
+{
+    return _trackDesignPlaceStateEntranceExitPlaced;
 }
 
 #pragma endregion
