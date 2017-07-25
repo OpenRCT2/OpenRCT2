@@ -20,6 +20,7 @@
 - Improved: [#5863] Switching drawing engines no longer requires the application to restart.
 - Improved: The land tool buttons can now be held down to increase/decrease size.
 - Improved: Dropdowns longer than 32 items overflow into columns.
+- Improved: Ride Type option in ride window is now a dropdown.
 
 0.1.0 (2017-07-12)
 ------------------------------------------------------------------------
