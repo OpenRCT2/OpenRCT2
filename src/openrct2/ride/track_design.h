@@ -19,6 +19,8 @@
 
 #include "../common.h"
 #include "../object.h"
+#include "../rct12.h"
+#include "../rct2.h"
 #include "../world/map.h"
 #include "vehicle.h"
 
@@ -92,7 +94,7 @@ typedef struct rct_track_td6 {
         uint8 track_flags;                          // 0x06
     };
     uint8 version_and_colour_scheme;                // 0x07 0b0000_VVCC
-    rct_vehicle_colour vehicle_colours[32]; // 0x08
+    rct_vehicle_colour vehicle_colours[RCT2_MAX_CARS_PER_TRAIN]; // 0x08
     union{
         uint8 pad_48;
         uint8 track_spine_colour_rct1;              // 0x48
@@ -127,14 +129,14 @@ typedef struct rct_track_td6 {
     uint8 intensity;                                // 0x5C
     uint8 nausea;                                   // 0x5D
     money16 upkeep_cost;                            // 0x5E
-    uint8 track_spine_colour[4];                    // 0x60
-    uint8 track_rail_colour[4];                     // 0x64
-    uint8 track_support_colour[4];                  // 0x68
+    uint8 track_spine_colour[RCT12_NUM_COLOUR_SCHEMES]; // 0x60
+    uint8 track_rail_colour[RCT12_NUM_COLOUR_SCHEMES]; // 0x64
+    uint8 track_support_colour[RCT12_NUM_COLOUR_SCHEMES]; // 0x68
     uint32 flags2;                                  // 0x6C
     rct_object_entry vehicle_object;                // 0x70
     uint8 space_required_x;                         // 0x80
     uint8 space_required_y;                         // 0x81
-    uint8 vehicle_additional_colour[32];            // 0x82
+    uint8 vehicle_additional_colour[RCT2_MAX_CARS_PER_TRAIN]; // 0x82
     uint8 lift_hill_speed_num_circuits;             // 0xA2 0bCCCL_LLLL
     void *elements;                                 // 0xA3 (data starts here in file)
     size_t elementsSize;
@@ -180,13 +182,6 @@ enum {
 };
 
 enum {
-    BYTE_F4414E_ENTRANCE_EXIT_PLACED = (1 << 0),
-    BYTE_F4414E_SCENERY_UNAVAILABLE = (1 << 1),
-    BYTE_F4414E_HAS_SCENERY = (1 << 2),
-    BYTE_F4414E_DONT_PLACE_SCENERY = (1 << 7)
-};
-
-enum {
     PTD_OPERATION_DRAW_OUTLINES,
     PTD_OPERATION_1,
     PTD_OPERATION_2,
@@ -197,13 +192,11 @@ enum {
 };
 
 extern rct_track_td6 *gActiveTrackDesign;
-extern uint8 gTrackDesignPlaceFlags;
 extern bool gTrackDesignSceneryToggle;
 extern rct_xyz16 gTrackPreviewMin;
 extern rct_xyz16 gTrackPreviewMax;
 extern rct_xyz16 gTrackPreviewOrigin;
 
-extern uint8 byte_F4414E;
 extern bool byte_9D8150;
 
 extern bool gTrackDesignSaveMode;
@@ -234,5 +227,7 @@ void track_design_save_select_nearby_scenery(sint32 rideIndex);
 void track_design_save_select_map_element(sint32 interactionType, sint32 x, sint32 y, rct_map_element *mapElement, bool collect);
 bool track_design_save(uint8 rideIndex);
 bool track_design_save_to_file(const utf8 *path);
+
+bool track_design_are_entrance_and_exit_placed();
 
 #endif

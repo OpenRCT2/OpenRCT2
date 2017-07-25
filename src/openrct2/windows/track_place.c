@@ -332,7 +332,7 @@ static void window_track_place_tooldown(rct_window* w, rct_widgetindex widgetInd
             audio_play_sound_at_location(SOUND_PLACE_ITEM, mapX, mapY, mapZ);
 
             _currentRideIndex = rideIndex;
-            if (byte_F4414E & BYTE_F4414E_ENTRANCE_EXIT_PLACED) {
+            if (track_design_are_entrance_and_exit_placed()) {
                 window_ride_main_open(rideIndex);
                 window_close(w);
             } else {
