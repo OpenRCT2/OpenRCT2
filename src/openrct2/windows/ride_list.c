@@ -441,6 +441,7 @@ static void window_ride_list_scrollmousedown(rct_window *w, sint32 scrollIndex, 
     if (_quickDemolishMode && network_get_mode() != NETWORK_MODE_CLIENT) {
         gGameCommandErrorTitle = STR_CANT_DEMOLISH_RIDE;
         game_do_command(0, GAME_COMMAND_FLAG_APPLY, 0, rideIndex, GAME_COMMAND_DEMOLISH_RIDE, 0, 0);
+        window_ride_list_refresh_list(w);
     }
     else {
         window_ride_main_open(rideIndex);
