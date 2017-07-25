@@ -2138,8 +2138,7 @@ static void window_ride_show_ride_type_dropdown(rct_window *w, rct_widget *widge
     assert(_rideType == clamp(0, _rideType, RIDE_TYPE_COUNT));
 
     for (sint32 i = 0; i < RIDE_TYPE_COUNT; i++) {
-        gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
-        gDropdownItemsArgs[i] = RideNaming[i].name;
+        gDropdownItemsFormat[i] = RideNaming[i].name;
     }
     
     window_dropdown_show_text(
@@ -2153,7 +2152,7 @@ static void window_ride_show_ride_type_dropdown(rct_window *w, rct_widget *widge
 
     gDropdownHighlightedIndex = _rideType;
     gDropdownDefaultIndex = _rideType;
-    gDropdownItemsFormat[_rideType] = STR_DROPDOWN_MENU_LABEL_SELECTED;
+    dropdown_set_checked(_rideType, true);
 }
 
 /**
