@@ -14,6 +14,7 @@
 - Fix: [#5920] Placing guest spawn doesn't do anything every 3rd click
 - Fix: [#5939] Crash when importing 'Six Flags Santa Fe'.
 - Fix: [#5977] Custom music files not showing up in music list
+- Fix: [#5981] Ride list doesn't update after using quick demolish.
 - Fix: [#5984] Allow socket binding to same port after crash
 - Improved: [#4301] Leading and trailing whitespace in player name is now removed.
 - Improved: [#5859] OpenGL rendering performance
