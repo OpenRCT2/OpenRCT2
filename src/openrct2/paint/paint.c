@@ -734,6 +734,34 @@ void paint_generate_structs(rct_drawpixelinfo * dpi)
     }
 }
 
+static bool is_bbox_intersecting(uint8 rotation, const paint_struct_bound_box *initialBBox,
+                                 const paint_struct_bound_box *currentBBox) {
+    bool result = false;
+    switch (rotation) {
+    case 0:
+        if ((*initialBBox).z_end >= (*currentBBox).z && (*initialBBox).y_end >= (*currentBBox).y && (*initialBBox).x_end >= (*currentBBox).x
+            && !((*initialBBox).z < (*currentBBox).z_end && (*initialBBox).y < (*currentBBox).y_end && (*initialBBox).x < (*currentBBox).x_end))
+            result = true;
+        break;
+    case 1:
+        if ((*initialBBox).z_end >= (*currentBBox).z && (*initialBBox).y_end >= (*currentBBox).y && (*initialBBox).x_end < (*currentBBox).x
+            && !((*initialBBox).z < (*currentBBox).z_end && (*initialBBox).y < (*currentBBox).y_end && (*initialBBox).x >= (*currentBBox).x_end))
+            result = true;
+        break;
+    case 2:
+        if ((*initialBBox).z_end >= (*currentBBox).z && (*initialBBox).y_end < (*currentBBox).y && (*initialBBox).x_end < (*currentBBox).x
+            && !((*initialBBox).z < (*currentBBox).z_end && (*initialBBox).y >= (*currentBBox).y_end && (*initialBBox).x >= (*currentBBox).x_end))
+            result = true;
+        break;
+    case 3:
+        if ((*initialBBox).z_end >= (*currentBBox).z && (*initialBBox).y_end < (*currentBBox).y && (*initialBBox).x_end >= (*currentBBox).x
+            && !((*initialBBox).z < (*currentBBox).z_end && (*initialBBox).y >= (*currentBBox).y_end && (*initialBBox).x < (*currentBBox).x_end))
+            result = true;
+        break;
+    }
+    return result;
+}
+
 paint_struct * paint_arrange_structs_helper(paint_struct * ps_next, uint16 quadrantIndex, uint8 flag)
 {
     paint_struct * ps;
@@ -803,31 +831,9 @@ paint_struct * paint_arrange_structs_helper(paint_struct * ps_next, uint16 quadr
                     .z_end = ps_next->bound_box_z_end
             };
 
-            sint32 yes = 0;
-            switch (rotation) {
-            case 0:
-                if (initialBBox.z_end >= currentBBox.z && initialBBox.y_end >= currentBBox.y && initialBBox.x_end >= currentBBox.x
-                    && !(initialBBox.z < currentBBox.z_end && initialBBox.y < currentBBox.y_end && initialBBox.x < currentBBox.x_end))
-                    yes = 1;
-                break;
-            case 1:
-                if (initialBBox.z_end >= currentBBox.z && initialBBox.y_end >= currentBBox.y && initialBBox.x_end < currentBBox.x
-                    && !(initialBBox.z < currentBBox.z_end && initialBBox.y < currentBBox.y_end && initialBBox.x >= currentBBox.x_end))
-                    yes = 1;
-                break;
-            case 2:
-                if (initialBBox.z_end >= currentBBox.z && initialBBox.y_end < currentBBox.y && initialBBox.x_end < currentBBox.x
-                    && !(initialBBox.z < currentBBox.z_end && initialBBox.y >= currentBBox.y_end && initialBBox.x >= currentBBox.x_end))
-                    yes = 1;
-                break;
-            case 3:
-                if (initialBBox.z_end >= currentBBox.z && initialBBox.y_end < currentBBox.y && initialBBox.x_end >= currentBBox.x
-                    && !(initialBBox.z < currentBBox.z_end && initialBBox.y >= currentBBox.y_end && initialBBox.x < currentBBox.x_end))
-                    yes = 1;
-                break;
-            }
+            bool compareResult = is_bbox_intersecting(rotation, &initialBBox, &currentBBox);
 
-            if (yes) {
+            if (compareResult) {
                 ps->next_quadrant_ps = ps_next->next_quadrant_ps;
                 paint_struct *ps_temp2 = ps_temp->next_quadrant_ps;
                 ps_temp->next_quadrant_ps = ps_next;
