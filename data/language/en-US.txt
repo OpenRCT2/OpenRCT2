@@ -2395,7 +2395,7 @@ STR_SCNR    :Funtopia
 STR_PARK    :Funtopia
 STR_DTLS    :Covering land both sides of a highway, this park has several rides already operating
 
-<Haunted Harbor>
+<Haunted Harbour>
 STR_SCNR    :Haunted Harbor
 STR_PARK    :Haunted Harbor
 STR_DTLS    :The local authority has agreed to sell nearby land cheaply to this small seaside park, on the condition that certain rides are preserved

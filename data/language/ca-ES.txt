@@ -12,15 +12,15 @@ STR_0007    :Ferrocarril en miniatura
 STR_0008    :Monorail
 STR_0009    :Minimuntanya russa suspesa
 STR_0010    :Passeig en bot
-STR_0011    :«Wild Mouse» de fusta
-STR_0012    :Cursa «Steeplechase»
+STR_0011    :{LEFTGUILLEMET}Wild Mouse{RIGHTGUILLEMET} de fusta
+STR_0012    :Cursa {LEFTGUILLEMET}Steeplechase{RIGHTGUILLEMET}
 STR_0013    :Atracció de cotxes
 STR_0014    :Caiguda lliure propulsada
-STR_0015    :Muntanya russa «Bobsleigh»
+STR_0015    :Muntanya russa {LEFTGUILLEMET}Bobsleigh{RIGHTGUILLEMET}
 STR_0016    :Torre d'observació
 STR_0017    :Muntanya russa amb inversions
 STR_0018    :Tobogan aquàtic amb bots inflables
-STR_0019    :Muntanya russa «Tren de la mina»
+STR_0019    :Muntanya russa {LEFTGUILLEMET}Tren de la mina{RIGHTGUILLEMET}
 STR_0020    :Telecadira
 STR_0021    :Muntanya russa amb tirabuixons
 STR_0022    :Laberint
@@ -57,12 +57,12 @@ STR_0052    :Tren fantasma
 STR_0053    :Muntanya russa Tornado d'acer
 STR_0054    :Muntanya russa de fusta
 STR_0055    :Muntanya russa de fricció lateral
-STR_0056    :«Wild Mouse»
+STR_0056    :{LEFTGUILLEMET}Wild Mouse{RIGHTGUILLEMET}
 STR_0057    :Muntanya russa multidimensió
 STR_0058    :Atracció desconeguda (38)
 STR_0059    :Muntanya russa voladora
 STR_0060    :Atracció desconeguda (3A)
-STR_0061    :«Virginia Reel»
+STR_0061    :{LEFTGUILLEMET}Virginia Reel{RIGHTGUILLEMET}
 STR_0062    :Bots amb remullada
 STR_0063    :Minihelicòpters
 STR_0064    :Muntanya russa amb passatgers gitats
@@ -564,8 +564,8 @@ STR_0559    :Edifici enorme de temàtica terrorífica amb passadissos esgarrifos
 STR_0560    :Un lloc que els visitants amb nàusees visiten per recuperar-se més de pressa.
 STR_0561    :Espectacle de circ dins d'una tenda enorme.
 STR_0562    :Els vagons autopropulsats viatgen per una via a diferents nivells que recorre paisatges fantasmagòrics amb efectes especials.
-STR_0563    :Els passatgers drets amb unes subjeccions simples dintre els vagons travessen i gaudeixen de caigudes i girs enrevessats això com d'una part «a l'aire lliure» damunt dels turons.
-STR_0564    :Movent-se per vies de fusta, aquesta muntanya russa és ràpida, rústica, sorollosa i dóna una sensació d'experiència «fora de control» a l'aire lliure.
+STR_0563    :Els passatgers drets amb unes subjeccions simples dintre els vagons travessen i gaudeixen de caigudes i girs enrevessats, així com d'una part {LEFTGUILLEMET}a l'aire lliure{RIGHTGUILLEMET} damunt dels turons.
+STR_0564    :Movent-se per vies de fusta, aquesta muntanya russa és ràpida, rústica, sorollosa i dóna una sensació d'experiència {LEFTGUILLEMET}fora de control{RIGHTGUILLEMET} a l'aire lliure.
 STR_0565    :Una muntanya russa senzilla de fusta que només és capaç de fer inclinacions i girs suaus, mentre que els vagons es mantenen a la via mitjançant la gravetat i unes rodes laterals de fricció.
 STR_0566    :Els vagons individuals giren per un difícil tram zigzaguejant amb girs pronunciats i caigudes brusques curtes.
 STR_0567    :Seient suspesos a ambdós laterals de la via, els passatgers són penjats cap per avall mentre són sotmesos a caigudes pronunciades i passen per inversions.
@@ -849,7 +849,7 @@ STR_0843    :<removed string - do not use>
 STR_0844    :<removed string - do not use>
 STR_0845    :<removed string - do not use>
 STR_0846    :<removed string - do not use>
-STR_0847    :Quant a l'«OpenRCT2»
+STR_0847    :Quant a l'{LEFTGUILLEMET}OpenRCT2{RIGHTGUILLEMET}
 STR_0848    :RollerCoaster Tycoon 2
 STR_0849    :{WINDOW_COLOUR_2}Versió 2.01.028
 STR_0850    :{WINDOW_COLOUR_2}Copyright {COPYRIGHT} 2002 Chris Sawyer. Tots els drets reservats.
@@ -894,7 +894,7 @@ STR_0888    :Surt de l'editor de muntanyes russes
 STR_0889    :Surt de l'administrador de dissenys de vies
 STR_0890    :<removed string - do not use>
 STR_0891    :Captura de pantalla
-STR_0892    :S'ha desat la captura de pantalla com a «{STRINGID}».
+STR_0892    :S'ha desat la captura de pantalla com a {LEFTGUILLEMET}{STRINGID}{RIGHTGUILLEMET}.
 STR_0893    :La captura de pantalla no s'ha pogut fer.
 STR_0894    :L'àrea de dades de paisatge està plena.
 STR_0895    :No es pot construir part a sobre i part sota terra.
@@ -931,8 +931,8 @@ STR_0925    :{SMALLFONT}{BLACK}Helicoide cap amunt
 STR_0926    :No es pot treure...
 STR_0927    :Això no es pot construir aquí...
 STR_0928    :{SMALLFONT}{BLACK}Cadena elevadora per pujar vagons per un pendent.
-STR_0929    :Corba en «S» (a l'esquerra)
-STR_0930    :Corba en «S» (a la dreta)
+STR_0929    :Corba en {LEFTGUILLEMET}S{RIGHTGUILLEMET} (a l'esquerra)
+STR_0930    :Corba en {LEFTGUILLEMET}S{RIGHTGUILLEMET} (a la dreta)
 STR_0931    :Inversió vertical (a l'esquerra)
 STR_0932    :Inversió vertical (a la dreta)
 STR_0933    :Abans puja o baixa el terreny.
@@ -1360,7 +1360,7 @@ STR_1354    :{WINDOW_COLOUR_2}Longitud de la caiguda més gran: {BLACK}{LENGTH}
 STR_1355    :{WINDOW_COLOUR_2}Caigudes: {BLACK}{COMMA16}
 STR_1356    :{WINDOW_COLOUR_2}Inversions: {BLACK}{COMMA16}
 STR_1357    :{WINDOW_COLOUR_2}Forats: {BLACK}{COMMA16}
-STR_1358    :{WINDOW_COLOUR_2}Temps total de «vol»: {BLACK}{COMMA2DP32} s
+STR_1358    :{WINDOW_COLOUR_2}Temps total de {LEFTGUILLEMET}vol{RIGHTGUILLEMET}: {BLACK}{COMMA2DP32} s
 STR_1359    :{WINDOW_COLOUR_2}Temps d'espera: {BLACK}{COMMA16} min
 STR_1360    :{WINDOW_COLOUR_2}Temps d'espera: {BLACK}{COMMA16} min
 STR_1361    :La velocitat no es pot canviar...
@@ -1462,8 +1462,8 @@ STR_1456    :{WINDOW_COLOUR_2}Diners gastats: {BLACK}{CURRENCY2DP}
 STR_1457    :{WINDOW_COLOUR_2}Diners a la butxaca: {BLACK}{CURRENCY2DP}
 STR_1458    :{WINDOW_COLOUR_2}Temps al parc: {BLACK}{REALTIME}
 STR_1459    :Estil de via
-STR_1460    :{SMALLFONT}{BLACK}Via oberta en forma d'«U»
-STR_1461    :{SMALLFONT}{BLACK}Via tancada en forma d'«O»
+STR_1460    :{SMALLFONT}{BLACK}Via oberta en forma d'{LEFTGUILLEMET}U{RIGHTGUILLEMET}
+STR_1461    :{SMALLFONT}{BLACK}Via tancada en forma d'{LEFTGUILLEMET}O{RIGHTGUILLEMET}
 STR_1462    :Massa inclinat per usar cadenes d'elevació
 STR_1463    :Visitants
 STR_1464    :Hèlix amunt (petita)
@@ -2491,8 +2491,8 @@ STR_2483    :{WINDOW_COLOUR_2}Benefici setmanal: {BLACK}+{CURRENCY2DP}
 STR_2484    :{WINDOW_COLOUR_2}Benefici setmanal: {RED}{CURRENCY2DP}
 STR_2485    :Controls
 STR_2486    :General
-STR_2487    :Mostra els noms «reals» dels visitants
-STR_2488    :{SMALLFONT}{BLACK}Alterna entre mostrar els noms «reals» dels visitants o el nombre que se li ha assignat.
+STR_2487    :Mostra els noms {LEFTGUILLEMET}reals{RIGHTGUILLEMET} dels visitants
+STR_2488    :{SMALLFONT}{BLACK}Alterna entre mostrar els noms {LEFTGUILLEMET}reals{RIGHTGUILLEMET} dels visitants o el nombre que se li ha assignat.
 STR_2489    :Dreceres de teclat...
 STR_2490    :Dreceres de teclat
 STR_2491    :Reinicia les tecles
@@ -2747,8 +2747,8 @@ STR_2738    :Música del menú principal:
 STR_2739    :Cap
 STR_2740    :RollerCoaster Tycoon 1
 STR_2741    :RollerCoaster Tycoon 2
-STR_2742    :El fitxer «css50.dat» no s'ha trobat.
-STR_2743    :Copieu «data/css17.dat» de la vostra instal·lació del RCT1 en «data/css50.dat» a la instal·lació del RCT2, o establiu correctament el camí del RCT1 a la pestanya d'altres opcions.
+STR_2742    :El fitxer {LEFTGUILLEMET}css50.dat{RIGHTGUILLEMET} no s'ha trobat.
+STR_2743    :Copieu {LEFTGUILLEMET}data/css17.dat{RIGHTGUILLEMET} de la vostra instal·lació del RCT1 en {LEFTGUILLEMET}data/css50.dat{RIGHTGUILLEMET} a la instal·lació del RCT2, o establiu correctament el camí del RCT1 a la pestanya d'altres opcions.
 STR_2744    :[
 STR_2745    :\
 STR_2746    :]
@@ -2838,23 +2838,23 @@ STR_2827    :{WINDOW_COLOUR_2}Premi als millors dissenys d'atraccions
 STR_2828    :{WINDOW_COLOUR_2}Premi als esquemes de colors més treballats
 STR_2829    :{WINDOW_COLOUR_2}Premi als camins més confusos
 STR_2830    :{WINDOW_COLOUR_2}Premi al parc amb millors atraccions suaus
-STR_2831    :{TOPAZ}El vostre parc ha rebut el «Premi al parc més brut»!
-STR_2832    :{TOPAZ}El vostre parc ha rebut el «Premi al parc més net»!
-STR_2833    :{TOPAZ}El vostre parc ha rebut el «Premi al parc amb millors muntanyes russes»!
-STR_2834    :{TOPAZ}El vostre parc ha rebut el «Premi al parc més valorat»!
-STR_2835    :{TOPAZ}El vostre parc ha rebut el «Premi al parc més bonic»!
-STR_2836    :{TOPAZ}El vostre parc ha rebut el «Premi al parc menys valorat»!
-STR_2837    :{TOPAZ}El vostre parc ha rebut el «Premi al parc més segur»!
-STR_2838    :{TOPAZ}El vostre parc ha rebut el «Premi a la millor plantilla»!
-STR_2839    :{TOPAZ}El vostre parc ha rebut el «Premi al parc amb millor menjar»!
-STR_2840    :{TOPAZ}El vostre parc ha rebut el «Premi al parc amb pitjor menjar»!
-STR_2841    :{TOPAZ}El vostre parc ha rebut el «Premi al parc amb millors lavabos»!
-STR_2842    :{TOPAZ}El vostre parc ha rebut el «Premi al parc més decebedor»!
-STR_2843    :{TOPAZ}El vostre parc ha rebut el «Premi al parc amb millors atraccions aquàtiques»!
-STR_2844    :{TOPAZ}El vostre parc ha rebut el «Premi als millors dissenys d'atraccions»!
-STR_2845    :{TOPAZ}El vostre parc ha rebut el «Premi als esquemes de colors més treballats»!
-STR_2846    :{TOPAZ}El vostre parc ha rebut el «Premi als camins més confusos»!
-STR_2847    :{TOPAZ}El vostre parc ha rebut el «Premi al parc amb millors atraccions suaus»!
+STR_2831    :{TOPAZ}El vostre parc ha rebut el {LEFTGUILLEMET}Premi al parc més brut{RIGHTGUILLEMET}!
+STR_2832    :{TOPAZ}El vostre parc ha rebut el {LEFTGUILLEMET}Premi al parc més net{RIGHTGUILLEMET}!
+STR_2833    :{TOPAZ}El vostre parc ha rebut el {LEFTGUILLEMET}Premi al parc amb millors muntanyes russes{RIGHTGUILLEMET}!
+STR_2834    :{TOPAZ}El vostre parc ha rebut el {LEFTGUILLEMET}Premi al parc més valorat{RIGHTGUILLEMET}!
+STR_2835    :{TOPAZ}El vostre parc ha rebut el {LEFTGUILLEMET}Premi al parc més bonic{RIGHTGUILLEMET}!
+STR_2836    :{TOPAZ}El vostre parc ha rebut el {LEFTGUILLEMET}Premi al parc menys valorat{RIGHTGUILLEMET}!
+STR_2837    :{TOPAZ}El vostre parc ha rebut el {LEFTGUILLEMET}Premi al parc més segur{RIGHTGUILLEMET}!
+STR_2838    :{TOPAZ}El vostre parc ha rebut el {LEFTGUILLEMET}Premi a la millor plantilla{RIGHTGUILLEMET}!
+STR_2839    :{TOPAZ}El vostre parc ha rebut el {LEFTGUILLEMET}Premi al parc amb millor menjar{RIGHTGUILLEMET}!
+STR_2840    :{TOPAZ}El vostre parc ha rebut el {LEFTGUILLEMET}Premi al parc amb pitjor menjar{RIGHTGUILLEMET}!
+STR_2841    :{TOPAZ}El vostre parc ha rebut el {LEFTGUILLEMET}Premi al parc amb millors lavabos{RIGHTGUILLEMET}!
+STR_2842    :{TOPAZ}El vostre parc ha rebut el {LEFTGUILLEMET}Premi al parc més decebedor{RIGHTGUILLEMET}!
+STR_2843    :{TOPAZ}El vostre parc ha rebut el {LEFTGUILLEMET}Premi al parc amb millors atraccions aquàtiques{RIGHTGUILLEMET}!
+STR_2844    :{TOPAZ}El vostre parc ha rebut el {LEFTGUILLEMET}Premi als millors dissenys d'atraccions{RIGHTGUILLEMET}!
+STR_2845    :{TOPAZ}El vostre parc ha rebut el {LEFTGUILLEMET}Premi als esquemes de colors més treballats{RIGHTGUILLEMET}!
+STR_2846    :{TOPAZ}El vostre parc ha rebut el {LEFTGUILLEMET}Premi als camins més confusos{RIGHTGUILLEMET}!
+STR_2847    :{TOPAZ}El vostre parc ha rebut el {LEFTGUILLEMET}Premi al parc amb millors atraccions suaus{RIGHTGUILLEMET}!
 STR_2848    :{WINDOW_COLOUR_2}Sense premis recents
 STR_2849    :S'ha instal·lat un nou escenari.
 STR_2850    :S'ha instal·lat un nou disseny de via.
@@ -2994,7 +2994,7 @@ STR_2983    :Escriviu el nou text del cartell:
 STR_2984    :No es pot establir aquest text per al cartell...
 STR_2985    :Cartell
 STR_2986    :{SMALLFONT}{BLACK}Canvia el text del cartell.
-STR_2987    :{SMALLFONT}{BLACK}Canvia el text del cartell a «No passeu».
+STR_2987    :{SMALLFONT}{BLACK}Canvia el text del cartell a {LEFTGUILLEMET}No passeu{RIGHTGUILLEMET}.
 STR_2988    :{SMALLFONT}{BLACK}Elimina el cartell.
 STR_2989    :{SMALLFONT}{BLACK}Seleccioneu el color principal.
 STR_2990    :{SMALLFONT}{BLACK}Seleccioneu el color del text.
@@ -3405,29 +3405,29 @@ STR_3393    :{SMALLFONT}{BLACK}Per veure millor el parc, podeu allunyar-vos usan
 STR_3394    :{SMALLFONT}{BLACK}També podeu girar la vista en passos de 90{DEGREE}...
 STR_3395    :{SMALLFONT}{BLACK}La construcció d'atraccions a aquesta escala és un pèl difícil, aixó que apropem-nos al parc un altre cop...
 STR_3396    :{SMALLFONT}{BLACK}Ara construirem una atracció senzilla per començar el parc...
-STR_3397    :{SMALLFONT}{BLACK}La imatge «fantasma» blanca mostra on es construirà l'atracció. Mourem el punter per triar la posició correcta i llavors farem clic amb el ratolí per construir-ho...
+STR_3397    :{SMALLFONT}{BLACK}La imatge {LEFTGUILLEMET}fantasma{RIGHTGUILLEMET} blanca mostra on es construirà l'atracció. Mourem el punter per triar la posició correcta i llavors farem clic amb el ratolí per construir-ho...
 STR_3398    :{SMALLFONT}{BLACK}Les atraccions necessiten una entrada i una sortida. Mourem el punter a una casella a la vora de l'atracció i fem dos clics: primer per construir l'entrada i després per construir la sortida...
 STR_3399    :{SMALLFONT}{BLACK}Cal que construïm camins per permetre que els visitants puguin accedir a l'atracció...
 STR_3400    :{SMALLFONT}{BLACK}Per al camí d'entrada emprarem un camí especial per tal que la gent hi faci cua...
 STR_3401    :{SMALLFONT}{BLACK}Per al camí de sortida, només cal un camí normal...
-STR_3402    :{SMALLFONT}{BLACK}Bé! Obrim l'atracció! Per obrir-la, fem clic a la icona amb una bandera de la finestra de l'atracció i escollim «Obre»...
+STR_3402    :{SMALLFONT}{BLACK}Bé! Obrim l'atracció! Per obrir-la, fem clic a la icona amb una bandera de la finestra de l'atracció i escollim {LEFTGUILLEMET}Obre{RIGHTGUILLEMET}...
 STR_3403    :{SMALLFONT}{BLACK}Però on estan els visitants?
 STR_3404    :{SMALLFONT}{BLACK}Ah! El parc encara està tancat!Bé, ara l'obrirem...
 STR_3405    :{SMALLFONT}{BLACK}Mentre esperem als nostres primers visitants, desenvoluparem més el parc...
 STR_3406    :{SMALLFONT}{BLACK}Aquí tenim el parc. Construirem una atracció senzilla però amb un disseny personalitzat...
 STR_3407    :{SMALLFONT}{BLACK}Primer cal escollir la posició inicial...
-STR_3408    :{SMALLFONT}{BLACK}La secció de via que acabem de construir és una «andana», que permet als visitants pujar i baixar de l'atracció...
+STR_3408    :{SMALLFONT}{BLACK}La secció de via que acabem de construir és una {LEFTGUILLEMET}andana{RIGHTGUILLEMET}, que permet als visitants pujar i baixar de l'atracció...
 STR_3409    :{SMALLFONT}{BLACK}Ampliarem la plataforma una mica més afegint-hi un parell de seccions d'andana més...
 STR_3410    :{SMALLFONT}{BLACK}Les icones de la part superior de la finestra de construcció us permeten escollir les diferents peces de via que voleu afegir...
 STR_3411    :{SMALLFONT}{BLACK}Escollirem un gir a l'esquerra...
-STR_3412    :{SMALLFONT}{BLACK}El revolt encara no s'ha construït, però la imatge fantasma blanca ens mostra on es construirà. Quan feu clic a la icona gran de «Construeix-ho», el construirà definitivament...
+STR_3412    :{SMALLFONT}{BLACK}El revolt encara no s'ha construït, però la imatge fantasma blanca ens mostra on es construirà. Quan feu clic a la icona gran de {LEFTGUILLEMET}Construeix-ho{RIGHTGUILLEMET}, el construirà definitivament...
 STR_3413    :{SMALLFONT}{BLACK}Ara volem continuar amb una secció de via recta, així que farem clic a la icona de via recta...
 STR_3414    :{SMALLFONT}{BLACK}Ara que hem completat el circuit, necessitem construir l'entrada i la sortida de l'atracció...
 STR_3415    :{SMALLFONT}{BLACK}Fem ara una prova de com funciona l'atracció...
 STR_3416    :{SMALLFONT}{BLACK}Mentre s'està provant, construirem el camí per fer cua i el camí de sortida...
 STR_3417    :{SMALLFONT}{BLACK}D'acord. Obrim el parc i l'atracció...
 STR_3418    :{SMALLFONT}{BLACK}La nostra nova atracció no és gaire emocionant. Potser caldria que hi afegim elements decoratius?
-STR_3419    :{SMALLFONT}{BLACK}Per construir decoracions damunt d'altres elements decoratius o aixecades a l'aire, manteniu premuda la tecla «Maj» i moveu el ratolí per escollir-ne l'alçada...
+STR_3419    :{SMALLFONT}{BLACK}Per construir decoracions damunt d'altres elements decoratius o aixecades a l'aire, manteniu premuda la tecla {LEFTGUILLEMET}Maj{RIGHTGUILLEMET} i moveu el ratolí per escollir-ne l'alçada...
 STR_3420    :{SMALLFONT}{BLACK}Alguns elements decoratius es poden repintar un cop s'han construit...
 STR_3421    :{SMALLFONT}{BLACK}Afegim una mica de música a l'atracció...
 STR_3422    :{SMALLFONT}{BLACK}Construïm una muntanya russa!
@@ -3441,7 +3441,7 @@ STR_3429    :{SMALLFONT}{BLACK}No. Això no funciona! Mireu les marques d'alçad
 STR_3430    :{SMALLFONT}{BLACK}Per assegurar-nos que el tren és capaç de fer la volta sencera, cada pujada hauria de ser una mica menys alta que l'anterior...
 STR_3431    :{SMALLFONT}{BLACK}Molt millor! El nostre tren hauria d'aconseguir passar la pujada. Provem ara una via més embolicada...
 STR_3432    :{SMALLFONT}{BLACK}Necessitem baixar la velocitat del tren abans de l'últim revolt i que arribi a l'andana. Afegim-hi uns frens...
-STR_3433    :{SMALLFONT}{BLACK}I finalment, afegirem uns «frens de bloc», que permeten que dos trens circulin pel mateix circuit de manera segura...
+STR_3433    :{SMALLFONT}{BLACK}I finalment, afegirem uns {LEFTGUILLEMET}frens de bloc{RIGHTGUILLEMET}, que permeten que dos trens circulin pel mateix circuit de manera segura...
 STR_3434    :{SMALLFONT}{BLACK}Provem l'atracció i comprovem si funciona!
 STR_3435    :{SMALLFONT}{BLACK}Bé! Funciona! Afegim-hi els camins d'entrada i sortida i obrim la muntanya russa per als nostres visitants...
 STR_3436    :{SMALLFONT}{BLACK}Mentre esperem els primers passatgers, podem decorar l'atracció...
@@ -3474,7 +3474,7 @@ STR_5132    :Repara totes les atraccions
 STR_5133    :{SMALLFONT}{BLACK}Ajusta el propietari d'una àrea més petita.
 STR_5134    :{SMALLFONT}{BLACK}Ajusta el propietari d'una àrea més gran.
 STR_5135    :{SMALLFONT}{BLACK}Propietaris i drets de construcció
-STR_5136    :Drets del terreny
+STR_5136    :Drets de construcció
 STR_5137    :Desactiva límits de funcionament
 STR_5138    :{SMALLFONT}{WINDOW_COLOUR_2}{STRINGID}
 STR_5139    :{WHITE}{STRINGID}
@@ -3512,7 +3512,7 @@ STR_5170    :{SMALLFONT}{BLACK}Posa el nom dels usuaris del xat del Twitch als v
 STR_5171    :Vigila als usuaris del xat
 STR_5172    :{SMALLFONT}{BLACK}Vigila i dóna informació rellevant de què fan els visitants que porten el nom d'algun usuari del xat del Twitch.
 STR_5173    :Mostra el xat com a notícies
-STR_5174    :{SMALLFONT}{BLACK}Mostra els missatges del xat del Twitch precedits per «!news» per rebre les notificacions durant la partida.
+STR_5174    :{SMALLFONT}{BLACK}Mostra els missatges del xat del Twitch precedits per {LEFTGUILLEMET}!news{RIGHTGUILLEMET} per rebre les notificacions durant la partida.
 STR_5175    :Escriu el nom del canal Twitch
 STR_5176    :Activa la integració del Twitch
 STR_5177    :Mode de pantalla:
@@ -3741,7 +3741,7 @@ STR_5399    :Prem el botó de parada per continuar editant-la.
 STR_5400    :Aquesta seqüència no es pot editar.
 STR_5401    :Crea una nova seqüència per al menú principal i poder fer-hi canvis.
 STR_5402    :No s'ha pogut carregar la seqüència per al menú principal.
-STR_5403    :Potser no hi ha cap ordre de «Carrega» o d'«Espera» o bé la partida desada no és vàlida.
+STR_5403    :Potser no hi ha cap ordre de {LEFTGUILLEMET}Carrega{RIGHTGUILLEMET} o d'{LEFTGUILLEMET}Espera{RIGHTGUILLEMET} o bé la partida desada no és vàlida.
 STR_5404    :El nom ja existeix.
 STR_5405    :Escriviu un nom per a la partida
 STR_5406    :Escriviu un nom per a la seqüència
@@ -3768,7 +3768,7 @@ STR_5426    :Acaba
 STR_5427    :Coordenades:
 STR_5428    :Rotacions antihoràries:
 STR_5429    :Nivell de zoom:
-STR_5430    :Segons que cal esperar:
+STR_5430    :Mil·lisegons que cal esperar:
 STR_5431    :Partida que s'ha de carregar:
 STR_5432    :Ordre:
 STR_5433    :Seqüències del menú principal
@@ -3777,7 +3777,7 @@ STR_5435    :Canvia el nom de la desada
 STR_5436    :Edita seqüències del menú principal...
 STR_5437    :No s'ha escollit cap desada
 STR_5438    :No es poden fer canvis mentre l'editor d'ordres estigui obert.
-STR_5439    :Cal una ordre d'espera d'almenys 4 segons per a una ordre de «Torna a començar».
+STR_5439    :Cal una ordre d'espera d'almenys 4 segons per a una ordre de {LEFTGUILLEMET}Torna a començar{RIGHTGUILLEMET}.
 STR_5440    :Minimitza la pantalla completa si es perd el focus
 STR_5441    :{SMALLFONT}{BLACK}Identifica les atraccions per tipus de via.{NEWLINE}Així els vehicles després{NEWLINE}poden modificar-se (com al RCT1).
 STR_5442    :Força la valoració del parc:
@@ -4088,7 +4088,7 @@ STR_5778    :Construït fa {COMMA16} anys
 STR_5779    :Ingressos: {CURRENCY2DP} per hora
 STR_5780    :Cost de funcionament: {CURRENCY2DP} per hora
 STR_5781    :Cost de funcionament desconegut
-STR_5782    :Esteu connectat. Premeu «{STRING}» per xatejar.
+STR_5782    :Esteu connectat. Premeu {LEFTGUILLEMET}{STRING}{RIGHTGUILLEMET} per xatejar.
 STR_5783    :{WINDOW_COLOUR_2}Escenari blocat
 STR_5784    :{BLACK}Completeu els escenaris anteriors per desblocar-lo.
 STR_5785    :No es pot canviar el nom del grup...
@@ -4097,7 +4097,7 @@ STR_5787    :{COMMA32} jugadors connectats
 STR_5788    :Interval de revisió per defecte:
 STR_5789    :Desactiva els efectes de llamps
 STR_5790    :{SMALLFONT}{BLACK}Activa l'estil de pagaments del RCT1{NEWLINE}(es podran editar tant els preus d'entrada al parc com el de les entrades a les atraccions).
-STR_5791    :{SMALLFONT}{BLACK}Estableix la fiabilitat de totes les atraccions al 100%{NEWLINE}i n'estableix la data de construcció a «aquest any».
+STR_5791    :{SMALLFONT}{BLACK}Estableix la fiabilitat de totes les atraccions al 100%{NEWLINE}i n'estableix la data de construcció a {LEFTGUILLEMET}aquest any{RIGHTGUILLEMET}.
 STR_5792    :{SMALLFONT}{BLACK}Repara atraccions avariades
 STR_5793    :{SMALLFONT}{BLACK}Esborra l'historial de sinistres de les atraccions,{NEWLINE}i els visitants no es queixaran de que no són segures.
 STR_5794    :{SMALLFONT}{BLACK}Alguns escenaris desactiven l'edició{NEWLINE}d'algunes atraccions del parc.{NEWLINE}Aquesta trampa elimina aquesta restricció.
@@ -4126,7 +4126,7 @@ STR_5814    :{WINDOW_COLOUR_1}{OPENQUOTES}{STRING}{ENDQUOTES}
 STR_5815    :{SMALLFONT}{BLACK}Mostra el comptador de FPS del joc.
 STR_5816    :{SMALLFONT}{BLACK}Estableix la relació d'escala del joc.{NEWLINE}Sol ser útil quan es juga amb{NEWLINE}pantalles d'alta resolució.
 STR_5817    :{SMALLFONT}{BLACK}[Requereix renderitzat per maquinari]{NEWLINE}Estableix el tipus d'escalat de la interfície gràfica.
-STR_5818    :{SMALLFONT}{BLACK}[Requereix renderitzat per maquinari]{NEWLINE}Usa el mètode «nearest neighbour»{NEWLINE}quan s'estableix l'escalat de finestres{NEWLINE}a valors enters (1, 2, 3...).
+STR_5818    :{SMALLFONT}{BLACK}[Requereix renderitzat per maquinari]{NEWLINE}Usa el mètode {LEFTGUILLEMET}nearest neighbour{RIGHTGUILLEMET}{NEWLINE}quan s'estableix l'escalat de finestres{NEWLINE}a valors enters (1, 2, 3...).
 STR_5819    :{SMALLFONT}{BLACK}[Requereix renderitzat per maquinari]{NEWLINE}Posa la partida en pausa{NEWLINE}si s'activa l'Steam.
 STR_5820    :{SMALLFONT}{BLACK}Minimitza el joc si es perd el focus{NEWLINE}mentre s'està en mode de pantalla completa.
 STR_5821    :{SMALLFONT}{BLACK}Canvia el color del marcador de construcció quan s'estan construint{NEWLINE}atraccions, camins, botigues, estands, decoracions...
@@ -4144,7 +4144,7 @@ STR_5832    :{SMALLFONT}{BLACK}Mostra les alçades com a unitats genèriques (-2
 STR_5833    :{SMALLFONT}{BLACK}Canvia el format de les dates.
 STR_5834    :{SMALLFONT}{BLACK}Trieu quin dispositiu de so ha de fer servir l'OpenRCT2.
 STR_5835    :{SMALLFONT}{BLACK}Silencia el joc si la finestra perd el focus.
-STR_5836    :{SMALLFONT}{BLACK}Seleccioneu la peça de música per al menú principal.{NEWLINE}Si seleccioneu el tema de l'RCT1, cal que copieu «data/css17.dat» de la carpeta del RCT1 al directori del RCT2 com a «data/css50.dat», o bé establiu correctament la carpeta del RCT1 a la pestanya d'altres opcions.
+STR_5836    :{SMALLFONT}{BLACK}Seleccioneu la peça de música per al menú principal.{NEWLINE}Si seleccioneu el tema de l'RCT1, cal que copieu {LEFTGUILLEMET}data/css17.dat{RIGHTGUILLEMET} de la carpeta del RCT1 al directori del RCT2 com a {LEFTGUILLEMET}data/css50.dat{RIGHTGUILLEMET}, o bé establiu correctament la carpeta del RCT1 a la pestanya d'altres opcions.
 STR_5837    :{SMALLFONT}{BLACK}Crea i gestiona els temes de la interfície personalitzats.
 STR_5838    :{SMALLFONT}{BLACK}Mostra un botó per a la finestra de finances a la barra d'eines.
 STR_5839    :{SMALLFONT}{BLACK}Mostra un botó per a la finestra de recerques a la barra d'eines.
@@ -4310,7 +4310,7 @@ STR_5998    :Afegeix diners
 STR_5999    :Estableix quantitat de diners
 STR_6000    :Introduïu el valor nou
 STR_6001    :Activa els efectes d'il·luminació (experimental)
-STR_6002    :{SMALLFONT}{BLACK}Els fanals i atraccions encendran els seus llums per la nit.{NEWLINE}Cal que s'activi i utilitzi el motor gràfic de «Renderitzat per maquinari».
+STR_6002    :{SMALLFONT}{BLACK}Els fanals i atraccions encendran els seus llums per la nit.{NEWLINE}Cal que s'activi i utilitzi el motor gràfic de {LEFTGUILLEMET}Renderitzat per maquinari{RIGHTGUILLEMET}.
 STR_6003    :Vista retallada
 STR_6004    :Vista retallada
 STR_6005    :Activa la vista retallada
@@ -4364,6 +4364,84 @@ STR_6052    :El mapa d'alçades és massa gran i es retallarà
 STR_6053    :Aquest mapa d'alçades no es pot normalitzar
 STR_6054    :Només es poden usar bitmaps de 24 bits
 STR_6055    :Fitxer de mapa d'alçades de l'OpenRCT2
+STR_6056    :{SMALLFONT}{BLACK}Botó de silenci
+STR_6057    :{SMALLFONT}{BLACK}Mostra un botó a la barra d'eines per activar o silenciar el so.
+STR_6058    :Silencia
+STR_6059    :{RIGHTGUILLEMET}
+STR_6060    :Mostra animacions de compres
+STR_6061    :{SMALLFONT}{BLACK}Mostra un efecte mostrant les compres{NEWLINE}que fan els visitants.
+STR_6062    :{OUTLINE}{GREEN}+{CURRENCY2DP}
+STR_6063    :{OUTLINE}{RED}-{CURRENCY2DP}
+STR_6064    :Compra tots els terrenys
+STR_6065    :Registra accions d'usuari
+STR_6066    :{SMALLFONT}{BLACK}Registra totes les accions d'usuari en un arxiu a la vostra carpeta.
+STR_6067    :S'ha iniciat el servidor.
+STR_6068    :S'ha apagat el servidor.
+STR_6069    :El/la {STRING} està expulsat per en/la {STRING}.
+STR_6070    :El/la {STRING} ha estat afegit al grup {LEFTGUILLEMET}{STRING}{RIGHTGUILLEMET} per en/la {STRING}.
+STR_6071    :El/la {STRING} ha creat un grup de jugadors nou: {LEFTGUILLEMET}{STRING}{RIGHTGUILLEMET}
+STR_6072    :El/la {STRING} ha esborrat el grup de jugadors {LEFTGUILLEMET}{STRING}{RIGHTGUILLEMET}.
+STR_6073    :El/la {STRING} ha editat els permisos del grup de jugadors {LEFTGUILLEMET}{STRING}{RIGHTGUILLEMET}.
+STR_6074    :El/la {STRING} ha canviat el nom del grup de {LEFTGUILLEMET}{STRING}{RIGHTGUILLEMET} a {LEFTGUILLEMET}{STRING}{RIGHTGUILLEMET}.
+STR_6075    :El/la {STRING} ha canviat el grup de jugadors per defecte a {LEFTGUILLEMET}{STRING}{RIGHTGUILLEMET}.
+STR_6076    :El/la {STRING} ha usat/commutat la trampa {LEFTGUILLEMET}{STRING}{RIGHTGUILLEMET}.
+STR_6077    :Afegeix diners
+STR_6078    :El/la {STRING} ha construït l'atracció {LEFTGUILLEMET}{STRING}{RIGHTGUILLEMET}.
+STR_6079    :El/la {STRING} ha retirat l'atracció {LEFTGUILLEMET}{STRING}{RIGHTGUILLEMET}.
+STR_6080    :El/la {STRING} ha modificat l'aparença de l'atracció {LEFTGUILLEMET}{STRING}{RIGHTGUILLEMET}.
+STR_6081    :El/la {STRING} ha tancat l'atracció {LEFTGUILLEMET}{STRING}{RIGHTGUILLEMET}.
+STR_6082    :El/la {STRING} ha obert l'atracció {LEFTGUILLEMET}{STRING}{RIGHTGUILLEMET}.
+STR_6083    :El/la {STRING} ha posat en prova l'atracció {LEFTGUILLEMET}{STRING}{RIGHTGUILLEMET}.
+STR_6084    :El/la {STRING} ha modificat les opcions dels vehicles de l'atracció {LEFTGUILLEMET}{STRING}{RIGHTGUILLEMET}.
+STR_6085    :El/la {STRING} ha modificat les opcions d'atracció de {LEFTGUILLEMET}{STRING}{RIGHTGUILLEMET}.
+STR_6086    :El/la {STRING} ha canviat el nom de l'atracció {LEFTGUILLEMET}{STRING}{RIGHTGUILLEMET} a {LEFTGUILLEMET}{STRING}{RIGHTGUILLEMET}.
+STR_6087    :El/la {STRING} ha canviat el preu de l'atracció {LEFTGUILLEMET}{STRING}{RIGHTGUILLEMET} a {STRING}
+STR_6088    :El/la {STRING} ha canviat el preu secunadri de l'atracció {LEFTGUILLEMET}{STRING}{RIGHTGUILLEMET} a {STRING}.
+STR_6089    :El/la {STRING} ha canviat el nom del parc {LEFTGUILLEMET}{STRING}{RIGHTGUILLEMET} a {LEFTGUILLEMET}{STRING}{RIGHTGUILLEMET}.
+STR_6090    :El/la {STRING} ha obert el parc.
+STR_6091    :El/la {STRING} ha tancat el parc.
+STR_6092    :El/la {STRING} ha canviat el preu de l'entrada al parc a {STRING}.
+STR_6093    :El/la {STRING} ha afegit decoracions.
+STR_6094    :El/la {STRING} ha tret decoracions.
+STR_6095    :El/la {STRING} ha editat decoracions.
+STR_6096    :El/la {STRING} ha canviat el nom del senyal a {LEFTGUILLEMET}{STRING}{RIGHTGUILLEMET}.
+STR_6097    :El/la {STRING} ha construït una peça de la via de {LEFTGUILLEMET}{STRING}{RIGHTGUILLEMET}.
+STR_6098    :El/la {STRING} ha tret una peça de via.
+STR_6099    :Us heu connectat al servidor.
+STR_6100    :Us heu desconnectat del servidor.
+STR_6101    :Les atraccions no perden valor
+STR_6102    :{SMALLFONT}{BLACK}El valor de les atraccions no disminuirà amb el pas del temps, de manera que els visitants no pensaran de cop que l'atracció és massa cara.
+STR_6103    :{SMALLFONT}{BLACK}Aquesta opció està desactivada si es juga en xarxa.
+STR_6104    :Muntanya russa amb tirabuixons
+STR_6105    :Hipermuntanya russa
+STR_6106    :Atracció de cotxes
+STR_6107    :Monster Trucks
+STR_6108    :Tornado d'acer
+STR_6109    :Hiper-Twister
+STR_6110    :Muntanya russa infantil
+STR_6111    :Minimuntanya russa clàssica
+STR_6112    :Muntanya russa compacta amb vies d'acer per la qual els vagons passen per tirabuixons i inversions.
+STR_6113    :Una muntanya russa alta sense inversions, amb llargues caigudes, alta velocitat, vagons còmodes i amb només unes barres de subjecció.
+STR_6114    :Els passatgers viatgen poc a poc en vehicles autopropulsats sobre la ruta que segueix la via.
+STR_6115    :Camions 4x4 gegants i autopropulsats que poden pujar per pendents empinades.
+STR_6116    :Muntanya russa amb vagons amples que llisca per una via d'acer llisa, passant per una bona varietat d'inversions.
+STR_6117    :Els passatgers drets amb unes subjeccions simples dintre els vagons travessen i gaudeixen de caigudes i girs enrevessats, així com d'una part {LEFTGUILLEMET}a l'aire lliure{RIGHTGUILLEMET} damunt dels turons.
+STR_6118    :Muntanya russa suau per gent que encara no s'atreveix amb muntanyes russes grans.
+STR_6119    :Una muntanya russa barata i fàcil de construir, però amb una alçada limitada.
+STR_6120    :{BABYBLUE}Nou vehicle disponible per {STRINGID}:{NEWLINE}{STRINGID}
+STR_6121    :{SMALLFONT}{BLACK}Amplia els drets de construcció del parc fins a les vores del mapa.
+STR_6122    :No hi ha prou muntanyes russes en aquest escenari!
+STR_6123    :S'ha produït un error carregant els objectes del parc.
+STR_6124    :Nom de l'objecte
+STR_6125    :Tipus d'objecte
+STR_6126    :Tipus desconegut
+STR_6127    :Arxiu: {STRING}
+STR_6128    :L'arxiu no s'ha pogut carregar ja que està danyat o bé els objectes referenciats són desconeguts. Se'n dóna una llista a continuació.
+STR_6129    :Copia l'objecte seleccionat al porta-retalls
+STR_6130    :Copia la llista sencera al porta-retalls
+STR_6131    :Origen de l'objecte
+STR_6132    :Ignora recerques pendents
+STR_6133    :{SMALLFONT}{BLACK}Permet l'accés a atraccions i decoracions que encara no s'han recercat.
 
 #############
 # Scenarios #
@@ -4388,7 +4466,7 @@ STR_DTLS    :Construïu un parc temàtic des de l'inici al voltant d'un llac.
 <Diamond Heights>
 STR_SCNR    :Els cims diamantins
 STR_PARK    :Els cims diamantins
-STR_DTLS    :«Els cims diamantins» ja és un parc exitós amb grans atraccions. Desenvolupeu-lo i dobleu-ne el valor.
+STR_DTLS    :{LEFTGUILLEMET}Els cims diamantins{RIGHTGUILLEMET} ja és un parc exitós amb grans atraccions. Desenvolupeu-lo i dobleu-ne el valor.
 
 <Evergreen Gardens>
 STR_SCNR    :Els jardins perennes
@@ -4506,7 +4584,7 @@ STR_SCNR    :Diversiotopia
 STR_PARK    :Diversiotopia
 STR_DTLS    :Cobrint ambdues bandes d'una autopista, aquest parc ja opera amb algunes atraccions.
 
-<Haunted Harbor>
+<Haunted Harbour>
 STR_SCNR    :El port embruixat
 STR_PARK    :El port embruixat
 STR_DTLS    :Les autoritats locals han acordat vendre barat el terreny proper d'aquest parc coster amb la condició que es preservin algunes atraccions.
@@ -4609,7 +4687,7 @@ STR_DTLS    :L'autoritat local no permetrà campanyes de màrqueting. El parc ha
 <Giggle Downs>
 STR_SCNR    :Baixades de riure
 STR_PARK    :Baixades de riure
-STR_DTLS    :Un «steeplechase» de quatre carrils és la peça centra d'aquest parc en expansió.
+STR_DTLS    :Un {LEFTGUILLEMET}steeplechase{RIGHTGUILLEMET} de quatre carrils és la peça centra d'aquest parc en expansió.
 
 <Mineral Park>
 STR_SCNR    :Parc mineral
@@ -4802,8 +4880,8 @@ STR_DTLS    :
 ## Misc parks from RCT1
 # Had no details
 <Fort Anachronism>
-STR_SCNR    :El castell «Fort Anachronism»
-STR_PARK    :El castell «Fort Anachronism»
+STR_SCNR    :El castell {LEFTGUILLEMET}Fort Anachronism{RIGHTGUILLEMET}
+STR_PARK    :El castell {LEFTGUILLEMET}Fort Anachronism{RIGHTGUILLEMET}
 STR_DTLS    :
 
 #####################

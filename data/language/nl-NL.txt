@@ -4432,6 +4432,9 @@ STR_6127    :Bestand: {STRING}
 STR_6128    :Het bestand kon niet geladen worden omdat sommige objecten waar het naar verwijst beschadigd zijn of ontbreken. Hieronder staat een lijst van deze objecten.
 STR_6129    :Selectie naar klembord kopiëren
 STR_6130    :Hele lijst naar klembord kopiëren
+STR_6131    :Afkomst
+STR_6132    :Uitvindingsstatus negeren
+STR_6133    :{SMALLFONT}{BLACK}Maakt attracties en decor beschikbaar die nog niet zijn uitgevonden.
 
 #############
 # Scenarios #

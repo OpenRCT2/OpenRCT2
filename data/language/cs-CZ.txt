@@ -4440,6 +4440,9 @@ STR_6127    :Soubor: {STRING}
 STR_6128    :Soubor se nepodařilo načíst, protože využívá objekty, z nichž některé jsou porušené nebo zcela chybí. Seznam takových objektů je k dispozici níže.
 STR_6129    :Kopírovat vybrané do schránky
 STR_6130    :Kopírovat celý seznam do schránky
+STR_6131    :Zdroj objektu
+STR_6132    :Ignorovat nutnost výzkumu
+STR_6133    :{SMALLFONT}{BLACK}Povolí přístup k atrakcím a kulisám, které ještě nebyly vyzkoumány
 
 ###############################################################################
 ## RCT2 Objects

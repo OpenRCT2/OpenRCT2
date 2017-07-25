@@ -4581,9 +4581,9 @@ STR_SCNR    :Funtopia
 STR_PARK    :Funtopia
 STR_DTLS    :Utsträckande mark på båda sidor av en motorväg, denna park har ett flertal åkturer igång
 
-<Haunted Harbor>
-STR_SCNR    :Haunted Harbor
-STR_PARK    :Haunted Harbor
+<Haunted Harbour>
+STR_SCNR    :Haunted Harbour
+STR_PARK    :Haunted Harbour
 STR_DTLS    :Den lokala myndigheten har godkänt tillåtelse att sälja land i närheten billigt till denna lilla sjösatta park, på villkoret att vissa åkturer är bevarade
 
 <Fun Fortress>

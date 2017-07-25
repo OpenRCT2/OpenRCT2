@@ -4585,9 +4585,9 @@ STR_SCNR    :Funtopia
 STR_PARK    :Funtopia
 STR_DTLS    :Un parco ai bordi di un'autostrada, con alcune attrazioni già operative
 
-<Haunted Harbor>
-STR_SCNR    :Haunted Harbor
-STR_PARK    :Haunted Harbor
+<Haunted Harbour>
+STR_SCNR    :Haunted Harbour
+STR_PARK    :Haunted Harbour
 STR_DTLS    :L'autorità locale ha accettato di svendere i terreni confinanti a questo piccolo parco sul mare, a condizione che alcune attrazioni vengano mantenute
 
 <Fun Fortress>
