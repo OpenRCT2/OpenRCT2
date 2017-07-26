@@ -867,19 +867,65 @@ static void window_options_mouseup(rct_window *w, rct_widgetindex widgetIndex)
             utf8string rct1path = platform_open_directory_browser(language_get_string(STR_PATH_TO_RCT1_BROWSER));
             if (rct1path) {
                 // Check if this directory actually contains RCT1
-                // The sprite file can be called either csg1.1 or csg1.dat, so check for both names.
-                utf8 checkpath[MAX_PATH];
-                safe_strcpy(checkpath, rct1path, MAX_PATH);
-                safe_strcat_path(checkpath, "Data", MAX_PATH);
-                safe_strcat_path(checkpath, "csg1.1", MAX_PATH);
+                utf8 csg1path[MAX_PATH];
+                utf8 csg1ipath[MAX_PATH];
+                utf8 steam_installpath[MAX_PATH];
 
-                if (!platform_file_exists(checkpath)) {
-                    safe_strcpy(checkpath, rct1path, MAX_PATH);
-                    safe_strcat_path(checkpath, "Data", MAX_PATH);
-                    safe_strcat_path(checkpath, "csg1.dat", MAX_PATH);
+                // Support the file layout of RCT1 on Steam
+                // First check if this is a Steam directory by looking for RCTdeluxe_install directory
+                safe_strcpy(steam_installpath, rct1path, MAX_PATH);
+                safe_strcat_path(steam_installpath, "RCTdeluxe_install", MAX_PATH);
+                if (platform_directory_exists(steam_installpath)) {
+                    // Copy the missing files from RCTdeluxe_install
+                    utf8 srcpath[MAX_PATH];
+                    utf8 destpath[MAX_PATH];
+
+                    // Copy csg1i.dat
+                    safe_strcpy(srcpath, steam_installpath, MAX_PATH);
+                    safe_strcat_path(srcpath, "Data", MAX_PATH);
+                    safe_strcat_path(srcpath, "csg1i.dat", MAX_PATH);
+                    safe_strcpy(destpath, rct1path, MAX_PATH);
+                    safe_strcat_path(destpath, "Data", MAX_PATH);
+                    safe_strcat_path(destpath, "csg1i.dat", MAX_PATH);
+                    platform_file_copy(srcpath, destpath, true);
+
+                    // Copy css17.dat
+                    safe_strcpy(srcpath, steam_installpath, MAX_PATH);
+                    safe_strcat_path(srcpath, "Data", MAX_PATH);
+                    safe_strcat_path(srcpath, "css17.dat", MAX_PATH);
+                    safe_strcpy(destpath, rct1path, MAX_PATH);
+                    safe_strcat_path(destpath, "Data", MAX_PATH);
+                    safe_strcat_path(destpath, "css17.dat", MAX_PATH);
+                    platform_file_copy(srcpath, destpath, true);
+
+                    // Copy mp.dat
+                    safe_strcpy(srcpath, steam_installpath, MAX_PATH);
+                    safe_strcat_path(srcpath, "Data", MAX_PATH);
+                    safe_strcat_path(srcpath, "mp.dat", MAX_PATH);
+                    safe_strcpy(destpath, rct1path, MAX_PATH);
+                    safe_strcat_path(destpath, "Data", MAX_PATH);
+                    safe_strcat_path(destpath, "mp.dat", MAX_PATH);
+                    platform_file_copy(srcpath, destpath, true);
                 }
 
-                if (platform_file_exists(checkpath)) {
+                // The sprite file can be called either csg1.1 or csg1.dat, so check for both names.
+                safe_strcpy(csg1path, rct1path, MAX_PATH);
+                safe_strcat_path(csg1path, "Data", MAX_PATH);
+                safe_strcat_path(csg1path, "csg1.1", MAX_PATH);
+
+                if (!platform_file_exists(csg1path)) {
+                    safe_strcpy(csg1path, rct1path, MAX_PATH);
+                    safe_strcat_path(csg1path, "Data", MAX_PATH);
+                    safe_strcat_path(csg1path, "csg1.dat", MAX_PATH);
+                }
+
+                // Also check for csg1i.dat
+                safe_strcpy(csg1ipath, rct1path, MAX_PATH);
+                safe_strcat_path(csg1ipath, "Data", MAX_PATH);
+                safe_strcat_path(csg1ipath, "csg1i.dat", MAX_PATH);
+
+                // If csg1.dat or csg1.1 exists and csg1i.dat exists
+                if (platform_file_exists(csg1path) && platform_file_exists(csg1ipath)) {
                     SafeFree(gConfigGeneral.rct1_path);
                     gConfigGeneral.rct1_path = rct1path;
                     config_save_default();
