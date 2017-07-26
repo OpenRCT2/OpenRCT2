@@ -1,6 +1,13 @@
 cmake_minimum_required(VERSION 2.6)
 
 option(DISABLE_RCT2_TESTS "Disable tests that require RollerCoaster Tycoon 2 assets.")
+option(SYSTEM_GTEST "Use the googletest library provided by the system.")
+
+if (SYSTEM_GTEST)
+    find_package(GTest REQUIRED)
+
+    set(GTEST_LIBRARIES ${GTEST_BOTH_LIBRARIES})
+else (SYSTEM_GTEST)
 
 # Bootstrap GoogleTest
 INCLUDE(ExternalProject)
@@ -52,11 +59,13 @@ set_property(TARGET ${GTEST_MAIN_LIBRARY} PROPERTY IMPORTED_LOCATION ${GTEST_MAI
 add_dependencies(${GTEST_LIBRARY} googletest)
 add_dependencies(${GTEST_MAIN_LIBRARY} ${GTEST_LIBRARY})
 
+set(GTEST_LIBRARIES gtest gtest_main pthread)
+
+endif (SYSTEM_GTEST)
+
 include_directories(SYSTEM ${GTEST_INCLUDE_DIRS})
 include_directories("${ROOT_DIR}/src")
 include_directories(${SDL2_INCLUDE_DIRS})
-
-set(GTEST_LIBRARIES gtest gtest_main pthread)
 
 # Some most common files required in tests
 set(COMMON_TEST_SOURCES
