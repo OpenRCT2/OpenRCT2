@@ -284,7 +284,7 @@ void game_update()
 {
     gInUpdateCode = true;
 
-    sint32 i, numUpdates;
+    sint32 numUpdates;
 
     // 0x006E3AEC // screen_game_process_mouse_input();
     screenshot_check();
@@ -317,6 +317,25 @@ void game_update()
         network_process_game_commands();
     }
 
+    // Update the game one or more times
+    for (sint32 i = 0; i < numUpdates; i++) {
+        game_logic_update();
+
+        if (gGameSpeed > 1)
+            continue;
+
+        if (input_get_state() == INPUT_STATE_RESET ||
+            input_get_state() == INPUT_STATE_NORMAL
+        ) {
+            if (input_test_flag(INPUT_FLAG_VIEWPORT_SCROLLING)) {
+                input_set_flag(INPUT_FLAG_VIEWPORT_SCROLLING, false);
+                break;
+            }
+        } else {
+            break;
+        }
+    }
+
     if (!gOpenRCT2Headless)
     {
         input_set_flag(INPUT_FLAG_VIEWPORT_SCROLLING, false);
@@ -345,25 +364,6 @@ void game_update()
         gUnk141F568 = gUnk13CA740;
 
         game_handle_input();
-    }
-
-    // Update the game one or more times
-    for (i = 0; i < numUpdates; i++) {
-        game_logic_update();
-
-        if (gGameSpeed > 1)
-            continue;
-
-        if (input_get_state() == INPUT_STATE_RESET ||
-            input_get_state() == INPUT_STATE_NORMAL
-        ) {
-            if (input_test_flag(INPUT_FLAG_VIEWPORT_SCROLLING)) {
-                input_set_flag(INPUT_FLAG_VIEWPORT_SCROLLING, false);
-                break;
-            }
-        } else {
-            break;
-        }
     }
 
     // Always perform autosave check, even when paused
