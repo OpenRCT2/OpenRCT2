@@ -998,7 +998,7 @@ static void sub_68F41A(rct_peep *peep, sint32 index)
             }
 
             if (peep->time_on_ride > 15){
-                peep->happiness_growth_rate = min(0, peep->happiness_growth_rate - 5);
+                peep->happiness_growth_rate = max(0, peep->happiness_growth_rate - 5);
 
                 if (peep->time_on_ride > 22){
                     rct_ride* ride = get_ride(peep->current_ride);
