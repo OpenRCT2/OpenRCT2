@@ -1962,6 +1962,7 @@ enum {
     STR_SHORTCUT_SHOW_MAP = 2523,
     STR_SHORTCUT_SCREENSHOT = 2524,
     STR_SHORTCUT_KEY_UNKNOWN = 2525,
+
 // STR_2525    :???
 // STR_2526    :???
 // STR_2527    :???
@@ -3803,6 +3804,8 @@ enum {
 
     STR_CHEAT_IGNORE_RESEARCH_STATUS = 6132,
     STR_CHEAT_IGNORE_RESEARCH_STATUS_TIP = 6133,
+
+    STR_SHORTCUT_CLEAR_SCENERY = 6134,
 
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     STR_COUNT = 32768

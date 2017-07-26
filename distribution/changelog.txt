@@ -1,6 +1,7 @@
 0.1.1 (in development)
 ------------------------------------------------------------------------
 - Feature: [#5815] Add cheat to ignore research status and access rides/scenery not yet invented.
+- Feature: [#5857] Keyboard shortcut for clear scenery.
 - Feature: [#5877] Allow up to 16 stations to be synchronised
 - Feature: [#5970] The Bobsleigh Roller Coaster now supports on-ride photos.
 - Feature: [#5991] Allow all tracked rides that can be tested without guests to the Track Designer
