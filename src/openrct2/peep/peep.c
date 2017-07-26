@@ -4070,7 +4070,7 @@ static void peep_update_ride_sub_state_20(rct_peep* peep){
             peep->destination_x = x;
             peep->destination_y = y;
             peep->destination_tolerence = 3;
-            peep->happiness_target = min(peep->happiness_target + 30, 0xFF);
+            peep->happiness_target = min(peep->happiness_target + 30, 255);
             peep->happiness = peep->happiness_target;
         }
         else{
@@ -4098,7 +4098,7 @@ static void peep_update_ride_sub_state_20(rct_peep* peep){
     peep->destination_y = y;
     peep->destination_tolerence = 3;
 
-    peep->happiness_target = min(peep->happiness_target + 30, 0xFF);
+    peep->happiness_target = min(peep->happiness_target + 30, 255);
     peep->happiness = peep->happiness_target;
 
     peep_stop_purchase_thought(peep, ride->type);
@@ -11923,7 +11923,7 @@ static bool peep_should_go_on_ride(rct_peep *peep, sint32 rideIndex, sint32 entr
                 if (ridePrice > (money16)(value * 2)) {
                     if (peepAtRide) {
                         peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_BAD_VALUE, rideIndex);
-                        if (peep->happiness_target < 60) {
+                        if (peep->happiness_target >= 60) {
                             peep->happiness_target -= 16;
                         }
                         ride_update_popularity(ride, 0);
