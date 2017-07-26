@@ -7704,7 +7704,7 @@ void ride_update_max_vehicles(sint32 rideIndex, bool wasTrackChanged)
         }
         sint32 newCarsPerTrain = max(ride->proposed_num_cars_per_train, rideEntry->min_cars_in_train);
         maxCarsPerTrain = max(maxCarsPerTrain, rideEntry->min_cars_in_train);
-        if (!gCheatsDisableTrainLengthLimit || isCreating) {
+        if (!gCheatsDisableTrainLengthLimit || wasTrackChanged) {
             newCarsPerTrain = min(maxCarsPerTrain, newCarsPerTrain);
         }
         ride->min_max_cars_per_train = maxCarsPerTrain | (rideEntry->min_cars_in_train << 4);
@@ -7779,7 +7779,7 @@ void ride_update_max_vehicles(sint32 rideIndex, bool wasTrackChanged)
         maxNumTrains = rideEntry->cars_per_flat_ride;
     }
 
-    if (gCheatsDisableTrainLengthLimit && !isCreating) {
+    if (gCheatsDisableTrainLengthLimit && !wasTrackChanged) {
         maxNumTrains = 31;
     }
     numVehicles = min(ride->proposed_num_vehicles, maxNumTrains);
