@@ -1483,9 +1483,10 @@ static rct_window *window_ride_open(sint32 rideIndex)
     w = window_create_auto_pos(316, 207, window_ride_page_events[0], WC_RIDE, WF_10 | WF_RESIZABLE);
     w->widgets = window_ride_page_widgets[WINDOW_RIDE_PAGE_MAIN];
     w->enabled_widgets = window_ride_page_enabled_widgets[WINDOW_RIDE_PAGE_MAIN];
+    w->hold_down_widgets = window_ride_page_hold_down_widgets[WINDOW_RIDE_PAGE_MAIN];
     w->number = rideIndex;
 
-    w->page = 0;
+    w->page = WINDOW_RIDE_PAGE_MAIN;
     w->var_48C = 0;
     w->frame_no = 0;
     w->list_information_type = 0;
