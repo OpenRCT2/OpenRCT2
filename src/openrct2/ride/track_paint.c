@@ -307,7 +307,7 @@ void track_paint_util_draw_station_impl(uint8 rideIndex, uint8 trackSequence, ui
     rct_xy16 position = {gPaintMapPosition.x, gPaintMapPosition.y};
     rct_ride * ride = get_ride(rideIndex);
     const rct_ride_entrance_definition * entranceStyle = &RideEntranceDefinitions[ride->entrance_style];
-    const bool hasGreenLight = (bool) (mapElement->properties.track.sequence & MAP_ELEM_TRACK_SEQUENCE_GREEN_LIGHT_MASK);
+    const bool hasGreenLight = (bool) (mapElement->properties.track.sequence & MAP_ELEM_TRACK_SEQUENCE_GREEN_LIGHT);
 
     bool hasFence;
     uint32 imageId;
@@ -441,7 +441,7 @@ void track_paint_util_draw_station_inverted(uint8 rideIndex, uint8 trackSequence
     rct_xy16 position = {gPaintMapPosition.x, gPaintMapPosition.y};
     rct_ride * ride = get_ride(rideIndex);
     const rct_ride_entrance_definition * entranceStyle = &RideEntranceDefinitions[ride->entrance_style];
-    const bool hasGreenLight = (bool) (mapElement->properties.track.sequence & MAP_ELEM_TRACK_SEQUENCE_GREEN_LIGHT_MASK);
+    const bool hasGreenLight = (bool) (mapElement->properties.track.sequence & MAP_ELEM_TRACK_SEQUENCE_GREEN_LIGHT);
 
     bool hasFence;
     uint32 imageId;
