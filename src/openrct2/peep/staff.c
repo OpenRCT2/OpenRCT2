@@ -1455,7 +1455,7 @@ static void staff_entertainer_update_nearby_peeps(rct_peep* peep) {
             continue;
 
         if (peep->state == PEEP_STATE_WALKING) {
-            peep->happiness_target = min(peep->happiness_target + 4, 255);
+            peep->happiness_target = min(peep->happiness_target + 4, PEEP_MAX_HAPPINESS);
         }
         else if (peep->state == PEEP_STATE_QUEUING) {
             if(peep->time_in_queue > 200) {
@@ -1464,7 +1464,7 @@ static void staff_entertainer_update_nearby_peeps(rct_peep* peep) {
             else {
                 peep->time_in_queue = 0;
             }
-            peep->happiness_target = min(peep->happiness_target + 3, 255);
+            peep->happiness_target = min(peep->happiness_target + 3, PEEP_MAX_HAPPINESS);
         }
     }
 }
