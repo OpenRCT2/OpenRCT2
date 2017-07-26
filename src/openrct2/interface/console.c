@@ -665,7 +665,7 @@ static sint32 cc_staff(const utf8 **argv, sint32 argc)
                     rct_peep *peep = GET_PEEP(int_val[0]);
 
                     peep->energy = int_val[1];
-                    peep->energy_growth_rate = int_val[1];
+                    peep->energy_target = int_val[1];
                 }
             } else if (strcmp(argv[1], "costume") == 0) {
                 sint32 int_val[2];

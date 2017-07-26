@@ -1359,11 +1359,11 @@ private:
         dst->direction = src->direction;
 
         dst->energy = src->energy;
-        dst->energy_growth_rate = src->energy_growth_rate;
+        dst->energy_target = src->energy_target;
         dst->happiness = src->happiness;
-        dst->happiness_growth_rate = src->happiness_growth_rate;
+        dst->happiness_target = src->happiness_target;
         dst->nausea = src->nausea;
-        dst->nausea_growth_rate = src->nausea_growth_rate;
+        dst->nausea_target = src->nausea_target;
         dst->hunger = src->hunger;
         dst->thirst = src->thirst;
         dst->bathroom = src->bathroom;

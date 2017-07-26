@@ -285,36 +285,39 @@ static void cheat_set_guest_parameter(sint32 parameter, sint32 value)
 
     FOR_ALL_GUESTS(spriteIndex, peep) {
         switch(parameter) {
-            case GUEST_PARAMETER_HAPPINESS:
-                peep->happiness = value;
-                // Clear the 'red-faced with anger' status if we're making the guest happy
-                if (value > 0)
-                {
-                    peep->peep_flags &= ~PEEP_FLAGS_ANGRY;
-                    peep->angriness = 0;
-                }
-                break;
-            case GUEST_PARAMETER_ENERGY:
-                peep->energy = value;
-                break;
-            case GUEST_PARAMETER_HUNGER:
-                peep->hunger = value;
-                break;
-            case GUEST_PARAMETER_THIRST:
-                peep->thirst = value;
-                break;
-            case GUEST_PARAMETER_NAUSEA:
-                peep->nausea = value;
-                break;
-            case GUEST_PARAMETER_NAUSEA_TOLERANCE:
-                peep->nausea_tolerance = value;
-                break;
-            case GUEST_PARAMETER_BATHROOM:
-                peep->bathroom = value;
-                break;
-            case GUEST_PARAMETER_PREFERRED_RIDE_INTENSITY:
-                peep->intensity = (15 << 4) | value;
-                break;
+        case GUEST_PARAMETER_HAPPINESS:
+            peep->happiness = value;
+            peep->happiness_target = value;
+            // Clear the 'red-faced with anger' status if we're making the guest happy
+            if (value > 0)
+            {
+                peep->peep_flags &= ~PEEP_FLAGS_ANGRY;
+                peep->angriness = 0;
+            }
+            break;
+        case GUEST_PARAMETER_ENERGY:
+            peep->energy = value;
+            peep->energy_target = value;
+            break;
+        case GUEST_PARAMETER_HUNGER:
+            peep->hunger = value;
+            break;
+        case GUEST_PARAMETER_THIRST:
+            peep->thirst = value;
+            break;
+        case GUEST_PARAMETER_NAUSEA:
+            peep->nausea = value;
+            peep->nausea_target = value;
+            break;
+        case GUEST_PARAMETER_NAUSEA_TOLERANCE:
+            peep->nausea_tolerance = value;
+            break;
+        case GUEST_PARAMETER_BATHROOM:
+            peep->bathroom = value;
+            break;
+        case GUEST_PARAMETER_PREFERRED_RIDE_INTENSITY:
+            peep->intensity = (15 << 4) | value;
+            break;
         }
         peep_update_sprite_type(peep);
     }
@@ -430,7 +433,7 @@ static void cheat_set_staff_speed(uint8 value)
 
     FOR_ALL_STAFF(spriteIndex, peep) {
         peep->energy = value;
-        peep->energy_growth_rate = value;
+        peep->energy_target = value;
     }
 }
 

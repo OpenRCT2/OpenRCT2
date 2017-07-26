@@ -1217,8 +1217,8 @@ void ride_remove_peeps(sint32 rideIndex)
             peep->state = PEEP_STATE_FALLING;
             peep_switch_to_special_sprite(peep, 0);
 
-            peep->happiness = min(peep->happiness, peep->happiness_growth_rate) / 2;
-            peep->happiness_growth_rate = peep->happiness;
+            peep->happiness = min(peep->happiness, peep->happiness_target) / 2;
+            peep->happiness_target = peep->happiness;
             peep->window_invalidate_flags |= PEEP_INVALIDATE_PEEP_STATS;
         }
     }
