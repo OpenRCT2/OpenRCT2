@@ -3865,7 +3865,7 @@ static money32 ride_set_setting(uint8 rideIndex, uint8 setting, uint8 value, uin
             ride_remove_peeps(rideIndex);
 
             ride->mode = value;
-            ride_update_max_vehicles(rideIndex);
+            ride_update_max_vehicles(rideIndex, false);
         }
         break;
     case RIDE_SETTING_DEPARTURE:
@@ -4818,7 +4818,7 @@ static void ride_create_vehicles_find_first_block(rct_ride *ride, rct_xy_element
  */
 static bool ride_create_vehicles(rct_ride *ride, sint32 rideIndex, rct_xy_element *element, sint32 isApplying)
 {
-    ride_update_max_vehicles(rideIndex);
+    ride_update_max_vehicles(rideIndex, false);
     if (ride->subtype == RIDE_ENTRY_INDEX_NULL) {
         return true;
     }
@@ -7664,7 +7664,7 @@ foundTrack:
  *
  *  rct2: 0x006DD57D
  */
-void ride_update_max_vehicles(sint32 rideIndex)
+void ride_update_max_vehicles(sint32 rideIndex, bool wasTrackChanged)
 {
     rct_ride *ride = get_ride(rideIndex);
     if (ride->subtype == RIDE_ENTRY_INDEX_NULL)
@@ -7704,7 +7704,7 @@ void ride_update_max_vehicles(sint32 rideIndex)
         }
         sint32 newCarsPerTrain = max(ride->proposed_num_cars_per_train, rideEntry->min_cars_in_train);
         maxCarsPerTrain = max(maxCarsPerTrain, rideEntry->min_cars_in_train);
-        if (!gCheatsDisableTrainLengthLimit) {
+        if (!gCheatsDisableTrainLengthLimit || wasTrackChanged) {
             newCarsPerTrain = min(maxCarsPerTrain, newCarsPerTrain);
         }
         ride->min_max_cars_per_train = maxCarsPerTrain | (rideEntry->min_cars_in_train << 4);
@@ -7779,7 +7779,7 @@ void ride_update_max_vehicles(sint32 rideIndex)
         maxNumTrains = rideEntry->cars_per_flat_ride;
     }
 
-    if (gCheatsDisableTrainLengthLimit) {
+    if (gCheatsDisableTrainLengthLimit && !wasTrackChanged) {
         maxNumTrains = 31;
     }
     numVehicles = min(ride->proposed_num_vehicles, maxNumTrains);
@@ -7964,7 +7964,7 @@ static money32 ride_set_vehicles(uint8 rideIndex, uint8 setting, uint8 value, ui
     }
 
     ride->num_circuits = 1;
-    ride_update_max_vehicles(rideIndex);
+    ride_update_max_vehicles(rideIndex, false);
 
     if (ride->overall_view.xy != RCT_XY8_UNDEFINED) {
         rct_xyz16 coord;
