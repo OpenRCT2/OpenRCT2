@@ -1374,7 +1374,7 @@ static money32 track_place(sint32 rideIndex, sint32 type, sint32 originX, sint32
                 track_add_station_element(x, y, baseZ, direction, rideIndex, GAME_COMMAND_FLAG_APPLY);
             }
             sub_6CB945(rideIndex);
-            ride_update_max_vehicles(rideIndex);
+            ride_update_max_vehicles(rideIndex, true);
         }
 
         if (rideTypeFlags & RIDE_TYPE_FLAG_TRACK_MUST_BE_ON_WATER){
@@ -1634,7 +1634,7 @@ static money32 track_remove(uint8 type, uint8 sequence, sint16 originX, sint16 o
         map_element_remove(mapElement);
         sub_6CB945(rideIndex);
         if (!(flags & (1 << 6))){
-            ride_update_max_vehicles(rideIndex);
+            ride_update_max_vehicles(rideIndex, true);
         }
     }
 
