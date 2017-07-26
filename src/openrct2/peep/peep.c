@@ -684,7 +684,8 @@ static uint8 peep_assess_surroundings(sint16 centre_x, sint16 centre_y, sint16 c
 static void peep_update_hunger(rct_peep *peep){
     if (peep->hunger >= 3){
         peep->hunger -= 2;
-        peep->energy_target = min(peep->energy_target + 2, 255);
+        // Originally capped at 255 instead of 128 (the actual max value), like a mistake since most other values do max out at 255.
+        peep->energy_target = min(peep->energy_target + 2, PEEP_MAX_ENERGY);
         peep->bathroom = min(peep->bathroom + 1, 255);
     }
 }
@@ -982,7 +983,7 @@ static void sub_68F41A(rct_peep *peep, sint32 index)
 
                     if (thought_type != PEEP_THOUGHT_TYPE_NONE) {
                         peep_insert_new_thought(peep, thought_type, 0xFF);
-                        peep->happiness_target = min(255, peep->happiness_target + 45);
+                        peep->happiness_target = min(PEEP_MAX_HAPPINESS, peep->happiness_target + 45);
                     }
                 }
             }
@@ -1313,9 +1314,8 @@ static void sub_68F41A(rct_peep *peep, sint32 index)
     if (energy < 32)
         energy = 32;
 
-    /* This suggests 100% energy is 128. */
-    if (energy > 128)
-        energy = 128;
+    /* Previous code here suggested maximum energy is 128. */
+    energy = max(PEEP_MAX_ENERGY, energy);
 
     if (energy != peep->energy){
         peep->energy = energy;
@@ -4071,7 +4071,7 @@ static void peep_update_ride_sub_state_20(rct_peep* peep){
             peep->destination_x = x;
             peep->destination_y = y;
             peep->destination_tolerence = 3;
-            peep->happiness_target = min(peep->happiness_target + 30, 255);
+            peep->happiness_target = min(peep->happiness_target + 30, PEEP_MAX_HAPPINESS);
             peep->happiness = peep->happiness_target;
         }
         else{
@@ -4099,7 +4099,7 @@ static void peep_update_ride_sub_state_20(rct_peep* peep){
     peep->destination_y = y;
     peep->destination_tolerence = 3;
 
-    peep->happiness_target = min(peep->happiness_target + 30, 255);
+    peep->happiness_target = min(peep->happiness_target + 30, PEEP_MAX_HAPPINESS);
     peep->happiness = peep->happiness_target;
 
     peep_stop_purchase_thought(peep, ride->type);
@@ -7209,7 +7209,7 @@ rct_peep *peep_generate(sint32 x, sint32 y, sint32 z)
     /* Initial value will vary by -15..16 */
     sint8 happiness_delta = (peep_rand() & 0x1F) - 15;
     /* Adjust by the delta, clamping at min=0 and max=255. */
-    peep->happiness = clamp(0, peep->happiness + happiness_delta, 255);
+    peep->happiness = clamp(0, peep->happiness + happiness_delta, PEEP_MAX_HAPPINESS);
     peep->happiness_target = peep->happiness;
     peep->nausea = 0;
     peep->nausea_target = 0;
@@ -7288,7 +7288,7 @@ rct_peep *peep_generate(sint32 x, sint32 y, sint32 z)
     peep->trousers_colour = trouser_colours[trousers_colour];
 
     /* It looks like 65 is about 50% energy level, so this initialises
-     * a peep with approx 50%-100% energy. */
+     * a peep with approx 50%-100% energy (0x3F = 63, 63 + 65 = 128). */
     uint8 energy = (peep_rand() & 0x3F) + 65;
     peep->energy = energy;
     peep->energy_target = energy;
@@ -10634,7 +10634,7 @@ static void peep_on_enter_ride(rct_peep *peep, sint32 rideIndex)
 
     peep_set_has_ridden(peep, peep->current_ride);
     peep_update_favourite_ride(peep, ride);
-    peep->happiness_target = clamp(0, peep->happiness_target + satisfaction, 255);
+    peep->happiness_target = clamp(0, peep->happiness_target + satisfaction, PEEP_MAX_HAPPINESS);
     peep_update_ride_nausea_growth(peep, ride);
 }
 
@@ -10651,7 +10651,7 @@ static void peep_on_enter_ride(rct_peep *peep, sint32 rideIndex)
 static void peep_update_favourite_ride(rct_peep *peep, rct_ride *ride)
 {
     peep->peep_flags &= ~PEEP_FLAGS_RIDE_SHOULD_BE_MARKED_AS_FAVOURITE;
-    uint8 peepRideRating = clamp(0, (ride->excitement / 4) + peep->happiness, 255);
+    uint8 peepRideRating = clamp(0, (ride->excitement / 4) + peep->happiness, PEEP_MAX_HAPPINESS);
     if (peepRideRating >= peep->favourite_ride_rating) {
         if (peep->happiness >= 160 && peep->happiness_target >= 160) {
             peep->favourite_ride_rating = peepRideRating;
@@ -11042,8 +11042,8 @@ loc_69B119:
             }
 
             sint32 happinessGrowth = value * 4;
-            peep->happiness_target = min((peep->happiness_target + happinessGrowth), 255);
-            peep->happiness = min((peep->happiness + happinessGrowth), 255);
+            peep->happiness_target = min((peep->happiness_target + happinessGrowth), PEEP_MAX_HAPPINESS);
+            peep->happiness = min((peep->happiness + happinessGrowth), PEEP_MAX_HAPPINESS);
         }
     }
 
