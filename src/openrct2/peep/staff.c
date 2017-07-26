@@ -331,7 +331,7 @@ static money32 staff_hire_new_staff_member(uint8 staff_type, uint8 flags, sint16
 
             // Staff energy determines their walking speed
             newPeep->energy = 0x60;
-            newPeep->energy_growth_rate = 0x60;
+            newPeep->energy_target = 0x60;
             newPeep->var_E2 = 0;
 
             peep_update_name_sort(newPeep);
@@ -1455,7 +1455,7 @@ static void staff_entertainer_update_nearby_peeps(rct_peep* peep) {
             continue;
 
         if (peep->state == PEEP_STATE_WALKING) {
-            peep->happiness_growth_rate = min(peep->happiness_growth_rate + 4, 255);
+            peep->happiness_target = min(peep->happiness_target + 4, 255);
         }
         else if (peep->state == PEEP_STATE_QUEUING) {
             if(peep->time_in_queue > 200) {
@@ -1464,7 +1464,7 @@ static void staff_entertainer_update_nearby_peeps(rct_peep* peep) {
             else {
                 peep->time_in_queue = 0;
             }
-            peep->happiness_growth_rate = min(peep->happiness_growth_rate + 3, 255);
+            peep->happiness_target = min(peep->happiness_target + 3, 255);
         }
     }
 }
