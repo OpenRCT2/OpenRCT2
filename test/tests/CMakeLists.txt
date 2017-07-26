@@ -36,7 +36,7 @@ ExternalProject_Add(
 
 
 # Specify include dir
-set(GTEST_INCLUDE_DIR ${GOOGLETEST_DISTRIB_SOURCE_DIR}/googletest/include)
+set(GTEST_INCLUDE_DIRS ${GOOGLETEST_DISTRIB_SOURCE_DIR}/googletest/include)
 
 # Library
 ExternalProject_Get_Property(googletest BINARY_DIR)
@@ -52,7 +52,7 @@ set_property(TARGET ${GTEST_MAIN_LIBRARY} PROPERTY IMPORTED_LOCATION ${GTEST_MAI
 add_dependencies(${GTEST_LIBRARY} googletest)
 add_dependencies(${GTEST_MAIN_LIBRARY} ${GTEST_LIBRARY})
 
-include_directories(SYSTEM ${GTEST_INCLUDE_DIR})
+include_directories(SYSTEM ${GTEST_INCLUDE_DIRS})
 include_directories("${ROOT_DIR}/src")
 include_directories(${SDL2_INCLUDE_DIRS})
 
