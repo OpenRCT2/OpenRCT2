@@ -887,7 +887,7 @@ STR_0884    :Landschap laden
 STR_0885    :Landschap opslaan
 STR_0886    :Spel afsluiten
 STR_0887    :Scenariobewerker afsluiten
-STR_0888    :Achtbaanontwerper afsluiten
+STR_0888    :Baanontwerper afsluiten
 STR_0889    :Baanontwerpbeheer afsluiten
 STR_0890    :<removed string - do not use>
 STR_0891    :Screenshot
@@ -3209,7 +3209,7 @@ STR_3203    :Uitvindingen instellen
 STR_3204    :Opties selecteren
 STR_3205    :Doelstelling selecteren
 STR_3206    :Scenario opslaan
-STR_3207    :Achtbaanontwerper
+STR_3207    :Baanontwerper
 STR_3208    :Baanontwerpbeheer
 STR_3209    :Terug naar de vorige stap:
 STR_3210    :Verder naar de volgende stap:
@@ -3337,7 +3337,7 @@ STR_3331    :Pad van de parkingang naar de rand van de kaart is incompleet of te
 STR_3332    :Parkingang staat achterstevoren of heeft geen pad naar de rand van de kaart
 STR_3333    :Plug-inobjecten meeleveren in opgeslagen spellen
 STR_3334    :{SMALLFONT}{BLACK}Selecteer of toegevoegde (niet-standaard) objecten in opgeslagen spellen en scenario's moeten worden meegeleverd, zodat ze geopend kunnen worden door iemand die deze objecten nog niet heeft
-STR_3335    :Achtbaanontwerper - Attractietypes en -voertuigen selecteren
+STR_3335    :Baanontwerper - Attractietypes en -voertuigen selecteren
 STR_3336    :Baanontwerpbeheer - Attractietype selecteren
 STR_3337    :<not used anymore>
 STR_3338    :{BLACK}Eigen ontwerp
@@ -3346,7 +3346,7 @@ STR_3340    :{BLACK}{COMMA16} ontwerpen beschikbaar, of maak een eigen ontwerp
 STR_3341    :{SMALLFONT}{BLACK}Hulpmiddelen
 STR_3342    :Scenariobewerker
 STR_3343    :Opgeslagen spel omzetten naar scenario
-STR_3344    :Achtbaanontwerper
+STR_3344    :Baanontwerper
 STR_3345    :Baanontwerpbeheer
 STR_3346    :Kan baanontwerp niet opslaan
 STR_3347    :Attractie is te groot, bevat teveel elementen of het decor is te ver verspreid

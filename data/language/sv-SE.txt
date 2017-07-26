@@ -890,7 +890,7 @@ STR_0884    :Ladda Landskap
 STR_0885    :Spara Landskap
 STR_0886    :Avsluta Spel
 STR_0887    :Avsluta Scenarioskaparen
-STR_0888    :Avsluta Berg- och Dalbanebyggaren
+STR_0888    :Avsluta Åktur Designer
 STR_0889    :Avsluta Spårredigeraren
 STR_0890    :<removed string - do not use>
 STR_0891    :Skärmdump
@@ -3212,7 +3212,7 @@ STR_3203    :Bygg upp uppfinningslista
 STR_3204    :Välj Inställningar
 STR_3205    :Välj Uppdrag
 STR_3206    :Spara Scenario
-STR_3207    :Berg- och dalbanedesigner
+STR_3207    :Åktur Designer
 STR_3208    :Bandesignhanterare
 STR_3209    :Tillbaka till tidigare steg:
 STR_3210    :Vidare till nästa steg:
@@ -3340,7 +3340,7 @@ STR_3331    :Vägen från parkentrén till kartkanten är antingen inte komplett
 STR_3332    :Parkentrén är åt fel håll eller har ingen väg som leder till kartkanten
 STR_3333    :Exportera plug-in-objekt med sparade spel
 STR_3334    :{SMALLFONT}{BLACK}Välj om plug-in objekt (extra objekt som inte följer med basspelet) ska sparas i sparade spel och scenarion, vilket låter spelare importera denna data
-STR_3335    :Berg- och dalbanedesigner - Välj Åkturstyp & Fordon
+STR_3335    :Åktur Designer - Välj Åkturstyp & Fordon
 STR_3336    :Bandesign-hanterare - Välj Åkturstyp
 STR_3337    :<not used anymore>
 STR_3338    :{BLACK}Egendesignad layout
@@ -3349,7 +3349,7 @@ STR_3340    :{BLACK}{COMMA16} designer tillgängliga, eller egendesignad layout
 STR_3341    :{SMALLFONT}{BLACK}Spelverktyg
 STR_3342    :Scenarioredigerare
 STR_3343    :Konvertera Sparat Spel till Scenario
-STR_3344    :Berg- och dalbana-designer
+STR_3344    :Åktur Designer
 STR_3345    :Bandesignhanterare
 STR_3346    :Kan inte spara bandesign...
 STR_3347    :Åkturen är för stor, innehåller för många delar, eller har för utspridda dekorationer
