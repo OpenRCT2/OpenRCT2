@@ -361,7 +361,7 @@ static void paint_go_karts_station(uint8 rideIndex, uint8 trackSequence, uint8 d
     }
 
     if (mapElement->properties.track.type == TRACK_ELEM_END_STATION) {
-        const bool hasGreenLight = (bool)(mapElement->properties.track.sequence & MAP_ELEM_TRACK_SEQUENCE_GREEN_LIGHT_MASK);
+        const bool hasGreenLight = (bool)(mapElement->properties.track.sequence & MAP_ELEM_TRACK_SEQUENCE_GREEN_LIGHT);
 
         switch (direction) {
             case 0:

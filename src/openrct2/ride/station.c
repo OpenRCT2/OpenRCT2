@@ -65,13 +65,13 @@ static void ride_update_station_blocksection(rct_ride *ride, sint32 stationIndex
     if ((ride->status == RIDE_STATUS_CLOSED && ride->num_riders == 0) || (mapElement != NULL && mapElement->flags & 0x20)) {
         ride->station_depart[stationIndex] &= ~STATION_DEPART_FLAG;
 
-        if ((ride->station_depart[stationIndex] & STATION_DEPART_FLAG) || (mapElement != NULL && (mapElement->properties.track.sequence & MAP_ELEM_TRACK_SEQUENCE_GREEN_LIGHT_MASK)))
+        if ((ride->station_depart[stationIndex] & STATION_DEPART_FLAG) || (mapElement != NULL && (mapElement->properties.track.sequence & MAP_ELEM_TRACK_SEQUENCE_GREEN_LIGHT)))
             ride_invalidate_station_start(ride, stationIndex, false);
     } else {
         if (!(ride->station_depart[stationIndex] & STATION_DEPART_FLAG)) {
             ride->station_depart[stationIndex] |= STATION_DEPART_FLAG;
             ride_invalidate_station_start(ride, stationIndex, true);
-        } else if (mapElement != NULL && mapElement->properties.track.sequence & MAP_ELEM_TRACK_SEQUENCE_GREEN_LIGHT_MASK) {
+        } else if (mapElement != NULL && mapElement->properties.track.sequence & MAP_ELEM_TRACK_SEQUENCE_GREEN_LIGHT) {
             ride_invalidate_station_start(ride, stationIndex, true);
         }
     }
@@ -281,7 +281,7 @@ static void ride_invalidate_station_start(rct_ride *ride, sint32 stationIndex, b
     if (mapElement == NULL)
         return;
 
-    mapElement->properties.track.sequence &= ~MAP_ELEM_TRACK_SEQUENCE_GREEN_LIGHT_MASK;
+    mapElement->properties.track.sequence &= ~MAP_ELEM_TRACK_SEQUENCE_GREEN_LIGHT;
     if (greenLight)
     {
         mapElement->properties.track.sequence |= MAP_ELEM_TRACK_SEQUENCE_GREEN_LIGHT;
