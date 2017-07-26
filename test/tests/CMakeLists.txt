@@ -7,6 +7,8 @@ if (SYSTEM_GTEST)
     find_package(GTest REQUIRED)
 
     set(GTEST_LIBRARIES ${GTEST_BOTH_LIBRARIES})
+
+    message(WARNING "Gtest strongly advices against using a system installation, see https://github.com/google/googletest/blob/master/googletest/docs/FAQ.md#why-is-it-not-recommended-to-install-a-pre-compiled-copy-of-google-test-for-example-into-usrlocal for detailed information. If errors occur please double-check without the SYSTEM_GTEST flag.")
 else (SYSTEM_GTEST)
 
         # Bootstrap GoogleTest
