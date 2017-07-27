@@ -159,4 +159,3 @@ install(FILES "resources/logo/icon_x256.png" DESTINATION "${CMAKE_INSTALL_DATARO
 install(FILES "resources/logo/icon_flag.svg" DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/scalable/apps" RENAME "openrct2.svg")
 install(FILES "distribution/linux/openrct2.desktop" DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/applications")
 install(DIRECTORY "distribution/man/" DESTINATION "${CMAKE_INSTALL_MANDIR}/man6" FILES_MATCHING PATTERN "*.6")
-install(CODE "execute_process(COMMAND find \$ENV{DESTDIR}${CMAKE_INSTALL_FULL_MANDIR}/man6 -type f -exec gzip -f \"{}\" \;)")
