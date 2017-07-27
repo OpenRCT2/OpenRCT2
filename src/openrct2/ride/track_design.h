@@ -37,7 +37,7 @@ typedef struct rct_td6_maze_element {
             union {
                 uint16 maze_entry;
                 struct{
-                    uint8 unk_2;
+                    uint8 direction;
                     uint8 type;
                 };
             };
@@ -189,6 +189,12 @@ enum {
     PTD_OPERATION_4,
     PTD_OPERATION_GET_COST,
     PTD_OPERATION_CLEAR_OUTLINES,
+};
+
+enum {
+    MAZE_ELEMENT_TYPE_MAZE_TRACK = 0,
+    MAZE_ELEMENT_TYPE_ENTRANCE = (1 << 3),
+    MAZE_ELEMENT_TYPE_EXIT = (1 << 7)
 };
 
 extern rct_track_td6 *gActiveTrackDesign;

@@ -883,7 +883,7 @@ static bool track_design_save_to_td6_for_maze(uint8 rideIndex, rct_track_td6 *td
     // Add something that stops this from walking off the end
 
     uint8 entrance_direction = map_element_get_direction(mapElement);
-    maze->unk_2 = entrance_direction;
+    maze->direction = entrance_direction;
     maze->type = 8;
     maze->x = (sint8)((x - startX) / 32);
     maze->y = (sint8)((y - startY) / 32);
@@ -908,7 +908,7 @@ static bool track_design_save_to_td6_for_maze(uint8 rideIndex, rct_track_td6 *td
     // Add something that stops this from walking off the end
 
     uint8 exit_direction = map_element_get_direction(mapElement);
-    maze->unk_2 = exit_direction;
+    maze->direction = exit_direction;
     maze->type = 0x80;
     maze->x = (sint8)((x - startX) / 32);
     maze->y = (sint8)((y - startY) / 32);
