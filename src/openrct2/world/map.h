@@ -43,7 +43,18 @@ typedef struct rct_map_element_track_properties {
     uint8 type; //4
     union{
         struct{
-            uint8 sequence; //5
+            // The lower 4 bits are the track sequence.
+            // The upper 4 bits are either station bits or on-ride photo bits.
+            //
+            // Station bits:
+            // - Bit 8 marks green light
+            // - Bit 5-7 are station index.
+            //
+            // On-ride photo bits:
+            // - Bits 7 and 8 are never set
+            // - Bits 5 and 6 are set when a vehicle triggers the on-ride photo and act like a countdown from 3.
+            // - If any of the bits 5-8 are set, the game counts it as a photo being taken.
+            uint8 sequence; //5.
             uint8 colour; //6
         };
         uint16 maze_entry; // 5
@@ -255,6 +266,7 @@ enum
 
 #define MAP_ELEM_TRACK_SEQUENCE_STATION_INDEX_MASK 0x70
 #define MAP_ELEM_TRACK_SEQUENCE_SEQUENCE_MASK 0x0F
+#define MAP_ELEM_TRACK_SEQUENCE_TAKING_PHOTO_MASK 0xF0
 
 #define MINIMUM_MAP_SIZE_TECHNICAL 15
 #define MAXIMUM_MAP_SIZE_TECHNICAL 256
@@ -449,6 +461,15 @@ bool map_is_location_owned_or_has_rights(sint32 x, sint32 y);
 bool map_surface_is_blocked(sint16 x, sint16 y);
 sint32 map_element_get_station(const rct_map_element * mapElement);
 void map_element_set_station(rct_map_element * mapElement, uint32 stationIndex);
+sint32 map_element_get_track_sequence(const rct_map_element * mapElement);
+void map_element_set_track_sequence(rct_map_element * mapElement, sint32 trackSequence);
+bool map_element_get_green_light(const rct_map_element * mapElement);
+void map_element_set_green_light(rct_map_element * mapElement, bool greenLight);
+sint32 map_element_get_brake_booster_speed(const rct_map_element *mapElement);
+void map_element_set_brake_booster_speed(rct_map_element *mapElement, sint32 speed);
+bool map_element_is_taking_photo(const rct_map_element * mapElement);
+void map_element_set_onride_photo_timeout(rct_map_element * mapElement);
+void map_element_decrement_onride_photo_timout(rct_map_element * mapElement);
 void map_element_remove(rct_map_element *mapElement);
 void map_remove_all_rides();
 void map_invalidate_map_selection_tiles();
