@@ -121,7 +121,7 @@ void scenery_paint(uint8 direction, sint32 height, rct_map_element* mapElement) 
     {
         if (entry->small_scenery.flags & SMALL_SCENERY_FLAG_HAS_SECONDARY_COLOUR)
         {
-            baseImageid |= SPRITE_ID_PALETTE_COLOUR_3(scenery_small_get_primary_colour(mapElement),
+            baseImageid |= SPRITE_ID_PALETTE_COLOUR_2(scenery_small_get_primary_colour(mapElement),
                                                       scenery_small_get_secondary_colour(mapElement));
         }
         else
@@ -244,7 +244,7 @@ void scenery_paint(uint8 direction, sint32 height, rct_map_element* mapElement) 
                 if (entry->small_scenery.flags & SMALL_SCENERY_FLAG_HAS_PRIMARY_COLOUR)
                 {
                     if (entry->small_scenery.flags & SMALL_SCENERY_FLAG_HAS_SECONDARY_COLOUR) {
-                        image_id |= SPRITE_ID_PALETTE_COLOUR_3(scenery_small_get_primary_colour(mapElement),
+                        image_id |= SPRITE_ID_PALETTE_COLOUR_2(scenery_small_get_primary_colour(mapElement),
                                                                scenery_small_get_secondary_colour(mapElement));
                     }
                     else
