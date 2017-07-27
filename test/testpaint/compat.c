@@ -141,7 +141,7 @@ int map_element_get_station(const rct_map_element * mapElement) {
     return (mapElement->properties.track.sequence & MAP_ELEM_TRACK_SEQUENCE_STATION_INDEX_MASK) >> 4;
 }
 
-void map_element_set_station(rct_map_element * mapElement, int stationIndex)
+void map_element_set_station(rct_map_element * mapElement, uint32 stationIndex)
 {
     mapElement->properties.track.sequence &= ~MAP_ELEM_TRACK_SEQUENCE_STATION_INDEX_MASK;
     mapElement->properties.track.sequence |= (stationIndex << 4);
