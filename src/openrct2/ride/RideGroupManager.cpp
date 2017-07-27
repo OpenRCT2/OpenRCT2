@@ -15,6 +15,7 @@
 #pragma endregion
 
 #include <memory>
+#include <vector>
 #include "RideGroupManager.h"
 #include "../config/Config.h"
 #include "../core/String.hpp"
