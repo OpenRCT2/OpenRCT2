@@ -137,8 +137,14 @@ rct_map_element *map_get_first_element_at(int x, int y) {
     return gMapElementTilePointers[x + y * 256];
 }
 
-int map_get_station(rct_map_element *mapElement) {
-    return (mapElement->properties.track.sequence & 0x70) >> 4;
+int map_element_get_station(const rct_map_element * mapElement) {
+    return (mapElement->properties.track.sequence & MAP_ELEM_TRACK_SEQUENCE_STATION_INDEX_MASK) >> 4;
+}
+
+void map_element_set_station(rct_map_element * mapElement, int stationIndex)
+{
+    mapElement->properties.track.sequence &= ~MAP_ELEM_TRACK_SEQUENCE_STATION_INDEX_MASK;
+    mapElement->properties.track.sequence |= (stationIndex << 4);
 }
 
 bool ride_type_has_flag(int rideType, int flag)

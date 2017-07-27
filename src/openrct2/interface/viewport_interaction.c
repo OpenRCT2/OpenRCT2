@@ -246,7 +246,7 @@ sint32 viewport_interaction_get_item_right(sint32 x, sint32 y, viewport_interact
         set_map_tooltip_format_arg(6, uint32, ride->name_arguments);
         set_map_tooltip_format_arg(10, rct_string_id, RideComponentNames[RideNameConvention[ride->type].station].capitalised);
 
-        stationIndex = map_get_station(mapElement);
+        stationIndex = map_element_get_station(mapElement);
         for (i = stationIndex; i >= 0; i--)
             if (ride->station_starts[i].xy == RCT_XY8_UNDEFINED)
                 stationIndex--;

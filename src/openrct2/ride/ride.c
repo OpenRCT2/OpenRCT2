@@ -3374,7 +3374,7 @@ static void ride_station_set_map_tooltip(rct_map_element *mapElement)
     rideIndex = mapElement->properties.track.ride_index;
     ride = get_ride(rideIndex);
 
-    stationIndex = map_get_station(mapElement);
+    stationIndex = map_element_get_station(mapElement);
     for (i = stationIndex; i >= 0; i--)
         if (ride->station_starts[i].xy == RCT_XY8_UNDEFINED)
             stationIndex--;
@@ -3402,7 +3402,7 @@ static void ride_entrance_set_map_tooltip(rct_map_element *mapElement)
     ride = get_ride(rideIndex);
 
     // Get the station
-    stationIndex = map_get_station(mapElement);
+    stationIndex = map_element_get_station(mapElement);
     for (i = stationIndex; i >= 0; i--)
         if (ride->station_starts[i].xy == RCT_XY8_UNDEFINED)
             stationIndex--;
@@ -3428,7 +3428,7 @@ static void ride_entrance_set_map_tooltip(rct_map_element *mapElement)
         set_map_tooltip_format_arg(16, uint16, queueLength);
     } else {
         // Get the station
-        stationIndex = map_get_station(mapElement);
+        stationIndex = map_element_get_station(mapElement);
         for (i = stationIndex; i >= 0; i--)
             if (ride->station_starts[i].xy == RCT_XY8_UNDEFINED)
                 stationIndex--;
@@ -4571,7 +4571,7 @@ static rct_vehicle *vehicle_create_car(
         vehicle->track_x = x;
         vehicle->track_y = y;
         vehicle->track_z = z;
-        vehicle->current_station = map_get_station(mapElement);
+        vehicle->current_station = map_element_get_station(mapElement);
 
         z += RideData5[ride->type].z_offset;
 
@@ -4645,7 +4645,7 @@ static rct_vehicle *vehicle_create_car(
         y += word_9A2A60[direction].y;
         vehicle->track_z = mapElement->base_height * 8;
 
-        vehicle->current_station = map_get_station(mapElement);
+        vehicle->current_station = map_element_get_station(mapElement);
         z = mapElement->base_height * 8;
         z += RideData5[ride->type].z_offset;
 
@@ -7220,7 +7220,7 @@ void ride_get_entrance_or_exit_position_from_screen_position(sint32 screenX, sin
                     if (mapElement->properties.track.type == TRACK_ELEM_MAZE) {
                         gRideEntranceExitPlaceStationIndex = 0;
                     } else {
-                        gRideEntranceExitPlaceStationIndex = (mapElement->properties.track.sequence & MAP_ELEM_TRACK_SEQUENCE_STATION_INDEX_MASK) >> 4;
+                        gRideEntranceExitPlaceStationIndex = map_element_get_station(mapElement);
                     }
                 }
             }
@@ -7278,7 +7278,7 @@ void ride_get_entrance_or_exit_position_from_screen_position(sint32 screenX, sin
                         *outDirection = direction ^ 2;
                         return;
                     }
-                    if (map_get_station(mapElement) != gRideEntranceExitPlaceStationIndex)
+                    if (map_element_get_station(mapElement) != gRideEntranceExitPlaceStationIndex)
                         continue;
 
                     sint32 eax = (direction + 2 - mapElement->type) & MAP_ELEMENT_DIRECTION_MASK;
@@ -7317,7 +7317,7 @@ void ride_get_entrance_or_exit_position_from_screen_position(sint32 screenX, sin
                 continue;
             if (mapElement->properties.track.ride_index != gRideEntranceExitPlaceRideIndex)
                 continue;
-            if (map_get_station(mapElement) != gRideEntranceExitPlaceStationIndex)
+            if (map_element_get_station(mapElement) != gRideEntranceExitPlaceStationIndex)
                 continue;
 
             switch (mapElement->properties.track.type) {
@@ -8045,9 +8045,7 @@ void sub_6CB945(sint32 rideIndex)
                     break;
                 }
 
-                mapElement->properties.track.sequence &= ~MAP_ELEM_TRACK_SEQUENCE_STATION_INDEX_MASK;
-                mapElement->properties.track.sequence |= (stationId << 4);
-
+                map_element_set_station(mapElement, stationId);
                 direction = map_element_get_direction(mapElement);
 
                 if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_3)) {
@@ -8080,8 +8078,7 @@ void sub_6CB945(sint32 rideIndex)
                     break;
                 }
 
-                mapElement->properties.track.sequence &= ~MAP_ELEM_TRACK_SEQUENCE_STATION_INDEX_MASK;
-                mapElement->properties.track.sequence |= (stationId << 4);
+                map_element_set_station(mapElement, stationId);
             }
         }
     }
@@ -8152,7 +8149,7 @@ void sub_6CB945(sint32 rideIndex)
 
                 uint8 stationId = 0;
                 if (trackElement->properties.track.type != TRACK_ELEM_INVERTED_90_DEG_UP_TO_FLAT_QUARTER_LOOP) {
-                    stationId = (trackElement->properties.track.sequence & MAP_ELEM_TRACK_SEQUENCE_STATION_INDEX_MASK) >> 4;
+                    stationId = map_element_get_station(trackElement);
                 }
 
                 if (mapElement->properties.entrance.type == ENTRANCE_TYPE_RIDE_EXIT) {

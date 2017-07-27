@@ -1603,7 +1603,7 @@ rct_window *window_ride_open_track(rct_map_element *mapElement)
         (TrackSequenceProperties[mapElement->properties.track.type][0] & TRACK_SEQUENCE_FLAG_ORIGIN)
     ) {
         // Open ride window in station view
-        return window_ride_open_station(rideIndex, map_get_station(mapElement));
+        return window_ride_open_station(rideIndex, map_element_get_station(mapElement));
     } else {
         // Open ride window in overview mode.
         return window_ride_main_open(rideIndex);

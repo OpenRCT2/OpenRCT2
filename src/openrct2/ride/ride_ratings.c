@@ -205,7 +205,7 @@ static void ride_ratings_update_state_2()
             ((mapElement->properties.track.sequence & MAP_ELEM_TRACK_SEQUENCE_SEQUENCE_MASK) == 0 && trackType == mapElement->properties.track.type))
         {
             if (trackType == TRACK_ELEM_END_STATION) {
-                sint32 entranceIndex = map_get_station(mapElement);
+                sint32 entranceIndex = map_element_get_station(mapElement);
                 gRideRatingsCalcData.station_flags &= ~RIDE_RATING_STATION_FLAG_NO_ENTRANCE;
                 if (ride->entrances[entranceIndex].xy == RCT_XY8_UNDEFINED) {
                     gRideRatingsCalcData.station_flags |= RIDE_RATING_STATION_FLAG_NO_ENTRANCE;
