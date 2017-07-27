@@ -129,7 +129,7 @@ void rct_duck::UpdateFlyToWater()
     sint32 manhattanDistanceN = abs(target_x - newX) + abs(target_y - newY);
 
     rct_map_element * mapElement = map_get_surface_element_at(target_x >> 5, target_y >> 5);
-    sint32 waterHeight = mapElement->properties.surface.terrain & 0x1F;
+    sint32 waterHeight = map_get_water_height(mapElement);
     if (waterHeight == 0)
     {
         state = DUCK_STATE::FLY_AWAY;

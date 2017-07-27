@@ -398,10 +398,10 @@ sint32 tile_smooth(sint32 x, sint32 y)
     {
         // All corners are raised, raise the entire tile instead.
         surfaceElement->base_height = (surfaceElement->clearance_height += 2);
-        uint8 waterHeight = (surfaceElement->properties.surface.terrain & 0x1F) * 2;
+        uint8 waterHeight = map_get_water_height(surfaceElement) * 2;
         if (waterHeight <= surfaceElement->base_height)
         {
-            surfaceElement->properties.surface.terrain &= ~0x1F;
+            surfaceElement->properties.surface.terrain &= ~MAP_ELEMENT_WATER_HEIGHT_MASK;
         }
     }
     else

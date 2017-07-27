@@ -517,7 +517,7 @@ sint32 map_element_height(sint32 x, sint32 y)
     }
 
     uint32 height =
-        ((mapElement->properties.surface.terrain & MAP_ELEMENT_WATER_HEIGHT_MASK) << 20) |
+        (map_get_water_height(mapElement) << 20) |
         (mapElement->base_height << 3);
 
     uint32 slope = (mapElement->properties.surface.slope & MAP_ELEMENT_SLOPE_MASK);
@@ -1364,10 +1364,14 @@ static money32 map_change_surface_style(sint32 x0, sint32 y0, sint32 x1, sint32 
                 }
             }
 
-            if (flags & 1) {
-                if (!(mapElement->properties.surface.terrain & MAP_ELEMENT_SURFACE_TERRAIN_MASK)) {
-                    if (!(mapElement->type & MAP_ELEMENT_DIRECTION_MASK)) {
-                        if ((mapElement->properties.surface.grass_length & 7) != GRASS_LENGTH_CLEAR_0) {
+            if (flags & 1)
+            {
+                if (map_get_water_height(mapElement) == 0)
+                {
+                    if (!(mapElement->type & MAP_ELEMENT_DIRECTION_MASK))
+                    {
+                        if ((mapElement->properties.surface.grass_length & 7) != GRASS_LENGTH_CLEAR_0)
+                        {
                             mapElement->properties.surface.grass_length = GRASS_LENGTH_CLEAR_0;
                             map_invalidate_tile_full(x, y);
                         }
@@ -1538,7 +1542,7 @@ static money32 map_set_land_height(sint32 flags, sint32 x, sint32 y, sint32 heig
     rct_map_element *surfaceElement = map_get_surface_element_at(x / 32, y / 32);
     if(surfaceElement->type & MAP_ELEMENT_TYPE_FLAG_HIGHLIGHT)
     {
-        sint32 waterHeight = surfaceElement->properties.surface.terrain & MAP_ELEMENT_WATER_HEIGHT_MASK;
+        sint32 waterHeight = map_get_water_height(surfaceElement);
         if(waterHeight != 0)
         {
             if(style & 0x1F)
@@ -1827,6 +1831,11 @@ static money32 lower_land(sint32 flags, sint32 x, sint32 y, sint32 z, sint32 ax,
     return cost;
 }
 
+sint32 map_get_water_height(const rct_map_element * mapElement)
+{
+    return mapElement->properties.surface.terrain & MAP_ELEMENT_WATER_HEIGHT_MASK;
+}
+
 money32 raise_water(sint16 x0, sint16 y0, sint16 x1, sint16 y1, uint8 flags)
 {
     money32 cost = 0;
@@ -1844,8 +1853,8 @@ money32 raise_water(sint16 x0, sint16 y0, sint16 x1, sint16 y1, uint8 flags)
             rct_map_element* map_element = map_get_surface_element_at(xi / 32, yi / 32);
             if (map_element != NULL) {
                 uint8 height = map_element->base_height;
-                if (map_element->properties.surface.terrain & 0x1F)
-                    height = (map_element->properties.surface.terrain & 0x1F) * 2;
+                if (map_get_water_height(map_element) > 0)
+                    height = map_get_water_height(map_element) * 2;
                 if (max_height > height)
                     max_height = height;
             }
@@ -1857,7 +1866,7 @@ money32 raise_water(sint16 x0, sint16 y0, sint16 x1, sint16 y1, uint8 flags)
             rct_map_element* map_element = map_get_surface_element_at(xi / 32, yi / 32);
             if (map_element != NULL) {
                 if (map_element->base_height <= max_height){
-                    uint8 height = (map_element->properties.surface.terrain & 0x1F);
+                    uint8 height = map_get_water_height(map_element);
                     if (height != 0) {
                         height *= 2;
                         if (height > max_height)
@@ -1924,7 +1933,7 @@ money32 lower_water(sint16 x0, sint16 y0, sint16 x1, sint16 y1, uint8 flags)
         for (sint32 xi = x0; xi <= x1; xi += 32){
             rct_map_element* map_element = map_get_surface_element_at(xi / 32, yi / 32);
             if (map_element != NULL) {
-                uint8 height = map_element->properties.surface.terrain & 0x1F;
+                uint8 height = map_get_water_height(map_element);
                 if (height != 0) {
                     height *= 2;
                     if (height > min_height)
@@ -1938,7 +1947,7 @@ money32 lower_water(sint16 x0, sint16 y0, sint16 x1, sint16 y1, uint8 flags)
         for (sint32 xi = x0; xi <= x1; xi += 32) {
             rct_map_element* map_element = map_get_surface_element_at(xi / 32, yi / 32);
             if (map_element != NULL) {
-                uint8 height = (map_element->properties.surface.terrain & 0x1F);
+                uint8 height = map_get_water_height(map_element);
                 if (height != 0) {
                     height *= 2;
                     if (height < min_height)
@@ -2454,8 +2463,9 @@ void game_command_set_water_height(sint32* eax, sint32* ebx, sint32* ecx, sint32
     rct_map_element* map_element = map_get_surface_element_at(x / 32, y / 32);
     sint32 zHigh = map_element->base_height;
     sint32 zLow = base_height;
-    if(map_element->properties.surface.terrain & 0x1F){
-        zHigh = (map_element->properties.surface.terrain & 0x1F) * 2;
+    if (map_get_water_height(map_element) > 0)
+    {
+        zHigh = map_get_water_height(map_element) * 2;
     }
     if(zLow > zHigh){
         sint32 temp = zHigh;
@@ -3144,7 +3154,7 @@ sint32 map_can_construct_with_clear_at(sint32 x, sint32 y, sint32 zLow, sint32 z
             }
             continue;
         }
-        sint32 water_height = ((map_element->properties.surface.terrain & MAP_ELEMENT_WATER_HEIGHT_MASK) * 2);
+        sint32 water_height = map_get_water_height(map_element) * 2;
         if (water_height && water_height > zLow && map_element->base_height < zHigh) {
             gMapGroundFlags |= ELEMENT_IS_UNDERWATER;
             if (water_height < zHigh) {
@@ -3282,7 +3292,7 @@ static void map_update_grass_length(sint32 x, sint32 y, rct_map_element *mapElem
     sint32 grassLength = mapElement->properties.surface.grass_length & 7;
 
     // Check if grass is underwater or outside park
-    sint32 waterHeight = (mapElement->properties.surface.terrain & 0x1F) * 2;
+    sint32 waterHeight = map_get_water_height(mapElement) * 2;
     if (waterHeight > mapElement->base_height || !map_is_location_in_park(x, y)) {
         if (grassLength != GRASS_LENGTH_CLEAR_0)
             map_set_grass_length(x, y, mapElement, GRASS_LENGTH_CLEAR_0);
@@ -3628,7 +3638,7 @@ sint32 map_get_highest_z(sint32 tileX, sint32 tileY)
     if ((mapElement->properties.surface.slope & 0x10) != 0)
         z += 16;
 
-    z = max(z, (mapElement->properties.surface.terrain & 0x1F) * 16);
+    z = max(z, map_get_water_height(mapElement) * 16);
     return z;
 }
 
@@ -3925,7 +3935,7 @@ bool map_surface_is_blocked(sint16 x, sint16 y){
         return true;
     }
 
-    sint16 water_height = mapElement->properties.surface.terrain & MAP_ELEMENT_WATER_HEIGHT_MASK;
+    sint16 water_height = map_get_water_height(mapElement);
     water_height *= 2;
     if (water_height > mapElement->base_height)
         return true;

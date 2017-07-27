@@ -498,7 +498,7 @@ static void ride_ratings_score_close_proximity(rct_map_element *inputMapElement)
             if (mapElement->base_height * 8 == gRideRatingsCalcData.proximity_z) {
                 proximity_score_increment(PROXIMITY_SURFACE_TOUCH);
             }
-            sint32 waterHeight = (mapElement->properties.surface.terrain & 0x1F);
+            sint32 waterHeight = map_get_water_height(mapElement);
             if (waterHeight != 0) {
                 sint32 z = waterHeight * 16;
                 if (z <= gRideRatingsCalcData.proximity_z) {

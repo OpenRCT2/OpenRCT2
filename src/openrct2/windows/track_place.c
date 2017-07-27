@@ -419,8 +419,8 @@ static sint32 window_track_place_get_base_z(sint32 x, sint32 y)
     }
 
     // Increase Z above water
-    if (mapElement->properties.surface.terrain & 0x1F)
-        z = max(z, (mapElement->properties.surface.terrain & 0x1F) << 4);
+    if (map_get_water_height(mapElement) > 0)
+        z = max(z, map_get_water_height(mapElement) << 4);
 
     return z + place_virtual_track(_trackDesign, PTD_OPERATION_GET_PLACE_Z, true, 0, x, y, z);
 }

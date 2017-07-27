@@ -275,9 +275,9 @@ static money32 SmallSceneryPlace(sint16 x,
 
     rct_map_element* surfaceElement = map_get_surface_element_at(x / 32, y / 32);
 
-    if (!gCheatsDisableClearanceChecks && (surfaceElement->properties.surface.terrain & MAP_ELEMENT_WATER_HEIGHT_MASK))
+    if (!gCheatsDisableClearanceChecks && map_get_water_height(surfaceElement) > 0)
     {
-        sint32 water_height = ((surfaceElement->properties.surface.terrain & MAP_ELEMENT_WATER_HEIGHT_MASK) * 16) - 1;
+        sint32 water_height = (map_get_water_height(surfaceElement) * 16) - 1;
         if (water_height > targetHeight)
         {
             gGameCommandErrorText = STR_CANT_BUILD_THIS_UNDERWATER;
@@ -293,9 +293,9 @@ static money32 SmallSceneryPlace(sint16 x,
             return MONEY32_UNDEFINED;
         }
 
-        if (surfaceElement->properties.surface.terrain & MAP_ELEMENT_WATER_HEIGHT_MASK)
+        if (map_get_water_height(surfaceElement) > 0)
         {
-            if (((surfaceElement->properties.surface.terrain & MAP_ELEMENT_WATER_HEIGHT_MASK) * 16) > targetHeight)
+            if ((map_get_water_height(surfaceElement) * 16) > targetHeight)
             {
                 gGameCommandErrorText = STR_CAN_ONLY_BUILD_THIS_ON_LAND;
                 return MONEY32_UNDEFINED;
@@ -321,7 +321,7 @@ static money32 SmallSceneryPlace(sint16 x,
 
         if (!isOnWater)
         {
-            if ((surfaceElement->properties.surface.terrain & MAP_ELEMENT_WATER_HEIGHT_MASK) ||
+            if (map_get_water_height(surfaceElement) ||
                 (surfaceElement->base_height * 8) != targetHeight)
             {
 

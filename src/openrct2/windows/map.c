@@ -1215,7 +1215,7 @@ static void place_park_entrance_get_map_position(sint32 x, sint32 y, sint16 *map
         return;
 
     mapElement = map_get_surface_element_at(*mapX >> 5, *mapY >> 5);
-    *mapZ = mapElement->properties.surface.terrain & 0x1F;
+    *mapZ = map_get_water_height(mapElement);
     if (*mapZ == 0) {
         *mapZ = mapElement->base_height / 2;
         if ((mapElement->properties.surface.slope & 0x0F) != 0) {
@@ -1585,7 +1585,7 @@ static uint16 map_window_get_pixel_colour_peep(sint32 x, sint32 y)
 
     mapElement = map_get_surface_element_at(x >> 5, y >> 5);
     colour = TerrainColour[map_element_get_terrain(mapElement)];
-    if (mapElement->properties.surface.terrain & 0x1F)
+    if (map_get_water_height(mapElement) > 0)
         colour = WaterColour;
 
     if (!(mapElement->properties.surface.ownership & OWNERSHIP_OWNED))
@@ -1615,7 +1615,7 @@ static uint16 map_window_get_pixel_colour_ride(sint32 x, sint32 y)
     do {
         switch (map_element_get_type(mapElement)) {
         case MAP_ELEMENT_TYPE_SURFACE:
-            if (mapElement->properties.surface.terrain & 0x1F) {
+            if (map_get_water_height(mapElement) > 0) {
                 colour &= 0xFFFF;
                 colour |= FALLBACK_COLOUR(PALETTE_INDEX_194);
             }

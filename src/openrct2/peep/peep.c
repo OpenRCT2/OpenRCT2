@@ -2112,8 +2112,9 @@ static void peep_update_falling(rct_peep* peep){
             } // If a surface get the height and see if we are on it
             else if (map_element_get_type(map_element) == MAP_ELEMENT_TYPE_SURFACE) {
                 // If the surface is water check to see if we could be drowning
-                if (map_element->properties.surface.terrain & MAP_ELEMENT_WATER_HEIGHT_MASK) {
-                    sint32 height = (map_element->properties.surface.terrain & MAP_ELEMENT_WATER_HEIGHT_MASK) * 16;
+                if (map_get_water_height(map_element) > 0)
+                {
+                    sint32 height = map_get_water_height(map_element) * 16;
 
                     if (height - 4 >= peep->z && height < peep->z + 20) {
                         // Looks like we are drowning!
@@ -6324,7 +6325,7 @@ static void peep_update_patrolling(rct_peep* peep){
         rct_map_element* map_element = map_get_surface_element_at(peep->next_x / 32, peep->next_y / 32);
 
         if (map_element != NULL){
-            sint32 water_height = map_element->properties.surface.terrain & MAP_ELEMENT_WATER_HEIGHT_MASK;
+            sint32 water_height = map_get_water_height(map_element);
             if (water_height){
                 invalidate_sprite_2((rct_sprite*)peep);
                 water_height *= 16;
@@ -6498,7 +6499,7 @@ static void peep_update_walking(rct_peep* peep){
     if ((peep->next_var_29 & 0x18) == 8){
         rct_map_element* map_element = map_get_surface_element_at(peep->next_x / 32, peep->next_y / 32);
 
-        sint32 water_height = map_element->properties.surface.terrain & MAP_ELEMENT_WATER_HEIGHT_MASK;
+        sint32 water_height = map_get_water_height(map_element);
         if (water_height){
             invalidate_sprite_2((rct_sprite*)peep);
             water_height *= 16;
@@ -10533,7 +10534,7 @@ static sint32 peep_perform_next_action(rct_peep *peep)
             if (mapElement == NULL)
                 return peep_return_to_centre_of_tile(peep);
 
-            sint16 water_height = mapElement->properties.surface.terrain & MAP_ELEMENT_WATER_HEIGHT_MASK;
+            sint16 water_height = map_get_water_height(mapElement);
             if (water_height)
                 return peep_return_to_centre_of_tile(peep);
 
