@@ -4647,6 +4647,7 @@ static money32 map_place_peep_spawn(sint32 flags, sint16 x, sint16 y, sint32 z, 
     // Verify footpath exists at location, and retrieve coordinates
     mapElement = map_get_path_element_at(x >> 5, y >> 5, z * 2);
     if (mapElement == NULL) {
+        gGameCommandErrorText = STR_CAN_ONLY_BE_BUILT_ACROSS_PATHS;
         return MONEY32_UNDEFINED;
     }
 
@@ -4656,7 +4657,7 @@ static money32 map_place_peep_spawn(sint32 flags, sint16 x, sint16 y, sint32 z, 
         return MONEY32_UNDEFINED;
     }
     if (surfaceMapElement->properties.surface.ownership & 0xF0) {
-        gGameCommandErrorText = STR_LAND_OWNED;
+        gGameCommandErrorText = STR_ERR_MUST_BE_OUTSIDE_PARK_BOUNDARIES;
         return MONEY32_UNDEFINED;
     }
 

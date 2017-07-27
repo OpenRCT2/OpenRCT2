@@ -3791,6 +3791,9 @@ enum {
     STR_TRACK_DESIGN_NAME = 6142,
     STR_TRACK_DESIGN_TYPE = 6143,
 
+    STR_ERR_CANT_PLACE_PEEP_SPAWN_HERE = 6144,
+    STR_ERR_MUST_BE_OUTSIDE_PARK_BOUNDARIES = 6145,
+
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     STR_COUNT = 32768
 };

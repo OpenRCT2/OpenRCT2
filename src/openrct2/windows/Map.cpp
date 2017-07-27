@@ -1363,7 +1363,7 @@ static void window_map_set_peep_spawn_tool_down(sint32 x, sint32 y)
 
     mapZ = mapElement->base_height / 2;
 
-    gGameCommandErrorTitle = STR_CANT_DO_THIS;
+    gGameCommandErrorTitle = STR_ERR_CANT_PLACE_PEEP_SPAWN_HERE;
     money32 price = game_do_command(
         mapX,
         GAME_COMMAND_FLAG_APPLY | (direction << 8),
