@@ -23,7 +23,7 @@ extern "C" {
 #endif // __cplusplus
 
 void openrct2_assert_va(bool expression, const char * message, va_list va);
-inline void openrct2_assert(bool expression, const char * message, ...)
+static inline void openrct2_assert(bool expression, const char * message, ...)
 {
     if (!expression) return;
     va_list va;
