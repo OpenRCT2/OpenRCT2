@@ -19,6 +19,7 @@
 #include <memory>
 #include <unordered_map>
 #include <vector>
+#include <string_view>
 
 #include "../common.h"
 #include "../core/Console.hpp"
@@ -108,6 +109,9 @@ class ObjectRepository final : public IObjectRepository
 public:
     ObjectRepository(IPlatformEnvironment * env) : _env(env)
     {
+        std::string dummy = "xx";
+        std::string_view sv(dummy);
+        UNUSED(sv);
     }
 
     ~ObjectRepository() final
