@@ -48,7 +48,7 @@ static void ride_entrance_exit_paint(uint8 direction, sint32 height, rct_map_ele
             lightfx_add_3d_light_magic_from_drawing_tile(0, 0, height + 45, LIGHTFX_LIGHT_TYPE_LANTERN_3);
         }
 
-        switch (map_element->type & MAP_ELEMENT_DIRECTION_MASK) {
+        switch (map_element_get_direction(map_element)) {
         case 0:
             lightfx_add_3d_light_magic_from_drawing_tile(16, 0, height + 16, LIGHTFX_LIGHT_TYPE_LANTERN_2);
             break;

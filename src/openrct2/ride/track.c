@@ -1467,7 +1467,7 @@ static money32 track_remove(uint8 type, uint8 sequence, sint16 originX, sint16 o
         if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_TRACK)
             continue;
 
-        if ((mapElement->type & MAP_ELEMENT_DIRECTION_MASK) != rotation)
+        if ((map_element_get_direction(mapElement)) != rotation)
             continue;
 
         if (map_element_get_track_sequence(mapElement) != sequence)
@@ -1507,7 +1507,7 @@ static money32 track_remove(uint8 type, uint8 sequence, sint16 originX, sint16 o
     const rct_preview_track* trackBlock = get_track_def_from_ride(ride, type);
     trackBlock += map_element_get_track_sequence(mapElement);
 
-    uint8 originDirection = mapElement->type & MAP_ELEMENT_DIRECTION_MASK;
+    uint8 originDirection = map_element_get_direction(mapElement);
     switch (originDirection){
     case 0:
         originX -= trackBlock->x;
@@ -1569,7 +1569,7 @@ static money32 track_remove(uint8 type, uint8 sequence, sint16 originX, sint16 o
             if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_TRACK)
                 continue;
 
-            if ((mapElement->type & MAP_ELEMENT_DIRECTION_MASK) != rotation)
+            if ((map_element_get_direction(mapElement)) != rotation)
                 continue;
 
             if (map_element_get_track_sequence(mapElement) != trackBlock->index)

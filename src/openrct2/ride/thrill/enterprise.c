@@ -39,7 +39,7 @@ static void paint_enterprise_structure(rct_ride * ride, sint8 xOffset, sint8 yOf
         g_currently_drawn_item = vehicle;
     }
 
-    uint32 imageOffset = (get_current_rotation() + map_element_get_direction(mapElement)) % 4;
+    uint32 imageOffset = map_element_get_direction_with_offset(mapElement, get_current_rotation());
     if (vehicle != NULL) {
         imageOffset = (vehicle->vehicle_sprite_type << 2) + (((vehicle->sprite_direction >> 3) + get_current_rotation()) % 4);
     }

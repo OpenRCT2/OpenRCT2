@@ -801,7 +801,7 @@ extern "C"
      */
     void maze_entrance_hedge_replacement(sint32 x, sint32 y, rct_map_element *mapElement)
     {
-        sint32 direction = mapElement->type & MAP_ELEMENT_DIRECTION_MASK;
+        sint32 direction = map_element_get_direction(mapElement);
         x += TileDirectionDelta[direction].x;
         y += TileDirectionDelta[direction].y;
         sint32 z = mapElement->base_height;
@@ -832,7 +832,7 @@ extern "C"
      */
     void maze_entrance_hedge_removal(sint32 x, sint32 y, rct_map_element *mapElement)
     {
-        sint32 direction = mapElement->type & MAP_ELEMENT_DIRECTION_MASK;
+        sint32 direction = map_element_get_direction(mapElement);
         x += TileDirectionDelta[direction].x;
         y += TileDirectionDelta[direction].y;
         sint32 z = mapElement->base_height;

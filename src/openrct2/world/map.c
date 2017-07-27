@@ -279,6 +279,11 @@ sint32 map_element_get_direction(const rct_map_element *element)
     return element->type & MAP_ELEMENT_DIRECTION_MASK;
 }
 
+sint32 map_element_get_direction_with_offset(const rct_map_element *element, uint8 offset)
+{
+    return ((element->type & MAP_ELEMENT_DIRECTION_MASK) + offset) % 4;
+}
+
 sint32 map_element_get_terrain(const rct_map_element *element)
 {
     sint32 terrain = (element->properties.surface.terrain >> 5) & 7;
@@ -888,7 +893,7 @@ void game_command_remove_large_scenery(sint32* eax, sint32* ebx, sint32* ecx, si
         if ((map_element->properties.scenerymultiple.type >> 10) != tileIndex)
             continue;
 
-        if ((map_element->type & MAP_ELEMENT_DIRECTION_MASK) != map_element_direction)
+        if ((map_element_get_direction(map_element)) != map_element_direction)
             continue;
 
         // If we are removing ghost elements
@@ -959,7 +964,7 @@ void game_command_remove_large_scenery(sint32* eax, sint32* ebx, sint32* ecx, si
             if (map_element_get_type(sceneryElement) != MAP_ELEMENT_TYPE_SCENERY_MULTIPLE)
                 continue;
 
-            if ((sceneryElement->type & MAP_ELEMENT_DIRECTION_MASK) != map_element_direction)
+            if (map_element_get_direction(sceneryElement) != map_element_direction)
                 continue;
 
             if ((sceneryElement->properties.scenerymultiple.type >> 10) != i)
@@ -1142,7 +1147,7 @@ restart_from_beginning:
                 sint32 eax = x * 32;
                 sint32 ebx = flags;
                 sint32 ecx = y * 32;
-                sint32 edx = (mapElement->base_height << 8) | (mapElement->type & MAP_ELEMENT_DIRECTION_MASK);
+                sint32 edx = (mapElement->base_height << 8) | (map_element_get_direction(mapElement));
                 sint32 edi = 0, ebp = 0;
                 cost = game_do_command(eax, ebx, ecx, edx, GAME_COMMAND_REMOVE_WALL, edi, ebp);
 
@@ -1157,7 +1162,7 @@ restart_from_beginning:
         case MAP_ELEMENT_TYPE_SCENERY_MULTIPLE:
             if (clear & (1 << 1)) {
                 sint32 eax = x * 32;
-                sint32 ebx = flags | ((mapElement->type & MAP_ELEMENT_DIRECTION_MASK) << 8);
+                sint32 ebx = flags | ((map_element_get_direction(mapElement)) << 8);
                 sint32 ecx = y * 32;
                 sint32 edx = mapElement->base_height | ((mapElement->properties.scenerymultiple.type >> 10) << 8);
                 sint32 edi = 0, ebp = 0;
@@ -1315,7 +1320,7 @@ static money32 map_change_surface_style(sint32 x0, sint32 y0, sint32 x1, sint32 
 
             if (surfaceStyle != 0xFF){
                 uint8 cur_terrain = (
-                    (mapElement->type&MAP_ELEMENT_DIRECTION_MASK) << 3) |
+                    map_element_get_direction(mapElement) << 3) |
                     (mapElement->properties.surface.terrain >> 5);
 
                 if (surfaceStyle != cur_terrain) {
@@ -1368,10 +1373,9 @@ static money32 map_change_surface_style(sint32 x0, sint32 y0, sint32 x1, sint32 
             {
                 if (!(mapElement->properties.surface.terrain & MAP_ELEMENT_SURFACE_TERRAIN_MASK))
                 {
-                    if (!(mapElement->type & MAP_ELEMENT_DIRECTION_MASK))
+                    if (!(map_element_get_direction(mapElement)))
                     {
-                        if ((mapElement->properties.surface.grass_length & 7) != GRASS_LENGTH_CLEAR_0)
-                        {
+                        if ((mapElement->properties.surface.grass_length & 7) != GRASS_LENGTH_CLEAR_0) {
                             mapElement->properties.surface.grass_length = GRASS_LENGTH_CLEAR_0;
                             map_invalidate_tile_full(x, y);
                         }
@@ -3561,7 +3565,7 @@ static void clear_element_at(sint32 x, sint32 y, rct_map_element **elementPtr)
                 x,
                 GAME_COMMAND_FLAG_APPLY,
                 y,
-                (element->type & MAP_ELEMENT_DIRECTION_MASK) | (element->base_height << 8),
+                map_element_get_direction(element) | (element->base_height << 8),
                 GAME_COMMAND_REMOVE_WALL,
                 0,
                 0
@@ -3571,7 +3575,7 @@ static void clear_element_at(sint32 x, sint32 y, rct_map_element **elementPtr)
         gGameCommandErrorTitle = STR_CANT_REMOVE_THIS;
         game_do_command(
                 x,
-                (GAME_COMMAND_FLAG_APPLY) | ((element->type & MAP_ELEMENT_DIRECTION_MASK) << 8),
+                (GAME_COMMAND_FLAG_APPLY) | (map_element_get_direction(element) << 8),
                 y,
                 (element->base_height) | (((element->properties.scenerymultiple.type >> 8) >> 2) << 8),
                 GAME_COMMAND_REMOVE_LARGE_SCENERY,
@@ -3666,7 +3670,7 @@ rct_map_element *map_get_large_scenery_segment(sint32 x, sint32 y, sint32 z, sin
             continue;
         if ((mapElement->properties.scenerymultiple.type >> 10) != sequence)
             continue;
-        if ((mapElement->type & MAP_ELEMENT_DIRECTION_MASK) != direction)
+        if ((map_element_get_direction(mapElement)) != direction)
             continue;
 
         return mapElement;
@@ -4106,7 +4110,7 @@ void game_command_set_sign_style(sint32* eax, sint32* ebx, sint32* ecx, sint32* 
             banner->x * 32,
             banner->y * 32,
             mapElement->base_height,
-            mapElement->type & 3,
+            map_element_get_direction(mapElement),
             mapElement->properties.scenerymultiple.type >> 10,
             mainColour,
             textColour

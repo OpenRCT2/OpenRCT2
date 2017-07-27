@@ -70,7 +70,7 @@ static bool WallCheckObstructionWithTrack(rct_scenery_entry * wall,
 {
     sint32 trackType = trackElement->properties.track.type;
     sint32 sequence = map_element_get_track_sequence(trackElement);
-    sint32 direction = (edge - trackElement->type) & 3;
+    sint32 direction = (edge - map_element_get_direction(trackElement)) % 4;
     rct_ride * ride = get_ride(trackElement->properties.track.ride_index);
 
     if (TrackIsAllowedWallEdges(ride->type, trackType, sequence, direction))
@@ -113,7 +113,7 @@ static bool WallCheckObstructionWithTrack(rct_scenery_entry * wall,
         {
             if (!(TrackCoordinates[trackType].rotation_begin & 4))
             {
-                direction = (trackElement->type & 3) ^ 2;
+                direction = map_element_get_direction_with_offset(trackElement, 2);
                 if (direction == edge)
                 {
                     const rct_preview_track * trackBlock = &TrackBlocks[trackType][sequence];
@@ -145,7 +145,7 @@ static bool WallCheckObstructionWithTrack(rct_scenery_entry * wall,
         return false;
     }
 
-    direction = (trackElement->type + direction) & 3;
+    direction = map_element_get_direction(trackElement);
     if (direction != edge)
     {
         return false;
@@ -195,7 +195,7 @@ static bool WallCheckObstruction(rct_scenery_entry * wall,
         if (z1 <= mapElement->base_height) continue;
         if (elementType == MAP_ELEMENT_TYPE_WALL)
         {
-            sint32 direction = mapElement->type & 3;
+            sint32 direction = map_element_get_direction(mapElement);
             if (edge == direction)
             {
                 map_obstruction_set_error_text(mapElement);
@@ -222,7 +222,7 @@ static bool WallCheckObstruction(rct_scenery_entry * wall,
             entry = get_large_scenery_entry(entryType);
             tile = &entry->large_scenery.tiles[sequence];
             {
-                sint32 direction = ((edge - mapElement->type) & 3) + 8;
+                sint32 direction = ((edge - map_element_get_direction(mapElement)) % 4) + 8;
                 if (!(tile->var_7 & (1 << direction)))
                 {
                     map_obstruction_set_error_text(mapElement);
@@ -586,7 +586,7 @@ static rct_map_element * GetFirstWallElementAt(sint32 x, sint32 y, uint8 baseZ, 
     {
         if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_WALL) continue;
         if (mapElement->base_height != baseZ) continue;
-        if ((mapElement->type & MAP_ELEMENT_DIRECTION_MASK) != direction) continue;
+        if ((map_element_get_direction(mapElement)) != direction) continue;
         if (map_element_is_ghost(mapElement) != isGhost) continue;
         return mapElement;
     }
@@ -774,7 +774,7 @@ extern "C"
             if (mapElement->clearance_height <= z0 || mapElement->base_height >= z1)
                 continue;
 
-            if (direction != (mapElement->type & 3))
+            if (direction != map_element_get_direction(mapElement))
                 continue;
 
             map_element_remove_banner_entry(mapElement);

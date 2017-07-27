@@ -1741,7 +1741,7 @@ static void window_ride_construction_construct(rct_window *w)
             _currentTrackBeginX = next_track.x;
             _currentTrackBeginY = next_track.y;
             _currentTrackBeginZ = z;
-            _currentTrackPieceDirection = next_track.element->type & MAP_ELEMENT_DIRECTION_MASK;
+            _currentTrackPieceDirection = map_element_get_direction(next_track.element);
             _currentTrackPieceType = next_track.element->properties.track.type;
             _currentTrackSelectionFlags = 0;
             _rideConstructionArrowPulseTime = 0;
@@ -1818,7 +1818,7 @@ static void window_ride_construction_mouseup_demolish(rct_window* w)
     else if (track_block_get_next(&inputElement, &outputElement, &z, &direction)) {
         x = outputElement.x;
         y = outputElement.y;
-        direction = outputElement.element->type & MAP_ELEMENT_DIRECTION_MASK;
+        direction = map_element_get_direction(outputElement.element);
         type = outputElement.element->properties.track.type;
         gGotoStartPlacementMode = false;
     } else {
