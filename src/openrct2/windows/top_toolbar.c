@@ -1045,8 +1045,8 @@ static void scenery_eyedropper_tool_down(sint16 x, sint16 y, rct_widgetindex wid
             sint32 sceneryId = get_scenery_id_from_entry_index(OBJECT_TYPE_SMALL_SCENERY, entryIndex);
             if (sceneryId != -1 && window_scenery_set_selected_item(sceneryId)) {
                 gWindowSceneryRotation = map_element_get_direction_with_offset(mapElement, get_current_rotation());
-                gWindowSceneryPrimaryColour = mapElement->properties.scenery.colour_1 & 0x1F;
-                gWindowScenerySecondaryColour = mapElement->properties.scenery.colour_2 & 0x1F;
+                gWindowSceneryPrimaryColour = scenery_small_get_primary_colour(mapElement);
+                gWindowScenerySecondaryColour = scenery_small_get_secondary_colour(mapElement);
                 gWindowSceneryEyedropperEnabled = false;
             }
         }

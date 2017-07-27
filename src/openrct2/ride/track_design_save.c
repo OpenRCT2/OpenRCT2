@@ -286,8 +286,8 @@ static void track_design_save_add_scenery(sint32 x, sint32 y, rct_map_element *m
     flags |= mapElement->type & 3;
     flags |= (mapElement->type & 0xC0) >> 4;
 
-    uint8 primaryColour = mapElement->properties.scenery.colour_1 & 0x1F;
-    uint8 secondaryColour = mapElement->properties.scenery.colour_2 & 0x1F;
+    uint8 primaryColour = scenery_small_get_primary_colour(mapElement);
+    uint8 secondaryColour = scenery_small_get_secondary_colour(mapElement);
 
     track_design_save_push_map_element(x, y, mapElement);
     track_design_save_push_map_element_desc(entry, x, y, mapElement->base_height, flags, primaryColour, secondaryColour);
@@ -469,8 +469,8 @@ static void track_design_save_remove_scenery(sint32 x, sint32 y, rct_map_element
     flags |= mapElement->type & 3;
     flags |= (mapElement->type & 0xC0) >> 4;
 
-    uint8 primaryColour = mapElement->properties.scenery.colour_1 & 0x1F;
-    uint8 secondaryColour = mapElement->properties.scenery.colour_2 & 0x1F;
+    uint8 primaryColour = scenery_small_get_primary_colour(mapElement);
+    uint8 secondaryColour = scenery_small_get_secondary_colour(mapElement);
 
     track_design_save_pop_map_element(x, y, mapElement);
     track_design_save_pop_map_element_desc(entry, x, y, mapElement->base_height, flags, primaryColour, secondaryColour);
