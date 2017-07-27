@@ -493,8 +493,8 @@ static void track_design_mirror_maze(rct_track_td6 *td6)
         maze->y = -maze->y;
 
         if (maze->type == 0x8 || maze->type == 0x80) {
-            if (maze->unk_2 & 1) {
-                maze->unk_2 ^= (1 << 1);
+            if (maze->direction & 1) {
+                maze->direction ^= (1 << 1);
             }
             continue;
         }
@@ -926,10 +926,10 @@ static sint32 track_design_place_maze(rct_track_td6 *td6, sint16 x, sint16 y, si
     _trackDesignPlaceZ = 0;
     _trackDesignPlaceCost = 0;
 
-    rct_td6_maze_element *maze = td6->maze_elements;
-    for (; maze->all != 0; maze++){
+    rct_td6_maze_element *maze_element = td6->maze_elements;
+    for (; maze_element->all != 0; maze_element++){
         uint8 rotation = _currentTrackPieceDirection & 3;
-        rct_xy16 mapCoord = { .x = maze->x * 32, .y = maze->y * 32 };
+        rct_xy16 mapCoord = { .x = maze_element->x * 32, .y = maze_element->y * 32 };
         rotate_map_coordinates(&mapCoord.x, &mapCoord.y, rotation);
         mapCoord.x += x;
         mapCoord.y += y;
@@ -945,58 +945,84 @@ static sint32 track_design_place_maze(rct_track_td6 *td6, sint16 x, sint16 y, si
             _trackDesignPlaceOperation == PTD_OPERATION_4 ||
             _trackDesignPlaceOperation == PTD_OPERATION_GET_COST
         ) {
-            uint8 bl;
+            uint8 flags;
             money32 cost = 0;
             uint16 maze_entry;
-            switch (maze->type) {
-            case 0x08:
+            switch (maze_element->type) {
+            case MAZE_ELEMENT_TYPE_ENTRANCE:
                 // entrance
-                rotation += maze->unk_2;
+                rotation += maze_element->direction;
                 rotation &= 3;
 
+                flags = GAME_COMMAND_FLAG_APPLY;
                 gGameCommandErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
-
-                bl = 1;
-                if (_trackDesignPlaceOperation == PTD_OPERATION_4) bl = 0x69;
+                
                 if (_trackDesignPlaceOperation == PTD_OPERATION_1) {
                     cost = game_do_command(mapCoord.x, 0 | rotation << 8, mapCoord.y, (z / 16) & 0xFF, GAME_COMMAND_PLACE_RIDE_ENTRANCE_OR_EXIT, -1, 0);
                 } else {
-                    cost = game_do_command(mapCoord.x, bl | rotation << 8, mapCoord.y, rideIndex, GAME_COMMAND_PLACE_RIDE_ENTRANCE_OR_EXIT, 0, 0);
+                    if (_trackDesignPlaceOperation == PTD_OPERATION_GET_COST)
+                    {
+                        flags = GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5;
+                    }
+                    else if (_trackDesignPlaceOperation == PTD_OPERATION_4)
+                    {
+                        flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5 | GAME_COMMAND_FLAG_GHOST;
+                    }
+                    cost = game_do_command(mapCoord.x, flags | rotation << 8, mapCoord.y, rideIndex, GAME_COMMAND_PLACE_RIDE_ENTRANCE_OR_EXIT, 0, 0);
                 }
                 if (cost != MONEY32_UNDEFINED){
                     _trackDesignPlaceStateEntranceExitPlaced = true;
                 }
                 break;
-            case 0x80:
+            case MAZE_ELEMENT_TYPE_EXIT:
                 // exit
-                rotation += maze->unk_2;
+                rotation += maze_element->direction;
                 rotation &= 3;
 
+                flags = GAME_COMMAND_FLAG_APPLY;
                 gGameCommandErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
 
-                bl = 1;
-                if (_trackDesignPlaceOperation == PTD_OPERATION_4) bl = 0x69;
                 if (_trackDesignPlaceOperation == PTD_OPERATION_1) {
                     cost = game_do_command(mapCoord.x, 0 | rotation << 8, mapCoord.y, ((z / 16) & 0xFF) | (1 << 8), GAME_COMMAND_PLACE_RIDE_ENTRANCE_OR_EXIT, -1, 0);
                 }
-                else{
-                    cost = game_do_command(mapCoord.x, bl | rotation << 8, mapCoord.y, rideIndex | (1 << 8), GAME_COMMAND_PLACE_RIDE_ENTRANCE_OR_EXIT, 0, 0);
+                else {
+                    if (_trackDesignPlaceOperation == PTD_OPERATION_GET_COST)
+                    {
+                        flags = GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5;
+                    }
+                    else if (_trackDesignPlaceOperation == PTD_OPERATION_4)
+                    {
+                        flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5 | GAME_COMMAND_FLAG_GHOST;
+                    }
+                    cost = game_do_command(mapCoord.x, flags | rotation << 8, mapCoord.y, rideIndex | (1 << 8), GAME_COMMAND_PLACE_RIDE_ENTRANCE_OR_EXIT, 0, 0);
                 }
                 if (cost != MONEY32_UNDEFINED){
                     _trackDesignPlaceStateEntranceExitPlaced = true;
                 }
                 break;
             default:
-                maze_entry = rol16(maze->maze_entry, rotation * 4);
+                maze_entry = rol16(maze_element->maze_entry, rotation * 4);
 
-                bl = 1;
-                if (_trackDesignPlaceOperation == PTD_OPERATION_GET_COST) bl = 0x29;
-                if (_trackDesignPlaceOperation == PTD_OPERATION_4) bl = 0x69;
-                if (_trackDesignPlaceOperation == PTD_OPERATION_1) bl = 0;
+                if (_trackDesignPlaceOperation == PTD_OPERATION_GET_COST)
+                {
+                    flags = GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5;
+                }
+                else if (_trackDesignPlaceOperation == PTD_OPERATION_4)
+                {
+                    flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5 | GAME_COMMAND_FLAG_GHOST;
+                }
+                else if (_trackDesignPlaceOperation == PTD_OPERATION_1)
+                {
+                    flags = 0;
+                }
+                else 
+                {
+                    flags = GAME_COMMAND_FLAG_APPLY;
+                }
 
                 gGameCommandErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
 
-                cost = game_do_command(mapCoord.x, bl | (maze_entry & 0xFF) << 8, mapCoord.y, rideIndex | (maze_entry & 0xFF00), GAME_COMMAND_PLACE_MAZE_DESIGN, z, 0);
+                cost = game_do_command(mapCoord.x, flags | (maze_entry & 0xFF) << 8, mapCoord.y, rideIndex | (maze_entry & 0xFF00), GAME_COMMAND_PLACE_MAZE_DESIGN, z, 0);
                 break;
             }
 
