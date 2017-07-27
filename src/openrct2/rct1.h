@@ -1216,7 +1216,6 @@ enum {
 
 extern const uint8 gRideCategories[RIDE_TYPE_COUNT];
 
-sint32 vehicle_preference_compare(uint8 rideType, const char * a, const char * b);
 bool rideTypeShouldLoseSeparateFlag(const rct_ride_entry *rideEntry);
 
 ParkLoadResult * rct1_load_saved_game(const char *path);
