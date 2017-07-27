@@ -34,12 +34,9 @@
 
 extern "C"
 {
-    void openrct2_assert(bool expression, const char * message, ...)
+    void openrct2_assert_va(bool expression, const char * message, va_list va)
     {
-        va_list args;
-        va_start(args, message);
-        Guard::Assert_VA(expression, message, args);
-        va_end(args);
+        Guard::Assert_VA(expression, message, va);
     }
 
 }
