@@ -4674,6 +4674,12 @@ static money32 map_place_peep_spawn(sint32 flags, sint16 x, sint16 y, sint32 z, 
         if (peepSpawnIndex == -1) {
             peepSpawnIndex = _nextPeepSpawnIndex;
             _nextPeepSpawnIndex = (peepSpawnIndex + 1) % MAX_PEEP_SPAWNS;
+
+            // Before the new location is set, clear the old location
+            sint32 prevX = gPeepSpawns[peepSpawnIndex].x;
+            gPeepSpawns[peepSpawnIndex].x = PEEP_SPAWN_UNDEFINED;
+
+            map_invalidate_tile_full(prevX, gPeepSpawns[peepSpawnIndex].y);
         }
 
         // Set peep spawn
