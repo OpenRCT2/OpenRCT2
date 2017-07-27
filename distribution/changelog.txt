@@ -18,6 +18,7 @@
 - Fix: [#5981] Ride list doesn't update after using quick demolish.
 - Fix: [#5984] Allow socket binding to same port after crash
 - Fix: [#5998] Staff not getting paid / no loan interest.
+- Fix: [#6026] 'Select ride to advertise' dropdown does not display all items.
 - Improved: [#4301] Leading and trailing whitespace in player name is now removed.
 - Improved: [#5859] OpenGL rendering performance
 - Improved: [#5863] Switching drawing engines no longer requires the application to restart.
