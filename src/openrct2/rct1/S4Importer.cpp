@@ -2676,27 +2676,4 @@ extern "C"
     {
         return RCT1::GetColour(colour);
     }
-
-    /**
-     * This function keeps a list of the preferred vehicle for every generic track
-     * type, out of the available vehicle types in the current game. It determines
-     * which picture is shown on the new ride tab and which train type is selected
-     * by default.
-     */
-    sint32 vehicle_preference_compare(uint8 rideType, const char * a, const char * b)
-    {
-        std::vector<const char *> rideEntryOrder = RCT1::GetPreferedRideEntryOrder(rideType);
-        for (const char * object : rideEntryOrder)
-        {
-            if (String::Equals(object, a, true))
-            {
-                return -1;
-            }
-            if (String::Equals(object, b, true))
-            {
-                return  1;
-            }
-        }
-        return 0;
-    }
 }

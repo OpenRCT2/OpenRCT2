@@ -45,7 +45,10 @@ interface IRideGroupManager
     virtual ride_group * RideGroupFind(uint8 rideType, uint8 index) const abstract;
     virtual bool RideGroupsAreEqual(const ride_group * a, const ride_group * b) const abstract;
     virtual bool RideGroupIsInvented(const ride_group * rideGroup) const abstract;
+
+    virtual const std::vector<const char *> GetPreferedRideEntryOrder(uint8 rideType) const abstract;
 };
+
 
 IRideGroupManager * GetRideGroupManager();
 
@@ -57,6 +60,7 @@ extern "C"
     ride_group * ride_group_find(uint8 rideType, uint8 index);
     bool ride_groups_are_equal(const ride_group * a, const ride_group * b);
     bool ride_group_is_invented(const ride_group * rideGroup);
+    sint32 vehicle_preference_compare(uint8 rideType, const char * a, const char * b);
 #ifdef __cplusplus
 }
 #endif
