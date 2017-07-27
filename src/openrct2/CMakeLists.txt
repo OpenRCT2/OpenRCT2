@@ -265,3 +265,13 @@ if (NOT DISABLE_RCT2)
     # builds without need for -fno-omit-frame-pointer
     set_source_files_properties(${CMAKE_CURRENT_LIST_DIR}/rct2/addresses.c PROPERTIES COMPILE_FLAGS -O0)
 endif ()
+
+if (CXX_WARN_SUGGEST_FINAL_TYPES)
+    # Disable -Wsuggest-final-types via pragmas where due.
+   add_definitions(-D__WARN_SUGGEST_FINAL_TYPES__)
+endif ()
+
+if (CXX_WARN_SUGGEST_FINAL_METHODS)
+    # Disable -Wsuggest-final-methods via pragmas where due.
+   add_definitions(-D__WARN_SUGGEST_FINAL_METHODS__)
+endif ()
