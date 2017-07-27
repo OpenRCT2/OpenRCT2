@@ -1194,7 +1194,7 @@ static void loc_6A6D7E(
                     }
 
                     const uint8 trackType = mapElement->properties.track.type;
-                    const uint8 trackSequence = mapElement->properties.track.sequence & MAP_ELEM_TRACK_SEQUENCE_SEQUENCE_MASK;
+                    const uint8 trackSequence = map_element_get_track_sequence(mapElement);
                     if (!(FlatRideTrackSequenceProperties[trackType][trackSequence] & TRACK_SEQUENCE_FLAG_CONNECTS_TO_PATH)) {
                         return;
                     }
@@ -1286,7 +1286,7 @@ static void loc_6A6C85(
             return;
         }
         const uint8 trackType = mapElement->properties.track.type;
-        const uint8 trackSequence = mapElement->properties.track.sequence & MAP_ELEM_TRACK_SEQUENCE_SEQUENCE_MASK;
+        const uint8 trackSequence = map_element_get_track_sequence(mapElement);
         if (!(FlatRideTrackSequenceProperties[trackType][trackSequence] & TRACK_SEQUENCE_FLAG_CONNECTS_TO_PATH)) {
             return;
         }

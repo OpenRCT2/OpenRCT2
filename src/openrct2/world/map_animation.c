@@ -324,8 +324,8 @@ static bool map_animation_invalidate_track_onridephoto(sint32 x, sint32 y, sint3
             if (game_is_paused()) {
                 return false;
             }
-            if (mapElement->properties.track.sequence & 0xF0) {
-                mapElement->properties.track.sequence -= 0x10;
+            if (map_element_is_taking_photo(mapElement)) {
+                map_element_decrement_onride_photo_timout(mapElement);
                 return false;
             } else {
                 return true;
