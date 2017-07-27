@@ -82,6 +82,8 @@ static money32 SmallSceneryRemove(sint16 x, sint16 y, sint8 baseHeight, uint8 qu
     bool sceneryFound = false;
     rct_map_element* mapElement = map_get_first_element_at(x / 32, y / 32);
     do {
+        if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_SCENERY)
+            continue;
         if ((mapElement->type >> 6) != quadrant)
             continue;
         if (mapElement->base_height != baseHeight)
