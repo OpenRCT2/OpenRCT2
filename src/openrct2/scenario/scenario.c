@@ -470,7 +470,7 @@ static void scenario_update_daynight_cycle()
 void scenario_update()
 {
     if (!(gScreenFlags & ~SCREEN_FLAGS_PLAYING)) {
-        uint32 currentMonthTick = gDateMonthTicks;
+        uint32 currentMonthTick = floor2(gDateMonthTicks, 4);
         uint32 nextMonthTick = currentMonthTick + 4;
         uint8 currentMonth = gDateMonthsElapsed & 7;
         uint8 currentDaysInMonth = (uint8)days_in_month[currentMonth];
