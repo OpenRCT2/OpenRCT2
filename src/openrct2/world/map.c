@@ -4636,32 +4636,31 @@ static money32 map_place_peep_spawn(sint32 flags, sint16 x, sint16 y, sint32 z, 
 
     gCommandPosition.x = x;
     gCommandPosition.y = y;
-    gCommandPosition.z = z * 16;
+    gCommandPosition.z = z * 2;
+
+    if (x <= 16 || y <= 16 || x >= (gMapSizeUnits - 16) || y >= (gMapSizeUnits - 16)) {
+        gGameCommandErrorText = STR_OFF_EDGE_OF_MAP;
+        return MONEY32_UNDEFINED;
+    }
 
     rct_map_element *mapElement, *surfaceMapElement;
-    sint32 mapX, mapY, mapZ, _direction;
-
     // Verify footpath exists at location, and retrieve coordinates
-    // TODO get_coordinates_from_pos relies on local viewport, switch to "map_get_path_element_at() == null"
-    footpath_get_coordinates_from_pos(x, y, &mapX, &mapY, &_direction, &mapElement);
-    if (mapX == MAP_LOCATION_NULL)
+    mapElement = map_get_path_element_at(x >> 5, y >> 5, z * 2);
+    if (mapElement == NULL) {
         return MONEY32_UNDEFINED;
+    }
 
     // Verify location is unowned
-    surfaceMapElement = map_get_surface_element_at(mapX >> 5, mapY >> 5);
+    surfaceMapElement = map_get_surface_element_at(x >> 5, y >> 5);
     if (surfaceMapElement == NULL) {
         return MONEY32_UNDEFINED;
     }
     if (surfaceMapElement->properties.surface.ownership & 0xF0) {
+        gGameCommandErrorText = STR_LAND_OWNED;
         return MONEY32_UNDEFINED;
     }
 
     if (flags & GAME_COMMAND_FLAG_APPLY) {
-        // Get location via retrieved footpath element
-        mapX = mapX + 16 + (word_981D6C[direction].x * 15);
-        mapY = mapY + 16 + (word_981D6C[direction].y * 15);
-        mapZ = mapElement->base_height / 2;
-
         // Find empty or next appropriate peep spawn to use
         sint32 peepSpawnIndex = -1;
         for (sint32 i = 0; i < MAX_PEEP_SPAWNS; i++) {
@@ -4678,9 +4677,9 @@ static money32 map_place_peep_spawn(sint32 flags, sint16 x, sint16 y, sint32 z, 
         }
 
         // Set peep spawn
-        gPeepSpawns[peepSpawnIndex].x = mapX;
-        gPeepSpawns[peepSpawnIndex].y = mapY;
-        gPeepSpawns[peepSpawnIndex].z = mapZ;
+        gPeepSpawns[peepSpawnIndex].x = x;
+        gPeepSpawns[peepSpawnIndex].y = y;
+        gPeepSpawns[peepSpawnIndex].z = z;
         gPeepSpawns[peepSpawnIndex].direction = direction;
 
         // Invalidate tile
