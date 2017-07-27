@@ -1276,9 +1276,11 @@ static void limit_autosave_count(const size_t numberOfFilesToKeep, bool processL
 
     if (processLandscapeFolder) {
         platform_get_user_directory(filter, "landscape", sizeof(filter));
+        safe_strcat_path(filter, "autosave", sizeof(filter));
         safe_strcat_path(filter, "autosave_*.sc6", sizeof(filter));
     } else {
         platform_get_user_directory(filter, "save", sizeof(filter));
+        safe_strcat_path(filter, "autosave", sizeof(filter));
         safe_strcat_path(filter, "autosave_*.sv6", sizeof(filter));
     }
 
@@ -1307,6 +1309,7 @@ static void limit_autosave_count(const size_t numberOfFilesToKeep, bool processL
             } else {
                 platform_get_user_directory(autosaveFiles[i], "save", sizeof(utf8) * MAX_PATH);
             }
+            safe_strcat_path(autosaveFiles[i], "autosave", sizeof(utf8) * MAX_PATH);
             safe_strcat_path(autosaveFiles[i], fileInfo.path, sizeof(utf8) * MAX_PATH);
         }
     }
@@ -1360,6 +1363,8 @@ void game_autosave()
     utf8 path[MAX_PATH];
     utf8 backupPath[MAX_PATH];
     platform_get_user_directory(path, subDirectory, sizeof(path));
+    safe_strcat_path(path, "autosave", sizeof(path));
+    platform_ensure_directory_exists(path);
     safe_strcpy(backupPath, path, sizeof(backupPath));
     safe_strcat_path(path, timeName, sizeof(path));
     safe_strcat_path(backupPath, "autosave", sizeof(backupPath));
