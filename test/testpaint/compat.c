@@ -202,6 +202,11 @@ void map_element_decrement_onride_photo_timout(rct_map_element * mapElement)
     }
 }
 
+sint32 map_get_water_height(const rct_map_element * mapElement)
+{
+    return mapElement->properties.surface.terrain & MAP_ELEMENT_WATER_HEIGHT_MASK;
+}
+
 bool ride_type_has_flag(int rideType, int flag)
 {
     return (RideProperties[rideType].flags & flag) != 0;
