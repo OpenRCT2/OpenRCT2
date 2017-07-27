@@ -295,4 +295,11 @@ rct_scenery_set_entry *get_scenery_group_entry(sint32 entryIndex);
 
 sint32 get_scenery_id_from_entry_index(uint8 objectType, sint32 entryIndex);
 
+sint32 scenery_small_get_primary_colour(const rct_map_element *mapElement);
+sint32 scenery_small_get_secondary_colour(const rct_map_element *mapElement);
+void scenery_small_set_primary_colour(rct_map_element *mapElement, uint32 colour);
+void scenery_small_set_secondary_colour(rct_map_element *mapElement, uint32 colour);
+bool scenery_small_get_supports_needed(const rct_map_element *mapElement);
+void scenery_small_set_supports_needed(rct_map_element *mapElement);
+
 #endif

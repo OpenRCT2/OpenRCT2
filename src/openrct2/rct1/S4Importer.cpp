@@ -2198,9 +2198,8 @@ private:
             {
                 switch (map_element_get_type(mapElement)) {
                 case MAP_ELEMENT_TYPE_SCENERY:
-                    colour = RCT1::GetColour(mapElement->properties.scenery.colour_1 & 0x1F);
-                    mapElement->properties.scenery.colour_1 &= 0xE0;
-                    mapElement->properties.scenery.colour_1 |= colour;
+                    colour = RCT1::GetColour(scenery_small_get_primary_colour(mapElement));
+                        scenery_small_set_primary_colour(mapElement, colour);
 
                     // Copied from [rct2: 0x006A2956]
                     switch (mapElement->properties.scenery.type) {
@@ -2209,7 +2208,7 @@ private:
                     case 168: // TGE3 (Geometric Sculpture)
                     case 170: // TGE4 (Geometric Sculpture)
                     case 171: // TGE5 (Geometric Sculpture)
-                        mapElement->properties.scenery.colour_2 = COLOUR_WHITE;
+                        scenery_small_set_secondary_colour(mapElement, COLOUR_WHITE);
                         break;
                     }
                     break;

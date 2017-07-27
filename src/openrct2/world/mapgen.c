@@ -257,7 +257,7 @@ static void mapgen_place_tree(sint32 type, sint32 x, sint32 y)
     mapElement->type = MAP_ELEMENT_TYPE_SCENERY | (util_rand() & 3);
     mapElement->properties.scenery.type = type;
     mapElement->properties.scenery.age = 0;
-    mapElement->properties.scenery.colour_1 = COLOUR_YELLOW;
+    scenery_small_set_primary_colour(mapElement, COLOUR_YELLOW);
 }
 
 /**

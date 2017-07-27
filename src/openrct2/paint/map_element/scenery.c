@@ -117,10 +117,16 @@ void scenery_paint(uint8 direction, sint32 height, rct_map_element* mapElement) 
             baseImageid += 4;
         }
     }
-    if (entry->small_scenery.flags & SMALL_SCENERY_FLAG_HAS_PRIMARY_COLOUR) {
-        baseImageid |= ((mapElement->properties.scenery.colour_1 & 0x1F) << 19) | IMAGE_TYPE_REMAP;
-        if (entry->small_scenery.flags & SMALL_SCENERY_FLAG_HAS_SECONDARY_COLOUR) {
-            baseImageid |= ((mapElement->properties.scenery.colour_2 & 0x1F) << 24) | IMAGE_TYPE_REMAP_2_PLUS;
+    if (entry->small_scenery.flags & SMALL_SCENERY_FLAG_HAS_PRIMARY_COLOUR)
+    {
+        if (entry->small_scenery.flags & SMALL_SCENERY_FLAG_HAS_SECONDARY_COLOUR)
+        {
+            baseImageid |= SPRITE_ID_PALETTE_COLOUR_3(scenery_small_get_primary_colour(mapElement),
+                                                      scenery_small_get_secondary_colour(mapElement));
+        }
+        else
+        {
+            baseImageid |= SPRITE_ID_PALETTE_COLOUR_1(scenery_small_get_primary_colour(mapElement));
         }
     }
     if (dword_F64EB0 != 0) {
@@ -134,7 +140,7 @@ void scenery_paint(uint8 direction, sint32 height, rct_map_element* mapElement) 
         if (dword_F64EB0 == 0) {
             // Draw translucent overlay:
             // TODO: Name palette entries
-            sint32 image_id = (baseImageid & 0x7FFFF) + (GlassPaletteIds[(mapElement->properties.scenery.colour_1 & 0x1F)] << 19) + 0x40000004;
+            sint32 image_id = (baseImageid & 0x7FFFF) + (GlassPaletteIds[scenery_small_get_primary_colour(mapElement)] << 19) + 0x40000004;
             sub_98199C(image_id, x_offset, y_offset, boxlength.x, boxlength.y, boxlength.z - 1, height, boxoffset.x, boxoffset.y, boxoffset.z, rotation);
         }
     }
@@ -235,10 +241,15 @@ void scenery_paint(uint8 direction, sint32 height, rct_map_element* mapElement) 
                 if (entry->small_scenery.flags & (SMALL_SCENERY_FLAG_VISIBLE_WHEN_ZOOMED | SMALL_SCENERY_FLAG17)) {
                     image_id += 4;
                 }
-                if (entry->small_scenery.flags & SMALL_SCENERY_FLAG_HAS_PRIMARY_COLOUR) {
-                    image_id |= ((mapElement->properties.scenery.colour_1 & 0x1F) << 19) | IMAGE_TYPE_REMAP;
+                if (entry->small_scenery.flags & SMALL_SCENERY_FLAG_HAS_PRIMARY_COLOUR)
+                {
                     if (entry->small_scenery.flags & SMALL_SCENERY_FLAG_HAS_SECONDARY_COLOUR) {
-                        image_id |= ((mapElement->properties.scenery.colour_2 & 0x1F) << 24) | IMAGE_TYPE_REMAP_2_PLUS;
+                        image_id |= SPRITE_ID_PALETTE_COLOUR_3(scenery_small_get_primary_colour(mapElement),
+                                                               scenery_small_get_secondary_colour(mapElement));
+                    }
+                    else
+                    {
+                        image_id |= SPRITE_ID_PALETTE_COLOUR_1(scenery_small_get_primary_colour(mapElement));
                     }
                 }
                 if (dword_F64EB0 != 0) {
@@ -254,7 +265,7 @@ void scenery_paint(uint8 direction, sint32 height, rct_map_element* mapElement) 
         }
     }
     // 6E0556: Draw supports:
-    if (mapElement->properties.scenery.colour_1 & 0x20) {
+    if (scenery_small_get_supports_needed(mapElement)) {
         if (!(entry->small_scenery.flags & SMALL_SCENERY_FLAG_NO_SUPPORTS)) {
             sint32 ax = 0;
             sint32 supportHeight = height;
@@ -263,8 +274,9 @@ void scenery_paint(uint8 direction, sint32 height, rct_map_element* mapElement) 
                 ax = 49;
             }
             uint32 supportImageColourFlags = IMAGE_TYPE_REMAP;
-            if (entry->small_scenery.flags & SMALL_SCENERY_FLAG_PAINT_SUPPORTS) {
-                supportImageColourFlags = ((mapElement->properties.scenery.colour_1 & 0x1F) << 19) | IMAGE_TYPE_REMAP;
+            if (entry->small_scenery.flags & SMALL_SCENERY_FLAG_PAINT_SUPPORTS)
+            {
+                supportImageColourFlags = SPRITE_ID_PALETTE_COLOUR_1(scenery_small_get_primary_colour(mapElement));
             }
             if (dword_F64EB0 != 0) {
                 supportImageColourFlags = dword_F64EB0;

@@ -149,10 +149,9 @@ static money32 SmallScenerySetColour(sint16 x, sint16 y, sint8 baseHeight, uint8
 
     if (flags & GAME_COMMAND_FLAG_APPLY)
     {
-        mapElement->properties.scenery.colour_1 &= 0xE0;
-        mapElement->properties.scenery.colour_1 |= primaryColour;
-        mapElement->properties.scenery.colour_2 &= 0xE0;
-        mapElement->properties.scenery.colour_2 |= secondaryColour;
+        scenery_small_set_primary_colour(mapElement, primaryColour);
+        scenery_small_set_secondary_colour(mapElement, secondaryColour);
+
         map_invalidate_tile_full(x, y);
     }
 
@@ -414,13 +413,13 @@ static money32 SmallSceneryPlace(sint16 x,
     newElement->type = type;
     newElement->properties.scenery.type = sceneryType;
     newElement->properties.scenery.age = 0;
-    newElement->properties.scenery.colour_1 = primaryColour;
-    newElement->properties.scenery.colour_2 = secondaryColour;
+    scenery_small_set_primary_colour(newElement, primaryColour);
+    scenery_small_set_secondary_colour(newElement, secondaryColour);
     newElement->clearance_height = newElement->base_height + ((sceneryEntry->small_scenery.height + 7) / 8);
 
     if (supportsRequired)
     {
-        newElement->properties.scenery.colour_1 |= 0x20;
+        scenery_small_set_supports_needed(newElement);
     }
 
     if (flags & GAME_COMMAND_FLAG_GHOST)
