@@ -101,6 +101,7 @@ rct_map_element **gMapElementTilePointers = RCT2_ADDRESS(RCT2_ADDRESS_TILE_MAP_E
 #endif
 rct_xy16 gMapSelectionTiles[300];
 rct2_peep_spawn gPeepSpawns[MAX_PEEP_SPAWNS];
+static sint32 _nextPeepSpawnIndex = 0;
 
 rct_map_element *gNextFreeMapElement;
 uint32 gNextFreeMapElementPointerIndex;
@@ -4623,4 +4624,78 @@ uint16 check_max_allowable_land_rights_for_tile(uint8 x, uint8 y, uint8 base_z)
     while (!map_element_is_last_for_tile(mapElement++));
 
     return destOwnership;
+}
+
+static money32 map_place_peep_spawn(sint32 flags, sint16 x, sint16 y, sint32 z, sint32 direction)
+{
+    if (!(gScreenFlags & SCREEN_FLAGS_EDITOR) && !gCheatsSandboxMode) {
+        return MONEY32_UNDEFINED;
+    }
+
+    gCommandExpenditureType = RCT_EXPENDITURE_TYPE_LAND_PURCHASE;
+
+    gCommandPosition.x = x;
+    gCommandPosition.y = y;
+    gCommandPosition.z = z * 16;
+
+    rct_map_element *mapElement, *surfaceMapElement;
+    sint32 mapX, mapY, mapZ, _direction;
+
+    // Verify footpath exists at location, and retrieve coordinates
+    // TODO get_coordinates_from_pos relies on local viewport, switch to "map_get_path_element_at() == null"
+    footpath_get_coordinates_from_pos(x, y, &mapX, &mapY, &_direction, &mapElement);
+    if (mapX == MAP_LOCATION_NULL)
+        return MONEY32_UNDEFINED;
+
+    // Verify location is unowned
+    surfaceMapElement = map_get_surface_element_at(mapX >> 5, mapY >> 5);
+    if (surfaceMapElement == NULL) {
+        return MONEY32_UNDEFINED;
+    }
+    if (surfaceMapElement->properties.surface.ownership & 0xF0) {
+        return MONEY32_UNDEFINED;
+    }
+
+    if (flags & GAME_COMMAND_FLAG_APPLY) {
+        // Get location via retrieved footpath element
+        mapX = mapX + 16 + (word_981D6C[direction].x * 15);
+        mapY = mapY + 16 + (word_981D6C[direction].y * 15);
+        mapZ = mapElement->base_height / 2;
+
+        // Find empty or next appropriate peep spawn to use
+        sint32 peepSpawnIndex = -1;
+        for (sint32 i = 0; i < MAX_PEEP_SPAWNS; i++) {
+            if (gPeepSpawns[i].x == PEEP_SPAWN_UNDEFINED) {
+                peepSpawnIndex = i;
+                break;
+            }
+        }
+
+        // If no empty peep spawns exist, use peep spawn next to last one set.
+        if (peepSpawnIndex == -1) {
+            peepSpawnIndex = _nextPeepSpawnIndex;
+            _nextPeepSpawnIndex = (peepSpawnIndex + 1) % MAX_PEEP_SPAWNS;
+        }
+
+        // Set peep spawn
+        gPeepSpawns[peepSpawnIndex].x = mapX;
+        gPeepSpawns[peepSpawnIndex].y = mapY;
+        gPeepSpawns[peepSpawnIndex].z = mapZ;
+        gPeepSpawns[peepSpawnIndex].direction = direction;
+
+        // Invalidate tile
+        map_invalidate_tile_full(x, y);
+    }
+
+    return 0;
+}
+
+void game_command_place_peep_spawn(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp)
+{
+    *ebx = map_place_peep_spawn(
+        *ebx & 0xFF,
+        *eax & 0xFFFF,
+        *ecx & 0xFFFF,
+        *edx & 0xFF,
+        (*ebx >> 8) & 0xFF);
 }
