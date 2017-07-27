@@ -22,6 +22,7 @@
 - Improved: [#5859] OpenGL rendering performance
 - Improved: [#5863] Switching drawing engines no longer requires the application to restart.
 - Improved: [#6003] Doors placed on tracks will now work with all vehicles
+- Improved: [#6037] Autosaves are now stored in a subfolder
 - Improved: The land tool buttons can now be held down to increase/decrease size.
 - Improved: Dropdowns longer than 32 items overflow into columns.
 - Improved: Ride Type option in ride window is now a dropdown.
