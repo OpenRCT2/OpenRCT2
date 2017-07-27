@@ -133,8 +133,10 @@ void X8RainDrawer::Restore()
     }
 }
 
+#ifdef __WARN_SUGGEST_FINAL_METHODS__
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wsuggest-final-methods"
+#endif
 
 X8DrawingEngine::X8DrawingEngine(Ui::IUiContext * uiContext)
 {
@@ -468,7 +470,9 @@ void X8DrawingEngine::DrawDirtyBlocks(uint32 x, uint32 y, uint32 columns, uint32
     window_draw_all(&_bitsDPI, left, top, right, bottom);
 }
 
+#ifdef __WARN_SUGGEST_FINAL_METHODS__
 #pragma GCC diagnostic pop
+#endif
 
 X8DrawingContext::X8DrawingContext(X8DrawingEngine * engine)
 {
