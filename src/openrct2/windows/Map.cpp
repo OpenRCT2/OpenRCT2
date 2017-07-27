@@ -1358,10 +1358,12 @@ static void window_map_set_peep_spawn_tool_down(sint32 x, sint32 y)
     rct_map_element *mapElement, *surfaceMapElement;
     sint32 mapX, mapY, mapZ, direction;
 
+    // Verify footpath exists at location, and retrieve coordinates
     footpath_get_coordinates_from_pos(x, y, &mapX, &mapY, &direction, &mapElement);
-    if (mapX == 0x8000)
+    if (mapX == MAP_LOCATION_NULL)
         return;
 
+    // Verify location is unowned
     surfaceMapElement = map_get_surface_element_at(mapX >> 5, mapY >> 5);
     if (surfaceMapElement == nullptr) {
         return;
@@ -1370,10 +1372,12 @@ static void window_map_set_peep_spawn_tool_down(sint32 x, sint32 y)
         return;
     }
 
+    // Get location via retrieved footpath element
     mapX = mapX + 16 + (word_981D6C[direction].x * 15);
     mapY = mapY + 16 + (word_981D6C[direction].y * 15);
     mapZ = mapElement->base_height / 2;
 
+    // Find empty or next appropriate peep spawn to use
     sint32 peepSpawnIndex = -1;
     for (sint32 i = 0; i < MAX_PEEP_SPAWNS; i++) {
         if (gPeepSpawns[i].x == PEEP_SPAWN_UNDEFINED) {
@@ -1385,10 +1389,14 @@ static void window_map_set_peep_spawn_tool_down(sint32 x, sint32 y)
         peepSpawnIndex = _nextPeepSpawnIndex;
         _nextPeepSpawnIndex = (peepSpawnIndex + 1) % MAX_PEEP_SPAWNS;
     }
+
+    // Set peep spawn
     gPeepSpawns[peepSpawnIndex].x = mapX;
     gPeepSpawns[peepSpawnIndex].y = mapY;
     gPeepSpawns[peepSpawnIndex].z = mapZ;
     gPeepSpawns[peepSpawnIndex].direction = direction;
+
+    // Invalidate screen
     gfx_invalidate_screen();
 }
 
