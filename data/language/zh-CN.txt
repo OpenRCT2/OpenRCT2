@@ -895,7 +895,7 @@ STR_0884    :载入地形
 STR_0885    :保存地形
 STR_0886    :退出游戏
 STR_0887    :退出场景编辑器
-STR_0888    :退出过山车设计工具
+STR_0888    :退出轨道设计工具
 STR_0889    :退出轨道设计管理工具
 STR_0890    :<removed string - do not use>
 STR_0891    :截图
@@ -3220,7 +3220,7 @@ STR_3203    :设置研发清单
 STR_3204    :选取选项
 STR_3205    :选取目标
 STR_3206    :存储剧情
-STR_3207    :过山车设计工具
+STR_3207    :轨道设计工具
 STR_3208    :轨道设计管理工具
 STR_3209    :上一步:
 STR_3210    :下一步:
@@ -3348,7 +3348,7 @@ STR_3331    :由地图边缘到乐园入口的道路尚未连接好, 或者太�
 STR_3332    :乐园入口倒转了, 或没有道路连接至地图边缘
 STR_3333    :在存档中导出附加物
 STR_3334    :{SMALLFONT}{BLACK}Select whether to save any additional plug-in object data required (add-in data not supplied with the main product) in saved game or scenario files, allowing them to be loaded by someone who doesn't have the additional object data
-STR_3335    :过山车设计工具 - 选择游乐设施的类型及车辆种类
+STR_3335    :轨道设计工具 - 选择游乐设施的类型及车辆种类
 STR_3336    :轨道设计管理工具 - 选择游乐设施的类型
 STR_3337    :<not used anymore>
 STR_3338    :{BLACK}Custom-designed layout
@@ -3357,7 +3357,7 @@ STR_3340    :{BLACK}{COMMA16} designs available, or custom-designed layout
 STR_3341    :{SMALLFONT}{BLACK}游戏工具
 STR_3342    :剧情编辑器
 STR_3343    :将游戏存档转换成剧情关
-STR_3344    :过山车设计工具
+STR_3344    :轨道设计工具
 STR_3345    :轨道设计管理工具
 STR_3346    :不能保存轨道设计...
 STR_3347    :Ride is too large, contains too many elements, or scenery is too spread out
@@ -4449,6 +4449,7 @@ STR_6130    :将整个列表复制到剪贴板
 STR_6131    :对象源
 STR_6132    :忽略研究状态
 STR_6133    :{SMALLFONT}{BLACK}使用还未被研究出的游乐设施和景观
+
 
 
 #############
