@@ -16,7 +16,7 @@ The following people are not part of the project team, but have been contributin
 * Hielke Morsink (Broxzier)
 * Matte Andersson (Nubbie)
 * Kenton Boadway (PFCKrutonium)
-* (wolfreak99)
+* Joe Minor Jr (wolfreak99)
 
 ## Implementation (RCT2)
 * Ted John (IntelOrca)
