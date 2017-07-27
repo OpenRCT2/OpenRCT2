@@ -1282,7 +1282,7 @@ static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid
             }
 
             gSceneryPlaceZ = 0;
-            uint16 water_height = map_element->properties.surface.terrain & MAP_ELEMENT_WATER_HEIGHT_MASK;
+            uint16 water_height = map_get_water_height(map_element);
             if (water_height != 0) {
                 gSceneryPlaceZ = water_height * 16;
             }

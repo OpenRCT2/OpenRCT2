@@ -1662,7 +1662,7 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi)
             gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_SURFACE_OWNERSHIP, &landOwnership, COLOUR_DARK_GREEN, x, y + 22);
 
             // Water level
-            sint32 waterLevel = mapElement->properties.surface.terrain & MAP_ELEMENT_WATER_HEIGHT_MASK;
+            sint32 waterLevel = map_get_water_height(mapElement);
             gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_SURFACE_WATER_LEVEL, &waterLevel, COLOUR_DARK_GREEN, x, y + 33);
 
             // Properties

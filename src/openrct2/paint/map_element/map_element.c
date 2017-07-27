@@ -230,8 +230,9 @@ static void sub_68B3FB(sint32 x, sint32 y)
     element--;
 
     if (map_element_get_type(element) == MAP_ELEMENT_TYPE_SURFACE &&
-        (element->properties.surface.terrain & MAP_ELEMENT_WATER_HEIGHT_MASK) != 0){
-        max_height = (element->properties.surface.terrain & MAP_ELEMENT_WATER_HEIGHT_MASK) << 1;
+        (map_get_water_height(element) > 0))
+    {
+        max_height = map_get_water_height(element) * 2;
     }
 
     max_height *= 8;

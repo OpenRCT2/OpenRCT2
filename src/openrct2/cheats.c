@@ -71,7 +71,7 @@ static void cheat_set_grass_length(sint32 length)
             if (map_element_get_terrain(mapElement) != TERRAIN_GRASS)
                 continue;
 
-            if ((mapElement->properties.surface.terrain & 0x1F) > 0)
+            if (map_get_water_height(mapElement) > 0)
                 continue;
 
             mapElement->properties.surface.grass_length = length;

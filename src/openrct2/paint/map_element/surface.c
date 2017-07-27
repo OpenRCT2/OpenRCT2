@@ -755,7 +755,7 @@ static void viewport_surface_draw_water_side_top(enum edge_t edge, uint8 height,
         regs.ah = 1;
         regs.ch = 1;
     } else {
-        regs.dh = neighbour.map_element->properties.surface.terrain & 0x1F;
+        regs.dh = map_get_water_height(neighbour.map_element);
         if (regs.dl == regs.dh) {
             return;
         }
@@ -867,7 +867,7 @@ static void viewport_surface_draw_water_side_bottom(enum edge_t edge, uint8 heig
         regs.ch = 1;
         regs.ah = 1;
     } else {
-        regs.dh = neighbour.map_element->properties.surface.terrain & 0x1F;
+        regs.dh = map_get_water_height(neighbour.map_element);
         if (regs.dl == regs.dh) {
             return;
         }
@@ -1254,8 +1254,9 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
                 sint32 local_surfaceShape = surfaceShape;
                 sint32 local_height = height;
                 // Water tool
-                if (mapElement->properties.surface.terrain & 0x1F) {
-                    sint32 waterHeight = (mapElement->properties.surface.terrain & 0x1F) * 16;
+                if (map_get_water_height(mapElement) > 0)
+                {
+                    sint32 waterHeight = map_get_water_height(mapElement) * 16;
                     if (waterHeight > height) {
                         local_height += 16;
 
@@ -1369,12 +1370,13 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
 #endif
     }
 
-    if (mapElement->properties.surface.terrain & 0x1F) {
+    if (map_get_water_height(mapElement) > 0)
+    {
         // loc_6615A9: (water height)
         gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_WATER;
 
         uint16 localHeight = height + 16;
-        uint16 waterHeight = (mapElement->properties.surface.terrain & 0x1F) * 16;
+        uint16 waterHeight = map_get_water_height(mapElement) * 16;
 
         if (!gTrackDesignSaveMode) {
             gUnk141E9DC = waterHeight;

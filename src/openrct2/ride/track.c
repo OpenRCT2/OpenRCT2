@@ -1170,7 +1170,7 @@ static money32 track_place(sint32 rideIndex, sint32 type, sint32 originX, sint32
         if ((rideTypeFlags & RIDE_TYPE_FLAG_TRACK_MUST_BE_ON_WATER) && !byte_9D8150) {
             mapElement = map_get_surface_element_at(x / 32, y / 32);
 
-            uint8 water_height = 2 * (mapElement->properties.surface.terrain & MAP_ELEMENT_WATER_HEIGHT_MASK);
+            uint8 water_height = map_get_water_height(mapElement) * 2;
             if (water_height == 0) {
                 gGameCommandErrorText = STR_CAN_ONLY_BUILD_THIS_ON_WATER;
                 return MONEY32_UNDEFINED;

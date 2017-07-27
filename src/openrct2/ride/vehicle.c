@@ -4082,7 +4082,7 @@ static bool vehicle_is_boat_on_water(rct_vehicle *vehicle, sint32 x, sint32 y)
     rct_map_element *mapElement = map_get_first_element_at(x >> 5, y >> 5);
     do {
         if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_SURFACE) {
-            sint32 waterZ = (mapElement->properties.surface.terrain & 0x1F) * 2;
+            sint32 waterZ = map_get_water_height(mapElement) * 2;
             if (z != waterZ) {
                 return true;
             }

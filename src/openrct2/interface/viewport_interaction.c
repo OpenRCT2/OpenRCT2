@@ -593,7 +593,7 @@ void sub_68A15E(sint32 screenX, sint32 screenY, sint16 *x, sint16 *y, sint32 *di
 
     sint16 originalZ = 0;
     if (interactionType == VIEWPORT_INTERACTION_ITEM_WATER) {
-        originalZ = (myMapElement->properties.surface.terrain & MAP_ELEMENT_WATER_HEIGHT_MASK) << 4;
+        originalZ = map_get_water_height(myMapElement) << 4;
     }
 
     rct_xy16 start_vp_pos = screen_coord_to_viewport_coord(viewport, screenX, screenY);

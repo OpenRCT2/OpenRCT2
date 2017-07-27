@@ -374,10 +374,9 @@ static money32 WallPlace(uint8 wallType,
         return MONEY32_UNDEFINED;
     }
 
-    if (surfaceElement->properties.surface.terrain & MAP_ELEMENT_WATER_HEIGHT_MASK)
+    if (map_get_water_height(surfaceElement) > 0)
     {
-        uint16 waterHeight = surfaceElement->properties.surface.terrain & MAP_ELEMENT_WATER_HEIGHT_MASK;
-        waterHeight *= 16;
+        uint16 waterHeight = map_get_water_height(surfaceElement) * 16;
 
         if (position.z < waterHeight && !gCheatsDisableClearanceChecks)
         {
