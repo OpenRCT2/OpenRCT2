@@ -1366,7 +1366,7 @@ static money32 map_change_surface_style(sint32 x0, sint32 y0, sint32 x1, sint32 
 
             if (flags & 1)
             {
-                if (map_get_water_height(mapElement) == 0)
+                if (!(mapElement->properties.surface.terrain & MAP_ELEMENT_SURFACE_TERRAIN_MASK))
                 {
                     if (!(mapElement->type & MAP_ELEMENT_DIRECTION_MASK))
                     {
