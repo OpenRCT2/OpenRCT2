@@ -3793,6 +3793,7 @@ enum {
 
     STR_ERR_CANT_PLACE_PEEP_SPAWN_HERE = 6144,
     STR_ERR_MUST_BE_OUTSIDE_PARK_BOUNDARIES = 6145,
+    STR_LOG_PLACE_PEEP_SPAWN = 6146,
 
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     STR_COUNT = 32768

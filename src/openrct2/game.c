@@ -854,6 +854,14 @@ void game_log_multiplayer_command(int command, int *eax, int* ebx, int* ecx, int
         format_string(log_msg, 256, STR_LOG_REMOVE_TRACK, args);
         network_append_server_log(log_msg);
     }
+    else if (command == GAME_COMMAND_PLACE_PEEP_SPAWN) {
+        char* args[1] = {
+            (char *)player_name,
+        };
+
+        format_string(log_msg, 256, STR_LOG_PLACE_PEEP_SPAWN, args);
+        network_append_server_log(log_msg);
+    }
 }
 
 void pause_toggle()

@@ -4454,6 +4454,7 @@ STR_6142    :{WINDOW_COLOUR_2}Track name: {BLACK}{STRING}
 STR_6143    :{WINDOW_COLOUR_2}Ride type: {BLACK}{STRINGID}
 STR_6144    :Can't place peep spawn here...
 STR_6145    :Must be outside park boundaries!
+STR_6146    :{STRING} placed a peep spawn.
 
 #############
 # Scenarios #
