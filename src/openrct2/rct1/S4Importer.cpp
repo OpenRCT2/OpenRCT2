@@ -448,7 +448,7 @@ private:
             switch (map_element_get_type(mapElement)) {
             case MAP_ELEMENT_TYPE_PATH:
             {
-                uint8 pathColour = mapElement->type & 3;
+                uint8 pathColour = map_element_get_direction(mapElement);
                 uint8 pathType = (mapElement->properties.path.type & 0xF0) >> 4;
 
                 pathType = (pathType << 2) | pathColour;
@@ -2475,7 +2475,7 @@ private:
             gParkEntrances[entranceIndex].x = it.x * 32;
             gParkEntrances[entranceIndex].y = it.y * 32;
             gParkEntrances[entranceIndex].z = element->base_height * 8;
-            gParkEntrances[entranceIndex].direction = element->type & 3;
+            gParkEntrances[entranceIndex].direction = map_element_get_direction(element);
             entranceIndex++;
         }
     }

@@ -251,7 +251,7 @@ static void sub_68B3FB(sint32 x, sint32 y)
         // Only paint map_elements below the clip height.
         if ((gCurrentViewportFlags & VIEWPORT_FLAG_PAINT_CLIP_TO_HEIGHT) && (map_element->base_height > gClipHeight)) break;
 
-        sint32 direction = (map_element->type + rotation) & MAP_ELEMENT_DIRECTION_MASK;
+        sint32 direction = map_element_get_direction_with_offset(map_element, rotation);
         sint32 height = map_element->base_height * 8;
 
         rct_xy16 dword_9DE574 = gPaintMapPosition;

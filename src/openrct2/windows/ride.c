@@ -4104,7 +4104,7 @@ static void window_ride_set_track_colour_scheme(rct_window *w, sint32 x, sint32 
         return;
 
     z = mapElement->base_height * 8;
-    direction = mapElement->type & MAP_ELEMENT_DIRECTION_MASK;
+    direction = map_element_get_direction(mapElement);
     sub_6C683D(&x, &y, &z, direction, mapElement->properties.track.type, newColourScheme, NULL, 4);
 }
 

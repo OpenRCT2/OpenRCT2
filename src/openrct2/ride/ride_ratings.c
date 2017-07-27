@@ -470,7 +470,7 @@ static void ride_ratings_score_close_proximity_loops(rct_map_element *inputMapEl
         sint32 y = gRideRatingsCalcData.proximity_y;
         ride_ratings_score_close_proximity_loops_helper(inputMapElement, x, y);
 
-        sint32 direction = inputMapElement->type & MAP_ELEMENT_DIRECTION_MASK;
+        sint32 direction = map_element_get_direction(inputMapElement);
         x = gRideRatingsCalcData.proximity_x + TileDirectionDelta[direction].x;
         y = gRideRatingsCalcData.proximity_y + TileDirectionDelta[direction].y;
         ride_ratings_score_close_proximity_loops_helper(inputMapElement, x, y);
@@ -607,7 +607,7 @@ static void ride_ratings_score_close_proximity(rct_map_element *inputMapElement)
         } // switch map_element_get_type
     } while (!map_element_is_last_for_tile(mapElement++));
 
-    uint8 direction = inputMapElement->type & MAP_ELEMENT_DIRECTION_MASK;
+    uint8 direction = map_element_get_direction(inputMapElement);
     ride_ratings_score_close_proximity_in_direction(inputMapElement, (direction + 1) & 3);
     ride_ratings_score_close_proximity_in_direction(inputMapElement, (direction - 1) & 3);
     ride_ratings_score_close_proximity_loops(inputMapElement);

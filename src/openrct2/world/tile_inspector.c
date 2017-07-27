@@ -226,7 +226,7 @@ sint32 tile_inspector_rotate_element_at(sint32 x, sint32 y, sint32 elementIndex,
         case MAP_ELEMENT_TYPE_SCENERY:
         case MAP_ELEMENT_TYPE_ENTRANCE:
         case MAP_ELEMENT_TYPE_WALL:
-            newRotation = (mapElement->type + 1) & MAP_ELEMENT_DIRECTION_MASK;
+            newRotation = map_element_get_direction_with_offset(mapElement, 1);
             mapElement->type &= ~MAP_ELEMENT_DIRECTION_MASK;
             mapElement->type |= newRotation;
             break;
@@ -666,7 +666,7 @@ sint32 tile_inspector_track_base_height_offset(sint32 x, sint32 y, sint32 elemen
                 if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_TRACK)
                     continue;
 
-                if ((mapElement->type & MAP_ELEMENT_DIRECTION_MASK) != rotation)
+                if ((map_element_get_direction(mapElement)) != rotation)
                     continue;
 
                 if (map_element_get_track_sequence(mapElement) != trackBlock->index)
@@ -798,7 +798,7 @@ sint32 tile_inspector_track_set_chain(sint32 x, sint32 y, sint32 elementIndex, b
                 if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_TRACK)
                     continue;
 
-                if ((mapElement->type & MAP_ELEMENT_DIRECTION_MASK) != rotation)
+                if ((map_element_get_direction(mapElement)) != rotation)
                     continue;
 
                 if (map_element_get_track_sequence(mapElement) != trackBlock->index)

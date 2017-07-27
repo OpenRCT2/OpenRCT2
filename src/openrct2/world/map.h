@@ -436,6 +436,7 @@ bool map_element_is_ghost(const rct_map_element *element);
 uint8 map_element_get_scenery_quadrant(const rct_map_element *element);
 sint32 map_element_get_type(const rct_map_element *element);
 sint32 map_element_get_direction(const rct_map_element *element);
+sint32 map_element_get_direction_with_offset(const rct_map_element *element, uint8 offset);
 sint32 map_element_get_terrain(const rct_map_element *element);
 sint32 map_element_get_terrain_edge(const rct_map_element *element);
 void map_element_set_terrain(rct_map_element *element, sint32 terrain);

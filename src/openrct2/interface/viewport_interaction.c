@@ -469,7 +469,7 @@ static void viewport_interaction_remove_footpath_item(rct_map_element *mapElemen
  */
 void viewport_interaction_remove_park_entrance(rct_map_element *mapElement, sint32 x, sint32 y)
 {
-    sint32 rotation = (mapElement->type + 1) & 3;
+    sint32 rotation = map_element_get_direction_with_offset(mapElement, 1);
     switch (mapElement->properties.entrance.index & 0x0F) {
     case 1:
         x += TileDirectionDelta[rotation].x;
@@ -499,7 +499,7 @@ static void viewport_interaction_remove_park_wall(rct_map_element *mapElement, s
             x,
             GAME_COMMAND_FLAG_APPLY,
             y,
-            (mapElement->type & 0x3) | (mapElement->base_height << 8),
+            map_element_get_direction(mapElement) | (mapElement->base_height << 8),
             GAME_COMMAND_REMOVE_WALL,
             0,
             0
@@ -524,7 +524,7 @@ static void viewport_interaction_remove_large_scenery(rct_map_element *mapElemen
         gGameCommandErrorTitle = STR_CANT_REMOVE_THIS;
         game_do_command(
             x,
-            1 | ((mapElement->type & 0x3) << 8),
+            1 | (map_element_get_direction(mapElement) << 8),
             y,
             mapElement->base_height | ((mapElement->properties.scenerymultiple.type >> 10) << 8),
             GAME_COMMAND_REMOVE_LARGE_SCENERY,

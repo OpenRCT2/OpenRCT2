@@ -192,7 +192,7 @@ static bool map_animation_invalidate_small_scenery(sint32 x, sint32 y, sint32 ba
         if (sceneryEntry->small_scenery.flags & SMALL_SCENERY_FLAG_IS_CLOCK) {
             // Peep, looking at scenery
             if (!(gCurrentTicks & 0x3FF) && game_is_not_paused()) {
-                sint32 direction = mapElement->type & 3;
+                sint32 direction = map_element_get_direction(mapElement);
                 sint32 x2 = x - TileDirectionDelta[direction].x;
                 sint32 y2 = y - TileDirectionDelta[direction].y;
 

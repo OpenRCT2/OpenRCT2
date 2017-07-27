@@ -129,6 +129,10 @@ int map_element_get_direction(const rct_map_element *element) {
     return element->type & MAP_ELEMENT_DIRECTION_MASK;
 }
 
+int map_element_get_direction_with_offset(const rct_map_element *element, uint8 offset) {
+    return ((element->type & MAP_ELEMENT_DIRECTION_MASK) + offset) % 4;
+}
+
 rct_map_element *map_get_first_element_at(int x, int y) {
     if (x < 0 || y < 0 || x > 255 || y > 255) {
         log_error("Trying to access element outside of range");

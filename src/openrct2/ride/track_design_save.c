@@ -882,7 +882,7 @@ static bool track_design_save_to_td6_for_maze(uint8 rideIndex, rct_track_td6 *td
     } while (!map_element_is_last_for_tile(mapElement++));
     // Add something that stops this from walking off the end
 
-    uint8 entrance_direction = mapElement->type & MAP_ELEMENT_DIRECTION_MASK;
+    uint8 entrance_direction = map_element_get_direction(mapElement);
     maze->unk_2 = entrance_direction;
     maze->type = 8;
     maze->x = (sint8)((x - startX) / 32);
@@ -907,7 +907,7 @@ static bool track_design_save_to_td6_for_maze(uint8 rideIndex, rct_track_td6 *td
     } while (!map_element_is_last_for_tile(mapElement++));
     // Add something that stops this from walking off the end
 
-    uint8 exit_direction = mapElement->type & MAP_ELEMENT_DIRECTION_MASK;
+    uint8 exit_direction = map_element_get_direction(mapElement);
     maze->unk_2 = exit_direction;
     maze->type = 0x80;
     maze->x = (sint8)((x - startX) / 32);
@@ -975,7 +975,7 @@ static bool track_design_save_to_td6_for_tracked_ride(uint8 rideIndex, rct_track
 
     z = trackElement.element->base_height * 8;
     uint8 track_type = trackElement.element->properties.track.type;
-    uint8 direction = trackElement.element->type & MAP_ELEMENT_DIRECTION_MASK;
+    uint8 direction = map_element_get_direction(trackElement.element);
     _trackSaveDirection = direction;
 
     if (sub_6C683D(&trackElement.x, &trackElement.y, &z, direction, track_type, 0, &trackElement.element, 0)) {
@@ -1028,7 +1028,7 @@ static bool track_design_save_to_td6_for_tracked_ride(uint8 rideIndex, rct_track
         }
 
         z = trackElement.element->base_height * 8;
-        direction = trackElement.element->type & MAP_ELEMENT_DIRECTION_MASK;
+        direction = map_element_get_direction(trackElement.element);
         track_type = trackElement.element->properties.track.type;
 
         if (sub_6C683D(&trackElement.x, &trackElement.y, &z, direction, track_type, 0, &trackElement.element, 0)) {
@@ -1068,7 +1068,7 @@ static bool track_design_save_to_td6_for_tracked_ride(uint8 rideIndex, rct_track
             } while (!map_element_is_last_for_tile(map_element++));
             // Add something that stops this from walking off the end
 
-            uint8 entrance_direction = map_element->type & MAP_ELEMENT_DIRECTION_MASK;
+            uint8 entrance_direction = map_element_get_direction(map_element);
             entrance_direction -= _trackSaveDirection;
             entrance_direction &= MAP_ELEMENT_DIRECTION_MASK;
             entrance->direction = entrance_direction;
