@@ -88,75 +88,14 @@ enum {
 
 #define SCREEN_FLAGS_EDITOR (SCREEN_FLAGS_SCENARIO_EDITOR | SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)
 
-enum {
-    PATH_ID_G1,
-    PATH_ID_PLUGIN,
-    PATH_ID_CSS1,
-    PATH_ID_CSS2,
-    PATH_ID_CSS4,
-    PATH_ID_CSS5,
-    PATH_ID_CSS6,
-    PATH_ID_CSS7,
-    PATH_ID_CSS8,
-    PATH_ID_CSS9,
-    PATH_ID_CSS11,
-    PATH_ID_CSS12,
-    PATH_ID_CSS13,
-    PATH_ID_CSS14,
-    PATH_ID_CSS15,
-    PATH_ID_CSS3,
-    PATH_ID_CSS17,
-    PATH_ID_CSS18,
-    PATH_ID_CSS19,
-    PATH_ID_CSS20,
-    PATH_ID_CSS21,
-    PATH_ID_CSS22,
-    PATH_ID_SCORES,
-    PATH_ID_CSS23,
-    PATH_ID_CSS24,
-    PATH_ID_CSS25,
-    PATH_ID_CSS26,
-    PATH_ID_CSS27,
-    PATH_ID_CSS28,
-    PATH_ID_CSS29,
-    PATH_ID_CSS30,
-    PATH_ID_CSS31,
-    PATH_ID_CSS32,
-    PATH_ID_CSS33,
-    PATH_ID_CSS34,
-    PATH_ID_CSS35,
-    PATH_ID_CSS36,
-    PATH_ID_CSS37,
-    PATH_ID_CSS38,
-    PATH_ID_CUSTOM1,
-    PATH_ID_CUSTOM2,
-    PATH_ID_CSS39,
-    PATH_ID_CSS40,
-    PATH_ID_CSS41,
-    PATH_ID_SIXFLAGS_MAGICMOUNTAIN,
-    PATH_ID_CSS42,
-    PATH_ID_CSS43,
-    PATH_ID_CSS44,
-    PATH_ID_CSS45,
-    PATH_ID_CSS46,
-    PATH_ID_CSS50,
-    PATH_ID_END
-};
-
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 extern uint32 gCurrentDrawCount;
-
 extern uint8 gScreenFlags;
 extern uint32 gScreenAge;
 extern uint8 gSavePromptMode;
-
-extern char gRCT2AddressAppPath[];
-
-sint32 rct2_init_directories();
-const char *get_file_path(sint32 pathId);
 
 #ifdef __cplusplus
 }

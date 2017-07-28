@@ -1426,7 +1426,7 @@ static void window_options_dropdown(rct_window *w, rct_widgetindex widgetIndex, 
             window_invalidate(w);
             break;
         case WIDX_TITLE_MUSIC_DROPDOWN:
-            if ((dropdownIndex == 1 || dropdownIndex == 3) && !platform_file_exists(get_file_path(PATH_ID_CSS50))) {
+            if ((dropdownIndex == 1 || dropdownIndex == 3) && !platform_file_exists(context_get_path_legacy(PATH_ID_CSS50))) {
                 window_error_open(STR_OPTIONS_MUSIC_ERR_CSS50_NOT_FOUND, STR_OPTIONS_MUSIC_ERR_CSS50_NOT_FOUND_HINT);
             }
             else {

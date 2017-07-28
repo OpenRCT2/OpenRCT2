@@ -173,6 +173,81 @@ namespace OpenRCT2
             window_save_prompt_open();
         }
 
+        std::string GetPathLegacy(sint32 pathId) override
+        {
+            static const char * const LegacyFileNames[PATH_ID_END] =
+            {
+                nullptr,
+                nullptr,
+                "css1.dat",
+                "css2.dat",
+                "css4.dat",
+                "css5.dat",
+                "css6.dat",
+                "css7.dat",
+                "css8.dat",
+                "css9.dat",
+                "css11.dat",
+                "css12.dat",
+                "css13.dat",
+                "css14.dat",
+                "css15.dat",
+                "css3.dat",
+                "css17.dat",
+                "css18.dat",
+                "css19.dat",
+                "css20.dat",
+                "css21.dat",
+                "css22.dat",
+                nullptr,
+                "css23.dat",
+                "css24.dat",
+                "css25.dat",
+                "css26.dat",
+                "css27.dat",
+                "css28.dat",
+                "css29.dat",
+                "css30.dat",
+                "css31.dat",
+                "css32.dat",
+                "css33.dat",
+                "css34.dat",
+                "css35.dat",
+                "css36.dat",
+                "css37.dat",
+                "css38.dat",
+                "CUSTOM1.WAV",
+                "CUSTOM2.WAV",
+                "css39.dat",
+                "css40.dat",
+                "css41.dat",
+                nullptr,
+                "css42.dat",
+                "css43.dat",
+                "css44.dat",
+                "css45.dat",
+                "css46.dat",
+                "css50.dat"
+            };
+
+            std::string result;
+            if (pathId == PATH_ID_CSS50)
+            {
+                auto dataPath = _env->GetDirectoryPath(DIRBASE::RCT1, DIRID::DATA);
+                result = Path::Combine(dataPath, "css17.dat");
+            }
+            else if (pathId >= 0 && pathId < PATH_ID_END)
+            {
+                auto fileName = LegacyFileNames[pathId];
+                if (fileName != nullptr)
+                {
+                    auto dataPath = _env->GetDirectoryPath(DIRBASE::RCT2, DIRID::DATA);
+                    result = Path::Combine(dataPath, fileName);
+                }
+            }
+            return result;
+        }
+
         bool Initialise() final override
         {
             if (_initialised)
@@ -218,11 +293,12 @@ namespace OpenRCT2
                 }
             }
 
-            if (!rct2_init_directories())
+            auto rct2InstallPath = GetOrPromptRCT2Path();
+            if (rct2InstallPath.empty())
             {
                 return false;
             }
-            _env->SetBasePath(DIRBASE::RCT2, gRCT2AddressAppPath);
+            _env->SetBasePath(DIRBASE::RCT2, rct2InstallPath);
 
             if (!gOpenRCT2Headless)
             {
@@ -302,6 +378,32 @@ namespace OpenRCT2
         }
 
     private:
+        std::string GetOrPromptRCT2Path()
+        {
+            auto result = std::string();
+            if (String::IsNullOrEmpty(gCustomRCT2DataPath))
+            {
+                // Check install directory
+                if (gConfigGeneral.rct2_path == nullptr || !platform_original_game_data_exists(gConfigGeneral.rct2_path))
+                {
+                    log_verbose("install directory does not exist or invalid directory selected, %s", gConfigGeneral.rct2_path);
+                    if (!config_find_or_browse_install_directory())
+                    {
+                        utf8 path[MAX_PATH];
+                        config_get_default_path(path, sizeof(path));
+                        Console::Error::WriteLine("An RCT2 install directory must be specified! Please edit \"game_path\" in %s.\n", path);
+                        return std::string();
+                    }
+                }
+                result = std::string(gConfigGeneral.rct2_path);
+            }
+            else
+            {
+                result = std::string(gCustomRCT2DataPath);
+            }
+            return result;
+        }
+
         bool LoadBaseGraphics()
         {
             if (!gfx_load_g1(_env))
@@ -865,6 +967,14 @@ extern "C"
     void context_quit()
     {
         GetContext()->Quit();
+    }
+
+    const utf8 * context_get_path_legacy(sint32 pathId)
+    {
+        static utf8 result[MAX_PATH];
+        auto path = GetContext()->GetPathLegacy(pathId);
+        String::Set(result, sizeof(result), path.c_str());
+        return result;
     }
 
     bool platform_open_common_file_dialog(utf8 * outFilename, file_dialog_desc * desc, size_t outSize)
