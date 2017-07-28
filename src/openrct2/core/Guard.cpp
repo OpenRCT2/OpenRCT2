@@ -34,11 +34,13 @@
 
 extern "C"
 {
-    void openrct2_assert_va(bool expression, const char * message, va_list va)
+    void openrct2_assert_fwd(bool expression, const char * message, ...)
     {
+        va_list va;
+        va_start(va, message);
         Guard::Assert_VA(expression, message, va);
+        va_end(va);
     }
-
 }
 
 namespace Guard
