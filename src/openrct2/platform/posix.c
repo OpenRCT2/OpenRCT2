@@ -28,6 +28,7 @@
 #include <sys/stat.h>
 #include <sys/time.h>
 #include <time.h>
+#include <unistd.h>
 #include "../config/Config.h"
 #include "../localisation/date.h"
 #include "../localisation/language.h"
@@ -834,6 +835,11 @@ utf8* platform_get_username() {
     } else {
         return NULL;
     }
+}
+
+bool platform_process_is_elevated()
+{
+   return (geteuid() == 0);
 }
 
 #endif
