@@ -11273,7 +11273,7 @@ static void peep_make_passing_peeps_sick(rct_peep *peep, rct_peep *otherPeep)
 {
     if (peep == otherPeep)
         return;
-    if (otherPeep->state == PEEP_STATE_QUEUING)
+    if (otherPeep->state != PEEP_STATE_WALKING)
         return;
 
     if (otherPeep->action == PEEP_ACTION_NONE_1 || otherPeep->action == PEEP_ACTION_NONE_2) {
