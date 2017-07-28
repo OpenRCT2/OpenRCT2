@@ -166,10 +166,7 @@ extern uint8 gSavePromptMode;
 
 extern char gRCT2AddressAppPath[];
 
-bool rct2_init();
 sint32 rct2_init_directories();
-sint32 check_mutex();
-sint32 check_files_integrity();
 const char *get_file_path(sint32 pathId);
 void rct2_quit();
 
