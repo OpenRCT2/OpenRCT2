@@ -7973,8 +7973,8 @@ static money32 ride_set_vehicles(uint8 rideIndex, uint8 setting, uint8 value, ui
 
     rct_window *w = window_find_by_number(WC_RIDE, rideIndex);
     if (w != NULL) {
-        if (w->page == 4) {
-            w->var_48C = 0;
+        if (w->page == 4) { // WINDOW_RIDE_PAGE_COLOUR
+            w->vehicleIndex = 0;
         }
         window_invalidate(w);
     }

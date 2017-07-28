@@ -278,6 +278,8 @@ typedef struct rct_window {
     sint16 page;                    // 0x48A
     union {
         sint16 picked_peep_old_x;   // 0x48C staff/guest window: peep x gets set to 0x8000 on pickup, this is the old value
+        sint16 vehicleIndex;        // 0x48C Ride window: selected car when setting vehicle colours
+        sint16 numberOfStaff;       // 0x48C Used in park window.
         sint16 var_48C;
     };
     uint16 frame_no;                // 0x48E updated every tic for motion in windows sprites

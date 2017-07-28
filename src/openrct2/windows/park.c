@@ -573,7 +573,7 @@ static rct_window *window_park_open()
     w->viewport_focus_coordinates.y = 0;
     w->frame_no = 0;
     w->list_information_type = -1;
-    w->var_48C = -1;
+    w->numberOfStaff = -1;
     w->var_492 = 0;
     window_park_set_disabled_tabs(w);
 
@@ -1346,8 +1346,8 @@ static void window_park_stats_update(rct_window *w)
 
     // Invalidate number of staff if changed
     i = peep_get_staff_count();
-    if (w->var_48C != i) {
-        w->var_48C = i;
+    if (w->numberOfStaff != i) {
+        w->numberOfStaff = i;
         widget_invalidate(w, WIDX_PAGE_BACKGROUND);
     }
 }
@@ -1406,8 +1406,8 @@ static void window_park_stats_paint(rct_window *w, rct_drawpixelinfo *dpi)
     y += 10;
 
     // Draw number of staff
-    if (w->var_48C != -1) {
-        set_format_arg(0, uint32, w->var_48C);
+    if (w->numberOfStaff != -1) {
+        set_format_arg(0, uint32, w->numberOfStaff);
         gfx_draw_string_left(dpi, STR_STAFF_LABEL, gCommonFormatArgs, COLOUR_BLACK, x, y);
     }
     y += 10;
