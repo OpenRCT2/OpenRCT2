@@ -4683,9 +4683,14 @@ static money32 map_place_peep_spawn(sint32 flags, sint16 x, sint16 y, sint32 z, 
             map_invalidate_tile_full(prevX, gPeepSpawns[peepSpawnIndex].y);
         }
 
+        // Shift the spawn point to the middle of the tile
+        sint32 middleX, middleY;
+        middleX = x + 16 + (word_981D6C[direction].x * 15);
+        middleY = y + 16 + (word_981D6C[direction].y * 15);
+        
         // Set peep spawn
-        gPeepSpawns[peepSpawnIndex].x = x;
-        gPeepSpawns[peepSpawnIndex].y = y;
+        gPeepSpawns[peepSpawnIndex].x = middleX;
+        gPeepSpawns[peepSpawnIndex].y = middleY;
         gPeepSpawns[peepSpawnIndex].z = z;
         gPeepSpawns[peepSpawnIndex].direction = direction;
 
