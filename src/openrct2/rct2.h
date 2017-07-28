@@ -143,17 +143,6 @@ enum {
     PATH_ID_END
 };
 
-enum {
-    FILE_EXTENSION_UNKNOWN,
-    FILE_EXTENSION_DAT,
-    FILE_EXTENSION_SC4,
-    FILE_EXTENSION_SV4,
-    FILE_EXTENSION_TD4,
-    FILE_EXTENSION_SC6,
-    FILE_EXTENSION_SV6,
-    FILE_EXTENSION_TD6,
-};
-
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -169,8 +158,6 @@ extern char gRCT2AddressAppPath[];
 sint32 rct2_init_directories();
 const char *get_file_path(sint32 pathId);
 void rct2_quit();
-
-uint32 get_file_extension_type(const utf8 *path);
 
 #ifdef __cplusplus
 }

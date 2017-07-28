@@ -20,6 +20,7 @@
 #include "../core/Exception.hpp"
 #include "../core/Guard.hpp"
 #include "../core/Path.hpp"
+#include "../FileClassifier.h"
 #include "../ParkImporter.h"
 #include "../rct2/S6Exporter.h"
 #include "CommandLine.hpp"

@@ -17,6 +17,7 @@
 #include "audio/audio.h"
 #include "drawing/drawing.h"
 #include "editor.h"
+#include "FileClassifier.h"
 #include "game.h"
 #include "interface/viewport.h"
 #include "interface/window.h"

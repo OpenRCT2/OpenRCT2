@@ -16,6 +16,7 @@
 
 #include "../config/Config.h"
 #include "../drawing/drawing.h"
+#include "../FileClassifier.h"
 #include "../game.h"
 #include "../input.h"
 #include "../interface/viewport.h"
