@@ -1487,7 +1487,7 @@ static rct_window *window_ride_open(sint32 rideIndex)
     w->number = rideIndex;
 
     w->page = WINDOW_RIDE_PAGE_MAIN;
-    w->var_48C = 0;
+    w->vehicleIndex = 0;
     w->frame_no = 0;
     w->list_information_type = 0;
     w->var_492 = 0;
@@ -4299,18 +4299,18 @@ static void window_ride_colour_mousedown(rct_window *w, rct_widgetindex widgetIn
             widget->right - dropdownWidget->left
         );
 
-        dropdown_set_checked(w->var_48C, true);
+        dropdown_set_checked(w->vehicleIndex, true);
         break;
     case WIDX_VEHICLE_MAIN_COLOUR:
-        vehicleColour = ride_get_vehicle_colour(ride, w->var_48C);
+        vehicleColour = ride_get_vehicle_colour(ride, w->vehicleIndex);
         window_dropdown_show_colour(w, widget, w->colours[1], vehicleColour.main);
         break;
     case WIDX_VEHICLE_ADDITIONAL_COLOUR_1:
-        vehicleColour = ride_get_vehicle_colour(ride, w->var_48C);
+        vehicleColour = ride_get_vehicle_colour(ride, w->vehicleIndex);
         window_dropdown_show_colour(w, widget, w->colours[1], vehicleColour.additional_1);
         break;
     case WIDX_VEHICLE_ADDITIONAL_COLOUR_2:
-        vehicleColour = ride_get_vehicle_colour(ride, w->var_48C);
+        vehicleColour = ride_get_vehicle_colour(ride, w->vehicleIndex);
         window_dropdown_show_colour(w, widget, w->colours[1], vehicleColour.additional_2);
         break;
     }
@@ -4347,20 +4347,20 @@ static void window_ride_colour_dropdown(rct_window *w, rct_widgetindex widgetInd
         break;
     case WIDX_VEHICLE_COLOUR_SCHEME_DROPDOWN:
         game_do_command(0, (5 << 8) | 1, 0, (dropdownIndex << 8) | w->number, GAME_COMMAND_SET_RIDE_APPEARANCE, 0, 0);
-        w->var_48C = 0;
+        w->vehicleIndex = 0;
         break;
     case WIDX_VEHICLE_COLOUR_INDEX_DROPDOWN:
-        w->var_48C = dropdownIndex;
+        w->vehicleIndex = dropdownIndex;
         window_invalidate(w);
         break;
     case WIDX_VEHICLE_MAIN_COLOUR:
-        game_do_command(0, (2 << 8) | 1, 0, (dropdownIndex << 8) | w->number, GAME_COMMAND_SET_RIDE_APPEARANCE, w->var_48C, 0);
+        game_do_command(0, (2 << 8) | 1, 0, (dropdownIndex << 8) | w->number, GAME_COMMAND_SET_RIDE_APPEARANCE, w->vehicleIndex, 0);
         break;
     case WIDX_VEHICLE_ADDITIONAL_COLOUR_1:
-        game_do_command(0, (3 << 8) | 1, 0, (dropdownIndex << 8) | w->number, GAME_COMMAND_SET_RIDE_APPEARANCE, w->var_48C, 0);
+        game_do_command(0, (3 << 8) | 1, 0, (dropdownIndex << 8) | w->number, GAME_COMMAND_SET_RIDE_APPEARANCE, w->vehicleIndex, 0);
         break;
     case WIDX_VEHICLE_ADDITIONAL_COLOUR_2:
-        game_do_command(0, (7 << 8) | 1, 0, (dropdownIndex << 8) | w->number, GAME_COMMAND_SET_RIDE_APPEARANCE, w->var_48C, 0);
+        game_do_command(0, (7 << 8) | 1, 0, (dropdownIndex << 8) | w->number, GAME_COMMAND_SET_RIDE_APPEARANCE, w->vehicleIndex, 0);
         break;
     }
 }
@@ -4495,9 +4495,9 @@ static void window_ride_colour_invalidate(rct_window *w)
     if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_NO_VEHICLES) && ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS)) {
         sint32 vehicleColourSchemeType = ride->colour_scheme_type & 3;
         if (vehicleColourSchemeType == 0)
-            w->var_48C = 0;
+            w->vehicleIndex = 0;
 
-        vehicleColour = ride_get_vehicle_colour(ride, w->var_48C);
+        vehicleColour = ride_get_vehicle_colour(ride, w->vehicleIndex);
 
         window_ride_colour_widgets[WIDX_VEHICLE_PREVIEW].type = WWT_SCROLL;
         window_ride_colour_widgets[WIDX_VEHICLE_MAIN_COLOUR].type = WWT_COLOURBTN;
@@ -4545,7 +4545,7 @@ static void window_ride_colour_invalidate(rct_window *w)
         set_format_arg( 6, rct_string_id, VehicleColourSchemeNames[vehicleColourSchemeType]);
         set_format_arg( 8, rct_string_id, RideComponentNames[RideNameConvention[ride->type].vehicle].singular);
         set_format_arg(10, rct_string_id, RideComponentNames[RideNameConvention[ride->type].vehicle].capitalised);
-        set_format_arg(12, uint16, w->var_48C + 1);
+        set_format_arg(12, uint16, w->vehicleIndex + 1);
         // Vehicle index
         if (vehicleColourSchemeType != 0) {
             window_ride_colour_widgets[WIDX_VEHICLE_COLOUR_INDEX].type = WWT_DROPDOWN;
@@ -4685,7 +4685,7 @@ static void window_ride_colour_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi
     ride = get_ride(w->number);
     rideEntry = get_ride_entry_by_ride(ride);
     vehiclePreviewWidget = &window_ride_colour_widgets[WIDX_VEHICLE_PREVIEW];
-    vehicleColour = ride_get_vehicle_colour(ride, w->var_48C);
+    vehicleColour = ride_get_vehicle_colour(ride, w->vehicleIndex);
 
     // Background colour
     gfx_fill_rect(dpi, dpi->x, dpi->y, dpi->x + dpi->width - 1, dpi->y + dpi->height - 1, PALETTE_INDEX_12);
@@ -4696,7 +4696,7 @@ static void window_ride_colour_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi
 
     // ?
     trainCarIndex = (ride->colour_scheme_type & 3) == RIDE_COLOUR_SCHEME_DIFFERENT_PER_CAR ?
-        w->var_48C : rideEntry->tab_vehicle;
+        w->vehicleIndex : rideEntry->tab_vehicle;
 
     rct_ride_entry_vehicle* rideVehicleEntry = &rideEntry->vehicles[ride_entry_get_vehicle_at_position(ride->subtype, ride->num_cars_per_train, trainCarIndex)];
 
