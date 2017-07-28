@@ -142,18 +142,18 @@ void RideObject::Load()
         if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_FLAT)
         {
             sint32 al = 1;
-            if (vehicleEntry->flags_b & VEHICLE_ENTRY_FLAG_B_SWINGING)
+            if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_SWINGING)
             {
                 al = 13;
-                if ((vehicleEntry->flags_b & (VEHICLE_ENTRY_FLAG_B_5 | VEHICLE_ENTRY_FLAG_B_11)) != (VEHICLE_ENTRY_FLAG_B_5 | VEHICLE_ENTRY_FLAG_B_11))
+                if ((vehicleEntry->flags & (VEHICLE_ENTRY_FLAG_21 | VEHICLE_ENTRY_FLAG_27)) != (VEHICLE_ENTRY_FLAG_21 | VEHICLE_ENTRY_FLAG_27))
                 {
                     al = 7;
-                    if (!(vehicleEntry->flags_b & VEHICLE_ENTRY_FLAG_B_5))
+                    if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_21))
                     {
-                        if (!(vehicleEntry->flags_b & VEHICLE_ENTRY_FLAG_B_11))
+                        if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_27))
                         {
                             al = 5;
-                            if (vehicleEntry->flags_b & VEHICLE_ENTRY_FLAG_B_9)
+                            if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_25)
                             {
                                 al = 3;
                             }
@@ -164,22 +164,22 @@ void RideObject::Load()
             vehicleEntry->var_03 = al;
             // 0x6DE90B
             al = 0x20;
-            if (!(vehicleEntry->flags_a & VEHICLE_ENTRY_FLAG_A_14))
+            if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_14))
             {
                 al = 1;
-                if (vehicleEntry->flags_b & VEHICLE_ENTRY_FLAG_B_7)
+                if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_23)
                 {
                     if (vehicleEntry->var_11 != 6)
                     {
                         al = 2;
-                        if (!(vehicleEntry->flags_a & VEHICLE_ENTRY_FLAG_A_7))
+                        if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_7))
                         {
                             al = 4;
                         }
                     }
                 }
             }
-            if (vehicleEntry->flags_a & VEHICLE_ENTRY_FLAG_A_12)
+            if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_12)
             {
                 al = vehicleEntry->special_frames;
             }
@@ -194,7 +194,7 @@ void RideObject::Load()
             {
                 sint32 b = vehicleEntry->var_16 * 32;
 
-                if (vehicleEntry->flags_a & VEHICLE_ENTRY_FLAG_A_11) b /= 2;
+                if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_11) b /= 2;
                 if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_15) b /= 8;
 
                 image_index += b;
@@ -204,7 +204,7 @@ void RideObject::Load()
                 {
                     vehicleEntry->var_20 = image_index;
                     b = vehicleEntry->var_16 * 72;
-                    if (vehicleEntry->flags_a & VEHICLE_ENTRY_FLAG_A_14)
+                    if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_14)
                     {
                         b = vehicleEntry->var_16 * 16;
                     }
@@ -323,10 +323,10 @@ void RideObject::Load()
             cur_vehicle_images_offset = image_index + vehicleEntry->no_seating_rows * vehicleEntry->no_vehicle_images;
             // 0x6DEB0D
 
-            if (!(vehicleEntry->flags_a & VEHICLE_ENTRY_FLAG_A_10))
+            if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_10))
             {
                 sint32 num_images = cur_vehicle_images_offset - vehicleEntry->base_image_id;
-                if (vehicleEntry->flags_a & VEHICLE_ENTRY_FLAG_A_13)
+                if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_13)
                 {
                     num_images *= 2;
                 }
@@ -439,8 +439,7 @@ void RideObject::ReadLegacyVehicle(IReadObjectContext * context, IStream * strea
     vehicle->sprite_height_negative = stream->ReadValue<uint8>();
     vehicle->sprite_height_positive = stream->ReadValue<uint8>();
     vehicle->var_11 = stream->ReadValue<uint8>();
-    vehicle->flags_a = stream->ReadValue<uint16>();
-    vehicle->flags_b = stream->ReadValue<uint16>();
+    vehicle->flags = stream->ReadValue<uint32>();
     vehicle->var_16 = stream->ReadValue<uint16>();
     stream->Seek(4, STREAM_SEEK_CURRENT);
     vehicle->var_1C = stream->ReadValue<uint32>();

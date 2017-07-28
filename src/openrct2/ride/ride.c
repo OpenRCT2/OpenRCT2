@@ -4524,7 +4524,7 @@ static rct_vehicle *vehicle_create_car(
     regs.edx = vehicleEntry->spacing >> 1;
     *remainingDistance -= regs.edx;
     vehicle->remaining_distance = *remainingDistance;
-    if (!(vehicleEntry->flags_b & VEHICLE_ENTRY_FLAG_B_14)) {
+    if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_30)) {
         *remainingDistance -= regs.edx;
     }
 
@@ -4560,7 +4560,7 @@ static rct_vehicle *vehicle_create_car(
         vehicle->peep[i] = SPRITE_INDEX_NULL;
     }
 
-    if (vehicleEntry->flags_b & VEHICLE_ENTRY_FLAG_B_15) {
+    if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_31) {
         // loc_6DDCA4:
         vehicle->var_CD = 0;
         sint32 direction = map_element_get_direction(mapElement);
@@ -4591,29 +4591,29 @@ static rct_vehicle *vehicle_create_car(
         sprite_move(chosenLoc.x, chosenLoc.y, z, (rct_sprite*)vehicle);
     } else {
         regs.dl = 0;
-        if (vehicleEntry->flags_b & VEHICLE_ENTRY_FLAG_B_12) {
+        if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_28) {
             regs.dl = 1;
         }
 
-        if (vehicleEntry->flags_b & VEHICLE_ENTRY_FLAG_B_14) {
+        if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_30) {
             // Choose which lane Go Kart should start in
             regs.dl = 5;
             if (vehicleIndex & 1) {
                 regs.dl = 6;
             }
         }
-        if (vehicleEntry->flags_a & VEHICLE_ENTRY_FLAG_A_MINI_GOLF) {
+        if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_MINI_GOLF) {
             regs.dl = 9;
             vehicle->var_D3 = 0;
             vehicle->mini_golf_current_animation = 0;
             vehicle->mini_golf_flags = 0;
         }
-        if (vehicleEntry->flags_a & VEHICLE_ENTRY_FLAG_A_4) {
+        if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_4) {
             if (!vehicle->is_child) {
                 regs.dl = 15;
             }
         }
-        if (vehicleEntry->flags_a & VEHICLE_ENTRY_FLAG_A_5) {
+        if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_5) {
             regs.dl = 16;
         }
         vehicle->var_CD = regs.dl;
@@ -4651,13 +4651,13 @@ static rct_vehicle *vehicle_create_car(
         sprite_move(x, y, z, (rct_sprite*)vehicle);
         vehicle->track_type = (mapElement->properties.track.type << 2) | (vehicle->sprite_direction >> 3);
         vehicle->track_progress = 31;
-        if (vehicleEntry->flags_a & VEHICLE_ENTRY_FLAG_A_MINI_GOLF) {
+        if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_MINI_GOLF) {
             vehicle->track_progress = 15;
         }
         vehicle->update_flags = VEHICLE_UPDATE_FLAG_1;
-        if (vehicleEntry->flags_a & VEHICLE_ENTRY_FLAG_A_6) {
+        if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_HAS_INVERTED_SPRITE_SET) {
             if (mapElement->properties.track.colour & TRACK_ELEMENT_COLOUR_FLAG_INVERTED) {
-                vehicle->update_flags |= VEHICLE_UPDATE_FLAG_11;
+                vehicle->update_flags |= VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES;
             }
         }
         vehicle->status = VEHICLE_STATUS_MOVING_TO_END_OF_STATION;
@@ -4877,7 +4877,7 @@ static bool ride_create_vehicles(rct_ride *ride, sint32 rideIndex, rct_xy_elemen
 
                 rct_ride_entry_vehicle *vehicleEntry = vehicle_get_vehicle_entry(vehicle);
 
-                if (!(vehicleEntry->flags_b & VEHICLE_ENTRY_FLAG_B_15)) {
+                if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_31)) {
                     vehicle_update_track_motion(vehicle, NULL);
                 }
 
@@ -7173,7 +7173,7 @@ void set_vehicle_type_image_max_sizes(rct_ride_entry_vehicle* vehicle_type, sint
 
     // Moved from object paint
 
-    if (vehicle_type->flags_a & VEHICLE_ENTRY_FLAG_A_13){
+    if (vehicle_type->flags & VEHICLE_ENTRY_FLAG_13){
         bl += 16;
     }
 
