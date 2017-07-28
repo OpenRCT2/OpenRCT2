@@ -22,6 +22,7 @@
 #include "../localisation/localisation.h"
 #include "../localisation/string_ids.h"
 #include "../management/finance.h"
+#include "../OpenRCT2.h"
 #include "../scenario/scenario.h"
 #include "../rct1.h"
 #include "../ride/ride.h"

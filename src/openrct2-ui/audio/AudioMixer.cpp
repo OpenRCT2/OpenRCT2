@@ -36,7 +36,6 @@ extern "C"
     #include <openrct2/localisation/localisation.h>
     #include <openrct2/OpenRCT2.h>
     #include <openrct2/platform/platform.h>
-    #include <openrct2/rct2.h>
 }
 
 namespace OpenRCT2 { namespace Audio

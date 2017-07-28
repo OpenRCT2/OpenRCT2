@@ -24,6 +24,7 @@
 #include "../object.h"
 #include "../object/ObjectManager.h"
 #include "../object/ObjectRepository.h"
+#include "../OpenRCT2.h"
 #include "../rct1.h"
 #include "../sprites.h"
 #include "../util/util.h"

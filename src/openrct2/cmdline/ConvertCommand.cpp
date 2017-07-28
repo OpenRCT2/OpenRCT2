@@ -30,7 +30,6 @@ extern "C"
     #include "../game.h"
     #include "../interface/window.h"
     #include "../OpenRCT2.h"
-    #include "../rct2.h"
 }
 
 static void WriteConvertFromAndToMessage(uint32 sourceFileType, uint32 destinationFileType);

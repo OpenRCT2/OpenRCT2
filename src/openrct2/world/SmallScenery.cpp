@@ -15,9 +15,7 @@
 #pragma endregion
 
 #include "../network/network.h"
-
-#include "../rct2.h"
-#include "../network/network.h"
+#include "../OpenRCT2.h"
 
 extern "C"
 {

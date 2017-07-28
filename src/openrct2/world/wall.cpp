@@ -16,6 +16,7 @@
 
 #include "../common.h"
 #include "../network/network.h"
+#include "../OpenRCT2.h"
 
 extern "C"
 {

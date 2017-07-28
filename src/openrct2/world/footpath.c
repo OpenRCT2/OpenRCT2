@@ -19,7 +19,7 @@
 #include "../localisation/localisation.h"
 #include "../network/network.h"
 #include "../object_list.h"
-#include "../rct2.h"
+#include "../OpenRCT2.h"
 #include "../ride/station.h"
 #include "../ride/track.h"
 #include "../ride/track_data.h"

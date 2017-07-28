@@ -48,7 +48,6 @@ extern "C"
     #include "../object.h"
     #include "../object_list.h"
     #include "../platform/platform.h"
-    #include "../rct2.h"
     #include "../util/sawyercoding.h"
     #include "../util/util.h"
 }

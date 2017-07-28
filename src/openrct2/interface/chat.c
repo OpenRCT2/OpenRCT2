@@ -21,7 +21,6 @@
 #include "../localisation/localisation.h"
 #include "../network/network.h"
 #include "../platform/platform.h"
-#include "../rct2.h"
 #include "../util/util.h"
 #include "chat.h"
 

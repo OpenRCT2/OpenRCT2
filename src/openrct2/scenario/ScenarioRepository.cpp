@@ -35,7 +35,6 @@ extern "C"
     #include "../config/Config.h"
     #include "../localisation/localisation.h"
     #include "../platform/platform.h"
-    #include "../rct2.h"
     #include "scenario.h"
 }
 

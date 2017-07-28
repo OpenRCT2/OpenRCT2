@@ -23,11 +23,6 @@
 #include "AudioMixer.h"
 #include "AudioSource.h"
 
-extern "C"
-{
-    #include "../rct2.h"
-}
-
 using namespace OpenRCT2;
 using namespace OpenRCT2::Audio;
 

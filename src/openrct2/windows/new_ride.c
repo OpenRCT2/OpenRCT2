@@ -24,6 +24,7 @@
 #include "../management/research.h"
 #include "../network/network.h"
 #include "../object.h"
+#include "../OpenRCT2.h"
 #include "../rct1.h"
 #include "../ride/ride.h"
 #include "../ride/ride_data.h"

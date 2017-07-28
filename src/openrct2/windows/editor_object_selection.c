@@ -30,6 +30,7 @@
 #include "../object_list.h"
 #include "../object/ObjectManager.h"
 #include "../object/ObjectRepository.h"
+#include "../OpenRCT2.h"
 #include "../platform/platform.h"
 #include "../rct1.h"
 #include "../ride/ride.h"

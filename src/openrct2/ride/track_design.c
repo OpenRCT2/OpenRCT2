@@ -23,6 +23,7 @@
 #include "../network/network.h"
 #include "../object/ObjectManager.h"
 #include "../object/ObjectRepository.h"
+#include "../OpenRCT2.h"
 #include "../rct1.h"
 #include "../rct1/Tables.h"
 #include "../util/sawyercoding.h"

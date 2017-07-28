@@ -23,6 +23,7 @@
 #include <openrct2/interface/Screenshot.h>
 #include <openrct2/localisation/localisation.h>
 #include <openrct2/network/network.h>
+#include <openrct2/OpenRCT2.h>
 #include <openrct2/platform/platform.h>
 #include <openrct2/ride/track.h>
 #include <openrct2/ride/track_paint.h>

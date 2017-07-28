@@ -31,7 +31,6 @@ extern "C"
     #include "../drawing/drawing.h"
     #include "../localisation/string_ids.h"
     #include "../platform/platform.h"
-    #include "../rct2.h"
 }
 
 using namespace OpenRCT2;

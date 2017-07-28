@@ -32,6 +32,7 @@
 #include <vector>
 #include "../core/Math.hpp"
 #include "../core/String.hpp"
+#include "../OpenRCT2.h"
 
 extern "C"
 {
@@ -43,7 +44,6 @@ extern "C"
     #include "../management/news_item.h"
     #include "../peep/peep.h"
     #include "../platform/platform.h"
-    #include "../rct2.h"
     #include "../util/util.h"
     #include "../world/sprite.h"
     #include "http.h"

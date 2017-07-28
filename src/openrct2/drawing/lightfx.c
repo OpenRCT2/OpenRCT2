@@ -18,7 +18,6 @@
 
 #include "../common.h"
 #include "../game.h"
-#include "../rct2.h"
 #include "../interface/viewport.h"
 #include "../interface/window.h"
 #include "../paint/map_element/map_element.h"

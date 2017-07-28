@@ -27,7 +27,6 @@
 extern "C"
 {
     #include "platform/platform.h"
-    #include "rct2.h"
 }
 
 using namespace OpenRCT2;

@@ -20,7 +20,7 @@
 #include "../interface/window.h"
 #include "../localisation/localisation.h"
 #include "../management/finance.h"
-#include "../rct2.h"
+#include "../OpenRCT2.h"
 #include "../sprites.h"
 #include "dropdown.h"
 #include "error.h"

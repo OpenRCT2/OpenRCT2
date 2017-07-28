@@ -76,29 +76,4 @@ assert_struct_size(rct_scores_entry, 0x02B0);
 
 #pragma pack(pop)
 
-enum {
-    // Although this is labeled a flag it actually means when
-    // zero the screen is in playing mode.
-    SCREEN_FLAGS_PLAYING = 0,
-    SCREEN_FLAGS_TITLE_DEMO = 1,
-    SCREEN_FLAGS_SCENARIO_EDITOR = 2,
-    SCREEN_FLAGS_TRACK_DESIGNER = 4,
-    SCREEN_FLAGS_TRACK_MANAGER = 8,
-};
-
-#define SCREEN_FLAGS_EDITOR (SCREEN_FLAGS_SCENARIO_EDITOR | SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)
-
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-extern uint32 gCurrentDrawCount;
-extern uint8 gScreenFlags;
-extern uint32 gScreenAge;
-extern uint8 gSavePromptMode;
-
-#ifdef __cplusplus
-}
-#endif
-
 #endif

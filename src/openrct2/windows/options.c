@@ -38,7 +38,6 @@
 #include "../localisation/localisation.h"
 #include "../network/network.h"
 #include "../platform/platform.h"
-#include "../rct2.h"
 #include "../sprites.h"
 #include "../title/TitleScreen.h"
 #include "../title/TitleSequence.h"

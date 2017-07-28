@@ -28,7 +28,6 @@
 #include "../management/news_item.h"
 #include "../network/network.h"
 #include "../OpenRCT2.h"
-#include "../rct2.h"
 #include "../ride/ride.h"
 #include "../ride/ride_data.h"
 #include "../ride/station.h"

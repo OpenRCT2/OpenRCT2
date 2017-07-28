@@ -23,6 +23,7 @@
 #include "../interface/widget.h"
 #include "../interface/window.h"
 #include "../localisation/localisation.h"
+#include "../OpenRCT2.h"
 #include "../ParkImporter.h"
 #include "../peep/peep.h"
 #include "../peep/staff.h"

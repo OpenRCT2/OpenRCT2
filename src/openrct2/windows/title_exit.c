@@ -22,7 +22,6 @@
 #include "../interface/widget.h"
 #include "../interface/window.h"
 #include "../intro.h"
-#include "../rct2.h"
 
 enum WINDOW_TITLE_EXIT_WIDGET_IDX {
     WIDX_EXIT,

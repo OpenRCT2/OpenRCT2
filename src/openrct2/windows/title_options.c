@@ -21,7 +21,6 @@
 #include "../localisation/localisation.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
-#include "../rct2.h"
 
 enum WINDOW_TITLE_OPTIONS_WIDGET_IDX {
     WIDX_OPTIONS,

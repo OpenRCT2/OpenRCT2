@@ -23,6 +23,7 @@
 #include "../core/Math.hpp"
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
+#include "../OpenRCT2.h"
 #include "../ParkImporter.h"
 #include "../scenario/ScenarioRepository.h"
 #include "../scenario/ScenarioSources.h"

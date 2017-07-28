@@ -22,7 +22,6 @@
 #include "../object.h"
 #include "../OpenRCT2.h"
 #include "../platform/platform.h"
-#include "../rct2.h"
 #include "../world/water.h"
 #include "drawing.h"
 

@@ -30,6 +30,7 @@
 #include "../localisation/localisation.h"
 #include "../network/network.h"
 #include "../network/twitch.h"
+#include "../OpenRCT2.h"
 #include "../ParkImporter.h"
 #include "../peep/staff.h"
 #include "../scenario/scenario.h"

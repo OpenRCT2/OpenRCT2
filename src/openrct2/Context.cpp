@@ -63,7 +63,6 @@ extern "C"
     #include "object_list.h"
     #include "platform/platform.h"
     #include "rct1.h"
-    #include "rct2.h"
     #include "rct2/interop.h"
     #include "util/util.h"
 }
