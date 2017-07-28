@@ -157,7 +157,6 @@ extern char gRCT2AddressAppPath[];
 
 sint32 rct2_init_directories();
 const char *get_file_path(sint32 pathId);
-void rct2_quit();
 
 #ifdef __cplusplus
 }

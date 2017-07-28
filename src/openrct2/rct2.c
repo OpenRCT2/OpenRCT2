@@ -87,12 +87,6 @@ uint8 gSavePromptMode;
 
 char gRCT2AddressAppPath[MAX_PATH];
 
-void rct2_quit()
-{
-    gSavePromptMode = PM_QUIT;
-    window_save_prompt_open();
-}
-
 /**
  *
  *  rct2: 0x00683499

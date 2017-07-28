@@ -98,6 +98,7 @@ namespace OpenRCT2
         virtual bool Initialise() abstract;
         virtual void Open(const std::string &path) abstract;
         virtual void Finish() abstract;
+        virtual void Quit() abstract;
     };
 
     IContext * CreateContext();
@@ -147,6 +148,7 @@ extern "C"
     rct_window * context_open_window(rct_windowclass wc);
     void context_input_handle_keyboard(bool isTitle);
     bool context_read_bmp(void * * outPixels, uint32 * outWidth, uint32 * outHeight, const utf8 * path);
+    void context_quit();
 #ifdef __cplusplus
 }
 #endif

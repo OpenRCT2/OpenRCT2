@@ -167,6 +167,12 @@ namespace OpenRCT2
             _finished = true;
         }
 
+        void Quit() override
+        {
+            gSavePromptMode = PM_QUIT;
+            window_save_prompt_open();
+        }
+
         bool Initialise() final override
         {
             if (_initialised)
@@ -854,6 +860,11 @@ extern "C"
     bool context_read_bmp(void * * outPixels, uint32 * outWidth, uint32 * outHeight, const utf8 * path)
     {
         return GetContext()->GetUiContext()->ReadBMP(outPixels, outWidth, outHeight, std::string(path));
+    }
+
+    void context_quit()
+    {
+        GetContext()->Quit();
     }
 
     bool platform_open_common_file_dialog(utf8 * outFilename, file_dialog_desc * desc, size_t outSize)
