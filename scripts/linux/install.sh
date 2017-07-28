@@ -7,9 +7,6 @@ then
 	exit 1
 fi
 
-SDL2_PV=2.0.3
-SDL2_TTF_PV=2.0.12
-
 cachedir=.cache
 if [[ $(uname -s) == "Darwin" ]]; then
 	liburl=https://openrct2.website/files/orctlibs-osx.zip
@@ -20,9 +17,6 @@ mkdir -p "$cachedir"
 
 # Sets default target to "ubuntu_amd64", if none specified
 TARGET=${TARGET-ubuntu_amd64}
-# keep in sync with version in build.sh
-libversion=3
-libVFile="./libversion"
 
 function has_cmd {
 	command -v "$1" >/dev/null 2>&1
