@@ -283,7 +283,7 @@ static bool window_other_wheel_input(rct_window *w, rct_widgetindex widgetIndex,
     // Preview / Increment / Decrement
     if (widgetIndex >= previewWidgetIndex && widgetIndex < previewWidgetIndex + 3) {
         rct_widgetindex buttonWidgetIndex = wheel < 0 ? previewWidgetIndex + 2 : previewWidgetIndex + 1;
-        window_event_mouse_up_call(w, buttonWidgetIndex);
+        window_event_mouse_down_call(w, buttonWidgetIndex);
         return true;
     }
 
