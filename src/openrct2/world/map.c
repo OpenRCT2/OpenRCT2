@@ -1657,8 +1657,8 @@ static money32 map_set_land_height(sint32 flags, sint32 x, sint32 y, sint32 heig
         } while (!map_element_is_last_for_tile(mapElement++));
     }
 
-    for (int i = 0; i < 4; i += 1) {
-        int cornerHeight = map_element_get_corner_height(surfaceElement, i);
+    for (sint32 i = 0; i < 4; i += 1) {
+        sint32 cornerHeight = map_element_get_corner_height(surfaceElement, i);
         cornerHeight -= map_get_corner_height(height, style & MAP_ELEMENT_SLOPE_MASK, i);
         cost += MONEY(abs(cornerHeight) * 5 / 2, 0);
     }
