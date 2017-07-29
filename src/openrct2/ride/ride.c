@@ -6453,7 +6453,8 @@ void game_command_demolish_ride(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *e
         return;
     }
     sint32 x = 0, y = 0, z = 0;
-    if(ride->overall_view.xy != RCT_XY8_UNDEFINED){
+    if (ride->overall_view.xy != RCT_XY8_UNDEFINED)
+    {
         x = (ride->overall_view.x * 32) + 16;
         y = (ride->overall_view.y * 32) + 16;
         z = map_element_height(x, y);
@@ -6461,16 +6462,22 @@ void game_command_demolish_ride(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *e
         gCommandPosition.y = y;
         gCommandPosition.z = z;
     }
-    if(!(*ebx & 0x40) && game_is_paused() && !gCheatsBuildInPauseMode){
+    if (!(*ebx & 0x40) && game_is_paused() && !gCheatsBuildInPauseMode)
+    {
         gGameCommandErrorText = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
         *ebx = MONEY32_UNDEFINED;
         return;
-    }else if (ride->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE){
+    }
+    else if (ride->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE)
+    {
         gGameCommandErrorText = STR_LOCAL_AUTHORITY_FORBIDS_DEMOLITION_OR_MODIFICATIONS_TO_THIS_RIDE;
         *ebx = MONEY32_UNDEFINED;
         return;
-    }else{
-        if(*ebx & GAME_COMMAND_FLAG_APPLY){
+    }
+    else
+    {
+        if (*ebx & GAME_COMMAND_FLAG_APPLY)
+        {
             if (ride->overall_view.xy != RCT_XY8_UNDEFINED) {
                 rct_xyz16 coord;
                 coord.x = ride->overall_view.x * 32 + 16;
@@ -6479,7 +6486,7 @@ void game_command_demolish_ride(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *e
                 network_set_player_last_action_coord(network_get_player_index(game_command_playerid), coord);
             }
 
-            if(!(*ebx & 8)){
+            if (!(*ebx & 8)) {
                 window_close_by_number(WC_RIDE_CONSTRUCTION, ride_id);
             }
             window_close_by_number(WC_RIDE, ride_id);
@@ -6493,9 +6500,9 @@ void game_command_demolish_ride(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *e
             sub_6CB945(ride_id);
             news_item_disable_news(NEWS_ITEM_RIDE, ride_id);
 
-            for(sint32 i = 0; i < MAX_BANNERS; i++){
+            for (sint32 i = 0; i < MAX_BANNERS; i++) {
                 rct_banner *banner = &gBanners[i];
-                if(banner->type != BANNER_NULL && banner->flags & BANNER_FLAG_LINKED_TO_RIDE && banner->colour == ride_id){
+                if (banner->type != BANNER_NULL && banner->flags & BANNER_FLAG_LINKED_TO_RIDE && banner->colour == ride_id) {
                     banner->flags &= 0xFB;
                     banner->string_idx = STR_DEFAULT_SIGN;
                 }
@@ -6503,53 +6510,54 @@ void game_command_demolish_ride(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *e
 
             uint16 spriteIndex;
             rct_peep *peep;
-            FOR_ALL_GUESTS(spriteIndex, peep){
+            FOR_ALL_GUESTS(spriteIndex, peep)
+            {
                 uint8 ride_id_bit = ride_id % 8;
                 uint8 ride_id_offset = ride_id / 8;
                 peep->rides_been_on[ride_id_offset] &= ~(1 << ride_id_bit); // clear ride from potentially being in rides_been_on
-                if(peep->state == PEEP_STATE_WATCHING){
-                    if(peep->current_ride == ride_id){
+                if (peep->state == PEEP_STATE_WATCHING) {
+                    if (peep->current_ride == ride_id) {
                         peep->current_ride = MAX_RIDES;
-                        if(peep->time_to_stand >= 50){ // make peep stop watching the ride
+                        if (peep->time_to_stand >= 50) { // make peep stop watching the ride
                             peep->time_to_stand = 50;
                         }
                     }
                 }
                 // remove any free voucher for this ride from peep
-                if(peep->item_standard_flags & PEEP_ITEM_VOUCHER){
-                    if(peep->voucher_type == VOUCHER_TYPE_RIDE_FREE && peep->voucher_arguments == ride_id){
+                if (peep->item_standard_flags & PEEP_ITEM_VOUCHER) {
+                    if (peep->voucher_type == VOUCHER_TYPE_RIDE_FREE && peep->voucher_arguments == ride_id) {
                         peep->item_standard_flags &= ~(PEEP_ITEM_VOUCHER);
                     }
                 }
                 // remove any photos of this ride from peep
-                if(peep->item_standard_flags & PEEP_ITEM_PHOTO){
-                    if(peep->photo1_ride_ref == ride_id){
+                if (peep->item_standard_flags & PEEP_ITEM_PHOTO) {
+                    if (peep->photo1_ride_ref == ride_id) {
                         peep->item_standard_flags &= ~PEEP_ITEM_PHOTO;
                     }
                 }
-                if(peep->item_extra_flags & PEEP_ITEM_PHOTO2){
-                    if(peep->photo2_ride_ref == ride_id){
+                if (peep->item_extra_flags & PEEP_ITEM_PHOTO2) {
+                    if (peep->photo2_ride_ref == ride_id) {
                         peep->item_extra_flags &= ~PEEP_ITEM_PHOTO2;
                     }
                 }
-                if(peep->item_extra_flags & PEEP_ITEM_PHOTO3){
-                    if(peep->photo3_ride_ref == ride_id){
+                if (peep->item_extra_flags & PEEP_ITEM_PHOTO3) {
+                    if (peep->photo3_ride_ref == ride_id) {
                         peep->item_extra_flags &= ~PEEP_ITEM_PHOTO3;
                     }
                 }
-                if(peep->item_extra_flags & PEEP_ITEM_PHOTO4){
-                    if(peep->photo4_ride_ref == ride_id){
+                if (peep->item_extra_flags & PEEP_ITEM_PHOTO4) {
+                    if (peep->photo4_ride_ref == ride_id) {
                         peep->item_extra_flags &= ~PEEP_ITEM_PHOTO4;
                     }
                 }
-                if(peep->guest_heading_to_ride_id == ride_id){
+                if (peep->guest_heading_to_ride_id == ride_id) {
                     peep->guest_heading_to_ride_id = MAX_RIDES;
                 }
-                if(peep->favourite_ride == ride_id){
+                if (peep->favourite_ride == ride_id) {
                     peep->favourite_ride = MAX_RIDES;
                 }
                 for (sint32 i = 0; i < PEEP_MAX_THOUGHTS; i++) {
-                    if(peep->thoughts[i].item == ride_id){
+                    if (peep->thoughts[i].item == ride_id) {
                         // Clear top thought, push others up
                         memmove(&peep->thoughts[i], &peep->thoughts[i + 1], sizeof(rct_peep_thought)*(PEEP_MAX_THOUGHTS - i - 1));
                         peep->thoughts[PEEP_MAX_THOUGHTS - 1].type = PEEP_THOUGHT_TYPE_NONE;
@@ -6566,7 +6574,9 @@ void game_command_demolish_ride(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *e
             gCommandPosition.z = z;
             gCommandExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
             return;
-        }else{
+        }
+        else
+        {
             *ebx = 0;
             gCommandExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
             return;
