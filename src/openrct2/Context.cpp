@@ -199,6 +199,19 @@ namespace OpenRCT2
                 config_save_default();
             }
 
+            if (platform_process_is_elevated())
+            {
+                std::string elevationWarning = "It is not recommended to run OpenRCT2 with elevated permissions.";
+                if (gOpenRCT2Headless)
+                {
+                    Console::Error::WriteLine(elevationWarning.c_str());
+                }
+                else
+                {
+                    _uiContext->ShowMessageBox(elevationWarning);
+                }
+            }
+
             if (!rct2_init_directories())
             {
                 return false;

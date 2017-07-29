@@ -816,6 +816,23 @@ utf8* platform_get_username()
     return username;
 }
 
+bool platform_process_is_elevated()
+{
+    BOOL isElevated = FALSE;
+    HANDLE hToken = NULL;
+    if (OpenProcessToken(GetCurrentProcess(), TOKEN_QUERY, &hToken)) {
+        TOKEN_ELEVATION Elevation;
+        DWORD tokenSize = sizeof(TOKEN_ELEVATION);
+        if (GetTokenInformation(hToken, TokenElevation, &Elevation, sizeof(Elevation), &tokenSize)) {
+            isElevated = Elevation.TokenIsElevated;
+        }
+    }
+    if (hToken) {
+        CloseHandle(hToken);
+    }
+    return isElevated;
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 // File association setup
 ///////////////////////////////////////////////////////////////////////////////
