@@ -2395,32 +2395,32 @@ static money32 smooth_land(sint32 flags, sint32 centreX, sint32 centreY, sint32 
         for (y = mapTop; y <= mapBottom; y += 32)
         {
             mapElement = map_get_surface_element_at(x >> 5, y >> 5);
-            z = clamp(minHeight, map_element_get_corner_height(mapElement, 0), maxHeight);
-            z2 = clamp(minHeight, map_element_get_corner_height(mapElement, 1), maxHeight);
+            z = clamp(minHeight, map_element_get_corner_height(mapElement, 3), maxHeight);
+            z2 = clamp(minHeight, map_element_get_corner_height(mapElement, 2), maxHeight);
             totalCost += smooth_land_row_by_edge(flags, x, y, z, z2, -32, 0, 0, 1, 3, 2, raiseLand);
         }
         x = mapRight;
         for (y = mapTop; y <= mapBottom; y += 32)
         {
             mapElement = map_get_surface_element_at(x >> 5, y >> 5);
-            z = clamp(minHeight, map_element_get_corner_height(mapElement, 2), maxHeight);
-            z2 = clamp(minHeight, map_element_get_corner_height(mapElement, 3), maxHeight);
+            z = clamp(minHeight, map_element_get_corner_height(mapElement, 1), maxHeight);
+            z2 = clamp(minHeight, map_element_get_corner_height(mapElement, 0), maxHeight);
             totalCost += smooth_land_row_by_edge(flags, x, y, z, z2, 32, 0, 2, 3, 1, 0, raiseLand);
         }
         y = mapTop;
         for (x = mapLeft; x <= mapRight; x += 32)
         {
             mapElement = map_get_surface_element_at(x >> 5, y >> 5);
-            z = clamp(minHeight, map_element_get_corner_height(mapElement, 0), maxHeight);
-            z2 = clamp(minHeight, map_element_get_corner_height(mapElement, 3), maxHeight);
+            z = clamp(minHeight, map_element_get_corner_height(mapElement, 1), maxHeight);
+            z2 = clamp(minHeight, map_element_get_corner_height(mapElement, 2), maxHeight);
             totalCost += smooth_land_row_by_edge(flags, x, y, z, z2, 0, -32, 0, 3, 1, 2, raiseLand);
         }
         y = mapBottom;
         for (x = mapLeft; x <= mapRight; x += 32)
         {
             mapElement = map_get_surface_element_at(x >> 5, y >> 5);
-            z = clamp(minHeight, map_element_get_corner_height(mapElement, 1), maxHeight);
-            z2 = clamp(minHeight, map_element_get_corner_height(mapElement, 2), maxHeight);
+            z = clamp(minHeight, map_element_get_corner_height(mapElement, 0), maxHeight);
+            z2 = clamp(minHeight, map_element_get_corner_height(mapElement, 3), maxHeight);
             totalCost += smooth_land_row_by_edge(flags, x, y, z, z2, 0, 32, 1, 2, 0, 3, raiseLand);
         }
     }
