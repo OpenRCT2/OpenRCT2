@@ -5,6 +5,7 @@
 - Feature: [#5877] Allow up to 16 stations to be synchronised
 - Feature: [#5970] The Bobsleigh Roller Coaster now supports on-ride photos.
 - Feature: [#5991] Allow all tracked rides that can be tested without guests to the Track Designer
+- Fix: [#2127, #2229, #5586] Mountain tool cost calculation
 - Fix: [#3589] Crash due to invalid footpathEntry in path_paint
 - Fix: [#4455] Crash in window_sign_invalidate due to original bug
 - Fix: [#4931] Crash in path_paint - footpathentry was null
@@ -23,6 +24,7 @@
 - Fix: [#5998] Staff not getting paid / no loan interest.
 - Fix: [#6026] 'Select ride to advertise' dropdown does not display all items.
 - Fix: [#6052] Unable to place entrance/exit on certain ride types.
+- Improved: [#2223] Change mountain tool to ignore higher surrounding tiles.
 - Improved: [#4301] Leading and trailing whitespace in player name is now removed.
 - Improved: [#5859] OpenGL rendering performance
 - Improved: [#5863] Switching drawing engines no longer requires the application to restart.

@@ -66,6 +66,7 @@ The following people are not part of the project team, but have been contributin
 * Joël Troch (JoelTroch) - Keyboard shortcuts for ride construction.
 * Thomas Delebo (delebota) - Misc.
 * Brian Callahan (ibara) - OpenBSD port.
+* Jens Heuseveldt (jensj12) - Mountain tool improvements, misc.
 
 ## Bug fixes
 * (halfbro)
