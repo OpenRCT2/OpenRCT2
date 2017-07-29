@@ -4443,6 +4443,7 @@ STR_6130    :Kopírovat celý seznam do schránky
 STR_6131    :Zdroj objektu
 STR_6132    :Ignorovat nutnost výzkumu
 STR_6133    :{SMALLFONT}{BLACK}Povolí přístup k atrakcím a kulisám, které ještě nebyly vyzkoumány
+STR_6134    :Odstranit kulisy
 
 ###############################################################################
 ## RCT2 Objects
