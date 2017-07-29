@@ -165,15 +165,25 @@ void window_new_campaign_open(sint16 campaignType)
     // Get all applicable rides
     numApplicableRides = 0;
     window_new_campaign_rides[0] = 255;
-    FOR_ALL_RIDES(i, ride) {
-        if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_SHOP | RIDE_TYPE_FLAG_SELLS_FOOD | RIDE_TYPE_FLAG_SELLS_DRINKS | RIDE_TYPE_FLAG_IS_BATHROOM))
-            window_new_campaign_rides[numApplicableRides++] = i;
+    FOR_ALL_RIDES(i, ride)
+    {
+        if (ride->status != RIDE_STATUS_OPEN)
+        {
+            continue;
+        }
+        if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_SHOP | RIDE_TYPE_FLAG_SELLS_FOOD | RIDE_TYPE_FLAG_SELLS_DRINKS | RIDE_TYPE_FLAG_IS_BATHROOM))
+        {
+            continue;
+        }
+
+        window_new_campaign_rides[numApplicableRides++] = i;
     }
 
-    // Take top 40 most reliable rides
-    if (numApplicableRides > 40) {
+    // Take top 128 most valuable rides
+    if (numApplicableRides > DROPDOWN_ITEMS_MAX_SIZE)
+    {
         qsort(window_new_campaign_rides, numApplicableRides, sizeof(uint8), ride_value_compare);
-        numApplicableRides = 40;
+        numApplicableRides = DROPDOWN_ITEMS_MAX_SIZE;
     }
 
     // Sort rides by name
