@@ -6465,6 +6465,10 @@ void game_command_demolish_ride(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *e
         gGameCommandErrorText = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
         *ebx = MONEY32_UNDEFINED;
         return;
+    }else if (ride->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE){
+        gGameCommandErrorText = STR_LOCAL_AUTHORITY_FORBIDS_DEMOLITION_OR_MODIFICATIONS_TO_THIS_RIDE;
+        *ebx = MONEY32_UNDEFINED;
+        return;
     }else{
         if(*ebx & GAME_COMMAND_FLAG_APPLY){
             if (ride->overall_view.xy != RCT_XY8_UNDEFINED) {
