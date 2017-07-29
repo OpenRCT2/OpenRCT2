@@ -70,6 +70,7 @@ extern "C" {
 #include <openssl/evp.h>
 #include "../core/Json.hpp"
 #include "../core/Nullable.hpp"
+#include "../core/FileStream.hpp"
 #include "NetworkConnection.h"
 #include "NetworkGroup.h"
 #include "NetworkKey.h"
@@ -127,7 +128,7 @@ public:
     void LoadGroups();
 
     std::string BeginLog(const std::string &directory, const std::string &filenameFormat);
-    void AppendLog(const std::string &logPath, const std::string &s);
+    void AppendLog(FileStream *fs, const std::string &s);
 
     void BeginChatLog();
     void AppendChatLog(const std::string &s);
@@ -235,6 +236,8 @@ private:
     std::string _serverLogPath;
     std::string _serverLogFilenameFormat = "-%Y%m%d-%H%M%S.txt";
     OpenRCT2::IPlatformEnvironment * _env;
+    FileStream * _chat_log_fs = nullptr;
+    FileStream * _server_log_fs = nullptr;
 
     void UpdateServer();
     void UpdateClient();

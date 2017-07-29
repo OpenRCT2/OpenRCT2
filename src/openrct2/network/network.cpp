@@ -851,30 +851,25 @@ std::string Network::BeginLog(const std::string &directory, const std::string &f
     return Path::Combine(directory, filename);
 }
 
-void Network::AppendLog(const std::string &logPath, const std::string &s)
+void Network::AppendLog(FileStream *fs, const std::string &s)
 {
-    std::string directory = Path::GetDirectory(logPath);
-    if (platform_ensure_directory_exists(directory.c_str())) {
-        try
-        {
-            auto fs = FileStream(logPath, FILE_MODE_APPEND);
+    try
+    {
+        utf8 buffer[256];
+        time_t timer;
+        time(&timer);
+        auto tmInfo = localtime(&timer);
+        if (strftime(buffer, sizeof(buffer), "[%Y/%m/%d %H:%M:%S] ", tmInfo) != 0) {
+            String::Append(buffer, sizeof(buffer), s.c_str());
+            utf8_remove_formatting(buffer, false);
+            String::Append(buffer, sizeof(buffer), PLATFORM_NEWLINE);
 
-            utf8 buffer[256];
-            time_t timer;
-            time(&timer);
-            auto tmInfo = localtime(&timer);
-            if (strftime(buffer, sizeof(buffer), "[%Y/%m/%d %H:%M:%S] ", tmInfo) != 0) {
-                String::Append(buffer, sizeof(buffer), s.c_str());
-                utf8_remove_formatting(buffer, false);
-                String::Append(buffer, sizeof(buffer), PLATFORM_NEWLINE);
-
-                fs.Write(buffer, strlen(buffer));
-            }
+            fs->Write(buffer, strlen(buffer));
         }
-        catch (const Exception &ex)
-        {
-            log_error("%s", ex.GetMessage());
-        }
+    }
+    catch (const Exception &ex)
+    {
+        log_error("%s", ex.GetMessage());
     }
 }
 
@@ -882,24 +877,27 @@ void Network::BeginChatLog()
 {
     auto directory = _env->GetDirectoryPath(DIRBASE::USER, DIRID::LOG_CHAT);
     _chatLogPath = BeginLog(directory, _chatLogFilenameFormat);
+    _chat_log_fs = new FileStream(_chatLogPath, FILE_MODE_APPEND);
 }
 
 void Network::AppendChatLog(const std::string &s)
 {
     if (gConfigNetwork.log_chat) {
-        AppendLog(_chatLogPath, s);
+        AppendLog(_chat_log_fs, s);
     }
 }
 
 void Network::CloseChatLog()
 {
+    delete _chat_log_fs;
 }
 
 void Network::BeginServerLog()
 {
     auto directory = _env->GetDirectoryPath(DIRBASE::USER, DIRID::LOG_SERVER);
     _serverLogPath = BeginLog(directory, (ServerName + _serverLogFilenameFormat));
-
+    _server_log_fs = new FileStream(_serverLogPath, FILE_MODE_APPEND);
+    
     // Log server start event
     utf8 logMessage[256];
     if (GetMode() == NETWORK_MODE_CLIENT) {
@@ -913,7 +911,7 @@ void Network::BeginServerLog()
 void Network::AppendServerLog(const std::string &s)
 {
     if (gConfigNetwork.log_server_actions) {
-        AppendLog(_serverLogPath.c_str(), s);
+        AppendLog(_server_log_fs, s);
     }
 }
 
@@ -927,6 +925,7 @@ void Network::CloseServerLog()
         format_string(logMessage, sizeof(logMessage), STR_LOG_SERVER_STOPPED, NULL);
     }
     AppendServerLog(logMessage);
+    delete _server_log_fs;
 }
 
 void Network::Client_Send_TOKEN()
