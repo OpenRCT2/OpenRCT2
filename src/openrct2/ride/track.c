@@ -1632,8 +1632,8 @@ static money32 track_remove(uint8 type, uint8 sequence, sint16 originX, sint16 o
             footpath_remove_edges_at(x, y, mapElement);
         }
         map_element_remove(mapElement);
-        sub_6CB945(rideIndex);
-        if (!(flags & (1 << 6))){
+        if (!(flags & GAME_COMMAND_FLAG_GHOST)){
+            sub_6CB945(rideIndex);
             ride_update_max_vehicles(rideIndex);
         }
     }
