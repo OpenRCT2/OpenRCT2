@@ -2317,7 +2317,13 @@ void remove_peep_from_queue(rct_peep* peep)
     rct_ride* ride = get_ride(peep->current_ride);
 
     uint8 cur_station = peep->current_ride_station;
-    ride->queue_length[cur_station]--;
+    // Make sure we don't underflow, building while paused might reset it to 0 where peeps have 
+    // not yet left the queue.
+    if (ride->queue_length[cur_station] > 0)
+    {
+        ride->queue_length[cur_station]--;
+    }
+
     if (peep->sprite_index == ride->last_peep_in_queue[cur_station])
     {
         ride->last_peep_in_queue[cur_station] = peep->next_in_queue;
