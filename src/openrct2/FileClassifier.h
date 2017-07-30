@@ -45,14 +45,15 @@ enum class FILE_TYPE
     TRACK_DESIGN,
 };
 
-struct ClassifiedFile
+struct ClassifiedFileInfo
 {
     FILE_TYPE Type;
     uint32    Version;
 };
 
-bool TryClassifyFile(const std::string &path, ClassifiedFile * result);
-bool TryClassifyFile(IStream * stream, ClassifiedFile * result);
+#define FILE_TYPE_S4_CUTOFF 2
+bool TryClassifyFile(const std::string &path, ClassifiedFileInfo * result);
+bool TryClassifyFile(IStream * stream, ClassifiedFileInfo * result);
 
 #endif // __cplusplus
 

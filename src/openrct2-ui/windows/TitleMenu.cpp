@@ -134,9 +134,7 @@ rct_window * window_title_menu_open()
 
 static void window_title_menu_scenarioselect_callback(const utf8 *path)
 {
-    ParkLoadResult * result = scenario_load_and_play_from_path(path);
-    handle_park_load_failure(result, path);
-    ParkLoadResult_Delete(result);
+    context_load_park_from_file(path);
 }
 
 static void window_title_menu_mouseup(rct_window *w, rct_widgetindex widgetIndex)

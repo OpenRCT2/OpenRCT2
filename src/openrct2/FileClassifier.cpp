@@ -25,11 +25,11 @@ extern "C"
     #include "util/sawyercoding.h"
 }
 
-static bool TryClassifyAsS6(IStream * stream, ClassifiedFile * result);
-static bool TryClassifyAsS4(IStream * stream, ClassifiedFile * result);
-static bool TryClassifyAsTD4_TD6(IStream * stream, ClassifiedFile * result);
+static bool TryClassifyAsS6(IStream * stream, ClassifiedFileInfo * result);
+static bool TryClassifyAsS4(IStream * stream, ClassifiedFileInfo * result);
+static bool TryClassifyAsTD4_TD6(IStream * stream, ClassifiedFileInfo * result);
 
-bool TryClassifyFile(const std::string &path, ClassifiedFile * result)
+bool TryClassifyFile(const std::string &path, ClassifiedFileInfo * result)
 {
     try
     {
@@ -42,7 +42,7 @@ bool TryClassifyFile(const std::string &path, ClassifiedFile * result)
     }
 }
 
-bool TryClassifyFile(IStream * stream, ClassifiedFile * result)
+bool TryClassifyFile(IStream * stream, ClassifiedFileInfo * result)
 {
     // TODO Currently track designs get classified as SC4s because they use the
     //      same checksum algorithm. The only way after to tell the difference
@@ -70,7 +70,7 @@ bool TryClassifyFile(IStream * stream, ClassifiedFile * result)
     return false;
 }
 
-static bool TryClassifyAsS6(IStream * stream, ClassifiedFile * result)
+static bool TryClassifyAsS6(IStream * stream, ClassifiedFileInfo * result)
 {
     bool success = false;
     uint64 originalPosition = stream->GetPosition();
@@ -96,7 +96,7 @@ static bool TryClassifyAsS6(IStream * stream, ClassifiedFile * result)
     return success;
 }
 
-static bool TryClassifyAsS4(IStream * stream, ClassifiedFile * result)
+static bool TryClassifyAsS4(IStream * stream, ClassifiedFileInfo * result)
 {
     uint64 originalPosition = stream->GetPosition();
     size_t dataLength = (size_t)stream->GetLength();
@@ -124,7 +124,7 @@ static bool TryClassifyAsS4(IStream * stream, ClassifiedFile * result)
     return false;
 }
 
-static bool TryClassifyAsTD4_TD6(IStream * stream, ClassifiedFile * result)
+static bool TryClassifyAsTD4_TD6(IStream * stream, ClassifiedFileInfo * result)
 {
     bool success = false;
     uint64 originalPosition = stream->GetPosition();

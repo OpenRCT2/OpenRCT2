@@ -67,7 +67,7 @@ TEST_F(RideRatings, all)
     bool initialised = context->Initialise();
     ASSERT_TRUE(initialised);
 
-    game_load_sv6_path(path.c_str());
+    load_from_sv6(path.c_str());
 
     // Check ride count to check load was successful
     ASSERT_EQ(gRideCount, 134);

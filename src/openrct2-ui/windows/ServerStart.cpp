@@ -14,6 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
+#include <openrct2/Context.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/ParkImporter.h>
 #include <openrct2/network/network.h>
@@ -169,18 +170,14 @@ static void window_server_start_close(rct_window *w)
 static void window_server_start_scenarioselect_callback(const utf8 *path)
 {
     network_set_password(_password);
-    ParkLoadResult * result = scenario_load_and_play_from_path(path);
-    if (ParkLoadResult_GetError(result) == PARK_LOAD_ERROR_OK) {
+    if (context_load_park_from_file(path)) {
         network_begin_server(gConfigNetwork.default_port, gConfigNetwork.listen_address);
-    } else {
-        handle_park_load_failure(result, path);
     }
-    ParkLoadResult_Delete(result);
 }
 
 static void window_server_start_loadsave_callback(sint32 result, const utf8 * path)
 {
-    if (result == MODAL_RESULT_OK && game_load_save_or_scenario(path)) {
+    if (result == MODAL_RESULT_OK && context_load_park_from_file(path)) {
         network_begin_server(gConfigNetwork.default_port, gConfigNetwork.listen_address);
     }
 }
