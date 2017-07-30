@@ -47,6 +47,7 @@ TitleScreen::TitleScreen()
 
 TitleScreen::~TitleScreen()
 {
+    delete _sequencePlayer;
     _singleton = nullptr;
 }
 
