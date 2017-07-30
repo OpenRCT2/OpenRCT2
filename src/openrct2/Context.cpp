@@ -373,7 +373,7 @@ namespace OpenRCT2
         bool LoadParkFromFile(const std::string &path, bool loadTitleScreenOnFail = false) final override
         {
             auto fs = FileStream(path, FILE_MODE_OPEN);
-            return LoadParkFromStream(&fs, path, false);
+            return LoadParkFromStream(&fs, path, loadTitleScreenOnFail);
         }
 
     private:
