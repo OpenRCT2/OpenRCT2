@@ -55,6 +55,7 @@ namespace OpenRCT2
         CONFIG_KEYBOARD,    // Keyboard shortcuts. (hotkeys.cfg)
         CACHE_OBJECTS,      // Object repository cache (objects.idx).
         CACHE_TRACKS,       // Track repository cache (tracks.idx).
+        MP_DAT,             // Mega Park data, Steam RCT1 only (\RCTdeluxe_install\Data\mp.dat)
         NETWORK_GROUPS,     // Server groups with permissions (groups.json).
         NETWORK_SERVERS,    // Saved servers (servers.cfg).
         NETWORK_USERS,      // Users and their groups (users.json).

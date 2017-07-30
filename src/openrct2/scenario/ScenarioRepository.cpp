@@ -18,6 +18,7 @@
 #include <memory>
 #include <vector>
 #include "../core/Console.hpp"
+#include "../core/File.h"
 #include "../core/FileScanner.h"
 #include "../core/FileStream.hpp"
 #include "../core/Math.hpp"
@@ -149,9 +150,13 @@ public:
         std::string rct1dir = _env->GetDirectoryPath(DIRBASE::RCT1, DIRID::SCENARIO);
         std::string rct2dir = _env->GetDirectoryPath(DIRBASE::RCT2, DIRID::SCENARIO);
         std::string openrct2dir = _env->GetDirectoryPath(DIRBASE::USER, DIRID::SCENARIO);
+        std::string mpdatdir = _env->GetFilePath(PATHID::MP_DAT);
+
         Scan(rct1dir);
         Scan(rct2dir);
         Scan(openrct2dir);
+
+        ConvertMegaPark(mpdatdir, openrct2dir);
 
         Sort();
         LoadScores();
@@ -269,6 +274,38 @@ private:
             AddScenario(path, fileInfo->LastModified);
         }
         delete scanner;
+    }
+
+    void ConvertMegaPark(std::string &mpdatDir, std::string &scenarioDir)
+    {
+        //Convert mp.dat from RCT1 Data directory into SC21.SC4 (Mega Park)
+        utf8 mpdatPath[MAX_PATH];
+        utf8 sc21Path[MAX_PATH];
+
+        String::Set(mpdatPath, sizeof(mpdatPath), mpdatDir.c_str());
+
+        if (platform_file_exists(mpdatPath))
+        {
+            //Make sure the scenario directory exists, and that SC21.SC4 hasn't already been created
+            String::Set(sc21Path, sizeof(sc21Path), scenarioDir.c_str());
+            platform_ensure_directory_exists(sc21Path);
+            Path::Append(sc21Path, sizeof(sc21Path), "SC21.SC4");
+
+            if (!platform_file_exists(sc21Path)) {
+                size_t length;
+                auto mpdat = (uint8 *)(File::ReadAllBytes(mpdatPath, &length));
+                auto outFS = FileStream(sc21Path, FILE_MODE_WRITE);
+
+                for (uint32 i = 0; i < (uint32)length; i++)
+                {
+                    //Rotate each byte of mp.dat left by 4 bits to convert
+                    mpdat[i] = rol8(mpdat[i], 4);
+                }
+
+                outFS.WriteArray<uint8>(mpdat, length);
+                Memory::FreeArray(mpdat, length);
+            }
+        }
     }
 
     void AddScenario(const std::string &path, uint64 timestamp)

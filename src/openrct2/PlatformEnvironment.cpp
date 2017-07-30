@@ -73,7 +73,11 @@ public:
     {
         const utf8 * fileName = FileNames[(size_t)pathid];
         const utf8 * basePath = _basePath[(size_t)DIRBASE::USER].c_str();
-        if (pathid == PATHID::SCORES_RCT2)
+        if (pathid == PATHID::MP_DAT)
+        {
+            basePath = _basePath[(size_t)DIRBASE::RCT1].c_str();
+        }
+        else if (pathid == PATHID::SCORES_RCT2)
         {
             basePath = _basePath[(size_t)DIRBASE::RCT2].c_str();
         }
@@ -182,6 +186,7 @@ const char * PlatformEnvironment::FileNames[] =
     "hotkeys.dat",          // CONFIG_KEYBOARD
     "objects.idx",          // CACHE_OBJECTS
     "tracks.idx",           // CACHE_TRACKS
+    "RCTdeluxe_install" PATH_SEPARATOR "Data" PATH_SEPARATOR "mp.dat", // MP_DAT
     "groups.json",          // NETWORK_GROUPS
     "servers.cfg",          // NETWORK_SERVERS
     "users.json",           // NETWORK_USERS
