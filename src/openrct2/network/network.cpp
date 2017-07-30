@@ -1659,6 +1659,13 @@ void Network::Client_Handle_OBJECTS(NetworkConnection& connection, NetworkPacket
     uint32 size;
     packet >> size;
     log_verbose("client received object list, it has %u entries", size);
+    if (size > OBJECT_ENTRY_COUNT)
+    {
+        connection.SetLastDisconnectReason(STR_MULTIPLAYER_SERVER_INVALID_REQUEST);
+        connection.Socket->Disconnect();
+        log_warning("Server sent invalid amount of objects");
+        return;
+    }
     std::vector<std::string> requested_objects;
     for (uint32 i = 0; i < size; i++)
     {
@@ -1686,6 +1693,20 @@ void Network::Server_Handle_OBJECTS(NetworkConnection& connection, NetworkPacket
 {
     uint32 size;
     packet >> size;
+    if (size > OBJECT_ENTRY_COUNT)
+    {
+        connection.SetLastDisconnectReason(STR_MULTIPLAYER_CLIENT_INVALID_REQUEST);
+        connection.Socket->Disconnect();
+        std::string playerName = "(unknown)";
+        if (connection.Player)
+        {
+            playerName = connection.Player->Name;
+        }
+        std::string text = std::string("Player ") + playerName + std::string(" requested invalid amount of objects");
+        AppendServerLog(text);
+        log_warning(text.c_str());
+        return;
+    }
     log_verbose("Client requested %u objects", size);
     IObjectRepository * repo = GetObjectRepository();
     for (uint32 i = 0; i < size; i++)

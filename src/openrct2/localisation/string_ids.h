@@ -3807,6 +3807,9 @@ enum {
 
     STR_SHORTCUT_CLEAR_SCENERY = 6134,
 
+    STR_MULTIPLAYER_CLIENT_INVALID_REQUEST = 6135,
+    STR_MULTIPLAYER_SERVER_INVALID_REQUEST = 6136,
+
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     STR_COUNT = 32768
 };
