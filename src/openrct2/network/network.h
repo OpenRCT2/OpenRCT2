@@ -234,7 +234,7 @@ private:
     std::string _chatLogFilenameFormat = "%Y%m%d-%H%M%S.txt";
     std::string _serverLogPath;
     std::string _serverLogFilenameFormat = "-%Y%m%d-%H%M%S.txt";
-    OpenRCT2::IPlatformEnvironment * _env;
+    OpenRCT2::IPlatformEnvironment * _env = nullptr;
 
     void UpdateServer();
     void UpdateClient();

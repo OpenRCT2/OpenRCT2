@@ -31,7 +31,7 @@ typedef struct http_request_t {
     void *tag;
     const char *method;
     const char *url;
-    http_data_type type;
+    http_data_type type = HTTP_DATA_NONE;
     size_t size;
     union {
         const json_t *root;

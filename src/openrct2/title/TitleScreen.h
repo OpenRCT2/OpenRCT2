@@ -41,8 +41,8 @@ public:
 private:
     ITitleSequencePlayer *  _sequencePlayer = nullptr;
     uint16                  _loadedTitleSequenceId = UINT16_MAX;
-    uint16                  _currentSequence;
-    bool                    _hideVersionInfo;
+    uint16                  _currentSequence = UINT16_MAX;
+    bool                    _hideVersionInfo = false;
 
     void TitleInitialise();
     void TryLoadSequence();

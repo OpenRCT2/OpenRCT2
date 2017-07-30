@@ -38,7 +38,7 @@ extern "C"
 }
 
 // TODO Remove when no longer required.
-static TitleScreen * _singleton;
+static TitleScreen * _singleton = nullptr;
 
 TitleScreen::TitleScreen()
 {
