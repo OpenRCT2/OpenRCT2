@@ -1124,6 +1124,7 @@ bool game_load_save(const utf8 *path)
     }
 
     if (load_success) {
+        ParkLoadResult_Delete(result);
         if (network_get_mode() == NETWORK_MODE_CLIENT) {
             network_close();
         }
@@ -1138,6 +1139,7 @@ bool game_load_save(const utf8 *path)
         return true;
     } else {
         handle_park_load_failure(result, path);
+        ParkLoadResult_Delete(result);
         return false;
     }
 }
