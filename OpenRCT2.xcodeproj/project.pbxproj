@@ -227,7 +227,6 @@
 		F76C86C11EC4E88400FA49E2 /* interop.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C847B1EC4E7CC00FA49E2 /* interop.c */; };
 		F76C86C31EC4E88400FA49E2 /* S6Exporter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C847D1EC4E7CC00FA49E2 /* S6Exporter.cpp */; };
 		F76C86C51EC4E88400FA49E2 /* S6Importer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C847F1EC4E7CC00FA49E2 /* S6Importer.cpp */; };
-		F76C86C61EC4E88400FA49E2 /* rct2.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84801EC4E7CC00FA49E2 /* rct2.c */; };
 		F76C86C81EC4E88400FA49E2 /* cable_lift.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84841EC4E7CC00FA49E2 /* cable_lift.c */; };
 		F76C86CA1EC4E88400FA49E2 /* air_powered_vertical_coaster.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84871EC4E7CC00FA49E2 /* air_powered_vertical_coaster.c */; };
 		F76C86CB1EC4E88400FA49E2 /* bobsleigh_coaster.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84881EC4E7CC00FA49E2 /* bobsleigh_coaster.c */; };
@@ -1069,7 +1068,6 @@
 		F76C847D1EC4E7CC00FA49E2 /* S6Exporter.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = S6Exporter.cpp; sourceTree = "<group>"; };
 		F76C847E1EC4E7CC00FA49E2 /* S6Exporter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = S6Exporter.h; sourceTree = "<group>"; };
 		F76C847F1EC4E7CC00FA49E2 /* S6Importer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = S6Importer.cpp; sourceTree = "<group>"; };
-		F76C84801EC4E7CC00FA49E2 /* rct2.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = rct2.c; sourceTree = "<group>"; };
 		F76C84811EC4E7CC00FA49E2 /* rct2.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = rct2.h; sourceTree = "<group>"; };
 		F76C84841EC4E7CC00FA49E2 /* cable_lift.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = cable_lift.c; sourceTree = "<group>"; };
 		F76C84851EC4E7CC00FA49E2 /* cable_lift.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = cable_lift.h; sourceTree = "<group>"; };
@@ -1362,7 +1360,6 @@
 		F7D7747E1EC61E5100BE6EBC /* UiContext.macOS.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = UiContext.macOS.mm; sourceTree = "<group>"; usesTabs = 0; };
 		F7D774841EC66CD700BE6EBC /* OpenRCT2-cli */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "OpenRCT2-cli"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F7FFCDA91F02FD8E0078BFFB /* object_load_error.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = object_load_error.c; sourceTree = "<group>"; };
-		F7FFCDAB1F02FEC00078BFFB /* park_load_result_types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = park_load_result_types.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1785,7 +1782,6 @@
 				F76C84371EC4E7CC00FA49E2 /* object_list.h */,
 				F76C84381EC4E7CC00FA49E2 /* OpenRCT2.cpp */,
 				F76C84391EC4E7CC00FA49E2 /* OpenRCT2.h */,
-				F7FFCDAB1F02FEC00078BFFB /* park_load_result_types.h */,
 				F76C84511EC4E7CC00FA49E2 /* ParkImporter.cpp */,
 				F76C84521EC4E7CC00FA49E2 /* ParkImporter.h */,
 				F76C84641EC4E7CC00FA49E2 /* PlatformEnvironment.cpp */,
@@ -1793,7 +1789,6 @@
 				F76C846A1EC4E7CC00FA49E2 /* rct1.c */,
 				F76C846B1EC4E7CC00FA49E2 /* rct1.h */,
 				F76C84751EC4E7CC00FA49E2 /* rct12.h */,
-				F76C84801EC4E7CC00FA49E2 /* rct2.c */,
 				F76C84811EC4E7CC00FA49E2 /* rct2.h */,
 				F76C84FA1EC4E7CD00FA49E2 /* sprites.h */,
 				F76C850B1EC4E7CD00FA49E2 /* Version.cpp */,
@@ -3186,7 +3181,6 @@
 				F76C86C11EC4E88400FA49E2 /* interop.c in Sources */,
 				F76C86C31EC4E88400FA49E2 /* S6Exporter.cpp in Sources */,
 				F76C86C51EC4E88400FA49E2 /* S6Importer.cpp in Sources */,
-				F76C86C61EC4E88400FA49E2 /* rct2.c in Sources */,
 				F76C86C81EC4E88400FA49E2 /* cable_lift.c in Sources */,
 				F76C86CA1EC4E88400FA49E2 /* air_powered_vertical_coaster.c in Sources */,
 				F76C86CB1EC4E88400FA49E2 /* bobsleigh_coaster.c in Sources */,
