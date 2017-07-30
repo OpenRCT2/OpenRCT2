@@ -466,7 +466,10 @@ namespace OpenRCT2
                 {
                     try
                     {
-                        LoadParkFromFile(gOpenRCT2StartupActionPath, true);
+                        if (!LoadParkFromFile(gOpenRCT2StartupActionPath, true))
+                        {
+                            break;
+                        }
                     }
                     catch (const std::exception &ex)
                     {
