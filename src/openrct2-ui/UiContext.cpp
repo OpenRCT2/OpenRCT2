@@ -30,6 +30,7 @@
 #include <openrct2/localisation/string_ids.h>
 #include <openrct2/platform/Platform2.h>
 #include <openrct2/ui/UiContext.h>
+#include <openrct2/ui/WindowManager.h>
 #include <openrct2/Version.h>
 #include "CursorRepository.h"
 #include "drawing/engines/DrawingEngines.h"
@@ -106,6 +107,7 @@ public:
     ~UiContext() override
     {
         CloseWindow();
+        delete _windowManager;
         SDL_QuitSubSystem(SDL_INIT_VIDEO);
         delete _platformUiContext;
     }
