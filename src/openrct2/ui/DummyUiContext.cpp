@@ -83,6 +83,8 @@ namespace OpenRCT2 { namespace Ui
 
         // Clipboard
         bool SetClipboardText(const utf8* target) override { return false; }
+
+        ~DummyUiContext() { delete _windowManager; }
     };
 
     IUiContext * CreateDummyUiContext()
