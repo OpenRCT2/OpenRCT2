@@ -24,6 +24,7 @@
 - Fix: [#5998] Staff not getting paid / no loan interest.
 - Fix: [#6026] 'Select ride to advertise' dropdown does not display all items.
 - Fix: [#6052] Unable to place entrance/exit on certain ride types.
+- Fix: [#6071] Quick demolish can delete protected ride.
 - Improved: [#2223] Change mountain tool to ignore higher surrounding tiles.
 - Improved: [#4301] Leading and trailing whitespace in player name is now removed.
 - Improved: [#5859] OpenGL rendering performance
