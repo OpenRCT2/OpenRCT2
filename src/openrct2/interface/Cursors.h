@@ -53,7 +53,7 @@ enum CURSOR_ID
 
 #ifdef __cplusplus
 
-namespace OpenRCT2 { namespace Ui
+namespace OpenRCT2::Ui
 {
     struct CursorData
     {
@@ -65,6 +65,6 @@ namespace OpenRCT2 { namespace Ui
         uint8 Data[32 * 4];
         uint8 Mask[32 * 4];
     };
-} }
+}
 
 #endif
