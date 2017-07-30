@@ -283,7 +283,7 @@ public:
         {
             switch (e.type) {
             case SDL_QUIT:
-                rct2_quit();
+                context_quit();
                 break;
             case SDL_WINDOWEVENT:
                 // HACK: Fix #2158, OpenRCT2 does not draw if it does not think that the window is

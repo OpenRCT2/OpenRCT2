@@ -33,7 +33,6 @@ extern "C"
     #include "../interface/window.h"
     #include "../intro.h"
     #include "../platform/platform.h"
-    #include "../rct2.h"
     #include "drawing.h"
     #include "lightfx.h"
 }

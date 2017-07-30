@@ -35,7 +35,6 @@ extern "C"
     #include "../config/Config.h"
     #include "../localisation/localisation.h"
     #include "../platform/platform.h"
-    #include "../rct2.h"
     #include "scenario.h"
 }
 
@@ -594,13 +593,6 @@ private:
         {
             Console::Error::WriteLine("Unable to save highscores to '%s'", path.c_str());
         }
-    }
-
-    static utf8 * GetRCT2Directory(utf8 * buffer, size_t bufferSize)
-    {
-        String::Set(buffer, bufferSize, gRCT2AddressAppPath);
-        Path::Append(buffer, bufferSize, "Scenarios");
-        return buffer;
     }
 };
 

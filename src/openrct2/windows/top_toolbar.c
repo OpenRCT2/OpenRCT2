@@ -30,6 +30,7 @@
 #include "../localisation/localisation.h"
 #include "../network/network.h"
 #include "../network/twitch.h"
+#include "../OpenRCT2.h"
 #include "../ParkImporter.h"
 #include "../peep/staff.h"
 #include "../scenario/scenario.h"
@@ -585,7 +586,7 @@ static void window_top_toolbar_dropdown(rct_window *w, rct_widgetindex widgetInd
             game_do_command(0, 1, 0, 0, GAME_COMMAND_LOAD_OR_QUIT, 1, 0);
             break;
         case DDIDX_EXIT_OPENRCT2:
-            rct2_quit();
+            context_quit();
             break;
 #ifndef DISABLE_TWITCH
         case DDIDX_ENABLE_TWITCH:

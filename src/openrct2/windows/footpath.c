@@ -21,7 +21,7 @@
 #include "../interface/viewport.h"
 #include "../interface/widget.h"
 #include "../localisation/localisation.h"
-#include "../rct2.h"
+#include "../OpenRCT2.h"
 #include "../sprites.h"
 #include "../world/footpath.h"
 #include "dropdown.h"

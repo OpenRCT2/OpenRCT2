@@ -21,7 +21,6 @@
 #include "../localisation/localisation.h"
 #include "../paint/map_element/map_element.h"
 #include "../paint/paint.h"
-#include "../rct2.h"
 #include "../ride/track_paint.h"
 #include "../sprites.h"
 #include "../world/map.h"

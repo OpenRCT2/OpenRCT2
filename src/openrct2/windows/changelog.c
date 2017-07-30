@@ -22,7 +22,6 @@
 #include "../localisation/localisation.h"
 #include "../OpenRCT2.h"
 #include "../platform/platform.h"
-#include "../rct2.h"
 #include "../util/util.h"
 #include "../world/footpath.h"
 #include "../world/map.h"

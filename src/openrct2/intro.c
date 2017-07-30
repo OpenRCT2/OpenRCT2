@@ -19,7 +19,6 @@
 #include "Context.h"
 #include "drawing/drawing.h"
 #include "intro.h"
-#include "rct2.h"
 #include "sprites.h"
 
 #define BACKROUND_COLOUR_DARK       PALETTE_INDEX_10

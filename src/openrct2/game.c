@@ -19,6 +19,7 @@
 #include "config/Config.h"
 #include "Context.h"
 #include "editor.h"
+#include "FileClassifier.h"
 #include "game.h"
 #include "input.h"
 #include "interface/Screenshot.h"

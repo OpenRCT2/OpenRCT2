@@ -20,12 +20,9 @@
 #include "../interface/widget.h"
 #include "../interface/window.h"
 #include "../localisation/localisation.h"
-#include "../rct2.h"
 #include "../sprites.h"
 #include "../world/map.h"
 #include "dropdown.h"
-
-
 
 enum WINDOW_LAND_WIDGET_IDX {
     WIDX_BACKGROUND,

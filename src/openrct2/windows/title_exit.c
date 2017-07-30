@@ -22,7 +22,6 @@
 #include "../interface/widget.h"
 #include "../interface/window.h"
 #include "../intro.h"
-#include "../rct2.h"
 
 enum WINDOW_TITLE_EXIT_WIDGET_IDX {
     WIDX_EXIT,
@@ -98,7 +97,7 @@ static void window_title_exit_mouseup(rct_window *w, rct_widgetindex widgetIndex
 
     switch (widgetIndex) {
     case WIDX_EXIT:
-        rct2_quit();
+        context_quit();
         //game_do_command(0, 1, 0, 0, 5, 3, 0);
         break;
     };

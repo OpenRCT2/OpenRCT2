@@ -20,7 +20,6 @@
 #include "../input.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
-#include "../rct2.h"
 #include "tooltip.h"
 
 enum {

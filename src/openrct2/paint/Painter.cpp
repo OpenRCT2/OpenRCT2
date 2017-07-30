@@ -16,6 +16,7 @@
 
 #include "../config/Config.h"
 #include "../drawing/IDrawingEngine.h"
+#include "../OpenRCT2.h"
 #include "../title/TitleScreen.h"
 #include "../ui/UiContext.h"
 #include "Painter.h"

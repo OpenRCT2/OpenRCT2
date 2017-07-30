@@ -33,7 +33,6 @@
 
 extern "C"
 {
-    #include "../rct2.h"
     #include "track_design.h"
 }
 

@@ -20,8 +20,8 @@
 #include FT_FREETYPE_H
 
 #include "../localisation/localisation.h"
+#include "../OpenRCT2.h"
 #include "../platform/platform.h"
-#include "../rct2.h"
 #include "ttf.h"
 
 static bool _ttfInitialised = false;

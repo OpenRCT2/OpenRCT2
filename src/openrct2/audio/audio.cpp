@@ -359,7 +359,7 @@ void audio_init_ride_sounds_and_info()
     for (size_t m = 0; m < Util::CountOf(gRideMusicInfoList); m++)
     {
         rct_ride_music_info *rideMusicInfo = gRideMusicInfoList[m];
-        const utf8 *path = get_file_path(rideMusicInfo->path_id);
+        const utf8 * path = context_get_path_legacy(rideMusicInfo->path_id);
         if (File::Exists(path))
         {
             try

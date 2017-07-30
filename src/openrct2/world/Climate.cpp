@@ -16,6 +16,7 @@
 
 #include "../config/Config.h"
 #include "../core/Math.hpp"
+#include "../OpenRCT2.h"
 #include "Climate.h"
 
 extern "C"
@@ -27,7 +28,6 @@ extern "C"
     #include "../game.h"
     #include "../interface/window.h"
     #include "../localisation/date.h"
-    #include "../rct2.h"
     #include "../scenario/scenario.h"
     #include "../sprites.h"
     #include "../util/util.h"

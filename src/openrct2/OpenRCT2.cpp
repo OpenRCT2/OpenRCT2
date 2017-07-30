@@ -23,7 +23,6 @@ extern "C"
 {
     #include "audio/audio.h"
     #include "platform/platform.h"
-    #include "rct2.h"
 }
 
 extern "C"
@@ -47,4 +46,9 @@ extern "C"
     // OpenSSL's message digest context used for calculating sprite checksums
     EVP_MD_CTX * gHashCTX = nullptr;
 #endif // DISABLE_NETWORK
+
+    uint32 gCurrentDrawCount = 0;
+    uint8 gScreenFlags;
+    uint32 gScreenAge;
+    uint8 gSavePromptMode;
 }

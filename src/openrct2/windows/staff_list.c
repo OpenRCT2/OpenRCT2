@@ -24,7 +24,6 @@
 #include "../localisation/localisation.h"
 #include "../peep/peep.h"
 #include "../peep/staff.h"
-#include "../rct2.h"
 #include "../sprites.h"
 #include "../util/util.h"
 #include "../world/footpath.h"

@@ -21,7 +21,6 @@ extern "C"
 {
 #endif
 
-#include "../rct2.h"
 #include "drawing.h"
 
 extern rct_string_id DrawingEngineStringIds[3];

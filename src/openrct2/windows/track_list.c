@@ -22,6 +22,7 @@
 #include "../interface/widget.h"
 #include "../interface/window.h"
 #include "../localisation/localisation.h"
+#include "../OpenRCT2.h"
 #include "../rct1.h"
 #include "../ride/ride.h"
 #include "../ride/track.h"

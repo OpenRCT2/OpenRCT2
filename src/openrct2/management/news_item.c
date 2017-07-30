@@ -20,7 +20,7 @@
 #include "../interface/window.h"
 #include "../localisation/date.h"
 #include "../localisation/localisation.h"
-#include "../rct2.h"
+#include "../OpenRCT2.h"
 #include "../ride/ride.h"
 #include "../util/util.h"
 #include "../world/sprite.h"

@@ -26,6 +26,7 @@
 #include "../interface/themes.h"
 #include "../localisation/localisation.h"
 #include "../localisation/string_ids.h"
+#include "../OpenRCT2.h"
 #include "../platform/platform.h"
 #include "../world/map.h"
 #include "../world/sprite.h"
