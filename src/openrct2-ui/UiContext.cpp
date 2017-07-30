@@ -429,7 +429,7 @@ public:
                 if (_cursorState.touchIsDouble)
                 {
                     store_mouse_input(MOUSE_STATE_RIGHT_RELEASE, x, y);
-                    _cursorState.left = CURSOR_RELEASED;
+                    _cursorState.right = CURSOR_RELEASED;
                     _cursorState.old = 4;
                 }
                 else {
