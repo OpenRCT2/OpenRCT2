@@ -225,8 +225,7 @@ typedef struct scenery_variables {
 } scenery_variables;
 
 typedef struct track_list_variables {
-    uint16 var_480;
-    uint16 var_484;
+    bool track_list_being_updated;
     bool reload_track_designs;
 } track_list_variables;
 

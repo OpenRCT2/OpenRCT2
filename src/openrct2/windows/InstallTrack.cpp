@@ -42,15 +42,21 @@ enum {
     WIDX_CANCEL
 };
 
+#define WW 380
+#define WH 400
+#define WW_LESS_PADDING (WW - 4)
+#define PREVIEW_BUTTONS_LEFT (WW - 25)
+#define ACTION_BUTTONS_LEFT (WW - 100)
+
 static rct_widget window_install_track_widgets[] = {
-    { WWT_FRAME,            0,  0,      401,    0,      399,    0xFFFFFFFF,                             STR_NONE                },
-    { WWT_CAPTION,          0,  1,      400,    1,      14,     STR_TRACK_DESIGN_INSTALL_WINDOW_TITLE,  STR_WINDOW_TITLE_TIP    },
-    { WWT_CLOSEBOX,         0,  389,    399,    2,      13,     STR_CLOSE_X,                            STR_CLOSE_WINDOW_TIP    },
-    { WWT_FLATBTN,          0,  15,     386,    18,     236,    0xFFFFFFFF,                             STR_NONE                },
-    { WWT_FLATBTN,          0,  376,    399,    374,    397,    SPR_ROTATE_ARROW,                       STR_ROTATE_90_TIP       },
-    { WWT_FLATBTN,          0,  376,    399,    350,    373,    SPR_SCENERY,                            STR_TOGGLE_SCENERY_TIP  },
-    { WWT_DROPDOWN_BUTTON,  0,  303,    397,    241,    252,    STR_INSTALL_NEW_TRACK_DESIGN_INSTALL,   STR_NONE                },
-    { WWT_DROPDOWN_BUTTON,  0,  303,    397,    256,    267,    STR_INSTALL_NEW_TRACK_DESIGN_CANCEL,    STR_NONE                },
+    { WWT_FRAME,            0,  0,                      WW - 1,             0,      WH-1,   STR_NONE,                               STR_NONE                },
+    { WWT_CAPTION,          0,  1,                      WW - 2,             1,      14,     STR_TRACK_DESIGN_INSTALL_WINDOW_TITLE,  STR_WINDOW_TITLE_TIP    },
+    { WWT_CLOSEBOX,         0,  WW - 13,                WW - 3,             2,      13,     STR_CLOSE_X,                            STR_CLOSE_WINDOW_TIP    },
+    { WWT_FLATBTN,          0,  4,                      WW - 5,             18,     236,    STR_NONE,                               STR_NONE                },
+    { WWT_FLATBTN,          0,  PREVIEW_BUTTONS_LEFT,   WW_LESS_PADDING,    374,    397,    SPR_ROTATE_ARROW,                       STR_ROTATE_90_TIP       },
+    { WWT_FLATBTN,          0,  PREVIEW_BUTTONS_LEFT,   WW_LESS_PADDING,    350,    373,    SPR_SCENERY,                            STR_TOGGLE_SCENERY_TIP  },
+    { WWT_DROPDOWN_BUTTON,  0,  ACTION_BUTTONS_LEFT,    WW_LESS_PADDING,    241,    252,    STR_INSTALL_NEW_TRACK_DESIGN_INSTALL,   STR_NONE                },
+    { WWT_DROPDOWN_BUTTON,  0,  ACTION_BUTTONS_LEFT,    WW_LESS_PADDING,    256,    267,    STR_INSTALL_NEW_TRACK_DESIGN_CANCEL,    STR_NONE                },
     { WIDGETS_END },
 };
 
@@ -132,11 +138,11 @@ void window_install_track_open(const utf8 *path)
     sint32 x = screenWidth / 2 - 201;
     sint32 y = Math::Max(TOP_TOOLBAR_HEIGHT + 1, screenHeight / 2 - 200);
 
-    rct_window *w = window_create(x, y, 402, 400, &window_install_track_events, WC_INSTALL_TRACK, 0);
+    rct_window *w = window_create(x, y, WW, WH, &window_install_track_events, WC_INSTALL_TRACK, 0);
     w->widgets = window_install_track_widgets;
     w->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_ROTATE) | (1 << WIDX_TOGGLE_SCENERY) | (1 << WIDX_INSTALL) | (1 << WIDX_CANCEL);
     window_init_scroll_widgets(w);
-    w->track_list.var_484 = 0;
+    w->track_list.track_list_being_updated = false;
     window_push_others_right(w);
 
     _trackPath = _strdup(path);
@@ -247,13 +253,33 @@ static void window_install_track_paint(rct_window *w, rct_drawpixelinfo *dpi)
         }
     }
 
-    // Track design name
-    gfx_draw_string_centred_clipped(dpi, STR_TRACK_PREVIEW_NAME_FORMAT, &_trackName, COLOUR_BLACK, x, y, 368);
-
     // Information
     x = w->x + widget->left + 1;
-    y = w->y + widget->bottom + 2;
+    y = w->y + widget->bottom + 4;
     // 0x006D3CF1 -- 0x006d3d71 missing
+
+    // Track design name & type
+    gfx_draw_string_left(dpi, STR_TRACK_DESIGN_NAME, &_trackName, COLOUR_BLACK, x-1, y);
+    y += 10;
+
+    rct_ride_name rideName;
+    rct_string_id friendlyTrackName;
+
+    void * objectEntry = object_manager_load_object(&td6->vehicle_object);
+    if (objectEntry != NULL)
+    {
+        sint32 groupIndex = object_manager_get_loaded_object_entry_index(objectEntry);
+        rideName = get_ride_naming(td6->type, get_ride_entry(groupIndex));
+        friendlyTrackName = rideName.name;
+    }
+    else
+    {
+        // Fall back on the technical track name if the vehicle object cannot be loaded
+        friendlyTrackName = RideNaming[td6->type].name;
+    }
+    
+    gfx_draw_string_left(dpi, STR_TRACK_DESIGN_TYPE, &friendlyTrackName, COLOUR_BLACK, x, y);
+    y += 14;
 
     // Stats
     fixed32_2dp rating = td6->excitement * 10;

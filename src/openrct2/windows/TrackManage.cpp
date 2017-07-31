@@ -164,7 +164,7 @@ static void _window_track_manage_open(track_design_file_ref *tdFileRef)
 
     rct_window *trackDesignListWindow = window_find_by_class(WC_TRACK_DESIGN_LIST);
     if (trackDesignListWindow != nullptr) {
-        trackDesignListWindow->track_list.var_484 |= 1;
+        trackDesignListWindow->track_list.track_list_being_updated = true;
     }
 
     _trackDesignFileReference = tdFileRef;
@@ -178,7 +178,7 @@ static void window_track_manage_close(rct_window *w)
 {
     rct_window *trackDesignListWindow = window_find_by_class(WC_TRACK_DESIGN_LIST);
     if (trackDesignListWindow != nullptr) {
-        trackDesignListWindow->track_list.var_484 &= ~1;
+        trackDesignListWindow->track_list.track_list_being_updated = false;
     }
 }
 
