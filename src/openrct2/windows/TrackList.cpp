@@ -144,8 +144,7 @@ static void _window_track_list_open(ride_list_item item)
     w->widgets = window_track_list_widgets;
     w->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_ROTATE) | (1 << WIDX_TOGGLE_SCENERY) | (1 << WIDX_BACK);
     window_init_scroll_widgets(w);
-    w->track_list.var_480 = 0xFFFF;
-    w->track_list.var_484 = 0;
+    w->track_list.track_list_being_updated = false;
     w->track_list.reload_track_designs = false;
     w->selected_list_item = 0;
     if (_trackDesignsCount != 0 && !(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)) {
@@ -198,8 +197,6 @@ static void window_track_list_close(rct_window *w)
  */
 static void window_track_list_select(rct_window *w, sint32 index)
 {
-    w->track_list.var_480 = index;
-
     // Displays a message if the ride can't load, fix #4080
     if (_loadedTrackDesign == nullptr) {
         window_error_open(STR_CANT_BUILD_PARK_ENTRANCE_HERE, STR_TRACK_LOAD_FAILED_ERROR);
@@ -298,7 +295,7 @@ static void window_track_list_scrollgetsize(rct_window *w, sint32 scrollIndex, s
  */
 static void window_track_list_scrollmousedown(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y)
 {
-    if (!(w->track_list.var_484 & 1)) {
+    if (!w->track_list.track_list_being_updated) {
         sint32 i = window_track_list_get_list_item_index_from_position(x, y);
         if (i != -1) {
             window_track_list_select(w, i);
@@ -312,7 +309,7 @@ static void window_track_list_scrollmousedown(rct_window *w, sint32 scrollIndex,
  */
 static void window_track_list_scrollmouseover(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y)
 {
-    if (!(w->track_list.var_484 & 1)) {
+    if (!w->track_list.track_list_being_updated) {
         sint32 i = window_track_list_get_list_item_index_from_position(x, y);
         if (i != -1 && w->selected_list_item != i) {
             w->selected_list_item = i;

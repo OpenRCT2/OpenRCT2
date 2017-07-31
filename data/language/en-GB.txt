@@ -3383,7 +3383,7 @@ STR_3372    :{BLACK}= Cash Machine
 STR_3373    :{BLACK}= Toilet
 STR_3374    :Warning: Too many objects selected!
 STR_3375    :Not all objects in this scenery group could be selected
-STR_3376    :Install new track design...
+STR_3376    :Install new
 STR_3377    :{SMALLFONT}{BLACK}Install a new track design file
 STR_3378    :Install
 STR_3379    :Cancel
@@ -4450,6 +4450,8 @@ STR_6138    :OpenRCT2 is the work of many authors, a full list can be found in {
 STR_6139    :All product and company names belong to their respective holders. Use of them does not imply any affiliation with or endorsement by them.
 STR_6140    :Changelog...
 STR_6141    :RCT1 Bottom Toolbar
+STR_6142    :{WINDOW_COLOUR_2}Track name: {BLACK}{STRING}
+STR_6143    :{WINDOW_COLOUR_2}Ride type: {BLACK}{STRINGID}
 
 #############
 # Scenarios #
