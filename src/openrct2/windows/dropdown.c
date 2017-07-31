@@ -60,21 +60,37 @@ sint32 gDropdownDefaultIndex;
 
 bool dropdown_is_checked(sint32 index)
 {
+    if (index < 0 || index >= countof(_dropdownItemsDisabled))
+    {
+        return false;
+    }
     return _dropdownItemsChecked[index];
 }
 
 bool dropdown_is_disabled(sint32 index)
 {
+    if (index < 0 || index >= countof(_dropdownItemsDisabled))
+    {
+        return true;
+    }
     return _dropdownItemsDisabled[index];
 }
 
 void dropdown_set_checked(sint32 index, bool value)
 {
+    if (index < 0 || index >= countof(_dropdownItemsDisabled))
+    {
+        return;
+    }
     _dropdownItemsChecked[index] = value;
 }
 
 void dropdown_set_disabled(sint32 index, bool value)
 {
+    if (index < 0 || index >= countof(_dropdownItemsDisabled))
+    {
+        return;
+    }
     _dropdownItemsDisabled[index] = value;
 }
 
