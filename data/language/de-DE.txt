@@ -889,7 +889,7 @@ STR_0884    :Landschaft laden
 STR_0885    :Landschaft speichern
 STR_0886    :Spiel beenden
 STR_0887    :Szenario-Editor beenden
-STR_0888    :Achterbahn-Designer beenden
+STR_0888    :Streckenentwurf-Designer beenden
 STR_0889    :Streckenentwurf-Manager beenden
 STR_0890    :<removed string - do not use>
 STR_0891    :Screenshot
@@ -3213,7 +3213,7 @@ STR_3203    :Einrichtung der Erfindungsliste
 STR_3204    :Optionsauswahl
 STR_3205    :Zielauswahl
 STR_3206    :Szenario speichern
-STR_3207    :Achterbahn-Designer
+STR_3207    :Streckenentwurf-Designer
 STR_3208    :Streckenentwurf-Manager
 STR_3209    :Zurück zum vorherigen Schritt:
 STR_3210    :Weiter zum nächsten Schritt:
@@ -3341,7 +3341,7 @@ STR_3331    :Fußweg vom Parkeingang zum Kartenrand entweder nicht vollständig 
 STR_3332    :Parkeingang liegt verkehrt herum oder besitzt keinen Fußweg zum Kartenrand
 STR_3333    :Zusatzobjekte bei gespeich. Spielen exportieren
 STR_3334    :{SMALLFONT}{BLACK}Wählen Sie aus, ob zusätzliche Plugin-Objektdaten (Zusatzdaten, die nicht zum Hauptprodukt gehören) in Spielständen oder Szenariodateien gespeichert werden sollen, damit jemand, der nicht über die zusätzlichen Objektdaten verfügt, die gespeicherten Daten laden kann
-STR_3335    :Achterbahn-Designer - Bahnarten & Fahrzeuge auswählen
+STR_3335    :Streckenentwurf-Designer - Bahnarten & Fahrzeuge auswählen
 STR_3336    :Streckenentwurf-Manager - Bahnart auswählen
 STR_3337    :Six Flags-Park
 STR_3338    :{BLACK}Eigenes Layout entwerfen
@@ -3350,7 +3350,7 @@ STR_3340    :{BLACK}{COMMA16} Entwürfe verfügbar oder eigenes Layout entwerfen
 STR_3341    :{SMALLFONT}{BLACK}Spielwerkzeuge
 STR_3342    :Szenario-Editor
 STR_3343    :Gespeichertes Spiel in Szenario umwandeln
-STR_3344    :Achterbahn-Designer
+STR_3344    :Streckenentwurf-Designer
 STR_3345    :Streckenentwurf-Manager
 STR_3346    :Streckenentwurf kann nicht gespeichert werden...
 STR_3347    :Bahn ist zu lang, enthält zu viele Elemente oder Szenerie ist zu zerstreut
@@ -4320,9 +4320,9 @@ STR_6016    :Modifiziere Kachel
 STR_6017    :Bitte verlangsamen Sie Ihr Tempo
 STR_6018    :Streckenbau - Bogen links
 STR_6019    :Streckenbau - Bogen rechts
-STR_6020    :Streckenbau - Verwende Standard Abschnitt
+STR_6020    :Streckenbau - Verwende Standardabschnitt
 STR_6021    :Streckenbau - Neigung unten
-STR_6022    :Streckenbau - Neigung Oben
+STR_6022    :Streckenbau - Neigung oben
 STR_6023    :Streckenbau - Umschalten Kettenlift
 STR_6024    :Streckenbau - Überhöhung links
 STR_6025    :Streckenbau - Überhöhung rechts
@@ -4430,6 +4430,10 @@ STR_6127    :Datei: {STRING}
 STR_6128    :Die Datei konnte aufgrund fehlender oder beschädigter Objekte nicht geladen werden. Eine Liste dieser Elemente ist nachstehend aufgeführt.
 STR_6129    :Ausgewählte Elemente kopieren
 STR_6130    :Vollständige Liste kopieren
+STR_6131    :Objektquelle
+STR_6132    :Forschungsstatus ignorieren
+STR_6133    :{SMALLFONT}{BLACK}Ermöglicht den Zugriff auf Attraktionen und Szenerie, die bisher noch nicht erforscht wurden
+STR_6134    :Szenerie entfernen
 
 #############
 # Scenarios #

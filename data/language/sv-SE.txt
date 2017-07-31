@@ -4439,6 +4439,7 @@ STR_6130    :Kopiera hela listan till urklipp
 STR_6131    :Källa för objektet
 STR_6132    :Ignorera forskning
 STR_6133    :{SMALLFONT}{BLACK}Ger tillgång till åkturer och dekorationer som inte har blivit uppfunna än
+STR_6134    :Rensa dekoration
 
 #############
 # Scenarion #
