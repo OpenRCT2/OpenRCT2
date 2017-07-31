@@ -39,7 +39,7 @@ void vehicle_visual_submarine(sint32 x, sint32 imageDirection, sint32 y, sint32 
             baseImage_id += vehicleEntry->var_1C;
         }
     } else {
-        if (vehicleEntry->flags_a & VEHICLE_ENTRY_FLAG_A_11) {
+        if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_11) {
             baseImage_id /= 2;
         }
         if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_15) {
