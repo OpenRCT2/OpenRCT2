@@ -58,7 +58,7 @@ void platform_get_exe_path(utf8 *outPath, size_t outSize)
     }
 #elif defined(__OpenBSD__)
     // There is no way to get the path name of a running executable.
-    // If you are not using the port or package, you must change this line!
+    // If you are not using the port or package, you may have to change this line!
     strlcpy(exePath, "/usr/local/bin/", sizeof(exePath));
 #else
 #error "Platform does not support full path exe retrieval"
