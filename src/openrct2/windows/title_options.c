@@ -24,10 +24,12 @@
 
 enum WINDOW_TITLE_OPTIONS_WIDGET_IDX {
     WIDX_OPTIONS,
+    WIDX_CHANGELOG,
 };
 
 static rct_widget window_title_options_widgets[] = {
     { WWT_DROPDOWN_BUTTON, 2, 0, 79, 0, 11, STR_OPTIONS, STR_OPTIONS_TIP },
+    { WWT_DROPDOWN_BUTTON, 2, 0, 79, 14, 25, STR_CHANGELOG_TITLE, STR_CHANGELOG_TIP },
     { WIDGETS_END },
 };
 
@@ -72,13 +74,13 @@ void window_title_options_open()
 {
     rct_window * window = window_create(
         context_get_width() - 80, 0,
-        80, 12,
+        80, 26,
         &window_title_options_events,
         WC_TITLE_OPTIONS,
         WF_STICK_TO_BACK | WF_TRANSPARENT
     );
     window->widgets = window_title_options_widgets;
-    window->enabled_widgets |= (1ULL << WIDX_OPTIONS);
+    window->enabled_widgets = (1ULL << WIDX_OPTIONS) | (1ULL << WIDX_CHANGELOG);
     window_init_scroll_widgets(window);
 }
 
@@ -90,6 +92,9 @@ static void window_title_options_mouseup(rct_window *w, rct_widgetindex widgetIn
     switch (widgetIndex) {
     case WIDX_OPTIONS:
         window_options_open();
+        break;
+    case WIDX_CHANGELOG:
+        window_changelog_open();
         break;
     }
 }
