@@ -243,16 +243,20 @@ static size_t decode_chunk_rle_with_size(const uint8* src_buffer, uint8* dst_buf
 
     dst = dst_buffer;
 
+    assert(length > 0);
+    assert(dstSize > 0);
     for (size_t i = 0; i < length; i++) {
         rleCodeByte = src_buffer[i];
         if (rleCodeByte & 128) {
             i++;
             count = 257 - rleCodeByte;
             assert(dst + count <= dst_buffer + dstSize);
+            assert(i < length);
             memset(dst, src_buffer[i], count);
             dst = (uint8*)((uintptr_t)dst + count);
         } else {
             assert(dst + rleCodeByte + 1 <= dst_buffer + dstSize);
+            assert(i + 1 < length);
             memcpy(dst, src_buffer + i + 1, rleCodeByte + 1);
             dst = (uint8*)((uintptr_t)dst + rleCodeByte + 1);
             i += rleCodeByte + 1;
