@@ -274,7 +274,7 @@ static money32 SmallSceneryPlace(sint16 x,
 
     rct_map_element* surfaceElement = map_get_surface_element_at(x / 32, y / 32);
 
-    if (!gCheatsDisableClearanceChecks && map_get_water_height(surfaceElement) > 0)
+    if (surfaceElement != NULL && !gCheatsDisableClearanceChecks && map_get_water_height(surfaceElement) > 0)
     {
         sint32 water_height = (map_get_water_height(surfaceElement) * 16) - 1;
         if (water_height > targetHeight)
@@ -292,7 +292,7 @@ static money32 SmallSceneryPlace(sint16 x,
             return MONEY32_UNDEFINED;
         }
 
-        if (map_get_water_height(surfaceElement) > 0)
+        if (surfaceElement != NULL && map_get_water_height(surfaceElement) > 0)
         {
             if ((map_get_water_height(surfaceElement) * 16) > targetHeight)
             {
@@ -306,6 +306,7 @@ static money32 SmallSceneryPlace(sint16 x,
         (sceneryEntry->small_scenery.flags & SMALL_SCENERY_FLAG_REQUIRE_FLAT_SURFACE) &&
         !supportsRequired &&
         !isOnWater &&
+        surfaceElement != NULL &&
         (surfaceElement->properties.surface.slope & 0x1F))
     {
 
@@ -320,12 +321,15 @@ static money32 SmallSceneryPlace(sint16 x,
 
         if (!isOnWater)
         {
-            if (map_get_water_height(surfaceElement) ||
-                (surfaceElement->base_height * 8) != targetHeight)
+            if (surfaceElement != NULL)
             {
+                if (map_get_water_height(surfaceElement) ||
+                    (surfaceElement->base_height * 8) != targetHeight)
+                {
 
-                gGameCommandErrorText = STR_LEVEL_LAND_REQUIRED;
-                return MONEY32_UNDEFINED;
+                    gGameCommandErrorText = STR_LEVEL_LAND_REQUIRED;
+                    return MONEY32_UNDEFINED;
+                }
             }
 
         }
