@@ -19,6 +19,7 @@
 extern "C"
 {
     #include "../input.h"
+    #include "../interface/themes.h"
     #include "../interface/widget.h"
     #include "../localisation/localisation.h"
 }
@@ -76,6 +77,13 @@ static void window_map_tooltip_open();
  */
 void window_map_tooltip_update_visibility()
 {
+    if (theme_get_flags() & UITHEME_FLAG_USE_FULL_BOTTOM_TOOLBAR)
+    {
+        // The map tooltip is drawn by the bottom toolbar
+        window_invalidate_by_class(WC_BOTTOM_TOOLBAR);
+        return;
+    }
+
     sint32 cursorX, cursorY;
 
     const CursorState * state = context_get_cursor_state();
