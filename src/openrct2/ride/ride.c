@@ -2030,7 +2030,10 @@ static void ride_update(sint32 rideIndex)
         ride->num_customers_timeout = 0;
 
         // Shift number of customers history, start of the array is the most recent one
-        memmove(ride->num_customers + 1, ride->num_customers, sizeof(ride->num_customers) - 1);
+        for (sint32 i = CUSTOMER_HISTORY_SIZE - 1; i > 0; i--)
+        {
+            ride->num_customers[i] = ride->num_customers[i - 1];
+        }
         ride->num_customers[0] = ride->cur_num_customers;
 
         ride->cur_num_customers = 0;
@@ -2305,9 +2308,12 @@ static void ride_breakdown_update(sint32 rideIndex)
 
         ride->downtime = min(totalDowntime / 2, 100);
 
-        memmove(&ride->downtime_history[1], ride->downtime_history, sizeof(ride->downtime_history) - 1);
-
+        for (sint32 i = DOWNTIME_HISTORY_SIZE - 1; i > 0; i--)
+        {
+            ride->downtime_history[i] = ride->downtime_history[i - 1];
+        }
         ride->downtime_history[0] = 0;
+
         ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAINTENANCE;
     }
 
