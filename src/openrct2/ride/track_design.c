@@ -895,7 +895,7 @@ static sint32 track_design_place_scenery(rct_td6_scenery_element *scenery_start,
                     continue;
                     break;
                 }
-                _trackDesignPlaceCost += cost;
+                add_clamp_money32(_trackDesignPlaceCost, cost);
                 if (_trackDesignPlaceOperation != PTD_OPERATION_2) {
                     if (cost == MONEY32_UNDEFINED){
                         _trackDesignPlaceCost = MONEY32_UNDEFINED;
@@ -1131,7 +1131,7 @@ static bool track_design_place_ride(rct_track_td6 *td6, sint16 x, sint16 y, sint
             sint16 tempZ = z - trackCoordinates->z_begin;
             uint32 edi =
                 ((track->flags & 0x0F) << 17) |
-                ((track->flags & 0x0F) << 28) |
+                ((uint32)(track->flags & 0x0F) << 28) |
                 (((track->flags >> 4) & 0x03) << 24) |
                 (tempZ & 0xFFFF);
 
