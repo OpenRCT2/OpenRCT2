@@ -99,7 +99,7 @@ typedef struct rct_s6_data {
     // packed objects
 
     // SC6[3]
-    rct_object_entry objects[721];
+    rct_object_entry objects[OBJECT_ENTRY_COUNT];
 
     // SC6[4]
     uint16 elapsed_months;
