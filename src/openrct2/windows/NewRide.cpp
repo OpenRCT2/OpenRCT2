@@ -357,7 +357,7 @@ static ride_list_item * window_new_ride_iterate_over_ride_group(uint8 rideType, 
         rct_ride_entry *rideEntry = get_ride_entry(rideEntryIndex);
 
         // Check if ride is in this category
-        if (!gConfigInterface.select_by_track_type && (currentCategory != rideEntry->category[0] && currentCategory != rideEntry->category[1]))
+        if (!gConfigInterface.select_by_track_type && !ride_entry_has_category(rideEntry, currentCategory))
             continue;
 
         if (ride_type_has_ride_groups(rideType))

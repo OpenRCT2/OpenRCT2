@@ -200,7 +200,7 @@ static rct_track_td6 * track_design_open_from_td4(uint8 *src, size_t srcLength)
 
     // Track colours
     if (version == 0) {
-        for (sint32 i = 0; i < RCT12_NUM_COLOUR_SCHEMES; i++) {
+        for (sint32 i = 0; i < NUM_COLOUR_SCHEMES; i++) {
             td6->track_spine_colour[i] = rct1_get_colour(td4->track_spine_colour_v0);
             td6->track_rail_colour[i] = rct1_get_colour(td4->track_rail_colour_v0);
             td6->track_support_colour[i] = rct1_get_colour(td4->track_support_colour_v0);

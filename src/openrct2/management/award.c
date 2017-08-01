@@ -153,16 +153,23 @@ static sint32 award_is_deserved_best_rollercoasters(sint32 awardType, sint32 act
     rct_ride_entry *rideEntry;
 
     rollerCoasters = 0;
-    FOR_ALL_RIDES(i, ride) {
+    FOR_ALL_RIDES(i, ride)
+    {
         rideEntry = get_ride_entry(ride->subtype);
-        if (rideEntry == NULL) {
+        if (rideEntry == NULL)
+        {
             continue;
         }
-        if (rideEntry->category[0] != RIDE_CATEGORY_ROLLERCOASTER && rideEntry->category[1] != RIDE_CATEGORY_ROLLERCOASTER)
-            continue;
 
         if (ride->status != RIDE_STATUS_OPEN || (ride->lifecycle_flags & RIDE_LIFECYCLE_CRASHED))
+        {
             continue;
+        }
+
+        if (!ride_entry_has_category(rideEntry, RIDE_CATEGORY_ROLLERCOASTER))
+        {
+            continue;
+        }
 
         rollerCoasters++;
     }
@@ -463,16 +470,23 @@ static sint32 award_is_deserved_best_water_rides(sint32 awardType, sint32 active
     rct_ride_entry *rideEntry;
 
     waterRides = 0;
-    FOR_ALL_RIDES(i, ride) {
+    FOR_ALL_RIDES(i, ride)
+    {
         rideEntry = get_ride_entry(ride->subtype);
-        if (rideEntry == NULL) {
+        if (rideEntry == NULL)
+        {
             continue;
         }
-        if (rideEntry->category[0] != RIDE_CATEGORY_WATER && rideEntry->category[1] != RIDE_CATEGORY_WATER)
-            continue;
 
         if (ride->status != RIDE_STATUS_OPEN || (ride->lifecycle_flags & RIDE_LIFECYCLE_CRASHED))
+        {
             continue;
+        }
+
+        if (!ride_entry_has_category(rideEntry, RIDE_CATEGORY_WATER))
+        {
+            continue;
+        }
 
         waterRides++;
     }
@@ -566,16 +580,23 @@ static sint32 award_is_deserved_best_gentle_rides(sint32 awardType, sint32 activ
     rct_ride_entry *rideEntry;
 
     gentleRides = 0;
-    FOR_ALL_RIDES(i, ride) {
+    FOR_ALL_RIDES(i, ride)
+    {
         rideEntry = get_ride_entry(ride->subtype);
-        if (rideEntry == NULL) {
+        if (rideEntry == NULL)
+        {
             continue;
         }
-        if (rideEntry->category[0] != RIDE_CATEGORY_GENTLE && rideEntry->category[1] != RIDE_CATEGORY_GENTLE)
-            continue;
 
         if (ride->status != RIDE_STATUS_OPEN || (ride->lifecycle_flags & RIDE_LIFECYCLE_CRASHED))
+        {
             continue;
+        }
+
+        if (!ride_entry_has_category(rideEntry, RIDE_CATEGORY_GENTLE))
+        {
+            continue;
+        }
 
         gentleRides++;
     }

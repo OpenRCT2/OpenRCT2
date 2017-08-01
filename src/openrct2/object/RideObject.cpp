@@ -45,7 +45,7 @@ void RideObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
 {
     stream->Seek(8, STREAM_SEEK_CURRENT);
     _legacyType.flags = stream->ReadValue<uint32>();
-    for (sint32 i = 0; i < MAX_RIDE_TYPES_PER_RIDE_ENTRY; i++)
+    for (sint32 i = 0; i < RCT2_MAX_RIDE_TYPES_PER_RIDE_ENTRY; i++)
     {
         _legacyType.ride_type[i] = stream->ReadValue<uint8>();
     }
@@ -60,7 +60,7 @@ void RideObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
     _legacyType.rear_vehicle = stream->ReadValue<uint8>();
     _legacyType.third_vehicle = stream->ReadValue<uint8>();
     _legacyType.pad_019 = stream->ReadValue<uint8>();
-    for (sint32 i = 0; i < MAX_VEHICLES_PER_RIDE_ENTRY; i++)
+    for (sint32 i = 0; i < RCT2_MAX_VEHICLES_PER_RIDE_ENTRY; i++)
     {
         rct_ride_entry_vehicle * entry = &_legacyType.vehicles[i];
         ReadLegacyVehicle(context, stream, entry);
@@ -97,7 +97,7 @@ void RideObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
     }
 
     // Read peep loading positions
-    for (sint32 i = 0; i < MAX_VEHICLES_PER_RIDE_ENTRY; i++)
+    for (sint32 i = 0; i < RCT2_MAX_VEHICLES_PER_RIDE_ENTRY; i++)
     {
         uint16 numPeepLoadingPositions = stream->ReadValue<uint8>();
         if (numPeepLoadingPositions == 255)
@@ -380,11 +380,11 @@ const utf8 * RideObject::GetCapacity() const
 
 void RideObject::SetRepositoryItem(ObjectRepositoryItem * item) const
 {
-    for (sint32 i = 0; i < MAX_RIDE_TYPES_PER_RIDE_ENTRY; i++)
+    for (sint32 i = 0; i < RCT2_MAX_RIDE_TYPES_PER_RIDE_ENTRY; i++)
     {
         item->RideType[i] = _legacyType.ride_type[i];
     }
-    for (sint32 i = 0; i < 2; i++)
+    for (sint32 i = 0; i < RCT2_MAX_CATEGORIES_PER_RIDE; i++)
     {
         item->RideCategory[i] = _legacyType.category[i];
     }
@@ -477,7 +477,7 @@ void RideObject::PerformFixes()
     std::string identifier = GetIdentifier();
     
     // Add boosters if the track type is eligible
-    for (sint32 i = 0; i < MAX_RIDE_TYPES_PER_RIDE_ENTRY; i++)
+    for (sint32 i = 0; i < RCT2_MAX_RIDE_TYPES_PER_RIDE_ENTRY; i++)
     {
         if (ride_type_supports_boosters(_legacyType.ride_type[i]))
         {

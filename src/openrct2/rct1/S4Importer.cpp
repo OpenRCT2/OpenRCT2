@@ -30,6 +30,7 @@
 #include "../object/ObjectManager.h"
 #include "../object/ObjectRepository.h"
 #include "../ParkImporter.h"
+#include "../ride/station.h"
 #include "../scenario/ScenarioSources.h"
 #include "Tables.h"
 
@@ -761,7 +762,20 @@ private:
             dst->queue_time[i] = src->queue_time[i];
             dst->last_peep_in_queue[i] = src->last_peep_in_queue[i];
             dst->queue_length[i] = src->num_peeps_in_queue[i];
+
+            dst->time[i] = src->time[i];
+            dst->length[i] = src->length[i];
         }
+        // All other values take 0 as their default. Since they're already memset to that, no need to do it again.
+        for (sint32 i = RCT12_MAX_STATIONS_PER_RIDE; i < MAX_STATIONS; i++)
+        {
+            dst->station_starts[i].xy = RCT_XY8_UNDEFINED;
+            dst->train_at_station[i] = 255;
+            dst->entrances[i].xy = RCT_XY8_UNDEFINED;
+            dst->exits[i].xy = RCT_XY8_UNDEFINED;
+            dst->last_peep_in_queue[i] = SPRITE_INDEX_NULL;
+        }
+
         dst->num_stations = src->num_stations;
 
         // Vehicle links (indexes converted later)
@@ -851,10 +865,7 @@ private:
 
         dst->max_speed = src->max_speed;
         dst->average_speed = src->average_speed;
-        for (sint32 i = 0; i < RCT12_MAX_STATIONS_PER_RIDE; i++) {
-            dst->time[i] = src->time[i];
-            dst->length[i] = src->length[i];
-        }
+
         dst->max_positive_vertical_g = src->max_positive_vertical_g;
         dst->max_negative_vertical_g = src->max_negative_vertical_g;
         dst->max_lateral_g = src->max_lateral_g;
