@@ -34,6 +34,11 @@ TEST(MultiLaunchTest, all)
         // Check ride count to check load was successful
         ASSERT_EQ(gRideCount, 134);
 
+        for (int j = 0; j < 10; j++)
+        {
+            game_logic_update();
+        }
+
         delete context;
     }
     SUCCEED();
