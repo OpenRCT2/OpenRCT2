@@ -21,7 +21,7 @@
 class SceneryObject : public Object
 {
 private:
-    rct_object_entry    _primarySceneryGroupEntry = { 0 };
+    rct_object_entry    _primarySceneryGroupEntry = { };
 
 public:
     explicit SceneryObject(const rct_object_entry &entry) : Object(entry) { }
