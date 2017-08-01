@@ -19,6 +19,15 @@
 #include "../common.h"
 
 #ifdef __cplusplus
+extern "C"
+{
+#endif
+#include "../drawing/drawing.h"
+#ifdef __cplusplus
+}
+#endif
+
+#ifdef __cplusplus
 interface ITitleSequencePlayer;
 
 class TitleScreen final

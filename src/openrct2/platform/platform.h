@@ -166,7 +166,7 @@ void core_init();
 
 #if defined(__APPLE__) && defined(__MACH__)
     void macos_disallow_automatic_window_tabbing();
-    utf8* macos_str_decomp_to_precomp();
+    utf8* macos_str_decomp_to_precomp(utf8 *input);
 #endif
 
 #endif
