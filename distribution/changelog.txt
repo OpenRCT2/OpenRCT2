@@ -38,6 +38,7 @@
 - Improved: The land tool buttons can now be held down to increase/decrease size.
 - Improved: Dropdowns longer than 32 items overflow into columns.
 - Improved: Ride Type option in ride window is now a dropdown.
+- Improved: "About OpenRCT2" window redesigned, now contains OpenRCT2 info and access to changelog
 
 0.1.0 (2017-07-12)
 ------------------------------------------------------------------------
