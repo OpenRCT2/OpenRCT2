@@ -480,6 +480,7 @@ enum {
     WC_DEBUG_PAINT = 130,
     WC_VIEW_CLIPPING = 131,
     WC_OBJECT_LOAD_ERROR = 132,
+    WC_TITLE_VERSION = 133,
 
     // Only used for colour schemes
     WC_STAFF = 220,
@@ -694,6 +695,7 @@ void window_title_menu_open();
 void window_title_exit_open();
 void window_title_options_open();
 void window_title_logo_open();
+void window_title_version_open();
 void window_news_open();
 void window_scenarioselect_open(scenarioselect_callback callback);
 void window_track_list_open(ride_list_item item);
