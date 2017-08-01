@@ -17,6 +17,8 @@
 #pragma once
 
 #ifdef __cplusplus
+#include <vector>
+
 extern "C"
 {
 #endif

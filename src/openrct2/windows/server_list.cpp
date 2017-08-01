@@ -21,10 +21,8 @@
 
 extern "C"
 {
-    #include "../interface/colour.h"
-    #include "../interface/widget.h"
-    #include "../interface/window.h"
-    #include "../localisation/localisation.h"
+#include "../interface/widget.h"
+#include "../localisation/localisation.h"
     #include "../network/http.h"
     #include "../sprites.h"
     #include "../util/util.h"
