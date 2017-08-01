@@ -19,10 +19,16 @@
 
 #include "common.h"
 
-#define RCT2_MAX_RIDES_IN_PARK   255
-#define RCT2_MAX_STAFF           204
-#define RCT2_MAX_BANNERS_IN_PARK 250
-#define RCT2_MAX_CARS_PER_TRAIN  32
+#define RCT2_MAX_RIDES_IN_PARK              255
+#define RCT2_MAX_STAFF                      204
+#define RCT2_MAX_BANNERS_IN_PARK            250
+#define RCT2_MAX_VEHICLES_PER_RIDE          32
+#define RCT2_MAX_CARS_PER_TRAIN             32
+#define RCT2_MAX_CATEGORIES_PER_RIDE        2
+#define RCT2_MAX_RIDE_TYPES_PER_RIDE_ENTRY  3
+#define RCT2_MAX_VEHICLES_PER_RIDE_ENTRY    4
+#define RCT2_DOWNTIME_HISTORY_SIZE          8
+#define RCT2_CUSTOMER_HISTORY_SIZE          10
 
 typedef struct rct2_install_info {
     uint32 installLevel;

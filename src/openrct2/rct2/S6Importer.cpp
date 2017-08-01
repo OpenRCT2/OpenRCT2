@@ -28,6 +28,7 @@
 #include "../ParkImporter.h"
 #include "../rct12/SawyerChunkReader.h"
 #include "../rct12/SawyerEncoding.h"
+#include "../ride/station.h"
 
 extern "C"
 {
@@ -461,7 +462,7 @@ public:
 
         dst->overall_view = src->overall_view;
 
-        for (uint8 i = 0; i < RCT12_MAX_STATIONS_PER_RIDE; i++)
+        for (sint32 i = 0; i < RCT12_MAX_STATIONS_PER_RIDE; i++)
         {
             dst->station_starts[i] = src->station_starts[i];
             dst->station_heights[i] = src->station_heights[i];
@@ -471,6 +472,22 @@ public:
             dst->entrances[i] = src->entrances[i];
             dst->exits[i] = src->exits[i];
             dst->last_peep_in_queue[i] = src->last_peep_in_queue[i];
+
+            dst->length[i] = src->length[i];
+            dst->time[i] = src->time[i];
+
+            dst->queue_time[i] = src->queue_time[i];
+
+            dst->queue_length[i] = src->queue_length[i];
+        }
+        // All other values take 0 as their default. Since they're already memset to that, no need to do it again.
+        for (sint32 i = RCT12_MAX_STATIONS_PER_RIDE; i < MAX_STATIONS; i++)
+        {
+            dst->station_starts[i].xy = RCT_XY8_UNDEFINED;
+            dst->train_at_station[i] = 255;
+            dst->entrances[i].xy = RCT_XY8_UNDEFINED;
+            dst->exits[i].xy = RCT_XY8_UNDEFINED;
+            dst->last_peep_in_queue[i] = SPRITE_INDEX_NULL;
         }
 
         for (uint8 i = 0; i < MAX_VEHICLES_PER_RIDE; i++)
@@ -507,12 +524,6 @@ public:
         dst->average_speed_test_timeout = src->average_speed_test_timeout;
         // pad_0E2[0x2];
 
-        for (uint8 i = 0; i < RCT12_MAX_STATIONS_PER_RIDE; i++)
-        {
-            dst->length[i] = src->length[i];
-            dst->time[i] = src->time[i];
-        }
-
         dst->max_positive_vertical_g = src->max_positive_vertical_g;
         dst->max_negative_vertical_g = src->max_negative_vertical_g;
         dst->max_lateral_g = src->max_lateral_g;
@@ -537,7 +548,7 @@ public:
         dst->cur_num_customers = src->cur_num_customers;
         dst->num_customers_timeout = src->num_customers_timeout;
 
-        for (uint8 i = 0; i < 10; i++)
+        for (uint8 i = 0; i < RCT2_CUSTOMER_HISTORY_SIZE; i++)
         {
             dst->num_customers[i] = src->num_customers[i];
         }
@@ -599,7 +610,7 @@ public:
         dst->inspection_interval = src->inspection_interval;
         dst->last_inspection = src->last_inspection;
 
-        for (uint8 i = 0; i < 8; i++)
+        for (uint8 i = 0; i < RCT2_DOWNTIME_HISTORY_SIZE; i++)
         {
             dst->downtime_history[i] = src->downtime_history[i];
         }
@@ -614,11 +625,6 @@ public:
 
         dst->income_per_hour = src->income_per_hour;
         dst->profit = src->profit;
-
-        for (uint8 i = 0; i < RCT12_MAX_STATIONS_PER_RIDE; i++)
-        {
-            dst->queue_time[i] = src->queue_time[i];
-        }
 
         for (uint8 i = 0; i < RCT12_NUM_COLOUR_SCHEMES; i++)
         {
@@ -648,11 +654,6 @@ public:
         dst->cable_lift_z = src->cable_lift_z;
         // pad_1FD;
         dst->cable_lift = src->cable_lift;
-
-        for (uint8 i = 0; i < RCT12_MAX_STATIONS_PER_RIDE; i++)
-        {
-            dst->queue_length[i] = src->queue_length[i];
-        }
 
         // pad_208[0x58];
     }

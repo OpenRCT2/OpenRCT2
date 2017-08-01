@@ -2030,7 +2030,7 @@ static void ride_update(sint32 rideIndex)
         ride->num_customers_timeout = 0;
 
         // Shift number of customers history, start of the array is the most recent one
-        memmove(ride->num_customers + 1, ride->num_customers, 9 * sizeof(*(ride->num_customers)));
+        memmove(ride->num_customers + 1, ride->num_customers, sizeof(ride->num_customers) - 1);
         ride->num_customers[0] = ride->cur_num_customers;
 
         ride->cur_num_customers = 0;
@@ -2294,16 +2294,15 @@ static void ride_breakdown_update(sint32 rideIndex)
     if (ride->lifecycle_flags & (RIDE_LIFECYCLE_BROKEN_DOWN | RIDE_LIFECYCLE_CRASHED))
         ride->downtime_history[0]++;
 
-    if (!(gCurrentTicks & 8191)) {
-        sint32 totalDowntime =
-            ride->downtime_history[0] +
-            ride->downtime_history[1] +
-            ride->downtime_history[2] +
-            ride->downtime_history[3] +
-            ride->downtime_history[4] +
-            ride->downtime_history[5] +
-            ride->downtime_history[6] +
-            ride->downtime_history[7];
+    if (!(gCurrentTicks & 8191))
+    {
+        sint32 totalDowntime = 0;
+
+        for (sint32 i = 0; i < DOWNTIME_HISTORY_SIZE; i++)
+        {
+            totalDowntime += ride->downtime_history[i];
+        }
+
         ride->downtime = min(totalDowntime / 2, 100);
 
         memmove(&ride->downtime_history[1], ride->downtime_history, sizeof(ride->downtime_history) - 1);
@@ -5890,7 +5889,7 @@ static void ride_set_colour_preset(rct_ride *ride, uint8 index)
     if (index < colourPresets->count) {
         colours = colourPresets->list[index];
     }
-    for (sint32 i = 0; i < RCT12_NUM_COLOUR_SCHEMES; i++) {
+    for (sint32 i = 0; i < NUM_COLOUR_SCHEMES; i++) {
         ride->track_colour_main[i] = colours.main;
         ride->track_colour_additional[i] = colours.additional;
         ride->track_colour_supports[i] = colours.supports;
@@ -6082,7 +6081,7 @@ foundRideEntry:
     ride->proposed_num_cars_per_train = 12;
     ride->min_waiting_time = 10;
     ride->max_waiting_time = 60;
-    ride->depart_flags = RIDE_DEPART_WAIT_FOR_MINIMUM_LENGTH | 3;
+    ride->depart_flags = RIDE_DEPART_WAIT_FOR_MINIMUM_LENGTH | WAIT_FOR_LOAD_FULL;
     if (RideData4[ride->type].flags & RIDE_TYPE_FLAG4_MUSIC_ON_DEFAULT) {
         ride->lifecycle_flags |= RIDE_LIFECYCLE_MUSIC;
     }
@@ -8384,17 +8383,15 @@ uint32 ride_customers_per_hour(const rct_ride *ride) {
 }
 
 // Calculates the number of customers for this ride in the last 5 minutes (or more correctly 9600 game ticks)
-uint32 ride_customers_in_last_5_minutes(const rct_ride *ride) {
-    uint32 sum = ride->num_customers[0]
-                 + ride->num_customers[1]
-                 + ride->num_customers[2]
-                 + ride->num_customers[3]
-                 + ride->num_customers[4]
-                 + ride->num_customers[5]
-                 + ride->num_customers[6]
-                 + ride->num_customers[7]
-                 + ride->num_customers[8]
-                 + ride->num_customers[9];
+uint32 ride_customers_in_last_5_minutes(const rct_ride *ride)
+{
+    uint32 sum = 0;
+
+    for (sint32 i = 0; i < CUSTOMER_HISTORY_SIZE; i++)
+    {
+        sum += ride->num_customers[i];
+    }
+
     return sum;
 }
 
@@ -8724,4 +8721,17 @@ void fix_invalid_vehicle_sprite_sizes()
             }
         }
     }
+}
+
+bool ride_entry_has_category(const rct_ride_entry * rideEntry, uint8 category)
+{
+    for (sint32 i = 0; i < MAX_CATEGORIES_PER_RIDE; i++)
+    {
+        if (rideEntry->category[i] == category)
+        {
+            return true;
+        }
+    }
+
+    return false;
 }

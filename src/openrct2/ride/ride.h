@@ -30,6 +30,11 @@
 #define MAX_VEHICLES_PER_RIDE_ENTRY     4
 #define MAX_VEHICLES_PER_RIDE           32
 #define RIDE_ENTRY_INDEX_NULL           255
+#define NUM_COLOUR_SCHEMES              4
+#define MAX_CATEGORIES_PER_RIDE         2
+#define DOWNTIME_HISTORY_SIZE           8
+#define CUSTOMER_HISTORY_SIZE           10
+
 typedef fixed16_2dp ride_rating;
 
 // Convenience function for writing ride ratings. The result is a 16 bit signed
@@ -107,7 +112,7 @@ typedef struct rct_ride_entry {
     };
     uint32 images_offset;                               // 0x004
     uint32 flags;                                       // 0x008
-    uint8 ride_type[MAX_RIDE_TYPES_PER_RIDE_ENTRY];     // 0x00C
+    uint8 ride_type[RCT2_MAX_RIDE_TYPES_PER_RIDE_ENTRY];// 0x00C
     uint8 min_cars_in_train;                            // 0x00F
     uint8 max_cars_in_train;                            // 0x010
     uint8 cars_per_flat_ride;                           // 0x011
@@ -124,14 +129,14 @@ typedef struct rct_ride_entry {
     uint8 rear_vehicle;                                 // 0x017
     uint8 third_vehicle;                                // 0x018
     uint8 pad_019;                                      // 0x019
-    rct_ride_entry_vehicle vehicles[MAX_VEHICLES_PER_RIDE_ENTRY];                 // 0x01A
+    rct_ride_entry_vehicle vehicles[RCT2_MAX_VEHICLES_PER_RIDE_ENTRY]; // 0x01A
     vehicle_colour_preset_list *vehicle_preset_list;    // 0x1AE
     sint8 excitement_multipler;                         // 0x1B2
     sint8 intensity_multipler;                          // 0x1B3
     sint8 nausea_multipler;                             // 0x1B4
     uint8 max_height;                                   // 0x1B5
     uint64 enabledTrackPieces;                          // 0x1B6
-    uint8 category[2];                                  // 0x1BE
+    uint8 category[RCT2_MAX_CATEGORIES_PER_RIDE];       // 0x1BE
     uint8 shop_item;                                    // 0x1C0
     uint8 shop_item_secondary;                          // 0x1C1
 } rct_ride_entry;
@@ -175,7 +180,7 @@ typedef struct rct_ride {
     rct_xy8 exits[RCT12_MAX_STATIONS_PER_RIDE];                     // 0x072
     uint16 last_peep_in_queue[RCT12_MAX_STATIONS_PER_RIDE];         // 0x07A
     uint8 pad_082[RCT12_MAX_STATIONS_PER_RIDE];                     // 0x082, Used to be number of peeps in queue in RCT1, but this has moved.
-    uint16 vehicles[MAX_VEHICLES_PER_RIDE];                         // 0x086, Points to the first car in the train
+    uint16 vehicles[RCT2_MAX_VEHICLES_PER_RIDE];                    // 0x086, Points to the first car in the train
     uint8 depart_flags;                                             // 0x0C6
 
     // Not sure if these should be uint or sint.
@@ -251,7 +256,7 @@ typedef struct rct_ride {
     // Counts ticks to update customer intervals, resets each 960 game ticks.
     uint16 num_customers_timeout;                                   // 0x122
     // Customer count in the last 10 * 960 game ticks (sliding window)
-    uint16 num_customers[10];                                       // 0x124
+    uint16 num_customers[RCT2_CUSTOMER_HISTORY_SIZE];               // 0x124
     money16 price;                                                  // 0x138
     rct_xy8 chairlift_bullwheel_location[2];                        // 0x13A
     uint8 chairlift_bullwheel_z[2];                                 // 0x13E
@@ -317,7 +322,7 @@ typedef struct rct_ride {
     uint8 downtime;                                                 // 0x199
     uint8 inspection_interval;                                      // 0x19A
     uint8 last_inspection;                                          // 0x19B
-    uint8 downtime_history[8];                                      // 0x19C
+    uint8 downtime_history[RCT2_DOWNTIME_HISTORY_SIZE];             // 0x19C
     uint32 no_primary_items_sold;                                   // 0x1A4
     uint32 no_secondary_items_sold;                                 // 0x1A8
     uint8 breakdown_sound_modifier;                                 // 0x1AC
@@ -1202,5 +1207,6 @@ uint8 ride_entry_get_first_non_null_ride_type(rct_ride_entry * rideEntry);
 bool ride_type_supports_boosters(uint8 rideType);
 sint32 get_booster_speed(uint8 rideType, sint32 rawSpeed);
 void fix_invalid_vehicle_sprite_sizes();
+bool ride_entry_has_category(const rct_ride_entry * rideEntry, uint8 category);
 
 #endif
