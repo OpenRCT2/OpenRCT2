@@ -1074,9 +1074,12 @@ void game_fix_save_vars()
         if (researchItem->entryIndex == RESEARCHED_ITEMS_SEPARATOR) continue;
         if (researchItem->entryIndex == RESEARCHED_ITEMS_END)
         {
-            assert(i < (MAX_RESEARCH_ITEMS - 1));
-            (researchItem+1)->entryIndex = RESEARCHED_ITEMS_END_2;
-            continue;
+            if (i == MAX_RESEARCH_ITEMS - 1)
+            {
+                (--researchItem)->entryIndex = RESEARCHED_ITEMS_END;
+            }
+            (++researchItem)->entryIndex = RESEARCHED_ITEMS_END_2;
+            break;
         }
         if (researchItem->entryIndex == RESEARCHED_ITEMS_END_2) break;
         if (researchItem->entryIndex & 0x10000) {
