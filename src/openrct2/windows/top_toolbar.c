@@ -678,6 +678,11 @@ static void window_top_toolbar_invalidate(rct_window *w)
     window_top_toolbar_widgets[WIDX_NEWS].type = WWT_TRNBTN;
     window_top_toolbar_widgets[WIDX_NETWORK].type = WWT_TRNBTN;
 
+    if (!gConfigInterface.toolbar_show_mute)
+    {
+        window_top_toolbar_widgets[WIDX_MUTE].type = WWT_EMPTY;
+    }
+
     if (gScreenFlags & (SCREEN_FLAGS_SCENARIO_EDITOR | SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)) {
         window_top_toolbar_widgets[WIDX_PAUSE].type = WWT_EMPTY;
         window_top_toolbar_widgets[WIDX_RIDES].type = WWT_EMPTY;
@@ -722,9 +727,6 @@ static void window_top_toolbar_invalidate(rct_window *w)
 
         if (!gConfigInterface.toolbar_show_news)
             window_top_toolbar_widgets[WIDX_NEWS].type = WWT_EMPTY;
-
-        if (!gConfigInterface.toolbar_show_mute)
-            window_top_toolbar_widgets[WIDX_MUTE].type = WWT_EMPTY;
 
         switch (network_get_mode()) {
         case NETWORK_MODE_NONE:
