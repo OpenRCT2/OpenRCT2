@@ -8,6 +8,7 @@
 - Fix: [#2127, #2229, #5586] Mountain tool cost calculation
 - Fix: [#3589] Crash due to invalid footpathEntry in path_paint
 - Fix: [#4455] Crash in window_sign_invalidate due to original bug
+- Fix: [#4715] Fix OpenGL rendering of water when zoomed. See #5890.
 - Fix: [#4931] Crash in path_paint - footpathentry was null
 - Fix: [#5629] Issue with tower ride modes approach to station - incorrect sum caused sawtooth in velocity
 - Fix: [#5768] Prevent loading non-existent title sequences.
@@ -15,6 +16,7 @@
 - Fix: [#5865] Ride preview flickering on uneven terrain or mid air.
 - Fix: [#5872] Incorrect OpenGL rendering of masked sprites
 - Fix: [#5880] Leaving bumper cars without building causes assertion.
+- Fix: [#5890] Fix zoomed OpenGL rendering of special sprites with primary and secondary colours.
 - Fix: [#5912] Negative queue when moving entrance in paused state.
 - Fix: [#5920] Placing guest spawn doesn't do anything every 3rd click
 - Fix: [#5939] Crash when importing 'Six Flags Santa Fe'.
