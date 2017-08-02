@@ -204,7 +204,7 @@ static bool window_changelog_read_file()
 {
     window_changelog_dispose_file();
     utf8 path[MAX_PATH];
-    safe_strcpy(path, gExePath, MAX_PATH);
+    platform_get_openrct_data_path(path, sizeof(path));
     safe_strcat_path(path, "changelog.txt", MAX_PATH);
     if (!readentirefile(path, (void**)&_changelogText, &_changelogTextSize)) {
         log_error("Unable to read changelog.txt");
