@@ -45,6 +45,9 @@ TEST(MultiLaunchTest, all)
             game_logic_update();
         }
 
+        // Check ride count again
+        ASSERT_EQ(gRideCount, 134);
+
         delete context;
     }
     SUCCEED();
