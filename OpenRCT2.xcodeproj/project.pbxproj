@@ -440,6 +440,7 @@
 		F775F5351EE35A89001F00E7 /* DummyUiContext.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F775F5331EE35A6B001F00E7 /* DummyUiContext.cpp */; };
 		F775F5371EE3724F001F00E7 /* DummyAudioContext.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F775F5361EE3724F001F00E7 /* DummyAudioContext.cpp */; };
 		F775F5381EE3725C001F00E7 /* DummyAudioContext.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F775F5361EE3724F001F00E7 /* DummyAudioContext.cpp */; };
+		F79F428F1F3260F1009E42F8 /* changelog.txt in Resources */ = {isa = PBXBuildFile; fileRef = F79F428E1F3260F1009E42F8 /* changelog.txt */; };
 		F7CB863F1EEDA0B50030C877 /* WindowManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F7CB863D1EEDA0B50030C877 /* WindowManager.cpp */; };
 		F7CB86431EEDA0F50030C877 /* shortcut_key_change.c in Sources */ = {isa = PBXBuildFile; fileRef = F7CB86411EEDA0F50030C877 /* shortcut_key_change.c */; };
 		F7CB86441EEDA0F50030C877 /* shortcut_keys.c in Sources */ = {isa = PBXBuildFile; fileRef = F7CB86421EEDA0F50030C877 /* shortcut_keys.c */; };
@@ -1346,6 +1347,7 @@
 		F775F5321EE35A48001F00E7 /* Ui.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Ui.h; sourceTree = "<group>"; };
 		F775F5331EE35A6B001F00E7 /* DummyUiContext.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DummyUiContext.cpp; sourceTree = "<group>"; };
 		F775F5361EE3724F001F00E7 /* DummyAudioContext.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DummyAudioContext.cpp; sourceTree = "<group>"; };
+		F79F428E1F3260F1009E42F8 /* changelog.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = changelog.txt; path = distribution/changelog.txt; sourceTree = SOURCE_ROOT; };
 		F7CB863D1EEDA0B50030C877 /* WindowManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WindowManager.cpp; sourceTree = "<group>"; };
 		F7CB863E1EEDA0B50030C877 /* WindowManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WindowManager.h; sourceTree = "<group>"; };
 		F7CB86411EEDA0F50030C877 /* shortcut_key_change.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = shortcut_key_change.c; path = windows/shortcut_key_change.c; sourceTree = "<group>"; };
@@ -1668,6 +1670,7 @@
 		D497D07A1C20FD52002BF46A /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				F79F428E1F3260F1009E42F8 /* changelog.txt */,
 				D41B74721C2125E50080A7B9 /* Assets.xcassets */,
 				D4895D321C23EFDD000CD788 /* Info.plist */,
 				D4C1EDD01C266A0B00F71B63 /* data */,
@@ -2781,6 +2784,7 @@
 				D41B74731C2125E50080A7B9 /* Assets.xcassets in Resources */,
 				D4EC48E61C2637710024B507 /* g2.dat in Resources */,
 				D4EC48E71C2637710024B507 /* language in Resources */,
+				F79F428F1F3260F1009E42F8 /* changelog.txt in Resources */,
 				D43407E21D0E14CE00C2B3D4 /* shaders in Resources */,
 				D4EC48E81C2637710024B507 /* title in Resources */,
 			);
