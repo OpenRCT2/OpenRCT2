@@ -861,6 +861,13 @@ extern "C"
         return desc->WindowName;
     }
 
+    void colour_scheme_update_all()
+    {
+        rct_window* w;
+        for (w = g_window_list; w < gWindowNextSlot; w++)
+            colour_scheme_update(w);
+    }
+
     void colour_scheme_update(rct_window * window)
     {
         colour_scheme_update_by_class(window, window->classification);

@@ -28,6 +28,7 @@ enum {
 };
 
 void colour_scheme_update(rct_window *window);
+void colour_scheme_update_all();
 void colour_scheme_update_by_class(rct_window *window, rct_windowclass classification);
 
 void         theme_manager_initialise();
