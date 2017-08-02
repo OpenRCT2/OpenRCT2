@@ -1072,7 +1072,15 @@ void game_fix_save_vars()
     for (sint32 i = 0; i < MAX_RESEARCH_ITEMS; i++) {
         rct_research_item *researchItem = &gResearchItems[i];
         if (researchItem->entryIndex == RESEARCHED_ITEMS_SEPARATOR) continue;
-        if (researchItem->entryIndex == RESEARCHED_ITEMS_END) continue;
+        if (researchItem->entryIndex == RESEARCHED_ITEMS_END)
+        {
+            if (i == MAX_RESEARCH_ITEMS - 1)
+            {
+                (--researchItem)->entryIndex = RESEARCHED_ITEMS_END;
+            }
+            (++researchItem)->entryIndex = RESEARCHED_ITEMS_END_2;
+            break;
+        }
         if (researchItem->entryIndex == RESEARCHED_ITEMS_END_2) break;
         if (researchItem->entryIndex & 0x10000) {
             uint8 entryIndex = researchItem->entryIndex & 0xFF;
@@ -1096,7 +1104,6 @@ void game_fix_save_vars()
 
     // Fix invalid vehicle sprite sizes, thus preventing visual corruption of sprites
     fix_invalid_vehicle_sprite_sizes();
-
 }
 
 /**
