@@ -170,8 +170,8 @@ public:
 
         // Clean up the parsing work data
         Memory::Free(_currentGroup);
-        // Destruct the string builder to free memory
-        _stringDataSB = StringBuilder();
+        // Reset the string builder to free memory
+        _stringDataSB.Reset();
         _currentGroup = nullptr;
         _currentObjectOverride = nullptr;
         _currentScenarioOverride = nullptr;
