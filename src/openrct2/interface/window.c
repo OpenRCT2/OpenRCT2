@@ -2183,6 +2183,13 @@ void window_resize_gui(sint32 width, sint32 height)
         optionsWind->x = width - 80;
     }
 
+    rct_window *versionWind = window_find_by_class(WC_TITLE_VERSION);
+    if (versionWind != NULL) {
+        // Using the resize event allows keeping
+        // new values contained within window file
+        window_event_resize_call(versionWind);
+    }
+
     gfx_invalidate_screen();
 }
 

@@ -61,7 +61,6 @@ extern "C"
     void title_set_hide_version_info(bool value);
     uint16 title_get_current_sequence();
     void title_set_current_sequence(uint16 value);
-    void DrawOpenRCT2(rct_drawpixelinfo *dpi, sint32 x, sint32 y);
 #ifdef __cplusplus
 }
 #endif
