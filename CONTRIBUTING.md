@@ -39,8 +39,8 @@ work outside and inside the game.
 
 ## Code hints
 ### Adding new strings
-If you need to add a new localisable string to OpenRCT2, please add your new string entry to ```./data/language/english_uk.txt```.
-It is important that you only edit English (UK) in the OpenRCT2 repository as this is the base language that is used for
+If you need to add a new localisable string to OpenRCT2, please add your new string entry to ```./data/language/en-GB.txt```.
+It is important that you only edit en-GB in the OpenRCT2 repository as this is the base language that is used for
 translation to other languages. A separate repository OpenRCT2/Localisation is used for translation pull requests, and changes
 to that repository are merged with the OpenRCT2 main repository every night. When your pull request is merged, it is helpful
 to create a new issue in the OpenRCT2/Localisation repository about the new strings you have added. This notifies translators
