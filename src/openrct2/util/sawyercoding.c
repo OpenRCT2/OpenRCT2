@@ -21,7 +21,7 @@
 
 static size_t decode_chunk_rle(const uint8* src_buffer, uint8* dst_buffer, size_t length);
 static size_t decode_chunk_rle_with_size(const uint8* src_buffer, uint8* dst_buffer, size_t length, size_t dstSize);
-static size_t decode_chunk_repeat(uint8 *buffer, size_t length);
+static size_t decode_chunk_repeat(uint8 *buffer, size_t length, size_t dstLength);
 static void decode_chunk_rotate(uint8 *buffer, size_t length);
 
 static size_t encode_chunk_rle(const uint8 *src_buffer, uint8 *dst_buffer, size_t length);
@@ -51,7 +51,7 @@ size_t sawyercoding_read_chunk_buffer(uint8 *dst_buffer, const uint8 *src_buffer
         break;
     case CHUNK_ENCODING_RLECOMPRESSED:
         chunkHeader.length = (uint32)decode_chunk_rle_with_size(src_buffer, dst_buffer, chunkHeader.length, dst_buffer_size);
-        chunkHeader.length = (uint32)decode_chunk_repeat(dst_buffer, chunkHeader.length);
+        chunkHeader.length = (uint32)decode_chunk_repeat(dst_buffer, chunkHeader.length, dst_buffer_size);
         break;
     case CHUNK_ENCODING_ROTATE:
         memcpy(dst_buffer, src_buffer, chunkHeader.length);
@@ -271,7 +271,7 @@ static size_t decode_chunk_rle_with_size(const uint8* src_buffer, uint8* dst_buf
  *
  *  rct2: 0x006769F1
  */
-static size_t decode_chunk_repeat(uint8 *buffer, size_t length)
+static size_t decode_chunk_repeat(uint8 *buffer, size_t length, size_t dstLength)
 {
     size_t i, count;
     uint8 *src, *dst, *copyOffset;
@@ -287,6 +287,8 @@ static size_t decode_chunk_repeat(uint8 *buffer, size_t length)
         } else {
             count = (src[i] & 7) + 1;
             copyOffset = dst + (sint32)(src[i] >> 3) - 32;
+            assert(dst + count < buffer + dstLength);
+            assert(copyOffset + count < src + length);
             memcpy(dst, copyOffset, count);
             dst = (uint8*)((uintptr_t)dst + count);
         }

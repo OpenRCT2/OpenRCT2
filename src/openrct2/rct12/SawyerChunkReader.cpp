@@ -82,6 +82,7 @@ std::shared_ptr<SawyerChunk> SawyerChunkReader::ReadChunk()
             }
 
             size_t uncompressedLength = sawyercoding_read_chunk_buffer(buffer, compressedData.get(), header, bufferSize);
+            Guard::Assert(uncompressedLength != 0, "Encountered zero-sized chunk!");
             buffer = Memory::Reallocate(buffer, uncompressedLength);
             if (buffer == nullptr)
             {
