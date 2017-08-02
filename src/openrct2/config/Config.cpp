@@ -668,6 +668,7 @@ extern "C"
         SafeFree(gConfigSound.device);
         SafeFree(gConfigTwitch.channel);
         SafeFree(gConfigNetwork.player_name);
+        SafeFree(gConfigNetwork.listen_address);
         SafeFree(gConfigNetwork.default_password);
         SafeFree(gConfigNetwork.server_name);
         SafeFree(gConfigNetwork.server_description);
