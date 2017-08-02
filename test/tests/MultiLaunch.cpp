@@ -30,6 +30,7 @@ TEST(MultiLaunchTest, all)
         ASSERT_TRUE(initialised);
 
         game_load_sv6_path(path.c_str());
+        game_load_init();
 
         // Check ride count to check load was successful
         ASSERT_EQ(gRideCount, 134);
