@@ -756,7 +756,6 @@ void window_research_funding_page_paint(rct_window *w, rct_drawpixelinfo *dpi, r
 
 void window_scenery_open();
 void window_music_credits_open();
-void window_publisher_credits_open();
 void window_track_manage_open(struct track_design_file_ref *tdFileRef);
 void window_viewport_open();
 void window_themes_open();
