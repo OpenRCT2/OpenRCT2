@@ -193,7 +193,7 @@ static void window_music_credits_scrollpaint(rct_window *w, rct_drawpixelinfo *d
 
     sint32 y = 2;
 
-    for (sint32 i = 0; i < Util::CountOf(music_credits); i++) {
+    for (size_t i = 0; i < Util::CountOf(music_credits); i++) {
         gfx_draw_string_centred(dpi, music_credits[i], x, y, COLOUR_BLACK, NULL);
         y += 10;
     }
@@ -208,7 +208,7 @@ static void window_music_credits_scrollpaint(rct_window *w, rct_drawpixelinfo *d
     gfx_fill_rect_inset(dpi, 4, y, 484, y+1, w->colours[1], INSET_RECT_FLAG_BORDER_INSET);
     y += 11;
 
-    for (sint32 i = 0; i < Util::CountOf(music_credits_rct2); i++) {
+    for (size_t i = 0; i < Util::CountOf(music_credits_rct2); i++) {
         gfx_draw_string_centred(dpi, music_credits_rct2[i], x, y, COLOUR_BLACK, NULL);
         y += 10;
     }

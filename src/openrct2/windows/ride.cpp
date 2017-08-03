@@ -4822,8 +4822,8 @@ static void window_ride_music_mousedown(rct_window *w, rct_widgetindex widgetInd
     if (ride->type == RIDE_TYPE_MERRY_GO_ROUND) {
         window_ride_current_music_style_order[numItems++] = MUSIC_STYLE_FAIRGROUND_ORGAN;
     } else {
-        for (i = 0; i < Util::CountOf(MusicStyleOrder); i++)
-            window_ride_current_music_style_order[numItems++] = MusicStyleOrder[i];
+        for (size_t n = 0; n < Util::CountOf(MusicStyleOrder); n++)
+            window_ride_current_music_style_order[numItems++] = MusicStyleOrder[n];
 
         if (gRideMusicInfoList[36]->length != 0)
             window_ride_current_music_style_order[numItems++] = MUSIC_STYLE_CUSTOM_MUSIC_1;

@@ -748,7 +748,7 @@ static void window_top_toolbar_invalidate(rct_window *w)
     // Align left hand side toolbar buttons
     firstAlignment = 1;
     x = 0;
-    for (sint32 i = 0; i < Util::CountOf(left_aligned_widgets_order); ++i) {
+    for (size_t i = 0; i < Util::CountOf(left_aligned_widgets_order); ++i) {
         widgetIndex = left_aligned_widgets_order[i];
         widget = &window_top_toolbar_widgets[widgetIndex];
         if (widget->type == WWT_EMPTY && widgetIndex != WIDX_SEPARATOR)
@@ -769,7 +769,7 @@ static void window_top_toolbar_invalidate(rct_window *w)
     sint32 screenWidth = context_get_width();
     firstAlignment = 1;
     x = Math::Max(640, screenWidth);
-    for (sint32 i = 0; i < Util::CountOf(right_aligned_widgets_order); ++i) {
+    for (size_t i = 0; i < Util::CountOf(right_aligned_widgets_order); ++i) {
         widgetIndex = right_aligned_widgets_order[i];
         widget = &window_top_toolbar_widgets[widgetIndex];
         if (widget->type == WWT_EMPTY && widgetIndex != WIDX_SEPARATOR)
