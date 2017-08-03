@@ -20,12 +20,12 @@
     #include <vector>
 #endif
 
-#include "../common.h"
 
 #ifdef __cplusplus
 extern "C"
 {
 #endif
+    #include "../common.h"
     #include "../object.h"
 #ifdef __cplusplus
 }
