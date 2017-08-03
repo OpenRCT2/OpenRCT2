@@ -16,7 +16,13 @@
 
 #pragma once
 
-#include "../common.h"
+#ifdef __cplusplus
+extern "C" {
+#endif
+    #include "../common.h"
+#ifdef __cplusplus
+}
+#endif
 
 #define MIXER_VOLUME_MAX        128
 #define MIXER_LOOP_NONE         0
