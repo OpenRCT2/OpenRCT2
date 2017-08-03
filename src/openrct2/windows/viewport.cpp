@@ -93,7 +93,7 @@ static sint32 _viewportNumber = 1;
 /**
  * Creates a custom viewport window.
  */
-void _window_viewport_open()
+static void _window_viewport_open()
 {
     rct_window *w = window_create_auto_pos(
         INITIAL_WIDTH, INITIAL_HEIGHT,

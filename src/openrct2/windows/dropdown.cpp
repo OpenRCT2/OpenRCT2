@@ -64,7 +64,7 @@ sint32 gDropdownDefaultIndex;
 
 bool dropdown_is_checked(sint32 index)
 {
-    if (index < 0 || index >= Util::CountOf(_dropdownItemsDisabled))
+    if (index < 0 || index >= (sint32)Util::CountOf(_dropdownItemsDisabled))
     {
         return false;
     }
@@ -73,7 +73,7 @@ bool dropdown_is_checked(sint32 index)
 
 bool dropdown_is_disabled(sint32 index)
 {
-    if (index < 0 || index >= Util::CountOf(_dropdownItemsDisabled))
+    if (index < 0 || index >= (sint32)Util::CountOf(_dropdownItemsDisabled))
     {
         return true;
     }
@@ -82,7 +82,7 @@ bool dropdown_is_disabled(sint32 index)
 
 void dropdown_set_checked(sint32 index, bool value)
 {
-    if (index < 0 || index >= Util::CountOf(_dropdownItemsDisabled))
+    if (index < 0 || index >= (sint32)Util::CountOf(_dropdownItemsDisabled))
     {
         return;
     }
@@ -91,7 +91,7 @@ void dropdown_set_checked(sint32 index, bool value)
 
 void dropdown_set_disabled(sint32 index, bool value)
 {
-    if (index < 0 || index >= Util::CountOf(_dropdownItemsDisabled))
+    if (index < 0 || index >= (sint32)Util::CountOf(_dropdownItemsDisabled))
     {
         return;
     }
