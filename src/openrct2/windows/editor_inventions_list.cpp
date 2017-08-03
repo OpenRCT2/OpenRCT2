@@ -666,7 +666,7 @@ static void window_editor_inventions_list_scrollmousedown(rct_window *w, sint32 
     if (researchItem == NULL)
         return;
 
-    if (researchItem->entryIndex < (uint32)RESEARCHED_ITEMS_END_2 && research_item_is_always_researched(researchItem))
+    if (researchItem->entryIndex < RESEARCHED_ITEMS_END_2 && research_item_is_always_researched(researchItem))
         return;
 
     window_invalidate(w);
@@ -721,7 +721,7 @@ static void window_editor_inventions_list_cursor(rct_window *w, rct_widgetindex 
     if (researchItem == NULL)
         return;
 
-    if (researchItem->entryIndex < (uint32)RESEARCHED_ITEMS_END_2 && research_item_is_always_researched(researchItem)) {
+    if (researchItem->entryIndex < RESEARCHED_ITEMS_END_2 && research_item_is_always_researched(researchItem)) {
         return;
     }
 

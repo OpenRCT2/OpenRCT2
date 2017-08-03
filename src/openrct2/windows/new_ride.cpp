@@ -303,7 +303,7 @@ static void window_new_ride_populate_list()
     ride_list_item *nextListItem = _windowNewRideListItems;
 
     // For each ride type in the view order list
-    for (sint32 i = 0; i < Util::CountOf(RideTypeViewOrder); i++) {
+    for (sint32 i = 0; i < (sint32)Util::CountOf(RideTypeViewOrder); i++) {
         uint8 rideType = RideTypeViewOrder[i];
         if (rideType == RIDE_TYPE_NULL)
             continue;
@@ -820,7 +820,8 @@ static void window_new_ride_paint(rct_window *w, rct_drawpixelinfo *dpi)
     window_new_ride_draw_tab_images(dpi, w);
 
     if (_windowNewRideCurrentTab != WINDOW_NEW_RIDE_PAGE_RESEARCH) {
-        ride_list_item item = { .ride_type_and_entry = static_cast<uint16>(w->new_ride.highlighted_ride_id)};
+        ride_list_item item;
+        item.ride_type_and_entry = static_cast<uint16>(w->new_ride.highlighted_ride_id);
         if (item.type != RIDE_TYPE_NULL || item.entry_index != 255)
             window_new_ride_paint_ride_information(w, dpi, item, w->x + 3, w->y + w->height - 52, w->width - 6);
     } else {
@@ -994,7 +995,8 @@ static void window_new_ride_paint_ride_information(rct_window *w, rct_drawpixeli
  */
 static void window_new_ride_select(rct_window *w)
 {
-    ride_list_item item = { .ride_type_and_entry = static_cast<uint16>(w->new_ride.selected_ride_id)};
+    ride_list_item item;
+    item.ride_type_and_entry = static_cast<uint16>(w->new_ride.selected_ride_id);
     if (item.type == RIDE_TYPE_NULL)
         return;
 

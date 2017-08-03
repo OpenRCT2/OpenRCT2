@@ -1478,7 +1478,7 @@ static void window_editor_object_selection_set_pressed_tab(rct_window *w)
 static void window_editor_object_selection_select_default_objects()
 {
     if (_numSelectedObjectsForType[0] == 0) {
-        for (sint32 i = 0; i < Util::CountOf(DefaultSelectedObjects); i++) {
+        for (sint32 i = 0; i < (sint32)Util::CountOf(DefaultSelectedObjects); i++) {
             window_editor_object_selection_select_object(0, 7, &DefaultSelectedObjects[i]);
         }
     }
@@ -1492,7 +1492,7 @@ static void window_editor_object_selection_select_required_objects()
 {
     sint32 i;
 
-    for (i = 0; i < Util::CountOf(RequiredSelectedObjects); i++)
+    for (i = 0; i < (sint32)Util::CountOf(RequiredSelectedObjects); i++)
         window_editor_object_selection_select_object(0, 0xF, &RequiredSelectedObjects[i]);
 }
 

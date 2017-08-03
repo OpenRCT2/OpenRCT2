@@ -1565,7 +1565,7 @@ static void window_park_objective_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
     // Objective outcome
     if (gScenarioCompletedCompanyValue != MONEY32_UNDEFINED) {
-        if (gScenarioCompletedCompanyValue == 0x80000001) {
+        if ((uint32)gScenarioCompletedCompanyValue == 0x80000001) {
             // Objective failed
             gfx_draw_string_left_wrapped(dpi, NULL, x, y, 222, STR_OBJECTIVE_FAILED, COLOUR_BLACK);
         } else {

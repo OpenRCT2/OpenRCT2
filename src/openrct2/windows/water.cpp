@@ -89,7 +89,7 @@ static rct_window_event_list window_water_events = {
  *
  *  rct2: 0x006E6A40
  */
-void _window_water_open()
+static void _window_water_open()
 {
     rct_window* window;
 
