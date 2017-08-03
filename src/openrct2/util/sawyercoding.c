@@ -288,7 +288,7 @@ static size_t decode_chunk_repeat(uint8 *buffer, size_t length, size_t dstLength
             count = (src[i] & 7) + 1;
             copyOffset = dst + (sint32)(src[i] >> 3) - 32;
             assert(dst + count < buffer + dstLength);
-            assert(copyOffset + count < src + length);
+            assert(copyOffset + count < buffer + dstLength);
             memcpy(dst, copyOffset, count);
             dst = (uint8*)((uintptr_t)dst + count);
         }
