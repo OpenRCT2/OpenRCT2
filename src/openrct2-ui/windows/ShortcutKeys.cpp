@@ -15,11 +15,15 @@
 #pragma endregion
 
 #include <openrct2/config/Config.h>
+#include "../input/KeyboardShortcuts.h"
+
+extern "C"
+{
 #include <openrct2/interface/window.h>
 #include <openrct2/interface/widget.h>
 #include <openrct2/localisation/localisation.h>
 #include <openrct2/platform/platform.h>
-#include "../input/KeyboardShortcuts.h"
+}
 
 #define WW 420
 #define WH 280

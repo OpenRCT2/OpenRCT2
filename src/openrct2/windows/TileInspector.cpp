@@ -14,8 +14,13 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../common.h"
 #include "../core/Guard.hpp"
+#include "../core/Math.hpp"
+#include "../core/Util.hpp"
+
+extern "C"
+{
+#include "../common.h"
 #include "../game.h"
 #include "../input.h"
 #include "../interface/widget.h"
@@ -28,6 +33,7 @@
 #include "../world/tile_inspector.h"
 #include "dropdown.h"
 #include "tile_inspector.h"
+}
 
 static const rct_string_id TerrainTypeStringIds[] = {
     STR_TILE_INSPECTOR_TERRAIN_GRASS,
@@ -584,7 +590,7 @@ static void window_tile_inspector_select_element_from_list(rct_window *w, sint32
 
         // Get type of selected map element to select the correct page
         rct_map_element *const mapElement = window_tile_inspector_get_selected_element(w);
-        page = (min(map_element_get_type(mapElement), MAP_ELEMENT_TYPE_CORRUPT) >> 2) + 1;
+        page = (Math::Min(map_element_get_type(mapElement), MAP_ELEMENT_TYPE_CORRUPT) >> 2) + 1;
     }
 
     window_tile_inspector_set_page(w, page);
@@ -908,22 +914,22 @@ static void window_tile_inspector_mouseup(rct_window *w, rct_widgetindex widgetI
         window_close(w);
         break;
     case WIDX_SPINNER_X_INCREASE:
-        windowTileInspectorTileX = min(windowTileInspectorTileX + 1, 255);
+        windowTileInspectorTileX = Math::Min(windowTileInspectorTileX + 1, 255);
         window_tile_inspector_load_tile(w);
         window_tile_inspector_auto_set_buttons(w);
         break;
     case WIDX_SPINNER_X_DECREASE:
-        windowTileInspectorTileX = max(windowTileInspectorTileX - 1, 0);
+        windowTileInspectorTileX = Math::Max(windowTileInspectorTileX - 1, 0);
         window_tile_inspector_load_tile(w);
         window_tile_inspector_auto_set_buttons(w);
         break;
     case WIDX_SPINNER_Y_INCREASE:
-        windowTileInspectorTileY = min(windowTileInspectorTileY + 1, 255);
+        windowTileInspectorTileY = Math::Min(windowTileInspectorTileY + 1, 255);
         window_tile_inspector_load_tile(w);
         window_tile_inspector_auto_set_buttons(w);
         break;
     case WIDX_SPINNER_Y_DECREASE:
-        windowTileInspectorTileY = max(windowTileInspectorTileY - 1, 0);
+        windowTileInspectorTileY = Math::Max(windowTileInspectorTileY - 1, 0);
         window_tile_inspector_load_tile(w);
         window_tile_inspector_auto_set_buttons(w);
         break;
@@ -1646,7 +1652,7 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
             // Edge texture name
             sint32 idx = map_element_get_terrain_edge(mapElement);
-            openrct2_assert(idx < countof(TerrainEdgeTypeStringIds), "Tried accessing invalid entry %d in terrainEdgeTypeStringIds", idx);
+            openrct2_assert(idx < Util::CountOf(TerrainEdgeTypeStringIds), "Tried accessing invalid entry %d in terrainEdgeTypeStringIds", idx);
             rct_string_id terrainEdgeNameId = TerrainEdgeTypeStringIds[map_element_get_terrain_edge(mapElement)];
             gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_SURFACE_EDGE, &terrainEdgeNameId, COLOUR_DARK_GREEN, x, y + 11);
 

@@ -15,10 +15,14 @@
 #pragma endregion
 
 #include <openrct2/config/Config.h>
+#include "../input/KeyboardShortcuts.h"
+
+extern "C"
+{
 #include <openrct2/interface/window.h>
 #include <openrct2/interface/widget.h>
 #include <openrct2/localisation/localisation.h>
-#include "../input/KeyboardShortcuts.h"
+}
 
 extern const rct_string_id ShortcutStringIds[];
 

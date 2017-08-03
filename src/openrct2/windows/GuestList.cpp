@@ -15,11 +15,15 @@
 #pragma endregion
 
 #include "../config/Config.h"
+
+extern "C"
+{
 #include "../game.h"
 #include "../interface/widget.h"
 #include "../localisation/localisation.h"
 #include "../sprites.h"
 #include "dropdown.h"
+}
 
 enum {
     PAGE_INDIVIDUAL,
