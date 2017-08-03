@@ -270,7 +270,7 @@ extern rct_object_entry RequiredSelectedObjects[7];
  */
 static void research_scenery_sets_setup(){
 
-    for (sint32 i = 0; i < Util::CountOf(RequiredSelectedObjects); i++) {
+    for (size_t i = 0; i < Util::CountOf(RequiredSelectedObjects); i++) {
         rct_object_entry * object = &RequiredSelectedObjects[i];
 
         uint8 entry_type, entry_index;

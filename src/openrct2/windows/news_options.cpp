@@ -172,7 +172,7 @@ static void window_news_options_mouseup(rct_window *w, rct_widgetindex widgetInd
         sint32 checkBoxIndex = widgetIndex - WIDX_CHECKBOX_0;
         if (checkBoxIndex >= 0) {
             sint32 matchIndex = 0;
-            for (sint32 i = 0; i < Util::CountOf(NewsItemOptionDefinitions); i++) {
+            for (size_t i = 0; i < Util::CountOf(NewsItemOptionDefinitions); i++) {
                 const notification_def *ndef = &NewsItemOptionDefinitions[i];
                 if (ndef->category != w->page) continue;
 
@@ -214,7 +214,7 @@ static void window_news_options_invalidate(rct_window *w)
 
     sint32 checkboxWidgetIndex = WIDX_CHECKBOX_0;
     rct_widget *checkboxWidget = &w->widgets[checkboxWidgetIndex];
-    for (sint32 i = 0; i < Util::CountOf(NewsItemOptionDefinitions); i++) {
+    for (size_t i = 0; i < Util::CountOf(NewsItemOptionDefinitions); i++) {
         const notification_def *ndef = &NewsItemOptionDefinitions[i];
         if (ndef->category != w->page) continue;
 

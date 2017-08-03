@@ -378,7 +378,7 @@ static void window_ride_list_dropdown(rct_window *w, rct_widgetindex widgetIndex
 
         sint32 informationType = INFORMATION_TYPE_STATUS;
         uint32 arg = (uint32)gDropdownItemsArgs[dropdownIndex];
-        for (sint32 i = 0; i < Util::CountOf(ride_info_type_string_mapping); i++) {
+        for (size_t i = 0; i < Util::CountOf(ride_info_type_string_mapping); i++) {
             if (arg == ride_info_type_string_mapping[i]) {
                 informationType = i;
             }
