@@ -4445,6 +4445,8 @@ STR_6131    :Objektkilde
 STR_6132    :Ignorer forskningsstatus
 STR_6133    :{SMALLFONT}{BLACK}Gir tilgang til attraksjoner og pynt som ikke har blitt funnet opp enda
 STR_6134    :Slett pynt
+STR_6135    :Klient sendte ugyldig forespørsel
+STR_6136    :Server sendte ugyldig forespørsel
 
 #############
 # Scenarios #

@@ -4440,6 +4440,8 @@ STR_6131    :Källa för objektet
 STR_6132    :Ignorera forskning
 STR_6133    :{SMALLFONT}{BLACK}Ger tillgång till åkturer och dekorationer som inte har blivit uppfunna än
 STR_6134    :Rensa dekoration
+STR_6135    :Klient skickade ogiltig begäran
+STR_6136    :Server skickade ogiltig begäran
 
 #############
 # Scenarion #

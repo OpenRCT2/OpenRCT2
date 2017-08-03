@@ -3768,7 +3768,7 @@ STR_5426    :Fim
 STR_5427    :Cordenadas:
 STR_5428    :Rotações anti-horárias:
 STR_5429    :Nível de ampliação:
-STR_5430    :Segundos de espera:
+STR_5430    :Milissegundos de espera:
 STR_5431    :Salvar para carregar:
 STR_5432    :Comando:
 STR_5433    :Sequências de título
@@ -4439,6 +4439,12 @@ STR_6127    :Arquivo: {STRING}
 STR_6128    :O arquivo não pode ser carregado pois alguns dos objetos referência dele estão faltando ou corrompidos. Uma lista desses objetos está disponível abaixo.
 STR_6129    :Copiar itens selecionados para o clipboard
 STR_6130    :Copiar lista inteira para o clipboard
+STR_6131    :Fonte do objeto
+STR_6132    :Ignorar status de pesquisa
+STR_6133    :{SMALLFONT}{BLACK}Acessa atrações e cenários que ainda não foram inventados
+STR_6134    :Limpar Cenário
+STR_6135    :Cliente enviou um pedido inválido
+STR_6136    :Servidor enviou um pedido inválido
 
 #############
 # Scenarios #

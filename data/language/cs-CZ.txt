@@ -4444,6 +4444,8 @@ STR_6131    :Zdroj objektu
 STR_6132    :Ignorovat nutnost výzkumu
 STR_6133    :{SMALLFONT}{BLACK}Povolí přístup k atrakcím a kulisám, které ještě nebyly vyzkoumány
 STR_6134    :Odstranit kulisy
+STR_6135    :Klient zaslal neplatný požadavek
+STR_6136    :Server zaslal neplatný požadavek
 
 ###############################################################################
 ## RCT2 Objects

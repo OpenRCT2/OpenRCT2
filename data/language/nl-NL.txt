@@ -4435,6 +4435,9 @@ STR_6130    :Hele lijst naar klembord kopiëren
 STR_6131    :Afkomst
 STR_6132    :Uitvindingsstatus negeren
 STR_6133    :{SMALLFONT}{BLACK}Maakt attracties en decor beschikbaar die nog niet zijn uitgevonden.
+STR_6134    :Decor verwijderen
+STR_6135    :Ongeldig verzoek van de client
+STR_6136    :Ongeldig verzoek van de server
 
 #############
 # Scenarios #
