@@ -528,7 +528,8 @@ static void window_track_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
         y += 10;
 
         // Drop height is multiplied by 0.75
-        gfx_draw_string_left(dpi, STR_HIGHEST_DROP_HEIGHT, &drops, COLOUR_BLACK, x, y);
+        uint16 highestDropHeight = (td6->highest_drop_height * 3) / 4;
+        gfx_draw_string_left(dpi, STR_HIGHEST_DROP_HEIGHT, &highestDropHeight, COLOUR_BLACK, x, y);
         y += 10;
     }
 

@@ -28,6 +28,7 @@
 - Fix: [#6052] Unable to place entrance/exit on certain ride types.
 - Fix: [#6071] Quick demolish can delete protected ride.
 - Fix: [#6111] Mute button always visible in editor.
+- Fix: [#6113] Track preview shows incorrect highest drop height.
 - Improved: [#2223] Change mountain tool to ignore higher surrounding tiles.
 - Improved: [#4301] Leading and trailing whitespace in player name is now removed.
 - Improved: [#5859] OpenGL rendering performance
