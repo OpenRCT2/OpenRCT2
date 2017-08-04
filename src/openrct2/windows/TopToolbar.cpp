@@ -21,6 +21,7 @@
 #include "../network/network.h"
 #include "../core/Util.hpp"
 #include "../core/Math.hpp"
+#include "../interface/Screenshot.h"
 
 extern "C"
 {
@@ -30,7 +31,6 @@ extern "C"
 #include "../input.h"
     #include "../interface/console.h"
     #include "../interface/land_tool.h"
-    #include "../interface/Screenshot.h"
     #include "../interface/viewport.h"
     #include "../interface/widget.h"
 #include "../network/twitch.h"
