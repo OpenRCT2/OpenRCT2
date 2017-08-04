@@ -86,7 +86,7 @@
 		D4EC48E71C2637710024B507 /* language in Resources */ = {isa = PBXBuildFile; fileRef = D4EC48E41C2637710024B507 /* language */; };
 		D4EC48E81C2637710024B507 /* title in Resources */ = {isa = PBXBuildFile; fileRef = D4EC48E51C2637710024B507 /* title */; };
 		F74789551EEDEA0D009E50E7 /* input.c in Sources */ = {isa = PBXBuildFile; fileRef = F74789531EEDEA0D009E50E7 /* input.c */; };
-		F76C85B01EC4E88300FA49E2 /* audio.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C83571EC4E7CC00FA49E2 /* audio.cpp */; };
+		F76C85B01EC4E88300FA49E2 /* Audio.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C83571EC4E7CC00FA49E2 /* Audio.cpp */; };
 		F76C85B41EC4E88300FA49E2 /* AudioMixer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C835B1EC4E7CC00FA49E2 /* AudioMixer.cpp */; };
 		F76C85B71EC4E88300FA49E2 /* NullAudioSource.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C835E1EC4E7CC00FA49E2 /* NullAudioSource.cpp */; };
 		F76C85B81EC4E88300FA49E2 /* cheats.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C835F1EC4E7CC00FA49E2 /* cheats.c */; };
@@ -115,7 +115,7 @@
 		F76C85EE1EC4E88300FA49E2 /* Zip.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C83991EC4E7CC00FA49E2 /* Zip.cpp */; };
 		F76C85F01EC4E88300FA49E2 /* diagnostic.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C839B1EC4E7CC00FA49E2 /* diagnostic.c */; };
 		F76C85F21EC4E88300FA49E2 /* drawing.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C839E1EC4E7CC00FA49E2 /* drawing.c */; };
-		F76C85F41EC4E88300FA49E2 /* drawing_fast.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C83A01EC4E7CC00FA49E2 /* drawing_fast.cpp */; };
+		F76C85F41EC4E88300FA49E2 /* DrawingFast.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C83A01EC4E7CC00FA49E2 /* DrawingFast.cpp */; };
 		F76C85F51EC4E88300FA49E2 /* font.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C83A11EC4E7CC00FA49E2 /* font.c */; };
 		F76C85F91EC4E88300FA49E2 /* Image.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C83A51EC4E7CC00FA49E2 /* Image.cpp */; };
 		F76C85FA1EC4E88300FA49E2 /* lightfx.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C83A61EC4E7CC00FA49E2 /* lightfx.c */; };
@@ -124,7 +124,7 @@
 		F76C85FF1EC4E88300FA49E2 /* Rain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C83AB1EC4E7CC00FA49E2 /* Rain.cpp */; };
 		F76C86011EC4E88300FA49E2 /* rect.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C83AD1EC4E7CC00FA49E2 /* rect.c */; };
 		F76C86021EC4E88300FA49E2 /* scrolling_text.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C83AE1EC4E7CC00FA49E2 /* scrolling_text.c */; };
-		F76C86031EC4E88300FA49E2 /* sprite.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C83AF1EC4E7CC00FA49E2 /* sprite.cpp */; };
+		F76C86031EC4E88300FA49E2 /* Sprite.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C83AF1EC4E7CC00FA49E2 /* Sprite.cpp */; };
 		F76C86041EC4E88300FA49E2 /* string.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C83B01EC4E7CC00FA49E2 /* string.c */; };
 		F76C86051EC4E88300FA49E2 /* editor.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C83B11EC4E7CC00FA49E2 /* editor.c */; };
 		F76C86071EC4E88300FA49E2 /* FileClassifier.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C83B31EC4E7CC00FA49E2 /* FileClassifier.cpp */; };
@@ -146,7 +146,7 @@
 		F76C862A1EC4E88300FA49E2 /* currency.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C83D91EC4E7CC00FA49E2 /* currency.c */; };
 		F76C862C1EC4E88300FA49E2 /* date.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C83DB1EC4E7CC00FA49E2 /* date.c */; };
 		F76C862E1EC4E88300FA49E2 /* format_codes.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C83DD1EC4E7CC00FA49E2 /* format_codes.c */; };
-		F76C86301EC4E88300FA49E2 /* language.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C83DF1EC4E7CC00FA49E2 /* language.cpp */; };
+		F76C86301EC4E88300FA49E2 /* Language.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C83DF1EC4E7CC00FA49E2 /* Language.cpp */; };
 		F76C86321EC4E88300FA49E2 /* LanguagePack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C83E11EC4E7CC00FA49E2 /* LanguagePack.cpp */; };
 		F76C86341EC4E88300FA49E2 /* localisation.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C83E31EC4E7CC00FA49E2 /* localisation.c */; };
 		F76C86361EC4E88300FA49E2 /* real_names.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C83E51EC4E7CC00FA49E2 /* real_names.c */; };
@@ -157,8 +157,8 @@
 		F76C863F1EC4E88300FA49E2 /* marketing.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C83EF1EC4E7CC00FA49E2 /* marketing.c */; };
 		F76C86411EC4E88300FA49E2 /* news_item.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C83F11EC4E7CC00FA49E2 /* news_item.c */; };
 		F76C86431EC4E88300FA49E2 /* research.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C83F31EC4E7CC00FA49E2 /* research.c */; };
-		F76C86451EC4E88300FA49E2 /* http.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C83F61EC4E7CC00FA49E2 /* http.cpp */; };
-		F76C86471EC4E88300FA49E2 /* network.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C83F81EC4E7CC00FA49E2 /* network.cpp */; };
+		F76C86451EC4E88300FA49E2 /* Http.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C83F61EC4E7CC00FA49E2 /* Http.cpp */; };
+		F76C86471EC4E88300FA49E2 /* Network.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C83F81EC4E7CC00FA49E2 /* Network.cpp */; };
 		F76C86491EC4E88300FA49E2 /* NetworkAction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C83FA1EC4E7CC00FA49E2 /* NetworkAction.cpp */; };
 		F76C864B1EC4E88300FA49E2 /* NetworkConnection.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C83FC1EC4E7CC00FA49E2 /* NetworkConnection.cpp */; };
 		F76C864D1EC4E88300FA49E2 /* NetworkGroup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C83FE1EC4E7CC00FA49E2 /* NetworkGroup.cpp */; };
@@ -169,7 +169,7 @@
 		F76C86581EC4E88300FA49E2 /* NetworkUser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C84091EC4E7CC00FA49E2 /* NetworkUser.cpp */; };
 		F76C865A1EC4E88300FA49E2 /* ServerList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C840B1EC4E7CC00FA49E2 /* ServerList.cpp */; };
 		F76C865C1EC4E88300FA49E2 /* TcpSocket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C840D1EC4E7CC00FA49E2 /* TcpSocket.cpp */; };
-		F76C865E1EC4E88300FA49E2 /* twitch.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C840F1EC4E7CC00FA49E2 /* twitch.cpp */; };
+		F76C865E1EC4E88300FA49E2 /* Twitch.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C840F1EC4E7CC00FA49E2 /* Twitch.cpp */; };
 		F76C86601EC4E88300FA49E2 /* BannerObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C84121EC4E7CC00FA49E2 /* BannerObject.cpp */; };
 		F76C86621EC4E88300FA49E2 /* EntranceObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C84141EC4E7CC00FA49E2 /* EntranceObject.cpp */; };
 		F76C86641EC4E88300FA49E2 /* FootpathItemObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C84161EC4E7CC00FA49E2 /* FootpathItemObject.cpp */; };
@@ -208,7 +208,7 @@
 		F76C869E1EC4E88400FA49E2 /* peep.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84541EC4E7CC00FA49E2 /* peep.c */; };
 		F76C86A01EC4E88400FA49E2 /* peep_data.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84561EC4E7CC00FA49E2 /* peep_data.c */; };
 		F76C86A11EC4E88400FA49E2 /* staff.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84571EC4E7CC00FA49E2 /* staff.c */; };
-		F76C86A31EC4E88400FA49E2 /* crash.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C845A1EC4E7CC00FA49E2 /* crash.cpp */; };
+		F76C86A31EC4E88400FA49E2 /* Crash.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C845A1EC4E7CC00FA49E2 /* Crash.cpp */; };
 		F76C86A51EC4E88400FA49E2 /* linux.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C845C1EC4E7CC00FA49E2 /* linux.c */; };
 		F76C86A61EC4E88400FA49E2 /* macos.m in Sources */ = {isa = PBXBuildFile; fileRef = F76C845D1EC4E7CC00FA49E2 /* macos.m */; };
 		F76C86A81EC4E88400FA49E2 /* Platform2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C845F1EC4E7CC00FA49E2 /* Platform2.cpp */; };
@@ -217,7 +217,7 @@
 		F76C86AC1EC4E88400FA49E2 /* windows.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84631EC4E7CC00FA49E2 /* windows.c */; };
 		F76C86AD1EC4E88400FA49E2 /* PlatformEnvironment.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C84641EC4E7CC00FA49E2 /* PlatformEnvironment.cpp */; };
 		F76C86AF1EC4E88400FA49E2 /* S4Importer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C84671EC4E7CC00FA49E2 /* S4Importer.cpp */; };
-		F76C86B01EC4E88400FA49E2 /* tables.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C84681EC4E7CC00FA49E2 /* tables.cpp */; };
+		F76C86B01EC4E88400FA49E2 /* Tables.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C84681EC4E7CC00FA49E2 /* Tables.cpp */; };
 		F76C86B21EC4E88400FA49E2 /* rct1.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C846A1EC4E7CC00FA49E2 /* rct1.c */; };
 		F76C86B41EC4E88400FA49E2 /* SawyerChunk.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C846D1EC4E7CC00FA49E2 /* SawyerChunk.cpp */; };
 		F76C86B61EC4E88400FA49E2 /* SawyerChunkReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C846F1EC4E7CC00FA49E2 /* SawyerChunkReader.cpp */; };
@@ -395,10 +395,10 @@
 		F76C87921EC4E88400FA49E2 /* viewport.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C85591EC4E7CD00FA49E2 /* viewport.c */; };
 		F76C87931EC4E88400FA49E2 /* water.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C855A1EC4E7CD00FA49E2 /* water.c */; };
 		F76C87941EC4E88400FA49E2 /* Balloon.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C855C1EC4E7CD00FA49E2 /* Balloon.cpp */; };
-		F76C87951EC4E88400FA49E2 /* banner.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C855D1EC4E7CD00FA49E2 /* banner.cpp */; };
+		F76C87951EC4E88400FA49E2 /* Banner.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C855D1EC4E7CD00FA49E2 /* Banner.cpp */; };
 		F76C87971EC4E88400FA49E2 /* Climate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C855F1EC4E7CD00FA49E2 /* Climate.cpp */; };
 		F76C87991EC4E88400FA49E2 /* Duck.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C85611EC4E7CD00FA49E2 /* Duck.cpp */; };
-		F76C879A1EC4E88400FA49E2 /* entrance.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C85621EC4E7CD00FA49E2 /* entrance.cpp */; };
+		F76C879A1EC4E88400FA49E2 /* Entrance.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C85621EC4E7CD00FA49E2 /* Entrance.cpp */; };
 		F76C879C1EC4E88400FA49E2 /* footpath.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C85641EC4E7CD00FA49E2 /* footpath.c */; };
 		F76C879E1EC4E88400FA49E2 /* Fountain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C85661EC4E7CD00FA49E2 /* Fountain.cpp */; };
 		F76C87A01EC4E88400FA49E2 /* map.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C85681EC4E7CD00FA49E2 /* map.c */; };
@@ -411,7 +411,7 @@
 		F76C87AC1EC4E88500FA49E2 /* scenery.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C85741EC4E7CD00FA49E2 /* scenery.c */; };
 		F76C87AE1EC4E88500FA49E2 /* sprite.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C85761EC4E7CD00FA49E2 /* sprite.c */; };
 		F76C87B01EC4E88500FA49E2 /* tile_inspector.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C85781EC4E7CD00FA49E2 /* tile_inspector.c */; };
-		F76C87B21EC4E88500FA49E2 /* wall.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C857A1EC4E7CD00FA49E2 /* wall.cpp */; };
+		F76C87B21EC4E88500FA49E2 /* Wall.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C857A1EC4E7CD00FA49E2 /* Wall.cpp */; };
 		F76C88781EC5324E00FA49E2 /* AudioChannel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C85821EC4E82600FA49E2 /* AudioChannel.cpp */; };
 		F76C88791EC5324E00FA49E2 /* AudioContext.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C85831EC4E82600FA49E2 /* AudioContext.cpp */; };
 		F76C887A1EC5324E00FA49E2 /* AudioMixer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C85861EC4E82600FA49E2 /* AudioMixer.cpp */; };
@@ -794,7 +794,7 @@
 		F74789531EEDEA0D009E50E7 /* input.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = input.c; path = input/input.c; sourceTree = "<group>"; };
 		F74789541EEDEA0D009E50E7 /* input.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = input.h; path = input/input.h; sourceTree = "<group>"; };
 		F76C809A1EC4D9FA00FA49E2 /* libopenrct2.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libopenrct2.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		F76C83571EC4E7CC00FA49E2 /* audio.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = audio.cpp; sourceTree = "<group>"; };
+		F76C83571EC4E7CC00FA49E2 /* Audio.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Audio.cpp; sourceTree = "<group>"; };
 		F76C83581EC4E7CC00FA49E2 /* audio.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = audio.h; sourceTree = "<group>"; };
 		F76C83591EC4E7CC00FA49E2 /* AudioChannel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AudioChannel.h; sourceTree = "<group>"; };
 		F76C835A1EC4E7CC00FA49E2 /* AudioContext.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AudioContext.h; sourceTree = "<group>"; };
@@ -861,7 +861,7 @@
 		F76C839C1EC4E7CC00FA49E2 /* diagnostic.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = diagnostic.h; sourceTree = "<group>"; };
 		F76C839E1EC4E7CC00FA49E2 /* drawing.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = drawing.c; sourceTree = "<group>"; };
 		F76C839F1EC4E7CC00FA49E2 /* drawing.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = drawing.h; sourceTree = "<group>"; };
-		F76C83A01EC4E7CC00FA49E2 /* drawing_fast.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = drawing_fast.cpp; sourceTree = "<group>"; };
+		F76C83A01EC4E7CC00FA49E2 /* DrawingFast.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = DrawingFast.cpp; sourceTree = "<group>"; };
 		F76C83A11EC4E7CC00FA49E2 /* font.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = font.c; sourceTree = "<group>"; };
 		F76C83A21EC4E7CC00FA49E2 /* font.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = font.h; sourceTree = "<group>"; };
 		F76C83A31EC4E7CC00FA49E2 /* IDrawingContext.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IDrawingContext.h; sourceTree = "<group>"; };
@@ -876,7 +876,7 @@
 		F76C83AC1EC4E7CC00FA49E2 /* Rain.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Rain.h; sourceTree = "<group>"; };
 		F76C83AD1EC4E7CC00FA49E2 /* rect.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = rect.c; sourceTree = "<group>"; };
 		F76C83AE1EC4E7CC00FA49E2 /* scrolling_text.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = scrolling_text.c; sourceTree = "<group>"; };
-		F76C83AF1EC4E7CC00FA49E2 /* sprite.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = sprite.cpp; sourceTree = "<group>"; };
+		F76C83AF1EC4E7CC00FA49E2 /* Sprite.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Sprite.cpp; sourceTree = "<group>"; };
 		F76C83B01EC4E7CC00FA49E2 /* string.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = string.c; sourceTree = "<group>"; };
 		F76C83B11EC4E7CC00FA49E2 /* editor.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = editor.c; sourceTree = "<group>"; };
 		F76C83B21EC4E7CC00FA49E2 /* editor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = editor.h; sourceTree = "<group>"; };
@@ -918,7 +918,7 @@
 		F76C83DC1EC4E7CC00FA49E2 /* date.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = date.h; sourceTree = "<group>"; };
 		F76C83DD1EC4E7CC00FA49E2 /* format_codes.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = format_codes.c; sourceTree = "<group>"; };
 		F76C83DE1EC4E7CC00FA49E2 /* format_codes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = format_codes.h; sourceTree = "<group>"; };
-		F76C83DF1EC4E7CC00FA49E2 /* language.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = language.cpp; sourceTree = "<group>"; };
+		F76C83DF1EC4E7CC00FA49E2 /* Language.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Language.cpp; sourceTree = "<group>"; };
 		F76C83E01EC4E7CC00FA49E2 /* language.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = language.h; sourceTree = "<group>"; };
 		F76C83E11EC4E7CC00FA49E2 /* LanguagePack.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = LanguagePack.cpp; sourceTree = "<group>"; };
 		F76C83E21EC4E7CC00FA49E2 /* LanguagePack.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LanguagePack.h; sourceTree = "<group>"; };
@@ -939,9 +939,9 @@
 		F76C83F21EC4E7CC00FA49E2 /* news_item.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = news_item.h; sourceTree = "<group>"; };
 		F76C83F31EC4E7CC00FA49E2 /* research.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = research.c; sourceTree = "<group>"; };
 		F76C83F41EC4E7CC00FA49E2 /* research.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = research.h; sourceTree = "<group>"; };
-		F76C83F61EC4E7CC00FA49E2 /* http.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = http.cpp; sourceTree = "<group>"; };
+		F76C83F61EC4E7CC00FA49E2 /* Http.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Http.cpp; sourceTree = "<group>"; };
 		F76C83F71EC4E7CC00FA49E2 /* http.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = http.h; sourceTree = "<group>"; };
-		F76C83F81EC4E7CC00FA49E2 /* network.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = network.cpp; sourceTree = "<group>"; };
+		F76C83F81EC4E7CC00FA49E2 /* Network.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Network.cpp; sourceTree = "<group>"; };
 		F76C83F91EC4E7CC00FA49E2 /* network.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = network.h; sourceTree = "<group>"; };
 		F76C83FA1EC4E7CC00FA49E2 /* NetworkAction.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = NetworkAction.cpp; sourceTree = "<group>"; };
 		F76C83FB1EC4E7CC00FA49E2 /* NetworkAction.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NetworkAction.h; sourceTree = "<group>"; };
@@ -964,7 +964,7 @@
 		F76C840C1EC4E7CC00FA49E2 /* ServerList.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ServerList.h; sourceTree = "<group>"; };
 		F76C840D1EC4E7CC00FA49E2 /* TcpSocket.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = TcpSocket.cpp; sourceTree = "<group>"; };
 		F76C840E1EC4E7CC00FA49E2 /* TcpSocket.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TcpSocket.h; sourceTree = "<group>"; };
-		F76C840F1EC4E7CC00FA49E2 /* twitch.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = twitch.cpp; sourceTree = "<group>"; };
+		F76C840F1EC4E7CC00FA49E2 /* Twitch.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Twitch.cpp; sourceTree = "<group>"; };
 		F76C84101EC4E7CC00FA49E2 /* twitch.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = twitch.h; sourceTree = "<group>"; };
 		F76C84121EC4E7CC00FA49E2 /* BannerObject.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = BannerObject.cpp; sourceTree = "<group>"; };
 		F76C84131EC4E7CC00FA49E2 /* BannerObject.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BannerObject.h; sourceTree = "<group>"; };
@@ -1033,7 +1033,7 @@
 		F76C84561EC4E7CC00FA49E2 /* peep_data.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = peep_data.c; sourceTree = "<group>"; };
 		F76C84571EC4E7CC00FA49E2 /* staff.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = staff.c; sourceTree = "<group>"; };
 		F76C84581EC4E7CC00FA49E2 /* staff.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = staff.h; sourceTree = "<group>"; };
-		F76C845A1EC4E7CC00FA49E2 /* crash.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = crash.cpp; sourceTree = "<group>"; };
+		F76C845A1EC4E7CC00FA49E2 /* Crash.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Crash.cpp; sourceTree = "<group>"; };
 		F76C845B1EC4E7CC00FA49E2 /* crash.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = crash.h; sourceTree = "<group>"; };
 		F76C845C1EC4E7CC00FA49E2 /* linux.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = linux.c; sourceTree = "<group>"; };
 		F76C845D1EC4E7CC00FA49E2 /* macos.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = macos.m; sourceTree = "<group>"; };
@@ -1046,7 +1046,7 @@
 		F76C84641EC4E7CC00FA49E2 /* PlatformEnvironment.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = PlatformEnvironment.cpp; sourceTree = "<group>"; };
 		F76C84651EC4E7CC00FA49E2 /* PlatformEnvironment.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PlatformEnvironment.h; sourceTree = "<group>"; };
 		F76C84671EC4E7CC00FA49E2 /* S4Importer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = S4Importer.cpp; sourceTree = "<group>"; };
-		F76C84681EC4E7CC00FA49E2 /* tables.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = tables.cpp; sourceTree = "<group>"; };
+		F76C84681EC4E7CC00FA49E2 /* Tables.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Tables.cpp; sourceTree = "<group>"; };
 		F76C84691EC4E7CC00FA49E2 /* Tables.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Tables.h; sourceTree = "<group>"; };
 		F76C846A1EC4E7CC00FA49E2 /* rct1.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = rct1.c; sourceTree = "<group>"; };
 		F76C846B1EC4E7CC00FA49E2 /* rct1.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = rct1.h; sourceTree = "<group>"; };
@@ -1270,12 +1270,12 @@
 		F76C85591EC4E7CD00FA49E2 /* viewport.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = viewport.c; sourceTree = "<group>"; };
 		F76C855A1EC4E7CD00FA49E2 /* water.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = water.c; sourceTree = "<group>"; };
 		F76C855C1EC4E7CD00FA49E2 /* Balloon.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Balloon.cpp; sourceTree = "<group>"; };
-		F76C855D1EC4E7CD00FA49E2 /* banner.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = banner.cpp; sourceTree = "<group>"; };
+		F76C855D1EC4E7CD00FA49E2 /* Banner.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Banner.cpp; sourceTree = "<group>"; };
 		F76C855E1EC4E7CD00FA49E2 /* banner.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = banner.h; sourceTree = "<group>"; };
 		F76C855F1EC4E7CD00FA49E2 /* Climate.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Climate.cpp; sourceTree = "<group>"; };
 		F76C85601EC4E7CD00FA49E2 /* Climate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Climate.h; sourceTree = "<group>"; };
 		F76C85611EC4E7CD00FA49E2 /* Duck.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Duck.cpp; sourceTree = "<group>"; };
-		F76C85621EC4E7CD00FA49E2 /* entrance.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = entrance.cpp; sourceTree = "<group>"; };
+		F76C85621EC4E7CD00FA49E2 /* Entrance.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Entrance.cpp; sourceTree = "<group>"; };
 		F76C85631EC4E7CD00FA49E2 /* entrance.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = entrance.h; sourceTree = "<group>"; };
 		F76C85641EC4E7CD00FA49E2 /* footpath.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = footpath.c; sourceTree = "<group>"; };
 		F76C85651EC4E7CD00FA49E2 /* footpath.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = footpath.h; sourceTree = "<group>"; };
@@ -1299,7 +1299,7 @@
 		F76C85771EC4E7CD00FA49E2 /* sprite.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = sprite.h; sourceTree = "<group>"; };
 		F76C85781EC4E7CD00FA49E2 /* tile_inspector.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = tile_inspector.c; sourceTree = "<group>"; };
 		F76C85791EC4E7CD00FA49E2 /* tile_inspector.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = tile_inspector.h; sourceTree = "<group>"; };
-		F76C857A1EC4E7CD00FA49E2 /* wall.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = wall.cpp; sourceTree = "<group>"; };
+		F76C857A1EC4E7CD00FA49E2 /* Wall.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Wall.cpp; sourceTree = "<group>"; };
 		F76C857B1EC4E7CD00FA49E2 /* water.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = water.h; sourceTree = "<group>"; };
 		F76C857D1EC4E80E00FA49E2 /* Cli.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Cli.cpp; sourceTree = "<group>"; };
 		F76C85821EC4E82600FA49E2 /* AudioChannel.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = AudioChannel.cpp; sourceTree = "<group>"; };
@@ -1799,7 +1799,7 @@
 			isa = PBXGroup;
 			children = (
 				F775F5361EE3724F001F00E7 /* DummyAudioContext.cpp */,
-				F76C83571EC4E7CC00FA49E2 /* audio.cpp */,
+				F76C83571EC4E7CC00FA49E2 /* Audio.cpp */,
 				F76C83581EC4E7CC00FA49E2 /* audio.h */,
 				F76C83591EC4E7CC00FA49E2 /* AudioChannel.h */,
 				F76C835A1EC4E7CC00FA49E2 /* AudioContext.h */,
@@ -1886,7 +1886,7 @@
 			children = (
 				F76C839E1EC4E7CC00FA49E2 /* drawing.c */,
 				F76C839F1EC4E7CC00FA49E2 /* drawing.h */,
-				F76C83A01EC4E7CC00FA49E2 /* drawing_fast.cpp */,
+				F76C83A01EC4E7CC00FA49E2 /* DrawingFast.cpp */,
 				F76C83A11EC4E7CC00FA49E2 /* font.c */,
 				F76C83A21EC4E7CC00FA49E2 /* font.h */,
 				F76C83A31EC4E7CC00FA49E2 /* IDrawingContext.h */,
@@ -1901,7 +1901,7 @@
 				F76C83AC1EC4E7CC00FA49E2 /* Rain.h */,
 				F76C83AD1EC4E7CC00FA49E2 /* rect.c */,
 				F76C83AE1EC4E7CC00FA49E2 /* scrolling_text.c */,
-				F76C83AF1EC4E7CC00FA49E2 /* sprite.cpp */,
+				F76C83AF1EC4E7CC00FA49E2 /* Sprite.cpp */,
 				F76C83B01EC4E7CC00FA49E2 /* string.c */,
 				4CB832A91EFFB8D100B88761 /* ttf.c */,
 				4CB832AA1EFFB8D100B88761 /* ttf.h */,
@@ -1953,7 +1953,7 @@
 				F76C83DC1EC4E7CC00FA49E2 /* date.h */,
 				F76C83DD1EC4E7CC00FA49E2 /* format_codes.c */,
 				F76C83DE1EC4E7CC00FA49E2 /* format_codes.h */,
-				F76C83DF1EC4E7CC00FA49E2 /* language.cpp */,
+				F76C83DF1EC4E7CC00FA49E2 /* Language.cpp */,
 				F76C83E01EC4E7CC00FA49E2 /* language.h */,
 				F76C83E11EC4E7CC00FA49E2 /* LanguagePack.cpp */,
 				F76C83E21EC4E7CC00FA49E2 /* LanguagePack.h */,
@@ -1988,9 +1988,9 @@
 		F76C83F51EC4E7CC00FA49E2 /* network */ = {
 			isa = PBXGroup;
 			children = (
-				F76C83F61EC4E7CC00FA49E2 /* http.cpp */,
+				F76C83F61EC4E7CC00FA49E2 /* Http.cpp */,
 				F76C83F71EC4E7CC00FA49E2 /* http.h */,
-				F76C83F81EC4E7CC00FA49E2 /* network.cpp */,
+				F76C83F81EC4E7CC00FA49E2 /* Network.cpp */,
 				F76C83F91EC4E7CC00FA49E2 /* network.h */,
 				F76C83FA1EC4E7CC00FA49E2 /* NetworkAction.cpp */,
 				F76C83FB1EC4E7CC00FA49E2 /* NetworkAction.h */,
@@ -2013,7 +2013,7 @@
 				F76C840C1EC4E7CC00FA49E2 /* ServerList.h */,
 				F76C840D1EC4E7CC00FA49E2 /* TcpSocket.cpp */,
 				F76C840E1EC4E7CC00FA49E2 /* TcpSocket.h */,
-				F76C840F1EC4E7CC00FA49E2 /* twitch.cpp */,
+				F76C840F1EC4E7CC00FA49E2 /* Twitch.cpp */,
 				F76C84101EC4E7CC00FA49E2 /* twitch.h */,
 			);
 			path = network;
@@ -2121,7 +2121,7 @@
 		F76C84591EC4E7CC00FA49E2 /* platform */ = {
 			isa = PBXGroup;
 			children = (
-				F76C845A1EC4E7CC00FA49E2 /* crash.cpp */,
+				F76C845A1EC4E7CC00FA49E2 /* Crash.cpp */,
 				F76C845B1EC4E7CC00FA49E2 /* crash.h */,
 				F76C845C1EC4E7CC00FA49E2 /* linux.c */,
 				F76C845D1EC4E7CC00FA49E2 /* macos.m */,
@@ -2139,7 +2139,7 @@
 			isa = PBXGroup;
 			children = (
 				F76C84671EC4E7CC00FA49E2 /* S4Importer.cpp */,
-				F76C84681EC4E7CC00FA49E2 /* tables.cpp */,
+				F76C84681EC4E7CC00FA49E2 /* Tables.cpp */,
 				F76C84691EC4E7CC00FA49E2 /* Tables.h */,
 			);
 			path = rct1;
@@ -2474,12 +2474,12 @@
 			isa = PBXGroup;
 			children = (
 				F76C855C1EC4E7CD00FA49E2 /* Balloon.cpp */,
-				F76C855D1EC4E7CD00FA49E2 /* banner.cpp */,
+				F76C855D1EC4E7CD00FA49E2 /* Banner.cpp */,
 				F76C855E1EC4E7CD00FA49E2 /* banner.h */,
 				F76C855F1EC4E7CD00FA49E2 /* Climate.cpp */,
 				F76C85601EC4E7CD00FA49E2 /* Climate.h */,
 				F76C85611EC4E7CD00FA49E2 /* Duck.cpp */,
-				F76C85621EC4E7CD00FA49E2 /* entrance.cpp */,
+				F76C85621EC4E7CD00FA49E2 /* Entrance.cpp */,
 				F76C85631EC4E7CD00FA49E2 /* entrance.h */,
 				F76C85641EC4E7CD00FA49E2 /* footpath.c */,
 				F76C85651EC4E7CD00FA49E2 /* footpath.h */,
@@ -2504,7 +2504,7 @@
 				F76C85771EC4E7CD00FA49E2 /* sprite.h */,
 				F76C85781EC4E7CD00FA49E2 /* tile_inspector.c */,
 				F76C85791EC4E7CD00FA49E2 /* tile_inspector.h */,
-				F76C857A1EC4E7CD00FA49E2 /* wall.cpp */,
+				F76C857A1EC4E7CD00FA49E2 /* Wall.cpp */,
 				F76C857B1EC4E7CD00FA49E2 /* water.h */,
 			);
 			path = world;
@@ -3036,7 +3036,7 @@
 				F775F5381EE3725C001F00E7 /* DummyAudioContext.cpp in Sources */,
 				F775F5351EE35A89001F00E7 /* DummyUiContext.cpp in Sources */,
 				F7D7747B1EC5EB6D00BE6EBC /* lay_down_roller_coaster.c in Sources */,
-				F76C85B01EC4E88300FA49E2 /* audio.cpp in Sources */,
+				F76C85B01EC4E88300FA49E2 /* Audio.cpp in Sources */,
 				F76C85B41EC4E88300FA49E2 /* AudioMixer.cpp in Sources */,
 				F76C85B71EC4E88300FA49E2 /* NullAudioSource.cpp in Sources */,
 				F76C85B81EC4E88300FA49E2 /* cheats.c in Sources */,
@@ -3066,7 +3066,7 @@
 				F76C85EE1EC4E88300FA49E2 /* Zip.cpp in Sources */,
 				F76C85F01EC4E88300FA49E2 /* diagnostic.c in Sources */,
 				F76C85F21EC4E88300FA49E2 /* drawing.c in Sources */,
-				F76C85F41EC4E88300FA49E2 /* drawing_fast.cpp in Sources */,
+				F76C85F41EC4E88300FA49E2 /* DrawingFast.cpp in Sources */,
 				F76C85F51EC4E88300FA49E2 /* font.c in Sources */,
 				F76C85F91EC4E88300FA49E2 /* Image.cpp in Sources */,
 				F76C85FA1EC4E88300FA49E2 /* lightfx.c in Sources */,
@@ -3075,7 +3075,7 @@
 				F76C85FF1EC4E88300FA49E2 /* Rain.cpp in Sources */,
 				F76C86011EC4E88300FA49E2 /* rect.c in Sources */,
 				F76C86021EC4E88300FA49E2 /* scrolling_text.c in Sources */,
-				F76C86031EC4E88300FA49E2 /* sprite.cpp in Sources */,
+				F76C86031EC4E88300FA49E2 /* Sprite.cpp in Sources */,
 				F76C86041EC4E88300FA49E2 /* string.c in Sources */,
 				F76C86051EC4E88300FA49E2 /* editor.c in Sources */,
 				F76C86071EC4E88300FA49E2 /* FileClassifier.cpp in Sources */,
@@ -3097,7 +3097,7 @@
 				F76C862A1EC4E88300FA49E2 /* currency.c in Sources */,
 				F76C862C1EC4E88300FA49E2 /* date.c in Sources */,
 				F76C862E1EC4E88300FA49E2 /* format_codes.c in Sources */,
-				F76C86301EC4E88300FA49E2 /* language.cpp in Sources */,
+				F76C86301EC4E88300FA49E2 /* Language.cpp in Sources */,
 				F76C86321EC4E88300FA49E2 /* LanguagePack.cpp in Sources */,
 				F76C86341EC4E88300FA49E2 /* localisation.c in Sources */,
 				F76C86361EC4E88300FA49E2 /* real_names.c in Sources */,
@@ -3108,8 +3108,8 @@
 				F76C863F1EC4E88300FA49E2 /* marketing.c in Sources */,
 				F76C86411EC4E88300FA49E2 /* news_item.c in Sources */,
 				F76C86431EC4E88300FA49E2 /* research.c in Sources */,
-				F76C86451EC4E88300FA49E2 /* http.cpp in Sources */,
-				F76C86471EC4E88300FA49E2 /* network.cpp in Sources */,
+				F76C86451EC4E88300FA49E2 /* Http.cpp in Sources */,
+				F76C86471EC4E88300FA49E2 /* Network.cpp in Sources */,
 				F76C86491EC4E88300FA49E2 /* NetworkAction.cpp in Sources */,
 				F76C864B1EC4E88300FA49E2 /* NetworkConnection.cpp in Sources */,
 				F76C864D1EC4E88300FA49E2 /* NetworkGroup.cpp in Sources */,
@@ -3120,7 +3120,7 @@
 				F76C86581EC4E88300FA49E2 /* NetworkUser.cpp in Sources */,
 				F76C865A1EC4E88300FA49E2 /* ServerList.cpp in Sources */,
 				F76C865C1EC4E88300FA49E2 /* TcpSocket.cpp in Sources */,
-				F76C865E1EC4E88300FA49E2 /* twitch.cpp in Sources */,
+				F76C865E1EC4E88300FA49E2 /* Twitch.cpp in Sources */,
 				F76C86601EC4E88300FA49E2 /* BannerObject.cpp in Sources */,
 				F76C86621EC4E88300FA49E2 /* EntranceObject.cpp in Sources */,
 				F76C86641EC4E88300FA49E2 /* FootpathItemObject.cpp in Sources */,
@@ -3159,7 +3159,7 @@
 				F76C869E1EC4E88400FA49E2 /* peep.c in Sources */,
 				F76C86A01EC4E88400FA49E2 /* peep_data.c in Sources */,
 				F76C86A11EC4E88400FA49E2 /* staff.c in Sources */,
-				F76C86A31EC4E88400FA49E2 /* crash.cpp in Sources */,
+				F76C86A31EC4E88400FA49E2 /* Crash.cpp in Sources */,
 				F76C86A51EC4E88400FA49E2 /* linux.c in Sources */,
 				F76C86A61EC4E88400FA49E2 /* macos.m in Sources */,
 				F76C86A81EC4E88400FA49E2 /* Platform2.cpp in Sources */,
@@ -3168,7 +3168,7 @@
 				F76C86AC1EC4E88400FA49E2 /* windows.c in Sources */,
 				F76C86AD1EC4E88400FA49E2 /* PlatformEnvironment.cpp in Sources */,
 				F76C86AF1EC4E88400FA49E2 /* S4Importer.cpp in Sources */,
-				F76C86B01EC4E88400FA49E2 /* tables.cpp in Sources */,
+				F76C86B01EC4E88400FA49E2 /* Tables.cpp in Sources */,
 				F76C86B21EC4E88400FA49E2 /* rct1.c in Sources */,
 				F76C86B41EC4E88400FA49E2 /* SawyerChunk.cpp in Sources */,
 				F76C86B61EC4E88400FA49E2 /* SawyerChunkReader.cpp in Sources */,
@@ -3346,10 +3346,10 @@
 				F76C87921EC4E88400FA49E2 /* viewport.c in Sources */,
 				F76C87931EC4E88400FA49E2 /* water.c in Sources */,
 				F76C87941EC4E88400FA49E2 /* Balloon.cpp in Sources */,
-				F76C87951EC4E88400FA49E2 /* banner.cpp in Sources */,
+				F76C87951EC4E88400FA49E2 /* Banner.cpp in Sources */,
 				F76C87971EC4E88400FA49E2 /* Climate.cpp in Sources */,
 				F76C87991EC4E88400FA49E2 /* Duck.cpp in Sources */,
-				F76C879A1EC4E88400FA49E2 /* entrance.cpp in Sources */,
+				F76C879A1EC4E88400FA49E2 /* Entrance.cpp in Sources */,
 				F76C879C1EC4E88400FA49E2 /* footpath.c in Sources */,
 				F76C879E1EC4E88400FA49E2 /* Fountain.cpp in Sources */,
 				F76C87A01EC4E88400FA49E2 /* map.c in Sources */,
@@ -3362,7 +3362,7 @@
 				F76C87AC1EC4E88500FA49E2 /* scenery.c in Sources */,
 				F76C87AE1EC4E88500FA49E2 /* sprite.c in Sources */,
 				F76C87B01EC4E88500FA49E2 /* tile_inspector.c in Sources */,
-				F76C87B21EC4E88500FA49E2 /* wall.cpp in Sources */,
+				F76C87B21EC4E88500FA49E2 /* Wall.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
