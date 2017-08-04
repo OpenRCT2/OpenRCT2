@@ -707,11 +707,7 @@ extern "C"
         ThemeManager::ActiveAvailableThemeIndex = index;
         String::DiscardDuplicate(&gConfigInterface.current_theme_preset, theme_manager_get_available_theme_name(index));
 
-        // Apply the selected theme to all open windows
-        for (rct_window *w = g_window_list; w < gWindowNextSlot; w++)
-        {
-            colour_scheme_update(w);
-        }
+        colour_scheme_update_all();
     }
 
     uint8 theme_get_colour(rct_windowclass wc, uint8 index)
@@ -859,6 +855,14 @@ extern "C"
             return STR_EMPTY;
         }
         return desc->WindowName;
+    }
+
+    void colour_scheme_update_all()
+    {
+        for (rct_window *w = g_window_list; w < gWindowNextSlot; w++)
+        {
+            colour_scheme_update(w);
+        }
     }
 
     void colour_scheme_update(rct_window * window)

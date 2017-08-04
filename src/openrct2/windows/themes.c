@@ -547,6 +547,7 @@ static void window_themes_dropdown(rct_window *w, rct_widgetindex widgetIndex, s
             uint8 colour = theme_get_colour(wc, _colour_index_2);
             colour = (colour & COLOUR_FLAG_TRANSLUCENT) | dropdownIndex;
             theme_set_colour(wc, _colour_index_2, colour);
+            colour_scheme_update_all();
             window_invalidate_all();
             _colour_index_1 = -1;
             _colour_index_2 = -1;
@@ -628,6 +629,7 @@ void window_themes_scrollmousedown(rct_window *w, sint32 scrollIndex, sint32 x, 
                         colour |= COLOUR_FLAG_TRANSLUCENT;
                     }
                     theme_set_colour(wc, _colour_index_2, colour);
+                    colour_scheme_update_all();
                     window_invalidate_all();
                 }
             }
