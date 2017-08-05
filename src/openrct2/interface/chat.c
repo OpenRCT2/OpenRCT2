@@ -280,6 +280,15 @@ void chat_handle_hover_msg(char* msg, sint32 msgIndex, const CursorState* curSta
             platform_open_browser(url);
         }
     }
+    // TODO Remove this code or revert "(DEBUG) Allow clearing chat history by clicking non-url messages" once lineHeight is working properly
+    else {
+        if (curState->left == CURSOR_RELEASED) {
+            for (sint32 i = 0; i < CHAT_HISTORY_SIZE; i++) {
+                memset(_chatHistory[i], 0, CHAT_INPUT_SIZE);
+            }
+            _chatHistoryIndex = 0;
+        }
+    }
 }
 
 void chat_history_add(const char * src)
