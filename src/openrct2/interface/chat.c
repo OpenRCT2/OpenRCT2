@@ -24,6 +24,7 @@
 #include "../platform/platform.h"
 #include "../util/util.h"
 #include "chat.h"
+#include "Cursors.h"
 
 bool gChatOpen = false;
 static char _chatCurrentLine[CHAT_MAX_MESSAGE_LENGTH];
@@ -79,33 +80,40 @@ void chat_update()
     // Clicking the chat
     if (!input_test_flag(INPUT_FLAG_5))
     {
-        sint32 x = _chatLeft;
         sint32 y = _chatBottom - (15 * 2);
 
         const CursorState * cursorState = context_get_cursor_state();
         sint32 mX = cursorState->x;
         sint32 mY = cursorState->y;
 
-        _chatMouseOver = -1;
+        if (_chatMouseOver != -1) {
+            _chatMouseOver = -1;
+            // To prevent blocking visual feedback on items below chat, cursor should
+            // only reset when a message was previously hovered over.
+            input_set_cursor(CURSOR_ARROW);
+        }
 
-        for (sint32 i = 0; i < CHAT_HISTORY_SIZE; i++, y -= 15) {
-            uint32 expireTime = chat_history_get_time(i) + 10000;
-            if (!gChatOpen && platform_get_ticks() > expireTime) {
-                break;
-            }
+        if (mX > _chatLeft && mX < _chatRight && mY > _chatTop && mY < _chatBottom) {
+            for (sint32 i = 0; i < CHAT_HISTORY_SIZE; i++, y -= 15) {
+                uint32 expireTime = chat_history_get_time(i) + 10000;
+                if (!gChatOpen && platform_get_ticks() > expireTime) {
+                    break;
+                }
 
-            char lineBuffer[CHAT_INPUT_SIZE + 10];
-            char* lineCh = lineBuffer;
-            safe_strcpy(lineBuffer, chat_history_get(i), CHAT_INPUT_SIZE + 10);
+                char lineBuffer[CHAT_INPUT_SIZE + 10];
+                char* lineCh = lineBuffer;
+                safe_strcpy(lineBuffer, chat_history_get(i), CHAT_INPUT_SIZE + 10);
 
-            char url[256];
-            char* urlBuffer = url;
-            url_from_string(urlBuffer, lineBuffer, sizeof(url));
+                char url[256];
+                char* urlBuffer = url;
+                url_from_string(urlBuffer, lineBuffer, sizeof(url));
 
-            if (mY > y && mY - 15 < y && mX > x && mX < _chatRight && url != NULL) {
-                _chatMouseOver = i;
-                if (cursorState->left == CURSOR_RELEASED) {
-                    chat_handle_press(lineBuffer);
+                if (mY > y && mY - 15 < y && url != NULL) {
+                    _chatMouseOver = i;
+                    input_set_cursor(CURSOR_HAND_POINT);
+                    if (cursorState->left == CURSOR_RELEASED) {
+                        chat_handle_press(lineBuffer);
+                    }
                 }
             }
         }
