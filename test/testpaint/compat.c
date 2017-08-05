@@ -130,7 +130,7 @@ int map_element_get_direction(const rct_map_element *element) {
 }
 
 int map_element_get_direction_with_offset(const rct_map_element *element, uint8 offset) {
-    return ((element->type & MAP_ELEMENT_DIRECTION_MASK) + offset) % 4;
+    return ((element->type & MAP_ELEMENT_DIRECTION_MASK) + offset) & MAP_ELEMENT_DIRECTION_MASK;
 }
 
 rct_map_element *map_get_first_element_at(int x, int y) {

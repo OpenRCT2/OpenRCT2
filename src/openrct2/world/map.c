@@ -280,7 +280,7 @@ sint32 map_element_get_direction(const rct_map_element *element)
 
 sint32 map_element_get_direction_with_offset(const rct_map_element *element, uint8 offset)
 {
-    return ((element->type & MAP_ELEMENT_DIRECTION_MASK) + offset) % 4;
+    return ((element->type & MAP_ELEMENT_DIRECTION_MASK) + offset) & MAP_ELEMENT_DIRECTION_MASK;
 }
 
 sint32 map_element_get_terrain(const rct_map_element *element)

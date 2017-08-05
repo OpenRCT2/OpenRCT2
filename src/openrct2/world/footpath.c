@@ -1208,7 +1208,7 @@ static void loc_6A6D7E(
                 break;
             case MAP_ELEMENT_TYPE_ENTRANCE:
                 if (z == mapElement->base_height) {
-                    if (entrance_has_direction(mapElement, ((direction - map_element_get_direction(mapElement)) % 4) ^ 2)) {
+                    if (entrance_has_direction(mapElement, ((direction - map_element_get_direction(mapElement)) & MAP_ELEMENT_DIRECTION_MASK) ^ 2)) {
                         if (query) {
                             neighbour_list_push(neighbourList, 8, direction, mapElement->properties.entrance.ride_index,  mapElement->properties.entrance.index);
                         } else {
@@ -1288,7 +1288,7 @@ static void loc_6A6C85(
         if (!(FlatRideTrackSequenceProperties[trackType][trackSequence] & TRACK_SEQUENCE_FLAG_CONNECTS_TO_PATH)) {
             return;
         }
-        uint16 dx = (direction - map_element_get_direction(mapElement)) % 4;
+        uint16 dx = (direction - map_element_get_direction(mapElement)) & MAP_ELEMENT_DIRECTION_MASK;
         if (!(FlatRideTrackSequenceProperties[trackType][trackSequence] & (1 << dx))) {
             return;
         }
