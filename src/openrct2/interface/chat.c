@@ -185,8 +185,15 @@ void chat_draw(rct_drawpixelinfo * dpi)
 
         safe_strcpy(lineBuffer, chat_history_get(i), sizeof(lineBuffer));
 
-        stringHeight = chat_history_draw_string(dpi, (void*) &lineCh, x, y, _chatWidth - 10) + 5;
-        gfx_set_dirty_blocks(x, y - stringHeight, x + _chatWidth, y + 20);
+        // TODO remove this code (or revert "(DEBUG) Shift text to right when hovered over") when finished
+        sint32 _x = x;
+        if (_chatMouseOver == i) {
+            _x += 5;
+        }
+
+        stringHeight = chat_history_draw_string(dpi, (void*) &lineCh, _x, y, _chatWidth - 10) + 5;
+
+        gfx_set_dirty_blocks(x, y - stringHeight, _x + _chatWidth, y + 20);
 
         if ((y - stringHeight) < 50) {
             break;
