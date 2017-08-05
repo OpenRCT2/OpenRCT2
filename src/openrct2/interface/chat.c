@@ -82,8 +82,9 @@ void chat_update()
         sint32 x = _chatLeft;
         sint32 y = _chatBottom - (15 * 2);
 
-        sint32 mX = 0;// gCursorState.x; // TODO find new gCursorState equivalent
-        sint32 mY = 0;// gCursorState.y; // TODO find new gCursorState equivalent
+        const CursorState * cursorState = context_get_cursor_state();
+        sint32 mX = cursorState->x;
+        sint32 mY = cursorState->y;
 
         _chatMouseOver = -1;
 
@@ -101,9 +102,7 @@ void chat_update()
 
             if (mY > y && mY - 15 < y && mX > x && mX < _chatRight && url != 0) {
                 _chatMouseOver = i;
-                // TODO find new gCursorState equivalent
-                //if (gCursorState.left == CURSOR_RELEASED) {
-                if (false) {
+                if (cursorState->left == CURSOR_RELEASED) {
                     chat_handle_press(lineBuffer);
                 }
             }
