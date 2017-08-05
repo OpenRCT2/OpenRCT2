@@ -74,6 +74,25 @@ void chat_init()
     memset(_chatHistoryTime, 0, sizeof(_chatHistoryTime));
 }
 
+// TODO remove this or revert "(DEBUG) create debug_ui_box" when finished
+bool debug_ui_box_show = false;
+sint32 debug_ui_box_x1 = 0, debug_ui_box_y1 = 0, debug_ui_box_x2 = 0, debug_ui_box_y2 = 0;
+sint32 debug_mouse_x = 0, debug_mouse_y = 0;
+
+void debug_ui_box_set(sint32 x1, sint32 y1, sint32 x2, sint32 y2)
+{
+    debug_ui_box_show = true;
+    debug_ui_box_x1 = x1;
+    debug_ui_box_y1 = y1;
+    debug_ui_box_x2 = x2;
+    debug_ui_box_y2 = y2;
+}
+
+void debug_ui_box_hide()
+{
+    debug_ui_box_show = false;
+}
+
 void chat_update()
 {
     // Flash the caret
@@ -96,9 +115,14 @@ void chat_update()
             // To prevent blocking visual feedback on items below chat, cursor should
             // only reset when a message was previously hovered over.
             input_set_cursor(CURSOR_ARROW);
+            debug_ui_box_hide();
+            debug_mouse_x = 0;
+            debug_mouse_y = 0;
         }
 
         if (mX > _chatLeft && mX < _chatRight && mY > _chatTop && mY < _chatBottom) {
+            debug_mouse_x = mX;
+            debug_mouse_y = mY;
             for (sint32 i = 0; i < CHAT_HISTORY_SIZE; i++, y -= 15) {
                 uint32 expireTime = chat_history_get_time(i) + 10000;
                 if (!gChatOpen && platform_get_ticks() > expireTime) {
@@ -110,15 +134,23 @@ void chat_update()
                 safe_strcpy(lineBuffer, chat_history_get(i), CHAT_INPUT_SIZE + 10);
 
                 // TODO this part is not yet used.
-                stringHeight = chat_string_wrapped_get_height((void*)&lineCh, _chatWidth - 10);
+                stringHeight = chat_string_wrapped_get_height((void*)&lineCh, _chatWidth - 10) + 5;
 
                 if (mY > y && mY - 15 < y && !str_is_null_or_empty(lineCh)) {
+                    debug_ui_box_set(_chatLeft, y, _chatRight, y + 15);
                     chat_handle_hover_msg(lineCh, i, cursorState, mX - _chatLeft, mY - y);
-                    break;
                 }
             }
         }
     }
+}
+
+void draw_rect(rct_drawpixelinfo* dpi, sint32 x1, sint32 y1, sint32 x2, sint32 y2, sint32 col)
+{
+    gfx_draw_line(dpi, x1, y1, x1, y2, COLOUR_BRIGHT_RED);
+    gfx_draw_line(dpi, x1, y1, x2, y1, COLOUR_BRIGHT_RED);
+    gfx_draw_line(dpi, x2, y1, x2, y2, COLOUR_BRIGHT_RED);
+    gfx_draw_line(dpi, x1, y2, x2, y2, COLOUR_BRIGHT_RED);
 }
 
 void chat_draw(rct_drawpixelinfo * dpi)
@@ -222,6 +254,12 @@ void chat_draw(rct_drawpixelinfo * dpi)
             gfx_fill_rect(dpi, caretX, caretY, caretX + 6, caretY + 1, PALETTE_INDEX_56);
         }
     }
+
+    // TODO remove this or revert "(DEBUG) create debug_ui_box" when finished
+    if (debug_ui_box_show) {
+        draw_rect(dpi, debug_ui_box_x1, debug_ui_box_y1, debug_ui_box_x2, debug_ui_box_y2, COLOUR_BRIGHT_RED);
+    }
+    draw_rect(dpi, debug_mouse_x - 1, debug_mouse_y - 1, debug_mouse_x + 1, debug_mouse_y + 1, COLOUR_MOSS_GREEN);
 }
 
 void chat_handle_hover_msg(char* msg, sint32 msgIndex, const CursorState* curState, sint32 rMouseX, sint32 rMouseY)
