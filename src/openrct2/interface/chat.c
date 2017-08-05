@@ -17,6 +17,7 @@
 #include "../audio/audio.h"
 #include "../audio/AudioMixer.h"
 #include "../Context.h"
+#include "../input.h"
 #include "../interface/themes.h"
 #include "../localisation/localisation.h"
 #include "../network/network.h"
@@ -37,6 +38,7 @@ static sint32 _chatBottom;
 static sint32 _chatWidth;
 static sint32 _chatHeight;
 static TextInputSession * _chatTextInputSession;
+static sint32 _chatMouseOver = -1;
 
 static const char* chat_history_get(uint32 index);
 static uint32 chat_history_get_time(uint32 index);
@@ -73,6 +75,40 @@ void chat_update()
 {
     // Flash the caret
     _chatCaretTicks = (_chatCaretTicks + 1) % 30;
+
+    // Clicking the chat
+    if (!input_test_flag(INPUT_FLAG_5))
+    {
+        sint32 x = _chatLeft;
+        sint32 y = _chatBottom - (15 * 2);
+
+        sint32 mX = 0;// gCursorState.x; // TODO find new gCursorState equivalent
+        sint32 mY = 0;// gCursorState.y; // TODO find new gCursorState equivalent
+
+        _chatMouseOver = -1;
+
+        for (sint32 i = 0; i < CHAT_HISTORY_SIZE; i++, y -= 15) {
+            // TODO find new SDL_TICKS_PASSED, SDL_GetTicks()
+            if (!gChatOpen && SDL_TICKS_PASSED(SDL_GetTicks(), chat_history_get_time(i) + 10000)) {
+                break;
+            }
+
+            char lineBuffer[CHAT_INPUT_SIZE + 10];
+            char* lineCh = lineBuffer;
+            safe_strcpy(lineBuffer, chat_history_get(i), CHAT_INPUT_SIZE + 10);
+
+            char* url = url_from_string(lineBuffer);
+
+            if (mY > y && mY - 15 < y && mX > x && mX < _chatRight && url != 0) {
+                _chatMouseOver = i;
+                // TODO find new gCursorState equivalent
+                //if (gCursorState.left == CURSOR_RELEASED) {
+                if (false) {
+                    chat_handle_press(lineBuffer);
+                }
+            }
+        }
+    }
 }
 
 void chat_draw(rct_drawpixelinfo * dpi)
@@ -168,6 +204,15 @@ void chat_draw(rct_drawpixelinfo * dpi)
 
             gfx_fill_rect(dpi, caretX, caretY, caretX + 6, caretY + 1, PALETTE_INDEX_56);
         }
+    }
+}
+
+void chat_handle_press(char* handle)
+{
+    char *ufs = url_from_string(handle);
+
+    if (ufs != 0) {
+        platform_open_browser(ufs);
     }
 }
 
