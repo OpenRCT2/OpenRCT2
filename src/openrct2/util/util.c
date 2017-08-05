@@ -552,11 +552,7 @@ size_t strcatftime(char * buffer, size_t bufferSize, const char * format, const 
 
 char* url_from_string(char *data)
 {
-    char *ret = strstr(data, "http://");
-
-    if (!ret) {
-        ret = strstr(data, "https://");
-    }
+    char *ret = url_begin(data);
 
     if (ret) {
         char *ret2 = url_end(ret);
@@ -572,6 +568,17 @@ char* url_from_string(char *data)
     }
 
     return 0;
+}
+
+char* url_begin(char* data)
+{
+    char *ret = strstr(data, "http://");
+
+    if (!ret) {
+        ret = strstr(data, "https://");
+    }
+
+    return ret;
 }
 
 char* url_end(char *data)

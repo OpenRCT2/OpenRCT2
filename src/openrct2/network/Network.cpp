@@ -578,10 +578,7 @@ const char* Network::FormatChat(NetworkPlayer* fromplayer, const char* text)
     utf8_remove_format_codes((utf8*)ptrtext, true);
 
     // Highlight urls in babyblue
-    lineCh = strstr(formatted, "http://");
-    if (!lineCh) {
-        lineCh = strstr(formatted, "https://");
-    }
+    lineCh = url_begin(formatted);
     if (lineCh) {
         char formatted2[1024];
         safe_strcpy(formatted2, lineCh, 800);
