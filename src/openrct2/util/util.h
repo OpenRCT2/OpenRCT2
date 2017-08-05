@@ -65,7 +65,7 @@ money32 add_clamp_money32(money32 value, money32 value_to_add);
 
 size_t strcatftime(char * buffer, size_t bufferSize, const char * format, const struct tm * tp);
 
-char* url_from_string(char* data);
+void url_from_string(char* buffer, char* data, size_t bufferSize);
 char* url_begin(char* data);
 char* url_end(char* data);
 

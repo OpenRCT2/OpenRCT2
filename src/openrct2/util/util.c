@@ -550,7 +550,7 @@ size_t strcatftime(char * buffer, size_t bufferSize, const char * format, const 
     return 0;
 }
 
-char* url_from_string(char *data)
+void url_from_string(char* buffer, char *data, size_t bufferSize)
 {
     char *ret = url_begin(data);
 
@@ -563,11 +563,12 @@ char* url_from_string(char *data)
         ret2 = url_end(url);
         *ret2 = '\0';
 
-        return url;
-
+        safe_strcpy(buffer, url, bufferSize);
+        SafeFree(url);
     }
-
-    return 0;
+    else {
+        buffer[0] = 0;
+    }
 }
 
 char* url_begin(char* data)

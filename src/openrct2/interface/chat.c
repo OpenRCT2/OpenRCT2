@@ -98,9 +98,11 @@ void chat_update()
             char* lineCh = lineBuffer;
             safe_strcpy(lineBuffer, chat_history_get(i), CHAT_INPUT_SIZE + 10);
 
-            char* url = url_from_string(lineBuffer);
+            char url[256];
+            char* urlBuffer = url;
+            url_from_string(urlBuffer, lineBuffer, sizeof(url));
 
-            if (mY > y && mY - 15 < y && mX > x && mX < _chatRight && url != 0) {
+            if (mY > y && mY - 15 < y && mX > x && mX < _chatRight && url != NULL) {
                 _chatMouseOver = i;
                 if (cursorState->left == CURSOR_RELEASED) {
                     chat_handle_press(lineBuffer);
@@ -208,10 +210,12 @@ void chat_draw(rct_drawpixelinfo * dpi)
 
 void chat_handle_press(char* handle)
 {
-    char *ufs = url_from_string(handle);
-
-    if (ufs != 0) {
-        platform_open_browser(ufs);
+    char url[256];
+    char* urlBuffer = url;
+    url_from_string(urlBuffer, handle, sizeof(url));
+    
+    if (url != NULL) {
+        platform_open_browser(url);
     }
 }
 
