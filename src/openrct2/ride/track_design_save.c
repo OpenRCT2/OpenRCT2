@@ -1159,7 +1159,7 @@ static size_t track_design_get_scenery_elements_count(rct_track_td6 *td6)
     size_t count = 0;
     rct_td6_scenery_element *sceneryElement = td6->scenery_elements;
     if (sceneryElement != NULL) {
-        while ((sceneryElement->scenery_object.flags & 0xFF) != 0xFF) {
+        while (sceneryElement->scenery_object.end_flag != 0xFF) {
             count++;
             sceneryElement++;
         }

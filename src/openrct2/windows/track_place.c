@@ -488,8 +488,8 @@ static void window_track_place_draw_mini_preview(rct_track_td6 *td6)
     for (sint32 pass = 0; pass < 2; pass++) {
         rct_xy16 origin = { 0, 0 };
         if (pass == 1) {
-            origin.x -= ((max.x + min.x) >> 6) << 5;
-            origin.y -= ((max.y + min.y) >> 6) << 5;
+            origin.x -= ((max.x + min.x) >> 6) * 32;
+            origin.y -= ((max.y + min.y) >> 6) * 32;
         }
 
         if (td6->type == RIDE_TYPE_MAZE) {

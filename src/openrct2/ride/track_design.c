@@ -365,7 +365,7 @@ static void track_design_load_scenery_objects(rct_track_td6 *td6)
 
     // Load scenery objects
     rct_td6_scenery_element *scenery = td6->scenery_elements;
-    for (; (scenery->scenery_object.flags & 0xFF) != 0xFF; scenery++) {
+    for (; scenery->scenery_object.end_flag != 0xFF; scenery++) {
         rct_object_entry * sceneryEntry = &scenery->scenery_object;
         object_manager_load_object(sceneryEntry);
     }
@@ -378,7 +378,7 @@ static void track_design_load_scenery_objects(rct_track_td6 *td6)
 static void track_design_mirror_scenery(rct_track_td6 *td6)
 {
     rct_td6_scenery_element *scenery = td6->scenery_elements;
-    for (; (scenery->scenery_object.flags & 0xFF) != 0xFF; scenery++) {
+    for (; scenery->scenery_object.end_flag != 0xFF; scenery++) {
         uint8 entry_type, entry_index;
         if (!find_object_in_entry_group(&scenery->scenery_object, &entry_type, &entry_index)) {
             entry_type = scenery->scenery_object.flags & 0xF;
@@ -558,7 +558,7 @@ static void track_design_update_max_min_coordinates(sint16 x, sint16 y, sint16 z
 static sint32 track_design_place_scenery(rct_td6_scenery_element *scenery_start, uint8 rideIndex, sint32 originX, sint32 originY, sint32 originZ)
 {
     for (uint8 mode = 0; mode <= 1; mode++) {
-        if ((scenery_start->scenery_object.flags & 0xFF) != 0xFF) {
+        if (scenery_start->scenery_object.end_flag != 0xFF) {
             _trackDesignPlaceStateHasScenery = true;
         }
 
@@ -566,7 +566,7 @@ static sint32 track_design_place_scenery(rct_td6_scenery_element *scenery_start,
             continue;
         }
 
-        for (rct_td6_scenery_element *scenery = scenery_start; (scenery->scenery_object.flags & 0xFF) != 0xFF; scenery++) {
+        for (rct_td6_scenery_element *scenery = scenery_start; scenery->scenery_object.end_flag != 0xFF; scenery++) {
             uint8 rotation = _currentTrackPieceDirection;
             rct_xy8 tile = { .x = originX / 32, .y = originY / 32 };
             switch (rotation & 3){
@@ -895,7 +895,7 @@ static sint32 track_design_place_scenery(rct_td6_scenery_element *scenery_start,
                     continue;
                     break;
                 }
-                _trackDesignPlaceCost += cost;
+                add_clamp_money32(_trackDesignPlaceCost, cost);
                 if (_trackDesignPlaceOperation != PTD_OPERATION_2) {
                     if (cost == MONEY32_UNDEFINED){
                         _trackDesignPlaceCost = MONEY32_UNDEFINED;
@@ -1131,7 +1131,7 @@ static bool track_design_place_ride(rct_track_td6 *td6, sint16 x, sint16 y, sint
             sint16 tempZ = z - trackCoordinates->z_begin;
             uint32 edi =
                 ((track->flags & 0x0F) << 17) |
-                ((track->flags & 0x0F) << 28) |
+                ((uint32)(track->flags & 0x0F) << 28) |
                 (((track->flags >> 4) & 0x03) << 24) |
                 (tempZ & 0xFFFF);
 
