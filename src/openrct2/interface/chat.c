@@ -82,7 +82,10 @@ void chat_update()
     // Clicking the chat
     if (!input_test_flag(INPUT_FLAG_5))
     {
-        sint32 y = _chatBottom - (15 * 2);
+        char* inputLine = _chatCurrentLine;
+        sint32 stringHeight = chat_string_wrapped_get_height((void*)&inputLine, _chatWidth - 10) + 5;
+
+        sint32 y = _chatBottom - stringHeight - 15;
 
         const CursorState * cursorState = context_get_cursor_state();
         sint32 mX = cursorState->x;
@@ -106,8 +109,12 @@ void chat_update()
                 char* lineCh = lineBuffer;
                 safe_strcpy(lineBuffer, chat_history_get(i), CHAT_INPUT_SIZE + 10);
 
+                // TODO this part is not yet used.
+                stringHeight = chat_string_wrapped_get_height((void*)&lineCh, _chatWidth - 10);
+
                 if (mY > y && mY - 15 < y && !str_is_null_or_empty(lineCh)) {
                     chat_handle_hover_msg(lineCh, i, cursorState, mX - _chatLeft, mY - y);
+                    break;
                 }
             }
         }
