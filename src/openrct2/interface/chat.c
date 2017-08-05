@@ -89,8 +89,8 @@ void chat_update()
         _chatMouseOver = -1;
 
         for (sint32 i = 0; i < CHAT_HISTORY_SIZE; i++, y -= 15) {
-            // TODO find new SDL_TICKS_PASSED, SDL_GetTicks()
-            if (!gChatOpen && SDL_TICKS_PASSED(SDL_GetTicks(), chat_history_get_time(i) + 10000)) {
+            uint32 expireTime = chat_history_get_time(i) + 10000;
+            if (!gChatOpen && platform_get_ticks() > expireTime) {
                 break;
             }
 
