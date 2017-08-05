@@ -209,4 +209,12 @@ uint8 platform_get_locale_measurement_format()
     }
 }
 
+void platform_open_browser(const char* url)
+{
+    @autoreleasepool
+    {
+        [[NSWorkspace sharedWorkspace]] openURL:[NSURL URLWithString:[NSString stringWithUTF8String:url]]];
+    }
+}
+
 #endif

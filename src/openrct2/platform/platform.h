@@ -168,4 +168,6 @@ void core_init();
     utf8* macos_str_decomp_to_precomp();
 #endif
 
+    void platform_open_browser(const char* url);
+
 #endif
