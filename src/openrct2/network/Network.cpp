@@ -576,6 +576,25 @@ const char* Network::FormatChat(NetworkPlayer* fromplayer, const char* text)
     char* ptrtext = lineCh;
     safe_strcpy(lineCh, text, 800);
     utf8_remove_format_codes((utf8*)ptrtext, true);
+
+    // Highlight urls in babyblue
+    lineCh = strstr(formatted, "http://");
+    if (!lineCh) {
+        lineCh = strstr(formatted, "https://");
+    }
+    if (lineCh) {
+        char formatted2[1024];
+        safe_strcpy(formatted2, lineCh, 800);
+        lineCh = utf8_write_codepoint(lineCh, FORMAT_BABYBLUE);
+        safe_strcpy(lineCh, formatted2, 800);
+        lineCh = url_end(lineCh);
+        if (lineCh != 0) {
+            safe_strcpy(formatted2, lineCh, 800);
+            lineCh = utf8_write_codepoint(lineCh, FORMAT_WHITE);
+            safe_strcpy(lineCh, formatted2, 800);
+        }
+    }
+
     return formatted;
 }
 
