@@ -851,7 +851,7 @@ STR_0845    :
 STR_0846    :
 STR_0847    :'OpenRCT2'에 대해서
 STR_0848    :롤러코스터 타이쿤 2
-STR_0849    :{WINDOW_COLOUR_2}버전 2.01.028
+STR_0849    :<removed string - do not use>
 STR_0850    :{WINDOW_COLOUR_2}Copyright {COPYRIGHT} 2002 Chris Sawyer, all rights reserved
 STR_0851    :{WINDOW_COLOUR_2}디자인 및 프로그래밍: Chris Sawyer
 STR_0852    :{WINDOW_COLOUR_2}그래픽: Simon Foster
@@ -860,13 +860,13 @@ STR_0854    :{WINDOW_COLOUR_2}추가 효과음 녹음: David Ellis
 STR_0855    :{WINDOW_COLOUR_2}리프리젠테이션: Marjacq Ltd사의 Jacqui Lyons
 STR_0856    :{WINDOW_COLOUR_2}감사드릴 분들:
 STR_0857    :{WINDOW_COLOUR_2}Peter James Adcock, Joe Booth 그리고 John Wardley
-STR_0858    :{WINDOW_COLOUR_2}
-STR_0859    :{WINDOW_COLOUR_2}
-STR_0860    :{WINDOW_COLOUR_2}
-STR_0861    :
-STR_0862    :
-STR_0863    :
-STR_0864    :
+STR_0858    :<removed string - do not use>
+STR_0859    :<removed string - do not use>
+STR_0860    :<removed string - do not use>
+STR_0861    :<removed string - do not use>
+STR_0862    :<removed string - do not use>
+STR_0863    :<removed string - do not use>
+STR_0864    :<removed string - do not use>
 STR_0865    :{STRINGID}
 STR_0866    :{POP16}{STRINGID}
 STR_0867    :{POP16}{POP16}{STRINGID}
@@ -2868,7 +2868,7 @@ STR_2856    :{WINDOW_COLOUR_2}튜토리얼
 STR_2857    :{WINDOW_COLOUR_2}(조작하려면 마우스나 키보드 키를 누르세요)
 STR_2858    :광고 이벤트를 시작할 수 없습니다...
 STR_2859    :OpenRCT2 프로그램이 이미 실행 중입니다
-STR_2860    :Infogrames Interactive 제공...
+STR_2860    :<removed string - do not use>
 STR_2861    :{WINDOW_COLOUR_2}Licensed to Infogrames Interactive Inc.
 STR_2862    :음악 저작권...
 STR_2863    :음악 저작권
@@ -2916,29 +2916,29 @@ STR_2904    :{WINDOW_COLOUR_2}Manic Mechanic:   (Allister Brimble) copyright {CO
 STR_2905    :{WINDOW_COLOUR_2}Techno Torture:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
 STR_2906    :{WINDOW_COLOUR_2}Sweat Dreams:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
 STR_2907    :{WINDOW_COLOUR_2}What shall we do with the Drunken Sailor:   (Anon/Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2908    :{WINDOW_COLOUR_2}Infogrames Interactive
-STR_2909    :{WINDOW_COLOUR_2}수석 프로듀서:  Thomas J. Zahorik
-STR_2910    :{WINDOW_COLOUR_2}제작 책임자:  Bill Levay
-STR_2911    :{WINDOW_COLOUR_2}수석 마케팅 프로덕트 매니저:  Scott Triola
-STR_2912    :{WINDOW_COLOUR_2}프로덕트 개발 V.P.:  Scott Walker
-STR_2913    :{WINDOW_COLOUR_2}일반 매니저:  John Hurlbut
-STR_2914    :{WINDOW_COLOUR_2}품질 보증 감독:  Michael Craighead
-STR_2915    :{WINDOW_COLOUR_2}Q.A. 인증 매니저:  Kurt Boutin
-STR_2916    :{WINDOW_COLOUR_2}Q.A. 인증 리드:  Mark Huggins
-STR_2917    :{WINDOW_COLOUR_2}테스터:  Dena Irene Fitzgerald, Scott Rollins, Christopher McPhail
-STR_2918    :{WINDOW_COLOUR_2}Clif McClure, Erik Maramaldi, Erik Jeffery
-STR_2919    :{WINDOW_COLOUR_2}마케팅 감독:  Ann Marie Bland
-STR_2920    :{WINDOW_COLOUR_2}창조형 서비스 매니저:  Steve Martin
-STR_2921    :{WINDOW_COLOUR_2}편집 & 문서 서비스 매니저:  Elizabeth Mackney
-STR_2922    :{WINDOW_COLOUR_2}그래픽 디자이너:  Paul Anselmi
-STR_2923    :{WINDOW_COLOUR_2}카피라이터:  Kurt Carlson
-STR_2924    :{WINDOW_COLOUR_2}감사 인사:  Peter Matiss
-STR_2925    :{WINDOW_COLOUR_2}엔지니어링 스페셜리스트:  Ken Edwards
-STR_2926    :{WINDOW_COLOUR_2}엔지니어링 서비스 매니저:  Luis Rivas
-STR_2927    :{WINDOW_COLOUR_2}리드 적합성 분석:  Geoffrey Smith
-STR_2928    :{WINDOW_COLOUR_2}적합성 분석:  Jason Cordero, Burke McQuinn, Kim Jardin
-STR_2929    :{WINDOW_COLOUR_2}리드 테스터:  Daniel Frisoli
-STR_2930    :{WINDOW_COLOUR_2}수석 테스터:  Matt Pantaleoni
+STR_2908    :<removed string - do not use>
+STR_2909    :<removed string - do not use>
+STR_2910    :<removed string - do not use>
+STR_2911    :<removed string - do not use>
+STR_2912    :<removed string - do not use>
+STR_2913    :<removed string - do not use>
+STR_2914    :<removed string - do not use>
+STR_2915    :<removed string - do not use>
+STR_2916    :<removed string - do not use>
+STR_2917    :<removed string - do not use>
+STR_2918    :<removed string - do not use>
+STR_2919    :<removed string - do not use>
+STR_2920    :<removed string - do not use>
+STR_2921    :<removed string - do not use>
+STR_2922    :<removed string - do not use>
+STR_2923    :<removed string - do not use>
+STR_2924    :<removed string - do not use>
+STR_2925    :<removed string - do not use>
+STR_2926    :<removed string - do not use>
+STR_2927    :<removed string - do not use>
+STR_2928    :<removed string - do not use>
+STR_2929    :<removed string - do not use>
+STR_2930    :<removed string - do not use>
 STR_2931    :{WINDOW_COLOUR_2}
 STR_2932    :{WINDOW_COLOUR_2}
 STR_2933    :{WINDOW_COLOUR_2}
@@ -4443,6 +4443,10 @@ STR_6133    :{SMALLFONT}{BLACK}아직 개발되지 않은 놀이기구와 풍경
 STR_6134    :조형물 제거
 STR_6135    :클라이언트에서 잘못된 요청을 보냈습니다
 STR_6136    :서버에서 잘못된 요청을 보냈습니다
+STR_6137    :OpenRCT2 - 롤러코스터 타이쿤 2의 자유 공개 소스 복제품
+STR_6138    :OpenRCT2는 많은 분들이 참여한 작품입니다. 모든 참여자의 목록은 {OPENQUOTES}contributors.md{ENDQUOTES} 파일을 참고하세요. 더 많은 정보를 원하시면 http://github.com/OpenRCT2/OpenRCT2 를 방문해주세요.
+STR_6139    :모든 제품과 회사 이름은 해당 소유자의 것입니다. 이러한 제품이나 이름의 사용은 그러한 것들에 대한 제휴나 지지를 뜻하지 않습니다.
+STR_6140    :변경 기록...
 
 #############
 # Scenarios #

@@ -850,7 +850,7 @@ STR_0845    :<not used anymore>
 STR_0846    :<not used anymore>
 STR_0847    :Über `OpenRCT2'
 STR_0848    :RollerCoaster Tycoon 2
-STR_0849    :{WINDOW_COLOUR_2}Version 2.01.032
+STR_0849    :<removed string - do not use>
 STR_0850    :{WINDOW_COLOUR_2}Copyright {COPYRIGHT} 2002 Chris Sawyer, alle Rechte vorbehalten
 STR_0851    :{WINDOW_COLOUR_2}Entworfen und programmiert von Chris Sawyer
 STR_0852    :{WINDOW_COLOUR_2}Grafik von Simon Foster
@@ -859,13 +859,13 @@ STR_0854    :{WINDOW_COLOUR_2}Zusätzliche Sounds aufgenommen von David Ellis
 STR_0855    :{WINDOW_COLOUR_2}Repräsentation von Jacqui Lyons bei Marjacq Ltd.
 STR_0856    :{WINDOW_COLOUR_2}Dank gilt:
 STR_0857    :{WINDOW_COLOUR_2}Peter James Adcock, Joe Booth und John Wardley
-STR_0858    :{WINDOW_COLOUR_2}
-STR_0859    :{WINDOW_COLOUR_2}
-STR_0860    :{WINDOW_COLOUR_2}
-STR_0861    :
-STR_0862    :
-STR_0863    :
-STR_0864    :
+STR_0858    :<removed string - do not use>
+STR_0859    :<removed string - do not use>
+STR_0860    :<removed string - do not use>
+STR_0861    :<removed string - do not use>
+STR_0862    :<removed string - do not use>
+STR_0863    :<removed string - do not use>
+STR_0864    :<removed string - do not use>
 STR_0865    :{STRINGID}
 STR_0866    :{POP16}{STRINGID}
 STR_0867    :{POP16}{POP16}{STRINGID}
@@ -2866,7 +2866,7 @@ STR_2856    :{WINDOW_COLOUR_2}Lehrgang
 STR_2857    :{WINDOW_COLOUR_2}(Drücken Sie eine Taste oder klicken Sie mit der Maus, um die Kontrolle zu übernehmen)
 STR_2858    :Marketingkampage kann nicht gestartet werden...
 STR_2859    :OpenRCT2 läuft bereits
-STR_2860    :Infogrames Interactive Credits...
+STR_2860    :<removed string - do not use>
 STR_2861    :{WINDOW_COLOUR_2}Lizenziert für Infogrames Interactive Inc.
 STR_2862    :Musik...
 STR_2863    :Musik
@@ -2914,29 +2914,29 @@ STR_2904    :{WINDOW_COLOUR_2}Manic Mechanic:   (Allister Brimble) Copyright {CO
 STR_2905    :{WINDOW_COLOUR_2}Techno Torture:   (Allister Brimble) Copyright {COPYRIGHT} Chris Sawyer
 STR_2906    :{WINDOW_COLOUR_2}Sweat Dreams:   (Allister Brimble) Copyright {COPYRIGHT} Chris Sawyer
 STR_2907    :{WINDOW_COLOUR_2}What shall we do with the Drunken Sailor:   (Anon/Allister Brimble) Copyright {COPYRIGHT} Chris Sawyer
-STR_2908    :{WINDOW_COLOUR_2}Infogrames Interactive
-STR_2909    :{WINDOW_COLOUR_2}Senior Producer:  Thomas J. Zahorik
-STR_2910    :{WINDOW_COLOUR_2}Executive Producer:  Bill Levay
-STR_2911    :{WINDOW_COLOUR_2}Senior Marketing Produktmanager:  Scott Triola
-STR_2912    :{WINDOW_COLOUR_2}V.P. Produktentwicklung:  Scott Walker
-STR_2913    :{WINDOW_COLOUR_2}General Manager:  John Hurlbut
-STR_2914    :{WINDOW_COLOUR_2}Direktor Qualitätssicherung (Q.A.):  Michael Craighead
-STR_2915    :{WINDOW_COLOUR_2}Q.A.-Zertifizierungsmanager:  Kurt Boutin
-STR_2916    :{WINDOW_COLOUR_2}Q.A.-Zertifizierungsleitung:  Mark Huggins
-STR_2917    :{WINDOW_COLOUR_2}Tester:  Dena Irene Fitzgerald, Scott Rollins, Christopher McPhail
-STR_2918    :{WINDOW_COLOUR_2}Clif McClure, Erik Maramaldi, Erik Jeffery
-STR_2919    :{WINDOW_COLOUR_2}Marketingdirektor:  Ann Marie Bland
-STR_2920    :{WINDOW_COLOUR_2}Creative Services Manager:  Steve Martin
-STR_2921    :{WINDOW_COLOUR_2}Redaktions- & Dokumentationsmanager:  Elizabeth Mackney
-STR_2922    :{WINDOW_COLOUR_2}Grafikdesigner:  Paul Anselmi
-STR_2923    :{WINDOW_COLOUR_2}Copywriter:  Kurt Carlson
-STR_2924    :{WINDOW_COLOUR_2}Besonderer Dank geht an:  Peter Matiss
-STR_2925    :{WINDOW_COLOUR_2}Technischer Spezialist:  Ken Edwards
-STR_2926    :{WINDOW_COLOUR_2}Manager Technikabteilung:  Luis Rivas
-STR_2927    :{WINDOW_COLOUR_2}Leitung Kompatibilätsanalyse:  Geoffrey Smith
-STR_2928    :{WINDOW_COLOUR_2}Kompatibilätsanalyse:  Jason Cordero, Burke McQuinn, Kim Jardin
-STR_2929    :{WINDOW_COLOUR_2}Leitender Tester:  Daniel Frisoli
-STR_2930    :{WINDOW_COLOUR_2}Senior Tester:  Matt Pantaleoni
+STR_2908    :<removed string - do not use>
+STR_2909    :<removed string - do not use>
+STR_2910    :<removed string - do not use>
+STR_2911    :<removed string - do not use>
+STR_2912    :<removed string - do not use>
+STR_2913    :<removed string - do not use>
+STR_2914    :<removed string - do not use>
+STR_2915    :<removed string - do not use>
+STR_2916    :<removed string - do not use>
+STR_2917    :<removed string - do not use>
+STR_2918    :<removed string - do not use>
+STR_2919    :<removed string - do not use>
+STR_2920    :<removed string - do not use>
+STR_2921    :<removed string - do not use>
+STR_2922    :<removed string - do not use>
+STR_2923    :<removed string - do not use>
+STR_2924    :<removed string - do not use>
+STR_2925    :<removed string - do not use>
+STR_2926    :<removed string - do not use>
+STR_2927    :<removed string - do not use>
+STR_2928    :<removed string - do not use>
+STR_2929    :<removed string - do not use>
+STR_2930    :<removed string - do not use>
 STR_2931    :{WINDOW_COLOUR_2}
 STR_2932    :{WINDOW_COLOUR_2}
 STR_2933    :{WINDOW_COLOUR_2}
@@ -4436,6 +4436,10 @@ STR_6133    :{SMALLFONT}{BLACK}Ermöglicht den Zugriff auf Attraktionen und Szen
 STR_6134    :Szenerie entfernen
 STR_6135    :Ungültige Anfrage durch den Client
 STR_6136    :Ungültige Anfrage durch den Server
+STR_6137    :OpenRCT2, ein freier und quelloffener Klon von RollerCoaster Tycoon 2.
+STR_6138    :OpenRCT2 ist das Werk vieler Autoren, eine vollständige Liste befindet sich in {OPENQUOTES}contributors.md{ENDQUOTES}. Für weitere Informationen, besuche http://github.com/OpenRCT2/OpenRCT2
+STR_6139    :Alle Produkt- und Firmennamen sind Eigentum ihrer jeweiligen Inhaber.{NEWLINE}Die Nutzung dieser stellt keine Zugehörigkeit oder Unterstützung dar.
+STR_6140    :Changelog...
 
 #############
 # Scenarios #
