@@ -42,8 +42,6 @@ void chat_init();
 void chat_update();
 void chat_draw(rct_drawpixelinfo * dpi);
 
-void chat_handle_press(char* handle);
-
 void chat_history_add(const char *src);
 void chat_input(CHAT_INPUT input);
 

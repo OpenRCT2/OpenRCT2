@@ -45,6 +45,8 @@ static const char* chat_history_get(uint32 index);
 static uint32 chat_history_get_time(uint32 index);
 static void chat_clear_input();
 
+void chat_handle_hover_msg(char* msg, sint32 msgIndex, const CursorState* curState, sint32 rMouseX, sint32 rMouseY);
+
 void chat_open()
 {
     gChatOpen = true;
@@ -104,16 +106,8 @@ void chat_update()
                 char* lineCh = lineBuffer;
                 safe_strcpy(lineBuffer, chat_history_get(i), CHAT_INPUT_SIZE + 10);
 
-                char url[256];
-                char* urlBuffer = url;
-                url_from_string(urlBuffer, lineBuffer, sizeof(url));
-
-                if (mY > y && mY - 15 < y && url != NULL) {
-                    _chatMouseOver = i;
-                    input_set_cursor(CURSOR_HAND_POINT);
-                    if (cursorState->left == CURSOR_RELEASED) {
-                        chat_handle_press(lineBuffer);
-                    }
+                if (mY > y && mY - 15 < y && !str_is_null_or_empty(lineCh)) {
+                    chat_handle_hover_msg(lineCh, i, cursorState, mX - _chatLeft, mY - y);
                 }
             }
         }
@@ -216,14 +210,23 @@ void chat_draw(rct_drawpixelinfo * dpi)
     }
 }
 
-void chat_handle_press(char* handle)
+void chat_handle_hover_msg(char* msg, sint32 msgIndex, const CursorState* curState, sint32 rMouseX, sint32 rMouseY)
 {
+    _chatMouseOver = msgIndex;
+
+    // TODO use relative mouse x/y coordinates to determine the distance
+    // into the message to check. This will allow multiple urls in a single
+    // message by skipping urls before the hovered url.
+    // Take into account user will usually hover halfway into a url.
     char url[256];
     char* urlBuffer = url;
-    url_from_string(urlBuffer, handle, sizeof(url));
-    
-    if (url != NULL) {
-        platform_open_browser(url);
+    url_from_string(urlBuffer, msg, sizeof(url));
+
+    if (!str_is_null_or_empty(url)) {
+        input_set_cursor(CURSOR_HAND_POINT);
+        if (curState->left == CURSOR_RELEASED) {
+            platform_open_browser(url);
+        }
     }
 }
 
