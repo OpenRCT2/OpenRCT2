@@ -7,6 +7,7 @@
 - Feature: [#5991] Allow all tracked rides that can be tested without guests to the Track Designer
 - Fix: [#2127, #2229, #5586] Mountain tool cost calculation
 - Fix: [#3589] Crash due to invalid footpathEntry in path_paint
+- Fix: [#3852] Constructing path not clearing scenery on server.
 - Fix: [#4455] Crash in window_sign_invalidate due to original bug
 - Fix: [#4715] Fix OpenGL rendering of water when zoomed. See #5890.
 - Fix: [#4931] Crash in path_paint - footpathentry was null
