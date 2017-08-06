@@ -19,6 +19,7 @@
 #include <openrct2/network/network.h>
 #include <openrct2/network/ServerList.h>
 #include <openrct2/Context.h>
+#include <openrct2-ui/windows/Window.h>
 
 extern "C"
 {

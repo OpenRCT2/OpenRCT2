@@ -18,6 +18,7 @@
 #include <openrct2/network/network.h>
 #include <openrct2/world/Climate.h>
 #include <openrct2/core/Math.hpp>
+#include <openrct2-ui/windows/Window.h>
 
 extern "C" {
     #include <openrct2/interface/widget.h>

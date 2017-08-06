@@ -16,6 +16,7 @@
 
 
 #include <openrct2/core/Util.hpp>
+#include <openrct2-ui/windows/Window.h>
 
 extern "C"
 {

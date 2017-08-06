@@ -17,6 +17,7 @@
 #include <openrct2/config/Config.h>
 #include <openrct2/Context.h>
 #include <openrct2/ParkImporter.h>
+#include <openrct2-ui/windows/Window.h>
 
 extern "C"
 {

@@ -31,6 +31,7 @@
 #include <openrct2/title/TitleSequenceManager.h>
 #include <openrct2/core/Math.hpp>
 #include <openrct2/ui/UiContext.h>
+#include <openrct2-ui/windows/Window.h>
 
 extern "C"
 {
