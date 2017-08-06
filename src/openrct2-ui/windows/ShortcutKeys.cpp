@@ -16,13 +16,12 @@
 
 #include <openrct2/config/Config.h>
 #include "../input/KeyboardShortcuts.h"
+#include "Window.h"
 
 extern "C"
 {
-#include <openrct2/interface/window.h>
 #include <openrct2/interface/widget.h>
 #include <openrct2/localisation/localisation.h>
-#include <openrct2/platform/platform.h>
 }
 
 #define WW 420

@@ -14,14 +14,14 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../Context.h"
+#include <openrct2/Context.h>
 
 extern "C" {
-    #include "../interface/widget.h"
-    #include "../localisation/localisation.h"
-    #include "../paint/map_element/map_element.h"
-    #include "../paint/paint.h"
-    #include "../ride/track_paint.h"
+    #include <openrct2/interface/widget.h>
+    #include <openrct2/localisation/localisation.h>
+    #include <openrct2/paint/map_element/map_element.h>
+    #include <openrct2/paint/paint.h>
+    #include <openrct2/ride/track_paint.h>
 }
 
 enum WINDOW_DEBUG_PAINT_WIDGET_IDX
@@ -78,13 +78,16 @@ static rct_window_event_list window_debug_paint_events = {
     NULL
 };
 
-static void _window_debug_paint_open()
+rct_window * window_debug_paint_open()
 {
-    // Check if window is already open
-    if (window_find_by_class(WC_DEBUG_PAINT) != NULL)
-        return;
+    rct_window * window;
 
-    rct_window * window = window_create(
+    // Check if window is already open
+    window = window_find_by_class(WC_DEBUG_PAINT);
+    if (window != NULL)
+        return window;
+
+    window = window_create(
         16,
         context_get_height() - 16 - 33 - WINDOW_HEIGHT,
         WINDOW_WIDTH,
@@ -101,6 +104,8 @@ static void _window_debug_paint_open()
 
     window->colours[0] = TRANSLUCENT(COLOUR_BLACK);
     window->colours[1] = COLOUR_GREY;
+
+    return window;
 }
 
 static void window_debug_paint_mouseup(rct_window * w, rct_widgetindex widgetIndex)
@@ -133,12 +138,4 @@ static void window_debug_paint_invalidate(rct_window * w)
 static void window_debug_paint_paint(rct_window * w, rct_drawpixelinfo * dpi)
 {
     window_draw_widgets(w, dpi);
-}
-
-extern "C"
-{
-    void window_debug_paint_open()
-    {
-        _window_debug_paint_open();
-    }
 }

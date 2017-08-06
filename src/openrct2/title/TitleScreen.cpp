@@ -100,7 +100,7 @@ void TitleScreen::Load()
     if (gOpenRCT2ShowChangelog)
     {
         gOpenRCT2ShowChangelog = false;
-        window_changelog_open();
+        context_open_window(WC_CHANGELOG);
     }
 
     if (_sequencePlayer != nullptr)
@@ -174,10 +174,10 @@ void TitleScreen::ChangeSequence(sint32 preset)
  */
 void TitleScreen::CreateWindows()
 {
-    window_title_menu_open();
-    window_title_exit_open();
-    window_title_options_open();
-    window_title_logo_open();
+    context_open_window(WC_TITLE_MENU);
+    context_open_window(WC_TITLE_EXIT);
+    context_open_window(WC_TITLE_OPTIONS);
+    context_open_window(WC_TITLE_LOGO);
     window_resize_gui(context_get_width(), context_get_height());
     _hideVersionInfo = false;
 }

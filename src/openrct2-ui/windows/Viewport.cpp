@@ -16,12 +16,12 @@
 
 extern "C"
 {
-    #include "../audio/audio.h"
-    #include "../game.h"
-    #include "../localisation/localisation.h"
-    #include "../sprites.h"
-    #include "../interface/viewport.h"
-    #include "../interface/widget.h"
+    #include <openrct2/audio/audio.h>
+    #include <openrct2/game.h>
+    #include <openrct2/localisation/localisation.h>
+    #include <openrct2/sprites.h>
+    #include <openrct2/interface/viewport.h>
+    #include <openrct2/interface/widget.h>
 }
 
 #define INITIAL_WIDTH 500
@@ -93,7 +93,7 @@ static sint32 _viewportNumber = 1;
 /**
  * Creates a custom viewport window.
  */
-static void _window_viewport_open()
+rct_window * window_viewport_open()
 {
     rct_window *w = window_create_auto_pos(
         INITIAL_WIDTH, INITIAL_HEIGHT,
@@ -121,6 +121,8 @@ static void _window_viewport_open()
     }
 
     w->viewport->flags |= VIEWPORT_FLAG_SOUND_ON;
+
+    return w;
 }
 
 static void window_viewport_anchor_border_widgets(rct_window *w)
@@ -231,12 +233,4 @@ static void window_viewport_paint(rct_window *w, rct_drawpixelinfo *dpi)
     // Draw viewport
     if (w->viewport != NULL)
         window_draw_viewport(dpi, w);
-}
-
-extern "C"
-{
-    void window_viewport_open()
-    {
-        _window_viewport_open();
-    }
 }

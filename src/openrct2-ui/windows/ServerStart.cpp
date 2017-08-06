@@ -14,17 +14,17 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../config/Config.h"
-#include "../ParkImporter.h"
-#include "../network/network.h"
+#include <openrct2/config/Config.h>
+#include <openrct2/ParkImporter.h>
+#include <openrct2/network/network.h>
 
 extern "C"
 {
-#include "../interface/chat.h"
-#include "../interface/themes.h"
-#include "../interface/widget.h"
-#include "../localisation/localisation.h"
-#include "../util/util.h"
+#include <openrct2/interface/chat.h>
+#include <openrct2/interface/themes.h>
+#include <openrct2/interface/widget.h>
+#include <openrct2/localisation/localisation.h>
+#include <openrct2/util/util.h>
 }
 
 static char _port[7];
@@ -109,14 +109,14 @@ static rct_window_event_list window_server_start_events = {
     NULL
 };
 
-void window_server_start_open()
+rct_window * window_server_start_open()
 {
     rct_window* window;
 
     // Check if window is already open
     window = window_bring_to_front_by_class(WC_SERVER_START);
     if (window != NULL)
-        return;
+        return window;
 
     window = window_create_centred(WW, WH, &window_server_start_events, WC_SERVER_START, WF_10);
 
@@ -156,6 +156,8 @@ void window_server_start_open()
     safe_strcpy(_name, gConfigNetwork.server_name, sizeof(_name));
     safe_strcpy(_description, gConfigNetwork.server_description, sizeof(_description));
     safe_strcpy(_greeting, gConfigNetwork.server_greeting, sizeof(_greeting));
+
+    return window;
 }
 
 static void window_server_start_close(rct_window *w)

@@ -16,9 +16,9 @@
 
 extern "C"
 {
-    #include "../localisation/localisation.h"
-    #include "../sprites.h"
-    #include "../interface/widget.h"
+    #include <openrct2/localisation/localisation.h>
+    #include <openrct2/sprites.h>
+    #include <openrct2/interface/widget.h>
 }
 
 static rct_widget window_title_logo_widgets[] = {
@@ -62,7 +62,7 @@ static rct_window_event_list window_title_logo_events = {
  * Creates the window containing the logo and the expansion packs on the title screen.
  *  rct2: 0x0066B679 (part of 0x0066B3E8)
  */
-static void _window_title_logo_open()
+rct_window * window_title_logo_open()
 {
     rct_window *window = window_create(0, 0, 200, 106, &window_title_logo_events, WC_TITLE_LOGO, WF_STICK_TO_BACK | WF_TRANSPARENT);
     window->widgets = window_title_logo_widgets;
@@ -70,6 +70,8 @@ static void _window_title_logo_open()
     window->colours[0] = TRANSLUCENT(COLOUR_GREY);
     window->colours[1] = TRANSLUCENT(COLOUR_GREY);
     window->colours[2] = TRANSLUCENT(COLOUR_GREY);
+
+    return window;
 }
 
 /**
@@ -82,12 +84,4 @@ static void window_title_logo_paint(rct_window *w, rct_drawpixelinfo *dpi)
     sint32 y = 2;
     gfx_draw_sprite(dpi, SPR_G2_LOGO, w->x + x, w->y + y, 0);
     gfx_draw_sprite(dpi, SPR_G2_TITLE, w->x + x + 104, w->y + y + 18, 0);
-}
-
-extern "C"
-{
-    void window_title_logo_open()
-    {
-        _window_title_logo_open();
-    }
 }

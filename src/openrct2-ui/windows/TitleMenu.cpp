@@ -14,19 +14,19 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../config/Config.h"
-#include "../Context.h"
-#include "../ParkImporter.h"
+#include <openrct2/config/Config.h>
+#include <openrct2/Context.h>
+#include <openrct2/ParkImporter.h>
 
 extern "C"
 {
-    #include "../editor.h"
-    #include "../game.h"
-    #include "../input.h"
-    #include "../interface/widget.h"
-#include "../localisation/localisation.h"
-    #include "../sprites.h"
-#include "dropdown.h"
+    #include <openrct2/editor.h>
+    #include <openrct2/game.h>
+    #include <openrct2/input.h>
+    #include <openrct2/interface/widget.h>
+#include <openrct2/localisation/localisation.h>
+    #include <openrct2/sprites.h>
+#include <openrct2/windows/dropdown.h>
 }
 
 enum {
@@ -87,7 +87,7 @@ static rct_window_event_list window_title_menu_events = {
  * Creates the window containing the menu buttons on the title screen.
  *  rct2: 0x0066B5C0 (part of 0x0066B3E8)
  */
-static void _window_title_menu_open()
+rct_window * window_title_menu_open()
 {
     rct_window* window;
 
@@ -127,6 +127,8 @@ static void _window_title_menu_open()
     window->x = (context_get_width() - window->width) / 2;
 
     window_init_scroll_widgets(window);
+
+    return window;
 }
 
 static void window_title_menu_scenarioselect_callback(const utf8 *path)
@@ -171,7 +173,7 @@ static void window_title_menu_mouseup(rct_window *w, rct_widgetindex widgetIndex
         else {
             window_close_by_class(WC_SCENARIO_SELECT);
             window_close_by_class(WC_LOADSAVE);
-            window_server_list_open();
+            context_open_window(WC_SERVER_LIST);
         }
         break;
     }
@@ -224,12 +226,4 @@ static void window_title_menu_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
     gfx_filter_rect(dpi, w->x, w->y, w->x + w->width - 1, w->y + 82 - 1, PALETTE_51);
     window_draw_widgets(w, dpi);
-}
-
-extern "C"
-{
-    void window_title_menu_open()
-    {
-        _window_title_menu_open();
-    }
 }

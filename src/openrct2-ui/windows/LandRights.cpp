@@ -14,17 +14,17 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../Context.h"
-#include "../core/Math.hpp"
+#include <openrct2/Context.h>
+#include <openrct2/core/Math.hpp>
 
 extern "C"
 {
-#include "../game.h"
-#include "../input.h"
-#include "../interface/land_tool.h"
-#include "../interface/viewport.h"
-#include "../interface/widget.h"
-#include "../localisation/localisation.h"
+#include <openrct2/game.h>
+#include <openrct2/input.h>
+#include <openrct2/interface/land_tool.h>
+#include <openrct2/interface/viewport.h>
+#include <openrct2/interface/widget.h>
+#include <openrct2/localisation/localisation.h>
 }
 
 enum WINDOW_WATER_WIDGET_IDX {
@@ -104,13 +104,14 @@ static rct_window_event_list window_land_rights_events = {
 static uint8 _landRightsMode;
 static money32 _landRightsCost;
 
-void window_land_rights_open()
+rct_window * window_land_rights_open()
 {
     rct_window* window;
 
     // Check if window is already open
-    if (window_find_by_class(WC_LAND_RIGHTS) != NULL)
-        return;
+    window = window_find_by_class(WC_LAND_RIGHTS);
+    if (window != NULL)
+        return window;
 
     window = window_create(context_get_width() - 98, 29, 98, 94, &window_land_rights_events, WC_LAND_RIGHTS, 0);
     window->widgets = window_land_rights_widgets;
@@ -134,6 +135,8 @@ void window_land_rights_open()
     if (gLandRemainingConstructionSales == 0) {
         show_construction_rights();
     }
+
+    return window;
 }
 
 static void window_land_rights_close(rct_window *w)

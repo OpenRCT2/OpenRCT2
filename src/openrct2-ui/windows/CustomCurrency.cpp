@@ -14,13 +14,13 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../config/Config.h"
+#include <openrct2/config/Config.h>
 
 extern "C" {
-    #include "../localisation/localisation.h"
-    #include "../interface/widget.h"
-    #include "../util/util.h"
-    #include "dropdown.h"
+    #include <openrct2/localisation/localisation.h>
+    #include <openrct2/interface/widget.h>
+    #include <openrct2/util/util.h>
+    #include <openrct2/windows/dropdown.h>
 }
 
 enum WINDOW_CUSTOM_CURRENCY_WIDGET_IDX {
@@ -88,14 +88,14 @@ static rct_window_event_list _windowCustomCurrencyEvents = {
 };
 
 
-static void _custom_currency_window_open()
+rct_window * custom_currency_window_open()
 {
     rct_window* window;
 
     // Check if window is already open
     window = window_bring_to_front_by_class(WC_CUSTOM_CURRENCY_CONFIG);
     if(window != NULL)
-        return;
+        return window;
 
     window = window_create_centred(
         400,
@@ -119,6 +119,8 @@ static void _custom_currency_window_open()
     window->colours[0] = COLOUR_LIGHT_BROWN;
     window->colours[1] = COLOUR_LIGHT_BROWN;
     window->colours[2] = COLOUR_LIGHT_BROWN;
+
+    return window;
 }
 
 
@@ -313,13 +315,5 @@ static void custom_currency_window_paint(rct_window *w, rct_drawpixelinfo *dpi)
             w->x + window_custom_currency_widgets[WIDX_AFFIX_DROPDOWN].left + 1,
             w->y + window_custom_currency_widgets[WIDX_AFFIX_DROPDOWN].top
         );
-    }
-}
-
-extern "C"
-{
-    void custom_currency_window_open()
-    {
-        _custom_currency_window_open();
     }
 }

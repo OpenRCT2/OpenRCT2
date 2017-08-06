@@ -15,6 +15,7 @@
 #pragma endregion
 
 #include <openrct2/ui/WindowManager.h>
+#include <openrct2-ui/windows/Window.h>
 #include "input/input.h"
 #include "input/KeyboardShortcuts.h"
 #include "WindowManager.h"
@@ -27,8 +28,50 @@ public:
     rct_window * OpenWindow(rct_windowclass wc) override
     {
         switch (wc) {
+        case WC_ABOUT:
+            return window_about_open();
+        case WC_CHANGELOG:
+            return window_changelog_open();
+        case WC_CHEATS:
+            return window_cheats_open();
+        case WC_CUSTOM_CURRENCY_CONFIG:
+            return custom_currency_window_open();
+        case WC_DEBUG_PAINT:
+            return window_debug_paint_open();
+        case WC_LAND_RIGHTS:
+            return window_land_rights_open();
+        case WC_MAPGEN:
+            return window_mapgen_open();
+        case WC_MULTIPLAYER:
+            return window_multiplayer_open();
+        case WC_MUSIC_CREDITS:
+            return window_music_credits_open();
+        case WC_RECENT_NEWS:
+            return window_news_open();
+        case WC_NOTIFICATION_OPTIONS:
+            return window_news_options_open();
+        case WC_OPTIONS:
+            return window_options_open();
+        case WC_SAVE_PROMPT:
+            return window_save_prompt_open();
+        case WC_SERVER_LIST:
+            return window_server_list_open();
+        case WC_SERVER_START:
+            return window_server_start_open();
         case WC_KEYBOARD_SHORTCUT_LIST:
             return window_shortcut_keys_open();
+        case WC_THEMES:
+            return window_themes_open();
+        case WC_TITLE_EXIT:
+            return window_title_exit_open();
+        case WC_TITLE_LOGO:
+            return window_title_logo_open();
+        case WC_TITLE_MENU:
+            return window_title_menu_open();
+        case WC_TITLE_OPTIONS:
+            return window_title_options_open();
+        case WC_VIEWPORT:
+            return window_viewport_open();
         default:
             return nullptr;
         }

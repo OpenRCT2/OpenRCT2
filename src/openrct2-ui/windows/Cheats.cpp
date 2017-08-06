@@ -14,18 +14,18 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../config/Config.h"
-#include "../network/network.h"
-#include "../world/Climate.h"
-#include "../core/Math.hpp"
+#include <openrct2/config/Config.h>
+#include <openrct2/network/network.h>
+#include <openrct2/world/Climate.h>
+#include <openrct2/core/Math.hpp>
 
 extern "C" {
-    #include "../interface/widget.h"
-    #include "../localisation/localisation.h"
-    #include "../sprites.h"
-    #include "../util/util.h"
-    #include "error.h"
-    #include "dropdown.h"
+    #include <openrct2/interface/widget.h>
+    #include <openrct2/localisation/localisation.h>
+    #include <openrct2/sprites.h>
+    #include <openrct2/util/util.h>
+    #include <openrct2/windows/error.h>
+    #include <openrct2/windows/dropdown.h>
 }
 
 #define CHEATS_MONEY_DEFAULT MONEY(10000,00)
@@ -476,14 +476,14 @@ static rct_string_id window_cheats_page_titles[] = {
 
 static void window_cheats_draw_tab_images(rct_drawpixelinfo *dpi, rct_window *w);
 
-static void _window_cheats_open()
+rct_window * window_cheats_open()
 {
     rct_window* window;
 
     // Check if window is already open
     window = window_bring_to_front_by_class(WC_CHEATS);
     if (window != NULL)
-        return;
+        return window;
 
     window = window_create(32, 32, WW, WH, &window_cheats_money_events, WC_CHEATS, 0);
     window->widgets = window_cheats_money_widgets;
@@ -492,6 +492,8 @@ static void _window_cheats_open()
     window_init_scroll_widgets(window);
     window_cheats_set_page(window, WINDOW_CHEATS_PAGE_MONEY);
     park_rating_spinner_value = get_forced_park_rating() >= 0 ? get_forced_park_rating() : 999;
+
+    return window;
 }
 
 static void window_cheats_money_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget)
@@ -1014,12 +1016,4 @@ static void window_cheats_set_page(rct_window *w, sint32 page)
     w->widgets[WIDX_BACKGROUND].bottom = maxY - 1;
     w->widgets[WIDX_PAGE_BACKGROUND].bottom = maxY - 1;
     window_invalidate(w);
-}
-
-extern "C"
-{
-    void window_cheats_open()
-    {
-        _window_cheats_open();
-    }
 }

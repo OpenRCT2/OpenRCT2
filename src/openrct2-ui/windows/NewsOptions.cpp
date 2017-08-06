@@ -14,14 +14,14 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../config/Config.h"
-#include "../core/Util.hpp"
+#include <openrct2/config/Config.h>
+#include <openrct2/core/Util.hpp>
 
 extern "C"
 {
-#include "../interface/widget.h"
-#include "../localisation/localisation.h"
-#include "../sprites.h"
+#include <openrct2/interface/widget.h>
+#include <openrct2/localisation/localisation.h>
+#include <openrct2/sprites.h>
 }
 
 enum {
@@ -129,7 +129,7 @@ static void window_news_options_set_page(rct_window *w, sint32 page);
 static void window_news_options_draw_tab_images(rct_window *w, rct_drawpixelinfo *dpi);
 static bool *get_notification_value_ptr(const notification_def *ndef);
 
-void window_news_options_open()
+rct_window * window_news_options_open()
 {
     rct_window* window;
 
@@ -154,6 +154,8 @@ void window_news_options_open()
         window->colours[1] = COLOUR_LIGHT_BLUE;
         window->colours[2] = COLOUR_LIGHT_BLUE;
     }
+
+    return window;
 }
 
 static void window_news_options_mouseup(rct_window *w, rct_widgetindex widgetIndex)

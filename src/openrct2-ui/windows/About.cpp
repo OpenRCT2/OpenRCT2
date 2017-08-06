@@ -14,13 +14,14 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../OpenRCT2.h"
+#include <openrct2/OpenRCT2.h>
+#include <openrct2/Context.h>
 
 extern "C"
 {
-    #include "../interface/widget.h"
-    #include "../localisation/localisation.h"
-    #include "../sprites.h"
+    #include <openrct2/interface/widget.h>
+    #include <openrct2/localisation/localisation.h>
+    #include <openrct2/sprites.h>
 }
 
 #define WW 400
@@ -163,14 +164,14 @@ static void window_about_set_page(rct_window *w, sint32 page);
  *
  *  rct2: 0x0066D2AC
  */
-static void _window_about_open()
+rct_window * window_about_open()
 {
     rct_window* window;
 
     // Check if window is already open
     window = window_bring_to_front_by_class(WC_ABOUT);
     if (window != NULL)
-        return;
+        return window;
 
     window = window_create_centred(
         WW,
@@ -186,6 +187,8 @@ static void _window_about_open()
     window->colours[0] = COLOUR_GREY;
     window->colours[1] = COLOUR_LIGHT_BLUE;
     window->colours[2] = COLOUR_LIGHT_BLUE;
+
+    return window;
 }
 
 #pragma region OpenRCT2
@@ -201,7 +204,7 @@ static void window_about_openrct2_mouseup(rct_window *w, rct_widgetindex widgetI
         window_about_set_page(w, widgetIndex - WIDX_TAB_ABOUT_OPENRCT2);
         break;
     case WIDX_CHANGELOG:
-        window_changelog_open();
+        context_open_window(WC_CHANGELOG);
         break;
     }
 }
@@ -269,7 +272,7 @@ static void window_about_rct2_mouseup(rct_window *w, rct_widgetindex widgetIndex
         window_about_set_page(w, widgetIndex - WIDX_TAB_ABOUT_OPENRCT2);
         break;
     case WIDX_MUSIC_CREDITS:
-        window_music_credits_open();
+        context_open_window(WC_MUSIC_CREDITS);
         break;
     }
 }
@@ -330,12 +333,4 @@ static void window_about_set_page(rct_window *w, sint32 page)
 
     window_init_scroll_widgets(w);
     window_invalidate(w);
-}
-
-extern "C"
-{
-    void window_about_open()
-    {
-        _window_about_open();
-    }
 }

@@ -156,9 +156,6 @@ extern "C"
     sint32 keyboard_shortcuts_get_from_key(sint32 key);
     void keyboard_shortcuts_format_string(char * buffer, size_t bufferSize, sint32 shortcut);
 
-    rct_window * window_shortcut_keys_open();
-    rct_window * window_shortcut_change_open(sint32 selected_key);
-
     void keyboard_shortcut_handle(sint32 key);
     void keyboard_shortcut_handle_command(sint32 shortcutIndex);
     void keyboard_shortcut_format_string(char *buffer, size_t size, uint16 shortcutKey);
