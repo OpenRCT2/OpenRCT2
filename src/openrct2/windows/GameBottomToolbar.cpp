@@ -206,7 +206,7 @@ static void window_game_bottom_toolbar_mouseup(rct_window *w, rct_widgetindex wi
         break;
     case WIDX_RIGHT_OUTSET:
     case WIDX_DATE:
-        window_news_open();
+        context_open_window(WC_RECENT_NEWS);
         break;
     }
 }

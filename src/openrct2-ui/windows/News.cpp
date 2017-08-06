@@ -14,17 +14,18 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../core/Math.hpp"
+#include <openrct2/core/Math.hpp>
+#include <openrct2/Context.h>
 
 extern "C"
 {
-#include "../audio/audio.h"
-#include "../management/news_item.h"
-#include "../localisation/localisation.h"
-#include "../world/sprite.h"
-#include "../peep/staff.h"
-#include "../sprites.h"
-#include "../interface/widget.h"
+#include <openrct2/audio/audio.h>
+#include <openrct2/management/news_item.h>
+#include <openrct2/localisation/localisation.h>
+#include <openrct2/world/sprite.h>
+#include <openrct2/peep/staff.h>
+#include <openrct2/sprites.h>
+#include <openrct2/interface/widget.h>
 }
 
 enum WINDOW_NEWS_WIDGET_IDX {
@@ -87,7 +88,7 @@ static rct_window_event_list window_news_events = {
  *
  *  rct2: 0x0066E464
  */
-void window_news_open()
+rct_window * window_news_open()
 {
     rct_window* window;
 
@@ -117,6 +118,7 @@ void window_news_open()
     window->scrolls[0].v_top = Math::Max(0, height - (widget->bottom - widget->top - 1));
     widget_scroll_update_thumbs(window, WIDX_SCROLL);
 
+    return window;
 }
 
 /**
@@ -130,7 +132,7 @@ static void window_news_mouseup(rct_window *w, rct_widgetindex widgetIndex)
         window_close(w);
         break;
     case WIDX_SETTINGS:
-        window_news_options_open();
+        context_open_window(WC_NOTIFICATION_OPTIONS);
         break;
     }
 }

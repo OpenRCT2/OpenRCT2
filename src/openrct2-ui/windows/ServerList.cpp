@@ -15,20 +15,21 @@
 #pragma endregion
 
 #include <mutex>
-#include "../config/Config.h"
-#include "../network/network.h"
-#include "../network/ServerList.h"
+#include <openrct2/config/Config.h>
+#include <openrct2/network/network.h>
+#include <openrct2/network/ServerList.h>
+#include <openrct2/Context.h>
 
 extern "C"
 {
-#include "../interface/widget.h"
-#include "../localisation/localisation.h"
-    #include "../network/http.h"
-    #include "../sprites.h"
-    #include "../util/util.h"
-    #include "../windows/dropdown.h"
-    #include "../windows/tooltip.h"
-    #include "error.h"
+#include <openrct2/interface/widget.h>
+#include <openrct2/localisation/localisation.h>
+    #include <openrct2/network/http.h>
+    #include <openrct2/sprites.h>
+    #include <openrct2/util/util.h>
+    #include <openrct2/windows/dropdown.h>
+    #include <openrct2/windows/tooltip.h>
+    #include <openrct2/windows/error.h>
 }
 
 #define WWIDTH_MIN 500
@@ -137,49 +138,48 @@ static void fetch_servers();
 static void fetch_servers_callback(http_response_t* response);
 #endif
 
-extern "C"
+rct_window * window_server_list_open()
 {
-    void window_server_list_open()
-    {
-        rct_window* window;
+    rct_window* window;
 
-        // Check if window is already open
-        window = window_bring_to_front_by_class(WC_SERVER_LIST);
-        if (window != NULL)
-            return;
+    // Check if window is already open
+    window = window_bring_to_front_by_class(WC_SERVER_LIST);
+    if (window != NULL)
+        return window;
 
-        window = window_create_centred(WWIDTH_MIN, WHEIGHT_MIN, &window_server_list_events, WC_SERVER_LIST, WF_10 | WF_RESIZABLE);
+    window = window_create_centred(WWIDTH_MIN, WHEIGHT_MIN, &window_server_list_events, WC_SERVER_LIST, WF_10 | WF_RESIZABLE);
 
-        window_server_list_widgets[WIDX_PLAYER_NAME_INPUT].string = _playerName;
-        window->widgets = window_server_list_widgets;
-        window->enabled_widgets = (
-            (1 << WIDX_CLOSE) |
-            (1 << WIDX_PLAYER_NAME_INPUT) |
-            (1 << WIDX_FETCH_SERVERS) |
-            (1 << WIDX_ADD_SERVER) |
-            (1 << WIDX_START_SERVER)
-        );
-        window_init_scroll_widgets(window);
-        window->no_list_items = 0;
-        window->selected_list_item = -1;
-        window->frame_no = 0;
-        window->min_width = 320;
-        window->min_height = 90;
-        window->max_width = window->min_width;
-        window->max_height = window->min_height;
+    window_server_list_widgets[WIDX_PLAYER_NAME_INPUT].string = _playerName;
+    window->widgets = window_server_list_widgets;
+    window->enabled_widgets = (
+        (1 << WIDX_CLOSE) |
+        (1 << WIDX_PLAYER_NAME_INPUT) |
+        (1 << WIDX_FETCH_SERVERS) |
+        (1 << WIDX_ADD_SERVER) |
+        (1 << WIDX_START_SERVER)
+    );
+    window_init_scroll_widgets(window);
+    window->no_list_items = 0;
+    window->selected_list_item = -1;
+    window->frame_no = 0;
+    window->min_width = 320;
+    window->min_height = 90;
+    window->max_width = window->min_width;
+    window->max_height = window->min_height;
 
-        window->page = 0;
-        window->list_information_type = 0;
+    window->page = 0;
+    window->list_information_type = 0;
 
-        window_set_resize(window, WWIDTH_MIN, WHEIGHT_MIN, WWIDTH_MAX, WHEIGHT_MAX);
+    window_set_resize(window, WWIDTH_MIN, WHEIGHT_MIN, WWIDTH_MAX, WHEIGHT_MAX);
 
-        safe_strcpy(_playerName, gConfigNetwork.player_name, sizeof(_playerName));
+    safe_strcpy(_playerName, gConfigNetwork.player_name, sizeof(_playerName));
 
-        server_list_load_server_entries();
-        window->no_list_items = _numServerEntries;
+    server_list_load_server_entries();
+    window->no_list_items = _numServerEntries;
 
-        fetch_servers();
-    }
+    fetch_servers();
+
+    return window;
 }
 
 static void window_server_list_close(rct_window *w)
@@ -216,7 +216,7 @@ static void window_server_list_mouseup(rct_window *w, rct_widgetindex widgetInde
         window_text_input_open(w, widgetIndex, STR_ADD_SERVER, STR_ENTER_HOSTNAME_OR_IP_ADDRESS, STR_NONE, 0, 128);
         break;
     case WIDX_START_SERVER:
-        window_server_start_open();
+        context_open_window(WC_SERVER_START);
         break;
     }
 }

@@ -14,15 +14,16 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../Context.h"
-#include "../OpenRCT2.h"
-#include "../core/Math.hpp"
-#include "../core/Memory.hpp"
+#include <openrct2/Context.h>
+#include <openrct2/OpenRCT2.h>
+#include <openrct2/core/Math.hpp>
+#include <openrct2/core/Memory.hpp>
 
 extern "C" {
-    #include "../interface/widget.h"
-    #include "../localisation/localisation.h"
-    #include "../util/util.h"
+    #include <openrct2/interface/widget.h>
+    #include <openrct2/localisation/localisation.h>
+    #include <openrct2/platform/platform.h>
+    #include <openrct2/util/util.h>
 }
 
 enum {
@@ -95,7 +96,7 @@ static char **_changelogLines = NULL;
 static sint32 _changelogNumLines = 0;
 static sint32 _changelogLongestLineWidth = 0;
 
-static rct_window *_window_changelog_open()
+rct_window * window_changelog_open()
 {
     rct_window* window;
 
@@ -270,12 +271,4 @@ static void window_changelog_dispose_file()
     SafeFree(_changelogLines);
     _changelogTextSize = 0;
     _changelogNumLines = 0;
-}
-
-extern "C"
-{
-    rct_window *window_changelog_open()
-    {
-        return _window_changelog_open();
-    }
 }

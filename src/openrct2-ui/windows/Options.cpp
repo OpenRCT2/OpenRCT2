@@ -22,31 +22,31 @@
  *      Padding between the widgets and the window needs reducing, an artifact from originally being inside group boxes.
  */
 
-#include "../audio/AudioMixer.h"
-#include "../config/Config.h"
-#include "../Context.h"
-#include "../drawing/IDrawingEngine.h"
-#include "../network/network.h"
-#include "../title/TitleScreen.h"
-#include "../title/TitleSequenceManager.h"
-#include "../core/Math.hpp"
-#include "../ui/UiContext.h"
+#include <openrct2/audio/AudioMixer.h>
+#include <openrct2/config/Config.h>
+#include <openrct2/Context.h>
+#include <openrct2/drawing/IDrawingEngine.h>
+#include <openrct2/network/network.h>
+#include <openrct2/title/TitleScreen.h>
+#include <openrct2/title/TitleSequenceManager.h>
+#include <openrct2/core/Math.hpp>
+#include <openrct2/ui/UiContext.h>
 
 extern "C"
 {
-#include "../audio/audio.h"
-#include "../interface/themes.h"
-#include "../interface/viewport.h"
-#include "../interface/widget.h"
-#include "../localisation/currency.h"
-#include "../localisation/date.h"
-#include "../localisation/language.h"
-#include "../localisation/localisation.h"
-#include "../platform/platform.h"
-#include "../sprites.h"
-#include "../util/util.h"
-#include "dropdown.h"
-#include "error.h"
+#include <openrct2/audio/audio.h>
+#include <openrct2/interface/themes.h>
+#include <openrct2/interface/viewport.h>
+#include <openrct2/interface/widget.h>
+#include <openrct2/localisation/currency.h>
+#include <openrct2/localisation/date.h>
+#include <openrct2/localisation/language.h>
+#include <openrct2/localisation/localisation.h>
+#include <openrct2/platform/platform.h>
+#include <openrct2/sprites.h>
+#include <openrct2/util/util.h>
+#include <openrct2/windows/dropdown.h>
+#include <openrct2/windows/error.h>
 }
 
 enum WINDOW_OPTIONS_PAGE {
@@ -580,14 +580,14 @@ static sint32 _numResolutions = 0;
 *
 *  rct2: 0x006BAC5B
 */
-void window_options_open()
+rct_window * window_options_open()
 {
     rct_window* w;
 
     // Check if window is already open
     w = window_bring_to_front_by_class(WC_OPTIONS);
     if (w != NULL)
-        return;
+        return w;
 
     w = window_create_centred(WW, WH, &window_options_events, WC_OPTIONS, 0);
     w->widgets = window_options_display_widgets;
@@ -595,6 +595,8 @@ void window_options_open()
     w->page = WINDOW_OPTIONS_PAGE_DISPLAY;
     w->frame_no = 0;
     window_init_scroll_widgets(w);
+
+    return w;
 }
 
 static void window_options_close(rct_window *w)
@@ -795,7 +797,7 @@ static void window_options_mouseup(rct_window *w, rct_widgetindex widgetIndex)
             window_invalidate(w);
             break;
         case WIDX_THEMES_BUTTON:
-            window_themes_open();
+            context_open_window(WC_THEMES);
             window_invalidate(w);
             break;
         case WIDX_SELECT_BY_TRACK_TYPE:
@@ -1356,7 +1358,7 @@ static void window_options_dropdown(rct_window *w, rct_widgetindex widgetIndex, 
         case WIDX_CURRENCY_DROPDOWN:
             if(dropdownIndex == CURRENCY_CUSTOM + 1) { // Add 1 because the separator occupies a position
                 gConfigGeneral.currency_format = (sint8)dropdownIndex - 1;
-                custom_currency_window_open();
+                context_open_window(WC_CUSTOM_CURRENCY_CONFIG);
             } else {
                 gConfigGeneral.currency_format = (sint8)dropdownIndex;
             }

@@ -32,6 +32,7 @@
 #include <openrct2/interface/viewport.h>
 #include <openrct2/interface/widget.h>
 #include <openrct2/interface/window.h>
+#include <openrct2/Context.h>
 #include "KeyboardShortcuts.h"
 
 uint8 gKeyboardShortcutChangeId;
@@ -446,7 +447,7 @@ static void shortcut_show_recent_messages()
         return;
 
     if (!(gScreenFlags & (SCREEN_FLAGS_SCENARIO_EDITOR | SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)))
-        window_news_open();
+        context_open_window(WC_RECENT_NEWS);
 }
 
 static void shortcut_show_map()
@@ -493,7 +494,7 @@ static void shortcut_open_cheat_window()
         window_close(window);
         return;
     }
-    window_cheats_open();
+    context_open_window(WC_CHEATS);
 }
 
 static void shortcut_clear_scenery()
@@ -535,7 +536,7 @@ static void shortcut_quick_save_game()
 
 static void shortcut_show_options()
 {
-    window_options_open();
+    context_open_window(WC_OPTIONS);
 }
 
 static void shortcut_mute_sound()
@@ -551,7 +552,7 @@ static void shortcut_windowed_mode_toggle()
 static void shortcut_show_multiplayer()
 {
     if (network_get_mode() != NETWORK_MODE_NONE)
-        window_multiplayer_open();
+        context_open_window(WC_MULTIPLAYER);
 }
 
 static void shortcut_orginal_painting_toggle()
@@ -567,7 +568,7 @@ static void shortcut_debug_paint_toggle()
     if (window != NULL) {
         window_close(window);
     } else {
-        window_debug_paint_open();
+        context_open_window(WC_DEBUG_PAINT);
     }
 }
 

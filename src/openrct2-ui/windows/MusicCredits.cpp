@@ -15,12 +15,12 @@
 #pragma endregion
 
 
-#include "../core/Util.hpp"
+#include <openrct2/core/Util.hpp>
 
 extern "C"
 {
-#include "../localisation/localisation.h"
-#include "../interface/widget.h"
+#include <openrct2/localisation/localisation.h>
+#include <openrct2/interface/widget.h>
 }
 
 enum WINDOW_MUSIC_CREDITS_WIDGET_IDX {
@@ -125,14 +125,14 @@ static rct_window_event_list window_music_credits_events = {
 *
 *  rct2: 0x0066D55B
 */
-void window_music_credits_open()
+rct_window * window_music_credits_open()
 {
     rct_window* window;
 
     // Check if window is already open
     window = window_bring_to_front_by_class(WC_MUSIC_CREDITS);
     if (window != NULL)
-        return;
+        return window;
 
     window = window_create_centred(
         510,
@@ -150,6 +150,7 @@ void window_music_credits_open()
     window->colours[1] = COLOUR_LIGHT_BLUE;
     window->colours[2] = COLOUR_LIGHT_BLUE;
 
+    return window;
 }
 
 /**

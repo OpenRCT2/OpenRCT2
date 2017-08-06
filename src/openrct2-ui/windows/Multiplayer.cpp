@@ -14,16 +14,16 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../config/Config.h"
-#include "../network/network.h"
+#include <openrct2/config/Config.h>
+#include <openrct2/network/network.h>
 
 extern "C"
 {
-#include "../interface/widget.h"
-#include "../localisation/localisation.h"
-#include "../sprites.h"
-#include "../util/util.h"
-#include "dropdown.h"
+#include <openrct2/interface/widget.h>
+#include <openrct2/localisation/localisation.h>
+#include <openrct2/sprites.h>
+#include <openrct2/util/util.h>
+#include <openrct2/windows/dropdown.h>
 }
 
 enum {
@@ -292,7 +292,7 @@ static void window_multiplayer_set_page(rct_window* w, sint32 page);
 static bool _windowInformationSizeDirty;
 static rct_xy16 _windowInformationSize;
 
-void window_multiplayer_open()
+rct_window * window_multiplayer_open()
 {
     // Check if window is already open
     rct_window *window = window_bring_to_front_by_class(WC_MULTIPLAYER);
@@ -300,6 +300,8 @@ void window_multiplayer_open()
         window = window_create_auto_pos(320, 144, &window_multiplayer_players_events, WC_MULTIPLAYER, WF_10 | WF_RESIZABLE);
         window_multiplayer_set_page(window, WINDOW_MULTIPLAYER_PAGE_INFORMATION);
     }
+
+    return window;
 }
 
 static void window_multiplayer_set_page(rct_window* w, sint32 page)

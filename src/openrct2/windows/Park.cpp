@@ -649,7 +649,7 @@ static void window_park_entrance_mouseup(rct_window *w, rct_widgetindex widgetIn
         window_park_set_page(w, widgetIndex - WIDX_TAB_1);
         break;
     case WIDX_BUY_LAND_RIGHTS:
-        window_land_rights_open();
+        context_open_window(WC_LAND_RIGHTS);
         break;
     case WIDX_LOCATE:
         window_scroll_to_viewport(w);

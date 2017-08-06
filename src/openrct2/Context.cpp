@@ -169,7 +169,7 @@ namespace OpenRCT2
         void Quit() override
         {
             gSavePromptMode = PM_QUIT;
-            window_save_prompt_open();
+            context_open_window(WC_SAVE_PROMPT);
         }
 
         std::string GetPathLegacy(sint32 pathId) override

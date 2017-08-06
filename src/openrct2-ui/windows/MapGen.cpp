@@ -14,18 +14,18 @@
  *****************************************************************************/
 #pragma endregion
 
-
-#include "../core/Math.hpp"
+#include <openrct2/Context.h>
+#include <openrct2/core/Math.hpp>
 
 extern "C"
 {
-#include "../localisation/localisation.h"
-#include "../input.h"
-#include "../interface/land_tool.h"
-#include "../interface/widget.h"
-#include "../util/util.h"
-#include "../world/mapgen.h"
-#include "dropdown.h"
+#include <openrct2/localisation/localisation.h>
+#include <openrct2/input.h>
+#include <openrct2/interface/land_tool.h>
+#include <openrct2/interface/widget.h>
+#include <openrct2/util/util.h>
+#include <openrct2/world/mapgen.h>
+#include <openrct2/windows/dropdown.h>
 }
 
 enum {
@@ -1138,7 +1138,7 @@ static void window_mapgen_heightmap_loadsave_callback(sint32 result, const utf8 
         }
 
         // The window needs to be open while using the map
-        rct_window *const w = window_mapgen_open();
+        rct_window *const w = context_open_window(WC_MAPGEN);
         _heightmapLoaded = true;
         window_mapgen_set_page(w, WINDOW_MAPGEN_PAGE_HEIGHTMAP);
 

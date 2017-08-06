@@ -687,25 +687,16 @@ void window_resize_gui_scenario_editor(sint32 width, sint32 height);
 void window_top_toolbar_open();
 void window_game_bottom_toolbar_open();
 void window_game_bottom_toolbar_invalidate_news_item();
-void window_about_open();
 void window_footpath_open();
-void window_save_prompt_open();
-void window_title_menu_open();
-void window_title_exit_open();
-void window_title_options_open();
-void window_title_logo_open();
-void window_news_open();
 void window_scenarioselect_open(scenarioselect_callback callback);
 void window_track_list_open(ride_list_item item);
 void window_clear_scenery_open();
 void window_land_open();
 void window_water_open();
-void window_land_rights_open();
 void window_staff_list_open();
 void window_guest_list_open();
 void window_guest_list_open_with_filter(sint32 type, sint32 index);
 void window_map_open();
-void window_options_open();
 void window_guest_open(rct_peep* peep);
 rct_window *window_staff_open(rct_peep* peep);
 void window_staff_fire_prompt_open(rct_peep* peep);
@@ -730,7 +721,6 @@ void ride_construction_toolupdate_entrance_exit(sint32 screenX, sint32 screenY);
 void ride_construction_toolupdate_construct(sint32 screenX, sint32 screenY);
 void ride_construction_tooldown_construct(sint32 screenX, sint32 screenY);
 
-void custom_currency_window_open();
 
 void window_maze_construction_update_pressed_widgets();
 void window_track_place_open(const struct track_design_file_ref *tdFileRef);
@@ -740,35 +730,26 @@ void window_install_track_open(const char* path);
 void window_banner_open(rct_windownumber number);
 void window_sign_open(rct_windownumber number);
 void window_sign_small_open(rct_windownumber number);
-void window_news_options_open();
-void window_cheats_open();
-void window_multiplayer_open();
 void window_player_open(uint8 id);
 void window_network_status_open(const char* text, close_callback onClose);
 void window_network_status_close();
 void window_network_status_open_password();
-void window_server_list_open();
-void window_server_start_open();
 
 void window_research_open();
 void window_research_development_page_paint(rct_window *w, rct_drawpixelinfo *dpi, rct_widgetindex baseWidgetIndex);
 void window_research_funding_page_paint(rct_window *w, rct_drawpixelinfo *dpi, rct_widgetindex baseWidgetIndex);
 
 void window_scenery_open();
-void window_music_credits_open();
 void window_track_manage_open(struct track_design_file_ref *tdFileRef);
-void window_viewport_open();
-void window_themes_open();
 void window_title_editor_open(sint32 tab);
 void window_title_command_editor_open(struct TitleSequence * sequence, sint32 command, bool insert);
 void window_tile_inspector_open();
 void window_tile_inspector_clear_clipboard();
 void window_text_input_open(rct_window* call_w, rct_widgetindex call_widget, rct_string_id title, rct_string_id description, rct_string_id existing_text, uintptr_t existing_args, sint32 maxLength);
 void window_text_input_raw_open(rct_window* call_w, rct_widgetindex call_widget, rct_string_id title, rct_string_id description, utf8string existing_text, sint32 maxLength);
-rct_window *window_mapgen_open();
+
 rct_window *window_loadsave_open(sint32 type, char *defaultName);
-rct_window *window_changelog_open();
-void window_debug_paint_open();
+
 rct_window * window_object_load_error_open(utf8 * path, size_t numMissingObjects, const rct_object_entry * missingObjects);
 
 rct_window * window_editor_main_open();

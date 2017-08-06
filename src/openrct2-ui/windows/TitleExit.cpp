@@ -14,15 +14,15 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../config/Config.h"
-#include "../Context.h"
+#include <openrct2/config/Config.h>
+#include <openrct2/Context.h>
 
 extern "C"
 {
-#include "../sprites.h"
-    #include "../localisation/localisation.h"
-    #include "../interface/widget.h"
-#include "../intro.h"
+#include <openrct2/sprites.h>
+    #include <openrct2/localisation/localisation.h>
+    #include <openrct2/interface/widget.h>
+#include <openrct2/intro.h>
 }
 
 enum WINDOW_TITLE_EXIT_WIDGET_IDX {
@@ -72,7 +72,7 @@ static rct_window_event_list window_title_exit_events = {
  * Creates the window containing the exit button on the title screen.
  *  rct2: 0x0066B624 (part of 0x0066B3E8)
  */
-static void _window_title_exit_open()
+rct_window * window_title_exit_open()
 {
     rct_window* window;
 
@@ -86,6 +86,8 @@ static void _window_title_exit_open()
     window->widgets = window_title_exit_widgets;
     window->enabled_widgets |= (1ULL << WIDX_EXIT);
     window_init_scroll_widgets(window);
+
+    return window;
 }
 
 /**
@@ -112,12 +114,4 @@ static void window_title_exit_mouseup(rct_window *w, rct_widgetindex widgetIndex
 static void window_title_exit_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
     window_draw_widgets(w, dpi);
-}
-
-extern "C"
-{
-    void window_title_exit_open()
-    {
-        _window_title_exit_open();
-    }
 }

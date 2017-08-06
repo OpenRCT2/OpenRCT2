@@ -367,7 +367,7 @@ static void window_top_toolbar_mouseup(rct_window *w, rct_widgetindex widgetInde
         window_research_open();
         break;
     case WIDX_NEWS:
-        window_news_open();
+        context_open_window(WC_RECENT_NEWS);
         break;
     case WIDX_MUTE:
         audio_toggle_all_sounds();
@@ -567,10 +567,10 @@ static void window_top_toolbar_dropdown(rct_window *w, rct_widgetindex widgetInd
             }
             break;
         case DDIDX_ABOUT:
-            window_about_open();
+            context_open_window(WC_ABOUT);
             break;
         case DDIDX_OPTIONS:
-            window_options_open();
+            context_open_window(WC_OPTIONS);
             break;
         case DDIDX_SCREENSHOT:
             gScreenshotCountdown = 10;
@@ -596,7 +596,7 @@ static void window_top_toolbar_dropdown(rct_window *w, rct_widgetindex widgetInd
     case WIDX_CHEATS:
         switch (dropdownIndex) {
         case DDIDX_CHEATS:
-            window_cheats_open();
+            context_open_window(WC_CHEATS);
             break;
         case DDIDX_ENABLE_SANDBOX_MODE:
             game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_SANDBOXMODE, !gCheatsSandboxMode, GAME_COMMAND_CHEAT, 0, 0);
@@ -618,10 +618,10 @@ static void window_top_toolbar_dropdown(rct_window *w, rct_widgetindex widgetInd
             window_map_open();
             break;
         case 1:
-            window_viewport_open();
+            context_open_window(WC_VIEWPORT);
             break;
         case 2:
-            window_mapgen_open();
+            context_open_window(WC_MAPGEN);
             break;
         }
         break;
@@ -3100,7 +3100,7 @@ void top_toolbar_debug_menu_dropdown(sint16 dropdownIndex)
             break;
         case DDIDX_DEBUG_PAINT:
             if (window_find_by_class(WC_DEBUG_PAINT) == NULL) {
-                window_debug_paint_open();
+                context_open_window(WC_DEBUG_PAINT);
             } else {
                 window_close_by_class(WC_DEBUG_PAINT);
             }
@@ -3115,7 +3115,7 @@ void top_toolbar_network_menu_dropdown(sint16 dropdownIndex)
     if (w) {
         switch (dropdownIndex) {
         case DDIDX_MULTIPLAYER:
-            window_multiplayer_open();
+            context_open_window(WC_MULTIPLAYER);
             break;
         }
     }

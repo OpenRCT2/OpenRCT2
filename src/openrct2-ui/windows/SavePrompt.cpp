@@ -14,16 +14,16 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../config/Config.h"
-#include "../OpenRCT2.h"
-#include "../core/Util.hpp"
+#include <openrct2/config/Config.h>
+#include <openrct2/OpenRCT2.h>
+#include <openrct2/core/Util.hpp>
 
 extern "C"
 {
-#include "../audio/audio.h"
-#include "../game.h"
-#include "../localisation/localisation.h"
-#include "../interface/widget.h"
+#include <openrct2/audio/audio.h>
+#include <openrct2/game.h>
+#include <openrct2/localisation/localisation.h>
+#include <openrct2/interface/widget.h>
 }
 
 enum WINDOW_SAVE_PROMPT_WIDGET_IDX {
@@ -111,7 +111,7 @@ static rct_window_event_list window_save_prompt_events = {
  *
  *  rct2: 0x0066DCBE
  */
-void window_save_prompt_open()
+rct_window * window_save_prompt_open()
 {
     sint32 width, height;
     rct_string_id stringId;
@@ -127,7 +127,7 @@ void window_save_prompt_open()
     // do not show save prompt if we're in the title demo and click on load game
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) {
         game_load_or_quit_no_save_prompt();
-        return;
+        return nullptr;
     }
 
     if (!gConfigGeneral.confirmation_prompt) {
@@ -139,7 +139,7 @@ void window_save_prompt_open()
 
         if (gScreenAge < 3840) {
             game_load_or_quit_no_save_prompt();
-            return;
+            return nullptr;
         }
     }
 
@@ -170,7 +170,7 @@ void window_save_prompt_open()
 
     if (prompt_mode >= Util::CountOf(window_save_prompt_labels)) {
         log_warning("Invalid save prompt mode %u", prompt_mode);
-        return;
+        return nullptr;
     }
     window = window_create_centred(
         width,
@@ -196,6 +196,8 @@ void window_save_prompt_open()
         stringId = STR_QUIT_SCENARIO_EDITOR;
     window_save_prompt_widgets[WIDX_TITLE].text = stringId;
     window_save_prompt_widgets[WIDX_LABEL].text = window_save_prompt_labels[prompt_mode][1];
+
+    return window;
 }
 
 /**

@@ -14,19 +14,19 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../config/Config.h"
+#include <openrct2/config/Config.h>
 
 extern "C"
 {
-#include "../game.h"
-#include "../input.h"
-#include "../interface/widget.h"
-#include "../localisation/localisation.h"
-#include "../sprites.h"
-#include "dropdown.h"
-#include "../interface/themes.h"
-#include "error.h"
-#include "../util/util.h"
+#include <openrct2/game.h>
+#include <openrct2/input.h>
+#include <openrct2/interface/widget.h>
+#include <openrct2/localisation/localisation.h>
+#include <openrct2/sprites.h>
+#include <openrct2/windows/dropdown.h>
+#include <openrct2/interface/themes.h>
+#include <openrct2/windows/error.h>
+#include <openrct2/util/util.h>
 }
 
 enum {
@@ -309,14 +309,14 @@ static void window_themes_draw_tab_images(rct_drawpixelinfo *dpi, rct_window *w)
     }
 }
 
-void window_themes_open()
+rct_window * window_themes_open()
 {
     rct_window* window;
 
     // Check if window is already open
     window = window_bring_to_front_by_class(WC_THEMES);
     if (window != NULL)
-        return;
+        return window;
 
     window = window_create_auto_pos(320, 107, &window_themes_events, WC_THEMES, WF_10 | WF_RESIZABLE);
     window->widgets = window_themes_widgets;
@@ -351,6 +351,8 @@ void window_themes_open()
     window->min_height = 107;
     window->max_width = 320;
     window->max_height = 107;
+
+    return window;
 }
 
 static void window_themes_mouseup(rct_window *w, rct_widgetindex widgetIndex)

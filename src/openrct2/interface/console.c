@@ -1189,9 +1189,9 @@ static sint32 cc_open(const utf8 **argv, sint32 argc) {
         } else if (strcmp(argv[0], "scenario_options") == 0 && invalidArguments(&invalidTitle, !title)) {
             window_editor_scenario_options_open();
         } else if (strcmp(argv[0], "options") == 0) {
-            window_options_open();
+            context_open_window(WC_OPTIONS);
         } else if (strcmp(argv[0], "themes") == 0) {
-            window_themes_open();
+            context_open_window(WC_THEMES);
         } else if (strcmp(argv[0], "title_sequences") == 0) {
             window_title_editor_open(0);
         } else if (invalidTitle) {

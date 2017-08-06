@@ -18,6 +18,7 @@
 #include "../core/Math.hpp"
 #include "../core/Util.hpp"
 #include "../core/Memory.hpp"
+#include "../Context.h"
 
 extern "C"
 {
@@ -374,7 +375,7 @@ static void window_map_mouseup(rct_window *w, rct_widgetindex widgetIndex)
         window_map_inputsize_map(w);
         break;
     case WIDX_MAP_GENERATOR:
-        window_mapgen_open();
+        context_open_window(WC_MAPGEN);
         break;
     default:
         if (widgetIndex >= WIDX_PEOPLE_TAB && widgetIndex <= WIDX_RIDES_TAB) {

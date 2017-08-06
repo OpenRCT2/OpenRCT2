@@ -14,14 +14,14 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../config/Config.h"
-#include "../Context.h"
+#include <openrct2/config/Config.h>
+#include <openrct2/Context.h>
 
 extern "C"
 {
-#include "../intro.h"
-    #include "../localisation/localisation.h"
-    #include "../interface/widget.h"
+#include <openrct2/intro.h>
+    #include <openrct2/localisation/localisation.h>
+    #include <openrct2/interface/widget.h>
 }
 
 enum WINDOW_TITLE_OPTIONS_WIDGET_IDX {
@@ -70,7 +70,7 @@ static rct_window_event_list window_title_options_events = {
 /**
  * Creates the window containing the options button on the title screen.
  */
-static void _window_title_options_open()
+rct_window * window_title_options_open()
 {
     rct_window * window = window_create(
         context_get_width() - 80, 0,
@@ -82,6 +82,8 @@ static void _window_title_options_open()
     window->widgets = window_title_options_widgets;
     window->enabled_widgets |= (1ULL << WIDX_OPTIONS);
     window_init_scroll_widgets(window);
+
+    return window;
 }
 
 static void window_title_options_mouseup(rct_window *w, rct_widgetindex widgetIndex)
@@ -91,7 +93,7 @@ static void window_title_options_mouseup(rct_window *w, rct_widgetindex widgetIn
 
     switch (widgetIndex) {
     case WIDX_OPTIONS:
-        window_options_open();
+        context_open_window(WC_OPTIONS);
         break;
     }
 }
@@ -99,13 +101,5 @@ static void window_title_options_mouseup(rct_window *w, rct_widgetindex widgetIn
 static void window_title_options_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
     window_draw_widgets(w, dpi);
-}
-
-extern "C"
-{
-    void window_title_options_open()
-    {
-        _window_title_options_open();
-    }
 }
 

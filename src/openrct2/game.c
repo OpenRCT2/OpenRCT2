@@ -899,7 +899,7 @@ static void game_load_or_quit(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *edx
         switch (*edx & 0xFF) {
         case 0:
             gSavePromptMode = *edi & 0xFF;
-            window_save_prompt_open();
+            context_open_window(WC_SAVE_PROMPT);
             break;
         case 1:
             window_close_by_class(WC_SAVE_PROMPT);
