@@ -46,7 +46,7 @@ DISPLAY_TYPE gClipHeightDisplayType = DISPLAY_TYPE::DISPLAY_UNITS;
 #define WW 160
 #define WH 70
 
-rct_widget window_view_clipping_widgets[] = {
+static rct_widget window_view_clipping_widgets[] = {
     { WWT_FRAME,        0,  0,      WW - 1, 0,  WH - 1, STR_NONE,               STR_NONE }, // panel / background
     { WWT_CAPTION,      0,  1,      WW - 2, 1,  14,     STR_VIEW_CLIPPING_TITLE,        STR_WINDOW_TITLE_TIP }, // title bar
     { WWT_CLOSEBOX,     0,  WW - 13,    WW - 3, 2,  13,     STR_CLOSE_X,                STR_CLOSE_WINDOW_TIP }, // close x button
@@ -68,6 +68,7 @@ static void window_view_clipping_update(rct_window *w);
 static void window_view_clipping_invalidate(rct_window *w);
 static void window_view_clipping_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_view_clipping_scrollgetsize(rct_window *w, int scrollIndex, int *width, int *height);
+static void window_view_clipping_close();
 
 static rct_window_event_list window_view_clipping_events = {
     window_view_clipping_close_button,
@@ -154,7 +155,7 @@ static void _window_view_clipping_open()
     window_invalidate(window);
 }
 
-void window_view_clipping_close()
+static void window_view_clipping_close()
 {
     // Turn off view clipping when the window is closed.
     rct_window *mainWindow = window_get_main();

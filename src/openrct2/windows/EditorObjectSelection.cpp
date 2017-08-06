@@ -60,11 +60,10 @@ enum {
     FILTER_ALL = FILTER_RIDES | FILTER_RCT2 | FILTER_WW | FILTER_TT | FILTER_CUSTOM | FILTER_SELECTED | FILTER_NONSELECTED,
 };
 
-uint32 _filter_flags;
-uint16 _filter_object_counts[11];
-uint8 _filter_ride_tab;
+static uint32 _filter_flags;
+static uint16 _filter_object_counts[11];
 
-char _filter_string[41];
+static char _filter_string[41];
 
 #define _FILTER_ALL ((_filter_flags & FILTER_ALL) == FILTER_ALL)
 #define _FILTER_RCT2 (_filter_flags & FILTER_RCT2)

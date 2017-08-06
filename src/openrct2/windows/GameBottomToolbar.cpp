@@ -54,7 +54,7 @@ enum WINDOW_GAME_BOTTOM_TOOLBAR_WIDGET_IDX {
 // Left panel size was also increased for symmetry.
 #define WIDTH_MOD 22
 
-rct_widget window_game_bottom_toolbar_widgets[] = {
+static rct_widget window_game_bottom_toolbar_widgets[] = {
     { WWT_IMGBTN,   0,  0x0000, 0x0077+WIDTH_MOD,   0,      33,     0xFFFFFFFF, STR_NONE }, // Left outset panel
     { WWT_IMGBTN,   0,  0x0002, 0x0075+WIDTH_MOD,   2,      31,     0xFFFFFFFF, STR_NONE }, // Left inset panel
     { WWT_FLATBTN,  0,  0x0002, 0x0075+WIDTH_MOD,   1,      12,     0xFFFFFFFF, STR_PROFIT_PER_WEEK_AND_PARK_VALUE_TIP },   // Money window

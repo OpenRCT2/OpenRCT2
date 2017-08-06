@@ -66,7 +66,7 @@ enum WINDOW_GUEST_WIDGET_IDX {
 
 validate_global_widx(WC_PEEP, WIDX_ACTION_LBL);
 
-rct_widget window_guest_overview_widgets[] = {
+static rct_widget window_guest_overview_widgets[] = {
     {WWT_FRAME,    0, 0,   191, 0,   156, 0xFFFFFFFF, STR_NONE},                            // Panel / Background
     {WWT_CAPTION,  0, 1,   190, 1,   14,  STR_STRINGID,         STR_WINDOW_TITLE_TIP},      // Title
     {WWT_CLOSEBOX, 0, 179, 189, 2,   13,  STR_CLOSE_X,          STR_CLOSE_WINDOW_TIP},      // Close x button
@@ -87,7 +87,7 @@ rct_widget window_guest_overview_widgets[] = {
     { WIDGETS_END },
 };
 
-rct_widget window_guest_stats_widgets[] = {
+static rct_widget window_guest_stats_widgets[] = {
     {WWT_FRAME,    0, 0,   191, 0,  156, STR_NONE, STR_NONE},
     {WWT_CAPTION,  0, 1,   190, 1,  14, STR_STRINGID,         STR_WINDOW_TITLE_TIP},
     {WWT_CLOSEBOX, 0, 179, 189, 2,  13, STR_CLOSE_X,          STR_CLOSE_WINDOW_TIP},
@@ -101,7 +101,7 @@ rct_widget window_guest_stats_widgets[] = {
     {WIDGETS_END},
 };
 
-rct_widget window_guest_rides_widgets[] = {
+static rct_widget window_guest_rides_widgets[] = {
     {WWT_FRAME,    0, 0,   191, 0,  156, STR_NONE, STR_NONE},
     {WWT_CAPTION,  0, 1,   190, 1,  14,  STR_STRINGID,         STR_WINDOW_TITLE_TIP},
     {WWT_CLOSEBOX, 0, 179, 189, 2,  13,  STR_CLOSE_X,          STR_CLOSE_WINDOW_TIP},
@@ -116,7 +116,7 @@ rct_widget window_guest_rides_widgets[] = {
     {WIDGETS_END},
 };
 
-rct_widget window_guest_finance_widgets[] = {
+static rct_widget window_guest_finance_widgets[] = {
     {WWT_FRAME,    0, 0,   191, 0,  156, STR_NONE, STR_NONE},
     {WWT_CAPTION,  0, 1,   190, 1,  14, STR_STRINGID,         STR_WINDOW_TITLE_TIP},
     {WWT_CLOSEBOX, 0, 179, 189, 2,  13, STR_CLOSE_X,          STR_CLOSE_WINDOW_TIP},
@@ -130,7 +130,7 @@ rct_widget window_guest_finance_widgets[] = {
     {WIDGETS_END},
 };
 
-rct_widget window_guest_thoughts_widgets[] = {
+static rct_widget window_guest_thoughts_widgets[] = {
     {WWT_FRAME,    0, 0,   191, 0,  156, STR_NONE, STR_NONE},
     {WWT_CAPTION,  0, 1,   190, 1,  14, STR_STRINGID,         STR_WINDOW_TITLE_TIP},
     {WWT_CLOSEBOX, 0, 179, 189, 2,  13, STR_CLOSE_X,          STR_CLOSE_WINDOW_TIP},
@@ -144,7 +144,7 @@ rct_widget window_guest_thoughts_widgets[] = {
     {WIDGETS_END},
 };
 
-rct_widget window_guest_inventory_widgets[] = {
+static rct_widget window_guest_inventory_widgets[] = {
     {WWT_FRAME,    0, 0,   191, 0,  156, STR_NONE, STR_NONE},
     {WWT_CAPTION,  0, 1,   190, 1,  14, STR_STRINGID,         STR_WINDOW_TITLE_TIP},
     {WWT_CLOSEBOX, 0, 179, 189, 2,  13, STR_CLOSE_X,          STR_CLOSE_WINDOW_TIP},
@@ -159,7 +159,7 @@ rct_widget window_guest_inventory_widgets[] = {
 };
 
 // 0x981D0C
-rct_widget *window_guest_page_widgets[] = {
+static rct_widget *window_guest_page_widgets[] = {
     window_guest_overview_widgets,
     window_guest_stats_widgets,
     window_guest_rides_widgets,
@@ -168,54 +168,54 @@ rct_widget *window_guest_page_widgets[] = {
     window_guest_inventory_widgets
 };
 
-void window_guest_set_page(rct_window* w, sint32 page);
-void window_guest_disable_widgets(rct_window* w);
-void window_guest_viewport_init(rct_window* w);
+static void window_guest_set_page(rct_window* w, sint32 page);
+static void window_guest_disable_widgets(rct_window* w);
+static void window_guest_viewport_init(rct_window* w);
 
-void window_guest_overview_close(rct_window *w);
-void window_guest_overview_resize(rct_window *w);
-void window_guest_overview_mouse_up(rct_window *w, rct_widgetindex widgetIndex);
-void window_guest_overview_paint(rct_window *w, rct_drawpixelinfo *dpi);
-void window_guest_overview_invalidate(rct_window *w);
-void window_guest_overview_viewport_rotate(rct_window *w);
-void window_guest_overview_update(rct_window* w);
-void window_guest_overview_text_input(rct_window *w, rct_widgetindex widgetIndex, char *text);
-void window_guest_overview_tool_update(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y);
-void window_guest_overview_tool_down(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y);
-void window_guest_overview_tool_abort(rct_window *w, rct_widgetindex widgetIndex);
+static void window_guest_overview_close(rct_window *w);
+static void window_guest_overview_resize(rct_window *w);
+static void window_guest_overview_mouse_up(rct_window *w, rct_widgetindex widgetIndex);
+static void window_guest_overview_paint(rct_window *w, rct_drawpixelinfo *dpi);
+static void window_guest_overview_invalidate(rct_window *w);
+static void window_guest_overview_viewport_rotate(rct_window *w);
+static void window_guest_overview_update(rct_window* w);
+static void window_guest_overview_text_input(rct_window *w, rct_widgetindex widgetIndex, char *text);
+static void window_guest_overview_tool_update(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y);
+static void window_guest_overview_tool_down(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y);
+static void window_guest_overview_tool_abort(rct_window *w, rct_widgetindex widgetIndex);
 
-void window_guest_mouse_up(rct_window *w, rct_widgetindex widgetIndex);
-void window_guest_unknown_05(rct_window *w);
+static void window_guest_mouse_up(rct_window *w, rct_widgetindex widgetIndex);
+static void window_guest_unknown_05(rct_window *w);
 
-void window_guest_stats_resize(rct_window *w);
-void window_guest_stats_update(rct_window *w);
-void window_guest_stats_invalidate(rct_window *w);
-void window_guest_stats_paint(rct_window *w, rct_drawpixelinfo *dpi);
+static void window_guest_stats_resize(rct_window *w);
+static void window_guest_stats_update(rct_window *w);
+static void window_guest_stats_invalidate(rct_window *w);
+static void window_guest_stats_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
-void window_guest_rides_resize(rct_window *w);
-void window_guest_rides_update(rct_window *w);
-void window_guest_rides_tooltip(rct_window* w, rct_widgetindex widgetIndex, rct_string_id *stringId);
-void window_guest_rides_scroll_get_size(rct_window *w, sint32 scrollIndex, sint32 *width, sint32 *height);
-void window_guest_rides_scroll_mouse_down(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y);
-void window_guest_rides_scroll_mouse_over(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y);
-void window_guest_rides_invalidate(rct_window *w);
-void window_guest_rides_paint(rct_window *w, rct_drawpixelinfo *dpi);
-void window_guest_rides_scroll_paint(rct_window *w, rct_drawpixelinfo *dpi, sint32 scrollIndex);
+static void window_guest_rides_resize(rct_window *w);
+static void window_guest_rides_update(rct_window *w);
+static void window_guest_rides_tooltip(rct_window* w, rct_widgetindex widgetIndex, rct_string_id *stringId);
+static void window_guest_rides_scroll_get_size(rct_window *w, sint32 scrollIndex, sint32 *width, sint32 *height);
+static void window_guest_rides_scroll_mouse_down(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y);
+static void window_guest_rides_scroll_mouse_over(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y);
+static void window_guest_rides_invalidate(rct_window *w);
+static void window_guest_rides_paint(rct_window *w, rct_drawpixelinfo *dpi);
+static void window_guest_rides_scroll_paint(rct_window *w, rct_drawpixelinfo *dpi, sint32 scrollIndex);
 
-void window_guest_finance_resize(rct_window *w);
-void window_guest_finance_update(rct_window *w);
-void window_guest_finance_invalidate(rct_window *w);
-void window_guest_finance_paint(rct_window *w, rct_drawpixelinfo *dpi);
+static void window_guest_finance_resize(rct_window *w);
+static void window_guest_finance_update(rct_window *w);
+static void window_guest_finance_invalidate(rct_window *w);
+static void window_guest_finance_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
-void window_guest_thoughts_resize(rct_window *w);
-void window_guest_thoughts_update(rct_window *w);
-void window_guest_thoughts_invalidate(rct_window *w);
-void window_guest_thoughts_paint(rct_window *w, rct_drawpixelinfo *dpi);
+static void window_guest_thoughts_resize(rct_window *w);
+static void window_guest_thoughts_update(rct_window *w);
+static void window_guest_thoughts_invalidate(rct_window *w);
+static void window_guest_thoughts_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
-void window_guest_inventory_resize(rct_window *w);
-void window_guest_inventory_update(rct_window *w);
-void window_guest_inventory_invalidate(rct_window *w);
-void window_guest_inventory_paint(rct_window *w, rct_drawpixelinfo *dpi);
+static void window_guest_inventory_resize(rct_window *w);
+static void window_guest_inventory_update(rct_window *w);
+static void window_guest_inventory_invalidate(rct_window *w);
+static void window_guest_inventory_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
 static rct_window_event_list window_guest_overview_events = {
     window_guest_overview_close,

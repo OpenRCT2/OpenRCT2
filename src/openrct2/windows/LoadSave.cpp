@@ -128,14 +128,14 @@ typedef struct loadsave_list_item {
 
 static loadsave_callback _loadSaveCallback;
 
-sint32 _listItemsCount = 0;
-loadsave_list_item *_listItems = NULL;
-char _directory[MAX_PATH];
-char _shortenedDirectory[MAX_PATH];
+static sint32 _listItemsCount = 0;
+static loadsave_list_item *_listItems = NULL;
+static char _directory[MAX_PATH];
+static char _shortenedDirectory[MAX_PATH];
 static char _parentDirectory[MAX_PATH];
-char _extension[32];
-char _defaultName[MAX_PATH];
-sint32 _type;
+static char _extension[32];
+static char _defaultName[MAX_PATH];
+static sint32 _type;
 
 static void window_loadsave_populate_list(rct_window *w, sint32 includeNewItem, const char *directory, const char *extension);
 static void window_loadsave_select(rct_window *w, const char *path);

@@ -154,7 +154,7 @@ static rct_window_event_list window_editor_inventions_list_drag_events = {
 
 #pragma endregion
 
-rct_research_item *_editorInventionsListDraggedItem;
+static rct_research_item *_editorInventionsListDraggedItem;
 
 static const rct_string_id EditorInventionsResearchCategories[] = {
     STR_RESEARCH_NEW_TRANSPORT_RIDES,
