@@ -183,17 +183,6 @@ static void window_editor_bottom_toolbar_jump_back_to_invention_list_set_up() {
 
 /**
 *
-*  rct2: 0x0066F666
-*/
-static void window_editor_bottom_toolbar_jump_back_to_scenario_options() {
-    window_close_all();
-    window_editor_scenario_options_open();
-    gS6Info.editor_step = EDITOR_STEP_OPTIONS_SELECTION;
-    gfx_invalidate_screen();
-}
-
-/**
-*
 *  rct2: 0x0066F64E
 */
 void window_editor_bottom_toolbar_jump_back_to_options_selection() {

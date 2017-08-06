@@ -1332,7 +1332,7 @@ static void window_options_dropdown(rct_window *w, rct_widgetindex widgetIndex, 
     case WINDOW_OPTIONS_PAGE_RENDERING:
         switch (widgetIndex) {
         case WIDX_CONSTRUCTION_MARKER_DROPDOWN:
-            if (dropdownIndex != gConfigGeneral.construction_marker_colour) {
+            if (dropdownIndex != (gConfigGeneral.construction_marker_colour ? 1 : 0)) {
                 gConfigGeneral.construction_marker_colour = (uint8)dropdownIndex;
                 config_save_default();
                 gfx_invalidate_screen();
@@ -1565,6 +1565,7 @@ static void window_options_invalidate(rct_window *w)
         break;
 
     case WINDOW_OPTIONS_PAGE_RENDERING:
+    {
         widget_set_checkbox_value(w, WIDX_TILE_SMOOTHING_CHECKBOX, gConfigGeneral.landscape_smoothing);
         widget_set_checkbox_value(w, WIDX_GRIDLINES_CHECKBOX, gConfigGeneral.always_show_gridlines);
         widget_set_checkbox_value(w, WIDX_DAY_NIGHT_CHECKBOX, gConfigGeneral.day_night_cycle);
@@ -1608,6 +1609,7 @@ static void window_options_invalidate(rct_window *w)
         window_options_rendering_widgets[WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX].type = WWT_CHECKBOX;
         window_options_rendering_widgets[WIDX_SHOW_GUEST_PURCHASES_CHECKBOX].type = WWT_CHECKBOX;
         break;
+    }
 
     case WINDOW_OPTIONS_PAGE_CULTURE:
         // currency: pounds, dollars, etc. (10 total)

@@ -1596,7 +1596,7 @@ static uint16 map_window_get_pixel_colour_peep(sint32 x, sint32 y)
     if (!(mapElement->properties.surface.ownership & OWNERSHIP_OWNED))
         colour = PALETTE_INDEX_10 | (colour & 0xFF00);
 
-    const sint32 maxSupportedMapElementType = Util::CountOf(ElementTypeAddColour);
+    const sint32 maxSupportedMapElementType = (sint32)Util::CountOf(ElementTypeAddColour);
     while (!map_element_is_last_for_tile(mapElement++)) {
         sint32 mapElementType = map_element_get_type(mapElement) >> 2;
         if (mapElementType >= maxSupportedMapElementType) {

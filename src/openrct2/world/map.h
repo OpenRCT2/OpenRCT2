@@ -320,7 +320,7 @@ typedef struct rct_xy16 {
 } rct_xy16;
 assert_struct_size(rct_xy16, 4);
 
-#define MakeXY16(x, y) ((rct_xy16) {(sint16)(x), (sint16)(y)} )
+#define MakeXY16(x, y) {(sint16)(x), (sint16)(y)}
 
 typedef struct rct_xyz16 {
     sint16 x, y, z;

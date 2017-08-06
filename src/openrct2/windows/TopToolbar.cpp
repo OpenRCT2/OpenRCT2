@@ -1905,7 +1905,7 @@ static void top_toolbar_tool_update_land(sint16 x, sint16 y){
     }
 
     sint16 tool_size = gLandToolSize;
-    rct_xy16 mapTile = { .x = x, .y = y };
+    rct_xy16 mapTile = { x, y };
 
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
     if (tool_size == 1){
@@ -2524,10 +2524,7 @@ static void top_toolbar_tool_update_scenery(sint16 x, sint16 y){
         rct_xy16* selectedTile = gMapSelectionTiles;
 
         for (rct_large_scenery_tile* tile = scenery->large_scenery.tiles; tile->x_offset != (sint16)(uint16)0xFFFF; tile++){
-            rct_xy16 tileLocation = {
-                .x = tile->x_offset,
-                .y = tile->y_offset
-            };
+            rct_xy16 tileLocation = { tile->x_offset, tile->y_offset };
 
             rotate_map_coordinates(&tileLocation.x, &tileLocation.y, (parameter1 >> 8) & 0xFF);
 
@@ -2538,7 +2535,7 @@ static void top_toolbar_tool_update_scenery(sint16 x, sint16 y){
             selectedTile->y = tileLocation.y;
             selectedTile++;
         }
-        selectedTile->x = 0xFFFF;
+        selectedTile->x = -1;
 
         gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
         map_invalidate_map_selection_tiles();
@@ -2656,7 +2653,7 @@ static void window_top_toolbar_tool_down(rct_window* w, rct_widgetindex widgetIn
             gMapSelectPositionA.x,
             1,
             gMapSelectPositionA.y,
-            (gClearSmallScenery | gClearLargeScenery << 1 | gClearFootpath << 2),
+            ((gClearSmallScenery ? 1 : 0) | (gClearLargeScenery ? 1 : 0) << 1 | (gClearFootpath ? 1 : 0) << 2),
             GAME_COMMAND_CLEAR_SCENERY,
             gMapSelectPositionB.x,
             gMapSelectPositionB.y
@@ -2791,7 +2788,7 @@ static void window_top_toolbar_water_tool_drag(sint16 x, sint16 y)
     if (!viewport)
         return;
 
-    sint16 dx = 0xFFF0;
+    sint16 dx = (sint16)(uint16)0xFFF0;
     dx >>= viewport->zoom;
 
     y -= gInputDragLastY;
@@ -2859,7 +2856,7 @@ static void window_top_toolbar_tool_drag(rct_window* w, rct_widgetindex widgetIn
             gMapSelectPositionA.x,
             1,
             gMapSelectPositionA.y,
-            (gClearSmallScenery | gClearLargeScenery << 1 | gClearFootpath << 2),
+            ((gClearSmallScenery ? 1 : 0) | (gClearLargeScenery ? 1 : 0) << 1 | (gClearFootpath ? 1 : 0) << 2),
             GAME_COMMAND_CLEAR_SCENERY,
             gMapSelectPositionB.x,
             gMapSelectPositionB.y

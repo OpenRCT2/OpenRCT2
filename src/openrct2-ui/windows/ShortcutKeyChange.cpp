@@ -24,8 +24,6 @@ extern "C"
 #include <openrct2/localisation/localisation.h>
 }
 
-extern const rct_string_id ShortcutStringIds[];
-
 #define WW 250
 #define WH 60
 
