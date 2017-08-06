@@ -1315,7 +1315,8 @@ static void window_ride_draw_tab_vehicle(rct_drawpixelinfo *dpi, rct_window *w)
 			|| ride->type == RIDE_TYPE_INVERTED_IMPULSE_COASTER	
 			|| ride->type == RIDE_TYPE_SUSPENDED_SWINGING_COASTER
 			|| ride->type == RIDE_TYPE_CHAIRLIFT
-			|| ride->type == RIDE_TYPE_MINI_SUSPENDED_COASTER) {
+			|| ride->type == RIDE_TYPE_MINI_SUSPENDED_COASTER
+			|| ride->type == RIDE_TYPE_SUSPENDED_MONORAIL) {
 			y /= 4;
 		}
 
