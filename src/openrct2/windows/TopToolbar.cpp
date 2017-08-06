@@ -263,21 +263,21 @@ static rct_window_event_list window_top_toolbar_events = {
     NULL
 };
 
-void top_toolbar_init_view_menu(rct_window *window, rct_widget *widget);
-void top_toolbar_view_menu_dropdown(sint16 dropdownIndex);
-void top_toolbar_init_fastforward_menu(rct_window *window, rct_widget *widget);
-void top_toolbar_fastforward_menu_dropdown(sint16 dropdownIndex);
-void top_toolbar_init_rotate_menu(rct_window *window, rct_widget *widget);
-void top_toolbar_rotate_menu_dropdown(sint16 dropdownIndex);
-void top_toolbar_init_debug_menu(rct_window *window, rct_widget *widget);
-void top_toolbar_debug_menu_dropdown(sint16 dropdownIndex);
-void top_toolbar_init_network_menu(rct_window *window, rct_widget *widget);
-void top_toolbar_network_menu_dropdown(sint16 dropdownIndex);
+static void top_toolbar_init_view_menu(rct_window *window, rct_widget *widget);
+static void top_toolbar_view_menu_dropdown(sint16 dropdownIndex);
+static void top_toolbar_init_fastforward_menu(rct_window *window, rct_widget *widget);
+static void top_toolbar_fastforward_menu_dropdown(sint16 dropdownIndex);
+static void top_toolbar_init_rotate_menu(rct_window *window, rct_widget *widget);
+static void top_toolbar_rotate_menu_dropdown(sint16 dropdownIndex);
+static void top_toolbar_init_debug_menu(rct_window *window, rct_widget *widget);
+static void top_toolbar_debug_menu_dropdown(sint16 dropdownIndex);
+static void top_toolbar_init_network_menu(rct_window *window, rct_widget *widget);
+static void top_toolbar_network_menu_dropdown(sint16 dropdownIndex);
 
-void toggle_footpath_window();
-void toggle_land_window(rct_window *topToolbar, rct_widgetindex widgetIndex);
-void toggle_clear_scenery_window(rct_window *topToolbar, rct_widgetindex widgetIndex);
-void toggle_water_window(rct_window *topToolbar, rct_widgetindex widgetIndex);
+static void toggle_footpath_window();
+static void toggle_land_window(rct_window *topToolbar, rct_widgetindex widgetIndex);
+static void toggle_clear_scenery_window(rct_window *topToolbar, rct_widgetindex widgetIndex);
+static void toggle_water_window(rct_window *topToolbar, rct_widgetindex widgetIndex);
 
 money32 selection_lower_land(uint8 flags);
 money32 selection_raise_land(uint8 flags);

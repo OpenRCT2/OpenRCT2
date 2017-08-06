@@ -760,7 +760,6 @@ void window_editor_scenario_options_open();
 void window_editor_objective_options_open();
 
 void window_view_clipping_open();
-void window_view_clipping_close();
 
 void window_guest_list_init_vars_a();
 void window_guest_list_init_vars_b();

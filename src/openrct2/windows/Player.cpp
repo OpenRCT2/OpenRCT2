@@ -83,14 +83,14 @@ rct_widget *window_player_page_widgets[] = {
 
 #pragma region Events
 
-void window_player_overview_close(rct_window *w);
-void window_player_overview_mouse_up(rct_window *w, rct_widgetindex widgetIndex);
-void window_player_overview_resize(rct_window *w);
-void window_player_overview_mouse_down(rct_window *w, rct_widgetindex widgetIndex, rct_widget *widget);
-void window_player_overview_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex);
-void window_player_overview_update(rct_window* w);
-void window_player_overview_invalidate(rct_window *w);
-void window_player_overview_paint(rct_window *w, rct_drawpixelinfo *dpi);
+static void window_player_overview_close(rct_window *w);
+static void window_player_overview_mouse_up(rct_window *w, rct_widgetindex widgetIndex);
+static void window_player_overview_resize(rct_window *w);
+static void window_player_overview_mouse_down(rct_window *w, rct_widgetindex widgetIndex, rct_widget *widget);
+static void window_player_overview_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex);
+static void window_player_overview_update(rct_window* w);
+static void window_player_overview_invalidate(rct_window *w);
+static void window_player_overview_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
 static rct_window_event_list window_player_overview_events = {
     window_player_overview_close,
@@ -123,12 +123,12 @@ static rct_window_event_list window_player_overview_events = {
     NULL
 };
 
-void window_player_statistics_close(rct_window *w);
-void window_player_statistics_mouse_up(rct_window *w, rct_widgetindex widgetIndex);
-void window_player_statistics_resize(rct_window *w);
-void window_player_statistics_update(rct_window* w);
-void window_player_statistics_invalidate(rct_window *w);
-void window_player_statistics_paint(rct_window *w, rct_drawpixelinfo *dpi);
+static void window_player_statistics_close(rct_window *w);
+static void window_player_statistics_mouse_up(rct_window *w, rct_widgetindex widgetIndex);
+static void window_player_statistics_resize(rct_window *w);
+static void window_player_statistics_update(rct_window* w);
+static void window_player_statistics_invalidate(rct_window *w);
+static void window_player_statistics_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
 static rct_window_event_list window_player_statistics_events = {
     window_player_statistics_close,

@@ -191,7 +191,7 @@ const uint8 default_path_slope[] = {
 };
 
 /** rct2: 0x0098D7E0 */
-uint8 footpath_construction_preview_images[][4] = {
+static uint8 footpath_construction_preview_images[][4] = {
     {5,  10, 5,  10}, // Flat
     {16, 17, 18, 19}, // Upwards
     {18, 19, 16, 17}, // Downwards

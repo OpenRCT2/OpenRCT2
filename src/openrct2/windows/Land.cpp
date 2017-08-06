@@ -98,8 +98,8 @@ static rct_window_event_list window_land_events = {
     NULL
 };
 
-sint32 _selectedFloorTexture;
-sint32 _selectedWallTexture;
+static sint32 _selectedFloorTexture;
+static sint32 _selectedWallTexture;
 
 /**
  *

@@ -2959,7 +2959,7 @@ typedef struct rct_vehichle_paintinfo {
     sint32 tertiary_colour;
 } rct_vehichle_paintinfo;
 
-rct_vehichle_paintinfo _sprites_to_draw[144];
+static rct_vehichle_paintinfo _sprites_to_draw[144];
 
 /**
  *

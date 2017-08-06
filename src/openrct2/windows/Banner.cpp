@@ -59,7 +59,7 @@ static const rct_string_id BannerColouredTextFormats[] = {
     STR_TEXT_COLOR_PALESILVER,
 };
 
-rct_widget window_banner_widgets[] = {
+static rct_widget window_banner_widgets[] = {
     { WWT_FRAME,            0,  0,          WW - 1, 0,      WH - 1,     0xFFFFFFFF,                 STR_NONE},                          // panel / background
     { WWT_CAPTION,          0,  1,          WW - 2, 1,      14,         STR_BANNER_WINDOW_TITLE,    STR_WINDOW_TITLE_TIP},              // title bar
     { WWT_CLOSEBOX,         0,  WW - 13,    WW - 3, 2,      13,         STR_CLOSE_X,                STR_CLOSE_WINDOW_TIP},              // close x button

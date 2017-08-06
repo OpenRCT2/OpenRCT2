@@ -39,7 +39,7 @@ enum {
     WINDOW_STAFF_LIST_TAB_ENTERTAINERS
 };
 
-bool _quick_fire_mode = false;
+static bool _quick_fire_mode = false;
 
 static void window_staff_list_close(rct_window *w);
 static void window_staff_list_mouseup(rct_window *w, rct_widgetindex widgetIndex);

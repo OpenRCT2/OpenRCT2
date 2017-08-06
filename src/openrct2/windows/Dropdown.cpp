@@ -46,11 +46,11 @@ static rct_widget window_dropdown_widgets[] = {
     { WIDGETS_END },
 };
 
-sint32 _dropdown_num_columns;
-sint32 _dropdown_num_rows;
-sint32 _dropdown_item_width;
-sint32 _dropdown_item_height;
-bool _dropdown_list_vertically;
+static sint32 _dropdown_num_columns;
+static sint32 _dropdown_num_rows;
+static sint32 _dropdown_item_width;
+static sint32 _dropdown_item_height;
+static bool _dropdown_list_vertically;
 
 sint32 gDropdownNumItems;
 rct_string_id gDropdownItemsFormat[DROPDOWN_ITEMS_MAX_SIZE];
