@@ -15,6 +15,7 @@
 #pragma endregion
 
 #include <openrct2/config/Config.h>
+#include <openrct2-ui/windows/Window.h>
 
 extern "C" {
     #include <openrct2/localisation/localisation.h>
