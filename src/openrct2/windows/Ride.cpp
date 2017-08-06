@@ -493,7 +493,7 @@ const uint64 window_ride_page_enabled_widgets[] = {
 };
 
 const uint64 window_ride_page_hold_down_widgets[] = {
-    (1ULL << WIDX_RIDE_TYPE_INCREASE) | 
+    (1ULL << WIDX_RIDE_TYPE_INCREASE) |
         (1ULL << WIDX_RIDE_TYPE_DECREASE),
     (1ULL << WIDX_VEHICLE_TRAINS_INCREASE) |
         (1ULL << WIDX_VEHICLE_TRAINS_DECREASE) |
@@ -1308,6 +1308,18 @@ static void window_ride_draw_tab_vehicle(rct_drawpixelinfo *dpi, rct_window *w)
             y *= 2;
             clipDPI.x *= 2;
             clipDPI.y *= 2;
+        }
+
+        // For any suspended rides, move image higher in the vehicle tab on the rides window
+        if (ride->type == RIDE_TYPE_COMPACT_INVERTED_COASTER
+            || ride->type == RIDE_TYPE_INVERTED_ROLLER_COASTER
+            || ride->type == RIDE_TYPE_INVERTED_IMPULSE_COASTER
+            || ride->type == RIDE_TYPE_SUSPENDED_SWINGING_COASTER
+            || ride->type == RIDE_TYPE_CHAIRLIFT
+            || ride->type == RIDE_TYPE_MINI_SUSPENDED_COASTER
+            || ride->type == RIDE_TYPE_SUSPENDED_MONORAIL)
+        {
+            y /= 4;
         }
 
         const uint8 vehicle = ride_entry_get_vehicle_at_position(ride->subtype, ride->num_cars_per_train, rideEntry->tab_vehicle);
@@ -2143,7 +2155,7 @@ static void window_ride_show_ride_type_dropdown(rct_window *w, rct_widget *widge
         gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
         gDropdownItemsArgs[i] = RideNaming[i].name;
     }
-    
+
     window_dropdown_show_text(
         w->x + widget->left,
         w->y + widget->top,
