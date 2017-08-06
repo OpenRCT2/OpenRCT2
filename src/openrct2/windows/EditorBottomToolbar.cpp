@@ -183,7 +183,7 @@ static void window_editor_bottom_toolbar_jump_back_to_invention_list_set_up() {
 
 /**
 *
-*  rct2: 0x0066F64E
+*  rct2: 0x0066F666
 */
 void window_editor_bottom_toolbar_jump_back_to_options_selection() {
     window_close_all();

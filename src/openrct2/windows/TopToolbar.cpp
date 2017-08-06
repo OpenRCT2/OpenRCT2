@@ -2788,7 +2788,7 @@ static void window_top_toolbar_water_tool_drag(sint16 x, sint16 y)
     if (!viewport)
         return;
 
-    sint16 dx = (sint16)(uint16)0xFFF0;
+    sint16 dx = -16;
     dx >>= viewport->zoom;
 
     y -= gInputDragLastY;
