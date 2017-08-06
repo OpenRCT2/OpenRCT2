@@ -78,7 +78,7 @@ static sint32 _window_title_command_editor_index;
 #define BUF_SIZE 50
 static char textbox1Buffer[BUF_SIZE];
 static char textbox2Buffer[BUF_SIZE];
-static TitleCommand command = { TITLE_SCRIPT_LOAD, { .SaveIndex = 0 } };
+static TitleCommand command = { TITLE_SCRIPT_LOAD, { 0 } };
 static TitleSequence * _sequence = NULL;
 
 static rct_widget window_title_command_editor_widgets[] = {

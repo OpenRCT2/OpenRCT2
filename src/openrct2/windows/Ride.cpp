@@ -4937,7 +4937,7 @@ static void window_ride_music_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 static rct_string_id get_rating_name(ride_rating rating)
 {
-    sint32 index = Math::Clamp<sint32>(0, rating >> 8, Util::CountOf(RatingNames) - 1);
+    sint32 index = Math::Clamp<sint32>(0, rating >> 8, (sint32)Util::CountOf(RatingNames) - 1);
     return RatingNames[index];
 }
 

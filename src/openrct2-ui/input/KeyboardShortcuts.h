@@ -147,6 +147,7 @@ extern "C"
 
     /** The current shortcut being changed. */
     extern uint8 gKeyboardShortcutChangeId;
+    extern const rct_string_id ShortcutStringIds[SHORTCUT_COUNT];
 
     void keyboard_shortcuts_reset();
     bool keyboard_shortcuts_load();

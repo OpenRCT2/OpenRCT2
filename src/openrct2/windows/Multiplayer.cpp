@@ -412,7 +412,7 @@ static rct_xy16 window_multiplayer_information_get_size()
     height += (numLines + 1) * lineHeight;
 
     _windowInformationSizeDirty = false;
-    _windowInformationSize = (rct_xy16){ (sint16) width, (sint16) height };
+    _windowInformationSize = { (sint16)width, (sint16)height };
     return _windowInformationSize;
 }
 

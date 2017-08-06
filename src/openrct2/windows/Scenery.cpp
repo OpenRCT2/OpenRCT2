@@ -546,11 +546,6 @@ static sint32 window_scenery_rows_height(sint32 rows)
     return rows * SCENERY_BUTTON_HEIGHT;
 }
 
-static sint32 rows_on_page(sint32 height)
-{
-    return height / 90;
-}
-
 /**
  *
  *  rct2: 0x006BD94C

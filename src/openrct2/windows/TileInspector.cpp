@@ -590,10 +590,10 @@ static void window_tile_inspector_select_element_from_list(rct_window *w, sint32
 
         // Get type of selected map element to select the correct page
         rct_map_element *const mapElement = window_tile_inspector_get_selected_element(w);
-        page = (Math::Min(map_element_get_type(mapElement), MAP_ELEMENT_TYPE_CORRUPT) >> 2) + 1;
+        page = (Math::Min<uint32>(map_element_get_type(mapElement), MAP_ELEMENT_TYPE_CORRUPT) >> 2) + 1;
     }
 
-    window_tile_inspector_set_page(w, page);
+    window_tile_inspector_set_page(w, (tile_inspector_page)page);
 
     // Enable/disable buttons
     window_tile_inspector_auto_set_buttons(w);
@@ -914,22 +914,22 @@ static void window_tile_inspector_mouseup(rct_window *w, rct_widgetindex widgetI
         window_close(w);
         break;
     case WIDX_SPINNER_X_INCREASE:
-        windowTileInspectorTileX = Math::Min(windowTileInspectorTileX + 1, 255);
+        windowTileInspectorTileX = Math::Min<uint32>(windowTileInspectorTileX + 1, 255);
         window_tile_inspector_load_tile(w);
         window_tile_inspector_auto_set_buttons(w);
         break;
     case WIDX_SPINNER_X_DECREASE:
-        windowTileInspectorTileX = Math::Max(windowTileInspectorTileX - 1, 0);
+        windowTileInspectorTileX = Math::Max<uint32>(windowTileInspectorTileX - 1, 0);
         window_tile_inspector_load_tile(w);
         window_tile_inspector_auto_set_buttons(w);
         break;
     case WIDX_SPINNER_Y_INCREASE:
-        windowTileInspectorTileY = Math::Min(windowTileInspectorTileY + 1, 255);
+        windowTileInspectorTileY = Math::Min<uint32>(windowTileInspectorTileY + 1, 255);
         window_tile_inspector_load_tile(w);
         window_tile_inspector_auto_set_buttons(w);
         break;
     case WIDX_SPINNER_Y_DECREASE:
-        windowTileInspectorTileY = Math::Max(windowTileInspectorTileY - 1, 0);
+        windowTileInspectorTileY = Math::Max<uint32>(windowTileInspectorTileY - 1, 0);
         window_tile_inspector_load_tile(w);
         window_tile_inspector_auto_set_buttons(w);
         break;
@@ -1624,15 +1624,15 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi)
     }
 
     // Draw coordinates
-    gfx_draw_string(dpi, "X:", COLOUR_DARK_GREEN, w->x + 6, w->y + 24);
-    gfx_draw_string(dpi, "Y:", COLOUR_DARK_GREEN, w->x + 64, w->y + 24);
+    gfx_draw_string(dpi, (char *)"X:", COLOUR_DARK_GREEN, w->x + 6, w->y + 24);
+    gfx_draw_string(dpi, (char *)"Y:", COLOUR_DARK_GREEN, w->x + 64, w->y + 24);
     if (windowTileInspectorTileSelected) {
         gfx_draw_string_right(dpi, STR_FORMAT_INTEGER, &windowTileInspectorTileX, COLOUR_DARK_GREEN, w->x + 48, w->y + 24);
         gfx_draw_string_right(dpi, STR_FORMAT_INTEGER, &windowTileInspectorTileY, COLOUR_DARK_GREEN, w->x + 105, w->y + 24);
     }
     else {
-        gfx_draw_string(dpi, "-", COLOUR_DARK_GREEN, w->x + 48 - 7, w->y + 24);
-        gfx_draw_string(dpi, "-", COLOUR_DARK_GREEN, w->x + 105 - 7, w->y + 24);
+        gfx_draw_string(dpi, (char *)"-", COLOUR_DARK_GREEN, w->x + 48 - 7, w->y + 24);
+        gfx_draw_string(dpi, (char *)"-", COLOUR_DARK_GREEN, w->x + 105 - 7, w->y + 24);
     }
 
     if (w->selected_list_item != -1) {
@@ -1970,7 +1970,7 @@ static void window_tile_inspector_scrollpaint(rct_window *w, rct_drawpixelinfo *
     gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
     do {
         sint32 type = map_element_get_type(mapElement);
-        char *typeName;
+        const char * typeName = "";
         sint32 baseHeight = mapElement->base_height;
         sint32 clearanceHeight = mapElement->clearance_height;
 
@@ -2036,7 +2036,7 @@ static void window_tile_inspector_scrollpaint(rct_window *w, rct_drawpixelinfo *
         const bool broken = (mapElement->flags & MAP_ELEMENT_FLAG_BROKEN) != 0;
         const bool last = (mapElement->flags & MAP_ELEMENT_FLAG_LAST_TILE) != 0;
         gfx_clip_string(buffer, w->widgets[WIDX_COLUMN_TYPE].right - w->widgets[WIDX_COLUMN_TYPE].left - COL_X_TYPE);
-        gfx_draw_string(dpi, typeName, COLOUR_DARK_GREEN, x + COL_X_TYPE + 3, y); // 3px padding
+        gfx_draw_string(dpi, (char *)typeName, COLOUR_DARK_GREEN, x + COL_X_TYPE + 3, y); // 3px padding
         gfx_draw_string_left(dpi, STR_FORMAT_INTEGER, &baseHeight, COLOUR_DARK_GREEN, x + COL_X_BH, y);
         gfx_draw_string_left(dpi, STR_FORMAT_INTEGER, &clearanceHeight, COLOUR_DARK_GREEN, x + COL_X_CH, y);
         if (ghost) gfx_draw_string(dpi, (char*)CheckBoxMarkString, w->colours[1], x + COL_X_GF, y);

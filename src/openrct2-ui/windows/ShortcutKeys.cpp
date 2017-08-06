@@ -90,7 +90,9 @@ static rct_window_event_list window_shortcut_events = {
     window_shortcut_scrollpaint
 };
 
-const rct_string_id ShortcutStringIds[] = {
+extern "C"
+{
+const rct_string_id ShortcutStringIds[SHORTCUT_COUNT] = {
     STR_SHORTCUT_CLOSE_TOP_MOST_WINDOW,
     STR_SHORTCUT_CLOSE_ALL_FLOATING_WINDOWS,
     STR_SHORTCUT_CANCEL_CONSTRUCTION_MODE,
@@ -156,6 +158,7 @@ const rct_string_id ShortcutStringIds[] = {
     STR_LOAD_GAME,
     STR_SHORTCUT_CLEAR_SCENERY,
 };
+}
 
 /**
  *

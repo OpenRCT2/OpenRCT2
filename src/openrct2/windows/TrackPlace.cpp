@@ -175,7 +175,7 @@ static void _window_track_place_open(const track_design_file_ref *tdFileRef)
     window_push_others_right(w);
     show_gridlines();
     _window_track_place_last_cost = MONEY32_UNDEFINED;
-    _window_track_place_last_x = 0xFFFF;
+    _window_track_place_last_x = -1;
     _currentTrackPieceDirection = (2 - get_current_rotation()) & 3;
 
     window_track_place_clear_mini_preview();
@@ -215,14 +215,14 @@ static void window_track_place_mouseup(rct_window *w, rct_widgetindex widgetInde
         window_track_place_clear_provisional();
         _currentTrackPieceDirection = (_currentTrackPieceDirection + 1) & 3;
         window_invalidate(w);
-        _window_track_place_last_x = 0xFFFF;
+        _window_track_place_last_x = -1;
         window_track_place_draw_mini_preview(_trackDesign);
         break;
     case WIDX_MIRROR:
         track_design_mirror(_trackDesign);
         _currentTrackPieceDirection = (0 - _currentTrackPieceDirection) & 3;
         window_invalidate(w);
-        _window_track_place_last_x = 0xFFFF;
+        _window_track_place_last_x = -1;
         window_track_place_draw_mini_preview(_trackDesign);
         break;
     case WIDX_SELECT_DIFFERENT_DESIGN:
@@ -605,9 +605,9 @@ static void window_track_place_draw_mini_preview_maze(rct_track_td6 *td6, sint32
 
 static rct_xy16 draw_mini_preview_get_pixel_position(sint16 x, sint16 y)
 {
-    return (rct_xy16) {
-            (sint16) (80 + ((y / 32) - (x / 32)) * 4),
-            (sint16) (38 + ((y / 32) + (x / 32)) * 2)
+    return {
+        (sint16)(80 + ((y / 32) - (x / 32)) * 4),
+        (sint16)(38 + ((y / 32) + (x / 32)) * 2)
     };
 }
 

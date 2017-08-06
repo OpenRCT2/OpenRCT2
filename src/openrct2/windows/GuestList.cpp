@@ -958,12 +958,18 @@ static void window_guest_list_find_groups()
         sint32 curr_num_guests = _window_guest_list_groups_num_guests[groupIndex];
         sint32 swap_position = 0;
         //This section places the groups in size order.
+        bool gotoNextPeep = false;
         while (1) {
-            if (swap_position >= groupIndex)
-                goto nextPeep;
+            if (swap_position >= groupIndex) {
+                gotoNextPeep = true;
+                break;
+            }
             if (curr_num_guests > _window_guest_list_groups_num_guests[swap_position])
                 break;
             swap_position++;
+        }
+        if (gotoNextPeep) {
+            continue;
         }
 
         sint32 argument_1 = _window_guest_list_groups_argument_1[groupIndex];
@@ -992,8 +998,5 @@ static void window_guest_list_find_groups()
             _window_guest_list_group_index[swap_position] = bl;
             bl = temp;
         } while (++swap_position <= groupIndex);
-
-    nextPeep:
-        ;
     }
 }

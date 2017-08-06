@@ -288,7 +288,7 @@ void window_new_ride_init_vars()
         Reset what is highlighted in each tab.
         Each 16bit number represents the item in its respective tab.
         */
-        _windowNewRideHighlightedItem[i] = (ride_list_item){ 255, 255 };
+        _windowNewRideHighlightedItem[i] = { 255, 255 };
     }
 }
 

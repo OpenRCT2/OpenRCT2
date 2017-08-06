@@ -50,8 +50,8 @@
     <ClCompile Include="UiContext.Linux.cpp" />
     <ClCompile Include="UiContext.Win32.cpp" />
     <ClCompile Include="WindowManager.cpp" />
-    <ClCompile Include="windows\shortcut_keys.c" />
-    <ClCompile Include="windows\shortcut_key_change.c" />
+    <ClCompile Include="windows\ShortcutKeys.cpp" />
+    <ClCompile Include="windows\ShortcutKeyChange.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="audio\AudioContext.h" />

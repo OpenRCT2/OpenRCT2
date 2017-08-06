@@ -29,6 +29,7 @@ extern "C"
 #include "../sprites.h"
 #include "../util/util.h"
 #include "../world/scenery.h"
+#include "_legacy.h"
 }
 
 #pragma region Widgets
@@ -261,8 +262,6 @@ static void research_rides_setup(){
     }
 }
 
-extern rct_object_entry RequiredSelectedObjects[7];
-
 /**
  *
  *  rct2: 0x0068590C
@@ -271,7 +270,7 @@ extern rct_object_entry RequiredSelectedObjects[7];
 static void research_scenery_sets_setup(){
 
     for (size_t i = 0; i < Util::CountOf(RequiredSelectedObjects); i++) {
-        rct_object_entry * object = &RequiredSelectedObjects[i];
+        const rct_object_entry * object = &RequiredSelectedObjects[i];
 
         uint8 entry_type, entry_index;
         if (!find_object_in_entry_group(object, &entry_type, &entry_index))
