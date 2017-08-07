@@ -135,6 +135,27 @@ void platform_posix_sub_resolve_openrct_data_path(utf8 *out, size_t size) {
     }
 }
 
+/**
+* Default directory fallback is:
+*   - <exePath>/doc
+*   - /usr/share/doc/openrct2
+*/
+static void platform_posix_sub_resolve_openrct_doc_path(utf8 *out, size_t size) {
+    static const utf8 *searchLocations[] = {
+        "./doc",
+        "/usr/share/doc/openrct2",
+    };
+    for (size_t i = 0; i < countof(searchLocations); i++)
+    {
+        log_verbose("Looking for OpenRCT2 doc path at %s", searchLocations[i]);
+        if (platform_directory_exists(searchLocations[i]))
+        {
+            safe_strcpy(out, searchLocations[i], size);
+            return;
+        }
+    }
+}
+
 uint16 platform_get_locale_language(){
     const char *langString = setlocale(LC_MESSAGES, "");
     if(langString != NULL){
@@ -224,15 +245,9 @@ uint8 platform_get_locale_measurement_format(){
     return MEASUREMENT_FORMAT_METRIC;
 }
 
-static void platform_linux_get_openrct_doc_path(utf8 *outPath, size_t outSize)
-{
-    platform_posix_sub_resolve_openrct_data_path(outPath, outSize);
-    safe_strcat_path(outPath, "doc", outSize);
-}
-
 void platform_get_changelog_path(utf8 *outPath, size_t outSize)
 {
-    platform_linux_get_openrct_doc_path(outPath, outSize);
+    platform_posix_sub_resolve_openrct_doc_path(outPath, outSize);
     safe_strcat_path(outPath, "changelog.txt", outSize);
 }
 
