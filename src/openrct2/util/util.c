@@ -549,3 +549,62 @@ size_t strcatftime(char * buffer, size_t bufferSize, const char * format, const 
     }
     return 0;
 }
+
+void url_from_string(char* buffer, char *data, size_t bufferSize)
+{
+    char *ret = url_begin(data);
+
+    if (ret) {
+        char *ret2 = url_end(ret);
+        char *url = malloc(256 * sizeof(char));
+
+        strncpy(url, ret, ret2 - ret);
+
+        ret2 = url_end(url);
+        *ret2 = '\0';
+
+        safe_strcpy(buffer, url, bufferSize);
+        SafeFree(url);
+    }
+    else {
+        buffer[0] = 0;
+    }
+}
+
+char* url_begin(char* data)
+{
+    char *ret = strstr(data, "http://");
+
+    if (!ret) {
+        ret = strstr(data, "https://");
+    }
+
+    return ret;
+}
+
+char* url_end(char *data)
+{
+    // find the end of an url.
+    while (*data) {
+        if (!isalnum(*data)
+            && *data != '-'
+            && *data != '_'
+            && *data != '.'
+            && *data != '?'
+            && *data != '#'
+            && *data != '['
+            && *data != ']'
+            && *data != '~'
+            && *data != '@'
+            && *data != '%'
+            && *data != ':'
+            && *data != '/'
+        ) {
+            break;
+        }
+
+        data++;
+    }
+
+    return data;
+}

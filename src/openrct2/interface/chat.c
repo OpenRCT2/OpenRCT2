@@ -17,12 +17,14 @@
 #include "../audio/audio.h"
 #include "../audio/AudioMixer.h"
 #include "../Context.h"
+#include "../input.h"
 #include "../interface/themes.h"
 #include "../localisation/localisation.h"
 #include "../network/network.h"
 #include "../platform/platform.h"
 #include "../util/util.h"
 #include "chat.h"
+#include "Cursors.h"
 
 bool gChatOpen = false;
 static char _chatCurrentLine[CHAT_MAX_MESSAGE_LENGTH];
@@ -37,10 +39,13 @@ static sint32 _chatBottom;
 static sint32 _chatWidth;
 static sint32 _chatHeight;
 static TextInputSession * _chatTextInputSession;
+static sint32 _chatMouseOver = -1;
 
 static const char* chat_history_get(uint32 index);
 static uint32 chat_history_get_time(uint32 index);
 static void chat_clear_input();
+
+void chat_handle_hover_msg(char* msg, sint32 msgIndex, const CursorState* curState, sint32 rMouseX, sint32 rMouseY);
 
 void chat_open()
 {
@@ -69,10 +74,89 @@ void chat_init()
     memset(_chatHistoryTime, 0, sizeof(_chatHistoryTime));
 }
 
+// TODO remove this or revert "(DEBUG) create debug_ui_box" when finished
+bool debug_ui_box_show = false;
+sint32 debug_ui_box_x1 = 0, debug_ui_box_y1 = 0, debug_ui_box_x2 = 0, debug_ui_box_y2 = 0;
+sint32 debug_mouse_x = 0, debug_mouse_y = 0;
+
+void debug_ui_box_set(sint32 x1, sint32 y1, sint32 x2, sint32 y2)
+{
+    debug_ui_box_show = true;
+    debug_ui_box_x1 = x1;
+    debug_ui_box_y1 = y1;
+    debug_ui_box_x2 = x2;
+    debug_ui_box_y2 = y2;
+}
+
+void debug_ui_box_hide()
+{
+    debug_ui_box_show = false;
+}
+
+// TODO remove these lines once stringHeight is properly working
+bool subtract_lineY_by_stringHeight     = true;
+bool compare_mouseY_to_stringHeight     = true;
+bool adjust_debugUiBoxY_by_stringHeight = true;
+
 void chat_update()
 {
     // Flash the caret
     _chatCaretTicks = (_chatCaretTicks + 1) % 30;
+
+    // Clicking the chat
+    if (!input_test_flag(INPUT_FLAG_5))
+    {
+        char* inputLine = _chatCurrentLine;
+        // TODO the stringHeights need some work on for multiple lines.
+        sint32 stringHeight = chat_string_wrapped_get_height((void*)&inputLine, _chatWidth - 10) - 5;
+
+        sint32 y = _chatBottom - stringHeight - 15;
+
+        const CursorState * cursorState = context_get_cursor_state();
+        sint32 mX = cursorState->x;
+        sint32 mY = cursorState->y;
+
+        if (_chatMouseOver != -1) {
+            _chatMouseOver = -1;
+            // To prevent blocking visual feedback on items below chat, cursor should
+            // only reset when a message was previously hovered over.
+            input_set_cursor(CURSOR_ARROW);
+            debug_ui_box_hide();
+            debug_mouse_x = 0;
+            debug_mouse_y = 0;
+        }
+
+        if (mX > _chatLeft && mX < _chatRight && mY > _chatTop && mY < _chatBottom) {
+            debug_mouse_x = mX;
+            debug_mouse_y = mY;
+            for (sint32 i = 0; i < CHAT_HISTORY_SIZE; i++, y -= (subtract_lineY_by_stringHeight ? stringHeight : 15)) {
+                uint32 expireTime = chat_history_get_time(i) + 10000;
+                if (!gChatOpen && platform_get_ticks() > expireTime) {
+                    break;
+                }
+
+                char lineBuffer[CHAT_INPUT_SIZE + 10];
+                char* lineCh = lineBuffer;
+                safe_strcpy(lineBuffer, chat_history_get(i), CHAT_INPUT_SIZE + 10);
+
+                // TODO the stringHeights need some work on for multiple lines.
+                stringHeight = chat_string_wrapped_get_height((void*)&lineCh, _chatWidth - 10) + 5;
+
+                if (mY > y && mY - (compare_mouseY_to_stringHeight ? stringHeight : 15) < y && !str_is_null_or_empty(lineCh)) {
+                    debug_ui_box_set(_chatLeft, y, _chatRight, y + (adjust_debugUiBoxY_by_stringHeight ? stringHeight : 15));
+                    chat_handle_hover_msg(lineCh, i, cursorState, mX - _chatLeft, mY - y);
+                }
+            }
+        }
+    }
+}
+
+void draw_rect(rct_drawpixelinfo* dpi, sint32 x1, sint32 y1, sint32 x2, sint32 y2, sint32 col)
+{
+    gfx_draw_line(dpi, x1, y1, x1, y2, COLOUR_BRIGHT_RED);
+    gfx_draw_line(dpi, x1, y1, x2, y1, COLOUR_BRIGHT_RED);
+    gfx_draw_line(dpi, x2, y1, x2, y2, COLOUR_BRIGHT_RED);
+    gfx_draw_line(dpi, x1, y2, x2, y2, COLOUR_BRIGHT_RED);
 }
 
 void chat_draw(rct_drawpixelinfo * dpi)
@@ -139,8 +223,15 @@ void chat_draw(rct_drawpixelinfo * dpi)
 
         safe_strcpy(lineBuffer, chat_history_get(i), sizeof(lineBuffer));
 
-        stringHeight = chat_history_draw_string(dpi, (void*) &lineCh, x, y, _chatWidth - 10) + 5;
-        gfx_set_dirty_blocks(x, y - stringHeight, x + _chatWidth, y + 20);
+        // TODO remove this code (or revert "(DEBUG) Shift text to right when hovered over") when finished
+        sint32 _x = x;
+        if (_chatMouseOver == i) {
+            _x += 5;
+        }
+
+        stringHeight = chat_history_draw_string(dpi, (void*) &lineCh, _x, y, _chatWidth - 10) + 5;
+
+        gfx_set_dirty_blocks(x, y - stringHeight, _x + _chatWidth, y + 20);
 
         if ((y - stringHeight) < 50) {
             break;
@@ -167,6 +258,41 @@ void chat_draw(rct_drawpixelinfo * dpi)
             sint32 caretY = y + 14;
 
             gfx_fill_rect(dpi, caretX, caretY, caretX + 6, caretY + 1, PALETTE_INDEX_56);
+        }
+    }
+
+    // TODO remove this or revert "(DEBUG) create debug_ui_box" when finished
+    if (debug_ui_box_show) {
+        draw_rect(dpi, debug_ui_box_x1, debug_ui_box_y1, debug_ui_box_x2, debug_ui_box_y2, COLOUR_BRIGHT_RED);
+    }
+    draw_rect(dpi, debug_mouse_x - 1, debug_mouse_y - 1, debug_mouse_x + 1, debug_mouse_y + 1, COLOUR_MOSS_GREEN);
+}
+
+void chat_handle_hover_msg(char* msg, sint32 msgIndex, const CursorState* curState, sint32 rMouseX, sint32 rMouseY)
+{
+    _chatMouseOver = msgIndex;
+
+    // TODO use relative mouse x/y coordinates to determine the distance
+    // into the message to check. This will allow multiple urls in a single
+    // message by skipping urls before the hovered url.
+    // Take into account user will usually hover halfway into a url.
+    char url[256];
+    char* urlBuffer = url;
+    url_from_string(urlBuffer, msg, sizeof(url));
+
+    if (!str_is_null_or_empty(url)) {
+        input_set_cursor(CURSOR_HAND_POINT);
+        if (curState->left == CURSOR_RELEASED) {
+            platform_open_browser(url);
+        }
+    }
+    // TODO Remove this code or revert "(DEBUG) Allow clearing chat history by clicking non-url messages" once lineHeight is working properly
+    else {
+        if (curState->left == CURSOR_RELEASED) {
+            for (sint32 i = 0; i < CHAT_HISTORY_SIZE; i++) {
+                memset(_chatHistory[i], 0, CHAT_INPUT_SIZE);
+            }
+            _chatHistoryIndex = 0;
         }
     }
 }

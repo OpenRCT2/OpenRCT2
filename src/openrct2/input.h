@@ -115,4 +115,6 @@ void reset_tooltip_not_shown();
 
 void input_reset_place_obj_modifier();
 
+void input_set_cursor(uint8 cursor_id);
+
 #endif
