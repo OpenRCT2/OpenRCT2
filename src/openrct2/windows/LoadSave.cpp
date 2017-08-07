@@ -531,9 +531,10 @@ static void window_loadsave_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, s
             gfx_filter_rect(dpi, 0, y, listWidth, y + 9, PALETTE_DARKEN_1);
         }
         // display a marker next to the currently loaded game file
+        // BUG incorrect files are being marked as loaded, this has been disabled until it's fixed.
         if (_listItems[i].loaded) {
-            set_format_arg(0, rct_string_id, STR_RIGHTGUILLEMET);
-            gfx_draw_string_left(dpi, stringId, gCommonFormatArgs, COLOUR_BLACK, 0, y - 1);
+            // set_format_arg(0, rct_string_id, STR_RIGHTGUILLEMET);
+            // gfx_draw_string_left(dpi, stringId, gCommonFormatArgs, COLOUR_BLACK, 0, y - 1);
         }
 
         set_format_arg(0, rct_string_id, STR_STRING);
