@@ -224,6 +224,18 @@ uint8 platform_get_locale_measurement_format(){
     return MEASUREMENT_FORMAT_METRIC;
 }
 
+static void platform_linux_get_openrct_doc_path(utf8 *outPath, size_t outSize)
+{
+    platform_posix_sub_resolve_openrct_data_path(outPath, outSize);
+    safe_strcat_path(outPath, "doc", outSize);
+}
+
+void platform_get_changelog_path(utf8 *outPath, size_t outSize)
+{
+    platform_linux_get_openrct_doc_path(outPath, outSize);
+    safe_strcat_path(outPath, "changelog.txt", outSize);
+}
+
 #ifndef NO_TTF
 bool platform_get_font_path(TTFFontDescriptor *font, utf8 *buffer, size_t size)
 {
