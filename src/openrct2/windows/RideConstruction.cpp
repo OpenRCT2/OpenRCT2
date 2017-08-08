@@ -3893,7 +3893,7 @@ void ride_construction_tooldown_construct(sint32 screenX, sint32 screenY)
         z -= bx;
 
         // FIX not sure exactly why it starts trial and error place from a lower Z, but it causes issues with disable clearance
-        if (!gCheatsDisableClearanceChecks) {
+        if (!gCheatsDisableClearanceChecks && z > 16) {
             z -= 16;
         }
     } else {
