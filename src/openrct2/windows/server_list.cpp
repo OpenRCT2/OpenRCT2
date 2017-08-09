@@ -687,7 +687,7 @@ static void fetch_servers()
         sort_servers();
     }
 
-    http_request_t request = { 0 };
+    http_request_t request = {};
     request.url = masterServerUrl;
     request.method = HTTP_METHOD_GET;
     request.body = NULL;

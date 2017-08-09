@@ -200,7 +200,7 @@ namespace Twitch
         _twitchState = TWITCH_STATE_JOINING;
         _twitchIdle = false;
 
-        http_request_t request = { 0 };
+        http_request_t request = {};
         request.url = url;
         request.method = HTTP_METHOD_GET;
         request.body = nullptr;
@@ -277,7 +277,7 @@ namespace Twitch
         _twitchState = TWITCH_STATE_WAITING;
         _twitchIdle = false;
 
-        http_request_t request = { 0 };
+        http_request_t request = {};
         request.url = url;
         request.method = HTTP_METHOD_GET;
         request.body = NULL;
@@ -308,7 +308,7 @@ namespace Twitch
         _twitchState = TWITCH_STATE_WAITING;
         _twitchIdle = false;
 
-        http_request_t request = { 0 };
+        http_request_t request = {};
         request.url = url;
         request.method = HTTP_METHOD_GET;
         request.body = nullptr;
