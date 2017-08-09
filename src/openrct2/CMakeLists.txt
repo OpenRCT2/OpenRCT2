@@ -128,7 +128,7 @@ endif ()
 # Outputs
 set(PROJECT libopenrct2)
 project(${PROJECT})
-add_library(${PROJECT} SHARED ${OPENRCT2_CORE_SOURCES} ${OPENRCT2_CORE_MM_SOURCES} ${RCT2_SECTIONS})
+add_library(${PROJECT} ${OPENRCT2_CORE_SOURCES} ${OPENRCT2_CORE_MM_SOURCES} ${RCT2_SECTIONS})
 set_target_properties(${PROJECT} PROPERTIES PREFIX "")
 set_target_properties(${PROJECT} PROPERTIES COMPILE_FLAGS "-Wundef")
 
@@ -164,6 +164,12 @@ if (NOT DISABLE_NETWORK)
     if (WIN32)
         target_link_libraries(${PROJECT} ws2_32)
     endif ()
+
+    # our HTTP implementation requires use of threads
+    set(THREADS_PREFER_PTHREAD_FLAG ON)
+    find_package(Threads REQUIRED)
+    target_link_libraries(${PROJECT} Threads::Threads)
+
     if (STATIC)
         target_link_libraries(${PROJECT} ${LIBCURL_STATIC_LIBRARIES}
                                          ${SSL_STATIC_LIBRARIES})
