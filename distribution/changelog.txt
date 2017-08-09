@@ -1,4 +1,4 @@
-0.1.1 (in development)
+0.1.1 (2017-08-09)
 ------------------------------------------------------------------------
 - Feature: [#5815] Add cheat to ignore research status and access rides/scenery not yet invented.
 - Feature: [#5857] Keyboard shortcut for clear scenery.
