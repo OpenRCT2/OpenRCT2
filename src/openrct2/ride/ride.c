@@ -5703,15 +5703,14 @@ void game_command_set_ride_name(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *e
 
     *ebx = 0;
 
-	//After renaming a ride, refresh Guest list if open
-	rct_window* window;
+    //After renaming a ride, refresh Guest list if open
+    rct_window* window;
 
-	window = window_find_by_class(WC_GUEST_LIST);
-	if (window == NULL) {
-		return;
-	}
-
-	window_guest_list_find_groups_force_refresh();
+    window = window_find_by_class(WC_GUEST_LIST);
+    if (window != NULL)
+    {
+        window_guest_list_find_groups_force_refresh();
+    }
 }
 
 /**
