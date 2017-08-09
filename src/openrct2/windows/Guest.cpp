@@ -19,17 +19,17 @@
 
 extern "C"
 {
-#include "../game.h"
-#include "../input.h"
-#include "../management/marketing.h"
-#include "../peep/staff.h"
-#include "../ride/ride_data.h"
-#include "../localisation/localisation.h"
-#include "../sprites.h"
-#include "../interface/viewport.h"
-#include "../interface/widget.h"
-#include "../util/util.h"
-#include "../world/footpath.h"
+    #include "../game.h"
+    #include "../input.h"
+    #include "../management/marketing.h"
+    #include "../peep/staff.h"
+    #include "../ride/ride_data.h"
+    #include "../localisation/localisation.h"
+    #include "../sprites.h"
+    #include "../interface/viewport.h"
+    #include "../interface/widget.h"
+    #include "../util/util.h"
+    #include "../world/footpath.h"
 }
 
 enum WINDOW_GUEST_PAGE {

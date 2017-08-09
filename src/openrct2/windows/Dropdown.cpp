@@ -20,11 +20,11 @@
 
 extern "C"
 {
-#include "../input.h"
-#include "../interface/widget.h"
-#include "../localisation/localisation.h"
-#include "../sprites.h"
-#include "dropdown.h"
+    #include "../input.h"
+    #include "../interface/widget.h"
+    #include "../localisation/localisation.h"
+    #include "../sprites.h"
+    #include "dropdown.h"
 }
 
 // The maximum number of rows to list before items overflow into new columns

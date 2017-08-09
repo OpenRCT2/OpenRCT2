@@ -22,14 +22,14 @@
 
 extern "C"
 {
-#include "../editor.h"
-#include "../input.h"
-#include "../interface/widget.h"
-#include "../localisation/localisation.h"
-#include "../sprites.h"
-#include "../util/util.h"
-#include "../world/scenery.h"
-#include "_legacy.h"
+    #include "../editor.h"
+    #include "../input.h"
+    #include "../interface/widget.h"
+    #include "../localisation/localisation.h"
+    #include "../sprites.h"
+    #include "../util/util.h"
+    #include "../world/scenery.h"
+    #include "_legacy.h"
 }
 
 #pragma region Widgets

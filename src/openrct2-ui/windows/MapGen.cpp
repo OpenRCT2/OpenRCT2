@@ -20,13 +20,13 @@
 
 extern "C"
 {
-#include <openrct2/localisation/localisation.h>
-#include <openrct2/input.h>
-#include <openrct2/interface/land_tool.h>
-#include <openrct2/interface/widget.h>
-#include <openrct2/util/util.h>
-#include <openrct2/world/mapgen.h>
-#include <openrct2/windows/dropdown.h>
+    #include <openrct2/localisation/localisation.h>
+    #include <openrct2/input.h>
+    #include <openrct2/interface/land_tool.h>
+    #include <openrct2/interface/widget.h>
+    #include <openrct2/util/util.h>
+    #include <openrct2/world/mapgen.h>
+    #include <openrct2/windows/dropdown.h>
 }
 
 enum {

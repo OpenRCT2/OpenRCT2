@@ -18,16 +18,16 @@
 
 extern "C"
 {
-#include "../game.h"
-#include "../interface/viewport.h"
-#include "../interface/widget.h"
-#include "../localisation/localisation.h"
-#include "../peep/staff.h"
-#include "../sprites.h"
-#include "../world/footpath.h"
-#include "../input.h"
-#include "dropdown.h"
-#include "../interface/themes.h"
+    #include "../game.h"
+    #include "../interface/viewport.h"
+    #include "../interface/widget.h"
+    #include "../localisation/localisation.h"
+    #include "../peep/staff.h"
+    #include "../sprites.h"
+    #include "../world/footpath.h"
+    #include "../input.h"
+    #include "dropdown.h"
+    #include "../interface/themes.h"
 }
 
 #define WW 190

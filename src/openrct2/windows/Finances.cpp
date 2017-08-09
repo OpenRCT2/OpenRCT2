@@ -19,14 +19,14 @@
 
 extern "C"
 {
-#include "../game.h"
-#include "../interface/graph.h"
-#include "../interface/widget.h"
-#include "../localisation/date.h"
-#include "../localisation/localisation.h"
-#include "../ride/ride_data.h"
-#include "../sprites.h"
-#include "dropdown.h"
+    #include "../game.h"
+    #include "../interface/graph.h"
+    #include "../interface/widget.h"
+    #include "../localisation/date.h"
+    #include "../localisation/localisation.h"
+    #include "../ride/ride_data.h"
+    #include "../sprites.h"
+    #include "dropdown.h"
 }
 
 enum {

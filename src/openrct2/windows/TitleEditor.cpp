@@ -26,13 +26,13 @@
 
 extern "C"
 {
-#include "../game.h"
+    #include "../game.h"
     #include "../input.h"
-#include "../interface/widget.h"
-#include "../localisation/localisation.h"
-#include "../sprites.h"
+    #include "../interface/widget.h"
+    #include "../localisation/localisation.h"
+    #include "../sprites.h"
     #include "../util/util.h"
-#include "dropdown.h"
+    #include "dropdown.h"
     #include "error.h"
 }
 

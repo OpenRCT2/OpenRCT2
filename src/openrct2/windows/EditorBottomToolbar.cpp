@@ -19,16 +19,16 @@
 
 extern "C"
 {
-#include "../audio/audio.h"
-#include "../game.h"
-#include "../editor.h"
-#include "../input.h"
-#include "../sprites.h"
-#include "../localisation/localisation.h"
-#include "../interface/themes.h"
-#include "../interface/widget.h"
-#include "../world/scenery.h"
-#include "error.h"
+    #include "../audio/audio.h"
+    #include "../game.h"
+    #include "../editor.h"
+    #include "../input.h"
+    #include "../sprites.h"
+    #include "../localisation/localisation.h"
+    #include "../interface/themes.h"
+    #include "../interface/widget.h"
+    #include "../world/scenery.h"
+    #include "error.h"
 }
 
 enum {

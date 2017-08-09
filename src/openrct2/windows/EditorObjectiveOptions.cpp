@@ -19,14 +19,14 @@
 
 extern "C"
 {
-#include "../game.h"
-#include "../interface/widget.h"
-#include "../localisation/date.h"
-#include "../localisation/localisation.h"
-#include "../sprites.h"
-#include "../util/util.h"
-#include "dropdown.h"
-#include "error.h"
+    #include "../game.h"
+    #include "../interface/widget.h"
+    #include "../localisation/date.h"
+    #include "../localisation/localisation.h"
+    #include "../sprites.h"
+    #include "../util/util.h"
+    #include "dropdown.h"
+    #include "error.h"
 }
 
 #pragma region Widgets

@@ -18,11 +18,11 @@
 
 extern "C"
 {
-#include "../game.h"
-#include "../interface/widget.h"
-#include "../localisation/localisation.h"
-#include "../sprites.h"
-#include "dropdown.h"
+    #include "../game.h"
+    #include "../interface/widget.h"
+    #include "../localisation/localisation.h"
+    #include "../sprites.h"
+    #include "dropdown.h"
 }
 
 enum {

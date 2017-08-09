@@ -20,10 +20,10 @@
 
 extern "C"
 {
-#include "../audio/audio.h"
-#include "../interface/widget.h"
-#include "../localisation/localisation.h"
-#include "error.h"
+    #include "../audio/audio.h"
+    #include "../interface/widget.h"
+    #include "../localisation/localisation.h"
+    #include "error.h"
 }
 
 bool gDisableErrorWindowSound = false;

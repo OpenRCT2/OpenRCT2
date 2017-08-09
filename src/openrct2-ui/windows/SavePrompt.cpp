@@ -21,10 +21,10 @@
 
 extern "C"
 {
-#include <openrct2/audio/audio.h>
-#include <openrct2/game.h>
-#include <openrct2/localisation/localisation.h>
-#include <openrct2/interface/widget.h>
+    #include <openrct2/audio/audio.h>
+    #include <openrct2/game.h>
+    #include <openrct2/localisation/localisation.h>
+    #include <openrct2/interface/widget.h>
 }
 
 enum WINDOW_SAVE_PROMPT_WIDGET_IDX {

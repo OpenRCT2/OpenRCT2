@@ -22,14 +22,14 @@
 
 extern "C"
 {
-#include "../game.h"
-#include "../input.h"
-#include "../interface/widget.h"
-#include "../localisation/date.h"
-#include "../localisation/localisation.h"
-#include "../management/news_item.h"
-#include "../peep/staff.h"
-#include "../sprites.h"
+    #include "../game.h"
+    #include "../input.h"
+    #include "../interface/widget.h"
+    #include "../localisation/date.h"
+    #include "../localisation/localisation.h"
+    #include "../management/news_item.h"
+    #include "../peep/staff.h"
+    #include "../sprites.h"
 }
 
 enum WINDOW_GAME_BOTTOM_TOOLBAR_WIDGET_IDX {

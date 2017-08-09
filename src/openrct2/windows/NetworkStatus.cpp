@@ -18,9 +18,9 @@
 
 extern "C"
 {
-#include "../interface/widget.h"
-#include "../localisation/localisation.h"
-#include "../util/util.h"
+    #include "../interface/widget.h"
+    #include "../localisation/localisation.h"
+    #include "../util/util.h"
 }
 
 static char _password[33];

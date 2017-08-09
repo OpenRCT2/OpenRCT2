@@ -20,19 +20,19 @@
 
 extern "C"
 {
-#include "../common.h"
-#include "../game.h"
-#include "../input.h"
-#include "../interface/widget.h"
-#include "../localisation/localisation.h"
-#include "../ride/ride_data.h"
-#include "../ride/track.h"
-#include "../sprites.h"
-#include "../world/footpath.h"
-#include "../world/scenery.h"
-#include "../world/tile_inspector.h"
-#include "dropdown.h"
-#include "tile_inspector.h"
+    #include "../common.h"
+    #include "../game.h"
+    #include "../input.h"
+    #include "../interface/widget.h"
+    #include "../localisation/localisation.h"
+    #include "../ride/ride_data.h"
+    #include "../ride/track.h"
+    #include "../sprites.h"
+    #include "../world/footpath.h"
+    #include "../world/scenery.h"
+    #include "../world/tile_inspector.h"
+    #include "dropdown.h"
+    #include "tile_inspector.h"
 }
 
 static const rct_string_id TerrainTypeStringIds[] = {
