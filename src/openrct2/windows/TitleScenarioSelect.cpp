@@ -26,7 +26,7 @@ extern "C"
     #include "../localisation/localisation.h"
     #include "../sprites.h"
     #include "../interface/widget.h"
-#include "../interface/themes.h"
+    #include "../interface/themes.h"
     #include "../util/util.h"
 }
 

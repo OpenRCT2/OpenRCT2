@@ -19,15 +19,15 @@
 
 extern "C"
 {
-#include <openrct2/game.h>
-#include <openrct2/input.h>
-#include <openrct2/interface/widget.h>
-#include <openrct2/localisation/localisation.h>
-#include <openrct2/sprites.h>
-#include <openrct2/windows/dropdown.h>
-#include <openrct2/interface/themes.h>
-#include <openrct2/windows/error.h>
-#include <openrct2/util/util.h>
+    #include <openrct2/game.h>
+    #include <openrct2/input.h>
+    #include <openrct2/interface/widget.h>
+    #include <openrct2/localisation/localisation.h>
+    #include <openrct2/sprites.h>
+    #include <openrct2/windows/dropdown.h>
+    #include <openrct2/interface/themes.h>
+    #include <openrct2/windows/error.h>
+    #include <openrct2/util/util.h>
 }
 
 enum {

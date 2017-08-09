@@ -18,18 +18,18 @@
 
 extern "C"
 {
-#include "../drawing/drawing.h"
-#include "../game.h"
-#include "../input.h"
-#include "../interface/viewport.h"
-#include "../interface/widget.h"
-#include "../localisation/localisation.h"
-#include "../peep/staff.h"
-#include "../sprites.h"
-#include "../util/util.h"
-#include "../world/footpath.h"
-#include "dropdown.h"
-#include "error.h"
+    #include "../drawing/drawing.h"
+    #include "../game.h"
+    #include "../input.h"
+    #include "../interface/viewport.h"
+    #include "../interface/widget.h"
+    #include "../localisation/localisation.h"
+    #include "../peep/staff.h"
+    #include "../sprites.h"
+    #include "../util/util.h"
+    #include "../world/footpath.h"
+    #include "dropdown.h"
+    #include "error.h"
 }
 
 enum {

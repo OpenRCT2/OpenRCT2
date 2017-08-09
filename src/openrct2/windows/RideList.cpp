@@ -20,12 +20,12 @@
 
 extern "C"
 {
-#include "../game.h"
-#include "../localisation/localisation.h"
-#include "../sprites.h"
-#include "../interface/widget.h"
-#include "dropdown.h"
-#include "../interface/themes.h"
+    #include "../game.h"
+    #include "../localisation/localisation.h"
+    #include "../sprites.h"
+    #include "../interface/widget.h"
+    #include "dropdown.h"
+    #include "../interface/themes.h"
 }
 
 enum {

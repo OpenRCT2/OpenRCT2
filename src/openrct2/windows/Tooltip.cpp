@@ -19,10 +19,10 @@
 
 extern "C"
 {
-#include "../localisation/localisation.h"
+    #include "../localisation/localisation.h"
     #include "../input.h"
     #include "../interface/widget.h"
-#include "tooltip.h"
+    #include "tooltip.h"
 }
 
 enum {

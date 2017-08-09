@@ -35,19 +35,19 @@
 
 extern "C"
 {
-#include <openrct2/audio/audio.h>
-#include <openrct2/interface/themes.h>
-#include <openrct2/interface/viewport.h>
-#include <openrct2/interface/widget.h>
-#include <openrct2/localisation/currency.h>
-#include <openrct2/localisation/date.h>
-#include <openrct2/localisation/language.h>
-#include <openrct2/localisation/localisation.h>
-#include <openrct2/platform/platform.h>
-#include <openrct2/sprites.h>
-#include <openrct2/util/util.h>
-#include <openrct2/windows/dropdown.h>
-#include <openrct2/windows/error.h>
+    #include <openrct2/audio/audio.h>
+    #include <openrct2/interface/themes.h>
+    #include <openrct2/interface/viewport.h>
+    #include <openrct2/interface/widget.h>
+    #include <openrct2/localisation/currency.h>
+    #include <openrct2/localisation/date.h>
+    #include <openrct2/localisation/language.h>
+    #include <openrct2/localisation/localisation.h>
+    #include <openrct2/platform/platform.h>
+    #include <openrct2/sprites.h>
+    #include <openrct2/util/util.h>
+    #include <openrct2/windows/dropdown.h>
+    #include <openrct2/windows/error.h>
 }
 
 enum WINDOW_OPTIONS_PAGE {

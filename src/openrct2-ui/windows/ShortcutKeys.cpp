@@ -20,8 +20,8 @@
 
 extern "C"
 {
-#include <openrct2/interface/widget.h>
-#include <openrct2/localisation/localisation.h>
+    #include <openrct2/interface/widget.h>
+    #include <openrct2/localisation/localisation.h>
 }
 
 #define WW 420

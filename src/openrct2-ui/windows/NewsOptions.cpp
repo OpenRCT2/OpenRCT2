@@ -20,9 +20,9 @@
 
 extern "C"
 {
-#include <openrct2/interface/widget.h>
-#include <openrct2/localisation/localisation.h>
-#include <openrct2/sprites.h>
+    #include <openrct2/interface/widget.h>
+    #include <openrct2/localisation/localisation.h>
+    #include <openrct2/sprites.h>
 }
 
 enum {

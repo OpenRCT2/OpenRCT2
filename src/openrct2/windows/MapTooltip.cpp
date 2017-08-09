@@ -18,9 +18,9 @@
 
 extern "C"
 {
-#include "../input.h"
-#include "../interface/widget.h"
-#include "../localisation/localisation.h"
+    #include "../input.h"
+    #include "../interface/widget.h"
+    #include "../localisation/localisation.h"
 }
 
 static rct_widget window_map_tooltip_widgets[] = {

@@ -18,9 +18,9 @@
 
 extern "C"
 {
-#include "../interface/viewport.h"
-#include "../interface/widget.h"
-#include "../world/footpath.h"
+    #include "../interface/viewport.h"
+    #include "../interface/widget.h"
+    #include "../world/footpath.h"
 }
 
 static void window_editor_main_paint(rct_window *w, rct_drawpixelinfo *dpi);

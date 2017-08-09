@@ -18,9 +18,9 @@
 
 extern "C"
 {
-#include "../interface/viewport.h"
-#include "../interface/widget.h"
-#include "../world/footpath.h"
+    #include "../interface/viewport.h"
+    #include "../interface/widget.h"
+    #include "../world/footpath.h"
 }
 
 rct_widget window_main_widgets[] = {

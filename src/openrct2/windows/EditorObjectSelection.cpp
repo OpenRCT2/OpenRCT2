@@ -24,20 +24,20 @@
 
 extern "C"
 {
-#include <ctype.h>
-#include "../audio/audio.h"
-#include "../game.h"
-#include "../editor.h"
-#include "../interface/widget.h"
-#include "../localisation/localisation.h"
-#include "../object_list.h"
-#include "../rct1.h"
-#include "../ride/ride_data.h"
-#include "../util/util.h"
-#include "dropdown.h"
-#include "error.h"
-#include "../sprites.h"
-#include "_legacy.h"
+    #include <ctype.h>
+    #include "../audio/audio.h"
+    #include "../game.h"
+    #include "../editor.h"
+    #include "../interface/widget.h"
+    #include "../localisation/localisation.h"
+    #include "../object_list.h"
+    #include "../rct1.h"
+    #include "../ride/ride_data.h"
+    #include "../util/util.h"
+    #include "dropdown.h"
+    #include "error.h"
+    #include "../sprites.h"
+    #include "_legacy.h"
 }
 
 enum {
