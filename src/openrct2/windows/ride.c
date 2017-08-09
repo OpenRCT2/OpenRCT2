@@ -1309,16 +1309,17 @@ static void window_ride_draw_tab_vehicle(rct_drawpixelinfo *dpi, rct_window *w)
             clipDPI.y *= 2;
         }
 
-		//For any suspended rides, move image higher in the vehicle tab on the rides window
-		if (ride->type == RIDE_TYPE_COMPACT_INVERTED_COASTER
-			|| ride->type == RIDE_TYPE_INVERTED_ROLLER_COASTER
-			|| ride->type == RIDE_TYPE_INVERTED_IMPULSE_COASTER	
-			|| ride->type == RIDE_TYPE_SUSPENDED_SWINGING_COASTER
-			|| ride->type == RIDE_TYPE_CHAIRLIFT
-			|| ride->type == RIDE_TYPE_MINI_SUSPENDED_COASTER
-			|| ride->type == RIDE_TYPE_SUSPENDED_MONORAIL) {
-			y /= 4;
-		}
+	//For any suspended rides, move image higher in the vehicle tab on the rides window
+	if (ride->type == RIDE_TYPE_COMPACT_INVERTED_COASTER
+	    || ride->type == RIDE_TYPE_INVERTED_ROLLER_COASTER
+	    || ride->type == RIDE_TYPE_INVERTED_IMPULSE_COASTER	
+	    || ride->type == RIDE_TYPE_SUSPENDED_SWINGING_COASTER
+	    || ride->type == RIDE_TYPE_CHAIRLIFT
+	    || ride->type == RIDE_TYPE_MINI_SUSPENDED_COASTER
+	    || ride->type == RIDE_TYPE_SUSPENDED_MONORAIL) 
+	{
+	    y /= 4;
+	}
 
         const uint8 vehicle = ride_entry_get_vehicle_at_position(ride->subtype, ride->num_cars_per_train, rideEntry->tab_vehicle);
         rct_ride_entry_vehicle* rideVehicleEntry = &rideEntry->vehicles[vehicle];
