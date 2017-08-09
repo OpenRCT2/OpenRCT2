@@ -32,6 +32,7 @@
 #include <vector>
 #include "../core/Math.hpp"
 #include "../core/String.hpp"
+#include "../OpenRCT2.h"
 
 extern "C"
 {
@@ -43,7 +44,6 @@ extern "C"
     #include "../management/news_item.h"
     #include "../peep/peep.h"
     #include "../platform/platform.h"
-    #include "../rct2.h"
     #include "../util/util.h"
     #include "../world/sprite.h"
     #include "http.h"
@@ -200,7 +200,7 @@ namespace Twitch
         _twitchState = TWITCH_STATE_JOINING;
         _twitchIdle = false;
 
-        http_request_t request = { 0 };
+        http_request_t request = {};
         request.url = url;
         request.method = HTTP_METHOD_GET;
         request.body = nullptr;
@@ -277,7 +277,7 @@ namespace Twitch
         _twitchState = TWITCH_STATE_WAITING;
         _twitchIdle = false;
 
-        http_request_t request = { 0 };
+        http_request_t request = {};
         request.url = url;
         request.method = HTTP_METHOD_GET;
         request.body = NULL;
@@ -308,7 +308,7 @@ namespace Twitch
         _twitchState = TWITCH_STATE_WAITING;
         _twitchIdle = false;
 
-        http_request_t request = { 0 };
+        http_request_t request = {};
         request.url = url;
         request.method = HTTP_METHOD_GET;
         request.body = nullptr;

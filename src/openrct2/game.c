@@ -19,6 +19,7 @@
 #include "config/Config.h"
 #include "Context.h"
 #include "editor.h"
+#include "FileClassifier.h"
 #include "game.h"
 #include "input.h"
 #include "interface/Screenshot.h"
@@ -63,7 +64,6 @@
 #define NUMBER_OF_AUTOSAVES_TO_KEEP 9
 
 uint16 gTicksSinceLastUpdate;
-uint32 gLastTickCount;
 uint8 gGamePaused = 0;
 sint32 gGameSpeed = 1;
 float gDayNightCycle = 0;
@@ -285,7 +285,7 @@ void game_update()
 {
     gInUpdateCode = true;
 
-    sint32 i, numUpdates;
+    sint32 numUpdates;
 
     // 0x006E3AEC // screen_game_process_mouse_input();
     screenshot_check();
@@ -295,8 +295,8 @@ void game_update()
     if (gGameSpeed > 1) {
         numUpdates = 1 << (gGameSpeed - 1);
     } else {
-        numUpdates = gTicksSinceLastUpdate / 31;
-        numUpdates = clamp(1, numUpdates, 4);
+        numUpdates = gTicksSinceLastUpdate / GAME_UPDATE_TIME_MS;
+        numUpdates = clamp(1, numUpdates, GAME_MAX_UPDATES);
     }
 
     if (network_get_mode() == NETWORK_MODE_CLIENT && network_get_status() == NETWORK_STATUS_CONNECTED && network_get_authstatus() == NETWORK_AUTH_OK) {
@@ -316,6 +316,25 @@ void game_update()
         network_update();
 
         network_process_game_commands();
+    }
+
+    // Update the game one or more times
+    for (sint32 i = 0; i < numUpdates; i++) {
+        game_logic_update();
+
+        if (gGameSpeed > 1)
+            continue;
+
+        if (input_get_state() == INPUT_STATE_RESET ||
+            input_get_state() == INPUT_STATE_NORMAL
+        ) {
+            if (input_test_flag(INPUT_FLAG_VIEWPORT_SCROLLING)) {
+                input_set_flag(INPUT_FLAG_VIEWPORT_SCROLLING, false);
+                break;
+            }
+        } else {
+            break;
+        }
     }
 
     if (!gOpenRCT2Headless)
@@ -346,25 +365,6 @@ void game_update()
         gUnk141F568 = gUnk13CA740;
 
         game_handle_input();
-    }
-
-    // Update the game one or more times
-    for (i = 0; i < numUpdates; i++) {
-        game_logic_update();
-
-        if (gGameSpeed > 1)
-            continue;
-
-        if (input_get_state() == INPUT_STATE_RESET ||
-            input_get_state() == INPUT_STATE_NORMAL
-        ) {
-            if (input_test_flag(INPUT_FLAG_VIEWPORT_SCROLLING)) {
-                input_set_flag(INPUT_FLAG_VIEWPORT_SCROLLING, false);
-                break;
-            }
-        } else {
-            break;
-        }
     }
 
     // Always perform autosave check, even when paused
@@ -1072,7 +1072,15 @@ void game_fix_save_vars()
     for (sint32 i = 0; i < MAX_RESEARCH_ITEMS; i++) {
         rct_research_item *researchItem = &gResearchItems[i];
         if (researchItem->entryIndex == RESEARCHED_ITEMS_SEPARATOR) continue;
-        if (researchItem->entryIndex == RESEARCHED_ITEMS_END) continue;
+        if (researchItem->entryIndex == RESEARCHED_ITEMS_END)
+        {
+            if (i == MAX_RESEARCH_ITEMS - 1)
+            {
+                (--researchItem)->entryIndex = RESEARCHED_ITEMS_END;
+            }
+            (++researchItem)->entryIndex = RESEARCHED_ITEMS_END_2;
+            break;
+        }
         if (researchItem->entryIndex == RESEARCHED_ITEMS_END_2) break;
         if (researchItem->entryIndex & 0x10000) {
             uint8 entryIndex = researchItem->entryIndex & 0xFF;
@@ -1096,7 +1104,6 @@ void game_fix_save_vars()
 
     // Fix invalid vehicle sprite sizes, thus preventing visual corruption of sprites
     fix_invalid_vehicle_sprite_sizes();
-
 }
 
 /**
@@ -1125,6 +1132,7 @@ bool game_load_save(const utf8 *path)
     }
 
     if (load_success) {
+        ParkLoadResult_Delete(result);
         if (network_get_mode() == NETWORK_MODE_CLIENT) {
             network_close();
         }
@@ -1139,6 +1147,7 @@ bool game_load_save(const utf8 *path)
         return true;
     } else {
         handle_park_load_failure(result, path);
+        ParkLoadResult_Delete(result);
         return false;
     }
 }
@@ -1277,9 +1286,11 @@ static void limit_autosave_count(const size_t numberOfFilesToKeep, bool processL
 
     if (processLandscapeFolder) {
         platform_get_user_directory(filter, "landscape", sizeof(filter));
+        safe_strcat_path(filter, "autosave", sizeof(filter));
         safe_strcat_path(filter, "autosave_*.sc6", sizeof(filter));
     } else {
         platform_get_user_directory(filter, "save", sizeof(filter));
+        safe_strcat_path(filter, "autosave", sizeof(filter));
         safe_strcat_path(filter, "autosave_*.sv6", sizeof(filter));
     }
 
@@ -1308,6 +1319,7 @@ static void limit_autosave_count(const size_t numberOfFilesToKeep, bool processL
             } else {
                 platform_get_user_directory(autosaveFiles[i], "save", sizeof(utf8) * MAX_PATH);
             }
+            safe_strcat_path(autosaveFiles[i], "autosave", sizeof(utf8) * MAX_PATH);
             safe_strcat_path(autosaveFiles[i], fileInfo.path, sizeof(utf8) * MAX_PATH);
         }
     }
@@ -1361,6 +1373,8 @@ void game_autosave()
     utf8 path[MAX_PATH];
     utf8 backupPath[MAX_PATH];
     platform_get_user_directory(path, subDirectory, sizeof(path));
+    safe_strcat_path(path, "autosave", sizeof(path));
+    platform_ensure_directory_exists(path);
     safe_strcpy(backupPath, path, sizeof(backupPath));
     safe_strcat_path(path, timeName, sizeof(path));
     safe_strcat_path(backupPath, "autosave", sizeof(backupPath));
@@ -1490,6 +1504,7 @@ void game_init_all(sint32 mapSize)
     window_staff_list_init_vars();
     scenery_set_default_placement_configuration();
     window_tile_inspector_clear_clipboard();
+    load_palette();
 }
 
 GAME_COMMAND_POINTER* new_game_command_table[GAME_COMMAND_COUNT] = {

@@ -21,7 +21,6 @@
 #include "../localisation/localisation.h"
 #include "../OpenRCT2.h"
 #include "../platform/platform.h"
-#include "../rct2.h"
 #include "error.h"
 
 bool gDisableErrorWindowSound = false;

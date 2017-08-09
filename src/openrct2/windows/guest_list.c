@@ -82,15 +82,15 @@ static rct_widget window_guest_list_widgets[] = {
     { WWT_DROPDOWN_BUTTON,  1,  284,    294,    60, 69,     STR_DROPDOWN_GLYPH,     STR_INFORMATION_TYPE_TIP },     // information type dropdown button
     { WWT_FLATBTN,          1,  297,    320,    46, 69,     SPR_MAP,                STR_SHOW_GUESTS_ON_MAP_TIP },   // map
     { WWT_FLATBTN,          1,  321,    344,    46, 69,     SPR_TRACK_PEEP,         STR_TRACKED_GUESTS_ONLY_TIP },  // tracking
-    { WWT_TAB,              1,  3,      33,     17, 43,     0x20000000 | SPR_TAB,   STR_INDIVIDUAL_GUESTS_TIP },    // tab 1
-    { WWT_TAB,              1,  34,     64,     17, 43,     0x20000000 | SPR_TAB,   STR_SUMMARISED_GUESTS_TIP },    // tab 2
+    { WWT_TAB,              1,  3,      33,     17, 43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_INDIVIDUAL_GUESTS_TIP },    // tab 1
+    { WWT_TAB,              1,  34,     64,     17, 43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_SUMMARISED_GUESTS_TIP },    // tab 2
     { WWT_SCROLL,           1,  3,      346,    72, 326,    SCROLL_BOTH,            STR_NONE },                     // guest list
     { WIDGETS_END },
 };
 
 static void window_guest_list_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_guest_list_resize(rct_window *w);
-static void window_guest_list_mousedown(rct_widgetindex widgetIndex, rct_window*w, rct_widget* widget);
+static void window_guest_list_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget);
 static void window_guest_list_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex);
 static void window_guest_list_update(rct_window *w);
 static void window_guest_list_scrollgetsize(rct_window *w, sint32 scrollIndex, sint32 *width, sint32 *height);
@@ -347,7 +347,7 @@ static void window_guest_list_resize(rct_window *w)
  *
  *  rct2: 0x00699AC4
  */
-static void window_guest_list_mousedown(rct_widgetindex widgetIndex, rct_window*w, rct_widget* widget)
+static void window_guest_list_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget)
 {
     sint32 i;
     switch (widgetIndex) {

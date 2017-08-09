@@ -26,7 +26,7 @@ namespace OpenRCT2 { namespace Audio
     class AudioContext : public IAudioContext
     {
     private:
-        IAudioMixer * _audioMixer;
+        IAudioMixer * _audioMixer = nullptr;
 
     public:
         AudioContext()
@@ -40,6 +40,7 @@ namespace OpenRCT2 { namespace Audio
 
         ~AudioContext() override
         {
+            delete _audioMixer;
             SDL_QuitSubSystem(SDL_INIT_AUDIO);
         }
 

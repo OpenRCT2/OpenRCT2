@@ -51,8 +51,6 @@ namespace RCT1
     const char * GetWaterObject(uint8 waterType);
 
     const std::vector<const char *> GetSceneryObjects(uint8 sceneryType);
-
-    const std::vector<const char *> GetPreferedRideEntryOrder(uint8 rideType);
 }
 
 extern "C" {

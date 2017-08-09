@@ -19,7 +19,7 @@
 #include "../interface/window.h"
 #include "../localisation/date.h"
 #include "../localisation/localisation.h"
-#include "../rct2.h"
+#include "../OpenRCT2.h"
 #include "../scenario/scenario.h"
 #include "../sprites.h"
 #include "../util/util.h"
@@ -90,8 +90,8 @@ enum {
     { WWT_CAPTION,          0,  1,      448,    1,      14,     STR_OBJECTIVE_SELECTION,    STR_WINDOW_TITLE_TIP                                }, \
     { WWT_CLOSEBOX,         0,  437,    447,    2,      13,     STR_CLOSE_X,                STR_CLOSE_WINDOW_TIP                                }, \
     { WWT_RESIZE,           1,  0,      279,    43,     148,    STR_NONE,                   STR_NONE                                            }, \
-    { WWT_TAB,              1,  3,      33,     17,     43,     0x20000000 | SPR_TAB,       STR_SELECT_OBJECTIVE_AND_PARK_NAME_TIP              }, \
-    { WWT_TAB,              1,  34,     64,     17,     43,     0x20000000 | SPR_TAB,       STR_SELECT_RIDES_TO_BE_PRESERVED_TIP                }
+    { WWT_TAB,              1,  3,      33,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,       STR_SELECT_OBJECTIVE_AND_PARK_NAME_TIP              }, \
+    { WWT_TAB,              1,  34,     64,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,       STR_SELECT_RIDES_TO_BE_PRESERVED_TIP                }
 
 static rct_widget window_editor_objective_options_main_widgets[] = {
     MAIN_OBJECTIVE_OPTIONS_WIDGETS,
@@ -130,7 +130,7 @@ static rct_widget *window_editor_objective_options_widgets[] = {
 
 static void window_editor_objective_options_main_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_editor_objective_options_main_resize(rct_window *w);
-static void window_editor_objective_options_main_mousedown(rct_widgetindex widgetIndex, rct_window*w, rct_widget* widget);
+static void window_editor_objective_options_main_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget);
 static void window_editor_objective_options_main_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex);
 static void window_editor_objective_options_main_update(rct_window *w);
 static void window_editor_objective_options_main_textinput(rct_window *w, rct_widgetindex widgetIndex, char *text);
@@ -683,7 +683,7 @@ static void window_editor_objective_options_arg_2_decrease(rct_window *w)
  *
  *  rct2: 0x00671A0D
  */
-static void window_editor_objective_options_main_mousedown(rct_widgetindex widgetIndex, rct_window *w, rct_widget* widget)
+static void window_editor_objective_options_main_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget)
 {
     switch (widgetIndex) {
     case WIDX_OBJECTIVE_DROPDOWN:

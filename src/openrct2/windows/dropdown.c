@@ -19,10 +19,12 @@
 #include "../interface/widget.h"
 #include "../interface/window.h"
 #include "../localisation/localisation.h"
-#include "../rct2.h"
 #include "../scenario/scenario.h"
 #include "../sprites.h"
 #include "dropdown.h"
+
+// The maximum number of rows to list before items overflow into new columns
+#define DROPDOWN_TEXT_MAX_ROWS 32
 
 sint32 gAppropriateImageDropdownItemsPerRow[] = {
     1, 1, 1, 1, 2, 2, 3, 3, 4,
@@ -44,12 +46,13 @@ sint32 _dropdown_num_columns;
 sint32 _dropdown_num_rows;
 sint32 _dropdown_item_width;
 sint32 _dropdown_item_height;
+bool _dropdown_list_vertically;
 
 sint32 gDropdownNumItems;
-rct_string_id gDropdownItemsFormat[64];
-sint64 gDropdownItemsArgs[64];
-uint64 gDropdownItemsChecked;
-uint64 gDropdownItemsDisabled;
+rct_string_id gDropdownItemsFormat[DROPDOWN_ITEMS_MAX_SIZE];
+sint64 gDropdownItemsArgs[DROPDOWN_ITEMS_MAX_SIZE];
+static bool _dropdownItemsChecked[DROPDOWN_ITEMS_MAX_SIZE];
+static bool _dropdownItemsDisabled[DROPDOWN_ITEMS_MAX_SIZE];
 bool gDropdownIsColour;
 sint32 gDropdownLastColourHover;
 sint32 gDropdownHighlightedIndex;
@@ -57,30 +60,38 @@ sint32 gDropdownDefaultIndex;
 
 bool dropdown_is_checked(sint32 index)
 {
-    return gDropdownItemsChecked & (1ULL << index);
+    if (index < 0 || index >= countof(_dropdownItemsDisabled))
+    {
+        return false;
+    }
+    return _dropdownItemsChecked[index];
 }
 
 bool dropdown_is_disabled(sint32 index)
 {
-    return gDropdownItemsDisabled & (1ULL << index);
+    if (index < 0 || index >= countof(_dropdownItemsDisabled))
+    {
+        return true;
+    }
+    return _dropdownItemsDisabled[index];
 }
 
 void dropdown_set_checked(sint32 index, bool value)
 {
-    if (value) {
-        gDropdownItemsChecked |= 1ULL << index;
-    } else {
-        gDropdownItemsChecked &= ~(1ULL << index);
+    if (index < 0 || index >= countof(_dropdownItemsDisabled))
+    {
+        return;
     }
+    _dropdownItemsChecked[index] = value;
 }
 
 void dropdown_set_disabled(sint32 index, bool value)
 {
-    if (value) {
-        gDropdownItemsDisabled |= 1ULL << index;
-    } else {
-        gDropdownItemsDisabled &= ~(1ULL << index);
+    if (index < 0 || index >= countof(_dropdownItemsDisabled))
+    {
+        return;
     }
+    _dropdownItemsDisabled[index] = value;
 }
 
 static void window_dropdown_paint(rct_window *w, rct_drawpixelinfo *dpi);
@@ -165,15 +176,25 @@ void window_dropdown_show_text_custom_width(sint32 x, sint32 y, sint32 extray, u
         input_set_flag(INPUT_FLAG_DROPDOWN_STAY_OPEN, true);
 
     window_dropdown_close();
-    _dropdown_num_columns = 1;
+    
+    // Set and calculate num items, rows and columns
     _dropdown_item_width = width;
-    _dropdown_item_height = 10;
-    if (flags & DROPDOWN_FLAG_CUSTOM_HEIGHT)
-        _dropdown_item_height = custom_height;
-
-    // Set the widgets
+    _dropdown_item_height = (flags & DROPDOWN_FLAG_CUSTOM_HEIGHT) ? custom_height : 10;
     gDropdownNumItems = (sint32)num_items;
-    _dropdown_num_rows = (sint32)num_items;
+    // There must always be at least one column to prevent dividing by zero
+    if (gDropdownNumItems == 0)
+    {
+        _dropdown_num_columns = 1;
+        _dropdown_num_rows = 0;
+    }
+    else
+    {
+        _dropdown_num_columns = (gDropdownNumItems + DROPDOWN_TEXT_MAX_ROWS - 1) / DROPDOWN_TEXT_MAX_ROWS;
+        _dropdown_num_rows = (gDropdownNumItems + _dropdown_num_columns - 1) / _dropdown_num_columns;
+    }
+    
+    // Text dropdowns are listed horizontally
+    _dropdown_list_vertically = true;
 
     width = _dropdown_item_width * _dropdown_num_columns + 3;
     sint32 height = _dropdown_item_height * _dropdown_num_rows + 3;
@@ -184,8 +205,8 @@ void window_dropdown_show_text_custom_width(sint32 x, sint32 y, sint32 extray, u
     if (y + height > screenHeight)
         y = max(0, screenHeight - height);
 
-    window_dropdown_widgets[WIDX_BACKGROUND].bottom = (sint16)(_dropdown_item_height * num_items + 3);
-    window_dropdown_widgets[WIDX_BACKGROUND].right = (sint16)(_dropdown_item_width + 3);
+    window_dropdown_widgets[WIDX_BACKGROUND].right = width;
+    window_dropdown_widgets[WIDX_BACKGROUND].bottom = height;
 
     // Create the window
     w = window_create(
@@ -203,8 +224,8 @@ void window_dropdown_show_text_custom_width(sint32 x, sint32 y, sint32 extray, u
 
     // Input state
     gDropdownHighlightedIndex = -1;
-    gDropdownItemsDisabled = 0;
-    gDropdownItemsChecked = 0;
+    memset(_dropdownItemsDisabled, 0, sizeof(_dropdownItemsDisabled));
+    memset(_dropdownItemsChecked, 0, sizeof(_dropdownItemsChecked));
     gDropdownIsColour = false;
     gDropdownDefaultIndex = -1;
     input_set_state(INPUT_STATE_DROPDOWN_ACTIVE);
@@ -240,10 +261,22 @@ void window_dropdown_show_image(sint32 x, sint32 y, sint32 extray, uint8 colour,
     _dropdown_item_width = itemWidth;
     _dropdown_item_height = itemHeight;
     gDropdownNumItems = numItems;
-    _dropdown_num_columns = numColumns;
-    _dropdown_num_rows = gDropdownNumItems / _dropdown_num_columns;
-    if (gDropdownNumItems % _dropdown_num_columns != 0)
-        _dropdown_num_rows++;
+    // There must always be at least one column to prevent dividing by zero
+    if (gDropdownNumItems == 0)
+    {
+        _dropdown_num_columns = 1;
+        _dropdown_num_rows = 0;
+    }
+    else
+    {
+        _dropdown_num_columns = numColumns;
+        _dropdown_num_rows = gDropdownNumItems / _dropdown_num_columns;
+        if (gDropdownNumItems % _dropdown_num_columns != 0)
+            _dropdown_num_rows++;
+    }
+
+    // image dropdowns are listed horizontally
+    _dropdown_list_vertically = false;
 
     // Calculate position and size
     width = _dropdown_item_width * _dropdown_num_columns + 3;
@@ -274,8 +307,8 @@ void window_dropdown_show_image(sint32 x, sint32 y, sint32 extray, uint8 colour,
 
     // Input state
     gDropdownHighlightedIndex = -1;
-    gDropdownItemsDisabled = 0;
-    gDropdownItemsChecked = 0;
+    memset(_dropdownItemsDisabled, 0, sizeof(_dropdownItemsDisabled));
+    memset(_dropdownItemsChecked, 0, sizeof(_dropdownItemsChecked));
     gDropdownIsColour = false;
     gDropdownDefaultIndex = -1;
     input_set_state(INPUT_STATE_DROPDOWN_ACTIVE);
@@ -294,8 +327,14 @@ static void window_dropdown_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
     sint32 highlightedIndex = gDropdownHighlightedIndex;
     for (sint32 i = 0; i < gDropdownNumItems; i++) {
-        cell_x = i % _dropdown_num_columns;
-        cell_y = i / _dropdown_num_columns;
+        if (_dropdown_list_vertically) {
+            cell_x = i / _dropdown_num_rows;
+            cell_y = i % _dropdown_num_rows;
+        }
+        else {
+            cell_x = i % _dropdown_num_columns;
+            cell_y = i / _dropdown_num_columns;
+        }
 
         if (gDropdownItemsFormat[i] == DROPDOWN_SEPARATOR) {
             l = w->x + 2 + (cell_x * _dropdown_item_width);
@@ -337,7 +376,7 @@ static void window_dropdown_paint(rct_window *w, rct_drawpixelinfo *dpi)
                 );
             } else {
                 // Text item
-                if (i < 64) {
+                if (i < DROPDOWN_ITEMS_MAX_SIZE) {
                     if (dropdown_is_checked(i)) {
                         item++;
                     }
@@ -348,7 +387,7 @@ static void window_dropdown_paint(rct_window *w, rct_drawpixelinfo *dpi)
                 if (i == highlightedIndex)
                     colour = COLOUR_WHITE;
                 if (dropdown_is_disabled(i))
-                    if (i < 64)
+                    if (i < DROPDOWN_ITEMS_MAX_SIZE)
                         colour = NOT_TRANSLUCENT(w->colours[0]) | COLOUR_FLAG_INSET;
 
                 // Draw item string
@@ -385,7 +424,12 @@ sint32 dropdown_index_from_point(sint32 x, sint32 y, rct_window *w)
     sint32 row_no = top / _dropdown_item_height;
     if (row_no >= _dropdown_num_rows) return -1;
 
-    sint32 dropdown_index = row_no * _dropdown_num_columns + column_no;
+    sint32 dropdown_index;
+    if (_dropdown_list_vertically)
+        dropdown_index = column_no * _dropdown_num_rows + row_no;
+    else
+        dropdown_index = row_no * _dropdown_num_columns + column_no;
+
     if (dropdown_index >= gDropdownNumItems) return -1;
 
     return dropdown_index;
@@ -404,7 +448,7 @@ void window_dropdown_show_colour(rct_window *w, rct_widget *widget, uint8 dropdo
             defaultIndex = i;
 
         gDropdownItemsFormat[i] = DROPDOWN_FORMAT_COLOUR_PICKER;
-        gDropdownItemsArgs[i] = (i << 32) | (0x20000000 | (i << 19) | SPR_PALETTE_BTN);
+        gDropdownItemsArgs[i] = (i << 32) | (SPRITE_ID_PALETTE_COLOUR_1(i) | SPR_PALETTE_BTN);
     }
 
     // Show dropdown

@@ -20,6 +20,7 @@
 #include "../core/Exception.hpp"
 #include "../core/Guard.hpp"
 #include "../core/Path.hpp"
+#include "../FileClassifier.h"
 #include "../ParkImporter.h"
 #include "../rct2/S6Exporter.h"
 #include "CommandLine.hpp"
@@ -29,7 +30,6 @@ extern "C"
     #include "../game.h"
     #include "../interface/window.h"
     #include "../OpenRCT2.h"
-    #include "../rct2.h"
 }
 
 static void WriteConvertFromAndToMessage(uint32 sourceFileType, uint32 destinationFileType);

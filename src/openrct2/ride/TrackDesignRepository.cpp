@@ -33,7 +33,6 @@
 
 extern "C"
 {
-    #include "../rct2.h"
     #include "track_design.h"
 }
 
@@ -456,17 +455,17 @@ public:
     }
 };
 
-static std::unique_ptr<TrackDesignRepository> _trackDesignRepository;
+static TrackDesignRepository * _trackDesignRepository = nullptr;
 
 ITrackDesignRepository * CreateTrackDesignRepository(IPlatformEnvironment * env)
 {
-    _trackDesignRepository = std::unique_ptr<TrackDesignRepository>(new TrackDesignRepository(env));
-    return _trackDesignRepository.get();
+    _trackDesignRepository = new TrackDesignRepository(env);
+    return _trackDesignRepository;
 }
 
 ITrackDesignRepository * GetTrackDesignRepository()
 {
-    return _trackDesignRepository.get();
+    return _trackDesignRepository;
 }
 
 extern "C"

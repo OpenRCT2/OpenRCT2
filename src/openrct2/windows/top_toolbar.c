@@ -30,6 +30,7 @@
 #include "../localisation/localisation.h"
 #include "../network/network.h"
 #include "../network/twitch.h"
+#include "../OpenRCT2.h"
 #include "../ParkImporter.h"
 #include "../peep/staff.h"
 #include "../scenario/scenario.h"
@@ -78,6 +79,7 @@ validate_global_widx(WC_TOP_TOOLBAR, WIDX_LAND);
 validate_global_widx(WC_TOP_TOOLBAR, WIDX_WATER);
 validate_global_widx(WC_TOP_TOOLBAR, WIDX_SCENERY);
 validate_global_widx(WC_TOP_TOOLBAR, WIDX_PATH);
+validate_global_widx(WC_TOP_TOOLBAR, WIDX_CLEAR_SCENERY);
 
 typedef enum {
     DDIDX_NEW_GAME = 0,
@@ -191,38 +193,38 @@ static const sint32 right_aligned_widgets_order[] = {
 #pragma endregion
 
 static rct_widget window_top_toolbar_widgets[] = {
-    { WWT_TRNBTN,   0,  0x0000,         0x001D,         0,      TOP_TOOLBAR_HEIGHT,     0x20000000 | SPR_TOOLBAR_PAUSE,             STR_PAUSE_GAME_TIP },               // Pause
-    { WWT_TRNBTN,   0,  0x001E + 30,    0x003B + 30,    0,      TOP_TOOLBAR_HEIGHT,     0x20000000 | SPR_TOOLBAR_FILE,              STR_DISC_AND_GAME_OPTIONS_TIP },    // File menu
-    { WWT_TRNBTN,   0,  0x00DC + 30,    0x00F9 + 30,    0,      TOP_TOOLBAR_HEIGHT,     0x20000000 | SPR_G2_TOOLBAR_MUTE,           STR_TOOLBAR_MUTE_TIP },             // Mute
-    { WWT_TRNBTN,   1,  0x0046 + 30,    0x0063 + 30,    0,      TOP_TOOLBAR_HEIGHT,     0x20000000 | SPR_TOOLBAR_ZOOM_OUT,          STR_ZOOM_OUT_TIP },                 // Zoom out
-    { WWT_TRNBTN,   1,  0x0064 + 30,    0x0081 + 30,    0,      TOP_TOOLBAR_HEIGHT,     0x20000000 | SPR_TOOLBAR_ZOOM_IN,           STR_ZOOM_IN_TIP },                  // Zoom in
-    { WWT_TRNBTN,   1,  0x0082 + 30,    0x009F + 30,    0,      TOP_TOOLBAR_HEIGHT,     0x20000000 | SPR_TOOLBAR_ROTATE,            STR_ROTATE_TIP },                   // Rotate camera
-    { WWT_TRNBTN,   1,  0x00A0 + 30,    0x00BD + 30,    0,      TOP_TOOLBAR_HEIGHT,     0x20000000 | SPR_TOOLBAR_VIEW,              STR_VIEW_OPTIONS_TIP },             // Transparency menu
-    { WWT_TRNBTN,   1,  0x00BE + 30,    0x00DB + 30,    0,      TOP_TOOLBAR_HEIGHT,     0x20000000 | SPR_TOOLBAR_MAP,               STR_SHOW_MAP_TIP },                 // Map
-    { WWT_TRNBTN,   2,  0x010B, 0x0128, 0,                      TOP_TOOLBAR_HEIGHT,     0x20000000 | SPR_TOOLBAR_LAND,              STR_ADJUST_LAND_TIP },              // Land
-    { WWT_TRNBTN,   2,  0x0129, 0x0146, 0,                      TOP_TOOLBAR_HEIGHT,     0x20000000 | SPR_TOOLBAR_WATER,             STR_ADJUST_WATER_TIP },             // Water
-    { WWT_TRNBTN,   2,  0x0147, 0x0164, 0,                      TOP_TOOLBAR_HEIGHT,     0x20000000 | SPR_TOOLBAR_SCENERY,           STR_PLACE_SCENERY_TIP },            // Scenery
-    { WWT_TRNBTN,   2,  0x0165, 0x0182, 0,                      TOP_TOOLBAR_HEIGHT,     0x20000000 | SPR_TOOLBAR_FOOTPATH,          STR_BUILD_FOOTPATH_TIP },           // Path
-    { WWT_TRNBTN,   2,  0x0183, 0x01A0, 0,                      TOP_TOOLBAR_HEIGHT,     0x20000000 | SPR_TOOLBAR_CONSTRUCT_RIDE,    STR_BUILD_RIDE_TIP },               // Construct ride
-    { WWT_TRNBTN,   3,  0x01EA, 0x0207, 0,                      TOP_TOOLBAR_HEIGHT,     0x20000000 | SPR_TOOLBAR_RIDES,             STR_RIDES_IN_PARK_TIP },            // Rides
-    { WWT_TRNBTN,   3,  0x0208, 0x0225, 0,                      TOP_TOOLBAR_HEIGHT,     0x20000000 | SPR_TOOLBAR_PARK,              STR_PARK_INFORMATION_TIP },         // Park
-    { WWT_TRNBTN,   3,  0x0226, 0x0243, 0,                      TOP_TOOLBAR_HEIGHT,     0x20000000 | SPR_TAB_TOOLBAR,               STR_STAFF_TIP },                    // Staff
-    { WWT_TRNBTN,   3,  0x0230, 0x024D, 0,                      TOP_TOOLBAR_HEIGHT,     0x20000000 | SPR_TOOLBAR_GUESTS,            STR_GUESTS_TIP },                   // Guests
-    { WWT_TRNBTN,   2,  0x0230, 0x024D, 0,                      TOP_TOOLBAR_HEIGHT,     0x20000000 | SPR_TOOLBAR_CLEAR_SCENERY,     STR_CLEAR_SCENERY_TIP },            // Clear scenery
-    { WWT_TRNBTN,   0,  0x001E, 0x003B, 0,                      TOP_TOOLBAR_HEIGHT,     0x20000000 | SPR_TAB_TOOLBAR,               STR_GAME_SPEED_TIP },               // Fast forward
-    { WWT_TRNBTN,   0,  0x001E, 0x003B, 0,                      TOP_TOOLBAR_HEIGHT,     0x20000000 | SPR_TAB_TOOLBAR,               STR_CHEATS_TIP },                   // Cheats
-    { WWT_TRNBTN,   0,  0x001E, 0x003B, 0,                      TOP_TOOLBAR_HEIGHT,     0x20000000 | SPR_TAB_TOOLBAR,               STR_DEBUG_TIP },                    // Debug
-    { WWT_TRNBTN,   3,  0x001E, 0x003B, 0,                      TOP_TOOLBAR_HEIGHT,     0x20000000 | SPR_TAB_TOOLBAR,               STR_SCENARIO_OPTIONS_FINANCIAL_TIP },// Finances
-    { WWT_TRNBTN,   3,  0x001E, 0x003B, 0,                      TOP_TOOLBAR_HEIGHT,     0x20000000 | SPR_TAB_TOOLBAR,               STR_FINANCES_RESEARCH_TIP },        // Research
-    { WWT_TRNBTN,   3,  0x001E, 0x003B, 0,                      TOP_TOOLBAR_HEIGHT,     0x20000000 | SPR_TAB_TOOLBAR,               STR_SHOW_RECENT_MESSAGES_TIP },     // News
-    { WWT_TRNBTN,   0,  0x001E, 0x003B, 0,                      TOP_TOOLBAR_HEIGHT,     0x20000000 | SPR_TAB_TOOLBAR,               STR_SHOW_MULTIPLAYER_STATUS_TIP },  // Network
+    { WWT_TRNBTN,   0,  0x0000,         0x001D,         0,      TOP_TOOLBAR_HEIGHT,     IMAGE_TYPE_REMAP | SPR_TOOLBAR_PAUSE,             STR_PAUSE_GAME_TIP },               // Pause
+    { WWT_TRNBTN,   0,  0x001E + 30,    0x003B + 30,    0,      TOP_TOOLBAR_HEIGHT,     IMAGE_TYPE_REMAP | SPR_TOOLBAR_FILE,              STR_DISC_AND_GAME_OPTIONS_TIP },    // File menu
+    { WWT_TRNBTN,   0,  0x00DC + 30,    0x00F9 + 30,    0,      TOP_TOOLBAR_HEIGHT,     IMAGE_TYPE_REMAP | SPR_G2_TOOLBAR_MUTE,           STR_TOOLBAR_MUTE_TIP },             // Mute
+    { WWT_TRNBTN,   1,  0x0046 + 30,    0x0063 + 30,    0,      TOP_TOOLBAR_HEIGHT,     IMAGE_TYPE_REMAP | SPR_TOOLBAR_ZOOM_OUT,          STR_ZOOM_OUT_TIP },                 // Zoom out
+    { WWT_TRNBTN,   1,  0x0064 + 30,    0x0081 + 30,    0,      TOP_TOOLBAR_HEIGHT,     IMAGE_TYPE_REMAP | SPR_TOOLBAR_ZOOM_IN,           STR_ZOOM_IN_TIP },                  // Zoom in
+    { WWT_TRNBTN,   1,  0x0082 + 30,    0x009F + 30,    0,      TOP_TOOLBAR_HEIGHT,     IMAGE_TYPE_REMAP | SPR_TOOLBAR_ROTATE,            STR_ROTATE_TIP },                   // Rotate camera
+    { WWT_TRNBTN,   1,  0x00A0 + 30,    0x00BD + 30,    0,      TOP_TOOLBAR_HEIGHT,     IMAGE_TYPE_REMAP | SPR_TOOLBAR_VIEW,              STR_VIEW_OPTIONS_TIP },             // Transparency menu
+    { WWT_TRNBTN,   1,  0x00BE + 30,    0x00DB + 30,    0,      TOP_TOOLBAR_HEIGHT,     IMAGE_TYPE_REMAP | SPR_TOOLBAR_MAP,               STR_SHOW_MAP_TIP },                 // Map
+    { WWT_TRNBTN,   2,  0x010B, 0x0128, 0,                      TOP_TOOLBAR_HEIGHT,     IMAGE_TYPE_REMAP | SPR_TOOLBAR_LAND,              STR_ADJUST_LAND_TIP },              // Land
+    { WWT_TRNBTN,   2,  0x0129, 0x0146, 0,                      TOP_TOOLBAR_HEIGHT,     IMAGE_TYPE_REMAP | SPR_TOOLBAR_WATER,             STR_ADJUST_WATER_TIP },             // Water
+    { WWT_TRNBTN,   2,  0x0147, 0x0164, 0,                      TOP_TOOLBAR_HEIGHT,     IMAGE_TYPE_REMAP | SPR_TOOLBAR_SCENERY,           STR_PLACE_SCENERY_TIP },            // Scenery
+    { WWT_TRNBTN,   2,  0x0165, 0x0182, 0,                      TOP_TOOLBAR_HEIGHT,     IMAGE_TYPE_REMAP | SPR_TOOLBAR_FOOTPATH,          STR_BUILD_FOOTPATH_TIP },           // Path
+    { WWT_TRNBTN,   2,  0x0183, 0x01A0, 0,                      TOP_TOOLBAR_HEIGHT,     IMAGE_TYPE_REMAP | SPR_TOOLBAR_CONSTRUCT_RIDE,    STR_BUILD_RIDE_TIP },               // Construct ride
+    { WWT_TRNBTN,   3,  0x01EA, 0x0207, 0,                      TOP_TOOLBAR_HEIGHT,     IMAGE_TYPE_REMAP | SPR_TOOLBAR_RIDES,             STR_RIDES_IN_PARK_TIP },            // Rides
+    { WWT_TRNBTN,   3,  0x0208, 0x0225, 0,                      TOP_TOOLBAR_HEIGHT,     IMAGE_TYPE_REMAP | SPR_TOOLBAR_PARK,              STR_PARK_INFORMATION_TIP },         // Park
+    { WWT_TRNBTN,   3,  0x0226, 0x0243, 0,                      TOP_TOOLBAR_HEIGHT,     IMAGE_TYPE_REMAP | SPR_TAB_TOOLBAR,               STR_STAFF_TIP },                    // Staff
+    { WWT_TRNBTN,   3,  0x0230, 0x024D, 0,                      TOP_TOOLBAR_HEIGHT,     IMAGE_TYPE_REMAP | SPR_TOOLBAR_GUESTS,            STR_GUESTS_TIP },                   // Guests
+    { WWT_TRNBTN,   2,  0x0230, 0x024D, 0,                      TOP_TOOLBAR_HEIGHT,     IMAGE_TYPE_REMAP | SPR_TOOLBAR_CLEAR_SCENERY,     STR_CLEAR_SCENERY_TIP },            // Clear scenery
+    { WWT_TRNBTN,   0,  0x001E, 0x003B, 0,                      TOP_TOOLBAR_HEIGHT,     IMAGE_TYPE_REMAP | SPR_TAB_TOOLBAR,               STR_GAME_SPEED_TIP },               // Fast forward
+    { WWT_TRNBTN,   0,  0x001E, 0x003B, 0,                      TOP_TOOLBAR_HEIGHT,     IMAGE_TYPE_REMAP | SPR_TAB_TOOLBAR,               STR_CHEATS_TIP },                   // Cheats
+    { WWT_TRNBTN,   0,  0x001E, 0x003B, 0,                      TOP_TOOLBAR_HEIGHT,     IMAGE_TYPE_REMAP | SPR_TAB_TOOLBAR,               STR_DEBUG_TIP },                    // Debug
+    { WWT_TRNBTN,   3,  0x001E, 0x003B, 0,                      TOP_TOOLBAR_HEIGHT,     IMAGE_TYPE_REMAP | SPR_TAB_TOOLBAR,               STR_SCENARIO_OPTIONS_FINANCIAL_TIP },// Finances
+    { WWT_TRNBTN,   3,  0x001E, 0x003B, 0,                      TOP_TOOLBAR_HEIGHT,     IMAGE_TYPE_REMAP | SPR_TAB_TOOLBAR,               STR_FINANCES_RESEARCH_TIP },        // Research
+    { WWT_TRNBTN,   3,  0x001E, 0x003B, 0,                      TOP_TOOLBAR_HEIGHT,     IMAGE_TYPE_REMAP | SPR_TAB_TOOLBAR,               STR_SHOW_RECENT_MESSAGES_TIP },     // News
+    { WWT_TRNBTN,   0,  0x001E, 0x003B, 0,                      TOP_TOOLBAR_HEIGHT,     IMAGE_TYPE_REMAP | SPR_TAB_TOOLBAR,               STR_SHOW_MULTIPLAYER_STATUS_TIP },  // Network
 
     { WWT_EMPTY,    0,  0,      10-1,   0,                      0,                      0xFFFFFFFF,                                 STR_NONE },                         // Artificial widget separator
     { WIDGETS_END },
 };
 
 static void window_top_toolbar_mouseup(rct_window *w, rct_widgetindex widgetIndex);
-static void window_top_toolbar_mousedown(rct_widgetindex widgetIndex, rct_window*w, rct_widget* widget);
+static void window_top_toolbar_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget);
 static void window_top_toolbar_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex);
 static void window_top_toolbar_tool_update(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y);
 static void window_top_toolbar_tool_down(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y);
@@ -379,7 +381,7 @@ static void window_top_toolbar_mouseup(rct_window *w, rct_widgetindex widgetInde
  *
  *  rct2: 0x0066CA3B
  */
-static void window_top_toolbar_mousedown(rct_widgetindex widgetIndex, rct_window*w, rct_widget* widget)
+static void window_top_toolbar_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget)
 {
     sint32 numItems;
 
@@ -584,7 +586,7 @@ static void window_top_toolbar_dropdown(rct_window *w, rct_widgetindex widgetInd
             game_do_command(0, 1, 0, 0, GAME_COMMAND_LOAD_OR_QUIT, 1, 0);
             break;
         case DDIDX_EXIT_OPENRCT2:
-            rct2_quit();
+            context_quit();
             break;
 #ifndef DISABLE_TWITCH
         case DDIDX_ENABLE_TWITCH:
@@ -676,6 +678,11 @@ static void window_top_toolbar_invalidate(rct_window *w)
     window_top_toolbar_widgets[WIDX_NEWS].type = WWT_TRNBTN;
     window_top_toolbar_widgets[WIDX_NETWORK].type = WWT_TRNBTN;
 
+    if (!gConfigInterface.toolbar_show_mute)
+    {
+        window_top_toolbar_widgets[WIDX_MUTE].type = WWT_EMPTY;
+    }
+
     if (gScreenFlags & (SCREEN_FLAGS_SCENARIO_EDITOR | SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)) {
         window_top_toolbar_widgets[WIDX_PAUSE].type = WWT_EMPTY;
         window_top_toolbar_widgets[WIDX_RIDES].type = WWT_EMPTY;
@@ -720,9 +727,6 @@ static void window_top_toolbar_invalidate(rct_window *w)
 
         if (!gConfigInterface.toolbar_show_news)
             window_top_toolbar_widgets[WIDX_NEWS].type = WWT_EMPTY;
-
-        if (!gConfigInterface.toolbar_show_mute)
-            window_top_toolbar_widgets[WIDX_MUTE].type = WWT_EMPTY;
 
         switch (network_get_mode()) {
         case NETWORK_MODE_NONE:
@@ -796,9 +800,9 @@ static void window_top_toolbar_invalidate(rct_window *w)
         w->pressed_widgets &= ~(1 << WIDX_PAUSE);
 
     if (!gGameSoundsOff)
-        window_top_toolbar_widgets[WIDX_MUTE].image = 0x20000000 | SPR_G2_TOOLBAR_MUTE;
+        window_top_toolbar_widgets[WIDX_MUTE].image = IMAGE_TYPE_REMAP | SPR_G2_TOOLBAR_MUTE;
     else
-        window_top_toolbar_widgets[WIDX_MUTE].image = 0x20000000 | SPR_G2_TOOLBAR_UNMUTE;
+        window_top_toolbar_widgets[WIDX_MUTE].image = IMAGE_TYPE_REMAP | SPR_G2_TOOLBAR_UNMUTE;
 
     // Zoomed out/in disable. Not sure where this code is in the original.
     if (window_get_main()->viewport->zoom == 0){
@@ -827,7 +831,7 @@ static void window_top_toolbar_paint(rct_window *w, rct_drawpixelinfo *dpi)
         imgId = SPR_TOOLBAR_STAFF;
         if (widget_is_pressed(w, WIDX_STAFF))
             imgId++;
-        imgId |= (gStaffHandymanColour << 19) | 0xA0000000 | (gStaffMechanicColour << 24);
+        imgId |= SPRITE_ID_PALETTE_COLOUR_2(gStaffHandymanColour, gStaffMechanicColour);
         gfx_draw_sprite(dpi, imgId, x, y, 0);
     }
 
@@ -968,7 +972,7 @@ static void repaint_scenery_tool_down(sint16 x, sint16 y, rct_widgetindex widget
             grid_x,
             1 | (gWindowSceneryPrimaryColour << 8),
             grid_y,
-            (map_element->type & MAP_ELEMENT_DIRECTION_MASK) | (map_element->base_height << 8),
+            (map_element_get_direction(map_element)) | (map_element->base_height << 8),
             GAME_COMMAND_SET_WALL_COLOUR,
             0,
             gWindowScenerySecondaryColour | (gWindowSceneryTertiaryColour << 8));
@@ -986,7 +990,7 @@ static void repaint_scenery_tool_down(sint16 x, sint16 y, rct_widgetindex widget
         gGameCommandErrorTitle = STR_CANT_REPAINT_THIS;
         game_do_command(
             grid_x,
-            1 | ((map_element->type & MAP_ELEMENT_DIRECTION_MASK) << 8),
+            1 | ((map_element_get_direction(map_element)) << 8),
             grid_y,
             map_element->base_height | ((map_element->properties.scenerymultiple.type >> 10) << 8),
             GAME_COMMAND_SET_LARGE_SCENERY_COLOUR,
@@ -1043,9 +1047,9 @@ static void scenery_eyedropper_tool_down(sint16 x, sint16 y, rct_widgetindex wid
         if (sceneryEntry != NULL && sceneryEntry != (rct_scenery_entry *)-1) {
             sint32 sceneryId = get_scenery_id_from_entry_index(OBJECT_TYPE_SMALL_SCENERY, entryIndex);
             if (sceneryId != -1 && window_scenery_set_selected_item(sceneryId)) {
-                gWindowSceneryRotation = (get_current_rotation() + map_element_get_direction(mapElement)) & 3;
-                gWindowSceneryPrimaryColour = mapElement->properties.scenery.colour_1 & 0x1F;
-                gWindowScenerySecondaryColour = mapElement->properties.scenery.colour_2 & 0x1F;
+                gWindowSceneryRotation = map_element_get_direction_with_offset(mapElement, get_current_rotation());
+                gWindowSceneryPrimaryColour = scenery_small_get_primary_colour(mapElement);
+                gWindowScenerySecondaryColour = scenery_small_get_secondary_colour(mapElement);
                 gWindowSceneryEyedropperEnabled = false;
             }
         }
@@ -1073,7 +1077,7 @@ static void scenery_eyedropper_tool_down(sint16 x, sint16 y, rct_widgetindex wid
         if (sceneryEntry != NULL && sceneryEntry != (rct_scenery_entry *)-1) {
             sint32 sceneryId = get_scenery_id_from_entry_index(OBJECT_TYPE_LARGE_SCENERY, entryIndex);
             if (sceneryId != -1 && window_scenery_set_selected_item(sceneryId)) {
-                gWindowSceneryRotation = (get_current_rotation() + map_element_get_direction(mapElement)) & 3;
+                gWindowSceneryRotation = map_element_get_direction_with_offset(mapElement, get_current_rotation());
                 gWindowSceneryPrimaryColour = mapElement->properties.scenerymultiple.colour[0] & 0x1F;
                 gWindowScenerySecondaryColour = mapElement->properties.scenerymultiple.colour[1] & 0x1F;
                 gWindowSceneryEyedropperEnabled = false;
@@ -1122,31 +1126,30 @@ static void scenery_eyedropper_tool_down(sint16 x, sint16 y, rct_widgetindex wid
 static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid_x, sint16* grid_y, uint32* parameter_1, uint32* parameter_2, uint32* parameter_3){
     rct_window* w = window_find_by_class(WC_SCENERY);
 
-    if (w == NULL)
-    {
-        *grid_x = 0x8000;
+    if (w == NULL) {
+        *grid_x = MAP_LOCATION_NULL;
         return;
     }
 
     uint8 scenery_type = selected_scenery >> 8;
-    // Not sure what this type is yet.
-    uint8 type = 0;
+    bool can_raise_item = false;
 
-    if (scenery_type == 0){
+    if (scenery_type == SCENERY_TYPE_SMALL) {
         rct_scenery_entry* scenery_entry = get_small_scenery_entry(selected_scenery);
 
-        if (scenery_entry->small_scenery.flags & SMALL_SCENERY_FLAG18){
-            type = 1;
+        if (scenery_entry->small_scenery.flags & SMALL_SCENERY_FLAG_STACKABLE) {
+            can_raise_item = true;
         }
     }
-    else if (scenery_type == 2 || scenery_type == 3){
-        type = 1;
+    else if (scenery_type == SCENERY_TYPE_WALL || scenery_type == SCENERY_TYPE_LARGE) {
+        can_raise_item = true;
     }
 
-    if (type == 0 && !gCheatsDisableSupportLimits) {
+    if (!can_raise_item && !gCheatsDisableSupportLimits) {
         gSceneryCtrlPressed = false;
         gSceneryShiftPressed = false;
-    } else {
+    }
+    else {
         if (!gSceneryCtrlPressed) {
             if (input_test_place_object_modifier(PLACE_OBJECT_MODIFIER_COPY_Z)) {
                 // CTRL pressed
@@ -1161,12 +1164,13 @@ static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid
                 sint32 interaction_type;
                 get_map_coordinates_from_pos(x, y, flags, NULL, NULL, &interaction_type, &map_element, NULL);
 
-                if (interaction_type != VIEWPORT_INTERACTION_ITEM_NONE){
+                if (interaction_type != VIEWPORT_INTERACTION_ITEM_NONE) {
                     gSceneryCtrlPressed = true;
                     gSceneryCtrlPressZ = map_element->base_height * 8;
                 }
             }
-        } else {
+        }
+        else {
             if (!(input_test_place_object_modifier(PLACE_OBJECT_MODIFIER_COPY_Z))) {
                 // CTRL not pressed
                 gSceneryCtrlPressed = false;
@@ -1182,26 +1186,27 @@ static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid
                 gSceneryShiftPressZOffset = 0;
             }
         }
-        else{
+        else {
             if (input_test_place_object_modifier(PLACE_OBJECT_MODIFIER_SHIFT_Z)) {
                 // SHIFT pressed
                 gSceneryShiftPressZOffset = (gSceneryShiftPressY - y + 4) & 0xFFF8;
 
                 x = gSceneryShiftPressX;
                 y = gSceneryShiftPressY;
-            } else {
+            }
+            else {
                 // SHIFT not pressed
                 gSceneryShiftPressed = false;
             }
         }
     }
 
-    switch (scenery_type){
-    case 0:
+    switch (scenery_type) {
+    case SCENERY_TYPE_SMALL:
     {
         // Small scenery
         rct_scenery_entry* scenery = get_small_scenery_entry(selected_scenery);
-        if (!(scenery->small_scenery.flags & SMALL_SCENERY_FLAG_FULL_TILE)){
+        if (!(scenery->small_scenery.flags & SMALL_SCENERY_FLAG_FULL_TILE)) {
             uint8 cl = 0;
 
             // If CTRL not pressed
@@ -1215,25 +1220,22 @@ static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid
 
                 // If SHIFT pressed
                 if (gSceneryShiftPressed) {
-
                     rct_map_element* map_element = map_get_surface_element_at(*grid_x / 32, *grid_y / 32);
 
-                    if (map_element == NULL){
-                        *grid_x = 0x8000;
+                    if (map_element == NULL) {
+                        *grid_x = MAP_LOCATION_NULL;
                         return;
                     }
 
                     sint16 z = (map_element->base_height * 8) & 0xFFF0;
                     z += gSceneryShiftPressZOffset;
 
-                    if (z < 16){
-                        z = 16;
-                    }
+                    z = max(z, 16);
 
                     gSceneryPlaceZ = z;
                 }
             }
-            else{
+            else {
                 sint16 z = gSceneryCtrlPressZ;
 
                 screen_get_map_xy_quadrant_with_z(x, y, z, grid_x, grid_y, &cl);
@@ -1243,9 +1245,7 @@ static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid
                     z += gSceneryShiftPressZOffset;
                 }
 
-                if (z < 16){
-                    z = 16;
-                }
+                z = max(z, 16);
 
                 gSceneryPlaceZ = z;
             }
@@ -1255,7 +1255,7 @@ static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid
 
             uint8 rotation = gWindowSceneryRotation;
 
-            if (!(scenery->small_scenery.flags & SMALL_SCENERY_FLAG4)){
+            if (!(scenery->small_scenery.flags & SMALL_SCENERY_FLAG_ROTATABLE)) {
                 rotation = util_rand() & 0xFF;
             }
 
@@ -1279,15 +1279,14 @@ static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid
 
             get_map_coordinates_from_pos(x, y, flags, grid_x, grid_y, &interaction_type, &map_element, NULL);
 
-            if (interaction_type == VIEWPORT_INTERACTION_ITEM_NONE)
-            {
-                *grid_x = 0x8000;
+            if (interaction_type == VIEWPORT_INTERACTION_ITEM_NONE) {
+                *grid_x = MAP_LOCATION_NULL;
                 return;
             }
 
             gSceneryPlaceZ = 0;
-            uint16 water_height = map_element->properties.surface.terrain & MAP_ELEMENT_WATER_HEIGHT_MASK;
-            if (water_height != 0){
+            uint16 water_height = map_get_water_height(map_element);
+            if (water_height != 0) {
                 gSceneryPlaceZ = water_height * 16;
             }
 
@@ -1295,22 +1294,20 @@ static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid
             if (gSceneryShiftPressed) {
                 map_element = map_get_surface_element_at(*grid_x / 32, *grid_y / 32);
 
-                if (map_element == NULL){
-                    *grid_x = 0x8000;
+                if (map_element == NULL) {
+                    *grid_x = MAP_LOCATION_NULL;
                     return;
                 }
 
                 sint16 z = (map_element->base_height * 8) & 0xFFF0;
                 z += gSceneryShiftPressZOffset;
 
-                if (z < 16){
-                    z = 16;
-                }
+                z = max(z, 16);
 
                 gSceneryPlaceZ = z;
             }
         }
-        else{
+        else {
             sint16 z = gSceneryCtrlPressZ;
             screen_get_map_xy_with_z(x, y, z, grid_x, grid_y);
 
@@ -1319,9 +1316,7 @@ static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid
                 z += gSceneryShiftPressZOffset;
             }
 
-            if (z < 16){
-                z = 16;
-            }
+            z = max(z, 16);
 
             gSceneryPlaceZ = z;
         }
@@ -1333,7 +1328,7 @@ static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid
         *grid_y &= 0xFFE0;
         uint8 rotation = gWindowSceneryRotation;
 
-        if (!(scenery->small_scenery.flags & SMALL_SCENERY_FLAG4)){
+        if (!(scenery->small_scenery.flags & SMALL_SCENERY_FLAG_ROTATABLE)) {
             rotation = util_rand() & 0xFF;
         }
 
@@ -1346,10 +1341,9 @@ static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid
         *parameter_3 = rotation | (gWindowScenerySecondaryColour << 16);
         break;
     }
-    case 1:
+    case SCENERY_TYPE_PATH_ITEM:
     {
         // Path bits
-
         uint16 flags =
             VIEWPORT_INTERACTION_MASK_FOOTPATH &
             VIEWPORT_INTERACTION_MASK_FOOTPATH_ITEM;
@@ -1358,21 +1352,20 @@ static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid
 
         get_map_coordinates_from_pos(x, y, flags, grid_x, grid_y, &interaction_type, &map_element, NULL);
 
-        if (interaction_type == VIEWPORT_INTERACTION_ITEM_NONE)
-        {
-            *grid_x = 0x8000;
+        if (interaction_type == VIEWPORT_INTERACTION_ITEM_NONE) {
+            *grid_x = MAP_LOCATION_NULL;
             return;
         }
 
         *parameter_1 = 0 | ((map_element->properties.path.type & 0x7) << 8);
         *parameter_2 = map_element->base_height | ((map_element->properties.path.type >> 4) << 8);
-        if (map_element->type & 1){
-            *parameter_2 |= 0x8000;
+        if (map_element->type & 1) {
+            *parameter_2 |= MAP_LOCATION_NULL;
         }
         *parameter_3 = (selected_scenery & 0xFF) + 1;
         break;
     }
-    case 2:
+    case SCENERY_TYPE_WALL:
     {
         // Walls
         uint8 cl;
@@ -1389,22 +1382,20 @@ static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid
             if (gSceneryShiftPressed) {
                 rct_map_element* map_element = map_get_surface_element_at(*grid_x / 32, *grid_y / 32);
 
-                if (map_element == NULL){
-                    *grid_x = 0x8000;
+                if (map_element == NULL) {
+                    *grid_x = MAP_LOCATION_NULL;
                     return;
                 }
 
                 sint16 z = (map_element->base_height * 8) & 0xFFF0;
                 z += gSceneryShiftPressZOffset;
 
-                if (z < 16){
-                    z = 16;
-                }
+                z = max(z, 16);
 
                 gSceneryPlaceZ = z;
             }
         }
-        else{
+        else {
             sint16 z = gSceneryCtrlPressZ;
             screen_get_map_xy_side_with_z(x, y, z, grid_x, grid_y, &cl);
 
@@ -1413,9 +1404,7 @@ static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid
                 z += gSceneryShiftPressZOffset;
             }
 
-            if (z < 16){
-                z = 16;
-            }
+            z = max(z, 16);
 
             gSceneryPlaceZ = z;
         }
@@ -1430,10 +1419,9 @@ static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid
         *parameter_3 = 0;
         break;
     }
-    case 3:
+    case SCENERY_TYPE_LARGE:
     {
         // Large scenery
-
         // If CTRL not pressed
         if (!gSceneryCtrlPressed) {
             sub_68A15E(x, y, grid_x, grid_y, NULL, NULL);
@@ -1447,22 +1435,20 @@ static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid
             if (gSceneryShiftPressed) {
                 rct_map_element* map_element = map_get_surface_element_at(*grid_x / 32, *grid_y / 32);
 
-                if (map_element == NULL){
-                    *grid_x = 0x8000;
+                if (map_element == NULL) {
+                    *grid_x = MAP_LOCATION_NULL;
                     return;
                 }
 
                 sint16 z = (map_element->base_height * 8) & 0xFFF0;
                 z += gSceneryShiftPressZOffset;
 
-                if (z < 16){
-                    z = 16;
-                }
+                z = max(z, 16);
 
                 gSceneryPlaceZ = z;
             }
         }
-        else{
+        else {
             sint16 z = gSceneryCtrlPressZ;
             screen_get_map_xy_with_z(x, y, z, grid_x, grid_y);
 
@@ -1471,9 +1457,7 @@ static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid
                 z += gSceneryShiftPressZOffset;
             }
 
-            if (z < 16){
-                z = 16;
-            }
+            z = max(z, 16);
 
             gSceneryPlaceZ = z;
         }
@@ -1493,10 +1477,9 @@ static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid
         *parameter_3 = selected_scenery & 0xFF;
         break;
     }
-    case 4:
+    case SCENERY_TYPE_BANNER:
     {
         // Banner
-
         uint16 flags =
             VIEWPORT_INTERACTION_MASK_FOOTPATH &
             VIEWPORT_INTERACTION_MASK_FOOTPATH_ITEM;
@@ -1505,9 +1488,8 @@ static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid
 
         get_map_coordinates_from_pos(x, y, flags, grid_x, grid_y, &interaction_type, &map_element, NULL);
 
-        if (interaction_type == VIEWPORT_INTERACTION_ITEM_NONE)
-        {
-            *grid_x = 0x8000;
+        if (interaction_type == VIEWPORT_INTERACTION_ITEM_NONE) {
+            *grid_x = MAP_LOCATION_NULL;
             return;
         }
 
@@ -1517,8 +1499,8 @@ static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid
 
         sint16 z = map_element->base_height;
 
-        if (map_element->properties.path.type & (1 << 2)){
-            if (rotation != ((map_element->properties.path.type & 3) ^ 2)){
+        if (map_element->properties.path.type & (1 << 2)) {
+            if (rotation != ((map_element->properties.path.type & 3) ^ 2)) {
                 z += 2;
             }
         }
@@ -1595,7 +1577,7 @@ static void window_top_toolbar_scenery_tool_down(sint16 x, sint16 y, rct_window 
                 cur_grid_x += ((util_rand() % 16) - 8) * 32;
                 cur_grid_y += ((util_rand() % 16) - 8) * 32;
 
-                if (!(scenery->small_scenery.flags & SMALL_SCENERY_FLAG4)){
+                if (!(scenery->small_scenery.flags & SMALL_SCENERY_FLAG_ROTATABLE)){
                     gSceneryPlaceRotation = (gSceneryPlaceRotation + 1) & 3;
                 }
             }

@@ -31,6 +31,9 @@
 #define PEEP_NOEXIT_WARNING_THRESHOLD 8
 #define PEEP_LOST_WARNING_THRESHOLD 8
 
+#define PEEP_MAX_HAPPINESS 255
+#define PEEP_MAX_ENERGY    128
+
 enum PEEP_TYPE {
     PEEP_TYPE_GUEST,
     PEEP_TYPE_STAFF
@@ -502,11 +505,11 @@ typedef struct rct_peep {
     uint8 destination_tolerence;    // 0x36 How close to destination before next action/state 0 = exact
     uint8 var_37;
     uint8 energy;                   // 0x38
-    uint8 energy_growth_rate;       // 0x39
+    uint8 energy_target;            // 0x39
     uint8 happiness;                // 0x3A
-    uint8 happiness_growth_rate;    // 0x3B
+    uint8 happiness_target;         // 0x3B
     uint8 nausea;                   // 0x3C
-    uint8 nausea_growth_rate;       // 0x3D
+    uint8 nausea_target;            // 0x3D
     uint8 hunger;                   // 0x3E
     uint8 thirst;                   // 0x3F
     uint8 bathroom;                 // 0x40

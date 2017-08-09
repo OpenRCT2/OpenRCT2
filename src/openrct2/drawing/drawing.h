@@ -238,9 +238,15 @@ typedef struct rct_palette {
     rct_palette_entry entries[256];
 } rct_palette;
 
+typedef struct rct_size16
+{
+    sint16 width;
+    sint16 height;
+} rct_size16;
+
 #define SPRITE_ID_PALETTE_COLOUR_1(colourId) (IMAGE_TYPE_REMAP | ((colourId) << 19))
-#define SPRITE_ID_PALETTE_COLOUR_2(primaryId, secondaryId) (IMAGE_TYPE_REMAP_2_PLUS | IMAGE_TYPE_REMAP | ((primaryId << 19) | (scondaryId << 24)))
-#define SPRITE_ID_PALETTE_COLOUR_3(primaryId, secondaryId) (IMAGE_TYPE_REMAP_2_PLUS | ((primaryId << 19) | (scondaryId << 24)))
+#define SPRITE_ID_PALETTE_COLOUR_2(primaryId, secondaryId) (IMAGE_TYPE_REMAP_2_PLUS | IMAGE_TYPE_REMAP | ((primaryId << 19) | (secondaryId << 24)))
+#define SPRITE_ID_PALETTE_COLOUR_3(primaryId, secondaryId) (IMAGE_TYPE_REMAP_2_PLUS | ((primaryId << 19) | (secondaryId << 24)))
 
 #define PALETTE_TO_G1_OFFSET_COUNT 144
 
@@ -311,7 +317,7 @@ void gfx_fill_rect_inset(rct_drawpixelinfo* dpi, sint16 left, sint16 top, sint16
 void gfx_filter_rect(rct_drawpixelinfo *dpi, sint32 left, sint32 top, sint32 right, sint32 bottom, FILTER_PALETTE_ID palette);
 
 // sprite
-bool gfx_load_g1();
+bool gfx_load_g1(void * platformEnvironment);
 bool gfx_load_g2();
 bool gfx_load_csg();
 void gfx_unload_g1();
@@ -363,7 +369,7 @@ void shorten_path(utf8 *buffer, size_t bufferSize, const utf8 *path, sint32 avai
 void scrolling_text_initialise_bitmaps();
 sint32 scrolling_text_setup(rct_string_id stringId, uint16 scroll, uint16 scrollingMode);
 
-void rct2_draw(rct_drawpixelinfo *dpi);
+rct_size16 FASTCALL gfx_get_sprite_size(uint32 image_id);
 
 #include "NewDrawing.h"
 

@@ -61,10 +61,10 @@ enum WINDOW_MULTIPLAYER_WIDGET_IDX {
     { WWT_CAPTION,          0,  1,      338,    1,      14,     STR_MULTIPLAYER,            STR_WINDOW_TITLE_TIP },     /* title bar            */  \
     { WWT_CLOSEBOX,         0,  327,    337,    2,      13,     STR_CLOSE_X,                STR_CLOSE_WINDOW_TIP },     /* close x button       */  \
     { WWT_RESIZE,           1,  0,      339,    43,     239,    0xFFFFFFFF,                 STR_NONE },                 /* content panel        */  \
-    { WWT_TAB,              1,  3,      33,     17,     43,     0x20000000 | SPR_TAB,       STR_SHOW_SERVER_INFO_TIP }, /* tab                  */  \
-    { WWT_TAB,              1,  3,      33,     17,     43,     0x20000000 | SPR_TAB,       STR_PLAYERS_TIP },          /* tab                  */  \
-    { WWT_TAB,              1,  3,      33,     17,     43,     0x20000000 | SPR_TAB,       STR_GROUPS_TIP },           /* tab                  */  \
-    { WWT_TAB,              1,  3,      33,     17,     43,     0x20000000 | SPR_TAB,       STR_OPTIONS_TIP }           /* tab                  */  \
+    { WWT_TAB,              1,  3,      33,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,       STR_SHOW_SERVER_INFO_TIP }, /* tab                  */  \
+    { WWT_TAB,              1,  3,      33,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,       STR_PLAYERS_TIP },          /* tab                  */  \
+    { WWT_TAB,              1,  3,      33,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,       STR_GROUPS_TIP },           /* tab                  */  \
+    { WWT_TAB,              1,  3,      33,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,       STR_OPTIONS_TIP }           /* tab                  */  \
 
 static rct_widget window_multiplayer_information_widgets[] = {
     MAIN_MULTIPLAYER_WIDGETS,
@@ -132,7 +132,7 @@ static void window_multiplayer_players_scrollpaint(rct_window *w, rct_drawpixeli
 
 static void window_multiplayer_groups_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_multiplayer_groups_resize(rct_window *w);
-static void window_multiplayer_groups_mousedown(rct_widgetindex widgetIndex, rct_window* w, rct_widget* widget);
+static void window_multiplayer_groups_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget);
 static void window_multiplayer_groups_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex);
 static void window_multiplayer_groups_update(rct_window *w);
 static void window_multiplayer_groups_scrollgetsize(rct_window *w, sint32 scrollIndex, sint32 *width, sint32 *height);
@@ -701,7 +701,7 @@ static void window_multiplayer_groups_resize(rct_window *w)
     window_invalidate(w);
 }
 
-static void window_multiplayer_groups_mousedown(rct_widgetindex widgetIndex, rct_window* w, rct_widget* widget)
+static void window_multiplayer_groups_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget)
 {
     switch (widgetIndex) {
     case WIDX_DEFAULT_GROUP_DROPDOWN:

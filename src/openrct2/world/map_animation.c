@@ -184,7 +184,7 @@ static bool map_animation_invalidate_small_scenery(sint32 x, sint32 y, sint32 ba
             continue;
 
         sceneryEntry = get_small_scenery_entry(mapElement->properties.scenery.type);
-        if (sceneryEntry->small_scenery.flags & (SMALL_SCENERY_FLAG12 | SMALL_SCENERY_FLAG13 | SMALL_SCENERY_FLAG15 | SMALL_SCENERY_FLAG16)) {
+        if (sceneryEntry->small_scenery.flags & (SMALL_SCENERY_FLAG_FOUNTAIN_SPRAY_1 | SMALL_SCENERY_FLAG_FOUNTAIN_SPRAY_4 | SMALL_SCENERY_FLAG_SWAMP_GOO | SMALL_SCENERY_FLAG_HAS_FRAME_OFFSETS)) {
             map_invalidate_tile_zoom1(x, y, mapElement->base_height * 8, mapElement->clearance_height * 8);
             return false;
         }
@@ -192,7 +192,7 @@ static bool map_animation_invalidate_small_scenery(sint32 x, sint32 y, sint32 ba
         if (sceneryEntry->small_scenery.flags & SMALL_SCENERY_FLAG_IS_CLOCK) {
             // Peep, looking at scenery
             if (!(gCurrentTicks & 0x3FF) && game_is_not_paused()) {
-                sint32 direction = mapElement->type & 3;
+                sint32 direction = map_element_get_direction(mapElement);
                 sint32 x2 = x - TileDirectionDelta[direction].x;
                 sint32 y2 = y - TileDirectionDelta[direction].y;
 
@@ -324,8 +324,8 @@ static bool map_animation_invalidate_track_onridephoto(sint32 x, sint32 y, sint3
             if (game_is_paused()) {
                 return false;
             }
-            if (mapElement->properties.track.sequence & 0xF0) {
-                mapElement->properties.track.sequence -= 0x10;
+            if (map_element_is_taking_photo(mapElement)) {
+                map_element_decrement_onride_photo_timout(mapElement);
                 return false;
             } else {
                 return true;

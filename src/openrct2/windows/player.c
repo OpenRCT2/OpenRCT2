@@ -63,8 +63,8 @@ enum WINDOW_PLAYER_WIDGET_IDX {
     { WWT_CAPTION,          0,  1,      190,    1,      14,     STR_STRING,             STR_WINDOW_TITLE_TIP }, /* Title                */      \
     { WWT_CLOSEBOX,         0,  179,    189,    2,      13,     STR_CLOSE_X,            STR_CLOSE_WINDOW_TIP }, /* Close x button       */      \
     { WWT_RESIZE,           1,  0,      191,    43,     156,    0xFFFFFFFF,             STR_NONE },             /* Resize               */      \
-    { WWT_TAB,              1,  3,      33,     17,     43,     0x20000000 | SPR_TAB,   STR_NONE },             /* Tab 1                */      \
-    { WWT_TAB,              1,  34,     64,     17,     43,     0x20000000 | SPR_TAB,   STR_NONE }              /* Tab 2                */
+    { WWT_TAB,              1,  3,      33,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_NONE },             /* Tab 1                */      \
+    { WWT_TAB,              1,  34,     64,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_NONE }              /* Tab 2                */
 
 rct_widget window_player_overview_widgets[] = {
     WINDOW_PLAYER_COMMON_WIDGETS,
@@ -93,7 +93,7 @@ rct_widget *window_player_page_widgets[] = {
 void window_player_overview_close(rct_window *w);
 void window_player_overview_mouse_up(rct_window *w, rct_widgetindex widgetIndex);
 void window_player_overview_resize(rct_window *w);
-void window_player_overview_mouse_down(rct_widgetindex widgetIndex, rct_window *w, rct_widget *widget);
+void window_player_overview_mouse_down(rct_window *w, rct_widgetindex widgetIndex, rct_widget *widget);
 void window_player_overview_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex);
 void window_player_overview_update(rct_window* w);
 void window_player_overview_invalidate(rct_window *w);
@@ -297,7 +297,7 @@ void window_player_overview_mouse_up(rct_window *w, rct_widgetindex widgetIndex)
     }
 }
 
-void window_player_overview_mouse_down(rct_widgetindex widgetIndex, rct_window *w, rct_widget *widget)
+void window_player_overview_mouse_down(rct_window *w, rct_widgetindex widgetIndex, rct_widget *widget)
 {
     switch(widgetIndex){
     case WIDX_GROUP_DROPDOWN:

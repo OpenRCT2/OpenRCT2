@@ -147,6 +147,12 @@ public:
             log_error("IPV6_V6ONLY failed. %d", LAST_SOCKET_ERROR());
         }
 
+        value = 1;
+        if (setsockopt(_socket, SOL_SOCKET, SO_REUSEADDR, (const char*)&value, sizeof(value)) != 0)
+        {
+            log_error("SO_REUSEADDR failed. %d", LAST_SOCKET_ERROR());
+        }
+
         try
         {
             // Bind to address:port and listen
@@ -281,7 +287,10 @@ public:
 
                 fd_set writeFD;
                 FD_ZERO(&writeFD);
+#pragma warning(push)
+#pragma warning(disable : 4548) // expression before comma has no effect; expected expression with side-effect
                 FD_SET(_socket, &writeFD);
+#pragma warning(pop)
                 timeval timeout;
                 timeout.tv_sec = 0;
                 timeout.tv_usec = 0;

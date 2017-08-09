@@ -129,6 +129,10 @@ int map_element_get_direction(const rct_map_element *element) {
     return element->type & MAP_ELEMENT_DIRECTION_MASK;
 }
 
+int map_element_get_direction_with_offset(const rct_map_element *element, uint8 offset) {
+    return ((element->type & MAP_ELEMENT_DIRECTION_MASK) + offset) & MAP_ELEMENT_DIRECTION_MASK;
+}
+
 rct_map_element *map_get_first_element_at(int x, int y) {
     if (x < 0 || y < 0 || x > 255 || y > 255) {
         log_error("Trying to access element outside of range");
@@ -137,8 +141,74 @@ rct_map_element *map_get_first_element_at(int x, int y) {
     return gMapElementTilePointers[x + y * 256];
 }
 
-int map_get_station(rct_map_element *mapElement) {
-    return (mapElement->properties.track.sequence & 0x70) >> 4;
+int map_element_get_station(const rct_map_element * mapElement) {
+    return (mapElement->properties.track.sequence & MAP_ELEM_TRACK_SEQUENCE_STATION_INDEX_MASK) >> 4;
+}
+
+void map_element_set_station(rct_map_element * mapElement, uint32 stationIndex)
+{
+    mapElement->properties.track.sequence &= ~MAP_ELEM_TRACK_SEQUENCE_STATION_INDEX_MASK;
+    mapElement->properties.track.sequence |= (stationIndex << 4);
+}
+
+sint32 map_element_get_track_sequence(const rct_map_element * mapElement)
+{
+    return mapElement->properties.track.sequence & MAP_ELEM_TRACK_SEQUENCE_SEQUENCE_MASK;
+}
+
+void map_element_set_track_sequence(rct_map_element * mapElement, int trackSequence)
+{
+    mapElement->properties.track.sequence &= ~MAP_ELEM_TRACK_SEQUENCE_SEQUENCE_MASK;
+    mapElement->properties.track.sequence |= (trackSequence & MAP_ELEM_TRACK_SEQUENCE_SEQUENCE_MASK);
+}
+
+bool map_element_get_green_light(const rct_map_element * mapElement)
+{
+    return (mapElement->properties.track.sequence & MAP_ELEM_TRACK_SEQUENCE_GREEN_LIGHT) != 0;
+}
+
+void map_element_set_green_light(rct_map_element * mapElement, bool greenLight)
+{
+    mapElement->properties.track.sequence &= ~MAP_ELEM_TRACK_SEQUENCE_GREEN_LIGHT;
+    if (greenLight)
+    {
+        mapElement->properties.track.sequence |= MAP_ELEM_TRACK_SEQUENCE_GREEN_LIGHT;
+    }
+}
+
+int map_element_get_brake_booster_speed(const rct_map_element *mapElement)
+{
+    return (mapElement->properties.track.sequence >> 4) << 1;
+}
+
+void map_element_set_brake_booster_speed(rct_map_element *mapElement, int speed)
+{
+    mapElement->properties.track.sequence = map_element_get_track_sequence(mapElement) | ((speed >> 1) << 4);
+}
+
+bool map_element_is_taking_photo(const rct_map_element * mapElement)
+{
+    return (mapElement->properties.track.sequence & MAP_ELEM_TRACK_SEQUENCE_TAKING_PHOTO_MASK) != 0;
+}
+
+void map_element_set_onride_photo_timeout(rct_map_element * mapElement)
+{
+    mapElement->properties.track.sequence &= MAP_ELEM_TRACK_SEQUENCE_SEQUENCE_MASK;
+    mapElement->properties.track.sequence |= (3 << 4);
+}
+
+void map_element_decrement_onride_photo_timout(rct_map_element * mapElement)
+{
+    // We should only touch the upper 4 bits, avoid underflow into the lower 4.
+    if (mapElement->properties.track.sequence & MAP_ELEM_TRACK_SEQUENCE_TAKING_PHOTO_MASK)
+    {
+        mapElement->properties.track.sequence -= (1 << 4);
+    }
+}
+
+sint32 map_get_water_height(const rct_map_element * mapElement)
+{
+    return mapElement->properties.surface.terrain & MAP_ELEMENT_WATER_HEIGHT_MASK;
 }
 
 bool ride_type_has_flag(int rideType, int flag)

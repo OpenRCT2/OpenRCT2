@@ -58,7 +58,7 @@ void platform_get_exe_path(utf8 *outPath, size_t outSize)
     }
 #elif defined(__OpenBSD__)
     // There is no way to get the path name of a running executable.
-    // If you are not using the port or package, you must change this line!
+    // If you are not using the port or package, you may have to change this line!
     strlcpy(exePath, "/usr/local/bin/", sizeof(exePath));
 #else
 #error "Platform does not support full path exe retrieval"
@@ -127,6 +127,27 @@ void platform_posix_sub_resolve_openrct_data_path(utf8 *out, size_t size) {
     for (size_t i = 0; i < countof(searchLocations); i++)
     {
         log_verbose("Looking for OpenRCT2 data in %s", searchLocations[i]);
+        if (platform_directory_exists(searchLocations[i]))
+        {
+            safe_strcpy(out, searchLocations[i], size);
+            return;
+        }
+    }
+}
+
+/**
+* Default directory fallback is:
+*   - <exePath>/doc
+*   - /usr/share/doc/openrct2
+*/
+static void platform_posix_sub_resolve_openrct_doc_path(utf8 *out, size_t size) {
+    static const utf8 *searchLocations[] = {
+        "./doc",
+        "/usr/share/doc/openrct2",
+    };
+    for (size_t i = 0; i < countof(searchLocations); i++)
+    {
+        log_verbose("Looking for OpenRCT2 doc path at %s", searchLocations[i]);
         if (platform_directory_exists(searchLocations[i]))
         {
             safe_strcpy(out, searchLocations[i], size);
@@ -222,6 +243,12 @@ uint8 platform_get_locale_measurement_format(){
         }
     }
     return MEASUREMENT_FORMAT_METRIC;
+}
+
+void platform_get_changelog_path(utf8 *outPath, size_t outSize)
+{
+    platform_posix_sub_resolve_openrct_doc_path(outPath, outSize);
+    safe_strcat_path(outPath, "changelog.txt", outSize);
 }
 
 #ifndef NO_TTF

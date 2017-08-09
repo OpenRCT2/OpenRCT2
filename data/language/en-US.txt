@@ -882,7 +882,6 @@ STR_0884    :Load Landscape
 STR_0885    :Save Landscape
 STR_0886    :Quit Game
 STR_0887    :Quit Scenario Editor
-STR_0888    :Quit Roller Coaster Designer
 STR_0889    :Quit Track Designs Manager
 STR_0890    :<removed string - do not use>
 STR_0891    :Screenshot
@@ -2395,7 +2394,7 @@ STR_SCNR    :Funtopia
 STR_PARK    :Funtopia
 STR_DTLS    :Covering land both sides of a highway, this park has several rides already operating
 
-<Haunted Harbor>
+<Haunted Harbour>
 STR_SCNR    :Haunted Harbor
 STR_PARK    :Haunted Harbor
 STR_DTLS    :The local authority has agreed to sell nearby land cheaply to this small seaside park, on the condition that certain rides are preserved

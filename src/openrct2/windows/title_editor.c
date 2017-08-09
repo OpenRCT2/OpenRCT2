@@ -16,12 +16,14 @@
 
 #include "../config/Config.h"
 #include "../drawing/drawing.h"
+#include "../FileClassifier.h"
 #include "../game.h"
 #include "../input.h"
 #include "../interface/viewport.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
 #include "../localisation/localisation.h"
+#include "../OpenRCT2.h"
 #include "../ParkImporter.h"
 #include "../peep/peep.h"
 #include "../peep/staff.h"
@@ -47,7 +49,7 @@ enum WINDOW_TITLE_EDITOR_TAB {
 static void window_title_editor_close(rct_window *w);
 static void window_title_editor_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_title_editor_resize(rct_window *w);
-static void window_title_editor_mousedown(rct_widgetindex widgetIndex, rct_window*w, rct_widget* widget);
+static void window_title_editor_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget);
 static void window_title_editor_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex);
 static void window_title_editor_update(rct_window *w);
 static void window_title_editor_scrollgetsize(rct_window *w, sint32 scrollIndex, sint32 *width, sint32 *height);
@@ -156,9 +158,9 @@ static rct_widget window_title_editor_widgets[] = {
     { WWT_CAPTION,          0,  1,      WW-2,   1,      14,     STR_TITLE_EDITOR_TITLE, STR_WINDOW_TITLE_TIP },                 // title bar
     { WWT_CLOSEBOX,         0,  WW-13,  WW-3,   2,      13,     STR_CLOSE_X,            STR_CLOSE_WINDOW_TIP },                 // close button
     { WWT_RESIZE,           1,  0,      WW-1,   43,     WH2-1,  0xFFFFFFFF,             STR_NONE },                             // tab content panel
-    { WWT_TAB,              1,  3,      33,     17,     43,     0x20000000 | SPR_TAB,   STR_THEMES_TAB_SETTINGS_TIP },  // presets tab
-    { WWT_TAB,              1,  34,     64,     17,     43,     0x20000000 | SPR_TAB,   STR_TITLE_EDITOR_SAVES_TAB_TIP },       // saves tab
-    { WWT_TAB,              1,  65,     95,     17,     43,     0x20000000 | SPR_TAB,   STR_TITLE_EDITOR_SCRIPT_TAB_TIP },      // script tab
+    { WWT_TAB,              1,  3,      33,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_THEMES_TAB_SETTINGS_TIP },  // presets tab
+    { WWT_TAB,              1,  34,     64,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_TITLE_EDITOR_SAVES_TAB_TIP },       // saves tab
+    { WWT_TAB,              1,  65,     95,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_TITLE_EDITOR_SCRIPT_TAB_TIP },      // script tab
     { WWT_SCROLL,           1,  BX+BW+9,WW-4,   48,     WH-4,   SCROLL_BOTH,            STR_NONE },                             // command/save list
 
     // Presets Tab
@@ -448,13 +450,13 @@ static void window_title_editor_mouseup(rct_window *w, rct_widgetindex widgetInd
         break;
     case WIDX_TITLE_EDITOR_STOP:
         if (_isSequencePlaying) {
-            gTitleCurrentSequence = 0;
+            title_set_current_sequence(0);
             _isSequencePlaying = false;
         }
         break;
     case WIDX_TITLE_EDITOR_PLAY:
         if (!_isSequencePlaying && (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)) {
-            gTitleCurrentSequence = (uint16)_selectedTitleSequence;
+            title_set_current_sequence((uint16)_selectedTitleSequence);
             _isSequencePlaying = true;
         }
         break;
@@ -481,7 +483,7 @@ static void window_title_editor_resize(rct_window *w)
     }
 }
 
-static void window_title_editor_mousedown(rct_widgetindex widgetIndex, rct_window* w, rct_widget* widget)
+static void window_title_editor_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget)
 {
     switch (widgetIndex) {
     case WIDX_TITLE_EDITOR_PRESETS_TAB:

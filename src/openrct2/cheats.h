@@ -39,6 +39,7 @@ extern bool gCheatsDisablePlantAging;
 extern bool gCheatsDisableRideValueAging;
 extern bool gCheatsEnableChainLiftOnAllTrack;
 extern bool gCheatsAllowArbitraryRideTypeChanges;
+extern bool gCheatsIgnoreResearchStatus;
 
 
 enum {
@@ -88,6 +89,7 @@ enum {
     CHEAT_ALLOW_ARBITRARY_RIDE_TYPE_CHANGES,
     CHEAT_OWNALLLAND,
     CHEAT_DISABLERIDEVALUEAGING,
+    CHEAT_IGNORERESEARCHSTATUS,
 };
 
 enum {
@@ -108,7 +110,6 @@ enum {
     OBJECT_UMBRELLA
 };
 
-#define CHEATS_MONEY_INCREMENT MONEY(5000,00)
 #define CHEATS_GIVE_GUESTS_MONEY MONEY(1000,00)
 #define CHEATS_TRAM_INCREMENT 250
 #define CHEATS_STAFF_FAST_SPEED 0xFF

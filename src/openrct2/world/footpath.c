@@ -19,7 +19,8 @@
 #include "../localisation/localisation.h"
 #include "../network/network.h"
 #include "../object_list.h"
-#include "../rct2.h"
+#include "../OpenRCT2.h"
+#include "../ride/station.h"
 #include "../ride/track.h"
 #include "../ride/track_data.h"
 #include "../util/util.h"
@@ -332,7 +333,7 @@ static money32 footpath_element_update(sint32 x, sint32 y, rct_map_element *mapE
     return gParkFlags & PARK_FLAGS_NO_MONEY ? 0 : gFootpathPrice;
 }
 
-static money32 footpath_place_real(sint32 type, sint32 x, sint32 y, sint32 z, sint32 slope, sint32 flags, uint8 pathItemType)
+static money32 footpath_place_real(sint32 type, sint32 x, sint32 y, sint32 z, sint32 slope, sint32 flags, uint8 pathItemType, bool clearDirection, sint32 direction)
 {
     rct_map_element *mapElement;
 
@@ -384,6 +385,18 @@ static money32 footpath_place_real(sint32 type, sint32 x, sint32 y, sint32 z, si
         coord.y = y + 16;
         coord.z = map_element_height(coord.x, coord.y);
         network_set_player_last_action_coord(network_get_player_index(game_command_playerid), coord);
+
+        if (clearDirection && !gCheatsDisableClearanceChecks)
+        {
+            direction = direction & 0xF;
+            // It is possible, let's remove walls between the old and new piece of path
+            wall_remove_intersecting_walls(x, y, z, z + 4 + ((slope & 0xf) ? 2 : 0), direction ^ 2);
+            wall_remove_intersecting_walls(
+                x - TileDirectionDelta[direction].x,
+                y - TileDirectionDelta[direction].y,
+                z, z + 4, direction
+            );
+        }
     }
 
     footpath_provisional_remove();
@@ -492,7 +505,9 @@ void game_command_place_footpath(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *
         *edx & 0xFF,
         (*ebx >> 8) & 0xFF,
         *ebx & 0xFF,
-        *edi & 0xFF
+        *edi & 0xFF,
+        (*ebp & FOOTPATH_CLEAR_DIRECTIONAL) >> 8,
+        *ebp & 0xFF
     );
 }
 
@@ -617,6 +632,11 @@ void game_command_remove_footpath(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 
 money32 footpath_place(sint32 type, sint32 x, sint32 y, sint32 z, sint32 slope, sint32 flags)
 {
     return game_do_command(x, (slope << 8) | flags, y, (type << 8) | z, GAME_COMMAND_PLACE_PATH, 0, 0);
+}
+
+money32 footpath_place_remove_intersecting(sint32 type, sint32 x, sint32 y, sint32 z, sint32 slope, sint32 flags, sint32 direction)
+{
+    return game_do_command(x, (slope << 8) | flags, y, (type << 8) | z, GAME_COMMAND_PLACE_PATH, 0, FOOTPATH_CLEAR_DIRECTIONAL | direction);
 }
 
 void footpath_remove(sint32 x, sint32 y, sint32 z, sint32 flags)
@@ -807,9 +827,7 @@ void footpath_bridge_get_info_from_pos(sint32 screenX, sint32 screenY, sint32 *x
     if (interactionType == VIEWPORT_INTERACTION_ITEM_RIDE && map_element_get_type(*mapElement) == MAP_ELEMENT_TYPE_ENTRANCE) {
         sint32 directions = entrance_get_directions(*mapElement);
         if (directions & 0x0F) {
-            sint32 bx = bitscanforward(directions);
-            bx += (*mapElement)->type; // First two bits seem to contain the direction of entrance/exit
-            bx &= 3;
+            sint32 bx = map_element_get_direction_with_offset(*mapElement, bitscanforward(directions));
             if (direction != NULL) *direction = bx;
             return;
         }
@@ -887,7 +905,7 @@ bool fence_in_the_way(sint32 x, sint32 y, sint32 z0, sint32 z1, sint32 direction
             continue;
         if (z1 <= mapElement->base_height)
             continue;
-        if ((mapElement->type & MAP_ELEMENT_DIRECTION_MASK) != direction)
+        if ((map_element_get_direction(mapElement)) != direction)
             continue;
 
         return true;
@@ -1193,11 +1211,11 @@ static void loc_6A6D7E(
                     }
 
                     const uint8 trackType = mapElement->properties.track.type;
-                    const uint8 trackSequence = mapElement->properties.track.sequence & 0x0F;
+                    const uint8 trackSequence = map_element_get_track_sequence(mapElement);
                     if (!(FlatRideTrackSequenceProperties[trackType][trackSequence] & TRACK_SEQUENCE_FLAG_CONNECTS_TO_PATH)) {
                         return;
                     }
-                    uint16 dx = ((direction - mapElement->type) & 3) ^ 2;
+                    uint16 dx = (direction - map_element_get_direction(mapElement)) ^ 2;
                     if (!(FlatRideTrackSequenceProperties[trackType][trackSequence] & (1 << dx))) {
                         return;
                     }
@@ -1209,7 +1227,7 @@ static void loc_6A6D7E(
                 break;
             case MAP_ELEMENT_TYPE_ENTRANCE:
                 if (z == mapElement->base_height) {
-                    if (entrance_has_direction(mapElement, ((direction - mapElement->type) & 3) ^ 2)) {
+                    if (entrance_has_direction(mapElement, ((direction - map_element_get_direction(mapElement)) & MAP_ELEMENT_DIRECTION_MASK) ^ 2)) {
                         if (query) {
                             neighbour_list_push(neighbourList, 8, direction, mapElement->properties.entrance.ride_index,  mapElement->properties.entrance.index);
                         } else {
@@ -1285,11 +1303,11 @@ static void loc_6A6C85(
             return;
         }
         const uint8 trackType = mapElement->properties.track.type;
-        const uint8 trackSequence = mapElement->properties.track.sequence & 0x0F;
+        const uint8 trackSequence = map_element_get_track_sequence(mapElement);
         if (!(FlatRideTrackSequenceProperties[trackType][trackSequence] & TRACK_SEQUENCE_FLAG_CONNECTS_TO_PATH)) {
             return;
         }
-        uint16 dx = (direction - mapElement->type) & 3;
+        uint16 dx = (direction - map_element_get_direction(mapElement)) & MAP_ELEMENT_DIRECTION_MASK;
         if (!(FlatRideTrackSequenceProperties[trackType][trackSequence] & (1 << dx))) {
             return;
         }
@@ -1500,13 +1518,13 @@ void footpath_update_queue_chains()
             continue;
         }
 
-        for (sint32 i = 0; i < RCT12_MAX_STATIONS_PER_RIDE; i++) {
-            if (ride->entrances[i] == 0xFFFF) {
+        for (sint32 i = 0; i < MAX_STATIONS; i++) {
+            if (ride->entrances[i].xy == RCT_XY8_UNDEFINED) {
                 continue;
             }
 
-            uint8 x = ride->entrances[i] & 0xFF;
-            uint8 y = ride->entrances[i] >> 8;
+            uint8 x = ride->entrances[i].x;
+            uint8 y = ride->entrances[i].y;
             uint8 z = ride->station_heights[i];
 
             rct_map_element *mapElement = map_get_first_element_at(x, y);
@@ -1515,7 +1533,7 @@ void footpath_update_queue_chains()
                 if (mapElement->base_height != z) continue;
                 if (mapElement->properties.entrance.type != ENTRANCE_TYPE_RIDE_ENTRANCE) continue;
 
-                uint8 direction = (mapElement->type & 3) ^ 2;
+                uint8 direction = map_element_get_direction_with_offset(mapElement, 2);
                 footpath_chain_ride_queue(rideIndex, i, x << 5, y << 5, mapElement, direction);
             } while (!map_element_is_last_for_tile(mapElement++));
         }
@@ -2002,7 +2020,7 @@ void footpath_update_queue_entrance_banner(sint32 x, sint32 y, rct_map_element *
     case MAP_ELEMENT_TYPE_ENTRANCE:
         if (mapElement->properties.entrance.type == ENTRANCE_TYPE_RIDE_ENTRANCE) {
             footpath_queue_chain_push(mapElement->properties.entrance.ride_index);
-            footpath_chain_ride_queue(255, 0, x, y, mapElement, (mapElement->type & MAP_ELEMENT_DIRECTION_MASK) ^ 2);
+            footpath_chain_ride_queue(255, 0, x, y, mapElement, map_element_get_direction_with_offset(mapElement, 2));
         }
         break;
     }

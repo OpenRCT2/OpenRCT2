@@ -39,7 +39,7 @@ void vehicle_visual_submarine(sint32 x, sint32 imageDirection, sint32 y, sint32 
             baseImage_id += vehicleEntry->var_1C;
         }
     } else {
-        if (vehicleEntry->flags_a & VEHICLE_ENTRY_FLAG_A_11) {
+        if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_11) {
             baseImage_id /= 2;
         }
         if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_15) {
@@ -52,13 +52,13 @@ void vehicle_visual_submarine(sint32 x, sint32 imageDirection, sint32 y, sint32 
 
     vehicle_boundbox bb = VehicleBoundboxes[vehicleEntry->draw_order][imageDirection / 2];
 
-    image_id = baseImage_id | (vehicle->colours.body_colour << 19) | (vehicle->colours.trim_colour << 24) | 0x80000000;
+    image_id = baseImage_id | (vehicle->colours.body_colour << 19) | (vehicle->colours.trim_colour << 24) | IMAGE_TYPE_REMAP_2_PLUS;
     paint_struct* ps = sub_98197C(image_id, 0, 0, bb.length_x, bb.length_y, bb.length_z, z, bb.offset_x, bb.offset_y, bb.offset_z + z, get_current_rotation());
     if (ps != NULL) {
         ps->tertiary_colour = vehicle->colours_extended;
     }
 
-    image_id = (baseImage_id + 1) | (vehicle->colours.body_colour << 19) | (vehicle->colours.trim_colour << 24) | 0x80000000;
+    image_id = (baseImage_id + 1) | (vehicle->colours.body_colour << 19) | (vehicle->colours.trim_colour << 24) | IMAGE_TYPE_REMAP_2_PLUS;
     ps = sub_98197C(image_id, 0, 0, bb.length_x, bb.length_y, 2, z, bb.offset_x, bb.offset_y, bb.offset_z + z - 10, get_current_rotation());
     if (ps != NULL) {
         ps->tertiary_colour = vehicle->colours_extended;

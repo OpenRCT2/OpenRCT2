@@ -23,7 +23,6 @@ extern "C"
 {
     #include "audio/audio.h"
     #include "platform/platform.h"
-    #include "rct2.h"
 }
 
 extern "C"
@@ -48,33 +47,8 @@ extern "C"
     EVP_MD_CTX * gHashCTX = nullptr;
 #endif // DISABLE_NETWORK
 
-    bool check_file_path(sint32 pathId)
-    {
-        const utf8 * path = get_file_path(pathId);
-        switch (pathId) {
-        case PATH_ID_G1:
-            if (!File::Exists(path))
-            {
-                Console::Error::WriteLine("Unable to find '%s'", path);
-                return false;
-            }
-            break;
-        case PATH_ID_CUSTOM1:
-        case PATH_ID_CUSTOM2:
-            if (File::Exists(path))
-            {
-                try
-                {
-                    auto fs = FileStream(path, FILE_MODE_OPEN);
-                    sint32 index = 36 + (pathId - PATH_ID_CUSTOM1);
-                    gRideMusicInfoList[index]->length = fs.GetLength();
-                }
-                catch (const Exception &)
-                {
-                }
-            }
-            break;
-        }
-        return true;
-    }
+    uint32 gCurrentDrawCount = 0;
+    uint8 gScreenFlags;
+    uint32 gScreenAge;
+    uint8 gSavePromptMode;
 }

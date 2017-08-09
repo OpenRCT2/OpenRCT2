@@ -19,6 +19,7 @@
 #include "../game.h"
 #include "../input.h"
 #include "../localisation/localisation.h"
+#include "../OpenRCT2.h"
 #include "../ride/ride.h"
 #include "../ride/ride_data.h"
 #include "../ride/track.h"
@@ -246,9 +247,9 @@ sint32 viewport_interaction_get_item_right(sint32 x, sint32 y, viewport_interact
         set_map_tooltip_format_arg(6, uint32, ride->name_arguments);
         set_map_tooltip_format_arg(10, rct_string_id, RideComponentNames[RideNameConvention[ride->type].station].capitalised);
 
-        stationIndex = map_get_station(mapElement);
+        stationIndex = map_element_get_station(mapElement);
         for (i = stationIndex; i >= 0; i--)
-            if (ride->station_starts[i] == 0xFFFF)
+            if (ride->station_starts[i].xy == RCT_XY8_UNDEFINED)
                 stationIndex--;
         stationIndex++;
         set_map_tooltip_format_arg(12, uint16, stationIndex);
@@ -265,7 +266,7 @@ sint32 viewport_interaction_get_item_right(sint32 x, sint32 y, viewport_interact
 
     case VIEWPORT_INTERACTION_ITEM_LARGE_SCENERY:
         sceneryEntry = get_large_scenery_entry(mapElement->properties.scenerymultiple.type & 0x3FF);
-        if (sceneryEntry->large_scenery.var_11 != 255) {
+        if (sceneryEntry->large_scenery.scrolling_mode != 255) {
             set_map_tooltip_format_arg(0, rct_string_id, STR_MAP_TOOLTIP_STRINGID_CLICK_TO_MODIFY);
             set_map_tooltip_format_arg(2, rct_string_id, sceneryEntry->name);
             return info->type;
@@ -469,7 +470,7 @@ static void viewport_interaction_remove_footpath_item(rct_map_element *mapElemen
  */
 void viewport_interaction_remove_park_entrance(rct_map_element *mapElement, sint32 x, sint32 y)
 {
-    sint32 rotation = (mapElement->type + 1) & 3;
+    sint32 rotation = map_element_get_direction_with_offset(mapElement, 1);
     switch (mapElement->properties.entrance.index & 0x0F) {
     case 1:
         x += TileDirectionDelta[rotation].x;
@@ -499,7 +500,7 @@ static void viewport_interaction_remove_park_wall(rct_map_element *mapElement, s
             x,
             GAME_COMMAND_FLAG_APPLY,
             y,
-            (mapElement->type & 0x3) | (mapElement->base_height << 8),
+            map_element_get_direction(mapElement) | (mapElement->base_height << 8),
             GAME_COMMAND_REMOVE_WALL,
             0,
             0
@@ -515,7 +516,7 @@ static void viewport_interaction_remove_large_scenery(rct_map_element *mapElemen
 {
     rct_scenery_entry *sceneryEntry = get_large_scenery_entry(mapElement->properties.scenerymultiple.type & MAP_ELEMENT_LARGE_TYPE_MASK);
 
-    if (sceneryEntry->large_scenery.var_11 != 0xFF){
+    if (sceneryEntry->large_scenery.scrolling_mode != 0xFF){
         sint32 id = (mapElement->type & 0xC0) |
             ((mapElement->properties.scenerymultiple.colour[0] & 0xE0) >> 2) |
             ((mapElement->properties.scenerymultiple.colour[1] & 0xE0) >> 5);
@@ -524,7 +525,7 @@ static void viewport_interaction_remove_large_scenery(rct_map_element *mapElemen
         gGameCommandErrorTitle = STR_CANT_REMOVE_THIS;
         game_do_command(
             x,
-            1 | ((mapElement->type & 0x3) << 8),
+            1 | (map_element_get_direction(mapElement) << 8),
             y,
             mapElement->base_height | ((mapElement->properties.scenerymultiple.type >> 10) << 8),
             GAME_COMMAND_REMOVE_LARGE_SCENERY,
@@ -593,7 +594,7 @@ void sub_68A15E(sint32 screenX, sint32 screenY, sint16 *x, sint16 *y, sint32 *di
 
     sint16 originalZ = 0;
     if (interactionType == VIEWPORT_INTERACTION_ITEM_WATER) {
-        originalZ = (myMapElement->properties.surface.terrain & MAP_ELEMENT_WATER_HEIGHT_MASK) << 4;
+        originalZ = map_get_water_height(myMapElement) << 4;
     }
 
     rct_xy16 start_vp_pos = screen_coord_to_viewport_coord(viewport, screenX, screenY);

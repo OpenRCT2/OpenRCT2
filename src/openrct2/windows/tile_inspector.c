@@ -458,7 +458,7 @@ static rct_map_element tileInspectorCopiedElement;
 
 static void window_tile_inspector_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_tile_inspector_resize(rct_window *w);
-static void window_tile_inspector_mousedown(rct_widgetindex widgetIndex, rct_window *w, rct_widget* widget);
+static void window_tile_inspector_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget);
 static void window_tile_inspector_update(rct_window *w);
 static void window_tile_inspector_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex);
 static void window_tile_inspector_tool_update(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y);
@@ -1169,7 +1169,7 @@ static void window_tile_inspector_resize(rct_window *w)
     }
 }
 
-static void window_tile_inspector_mousedown(rct_widgetindex widgetIndex, rct_window *w, rct_widget* widget)
+static void window_tile_inspector_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget)
 {
     switch (w->page) {
     case TILE_INSPECTOR_PAGE_WALL:
@@ -1662,7 +1662,7 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi)
             gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_SURFACE_OWNERSHIP, &landOwnership, COLOUR_DARK_GREEN, x, y + 22);
 
             // Water level
-            sint32 waterLevel = mapElement->properties.surface.terrain & MAP_ELEMENT_WATER_HEIGHT_MASK;
+            sint32 waterLevel = map_get_water_height(mapElement);
             gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_SURFACE_WATER_LEVEL, &waterLevel, COLOUR_DARK_GREEN, x, y + 33);
 
             // Properties
@@ -1729,7 +1729,7 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi)
             gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_TRACK_RIDE_NAME, gCommonFormatArgs, COLOUR_DARK_GREEN, x, y + 22);
             // Track
             sint16 trackType = mapElement->properties.track.type;
-            sint16 sequenceNumber = mapElement->properties.track.sequence & 0x0F;
+            sint16 sequenceNumber = map_element_get_track_sequence(mapElement);
             gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_TRACK_PIECE_ID, &trackType, COLOUR_DARK_GREEN, x, y + 33);
             gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_TRACK_SEQUENCE, &sequenceNumber, COLOUR_DARK_GREEN, x, y + 44);
 
@@ -1882,7 +1882,7 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
             // Banner info
             rct_scenery_entry *largeSceneryEntry = get_large_scenery_entry(mapElement->properties.scenerymultiple.type & MAP_ELEMENT_LARGE_TYPE_MASK);
-            if (largeSceneryEntry->large_scenery.var_11 != 0xFF) {
+            if (largeSceneryEntry->large_scenery.scrolling_mode != 0xFF) {
                 const sint32 bannerIndex = (mapElement->type & 0xC0) |
                     ((mapElement->properties.scenerymultiple.colour[0] & 0xE0) >> 2) |
                     ((mapElement->properties.scenerymultiple.colour[1] & 0xE0) >> 5);

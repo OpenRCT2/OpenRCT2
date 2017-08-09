@@ -851,7 +851,7 @@ STR_0845    :<removed string - do not use>
 STR_0846    :<removed string - do not use>
 STR_0847    :About 'OpenRCT2'
 STR_0848    :RollerCoaster Tycoon 2
-STR_0849    :{WINDOW_COLOUR_2}Version 2.01.028
+STR_0849    :<removed string - do not use>
 STR_0850    :{WINDOW_COLOUR_2}Copyright {COPYRIGHT} 2002 Chris Sawyer, all rights reserved
 STR_0851    :{WINDOW_COLOUR_2}Designed and programmed by Chris Sawyer
 STR_0852    :{WINDOW_COLOUR_2}Graphics by Simon Foster
@@ -860,13 +860,13 @@ STR_0854    :{WINDOW_COLOUR_2}Additional sounds recorded by David Ellis
 STR_0855    :{WINDOW_COLOUR_2}Representation by Jacqui Lyons at Marjacq Ltd.
 STR_0856    :{WINDOW_COLOUR_2}Thanks to:
 STR_0857    :{WINDOW_COLOUR_2}Peter James Adcock, Joe Booth, and John Wardley
-STR_0858    :{WINDOW_COLOUR_2}
-STR_0859    :{WINDOW_COLOUR_2}
-STR_0860    :{WINDOW_COLOUR_2}
-STR_0861    :
-STR_0862    :
-STR_0863    :
-STR_0864    :
+STR_0858    :<removed string - do not use>
+STR_0859    :<removed string - do not use>
+STR_0860    :<removed string - do not use>
+STR_0861    :<removed string - do not use>
+STR_0862    :<removed string - do not use>
+STR_0863    :<removed string - do not use>
+STR_0864    :<removed string - do not use>
 STR_0865    :{STRINGID}
 STR_0866    :{POP16}{STRINGID}
 STR_0867    :{POP16}{POP16}{STRINGID}
@@ -890,7 +890,7 @@ STR_0884    :Load Landscape
 STR_0885    :Save Landscape
 STR_0886    :<removed string - do not use>
 STR_0887    :Quit Scenario Editor
-STR_0888    :Quit Roller Coaster Designer
+STR_0888    :Quit Track Designer
 STR_0889    :Quit Track Designs Manager
 STR_0890    :<removed string - do not use>
 STR_0891    :Screenshot
@@ -2867,7 +2867,7 @@ STR_2856    :{WINDOW_COLOUR_2}Tutorial
 STR_2857    :{WINDOW_COLOUR_2}(Press a key or mouse button to take control)
 STR_2858    :Can't start marketing campaign...
 STR_2859    :Another instance of OpenRCT2 is already running
-STR_2860    :Infogrames Interactive credits...
+STR_2860    :<removed string - do not use>
 STR_2861    :{WINDOW_COLOUR_2}Licensed to Infogrames Interactive Inc.
 STR_2862    :Music acknowledgements...
 STR_2863    :Music acknowledgements
@@ -2915,29 +2915,29 @@ STR_2904    :{WINDOW_COLOUR_2}Manic Mechanic:   (Allister Brimble) copyright {CO
 STR_2905    :{WINDOW_COLOUR_2}Techno Torture:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
 STR_2906    :{WINDOW_COLOUR_2}Sweat Dreams:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
 STR_2907    :{WINDOW_COLOUR_2}What shall we do with the Drunken Sailor:   (Anon/Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2908    :{WINDOW_COLOUR_2}Infogrames Interactive
-STR_2909    :{WINDOW_COLOUR_2}Senior Producer:  Thomas J. Zahorik
-STR_2910    :{WINDOW_COLOUR_2}Executive Producer:  Bill Levay
-STR_2911    :{WINDOW_COLOUR_2}Senior Marketing Product Manager:  Scott Triola
-STR_2912    :{WINDOW_COLOUR_2}V.P. of Product Development:  Scott Walker
-STR_2913    :{WINDOW_COLOUR_2}General Manager:  John Hurlbut
-STR_2914    :{WINDOW_COLOUR_2}Director of Quality Assurance:  Michael Craighead
-STR_2915    :{WINDOW_COLOUR_2}Q.A. Certification Manager:  Kurt Boutin
-STR_2916    :{WINDOW_COLOUR_2}Q.A. Certification Lead:  Mark Huggins
-STR_2917    :{WINDOW_COLOUR_2}Testers:  Dena Irene Fitzgerald, Scott Rollins, Christopher McPhail
-STR_2918    :{WINDOW_COLOUR_2}Clif McClure, Erik Maramaldi, Erik Jeffery
-STR_2919    :{WINDOW_COLOUR_2}Director of Marketing:  Ann Marie Bland
-STR_2920    :{WINDOW_COLOUR_2}Manager of Creative Services:  Steve Martin
-STR_2921    :{WINDOW_COLOUR_2}Manager of Editorial & Documentation Services:  Elizabeth Mackney
-STR_2922    :{WINDOW_COLOUR_2}Graphic Designer:  Paul Anselmi
-STR_2923    :{WINDOW_COLOUR_2}Copywriter:  Kurt Carlson
-STR_2924    :{WINDOW_COLOUR_2}Special Thanks to:  Peter Matiss
-STR_2925    :{WINDOW_COLOUR_2}Engineering Specialist:  Ken Edwards
-STR_2926    :{WINDOW_COLOUR_2}Engineering Services Manager:  Luis Rivas
-STR_2927    :{WINDOW_COLOUR_2}Lead Compatibility Analyst:  Geoffrey Smith
-STR_2928    :{WINDOW_COLOUR_2}Compatibility Analysts:  Jason Cordero, Burke McQuinn, Kim Jardin 
-STR_2929    :{WINDOW_COLOUR_2}Lead Tester:  Daniel Frisoli
-STR_2930    :{WINDOW_COLOUR_2}Senior Tester:  Matt Pantaleoni
+STR_2908    :<removed string - do not use>
+STR_2909    :<removed string - do not use>
+STR_2910    :<removed string - do not use>
+STR_2911    :<removed string - do not use>
+STR_2912    :<removed string - do not use>
+STR_2913    :<removed string - do not use>
+STR_2914    :<removed string - do not use>
+STR_2915    :<removed string - do not use>
+STR_2916    :<removed string - do not use>
+STR_2917    :<removed string - do not use>
+STR_2918    :<removed string - do not use>
+STR_2919    :<removed string - do not use>
+STR_2920    :<removed string - do not use>
+STR_2921    :<removed string - do not use>
+STR_2922    :<removed string - do not use>
+STR_2923    :<removed string - do not use>
+STR_2924    :<removed string - do not use>
+STR_2925    :<removed string - do not use>
+STR_2926    :<removed string - do not use>
+STR_2927    :<removed string - do not use>
+STR_2928    :<removed string - do not use>
+STR_2929    :<removed string - do not use>
+STR_2930    :<removed string - do not use>
 STR_2931    :{WINDOW_COLOUR_2}
 STR_2932    :{WINDOW_COLOUR_2}
 STR_2933    :{WINDOW_COLOUR_2}
@@ -3214,7 +3214,7 @@ STR_3203    :Invention List Set Up
 STR_3204    :Options Selection
 STR_3205    :Objective Selection
 STR_3206    :Save Scenario
-STR_3207    :Roller Coaster Designer
+STR_3207    :Track Designer
 STR_3208    :Track Designs Manager
 STR_3209    :Back to Previous Step:
 STR_3210    :Forward to Next Step:
@@ -3342,7 +3342,7 @@ STR_3331    :Path from park entrance to map edge either not complete or too comp
 STR_3332    :Park entrance is the wrong way round or has no path leading to the map edge
 STR_3333    :Export plug-in objects with saved games
 STR_3334    :{SMALLFONT}{BLACK}Select whether to save any additional plug-in object data required (add-in data not supplied with the main product) in saved game or scenario files, allowing them to be loaded by someone who doesn't have the additional object data
-STR_3335    :Roller Coaster Designer - Select Ride Types & Vehicles
+STR_3335    :Track Designer - Select Ride Types & Vehicles
 STR_3336    :Track Designs Manager - Select Ride Type
 STR_3337    :<removed string - do not use>
 STR_3338    :{BLACK}Custom-designed layout
@@ -3351,7 +3351,7 @@ STR_3340    :{BLACK}{COMMA16} designs available, or custom-designed layout
 STR_3341    :{SMALLFONT}{BLACK}Game tools
 STR_3342    :Scenario Editor
 STR_3343    :Convert Saved Game to Scenario
-STR_3344    :Roller Coaster Designer
+STR_3344    :Track Designer
 STR_3345    :Track Designs Manager
 STR_3346    :Can't save track design...
 STR_3347    :Ride is too large, contains too many elements, or scenery is too spread out
@@ -4424,7 +4424,7 @@ STR_6112    :A compact steel-tracked roller coaster where the train travels thro
 STR_6113    :A tall non-inverting roller coaster with large drops, high speed, and comfortable trains with only lap bar restraints
 STR_6114    :Riders travel slowly in powered vehicles along a track-based route
 STR_6115    :Powered giant 4 x 4 trucks which can climb steep slopes
-STR_6116    :Wide roller coaster trains glide along smooth steel track, traveling through a variety of inversions
+STR_6116    :Wide roller coaster trains glide along smooth steel track, travelling through a variety of inversions
 STR_6117    :Sitting in comfortable trains with only simple lap restraints riders enjoy giant smooth drops and twisting track as well as plenty of 'air time' over the hills
 STR_6118    :A gentle roller coaster for people who haven't yet got the courage to face the larger rides
 STR_6119    :A cheap and easy to build roller coaster, but with a limited height
@@ -4439,6 +4439,16 @@ STR_6127    :File: {STRING}
 STR_6128    :The file could not be loaded as some of the objects referenced in it are missing or corrupt. A list of these objects is given below.
 STR_6129    :Copy selected item to clipboard
 STR_6130    :Copy entire list to clipboard
+STR_6131    :Object source
+STR_6132    :Ignore research status
+STR_6133    :{SMALLFONT}{BLACK}Access rides and scenery that have not yet been invented
+STR_6134    :Clear Scenery
+STR_6135    :Client sent invalid request
+STR_6136    :Server sent invalid request
+STR_6137    :OpenRCT2, a free and open source clone of Roller Coaster Tycoon 2.
+STR_6138    :OpenRCT2 is the work of many authors, a full list can be found in {OPENQUOTES}contributors.md{ENDQUOTES}. For more information, visit http://github.com/OpenRCT2/OpenRCT2
+STR_6139    :All product and company names belong to their respective holders. Use of them does not imply any affiliation with or endorsement by them.
+STR_6140    :Changelog...
 
 #############
 # Scenarios #
@@ -4581,7 +4591,7 @@ STR_SCNR    :Funtopia
 STR_PARK    :Funtopia
 STR_DTLS    :Covering land both sides of a highway, this park has several rides already operating
 
-<Haunted Harbor>
+<Haunted Harbour>
 STR_SCNR    :Haunted Harbour
 STR_PARK    :Haunted Harbour
 STR_DTLS    :The local authority has agreed to sell nearby land cheaply to this small seaside park, on the condition that certain rides are preserved
@@ -4654,7 +4664,7 @@ STR_DTLS    :Develop this Roman-themed park by adding rides and roller coasters
 <Swamp Cove>
 STR_SCNR    :Swamp Cove
 STR_PARK    :Swamp Cove
-STR_DTLS    :Built partly on a series of small islands, this park already has a pair of large roller coasters as its centerpiece
+STR_DTLS    :Built partly on a series of small islands, this park already has a pair of large roller coasters as its centrepiece
 
 <Adrenaline Heights>
 STR_SCNR    :Adrenaline Heights
@@ -4684,7 +4694,7 @@ STR_DTLS    :The local authority will not allow any kind of advertising or promo
 <Giggle Downs>
 STR_SCNR    :Giggle Downs
 STR_PARK    :Giggle Downs
-STR_DTLS    :A four lane steeplechase ride is the centerpiece of this expanding park
+STR_DTLS    :A four lane steeplechase ride is the centrepiece of this expanding park
 
 <Mineral Park>
 STR_SCNR    :Mineral Park
@@ -4781,7 +4791,7 @@ STR_DTLS    :This historical park is only allowed to build older-styled rides
 <Icarus Park>
 STR_SCNR    :Icarus Park
 STR_PARK    :Icarus Park
-STR_DTLS    :Develop this alien park to maximize its profit
+STR_DTLS    :Develop this alien park to maximise its profit
 
 <Sunny Swamps>
 STR_SCNR    :Sunny Swamps

@@ -28,6 +28,7 @@
 #include "../interface/viewport.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
+#include "../OpenRCT2.h"
 #include "../platform/platform.h"
 #include "../ride/track_data.h"
 #include "../util/util.h"

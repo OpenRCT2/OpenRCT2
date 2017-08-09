@@ -20,7 +20,6 @@
 #include "../interface/widget.h"
 #include "../interface/window.h"
 #include "../localisation/localisation.h"
-#include "../rct2.h"
 #include "../sprites.h"
 #include "../world/map.h"
 #include "../world/scenery.h"
@@ -44,16 +43,17 @@ rct_widget window_clear_scenery_widgets[] = {
     { WWT_CAPTION,  0,  1,  96, 1,  14, STR_CLEAR_SCENERY,                          STR_WINDOW_TITLE_TIP },             // title bar
     { WWT_CLOSEBOX, 0,  85, 95, 2,  13, STR_CLOSE_X,                                STR_CLOSE_WINDOW_TIP },             // close x button
     { WWT_IMGBTN,   0,  27, 70, 17, 48, SPR_LAND_TOOL_SIZE_0,                       STR_NONE },                         // preview box
-    { WWT_TRNBTN,   1,  28, 43, 18, 33, 0x20000000 | SPR_LAND_TOOL_DECREASE,        STR_ADJUST_SMALLER_LAND_TIP },      // decrement size
-    { WWT_TRNBTN,   1,  54, 69, 32, 47, 0x20000000 | SPR_LAND_TOOL_INCREASE,        STR_ADJUST_LARGER_LAND_TIP },       // increment size
-    { WWT_FLATBTN,  1,  7,  30, 53, 76, 0x20000000 | SPR_G2_BUTTON_TREES,           STR_CLEAR_SCENERY_REMOVE_SMALL_SCENERY_TIP }, // small scenery
-    { WWT_FLATBTN,  1,  37, 60, 53, 76, 0x20000000 | SPR_G2_BUTTON_LARGE_SCENERY,   STR_CLEAR_SCENERY_REMOVE_LARGE_SCENERY_TIP }, // large scenery
-    { WWT_FLATBTN,  1,  67, 90, 53, 76, 0x20000000 | SPR_G2_BUTTON_FOOTPATH,        STR_CLEAR_SCENERY_REMOVE_FOOTPATHS_TIP }, // footpaths
+    { WWT_TRNBTN,   1,  28, 43, 18, 33, IMAGE_TYPE_REMAP | SPR_LAND_TOOL_DECREASE,        STR_ADJUST_SMALLER_LAND_TIP },      // decrement size
+    { WWT_TRNBTN,   1,  54, 69, 32, 47, IMAGE_TYPE_REMAP | SPR_LAND_TOOL_INCREASE,        STR_ADJUST_LARGER_LAND_TIP },       // increment size
+    { WWT_FLATBTN,  1,  7,  30, 53, 76, IMAGE_TYPE_REMAP | SPR_G2_BUTTON_TREES,           STR_CLEAR_SCENERY_REMOVE_SMALL_SCENERY_TIP }, // small scenery
+    { WWT_FLATBTN,  1,  37, 60, 53, 76, IMAGE_TYPE_REMAP | SPR_G2_BUTTON_LARGE_SCENERY,   STR_CLEAR_SCENERY_REMOVE_LARGE_SCENERY_TIP }, // large scenery
+    { WWT_FLATBTN,  1,  67, 90, 53, 76, IMAGE_TYPE_REMAP | SPR_G2_BUTTON_FOOTPATH,        STR_CLEAR_SCENERY_REMOVE_FOOTPATHS_TIP }, // footpaths
     { WIDGETS_END },
 };
 
 static void window_clear_scenery_close(rct_window *w);
 static void window_clear_scenery_mouseup(rct_window *w, rct_widgetindex widgetIndex);
+static void window_clear_scenery_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget *widget);
 static void window_clear_scenery_update(rct_window *w);
 static void window_clear_scenery_invalidate(rct_window *w);
 static void window_clear_scenery_paint(rct_window *w, rct_drawpixelinfo *dpi);
@@ -64,7 +64,7 @@ static rct_window_event_list window_clear_scenery_events = {
     window_clear_scenery_close,
     window_clear_scenery_mouseup,
     NULL,
-    NULL,
+    window_clear_scenery_mousedown,
     NULL,
     NULL,
     window_clear_scenery_update,
@@ -107,6 +107,7 @@ void window_clear_scenery_open()
     window->widgets = window_clear_scenery_widgets;
     window->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_INCREMENT) | (1 << WIDX_DECREMENT) | (1 << WIDX_PREVIEW) |
         (1 << WIDX_SMALL_SCENERY) | (1 << WIDX_LARGE_SCENERY) | (1 << WIDX_FOOTPATH);
+    window->hold_down_widgets = (1 << WIDX_INCREMENT) | (1 << WIDX_DECREMENT);
     window_init_scroll_widgets(window);
     window_push_others_below(window);
 
@@ -139,20 +140,6 @@ static void window_clear_scenery_mouseup(rct_window *w, rct_widgetindex widgetIn
     case WIDX_CLOSE:
         window_close(w);
         break;
-    case WIDX_DECREMENT:
-        // Decrement land tool size, if it stays within the limit
-        gLandToolSize = max(MINIMUM_TOOL_SIZE, gLandToolSize - 1);
-
-        // Invalidate the window
-        window_invalidate(w);
-        break;
-    case WIDX_INCREMENT:
-        // Increment land tool size, if it stays within the limit
-        gLandToolSize = min(MAXIMUM_TOOL_SIZE, gLandToolSize + 1);
-
-        // Invalidate the window
-        window_invalidate(w);
-        break;
     case WIDX_PREVIEW:
         window_clear_scenery_inputsize(w);
         break;
@@ -166,6 +153,26 @@ static void window_clear_scenery_mouseup(rct_window *w, rct_widgetindex widgetIn
         break;
     case WIDX_FOOTPATH:
         gClearFootpath ^= 1;
+        window_invalidate(w);
+        break;
+    }
+}
+
+static void window_clear_scenery_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget *widget)
+{
+    switch (widgetIndex) {
+    case WIDX_DECREMENT:
+        // Decrement land tool size, if it stays within the limit
+        gLandToolSize = max(MINIMUM_TOOL_SIZE, gLandToolSize - 1);
+
+        // Invalidate the window
+        window_invalidate(w);
+        break;
+    case WIDX_INCREMENT:
+        // Increment land tool size, if it stays within the limit
+        gLandToolSize = min(MAXIMUM_TOOL_SIZE, gLandToolSize + 1);
+
+        // Invalidate the window
         window_invalidate(w);
         break;
     }
@@ -201,6 +208,7 @@ static void window_clear_scenery_inputsize(rct_window *w)
  */
 static void window_clear_scenery_update(rct_window *w)
 {
+    w->frame_no++;
     // Close window if another tool is open
     if (!clear_scenery_tool_is_active())
         window_close(w);

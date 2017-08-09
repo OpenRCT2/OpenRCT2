@@ -17,8 +17,8 @@
 #include "../../cheats.h"
 #include "../../config/Config.h"
 #include "../../interface/viewport.h"
+#include "../../OpenRCT2.h"
 #include "../../peep/staff.h"
-#include "../../rct2.h"
 #include "../../sprites.h"
 #include "map_element.h"
 #include "surface.h"
@@ -236,10 +236,10 @@ const uint32 dword_97B750[][2] = {
     {SPR_TERRAIN_CHECKERBOARD,                                   SPR_TERRAIN_CHECKERBOARD_GRID},
     {SPR_TERRAIN_GRASS_CLUMPS,                                   SPR_TERRAIN_GRASS_CLUMPS_GRID},
     {SPR_TERRAIN_ICE,                                            SPR_TERRAIN_ICE_GRID},
-    {SPR_TERRAIN_GRID | COLOUR_BRIGHT_RED << 19 | 0x20000000,    SPR_TERRAIN_GRID_GRID | COLOUR_BRIGHT_RED << 19 | 0x20000000},
-    {SPR_TERRAIN_GRID | COLOUR_YELLOW << 19 | 0x20000000,        SPR_TERRAIN_GRID_GRID | COLOUR_YELLOW << 19 | 0x20000000},
-    {SPR_TERRAIN_GRID | COLOUR_BRIGHT_PURPLE << 19 | 0x20000000, SPR_TERRAIN_GRID_GRID | COLOUR_BRIGHT_PURPLE << 19 | 0x20000000},
-    {SPR_TERRAIN_GRID | COLOUR_BRIGHT_GREEN << 19 | 0x20000000,  SPR_TERRAIN_GRID_GRID | COLOUR_BRIGHT_GREEN << 19 | 0x20000000},
+    {SPR_TERRAIN_GRID | COLOUR_BRIGHT_RED << 19 | IMAGE_TYPE_REMAP,    SPR_TERRAIN_GRID_GRID | COLOUR_BRIGHT_RED << 19 | IMAGE_TYPE_REMAP},
+    {SPR_TERRAIN_GRID | COLOUR_YELLOW << 19 | IMAGE_TYPE_REMAP,        SPR_TERRAIN_GRID_GRID | COLOUR_YELLOW << 19 | IMAGE_TYPE_REMAP},
+    {SPR_TERRAIN_GRID | COLOUR_BRIGHT_PURPLE << 19 | IMAGE_TYPE_REMAP, SPR_TERRAIN_GRID_GRID | COLOUR_BRIGHT_PURPLE << 19 | IMAGE_TYPE_REMAP},
+    {SPR_TERRAIN_GRID | COLOUR_BRIGHT_GREEN << 19 | IMAGE_TYPE_REMAP,  SPR_TERRAIN_GRID_GRID | COLOUR_BRIGHT_GREEN << 19 | IMAGE_TYPE_REMAP},
     {SPR_TERRAIN_SAND_RED,                                       SPR_TERRAIN_SAND_RED_GRID},
     {SPR_TERRAIN_SAND,                                           SPR_TERRAIN_SAND_GRID},
     {SPR_TERRAIN_CHECKERBOARD_INVERTED,                          SPR_TERRAIN_CHECKERBOARD_INVERTED_GRID},
@@ -254,10 +254,10 @@ const uint32 dword_97B7C8[] = {
     SPR_TERRAIN_CHECKERBOARD_UNDERGROUND,
     SPR_TERRAIN_GRASS_CLUMPS_UNDERGROUND,
     SPR_TERRAIN_ICE_UNDERGROUND,
-    SPR_TERRAIN_GRID_UNDERGROUND | COLOUR_BRIGHT_RED << 19 | 0x20000000,
-    SPR_TERRAIN_GRID_UNDERGROUND | COLOUR_YELLOW << 19 | 0x20000000,
-    SPR_TERRAIN_GRID_UNDERGROUND | COLOUR_BRIGHT_PURPLE << 19 | 0x20000000,
-    SPR_TERRAIN_GRID_UNDERGROUND | COLOUR_BRIGHT_GREEN << 19 | 0x20000000,
+    SPR_TERRAIN_GRID_UNDERGROUND | COLOUR_BRIGHT_RED << 19 | IMAGE_TYPE_REMAP,
+    SPR_TERRAIN_GRID_UNDERGROUND | COLOUR_YELLOW << 19 | IMAGE_TYPE_REMAP,
+    SPR_TERRAIN_GRID_UNDERGROUND | COLOUR_BRIGHT_PURPLE << 19 | IMAGE_TYPE_REMAP,
+    SPR_TERRAIN_GRID_UNDERGROUND | COLOUR_BRIGHT_GREEN << 19 | IMAGE_TYPE_REMAP,
     SPR_TERRAIN_SAND_RED_UNDERGROUND,
     SPR_TERRAIN_SAND_UNDERGROUND,
     SPR_TERRAIN_CHECKERBOARD_INVERTED_UNDERGROUND,
@@ -755,7 +755,7 @@ static void viewport_surface_draw_water_side_top(enum edge_t edge, uint8 height,
         regs.ah = 1;
         regs.ch = 1;
     } else {
-        regs.dh = neighbour.map_element->properties.surface.terrain & 0x1F;
+        regs.dh = map_get_water_height(neighbour.map_element);
         if (regs.dl == regs.dh) {
             return;
         }
@@ -867,7 +867,7 @@ static void viewport_surface_draw_water_side_bottom(enum edge_t edge, uint8 heig
         regs.ch = 1;
         regs.ah = 1;
     } else {
-        regs.dh = neighbour.map_element->properties.surface.terrain & 0x1F;
+        regs.dh = map_get_water_height(neighbour.map_element);
         if (regs.dl == regs.dh) {
             return;
         }
@@ -1076,7 +1076,7 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
 
         sint32 branch = -1;
         if ((mapElement->properties.surface.terrain & 0xE0) == 0) {
-            if ((mapElement->type & 0x3) == 0) {
+            if (map_element_get_direction(mapElement) == 0) {
                 if (zoomLevel == 0) {
                     if ((gCurrentViewportFlags & (VIEWPORT_FLAG_HIDE_BASE | VIEWPORT_FLAG_UNDERGROUND_INSIDE)) == 0) {
                         branch = mapElement->properties.surface.grass_length & 0x7;
@@ -1149,7 +1149,7 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
         uint8 staffType = staffIndex & 0x7FFF;
         sint16 x = gPaintMapPosition.x, y = gPaintMapPosition.y;
 
-        uint32 image_id = 0x20000000;
+        uint32 image_id = IMAGE_TYPE_REMAP;
         uint8 patrolColour = 7;
 
         if (!is_staff_list) {
@@ -1232,13 +1232,13 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
                 // Walls
                 // loc_661089:
                 uint32 eax = ((((mapSelectionType - 9) + rotation) & 3) + 0x21) << 19;
-                uint32 image_id = (SPR_TERRAIN_SELECTION_EDGE + byte_97B444[surfaceShape]) | eax | 0x20000000;
+                uint32 image_id = (SPR_TERRAIN_SELECTION_EDGE + byte_97B444[surfaceShape]) | eax | IMAGE_TYPE_REMAP;
                 paint_attach_to_previous_ps(image_id, 0, 0);
             } else if (mapSelectionType >= MAP_SELECT_TYPE_QUARTER_0) {
                 // loc_661051:(no jump)
                 // Selection split into four quarter segments
                 uint32 eax = ((((mapSelectionType - MAP_SELECT_TYPE_QUARTER_0) + rotation) & 3) + 0x27) << 19;
-                uint32 image_id = (SPR_TERRAIN_SELECTION_QUARTER + byte_97B444[surfaceShape]) | eax | 0x20000000;
+                uint32 image_id = (SPR_TERRAIN_SELECTION_QUARTER + byte_97B444[surfaceShape]) | eax | IMAGE_TYPE_REMAP;
                 paint_attach_to_previous_ps(image_id, 0, 0);
             } else if (mapSelectionType <= MAP_SELECT_TYPE_FULL) {
                 // Corners
@@ -1248,14 +1248,15 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
                 }
 
                 eax = (eax + 0x21) << 19;
-                uint32 image_id = (SPR_TERRAIN_SELECTION_CORNER + byte_97B444[surfaceShape]) | eax | 0x20000000;
+                uint32 image_id = (SPR_TERRAIN_SELECTION_CORNER + byte_97B444[surfaceShape]) | eax | IMAGE_TYPE_REMAP;
                 paint_attach_to_previous_ps(image_id, 0, 0);
             } else {
                 sint32 local_surfaceShape = surfaceShape;
                 sint32 local_height = height;
                 // Water tool
-                if (mapElement->properties.surface.terrain & 0x1F) {
-                    sint32 waterHeight = (mapElement->properties.surface.terrain & 0x1F) * 16;
+                if (map_get_water_height(mapElement) > 0)
+                {
+                    sint32 waterHeight = map_get_water_height(mapElement) * 16;
                     if (waterHeight > height) {
                         local_height += 16;
 
@@ -1296,7 +1297,7 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
                 colours = COLOUR_GREY << 24 | COLOUR_SATURATED_GREEN << 19;
             }
 
-            uint32 image_id = (SPR_TERRAIN_SELECTION_CORNER + byte_97B444[surfaceShape]) | colours | 0x20000000;
+            uint32 image_id = (SPR_TERRAIN_SELECTION_CORNER + byte_97B444[surfaceShape]) | colours | IMAGE_TYPE_REMAP;
             paint_attach_to_previous_ps(image_id, 0, 0);
             break;
         }
@@ -1369,12 +1370,13 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
 #endif
     }
 
-    if (mapElement->properties.surface.terrain & 0x1F) {
+    if (map_get_water_height(mapElement) > 0)
+    {
         // loc_6615A9: (water height)
         gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_WATER;
 
         uint16 localHeight = height + 16;
-        uint16 waterHeight = (mapElement->properties.surface.terrain & 0x1F) * 16;
+        uint16 waterHeight = map_get_water_height(mapElement) * 16;
 
         if (!gTrackDesignSaveMode) {
             gUnk141E9DC = waterHeight;
@@ -1384,7 +1386,7 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
                 image_offset = byte_97B740[surfaceShape & 0xF];
             }
 
-            sint32 image_id = (SPR_WATER_MASK + image_offset) | 0x60000000 | PALETTE_WATER << 19;
+            sint32 image_id = (SPR_WATER_MASK + image_offset) | IMAGE_TYPE_REMAP | IMAGE_TYPE_TRANSPARENT | PALETTE_WATER << 19;
             sub_98196C(image_id, 0, 0, 32, 32, -1, waterHeight, rotation);
 
             paint_attach_to_previous_ps(SPR_WATER_OVERLAY + image_offset, 0, 0);

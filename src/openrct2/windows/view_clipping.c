@@ -20,7 +20,6 @@
 #include "../interface/viewport.h"
 #include "../localisation/localisation.h"
 #include "../paint/paint.h"
-#include "../rct2.h"
 
 enum WINDOW_VIEW_CLIPPING_WIDGET_IDX {
     WIDX_BACKGROUND,

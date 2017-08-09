@@ -3769,7 +3769,7 @@ STR_5426    :Fin
 STR_5427    :Coordonnées :
 STR_5428    :Rotations antihoraires :
 STR_5429    :Niveau de zoom :
-STR_5430    :Secondes à attendre :
+STR_5430    :Temps en millisecondes :
 STR_5431    :Sauvegarde à charger :
 STR_5432    :Commande :
 STR_5433    :Séquences de titre
@@ -4410,6 +4410,43 @@ STR_6097    :{STRING} a placé une pièce pour l'attraction '{STRING}'.
 STR_6098    :{STRING} a détruit une pièce d'attraction.
 STR_6099    :Vous êtes connecté(e) au serveur.
 STR_6100    :Vous êtes déconnecté(e) du serveur.
+STR_6101    :Les attractions ne perdent pas de valeur au fil du temps.
+STR_6102    :{SMALLFONT}{BLACK}La valeur d'une attraction ne se dégradera pas au fil du temps, les visiteurs ne penseront plus que l'attraction est trop chère.
+STR_6103    :{SMALLFONT}{BLACK}Cette option est désactivée dans les parties multijoueurs.
+STR_6111    :Mini-montagnes russes classique
+
+STR_6104    :Montagnes Russes Tire-Bouchon
+STR_6105    :Hyper Montagnes Russes
+STR_6106    :Balade En Voiture
+STR_6107    :Camions Monstrueux
+STR_6108    :Tornades Métalliques
+STR_6109    :Hyper-Tornades
+STR_6110    :Montagnes Russes Junior
+STR_6111    :Mini Montagnes Russes Classique
+STR_6112    :Un montagne russe compact en métal où le train parcourt une série de tire-bouchons et de boucles
+STR_6113    :Un grand montagne russe non inversé avec de grandes descentes, forte vitesse, et des trains confortables avec une simple ceinture
+STR_6114    :Les visisteurs parcourent lentement des véhicules alimentés qui suivent un parcours spécifique
+STR_6115    :Des camions 4 x 4 géants qui peuvent grimper de pentes fortes
+STR_6116    :Des trains de montagnes russes largent glissent sur un parcours en métal lissé, et parcourent une variété d'inversions
+STR_6117    :Les visiteurs sont assis dans des trains confortables avec des ceintures simples en se réjouissant de descentes lisses, d'un tracé enroullé et également plein "de temps en l'air" au-dessus des montagnes
+STR_6118    :Des montagnes russes calmes pour les gens qui n'ont pas le courage de parcourir les plus imposants
+STR_6119    :Des montagnes russes peu cher et facile à construire, mais avec une hauteur limitée
+STR_6120    :{BABYBLUE}Nouveau véhicule disponible pour {STRINGID}:{NEWLINE}{STRINGID}
+
+STR_6121    :{SMALLFONT}{BLACK}Etend les droits de propriété du parc jusqu'aux bords de la carte
+STR_6122    :Il n'y a pas assez de montagnes russes dans ce scénario !
+STR_6123    :Erreur lors du chargement des objets pour le parc
+STR_6124    :Nom de l'objet
+STR_6125    :Type de l'objet
+STR_6126    :Type inconnu
+STR_6127    :Fichier : {STRING}
+STR_6128    :Le fichier n'a pas pu être chargé car certains d'entre eux qui sont référencés sont soit corrompus ou manquants. Une liste de ces objets est donnée ci-dessous.
+STR_6129    :Copier les objets sélectionnés dans le presse-papier
+STR_6130    :Copier la liste entière dans le presse-papier
+STR_6131    :Source de l'objet
+STR_6132    :Ignorer le status de la recherche
+STR_6133    :{SMALLFONT}{BLACK}Accéder au décor et aux attractions qui ne sont pas encore inventés
+STR_6134    :Effacer le décor
 
 #############
 # Scenarios #

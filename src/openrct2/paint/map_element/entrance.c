@@ -48,7 +48,7 @@ static void ride_entrance_exit_paint(uint8 direction, sint32 height, rct_map_ele
             lightfx_add_3d_light_magic_from_drawing_tile(0, 0, height + 45, LIGHTFX_LIGHT_TYPE_LANTERN_3);
         }
 
-        switch (map_element->type & MAP_ELEMENT_DIRECTION_MASK) {
+        switch (map_element_get_direction(map_element)) {
         case 0:
             lightfx_add_3d_light_magic_from_drawing_tile(16, 0, height + 16, LIGHTFX_LIGHT_TYPE_LANTERN_2);
             break;
@@ -72,14 +72,14 @@ static void ride_entrance_exit_paint(uint8 direction, sint32 height, rct_map_ele
 
     uint8 colour_1, colour_2;
     uint32 transparant_image_id = 0, image_id = 0;
-    if (style->base_image_id & 0x40000000) {
+    if (style->base_image_id & IMAGE_TYPE_TRANSPARENT) {
         colour_1 = GlassPaletteIds[ride->track_colour_main[0]];
-        transparant_image_id = (colour_1 << 19) | 0x40000000;
+        transparant_image_id = (colour_1 << 19) | IMAGE_TYPE_TRANSPARENT;
     }
 
     colour_1 = ride->track_colour_main[0];
     colour_2 = ride->track_colour_additional[0];
-    image_id = (colour_1 << 19) | (colour_2 << 24) | 0xA0000000;
+    image_id = (colour_1 << 19) | (colour_2 << 24) | IMAGE_TYPE_REMAP | IMAGE_TYPE_REMAP_2_PLUS;
 
     gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
     _unk9E32BC = 0;
@@ -214,8 +214,10 @@ static void park_entrance_paint(uint8 direction, sint32 height, rct_map_element*
 
     switch (part_index){
     case 0:
-        image_id = (path_entry->image + 5 * (1 + (direction & 1))) | ghost_id;
-            sub_98197C(image_id, 0, 0, 32, 0x1C, 0, height, 0, 2, height, get_current_rotation());
+        if (path_entry != (void*)-1) {
+            image_id = (path_entry->image + 5 * (1 + (direction & 1))) | ghost_id;
+                sub_98197C(image_id, 0, 0, 32, 0x1C, 0, height, 0, 2, height, get_current_rotation());
+        }
 
         entrance = (rct_entrance_type*)object_entry_groups[OBJECT_TYPE_PARK_ENTRANCE].chunks[0];
         image_id = (entrance->image_id + direction * 3) | ghost_id;

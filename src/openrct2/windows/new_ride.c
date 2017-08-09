@@ -24,6 +24,7 @@
 #include "../management/research.h"
 #include "../network/network.h"
 #include "../object.h"
+#include "../OpenRCT2.h"
 #include "../rct1.h"
 #include "../ride/ride.h"
 #include "../ride/ride_data.h"
@@ -182,13 +183,13 @@ static rct_widget window_new_ride_widgets[] = {
     { WWT_CAPTION,          0,  1,      599,    1,      14,     0xFFFFFFFF,                             STR_WINDOW_TITLE_TIP                },
     { WWT_CLOSEBOX,         0,  588,    598,    2,      13,     STR_CLOSE_X,                            STR_CLOSE_WINDOW_TIP                },
     { WWT_RESIZE,           1,  0,      600,    43,     369,    0xFFFFFFFF,                             STR_NONE                            },
-    { WWT_TAB,              1,  3,      33,     17,     43,     0x20000000 | SPR_TAB,                   STR_TRANSPORT_RIDES_TIP             },
-    { WWT_TAB,              1,  34,     64,     17,     43,     0x20000000 | SPR_TAB,                   STR_GENTLE_RIDES_TIP                },
-    { WWT_TAB,              1,  65,     95,     17,     43,     0x20000000 | SPR_TAB,                   STR_ROLLER_COASTERS_TIP             },
-    { WWT_TAB,              1,  96,     126,    17,     43,     0x20000000 | SPR_TAB,                   STR_THRILL_RIDES_TIP                },
-    { WWT_TAB,              1,  127,    157,    17,     43,     0x20000000 | SPR_TAB,                   STR_WATER_RIDES_TIP                 },
-    { WWT_TAB,              1,  158,    188,    17,     43,     0x20000000 | SPR_TAB,                   STR_SHOPS_STALLS_TIP                },
-    { WWT_TAB,              1,  189,    219,    17,     43,     0x20000000 | SPR_TAB,                   STR_RESEARCH_AND_DEVELOPMENT_TIP    },
+    { WWT_TAB,              1,  3,      33,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,                   STR_TRANSPORT_RIDES_TIP             },
+    { WWT_TAB,              1,  34,     64,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,                   STR_GENTLE_RIDES_TIP                },
+    { WWT_TAB,              1,  65,     95,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,                   STR_ROLLER_COASTERS_TIP             },
+    { WWT_TAB,              1,  96,     126,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,                   STR_THRILL_RIDES_TIP                },
+    { WWT_TAB,              1,  127,    157,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,                   STR_WATER_RIDES_TIP                 },
+    { WWT_TAB,              1,  158,    188,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,                   STR_SHOPS_STALLS_TIP                },
+    { WWT_TAB,              1,  189,    219,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,                   STR_RESEARCH_AND_DEVELOPMENT_TIP    },
     { WWT_SCROLL,           1,  3,      597,    46,     317,    SCROLL_VERTICAL,                                    STR_NONE                            },
     { WWT_GROUPBOX,         2,  3,      292,    47,     116,    STR_CURRENTLY_IN_DEVELOPMENT,           STR_NONE                            },
     { WWT_GROUPBOX,         2,  3,      292,    124,    188,    STR_LAST_DEVELOPMENT,                   STR_NONE                            },
@@ -202,7 +203,7 @@ static rct_widget window_new_ride_widgets[] = {
 #pragma region Events
 
 static void window_new_ride_mouseup(rct_window *w, rct_widgetindex widgetIndex);
-static void window_new_ride_mousedown(rct_widgetindex widgetIndex, rct_window *w, rct_widget *widget);
+static void window_new_ride_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget *widget);
 static void window_new_ride_update(rct_window *w);
 static void window_new_ride_scrollgetsize(rct_window *w, sint32 scrollIndex, sint32 *width, sint32 *height);
 static void window_new_ride_scrollmousedown(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y);
@@ -313,9 +314,9 @@ static void window_new_ride_populate_list()
                 continue;
         }
 
-        if (ride_type_is_invented(rideType)) {
+        if (ride_type_is_invented(rideType) || gCheatsIgnoreResearchStatus) {
 
-            if (!track_type_has_ride_groups(rideType)) {
+            if (!ride_type_has_ride_groups(rideType)) {
                 nextListItem = window_new_ride_iterate_over_ride_group(rideType, 0, nextListItem);
             }
             else {
@@ -350,7 +351,7 @@ static ride_list_item * window_new_ride_iterate_over_ride_group(uint8 rideType, 
         rideEntryName[8]=0;
 
         // Skip if vehicle type is not invented yet
-        if (!ride_entry_is_invented(rideEntryIndex))
+        if (!ride_entry_is_invented(rideEntryIndex) && !gCheatsIgnoreResearchStatus)
             continue;
 
         // Ride entries
@@ -360,7 +361,7 @@ static ride_list_item * window_new_ride_iterate_over_ride_group(uint8 rideType, 
         if (!gConfigInterface.select_by_track_type && (currentCategory != rideEntry->category[0] && currentCategory != rideEntry->category[1]))
             continue;
 
-        if (track_type_has_ride_groups(rideType))
+        if (ride_type_has_ride_groups(rideType))
         {
             const ride_group * rideEntryRideGroup = get_ride_group(rideType, rideEntry);
             const ride_group * rideGroup = ride_group_find(rideType, rideGroupIndex);
@@ -547,7 +548,7 @@ void window_new_ride_focus(ride_list_item rideItem)
             if (listItem->type == rideItem.type) {
                 const ride_group * irg = get_ride_group(rideTypeIndex, rideEntry);
 
-                if (!track_type_has_ride_groups(rideTypeIndex) || ride_groups_are_equal(rideGroup, irg)) {
+                if (!ride_type_has_ride_groups(rideTypeIndex) || ride_groups_are_equal(rideGroup, irg)) {
                     _windowNewRideHighlightedItem[0] = rideItem;
                     w->new_ride.highlighted_ride_id = rideItem.ride_type_and_entry;
                     window_new_ride_scroll_to_focused_ride(w);
@@ -662,9 +663,9 @@ static void window_new_ride_draw_tab_image(rct_drawpixelinfo *dpi, rct_window *w
 
 static void window_new_ride_draw_tab_images(rct_drawpixelinfo *dpi, rct_window *w)
 {
-    window_new_ride_draw_tab_image(dpi, w, WINDOW_NEW_RIDE_PAGE_TRANSPORT, 0x20000000 | SPR_TAB_RIDES_TRANSPORT_0);
+    window_new_ride_draw_tab_image(dpi, w, WINDOW_NEW_RIDE_PAGE_TRANSPORT, IMAGE_TYPE_REMAP | SPR_TAB_RIDES_TRANSPORT_0);
     window_new_ride_draw_tab_image(dpi, w, WINDOW_NEW_RIDE_PAGE_GENTLE, SPR_TAB_RIDES_GENTLE_0);
-    window_new_ride_draw_tab_image(dpi, w, WINDOW_NEW_RIDE_PAGE_ROLLER_COASTER, 0x20000000 | SPR_TAB_RIDES_ROLLER_COASTERS_0);
+    window_new_ride_draw_tab_image(dpi, w, WINDOW_NEW_RIDE_PAGE_ROLLER_COASTER, IMAGE_TYPE_REMAP | SPR_TAB_RIDES_ROLLER_COASTERS_0);
     window_new_ride_draw_tab_image(dpi, w, WINDOW_NEW_RIDE_PAGE_THRILL, SPR_TAB_RIDES_THRILL_0);
     window_new_ride_draw_tab_image(dpi, w, WINDOW_NEW_RIDE_PAGE_WATER, SPR_TAB_RIDES_WATER_0);
     window_new_ride_draw_tab_image(dpi, w, WINDOW_NEW_RIDE_PAGE_SHOP, SPR_TAB_RIDES_SHOP_0);
@@ -694,7 +695,7 @@ static void window_new_ride_mouseup(rct_window *w, rct_widgetindex widgetIndex)
  *
  *  rct2: 0x006B6B4F
  */
-static void window_new_ride_mousedown(rct_widgetindex widgetIndex, rct_window *w, rct_widget *widget)
+static void window_new_ride_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget *widget)
 {
     if (widgetIndex >= WIDX_TAB_1 && widgetIndex <= WIDX_TAB_7)
         window_new_ride_set_page(w, widgetIndex - WIDX_TAB_1);
@@ -917,7 +918,7 @@ static sint32 get_num_track_designs(ride_list_item item)
         }
     }
 
-    if (rideEntry != NULL && track_type_has_ride_groups(item.type))
+    if (rideEntry != NULL && ride_type_has_ride_groups(item.type))
     {
         const ride_group * rideGroup = get_ride_group(item.type, rideEntry);
         return (sint32)track_repository_get_count_for_ride_group(item.type, rideGroup);

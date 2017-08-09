@@ -58,6 +58,11 @@ enum {
     FOOTPATH_SEARCH_TOO_COMPLEX
 };
 
+enum
+{
+    FOOTPATH_CLEAR_DIRECTIONAL = (1 << 8),  // Flag set when direction is used.
+};
+
 extern uint8 gFootpathProvisionalFlags;
 extern rct_xyz16 gFootpathProvisionalPosition;
 extern uint8 gFootpathProvisionalType;
@@ -79,6 +84,7 @@ void game_command_place_footpath(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *
 void game_command_place_footpath_from_track(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *edx, sint32 *esi, sint32 *edi, sint32 *ebp);
 void game_command_remove_footpath(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *edx, sint32 *esi, sint32 *edi, sint32 *ebp);
 money32 footpath_place(sint32 type, sint32 x, sint32 y, sint32 z, sint32 slope, sint32 flags);
+money32 footpath_place_remove_intersecting(sint32 type, sint32 x, sint32 y, sint32 z, sint32 slope, sint32 flags, sint32 direction);
 void footpath_remove(sint32 x, sint32 y, sint32 z, sint32 flags);
 money32 footpath_provisional_set(sint32 type, sint32 x, sint32 y, sint32 z, sint32 slope);
 void footpath_provisional_remove();

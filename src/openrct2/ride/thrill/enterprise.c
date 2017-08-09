@@ -27,10 +27,10 @@ static void paint_enterprise_structure(rct_ride * ride, sint8 xOffset, sint8 yOf
     height += 7;
 
     rct_map_element * savedMapElement = g_currently_drawn_item;
-    rct_ride_entry * rideType = get_ride_entry(ride->subtype);
+    rct_ride_entry * rideEntry = get_ride_entry(ride->subtype);
     rct_vehicle * vehicle = NULL;
 
-    uint32 baseImageId = rideType->vehicles[0].base_image_id;
+    uint32 baseImageId = rideEntry->vehicles[0].base_image_id;
 
     if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK
         && ride->vehicles[0] != SPRITE_INDEX_NULL) {
@@ -39,14 +39,14 @@ static void paint_enterprise_structure(rct_ride * ride, sint8 xOffset, sint8 yOf
         g_currently_drawn_item = vehicle;
     }
 
-    uint32 imageOffset = (get_current_rotation() + map_element_get_direction(mapElement)) % 4;
+    uint32 imageOffset = map_element_get_direction_with_offset(mapElement, get_current_rotation());
     if (vehicle != NULL) {
         imageOffset = (vehicle->vehicle_sprite_type << 2) + (((vehicle->sprite_direction >> 3) + get_current_rotation()) % 4);
     }
 
     uint32 imageColourFlags = gTrackColours[SCHEME_MISC];
-    if (imageColourFlags == 0x20000000) {
-        imageColourFlags = ride->vehicle_colours[0].body_colour << 19 | ride->vehicle_colours[0].trim_colour << 24 | 0xA0000000;
+    if (imageColourFlags == IMAGE_TYPE_REMAP) {
+        imageColourFlags = SPRITE_ID_PALETTE_COLOUR_2(ride->vehicle_colours[0].body_colour, ride->vehicle_colours[0].trim_colour);
     }
 
     uint32 imageId = (baseImageId + imageOffset) | imageColourFlags;
@@ -65,7 +65,7 @@ static void paint_enterprise_structure(rct_ride * ride, sint8 xOffset, sint8 yOf
 
             uint32 peepFrameOffset = ((imageOffset % 4) * 4 + (i * 4) % 15) & 0x0F;
             uint32 ax = (imageOffset & 0xFFFFFFFC) << 2;
-            imageId = (baseImageId + 196 + peepFrameOffset + ax) | vehicle->peep_tshirt_colours[i] << 19 | 0x20000000;
+            imageId = (baseImageId + 196 + peepFrameOffset + ax) | SPRITE_ID_PALETTE_COLOUR_1(vehicle->peep_tshirt_colours[i]);
             sub_98199C(imageId, xOffset, yOffset, 24, 24, 48, height, 0, 0, height, get_current_rotation());
         }
     }

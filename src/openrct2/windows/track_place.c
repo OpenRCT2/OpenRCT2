@@ -262,7 +262,7 @@ static void window_track_place_toolupdate(rct_window* w, rct_widgetindex widgetI
 
     // Check if tool map position has changed since last update
     if (mapX == _window_track_place_last_x && mapY == _window_track_place_last_y) {
-        place_virtual_track(_trackDesign, PTD_OPERATION_DRAW_OUTLINES, 0, mapX, mapY, 0);
+        place_virtual_track(_trackDesign, PTD_OPERATION_DRAW_OUTLINES, true, 0, mapX, mapY, 0);
         return;
     }
 
@@ -296,7 +296,7 @@ static void window_track_place_toolupdate(rct_window* w, rct_widgetindex widgetI
         widget_invalidate(w, WIDX_PRICE);
     }
 
-    place_virtual_track(_trackDesign, PTD_OPERATION_DRAW_OUTLINES, 0, mapX, mapY, mapZ);
+    place_virtual_track(_trackDesign, PTD_OPERATION_DRAW_OUTLINES, true, 0, mapX, mapY, mapZ);
 }
 
 /**
@@ -332,7 +332,7 @@ static void window_track_place_tooldown(rct_window* w, rct_widgetindex widgetInd
             audio_play_sound_at_location(SOUND_PLACE_ITEM, mapX, mapY, mapZ);
 
             _currentRideIndex = rideIndex;
-            if (byte_F4414E & BYTE_F4414E_ENTRANCE_EXIT_PLACED) {
+            if (track_design_are_entrance_and_exit_placed()) {
                 window_ride_main_open(rideIndex);
                 window_close(w);
             } else {
@@ -387,6 +387,7 @@ static void window_track_place_clear_provisional()
         place_virtual_track(
             _trackDesign,
             PTD_OPERATION_CLEAR_OUTLINES,
+            true,
             _window_track_place_ride_index,
             _window_track_place_last_valid_x,
             _window_track_place_last_valid_y,
@@ -418,10 +419,10 @@ static sint32 window_track_place_get_base_z(sint32 x, sint32 y)
     }
 
     // Increase Z above water
-    if (mapElement->properties.surface.terrain & 0x1F)
-        z = max(z, (mapElement->properties.surface.terrain & 0x1F) << 4);
+    if (map_get_water_height(mapElement) > 0)
+        z = max(z, map_get_water_height(mapElement) << 4);
 
-    return z + place_virtual_track(_trackDesign, PTD_OPERATION_GET_PLACE_Z, 0, x, y, z);
+    return z + place_virtual_track(_trackDesign, PTD_OPERATION_GET_PLACE_Z, true, 0, x, y, z);
 }
 
 static void window_track_place_attempt_placement(rct_track_td6 *td6, sint32 x, sint32 y, sint32 z, sint32 bl, money32 *cost, uint8 *rideIndex)
@@ -463,7 +464,7 @@ static void window_track_place_paint(rct_window *w, rct_drawpixelinfo *dpi)
         substituteElement->x_offset = 0;
         substituteElement->y_offset = 0;
         substituteElement->flags = 0;
-        gfx_draw_sprite(&clippedDpi, 0 | IMAGE_TYPE_REMAP | NOT_TRANSLUCENT(w->colours[0]) << 19, 0, 0, 0);
+        gfx_draw_sprite(&clippedDpi, SPRITE_ID_PALETTE_COLOUR_1(NOT_TRANSLUCENT(w->colours[0])), 0, 0, 0);
         *substituteElement = tmpElement;
     }
 
@@ -487,8 +488,8 @@ static void window_track_place_draw_mini_preview(rct_track_td6 *td6)
     for (sint32 pass = 0; pass < 2; pass++) {
         rct_xy16 origin = { 0, 0 };
         if (pass == 1) {
-            origin.x -= ((max.x + min.x) >> 6) << 5;
-            origin.y -= ((max.y + min.y) >> 6) << 5;
+            origin.x -= ((max.x + min.x) >> 6) * 32;
+            origin.y -= ((max.y + min.y) >> 6) * 32;
         }
 
         if (td6->type == RIDE_TYPE_MAZE) {

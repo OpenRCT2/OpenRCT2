@@ -27,7 +27,7 @@ class SmallSceneryObject final : public SceneryObject
 {
 private:
     rct_scenery_entry   _legacyType = { 0 };
-    uint8 *             _var10data = nullptr;
+    uint8 *             _frameOffsets = nullptr;
 
 public:
     explicit SmallSceneryObject(const rct_object_entry &entry) : SceneryObject(entry) { }
@@ -42,5 +42,5 @@ public:
     void DrawPreview(rct_drawpixelinfo * dpi, sint32 width, sint32 height) const override;
 
 private:
-    static uint8 * ReadVar10(IStream * stream);
+    static uint8 * ReadFrameOffsets(IStream * stream);
 };

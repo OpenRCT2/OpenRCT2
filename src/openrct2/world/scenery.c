@@ -93,12 +93,14 @@ void scenery_update_tile(sint32 x, sint32 y)
             scenery_update_age(x, y, mapElement);
         } else if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_PATH) {
             if (footpath_element_has_path_scenery(mapElement) && !footpath_element_path_scenery_is_ghost(mapElement)) {
-                rct_scenery_entry *sceneryEntry;
-                sceneryEntry = get_footpath_item_entry(footpath_element_get_path_scenery_index(mapElement));
-                if (sceneryEntry->path_bit.flags & PATH_BIT_FLAG_JUMPING_FOUNTAIN_WATER) {
-                    jumping_fountain_begin(JUMPING_FOUNTAIN_TYPE_WATER, x, y, mapElement);
-                } else if (sceneryEntry->path_bit.flags & PATH_BIT_FLAG_JUMPING_FOUNTAIN_SNOW) {
-                    jumping_fountain_begin(JUMPING_FOUNTAIN_TYPE_SNOW, x, y, mapElement);
+                rct_scenery_entry *sceneryEntry = get_footpath_item_entry(footpath_element_get_path_scenery_index(mapElement));
+                if (sceneryEntry != (void*)-1) {
+                    if (sceneryEntry->path_bit.flags & PATH_BIT_FLAG_JUMPING_FOUNTAIN_WATER) {
+                        jumping_fountain_begin(JUMPING_FOUNTAIN_TYPE_WATER, x, y, mapElement);
+                    }
+                    else if (sceneryEntry->path_bit.flags & PATH_BIT_FLAG_JUMPING_FOUNTAIN_SNOW) {
+                        jumping_fountain_begin(JUMPING_FOUNTAIN_TYPE_SNOW, x, y, mapElement);
+                    }
                 }
             }
         }
@@ -314,4 +316,39 @@ sint32 get_scenery_id_from_entry_index(uint8 objectType, sint32 entryIndex)
     case OBJECT_TYPE_BANNERS:       return entryIndex + SCENERY_BANNERS_ID_MIN;
     default:                        return -1;
     }
+}
+
+sint32 scenery_small_get_primary_colour(const rct_map_element *mapElement)
+{
+    return (mapElement->properties.scenery.colour_1 & 0x1F);
+}
+
+sint32 scenery_small_get_secondary_colour(const rct_map_element *mapElement)
+{
+    return (mapElement->properties.scenery.colour_2 & 0x1F);
+}
+
+void scenery_small_set_primary_colour(rct_map_element *mapElement, uint32 colour)
+{
+    assert(colour <= 31);
+    mapElement->properties.scenery.colour_1 &= ~0x1F;
+    mapElement->properties.scenery.colour_1 |= colour;
+
+}
+
+void scenery_small_set_secondary_colour(rct_map_element *mapElement, uint32 colour)
+{
+    assert(colour <= 31);
+    mapElement->properties.scenery.colour_2 &= ~0x1F;
+    mapElement->properties.scenery.colour_2 |= colour;
+}
+
+bool scenery_small_get_supports_needed(const rct_map_element *mapElement)
+{
+    return (bool)(mapElement->properties.scenery.colour_1 & MAP_ELEM_SMALL_SCENERY_COLOUR_FLAG_NEEDS_SUPPORTS);
+}
+
+void scenery_small_set_supports_needed(rct_map_element *mapElement)
+{
+    mapElement->properties.scenery.colour_1 |= MAP_ELEM_SMALL_SCENERY_COLOUR_FLAG_NEEDS_SUPPORTS;
 }

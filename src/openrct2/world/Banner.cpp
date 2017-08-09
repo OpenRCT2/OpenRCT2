@@ -522,12 +522,12 @@ extern "C"
             if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_SHOP))
                 continue;
 
-            uint16 xy = ride->overall_view;
-            if (xy == 0xFFFF)
+            rct_xy8 location = ride->overall_view;
+            if (location.xy == RCT_XY8_UNDEFINED)
                 continue;
 
-            sint32 rideX = (xy & 0xFF) * 32;
-            sint32 rideY = (xy >> 8) * 32;
+            sint32 rideX = location.x * 32;
+            sint32 rideY = location.y * 32;
             sint32 distance = abs(x - rideX) + abs(y - rideY);
             if (distance < resultDistance)
             {

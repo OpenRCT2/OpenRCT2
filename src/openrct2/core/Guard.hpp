@@ -16,16 +16,18 @@
 
 #pragma once
 
+#include <stdarg.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif // __cplusplus
 
-void openrct2_assert(bool expression, const char * message, ...);
+void openrct2_assert_fwd(bool expression, const char * message, ...);
+
+#define openrct2_assert(expr, msg, ...) if(!(expr)) { openrct2_assert_fwd((expr), msg, ##__VA_ARGS__); }
 
 #ifdef __cplusplus
 }
-
-#include <stdarg.h>
 
 enum class ASSERT_BEHAVIOUR
 {

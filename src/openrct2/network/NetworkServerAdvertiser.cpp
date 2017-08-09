@@ -101,7 +101,7 @@ private:
         _lastAdvertiseTime = platform_get_ticks();
 
         // Send the registration request
-        http_request_t request = { 0 };
+        http_request_t request = {};
         request.tag = this;
         request.url = GetMasterServerUrl();
         request.method = HTTP_METHOD_POST;
@@ -131,7 +131,7 @@ private:
 
     void SendHeartbeat()
     {
-        http_request_t request = { 0 };
+        http_request_t request = {};
         request.tag = this;
         request.url = GetMasterServerUrl();
         request.method = HTTP_METHOD_PUT;

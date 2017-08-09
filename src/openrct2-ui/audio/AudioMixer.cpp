@@ -18,6 +18,7 @@
 #include <SDL.h>
 #include <speex/speex_resampler.h>
 #include <list>
+#include <openrct2/Context.h>
 #include <openrct2/core/Guard.hpp>
 #include <openrct2/core/Math.hpp>
 #include <openrct2/core/Memory.hpp>
@@ -35,7 +36,6 @@ extern "C"
     #include <openrct2/localisation/localisation.h>
     #include <openrct2/OpenRCT2.h>
     #include <openrct2/platform/platform.h>
-    #include <openrct2/rct2.h>
 }
 
 namespace OpenRCT2 { namespace Audio
@@ -207,7 +207,7 @@ namespace OpenRCT2 { namespace Audio
                 IAudioSource * source = _musicSources[pathId];
                 if (source == nullptr)
                 {
-                    const utf8 * path = get_file_path((sint32)pathId);
+                    const utf8 * path = context_get_path_legacy((sint32)pathId);
                     source = AudioSource::CreateMemoryFromWAV(path, &_format);
                     if (source == nullptr)
                     {
@@ -238,7 +238,7 @@ namespace OpenRCT2 { namespace Audio
     private:
         void LoadAllSounds()
         {
-            const utf8 * css1Path = get_file_path(PATH_ID_CSS1);
+            const utf8 * css1Path = context_get_path_legacy(PATH_ID_CSS1);
             for (size_t i = 0; i < Util::CountOf(_css1Sources); i++)
             {
                 auto source = AudioSource::CreateMemoryFromCSS1(css1Path, i, &_format);

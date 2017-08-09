@@ -21,7 +21,7 @@
 #include "../interface/viewport.h"
 #include "../interface/widget.h"
 #include "../localisation/localisation.h"
-#include "../rct2.h"
+#include "../OpenRCT2.h"
 #include "../sprites.h"
 #include "../world/footpath.h"
 #include "dropdown.h"
@@ -97,7 +97,7 @@ static rct_widget window_footpath_widgets[] = {
 
 static void window_footpath_close(rct_window *w);
 static void window_footpath_mouseup(rct_window *w, rct_widgetindex widgetIndex);
-static void window_footpath_mousedown(rct_widgetindex widgetIndex, rct_window *w, rct_widget *widget);
+static void window_footpath_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget *widget);
 static void window_footpath_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex);
 static void window_footpath_update(rct_window *w);
 static void window_footpath_toolupdate(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y);
@@ -336,7 +336,7 @@ static void window_footpath_mouseup(rct_window *w, rct_widgetindex widgetIndex)
  *
  *  rct2: 0x006A7EC5
  */
-static void window_footpath_mousedown(rct_widgetindex widgetIndex, rct_window*w, rct_widget* widget)
+static void window_footpath_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget)
 {
     switch (widgetIndex) {
     case WIDX_FOOTPATH_TYPE:
@@ -887,24 +887,8 @@ static void window_footpath_construct()
     sint32 type, x, y, z, slope;
     footpath_get_next_path_info(&type, &x, &y, &z, &slope);
 
-    // Try to place the path at the desired location
     gGameCommandErrorTitle = STR_CANT_BUILD_FOOTPATH_HERE;
-    money32 cost = footpath_place(type, x, y, z, slope, 0);
-
-    if (cost != MONEY32_UNDEFINED && !gCheatsDisableClearanceChecks) {
-        // It is possible, let's remove walls between the old and new piece of path
-        uint8 direction = gFootpathConstructDirection;
-        wall_remove_intersecting_walls(x, y, z, z + 4 + ((slope & 0xf) ? 2 : 0), direction ^ 2);
-        wall_remove_intersecting_walls(
-            x - TileDirectionDelta[direction].x,
-            y - TileDirectionDelta[direction].y,
-            z, z + 4, direction
-        );
-    }
-
-    // Actually place the path now
-    gGameCommandErrorTitle = STR_CANT_BUILD_FOOTPATH_HERE;
-    cost = footpath_place(type, x, y, z, slope, GAME_COMMAND_FLAG_APPLY);
+    money32 cost = footpath_place_remove_intersecting(type, x, y, z, slope, GAME_COMMAND_FLAG_APPLY, gFootpathConstructDirection);
 
     if (cost != MONEY32_UNDEFINED) {
         audio_play_sound_at_location(

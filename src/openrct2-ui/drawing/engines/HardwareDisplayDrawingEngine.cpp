@@ -53,7 +53,8 @@ private:
 
 public:
     explicit HardwareDisplayDrawingEngine(IUiContext * uiContext)
-        : _uiContext(uiContext)
+        : X8DrawingEngine(uiContext),
+          _uiContext(uiContext)
     {
         _window = (SDL_Window *)_uiContext->GetWindow();
     }
@@ -75,8 +76,13 @@ public:
         SDL_DestroyTexture(_screenTexture);
         SDL_FreeFormat(_screenTextureFormat);
 
-        SDL_RendererInfo rendererInfo;
-        SDL_GetRendererInfo(_sdlRenderer, &rendererInfo);
+        SDL_RendererInfo rendererInfo = {};
+        sint32 result = SDL_GetRendererInfo(_sdlRenderer, &rendererInfo);
+        if (result < 0)
+        {
+            log_warning("HWDisplayDrawingEngine::Resize error: %s", SDL_GetError());
+            return;
+        }
         uint32 pixelFormat = SDL_PIXELFORMAT_UNKNOWN;
         for (uint32 i = 0; i < rendererInfo.num_texture_formats; i++)
         {
@@ -121,9 +127,8 @@ public:
         }
     }
 
-    void Draw() override
+    void EndDraw() override
     {
-        X8DrawingEngine::Draw();
         Display();
     }
 

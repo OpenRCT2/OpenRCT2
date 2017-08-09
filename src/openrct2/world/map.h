@@ -43,7 +43,18 @@ typedef struct rct_map_element_track_properties {
     uint8 type; //4
     union{
         struct{
-            uint8 sequence; //5
+            // The lower 4 bits are the track sequence.
+            // The upper 4 bits are either station bits or on-ride photo bits.
+            //
+            // Station bits:
+            // - Bit 8 marks green light
+            // - Bit 5-7 are station index.
+            //
+            // On-ride photo bits:
+            // - Bits 7 and 8 are never set
+            // - Bits 5 and 6 are set when a vehicle triggers the on-ride photo and act like a countdown from 3.
+            // - If any of the bits 5-8 are set, the game counts it as a photo being taken.
+            uint8 sequence; //5.
             uint8 colour; //6
         };
         uint16 maze_entry; // 5
@@ -237,6 +248,16 @@ enum {
     ELEMENT_IS_UNDERWATER = 1 << 2,
 };
 
+enum
+{
+    MAP_ELEM_TRACK_SEQUENCE_GREEN_LIGHT = (1 << 7),
+};
+
+enum
+{
+    MAP_ELEM_SMALL_SCENERY_COLOUR_FLAG_NEEDS_SUPPORTS = (1 << 5),
+};
+
 #define MAP_ELEMENT_QUADRANT_MASK 0xC0
 #define MAP_ELEMENT_TYPE_MASK 0x3C
 #define MAP_ELEMENT_DIRECTION_MASK 0x03
@@ -248,6 +269,12 @@ enum {
 #define MAP_ELEMENT_WATER_HEIGHT_MASK 0x1F
 #define MAP_ELEMENT_SURFACE_TERRAIN_MASK 0xE0
 
+#define MAP_ELEM_TRACK_SEQUENCE_STATION_INDEX_MASK 0x70
+#define MAP_ELEM_TRACK_SEQUENCE_SEQUENCE_MASK 0x0F
+#define MAP_ELEM_TRACK_SEQUENCE_TAKING_PHOTO_MASK 0xF0
+
+#define MINIMUM_LAND_HEIGHT 2
+#define MAXIMUM_LAND_HEIGHT 142
 
 #define MINIMUM_MAP_SIZE_TECHNICAL 15
 #define MAXIMUM_MAP_SIZE_TECHNICAL 256
@@ -261,6 +288,7 @@ enum {
 #define MAX_TILE_MAP_ELEMENT_POINTERS (MAXIMUM_MAP_SIZE_TECHNICAL * MAXIMUM_MAP_SIZE_TECHNICAL)
 #define MAX_PEEP_SPAWNS 2
 #define PEEP_SPAWN_UNDEFINED 0xFFFF
+#define RCT_XY8_UNDEFINED 0xFFFF
 
 #define MAP_ELEMENT_LARGE_TYPE_MASK 0x3FF
 
@@ -416,6 +444,7 @@ bool map_element_is_ghost(const rct_map_element *element);
 uint8 map_element_get_scenery_quadrant(const rct_map_element *element);
 sint32 map_element_get_type(const rct_map_element *element);
 sint32 map_element_get_direction(const rct_map_element *element);
+sint32 map_element_get_direction_with_offset(const rct_map_element *element, uint8 offset);
 sint32 map_element_get_terrain(const rct_map_element *element);
 sint32 map_element_get_terrain_edge(const rct_map_element *element);
 void map_element_set_terrain(rct_map_element *element, sint32 terrain);
@@ -439,7 +468,17 @@ bool map_is_location_owned(sint32 x, sint32 y, sint32 z);
 bool map_is_location_in_park(sint32 x, sint32 y);
 bool map_is_location_owned_or_has_rights(sint32 x, sint32 y);
 bool map_surface_is_blocked(sint16 x, sint16 y);
-sint32 map_get_station(rct_map_element *mapElement);
+sint32 map_element_get_station(const rct_map_element * mapElement);
+void map_element_set_station(rct_map_element * mapElement, uint32 stationIndex);
+sint32 map_element_get_track_sequence(const rct_map_element * mapElement);
+void map_element_set_track_sequence(rct_map_element * mapElement, sint32 trackSequence);
+bool map_element_get_green_light(const rct_map_element * mapElement);
+void map_element_set_green_light(rct_map_element * mapElement, bool greenLight);
+sint32 map_element_get_brake_booster_speed(const rct_map_element *mapElement);
+void map_element_set_brake_booster_speed(rct_map_element *mapElement, sint32 speed);
+bool map_element_is_taking_photo(const rct_map_element * mapElement);
+void map_element_set_onride_photo_timeout(rct_map_element * mapElement);
+void map_element_decrement_onride_photo_timout(rct_map_element * mapElement);
 void map_element_remove(rct_map_element *mapElement);
 void map_remove_all_rides();
 void map_invalidate_map_selection_tiles();
@@ -451,11 +490,13 @@ bool map_element_check_address(const rct_map_element * const element);
 
 typedef sint32 (CLEAR_FUNC)(rct_map_element** map_element, sint32 x, sint32 y, uint8 flags, money32* price);
 sint32 map_place_non_scenery_clear_func(rct_map_element** map_element, sint32 x, sint32 y, uint8 flags, money32* price);
+sint32 map_place_scenery_clear_func(rct_map_element** map_element, sint32 x, sint32 y, uint8 flags, money32* price);
 sint32 map_can_construct_with_clear_at(sint32 x, sint32 y, sint32 zLow, sint32 zHigh, CLEAR_FUNC *clearFunc, uint8 bl, uint8 flags, money32 *price);
 sint32 map_can_construct_at(sint32 x, sint32 y, sint32 zLow, sint32 zHigh, uint8 bl);
 void rotate_map_coordinates(sint16 *x, sint16 *y, sint32 rotation);
 rct_xy16 coordinate_3d_to_2d(const rct_xyz16* coordinate_3d, sint32 rotation);
 money32 map_clear_scenery(sint32 x0, sint32 y0, sint32 x1, sint32 y1, sint32 clear, sint32 flags);
+sint32 map_get_water_height(const rct_map_element * mapElement);
 money32 lower_water(sint16 x0, sint16 y0, sint16 x1, sint16 y1, uint8 flags);
 money32 raise_water(sint16 x0, sint16 y0, sint16 x1, sint16 y1, uint8 flags);
 money32 wall_place(sint32 type, sint32 x, sint32 y, sint32 z, sint32 edge, sint32 primaryColour, sint32 secondaryColour, sint32 tertiaryColour, sint32 flags);

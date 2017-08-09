@@ -135,7 +135,7 @@ static rct_widget window_ride_construction_widgets[] = {
 static void window_ride_construction_close(rct_window *w);
 static void window_ride_construction_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_ride_construction_resize(rct_window *w);
-static void window_ride_construction_mousedown(rct_widgetindex widgetIndex, rct_window *w, rct_widget *widget);
+static void window_ride_construction_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget *widget);
 static void window_ride_construction_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex);
 static void window_ride_construction_update(rct_window *w);
 static void window_ride_construction_toolupdate(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y);
@@ -1293,7 +1293,7 @@ static void window_ride_construction_resize(rct_window *w)
  *
  *  rct2: 0x006C6E6A
  */
-static void window_ride_construction_mousedown(rct_widgetindex widgetIndex, rct_window *w, rct_widget *widget)
+static void window_ride_construction_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget *widget)
 {
     rct_ride *ride = get_ride(_currentRideIndex);
 
@@ -1741,7 +1741,7 @@ static void window_ride_construction_construct(rct_window *w)
             _currentTrackBeginX = next_track.x;
             _currentTrackBeginY = next_track.y;
             _currentTrackBeginZ = z;
-            _currentTrackPieceDirection = next_track.element->type & MAP_ELEMENT_DIRECTION_MASK;
+            _currentTrackPieceDirection = map_element_get_direction(next_track.element);
             _currentTrackPieceType = next_track.element->properties.track.type;
             _currentTrackSelectionFlags = 0;
             _rideConstructionArrowPulseTime = 0;
@@ -1818,7 +1818,7 @@ static void window_ride_construction_mouseup_demolish(rct_window* w)
     else if (track_block_get_next(&inputElement, &outputElement, &z, &direction)) {
         x = outputElement.x;
         y = outputElement.y;
-        direction = outputElement.element->type & MAP_ELEMENT_DIRECTION_MASK;
+        direction = map_element_get_direction(outputElement.element);
         type = outputElement.element->properties.track.type;
         gGotoStartPlacementMode = false;
     } else {
@@ -2425,7 +2425,7 @@ static void sub_6CBCE2(
         _tempTrackMapElement.base_height = baseZ;
         _tempTrackMapElement.clearance_height = clearanceZ;
         _tempTrackMapElement.properties.track.type = trackType;
-        _tempTrackMapElement.properties.track.sequence = trackBlock->index;
+        map_element_set_track_sequence(&_tempTrackMapElement, trackBlock->index);
         _tempTrackMapElement.properties.track.colour = (edx & 0x20000) ? 4 : 0;
         _tempTrackMapElement.properties.track.ride_index = rideIndex;
 
@@ -2477,7 +2477,7 @@ void window_ride_construction_update_active_elements()
         if (!sub_6C683D(&x, &y, &z, _currentTrackPieceDirection & 3, _currentTrackPieceType, 0, &mapElement, 0)) {
             _selectedTrackType = mapElement->properties.track.type;
             if (track_element_has_speed_setting(mapElement->properties.track.type))
-                _currentBrakeSpeed2 = (mapElement->properties.track.sequence >> 4) << 1;
+                _currentBrakeSpeed2 = map_element_get_brake_booster_speed(mapElement);
             _currentSeatRotationAngle = mapElement->properties.track.colour >> 4;
         }
     }
@@ -2739,7 +2739,7 @@ static void window_ride_construction_update_enabled_track_pieces()
     }
     else
     {
-        if (track_type_has_ride_groups(rideType))
+        if (ride_type_has_ride_groups(rideType))
         {
             const ride_group * rideGroup = get_ride_group(rideType, rideEntry);
             _enabledRidePieces = rideGroup->available_track_pieces;
@@ -3578,7 +3578,13 @@ static void window_ride_construction_show_special_track_dropdown(rct_window *w, 
         widget->right - widget->left
     );
 
-    gDropdownItemsDisabled = _currentDisabledSpecialTrackPieces;
+    for (sint32 i = 0; i < 32; i++)
+    {
+        if (_currentDisabledSpecialTrackPieces & (1 << i))
+        {
+            dropdown_set_disabled(i, true);
+        }
+    }
     gDropdownDefaultIndex = defaultIndex;
 }
 

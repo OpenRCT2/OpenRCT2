@@ -851,7 +851,7 @@ STR_0845    :<not used anymore>
 STR_0846    :<not used anymore>
 STR_0847    :Sobre 'OpenRCT2'
 STR_0848    :RollerCoaster Tycoon 2
-STR_0849    :{WINDOW_COLOUR_2}Version 2.01.028
+STR_0849    :<removed string - do not use>
 STR_0850    :{WINDOW_COLOUR_2}Copyright {COPYRIGHT} 2002 Chris Sawyer, todos os direitos reservados
 STR_0851    :{WINDOW_COLOUR_2}Projetado e programado por Chris Sawyer
 STR_0852    :{WINDOW_COLOUR_2}Gráficos por Simon Foster
@@ -860,13 +860,13 @@ STR_0854    :{WINDOW_COLOUR_2}Sons adicionais gravados por David Ellis
 STR_0855    :{WINDOW_COLOUR_2}Representação por Jacqui Lyons na Marjacq Ltd.
 STR_0856    :{WINDOW_COLOUR_2}Obrigado a:
 STR_0857    :{WINDOW_COLOUR_2}Peter James Adcock, Joe Booth, and John Wardley
-STR_0858    :{WINDOW_COLOUR_2}
-STR_0859    :{WINDOW_COLOUR_2}
-STR_0860    :{WINDOW_COLOUR_2}
-STR_0861    :
-STR_0862    :
-STR_0863    :
-STR_0864    :
+STR_0858    :<removed string - do not use>
+STR_0859    :<removed string - do not use>
+STR_0860    :<removed string - do not use>
+STR_0861    :<removed string - do not use>
+STR_0862    :<removed string - do not use>
+STR_0863    :<removed string - do not use>
+STR_0864    :<removed string - do not use>
 STR_0865    :{STRINGID}
 STR_0866    :{POP16}{STRINGID}
 STR_0867    :{POP16}{POP16}{STRINGID}
@@ -890,7 +890,7 @@ STR_0884    :Carregar Paisagem
 STR_0885    :Salvar Paisagem
 STR_0886    :Sair do Jogo
 STR_0887    :Sair do Editor de Cenário
-STR_0888    :Sair do Construtor de Montanha-Russa
+STR_0888    :Sair do Construtor de Pista
 STR_0889    :Sair do Gerenciador de Projetos de Pista
 STR_0890    :<removed string - do not use>
 STR_0891    :Captura de tela
@@ -2867,7 +2867,7 @@ STR_2856    :{WINDOW_COLOUR_2}Tutorial
 STR_2857    :{WINDOW_COLOUR_2}(Pressione uma tecla ou botão do mouse para controlar)
 STR_2858    :Impossível começar uma campanha de marketing...
 STR_2859    :Um outro exemplar de OpenRCT2 já está executando
-STR_2860    :Créditos de Infogrames Interactive...
+STR_2860    :<removed string - do not use>
 STR_2861    :{WINDOW_COLOUR_2}Licenciado para Infogrames Interactive Inc.
 STR_2862    :Reconhecimentos de música...
 STR_2863    :Reconhecimentos de música
@@ -2915,29 +2915,29 @@ STR_2904    :{WINDOW_COLOUR_2}Manic Mechanic:   (Allister Brimble) direitos auto
 STR_2905    :{WINDOW_COLOUR_2}Techno Torture:   (Allister Brimble) direitos autorais {COPYRIGHT} Chris Sawyer
 STR_2906    :{WINDOW_COLOUR_2}Sweat Dreams:   (Allister Brimble) direitos autorais {COPYRIGHT} Chris Sawyer
 STR_2907    :{WINDOW_COLOUR_2}What shall we do with the Drunken Sailor:   (Anon/Allister Brimble) direitos autorais {COPYRIGHT} Chris Sawyer
-STR_2908    :{WINDOW_COLOUR_2}Infogrames Interactive
-STR_2909    :{WINDOW_COLOUR_2}Produtor Sênior:  Thomas J. Zahorik
-STR_2910    :{WINDOW_COLOUR_2}Produtor Executivo:  Bill Levay
-STR_2911    :{WINDOW_COLOUR_2}Gerente de Produtos de Marketing Sênior:  Scott Triola
-STR_2912    :{WINDOW_COLOUR_2}Vice-Presidente de Desenvolvimento de Produto:  Scott Walker
-STR_2913    :{WINDOW_COLOUR_2}Gerente Geral:  John Hurlbut
-STR_2914    :{WINDOW_COLOUR_2}Diretor de Garantia de Qualidade:  Michael Craighead
-STR_2915    :{WINDOW_COLOUR_2}Gerente de Certificação de Garantia de Qualidade:  Kurt Boutin
-STR_2916    :{WINDOW_COLOUR_2}Líder de Certificação de Garantia de Qualidade:  Mark Huggins
-STR_2917    :{WINDOW_COLOUR_2}Testadores:  Dena Irene Fitzgerald, Scott Rollins, Christopher McPhail
-STR_2918    :{WINDOW_COLOUR_2}Clif McClure, Erik Maramaldi, Erik Jeffery
-STR_2919    :{WINDOW_COLOUR_2}Diretor de Marketing:  Ann Marie Bland
-STR_2920    :{WINDOW_COLOUR_2}Gerente de Serviços Criativos:  Steve Martin
-STR_2921    :{WINDOW_COLOUR_2}Gerente de Serviços Editoriais e Documentação:  Elizabeth Mackney
-STR_2922    :{WINDOW_COLOUR_2}Designer Gráfico:  Paul Anselmi
-STR_2923    :{WINDOW_COLOUR_2}Copywriter:  Kurt Carlson
-STR_2924    :{WINDOW_COLOUR_2}Agradecimentos Especiais à:  Peter Matiss
-STR_2925    :{WINDOW_COLOUR_2}Especialista em Engenharia:  Ken Edwards
-STR_2926    :{WINDOW_COLOUR_2}Gerende de Serviços de Engenharia:  Luis Rivas
-STR_2927    :{WINDOW_COLOUR_2}Líder de Análistas de Compatibilidade:  Geoffrey Smith
-STR_2928    :{WINDOW_COLOUR_2}Analistas de Compatibilidade:  Jason Cordero, Burke McQuinn, Kim Jardin 
-STR_2929    :{WINDOW_COLOUR_2}Testador Líder:  Daniel Frisoli
-STR_2930    :{WINDOW_COLOUR_2}Testador Sênior:  Matt Pantaleoni
+STR_2908    :<removed string - do not use>
+STR_2909    :<removed string - do not use>
+STR_2910    :<removed string - do not use>
+STR_2911    :<removed string - do not use>
+STR_2912    :<removed string - do not use>
+STR_2913    :<removed string - do not use>
+STR_2914    :<removed string - do not use>
+STR_2915    :<removed string - do not use>
+STR_2916    :<removed string - do not use>
+STR_2917    :<removed string - do not use>
+STR_2918    :<removed string - do not use>
+STR_2919    :<removed string - do not use>
+STR_2920    :<removed string - do not use>
+STR_2921    :<removed string - do not use>
+STR_2922    :<removed string - do not use>
+STR_2923    :<removed string - do not use>
+STR_2924    :<removed string - do not use>
+STR_2925    :<removed string - do not use>
+STR_2926    :<removed string - do not use>
+STR_2927    :<removed string - do not use>
+STR_2928    :<removed string - do not use>
+STR_2929    :<removed string - do not use>
+STR_2930    :<removed string - do not use>
 STR_2931    :{WINDOW_COLOUR_2}
 STR_2932    :{WINDOW_COLOUR_2}
 STR_2933    :{WINDOW_COLOUR_2}
@@ -3214,7 +3214,7 @@ STR_3203    :Montar Lista de Invenções
 STR_3204    :Seleção de Opções
 STR_3205    :Seleção de Objetivos
 STR_3206    :Salvar Cenário
-STR_3207    :Construtor de Montanha-Russa
+STR_3207    :Construtor de Pista
 STR_3208    :Gerenciador de Projetos de Pista
 STR_3209    :Voltar para o Passo Anterior:
 STR_3210    :Avançar para o Próximo Passo:
@@ -3342,7 +3342,7 @@ STR_3331    :Caminho da entrada do parque a borda do mapa incompleta ou muito co
 STR_3332    :Entrada do parque está ao contrário ou não tem caminho até a borda do mapa
 STR_3333    :Exportar plug-in de objetos com jogos salvos
 STR_3334    :{SMALLFONT}{BLACK}Selecione se deve salvar requerimento de qualquer plug-in de objeto adicional (dados adicionais não fornecidos no produto principal) nos dados de jogo salvo ou cenário, permitindo que sejam carregados por alguém que não tenha dados de objeto adicional
-STR_3335    :Construtor de Montanha-Russa - Selecione o Tipo de Veículo e Atração
+STR_3335    :Construtor de Pista - Selecione o Tipo de Veículo e Atração
 STR_3336    :Gerenciador de Projetos de Pista - Selecione o Tipo de Atração
 STR_3337    :<not used anymore>
 STR_3338    :{BLACK}Projeto com Traçado Personalizado
@@ -3351,7 +3351,7 @@ STR_3340    :{BLACK}{COMMA16} projetos disponíveis, ou projeto com traçado per
 STR_3341    :{SMALLFONT}{BLACK}Ferramentas de Jogo
 STR_3342    :Editor de Cenário
 STR_3343    :Converter Jogo Salvo em Cenário
-STR_3344    :Construtor de Montanha-Russa
+STR_3344    :Construtor de Pista
 STR_3345    :Gerenciador de Projetos de Pista
 STR_3346    :Impossível salvar projeto de pista...
 STR_3347    :Atração é muito grande, contém muitos elementos, ou o cenários é muito espalhado
@@ -3768,7 +3768,7 @@ STR_5426    :Fim
 STR_5427    :Cordenadas:
 STR_5428    :Rotações anti-horárias:
 STR_5429    :Nível de ampliação:
-STR_5430    :Segundos de espera:
+STR_5430    :Milissegundos de espera:
 STR_5431    :Salvar para carregar:
 STR_5432    :Comando:
 STR_5433    :Sequências de título
@@ -4439,6 +4439,16 @@ STR_6127    :Arquivo: {STRING}
 STR_6128    :O arquivo não pode ser carregado pois alguns dos objetos referência dele estão faltando ou corrompidos. Uma lista desses objetos está disponível abaixo.
 STR_6129    :Copiar itens selecionados para o clipboard
 STR_6130    :Copiar lista inteira para o clipboard
+STR_6131    :Fonte do objeto
+STR_6132    :Ignorar status de pesquisa
+STR_6133    :{SMALLFONT}{BLACK}Acessa atrações e cenários que ainda não foram inventados
+STR_6134    :Limpar Cenário
+STR_6135    :Cliente enviou um pedido inválido
+STR_6136    :Servidor enviou um pedido inválido
+STR_6137    :OpenRCT2, um clone grátis e com código aberto do Roller Coaster Tycoon 2
+STR_6138    :OpenRCT2 é o trabalho de vários autores, a lista completa pode ser encontrada em {OPENQUOTES}contributors.md{ENDQUOTES}. Para mais informações, visite http://github.com/OpenRCT2/OpenRCT2
+STR_6139    :Todos os nomes de produtos e de empresas pertencem aos seus respectivos proprietários. O uso deles não implica qualquer afiliação ou aprovação por eles.
+STR_6140    :Changelog...
 
 #############
 # Scenarios #
@@ -4581,7 +4591,7 @@ STR_SCNR    :Funtopia
 STR_PARK    :Funtopia
 STR_DTLS    :Cobrindo terra em ambos os lados de uma estrada, este parque já tem vários brinquedos em operação.
 
-<Haunted Harbor>
+<Haunted Harbour>
 STR_SCNR    :Haunted Harbour
 STR_PARK    :Haunted Harbour
 STR_DTLS    :A autoridade local concordou em vender barato o terreno para este pequeno parque litorâneo, com a condição de que certos brinquedos são preservados.

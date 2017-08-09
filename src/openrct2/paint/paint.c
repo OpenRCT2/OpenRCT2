@@ -107,7 +107,7 @@ static void paint_add_ps_to_quadrant(paint_struct * ps, sint32 positionHash)
 {
     uint32 paintQuadrantIndex = clamp(0, positionHash / 32, MAX_PAINT_QUADRANTS - 1);
 
-    ps->var_18 = paintQuadrantIndex;
+    ps->quadrant_index = paintQuadrantIndex;
     ps->next_quadrant_ps = _paintQuadrants[paintQuadrantIndex];
     _paintQuadrants[paintQuadrantIndex] = ps;
 
@@ -732,44 +732,47 @@ void paint_generate_structs(rct_drawpixelinfo * dpi)
     }
 }
 
-static void paint_arrange_structs_helper(paint_struct * ps_next, uint16 ax, uint8 flag)
+static paint_struct * paint_arrange_structs_helper(paint_struct * ps_next, uint16 quadrantIndex, uint8 flag)
 {
     paint_struct * ps;
     paint_struct * ps_temp;
     do {
         ps = ps_next;
         ps_next = ps_next->next_quadrant_ps;
-        if (ps_next == NULL) return;
-    } while (ax > ps_next->var_18);
+        if (ps_next == NULL) return ps;
+    } while (quadrantIndex > ps_next->quadrant_index);
+
+    // Cache the last visited node so we don't have to walk the whole list again
+    paint_struct * ps_cache = ps;
 
     ps_temp = ps;
     do {
         ps = ps->next_quadrant_ps;
         if (ps == NULL) break;
 
-        if (ps->var_18 > ax + 1) {
-            ps->var_1B = 1 << 7;
+        if (ps->quadrant_index > quadrantIndex + 1) {
+            ps->quadrant_flags = PAINT_QUADRANT_FLAG_BIGGER;
         }
-        else if (ps->var_18 == ax + 1) {
-            ps->var_1B = (1 << 1) | (1 << 0);
+        else if (ps->quadrant_index == quadrantIndex + 1) {
+            ps->quadrant_flags = PAINT_QUADRANT_FLAG_NEXT | PAINT_QUADRANT_FLAG_IDENTICAL;
         }
-        else if (ps->var_18 == ax) {
-            ps->var_1B = flag | (1 << 0);
+        else if (ps->quadrant_index == quadrantIndex) {
+            ps->quadrant_flags = flag | PAINT_QUADRANT_FLAG_IDENTICAL;
         }
-    } while (ps->var_18 <= ax + 1);
+    } while (ps->quadrant_index <= quadrantIndex + 1);
     ps = ps_temp;
 
     uint8 rotation = get_current_rotation();
     while (true) {
         while (true) {
             ps_next = ps->next_quadrant_ps;
-            if (ps_next == NULL) return;
-            if (ps_next->var_1B & (1 << 7)) return;
-            if (ps_next->var_1B & (1 << 0)) break;
+            if (ps_next == NULL) return ps_cache;
+            if (ps_next->quadrant_flags & PAINT_QUADRANT_FLAG_BIGGER) return ps_cache;
+            if (ps_next->quadrant_flags & PAINT_QUADRANT_FLAG_IDENTICAL) break;
             ps = ps_next;
         }
 
-        ps_next->var_1B &= ~(1 << 0);
+        ps_next->quadrant_flags &= ~PAINT_QUADRANT_FLAG_IDENTICAL;
         ps_temp = ps;
 
         typedef struct bound_box {
@@ -795,8 +798,8 @@ static void paint_arrange_structs_helper(paint_struct * ps_next, uint16 ax, uint
             ps = ps_next;
             ps_next = ps_next->next_quadrant_ps;
             if (ps_next == NULL) break;
-            if (ps_next->var_1B & (1 << 7)) break;
-            if (!(ps_next->var_1B & (1 << 1))) continue;
+            if (ps_next->quadrant_flags & PAINT_QUADRANT_FLAG_BIGGER) break;
+            if (!(ps_next->quadrant_flags & PAINT_QUADRANT_FLAG_NEXT)) continue;
 
             sint32 yes = 0;
             switch (rotation) {
@@ -857,11 +860,11 @@ paint_struct paint_arrange_structs()
             }
         } while (++quadrantIndex <= _paintQuadrantFrontIndex);
 
-        paint_arrange_structs_helper(&psHead, _paintQuadrantBackIndex & 0xFFFF, 1 << 1);
+        paint_struct * ps_cache = paint_arrange_structs_helper(&psHead, _paintQuadrantBackIndex & 0xFFFF, PAINT_QUADRANT_FLAG_NEXT);
 
         quadrantIndex = _paintQuadrantBackIndex;
         while (++quadrantIndex < _paintQuadrantFrontIndex) {
-            paint_arrange_structs_helper(&psHead, quadrantIndex & 0xFFFF, 0);
+            ps_cache = paint_arrange_structs_helper(ps_cache, quadrantIndex & 0xFFFF, 0);
         }
     }
     return psHead;
@@ -988,7 +991,7 @@ static uint32 paint_ps_colourify_image(uint32 imageId, uint8 spriteType, uint32 
 {
     if (viewFlags & VIEWPORT_FLAG_SEETHROUGH_RIDES) {
         if (spriteType == VIEWPORT_INTERACTION_ITEM_RIDE) {
-            if (!(imageId & 0x40000000)) {
+            if (!(imageId & IMAGE_TYPE_TRANSPARENT)) {
                 imageId &= 0x7FFFF;
                 imageId |= 0x41880000;
             }
@@ -996,7 +999,7 @@ static uint32 paint_ps_colourify_image(uint32 imageId, uint8 spriteType, uint32 
     }
     if (viewFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE) {
         if (spriteType == VIEWPORT_INTERACTION_ITEM_WALL) {
-            if (!(imageId & 0x40000000)) {
+            if (!(imageId & IMAGE_TYPE_TRANSPARENT)) {
                 imageId &= 0x7FFFF;
                 imageId |= 0x41880000;
             }
@@ -1007,7 +1010,7 @@ static uint32 paint_ps_colourify_image(uint32 imageId, uint8 spriteType, uint32 
         case VIEWPORT_INTERACTION_ITEM_FOOTPATH:
         case VIEWPORT_INTERACTION_ITEM_FOOTPATH_ITEM:
         case VIEWPORT_INTERACTION_ITEM_BANNER:
-            if (!(imageId & 0x40000000)) {
+            if (!(imageId & IMAGE_TYPE_TRANSPARENT)) {
                 imageId &= 0x7FFFF;
                 imageId |= 0x41880000;
             }
@@ -1019,7 +1022,7 @@ static uint32 paint_ps_colourify_image(uint32 imageId, uint8 spriteType, uint32 
         case VIEWPORT_INTERACTION_ITEM_SCENERY:
         case VIEWPORT_INTERACTION_ITEM_LARGE_SCENERY:
         case VIEWPORT_INTERACTION_ITEM_WALL:
-            if (!(imageId & 0x40000000)) {
+            if (!(imageId & IMAGE_TYPE_TRANSPARENT)) {
                 imageId &= 0x7FFFF;
                 imageId |= 0x41880000;
             }

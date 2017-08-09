@@ -34,11 +34,10 @@
 #include "error.h"
 #include "dropdown.h"
 
-#define MONEY_DEFAULT MONEY(5000,00)
-#define MONEY_INCREMENT_DIV MONEY(1000,00)
-#define MONEY_DIGITS 14
-static utf8 _moneySpinnerText[MONEY_DIGITS];
-static money32 _moneySpinnerValue = MONEY_DEFAULT;
+#define CHEATS_MONEY_DEFAULT MONEY(10000,00)
+#define CHEATS_MONEY_INCREMENT_DIV MONEY(5000,00)
+static utf8 _moneySpinnerText[MONEY_STRING_MAXLENGTH];
+static money32 _moneySpinnerValue = CHEATS_MONEY_DEFAULT;
 
 enum {
     WINDOW_CHEATS_PAGE_MONEY,
@@ -148,6 +147,7 @@ enum WINDOW_CHEATS_WIDGET_IDX {
     WIDX_ENABLE_CHAIN_LIFT_ON_ALL_TRACK,
     WIDX_ENABLE_ARBITRARY_RIDE_TYPE_CHANGES,
     WIDX_DISABLE_RIDE_VALUE_AGING,
+    WIDX_IGNORE_RESEARCH_STATUS,
 };
 
 #pragma region MEASUREMENTS
@@ -185,10 +185,10 @@ enum WINDOW_CHEATS_WIDGET_IDX {
     { WWT_CAPTION,          0,  1,          WW - 2, 1,      14,         STR_CHEAT_TITLE,        STR_WINDOW_TITLE_TIP },     /* title bar            */ \
     { WWT_CLOSEBOX,         0,  WW - 13,    WW - 3, 2,      13,         STR_CLOSE_X,            STR_CLOSE_WINDOW_TIP },     /* close x button       */ \
     { WWT_IMGBTN,           1,  0,          WW - 1, 43,     WH - 1,     0xFFFFFFFF,             STR_NONE },                 /* tab content panel    */ \
-    { WWT_TAB,              1,  3,          33,     17,     43,         0x20000000 | SPR_TAB,   STR_FINANCIAL_CHEATS_TIP }, /* tab 1                */ \
-    { WWT_TAB,              1,  34,         64,     17,     43,         0x20000000 | SPR_TAB,   STR_GUEST_CHEATS_TIP },     /* tab 2                */ \
-    { WWT_TAB,              1,  65,         95,     17,     43,         0x20000000 | SPR_TAB,   STR_PARK_CHEATS_TIP },      /* tab 3                */ \
-    { WWT_TAB,              1,  96,         126,    17,     43,         0x20000000 | SPR_TAB,   STR_RIDE_CHEATS_TIP }       /* tab 4                */
+    { WWT_TAB,              1,  3,          33,     17,     43,         IMAGE_TYPE_REMAP | SPR_TAB,   STR_FINANCIAL_CHEATS_TIP }, /* tab 1                */ \
+    { WWT_TAB,              1,  34,         64,     17,     43,         IMAGE_TYPE_REMAP | SPR_TAB,   STR_GUEST_CHEATS_TIP },     /* tab 2                */ \
+    { WWT_TAB,              1,  65,         95,     17,     43,         IMAGE_TYPE_REMAP | SPR_TAB,   STR_PARK_CHEATS_TIP },      /* tab 3                */ \
+    { WWT_TAB,              1,  96,         126,    17,     43,         IMAGE_TYPE_REMAP | SPR_TAB,   STR_RIDE_CHEATS_TIP }       /* tab 4                */
 
 static rct_widget window_cheats_money_widgets[] = {
     MAIN_CHEATS_WIDGETS,
@@ -285,6 +285,7 @@ static rct_widget window_cheats_rides_widgets[] = {
     { WWT_CHECKBOX,         1,      XPL(0),                 OWPL,                   YPL(13),        OHPL(13),       STR_CHEAT_ENABLE_CHAIN_LIFT_ON_ALL_TRACK,   STR_CHEAT_ENABLE_CHAIN_LIFT_ON_ALL_TRACK_TIP }, // Enable chain lift on all track
     { WWT_CHECKBOX,         1,      XPL(0),                 OWPL,                   YPL(14),        OHPL(14),       STR_CHEAT_ALLOW_ARBITRARY_RIDE_TYPE_CHANGES,    STR_CHEAT_ALLOW_ARBITRARY_RIDE_TYPE_CHANGES_TIP },  // Allow arbitrary ride type changes
     { WWT_CHECKBOX,         1,      XPL(0),                 OWPL,                   YPL(15),        OHPL(15),       STR_CHEAT_DISABLE_RIDE_VALUE_AGING, STR_CHEAT_DISABLE_RIDE_VALUE_AGING_TIP }, // Disable ride ageing
+    { WWT_CHECKBOX,         1,      XPL(0),                 OWPL,                   YPL(16),        OHPL(16),       STR_CHEAT_IGNORE_RESEARCH_STATUS, STR_CHEAT_IGNORE_RESEARCH_STATUS_TIP}, // Ignore Research Status
     { WIDGETS_END },
 };
 
@@ -296,8 +297,8 @@ static rct_widget *window_cheats_page_widgets[] = {
 };
 
 static void window_cheats_money_mouseup(rct_window *w, rct_widgetindex widgetIndex);
-static void window_cheats_money_mousedown(rct_widgetindex widgetIndex, rct_window *w, rct_widget* widget);
-static void window_cheats_misc_mousedown(rct_widgetindex widgetIndex, rct_window *w, rct_widget* widget);
+static void window_cheats_money_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget);
+static void window_cheats_misc_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget);
 static void window_cheats_misc_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex);
 static void window_cheats_guests_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_cheats_misc_mouseup(rct_window *w, rct_widgetindex widgetIndex);
@@ -462,7 +463,7 @@ static uint64 window_cheats_page_enabled_widgets[] = {
         (1ULL << WIDX_MAKE_DESTRUCTIBLE) | (1ULL << WIDX_FIX_ALL) | (1ULL << WIDX_FAST_LIFT_HILL) | (1ULL << WIDX_DISABLE_BRAKES_FAILURE) |
         (1ULL << WIDX_DISABLE_ALL_BREAKDOWNS) | (1ULL << WIDX_BUILD_IN_PAUSE_MODE) | (1ULL << WIDX_RESET_CRASH_STATUS) | (1ULL << WIDX_10_MINUTE_INSPECTIONS) |
         (1ULL << WIDX_SHOW_ALL_OPERATING_MODES) | (1ULL << WIDX_SHOW_VEHICLES_FROM_OTHER_TRACK_TYPES) | (1ULL << WIDX_DISABLE_TRAIN_LENGTH_LIMITS) |
-        (1ULL << WIDX_ENABLE_CHAIN_LIFT_ON_ALL_TRACK) | (1ULL << WIDX_ENABLE_ARBITRARY_RIDE_TYPE_CHANGES) | (1ULL << WIDX_DISABLE_RIDE_VALUE_AGING)
+        (1ULL << WIDX_ENABLE_CHAIN_LIFT_ON_ALL_TRACK) | (1ULL << WIDX_ENABLE_ARBITRARY_RIDE_TYPE_CHANGES) | (1ULL << WIDX_DISABLE_RIDE_VALUE_AGING) | (1ULL << WIDX_IGNORE_RESEARCH_STATUS)
 };
 
 static uint64 window_cheats_page_hold_down_widgets[] = {
@@ -499,15 +500,15 @@ void window_cheats_open()
     park_rating_spinner_value = get_forced_park_rating() >= 0 ? get_forced_park_rating() : 999;
 }
 
-static void window_cheats_money_mousedown(rct_widgetindex widgetIndex, rct_window *w, rct_widget* widget)
+static void window_cheats_money_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget)
 {
     switch (widgetIndex) {
     case WIDX_MONEY_SPINNER_INCREMENT:
-        _moneySpinnerValue = add_clamp_money32(MONEY_INCREMENT_DIV * (_moneySpinnerValue / MONEY_INCREMENT_DIV), MONEY_INCREMENT_DIV);
+        _moneySpinnerValue = add_clamp_money32(CHEATS_MONEY_INCREMENT_DIV * (_moneySpinnerValue / CHEATS_MONEY_INCREMENT_DIV), CHEATS_MONEY_INCREMENT_DIV);
         widget_invalidate_by_class(WC_CHEATS, WIDX_MONEY_SPINNER);
         break;
     case WIDX_MONEY_SPINNER_DECREMENT:
-        _moneySpinnerValue = add_clamp_money32(MONEY_INCREMENT_DIV * (_moneySpinnerValue / MONEY_INCREMENT_DIV), -MONEY_INCREMENT_DIV);
+        _moneySpinnerValue = add_clamp_money32(CHEATS_MONEY_INCREMENT_DIV * (_moneySpinnerValue / CHEATS_MONEY_INCREMENT_DIV), -CHEATS_MONEY_INCREMENT_DIV);
         widget_invalidate_by_class(WC_CHEATS, WIDX_MONEY_SPINNER);
         break;
     case WIDX_ADD_MONEY:
@@ -516,7 +517,7 @@ static void window_cheats_money_mousedown(rct_widgetindex widgetIndex, rct_windo
     }
 }
 
-static void window_cheats_misc_mousedown(rct_widgetindex widgetIndex, rct_window *w, rct_widget* widget)
+static void window_cheats_misc_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget)
 {
     switch (widgetIndex) {
     case WIDX_INCREASE_PARK_RATING:
@@ -583,14 +584,14 @@ static void window_cheats_money_mouseup(rct_window *w, rct_widgetindex widgetInd
         game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_NOMONEY, gParkFlags & PARK_FLAGS_NO_MONEY ? 0 : 1, GAME_COMMAND_CHEAT, 0, 0);
         break;
     case WIDX_MONEY_SPINNER:
-        money_to_string(_moneySpinnerValue, _moneySpinnerText, MONEY_DIGITS);
-        window_text_input_raw_open(w, WIDX_MONEY_SPINNER, STR_ENTER_NEW_VALUE, STR_ENTER_NEW_VALUE, _moneySpinnerText, MONEY_DIGITS);
+        money_to_string(_moneySpinnerValue, _moneySpinnerText, MONEY_STRING_MAXLENGTH);
+        window_text_input_raw_open(w, WIDX_MONEY_SPINNER, STR_ENTER_NEW_VALUE, STR_ENTER_NEW_VALUE, _moneySpinnerText, MONEY_STRING_MAXLENGTH);
         break;
     case WIDX_SET_MONEY:
         game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_SETMONEY, _moneySpinnerValue, GAME_COMMAND_CHEAT, 0, 0);
         break;
     case WIDX_CLEAR_LOAN:
-        game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_CLEARLOAN, CHEATS_MONEY_INCREMENT, GAME_COMMAND_CHEAT, 0, 0);
+        game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_CLEARLOAN, CHEATS_MONEY_DEFAULT, GAME_COMMAND_CHEAT, 0, 0);
         break;
     }
 }
@@ -608,13 +609,13 @@ static void window_cheats_guests_mouseup(rct_window *w, rct_widgetindex widgetIn
         window_cheats_set_page(w, widgetIndex - WIDX_TAB_1);
         break;
     case WIDX_GUEST_HAPPINESS_MAX:
-        game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_SETGUESTPARAMETER, GUEST_PARAMETER_HAPPINESS, GAME_COMMAND_CHEAT, 255, 0);
+        game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_SETGUESTPARAMETER, GUEST_PARAMETER_HAPPINESS, GAME_COMMAND_CHEAT, PEEP_MAX_HAPPINESS, 0);
         break;
     case WIDX_GUEST_HAPPINESS_MIN:
         game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_SETGUESTPARAMETER, GUEST_PARAMETER_HAPPINESS, GAME_COMMAND_CHEAT, 0, 0);
         break;
     case WIDX_GUEST_ENERGY_MAX:
-        game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_SETGUESTPARAMETER, GUEST_PARAMETER_ENERGY, GAME_COMMAND_CHEAT, 127, 0);
+        game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_SETGUESTPARAMETER, GUEST_PARAMETER_ENERGY, GAME_COMMAND_CHEAT, PEEP_MAX_ENERGY, 0);
         break;
     case WIDX_GUEST_ENERGY_MIN:
         game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_SETGUESTPARAMETER, GUEST_PARAMETER_ENERGY, GAME_COMMAND_CHEAT, 0, 0);
@@ -835,6 +836,9 @@ static void window_cheats_rides_mouseup(rct_window *w, rct_widgetindex widgetInd
     case WIDX_DISABLE_RIDE_VALUE_AGING:
         game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_DISABLERIDEVALUEAGING, !gCheatsDisableRideValueAging, GAME_COMMAND_CHEAT, 0, 0);
         break;
+    case WIDX_IGNORE_RESEARCH_STATUS:
+        game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_IGNORERESEARCHSTATUS, !gCheatsIgnoreResearchStatus, GAME_COMMAND_CHEAT, 0, 0);
+        break;
     }
 }
 
@@ -918,6 +922,7 @@ static void window_cheats_invalidate(rct_window *w)
         widget_set_checkbox_value(w, WIDX_ENABLE_CHAIN_LIFT_ON_ALL_TRACK, gCheatsEnableChainLiftOnAllTrack);
         widget_set_checkbox_value(w, WIDX_ENABLE_ARBITRARY_RIDE_TYPE_CHANGES, gCheatsAllowArbitraryRideTypeChanges);
         widget_set_checkbox_value(w, WIDX_DISABLE_RIDE_VALUE_AGING, gCheatsDisableRideValueAging);
+        widget_set_checkbox_value(w, WIDX_IGNORE_RESEARCH_STATUS, gCheatsIgnoreResearchStatus);
         break;
     }
 

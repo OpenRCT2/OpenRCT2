@@ -1,3 +1,46 @@
+0.1.1 (in development)
+------------------------------------------------------------------------
+- Feature: [#5815] Add cheat to ignore research status and access rides/scenery not yet invented.
+- Feature: [#5857] Keyboard shortcut for clear scenery.
+- Feature: [#5877] Allow up to 16 stations to be synchronised
+- Feature: [#5970] The Bobsleigh Roller Coaster now supports on-ride photos.
+- Feature: [#5991] Allow all tracked rides that can be tested without guests to the Track Designer
+- Fix: [#2127, #2229, #5586] Mountain tool cost calculation
+- Fix: [#3589] Crash due to invalid footpathEntry in path_paint
+- Fix: [#3852] Constructing path not clearing scenery on server.
+- Fix: [#4455] Crash in window_sign_invalidate due to original bug
+- Fix: [#4715] Fix OpenGL rendering of water when zoomed. See #5890.
+- Fix: [#4931] Crash in path_paint - footpathentry was null
+- Fix: [#5629] Issue with tower ride modes approach to station - incorrect sum caused sawtooth in velocity
+- Fix: [#5768] Prevent loading non-existent title sequences.
+- Fix: [#5858] Crash when using custom ride with no colour presets.
+- Fix: [#5865] Ride preview flickering on uneven terrain or mid air.
+- Fix: [#5872] Incorrect OpenGL rendering of masked sprites
+- Fix: [#5880] Leaving bumper cars without building causes assertion.
+- Fix: [#5890] Fix zoomed OpenGL rendering of special sprites with primary and secondary colours.
+- Fix: [#5912] Negative queue when moving entrance in paused state.
+- Fix: [#5920] Placing guest spawn doesn't do anything every 3rd click
+- Fix: [#5939] Crash when importing 'Six Flags Santa Fe'.
+- Fix: [#5977] Custom music files not showing up in music list
+- Fix: [#5981] Ride list doesn't update after using quick demolish.
+- Fix: [#5984] Allow socket binding to same port after crash
+- Fix: [#5998] Staff not getting paid / no loan interest.
+- Fix: [#6026] 'Select ride to advertise' dropdown does not display all items.
+- Fix: [#6052] Unable to place entrance/exit on certain ride types.
+- Fix: [#6071] Quick demolish can delete protected ride.
+- Fix: [#6111] Mute button always visible in editor.
+- Fix: [#6113] Track preview shows incorrect highest drop height.
+- Improved: [#2223] Change mountain tool to ignore higher surrounding tiles.
+- Improved: [#4301] Leading and trailing whitespace in player name is now removed.
+- Improved: [#5859] OpenGL rendering performance
+- Improved: [#5863] Switching drawing engines no longer requires the application to restart.
+- Improved: [#6003] Doors placed on tracks will now work with all vehicles
+- Improved: [#6037] Autosaves are now stored in a subfolder
+- Improved: The land tool buttons can now be held down to increase/decrease size.
+- Improved: Dropdowns longer than 32 items overflow into columns.
+- Improved: Ride Type option in ride window is now a dropdown.
+- Improved: "About OpenRCT2" window redesigned, now contains OpenRCT2 info and access to changelog
+
 0.1.0 (2017-07-12)
 ------------------------------------------------------------------------
 - Feature: [#1399 (partial), #5177] Add window that displays any missing/corrupt objects when loading a park

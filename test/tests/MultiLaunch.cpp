@@ -6,6 +6,7 @@
 #include <openrct2/core/Path.hpp>
 #include <openrct2/core/String.hpp>
 #include <openrct2/OpenRCT2.h>
+#include <openrct2/ParkImporter.h>
 #include "TestData.h"
 
 extern "C"
@@ -29,9 +30,22 @@ TEST(MultiLaunchTest, all)
         bool initialised = context->Initialise();
         ASSERT_TRUE(initialised);
 
-        game_load_sv6_path(path.c_str());
+        ParkLoadResult * plr = game_load_sv6_path(path.c_str());
+
+        ASSERT_EQ(ParkLoadResult_GetError(plr), PARK_LOAD_ERROR_OK);
+        ParkLoadResult_Delete(plr);
+
+        game_load_init();
 
         // Check ride count to check load was successful
+        ASSERT_EQ(gRideCount, 134);
+
+        for (int j = 0; j < 10; j++)
+        {
+            game_logic_update();
+        }
+
+        // Check ride count again
         ASSERT_EQ(gRideCount, 134);
 
         delete context;

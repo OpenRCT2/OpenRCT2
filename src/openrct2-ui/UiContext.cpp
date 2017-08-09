@@ -30,6 +30,7 @@
 #include <openrct2/localisation/string_ids.h>
 #include <openrct2/platform/Platform2.h>
 #include <openrct2/ui/UiContext.h>
+#include <openrct2/ui/WindowManager.h>
 #include <openrct2/Version.h>
 #include "CursorRepository.h"
 #include "drawing/engines/DrawingEngines.h"
@@ -72,8 +73,6 @@ private:
     SDL_Window *    _window = nullptr;
     sint32          _width  = 0;
     sint32          _height = 0;
-    uint32          _windowFlags = 0;
-    uint32          _windowFlagsLastCheckTick = 0;
 
     bool _resolutionsAllowAnyAspectRatio = false;
     std::vector<Resolution> _fsResolutions;
@@ -108,6 +107,7 @@ public:
     ~UiContext() override
     {
         CloseWindow();
+        delete _windowManager;
         SDL_QuitSubSystem(SDL_INIT_VIDEO);
         delete _platformUiContext;
     }
@@ -283,7 +283,7 @@ public:
         {
             switch (e.type) {
             case SDL_QUIT:
-                rct2_quit();
+                context_quit();
                 break;
             case SDL_WINDOWEVENT:
                 // HACK: Fix #2158, OpenRCT2 does not draw if it does not think that the window is
@@ -429,7 +429,7 @@ public:
                 if (_cursorState.touchIsDouble)
                 {
                     store_mouse_input(MOUSE_STATE_RIGHT_RELEASE, x, y);
-                    _cursorState.left = CURSOR_RELEASED;
+                    _cursorState.right = CURSOR_RELEASED;
                     _cursorState.old = 4;
                 }
                 else {
@@ -516,44 +516,28 @@ public:
         sint32 x = SDL_WINDOWPOS_UNDEFINED_DISPLAY(defaultDisplay);
         sint32 y = SDL_WINDOWPOS_UNDEFINED_DISPLAY(defaultDisplay);
 
-        // Get saved window size
-        sint32 width = gConfigGeneral.window_width;
-        sint32 height = gConfigGeneral.window_height;
-        if (width <= 0) width = 640;
-        if (height <= 0) height = 480;
-
-        // Create window in window first rather than fullscreen so we have the display the window is on first
-        uint32 flags = SDL_WINDOW_RESIZABLE;
-        if (gConfigGeneral.drawing_engine == DRAWING_ENGINE_OPENGL)
-        {
-            flags |= SDL_WINDOW_OPENGL;
-        }
-
-        _window = SDL_CreateWindow(OPENRCT2_NAME, x, y, width, height, flags);
-        if (_window == nullptr)
-        {
-            SDLException::Throw("SDL_CreateWindow(...)");
-        }
-
-        SDL_SetWindowMinimumSize(_window, 720, 480);
-        SetCursorTrap(gConfigGeneral.trap_cursor);
-        _platformUiContext->SetWindowIcon(_window);
-
-        // Initialise the surface, palette and draw buffer
-        OnResize(width, height);
-
-        UpdateFullscreenResolutions();
-        SetFullscreenMode((FULLSCREEN_MODE)gConfigGeneral.fullscreen_mode);
+        CreateWindow(x, y);
 
         // Check if steam overlay renderer is loaded into the process
         _steamOverlayActive = _platformUiContext->IsSteamOverlayAttached();
-        TriggerResize();
     }
 
     void CloseWindow() override
     {
         drawing_engine_dispose();
         SDL_DestroyWindow(_window);
+        _window = nullptr;
+    }
+
+    void RecreateWindow() override
+    {
+        // Use the position of the current window for the new window
+        sint32 x, y;
+        SDL_SetWindowFullscreen(_window, 0);
+        SDL_GetWindowPosition(_window, &x, &y);
+
+        CloseWindow();
+        CreateWindow(x, y);
     }
 
     void ShowMessageBox(const std::string &message) override
@@ -646,6 +630,41 @@ public:
 
 
 private:
+    void CreateWindow(sint32 x, sint32 y)
+    {
+        // Get saved window size
+        sint32 width = gConfigGeneral.window_width;
+        sint32 height = gConfigGeneral.window_height;
+        if (width <= 0) width = 640;
+        if (height <= 0) height = 480;
+
+        // Create window in window first rather than fullscreen so we have the display the window is on first
+        uint32 flags = SDL_WINDOW_RESIZABLE;
+        if (gConfigGeneral.drawing_engine == DRAWING_ENGINE_OPENGL)
+        {
+            flags |= SDL_WINDOW_OPENGL;
+        }
+
+        _window = SDL_CreateWindow(OPENRCT2_NAME, x, y, width, height, flags);
+        if (_window == nullptr)
+        {
+            SDLException::Throw("SDL_CreateWindow(...)");
+        }
+
+        SDL_SetWindowMinimumSize(_window, 720, 480);
+        SetCursorTrap(gConfigGeneral.trap_cursor);
+        _platformUiContext->SetWindowIcon(_window);
+
+        // Initialise the surface, palette and draw buffer
+        drawing_engine_init();
+        OnResize(width, height);
+
+        UpdateFullscreenResolutions();
+        SetFullscreenMode((FULLSCREEN_MODE)gConfigGeneral.fullscreen_mode);
+
+        TriggerResize();
+    }
+
     void OnResize(sint32 width, sint32 height)
     {
         // Scale the native window size to the game's canvas size
@@ -664,7 +683,6 @@ private:
         gfx_invalidate_screen();
 
         // Check if the window has been resized in windowed mode and update the config file accordingly
-        // This is called in rct2_update and is only called after resizing a window has finished
         sint32 nonWindowFlags =
 #ifndef __MACOSX__
             SDL_WINDOW_MAXIMIZED |
@@ -764,14 +782,7 @@ private:
 
     uint32 GetWindowFlags()
     {
-        // Don't check if window is minimised too frequently (every second is fine)
-        uint32 tick = Platform::GetTicks();
-        if (tick > _windowFlagsLastCheckTick + 1000)
-        {
-            _windowFlags = SDL_GetWindowFlags(_window);
-            _windowFlagsLastCheckTick = tick;
-        }
-        return _windowFlags;
+        return SDL_GetWindowFlags(_window);
     }
 };
 

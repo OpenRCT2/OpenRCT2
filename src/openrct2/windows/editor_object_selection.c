@@ -30,6 +30,7 @@
 #include "../object_list.h"
 #include "../object/ObjectManager.h"
 #include "../object/ObjectRepository.h"
+#include "../OpenRCT2.h"
 #include "../platform/platform.h"
 #include "../rct1.h"
 #include "../ride/ride.h"
@@ -151,17 +152,17 @@ static rct_widget window_editor_object_selection_widgets[] = {
     { WWT_CAPTION,          0,  1,      598,    1,      14,     STR_OBJECT_SELECTION,           STR_WINDOW_TITLE_TIP },
     { WWT_CLOSEBOX,         0,  587,    597,    2,      13,     STR_CLOSE_X,                    STR_CLOSE_WINDOW_TIP },
     { WWT_RESIZE,           1,  0,      599,    43,     399,    0xFFFFFFFF,                     STR_NONE },
-    { WWT_TAB,              1,  3,      33,     17,     43,     0x20000000 | SPR_TAB,           STR_STRING_DEFINED_TOOLTIP },
-    { WWT_TAB,              1,  34,     64,     17,     43,     0x20000000 | SPR_TAB,           STR_STRING_DEFINED_TOOLTIP },
-    { WWT_TAB,              1,  65,     95,     17,     43,     0x20000000 | SPR_TAB,           STR_STRING_DEFINED_TOOLTIP },
-    { WWT_TAB,              1,  96,     126,    17,     43,     0x20000000 | SPR_TAB,           STR_STRING_DEFINED_TOOLTIP },
-    { WWT_TAB,              1,  127,    157,    17,     43,     0x20000000 | SPR_TAB,           STR_STRING_DEFINED_TOOLTIP },
-    { WWT_TAB,              1,  158,    188,    17,     43,     0x20000000 | SPR_TAB,           STR_STRING_DEFINED_TOOLTIP },
-    { WWT_TAB,              1,  189,    219,    17,     43,     0x20000000 | SPR_TAB,           STR_STRING_DEFINED_TOOLTIP },
-    { WWT_TAB,              1,  220,    250,    17,     43,     0x20000000 | SPR_TAB,           STR_STRING_DEFINED_TOOLTIP },
-    { WWT_TAB,              1,  251,    281,    17,     43,     0x20000000 | SPR_TAB,           STR_STRING_DEFINED_TOOLTIP },
-    { WWT_TAB,              1,  282,    312,    17,     43,     0x20000000 | SPR_TAB,           STR_STRING_DEFINED_TOOLTIP },
-    { WWT_TAB,              1,  313,    343,    17,     43,     0x20000000 | SPR_TAB,           STR_STRING_DEFINED_TOOLTIP },
+    { WWT_TAB,              1,  3,      33,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,           STR_STRING_DEFINED_TOOLTIP },
+    { WWT_TAB,              1,  34,     64,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,           STR_STRING_DEFINED_TOOLTIP },
+    { WWT_TAB,              1,  65,     95,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,           STR_STRING_DEFINED_TOOLTIP },
+    { WWT_TAB,              1,  96,     126,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,           STR_STRING_DEFINED_TOOLTIP },
+    { WWT_TAB,              1,  127,    157,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,           STR_STRING_DEFINED_TOOLTIP },
+    { WWT_TAB,              1,  158,    188,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,           STR_STRING_DEFINED_TOOLTIP },
+    { WWT_TAB,              1,  189,    219,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,           STR_STRING_DEFINED_TOOLTIP },
+    { WWT_TAB,              1,  220,    250,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,           STR_STRING_DEFINED_TOOLTIP },
+    { WWT_TAB,              1,  251,    281,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,           STR_STRING_DEFINED_TOOLTIP },
+    { WWT_TAB,              1,  282,    312,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,           STR_STRING_DEFINED_TOOLTIP },
+    { WWT_TAB,              1,  313,    343,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,           STR_STRING_DEFINED_TOOLTIP },
     { WWT_DROPDOWN_BUTTON,  0,  470,    591,    23,     34,     STR_OBJECT_SELECTION_ADVANCED,  STR_OBJECT_SELECTION_ADVANCED_TIP },
     { WWT_SCROLL,           1,  4,      291,    60,     386,    SCROLL_VERTICAL,                STR_NONE },
     { WWT_FLATBTN,          1,  391,    504,    46,     159,    0xFFFFFFFF,                     STR_NONE },
@@ -170,13 +171,13 @@ static rct_widget window_editor_object_selection_widgets[] = {
     { WWT_TEXT_BOX,         1,  4,      214,    46,     57,     STR_NONE,                       STR_NONE },
     { WWT_DROPDOWN_BUTTON,  1,  218,    287,    46,     57,     STR_OBJECT_SEARCH_CLEAR,        STR_NONE },
     { WWT_IMGBTN,           1,  3,      287,    73,     76,     0xFFFFFFFF,                     STR_NONE },
-    { WWT_TAB,              1,  3,      33,     47,     73,     0x20000000 | SPR_TAB,           STR_OBJECT_FILTER_ALL_RIDES_TIP },
-    { WWT_TAB,              1,  34,     64,     47,     73,     0x20000000 | SPR_TAB,           STR_TRANSPORT_RIDES_TIP },
-    { WWT_TAB,              1,  65,     95,     47,     73,     0x20000000 | SPR_TAB,           STR_GENTLE_RIDES_TIP },
-    { WWT_TAB,              1,  96,     126,    47,     73,     0x20000000 | SPR_TAB,           STR_ROLLER_COASTERS_TIP },
-    { WWT_TAB,              1,  127,    157,    47,     73,     0x20000000 | SPR_TAB,           STR_THRILL_RIDES_TIP },
-    { WWT_TAB,              1,  158,    188,    47,     73,     0x20000000 | SPR_TAB,           STR_WATER_RIDES_TIP },
-    { WWT_TAB,              1,  189,    219,    47,     73,     0x20000000 | SPR_TAB,           STR_SHOPS_STALLS_TIP },
+    { WWT_TAB,              1,  3,      33,     47,     73,     IMAGE_TYPE_REMAP | SPR_TAB,           STR_OBJECT_FILTER_ALL_RIDES_TIP },
+    { WWT_TAB,              1,  34,     64,     47,     73,     IMAGE_TYPE_REMAP | SPR_TAB,           STR_TRANSPORT_RIDES_TIP },
+    { WWT_TAB,              1,  65,     95,     47,     73,     IMAGE_TYPE_REMAP | SPR_TAB,           STR_GENTLE_RIDES_TIP },
+    { WWT_TAB,              1,  96,     126,    47,     73,     IMAGE_TYPE_REMAP | SPR_TAB,           STR_ROLLER_COASTERS_TIP },
+    { WWT_TAB,              1,  127,    157,    47,     73,     IMAGE_TYPE_REMAP | SPR_TAB,           STR_THRILL_RIDES_TIP },
+    { WWT_TAB,              1,  158,    188,    47,     73,     IMAGE_TYPE_REMAP | SPR_TAB,           STR_WATER_RIDES_TIP },
+    { WWT_TAB,              1,  189,    219,    47,     73,     IMAGE_TYPE_REMAP | SPR_TAB,           STR_SHOPS_STALLS_TIP },
     { WWT_13,               1,  4,      204,    80,     93,     STR_NONE,                       STR_NONE },
     { WWT_13,               1,  205,    291,    80,     93,     STR_NONE,                       STR_NONE },
     { WIDGETS_END }
@@ -189,7 +190,7 @@ static rct_widget window_editor_object_selection_widgets[] = {
 static void window_editor_object_selection_close(rct_window *w);
 static void window_editor_object_selection_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_editor_object_selection_resize(rct_window *w);
-static void window_editor_object_selection_mousedown(rct_widgetindex widgetIndex, rct_window*w, rct_widget* widget);
+static void window_editor_object_selection_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget);
 static void window_editor_object_selection_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex);
 static void window_editor_object_selection_update(rct_window *w);
 static void window_editor_object_selection_scrollgetsize(rct_window *w, sint32 scrollIndex, sint32 *width, sint32 *height);
@@ -897,11 +898,9 @@ static void window_editor_object_selection_resize(rct_window *w)
     window_set_resize(w, 600, 400, 1200, 1000);
 }
 
-void window_editor_object_selection_mousedown(rct_widgetindex widgetIndex, rct_window*w, rct_widget* widget)
+void window_editor_object_selection_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget)
 {
     sint32 num_items;
-
-    //widget = &w->widgets[widgetIndex - 1];
 
     switch (widgetIndex) {
     case WIDX_FILTER_DROPDOWN:
@@ -935,7 +934,14 @@ void window_editor_object_selection_mousedown(rct_widgetindex widgetIndex, rct_w
             num_items
             );
 
-        gDropdownItemsChecked = _filter_flags & 0xF;
+        for (sint32 i = 0; i < 4; i++)
+        {
+            if (_filter_flags & (1 << i))
+            {
+                dropdown_set_checked(i, true);
+            }
+        }
+
         if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)) {
             dropdown_set_checked(DDIX_FILTER_SELECTED, _FILTER_SELECTED);
             dropdown_set_checked(DDIX_FILTER_NONSELECTED, _FILTER_NONSELECTED);
@@ -1267,7 +1273,7 @@ static void window_editor_object_selection_paint(rct_window *w, rct_drawpixelinf
         gfx_draw_sprite(dpi, SPR_TAB_RIDE_16 + i, x, y, 0);
     }
 
-    const sint32 ride_tabs[] = { SPR_TAB_RIDE_16, 0x20000000 | SPR_TAB_RIDES_TRANSPORT_0, SPR_TAB_RIDES_GENTLE_0, 0x20000000 | SPR_TAB_RIDES_ROLLER_COASTERS_0, SPR_TAB_RIDES_THRILL_0, SPR_TAB_RIDES_WATER_0, SPR_TAB_RIDES_SHOP_0, SPR_TAB_FINANCES_RESEARCH_0 };
+    const sint32 ride_tabs[] = { SPR_TAB_RIDE_16, IMAGE_TYPE_REMAP | SPR_TAB_RIDES_TRANSPORT_0, SPR_TAB_RIDES_GENTLE_0, IMAGE_TYPE_REMAP | SPR_TAB_RIDES_ROLLER_COASTERS_0, SPR_TAB_RIDES_THRILL_0, SPR_TAB_RIDES_WATER_0, SPR_TAB_RIDES_SHOP_0, SPR_TAB_FINANCES_RESEARCH_0 };
     const sint32 ThrillRidesTabAnimationSequence[] = {
         5, 6, 5, 4, 3, 2, 1, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 4, 0, 0, 0
     };

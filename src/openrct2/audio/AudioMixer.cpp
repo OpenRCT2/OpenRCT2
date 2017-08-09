@@ -23,11 +23,6 @@
 #include "AudioMixer.h"
 #include "AudioSource.h"
 
-extern "C"
-{
-    #include "../rct2.h"
-}
-
 using namespace OpenRCT2;
 using namespace OpenRCT2::Audio;
 
@@ -143,7 +138,7 @@ void * Mixer_Play_Music(sint32 pathId, sint32 loop, sint32 streaming)
     {
         if (streaming)
         {
-            const utf8 * path = get_file_path(pathId);
+            const utf8 * path = context_get_path_legacy(pathId);
 
             IAudioContext * audioContext = GetContext()->GetAudioContext();
             IAudioSource * source = audioContext->CreateStreamFromWAV(path);

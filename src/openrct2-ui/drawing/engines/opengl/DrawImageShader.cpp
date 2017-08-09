@@ -81,8 +81,6 @@ DrawImageShader::~DrawImageShader()
     glDeleteBuffers(1, &_vbo);
     glDeleteBuffers(1, &_vboInstances);
     glDeleteVertexArrays(1, &_vao);
-
-    glBindVertexArray(_vao);
 }
 
 void DrawImageShader::GetLocations()

@@ -895,7 +895,7 @@ STR_0884    :载入地形
 STR_0885    :保存地形
 STR_0886    :退出游戏
 STR_0887    :退出场景编辑器
-STR_0888    :退出过山车设计工具
+STR_0888    :退出轨道设计工具
 STR_0889    :退出轨道设计管理工具
 STR_0890    :<removed string - do not use>
 STR_0891    :截图
@@ -3220,7 +3220,7 @@ STR_3203    :设置研发清单
 STR_3204    :选取选项
 STR_3205    :选取目标
 STR_3206    :存储剧情
-STR_3207    :过山车设计工具
+STR_3207    :轨道设计工具
 STR_3208    :轨道设计管理工具
 STR_3209    :上一步:
 STR_3210    :下一步:
@@ -3348,7 +3348,7 @@ STR_3331    :由地图边缘到乐园入口的道路尚未连接好, 或者太�
 STR_3332    :乐园入口倒转了, 或没有道路连接至地图边缘
 STR_3333    :在存档中导出附加物
 STR_3334    :{SMALLFONT}{BLACK}Select whether to save any additional plug-in object data required (add-in data not supplied with the main product) in saved game or scenario files, allowing them to be loaded by someone who doesn't have the additional object data
-STR_3335    :过山车设计工具 - 选择游乐设施的类型及车辆种类
+STR_3335    :轨道设计工具 - 选择游乐设施的类型及车辆种类
 STR_3336    :轨道设计管理工具 - 选择游乐设施的类型
 STR_3337    :<not used anymore>
 STR_3338    :{BLACK}Custom-designed layout
@@ -3357,7 +3357,7 @@ STR_3340    :{BLACK}{COMMA16} designs available, or custom-designed layout
 STR_3341    :{SMALLFONT}{BLACK}游戏工具
 STR_3342    :剧情编辑器
 STR_3343    :将游戏存档转换成剧情关
-STR_3344    :过山车设计工具
+STR_3344    :轨道设计工具
 STR_3345    :轨道设计管理工具
 STR_3346    :不能保存轨道设计...
 STR_3347    :Ride is too large, contains too many elements, or scenery is too spread out
@@ -3774,7 +3774,7 @@ STR_5426    :结束
 STR_5427    :坐标:
 STR_5428    :逆时针旋转次数:
 STR_5429    :放大级别:
-STR_5430    :等待秒数:
+STR_5430    :等待毫秒数:
 STR_5431    :要读取的存档:
 STR_5432    :命令:
 STR_5433    :Title Sequences
@@ -4373,7 +4373,82 @@ STR_6055    :OpenRCT2高度图文件
 STR_6056    :{SMALLFONT}{BLACK}静音
 STR_6057    :{SMALLFONT}{BLACK}在工具栏为静音选项显示一个单独的按钮
 STR_6058    :静音
-
+STR_6059    :{RIGHTGUILLEMET}
+STR_6060    :将游客的购买行为用动画表现
+STR_6061    :{SMALLFONT}{BLACK}当游客购买时播放金钱动画效果{NEWLINE}.
+STR_6062    :{OUTLINE}{GREEN}+ {CURRENCY2DP}
+STR_6063    :{OUTLINE}{RED}- {CURRENCY2DP}
+STR_6064    :拥有所有土地
+STR_6065    :记录用户操作
+STR_6066    :{SMALLFONT}{BLACK}在你的用户文件夹下用文件记录所有用户的操作.
+STR_6067    :服务器开启.
+STR_6068    :服务器关闭.
+STR_6069    :{STRING} 被{STRING}从服务器踢出.
+STR_6070    :{STRING} 被设置到组'{STRING}', 通过{STRING}设置.
+STR_6071    :{STRING} 创建新的玩家组'{STRING}'.
+STR_6072    :{STRING} 删除玩家组'{String}'.
+STR_6073    :{STRING} 编辑玩家组'{String}'的权限.
+STR_6074    :{STRING} 将玩家组名称从'{String}'改名为'{String}'.
+STR_6075    :{STRING} 设置默认玩家组为'{String}'.
+STR_6076    :{STRING} 使用/开启作弊'{STRING}'.
+STR_6077    :增加金钱
+STR_6078    :{STRING} 建造游乐设施'{STRING}'.
+STR_6079    :{STRING} 拆除游乐设施'{STRING}'.
+STR_6080    :{STRING} 改变游乐设施'{STRING}'的外观.
+STR_6081    :{STRING} 将游乐设施'{STRING}'的状态变为已关闭.
+STR_6082    :{STRING} 将游乐设施'{STRING}'的状态变为开放中.
+STR_6083    :{STRING} 将游乐设施'{STRING}'的状态变为测试中.
+STR_6084    :{STRING} 改变游乐设施'{STRING}'的车辆选项.
+STR_6085    :{STRING} 改变游乐设施'{STRING}'的设备选项.
+STR_6086    :{STRING} 将游乐设施'{STRING}'改名为'{STRING}'.
+STR_6087    :{STRING} 将游乐设施的价格从'{STRING}'调整到{STRING}
+STR_6088    :{STRING} 将游乐设施的第二价格从'{STRING}'调整到{STRING}
+STR_6089    :{STRING} 将游乐园名称从'{STRING}'改名为'{STRING}'.
+STR_6090    :{STRING} 开放游乐园.
+STR_6091    :{STRING} 关闭游乐园.
+STR_6092    :{STRING} 将游乐园门票价格调整为{STRING}
+STR_6093    :{STRING} 放置新景观.
+STR_6094    :{STRING} 移除景观.
+STR_6095    :{STRING} 编辑景观.
+STR_6096    :{STRING} 将指示牌命名为'{STRING}'.
+STR_6097    :{STRING} 为游乐设施放置一条新轨道'{STRING}'.
+STR_6098    :{STRING} 移除游乐设施的一条轨道.
+STR_6099    :你已连接到服务器.
+STR_6100    :你已从服务器断开.
+STR_6101    :游乐设施不会随时间流逝而贬值
+STR_6102    :{SMALLFONT}{BLACK}游乐设施的价值不会随时间流逝而贬值, 因此游客不会产生玩此游乐设施太贵的想法.
+STR_6103    :{SMALLFONT}{BLACK}此选项在联网模式下被禁用.
+STR_6104    :螺旋过山车
+STR_6105    :Hypercoaster
+STR_6106    :轨道小车
+STR_6107    :Monster Trucks
+STR_6108    :钢架旋转式
+STR_6109    :超旋转式
+STR_6110    :Junior过山车
+STR_6111    :经典迷你过山车
+STR_6112    :一种紧凑的钢制轨道过山车, 其车厢穿越螺旋轨道和回旋轨道
+STR_6113    :一种高大的非翻转的过山车, 拥有巨大降落, 高速和只有围栏限制的舒适的车厢
+#TODO 6114
+STR_6114    :乘客沿轨道缓慢行驶
+STR_6115    :动力十足的4x4四驱卡车, 可以攀爬陡峭的斜坡
+STR_6116    :宽阔的过山车车厢沿着光滑的钢轨滑行，穿过各种倒置轨道
+STR_6117    :坐在舒适的只有简单的围栏护手的车厢中，即可享受巨大落差和旋转轨道，就像在山丘上的大量'空中时光'
+STR_6118    :对于还没有勇气面对更大游乐设施的人们而言，这是一种温和的过山车
+STR_6119    :一种廉价且方便建造的过山车, 但是有高度限制
+STR_6120    :{BABYBLUE}新车辆可用于{STRINGID}:{NEWLINE}{STRINGID}
+STR_6121    :{SMALLFONT}{BLACK}将游乐园土地所有权扩展至地图边缘
+STR_6122    :此剧情中没有足够的过山车!
+STR_6123    :加载错误的游乐园对象
+STR_6124    :对象名称
+STR_6125    :对象类型
+STR_6126    :未知类型
+STR_6127    :文件: {STRING}
+STR_6128    :文件不能被加载, 因为其中一部分引用的对象丢失或错误. 以下是这些对象的列表.
+STR_6129    :将选中的项目复制到剪贴板
+STR_6130    :将整个列表复制到剪贴板
+STR_6131    :对象源
+STR_6132    :忽略研究状态
+STR_6133    :{SMALLFONT}{BLACK}使用还未被研究出的游乐设施和景观
 
 
 
@@ -4518,9 +4593,9 @@ STR_SCNR    :Funtopia
 STR_PARK    :Funtopia
 STR_DTLS    :Covering land both sides of a highway, this park has several rides already operating
 
-<Haunted Harbor>
-STR_SCNR    :Haunted Harbor
-STR_PARK    :Haunted Harbor
+<Haunted Harbour>
+STR_SCNR    :Haunted Harbour
+STR_PARK    :Haunted Harbour
 STR_DTLS    :The local authority has agreed to sell nearby land cheaply to this small seaside park, on the condition that certain rides are preserved
 
 <Fun Fortress>

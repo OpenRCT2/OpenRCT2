@@ -20,7 +20,7 @@
 #include "../interface/window.h"
 #include "../localisation/localisation.h"
 #include "../management/finance.h"
-#include "../rct2.h"
+#include "../OpenRCT2.h"
 #include "../sprites.h"
 #include "dropdown.h"
 #include "error.h"
@@ -96,9 +96,9 @@ static rct_widget window_editor_scenario_options_financial_widgets[] = {
     { WWT_CAPTION,          0,  1,      278,    1,      14,     STR_SCENARIO_OPTIONS_FINANCIAL,         STR_WINDOW_TITLE_TIP                        },
     { WWT_CLOSEBOX,         0,  267,    277,    2,      13,     STR_CLOSE_X,                            STR_CLOSE_WINDOW_TIP                        },
     { WWT_RESIZE,           1,  0,      279,    43,     148,    STR_NONE,                               STR_NONE                                    },
-    { WWT_TAB,              1,  3,      33,     17,     43,     0x20000000 | SPR_TAB,                   STR_SCENARIO_OPTIONS_FINANCIAL_TIP          },
-    { WWT_TAB,              1,  34,     64,     17,     46,     0x20000000 | SPR_TAB,                   STR_SCENARIO_OPTIONS_GUESTS_TIP             },
-    { WWT_TAB,              1,  65,     95,     17,     43,     0x20000000 | SPR_TAB,                   STR_SCENARIO_OPTIONS_PARK_TIP               },
+    { WWT_TAB,              1,  3,      33,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,                   STR_SCENARIO_OPTIONS_FINANCIAL_TIP          },
+    { WWT_TAB,              1,  34,     64,     17,     46,     IMAGE_TYPE_REMAP | SPR_TAB,                   STR_SCENARIO_OPTIONS_GUESTS_TIP             },
+    { WWT_TAB,              1,  65,     95,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,                   STR_SCENARIO_OPTIONS_PARK_TIP               },
 
     { WWT_CHECKBOX,         1,  8,      271,    48,     59,     STR_MAKE_PARK_NO_MONEY,                 STR_MAKE_PARK_NO_MONEY_TIP                  },
     { WWT_SPINNER,          1,  168,    267,    65,     76,     STR_NONE,                               STR_NONE                                    },
@@ -122,9 +122,9 @@ static rct_widget window_editor_scenario_options_guests_widgets[] = {
     { WWT_CAPTION,          0,  1,      278,    1,      14,     STR_SCENARIO_OPTIONS_GUESTS,            STR_WINDOW_TITLE_TIP                        },
     { WWT_CLOSEBOX,         0,  267,    277,    2,      13,     STR_CLOSE_X,                            STR_CLOSE_WINDOW_TIP                        },
     { WWT_RESIZE,           1,  0,      279,    43,     148,    STR_NONE,                               STR_NONE                                    },
-    { WWT_TAB,              1,  3,      33,     17,     43,     0x20000000 | SPR_TAB,                   STR_SCENARIO_OPTIONS_FINANCIAL_TIP          },
-    { WWT_TAB,              1,  34,     64,     17,     46,     0x20000000 | SPR_TAB,                   STR_SCENARIO_OPTIONS_GUESTS_TIP             },
-    { WWT_TAB,              1,  65,     95,     17,     43,     0x20000000 | SPR_TAB,                   STR_SCENARIO_OPTIONS_PARK_TIP               },
+    { WWT_TAB,              1,  3,      33,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,                   STR_SCENARIO_OPTIONS_FINANCIAL_TIP          },
+    { WWT_TAB,              1,  34,     64,     17,     46,     IMAGE_TYPE_REMAP | SPR_TAB,                   STR_SCENARIO_OPTIONS_GUESTS_TIP             },
+    { WWT_TAB,              1,  65,     95,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,                   STR_SCENARIO_OPTIONS_PARK_TIP               },
 
     { WWT_SPINNER,          1,  268,    337,    48,     59,     STR_NONE,                               STR_NONE                                    },
     { WWT_DROPDOWN_BUTTON,  1,  326,    336,    49,     53,     STR_NUMERIC_UP,                         STR_NONE                                    },
@@ -148,9 +148,9 @@ static rct_widget window_editor_scenario_options_park_widgets[] = {
     { WWT_CAPTION,          0,  1,      278,    1,      14,     STR_SCENARIO_OPTIONS_PARK,              STR_WINDOW_TITLE_TIP                        },
     { WWT_CLOSEBOX,         0,  267,    277,    2,      13,     STR_CLOSE_X,                            STR_CLOSE_WINDOW_TIP                        },
     { WWT_RESIZE,           1,  0,      279,    43,     148,    STR_NONE,                               STR_NONE                                    },
-    { WWT_TAB,              1,  3,      33,     17,     43,     0x20000000 | SPR_TAB,                   STR_SCENARIO_OPTIONS_FINANCIAL_TIP          },
-    { WWT_TAB,              1,  34,     64,     17,     46,     0x20000000 | SPR_TAB,                   STR_SCENARIO_OPTIONS_GUESTS_TIP             },
-    { WWT_TAB,              1,  65,     95,     17,     43,     0x20000000 | SPR_TAB,                   STR_SCENARIO_OPTIONS_PARK_TIP               },
+    { WWT_TAB,              1,  3,      33,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,                   STR_SCENARIO_OPTIONS_FINANCIAL_TIP          },
+    { WWT_TAB,              1,  34,     64,     17,     46,     IMAGE_TYPE_REMAP | SPR_TAB,                   STR_SCENARIO_OPTIONS_GUESTS_TIP             },
+    { WWT_TAB,              1,  65,     95,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,                   STR_SCENARIO_OPTIONS_PARK_TIP               },
 
     { WWT_SPINNER,          1,  188,    257,    48,     59,     STR_NONE,                               STR_NONE                                    },
     { WWT_DROPDOWN_BUTTON,  1,  246,    256,    49,     53,     STR_NUMERIC_UP,                         STR_NONE                                    },
@@ -183,21 +183,21 @@ static rct_widget *window_editor_scenario_options_widgets[] = {
 
 static void window_editor_scenario_options_financial_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_editor_scenario_options_financial_resize(rct_window *w);
-static void window_editor_scenario_options_financial_mousedown(rct_widgetindex widgetIndex, rct_window *w, rct_widget *widget);
+static void window_editor_scenario_options_financial_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget *widget);
 static void window_editor_scenario_options_financial_update(rct_window *w);
 static void window_editor_scenario_options_financial_invalidate(rct_window *w);
 static void window_editor_scenario_options_financial_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
 static void window_editor_scenario_options_guests_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_editor_scenario_options_guests_resize(rct_window *w);
-static void window_editor_scenario_options_guests_mousedown(rct_widgetindex widgetIndex, rct_window *w, rct_widget *widget);
+static void window_editor_scenario_options_guests_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget *widget);
 static void window_editor_scenario_options_guests_update(rct_window *w);
 static void window_editor_scenario_options_guests_invalidate(rct_window *w);
 static void window_editor_scenario_options_guests_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
 static void window_editor_scenario_options_park_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_editor_scenario_options_park_resize(rct_window *w);
-static void window_editor_scenario_options_park_mousedown(rct_widgetindex widgetIndex, rct_window *w, rct_widget *widget);
+static void window_editor_scenario_options_park_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget *widget);
 static void window_editor_scenario_options_park_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex);
 static void window_editor_scenario_options_park_update(rct_window *w);
 static void window_editor_scenario_options_park_invalidate(rct_window *w);
@@ -551,7 +551,7 @@ static void window_editor_scenario_options_financial_resize(rct_window *w)
  *
  *  rct2: 0x006704C8
  */
-static void window_editor_scenario_options_financial_mousedown(rct_widgetindex widgetIndex, rct_window *w, rct_widget *widget)
+static void window_editor_scenario_options_financial_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget *widget)
 {
     switch (widgetIndex) {
     case WIDX_INITIAL_CASH_INCREASE:
@@ -884,7 +884,7 @@ static void window_editor_scenario_options_guests_resize(rct_window *w)
  *
  *  rct2: 0x00670A89
  */
-static void window_editor_scenario_options_guests_mousedown(rct_widgetindex widgetIndex, rct_window *w, rct_widget *widget)
+static void window_editor_scenario_options_guests_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget *widget)
 {
     switch (widgetIndex) {
     case WIDX_CASH_PER_GUEST_INCREASE:
@@ -1226,7 +1226,7 @@ static void window_editor_scenario_options_park_resize(rct_window *w)
  *
  *  rct2: 0x00671019
  */
-static void window_editor_scenario_options_park_mousedown(rct_widgetindex widgetIndex, rct_window *w, rct_widget *widget)
+static void window_editor_scenario_options_park_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget *widget)
 {
     rct_widget *dropdownWidget;
 

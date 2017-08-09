@@ -331,7 +331,7 @@ static money32 staff_hire_new_staff_member(uint8 staff_type, uint8 flags, sint16
 
             // Staff energy determines their walking speed
             newPeep->energy = 0x60;
-            newPeep->energy_growth_rate = 0x60;
+            newPeep->energy_target = 0x60;
             newPeep->var_E2 = 0;
 
             peep_update_name_sort(newPeep);
@@ -1160,14 +1160,14 @@ static uint8 staff_mechanic_direction_surface(rct_peep* peep) {
 
         rct_ride* ride = get_ride(peep->current_ride);
 
-        uint16 location = ride->exits[peep->current_ride_station];
-        if (location == 0xFFFF) {
+        rct_xy8 location = ride->exits[peep->current_ride_station];
+        if (location.xy == RCT_XY8_UNDEFINED) {
             location = ride->entrances[peep->current_ride_station];
         }
 
         rct_xy16 chosenTile = {
-            .x = (location & 0xFF) * 32,
-            .y = (location >> 8) * 32
+            .x = location.x * 32,
+            .y = location.y * 32
         };
 
         sint16 x_diff = chosenTile.x - peep->x;
@@ -1248,14 +1248,14 @@ static uint8 staff_mechanic_direction_path(rct_peep* peep, uint8 validDirections
 
         /* Find location of the exit for the target ride station
          * or if the ride has no exit, the entrance. */
-        uint16 location = ride->exits[peep->current_ride_station];
-        if (location == 0xFFFF) {
+        rct_xy8 location = ride->exits[peep->current_ride_station];
+        if (location.xy == RCT_XY8_UNDEFINED) {
             location = ride->entrances[peep->current_ride_station];
         }
 
         rct_xy16 chosenTile = {
-            .x = (location & 0xFF) * 32,
-            .y = (location >> 8) * 32
+            .x = location.x * 32,
+            .y = location.y * 32
         };
 
         gPeepPathFindGoalPosition.x = chosenTile.x;
@@ -1455,7 +1455,7 @@ static void staff_entertainer_update_nearby_peeps(rct_peep* peep) {
             continue;
 
         if (peep->state == PEEP_STATE_WALKING) {
-            peep->happiness_growth_rate = min(peep->happiness_growth_rate + 4, 255);
+            peep->happiness_target = min(peep->happiness_target + 4, PEEP_MAX_HAPPINESS);
         }
         else if (peep->state == PEEP_STATE_QUEUING) {
             if(peep->time_in_queue > 200) {
@@ -1464,7 +1464,7 @@ static void staff_entertainer_update_nearby_peeps(rct_peep* peep) {
             else {
                 peep->time_in_queue = 0;
             }
-            peep->happiness_growth_rate = min(peep->happiness_growth_rate + 3, 255);
+            peep->happiness_target = min(peep->happiness_target + 3, PEEP_MAX_HAPPINESS);
         }
     }
 }

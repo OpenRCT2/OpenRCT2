@@ -17,6 +17,7 @@
 #include "../audio/audio.h"
 #include "../cheats.h"
 #include "../config/Config.h"
+#include "../FileClassifier.h"
 #include "../game.h"
 #include "../interface/viewport.h"
 #include "../localisation/date.h"
@@ -58,9 +59,6 @@ const rct_string_id ScenarioCategoryStringIds[SCENARIO_CATEGORY_COUNT] = {
     STR_BUILD_YOUR_OWN_PARKS,
 };
 
-static char _scenarioPath[MAX_PATH];
-const char *_scenarioFileName = "";
-
 rct_s6_info gS6Info;
 char gScenarioName[64];
 char gScenarioDetails[256];
@@ -85,6 +83,8 @@ money32 gScenarioObjectiveCurrency;
 uint16 gScenarioParkRatingWarningDays;
 money32 gScenarioCompletedCompanyValue;
 money32 gScenarioCompanyValueRecord;
+
+char gScenarioFileName[MAX_PATH];
 
 static sint32 scenario_create_ducks();
 static void scenario_objective_check();
@@ -113,14 +113,7 @@ ParkLoadResult * scenario_load_and_play_from_path(const char * path)
     reset_sprite_spatial_index();
     reset_all_sprite_quadrant_placements();
 
-    size_t len = strnlen(path, MAX_PATH) + 1;
-    safe_strcpy(_scenarioPath, path, len);
-    if (len - 1 == MAX_PATH)
-    {
-        _scenarioPath[MAX_PATH - 1] = '\0';
-        log_warning("truncated string %s", _scenarioPath);
-    }
-    _scenarioFileName = path_get_filename(_scenarioPath);
+    safe_strcpy(gScenarioFileName, path_get_filename(path), sizeof(gScenarioFileName));
 
     gFirstTimeSaving = true;
 
@@ -288,12 +281,6 @@ static void scenario_end()
     window_park_objective_open();
 }
 
-void scenario_set_filename(const char *value)
-{
-    substitute_path(_scenarioPath, sizeof(_scenarioPath), gRCT2AddressScenariosPath, value);
-    _scenarioFileName = path_get_filename(_scenarioPath);
-}
-
 /**
  *
  *  rct2: 0x0066A752
@@ -315,7 +302,7 @@ void scenario_success()
     gScenarioCompletedCompanyValue = companyValue;
     peep_applause();
 
-    if (scenario_repository_try_record_highscore(_scenarioFileName, companyValue, NULL))
+    if (scenario_repository_try_record_highscore(gScenarioFileName, companyValue, NULL))
     {
         // Allow name entry
         gParkFlags |= PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT;
@@ -330,7 +317,7 @@ void scenario_success()
  */
 void scenario_success_submit_name(const char *name)
 {
-    if (scenario_repository_try_record_highscore(_scenarioFileName, gScenarioCompanyValueRecord, name))
+    if (scenario_repository_try_record_highscore(gScenarioFileName, gScenarioCompanyValueRecord, name))
     {
         safe_strcpy(gScenarioCompletedBy, name, 32);
     }
@@ -484,7 +471,7 @@ static void scenario_update_daynight_cycle()
 void scenario_update()
 {
     if (!(gScreenFlags & ~SCREEN_FLAGS_PLAYING)) {
-        uint32 currentMonthTick = gDateMonthTicks;
+        uint32 currentMonthTick = floor2(gDateMonthTicks, 4);
         uint32 nextMonthTick = currentMonthTick + 4;
         uint8 currentMonth = gDateMonthsElapsed & 7;
         uint8 currentDaysInMonth = (uint8)days_in_month[currentMonth];
@@ -678,7 +665,7 @@ static bool scenario_prepare_rides_for_save()
         // If there are more than 5 roller coasters, only mark the first five.
         if (isFiveCoasterObjective &&
             rideEntry != NULL &&
-            ((rideEntry->category[0] == RIDE_GROUP_ROLLERCOASTER || rideEntry->category[1] == RIDE_GROUP_ROLLERCOASTER) &&
+            ((rideEntry->category[0] == RIDE_CATEGORY_ROLLERCOASTER || rideEntry->category[1] == RIDE_CATEGORY_ROLLERCOASTER) &&
              rcs < 5))
         {
             ride->lifecycle_flags |= RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK;
@@ -921,7 +908,7 @@ static void scenario_objective_check_10_rollercoasters()
         }
 
         if (rideType != NULL &&
-            (rideType->category[0] == RIDE_GROUP_ROLLERCOASTER || rideType->category[1] == RIDE_GROUP_ROLLERCOASTER) &&
+            (rideType->category[0] == RIDE_CATEGORY_ROLLERCOASTER || rideType->category[1] == RIDE_CATEGORY_ROLLERCOASTER) &&
             ride->status == RIDE_STATUS_OPEN &&
             ride->excitement >= RIDE_RATING(6,00) && type_already_counted[subtype_id] == 0){
             type_already_counted[subtype_id]++;
@@ -1001,7 +988,7 @@ static void scenario_objective_check_10_rollercoasters_length()
         if (rideType == NULL) {
             continue;
         }
-        if ((rideType->category[0] == RIDE_GROUP_ROLLERCOASTER || rideType->category[1] == RIDE_GROUP_ROLLERCOASTER) &&
+        if ((rideType->category[0] == RIDE_CATEGORY_ROLLERCOASTER || rideType->category[1] == RIDE_CATEGORY_ROLLERCOASTER) &&
             ride->status == RIDE_STATUS_OPEN &&
             ride->excitement >= RIDE_RATING(7,00) && type_already_counted[subtype_id] == 0){
 
@@ -1036,7 +1023,7 @@ static void scenario_objective_check_finish_5_rollercoasters()
         if (ride->status != RIDE_STATUS_CLOSED &&
             ride->excitement >= objectiveRideExcitement &&
             (ride->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK) && // Set on partially finished coasters
-            (rideEntry->category[0] == RIDE_GROUP_ROLLERCOASTER || rideEntry->category[1] == RIDE_GROUP_ROLLERCOASTER))
+            (rideEntry->category[0] == RIDE_CATEGORY_ROLLERCOASTER || rideEntry->category[1] == RIDE_CATEGORY_ROLLERCOASTER))
             rcs++;
     }
 

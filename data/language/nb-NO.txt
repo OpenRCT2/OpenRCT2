@@ -890,8 +890,8 @@ STR_0884    :Last inn landskap
 STR_0885    :Lagre landskap
 STR_0886    :Avslutt spill
 STR_0887    :Avslutt scenarioeditoren
-STR_0888    :Avslutt berg-og-dal-banedesigner
-STR_0889    :Avslutt spordesign-editoren
+STR_0888    :Avslutt spordesigner
+STR_0889    :Avslutt spordesign-administratoren
 STR_0890    :<removed string - do not use>
 STR_0891    :Skjermbilde
 STR_0892    :Skjermbilde lagret som '{STRINGID}'
@@ -3214,7 +3214,7 @@ STR_3203    :Invention List Set Up
 STR_3204    :Options Selection
 STR_3205    :Objective Selection
 STR_3206    :Save Scenario
-STR_3207    :Roller Coaster Designer
+STR_3207    :Spordesigner
 STR_3208    :Track Designs Manager
 STR_3209    :Back to Previous Step:
 STR_3210    :Forward to Next Step:
@@ -3342,7 +3342,7 @@ STR_3331    :Path from park entrance to map edge either not complete or too comp
 STR_3332    :Park entrance is the wrong way round or has no path leading to the map edge
 STR_3333    :Export plug-in objects with saved games
 STR_3334    :{SMALLFONT}{BLACK}Select whether to save any additional plug-in object data required (add-in data not supplied with the main product) in saved game or scenario files, allowing them to be loaded by someone who doesn't have the additional object data
-STR_3335    :Roller Coaster Designer - Select Ride Types & Vehicles
+STR_3335    :Spordesigner - Velg attraksjonstyper og vogner
 STR_3336    :Track Designs Manager - Select Ride Type
 STR_3337    :<removed string - do not use>
 STR_3338    :{BLACK}Custom-designed layout
@@ -3351,7 +3351,7 @@ STR_3340    :{BLACK}{COMMA16} designs available, or custom-designed layout
 STR_3341    :{SMALLFONT}{BLACK}Game tools
 STR_3342    :Scenario Editor
 STR_3343    :Convert Saved Game to Scenario
-STR_3344    :Roller Coaster Designer
+STR_3344    :Spordesigner
 STR_3345    :Track Designs Manager
 STR_3346    :Can't save track design...
 STR_3347    :Ride is too large, contains too many elements, or scenery is too spread out
@@ -3768,7 +3768,7 @@ STR_5426    :End
 STR_5427    :Coordinates:
 STR_5428    :Anticlockwise rotations:
 STR_5429    :Zoom level:
-STR_5430    :Seconds to wait:
+STR_5430    :Tid i millisekunder:
 STR_5431    :Save to load:
 STR_5432    :Command:
 STR_5433    :Title Sequences
@@ -4368,6 +4368,85 @@ STR_6056    :{SMALLFONT}{BLACK}Demp lyd
 STR_6057    :{SMALLFONT}{BLACK}Show a separate button for the Mute Option in the toolbar
 STR_6057    :{SMALLFONT}{BLACK}Vis en separat knapp for lyddemping i verktøylinjen
 STR_6058    :Demp lyd
+STR_6059    :{RIGHTGUILLEMET}
+STR_6060    :Vis gjestenes innkjøp som en animasjon
+STR_6061    :{SMALLFONT}{BLACK}Show animated money effect{NEWLINE}when guests make purchases.
+STR_6061    :{SMALLFONT}{BLACK}Vis animert penge-effekt{NEWLINE}når gjester kjøper noe.
+STR_6062    :{OUTLINE}{GREEN}+ {CURRENCY2DP}
+STR_6063    :{OUTLINE}{RED}- {CURRENCY2DP}
+STR_6064    :Ta eierskap av alt land
+STR_6065    :Loggfør brukerhandlinger
+STR_6066    :{SMALLFONT}{BLACK}Loggerfører alle brukerhandlinger til filer i din brukerkatalog.
+STR_6067    :Server startet.
+STR_6068    :Server skrus av.
+STR_6069    :{STRING} ble sparket fra serveren av {STRING}.
+STR_6070    :{STRING} ble satt til gruppe '{STRING}' av {STRING}.
+STR_6071    :{STRING} laget en ny spillergruppe: '{STRING}'.
+STR_6072    :{STRING} slettet spillergruppe '{String}'.
+STR_6073    :{STRING} endret rettigheter for spillergruppe '{String}'.
+STR_6074    :{STRING} endret navn for spillergruppe '{String}' til '{String}'.
+STR_6075    :{STRING} endret standard-spillergruppen til '{String}'.
+STR_6076    :{STRING} brukte eller skrudde av/på juksehandling '{STRING}'.
+STR_6077    :Legg til penger
+STR_6078    :{STRING} opprettet attraksjon: '{STRING}'.
+STR_6079    :{STRING} rev ned attraksjon: '{STRING}'.
+STR_6080    :{STRING} endret utseende til attraksjon '{STRING}'.
+STR_6081    :{STRING} endret attraksjonsstatus på '{STRING}' til stengt.
+STR_6082    :{STRING} endret attraksjonsstatus på '{STRING}' til åpen.
+STR_6083    :{STRING} endret attraksjonsstatus på '{STRING}' til testing.
+STR_6084    :{STRING} endret vogninnstillingene på attraksjon '{STRING}'.
+STR_6085    :{STRING} endret attraksjonsinnstillingene på '{STRING}'.
+STR_6086    :{STRING} endret navn på attraksjon '{STRING}' til '{STRING}'.
+STR_6087    :{STRING} endret inngangspris på '{STRING}' til {STRING}
+STR_6088    :{STRING} endret annen pris på '{STRING}' til {STRING}
+STR_6089    :{STRING} endret parkens navn fra '{STRING}' til '{STRING}'.
+STR_6090    :{STRING} åpnet parken.
+STR_6091    :{STRING} stengte parken.
+STR_6092    :{STRING} endret parkens inngangspris til {STRING}
+STR_6093    :{STRING} plasserte nytt pyntelement.
+STR_6094    :{STRING} fjernet pyntelement.
+STR_6095    :{STRING} endret pyntelement.
+STR_6096    :{STRING} satt skiltnavn til '{STRING}'.
+STR_6097    :{STRING} plasserte et sporelement på attraksjon '{STRING}'.
+STR_6098    :{STRING} fjernet et sporelement.
+STR_6099    :Du koblet til serveren.
+STR_6100    :Du koblet fra serveren.
+STR_6101    :Attraksjoners verdi synker ikke over tid
+STR_6102    :{SMALLFONT}{BLACK}Verdien til attraksjoner synker ikke over tid, slik at gjester ikke bestemmer seg for at en attraksjon har for høy inngangspris.
+STR_6103    :{SMALLFONT}{BLACK}Denne innstillingen er skrudd av for nettverksspill.
+STR_6104    :Korkskru berg-og-dal-bane
+STR_6105    :Hyper berg-og-dal-bane
+STR_6106    :Kjøretur
+STR_6107    :Monster Trucker
+STR_6108    :Stål Twister
+STR_6109    :Hyper-Twister
+STR_6110    :Junior berg-og-dal-bane
+STR_6111    :Klassisk Mini-berg-og-dal-bane
+STR_6112    :En kompakt berg-og-dal-bane i stål, hvor toget går gjennom korkskruer og looper
+STR_6113    :En høy berg-og-dal-bane som ikke går opp-ned, med høye fall, høy fart og komfortable tog som kun har sikringer over fanget
+STR_6114    :Passasjerer kjører sakte i selvdrevne kjøretøy langs et spor
+STR_6115    :Selvdrevne gigantiske firehjulstrucker som kan kjøre opp bratte bakker
+STR_6116    :Vide berg-og-dal-bane-tog glir langs jevne stålspor, mens de går gjennom et stort utvalg opp-ned-seksjoner
+STR_6117    :Passasjerer opplever gigantiske jevne fall og vridde spor, samt mye vektløshet over toppene – i komfortable seter med minimalt inntrengende sikringer
+STR_6118    :En rolig berg-og-dal-bane for dem som ikke enda tør prøve de større attraksjonene
+STR_6119    :En billig og lettbygd berg-og-dal-bane, men med knapp høydebegrensning
+STR_6120    :{BABYBLUE}Ny vogn nå tilgjengelig for {STRINGID}:{NEWLINE}{STRINGID}
+STR_6121    :{SMALLFONT}{BLACK}Utvider parkens landrettigheter til kartets kanter
+STR_6122    :Det er ikke nok berg-og-dal-baner i dette scenariet!
+STR_6123    :Feil i lasting av objekter for park
+STR_6124    :Objektnavn
+STR_6125    :Objekttype
+STR_6126    :Ukjent type
+STR_6127    :Fil: {STRING}
+STR_6128    :Filen kunne ikke bli lastet, siden noen av objektene den refererer til mangler eller er korrupte. En liste av disse objektene følger.
+STR_6129    :Kopier valgt element til utklippstavlen
+STR_6130    :Kopier hele listen til utklippstavlen
+STR_6131    :Objektkilde
+STR_6132    :Ignorer forskningsstatus
+STR_6133    :{SMALLFONT}{BLACK}Gir tilgang til attraksjoner og pynt som ikke har blitt funnet opp enda
+STR_6134    :Slett pynt
+STR_6135    :Klient sendte ugyldig forespørsel
+STR_6136    :Server sendte ugyldig forespørsel
 
 #############
 # Scenarios #
@@ -4510,9 +4589,9 @@ STR_SCNR    :Funtopia
 STR_PARK    :Funtopia
 STR_DTLS    :Covering land both sides of a highway, this park has several rides already operating
 
-<Haunted Harbor>
-STR_SCNR    :Haunted Harbor
-STR_PARK    :Haunted Harbor
+<Haunted Harbour>
+STR_SCNR    :Haunted Harbour
+STR_PARK    :Haunted Harbour
 STR_DTLS    :The local authority has agreed to sell nearby land cheaply to this small seaside park, on the condition that certain rides are preserved
 
 <Fun Fortress>

@@ -57,7 +57,7 @@ rct_widget window_sign_widgets[] = {
 };
 
 static void window_sign_mouseup(rct_window *w, rct_widgetindex widgetIndex);
-static void window_sign_mousedown(rct_widgetindex widgetIndex, rct_window*w, rct_widget* widget);
+static void window_sign_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget);
 static void window_sign_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex);
 static void window_sign_textinput(rct_window *w, rct_widgetindex widgetIndex, char *text);
 static void window_sign_viewport_rotate(rct_window *w);
@@ -168,7 +168,7 @@ void window_sign_open(rct_windownumber number)
     while (1){
         if (map_element_get_type(map_element) == MAP_ELEMENT_TYPE_SCENERY_MULTIPLE) {
             rct_scenery_entry* scenery_entry = get_large_scenery_entry(map_element->properties.scenerymultiple.type & MAP_ELEMENT_LARGE_TYPE_MASK);
-            if (scenery_entry->large_scenery.var_11 != 0xFF){
+            if (scenery_entry->large_scenery.scrolling_mode != 0xFF){
                 sint32 id = (map_element->type & 0xC0) |
                     ((map_element->properties.scenerymultiple.colour[0] & 0xE0) >> 2) |
                     ((map_element->properties.scenerymultiple.colour[1] & 0xE0) >> 5);
@@ -184,7 +184,7 @@ void window_sign_open(rct_windownumber number)
 
     w->list_information_type = map_element->properties.scenerymultiple.colour[0] & 0x1F;
     w->var_492 = map_element->properties.scenerymultiple.colour[1] & 0x1F;
-    w->var_48C = map_element->properties.scenerymultiple.type;
+    w->var_48C = map_element->properties.scenerymultiple.type & MAP_ELEMENT_LARGE_TYPE_MASK;
 
     view_x += 16;
     view_y += 16;
@@ -231,7 +231,7 @@ static void window_sign_mouseup(rct_window *w, rct_widgetindex widgetIndex)
         while (1){
             if (map_element_get_type(map_element) == MAP_ELEMENT_TYPE_SCENERY_MULTIPLE) {
                 rct_scenery_entry* scenery_entry = get_large_scenery_entry(map_element->properties.scenerymultiple.type & MAP_ELEMENT_LARGE_TYPE_MASK);
-                if (scenery_entry->large_scenery.var_11 != 0xFF){
+                if (scenery_entry->large_scenery.scrolling_mode != 0xFF){
                     sint32 id = (map_element->type & 0xC0) |
                         ((map_element->properties.scenerymultiple.colour[0] & 0xE0) >> 2) |
                         ((map_element->properties.scenerymultiple.colour[1] & 0xE0) >> 5);
@@ -269,7 +269,7 @@ static void window_sign_mouseup(rct_window *w, rct_widgetindex widgetIndex)
  *
  *  rct2: 0x6B9784
   & 0x6E6164 */
-static void window_sign_mousedown(rct_widgetindex widgetIndex, rct_window*w, rct_widget* widget)
+static void window_sign_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget)
 {
     switch (widgetIndex) {
     case WIDX_MAIN_COLOUR:
@@ -339,8 +339,8 @@ static void window_sign_invalidate(rct_window *w)
         text_colour_btn->type = WWT_COLOURBTN;
     }
 
-    main_colour_btn->image = (w->list_information_type << 19) | 0x60000000 | SPR_PALETTE_BTN;
-    text_colour_btn->image = (w->var_492 << 19) | 0x60000000 | SPR_PALETTE_BTN;
+    main_colour_btn->image = SPRITE_ID_PALETTE_COLOUR_1(w->list_information_type) | IMAGE_TYPE_TRANSPARENT | SPR_PALETTE_BTN;
+    text_colour_btn->image = SPRITE_ID_PALETTE_COLOUR_1(w->var_492) | IMAGE_TYPE_TRANSPARENT | SPR_PALETTE_BTN;
 }
 
 /**
@@ -571,6 +571,6 @@ static void window_sign_small_invalidate(rct_window *w)
         text_colour_btn->type = WWT_COLOURBTN;
     }
 
-    main_colour_btn->image = (w->list_information_type << 19) | 0x60000000 | SPR_PALETTE_BTN;
-    text_colour_btn->image = (w->var_492 << 19) | 0x60000000 | SPR_PALETTE_BTN;
+    main_colour_btn->image = SPRITE_ID_PALETTE_COLOUR_1(w->list_information_type) | IMAGE_TYPE_TRANSPARENT | SPR_PALETTE_BTN;
+    text_colour_btn->image = SPRITE_ID_PALETTE_COLOUR_1(w->var_492) | IMAGE_TYPE_TRANSPARENT | SPR_PALETTE_BTN;
 }

@@ -48,7 +48,6 @@ extern "C"
     #include "../object.h"
     #include "../object_list.h"
     #include "../platform/platform.h"
-    #include "../rct2.h"
     #include "../util/sawyercoding.h"
     #include "../util/util.h"
 }
@@ -698,17 +697,17 @@ private:
     }
 };
 
-static std::unique_ptr<ObjectRepository> _objectRepository;
+static ObjectRepository * _objectRepository = nullptr;
 
 IObjectRepository * CreateObjectRepository(IPlatformEnvironment * env)
 {
-    _objectRepository = std::unique_ptr<ObjectRepository>(new ObjectRepository(env));
-    return _objectRepository.get();
+    _objectRepository = new ObjectRepository(env);
+    return _objectRepository;
 }
 
 IObjectRepository * GetObjectRepository()
 {
-    return _objectRepository.get();
+    return _objectRepository;
 }
 
 bool IsObjectCustom(const ObjectRepositoryItem * object)

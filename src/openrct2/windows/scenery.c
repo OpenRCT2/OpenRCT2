@@ -24,7 +24,6 @@
 #include "../interface/window.h"
 #include "../localisation/localisation.h"
 #include "../peep/peep.h"
-#include "../rct2.h"
 #include "../world/map.h"
 #include "../world/scenery.h"
 #include "../world/sprite.h"
@@ -64,7 +63,7 @@ enum {
 static void window_scenery_close(rct_window *w);
 static void window_scenery_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_scenery_resize(rct_window *w);
-static void window_scenery_mousedown(rct_widgetindex widgetIndex, rct_window* w, rct_widget* widget);
+static void window_scenery_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget);
 static void window_scenery_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex);
 static void window_scenery_update(rct_window *w);
 static void window_scenery_event_07(rct_window *w);
@@ -170,7 +169,7 @@ static rct_widget window_scenery_widgets[] = {
     { WWT_TAB, 1, 468, 498, 17, 43, 0xFFFFFFFF, STR_STRING_DEFINED_TOOLTIP },                                   // 100000           0x009DE3D8
     { WWT_TAB, 1, 468, 498, 17, 43, 0xFFFFFFFF, STR_STRING_DEFINED_TOOLTIP },                                   // 200000           0x009DE3E8
     { WWT_TAB, 1, 468, 498, 17, 43, 0xFFFFFFFF, STR_STRING_DEFINED_TOOLTIP },                                   // 400000           0x009DE3F8
-    { WWT_TAB, 1, 468, 498, 17, 43, 0x20000000 | SPR_TAB_QUESTION, STR_STRING_DEFINED_TOOLTIP },                                    // 800000           0x009DE408
+    { WWT_TAB, 1, 468, 498, 17, 43, IMAGE_TYPE_REMAP | SPR_TAB_QUESTION, STR_STRING_DEFINED_TOOLTIP },                                    // 800000           0x009DE408
     { WWT_SCROLL, 1, 2, 608, 47, 126, SCROLL_VERTICAL, STR_NONE },                                  // 1000000          0x009DE418
     { WWT_FLATBTN, 1, 609, 632, 44, 67, SPR_ROTATE_ARROW, STR_ROTATE_OBJECTS_90 },                  // 2000000          0x009DE428
     { WWT_FLATBTN, 1, 609, 632, 68, 91, SPR_PAINTBRUSH, STR_SCENERY_PAINTBRUSH_TIP },                                   // 4000000          0x009DE438
@@ -193,7 +192,7 @@ void window_scenery_update_scroll(rct_window *w);
  */
 static void init_scenery_entry(rct_scenery_entry *sceneryEntry, sint32 index, uint8 sceneryTabId)
 {
-    if (scenery_is_invented(index)) {
+    if (scenery_is_invented(index) || gCheatsIgnoreResearchStatus) {
         if (sceneryTabId != 0xFF) {
             for (sint32 i = 0; i < SCENERY_ENTRIES_BY_TAB; i++) {
                 if (window_scenery_tab_entries[sceneryTabId][i] == -1)
@@ -249,7 +248,7 @@ void init_scenery()
         sint32 sceneryTabEntryCount = 0;
         for (sint32 i = 0; i < scenerySetEntry->entry_count; i++) {
             uint16 sceneryEntryId = scenerySetEntry->scenery_entries[i];
-            if (scenery_is_invented(sceneryEntryId)) {
+            if (scenery_is_invented(sceneryEntryId) || gCheatsIgnoreResearchStatus) {
                 window_scenery_tab_entries[scenerySetIndex][sceneryTabEntryCount] = sceneryEntryId;
                 window_scenery_tab_entries[scenerySetIndex][++sceneryTabEntryCount] = -1;
             } else {
@@ -371,7 +370,7 @@ void init_scenery()
         if (tabIndex >= 19)
             continue;
 
-        tabWidget->image = get_scenery_group_entry(tabIndex)->image | 0x20000000;
+        tabWidget->image = get_scenery_group_entry(tabIndex)->image | IMAGE_TYPE_REMAP;
     }
 
     window_invalidate_by_class(WC_SCENERY);
@@ -667,7 +666,7 @@ static void window_scenery_resize(rct_window *w)
  *
  *  rct2: 0x006E1A25
  */
-static void window_scenery_mousedown(rct_widgetindex widgetIndex, rct_window* w, rct_widget* widget) {
+static void window_scenery_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget) {
     switch (widgetIndex) {
     case WIDX_SCENERY_PRIMARY_COLOUR_BUTTON:
         window_dropdown_show_colour(w, widget, w->colours[1], gWindowSceneryPrimaryColour);
@@ -941,7 +940,7 @@ void window_scenery_invalidate(rct_window *w)
             }
 
             rct_scenery_entry* sceneryEntry = get_small_scenery_entry(tabSelectedSceneryId);
-            if (sceneryEntry->small_scenery.flags & SMALL_SCENERY_FLAG4) {
+            if (sceneryEntry->small_scenery.flags & SMALL_SCENERY_FLAG_ROTATABLE) {
                 window_scenery_widgets[WIDX_SCENERY_ROTATE_OBJECTS_BUTTON].type = WWT_FLATBTN;
             }
         }
@@ -951,11 +950,11 @@ void window_scenery_invalidate(rct_window *w)
     }
 
     window_scenery_widgets[WIDX_SCENERY_PRIMARY_COLOUR_BUTTON].image =
-        (gWindowSceneryPrimaryColour << 19) | 0x60000000 | SPR_PALETTE_BTN;
+        SPRITE_ID_PALETTE_COLOUR_1(gWindowSceneryPrimaryColour) | IMAGE_TYPE_TRANSPARENT | SPR_PALETTE_BTN;
     window_scenery_widgets[WIDX_SCENERY_SECONDARY_COLOUR_BUTTON].image =
-        (gWindowScenerySecondaryColour << 19) | 0x60000000 | SPR_PALETTE_BTN;
+        SPRITE_ID_PALETTE_COLOUR_1(gWindowScenerySecondaryColour) | IMAGE_TYPE_TRANSPARENT | SPR_PALETTE_BTN;
     window_scenery_widgets[WIDX_SCENERY_TERTIARY_COLOUR_BUTTON].image =
-        (gWindowSceneryTertiaryColour << 19) | 0x60000000 | SPR_PALETTE_BTN;
+        SPRITE_ID_PALETTE_COLOUR_1(gWindowSceneryTertiaryColour) | IMAGE_TYPE_TRANSPARENT | SPR_PALETTE_BTN;
 
     window_scenery_widgets[WIDX_SCENERY_PRIMARY_COLOUR_BUTTON].type = WWT_EMPTY;
     window_scenery_widgets[WIDX_SCENERY_SECONDARY_COLOUR_BUTTON].type = WWT_EMPTY;
@@ -1141,7 +1140,7 @@ void window_scenery_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 sc
             if (currentSceneryGlobalId >= SCENERY_BANNERS_ID_MIN) {
                 sceneryEntry = get_banner_entry(currentSceneryGlobalId - SCENERY_BANNERS_ID_MIN);
                 uint32 imageId = sceneryEntry->image + gWindowSceneryRotation * 2;
-                imageId |= (gWindowSceneryPrimaryColour << 19) | 0x20000000;
+                imageId |= (gWindowSceneryPrimaryColour << 19) | IMAGE_TYPE_REMAP;
 
                 gfx_draw_sprite(&clipdpi, imageId, 0x21, 0x28, w->colours[1]);
                 gfx_draw_sprite(&clipdpi, imageId + 1, 0x21, 0x28, w->colours[1]);
@@ -1149,8 +1148,8 @@ void window_scenery_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 sc
             else if (currentSceneryGlobalId >= SCENERY_LARGE_SCENERY_ID_MIN) {
                 sceneryEntry = get_large_scenery_entry(currentSceneryGlobalId - SCENERY_LARGE_SCENERY_ID_MIN);
                 uint32 imageId = sceneryEntry->image + gWindowSceneryRotation;
-                imageId |= (gWindowSceneryPrimaryColour << 19) | 0x20000000;
-                imageId |= (gWindowScenerySecondaryColour << 24) | 0x80000000;
+                imageId |= (gWindowSceneryPrimaryColour << 19) | IMAGE_TYPE_REMAP;
+                imageId |= (gWindowScenerySecondaryColour << 24) | IMAGE_TYPE_REMAP_2_PLUS;
 
                 gfx_draw_sprite(&clipdpi, imageId, 0x21, 0, w->colours[1]);
             }
@@ -1161,10 +1160,10 @@ void window_scenery_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 sc
                 uint16 spriteTop = (sceneryEntry->wall.height * 2) + 0x32;
 
                 if (sceneryEntry->wall.flags & WALL_SCENERY_HAS_GLASS) {
-                    imageId |= (gWindowSceneryPrimaryColour << 19) | 0x20000000;
+                    imageId |= (gWindowSceneryPrimaryColour << 19) | IMAGE_TYPE_REMAP;
 
                     if (sceneryEntry->wall.flags & WALL_SCENERY_HAS_SECONDARY_COLOUR) {
-                        imageId |= (gWindowScenerySecondaryColour << 24) | 0x80000000;
+                        imageId |= (gWindowScenerySecondaryColour << 24) | IMAGE_TYPE_REMAP_2_PLUS;
                     }
                     gfx_draw_sprite(&clipdpi, imageId, 0x2F, spriteTop, tertiaryColour);
 
@@ -1172,10 +1171,10 @@ void window_scenery_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 sc
                     gfx_draw_sprite(&clipdpi, imageId, 0x2F, spriteTop, tertiaryColour);
                 }
                 else {
-                    imageId |= (gWindowSceneryPrimaryColour << 19) | 0x20000000;
+                    imageId |= (gWindowSceneryPrimaryColour << 19) | IMAGE_TYPE_REMAP;
 
                     if (sceneryEntry->wall.flags & WALL_SCENERY_HAS_SECONDARY_COLOUR) {
-                        imageId |= (gWindowScenerySecondaryColour << 24) | 0x80000000;
+                        imageId |= (gWindowScenerySecondaryColour << 24) | IMAGE_TYPE_REMAP_2_PLUS;
 
                         if (sceneryEntry->wall.flags & WALL_SCENERY_HAS_TERNARY_COLOUR) {
                             imageId &= 0xDFFFFFFF;
@@ -1200,10 +1199,10 @@ void window_scenery_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 sc
                 uint32 imageId = sceneryEntry->image + gWindowSceneryRotation;
 
                 if (sceneryEntry->small_scenery.flags & SMALL_SCENERY_FLAG_HAS_PRIMARY_COLOUR) {
-                    imageId |= (gWindowSceneryPrimaryColour << 19) | 0x20000000;
+                    imageId |= (gWindowSceneryPrimaryColour << 19) | IMAGE_TYPE_REMAP;
 
                     if (sceneryEntry->small_scenery.flags & SMALL_SCENERY_FLAG_HAS_SECONDARY_COLOUR) {
-                        imageId |= (gWindowScenerySecondaryColour << 24) | 0x80000000;
+                        imageId |= (gWindowScenerySecondaryColour << 24) | IMAGE_TYPE_REMAP_2_PLUS;
                     }
                 }
 

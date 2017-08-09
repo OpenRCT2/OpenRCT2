@@ -35,7 +35,6 @@ extern "C"
     #include "../config/Config.h"
     #include "../localisation/localisation.h"
     #include "../platform/platform.h"
-    #include "../rct2.h"
     #include "scenario.h"
 }
 
@@ -595,26 +594,19 @@ private:
             Console::Error::WriteLine("Unable to save highscores to '%s'", path.c_str());
         }
     }
-
-    static utf8 * GetRCT2Directory(utf8 * buffer, size_t bufferSize)
-    {
-        String::Set(buffer, bufferSize, gRCT2AddressAppPath);
-        Path::Append(buffer, bufferSize, "Scenarios");
-        return buffer;
-    }
 };
 
-static std::unique_ptr<ScenarioRepository> _scenarioRepository;
+static ScenarioRepository * _scenarioRepository;
 
 IScenarioRepository * CreateScenarioRepository(IPlatformEnvironment * env)
 {
-    _scenarioRepository = std::unique_ptr<ScenarioRepository>(new ScenarioRepository(env));
-    return _scenarioRepository.get();
+    _scenarioRepository = new ScenarioRepository(env);
+    return _scenarioRepository;
 }
 
 IScenarioRepository * GetScenarioRepository()
 {
-    return _scenarioRepository.get();
+    return _scenarioRepository;
 }
 
 extern "C"

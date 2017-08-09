@@ -20,7 +20,7 @@
 #include "../interface/window.h"
 #include "../localisation/date.h"
 #include "../localisation/localisation.h"
-#include "../rct2.h"
+#include "../OpenRCT2.h"
 #include "../ride/ride.h"
 #include "../util/util.h"
 #include "../world/sprite.h"
@@ -215,12 +215,12 @@ void news_item_get_subject_location(sint32 type, sint32 subject, sint32 *x, sint
     switch (type) {
     case NEWS_ITEM_RIDE:
         ride = get_ride(subject);
-        if (ride->overall_view == 0xFFFF) {
+        if (ride->overall_view.xy == RCT_XY8_UNDEFINED) {
             *x = SPRITE_LOCATION_NULL;
             break;
         }
-        *x = (ride->overall_view & 0xFF) * 32 + 16;
-        *y = (ride->overall_view >> 8) * 32 + 16;
+        *x = ride->overall_view.x * 32 + 16;
+        *y = ride->overall_view.y * 32 + 16;
         *z = map_element_height(*x, *y);
         break;
     case NEWS_ITEM_PEEP_ON_RIDE:

@@ -72,10 +72,10 @@ rct_widget window_staff_overview_widgets[] = {
     { WWT_CAPTION,  0, 1,       WW - 2,     1,          14,     STR_STRINGID,           STR_WINDOW_TITLE_TIP }, // Title
     { WWT_CLOSEBOX, 0, WW - 13, WW - 3,     2,          13,     STR_CLOSE_X,            STR_CLOSE_WINDOW_TIP }, // Close x button
     { WWT_RESIZE,   1, 0,       WW - 1,     43,         WH - 1, 0xFFFFFFFF,             STR_NONE },             // Resize
-    { WWT_TAB,      1, 3,       33,         17,         43,     0x20000000 | SPR_TAB,   STR_STAFF_OVERVIEW_TIP },// Tab 1
-    { WWT_TAB,      1, 34,      64,         17,         43,     0x20000000 | SPR_TAB,   STR_STAFF_OPTIONS_TIP}, // Tab 2
-    { WWT_TAB,      1, 65,      95,         17,         43,     0x20000000 | SPR_TAB,   STR_STAFF_STATS_TIP},   // Tab 3
-    { WWT_TAB,      1, 96,      126,        17,         43,     0x20000000 | SPR_TAB,   STR_NONE},              // Tab 4
+    { WWT_TAB,      1, 3,       33,         17,         43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_STAFF_OVERVIEW_TIP },// Tab 1
+    { WWT_TAB,      1, 34,      64,         17,         43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_STAFF_OPTIONS_TIP}, // Tab 2
+    { WWT_TAB,      1, 65,      95,         17,         43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_STAFF_STATS_TIP},   // Tab 3
+    { WWT_TAB,      1, 96,      126,        17,         43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_NONE},              // Tab 4
     { WWT_VIEWPORT, 1, 3,       WW - 26,    47,         WH - 14,0xFFFFFFFF,             STR_NONE},              // Viewport
     { WWT_12,       1, 3,       WW - 26,    WH - 13,    WH - 3, 0xFFFFFFFF,             STR_NONE },             // Label at bottom of viewport
     { WWT_FLATBTN,  1, WW - 25, WW - 2,     45,         68,     SPR_PICKUP_BTN,         STR_PICKUP_TIP},        // Pickup Button
@@ -92,10 +92,10 @@ rct_widget window_staff_options_widgets[] = {
     { WWT_CAPTION,          0, 1,       WW - 2, 1,      14,     STR_STRINGID,           STR_WINDOW_TITLE_TIP }, // Title
     { WWT_CLOSEBOX,         0, WW - 13, WW - 3, 2,      13,     STR_CLOSE_X,            STR_CLOSE_WINDOW_TIP }, // Close x button
     { WWT_RESIZE,           1, 0,       WW - 1, 43,     WH - 1, 0xFFFFFFFF,             STR_NONE },             // Resize
-    { WWT_TAB,              1, 3,       33,     17,     43,     0x20000000 | SPR_TAB,   STR_STAFF_OVERVIEW_TIP },// Tab 1
-    { WWT_TAB,              1, 34,      64,     17,     43,     0x20000000 | SPR_TAB,   STR_STAFF_OPTIONS_TIP}, // Tab 2
-    { WWT_TAB,              1, 65,      95,     17,     43,     0x20000000 | SPR_TAB,   STR_STAFF_STATS_TIP},   // Tab 3
-    { WWT_TAB,              1, 96,      126,    17,     43,     0x20000000 | SPR_TAB,   STR_NONE},              // Tab 4
+    { WWT_TAB,              1, 3,       33,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_STAFF_OVERVIEW_TIP },// Tab 1
+    { WWT_TAB,              1, 34,      64,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_STAFF_OPTIONS_TIP}, // Tab 2
+    { WWT_TAB,              1, 65,      95,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_STAFF_STATS_TIP},   // Tab 3
+    { WWT_TAB,              1, 96,      126,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_NONE},              // Tab 4
     { WWT_CHECKBOX,         1, 5,       WW - 6, 50,     61,     0xFFFFFFFF,             STR_NONE},              // Checkbox 1
     { WWT_CHECKBOX,         1, 5,       WW - 6, 67,     78,     0xFFFFFFFF,             STR_NONE },             // Checkbox 2
     { WWT_CHECKBOX,         1, 5,       WW - 6, 84,     95,     0xFFFFFFFF,             STR_NONE},              // Checkbox 3
@@ -111,10 +111,10 @@ rct_widget window_staff_stats_widgets[] = {
     { WWT_CAPTION,  0, 1,       WW - 2, 1,  14,     STR_STRINGID,           STR_WINDOW_TITLE_TIP }, // Title
     { WWT_CLOSEBOX, 0, WW - 13, WW - 3, 2,  13,     STR_CLOSE_X,            STR_CLOSE_WINDOW_TIP }, // Close x button
     { WWT_RESIZE,   1, 0,       WW - 1, 43, WH - 1, 0xFFFFFFFF,             STR_NONE },             // Resize
-    { WWT_TAB,      1, 3,       33,     17, 43,     0x20000000 | SPR_TAB,   STR_STAFF_OVERVIEW_TIP },// Tab 1
-    { WWT_TAB,      1, 34,      64,     17, 43,     0x20000000 | SPR_TAB,   STR_STAFF_OPTIONS_TIP}, // Tab 2
-    { WWT_TAB,      1, 65,      95,     17, 43,     0x20000000 | SPR_TAB,   STR_STAFF_STATS_TIP},   // Tab 3
-    { WWT_TAB,      1, 96,      126,    17, 43,     0x20000000 | SPR_TAB,   STR_NONE},              // Tab 4
+    { WWT_TAB,      1, 3,       33,     17, 43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_STAFF_OVERVIEW_TIP },// Tab 1
+    { WWT_TAB,      1, 34,      64,     17, 43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_STAFF_OPTIONS_TIP}, // Tab 2
+    { WWT_TAB,      1, 65,      95,     17, 43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_STAFF_STATS_TIP},   // Tab 3
+    { WWT_TAB,      1, 96,      126,    17, 43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_NONE},              // Tab 4
     { WIDGETS_END },
 };
 
@@ -132,7 +132,7 @@ void window_staff_viewport_init(rct_window* w);
 void window_staff_overview_close(rct_window *w);
 void window_staff_overview_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 void window_staff_overview_resize(rct_window *w);
-void window_staff_overview_mousedown(rct_widgetindex widgetIndex, rct_window* w, rct_widget* widget);
+void window_staff_overview_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget);
 void window_staff_overview_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex);
 void window_staff_overview_update(rct_window* w);
 void window_staff_overview_invalidate(rct_window *w);
@@ -149,7 +149,7 @@ void window_staff_options_update(rct_window* w);
 void window_staff_options_invalidate(rct_window *w);
 void window_staff_options_paint(rct_window *w, rct_drawpixelinfo *dpi);
 void window_staff_options_tab_paint(rct_window* w, rct_drawpixelinfo* dpi);
-void window_staff_options_mousedown(rct_widgetindex widgetIndex, rct_window* w, rct_widget* widget);
+void window_staff_options_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget);
 void window_staff_options_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex);
 
 void window_staff_stats_mouseup(rct_window *w, rct_widgetindex widgetIndex);
@@ -535,7 +535,7 @@ void window_staff_overview_resize(rct_window *w)
  * Handle the dropdown of patrol button.
  *  rct2: 0x006BDF98
  */
-void window_staff_overview_mousedown(rct_widgetindex widgetIndex, rct_window* w, rct_widget* widget)
+void window_staff_overview_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget)
 {
     if (widgetIndex != WIDX_PATROL) {
         return;
@@ -555,7 +555,7 @@ void window_staff_overview_mousedown(rct_widgetindex widgetIndex, rct_window* w,
 
     // Disable clear patrol area if no area is set.
     if (!(gStaffModes[peep->staff_id] & 2)) {
-        gDropdownItemsDisabled |= (1ULL << 1);
+        dropdown_set_disabled(1, true);
     }
 }
 
@@ -1008,27 +1008,27 @@ void window_staff_overview_tab_paint(rct_window* w, rct_drawpixelinfo* dpi)
     }
     ebx += eax;
 
-    sint32 sprite_id = ebx | (peep->tshirt_colour << 19) | (peep->trousers_colour << 24) | 0xA0000000;
+    sint32 sprite_id = ebx | SPRITE_ID_PALETTE_COLOUR_2(peep->tshirt_colour , peep->trousers_colour);
     gfx_draw_sprite(&clip_dpi, sprite_id, x, y, 0);
 
     // If holding a balloon
     if (ebx >= 0x2A1D && ebx < 0x2A3D){
         ebx += 32;
-        ebx |= (peep->balloon_colour << 19) | 0x20000000;
+        ebx |= SPRITE_ID_PALETTE_COLOUR_1(peep->balloon_colour);
         gfx_draw_sprite(&clip_dpi, ebx, x, y, 0);
     }
 
     // If holding umbrella
     if (ebx >= 0x2BBD && ebx < 0x2BDD){
         ebx += 32;
-        ebx |= (peep->umbrella_colour << 19) | 0x20000000;
+        ebx |= SPRITE_ID_PALETTE_COLOUR_1(peep->umbrella_colour);
         gfx_draw_sprite(&clip_dpi, ebx, x, y, 0);
     }
 
     // If wearing hat
     if (ebx >= 0x29DD && ebx < 0x29FD){
         ebx += 32;
-        ebx |= (peep->hat_colour << 19) | 0x20000000;
+        ebx |= SPRITE_ID_PALETTE_COLOUR_1(peep->hat_colour);
         gfx_draw_sprite(&clip_dpi, ebx, x, y, 0);
     }
 }
@@ -1135,7 +1135,7 @@ void window_staff_overview_tool_update(rct_window* w, rct_widgetindex widgetInde
     uint32 imageId = g_peep_animation_entries[peep->sprite_type].sprite_animation[PEEP_ACTION_SPRITE_TYPE_UI].base_image;
     imageId += w->picked_peep_frame >> 2;
 
-    imageId |= (peep->tshirt_colour << 19) | (peep->trousers_colour << 24) | 0xA0000000;
+    imageId |= (peep->tshirt_colour << 19) | (peep->trousers_colour << 24) | IMAGE_TYPE_REMAP | IMAGE_TYPE_REMAP_2_PLUS;
     gPickupPeepImage = imageId;
 }
 
@@ -1278,22 +1278,22 @@ void window_staff_viewport_init(rct_window* w){
 * Handle the costume of staff member.
 * rct2: 0x006BE802
 */
-void window_staff_options_mousedown(rct_widgetindex widgetIndex, rct_window* w, rct_widget* widget)
+void window_staff_options_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget)
 {
     if (widgetIndex != WIDX_COSTUME_BTN) {
         return;
     }
 
     rct_peep* peep = GET_PEEP(w->number);
-    sint32 itemsChecked = 0;
+    sint32 checkedIndex = -1;
     //This will be moved below where Items Checked is when all
     //of dropdown related functions are finished. This prevents
     //the dropdown from not working on first click.
     sint32 numCostumes = staff_get_available_entertainer_costume_list(_availableCostumes);
     for (sint32 i = 0; i < numCostumes; i++) {
         uint8 costume = _availableCostumes[i];
-        if (costume == peep->sprite_type) {
-            itemsChecked = 1 << i;
+        if (peep->sprite_type == PEEP_SPRITE_TYPE_ENTERTAINER_PANDA + costume) {
+            checkedIndex = i;
         }
         gDropdownItemsArgs[i] = StaffCostumeNames[costume];
         gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
@@ -1309,7 +1309,10 @@ void window_staff_options_mousedown(rct_widgetindex widgetIndex, rct_window* w, 
     window_dropdown_show_text_custom_width(x, y, extray, w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, numCostumes, width);
 
     // See above note.
-    gDropdownItemsChecked = itemsChecked;
+    if (checkedIndex != -1)
+    {
+        dropdown_set_checked(checkedIndex, true);
+    }
 }
 
 /**

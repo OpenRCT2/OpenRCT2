@@ -532,7 +532,7 @@ STR_0527    :Una montaña rusa de acero capaz de rizos verticales
 STR_0528    :Los pasajeros viajan en botes hinchables por tubos semicirculares o totalmente cerrados.
 STR_0529    :El tren de la mina corre por una vía de acero que recuerda las viejas vías del tren.
 STR_0530    :Asientos colgados de un cable de acero viajan contínuamente desde un extremo a otro del recorrido
-STR_0531    :Una montaña rusa compacta de acero donde los vagones circulan por rizos y sacachorscos.
+STR_0531    :Una montaña rusa compacta de acero donde los vagones circulan por rizos y sacacorchos.
 STR_0532    :
 STR_0533    :
 STR_0534    :Go-Karts autopropulsados con gasolina.
@@ -3765,7 +3765,7 @@ STR_5426    :Fin
 STR_5427    :Coordenadas:
 STR_5428    :Rotaciones en contra del reloj:
 STR_5429    :Nivel de enfoque
-STR_5430    :Segundos a esperar:
+STR_5430    :Tiempo en milisegundos:
 STR_5431    :Partida a cargar:
 STR_5432    :Comando:
 STR_5433    :Secuencias del Menú Principal
@@ -4405,6 +4405,36 @@ STR_6097    :{STRING} colocó una pieza de vía de la atracción '{STRING}'.
 STR_6098    :{STRING} removió una pieza de la atracción.
 STR_6099    :Te has conectado al servidor.
 STR_6100    :Te has desconectado del servidor.
+STR_6101    :Atracciones no disminuyen su valor.
+STR_6102    :{SMALLFONT}{BLACK}El valor de una atracción no disminuye con el tiempo, así los visitantes no pensarán que una atracción es demasiado caro.
+STR_6103    :{SMALLFONT}{BLACK}Esta opción está deshabilitada durante una partida multijugador.
+STR_6104    :Montaña Rusa Sacacorchos
+STR_6105    :Hipermontaña Rusa
+STR_6106    :Atracción de Coches
+STR_6107    :Monster Trucks
+STR_6108    :Steel Twister
+STR_6109    :Hyper-Twister
+STR_6110    :Montaña Rusa Infantil
+STR_6111    :Mini Montaña Rusa Clásica
+STR_6112    :Una montaña rusa compacta de acero donde los vagones circulan por rizos y sacacorchos
+STR_6113    :Una montaña rusa alta y que no se invierte con grandes caídas, alta velocidad y vagones confortables con sólo unas barras para sujetarse
+STR_6114    :Los viajeros viajan lentamente en vehículos motorizados que siguen la ruta de las vías.
+STR_6115    :Camiones gigantes autopropulsados 4x4 que pueden subir cuestas impresionantes
+STR_6116    :Montaña rusa amplia sobre vías de acero que efectúa varias inversiones
+STR_6117    :Sentados en cómodos vagones con sujecciones simples, los viajeros disfrutan de grandes y suaves caídas así como de giros y gran cantidad de momentos de caída libre en los puntos superiores.
+STR_6118    :Una montaña rusa suave para las personas que todavía no tienen el coraje de enfrentar atracciones más grandes.
+STR_6119    :Una montaña rusa barata y fácil de construir, pero con una altura limitada.
+STR_6120    :{BABYBLUE}Nuevo vehículo disponible ahora para {STRINGID}:{NEWLINE}{STRINGID}
+STR_6121    :{SMALLFONT}{BLACK}Extiende los derechos de construcción del parque hasta los bordes del mapa.
+STR_6122    :¡No hay suficientes montañas rusas en este escenario!
+STR_6123    :Error al cargar objetos para el Parque
+STR_6124    :Nombre objeto
+STR_6125    :Tipo objeto
+STR_6126    :Tipo desconocido
+STR_6127    :Archivo: {STRING}
+STR_6128    :El archivo no se puede cargar ya que algunos de los objetos a los que hace referencia en él faltan o están corruptos. Se muestra un listado de estos objetos:
+STR_6129    :Copiar elemento seleccionado
+STR_6130    :Copiar todos los elementos
 
 ##############
 # Escenarios #
@@ -4547,9 +4577,9 @@ STR_SCNR    :Funtopia
 STR_PARK    :Funtopia
 STR_DTLS    :Covering land both sides of a highway, this park has several rides already operating
 
-<Haunted Harbor>
-STR_SCNR    :Haunted Harbor
-STR_PARK    :Haunted Harbor
+<Haunted Harbour>
+STR_SCNR    :Haunted Harbour
+STR_PARK    :Haunted Harbour
 STR_DTLS    :The local authority has agreed to sell nearby land cheaply to this small seaside park, on the condition that certain rides are preserved
 
 <Fun Fortress>

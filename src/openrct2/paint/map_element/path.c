@@ -748,7 +748,7 @@ void path_paint(uint8 direction, uint16 height, rct_map_element * map_element)
                 height2 += 16;
             }
 
-            sub_98196C(imageId | patrolColour << 19 | 0x20000000, 16, 16, 1, 1, 0, height2 + 2, get_current_rotation());
+            sub_98196C(imageId | patrolColour << 19 | IMAGE_TYPE_REMAP, 16, 16, 1, 1, 0, height2 + 2, get_current_rotation());
         }
     }
 
@@ -758,19 +758,22 @@ void path_paint(uint8 direction, uint16 height, rct_map_element * map_element)
         if (footpath_element_is_sloped(map_element)) {
             height2 += 8;
         }
-        uint32 imageId = (SPR_HEIGHT_MARKER_BASE + height2 / 16) | COLOUR_GREY << 19 | 0x20000000;
+        uint32 imageId = (SPR_HEIGHT_MARKER_BASE + height2 / 16) | COLOUR_GREY << 19 | IMAGE_TYPE_REMAP;
         imageId += get_height_marker_offset();
         imageId -= gMapBaseZ;
         sub_98196C(imageId, 16, 16, 1, 1, 0, height2, get_current_rotation());
     }
 
     uint8 pathType = (map_element->properties.path.type & 0xF0) >> 4;
-    rct_footpath_entry * footpathEntry = gFootpathEntries[pathType];
+    rct_footpath_entry * footpathEntry = get_footpath_entry(pathType);
 
-    if (footpathEntry->support_type == FOOTPATH_ENTRY_SUPPORT_TYPE_POLE) {
-        path_paint_pole_support(map_element, height, footpathEntry, word_F3F038, imageFlags, sceneryImageFlags);
-    } else {
-        path_paint_box_support(map_element, height, footpathEntry, word_F3F038, imageFlags, sceneryImageFlags);
+    if (footpathEntry != (void*)-1) {
+        if (footpathEntry->support_type == FOOTPATH_ENTRY_SUPPORT_TYPE_POLE) {
+            path_paint_pole_support(map_element, height, footpathEntry, word_F3F038, imageFlags, sceneryImageFlags);
+        }
+        else {
+            path_paint_box_support(map_element, height, footpathEntry, word_F3F038, imageFlags, sceneryImageFlags);
+        }
     }
 
 #ifdef __ENABLE_LIGHTFX__

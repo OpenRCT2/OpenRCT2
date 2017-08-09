@@ -20,6 +20,7 @@
 #include "../core/Exception.hpp"
 #include "../core/Registration.hpp"
 #include "../interface/Screenshot.h"
+#include "../paint/Painter.h"
 #include "IDrawingContext.h"
 #include "IDrawingEngine.h"
 #include "NewDrawing.h"
@@ -30,15 +31,17 @@ extern "C"
     #include "../drawing/drawing.h"
     #include "../localisation/string_ids.h"
     #include "../platform/platform.h"
-    #include "../rct2.h"
 }
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Drawing;
+using namespace OpenRCT2::Paint;
 using namespace OpenRCT2::Ui;
 
 static sint32                   _drawingEngineType  = DRAWING_ENGINE_SOFTWARE;
 static IDrawingEngine *         _drawingEngine      = nullptr;
+// TODO move this to Context
+static Painter *                _painter            = nullptr;
 
 extern "C"
 {
@@ -57,31 +60,33 @@ extern "C"
         return _drawingEngineType;
     }
 
-    bool drawing_engine_requires_restart(sint32 srcEngine, sint32 dstEngine)
+    bool drawing_engine_requires_new_window(sint32 srcEngine, sint32 dstEngine)
     {
-        // Linux requires a restart. This could be improved in the future by recreating the window,
-        // https://github.com/OpenRCT2/OpenRCT2/issues/2015
-        bool requiresRestart = true;
 #ifdef _WIN32
-        if (dstEngine != DRAWING_ENGINE_OPENGL)
+        if (srcEngine != DRAWING_ENGINE_OPENGL && dstEngine != DRAWING_ENGINE_OPENGL)
         {
             // Windows is apparently able to switch to hardware rendering on the fly although
             // using the same window in an unaccelerated and accelerated context is unsupported by SDL2
-            requiresRestart = false;
+            return false;
         }
 #endif
-        return requiresRestart;
+
+        return true;
     }
 
     void drawing_engine_init()
     {
         assert(_drawingEngine == nullptr);
+        assert(_painter == nullptr);
 
         _drawingEngineType = gConfigGeneral.drawing_engine;
 
-        IContext * context = GetContext();
-        IUiContext * uiContext = context->GetUiContext();
-        IDrawingEngine * drawingEngine = uiContext->CreateDrawingEngine((DRAWING_ENGINE_TYPE)_drawingEngineType);
+        auto context = GetContext();
+        auto uiContext = context->GetUiContext();
+        auto drawingEngine = uiContext->CreateDrawingEngine((DRAWING_ENGINE_TYPE)_drawingEngineType);
+
+        _painter = new Painter(uiContext);
+
         if (drawingEngine == nullptr)
         {
             if (_drawingEngineType == DRAWING_ENGINE_SOFTWARE)
@@ -135,13 +140,11 @@ extern "C"
 
     void drawing_engine_resize()
     {
-        if (_drawingEngine == nullptr)
+        if (_drawingEngine != nullptr)
         {
-            drawing_engine_init();
+            IUiContext * uiContext = GetContext()->GetUiContext();
+            _drawingEngine->Resize(uiContext->GetWidth(), uiContext->GetHeight());
         }
-
-        IUiContext * uiContext = GetContext()->GetUiContext();
-        _drawingEngine->Resize(uiContext->GetWidth(), uiContext->GetHeight());
     }
 
     void drawing_engine_set_palette(const rct_palette_entry * colours)
@@ -154,9 +157,11 @@ extern "C"
 
     void drawing_engine_draw()
     {
-        if (_drawingEngine != nullptr)
+        if (_drawingEngine != nullptr && _painter != nullptr)
         {
-            _drawingEngine->Draw();
+            _drawingEngine->BeginDraw();
+                _painter->Paint(_drawingEngine);
+            _drawingEngine->EndDraw();
         }
     }
 
@@ -171,7 +176,9 @@ extern "C"
     void drawing_engine_dispose()
     {
         delete _drawingEngine;
+        delete _painter;
         _drawingEngine = nullptr;
+        _painter = nullptr;
     }
 
     rct_drawpixelinfo * drawing_engine_get_dpi()

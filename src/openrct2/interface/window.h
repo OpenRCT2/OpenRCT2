@@ -155,7 +155,7 @@ typedef struct rct_window_event_list {
     void (*close)(struct rct_window*);
     void (*mouse_up)(struct rct_window*, rct_widgetindex);
     void (*resize)(struct rct_window*);
-    void (*mouse_down)(rct_widgetindex, struct rct_window*, rct_widget*);
+    void (*mouse_down)(struct rct_window*, rct_widgetindex, rct_widget*);
     void (*dropdown)(struct rct_window*, rct_widgetindex, sint32);
     void (*unknown_05)(struct rct_window*);
     void (*update)(struct rct_window*);
@@ -278,6 +278,8 @@ typedef struct rct_window {
     sint16 page;                    // 0x48A
     union {
         sint16 picked_peep_old_x;   // 0x48C staff/guest window: peep x gets set to 0x8000 on pickup, this is the old value
+        sint16 vehicleIndex;        // 0x48C Ride window: selected car when setting vehicle colours
+        sint16 numberOfStaff;       // 0x48C Used in park window.
         sint16 var_48C;
     };
     uint16 frame_no;                // 0x48E updated every tic for motion in windows sprites
@@ -497,6 +499,7 @@ enum {
 #define WC_TOP_TOOLBAR__WIDX_WATER                      9
 #define WC_TOP_TOOLBAR__WIDX_SCENERY                    10
 #define WC_TOP_TOOLBAR__WIDX_PATH                       11
+#define WC_TOP_TOOLBAR__WIDX_CLEAR_SCENERY              17
 #define WC_RIDE_CONSTRUCTION__WIDX_CONSTRUCT            23
 #define WC_RIDE_CONSTRUCTION__WIDX_ENTRANCE             29
 #define WC_RIDE_CONSTRUCTION__WIDX_EXIT                 30
@@ -753,7 +756,6 @@ void window_research_funding_page_paint(rct_window *w, rct_drawpixelinfo *dpi, r
 
 void window_scenery_open();
 void window_music_credits_open();
-void window_publisher_credits_open();
 void window_track_manage_open(struct track_design_file_ref *tdFileRef);
 void window_viewport_open();
 void window_themes_open();

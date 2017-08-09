@@ -890,7 +890,7 @@ STR_0884    :Nahrát krajinu
 STR_0885    :Uložit krajinu
 STR_0886    :Ukončit hru
 STR_0887    :Ukončit editor scénáře
-STR_0888    :Ukončit návrh horské dráhy
+STR_0888    :Ukončit návrhář trati
 STR_0889    :Ukončit správu návrhů tratí
 STR_0890    :<removed string - do not use>
 STR_0891    :Snímek obrazovky
@@ -3216,7 +3216,7 @@ STR_3203    :Nastavení výzkumu
 STR_3204    :Výběr nastavení
 STR_3205    :Výběr cílů
 STR_3206    :Uložit scénář
-STR_3207    :Návrh horské dráhy
+STR_3207    :Návrhář trati
 STR_3208    :Správa návrhů tratí
 STR_3209    :Zpět k předchozímu kroku:
 STR_3210    :Jít na následující krok:
@@ -3344,7 +3344,7 @@ STR_3331    :Cesta od vstupu do parku k hraně mapy není kompletní, nebo je p�
 STR_3332    :Vstup do parku je špatně otočený, nebo z něj nevede cesta k hraně mapy
 STR_3333    :Exportovat plug-in objekty s uložením hry
 STR_3334    :{SMALLFONT}{BLACK}Vyberte, zda ukládat data plug-in objektů (add-in data nejsou dodána s hlavním produktem) do souborů uložených her a scénářů, což dovolí jejích načítání na těmi, kdo nemají tyto dodatečná data objektů.
-STR_3335    :Návrh horské dráhy - Vyberte typ atrakce a vozů
+STR_3335    :Návrhář trati - Vyberte typ atrakce a vozů
 STR_3336    :Správa návrhu trati - Vyberte typ trati
 STR_3337    :<not used anymore>
 STR_3338    :{BLACK}Vlastnoručně navržené
@@ -3353,7 +3353,7 @@ STR_3340    :{BLACK}{COMMA16} návrhy dostupné nebo vlastnoručně navržené
 STR_3341    :{SMALLFONT}{BLACK}Herní nástroje
 STR_3342    :Editor scénáře
 STR_3343    :Konvertovat uloženou hru na scénář
-STR_3344    :Návrh horské dráhy
+STR_3344    :Návrhář trati
 STR_3345    :Správa návrhu trati
 STR_3346    :Nelze uložit návrh trati...
 STR_3347    :Trať je příliš velká, obsahuje příliš mnoho prvků, nebo příliš rozsáhlé kulisy
@@ -4440,6 +4440,12 @@ STR_6127    :Soubor: {STRING}
 STR_6128    :Soubor se nepodařilo načíst, protože využívá objekty, z nichž některé jsou porušené nebo zcela chybí. Seznam takových objektů je k dispozici níže.
 STR_6129    :Kopírovat vybrané do schránky
 STR_6130    :Kopírovat celý seznam do schránky
+STR_6131    :Zdroj objektu
+STR_6132    :Ignorovat nutnost výzkumu
+STR_6133    :{SMALLFONT}{BLACK}Povolí přístup k atrakcím a kulisám, které ještě nebyly vyzkoumány
+STR_6134    :Odstranit kulisy
+STR_6135    :Klient zaslal neplatný požadavek
+STR_6136    :Server zaslal neplatný požadavek
 
 ###############################################################################
 ## RCT2 Objects

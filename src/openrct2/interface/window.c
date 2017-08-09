@@ -26,6 +26,7 @@
 #include "../interface/themes.h"
 #include "../localisation/localisation.h"
 #include "../localisation/string_ids.h"
+#include "../OpenRCT2.h"
 #include "../platform/platform.h"
 #include "../world/map.h"
 #include "../world/sprite.h"
@@ -283,7 +284,7 @@ static bool window_other_wheel_input(rct_window *w, rct_widgetindex widgetIndex,
     // Preview / Increment / Decrement
     if (widgetIndex >= previewWidgetIndex && widgetIndex < previewWidgetIndex + 3) {
         rct_widgetindex buttonWidgetIndex = wheel < 0 ? previewWidgetIndex + 2 : previewWidgetIndex + 1;
-        window_event_mouse_up_call(w, buttonWidgetIndex);
+        window_event_mouse_down_call(w, buttonWidgetIndex);
         return true;
     }
 
@@ -1932,7 +1933,7 @@ void window_event_resize_call(rct_window *w)
 void window_event_mouse_down_call(rct_window *w, rct_widgetindex widgetIndex)
 {
     if (w->event_handlers->mouse_down != NULL)
-        w->event_handlers->mouse_down(widgetIndex, w, &w->widgets[widgetIndex]);
+        w->event_handlers->mouse_down(w, widgetIndex, &w->widgets[widgetIndex]);
 }
 
 void window_event_dropdown_call(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex)

@@ -1,5 +1,5 @@
 # CMAKE project for libopenrct2 (core OpenRCT2 component)
-cmake_minimum_required(VERSION 2.6)
+cmake_minimum_required(VERSION 3.1)
 if (CMAKE_BINARY_DIR STREQUAL CMAKE_SOURCE_DIR)
     message(FATAL_ERROR "Building in-source is not supported! Create a build dir and remove ${CMAKE_SOURCE_DIR}/CMakeCache.txt")
 endif ()
@@ -128,7 +128,7 @@ endif ()
 # Outputs
 set(PROJECT libopenrct2)
 project(${PROJECT})
-add_library(${PROJECT} SHARED ${OPENRCT2_CORE_SOURCES} ${OPENRCT2_CORE_MM_SOURCES} ${RCT2_SECTIONS})
+add_library(${PROJECT} ${OPENRCT2_CORE_SOURCES} ${OPENRCT2_CORE_MM_SOURCES} ${RCT2_SECTIONS})
 set_target_properties(${PROJECT} PROPERTIES PREFIX "")
 set_target_properties(${PROJECT} PROPERTIES COMPILE_FLAGS "-Wundef")
 
@@ -164,6 +164,12 @@ if (NOT DISABLE_NETWORK)
     if (WIN32)
         target_link_libraries(${PROJECT} ws2_32)
     endif ()
+
+    # our HTTP implementation requires use of threads
+    set(THREADS_PREFER_PTHREAD_FLAG ON)
+    find_package(Threads REQUIRED)
+    target_link_libraries(${PROJECT} Threads::Threads)
+
     if (STATIC)
         target_link_libraries(${PROJECT} ${LIBCURL_STATIC_LIBRARIES}
                                          ${SSL_STATIC_LIBRARIES})
@@ -264,4 +270,14 @@ if (NOT DISABLE_RCT2)
     # Disable optimizations for addresses.c for all compilers, to allow optimized
     # builds without need for -fno-omit-frame-pointer
     set_source_files_properties(${CMAKE_CURRENT_LIST_DIR}/rct2/addresses.c PROPERTIES COMPILE_FLAGS -O0)
+endif ()
+
+if (CXX_WARN_SUGGEST_FINAL_TYPES)
+    # Disable -Wsuggest-final-types via pragmas where due.
+   add_definitions(-D__WARN_SUGGEST_FINAL_TYPES__)
+endif ()
+
+if (CXX_WARN_SUGGEST_FINAL_METHODS)
+    # Disable -Wsuggest-final-methods via pragmas where due.
+   add_definitions(-D__WARN_SUGGEST_FINAL_METHODS__)
 endif ()

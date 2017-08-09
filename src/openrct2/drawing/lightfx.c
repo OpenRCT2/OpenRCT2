@@ -18,7 +18,6 @@
 
 #include "../common.h"
 #include "../game.h"
-#include "../rct2.h"
 #include "../interface/viewport.h"
 #include "../interface/window.h"
 #include "../paint/map_element/map_element.h"
@@ -290,7 +289,7 @@ void lightfx_prepare_light_list()
                     unk_140E9A8 = dpi;
                     painter_setup();
                     viewport_paint_setup();
-                    sub_688217();
+                    paint_arrange_structs();
                     sub_68862C();
 
                 //  log_warning("[%i, %i]", dpi->x, dpi->y);
@@ -326,7 +325,7 @@ void lightfx_prepare_light_list()
                     //  RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo*) = dpi;
                     //  painter_setup();
                     //  viewport_paint_setup();
-                    //  sub_688217();
+                    //  paint_arrange_structs();
                     //  sub_68862C();
                     //}
                 }

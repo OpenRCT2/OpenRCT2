@@ -29,7 +29,7 @@ extern "C"
 #define MAX_RIDE_GROUPS_PER_RIDE_TYPE 2
 
 typedef struct ride_group {
-    uint8 track_type;
+    uint8 ride_type;
     uint16 maximum_height;
     uint64 available_track_pieces;
     rct_ride_name naming;
@@ -41,22 +41,26 @@ interface IRideGroupManager
     virtual ~IRideGroupManager() { }
 
     virtual const ride_group * GetRideGroup(uint8 trackType, rct_ride_entry * rideEntry) const abstract;
-    virtual bool TrackTypeHasRideGroups(uint8 trackType) const abstract;
+    virtual bool RideTypeHasRideGroups(uint8 trackType) const abstract;
     virtual ride_group * RideGroupFind(uint8 rideType, uint8 index) const abstract;
     virtual bool RideGroupsAreEqual(const ride_group * a, const ride_group * b) const abstract;
     virtual bool RideGroupIsInvented(const ride_group * rideGroup) const abstract;
+
+    virtual const std::vector<const char *> GetPreferedRideEntryOrder(uint8 rideType) const abstract;
 };
+
 
 IRideGroupManager * GetRideGroupManager();
 
 extern "C"
 {
 #endif
-    const ride_group * get_ride_group(uint8 trackType, rct_ride_entry * rideEntry);
-    bool track_type_has_ride_groups(uint8 trackType);
+    const ride_group * get_ride_group(uint8 rideType, rct_ride_entry * rideEntry);
+    bool ride_type_has_ride_groups(uint8 rideType);
     ride_group * ride_group_find(uint8 rideType, uint8 index);
     bool ride_groups_are_equal(const ride_group * a, const ride_group * b);
     bool ride_group_is_invented(const ride_group * rideGroup);
+    sint32 vehicle_preference_compare(uint8 rideType, const char * a, const char * b);
 #ifdef __cplusplus
 }
 #endif

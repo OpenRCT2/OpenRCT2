@@ -16,8 +16,23 @@
 
 #pragma once
 
-#include <string>
 #include "common.h"
+
+enum
+{
+    FILE_EXTENSION_UNKNOWN,
+    FILE_EXTENSION_DAT,
+    FILE_EXTENSION_SC4,
+    FILE_EXTENSION_SV4,
+    FILE_EXTENSION_TD4,
+    FILE_EXTENSION_SC6,
+    FILE_EXTENSION_SV6,
+    FILE_EXTENSION_TD6,
+};
+
+#ifdef __cplusplus
+
+#include <string>
 
 interface IStream;
 
@@ -38,3 +53,15 @@ struct ClassifiedFile
 
 bool TryClassifyFile(const std::string &path, ClassifiedFile * result);
 bool TryClassifyFile(IStream * stream, ClassifiedFile * result);
+
+#endif // __cplusplus
+
+
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+    uint32 get_file_extension_type(const utf8 * path);
+#ifdef __cplusplus
+}
+#endif

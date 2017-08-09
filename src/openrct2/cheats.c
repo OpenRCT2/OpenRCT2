@@ -22,6 +22,7 @@
 #include "localisation/localisation.h"
 #include "management/finance.h"
 #include "network/network.h"
+#include "ride/station.h"
 #include "util/util.h"
 #include "world/Climate.h"
 #include "world/footpath.h"
@@ -50,6 +51,7 @@ bool gCheatsDisablePlantAging = false;
 bool gCheatsEnableChainLiftOnAllTrack = false;
 bool gCheatsAllowArbitraryRideTypeChanges = false;
 bool gCheatsDisableRideValueAging = false;
+bool gCheatsIgnoreResearchStatus = false;
 
 sint32 park_rating_spinner_value;
 
@@ -69,7 +71,7 @@ static void cheat_set_grass_length(sint32 length)
             if (map_element_get_terrain(mapElement) != TERRAIN_GRASS)
                 continue;
 
-            if ((mapElement->properties.surface.terrain & 0x1F) > 0)
+            if (map_get_water_height(mapElement) > 0)
                 continue;
 
             mapElement->properties.surface.grass_length = length;
@@ -174,7 +176,7 @@ static void cheat_renew_rides()
         // Set build date to current date (so the ride is brand new)
         ride->build_date = gDateMonthsElapsed;
         // Set reliability to 100
-        ride->reliability = (100 << 8);
+        ride->reliability = RIDE_INITIAL_RELIABILITY;
     }
     window_invalidate_by_class(WC_RIDE);
 }
@@ -283,36 +285,39 @@ static void cheat_set_guest_parameter(sint32 parameter, sint32 value)
 
     FOR_ALL_GUESTS(spriteIndex, peep) {
         switch(parameter) {
-            case GUEST_PARAMETER_HAPPINESS:
-                peep->happiness = value;
-                // Clear the 'red-faced with anger' status if we're making the guest happy
-                if (value > 0)
-                {
-                    peep->peep_flags &= ~PEEP_FLAGS_ANGRY;
-                    peep->angriness = 0;
-                }
-                break;
-            case GUEST_PARAMETER_ENERGY:
-                peep->energy = value;
-                break;
-            case GUEST_PARAMETER_HUNGER:
-                peep->hunger = value;
-                break;
-            case GUEST_PARAMETER_THIRST:
-                peep->thirst = value;
-                break;
-            case GUEST_PARAMETER_NAUSEA:
-                peep->nausea = value;
-                break;
-            case GUEST_PARAMETER_NAUSEA_TOLERANCE:
-                peep->nausea_tolerance = value;
-                break;
-            case GUEST_PARAMETER_BATHROOM:
-                peep->bathroom = value;
-                break;
-            case GUEST_PARAMETER_PREFERRED_RIDE_INTENSITY:
-                peep->intensity = (15 << 4) | value;
-                break;
+        case GUEST_PARAMETER_HAPPINESS:
+            peep->happiness = value;
+            peep->happiness_target = value;
+            // Clear the 'red-faced with anger' status if we're making the guest happy
+            if (value > 0)
+            {
+                peep->peep_flags &= ~PEEP_FLAGS_ANGRY;
+                peep->angriness = 0;
+            }
+            break;
+        case GUEST_PARAMETER_ENERGY:
+            peep->energy = value;
+            peep->energy_target = value;
+            break;
+        case GUEST_PARAMETER_HUNGER:
+            peep->hunger = value;
+            break;
+        case GUEST_PARAMETER_THIRST:
+            peep->thirst = value;
+            break;
+        case GUEST_PARAMETER_NAUSEA:
+            peep->nausea = value;
+            peep->nausea_target = value;
+            break;
+        case GUEST_PARAMETER_NAUSEA_TOLERANCE:
+            peep->nausea_tolerance = value;
+            break;
+        case GUEST_PARAMETER_BATHROOM:
+            peep->bathroom = value;
+            break;
+        case GUEST_PARAMETER_PREFERRED_RIDE_INTENSITY:
+            peep->intensity = (15 << 4) | value;
+            break;
         }
         peep_update_sprite_type(peep);
     }
@@ -369,7 +374,7 @@ static void cheat_remove_all_guests()
     {
         ride->num_riders = 0;
 
-        for (size_t stationIndex = 0; stationIndex < RCT12_MAX_STATIONS_PER_RIDE; stationIndex++)
+        for (size_t stationIndex = 0; stationIndex < MAX_STATIONS; stationIndex++)
         {
             ride->queue_length[stationIndex] = 0;
             ride->last_peep_in_queue[stationIndex] = SPRITE_INDEX_NULL;
@@ -428,7 +433,7 @@ static void cheat_set_staff_speed(uint8 value)
 
     FOR_ALL_STAFF(spriteIndex, peep) {
         peep->energy = value;
-        peep->energy_growth_rate = value;
+        peep->energy_target = value;
     }
 }
 
@@ -526,6 +531,7 @@ void game_command_cheat(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint
             case CHEAT_ALLOW_ARBITRARY_RIDE_TYPE_CHANGES: gCheatsAllowArbitraryRideTypeChanges = *edx != 0; window_invalidate_by_class(WC_RIDE); break;
             case CHEAT_OWNALLLAND: cheat_own_all_land(); break;
             case CHEAT_DISABLERIDEVALUEAGING: gCheatsDisableRideValueAging = *edx != 0; break;
+            case CHEAT_IGNORERESEARCHSTATUS: gCheatsIgnoreResearchStatus = *edx != 0; break;
         }
         if (network_get_mode() == NETWORK_MODE_NONE) {
             config_save_default();
@@ -557,6 +563,7 @@ void cheats_reset()
     gCheatsDisablePlantAging = false;
     gCheatsAllowArbitraryRideTypeChanges = false;
     gCheatsDisableRideValueAging = false;
+    gCheatsIgnoreResearchStatus = false;
 }
 
 //Generates the string to print for the server log when a cheat is used.
@@ -763,6 +770,7 @@ const char* cheats_get_cheat_string(int cheat, int edx, int edi) {
         case CHEAT_SETMONEY: return language_get_string(STR_SET_MONEY);
         case CHEAT_OWNALLLAND: return language_get_string(STR_CHEAT_OWN_ALL_LAND);
         case CHEAT_DISABLERIDEVALUEAGING: return language_get_string(STR_CHEAT_DISABLE_RIDE_VALUE_AGING);
+        case CHEAT_IGNORERESEARCHSTATUS: return language_get_string(STR_CHEAT_IGNORE_RESEARCH_STATUS);
     }
 
     return "";

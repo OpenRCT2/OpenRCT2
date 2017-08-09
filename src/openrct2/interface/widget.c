@@ -212,7 +212,7 @@ static void widget_frame_draw(rct_drawpixelinfo *dpi, rct_window *w, rct_widgeti
     // Draw the resize sprite at the bottom right corner
     l = w->x + widget->right - 18;
     t = w->y + widget->bottom - 18;
-    gfx_draw_sprite(dpi, SPR_RESIZE | 0x20000000 | ((colour & 0x7F) << 19), l, t, 0);
+    gfx_draw_sprite(dpi, SPR_RESIZE | IMAGE_TYPE_REMAP | ((colour & 0x7F) << 19), l, t, 0);
 }
 
 /**
@@ -245,7 +245,7 @@ static void widget_resize_draw(rct_drawpixelinfo *dpi, rct_window *w, rct_widget
     // Draw the resize sprite at the bottom right corner
     l = w->x + widget->right - 18;
     t = w->y + widget->bottom - 18;
-    gfx_draw_sprite(dpi, SPR_RESIZE | 0x20000000 | ((colour & 0x7F) << 19), l, t, 0);
+    gfx_draw_sprite(dpi, SPR_RESIZE | IMAGE_TYPE_REMAP | ((colour & 0x7F) << 19), l, t, 0);
 }
 
 /**
@@ -300,7 +300,7 @@ static void widget_tab_draw(rct_drawpixelinfo *dpi, rct_window *w, rct_widgetind
     }
 
     // Do not draw hidden tabs, unless given a sprite.
-    if (widget->type == WWT_TAB && widget->image != (0x20000000 | SPR_G2_TAB_DISABLED))
+    if (widget->type == WWT_TAB && widget->image != (IMAGE_TYPE_REMAP | SPR_G2_TAB_DISABLED))
         return;
 
     if (widget->type != WWT_TRNBTN) {
@@ -857,12 +857,12 @@ static void widget_draw_image(rct_drawpixelinfo *dpi, rct_window *w, rct_widgeti
         colour = ColourMapA[NOT_TRANSLUCENT(colour)].mid_light;
         gfx_draw_sprite_solid(dpi, image, l, t, colour);
     } else {
-        if (image & 0x80000000) {
+        if (image & IMAGE_TYPE_REMAP_2_PLUS) {
             // ?
         }
 
-        if (image & 0x40000000)
-            image &= ~0x40000000;
+        if (image & IMAGE_TYPE_TRANSPARENT)
+            image &= ~IMAGE_TYPE_TRANSPARENT;
         else
             image |= colour << 19;
 

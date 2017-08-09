@@ -62,9 +62,9 @@ static rct_widget window_ride_list_widgets[] = {
     { WWT_DROPDOWN,         1,  150,    273,    46,     57,     0xFFFFFFFF,                 STR_NONE },                                 // current information type
     { WWT_DROPDOWN_BUTTON,  1,  262,    272,    47,     56,     STR_DROPDOWN_GLYPH,         STR_RIDE_LIST_INFORMATION_TYPE_TIP },       // information type dropdown button
     { WWT_DROPDOWN_BUTTON,  1,  280,    333,    46,     57,     STR_SORT,                   STR_RIDE_LIST_SORT_TIP },                   // sort button
-    { WWT_TAB,              1,  3,      33,     17,     43,     0x20000000 | SPR_TAB,       STR_LIST_RIDES_TIP },                       // tab 1
-    { WWT_TAB,              1,  34,     64,     17,     43,     0x20000000 | SPR_TAB,       STR_LIST_SHOPS_AND_STALLS_TIP },            // tab 2
-    { WWT_TAB,              1,  65,     95,     17,     43,     0x20000000 | SPR_TAB,       STR_LIST_KIOSKS_AND_FACILITIES_TIP },       // tab 3
+    { WWT_TAB,              1,  3,      33,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,       STR_LIST_RIDES_TIP },                       // tab 1
+    { WWT_TAB,              1,  34,     64,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,       STR_LIST_SHOPS_AND_STALLS_TIP },            // tab 2
+    { WWT_TAB,              1,  65,     95,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,       STR_LIST_KIOSKS_AND_FACILITIES_TIP },       // tab 3
     { WWT_SCROLL,           1,  3,      336,    60,     236,    SCROLL_VERTICAL,                            STR_NONE },                                 // list
     { WWT_IMGBTN,           1,  320,    333,    62,     75,     SPR_G2_RCT1_CLOSE_BUTTON_0, STR_NONE },
     { WWT_IMGBTN,           1,  320,    333,    76,     89,     SPR_G2_RCT1_OPEN_BUTTON_0,  STR_NONE },
@@ -76,7 +76,7 @@ static bool _quickDemolishMode = false;
 
 static void window_ride_list_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_ride_list_resize(rct_window *w);
-static void window_ride_list_mousedown(rct_widgetindex widgetIndex, rct_window*w, rct_widget* widget);
+static void window_ride_list_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget);
 static void window_ride_list_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex);
 static void window_ride_list_update(rct_window *w);
 static void window_ride_list_scrollgetsize(rct_window *w, sint32 scrollIndex, sint32 *width, sint32 *height);
@@ -312,7 +312,7 @@ static void window_ride_list_resize(rct_window *w)
  *
  *  rct2: 0x006B3532
  */
-static void window_ride_list_mousedown(rct_widgetindex widgetIndex, rct_window*w, rct_widget* widget)
+static void window_ride_list_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget)
 {
     if (widgetIndex == WIDX_OPEN_CLOSE_ALL) {
         gDropdownItemsFormat[0] = STR_CLOSE_ALL;
@@ -441,6 +441,7 @@ static void window_ride_list_scrollmousedown(rct_window *w, sint32 scrollIndex, 
     if (_quickDemolishMode && network_get_mode() != NETWORK_MODE_CLIENT) {
         gGameCommandErrorTitle = STR_CANT_DEMOLISH_RIDE;
         game_do_command(0, GAME_COMMAND_FLAG_APPLY, 0, rideIndex, GAME_COMMAND_DEMOLISH_RIDE, 0, 0);
+        window_ride_list_refresh_list(w);
     }
     else {
         window_ride_main_open(rideIndex);
@@ -677,7 +678,7 @@ static void window_ride_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, 
             }
             break;
         case INFORMATION_TYPE_RELIABILITY:
-            set_format_arg(2, uint16, ride->reliability >> 8);
+            set_format_arg(2, uint16, ride->reliability_percentage);
             formatSecondary = STR_RELIABILITY_LABEL;
             break;
         case INFORMATION_TYPE_DOWN_TIME:
@@ -867,7 +868,7 @@ static void window_ride_list_refresh_list(rct_window *w)
         case INFORMATION_TYPE_RELIABILITY:
             while (--current_list_position >= 0) {
                 otherRide = get_ride(w->list_item_positions[current_list_position]);
-                if (ride->reliability >> 8 <= otherRide->reliability >> 8)
+                if (ride->reliability_percentage <= otherRide->reliability_percentage)
                     break;
 
                 window_bubble_list_item(w, current_list_position);

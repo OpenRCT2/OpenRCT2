@@ -46,7 +46,7 @@ static rct_widget window_title_menu_widgets[] = {
 };
 
 static void window_title_menu_mouseup(rct_window *w, rct_widgetindex widgetIndex);
-static void window_title_menu_mousedown(rct_widgetindex widgetIndex, rct_window*w, rct_widget* widget);
+static void window_title_menu_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget);
 static void window_title_menu_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex);
 static void window_title_menu_cursor(rct_window *w, rct_widgetindex widgetIndex, sint32 x, sint32 y, sint32 *cursorId);
 static void window_title_menu_paint(rct_window *w, rct_drawpixelinfo *dpi);
@@ -176,7 +176,7 @@ static void window_title_menu_mouseup(rct_window *w, rct_widgetindex widgetIndex
     }
 }
 
-static void window_title_menu_mousedown(rct_widgetindex widgetIndex, rct_window*w, rct_widget* widget)
+static void window_title_menu_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget)
 {
     if (widgetIndex == WIDX_GAME_TOOLS) {
         gDropdownItemsFormat[0] = STR_SCENARIO_EDITOR;

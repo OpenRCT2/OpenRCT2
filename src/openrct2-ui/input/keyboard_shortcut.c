@@ -23,6 +23,7 @@
 #include <openrct2/interface/Screenshot.h>
 #include <openrct2/localisation/localisation.h>
 #include <openrct2/network/network.h>
+#include <openrct2/OpenRCT2.h>
 #include <openrct2/platform/platform.h>
 #include <openrct2/ride/track.h>
 #include <openrct2/ride/track_paint.h>
@@ -214,7 +215,7 @@ static void shortcut_remove_top_bottom_toolbar_toggle()
             window_close(window_find_by_class(WC_TITLE_OPTIONS));
             window_close(window_find_by_class(WC_TITLE_MENU));
             window_close(window_find_by_class(WC_TITLE_EXIT));
-            gTitleHideVersionInfo = true;
+            title_set_hide_version_info(true);
         } else {
             title_create_windows();
         }
@@ -495,6 +496,23 @@ static void shortcut_open_cheat_window()
     window_cheats_open();
 }
 
+static void shortcut_clear_scenery()
+{
+    if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
+        return;
+    
+    if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gS6Info.editor_step == EDITOR_STEP_LANDSCAPE_EDITOR) {
+        if (!(gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER))) {
+            rct_window *window = window_find_by_class(WC_TOP_TOOLBAR);
+            if (window != NULL) {
+                window_invalidate(window);
+                window_event_mouse_up_call(window, WC_TOP_TOOLBAR__WIDX_CLEAR_SCENERY);
+            }
+        }
+    }
+}
+
+
 static void shortcut_open_chat_window()
 {
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
@@ -722,6 +740,7 @@ static const shortcut_action shortcut_table[SHORTCUT_COUNT] = {
     shortcut_ride_construction_build_current,
     shortcut_ride_construction_demolish_current,
     shortcut_load_game,
+    shortcut_clear_scenery,
 };
 
 #pragma endregion

@@ -49,7 +49,9 @@ typedef enum {
     WWT_TEXT_BOX = 27,
     WWT_LAST = 26,
 } WINDOW_WIDGET_TYPES;
+
 #define WIDGETS_END     WWT_LAST, 0, 0, 0, 0, 0, 0, 0
+#define BAR_BLINK       (1u << 31)
 
 enum {
     SCROLL_HORIZONTAL = (1 << 0),
