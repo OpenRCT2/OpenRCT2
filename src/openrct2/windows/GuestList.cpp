@@ -718,11 +718,11 @@ static void window_guest_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi,
             if (_window_guest_list_tracking_only && !(peep->peep_flags & PEEP_FLAGS_TRACKING))
                 continue;
 
-            //
-            if (y + 11 >= -0x7FFF && y + 11 > dpi->y && y < 0x7FFF) {
-                // Check if y is beyond the scroll control
-                if (y > dpi->y + dpi->height)
-                    break;
+            // Check if y is beyond the scroll control
+            if (y + 11 >= -0x7FFF &&
+                y + 11 > dpi->y &&
+                y < 0x7FFF &&
+                y < dpi->y + dpi->height) {
 
                 // Highlight backcolour and text colour (format)
                 format = STR_BLACK_STRING;
