@@ -1336,7 +1336,7 @@ static void window_options_dropdown(rct_window *w, rct_widgetindex widgetIndex, 
         switch (widgetIndex) {
         case WIDX_CONSTRUCTION_MARKER_DROPDOWN:
             if (dropdownIndex != (gConfigGeneral.construction_marker_colour ? 1 : 0)) {
-                gConfigGeneral.construction_marker_colour = (uint8)dropdownIndex;
+                gConfigGeneral.construction_marker_colour = dropdownIndex != 0;
                 config_save_default();
                 gfx_invalidate_screen();
             }

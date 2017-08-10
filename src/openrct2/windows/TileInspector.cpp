@@ -1531,10 +1531,10 @@ static void window_tile_inspector_invalidate(rct_window *w)
         w->widgets[WIDX_SCENERY_CHECK_COLLISION_S].bottom = w->widgets[WIDX_SCENERY_CHECK_COLLISION_S].top + 13;
         w->widgets[WIDX_SCENERY_CHECK_COLLISION_W].top = GBBT(propertiesAnchor, 2) + 5 + 7 * 1;
         w->widgets[WIDX_SCENERY_CHECK_COLLISION_W].bottom = w->widgets[WIDX_SCENERY_CHECK_COLLISION_W].top + 13;
-        N = mapElement->flags & (1 << ((2 - get_current_rotation()) & 3));
-        E = mapElement->flags & (1 << ((3 - get_current_rotation()) & 3));
-        S = mapElement->flags & (1 << ((0 - get_current_rotation()) & 3));
-        W = mapElement->flags & (1 << ((1 - get_current_rotation()) & 3));
+        N = (mapElement->flags & (1 << ((2 - get_current_rotation()) & 3))) != 0;
+        E = (mapElement->flags & (1 << ((3 - get_current_rotation()) & 3))) != 0;
+        S = (mapElement->flags & (1 << ((0 - get_current_rotation()) & 3))) != 0;
+        W = (mapElement->flags & (1 << ((1 - get_current_rotation()) & 3))) != 0;
         widget_set_checkbox_value(w, WIDX_SCENERY_CHECK_COLLISION_N, N);
         widget_set_checkbox_value(w, WIDX_SCENERY_CHECK_COLLISION_E, E);
         widget_set_checkbox_value(w, WIDX_SCENERY_CHECK_COLLISION_S, S);

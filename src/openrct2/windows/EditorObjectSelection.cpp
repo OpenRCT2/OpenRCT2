@@ -66,12 +66,12 @@ static uint16 _filter_object_counts[11];
 static char _filter_string[41];
 
 #define _FILTER_ALL ((_filter_flags & FILTER_ALL) == FILTER_ALL)
-#define _FILTER_RCT2 (_filter_flags & FILTER_RCT2)
-#define _FILTER_WW (_filter_flags & FILTER_WW)
-#define _FILTER_TT (_filter_flags & FILTER_TT)
-#define _FILTER_CUSTOM (_filter_flags & FILTER_CUSTOM)
-#define _FILTER_SELECTED (_filter_flags & FILTER_SELECTED)
-#define _FILTER_NONSELECTED (_filter_flags & FILTER_NONSELECTED)
+#define _FILTER_RCT2 ((_filter_flags & FILTER_RCT2) != 0)
+#define _FILTER_WW ((_filter_flags & FILTER_WW) != 0)
+#define _FILTER_TT ((_filter_flags & FILTER_TT) != 0)
+#define _FILTER_CUSTOM ((_filter_flags & FILTER_CUSTOM) != 0)
+#define _FILTER_SELECTED ((_filter_flags & FILTER_SELECTED) != 0)
+#define _FILTER_NONSELECTED ((_filter_flags & FILTER_NONSELECTED) != 0)
 
 enum {
     WINDOW_OBJECT_SELECTION_PAGE_RIDE_VEHICLES_ATTRACTIONS,

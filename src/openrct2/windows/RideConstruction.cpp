@@ -515,7 +515,7 @@ static const rct_string_id RideConstructionSeatAngleRotationStrings[] = {
 
 static bool is_track_enabled(sint32 trackFlagIndex)
 {
-    return _enabledRidePieces & (1ULL << trackFlagIndex);
+    return (_enabledRidePieces & (1ULL << trackFlagIndex)) != 0;
 }
 
 static sint32 ride_get_alternative_type(rct_ride *ride)
@@ -2509,7 +2509,7 @@ static bool sub_6CA2DF_get_track_element(uint8 *trackElement) {
         return false;
     }
 
-    bool startsDiagonal = _currentTrackPieceDirection & (1 << 2);
+    bool startsDiagonal = (_currentTrackPieceDirection & (1 << 2)) != 0;
     if (curve == TRACK_CURVE_LEFT_LARGE || curve == TRACK_CURVE_RIGHT_LARGE) {
         if (_rideConstructionState == RIDE_CONSTRUCTION_STATE_BACK) {
             startsDiagonal = !startsDiagonal;
