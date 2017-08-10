@@ -14,15 +14,16 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../Context.h"
-#include "../core/Math.hpp"
+#include <openrct2/Context.h>
+#include <openrct2/core/Math.hpp>
+#include <openrct2-ui/windows/Window.h>
 
 extern "C"
 {
-    #include "../interface/land_tool.h"
-    #include "../interface/widget.h"
-    #include "../localisation/localisation.h"
-    #include "dropdown.h"
+    #include <openrct2/interface/land_tool.h>
+    #include <openrct2/interface/widget.h>
+    #include <openrct2/localisation/localisation.h>
+    #include <openrct2/windows/dropdown.h>
 }
 
 enum WINDOW_LAND_WIDGET_IDX {
@@ -105,13 +106,14 @@ static sint32 _selectedWallTexture;
  *
  *  rct2: 0x00663E7D
  */
-void window_land_open()
+rct_window * window_land_open()
 {
     rct_window* window;
 
     // Check if window is already open
-    if (window_find_by_class(WC_LAND) != NULL)
-        return;
+    window = window_find_by_class(WC_LAND);
+    if (window != NULL)
+        return window;
 
     window = window_create(context_get_width() - 98, 29, 98, 160, &window_land_events, WC_LAND, 0);
     window->widgets = window_land_widgets;
@@ -137,6 +139,8 @@ void window_land_open()
     _selectedWallTexture = 0;
     gLandToolRaiseCost = MONEY32_UNDEFINED;
     gLandToolLowerCost = MONEY32_UNDEFINED;
+
+    return window;
 }
 
 /**

@@ -1185,9 +1185,9 @@ static sint32 cc_open(const utf8 **argv, sint32 argc) {
             window_close_all();
             window_editor_object_selection_open();
         } else if (strcmp(argv[0], "inventions_list") == 0 && invalidArguments(&invalidTitle, !title)) {
-            window_editor_inventions_list_open();
+            context_open_window(WC_EDITOR_INVENTION_LIST);
         } else if (strcmp(argv[0], "scenario_options") == 0 && invalidArguments(&invalidTitle, !title)) {
-            window_editor_scenario_options_open();
+            context_open_window(WC_EDITOR_SCENARIO_OPTIONS);
         } else if (strcmp(argv[0], "options") == 0) {
             context_open_window(WC_OPTIONS);
         } else if (strcmp(argv[0], "themes") == 0) {

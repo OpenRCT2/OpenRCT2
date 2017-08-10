@@ -140,7 +140,7 @@ void game_reduce_game_speed()
  */
 void game_create_windows()
 {
-    window_main_open();
+    context_open_window(WC_MAIN_WINDOW);
     window_top_toolbar_open();
     window_game_bottom_toolbar_open();
     window_resize_gui(context_get_width(), context_get_height());
@@ -1501,7 +1501,6 @@ void game_init_all(sint32 mapSize)
     window_new_ride_init_vars();
     window_guest_list_init_vars_a();
     window_guest_list_init_vars_b();
-    window_staff_list_init_vars();
     scenery_set_default_placement_configuration();
     window_tile_inspector_clear_clipboard();
     load_palette();

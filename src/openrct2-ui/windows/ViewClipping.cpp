@@ -14,13 +14,14 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../config/Config.h"
+#include <openrct2/config/Config.h>
+#include <openrct2-ui/windows/Window.h>
 
 extern "C"
 {
-    #include "../interface/widget.h"
-    #include "../interface/viewport.h"
-    #include "../localisation/localisation.h"
+    #include <openrct2/interface/widget.h>
+    #include <openrct2/interface/viewport.h>
+    #include <openrct2/localisation/localisation.h>
 }
 
 enum WINDOW_VIEW_CLIPPING_WIDGET_IDX {
@@ -111,7 +112,7 @@ static void window_view_clipping_set_clipheight(rct_window *w, const uint8 cliph
     w->scrolls[0].h_left = (sint16)ceil(clip_height_ratio * (w->scrolls[0].h_right - ((widget->right - widget->left) - 1)));
 }
 
-static void _window_view_clipping_open()
+rct_window * window_view_clipping_open()
 {
     rct_window* window;
 
@@ -119,14 +120,9 @@ static void _window_view_clipping_open()
     rct_window *mainWindow = window_get_main();
 
     // Check if window is already open
-    if (window_find_by_class(WC_VIEW_CLIPPING) != NULL) {
-        // If window is already open, toggle the view clipping on/off
-        if (mainWindow != NULL) {
-            mainWindow->viewport->flags ^= VIEWPORT_FLAG_PAINT_CLIP_TO_HEIGHT;
-            window_invalidate(mainWindow);
-        }
-
-        return;
+    window = window_find_by_class(WC_VIEW_CLIPPING);
+    if (window != NULL) {
+        return window;
     }
 
     // Window is not open - create it.
@@ -152,7 +148,7 @@ static void _window_view_clipping_open()
         window_invalidate(mainWindow);
     }
 
-    window_invalidate(window);
+    return window;
 }
 
 static void window_view_clipping_close()
@@ -298,12 +294,3 @@ static void window_view_clipping_scrollgetsize(rct_window *w, int scrollIndex, i
 {
     *width = 1000;
 }
-
-extern "C"
-{
-    void window_view_clipping_open()
-    {
-        _window_view_clipping_open();
-    }
-}
-
