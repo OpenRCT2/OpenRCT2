@@ -216,7 +216,6 @@ static void ride_update(sint32 rideIndex);
 static void ride_update_vehicle_colours(sint32 rideIndex);
 void loc_6DDF9C(Ride *ride, rct_map_element *mapElement);
 
-
 Ride *get_ride(sint32 index)
 {
     if (index < 0 || index >= MAX_RIDES)

@@ -101,6 +101,8 @@ public:
     {
     }
 
+    virtual ~GameAction() = default;
+
     uint32 GetPlayer() const
     {
         return _playerId;
