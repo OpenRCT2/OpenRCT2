@@ -27,7 +27,7 @@ extern "C"
     #include "../ride/track_design.h"
 }
 
-static money32 SmallSceneryRemove(sint16 x, sint16 y, sint8 baseHeight, uint8 quadrant, uint8 sceneryType, uint8 flags)
+static money32 SmallSceneryRemove(sint16 x, sint16 y, uint8 baseHeight, uint8 quadrant, uint8 sceneryType, uint8 flags)
 {
     if (!map_is_location_valid(x, y))
     {
@@ -119,7 +119,7 @@ static money32 SmallSceneryRemove(sint16 x, sint16 y, sint8 baseHeight, uint8 qu
     return (gParkFlags & PARK_FLAGS_NO_MONEY) ? 0 : cost;
 }
 
-static money32 SmallScenerySetColour(sint16 x, sint16 y, sint8 baseHeight, uint8 quadrant, uint8 sceneryType, uint8 primaryColour, uint8 secondaryColour, uint8 flags)
+static money32 SmallScenerySetColour(sint16 x, sint16 y, uint8 baseHeight, uint8 quadrant, uint8 sceneryType, uint8 primaryColour, uint8 secondaryColour, uint8 flags)
 {
     gCommandExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
     sint32 z = baseHeight * 8;

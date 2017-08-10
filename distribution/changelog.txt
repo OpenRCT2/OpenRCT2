@@ -2,6 +2,7 @@
 ------------------------------------------------------------------------
 - Feature: [#6078] Game now converts mp.dat to SC21.SC4 (Mega Park) automatically.
 - Fix: [#816] Fix Original bug with guest list and map window interaction causing unexpected peeps to flash.
+- Fix: Infinite loop when removing scenery elements with >127 base height.
 
 0.1.1 (2017-08-09)
 ------------------------------------------------------------------------
