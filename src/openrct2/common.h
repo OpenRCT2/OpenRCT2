@@ -249,13 +249,13 @@ typedef uint16 rct_string_id;
 
 // C++17 or later
 #if defined(__cplusplus) && __cplusplus > 201402L
-	#define UNUSED_ATTR [[maybe_unused]]
+    #define UNUSED_ATTR [[maybe_unused]]
 #else
-	#ifdef __GNUC__
-		#define UNUSED_ATTR [[gnu::unused]]
-	#else
-		#define UNUSED_ATTR
-	#endif
+    #ifdef __GNUC__
+        #define UNUSED_ATTR [[gnu::unused]]
+    #else
+        #define UNUSED_ATTR
+    #endif
 #endif
 
 /**

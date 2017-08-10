@@ -363,7 +363,7 @@ static ride_list_item * window_new_ride_iterate_over_ride_group(uint8 rideType, 
             const ride_group * rideEntryRideGroup = get_ride_group(rideType, rideEntry);
             const ride_group * rideGroup = ride_group_find(rideType, rideGroupIndex);
 
-			if (!ride_groups_are_equal(rideEntryRideGroup, rideGroup))
+            if (!ride_groups_are_equal(rideEntryRideGroup, rideGroup))
                 continue;
         }
 
