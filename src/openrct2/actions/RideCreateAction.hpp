@@ -30,6 +30,7 @@ extern "C"
     #include "../rct1.h"
     #include "../ride/ride_data.h"
     #include "../ride/ride.h"
+    #include "../ride/station.h"
 }
 
 struct RideCreateGameActionResult : public GameActionResult
@@ -78,7 +79,7 @@ public:
                 rideEntry = get_ride_entry(*rei);
 
                 // Can happen in select-by-track-type mode
-                if (!ride_entry_is_invented(*rei))
+                if (!ride_entry_is_invented(*rei) && !gCheatsIgnoreResearchStatus)
                 {
                     continue;
                 }
@@ -145,7 +146,7 @@ public:
             ride_set_name_to_default(ride, rideEntry);
         }
 
-        for (size_t i = 0; i < RCT12_MAX_STATIONS_PER_RIDE; i++)
+        for (size_t i = 0; i < MAX_STATIONS; i++)
         {
             ride->station_starts[i].xy = RCT_XY8_UNDEFINED;
             ride->entrances[i].xy = RCT_XY8_UNDEFINED;
@@ -282,7 +283,7 @@ public:
 
         ride->breakdown_reason = 255;
         ride->upkeep_cost = (money16)-1;
-        ride->reliability = 0x64FF;
+        ride->reliability = RIDE_INITIAL_RELIABILITY;
         ride->unreliability_factor = 1;
         ride->inspection_interval = RIDE_INSPECTION_EVERY_30_MINUTES;
         ride->last_inspection = 0;
