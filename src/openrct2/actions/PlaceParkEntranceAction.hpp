@@ -16,6 +16,7 @@
 
 #include "../core/MemoryStream.h"
 #include "../localisation/string_ids.h"
+#include "../OpenRCT2.h"
 #include "GameAction.h"
 
 #pragma once
