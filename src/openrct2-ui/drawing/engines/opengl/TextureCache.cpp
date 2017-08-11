@@ -126,16 +126,21 @@ void TextureCache::CreateAtlasesTexture()
         glGetIntegerv(GL_MAX_ARRAY_TEXTURE_LAYERS, &_atlasesTextureIndicesLimit);
         if (_atlasesTextureDimensions < _atlasesTextureIndicesLimit) _atlasesTextureIndicesLimit = _atlasesTextureDimensions;
 
-        // Create an array texture to hold all of the atlases
-        glGenTextures(1, &_atlasesTexture);
-        glBindTexture(GL_TEXTURE_2D_ARRAY, _atlasesTexture);
-        glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-        glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-        glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+        AllocateAtlasesTexture();
 
         _atlasesTextureInitialised = true;
         _atlasesTextureIndices = 0;
     }
+}
+
+void TextureCache::AllocateAtlasesTexture()
+{
+    // Create an array texture to hold all of the atlases
+    glGenTextures(1, &_atlasesTexture);
+    glBindTexture(GL_TEXTURE_2D_ARRAY, _atlasesTexture);
+    glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 }
 
 void TextureCache::EnlargeAtlasesTexture(GLuint newEntries)
@@ -148,7 +153,9 @@ void TextureCache::EnlargeAtlasesTexture(GLuint newEntries)
     auto oldPixels = std::vector<char>(_atlasesTextureDimensions * _atlasesTextureDimensions * _atlasesTextureIndices);
     glGetTexImage(GL_TEXTURE_2D_ARRAY, 0, GL_RED_INTEGER, GL_UNSIGNED_BYTE, oldPixels.data());
 
-    // Reallocate array
+    // Delete old texture, allocate a new one, then define the new format on the newly created texture
+    glDeleteTextures(1, &_atlasesTexture);
+    AllocateAtlasesTexture();
     glTexImage3D(GL_TEXTURE_2D_ARRAY, 0, GL_R8UI, _atlasesTextureDimensions, _atlasesTextureDimensions, newIndices, 0, GL_RED_INTEGER, GL_UNSIGNED_BYTE, nullptr);
 
     // Restore old data
