@@ -15,7 +15,7 @@
 #pragma endregion
 
 #include <openrct2/config/Config.h>
-#include "../input/KeyboardShortcuts.h"
+#include <openrct2-ui/input/KeyboardShortcuts.h>
 #include "Window.h"
 
 extern "C"

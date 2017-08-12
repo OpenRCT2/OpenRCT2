@@ -14,20 +14,21 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../OpenRCT2.h"
+#include <openrct2/OpenRCT2.h>
+#include <openrct2-ui/windows/Window.h>
 
 extern "C"
 {
-    #include "../audio/audio.h"
-    #include "../cheats.h"
-    #include "../game.h"
-    #include "../input.h"
-    #include "../interface/viewport.h"
-    #include "../interface/widget.h"
-    #include "../localisation/localisation.h"
-    #include "../sprites.h"
-    #include "../world/footpath.h"
-    #include "dropdown.h"
+    #include <openrct2/audio/audio.h>
+    #include <openrct2/cheats.h>
+    #include <openrct2/game.h>
+    #include <openrct2/input.h>
+    #include <openrct2/interface/viewport.h>
+    #include <openrct2/interface/widget.h>
+    #include <openrct2/localisation/localisation.h>
+    #include <openrct2/sprites.h>
+    #include <openrct2/world/footpath.h>
+    #include <openrct2/windows/dropdown.h>
 }
 
 enum {
@@ -214,7 +215,7 @@ static bool footpath_select_default();
  *
  *  rct2: 0x006A7C43
  */
-void window_footpath_open()
+rct_window * window_footpath_open()
 {
     // If a restricted path was selected when the game is no longer in Sandbox mode, reset it
     rct_footpath_entry *pathEntry = get_footpath_entry(gFootpathSelectedId);
@@ -226,14 +227,14 @@ void window_footpath_open()
     if (pathEntry == (rct_footpath_entry*)-1) {
         if (!footpath_select_default()) {
             // No path objects to select from, don't open window
-            return;
+            return nullptr;
         }
     }
 
     // Check if window is already open
     rct_window *window = window_bring_to_front_by_class(WC_FOOTPATH);
-    if (window != NULL)
-        return;
+    if (window != nullptr)
+        return window;
 
     window = window_create(
         0,
@@ -271,6 +272,8 @@ void window_footpath_open()
     input_set_flag(INPUT_FLAG_6, true);
     _footpathErrorOccured = false;
     window_footpath_set_enabled_and_pressed_widgets();
+
+    return window;
 }
 
 /**

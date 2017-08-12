@@ -14,22 +14,23 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../interface/Cursors.h"
-#include "../object/ObjectManager.h"
-#include "../object/ObjectRepository.h"
-#include "../OpenRCT2.h"
-#include "../core/Util.hpp"
+#include <openrct2/interface/Cursors.h>
+#include <openrct2/object/ObjectManager.h>
+#include <openrct2/object/ObjectRepository.h>
+#include <openrct2/OpenRCT2.h>
+#include <openrct2/core/Util.hpp>
+#include <openrct2-ui/windows/Window.h>
 
 extern "C"
 {
-    #include "../editor.h"
-    #include "../input.h"
-    #include "../interface/widget.h"
-    #include "../localisation/localisation.h"
-    #include "../sprites.h"
-    #include "../util/util.h"
-    #include "../world/scenery.h"
-    #include "_legacy.h"
+    #include <openrct2/editor.h>
+    #include <openrct2/input.h>
+    #include <openrct2/interface/widget.h>
+    #include <openrct2/localisation/localisation.h>
+    #include <openrct2/sprites.h>
+    #include <openrct2/util/util.h>
+    #include <openrct2/world/scenery.h>
+    #include <openrct2/windows/_legacy.h>
 }
 
 #pragma region Widgets
@@ -535,13 +536,13 @@ static rct_research_item *get_research_item_at(sint32 x, sint32 y)
  *
  *  rct2: 0x00684E04
  */
-void window_editor_inventions_list_open()
+rct_window * window_editor_inventions_list_open()
 {
     rct_window *w;
 
     w = window_bring_to_front_by_class(WC_EDITOR_INVENTION_LIST);
     if (w != NULL)
-        return;
+        return w;
 
     research_always_researched_setup();
 
@@ -564,6 +565,8 @@ void window_editor_inventions_list_open()
     w->selected_tab = 0;
     w->research_item = NULL;
     _editorInventionsListDraggedItem = NULL;
+
+    return w;
 }
 
 /**

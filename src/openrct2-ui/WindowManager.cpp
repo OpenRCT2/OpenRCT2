@@ -34,12 +34,26 @@ public:
             return window_changelog_open();
         case WC_CHEATS:
             return window_cheats_open();
+        case WC_CLEAR_SCENERY:
+            return window_clear_scenery_open();
         case WC_CUSTOM_CURRENCY_CONFIG:
             return custom_currency_window_open();
         case WC_DEBUG_PAINT:
             return window_debug_paint_open();
+        case WC_EDITOR_INVENTION_LIST:
+            return window_editor_inventions_list_open();
+        case WC_EDTIOR_OBJECTIVE_OPTIONS:
+            return window_editor_objective_options_open();
+        case WC_EDITOR_SCENARIO_OPTIONS:
+            return window_editor_scenario_options_open();
+        case WC_FOOTPATH:
+            return window_footpath_open();
+        case WC_LAND:
+            return window_land_open();
         case WC_LAND_RIGHTS:
             return window_land_rights_open();
+        case WC_MAIN_WINDOW:
+            return window_main_open();
         case WC_MAPGEN:
             return window_mapgen_open();
         case WC_MULTIPLAYER:
@@ -60,6 +74,8 @@ public:
             return window_server_start_open();
         case WC_KEYBOARD_SHORTCUT_LIST:
             return window_shortcut_keys_open();
+        case WC_STAFF_LIST:
+            return window_staff_list_open();
         case WC_THEMES:
             return window_themes_open();
         case WC_TITLE_EXIT:
@@ -70,8 +86,12 @@ public:
             return window_title_menu_open();
         case WC_TITLE_OPTIONS:
             return window_title_options_open();
+        case WC_VIEW_CLIPPING:
+            return window_view_clipping_open();
         case WC_VIEWPORT:
             return window_viewport_open();
+        case WC_WATER:
+            return window_water_open();
         default:
             return nullptr;
         }

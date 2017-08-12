@@ -680,20 +680,14 @@ void window_close_construction_windows();
 void window_update_viewport_ride_music();
 
 // Open window functions
-void window_main_open();
 void window_relocate_windows(sint32 width, sint32 height);
 void window_resize_gui(sint32 width, sint32 height);
 void window_resize_gui_scenario_editor(sint32 width, sint32 height);
 void window_top_toolbar_open();
 void window_game_bottom_toolbar_open();
 void window_game_bottom_toolbar_invalidate_news_item();
-void window_footpath_open();
 void window_scenarioselect_open(scenarioselect_callback callback);
 void window_track_list_open(ride_list_item item);
-void window_clear_scenery_open();
-void window_land_open();
-void window_water_open();
-void window_staff_list_open();
 void window_guest_list_open();
 void window_guest_list_open_with_filter(sint32 type, sint32 index);
 void window_map_open();
@@ -756,11 +750,6 @@ rct_window * window_object_load_error_open(utf8 * path, size_t numMissingObjects
 rct_window * window_editor_main_open();
 void window_editor_bottom_toolbar_open();
 void window_editor_object_selection_open();
-void window_editor_inventions_list_open();
-void window_editor_scenario_options_open();
-void window_editor_objective_options_open();
-
-void window_view_clipping_open();
 
 void window_guest_list_init_vars_a();
 void window_guest_list_init_vars_b();
