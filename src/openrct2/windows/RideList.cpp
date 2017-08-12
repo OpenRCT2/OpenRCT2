@@ -188,7 +188,6 @@ static const rct_string_id page_names[] = {
 static sint32 _window_ride_list_information_type;
 
 static void window_ride_list_draw_tab_images(rct_drawpixelinfo *dpi, rct_window *w);
-static void window_ride_list_refresh_list(rct_window *w);
 static void window_ride_list_close_all(rct_window *w);
 static void window_ride_list_open_all(rct_window *w);
 
@@ -739,7 +738,7 @@ static void window_ride_list_draw_tab_images(rct_drawpixelinfo *dpi, rct_window 
  *
  *  rct2: 0x006B39A8
  */
-static void window_ride_list_refresh_list(rct_window *w)
+void window_ride_list_refresh_list(rct_window *w)
 {
     sint32 i;
     rct_ride *ride, *otherRide;
