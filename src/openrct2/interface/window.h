@@ -715,6 +715,7 @@ rct_window *window_ride_open_vehicle(rct_vehicle *vehicle);
 void window_ride_demolish_prompt_open(sint32 rideIndex);
 void window_ride_construct(rct_window *w);
 void window_ride_list_open();
+void window_ride_list_refresh_list(rct_window *w);
 rct_window *window_ride_construction_open();
 rct_window *window_maze_construction_open();
 void ride_construction_toolupdate_entrance_exit(sint32 screenX, sint32 screenY);

@@ -99,10 +99,19 @@ static void _window_ride_demolish_prompt_open(sint32 rideIndex)
 */
 static void window_ride_demolish_mouseup(rct_window *w, rct_widgetindex widgetIndex)
 {
+    rct_window* window;
     switch (widgetIndex) {
     case WIDX_DEMOLISH:
         gGameCommandErrorTitle = STR_CANT_DEMOLISH_RIDE;
         game_do_command(0, 1, 0, w->number, GAME_COMMAND_DEMOLISH_RIDE, 0, 1); // Set ebp to 1 to be used to log demolish from window prompt
+
+        // Prevents demolished rides sticking around in the ride list window
+        window = window_find_by_class(WC_RIDE_LIST);
+        if (window != NULL)
+        {
+            window_ride_list_refresh_list(window);
+        }
+
         break;
     case WIDX_CANCEL:
     case WIDX_CLOSE:
