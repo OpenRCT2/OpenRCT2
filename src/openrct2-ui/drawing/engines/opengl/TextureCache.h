@@ -214,6 +214,7 @@ public:
 
 private:
     void CreateAtlasesTexture();
+    void AllocateAtlasesTexture();
     void EnlargeAtlasesTexture(GLuint newEntries);
     CachedTextureInfo LoadImageTexture(uint32 image);
     CachedTextureInfo LoadGlyphTexture(uint32 image, uint8 * palette);
