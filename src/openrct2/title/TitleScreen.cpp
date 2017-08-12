@@ -92,7 +92,7 @@ void TitleScreen::Load()
     audio_stop_all_music_and_sounds();
     game_init_all(150);
     viewport_init_all();
-    window_main_open();
+    context_open_window(WC_MAIN_WINDOW);
     CreateWindows();
     TitleInitialise();
     audio_start_title_music();

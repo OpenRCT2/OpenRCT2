@@ -14,19 +14,20 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../OpenRCT2.h"
-#include "../world/Climate.h"
+#include <openrct2/OpenRCT2.h>
+#include <openrct2/world/Climate.h>
+#include <openrct2-ui/windows/Window.h>
 
 extern "C"
 {
-    #include "../game.h"
-    #include "../interface/widget.h"
-    #include "../localisation/date.h"
-    #include "../localisation/localisation.h"
-    #include "../sprites.h"
-    #include "../util/util.h"
-    #include "dropdown.h"
-    #include "error.h"
+    #include <openrct2/game.h>
+    #include <openrct2/interface/widget.h>
+    #include <openrct2/localisation/date.h>
+    #include <openrct2/localisation/localisation.h>
+    #include <openrct2/sprites.h>
+    #include <openrct2/util/util.h>
+    #include <openrct2/windows/dropdown.h>
+    #include <openrct2/windows/error.h>
 }
 
 #pragma region Widgets
@@ -261,13 +262,13 @@ static void window_editor_objective_options_update_disabled_widgets(rct_window *
  *
  *  rct2: 0x0067137D
  */
-void window_editor_objective_options_open()
+rct_window * window_editor_objective_options_open()
 {
     rct_window *w;
 
     w = window_bring_to_front_by_class(WC_EDTIOR_OBJECTIVE_OPTIONS);
     if (w != NULL)
-        return;
+        return w;
 
     w = window_create_centred(
         450,
@@ -286,6 +287,8 @@ void window_editor_objective_options_open()
     w->no_list_items = 0;
     w->selected_list_item = -1;
     window_editor_objective_options_update_disabled_widgets(w);
+
+    return w;
 }
 
 static void window_editor_objective_options_set_pressed_tab(rct_window *w)

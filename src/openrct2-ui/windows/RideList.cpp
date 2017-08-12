@@ -14,18 +14,19 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../config/Config.h"
-#include "../network/network.h"
-#include "../core/Util.hpp"
+#include <openrct2/config/Config.h>
+#include <openrct2/network/network.h>
+#include <openrct2/core/Util.hpp>
+#include <openrct2-ui/windows/Window.h>
 
 extern "C"
 {
-    #include "../game.h"
-    #include "../localisation/localisation.h"
-    #include "../sprites.h"
-    #include "../interface/widget.h"
-    #include "dropdown.h"
-    #include "../interface/themes.h"
+    #include <openrct2/game.h>
+    #include <openrct2/localisation/localisation.h>
+    #include <openrct2/sprites.h>
+    #include <openrct2/interface/widget.h>
+    #include <openrct2/windows/dropdown.h>
+    #include <openrct2/interface/themes.h>
 }
 
 enum {
@@ -196,7 +197,7 @@ static void window_ride_list_open_all(rct_window *w);
  *
  *  rct2: 0x006B30BC
  */
-void window_ride_list_open()
+rct_window * window_ride_list_open()
 {
     rct_window* window;
 
@@ -233,6 +234,8 @@ void window_ride_list_open()
     _window_ride_list_information_type = INFORMATION_TYPE_STATUS;
     window->list_information_type = 0;
     _quickDemolishMode = false;
+
+    return window;
 }
 
 /**

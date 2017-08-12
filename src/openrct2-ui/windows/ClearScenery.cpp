@@ -14,14 +14,15 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../Context.h"
-#include "../core/Math.hpp"
+#include <openrct2/Context.h>
+#include <openrct2-ui/windows/Window.h>
+#include <openrct2/core/Math.hpp>
 
 extern "C" {
-    #include "../interface/land_tool.h"
-    #include "../interface/widget.h"
-    #include "../localisation/localisation.h"
-    #include "../world/scenery.h"
+    #include <openrct2/interface/land_tool.h>
+    #include <openrct2/interface/widget.h>
+    #include <openrct2/localisation/localisation.h>
+    #include <openrct2/world/scenery.h>
 }
 
 enum WINDOW_CLEAR_SCENERY_WIDGET_IDX {
@@ -95,13 +96,14 @@ static rct_window_event_list window_clear_scenery_events = {
  *
  *  rct2: 0x0068E0A7
  */
-static void _window_clear_scenery_open()
+rct_window * window_clear_scenery_open()
 {
     rct_window* window;
 
     // Check if window is already open
-    if (window_find_by_class(WC_CLEAR_SCENERY) != NULL)
-        return;
+    window = window_find_by_class(WC_CLEAR_SCENERY);
+    if (window != NULL)
+        return window;
 
     window = window_create(context_get_width() - 98, 29, 98, 94, &window_clear_scenery_events, WC_CLEAR_SCENERY, 0);
     window->widgets = window_clear_scenery_widgets;
@@ -117,6 +119,8 @@ static void _window_clear_scenery_open()
     gClearSmallScenery = true;
     gClearLargeScenery = false;
     gClearFootpath = false;
+
+    return window;
 }
 
 /**
@@ -254,13 +258,5 @@ static void window_clear_scenery_paint(rct_window *w, rct_drawpixelinfo *dpi)
         gClearSceneryCost != 0
     ) {
         gfx_draw_string_centred(dpi, STR_COST_AMOUNT, x, y, COLOUR_BLACK, &gClearSceneryCost);
-    }
-}
-
-extern "C"
-{
-    void window_clear_scenery_open()
-    {
-        _window_clear_scenery_open();
     }
 }
