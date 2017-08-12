@@ -1855,7 +1855,14 @@ static int ride_get_train_index_from_vehicle(rct_ride* ride, uint16 spriteIndex)
     while (ride->vehicles[trainIndex] != spriteIndex)
     {
         trainIndex++;
-        if (trainIndex >= ride->num_vehicles || trainIndex >= countof(ride->vehicles))
+        if (trainIndex >= ride->num_vehicles)
+        {
+            // This should really return VEHICLE_INVALID_ID, but doing so
+            // would break some hacked parks that hide track by setting tracked rides'
+            // track type to, e.g., Crooked House
+            break;
+        }
+        else if (trainIndex >= countof(ride->vehicles))
         {
             return VEHICLE_INVALID_ID;
         }
