@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop">
+  <id>openrct2.desktop</id>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>GPL-3.0</project_license>
+  <name>OpenRCT2</name>
+  <summary>A construction and management simulation video game that simulates amusement park management</summary>
+  <description>
+    <p>
+      OpenRCT2 is an open-source re-implementation of RollerCoaster Tycoon 2 (RCT2).
+      The gameplay revolves around building and maintaining an amusement park containing
+      attractions, shops and facilities. The player must try to make a profit and maintain
+      a good park reputation whilst keeping the guests happy. OpenRCT2 allows for both
+      scenario and sandbox play. Scenarios require the player to complete a certain
+      objective in a set time limit whilst sandbox allows the player to build a more
+      flexible park with optionally no restrictions or finance.
+    </p>
+    <p>
+      OpenRCT2 features many changes compared to the original RollerCoaster Tycoon 2 game. A few of them are listed here.
+    </p>
+    <ul>
+      <li>User Interface theming.</li>
+      <li>Fast-forwarding gameplay.</li>
+      <li>Multiplayer support.</li>
+      <li>Multilingual. Improved translations.</li>
+      <li>OpenGL hardware rendering.</li>
+      <li>Various fixes and improvements for bugs in the original game.</li>
+      <li>Native support for Linux and macOS.</li>
+      <li>Added hacks and cheats.</li>
+      <li>Auto-saving and giant screenshots.</li>
+    </ul>
+    <p>
+      Original RollerCoaster Tycoon 2 game files are required in order to play OpenRCT2.
+    </p>
+  </description>
+  <screenshots>
+    <screenshot type="default">
+      <image>https://camo.githubusercontent.com/888d993a9716208446bd0d5a762977d6b7993058/68747470733a2f2f692e696d6775722e636f6d2f6537434b3553632e706e67</image>
+    </screenshot>
+  </screenshots>
+  <url type="homepage">https://openrct2.website/</url>
+  <url type="bugtracker">https://github.com/OpenRCT2/OpenRCT2/issues</url>
+  <url type="help">https://github.com/OpenRCT2/OpenRCT2/wiki</url>
+  <content_rating type="oars-1.0">
+    <content_attribute id="violence-cartoon">mild</content_attribute>
+    <content_attribute id="violence-fantasy">none</content_attribute>
+    <content_attribute id="violence-realistic">none</content_attribute>
+    <content_attribute id="violence-bloodshed">none</content_attribute>
+    <content_attribute id="violence-sexual">none</content_attribute>
+    <content_attribute id="drugs-alcohol">none</content_attribute>
+    <content_attribute id="drugs-narcotics">none</content_attribute>
+    <content_attribute id="drugs-tobacco">none</content_attribute>
+    <content_attribute id="sex-nudity">none</content_attribute>
+    <content_attribute id="sex-themes">none</content_attribute>
+    <content_attribute id="language-profanity">none</content_attribute>
+    <content_attribute id="language-humor">none</content_attribute>
+    <content_attribute id="language-discrimination">none</content_attribute>
+    <content_attribute id="social-chat">intense</content_attribute>
+    <content_attribute id="social-info">none</content_attribute>
+    <content_attribute id="social-audio">none</content_attribute>
+    <content_attribute id="social-location">none</content_attribute>
+    <content_attribute id="social-contacts">none</content_attribute>
+    <content_attribute id="money-purchasing">none</content_attribute>
+    <content_attribute id="money-gambling">none</content_attribute>
+  </content_rating>
+</component>
