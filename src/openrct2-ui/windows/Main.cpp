@@ -14,13 +14,14 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../Context.h"
+#include <openrct2/Context.h>
+#include <openrct2-ui/windows/Window.h>
 
 extern "C"
 {
-    #include "../interface/viewport.h"
-    #include "../interface/widget.h"
-    #include "../world/footpath.h"
+    #include <openrct2/interface/viewport.h>
+    #include <openrct2/interface/widget.h>
+    #include <openrct2/world/footpath.h>
 }
 
 rct_widget window_main_widgets[] = {
@@ -65,7 +66,7 @@ static rct_window_event_list window_main_events = {
  * Creates the main window that holds the main viewport.
  *  rct2: 0x0066B3E8
  */
-void window_main_open()
+rct_window * window_main_open()
 {
     window_main_widgets[0].right = context_get_width();
     window_main_widgets[0].bottom = context_get_height();
@@ -85,6 +86,8 @@ void window_main_open()
     gShowLandRightsRefCount = 0;
     gShowConstuctionRightsRefCount = 0;
     gFootpathSelectedType = 0;
+
+    return window;
 }
 
 

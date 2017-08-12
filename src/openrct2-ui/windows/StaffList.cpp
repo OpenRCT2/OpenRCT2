@@ -14,22 +14,23 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../config/Config.h"
+#include <openrct2/config/Config.h>
+#include <openrct2-ui/windows/Window.h>
 
 extern "C"
 {
-    #include "../drawing/drawing.h"
-    #include "../game.h"
-    #include "../input.h"
-    #include "../interface/viewport.h"
-    #include "../interface/widget.h"
-    #include "../localisation/localisation.h"
-    #include "../peep/staff.h"
-    #include "../sprites.h"
-    #include "../util/util.h"
-    #include "../world/footpath.h"
-    #include "dropdown.h"
-    #include "error.h"
+    #include <openrct2/drawing/drawing.h>
+    #include <openrct2/game.h>
+    #include <openrct2/input.h>
+    #include <openrct2/interface/viewport.h>
+    #include <openrct2/interface/widget.h>
+    #include <openrct2/localisation/localisation.h>
+    #include <openrct2/peep/staff.h>
+    #include <openrct2/sprites.h>
+    #include <openrct2/util/util.h>
+    #include <openrct2/world/footpath.h>
+    #include <openrct2/windows/dropdown.h>
+    #include <openrct2/windows/error.h>
 }
 
 enum {
@@ -130,7 +131,7 @@ static rct_widget window_staff_list_widgets[] = {
 
 static uint16 _window_staff_list_selected_type_count = 0;
 static sint32 _windowStaffListHighlightedIndex;
-static sint32 _windowStaffListSelectedTab;
+static sint32 _windowStaffListSelectedTab = WINDOW_STAFF_LIST_TAB_HANDYMEN;
 
 static uint8 window_staff_list_get_random_entertainer_costume();
 
@@ -149,24 +150,16 @@ static const staff_naming_convention StaffNamingConvention[] = {
 };
 
 /*
-* rct2: 0x006BD39C
-**/
-void window_staff_list_init_vars()
-{
-    _windowStaffListSelectedTab = WINDOW_STAFF_LIST_TAB_HANDYMEN;
-}
-
-/*
 * rct2: 0x006BD3CC
 **/
-void window_staff_list_open()
+rct_window * window_staff_list_open()
 {
     rct_window* window;
 
     // Check if window is already open
     window = window_bring_to_front_by_class(WC_STAFF_LIST);
     if (window != NULL)
-        return;
+        return window;
 
     window = window_create_auto_pos(WW, WH, &window_staff_list_events, WC_STAFF_LIST, WF_10 | WF_RESIZABLE);
     window->widgets = window_staff_list_widgets;
@@ -192,6 +185,8 @@ void window_staff_list_open()
     window->max_width = MAX_WW;
     window->max_height = MAX_WH;
     _quick_fire_mode = false;
+
+    return window;
 }
 
 static void window_staff_list_cancel_tools(rct_window *w) {

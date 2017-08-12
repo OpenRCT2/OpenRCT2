@@ -176,7 +176,7 @@ void window_editor_bottom_toolbar_jump_back_to_landscape_editor() {
 */
 static void window_editor_bottom_toolbar_jump_back_to_invention_list_set_up() {
     window_close_all();
-    window_editor_inventions_list_open();
+    context_open_window(WC_EDITOR_INVENTION_LIST);
     gS6Info.editor_step = EDITOR_STEP_INVENTIONS_LIST_SET_UP;
     gfx_invalidate_screen();
 }
@@ -187,7 +187,7 @@ static void window_editor_bottom_toolbar_jump_back_to_invention_list_set_up() {
 */
 void window_editor_bottom_toolbar_jump_back_to_options_selection() {
     window_close_all();
-    window_editor_scenario_options_open();
+    context_open_window(WC_EDITOR_SCENARIO_OPTIONS);
     gS6Info.editor_step = EDITOR_STEP_OPTIONS_SELECTION;
     gfx_invalidate_screen();
 }
@@ -245,7 +245,7 @@ void window_editor_bottom_toolbar_jump_forward_from_object_selection()
 void window_editor_bottom_toolbar_jump_forward_to_invention_list_set_up() {
     if (editor_check_park()) {
         window_close_all();
-        window_editor_inventions_list_open();
+        context_open_window(WC_EDITOR_INVENTION_LIST);
         gS6Info.editor_step = EDITOR_STEP_INVENTIONS_LIST_SET_UP;
     } else {
         window_error_open(STR_CANT_ADVANCE_TO_NEXT_EDITOR_STAGE, gGameCommandErrorText);
@@ -260,7 +260,7 @@ void window_editor_bottom_toolbar_jump_forward_to_invention_list_set_up() {
 */
 void window_editor_bottom_toolbar_jump_forward_to_options_selection() {
     window_close_all();
-    window_editor_scenario_options_open();
+    context_open_window(WC_EDITOR_SCENARIO_OPTIONS);
     gS6Info.editor_step = EDITOR_STEP_OPTIONS_SELECTION;
     gfx_invalidate_screen();
 }
@@ -271,7 +271,7 @@ void window_editor_bottom_toolbar_jump_forward_to_options_selection() {
 */
 void window_editor_bottom_toolbar_jump_forward_to_objective_selection() {
     window_close_all();
-    window_editor_objective_options_open();
+    context_open_window(WC_EDTIOR_OBJECTIVE_OPTIONS);
     gS6Info.editor_step = EDITOR_STEP_OBJECTIVE_SELECTION;
     gfx_invalidate_screen();
 }

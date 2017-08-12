@@ -19,6 +19,7 @@
 #include <openrct2/world/Climate.h>
 #include <openrct2/core/Math.hpp>
 #include <openrct2-ui/windows/Window.h>
+#include <openrct2/Context.h>
 
 extern "C" {
     #include <openrct2/interface/widget.h>
@@ -752,7 +753,7 @@ static void window_cheats_misc_mouseup(rct_window *w, rct_widgetindex widgetInde
         game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_SETSTAFFSPEED, CHEATS_STAFF_NORMAL_SPEED, GAME_COMMAND_CHEAT, 0, 0);
         break;
     case WIDX_PARK_PARAMETERS:
-        window_editor_scenario_options_open();
+        context_open_window(WC_EDITOR_SCENARIO_OPTIONS);
         break;
     case WIDX_FORCE_PARK_RATING:
         if (get_forced_park_rating() >= 0){

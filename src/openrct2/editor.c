@@ -46,6 +46,7 @@
 #include "world/park.h"
 #include "world/scenery.h"
 #include "world/sprite.h"
+#include "Context.h"
 
 uint8 _editorSelectedRides[128];
 uint8 _editorSelectedSmallScenery[252];
@@ -378,7 +379,7 @@ void editor_open_windows_for_current_step()
         if (window_find_by_class(WC_EDITOR_OBJECT_SELECTION))
             return;
 
-        if (window_find_by_class(49))
+        if (window_find_by_class(WC_INSTALL_TRACK))
             return;
 
         if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER) {
@@ -391,19 +392,19 @@ void editor_open_windows_for_current_step()
         if (window_find_by_class(WC_EDITOR_INVENTION_LIST))
             return;
 
-        window_editor_inventions_list_open();
+        context_open_window(WC_EDITOR_INVENTION_LIST);
         break;
     case EDITOR_STEP_OPTIONS_SELECTION:
         if (window_find_by_class(WC_EDITOR_SCENARIO_OPTIONS))
             return;
 
-        window_editor_scenario_options_open();
+        context_open_window(WC_EDITOR_SCENARIO_OPTIONS);
         break;
     case EDITOR_STEP_OBJECTIVE_SELECTION:
         if (window_find_by_class(WC_EDTIOR_OBJECTIVE_OPTIONS))
             return;
 
-        window_editor_objective_options_open();
+        context_open_window(WC_EDTIOR_OBJECTIVE_OPTIONS);
         break;
     }
 }

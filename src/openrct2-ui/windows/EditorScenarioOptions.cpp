@@ -14,18 +14,19 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../OpenRCT2.h"
-#include "../core/Math.hpp"
+#include <openrct2/OpenRCT2.h>
+#include <openrct2/core/Math.hpp>
+#include <openrct2-ui/windows/Window.h>
 
 extern "C"
 {
-    #include "../editor.h"
-    #include "../game.h"
-    #include "../interface/widget.h"
-    #include "../localisation/localisation.h"
-    #include "../sprites.h"
-    #include "dropdown.h"
-    #include "error.h"
+    #include <openrct2/editor.h>
+    #include <openrct2/game.h>
+    #include <openrct2/interface/widget.h>
+    #include <openrct2/localisation/localisation.h>
+    #include <openrct2/sprites.h>
+    #include <openrct2/windows/dropdown.h>
+    #include <openrct2/windows/error.h>
 }
 
 #pragma region Widgets
@@ -388,13 +389,13 @@ static uint32 window_editor_scenario_options_page_hold_down_widgets[] = {
  *
  *  rct2: 0x00670138
  */
-void window_editor_scenario_options_open()
+rct_window * window_editor_scenario_options_open()
 {
     rct_window *w;
 
     w = window_bring_to_front_by_class(WC_EDITOR_SCENARIO_OPTIONS);
     if (w != NULL)
-        return;
+        return w;
 
     w = window_create_centred(
         280,
@@ -409,6 +410,8 @@ void window_editor_scenario_options_open()
     window_init_scroll_widgets(w);
     w->var_4AE = 0;
     w->page = 0;
+
+    return w;
 }
 
 static void window_editor_scenario_options_set_pressed_tab(rct_window *w)

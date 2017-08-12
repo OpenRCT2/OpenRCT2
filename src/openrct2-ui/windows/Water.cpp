@@ -14,14 +14,15 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../Context.h"
-#include "../core/Math.hpp"
+#include <openrct2/Context.h>
+#include <openrct2/core/Math.hpp>
+#include <openrct2-ui/windows/Window.h>
 
 extern "C"
 {
-    #include "../interface/land_tool.h"
-    #include "../interface/widget.h"
-    #include "../localisation/localisation.h"
+    #include <openrct2/interface/land_tool.h>
+    #include <openrct2/interface/widget.h>
+    #include <openrct2/localisation/localisation.h>
 }
 
 enum WINDOW_WATER_WIDGET_IDX {
@@ -89,13 +90,14 @@ static rct_window_event_list window_water_events = {
  *
  *  rct2: 0x006E6A40
  */
-static void _window_water_open()
+rct_window * window_water_open()
 {
     rct_window* window;
 
     // Check if window is already open
-    if (window_find_by_class(WC_WATER) != NULL)
-        return;
+    window = window_find_by_class(WC_WATER);
+    if (window != nullptr)
+        return window;
 
     window = window_create(
         context_get_width() - 76,
@@ -115,6 +117,8 @@ static void _window_water_open()
     gLandToolSize = 1;
     gWaterToolRaiseCost = MONEY32_UNDEFINED;
     gWaterToolLowerCost = MONEY32_UNDEFINED;
+
+    return window;
 }
 
 /**
@@ -242,11 +246,4 @@ static void window_water_paint(rct_window *w, rct_drawpixelinfo *dpi)
         gfx_draw_string_centred(dpi, STR_LOWER_COST_AMOUNT, x, y, COLOUR_BLACK, &gWaterToolLowerCost);
 
 
-}
-
-extern "C"
-{
-    void window_water_open() {
-        _window_water_open();
-    }
 }

@@ -355,7 +355,7 @@ static void window_top_toolbar_mouseup(rct_window *w, rct_widgetindex widgetInde
         window_park_entrance_open();
         break;
     case WIDX_STAFF:
-        window_staff_list_open();
+        context_open_window(WC_STAFF_LIST);
         break;
     case WIDX_GUESTS:
         window_guest_list_open();
@@ -3093,10 +3093,10 @@ void top_toolbar_debug_menu_dropdown(sint16 dropdownIndex)
             window_editor_object_selection_open();
             break;
         case DDIDX_INVENTIONS_LIST:
-            window_editor_inventions_list_open();
+            context_open_window(WC_EDITOR_INVENTION_LIST);
             break;
         case DDIDX_SCENARIO_OPTIONS:
-            window_editor_scenario_options_open();
+            context_open_window(WC_EDITOR_SCENARIO_OPTIONS);
             break;
         case DDIDX_DEBUG_PAINT:
             if (window_find_by_class(WC_DEBUG_PAINT) == NULL) {
@@ -3237,7 +3237,12 @@ void top_toolbar_view_menu_dropdown(sint16 dropdownIndex)
             w->viewport->flags ^= VIEWPORT_FLAG_PATH_HEIGHTS;
             break;
         case DDIDX_VIEW_CLIPPING:
-            window_view_clipping_open();
+            if (window_find_by_class(WC_VIEW_CLIPPING) == nullptr) {
+                context_open_window(WC_VIEW_CLIPPING);
+            } else {
+                // If window is already open, toggle the view clipping on/off
+                w->viewport->flags ^= VIEWPORT_FLAG_PAINT_CLIP_TO_HEIGHT;
+            }
             break;
         default:
             return;
@@ -3253,7 +3258,7 @@ void top_toolbar_view_menu_dropdown(sint16 dropdownIndex)
 void toggle_footpath_window()
 {
     if (window_find_by_class(WC_FOOTPATH) == NULL) {
-        window_footpath_open();
+        context_open_window(WC_FOOTPATH);
     } else {
         tool_cancel();
         window_close_by_class(WC_FOOTPATH);
@@ -3272,7 +3277,7 @@ void toggle_land_window(rct_window *topToolbar, rct_widgetindex widgetIndex)
         show_gridlines();
         tool_set(topToolbar, widgetIndex, TOOL_DIG_DOWN);
         input_set_flag(INPUT_FLAG_6, true);
-        window_land_open();
+        context_open_window(WC_LAND);
     }
 }
 
@@ -3288,7 +3293,7 @@ void toggle_clear_scenery_window(rct_window *topToolbar, rct_widgetindex widgetI
         show_gridlines();
         tool_set(topToolbar, widgetIndex, TOOL_CROSSHAIR);
         input_set_flag(INPUT_FLAG_6, true);
-        window_clear_scenery_open();
+        context_open_window(WC_CLEAR_SCENERY);
     }
 }
 
@@ -3304,7 +3309,7 @@ void toggle_water_window(rct_window *topToolbar, rct_widgetindex widgetIndex)
         show_gridlines();
         tool_set(topToolbar, widgetIndex, TOOL_WATER_DOWN);
         input_set_flag(INPUT_FLAG_6, true);
-        window_water_open();
+        context_open_window(WC_WATER);
     }
 }
 

@@ -16,7 +16,7 @@
 
 #include <openrct2/config/Config.h>
 #include <openrct2-ui/windows/Window.h>
-#include "../input/KeyboardShortcuts.h"
+#include <openrct2-ui/input/KeyboardShortcuts.h>
 
 extern "C"
 {
