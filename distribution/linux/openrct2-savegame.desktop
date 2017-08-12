@@ -1,0 +1,10 @@
+# http://standards.freedesktop.org/desktop-entry-spec/desktop-entry-spec-1.0.html
+[Desktop Entry]
+Type=Application
+Version=1.0
+Exec=openrct2 %f
+Icon=openrct2
+Name=OpenRCT2
+Terminal=false
+NoDisplay=true
+MimeType=application/x-openrct2-savegame;
