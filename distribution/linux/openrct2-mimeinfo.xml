@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<mime-info xmlns='http://www.freedesktop.org/standards/shared-mime-info'>
+
+  <mime-type type="application/x-openrct2-savegame">
+    <icon name="openrct2" />
+    <generic-icon name="applications-games"/>
+    <comment>OpenRCT2 Savegame</comment>
+    <glob weight="60" pattern="*.sv6"/>
+    <glob weight="60" pattern="*.sv4"/>
+  </mime-type>
+
+</mime-info>
