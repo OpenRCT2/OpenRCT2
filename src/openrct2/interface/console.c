@@ -1167,7 +1167,7 @@ static sint32 cc_object_count(const utf8 **argv, sint32 argc) {
 
         sint32 entryGroupIndex = 0;
         for (; entryGroupIndex < object_entry_group_counts[i]; entryGroupIndex++){
-            if (object_entry_groups[i].chunks[entryGroupIndex] == (uint8*)-1){
+            if (object_entry_groups[i].chunks[entryGroupIndex] == NULL){
                 break;
             }
         }

@@ -292,7 +292,7 @@ enum
 
 #define MAP_ELEMENT_LARGE_TYPE_MASK 0x3FF
 
-#define TILE_UNDEFINED_MAP_ELEMENT (rct_map_element*)-1
+#define TILE_UNDEFINED_MAP_ELEMENT NULL
 
 #pragma pack(push, 1)
 typedef struct rct_xy8 {

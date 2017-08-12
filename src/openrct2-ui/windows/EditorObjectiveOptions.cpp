@@ -827,8 +827,6 @@ static void window_editor_objective_options_main_invalidate(rct_window *w)
     rct_stex_entry *stex;
 
     stex = g_stexEntries[0];
-    if (stex == (rct_stex_entry*)-1)
-        stex = nullptr;
 
     widgets = window_editor_objective_options_widgets[w->page];
     if (w->widgets != widgets) {
@@ -897,8 +895,6 @@ static void window_editor_objective_options_main_paint(rct_window *w, rct_drawpi
     window_editor_objective_options_draw_tab_images(w, dpi);
 
     stex = g_stexEntries[0];
-    if (stex == (rct_stex_entry*)-1)
-        stex = nullptr;
 
     // Objective label
     x = w->x + 8;

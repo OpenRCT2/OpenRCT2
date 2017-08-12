@@ -136,7 +136,7 @@ void fence_paint(paint_session * session, uint8 direction, sint32 height, rct_ma
     session->InteractionType = VIEWPORT_INTERACTION_ITEM_WALL;
 
     rct_scenery_entry * sceneryEntry = get_wall_entry(map_element->properties.wall.type);
-    if (sceneryEntry == NULL || sceneryEntry == (rct_scenery_entry *)-1) {
+    if (sceneryEntry == NULL) {
         return;
     }
     uint32 frameNum = 0;

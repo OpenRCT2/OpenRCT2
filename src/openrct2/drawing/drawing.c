@@ -522,7 +522,7 @@ void load_palette()
 
     uint32 palette = 0x5FC;
 
-    if ((intptr_t)water_type != -1) {
+    if (water_type != NULL) {
         openrct2_assert(water_type->image_id != (uint32)-1, "Failed to load water palette");
         palette = water_type->image_id;
     }

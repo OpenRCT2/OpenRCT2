@@ -2218,16 +2218,13 @@ private:
     void ClearExtraTileEntries()
     {
         // Reset the map tile pointers
-        for (size_t i = 0; i < 0x10000; i++)
-        {
-            gMapElementTilePointers[i] = (rct_map_element *)-1;
-        }
+        Memory::Set(gMapElementTilePointers, 0, sizeof(rct_map_element*) * MAX_TILE_MAP_ELEMENT_POINTERS);
 
         // Get the first free map element
         rct_map_element * nextFreeMapElement = gMapElements;
-        for (size_t i = 0; i < 128 * 128; i++)
+        for (size_t i = 0; i < RCT1_MAX_MAP_SIZE * RCT1_MAX_MAP_SIZE; i++)
         {
-            do { } while (!map_element_is_last_for_tile(nextFreeMapElement++));
+            while (!map_element_is_last_for_tile(nextFreeMapElement++));
         }
 
         rct_map_element * mapElement = gMapElements;
@@ -2240,7 +2237,7 @@ private:
             for (sint32 y = 0; y < RCT1_MAX_MAP_SIZE; y++)
             {
                 *tilePointer++ = mapElement;
-                do { } while (!map_element_is_last_for_tile(mapElement++));
+                while (!map_element_is_last_for_tile(mapElement++));
             }
 
             // Fill the rest of the row with blank tiles

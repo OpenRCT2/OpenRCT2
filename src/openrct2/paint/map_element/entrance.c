@@ -214,7 +214,7 @@ static void park_entrance_paint(paint_session * session, uint8 direction, sint32
 
     switch (part_index){
     case 0:
-        if (path_entry != (void*)-1) {
+        if (path_entry != NULL) {
             image_id = (path_entry->image + 5 * (1 + (direction & 1))) | ghost_id;
                 sub_98197C(session, image_id, 0, 0, 32, 0x1C, 0, height, 0, 2, height, get_current_rotation());
         }

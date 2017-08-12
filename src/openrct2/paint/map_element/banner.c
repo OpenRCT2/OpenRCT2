@@ -48,7 +48,7 @@ void banner_paint(paint_session * session, uint8 direction, sint32 height, rct_m
 
     rct_scenery_entry* banner_scenery = get_banner_entry(gBanners[map_element->properties.banner.index].type);
 
-    if ((banner_scenery == (rct_scenery_entry *)-1) || (banner_scenery == NULL)) {
+    if (banner_scenery == NULL) {
         return;
     }
 

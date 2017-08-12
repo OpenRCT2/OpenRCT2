@@ -381,8 +381,8 @@ private:
             void * * legacyChunk = &object_entry_groups[objectType].chunks[entryIndex];
             if (loadedObject == nullptr)
             {
-                Memory::Set(legacyEntry, 0xFF, sizeof(rct_object_entry_extended));
-                *legacyChunk = (void *)-1;
+                Memory::Set(legacyEntry, 0x00, sizeof(rct_object_entry_extended));
+                *legacyChunk = nullptr;
             }
             else
             {

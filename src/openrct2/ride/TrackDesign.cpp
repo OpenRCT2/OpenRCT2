@@ -766,7 +766,7 @@ track_design_place_scenery(rct_td6_scenery_element * scenery_start, uint8 rideIn
                          path                      = get_footpath_entry(entry_index), entry_index++
                         )
                     {
-                        if (path == (rct_footpath_entry *) -1)
+                        if (path == nullptr)
                         {
                             continue;
                         }
@@ -894,7 +894,7 @@ track_design_place_scenery(rct_td6_scenery_element * scenery_start, uint8 rideIn
                          path                      = get_footpath_entry(entry_index), entry_index++)
                     {
 
-                        if (path == (rct_footpath_entry *) -1)
+                        if (path == nullptr)
                         {
                             continue;
                         }

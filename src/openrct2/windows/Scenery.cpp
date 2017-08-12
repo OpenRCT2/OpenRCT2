@@ -240,7 +240,7 @@ void init_scenery()
             continue;
 
         rct_scenery_set_entry* scenerySetEntry = get_scenery_group_entry(scenerySetIndex);
-        if (scenerySetEntry == (rct_scenery_set_entry *)-1)
+        if (scenerySetEntry == nullptr)
             continue;
 
         sint32 sceneryTabEntryCount = 0;
@@ -257,7 +257,7 @@ void init_scenery()
 
     // small scenery
     for (uint16 sceneryId = SCENERY_SMALL_SCENERY_ID_MIN; sceneryId < SCENERY_SMALL_SCENERY_ID_MAX; sceneryId++) {
-        if (get_small_scenery_entry(sceneryId) == (rct_scenery_entry *)-1)
+        if (get_small_scenery_entry(sceneryId) == nullptr)
             continue;
 
         rct_scenery_entry* sceneryEntry = get_small_scenery_entry(sceneryId);
@@ -268,7 +268,7 @@ void init_scenery()
     for (sint32 sceneryId = SCENERY_LARGE_SCENERY_ID_MIN; sceneryId < SCENERY_LARGE_SCENERY_ID_MAX; sceneryId++) {
         sint32 largeSceneryIndex = sceneryId - SCENERY_LARGE_SCENERY_ID_MIN;
 
-        if (get_large_scenery_entry(largeSceneryIndex) == (rct_scenery_entry *)-1)
+        if (get_large_scenery_entry(largeSceneryIndex) == nullptr)
             continue;
 
         rct_scenery_entry* sceneryEntry = get_large_scenery_entry(largeSceneryIndex);
@@ -279,7 +279,7 @@ void init_scenery()
     for (sint32 sceneryId = SCENERY_WALLS_ID_MIN; sceneryId < SCENERY_WALLS_ID_MAX; sceneryId++) {
         sint32 wallSceneryIndex = sceneryId - SCENERY_WALLS_ID_MIN;
 
-        if (get_wall_entry(wallSceneryIndex) == (rct_scenery_entry *)-1)
+        if (get_wall_entry(wallSceneryIndex) == nullptr)
             continue;
 
         rct_scenery_entry* sceneryEntry = get_wall_entry(wallSceneryIndex);
@@ -290,7 +290,7 @@ void init_scenery()
     for (sint32 sceneryId = SCENERY_BANNERS_ID_MIN; sceneryId < SCENERY_BANNERS_ID_MAX; sceneryId++) {
         sint32 bannerIndex = sceneryId - SCENERY_BANNERS_ID_MIN;
 
-        if (get_banner_entry(bannerIndex) == (rct_scenery_entry *)-1)
+        if (get_banner_entry(bannerIndex) == nullptr)
             continue;
 
         rct_scenery_entry* sceneryEntry = get_banner_entry(bannerIndex);
@@ -301,7 +301,7 @@ void init_scenery()
     for (sint32 sceneryId = SCENERY_PATH_SCENERY_ID_MIN; sceneryId < SCENERY_PATH_SCENERY_ID_MAX; sceneryId++) {
         sint32 pathBitIndex = sceneryId - SCENERY_PATH_SCENERY_ID_MIN;
 
-        if (get_footpath_item_entry(pathBitIndex) == (rct_scenery_entry *)-1)
+        if (get_footpath_item_entry(pathBitIndex) == nullptr)
             continue;
 
         rct_scenery_entry* sceneryEntry = get_footpath_item_entry(pathBitIndex);
@@ -317,7 +317,7 @@ void init_scenery()
 
     for (sint32 scenerySetId = 0; scenerySetId < MAX_SCENERY_GROUP_OBJECTS; scenerySetId++) {
         rct_scenery_set_entry* sceneryEntry = get_scenery_group_entry(scenerySetId);
-        if (sceneryEntry == (rct_scenery_set_entry *)-1)
+        if (sceneryEntry == nullptr)
             continue;
 
         tabIndexes[usedValues] = scenerySetId;
@@ -901,7 +901,7 @@ void window_scenery_invalidate(rct_window *w)
     uint32 titleStringId = STR_MISCELLANEOUS;
     if (tabIndex < SCENERY_WINDOW_TABS - 1) {
         rct_scenery_set_entry * sgEntry = get_scenery_group_entry(tabIndex);
-        if (sgEntry != nullptr && sgEntry != (rct_scenery_set_entry *)-1) {
+        if (sgEntry != nullptr) {
             titleStringId = sgEntry->name;
         }
     }

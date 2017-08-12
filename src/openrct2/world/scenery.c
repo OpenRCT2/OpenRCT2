@@ -94,7 +94,7 @@ void scenery_update_tile(sint32 x, sint32 y)
         } else if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_PATH) {
             if (footpath_element_has_path_scenery(mapElement) && !footpath_element_path_scenery_is_ghost(mapElement)) {
                 rct_scenery_entry *sceneryEntry = get_footpath_item_entry(footpath_element_get_path_scenery_index(mapElement));
-                if (sceneryEntry != (void*)-1) {
+                if (sceneryEntry != NULL) {
                     if (sceneryEntry->path_bit.flags & PATH_BIT_FLAG_JUMPING_FOUNTAIN_WATER) {
                         jumping_fountain_begin(JUMPING_FOUNTAIN_TYPE_WATER, x, y, mapElement);
                     }
@@ -117,7 +117,7 @@ void scenery_update_age(sint32 x, sint32 y, rct_map_element *mapElement)
     rct_scenery_entry *sceneryEntry;
 
     sceneryEntry = get_small_scenery_entry(mapElement->properties.scenery.type);
-    if (sceneryEntry == (rct_scenery_entry*)-1)
+    if (sceneryEntry == NULL)
     {
         return;
     }

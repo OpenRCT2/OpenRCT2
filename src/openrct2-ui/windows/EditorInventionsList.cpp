@@ -307,8 +307,6 @@ static void research_always_researched_setup()
     research_scenery_sets_setup();
 }
 
-
-
 /**
  *
  *  rct2: 0x00685A93
@@ -760,7 +758,7 @@ static void window_editor_inventions_list_paint(rct_window *w, rct_drawpixelinfo
 
     void *chunk = object_entry_groups[objectEntryType].chunks[researchItem->entryIndex & 0xFF];
 
-    if (chunk == nullptr || chunk == (void*)-1)
+    if (chunk == nullptr)
         return;
 
     rct_object_entry * entry = &object_entry_groups[objectEntryType].entries[researchItem->entryIndex & 0xFF].entry;

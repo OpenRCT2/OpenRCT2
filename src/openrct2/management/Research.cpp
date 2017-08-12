@@ -311,7 +311,7 @@ void research_finish_item(uint32 entryIndex)
     {
         // Scenery
         rct_scenery_set_entry * scenerySetEntry = get_scenery_group_entry(entryIndex & 0xFFFF);
-        if (scenerySetEntry != nullptr && scenerySetEntry != (rct_scenery_set_entry *) -1)
+        if (scenerySetEntry != nullptr)
         {
             for (sint32 i = 0; i < scenerySetEntry->entry_count; i++)
             {
@@ -448,7 +448,7 @@ void research_reset_current_item()
     for (sint32 i = 0; i < MAX_SCENERY_GROUP_OBJECTS; ++i)
     {
         rct_scenery_set_entry * scenery_set = get_scenery_group_entry(i);
-        if ((intptr_t) scenery_set == -1)
+        if (scenery_set == nullptr)
         {
             continue;
         }
@@ -665,7 +665,7 @@ void research_populate_list_random()
     for (sint32 i = 0; i < MAX_SCENERY_GROUP_OBJECTS; i++)
     {
         rct_scenery_set_entry * scenerySetEntry = get_scenery_group_entry(i);
-        if (scenerySetEntry == (rct_scenery_set_entry *) -1)
+        if (scenerySetEntry == nullptr)
         {
             continue;
         }
@@ -700,7 +700,7 @@ void research_populate_list_researched()
     for (sint32 i = 0; i < MAX_SCENERY_GROUP_OBJECTS; i++)
     {
         rct_scenery_set_entry * scenerySetEntry = get_scenery_group_entry(i);
-        if (scenerySetEntry == (rct_scenery_set_entry *) -1)
+        if (scenerySetEntry == nullptr)
         {
             continue;
         }

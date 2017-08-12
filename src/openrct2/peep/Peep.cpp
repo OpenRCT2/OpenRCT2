@@ -6785,8 +6785,7 @@ static sint32 peep_update_patrolling_find_watering(rct_peep * peep)
 
             rct_scenery_entry * sceneryEntry = get_small_scenery_entry(map_element->properties.scenery.type);
 
-            if (sceneryEntry == (rct_scenery_entry *)-1 ||
-                !(sceneryEntry->small_scenery.flags & SMALL_SCENERY_FLAG_CAN_BE_WATERED))
+            if (sceneryEntry == nullptr || !(sceneryEntry->small_scenery.flags & SMALL_SCENERY_FLAG_CAN_BE_WATERED))
             {
                 continue;
             }

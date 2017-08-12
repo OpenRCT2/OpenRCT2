@@ -33,7 +33,7 @@ static money32 SmallSceneryRemove(sint16 x, sint16 y, uint8 baseHeight, uint8 qu
     money32 cost;
 
     rct_scenery_entry *entry = get_small_scenery_entry(sceneryType);
-    if (entry == (rct_scenery_entry *)-1)
+    if (entry == nullptr)
     {
         log_warning("Invalid game command for scenery removal, scenery_type = %u", sceneryType);
         return MONEY32_UNDEFINED;
