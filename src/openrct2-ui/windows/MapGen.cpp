@@ -143,7 +143,6 @@ enum {
 #define TWX2PL(COL)     ((sint16)(TWX1PL(COL) + TEXBTNW - 1))           // terrain wall button x2 placement
 #define TBY1PL(ROW)     ((sint16)(Y1PL(ROW)))                           // terrain floor/wall button y1 placement
 #define TBY2PL(ROW)     ((sint16)(TBY1PL(ROW) + TXTBTNH))               // terrain floor/wall button y2 placement
-
 #pragma endregion
 
 #define SHARED_WIDGETS \
@@ -159,19 +158,23 @@ enum {
 static rct_widget MapWidgets[] = {
     SHARED_WIDGETS,
 
-    { WWT_DROPDOWN_BUTTON,  1, WW - 95, WW - 6, WH - 17, WH - 6, STR_MAPGEN_ACTION_GENERATE, STR_NONE }, // WIDX_MAP_GENERATE
+    { WWT_DROPDOWN_BUTTON,  1, WW - 95, WW - 6, WH - 17, WH - 6, STR_MAPGEN_ACTION_GENERATE,        STR_NONE }, // WIDX_MAP_GENERATE
 
-    { WWT_SPINNER,          1,  104,    198,    52,     63,     STR_NONE,                   STR_NONE }, // WIDX_MAP_SIZE
-    { WWT_DROPDOWN_BUTTON,  1,  187,    197,    53,     57,     STR_NUMERIC_UP,             STR_NONE }, // WIDX_MAP_SIZE_UP
-    { WWT_DROPDOWN_BUTTON,  1,  187,    197,    58,     62,     STR_NUMERIC_DOWN,           STR_NONE }, // WIDX_MAP_SIZE_DOWN
-    { WWT_SPINNER,          1,  104,    198,    70,     81,     STR_NONE,                   STR_NONE }, // WIDX_BASE_HEIGHT
-    { WWT_DROPDOWN_BUTTON,  1,  187,    197,    71,     75,     STR_NUMERIC_UP,             STR_NONE }, // WIDX_BASE_HEIGHT_UP
-    { WWT_DROPDOWN_BUTTON,  1,  187,    197,    76,     80,     STR_NUMERIC_DOWN,           STR_NONE }, // WIDX_BASE_HEIGHT_DOWN
-    { WWT_SPINNER,          1,  104,    198,    88,     99,     STR_NONE,                   STR_NONE }, // WIDX_WATER_LEVEL
-    { WWT_DROPDOWN_BUTTON,  1,  187,    197,    89,     93,     STR_NUMERIC_UP,             STR_NONE }, // WIDX_WATER_LEVEL_UP
-    { WWT_DROPDOWN_BUTTON,  1,  187,    197,    94,     98,     STR_NUMERIC_DOWN,           STR_NONE }, // WIDX_WATER_LEVEL_DOWN
-    { WWT_FLATBTN,          1,  104,    150,    106,    141,    0xFFFFFFFF,                 STR_CHANGE_BASE_LAND_TIP }, // WIDX_FLOOR_TEXTURE
-    { WWT_FLATBTN,          1,  151,    197,    106,    141,    0xFFFFFFFF,                 STR_CHANGE_VERTICAL_LAND_TIP }, // WIDX_WALL_TEXTURE
+    { WWT_SPINNER,          1,  X1PL(1),    X2PL(1),    Y1PL(0),     Y2PL(0),     STR_NONE,         STR_NONE }, // WIDX_MAP_SIZE
+    { WWT_DROPDOWN_BUTTON,  1,  SAX1PL(1),  SAX2PL(1),  SUY1PL(0),   SUY2PL(0),   STR_NUMERIC_UP,   STR_NONE }, // WIDX_MAP_SIZE_UP
+    { WWT_DROPDOWN_BUTTON,  1,  SAX1PL(1),  SAX2PL(1),  SDY1PL(0),   SDY2PL(0),   STR_NUMERIC_DOWN, STR_NONE }, // WIDX_MAP_SIZE_DOWN
+
+    { WWT_SPINNER,          1,  X1PL(1),    X2PL(1),    Y1PL(1),     Y2PL(1),     STR_NONE,         STR_NONE }, // WIDX_BASE_HEIGHT
+    { WWT_DROPDOWN_BUTTON,  1,  SAX1PL(1),  SAX2PL(1),  SUY1PL(1),   SUY2PL(1),   STR_NUMERIC_UP,   STR_NONE }, // WIDX_BASE_HEIGHT_UP
+    { WWT_DROPDOWN_BUTTON,  1,  SAX1PL(1),  SAX2PL(1),  SDY1PL(1),   SDY2PL(1),   STR_NUMERIC_DOWN, STR_NONE }, // WIDX_BASE_HEIGHT_DOWN
+
+    { WWT_SPINNER,          1,  X1PL(1),    X2PL(1),    Y1PL(2),     Y2PL(2),     STR_NONE,         STR_NONE }, // WIDX_WATER_LEVEL
+    { WWT_DROPDOWN_BUTTON,  1,  SAX1PL(1),  SAX2PL(1),  SUY1PL(2),   SUY2PL(2),   STR_NUMERIC_UP,   STR_NONE }, // WIDX_WATER_LEVEL_UP
+    { WWT_DROPDOWN_BUTTON,  1,  SAX1PL(1),  SAX2PL(1),  SDY1PL(2),   SDY2PL(2),   STR_NUMERIC_DOWN, STR_NONE }, // WIDX_WATER_LEVEL_DOWN
+
+    { WWT_FLATBTN,          1,  TFX1PL(1),  TFX2PL(1),  TBY1PL(3),   TBY2PL(3),   0xFFFFFFFF,       STR_CHANGE_BASE_LAND_TIP }, // WIDX_FLOOR_TEXTURE
+    { WWT_FLATBTN,          1,  TWX1PL(1),  TWX2PL(1),  TBY1PL(3),   TBY2PL(3),   0xFFFFFFFF,       STR_CHANGE_VERTICAL_LAND_TIP }, // WIDX_WALL_TEXTURE
+
     { WIDGETS_END },
 };
 
