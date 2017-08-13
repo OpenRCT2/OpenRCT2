@@ -110,8 +110,41 @@ enum {
 
 #pragma region Widgets
 
-#define WW 300
-#define WH 200
+#pragma region Measurements
+
+#define WW              300
+#define WH              200
+#define TAB_HEIGHT      43
+#define XSPA            2                                               // X spacing
+#define YSPA            7                                               // Y spacing
+#define XOS             6 + XSPA                                        // X offset from left
+#define YOS             TAB_HEIGHT + YSPA + 2                           // Y offset from top (includes tabs height)
+#define BTNW            94                                              // button width
+#define BTNH            11                                              // button height
+#define SABTNW          9                                               // spinner arrow width
+#define SABTNH          4                                               // spinner arrow height
+#define GROUP_SPACE     6
+#define TEXBTNW         46                                              // texture button width
+#define TXTBTNH         35                                              // texture button height
+
+#define Y1PL(ROW)       ((sint16)(YOS + ((BTNH + YSPA) * ROW)))
+#define Y2PL(ROW)       ((sint16)(Y1PL(ROW) + BTNH))
+#define X1PL(COL)       ((sint16)(XOS + ((BTNW + XSPA) * COL)))
+#define X2PL(COL)       ((sint16)(X1PL(COL) + BTNW))
+#define SAX1PL(COL)     ((sint16)(X2PL(COL) - 2 - SABTNW))              // spinner up/down x1 placement
+#define SAX2PL(COL)     ((sint16)(X2PL(COL) - 1))                       // spinner up/down x2 placement
+#define SUY1PL(ROW)     ((sint16)(Y1PL(ROW) + 1))                       // spinner up y1 placement
+#define SUY2PL(ROW)     ((sint16)(SUY1PL(ROW) + SABTNH))                // spinner up y2 placement
+#define SDY1PL(ROW)     ((sint16)(SUY2PL(ROW)) + 1)                     // spinner down y1 placement
+#define SDY2PL(ROW)     ((sint16)(SDY1PL(ROW) + SABTNH))                // spinner down y2 placement
+#define TFX1PL(COL)     ((sint16)(X1PL(COL)))                           // terrain floor button x1 placement
+#define TFX2PL(COL)     ((sint16)(TFX1PL(COL) + TEXBTNW))               // terrain floor button x2 placement
+#define TWX1PL(COL)     ((sint16)(TFX2PL(COL)) + 1)                     // terrain wall button x1 placement
+#define TWX2PL(COL)     ((sint16)(TWX1PL(COL) + TEXBTNW - 1))           // terrain wall button x2 placement
+#define TBY1PL(ROW)     ((sint16)(Y1PL(ROW)))                           // terrain floor/wall button y1 placement
+#define TBY2PL(ROW)     ((sint16)(TBY1PL(ROW) + TXTBTNH))               // terrain floor/wall button y2 placement
+
+#pragma endregion
 
 #define SHARED_WIDGETS \
     { WWT_FRAME,    0,  0,          WW - 1, 0,  WH - 1, 0xFFFFFFFF,                 STR_NONE },             /* WIDX_BACKGROUND */ \
