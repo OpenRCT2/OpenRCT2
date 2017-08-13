@@ -126,65 +126,65 @@ enum {
 static rct_widget MapWidgets[] = {
     SHARED_WIDGETS,
 
-    { WWT_DROPDOWN_BUTTON,  1, WW - 95, WW - 6, WH - 17, WH - 6, STR_MAPGEN_ACTION_GENERATE, STR_NONE },
+    { WWT_DROPDOWN_BUTTON,  1, WW - 95, WW - 6, WH - 17, WH - 6, STR_MAPGEN_ACTION_GENERATE, STR_NONE }, // WIDX_MAP_GENERATE
 
-    { WWT_SPINNER,          1,  104,    198,    52,     63,     STR_NONE,                   STR_NONE },
-    { WWT_DROPDOWN_BUTTON,  1,  187,    197,    53,     57,     STR_NUMERIC_UP,             STR_NONE },
-    { WWT_DROPDOWN_BUTTON,  1,  187,    197,    58,     62,     STR_NUMERIC_DOWN,           STR_NONE },
-    { WWT_SPINNER,          1,  104,    198,    70,     81,     STR_NONE,                   STR_NONE },
-    { WWT_DROPDOWN_BUTTON,  1,  187,    197,    71,     75,     STR_NUMERIC_UP,             STR_NONE },
-    { WWT_DROPDOWN_BUTTON,  1,  187,    197,    76,     80,     STR_NUMERIC_DOWN,           STR_NONE },
-    { WWT_SPINNER,          1,  104,    198,    88,     99,     STR_NONE,                   STR_NONE },
-    { WWT_DROPDOWN_BUTTON,  1,  187,    197,    89,     93,     STR_NUMERIC_UP,             STR_NONE },
-    { WWT_DROPDOWN_BUTTON,  1,  187,    197,    94,     98,     STR_NUMERIC_DOWN,           STR_NONE },
-    { WWT_FLATBTN,          1,  104,    150,    106,    141,    0xFFFFFFFF,                 STR_CHANGE_BASE_LAND_TIP },
-    { WWT_FLATBTN,          1,  151,    197,    106,    141,    0xFFFFFFFF,                 STR_CHANGE_VERTICAL_LAND_TIP },
+    { WWT_SPINNER,          1,  104,    198,    52,     63,     STR_NONE,                   STR_NONE }, // WIDX_MAP_SIZE
+    { WWT_DROPDOWN_BUTTON,  1,  187,    197,    53,     57,     STR_NUMERIC_UP,             STR_NONE }, // WIDX_MAP_SIZE_UP
+    { WWT_DROPDOWN_BUTTON,  1,  187,    197,    58,     62,     STR_NUMERIC_DOWN,           STR_NONE }, // WIDX_MAP_SIZE_DOWN
+    { WWT_SPINNER,          1,  104,    198,    70,     81,     STR_NONE,                   STR_NONE }, // WIDX_BASE_HEIGHT
+    { WWT_DROPDOWN_BUTTON,  1,  187,    197,    71,     75,     STR_NUMERIC_UP,             STR_NONE }, // WIDX_BASE_HEIGHT_UP
+    { WWT_DROPDOWN_BUTTON,  1,  187,    197,    76,     80,     STR_NUMERIC_DOWN,           STR_NONE }, // WIDX_BASE_HEIGHT_DOWN
+    { WWT_SPINNER,          1,  104,    198,    88,     99,     STR_NONE,                   STR_NONE }, // WIDX_WATER_LEVEL
+    { WWT_DROPDOWN_BUTTON,  1,  187,    197,    89,     93,     STR_NUMERIC_UP,             STR_NONE }, // WIDX_WATER_LEVEL_UP
+    { WWT_DROPDOWN_BUTTON,  1,  187,    197,    94,     98,     STR_NUMERIC_DOWN,           STR_NONE }, // WIDX_WATER_LEVEL_DOWN
+    { WWT_FLATBTN,          1,  104,    150,    106,    141,    0xFFFFFFFF,                 STR_CHANGE_BASE_LAND_TIP }, // WIDX_FLOOR_TEXTURE
+    { WWT_FLATBTN,          1,  151,    197,    106,    141,    0xFFFFFFFF,                 STR_CHANGE_VERTICAL_LAND_TIP }, // WIDX_WALL_TEXTURE
     { WIDGETS_END },
 };
 
 static rct_widget RandomWidgets[] = {
     SHARED_WIDGETS,
 
-    { WWT_DROPDOWN_BUTTON,  1, WW - 95, WW - 6, WH - 17, WH - 6, STR_MAPGEN_ACTION_GENERATE,        STR_NONE },
+    { WWT_DROPDOWN_BUTTON,  1, WW - 95, WW - 6, WH - 17, WH - 6, STR_MAPGEN_ACTION_GENERATE,        STR_NONE }, // WIDX_RANDOM_GENERATE
 
-    { WWT_CHECKBOX,         1,  4,      198,    52,     63,     STR_MAPGEN_OPTION_RANDOM_TERRAIN,   STR_NONE },
-    { WWT_CHECKBOX,         1,  4,      198,    70,     81,     STR_MAPGEN_OPTION_PLACE_TREES,      STR_NONE },
+    { WWT_CHECKBOX,         1,  4,      198,    52,     63,     STR_MAPGEN_OPTION_RANDOM_TERRAIN,   STR_NONE }, // WIDX_RANDOM_TERRAIN
+    { WWT_CHECKBOX,         1,  4,      198,    70,     81,     STR_MAPGEN_OPTION_PLACE_TREES,      STR_NONE }, // WIDX_RANDOM_PLACE_TREES
     { WIDGETS_END },
 };
 
 static rct_widget SimplexWidgets[] = {
     SHARED_WIDGETS,
 
-    { WWT_DROPDOWN_BUTTON,  1, WW - 95, WW - 6, WH - 17, WH - 6, STR_MAPGEN_ACTION_GENERATE, STR_NONE },
+    { WWT_DROPDOWN_BUTTON,  1, WW - 95, WW - 6, WH - 17, WH - 6, STR_MAPGEN_ACTION_GENERATE, STR_NONE }, // WIDX_SIMPLEX_GENERATE
 
-    { WWT_12,               1,  4,      198,    52,     63,     STR_MAPGEN_SIMPLEX_NOISE,   STR_NONE },
+    { WWT_12,               1,  4,      198,    52,     63,     STR_MAPGEN_SIMPLEX_NOISE,   STR_NONE }, // WIDX_SIMPLEX_LABEL
 
-    { WWT_SPINNER,          1,  104,    198,    70,     81,     STR_NONE,                   STR_NONE },
-    { WWT_DROPDOWN_BUTTON,  1,  187,    197,    71,     75,     STR_NUMERIC_UP,             STR_NONE },
-    { WWT_DROPDOWN_BUTTON,  1,  187,    197,    76,     80,     STR_NUMERIC_DOWN,           STR_NONE },
+    { WWT_SPINNER,          1,  104,    198,    70,     81,     STR_NONE,                   STR_NONE }, // WIDX_SIMPLEX_LOW
+    { WWT_DROPDOWN_BUTTON,  1,  187,    197,    71,     75,     STR_NUMERIC_UP,             STR_NONE }, // WIDX_SIMPLEX_LOW_UP
+    { WWT_DROPDOWN_BUTTON,  1,  187,    197,    76,     80,     STR_NUMERIC_DOWN,           STR_NONE }, // WIDX_SIMPLEX_LOW_DOWN
 
-    { WWT_SPINNER,          1,  104,    198,    88,     99,     STR_NONE,                   STR_NONE },
-    { WWT_DROPDOWN_BUTTON,  1,  187,    197,    89,     93,     STR_NUMERIC_UP,             STR_NONE },
-    { WWT_DROPDOWN_BUTTON,  1,  187,    197,    94,     98,     STR_NUMERIC_DOWN,           STR_NONE },
+    { WWT_SPINNER,          1,  104,    198,    88,     99,     STR_NONE,                   STR_NONE }, // WIDX_SIMPLEX_HIGH
+    { WWT_DROPDOWN_BUTTON,  1,  187,    197,    89,     93,     STR_NUMERIC_UP,             STR_NONE }, // WIDX_SIMPLEX_HIGH_UP
+    { WWT_DROPDOWN_BUTTON,  1,  187,    197,    94,     98,     STR_NUMERIC_DOWN,           STR_NONE }, // WIDX_SIMPLEX_HIGH_DOWN
 
-    { WWT_SPINNER,          1,  104,    198,    106,    117,    STR_NONE,                   STR_NONE },
-    { WWT_DROPDOWN_BUTTON,  1,  187,    197,    107,    111,    STR_NUMERIC_UP,             STR_NONE },
-    { WWT_DROPDOWN_BUTTON,  1,  187,    197,    112,    116,    STR_NUMERIC_DOWN,           STR_NONE },
+    { WWT_SPINNER,          1,  104,    198,    106,    117,    STR_NONE,                   STR_NONE }, // WIDX_SIMPLEX_BASE_FREQ
+    { WWT_DROPDOWN_BUTTON,  1,  187,    197,    107,    111,    STR_NUMERIC_UP,             STR_NONE }, // WIDX_SIMPLEX_BASE_FREQ_UP
+    { WWT_DROPDOWN_BUTTON,  1,  187,    197,    112,    116,    STR_NUMERIC_DOWN,           STR_NONE }, // WIDX_SIMPLEX_BASE_FREQ_DOWN
 
-    { WWT_SPINNER,          1,  104,    198,    124,    135,    STR_NONE,                   STR_NONE },
-    { WWT_DROPDOWN_BUTTON,  1,  187,    197,    125,    129,    STR_NUMERIC_UP,             STR_NONE },
-    { WWT_DROPDOWN_BUTTON,  1,  187,    197,    130,    134,    STR_NUMERIC_DOWN,           STR_NONE },
+    { WWT_SPINNER,          1,  104,    198,    124,    135,    STR_NONE,                   STR_NONE }, // WIDX_SIMPLEX_OCTAVES
+    { WWT_DROPDOWN_BUTTON,  1,  187,    197,    125,    129,    STR_NUMERIC_UP,             STR_NONE }, // WIDX_SIMPLEX_OCTAVES_UP
+    { WWT_DROPDOWN_BUTTON,  1,  187,    197,    130,    134,    STR_NUMERIC_DOWN,           STR_NONE }, // WIDX_SIMPLEX_OCTAVES_DOWN
 
-    { WWT_SPINNER,          1,  104,    198,    148,    159,    STR_NONE,                   STR_NONE },
-    { WWT_DROPDOWN_BUTTON,  1,  187,    197,    149,    153,    STR_NUMERIC_UP,             STR_NONE },
-    { WWT_DROPDOWN_BUTTON,  1,  187,    197,    154,    158,    STR_NUMERIC_DOWN,           STR_NONE },
+    { WWT_SPINNER,          1,  104,    198,    148,    159,    STR_NONE,                   STR_NONE }, // WIDX_SIMPLEX_MAP_SIZE
+    { WWT_DROPDOWN_BUTTON,  1,  187,    197,    149,    153,    STR_NUMERIC_UP,             STR_NONE }, // WIDX_SIMPLEX_MAP_SIZE_UP
+    { WWT_DROPDOWN_BUTTON,  1,  187,    197,    154,    158,    STR_NUMERIC_DOWN,           STR_NONE }, // WIDX_SIMPLEX_MAP_SIZE_DOWN
 
-    { WWT_SPINNER,          1,  104,    198,    166,    177,    STR_NONE,                   STR_NONE },
-    { WWT_DROPDOWN_BUTTON,  1,  187,    197,    167,    171,    STR_NUMERIC_UP,             STR_NONE },
-    { WWT_DROPDOWN_BUTTON,  1,  187,    197,    172,    176,    STR_NUMERIC_DOWN,           STR_NONE },
+    { WWT_SPINNER,          1,  104,    198,    166,    177,    STR_NONE,                   STR_NONE }, // WIDX_SIMPLEX_WATER_LEVEL
+    { WWT_DROPDOWN_BUTTON,  1,  187,    197,    167,    171,    STR_NUMERIC_UP,             STR_NONE }, // WIDX_SIMPLEX_WATER_LEVEL_UP
+    { WWT_DROPDOWN_BUTTON,  1,  187,    197,    172,    176,    STR_NUMERIC_DOWN,           STR_NONE }, // WIDX_SIMPLEX_WATER_LEVEL_DOWN
 
-    { WWT_FLATBTN,          1,  225,    271,    68,     103,    0xFFFFFFFF,                 STR_CHANGE_BASE_LAND_TIP },
-    { WWT_FLATBTN,          1,  225,    271,    104,    139,    0xFFFFFFFF,                 STR_CHANGE_VERTICAL_LAND_TIP },
+    { WWT_FLATBTN,          1,  225,    271,    68,     103,    0xFFFFFFFF,                 STR_CHANGE_BASE_LAND_TIP }, // WIDX_SIMPLEX_FLOOR_TEXTURE
+    { WWT_FLATBTN,          1,  225,    271,    104,    139,    0xFFFFFFFF,                 STR_CHANGE_VERTICAL_LAND_TIP }, // WIDX_SIMPLEX_WALL_TEXTURE
 
     { WIDGETS_END },
 };
