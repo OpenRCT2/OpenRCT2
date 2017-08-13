@@ -9,4 +9,12 @@
     <glob weight="60" pattern="*.sv4"/>
   </mime-type>
 
+  <mime-type type="application/x-openrct2-scenario">
+    <icon name="openrct2" />
+    <generic-icon name="applications-games"/>
+    <comment>OpenRCT2 Scenario</comment>
+    <glob weight="60" pattern="*.sc6"/>
+    <glob weight="60" pattern="*.sc4"/>
+  </mime-type>
+
 </mime-info>
