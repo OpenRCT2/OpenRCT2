@@ -57,6 +57,17 @@ public:
         switch (base) {
         default:
         case DIRBASE::RCT1:
+            directoryName = DirectoryNamesRCT1[(size_t)did];
+            if (did == DIRID::DATA)
+            {
+                std::string steamPath = Path::Combine(basePath, DirectoryNamesRCT1[(size_t)DIRID::DATA_STEAM]);
+                if (platform_directory_exists(steamPath.c_str()))
+                {
+                    // If RCTdeluxe_install/Data exists, use that instead.
+                    directoryName = DirectoryNamesRCT1[(size_t)DIRID::DATA_STEAM];
+                }
+            }
+            break;
         case DIRBASE::RCT2:
             directoryName = DirectoryNamesRCT2[(size_t)did];
             break;
@@ -73,11 +84,7 @@ public:
     {
         const utf8 * fileName = FileNames[(size_t)pathid];
         const utf8 * basePath = _basePath[(size_t)DIRBASE::USER].c_str();
-        if (pathid == PATHID::MP_DAT)
-        {
-            basePath = _basePath[(size_t)DIRBASE::RCT1].c_str();
-        }
-        else if (pathid == PATHID::SCORES_RCT2)
+        if (pathid == PATHID::SCORES_RCT2)
         {
             basePath = _basePath[(size_t)DIRBASE::RCT2].c_str();
         }
@@ -94,6 +101,7 @@ public:
     }
 
 private:
+    static const char * DirectoryNamesRCT1[];
     static const char * DirectoryNamesRCT2[];
     static const char * DirectoryNamesOpenRCT2[];
     static const char * FileNames[];
@@ -144,9 +152,29 @@ IPlatformEnvironment * OpenRCT2::CreatePlatformEnvironment()
     return env;
 }
 
+const char * PlatformEnvironment::DirectoryNamesRCT1[] =
+{
+    "Data",                 // DATA
+    "RCTdeluxe_install" PATH_SEPARATOR "Data", // DATA_STEAM
+    "Landscapes",           // LANDSCAPE
+    nullptr,                // LANGUAGE
+    nullptr,                // LOG_CHAT
+    nullptr,                // LOG_SERVER
+    nullptr,                // NETWORK_KEY
+    nullptr,                // OBJECT
+    "Saved Games",          // SAVE
+    "Scenarios",            // SCENARIO
+    nullptr,                // SCREENSHOT
+    nullptr,                // SEQUENCE
+    nullptr,                // SHADER
+    nullptr,                // THEME
+    "Tracks",               // TRACK
+};
+
 const char * PlatformEnvironment::DirectoryNamesRCT2[] =
 {
     "Data",                 // DATA
+    nullptr,                // DATA_STEAM
     "Landscapes",           // LANDSCAPE
     nullptr,                // LANGUAGE
     nullptr,                // LOG_CHAT
@@ -165,6 +193,7 @@ const char * PlatformEnvironment::DirectoryNamesRCT2[] =
 const char * PlatformEnvironment::DirectoryNamesOpenRCT2[] =
 {
     "data",                 // DATA
+    nullptr,                // DATA_STEAM
     "landscape",            // LANDSCAPE
     "language",             // LANGUAGE
     "chatlogs",             // LOG_CHAT
@@ -186,7 +215,6 @@ const char * PlatformEnvironment::FileNames[] =
     "hotkeys.dat",          // CONFIG_KEYBOARD
     "objects.idx",          // CACHE_OBJECTS
     "tracks.idx",           // CACHE_TRACKS
-    "RCTdeluxe_install" PATH_SEPARATOR "Data" PATH_SEPARATOR "mp.dat", // MP_DAT
     "groups.json",          // NETWORK_GROUPS
     "servers.cfg",          // NETWORK_SERVERS
     "users.json",           // NETWORK_USERS
