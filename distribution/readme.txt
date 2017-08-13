@@ -105,15 +105,7 @@ the directory. Alternatively after running OpenRCT2 for the first time, you can
 edit openrct2.cfg in the OpenRCT2 sub directory of your documents folder to set
 the RCT2 install path.
 
-If you are running Windows and have set a DPI scale, OpenRCT2 might look blury.
-This is because OpenRCT2 currently uses the original RollerCoaster Tycoon 2
-binary as an application host. However you can manually configure this binary to
-not be scaled. This will make the game more crisp, but may result in the
-interface being too small to see clearly and less ergonomic to use. To stop DPI
-scaling, right click the binary itself (openrct2.exe) in the install directory
-or the OpenRCT2 shortcut either in your start menu or on your desktop and then
-select properties. Select the compatibility tab, check
-"Disable display scaling on high DPI settings" and then click OK.
+OpenRCT2 supports setting a DPI scale in increments of .25. To set it, open the Options menu.
 
 If you wish to use Steam Overlay or capture game for video recording or
 streaming, you might have to enable hardware display in the options window.
