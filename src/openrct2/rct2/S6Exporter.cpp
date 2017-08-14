@@ -175,7 +175,7 @@ void S6Exporter::Export()
         }
         else
         {
-            _s6.objects[i] = *((rct_object_entry *)entry);
+            _s6.objects[i] = *entry;
         }
     }
 
