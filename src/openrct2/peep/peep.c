@@ -205,7 +205,8 @@ const char *gPeepEasterEggNames[] = {
     "KATIE SMITH",
     "EILIDH BELL",
     "NANCY STILLWAGON",
-    "DAVID ELLIS"
+    "DAVID ELLIS",
+    "janisozaur",
 };
 
 /** rct2: 0x00981DB0 */
@@ -12764,6 +12765,12 @@ money32 set_peep_name(sint32 flags, sint32 state, uint16 sprite_index, uint8* te
     peep->peep_flags &= ~PEEP_FLAGS_HERE_WE_ARE;
     if (peep_check_easteregg_name(EASTEREGG_PEEP_NAME_DAVID_ELLIS, peep)) {
         peep->peep_flags |= PEEP_FLAGS_HERE_WE_ARE;
+    }
+
+    if (peep_check_easteregg_name(EASTEREGG_PEEP_NAME_JANISOZAUR, peep)) {
+        // insta-hunger
+        peep->hunger = 0x0;
+        peep->peep_flags |= PEEP_FLAGS_HUNGER;
     }
 
     gfx_invalidate_screen();
