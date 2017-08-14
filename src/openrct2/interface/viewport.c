@@ -37,9 +37,6 @@
 #include "window.h"
 
 //#define DEBUG_SHOW_DIRTY_BOX
-uint8 gShowGridLinesRefCount;
-uint8 gShowLandRightsRefCount;
-uint8 gShowConstuctionRightsRefCount;
 
 rct_viewport g_viewport_list[MAX_VIEWPORT_COUNT];
 rct_viewport *g_music_tracking_viewport;
@@ -853,16 +850,13 @@ rct_xy16 viewport_coord_to_map_coord(sint32 x, sint32 y, sint32 z)
  */
 void show_gridlines()
 {
-    if (gShowGridLinesRefCount == 0) {
-        rct_window *mainWindow = window_get_main();
-        if (mainWindow != NULL) {
-            if (!(mainWindow->viewport->flags & VIEWPORT_FLAG_GRIDLINES)) {
-                mainWindow->viewport->flags |= VIEWPORT_FLAG_GRIDLINES;
-                window_invalidate(mainWindow);
-            }
+    rct_window *mainWindow = window_get_main();
+    if (mainWindow != NULL) {
+        if (!(mainWindow->viewport->flags & VIEWPORT_FLAG_GRIDLINES)) {
+            mainWindow->viewport->flags |= VIEWPORT_FLAG_GRIDLINES;
+            window_invalidate(mainWindow);
         }
     }
-    gShowGridLinesRefCount++;
 }
 
 /**
@@ -871,14 +865,11 @@ void show_gridlines()
  */
 void hide_gridlines()
 {
-    gShowGridLinesRefCount--;
-    if (gShowGridLinesRefCount == 0) {
-        rct_window *mainWindow = window_get_main();
-        if (mainWindow != NULL) {
-            if (!gConfigGeneral.always_show_gridlines) {
-                mainWindow->viewport->flags &= ~VIEWPORT_FLAG_GRIDLINES;
-                window_invalidate(mainWindow);
-            }
+    rct_window *mainWindow = window_get_main();
+    if (mainWindow != NULL) {
+        if (!gConfigGeneral.always_show_gridlines) {
+            mainWindow->viewport->flags &= ~VIEWPORT_FLAG_GRIDLINES;
+            window_invalidate(mainWindow);
         }
     }
 }
@@ -889,16 +880,13 @@ void hide_gridlines()
  */
 void show_land_rights()
 {
-    if (gShowLandRightsRefCount == 0) {
-        rct_window *mainWindow = window_get_main();
-        if (mainWindow != NULL) {
-            if (!(mainWindow->viewport->flags & VIEWPORT_FLAG_LAND_OWNERSHIP)) {
-                mainWindow->viewport->flags |= VIEWPORT_FLAG_LAND_OWNERSHIP;
-                window_invalidate(mainWindow);
-            }
+    rct_window *mainWindow = window_get_main();
+    if (mainWindow != NULL) {
+        if (!(mainWindow->viewport->flags & VIEWPORT_FLAG_LAND_OWNERSHIP)) {
+            mainWindow->viewport->flags |= VIEWPORT_FLAG_LAND_OWNERSHIP;
+            window_invalidate(mainWindow);
         }
     }
-    gShowLandRightsRefCount++;
 }
 
 /**
@@ -907,14 +895,11 @@ void show_land_rights()
  */
 void hide_land_rights()
 {
-    gShowLandRightsRefCount--;
-    if (gShowLandRightsRefCount == 0) {
-        rct_window *mainWindow = window_get_main();
-        if (mainWindow != NULL) {
-            if (mainWindow->viewport->flags & VIEWPORT_FLAG_LAND_OWNERSHIP) {
-                mainWindow->viewport->flags &= ~VIEWPORT_FLAG_LAND_OWNERSHIP;
-                window_invalidate(mainWindow);
-            }
+    rct_window *mainWindow = window_get_main();
+    if (mainWindow != NULL) {
+        if (mainWindow->viewport->flags & VIEWPORT_FLAG_LAND_OWNERSHIP) {
+            mainWindow->viewport->flags &= ~VIEWPORT_FLAG_LAND_OWNERSHIP;
+            window_invalidate(mainWindow);
         }
     }
 }
@@ -925,16 +910,13 @@ void hide_land_rights()
  */
 void show_construction_rights()
 {
-    if (gShowConstuctionRightsRefCount == 0) {
-        rct_window *mainWindow = window_get_main();
-        if (mainWindow != NULL) {
-            if (!(mainWindow->viewport->flags & VIEWPORT_FLAG_CONSTRUCTION_RIGHTS)) {
-                mainWindow->viewport->flags |= VIEWPORT_FLAG_CONSTRUCTION_RIGHTS;
-                window_invalidate(mainWindow);
-            }
+    rct_window *mainWindow = window_get_main();
+    if (mainWindow != NULL) {
+        if (!(mainWindow->viewport->flags & VIEWPORT_FLAG_CONSTRUCTION_RIGHTS)) {
+            mainWindow->viewport->flags |= VIEWPORT_FLAG_CONSTRUCTION_RIGHTS;
+            window_invalidate(mainWindow);
         }
     }
-    gShowConstuctionRightsRefCount++;
 }
 
 /**
@@ -943,14 +925,11 @@ void show_construction_rights()
  */
 void hide_construction_rights()
 {
-    gShowConstuctionRightsRefCount--;
-    if (gShowConstuctionRightsRefCount == 0) {
-        rct_window *mainWindow = window_get_main();
-        if (mainWindow != NULL) {
-            if (mainWindow->viewport->flags & VIEWPORT_FLAG_CONSTRUCTION_RIGHTS) {
-                mainWindow->viewport->flags &= ~VIEWPORT_FLAG_CONSTRUCTION_RIGHTS;
-                window_invalidate(mainWindow);
-            }
+    rct_window *mainWindow = window_get_main();
+    if (mainWindow != NULL) {
+        if (mainWindow->viewport->flags & VIEWPORT_FLAG_CONSTRUCTION_RIGHTS) {
+            mainWindow->viewport->flags &= ~VIEWPORT_FLAG_CONSTRUCTION_RIGHTS;
+            window_invalidate(mainWindow);
         }
     }
 }
