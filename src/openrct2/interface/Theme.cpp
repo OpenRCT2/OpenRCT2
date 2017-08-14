@@ -394,7 +394,7 @@ json_t * UITheme::ToJson() const
     json_object_set_new(jsonTheme,
                         "useAltScenarioSelectFont",
                         json_boolean(Flags & UITHEME_FLAG_USE_ALTERNATIVE_SCENARIO_SELECT_FONT));
-	json_object_set_new(jsonTheme, "useFullBottomToolbar", json_boolean(Flags & UITHEME_FLAG_USE_FULL_BOTTOM_TOOLBAR));
+    json_object_set_new(jsonTheme, "useFullBottomToolbar", json_boolean(Flags & UITHEME_FLAG_USE_FULL_BOTTOM_TOOLBAR));
 
     return jsonTheme;
 }

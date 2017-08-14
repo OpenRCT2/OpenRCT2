@@ -3787,7 +3787,6 @@ enum {
     STR_CHANGELOG_ELLIPSIS = 6140,
 
     STR_THEMES_OPTION_RCT1_BOTTOM_TOOLBAR = 6141,
-    STR_BOTTOM_TOOLBAR_CREDITS = 6142,
 
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     STR_COUNT = 32768

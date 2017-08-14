@@ -4450,7 +4450,6 @@ STR_6138    :OpenRCT2 is the work of many authors, a full list can be found in {
 STR_6139    :All product and company names belong to their respective holders. Use of them does not imply any affiliation with or endorsement by them.
 STR_6140    :Changelog...
 STR_6141    :RCT1 Bottom Toolbar
-STR_6142    :OpenRCT2
 
 #############
 # Scenarios #
