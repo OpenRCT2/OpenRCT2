@@ -57,7 +57,7 @@ CRCCheck force
 ShowInstDetails show
 ShowUninstDetails show
 
-RequestExecutionLevel admin
+RequestExecutionLevel user
 
 Var SHORTCUTS
 
@@ -66,6 +66,7 @@ Var SHORTCUTS
 !include "InstallOptions.nsh"
 !include "WinVer.nsh"
 !include "x64.nsh"
+!include "UAC.nsh"
 
 !define MUI_ABORTWARNING
 !define MUI_WELCOMEPAGE_TITLE_3LINES
@@ -91,7 +92,8 @@ ManifestDPIAware true
 
 !define MUI_FINISHPAGE_TITLE_3LINES
 !define MUI_FINISHPAGE_RUN_TEXT "Run ${APPNAMEANDVERSION} now!"
-!define MUI_FINISHPAGE_RUN "$INSTDIR\${OPENRCT2_EXE}"
+!define MUI_FINISHPAGE_RUN
+!define MUI_FINISHPAGE_RUN_FUNCTION PageFinishRun
 !define MUI_FINISHPAGE_LINK "Visit the OpenRCT2 site for more information"
 !define MUI_FINISHPAGE_LINK_LOCATION "${APPURLLINK}"
 !define MUI_FINISHPAGE_NOREBOOTSUPPORT
@@ -107,6 +109,35 @@ ManifestDPIAware true
 ; Set languages (first is default language)
 !insertmacro MUI_LANGUAGE "English"
 !insertmacro MUI_RESERVEFILE_LANGDLL
+
+!macro Init thing
+uac_tryagain:
+!insertmacro UAC_RunElevated
+${Switch} $0
+${Case} 0
+	${IfThen} $1 = 1 ${|} Quit ${|} ;we are the outer process, the inner process has done its work, we are done
+	${IfThen} $3 <> 0 ${|} ${Break} ${|} ;we are admin, let the show go on
+	${If} $1 = 3 ;RunAs completed successfully, but with a non-admin user
+		MessageBox mb_YesNo|mb_IconExclamation|mb_TopMost|mb_SetForeground "This ${thing} requires admin privileges, try again" /SD IDNO IDYES uac_tryagain IDNO 0
+	${EndIf}
+	;fall-through and die
+${Case} 1223
+	MessageBox mb_IconStop|mb_TopMost|mb_SetForeground "This ${thing} requires admin privileges, aborting!"
+	Quit
+${Case} 1062
+	MessageBox mb_IconStop|mb_TopMost|mb_SetForeground "Logon service not running, aborting!"
+	Quit
+${Default}
+	MessageBox mb_IconStop|mb_TopMost|mb_SetForeground "Unable to elevate, error $0"
+	Quit
+${EndSwitch}
+
+SetShellVarContext all
+!macroend
+
+Function PageFinishRun
+!insertmacro UAC_AsUser_ExecShell "" "$INSTDIR\${OPENRCT2_EXE}" "" "" ""
+FunctionEnd
 
 ;--------------------------------------------------------------
 ; (Core) OpenRCT2 install section. Copies all internal game data
@@ -454,6 +485,7 @@ Var UninstallString
 ;-----------------------------------------------------------------------------------
 ; NSIS Initialize function, determine if we are going to install/upgrade or uninstall
 Function .onInit
+    !insertmacro Init "installer"
     StrCpy $SHORTCUTS "OpenRCT2"
 
     SectionSetFlags 0 17
@@ -474,5 +506,9 @@ FinishCallback:
     ClearErrors
     ; Call CheckProcessorArchitecture
     ; Call CheckWindowsVersion
+FunctionEnd
+
+Function un.onInit
+!insertmacro Init "uninstaller"
 FunctionEnd
 ; eof
