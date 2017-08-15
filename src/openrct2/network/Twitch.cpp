@@ -280,7 +280,7 @@ namespace Twitch
         http_request_t request = {};
         request.url = url;
         request.method = HTTP_METHOD_GET;
-        request.body = NULL;
+        request.body = nullptr;
         request.type = HTTP_DATA_JSON;
         http_request_async(&request, [](http_response_t * jsonResponse) -> void
         {
@@ -354,7 +354,7 @@ namespace Twitch
         }
 
         http_request_dispose(_twitchJsonResponse);
-        _twitchJsonResponse = NULL;
+        _twitchJsonResponse = nullptr;
         _twitchState = TWITCH_STATE_JOINED;
 
         gfx_invalidate_screen();
@@ -420,7 +420,7 @@ namespace Twitch
             if (is_user_string_id(peep->name_string_idx))
             {
                 utf8 buffer[256];
-                format_string(buffer, 256, peep->name_string_idx, NULL);
+                format_string(buffer, 256, peep->name_string_idx, nullptr);
 
                 AudienceMember * member = nullptr;
                 for (AudienceMember &m : members)

@@ -82,34 +82,34 @@ static void window_banner_invalidate(rct_window *w);
 static void window_banner_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
 static rct_window_event_list window_banner_events = {
-    NULL,
+    nullptr,
     window_banner_mouseup,
-    NULL,
+    nullptr,
     window_banner_mousedown,
     window_banner_dropdown,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_banner_textinput,
     window_banner_viewport_rotate,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_banner_invalidate,
     window_banner_paint,
-    NULL
+    nullptr
 };
 
 /**
@@ -124,7 +124,7 @@ static void _window_banner_open(rct_windownumber number)
 
     // Check if window is already open
     w = window_bring_to_front_by_number(WC_BANNER, number);
-    if (w != NULL)
+    if (w != nullptr)
         return;
 
     w = window_create_auto_pos(WW, WH, &window_banner_events, WC_BANNER, WF_NO_SCROLLING);
@@ -284,7 +284,7 @@ static void window_banner_dropdown(rct_window *w, rct_widgetindex widgetIndex, s
  */
 static void window_banner_textinput(rct_window *w, rct_widgetindex widgetIndex, char *text)
 {
-    if (widgetIndex == WIDX_BANNER_TEXT && text != NULL) {
+    if (widgetIndex == WIDX_BANNER_TEXT && text != nullptr) {
         game_do_command(1, GAME_COMMAND_FLAG_APPLY, w->number, *((sint32*)(text + 0)), GAME_COMMAND_SET_BANNER_NAME, *((sint32*)(text + 8)), *((sint32*)(text + 4)));
         game_do_command(2, GAME_COMMAND_FLAG_APPLY, w->number, *((sint32*)(text + 12)), GAME_COMMAND_SET_BANNER_NAME, *((sint32*)(text + 20)), *((sint32*)(text + 16)));
         game_do_command(0, GAME_COMMAND_FLAG_APPLY, w->number, *((sint32*)(text + 24)), GAME_COMMAND_SET_BANNER_NAME, *((sint32*)(text + 32)), *((sint32*)(text + 28)));
@@ -332,7 +332,7 @@ static void window_banner_paint(rct_window *w, rct_drawpixelinfo *dpi)
     window_draw_widgets(w, dpi);
 
     // Draw viewport
-    if (w->viewport != NULL) {
+    if (w->viewport != nullptr) {
         window_draw_viewport(dpi, w);
     }
 }

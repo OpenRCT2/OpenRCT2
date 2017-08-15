@@ -51,35 +51,35 @@ static void window_network_status_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static rct_window_event_list window_network_status_events = {
     window_network_status_onclose,
     window_network_status_mouseup,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_network_status_update,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_network_status_textinput,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_network_status_invalidate,
     window_network_status_paint,
-    NULL
+    nullptr
 };
 
-static close_callback _onClose = NULL;
+static close_callback _onClose = nullptr;
 
 void window_network_status_open(const char* text, close_callback onClose)
 {
@@ -88,7 +88,7 @@ void window_network_status_open(const char* text, close_callback onClose)
 
     // Check if window is already open
     rct_window *window = window_bring_to_front_by_class_with_flags(WC_NETWORK_STATUS, 0);
-    if (window != NULL)
+    if (window != nullptr)
         return;
 
     window = window_create_centred(420, 90, &window_network_status_events, WC_NETWORK_STATUS, WF_10 | WF_TRANSPARENT);
@@ -110,7 +110,7 @@ void window_network_status_open(const char* text, close_callback onClose)
 
 void window_network_status_close()
 {
-    _onClose = NULL;
+    _onClose = nullptr;
     window_close_by_class(WC_NETWORK_STATUS);
 }
 
@@ -118,7 +118,7 @@ void window_network_status_open_password()
 {
     rct_window* window;
     window = window_bring_to_front_by_class(WC_NETWORK_STATUS);
-    if (window == NULL)
+    if (window == nullptr)
         return;
 
     window_text_input_raw_open(window, WIDX_PASSWORD, STR_PASSWORD_REQUIRED, STR_PASSWORD_REQUIRED_DESC, _password, 32);
@@ -126,7 +126,7 @@ void window_network_status_open_password()
 
 static void window_network_status_onclose(rct_window *w)
 {
-    if (_onClose != NULL) {
+    if (_onClose != nullptr) {
         _onClose();
     }
 }
@@ -150,11 +150,11 @@ static void window_network_status_textinput(rct_window *w, rct_widgetindex widge
     _password[0] = '\0';
     switch (widgetIndex) {
     case WIDX_PASSWORD:
-        if (text != NULL)
+        if (text != nullptr)
             safe_strcpy(_password, text, sizeof(_password));
         break;
     }
-    if (text == NULL) {
+    if (text == nullptr) {
         network_shutdown_client();
     } else {
         network_send_password(_password);

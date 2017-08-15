@@ -102,31 +102,31 @@ static void window_guest_list_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_guest_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 scrollIndex);
 
 static rct_window_event_list window_guest_list_events = {
-    NULL,
+    nullptr,
     window_guest_list_mouseup,
     window_guest_list_resize,
     window_guest_list_mousedown,
     window_guest_list_dropdown,
-    NULL,
+    nullptr,
     window_guest_list_update,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_guest_list_scrollgetsize,
     window_guest_list_scrollmousedown,
-    NULL,
+    nullptr,
     window_guest_list_scrollmouseover,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
     window_guest_list_tooltip,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
     window_guest_list_invalidate,
     window_guest_list_paint,
     window_guest_list_scrollpaint
@@ -191,7 +191,7 @@ void window_guest_list_open()
 
     // Check if window is already open
     window = window_bring_to_front_by_class(WC_GUEST_LIST);
-    if (window != NULL)
+    if (window != nullptr)
         return;
 
     window = window_create_auto_pos(350, 330, &window_guest_list_events, WC_GUEST_LIST, WF_10 | WF_RESIZABLE);

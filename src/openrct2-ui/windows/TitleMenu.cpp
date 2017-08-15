@@ -54,34 +54,34 @@ static void window_title_menu_cursor(rct_window *w, rct_widgetindex widgetIndex,
 static void window_title_menu_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
 static rct_window_event_list window_title_menu_events = {
-    NULL,
+    nullptr,
     window_title_menu_mouseup,
-    NULL,
+    nullptr,
     window_title_menu_mousedown,
     window_title_menu_dropdown,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_title_menu_cursor,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
     window_title_menu_paint,
-    NULL
+    nullptr
 };
 
 /**
@@ -141,12 +141,12 @@ static void window_title_menu_scenarioselect_callback(const utf8 *path)
 
 static void window_title_menu_mouseup(rct_window *w, rct_widgetindex widgetIndex)
 {
-    rct_window *windowToOpen = NULL;
+    rct_window *windowToOpen = nullptr;
 
     switch (widgetIndex) {
     case WIDX_START_NEW_GAME:
         windowToOpen = window_find_by_class(WC_SCENARIO_SELECT);
-        if (windowToOpen != NULL) {
+        if (windowToOpen != nullptr) {
             window_bring_to_front(windowToOpen);
         }
         else {
@@ -157,7 +157,7 @@ static void window_title_menu_mouseup(rct_window *w, rct_widgetindex widgetIndex
         break;
     case WIDX_CONTINUE_SAVED_GAME:
         windowToOpen = window_find_by_class(WC_LOADSAVE);
-        if (windowToOpen != NULL) {
+        if (windowToOpen != nullptr) {
             window_bring_to_front(windowToOpen);
         }
         else {
@@ -168,7 +168,7 @@ static void window_title_menu_mouseup(rct_window *w, rct_widgetindex widgetIndex
         break;
     case WIDX_MULTIPLAYER:
         windowToOpen = window_find_by_class(WC_SERVER_LIST);
-        if (windowToOpen != NULL) {
+        if (windowToOpen != nullptr) {
             window_bring_to_front(windowToOpen);
         }
         else {

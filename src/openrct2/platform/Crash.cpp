@@ -64,7 +64,7 @@ static bool OnCrash(const wchar_t * dumpPath,
         printf("%s\n", DumpFailedMessage);
         if (!gOpenRCT2SilentBreakpad)
         {
-            MessageBoxA(NULL, DumpFailedMessage, OPENRCT2_NAME, MB_OK | MB_ICONERROR);
+            MessageBoxA(nullptr, DumpFailedMessage, OPENRCT2_NAME, MB_OK | MB_ICONERROR);
         }
         return succeeded;
     }
@@ -118,8 +118,8 @@ static bool OnCrash(const wchar_t * dumpPath,
                _wszCommitSha1Short);
 
     // Cannot use platform_show_messagebox here, it tries to set parent window already dead.
-    MessageBoxW(NULL, message, WSZ(OPENRCT2_NAME), MB_OK | MB_ICONERROR);
-    HRESULT coInitializeResult = CoInitialize(NULL);
+    MessageBoxW(nullptr, message, WSZ(OPENRCT2_NAME), MB_OK | MB_ICONERROR);
+    HRESULT coInitializeResult = CoInitialize(nullptr);
     if (SUCCEEDED(coInitializeResult))
     {
         LPITEMIDLIST pidl = ILCreateFromPathW(dumpPath);
@@ -149,7 +149,7 @@ static bool OnCrash(const wchar_t * dumpPath,
 static std::wstring GetDumpDirectory()
 {
     char userDirectory[MAX_PATH];
-    platform_get_user_directory(userDirectory, NULL, sizeof(userDirectory));
+    platform_get_user_directory(userDirectory, nullptr, sizeof(userDirectory));
 
     wchar_t * userDirectoryW = utf8_to_widechar(userDirectory);
     auto result = std::wstring(userDirectoryW);

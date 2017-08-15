@@ -477,31 +477,31 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_tile_inspector_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 scrollIndex);
 
 static rct_window_event_list TileInspectorWindowEvents = {
-    NULL,
+    nullptr,
     window_tile_inspector_mouseup,
     window_tile_inspector_resize,
     window_tile_inspector_mousedown,
     window_tile_inspector_dropdown,
-    NULL,
+    nullptr,
     window_tile_inspector_update,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
     window_tile_inspector_tool_update,
     window_tile_inspector_tool_down,
     window_tile_inspector_tool_drag,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
     window_tile_inspector_scrollgetsize,
     window_tile_inspector_scrollmousedown,
-    NULL,
+    nullptr,
     window_tile_inspector_scrollmouseover,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_tile_inspector_invalidate,
     window_tile_inspector_paint,
     window_tile_inspector_scrollpaint
@@ -539,7 +539,7 @@ void window_tile_inspector_open()
 
     // Check if window is already open
     window = window_bring_to_front_by_class(WC_TILE_INSPECTOR);
-    if (window != NULL)
+    if (window != nullptr)
         return;
 
     window = window_create(
@@ -1673,7 +1673,7 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi)
             // Raise / lower label
             x = w->x + w->widgets[WIDX_GROUPBOX_DETAILS].left + 7;
             y = w->y + w->widgets[WIDX_SURFACE_SPINNER_HEIGHT].top;
-            gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_BASE_HEIGHT_FULL, NULL, COLOUR_DARK_GREEN, x, y);
+            gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_BASE_HEIGHT_FULL, nullptr, COLOUR_DARK_GREEN, x, y);
 
             // Current base height
             x = w->x + w->widgets[WIDX_SURFACE_SPINNER_HEIGHT].left + 3;
@@ -1683,7 +1683,7 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi)
             // Raised corners
             x = w->x + w->widgets[WIDX_GROUPBOX_DETAILS].left + 7;
             y = w->y + w->widgets[WIDX_SURFACE_CHECK_CORNER_E].top;
-            gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_SURFACE_CORNERS, NULL, COLOUR_DARK_GREEN, x, y);
+            gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_SURFACE_CORNERS, nullptr, COLOUR_DARK_GREEN, x, y);
             break;
         }
 
@@ -1700,13 +1700,13 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi)
                 gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_PATH_ADDITIONS, &additionNameId, COLOUR_DARK_GREEN, x, y + 11);
             }
             else
-                gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_PATH_ADDITIONS_NONE, NULL, COLOUR_DARK_GREEN, x, y + 11);
+                gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_PATH_ADDITIONS_NONE, nullptr, COLOUR_DARK_GREEN, x, y + 11);
 
             // Properties
             // Raise / lower label
             x = w->x + w->widgets[WIDX_GROUPBOX_DETAILS].left + 7;
             y = w->y + w->widgets[WIDX_PATH_SPINNER_HEIGHT].top;
-            gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_BASE_HEIGHT_FULL, NULL, COLOUR_DARK_GREEN, x, y);
+            gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_BASE_HEIGHT_FULL, nullptr, COLOUR_DARK_GREEN, x, y);
 
             // Current base height
             x = w->x + w->widgets[WIDX_PATH_SPINNER_HEIGHT].left + 3;
@@ -1716,7 +1716,7 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi)
             // Path connections
             x = w->x + w->widgets[WIDX_GROUPBOX_DETAILS].left + 7;
             y = w->y + w->widgets[WIDX_PATH_CHECK_EDGE_W].top;
-            gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_PATH_CONECTED_EDGES, NULL, COLOUR_DARK_GREEN, x, y);
+            gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_PATH_CONECTED_EDGES, nullptr, COLOUR_DARK_GREEN, x, y);
             break;
         }
 
@@ -1740,7 +1740,7 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi)
             // Properties
             // Raise / lower label
             y = w->y + w->widgets[WIDX_TRACK_SPINNER_HEIGHT].top;
-            gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_BASE_HEIGHT_FULL, NULL, COLOUR_DARK_GREEN, x, y);
+            gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_BASE_HEIGHT_FULL, nullptr, COLOUR_DARK_GREEN, x, y);
 
             // Current base height
             x = w->x + w->widgets[WIDX_TRACK_SPINNER_HEIGHT].left + 3;
@@ -1774,7 +1774,7 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi)
             // Properties
             // Raise / Lower
             y = w->y + w->widgets[WIDX_SCENERY_SPINNER_HEIGHT].top;
-            gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_BASE_HEIGHT_FULL, NULL, COLOUR_DARK_GREEN, x, y);
+            gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_BASE_HEIGHT_FULL, nullptr, COLOUR_DARK_GREEN, x, y);
 
             // Current base height
             x = w->x + w->widgets[WIDX_SCENERY_SPINNER_HEIGHT].left + 3;
@@ -1784,11 +1784,11 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi)
             // Quarter tile
             x = w->x + w->widgets[WIDX_GROUPBOX_DETAILS].left + 7;
             y = w->y + w->widgets[WIDX_SCENERY_CHECK_QUARTER_E].top;
-            gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_SCENERY_QUADRANT_LABEL, NULL, COLOUR_DARK_GREEN, x, y);
+            gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_SCENERY_QUADRANT_LABEL, nullptr, COLOUR_DARK_GREEN, x, y);
 
             // Collision
             y = w->y + w->widgets[WIDX_SCENERY_CHECK_COLLISION_E].top;
-            gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_COLLISSION, NULL, COLOUR_DARK_GREEN, x, y);
+            gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_COLLISSION, nullptr, COLOUR_DARK_GREEN, x, y);
             break;
         }
 
@@ -1832,7 +1832,7 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi)
             // Properties
             // Raise / Lower
             y = w->y + w->widgets[WIDX_ENTRANCE_SPINNER_HEIGHT].top;
-            gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_BASE_HEIGHT_FULL, NULL, COLOUR_DARK_GREEN, x, y);
+            gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_BASE_HEIGHT_FULL, nullptr, COLOUR_DARK_GREEN, x, y);
 
             // Current base height
             x = w->x + w->widgets[WIDX_ENTRANCE_SPINNER_HEIGHT].left + 3;
@@ -1853,13 +1853,13 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi)
                 gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_ENTRY_BANNER_TEXT, &gBanners[mapElement->properties.wall.banner_index].string_idx, COLOUR_DARK_GREEN, x, y + 11);
             }
             else {
-                gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_ENTRY_BANNER_NONE, NULL, COLOUR_DARK_GREEN, x, y + 11);
+                gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_ENTRY_BANNER_NONE, nullptr, COLOUR_DARK_GREEN, x, y + 11);
             }
 
             // Properties
             // Raise / lower label
             y = w->y + w->widgets[WIDX_WALL_SPINNER_HEIGHT].top;
-            gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_BASE_HEIGHT_FULL, NULL, COLOUR_DARK_GREEN, x, y);
+            gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_BASE_HEIGHT_FULL, nullptr, COLOUR_DARK_GREEN, x, y);
 
             // Current base height
             x = w->x + w->widgets[WIDX_WALL_SPINNER_HEIGHT].left + 3;
@@ -1869,7 +1869,7 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi)
             // Slope label
             x = w->x + w->widgets[WIDX_GROUPBOX_DETAILS].left + 7;
             y = w->y + w->widgets[WIDX_WALL_DROPDOWN_SLOPE].top;
-            gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_WALL_SLOPE, NULL, COLOUR_DARK_GREEN, x, y);
+            gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_WALL_SLOPE, nullptr, COLOUR_DARK_GREEN, x, y);
             break;
         }
 
@@ -1894,13 +1894,13 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi)
                 gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_ENTRY_BANNER_TEXT, &gBanners[bannerIndex].string_idx, COLOUR_DARK_GREEN, x, y + 22);
             }
             else {
-                gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_ENTRY_BANNER_NONE, NULL, COLOUR_DARK_GREEN, x, y + 22);
+                gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_ENTRY_BANNER_NONE, nullptr, COLOUR_DARK_GREEN, x, y + 22);
             }
 
             // Properties
             // Raise / lower label
             y = w->y + w->widgets[WIDX_LARGE_SCENERY_SPINNER_HEIGHT].top;
-            gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_BASE_HEIGHT_FULL, NULL, COLOUR_DARK_GREEN, x, y);
+            gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_BASE_HEIGHT_FULL, nullptr, COLOUR_DARK_GREEN, x, y);
 
             // Current base height
             x = w->x + w->widgets[WIDX_LARGE_SCENERY_SPINNER_HEIGHT].left + 3;
@@ -1925,7 +1925,7 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi)
             // Properties
             // Raise / lower label
             y = w->y + w->widgets[WIDX_BANNER_SPINNER_HEIGHT].top;
-            gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_BASE_HEIGHT_FULL, NULL, COLOUR_DARK_GREEN, x, y);
+            gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_BASE_HEIGHT_FULL, nullptr, COLOUR_DARK_GREEN, x, y);
 
             // Current base height
             x = w->x + w->widgets[WIDX_BANNER_SPINNER_HEIGHT].left + 3;
@@ -1935,7 +1935,7 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi)
             // Blocked paths
             y += 28;
             x = w->x + w->widgets[WIDX_GROUPBOX_DETAILS].left + 7;
-            gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_BANNER_BLOCKED_PATHS, NULL, COLOUR_DARK_GREEN, x, y);
+            gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_BANNER_BLOCKED_PATHS, nullptr, COLOUR_DARK_GREEN, x, y);
             break;
         }
 
@@ -1944,7 +1944,7 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi)
             // Properties
             // Raise / lower label
             y = w->y + w->widgets[WIDX_CORRUPT_SPINNER_HEIGHT].top;
-            gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_BASE_HEIGHT_FULL, NULL, COLOUR_DARK_GREEN, x, y);
+            gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_BASE_HEIGHT_FULL, nullptr, COLOUR_DARK_GREEN, x, y);
 
             // Current base height
             x = w->x + w->widgets[WIDX_CORRUPT_SPINNER_HEIGHT].left + 3;

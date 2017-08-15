@@ -76,7 +76,7 @@ public:
             _palette == nullptr ||
             _RGBASurface == nullptr)
         {
-            log_fatal("%p || %p || %p == NULL %s", _surface, _palette, _RGBASurface, SDL_GetError());
+            log_fatal("%p || %p || %p == nullptr %s", _surface, _palette, _RGBASurface, SDL_GetError());
             exit(-1);
         }
 

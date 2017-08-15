@@ -182,7 +182,7 @@ namespace Path
 #ifdef _WIN32
         wchar_t * relativePathW = utf8_to_widechar(relativePath);
         wchar_t   absolutePathW[MAX_PATH];
-        DWORD length = GetFullPathNameW(relativePathW, (DWORD)Util::CountOf(absolutePathW), absolutePathW, NULL);
+        DWORD length = GetFullPathNameW(relativePathW, (DWORD)Util::CountOf(absolutePathW), absolutePathW, nullptr);
         Memory::Free(relativePathW);
         if (length == 0)
         {
@@ -196,7 +196,7 @@ namespace Path
             return buffer;
         }
 #else
-        utf8 * absolutePath = realpath(relativePath, NULL);
+        utf8 * absolutePath = realpath(relativePath, nullptr);
         if (absolutePath == nullptr)
         {
             return String::Set(buffer, bufferSize, relativePath);

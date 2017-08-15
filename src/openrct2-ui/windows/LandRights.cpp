@@ -71,32 +71,32 @@ static bool land_rights_tool_is_active();
 static rct_window_event_list window_land_rights_events = {
     window_land_rights_close,
     window_land_rights_mouseup,
-    NULL,
+    nullptr,
     window_land_rights_mousedown,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
     window_land_rights_update,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
     window_land_rights_toolupdate,
     window_land_rights_tooldown,
     window_land_rights_tooldrag,
-    NULL,
+    nullptr,
     window_land_rights_toolabort,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_land_rights_textinput,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_land_rights_invalidate,
     window_land_rights_paint,
-    NULL
+    nullptr
 };
 
 #define LAND_RIGHTS_MODE_BUY_CONSTRUCTION_RIGHTS 0
@@ -111,7 +111,7 @@ rct_window * window_land_rights_open()
 
     // Check if window is already open
     window = window_find_by_class(WC_LAND_RIGHTS);
-    if (window != NULL)
+    if (window != nullptr)
         return window;
 
     window = window_create(context_get_width() - 98, 29, 98, 94, &window_land_rights_events, WC_LAND_RIGHTS, 0);
@@ -208,7 +208,7 @@ static void window_land_rights_textinput(rct_window *w, rct_widgetindex widgetIn
     sint32 size;
     char* end;
 
-    if (widgetIndex != WIDX_PREVIEW || text == NULL)
+    if (widgetIndex != WIDX_PREVIEW || text == nullptr)
         return;
 
     size = strtol(text, &end, 10);
@@ -291,7 +291,7 @@ static void window_land_rights_tool_update_land_rights(sint16 x, sint16 y)
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
 
     rct_xy16 mapTile = { 0 };
-    screen_get_map_xy(x, y, &mapTile.x, &mapTile.y, NULL);
+    screen_get_map_xy(x, y, &mapTile.x, &mapTile.y, nullptr);
 
     if (mapTile.x == MAP_LOCATION_NULL) {
         if (_landRightsCost != MONEY32_UNDEFINED) {

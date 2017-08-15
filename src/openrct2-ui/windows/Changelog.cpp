@@ -61,28 +61,28 @@ static rct_window_event_list window_changelog_events = {
     window_changelog_close,
     window_changelog_mouseup,
     window_changelog_resize,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_changelog_scrollgetsize,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_changelog_invalidate,
     window_changelog_paint,
     window_changelog_scrollpaint
@@ -91,9 +91,9 @@ static rct_window_event_list window_changelog_events = {
 static bool window_changelog_read_file();
 static void window_changelog_dispose_file();
 
-static char *_changelogText = NULL;
+static char *_changelogText = nullptr;
 static size_t _changelogTextSize = 0;
-static char **_changelogLines = NULL;
+static char **_changelogLines = nullptr;
 static sint32 _changelogNumLines = 0;
 static sint32 _changelogLongestLineWidth = 0;
 
@@ -102,11 +102,11 @@ rct_window * window_changelog_open()
     rct_window* window;
 
     window = window_bring_to_front_by_class(WC_CHANGELOG);
-    if (window != NULL)
+    if (window != nullptr)
         return window;
 
     if (!window_changelog_read_file())
-        return NULL;
+        return nullptr;
 
     sint32 screenWidth = context_get_width();
     sint32 screenHeight = context_get_height();
@@ -210,7 +210,7 @@ static bool window_changelog_read_file()
         return false;
     }
     void* new_memory = realloc(_changelogText, _changelogTextSize + 1);
-    if (new_memory == NULL) {
+    if (new_memory == nullptr) {
         log_error("Failed to reallocate memory for changelog text");
         return false;
     }
@@ -235,7 +235,7 @@ static bool window_changelog_read_file()
             if (_changelogNumLines > changelogLinesCapacity) {
                 changelogLinesCapacity *= 2;
                 new_memory = realloc(_changelogLines, changelogLinesCapacity * sizeof(char*));
-                if (new_memory == NULL) {
+                if (new_memory == nullptr) {
                     log_error("Failed to reallocate memory for change log lines");
                     return false;
                 }
@@ -251,7 +251,7 @@ static bool window_changelog_read_file()
     }
 
     new_memory = realloc(_changelogLines, _changelogNumLines * sizeof(char*));
-    if (new_memory == NULL) {
+    if (new_memory == nullptr) {
         log_error("Failed to reallocate memory for change log lines");
         return false;
     }

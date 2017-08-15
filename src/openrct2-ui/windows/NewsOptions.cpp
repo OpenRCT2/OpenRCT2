@@ -96,34 +96,34 @@ static void window_news_options_invalidate(rct_window *w);
 static void window_news_options_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
 static rct_window_event_list window_news_options_events = {
-    NULL,
+    nullptr,
     window_news_options_mouseup,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_news_options_update,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_news_options_invalidate,
     window_news_options_paint,
-    NULL
+    nullptr
 };
 
 static void window_news_options_set_page(rct_window *w, sint32 page);
@@ -136,7 +136,7 @@ rct_window * window_news_options_open()
 
     // Check if window is already open
     window = window_bring_to_front_by_class(WC_NOTIFICATION_OPTIONS);
-    if (window == NULL) {
+    if (window == nullptr) {
         window = window_create_centred(
             400,
             300,

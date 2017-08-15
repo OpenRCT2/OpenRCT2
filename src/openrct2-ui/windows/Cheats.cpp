@@ -306,127 +306,127 @@ static void window_cheats_set_page(rct_window *w, sint32 page);
 static void window_cheats_text_input(rct_window *w, rct_widgetindex widgetIndex, char *text);
 
 static rct_window_event_list window_cheats_money_events = {
-    NULL,
+    nullptr,
     window_cheats_money_mouseup,
-    NULL,
+    nullptr,
     window_cheats_money_mousedown,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
     window_cheats_update,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_cheats_text_input,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_cheats_invalidate,
     window_cheats_paint,
-    NULL
+    nullptr
 };
 
 static rct_window_event_list window_cheats_guests_events = {
-    NULL,
+    nullptr,
     window_cheats_guests_mouseup,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_cheats_update,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_cheats_invalidate,
     window_cheats_paint,
-    NULL
+    nullptr
 };
 
 static rct_window_event_list window_cheats_misc_events = {
-    NULL,
+    nullptr,
     window_cheats_misc_mouseup,
-    NULL,
+    nullptr,
     window_cheats_misc_mousedown,
     window_cheats_misc_dropdown,
-    NULL,
+    nullptr,
     window_cheats_update,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_cheats_invalidate,
     window_cheats_paint,
-    NULL
+    nullptr
 };
 
 static rct_window_event_list window_cheats_rides_events = {
-    NULL,
+    nullptr,
     window_cheats_rides_mouseup,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_cheats_update,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_cheats_invalidate,
     window_cheats_paint,
-    NULL
+    nullptr
 };
 
 
@@ -484,7 +484,7 @@ rct_window * window_cheats_open()
 
     // Check if window is already open
     window = window_bring_to_front_by_class(WC_CHEATS);
-    if (window != NULL)
+    if (window != nullptr)
         return window;
 
     window = window_create(32, 32, WW, WH, &window_cheats_money_events, WC_CHEATS, 0);
@@ -841,7 +841,7 @@ static void window_cheats_rides_mouseup(rct_window *w, rct_widgetindex widgetInd
 }
 
 static void window_cheats_text_input(rct_window *w, rct_widgetindex widgetIndex, char *text) {
-    if (text == NULL)
+    if (text == nullptr)
         return;
 
     if (w->page == WINDOW_CHEATS_PAGE_MONEY && widgetIndex == WIDX_MONEY_SPINNER) {
@@ -942,19 +942,19 @@ static void window_cheats_paint(rct_window *w, rct_drawpixelinfo *dpi)
         gfx_draw_string_left(dpi, STR_BOTTOM_TOOLBAR_CASH, gCommonFormatArgs, colour, w->x + XPL(0) + TXTO, w->y + YPL(2) + TXTO);
     }
     else if(w->page == WINDOW_CHEATS_PAGE_MISC){
-        gfx_draw_string_left(dpi, STR_CHEAT_STAFF_SPEED,            NULL,   COLOUR_BLACK, w->x + XPL(0) + TXTO, w->y + YPL(17) + TXTO);
-        gfx_draw_string_left(dpi, STR_FORCE_WEATHER,                NULL,   COLOUR_BLACK, w->x + XPL(0) + TXTO, w->y + YPL(10) + TXTO);
+        gfx_draw_string_left(dpi, STR_CHEAT_STAFF_SPEED,            nullptr,   COLOUR_BLACK, w->x + XPL(0) + TXTO, w->y + YPL(17) + TXTO);
+        gfx_draw_string_left(dpi, STR_FORCE_WEATHER,                nullptr,   COLOUR_BLACK, w->x + XPL(0) + TXTO, w->y + YPL(10) + TXTO);
         gfx_draw_string_right(dpi, STR_FORMAT_INTEGER,      &park_rating_spinner_value, w->colours[1], w->x + WPL(1) - 10 - TXTO, w->y + YPL(5) + TXTO);
     }
     else if (w->page == WINDOW_CHEATS_PAGE_GUESTS){
-        gfx_draw_string_left(dpi, STR_CHEAT_GUEST_HAPPINESS,        NULL,   COLOUR_BLACK, w->x + XPL(0) + TXTO, w->y + YPL(1) + TXTO);
-        gfx_draw_string_left(dpi, STR_CHEAT_GUEST_ENERGY,           NULL,   COLOUR_BLACK, w->x + XPL(0) + TXTO, w->y + YPL(2) + TXTO);
-        gfx_draw_string_left(dpi, STR_CHEAT_GUEST_HUNGER,           NULL,   COLOUR_BLACK, w->x + XPL(0) + TXTO, w->y + YPL(3) + TXTO);
-        gfx_draw_string_left(dpi, STR_CHEAT_GUEST_THIRST,           NULL,   COLOUR_BLACK, w->x + XPL(0) + TXTO, w->y + YPL(4) + TXTO);
-        gfx_draw_string_left(dpi, STR_CHEAT_GUEST_NAUSEA,           NULL,   COLOUR_BLACK, w->x + XPL(0) + TXTO, w->y + YPL(5) + TXTO);
-        gfx_draw_string_left(dpi, STR_CHEAT_GUEST_NAUSEA_TOLERANCE, NULL,   COLOUR_BLACK, w->x + XPL(0) + TXTO, w->y + YPL(6) + TXTO);
-        gfx_draw_string_left(dpi, STR_CHEAT_GUEST_BATHROOM,         NULL,   COLOUR_BLACK, w->x + XPL(0) + TXTO, w->y + YPL(7) + TXTO);
-        gfx_draw_string_left(dpi, STR_CHEAT_GUEST_PREFERRED_INTENSITY,NULL, COLOUR_BLACK, w->x + XPL(0) + TXTO, w->y + YPL(8) + TXTO);
+        gfx_draw_string_left(dpi, STR_CHEAT_GUEST_HAPPINESS,        nullptr,   COLOUR_BLACK, w->x + XPL(0) + TXTO, w->y + YPL(1) + TXTO);
+        gfx_draw_string_left(dpi, STR_CHEAT_GUEST_ENERGY,           nullptr,   COLOUR_BLACK, w->x + XPL(0) + TXTO, w->y + YPL(2) + TXTO);
+        gfx_draw_string_left(dpi, STR_CHEAT_GUEST_HUNGER,           nullptr,   COLOUR_BLACK, w->x + XPL(0) + TXTO, w->y + YPL(3) + TXTO);
+        gfx_draw_string_left(dpi, STR_CHEAT_GUEST_THIRST,           nullptr,   COLOUR_BLACK, w->x + XPL(0) + TXTO, w->y + YPL(4) + TXTO);
+        gfx_draw_string_left(dpi, STR_CHEAT_GUEST_NAUSEA,           nullptr,   COLOUR_BLACK, w->x + XPL(0) + TXTO, w->y + YPL(5) + TXTO);
+        gfx_draw_string_left(dpi, STR_CHEAT_GUEST_NAUSEA_TOLERANCE, nullptr,   COLOUR_BLACK, w->x + XPL(0) + TXTO, w->y + YPL(6) + TXTO);
+        gfx_draw_string_left(dpi, STR_CHEAT_GUEST_BATHROOM,         nullptr,   COLOUR_BLACK, w->x + XPL(0) + TXTO, w->y + YPL(7) + TXTO);
+        gfx_draw_string_left(dpi, STR_CHEAT_GUEST_PREFERRED_INTENSITY,nullptr, COLOUR_BLACK, w->x + XPL(0) + TXTO, w->y + YPL(8) + TXTO);
     }
 }
 

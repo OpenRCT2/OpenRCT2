@@ -231,194 +231,194 @@ static void window_finances_research_paint(rct_window *w, rct_drawpixelinfo *dpi
 
 // 0x00988EB8
 static rct_window_event_list window_finances_summary_events = {
-    NULL,
+    nullptr,
     window_finances_summary_mouseup,
-    NULL,
+    nullptr,
     window_finances_summary_mousedown,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
     window_finances_summary_update,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_finances_summary_invalidate,
     window_finances_summary_paint,
-    NULL
+    nullptr
 };
 
 // 0x00988F28
 static rct_window_event_list window_finances_financial_graph_events = {
-    NULL,
+    nullptr,
     window_finances_financial_graph_mouseup,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_finances_financial_graph_update,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_finances_financial_graph_invalidate,
     window_finances_financial_graph_paint,
-    NULL
+    nullptr
 };
 
 // 0x00988F98
 static rct_window_event_list window_finances_value_graph_events = {
-    NULL,
+    nullptr,
     window_finances_park_value_graph_mouseup,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_finances_park_value_graph_update,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_finances_park_value_graph_invalidate,
     window_finances_park_value_graph_paint,
-    NULL
+    nullptr
 };
 
 // 0x00989008
 static rct_window_event_list window_finances_profit_graph_events = {
-    NULL,
+    nullptr,
     window_finances_profit_graph_mouseup,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_finances_profit_graph_update,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_finances_profit_graph_invalidate,
     window_finances_profit_graph_paint,
-    NULL
+    nullptr
 };
 
 // 0x00989078
 static rct_window_event_list window_finances_marketing_events = {
-    NULL,
+    nullptr,
     window_finances_marketing_mouseup,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_finances_marketing_update,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_finances_marketing_invalidate,
     window_finances_marketing_paint,
-    NULL
+    nullptr
 };
 
 // 0x009890E8
 static rct_window_event_list window_finances_research_events = {
-    NULL,
+    nullptr,
     window_finances_research_mouseup,
-    NULL,
+    nullptr,
     window_finances_research_mousedown,
     window_finances_research_dropdown,
-    NULL,
+    nullptr,
     window_finances_research_update,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_finances_research_invalidate,
     window_finances_research_paint,
-    NULL
+    nullptr
 };
 
 static rct_window_event_list *window_finances_page_events[] = {
@@ -549,7 +549,7 @@ void window_finances_open()
     rct_window *w;
 
     w = window_bring_to_front_by_class(WC_FINANCES);
-    if (w == NULL) {
+    if (w == nullptr) {
         w = window_create_auto_pos(530, 257, window_finances_page_events[0], WC_FINANCES, WF_10);
         w->number = 0;
         w->frame_no = 0;
@@ -582,7 +582,7 @@ void window_finances_research_open()
 
     window_finances_open();
     w = window_find_by_class(WC_FINANCES);
-    if (w != NULL)
+    if (w != nullptr)
         window_finances_set_page(w, WINDOW_FINANCES_PAGE_RESEARCH);
 }
 
@@ -666,7 +666,7 @@ static void window_finances_summary_paint(rct_window *w, rct_drawpixelinfo *dpi)
     y = w->y + 47;
 
     // Expenditure / Income heading
-    draw_string_left_underline(dpi, STR_FINANCES_SUMMARY_EXPENDITURE_INCOME, NULL, COLOUR_BLACK, x, y - 1);
+    draw_string_left_underline(dpi, STR_FINANCES_SUMMARY_EXPENDITURE_INCOME, nullptr, COLOUR_BLACK, x, y - 1);
     y += 14;
 
     // Expenditure / Income row labels
@@ -675,7 +675,7 @@ static void window_finances_summary_paint(rct_window *w, rct_drawpixelinfo *dpi)
         if (i % 2 == 0)
             gfx_fill_rect(dpi, x, y, x + 513 - 2, y + 9, ColourMapA[w->colours[1]].lighter | 0x1000000);
 
-        gfx_draw_string_left(dpi, window_finances_summary_row_labels[i], NULL, COLOUR_BLACK, x, y - 1);
+        gfx_draw_string_left(dpi, window_finances_summary_row_labels[i], nullptr, COLOUR_BLACK, x, y - 1);
         y += 10;
     }
 
@@ -741,7 +741,7 @@ static void window_finances_summary_paint(rct_window *w, rct_drawpixelinfo *dpi)
     gfx_fill_rect_inset(dpi, w->x + 8, w->y + 223, w->x + 8 + 513, w->y + 223 + 1, w->colours[1], INSET_RECT_FLAG_BORDER_INSET);
 
     // Loan and interest rate
-    gfx_draw_string_left(dpi, STR_FINANCES_SUMMARY_LOAN, NULL, COLOUR_BLACK, w->x + 4, w->y + 229);
+    gfx_draw_string_left(dpi, STR_FINANCES_SUMMARY_LOAN, nullptr, COLOUR_BLACK, w->x + 4, w->y + 229);
     set_format_arg(0, uint16, gBankLoanInterestRate);
     gfx_draw_string_left(dpi, STR_FINANCES_SUMMARY_AT_X_PER_YEAR, gCommonFormatArgs, COLOUR_BLACK, w->x + 156, w->y + 229);
 
@@ -1203,7 +1203,7 @@ static void window_finances_marketing_paint(rct_window *w, rct_drawpixelinfo *dp
     }
 
     if (noCampaignsActive) {
-        gfx_draw_string_left(dpi, STR_MARKETING_CAMPAGINS_NONE, NULL, COLOUR_BLACK, x + 4, y);
+        gfx_draw_string_left(dpi, STR_MARKETING_CAMPAGINS_NONE, nullptr, COLOUR_BLACK, x + 4, y);
         y += 10;
     }
     y += 31;
@@ -1218,7 +1218,7 @@ static void window_finances_marketing_paint(rct_window *w, rct_drawpixelinfo *dp
         money32 pricePerWeek = AdvertisingCampaignPricePerWeek[i];
 
         // Draw button text
-        gfx_draw_string_left(dpi, MarketingCampaignNames[i][0], NULL, COLOUR_BLACK, x + 4, y - 1);
+        gfx_draw_string_left(dpi, MarketingCampaignNames[i][0], nullptr, COLOUR_BLACK, x + 4, y - 1);
         gfx_draw_string_left(dpi, STR_MARKETING_PER_WEEK, &pricePerWeek, COLOUR_BLACK, x + 310, y - 1);
 
         y += 12;
@@ -1388,9 +1388,9 @@ static void window_finances_set_page(rct_window *w, sint32 page)
 {
     w->page = page;
     w->frame_no = 0;
-    if (w->viewport != NULL) {
+    if (w->viewport != nullptr) {
         w->viewport->width = 0;
-        w->viewport = NULL;
+        w->viewport = nullptr;
     }
 
     w->enabled_widgets = window_finances_page_enabled_widgets[page];

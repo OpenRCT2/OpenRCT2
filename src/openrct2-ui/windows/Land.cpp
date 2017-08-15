@@ -71,32 +71,32 @@ static void window_land_inputsize(rct_window *w);
 static rct_window_event_list window_land_events = {
     window_land_close,
     window_land_mouseup,
-    NULL,
+    nullptr,
     window_land_mousedown,
     window_land_dropdown,
-    NULL,
+    nullptr,
     window_land_update,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_land_textinput,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_land_invalidate,
     window_land_paint,
-    NULL
+    nullptr
 };
 
 static sint32 _selectedFloorTexture;
@@ -112,7 +112,7 @@ rct_window * window_land_open()
 
     // Check if window is already open
     window = window_find_by_class(WC_LAND);
-    if (window != NULL)
+    if (window != nullptr)
         return window;
 
     window = window_create(context_get_width() - 98, 29, 98, 160, &window_land_events, WC_LAND, 0);
@@ -262,7 +262,7 @@ static void window_land_textinput(rct_window *w, rct_widgetindex widgetIndex, ch
     sint32 size;
     char* end;
 
-    if (widgetIndex != WIDX_PREVIEW || text == NULL)
+    if (widgetIndex != WIDX_PREVIEW || text == nullptr)
         return;
 
     size = strtol(text, &end, 10);

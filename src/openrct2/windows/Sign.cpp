@@ -65,34 +65,34 @@ static void window_sign_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
 // 0x98E44C
 static rct_window_event_list window_sign_events = {
-    NULL,
+    nullptr,
     window_sign_mouseup,
-    NULL,
+    nullptr,
     window_sign_mousedown,
     window_sign_dropdown,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_sign_textinput,
     window_sign_viewport_rotate,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_sign_invalidate,
     window_sign_paint,
-    NULL
+    nullptr
 };
 
 static void window_sign_small_mouseup(rct_window *w, rct_widgetindex widgetIndex);
@@ -101,34 +101,34 @@ static void window_sign_small_invalidate(rct_window *w);
 
 // 0x9A410C
 static rct_window_event_list window_sign_small_events = {
-    NULL,
+    nullptr,
     window_sign_small_mouseup,
-    NULL,
+    nullptr,
     window_sign_mousedown,
     window_sign_small_dropdown,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_sign_textinput,
     window_sign_viewport_rotate,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_sign_small_invalidate,
     window_sign_paint,
-    NULL
+    nullptr
 };
 
 /**
@@ -143,7 +143,7 @@ void window_sign_open(rct_windownumber number)
 
     // Check if window is already open
     w = window_bring_to_front_by_number(WC_BANNER, number);
-    if (w != NULL)
+    if (w != nullptr)
         return;
 
     w = window_create_auto_pos(WW, WH, &window_sign_events, WC_BANNER, WF_NO_SCROLLING);
@@ -309,7 +309,7 @@ static void window_sign_dropdown(rct_window *w, rct_widgetindex widgetIndex, sin
  */
 static void window_sign_textinput(rct_window *w, rct_widgetindex widgetIndex, char *text)
 {
-    if (widgetIndex == WIDX_SIGN_TEXT && text != NULL) {
+    if (widgetIndex == WIDX_SIGN_TEXT && text != nullptr) {
         game_do_command(1, GAME_COMMAND_FLAG_APPLY, w->number, *((sint32*)(text + 0)), GAME_COMMAND_SET_SIGN_NAME, *((sint32*)(text + 8)), *((sint32*)(text + 4)));
         game_do_command(2, GAME_COMMAND_FLAG_APPLY, w->number, *((sint32*)(text + 12)), GAME_COMMAND_SET_SIGN_NAME, *((sint32*)(text + 20)), *((sint32*)(text + 16)));
         game_do_command(0, GAME_COMMAND_FLAG_APPLY, w->number, *((sint32*)(text + 24)), GAME_COMMAND_SET_SIGN_NAME, *((sint32*)(text + 32)), *((sint32*)(text + 28)));
@@ -350,7 +350,7 @@ static void window_sign_paint(rct_window *w, rct_drawpixelinfo *dpi)
     window_draw_widgets(w, dpi);
 
     // Draw viewport
-    if (w->viewport != NULL) {
+    if (w->viewport != nullptr) {
         window_draw_viewport(dpi, w);
     }
 }
@@ -405,7 +405,7 @@ void window_sign_small_open(rct_windownumber number){
 
     // Check if window is already open
     w = window_bring_to_front_by_number(WC_BANNER, number);
-    if (w != NULL)
+    if (w != nullptr)
         return;
 
     w = window_create_auto_pos(WW, WH, &window_sign_small_events, WC_BANNER, 0);

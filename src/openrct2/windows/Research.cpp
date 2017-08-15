@@ -115,66 +115,66 @@ static void window_research_funding_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 //
 static rct_window_event_list window_research_development_events = {
-    NULL,
+    nullptr,
     window_research_development_mouseup,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_research_development_update,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_research_development_invalidate,
     window_research_development_paint,
-    NULL
+    nullptr
 };
 
 // 0x009890E8
 static rct_window_event_list window_research_funding_events = {
-    NULL,
+    nullptr,
     window_research_funding_mouseup,
-    NULL,
+    nullptr,
     window_research_funding_mousedown,
     window_research_funding_dropdown,
-    NULL,
+    nullptr,
     window_research_funding_update,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_research_funding_invalidate,
     window_research_funding_paint,
-    NULL
+    nullptr
 };
 
 static rct_window_event_list *window_research_page_events[] = {
@@ -236,7 +236,7 @@ void window_research_open()
     rct_window *w;
 
     w = window_bring_to_front_by_class(WC_RESEARCH);
-    if (w == NULL) {
+    if (w == nullptr) {
         w = window_create_auto_pos(530, 257, window_research_page_events[0], WC_RESEARCH, WF_10);
         w->widgets = window_research_page_widgets[0];
         w->enabled_widgets = window_research_page_enabled_widgets[0];
@@ -398,7 +398,7 @@ void window_research_development_page_paint(rct_window *w, rct_drawpixelinfo *dp
     if (typeId != 0xFFFFFFFF) {
         if (typeId >= 0x10000) {
             rct_ride_entry *rideEntry = get_ride_entry(typeId & 0xFF);
-            if (rideEntry == NULL) {
+            if (rideEntry == nullptr) {
                 return;
             }
             stringId = (rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME) ?
@@ -408,7 +408,7 @@ void window_research_development_page_paint(rct_window *w, rct_drawpixelinfo *dp
             lastDevelopmentFormat = STR_RESEARCH_RIDE_LABEL;
         } else {
             rct_scenery_set_entry *sse = get_scenery_group_entry(typeId);
-            if (sse == NULL) {
+            if (sse == nullptr) {
                 return;
             }
             stringId = sse->name;
@@ -594,9 +594,9 @@ static void window_research_set_page(rct_window *w, sint32 page)
 {
     w->page = page;
     w->frame_no = 0;
-    if (w->viewport != NULL) {
+    if (w->viewport != nullptr) {
         w->viewport->width = 0;
-        w->viewport = NULL;
+        w->viewport = nullptr;
     }
 
     w->enabled_widgets = window_research_page_enabled_widgets[page];

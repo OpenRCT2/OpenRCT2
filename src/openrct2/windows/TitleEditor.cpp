@@ -72,26 +72,26 @@ static rct_window_event_list window_title_editor_events = {
     window_title_editor_resize,
     window_title_editor_mousedown,
     window_title_editor_dropdown,
-    NULL,
+    nullptr,
     window_title_editor_update,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_title_editor_scrollgetsize,
     window_title_editor_scrollmousedown,
-    NULL,
+    nullptr,
     window_title_editor_scrollmouseover,
     window_title_editor_textinput,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
     window_title_editor_tooltip,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
     window_title_editor_invalidate,
     window_title_editor_paint,
     window_title_editor_scrollpaint,
@@ -194,11 +194,11 @@ static rct_widget window_title_editor_widgets[] = {
 
 static size_t _selectedTitleSequence = 0;
 static bool _isSequenceReadOnly;
-static TitleSequence * _editingTitleSequence = NULL;
+static TitleSequence * _editingTitleSequence = nullptr;
 static bool _isSequencePlaying = false;
 static const utf8 * _sequenceName;
 
-static utf8 * _renameSavePath = NULL;
+static utf8 * _renameSavePath = nullptr;
 
 static sint16 _window_title_editor_highlighted_index;
 
@@ -224,7 +224,7 @@ static void _window_title_editor_open(sint32 tab)
 
     // Check if window is already open
     window = window_bring_to_front_by_class(WC_TITLE_EDITOR);
-    if (window != NULL)
+    if (window != nullptr)
         return;
 
     window = window_create_auto_pos(WW, WH2, &window_title_editor_events, WC_TITLE_EDITOR, WF_10 | WF_RESIZABLE);
@@ -286,16 +286,16 @@ static void window_title_editor_close(rct_window *w)
     window_close_by_class(WC_TITLE_COMMAND_EDITOR);
 
     FreeTitleSequence(_editingTitleSequence);
-    _editingTitleSequence = NULL;
+    _editingTitleSequence = nullptr;
     _isSequencePlaying = false;
-    _sequenceName = NULL;
+    _sequenceName = nullptr;
 
     SafeFree(_renameSavePath);
 }
 
 static void window_title_editor_mouseup(rct_window *w, rct_widgetindex widgetIndex)
 {
-    bool commandEditorOpen = (window_find_by_class(WC_TITLE_COMMAND_EDITOR) != NULL);
+    bool commandEditorOpen = (window_find_by_class(WC_TITLE_COMMAND_EDITOR) != nullptr);
     switch (widgetIndex) {
     case WIDX_TITLE_EDITOR_CLOSE:
         window_close(w);
@@ -311,7 +311,7 @@ static void window_title_editor_mouseup(rct_window *w, rct_widgetindex widgetInd
         }
         break;
     case WIDX_TITLE_EDITOR_DUPLICATE_BUTTON:
-        if (!commandEditorOpen && _editingTitleSequence != NULL) {
+        if (!commandEditorOpen && _editingTitleSequence != nullptr) {
             window_text_input_open(w, widgetIndex, STR_TITLE_EDITOR_ACTION_DUPLICATE, STR_TITLE_EDITOR_ENTER_NAME_FOR_SEQUENCE, STR_STRING, (uintptr_t)_editingTitleSequence->Name, 64);
         }
         break;
@@ -322,7 +322,7 @@ static void window_title_editor_mouseup(rct_window *w, rct_widgetindex widgetInd
         }
         break;
     case WIDX_TITLE_EDITOR_RENAME_SAVE_BUTTON:
-        if (window_title_editor_check_can_edit() && _editingTitleSequence != NULL) {
+        if (window_title_editor_check_can_edit() && _editingTitleSequence != nullptr) {
             window_text_input_open(w, widgetIndex, STR_TRACK_MANAGE_RENAME, STR_TITLE_EDITOR_ENTER_NAME_FOR_SEQUENCE, STR_STRING, (uintptr_t)_editingTitleSequence->Name, 64);
         }
         break;
@@ -332,7 +332,7 @@ static void window_title_editor_mouseup(rct_window *w, rct_widgetindex widgetInd
     //////////////////////////////////////////////////////////////////////////////////////////////////////
     case WIDX_TITLE_EDITOR_ADD_SAVE:
         if (!_isSequenceReadOnly && !_isSequencePlaying && !commandEditorOpen) {
-            window_loadsave_open(LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME, NULL);
+            window_loadsave_open(LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME, nullptr);
             window_loadsave_set_loadsave_callback(window_title_editor_add_park_callback);
         }
         break;
@@ -500,7 +500,7 @@ static void window_title_editor_mousedown(rct_window *w, rct_widgetindex widgetI
         break;
     }
     case WIDX_TITLE_EDITOR_PRESETS_DROPDOWN:
-        if (window_find_by_class(WC_TITLE_COMMAND_EDITOR) != NULL) {
+        if (window_find_by_class(WC_TITLE_COMMAND_EDITOR) != nullptr) {
             window_error_open(STR_TITLE_EDITOR_ERR_CANT_CHANGE_WHILE_EDITOR_IS_OPEN, STR_NONE);
         } else {
             sint32 numItems = (sint32)title_sequence_manager_get_count();
@@ -765,7 +765,7 @@ static void window_title_editor_paint(rct_window *w, rct_drawpixelinfo *dpi)
     switch (w->selected_tab) {
     case WINDOW_TITLE_EDITOR_TAB_PRESETS:
         set_format_arg(0, uintptr_t, _sequenceName);
-        gfx_draw_string_left(dpi, STR_TITLE_SEQUENCE, NULL, w->colours[1], w->x + 10, w->y + window_title_editor_widgets[WIDX_TITLE_EDITOR_PRESETS].top + 1);
+        gfx_draw_string_left(dpi, STR_TITLE_SEQUENCE, nullptr, w->colours[1], w->x + 10, w->y + window_title_editor_widgets[WIDX_TITLE_EDITOR_PRESETS].top + 1);
         gfx_draw_string_left_clipped(
             dpi,
             STR_STRING,
@@ -804,7 +804,7 @@ static void window_title_editor_scrollpaint_saves(rct_window *w, rct_drawpixelin
 
     sint32 x = 0;
     sint32 y = 0;
-    if (_editingTitleSequence == NULL) {
+    if (_editingTitleSequence == nullptr) {
         return;
     }
     for (sint32 i = 0; i < (sint32)_editingTitleSequence->NumSaves; i++, y += ROW_HEIGHT) {
@@ -952,7 +952,7 @@ static void window_title_editor_load_sequence(size_t index)
 
     const char * path = title_sequence_manager_get_path(index);
     TitleSequence * titleSequence = LoadTitleSequence(path);
-    if (titleSequence == NULL) {
+    if (titleSequence == nullptr) {
         window_error_open(STR_FAILED_TO_LOAD_FILE_CONTAINS_INVALID_DATA, STR_NONE);
         return;
     }
@@ -974,7 +974,7 @@ static ITitleSequencePlayer * window_title_editor_get_player()
 
 static bool window_title_editor_check_can_edit()
 {
-    bool commandEditorOpen = (window_find_by_class(WC_TITLE_COMMAND_EDITOR) != NULL);
+    bool commandEditorOpen = (window_find_by_class(WC_TITLE_COMMAND_EDITOR) != nullptr);
     if (_isSequenceReadOnly) {
         window_error_open(STR_ERROR_CANT_CHANGE_TITLE_SEQUENCE, STR_NONE);
     } else if (_isSequencePlaying) {

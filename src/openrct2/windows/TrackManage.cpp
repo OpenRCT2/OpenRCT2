@@ -73,64 +73,64 @@ static void window_track_delete_prompt_paint(rct_window *w, rct_drawpixelinfo *d
 static rct_window_event_list window_track_manage_events = {
     window_track_manage_close,
     window_track_manage_mouseup,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_track_manage_textinput,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_track_manage_paint,
-    NULL
+    nullptr
 };
 
 // 0x0099415C
 static rct_window_event_list window_track_delete_prompt_events = {
-    NULL,
+    nullptr,
     window_track_delete_prompt_mouseup,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_track_delete_prompt_paint,
-    NULL
+    nullptr
 };
 
 #pragma endregion
@@ -163,7 +163,7 @@ static void _window_track_manage_open(track_design_file_ref *tdFileRef)
     window_init_scroll_widgets(w);
 
     rct_window *trackDesignListWindow = window_find_by_class(WC_TRACK_DESIGN_LIST);
-    if (trackDesignListWindow != NULL) {
+    if (trackDesignListWindow != nullptr) {
         trackDesignListWindow->track_list.var_484 |= 1;
     }
 
@@ -177,7 +177,7 @@ static void _window_track_manage_open(track_design_file_ref *tdFileRef)
 static void window_track_manage_close(rct_window *w)
 {
     rct_window *trackDesignListWindow = window_find_by_class(WC_TRACK_DESIGN_LIST);
-    if (trackDesignListWindow != NULL) {
+    if (trackDesignListWindow != nullptr) {
         trackDesignListWindow->track_list.var_484 &= ~1;
     }
 }
@@ -320,7 +320,7 @@ static void window_track_delete_prompt_paint(rct_window *w, rct_drawpixelinfo *d
 static void window_track_design_list_reload_tracks()
 {
     rct_window * trackListWindow = window_find_by_class(WC_TRACK_DESIGN_LIST);
-    if (trackListWindow != NULL) {
+    if (trackListWindow != nullptr) {
         trackListWindow->track_list.reload_track_designs = true;
     }
 }

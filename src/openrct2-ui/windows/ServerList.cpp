@@ -40,7 +40,7 @@ extern "C"
 #define ITEM_HEIGHT (3 + 9 + 3)
 
 static char _playerName[32 + 1];
-static server_entry *_serverEntries = NULL;
+static server_entry *_serverEntries = nullptr;
 static sint32 _numServerEntries = 0;
 static std::mutex _mutex;
 static uint32 _numPlayersOnline = 0;
@@ -90,28 +90,28 @@ static rct_window_event_list window_server_list_events = {
     window_server_list_close,
     window_server_list_mouseup,
     window_server_list_resize,
-    NULL,
+    nullptr,
     window_server_list_dropdown,
-    NULL,
+    nullptr,
     window_server_list_update,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_server_list_scroll_getsize,
     window_server_list_scroll_mousedown,
-    NULL,
+    nullptr,
     window_server_list_scroll_mouseover,
     window_server_list_textinput,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_server_list_invalidate,
     window_server_list_paint,
     window_server_list_scrollpaint
@@ -123,7 +123,7 @@ enum {
 };
 
 static sint32 _hoverButtonIndex = -1;
-static char * _version = NULL;
+static char * _version = nullptr;
 
 static void server_list_get_item_button(sint32 buttonIndex, sint32 x, sint32 y, sint32 width, sint32 *outX, sint32 *outY);
 static void server_list_load_server_entries();
@@ -145,7 +145,7 @@ rct_window * window_server_list_open()
 
     // Check if window is already open
     window = window_bring_to_front_by_class(WC_SERVER_LIST);
-    if (window != NULL)
+    if (window != nullptr)
         return window;
 
     window = window_create_centred(WWIDTH_MIN, WHEIGHT_MIN, &window_server_list_events, WC_SERVER_LIST, WF_10 | WF_RESIZABLE);
@@ -328,7 +328,7 @@ static void window_server_list_scroll_mouseover(rct_window *w, sint32 scrollInde
 
 static void window_server_list_textinput(rct_window *w, rct_widgetindex widgetIndex, char *text)
 {
-    if (text == NULL || text[0] == 0) return;
+    if (text == nullptr || text[0] == 0) return;
 
     switch (widgetIndex) {
     case WIDX_PLAYER_NAME_INPUT:
@@ -396,7 +396,7 @@ static void window_server_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
     window_draw_widgets(w, dpi);
 
-    gfx_draw_string_left(dpi, STR_PLAYER_NAME, NULL, COLOUR_WHITE, w->x + 6, w->y + w->widgets[WIDX_PLAYER_NAME_INPUT].top);
+    gfx_draw_string_left(dpi, STR_PLAYER_NAME, nullptr, COLOUR_WHITE, w->x + 6, w->y + w->widgets[WIDX_PLAYER_NAME_INPUT].top);
     const char * version = NETWORK_STREAM_ID;
     gfx_draw_string_left(dpi, STR_NETWORK_VERSION, (void*)&version, COLOUR_WHITE, w->x + 324, w->y + w->widgets[WIDX_START_SERVER].top);
 
@@ -525,7 +525,7 @@ static void server_list_save_server_entries()
 
 static void dispose_server_entry_list()
 {
-    if (_serverEntries != NULL) {
+    if (_serverEntries != nullptr) {
         for (sint32 i = 0; i < _numServerEntries; i++) {
             dispose_server_entry(&_serverEntries[i]);
         }
@@ -551,7 +551,7 @@ static server_entry* add_server_entry(char *address)
     }
 
     _numServerEntries++;
-    if (_serverEntries == NULL) {
+    if (_serverEntries == nullptr) {
         _serverEntries = (server_entry *)malloc(_numServerEntries * sizeof(server_entry));
     } else {
         _serverEntries = (server_entry *)realloc(_serverEntries, _numServerEntries * sizeof(server_entry));
@@ -612,7 +612,7 @@ static sint32 server_compare(const void *a, const void *b)
 
 static void sort_servers()
 {
-    if (_serverEntries == NULL) {
+    if (_serverEntries == nullptr) {
         return;
     }
     qsort(_serverEntries, _numServerEntries, sizeof(server_entry), server_compare);
@@ -637,7 +637,7 @@ static void join_server(char *address)
     char *dot = strchr(address, '.');
 
     char *colon = strrchr(address, ':');
-    if (colon != NULL && (endbracket != NULL || dot != NULL)) {
+    if (colon != nullptr && (endbracket != nullptr || dot != nullptr)) {
         address = substr(address, (sint32)(colon - address));
         sscanf(colon + 1, "%d", &port);
         addresscopied = true;
@@ -689,7 +689,7 @@ static void fetch_servers()
     http_request_t request = {};
     request.url = masterServerUrl;
     request.method = HTTP_METHOD_GET;
-    request.body = NULL;
+    request.body = nullptr;
     request.type = HTTP_DATA_JSON;
     http_request_async(&request, fetch_servers_callback);
 #endif
@@ -698,7 +698,7 @@ static void fetch_servers()
 #ifndef DISABLE_HTTP
 static void fetch_servers_callback(http_response_t* response)
 {
-    if (response == NULL) {
+    if (response == nullptr) {
         log_warning("Unable to connect to master server");
         return;
     }
@@ -742,7 +742,7 @@ static void fetch_servers_callback(http_response_t* response)
         json_t *ip4 = json_object_get(ip, "v4");
         json_t *addressIp = json_array_get(ip4, 0);
 
-        if (name == NULL || version == NULL)
+        if (name == nullptr || version == nullptr)
         {
             log_verbose("Cowardly refusing to add server without name or version specified.");
             continue;
@@ -759,7 +759,7 @@ static void fetch_servers_callback(http_response_t* response)
             SafeFree(newserver->version);
             newserver->name = _strdup(json_string_value(name));
             newserver->requiresPassword = json_is_true(requiresPassword);
-            newserver->description = _strdup(description == NULL ? "" : json_string_value(description));
+            newserver->description = _strdup(description == nullptr ? "" : json_string_value(description));
             newserver->version = _strdup(json_string_value(version));
             newserver->players = (uint8)json_integer_value(players);
             newserver->maxplayers = (uint8)json_integer_value(maxPlayers);
@@ -771,7 +771,7 @@ static void fetch_servers_callback(http_response_t* response)
     _numPlayersOnline = get_total_player_count();
 
     rct_window *window = window_find_by_class(WC_SERVER_LIST);
-    if (window != NULL) {
+    if (window != nullptr) {
         window_invalidate(window);
     }
 }

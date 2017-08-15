@@ -104,30 +104,30 @@ static rct_window_event_list window_maze_construction_events = {
     window_maze_construction_mouseup,
     window_maze_construction_resize,
     window_maze_construction_mousedown,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
     window_maze_construction_update,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
     window_maze_construction_toolupdate,
     window_maze_construction_tooldown,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_maze_construction_invalidate,
     window_maze_construction_paint,
-    NULL
+    nullptr
 };
 
 #pragma endregion
@@ -297,7 +297,7 @@ static void window_maze_construction_mousedown(rct_window *w, rct_widgetindex wi
 static void window_maze_construction_update(rct_window *w)
 {
     rct_ride *ride = get_ride(_currentRideIndex);
-    if (ride == NULL || ride->status != RIDE_STATUS_CLOSED) {
+    if (ride == nullptr || ride->status != RIDE_STATUS_CLOSED) {
         window_close(w);
         return;
     }
@@ -454,7 +454,7 @@ void window_maze_construction_update_pressed_widgets()
     rct_window *w;
 
     w = window_find_by_class(WC_RIDE_CONSTRUCTION);
-    if (w == NULL)
+    if (w == nullptr)
         return;
 
     uint64 pressedWidgets = w->pressed_widgets;

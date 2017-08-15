@@ -118,7 +118,7 @@ public:
                 else
                     return (ride_group *) &ride_group_hyper_twister;
             default:
-                return NULL;
+                return nullptr;
         }
     }
 
@@ -159,7 +159,7 @@ public:
                 rideGroup = (ride_group *) &twister_rc_groups[index];
                 break;
             default:
-                return NULL;
+                return nullptr;
         }
 
         return rideGroup;
@@ -167,7 +167,7 @@ public:
 
     bool RideGroupsAreEqual(const ride_group * a, const ride_group * b) const override
     {
-        if (a != NULL && b != NULL && (a->naming.name == b->naming.name && a->naming.description == b->naming.description))
+        if (a != nullptr && b != nullptr && (a->naming.name == b->naming.name && a->naming.description == b->naming.description))
         {
             return true;
         }

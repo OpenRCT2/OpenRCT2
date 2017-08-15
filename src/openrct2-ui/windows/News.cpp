@@ -55,32 +55,32 @@ static void window_news_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_news_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 scrollIndex);
 
 static rct_window_event_list window_news_events = {
-    NULL,
+    nullptr,
     window_news_mouseup,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_news_update,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_news_scrollgetsize,
     window_news_scrollmousedown,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_news_tooltip,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
     window_news_paint,
     window_news_scrollpaint
 };
@@ -95,7 +95,7 @@ rct_window * window_news_open()
 
     // Check if window is already open
     window = window_bring_to_front_by_class(WC_RECENT_NEWS);
-    if (window == NULL) {
+    if (window == nullptr) {
         window = window_create_auto_pos(
             400,
             300,
@@ -171,7 +171,7 @@ static void window_news_update(rct_window *w)
             else if (w->news.var_482 > 1) {
                 news_item_get_subject_location(newsItem->Type, newsItem->Assoc, &x, &y, &z);
                 if (x != SPRITE_LOCATION_NULL)
-                    if ((w = window_get_main()) != NULL)
+                    if ((w = window_get_main()) != nullptr)
                         window_scroll_to_location(w, x, y, z);
                 return;
             }

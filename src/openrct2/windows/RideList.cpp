@@ -88,31 +88,31 @@ static void window_ride_list_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_ride_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 scrollIndex);
 
 static rct_window_event_list window_ride_list_events = {
-    NULL,
+    nullptr,
     window_ride_list_mouseup,
     window_ride_list_resize,
     window_ride_list_mousedown,
     window_ride_list_dropdown,
-    NULL,
+    nullptr,
     window_ride_list_update,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_ride_list_scrollgetsize,
     window_ride_list_scrollmousedown,
-    NULL,
+    nullptr,
     window_ride_list_scrollmouseover,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
     window_ride_list_tooltip,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
     window_ride_list_invalidate,
     window_ride_list_paint,
     window_ride_list_scrollpaint
@@ -201,7 +201,7 @@ void window_ride_list_open()
 
     // Check if window is already open
     window = window_bring_to_front_by_class(WC_RIDE_LIST);
-    if (window == NULL) {
+    if (window == nullptr) {
         window = window_create_auto_pos(340, 240, &window_ride_list_events, WC_RIDE_LIST, WF_10 | WF_RESIZABLE);
         window->widgets = window_ride_list_widgets;
         window->enabled_widgets =

@@ -70,37 +70,37 @@ static void window_object_load_error_scrollpaint(rct_window *w, rct_drawpixelinf
 static rct_window_event_list window_object_load_error_events = {
     window_object_load_error_close,
     window_object_load_error_mouseup,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_object_load_error_update,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_object_load_error_scrollgetsize,
     window_object_load_error_scrollmousedown,
-    NULL,
+    nullptr,
     window_object_load_error_scrollmouseover,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_object_load_error_paint,
     window_object_load_error_scrollpaint
 };
 
-rct_object_entry * invalid_entries = NULL;
+rct_object_entry * invalid_entries = nullptr;
 sint32 highlighted_index = -1;
-utf8* file_path = NULL;
+utf8* file_path = nullptr;
 
 /**
 *  Returns an rct_string_id that represents an rct_object_entry's type.
@@ -162,7 +162,7 @@ static utf8* combine_object_names(rct_window *w)
         // Something's gone wrong, this shouldn't happen
         // We don't want to allocate stupidly large amounts of memory
         // for no reason, so bail
-        return NULL;
+        return nullptr;
     }
     utf8* buffer;
 
@@ -189,7 +189,7 @@ rct_window * window_object_load_error_open(utf8 * path, size_t numMissingObjects
 
     // Check if window is already open
     rct_window * window = window_bring_to_front_by_class(WC_OBJECT_LOAD_ERROR);
-    if (window == NULL) {
+    if (window == nullptr) {
         window = window_create_centred(
             WW,
             WH,
@@ -328,10 +328,10 @@ static void window_object_load_error_scrollpaint(rct_window *w, rct_drawpixelinf
 
         // ... source game ...
         rct_string_id sourceStringId = object_manager_get_source_game_string(&invalid_entries[i]);
-        gfx_draw_string_left(dpi, sourceStringId, NULL, COLOUR_DARK_GREEN, SOURCE_COL_LEFT, y);
+        gfx_draw_string_left(dpi, sourceStringId, nullptr, COLOUR_DARK_GREEN, SOURCE_COL_LEFT, y);
 
         // ... and type
         rct_string_id type = get_object_type_string(&invalid_entries[i]);
-        gfx_draw_string_left(dpi, type, NULL, COLOUR_DARK_GREEN, TYPE_COL_LEFT, y);
+        gfx_draw_string_left(dpi, type, nullptr, COLOUR_DARK_GREEN, TYPE_COL_LEFT, y);
     }
 }

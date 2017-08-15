@@ -621,63 +621,63 @@ static void window_ride_set_page(rct_window *w, sint32 page);
 
 // 0x0098DFD4
 static rct_window_event_list window_ride_main_events = {
-    NULL,
+    nullptr,
     window_ride_main_mouseup,
     window_ride_main_resize,
     window_ride_main_mousedown,
     window_ride_main_dropdown,
-    NULL,
+    nullptr,
     window_ride_main_update,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_ride_main_textinput,
     window_ride_main_viewport_rotate,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_ride_main_invalidate,
     window_ride_main_paint,
-    NULL
+    nullptr
 };
 
 // 0x0098E204
 static rct_window_event_list window_ride_vehicle_events = {
-    NULL,
+    nullptr,
     window_ride_vehicle_mouseup,
     window_ride_vehicle_resize,
     window_ride_vehicle_mousedown,
     window_ride_vehicle_dropdown,
-    NULL,
+    nullptr,
     window_ride_vehicle_update,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_ride_vehicle_invalidate,
     window_ride_vehicle_paint,
     window_ride_vehicle_scrollpaint
@@ -685,66 +685,66 @@ static rct_window_event_list window_ride_vehicle_events = {
 
 // 0x0098E0B4
 static rct_window_event_list window_ride_operating_events = {
-    NULL,
+    nullptr,
     window_ride_operating_mouseup,
     window_ride_operating_resize,
     window_ride_operating_mousedown,
     window_ride_operating_dropdown,
-    NULL,
+    nullptr,
     window_ride_operating_update,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_ride_operating_invalidate,
     window_ride_operating_paint,
-    NULL
+    nullptr
 };
 
 // 0x0098E124
 static rct_window_event_list window_ride_maintenance_events = {
-    NULL,
+    nullptr,
     window_ride_maintenance_mouseup,
     window_ride_maintenance_resize,
     window_ride_maintenance_mousedown,
     window_ride_maintenance_dropdown,
-    NULL,
+    nullptr,
     window_ride_maintenance_update,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_ride_maintenance_invalidate,
     window_ride_maintenance_paint,
-    NULL
+    nullptr
 };
 
 // 0x0098E044
@@ -754,26 +754,26 @@ static rct_window_event_list window_ride_colour_events = {
     window_ride_colour_resize,
     window_ride_colour_mousedown,
     window_ride_colour_dropdown,
-    NULL,
+    nullptr,
     window_ride_colour_update,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
     window_ride_colour_tooldown,
     window_ride_colour_tooldrag,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_ride_colour_invalidate,
     window_ride_colour_paint,
     window_ride_colour_scrollpaint
@@ -781,34 +781,34 @@ static rct_window_event_list window_ride_colour_events = {
 
 // 0x0098E194
 static rct_window_event_list window_ride_music_events = {
-    NULL,
+    nullptr,
     window_ride_music_mouseup,
     window_ride_music_resize,
     window_ride_music_mousedown,
     window_ride_music_dropdown,
-    NULL,
+    nullptr,
     window_ride_music_update,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_ride_music_invalidate,
     window_ride_music_paint,
-    NULL
+    nullptr
 };
 
 // 0x0098DE14
@@ -818,58 +818,58 @@ static rct_window_event_list window_ride_measurements_events = {
     window_ride_measurements_resize,
     window_ride_measurements_mousedown,
     window_ride_measurements_dropdown,
-    NULL,
+    nullptr,
     window_ride_measurements_update,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
     window_ride_measurements_tooldown,
     window_ride_measurements_tooldrag,
-    NULL,
+    nullptr,
     window_ride_measurements_toolabort,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_ride_measurements_invalidate,
     window_ride_measurements_paint,
-    NULL
+    nullptr
 };
 
 // 0x0098DF64
 static rct_window_event_list window_ride_graphs_events = {
-    NULL,
+    nullptr,
     window_ride_graphs_mouseup,
     window_ride_graphs_resize,
     window_ride_graphs_mousedown,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
     window_ride_graphs_update,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_ride_graphs_scrollgetheight,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_ride_graphs_15,
     window_ride_graphs_tooltip,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
     window_ride_graphs_invalidate,
     window_ride_graphs_paint,
     window_ride_graphs_scrollpaint
@@ -877,66 +877,66 @@ static rct_window_event_list window_ride_graphs_events = {
 
 // 0x0098DEF4
 static rct_window_event_list window_ride_income_events = {
-    NULL,
+    nullptr,
     window_ride_income_mouseup,
     window_ride_income_resize,
     window_ride_income_mousedown,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
     window_ride_income_update,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_ride_income_invalidate,
     window_ride_income_paint,
-    NULL
+    nullptr
 };
 
 // 0x0098DE84
 static rct_window_event_list window_ride_customer_events = {
-    NULL,
+    nullptr,
     window_ride_customer_mouseup,
     window_ride_customer_resize,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
     window_ride_customer_update,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_ride_customer_invalidate,
     window_ride_customer_paint,
-    NULL
+    nullptr
 };
 
 static rct_window_event_list *window_ride_page_events[] = {
@@ -1427,7 +1427,7 @@ static void window_ride_disable_tabs(rct_window *w)
 
     rct_ride_entry *type = get_ride_entry(ride->subtype);
 
-    if (type == NULL) {
+    if (type == nullptr) {
         disabled_tabs |= 1 << WIDX_TAB_2 | 1 << WIDX_TAB_3 | 1 << WIDX_TAB_4 | 1 << WIDX_TAB_5 | 1 << WIDX_TAB_6
                        | 1 << WIDX_TAB_7 | 1 << WIDX_TAB_8 | 1 << WIDX_TAB_9 | 1 << WIDX_TAB_10;
     } else if ((type->flags & RIDE_ENTRY_FLAG_DISABLE_COLOUR_TAB) != 0)
@@ -1528,7 +1528,7 @@ rct_window *window_ride_main_open(sint32 rideIndex)
     rct_window *w;
 
     w = window_bring_to_front_by_number(WC_RIDE, rideIndex);
-    if (w == NULL) {
+    if (w == nullptr) {
         w = window_ride_open(rideIndex);
         w->ride.var_482 = -1;
     }
@@ -1566,7 +1566,7 @@ rct_window *window_ride_open_station(sint32 rideIndex, sint32 stationIndex)
         return window_ride_main_open(rideIndex);
 
     w = window_bring_to_front_by_number(WC_RIDE, rideIndex);
-    if (w == NULL) {
+    if (w == nullptr) {
         w = window_ride_open(rideIndex);
         w->ride.var_482 = -1;
     }
@@ -1645,7 +1645,7 @@ rct_window *window_ride_open_vehicle(rct_vehicle *vehicle)
 
 
     rct_window *w = window_find_by_number(WC_RIDE, rideIndex);
-    if (w != NULL) {
+    if (w != nullptr) {
         window_invalidate(w);
 
         if (
@@ -1666,7 +1666,7 @@ rct_window *window_ride_open_vehicle(rct_vehicle *vehicle)
 
                 numPeepsLeft--;
                 rct_window *w2 = window_find_by_number(WC_PEEP, peepSpriteIndex);
-                if (w2 == NULL) {
+                if (w2 == nullptr) {
                     rct_peep *peep = &(get_sprite(peepSpriteIndex)->peep);
                     window_guest_open(peep);
                     openedPeepWindow = 1;
@@ -1681,7 +1681,7 @@ rct_window *window_ride_open_vehicle(rct_vehicle *vehicle)
             window_bring_to_front_by_number(WC_RIDE, rideIndex);
     }
 
-    if (w == NULL) {
+    if (w == nullptr) {
         w = window_ride_open(rideIndex);
         w->ride.var_482 = -1;
     }
@@ -1721,7 +1721,7 @@ static void window_ride_set_page(rct_window *w, sint32 page)
 
     // Set listen only to viewport
     listen = 0;
-    if (page == WINDOW_RIDE_PAGE_MAIN && w->page == WINDOW_RIDE_PAGE_MAIN && w->viewport != NULL && !(w->viewport->flags & VIEWPORT_FLAG_SOUND_ON))
+    if (page == WINDOW_RIDE_PAGE_MAIN && w->page == WINDOW_RIDE_PAGE_MAIN && w->viewport != nullptr && !(w->viewport->flags & VIEWPORT_FLAG_SOUND_ON))
         listen++;
 
     w->page = page;
@@ -1733,9 +1733,9 @@ static void window_ride_set_page(rct_window *w, sint32 page)
         //ride_update_max_vehicles(w->number);
     //}
 
-    if (w->viewport != NULL) {
+    if (w->viewport != nullptr) {
         w->viewport->width = 0;
-        w->viewport = NULL;
+        w->viewport = nullptr;
     }
 
     w->enabled_widgets = window_ride_page_enabled_widgets[page];
@@ -1751,7 +1751,7 @@ static void window_ride_set_page(rct_window *w, sint32 page)
     window_init_scroll_widgets(w);
     window_invalidate(w);
 
-    if (listen != 0 && w->viewport != NULL)
+    if (listen != 0 && w->viewport != nullptr)
         w->viewport->flags |= VIEWPORT_FLAG_SOUND_ON;
 }
 
@@ -1851,7 +1851,7 @@ static void window_ride_init_viewport(rct_window *w)
 
     uint16 viewport_flags = 0;
 
-    if (w->viewport != NULL) {
+    if (w->viewport != nullptr) {
         if (focus.coordinate.x == w->viewport_focus_coordinates.x &&
             focus.coordinate.y == w->viewport_focus_coordinates.y &&
             focus.coordinate.z == w->viewport_focus_coordinates.z &&
@@ -1864,7 +1864,7 @@ static void window_ride_init_viewport(rct_window *w)
         }
         viewport_flags = w->viewport->flags;
         w->viewport->width = 0;
-        w->viewport = NULL;
+        w->viewport = nullptr;
 
         viewport_update_pointers();
     } else if (gConfigGeneral.always_show_gridlines) {
@@ -1953,7 +1953,7 @@ static void window_ride_main_mouseup(rct_window *w, rct_widgetindex widgetIndex)
     case WIDX_CONSTRUCTION:
         rideIndex = (uint8)w->number;
         ride_construct(rideIndex);
-        if (window_find_by_number(WC_RIDE_CONSTRUCTION, rideIndex) != NULL) {
+        if (window_find_by_number(WC_RIDE_CONSTRUCTION, rideIndex) != nullptr) {
             window_close(w);
         }
         break;
@@ -2310,7 +2310,7 @@ static void window_ride_main_update(rct_window *w)
  */
 static void window_ride_main_textinput(rct_window *w, rct_widgetindex widgetIndex, char *text)
 {
-    if (widgetIndex != WIDX_RENAME || text == NULL)
+    if (widgetIndex != WIDX_RENAME || text == nullptr)
         return;
 
     ride_set_name(w->number, text);
@@ -2589,7 +2589,7 @@ static void window_ride_main_paint(rct_window *w, rct_drawpixelinfo *dpi)
     window_ride_draw_tab_images(dpi, w);
 
     // Viewport and ear icon
-    if (w->viewport != NULL) {
+    if (w->viewport != nullptr) {
         window_draw_viewport(dpi, w);
         if (w->viewport->flags & VIEWPORT_FLAG_SOUND_ON)
             gfx_draw_sprite(dpi, SPR_HEARING_VIEWPORT, w->x + 2, w->y + 2, 0);
@@ -2931,7 +2931,7 @@ static void window_ride_vehicle_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
     // Capacity
     void * loadedObject = object_manager_get_loaded_object_by_index(ride->subtype);
-    if (loadedObject != NULL)
+    if (loadedObject != nullptr)
     {
         const utf8 * capacity = object_get_capacity(loadedObject);
         set_format_arg(0, rct_string_id, STR_STRING);
@@ -3649,10 +3649,10 @@ static void window_ride_locate_mechanic(rct_window *w)
     mechanic = ride_get_assigned_mechanic(ride);
 
     // Otherwise find the closest mechanic
-    if (mechanic == NULL)
+    if (mechanic == nullptr)
         mechanic = ride_find_closest_mechanic(ride, 1);
 
-    if (mechanic == NULL)
+    if (mechanic == nullptr)
         window_error_open(STR_UNABLE_TO_LOCATE_MECHANIC, STR_NONE);
     else
         window_staff_open(mechanic);
@@ -3722,7 +3722,7 @@ static void window_ride_maintenance_mousedown(rct_window *w, rct_widgetindex wid
 {
     rct_ride *ride = get_ride(w->number);
     rct_ride_entry *ride_type = get_ride_entry(ride->subtype);
-    if (ride_type == NULL) {
+    if (ride_type == nullptr) {
         return;
     }
 
@@ -3973,7 +3973,7 @@ static void window_ride_maintenance_paint(rct_window *w, rct_drawpixelinfo *dpi)
     widget = &window_ride_maintenance_widgets[WIDX_INSPECTION_INTERVAL];
     x = w->x + 4;
     y = w->y + widget->top + 1;
-    gfx_draw_string_left(dpi, STR_INSPECTION, NULL, COLOUR_BLACK, x, y);
+    gfx_draw_string_left(dpi, STR_INSPECTION, nullptr, COLOUR_BLACK, x, y);
 
     // Reliability
     widget = &window_ride_maintenance_widgets[WIDX_PAGE_BACKGROUND];
@@ -4046,7 +4046,7 @@ static void window_ride_maintenance_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
         if (stringId != 0) {
             if (stringId == STR_CALLING_MECHANIC || stringId == STR_NO_MECHANICS_ARE_HIRED_MESSAGE) {
-                gfx_draw_string_left_wrapped(dpi, NULL, x + 4, y, 280, stringId, COLOUR_BLACK);
+                gfx_draw_string_left_wrapped(dpi, nullptr, x + 4, y, 280, stringId, COLOUR_BLACK);
             } else {
                 rct_peep *mechanicSprite = &(get_sprite(ride->mechanic)->peep);
                 if (peep_is_mechanic(mechanicSprite)) {
@@ -4105,7 +4105,7 @@ static void window_ride_set_track_colour_scheme(rct_window *w, sint32 x, sint32 
     newColourScheme = (uint8)w->ride_colour;
 
     rct_xy16 mapCoord = { 0 };
-    get_map_coordinates_from_pos(x, y, VIEWPORT_INTERACTION_MASK_RIDE, &mapCoord.x, &mapCoord.y, &interactionType, &mapElement, NULL);
+    get_map_coordinates_from_pos(x, y, VIEWPORT_INTERACTION_MASK_RIDE, &mapCoord.x, &mapCoord.y, &interactionType, &mapElement, nullptr);
     x = mapCoord.x;
     y = mapCoord.y;
 
@@ -4118,7 +4118,7 @@ static void window_ride_set_track_colour_scheme(rct_window *w, sint32 x, sint32 
 
     z = mapElement->base_height * 8;
     direction = map_element_get_direction(mapElement);
-    sub_6C683D(&x, &y, &z, direction, mapElement->properties.track.type, newColourScheme, NULL, 4);
+    sub_6C683D(&x, &y, &z, direction, mapElement->properties.track.type, newColourScheme, nullptr, 4);
 }
 
 /**
@@ -5164,7 +5164,7 @@ static void window_ride_measurements_tooldown(rct_window *w, rct_widgetindex wid
     _lastSceneryY = y;
     _collectTrackDesignScenery = true; // Default to true in case user does not select anything valid
 
-    get_map_coordinates_from_pos(x, y, 0xFCCF, &mapX, &mapY, &interactionType, &mapElement, NULL);
+    get_map_coordinates_from_pos(x, y, 0xFCCF, &mapX, &mapY, &interactionType, &mapElement, nullptr);
     switch (interactionType) {
     case VIEWPORT_INTERACTION_ITEM_SCENERY:
     case VIEWPORT_INTERACTION_ITEM_LARGE_SCENERY:
@@ -5187,7 +5187,7 @@ static void window_ride_measurements_tooldrag(rct_window *w, rct_widgetindex wid
     sint16 mapX, mapY;
     sint32 interactionType;
 
-    get_map_coordinates_from_pos(x, y, 0xFCCF, &mapX, &mapY, &interactionType, &mapElement, NULL);
+    get_map_coordinates_from_pos(x, y, 0xFCCF, &mapX, &mapY, &interactionType, &mapElement, nullptr);
     switch (interactionType) {
     case VIEWPORT_INTERACTION_ITEM_SCENERY:
     case VIEWPORT_INTERACTION_ITEM_LARGE_SCENERY:
@@ -5273,7 +5273,7 @@ static void window_ride_measurements_paint(rct_window *w, rct_drawpixelinfo *dpi
 
         sint32 x = w->x + (widget->right - widget->left) / 2;
         sint32 y = w->y + widget->top + 40;
-        gfx_draw_string_centred_wrapped(dpi, NULL, x, y, w->width - 8, STR_CLICK_ITEMS_OF_SCENERY_TO_SELECT, COLOUR_BLACK);
+        gfx_draw_string_centred_wrapped(dpi, nullptr, x, y, w->width - 8, STR_CLICK_ITEMS_OF_SCENERY_TO_SELECT, COLOUR_BLACK);
 
         x = w->x + 4;
         y = w->y + window_ride_measurements_widgets[WIDX_SELECT_NEARBY_SCENERY].bottom + 17;
@@ -5438,7 +5438,7 @@ static void window_ride_measurements_paint(rct_window *w, rct_drawpixelinfo *dpi
                 }
             }
         } else {
-            gfx_draw_string_left(dpi, STR_NO_TEST_RESULTS_YET, NULL, COLOUR_BLACK, x, y);
+            gfx_draw_string_left(dpi, STR_NO_TEST_RESULTS_YET, nullptr, COLOUR_BLACK, x, y);
         }
     }
 }
@@ -5544,8 +5544,8 @@ static void window_ride_graphs_update(rct_window *w)
     widget = &window_ride_graphs_widgets[WIDX_GRAPH];
     x = w->scrolls[0].h_left;
     if (!(w->list_information_type & 0x8000)) {
-        measurement = ride_get_measurement(w->number, NULL);
-        x = measurement == NULL ?
+        measurement = ride_get_measurement(w->number, nullptr);
+        x = measurement == nullptr ?
             0 :
             measurement->current_item - (((widget->right - widget->left) / 4) * 3);
     }
@@ -5568,8 +5568,8 @@ static void window_ride_graphs_scrollgetheight(rct_window *w, sint32 scrollIndex
     *width = window_ride_graphs_widgets[WIDX_GRAPH].right - window_ride_graphs_widgets[WIDX_GRAPH].left - 2;
 
     // Get measurement size
-    measurement = ride_get_measurement(w->number, NULL);
-    if (measurement != NULL)
+    measurement = ride_get_measurement(w->number, nullptr);
+    if (measurement != nullptr)
         *width = Math::Max<sint32>(*width, measurement->num_items);
 }
 
@@ -5592,7 +5592,7 @@ static void window_ride_graphs_tooltip(rct_window* w, rct_widgetindex widgetInde
         set_format_arg(0, rct_string_id, STR_GRAPH);
         rct_string_id message;
         rct_ride_measurement *measurement = ride_get_measurement(w->number, &message);
-        if (measurement != NULL && (measurement->flags & RIDE_MEASUREMENT_FLAG_RUNNING)) {
+        if (measurement != nullptr && (measurement->flags & RIDE_MEASUREMENT_FLAG_RUNNING)) {
             set_format_arg(4, uint16, measurement->vehicle_index + 1);
             rct_ride *ride = get_ride(w->number);
             set_format_arg(2, rct_string_id, RideComponentNames[RideNameConvention[ride->type].vehicle].count);
@@ -5685,7 +5685,7 @@ static void window_ride_graphs_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi
     rct_widget *widget = &window_ride_graphs_widgets[WIDX_GRAPH];
     rct_string_id stringId;
     rct_ride_measurement *measurement = ride_get_measurement(w->number, &stringId);
-    if (measurement == NULL) {
+    if (measurement == nullptr) {
         // No measurement message
         sint32 x = (widget->right - widget->left) / 2;
         sint32 y = (widget->bottom - widget->top) / 2 - 5;

@@ -71,29 +71,29 @@ static void window_track_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi,
 static rct_window_event_list window_track_list_events = {
     window_track_list_close,
     window_track_list_mouseup,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_track_list_update,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_track_list_scrollgetsize,
     window_track_list_scrollmousedown,
-    NULL,
+    nullptr,
     window_track_list_scrollmouseover,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
     window_track_list_tooltip,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
     window_track_list_invalidate,
     window_track_list_paint,
     window_track_list_scrollpaint
@@ -103,7 +103,7 @@ static rct_window_event_list window_track_list_events = {
 
 ride_list_item _window_track_list_item;
 
-static track_design_file_ref *_trackDesigns = NULL;
+static track_design_file_ref *_trackDesigns = nullptr;
 static size_t _trackDesignsCount = 0;
 static uint16 _loadedTrackDesignIndex;
 static rct_track_td6 *_loadedTrackDesign;
@@ -157,7 +157,7 @@ static void _window_track_list_open(ride_list_item item)
 
     _trackDesignPreviewPixels = Memory::AllocateArray<uint8>(4 * TRACK_PREVIEW_IMAGE_SIZE);
 
-    _loadedTrackDesign = NULL;
+    _loadedTrackDesign = nullptr;
     _loadedTrackDesignIndex = TRACK_DESIGN_INDEX_UNLOADED;
 }
 
@@ -169,7 +169,7 @@ static void window_track_list_close(rct_window *w)
 {
     // Dispose track design and preview
     track_design_dispose(_loadedTrackDesign);
-    _loadedTrackDesign = NULL;
+    _loadedTrackDesign = nullptr;
     SafeFree(_trackDesignPreviewPixels);
 
     // Dispose track list
@@ -201,7 +201,7 @@ static void window_track_list_select(rct_window *w, sint32 index)
     w->track_list.var_480 = index;
 
     // Displays a message if the ride can't load, fix #4080
-    if (_loadedTrackDesign == NULL) {
+    if (_loadedTrackDesign == nullptr) {
         window_error_open(STR_CANT_BUILD_PARK_ENTRANCE_HERE, STR_TRACK_LOAD_FAILED_ERROR);
         return;
     }
@@ -217,7 +217,7 @@ static void window_track_list_select(rct_window *w, sint32 index)
     }
 
     rct_track_td6 *td6 = _loadedTrackDesign;
-    if (td6 != NULL && (td6->track_flags & TRACK_DESIGN_FLAG_SCENERY_UNAVAILABLE)) {
+    if (td6 != nullptr && (td6->track_flags & TRACK_DESIGN_FLAG_SCENERY_UNAVAILABLE)) {
         gTrackDesignSceneryToggle = true;
     }
 
@@ -348,7 +348,7 @@ static void window_track_list_invalidate(rct_window *w)
     rct_string_id stringId = STR_NONE;
     rct_ride_entry *entry = get_ride_entry(_window_track_list_item.entry_index);
 
-    if (entry != NULL && entry != (rct_ride_entry*)-1) {
+    if (entry != nullptr && entry != (rct_ride_entry*)-1) {
         rct_ride_name rideName = get_ride_naming(_window_track_list_item.type, entry);
         stringId = rideName.name;
     }
@@ -416,7 +416,7 @@ static void window_track_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
     }
 
     rct_track_td6 *td6 = _loadedTrackDesign;
-    if (td6 == NULL) {
+    if (td6 == nullptr) {
         return;
     }
 
@@ -437,14 +437,14 @@ static void window_track_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
     // Warnings
     if ((td6->track_flags & TRACK_DESIGN_FLAG_VEHICLE_UNAVAILABLE) && !(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)) {
         // Vehicle design not available
-        gfx_draw_string_centred_clipped(dpi, STR_VEHICLE_DESIGN_UNAVAILABLE, NULL, COLOUR_BLACK, x, y, 368);
+        gfx_draw_string_centred_clipped(dpi, STR_VEHICLE_DESIGN_UNAVAILABLE, nullptr, COLOUR_BLACK, x, y, 368);
         y -= 10;
     }
 
     if (td6->track_flags & TRACK_DESIGN_FLAG_SCENERY_UNAVAILABLE) {
         if (!gTrackDesignSceneryToggle) {
             // Scenery not available
-            gfx_draw_string_centred_clipped(dpi, STR_DESIGN_INCLUDES_SCENERY_WHICH_IS_UNAVAILABLE, NULL, COLOUR_BLACK, x, y, 368);
+            gfx_draw_string_centred_clipped(dpi, STR_DESIGN_INCLUDES_SCENERY_WHICH_IS_UNAVAILABLE, nullptr, COLOUR_BLACK, x, y, 368);
             y -= 10;
         }
     }
@@ -572,7 +572,7 @@ static void window_track_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi,
     if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER) {
         if (_trackDesignsCount == 0) {
             // No track designs
-            gfx_draw_string_left(dpi, STR_NO_TRACK_DESIGNS_OF_THIS_TYPE, NULL, COLOUR_BLACK, x, y - 1);
+            gfx_draw_string_left(dpi, STR_NO_TRACK_DESIGNS_OF_THIS_TYPE, nullptr, COLOUR_BLACK, x, y - 1);
             return;
         }
     } else {
@@ -616,7 +616,7 @@ static void track_list_load_designs(ride_list_item item)
 {
     if (!ride_type_has_ride_groups(item.type)) {
         char entry[9];
-        const char *entryPtr = NULL;
+        const char *entryPtr = nullptr;
         if (item.type < 0x80) {
             rct_ride_entry *rideEntry = get_ride_entry(item.entry_index);
             if ((rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE) && !rideTypeShouldLoseSeparateFlag(rideEntry)) {
@@ -636,10 +636,10 @@ static bool track_list_load_design_for_preview(utf8 *path)
 {
     // Dispose currently loaded track
     track_design_dispose(_loadedTrackDesign);
-    _loadedTrackDesign = NULL;
+    _loadedTrackDesign = nullptr;
 
     _loadedTrackDesign = track_design_open(path);
-    if (_loadedTrackDesign != NULL && drawing_engine_get_type() != DRAWING_ENGINE_OPENGL) {
+    if (_loadedTrackDesign != nullptr && drawing_engine_get_type() != DRAWING_ENGINE_OPENGL) {
         track_design_draw_preview(_loadedTrackDesign, _trackDesignPreviewPixels);
         return true;
     }

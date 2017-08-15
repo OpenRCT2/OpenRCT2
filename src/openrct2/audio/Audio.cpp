@@ -138,7 +138,7 @@ void audio_init()
 {
     if (str_is_null_or_empty(gConfigSound.device))
     {
-        Mixer_Init(NULL);
+        Mixer_Init(nullptr);
         gAudioCurrentDevice = 0;
     }
     else

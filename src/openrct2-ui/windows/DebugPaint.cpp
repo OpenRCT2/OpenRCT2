@@ -49,34 +49,34 @@ static void window_debug_paint_invalidate(rct_window * w);
 static void window_debug_paint_paint(rct_window * w, rct_drawpixelinfo * dpi);
 
 static rct_window_event_list window_debug_paint_events = {
-    NULL,
+    nullptr,
     window_debug_paint_mouseup,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_debug_paint_invalidate,
     window_debug_paint_paint,
-    NULL
+    nullptr
 };
 
 rct_window * window_debug_paint_open()
@@ -85,7 +85,7 @@ rct_window * window_debug_paint_open()
 
     // Check if window is already open
     window = window_find_by_class(WC_DEBUG_PAINT);
-    if (window != NULL)
+    if (window != nullptr)
         return window;
 
     window = window_create(

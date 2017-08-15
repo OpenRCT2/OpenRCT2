@@ -46,34 +46,34 @@ static void window_ride_demolish_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
 //0x0098E2E4
 static rct_window_event_list window_ride_demolish_events = {
-    NULL,
+    nullptr,
     window_ride_demolish_mouseup,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_ride_demolish_paint,
-    NULL
+    nullptr
 };
 
 /** Based off of rct2: 0x006B486A */
@@ -82,7 +82,7 @@ static void _window_ride_demolish_prompt_open(sint32 rideIndex)
     rct_window *w;
 
     w = window_bring_to_front_by_number(WC_DEMOLISH_RIDE_PROMPT, rideIndex);
-    if (w != NULL)
+    if (w != nullptr)
         return;
 
     w = window_create_centred(WW, WH, &window_ride_demolish_events, WC_DEMOLISH_RIDE_PROMPT, WF_TRANSPARENT);
@@ -107,7 +107,7 @@ static void window_ride_demolish_mouseup(rct_window *w, rct_widgetindex widgetIn
 
         // Prevents demolished rides sticking around in the ride list window
         window = window_find_by_class(WC_RIDE_LIST);
-        if (window != NULL)
+        if (window != nullptr)
         {
             window_ride_list_refresh_list(window);
         }

@@ -137,7 +137,7 @@ static money32 SmallScenerySetColour(sint16 x, sint16 y, uint8 baseHeight, uint8
 
     rct_map_element *mapElement = map_get_small_scenery_element_at(x, y, baseHeight, sceneryType, quadrant);
 
-    if (mapElement == NULL)
+    if (mapElement == nullptr)
     {
         return 0;
     }
@@ -211,7 +211,7 @@ static money32 SmallSceneryPlace(sint16 x,
     }
 
     rct_scenery_entry* sceneryEntry = get_small_scenery_entry(sceneryType);
-    if (sceneryEntry == NULL)
+    if (sceneryEntry == nullptr)
     {
         return MONEY32_UNDEFINED;
     }
@@ -274,7 +274,7 @@ static money32 SmallSceneryPlace(sint16 x,
 
     rct_map_element* surfaceElement = map_get_surface_element_at(x / 32, y / 32);
 
-    if (surfaceElement != NULL && !gCheatsDisableClearanceChecks && map_get_water_height(surfaceElement) > 0)
+    if (surfaceElement != nullptr && !gCheatsDisableClearanceChecks && map_get_water_height(surfaceElement) > 0)
     {
         sint32 water_height = (map_get_water_height(surfaceElement) * 16) - 1;
         if (water_height > targetHeight)
@@ -292,7 +292,7 @@ static money32 SmallSceneryPlace(sint16 x,
             return MONEY32_UNDEFINED;
         }
 
-        if (surfaceElement != NULL && map_get_water_height(surfaceElement) > 0)
+        if (surfaceElement != nullptr && map_get_water_height(surfaceElement) > 0)
         {
             if ((map_get_water_height(surfaceElement) * 16) > targetHeight)
             {
@@ -306,7 +306,7 @@ static money32 SmallSceneryPlace(sint16 x,
         (sceneryEntry->small_scenery.flags & SMALL_SCENERY_FLAG_REQUIRE_FLAT_SURFACE) &&
         !supportsRequired &&
         !isOnWater &&
-        surfaceElement != NULL &&
+        surfaceElement != nullptr &&
         (surfaceElement->properties.surface.slope & 0x1F))
     {
 
@@ -321,7 +321,7 @@ static money32 SmallSceneryPlace(sint16 x,
 
         if (!isOnWater)
         {
-            if (surfaceElement != NULL)
+            if (surfaceElement != nullptr)
             {
                 if (map_get_water_height(surfaceElement) ||
                     (surfaceElement->base_height * 8) != targetHeight)
@@ -409,7 +409,7 @@ static money32 SmallSceneryPlace(sint16 x,
     }
 
     rct_map_element* newElement = map_element_insert(x / 32, y / 32, zLow, collisionQuadrants);
-    assert(newElement != NULL);
+    assert(newElement != nullptr);
     gSceneryMapElement = newElement;
     uint8 type = quadrant << 6;
     type |= MAP_ELEMENT_TYPE_SCENERY;

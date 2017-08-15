@@ -59,31 +59,31 @@ static void window_themes_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sin
 static void window_themes_draw_tab_images(rct_drawpixelinfo *dpi, rct_window *w);
 
 static rct_window_event_list window_themes_events = {
-    NULL,
+    nullptr,
     window_themes_mouseup,
     window_themes_resize,
     window_themes_mousedown,
     window_themes_dropdown,
-    NULL,
+    nullptr,
     window_themes_update,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_themes_scrollgetsize,
     window_themes_scrollmousedown,
-    NULL,
+    nullptr,
     window_themes_scrollmouseover,
     window_themes_textinput,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
     window_themes_tooltip,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
     window_themes_invalidate,
     window_themes_paint,
     window_themes_scrollpaint,
@@ -257,7 +257,7 @@ static rct_windowclass window_themes_tab_7_classes[] = {
 };
 
 static rct_windowclass *window_themes_tab_classes[] = {
-    NULL,
+    nullptr,
     window_themes_tab_1_classes,
     window_themes_tab_2_classes,
     window_themes_tab_3_classes,
@@ -316,7 +316,7 @@ rct_window * window_themes_open()
 
     // Check if window is already open
     window = window_bring_to_front_by_class(WC_THEMES);
-    if (window != NULL)
+    if (window != nullptr)
         return window;
 
     window = window_create_auto_pos(320, 107, &window_themes_events, WC_THEMES, WF_10 | WF_RESIZABLE);
@@ -646,7 +646,7 @@ void window_themes_scrollmouseover(rct_window *w, sint32 scrollIndex, sint32 x, 
 
 static void window_themes_textinput(rct_window *w, rct_widgetindex widgetIndex, char *text)
 {
-    if (text == NULL || text[0] == 0)
+    if (text == nullptr || text[0] == 0)
         return;
 
     switch (widgetIndex) {
@@ -702,7 +702,7 @@ void window_themes_invalidate(rct_window *w)
 
     w->pressed_widgets = pressed_widgets | (1 << widgetIndex);
 
-    if (window_find_by_class(WC_DROPDOWN) == NULL) {
+    if (window_find_by_class(WC_DROPDOWN) == nullptr) {
         _colour_index_1 = -1;
         _colour_index_2 = -1;
     }
@@ -778,7 +778,7 @@ void window_themes_paint(rct_window *w, rct_drawpixelinfo *dpi)
         size_t activeAvailableThemeIndex = theme_manager_get_active_available_theme_index();
         const utf8 * activeThemeName = theme_manager_get_available_theme_name(activeAvailableThemeIndex);
         set_format_arg(0, uintptr_t, (uintptr_t)activeThemeName);
-        gfx_draw_string_left(dpi, STR_THEMES_LABEL_CURRENT_THEME, NULL, w->colours[1], w->x + 10, w->y + window_themes_widgets[WIDX_THEMES_PRESETS].top + 1);
+        gfx_draw_string_left(dpi, STR_THEMES_LABEL_CURRENT_THEME, nullptr, w->colours[1], w->x + 10, w->y + window_themes_widgets[WIDX_THEMES_PRESETS].top + 1);
         gfx_draw_string_left_clipped(
             dpi,
             STR_STRING,
@@ -837,7 +837,7 @@ void window_themes_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 scr
             rct_windowclass wc = get_window_class_tab_index(i);
             sint32 numColours = theme_desc_get_num_colours(wc);
             for (uint8 j = 0; j < numColours; j++) {
-                gfx_draw_string_left(dpi, theme_desc_get_name(wc), NULL, w->colours[1], 2, y + 4);
+                gfx_draw_string_left(dpi, theme_desc_get_name(wc), nullptr, w->colours[1], 2, y + 4);
 
                 uint8 colour = theme_get_colour(wc, j);
                 uint32 image = SPRITE_ID_PALETTE_COLOUR_1(colour & ~COLOUR_FLAG_TRANSLUCENT) | IMAGE_TYPE_TRANSPARENT | SPR_PALETTE_BTN;

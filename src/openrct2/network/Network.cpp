@@ -450,7 +450,7 @@ void Network::UpdateClient()
             {
                 _lastConnectStatus = SOCKET_STATUS_RESOLVING;
                 char str_resolving[256];
-                format_string(str_resolving, 256, STR_MULTIPLAYER_RESOLVING, NULL);
+                format_string(str_resolving, 256, STR_MULTIPLAYER_RESOLVING, nullptr);
                 window_network_status_open(str_resolving, []() -> void {
                     gNetwork.Close();
                 });
@@ -463,7 +463,7 @@ void Network::UpdateClient()
             {
                 _lastConnectStatus = SOCKET_STATUS_CONNECTING;
                 char str_connecting[256];
-                format_string(str_connecting, 256, STR_MULTIPLAYER_CONNECTING, NULL);
+                format_string(str_connecting, 256, STR_MULTIPLAYER_CONNECTING, nullptr);
                 window_network_status_open(str_connecting, []() -> void {
                     gNetwork.Close();
                 });
@@ -477,7 +477,7 @@ void Network::UpdateClient()
             server_connection->ResetLastPacketTime();
             Client_Send_TOKEN();
             char str_authenticating[256];
-            format_string(str_authenticating, 256, STR_MULTIPLAYER_AUTHENTICATING, NULL);
+            format_string(str_authenticating, 256, STR_MULTIPLAYER_AUTHENTICATING, nullptr);
             window_network_status_open(str_authenticating, []() -> void {
                 gNetwork.Close();
             });
@@ -511,10 +511,10 @@ void Network::UpdateClient()
                     const char * disconnect_reason = server_connection->GetLastDisconnectReason();
                     format_string(str_disconnected, 256, STR_MULTIPLAYER_DISCONNECTED_WITH_REASON, &disconnect_reason);
                 } else {
-                    format_string(str_disconnected, 256, STR_MULTIPLAYER_DISCONNECTED_NO_REASON, NULL);
+                    format_string(str_disconnected, 256, STR_MULTIPLAYER_DISCONNECTED_NO_REASON, nullptr);
                 }
 
-                window_network_status_open(str_disconnected, NULL);
+                window_network_status_open(str_disconnected, nullptr);
             }
             Close();
         }
@@ -634,7 +634,7 @@ void Network::KickPlayer(sint32 playerId)
             // Disconnect the client gracefully
             (*it)->SetLastDisconnectReason(STR_MULTIPLAYER_KICKED);
             char str_disconnect_msg[256];
-            format_string(str_disconnect_msg, 256, STR_MULTIPLAYER_KICKED_REASON, NULL);
+            format_string(str_disconnect_msg, 256, STR_MULTIPLAYER_KICKED_REASON, nullptr);
             Server_Send_SETDISCONNECTMSG(*(*it), str_disconnect_msg);
             (*it)->Socket->Disconnect();
             break;
@@ -747,7 +747,7 @@ void Network::SaveGroups()
     if (GetMode() == NETWORK_MODE_SERVER) {
         utf8 path[MAX_PATH];
 
-        platform_get_user_directory(path, NULL, sizeof(path));
+        platform_get_user_directory(path, nullptr, sizeof(path));
         safe_strcat_path(path, "groups.json", sizeof(path));
 
         json_t * jsonGroupsCfg = json_object();
@@ -803,7 +803,7 @@ void Network::LoadGroups()
 
     utf8 path[MAX_PATH];
 
-    platform_get_user_directory(path, NULL, sizeof(path));
+    platform_get_user_directory(path, nullptr, sizeof(path));
     safe_strcat_path(path, "groups.json", sizeof(path));
 
     json_t * json = nullptr;
@@ -903,9 +903,9 @@ void Network::BeginServerLog()
     // Log server start event
     utf8 logMessage[256];
     if (GetMode() == NETWORK_MODE_CLIENT) {
-        format_string(logMessage, sizeof(logMessage), STR_LOG_CLIENT_STARTED, NULL);
+        format_string(logMessage, sizeof(logMessage), STR_LOG_CLIENT_STARTED, nullptr);
     } else if (GetMode() == NETWORK_MODE_SERVER) {
-        format_string(logMessage, sizeof(logMessage), STR_LOG_SERVER_STARTED, NULL);
+        format_string(logMessage, sizeof(logMessage), STR_LOG_SERVER_STARTED, nullptr);
     }
     AppendServerLog(logMessage);
 }
@@ -922,9 +922,9 @@ void Network::CloseServerLog()
     // Log server stopped event
     char logMessage[256];
     if (GetMode() == NETWORK_MODE_CLIENT) {
-        format_string(logMessage, sizeof(logMessage), STR_LOG_CLIENT_STOPPED, NULL);
+        format_string(logMessage, sizeof(logMessage), STR_LOG_CLIENT_STOPPED, nullptr);
     } else if (GetMode() == NETWORK_MODE_SERVER) {
-        format_string(logMessage, sizeof(logMessage), STR_LOG_SERVER_STOPPED, NULL);
+        format_string(logMessage, sizeof(logMessage), STR_LOG_SERVER_STOPPED, nullptr);
     }
     AppendServerLog(logMessage);
 }
@@ -1060,7 +1060,7 @@ uint8 * Network::save_for_network(size_t &out_size, const std::vector<const Obje
     sint32 size = ms.GetLength();
 
     uint8 *compressed = util_zlib_deflate((const uint8 *)data, size, &out_size);
-    if (compressed != NULL)
+    if (compressed != nullptr)
     {
         header = (uint8 *)_strdup("open2_sv6_zlib");
         size_t header_len = strlen((char *)header) + 1; // account for null terminator
@@ -1387,8 +1387,8 @@ void Network::ProcessGameCommandQueue()
         _desynchronised = true;
 
         char str_desync[256];
-        format_string(str_desync, 256, STR_MULTIPLAYER_DESYNC, NULL);
-        window_network_status_open(str_desync, NULL);
+        format_string(str_desync, 256, STR_MULTIPLAYER_DESYNC, nullptr);
+        window_network_status_open(str_desync, nullptr);
         if (!gConfigNetwork.stay_connected) {
             Close();
         }
@@ -1849,7 +1849,7 @@ void Network::Client_Handle_MAP(NetworkConnection& connection, NetworkPacket& pa
             has_to_free = true;
             size_t header_len = strlen("open2_sv6_zlib") + 1;
             data = util_zlib_inflate(&chunk_buffer[header_len], size - header_len, &data_size);
-            if (data == NULL)
+            if (data == nullptr)
             {
                 log_warning("Failed to decompress data sent from server.");
                 Close();

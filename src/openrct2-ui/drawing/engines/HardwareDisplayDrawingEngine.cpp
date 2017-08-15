@@ -140,7 +140,7 @@ private:
         {
             void * pixels;
             sint32 pitch;
-            if (SDL_LockTexture(_screenTexture, NULL, &pixels, &pitch) == 0)
+            if (SDL_LockTexture(_screenTexture, nullptr, &pixels, &pitch) == 0)
             {
                 lightfx_render_to_texture(pixels, pitch, _bits, _width, _height, _paletteHWMapped, _lightPaletteHWMapped);
                 SDL_UnlockTexture(_screenTexture);

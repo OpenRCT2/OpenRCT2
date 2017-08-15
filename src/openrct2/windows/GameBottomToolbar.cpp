@@ -90,34 +90,34 @@ static void window_game_bottom_toolbar_draw_news_item(rct_drawpixelinfo *dpi, rc
  *  rct2: 0x0097BFDC
  */
 static rct_window_event_list window_game_bottom_toolbar_events = {
-    NULL,
+    nullptr,
     window_game_bottom_toolbar_mouseup,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
     window_game_bottom_toolbar_unknown05,
     window_game_bottom_toolbar_update,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_game_bottom_toolbar_tooltip,
     window_game_bottom_toolbar_cursor,
-    NULL,
+    nullptr,
     window_game_bottom_toolbar_invalidate,
     window_game_bottom_toolbar_paint,
-    NULL
+    nullptr
 };
 
 static void window_game_bottom_toolbar_invalidate_dirty_widgets(rct_window *w);
@@ -200,7 +200,7 @@ static void window_game_bottom_toolbar_mouseup(rct_window *w, rct_widgetindex wi
                 break;
 
             rct_window *mainWindow = window_get_main();
-            if (mainWindow != NULL)
+            if (mainWindow != nullptr)
                 window_scroll_to_location(mainWindow, x, y, z);
         }
         break;

@@ -423,32 +423,32 @@ static void window_options_tooltip(rct_window *w, rct_widgetindex widgetIndex, r
 static rct_window_event_list window_options_events = {
     window_options_close,
     window_options_mouseup,
-    NULL,
+    nullptr,
     window_options_mousedown,
     window_options_dropdown,
-    NULL,
+    nullptr,
     window_options_update,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_options_scrollgetsize,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
     window_options_text_input,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
     window_options_tooltip,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
     window_options_invalidate,
     window_options_paint,
-    NULL
+    nullptr
 };
 
 #pragma endregion
@@ -574,7 +574,7 @@ static uint64 window_options_page_enabled_widgets[] = {
 
 #pragma endregion
 
-static struct Resolution * _resolutions = NULL;
+static struct Resolution * _resolutions = nullptr;
 static sint32 _numResolutions = 0;
 
 /**
@@ -587,7 +587,7 @@ rct_window * window_options_open()
 
     // Check if window is already open
     w = window_bring_to_front_by_class(WC_OPTIONS);
-    if (w != NULL)
+    if (w != nullptr)
         return w;
 
     w = window_create_centred(WW, WH, &window_options_events, WC_OPTIONS, 0);
@@ -603,7 +603,7 @@ rct_window * window_options_open()
 static void window_options_close(rct_window *w)
 {
     free(_resolutions);
-    _resolutions = NULL;
+    _resolutions = nullptr;
     _numResolutions = 0;
 }
 
@@ -673,7 +673,7 @@ static void window_options_mouseup(rct_window *w, rct_widgetindex widgetIndex)
             gConfigGeneral.always_show_gridlines ^= 1;
             config_save_default();
             gfx_invalidate_screen();
-            if ((w = window_get_main()) != NULL) {
+            if ((w = window_get_main()) != nullptr) {
                 if (gConfigGeneral.always_show_gridlines)
                     w->viewport->flags |= VIEWPORT_FLAG_GRIDLINES;
                 else
@@ -1418,8 +1418,8 @@ static void window_options_dropdown(rct_window *w, rct_widgetindex widgetIndex, 
             audio_init_ride_sounds(dropdownIndex);
             if (dropdownIndex < gAudioDeviceCount) {
                 if (dropdownIndex == 0) {
-                    Mixer_Init(NULL);
-                    gConfigSound.device = NULL;
+                    Mixer_Init(nullptr);
+                    gConfigSound.device = nullptr;
                 }
                 else {
                     char* devicename = gAudioDevices[dropdownIndex].name;
@@ -1837,7 +1837,7 @@ static void window_options_paint(rct_window *w, rct_drawpixelinfo *dpi)
         gfx_draw_string_left_clipped(
             dpi,
             DrawingEngineStringIds[gConfigGeneral.drawing_engine],
-            NULL,
+            nullptr,
             w->colours[1],
             w->x + window_options_culture_widgets[WIDX_DRAWING_ENGINE].left + 1,
             w->y + window_options_culture_widgets[WIDX_DRAWING_ENGINE].top,
@@ -1877,7 +1877,7 @@ static void window_options_paint(rct_window *w, rct_drawpixelinfo *dpi)
         gfx_draw_string_left(
             dpi,
             DateFormatStringIds[gConfigGeneral.date_format],
-            NULL,
+            nullptr,
             w->colours[1],
             w->x + window_options_culture_widgets[WIDX_DATE_FORMAT].left + 1,
             w->y + window_options_culture_widgets[WIDX_DATE_FORMAT].top
@@ -1887,7 +1887,7 @@ static void window_options_paint(rct_window *w, rct_drawpixelinfo *dpi)
     {
         // Sound device
         rct_string_id audioDeviceStringId = STR_OPTIONS_SOUND_VALUE_DEFAULT;
-        const char * audioDeviceName = NULL;
+        const char * audioDeviceName = nullptr;
         if (gAudioCurrentDevice == -1) {
             audioDeviceStringId = STR_SOUND_NONE;
         } else {
@@ -1915,7 +1915,7 @@ static void window_options_paint(rct_window *w, rct_drawpixelinfo *dpi)
         gfx_draw_string_left(
             dpi,
             window_options_title_music_names[gConfigSound.title_music],
-            NULL,
+            nullptr,
             w->colours[1],
             w->x + window_options_audio_widgets[WIDX_TITLE_MUSIC].left + 1,
             w->y + window_options_audio_widgets[WIDX_TITLE_MUSIC].top
@@ -1930,7 +1930,7 @@ static void window_options_paint(rct_window *w, rct_drawpixelinfo *dpi)
         const utf8 * activeThemeName = theme_manager_get_available_theme_name(activeAvailableThemeIndex);
         set_format_arg(0, uintptr_t, (uintptr_t)activeThemeName);
 
-        gfx_draw_string_left(dpi, STR_THEMES_LABEL_CURRENT_THEME, NULL, w->colours[1], w->x + 10, w->y + window_options_controls_and_interface_widgets[WIDX_THEMES].top + 1);
+        gfx_draw_string_left(dpi, STR_THEMES_LABEL_CURRENT_THEME, nullptr, w->colours[1], w->x + 10, w->y + window_options_controls_and_interface_widgets[WIDX_THEMES].top + 1);
         gfx_draw_string_left_clipped(
             dpi,
             STR_STRING,
@@ -1940,13 +1940,13 @@ static void window_options_paint(rct_window *w, rct_drawpixelinfo *dpi)
             w->y + window_options_controls_and_interface_widgets[WIDX_THEMES].top,
             window_options_controls_and_interface_widgets[WIDX_THEMES_DROPDOWN].left - window_options_controls_and_interface_widgets[WIDX_THEMES].left - 4
         );
-        gfx_draw_string_left(dpi, STR_OPTIONS_SCENARIO_GROUPING, NULL, w->colours[1], w->x + 10, w->y + window_options_controls_and_interface_widgets[WIDX_SCENARIO_GROUPING].top + 1);
+        gfx_draw_string_left(dpi, STR_OPTIONS_SCENARIO_GROUPING, nullptr, w->colours[1], w->x + 10, w->y + window_options_controls_and_interface_widgets[WIDX_SCENARIO_GROUPING].top + 1);
         gfx_draw_string_left_clipped(
             dpi,
             gConfigGeneral.scenario_select_mode == SCENARIO_SELECT_MODE_DIFFICULTY ?
                 STR_OPTIONS_SCENARIO_DIFFICULTY :
                 STR_OPTIONS_SCENARIO_ORIGIN,
-            NULL,
+            nullptr,
             w->colours[1],
             w->x + window_options_controls_and_interface_widgets[WIDX_SCENARIO_GROUPING].left + 1,
             w->y + window_options_controls_and_interface_widgets[WIDX_SCENARIO_GROUPING].top,
@@ -1960,7 +1960,7 @@ static void window_options_paint(rct_window *w, rct_drawpixelinfo *dpi)
         gfx_draw_string_left(
             dpi,
             window_options_autosave_names[gConfigGeneral.autosave_frequency],
-            NULL,
+            nullptr,
             w->colours[1],
             w->x + window_options_misc_widgets[WIDX_AUTOSAVE].left + 1,
             w->y + window_options_misc_widgets[WIDX_AUTOSAVE].top
@@ -1983,7 +1983,7 @@ static void window_options_paint(rct_window *w, rct_drawpixelinfo *dpi)
         gfx_draw_string_left(
             dpi,
             RideInspectionIntervalNames[gConfigGeneral.default_inspection_interval],
-            NULL,
+            nullptr,
             w->colours[1],
             w->x + window_options_misc_widgets[WIDX_DEFAULT_INSPECTION_INTERVAL].left + 1,
             w->y + window_options_misc_widgets[WIDX_DEFAULT_INSPECTION_INTERVAL].top
@@ -2047,7 +2047,7 @@ static void window_options_scrollgetsize(rct_window *w, sint32 scrollIndex, sint
 
 static void window_options_text_input(rct_window *w, rct_widgetindex widgetIndex, char *text)
 {
-    if (text == NULL)
+    if (text == nullptr)
         return;
 
     if (widgetIndex == WIDX_CHANNEL_BUTTON) {

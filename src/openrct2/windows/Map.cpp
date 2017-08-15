@@ -144,27 +144,27 @@ static rct_window_event_list window_map_events = {
     window_map_mouseup,
     window_map_resize,
     window_map_mousedown,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
     window_map_update,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
     window_map_toolupdate,
     window_map_tooldown,
     window_map_tooldrag,
-    NULL,
+    nullptr,
     window_map_toolabort,
-    NULL,
+    nullptr,
     window_map_scrollgetsize,
     window_map_scrollmousedown,
     window_map_scrollmousedown,
-    NULL,
+    nullptr,
     window_map_textinput,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
     window_map_tooltip,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
     window_map_invalidate,
     window_map_paint,
     window_map_scrollpaint
@@ -213,14 +213,14 @@ void window_map_open()
 
     // Check if window is already open
     w = window_bring_to_front_by_class(WC_MAP);
-    if (w != NULL) {
+    if (w != nullptr) {
         w->selected_tab = 0;
         w->list_information_type = 0;
         return;
     }
 
     _mapImageData = Memory::Allocate<uint8[MAP_WINDOW_MAP_SIZE][MAP_WINDOW_MAP_SIZE]>();
-    if (_mapImageData == NULL) {
+    if (_mapImageData == nullptr) {
         return;
     }
 
@@ -270,7 +270,7 @@ void window_map_reset()
 
     // Check if window is even opened
     w = window_bring_to_front_by_class(WC_MAP);
-    if (w == NULL) {
+    if (w == nullptr) {
         return;
     }
 
@@ -578,7 +578,7 @@ static void window_map_scrollmousedown(rct_window *w, sint32 scrollIndex, sint32
     mapZ = map_element_height(x, y);
 
     mainWindow = window_get_main();
-    if (mainWindow != NULL) {
+    if (mainWindow != nullptr) {
         window_scroll_to_location(mainWindow, mapX, mapY, mapZ);
     }
 
@@ -644,7 +644,7 @@ static void window_map_textinput(rct_window *w, rct_widgetindex widgetIndex, cha
     sint32 size;
     char* end;
 
-    if (text == NULL)
+    if (text == nullptr)
         return;
 
     switch (widgetIndex) {
@@ -871,7 +871,7 @@ static void window_map_paint(rct_window *w, rct_drawpixelinfo *dpi)
             }
         }
     } else if (!widget_is_active_tool(w, WIDX_SET_LAND_RIGHTS)) {
-        gfx_draw_string_left(dpi, STR_MAP_SIZE, NULL, w->colours[1], w->x + 4, w->y + w->widgets[WIDX_MAP_SIZE_SPINNER].top + 1);
+        gfx_draw_string_left(dpi, STR_MAP_SIZE, nullptr, w->colours[1], w->x + 4, w->y + w->widgets[WIDX_MAP_SIZE_SPINNER].top + 1);
     }
 }
 
@@ -928,11 +928,11 @@ static void window_map_centre_on_view_point()
     sint16 ax, bx, cx, dx;
     sint16 bp, di;
 
-    if (w == NULL || w->viewport == NULL)
+    if (w == nullptr || w->viewport == nullptr)
         return;
 
     w_map = window_find_by_class(WC_MAP);
-    if (w_map == NULL)
+    if (w_map == nullptr)
         return;
 
     rct_xy16 offset = MiniMapOffsets[get_current_rotation()];
@@ -1145,11 +1145,11 @@ static void window_map_paint_train_overlay(rct_drawpixelinfo *dpi)
 static void window_map_paint_hud_rectangle(rct_drawpixelinfo *dpi)
 {
     rct_window *main_window = window_get_main();
-    if (main_window == NULL)
+    if (main_window == nullptr)
         return;
 
     rct_viewport *viewport = main_window->viewport;
-    if (viewport == NULL)
+    if (viewport == nullptr)
         return;
 
     rct_xy16 offset = MiniMapOffsets[get_current_rotation()];
@@ -1363,7 +1363,7 @@ static void window_map_set_peep_spawn_tool_down(sint32 x, sint32 y)
         return;
 
     surfaceMapElement = map_get_surface_element_at(mapX >> 5, mapY >> 5);
-    if (surfaceMapElement == NULL) {
+    if (surfaceMapElement == nullptr) {
         return;
     }
     if (surfaceMapElement->properties.surface.ownership & 0xF0) {

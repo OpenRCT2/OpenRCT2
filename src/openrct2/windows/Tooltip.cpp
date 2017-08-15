@@ -38,34 +38,34 @@ static void window_tooltip_update(rct_window *w);
 static void window_tooltip_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
 static rct_window_event_list window_tooltip_events = {
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_tooltip_update,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_tooltip_paint,
-    NULL
+    nullptr
 };
 
 static utf8 _tooltipText[sizeof(gCommonStringFormatBuffer)];
@@ -87,7 +87,7 @@ static void _window_tooltip_show(rct_string_id id, sint32 x, sint32 y)
     sint32 width, height;
 
     w = window_find_by_class(WC_ERROR);
-    if (w != NULL)
+    if (w != nullptr)
         return;
 
     char* buffer = gCommonStringFormatBuffer;
@@ -150,7 +150,7 @@ static void _window_tooltip_open(rct_window *widgetWindow, rct_widgetindex widge
 {
     rct_widget *widget;
 
-    if (widgetWindow == NULL || widgetIndex == -1)
+    if (widgetWindow == nullptr || widgetIndex == -1)
         return;
 
     widget = &widgetWindow->widgets[widgetIndex];
