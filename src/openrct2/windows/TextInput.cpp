@@ -64,32 +64,32 @@ static void draw_ime_composition(rct_drawpixelinfo * dpi, int cursorX, int curso
 static rct_window_event_list window_text_input_events = {
     window_text_input_close,
     window_text_input_mouseup,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_text_input_update7,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_text_input_invalidate,
     window_text_input_paint,
-    NULL
+    nullptr
 };
 
 rct_string_id input_text_description;
@@ -169,7 +169,7 @@ void window_text_input_raw_open(rct_window* call_w, rct_widgetindex call_widget,
 
     // Enter in the text input buffer any existing
     // text.
-    if (existing_text != NULL)
+    if (existing_text != nullptr)
         safe_strcpy(text_input, existing_text, maxLength);
 
     // In order to prevent strings that exceed the maxLength
@@ -233,15 +233,15 @@ static void window_text_input_mouseup(rct_window *w, rct_widgetindex widgetIndex
         context_stop_text_input();
         // Pass back the text that has been entered.
         // ecx when zero means text input failed
-        if (calling_w != NULL)
-            window_event_textinput_call(calling_w, calling_widget, NULL);
+        if (calling_w != nullptr)
+            window_event_textinput_call(calling_w, calling_widget, nullptr);
         window_close(w);
         break;
     case WIDX_OKAY:
         context_stop_text_input();
         // Pass back the text that has been entered.
         // ecx when none zero means text input success
-        if (calling_w != NULL)
+        if (calling_w != nullptr)
             window_event_textinput_call(calling_w, calling_widget, text_input);
         window_close(w);
     }
@@ -301,7 +301,7 @@ static void window_text_input_paint(rct_window *w, rct_drawpixelinfo *dpi)
                 // Make a 1 utf8-character wide string for measuring the width
                 // of the currently selected character.
                 utf8 tmp[5] = { 0 }; // This is easier than setting temp_string[0..5]
-                uint32 codepoint = utf8_get_next(text_input + gTextInput->SelectionStart, NULL);
+                uint32 codepoint = utf8_get_next(text_input + gTextInput->SelectionStart, nullptr);
                 utf8_write_codepoint(tmp, codepoint);
                 width = Math::Max(gfx_get_string_width(tmp) - 2, 4);
             }

@@ -112,7 +112,7 @@ static money32 ParkEntrancePlace(sint32 flags, sint16 x, sint16 y, uint8 z, uint
 
         // Check that entrance element does not already exist at this location
         rct_map_element* entranceElement = map_get_park_entrance_element_at(x, y, zLow, false);
-        if (entranceElement != NULL)
+        if (entranceElement != nullptr)
         {
             return MONEY32_UNDEFINED;
         }
@@ -129,7 +129,7 @@ static money32 ParkEntrancePlace(sint32 flags, sint16 x, sint16 y, uint8 z, uint
         }
 
         rct_map_element* newElement = map_element_insert(x / 32, y / 32, zLow, 0xF);
-        assert(newElement != NULL);
+        assert(newElement != nullptr);
         newElement->clearance_height = zHigh;
 
         if (flags & GAME_COMMAND_FLAG_GHOST)
@@ -165,7 +165,7 @@ static void ParkEntranceRemoveSegment(sint32 x, sint32 y, sint32 z)
     rct_map_element *mapElement;
 
     mapElement = map_get_park_entrance_element_at(x, y, z, true);
-    if (mapElement == NULL)
+    if (mapElement == nullptr)
     {
         return;
     }
@@ -407,7 +407,7 @@ static money32 RideEntranceExitPlace(sint16 x,
             network_set_player_last_action_coord(network_get_player_index(game_command_playerid), coord);
 
             rct_map_element* mapElement = map_element_insert(x / 32, y / 32, z / 8, 0xF);
-            assert(mapElement != NULL);
+            assert(mapElement != nullptr);
             mapElement->clearance_height = clear_z;
             mapElement->properties.entrance.type = isExit;
             mapElement->properties.entrance.index = stationNum << 4;
@@ -498,7 +498,7 @@ static money32 RideEntranceExitRemove(sint16 x, sint16 y, uint8 rideIndex, uint8
 
         bool found = false;
         rct_map_element* mapElement = map_get_first_element_at(x / 32, y / 32);
-        if (mapElement == NULL)
+        if (mapElement == nullptr)
         {
             log_warning("Invalid coordinates for entrance/exit removal x = %d, y = %d", x, y);
             return MONEY32_UNDEFINED;

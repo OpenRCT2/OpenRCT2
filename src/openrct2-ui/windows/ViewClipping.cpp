@@ -74,32 +74,32 @@ static void window_view_clipping_close();
 static rct_window_event_list window_view_clipping_events = {
     window_view_clipping_close_button,
     window_view_clipping_mouseup,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_view_clipping_update,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_view_clipping_scrollgetsize,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_view_clipping_invalidate,
     window_view_clipping_paint,
-    NULL
+    nullptr
 };
 
 #pragma endregion
@@ -121,7 +121,7 @@ rct_window * window_view_clipping_open()
 
     // Check if window is already open
     window = window_find_by_class(WC_VIEW_CLIPPING);
-    if (window != NULL) {
+    if (window != nullptr) {
         return window;
     }
 
@@ -143,7 +143,7 @@ rct_window * window_view_clipping_open()
     window_push_others_below(window);
 
     // Turn on view clipping when the window is opened.
-    if (mainWindow != NULL) {
+    if (mainWindow != nullptr) {
         mainWindow->viewport->flags |= VIEWPORT_FLAG_PAINT_CLIP_TO_HEIGHT;
         window_invalidate(mainWindow);
     }
@@ -155,7 +155,7 @@ static void window_view_clipping_close()
 {
     // Turn off view clipping when the window is closed.
     rct_window *mainWindow = window_get_main();
-    if (mainWindow != NULL) {
+    if (mainWindow != nullptr) {
         mainWindow->viewport->flags &= ~VIEWPORT_FLAG_PAINT_CLIP_TO_HEIGHT;
         window_invalidate(mainWindow);
     }
@@ -179,7 +179,7 @@ static void window_view_clipping_mouseup(rct_window *w, rct_widgetindex widgetIn
     case WIDX_CLIP_HEIGHT_CHECKBOX:
         // Toggle height clipping.
         mainWindow = window_get_main();
-        if (mainWindow != NULL) {
+        if (mainWindow != nullptr) {
             mainWindow->viewport->flags ^= VIEWPORT_FLAG_PAINT_CLIP_TO_HEIGHT;
             window_invalidate(mainWindow);
         }
@@ -189,14 +189,14 @@ static void window_view_clipping_mouseup(rct_window *w, rct_widgetindex widgetIn
         if (gClipHeight < 255)
             window_view_clipping_set_clipheight(w, gClipHeight + 1);
         mainWindow = window_get_main();
-        if (mainWindow != NULL)
+        if (mainWindow != nullptr)
             window_invalidate(mainWindow);
         break;
     case WIDX_CLIP_HEIGHT_DECREASE:
         if (gClipHeight > 0)
             window_view_clipping_set_clipheight(w, gClipHeight - 1);
         mainWindow = window_get_main();
-        if (mainWindow != NULL)
+        if (mainWindow != nullptr)
             window_invalidate(mainWindow);
         break;
     case WIDX_CLIP_HEIGHT_VALUE:
@@ -225,7 +225,7 @@ static void window_view_clipping_update(rct_window *w)
 
         // Update the main window accordingly.
         rct_window *mainWindow = window_get_main();
-        if (mainWindow != NULL) {
+        if (mainWindow != nullptr) {
             window_invalidate(mainWindow);
         }
     }
@@ -237,7 +237,7 @@ static void window_view_clipping_invalidate(rct_window *w)
     widget_scroll_update_thumbs(w, WIDX_CLIP_HEIGHT_SLIDER);
 
     rct_window *mainWindow = window_get_main();
-    if (mainWindow != NULL) {
+    if (mainWindow != nullptr) {
         widget_set_checkbox_value(w, WIDX_CLIP_HEIGHT_CHECKBOX, mainWindow->viewport->flags & VIEWPORT_FLAG_PAINT_CLIP_TO_HEIGHT);
     }
 }
@@ -249,7 +249,7 @@ static void window_view_clipping_paint(rct_window *w, rct_drawpixelinfo *dpi)
     // Clip height value
     sint32 x = w->x + 8;
     sint32 y = w->y + w->widgets[WIDX_CLIP_HEIGHT_VALUE].top;
-    gfx_draw_string_left(dpi, STR_VIEW_CLIPPING_HEIGHT_VALUE, NULL, w->colours[0], x, y);
+    gfx_draw_string_left(dpi, STR_VIEW_CLIPPING_HEIGHT_VALUE, nullptr, w->colours[0], x, y);
 
     x = w->x + w->widgets[WIDX_CLIP_HEIGHT_VALUE].left + 1;
     y = w->y + w->widgets[WIDX_CLIP_HEIGHT_VALUE].top;

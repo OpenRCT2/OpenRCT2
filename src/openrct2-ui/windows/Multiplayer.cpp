@@ -154,127 +154,127 @@ static void window_multiplayer_options_invalidate(rct_window *w);
 static void window_multiplayer_options_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
 static rct_window_event_list window_multiplayer_information_events = {
-    NULL,
+    nullptr,
     window_multiplayer_information_mouseup,
     window_multiplayer_information_resize,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
     window_multiplayer_information_update,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_multiplayer_information_invalidate,
     window_multiplayer_information_paint,
-    NULL
+    nullptr
 };
 
 static rct_window_event_list window_multiplayer_players_events = {
-    NULL,
+    nullptr,
     window_multiplayer_players_mouseup,
     window_multiplayer_players_resize,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
     window_multiplayer_players_update,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_multiplayer_players_scrollgetsize,
     window_multiplayer_players_scrollmousedown,
-    NULL,
+    nullptr,
     window_multiplayer_players_scrollmouseover,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_multiplayer_players_invalidate,
     window_multiplayer_players_paint,
     window_multiplayer_players_scrollpaint
 };
 
 static rct_window_event_list window_multiplayer_groups_events = {
-    NULL,
+    nullptr,
     window_multiplayer_groups_mouseup,
     window_multiplayer_groups_resize,
     window_multiplayer_groups_mousedown,
     window_multiplayer_groups_dropdown,
-    NULL,
+    nullptr,
     window_multiplayer_groups_update,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_multiplayer_groups_scrollgetsize,
     window_multiplayer_groups_scrollmousedown,
-    NULL,
+    nullptr,
     window_multiplayer_groups_scrollmouseover,
     window_multiplayer_groups_text_input,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_multiplayer_groups_invalidate,
     window_multiplayer_groups_paint,
     window_multiplayer_groups_scrollpaint
 };
 
 static rct_window_event_list window_multiplayer_options_events = {
-    NULL,
+    nullptr,
     window_multiplayer_options_mouseup,
     window_multiplayer_options_resize,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
     window_multiplayer_options_update,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_multiplayer_options_invalidate,
     window_multiplayer_options_paint,
-    NULL
+    nullptr
 };
 
 static rct_window_event_list *window_multiplayer_page_events[] = {
@@ -297,7 +297,7 @@ rct_window * window_multiplayer_open()
 {
     // Check if window is already open
     rct_window *window = window_bring_to_front_by_class(WC_MULTIPLAYER);
-    if (window == NULL) {
+    if (window == nullptr) {
         window = window_create_auto_pos(320, 144, &window_multiplayer_players_events, WC_MULTIPLAYER, WF_10 | WF_RESIZABLE);
         window_multiplayer_set_page(window, WINDOW_MULTIPLAYER_PAGE_INFORMATION);
     }
@@ -585,10 +585,10 @@ static void window_multiplayer_players_paint(rct_window *w, rct_drawpixelinfo *d
     window_multiplayer_draw_tab_images(w, dpi);
 
     // Columns
-    gfx_draw_string_left(dpi, STR_PLAYER, NULL, w->colours[2], w->x + 6, 58 - 12 + w->y + 1);
-    gfx_draw_string_left(dpi, STR_GROUP, NULL, w->colours[2], w->x + 180, 58 - 12 + w->y + 1);
-    gfx_draw_string_left(dpi, STR_LAST_ACTION, NULL, w->colours[2], w->x + 263, 58 - 12 + w->y + 1);
-    gfx_draw_string_left(dpi, STR_PING, NULL, w->colours[2], w->x + 363, 58 - 12 + w->y + 1);
+    gfx_draw_string_left(dpi, STR_PLAYER, nullptr, w->colours[2], w->x + 6, 58 - 12 + w->y + 1);
+    gfx_draw_string_left(dpi, STR_GROUP, nullptr, w->colours[2], w->x + 180, 58 - 12 + w->y + 1);
+    gfx_draw_string_left(dpi, STR_LAST_ACTION, nullptr, w->colours[2], w->x + 263, 58 - 12 + w->y + 1);
+    gfx_draw_string_left(dpi, STR_PING, nullptr, w->colours[2], w->x + 363, 58 - 12 + w->y + 1);
 
     // Number of players
     stringId = w->no_list_items == 1 ? STR_MULTIPLAYER_PLAYER_COUNT : STR_MULTIPLAYER_PLAYER_COUNT_PLURAL;
@@ -793,7 +793,7 @@ static void window_multiplayer_groups_text_input(rct_window *w, rct_widgetindex 
     if (widgetIndex != WIDX_RENAME_GROUP)
         return;
 
-    if (text == NULL)
+    if (text == nullptr)
         return;
 
     game_do_command(3 | (_selectedGroup << 8) | (1 << 16), GAME_COMMAND_FLAG_APPLY, w->number, *((sint32*)(text + 0)), GAME_COMMAND_MODIFY_GROUPS, *((sint32*)(text + 8)), *((sint32*)(text + 4)));
@@ -843,7 +843,7 @@ static void window_multiplayer_groups_paint(rct_window *w, rct_drawpixelinfo *dp
     sint32 x = w->x + window_multiplayer_groups_widgets[WIDX_CONTENT_PANEL].left + 4;
     sint32 y = w->y + window_multiplayer_groups_widgets[WIDX_CONTENT_PANEL].top + 4;
 
-    gfx_draw_string_left(dpi, STR_DEFAULT_GROUP, NULL, w->colours[2], x, y);
+    gfx_draw_string_left(dpi, STR_DEFAULT_GROUP, nullptr, w->colours[2], x, y);
 
     y += 20;
 

@@ -93,65 +93,65 @@ static void window_about_rct2_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_about_openrct2_common_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
 static rct_window_event_list window_about_openrct2_events = {
-    NULL,
+    nullptr,
     window_about_openrct2_mouseup,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_about_openrct2_paint,
-    NULL
+    nullptr
 };
 
 static rct_window_event_list window_about_rct2_events = {
-    NULL,
+    nullptr,
     window_about_rct2_mouseup,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_about_rct2_paint,
-    NULL
+    nullptr
 };
 
 static rct_window_event_list *window_about_page_events[] = {
@@ -171,7 +171,7 @@ rct_window * window_about_open()
 
     // Check if window is already open
     window = window_bring_to_front_by_class(WC_ABOUT);
-    if (window != NULL)
+    if (window != nullptr)
         return window;
 
     window = window_create_centred(
@@ -241,14 +241,14 @@ static void window_about_openrct2_paint(rct_window *w, rct_drawpixelinfo *dpi)
     utf8 *ch = buffer;
     openrct2_write_full_version_info(ch, sizeof(buffer) - (ch - buffer));
 
-    y += gfx_draw_string_centred_wrapped(dpi, NULL, x, y, width, STR_ABOUT_OPENRCT2_DESCRIPTION, w->colours[2]) + 10;
+    y += gfx_draw_string_centred_wrapped(dpi, nullptr, x, y, width, STR_ABOUT_OPENRCT2_DESCRIPTION, w->colours[2]) + 10;
 
     logoSize = gfx_get_sprite_size(SPR_G2_LOGO);
     gfx_draw_sprite(dpi, SPR_G2_LOGO, x - (logoSize.width / 2), y, 0);
     y += logoSize.height + 20;
 
-    y += gfx_draw_string_centred_wrapped(dpi, NULL, x, y, width, STR_ABOUT_OPENRCT2_DESCRIPTION_2, w->colours[2]) + 15;
-    gfx_draw_string_centred_wrapped(dpi, NULL, x, y, width, STR_ABOUT_OPENRCT2_DESCRIPTION_3, w->colours[2]);
+    y += gfx_draw_string_centred_wrapped(dpi, nullptr, x, y, width, STR_ABOUT_OPENRCT2_DESCRIPTION_2, w->colours[2]) + 15;
+    gfx_draw_string_centred_wrapped(dpi, nullptr, x, y, width, STR_ABOUT_OPENRCT2_DESCRIPTION_3, w->colours[2]);
 
     gfx_draw_string_centred_wrapped(dpi, &ch, x, w->y + WH - 25, width, STR_STRING, w->colours[2]);
 
@@ -295,23 +295,23 @@ static void window_about_rct2_paint(rct_window *w, rct_drawpixelinfo *dpi)
     y = yPage + 5;
 
     // Credits
-    gfx_draw_string_centred(dpi, STR_COPYRIGHT_CS, x, y, COLOUR_BLACK, NULL);
+    gfx_draw_string_centred(dpi, STR_COPYRIGHT_CS, x, y, COLOUR_BLACK, nullptr);
     y += 84;
-    gfx_draw_string_centred(dpi, STR_DESIGNED_AND_PROGRAMMED_BY_CS, x, y, COLOUR_BLACK, NULL);
+    gfx_draw_string_centred(dpi, STR_DESIGNED_AND_PROGRAMMED_BY_CS, x, y, COLOUR_BLACK, nullptr);
     y += 10;
-    gfx_draw_string_centred(dpi, STR_GRAPHICS_BY_SF, x, y, COLOUR_BLACK, NULL);
+    gfx_draw_string_centred(dpi, STR_GRAPHICS_BY_SF, x, y, COLOUR_BLACK, nullptr);
     y += 10;
-    gfx_draw_string_centred(dpi, STR_SOUND_AND_MUSIC_BY_AB, x, y, COLOUR_BLACK, NULL);
+    gfx_draw_string_centred(dpi, STR_SOUND_AND_MUSIC_BY_AB, x, y, COLOUR_BLACK, nullptr);
     y += 10;
-    gfx_draw_string_centred(dpi, STR_ADDITIONAL_SOUNDS_RECORDED_BY_DE, x, y, COLOUR_BLACK, NULL);
+    gfx_draw_string_centred(dpi, STR_ADDITIONAL_SOUNDS_RECORDED_BY_DE, x, y, COLOUR_BLACK, nullptr);
     y += 13;
-    gfx_draw_string_centred(dpi, STR_REPRESENTATION_BY_JL, x, y, COLOUR_BLACK, NULL);
+    gfx_draw_string_centred(dpi, STR_REPRESENTATION_BY_JL, x, y, COLOUR_BLACK, nullptr);
     y += 25;
-    gfx_draw_string_centred(dpi, STR_THANKS_TO, x, y, COLOUR_BLACK, NULL);
+    gfx_draw_string_centred(dpi, STR_THANKS_TO, x, y, COLOUR_BLACK, nullptr);
     y += 10;
-    gfx_draw_string_centred(dpi, STR_THANKS_TO_PEOPLE, x, y, COLOUR_BLACK, NULL);
+    gfx_draw_string_centred(dpi, STR_THANKS_TO_PEOPLE, x, y, COLOUR_BLACK, nullptr);
     y += 25;
-    gfx_draw_string_centred(dpi, STR_LICENSED_TO_INFOGRAMES_INTERACTIVE_INC, x, y, COLOUR_BLACK, NULL);
+    gfx_draw_string_centred(dpi, STR_LICENSED_TO_INFOGRAMES_INTERACTIVE_INC, x, y, COLOUR_BLACK, nullptr);
 
     // Images
     gfx_draw_sprite(dpi, SPR_CREDITS_CHRIS_SAWYER_SMALL, w->x + 92, yPage + 24, 0);

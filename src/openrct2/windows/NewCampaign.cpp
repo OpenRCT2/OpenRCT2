@@ -65,34 +65,34 @@ static void window_new_campaign_invalidate(rct_window *w);
 static void window_new_campaign_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
 static rct_window_event_list window_new_campaign_events = {
-    NULL,
+    nullptr,
     window_new_campaign_mouseup,
-    NULL,
+    nullptr,
     window_new_campaign_mousedown,
     window_new_campaign_dropdown,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_new_campaign_invalidate,
     window_new_campaign_paint,
-    NULL
+    nullptr
 };
 
 uint8 window_new_campaign_rides[MAX_RIDES];
@@ -132,7 +132,7 @@ void window_new_campaign_open(sint16 campaignType)
     sint32 i, numApplicableRides;
 
     w = window_bring_to_front_by_class(WC_NEW_CAMPAIGN);
-    if (w != NULL) {
+    if (w != nullptr) {
         if (w->campaign.campaign_type == campaignType)
             return;
 
@@ -206,7 +206,7 @@ static void window_new_campaign_get_shop_items()
     uint64 items = 0;
     FOR_ALL_RIDES(i, ride) {
         rct_ride_entry *rideType = get_ride_entry(ride->subtype);
-        if (rideType == NULL) {
+        if (rideType == nullptr) {
             continue;
         }
         uint8 itemType = rideType->shop_item;

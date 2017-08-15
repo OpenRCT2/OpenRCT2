@@ -80,26 +80,26 @@ static rct_window_event_list window_scenery_events = {
     window_scenery_resize,
     window_scenery_mousedown,
     window_scenery_dropdown,
-    NULL,
+    nullptr,
     window_scenery_update,
     window_scenery_event_07,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_scenery_scrollgetsize,
     window_scenery_scrollmousedown,
-    NULL,
+    nullptr,
     window_scenery_scrollmouseover,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
     window_scenery_tooltip,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
     window_scenery_invalidate,
     window_scenery_paint,
     window_scenery_scrollpaint,
@@ -416,7 +416,7 @@ void window_scenery_open()
 
     // Check if window is already open
     window = window_bring_to_front_by_class(WC_SCENERY);
-    if (window != NULL)
+    if (window != nullptr)
         return;
 
     init_scenery();
@@ -902,7 +902,7 @@ void window_scenery_invalidate(rct_window *w)
     uint32 titleStringId = STR_MISCELLANEOUS;
     if (tabIndex < 19) {
         rct_scenery_set_entry * sgEntry = get_scenery_group_entry(tabIndex);
-        if (sgEntry != NULL && sgEntry != (rct_scenery_set_entry *)-1) {
+        if (sgEntry != nullptr && sgEntry != (rct_scenery_set_entry *)-1) {
             titleStringId = sgEntry->name;
         }
     }
@@ -960,7 +960,7 @@ void window_scenery_invalidate(rct_window *w)
         window_scenery_widgets[WIDX_SCENERY_TERTIARY_COLOUR_BUTTON].type = WWT_COLOURBTN;
         window_scenery_widgets[WIDX_SCENERY_ROTATE_OBJECTS_BUTTON].type = WWT_EMPTY;
     } else if (tabSelectedSceneryId != -1) {
-        rct_scenery_entry* sceneryEntry = NULL;
+        rct_scenery_entry* sceneryEntry = nullptr;
 
         if (tabSelectedSceneryId >= 0x400) {
             sceneryEntry = get_banner_entry(tabSelectedSceneryId - 0x400);
@@ -1059,7 +1059,7 @@ void window_scenery_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
     uint32 price = 0;
 
-    rct_scenery_entry* sceneryEntry = NULL;
+    rct_scenery_entry* sceneryEntry = nullptr;
     if (selectedSceneryEntryId >= 0x400) {
         sceneryEntry = get_banner_entry(selectedSceneryEntryId - 0x400);
         price = sceneryEntry->banner.price;
@@ -1248,7 +1248,7 @@ bool window_scenery_set_selected_item(sint32 sceneryId)
 {
     bool result = false;
     rct_window * w = window_bring_to_front_by_class(WC_SCENERY);
-    if (w != NULL) {
+    if (w != nullptr) {
         sint32 tabIndex = window_scenery_find_tab_with_scenery_id(sceneryId);
         if (tabIndex != -1) {
             gWindowSceneryActiveTabIndex = tabIndex;

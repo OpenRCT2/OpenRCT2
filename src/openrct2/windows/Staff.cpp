@@ -167,93 +167,93 @@ static rct_window_event_list window_staff_overview_events = {
     window_staff_overview_resize,
     window_staff_overview_mousedown,
     window_staff_overview_dropdown,
-    NULL,
+    nullptr,
     window_staff_overview_update,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
     window_staff_overview_tool_update,
     window_staff_overview_tool_down,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
     window_staff_overview_tool_abort,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_staff_overview_text_input,
     window_staff_overview_viewport_rotate,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_staff_overview_invalidate, //Invalidate
     window_staff_overview_paint, //Paint
-    NULL
+    nullptr
 };
 
 // 0x992B5C
 static rct_window_event_list window_staff_options_events = {
-    NULL,
+    nullptr,
     window_staff_options_mouseup,
     window_staff_stats_resize,
     window_staff_options_mousedown,
     window_staff_options_dropdown,
     window_staff_unknown_05,
     window_staff_options_update,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_staff_options_invalidate, //Invalidate
     window_staff_options_paint, //Paint
-    NULL
+    nullptr
 };
 
 // 0x992BCC
 static rct_window_event_list window_staff_stats_events = {
-    NULL,
+    nullptr,
     window_staff_stats_mouseup,
     window_staff_stats_resize,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
     window_staff_unknown_05,
     window_staff_stats_update,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_staff_stats_invalidate, //Invalidate
     window_staff_stats_paint, //Paint
-    NULL
+    nullptr
 };
 
 static rct_window_event_list *window_staff_page_events[] = {
@@ -298,7 +298,7 @@ static uint8 _availableCostumes[ENTERTAINER_COSTUME_COUNT];
 rct_window *window_staff_open(rct_peep* peep)
 {
     rct_window* w = window_bring_to_front_by_number(WC_PEEP, peep->sprite_index);
-    if (w == NULL) {
+    if (w == nullptr) {
         w = window_create_auto_pos(WW, WH, &window_staff_overview_events, WC_PEEP, WF_10 | WF_RESIZABLE);
 
         w->number = peep->sprite_index;
@@ -1101,7 +1101,7 @@ void window_staff_overview_tool_update(rct_window* w, rct_widgetindex widgetInde
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
 
     sint32 map_x, map_y;
-    footpath_get_coordinates_from_pos(x, y + 16, &map_x, &map_y, NULL, NULL);
+    footpath_get_coordinates_from_pos(x, y + 16, &map_x, &map_y, nullptr, nullptr);
     if (map_x != MAP_LOCATION_NULL) {
         gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
         gMapSelectType = MAP_SELECT_TYPE_FULL;
@@ -1115,7 +1115,7 @@ void window_staff_overview_tool_update(rct_window* w, rct_widgetindex widgetInde
     gPickupPeepImage = UINT32_MAX;
 
     sint32 interactionType;
-    get_map_coordinates_from_pos(x, y, VIEWPORT_INTERACTION_MASK_NONE, NULL, NULL, &interactionType, NULL, NULL);
+    get_map_coordinates_from_pos(x, y, VIEWPORT_INTERACTION_MASK_NONE, nullptr, nullptr, &interactionType, nullptr, nullptr);
     if (interactionType == VIEWPORT_INTERACTION_ITEM_NONE)
         return;
 
@@ -1147,7 +1147,7 @@ void window_staff_overview_tool_down(rct_window* w, rct_widgetindex widgetIndex,
     if (widgetIndex == WIDX_PICKUP) {
         sint32 dest_x, dest_y;
         rct_map_element* mapElement;
-        footpath_get_coordinates_from_pos(x, y + 16, &dest_x, &dest_y, NULL, &mapElement);
+        footpath_get_coordinates_from_pos(x, y + 16, &dest_x, &dest_y, nullptr, &mapElement);
 
         if (dest_x == MAP_LOCATION_NULL)
             return;
@@ -1157,7 +1157,7 @@ void window_staff_overview_tool_down(rct_window* w, rct_widgetindex widgetIndex,
     }
     else if (widgetIndex == WIDX_PATROL){
         sint32 dest_x, dest_y;
-        footpath_get_coordinates_from_pos(x, y, &dest_x, &dest_y, NULL, NULL);
+        footpath_get_coordinates_from_pos(x, y, &dest_x, &dest_y, nullptr, nullptr);
 
         if (dest_x == MAP_LOCATION_NULL) return;
 
@@ -1187,7 +1187,7 @@ void window_staff_overview_text_input(rct_window *w, rct_widgetindex widgetIndex
     if (widgetIndex != WIDX_RENAME)
         return;
 
-    if (text == NULL)
+    if (text == nullptr)
         return;
 
     gGameCommandErrorTitle = STR_STAFF_ERROR_CANT_NAME_STAFF_MEMBER;

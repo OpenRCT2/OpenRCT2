@@ -159,34 +159,34 @@ static http_response_t *http_request(const HttpRequest2 &request)
     write_buffer writeBuffer;
 
     curl = curl_easy_init();
-    if (curl == NULL)
-        return NULL;
+    if (curl == nullptr)
+        return nullptr;
 
-    if (request.Type == HTTP_DATA_JSON && request.Body.Json != NULL) {
+    if (request.Type == HTTP_DATA_JSON && request.Body.Json != nullptr) {
         readBuffer.ptr = json_dumps(request.Body.Json, JSON_COMPACT);
         readBuffer.length = strlen(readBuffer.ptr);
         readBuffer.position = 0;
-    } else if (request.Type == HTTP_DATA_RAW && request.Body.Buffer != NULL) {
+    } else if (request.Type == HTTP_DATA_RAW && request.Body.Buffer != nullptr) {
         readBuffer.ptr = request.Body.Buffer;
         readBuffer.length = request.Size;
         readBuffer.position = 0;
     }
 
-    writeBuffer.ptr = NULL;
+    writeBuffer.ptr = nullptr;
     writeBuffer.length = 0;
     writeBuffer.capacity = 0;
 
-    curl_slist *headers = NULL;
+    curl_slist *headers = nullptr;
 
     if (request.Type == HTTP_DATA_JSON) {
         headers = curl_slist_append(headers, "Accept: " MIME_TYPE_APPLICATION_JSON);
 
-        if (request.Body.Json != NULL) {
+        if (request.Body.Json != nullptr) {
             headers = curl_slist_append(headers, "Content-Type: " MIME_TYPE_APPLICATION_JSON);
         }
     }
 
-    if (readBuffer.ptr != NULL) {
+    if (readBuffer.ptr != nullptr) {
         char contentLengthHeaderValue[64];
         snprintf(contentLengthHeaderValue, sizeof(contentLengthHeaderValue), "Content-Length: %zu", readBuffer.length);
         headers = curl_slist_append(headers, contentLengthHeaderValue);
@@ -205,16 +205,16 @@ static http_response_t *http_request(const HttpRequest2 &request)
 
     curlResult = curl_easy_perform(curl);
 
-    if (request.Type == HTTP_DATA_JSON && request.Body.Json != NULL) {
+    if (request.Type == HTTP_DATA_JSON && request.Body.Json != nullptr) {
         free(readBuffer.ptr);
     }
 
     if (curlResult != CURLE_OK) {
         log_error("HTTP request failed: %s.", curl_easy_strerror(curlResult));
-        if (writeBuffer.ptr != NULL)
+        if (writeBuffer.ptr != nullptr)
             free(writeBuffer.ptr);
 
-        return NULL;
+        return nullptr;
     }
 
     long httpStatusCode;
@@ -229,14 +229,14 @@ static http_response_t *http_request(const HttpRequest2 &request)
     writeBuffer.capacity = writeBuffer.length;
     writeBuffer.ptr[writeBuffer.length - 1] = 0;
 
-    response = NULL;
+    response = nullptr;
 
     // Parse as JSON if response is JSON
-    if (contentType != NULL && strstr(contentType, "json") != NULL) {
+    if (contentType != nullptr && strstr(contentType, "json") != nullptr) {
         json_t *root;
         json_error_t error;
         root = json_loads(writeBuffer.ptr, 0, &error);
-        if (root != NULL) {
+        if (root != nullptr) {
             response = (http_response_t*) malloc(sizeof(http_response_t));
             response->tag = request.Tag;
             response->status_code = (sint32) httpStatusCode;
@@ -272,9 +272,9 @@ void http_request_async(const http_request_t * request, void (*callback)(http_re
 
 void http_request_dispose(http_response_t *response)
 {
-    if (response->type == HTTP_DATA_JSON && response->root != NULL)
+    if (response->type == HTTP_DATA_JSON && response->root != nullptr)
         json_decref(response->root);
-    else if (response->type == HTTP_DATA_RAW && response->body != NULL)
+    else if (response->type == HTTP_DATA_RAW && response->body != nullptr)
         free(response->body);
 
     free(response);
@@ -285,7 +285,7 @@ const char *http_get_extension_from_url(const char *url, const char *fallback)
     const char *extension = strrchr(url, '.');
 
     // Assume a save file by default if no valid extension can be determined
-    if (extension == NULL || strchr(extension, '/') != NULL) {
+    if (extension == nullptr || strchr(extension, '/') != nullptr) {
         return fallback;
     } else {
         return extension;
@@ -302,19 +302,19 @@ size_t http_download_park(const char * url, void * * outData)
 
     http_response_t *response = http_request(request);
 
-    if (response == NULL || response->status_code != 200) {
+    if (response == nullptr || response->status_code != 200) {
         Console::Error::WriteLine("Failed to download '%s'", request.Url.c_str());
-        if (response != NULL) {
+        if (response != nullptr) {
             http_request_dispose(response);
         }
 
-        *outData = NULL;
+        *outData = nullptr;
         return 0;
     }
 
     size_t dataSize = response->size - 1;
     void * data = malloc(dataSize);
-    if (data == NULL) {
+    if (data == nullptr) {
         dataSize = 0;
         Console::Error::WriteLine("Failed to allocate memory for downloaded park.");
     } else {

@@ -92,32 +92,32 @@ static void window_music_credits_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_music_credits_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 scrollIndex);
 
 static rct_window_event_list window_music_credits_events = {
-    NULL,
+    nullptr,
     window_music_credits_mouseup,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_music_credits_scrollgetsize,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_music_credits_paint,
     window_music_credits_scrollpaint
 };
@@ -132,7 +132,7 @@ rct_window * window_music_credits_open()
 
     // Check if window is already open
     window = window_bring_to_front_by_class(WC_MUSIC_CREDITS);
-    if (window != NULL)
+    if (window != nullptr)
         return window;
 
     window = window_create_centred(
@@ -196,13 +196,13 @@ static void window_music_credits_scrollpaint(rct_window *w, rct_drawpixelinfo *d
     sint32 y = 2;
 
     for (size_t i = 0; i < Util::CountOf(music_credits); i++) {
-        gfx_draw_string_centred(dpi, music_credits[i], x, y, COLOUR_BLACK, NULL);
+        gfx_draw_string_centred(dpi, music_credits[i], x, y, COLOUR_BLACK, nullptr);
         y += 10;
     }
 
     // Add 4 more space before "Original recordings ...".
     y += 4;
-    gfx_draw_string_centred(dpi, STR_MUSIC_ACKNOWLEDGEMENTS_ORIGINAL_RECORDINGS, x, y, COLOUR_BLACK, NULL);
+    gfx_draw_string_centred(dpi, STR_MUSIC_ACKNOWLEDGEMENTS_ORIGINAL_RECORDINGS, x, y, COLOUR_BLACK, nullptr);
     y += 10;
 
     // Draw the separator
@@ -211,7 +211,7 @@ static void window_music_credits_scrollpaint(rct_window *w, rct_drawpixelinfo *d
     y += 11;
 
     for (size_t i = 0; i < Util::CountOf(music_credits_rct2); i++) {
-        gfx_draw_string_centred(dpi, music_credits_rct2[i], x, y, COLOUR_BLACK, NULL);
+        gfx_draw_string_centred(dpi, music_credits_rct2[i], x, y, COLOUR_BLACK, nullptr);
         y += 10;
     }
 

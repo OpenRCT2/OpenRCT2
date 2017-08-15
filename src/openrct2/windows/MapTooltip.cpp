@@ -32,34 +32,34 @@ static void window_map_tooltip_update(rct_window *w);
 static void window_map_tooltip_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
 static rct_window_event_list window_map_tooltip_events = {
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_map_tooltip_update,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_map_tooltip_paint,
-    NULL
+    nullptr
 };
 
 #define MAP_TOOLTIP_ARGS
@@ -97,7 +97,7 @@ void window_map_tooltip_update_visibility()
     if (_cursorHoldDuration < 25 ||
         stringId == STR_NONE ||
         input_test_place_object_modifier((PLACE_OBJECT_MODIFIER) (PLACE_OBJECT_MODIFIER_COPY_Z | PLACE_OBJECT_MODIFIER_SHIFT_Z)) ||
-        window_find_by_class(WC_ERROR) != NULL
+        window_find_by_class(WC_ERROR) != nullptr
     ) {
         window_close_by_class(WC_MAP_TOOLTIP);
     } else {
@@ -121,7 +121,7 @@ static void window_map_tooltip_open()
     y = state->y + 15;
 
     w = window_find_by_class(WC_MAP_TOOLTIP);
-    if (w == NULL) {
+    if (w == nullptr) {
         w = window_create(
             x, y, width, height, &window_map_tooltip_events, WC_MAP_TOOLTIP, WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_NO_BACKGROUND
         );

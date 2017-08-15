@@ -63,32 +63,32 @@ static void window_install_track_text_input(rct_window *w, rct_widgetindex widge
 static rct_window_event_list window_install_track_events = {
     window_install_track_close,
     window_install_track_mouseup,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_install_track_text_input,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_install_track_invalidate,
     window_install_track_paint,
-    NULL
+    nullptr
 };
 
 static rct_track_td6 *_trackDesign;
@@ -106,7 +106,7 @@ static void window_install_track_design(rct_window *w);
 void window_install_track_open(const utf8 *path)
 {
     _trackDesign = track_design_open(path);
-    if (_trackDesign == NULL) {
+    if (_trackDesign == nullptr) {
         window_error_open(STR_UNABLE_TO_LOAD_FILE, STR_NONE);
         return;
     }
@@ -116,7 +116,7 @@ void window_install_track_open(const utf8 *path)
         log_error("Failed to load track (ride type null): %s", path);
         return;
     }
-    if (object_manager_load_object(&_trackDesign->vehicle_object) == NULL) {
+    if (object_manager_load_object(&_trackDesign->vehicle_object) == nullptr) {
         log_error("Failed to load track (vehicle load fail): %s", path);
         return;
     }
@@ -157,7 +157,7 @@ static void window_install_track_close(rct_window *w)
     SafeFree(_trackName);
     SafeFree(_trackDesignPreviewPixels);
     track_design_dispose(_trackDesign);
-    _trackDesign = NULL;
+    _trackDesign = nullptr;
 }
 
 /**
@@ -242,7 +242,7 @@ static void window_install_track_paint(rct_window *w, rct_drawpixelinfo *dpi)
     if (td6->track_flags & TRACK_DESIGN_FLAG_SCENERY_UNAVAILABLE) {
         if (!gTrackDesignSceneryToggle) {
             // Scenery not available
-            gfx_draw_string_centred_clipped(dpi, STR_DESIGN_INCLUDES_SCENERY_WHICH_IS_UNAVAILABLE, NULL, COLOUR_BLACK, x, y, 368);
+            gfx_draw_string_centred_clipped(dpi, STR_DESIGN_INCLUDES_SCENERY_WHICH_IS_UNAVAILABLE, nullptr, COLOUR_BLACK, x, y, 368);
             y -= 10;
         }
     }

@@ -353,7 +353,7 @@ bool NetworkKey::Sign(const uint8 * md, const size_t len, char ** signature, siz
     *signature = nullptr;
 
     /* Create the Message Digest Context */
-    if ((mdctx = EVP_MD_CTX_create()) == NULL)
+    if ((mdctx = EVP_MD_CTX_create()) == nullptr)
     {
         log_error("Failed to create MD context");
         return false;
@@ -385,7 +385,7 @@ bool NetworkKey::Sign(const uint8 * md, const size_t len, char ** signature, siz
 
     uint8 * sig;
     /* Allocate memory for the signature based on size in slen */
-    if ((sig = (unsigned char*)malloc((sint32)(sizeof(unsigned char) * (*out_size)))) == NULL)
+    if ((sig = (unsigned char*)malloc((sint32)(sizeof(unsigned char) * (*out_size)))) == nullptr)
     {
         log_error("Failed to crypto-allocate space for signature");
         EVP_MD_CTX_destroy(mdctx);
@@ -411,7 +411,7 @@ bool NetworkKey::Verify(const uint8 * md, const size_t len, const char * sig, co
     EVP_MD_CTX * mdctx = nullptr;
 
     /* Create the Message Digest Context */
-    if ((mdctx = EVP_MD_CTX_create()) == NULL)
+    if ((mdctx = EVP_MD_CTX_create()) == nullptr)
     {
         log_error("Failed to create MD context");
         return false;

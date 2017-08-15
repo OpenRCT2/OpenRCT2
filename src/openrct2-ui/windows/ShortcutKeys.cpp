@@ -59,31 +59,31 @@ static void window_shortcut_scrollmouseover(rct_window *w, sint32 scrollIndex, s
 static void window_shortcut_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 scrollIndex);
 
 static rct_window_event_list window_shortcut_events = {
-    NULL,
+    nullptr,
     window_shortcut_mouseup,
     window_shortcut_resize,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_shortcut_scrollgetsize,
     window_shortcut_scrollmousedown,
-    NULL,
+    nullptr,
     window_shortcut_scrollmouseover,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
     window_shortcut_tooltip,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
     window_shortcut_invalidate,
     window_shortcut_paint,
     window_shortcut_scrollpaint
@@ -166,7 +166,7 @@ const rct_string_id ShortcutStringIds[SHORTCUT_COUNT] = {
 rct_window * window_shortcut_keys_open()
 {
     rct_window * w = window_bring_to_front_by_class(WC_KEYBOARD_SHORTCUT_LIST);
-    if (w == NULL)
+    if (w == nullptr)
     {
         w = window_create_auto_pos(WW, WH, &window_shortcut_events, WC_KEYBOARD_SHORTCUT_LIST, WF_RESIZABLE);
 

@@ -64,32 +64,32 @@ static void window_clear_scenery_inputsize(rct_window *w);
 static rct_window_event_list window_clear_scenery_events = {
     window_clear_scenery_close,
     window_clear_scenery_mouseup,
-    NULL,
+    nullptr,
     window_clear_scenery_mousedown,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
     window_clear_scenery_update,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_clear_scenery_textinput,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_clear_scenery_invalidate,
     window_clear_scenery_paint,
-    NULL
+    nullptr
 };
 
 /**
@@ -102,7 +102,7 @@ rct_window * window_clear_scenery_open()
 
     // Check if window is already open
     window = window_find_by_class(WC_CLEAR_SCENERY);
-    if (window != NULL)
+    if (window != nullptr)
         return window;
 
     window = window_create(context_get_width() - 98, 29, 98, 94, &window_clear_scenery_events, WC_CLEAR_SCENERY, 0);
@@ -187,7 +187,7 @@ static void window_clear_scenery_textinput(rct_window *w, rct_widgetindex widget
     sint32 size;
     char* end;
 
-    if (widgetIndex != WIDX_PREVIEW || text == NULL)
+    if (widgetIndex != WIDX_PREVIEW || text == nullptr)
         return;
 
     size = strtol(text, &end, 10);

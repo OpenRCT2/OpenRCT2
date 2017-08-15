@@ -51,7 +51,7 @@ typedef struct sc_list_item {
     };
 } sc_list_item;
 
-static sc_list_item *_listItems = NULL;
+static sc_list_item *_listItems = nullptr;
 
 enum {
     WIDX_BACKGROUND,
@@ -112,29 +112,29 @@ static void window_scenarioselect_scrollpaint(rct_window *w, rct_drawpixelinfo *
 static rct_window_event_list window_scenarioselect_events = {
     window_scenarioselect_close,
     window_scenarioselect_mouseup,
-    NULL,
+    nullptr,
     window_scenarioselect_mousedown,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_scenarioselect_scrollgetsize,
     window_scenarioselect_scrollmousedown,
-    NULL,
+    nullptr,
     window_scenarioselect_scrollmouseover,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_scenarioselect_invalidate,
     window_scenarioselect_paint,
     window_scenarioselect_scrollpaint
@@ -160,7 +160,7 @@ static void _window_scenarioselect_open(scenarioselect_callback callback)
 
     _callback = callback;
 
-    if (window_bring_to_front_by_class(WC_SCENARIO_SELECT) != NULL)
+    if (window_bring_to_front_by_class(WC_SCENARIO_SELECT) != nullptr)
         return;
 
     // Load scenario list
@@ -190,7 +190,7 @@ static void _window_scenarioselect_open(scenarioselect_callback callback)
 
     window_init_scroll_widgets(window);
     window->viewport_focus_coordinates.var_480 = -1;
-    window->highlighted_scenario = NULL;
+    window->highlighted_scenario = nullptr;
 }
 
 /**
@@ -250,7 +250,7 @@ static void window_scenarioselect_mousedown(rct_window *w, rct_widgetindex widge
 {
     if (widgetIndex >= WIDX_TAB1 && widgetIndex <= WIDX_TAB8) {
         w->selected_tab = widgetIndex - 4;
-        w->highlighted_scenario = NULL;
+        w->highlighted_scenario = nullptr;
         initialise_list_items(w);
         window_invalidate(w);
         window_event_resize_call(w);
@@ -309,7 +309,7 @@ static void window_scenarioselect_scrollmouseover(rct_window *w, sint32 scrollIn
 {
     bool originalShowLockedInformation = _showLockedInformation;
     _showLockedInformation = false;
-    const scenario_index_entry *selected = NULL;
+    const scenario_index_entry *selected = nullptr;
     for (sc_list_item *listItem = _listItems; listItem->type != LIST_ITEM_TYPE_END; listItem++) {
         switch (listItem->type) {
         case LIST_ITEM_TYPE_HEADING:
@@ -391,14 +391,14 @@ static void window_scenarioselect_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
     // Return if no scenario highlighted
     scenario = w->highlighted_scenario;
-    if (scenario == NULL) {
+    if (scenario == nullptr) {
         if (_showLockedInformation) {
             // Show locked information
             sint32 x = w->x + window_scenarioselect_widgets[WIDX_SCENARIOLIST].right + 4;
             sint32 y = w->y + window_scenarioselect_widgets[WIDX_TABCONTENT].top + 5;
-            gfx_draw_string_centred_clipped(dpi, STR_SCENARIO_LOCKED, NULL, COLOUR_BLACK, x + 85, y, 170);
+            gfx_draw_string_centred_clipped(dpi, STR_SCENARIO_LOCKED, nullptr, COLOUR_BLACK, x + 85, y, 170);
             y += 15;
-            y += gfx_draw_string_left_wrapped(dpi, NULL, x, y, 170, STR_SCENARIO_LOCKED_DESC, COLOUR_BLACK) + 5;
+            y += gfx_draw_string_left_wrapped(dpi, nullptr, x, y, 170, STR_SCENARIO_LOCKED_DESC, COLOUR_BLACK) + 5;
         }
         return;
     }
@@ -435,7 +435,7 @@ static void window_scenarioselect_paint(rct_window *w, rct_drawpixelinfo *dpi)
     y += gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, x, y, 170, STR_OBJECTIVE, COLOUR_BLACK) + 5;
 
     // Scenario score
-    if (scenario->highscore != NULL) {
+    if (scenario->highscore != nullptr) {
         // TODO: Should probably be translatable
         const utf8 *completedByName = "???";
         if (!str_is_null_or_empty(scenario->highscore->name)) {
@@ -486,7 +486,7 @@ static void window_scenarioselect_scrollpaint(rct_window *w, rct_drawpixelinfo *
                 gfx_filter_rect(dpi, 0, y, w->width, y + 23, PALETTE_DARKEN_1);
             }
 
-            bool isCompleted = scenario->highscore != NULL;
+            bool isCompleted = scenario->highscore != nullptr;
             bool isDisabled = listItem->scenario.is_locked;
 
             // Draw scenario name
@@ -533,11 +533,11 @@ static void draw_category_heading(rct_window *w, rct_drawpixelinfo *dpi, sint32 
 
     // Draw string
     sint32 centreX = (left + right) / 2;
-    gfx_draw_string_centred(dpi, stringId, centreX, y, baseColour, NULL);
+    gfx_draw_string_centred(dpi, stringId, centreX, y, baseColour, nullptr);
 
     // Get string dimensions
     utf8 *buffer = gCommonStringFormatBuffer;
-    format_string(buffer, 256, stringId, NULL);
+    format_string(buffer, 256, stringId, nullptr);
     sint32 categoryStringHalfWidth = (gfx_get_string_width(buffer) / 2) + 4;
     sint32 strLeft = centreX - categoryStringHalfWidth;
     sint32 strRight = centreX + categoryStringHalfWidth;
@@ -626,7 +626,7 @@ static void initialise_list_items(rct_window *w)
         listItem->scenario.scenario = scenario;
         if (is_locking_enabled(w)) {
             listItem->scenario.is_locked = numUnlocks <= 0;
-            if (scenario->highscore == NULL) {
+            if (scenario->highscore == nullptr) {
                 numUnlocks--;
             } else {
                 // Mark RCT1 scenario as completed

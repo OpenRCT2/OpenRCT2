@@ -115,32 +115,32 @@ static void window_footpath_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static rct_window_event_list window_footpath_events = {
     window_footpath_close,
     window_footpath_mouseup,
-    NULL,
+    nullptr,
     window_footpath_mousedown,
     window_footpath_dropdown,
-    NULL,
+    nullptr,
     window_footpath_update,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
     window_footpath_toolupdate,
     window_footpath_tooldown,
     window_footpath_tooldrag,
     window_footpath_toolup,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_footpath_invalidate,
     window_footpath_paint,
-    NULL
+    nullptr
 };
 
 static money32 _window_footpath_cost;
@@ -619,7 +619,7 @@ static void window_footpath_paint(rct_window *w, rct_drawpixelinfo *dpi)
         // Draw build this... label
         x = w->x + (window_footpath_widgets[WIDX_CONSTRUCT].left + window_footpath_widgets[WIDX_CONSTRUCT].right) / 2;
         y = w->y + window_footpath_widgets[WIDX_CONSTRUCT].bottom - 23;
-        gfx_draw_string_centred(dpi, STR_BUILD_THIS, x, y, COLOUR_BLACK, NULL);
+        gfx_draw_string_centred(dpi, STR_BUILD_THIS, x, y, COLOUR_BLACK, nullptr);
     }
 
     // Draw cost
@@ -708,7 +708,7 @@ static void window_footpath_set_provisional_path_at_point(sint32 x, sint32 y)
     sint32 interactionType;
     rct_map_element *mapElement;
     rct_xy16 mapCoord = { 0 };
-    get_map_coordinates_from_pos(x, y, VIEWPORT_INTERACTION_MASK_FOOTPATH & VIEWPORT_INTERACTION_MASK_TERRAIN, &mapCoord.x, &mapCoord.y, &interactionType, &mapElement, NULL);
+    get_map_coordinates_from_pos(x, y, VIEWPORT_INTERACTION_MASK_FOOTPATH & VIEWPORT_INTERACTION_MASK_TERRAIN, &mapCoord.x, &mapCoord.y, &interactionType, &mapElement, nullptr);
     x = mapCoord.x;
     y = mapCoord.y;
 
@@ -806,7 +806,7 @@ static void window_footpath_place_path_at_point(sint32 x, sint32 y)
     footpath_provisional_update();
 
     rct_xy16 mapCoord = { 0 };
-    get_map_coordinates_from_pos(x, y, VIEWPORT_INTERACTION_MASK_FOOTPATH & VIEWPORT_INTERACTION_MASK_TERRAIN, &mapCoord.x, &mapCoord.y, &interactionType, &mapElement, NULL);
+    get_map_coordinates_from_pos(x, y, VIEWPORT_INTERACTION_MASK_FOOTPATH & VIEWPORT_INTERACTION_MASK_TERRAIN, &mapCoord.x, &mapCoord.y, &interactionType, &mapElement, nullptr);
     x = mapCoord.x;
     y = mapCoord.y;
 
@@ -991,7 +991,7 @@ static rct_map_element *footpath_get_map_element_to_remove()
     x = gFootpathConstructFromPosition.x / 32;
     y = gFootpathConstructFromPosition.y / 32;
     if (x >= 256 || y >= 256)
-        return NULL;
+        return nullptr;
 
     z = (gFootpathConstructFromPosition.z >> 3) & 0xFF;
     zLow = z - 2;
@@ -1015,7 +1015,7 @@ static rct_map_element *footpath_get_map_element_to_remove()
         }
     } while (!map_element_is_last_for_tile(mapElement++));
 
-    return NULL;
+    return nullptr;
 }
 
 /**
@@ -1030,7 +1030,7 @@ static void window_footpath_remove()
     footpath_provisional_update();
 
     mapElement = footpath_get_map_element_to_remove();
-    if (mapElement != NULL)
+    if (mapElement != nullptr)
         footpath_remove_map_element(mapElement);
 
     window_footpath_set_enabled_and_pressed_widgets();
@@ -1043,7 +1043,7 @@ static void window_footpath_remove()
 static void window_footpath_set_enabled_and_pressed_widgets()
 {
     rct_window *w = window_find_by_class(WC_FOOTPATH);
-    if (w == NULL)
+    if (w == nullptr)
         return;
 
     if (gFootpathConstructionMode == PATH_CONSTRUCTION_MODE_BRIDGE_OR_TUNNEL) {

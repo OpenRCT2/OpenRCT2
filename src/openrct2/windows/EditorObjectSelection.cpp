@@ -202,26 +202,26 @@ static rct_window_event_list window_editor_object_selection_events = {
     window_editor_object_selection_resize,
     window_editor_object_selection_mousedown,
     window_editor_object_selection_dropdown,
-    NULL,
+    nullptr,
     window_editor_object_selection_update,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_editor_object_selection_scrollgetsize,
     window_editor_object_selection_scroll_mousedown,
-    NULL,
+    nullptr,
     window_editor_object_selection_scroll_mouseover,
     window_editor_object_selection_textinput,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
     window_editor_object_selection_tooltip,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
     window_editor_object_selection_invalidate,
     window_editor_object_selection_paint,
     window_editor_object_selection_scrollpaint
@@ -277,11 +277,11 @@ static rct_string_id get_ride_type_string_id(const ObjectRepositoryItem * item);
 typedef sint32(*sortFunc_t)(const void *, const void *);
 
 static sint32 _numListItems = 0;
-static list_item *_listItems = NULL;
+static list_item *_listItems = nullptr;
 static sint32 _listSortType = RIDE_SORT_TYPE;
 static bool _listSortDescending = false;
-static void * _loadedObject = NULL;
-static uint8 * _objectSelectionFlags = NULL;
+static void * _loadedObject = nullptr;
+static uint8 * _objectSelectionFlags = nullptr;
 static sint32 _numSelectedObjectsForType[11];
 static sint32 _numAvailableObjectsForType[11];
 static bool _maxObjectsWasHit;
@@ -358,11 +358,11 @@ static void visible_list_refresh(rct_window *w)
     }
 
     _listItems = Memory::ReallocateArray(_listItems, _numListItems);
-    if (_listItems == NULL) {
+    if (_listItems == nullptr) {
         _numListItems = 0;
         log_error("Unable to reallocate list items");
     } else {
-        sortFunc_t sortFunc = NULL;
+        sortFunc_t sortFunc = nullptr;
         switch (_listSortType) {
         case RIDE_SORT_TYPE:
             sortFunc = visible_list_sort_ride_type;
@@ -398,7 +398,7 @@ void window_editor_object_selection_open()
     rct_window* window;
 
     window = window_bring_to_front_by_class(WC_EDITOR_OBJECT_SELECTION);
-    if (window != NULL)
+    if (window != nullptr)
         return;
 
     if (!sub_6AB211())
@@ -611,7 +611,7 @@ static sint32 sub_6AB211()
 {
     sint32 numObjects = (sint32)object_repository_get_items_count();
     _objectSelectionFlags = (uint8*)calloc(numObjects, sizeof(uint8));
-    if (_objectSelectionFlags == NULL){
+    if (_objectSelectionFlags == nullptr){
         log_error("Failed to allocate memory for object flag list.");
         return 0;
     }
@@ -720,7 +720,7 @@ static void window_editor_object_selection_close(rct_window *w)
     editor_object_flags_free();
 
     object_delete(_loadedObject);
-    _loadedObject = NULL;
+    _loadedObject = nullptr;
 
     if (gScreenFlags & SCREEN_FLAGS_EDITOR) {
         research_populate_list_random();
@@ -813,7 +813,7 @@ static void window_editor_object_selection_mouseup(rct_window *w, rct_widgetinde
         }
         window_invalidate(w);
 
-        window_loadsave_open(LOADSAVETYPE_LOAD | LOADSAVETYPE_TRACK, NULL);
+        window_loadsave_open(LOADSAVETYPE_LOAD | LOADSAVETYPE_TRACK, nullptr);
         break;
     case WIDX_FILTER_STRING_BUTTON:
         //window_text_input_open(w, widgetIndex, STR_OBJECT_SEARCH, STR_OBJECT_SEARCH_DESC, STR_STRING, (uint32)_filter_string, 40);
@@ -1026,11 +1026,11 @@ static void window_editor_object_selection_scroll_mouseover(rct_window *w, sint3
         w->selected_list_item = selectedObject;
 
         object_delete(_loadedObject);
-        _loadedObject = NULL;
+        _loadedObject = nullptr;
 
         list_item * listItem = &_listItems[selectedObject];
         if (selectedObject == -1) {
-            w->object_entry = NULL;
+            w->object_entry = nullptr;
         } else {
             w->object_entry = listItem->entry;
             _loadedObject = object_repository_load_object(listItem->entry);
@@ -1291,7 +1291,7 @@ static void window_editor_object_selection_paint(rct_window *w, rct_drawpixelinf
         gfx_draw_string_left_clipped(dpi, STR_OBJECTS_SORT_RIDE, &stringId, w->colours[1], w->x + widget->left + 1, w->y + widget->top + 1, widget->right - widget->left);
     }
 
-    if (w->selected_list_item == -1 || _loadedObject == NULL)
+    if (w->selected_list_item == -1 || _loadedObject == nullptr)
         return;
 
     list_item *listItem = &_listItems[w->selected_list_item];
@@ -1322,7 +1322,7 @@ static void window_editor_object_selection_paint(rct_window *w, rct_drawpixelinf
 
     // Draw description of object
     const char *description = object_get_description(_loadedObject);
-    if (description != NULL) {
+    if (description != nullptr) {
         set_format_arg(0, rct_string_id, STR_STRING);
         set_format_arg(2, const char *, description);
 
@@ -1344,18 +1344,18 @@ static void window_editor_object_selection_paint(rct_window *w, rct_drawpixelinf
     case 2: stringId = STR_OBJECT_FILTER_TT; break;
     default: stringId = STR_OBJECT_FILTER_CUSTOM; break;
     }
-    gfx_draw_string_right(dpi, stringId, NULL, COLOUR_WHITE, w->x + w->width - 5, w->y + w->height - 3 - 12 - 14);
+    gfx_draw_string_right(dpi, stringId, nullptr, COLOUR_WHITE, w->x + w->width - 5, w->y + w->height - 3 - 12 - 14);
 
     //
     if (w->selected_tab == WINDOW_OBJECT_SELECTION_PAGE_RIDE_VEHICLES_ATTRACTIONS) {
         y = w->y + w->height - 3 - 12 - 14 - 14;
         stringId = get_ride_type_string_id(listItem->repositoryItem);
-        gfx_draw_string_right(dpi, stringId, NULL, COLOUR_WHITE, w->x + w->width - 5, y);
+        gfx_draw_string_right(dpi, stringId, nullptr, COLOUR_WHITE, w->x + w->width - 5, y);
         y -= 11;
     }
 
     //stringId = highlightedEntry->checksum
-    // gfx_draw_string_right(dpi, stringId, NULL, 2, w->x + w->width - 5, w->y + w->height - 3 - 12 - 14);
+    // gfx_draw_string_right(dpi, stringId, nullptr, 2, w->x + w->width - 5, w->y + w->height - 3 - 12 - 14);
 
     // Draw object dat name
     const char *path = path_get_filename(listItem->repositoryItem->Path);
@@ -1535,7 +1535,7 @@ static sint32 window_editor_object_selection_select_object(uint8 bh, sint32 flag
 {
     sint32 numObjects = (sint32)object_repository_get_items_count();
     const ObjectRepositoryItem * item = object_repository_find_object_by_entry(entry);
-    if (item == NULL) {
+    if (item == nullptr) {
         set_object_selection_error(bh, STR_OBJECT_SELECTION_ERR_OBJECT_DATA_NOT_FOUND);
         return 0;
     }
@@ -1673,9 +1673,9 @@ static void editor_load_selected_objects()
             const ObjectRepositoryItem * item = &items[i];
             const rct_object_entry * entry = &item->ObjectEntry;
             void * loadedObject = object_manager_get_loaded_object(entry);
-            if (loadedObject == NULL) {
+            if (loadedObject == nullptr) {
                 loadedObject = object_manager_load_object(entry);
-                if (loadedObject == NULL) {
+                if (loadedObject == nullptr) {
                     log_error("Failed to load entry %.8s", entry->name);
                 }
                 else if (!(gScreenFlags & SCREEN_FLAGS_EDITOR)) {
@@ -1719,7 +1719,7 @@ static void window_editor_object_selection_update(rct_window *w)
 
 static void window_editor_object_selection_textinput(rct_window *w, rct_widgetindex widgetIndex, char *text)
 {
-    if (widgetIndex != WIDX_FILTER_STRING_BUTTON || text == NULL)
+    if (widgetIndex != WIDX_FILTER_STRING_BUTTON || text == nullptr)
         return;
 
     if (strcmp(_filter_string, text) == 0)
@@ -1765,7 +1765,7 @@ static bool filter_string(const ObjectRepositoryItem * item)
 
     // Object doesn't have a name
     utf8 *name = item->Name;
-    if (name == NULL || name[0] == '\0')
+    if (name == nullptr || name[0] == '\0')
         return false;
 
     // Get ride type
@@ -1787,7 +1787,7 @@ static bool filter_string(const ObjectRepositoryItem * item)
     for (sint32 i = 0; filter_lower[i] != '\0'; i++)
         filter_lower[i] = (char)tolower(filter_lower[i]);
 
-    return strstr(name_lower, filter_lower) != NULL || (((item->ObjectEntry.flags & 0x0F) == OBJECT_TYPE_RIDE) && strstr(type_lower, filter_lower) != NULL);
+    return strstr(name_lower, filter_lower) != nullptr || (((item->ObjectEntry.flags & 0x0F) == OBJECT_TYPE_RIDE) && strstr(type_lower, filter_lower) != nullptr);
 }
 
 static bool filter_source(const ObjectRepositoryItem * item)

@@ -151,63 +151,63 @@ static void window_editor_objective_options_rides_scrollpaint(rct_window *w, rct
 
 // 0x009A9DF4
 static rct_window_event_list window_objective_options_main_events = {
-    NULL,
+    nullptr,
     window_editor_objective_options_main_mouseup,
     window_editor_objective_options_main_resize,
     window_editor_objective_options_main_mousedown,
     window_editor_objective_options_main_dropdown,
-    NULL,
+    nullptr,
     window_editor_objective_options_main_update,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_editor_objective_options_main_textinput,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_editor_objective_options_main_invalidate,
     window_editor_objective_options_main_paint,
-    NULL
+    nullptr
 };
 
 // 0x009A9F58
 static rct_window_event_list window_objective_options_rides_events = {
-    NULL,
+    nullptr,
     window_editor_objective_options_rides_mouseup,
     window_editor_objective_options_rides_resize,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
     window_editor_objective_options_rides_update,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_editor_objective_options_rides_scrollgetheight,
     window_editor_objective_options_rides_scrollmousedown,
-    NULL,
+    nullptr,
     window_editor_objective_options_rides_scrollmouseover,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_editor_objective_options_rides_invalidate,
     window_editor_objective_options_rides_paint,
     window_editor_objective_options_rides_scrollpaint
@@ -267,7 +267,7 @@ rct_window * window_editor_objective_options_open()
     rct_window *w;
 
     w = window_bring_to_front_by_class(WC_EDTIOR_OBJECTIVE_OPTIONS);
-    if (w != NULL)
+    if (w != nullptr)
         return w;
 
     w = window_create_centred(
@@ -789,7 +789,7 @@ static void window_editor_objective_options_main_update(rct_window *w)
  */
 static void window_editor_objective_options_main_textinput(rct_window *w, rct_widgetindex widgetIndex, char *text)
 {
-    if (text == NULL)
+    if (text == nullptr)
         return;
 
     switch (widgetIndex) {
@@ -831,7 +831,7 @@ static void window_editor_objective_options_main_invalidate(rct_window *w)
 
     stex = g_stexEntries[0];
     if (stex == (rct_stex_entry*)-1)
-        stex = NULL;
+        stex = nullptr;
 
     widgets = window_editor_objective_options_widgets[w->page];
     if (w->widgets != widgets) {
@@ -841,7 +841,7 @@ static void window_editor_objective_options_main_invalidate(rct_window *w)
 
     window_editor_objective_options_set_pressed_tab(w);
 
-    if (stex == NULL)
+    if (stex == nullptr)
         w->disabled_widgets &= ~((1 << WIDX_PARK_NAME) | (1 << WIDX_SCENARIO_NAME));
     else
         w->disabled_widgets |= ((1 << WIDX_PARK_NAME) | (1 << WIDX_SCENARIO_NAME));
@@ -901,12 +901,12 @@ static void window_editor_objective_options_main_paint(rct_window *w, rct_drawpi
 
     stex = g_stexEntries[0];
     if (stex == (rct_stex_entry*)-1)
-        stex = NULL;
+        stex = nullptr;
 
     // Objective label
     x = w->x + 8;
     y = w->y + w->widgets[WIDX_OBJECTIVE].top;
-    gfx_draw_string_left(dpi, STR_OBJECTIVE_WINDOW, NULL, COLOUR_BLACK, x, y);
+    gfx_draw_string_left(dpi, STR_OBJECTIVE_WINDOW, nullptr, COLOUR_BLACK, x, y);
 
     // Objective value
     x = w->x + w->widgets[WIDX_OBJECTIVE].left + 1;
@@ -940,7 +940,7 @@ static void window_editor_objective_options_main_paint(rct_window *w, rct_drawpi
             stringId = STR_WINDOW_OBJECTIVE_EXCITEMENT_RATING;
             break;
         }
-        gfx_draw_string_left(dpi, stringId, NULL, COLOUR_BLACK, x, y);
+        gfx_draw_string_left(dpi, stringId, nullptr, COLOUR_BLACK, x, y);
 
         // Objective argument 1 value
         x = w->x + w->widgets[WIDX_OBJECTIVE_ARG_1].left + 1;
@@ -974,7 +974,7 @@ static void window_editor_objective_options_main_paint(rct_window *w, rct_drawpi
         // Objective argument 2 label
         x = w->x + 28;
         y = w->y + w->widgets[WIDX_OBJECTIVE_ARG_2].top;
-        gfx_draw_string_left(dpi, STR_WINDOW_OBJECTIVE_DATE, NULL, COLOUR_BLACK, x, y);
+        gfx_draw_string_left(dpi, STR_WINDOW_OBJECTIVE_DATE, nullptr, COLOUR_BLACK, x, y);
 
         // Objective argument 2 value
         x = w->x + w->widgets[WIDX_OBJECTIVE_ARG_2].left + 1;
@@ -986,7 +986,7 @@ static void window_editor_objective_options_main_paint(rct_window *w, rct_drawpi
     // Climate label
     x = w->x + 8;
     y = w->y + w->widgets[WIDX_CLIMATE].top;
-    gfx_draw_string_left(dpi, STR_CLIMATE_LABEL, NULL, COLOUR_BLACK, x, y);
+    gfx_draw_string_left(dpi, STR_CLIMATE_LABEL, nullptr, COLOUR_BLACK, x, y);
 
     // Climate value
     x = w->x + w->widgets[WIDX_CLIMATE].left + 1;
@@ -999,7 +999,7 @@ static void window_editor_objective_options_main_paint(rct_window *w, rct_drawpi
     y = w->y + w->widgets[WIDX_PARK_NAME].top;
     width = w->widgets[WIDX_PARK_NAME].left - 16;
 
-    if (stex != NULL) {
+    if (stex != nullptr) {
         set_format_arg(0, rct_string_id, stex->park_name);
     } else {
         set_format_arg(0, rct_string_id, gParkName);
@@ -1012,7 +1012,7 @@ static void window_editor_objective_options_main_paint(rct_window *w, rct_drawpi
     y = w->y + w->widgets[WIDX_SCENARIO_NAME].top;
     width = w->widgets[WIDX_SCENARIO_NAME].left - 16;
 
-    if (stex != NULL) {
+    if (stex != nullptr) {
         set_format_arg(0, rct_string_id, stex->scenario_name);
         set_format_arg(2, uint32, gParkNameArgs);
     } else {
@@ -1025,14 +1025,14 @@ static void window_editor_objective_options_main_paint(rct_window *w, rct_drawpi
     // Scenario details label
     x = w->x + 8;
     y = w->y + w->widgets[WIDX_DETAILS].top;
-    gfx_draw_string_left(dpi, STR_WINDOW_PARK_DETAILS, NULL, COLOUR_BLACK, x, y);
+    gfx_draw_string_left(dpi, STR_WINDOW_PARK_DETAILS, nullptr, COLOUR_BLACK, x, y);
 
     // Scenario details value
     x = w->x + 16;
     y = w->y + w->widgets[WIDX_DETAILS].top + 10;
     width = w->widgets[WIDX_DETAILS].left - 4;
 
-    if (stex != NULL) {
+    if (stex != nullptr) {
         set_format_arg(0, rct_string_id, stex->details);
         set_format_arg(2, uint32, gParkNameArgs);
     } else {
@@ -1044,7 +1044,7 @@ static void window_editor_objective_options_main_paint(rct_window *w, rct_drawpi
     // Scenario category label
     x = w->x + 8;
     y = w->y + w->widgets[WIDX_CATEGORY].top;
-    gfx_draw_string_left(dpi, STR_WINDOW_SCENARIO_GROUP, NULL, COLOUR_BLACK, x, y);
+    gfx_draw_string_left(dpi, STR_WINDOW_SCENARIO_GROUP, nullptr, COLOUR_BLACK, x, y);
 
     // Scenario category value
     x = w->x + w->widgets[WIDX_CATEGORY].left + 1;
@@ -1182,7 +1182,7 @@ static void window_editor_objective_options_rides_paint(rct_window *w, rct_drawp
     window_draw_widgets(w, dpi);
     window_editor_objective_options_draw_tab_images(w, dpi);
 
-    gfx_draw_string_left(dpi, STR_WINDOW_PRESERVATION_ORDER, NULL, COLOUR_BLACK, w->x + 6, w->y + w->widgets[WIDX_PAGE_BACKGROUND].top + 3);
+    gfx_draw_string_left(dpi, STR_WINDOW_PRESERVATION_ORDER, nullptr, COLOUR_BLACK, w->x + 6, w->y + w->widgets[WIDX_PAGE_BACKGROUND].top + 3);
 }
 
 /**

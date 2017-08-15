@@ -76,32 +76,32 @@ static void window_track_place_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static rct_window_event_list window_track_place_events = {
     window_track_place_close,
     window_track_place_mouseup,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_track_place_update,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
     window_track_place_toolupdate,
     window_track_place_tooldown,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
     window_track_place_toolabort,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_track_place_unknown14,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_track_place_invalidate,
     window_track_place_paint,
-    NULL
+    nullptr
 };
 
 static uint8 *_window_track_place_mini_preview;
@@ -147,7 +147,7 @@ static void window_track_place_clear_mini_preview()
 static void _window_track_place_open(const track_design_file_ref *tdFileRef)
 {
     rct_track_td6 *td6 = track_design_open(tdFileRef->path);
-    if (td6 == NULL) {
+    if (td6 == nullptr) {
         return;
     }
 
@@ -198,7 +198,7 @@ static void window_track_place_close(rct_window *w)
     hide_gridlines();
     SafeFree(_window_track_place_mini_preview);
     track_design_dispose(_trackDesign);
-    _trackDesign = NULL;
+    _trackDesign = nullptr;
 }
 
 /**
@@ -257,7 +257,7 @@ static void window_track_place_toolupdate(rct_window* w, rct_widgetindex widgetI
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
 
     // Get the tool map position
-    sub_68A15E(x, y, &mapX, &mapY, NULL, NULL);
+    sub_68A15E(x, y, &mapX, &mapY, nullptr, nullptr);
     if (mapX == MAP_LOCATION_NULL) {
         window_track_place_clear_provisional();
         return;
@@ -319,7 +319,7 @@ static void window_track_place_tooldown(rct_window* w, rct_widgetindex widgetInd
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
 
-    sub_68A15E(x, y, &mapX, &mapY, NULL, NULL);
+    sub_68A15E(x, y, &mapX, &mapY, nullptr, nullptr);
     if (mapX == MAP_LOCATION_NULL)
         return;
 
@@ -441,10 +441,10 @@ static void window_track_place_attempt_placement(rct_track_td6 *td6, sint32 x, s
 
     gActiveTrackDesign = _trackDesign;
     result = game_do_command_p(GAME_COMMAND_PLACE_TRACK_DESIGN, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-    gActiveTrackDesign = NULL;
+    gActiveTrackDesign = nullptr;
 
-    if (cost != NULL) *cost = result;
-    if (rideIndex != NULL) *rideIndex = edi & 0xFF;
+    if (cost != nullptr) *cost = result;
+    if (rideIndex != nullptr) *rideIndex = edi & 0xFF;
 }
 
 /**

@@ -82,32 +82,32 @@ static void window_server_start_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static rct_window_event_list window_server_start_events = {
     window_server_start_close,
     window_server_start_mouseup,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_server_start_update,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_server_start_textinput,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_server_start_invalidate,
     window_server_start_paint,
-    NULL
+    nullptr
 };
 
 rct_window * window_server_start_open()
@@ -116,7 +116,7 @@ rct_window * window_server_start_open()
 
     // Check if window is already open
     window = window_bring_to_front_by_class(WC_SERVER_START);
-    if (window != NULL)
+    if (window != nullptr)
         return window;
 
     window = window_create_centred(WW, WH, &window_server_start_events, WC_SERVER_START, WF_10);
@@ -230,7 +230,7 @@ static void window_server_start_mouseup(rct_window *w, rct_widgetindex widgetInd
         break;
     case WIDX_LOAD_SERVER:
         network_set_password(_password);
-        window_loadsave_open(LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME, NULL);
+        window_loadsave_open(LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME, nullptr);
         window_loadsave_set_loadsave_callback(window_server_start_loadsave_callback);
         break;
     }
@@ -249,7 +249,7 @@ static void window_server_start_update(rct_window *w)
 
 static void window_server_start_textinput(rct_window *w, rct_widgetindex widgetIndex, char *text)
 {
-    if (text == NULL) return;
+    if (text == nullptr) return;
 
     switch (widgetIndex) {
     case WIDX_PORT_INPUT:
@@ -343,10 +343,10 @@ static void window_server_start_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
     window_draw_widgets(w, dpi);
 
-    gfx_draw_string_left(dpi, STR_PORT, NULL, w->colours[1], w->x + 6, w->y + w->widgets[WIDX_PORT_INPUT].top);
-    gfx_draw_string_left(dpi, STR_SERVER_NAME, NULL, w->colours[1], w->x + 6, w->y + w->widgets[WIDX_NAME_INPUT].top);
-    gfx_draw_string_left(dpi, STR_SERVER_DESCRIPTION, NULL, w->colours[1], w->x + 6, w->y + w->widgets[WIDX_DESCRIPTION_INPUT].top);
-    gfx_draw_string_left(dpi, STR_SERVER_GREETING, NULL, w->colours[1], w->x + 6, w->y + w->widgets[WIDX_GREETING_INPUT].top);
-    gfx_draw_string_left(dpi, STR_PASSWORD, NULL, w->colours[1], w->x + 6, w->y + w->widgets[WIDX_PASSWORD_INPUT].top);
-    gfx_draw_string_left(dpi, STR_MAX_PLAYERS, NULL, w->colours[1], w->x + 6, w->y + w->widgets[WIDX_MAXPLAYERS].top);
+    gfx_draw_string_left(dpi, STR_PORT, nullptr, w->colours[1], w->x + 6, w->y + w->widgets[WIDX_PORT_INPUT].top);
+    gfx_draw_string_left(dpi, STR_SERVER_NAME, nullptr, w->colours[1], w->x + 6, w->y + w->widgets[WIDX_NAME_INPUT].top);
+    gfx_draw_string_left(dpi, STR_SERVER_DESCRIPTION, nullptr, w->colours[1], w->x + 6, w->y + w->widgets[WIDX_DESCRIPTION_INPUT].top);
+    gfx_draw_string_left(dpi, STR_SERVER_GREETING, nullptr, w->colours[1], w->x + 6, w->y + w->widgets[WIDX_GREETING_INPUT].top);
+    gfx_draw_string_left(dpi, STR_PASSWORD, nullptr, w->colours[1], w->x + 6, w->y + w->widgets[WIDX_PASSWORD_INPUT].top);
+    gfx_draw_string_left(dpi, STR_MAX_PLAYERS, nullptr, w->colours[1], w->x + 6, w->y + w->widgets[WIDX_MAXPLAYERS].top);
 }

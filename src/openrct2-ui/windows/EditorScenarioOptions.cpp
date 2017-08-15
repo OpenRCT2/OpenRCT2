@@ -209,98 +209,98 @@ static void window_editor_scenario_options_park_paint(rct_window *w, rct_drawpix
 
 // 0x0097EB60
 static rct_window_event_list window_scenario_options_financial_events = {
-    NULL,
+    nullptr,
     window_editor_scenario_options_financial_mouseup,
     window_editor_scenario_options_financial_resize,
     window_editor_scenario_options_financial_mousedown,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
     window_editor_scenario_options_financial_update,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_editor_scenario_options_financial_invalidate,
     window_editor_scenario_options_financial_paint,
-    NULL
+    nullptr
 };
 
 // 0x0097EBD0
 static rct_window_event_list window_scenario_options_guests_events = {
-    NULL,
+    nullptr,
     window_editor_scenario_options_guests_mouseup,
     window_editor_scenario_options_guests_resize,
     window_editor_scenario_options_guests_mousedown,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
     window_editor_scenario_options_guests_update,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_editor_scenario_options_guests_invalidate,
     window_editor_scenario_options_guests_paint,
-    NULL
+    nullptr
 };
 
 // 0x0097EC40
 static rct_window_event_list window_scenario_options_park_events = {
-    NULL,
+    nullptr,
     window_editor_scenario_options_park_mouseup,
     window_editor_scenario_options_park_resize,
     window_editor_scenario_options_park_mousedown,
     window_editor_scenario_options_park_dropdown,
-    NULL,
+    nullptr,
     window_editor_scenario_options_park_update,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_editor_scenario_options_park_invalidate,
     window_editor_scenario_options_park_paint,
-    NULL
+    nullptr
 };
 
 static rct_window_event_list *window_editor_scenario_options_page_events[] = {
@@ -394,7 +394,7 @@ rct_window * window_editor_scenario_options_open()
     rct_window *w;
 
     w = window_bring_to_front_by_class(WC_EDITOR_SCENARIO_OPTIONS);
-    if (w != NULL)
+    if (w != nullptr)
         return w;
 
     w = window_create_centred(
@@ -791,7 +791,7 @@ static void window_editor_scenario_options_financial_paint(rct_window *w, rct_dr
     if (w->widgets[WIDX_INITIAL_CASH].type != WWT_EMPTY) {
         x = w->x + 8;
         y = w->y + w->widgets[WIDX_INITIAL_CASH].top;
-        gfx_draw_string_left(dpi, STR_INIT_CASH_LABEL, NULL, COLOUR_BLACK, x, y);
+        gfx_draw_string_left(dpi, STR_INIT_CASH_LABEL, nullptr, COLOUR_BLACK, x, y);
 
         x = w->x + w->widgets[WIDX_INITIAL_CASH].left + 1;
         y = w->y + w->widgets[WIDX_INITIAL_CASH].top;
@@ -801,7 +801,7 @@ static void window_editor_scenario_options_financial_paint(rct_window *w, rct_dr
     if (w->widgets[WIDX_INITIAL_LOAN].type != WWT_EMPTY) {
         x = w->x + 8;
         y = w->y + w->widgets[WIDX_INITIAL_LOAN].top;
-        gfx_draw_string_left(dpi, STR_INIT_LOAN_LABEL, NULL, COLOUR_BLACK, x, y);
+        gfx_draw_string_left(dpi, STR_INIT_LOAN_LABEL, nullptr, COLOUR_BLACK, x, y);
 
         x = w->x + w->widgets[WIDX_INITIAL_LOAN].left + 1;
         y = w->y + w->widgets[WIDX_INITIAL_LOAN].top;
@@ -811,7 +811,7 @@ static void window_editor_scenario_options_financial_paint(rct_window *w, rct_dr
     if (w->widgets[WIDX_MAXIMUM_LOAN].type != WWT_EMPTY) {
         x = w->x + 8;
         y = w->y + w->widgets[WIDX_MAXIMUM_LOAN].top;
-        gfx_draw_string_left(dpi, STR_MAX_LOAN_LABEL, NULL, COLOUR_BLACK, x, y);
+        gfx_draw_string_left(dpi, STR_MAX_LOAN_LABEL, nullptr, COLOUR_BLACK, x, y);
 
         x = w->x + w->widgets[WIDX_MAXIMUM_LOAN].left + 1;
         y = w->y + w->widgets[WIDX_MAXIMUM_LOAN].top;
@@ -821,7 +821,7 @@ static void window_editor_scenario_options_financial_paint(rct_window *w, rct_dr
     if (w->widgets[WIDX_INTEREST_RATE].type != WWT_EMPTY) {
         x = w->x + 8;
         y = w->y + w->widgets[WIDX_INTEREST_RATE].top;
-        gfx_draw_string_left(dpi, STR_INTEREST_RATE_LABEL, NULL, COLOUR_BLACK, x, y);
+        gfx_draw_string_left(dpi, STR_INTEREST_RATE_LABEL, nullptr, COLOUR_BLACK, x, y);
 
         x = w->x + w->widgets[WIDX_INTEREST_RATE].left + 1;
         y = w->y + w->widgets[WIDX_INTEREST_RATE].top;
@@ -1094,7 +1094,7 @@ static void window_editor_scenario_options_guests_paint(rct_window *w, rct_drawp
         // Cash per guest label
         x = w->x + 8;
         y = w->y + w->widgets[WIDX_CASH_PER_GUEST].top;
-        gfx_draw_string_left(dpi, STR_CASH_PER_GUEST_LABEL, NULL, COLOUR_BLACK, x, y);
+        gfx_draw_string_left(dpi, STR_CASH_PER_GUEST_LABEL, nullptr, COLOUR_BLACK, x, y);
 
         // Cash per guest value
         x = w->x + w->widgets[WIDX_CASH_PER_GUEST].left + 1;
@@ -1106,7 +1106,7 @@ static void window_editor_scenario_options_guests_paint(rct_window *w, rct_drawp
     // Guest initial happiness label
     x = w->x + 8;
     y = w->y + w->widgets[WIDX_GUEST_INITIAL_HAPPINESS].top;
-    gfx_draw_string_left(dpi, STR_GUEST_INIT_HAPPINESS, NULL, COLOUR_BLACK, x, y);
+    gfx_draw_string_left(dpi, STR_GUEST_INIT_HAPPINESS, nullptr, COLOUR_BLACK, x, y);
 
     // Guest initial happiness value
     x = w->x + w->widgets[WIDX_GUEST_INITIAL_HAPPINESS].left + 1;
@@ -1117,7 +1117,7 @@ static void window_editor_scenario_options_guests_paint(rct_window *w, rct_drawp
     // Guest initial hunger label
     x = w->x + 8;
     y = w->y + w->widgets[WIDX_GUEST_INITIAL_HUNGER].top;
-    gfx_draw_string_left(dpi, STR_GUEST_INIT_HUNGER, NULL, COLOUR_BLACK, x, y);
+    gfx_draw_string_left(dpi, STR_GUEST_INIT_HUNGER, nullptr, COLOUR_BLACK, x, y);
 
     // Guest initial hunger value
     x = w->x + w->widgets[WIDX_GUEST_INITIAL_HUNGER].left + 1;
@@ -1128,7 +1128,7 @@ static void window_editor_scenario_options_guests_paint(rct_window *w, rct_drawp
     // Guest initial thirst label
     x = w->x + 8;
     y = w->y + w->widgets[WIDX_GUEST_INITIAL_THIRST].top;
-    gfx_draw_string_left(dpi, STR_GUEST_INIT_THIRST, NULL, COLOUR_BLACK, x, y);
+    gfx_draw_string_left(dpi, STR_GUEST_INIT_THIRST, nullptr, COLOUR_BLACK, x, y);
 
     // Guest initial thirst value
     x = w->x + w->widgets[WIDX_GUEST_INITIAL_THIRST].left + 1;
@@ -1471,7 +1471,7 @@ static void window_editor_scenario_options_park_paint(rct_window *w, rct_drawpix
         // Cost to buy land label
         x = w->x + 8;
         y = w->y + w->widgets[WIDX_LAND_COST].top;
-        gfx_draw_string_left(dpi, STR_LAND_COST_LABEL, NULL, COLOUR_BLACK, x, y);
+        gfx_draw_string_left(dpi, STR_LAND_COST_LABEL, nullptr, COLOUR_BLACK, x, y);
 
         // Cost to buy land value
         x = w->x + w->widgets[WIDX_LAND_COST].left + 1;
@@ -1484,7 +1484,7 @@ static void window_editor_scenario_options_park_paint(rct_window *w, rct_drawpix
         // Cost to buy construction rights label
         x = w->x + 8;
         y = w->y + w->widgets[WIDX_CONSTRUCTION_RIGHTS_COST].top;
-        gfx_draw_string_left(dpi, STR_RIGHTS_COST_LABEL, NULL, COLOUR_BLACK, x, y);
+        gfx_draw_string_left(dpi, STR_RIGHTS_COST_LABEL, nullptr, COLOUR_BLACK, x, y);
 
         // Cost to buy construction rights value
         x = w->x + w->widgets[WIDX_CONSTRUCTION_RIGHTS_COST].left + 1;
@@ -1497,7 +1497,7 @@ static void window_editor_scenario_options_park_paint(rct_window *w, rct_drawpix
         // Pay for park or rides label
         x = w->x + w->widgets[WIDX_PAY_FOR_PARK_OR_RIDES].left + 1;
         y = w->y + w->widgets[WIDX_PAY_FOR_PARK_OR_RIDES].top;
-        gfx_draw_string_left(dpi, STR_FREE_PARK_ENTER, NULL, COLOUR_BLACK, x, y);
+        gfx_draw_string_left(dpi, STR_FREE_PARK_ENTER, nullptr, COLOUR_BLACK, x, y);
 
         // Pay for park or rides value
         stringId = gParkFlags & PARK_FLAGS_PARK_FREE_ENTRY ? STR_FREE_PARK_ENTER : STR_PAY_PARK_ENTER;
@@ -1508,7 +1508,7 @@ static void window_editor_scenario_options_park_paint(rct_window *w, rct_drawpix
         // Entry price label
         x = w->x + w->widgets[WIDX_PAY_FOR_PARK_OR_RIDES].right + 8;
         y = w->y + w->widgets[WIDX_ENTRY_PRICE].top;
-        gfx_draw_string_left(dpi, STR_ENTRY_PRICE_LABEL, NULL, COLOUR_BLACK, x, y);
+        gfx_draw_string_left(dpi, STR_ENTRY_PRICE_LABEL, nullptr, COLOUR_BLACK, x, y);
 
         // Entry price value
         x = w->x + w->widgets[WIDX_ENTRY_PRICE].left + 1;

@@ -64,26 +64,26 @@ static rct_window_event_list window_staff_list_events = {
     window_staff_list_resize,
     window_staff_list_mousedown,
     window_staff_list_dropdown,
-    NULL,
+    nullptr,
     window_staff_list_update,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
     window_staff_list_tooldown,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
     window_staff_list_toolabort,
-    NULL,
+    nullptr,
     window_staff_list_scrollgetsize,
     window_staff_list_scrollmousedown,
-    NULL,
+    nullptr,
     window_staff_list_scrollmouseover,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
     window_staff_list_tooltip,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
     window_staff_list_invalidate,
     window_staff_list_paint,
     window_staff_list_scrollpaint,
@@ -158,7 +158,7 @@ rct_window * window_staff_list_open()
 
     // Check if window is already open
     window = window_bring_to_front_by_class(WC_STAFF_LIST);
-    if (window != NULL)
+    if (window != nullptr)
         return window;
 
     window = window_create_auto_pos(WW, WH, &window_staff_list_events, WC_STAFF_LIST, WF_10 | WF_RESIZABLE);
@@ -313,7 +313,7 @@ void window_staff_list_update(rct_window *w)
         widget_invalidate(w, WIDX_STAFF_LIST_HANDYMEN_TAB + _windowStaffListSelectedTab);
 
         // Enable highlighting of these staff members in map window
-        if (window_find_by_class(WC_MAP) != NULL) {
+        if (window_find_by_class(WC_MAP) != nullptr) {
             sint32 spriteIndex;
             rct_peep * peep;
             gWindowMapFlashingFlags |= (1 << 2);
@@ -346,7 +346,7 @@ static void window_staff_list_tooldown(rct_window *w, rct_widgetindex widgetInde
         bool isPatrolAreaSet = staff_is_patrol_area_set(200 + selectedPeepType, x, y);
 
         uint16 spriteIndex;
-        rct_peep *peep, *closestPeep = NULL;
+        rct_peep *peep, *closestPeep = nullptr;
         sint32 closestPeepDistance = INT_MAX;
         FOR_ALL_STAFF(spriteIndex, peep) {
             if (peep->staff_type != selectedPeepType)
@@ -372,7 +372,7 @@ static void window_staff_list_tooldown(rct_window *w, rct_widgetindex widgetInde
             }
         }
 
-        if (closestPeep != NULL) {
+        if (closestPeep != nullptr) {
             tool_cancel();
             rct_window *staffWindow = window_staff_open(closestPeep);
             window_event_dropdown_call(staffWindow, WC_PEEP__WIDX_PATROL, 0);

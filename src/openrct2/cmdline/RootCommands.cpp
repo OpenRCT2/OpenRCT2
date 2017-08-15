@@ -365,7 +365,7 @@ static exitcode_t HandleCommandSetRCT2(CommandLineArgEnumerator * enumerator)
     // Check user path that will contain the config
     utf8 userPath[MAX_PATH];
     platform_resolve_user_data_path();
-    platform_get_user_directory(userPath, NULL, sizeof(userPath));
+    platform_get_user_directory(userPath, nullptr, sizeof(userPath));
     if (!platform_ensure_directory_exists(userPath)) {
         Console::Error::WriteLine("Unable to access or create directory '%s'.", userPath);
         return EXITCODE_FAIL;

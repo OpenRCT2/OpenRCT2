@@ -60,34 +60,34 @@ static void window_viewport_invalidate(rct_window *w);
 static void window_viewport_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
 static rct_window_event_list window_viewport_events = {
-    NULL,
+    nullptr,
     window_viewport_mouseup,
     window_viewport_resize,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
     window_viewport_update,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_viewport_invalidate,
     window_viewport_paint,
-    NULL
+    nullptr
 };
 
 static sint32 _viewportNumber = 1;
@@ -114,7 +114,7 @@ rct_window * window_viewport_open()
     // Create viewport
     viewport_create(w, w->x, w->y, w->width, w->height, 0, 128 * 32, 128 * 32, 0, 1, -1);
     rct_window *mainWindow = window_get_main();
-    if (mainWindow != NULL) {
+    if (mainWindow != nullptr) {
         rct_viewport *mainViewport = mainWindow->viewport;
         sint32 x = mainViewport->view_x + (mainViewport->view_width / 2);
         sint32 y = mainViewport->view_y + (mainViewport->view_height / 2);
@@ -148,21 +148,21 @@ static void window_viewport_mouseup(rct_window *w, rct_widgetindex widgetIndex)
         window_close(w);
         break;
     case WIDX_ZOOM_IN:
-        if (w->viewport != NULL && w->viewport->zoom > 0) {
+        if (w->viewport != nullptr && w->viewport->zoom > 0) {
             w->viewport->zoom--;
             window_invalidate(w);
         }
         break;
     case WIDX_ZOOM_OUT:
-        if (w->viewport != NULL && w->viewport->zoom < 3) {
+        if (w->viewport != nullptr && w->viewport->zoom < 3) {
             w->viewport->zoom++;
             window_invalidate(w);
         }
         break;
     case WIDX_LOCATE:
         mainWindow = window_get_main();
-        if (mainWindow != NULL) {
-            get_map_coordinates_from_pos(w->x + (w->width / 2), w->y + (w->height / 2), VIEWPORT_INTERACTION_MASK_NONE, &x, &y, NULL, NULL, NULL);
+        if (mainWindow != nullptr) {
+            get_map_coordinates_from_pos(w->x + (w->width / 2), w->y + (w->height / 2), VIEWPORT_INTERACTION_MASK_NONE, &x, &y, nullptr, nullptr, nullptr);
             window_scroll_to_location(mainWindow, x, y, map_element_height(x, y));
         }
         break;
@@ -180,7 +180,7 @@ static void window_viewport_update(rct_window *w)
     rct_window *mainWindow;
 
     mainWindow = window_get_main();
-    if (mainWindow == NULL)
+    if (mainWindow == nullptr)
         return;
 
     if (w->viewport->flags != mainWindow->viewport->flags) {
@@ -233,6 +233,6 @@ static void window_viewport_paint(rct_window *w, rct_drawpixelinfo *dpi)
     window_draw_widgets(w, dpi);
 
     // Draw viewport
-    if (w->viewport != NULL)
+    if (w->viewport != nullptr)
         window_draw_viewport(dpi, w);
 }

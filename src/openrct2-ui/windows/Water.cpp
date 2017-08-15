@@ -58,32 +58,32 @@ static void window_water_inputsize(rct_window *w);
 static rct_window_event_list window_water_events = {
     window_water_close,
     window_water_mouseup,
-    NULL,
+    nullptr,
     window_water_mousedown,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
     window_water_update,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_water_textinput,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_water_invalidate,
     window_water_paint,
-    NULL
+    nullptr
 };
 
 /**
@@ -173,7 +173,7 @@ static void window_water_textinput(rct_window *w, rct_widgetindex widgetIndex, c
     sint32 size;
     char* end;
 
-    if (widgetIndex != WIDX_PREVIEW || text == NULL)
+    if (widgetIndex != WIDX_PREVIEW || text == nullptr)
         return;
 
     size = strtol(text, &end, 10);

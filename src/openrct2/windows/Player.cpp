@@ -98,29 +98,29 @@ static rct_window_event_list window_player_overview_events = {
     window_player_overview_resize,
     window_player_overview_mouse_down,
     window_player_overview_dropdown,
-    NULL,
+    nullptr,
     window_player_overview_update,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_player_overview_invalidate,
     window_player_overview_paint,
-    NULL
+    nullptr
 };
 
 static void window_player_statistics_close(rct_window *w);
@@ -134,31 +134,31 @@ static rct_window_event_list window_player_statistics_events = {
     window_player_statistics_close,
     window_player_statistics_mouse_up,
     window_player_statistics_resize,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
     window_player_statistics_update,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_player_statistics_invalidate,
     window_player_statistics_paint,
-    NULL
+    nullptr
 };
 
 static rct_window_event_list *window_player_page_events[] = {
@@ -192,7 +192,7 @@ void window_player_open(uint8 id)
     rct_window* window;
 
     window = window_bring_to_front_by_number(WC_PLAYER, id);
-    if (window == NULL) {
+    if (window == nullptr) {
         window = window_create_auto_pos(240, 170, &window_player_overview_events, WC_PLAYER, WF_RESIZABLE);
         window->number = id;
         window->page = 0;
@@ -273,7 +273,7 @@ void window_player_overview_mouse_up(rct_window *w, rct_widgetindex widgetIndex)
         break;
     case WIDX_LOCATE:{
         rct_window* mainWindow = window_get_main();
-        if (mainWindow != NULL) {
+        if (mainWindow != nullptr) {
             sint32 player = network_get_player_index((uint8)w->number);
             if (player == -1) {
                 return;
@@ -392,7 +392,7 @@ void window_player_overview_paint(rct_window *w, rct_drawpixelinfo *dpi)
     }
     gfx_draw_string_centred_clipped(dpi, STR_LAST_ACTION_RAN, gCommonFormatArgs, COLOUR_BLACK, x, y, width);
 
-    if (w->viewport != NULL && w->var_492 != -1) {
+    if (w->viewport != nullptr && w->var_492 != -1) {
         window_draw_viewport(dpi, w);
     }
 }
@@ -433,7 +433,7 @@ void window_player_overview_invalidate(rct_window *w)
     window_align_tabs(w, WIDX_TAB_1, WIDX_TAB_2);
 
     rct_viewport *viewport = w->viewport;
-    if (viewport != NULL) {
+    if (viewport != nullptr) {
         rct_widget *viewportWidget = &window_player_overview_widgets[WIDX_VIEWPORT];
 
         viewport->x = w->x + viewportWidget->left;
@@ -548,7 +548,7 @@ static void window_player_set_page(rct_window* w, sint32 page)
     window_invalidate(w);
 
     if (page == WINDOW_PLAYER_PAGE_OVERVIEW) {
-        if (w->viewport == NULL) {
+        if (w->viewport == nullptr) {
             viewport_create(w, w->x, w->y, w->width, w->height, 0, 128 * 32, 128 * 32, 0, 1, -1);
             w->flags |= WF_NO_SCROLLING;
             window_event_invalidate_call(w);
@@ -558,9 +558,9 @@ static void window_player_set_page(rct_window* w, sint32 page)
             window_player_update_viewport(w, false);
         }
     } else {
-        if (w->viewport != NULL) {
+        if (w->viewport != nullptr) {
             w->viewport->width = 0;
-            w->viewport = NULL;
+            w->viewport = nullptr;
         }
     }
 }
@@ -602,7 +602,7 @@ static void window_player_update_viewport(rct_window *w, bool scroll)
     }
 
     rct_viewport *viewport = w->viewport;
-    if (viewport != NULL) {
+    if (viewport != nullptr) {
         rct_xyz16 coord = network_get_player_last_action_coord(playerIndex);
         if (coord.x != 0 || coord.y != 0 || coord.z != 0) {
             sint32 viewX, viewY;

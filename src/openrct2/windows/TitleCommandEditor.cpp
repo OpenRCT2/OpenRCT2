@@ -79,7 +79,7 @@ static sint32 _window_title_command_editor_index;
 static char textbox1Buffer[BUF_SIZE];
 static char textbox2Buffer[BUF_SIZE];
 static TitleCommand command = { TITLE_SCRIPT_LOAD, { 0 } };
-static TitleSequence * _sequence = NULL;
+static TitleSequence * _sequence = nullptr;
 
 static rct_widget window_title_command_editor_widgets[] = {
     { WWT_FRAME,                1,  0,          WW-1,       0,      WH-1,   0xFFFFFFFF,                         STR_NONE },                         // panel / background
@@ -117,34 +117,34 @@ static rct_xy16 get_location();
 static uint8 get_zoom();
 
 static rct_window_event_list window_title_command_editor_events = {
-    NULL,
+    nullptr,
     window_title_command_editor_mouseup,
-    NULL,
+    nullptr,
     window_title_command_editor_mousedown,
     window_title_command_editor_dropdown,
-    NULL,
+    nullptr,
     window_title_command_editor_update,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_title_command_editor_textinput,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_title_command_editor_invalidate,
     window_title_command_editor_paint,
-    NULL
+    nullptr
 };
 
 static sint32 get_command_info_index(sint32 index)
@@ -169,11 +169,11 @@ static rct_xy16 get_location()
 {
     rct_xy16 mapCoord = { 0 };
     rct_window *w = window_get_main();
-    if (w != NULL) {
+    if (w != nullptr) {
         sint32 interactionType;
         rct_map_element *mapElement;
 
-        get_map_coordinates_from_pos(w->viewport->view_width / 2, w->viewport->view_height / 2, VIEWPORT_INTERACTION_MASK_TERRAIN, &mapCoord.x, &mapCoord.y, &interactionType, &mapElement, NULL);
+        get_map_coordinates_from_pos(w->viewport->view_width / 2, w->viewport->view_height / 2, VIEWPORT_INTERACTION_MASK_TERRAIN, &mapCoord.x, &mapCoord.y, &interactionType, &mapElement, nullptr);
         mapCoord.x -= 16;
         mapCoord.x /= 32;
         mapCoord.y -= 16;
@@ -188,7 +188,7 @@ static uint8 get_zoom()
 {
     uint8 zoom = 0;
     rct_window *w = window_get_main();
-    if (w != NULL) {
+    if (w != nullptr) {
         zoom = w->viewport->zoom;
     }
     return zoom;
@@ -199,7 +199,7 @@ static void _window_title_command_editor_open(TitleSequence * sequence, sint32 i
     _sequence = sequence;
 
     // Check if window is already open
-    if (window_find_by_class(WC_TITLE_COMMAND_EDITOR) != NULL)
+    if (window_find_by_class(WC_TITLE_COMMAND_EDITOR) != nullptr)
         return;
 
     rct_window * window = window_create_centred(
@@ -304,7 +304,7 @@ static void window_title_command_editor_mouseup(rct_window *w, rct_widgetindex w
         TileSequenceSave(_sequence);
 
         rct_window *title_editor_w = window_find_by_class(WC_TITLE_EDITOR);
-        if (title_editor_w != NULL) {
+        if (title_editor_w != nullptr) {
             title_editor_w->selected_list_item = _window_title_command_editor_index;
         }
         window_close(w);
@@ -452,7 +452,7 @@ static void window_title_command_editor_textinput(rct_window * w, rct_widgetinde
     if (value > 255 && command.Type != TITLE_SCRIPT_WAIT) value = 255;
     switch (widgetIndex) {
     case WIDX_TEXTBOX_FULL:
-        if (text == NULL) {
+        if (text == nullptr) {
             if (*end == '\0') {
                 if (command.Type == TITLE_SCRIPT_WAIT) {
                     if (value < 100) value = 100;
@@ -474,7 +474,7 @@ static void window_title_command_editor_textinput(rct_window * w, rct_widgetinde
         }
         break;
     case WIDX_TEXTBOX_X:
-        if (text == NULL) {
+        if (text == nullptr) {
             if (*end == '\0') {
                 command.X = (uint8)value;
             }
@@ -485,7 +485,7 @@ static void window_title_command_editor_textinput(rct_window * w, rct_widgetinde
         }
         break;
     case WIDX_TEXTBOX_Y:
-        if (text == NULL) {
+        if (text == nullptr) {
             if (*end == '\0') {
                 command.Y = (uint8)value;
             }
@@ -550,13 +550,13 @@ static void window_title_command_editor_paint(rct_window *w, rct_drawpixelinfo *
 {
     window_draw_widgets(w, dpi);
 
-    gfx_draw_string_left(dpi, STR_TITLE_COMMAND_EDITOR_COMMAND_LABEL, NULL, w->colours[1], w->x + WS, w->y + BY - 14);
-    gfx_draw_string_left(dpi, get_command_info(command.Type).descStringId, NULL, w->colours[1], w->x + WS, w->y + BY2 - 14);
+    gfx_draw_string_left(dpi, STR_TITLE_COMMAND_EDITOR_COMMAND_LABEL, nullptr, w->colours[1], w->x + WS, w->y + BY - 14);
+    gfx_draw_string_left(dpi, get_command_info(command.Type).descStringId, nullptr, w->colours[1], w->x + WS, w->y + BY2 - 14);
 
     gfx_draw_string_left_clipped(
         dpi,
         get_command_info(command.Type).nameStringId,
-        NULL,
+        nullptr,
         w->colours[1],
         w->x + w->widgets[WIDX_COMMAND].left + 1,
         w->y + w->widgets[WIDX_COMMAND].top,
@@ -566,7 +566,7 @@ static void window_title_command_editor_paint(rct_window *w, rct_drawpixelinfo *
         gfx_draw_string_left_clipped(
             dpi,
             SpeedNames[command.Speed - 1],
-            NULL,
+            nullptr,
             w->colours[1],
             w->x + w->widgets[WIDX_INPUT].left + 1,
             w->y + w->widgets[WIDX_INPUT].top,
@@ -577,7 +577,7 @@ static void window_title_command_editor_paint(rct_window *w, rct_drawpixelinfo *
             gfx_draw_string_left_clipped(
                 dpi,
                 STR_TITLE_COMMAND_EDITOR_NO_SAVE_SELECTED,
-                NULL,
+                nullptr,
                 w->colours[1],
                 w->x + w->widgets[WIDX_INPUT].left + 1,
                 w->y + w->widgets[WIDX_INPUT].top,

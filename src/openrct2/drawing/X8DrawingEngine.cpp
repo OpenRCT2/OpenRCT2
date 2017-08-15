@@ -388,7 +388,7 @@ void X8DrawingEngine::ResetWindowVisbilities()
     for (rct_window *w = g_window_list; w < gWindowNextSlot; w++)
     {
         w->visibility = VC_UNKNOWN;
-        if (w->viewport != NULL) w->viewport->visibility = VC_UNKNOWN;
+        if (w->viewport != nullptr) w->viewport->visibility = VC_UNKNOWN;
     }
 }
 

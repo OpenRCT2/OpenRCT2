@@ -221,186 +221,186 @@ static rct_window_event_list window_guest_overview_events = {
     window_guest_overview_close,
     window_guest_overview_mouse_up,
     window_guest_overview_resize,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
     window_guest_overview_update,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
     window_guest_overview_tool_update,
     window_guest_overview_tool_down,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
     window_guest_overview_tool_abort,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_guest_overview_text_input,
     window_guest_overview_viewport_rotate,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_guest_overview_invalidate,
     window_guest_overview_paint,
-    NULL
+    nullptr
 };
 
 static rct_window_event_list window_guest_stats_events = {
-    NULL,
+    nullptr,
     window_guest_mouse_up,
     window_guest_stats_resize,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
     window_guest_unknown_05,
     window_guest_stats_update,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_guest_stats_invalidate,
     window_guest_stats_paint,
-    NULL
+    nullptr
 };
 
 static rct_window_event_list window_guest_rides_events = {
-    NULL,
+    nullptr,
     window_guest_mouse_up,
     window_guest_rides_resize,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
     window_guest_unknown_05,
     window_guest_rides_update,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_guest_rides_scroll_get_size,
     window_guest_rides_scroll_mouse_down,
-    NULL,
+    nullptr,
     window_guest_rides_scroll_mouse_over,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
     window_guest_rides_tooltip,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
     window_guest_rides_invalidate,
     window_guest_rides_paint,
     window_guest_rides_scroll_paint
 };
 
 static rct_window_event_list window_guest_finance_events = {
-    NULL,
+    nullptr,
     window_guest_mouse_up,
     window_guest_finance_resize,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
     window_guest_unknown_05,
     window_guest_finance_update,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_guest_finance_invalidate,
     window_guest_finance_paint,
-    NULL
+    nullptr
 };
 
 static rct_window_event_list window_guest_thoughts_events = {
-    NULL,
+    nullptr,
     window_guest_mouse_up,
     window_guest_thoughts_resize,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
     window_guest_unknown_05,
     window_guest_thoughts_update,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_guest_thoughts_invalidate,
     window_guest_thoughts_paint,
-    NULL
+    nullptr
 };
 
 static rct_window_event_list window_guest_inventory_events = {
-    NULL,
+    nullptr,
     window_guest_mouse_up,
     window_guest_inventory_resize,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
     window_guest_unknown_05,
     window_guest_inventory_update,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_guest_inventory_invalidate,
     window_guest_inventory_paint,
-    NULL
+    nullptr
 };
 
 // 0x981D24
@@ -486,7 +486,7 @@ void window_guest_open(rct_peep* peep){
     rct_window* window;
 
     window = window_bring_to_front_by_number(WC_PEEP, peep->sprite_index);
-    if (window == NULL){
+    if (window == nullptr){
         window = window_create_auto_pos(192, 157, &window_guest_overview_events, WC_PEEP, WF_RESIZABLE);
         window->widgets = window_guest_overview_widgets;
         window->enabled_widgets = window_guest_page_enabled_widgets[0];
@@ -1146,7 +1146,7 @@ void window_guest_overview_text_input(rct_window *w, rct_widgetindex widgetIndex
     if (widgetIndex != WIDX_RENAME)
         return;
 
-    if (text == NULL)
+    if (text == nullptr)
         return;
 
     gGameCommandErrorTitle = STR_CANT_NAME_GUEST;
@@ -1169,7 +1169,7 @@ void window_guest_overview_tool_update(rct_window* w, rct_widgetindex widgetInde
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
 
     sint32 map_x, map_y;
-    footpath_get_coordinates_from_pos(x, y + 16, &map_x, &map_y, NULL, NULL);
+    footpath_get_coordinates_from_pos(x, y + 16, &map_x, &map_y, nullptr, nullptr);
     if (map_x != MAP_LOCATION_NULL) {
         gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
         gMapSelectType = MAP_SELECT_TYPE_FULL;
@@ -1183,7 +1183,7 @@ void window_guest_overview_tool_update(rct_window* w, rct_widgetindex widgetInde
     gPickupPeepImage = UINT32_MAX;
 
     sint32 interactionType;
-    get_map_coordinates_from_pos(x, y, VIEWPORT_INTERACTION_MASK_NONE, NULL, NULL, &interactionType, NULL, NULL);
+    get_map_coordinates_from_pos(x, y, VIEWPORT_INTERACTION_MASK_NONE, nullptr, nullptr, &interactionType, nullptr, nullptr);
     if (interactionType == VIEWPORT_INTERACTION_ITEM_NONE)
         return;
 
@@ -1217,7 +1217,7 @@ void window_guest_overview_tool_down(rct_window* w, rct_widgetindex widgetIndex,
 
     sint32 dest_x, dest_y;
     rct_map_element* mapElement;
-    footpath_get_coordinates_from_pos(x, y + 16, &dest_x, &dest_y, NULL, &mapElement);
+    footpath_get_coordinates_from_pos(x, y + 16, &dest_x, &dest_y, nullptr, &mapElement);
 
     if (dest_x == MAP_LOCATION_NULL)
         return;
@@ -1479,7 +1479,7 @@ void window_guest_stats_paint(rct_window *w, rct_drawpixelinfo *dpi)
     gfx_fill_rect_inset(dpi, x, y - 6, x + 179, y - 5, w->colours[1], INSET_RECT_FLAG_BORDER_INSET);
 
     // Preferred Ride
-    gfx_draw_string_left(dpi, STR_GUEST_STAT_PREFERRED_RIDE, NULL, COLOUR_BLACK, x, y);
+    gfx_draw_string_left(dpi, STR_GUEST_STAT_PREFERRED_RIDE, nullptr, COLOUR_BLACK, x, y);
     y += 10;
 
     // Intensity
@@ -1675,7 +1675,7 @@ void window_guest_rides_paint(rct_window *w, rct_drawpixelinfo *dpi)
     // dx
     sint32 y = w->y + window_guest_rides_widgets[WIDX_PAGE_BACKGROUND].top + 2;
 
-    gfx_draw_string_left(dpi, STR_GUEST_LABEL_RIDES_BEEN_ON, NULL, COLOUR_BLACK, x, y);
+    gfx_draw_string_left(dpi, STR_GUEST_LABEL_RIDES_BEEN_ON, nullptr, COLOUR_BLACK, x, y);
 
     y = w->y + window_guest_rides_widgets[WIDX_PAGE_BACKGROUND].bottom - 12;
 
@@ -1938,7 +1938,7 @@ void window_guest_thoughts_paint(rct_window *w, rct_drawpixelinfo *dpi)
     // dx
     sint32 y = w->y + window_guest_thoughts_widgets[WIDX_PAGE_BACKGROUND].top + 4;
 
-    gfx_draw_string_left(dpi, STR_GUEST_RECENT_THOUGHTS_LABEL, NULL, COLOUR_BLACK, x, y);
+    gfx_draw_string_left(dpi, STR_GUEST_RECENT_THOUGHTS_LABEL, nullptr, COLOUR_BLACK, x, y);
 
     y += 10;
     for (rct_peep_thought* thought = peep->thoughts; thought < &peep->thoughts[PEEP_MAX_THOUGHTS]; ++thought){
@@ -2114,7 +2114,7 @@ void window_guest_inventory_paint(rct_window *w, rct_drawpixelinfo *dpi)
     sint32 maxY = w->y + w->height - 22;
     sint32 numItems = 0;
 
-    gfx_draw_string_left(dpi, STR_CARRYING, NULL, COLOUR_BLACK, x, y);
+    gfx_draw_string_left(dpi, STR_CARRYING, nullptr, COLOUR_BLACK, x, y);
     y += 10;
 
     for (sint32 item = 0; item < SHOP_ITEM_COUNT; item++) {
@@ -2127,6 +2127,6 @@ void window_guest_inventory_paint(rct_window *w, rct_drawpixelinfo *dpi)
     }
 
     if (numItems == 0) {
-        gfx_draw_string_left(dpi, STR_NOTHING, NULL, COLOUR_BLACK, x, y);
+        gfx_draw_string_left(dpi, STR_NOTHING, nullptr, COLOUR_BLACK, x, y);
     }
 }

@@ -58,34 +58,34 @@ static void custom_currency_window_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
 
 static rct_window_event_list _windowCustomCurrencyEvents = {
-    NULL,
+    nullptr,
     custom_currency_window_mouseup,
-    NULL,
+    nullptr,
     custom_currency_window_mousedown,
     custom_currency_window_dropdown,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     custom_currency_window_text_input,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     custom_currency_window_paint,
-    NULL
+    nullptr
 };
 
 
@@ -95,7 +95,7 @@ rct_window * custom_currency_window_open()
 
     // Check if window is already open
     window = window_bring_to_front_by_class(WC_CUSTOM_CURRENCY_CONFIG);
-    if(window != NULL)
+    if(window != nullptr)
         return window;
 
     window = window_create_centred(
@@ -235,7 +235,7 @@ static void custom_currency_window_dropdown(rct_window *w, rct_widgetindex widge
 
 static void custom_currency_window_text_input(struct rct_window *w, rct_widgetindex widgetIndex, char *text)
 {
-    if (text == NULL)
+    if (text == nullptr)
         return;
     sint32 rate;
     char* end;
@@ -281,7 +281,7 @@ static void custom_currency_window_paint(rct_window *w, rct_drawpixelinfo *dpi)
     x = w->x + 10;
     y = w->y + 30;
 
-    gfx_draw_string_left(dpi, STR_RATE, NULL, w->colours[1], x, y);
+    gfx_draw_string_left(dpi, STR_RATE, nullptr, w->colours[1], x, y);
 
     sint32 baseExchange = CurrencyDescriptors[CURRENCY_POUNDS].rate;
     set_format_arg(0, sint32, baseExchange);
@@ -289,7 +289,7 @@ static void custom_currency_window_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
     y += 20;
 
-    gfx_draw_string_left(dpi, STR_CURRENCY_SYMBOL_TEXT, NULL, w->colours[1], x, y);
+    gfx_draw_string_left(dpi, STR_CURRENCY_SYMBOL_TEXT, nullptr, w->colours[1], x, y);
 
     gfx_draw_string(
         dpi,

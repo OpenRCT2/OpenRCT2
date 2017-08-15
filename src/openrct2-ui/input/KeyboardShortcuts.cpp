@@ -135,26 +135,26 @@ std::string KeyboardShortcuts::GetShortcutString(sint32 shortcut) const
     if (shortcutKey == SHORTCUT_UNDEFINED) return std::string();
     if (shortcutKey & SHIFT)
     {
-        format_string(formatBuffer, sizeof(formatBuffer), STR_SHIFT_PLUS, NULL);
+        format_string(formatBuffer, sizeof(formatBuffer), STR_SHIFT_PLUS, nullptr);
         String::Append(buffer, sizeof(buffer), formatBuffer);
     }
     if (shortcutKey & CTRL)
     {
-        format_string(formatBuffer, sizeof(formatBuffer), STR_CTRL_PLUS, NULL);
+        format_string(formatBuffer, sizeof(formatBuffer), STR_CTRL_PLUS, nullptr);
         String::Append(buffer, sizeof(buffer), formatBuffer);
     }
     if (shortcutKey & ALT)
     {
 #ifdef __MACOSX__
-        format_string(formatBuffer, sizeof(formatBuffer), STR_OPTION_PLUS, NULL);
+        format_string(formatBuffer, sizeof(formatBuffer), STR_OPTION_PLUS, nullptr);
 #else
-        format_string(formatBuffer, sizeof(formatBuffer), STR_ALT_PLUS, NULL);
+        format_string(formatBuffer, sizeof(formatBuffer), STR_ALT_PLUS, nullptr);
 #endif
         String::Append(buffer, sizeof(buffer), formatBuffer);
     }
     if (shortcutKey & CMD)
     {
-        format_string(formatBuffer, sizeof(formatBuffer), STR_CMD_PLUS, NULL);
+        format_string(formatBuffer, sizeof(formatBuffer), STR_CMD_PLUS, nullptr);
         String::Append(buffer, sizeof(buffer), formatBuffer);
     }
     String::Append(buffer, sizeof(buffer), SDL_GetScancodeName((SDL_Scancode)(shortcutKey & 0xFF)));

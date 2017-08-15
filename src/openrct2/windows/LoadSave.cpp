@@ -83,30 +83,30 @@ static void window_loadsave_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, s
 static rct_window_event_list window_loadsave_events = {
     window_loadsave_close,
     window_loadsave_mouseup,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_loadsave_scrollgetsize,
     window_loadsave_scrollmousedown,
-    NULL,
+    nullptr,
     window_loadsave_scrollmouseover,
     window_loadsave_textinput,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
     window_loadsave_tooltip,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
     window_loadsave_paint,
     window_loadsave_scrollpaint
 };
@@ -129,7 +129,7 @@ typedef struct loadsave_list_item {
 static loadsave_callback _loadSaveCallback;
 
 static sint32 _listItemsCount = 0;
-static loadsave_list_item *_listItems = NULL;
+static loadsave_list_item *_listItems = nullptr;
 static char _directory[MAX_PATH];
 static char _shortenedDirectory[MAX_PATH];
 static char _parentDirectory[MAX_PATH];
@@ -164,7 +164,7 @@ static sint32 window_loadsave_get_dir(utf8 *last_save, char *path, const char *s
 
 rct_window *window_loadsave_open(sint32 type, char *defaultName)
 {
-    _loadSaveCallback = NULL;
+    _loadSaveCallback = nullptr;
     _type = type;
     _defaultName[0] = '\0';
 
@@ -173,7 +173,7 @@ rct_window *window_loadsave_open(sint32 type, char *defaultName)
     }
 
     rct_window *w = window_bring_to_front_by_class(WC_LOADSAVE);
-    if (w == NULL) {
+    if (w == nullptr) {
         w = window_create_centred(WW, WH, &window_loadsave_events, WC_LOADSAVE, WF_STICK_TO_FRONT);
         w->widgets = window_loadsave_widgets;
         w->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_UP) | (1 << WIDX_NEW_FOLDER) | (1 << WIDX_NEW_FILE) | (1 << WIDX_SORT_NAME) | (1 << WIDX_SORT_DATE) | (1 << WIDX_BROWSE) | (1 << WIDX_DEFAULT);
@@ -232,7 +232,7 @@ rct_window *window_loadsave_open(sint32 type, char *defaultName)
 
     if (!success) {
         window_close(w);
-        return NULL;
+        return nullptr;
     }
 
     w->no_list_items = _listItemsCount;
@@ -242,9 +242,9 @@ rct_window *window_loadsave_open(sint32 type, char *defaultName)
 
 static void window_loadsave_close(rct_window *w)
 {
-    if (_listItems != NULL) {
+    if (_listItems != nullptr) {
         free(_listItems);
-        _listItems = NULL;
+        _listItems = nullptr;
     }
 
     window_close_by_class(WC_LOADSAVE_OVERWRITE_PROMPT);
@@ -259,7 +259,7 @@ static bool browse(bool isSave, char *path, size_t pathSize)
     file_dialog_desc desc = { 0 };
     desc.initial_directory = _directory;
     desc.type = isSave ? FD_SAVE : FD_OPEN;
-    desc.default_filename = isSave ? path : NULL;
+    desc.default_filename = isSave ? path : nullptr;
 
     rct_string_id title = STR_NONE;
     switch (_type & 0x0E) {
@@ -317,7 +317,7 @@ static void window_loadsave_mouseup(rct_window *w, rct_widgetindex widgetIndex)
         window_text_input_open(w, WIDX_NEW_FILE, STR_NONE, STR_FILEBROWSER_FILE_NAME_PROMPT, STR_STRING, (uintptr_t)&_defaultName, 64);
         break;
     case WIDX_NEW_FOLDER:
-        window_text_input_raw_open(w, WIDX_NEW_FOLDER, STR_NONE, STR_FILEBROWSER_FOLDER_NAME_PROMPT, NULL, 64);
+        window_text_input_raw_open(w, WIDX_NEW_FOLDER, STR_NONE, STR_FILEBROWSER_FOLDER_NAME_PROMPT, nullptr, 64);
         break;
     case WIDX_BROWSE:
         if (browse(isSave, path, sizeof(path)))
@@ -421,7 +421,7 @@ static void window_loadsave_textinput(rct_window *w, rct_widgetindex widgetIndex
     char path[MAX_PATH];
     sint32 i, overwrite;
 
-    if (text == NULL || text[0] == 0)
+    if (text == nullptr || text[0] == 0)
         return;
 
     switch (widgetIndex) {
@@ -581,7 +581,7 @@ static void window_loadsave_populate_list(rct_window *w, sint32 includeNewItem, 
     }
     _shortenedDirectory[0] = '\0';
 
-    if (_listItems != NULL)
+    if (_listItems != nullptr)
         free(_listItems);
 
     sint32 listItemCapacity = 8;
@@ -600,7 +600,7 @@ static void window_loadsave_populate_list(rct_window *w, sint32 includeNewItem, 
             if (listItemCapacity <= _listItemsCount) {
                 listItemCapacity *= 2;
                 void *new_memory = realloc(_listItems, listItemCapacity * sizeof(loadsave_list_item));
-                if (new_memory == NULL) {
+                if (new_memory == nullptr) {
                     log_error("Failed to reallocate memory for loadsave list");
                     return;
                 }
@@ -628,7 +628,7 @@ static void window_loadsave_populate_list(rct_window *w, sint32 includeNewItem, 
 
         // Remove everything past the now last separator
         char *ch = strrchr(_parentDirectory, *PATH_SEPARATOR);
-        if (ch != NULL) {
+        if (ch != nullptr) {
             *(ch + 1) = '\0';
         } else if (drives) {
             // If on Windows, clear the entire path to show the drives
@@ -675,7 +675,7 @@ static void window_loadsave_populate_list(rct_window *w, sint32 includeNewItem, 
         char * extToken;
         bool showExtension = false;
         extToken = strtok(extCopy, ";");
-        while (extToken != NULL) {
+        while (extToken != nullptr) {
             safe_strcpy(filter, directory, sizeof(filter));
             safe_strcat_path(filter, "*", sizeof(filter));
             path_append_extension(filter, extToken, sizeof(filter));
@@ -706,7 +706,7 @@ static void window_loadsave_populate_list(rct_window *w, sint32 includeNewItem, 
             }
             platform_enumerate_files_end(fileEnumHandle);
 
-            extToken = strtok(NULL, ";");
+            extToken = strtok(nullptr, ";");
             showExtension = true; //Show any extension after the first iteration
         }
 
@@ -716,7 +716,7 @@ static void window_loadsave_populate_list(rct_window *w, sint32 includeNewItem, 
 
 static void window_loadsave_invoke_callback(sint32 result, const utf8 * path)
 {
-    if (_loadSaveCallback != NULL) {
+    if (_loadSaveCallback != nullptr) {
         _loadSaveCallback(result, path);
     }
 }
@@ -872,34 +872,34 @@ static void window_overwrite_prompt_mouseup(rct_window *w, rct_widgetindex widge
 static void window_overwrite_prompt_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
 static rct_window_event_list window_overwrite_prompt_events = {
-    NULL,
+    nullptr,
     window_overwrite_prompt_mouseup,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_overwrite_prompt_paint,
-    NULL
+    nullptr
 };
 
 static char _window_overwrite_prompt_name[256];
@@ -931,7 +931,7 @@ static void window_overwrite_prompt_mouseup(rct_window *w, rct_widgetindex widge
     switch (widgetIndex) {
     case WIDX_OVERWRITE_OVERWRITE:
         loadsaveWindow = window_find_by_class(WC_LOADSAVE);
-        if (loadsaveWindow != NULL)
+        if (loadsaveWindow != nullptr)
             window_loadsave_select(loadsaveWindow, _window_overwrite_prompt_path);
         // As the window_loadsave_select function can change the order of the
         // windows we can't use window_close(w).

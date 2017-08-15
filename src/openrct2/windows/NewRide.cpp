@@ -214,31 +214,31 @@ static void window_new_ride_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, s
 
 // 0x0098E354
 static rct_window_event_list window_new_ride_events = {
-    NULL,
+    nullptr,
     window_new_ride_mouseup,
-    NULL,
+    nullptr,
     window_new_ride_mousedown,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
     window_new_ride_update,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     window_new_ride_scrollgetsize,
     window_new_ride_scrollmousedown,
-    NULL,
+    nullptr,
     window_new_ride_scrollmouseover,
-    NULL,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
+    nullptr,
     window_new_ride_tooltip,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
     window_new_ride_invalidate,
     window_new_ride_paint,
     window_new_ride_scrollpaint
@@ -452,7 +452,7 @@ rct_window *window_new_ride_open()
     rct_window *w;
 
     w = window_bring_to_front_by_class(WC_CONSTRUCT_RIDE);
-    if (w != NULL)
+    if (w != nullptr)
         return w;
 
     // Not sure what these windows are
@@ -514,7 +514,7 @@ void window_new_ride_focus(ride_list_item rideItem)
     // Find the first non-null ride type index.
 
     w = window_find_by_class(WC_CONSTRUCT_RIDE);
-    if (w == NULL)
+    if (w == nullptr)
         return;
 
     rideEntry = get_ride_entry(rideItem.entry_index);
@@ -907,8 +907,8 @@ static ride_list_item window_new_ride_scroll_get_ride_list_item_at(rct_window *w
 static sint32 get_num_track_designs(ride_list_item item)
 {
     char entry[9];
-    const char *entryPtr = NULL;
-    rct_ride_entry * rideEntry = NULL;
+    const char *entryPtr = nullptr;
+    rct_ride_entry * rideEntry = nullptr;
 
     if (item.type < 0x80) {
         rideEntry = get_ride_entry(item.entry_index);
@@ -918,7 +918,7 @@ static sint32 get_num_track_designs(ride_list_item item)
         }
     }
 
-    if (rideEntry != NULL && ride_type_has_ride_groups(item.type))
+    if (rideEntry != nullptr && ride_type_has_ride_groups(item.type))
     {
         const ride_group * rideGroup = get_ride_group(item.type, rideEntry);
         return (sint32)track_repository_get_count_for_ride_group(item.type, rideGroup);
