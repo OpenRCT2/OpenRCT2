@@ -344,7 +344,7 @@ static void window_banner_paint(rct_window *w, rct_drawpixelinfo *dpi)
 static void window_banner_viewport_rotate(rct_window *w)
 {
     rct_viewport* view = w->viewport;
-    w->viewport = 0;
+    w->viewport = nullptr;
 
     view->width = 0;
     viewport_update_pointers();
