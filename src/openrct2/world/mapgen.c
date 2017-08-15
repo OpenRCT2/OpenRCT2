@@ -144,7 +144,7 @@ void mapgen_generate(mapgen_settings *settings)
     sint32 x, y, mapSize, floorTexture, wallTexture, waterLevel;
     rct_map_element *mapElement;
 
-    util_srand((sint32)platform_get_ticks());
+    srand((sint32)platform_get_ticks());
 
     mapSize = settings->mapSize;
     floorTexture = settings->floor;
@@ -152,7 +152,7 @@ void mapgen_generate(mapgen_settings *settings)
     waterLevel = settings->water_level;
 
     if (floorTexture == -1)
-        floorTexture = BaseTerrain[util_rand() % countof(BaseTerrain)];
+        floorTexture = BaseTerrain[rand() % countof(BaseTerrain)];
 
     if (wallTexture == -1) {
         // Base edge type on surface type
@@ -190,7 +190,7 @@ void mapgen_generate(mapgen_settings *settings)
 
     if (1) {
         mapgen_simplex(settings);
-        mapgen_smooth_height(2 + (util_rand() % 6));
+        mapgen_smooth_height(2 + (rand() % 6));
     } else {
         // Keep overwriting the map with rough circular blobs of different sizes and heights.
         // This procedural method can produce intersecting contour like land and lakes.
@@ -218,7 +218,7 @@ void mapgen_generate(mapgen_settings *settings)
     // Add sandy beaches
     sint32 beachTexture = floorTexture;
     if (settings->floor == -1 && floorTexture == TERRAIN_GRASS) {
-        switch (util_rand() % 4) {
+        switch (rand() % 4) {
         case 0:
             beachTexture = TERRAIN_SAND;
             break;
@@ -254,7 +254,7 @@ static void mapgen_place_tree(sint32 type, sint32 x, sint32 y)
     assert(mapElement != NULL);
     mapElement->clearance_height = surfaceZ + (sceneryEntry->small_scenery.height >> 3);
 
-    mapElement->type = MAP_ELEMENT_TYPE_SCENERY | (util_rand() & 3);
+    mapElement->type = MAP_ELEMENT_TYPE_SCENERY | (rand() & 3);
     mapElement->properties.scenery.type = type;
     mapElement->properties.scenery.age = 0;
     scenery_small_set_primary_colour(mapElement, COLOUR_YELLOW);
@@ -324,7 +324,7 @@ static void mapgen_place_trees()
 
     // Shuffle list
     for (sint32 i = 0; i < availablePositionsCount; i++) {
-        sint32 rindex = util_rand() % availablePositionsCount;
+        sint32 rindex = rand() % availablePositionsCount;
         if (rindex == i)
             continue;
 
@@ -334,7 +334,7 @@ static void mapgen_place_trees()
     }
 
     // Place trees
-    float treeToLandRatio = (10 + (util_rand() % 30)) / 100.0f;
+    float treeToLandRatio = (10 + (rand() % 30)) / 100.0f;
     sint32 numTrees = max(4, (sint32)(availablePositionsCount * treeToLandRatio));
 
     for (sint32 i = 0; i < numTrees; i++) {
@@ -349,7 +349,7 @@ static void mapgen_place_trees()
             if (numGrassTreeIds == 0)
                 break;
 
-            type = grassTreeIds[util_rand() % numGrassTreeIds];
+            type = grassTreeIds[rand() % numGrassTreeIds];
             break;
 
         case TERRAIN_SAND:
@@ -358,15 +358,15 @@ static void mapgen_place_trees()
             if (numDesertTreeIds == 0)
                 break;
 
-            if (util_rand() % 4 == 0)
-                type = desertTreeIds[util_rand() % numDesertTreeIds];
+            if (rand() % 4 == 0)
+                type = desertTreeIds[rand() % numDesertTreeIds];
             break;
 
         case TERRAIN_ICE:
             if (numSnowTreeIds == 0)
                 break;
 
-            type = snowTreeIds[util_rand() % numSnowTreeIds];
+            type = snowTreeIds[rand() % numSnowTreeIds];
             break;
         }
 
@@ -405,15 +405,15 @@ static void mapgen_blobs(sint32 count, sint32 lowSize, sint32 highSize, sint32 l
     sint32 sizeRange = highSize - lowSize;
     sint32 heightRange = highHeight - lowHeight;
 
-    sint32 border = 2 + (util_rand() % 24);
+    sint32 border = 2 + (rand() % 24);
     sint32 borderRange = _heightSize - (border * 2);
     for (i = 0; i < count; i++) {
-        sint32 radius = lowSize + (util_rand() % sizeRange);
+        sint32 radius = lowSize + (rand() % sizeRange);
         mapgen_blob(
-            border + (util_rand() % borderRange),
-            border + (util_rand() % borderRange),
+            border + (rand() % borderRange),
+            border + (rand() % borderRange),
             (sint32)(M_PI * radius * radius),
-            lowHeight + (util_rand() % heightRange)
+            lowHeight + (rand() % heightRange)
         );
     }
 }
@@ -519,7 +519,7 @@ static void mapgen_blob(sint32 cx, sint32 cy, sint32 size, sint32 height)
     set_height(x, y, BLOB_HEIGHT);
 
     while (currentSize < size) {
-        if (util_rand() % 2 == 0) {
+        if (rand() % 2 == 0) {
             set_height(x, y, BLOB_HEIGHT);
             currentSize++;
         }
@@ -668,7 +668,7 @@ static uint8 perm[512];
 static void noise_rand()
 {
     for (sint32 i = 0; i < countof(perm); i++)
-        perm[i] = util_rand() & 0xFF;
+        perm[i] = rand() & 0xFF;
 }
 
 static float fractal_noise(sint32 x, sint32 y, float frequency, sint32 octaves, float lacunarity, float persistence)

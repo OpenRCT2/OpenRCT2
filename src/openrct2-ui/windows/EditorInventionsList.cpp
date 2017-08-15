@@ -367,7 +367,7 @@ static void research_items_shuffle()
 
     // Shuffle list
     for (i = 0; i < numNonResearchedItems; i++) {
-        sint32 ri = util_rand() % numNonResearchedItems;
+        sint32 ri = rand() % numNonResearchedItems;
         if (ri == i)
             continue;
 

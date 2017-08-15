@@ -235,7 +235,7 @@ private:
         char key[17];
         for (sint32 i = 0; i < 16; i++)
         {
-            sint32 hexCharIndex = util_rand() % Util::CountOf(hexChars);
+            sint32 hexCharIndex = rand() % Util::CountOf(hexChars);
             key[i] = hexChars[hexCharIndex];
         }
         key[Util::CountOf(key) - 1] = 0;

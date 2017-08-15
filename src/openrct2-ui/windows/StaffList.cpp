@@ -710,7 +710,7 @@ static uint8 window_staff_list_get_random_entertainer_costume()
     sint32 numCostumes = staff_get_available_entertainer_costume_list(costumeList);
     if (numCostumes > 0)
     {
-        sint32 index = util_rand() % numCostumes;
+        sint32 index = rand() % numCostumes;
         result = costumeList[index];
     }
     return result;
