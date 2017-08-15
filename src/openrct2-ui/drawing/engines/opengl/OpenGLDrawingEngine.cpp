@@ -561,6 +561,9 @@ void OpenGLDrawingContext::Clear(uint8 paletteIndex)
 
 void OpenGLDrawingContext::FillRect(uint32 colour, sint32 left, sint32 top, sint32 right, sint32 bottom)
 {
+    // Must be rendered in order, depends on already rendered contents
+    FlushCommandBuffers();
+
     left += _offsetX;
     top += _offsetY;
     right += _offsetX;
@@ -601,13 +604,13 @@ void OpenGLDrawingContext::FillRect(uint32 colour, sint32 left, sint32 top, sint
     command.bounds[3] = bottom + 1;
 
     _commandBuffers.rectangles.push_back(command);
-
-    // Must be rendered in order, depends on already rendered contents
-    FlushCommandBuffers();
 }
 
 void OpenGLDrawingContext::FilterRect(FILTER_PALETTE_ID palette, sint32 left, sint32 top, sint32 right, sint32 bottom)
 {
+    // Must be rendered in order, depends on already rendered contents
+    FlushCommandBuffers();
+
     left += _offsetX;
     top += _offsetY;
     right += _offsetX;
@@ -643,9 +646,6 @@ void OpenGLDrawingContext::FilterRect(FILTER_PALETTE_ID palette, sint32 left, si
     command.bounds[3] = bottom + 1;
 
     _commandBuffers.rectangles.push_back(command);
-
-    // Must be rendered in order, depends on already rendered contents
-    FlushCommandBuffers();
 }
 
 void OpenGLDrawingContext::DrawLine(uint32 colour, sint32 x1, sint32 y1, sint32 x2, sint32 y2)
