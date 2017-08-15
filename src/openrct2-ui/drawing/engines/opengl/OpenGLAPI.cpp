@@ -103,6 +103,7 @@ static const char * TryLoadAllProcAddresses()
     SetupOpenGLFunction(glLinkProgram);
     SetupOpenGLFunction(glShaderSource);
     SetupOpenGLFunction(glUniform1i);
+    SetupOpenGLFunction(glUniform1iv);
     SetupOpenGLFunction(glUniform2i);
     SetupOpenGLFunction(glUniform2f);
     SetupOpenGLFunction(glUniform4f);
