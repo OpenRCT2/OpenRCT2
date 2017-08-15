@@ -870,51 +870,51 @@ static void widget_draw_image(rct_drawpixelinfo *dpi, rct_window *w, rct_widgeti
     }
 }
 
-sint32 widget_is_enabled(rct_window *w, rct_widgetindex widgetIndex)
+bool widget_is_enabled(rct_window *w, rct_widgetindex widgetIndex)
 {
-    return (w->enabled_widgets & (1LL << widgetIndex)) ? 1 : 0;
+    return (w->enabled_widgets & (1LL << widgetIndex)) != 0;
 }
 
-sint32 widget_is_disabled(rct_window *w, rct_widgetindex widgetIndex)
+bool widget_is_disabled(rct_window *w, rct_widgetindex widgetIndex)
 {
-    return (w->disabled_widgets & (1LL << widgetIndex)) ? 1 : 0;
+    return (w->disabled_widgets & (1LL << widgetIndex)) != 0;
 }
 
-sint32 widget_is_pressed(rct_window *w, rct_widgetindex widgetIndex)
+bool widget_is_pressed(rct_window *w, rct_widgetindex widgetIndex)
 {
     if (w->pressed_widgets & (1LL << widgetIndex)) {
-        return 1;
+        return true;
     }
     if (input_get_state() == INPUT_STATE_WIDGET_PRESSED || input_get_state() == INPUT_STATE_DROPDOWN_ACTIVE) {
-        if (!(input_test_flag(INPUT_FLAG_WIDGET_PRESSED))) return 0;
-        if (gPressedWidget.window_classification != w->classification) return 0;
-        if (gPressedWidget.window_number != w->number) return 0;
-        if (gPressedWidget.widget_index != widgetIndex) return 0;
-        return 1;
+        if (!(input_test_flag(INPUT_FLAG_WIDGET_PRESSED))) return false;
+        if (gPressedWidget.window_classification != w->classification) return false;
+        if (gPressedWidget.window_number != w->number) return false;
+        if (gPressedWidget.widget_index != widgetIndex) return false;
+        return true;
     }
-    return 0;
+    return false;
 }
 
-sint32 widget_is_highlighted(rct_window *w, rct_widgetindex widgetIndex)
+bool widget_is_highlighted(rct_window *w, rct_widgetindex widgetIndex)
 {
-    if (gHoverWidget.window_classification != w->classification) return 0;
-    if (gHoverWidget.window_number != w->number) return 0;
-    if (gHoverWidget.widget_index != widgetIndex) return 0;
-    return 1;
+    if (gHoverWidget.window_classification != w->classification) return false;
+    if (gHoverWidget.window_number != w->number) return false;
+    if (gHoverWidget.widget_index != widgetIndex) return false;
+    return true;
 }
 
-sint32 widget_is_active_tool(rct_window *w, rct_widgetindex widgetIndex)
+bool widget_is_active_tool(rct_window *w, rct_widgetindex widgetIndex)
 {
     if (!(input_test_flag(INPUT_FLAG_TOOL_ACTIVE)))
-        return 0;
+        return false;
     if (gCurrentToolWidget.window_classification != w->classification)
-        return 0;
+        return false;
     if (gCurrentToolWidget.window_number != w->number)
-        return 0;
+        return false;
     if (gCurrentToolWidget.widget_index != widgetIndex)
-        return 0;
+        return false;
 
-    return 1;
+    return true;
 }
 
 /**
