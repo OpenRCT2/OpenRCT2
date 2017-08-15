@@ -64,6 +64,12 @@ void scenery_paint(uint8 direction, sint32 height, rct_map_element* mapElement) 
     uint32 dword_F64EB0 = baseImageid;
 
     rct_scenery_entry *entry = get_small_scenery_entry(mapElement->properties.scenery.type);
+
+    if (entry == (rct_scenery_entry*)-1)
+    {
+        return;
+    }
+
     baseImageid = entry->image + direction;
     boxlength.x = 2;
     boxlength.y = 2;

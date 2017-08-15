@@ -1427,7 +1427,7 @@ static void window_ride_disable_tabs(rct_window *w)
 
     rct_ride_entry *type = get_ride_entry(ride->subtype);
 
-    if (type == nullptr) {
+    if (type == nullptr || type == reinterpret_cast<rct_ride_entry*>(-1)) {
         disabled_tabs |= 1 << WIDX_TAB_2 | 1 << WIDX_TAB_3 | 1 << WIDX_TAB_4 | 1 << WIDX_TAB_5 | 1 << WIDX_TAB_6
                        | 1 << WIDX_TAB_7 | 1 << WIDX_TAB_8 | 1 << WIDX_TAB_9 | 1 << WIDX_TAB_10;
     } else if ((type->flags & RIDE_ENTRY_FLAG_DISABLE_COLOUR_TAB) != 0)

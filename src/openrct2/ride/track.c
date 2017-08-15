@@ -1563,6 +1563,9 @@ static money32 track_remove(uint8 type, uint8 sequence, sint16 originX, sint16 o
         found = 0;
         mapElement = map_get_first_element_at(x / 32, y / 32);
         do{
+            if (mapElement == NULL)
+                break;
+
             if (mapElement->base_height != z / 8)
                 continue;
 
