@@ -856,7 +856,7 @@ STR_0845    :<not used anymore>
 STR_0846    :<not used anymore>
 STR_0847    :关于'OpenRCT2'
 STR_0848    :过山车大亨2
-STR_0849    :{WINDOW_COLOUR_2}版本 2.01.028
+STR_0849    :<removed string - do not use>
 STR_0850    :{WINDOW_COLOUR_2}版权 {COPYRIGHT} 2002 Chris Sawyer, 版权所有
 STR_0851    :{WINDOW_COLOUR_2}设计及程序 by Chris Sawyer
 STR_0852    :{WINDOW_COLOUR_2}美术 by Simon Foster
@@ -865,13 +865,13 @@ STR_0854    :{WINDOW_COLOUR_2}Additional sounds recorded by David Ellis
 STR_0855    :{WINDOW_COLOUR_2}Representation by Jacqui Lyons at Marjacq Ltd.
 STR_0856    :{WINDOW_COLOUR_2}致谢:
 STR_0857    :{WINDOW_COLOUR_2}Peter James Adcock, Joe Booth, and John Wardley
-STR_0858    :{WINDOW_COLOUR_2}
-STR_0859    :{WINDOW_COLOUR_2}
-STR_0860    :{WINDOW_COLOUR_2}
-STR_0861    :
-STR_0862    :
-STR_0863    :
-STR_0864    :
+STR_0858    :<removed string - do not use>
+STR_0859    :<removed string - do not use>
+STR_0860    :<removed string - do not use>
+STR_0861    :<removed string - do not use>
+STR_0862    :<removed string - do not use>
+STR_0863    :<removed string - do not use>
+STR_0864    :<removed string - do not use>
 STR_0865    :{STRINGID}
 STR_0866    :{POP16}{STRINGID}
 STR_0867    :{POP16}{POP16}{STRINGID}
@@ -2873,7 +2873,7 @@ STR_2856    :{WINDOW_COLOUR_2}教学
 STR_2857    :{WINDOW_COLOUR_2}(按下任意键来获取控制)
 STR_2858    :不能开始实行营销计划...
 STR_2859    :另外一个OpenRCT2进程已在运行中
-STR_2860    :Infogrames Interactive credits...
+STR_2860    :<removed string - do not use>
 STR_2861    :{WINDOW_COLOUR_2}Licensed to Infogrames Interactive Inc.
 STR_2862    :音乐鸣谢列表...
 STR_2863    :音乐鸣谢列表
@@ -2921,29 +2921,29 @@ STR_2904    :{WINDOW_COLOUR_2}Manic Mechanic:   (Allister Brimble) copyright {CO
 STR_2905    :{WINDOW_COLOUR_2}Techno Torture:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
 STR_2906    :{WINDOW_COLOUR_2}Sweat Dreams:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
 STR_2907    :{WINDOW_COLOUR_2}What shall we do with the Drunken Sailor:   (Anon/Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2908    :{WINDOW_COLOUR_2}Infogrames Interactive
-STR_2909    :{WINDOW_COLOUR_2}Senior Producer:  Thomas J. Zahorik
-STR_2910    :{WINDOW_COLOUR_2}Executive Producer:  Bill Levay
-STR_2911    :{WINDOW_COLOUR_2}Senior Marketing Product Manager:  Scott Triola
-STR_2912    :{WINDOW_COLOUR_2}V.P. of Product Development:  Scott Walker
-STR_2913    :{WINDOW_COLOUR_2}General Manager:  John Hurlbut
-STR_2914    :{WINDOW_COLOUR_2}Director of Quality Assurance:  Michael Craighead
-STR_2915    :{WINDOW_COLOUR_2}Q.A. Certification Manager:  Kurt Boutin
-STR_2916    :{WINDOW_COLOUR_2}Q.A. Certification Lead:  Mark Huggins
-STR_2917    :{WINDOW_COLOUR_2}Testers:  Dena Irene Fitzgerald, Scott Rollins, Christopher McPhail
-STR_2918    :{WINDOW_COLOUR_2}Clif McClure, Erik Maramaldi, Erik Jeffery
-STR_2919    :{WINDOW_COLOUR_2}Director of Marketing:  Ann Marie Bland
-STR_2920    :{WINDOW_COLOUR_2}Manager of Creative Services:  Steve Martin
-STR_2921    :{WINDOW_COLOUR_2}Manager of Editorial & Documentation Services:  Elizabeth Mackney
-STR_2922    :{WINDOW_COLOUR_2}Graphic Designer:  Paul Anselmi
-STR_2923    :{WINDOW_COLOUR_2}Copywriter:  Kurt Carlson
-STR_2924    :{WINDOW_COLOUR_2}Special Thanks to:  Peter Matiss
-STR_2925    :{WINDOW_COLOUR_2}Engineering Specialist:  Ken Edwards
-STR_2926    :{WINDOW_COLOUR_2}Engineering Services Manager:  Luis Rivas
-STR_2927    :{WINDOW_COLOUR_2}Lead Compatibility Analyst:  Geoffrey Smith
-STR_2928    :{WINDOW_COLOUR_2}Compatibility Analysts:  Jason Cordero, Burke McQuinn, Kim Jardin 
-STR_2929    :{WINDOW_COLOUR_2}Lead Tester:  Daniel Frisoli
-STR_2930    :{WINDOW_COLOUR_2}Senior Tester:  Matt Pantaleoni
+STR_2908    :<removed string - do not use>
+STR_2909    :<removed string - do not use>
+STR_2910    :<removed string - do not use>
+STR_2911    :<removed string - do not use>
+STR_2912    :<removed string - do not use>
+STR_2913    :<removed string - do not use>
+STR_2914    :<removed string - do not use>
+STR_2915    :<removed string - do not use>
+STR_2916    :<removed string - do not use>
+STR_2917    :<removed string - do not use>
+STR_2918    :<removed string - do not use>
+STR_2919    :<removed string - do not use>
+STR_2920    :<removed string - do not use>
+STR_2921    :<removed string - do not use>
+STR_2922    :<removed string - do not use>
+STR_2923    :<removed string - do not use>
+STR_2924    :<removed string - do not use>
+STR_2925    :<removed string - do not use>
+STR_2926    :<removed string - do not use>
+STR_2927    :<removed string - do not use>
+STR_2928    :<removed string - do not use>
+STR_2929    :<removed string - do not use>
+STR_2930    :<removed string - do not use>
 STR_2931    :{WINDOW_COLOUR_2}
 STR_2932    :{WINDOW_COLOUR_2}
 STR_2933    :{WINDOW_COLOUR_2}
@@ -4449,8 +4449,13 @@ STR_6130    :将整个列表复制到剪贴板
 STR_6131    :对象源
 STR_6132    :忽略研究状态
 STR_6133    :{SMALLFONT}{BLACK}使用还未被研究出的游乐设施和景观
-
-
+STR_6134    :清除景物
+STR_6135    :客户端发送了无效的请求
+STR_6136    :服务器发送了无效的请求
+STR_6137    :OpenRCT2, 一款免费且开源的过山车大亨2的复制游戏.
+STR_6138    :OpenRCT2是一款由许多作者共同开发的作品，完整的列表可在{OPENQUOTES}contributors.md{ENDQUOTES}找到. 请访问http://github.com/OpenRCT2/OpenRCT2获取更多信息
+STR_6139    :所有的产品及公司名称均属其拥有者所有. 使用那些名称并不代表本项目与其有任何联系或认可.
+STR_6140    :更新日志...
 
 #############
 # Scenarios #
