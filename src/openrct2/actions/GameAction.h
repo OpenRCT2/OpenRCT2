@@ -79,6 +79,12 @@ struct GameActionResult
     GameActionResult(const GameActionResult&) = delete;
 };
 
+#ifdef __WARN_SUGGEST_FINAL_METHODS__
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wsuggest-final-methods"
+#pragma GCC diagnostic ignored "-Wsuggest-final-types"
+#endif
+
 struct GameAction
 {
 public:
@@ -182,6 +188,10 @@ public:
     */
     virtual GameActionResult::Ptr Execute() const abstract;
 };
+
+#ifdef __WARN_SUGGEST_FINAL_METHODS__
+#pragma GCC diagnostic pop
+#endif
 
 template<uint32 TType, uint16 TActionFlags, typename TResultType>
 struct GameActionBase : GameAction
