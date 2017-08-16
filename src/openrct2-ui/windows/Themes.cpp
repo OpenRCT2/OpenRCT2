@@ -112,7 +112,8 @@ enum WINDOW_STAFF_LIST_WIDGET_IDX {
     WIDX_THEMES_LIST,
     WIDX_THEMES_RCT1_RIDE_LIGHTS,
     WIDX_THEMES_RCT1_PARK_LIGHTS,
-    WIDX_THEMES_RCT1_SCENARIO_FONT
+    WIDX_THEMES_RCT1_SCENARIO_FONT,
+    WIDX_THEMES_RCT1_BOTTOM_TOOLBAR
 };
 
 static rct_widget window_themes_widgets[] = {
@@ -139,6 +140,7 @@ static rct_widget window_themes_widgets[] = {
     { WWT_CHECKBOX,         1,  10,     299,    54,     65,     STR_THEMES_OPTION_RCT1_RIDE_CONTROLS,           STR_NONE },                             // rct1 ride lights
     { WWT_CHECKBOX,         1,  10,     299,    69,     80,     STR_THEMES_OPTION_RCT1_PARK_CONTROLS,           STR_NONE },                             // rct1 park lights
     { WWT_CHECKBOX,         1,  10,     299,    84,     95,     STR_THEMES_OPTION_RCT1_SCENARIO_SELECTION_FONT, STR_NONE },                             // rct1 scenario font
+    { WWT_CHECKBOX,         1,  10,     299,    99,     110,    STR_THEMES_OPTION_RCT1_BOTTOM_TOOLBAR,          STR_NONE },                             // rct1 bottom toolbar
     { WIDGETS_END },
 };
 
@@ -340,7 +342,8 @@ rct_window * window_themes_open()
         (1 << WIDX_THEMES_RENAME_BUTTON) |
         (1 << WIDX_THEMES_RCT1_RIDE_LIGHTS) |
         (1 << WIDX_THEMES_RCT1_PARK_LIGHTS) |
-        (1 << WIDX_THEMES_RCT1_SCENARIO_FONT);
+        (1 << WIDX_THEMES_RCT1_SCENARIO_FONT) |
+        (1 << WIDX_THEMES_RCT1_BOTTOM_TOOLBAR);
 
     window_themes_init_vars();
 
@@ -416,9 +419,9 @@ static void window_themes_resize(rct_window *w)
     }
     else if (_selected_tab == WINDOW_THEMES_TAB_FEATURES) {
         w->min_width = 320;
-        w->min_height = 107;
+        w->min_height = 122;
         w->max_width = 320;
-        w->max_height = 107;
+        w->max_height = 122;
 
         if (w->width < w->min_width) {
             w->width = w->min_width;
@@ -536,6 +539,14 @@ static void window_themes_mousedown(rct_window *w, rct_widgetindex widgetIndex, 
             window_invalidate_all();
         }
         break;
+    case WIDX_THEMES_RCT1_BOTTOM_TOOLBAR:
+        if (theme_get_flags() & UITHEME_FLAG_PREDEFINED) {
+            window_error_open(STR_THEMES_ERR_CANT_CHANGE_THIS_THEME, STR_NONE);
+        } else {
+            theme_set_flags(theme_get_flags() ^ UITHEME_FLAG_USE_FULL_BOTTOM_TOOLBAR);
+            theme_save();
+            window_invalidate_all();
+        }
     }
 }
 
@@ -722,6 +733,7 @@ void window_themes_invalidate(rct_window *w)
     window_themes_widgets[WIDX_THEMES_RCT1_RIDE_LIGHTS].type = WWT_EMPTY;
     window_themes_widgets[WIDX_THEMES_RCT1_PARK_LIGHTS].type = WWT_EMPTY;
     window_themes_widgets[WIDX_THEMES_RCT1_SCENARIO_FONT].type = WWT_EMPTY;
+    window_themes_widgets[WIDX_THEMES_RCT1_BOTTOM_TOOLBAR].type = WWT_EMPTY;
     window_themes_widgets[WIDX_THEMES_DUPLICATE_BUTTON].type = WWT_EMPTY;
     window_themes_widgets[WIDX_THEMES_DELETE_BUTTON].type = WWT_EMPTY;
     window_themes_widgets[WIDX_THEMES_RENAME_BUTTON].type = WWT_EMPTY;
@@ -734,6 +746,7 @@ void window_themes_invalidate(rct_window *w)
         window_themes_widgets[WIDX_THEMES_RCT1_RIDE_LIGHTS].type = WWT_EMPTY;
         window_themes_widgets[WIDX_THEMES_RCT1_PARK_LIGHTS].type = WWT_EMPTY;
         window_themes_widgets[WIDX_THEMES_RCT1_SCENARIO_FONT].type = WWT_EMPTY;
+        window_themes_widgets[WIDX_THEMES_RCT1_BOTTOM_TOOLBAR].type = WWT_EMPTY;
         window_themes_widgets[WIDX_THEMES_DUPLICATE_BUTTON].type = WWT_DROPDOWN_BUTTON;
         window_themes_widgets[WIDX_THEMES_DELETE_BUTTON].type = WWT_DROPDOWN_BUTTON;
         window_themes_widgets[WIDX_THEMES_RENAME_BUTTON].type = WWT_DROPDOWN_BUTTON;
@@ -745,6 +758,7 @@ void window_themes_invalidate(rct_window *w)
         window_themes_widgets[WIDX_THEMES_RCT1_RIDE_LIGHTS].type = WWT_CHECKBOX;
         window_themes_widgets[WIDX_THEMES_RCT1_PARK_LIGHTS].type = WWT_CHECKBOX;
         window_themes_widgets[WIDX_THEMES_RCT1_SCENARIO_FONT].type = WWT_CHECKBOX;
+        window_themes_widgets[WIDX_THEMES_RCT1_BOTTOM_TOOLBAR].type = WWT_CHECKBOX;
         window_themes_widgets[WIDX_THEMES_DUPLICATE_BUTTON].type = WWT_EMPTY;
         window_themes_widgets[WIDX_THEMES_DELETE_BUTTON].type = WWT_EMPTY;
         window_themes_widgets[WIDX_THEMES_RENAME_BUTTON].type = WWT_EMPTY;
@@ -754,6 +768,7 @@ void window_themes_invalidate(rct_window *w)
         widget_set_checkbox_value(w, WIDX_THEMES_RCT1_RIDE_LIGHTS, theme_get_flags() & UITHEME_FLAG_USE_LIGHTS_RIDE);
         widget_set_checkbox_value(w, WIDX_THEMES_RCT1_PARK_LIGHTS, theme_get_flags() & UITHEME_FLAG_USE_LIGHTS_PARK);
         widget_set_checkbox_value(w, WIDX_THEMES_RCT1_SCENARIO_FONT, theme_get_flags() & UITHEME_FLAG_USE_ALTERNATIVE_SCENARIO_SELECT_FONT);
+        widget_set_checkbox_value(w, WIDX_THEMES_RCT1_BOTTOM_TOOLBAR, theme_get_flags() & UITHEME_FLAG_USE_FULL_BOTTOM_TOOLBAR);
     }
     else {
         window_themes_widgets[WIDX_THEMES_LIST].type = WWT_SCROLL;

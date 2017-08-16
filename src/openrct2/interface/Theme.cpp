@@ -210,7 +210,8 @@ UIThemeWindowEntry PredefinedThemeRCT2_Entries[] =
 const UITheme PredefinedThemeRCT1 = UITheme::CreatePredefined(
     "RCT1", PredefinedThemeRCT1_Entries, UITHEME_FLAG_USE_LIGHTS_RIDE |
                                          UITHEME_FLAG_USE_LIGHTS_PARK |
-                                         UITHEME_FLAG_USE_ALTERNATIVE_SCENARIO_SELECT_FONT);
+                                         UITHEME_FLAG_USE_ALTERNATIVE_SCENARIO_SELECT_FONT |
+                                         UITHEME_FLAG_USE_FULL_BOTTOM_TOOLBAR);
 
 const UITheme PredefinedThemeRCT2 = UITheme::CreatePredefined(
     "RCT2", PredefinedThemeRCT2_Entries, 0);
@@ -393,6 +394,7 @@ json_t * UITheme::ToJson() const
     json_object_set_new(jsonTheme,
                         "useAltScenarioSelectFont",
                         json_boolean(Flags & UITHEME_FLAG_USE_ALTERNATIVE_SCENARIO_SELECT_FONT));
+    json_object_set_new(jsonTheme, "useFullBottomToolbar", json_boolean(Flags & UITHEME_FLAG_USE_FULL_BOTTOM_TOOLBAR));
 
     return jsonTheme;
 }
@@ -442,6 +444,10 @@ UITheme * UITheme::FromJson(const json_t * json)
         if (json_is_true(json_object_get(json, "useAltScenarioSelectFont")))
         {
             result->Flags |= UITHEME_FLAG_USE_ALTERNATIVE_SCENARIO_SELECT_FONT;
+        }
+        if (json_is_true(json_object_get(json, "useFullBottomToolbar")))
+        {
+            result->Flags |= UITHEME_FLAG_USE_FULL_BOTTOM_TOOLBAR;
         }
 
         const char * jkey;

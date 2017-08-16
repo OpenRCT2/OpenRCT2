@@ -25,6 +25,7 @@ enum {
     UITHEME_FLAG_USE_LIGHTS_RIDE                       = 1 << 1,
     UITHEME_FLAG_USE_LIGHTS_PARK                       = 1 << 2,
     UITHEME_FLAG_USE_ALTERNATIVE_SCENARIO_SELECT_FONT  = 1 << 3,
+    UITHEME_FLAG_USE_FULL_BOTTOM_TOOLBAR               = 1 << 4,
 };
 
 void colour_scheme_update(rct_window *window);

@@ -24,6 +24,7 @@ extern "C"
 {
     #include "../game.h"
     #include "../input.h"
+    #include "../interface/themes.h"
     #include "../interface/widget.h"
     #include "../localisation/date.h"
     #include "../localisation/localisation.h"
@@ -84,6 +85,7 @@ static void window_game_bottom_toolbar_draw_left_panel(rct_drawpixelinfo *dpi, r
 static void window_game_bottom_toolbar_draw_park_rating(rct_drawpixelinfo *dpi, rct_window *w, sint32 colour, sint32 x, sint32 y, uint8 factor);
 static void window_game_bottom_toolbar_draw_right_panel(rct_drawpixelinfo *dpi, rct_window *w);
 static void window_game_bottom_toolbar_draw_news_item(rct_drawpixelinfo *dpi, rct_window *w);
+static void window_game_bottom_toolbar_draw_middle_panel(rct_drawpixelinfo *dpi, rct_window *w);
 
 /**
  *
@@ -179,7 +181,14 @@ static void window_game_bottom_toolbar_mouseup(rct_window *w, rct_widgetindex wi
         window_park_rating_open();
         break;
     case WIDX_MIDDLE_INSET:
-        news_item_close_current();
+        if (news_item_is_queue_empty())
+        {
+            context_open_window(WC_RECENT_NEWS);
+        }
+        else
+        {
+            news_item_close_current();
+        }
         break;
     case WIDX_NEWS_SUBJECT:
         newsItem = news_item_get(0);
@@ -268,16 +277,27 @@ static void window_game_bottom_toolbar_invalidate(rct_window *w)
     window_game_bottom_toolbar_widgets[WIDX_RIGHT_INSET].type = WWT_EMPTY;
 
     if (news_item_is_queue_empty()) {
-        window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].type = WWT_EMPTY;
-        window_game_bottom_toolbar_widgets[WIDX_MIDDLE_INSET].type = WWT_EMPTY;
-        window_game_bottom_toolbar_widgets[WIDX_NEWS_SUBJECT].type = WWT_EMPTY;
-        window_game_bottom_toolbar_widgets[WIDX_NEWS_LOCATE].type = WWT_EMPTY;
+        if (!(theme_get_flags() & UITHEME_FLAG_USE_FULL_BOTTOM_TOOLBAR)) {
+            window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].type = WWT_EMPTY;
+            window_game_bottom_toolbar_widgets[WIDX_MIDDLE_INSET].type = WWT_EMPTY;
+            window_game_bottom_toolbar_widgets[WIDX_NEWS_SUBJECT].type = WWT_EMPTY;
+            window_game_bottom_toolbar_widgets[WIDX_NEWS_LOCATE].type = WWT_EMPTY;
+        } else {
+            window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].type = WWT_IMGBTN;
+            window_game_bottom_toolbar_widgets[WIDX_MIDDLE_INSET].type = WWT_25;
+            window_game_bottom_toolbar_widgets[WIDX_NEWS_SUBJECT].type = WWT_EMPTY;
+            window_game_bottom_toolbar_widgets[WIDX_NEWS_LOCATE].type = WWT_EMPTY;
+            window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].colour = 0;
+            window_game_bottom_toolbar_widgets[WIDX_MIDDLE_INSET].colour = 0;
+        }
     } else {
         newsItem = news_item_get(0);
         window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].type = WWT_IMGBTN;
         window_game_bottom_toolbar_widgets[WIDX_MIDDLE_INSET].type = WWT_25;
         window_game_bottom_toolbar_widgets[WIDX_NEWS_SUBJECT].type = WWT_FLATBTN;
         window_game_bottom_toolbar_widgets[WIDX_NEWS_LOCATE].type = WWT_FLATBTN;
+        window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].colour = 2;
+        window_game_bottom_toolbar_widgets[WIDX_MIDDLE_INSET].colour = 2;
         w->disabled_widgets &= ~(1 << WIDX_NEWS_SUBJECT);
         w->disabled_widgets &= ~(1 << WIDX_NEWS_LOCATE);
 
@@ -348,6 +368,18 @@ static void window_game_bottom_toolbar_paint(rct_window *w, rct_drawpixelinfo *d
         w->y + window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].bottom,
         PALETTE_51
     );
+    if (theme_get_flags() & UITHEME_FLAG_USE_FULL_BOTTOM_TOOLBAR)
+    {
+        // Draw grey background
+        gfx_filter_rect(
+            dpi,
+            w->x + window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].left,
+            w->y + window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].top,
+            w->x + window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].right,
+            w->y + window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].bottom,
+            PALETTE_51
+        );
+    }
 
     window_draw_widgets(w, dpi);
 
@@ -355,7 +387,13 @@ static void window_game_bottom_toolbar_paint(rct_window *w, rct_drawpixelinfo *d
     window_game_bottom_toolbar_draw_right_panel(dpi, w);
 
     if (!news_item_is_queue_empty())
+    {
         window_game_bottom_toolbar_draw_news_item(dpi, w);
+    }
+    else if (theme_get_flags() & UITHEME_FLAG_USE_FULL_BOTTOM_TOOLBAR)
+    {
+        window_game_bottom_toolbar_draw_middle_panel(dpi, w);
+    }
 }
 
 static void window_game_bottom_toolbar_draw_left_panel(rct_drawpixelinfo *dpi, rct_window *w)
@@ -600,6 +638,38 @@ static void window_game_bottom_toolbar_draw_news_item(rct_drawpixelinfo *dpi, rc
     case NEWS_ITEM_GRAPH:
         gfx_draw_sprite(dpi, SPR_GRAPH, x, y, 0);
         break;
+    }
+}
+
+static void window_game_bottom_toolbar_draw_middle_panel(rct_drawpixelinfo *dpi, rct_window *w)
+{
+    rct_widget *middleOutsetWidget = &window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET];
+
+    gfx_fill_rect_inset(
+        dpi,
+        w->x + middleOutsetWidget->left + 1,
+        w->y + middleOutsetWidget->top + 1,
+        w->x + middleOutsetWidget->right - 1,
+        w->y + middleOutsetWidget->bottom - 1,
+        w->colours[1],
+        INSET_RECT_F_30
+    );
+
+    sint32 x = w->x + (middleOutsetWidget->left + middleOutsetWidget->right) / 2;
+    sint32 y = w->y + middleOutsetWidget->top + 11;
+    sint32 width = middleOutsetWidget->right - middleOutsetWidget->left - 62;
+
+    // Check if there is a map tooltip to draw
+    rct_string_id stringId;
+    memcpy(&stringId, gMapTooltipFormatArgs, sizeof(rct_string_id));
+    if (stringId == STR_NONE)
+    {
+        gfx_draw_string_centred_wrapped(dpi, gMapTooltipFormatArgs, x, y, width, STR_TITLE_SEQUENCE_OPENRCT2, w->colours[0]);
+    }
+    else
+    {
+        // Show tooltip in bottom toolbar
+        gfx_draw_string_centred_wrapped(dpi, gMapTooltipFormatArgs, x, y, width, STR_STRINGID, w->colours[0]);
     }
 }
 
