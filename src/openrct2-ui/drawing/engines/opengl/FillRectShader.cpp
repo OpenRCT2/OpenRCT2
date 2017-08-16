@@ -51,9 +51,9 @@ void FillRectShader::GetLocations()
     uClip               = GetUniformLocation("uClip");
     uBounds             = GetUniformLocation("uBounds");
     uFlags              = GetUniformLocation("uFlags");
-    uColour[0]          = GetUniformLocation("uColour[0]");
-    uColour[1]          = GetUniformLocation("uColour[1]");
     uSourceFramebuffer  = GetUniformLocation("uSourceFramebuffer");
+    uPalette            = GetUniformLocation("uPalette");
+    uPaletteRemap       = GetUniformLocation("uPaletteRemap");
 
     vIndex              = GetAttributeLocation("vIndex");
 }
@@ -78,15 +78,20 @@ void FillRectShader::SetFlags(uint32 flags)
     glUniform1i(uFlags, flags);
 }
 
-void FillRectShader::SetColour(sint32 index, vec4f colour)
-{
-    glUniform4f(uColour[index], colour.r, colour.g, colour.b, colour.a);
-}
-
 void FillRectShader::SetSourceFramebuffer(GLuint texture)
 {
     _sourceFramebuffer = texture;
     OpenGLAPI::SetTexture(0, GL_TEXTURE_2D, texture);
+}
+
+void FillRectShader::SetPalette(const vec4f * glPalette)
+{
+    glUniform4fv(uPalette, 256, (const GLfloat *)glPalette);
+}
+
+void FillRectShader::SetPaletteRemap(const GLint * paletteRemap)
+{
+    glUniform1iv(uPaletteRemap, 256, paletteRemap);
 }
 
 void FillRectShader::Draw(sint32 left, sint32 top, sint32 right, sint32 bottom)
