@@ -6,6 +6,7 @@
 - Fix: [#6101] Rides remain in ride list window briefly after demolition.
 - Fix: [#6115] Random title screen music not random on launch
 - Fix: [#6133] Construction rights not shown after selecting buy mode.
+- Fix: [#6188] Viewports not being clipped properly when zoomed out in OpenGL mode.
 - Fix: Infinite loop when removing scenery elements with >127 base height.
 - Improved: [#6186] Transparent menu items now draw properly in OpenGL mode.
 
