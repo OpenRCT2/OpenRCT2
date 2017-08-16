@@ -62,110 +62,6 @@ struct OpenGLVersion
 
 constexpr OpenGLVersion OPENGL_MINIMUM_REQUIRED_VERSION = { 3, 3 };
 
-static const vec3f TransparentColourTable[144 - 44] =
-{
-    { 0.7f, 0.8f, 0.8f }, // 44
-    { 0.7f, 0.8f, 0.8f },
-    { 0.3f, 0.4f, 0.4f },
-    { 0.2f, 0.3f, 0.3f },
-    { 0.1f, 0.2f, 0.2f },
-    { 0.4f, 0.5f, 0.5f },
-    { 0.3f, 0.4f, 0.4f },
-    { 0.4f, 0.5f, 0.5f },
-    { 0.4f, 0.5f, 0.5f },
-    { 0.3f, 0.4f, 0.4f },
-    { 0.6f, 0.7f, 0.7f },
-    { 0.3f, 0.5f, 0.9f },
-    { 0.1f, 0.3f, 0.8f },
-    { 0.5f, 0.7f, 0.9f },
-    { 0.6f, 0.2f, 0.2f },
-    { 0.5f, 0.1f, 0.1f },
-    { 0.8f, 0.4f, 0.4f },
-    { 0.3f, 0.5f, 0.4f },
-    { 0.2f, 0.4f, 0.2f },
-    { 0.5f, 0.7f, 0.5f },
-    { 0.5f, 0.5f, 0.7f },
-    { 0.3f, 0.3f, 0.5f },
-    { 0.6f, 0.6f, 0.8f },
-    { 0.5f, 0.5f, 0.2f },
-    { 0.4f, 0.4f, 0.1f },
-    { 0.7f, 0.7f, 0.4f },
-    { 0.7f, 0.5f, 0.3f },
-    { 0.6f, 0.4f, 0.2f },
-    { 0.8f, 0.7f, 0.4f },
-    { 0.8f, 0.7f, 0.1f },
-    { 0.7f, 0.4f, 0.0f },
-    { 1.0f, 0.9f, 0.2f },
-    { 0.4f, 0.6f, 0.2f },
-    { 0.3f, 0.4f, 0.2f },
-    { 0.5f, 0.7f, 0.3f },
-    { 0.5f, 0.6f, 0.4f },
-    { 0.4f, 0.4f, 0.3f },
-    { 0.7f, 0.8f, 0.5f },
-    { 0.3f, 0.7f, 0.2f },
-    { 0.2f, 0.6f, 0.0f },
-    { 0.4f, 0.8f, 0.3f },
-    { 0.8f, 0.5f, 0.4f },
-    { 0.7f, 0.4f, 0.3f },
-    { 0.9f, 0.7f, 0.5f },
-    { 0.5f, 0.3f, 0.7f },
-    { 0.4f, 0.2f, 0.6f },
-    { 0.7f, 0.5f, 0.8f },
-    { 0.9f, 0.0f, 0.0f },
-    { 0.7f, 0.0f, 0.0f },
-    { 1.0f, 0.3f, 0.3f },
-    { 1.0f, 0.4f, 0.1f },
-    { 0.9f, 0.3f, 0.0f },
-    { 1.0f, 0.6f, 0.3f },
-    { 0.2f, 0.6f, 0.6f },
-    { 0.0f, 0.4f, 0.4f },
-    { 0.4f, 0.7f, 0.7f },
-    { 0.9f, 0.2f, 0.6f },
-    { 0.6f, 0.1f, 0.4f },
-    { 1.0f, 0.5f, 0.7f },
-    { 0.6f, 0.5f, 0.4f },
-    { 0.4f, 0.3f, 0.2f },
-    { 0.7f, 0.7f, 0.6f },
-    { 0.9f, 0.6f, 0.6f },
-    { 0.8f, 0.5f, 0.5f },
-    { 1.0f, 0.7f, 0.7f },
-    { 0.7f, 0.8f, 0.8f },
-    { 0.5f, 0.6f, 0.6f },
-    { 0.9f, 1.0f, 1.0f },
-    { 0.2f, 0.3f, 0.3f },
-    { 0.4f, 0.5f, 0.5f },
-    { 0.7f, 0.8f, 0.8f },
-    { 0.2f, 0.3f, 0.5f },
-    { 0.5f, 0.5f, 0.7f },
-    { 0.5f, 0.3f, 0.7f },
-    { 0.1f, 0.3f, 0.7f },
-    { 0.3f, 0.5f, 0.9f },
-    { 0.6f, 0.8f, 1.0f },
-    { 0.2f, 0.6f, 0.6f },
-    { 0.5f, 0.8f, 0.8f },
-    { 0.1f, 0.5f, 0.0f },
-    { 0.3f, 0.5f, 0.4f },
-    { 0.4f, 0.6f, 0.2f },
-    { 0.3f, 0.7f, 0.2f },
-    { 0.5f, 0.6f, 0.4f },
-    { 0.5f, 0.5f, 0.2f },
-    { 1.0f, 0.9f, 0.2f },
-    { 0.8f, 0.7f, 0.1f },
-    { 0.6f, 0.3f, 0.0f },
-    { 1.0f, 0.4f, 0.1f },
-    { 0.7f, 0.3f, 0.0f },
-    { 0.7f, 0.5f, 0.3f },
-    { 0.5f, 0.3f, 0.1f },
-    { 0.5f, 0.4f, 0.3f },
-    { 0.8f, 0.5f, 0.4f },
-    { 0.6f, 0.2f, 0.2f },
-    { 0.6f, 0.0f, 0.0f },
-    { 0.9f, 0.0f, 0.0f },
-    { 0.6f, 0.1f, 0.3f },
-    { 0.9f, 0.2f, 0.6f },
-    { 0.9f, 0.6f, 0.6f },
-};
-
 class OpenGLDrawingEngine;
 
 class OpenGLDrawingContext final : public IDrawingContext
@@ -550,6 +446,8 @@ void OpenGLDrawingContext::ResetPalette()
     _textureCache->SetPalette(_engine->Palette);
     _drawImageShader->Use();
     _drawImageShader->SetPalette(_engine->GLPalette);
+    _fillRectShader->Use();
+    _fillRectShader->SetPalette(_engine->GLPalette);
 }
 
 void OpenGLDrawingContext::Clear(uint8 paletteIndex)
@@ -559,6 +457,9 @@ void OpenGLDrawingContext::Clear(uint8 paletteIndex)
 
 void OpenGLDrawingContext::FillRect(uint32 colour, sint32 left, sint32 top, sint32 right, sint32 bottom)
 {
+    // Must be rendered in order, depends on already rendered contents
+    FlushCommandBuffers();
+
     left += _offsetX;
     top += _offsetY;
     right += _offsetX;
@@ -568,14 +469,10 @@ void OpenGLDrawingContext::FillRect(uint32 colour, sint32 left, sint32 top, sint
 
     command.sourceFramebuffer = _fillRectShader->GetSourceFramebuffer();
 
-    vec4f paletteColour[2];
-    paletteColour[0] = _engine->GLPalette[(colour >> 0) & 0xFF];
-    paletteColour[1] = paletteColour[0];
     if (colour & 0x1000000)
     {
-        paletteColour[1].a = 0;
-
-        command.flags = 0;
+        // cross-pattern
+        command.flags = 1;
     }
     else if (colour & 0x2000000)
     {
@@ -587,8 +484,10 @@ void OpenGLDrawingContext::FillRect(uint32 colour, sint32 left, sint32 top, sint
         command.flags = 0;
     }
 
-    command.colours[0] = paletteColour[0];
-    command.colours[1] = paletteColour[1];
+    for (size_t i = 0; i < 256; i++)
+    {
+        command.paletteRemap[i] = colour & 0xFF;
+    }
 
     command.clip[0] = _clipLeft;
     command.clip[1] = _clipTop;
@@ -601,13 +500,13 @@ void OpenGLDrawingContext::FillRect(uint32 colour, sint32 left, sint32 top, sint
     command.bounds[3] = bottom + 1;
 
     _commandBuffers.rectangles.push_back(command);
-
-    // Must be rendered in order, depends on already rendered contents
-    FlushCommandBuffers();
 }
 
 void OpenGLDrawingContext::FilterRect(FILTER_PALETTE_ID palette, sint32 left, sint32 top, sint32 right, sint32 bottom)
 {
+    // Must be rendered in order, depends on already rendered contents
+    FlushCommandBuffers();
+
     left += _offsetX;
     top += _offsetY;
     right += _offsetX;
@@ -615,35 +514,22 @@ void OpenGLDrawingContext::FilterRect(FILTER_PALETTE_ID palette, sint32 left, si
 
     DrawRectCommand command = {};
 
-    command.sourceFramebuffer = _fillRectShader->GetSourceFramebuffer();
-
-    vec4f paletteColour[2];
-    //paletteColour[0] = _engine->GLPalette[(colour >> 0) & 0xFF];
-    //paletteColour[1] = paletteColour[0];
-
     // START FILTER
 
-    uint8 tableIndex = palette;
-    if (tableIndex <   44) return;
-    if (tableIndex >= 144) return;
-    tableIndex -= 44;
-
-    vec3f transformColour = TransparentColourTable[tableIndex];
-    paletteColour[0].r = transformColour.r;
-    paletteColour[0].g = transformColour.g;
-    paletteColour[0].b = transformColour.b;
-    paletteColour[0].a = 1;
-    paletteColour[1] = paletteColour[0];
-
-    GLuint srcTexture =  _engine->SwapCopyReturningSourceTexture();
-    command.flags = 1;
+    GLuint srcTexture = _engine->SwapCopyReturningSourceTexture();
+    command.flags = 0;
     command.sourceFramebuffer = srcTexture;
 
+    uint16           g1Index = palette_to_g1_offset[palette];
+    rct_g1_element * g1Element = &g1Elements[g1Index];
+    uint8 *          g1Bits = g1Element->offset;
+
+    for (size_t i = 0; i < 256; i++)
+    {
+        command.paletteRemap[i] = g1Bits[i];
+    }
+
     // END FILTER
-
-
-    command.colours[0] = paletteColour[0];
-    command.colours[1] = paletteColour[1];
 
     command.clip[0] = _clipLeft;
     command.clip[1] = _clipTop;
@@ -656,9 +542,6 @@ void OpenGLDrawingContext::FilterRect(FILTER_PALETTE_ID palette, sint32 left, si
     command.bounds[3] = bottom + 1;
 
     _commandBuffers.rectangles.push_back(command);
-
-    // Must be rendered in order, depends on already rendered contents
-    FlushCommandBuffers();
 }
 
 void OpenGLDrawingContext::DrawLine(uint32 colour, sint32 x1, sint32 y1, sint32 x2, sint32 y2)
@@ -999,9 +882,8 @@ void OpenGLDrawingContext::FlushRectangles()
         _fillRectShader->Use();
         _fillRectShader->SetFlags(command.flags);
         _fillRectShader->SetSourceFramebuffer(command.sourceFramebuffer);
-        _fillRectShader->SetColour(0, command.colours[0]);
-        _fillRectShader->SetColour(1, command.colours[1]);
         _fillRectShader->SetClip(command.clip[0], command.clip[1], command.clip[2], command.clip[3]);
+        _fillRectShader->SetPaletteRemap(command.paletteRemap);
         _fillRectShader->Draw(command.bounds[0], command.bounds[1], command.bounds[2], command.bounds[3]);
     }
 

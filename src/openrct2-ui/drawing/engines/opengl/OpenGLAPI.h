@@ -165,6 +165,7 @@ GLAPI_DECL PFNGLGENVERTEXARRAYSPROC             glGenVertexArrays           GLAP
 GLAPI_DECL PFNGLLINKPROGRAMPROC                 glLinkProgram               GLAPI_SET;
 GLAPI_DECL PFNGLSHADERSOURCEPROC                glShaderSource              GLAPI_SET;
 GLAPI_DECL PFNGLUNIFORM1IPROC                   glUniform1i                 GLAPI_SET;
+GLAPI_DECL PFNGLUNIFORM1IVPROC                  glUniform1iv                GLAPI_SET;
 GLAPI_DECL PFNGLUNIFORM2IPROC                   glUniform2i                 GLAPI_SET;
 GLAPI_DECL PFNGLUNIFORM2FPROC                   glUniform2f                 GLAPI_SET;
 GLAPI_DECL PFNGLUNIFORM4FPROC                   glUniform4f                 GLAPI_SET;

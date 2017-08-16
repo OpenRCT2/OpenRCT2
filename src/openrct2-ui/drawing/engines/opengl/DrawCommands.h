@@ -24,9 +24,9 @@
 struct DrawRectCommand {
     uint32 flags;
     GLuint sourceFramebuffer;
-    vec4f colours[2];
     sint32 clip[4];
     sint32 bounds[4];
+    GLint paletteRemap[256];
 };
 
 struct DrawLineCommand {

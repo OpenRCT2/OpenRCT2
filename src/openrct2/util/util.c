@@ -407,6 +407,8 @@ void util_srand(sint32 source) {
     srand1 = srand0 ^ (source >> 24);
     srand2 = srand1 ^ (source >> 16);
     srand3 = srand2 ^ (source >> 8);
+
+    util_rand(); // skip the first value as it's parity is predictable (always even).
 }
 
 uint32 util_rand() {
