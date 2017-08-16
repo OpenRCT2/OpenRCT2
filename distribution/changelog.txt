@@ -4,7 +4,9 @@
 - Fix: [#816] Fix Original bug with guest list and map window interaction causing unexpected peeps to flash.
 - Fix: [#1833, #4937, #6138] 'Too low!' warning when building rides and shops on the lowest land level.
 - Fix: [#6101] Rides remain in ride list window briefly after demolition.
+- Fix: [#6133] Construction rights not shown after selecting buy mode.
 - Fix: Infinite loop when removing scenery elements with >127 base height.
+- Improved: [#6186] Transparent menu items now draw properly in OpenGL mode.
 
 0.1.1 (2017-08-09)
 ------------------------------------------------------------------------
