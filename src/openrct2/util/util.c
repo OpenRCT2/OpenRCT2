@@ -400,24 +400,12 @@ bool str_is_null_or_empty(const char *str)
     return str == NULL || str[0] == 0;
 }
 
-uint32 srand0, srand1, srand2, srand3;
-
 void util_srand(sint32 source) {
-    srand0 = source;
-    srand1 = srand0 ^ (source >> 24);
-    srand2 = srand1 ^ (source >> 16);
-    srand3 = srand2 ^ (source >> 8);
-
-    util_rand(); // skip the first value as it's parity is predictable (always even).
+    srand(source);
 }
 
 uint32 util_rand() {
-    uint32 temp = srand0 ^ (srand0 << 11);
-    srand0 = srand1;
-    srand1 = srand2;
-    srand2 = srand3;
-    srand3 = srand3 ^ (srand3 >> 19) ^ temp ^ (temp >> 8);
-    return srand3;
+    return rand();
 }
 
 #define CHUNK 128*1024
