@@ -1254,7 +1254,7 @@ static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid
             uint8 rotation = gWindowSceneryRotation;
 
             if (!(scenery->small_scenery.flags & SMALL_SCENERY_FLAG_ROTATABLE)) {
-                rotation = rand() & 0xFF;
+                rotation = util_rand() & 0xFF;
             }
 
             rotation -= get_current_rotation();
@@ -1327,7 +1327,7 @@ static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid
         uint8 rotation = gWindowSceneryRotation;
 
         if (!(scenery->small_scenery.flags & SMALL_SCENERY_FLAG_ROTATABLE)) {
-            rotation = rand() & 0xFF;
+            rotation = util_rand() & 0xFF;
         }
 
         rotation -= get_current_rotation();
@@ -1569,11 +1569,11 @@ static void window_top_toolbar_scenery_tool_down(sint16 x, sint16 y, rct_window 
             if (isCluster){
                 if (!(scenery->small_scenery.flags & SMALL_SCENERY_FLAG_FULL_TILE)){
                     parameter_2 &= 0xFF00;
-                    parameter_2 |= rand() & 3;
+                    parameter_2 |= util_rand() & 3;
                 }
 
-                cur_grid_x += ((rand() % 16) - 8) * 32;
-                cur_grid_y += ((rand() % 16) - 8) * 32;
+                cur_grid_x += ((util_rand() % 16) - 8) * 32;
+                cur_grid_y += ((util_rand() % 16) - 8) * 32;
 
                 if (!(scenery->small_scenery.flags & SMALL_SCENERY_FLAG_ROTATABLE)){
                     gSceneryPlaceRotation = (gSceneryPlaceRotation + 1) & 3;

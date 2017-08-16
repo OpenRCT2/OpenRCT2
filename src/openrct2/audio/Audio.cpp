@@ -294,7 +294,7 @@ void audio_start_title_music()
         pathId = PATH_ID_CSS17;
         break;
     case 3:
-        pathId = (rand() & 1) ? PATH_ID_CSS50 :
+        pathId = (util_rand() & 1) ? PATH_ID_CSS50 :
                                      PATH_ID_CSS17;
         break;
     default:

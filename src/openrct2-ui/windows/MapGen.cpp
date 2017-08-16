@@ -830,8 +830,8 @@ static void window_mapgen_random_mouseup(rct_window *w, rct_widgetindex widgetIn
         mapgenSettings.wall = _randomTerrrain ? -1 : _wallTexture;
         mapgenSettings.trees = _placeTrees;
 
-        mapgenSettings.simplex_low = rand() % 4;
-        mapgenSettings.simplex_high = 12 + (rand() % (32 - 12));
+        mapgenSettings.simplex_low = util_rand() % 4;
+        mapgenSettings.simplex_high = 12 + (util_rand() % (32 - 12));
         mapgenSettings.simplex_base_freq = 1.75f;
         mapgenSettings.simplex_octaves = 6;
 

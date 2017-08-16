@@ -2844,7 +2844,7 @@ static void ride_music_update(sint32 rideIndex)
     if (ride->music_tune_id == 255) {
         uint8 *musicStyleTunes = ride_music_style_tuneids[ride->music];
         uint8 numTunes = *musicStyleTunes++;
-        ride->music_tune_id = musicStyleTunes[rand() % numTunes];
+        ride->music_tune_id = musicStyleTunes[util_rand() % numTunes];
         ride->music_position = 0;
         return;
     }
@@ -3146,7 +3146,7 @@ static sint32 ride_get_unused_preset_vehicle_colour(uint8 ride_type, uint8 ride_
 
     for (sint32 attempt = 0; attempt < 200; attempt++) {
         uint8 numColourConfigurations = presetList->count;
-        sint32 randomConfigIndex = rand() % numColourConfigurations;
+        sint32 randomConfigIndex = util_rand() % numColourConfigurations;
         vehicle_colour *preset = &presetList->list[randomConfigIndex];
 
         if (ride_does_vehicle_colour_exist(ride_sub_type, preset)) {
@@ -5874,7 +5874,7 @@ static sint32 ride_get_random_colour_preset_index(uint8 ride_type)
 
     // 200 attempts to find a colour preset that hasn't already been used in the park for this ride type
     for (sint32 i = 0; i < 200; i++) {
-        sint32 listIndex = rand() % colourPresets->count;
+        sint32 listIndex = util_rand() % colourPresets->count;
         const track_colour *colours = &colourPresets->list[listIndex];
 
         if (!ride_with_colour_config_exists(ride_type, colours)) {

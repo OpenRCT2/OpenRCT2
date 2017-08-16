@@ -1130,7 +1130,7 @@ void window_guest_overview_update(rct_window* w){
         // Create the "I have the strangest feeling I am being watched thought"
         if ((w->highlighted_item & 0xFFFF) >= 3840) {
             if (!(w->highlighted_item & 0x3FF)) {
-                sint32 random = rand() & 0xFFFF;
+                sint32 random = util_rand() & 0xFFFF;
                 if (random <= 0x2AAA) {
                     rct_peep* peep = GET_PEEP(w->number);
                     peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_WATCHED, 0xFF);
