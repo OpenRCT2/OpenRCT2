@@ -519,20 +519,20 @@ STR_0514    :I treni, sospesi sotto l'ottovolante, durante le curve oscillano la
 STR_0515    :Un ottovolante di acciaio con treni sospesi sotto al circuito, con molti elementi complessi e tortuosi
 STR_0516    :Un ottovolante tranquillo, per chi non ha ancora il coraggio di affrontare le attrazioni più impegnative
 STR_0517    :I passeggeri viaggiano su treni in miniatura su una strada ferrata di dimensioni ridotte
-STR_0518    :I passeggeri viaggiano su treni elettrici lungo un tracciato monorotaia
+STR_0518    :I passeggeri viaggiano su treni elettrici lungo un percorso a monorotaia
 STR_0519    :I passeggeri viaggiano a bordo di piccole carrozze appese al circuito, oscillando liberamente da lato a lato a ogni curva
 STR_0520    :Una piattaforma dalla quale i passeggeri possono guidare una piccola imbarcazione sull'acqua
 STR_0521    :Un ottovolante veloce e snodato con curve strette e discese ripide. L'intensità non può essere che alta.
 STR_0522    :Un piccolo ottovolante dove i passeggeri siedono sopra al percorso senza un vagone attorno
 STR_0523    :I passeggeri viaggiano lentamente su veicoli elettrici lungo un percorso basato su un circuito
 STR_0524    :I carrelli sono lanciati pneumaticamente su un'alta torre di acciaio e poi sono lasciati cadere liberamente
-STR_0525    :I passeggeri viaggiano lungo un percorso tortuoso, guidati soltanto dalle curvature e dalle inclinazioni del tracciato semi-circolare
+STR_0525    :I passeggeri viaggiano lungo un percorso tortuoso, guidati soltanto dalle curvature e dalle inclinazioni del percorso semi-circolare
 STR_0526    :I passeggeri viaggiano in una cabina di osservazione rotante mentre salgono su un'alta torre
 STR_0527    :Un rapido ottovolante d'acciaio caratterizzato da cadute verticali
 STR_0528    :I passeggeri viaggiano su canotti gonfiabili lungo un tortuoso percorso a forma di tubo, dalla sezione completamente chiusa o semi-circolare
 STR_0529    :Il treno della miniera è una montagna russa a tema fatta in acciaio realizzata per ricordare una vecchia ferrovia
-STR_0530    :Le carrozze pendono da un cavo d'acciaio che fa avanti e indietro per tutto il tracciato
-STR_0531    :Un ottovolante compatto su un tracciato d'acciaio nel quale i treni viaggiano lungo avvitamenti e inversioni
+STR_0530    :Le carrozze pendono da un cavo d'acciaio che fa avanti e indietro per tutto il percorso
+STR_0531    :Un ottovolante compatto su un percorso d'acciaio nel quale i treni viaggiano lungo avvitamenti e inversioni
 STR_0532    :Il labirinto è costituito da siepi o muri alti due metri, e al suo interno i visitatori cercano la via d'uscita
 STR_0533    :Un edificio di legno con una scala interna e uno scivolo a spirale esterno, da discendere utilizzando appositi tappetini
 STR_0534    :Go-kart a motore a benzina guidati dai visitatori
@@ -563,23 +563,23 @@ STR_0558    :Coppie di passeggeri su sedili doppi ruotano lungo le estremità di
 STR_0559    :Un largo edificio tematizzato che contiene corridoi paurosi e stanze spaventose
 STR_0560    :Un posto nel quale i visitatori nauseati possono guarire più velocemente
 STR_0561    :Spettacolo circense di animali all'interno di un tendone
-STR_0562    :Carrelli a motore viaggiano lungo un tracciato su più livelli attraversando scenari spaventosi ed effetti speciali
+STR_0562    :Carrelli a motore viaggiano lungo un percorso su più livelli attraversando scenari spaventosi ed effetti speciali
 STR_0563    :Seduti comodamente - il solo limite è che si può effettuare un solo giro alla volta - i passeggeri sperimentano dolci discese e numerose curve, provando una piacevole sensazione di assenza di peso
-STR_0564    :Quest'attrazione, in cui si viaggia lungo un tracciato di legno, è veloce, ricca di imprevisti, rumorosa e dà al passeggero la sensazione di essere senza controllo, oltre che quella di una grande libertà
+STR_0564    :Quest'attrazione, in cui si viaggia lungo un percorso di legno, è veloce, ricca di imprevisti, rumorosa e dà al passeggero la sensazione di essere senza controllo, oltre che quella di una grande libertà
 STR_0565    :Un semplice ottovolante di legno, adatto solo a curve e declivi  lenti, in cui le carrozze sono tenute in pista solo dalla frizione delle ruote sui i bordi della pista e dalla gravità
 STR_0566    :Carrozze individuali sfrecciano per uno stretto percorso a zig-zag con curve molto strette e corte e ripide discese
-STR_0567    :Seduti su sedili sospesi a entrambi i lati del tracciato, i passeggeri vengono capovolti mentre si tuffano per rapide discese e sperimentano numerose inversioni 
+STR_0567    :Seduti su sedili sospesi a entrambi i lati del percorso, i passeggeri vengono capovolti mentre si tuffano per rapide discese e sperimentano numerose inversioni 
 STR_0568    :<removed string - do not use>
-STR_0569    :I passeggeri, cinti da speciali imbracature al di sotto il tracciato, sperimentano la sensazione del volo quando vengono fatti oscillare nell'aria
+STR_0569    :I passeggeri, cinti da speciali imbracature al di sotto il percorso, sperimentano la sensazione del volo quando vengono fatti oscillare nell'aria
 STR_0570    :<removed string - do not use>
 STR_0571    :Carrelli circolari ruotano su sé stessi mentre viaggiano lungo il percorso di legno a zig-zag
 STR_0572    :Barche molto capienti viaggiano lungo un ampio canale d'acqua, trasportate in salita da una catena e lasciate accelerare lungo rapide discese in modo da bagnare i passeggeri con un grande spruzzo
 STR_0573    :Carrelli a motore a forma di elicottero viaggiano lungo un percorso di acciaio, controllati dai pedali dei passeggeri
-STR_0574    :I passeggeri, mantenuti orizzontali tramite uno speciale sistema di ritenuta, viaggiano lungo un tracciato tortuoso e numerose inversioni, sia supini che rivolti verso il terreno
+STR_0574    :I passeggeri, mantenuti orizzontali tramite uno speciale sistema di ritenuta, viaggiano lungo un percorso tortuoso e numerose inversioni, sia supini che rivolti verso il terreno
 STR_0575    :Dei treni elettrici sospesi sotto una singola rotaia trasportano i passeggeri per tutto il parco
 STR_0576    :<removed string - do not use>
-STR_0577    :Carrelli corrono lungo tracciati di legno, ruotando su sé stessi in speciali sezioni di inversione
-STR_0578    :Le carrozze corrono per il tracciato caratterizzato da vari giri,  ripide discese e curve ondulanti
+STR_0577    :Carrelli corrono lungo un percorso di legno, ruotando su sé stessi in speciali sezioni di inversione
+STR_0578    :Le carrozze viaggiano lungo un percorso racchiuso da anelli circolari, attraversando ripide cadute e paurosi avvitamenti
 STR_0579    :Un tranquillo gioco di golf in miniatura
 STR_0580    :Un gigante ottovolante di acciaio in grado di offrire morbide cadute e risalite a più di 90 metri di altezza
 STR_0581    :Un anello di sedie è posizionato in cima alla torre mentre ruota piano, quindi precipita fermandosi gentilmente alla base tramite freni magnetici
@@ -588,7 +588,7 @@ STR_0583    :Un edificio contenente stanze distorte e corridoi ad angolo che dis
 STR_0584    :Speciali biciclette viaggiano lungo un percorso a monorotaia di acciaio, spinte soltanto dalle pedalate dei passeggeri
 STR_0585    :I passeggeri viaggiano su coppie di sedili sospesi sotto al percorso, mentre viaggiano attraverso numerose inversioni e inclinazioni
 STR_0586    :Carrozze a forma di barca viaggiano lungo l'ottovolante, caratterizzato da ripide discese, curve avvitate e tuffi in sezioni acquatiche più tranquille.
-STR_0587    :Dopo un euforico lancio ad aria compressa il treno sale lungo un tracciato verticale, fino alla vetta della collina, e poi giù in verticale dal lato opposto per far ritorno alla stazione
+STR_0587    :Dopo un euforico lancio ad aria compressa il treno sale lungo un percorso verticale, fino alla vetta della collina, e poi giù in verticale dal lato opposto per far ritorno alla stazione
 STR_0588    :Carrozze singole corrono sotto a un percorso a zig-zag ricco di tornanti e cadute ripide
 STR_0589    :Una grande carrozza a forma di tappeto volante si muove su e giù su quattro bracci
 STR_0590    :I visitatori viaggiano in un sottomarino attraverso un percorso subacqueo
@@ -851,7 +851,7 @@ STR_0845    :<not used anymore>
 STR_0846    :<not used anymore>
 STR_0847    :Informazioni su 'OpenRCT2'
 STR_0848    :RollerCoaster Tycoon 2
-STR_0849    :{WINDOW_COLOUR_2}Versione 2.01.032
+STR_0849    :<removed string - do not use> 
 STR_0850    :{WINDOW_COLOUR_2}Copyright {COPYRIGHT} 2002 Chris Sawyer, tutti i diritti riservati
 STR_0851    :{WINDOW_COLOUR_2}Design e programmazione di Chris Sawyer
 STR_0852    :{WINDOW_COLOUR_2}Grafica di Simon Foster
@@ -860,13 +860,13 @@ STR_0854    :{WINDOW_COLOUR_2}Audio aggiuntivo registrato da David Ellis
 STR_0855    :{WINDOW_COLOUR_2}Rappresentazione di Jacqui Lyons a Marjacq Ltd.
 STR_0856    :{WINDOW_COLOUR_2}Grazie a: 
 STR_0857    :{WINDOW_COLOUR_2}Peter James Adcock, Joe Booth e John Wardley
-STR_0858    :{WINDOW_COLOUR_2}
-STR_0859    :{WINDOW_COLOUR_2}
-STR_0860    :{WINDOW_COLOUR_2}
-STR_0861    :
-STR_0862    :
-STR_0863    :
-STR_0864    :
+STR_0858    :<removed string - do not use>
+STR_0859    :<removed string - do not use>
+STR_0860    :<removed string - do not use>
+STR_0861    :<removed string - do not use>
+STR_0862    :<removed string - do not use>
+STR_0863    :<removed string - do not use>
+STR_0864    :<removed string - do not use>
 STR_0865    :{STRINGID}
 STR_0866    :{POP16}{STRINGID}
 STR_0867    :{POP16}{POP16}{STRINGID}
@@ -890,8 +890,8 @@ STR_0884    :Carica un paesaggio
 STR_0885    :Salva un paesaggio
 STR_0886    :Abbandona la partita
 STR_0887    :Abbandona l'editor degli scenari
-STR_0888    :Abbandona la progettazione degli ottovolanti
-STR_0889    :Abbandona il programma di progettazione dei tracciati
+STR_0888    :Abbandona l'editor dei percorsi
+STR_0889    :Abbandona il programma di progettazione dei percorsi
 STR_0890    :<removed string - do not use>
 STR_0891    :Schermata
 STR_0892    :Schermata salvata su disco come {OPENQUOTES}{STRINGID}{ENDQUOTES}
@@ -2866,7 +2866,7 @@ STR_2856    :{WINDOW_COLOUR_2}Esercitazione
 STR_2857    :{WINDOW_COLOUR_2}(Premi un tasto o un pulsante del mouse per assumere il controllo)
 STR_2858    :Impossibile avviare la campagna di marketing...
 STR_2859    :Al momento è in corso un'altra sezione di OpenRCT2
-STR_2860    :Riconoscimenti Infogrames...
+STR_2860    :<removed string - do not use>
 STR_2861    :{WINDOW_COLOUR_2}Concesso in licenza a Infogrames Interactive
 STR_2862    :Riconoscimenti dei brani musicali...
 STR_2863    :Riconoscimento dei brani musicali
@@ -2914,29 +2914,29 @@ STR_2904    :{WINDOW_COLOUR_2}Manic Mechanic:   (Allister Brimble) copyright {CO
 STR_2905    :{WINDOW_COLOUR_2}Techno Torture:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
 STR_2906    :{WINDOW_COLOUR_2}Sweat Dreams:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
 STR_2907    :{WINDOW_COLOUR_2}What shall we do with the Drunken Sailor:   (Anon/Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2908    :{WINDOW_COLOUR_2}Infogrames Interactive
-STR_2909    :{WINDOW_COLOUR_2}Produttore senior:  Thomas J. Zahorik
-STR_2910    :{WINDOW_COLOUR_2}Produttore esecutivo:  Bill Levay
-STR_2911    :{WINDOW_COLOUR_2}Responsabile senior di produzione marketing:  Scott Triola
-STR_2912    :{WINDOW_COLOUR_2}V.P. dello sviluppo del prodotto:  Scott Walker
-STR_2913    :{WINDOW_COLOUR_2}Responsabile generale:  John Hurlbut
-STR_2914    :{WINDOW_COLOUR_2}Direttore del Controllo qualità:  Michael Craighead
-STR_2915    :{WINDOW_COLOUR_2}Responsabile della certificazione C.Q.:  Kurt Boutin
-STR_2916    :{WINDOW_COLOUR_2}Capo della certificazione C.Q.:  Mark Huggins
-STR_2917    :{WINDOW_COLOUR_2}Controllo qualità:  Dena Irene Fitzgerald, Scott Rollins, Christopher McPhail
-STR_2918    :{WINDOW_COLOUR_2}Clif McClure, Erik Maramaldi, Erik Jeffery
-STR_2919    :{WINDOW_COLOUR_2}Direttore del marketing:  Ann Marie Bland
-STR_2920    :{WINDOW_COLOUR_2}Responsabile dei servizi creativi:  Steve Martin
-STR_2921    :{WINDOW_COLOUR_2}Responsabile dei servizi editoriali e della documentazione:  Elizabeth Mackney
-STR_2922    :{WINDOW_COLOUR_2}Progettista grafico:  Paul Anselmi
-STR_2923    :{WINDOW_COLOUR_2}Redattore pubblicitario:  Kurt Carlson
-STR_2924    :{WINDOW_COLOUR_2}Ringraziamenti speciali a:  Peter Matiss
-STR_2925    :{WINDOW_COLOUR_2}Specialista in ingegneria:  Ken Edwards
-STR_2926    :{WINDOW_COLOUR_2}Responsabile dei servizi d'ingegneria:  Luis Rivas
-STR_2927    :{WINDOW_COLOUR_2}Capo analista compatibilità:  Geoffrey Smith
-STR_2928    :{WINDOW_COLOUR_2}Analisi compatibilità:  Jason Cordero, Burke McQuinn, Kim Jardin 
-STR_2929    :{WINDOW_COLOUR_2}Capo tester:  Daniel Frisoli
-STR_2930    :{WINDOW_COLOUR_2}Tester senior:  Matt Pantaleoni
+STR_2908    :<removed string - do not use>
+STR_2909    :<removed string - do not use>
+STR_2910    :<removed string - do not use>
+STR_2911    :<removed string - do not use>
+STR_2912    :<removed string - do not use>
+STR_2913    :<removed string - do not use>
+STR_2914    :<removed string - do not use>
+STR_2915    :<removed string - do not use>
+STR_2916    :<removed string - do not use>
+STR_2917    :<removed string - do not use>
+STR_2918    :<removed string - do not use>
+STR_2919    :<removed string - do not use>
+STR_2920    :<removed string - do not use>
+STR_2921    :<removed string - do not use>
+STR_2922    :<removed string - do not use>
+STR_2923    :<removed string - do not use>
+STR_2924    :<removed string - do not use>
+STR_2925    :<removed string - do not use>
+STR_2926    :<removed string - do not use>
+STR_2927    :<removed string - do not use>
+STR_2928    :<removed string - do not use>
+STR_2929    :<removed string - do not use>
+STR_2930    :<removed string - do not use>
 STR_2931    :{WINDOW_COLOUR_2}
 STR_2932    :{WINDOW_COLOUR_2}
 STR_2933    :{WINDOW_COLOUR_2}
@@ -3213,10 +3213,10 @@ STR_3203    :Impostazione lista invenzioni
 STR_3204    :Selezione delle opzioni
 STR_3205    :Selezioni degli obiettivi
 STR_3206    :Salva lo scenario
-STR_3207    :Progettista di ottovolanti
-STR_3208    :Responsabile dei progetti di tracciato
-STR_3209    :Torna un passo indietro:
-STR_3210    :Vai un passo avanti:
+STR_3207    :Editor dei tracciati
+STR_3208    :Gestione tracciati salvati
+STR_3209    :Indietro al passo precedente:
+STR_3210    :Avanti al passo successivo:
 STR_3211    :Dimens. mappa:
 STR_3212    :{POP16}{COMMA16} x {PUSH16}{COMMA16}
 STR_3213    :Impossibile rimpicciolire ulteriormente la mappa
@@ -3341,8 +3341,8 @@ STR_3331    :Il percorso dall'entrata del parco al bordo della mappa non è comp
 STR_3332    :L'entrata del parco è oriantata nel senso sbagliato o non ha un percorso che conduce al bordo della mappa
 STR_3333    :Esporta oggetti di plug-in insieme alle partite salvate
 STR_3334    :{SMALLFONT}{BLACK}Scegli se salvare gli eventuali dati necessari degli oggetti di plug-in (dati non forniti con il prodotto principale) all'interno dei file di scenario o delle partite salvate, permettendone così l'accesso anche a chi non possiede questi dati addizionali
-STR_3335    :Progettista degli ottovolanti - Seleziona il tipo di veicoli e attrazione
-STR_3336    :Responsabile dei progetti di tracciato - Seleziona il tipo di attrazione
+STR_3335    :Editor di percorsi - Selezione tipo percorso e veicoli
+STR_3336    :Gestione percorsi personalizzati - Selezione tipo attrazione
 STR_3337    :<not used anymore>
 STR_3338    :{BLACK}Disposizione personalizzata
 STR_3339    :{BLACK}{COMMA16} progetto disponibile o progetto personalizzato
@@ -3350,24 +3350,24 @@ STR_3340    :{BLACK}{COMMA16} progetti disponibili o disposizioni personalizzate
 STR_3341    :{SMALLFONT}{BLACK}Strumenti di gioco
 STR_3342    :Editor degli scenari
 STR_3343    :Converti la partita salvata in uno scenario
-STR_3344    :Strumento di progettazione degli ottovolanti
-STR_3345    :Strumento di gestione dei progetti di tracciato
-STR_3346    :Impossibile salvare il progetto di tracciato...
+STR_3344    :Strumento di progettazione dei percorsi
+STR_3345    :Strumento di gestione dei progetti di percorso
+STR_3346    :Impossibile salvare il progetto di percorso...
 STR_3347    :L{GREEN}attrazione è troppo grande, contiene troppi elementi o lo scenario è sparso su un'area troppo vasta
 STR_3348    :Rinomina
 STR_3349    :Cancella
-STR_3350    :Battezza il progetto di tracciato
-STR_3351    :Digita il nome di questo progetto di tracciato:
-STR_3352    :Impossibile rinominare il progetto di tracciato...
+STR_3350    :Nome del progetto di percorso
+STR_3351    :Digita il nome di questo progetto di percorso:
+STR_3352    :Impossibile rinominare il progetto di percorso...
 STR_3353    :Il nuovo nome contiene dei caratteri non validi
 STR_3354    :Esiste già un altro file con quel nome, o il file è protetto dalla scrittura
 STR_3355    :Il file è protetto dalla scrittura o è chiuso all'accesso
 STR_3356    :Cancella il file
 STR_3357    :{WINDOW_COLOUR_2}Sei sicuro di voler cancellare permanentemente {STRING} ?
-STR_3358    :Impossibile cancellare il progetto di tracciato...
-STR_3359    :{BLACK}Non ci sono progetti di tracciato di questi tipo
+STR_3358    :Impossibile cancellare il progetto di percorso...
+STR_3359    :{BLACK}Non ci sono progetti di percorso di questi tipo
 STR_3360    :Attenzione!
-STR_3361    :Troppi progetti di tracciato di questo tipo - qualcuno non verrà elencato.
+STR_3361    :Troppi progetti di percorso di questo tipo - qualcuno non verrà elencato.
 STR_3362    :<not used anymore>
 STR_3363    :<not used anymore>
 STR_3364    :Avanzato
@@ -3382,15 +3382,15 @@ STR_3372    :{BLACK}= A.T.M.
 STR_3373    :{BLACK}= Servizi igien.
 STR_3374    :Attenzione: hai selezionato troppi oggetti!
 STR_3375    :Non è stato possibile selezionare tutti gli oggetti di questo gruppo di scenari
-STR_3376    :Installa un nuovo progetto di tracciato...
-STR_3377    :{SMALLFONT}{BLACK}Installa un nuovo file di progetti di tracciato
+STR_3376    :Installa un nuovo progetto di percorso...
+STR_3377    :{SMALLFONT}{BLACK}Installa un nuovo file di progetti di percorso
 STR_3378    :Installa
 STR_3379    :Annulla
-STR_3380    :Impossibile installare questo progetto di tracciato...
+STR_3380    :Impossibile installare questo progetto di percorso...
 STR_3381    :Il file non è compatibile o contiene dati non validi
 STR_3382    :Tentativo di copia del file fallito
-STR_3383    :Scegli un nuovo nome per il progetto di tracciato
-STR_3384    :Questo nome è già usato da un progetto di tracciato esistente - scegli un altro nome per questo progetto:
+STR_3383    :Scegliere un nuovo nome per il progetto di percorso
+STR_3384    :Questo nome è già usato da un progetto di percorso esistente - scegliere un altro nome per questo progetto:
 STR_3385    :Esercitazione per principianti
 STR_3386    :Esercitazione per le attrazioni personalizzate
 STR_3387    :Esercitazione per la costruzione di ottovolanti
@@ -3415,12 +3415,12 @@ STR_3404    :{SMALLFONT}{BLACK}Oh - il parco è ancora chiuso!  Beh, apriamolo..
 STR_3405    :{SMALLFONT}{BLACK}Mentre aspettiamo i nostri primi visitatori, costruiamo degli scenari...
 STR_3406    :{SMALLFONT}{BLACK}Ecco il nostro parco vuoto. Ora andremo a costruire un'attrazione personalizzata molto semplice...
 STR_3407    :{SMALLFONT}{BLACK}Prima dobbiamo selezionare la posizione di partenza...
-STR_3408    :{SMALLFONT}{BLACK}La sezione di tracciato che abbiamo appena costruito è la 'piattaforma di una stazione', che permette ai visitatori di salire e scendere dall'attrazione...
+STR_3408    :{SMALLFONT}{BLACK}La sezione di percorso che abbiamo appena costruito è la 'piattaforma di una stazione', che permette ai visitatori di salire e scendere dall'attrazione...
 STR_3409    :{SMALLFONT}{BLACK}Ora estenderemo un po' la piattaforma aggiungendo un altro paio di sezioni...
-STR_3410    :{SMALLFONT}{BLACK}Le icone in cima alla finestra di costruzione ti permettono di scegliere le varie parti del tracciato da aggiungere...
+STR_3410    :{SMALLFONT}{BLACK}Le icone in cima alla finestra di costruzione ti permettono di scegliere le varie parti del percorso da aggiungere...
 STR_3411    :{SMALLFONT}{BLACK}Ora selezioneremo una curva a sinistra...
 STR_3412    :{SMALLFONT}{BLACK}La curva non è stata ancora costruita, ma una sua immagine fantasma bianca ci mostra dove verrà collocata. Per costruirla, clicchiamo sulla grande icona 'costruiscilo'...
-STR_3413    :{SMALLFONT}{BLACK}Ora vogliamo costruire una parte di tracciato diritta, per cui clicchiamo sull'icona del tracciato diritto...
+STR_3413    :{SMALLFONT}{BLACK}Ora vogliamo costruire una parte di percorso diritta, per cui clicchiamo sull'icona del percorso diritto...
 STR_3414    :{SMALLFONT}{BLACK}Ora che il circuito è completo, dobbiamo costruire l'entrata e l'uscita dell'attrazione...
 STR_3415    :{SMALLFONT}{BLACK}Ora proviamo a vedere se l'attrazione funziona...
 STR_3416    :{SMALLFONT}{BLACK}Mentre viene effettuata la prova, costruiremo la corsia d'attesa e il percorso d'uscita...
@@ -3438,7 +3438,7 @@ STR_3427    :{SMALLFONT}{BLACK}Quelle curve sono una cattiva idea - i passeggeri
 STR_3428    :{SMALLFONT}{BLACK}Per migliorare l'attrazione occorre inclinare le curve - così i passeggeri verranno schiacciati verso i propri sedili invece di essere sbalzati fuori...
 STR_3429    :{SMALLFONT}{BLACK}No - non funzionerà! Guarda gli indici dell'altezza - la seconda salita è più alta di quella di traino...
 STR_3430    :{SMALLFONT}{BLACK}Per far sì che il treno possa arrivare fino alla fine, ogni salita dev'essere leggermente più bassa di quella precedente...
-STR_3431    :{SMALLFONT}{BLACK}Così va meglio - ora il nostro treno dovrebbe farcela! Ora proviamo con un tracciato più contorto...
+STR_3431    :{SMALLFONT}{BLACK}Così va meglio - ora il nostro treno dovrebbe farcela! Ora proviamo con un percorso più contorto...
 STR_3432    :{SMALLFONT}{BLACK}Dovremo rallentare la corsa del treno prima dell'ultima curva e della stazione, per cui aggiungiamo dei freni...
 STR_3433    :{SMALLFONT}{BLACK}E infine aggiungeremo i 'freni di blocco', che permettono a due treni di operare nel circuito con maggior sicurezza...
 STR_3434    :{SMALLFONT}{BLACK}Ora proviamo l'attrazione e vediamo se funziona!
@@ -3830,7 +3830,7 @@ STR_5485    :{SMALLFONT}{STRING}
 STR_5486    :{BLACK}{COMMA16}
 STR_5487    :{SMALLFONT}{BLACK}Mostra i messaggi recenti
 STR_5488    :Nessuna entrata (solo OpenRCT2!)
-STR_5489    :{SMALLFONT}{BLACK}Mostra solo i visitatori tracciati
+STR_5489    :{SMALLFONT}{BLACK}Mostra solo i visitatori seguiti
 STR_5490    :Disabilità audio quando si perde il focus
 STR_5491    :Lista Invenzioni
 STR_5492    :Opzioni Scenario
@@ -4170,7 +4170,7 @@ STR_5856    :{SMALLFONT}{BLACK}Imposta la risoluzione del gioco quando a tutto s
 STR_5857    :{SMALLFONT}{BLACK}Opzioni del gioco
 STR_5858    :{SMALLFONT}{BLACK}Usa la GPU per la grafica invece della CPU. Migliora la compatibilità con i programmi di cattura schermate. Potrebbe peggiorare le prestazioni.
 STR_5859    :{SMALLFONT}{BLACK}Attiva l'interpolazione dei fotogrammi{NEWLINE}per un gioco più fluido. Se disabilitato,{NEWLINE}il gioco sarà eseguito a 40 FPS.
-STR_5860    :Cambia tra il sistema di disegno dei tracciati originale e quello decompilato
+STR_5860    :Cambia tra il sistema di disegno dei percorsi originale e quello decompilato
 STR_5861    :Verifica chiave fallita
 STR_5862    :Blocca giocatori sconosciuti.
 STR_5863    :{SMALLFONT}{BLACK}Permetti solo ai giocatori con chiavi conosciute di unirsi.
@@ -4184,7 +4184,7 @@ STR_5870    :{SMALLFONT}{BLACK}Mostra le informazioni del server
 STR_5871    :Le piante non invecchiano
 STR_5872    :{SMALLFONT}{BLACK}Disabilità l'invecchiamento delle piante.
 STR_5873    :Permetti catena di traino su tutti i pezzi
-STR_5874    :{SMALLFONT}{BLACK}Permette di rendere qualsiasi pezzo del tracciato una catena di traino
+STR_5874    :{SMALLFONT}{BLACK}Permette di rendere qualsiasi pezzo del percorso una catena di traino
 STR_5875    :Motore di rendering:
 STR_5876    :{SMALLFONT}{BLACK}Il motore grafico usato per mostrare la grafica del gioco.
 STR_5877    :Software
@@ -4236,7 +4236,7 @@ STR_5922    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{SMALLFONT}{BLACK}Massimo
 STR_5923    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{SMALLFONT}{BLACK}Massimo {COMMA16} {STRINGID} per treno
 STR_5924    :Dettagli superficie
 STR_5925    :Dettagli sentiero
-STR_5926    :Dettagli tracciato
+STR_5926    :Dettagli percorso
 STR_5927    :Dettagli scenario
 STR_5928    :Dettagli entrata
 STR_5929    :Dettagli recinzione
@@ -4260,8 +4260,8 @@ STR_5946    :{WINDOW_COLOUR_2}Tipo percorso: {BLACK}{STRINGID}
 STR_5947    :{WINDOW_COLOUR_2}ID percorso: {BLACK}{COMMA16}
 STR_5948    :{WINDOW_COLOUR_2}Nome attrazione: {BLACK}{STRINGID}
 STR_5949    :{WINDOW_COLOUR_2}Catena di traino
-STR_5950    :{WINDOW_COLOUR_2}Applica cambiamenti a tutto il pezzo di tracciato
-STR_5951    :{WINDOW_COLOUR_2}ID pezzo di tracciato: {BLACK}{COMMA16}
+STR_5950    :{WINDOW_COLOUR_2}Applica cambiamenti a tutto il pezzo di percorso
+STR_5951    :{WINDOW_COLOUR_2}ID pezzo di percorso: {BLACK}{COMMA16}
 STR_5952    :{WINDOW_COLOUR_2}Numero sequenza: {BLACK}{COMMA16}
 STR_5953    :{SMALLFONT}{BLACK}Ordina gli elementi della mappa nell'attuale cella in ordine di altezza della loro base.
 STR_5954    :{WINDOW_COLOUR_2}Età scenario: {BLACK}{COMMA16}
@@ -4331,7 +4331,7 @@ STR_6016    :Modifica cella
 STR_6017    :Si prega di rallentare
 STR_6018    :Costruzione percorso - Curva a sinistra
 STR_6019    :Costruzione percorso - Curva a destra
-STR_6020    :Costruzione percorso - Usa tracciato predefinito
+STR_6020    :Costruzione percorso - Usa percorso predefinito
 STR_6021    :Costruzione percorso - Discesa
 STR_6022    :Costruzione percorso - Salita
 STR_6023    :Costruzione percorso - Attiva catena di traino
@@ -4425,7 +4425,7 @@ STR_6110    :Ottovolante per giovanissimi
 STR_6111    :Mini-ottovolante classico
 STR_6112    :Un ottovolante di acciaio compatto, nel quale i treni viaggiano attraverso avvitamenti e inversioni
 STR_6113    :Un ottovolante molto alto ma privo di inversioni, con grandi cadute, un'alta velocità e comodi treni dotati di una barra di protezione sul bacino
-STR_6114    :I passeggeri viaggiano con tranquillità su un tracciato a bordo di veicoli motorizzati
+STR_6114    :I passeggeri viaggiano con tranquillità su un percorso a bordo di veicoli motorizzati
 STR_6115    :Enormi camion 4x4 motorizzati, in grado di scalare ripide salite
 STR_6116    :Un ottovolante molto largo che scorre lungo un percorso di acciaio, passando attraverso numerosi tipi di inversioni
 STR_6117    :I passeggeri, seduti su confortevoli treni e protetti soltanto da barre di protezione sul bacino, viaggiano lungo discese e avvitamenti, provando la sensazione di sollevarsi dal sedile
@@ -4442,6 +4442,17 @@ STR_6127    :File: {STRING}
 STR_6128    :Non è stato possibile caricare il file perché alcuni riferimenti ad oggetti presenti sono corrotti o mancanti. Una lista di tali oggetti è riportata qui di seguito.
 STR_6129    :Copia oggetto selezionato
 STR_6130    :Copia l'intera lista di oggetti
+STR_6131    :Origine oggetto
+STR_6132    :Ignora stato di ricerca
+STR_6133    :{SMALLFONT}{BLACK}Permette di accedere ad attrazioni e scenari non ancora inventati
+STR_6134    :Rimuovi scenario
+STR_6135    :Il client ha inviato una richiesta non valida
+STR_6136    :Il server ha inviato una richiesta non valida
+STR_6137    :OpenRCT2, un clone libero e open-source di Roller Coaster Tycoon 2.
+STR_6138    :OpenRCT2 è frutto del lavoro di molti autori, una lista completa si può trovare nel file {OPENQUOTES}contributors.md{ENDQUOTES}. Per ulteriori informazioni, visitare http://github.com/OpenRCT2/OpenRCT2
+STR_6139    :Tutti i nomi di prodotti e aziende appartengono ai rispettivi proprietari. Il loro uso non implica alcuna affiliazione o approvazione da parte di essi.
+STR_6140    :Changelog...
+
 
 
 #############
@@ -4542,7 +4553,7 @@ STR_DTLS    :Le splendide montagne di Lightning Peaks sono popolari tra turisti 
 <Ivory Towers>
 STR_SCNR    :Ivory Towers
 STR_PARK    :Ivory Towers
-STR_DTLS    :Un parco robusto, ma con qualche problema
+STR_DTLS    :Un parco conosciuto, ma con qualche problema
 
 <Rainbow Valley>
 STR_SCNR    :Rainbow Valley
@@ -4568,7 +4579,7 @@ STR_DTLS    :Sviluppa le cascate in un fiorente parco a tema
 <Three Monkeys Park>
 STR_SCNR    :Three Monkeys Park
 STR_PARK    :Three Monkeys Park
-STR_DTLS    :Al centro di questo grande parco in sviluppo c'è un gigantesco ottovolante in acciaio a tre tracciati gareggianti
+STR_DTLS    :Al centro di questo grande parco in sviluppo c'è un gigantesco ottovolante in acciaio a tre percorsi gareggianti
 
 <Canary Mines>
 STR_SCNR    :Canary Mines
