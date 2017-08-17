@@ -1,5 +1,6 @@
 0.1.2 (in development)
 ------------------------------------------------------------------------
+- Feature: [#3994] Show bottom toolbar with map tooltip (theme option).
 - Feature: [#6078] Game now converts mp.dat to SC21.SC4 (Mega Park) automatically.
 - Fix: [#816] In the map window, there are more peeps flickering than there are selected (original bug).
 - Fix: [#1833, #4937, #6138] 'Too low!' warning when building rides and shops on the lowest land level (original bug).
