@@ -9,6 +9,7 @@
 - Fix: [#6188] Viewports not being clipped properly when zoomed out in OpenGL mode.
 - Fix: Infinite loop when removing scenery elements with >127 base height.
 - Improved: [#6186] Transparent menu items now draw properly in OpenGL mode.
+- Improved: Load/save window now refreshes list if native file dialog is closed/cancelled
 
 0.1.1 (2017-08-09)
 ------------------------------------------------------------------------
