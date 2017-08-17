@@ -65,7 +65,7 @@ static void paint_space_rings_structure(rct_ride * ride, uint8 direction,  uint3
         }
 
         if (imageColourFlags == IMAGE_TYPE_REMAP) {
-            imageColourFlags = SPRITE_ID_PALETTE_COLOUR_2(ride->vehicle_colours[vehicleIndex].body_colour, ride->vehicle_colours[0].trim_colour);
+            imageColourFlags = SPRITE_ID_PALETTE_COLOUR_2(ride->vehicle_colours[vehicleIndex].body_colour, ride->vehicle_colours[vehicleIndex].trim_colour);
         }
 
         uint32 imageId = (baseImageId + frameNum) | imageColourFlags;
