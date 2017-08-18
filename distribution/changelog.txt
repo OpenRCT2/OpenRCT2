@@ -4,6 +4,7 @@
 - Feature: [#6078] Game now converts mp.dat to SC21.SC4 (Mega Park) automatically.
 - Fix: [#816] In the map window, there are more peeps flickering than there are selected (original bug).
 - Fix: [#1833, #4937, #6138] 'Too low!' warning when building rides and shops on the lowest land level (original bug).
+- Fix: [#5788] Empty scenario names cause invisible entries in scenario list
 - Fix: [#6101] Rides remain in ride list window briefly after demolition.
 - Fix: [#6115] Random title screen music not random on launch
 - Fix: [#6133] Construction rights not shown after selecting buy mode.
