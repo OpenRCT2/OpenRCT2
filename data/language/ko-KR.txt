@@ -4447,6 +4447,7 @@ STR_6137    :OpenRCT2 - 롤러코스터 타이쿤 2의 자유 공개 소스 복�
 STR_6138    :OpenRCT2는 많은 분들이 참여한 작품입니다. 모든 참여자의 목록은 {OPENQUOTES}contributors.md{ENDQUOTES} 파일을 참고하세요. 더 많은 정보를 원하시면 http://github.com/OpenRCT2/OpenRCT2 를 방문해주세요.
 STR_6139    :모든 제품과 회사 이름은 해당 소유자의 것입니다. 이러한 제품이나 이름의 사용은 그러한 것들에 대한 제휴나 지지를 뜻하지 않습니다.
 STR_6140    :변경 기록...
+STR_6141    :RCT1 하단 툴바
 
 #############
 # Scenarios #
