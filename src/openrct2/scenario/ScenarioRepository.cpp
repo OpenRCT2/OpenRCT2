@@ -410,11 +410,19 @@ private:
         entry.objective_arg_2 = s6Info->objective_arg_2;
         entry.objective_arg_3 = s6Info->objective_arg_3;
         entry.highscore = nullptr;
-        String::Set(entry.name, sizeof(entry.name), s6Info->name);
-        String::Set(entry.details, sizeof(entry.details), s6Info->details);
+        if (String::IsNullOrEmpty(s6Info->name))
+        {
+            // If the scenario doesn't have a name, set it to the filename
+            String::Set(entry.name, sizeof(entry.name), Path::GetFileNameWithoutExtension(entry.path));
+        }
+        else
+        {
+            String::Set(entry.name, sizeof(entry.name), s6Info->name);
+            // Normalise the name to make the scenario as recognisable as possible.
+            ScenarioSources::NormaliseName(entry.name, sizeof(entry.name), entry.name);
+        }
 
-        // Normalise the name to make the scenario as recognisable as possible.
-        ScenarioSources::NormaliseName(entry.name, sizeof(entry.name), entry.name);
+        String::Set(entry.details, sizeof(entry.details), s6Info->details);
 
         // Look up and store information regarding the origins of this scenario.
         source_desc desc;
