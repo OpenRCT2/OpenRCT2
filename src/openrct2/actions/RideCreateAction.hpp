@@ -97,7 +97,7 @@ public:
                 {
                     res->Error = GA_ERROR::INVALID_PARAMETERS;
                     res->ErrorMessage = STR_INVALID_RIDE_TYPE;
-                    return res;
+                    return std::move(res);
                 }
             }
         }
@@ -106,7 +106,7 @@ public:
         {
             res->Error = GA_ERROR::INVALID_PARAMETERS;
             res->ErrorMessage = STR_INVALID_RIDE_TYPE;
-            return res;
+            return std::move(res);
         }
 
         sint32 rideEntryIndex = subType;
@@ -115,7 +115,7 @@ public:
         {
             res->Error = GA_ERROR::DISALLOWED;
             res->ErrorMessage = STR_TOO_MANY_RIDES;
-            return res;
+            return std::move(res);
         }
 
         res->rideIndex = rideIndex;
@@ -128,7 +128,7 @@ public:
             log_warning("Invalid request for ride %u", rideIndex);
             res->Error = GA_ERROR::UNKNOWN;
             res->ErrorMessage = STR_UNKNOWN_OBJECT_TYPE;
-            return res;
+            return std::move(res);
         }
 
         ride->type = rideType;
@@ -308,7 +308,7 @@ public:
         res->ExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
         res->Position.x = (uint16)0x8000;
 
-        return res;
+        return std::move(res);
     }
 };
 
