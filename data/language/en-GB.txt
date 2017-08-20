@@ -4914,3 +4914,11 @@ STR_CPTY    :4 passengers per car
 STR_NAME    :Conger Eel Coaster
 STR_DESC    :A compact steel-tracked roller coaster where the Eel-shaped train travels through corkscrews and loops
 STR_CPTY    :4 passengers per car
+
+###########
+# Scenery #
+###########
+
+#Bulrushes was spelt incorrectly
+[TBR]
+STR_NAME    :Bulrushes
