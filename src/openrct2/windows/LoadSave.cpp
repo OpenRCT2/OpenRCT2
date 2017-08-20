@@ -321,7 +321,17 @@ static void window_loadsave_mouseup(rct_window *w, rct_widgetindex widgetIndex)
         break;
     case WIDX_BROWSE:
         if (browse(isSave, path, sizeof(path)))
+        {
             window_loadsave_select(w, path);
+        }
+        else
+        {
+            // If user cancels file dialog, refresh list
+            safe_strcpy(path, _directory, sizeof(path));
+            window_loadsave_populate_list(w, isSave, path, _extension);
+            window_init_scroll_widgets(w);
+            w->no_list_items = _listItemsCount;
+        }
         break;
     case WIDX_SORT_NAME:
         if (gConfigGeneral.load_save_sort == SORT_NAME_ASCENDING){

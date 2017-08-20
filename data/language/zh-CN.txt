@@ -4456,6 +4456,7 @@ STR_6137    :OpenRCT2, 一款免费且开源的过山车大亨2的复制游戏.
 STR_6138    :OpenRCT2是一款由许多作者共同开发的作品，完整的列表可在{OPENQUOTES}contributors.md{ENDQUOTES}找到. 请访问http://github.com/OpenRCT2/OpenRCT2获取更多信息
 STR_6139    :所有的产品及公司名称均属其拥有者所有. 使用那些名称并不代表本项目与其有任何联系或认可.
 STR_6140    :更新日志...
+STR_6141    :RCT1式底部工具栏
 
 #############
 # Scenarios #
