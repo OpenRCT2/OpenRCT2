@@ -449,7 +449,7 @@ private:
             hints.ai_flags = AI_PASSIVE;
         }
 
-        addrinfo * result;
+        addrinfo * result = nullptr;
         getaddrinfo(address, serviceName.c_str(), &hints, &result);
         if (result == nullptr)
         {
