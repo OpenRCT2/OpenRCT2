@@ -4450,6 +4450,7 @@ STR_6137    :OpenRCT2 je zdarma dostupný open source klon hry Roller Coaster Ty
 STR_6138    :OpenRCT2 je dílem mnoha lidí. Seznam všech přispěvatelů je dostupný v souboru {OPENQUOTES}contributors.md{ENDQUOTES}. Pro více informací navštivte http://github.com/OpenRCT2/OpenRCT2
 STR_6139    :Všechny názvy produktů a společností jsou vlastnictvím jejich příslušných vlastníků. Jejich užití neimplikuje vazbu ani podporu příslušných vlastníků a tohoto projektu.
 STR_6140    :Seznam změn...
+STR_6141    :RCT1 dolní nástrojová lišta
 
 ###############################################################################
 ## RCT2 Objects
