@@ -90,18 +90,18 @@ The program can also be built as a command line program using CMake. This type o
 - CMake (available through Homebrew)
 
 ### Linux:
-- sdl2
-- sdl2-ttf (can be disabled)
+- sdl2 (only for UI client)
+- sdl2-ttf (only for UI client, can be disabled)
 - fontconfig (can be disabled)
 - libzip (>= 1.0)
 - libpng (>= 1.2)
-- speexdsp
+- speexdsp (only for UI client)
 - curl (only if building with http support)
 - jansson (>= 2.5)
 - openssl (>= 1.0; only if building with multiplayer support)
 - iconv (part of glibc on Linux)
 - zlib
-- gl (commonly provided by Mesa or GPU vendors; can be disabled)
+- gl (commonly provided by Mesa or GPU vendors; only for UI client, can be disabled)
 - cmake
 
 ## 3.2 Compiling and running
