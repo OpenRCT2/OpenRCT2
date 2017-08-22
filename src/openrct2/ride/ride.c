@@ -449,7 +449,7 @@ static money32 ride_calculate_income_per_hour(rct_ride *ride)
 {
     // Get entry by ride to provide better reporting
     rct_ride_entry *entry = get_ride_entry_by_ride(ride);
-    if (entry == NULL) {
+    if (entry == NULL || entry == (rct_ride_entry*)-1) {
         return 0;
     }
     money32 customersPerHour = ride_customers_per_hour(ride);
@@ -7687,6 +7687,10 @@ void ride_update_max_vehicles(sint32 rideIndex)
         return;
 
     rct_ride_entry *rideEntry = get_ride_entry(ride->subtype);
+    if (rideEntry == (rct_ride_entry*)-1)
+    {
+        return;
+    }
     rct_ride_entry_vehicle *vehicleEntry;
     uint8 numCarsPerTrain, numVehicles;
     sint32 maxNumTrains;
