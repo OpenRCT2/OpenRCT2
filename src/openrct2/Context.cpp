@@ -712,21 +712,25 @@ namespace OpenRCT2
                         gLastAutoSaveUpdate = AUTOSAVE_PAUSE;
                         if (info.Type == FILE_TYPE::SAVED_GAME)
                         {
-                            if (network_get_mode() == NETWORK_MODE_CLIENT) {
+                            if (network_get_mode() == NETWORK_MODE_CLIENT)
+                            {
                                 network_close();
                             }
                             game_load_init();
-                            if (network_get_mode() == NETWORK_MODE_SERVER) {
+                            if (network_get_mode() == NETWORK_MODE_SERVER)
+                            {
                                 network_send_map();
                             }
                         }
                         else
                         {
                             scenario_begin();
-                            if (network_get_mode() == NETWORK_MODE_SERVER) {
+                            if (network_get_mode() == NETWORK_MODE_SERVER)
+                            {
                                     network_send_map();
                             }
-                            if (network_get_mode() == NETWORK_MODE_CLIENT) {
+                            if (network_get_mode() == NETWORK_MODE_CLIENT)
+                            {
                                 network_close();
                             }
                         }
