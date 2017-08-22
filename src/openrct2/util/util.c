@@ -404,6 +404,7 @@ void util_srand(sint32 source) {
     srand(source);
 }
 
+// Caveat: rand() might only return values up to 0x7FFF, which is the minimum specified in the C standard.
 uint32 util_rand() {
     return rand();
 }
