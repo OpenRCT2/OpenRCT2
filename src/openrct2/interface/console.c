@@ -286,10 +286,10 @@ void console_input(CONSOLE_INPUT input)
         }
         break;
     case CONSOLE_INPUT_SCROLL_PREVIOUS:
-        console_scroll(1);
+        console_scroll(9);
         break;
     case CONSOLE_INPUT_SCROLL_NEXT:
-        console_scroll(-1);
+        console_scroll(-9);
         break;
     default:
         break;
@@ -365,7 +365,7 @@ double console_parse_double(const utf8 *src, bool *valid) {
 
 void console_scroll(sint32 delta)
 {
-    sint32 speed = 3;
+    sint32 speed = 3 * abs(delta);
     sint32 lines = 0;
     sint32 maxLines = ((_consoleBottom - 22 - _consoleTop) / 10) - 1;
     utf8 *ch = strchr(_consoleBuffer, 0);
