@@ -268,7 +268,7 @@ sint32 cmdline_for_gfxbench(const char **argv, sint32 argc)
     if (context->Initialise())
     {
         drawing_engine_init();
-        context->Open(inputPath);
+        context->LoadParkFromFile(inputPath);
 
         gIntroState = INTRO_STATE_NONE;
         gScreenFlags = SCREEN_FLAGS_PLAYING;
@@ -387,7 +387,7 @@ sint32 cmdline_for_screenshot(const char **argv, sint32 argc)
     if (context->Initialise())
     {
         drawing_engine_init();
-        context->Open(inputPath);
+        context->LoadParkFromFile(inputPath);
 
         gIntroState = INTRO_STATE_NONE;
         gScreenFlags = SCREEN_FLAGS_PLAYING;

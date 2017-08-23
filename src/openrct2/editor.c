@@ -15,6 +15,7 @@
 #pragma endregion
 
 #include "audio/audio.h"
+#include "Context.h"
 #include "drawing/drawing.h"
 #include "editor.h"
 #include "FileClassifier.h"
@@ -122,7 +123,7 @@ static void editor_convert_save_to_scenario_callback(sint32 result, const utf8 *
         return;
     }
 
-    if (!game_load_save_or_scenario(path)) {
+    if (!context_load_park_from_file(path)) {
         return;
     }
 
@@ -233,7 +234,7 @@ bool editor_load_landscape(const utf8 *path)
  */
 static sint32 editor_load_landscape_from_sv4(const char *path)
 {
-    rct1_load_saved_game(path);
+    load_from_sv4(path);
     editor_clear_map_for_editing(true);
 
     gS6Info.editor_step = EDITOR_STEP_LANDSCAPE_EDITOR;
@@ -247,7 +248,7 @@ static sint32 editor_load_landscape_from_sv4(const char *path)
 
 static sint32 editor_load_landscape_from_sc4(const char *path)
 {
-    rct1_load_scenario(path);
+    load_from_sc4(path);
     editor_clear_map_for_editing(false);
 
     gS6Info.editor_step = EDITOR_STEP_LANDSCAPE_EDITOR;
@@ -268,9 +269,9 @@ static sint32 editor_read_s6(const char *path)
     ParkLoadResult * loadResult = NULL;
     const char *extension = path_get_extension(path);
     if (_stricmp(extension, ".sc6") == 0) {
-        loadResult = scenario_load(path);
+        loadResult = load_from_sc6(path);
     } else if (_stricmp(extension, ".sv6") == 0) {
-        loadResult = game_load_sv6_path(path);
+        loadResult = load_from_sv6(path);
     }
     if (ParkLoadResult_GetError(loadResult) != PARK_LOAD_ERROR_OK) {
         ParkLoadResult_Delete(loadResult);

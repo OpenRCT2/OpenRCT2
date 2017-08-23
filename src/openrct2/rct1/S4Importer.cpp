@@ -2642,7 +2642,7 @@ IParkImporter * ParkImporter::CreateS4()
 /////////////////////////////////////////
 extern "C"
 {
-    ParkLoadResult * rct1_load_saved_game(const utf8 * path)
+    ParkLoadResult * load_from_sv4(const utf8 * path)
     {
         ParkLoadResult * result = nullptr;
         auto s4Importer = std::make_unique<S4Importer>();
@@ -2662,7 +2662,7 @@ extern "C"
         return result;
     }
 
-    ParkLoadResult * rct1_load_scenario(const utf8 * path)
+    ParkLoadResult * load_from_sc4(const utf8 * path)
     {
         ParkLoadResult * result = nullptr;
         auto s4Importer = std::make_unique<S4Importer>();

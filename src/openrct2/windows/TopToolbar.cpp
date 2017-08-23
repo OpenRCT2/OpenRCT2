@@ -520,9 +520,7 @@ static void window_top_toolbar_mousedown(rct_window *w, rct_widgetindex widgetIn
 
 static void window_top_toolbar_scenarioselect_callback(const utf8 *path)
 {
-    ParkLoadResult * result = scenario_load_and_play_from_path(path);
-    handle_park_load_failure(result, path);
-    ParkLoadResult_Delete(result);
+    context_load_park_from_file(path);
 }
 
 /**
