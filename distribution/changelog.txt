@@ -2,6 +2,7 @@
 ------------------------------------------------------------------------
 - Feature: [#3994] Show bottom toolbar with map tooltip (theme option).
 - Feature: [#6078] Game now converts mp.dat to SC21.SC4 (Mega Park) automatically.
+- Feature: [#6181] Map generator now allows adjusting random terrain and tree placement in Simplex Noise tab.
 - Fix: [#816] In the map window, there are more peeps flickering than there are selected (original bug).
 - Fix: [#1833, #4937, #6138] 'Too low!' warning when building rides and shops on the lowest land level (original bug).
 - Fix: [#5417] Hacked Crooked House tracked rides do not dispatch vehicles.
@@ -23,7 +24,6 @@
 - Feature: [#5877] Allow up to 16 stations to be synchronised
 - Feature: [#5970] The Bobsleigh Roller Coaster now supports on-ride photos.
 - Feature: [#5991] Allow all tracked rides that can be tested without guests to the Track Designer
-- Feature: [#6181] Map generator now allows adjusting random terrain and tree placement in Simplex Noise tab.
 - Fix: [#2127, #2229, #5586] Mountain tool cost calculation
 - Fix: [#3589] Crash due to invalid footpathEntry in path_paint
 - Fix: [#3852] Constructing path not clearing scenery on server.
