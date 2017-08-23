@@ -732,10 +732,13 @@ static void vehicle_update_sound_params(rct_vehicle* vehicle)
                             sint32 v = vehicle->velocity;
 
                             rct_ride_entry* ride_type = get_ride_entry(vehicle->ride_subtype);
-                            uint8 test = ride_type->vehicles[vehicle->vehicle_type].var_5A;
+                            if (ride_type != (rct_ride_entry*)-1)
+                            {
+                                uint8 test = ride_type->vehicles[vehicle->vehicle_type].var_5A;
 
-                            if (test & 1) {
-                                v *= 2;
+                                if (test & 1) {
+                                    v *= 2;
+                                }
                             }
                             if (v < 0) {
                                 v = -v;
@@ -1852,7 +1855,14 @@ static int ride_get_train_index_from_vehicle(rct_ride* ride, uint16 spriteIndex)
     while (ride->vehicles[trainIndex] != spriteIndex)
     {
         trainIndex++;
-        if (trainIndex >= ride->num_vehicles || trainIndex >= countof(ride->vehicles))
+        if (trainIndex >= ride->num_vehicles)
+        {
+            // This should really return VEHICLE_INVALID_ID, but doing so
+            // would break some hacked parks that hide track by setting tracked rides'
+            // track type to, e.g., Crooked House
+            break;
+        }
+        else if (trainIndex >= countof(ride->vehicles))
         {
             return VEHICLE_INVALID_ID;
         }
@@ -4837,6 +4847,11 @@ static void vehicle_update_sound(rct_vehicle *vehicle)
 
     ride = get_ride(vehicle->ride);
     rideEntry = get_ride_entry(vehicle->ride_subtype);
+
+    if (rideEntry == (rct_ride_entry*)-1)
+    {
+        return;
+    }
 
     rct_ride_entry_vehicle* vehicleEntry = &rideEntry->vehicles[vehicle->vehicle_type];
 
@@ -8637,6 +8652,11 @@ sint32 vehicle_update_track_motion(rct_vehicle *vehicle, sint32 *outStation)
     rct_ride_entry *rideEntry = get_ride_entry(vehicle->ride_subtype);
     rct_ride_entry_vehicle *vehicleEntry = vehicle_get_vehicle_entry(vehicle);
 
+    if (vehicleEntry == NULL)
+    {
+        return 0;
+    }
+
     if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_MINI_GOLF) {
         return vehicle_update_track_motion_mini_golf(vehicle, outStation);
     }
@@ -8943,6 +8963,10 @@ loc_6DC316:
 rct_ride_entry_vehicle *vehicle_get_vehicle_entry(rct_vehicle *vehicle)
 {
     rct_ride_entry *rideEntry = get_ride_entry(vehicle->ride_subtype);
+    if (rideEntry == (rct_ride_entry*)-1)
+    {
+        return NULL;
+    }
     return &rideEntry->vehicles[vehicle->vehicle_type];
 }
 

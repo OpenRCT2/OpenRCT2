@@ -164,7 +164,6 @@ namespace OpenRCT2 { namespace Ui
             {
                 std::wstring titleW = String::ToUtf16(title);
                 BROWSEINFOW bi = { 0 };
-                bi.hwndOwner = GetHWND(window);
                 bi.lpszTitle = titleW.c_str();
                 bi.ulFlags = BIF_RETURNONLYFSDIRS | BIF_NEWDIALOGSTYLE | BIF_NONEWFOLDERBUTTON;
 
@@ -173,12 +172,18 @@ namespace OpenRCT2 { namespace Ui
                 {
                     result = String::ToUtf8(SHGetPathFromIDListLongPath(pidl));
                 }
+                CoTaskMemFree(pidl);
             }
             else
             {
                 log_error("Error opening directory browse window");
             }
             CoUninitialize();
+
+            // SHBrowseForFolderW might minimize the main window,
+            // so make sure that it's visible again.
+            ShowWindow(GetHWND(window), SW_RESTORE);
+
             return result;
         }
 

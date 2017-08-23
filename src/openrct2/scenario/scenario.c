@@ -89,90 +89,15 @@ char gScenarioFileName[MAX_PATH];
 static sint32 scenario_create_ducks();
 static void scenario_objective_check();
 
-ParkLoadResult * scenario_load_and_play_from_path(const char * path)
-{
-    window_close_construction_windows();
-
-    uint32 extension = get_file_extension_type(path);
-    ParkLoadResult * result = NULL;
-    if (extension == FILE_EXTENSION_SC6) {
-        result = scenario_load(path);
-        if (ParkLoadResult_GetError(result) != PARK_LOAD_ERROR_OK) {
-            return result;
-        }
-    } else if (extension == FILE_EXTENSION_SC4) {
-        result = rct1_load_scenario(path);
-        if (ParkLoadResult_GetError(result) != PARK_LOAD_ERROR_OK) {
-            return result;
-        }
-    } else {
-        result = ParkLoadResult_CreateInvalidExtension();
-        return result;
-    }
-
-    reset_sprite_spatial_index();
-    reset_all_sprite_quadrant_placements();
-
-    safe_strcpy(gScenarioFileName, path_get_filename(path), sizeof(gScenarioFileName));
-
-    gFirstTimeSaving = true;
-
-    log_verbose("starting scenario, %s", path);
-    scenario_begin();
-    if (network_get_mode() == NETWORK_MODE_SERVER) {
-        network_send_map();
-    }
-    if (network_get_mode() == NETWORK_MODE_CLIENT) {
-        network_close();
-    }
-
-    // This ensures that the newly loaded scenario reflects the user's
-    // 'show real names of guests' option, now that it's a global setting
-    peep_update_names(gConfigGeneral.show_real_names_of_guests);
-    return result;
-}
-
 void scenario_begin()
 {
-    rct_window *mainWindow;
-
-    audio_stop_title_music();
-
-    gScreenFlags = SCREEN_FLAGS_PLAYING;
-    audio_stop_all_music_and_sounds();
-    viewport_init_all();
-    game_create_windows();
-    mainWindow = window_get_main();
-
-    mainWindow->viewport_target_sprite = SPRITE_INDEX_NULL;
-    mainWindow->saved_view_x = gSavedViewX;
-    mainWindow->saved_view_y = gSavedViewY;
-
-    uint8 zoomDifference = gSavedViewZoom - mainWindow->viewport->zoom;
-    mainWindow->viewport->zoom = gSavedViewZoom;
-    gCurrentRotation = gSavedViewRotation;
-    if (zoomDifference != 0) {
-        if (zoomDifference < 0) {
-            zoomDifference = -zoomDifference;
-            mainWindow->viewport->view_width >>= zoomDifference;
-            mainWindow->viewport->view_height >>= zoomDifference;
-        } else {
-            mainWindow->viewport->view_width <<= zoomDifference;
-            mainWindow->viewport->view_height <<= zoomDifference;
-        }
-    }
-    mainWindow->saved_view_x -= mainWindow->viewport->view_width >> 1;
-    mainWindow->saved_view_y -= mainWindow->viewport->view_height >> 1;
-    window_invalidate(mainWindow);
-
-    reset_all_sprite_quadrant_placements();
-    window_new_ride_init_vars();
+    game_load_init();
 
     // Set the scenario pseudo-random seeds
     gScenarioSrand0 ^= platform_get_ticks();
     gScenarioSrand1 ^= platform_get_ticks();
 
-    gWindowUpdateTicks = 0;
+
     gParkFlags &= ~PARK_FLAGS_NO_MONEY;
     if (gParkFlags & PARK_FLAGS_NO_MONEY_SCENARIO)
         gParkFlags |= PARK_FLAGS_NO_MONEY;
@@ -206,7 +131,8 @@ void scenario_begin()
             if (localisedStringIds[2] != STR_NONE) {
                 safe_strcpy(gScenarioDetails, language_get_string(localisedStringIds[2]), 256);
             }
-        } else {
+        }
+        else {
             rct_stex_entry* stex = g_stexEntries[0];
             if ((intptr_t)stex != -1) {
                 char *buffer = gCommonStringFormatBuffer;
@@ -263,10 +189,7 @@ void scenario_begin()
 
     gParkFlags |= PARK_FLAGS_SPRITES_INITIALISED;
 
-    load_palette();
-    window_tile_inspector_clear_clipboard();
     gScreenAge = 0;
-    gGameSpeed = 1;
 }
 
 static void scenario_end()

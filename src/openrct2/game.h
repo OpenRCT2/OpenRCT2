@@ -169,8 +169,7 @@ sint32 game_do_command_p(sint32 command, sint32 *eax, sint32 *ebx, sint32 *ecx, 
 void game_log_multiplayer_command(int command, int *eax, int* ebx, int* ecx, int* edx, int* edi, int* ebp);
 
 void game_load_or_quit_no_save_prompt();
-ParkLoadResult * game_load_sv6_path(const char * path);
-bool game_load_save(const utf8 *path);
+ParkLoadResult * load_from_sv6(const char * path);
 void game_load_init();
 void game_pause_toggle(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *edx, sint32 *esi, sint32 *edi, sint32 *ebp);
 void pause_toggle();
@@ -187,7 +186,6 @@ void game_convert_strings_to_utf8();
 void game_convert_news_items_to_utf8();
 void game_convert_strings_to_rct2(rct_s6_data *s6);
 void game_fix_save_vars();
-bool game_load_save_or_scenario(const utf8 * path);
 void game_init_all(sint32 mapSize);
 
 #endif

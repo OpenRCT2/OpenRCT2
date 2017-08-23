@@ -370,10 +370,10 @@ namespace OpenRCT2
             return true;
         }
 
-        void Open(const std::string &path) final override
+        bool LoadParkFromFile(const std::string &path, bool loadTitleScreenOnFail = false) final override
         {
             auto fs = FileStream(path, FILE_MODE_OPEN);
-            OpenParkAutoDetectFormat(&fs, path);
+            return LoadParkFromStream(&fs, path, loadTitleScreenOnFail);
         }
 
     private:
@@ -454,7 +454,7 @@ namespace OpenRCT2
                     }
 
                     auto ms = MemoryStream(data, dataSize, MEMORY_ACCESS::OWNER);
-                    if (!OpenParkAutoDetectFormat(&ms, gOpenRCT2StartupActionPath))
+                    if (!LoadParkFromStream(&ms, gOpenRCT2StartupActionPath, true))
                     {
                         Console::Error::WriteLine("Failed to load '%s'", gOpenRCT2StartupActionPath);
                         title_load();
@@ -466,7 +466,10 @@ namespace OpenRCT2
                 {
                     try
                     {
-                        Open(gOpenRCT2StartupActionPath);
+                        if (!LoadParkFromFile(gOpenRCT2StartupActionPath, true))
+                        {
+                            break;
+                        }
                     }
                     catch (const std::exception &ex)
                     {
@@ -679,21 +682,23 @@ namespace OpenRCT2
             console_update();
         }
 
-        bool OpenParkAutoDetectFormat(IStream * stream, const std::string &path)
+        bool LoadParkFromStream(IStream * stream, const std::string &path, bool loadTitleScreenFirstOnFail)
         {
-            ClassifiedFile info;
+            ClassifiedFileInfo info;
             if (TryClassifyFile(stream, &info))
             {
                 if (info.Type == FILE_TYPE::SAVED_GAME ||
                     info.Type == FILE_TYPE::SCENARIO)
                 {
                     std::unique_ptr<IParkImporter> parkImporter;
-                    if (info.Version <= 2)
+                    if (info.Version <= FILE_TYPE_S4_CUTOFF)
                     {
+                        // Save is an S4 (RCT1 format)
                         parkImporter.reset(ParkImporter::CreateS4());
                     }
                     else
                     {
+                        // Save is an S6 (RCT2 format)
                         parkImporter.reset(ParkImporter::CreateS6(_objectRepository, _objectManager));
                     }
 
@@ -707,20 +712,38 @@ namespace OpenRCT2
                         gLastAutoSaveUpdate = AUTOSAVE_PAUSE;
                         if (info.Type == FILE_TYPE::SAVED_GAME)
                         {
+                            if (network_get_mode() == NETWORK_MODE_CLIENT)
+                            {
+                                network_close();
+                            }
                             game_load_init();
+                            if (network_get_mode() == NETWORK_MODE_SERVER)
+                            {
+                                network_send_map();
+                            }
                         }
                         else
                         {
-                            reset_sprite_spatial_index();
-                            reset_all_sprite_quadrant_placements();
                             scenario_begin();
+                            if (network_get_mode() == NETWORK_MODE_SERVER)
+                            {
+                                    network_send_map();
+                            }
+                            if (network_get_mode() == NETWORK_MODE_CLIENT)
+                            {
+                                network_close();
+                            }
                         }
+                        // This ensures that the newly loaded save reflects the user's
+                        // 'show real names of guests' option, now that it's a global setting
+                        peep_update_names(gConfigGeneral.show_real_names_of_guests);
                         return true;
                     }
                     else
                     {
-                        handle_park_load_failure_with_title_opt(&result, path.c_str(), true);
+                        handle_park_load_failure_with_title_opt(&result, path.c_str(), loadTitleScreenFirstOnFail);
                     }
+
                 }
                 else
                 {
@@ -828,6 +851,11 @@ namespace OpenRCT2
 
 extern "C"
 {
+    bool context_load_park_from_file(const utf8 * path)
+    {
+        return GetContext()->LoadParkFromFile(path);
+    }
+
     void openrct2_write_full_version_info(utf8 * buffer, size_t bufferSize)
     {
         String::Set(buffer, bufferSize, gVersionInfoFull);

@@ -671,7 +671,7 @@ IParkImporter * ParkImporter::CreateS6(IObjectRepository * objectRepository, IOb
 
 extern "C"
 {
-    ParkLoadResult * game_load_sv6_path(const char * path)
+    ParkLoadResult * load_from_sv6(const char * path)
     {
         ParkLoadResult * result = nullptr;
         auto s6Importer = new S6Importer(GetObjectRepository(), GetObjectManager());
@@ -723,7 +723,7 @@ extern "C"
      *  rct2: 0x00676053
      * scenario (ebx)
      */
-    ParkLoadResult * scenario_load(const char * path)
+    ParkLoadResult * load_from_sc6(const char * path)
     {
         ParkLoadResult * result = nullptr;
         auto s6Importer = new S6Importer(GetObjectRepository(), GetObjectManager());

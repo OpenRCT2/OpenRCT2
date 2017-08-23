@@ -4442,7 +4442,7 @@ STR_6137    :OpenRCT2, een gratis en open source remake van Roller Coaster Tycoo
 STR_6138    :OpenRCT2 is het werk van velen, een volledige lijst is te vinden in {OPENQUOTES}contributors.md{ENDQUOTES}. Ga naar http://github.com/OpenRCT2/OpenRCT2 voor meer informatie.
 STR_6139    :Alle product- en bedrijfsnamen zijn eigendom van hun respectieve eigenaren. Het gebruik ervan impliceert geen overeenkomst of goedkeuring.
 STR_6140    :Wijzigingsoverzicht...
-
+STR_6141    :Onderste werkbalk in RCT1-stijl
 #############
 # Scenarios #
 #############

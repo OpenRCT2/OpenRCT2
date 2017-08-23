@@ -3788,6 +3788,9 @@ enum {
 
     STR_THEMES_OPTION_RCT1_BOTTOM_TOOLBAR = 6141,
 
+    STR_TRACK_DESIGN_NAME = 6142,
+    STR_TRACK_DESIGN_TYPE = 6143,
+
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     STR_COUNT = 32768
 };

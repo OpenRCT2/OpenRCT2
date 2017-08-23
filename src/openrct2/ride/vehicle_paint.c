@@ -2352,6 +2352,10 @@ void vehicle_paint(rct_vehicle *vehicle, sint32 imageDirection)
         vehicleEntry = &CableLiftVehicle;
     } else {
         rideEntry = get_ride_entry(vehicle->ride_subtype);
+        if (rideEntry == (rct_ride_entry*)-1)
+        {
+            return;
+        }
         vehicleEntry = &rideEntry->vehicles[vehicle->vehicle_type];
 
         if (vehicle->update_flags & VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES) {

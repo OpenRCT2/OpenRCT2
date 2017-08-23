@@ -1106,52 +1106,6 @@ void game_fix_save_vars()
     fix_invalid_vehicle_sprite_sizes();
 }
 
-/**
- *
- *  rct2: 0x00675E1B
- */
-bool game_load_save(const utf8 *path)
-{
-    log_verbose("loading saved game, %s", path);
-
-    safe_strcpy(gScenarioSavePath, path, MAX_PATH);
-
-    uint32 extension_type = get_file_extension_type(path);
-    ParkLoadResult * result = NULL;
-    bool load_success = false;
-    if (extension_type == FILE_EXTENSION_SV6) {
-        result = game_load_sv6_path(path);
-        load_success = (ParkLoadResult_GetError(result) == PARK_LOAD_ERROR_OK);
-        if (load_success)
-            gFirstTimeSaving = false;
-    } else if (extension_type == FILE_EXTENSION_SV4) {
-        result = rct1_load_saved_game(path);
-        load_success = (ParkLoadResult_GetError(result) == PARK_LOAD_ERROR_OK);
-        if (load_success)
-            gFirstTimeSaving = true;
-    }
-
-    if (load_success) {
-        ParkLoadResult_Delete(result);
-        if (network_get_mode() == NETWORK_MODE_CLIENT) {
-            network_close();
-        }
-        game_load_init();
-        if (network_get_mode() == NETWORK_MODE_SERVER) {
-            network_send_map();
-        }
-
-        // This ensures that the newly loaded save reflects the user's
-        // 'show real names of guests' option, now that it's a global setting
-        peep_update_names(gConfigGeneral.show_real_names_of_guests);
-        return true;
-    } else {
-        handle_park_load_failure(result, path);
-        ParkLoadResult_Delete(result);
-        return false;
-    }
-}
-
 void handle_park_load_failure_with_title_opt(const ParkLoadResult * result, const utf8 * path, bool loadTitleFirst)
 {
     if (ParkLoadResult_GetError(result) == PARK_LOAD_ERROR_MISSING_OBJECTS)
@@ -1224,6 +1178,7 @@ void game_load_init()
         window_update_all();
     }
 
+    audio_stop_title_music();
     gGameSpeed = 1;
 }
 
@@ -1417,29 +1372,10 @@ void rct2_exit()
     openrct2_finish();
 }
 
-bool game_load_save_or_scenario(const utf8 * path)
-{
-    uint32 extension = get_file_extension_type(path);
-    switch (extension) {
-    case FILE_EXTENSION_SV4:
-    case FILE_EXTENSION_SV6:
-        return game_load_save(path);
-    case FILE_EXTENSION_SC4:
-    case FILE_EXTENSION_SC6:
-    {
-        ParkLoadResult * result = scenario_load_and_play_from_path(path);
-        bool success = (ParkLoadResult_GetError(result) == PARK_LOAD_ERROR_OK);
-        ParkLoadResult_Delete(result);
-        return success;
-    }
-    }
-    return false;
-}
-
 static void game_load_or_quit_no_save_prompt_callback(sint32 result, const utf8 * path)
 {
     if (result == MODAL_RESULT_OK) {
-        game_load_save_or_scenario(path);
+        context_load_park_from_file(path);
     }
 }
 

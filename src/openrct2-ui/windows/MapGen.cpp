@@ -87,8 +87,10 @@ enum {
     WIDX_SIMPLEX_WATER_LEVEL,
     WIDX_SIMPLEX_WATER_LEVEL_UP,
     WIDX_SIMPLEX_WATER_LEVEL_DOWN,
+    WIDX_SIMPLEX_RANDOM_TERRAIN_CHECKBOX,
     WIDX_SIMPLEX_FLOOR_TEXTURE,
     WIDX_SIMPLEX_WALL_TEXTURE,
+    WIDX_SIMPLEX_PLACE_TREES_CHECKBOX,
 
     WIDX_HEIGHTMAP_SELECT = TAB_BEGIN,
     WIDX_HEIGHTMAP_SMOOTH_HEIGHTMAP,
@@ -110,14 +112,14 @@ enum {
 
 #pragma region Widgets
 
-#define WW 300
-#define WH 200
+#define WW 250
+#define WH 273
 
 #define SHARED_WIDGETS \
     { WWT_FRAME,    0,  0,          WW - 1, 0,  WH - 1, 0xFFFFFFFF,                 STR_NONE },             /* WIDX_BACKGROUND */ \
     { WWT_CAPTION,  0,  1,          WW - 2, 1,  14,     STR_MAPGEN_WINDOW_TITLE,    STR_WINDOW_TITLE_TIP }, /* WIDX_TITLE */ \
     { WWT_CLOSEBOX, 0,  WW - 13,    WW - 3, 2,  13,     STR_CLOSE_X,                STR_CLOSE_WINDOW_TIP }, /* WIDX_CLOSE */ \
-    { WWT_RESIZE,   1,  0,          299,    43, WH - 2, 0xFFFFFFFF,                 STR_NONE },             /* WIDX_PAGE_BACKGROUND */ \
+    { WWT_RESIZE,   1,  0,          WW - 1, 43, WH - 2, 0xFFFFFFFF,                 STR_NONE },             /* WIDX_PAGE_BACKGROUND */ \
     { WWT_TAB,      1,  3,          33,     17, 43,     IMAGE_TYPE_REMAP | SPR_TAB,       STR_NONE },             /* WIDX_TAB_1 */ \
     { WWT_TAB,      1,  34,         64,     17, 43,     IMAGE_TYPE_REMAP | SPR_TAB,       STR_NONE },             /* WIDX_TAB_2 */ \
     { WWT_TAB,      1,  65,         95,     17, 43,     IMAGE_TYPE_REMAP | SPR_TAB,       STR_NONE },             /* WIDX_TAB_3 */ \
@@ -155,36 +157,39 @@ static rct_widget RandomWidgets[] = {
 static rct_widget SimplexWidgets[] = {
     SHARED_WIDGETS,
 
-    { WWT_DROPDOWN_BUTTON,  1, WW - 95, WW - 6, WH - 17, WH - 6, STR_MAPGEN_ACTION_GENERATE, STR_NONE },
+    { WWT_DROPDOWN_BUTTON,  1, WW - 95, WW - 6, WH - 17, WH - 6, STR_MAPGEN_ACTION_GENERATE,      STR_NONE }, // WIDX_SIMPLEX_GENERATE
 
-    { WWT_12,               1,  4,      198,    52,     63,     STR_MAPGEN_SIMPLEX_NOISE,   STR_NONE },
+    { WWT_12,               1,  4,      198,    52,     63,     STR_MAPGEN_SIMPLEX_NOISE,         STR_NONE }, // WIDX_SIMPLEX_LABEL
 
-    { WWT_SPINNER,          1,  104,    198,    70,     81,     STR_NONE,                   STR_NONE },
-    { WWT_DROPDOWN_BUTTON,  1,  187,    197,    71,     75,     STR_NUMERIC_UP,             STR_NONE },
-    { WWT_DROPDOWN_BUTTON,  1,  187,    197,    76,     80,     STR_NUMERIC_DOWN,           STR_NONE },
+    { WWT_SPINNER,          1,  104,    198,    70,     81,     STR_NONE,                         STR_NONE }, // WIDX_SIMPLEX_LOW
+    { WWT_DROPDOWN_BUTTON,  1,  187,    197,    71,     75,     STR_NUMERIC_UP,                   STR_NONE }, // WIDX_SIMPLEX_LOW_UP
+    { WWT_DROPDOWN_BUTTON,  1,  187,    197,    76,     80,     STR_NUMERIC_DOWN,                 STR_NONE }, // WIDX_SIMPLEX_LOW_DOWN
 
-    { WWT_SPINNER,          1,  104,    198,    88,     99,     STR_NONE,                   STR_NONE },
-    { WWT_DROPDOWN_BUTTON,  1,  187,    197,    89,     93,     STR_NUMERIC_UP,             STR_NONE },
-    { WWT_DROPDOWN_BUTTON,  1,  187,    197,    94,     98,     STR_NUMERIC_DOWN,           STR_NONE },
+    { WWT_SPINNER,          1,  104,    198,    88,     99,     STR_NONE,                         STR_NONE }, // WIDX_SIMPLEX_HIGH
+    { WWT_DROPDOWN_BUTTON,  1,  187,    197,    89,     93,     STR_NUMERIC_UP,                   STR_NONE }, // WIDX_SIMPLEX_HIGH_UP
+    { WWT_DROPDOWN_BUTTON,  1,  187,    197,    94,     98,     STR_NUMERIC_DOWN,                 STR_NONE }, // WIDX_SIMPLEX_HIGH_DOWN
 
-    { WWT_SPINNER,          1,  104,    198,    106,    117,    STR_NONE,                   STR_NONE },
-    { WWT_DROPDOWN_BUTTON,  1,  187,    197,    107,    111,    STR_NUMERIC_UP,             STR_NONE },
-    { WWT_DROPDOWN_BUTTON,  1,  187,    197,    112,    116,    STR_NUMERIC_DOWN,           STR_NONE },
+    { WWT_SPINNER,          1,  104,    198,    106,    117,    STR_NONE,                         STR_NONE }, // WIDX_SIMPLEX_BASE_FREQ
+    { WWT_DROPDOWN_BUTTON,  1,  187,    197,    107,    111,    STR_NUMERIC_UP,                   STR_NONE }, // WIDX_SIMPLEX_BASE_FREQ_UP
+    { WWT_DROPDOWN_BUTTON,  1,  187,    197,    112,    116,    STR_NUMERIC_DOWN,                 STR_NONE }, // WIDX_SIMPLEX_BASE_FREQ_DOWN
 
-    { WWT_SPINNER,          1,  104,    198,    124,    135,    STR_NONE,                   STR_NONE },
-    { WWT_DROPDOWN_BUTTON,  1,  187,    197,    125,    129,    STR_NUMERIC_UP,             STR_NONE },
-    { WWT_DROPDOWN_BUTTON,  1,  187,    197,    130,    134,    STR_NUMERIC_DOWN,           STR_NONE },
+    { WWT_SPINNER,          1,  104,    198,    124,    135,    STR_NONE,                         STR_NONE }, // WIDX_SIMPLEX_OCTAVES
+    { WWT_DROPDOWN_BUTTON,  1,  187,    197,    125,    129,    STR_NUMERIC_UP,                   STR_NONE }, // WIDX_SIMPLEX_OCTAVES_UP
+    { WWT_DROPDOWN_BUTTON,  1,  187,    197,    130,    134,    STR_NUMERIC_DOWN,                 STR_NONE }, // WIDX_SIMPLEX_OCTAVES_DOWN
 
-    { WWT_SPINNER,          1,  104,    198,    148,    159,    STR_NONE,                   STR_NONE },
-    { WWT_DROPDOWN_BUTTON,  1,  187,    197,    149,    153,    STR_NUMERIC_UP,             STR_NONE },
-    { WWT_DROPDOWN_BUTTON,  1,  187,    197,    154,    158,    STR_NUMERIC_DOWN,           STR_NONE },
+    { WWT_SPINNER,          1,  104,    198,    148,    159,    STR_NONE,                         STR_NONE }, // WIDX_SIMPLEX_MAP_SIZE
+    { WWT_DROPDOWN_BUTTON,  1,  187,    197,    149,    153,    STR_NUMERIC_UP,                   STR_NONE }, // WIDX_SIMPLEX_MAP_SIZE_UP
+    { WWT_DROPDOWN_BUTTON,  1,  187,    197,    154,    158,    STR_NUMERIC_DOWN,                 STR_NONE }, // WIDX_SIMPLEX_MAP_SIZE_DOWN
 
-    { WWT_SPINNER,          1,  104,    198,    166,    177,    STR_NONE,                   STR_NONE },
-    { WWT_DROPDOWN_BUTTON,  1,  187,    197,    167,    171,    STR_NUMERIC_UP,             STR_NONE },
-    { WWT_DROPDOWN_BUTTON,  1,  187,    197,    172,    176,    STR_NUMERIC_DOWN,           STR_NONE },
+    { WWT_SPINNER,          1,  104,    198,    166,    177,    STR_NONE,                         STR_NONE }, // WIDX_SIMPLEX_WATER_LEVEL
+    { WWT_DROPDOWN_BUTTON,  1,  187,    197,    167,    171,    STR_NUMERIC_UP,                   STR_NONE }, // WIDX_SIMPLEX_WATER_LEVEL_UP
+    { WWT_DROPDOWN_BUTTON,  1,  187,    197,    172,    176,    STR_NUMERIC_DOWN,                 STR_NONE }, // WIDX_SIMPLEX_WATER_LEVEL_DOWN
 
-    { WWT_FLATBTN,          1,  225,    271,    68,     103,    0xFFFFFFFF,                 STR_CHANGE_BASE_LAND_TIP },
-    { WWT_FLATBTN,          1,  225,    271,    104,    139,    0xFFFFFFFF,                 STR_CHANGE_VERTICAL_LAND_TIP },
+    { WWT_CHECKBOX,         1,  104,    198,    190,    201,    STR_MAPGEN_OPTION_RANDOM_TERRAIN, STR_NONE }, // WIDX_SIMPLEX_RANDOM_TERRAIN_CHECKBOX
+    { WWT_FLATBTN,          1,  102,    148,    202,    237,    0xFFFFFFFF,                       STR_CHANGE_BASE_LAND_TIP }, // WIDX_SIMPLEX_FLOOR_TEXTURE
+    { WWT_FLATBTN,          1,  150,    196,    202,    237,    0xFFFFFFFF,                       STR_CHANGE_VERTICAL_LAND_TIP }, // WIDX_SIMPLEX_WALL_TEXTURE
+
+    { WWT_CHECKBOX,         1,  104,    198,    239,    250,    STR_NONE,                         STR_NONE }, // WIDX_SIMPLEX_PLACE_TREES_CHECKBOX
 
     { WIDGETS_END },
 };
@@ -446,8 +451,10 @@ static uint64 PageEnabledWidgets[WINDOW_MAPGEN_PAGE_COUNT] = {
     (1ULL << WIDX_SIMPLEX_WATER_LEVEL) |
     (1ULL << WIDX_SIMPLEX_WATER_LEVEL_UP) |
     (1ULL << WIDX_SIMPLEX_WATER_LEVEL_DOWN) |
+    (1ULL << WIDX_SIMPLEX_RANDOM_TERRAIN_CHECKBOX) |
     (1ULL << WIDX_SIMPLEX_FLOOR_TEXTURE) |
-    (1ULL << WIDX_SIMPLEX_WALL_TEXTURE),
+    (1ULL << WIDX_SIMPLEX_WALL_TEXTURE) |
+    (1ULL << WIDX_SIMPLEX_PLACE_TREES_CHECKBOX),
 
     (1ULL << WIDX_CLOSE) |
     (1ULL << WIDX_TAB_1) |
@@ -549,7 +556,7 @@ static sint32 _baseHeight = 12;
 static sint32 _waterLevel = 6;
 static sint32 _floorTexture = TERRAIN_GRASS;
 static sint32 _wallTexture = TERRAIN_EDGE_ROCK;
-static sint32 _randomTerrrain = 1;
+static bool _randomTerrain = true;
 static sint32 _placeTrees = 1;
 
 static sint32 _simplex_low = 6;
@@ -826,8 +833,8 @@ static void window_mapgen_random_mouseup(rct_window *w, rct_widgetindex widgetIn
         mapgenSettings.mapSize = _mapSize;
         mapgenSettings.height = _baseHeight + 2;
         mapgenSettings.water_level = _waterLevel + 2;
-        mapgenSettings.floor = _randomTerrrain ? -1 : _floorTexture;
-        mapgenSettings.wall = _randomTerrrain ? -1 : _wallTexture;
+        mapgenSettings.floor = _randomTerrain ? -1 : _floorTexture;
+        mapgenSettings.wall = _randomTerrain ? -1 : _wallTexture;
         mapgenSettings.trees = _placeTrees;
 
         mapgenSettings.simplex_low = util_rand() % 4;
@@ -839,7 +846,7 @@ static void window_mapgen_random_mouseup(rct_window *w, rct_widgetindex widgetIn
         gfx_invalidate_screen();
         break;
     case WIDX_RANDOM_TERRAIN:
-        _randomTerrrain ^= 1;
+        _randomTerrain = !_randomTerrain;
         break;
     case WIDX_RANDOM_PLACE_TREES:
         _placeTrees ^= 1;
@@ -868,7 +875,7 @@ static void window_mapgen_random_invalidate(rct_window *w)
     }
 
     w->pressed_widgets = 0;
-    if (_randomTerrrain)
+    if (_randomTerrain)
         w->pressed_widgets |= 1 << WIDX_RANDOM_TERRAIN;
     if (_placeTrees)
         w->pressed_widgets |= 1 << WIDX_RANDOM_PLACE_TREES;
@@ -904,9 +911,9 @@ static void window_mapgen_simplex_mouseup(rct_window *w, rct_widgetindex widgetI
 
         mapgenSettings.height = _baseHeight;
         mapgenSettings.water_level = _waterLevel + 2;
-        mapgenSettings.floor = _floorTexture;
-        mapgenSettings.wall = _wallTexture;
-        mapgenSettings.trees = 0;
+        mapgenSettings.floor = _randomTerrain ? -1 : _floorTexture;
+        mapgenSettings.wall = _randomTerrain ? -1 : _wallTexture;
+        mapgenSettings.trees = _placeTrees;
 
         mapgenSettings.simplex_low = _simplex_low;
         mapgenSettings.simplex_high = _simplex_high;
@@ -970,11 +977,19 @@ static void window_mapgen_simplex_mousedown(rct_window *w, rct_widgetindex widge
         _waterLevel = Math::Max(_waterLevel - 2, 0);
         window_invalidate(w);
         break;
+    case WIDX_SIMPLEX_RANDOM_TERRAIN_CHECKBOX:
+        _randomTerrain = !_randomTerrain;
+        window_invalidate(w);
+        break;
     case WIDX_SIMPLEX_FLOOR_TEXTURE:
         land_tool_show_surface_style_dropdown(w, widget, _floorTexture);
         break;
     case WIDX_SIMPLEX_WALL_TEXTURE:
         land_tool_show_edge_style_dropdown(w, widget, _wallTexture);
+        break;
+    case WIDX_SIMPLEX_PLACE_TREES_CHECKBOX:
+        _placeTrees ^= 1;
+        window_invalidate(w);
         break;
     }
 }
@@ -1038,6 +1053,19 @@ static void window_mapgen_simplex_invalidate(rct_window *w)
 
     w->widgets[WIDX_SIMPLEX_FLOOR_TEXTURE].image = SPR_FLOOR_TEXTURE_GRASS + _floorTexture;
     w->widgets[WIDX_SIMPLEX_WALL_TEXTURE].image = SPR_WALL_TEXTURE_ROCK + _wallTexture;
+    
+    widget_set_checkbox_value(w, WIDX_SIMPLEX_RANDOM_TERRAIN_CHECKBOX, _randomTerrain != 0);
+    widget_set_checkbox_value(w, WIDX_SIMPLEX_PLACE_TREES_CHECKBOX, _placeTrees != 0);
+
+    // Only allow floor and wall texture options if random terrain is disabled
+    if (!_randomTerrain) {
+        widget_set_enabled(w, WIDX_SIMPLEX_FLOOR_TEXTURE, true);
+        widget_set_enabled(w, WIDX_SIMPLEX_WALL_TEXTURE, true);
+    }
+    else {
+        widget_set_enabled(w, WIDX_SIMPLEX_FLOOR_TEXTURE, false);
+        widget_set_enabled(w, WIDX_SIMPLEX_WALL_TEXTURE, false);
+    }
 
     window_mapgen_set_pressed_tab(w);
 }
@@ -1062,6 +1090,8 @@ static void window_mapgen_simplex_paint(rct_window *w, rct_drawpixelinfo *dpi)
     gfx_draw_string_left(dpi, STR_COMMA16, &_simplex_high, textColour, w->x + w->widgets[WIDX_SIMPLEX_HIGH].left + 1, w->y + w->widgets[WIDX_SIMPLEX_HIGH].top + 1);
     gfx_draw_string_left(dpi, STR_WINDOW_OBJECTIVE_VALUE_RATING, &_simplex_base_freq, textColour, w->x + w->widgets[WIDX_SIMPLEX_BASE_FREQ].left + 1, w->y + w->widgets[WIDX_SIMPLEX_BASE_FREQ].top + 1);
     gfx_draw_string_left(dpi, STR_COMMA16, &_simplex_octaves, textColour, w->x + w->widgets[WIDX_SIMPLEX_OCTAVES].left + 1, w->y + w->widgets[WIDX_SIMPLEX_OCTAVES].top + 1);
+    gfx_draw_string_left(dpi, STR_TERRAIN_LABEL, NULL, textColour, w->x + 5, w->y + w->widgets[WIDX_SIMPLEX_RANDOM_TERRAIN_CHECKBOX].top + 1);
+    gfx_draw_string_left(dpi, STR_MAPGEN_OPTION_PLACE_TREES, NULL, textColour, w->x + 5, w->y + w->widgets[WIDX_SIMPLEX_PLACE_TREES_CHECKBOX].top + 1);
 
     // The practical map size is 2 lower than the technical map size
     rct_xy16 mapSizeArgs = MakeXY16(_mapSize - 2, _mapSize - 2);

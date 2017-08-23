@@ -117,6 +117,11 @@ void scenery_update_age(sint32 x, sint32 y, rct_map_element *mapElement)
     rct_scenery_entry *sceneryEntry;
 
     sceneryEntry = get_small_scenery_entry(mapElement->properties.scenery.type);
+    if (sceneryEntry == (rct_scenery_entry*)-1)
+    {
+        return;
+    }
+
     if (gCheatsDisablePlantAging &&
         (sceneryEntry->small_scenery.flags & SMALL_SCENERY_FLAG_CAN_BE_WATERED)) {
         return;

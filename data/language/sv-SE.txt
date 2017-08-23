@@ -4446,6 +4446,7 @@ STR_6137    :OpenRCT2, en gratis klon med öppen källkod av Roller Coaster Tyco
 STR_6138    :OpenRCT2 är ett samarbete med flera deltagare, en lista med alla deltagare kan hittas i {OPENQUOTES}contributors.md{ENDQUOTES}. För mer information, besök http://github.com/OpenRCT2/OpenRCT2
 STR_6139    :Alla produkter och företagsnamn tillhör deras respektive innehavare och ägare. Användningen av dem är ingen anknytning eller bekräftelse från respektive innehavare.
 STR_6140    :Ändringslogg...
+STR_6140    :RCT1-bottens Verktygsfält
 
 #############
 # Scenarion #

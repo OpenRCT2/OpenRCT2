@@ -96,7 +96,7 @@ namespace OpenRCT2
         virtual sint32 RunOpenRCT2(int argc, char * * argv) abstract;
 
         virtual bool Initialise() abstract;
-        virtual void Open(const std::string &path) abstract;
+        virtual bool LoadParkFromFile(const std::string &path, bool loadTitleScreenOnFail = false) abstract;
         virtual void Finish() abstract;
         virtual void Quit() abstract;
 
@@ -214,6 +214,7 @@ extern "C"
     bool context_read_bmp(void * * outPixels, uint32 * outWidth, uint32 * outHeight, const utf8 * path);
     void context_quit();
     const utf8 * context_get_path_legacy(sint32 pathId);
+    bool context_load_park_from_file(const utf8 * path);
 #ifdef __cplusplus
 }
 #endif
