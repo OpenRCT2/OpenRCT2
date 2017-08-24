@@ -17,6 +17,7 @@
 #ifndef _PLATFORM_H_
 #define _PLATFORM_H_
 
+#include <time.h>
 #include "../common.h"
 
 typedef struct TTFFontDescriptor TTFFontDescriptor;
