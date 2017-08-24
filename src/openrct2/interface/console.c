@@ -82,6 +82,8 @@ static sint32 cc_help(const utf8 **argv, sint32 argc);
 
 static bool invalidArguments(bool *invalid, bool arguments);
 
+static sint32 console_get_num_visible_lines();
+
 #define SET_FLAG(variable, flag, value) {if (value) variable |= flag; else variable &= ~flag;}
 
 void console_open()
@@ -160,7 +162,7 @@ void console_draw(rct_drawpixelinfo *dpi)
     sint32 lineHeight = font_get_line_height(gCurrentFontSpriteBase);
 
     sint32 lines = 0;
-    sint32 maxLines = ((_consoleBottom - 22 - _consoleTop) / lineHeight) - 1;
+    sint32 maxLines = console_get_num_visible_lines();
     utf8 *ch = strchr(_consoleBuffer, 0);
     while (ch > _consoleBuffer) {
         ch--;
@@ -287,13 +289,13 @@ void console_input(CONSOLE_INPUT input)
         break;
     case CONSOLE_INPUT_SCROLL_PREVIOUS:
     {
-        sint32 scrollAmt = ((_consoleBottom - 22 - _consoleTop) / 10) - 2;
+        sint32 scrollAmt = console_get_num_visible_lines() - 1;
         console_scroll(scrollAmt);
         break;
     }
     case CONSOLE_INPUT_SCROLL_NEXT:
     {
-        sint32 scrollAmt = ((_consoleBottom - 22 - _consoleTop) / 10) - 2;
+        sint32 scrollAmt = console_get_num_visible_lines() - 1;
         console_scroll(-scrollAmt);
         break;
     }
@@ -373,7 +375,7 @@ void console_scroll(sint32 linesToScroll)
 {
     sint32 speed = abs(linesToScroll);
     sint32 lines = 0;
-    sint32 maxLines = ((_consoleBottom - 22 - _consoleTop) / 10) - 1;
+    sint32 maxLines = console_get_num_visible_lines();
     utf8 *ch = strchr(_consoleBuffer, 0);
     while (ch > _consoleBuffer) {
         ch--;
@@ -386,6 +388,11 @@ void console_scroll(sint32 linesToScroll)
     else if (linesToScroll < 0 && _consoleScrollPos > 0) {
         _consoleScrollPos = max(_consoleScrollPos - speed, 0);
     }
+}
+
+static sint32 console_get_num_visible_lines()
+{
+    return ((_consoleBottom - 22 - _consoleTop) / 10) - 1;
 }
 
 void console_clear()
