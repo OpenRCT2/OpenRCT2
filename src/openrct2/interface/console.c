@@ -286,10 +286,10 @@ void console_input(CONSOLE_INPUT input)
         }
         break;
     case CONSOLE_INPUT_SCROLL_PREVIOUS:
-        console_scroll(9);
+        console_scroll(28);
         break;
     case CONSOLE_INPUT_SCROLL_NEXT:
-        console_scroll(-9);
+        console_scroll(-28);
         break;
     default:
         break;
@@ -363,9 +363,9 @@ double console_parse_double(const utf8 *src, bool *valid) {
     return value;
 }
 
-void console_scroll(sint32 delta)
+void console_scroll(sint32 linesToScroll)
 {
-    sint32 speed = 3 * abs(delta);
+    sint32 speed = abs(linesToScroll);
     sint32 lines = 0;
     sint32 maxLines = ((_consoleBottom - 22 - _consoleTop) / 10) - 1;
     utf8 *ch = strchr(_consoleBuffer, 0);
@@ -374,10 +374,10 @@ void console_scroll(sint32 delta)
         if (*ch == '\n')
             lines++;
     }
-    if (delta > 0 && _consoleScrollPos + 1 < (lines - maxLines + 4)) {
+    if (linesToScroll > 0 && _consoleScrollPos + 1 < (lines - maxLines + 4)) {
         _consoleScrollPos = min(_consoleScrollPos + speed, (lines - maxLines + 4));
     }
-    else if (delta < 0 && _consoleScrollPos > 0) {
+    else if (linesToScroll < 0 && _consoleScrollPos > 0) {
         _consoleScrollPos = max(_consoleScrollPos - speed, 0);
     }
 }
