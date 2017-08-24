@@ -29,7 +29,9 @@
 #include <ctype.h>
 #include <dlfcn.h>
 #include <errno.h>
+#ifndef NO_TTF
 #include <fontconfig/fontconfig.h>
+#endif // NO_TTF
 #include <fnmatch.h>
 #include <locale.h>
 
