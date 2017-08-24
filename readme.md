@@ -91,7 +91,7 @@ The program can also be built as a command line program using CMake. This type o
 
 ### Linux:
 - sdl2 (only for UI client)
-- sdl2-ttf (only for UI client, can be disabled)
+- freetype (can be disabled)
 - fontconfig (can be disabled)
 - libzip (>= 1.0)
 - libpng (>= 1.2)
@@ -129,7 +129,7 @@ The recommended way of building OpenRCT2 for macOS is with Xcode. The Xcode buil
 #### CMake:
 A command line version of OpenRCT2 can be built using CMake. This type of build requires you to provide the dependencies yourself. The supported method of doing this is with [Homebrew](http://brew.sh). Once you have Homebrew installed, you can download all the required libraries with this command:
 ```
-brew install cmake openssl jansson libpng sdl2 sdl2_ttf speexdsp libzip
+brew install cmake openssl jansson libpng sdl2 speexdsp libzip
 ```
 
 Once you have the dependencies installed, you can build the project using CMake using the following commands:
