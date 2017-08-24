@@ -286,11 +286,17 @@ void console_input(CONSOLE_INPUT input)
         }
         break;
     case CONSOLE_INPUT_SCROLL_PREVIOUS:
-        console_scroll(28);
+    {
+        sint32 scrollAmt = ((_consoleBottom - 22 - _consoleTop) / 10) - 2;
+        console_scroll(scrollAmt);
         break;
+    }
     case CONSOLE_INPUT_SCROLL_NEXT:
-        console_scroll(-28);
+    {
+        sint32 scrollAmt = ((_consoleBottom - 22 - _consoleTop) / 10) - 2;
+        console_scroll(-scrollAmt);
         break;
+    }
     default:
         break;
     }
