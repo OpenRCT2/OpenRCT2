@@ -21,14 +21,7 @@ fi
 
 pushd build
 	echo OPENRCT2_CMAKE_OPTS = "$OPENRCT2_CMAKE_OPTS"
-	if [[ $TARGET == "docker32" ]]
-	then
-		PARENT=$(readlink -f ../)
-		chmod a+rwx "$(pwd)"
-		chmod g+s "$(pwd)"
-		# CMAKE and MAKE opts from environment
-		docker run -u travis -v "$PARENT":"$PARENT" -w "$PARENT"/build -i -t openrct2/openrct2:32bit-only bash -c "cmake ../ -DFORCE32=on $OPENRCT2_CMAKE_OPTS && make $OPENRCT_MAKE_OPTS"
-	elif [[ $TARGET == "docker64" ]]
+	if [[ $TARGET == "docker64" ]]
 	then
 		PARENT=$(readlink -f ../)
 		chmod a+rwx "$(pwd)"
@@ -72,7 +65,7 @@ if [[ ! -h build/data ]]; then
 	ln -s ../data build/data
 fi
 
-if [[ $TARGET == "ubuntu_i686" ]] || [[ $TARGET == "docker32" ]]; then
+if [[ $TARGET == "ubuntu_i686" ]]; then
 	if [[ ! -h openrct2 ]]; then
 		ln -s build/openrct2 openrct2
 	fi
