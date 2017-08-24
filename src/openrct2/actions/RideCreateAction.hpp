@@ -62,6 +62,18 @@ public:
             return std::make_unique<RideCreateGameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_INVALID_RIDE_TYPE);
         }
 
+        sint32 rideIndex = ride_get_empty_slot();
+        if (rideIndex == -1)
+        {
+            return std::make_unique<RideCreateGameActionResult>(GA_ERROR::DISALLOWED, STR_TOO_MANY_RIDES);
+        }
+
+        sint32 subType = GetSubType();
+        if (subType >= 128)
+        {
+            return std::make_unique<RideCreateGameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_INVALID_RIDE_TYPE);
+        }
+
         return std::make_unique<RideCreateGameActionResult>();
     }
 
@@ -70,56 +82,11 @@ public:
         rct_ride_entry * rideEntry;
         auto res = std::make_unique<RideCreateGameActionResult>();
 
-        sint32 subType = rideSubType;
-        if (subType == RIDE_ENTRY_INDEX_NULL)
-        {
-            uint8 *availableRideEntries = get_ride_entry_indices_for_ride_type(rideType);
-            for (uint8 *rei = availableRideEntries; *rei != RIDE_ENTRY_INDEX_NULL; rei++)
-            {
-                rideEntry = get_ride_entry(*rei);
-
-                // Can happen in select-by-track-type mode
-                if (!ride_entry_is_invented(*rei) && !gCheatsIgnoreResearchStatus)
-                {
-                    continue;
-                }
-
-                if (!(rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE) || rideTypeShouldLoseSeparateFlag(rideEntry))
-                {
-                    subType = *rei;
-                    break;
-                }
-            }
-            if (subType == RIDE_ENTRY_INDEX_NULL)
-            {
-                subType = availableRideEntries[0];
-                if (subType == RIDE_ENTRY_INDEX_NULL)
-                {
-                    res->Error = GA_ERROR::INVALID_PARAMETERS;
-                    res->ErrorMessage = STR_INVALID_RIDE_TYPE;
-                    return std::move(res);
-                }
-            }
-        }
-
-        if (subType >= 128)
-        {
-            res->Error = GA_ERROR::INVALID_PARAMETERS;
-            res->ErrorMessage = STR_INVALID_RIDE_TYPE;
-            return std::move(res);
-        }
-
-        sint32 rideEntryIndex = subType;
+        sint32 rideEntryIndex = GetSubType();
         sint32 rideIndex = ride_get_empty_slot();
-        if (rideIndex == -1) 
-        {
-            res->Error = GA_ERROR::DISALLOWED;
-            res->ErrorMessage = STR_TOO_MANY_RIDES;
-            return std::move(res);
-        }
 
         res->rideIndex = rideIndex;
-        res->rideColor = ride_get_random_colour_preset_index(rideType) | (ride_get_unused_preset_vehicle_colour(rideType, subType) << 8);
+        res->rideColor = ride_get_random_colour_preset_index(rideType) | (ride_get_unused_preset_vehicle_colour(rideType, rideEntryIndex) << 8);
 
         auto ride = get_ride(rideIndex);
         rideEntry = get_ride_entry(rideEntryIndex);
@@ -310,5 +277,41 @@ public:
 
         return std::move(res);
     }
-};
 
+private:
+    sint32 GetSubType() const
+    {
+        sint32 subType = rideSubType;
+
+        if (subType == RIDE_ENTRY_INDEX_NULL)
+        {
+            uint8 *availableRideEntries = get_ride_entry_indices_for_ride_type(rideType);
+            for (uint8 *rei = availableRideEntries; *rei != RIDE_ENTRY_INDEX_NULL; rei++)
+            {
+                rct_ride_entry *rideEntry = get_ride_entry(*rei);
+                if (rideEntry == NULL)
+                {
+                    return RIDE_ENTRY_INDEX_NULL;
+                }
+
+                // Can happen in select-by-track-type mode
+                if (!ride_entry_is_invented(*rei) && !gCheatsIgnoreResearchStatus)
+                {
+                    continue;
+                }
+
+                if (!(rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE) || rideTypeShouldLoseSeparateFlag(rideEntry))
+                {
+                    subType = *rei;
+                    break;
+                }
+            }
+            if (subType == RIDE_ENTRY_INDEX_NULL)
+            {
+                subType = availableRideEntries[0];
+            }
+        }
+
+        return subType;
+    }
+};
