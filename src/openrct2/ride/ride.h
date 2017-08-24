@@ -1206,6 +1206,8 @@ sint32 get_booster_speed(uint8 rideType, sint32 rawSpeed);
 void fix_invalid_vehicle_sprite_sizes();
 bool ride_entry_has_category(const rct_ride_entry * rideEntry, uint8 category);
 
+sint32 ride_get_entry_index(sint32 rideType, sint32 rideSubType);
+
 #ifdef __cplusplus
 }
 #endif

@@ -8357,3 +8357,39 @@ bool ride_entry_has_category(const rct_ride_entry * rideEntry, uint8 category)
 
     return false;
 }
+
+sint32 ride_get_entry_index(sint32 rideType, sint32 rideSubType)
+{
+    sint32 subType = rideSubType;
+
+    if (subType == RIDE_ENTRY_INDEX_NULL)
+    {
+        uint8 *availableRideEntries = get_ride_entry_indices_for_ride_type(rideType);
+        for (uint8 *rideEntryIndex = availableRideEntries; *rideEntryIndex != RIDE_ENTRY_INDEX_NULL; rideEntryIndex++)
+        {
+            rct_ride_entry *rideEntry = get_ride_entry(*rideEntryIndex);
+            if (rideEntry == NULL)
+            {
+                return RIDE_ENTRY_INDEX_NULL;
+            }
+
+            // Can happen in select-by-track-type mode
+            if (!ride_entry_is_invented(*rideEntryIndex) && !gCheatsIgnoreResearchStatus)
+            {
+                continue;
+            }
+
+            if (!(rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME) || rideTypeShouldLoseSeparateFlag(rideEntry))
+            {
+                subType = *rideEntryIndex;
+                break;
+            }
+        }
+        if (subType == RIDE_ENTRY_INDEX_NULL)
+        {
+            subType = availableRideEntries[0];
+        }
+    }
+
+    return subType;
+}

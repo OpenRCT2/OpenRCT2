@@ -39,7 +39,6 @@ struct RideCreateGameActionResult : public GameActionResult
     RideCreateGameActionResult(GA_ERROR error, rct_string_id message) : GameActionResult(error, message) {}
 
     sint32 rideIndex;
-    uint32 rideColor;
 };
 
 struct RideCreateAction : public GameActionBase<GAME_COMMAND_CREATE_RIDE, GA_FLAGS::ALLOW_WHILE_PAUSED, RideCreateGameActionResult>
@@ -47,12 +46,14 @@ struct RideCreateAction : public GameActionBase<GAME_COMMAND_CREATE_RIDE, GA_FLA
 public:
     sint32 rideType;
     sint32 rideSubType;
+    uint8 colourPreset1;
+    uint8 colourPreset2;
 
     void Serialise(DataSerialiser& stream) override
     {
         GameAction::Serialise(stream);
 
-        stream << rideType << rideSubType;
+        stream << rideType << rideSubType << colourPreset1 << colourPreset2;
     }
 
     GameActionResult::Ptr Query() const override
@@ -62,15 +63,25 @@ public:
             return std::make_unique<RideCreateGameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_INVALID_RIDE_TYPE);
         }
 
-        sint32 rideIndex = ride_get_empty_slot();
-        if (rideIndex == -1)
+        sint32 rideEntryIndex = ride_get_entry_index(rideType, rideSubType);
+        if (rideEntryIndex >= 128)
         {
-            return std::make_unique<RideCreateGameActionResult>(GA_ERROR::DISALLOWED, STR_TOO_MANY_RIDES);
+            return std::make_unique<RideCreateGameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_INVALID_RIDE_TYPE);
         }
 
-        sint32 subType = GetSubType();
-        if (subType >= 128)
+
+        const track_colour_preset_list *colourPresets = &RideColourPresets[rideType];
+        if (colourPreset1 >= colourPresets->count)
         {
+            // FIXME: Add new error string.
+            return std::make_unique<RideCreateGameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_INVALID_RIDE_TYPE);
+        }
+
+        rct_ride_entry *rideEntry = get_ride_entry(rideEntryIndex);
+        vehicle_colour_preset_list *presetList = rideEntry->vehicle_preset_list;
+        if (colourPreset2 >= presetList->count)
+        {
+            // FIXME: Add new error string.
             return std::make_unique<RideCreateGameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_INVALID_RIDE_TYPE);
         }
 
@@ -82,11 +93,10 @@ public:
         rct_ride_entry * rideEntry;
         auto res = std::make_unique<RideCreateGameActionResult>();
 
-        sint32 rideEntryIndex = GetSubType();
+        sint32 rideEntryIndex = ride_get_entry_index(rideType, rideSubType);
         sint32 rideIndex = ride_get_empty_slot();
 
         res->rideIndex = rideIndex;
-        res->rideColor = ride_get_random_colour_preset_index(rideType) | (ride_get_unused_preset_vehicle_colour(rideType, rideEntryIndex) << 8);
 
         auto ride = get_ride(rideIndex);
         rideEntry = get_ride_entry(rideEntryIndex);
@@ -100,7 +110,7 @@ public:
 
         ride->type = rideType;
         ride->subtype = rideEntryIndex;
-        ride_set_colour_preset(ride, res->rideColor & 0xFF);
+        ride_set_colour_preset(ride, colourPreset1);
         ride->overall_view.xy = RCT_XY8_UNDEFINED;
 
         // Ride name
@@ -269,49 +279,12 @@ public:
         ride->num_circuits = 1;
         ride->mode = ride_get_default_mode(ride);
         ride->min_max_cars_per_train = (rideEntry->min_cars_in_train << 4) | rideEntry->max_cars_in_train;
-        ride_set_vehicle_colours_to_random_preset(ride, 0xFF & (res->rideColor >> 8));
+        ride_set_vehicle_colours_to_random_preset(ride, colourPreset2);
         window_invalidate_by_class(WC_RIDE_LIST);
 
         res->ExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
         res->Position.x = (uint16)0x8000;
 
         return std::move(res);
-    }
-
-private:
-    sint32 GetSubType() const
-    {
-        sint32 subType = rideSubType;
-
-        if (subType == RIDE_ENTRY_INDEX_NULL)
-        {
-            uint8 *availableRideEntries = get_ride_entry_indices_for_ride_type(rideType);
-            for (uint8 *rei = availableRideEntries; *rei != RIDE_ENTRY_INDEX_NULL; rei++)
-            {
-                rct_ride_entry *rideEntry = get_ride_entry(*rei);
-                if (rideEntry == NULL)
-                {
-                    return RIDE_ENTRY_INDEX_NULL;
-                }
-
-                // Can happen in select-by-track-type mode
-                if (!ride_entry_is_invented(*rei) && !gCheatsIgnoreResearchStatus)
-                {
-                    continue;
-                }
-
-                if (!(rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE) || rideTypeShouldLoseSeparateFlag(rideEntry))
-                {
-                    subType = *rei;
-                    break;
-                }
-            }
-            if (subType == RIDE_ENTRY_INDEX_NULL)
-            {
-                subType = availableRideEntries[0];
-            }
-        }
-
-        return subType;
-    }
+    }  
 };
