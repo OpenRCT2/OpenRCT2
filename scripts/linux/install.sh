@@ -108,9 +108,6 @@ elif [[ $(uname) == "Linux" ]]; then
 		"windows")
 			docker pull openrct2/openrct2:mingw-arch
 			;;
-		"docker32")
-			docker pull openrct2/openrct2:32bit-only
-			;;
 		"docker64")
 			docker pull openrct2/openrct2:64bit-only
 			;;
