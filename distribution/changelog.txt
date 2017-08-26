@@ -15,6 +15,7 @@
 - Fix: [#6198] You cannot cancel RCT1 directory selection
 - Fix: Infinite loop when removing scenery elements with >127 base height.
 - Improved: [#6186] Transparent menu items now draw properly in OpenGL mode.
+- Improved: [#6218] Speed up game start up time by saving scenario index to file.
 - Improved: Load/save window now refreshes list if native file dialog is closed/cancelled
 
 0.1.1 (2017-08-09)
