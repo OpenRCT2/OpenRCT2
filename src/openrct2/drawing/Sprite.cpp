@@ -52,18 +52,6 @@ extern "C"
         rct_g1_element * g1Elements = RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element);
     #endif
 
-    static const uint32 FadeSprites[] =
-    {
-        (uint32)SPR_NONE,
-        SPR_FADE_1,
-        SPR_FADE_2,
-        SPR_FADE_3,
-        SPR_FADE_4,
-        SPR_FADE_5,
-        SPR_FADE_6,
-        SPR_FADE_7,
-    };
-
     static void read_and_convert_gxdat(IStream * stream, size_t count, rct_g1_element *elements)
     {
         auto g1Elements32 = stream->ReadArray<rct_g1_element_32bit>(count);
@@ -274,26 +262,6 @@ extern "C"
         {
             log_error("Unable to load csg graphics");
             return false;
-        }
-    }
-
-    /**
-     * This function looks like it initialises the 0x009E3CE4 array which references sprites used for background / palette mixing or
-     * something. Further investigation is needed.
-     */
-    void sub_68371D()
-    {
-        for (size_t i = 0; i < Util::CountOf(FadeSprites); i++)
-        {
-            const uint32 spriteId = FadeSprites[i];
-            if (spriteId == (uint32)SPR_NONE)
-            {
-                unk_9E3CE4[i] = nullptr;
-            }
-            else
-            {
-                unk_9E3CE4[i] = g1Elements[FadeSprites[i]].offset;
-            }
         }
     }
 

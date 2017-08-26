@@ -136,15 +136,13 @@ typedef struct support_height {
 #ifdef NO_RCT2
 extern void *g_currently_drawn_item;
 extern paint_entry * gEndOfPaintStructArray;
-extern sint16 gUnk9DE568;
-extern sint16 gUnk9DE56C;
+extern rct_xy16 gPaintSpritePosition;
 extern paint_entry gPaintStructs[4000];
 #else
 #define gPaintStructs RCT2_ADDRESS(0x00EE788C, paint_entry)
 #define g_currently_drawn_item  RCT2_GLOBAL(0x009DE578, void*)
 #define gEndOfPaintStructArray  RCT2_GLOBAL(0x00EE7880, paint_entry *)
-#define gUnk9DE568              RCT2_GLOBAL(0x009DE568, sint16)
-#define gUnk9DE56C              RCT2_GLOBAL(0x009DE56C, sint16)
+#define gPaintSpritePosition    RCT2_GLOBAL(0x009DE568, rct_xy16)
 #endif
 
 #ifndef NO_RCT2

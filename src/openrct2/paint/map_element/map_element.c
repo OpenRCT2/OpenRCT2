@@ -134,8 +134,8 @@ static void blank_tiles_paint(sint32 x, sint32 y)
     dx -= 20;
     dx -= dpi->height;
     if (dx >= dpi->y) return;
-    gUnk9DE568 = x;
-    gUnk9DE56C = y;
+    gPaintSpritePosition.x = x;
+    gPaintSpritePosition.y = y;
     gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
     sub_98196C(3123, 0, 0, 32, 32, -1, 16, get_current_rotation());
 }
@@ -209,8 +209,8 @@ static void sub_68B3FB(sint32 x, sint32 y)
             0x20900C27;
         sint32 arrowZ = gMapSelectArrowPosition.z;
 
-        gUnk9DE568 = x;
-        gUnk9DE56C = y;
+        gPaintSpritePosition.x = x;
+        gPaintSpritePosition.y = y;
         gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
 
         sub_98197C(imageId, 0, 0, 32, 32, 0xFF, arrowZ, 0, 0, arrowZ + 18, rotation);
@@ -244,8 +244,8 @@ static void sub_68B3FB(sint32 x, sint32 y)
     if (dx >= dpi->y)
         return;
 
-    gUnk9DE568 = x;
-    gUnk9DE56C = y;
+    gPaintSpritePosition.x = x;
+    gPaintSpritePosition.y = y;
     gDidPassSurface = false;
     do {
         // Only paint map_elements below the clip height.

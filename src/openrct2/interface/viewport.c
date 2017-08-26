@@ -57,16 +57,14 @@ uint8 gCurrentRotation;
 uint32 gCurrentViewportFlags = 0;
 #endif
 
-uint32 gUnkEDF81C;
+uint32 gCurrentImageType;
 
 static rct_drawpixelinfo _viewportDpi1;
 static rct_drawpixelinfo _viewportDpi2;
 static uint8 _interactionSpriteType;
-static uint8 _unk9AC149;
 static sint16 _interactionMapX;
 static sint16 _interactionMapY;
 static uint16 _unk9AC154;
-static sint16 _unk9ABDAE;
 
 static void viewport_paint_column(rct_drawpixelinfo * dpi, uint32 viewFlags);
 static void viewport_paint_weather_gloom(rct_drawpixelinfo * dpi);
@@ -1022,7 +1020,6 @@ static void store_interaction_info(paint_struct *ps)
 
     if (!(_unk9AC154 & mask)) {
         _interactionSpriteType = ps->sprite_type;
-        _unk9AC149 = ps->var_29;
         _interactionMapX = ps->map_x;
         _interactionMapY = ps->map_y;
         _interaction_element = ps->mapElement;
@@ -1032,32 +1029,27 @@ static void store_interaction_info(paint_struct *ps)
 /**
  * rct2: 0x00679236, 0x00679662, 0x00679B0D, 0x00679FF1
  */
-static bool sub_679236_679662_679B0D_679FF1(uint32 ebx, rct_g1_element *image, uint8 *esi) {
+static bool pixel_is_present_bmp(uint32 imageType, rct_g1_element *image, uint8 *index) {
     // Probably used to check for corruption
     if (!(image->flags & G1_FLAG_BMP)) {
         return false;
     }
 
-    if (ebx & IMAGE_TYPE_REMAP) {
-        uint8 *ebx_palette = unk_9ABDA4;
-
-        uint8 al = *esi;
-        uint8 al2 = *(al + ebx_palette);
-
-        return (al2 != 0);
+    if (imageType & IMAGE_TYPE_REMAP) {
+        return gCurrentColourPalette[*index] != 0;
     }
 
-    if (ebx & IMAGE_TYPE_TRANSPARENT) {
+    if (imageType & IMAGE_TYPE_TRANSPARENT) {
         return false;
     }
 
-    return (*esi != 0);
+    return (*index != 0);
 }
 
 /**
  * rct2: 0x0067933B, 0x00679788, 0x00679C4A, 0x0067A117
  */
-static bool sub_67933B_679788_679C4A_67A117(uint8 *esi, sint16 x_start_point, sint16 y_start_point, sint32 round) {
+static bool is_pixel_present_rle(uint8 *esi, sint16 x_start_point, sint16 y_start_point, sint32 round) {
     const uint8 *ebx = esi + ((uint16 *) esi)[y_start_point];
 
     uint8 last_data_line = 0;
@@ -1137,11 +1129,11 @@ static bool sub_679074(rct_drawpixelinfo *dpi, sint32 imageId, sint16 x, sint16 
     rct_g1_element *image = gfx_get_g1_element(imageId & 0x7FFFF);
 
     if (dpi->zoom_level != 0) {
-        if (image->flags & 0x20) {
+        if (image->flags & G1_FLAG_NO_ZOOM_DRAW) {
             return false;
         }
 
-        if (image->flags & 0x10) {
+        if (image->flags & G1_FLAG_HAS_ZOOM_SPRITE) {
             // TODO: SAR in dpi done with `>> 1`, in coordinates with `/ 2`
             rct_drawpixelinfo zoomed_dpi = {
                     .bits = dpi->bits,
@@ -1208,9 +1200,6 @@ static bool sub_679074(rct_drawpixelinfo *dpi, sint32 imageId, sint16 x, sint16 
 
     sint16 xStartPoint = 0;
     sint16 xEndPoint = image->width;
-    if (!(image->flags & G1_FLAG_RLE_COMPRESSION)) {
-        _unk9ABDAE = 0;
-    }
 
     x += image->x_offset;
     x = floor2(x, round);
@@ -1219,10 +1208,6 @@ static bool sub_679074(rct_drawpixelinfo *dpi, sint32 imageId, sint16 x, sint16 
         xEndPoint += x;
         if (xEndPoint <= 0) {
             return false;
-        }
-
-        if (!(image->flags & G1_FLAG_RLE_COMPRESSION)) {
-            _unk9ABDAE -= x;
         }
 
         xStartPoint -= x;
@@ -1236,22 +1221,21 @@ static bool sub_679074(rct_drawpixelinfo *dpi, sint32 imageId, sint16 x, sint16 
         if (xEndPoint <= 0) {
             return false;
         }
-
-        if (!(image->flags & G1_FLAG_RLE_COMPRESSION)) {
-            _unk9ABDAE += x;
-        }
     }
 
     if (image->flags & G1_FLAG_RLE_COMPRESSION) {
-        return sub_67933B_679788_679C4A_67A117(image->offset, xStartPoint, yStartPoint, round);
+        return is_pixel_present_rle(image->offset, xStartPoint, yStartPoint, round);
     }
 
     uint8 *offset = image->offset + (yStartPoint * image->width) + xStartPoint;
-    uint32 ebx = gUnkEDF81C;
+    uint32 imageType = gCurrentImageType;
 
-    if (!(image->flags & 2)) {
-        return sub_679236_679662_679B0D_679FF1(ebx, image, offset);
+    if (!(image->flags & G1_FLAG_1)) {
+        return pixel_is_present_bmp(imageType, image, offset);
     }
+
+    // Adding assert here, possibly dead code below. Remove after some time.
+    assert(false);
 
     // The code below is untested.
     sint32 total_no_pixels = image->width * image->height;
@@ -1288,7 +1272,7 @@ static bool sub_679074(rct_drawpixelinfo *dpi, sint32 imageId, sint16 x, sint16 
         source_pointer = (uint8 *) ebx1;
     }
 
-    bool output = sub_679236_679662_679B0D_679FF1(ebx, image, new_source_pointer_start + (uintptr_t) offset);
+    bool output = pixel_is_present_bmp(imageType, image, new_source_pointer_start + (uintptr_t) offset);
     free(new_source_pointer_start);
 
     return output;
@@ -1302,15 +1286,15 @@ static bool sub_679023(rct_drawpixelinfo *dpi, sint32 imageId, sint32 x, sint32 
 {
     imageId &= 0xBFFFFFFF;
     if (imageId & IMAGE_TYPE_REMAP) {
-        gUnkEDF81C = IMAGE_TYPE_REMAP;
+        gCurrentImageType = IMAGE_TYPE_REMAP;
         sint32 index = (imageId >> 19) & 0x7F;
         if (imageId & IMAGE_TYPE_REMAP_2_PLUS) {
             index &= 0x1F;
         }
         sint32 g1Index = palette_to_g1_offset[index];
-        unk_9ABDA4 = g1Elements[g1Index].offset;
+        gCurrentColourPalette = g1Elements[g1Index].offset;
     } else {
-        gUnkEDF81C = 0;
+        gCurrentImageType = 0;
     }
     return sub_679074(dpi, imageId, x, y);
 }
