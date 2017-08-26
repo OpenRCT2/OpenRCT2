@@ -186,6 +186,7 @@ const char * PlatformEnvironment::FileNames[] =
     "hotkeys.dat",          // CONFIG_KEYBOARD
     "objects.idx",          // CACHE_OBJECTS
     "tracks.idx",           // CACHE_TRACKS
+    "scenarios.idx",        // CACHE_SCENARIOS
     "RCTdeluxe_install" PATH_SEPARATOR "Data" PATH_SEPARATOR "mp.dat", // MP_DAT
     "groups.json",          // NETWORK_GROUPS
     "servers.cfg",          // NETWORK_SERVERS

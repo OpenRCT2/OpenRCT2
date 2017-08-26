@@ -41,6 +41,20 @@ extern "C"
 
 using namespace OpenRCT2;
 
+constexpr uint32 SCENARIO_REPOSITORY_MAGIC_NUMBER = 0x58444953;
+constexpr uint16 SCENARIO_REPOSITORY_VERSION = 1;
+
+struct ScenarioRepositoryHeader
+{
+    uint32  MagicNumber;
+    uint16  Version;
+    uint32  TotalFiles;
+    uint64  TotalFileSize;
+    uint32  FileDateModifiedChecksum;
+    uint32  PathChecksum;
+    uint32  NumItems;
+};
+
 static sint32 ScenarioCategoryCompare(sint32 categoryA, sint32 categoryB)
 {
     if (categoryA == categoryB) return 0;
@@ -125,11 +139,13 @@ static void scenario_highscore_free(scenario_highscore_entry * highscore)
 class ScenarioRepository final : public IScenarioRepository
 {
 private:
+    static constexpr const utf8 * SC_FILE_PATTERN = "*.sc4;*.sc6";
     static constexpr uint32 HighscoreFileVersion = 1;
 
     IPlatformEnvironment * _env;
     std::vector<scenario_index_entry> _scenarios;
     std::vector<scenario_highscore_entry*> _highscores;
+    QueryDirectoryResult _directoryQueryResult = { 0 };
 
 public:
     ScenarioRepository(IPlatformEnvironment * env)
@@ -152,13 +168,23 @@ public:
         std::string openrct2dir = _env->GetDirectoryPath(DIRBASE::USER, DIRID::SCENARIO);
         std::string mpdatdir = _env->GetFilePath(PATHID::MP_DAT);
 
-        Scan(rct1dir);
-        Scan(rct2dir);
-        Scan(openrct2dir);
+        _directoryQueryResult = { 0 };
+        Query(rct1dir);
+        Query(rct2dir);
+        Query(openrct2dir);
+
+        if (!Load())
+        {
+            Scan(rct1dir);
+            Scan(rct2dir);
+            Scan(openrct2dir);
+            Save();
+        }
 
         ConvertMegaPark(mpdatdir, openrct2dir);
 
         Sort();
+
         LoadScores();
         LoadLegacyScores();
         AttachHighscores();
@@ -260,11 +286,17 @@ private:
         return (scenario_index_entry *)repo->GetByPath(path);
     }
 
+    void Query(const std::string &directory)
+    {
+        std::string pattern = Path::Combine(directory, SC_FILE_PATTERN);
+        Path::QueryDirectory(&_directoryQueryResult, pattern);
+    }
+
     void Scan(const std::string &directory)
     {
         utf8 pattern[MAX_PATH];
         String::Set(pattern, sizeof(pattern), directory.c_str());
-        Path::Append(pattern, sizeof(pattern), "*.sc4;*.sc6");
+        Path::Append(pattern, sizeof(pattern), SC_FILE_PATTERN);
 
         IFileScanner * scanner = Path::ScanDirectory(pattern, true);
         while (scanner->Next())
@@ -468,6 +500,69 @@ private:
             {
                 return scenario_index_entry_CompareByCategory(a, b) < 0;
             });
+        }
+    }
+
+    bool Load()
+    {
+        std::string path = _env->GetFilePath(PATHID::CACHE_SCENARIOS);
+        bool result = false;
+        try
+        {
+            auto fs = FileStream(path, FILE_MODE_OPEN);
+
+            // Read header, check if we need to re-scan
+            auto header = fs.ReadValue<ScenarioRepositoryHeader>();
+            if (header.MagicNumber == SCENARIO_REPOSITORY_MAGIC_NUMBER &&
+                header.Version == SCENARIO_REPOSITORY_VERSION &&
+                header.TotalFiles == _directoryQueryResult.TotalFiles &&
+                header.TotalFileSize == _directoryQueryResult.TotalFileSize &&
+                header.FileDateModifiedChecksum == _directoryQueryResult.FileDateModifiedChecksum &&
+                header.PathChecksum == _directoryQueryResult.PathChecksum)
+            {
+                // Directory is the same, just read the saved items
+                for (uint32 i = 0; i < header.NumItems; i++)
+                {
+                    auto scenario = fs.ReadValue<scenario_index_entry>();
+                    _scenarios.push_back(scenario);
+                }
+                result = true;
+            }
+        }
+        catch (const Exception &)
+        {
+            Console::Error::WriteLine("Unable to load scenario repository index.");
+        }
+        return result;
+    }
+
+    void Save() const
+    {
+        std::string path = _env->GetFilePath(PATHID::CACHE_SCENARIOS);
+        try
+        {
+            auto fs = FileStream(path, FILE_MODE_WRITE);
+
+            // Write header
+            ScenarioRepositoryHeader header = { 0 };
+            header.MagicNumber = SCENARIO_REPOSITORY_MAGIC_NUMBER;
+            header.Version = SCENARIO_REPOSITORY_VERSION;
+            header.TotalFiles = _directoryQueryResult.TotalFiles;
+            header.TotalFileSize = _directoryQueryResult.TotalFileSize;
+            header.FileDateModifiedChecksum = _directoryQueryResult.FileDateModifiedChecksum;
+            header.PathChecksum = _directoryQueryResult.PathChecksum;
+            header.NumItems = (uint32)_scenarios.size();
+            fs.WriteValue(header);
+
+            // Write items
+            for (const auto scenario : _scenarios)
+            {
+                fs.WriteValue(scenario);
+            }
+        }
+        catch (const Exception &)
+        {
+            Console::Error::WriteLine("Unable to write scenario repository index.");
         }
     }
 
