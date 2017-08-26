@@ -344,7 +344,7 @@ public:
             case SDL_MOUSEWHEEL:
                 if (gConsoleOpen)
                 {
-                    console_scroll(e.wheel.y);
+                    console_scroll(e.wheel.y * 3); // Scroll 3 lines at a time
                     break;
                 }
                 _cursorState.wheel += e.wheel.y * 128;
