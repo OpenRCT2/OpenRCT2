@@ -390,9 +390,11 @@ void console_scroll(sint32 linesToScroll)
     }
 }
 
+// Calculates the amount of visible lines, based on the console size, excluding the input line.
 static sint32 console_get_num_visible_lines()
 {
-    return ((_consoleBottom - 22 - _consoleTop) / 10) - 1;
+    sint32 lineHeight = 10;
+    return ((_consoleBottom - 22 - _consoleTop) / lineHeight) - 1;
 }
 
 void console_clear()
