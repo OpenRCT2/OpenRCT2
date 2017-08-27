@@ -1142,25 +1142,28 @@ void game_load_init()
     game_create_windows();
     mainWindow = window_get_main();
 
-    mainWindow->viewport_target_sprite = SPRITE_INDEX_NULL;
-    mainWindow->saved_view_x = gSavedViewX;
-    mainWindow->saved_view_y = gSavedViewY;
-    uint8 zoomDifference = gSavedViewZoom - mainWindow->viewport->zoom;
-    mainWindow->viewport->zoom = gSavedViewZoom;
-    gCurrentRotation = gSavedViewRotation;
-    if (zoomDifference != 0) {
-        if (zoomDifference < 0) {
-            zoomDifference = -zoomDifference;
-            mainWindow->viewport->view_width >>= zoomDifference;
-            mainWindow->viewport->view_height >>= zoomDifference;
-        } else {
-            mainWindow->viewport->view_width <<= zoomDifference;
-            mainWindow->viewport->view_height <<= zoomDifference;
+    if (mainWindow != NULL)
+    {
+        mainWindow->viewport_target_sprite = SPRITE_INDEX_NULL;
+        mainWindow->saved_view_x = gSavedViewX;
+        mainWindow->saved_view_y = gSavedViewY;
+        uint8 zoomDifference = gSavedViewZoom - mainWindow->viewport->zoom;
+        mainWindow->viewport->zoom = gSavedViewZoom;
+        gCurrentRotation = gSavedViewRotation;
+        if (zoomDifference != 0) {
+            if (zoomDifference < 0) {
+                zoomDifference = -zoomDifference;
+                mainWindow->viewport->view_width >>= zoomDifference;
+                mainWindow->viewport->view_height >>= zoomDifference;
+            } else {
+                mainWindow->viewport->view_width <<= zoomDifference;
+                mainWindow->viewport->view_height <<= zoomDifference;
+            }
         }
+        mainWindow->saved_view_x -= mainWindow->viewport->view_width >> 1;
+        mainWindow->saved_view_y -= mainWindow->viewport->view_height >> 1;
+        window_invalidate(mainWindow);
     }
-    mainWindow->saved_view_x -= mainWindow->viewport->view_width >> 1;
-    mainWindow->saved_view_y -= mainWindow->viewport->view_height >> 1;
-    window_invalidate(mainWindow);
 
     if (network_get_mode() != NETWORK_MODE_CLIENT)
     {
