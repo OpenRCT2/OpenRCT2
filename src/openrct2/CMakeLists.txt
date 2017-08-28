@@ -200,8 +200,8 @@ endif()
 
 # Includes
 target_include_directories(${PROJECT} SYSTEM PRIVATE ${LIBZIP_INCLUDE_DIRS})
-target_include_directories(${PROJECT} PRIVATE ${JANSSON_INCLUDE_DIRS}
-                                              ${PNG_INCLUDE_DIRS}
+target_include_directories(${PROJECT} PUBLIC ${JANSSON_INCLUDE_DIRS})
+target_include_directories(${PROJECT} PRIVATE ${PNG_INCLUDE_DIRS}
                                               ${ZLIB_INCLUDE_DIRS})
 if (NOT DISABLE_HTTP_TWITCH OR NOT DISABLE_NETWORK)
     target_include_directories(${PROJECT} PRIVATE ${LIBCURL_INCLUDE_DIRS})

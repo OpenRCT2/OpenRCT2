@@ -44,8 +44,8 @@ project(${PROJECT})
 add_executable(${PROJECT} ${OPENRCT2_UI_SOURCES} ${OPENRCT2_UI_M_SOURCES} ${OPENRCT2_UI_MM_SOURCES})
 
 target_link_libraries(${PROJECT} "libopenrct2"
-                                 ${SDL2_LIBRARIES}
-                                 ${SPEEX_LIBRARIES})
+                                 ${SDL2_LDFLAGS}
+                                 ${SPEEX_LDFLAGS})
 
 if (APPLE)
     target_link_libraries(${PROJECT} "-framework Cocoa")
