@@ -17,7 +17,13 @@
 #pragma once
 
 #include <string>
+#include <tuple>
+#include <vector>
 #include "../common.h"
+#include "File.h"
+#include "FileScanner.h"
+#include "FileStream.hpp"
+#include "Path.hpp"
 
 template<typename TItem>
 class FileIndex
@@ -29,7 +35,7 @@ private:
         uint64 TotalFileSize = 0;
         uint32 FileDateModifiedChecksum = 0;
         uint32 PathChecksum = 0;
-    }
+    };
 
     struct ScanResult
     {
@@ -49,17 +55,17 @@ private:
         uint8           VersionA = 0;
         uint8           VersionB = 0;
         uint16          LanguageId = 0;
-        DirectoryStats  DirectoryStats;
+        DirectoryStats  Stats;
         uint32          NumItems = 0;
     };
 
-    constexpr uint8 FILE_INDEX_VERSION = 4;
+    static constexpr uint8 FILE_INDEX_VERSION = 4;
 
-    uint32 _magicNumber;
-    uint8 _version;
-    std::string _indexPath;
-    std::string _pattern;
-    std::vector<std::string> _paths;
+    uint32 const _magicNumber;
+    uint8 const _version;
+    std::string const _indexPath;
+    std::string const _pattern;
+    std::vector<std::string> const _paths;
 
 public:
     FileIndex(uint32 magicNumber,
@@ -75,11 +81,13 @@ public:
     {
     }
 
+    virtual ~FileIndex() = default;
+
     /**
      * Queries and directories and loads the index header. If the index is up to date,
      * the items are loaded from the index and returned, otherwise the index is rebuilt.
      */
-    std::vector<TItem> LoadOrBuild()
+    std::vector<TItem> LoadOrBuild() const
     {
         std::vector<TItem> items;
         auto scanResult = Scan();
@@ -97,30 +105,32 @@ public:
                 auto item = Create(filePath);
                 items.push_back(item);
             }
-            WriteIndexFile(items);
+            WriteIndexFile(scanResult.Stats, items);
         }
         return items;
     }
 
+protected:
     /**
      * Loads the given file and creates the item representing the data to store in the index.
      */
-    virtual TItem Create(const std::string &path) abstract;
+    virtual TItem Create(const std::string &path) const abstract;
 
     /**
      * Serialises an index item to the given stream.
      */
-    virtual void Serialise(IStream * stream, const TItem item);
+    virtual void Serialise(IStream * stream, const TItem &item) const abstract;
 
     /**
      * Deserialises an index item from the given stream.
      */
-    virtual TItem Deserialise(IStream * stream) abstract;
+    virtual TItem Deserialise(IStream * stream) const abstract;
 
 private:
-    ScanResult Scan()
+    ScanResult Scan() const
     {
-        ScanResult scanResult;
+        DirectoryStats stats;
+        std::vector<std::string> files;
         for (const auto directory : _paths)
         {
             auto pattern = Path::Combine(directory, _pattern);
@@ -130,42 +140,43 @@ private:
                 auto fileInfo = scanner->GetFileInfo();
                 auto path = std::string(scanner->GetPath());
 
-                scanResult.Files.push(path);
+                files.push_back(path);
 
-                scanResult.TotalFiles++;
-                scanResult.TotalFileSize += fileInfo->Size;
-                scanResult.FileDateModifiedChecksum ^=
+                stats.TotalFiles++;
+                stats.TotalFileSize += fileInfo->Size;
+                stats.FileDateModifiedChecksum ^=
                     (uint32)(fileInfo->LastModified >> 32) ^
                     (uint32)(fileInfo->LastModified & 0xFFFFFFFF);
-                scanResult.FileDateModifiedChecksum = ror32(result->FileDateModifiedChecksum, 5);
-                scanResult.PathChecksum += GetPathChecksum(path);
+                stats.FileDateModifiedChecksum = ror32(stats.FileDateModifiedChecksum, 5);
+                stats.PathChecksum += GetPathChecksum(path);
             }
             delete scanner;
         }
+        return ScanResult(stats, files);
     }
 
-    std::tuple<bool, std::vector<TItem>> ReadIndexFile(const DirectoryStats &stats)
+    std::tuple<bool, std::vector<TItem>> ReadIndexFile(const DirectoryStats &stats) const
     {
         bool loadedItems = false;
         std::vector<TItem> items;
         try
         {
-            auto fs = FileStream(path, FILE_MODE_OPEN);
+            auto fs = FileStream(_indexPath, FILE_MODE_OPEN);
 
             // Read header, check if we need to re-scan
             auto header = fs.ReadValue<FileIndexHeader>();
             if (header.MagicNumber == _magicNumber &&
                 header.VersionA == FILE_INDEX_VERSION &&
                 header.VersionB == _version &&
-                header.TotalFiles == scanResult.TotalFiles &&
-                header.TotalFileSize == scanResult.TotalFileSize &&
-                header.FileDateModifiedChecksum == scanResult.FileDateModifiedChecksum &&
-                header.PathChecksum == scanResult.PathChecksum)
+                header.Stats.TotalFiles == stats.TotalFiles &&
+                header.Stats.TotalFileSize == stats.TotalFileSize &&
+                header.Stats.FileDateModifiedChecksum == stats.FileDateModifiedChecksum &&
+                header.Stats.PathChecksum == stats.PathChecksum)
             {
                 // Directory is the same, just read the saved items
                 for (uint32 i = 0; i < header.NumItems; i++)
                 {
-                    auto item = Deserialise(fs);
+                    auto item = Deserialise(&fs);
                     items.push_back(item);
                 }
                 loadedItems = true;
@@ -178,7 +189,7 @@ private:
         return std::make_tuple(loadedItems, items);
     }
 
-    void WriteIndexFile(const DirectoryStats &stats, const std::vector<TItem> &items)
+    void WriteIndexFile(const DirectoryStats &stats, const std::vector<TItem> &items) const
     {
         try
         {
@@ -187,23 +198,37 @@ private:
             // Write header
             FileIndexHeader header = { 0 };
             header.MagicNumber = _magicNumber;
-            header.Version = SCENARIO_REPOSITORY_VERSION;
+            header.VersionA = FILE_INDEX_VERSION;
+            header.VersionB = _version;
             header.LanguageId = gCurrentLanguage;
-            header.DirectoryStats = stats;
-            header.NumItems = items.size();
+            header.Stats = stats;
+            header.NumItems = (uint32)items.size();
             fs.WriteValue(header);
     
             // Write items
             for (const auto item : items)
             {
-                Serialise(fs, item);
+                Serialise(&fs, item);
             }
-            return true;
         }
         catch (const Exception &)
         {
             Console::Error::WriteLine("Unable to save index.");
-            return false;
         }
+    }
+
+    static uint32 GetPathChecksum(const std::string &path)
+    {
+        uint32 hash = 0xD8430DED;
+        for (const utf8 * ch = path.c_str(); *ch != '\0'; ch++)
+        {
+            hash += (*ch);
+            hash += (hash << 10);
+            hash ^= (hash >> 6);
+        }
+        hash += (hash << 3);
+        hash ^= (hash >> 11);
+        hash += (hash << 15);
+        return hash;
     }
 };
