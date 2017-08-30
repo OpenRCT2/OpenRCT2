@@ -15,14 +15,13 @@
 #pragma endregion
 
 #include <algorithm>
-#include <chrono>
 #include <memory>
 #include <unordered_map>
 #include <vector>
 
 #include "../common.h"
 #include "../core/Console.hpp"
-#include "../core/FileScanner.h"
+#include "../core/FileIndex.hpp"
 #include "../core/FileStream.hpp"
 #include "../core/Guard.hpp"
 #include "../core/IStream.hpp"
@@ -54,22 +53,6 @@ extern "C"
 
 using namespace OpenRCT2;
 
-constexpr uint16 OBJECT_REPOSITORY_VERSION = 11;
-
-#pragma pack(push, 1)
-struct ObjectRepositoryHeader
-{
-    uint16  Version;
-    uint16  LanguageId;
-    uint32  TotalFiles;
-    uint64  TotalFileSize;
-    uint32  FileDateModifiedChecksum;
-    uint32  PathChecksum;
-    uint32  NumItems;
-};
-assert_struct_size(ObjectRepositoryHeader, 28);
-#pragma pack(pop)
-
 struct ObjectEntryHash
 {
     size_t operator()(const rct_object_entry &entry) const
@@ -95,17 +78,131 @@ using ObjectEntryMap = std::unordered_map<rct_object_entry, size_t, ObjectEntryH
 
 static void ReportMissingObject(const rct_object_entry * entry);
 
+class ObjectFileIndex final : public FileIndex<ObjectRepositoryItem>
+{
+private:
+    static constexpr uint32 MAGIC_NUMBER = 0x5844494F; // OIDX
+    static constexpr uint16 VERSION = 15;
+    static constexpr auto PATTERN = "*.dat";
+
+public:
+    ObjectFileIndex(IPlatformEnvironment * env) :
+        FileIndex("object index",
+            MAGIC_NUMBER,
+            VERSION,
+            env->GetFilePath(PATHID::CACHE_OBJECTS),
+            std::string(PATTERN),
+            std::vector<std::string>({
+                env->GetDirectoryPath(DIRBASE::RCT2, DIRID::OBJECT),
+                env->GetDirectoryPath(DIRBASE::USER, DIRID::OBJECT) }))
+    {
+    }
+
+public:
+    std::tuple<bool, ObjectRepositoryItem> Create(const std::string &path) const override
+    {
+        auto object = ObjectFactory::CreateObjectFromLegacyFile(path.c_str());
+        if (object != nullptr)
+        {
+            ObjectRepositoryItem item = { 0 };
+            item.ObjectEntry = *object->GetObjectEntry();
+            item.Path = String::Duplicate(path);
+            item.Name = String::Duplicate(object->GetName());
+            object->SetRepositoryItem(&item);
+            delete object;
+            return std::make_tuple(true, item);
+        }
+        else
+        {
+            return std::make_tuple(true, ObjectRepositoryItem());
+        }
+    }
+
+protected:
+    void Serialise(IStream * stream, const ObjectRepositoryItem &item) const override
+    {
+        stream->WriteValue(item.ObjectEntry);
+        stream->WriteString(item.Path);
+        stream->WriteString(item.Name);
+
+        switch (item.ObjectEntry.flags & 0x0F) {
+        case OBJECT_TYPE_RIDE:
+            stream->WriteValue<uint8>(item.RideFlags);
+            for (sint32 i = 0; i < 2; i++)
+            {
+                stream->WriteValue<uint8>(item.RideCategory[i]);
+            }
+            for (sint32 i = 0; i < MAX_RIDE_TYPES_PER_RIDE_ENTRY; i++)
+            {
+                stream->WriteValue<uint8>(item.RideType[i]);
+            }
+            stream->WriteValue<uint8>(item.RideGroupIndex);
+            break;
+        case OBJECT_TYPE_SCENERY_SETS:
+            stream->WriteValue<uint16>(item.NumThemeObjects);
+            for (uint16 i = 0; i < item.NumThemeObjects; i++)
+            {
+                stream->WriteValue<rct_object_entry>(item.ThemeObjects[i]);
+            }
+            break;
+        }
+    }
+
+    ObjectRepositoryItem Deserialise(IStream * stream) const override
+    {
+        ObjectRepositoryItem item = { 0 };
+
+        item.ObjectEntry = stream->ReadValue<rct_object_entry>();
+        item.Path = stream->ReadString();
+        item.Name = stream->ReadString();
+
+        switch (item.ObjectEntry.flags & 0x0F) {
+        case OBJECT_TYPE_RIDE:
+            item.RideFlags = stream->ReadValue<uint8>();
+            for (sint32 i = 0; i < 2; i++)
+            {
+                item.RideCategory[i] = stream->ReadValue<uint8>();
+            }
+            for (sint32 i = 0; i < MAX_RIDE_TYPES_PER_RIDE_ENTRY; i++)
+            {
+                item.RideType[i] = stream->ReadValue<uint8>();
+            }
+            item.RideGroupIndex = stream->ReadValue<uint8>();
+            break;
+        case OBJECT_TYPE_SCENERY_SETS:
+            item.NumThemeObjects = stream->ReadValue<uint16>();
+            item.ThemeObjects = Memory::AllocateArray<rct_object_entry>(item.NumThemeObjects);
+            for (uint16 i = 0; i < item.NumThemeObjects; i++)
+            {
+                item.ThemeObjects[i] = stream->ReadValue<rct_object_entry>();
+            }
+            break;
+        }
+        return item;
+    }
+
+private:
+    bool IsTrackReadOnly(const std::string &path) const
+    {
+        return
+            String::StartsWith(path, SearchPaths[0]) ||
+            String::StartsWith(path, SearchPaths[1]);
+    }
+};
+
 class ObjectRepository final : public IObjectRepository
 {
-    const IPlatformEnvironment *        _env = nullptr;
+    IPlatformEnvironment * const        _env = nullptr;
+    ObjectFileIndex const               _fileIndex;
     std::vector<ObjectRepositoryItem>   _items;
-    QueryDirectoryResult                _queryDirectoryResult = { 0 };
     ObjectEntryMap                      _itemMap;
     uint16                              _languageId   = 0;
     sint32                              _numConflicts = 0;
 
 public:
-    ObjectRepository(IPlatformEnvironment * env) : _env(env)
+    ObjectRepository(IPlatformEnvironment * env)
+        : _env(env),
+          _fileIndex(env)
     {
     }
 
@@ -117,24 +214,17 @@ public:
     void LoadOrConstruct() override
     {
         ClearItems();
-
-        Query();
-        if (!Load())
-        {
-            _languageId = gCurrentLanguage;
-            Scan();
-            Save();
-        }
-
-        // SortItems();
+        auto items = _fileIndex.LoadOrBuild();
+        AddItems(items);
+        SortItems();
     }
 
     void Construct() override
     {
         _languageId = gCurrentLanguage;
-        Query();
-        Scan();
-        Save();
+        auto items = _fileIndex.Rebuild();
+        AddItems(items);
+        SortItems();
     }
 
     size_t GetNumObjects() const override
@@ -274,146 +364,6 @@ private:
         _itemMap.clear();
     }
 
-    void Query()
-    {
-        _queryDirectoryResult = { 0 };
-
-        const std::string &rct2Path = _env->GetDirectoryPath(DIRBASE::RCT2, DIRID::OBJECT);
-        const std::string &openrct2Path = _env->GetDirectoryPath(DIRBASE::USER, DIRID::OBJECT);
-        QueryDirectory(&_queryDirectoryResult, rct2Path);
-        QueryDirectory(&_queryDirectoryResult, openrct2Path);
-    }
-
-    void QueryDirectory(QueryDirectoryResult * result, const std::string &directory)
-    {
-        utf8 pattern[MAX_PATH];
-        String::Set(pattern, sizeof(pattern), directory.c_str());
-        Path::Append(pattern, sizeof(pattern), "*.dat");
-        Path::QueryDirectory(result, pattern);
-    }
-
-    void Scan()
-    {
-        Console::WriteLine("Scanning %lu objects...", _queryDirectoryResult.TotalFiles);
-        _numConflicts = 0;
-
-        auto startTime = std::chrono::high_resolution_clock::now();
-
-        const std::string &rct2Path = _env->GetDirectoryPath(DIRBASE::RCT2, DIRID::OBJECT);
-        const std::string &openrct2Path = _env->GetDirectoryPath(DIRBASE::USER, DIRID::OBJECT);
-        ScanDirectory(rct2Path);
-        ScanDirectory(openrct2Path);
-
-        auto endTime = std::chrono::high_resolution_clock::now();
-        std::chrono::duration<float> duration = endTime - startTime;
-
-        Console::WriteLine("Scanning complete in %.2f seconds.", duration.count());
-        if (_numConflicts > 0)
-        {
-            Console::WriteLine("%d object conflicts found.", _numConflicts);
-        }
-    }
-
-    void ScanDirectory(const std::string &directory)
-    {
-        utf8 pattern[MAX_PATH];
-        String::Set(pattern, sizeof(pattern), directory.c_str());
-        Path::Append(pattern, sizeof(pattern), "*.dat");
-
-        IFileScanner * scanner = Path::ScanDirectory(pattern, true);
-        while (scanner->Next())
-        {
-            const utf8 * enumPath = scanner->GetPath();
-            ScanObject(enumPath);
-        }
-        delete scanner;
-    }
-
-    void ScanObject(const utf8 * path)
-    {
-        Object * object = ObjectFactory::CreateObjectFromLegacyFile(path);
-        if (object != nullptr)
-        {
-            ObjectRepositoryItem item = { 0 };
-            item.ObjectEntry = *object->GetObjectEntry();
-            item.Path = String::Duplicate(path);
-            item.Name = String::Duplicate(object->GetName());
-            object->SetRepositoryItem(&item);
-            AddItem(&item);
-
-            delete object;
-        }
-    }
-
-    bool Load()
-    {
-        const std::string &path = _env->GetFilePath(PATHID::CACHE_OBJECTS);
-        try
-        {
-            auto fs = FileStream(path, FILE_MODE_OPEN);
-            auto header = fs.ReadValue<ObjectRepositoryHeader>();
-
-            if (header.Version == OBJECT_REPOSITORY_VERSION &&
-                header.LanguageId == gCurrentLanguage &&
-                header.TotalFiles == _queryDirectoryResult.TotalFiles &&
-                header.TotalFileSize == _queryDirectoryResult.TotalFileSize &&
-                header.FileDateModifiedChecksum == _queryDirectoryResult.FileDateModifiedChecksum &&
-                header.PathChecksum == _queryDirectoryResult.PathChecksum)
-            {
-                // Header matches, so the index is not out of date
-
-                // Buffer the rest of file into memory to speed up item reading
-                size_t dataSize = (size_t)(fs.GetLength() - fs.GetPosition());
-                void * data = fs.ReadArray<uint8>(dataSize);
-                auto ms = MemoryStream(data, dataSize, MEMORY_ACCESS::READ | MEMORY_ACCESS::OWNER);
-
-                // Read items
-                for (uint32 i = 0; i < header.NumItems; i++)
-                {
-                    ObjectRepositoryItem item = ReadItem(&ms);
-                    AddItem(&item);
-                }
-                return true;
-            }
-            Console::WriteLine("Object repository is out of date.");
-            return false;
-        }
-        catch (const IOException &)
-        {
-            return false;
-        }
-    }
-
-    void Save() const
-    {
-        const std::string &path = _env->GetFilePath(PATHID::CACHE_OBJECTS);
-        try
-        {
-            auto fs = FileStream(path, FILE_MODE_WRITE);
-
-            // Write header
-            ObjectRepositoryHeader header;
-            header.Version = OBJECT_REPOSITORY_VERSION;
-            header.LanguageId = _languageId;
-            header.TotalFiles = _queryDirectoryResult.TotalFiles;
-            header.TotalFileSize = _queryDirectoryResult.TotalFileSize;
-            header.FileDateModifiedChecksum = _queryDirectoryResult.FileDateModifiedChecksum;
-            header.PathChecksum = _queryDirectoryResult.PathChecksum;
-            header.NumItems = (uint32)_items.size();
-            fs.WriteValue(header);
-
-            // Write items
-            for (uint32 i = 0; i < header.NumItems; i++)
-            {
-                WriteItem(&fs, _items[i]);
-            }
-        }
-        catch (const IOException &)
-        {
-            log_error("Unable to write object repository index to '%s'.", path.c_str());
-        }
-    }
-
     void SortItems()
     {
         std::sort(_items.begin(), _items.end(), [](const ObjectRepositoryItem &a,
@@ -421,6 +371,12 @@ private:
         {
             return strcmp(a.Name, b.Name) < 0;
         });
+
+        // Fix the IDs
+        for (size_t i = 0; i < _items.size(); i++)
+        {
+            _items[i].Id = i;
+        }
 
         // Rebuild item map
         _itemMap.clear();
@@ -431,85 +387,42 @@ private:
         }
     }
 
-    bool AddItem(ObjectRepositoryItem * item)
+    void AddItems(const std::vector<ObjectRepositoryItem> &items)
     {
-        const ObjectRepositoryItem * conflict = FindObject(&item->ObjectEntry);
+        for (auto item : items)
+        {
+            AddItem(item);
+        }
+    }
+
+    bool AddItem(const ObjectRepositoryItem &item)
+    {
+        auto conflict = FindObject(&item.ObjectEntry);
         if (conflict == nullptr)
         {
             size_t index = _items.size();
-            item->Id = index;
-            _items.push_back(*item);
-            _itemMap[item->ObjectEntry] = index;
+            auto copy = item;
+            copy.Id = index;
+            _items.push_back(copy);
+            _itemMap[item.ObjectEntry] = index;
             return true;
         }
         else
         {
             _numConflicts++;
             Console::Error::WriteLine("Object conflict: '%s'", conflict->Path);
-            Console::Error::WriteLine("               : '%s'", item->Path);
+            Console::Error::WriteLine("               : '%s'", item.Path);
             return false;
         }
     }
 
-    static ObjectRepositoryItem ReadItem(IStream * stream)
+    void ScanObject(const std::string &path)
     {
-        ObjectRepositoryItem item = { 0 };
-
-        item.ObjectEntry = stream->ReadValue<rct_object_entry>();
-        item.Path = stream->ReadString();
-        item.Name = stream->ReadString();
-
-        switch (item.ObjectEntry.flags & 0x0F) {
-        case OBJECT_TYPE_RIDE:
-            item.RideFlags = stream->ReadValue<uint8>();
-            for (sint32 i = 0; i < 2; i++)
-            {
-                item.RideCategory[i] = stream->ReadValue<uint8>();
-            }
-            for (sint32 i = 0; i < MAX_RIDE_TYPES_PER_RIDE_ENTRY; i++)
-            {
-                item.RideType[i] = stream->ReadValue<uint8>();
-            }
-            item.RideGroupIndex = stream->ReadValue<uint8>();
-            break;
-        case OBJECT_TYPE_SCENERY_SETS:
-            item.NumThemeObjects = stream->ReadValue<uint16>();
-            item.ThemeObjects = Memory::AllocateArray<rct_object_entry>(item.NumThemeObjects);
-            for (uint16 i = 0; i < item.NumThemeObjects; i++)
-            {
-                item.ThemeObjects[i] = stream->ReadValue<rct_object_entry>();
-            }
-            break;
-        }
-        return item;
-    }
-
-    static void WriteItem(IStream * stream, const ObjectRepositoryItem &item)
-    {
-        stream->WriteValue(item.ObjectEntry);
-        stream->WriteString(item.Path);
-        stream->WriteString(item.Name);
-
-        switch (item.ObjectEntry.flags & 0x0F) {
-        case OBJECT_TYPE_RIDE:
-            stream->WriteValue<uint8>(item.RideFlags);
-            for (sint32 i = 0; i < 2; i++)
-            {
-                stream->WriteValue<uint8>(item.RideCategory[i]);
-            }
-            for (sint32 i = 0; i < MAX_RIDE_TYPES_PER_RIDE_ENTRY; i++)
-            {
-                stream->WriteValue<uint8>(item.RideType[i]);
-            }
-            stream->WriteValue<uint8>(item.RideGroupIndex);
-            break;
-        case OBJECT_TYPE_SCENERY_SETS:
-            stream->WriteValue<uint16>(item.NumThemeObjects);
-            for (uint16 i = 0; i < item.NumThemeObjects; i++)
-            {
-                stream->WriteValue<rct_object_entry>(item.ThemeObjects[i]);
-            }
-            break;
+        auto result = _fileIndex.Create(path);
+        if (std::get<0>(result))
+        {
+            auto ori = std::get<1>(result);
+            AddItem(ori);
         }
     }
 

@@ -109,12 +109,22 @@ public:
 protected:
     void Serialise(IStream * stream, const TrackRepositoryItem &item) const override
     {
-        stream->WriteValue(item);
+        stream->WriteString(item.Name);
+        stream->WriteString(item.Path);
+        stream->WriteValue(item.RideType);
+        stream->WriteString(item.ObjectEntry);
+        stream->WriteValue(item.Flags);
     }
 
     TrackRepositoryItem Deserialise(IStream * stream) const override
     {
-        return stream->ReadValue<TrackRepositoryItem>();
+        TrackRepositoryItem item;
+        item.Name = stream->ReadStdString();
+        item.Path = stream->ReadStdString();
+        item.RideType = stream->ReadValue<uint8>();
+        item.ObjectEntry = stream->ReadStdString();
+        item.Flags = stream->ReadValue<uint32>();
+        return item;
     }
 
 private:

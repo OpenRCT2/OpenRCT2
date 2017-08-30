@@ -116,22 +116,15 @@ public:
         else
         {
             // Index was not loaded
-            Console::WriteLine("Building %s", _name.c_str());
-            auto startTime = std::chrono::high_resolution_clock::now();
-            for (auto filePath : scanResult.Files)
-            {
-                log_verbose("FileIndex:Indexing '%s'", filePath.c_str());
-                auto item = Create(filePath);
-                if (std::get<0>(item))
-                {
-                    items.push_back(std::get<1>(item));
-                }
-            }
-            WriteIndexFile(scanResult.Stats, items);
-            auto endTime = std::chrono::high_resolution_clock::now();
-            auto duration = (std::chrono::duration<float>)(endTime - startTime);
-            Console::WriteLine("Finished building %s in %.2f seconds.", _name.c_str(), duration.count());
+            items = Build(scanResult);
         }
+        return items;
+    }
+
+    std::vector<TItem> Rebuild() const
+    {
+        auto scanResult = Scan();
+        auto items = Build(scanResult);
         return items;
     }
 
@@ -181,6 +174,30 @@ private:
             delete scanner;
         }
         return ScanResult(stats, files);
+    }
+
+    std::vector<TItem> Build(const ScanResult &scanResult) const
+    {
+        std::vector<TItem> items;
+        Console::WriteLine("Building %s (%zu items)", _name.c_str(), scanResult.Files.size());
+
+        auto startTime = std::chrono::high_resolution_clock::now();
+        for (auto filePath : scanResult.Files)
+        {
+            log_verbose("FileIndex:Indexing '%s'", filePath.c_str());
+            auto item = Create(filePath);
+            if (std::get<0>(item))
+            {
+                items.push_back(std::get<1>(item));
+            }
+        }
+
+        WriteIndexFile(scanResult.Stats, items);
+
+        auto endTime = std::chrono::high_resolution_clock::now();
+        auto duration = (std::chrono::duration<float>)(endTime - startTime);
+        Console::WriteLine("Finished building %s in %.2f seconds.", _name.c_str(), duration.count());
+        return items;
     }
 
     std::tuple<bool, std::vector<TItem>> ReadIndexFile(const DirectoryStats &stats) const
