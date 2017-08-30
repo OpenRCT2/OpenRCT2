@@ -59,15 +59,28 @@ private:
         uint32          NumItems = 0;
     };
 
+    // Index file format version which when incremented forces a rebuild
     static constexpr uint8 FILE_INDEX_VERSION = 4;
 
+    // Magic number for the index (to distinguish)
     uint32 const _magicNumber;
+    // Version for the specialised index
     uint8 const _version;
+    // Path to save the index at
     std::string const _indexPath;
+    // Pattern 
     std::string const _pattern;
     std::vector<std::string> const _paths;
 
 public:
+    /**
+     * Creates a new FileIndex.
+     * @param magicNumber Magic number for the index (to distinguish between different index files).
+     * @param version Version of the specialised index, increment this to force a rebuild.
+     * @param indexPath Full path to read and write the index file to.
+     * @param pattern The search pattern for indexing files.
+     * @param paths A list of search directories.
+     */
     FileIndex(uint32 magicNumber,
               uint8 version,
               std::string indexPath,
@@ -102,6 +115,7 @@ public:
             // Index was not loaded
             for (auto filePath : scanResult.Files)
             {
+                log_verbose("FileIndex:Indexing '%s'", filePath.c_str());
                 auto item = Create(filePath);
                 items.push_back(item);
             }
@@ -133,6 +147,8 @@ private:
         std::vector<std::string> files;
         for (const auto directory : _paths)
         {
+            log_verbose("FileIndex:Scanning for %s in '%s'", _pattern.c_str(), directory.c_str());
+
             auto pattern = Path::Combine(directory, _pattern);
             auto scanner = Path::ScanDirectory(pattern, true);
             while (scanner->Next())
@@ -161,6 +177,7 @@ private:
         std::vector<TItem> items;
         try
         {
+            log_verbose("FileIndex:Loading index: '%s'", _indexPath.c_str());
             auto fs = FileStream(_indexPath, FILE_MODE_OPEN);
 
             // Read header, check if we need to re-scan
@@ -181,10 +198,14 @@ private:
                 }
                 loadedItems = true;
             }
+            else
+            {
+                Console::WriteLine("Index out of date, rebuilding '%s'.", _indexPath.c_str());
+            }
         }
         catch (const Exception &)
         {
-            Console::Error::WriteLine("Unable to load index.");
+            Console::Error::WriteLine("Unable to load index: '%s'.", _indexPath.c_str());
         }
         return std::make_tuple(loadedItems, items);
     }
@@ -193,6 +214,7 @@ private:
     {
         try
         {
+            log_verbose("FileIndex:Writing index: '%s'", _indexPath.c_str());
             auto fs = FileStream(_indexPath, FILE_MODE_WRITE);
     
             // Write header
@@ -213,7 +235,7 @@ private:
         }
         catch (const Exception &)
         {
-            Console::Error::WriteLine("Unable to save index.");
+            Console::Error::WriteLine("Unable to save index: '%s'.", _indexPath.c_str());
         }
     }
 
