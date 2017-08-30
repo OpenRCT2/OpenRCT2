@@ -146,7 +146,8 @@ private:
     
 public:
     ScenarioFileIndex(IPlatformEnvironment * env) :
-        FileIndex(MAGIC_NUMBER,
+        FileIndex("scenario index",
+                  MAGIC_NUMBER,
                   VERSION,
                   env->GetFilePath(PATHID::CACHE_SCENARIOS),
                   std::string(PATTERN),
@@ -158,15 +159,18 @@ public:
     }
 
 protected:
-    scenario_index_entry Create(const std::string &path) const override
+    std::tuple<bool, scenario_index_entry> Create(const std::string &path) const override
     {
         scenario_index_entry entry;
         auto timestamp = File::GetLastModified(path);
-        if (!GetScenarioInfo(path, timestamp, &entry))
+        if (GetScenarioInfo(path, timestamp, &entry))
         {
-            // TODO
+            return std::make_tuple(true, entry);
         }
-        return entry;
+        else
+        {
+            return std::make_tuple(true, scenario_index_entry());
+        }
     }
 
     void Serialise(IStream * stream, const scenario_index_entry &item) const override

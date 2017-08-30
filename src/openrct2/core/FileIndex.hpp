@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include <chrono>
 #include <string>
 #include <tuple>
 #include <vector>
@@ -62,30 +63,30 @@ private:
     // Index file format version which when incremented forces a rebuild
     static constexpr uint8 FILE_INDEX_VERSION = 4;
 
-    // Magic number for the index (to distinguish)
+    std::string const _name;
     uint32 const _magicNumber;
-    // Version for the specialised index
     uint8 const _version;
-    // Path to save the index at
     std::string const _indexPath;
-    // Pattern 
     std::string const _pattern;
     std::vector<std::string> const _paths;
 
 public:
     /**
      * Creates a new FileIndex.
+     * @param name Name of the index (used for logging).
      * @param magicNumber Magic number for the index (to distinguish between different index files).
      * @param version Version of the specialised index, increment this to force a rebuild.
      * @param indexPath Full path to read and write the index file to.
      * @param pattern The search pattern for indexing files.
      * @param paths A list of search directories.
      */
-    FileIndex(uint32 magicNumber,
+    FileIndex(std::string name,
+              uint32 magicNumber,
               uint8 version,
               std::string indexPath,
               std::string pattern,
               std::vector<std::string> paths) :
+        _name(name),
         _magicNumber(magicNumber),
         _version(version),
         _indexPath(indexPath),
@@ -113,13 +114,21 @@ public:
         else
         {
             // Index was not loaded
+            Console::WriteLine("Building %s", _name.c_str());
+            auto startTime = std::chrono::high_resolution_clock::now();
             for (auto filePath : scanResult.Files)
             {
                 log_verbose("FileIndex:Indexing '%s'", filePath.c_str());
                 auto item = Create(filePath);
-                items.push_back(item);
+                if (std::get<0>(item))
+                {
+                    items.push_back(std::get<1>(item));
+                }
             }
             WriteIndexFile(scanResult.Stats, items);
+            auto endTime = std::chrono::high_resolution_clock::now();
+            auto duration = (std::chrono::duration<float>)(endTime - startTime);
+            Console::WriteLine("Finished building %s in %.2f seconds.", _name.c_str(), duration.count());
         }
         return items;
     }
@@ -127,8 +136,9 @@ public:
 protected:
     /**
      * Loads the given file and creates the item representing the data to store in the index.
+     * TODO Use std::optional when C++17 is available.
      */
-    virtual TItem Create(const std::string &path) const abstract;
+    virtual std::tuple<bool, TItem> Create(const std::string &path) const abstract;
 
     /**
      * Serialises an index item to the given stream.
@@ -200,7 +210,7 @@ private:
             }
             else
             {
-                Console::WriteLine("Index out of date, rebuilding '%s'.", _indexPath.c_str());
+                Console::WriteLine("%s out of date", _name.c_str());
             }
         }
         catch (const Exception &)
