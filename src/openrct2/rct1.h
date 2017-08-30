@@ -22,6 +22,7 @@
 #include "management/research.h"
 #include "rct12.h"
 #include "ride/ride.h"
+#include "peep/staff.h"
 #include "world/banner.h"
 #include "world/map.h"
 #include "world/sprite.h"
@@ -722,7 +723,7 @@ typedef struct rct1_s4 {
     rct_ride_measurement ride_measurements[8];
     uint32 next_guest_index;
     uint16 game_counter_5;
-    uint8 patrol_areas[(RCT1_MAX_STAFF + 4) * 128];
+    uint8 patrol_areas[(RCT1_MAX_STAFF + STAFF_TYPE_COUNT) * RCT12_PATROL_AREA_SIZE];
     uint8 staff_modes[RCT1_MAX_STAFF];
     uint8 unk_1F431E[4];
     uint8 unk_1F4322[8];

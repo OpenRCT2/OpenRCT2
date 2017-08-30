@@ -1503,8 +1503,8 @@ private:
 
     void ImportStaffPatrolArea(rct_peep * staffmember)
     {
-        sint32 peepOffset = staffmember->staff_id * 128;
-        for (sint32 i = 0; i < 128; i++)
+        sint32 peepOffset = staffmember->staff_id * RCT12_PATROL_AREA_SIZE;
+        for (sint32 i = 0; i < RCT12_PATROL_AREA_SIZE; i++)
         {
             if (_s4.patrol_areas[peepOffset + i] == 0)
             {
