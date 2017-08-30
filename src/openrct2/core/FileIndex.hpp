@@ -68,7 +68,9 @@ private:
     uint8 const _version;
     std::string const _indexPath;
     std::string const _pattern;
-    std::vector<std::string> const _paths;
+
+public:
+    std::vector<std::string> const SearchPaths;
 
 public:
     /**
@@ -91,7 +93,7 @@ public:
         _version(version),
         _indexPath(indexPath),
         _pattern(pattern),
-        _paths(paths)
+        SearchPaths(paths)
     {
     }
 
@@ -155,7 +157,7 @@ private:
     {
         DirectoryStats stats;
         std::vector<std::string> files;
-        for (const auto directory : _paths)
+        for (const auto directory : SearchPaths)
         {
             log_verbose("FileIndex:Scanning for %s in '%s'", _pattern.c_str(), directory.c_str());
 

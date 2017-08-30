@@ -21,14 +21,14 @@
 #include "../core/Collections.hpp"
 #include "../core/Console.hpp"
 #include "../core/File.h"
-#include "../core/FileScanner.h"
+#include "../core/FileIndex.hpp"
 #include "../core/FileStream.hpp"
 #include "../core/Path.hpp"
-#include "RideGroupManager.h"
 #include "../core/String.hpp"
 #include "../object/ObjectRepository.h"
 #include "../object/RideObject.h"
 #include "../PlatformEnvironment.h"
+#include "RideGroupManager.h"
 #include "TrackDesignRepository.h"
 
 extern "C"
@@ -38,52 +38,107 @@ extern "C"
 
 using namespace OpenRCT2;
 
-#pragma pack(push, 1)
-struct TrackRepositoryHeader
-{
-    uint32  MagicNumber;
-    uint16  Version;
-    uint32  TotalFiles;
-    uint64  TotalFileSize;
-    uint32  FileDateModifiedChecksum;
-    uint32  PathChecksum;
-    uint32  NumItems;
-};
-#pragma pack(pop)
-
 struct TrackRepositoryItem
 {
     std::string Name;
     std::string Path;
     uint8 RideType = 0;
     std::string ObjectEntry;
-    uint32 Flags;
+    uint32 Flags = 0;
 };
-
-constexpr uint32 TRACK_REPOSITORY_MAGIC_NUMBER = 0x58444954;
-constexpr uint16 TRACK_REPOSITORY_VERSION = 1;
 
 enum TRACK_REPO_ITEM_FLAGS
 {
     TRIF_READ_ONLY = (1 << 0),
 };
 
+static std::string GetNameFromTrackPath(const std::string &path)
+{
+    std::string name = Path::GetFileNameWithoutExtension(path);
+    //The track name should be the file name until the first instance of a dot
+    name = name.substr(0, name.find_first_of("."));
+    return name;
+}
+
+class TrackDesignFileIndex final : public FileIndex<TrackRepositoryItem>
+{
+private:
+    static constexpr uint32 MAGIC_NUMBER = 0x58444954; // TIDX
+    static constexpr uint16 VERSION = 1;
+    static constexpr auto PATTERN = "*.td4;*.td6";
+
+public:
+    TrackDesignFileIndex(IPlatformEnvironment * env) :
+        FileIndex("track design index",
+            MAGIC_NUMBER,
+            VERSION,
+            env->GetFilePath(PATHID::CACHE_TRACKS),
+            std::string(PATTERN),
+            std::vector<std::string>({
+                env->GetDirectoryPath(DIRBASE::RCT1, DIRID::TRACK),
+                env->GetDirectoryPath(DIRBASE::RCT2, DIRID::TRACK),
+                env->GetDirectoryPath(DIRBASE::USER, DIRID::TRACK) }))
+    {
+    }
+
+public:
+    std::tuple<bool, TrackRepositoryItem> Create(const std::string &path) const override
+    {
+        auto td6 = track_design_open(path.c_str());
+        if (td6 != nullptr)
+        {
+            TrackRepositoryItem item;
+            item.Name = GetNameFromTrackPath(path);
+            item.Path = path;
+            item.RideType = td6->type;
+            item.ObjectEntry = std::string(td6->vehicle_object.name, 8);
+            item.Flags = 0;
+            if (IsTrackReadOnly(path))
+            {
+                item.Flags |= TRIF_READ_ONLY;
+            }
+            track_design_dispose(td6);
+            return std::make_tuple(true, item);
+        }
+        else
+        {
+            return std::make_tuple(true, TrackRepositoryItem());
+        }
+    }
+
+protected:
+    void Serialise(IStream * stream, const TrackRepositoryItem &item) const override
+    {
+        stream->WriteValue(item);
+    }
+
+    TrackRepositoryItem Deserialise(IStream * stream) const override
+    {
+        return stream->ReadValue<TrackRepositoryItem>();
+    }
+
+private:
+    bool IsTrackReadOnly(const std::string &path) const
+    {
+        return
+            String::StartsWith(path, SearchPaths[0]) ||
+            String::StartsWith(path, SearchPaths[1]);
+    }
+};
+
 class TrackDesignRepository final : public ITrackDesignRepository
 {
 private:
-    static constexpr const utf8 * TD_FILE_PATTERN = "*.td4;*.td6";
-
-    IPlatformEnvironment * _env;
-
+    IPlatformEnvironment * const _env;
+    TrackDesignFileIndex const _fileIndex;
     std::vector<TrackRepositoryItem> _items;
-    QueryDirectoryResult _directoryQueryResult = { 0 };
 
 public:
     TrackDesignRepository(IPlatformEnvironment * env)
+        : _env(env),
+          _fileIndex(env)
     {
         Guard::ArgumentNotNull(env);
-
-        _env = env;
     }
 
     virtual ~TrackDesignRepository() final
@@ -227,21 +282,14 @@ public:
 
     void Scan() override
     {
-        std::string rct2Directory = _env->GetDirectoryPath(DIRBASE::RCT2, DIRID::TRACK);
-        std::string userDirectory = _env->GetDirectoryPath(DIRBASE::USER, DIRID::TRACK);
-
         _items.clear();
-        _directoryQueryResult = { 0 };
-        Query(rct2Directory);
-        Query(userDirectory);
-
-        if (!Load())
+        auto trackDesigns = _fileIndex.LoadOrBuild();
+        for (auto td : trackDesigns)
         {
-            Scan(rct2Directory, TRIF_READ_ONLY);
-            Scan(userDirectory);
-            SortItems();
-            Save();
+            _items.push_back(td);
         }
+
+        SortItems();
     }
 
     bool Delete(const std::string &path) override
@@ -295,48 +343,18 @@ public:
         std::string newPath = Path::Combine(installDir, fileName);
         if (File::Copy(path, newPath, false))
         {
-            AddTrack(path);
-            SortItems();
-            result = path;
+            auto td = _fileIndex.Create(path);
+            if (std::get<0>(td))
+            {
+                _items.push_back(std::get<1>(td));
+                SortItems();
+                result = path;
+            }
         }
         return result;
     }
 
 private:
-    void Query(const std::string &directory)
-    {
-        std::string pattern = Path::Combine(directory, TD_FILE_PATTERN);
-        Path::QueryDirectory(&_directoryQueryResult, pattern);
-    }
-
-    void Scan(const std::string &directory, uint32 flags = 0)
-    {
-        std::string pattern = Path::Combine(directory, TD_FILE_PATTERN);
-        IFileScanner * scanner = Path::ScanDirectory(pattern, true);
-        while (scanner->Next())
-        {
-            const utf8 * path = scanner->GetPath();
-            AddTrack(path, flags);
-        }
-        delete scanner;
-    }
-
-    void AddTrack(const std::string path, uint32 flags = 0)
-    {
-        rct_track_td6 * td6 = track_design_open(path.c_str());
-        if (td6 != nullptr)
-        {
-            TrackRepositoryItem item;
-            item.Name = GetNameFromTrackPath(path);
-            item.Path = path;
-            item.RideType = td6->type;
-            item.ObjectEntry = std::string(td6->vehicle_object.name, 8);
-            item.Flags = flags;
-            _items.push_back(item);
-            track_design_dispose(td6);
-        }
-    }
-
     void SortItems()
     {
         std::sort(_items.begin(), _items.end(), [](const TrackRepositoryItem &a,
@@ -348,78 +366,6 @@ private:
                 }
                 return String::Compare(a.Name, b.Name) < 0;
             });
-    }
-
-    bool Load()
-    {
-        std::string path = _env->GetFilePath(PATHID::CACHE_TRACKS);
-        bool result = false;
-        try
-        {
-            auto fs = FileStream(path, FILE_MODE_OPEN);
-
-            // Read header, check if we need to re-scan
-            auto header = fs.ReadValue<TrackRepositoryHeader>();
-            if (header.MagicNumber == TRACK_REPOSITORY_MAGIC_NUMBER &&
-                header.Version == TRACK_REPOSITORY_VERSION &&
-                header.TotalFiles == _directoryQueryResult.TotalFiles &&
-                header.TotalFileSize == _directoryQueryResult.TotalFileSize &&
-                header.FileDateModifiedChecksum == _directoryQueryResult.FileDateModifiedChecksum &&
-                header.PathChecksum == _directoryQueryResult.PathChecksum)
-            {
-                // Directory is the same, just read the saved items
-                for (uint32 i = 0; i < header.NumItems; i++)
-                {
-                    TrackRepositoryItem item;
-                    item.Name = fs.ReadStdString();
-                    item.Path = fs.ReadStdString();
-                    item.RideType = fs.ReadValue<uint8>();
-                    item.ObjectEntry = fs.ReadStdString();
-                    item.Flags = fs.ReadValue<uint32>();
-                    _items.push_back(item);
-                }
-                result = true;
-            }
-        }
-        catch (const Exception &)
-        {
-            Console::Error::WriteLine("Unable to write object repository index.");
-        }
-        return result;
-    }
-
-    void Save() const
-    {
-        std::string path = _env->GetFilePath(PATHID::CACHE_TRACKS);
-        try
-        {
-            auto fs = FileStream(path, FILE_MODE_WRITE);
-
-            // Write header
-            TrackRepositoryHeader header = { 0 };
-            header.MagicNumber = TRACK_REPOSITORY_MAGIC_NUMBER;
-            header.Version = TRACK_REPOSITORY_VERSION;
-            header.TotalFiles = _directoryQueryResult.TotalFiles;
-            header.TotalFileSize = _directoryQueryResult.TotalFileSize;
-            header.FileDateModifiedChecksum = _directoryQueryResult.FileDateModifiedChecksum;
-            header.PathChecksum = _directoryQueryResult.PathChecksum;
-            header.NumItems = (uint32)_items.size();
-            fs.WriteValue(header);
-
-            // Write items
-            for (const auto item : _items)
-            {
-                fs.WriteString(item.Name);
-                fs.WriteString(item.Path);
-                fs.WriteValue(item.RideType);
-                fs.WriteString(item.ObjectEntry);
-                fs.WriteValue(item.Flags);
-            }
-        }
-        catch (const Exception &)
-        {
-            Console::Error::WriteLine("Unable to write object repository index.");
-        }
     }
 
     size_t GetTrackIndex(const std::string &path) const
@@ -443,15 +389,6 @@ private:
             result = &_items[index];
         }
         return result;
-    }
-
-public:
-    static std::string GetNameFromTrackPath(const std::string &path)
-    {
-        std::string name = Path::GetFileNameWithoutExtension(path);
-        //The track name should be the file name until the first instance of a dot
-        name = name.substr(0, name.find_first_of("."));
-        return name;
     }
 };
 
@@ -522,6 +459,6 @@ extern "C"
 
     utf8 * track_repository_get_name_from_path(const utf8 * path)
     {
-        return String::Duplicate(TrackDesignRepository::GetNameFromTrackPath(path));
+        return String::Duplicate(GetNameFromTrackPath(path));
     }
 }
