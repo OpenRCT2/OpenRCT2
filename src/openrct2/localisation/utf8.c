@@ -45,6 +45,38 @@ uint32 utf8_get_next(const utf8 *char_ptr, const utf8 **nextchar_ptr)
     return result;
 }
 
+uint32 utf8_get_next_bounded(const utf8 *char_ptr, const utf8 **nextchar_ptr, sint32 len)
+{
+    sint32 result;
+    sint32 numBytes;
+
+    if (len == 0)
+    {
+        return 0;
+    }
+    if (!(char_ptr[0] & 0x80) && len >= 1) {
+        result = char_ptr[0];
+        numBytes = 1;
+    } else if ((char_ptr[0] & 0xE0) == 0xC0 && len >= 2) {
+        result = ((char_ptr[0] & 0x1F) << 6) | (char_ptr[1] & 0x3F);
+        numBytes = 2;
+    } else if ((char_ptr[0] & 0xF0) == 0xE0 && len >= 3) {
+        result = ((char_ptr[0] & 0x0F) << 12) | ((char_ptr[1] & 0x3F) << 6) | (char_ptr[2] & 0x3F);
+        numBytes = 3;
+    } else if ((char_ptr[0] & 0xF8) == 0xF0 && len >= 4) {
+        result = ((char_ptr[0] & 0x07) << 18) | ((char_ptr[1] & 0x3F) << 12) | ((char_ptr[1] & 0x3F) << 6) | (char_ptr[2] & 0x3F);
+        numBytes = 4;
+    } else {
+        // TODO 4 bytes
+        result = ' ';
+        numBytes = 1;
+    }
+
+    if (nextchar_ptr != NULL)
+        *nextchar_ptr = char_ptr + numBytes;
+    return result;
+}
+
 utf8 *utf8_write_codepoint(utf8 *dst, uint32 codepoint)
 {
     if (codepoint <= 0x7F) {

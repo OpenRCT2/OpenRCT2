@@ -38,7 +38,6 @@ public:
     {
         text = String::SkipBOM(text);
 
-        _text = text;
         _current = text;
     }
 
@@ -46,7 +45,7 @@ public:
     {
         if (_current == nullptr) return false;
 
-        codepoint_t codepoint = String::GetNextCodepoint(_current);
+        codepoint_t codepoint = String::GetNextCodepoint(_current, 4);
         *outCodepoint = codepoint;
         return true;
     }
@@ -55,7 +54,7 @@ public:
     {
         if (_current == nullptr) return false;
 
-        codepoint_t codepoint = String::GetNextCodepoint(_current, &_current);
+        codepoint_t codepoint = String::GetNextCodepoint(_current, 4, &_current);
         *outCodepoint = codepoint;
         if (codepoint == 0)
         {
@@ -77,6 +76,5 @@ public:
     }
 
 private:
-    const utf8 *_text;
     const utf8 *_current;
 };

@@ -430,14 +430,14 @@ namespace String
         return utf8_get_codepoint_length(codepoint);
     }
 
-    codepoint_t GetNextCodepoint(utf8 * ptr, utf8 * * nextPtr)
+    codepoint_t GetNextCodepoint(utf8 * ptr, sint32 len, utf8 * * nextPtr)
     {
-        return GetNextCodepoint((const utf8 *)ptr, (const utf8 * *)nextPtr);
+        return GetNextCodepoint((const utf8 *)ptr, len, (const utf8 * *)nextPtr);
     }
 
-    codepoint_t GetNextCodepoint(const utf8 * ptr, const utf8 * * nextPtr)
+    codepoint_t GetNextCodepoint(const utf8 * ptr, sint32 len, const utf8 * * nextPtr)
     {
-        return utf8_get_next(ptr, nextPtr);
+        return utf8_get_next_bounded(ptr, nextPtr, len);
     }
 
     utf8 * WriteCodepoint(utf8 * dst, codepoint_t codepoint)
@@ -445,14 +445,16 @@ namespace String
         return utf8_write_codepoint(dst, codepoint);
     }
 
-    utf8 * Trim(utf8 * str)
+    utf8 * Trim(utf8 * str, size_t len)
     {
         utf8 * firstNonWhitespace = nullptr;
 
         codepoint_t codepoint;
         utf8 * ch = str;
         utf8 * nextCh;
-        while ((codepoint = GetNextCodepoint(ch, &nextCh)) != '\0')
+        Guard::Assert(len < std::numeric_limits<sint32>::max());
+        sint32 maxLen = len;
+        while ((codepoint = GetNextCodepoint(ch, maxLen, &nextCh)) != '\0')
         {
             if (codepoint <= WCHAR_MAX && !iswspace((wchar_t)codepoint))
             {
@@ -461,6 +463,7 @@ namespace String
                     firstNonWhitespace = ch;
                 }
             }
+            maxLen = maxLen - (nextCh - ch);
             ch = nextCh;
         }
 
@@ -484,25 +487,28 @@ namespace String
         return str;
     }
 
-    const utf8 * TrimStart(const utf8 * str)
+    const utf8 * TrimStart(const utf8 * str, size_t len)
     {
         codepoint_t codepoint;
         const utf8 * ch = str;
         const utf8 * nextCh;
-        while ((codepoint = GetNextCodepoint(ch, &nextCh)) != '\0')
+        Guard::Assert(len < std::numeric_limits<sint32>::max());
+        sint32 maxLen = len;
+        while ((codepoint = GetNextCodepoint(ch, maxLen, &nextCh)) != '\0')
         {
             if (codepoint <= WCHAR_MAX && !iswspace((wchar_t)codepoint))
             {
                 return ch;
             }
+            maxLen = maxLen - (nextCh - ch);
             ch = nextCh;
         }
         return str;
     }
 
-    utf8 * TrimStart(utf8 * buffer, size_t bufferSize, const utf8 * src)
+    utf8 * TrimStart(utf8 * buffer, size_t bufferSize, const utf8 * src, size_t len)
     {
-        return String::Set(buffer, bufferSize, TrimStart(src));
+        return String::Set(buffer, bufferSize, TrimStart(src, len));
     }
 
     std::string Trim(const std::string &s)
@@ -512,7 +518,9 @@ namespace String
         const utf8 * nextCh;
         const utf8 * startSubstr = nullptr;
         const utf8 * endSubstr = nullptr;
-        while ((codepoint = GetNextCodepoint(ch, &nextCh)) != '\0')
+        Guard::Assert(s.length() < std::numeric_limits<sint32>::max());
+        sint32 maxLen = s.length();
+        while ((codepoint = GetNextCodepoint(ch, maxLen, &nextCh)) != '\0')
         {
             bool isWhiteSpace = codepoint <= WCHAR_MAX && iswspace((wchar_t)codepoint);
             if (!isWhiteSpace)
@@ -523,6 +531,7 @@ namespace String
                 }
                 endSubstr = ch;
             }
+            maxLen = maxLen - (nextCh - ch);
             ch = nextCh;
         }
 

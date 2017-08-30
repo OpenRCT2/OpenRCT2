@@ -75,6 +75,7 @@ bool language_open(sint32 id);
 void language_close_all();
 
 uint32 utf8_get_next(const utf8 *char_ptr, const utf8 **nextchar_ptr);
+uint32 utf8_get_next_bounded(const utf8 *char_ptr, const utf8 **nextchar_ptr, sint32 len);
 utf8 *utf8_write_codepoint(utf8 *dst, uint32 codepoint);
 sint32 utf8_insert_codepoint(utf8 *dst, uint32 codepoint);
 bool utf8_is_codepoint_start(const utf8 *text);
