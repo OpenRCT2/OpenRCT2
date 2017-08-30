@@ -20,7 +20,6 @@
 #include "../core/Console.hpp"
 #include "../core/File.h"
 #include "../core/FileIndex.hpp"
-#include "../core/FileScanner.h"
 #include "../core/FileStream.hpp"
 #include "../core/Math.hpp"
 #include "../core/Path.hpp"
@@ -41,20 +40,6 @@ extern "C"
 }
 
 using namespace OpenRCT2;
-
-constexpr uint32 SCENARIO_REPOSITORY_MAGIC_NUMBER = 0x58444953;
-constexpr uint16 SCENARIO_REPOSITORY_VERSION = 1;
-
-struct ScenarioRepositoryHeader
-{
-    uint32  MagicNumber;
-    uint16  Version;
-    uint32  TotalFiles;
-    uint64  TotalFileSize;
-    uint32  FileDateModifiedChecksum;
-    uint32  PathChecksum;
-    uint32  NumItems;
-};
 
 static sint32 ScenarioCategoryCompare(sint32 categoryA, sint32 categoryB)
 {
