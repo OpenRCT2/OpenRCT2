@@ -1294,6 +1294,19 @@ private:
         {
             FixPeepNextInQueue(peep, spriteIndexMap);
         }
+
+        // The RCT2 structures are bigger than in RCT1, so set them to zero
+        Memory::Set(gStaffModes, 0, sizeof(gStaffModes));
+        Memory::Set(gStaffPatrolAreas, 0, sizeof(gStaffPatrolAreas));
+
+        Memory::Copy(gStaffModes, _s4.staff_modes, sizeof(_s4.staff_modes));
+
+        FOR_ALL_STAFF(i, peep)
+        {
+            ImportStaffPatrolArea(peep);
+        }
+        // Only the individual patrol areas have been converted, so generate the combined patrol areas of each staff type
+        staff_update_greyed_patrol_areas();
     }
 
     void ImportPeep(rct_peep * dst, rct1_peep * src)
@@ -1486,6 +1499,37 @@ private:
     void FixPeepNextInQueue(rct_peep * peep, const uint16 * spriteIndexMap)
     {
         peep->next_in_queue = MapSpriteIndex(peep->next_in_queue, spriteIndexMap);
+    }
+
+    void ImportStaffPatrolArea(rct_peep * staffmember)
+    {
+        sint32 peepOffset = staffmember->staff_id * 128;
+        for (sint32 i = 0; i < 128; i++)
+        {
+            if (_s4.patrol_areas[peepOffset + i] == 0)
+            {
+                // No patrol for this area
+                continue;
+            }
+
+            // Loop over the bits of the uint8
+            for (sint32 j = 0; j < 8; j++)
+            {
+                sint8 bit = (_s4.patrol_areas[peepOffset + i] >> j) & 1;
+                if (bit == 0)
+                {
+                    // No patrol for this area
+                    continue;
+                }
+                // val contains the 5 highest bits of both the x and y coordinates
+                sint32 val = j | (i << 3);
+                sint32 x = val & 0x1F;
+                x <<= 7;
+                sint32 y = val & 0x3E0;
+                y <<= 2;
+                staff_set_patrol_area(staffmember->staff_id, x, y, true);
+            }
+        }
     }
 
     void ImportLitter()
