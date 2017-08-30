@@ -195,6 +195,7 @@ private:
             if (header.MagicNumber == _magicNumber &&
                 header.VersionA == FILE_INDEX_VERSION &&
                 header.VersionB == _version &&
+                header.LanguageId == gCurrentLanguage &&
                 header.Stats.TotalFiles == stats.TotalFiles &&
                 header.Stats.TotalFileSize == stats.TotalFileSize &&
                 header.Stats.FileDateModifiedChecksum == stats.FileDateModifiedChecksum &&
