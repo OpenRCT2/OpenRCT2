@@ -196,8 +196,6 @@ class ObjectRepository final : public IObjectRepository
     ObjectFileIndex const               _fileIndex;
     std::vector<ObjectRepositoryItem>   _items;
     ObjectEntryMap                      _itemMap;
-    uint16                              _languageId   = 0;
-    sint32                              _numConflicts = 0;
 
 public:
     ObjectRepository(IPlatformEnvironment * env)
@@ -221,7 +219,6 @@ public:
 
     void Construct() override
     {
-        _languageId = gCurrentLanguage;
         auto items = _fileIndex.Rebuild();
         AddItems(items);
         SortItems();
@@ -389,10 +386,15 @@ private:
 
     void AddItems(const std::vector<ObjectRepositoryItem> &items)
     {
+        size_t numConflicts = 0;
         for (auto item : items)
         {
-            AddItem(item);
+            if (!AddItem(item))
+            {
+                numConflicts++;
+            }
         }
+        Console::Error::WriteLine("%zu object conflicts found.", numConflicts);
     }
 
     bool AddItem(const ObjectRepositoryItem &item)
@@ -409,7 +411,6 @@ private:
         }
         else
         {
-            _numConflicts++;
             Console::Error::WriteLine("Object conflict: '%s'", conflict->Path);
             Console::Error::WriteLine("               : '%s'", item.Path);
             return false;
