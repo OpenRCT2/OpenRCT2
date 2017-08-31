@@ -710,9 +710,12 @@ extern "C"
     rct_size16 FASTCALL gfx_get_sprite_size(uint32 image_id)
     {
         rct_g1_element *g1_source = gfx_get_g1_element(image_id & 0X7FFFF);
-        rct_size16 size;
-        size.width = g1_source->width;
-        size.height = g1_source->height;
+        rct_size16 size = {};
+        if (g1_source != nullptr)
+        {
+            size.width = g1_source->width;
+            size.height = g1_source->height;
+        }
         return size;
     }
 }
