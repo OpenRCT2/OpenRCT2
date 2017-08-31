@@ -394,7 +394,10 @@ private:
                 numConflicts++;
             }
         }
-        Console::Error::WriteLine("%zu object conflicts found.", numConflicts);
+        if (numConflicts > 0)
+        {
+            Console::Error::WriteLine("%zu object conflicts found.", numConflicts);
+        }
     }
 
     bool AddItem(const ObjectRepositoryItem &item)
