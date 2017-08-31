@@ -179,8 +179,6 @@ static uint32 _currentLine;
 /** rct2: 0x00F1AD68 */
 static uint8 (*_mapImageData)[MAP_WINDOW_MAP_SIZE][MAP_WINDOW_MAP_SIZE];
 
-static sint32 _nextPeepSpawnIndex = 0;
-
 static void window_map_init_map();
 static void window_map_centre_on_view_point();
 static void window_map_show_default_scenario_editor_buttons(rct_window *w);
@@ -1355,41 +1353,34 @@ static void window_map_place_park_entrance_tool_down(sint32 x, sint32 y)
  */
 static void window_map_set_peep_spawn_tool_down(sint32 x, sint32 y)
 {
-    rct_map_element *mapElement, *surfaceMapElement;
+    rct_map_element *mapElement;
     sint32 mapX, mapY, mapZ, direction;
 
+    // Verify footpath exists at location, and retrieve coordinates
     footpath_get_coordinates_from_pos(x, y, &mapX, &mapY, &direction, &mapElement);
-    if (mapX == 0x8000)
+    if (mapX == MAP_LOCATION_NULL)
         return;
 
-    surfaceMapElement = map_get_surface_element_at(mapX >> 5, mapY >> 5);
-    if (surfaceMapElement == nullptr) {
-        return;
-    }
-    if (surfaceMapElement->properties.surface.ownership & 0xF0) {
-        return;
-    }
-
-    mapX = mapX + 16 + (word_981D6C[direction].x * 15);
-    mapY = mapY + 16 + (word_981D6C[direction].y * 15);
     mapZ = mapElement->base_height / 2;
 
-    sint32 peepSpawnIndex = -1;
-    for (sint32 i = 0; i < MAX_PEEP_SPAWNS; i++) {
-        if (gPeepSpawns[i].x == PEEP_SPAWN_UNDEFINED) {
-            peepSpawnIndex = i;
-            break;
-        }
+    gGameCommandErrorTitle = STR_ERR_CANT_PLACE_PEEP_SPAWN_HERE;
+    money32 price = game_do_command(
+        mapX,
+        GAME_COMMAND_FLAG_APPLY | (direction << 8),
+        mapY,
+        mapZ,
+        GAME_COMMAND_PLACE_PEEP_SPAWN,
+        0,
+        0
+    );
+    if (price != MONEY32_UNDEFINED) {
+        audio_play_sound_at_location(
+            SOUND_PLACE_ITEM,
+            gCommandPosition.x,
+            gCommandPosition.y,
+            gCommandPosition.z
+        );
     }
-    if (peepSpawnIndex == -1) {
-        peepSpawnIndex = _nextPeepSpawnIndex;
-        _nextPeepSpawnIndex = (peepSpawnIndex + 1) % MAX_PEEP_SPAWNS;
-    }
-    gPeepSpawns[peepSpawnIndex].x = mapX;
-    gPeepSpawns[peepSpawnIndex].y = mapY;
-    gPeepSpawns[peepSpawnIndex].z = mapZ;
-    gPeepSpawns[peepSpawnIndex].direction = direction;
-    gfx_invalidate_screen();
 }
 
 /**
