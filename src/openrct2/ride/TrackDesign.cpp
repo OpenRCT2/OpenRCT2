@@ -47,15 +47,15 @@ extern "C"
 typedef struct map_backup
 {
     rct_map_element map_elements[MAX_MAP_ELEMENTS];
-    rct_map_element *tile_pointers[MAX_TILE_MAP_ELEMENT_POINTERS];
-    rct_map_element *next_free_map_element;
+    rct_map_element * tile_pointers[MAX_TILE_MAP_ELEMENT_POINTERS];
+    rct_map_element * next_free_map_element;
     uint16          map_size_units;
     uint16          map_size_units_minus_2;
     uint16          map_size;
     uint8           current_rotation;
 } map_backup;
 
-rct_track_td6 *gActiveTrackDesign;
+rct_track_td6 * gActiveTrackDesign;
 bool          gTrackDesignSceneryToggle;
 rct_xyz16     gTrackPreviewMin;
 rct_xyz16     gTrackPreviewMax;
@@ -74,23 +74,23 @@ static bool _trackDesignPlaceStateSceneryUnavailable = false;
 static bool _trackDesignPlaceStateHasScenery         = false;
 static bool _trackDesignPlaceStatePlaceScenery       = true;
 
-static rct_track_td6 *track_design_open_from_buffer(uint8 *src, size_t srcLength);
+static rct_track_td6 * track_design_open_from_buffer(uint8 * src, size_t srcLength);
 
-static map_backup *track_design_preview_backup_map();
+static map_backup * track_design_preview_backup_map();
 
-static void track_design_preview_restore_map(map_backup *backup);
+static void track_design_preview_restore_map(map_backup * backup);
 
 static void track_design_preview_clear_map();
 
-static void td6_reset_trailing_elements(rct_track_td6 *td6);
+static void td6_reset_trailing_elements(rct_track_td6 * td6);
 
-static void td6_set_element_helper_pointers(rct_track_td6 *td6);
+static void td6_set_element_helper_pointers(rct_track_td6 * td6);
 
-rct_track_td6 *track_design_open(const utf8 *path)
+rct_track_td6 * track_design_open(const utf8 * path)
 {
     log_verbose("track_design_open(\"%s\")", path);
 
-    uint8  *buffer;
+    uint8  * buffer;
     size_t bufferLength;
     if (readentirefile(path, (void **) &buffer, &bufferLength))
     {
@@ -102,7 +102,7 @@ rct_track_td6 *track_design_open(const utf8 *path)
         }
 
         // Decode the track data
-        uint8 * decoded      = (uint8 *) malloc(0x10000);
+        uint8 * decoded = (uint8 *) malloc(0x10000);
         size_t decodedLength = sawyercoding_decode_td6(buffer, decoded, bufferLength);
         free(buffer);
         decoded = (uint8 *) realloc(decoded, decodedLength);
@@ -112,7 +112,7 @@ rct_track_td6 *track_design_open(const utf8 *path)
         }
         else
         {
-            rct_track_td6 *td6 = track_design_open_from_buffer(decoded, decodedLength);
+            rct_track_td6 * td6 = track_design_open_from_buffer(decoded, decodedLength);
             free(decoded);
 
             if (td6 != NULL)
@@ -125,7 +125,7 @@ rct_track_td6 *track_design_open(const utf8 *path)
     return NULL;
 }
 
-static rct_track_td6 *track_design_open_from_td4(uint8 *src, size_t srcLength)
+static rct_track_td6 * track_design_open_from_td4(uint8 * src, size_t srcLength)
 {
     rct_track_td4 * td4 = (rct_track_td4 *) calloc(1, sizeof(rct_track_td4));
     if (td4 == NULL)
@@ -190,13 +190,13 @@ static rct_track_td6 *track_design_open_from_td4(uint8 *src, size_t srcLength)
     rct_object_entry vehicleObject = {0x80, {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '}, 0};
     if (td4->type == RIDE_TYPE_MAZE)
     {
-        const char *name = RCT1::GetRideTypeObject(td4->type);
+        const char * name = RCT1::GetRideTypeObject(td4->type);
         assert(name != NULL);
         memcpy(vehicleObject.name, name, Math::Min(String::SizeOf(name), 8UL));
     }
     else
     {
-        const char *name = RCT1::GetVehicleObject(td4->vehicle_type);
+        const char * name = RCT1::GetVehicleObject(td4->vehicle_type);
         assert(name != NULL);
         memcpy(vehicleObject.name, name, Math::Min(String::SizeOf(name), 8UL));
     }
@@ -329,7 +329,7 @@ static rct_track_td6 *track_design_open_from_td4(uint8 *src, size_t srcLength)
     return td6;
 }
 
-static rct_track_td6 *track_design_open_from_buffer(uint8 *src, size_t srcLength)
+static rct_track_td6 * track_design_open_from_buffer(uint8 * src, size_t srcLength)
 {
     uint8 version = (src[7] >> 2) & 3;
     if (version == 0 || version == 1)
@@ -342,7 +342,7 @@ static rct_track_td6 *track_design_open_from_buffer(uint8 *src, size_t srcLength
         return NULL;
     }
 
-    rct_track_td6 *td6 = (rct_track_td6 *) calloc(1, sizeof(rct_track_td6));
+    rct_track_td6 * td6 = (rct_track_td6 *) calloc(1, sizeof(rct_track_td6));
     if (td6 == NULL)
     {
         log_error("Unable to allocate memory for TD6 data.");
@@ -366,12 +366,12 @@ static rct_track_td6 *track_design_open_from_buffer(uint8 *src, size_t srcLength
     return td6;
 }
 
-static void td6_reset_trailing_elements(rct_track_td6 *td6)
+static void td6_reset_trailing_elements(rct_track_td6 * td6)
 {
-    void   *lastElement;
+    void   * lastElement;
     if (td6->type == RIDE_TYPE_MAZE)
     {
-        rct_td6_maze_element *mazeElement = (rct_td6_maze_element *) td6->elements;
+        rct_td6_maze_element * mazeElement = (rct_td6_maze_element *) td6->elements;
         while (mazeElement->all != 0)
         {
             mazeElement++;
@@ -380,7 +380,7 @@ static void td6_reset_trailing_elements(rct_track_td6 *td6)
     }
     else
     {
-        rct_td6_track_element *trackElement = (rct_td6_track_element *) td6->elements;
+        rct_td6_track_element * trackElement = (rct_td6_track_element *) td6->elements;
         while (trackElement->type != 0xFF)
         {
             trackElement++;
@@ -391,7 +391,7 @@ static void td6_reset_trailing_elements(rct_track_td6 *td6)
     memset(lastElement, 0xFF, trailingSize);
 }
 
-static void td6_set_element_helper_pointers(rct_track_td6 *td6)
+static void td6_set_element_helper_pointers(rct_track_td6 * td6)
 {
     uintptr_t sceneryElementsStart;
     if (td6->type == RIDE_TYPE_MAZE)
@@ -399,7 +399,7 @@ static void td6_set_element_helper_pointers(rct_track_td6 *td6)
         td6->track_elements = NULL;
         td6->maze_elements  = (rct_td6_maze_element *) td6->elements;
 
-        rct_td6_maze_element *maze = td6->maze_elements;
+        rct_td6_maze_element * maze = td6->maze_elements;
         for (; maze->all != 0; maze++)
         {
         }
@@ -410,13 +410,13 @@ static void td6_set_element_helper_pointers(rct_track_td6 *td6)
         td6->maze_elements  = NULL;
         td6->track_elements = (rct_td6_track_element *) td6->elements;
 
-        rct_td6_track_element *track = td6->track_elements;
+        rct_td6_track_element * track = td6->track_elements;
         for (; track->type != 0xFF; track++)
         {
         }
         uintptr_t entranceElementsStart = (uintptr_t) track + 1;
 
-        rct_td6_entrance_element *entranceElement = (rct_td6_entrance_element *) entranceElementsStart;
+        rct_td6_entrance_element * entranceElement = (rct_td6_entrance_element *) entranceElementsStart;
         td6->entrance_elements = entranceElement;
         for (; entranceElement->z != -1; entranceElement++)
         {
@@ -424,11 +424,11 @@ static void td6_set_element_helper_pointers(rct_track_td6 *td6)
         sceneryElementsStart = (uintptr_t) entranceElement + 1;
     }
 
-    rct_td6_scenery_element *sceneryElement = (rct_td6_scenery_element *) sceneryElementsStart;
+    rct_td6_scenery_element * sceneryElement = (rct_td6_scenery_element *) sceneryElementsStart;
     td6->scenery_elements = sceneryElement;
 }
 
-void track_design_dispose(rct_track_td6 *td6)
+void track_design_dispose(rct_track_td6 * td6)
 {
     if (td6 != NULL)
     {
@@ -442,19 +442,19 @@ void track_design_dispose(rct_track_td6 *td6)
  *
  *  rct2: 0x006ABDB0
  */
-static void track_design_load_scenery_objects(rct_track_td6 *td6)
+static void track_design_load_scenery_objects(rct_track_td6 * td6)
 {
     object_manager_unload_all_objects();
 
     // Load ride object
-    rct_object_entry *rideEntry = &td6->vehicle_object;
+    rct_object_entry * rideEntry = &td6->vehicle_object;
     object_manager_load_object(rideEntry);
 
     // Load scenery objects
-    rct_td6_scenery_element *scenery = td6->scenery_elements;
+    rct_td6_scenery_element * scenery = td6->scenery_elements;
     for (; scenery->scenery_object.end_flag != 0xFF; scenery++)
     {
-        rct_object_entry *sceneryEntry = &scenery->scenery_object;
+        rct_object_entry * sceneryEntry = &scenery->scenery_object;
         object_manager_load_object(sceneryEntry);
     }
 }
@@ -463,9 +463,9 @@ static void track_design_load_scenery_objects(rct_track_td6 *td6)
  *
  *  rct2: 0x006D247A
  */
-static void track_design_mirror_scenery(rct_track_td6 *td6)
+static void track_design_mirror_scenery(rct_track_td6 * td6)
 {
-    rct_td6_scenery_element *scenery = td6->scenery_elements;
+    rct_td6_scenery_element * scenery = td6->scenery_elements;
     for (; scenery->scenery_object.end_flag != 0xFF; scenery++)
     {
         uint8 entry_type, entry_index;
@@ -478,53 +478,53 @@ static void track_design_mirror_scenery(rct_track_td6 *td6)
             }
         }
 
-        rct_scenery_entry *scenery_entry = (rct_scenery_entry *) object_entry_groups[entry_type].chunks[entry_index];
+        rct_scenery_entry * scenery_entry = (rct_scenery_entry *) object_entry_groups[entry_type].chunks[entry_index];
         switch (entry_type)
         {
         case OBJECT_TYPE_LARGE_SCENERY:
-        {
-            sint16                      x1    = 0, x2 = 0, y1 = 0, y2 = 0;
-            for (rct_large_scenery_tile *tile = scenery_entry->large_scenery.tiles; tile->x_offset != -1; tile++)
             {
-                if (x1 > tile->x_offset)
+                sint16                      x1     = 0, x2 = 0, y1 = 0, y2 = 0;
+                for (rct_large_scenery_tile * tile = scenery_entry->large_scenery.tiles; tile->x_offset != -1; tile++)
                 {
-                    x1 = tile->x_offset;
+                    if (x1 > tile->x_offset)
+                    {
+                        x1 = tile->x_offset;
+                    }
+                    if (x2 < tile->x_offset)
+                    {
+                        x2 = tile->x_offset;
+                    }
+                    if (y1 > tile->y_offset)
+                    {
+                        y1 = tile->y_offset;
+                    }
+                    if (y2 > tile->y_offset)
+                    {
+                        y2 = tile->y_offset;
+                    }
                 }
-                if (x2 < tile->x_offset)
-                {
-                    x2 = tile->x_offset;
-                }
-                if (y1 > tile->y_offset)
-                {
-                    y1 = tile->y_offset;
-                }
-                if (y2 > tile->y_offset)
-                {
-                    y2 = tile->y_offset;
-                }
-            }
 
-            switch (scenery->flags & 3)
-            {
-            case 0:
-                scenery->y = (-(scenery->y * 32 + y1) - y2) / 32;
-                break;
-            case 1:
-                scenery->x = (scenery->x * 32 + y2 + y1) / 32;
-                scenery->y = (-(scenery->y * 32)) / 32;
-                scenery->flags ^= (1 << 1);
-                break;
-            case 2:
-                scenery->y = (-(scenery->y * 32 - y2) + y1) / 32;
-                break;
-            case 3:
-                scenery->x = (scenery->x * 32 - y2 - y1) / 32;
-                scenery->y = (-(scenery->y * 32)) / 32;
-                scenery->flags ^= (1 << 1);
+                switch (scenery->flags & 3)
+                {
+                case 0:
+                    scenery->y = (-(scenery->y * 32 + y1) - y2) / 32;
+                    break;
+                case 1:
+                    scenery->x = (scenery->x * 32 + y2 + y1) / 32;
+                    scenery->y = (-(scenery->y * 32)) / 32;
+                    scenery->flags ^= (1 << 1);
+                    break;
+                case 2:
+                    scenery->y = (-(scenery->y * 32 - y2) + y1) / 32;
+                    break;
+                case 3:
+                    scenery->x = (scenery->x * 32 - y2 - y1) / 32;
+                    scenery->y = (-(scenery->y * 32)) / 32;
+                    scenery->flags ^= (1 << 1);
+                    break;
+                }
                 break;
             }
-            break;
-        }
         case OBJECT_TYPE_SMALL_SCENERY:
             scenery->y = -scenery->y;
 
@@ -573,15 +573,15 @@ static void track_design_mirror_scenery(rct_track_td6 *td6)
  *
  *  rct2: 0x006D2443
  */
-static void track_design_mirror_ride(rct_track_td6 *td6)
+static void track_design_mirror_ride(rct_track_td6 * td6)
 {
-    rct_td6_track_element *track = td6->track_elements;
+    rct_td6_track_element * track = td6->track_elements;
     for (; track->type != 0xFF; track++)
     {
         track->type = TrackElementMirrorMap[track->type];
     }
 
-    rct_td6_entrance_element *entrance = td6->entrance_elements;
+    rct_td6_entrance_element * entrance = td6->entrance_elements;
     for (; entrance->z != -1; entrance++)
     {
         entrance->y = -entrance->y;
@@ -601,9 +601,9 @@ static const uint8 maze_segment_mirror_map[] = {
  *
  *  rct2: 0x006D25FA
  */
-static void track_design_mirror_maze(rct_track_td6 *td6)
+static void track_design_mirror_maze(rct_track_td6 * td6)
 {
-    rct_td6_maze_element *maze = td6->maze_elements;
+    rct_td6_maze_element * maze = td6->maze_elements;
     for (; maze->all != 0; maze++)
     {
         maze->y = -maze->y;
@@ -632,7 +632,7 @@ static void track_design_mirror_maze(rct_track_td6 *td6)
  *
  *  rct2: 0x006D2436
  */
-void track_design_mirror(rct_track_td6 *td6)
+void track_design_mirror(rct_track_td6 * td6)
 {
     if (td6->type == RIDE_TYPE_MAZE)
     {
@@ -647,7 +647,7 @@ void track_design_mirror(rct_track_td6 *td6)
 
 static void track_design_add_selection_tile(sint16 x, sint16 y)
 {
-    rct_xy16 *selectionTile = gMapSelectionTiles;
+    rct_xy16 * selectionTile = gMapSelectionTiles;
     for (; selectionTile->x != -1; selectionTile++)
     {
         if (selectionTile->x == x && selectionTile->y == y)
@@ -680,7 +680,7 @@ static void track_design_update_max_min_coordinates(sint16 x, sint16 y, sint16 z
  *  rct2: 0x006D0964
  */
 static sint32
-track_design_place_scenery(rct_td6_scenery_element *scenery_start, uint8 rideIndex, sint32 originX, sint32 originY,
+track_design_place_scenery(rct_td6_scenery_element * scenery_start, uint8 rideIndex, sint32 originX, sint32 originY,
                            sint32 originZ)
 {
     for (uint8 mode = 0; mode <= 1; mode++)
@@ -695,10 +695,10 @@ track_design_place_scenery(rct_td6_scenery_element *scenery_start, uint8 rideInd
             continue;
         }
 
-        for (rct_td6_scenery_element *scenery = scenery_start; scenery->scenery_object.end_flag != 0xFF; scenery++)
+        for (rct_td6_scenery_element * scenery = scenery_start; scenery->scenery_object.end_flag != 0xFF; scenery++)
         {
             uint8   rotation = _currentTrackPieceDirection;
-            rct_xy8 tile     = { (uint8)(originX / 32), (uint8)(originY / 32) };
+            rct_xy8 tile     = {(uint8) (originX / 32), (uint8) (originY / 32)};
             switch (rotation & 3)
             {
             case MAP_ELEMENT_DIRECTION_WEST:
@@ -719,13 +719,13 @@ track_design_place_scenery(rct_td6_scenery_element *scenery_start, uint8 rideInd
                 break;
             }
 
-            rct_xy16 mapCoord = { (sint16)(tile.x * 32), (sint16)(tile.y * 32) };
+            rct_xy16 mapCoord = {(sint16) (tile.x * 32), (sint16) (tile.y * 32)};
             track_design_update_max_min_coordinates(mapCoord.x, mapCoord.y, originZ);
 
             if (_trackDesignPlaceOperation == PTD_OPERATION_DRAW_OUTLINES && mode == 0)
             {
-                uint8    new_tile       = 1;
-                rct_xy16 *selectionTile = gMapSelectionTiles;
+                uint8    new_tile        = 1;
+                rct_xy16 * selectionTile = gMapSelectionTiles;
                 for (; selectionTile->x != -1; selectionTile++)
                 {
                     if (selectionTile->x == tile.x && selectionTile->y == tile.y)
@@ -764,9 +764,9 @@ track_design_place_scenery(rct_td6_scenery_element *scenery_start, uint8 rideInd
                     }
 
                     entry_index = 0;
-                    for (rct_footpath_entry *path = get_footpath_entry(0);
+                    for (rct_footpath_entry * path = get_footpath_entry(0);
                          entry_index < object_entry_group_counts[OBJECT_TYPE_PATHS];
-                         path                     = get_footpath_entry(entry_index), entry_index++
+                         path                      = get_footpath_entry(entry_index), entry_index++
                         )
                     {
                         if (path == (rct_footpath_entry *) -1)
@@ -793,38 +793,38 @@ track_design_place_scenery(rct_td6_scenery_element *scenery_start, uint8 rideInd
                 switch (entry_type)
                 {
                 case OBJECT_TYPE_SMALL_SCENERY:
+                {
+                    //bl
+                    rotation += scenery->flags;
+                    rotation &= 3;
+
+                    //bh
+                    uint8 quadrant = (scenery->flags >> 2) + _currentTrackPieceDirection;
+                    quadrant &= 3;
+
+                    uint8 bh = rotation | (quadrant << 6) | MAP_ELEMENT_TYPE_SCENERY;
+
+                    rct_scenery_entry * small_scenery = get_small_scenery_entry(entry_index);
+                    if (!(!(small_scenery->small_scenery.flags & SMALL_SCENERY_FLAG_FULL_TILE) &&
+                          (small_scenery->small_scenery.flags & SMALL_SCENERY_FLAG_DIAGONAL)) &&
+                        (small_scenery->small_scenery.flags &
+                         (SMALL_SCENERY_FLAG_DIAGONAL | SMALL_SCENERY_FLAG_HALF_SPACE |
+                          SMALL_SCENERY_FLAG_THREE_QUARTERS)))
                     {
-                        //bl
-                        rotation += scenery->flags;
-                        rotation &= 3;
-
-                        //bh
-                        uint8 quadrant = (scenery->flags >> 2) + _currentTrackPieceDirection;
-                        quadrant &= 3;
-
-                        uint8 bh = rotation | (quadrant << 6) | MAP_ELEMENT_TYPE_SCENERY;
-
-                        rct_scenery_entry *small_scenery = get_small_scenery_entry(entry_index);
-                        if (!(!(small_scenery->small_scenery.flags & SMALL_SCENERY_FLAG_FULL_TILE) &&
-                              (small_scenery->small_scenery.flags & SMALL_SCENERY_FLAG_DIAGONAL)) &&
-                            (small_scenery->small_scenery.flags &
-                             (SMALL_SCENERY_FLAG_DIAGONAL | SMALL_SCENERY_FLAG_HALF_SPACE |
-                              SMALL_SCENERY_FLAG_THREE_QUARTERS)))
-                        {
-                            bh &= 0x3F;
-                        }
-
-                        z = (scenery->z * 8 + originZ) / 8;
-                        game_do_command(
-                            mapCoord.x,
-                            flags | bh << 8,
-                            mapCoord.y,
-                            (entry_index << 8) | z,
-                            GAME_COMMAND_REMOVE_SCENERY,
-                            0,
-                            0);
-                        break;
+                        bh &= 0x3F;
                     }
+
+                    z = (scenery->z * 8 + originZ) / 8;
+                    game_do_command(
+                        mapCoord.x,
+                        flags | bh << 8,
+                        mapCoord.y,
+                        (entry_index << 8) | z,
+                        GAME_COMMAND_REMOVE_SCENERY,
+                        0,
+                        0);
+                    break;
+                }
                 case OBJECT_TYPE_LARGE_SCENERY:
                     z = (scenery->z * 8 + originZ) / 8;
                     game_do_command(
@@ -892,9 +892,9 @@ track_design_place_scenery(rct_td6_scenery_element *scenery_start, uint8 rideInd
                     }
 
                     entry_index = 0;
-                    for (rct_footpath_entry *path = get_footpath_entry(0);
+                    for (rct_footpath_entry * path = get_footpath_entry(0);
                          entry_index < object_entry_group_counts[OBJECT_TYPE_PATHS];
-                         path                     = get_footpath_entry(entry_index), entry_index++)
+                         path                      = get_footpath_entry(entry_index), entry_index++)
                     {
 
                         if (path == (rct_footpath_entry *) -1)
@@ -933,7 +933,7 @@ track_design_place_scenery(rct_td6_scenery_element *scenery_start, uint8 rideInd
 
                     rotation += scenery->flags;
                     rotation &= 3;
-                    z = scenery->z * 8 + originZ;
+                    z        = scenery->z * 8 + originZ;
                     quadrant = ((scenery->flags >> 2) + _currentTrackPieceDirection) & 3;
 
                     bl = 0x81;
@@ -1105,7 +1105,7 @@ track_design_place_scenery(rct_td6_scenery_element *scenery_start, uint8 rideInd
                             continue;
                         }
 
-                        rct_map_element *map_element = map_get_path_element_at(mapCoord.x / 32, mapCoord.y / 32, z);
+                        rct_map_element * map_element = map_get_path_element_at(mapCoord.x / 32, mapCoord.y / 32, z);
 
                         if (map_element == NULL)
                         {
@@ -1158,7 +1158,7 @@ track_design_place_scenery(rct_td6_scenery_element *scenery_start, uint8 rideInd
     return 1;
 }
 
-static sint32 track_design_place_maze(rct_track_td6 *td6, sint16 x, sint16 y, sint16 z, uint8 rideIndex)
+static sint32 track_design_place_maze(rct_track_td6 * td6, sint16 x, sint16 y, sint16 z, uint8 rideIndex)
 {
     if (_trackDesignPlaceOperation == PTD_OPERATION_DRAW_OUTLINES)
     {
@@ -1172,11 +1172,11 @@ static sint32 track_design_place_maze(rct_track_td6 *td6, sint16 x, sint16 y, si
     _trackDesignPlaceZ    = 0;
     _trackDesignPlaceCost = 0;
 
-    rct_td6_maze_element *maze_element = td6->maze_elements;
+    rct_td6_maze_element * maze_element = td6->maze_elements;
     for (; maze_element->all != 0; maze_element++)
     {
         uint8    rotation = _currentTrackPieceDirection & 3;
-        rct_xy16 mapCoord = { (sint16)(maze_element->x * 32), (sint16)(maze_element->y * 32) };
+        rct_xy16 mapCoord = {(sint16) (maze_element->x * 32), (sint16) (maze_element->y * 32)};
         rotate_map_coordinates(&mapCoord.x, &mapCoord.y, rotation);
         mapCoord.x += x;
         mapCoord.y += y;
@@ -1319,8 +1319,8 @@ static sint32 track_design_place_maze(rct_track_td6 *td6, sint16 x, sint16 y, si
                 continue;
             }
 
-            rct_map_element *map_element = map_get_surface_element_at(mapCoord.x / 32, mapCoord.y / 32);
-            sint16          map_height   = map_element->base_height * 8;
+            rct_map_element * map_element = map_get_surface_element_at(mapCoord.x / 32, mapCoord.y / 32);
+            sint16          map_height    = map_element->base_height * 8;
             if (map_element->properties.surface.slope & 0xF)
             {
                 map_height += 16;
@@ -1357,7 +1357,7 @@ static sint32 track_design_place_maze(rct_track_td6 *td6, sint16 x, sint16 y, si
     return 1;
 }
 
-static bool track_design_place_ride(rct_track_td6 *td6, sint16 x, sint16 y, sint16 z, uint8 rideIndex)
+static bool track_design_place_ride(rct_track_td6 * td6, sint16 x, sint16 y, sint16 z, uint8 rideIndex)
 {
     gTrackPreviewOrigin = (rct_xyz16) {x, y, z};
     if (_trackDesignPlaceOperation == PTD_OPERATION_DRAW_OUTLINES)
@@ -1374,7 +1374,7 @@ static bool track_design_place_ride(rct_track_td6 *td6, sint16 x, sint16 y, sint
     uint8 rotation = _currentTrackPieceDirection;
 
     // Track elements
-    rct_td6_track_element *track = td6->track_elements;
+    rct_td6_track_element * track = td6->track_elements;
     for (; track->type != 0xFF; track++)
     {
         uint8 trackType = track->type;
@@ -1388,7 +1388,7 @@ static bool track_design_place_ride(rct_track_td6 *td6, sint16 x, sint16 y, sint
         switch (_trackDesignPlaceOperation)
         {
         case PTD_OPERATION_DRAW_OUTLINES:
-            for (const rct_preview_track *trackBlock = TrackBlocks[trackType]; trackBlock->index != 0xFF; trackBlock++)
+            for (const rct_preview_track * trackBlock = TrackBlocks[trackType]; trackBlock->index != 0xFF; trackBlock++)
             {
                 rct_xy16 tile = {x, y};
                 map_offset_with_rotation(&tile.x, &tile.y, trackBlock->x, trackBlock->y, rotation);
@@ -1398,10 +1398,10 @@ static bool track_design_place_ride(rct_track_td6 *td6, sint16 x, sint16 y, sint
             break;
         case PTD_OPERATION_CLEAR_OUTLINES:
         {
-            const rct_track_coordinates *trackCoordinates = &TrackCoordinates[trackType];
-            const rct_preview_track     *trackBlock       = TrackBlocks[trackType];
-            sint32                      tempZ             = z - trackCoordinates->z_begin + trackBlock->z;
-            uint8                       flags             =
+            const rct_track_coordinates * trackCoordinates = &TrackCoordinates[trackType];
+            const rct_preview_track     * trackBlock       = TrackBlocks[trackType];
+            sint32                      tempZ              = z - trackCoordinates->z_begin + trackBlock->z;
+            uint8                       flags              =
                                             GAME_COMMAND_FLAG_APPLY |
                                             GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED |
                                             GAME_COMMAND_FLAG_5 |
@@ -1414,7 +1414,7 @@ static bool track_design_place_ride(rct_track_td6 *td6, sint16 x, sint16 y, sint
         case PTD_OPERATION_4:
         case PTD_OPERATION_GET_COST:
         {
-            const rct_track_coordinates *trackCoordinates = &TrackCoordinates[trackType];
+            const rct_track_coordinates * trackCoordinates = &TrackCoordinates[trackType];
 
             //di
             sint16 tempZ = z - trackCoordinates->z_begin;
@@ -1463,8 +1463,8 @@ static bool track_design_place_ride(rct_track_td6 *td6, sint16 x, sint16 y, sint
         }
         case PTD_OPERATION_GET_PLACE_Z:
         {
-            sint32                       tempZ       = z - TrackCoordinates[trackType].z_begin;
-            for (const rct_preview_track *trackBlock = TrackBlocks[trackType]; trackBlock->index != 0xFF; trackBlock++)
+            sint32                       tempZ        = z - TrackCoordinates[trackType].z_begin;
+            for (const rct_preview_track * trackBlock = TrackBlocks[trackType]; trackBlock->index != 0xFF; trackBlock++)
             {
                 rct_xy16 tile = {x, y};
                 map_offset_with_rotation(&tile.x, &tile.y, trackBlock->x, trackBlock->y, rotation);
@@ -1473,7 +1473,7 @@ static bool track_design_place_ride(rct_track_td6 *td6, sint16 x, sint16 y, sint
                     continue;
                 }
 
-                rct_map_element *mapElement = map_get_surface_element_at(tile.x >> 5, tile.y >> 5);
+                rct_map_element * mapElement = map_get_surface_element_at(tile.x >> 5, tile.y >> 5);
                 if (mapElement == NULL)
                 {
                     return false;
@@ -1504,7 +1504,7 @@ static bool track_design_place_ride(rct_track_td6 *td6, sint16 x, sint16 y, sint
         }
         }
 
-        const rct_track_coordinates *track_coordinates = &TrackCoordinates[trackType];
+        const rct_track_coordinates * track_coordinates = &TrackCoordinates[trackType];
         map_offset_with_rotation(&x, &y, track_coordinates->x, track_coordinates->y, rotation);
         z -= track_coordinates->z_begin;
         z += track_coordinates->z_end;
@@ -1522,7 +1522,7 @@ static bool track_design_place_ride(rct_track_td6 *td6, sint16 x, sint16 y, sint
     }
 
     // Entrance elements
-    rct_td6_entrance_element *entrance = td6->entrance_elements;
+    rct_td6_entrance_element * entrance = td6->entrance_elements;
     for (; entrance->z != -1; entrance++)
     {
         rotation = _currentTrackPieceDirection & 3;
@@ -1553,11 +1553,11 @@ static bool track_design_place_ride(rct_track_td6 *td6, sint16 x, sint16 y, sint
 
             if (_trackDesignPlaceOperation != PTD_OPERATION_1)
             {
-                rct_xy16        tile         = {
-                    (sint16)(x + TileDirectionDelta[rotation].x),
-                    (sint16)(y + TileDirectionDelta[rotation].y)
+                rct_xy16        tile          = {
+                    (sint16) (x + TileDirectionDelta[rotation].x),
+                    (sint16) (y + TileDirectionDelta[rotation].y)
                 };
-                rct_map_element *map_element = map_get_first_element_at(tile.x >> 5, tile.y >> 5);
+                rct_map_element * map_element = map_get_first_element_at(tile.x >> 5, tile.y >> 5);
                 z = gTrackPreviewOrigin.z / 8;
                 z += (entrance->z == (sint8) (uint8) 0x80) ? -1 : entrance->z;
 
@@ -1651,7 +1651,7 @@ static bool track_design_place_ride(rct_track_td6 *td6, sint16 x, sint16 y, sint
 * bl == 6, Clear white outlined track.
 *  rct2: 0x006D01B3
 */
-sint32 place_virtual_track(rct_track_td6 *td6, uint8 ptdOperation, bool placeScenery, uint8 rideIndex, sint16 x, sint16 y, sint16 z)
+sint32 place_virtual_track(rct_track_td6 * td6, uint8 ptdOperation, bool placeScenery, uint8 rideIndex, sint16 x, sint16 y, sint16 z)
 {
     // Previously byte_F4414E was cleared here
     _trackDesignPlaceStatePlaceScenery       = placeScenery;
@@ -1681,7 +1681,7 @@ sint32 place_virtual_track(rct_track_td6 *td6, uint8 ptdOperation, bool placeSce
     }
 
     // Scenery elements
-    rct_td6_scenery_element *scenery = td6->scenery_elements;
+    rct_td6_scenery_element * scenery = td6->scenery_elements;
     if (track_place_success && scenery != NULL)
     {
         if (!track_design_place_scenery(
@@ -1720,7 +1720,7 @@ sint32 place_virtual_track(rct_track_td6 *td6, uint8 ptdOperation, bool placeSce
  * ebx = ride_id
  * cost = edi
  */
-static bool track_design_place_preview(rct_track_td6 *td6, money32 *cost, uint8 *rideId, uint8 *flags)
+static bool track_design_place_preview(rct_track_td6 * td6, money32 * cost, uint8 * rideId, uint8 * flags)
 {
     *flags                = 0;
 
@@ -1738,7 +1738,7 @@ static bool track_design_place_preview(rct_track_td6 *td6, money32 *cost, uint8 
         return false;
     }
 
-    rct_ride      *ride         = get_ride(rideIndex);
+    rct_ride      * ride        = get_ride(rideIndex);
     rct_string_id new_ride_name = user_string_allocate(USER_STRING_HIGH_ID_NUMBER | USER_STRING_DUPLICATION_PERMITTED,
                                                        "");
     if (new_ride_name != 0)
@@ -1810,7 +1810,7 @@ static bool track_design_place_preview(rct_track_td6 *td6, money32 *cost, uint8 
     }
 }
 
-static money32 place_track_design(sint16 x, sint16 y, sint16 z, uint8 flags, uint8 *outRideIndex)
+static money32 place_track_design(sint16 x, sint16 y, sint16 z, uint8 flags, uint8 * outRideIndex)
 {
     *outRideIndex = 255;
 
@@ -1827,12 +1827,12 @@ static money32 place_track_design(sint16 x, sint16 y, sint16 z, uint8 flags, uin
         }
     }
 
-    rct_track_td6 *td6 = gActiveTrackDesign;
+    rct_track_td6 * td6 = gActiveTrackDesign;
     if (td6 == NULL)
     {
         return MONEY32_UNDEFINED;
     }
-    rct_object_entry *rideEntryObject = &td6->vehicle_object;
+    rct_object_entry * rideEntryObject = &td6->vehicle_object;
 
     uint8 entryType, entryIndex;
     if (!find_object_in_entry_group(rideEntryObject, &entryType, &entryIndex))
@@ -1848,15 +1848,15 @@ static money32 place_track_design(sint16 x, sint16 y, sint16 z, uint8 flags, uin
     // The rest of the cases are handled by the code in ride_create()
     if (ride_type_has_ride_groups(td6->type) && entryIndex == 0xFF)
     {
-        const ObjectRepositoryItem *ori = object_repository_find_object_by_name(rideEntryObject->name);
+        const ObjectRepositoryItem * ori = object_repository_find_object_by_name(rideEntryObject->name);
         if (ori != NULL)
         {
             uint8          rideGroupIndex = ori->RideGroupIndex;
-            ride_group     *td6RideGroup  = ride_group_find(td6->type, rideGroupIndex);
-            rct_ride_entry *ire;
+            ride_group     * td6RideGroup = ride_group_find(td6->type, rideGroupIndex);
+            rct_ride_entry * ire;
 
-            uint8      *availableRideEntries = get_ride_entry_indices_for_ride_type(td6->type);
-            for (uint8 *rei                  = availableRideEntries; *rei != RIDE_ENTRY_INDEX_NULL; rei++)
+            uint8      * availableRideEntries = get_ride_entry_indices_for_ride_type(td6->type);
+            for (uint8 * rei                  = availableRideEntries; *rei != RIDE_ENTRY_INDEX_NULL; rei++)
             {
                 ire = get_ride_entry(*rei);
 
@@ -1865,7 +1865,7 @@ static money32 place_track_design(sint16 x, sint16 y, sint16 z, uint8 flags, uin
                     continue;
                 }
 
-                const ride_group *irg = get_ride_group(td6->type, ire);
+                const ride_group * irg = get_ride_group(td6->type, ire);
                 if (ride_groups_are_equal(td6RideGroup, irg))
                 {
                     entryIndex = *rei;
@@ -1877,8 +1877,8 @@ static money32 place_track_design(sint16 x, sint16 y, sint16 z, uint8 flags, uin
 
     uint8   rideIndex;
     uint8   rideColour;
-    money32 createRideResult          = ride_create_command(td6->type, entryIndex, GAME_COMMAND_FLAG_APPLY, &rideIndex,
-                                                            &rideColour);
+    money32 createRideResult           = ride_create_command(td6->type, entryIndex, GAME_COMMAND_FLAG_APPLY, &rideIndex,
+                                                             &rideColour);
     if (createRideResult == MONEY32_UNDEFINED)
     {
         gGameCommandErrorTitle  = STR_CANT_CREATE_NEW_RIDE_ATTRACTION;
@@ -1886,7 +1886,7 @@ static money32 place_track_design(sint16 x, sint16 y, sint16 z, uint8 flags, uin
         return MONEY32_UNDEFINED;
     }
 
-    rct_ride *ride = get_ride(rideIndex);
+    rct_ride * ride = get_ride(rideIndex);
     if (ride->type == RIDE_TYPE_NULL)
     {
         log_warning("Invalid game command for track placement, ride id = %d", rideIndex);
@@ -2032,8 +2032,8 @@ static money32 place_maze_design(uint8 flags, uint8 rideIndex, uint16 mazeEntry,
     // Check support height
     if (!gCheatsDisableSupportLimits)
     {
-        rct_map_element *mapElement = map_get_surface_element_at(x >> 5, y >> 5);
-        uint8           supportZ    = (z + 32) >> 3;
+        rct_map_element * mapElement = map_get_surface_element_at(x >> 5, y >> 5);
+        uint8           supportZ     = (z + 32) >> 3;
         if (supportZ > mapElement->base_height)
         {
             uint8 supportHeight    = (supportZ - mapElement->base_height) / 2;
@@ -2073,7 +2073,7 @@ static money32 place_maze_design(uint8 flags, uint8 rideIndex, uint16 mazeEntry,
         }
     }
 
-    rct_ride *ride = get_ride(rideIndex);
+    rct_ride * ride = get_ride(rideIndex);
 
     // Calculate price
     money32 price = 0;
@@ -2097,10 +2097,10 @@ static money32 place_maze_design(uint8 flags, uint8 rideIndex, uint16 mazeEntry,
         }
 
         // Place track element
-        sint32          fx          = floor2(x, 32);
-        sint32          fy          = floor2(y, 32);
-        sint32          fz          = z >> 3;
-        rct_map_element *mapElement = map_element_insert(fx >> 5, fy >> 5, fz, 15);
+        sint32          fx           = floor2(x, 32);
+        sint32          fy           = floor2(y, 32);
+        sint32          fz           = z >> 3;
+        rct_map_element * mapElement = map_element_insert(fx >> 5, fy >> 5, fz, 15);
         mapElement->clearance_height            = fz + 4;
         mapElement->type                        = MAP_ELEMENT_TYPE_TRACK;
         mapElement->properties.track.type       = TRACK_ELEM_MAZE;
@@ -2130,8 +2130,8 @@ static money32 place_maze_design(uint8 flags, uint8 rideIndex, uint16 mazeEntry,
  *
  *  rct2: 0x006D13FE
  */
-void game_command_place_track_design(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *edx, sint32 *esi, sint32 *edi,
-                                     sint32 *ebp)
+void game_command_place_track_design(sint32 * eax, sint32 * ebx, sint32 * ecx, sint32 * edx, sint32 * esi, sint32 * edi,
+                                     sint32 * ebp)
 {
     sint16 x     = *eax & 0xFFFF;
     sint16 y     = *ecx & 0xFFFF;
@@ -2146,8 +2146,8 @@ void game_command_place_track_design(sint32 *eax, sint32 *ebx, sint32 *ecx, sint
  *
  *  rct2: 0x006CDEE4
  */
-void game_command_place_maze_design(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *edx, sint32 *esi, sint32 *edi,
-                                    sint32 *ebp)
+void game_command_place_maze_design(sint32 * eax, sint32 * ebx, sint32 * ecx, sint32 * edx, sint32 * esi, sint32 * edi,
+                                    sint32 * ebp)
 {
     *ebx = place_maze_design(
         *ebx & 0xFF,
@@ -2165,10 +2165,10 @@ void game_command_place_maze_design(sint32 *eax, sint32 *ebx, sint32 *ecx, sint3
  *
  *  rct2: 0x006D1EF0
  */
-void track_design_draw_preview(rct_track_td6 *td6, uint8 *pixels)
+void track_design_draw_preview(rct_track_td6 * td6, uint8 * pixels)
 {
     // Make a copy of the map
-    map_backup *mapBackup = track_design_preview_backup_map();
+    map_backup * mapBackup = track_design_preview_backup_map();
     if (mapBackup == NULL)
     {
         return;
@@ -2270,9 +2270,9 @@ void track_design_draw_preview(rct_track_td6 *td6, uint8 *pixels)
  * design preview.
  *  rct2: 0x006D1C68
  */
-static map_backup *track_design_preview_backup_map()
+static map_backup * track_design_preview_backup_map()
 {
-    map_backup * backup = (map_backup *)malloc(sizeof(map_backup));
+    map_backup * backup = (map_backup *) malloc(sizeof(map_backup));
     if (backup != NULL)
     {
         memcpy(
@@ -2298,7 +2298,7 @@ static map_backup *track_design_preview_backup_map()
  * Restores the map from a backup.
  *  rct2: 0x006D2378
  */
-static void track_design_preview_restore_map(map_backup *backup)
+static void track_design_preview_restore_map(map_backup * backup)
 {
     memcpy(
         gMapElements,
@@ -2333,7 +2333,7 @@ static void track_design_preview_clear_map()
 
     for (sint32 i = 0; i < MAX_TILE_MAP_ELEMENT_POINTERS; i++)
     {
-        rct_map_element *map_element = &gMapElements[i];
+        rct_map_element * map_element = &gMapElements[i];
         map_element->type                            = MAP_ELEMENT_TYPE_SURFACE;
         map_element->flags                           = MAP_ELEMENT_FLAG_LAST_TILE;
         map_element->base_height                     = 2;
