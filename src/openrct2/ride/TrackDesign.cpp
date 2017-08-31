@@ -192,13 +192,13 @@ static rct_track_td6 * track_design_open_from_td4(uint8 * src, size_t srcLength)
     {
         const char * name = RCT1::GetRideTypeObject(td4->type);
         assert(name != NULL);
-        memcpy(vehicleObject.name, name, Math::Min(String::SizeOf(name), 8UL));
+        memcpy(vehicleObject.name, name, Math::Min(String::SizeOf(name), (size_t)8));
     }
     else
     {
         const char * name = RCT1::GetVehicleObject(td4->vehicle_type);
         assert(name != NULL);
-        memcpy(vehicleObject.name, name, Math::Min(String::SizeOf(name), 8UL));
+        memcpy(vehicleObject.name, name, Math::Min(String::SizeOf(name), (size_t)8));
     }
     memcpy(&td6->vehicle_object, &vehicleObject, sizeof(rct_object_entry));
     td6->vehicle_type = td4->vehicle_type;
