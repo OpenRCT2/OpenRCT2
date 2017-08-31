@@ -52,6 +52,7 @@ private:
 
     struct FileIndexHeader
     {
+        uint32          HeaderSize = sizeof(FileIndexHeader);
         uint32          MagicNumber = 0;
         uint8           VersionA = 0;
         uint8           VersionB = 0;
@@ -211,7 +212,8 @@ private:
 
             // Read header, check if we need to re-scan
             auto header = fs.ReadValue<FileIndexHeader>();
-            if (header.MagicNumber == _magicNumber &&
+            if (header.HeaderSize == sizeof(FileIndexHeader) &&
+                header.MagicNumber == _magicNumber &&
                 header.VersionA == FILE_INDEX_VERSION &&
                 header.VersionB == _version &&
                 header.LanguageId == gCurrentLanguage &&
@@ -248,7 +250,7 @@ private:
             auto fs = FileStream(_indexPath, FILE_MODE_WRITE);
     
             // Write header
-            FileIndexHeader header = { 0 };
+            FileIndexHeader header;
             header.MagicNumber = _magicNumber;
             header.VersionA = FILE_INDEX_VERSION;
             header.VersionB = _version;
