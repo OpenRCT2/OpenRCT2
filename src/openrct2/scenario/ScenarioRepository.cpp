@@ -150,13 +150,13 @@ public:
         std::string rct1dir = _env->GetDirectoryPath(DIRBASE::RCT1, DIRID::SCENARIO);
         std::string rct2dir = _env->GetDirectoryPath(DIRBASE::RCT2, DIRID::SCENARIO);
         std::string openrct2dir = _env->GetDirectoryPath(DIRBASE::USER, DIRID::SCENARIO);
-        std::string mpdatdir = _env->GetFilePath(PATHID::MP_DAT);
+        std::string rct1datdir = _env->GetDirectoryPath(DIRBASE::RCT1, DIRID::DATA);
 
         Scan(rct1dir);
         Scan(rct2dir);
         Scan(openrct2dir);
 
-        ConvertMegaPark(mpdatdir, openrct2dir);
+        ConvertMegaPark(rct1datdir, openrct2dir);
 
         Sort();
         LoadScores();
@@ -276,13 +276,14 @@ private:
         delete scanner;
     }
 
-    void ConvertMegaPark(std::string &mpdatDir, std::string &scenarioDir)
+    void ConvertMegaPark(std::string &rct1datDir, std::string &scenarioDir)
     {
         //Convert mp.dat from RCT1 Data directory into SC21.SC4 (Mega Park)
         utf8 mpdatPath[MAX_PATH];
         utf8 sc21Path[MAX_PATH];
 
-        String::Set(mpdatPath, sizeof(mpdatPath), mpdatDir.c_str());
+        String::Set(mpdatPath, sizeof(mpdatPath), rct1datDir.c_str());
+        Path::Append(mpdatPath, sizeof(mpdatPath), "mp.dat");
 
         if (platform_file_exists(mpdatPath))
         {
