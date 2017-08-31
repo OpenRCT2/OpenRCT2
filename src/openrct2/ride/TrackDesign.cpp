@@ -186,8 +186,10 @@ static rct_track_td6 * track_design_open_from_td4(uint8 * src, size_t srcLength)
         td6->ride_mode = RIDE_MODE_POWERED_LAUNCH;
     }
 
-    // Convert RCT1 vehicle type to RCT2 vehicle type. Intial
-    rct_object_entry vehicleObject = {0x80, {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '}, 0};
+    // Convert RCT1 vehicle type to RCT2 vehicle type. Intialise with an string consisting of 8 spaces (and no nul terminator).
+    char emptyDatName[9] = "        ";
+    rct_object_entry vehicleObject = {0x80, "", 0};
+    memcpy(vehicleObject.name, emptyDatName, 8);
     if (td4->type == RIDE_TYPE_MAZE)
     {
         const char * name = RCT1::GetRideTypeObject(td4->type);
