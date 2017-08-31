@@ -285,7 +285,7 @@ void lightfx_prepare_light_list()
                     dpi->zoom_level = _viewportDpi1.zoom;
                     dpi->height = 1;
                     dpi->width = 1;
-                    gEndOfPaintStructArray = 0xF1A4CC;
+                    gPaintSession.EndOfPaintStructArray = 0xF1A4CC;
                     unk_140E9A8 = dpi;
                     painter_setup();
                     viewport_paint_setup();

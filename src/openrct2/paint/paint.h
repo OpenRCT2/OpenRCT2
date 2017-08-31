@@ -91,9 +91,6 @@ struct paint_struct {
 assert_struct_size(paint_struct, 0x34);
 #endif
 
-extern paint_struct * g_ps_F1AD28;
-extern attached_paint_struct * g_aps_F1AD2C;
-
 typedef struct paint_string_struct paint_string_struct;
 
 /* size 0x1E */
@@ -133,11 +130,36 @@ typedef struct support_height {
     uint8 pad;
 } support_height;
 
+#define MAX_PAINT_QUADRANTS 512
+
+typedef struct paint_session
+{
+    rct_drawpixelinfo *     Unk140E9A8;
+    paint_entry             PaintStructs[4000];
+    paint_struct *          Quadrants[MAX_PAINT_QUADRANTS];
+    uint32                  QuadrantBackIndex;
+    uint32                  QuadrantFrontIndex;
+    void *                  CurrentlyDrawnItem;
+    paint_entry *           EndOfPaintStructArray;
+    paint_entry *           NextFreePaintStruct;
+    rct_xy16                SpritePosition;
+    paint_struct            UnkF1A4CC;
+    paint_struct *          UnkF1AD28;
+    attached_paint_struct * UnkF1AD2C;
+    uint8                   InteractionType;
+    support_height          SupportSegments[9];
+    support_height          Support;
+    paint_string_struct *   PSStringHead;
+    paint_string_struct *   LastPSString;
+    paint_struct *          WoodenSupportsPrependTo;
+    rct_xy16                MapPosition;
+} paint_session;
+
+extern paint_session gPaintSession;
+
 #ifdef NO_RCT2
 extern void *g_currently_drawn_item;
-extern paint_entry * gEndOfPaintStructArray;
 extern rct_xy16 gPaintSpritePosition;
-extern paint_entry gPaintStructs[4000];
 #else
 #define gPaintStructs RCT2_ADDRESS(0x00EE788C, paint_entry)
 #define g_currently_drawn_item  RCT2_GLOBAL(0x009DE578, void*)
@@ -154,8 +176,6 @@ extern uint8 gPaintInteractionType;
 extern support_height gSupportSegments[9];
 extern support_height gSupport;
 #endif
-
-extern paint_string_struct * gPaintPSStringHead;
 
 /** rct2: 0x00993CC4 */
 extern const uint32 construction_markers[];

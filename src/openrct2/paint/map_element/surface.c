@@ -446,7 +446,7 @@ static void viewport_surface_smoothen_edge(enum edge_t edge, struct tile_descrip
     uint32 image_id = maskImageBase + byte_97B444[self.slope];
 
     if (paint_attach_to_previous_ps(image_id, 0, 0)) {
-        attached_paint_struct * out = g_aps_F1AD2C;
+        attached_paint_struct * out = gPaintSession.UnkF1AD2C;
         // set content and enable masking
         out->colour_image_id = dword_97B804[neighbour.terrain] + cl;
         out->flags |= PAINT_STRUCT_FLAG_IS_MASKED;
@@ -1194,10 +1194,10 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
             paint_attach_to_previous_ps(SPR_TERRAIN_SELECTION_SQUARE + byte_97B444[surfaceShape], 0, 0);
         } else if (mapElement->properties.surface.ownership & OWNERSHIP_AVAILABLE) {
             rct_xy16 pos = {gPaintMapPosition.x, gPaintMapPosition.y};
-            paint_struct * backup = g_ps_F1AD28;
+            paint_struct * backup = gPaintSession.UnkF1AD28;
             sint32 height2 = (map_element_height(pos.x + 16, pos.y + 16) & 0xFFFF) + 3;
             sub_98196C(SPR_LAND_OWNERSHIP_AVAILABLE, 16, 16, 1, 1, 0, height2, rotation);
-            g_ps_F1AD28 = backup;
+            gPaintSession.UnkF1AD28 = backup;
         }
     }
 
@@ -1207,11 +1207,11 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
             assert(surfaceShape < countof(byte_97B444));
             paint_attach_to_previous_ps(SPR_TERRAIN_SELECTION_DOTTED + byte_97B444[surfaceShape], 0, 0);
         } else if (mapElement->properties.surface.ownership & OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE) {
-            paint_struct * backup = g_ps_F1AD28;
+            paint_struct * backup = gPaintSession.UnkF1AD28;
             rct_xy16 pos = {gPaintMapPosition.x, gPaintMapPosition.y};
             sint32 height2 = map_element_height(pos.x + 16, pos.y + 16) & 0xFFFF;
             sub_98196C(SPR_LAND_CONSTRUCTION_RIGHTS_AVAILABLE, 16, 16, 1, 1, 0, height2 + 3, rotation);
-            g_ps_F1AD28 = backup;
+            gPaintSession.UnkF1AD28 = backup;
         }
     }
 
@@ -1276,9 +1276,9 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
 
                 sint32 image_id = (SPR_TERRAIN_SELECTION_CORNER + byte_97B444[local_surfaceShape]) | 0x21300000;
 
-                paint_struct * backup = g_ps_F1AD28;
+                paint_struct * backup = gPaintSession.UnkF1AD28;
                 sub_98196C(image_id, 0, 0, 32, 32, 1, local_height, rotation);
-                g_ps_F1AD28 = backup;
+                gPaintSession.UnkF1AD28 = backup;
             }
         }
     }

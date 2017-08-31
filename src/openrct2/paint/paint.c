@@ -31,23 +31,11 @@ const uint32 construction_markers[] = {
     PALETTE_DARKEN_2 << 19 | IMAGE_TYPE_TRANSPARENT, // Translucent
 };
 
-paint_struct * g_ps_F1AD28;
-attached_paint_struct * g_aps_F1AD2C;
-
-paint_string_struct * gPaintPSStringHead;
-static paint_string_struct * _paintLastPSString;
-
-#define MAX_PAINT_QUADRANTS (512)
+paint_session gPaintSession;
 
 #ifdef NO_RCT2
-paint_entry gPaintStructs[4000];
-static uint32 _paintQuadrantBackIndex;
-static uint32 _paintQuadrantFrontIndex;
-static paint_struct *_paintQuadrants[MAX_PAINT_QUADRANTS];
 void *g_currently_drawn_item;
-paint_entry * gEndOfPaintStructArray;
 rct_xy16 gPaintSpritePosition;
-paint_struct gUnkF1A4CC;
 uint8 gPaintInteractionType;
 support_height gSupportSegments[9] = { 0 };
 support_height gSupport;
@@ -81,46 +69,51 @@ static void paint_ps_image_with_bounding_boxes(rct_drawpixelinfo * dpi, paint_st
 static void paint_ps_image(rct_drawpixelinfo * dpi, paint_struct * ps, uint32 imageId, sint16 x, sint16 y);
 static uint32 paint_ps_colourify_image(uint32 imageId, uint8 spriteType, uint32 viewFlags);
 
+static void paint_session_init(paint_session * session, rct_drawpixelinfo * dpi)
+{
+    memset(session, 0, sizeof(paint_session));
+    session->Unk140E9A8 = dpi;
+    session->EndOfPaintStructArray = &session->PaintStructs[4000 - 1];
+    session->NextFreePaintStruct = session->PaintStructs;
+    session->UnkF1AD28 = NULL;
+    session->UnkF1AD2C = NULL;
+    for (sint32 i = 0; i < MAX_PAINT_QUADRANTS; i++) {
+        session->Quadrants[i] = NULL;
+    }
+    session->QuadrantBackIndex = -1;
+    session->QuadrantFrontIndex = 0;
+    session->PSStringHead = NULL;
+    session->LastPSString = NULL;
+    session->WoodenSupportsPrependTo = NULL;
+}
+
 /**
  *
  *  rct2: 0x0068615B
  */
 void paint_init(rct_drawpixelinfo * dpi)
 {
-    unk_140E9A8 = dpi;
-    gEndOfPaintStructArray = &gPaintStructs[4000 - 1];
-    gNextFreePaintStruct = gPaintStructs;
-    g_ps_F1AD28 = NULL;
-    g_aps_F1AD2C = NULL;
-    for (sint32 i = 0; i < 512; i++) {
-        _paintQuadrants[i] = NULL;
-    }
-    _paintQuadrantBackIndex = -1;
-    _paintQuadrantFrontIndex = 0;
-    gPaintPSStringHead = NULL;
-    _paintLastPSString = NULL;
-    gWoodenSupportsPrependTo = NULL;
+    paint_session_init(&gPaintSession, dpi);
 }
 
-static void paint_add_ps_to_quadrant(paint_struct * ps, sint32 positionHash)
+static void paint_session_add_ps_to_quadrant(paint_session * session, paint_struct * ps, sint32 positionHash)
 {
     uint32 paintQuadrantIndex = clamp(0, positionHash / 32, MAX_PAINT_QUADRANTS - 1);
-
     ps->quadrant_index = paintQuadrantIndex;
-    ps->next_quadrant_ps = _paintQuadrants[paintQuadrantIndex];
-    _paintQuadrants[paintQuadrantIndex] = ps;
+    ps->next_quadrant_ps = session->Quadrants[paintQuadrantIndex];
+    session->Quadrants[paintQuadrantIndex] = ps;
 
-    _paintQuadrantBackIndex = min(_paintQuadrantBackIndex, paintQuadrantIndex);
-    _paintQuadrantFrontIndex = max(_paintQuadrantFrontIndex, paintQuadrantIndex);
+    session->QuadrantBackIndex = min(session->QuadrantBackIndex, paintQuadrantIndex);
+    session->QuadrantFrontIndex = max(session->QuadrantFrontIndex, paintQuadrantIndex);
 }
 
 /**
  * Extracted from 0x0098196c, 0x0098197c, 0x0098198c, 0x0098199c
  */
-static paint_struct * sub_9819_c(uint32 image_id, rct_xyz16 offset, rct_xyz16 boundBoxSize, rct_xyz16 boundBoxOffset, uint8 rotation)
+static paint_struct * sub_9819_c(paint_session * session, uint32 image_id, rct_xyz16 offset, rct_xyz16 boundBoxSize, rct_xyz16 boundBoxOffset, uint8 rotation)
 {
-    if (gNextFreePaintStruct >= gEndOfPaintStructArray) return NULL;
-    paint_struct * ps = &gNextFreePaintStruct->basic;
+    if (session->NextFreePaintStruct >= session->EndOfPaintStructArray) return NULL;
+    paint_struct * ps = &session->NextFreePaintStruct->basic;
 
     ps->image_id = image_id;
 
@@ -141,8 +134,8 @@ static paint_struct * sub_9819_c(uint32 image_id, rct_xyz16 offset, rct_xyz16 bo
             rotate_map_coordinates(&offset.x, &offset.y, 1);
             break;
     }
-    offset.x += gPaintSpritePosition.x;
-    offset.y += gPaintSpritePosition.y;
+    offset.x += session->SpritePosition.x;
+    offset.y += session->SpritePosition.y;
 
     rct_xy16 map = coordinate_3d_to_2d(&offset, rotation);
 
@@ -187,20 +180,20 @@ static paint_struct * sub_9819_c(uint32 image_id, rct_xyz16 offset, rct_xyz16 bo
             break;
     }
 
-    ps->bound_box_x_end = boundBoxSize.x + boundBoxOffset.x + gPaintSpritePosition.x;
+    ps->bound_box_x_end = boundBoxSize.x + boundBoxOffset.x + session->SpritePosition.x;
     ps->bound_box_z = boundBoxOffset.z;
     ps->bound_box_z_end = boundBoxOffset.z + boundBoxSize.z;
-    ps->bound_box_y_end = boundBoxSize.y + boundBoxOffset.y + gPaintSpritePosition.y;
+    ps->bound_box_y_end = boundBoxSize.y + boundBoxOffset.y + session->SpritePosition.y;
     ps->flags = 0;
-    ps->bound_box_x = boundBoxOffset.x + gPaintSpritePosition.x;
-    ps->bound_box_y = boundBoxOffset.y + gPaintSpritePosition.y;
+    ps->bound_box_x = boundBoxOffset.x + session->SpritePosition.x;
+    ps->bound_box_y = boundBoxOffset.y + session->SpritePosition.y;
     ps->attached_ps = NULL;
     ps->var_20 = NULL;
-    ps->sprite_type = gPaintInteractionType;
+    ps->sprite_type = session->InteractionType;
     ps->var_29 = 0;
-    ps->map_x = gPaintMapPosition.x;
-    ps->map_y = gPaintMapPosition.y;
-    ps->mapElement = g_currently_drawn_item;
+    ps->map_x = session->MapPosition.x;
+    ps->map_y = session->MapPosition.y;
+    ps->mapElement = session->CurrentlyDrawnItem;
 
     return ps;
 }
@@ -228,14 +221,16 @@ paint_struct * sub_98196C(
     assert((uint16) bound_box_length_x == (sint16) bound_box_length_x);
     assert((uint16) bound_box_length_y == (sint16) bound_box_length_y);
 
-    g_ps_F1AD28 = 0;
-    g_aps_F1AD2C = NULL;
+    paint_session * session = &gPaintSession;
 
-    if (gNextFreePaintStruct >= gEndOfPaintStructArray) {
+    session->UnkF1AD28 = 0;
+    session->UnkF1AD2C = NULL;
+
+    if (session->NextFreePaintStruct >= session->EndOfPaintStructArray) {
         return NULL;
     }
 
-    paint_struct *ps = &gNextFreePaintStruct->basic;
+    paint_struct *ps = &session->NextFreePaintStruct->basic;
     ps->image_id = image_id;
 
     uint32 image_element = image_id & 0x7FFFF;
@@ -282,8 +277,8 @@ paint_struct * sub_98196C(
             break;
     }
 
-    coord_3d.x += gPaintSpritePosition.x;
-    coord_3d.y += gPaintSpritePosition.y;
+    coord_3d.x += session->SpritePosition.x;
+    coord_3d.y += session->SpritePosition.y;
 
     ps->bound_box_x_end = coord_3d.x + boundBox.x;
     ps->bound_box_y_end = coord_3d.y + boundBox.y;
@@ -315,13 +310,13 @@ paint_struct * sub_98196C(
     ps->bound_box_y = coord_3d.y;
     ps->attached_ps = NULL;
     ps->var_20 = NULL;
-    ps->sprite_type = gPaintInteractionType;
+    ps->sprite_type = session->InteractionType;
     ps->var_29 = 0;
-    ps->map_x = gPaintMapPosition.x;
-    ps->map_y = gPaintMapPosition.y;
+    ps->map_x = session->MapPosition.x;
+    ps->map_y = session->MapPosition.y;
     ps->mapElement = g_currently_drawn_item;
 
-    g_ps_F1AD28 = ps;
+    session->UnkF1AD28 = ps;
 
     sint32 positionHash = 0;
     switch (rotation) {
@@ -338,9 +333,9 @@ paint_struct * sub_98196C(
         positionHash = coord_3d.x - coord_3d.y + 0x2000;
         break;
     }
-    paint_add_ps_to_quadrant(ps, positionHash);
+    paint_session_add_ps_to_quadrant(session, ps, positionHash);
 
-    gNextFreePaintStruct++;
+    session->NextFreePaintStruct++;
 
     return ps;
 }
@@ -369,19 +364,21 @@ paint_struct * sub_98197C(
     sint16 bound_box_offset_x, sint16 bound_box_offset_y, sint16 bound_box_offset_z,
     uint32 rotation
 ) {
-    g_ps_F1AD28 = 0;
-    g_aps_F1AD2C = NULL;
+    paint_session * session = &gPaintSession;
+
+    session->UnkF1AD28 = 0;
+    session->UnkF1AD2C = NULL;
 
     rct_xyz16 offset = {.x = x_offset, .y = y_offset, .z = z_offset};
     rct_xyz16 boundBoxSize = {.x = bound_box_length_x, .y = bound_box_length_y, .z = bound_box_length_z};
     rct_xyz16 boundBoxOffset = {.x = bound_box_offset_x, .y = bound_box_offset_y, .z = bound_box_offset_z};
-    paint_struct * ps = sub_9819_c(image_id, offset, boundBoxSize, boundBoxOffset, rotation);
+    paint_struct * ps = sub_9819_c(session, image_id, offset, boundBoxSize, boundBoxOffset, rotation);
 
     if (ps == NULL) {
         return NULL;
     }
 
-    g_ps_F1AD28 = ps;
+    session->UnkF1AD28 = ps;
 
     rct_xy16 attach = {
         .x = ps->bound_box_x,
@@ -402,9 +399,9 @@ paint_struct * sub_98197C(
     }
 
     sint32 positionHash = attach.x + attach.y;
-    paint_add_ps_to_quadrant(ps, positionHash);
+    paint_session_add_ps_to_quadrant(session, ps, positionHash);
 
-    gNextFreePaintStruct++;
+    session->NextFreePaintStruct++;
     return ps;
 }
 
@@ -436,20 +433,21 @@ paint_struct * sub_98198C(
     assert((uint16) bound_box_length_x == (sint16) bound_box_length_x);
     assert((uint16) bound_box_length_y == (sint16) bound_box_length_y);
 
-    g_ps_F1AD28 = 0;
-    g_aps_F1AD2C = NULL;
+    paint_session * session = &gPaintSession;
+    session->UnkF1AD28 = 0;
+    session->UnkF1AD2C = NULL;
 
     rct_xyz16 offset = {.x = x_offset, .y = y_offset, .z = z_offset};
     rct_xyz16 boundBoxSize = {.x = bound_box_length_x, .y = bound_box_length_y, .z = bound_box_length_z};
     rct_xyz16 boundBoxOffset = {.x = bound_box_offset_x, .y = bound_box_offset_y, .z = bound_box_offset_z};
-    paint_struct * ps = sub_9819_c(image_id, offset, boundBoxSize, boundBoxOffset, rotation);
+    paint_struct * ps = sub_9819_c(session, image_id, offset, boundBoxSize, boundBoxOffset, rotation);
 
     if (ps == NULL) {
         return NULL;
     }
 
-    g_ps_F1AD28 = ps;
-    gNextFreePaintStruct++;
+    session->UnkF1AD28 = ps;
+    session->NextFreePaintStruct++;
     return ps;
 }
 
@@ -481,7 +479,9 @@ paint_struct * sub_98199C(
     assert((uint16) bound_box_length_x == (sint16) bound_box_length_x);
     assert((uint16) bound_box_length_y == (sint16) bound_box_length_y);
 
-    if (g_ps_F1AD28 == NULL) {
+    paint_session * session = &gPaintSession;
+
+    if (session->UnkF1AD28 == NULL) {
         return sub_98197C(
             image_id,
             x_offset, y_offset,
@@ -495,17 +495,17 @@ paint_struct * sub_98199C(
     rct_xyz16 offset = {.x = x_offset, .y = y_offset, .z = z_offset};
     rct_xyz16 boundBox = {.x = bound_box_length_x, .y = bound_box_length_y, .z = bound_box_length_z};
     rct_xyz16 boundBoxOffset = {.x = bound_box_offset_x, .y = bound_box_offset_y, .z = bound_box_offset_z};
-    paint_struct * ps = sub_9819_c(image_id, offset, boundBox, boundBoxOffset, rotation);
+    paint_struct * ps = sub_9819_c(session, image_id, offset, boundBox, boundBoxOffset, rotation);
 
     if (ps == NULL) {
         return NULL;
     }
 
-    paint_struct *old_ps = g_ps_F1AD28;
+    paint_struct *old_ps = session->UnkF1AD28;
     old_ps->var_20 = ps;
 
-    g_ps_F1AD28 = ps;
-    gNextFreePaintStruct++;
+    session->UnkF1AD28 = ps;
+    session->NextFreePaintStruct++;
     return ps;
 }
 
@@ -519,27 +519,29 @@ paint_struct * sub_98199C(
  */
 bool paint_attach_to_previous_attach(uint32 image_id, uint16 x, uint16 y)
 {
-    if (g_aps_F1AD2C == NULL) {
+    paint_session * session = &gPaintSession;
+
+    if (session->UnkF1AD2C == NULL) {
         return paint_attach_to_previous_ps(image_id, x, y);
     }
 
-    if (gNextFreePaintStruct >= gEndOfPaintStructArray) {
+    if (session->NextFreePaintStruct >= session->EndOfPaintStructArray) {
         return false;
     }
-    attached_paint_struct * ps = &gNextFreePaintStruct->attached;
+    attached_paint_struct * ps = &session->NextFreePaintStruct->attached;
     ps->image_id = image_id;
     ps->x = x;
     ps->y = y;
     ps->flags = 0;
 
-    attached_paint_struct * ebx = g_aps_F1AD2C;
+    attached_paint_struct * ebx = session->UnkF1AD2C;
 
     ps->next = NULL;
     ebx->next = ps;
 
-    g_aps_F1AD2C = ps;
+    session->UnkF1AD2C = ps;
 
-    gNextFreePaintStruct++;
+    session->NextFreePaintStruct++;
 
     return true;
 }
@@ -554,29 +556,31 @@ bool paint_attach_to_previous_attach(uint32 image_id, uint16 x, uint16 y)
  */
 bool paint_attach_to_previous_ps(uint32 image_id, uint16 x, uint16 y)
 {
-    if (gNextFreePaintStruct >= gEndOfPaintStructArray) {
+    paint_session * session = &gPaintSession;
+
+    if (session->NextFreePaintStruct >= session->EndOfPaintStructArray) {
         return false;
     }
-    attached_paint_struct * ps = &gNextFreePaintStruct->attached;
+    attached_paint_struct * ps = &session->NextFreePaintStruct->attached;
 
     ps->image_id = image_id;
     ps->x = x;
     ps->y = y;
     ps->flags = 0;
 
-    paint_struct * masterPs = g_ps_F1AD28;
+    paint_struct * masterPs = session->UnkF1AD28;
     if (masterPs == NULL) {
         return false;
     }
 
-    gNextFreePaintStruct++;
+    session->NextFreePaintStruct++;
 
     attached_paint_struct * oldFirstAttached = masterPs->attached_ps;
     masterPs->attached_ps = ps;
 
     ps->next = oldFirstAttached;
 
-    g_aps_F1AD2C = ps;
+    session->UnkF1AD2C = ps;
 
     return true;
 }
@@ -593,10 +597,12 @@ bool paint_attach_to_previous_ps(uint32 image_id, uint16 x, uint16 y)
  */
 void paint_floating_money_effect(money32 amount, rct_string_id string_id, sint16 y, sint16 z, sint8 y_offsets[], sint16 offset_x, uint32 rotation)
 {
-    if (gNextFreePaintStruct >= gEndOfPaintStructArray) {
+    paint_session * session = &gPaintSession;
+
+    if (session->NextFreePaintStruct >= session->EndOfPaintStructArray) {
         return;
     }
-    paint_string_struct * ps = &gNextFreePaintStruct->string;
+    paint_string_struct * ps = &session->NextFreePaintStruct->string;
 
     ps->string_id = string_id;
     ps->next = 0;
@@ -606,20 +612,23 @@ void paint_floating_money_effect(money32 amount, rct_string_id string_id, sint16
     ps->args[3] = 0;
     ps->y_offsets = (uint8 *) y_offsets;
 
-    rct_xyz16 position = {.x = gPaintSpritePosition.x, .y = gPaintSpritePosition.y, .z = z};
+    rct_xyz16 position = {
+        .x = session->SpritePosition.x,
+        .y = session->SpritePosition.y,
+        .z = z };
     rct_xy16 coord = coordinate_3d_to_2d(&position, rotation);
 
     ps->x = coord.x + offset_x;
     ps->y = coord.y;
 
-    gNextFreePaintStruct++;
+    session->NextFreePaintStruct++;
 
-    if (_paintLastPSString == NULL) {
-        gPaintPSStringHead = ps;
+    if (session->LastPSString == NULL) {
+        session->PSStringHead = ps;
     } else {
-        _paintLastPSString->next = ps;
+        session->LastPSString->next = ps;
     }
-    _paintLastPSString = ps;
+    session->LastPSString = ps;
 }
 
 /**
@@ -841,15 +850,15 @@ static paint_struct * paint_arrange_structs_helper(paint_struct * ps_next, uint1
  *
  *  rct2: 0x00688217
  */
-paint_struct paint_arrange_structs()
+static paint_struct paint_session_arrange_structs(paint_session * session)
 {
     paint_struct psHead = { 0 };
     paint_struct * ps = &psHead;
     ps->next_quadrant_ps = NULL;
-    uint32 quadrantIndex = _paintQuadrantBackIndex;
+    uint32 quadrantIndex = session->QuadrantBackIndex;
     if (quadrantIndex != UINT32_MAX) {
         do {
-            paint_struct * ps_next = _paintQuadrants[quadrantIndex];
+            paint_struct * ps_next = session->Quadrants[quadrantIndex];
             if (ps_next != NULL) {
                 ps->next_quadrant_ps = ps_next;
                 do {
@@ -857,16 +866,21 @@ paint_struct paint_arrange_structs()
                     ps_next = ps_next->next_quadrant_ps;
                 } while (ps_next != NULL);
             }
-        } while (++quadrantIndex <= _paintQuadrantFrontIndex);
+        } while (++quadrantIndex <= session->QuadrantFrontIndex);
 
-        paint_struct * ps_cache = paint_arrange_structs_helper(&psHead, _paintQuadrantBackIndex & 0xFFFF, PAINT_QUADRANT_FLAG_NEXT);
+        paint_struct * ps_cache = paint_arrange_structs_helper(&psHead, session->QuadrantBackIndex & 0xFFFF, PAINT_QUADRANT_FLAG_NEXT);
 
-        quadrantIndex = _paintQuadrantBackIndex;
-        while (++quadrantIndex < _paintQuadrantFrontIndex) {
+        quadrantIndex = session->QuadrantBackIndex;
+        while (++quadrantIndex < session->QuadrantFrontIndex) {
             ps_cache = paint_arrange_structs_helper(ps_cache, quadrantIndex & 0xFFFF, 0);
         }
     }
     return psHead;
+}
+
+paint_struct paint_arrange_structs()
+{
+    return paint_session_arrange_structs(&gPaintSession);
 }
 
 /**
