@@ -27,7 +27,7 @@
 #include "ride_data.h"
 #include "track.h"
 #include "track_data.h"
-#include "track_design.h"
+#include "TrackDesign.h"
 #include "TrackDesignRepository.h"
 
 #define TRACK_MAX_SAVED_MAP_ELEMENTS 1500
