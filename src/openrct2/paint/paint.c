@@ -75,6 +75,7 @@ static const uint8 BoundBoxDebugColours[] = {
     222, // BANNER
 };
 
+bool gShowDirtyVisuals;
 bool gPaintBoundingBoxes;
 
 static void paint_attached_ps(rct_drawpixelinfo * dpi, paint_struct * ps, uint32 viewFlags);

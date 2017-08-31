@@ -31,16 +31,18 @@ enum WINDOW_DEBUG_PAINT_WIDGET_IDX
     WIDX_TOGGLE_OLD_DRAWING,
     WIDX_TOGGLE_SHOW_SEGMENT_HEIGHTS,
     WIDX_TOGGLE_SHOW_BOUND_BOXES,
+    WIDX_TOGGLE_SHOW_DIRTY_VISUALS,
 };
 
 #define WINDOW_WIDTH    (200)
-#define WINDOW_HEIGHT   (8 + 15 + 15 + 11 + 8)
+#define WINDOW_HEIGHT   (8 + 15 + 15 + 15 + 11 + 8)
 
 static rct_widget window_debug_paint_widgets[] = {
-    { WWT_FRAME,    0,  0,  WINDOW_WIDTH - 1,   0,              WINDOW_HEIGHT - 1,  0xFFFFFFFF,                             STR_NONE},
-    { WWT_CHECKBOX, 1,  8,  WINDOW_WIDTH - 8,   8,              8 + 11,             STR_DEBUG_PAINT_USE_OLD_DRAWING,        STR_NONE},
-    { WWT_CHECKBOX, 1,  8,  WINDOW_WIDTH - 8,   8 + 15,         8 + 15 + 11,        STR_DEBUG_PAINT_SHOW_SEGMENT_HEIGHTS,   STR_NONE},
-    { WWT_CHECKBOX, 1,  8,  WINDOW_WIDTH - 8,   8 + 15 + 15,    8 + 15 + 15 + 11,   STR_DEBUG_PAINT_SHOW_BOUND_BOXES,       STR_NONE},
+    { WWT_FRAME,    0,  0,  WINDOW_WIDTH - 1,   0,                  WINDOW_HEIGHT - 1,      0xFFFFFFFF,                             STR_NONE },
+    { WWT_CHECKBOX, 1,  8,  WINDOW_WIDTH - 8,   8,                  8 + 11,                 STR_DEBUG_PAINT_USE_OLD_DRAWING,        STR_NONE },
+    { WWT_CHECKBOX, 1,  8,  WINDOW_WIDTH - 8,   8 + 15,             8 + 15 + 11,            STR_DEBUG_PAINT_SHOW_SEGMENT_HEIGHTS,   STR_NONE },
+    { WWT_CHECKBOX, 1,  8,  WINDOW_WIDTH - 8,   8 + 15 + 15,        8 + 15 + 15 + 11,       STR_DEBUG_PAINT_SHOW_BOUND_BOXES,       STR_NONE },
+    { WWT_CHECKBOX, 1,  8,  WINDOW_WIDTH - 8,   8 + 15 + 15 + 15,   8 + 15 + 15 + 15 + 11,  STR_DEBUG_PAINT_SHOW_DIRTY_VISUALS,     STR_NONE },
     { WIDGETS_END },
 };
 
@@ -99,7 +101,11 @@ rct_window * window_debug_paint_open()
     );
 
     window->widgets = window_debug_paint_widgets;
-    window->enabled_widgets = (1 << WIDX_TOGGLE_OLD_DRAWING) | (1 << WIDX_TOGGLE_SHOW_BOUND_BOXES) | (1 << WIDX_TOGGLE_SHOW_SEGMENT_HEIGHTS);
+    window->enabled_widgets =
+        (1 << WIDX_TOGGLE_OLD_DRAWING) |
+        (1 << WIDX_TOGGLE_SHOW_BOUND_BOXES) |
+        (1 << WIDX_TOGGLE_SHOW_SEGMENT_HEIGHTS) |
+        (1 << WIDX_TOGGLE_SHOW_DIRTY_VISUALS);
     window_init_scroll_widgets(window);
     window_push_others_below(window);
 
@@ -126,6 +132,11 @@ static void window_debug_paint_mouseup(rct_window * w, rct_widgetindex widgetInd
             gPaintBoundingBoxes = !gPaintBoundingBoxes;
             gfx_invalidate_screen();
             break;
+
+        case WIDX_TOGGLE_SHOW_DIRTY_VISUALS:
+            gShowDirtyVisuals = !gShowDirtyVisuals;
+            gfx_invalidate_screen();
+            break;
     }
 }
 
@@ -134,6 +145,7 @@ static void window_debug_paint_invalidate(rct_window * w)
     widget_set_checkbox_value(w, WIDX_TOGGLE_OLD_DRAWING, gUseOriginalRidePaint);
     widget_set_checkbox_value(w, WIDX_TOGGLE_SHOW_SEGMENT_HEIGHTS, gShowSupportSegmentHeights);
     widget_set_checkbox_value(w, WIDX_TOGGLE_SHOW_BOUND_BOXES, gPaintBoundingBoxes);
+    widget_set_checkbox_value(w, WIDX_TOGGLE_SHOW_DIRTY_VISUALS, gShowDirtyVisuals);
 }
 
 static void window_debug_paint_paint(rct_window * w, rct_drawpixelinfo * dpi)

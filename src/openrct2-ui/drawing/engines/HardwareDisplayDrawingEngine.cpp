@@ -14,6 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
+#include <vector>
 #include <openrct2/common.h>
 #include <SDL.h>
 #include <openrct2/config/Config.h>
@@ -26,6 +27,7 @@ extern "C"
 {
     #include <openrct2/drawing/lightfx.h>
     #include <openrct2/game.h>
+    #include <openrct2/paint/paint.h>
 }
 
 using namespace OpenRCT2;
@@ -35,6 +37,8 @@ using namespace OpenRCT2::Ui;
 class HardwareDisplayDrawingEngine final : public X8DrawingEngine
 {
 private:
+    constexpr static uint32 DIRTY_VISUAL_TIME = 32;
+
     IUiContext * const  _uiContext;
     SDL_Window *        _window                     = nullptr;
     SDL_Renderer *      _sdlRenderer                = nullptr;
@@ -50,6 +54,8 @@ private:
     uint32  _pixelAfterOverlay      = 0;
     bool    _overlayActive          = false;
     bool    _pausedBeforeOverlay    = false;
+
+    std::vector<uint32> _dirtyVisualsTime;
 
 public:
     explicit HardwareDisplayDrawingEngine(IUiContext * uiContext)
@@ -130,6 +136,27 @@ public:
     void EndDraw() override
     {
         Display();
+        if (gShowDirtyVisuals)
+        {
+            UpdateDirtyVisuals();
+        }
+    }
+
+protected:
+    void OnDrawDirtyBlock(uint32 left, uint32 top, uint32 columns, uint32 rows) override
+    {
+        if (gShowDirtyVisuals)
+        {
+            uint32 right = left + columns;
+            uint32 bottom = top + rows;
+            for (uint32 x = left; x < right; x++)
+            {
+                for (uint32 y = top; y < bottom; y++)
+                {
+                    SetDirtyVisualTime(x, y, DIRTY_VISUAL_TIME);
+                }
+            }
+        }
     }
 
 private:
@@ -152,6 +179,11 @@ private:
             CopyBitsToTexture(_screenTexture, _bits, (sint32)_width, (sint32)_height, _paletteHWMapped);
         }
         SDL_RenderCopy(_sdlRenderer, _screenTexture, nullptr, nullptr);
+
+        if (gShowDirtyVisuals)
+        {
+            RenderDirtyVisuals();
+        }
 
         bool isSteamOverlayActive = GetContext()->GetUiContext()->IsSteamOverlayActive();
         if (isSteamOverlayActive && gConfigGeneral.steam_overlay_pause)
@@ -212,6 +244,70 @@ private:
                 }
             }
             SDL_UnlockTexture(texture);
+        }
+    }
+
+    uint32 GetDirtyVisualTime(uint32 x, uint32 y)
+    {
+        uint32 result = 0;
+        uint32 i = y * _dirtyGrid.BlockColumns + x;
+        if (_dirtyVisualsTime.size() > i)
+        {
+            result = _dirtyVisualsTime[i];
+        }
+        return result;
+    }
+
+    void SetDirtyVisualTime(uint32 x, uint32 y, uint32 value)
+    {
+        uint32 i = y * _dirtyGrid.BlockColumns + x;
+        if (_dirtyVisualsTime.size() > i)
+        {
+            _dirtyVisualsTime[i] = value;
+        }
+    }
+
+    void UpdateDirtyVisuals()
+    {
+        _dirtyVisualsTime.resize(_dirtyGrid.BlockRows * _dirtyGrid.BlockColumns);
+        for (uint32 y = 0; y < _dirtyGrid.BlockRows; y++)
+        {
+            for (uint32 x = 0; x < _dirtyGrid.BlockColumns; x++)
+            {
+                auto timeLeft = GetDirtyVisualTime(x, y);
+                if (timeLeft > 0)
+                {
+                    SetDirtyVisualTime(x, y, timeLeft - 1);
+                }
+            }
+        }
+    }
+
+    void RenderDirtyVisuals()
+    {
+        float scaleX = gConfigGeneral.window_scale;
+        float scaleY = gConfigGeneral.window_scale;
+
+        SDL_SetRenderDrawBlendMode(_sdlRenderer, SDL_BLENDMODE_BLEND);
+        for (uint32 y = 0; y < _dirtyGrid.BlockRows; y++)
+        {
+            for (uint32 x = 0; x < _dirtyGrid.BlockColumns; x++)
+            {
+                auto timeLeft = GetDirtyVisualTime(x, y);
+                if (timeLeft > 0)
+                {
+                    uint8 alpha = (uint8)(timeLeft * 5 / 2);
+
+                    SDL_Rect ddRect;
+                    ddRect.x = (sint32)(x * _dirtyGrid.BlockWidth * scaleX);
+                    ddRect.y = (sint32)(y * _dirtyGrid.BlockHeight * scaleY);
+                    ddRect.w = (sint32)(_dirtyGrid.BlockWidth * scaleX);
+                    ddRect.h = (sint32)(_dirtyGrid.BlockHeight * scaleY);
+
+                    SDL_SetRenderDrawColor(_sdlRenderer, 255, 255, 255, alpha);
+                    SDL_RenderFillRect(_sdlRenderer, &ddRect);
+                }
+            }
         }
     }
 

@@ -369,6 +369,10 @@ void X8DrawingEngine::ConfigureBits(uint32 width, uint32 height, uint32 pitch)
 #endif
 }
 
+void X8DrawingEngine::OnDrawDirtyBlock(uint32 x, uint32 y, uint32 columns, uint32 rows)
+{
+}
+
 void X8DrawingEngine::ConfigureDirtyGrid()
 {
     _dirtyGrid.BlockShiftX = 7;
@@ -466,6 +470,7 @@ void X8DrawingEngine::DrawDirtyBlocks(uint32 x, uint32 y, uint32 columns, uint32
     }
 
     // Draw region
+    OnDrawDirtyBlock(x, y, columns, rows);
     window_draw_all(&_bitsDPI, left, top, right, bottom);
 }
 
