@@ -4449,6 +4449,9 @@ STR_6137    :OpenRCT2, um clone grátis e com código aberto do Roller Coaster T
 STR_6138    :OpenRCT2 é o trabalho de vários autores, a lista completa pode ser encontrada em {OPENQUOTES}contributors.md{ENDQUOTES}. Para mais informações, visite http://github.com/OpenRCT2/OpenRCT2
 STR_6139    :Todos os nomes de produtos e de empresas pertencem aos seus respectivos proprietários. O uso deles não implica qualquer afiliação ou aprovação por eles.
 STR_6140    :Changelog...
+STR_6141    :Barra de ferramentas Inferior do RCT1
+STR_6142    :{WINDOW_COLOUR_2}Nome da pista: {BLACK}{STRING}
+STR_6143    :{WINDOW_COLOUR_2}Tipo de atração: {BLACK}{STRINGID}
 
 #############
 # Scenarios #
