@@ -143,18 +143,20 @@ add_executable(test_string ${STRING_TEST_SOURCES})
 target_link_libraries(test_string ${GTEST_LIBRARIES} test-common ${LDL} z)
 add_test(NAME string COMMAND test_string)
 
-if (NOT DISABLE_RCT2_TESTS)
-    # Ride ratings test
-    set(RIDE_RATINGS_TEST_SOURCES "${CMAKE_CURRENT_LIST_DIR}/RideRatings.cpp"
-                                  "${CMAKE_CURRENT_LIST_DIR}/TestData.cpp")
-    add_executable(test_ride_ratings ${RIDE_RATINGS_TEST_SOURCES})
-    target_link_libraries(test_ride_ratings ${GTEST_LIBRARIES} libopenrct2 ${LDL} z)
-    add_test(NAME ride_ratings COMMAND test_ride_ratings)
 
-    # Multi-launch test
-    set(MULTILAUNCH_TEST_SOURCES "${CMAKE_CURRENT_LIST_DIR}/MultiLaunch.cpp"
-                                 "${CMAKE_CURRENT_LIST_DIR}/TestData.cpp")
-    add_executable(test_multilaunch ${MULTILAUNCH_TEST_SOURCES})
-    target_link_libraries(test_multilaunch ${GTEST_LIBRARIES} libopenrct2 ${LDL} z)
+# Ride ratings test
+set(RIDE_RATINGS_TEST_SOURCES "${CMAKE_CURRENT_LIST_DIR}/RideRatings.cpp"
+                              "${CMAKE_CURRENT_LIST_DIR}/TestData.cpp")
+add_executable(test_ride_ratings ${RIDE_RATINGS_TEST_SOURCES})
+target_link_libraries(test_ride_ratings ${GTEST_LIBRARIES} libopenrct2 ${LDL} z)
+
+# Multi-launch test
+set(MULTILAUNCH_TEST_SOURCES "${CMAKE_CURRENT_LIST_DIR}/MultiLaunch.cpp"
+                             "${CMAKE_CURRENT_LIST_DIR}/TestData.cpp")
+add_executable(test_multilaunch ${MULTILAUNCH_TEST_SOURCES})
+target_link_libraries(test_multilaunch ${GTEST_LIBRARIES} libopenrct2 ${LDL} z)
+    
+if (NOT DISABLE_RCT2_TESTS)
+    add_test(NAME ride_ratings COMMAND test_ride_ratings)
     add_test(NAME multilaunch COMMAND test_multilaunch)
 endif ()
