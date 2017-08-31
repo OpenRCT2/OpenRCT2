@@ -235,9 +235,10 @@ private:
                 Console::WriteLine("%s out of date", _name.c_str());
             }
         }
-        catch (const Exception &)
+        catch (const std::exception &e)
         {
             Console::Error::WriteLine("Unable to load index: '%s'.", _indexPath.c_str());
+            Console::Error::WriteLine("%s", e.what());
         }
         return std::make_tuple(loadedItems, items);
     }
@@ -265,9 +266,10 @@ private:
                 Serialise(&fs, item);
             }
         }
-        catch (const Exception &)
+        catch (const std::exception &e)
         {
             Console::Error::WriteLine("Unable to save index: '%s'.", _indexPath.c_str());
+            Console::Error::WriteLine("%s", e.what());
         }
     }
 
