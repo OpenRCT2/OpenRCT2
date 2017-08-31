@@ -187,7 +187,7 @@ static rct_track_td6 * track_design_open_from_td4(uint8 * src, size_t srcLength)
     }
 
     // Convert RCT1 vehicle type to RCT2 vehicle type. Intialise with an string consisting of 8 spaces (and no nul terminator).
-    char emptyDatName[9] = "        ";
+    const char emptyDatName[9] = "        ";
     rct_object_entry vehicleObject = {0x80, "", 0};
     memcpy(vehicleObject.name, emptyDatName, 8);
     if (td4->type == RIDE_TYPE_MAZE)
@@ -1355,13 +1355,17 @@ static sint32 track_design_place_maze(rct_track_td6 * td6, sint16 x, sint16 y, s
         game_do_command(0, 0x69, 0, rideIndex, GAME_COMMAND_DEMOLISH_RIDE, 0, 0);
     }
 
-    gTrackPreviewOrigin = (rct_xyz16) {x, y, z};
+    gTrackPreviewOrigin.x = x;
+    gTrackPreviewOrigin.y = y;
+    gTrackPreviewOrigin.z = z;
     return 1;
 }
 
 static bool track_design_place_ride(rct_track_td6 * td6, sint16 x, sint16 y, sint16 z, uint8 rideIndex)
 {
-    gTrackPreviewOrigin = (rct_xyz16) {x, y, z};
+    gTrackPreviewOrigin.x = x;
+    gTrackPreviewOrigin.y = y;
+    gTrackPreviewOrigin.z = z;
     if (_trackDesignPlaceOperation == PTD_OPERATION_DRAW_OUTLINES)
     {
         gMapSelectionTiles->x     = -1;
@@ -1668,8 +1672,12 @@ sint32 place_virtual_track(rct_track_td6 * td6, uint8 ptdOperation, bool placeSc
     }
     _currentRideIndex          = rideIndex;
 
-    gTrackPreviewMin = (rct_xyz16) {x, y, z};
-    gTrackPreviewMax = (rct_xyz16) {x, y, z};
+    gTrackPreviewMin.x = x;
+    gTrackPreviewMin.y = y;
+    gTrackPreviewMin.z = z;
+    gTrackPreviewMax.x = x;
+    gTrackPreviewMax.y = y;
+    gTrackPreviewMax.z = z;
 
     _trackDesignPlaceSceneryZ = 0;
     uint8 track_place_success = 0;
