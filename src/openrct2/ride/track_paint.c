@@ -201,10 +201,6 @@ enum
     SPR_STATION_COVER_OFFSET_TALL
 };
 
-#ifdef NO_RCT2
-uint32 gTrackColours[4];
-#endif
-
 bool gUseOriginalRidePaint = false;
 
 bool track_paint_util_has_fence(enum edge_t edge, rct_xy16 position, rct_map_element * mapElement, rct_ride * ride, uint8 rotation)

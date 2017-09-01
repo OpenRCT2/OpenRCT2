@@ -168,11 +168,14 @@ typedef struct paint_session
     bool                    DidPassSurface;
     uint8                   Unk141E9DB;
     uint16                  Unk141E9DC;
+    uint32                  TrackColours[4];
 } paint_session;
 
 extern paint_session gPaintSession;
 
-#ifndef NO_RCT2
+#ifdef NO_RCT2
+#define gTrackColours               gPaintSession.TrackColours
+#else
 #define gPaintStructs               RCT2_ADDRESS(0x00EE788C, paint_entry)
 #define g_currently_drawn_item      RCT2_GLOBAL(0x009DE578, void*)
 #define gEndOfPaintStructArray      RCT2_GLOBAL(0x00EE7880, paint_entry *)
@@ -191,6 +194,7 @@ extern paint_session gPaintSession;
 #define gDidPassSurface             RCT2_GLOBAL(0x009DE57C, bool)
 #define g141E9DB                    RCT2_GLOBAL(0x0141E9DB, uint8)
 #define gUnk141E9DC                 RCT2_GLOBAL(0x0141E9DC, uint16)
+#define gTrackColours   RCT2_ADDRESS(0x00F44198, uint32)
 #endif
 
 /** rct2: 0x00993CC4 */

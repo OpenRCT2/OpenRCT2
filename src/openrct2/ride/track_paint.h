@@ -224,12 +224,6 @@ enum {
     STATION_VARIANT_TALL,
 };
 
-#ifdef NO_RCT2
-extern uint32 gTrackColours[4];
-#else
-#define gTrackColours   RCT2_ADDRESS(0x00F44198, uint32)
-#endif
-
 extern const uint32 floorSpritesCork[];
 
 extern const uint32 fenceSpritesRope[];
