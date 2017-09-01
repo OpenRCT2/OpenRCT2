@@ -79,7 +79,7 @@ static void paint_lift_base(uint8 rideIndex, uint8 trackSequence, uint8 directio
 
     sint32 edges = edges_3x3[trackSequence];
     rct_ride * ride = get_ride(rideIndex);
-    rct_xy16 position = gPaintMapPosition;
+    rct_xy16 position = gPaintSession.MapPosition;
 
     uint32 imageId = SPR_FLOOR_METAL_B | gTrackColours[SCHEME_SUPPORTS];
         sub_98197C(imageId, 0, 0, 32, 32, 1, height, 0, 0, height, get_current_rotation());

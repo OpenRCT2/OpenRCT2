@@ -166,6 +166,7 @@ extern paint_session gPaintSession;
 #define gSupportSegments            RCT2_ADDRESS(RCT2_ADDRESS_CURRENT_SUPPORT_SEGMENTS, support_height)
 #define gSupport                    RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PAINT_TILE_MAX_HEIGHT, support_height)
 #define gWoodenSupportsPrependTo    RCT2_GLOBAL(0x009DEA58, paint_struct *)
+#define gPaintMapPosition           RCT2_GLOBAL(0x009DE574, rct_xy16)
 #endif
 
 /** rct2: 0x00993CC4 */

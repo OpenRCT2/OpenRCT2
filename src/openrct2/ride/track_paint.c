@@ -304,7 +304,7 @@ void track_paint_util_draw_station_3(uint8 rideIndex, uint8 trackSequence, uint8
 
 void track_paint_util_draw_station_impl(uint8 rideIndex, uint8 trackSequence, uint8 direction, uint16 height, uint16 coverHeight, rct_map_element * mapElement, sint32 fenceOffsetA, sint32 fenceOffsetB)
 {
-    rct_xy16 position = gPaintMapPosition;
+    rct_xy16 position = gPaintSession.MapPosition;
     rct_ride * ride = get_ride(rideIndex);
     const rct_ride_entrance_definition * entranceStyle = &RideEntranceDefinitions[ride->entrance_style];
     const bool hasGreenLight = map_element_get_green_light(mapElement);
@@ -438,7 +438,7 @@ void track_paint_util_draw_station_impl(uint8 rideIndex, uint8 trackSequence, ui
 
 void track_paint_util_draw_station_inverted(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement, uint8 stationVariant)
 {
-    rct_xy16 position = gPaintMapPosition;
+    rct_xy16 position = gPaintSession.MapPosition;
     rct_ride * ride = get_ride(rideIndex);
     const rct_ride_entrance_definition * entranceStyle = &RideEntranceDefinitions[ride->entrance_style];
     const bool hasGreenLight = map_element_get_green_light(mapElement);
@@ -647,7 +647,7 @@ bool track_paint_util_draw_station_covers_2(enum edge_t edge, bool hasFence, con
 
 void track_paint_util_draw_station_platform(rct_ride *ride, uint8 direction, sint32 height, sint32 zOffset, rct_map_element * mapElement)
 {
-    rct_xy16 position = gPaintMapPosition;
+    rct_xy16 position = gPaintSession.MapPosition;
     const rct_ride_entrance_definition * entranceStyle = &RideEntranceDefinitions[ride->entrance_style];
     if (direction & 1) {
         bool hasFence = track_paint_util_has_fence(EDGE_NE, position, mapElement, ride, get_current_rotation());

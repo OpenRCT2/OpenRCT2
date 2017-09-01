@@ -623,7 +623,7 @@ static void paint_mini_golf_track_25_deg_down_to_flat(uint8 rideIndex, uint8 tra
 /** rct2: 0x0087F17C, 0x0087F18C, 0x0087F19C */
 static void paint_mini_golf_station(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
-    rct_xy16 position = gPaintMapPosition;
+    rct_xy16 position = gPaintSession.MapPosition;
     rct_ride * ride = get_ride(rideIndex);
     const rct_ride_entrance_definition * entranceStyle = &RideEntranceDefinitions[ride->entrance_style];
     uint32 imageId;

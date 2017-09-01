@@ -700,7 +700,7 @@ void path_paint(uint8 direction, uint16 height, rct_map_element * map_element)
         imageFlags = construction_markers[gConfigGeneral.construction_marker_colour];
     }
 
-    sint16 x = gPaintMapPosition.x, y = gPaintMapPosition.y;
+    sint16 x = gPaintSession.MapPosition.x, y = gPaintSession.MapPosition.y;
 
     rct_map_element * surface = map_get_surface_element_at(x / 32, y / 32);
 
@@ -727,8 +727,8 @@ void path_paint(uint8 direction, uint16 height, rct_map_element * map_element)
         sint32 staffIndex = gStaffDrawPatrolAreas;
         uint8 staffType = staffIndex & 0x7FFF;
         bool is_staff_list = staffIndex & 0x8000;
-        x = gPaintMapPosition.x;
-        y = gPaintMapPosition.y;
+        x = gPaintSession.MapPosition.x;
+        y = gPaintSession.MapPosition.y;
 
         uint8 patrolColour = COLOUR_LIGHT_BLUE;
 

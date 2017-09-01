@@ -443,7 +443,7 @@ static const uint32 monorail_track_pieces_diag_25_deg_up[4] = {
 /** rct2: 0x008AE1AC */
 static void paint_monorail_track_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
-    rct_xy16 position = gPaintMapPosition;
+    rct_xy16 position = gPaintSession.MapPosition;
 
     uint32 imageId = monorail_track_pieces_flat[direction] | gTrackColours[SCHEME_TRACK];
 
@@ -510,7 +510,7 @@ static void paint_monorail_station(uint8 rideIndex, uint8 trackSequence, uint8 d
 /** rct2: 0x008AE1BC */
 static void paint_monorail_track_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
-    rct_xy16 position = gPaintMapPosition;
+    rct_xy16 position = gPaintSession.MapPosition;
 
     uint32 imageId = monorail_track_pieces_25_deg_up[direction] | gTrackColours[SCHEME_TRACK];
 
@@ -538,7 +538,7 @@ static void paint_monorail_track_25_deg_up(uint8 rideIndex, uint8 trackSequence,
 /** rct2: 0x008AE1CC */
 static void paint_monorail_track_flat_to_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
-    rct_xy16 position = gPaintMapPosition;
+    rct_xy16 position = gPaintSession.MapPosition;
 
     uint32 imageId = monorail_track_pieces_flat_to_25_deg_up[direction] | gTrackColours[SCHEME_TRACK];
 
@@ -566,7 +566,7 @@ static void paint_monorail_track_flat_to_25_deg_up(uint8 rideIndex, uint8 trackS
 /** rct2: 0x008AE1DC */
 static void paint_monorail_track_25_deg_up_to_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
-    rct_xy16 position = gPaintMapPosition;
+    rct_xy16 position = gPaintSession.MapPosition;
 
     uint32 imageId = monorail_track_pieces_25_deg_up_to_flat[direction] | gTrackColours[SCHEME_TRACK];
 

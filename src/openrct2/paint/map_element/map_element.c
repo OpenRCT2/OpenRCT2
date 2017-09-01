@@ -35,7 +35,6 @@
 #ifdef NO_RCT2
 uint8 g141E9DB;
 uint16 gUnk141E9DC;
-rct_xy16 gPaintMapPosition;
 bool gDidPassSurface;
 rct_map_element * gSurfaceElement;
 tunnel_entry gLeftTunnels[TUNNEL_MAX_COUNT];
@@ -161,8 +160,8 @@ static void sub_68B3FB(sint32 x, sint32 y)
     RCT2_GLOBAL(0x009DE56A, uint16) = x;
     RCT2_GLOBAL(0x009DE56E, uint16) = y;
 #endif
-    gPaintMapPosition.x = x;
-    gPaintMapPosition.y = y;
+    gPaintSession.MapPosition.x = x;
+    gPaintSession.MapPosition.y = y;
 
     rct_map_element* map_element = map_get_first_element_at(x >> 5, y >> 5);
     uint8 rotation = get_current_rotation();
@@ -196,8 +195,8 @@ static void sub_68B3FB(sint32 x, sint32 y)
     dx >>= 1;
     // Display little yellow arrow when building footpaths?
     if ((gMapSelectFlags & MAP_SELECT_FLAG_ENABLE_ARROW) &&
-        gPaintMapPosition.x == gMapSelectArrowPosition.x &&
-        gPaintMapPosition.y == gMapSelectArrowPosition.y
+        gPaintSession.MapPosition.x == gMapSelectArrowPosition.x &&
+        gPaintSession.MapPosition.y == gMapSelectArrowPosition.y
     ) {
         uint8 arrowRotation =
             (rotation
@@ -254,7 +253,7 @@ static void sub_68B3FB(sint32 x, sint32 y)
         sint32 direction = map_element_get_direction_with_offset(map_element, rotation);
         sint32 height = map_element->base_height * 8;
 
-        rct_xy16 dword_9DE574 = gPaintMapPosition;
+        rct_xy16 dword_9DE574 = gPaintSession.MapPosition;
         gPaintSession.CurrentlyDrawnItem = map_element;
         // Setup the painting of for example: the underground, signs, rides, scenery, etc.
         switch (map_element_get_type(map_element))
@@ -293,7 +292,7 @@ static void sub_68B3FB(sint32 x, sint32 y)
             // An undefined map element is most likely a corrupt element inserted by 8 cars' MOM feature to skip drawing of all elements after it.
             return;
         }
-        gPaintMapPosition = dword_9DE574;
+        gPaintSession.MapPosition = dword_9DE574;
     } while (!map_element_is_last_for_tile(map_element++));
 
     if (!gShowSupportSegmentHeights) {

@@ -129,7 +129,7 @@ static void paint_motionsimulator(uint8 rideIndex, uint8 trackSequence, uint8 di
 
     sint32 edges = edges_2x2[trackSequence];
     rct_ride *ride = get_ride(rideIndex);
-    rct_xy16 position = { gPaintMapPosition.x, gPaintMapPosition.y };
+    rct_xy16 position = { gPaintSession.MapPosition.x, gPaintSession.MapPosition.y };
 
     wooden_a_supports_paint_setup((direction & 1), 0, height, gTrackColours[SCHEME_MISC], NULL);
     track_paint_util_paint_floor(edges, gTrackColours[SCHEME_TRACK], height, floorSpritesCork, get_current_rotation());

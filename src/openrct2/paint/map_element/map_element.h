@@ -85,7 +85,6 @@ enum
 #ifdef NO_RCT2
 extern uint8 g141E9DB;
 extern uint16 gUnk141E9DC;
-extern rct_xy16 gPaintMapPosition;
 extern bool gDidPassSurface;
 extern rct_map_element * gSurfaceElement;
 extern tunnel_entry gLeftTunnels[TUNNEL_MAX_COUNT];
@@ -96,7 +95,6 @@ extern uint8 gVerticalTunnelHeight;
 #else
 #define g141E9DB                    RCT2_GLOBAL(0x0141E9DB, uint8)
 #define gUnk141E9DC                 RCT2_GLOBAL(0x0141E9DC, uint16)
-#define gPaintMapPosition           RCT2_GLOBAL(0x009DE574, rct_xy16)
 #define gDidPassSurface             RCT2_GLOBAL(0x009DE57C, bool)
 #define gSurfaceElement             RCT2_GLOBAL(0x009E3250, rct_map_element *)
 #define gLeftTunnels                RCT2_ADDRESS(0x009E3138, tunnel_entry)

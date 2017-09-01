@@ -420,7 +420,7 @@ static void paint_car_ride_track_spinning_tunnel(uint8 rideIndex, uint8 trackSeq
 /** rct2: 0x006F73B8 */
 static void paint_car_ride_track_60_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
-    rct_xy16 position = gPaintMapPosition;
+    rct_xy16 position = gPaintSession.MapPosition;
 
     uint32 imageId = car_ride_track_pieces_60_deg_up[direction] | gTrackColours[SCHEME_TRACK];
 
@@ -466,7 +466,7 @@ static void paint_car_ride_track_60_deg_up(uint8 rideIndex, uint8 trackSequence,
 /** rct2: 0x006F73C8 */
 static void paint_car_ride_track_25_deg_up_to_60_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
-    rct_xy16 position = gPaintMapPosition;
+    rct_xy16 position = gPaintSession.MapPosition;
 
     uint32 imageId = car_ride_track_pieces_25_deg_up_to_60_deg_up[direction][0] | gTrackColours[SCHEME_TRACK];
 
@@ -512,7 +512,7 @@ static void paint_car_ride_track_25_deg_up_to_60_deg_up(uint8 rideIndex, uint8 t
 /** rct2: 0x006F73D8 */
 static void paint_car_ride_track_60_deg_up_to_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
-    rct_xy16 position = gPaintMapPosition;
+    rct_xy16 position = gPaintSession.MapPosition;
 
     uint32 imageId = car_ride_track_pieces_60_deg_up_to_25_deg_up[direction][0] | gTrackColours[SCHEME_TRACK];
 
