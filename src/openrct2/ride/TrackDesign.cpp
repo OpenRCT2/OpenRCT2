@@ -208,7 +208,7 @@ static rct_track_td6 * track_design_open_from_td4(uint8 * src, size_t srcLength)
     td6->version_and_colour_scheme = td4->version_and_colour_scheme;
 
     // Vehicle colours
-    for (int i = 0; i < RCT1_MAX_TRAINS_PER_RIDE; i++)
+    for (sint32 i = 0; i < RCT1_MAX_TRAINS_PER_RIDE; i++)
     {
         // RCT1 had no third colour
         RCT1::RCT1VehicleColourSchemeCopyDescriptor colourSchemeCopyDescriptor = RCT1::GetColourSchemeCopyDescriptor(
