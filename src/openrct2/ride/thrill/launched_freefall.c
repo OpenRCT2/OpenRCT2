@@ -57,7 +57,7 @@ void vehicle_visual_launched_freefall(sint32 x, sint32 imageDirection, sint32 y,
     sub_98197C(image_id, 0, 0, 16, 16, 41, z, -5, -5, z + 1, rotation);
 
     // Draw peeps:
-    if (unk_140E9A8->zoom_level < 2) {
+    if (gPaintSession.Unk140E9A8->zoom_level < 2) {
         if (vehicle->num_peeps > 0) {
             baseImage_id = vehicleEntry->base_image_id + 9;
             if ((vehicle->restraints_position / 64) == 3) {

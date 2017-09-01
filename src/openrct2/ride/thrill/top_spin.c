@@ -52,7 +52,7 @@ static void top_spin_paint_vehicle(sint8 al, sint8 cl, uint8 rideIndex, uint8 di
     uint16 boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ;
     // As we will be drawing a vehicle we need to backup the mapElement that
     // is assigned to the drawings.
-    rct_map_element* curMapElement = g_currently_drawn_item;
+    rct_map_element* curMapElement = gPaintSession.CurrentlyDrawnItem;
 
     height += 3;
 
@@ -67,8 +67,8 @@ static void top_spin_paint_vehicle(sint8 al, sint8 cl, uint8 rideIndex, uint8 di
         ride->vehicles[0] != SPRITE_INDEX_NULL) {
         vehicle = GET_VEHICLE(ride->vehicles[0]);
 
-        gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_SPRITE;
-        g_currently_drawn_item = vehicle;
+        gPaintSession.InteractionType = VIEWPORT_INTERACTION_ITEM_SPRITE;
+        gPaintSession.CurrentlyDrawnItem = vehicle;
 
         armRotation = vehicle->vehicle_sprite_type;
         seatRotation = vehicle->bank_rotation;
@@ -164,7 +164,7 @@ static void top_spin_paint_vehicle(sint8 al, sint8 cl, uint8 rideIndex, uint8 di
 
     sub_98199C(image_id, (sint8) seatCoords.x, (sint8) seatCoords.y, lengthX, lengthY, 90, seatCoords.z, boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ, rotation);
 
-    rct_drawpixelinfo* dpi = unk_140E9A8;
+    rct_drawpixelinfo* dpi = gPaintSession.Unk140E9A8;
     if (dpi->zoom_level < 2 && vehicle != NULL && vehicle->num_peeps != 0)
     {
         image_id = (seatImageId + (1 * 76)) | SPRITE_ID_PALETTE_COLOUR_2(vehicle->peep_tshirt_colours[0], vehicle->peep_tshirt_colours[1]);
@@ -219,8 +219,8 @@ static void top_spin_paint_vehicle(sint8 al, sint8 cl, uint8 rideIndex, uint8 di
 
     sub_98199C(image_id, al, cl, lengthX, lengthY, 90, height, boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ, rotation);
 
-    g_currently_drawn_item = curMapElement;
-    gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
+    gPaintSession.CurrentlyDrawnItem = curMapElement;
+    gPaintSession.InteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
 }
 
 /**

@@ -100,14 +100,15 @@ static void chairlift_paint_util_draw_supports(sint32 segments, uint16 height)
         return;
     }
 
+    support_height * supportSegments = gPaintSession.SupportSegments;
     for (sint32 s = 0; s < 9; s++) {
         if (!(segments & segment_offsets[s])) {
             continue;
         }
-        uint16 temp = gSupportSegments[s].height;
-        gSupportSegments[s].height = gSupport.height;
+        uint16 temp = supportSegments[s].height;
+        supportSegments[s].height = gPaintSession.Support.height;
         metal_a_supports_paint_setup(METAL_SUPPORTS_TRUSS, s, 0, height, gTrackColours[SCHEME_SUPPORTS]);
-        gSupportSegments[s].height = temp;
+        supportSegments[s].height = temp;
     }
 }
 

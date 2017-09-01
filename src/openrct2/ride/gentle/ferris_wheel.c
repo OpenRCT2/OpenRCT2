@@ -58,7 +58,7 @@ static void paint_ferris_wheel_structure(uint8 rideIndex, uint8 direction, sint8
 {
     uint32 imageId, baseImageId;
 
-    rct_map_element * savedMapElement = g_currently_drawn_item;
+    rct_map_element * savedMapElement = gPaintSession.CurrentlyDrawnItem;
 
     rct_ride * ride = get_ride(rideIndex);
     rct_ride_entry * rideEntry = get_ride_entry(ride->subtype);
@@ -75,8 +75,8 @@ static void paint_ferris_wheel_structure(uint8 rideIndex, uint8 direction, sint8
         && ride->vehicles[0] != SPRITE_INDEX_NULL) {
         vehicle = GET_VEHICLE(ride->vehicles[0]);
 
-        gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_SPRITE;
-        g_currently_drawn_item = vehicle;
+        gPaintSession.InteractionType = VIEWPORT_INTERACTION_ITEM_SPRITE;
+        gPaintSession.CurrentlyDrawnItem = vehicle;
     }
 
     uint32 imageOffset = 0;
@@ -120,8 +120,8 @@ static void paint_ferris_wheel_structure(uint8 rideIndex, uint8 direction, sint8
     imageId = (22150 + (direction & 1) * 2 + 1) | gTrackColours[SCHEME_TRACK];
     sub_98199C(imageId, xOffset, yOffset, boundBox.length_x, boundBox.length_y, 127, height, boundBox.offset_x, boundBox.offset_y, height, get_current_rotation());
 
-    g_currently_drawn_item = savedMapElement;
-    gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
+    gPaintSession.CurrentlyDrawnItem = savedMapElement;
+    gPaintSession.InteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
 }
 
 

@@ -59,7 +59,7 @@ void peep_paint(rct_peep * peep, sint32 imageDirection)
     }
 #endif
 
-    rct_drawpixelinfo * dpi = unk_140E9A8;
+    rct_drawpixelinfo * dpi = gPaintSession.Unk140E9A8;
     if (dpi->zoom_level > 2) {
         return;
     }

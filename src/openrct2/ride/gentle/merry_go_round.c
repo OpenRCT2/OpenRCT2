@@ -35,7 +35,7 @@ static const uint16 merry_go_round_breakdown_vibration[] = {
  */
 static void paint_merry_go_round_structure(uint8 rideIndex, uint8 direction, sint8 xOffset, sint8 yOffset, uint16 height)
 {
-    rct_map_element * savedMapElement = g_currently_drawn_item;
+    rct_map_element * savedMapElement = gPaintSession.CurrentlyDrawnItem;
     height += 7;
 
     rct_ride * ride = get_ride(rideIndex);
@@ -46,9 +46,9 @@ static void paint_merry_go_round_structure(uint8 rideIndex, uint8 direction, sin
 
     if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK
         && ride->vehicles[0] != SPRITE_INDEX_NULL) {
-        gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_SPRITE;
+        gPaintSession.InteractionType = VIEWPORT_INTERACTION_ITEM_SPRITE;
         vehicle = GET_VEHICLE(ride->vehicles[0]);
-        g_currently_drawn_item = vehicle;
+        gPaintSession.CurrentlyDrawnItem = vehicle;
 
         if (ride->lifecycle_flags & (RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN)
             && ride->breakdown_reason_pending == BREAKDOWN_CONTROL_FAILURE
@@ -73,7 +73,7 @@ static void paint_merry_go_round_structure(uint8 rideIndex, uint8 direction, sin
     uint32 imageId = (baseImageId + imageOffset) | imageColourFlags;
     sub_98197C(imageId, xOffset, yOffset, 24, 24, 48, height, xOffset + 16, yOffset + 16, height, get_current_rotation());
 
-    rct_drawpixelinfo * dpi = unk_140E9A8;
+    rct_drawpixelinfo * dpi = gPaintSession.Unk140E9A8;
     if (dpi->zoom_level == 0
         && ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK
         && vehicle != NULL) {
@@ -96,8 +96,8 @@ static void paint_merry_go_round_structure(uint8 rideIndex, uint8 direction, sin
         }
     }
 
-    g_currently_drawn_item = savedMapElement;
-    gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
+    gPaintSession.CurrentlyDrawnItem = savedMapElement;
+    gPaintSession.InteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
 }
 
 /**

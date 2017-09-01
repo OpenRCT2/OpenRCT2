@@ -74,7 +74,7 @@ void litter_paint(rct_litter *litter, sint32 imageDirection)
 {
     rct_drawpixelinfo *dpi;
 
-    dpi = unk_140E9A8;
+    dpi = gPaintSession.Unk140E9A8;
     if (dpi->zoom_level != 0) return; // If zoomed at all no litter drawn
 
     // litter has no sprite direction so remove that

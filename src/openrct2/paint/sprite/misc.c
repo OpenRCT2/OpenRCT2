@@ -39,7 +39,7 @@ extern const uint8 * DuckAnimations[];
  */
 void misc_paint(rct_sprite *misc, sint32 imageDirection)
 {
-    rct_drawpixelinfo * dpi = unk_140E9A8;
+    rct_drawpixelinfo * dpi = gPaintSession.Unk140E9A8;
 
     switch (misc->steam_particle.misc_identifier) {
         case SPRITE_MISC_STEAM_PARTICLE: // 0

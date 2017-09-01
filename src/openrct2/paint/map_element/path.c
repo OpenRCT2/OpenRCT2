@@ -366,7 +366,7 @@ static void sub_6A4101(rct_map_element * map_element, uint16 height, uint32 ebp,
 
         uint8 direction = ((map_element->type & 0xC0) >> 6);
         // Draw ride sign
-        gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
+        gPaintSession.InteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
         if (footpath_element_is_sloped(map_element)) {
             if (footpath_element_get_slope_direction(map_element) == direction)
                 height += 16;
@@ -419,9 +419,9 @@ static void sub_6A4101(rct_map_element * map_element, uint16 height, uint32 ebp,
             sub_98199C(scrolling_text_setup(string_id, scroll, scrollingMode), 0, 0, 1, 1, 21, height + 7,  boundBoxOffsets.x,  boundBoxOffsets.y,  boundBoxOffsets.z, get_current_rotation());
         }
 
-        gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_FOOTPATH;
+        gPaintSession.InteractionType = VIEWPORT_INTERACTION_ITEM_FOOTPATH;
         if (imageFlags != 0) {
-            gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
+            gPaintSession.InteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
         }
         return;
     }
@@ -596,15 +596,15 @@ static void sub_6A3F61(rct_map_element * map_element, uint16 bp, uint16 height, 
 
     // Probably drawing benches etc.
 
-    rct_drawpixelinfo * dpi = unk_140E9A8;
+    rct_drawpixelinfo * dpi = gPaintSession.Unk140E9A8;
 
     if (dpi->zoom_level <= 1) {
         if (!gTrackDesignSaveMode) {
             uint8 additions = map_element->properties.path.additions & 0xF;
             if (additions != 0) {
-                gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_FOOTPATH_ITEM;
+                gPaintSession.InteractionType = VIEWPORT_INTERACTION_ITEM_FOOTPATH_ITEM;
                 if (sceneryImageFlags != 0) {
-                    gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
+                    gPaintSession.InteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
                 }
 
                 // Draw additional path bits (bins, benches, lamps, queue screens)
@@ -624,10 +624,10 @@ static void sub_6A3F61(rct_map_element * map_element, uint16 bp, uint16 height, 
                     break;
                 }
 
-                gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_FOOTPATH;
+                gPaintSession.InteractionType = VIEWPORT_INTERACTION_ITEM_FOOTPATH;
 
                 if (sceneryImageFlags != 0) {
-                    gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
+                    gPaintSession.InteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
                 }
             }
         }
@@ -672,7 +672,7 @@ static void sub_6A3F61(rct_map_element * map_element, uint16 bp, uint16 height, 
  */
 void path_paint(uint8 direction, uint16 height, rct_map_element * map_element)
 {
-    gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_FOOTPATH;
+    gPaintSession.InteractionType = VIEWPORT_INTERACTION_ITEM_FOOTPATH;
 
     bool word_F3F038 = false;
 
@@ -696,7 +696,7 @@ void path_paint(uint8 direction, uint16 height, rct_map_element * map_element)
     }
 
     if (map_element->flags & MAP_ELEMENT_FLAG_GHOST) {
-        gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
+        gPaintSession.InteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
         imageFlags = construction_markers[gConfigGeneral.construction_marker_colour];
     }
 

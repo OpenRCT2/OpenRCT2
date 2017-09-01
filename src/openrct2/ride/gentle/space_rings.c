@@ -39,7 +39,7 @@ static const uint32 space_rings_fence_sprites[] = {
 /** rct2: 0x00768A3B */
 static void paint_space_rings_structure(rct_ride * ride, uint8 direction,  uint32 segment, sint32 height)
 {
-    rct_map_element * savedMapElement = g_currently_drawn_item;
+    rct_map_element * savedMapElement = gPaintSession.CurrentlyDrawnItem;
 
     uint32 vehicleIndex = (segment - direction) & 0x3;
 
@@ -53,9 +53,9 @@ static void paint_space_rings_structure(rct_ride * ride, uint8 direction,  uint3
 
         if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK
             && ride->vehicles[0] != SPRITE_INDEX_NULL) {
-            gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_SPRITE;
+            gPaintSession.InteractionType = VIEWPORT_INTERACTION_ITEM_SPRITE;
             vehicle = GET_VEHICLE(ride->vehicles[vehicleIndex]);
-            g_currently_drawn_item = vehicle;
+            gPaintSession.CurrentlyDrawnItem = vehicle;
             frameNum += (sint8) vehicle->vehicle_sprite_type * 4;
         }
 
@@ -79,8 +79,8 @@ static void paint_space_rings_structure(rct_ride * ride, uint8 direction,  uint3
         }
     }
 
-    g_currently_drawn_item = savedMapElement;
-    gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
+    gPaintSession.CurrentlyDrawnItem = savedMapElement;
+    gPaintSession.InteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
 }
 
 /** rct2: 0x00767C40 */

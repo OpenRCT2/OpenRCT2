@@ -1028,7 +1028,7 @@ void vehicle_visual_mini_golf_player(sint32 x, sint32 imageDirection, sint32 y, 
         return;
     }
 
-    rct_drawpixelinfo *edi = unk_140E9A8;
+    rct_drawpixelinfo *edi = gPaintSession.Unk140E9A8;
     if (edi->zoom_level >= 2) {
         return;
     }
@@ -1057,7 +1057,7 @@ void vehicle_visual_mini_golf_ball(sint32 x, sint32 imageDirection, sint32 y, si
         return;
     }
 
-    rct_drawpixelinfo *edi = unk_140E9A8;
+    rct_drawpixelinfo *edi = gPaintSession.Unk140E9A8;
     if (edi->zoom_level >= 1) {
         return;
     }

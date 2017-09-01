@@ -1753,7 +1753,7 @@ void track_paint(uint8 direction, sint32 height, rct_map_element *mapElement)
         ride->entrance_style = RIDE_ENTRANCE_STYLE_PLAIN;
     }
 
-    rct_drawpixelinfo *dpi = unk_140E9A8;
+    rct_drawpixelinfo *dpi = gPaintSession.Unk140E9A8;
 
     if (!gTrackDesignSaveMode || rideIndex == gTrackDesignSaveRideIndex) {
         sint32 trackType = mapElement->properties.track.type;
@@ -1761,7 +1761,7 @@ void track_paint(uint8 direction, sint32 height, rct_map_element *mapElement)
         sint32 trackColourScheme = mapElement->properties.track.colour & 3;
 
         if ((gCurrentViewportFlags & VIEWPORT_FLAG_TRACK_HEIGHTS) && dpi->zoom_level == 0) {
-            gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
+            gPaintSession.InteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
             if (TrackHeightMarkerPositions[trackType] & (1 << trackSequence)) {
                 uint16 ax = RideData5[ride->type].z_offset;
                 uint32 ebx = 0x20381689 + (height + 8) / 16;
@@ -1771,7 +1771,7 @@ void track_paint(uint8 direction, sint32 height, rct_map_element *mapElement)
             }
         }
 
-        gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
+        gPaintSession.InteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
         gTrackColours[SCHEME_TRACK] = SPRITE_ID_PALETTE_COLOUR_2(ride->track_colour_main[trackColourScheme], ride->track_colour_additional[trackColourScheme]);
         gTrackColours[SCHEME_SUPPORTS] = SPRITE_ID_PALETTE_COLOUR_1(ride->track_colour_supports[trackColourScheme]);
         gTrackColours[SCHEME_MISC] = IMAGE_TYPE_REMAP;
@@ -1784,7 +1784,7 @@ void track_paint(uint8 direction, sint32 height, rct_map_element *mapElement)
         }
         if (mapElement->flags & MAP_ELEMENT_FLAG_GHOST) {
             uint32 ghost_id = construction_markers[gConfigGeneral.construction_marker_colour];
-            gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
+            gPaintSession.InteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
             gTrackColours[SCHEME_TRACK] = ghost_id;
             gTrackColours[SCHEME_SUPPORTS] = ghost_id;
             gTrackColours[SCHEME_MISC] = ghost_id;

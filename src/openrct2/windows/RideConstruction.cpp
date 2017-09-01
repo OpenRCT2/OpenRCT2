@@ -2315,7 +2315,7 @@ static void window_ride_construction_draw_track_piece(
     }
     dpi->x += x - width / 2;
     dpi->y += y - height / 2 - 16;
-    unk_140E9A8 = dpi;
+    gPaintSession.Unk140E9A8 = dpi;
     uint32 d = unknown << 16;
     d |= rideIndex;
     d |= trackType << 8;
@@ -2347,7 +2347,7 @@ static void sub_6CBCE2(
     gCurrentViewportFlags = 0;
     trackDirection &= 3;
 
-    paint_init(unk_140E9A8);
+    paint_init(gPaintSession.Unk140E9A8);
 
     ride = get_ride(rideIndex);
 
@@ -2451,7 +2451,7 @@ static void sub_6CBCE2(
     gMapSizeMaxXY = preserveMapSizeMaxXY;
 
     paint_struct ps = paint_arrange_structs();
-    paint_draw_structs(unk_140E9A8, &ps, gCurrentViewportFlags);
+    paint_draw_structs(gPaintSession.Unk140E9A8, &ps, gCurrentViewportFlags);
 
     gCurrentViewportFlags = preserve_current_viewport_flags;
 }

@@ -33,13 +33,7 @@ const uint32 construction_markers[] = {
 
 paint_session gPaintSession;
 
-#ifdef NO_RCT2
-void *g_currently_drawn_item;
-rct_xy16 gPaintSpritePosition;
-uint8 gPaintInteractionType;
-support_height gSupportSegments[9] = { 0 };
-support_height gSupport;
-#else
+#ifndef NO_RCT2
 #define _paintQuadrants (RCT2_ADDRESS(0x00F1A50C, paint_struct*))
 #define _paintQuadrantBackIndex RCT2_GLOBAL(0xF1AD0C, uint32)
 #define _paintQuadrantFrontIndex RCT2_GLOBAL(0xF1AD10, uint32)
@@ -148,7 +142,7 @@ static paint_struct * sub_9819_c(paint_session * session, uint32 image_id, rct_x
     sint32 right = left + g1Element->width;
     sint32 top = bottom + g1Element->height;
 
-    rct_drawpixelinfo * dpi = unk_140E9A8;
+    rct_drawpixelinfo * dpi = session->Unk140E9A8;
 
     if (right <= dpi->x)return NULL;
     if (top <= dpi->y)return NULL;
@@ -298,7 +292,7 @@ paint_struct * sub_98196C(
     sint16 right = left + g1Element->width;
     sint16 top = bottom + g1Element->height;
 
-    rct_drawpixelinfo *dpi = unk_140E9A8;
+    rct_drawpixelinfo *dpi = session->Unk140E9A8;
 
     if (right <= dpi->x) return NULL;
     if (top <= dpi->y) return NULL;
@@ -314,7 +308,7 @@ paint_struct * sub_98196C(
     ps->var_29 = 0;
     ps->map_x = session->MapPosition.x;
     ps->map_y = session->MapPosition.y;
-    ps->mapElement = g_currently_drawn_item;
+    ps->mapElement = gPaintSession.CurrentlyDrawnItem;
 
     session->UnkF1AD28 = ps;
 

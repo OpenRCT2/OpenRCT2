@@ -101,7 +101,7 @@ static void spiral_slide_paint_tile_front(uint8 rideIndex, uint8 trackSequence, 
         sub_98197C(image_id, 16, 16, 8, 16, 108, height, 8, 0, height + 3, get_current_rotation());
     }
 
-    rct_drawpixelinfo *dpi = unk_140E9A8;
+    rct_drawpixelinfo *dpi = gPaintSession.Unk140E9A8;
     if (dpi->zoom_level == 0 && ride->slide_in_use != 0) {
         uint8 slide_progress = ride->spiral_slide_progress;
         if (slide_progress != 0) {

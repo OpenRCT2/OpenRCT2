@@ -44,7 +44,7 @@ rct_crooked_house_bound_box crooked_house_data[] = {
  * @param (edx) height
  */
 static void paint_crooked_house_structure(uint8 direction, uint8 x_offset, uint8 y_offset, uint32 segment, sint32 height) {
-    rct_map_element *original_map_element = g_currently_drawn_item;
+    rct_map_element *original_map_element = gPaintSession.CurrentlyDrawnItem;
 
     rct_ride *ride = get_ride(original_map_element->properties.track.ride_index);
 
@@ -53,8 +53,8 @@ static void paint_crooked_house_structure(uint8 direction, uint8 x_offset, uint8
     if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK) {
         if (ride->vehicles[0] != SPRITE_INDEX_NULL) {
             rct_sprite *sprite = get_sprite(ride->vehicles[0]);
-            gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_SPRITE;
-            g_currently_drawn_item = sprite;
+            gPaintSession.InteractionType = VIEWPORT_INTERACTION_ITEM_SPRITE;
+            gPaintSession.CurrentlyDrawnItem = sprite;
         }
     }
 

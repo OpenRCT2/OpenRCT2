@@ -359,7 +359,7 @@ bool wooden_a_supports_paint_setup(sint32 supportType, sint32 special, sint32 he
         return false;
     }
 
-    sint32 z = floor2(gSupport.height + 15, 16);
+    sint32 z = floor2(gPaintSession.Support.height + 15, 16);
     height -= z;
     if (height < 0) {
         if (underground != NULL) {
@@ -374,7 +374,7 @@ bool wooden_a_supports_paint_setup(sint32 supportType, sint32 special, sint32 he
     sint32 rotation = get_current_rotation();
 
     // Draw base support (usually shaped to the slope)
-    sint32 slope = gSupport.slope;
+    sint32 slope = gPaintSession.Support.slope;
     if (slope & (1 << 5)) {
         // Above scenery (just put a base piece above it)
         drawFlatPiece = true;
@@ -514,7 +514,7 @@ bool wooden_b_supports_paint_setup(sint32 supportType, sint32 special, sint32 he
         return false;
     }
 
-    uint16 baseHeight = ceil2(gSupport.height, 16);
+    uint16 baseHeight = ceil2(gPaintSession.Support.height, 16);
     sint16 supportLength = height - baseHeight;
 
     if (supportLength < 0) {
@@ -526,9 +526,9 @@ bool wooden_b_supports_paint_setup(sint32 supportType, sint32 special, sint32 he
 
     bool goTo662E8B = false;
 
-    if (gSupport.slope & 0x20) {
+    if (gPaintSession.Support.slope & 0x20) {
         goTo662E8B = true;
-    } else if (gSupport.slope & 0x10) {
+    } else if (gPaintSession.Support.slope & 0x10) {
         heightSteps -= 2;
         if (heightSteps < 0) {
             if (underground != NULL) *underground = true; // STC
@@ -540,7 +540,7 @@ bool wooden_b_supports_paint_setup(sint32 supportType, sint32 special, sint32 he
             baseHeight += 32;
             goTo662E8B = true;
         } else {
-            imageId += word_97B3C4[gSupport.slope & 0x1F];
+            imageId += word_97B3C4[gPaintSession.Support.slope & 0x1F];
 
             sub_98197C(
                 imageId | imageColourFlags,
@@ -564,7 +564,7 @@ bool wooden_b_supports_paint_setup(sint32 supportType, sint32 special, sint32 he
 
             _9E32B1 = true;
         }
-    } else if ((gSupport.slope & 0x0F) != 0) {
+    } else if ((gPaintSession.Support.slope & 0x0F) != 0) {
         heightSteps -= 1;
         if (heightSteps < 0) {
             if (underground != NULL) *underground = true; // STC
@@ -576,7 +576,7 @@ bool wooden_b_supports_paint_setup(sint32 supportType, sint32 special, sint32 he
             baseHeight += 16;
             goTo662E8B = true;
         } else {
-            imageId += word_97B3C4[gSupport.slope & 0x1F];
+            imageId += word_97B3C4[gPaintSession.Support.slope & 0x1F];
 
             sub_98197C(
                 imageId | imageColourFlags,
@@ -689,6 +689,8 @@ bool wooden_b_supports_paint_setup(sint32 supportType, sint32 special, sint32 he
  */
 bool metal_a_supports_paint_setup(uint8 supportType, uint8 segment, sint32 special, sint32 height, uint32 imageColourFlags)
 {
+    support_height * supportSegments = gPaintSession.SupportSegments;
+
     if (gCurrentViewportFlags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS) {
         return false;
     }
@@ -702,7 +704,7 @@ bool metal_a_supports_paint_setup(uint8 supportType, uint8 segment, sint32 speci
 
     const uint8 rotation = get_current_rotation();
     sint16 unk9E3294 = -1;
-    if (height < gSupportSegments[segment].height){
+    if (height < supportSegments[segment].height){
         unk9E3294 = height;
 
         height -= supportTypeToHeight[supportType];
@@ -712,16 +714,16 @@ bool metal_a_supports_paint_setup(uint8 supportType, uint8 segment, sint32 speci
         const uint8* esi = &(_97AF32[rotation * 2]);
 
         uint8 newSegment = esi[segment * 8];
-        if (height <= gSupportSegments[newSegment].height) {
+        if (height <= supportSegments[newSegment].height) {
             esi += 72;
             newSegment = esi[segment * 8];
-            if (height <= gSupportSegments[newSegment].height) {
+            if (height <= supportSegments[newSegment].height) {
                 esi += 72;
                 newSegment = esi[segment * 8];
-                if (height <= gSupportSegments[newSegment].height) {
+                if (height <= supportSegments[newSegment].height) {
                     esi += 72;
                     newSegment = esi[segment * 8];
-                    if (height <= gSupportSegments[newSegment].height) {
+                    if (height <= supportSegments[newSegment].height) {
                         return false;
                     }
                 }
@@ -745,23 +747,23 @@ bool metal_a_supports_paint_setup(uint8 supportType, uint8 segment, sint32 speci
         segment = newSegment;
     }
     sint16 si = height;
-    if (gSupportSegments[segment].slope & (1 << 5) ||
-        height - gSupportSegments[segment].height < 6 ||
+    if (supportSegments[segment].slope & (1 << 5) ||
+        height - supportSegments[segment].height < 6 ||
         _97B15C[supportType].base_id == 0
         ) {
 
-        height = gSupportSegments[segment].height;
+        height = supportSegments[segment].height;
     }else{
         sint8 xOffset = loc_97AF20[segment].x;
         sint8 yOffset = loc_97AF20[segment].y;
 
         uint32 image_id = _97B15C[supportType].base_id;
-        image_id += metal_supports_slope_image_map[gSupportSegments[segment].slope & 0x1F];
+        image_id += metal_supports_slope_image_map[supportSegments[segment].slope & 0x1F];
         image_id |= imageColourFlags;
 
-        sub_98196C(image_id, xOffset, yOffset, 0, 0, 5, gSupportSegments[segment].height, rotation);
+        sub_98196C(image_id, xOffset, yOffset, 0, 0, 5, supportSegments[segment].height, rotation);
 
-        height = gSupportSegments[segment].height + 6;
+        height = supportSegments[segment].height + 6;
     }
 
 
@@ -817,8 +819,8 @@ bool metal_a_supports_paint_setup(uint8 supportType, uint8 segment, sint32 speci
         height += z;
     }
 
-    gSupportSegments[segment].height = unk9E3294;
-    gSupportSegments[segment].slope = 0x20;
+    supportSegments[segment].height = unk9E3294;
+    supportSegments[segment].slope = 0x20;
 
     height = originalHeight;
     segment = originalSegment;
@@ -885,6 +887,8 @@ bool metal_b_supports_paint_setup(uint8 supportType, uint8 segment, sint32 speci
         return eax & 0xFF;
     }
 #endif
+
+    support_height * supportSegments = gPaintSession.SupportSegments;
     uint8 originalSegment = segment;
 
     if (gCurrentViewportFlags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS) {
@@ -898,7 +902,7 @@ bool metal_b_supports_paint_setup(uint8 supportType, uint8 segment, sint32 speci
     uint16 _9E3294 = 0xFFFF;
     sint32 baseHeight = height;
 
-    if (height < gSupportSegments[segment].height) {
+    if (height < supportSegments[segment].height) {
         _9E3294 = height;
 
         baseHeight -= supportTypeToHeight[supportType];
@@ -909,16 +913,16 @@ bool metal_b_supports_paint_setup(uint8 supportType, uint8 segment, sint32 speci
         uint16 baseIndex = get_current_rotation() * 2;
 
         uint8 ebp = _97AF32[baseIndex + segment * 8];
-        if (baseHeight <= gSupportSegments[ebp].height) {
+        if (baseHeight <= supportSegments[ebp].height) {
             baseIndex += 9 * 4 * 2; // 9 segments, 4 directions, 2 values
             uint8 ebp2 = _97AF32[baseIndex + segment * 8];
-            if (baseHeight <= gSupportSegments[ebp2].height) {
+            if (baseHeight <= supportSegments[ebp2].height) {
                 baseIndex += 9 * 4 * 2;
                 uint8 ebp3 = _97AF32[baseIndex + segment * 8];
-                if (baseHeight <= gSupportSegments[ebp3].height) {
+                if (baseHeight <= supportSegments[ebp3].height) {
                     baseIndex += 9 * 4 * 2;
                     uint8 ebp4 = _97AF32[baseIndex + segment * 8];
-                    if (baseHeight <= gSupportSegments[ebp4].height) {
+                    if (baseHeight <= supportSegments[ebp4].height) {
                         return true; // STC
                     }
                 }
@@ -942,23 +946,23 @@ bool metal_b_supports_paint_setup(uint8 supportType, uint8 segment, sint32 speci
 
     sint32 si = baseHeight;
 
-    if ((gSupportSegments[segment].slope & 0x20)
-        || (baseHeight - gSupportSegments[segment].height < 6)
+    if ((supportSegments[segment].slope & 0x20)
+        || (baseHeight - supportSegments[segment].height < 6)
         || (_97B15C[supportType].base_id == 0)) {
-        baseHeight = gSupportSegments[segment].height;
+        baseHeight = supportSegments[segment].height;
     } else {
-        uint32 imageOffset = metal_supports_slope_image_map[gSupportSegments[segment].slope & 0x1F];
+        uint32 imageOffset = metal_supports_slope_image_map[supportSegments[segment].slope & 0x1F];
         uint32 imageId = _97B15C[supportType].base_id + imageOffset;
 
         sub_98196C(
             imageId | imageColourFlags,
             loc_97AF20[segment].x, loc_97AF20[segment].y,
             0, 0, 5,
-            gSupportSegments[segment].height,
+            supportSegments[segment].height,
             get_current_rotation()
         );
 
-        baseHeight = gSupportSegments[segment].height + 6;
+        baseHeight = supportSegments[segment].height + 6;
     }
 
     sint16 heightDiff = floor2(baseHeight + 16, 16);
@@ -1017,8 +1021,8 @@ bool metal_b_supports_paint_setup(uint8 supportType, uint8 segment, sint32 speci
         i++;
     }
 
-    gSupportSegments[segment].height = _9E3294;
-    gSupportSegments[segment].slope = 0x20;
+    supportSegments[segment].height = _9E3294;
+    supportSegments[segment].slope = 0x20;
 
     if (special != 0) {
         baseHeight = height;
@@ -1086,7 +1090,7 @@ bool path_a_supports_paint_setup(sint32 supportType, sint32 special, sint32 heig
         return false;
     }
 
-    uint16 baseHeight = ceil2(gSupport.height, 16);
+    uint16 baseHeight = ceil2(gPaintSession.Support.height, 16);
     sint32 supportLength = height - baseHeight;
     if (supportLength < 0) {
         if (underground != NULL) *underground = true; // STC
@@ -1097,7 +1101,7 @@ bool path_a_supports_paint_setup(sint32 supportType, sint32 special, sint32 heig
 
     sint16 heightSteps = supportLength / 16;
 
-    if (gSupport.slope & 0x20) {
+    if (gPaintSession.Support.slope & 0x20) {
         //save dx2
         sub_98196C(
             (pathEntry->bridge_image + 48) | imageColourFlags,
@@ -1107,14 +1111,14 @@ bool path_a_supports_paint_setup(sint32 supportType, sint32 special, sint32 heig
             get_current_rotation()
         );
         hasSupports = true;
-    } else if (gSupport.slope & 0x10) {
+    } else if (gPaintSession.Support.slope & 0x10) {
         heightSteps -= 2;
         if (heightSteps < 0) {
             if (underground != NULL) *underground = true; // STC
             return false;
         }
 
-        uint32 imageId = (supportType * 24) + word_97B3C4[gSupport.slope & 0x1F] + pathEntry->bridge_image;
+        uint32 imageId = (supportType * 24) + word_97B3C4[gPaintSession.Support.slope & 0x1F] + pathEntry->bridge_image;
 
         sub_98197C(
             imageId | imageColourFlags,
@@ -1138,14 +1142,14 @@ bool path_a_supports_paint_setup(sint32 supportType, sint32 special, sint32 heig
 
         hasSupports = true;
 
-    } else if (gSupport.slope & 0x0F) {
+    } else if (gPaintSession.Support.slope & 0x0F) {
         heightSteps -= 1;
         if (heightSteps < 0) {
             if (underground != NULL) *underground = true; // STC
             return false;
         }
 
-        uint32 ebx = (supportType * 24) + word_97B3C4[gSupport.slope & 0x1F] + pathEntry->bridge_image;
+        uint32 ebx = (supportType * 24) + word_97B3C4[gPaintSession.Support.slope & 0x1F] + pathEntry->bridge_image;
 
         sub_98197C(
             ebx | imageColourFlags,
@@ -1254,6 +1258,8 @@ bool path_b_supports_paint_setup(sint32 segment, sint32 special, sint32 height, 
     }
 #endif
 
+    support_height * supportSegments = gPaintSession.SupportSegments;
+
     if (gCurrentViewportFlags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS) {
         return false; // AND
     }
@@ -1262,19 +1268,19 @@ bool path_b_supports_paint_setup(sint32 segment, sint32 special, sint32 height, 
         return false; // AND
     }
 
-    if (height < gSupportSegments[segment].height) {
+    if (height < supportSegments[segment].height) {
         return true; // STC
     }
 
     uint16 baseHeight;
 
-    if ((gSupportSegments[segment].slope & 0x20)
-        || (height - gSupportSegments[segment].height < 6)
+    if ((supportSegments[segment].slope & 0x20)
+        || (height - supportSegments[segment].height < 6)
         || !(pathEntry->flags & FOOTPATH_ENTRY_FLAG_HAS_SUPPORT_BASE_SPRITE)) {
-        baseHeight = gSupportSegments[segment].height;
+        baseHeight = supportSegments[segment].height;
     } else {
-        uint8 imageOffset = metal_supports_slope_image_map[gSupportSegments[segment].slope & 0x1F];
-        baseHeight = gSupportSegments[segment].height;
+        uint8 imageOffset = metal_supports_slope_image_map[supportSegments[segment].slope & 0x1F];
+        baseHeight = supportSegments[segment].height;
 
         sub_98196C(
             (pathEntry->bridge_image + 37 + imageOffset) | imageColourFlags,
@@ -1361,8 +1367,8 @@ bool path_b_supports_paint_setup(sint32 segment, sint32 special, sint32 height, 
     }
 
     // loc_6A34D8
-    gSupportSegments[segment].height = 0xFFFF;
-    gSupportSegments[segment].slope = 0x20;
+    supportSegments[segment].height = 0xFFFF;
+    supportSegments[segment].slope = 0x20;
 
     if (special != 0) {
         sint16 si = special + baseHeight;

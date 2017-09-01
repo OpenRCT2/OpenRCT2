@@ -226,7 +226,7 @@ void vehicle_visual_river_rapids(sint32 x, sint32 imageDirection, sint32 y, sint
     image_id = baseImage_id | SPRITE_ID_PALETTE_COLOUR_2(vehicle->colours.body_colour, vehicle->colours.trim_colour);
     sub_98197C(image_id, 0, 0, bb->length_x, bb->length_y, bb->length_z, z, bb->offset_x, bb->offset_y, bb->offset_z + z, rotation);
 
-    if (unk_140E9A8->zoom_level < 2 && vehicle->num_peeps > 0) {
+    if (gPaintSession.Unk140E9A8->zoom_level < 2 && vehicle->num_peeps > 0) {
         // Draw peeps: (this particular vehicle doesn't sort them back to front like others so the back ones sometimes clip, but thats how the original does it...)
         sint32 peeps = ((ecx / 8) + 0) & 3;
         image_id = (baseImage_id + ((peeps + 1) * 72)) | SPRITE_ID_PALETTE_COLOUR_2(vehicle->peep_tshirt_colours[0], vehicle->peep_tshirt_colours[1]) ;

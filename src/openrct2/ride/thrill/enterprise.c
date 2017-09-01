@@ -26,7 +26,7 @@ static void paint_enterprise_structure(rct_ride * ride, sint8 xOffset, sint8 yOf
 {
     height += 7;
 
-    rct_map_element * savedMapElement = g_currently_drawn_item;
+    rct_map_element * savedMapElement = gPaintSession.CurrentlyDrawnItem;
     rct_ride_entry * rideEntry = get_ride_entry(ride->subtype);
     rct_vehicle * vehicle = NULL;
 
@@ -34,9 +34,9 @@ static void paint_enterprise_structure(rct_ride * ride, sint8 xOffset, sint8 yOf
 
     if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK
         && ride->vehicles[0] != SPRITE_INDEX_NULL) {
-        gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_SPRITE;
+        gPaintSession.InteractionType = VIEWPORT_INTERACTION_ITEM_SPRITE;
         vehicle = GET_VEHICLE(ride->vehicles[0]);
-        g_currently_drawn_item = vehicle;
+        gPaintSession.CurrentlyDrawnItem = vehicle;
     }
 
     uint32 imageOffset = map_element_get_direction_with_offset(mapElement, get_current_rotation());
@@ -52,7 +52,7 @@ static void paint_enterprise_structure(rct_ride * ride, sint8 xOffset, sint8 yOf
     uint32 imageId = (baseImageId + imageOffset) | imageColourFlags;
     sub_98197C(imageId, xOffset, yOffset, 24, 24, 48, height, 0, 0, height, get_current_rotation());
 
-    rct_drawpixelinfo * dpi = unk_140E9A8;
+    rct_drawpixelinfo * dpi = gPaintSession.Unk140E9A8;
 
     if (dpi->zoom_level == 0
         && imageOffset < 12
@@ -70,8 +70,8 @@ static void paint_enterprise_structure(rct_ride * ride, sint8 xOffset, sint8 yOf
         }
     }
 
-    g_currently_drawn_item = savedMapElement;
-    gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
+    gPaintSession.CurrentlyDrawnItem = savedMapElement;
+    gPaintSession.InteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
 }
 
 /** rct2: 0x008A1584 */

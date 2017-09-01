@@ -106,7 +106,7 @@ void sub_68B2B7(sint32 x, sint32 y)
  */
 static void blank_tiles_paint(sint32 x, sint32 y)
 {
-    rct_drawpixelinfo *dpi = unk_140E9A8;
+    rct_drawpixelinfo *dpi = gPaintSession.Unk140E9A8;
 
     sint32 dx = 0;
     switch (get_current_rotation()) {
@@ -134,9 +134,9 @@ static void blank_tiles_paint(sint32 x, sint32 y)
     dx -= 20;
     dx -= dpi->height;
     if (dx >= dpi->y) return;
-    gPaintSpritePosition.x = x;
-    gPaintSpritePosition.y = y;
-    gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
+    gPaintSession.SpritePosition.x = x;
+    gPaintSession.SpritePosition.y = y;
+    gPaintSession.InteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
     sub_98196C(3123, 0, 0, 32, 32, -1, 16, get_current_rotation());
 }
 
@@ -148,7 +148,7 @@ bool gShowSupportSegmentHeights = false;
  */
 static void sub_68B3FB(sint32 x, sint32 y)
 {
-    rct_drawpixelinfo *dpi = unk_140E9A8;
+    rct_drawpixelinfo *dpi = gPaintSession.Unk140E9A8;
 
     gLeftTunnelCount = 0;
     gRightTunnelCount = 0;
@@ -209,9 +209,9 @@ static void sub_68B3FB(sint32 x, sint32 y)
             0x20900C27;
         sint32 arrowZ = gMapSelectArrowPosition.z;
 
-        gPaintSpritePosition.x = x;
-        gPaintSpritePosition.y = y;
-        gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
+        gPaintSession.SpritePosition.x = x;
+        gPaintSession.SpritePosition.y = y;
+        gPaintSession.InteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
 
         sub_98197C(imageId, 0, 0, 32, 32, 0xFF, arrowZ, 0, 0, arrowZ + 18, rotation);
     }
@@ -244,8 +244,8 @@ static void sub_68B3FB(sint32 x, sint32 y)
     if (dx >= dpi->y)
         return;
 
-    gPaintSpritePosition.x = x;
-    gPaintSpritePosition.y = y;
+    gPaintSession.SpritePosition.x = x;
+    gPaintSession.SpritePosition.y = y;
     gDidPassSurface = false;
     do {
         // Only paint map_elements below the clip height.
@@ -255,7 +255,7 @@ static void sub_68B3FB(sint32 x, sint32 y)
         sint32 height = map_element->base_height * 8;
 
         rct_xy16 dword_9DE574 = gPaintMapPosition;
-        g_currently_drawn_item = map_element;
+        gPaintSession.CurrentlyDrawnItem = map_element;
         // Setup the painting of for example: the underground, signs, rides, scenery, etc.
         switch (map_element_get_type(map_element))
         {
@@ -312,10 +312,10 @@ static void sub_68B3FB(sint32 x, sint32 y)
 
     for (sint32 sy = 0; sy < 3; sy++) {
         for (sint32 sx = 0; sx < 3; sx++) {
-            uint16 segmentHeight = gSupportSegments[segmentPositions[sy][sx]].height;
+            uint16 segmentHeight = gPaintSession.SupportSegments[segmentPositions[sy][sx]].height;
             sint32 imageColourFlats = 0b101111 << 19 | IMAGE_TYPE_TRANSPARENT;
             if (segmentHeight == 0xFFFF) {
-                segmentHeight = gSupport.height;
+                segmentHeight = gPaintSession.Support.height;
                 // white: 0b101101
                 imageColourFlats = 0b111011 << 19 | IMAGE_TYPE_TRANSPARENT;
             }
@@ -363,7 +363,7 @@ void paint_util_set_vertical_tunnel(uint16 height)
 
 void paint_util_set_general_support_height(sint16 height, uint8 slope)
 {
-    if (gSupport.height >= height) {
+    if (gPaintSession.Support.height >= height) {
         return;
     }
 
@@ -372,8 +372,8 @@ void paint_util_set_general_support_height(sint16 height, uint8 slope)
 
 void paint_util_force_set_general_support_height(sint16 height, uint8 slope)
 {
-    gSupport.height = height;
-    gSupport.slope = slope;
+    gPaintSession.Support.height = height;
+    gPaintSession.Support.slope = slope;
 }
 
 const uint16 segment_offsets[9] = {
@@ -390,11 +390,12 @@ const uint16 segment_offsets[9] = {
 
 void paint_util_set_segment_support_height(sint32 segments, uint16 height, uint8 slope)
 {
+    support_height * supportSegments = gPaintSession.SupportSegments;
     for (sint32 s = 0; s < 9; s++) {
         if (segments & segment_offsets[s]) {
-            gSupportSegments[s].height = height;
+            supportSegments[s].height = height;
             if (height != 0xFFFF) {
-                gSupportSegments[s].slope = slope;
+                supportSegments[s].slope = slope;
             }
         }
     }

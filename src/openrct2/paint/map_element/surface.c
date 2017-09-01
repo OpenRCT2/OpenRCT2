@@ -990,8 +990,8 @@ static void viewport_surface_draw_water_side_bottom(enum edge_t edge, uint8 heig
  */
 void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
 {
-    rct_drawpixelinfo * dpi = unk_140E9A8;
-    gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_TERRAIN;
+    rct_drawpixelinfo * dpi = gPaintSession.Unk140E9A8;
+    gPaintSession.InteractionType = VIEWPORT_INTERACTION_ITEM_TERRAIN;
     gDidPassSurface = true;
     gSurfaceElement = mapElement;
 
@@ -1002,8 +1002,8 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
     uint32 surfaceShape = viewport_surface_paint_setup_get_relative_slope(mapElement, rotation);
 
     rct_xy16 base = {
-        .x = gPaintSpritePosition.x,
-        .y = gPaintSpritePosition.y
+        .x = gPaintSession.SpritePosition.x,
+        .y = gPaintSession.SpritePosition.y
     };
 
     corner_height ch = corner_heights[surfaceShape];
@@ -1373,7 +1373,7 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
     if (map_get_water_height(mapElement) > 0)
     {
         // loc_6615A9: (water height)
-        gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_WATER;
+        gPaintSession.InteractionType = VIEWPORT_INTERACTION_ITEM_WATER;
 
         uint16 localHeight = height + 16;
         uint16 waterHeight = map_get_water_height(mapElement) * 16;
@@ -1410,7 +1410,7 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
         !gTrackDesignSaveMode
     ) {
         // Owned land boundary fences
-        gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_PARK;
+        gPaintSession.InteractionType = VIEWPORT_INTERACTION_ITEM_PARK;
 
         registers regs = { 0 };
         regs.al = mapElement->properties.surface.ownership & 0x0F;
@@ -1530,7 +1530,7 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
         }
     }
 
-    gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_TERRAIN;
+    gPaintSession.InteractionType = VIEWPORT_INTERACTION_ITEM_TERRAIN;
     g141E9DB |= G141E9DB_FLAG_1;
 
     switch (surfaceShape) {

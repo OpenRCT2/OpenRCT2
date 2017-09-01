@@ -1044,10 +1044,10 @@ void vehicle_visual_splash_boats_or_water_coaster(sint32 x, sint32 imageDirectio
     } else {
         vehicle = GET_VEHICLE(vehicle->next_vehicle_on_ride);
     }
-    g_currently_drawn_item = vehicle;
+    gPaintSession.CurrentlyDrawnItem = vehicle;
     imageDirection = ((get_current_rotation() * 8) + vehicle->sprite_direction) & 0x1F;
-    gPaintSpritePosition.x = vehicle->x;
-    gPaintSpritePosition.y = vehicle->y;
+    gPaintSession.SpritePosition.x = vehicle->x;
+    gPaintSession.SpritePosition.y = vehicle->y;
     vehicle_paint(vehicle, imageDirection);
 }
 #endif

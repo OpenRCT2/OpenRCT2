@@ -136,7 +136,7 @@ static void paint_magic_carpet_vehicle(rct_ride *ride, uint8 direction, uint32 s
     sub_98199C(vehicleImageId | imageColourFlags, (sint8)offset.x, (sint8)offset.y, bbSize.x, bbSize.y, 127, offset.z, bbOffset.x, bbOffset.y, bbOffset.z, get_current_rotation());
 
     // Riders
-    rct_drawpixelinfo *dpi = unk_140E9A8;
+    rct_drawpixelinfo *dpi = gPaintSession.Unk140E9A8;
     if (dpi->zoom_level <= 1 && (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK)) {
         rct_vehicle *vehicle = get_first_vehicle(ride);
         if (vehicle != NULL) {
@@ -154,14 +154,14 @@ static void paint_magic_carpet_vehicle(rct_ride *ride, uint8 direction, uint32 s
 /** rct2: 0x00899104 */
 static void paint_magic_carpet_structure(rct_ride *ride, uint8 direction, sint8 axisOffset, uint16 height)
 {
-    rct_map_element * savedMapElement = g_currently_drawn_item;
+    rct_map_element * savedMapElement = gPaintSession.CurrentlyDrawnItem;
     rct_vehicle *vehicle = get_first_vehicle(ride);
 
     uint32 swingImageId = 0;
     if (vehicle != NULL) {
         swingImageId = vehicle->vehicle_sprite_type;
-        gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_SPRITE;
-        g_currently_drawn_item = vehicle;
+        gPaintSession.InteractionType = VIEWPORT_INTERACTION_ITEM_SPRITE;
+        gPaintSession.CurrentlyDrawnItem = vehicle;
     }
 
     bound_box bb = MagicCarpetBounds[direction];
@@ -182,8 +182,8 @@ static void paint_magic_carpet_structure(rct_ride *ride, uint8 direction, sint8 
     paint_magic_carpet_pendulum(PLANE_FRONT, swingImageId, direction, offset, bbOffset, bbSize);
     paint_magic_carpet_frame(PLANE_FRONT, direction, offset, bbOffset, bbSize);
 
-    gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
-    g_currently_drawn_item = savedMapElement;
+    gPaintSession.InteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
+    gPaintSession.CurrentlyDrawnItem = savedMapElement;
 }
 
 /** rct2: 0x00898514 */
