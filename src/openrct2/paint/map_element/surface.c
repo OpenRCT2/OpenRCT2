@@ -1173,7 +1173,7 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
     if (((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode) &&
         gCurrentViewportFlags & VIEWPORT_FLAG_LAND_OWNERSHIP
     ) {
-        rct_xy16 pos = {gPaintMapPosition.x, gPaintMapPosition.y};
+        rct_xy16 pos = gPaintMapPosition;
         for (sint32 i = 0; i < MAX_PEEP_SPAWNS; ++i) {
             rct2_peep_spawn * spawn = &gPeepSpawns[i];
 
@@ -1193,7 +1193,7 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
             assert(surfaceShape < countof(byte_97B444));
             paint_attach_to_previous_ps(SPR_TERRAIN_SELECTION_SQUARE + byte_97B444[surfaceShape], 0, 0);
         } else if (mapElement->properties.surface.ownership & OWNERSHIP_AVAILABLE) {
-            rct_xy16 pos = {gPaintMapPosition.x, gPaintMapPosition.y};
+            rct_xy16 pos = gPaintMapPosition;
             paint_struct * backup = gPaintSession.UnkF1AD28;
             sint32 height2 = (map_element_height(pos.x + 16, pos.y + 16) & 0xFFFF) + 3;
             sub_98196C(SPR_LAND_OWNERSHIP_AVAILABLE, 16, 16, 1, 1, 0, height2, rotation);
@@ -1208,7 +1208,7 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
             paint_attach_to_previous_ps(SPR_TERRAIN_SELECTION_DOTTED + byte_97B444[surfaceShape], 0, 0);
         } else if (mapElement->properties.surface.ownership & OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE) {
             paint_struct * backup = gPaintSession.UnkF1AD28;
-            rct_xy16 pos = {gPaintMapPosition.x, gPaintMapPosition.y};
+            rct_xy16 pos = gPaintMapPosition;
             sint32 height2 = map_element_height(pos.x + 16, pos.y + 16) & 0xFFFF;
             sub_98196C(SPR_LAND_CONSTRUCTION_RIGHTS_AVAILABLE, 16, 16, 1, 1, 0, height2 + 3, rotation);
             gPaintSession.UnkF1AD28 = backup;
@@ -1221,7 +1221,7 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
 
     if (gMapSelectFlags & MAP_SELECT_FLAG_ENABLE) {
         // loc_660FB8:
-        rct_xy16 pos = {gPaintMapPosition.x, gPaintMapPosition.y};
+        rct_xy16 pos = gPaintMapPosition;
         if (pos.x >= gMapSelectPositionA.x &&
             pos.x <= gMapSelectPositionB.x &&
             pos.y >= gMapSelectPositionA.y &&
@@ -1284,7 +1284,7 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
     }
 
     if (gMapSelectFlags & MAP_SELECT_FLAG_ENABLE_CONSTRUCT) {
-        rct_xy16 pos = {gPaintMapPosition.x, gPaintMapPosition.y};
+        rct_xy16 pos = gPaintMapPosition;
 
         rct_xy16 * tile;
         for (tile = gMapSelectionTiles; tile->x != -1; tile++) {

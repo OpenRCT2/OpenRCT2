@@ -70,7 +70,7 @@ void vehicle_visual_submarine(sint32 x, sint32 imageDirection, sint32 y, sint32 
 
 static void submarine_ride_paint_track_station(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
-    rct_xy16 position = {gPaintMapPosition.x, gPaintMapPosition.y};
+    rct_xy16 position = gPaintMapPosition;
     rct_ride * ride = get_ride(rideIndex);
     const rct_ride_entrance_definition * entranceStyle = &RideEntranceDefinitions[ride->entrance_style];
     sint32 heightLower = height - 16;
@@ -96,7 +96,7 @@ static void submarine_ride_paint_track_station(uint8 rideIndex, uint8 trackSeque
 
 static void submarine_ride_paint_track_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
-    rct_xy16 position = {gPaintMapPosition.x, gPaintMapPosition.y};
+    rct_xy16 position = gPaintMapPosition;
     sint32 heightLower = height - 16;
     uint32 imageId;
 

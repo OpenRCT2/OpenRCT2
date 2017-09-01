@@ -52,7 +52,7 @@ static void paint_dodgems(uint8 rideIndex, uint8 trackSequence, uint8 direction,
 
     sint32 edges = edges_4x4[relativeTrackSequence];
     rct_ride * ride = get_ride(rideIndex);
-    rct_xy16 position = {gPaintMapPosition.x, gPaintMapPosition.y};
+    rct_xy16 position = gPaintMapPosition;
 
     wooden_a_supports_paint_setup(direction & 1, 0, height, gTrackColours[SCHEME_MISC], NULL);
 

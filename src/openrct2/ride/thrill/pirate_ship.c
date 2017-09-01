@@ -161,7 +161,7 @@ static void paint_pirate_ship(uint8 rideIndex, uint8 trackSequence, uint8 direct
 {
     uint8 relativeTrackSequence = track_map_1x5[direction][trackSequence];
     rct_ride * ride = get_ride(rideIndex);
-    rct_xy16 position = {gPaintMapPosition.x, gPaintMapPosition.y};
+    rct_xy16 position = gPaintMapPosition;
 
     uint32 imageId;
     bool hasFence;

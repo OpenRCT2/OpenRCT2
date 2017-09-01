@@ -94,7 +94,7 @@ static void multi_dimension_rc_track_station(uint8 rideIndex, uint8 trackSequenc
         { 15811, 15813, SPR_STATION_INVERTED_BAR_A_NW_SE },
     };
 
-    rct_xy16 position = {gPaintMapPosition.x, gPaintMapPosition.y};
+    rct_xy16 position = gPaintMapPosition;
 
     if (mapElement->properties.track.type == TRACK_ELEM_END_STATION) {
         sub_98197C_rotated(direction, imageIds[direction][1] | gTrackColours[SCHEME_TRACK], 0, 0, 32, 26, 1, height, 0, 3, height + 3);

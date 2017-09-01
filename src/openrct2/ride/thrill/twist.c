@@ -85,7 +85,7 @@ static void paint_twist(uint8 rideIndex, uint8 trackSequence, uint8 direction, s
 
     const uint8 edges = edges_3x3[trackSequence];
     rct_ride * ride = get_ride(rideIndex);
-    rct_xy16 position = {gPaintMapPosition.x, gPaintMapPosition.y};
+    rct_xy16 position = gPaintMapPosition;
 
     uint32 imageId;
 
