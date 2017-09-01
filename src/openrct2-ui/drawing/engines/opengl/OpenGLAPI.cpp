@@ -114,6 +114,7 @@ static const char * TryLoadAllProcAddresses()
     SetupOpenGLFunction(glVertexAttribPointer);
     SetupOpenGLFunction(glDrawArraysInstanced);
     SetupOpenGLFunction(glVertexAttribDivisor);
+    SetupOpenGLFunction(glBlendFuncSeparate);
 
     return nullptr;
 }

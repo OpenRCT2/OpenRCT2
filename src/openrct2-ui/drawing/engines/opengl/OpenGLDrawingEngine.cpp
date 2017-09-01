@@ -186,7 +186,7 @@ public:
         _drawingContext->Initialise();
 
         glEnable(GL_BLEND);
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ONE);
 
         _copyFramebufferShader = new CopyFramebufferShader();
     }
