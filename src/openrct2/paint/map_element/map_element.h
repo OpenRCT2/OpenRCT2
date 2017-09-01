@@ -75,18 +75,6 @@ enum
     G141E9DB_FLAG_2 = 2,
 };
 
-#ifdef NO_RCT2
-extern uint8 g141E9DB;
-extern uint16 gUnk141E9DC;
-extern bool gDidPassSurface;
-extern rct_map_element * gSurfaceElement;
-#else
-#define g141E9DB                    RCT2_GLOBAL(0x0141E9DB, uint8)
-#define gUnk141E9DC                 RCT2_GLOBAL(0x0141E9DC, uint16)
-#define gDidPassSurface             RCT2_GLOBAL(0x009DE57C, bool)
-#define gSurfaceElement             RCT2_GLOBAL(0x009E3250, rct_map_element *)
-#endif
-
 #ifdef __TESTPAINT__
 extern uint16 testPaintVerticalTunnelHeight;
 #endif

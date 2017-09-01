@@ -992,8 +992,8 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
 {
     rct_drawpixelinfo * dpi = gPaintSession.Unk140E9A8;
     gPaintSession.InteractionType = VIEWPORT_INTERACTION_ITEM_TERRAIN;
-    gDidPassSurface = true;
-    gSurfaceElement = mapElement;
+    gPaintSession.DidPassSurface = true;
+    gPaintSession.SurfaceElement = mapElement;
 
     uint16 zoomLevel = dpi->zoom_level;
 
@@ -1379,7 +1379,7 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
         uint16 waterHeight = map_get_water_height(mapElement) * 16;
 
         if (!gTrackDesignSaveMode) {
-            gUnk141E9DC = waterHeight;
+            gPaintSession.Unk141E9DC = waterHeight;
 
             sint32 image_offset = 0;
             if (waterHeight <= localHeight) {
@@ -1531,7 +1531,7 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
     }
 
     gPaintSession.InteractionType = VIEWPORT_INTERACTION_ITEM_TERRAIN;
-    g141E9DB |= G141E9DB_FLAG_1;
+    gPaintSession.Unk141E9DB |= G141E9DB_FLAG_1;
 
     switch (surfaceShape) {
         default:

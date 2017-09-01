@@ -443,12 +443,12 @@ static paint_struct * mini_golf_paint_util_7c(
 
 static bool mini_golf_paint_util_should_draw_fence(rct_map_element * mapElement)
 {
-    if (!gDidPassSurface) {
+    if (!gPaintSession.DidPassSurface) {
         // Should be above ground (have passed surface rendering)
         return false;
     }
 
-    rct_map_element * surfaceElement = gSurfaceElement;
+    rct_map_element * surfaceElement = gPaintSession.SurfaceElement;
     if (surfaceElement->base_height != mapElement->base_height) {
         return true;
     }

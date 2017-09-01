@@ -826,14 +826,14 @@ void path_paint_pole_support(rct_map_element * mapElement, sint32 height, rct_fo
         imageId += 51;
     }
 
-    if (!gDidPassSurface) {
+    if (!gPaintSession.DidPassSurface) {
         boundBoxOffset.x = 3;
         boundBoxOffset.y = 3;
         boundBoxSize.x = 26;
         boundBoxSize.y = 26;
     }
 
-    if (!hasFences || !gDidPassSurface) {
+    if (!hasFences || !gPaintSession.DidPassSurface) {
         sub_98197C(imageId | imageFlags, 0, 0, boundBoxSize.x, boundBoxSize.y, 0, height, boundBoxOffset.x, boundBoxOffset.y, height + 1, get_current_rotation());
     } else {
         uint32 image_id;
@@ -940,14 +940,14 @@ void path_paint_box_support(rct_map_element* mapElement, sint16 height, rct_foot
     }
 
     // Below Surface
-    if (!gDidPassSurface) {
+    if (!gPaintSession.DidPassSurface) {
         boundBoxOffset.x = 3;
         boundBoxOffset.y = 3;
         boundBoxSize.x = 26;
         boundBoxSize.y = 26;
     }
 
-    if (!hasFences || !gDidPassSurface) {
+    if (!hasFences || !gPaintSession.DidPassSurface) {
         sub_98197C(imageId | imageFlags, 0, 0, boundBoxSize.x, boundBoxSize.y, 0, height, boundBoxOffset.x, boundBoxOffset.y, height + 1, get_current_rotation());
     }
     else {

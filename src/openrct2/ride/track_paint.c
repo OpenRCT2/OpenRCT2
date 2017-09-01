@@ -577,7 +577,7 @@ bool track_paint_util_draw_station_covers(enum edge_t edge, bool hasFence, const
 
 bool track_paint_util_draw_station_covers_2(enum edge_t edge, bool hasFence, const rct_ride_entrance_definition * entranceStyle, uint8 direction, uint16 height, uint8 stationVariant)
 {
-    if (!(g141E9DB & (G141E9DB_FLAG_1 | G141E9DB_FLAG_2))) {
+    if (!(gPaintSession.Unk141E9DB & (G141E9DB_FLAG_1 | G141E9DB_FLAG_2))) {
         return false;
     }
 

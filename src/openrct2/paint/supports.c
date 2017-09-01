@@ -351,7 +351,7 @@ bool wooden_a_supports_paint_setup(sint32 supportType, sint32 special, sint32 he
         return false;
     }
 
-    if (!(g141E9DB & G141E9DB_FLAG_1)) {
+    if (!(gPaintSession.Unk141E9DB & G141E9DB_FLAG_1)) {
         return false;
     }
 
@@ -429,7 +429,7 @@ bool wooden_a_supports_paint_setup(sint32 supportType, sint32 special, sint32 he
 
     // Draw repeated supports for left over space
     while (height != 0) {
-        if ((z & 16) == 0 && height >= 2 && z + 16 != gUnk141E9DC) {
+        if ((z & 16) == 0 && height >= 2 && z + 16 != gPaintSession.Unk141E9DC) {
             // Full support
             sint32 imageId = WoodenSupportImageIds[supportType].full | imageColourFlags;
             uint8 ah = height == 2 ? 23 : 28;
@@ -505,7 +505,7 @@ bool wooden_b_supports_paint_setup(sint32 supportType, sint32 special, sint32 he
         return false;
     }
 
-    if (!(g141E9DB & G141E9DB_FLAG_1)) {
+    if (!(gPaintSession.Unk141E9DB & G141E9DB_FLAG_1)) {
         if (underground != NULL) *underground = false; // AND
         return false;
     }
@@ -606,7 +606,7 @@ bool wooden_b_supports_paint_setup(sint32 supportType, sint32 special, sint32 he
 
     if (!skipTo663004) {
         while (heightSteps > 0) {
-            if (baseHeight & 0x10 || heightSteps == 1 || baseHeight + 16 == gUnk141E9DC) {
+            if (baseHeight & 0x10 || heightSteps == 1 || baseHeight + 16 == gPaintSession.Unk141E9DC) {
                 sub_98196C(
                     WoodenSupportImageIds[supportType].half | imageColourFlags,
                     0, 0,
@@ -691,7 +691,7 @@ bool metal_a_supports_paint_setup(uint8 supportType, uint8 segment, sint32 speci
         return false;
     }
 
-    if (!(g141E9DB & G141E9DB_FLAG_1)) {
+    if (!(gPaintSession.Unk141E9DB & G141E9DB_FLAG_1)) {
         return false;
     }
 
@@ -891,7 +891,7 @@ bool metal_b_supports_paint_setup(uint8 supportType, uint8 segment, sint32 speci
         return false; // AND
     }
 
-    if (!(g141E9DB & G141E9DB_FLAG_1)) {
+    if (!(gPaintSession.Unk141E9DB & G141E9DB_FLAG_1)) {
         return false; // AND
     }
 
@@ -1082,7 +1082,7 @@ bool path_a_supports_paint_setup(sint32 supportType, sint32 special, sint32 heig
         return false;
     }
 
-    if (!(g141E9DB & G141E9DB_FLAG_1)) {
+    if (!(gPaintSession.Unk141E9DB & G141E9DB_FLAG_1)) {
         return false;
     }
 
@@ -1161,7 +1161,7 @@ bool path_a_supports_paint_setup(sint32 supportType, sint32 special, sint32 heig
     }
 
     while (heightSteps > 0) {
-        if (baseHeight & 0x10 || heightSteps == 1 || baseHeight + 16 == gUnk141E9DC) {
+        if (baseHeight & 0x10 || heightSteps == 1 || baseHeight + 16 == gPaintSession.Unk141E9DC) {
 
             uint32 imageId = (supportType * 24) + pathEntry->bridge_image + 23;
 
@@ -1260,7 +1260,7 @@ bool path_b_supports_paint_setup(sint32 segment, sint32 special, sint32 height, 
         return false; // AND
     }
 
-    if (!(g141E9DB & G141E9DB_FLAG_1)) {
+    if (!(gPaintSession.Unk141E9DB & G141E9DB_FLAG_1)) {
         return false; // AND
     }
 

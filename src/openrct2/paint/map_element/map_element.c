@@ -32,13 +32,6 @@
 #include "../../game.h"
 #include "../supports.h"
 
-#ifdef NO_RCT2
-uint8 g141E9DB;
-uint16 gUnk141E9DC;
-bool gDidPassSurface;
-rct_map_element * gSurfaceElement;
-#endif
-
 #ifdef __TESTPAINT__
 uint16 testPaintVerticalTunnelHeight;
 #endif
@@ -62,8 +55,8 @@ void map_element_paint_setup(sint32 x, sint32 y)
     ) {
         paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
         paint_util_force_set_general_support_height(-1, 0);
-        g141E9DB = 0;
-        gUnk141E9DC = 0xFFFF;
+        gPaintSession.Unk141E9DB = 0;
+        gPaintSession.Unk141E9DC = 0xFFFF;
 
         sub_68B3FB(x, y);
     } else {
@@ -85,8 +78,8 @@ void sub_68B2B7(sint32 x, sint32 y)
     ) {
         paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
         paint_util_force_set_general_support_height(-1, 0);
-        gUnk141E9DC = 0xFFFF;
-        g141E9DB = G141E9DB_FLAG_2;
+        gPaintSession.Unk141E9DC = 0xFFFF;
+        gPaintSession.Unk141E9DB = G141E9DB_FLAG_2;
 
         sub_68B3FB(x, y);
     } else {
@@ -240,7 +233,7 @@ static void sub_68B3FB(sint32 x, sint32 y)
 
     gPaintSession.SpritePosition.x = x;
     gPaintSession.SpritePosition.y = y;
-    gDidPassSurface = false;
+    gPaintSession.DidPassSurface = false;
     do {
         // Only paint map_elements below the clip height.
         if ((gCurrentViewportFlags & VIEWPORT_FLAG_PAINT_CLIP_TO_HEIGHT) && (map_element->base_height > gClipHeight)) break;

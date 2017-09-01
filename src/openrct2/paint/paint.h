@@ -164,6 +164,10 @@ typedef struct paint_session
     tunnel_entry            RightTunnels[TUNNEL_MAX_COUNT];
     uint8                   RightTunnelCount;
     uint8                   VerticalTunnelHeight;
+    rct_map_element *       SurfaceElement;
+    bool                    DidPassSurface;
+    uint8                   Unk141E9DB;
+    uint16                  Unk141E9DC;
 } paint_session;
 
 extern paint_session gPaintSession;
@@ -183,6 +187,10 @@ extern paint_session gPaintSession;
 #define gRightTunnels               RCT2_ADDRESS(0x009E30B6, tunnel_entry)
 #define gRightTunnelCount           RCT2_GLOBAL(0x0141F56B, uint8)
 #define gVerticalTunnelHeight       RCT2_GLOBAL(0x009E323C, uint8)
+#define gSurfaceElement             RCT2_GLOBAL(0x009E3250, rct_map_element *)
+#define gDidPassSurface             RCT2_GLOBAL(0x009DE57C, bool)
+#define g141E9DB                    RCT2_GLOBAL(0x0141E9DB, uint8)
+#define gUnk141E9DC                 RCT2_GLOBAL(0x0141E9DC, uint16)
 #endif
 
 /** rct2: 0x00993CC4 */
