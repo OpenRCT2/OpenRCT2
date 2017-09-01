@@ -178,7 +178,7 @@ static void paint_go_karts_track_25_deg_up(uint8 rideIndex, uint8 trackSequence,
         sub_98197C(imageId, 0, 0, 1, 32, 11, height, 29, 0, height + 2, get_current_rotation());
     }
 
-    gWoodenSupportsPrependTo = ps;
+    gPaintSession.WoodenSupportsPrependTo = ps;
 
     switch (direction) {
         case 0:
@@ -223,7 +223,7 @@ static void paint_go_karts_track_flat_to_25_deg_up(uint8 rideIndex, uint8 trackS
         sub_98197C(imageId, 0, 0, 1, 32, 11, height, 29, 0, height + 2, get_current_rotation());
     }
 
-    gWoodenSupportsPrependTo = ps;
+    gPaintSession.WoodenSupportsPrependTo = ps;
 
     switch (direction) {
         case 0:
@@ -268,7 +268,7 @@ static void paint_go_karts_track_25_deg_up_to_flat(uint8 rideIndex, uint8 trackS
         sub_98197C(imageId, 0, 0, 1, 32, 11, height, 29, 0, height + 2, get_current_rotation());
     }
 
-    gWoodenSupportsPrependTo = ps;
+    gPaintSession.WoodenSupportsPrependTo = ps;
 
     switch (direction) {
         case 0:

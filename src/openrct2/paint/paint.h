@@ -158,13 +158,14 @@ typedef struct paint_session
 extern paint_session gPaintSession;
 
 #ifndef NO_RCT2
-#define gPaintStructs           RCT2_ADDRESS(0x00EE788C, paint_entry)
-#define g_currently_drawn_item  RCT2_GLOBAL(0x009DE578, void*)
-#define gEndOfPaintStructArray  RCT2_GLOBAL(0x00EE7880, paint_entry *)
-#define gPaintSpritePosition    RCT2_GLOBAL(0x009DE568, rct_xy16)
-#define gPaintInteractionType   RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8)
-#define gSupportSegments        RCT2_ADDRESS(RCT2_ADDRESS_CURRENT_SUPPORT_SEGMENTS, support_height)
-#define gSupport                RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PAINT_TILE_MAX_HEIGHT, support_height)
+#define gPaintStructs               RCT2_ADDRESS(0x00EE788C, paint_entry)
+#define g_currently_drawn_item      RCT2_GLOBAL(0x009DE578, void*)
+#define gEndOfPaintStructArray      RCT2_GLOBAL(0x00EE7880, paint_entry *)
+#define gPaintSpritePosition        RCT2_GLOBAL(0x009DE568, rct_xy16)
+#define gPaintInteractionType       RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8)
+#define gSupportSegments            RCT2_ADDRESS(RCT2_ADDRESS_CURRENT_SUPPORT_SEGMENTS, support_height)
+#define gSupport                    RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PAINT_TILE_MAX_HEIGHT, support_height)
+#define gWoodenSupportsPrependTo    RCT2_GLOBAL(0x009DEA58, paint_struct *)
 #endif
 
 /** rct2: 0x00993CC4 */

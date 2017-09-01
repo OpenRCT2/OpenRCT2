@@ -150,11 +150,11 @@ static void mine_train_rc_track_60_deg_up(uint8 rideIndex, uint8 trackSequence, 
         wooden_a_supports_paint_setup(6, 21, height, gTrackColours[SCHEME_SUPPORTS], NULL);
         break;
     case 1:
-        gWoodenSupportsPrependTo = sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 20091, 0, 0, 1, 32, 98, height, 27, 0, height);
+        gPaintSession.WoodenSupportsPrependTo = sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 20091, 0, 0, 1, 32, 98, height, 27, 0, height);
         wooden_a_supports_paint_setup(7, 22, height, gTrackColours[SCHEME_SUPPORTS], NULL);
         break;
     case 2:
-        gWoodenSupportsPrependTo = sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 20092, 0, 0, 1, 32, 98, height, 27, 0, height);
+        gPaintSession.WoodenSupportsPrependTo = sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 20092, 0, 0, 1, 32, 98, height, 27, 0, height);
         wooden_a_supports_paint_setup(6, 23, height, gTrackColours[SCHEME_SUPPORTS], NULL);
         break;
     case 3:
@@ -231,12 +231,12 @@ static void mine_train_rc_track_25_deg_up_to_60_deg_up(uint8 rideIndex, uint8 tr
         wooden_a_supports_paint_setup(6, 13, height, gTrackColours[SCHEME_SUPPORTS], NULL);
         break;
     case 1:
-        gWoodenSupportsPrependTo = sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 20079, 0, 0, 32, 20, 1, height, 0, 6, height);
+        gPaintSession.WoodenSupportsPrependTo = sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 20079, 0, 0, 32, 20, 1, height, 0, 6, height);
         sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 20082, 0, 0, 32, 1, 66, height, 0, 27, height);
         wooden_a_supports_paint_setup(7, 14, height, gTrackColours[SCHEME_SUPPORTS], NULL);
         break;
     case 2:
-        gWoodenSupportsPrependTo = sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 20080, 0, 0, 32, 20, 1, height, 0, 6, height);
+        gPaintSession.WoodenSupportsPrependTo = sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 20080, 0, 0, 32, 20, 1, height, 0, 6, height);
         sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 20083, 0, 0, 32, 1, 66, height, 0, 27, height);
         wooden_a_supports_paint_setup(6, 15, height, gTrackColours[SCHEME_SUPPORTS], NULL);
         break;
@@ -263,12 +263,12 @@ static void mine_train_rc_track_60_deg_up_to_25_deg_up(uint8 rideIndex, uint8 tr
         wooden_a_supports_paint_setup(6, 17, height, gTrackColours[SCHEME_SUPPORTS], NULL);
         break;
     case 1:
-        gWoodenSupportsPrependTo = sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 20085, 0, 0, 24, 1, 61, height, 4, 29, height - 16);
+        gPaintSession.WoodenSupportsPrependTo = sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 20085, 0, 0, 24, 1, 61, height, 4, 29, height - 16);
         sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 20088, 0, 0, 32, 2, 66, height, 0, 4, height);
         wooden_a_supports_paint_setup(7, 18, height, gTrackColours[SCHEME_SUPPORTS], NULL);
         break;
     case 2:
-        gWoodenSupportsPrependTo = sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 20086, 0, 0, 24, 1, 61, height, 4, 29, height - 16);
+        gPaintSession.WoodenSupportsPrependTo = sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 20086, 0, 0, 24, 1, 61, height, 4, 29, height - 16);
         sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 20089, 0, 0, 32, 2, 66, height, 0, 4, height);
         wooden_a_supports_paint_setup(6, 19, height, gTrackColours[SCHEME_SUPPORTS], NULL);
         break;

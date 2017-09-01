@@ -331,10 +331,6 @@ const uint16 word_97B3C4[] = {
 
 extern bool gUseOriginalRidePaint;
 
-#ifdef NO_RCT2
-paint_struct * gWoodenSupportsPrependTo;
-#endif
-
 /**
  * Adds paint structs for wooden supports.
  *  rct2: 0x006629BC
@@ -463,14 +459,14 @@ bool wooden_a_supports_paint_setup(sint32 supportType, sint32 special, sint32 he
 
             unk_supports_desc_bound_box bBox = byte_97B23C[special].bounding_box;
 
-            if (byte_97B23C[special].var_6 == 0 || gWoodenSupportsPrependTo == NULL) {
+            if (byte_97B23C[special].var_6 == 0 || gPaintSession.WoodenSupportsPrependTo == NULL) {
                 sub_98197C(imageId, 0, 0, bBox.length.x, bBox.length.y, bBox.length.z, z, bBox.offset.x, bBox.offset.y, bBox.offset.z + z, rotation);
                 hasSupports = true;
             } else {
                 hasSupports = true;
                 paint_struct* ps = sub_98198C(imageId, 0, 0, bBox.length.x, bBox.length.y, bBox.length.z, z, bBox.offset.x, bBox.offset.y, bBox.offset.z + z, rotation);
                 if (ps != NULL) {
-                    paint_struct* edi = gWoodenSupportsPrependTo;
+                    paint_struct* edi = gPaintSession.WoodenSupportsPrependTo;
                     edi->var_20 = ps;
                 }
             }
@@ -647,7 +643,7 @@ bool wooden_b_supports_paint_setup(sint32 supportType, sint32 special, sint32 he
 
             unk_supports_desc_bound_box boundBox = supportsDesc.bounding_box;
 
-            if (supportsDesc.var_6 == 0 || gWoodenSupportsPrependTo == NULL) {
+            if (supportsDesc.var_6 == 0 || gPaintSession.WoodenSupportsPrependTo == NULL) {
                 sub_98197C(
                     imageId | imageColourFlags,
                     0, 0,
@@ -668,7 +664,7 @@ bool wooden_b_supports_paint_setup(sint32 supportType, sint32 special, sint32 he
                 );
                 _9E32B1 = true;
                 if (paintStruct != NULL) {
-                    gWoodenSupportsPrependTo->var_20 = paintStruct;
+                    gPaintSession.WoodenSupportsPrependTo->var_20 = paintStruct;
                 }
             }
         }
@@ -1203,7 +1199,7 @@ bool path_a_supports_paint_setup(sint32 supportType, sint32 special, sint32 heig
         unk_supports_desc supportsDesc = byte_98D8D4[specialIndex];
         unk_supports_desc_bound_box boundBox = supportsDesc.bounding_box;
 
-        if (supportsDesc.var_6 == 0 || gWoodenSupportsPrependTo == NULL) {
+        if (supportsDesc.var_6 == 0 || gPaintSession.WoodenSupportsPrependTo == NULL) {
             sub_98197C(
                 imageId | imageColourFlags,
                 0, 0,
@@ -1224,7 +1220,7 @@ bool path_a_supports_paint_setup(sint32 supportType, sint32 special, sint32 heig
             );
             hasSupports = true;
             if (paintStruct != NULL) {
-                gWoodenSupportsPrependTo->var_20 = paintStruct;
+                gPaintSession.WoodenSupportsPrependTo->var_20 = paintStruct;
             }
         }
     }

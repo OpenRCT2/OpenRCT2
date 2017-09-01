@@ -96,7 +96,7 @@ extern uint8 gVerticalTunnelHeight;
 #else
 #define g141E9DB                    RCT2_GLOBAL(0x0141E9DB, uint8)
 #define gUnk141E9DC                 RCT2_GLOBAL(0x0141E9DC, uint16)
-#define gPaintMapPosition                   RCT2_GLOBAL(0x009DE574, rct_xy16)
+#define gPaintMapPosition           RCT2_GLOBAL(0x009DE574, rct_xy16)
 #define gDidPassSurface             RCT2_GLOBAL(0x009DE57C, bool)
 #define gSurfaceElement             RCT2_GLOBAL(0x009E3250, rct_map_element *)
 #define gLeftTunnels                RCT2_ADDRESS(0x009E3138, tunnel_entry)

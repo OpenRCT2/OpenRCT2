@@ -313,7 +313,7 @@ static void paint_river_rapids_track_25_deg(uint8 direction, sint32 height, cons
         case 1:
             imageId = sprites[direction][0] | gTrackColours[SCHEME_TRACK];
             ps = sub_98197C(imageId, 0, 0, 24, 32, 4, height, 4, 0, height, get_current_rotation());
-            gWoodenSupportsPrependTo = ps;
+            gPaintSession.WoodenSupportsPrependTo = ps;
 
             imageId = sprites[direction][1] | gTrackColours[SCHEME_TRACK];
             sub_98197C(imageId, 0, 0, 1, 32, 34, height, 27, 0, height + 16, get_current_rotation());
@@ -325,7 +325,7 @@ static void paint_river_rapids_track_25_deg(uint8 direction, sint32 height, cons
         case 2:
             imageId = sprites[direction][0] | gTrackColours[SCHEME_TRACK];
             ps = sub_98197C(imageId, 0, 0, 32, 24, 4, height, 0, 4, height, get_current_rotation());
-            gWoodenSupportsPrependTo = ps;
+            gPaintSession.WoodenSupportsPrependTo = ps;
 
             imageId = sprites[direction][1] | gTrackColours[SCHEME_TRACK];
             sub_98197C(imageId, 0, 0, 32, 1, 34, height, 0, 27, height + 16, get_current_rotation());
@@ -370,7 +370,7 @@ static void paint_river_rapids_track_25_deg_to_flat_a(uint8 direction, sint32 he
         case 1:
             imageId = sprites[direction][0] | gTrackColours[SCHEME_TRACK];
             ps = sub_98197C(imageId, 0, 0, 24, 32, 4, height, 4, 0, height, get_current_rotation());
-            gWoodenSupportsPrependTo = ps;
+            gPaintSession.WoodenSupportsPrependTo = ps;
 
             imageId = sprites[direction][1] | gTrackColours[SCHEME_TRACK];
             sub_98197C(imageId, 0, 0, 1, 32, 18, height, 27, 0, height + 16, get_current_rotation());
@@ -382,7 +382,7 @@ static void paint_river_rapids_track_25_deg_to_flat_a(uint8 direction, sint32 he
         case 2:
             imageId = sprites[direction][0] | gTrackColours[SCHEME_TRACK];
             ps = sub_98197C(imageId, 0, 0, 32, 24, 4, height, 0, 4, height, get_current_rotation());
-            gWoodenSupportsPrependTo = ps;
+            gPaintSession.WoodenSupportsPrependTo = ps;
 
             imageId = sprites[direction][1] | gTrackColours[SCHEME_TRACK];
             sub_98197C(imageId, 0, 0, 32, 1, 18, height, 0, 27, height + 16, get_current_rotation());
@@ -427,7 +427,7 @@ static void paint_river_rapids_track_25_deg_to_flat_b(uint8 direction, sint32 he
         case 1:
             imageId = sprites[direction][0] | gTrackColours[SCHEME_TRACK];
             ps = sub_98197C(imageId, 0, 0, 24, 32, 11, height, 4, 0, height, get_current_rotation());
-            gWoodenSupportsPrependTo = ps;
+            gPaintSession.WoodenSupportsPrependTo = ps;
 
             imageId = sprites[direction][1] | gTrackColours[SCHEME_TRACK];
             sub_98197C(imageId, 0, 0, 1, 32, 26, height, 27, 0, height + 16, get_current_rotation());
@@ -439,7 +439,7 @@ static void paint_river_rapids_track_25_deg_to_flat_b(uint8 direction, sint32 he
         case 2:
             imageId = sprites[direction][0] | gTrackColours[SCHEME_TRACK];
             ps = sub_98197C(imageId, 0, 0, 32, 24, 11, height, 0, 4, height, get_current_rotation());
-            gWoodenSupportsPrependTo = ps;
+            gPaintSession.WoodenSupportsPrependTo = ps;
 
             imageId = sprites[direction][1] | gTrackColours[SCHEME_TRACK];
             sub_98197C(imageId, 0, 0, 32, 1, 26, height, 0, 27, height + 16, get_current_rotation());
