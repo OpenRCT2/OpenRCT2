@@ -142,6 +142,11 @@ namespace String
         }
     }
 
+    bool StartsWith(const std::string &str, const std::string &match, bool ignoreCase)
+    {
+        return StartsWith(str.c_str(), match.c_str(), ignoreCase);
+    }
+
     size_t IndexOf(const utf8 * str, utf8 match, size_t startIndex)
     {
         const utf8 * ch = str + startIndex;

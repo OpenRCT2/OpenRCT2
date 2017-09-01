@@ -14,6 +14,13 @@
  *****************************************************************************/
 #pragma endregion
 
+#ifdef _WIN32
+    #define WIN32_LEAN_AND_MEAN
+    #include <windows.h>
+#else
+    #include <sys/stat.h>
+#endif
+
 #include "Console.hpp"
 #include "File.h"
 #include "FileStream.hpp"
@@ -102,6 +109,32 @@ namespace File
 
         Memory::Free(data);
         return lines;
+    }
+
+    uint64 GetLastModified(const std::string &path)
+    {
+        uint64 lastModified = 0;
+#ifdef _WIN32
+        auto pathW = utf8_to_widechar(path.c_str());
+        auto hFile = CreateFileW(pathW, GENERIC_READ, FILE_SHARE_READ, nullptr, OPEN_EXISTING, 0, nullptr);
+        if (hFile != INVALID_HANDLE_VALUE)
+        {
+            FILETIME ftCreate, ftAccess, ftWrite;
+            if (GetFileTime(hFile, &ftCreate, &ftAccess, &ftWrite))
+            {
+                lastModified = ((uint64)ftWrite.dwHighDateTime << 32ULL) | (uint64)ftWrite.dwLowDateTime;
+            }
+            CloseHandle(hFile);
+        }
+        free(pathW);
+#else
+        struct stat statInfo;
+        if (stat(path.c_str(), &statInfo) == 0)
+        {
+            lastModified = statInfo.st_mtime;
+        }
+#endif
+        return lastModified; 
     }
 }
 

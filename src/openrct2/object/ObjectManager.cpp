@@ -581,7 +581,7 @@ private:
         return loadedObject;
     }
 
-    void ReportMissingObject(const rct_object_entry * entry)
+    static void ReportMissingObject(const rct_object_entry * entry)
     {
         utf8 objName[9] = { 0 };
         Memory::Copy(objName, entry->name, 8);

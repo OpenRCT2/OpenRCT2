@@ -23,6 +23,7 @@ extern "C"
     #include "../config/Config.h"
     #include "../platform/crash.h"
     #include "../platform/platform.h"
+    #include "../localisation/language.h"
 }
 
 #include "../core/Console.hpp"
@@ -32,6 +33,7 @@ extern "C"
 #include "../network/network.h"
 #include "../object/ObjectRepository.h"
 #include "../OpenRCT2.h"
+#include "../PlatformEnvironment.h"
 #include "../Version.h"
 #include "CommandLine.hpp"
 
@@ -397,9 +399,13 @@ static exitcode_t HandleCommandScanObjects(CommandLineArgEnumerator * enumerator
         return result;
     }
 
-    // IPlatformEnvironment * env = OpenRCT2::SetupEnvironment();
-    // IObjectRepository * objectRepository = CreateObjectRepository(env);
-    // objectRepository->Construct();
+    auto env = OpenRCT2::CreatePlatformEnvironment();
+
+    // HACK: set gCurrentLanguage otherwise it be wrong for the index file
+    gCurrentLanguage = gConfigGeneral.language;
+
+    auto objectRepository = CreateObjectRepository(env);
+    objectRepository->Construct();
     return EXITCODE_OK;
 }
 
