@@ -33,7 +33,7 @@
 
 extern "C"
 {
-    #include "track_design.h"
+    #include "TrackDesign.h"
 }
 
 using namespace OpenRCT2;

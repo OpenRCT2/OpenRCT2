@@ -42,7 +42,7 @@
 #include "ride/ride.h"
 #include "ride/ride_ratings.h"
 #include "ride/track.h"
-#include "ride/track_design.h"
+#include "ride/TrackDesign.h"
 #include "ride/vehicle.h"
 #include "scenario/scenario.h"
 #include "title/TitleScreen.h"

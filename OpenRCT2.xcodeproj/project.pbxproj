@@ -21,6 +21,7 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		4C4C1E981F58226500560300 /* TrackDesign.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C4C1E971F58226500560300 /* TrackDesign.cpp */; };
 		4C8667821EEFDCDF0024AAB8 /* RideGroupManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C8667801EEFDCDF0024AAB8 /* RideGroupManager.cpp */; };
 		4C8B42701EEB1ABD00F015CA /* X8DrawingEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C8B426E1EEB1ABD00F015CA /* X8DrawingEngine.cpp */; };
 		4C8B42721EEB1AE400F015CA /* HardwareDisplayDrawingEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C8B42711EEB1AE400F015CA /* HardwareDisplayDrawingEngine.cpp */; };
@@ -369,7 +370,6 @@
 		F76C87121EC4E88400FA49E2 /* track.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84D21EC4E7CC00FA49E2 /* track.c */; };
 		F76C87141EC4E88400FA49E2 /* track_data.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84D41EC4E7CC00FA49E2 /* track_data.c */; };
 		F76C87161EC4E88400FA49E2 /* track_data_old.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84D61EC4E7CC00FA49E2 /* track_data_old.c */; };
-		F76C87171EC4E88400FA49E2 /* track_design.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84D71EC4E7CC00FA49E2 /* track_design.c */; };
 		F76C87191EC4E88400FA49E2 /* track_design_save.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84D91EC4E7CD00FA49E2 /* track_design_save.c */; };
 		F76C871A1EC4E88400FA49E2 /* track_paint.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84DA1EC4E7CD00FA49E2 /* track_paint.c */; };
 		F76C871C1EC4E88400FA49E2 /* TrackDesignRepository.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C84DC1EC4E7CD00FA49E2 /* TrackDesignRepository.cpp */; };
@@ -590,6 +590,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		4C4C1E971F58226500560300 /* TrackDesign.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TrackDesign.cpp; sourceTree = "<group>"; };
+		4C4C1E991F5832AA00560300 /* TrackDesign.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TrackDesign.h; sourceTree = "<group>"; };
 		4C8667801EEFDCDF0024AAB8 /* RideGroupManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RideGroupManager.cpp; sourceTree = "<group>"; };
 		4C8667811EEFDCDF0024AAB8 /* RideGroupManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RideGroupManager.h; sourceTree = "<group>"; };
 		4C8B426E1EEB1ABD00F015CA /* X8DrawingEngine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = X8DrawingEngine.cpp; sourceTree = "<group>"; };
@@ -1246,8 +1248,6 @@
 		F76C84D41EC4E7CC00FA49E2 /* track_data.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = track_data.c; sourceTree = "<group>"; };
 		F76C84D51EC4E7CC00FA49E2 /* track_data.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = track_data.h; sourceTree = "<group>"; };
 		F76C84D61EC4E7CC00FA49E2 /* track_data_old.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = track_data_old.c; sourceTree = "<group>"; };
-		F76C84D71EC4E7CC00FA49E2 /* track_design.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = track_design.c; sourceTree = "<group>"; };
-		F76C84D81EC4E7CC00FA49E2 /* track_design.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = track_design.h; sourceTree = "<group>"; };
 		F76C84D91EC4E7CD00FA49E2 /* track_design_save.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = track_design_save.c; sourceTree = "<group>"; };
 		F76C84DA1EC4E7CD00FA49E2 /* track_paint.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = track_paint.c; sourceTree = "<group>"; };
 		F76C84DB1EC4E7CD00FA49E2 /* track_paint.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = track_paint.h; sourceTree = "<group>"; };
@@ -2230,11 +2230,11 @@
 				F76C84D41EC4E7CC00FA49E2 /* track_data.c */,
 				F76C84D51EC4E7CC00FA49E2 /* track_data.h */,
 				F76C84D61EC4E7CC00FA49E2 /* track_data_old.c */,
-				F76C84D71EC4E7CC00FA49E2 /* track_design.c */,
-				F76C84D81EC4E7CC00FA49E2 /* track_design.h */,
 				F76C84D91EC4E7CD00FA49E2 /* track_design_save.c */,
 				F76C84DA1EC4E7CD00FA49E2 /* track_paint.c */,
 				F76C84DB1EC4E7CD00FA49E2 /* track_paint.h */,
+				4C4C1E971F58226500560300 /* TrackDesign.cpp */,
+				4C4C1E991F5832AA00560300 /* TrackDesign.h */,
 				F76C84DC1EC4E7CD00FA49E2 /* TrackDesignRepository.cpp */,
 				F76C84DD1EC4E7CD00FA49E2 /* TrackDesignRepository.h */,
 				F76C84E41EC4E7CD00FA49E2 /* vehicle.c */,
@@ -3029,6 +3029,7 @@
 				F76C887A1EC5324E00FA49E2 /* AudioMixer.cpp in Sources */,
 				F76C887B1EC5324E00FA49E2 /* FileAudioSource.cpp in Sources */,
 				C64644FD1F3FA4120026AC2D /* Land.cpp in Sources */,
+				4C4C1E981F58226500560300 /* TrackDesign.cpp in Sources */,
 				C666EE6B1F37ACB10061AA04 /* About.cpp in Sources */,
 				C666ED771F33DBB20061AA04 /* ShortcutKeys.cpp in Sources */,
 				C666EE6C1F37ACB10061AA04 /* Changelog.cpp in Sources */,
@@ -3345,7 +3346,6 @@
 				F76C87141EC4E88400FA49E2 /* track_data.c in Sources */,
 				C666EE511F33E3800061AA04 /* TrackPlace.cpp in Sources */,
 				F76C87161EC4E88400FA49E2 /* track_data_old.c in Sources */,
-				F76C87171EC4E88400FA49E2 /* track_design.c in Sources */,
 				F76C87191EC4E88400FA49E2 /* track_design_save.c in Sources */,
 				F76C871A1EC4E88400FA49E2 /* track_paint.c in Sources */,
 				F76C871C1EC4E88400FA49E2 /* TrackDesignRepository.cpp in Sources */,

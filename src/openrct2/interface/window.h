@@ -22,7 +22,7 @@
 #include "../management/research.h"
 #include "../peep/peep.h"
 #include "../ride/ride.h"
-#include "../ride/track_design.h"
+#include "../ride/TrackDesign.h"
 #include "../ride/vehicle.h"
 #include "../scenario/scenario.h"
 #include "../world/park.h"
