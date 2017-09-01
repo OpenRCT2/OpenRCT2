@@ -37,11 +37,6 @@ uint8 g141E9DB;
 uint16 gUnk141E9DC;
 bool gDidPassSurface;
 rct_map_element * gSurfaceElement;
-tunnel_entry gLeftTunnels[TUNNEL_MAX_COUNT];
-uint8 gLeftTunnelCount;
-tunnel_entry gRightTunnels[TUNNEL_MAX_COUNT];
-uint8 gRightTunnelCount;
-uint8 gVerticalTunnelHeight;
 #endif
 
 #ifdef __TESTPAINT__
@@ -149,12 +144,12 @@ static void sub_68B3FB(sint32 x, sint32 y)
 {
     rct_drawpixelinfo *dpi = gPaintSession.Unk140E9A8;
 
-    gLeftTunnelCount = 0;
-    gRightTunnelCount = 0;
-    gLeftTunnels[0] = (tunnel_entry){0xFF, 0xFF};
-    gRightTunnels[0] = (tunnel_entry){0xFF, 0xFF};
+    gPaintSession.LeftTunnelCount = 0;
+    gPaintSession.RightTunnelCount = 0;
+    gPaintSession.LeftTunnels[0] = (tunnel_entry){0xFF, 0xFF};
+    gPaintSession.RightTunnels[0] = (tunnel_entry){0xFF, 0xFF};
 
-    gVerticalTunnelHeight = 0xFF;
+    gPaintSession.VerticalTunnelHeight = 0xFF;
 
 #ifndef NO_RCT2
     RCT2_GLOBAL(0x009DE56A, uint16) = x;
@@ -336,19 +331,19 @@ static void sub_68B3FB(sint32 x, sint32 y)
 
 void paint_util_push_tunnel_left(uint16 height, uint8 type)
 {
-    gLeftTunnels[gLeftTunnelCount] = (tunnel_entry){.height = (height / 16), .type = type};
-    if (gLeftTunnelCount < TUNNEL_MAX_COUNT - 1) {
-        gLeftTunnels[gLeftTunnelCount + 1] = (tunnel_entry) {0xFF, 0xFF};
-        gLeftTunnelCount++;
+    gPaintSession.LeftTunnels[gPaintSession.LeftTunnelCount] = (tunnel_entry){.height = (height / 16), .type = type};
+    if (gPaintSession.LeftTunnelCount < TUNNEL_MAX_COUNT - 1) {
+        gPaintSession.LeftTunnels[gPaintSession.LeftTunnelCount + 1] = (tunnel_entry) {0xFF, 0xFF};
+        gPaintSession.LeftTunnelCount++;
     }
 }
 
 void paint_util_push_tunnel_right(uint16 height, uint8 type)
 {
-    gRightTunnels[gRightTunnelCount] = (tunnel_entry){.height = (height / 16), .type = type};
-    if (gRightTunnelCount < TUNNEL_MAX_COUNT - 1) {
-        gRightTunnels[gRightTunnelCount + 1] = (tunnel_entry) {0xFF, 0xFF};
-        gRightTunnelCount++;
+    gPaintSession.RightTunnels[gPaintSession.RightTunnelCount] = (tunnel_entry){.height = (height / 16), .type = type};
+    if (gPaintSession.RightTunnelCount < TUNNEL_MAX_COUNT - 1) {
+        gPaintSession.RightTunnels[gPaintSession.RightTunnelCount + 1] = (tunnel_entry) {0xFF, 0xFF};
+        gPaintSession.RightTunnelCount++;
     }
 }
 
@@ -357,7 +352,7 @@ void paint_util_set_vertical_tunnel(uint16 height)
 #ifdef __TESTPAINT__
     testPaintVerticalTunnelHeight = height;
 #endif
-    gVerticalTunnelHeight = height / 16;
+    gPaintSession.VerticalTunnelHeight = height / 16;
 }
 
 void paint_util_set_general_support_height(sint16 height, uint8 slope)

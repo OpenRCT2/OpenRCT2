@@ -130,7 +130,13 @@ typedef struct support_height {
     uint8 pad;
 } support_height;
 
+typedef struct tunnel_entry {
+    uint8 height;
+    uint8 type;
+} tunnel_entry;
+
 #define MAX_PAINT_QUADRANTS 512
+#define TUNNEL_MAX_COUNT    65
 
 typedef struct paint_session
 {
@@ -153,6 +159,11 @@ typedef struct paint_session
     paint_string_struct *   LastPSString;
     paint_struct *          WoodenSupportsPrependTo;
     rct_xy16                MapPosition;
+    tunnel_entry            LeftTunnels[TUNNEL_MAX_COUNT];
+    uint8                   LeftTunnelCount;
+    tunnel_entry            RightTunnels[TUNNEL_MAX_COUNT];
+    uint8                   RightTunnelCount;
+    uint8                   VerticalTunnelHeight;
 } paint_session;
 
 extern paint_session gPaintSession;
@@ -167,6 +178,11 @@ extern paint_session gPaintSession;
 #define gSupport                    RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PAINT_TILE_MAX_HEIGHT, support_height)
 #define gWoodenSupportsPrependTo    RCT2_GLOBAL(0x009DEA58, paint_struct *)
 #define gPaintMapPosition           RCT2_GLOBAL(0x009DE574, rct_xy16)
+#define gLeftTunnels                RCT2_ADDRESS(0x009E3138, tunnel_entry)
+#define gLeftTunnelCount            RCT2_GLOBAL(0x0141F56A, uint8)
+#define gRightTunnels               RCT2_ADDRESS(0x009E30B6, tunnel_entry)
+#define gRightTunnelCount           RCT2_GLOBAL(0x0141F56B, uint8)
+#define gVerticalTunnelHeight       RCT2_GLOBAL(0x009E323C, uint8)
 #endif
 
 /** rct2: 0x00993CC4 */

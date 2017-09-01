@@ -577,7 +577,7 @@ static void viewport_surface_draw_land_side_bottom(enum edge_t edge, uint8 heigh
             tunnelBounds.x = 32;
             tunnelTopBoundBoxOffset.y = 31;
 
-            tunnelArray = gLeftTunnels;
+            tunnelArray = gPaintSession.LeftTunnels;
             break;
 
         case EDGE_BOTTOMRIGHT:
@@ -592,7 +592,7 @@ static void viewport_surface_draw_land_side_bottom(enum edge_t edge, uint8 heigh
             tunnelBounds.y = 32;
             tunnelTopBoundBoxOffset.x = 31;
 
-            tunnelArray = gRightTunnels;
+            tunnelArray = gPaintSession.RightTunnels;
             break;
 
         default:
@@ -839,7 +839,7 @@ static void viewport_surface_draw_water_side_bottom(enum edge_t edge, uint8 heig
             tunnelBounds.x = 32;
             tunnelTopBoundBoxOffset.y = 31;
 
-            tunnelArray = gLeftTunnels;
+            tunnelArray = gPaintSession.LeftTunnels;
             break;
 
         case EDGE_BOTTOMRIGHT:
@@ -854,7 +854,7 @@ static void viewport_surface_draw_water_side_bottom(enum edge_t edge, uint8 heig
             tunnelBounds.y = 32;
             tunnelTopBoundBoxOffset.x = 31;
 
-            tunnelArray = gRightTunnels;
+            tunnelArray = gPaintSession.RightTunnels;
             break;
 
         default:
@@ -1065,7 +1065,7 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
 
 
     bool has_surface = false;
-    if (gVerticalTunnelHeight * 16 == height) {
+    if (gPaintSession.VerticalTunnelHeight * 16 == height) {
         // Vertical tunnels
         sub_98197C(1575, 0, 0, 1, 30, 39, height, -2, 1, height - 40, rotation);
         sub_98197C(1576, 0, 0, 30, 1, 0, height, 1, 31, height, rotation);
@@ -1344,12 +1344,12 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
 #ifdef __MINGW32__
         // The other code crashes mingw 4.8.2, as available on Travis
         for (sint32 i = 0; i < TUNNEL_MAX_COUNT; i++) {
-            backupLeftTunnels[i] = gLeftTunnels[i];
-            backupRightTunnels[i] = gRightTunnels[i];
+            backupLeftTunnels[i] = gPaintSession.LeftTunnels[i];
+            backupRightTunnels[i] = gPaintSession.RightTunnels[i];
         }
 #else
-        memcpy(backupLeftTunnels, gLeftTunnels, sizeof(tunnel_entry) * TUNNEL_MAX_COUNT);
-        memcpy(backupRightTunnels, gRightTunnels, sizeof(tunnel_entry) * TUNNEL_MAX_COUNT);
+        memcpy(backupLeftTunnels, gPaintSession.LeftTunnels, sizeof(tunnel_entry) * TUNNEL_MAX_COUNT);
+        memcpy(backupRightTunnels, gPaintSession.RightTunnels, sizeof(tunnel_entry) * TUNNEL_MAX_COUNT);
 #endif
 
         viewport_surface_draw_land_side_top(EDGE_TOPLEFT, height / 16, eax / 32, tileDescriptors[0], tileDescriptors[3]);
@@ -1361,12 +1361,12 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
 #ifdef __MINGW32__
         // The other code crashes mingw 4.8.2, as available on Travis
         for (sint32 i = 0; i < TUNNEL_MAX_COUNT; i++) {
-            gLeftTunnels[i] = backupLeftTunnels[i];
-            gRightTunnels[i] = backupRightTunnels[i];
+            gPaintSession.LeftTunnels[i] = backupLeftTunnels[i];
+            gPaintSession.RightTunnels[i] = backupRightTunnels[i];
         }
 #else
-        memcpy(gLeftTunnels, backupLeftTunnels, sizeof(tunnel_entry) * TUNNEL_MAX_COUNT);
-        memcpy(gRightTunnels, backupRightTunnels, sizeof(tunnel_entry) * TUNNEL_MAX_COUNT);
+        memcpy(gPaintSession.LeftTunnels, backupLeftTunnels, sizeof(tunnel_entry) * TUNNEL_MAX_COUNT);
+        memcpy(gPaintSession.RightTunnels, backupRightTunnels, sizeof(tunnel_entry) * TUNNEL_MAX_COUNT);
 #endif
     }
 
