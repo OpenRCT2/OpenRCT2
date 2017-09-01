@@ -4452,6 +4452,7 @@ STR_6140    :Changelog...
 STR_6141    :RCT1 Bottom Toolbar
 STR_6142    :{WINDOW_COLOUR_2}Track name: {BLACK}{STRING}
 STR_6143    :{WINDOW_COLOUR_2}Ride type: {BLACK}{STRINGID}
+STR_6144    :Show dirty visuals
 
 #############
 # Scenarios #

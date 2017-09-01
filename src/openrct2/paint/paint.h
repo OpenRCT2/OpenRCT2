@@ -161,6 +161,7 @@ extern paint_string_struct * gPaintPSStringHead;
 
 /** rct2: 0x00993CC4 */
 extern const uint32 construction_markers[];
+extern bool gShowDirtyVisuals;
 extern bool gPaintBoundingBoxes;
 
 paint_struct * sub_98196C(uint32 image_id, sint8 x_offset, sint8 y_offset, sint16 bound_box_length_x, sint16 bound_box_length_y, sint8 bound_box_length_z, sint16 z_offset, uint32 rotation);

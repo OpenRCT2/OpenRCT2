@@ -114,6 +114,7 @@ namespace OpenRCT2
 
         protected:
             void ConfigureBits(uint32 width, uint32 height, uint32 pitch);
+            virtual void OnDrawDirtyBlock(uint32 x, uint32 y, uint32 columns, uint32 rows);
 
         private:
             void ConfigureDirtyGrid();
