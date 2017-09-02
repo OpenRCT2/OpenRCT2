@@ -507,10 +507,6 @@ public:
     {
         SDL_SetHint(SDL_HINT_VIDEO_MINIMIZE_ON_FOCUS_LOSS, gConfigGeneral.minimize_fullscreen_focus_loss ? "1" : "0");
 
-        // TODO This should probably be called somewhere else. It has nothing to do with window creation and can be done as soon as
-        // g1.dat is loaded.
-        // sub_68371D();
-
         // Set window position to default display
         sint32 defaultDisplay = Math::Clamp(0, gConfigGeneral.default_display, 0xFFFF);
         sint32 x = SDL_WINDOWPOS_UNDEFINED_DISPLAY(defaultDisplay);

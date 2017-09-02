@@ -437,7 +437,7 @@ static void colour_char(uint8 colour, uint16* current_font_flags, uint8* palette
     palette_pointer[2] = (eax >> 8) & 0xFF;
     palette_pointer[3] = (eax >> 16) & 0xFF;
     palette_pointer[4] = (eax >> 24) & 0xFF;
-    unk_9ABDA4 = palette_pointer;
+    gCurrentColourPalette = palette_pointer;
 }
 
 /**
@@ -458,7 +458,7 @@ static void colour_char_window(uint8 colour, uint16* current_font_flags,uint8* p
     palette_pointer[2] = (eax >> 8) & 0xFF;
     palette_pointer[3] = (eax >> 16) & 0xFF;
     palette_pointer[4] = (eax >> 24) & 0xFF;
-    unk_9ABDA4 = palette_pointer;
+    gCurrentColourPalette = palette_pointer;
 }
 
 /**
@@ -694,7 +694,7 @@ static void ttf_draw_character_sprite(rct_drawpixelinfo *dpi, sint32 codepoint, 
     sint32 sprite = font_sprite_get_codepoint_sprite(info->font_sprite_base, codepoint);
 
     if (!(info->flags & TEXT_DRAW_FLAG_NO_DRAW)) {
-        unk_9ABDA4 = &info->palette;
+        gCurrentColourPalette = info->palette;
 
         sint32 x = info->x;
         sint32 y = info->y;
@@ -854,7 +854,7 @@ static const utf8 *ttf_process_format_code(rct_drawpixelinfo *dpi, const utf8 *t
         memcpy(info->palette + 5, &(g1Element->offset[250]), 2);
 
         // Set the palette pointer
-        unk_9ABDA4 = &info->palette;
+        gCurrentColourPalette = info->palette;
         break;
     }
     case 3:
@@ -1034,7 +1034,7 @@ static void ttf_process_initial_colour(sint32 colour, text_draw_info *info)
             info->palette[2] = (eax >> 8) & 0xFF;
             info->palette[3] = (eax >> 16) & 0xFF;
             info->palette[4] = (eax >> 24) & 0xFF;
-            unk_9ABDA4 = &info->palette;
+            gCurrentColourPalette = info->palette;
             eax = 0;
         }
     }

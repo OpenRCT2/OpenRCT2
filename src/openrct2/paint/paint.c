@@ -46,13 +46,11 @@ static uint32 _paintQuadrantFrontIndex;
 static paint_struct *_paintQuadrants[MAX_PAINT_QUADRANTS];
 void *g_currently_drawn_item;
 paint_entry * gEndOfPaintStructArray;
-sint16 gUnk9DE568;
-sint16 gUnk9DE56C;
+rct_xy16 gPaintSpritePosition;
 paint_struct gUnkF1A4CC;
 uint8 gPaintInteractionType;
 support_height gSupportSegments[9] = { 0 };
 support_height gSupport;
-
 #else
 #define _paintQuadrants (RCT2_ADDRESS(0x00F1A50C, paint_struct*))
 #define _paintQuadrantBackIndex RCT2_GLOBAL(0xF1AD0C, uint32)
@@ -143,8 +141,8 @@ static paint_struct * sub_9819_c(uint32 image_id, rct_xyz16 offset, rct_xyz16 bo
             rotate_map_coordinates(&offset.x, &offset.y, 1);
             break;
     }
-    offset.x += gUnk9DE568;
-    offset.y += gUnk9DE56C;
+    offset.x += gPaintSpritePosition.x;
+    offset.y += gPaintSpritePosition.y;
 
     rct_xy16 map = coordinate_3d_to_2d(&offset, rotation);
 
@@ -189,13 +187,13 @@ static paint_struct * sub_9819_c(uint32 image_id, rct_xyz16 offset, rct_xyz16 bo
             break;
     }
 
-    ps->bound_box_x_end = boundBoxSize.x + boundBoxOffset.x + gUnk9DE568;
+    ps->bound_box_x_end = boundBoxSize.x + boundBoxOffset.x + gPaintSpritePosition.x;
     ps->bound_box_z = boundBoxOffset.z;
     ps->bound_box_z_end = boundBoxOffset.z + boundBoxSize.z;
-    ps->bound_box_y_end = boundBoxSize.y + boundBoxOffset.y + gUnk9DE56C;
+    ps->bound_box_y_end = boundBoxSize.y + boundBoxOffset.y + gPaintSpritePosition.y;
     ps->flags = 0;
-    ps->bound_box_x = boundBoxOffset.x + gUnk9DE568;
-    ps->bound_box_y = boundBoxOffset.y + gUnk9DE56C;
+    ps->bound_box_x = boundBoxOffset.x + gPaintSpritePosition.x;
+    ps->bound_box_y = boundBoxOffset.y + gPaintSpritePosition.y;
     ps->attached_ps = NULL;
     ps->var_20 = NULL;
     ps->sprite_type = gPaintInteractionType;
@@ -284,8 +282,8 @@ paint_struct * sub_98196C(
             break;
     }
 
-    coord_3d.x += gUnk9DE568;
-    coord_3d.y += gUnk9DE56C;
+    coord_3d.x += gPaintSpritePosition.x;
+    coord_3d.y += gPaintSpritePosition.y;
 
     ps->bound_box_x_end = coord_3d.x + boundBox.x;
     ps->bound_box_y_end = coord_3d.y + boundBox.y;
@@ -608,7 +606,7 @@ void paint_floating_money_effect(money32 amount, rct_string_id string_id, sint16
     ps->args[3] = 0;
     ps->y_offsets = (uint8 *) y_offsets;
 
-    rct_xyz16 position = {.x = gUnk9DE568, .y = gUnk9DE56C, .z = z};
+    rct_xyz16 position = {.x = gPaintSpritePosition.x, .y = gPaintSpritePosition.y, .z = z};
     rct_xy16 coord = coordinate_3d_to_2d(&position, rotation);
 
     ps->x = coord.x + offset_x;

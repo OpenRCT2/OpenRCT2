@@ -218,8 +218,8 @@ void scenery_paint(uint8 direction, sint32 height, rct_map_element* mapElement) 
             if (entry->small_scenery.flags & SMALL_SCENERY_FLAG_SWAMP_GOO) {
                 // 6E02F6:
                 sint32 image_id = gCurrentTicks;
-                image_id += gUnk9DE568 / 4;
-                image_id += gUnk9DE56C / 4;
+                image_id += gPaintSpritePosition.x / 4;
+                image_id += gPaintSpritePosition.y / 4;
                 image_id = (image_id / 4) & 15;
                 image_id += entry->image;
                 if (dword_F64EB0 != 0) {
@@ -232,7 +232,7 @@ void scenery_paint(uint8 direction, sint32 height, rct_map_element* mapElement) 
                 sint32 frame = gCurrentTicks;
                 if (!(entry->small_scenery.flags & SMALL_SCENERY_FLAG_COG)) {
                     // 6E01F8:
-                    frame += ((gUnk9DE568 / 4) + (gUnk9DE56C / 4));
+                    frame += ((gPaintSpritePosition.x / 4) + (gPaintSpritePosition.y / 4));
                     frame += (mapElement->type & 0xC0) / 16;
                 }
                 // 6E0222:

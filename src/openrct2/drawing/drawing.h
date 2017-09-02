@@ -281,9 +281,7 @@ extern rct_g1_element *g1Elements;
 extern rct_drawpixelinfo gScreenDPI;
 extern rct_drawpixelinfo gWindowDPI;
 
-extern void *unk_9ABDA4;
-extern void *unk_9E3CDC;
-extern void *unk_9E3CE4[8];
+extern uint8 *gCurrentColourPalette;
 #ifdef NO_RCT2
 extern rct_drawpixelinfo *unk_140E9A8;
 #else
@@ -328,7 +326,6 @@ bool is_csg_loaded();
 uint32 gfx_object_allocate_images(const rct_g1_element * images, uint32 count);
 void gfx_object_free_images(uint32 baseImageId, uint32 count);
 void gfx_object_check_all_images_freed();
-void sub_68371D();
 void FASTCALL gfx_bmp_sprite_to_buffer(uint8* palette_pointer, uint8* unknown_pointer, uint8* source_pointer, uint8* dest_pointer, rct_g1_element* source_image, rct_drawpixelinfo *dest_dpi, sint32 height, sint32 width, sint32 image_type);
 void FASTCALL gfx_rle_sprite_to_buffer(const uint8* RESTRICT source_bits_pointer, uint8* RESTRICT dest_bits_pointer, const uint8* RESTRICT palette_pointer, const rct_drawpixelinfo * RESTRICT dpi, sint32 image_type, sint32 source_y_start, sint32 height, sint32 source_x_start, sint32 width);
 void FASTCALL gfx_draw_sprite(rct_drawpixelinfo *dpi, sint32 image_id, sint32 x, sint32 y, uint32 tertiary_colour);

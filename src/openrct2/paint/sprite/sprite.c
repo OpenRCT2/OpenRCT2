@@ -64,10 +64,9 @@ void sprite_paint_setup(const uint16 eax, const uint16 ecx) {
         image_direction &= 0x1F;
 
         g_currently_drawn_item = spr;
-
-        gUnk9DE568 = spr->unknown.x;
+        gPaintSpritePosition.x = spr->unknown.x;
+        gPaintSpritePosition.y = spr->unknown.y;
         gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_SPRITE;
-        gUnk9DE56C = spr->unknown.y;
 
         switch (spr->unknown.sprite_identifier) {
         case SPRITE_IDENTIFIER_VEHICLE:
