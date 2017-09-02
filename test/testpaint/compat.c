@@ -80,7 +80,7 @@ rct_xy16 gMapSelectPositionB;
 rct_xyz16 gMapSelectArrowPosition;
 uint8 gMapSelectArrowDirection;
 
-void entrance_paint(uint8 direction, int height, rct_map_element *map_element) { }
+void entrance_paint(paint_session * session, uint8 direction, int height, rct_map_element *map_element) { }
 void banner_paint(paint_session * session, uint8 direction, int height, rct_map_element *map_element) { }
 void surface_paint(paint_session * session, uint8 direction, uint16 height, rct_map_element *mapElement) { }
 void path_paint(paint_session * session, uint8 direction, uint16 height, rct_map_element *mapElement) { }
