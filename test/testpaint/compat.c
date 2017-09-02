@@ -84,7 +84,7 @@ void entrance_paint(paint_session * session, uint8 direction, int height, rct_ma
 void banner_paint(paint_session * session, uint8 direction, int height, rct_map_element *map_element) { }
 void surface_paint(paint_session * session, uint8 direction, uint16 height, rct_map_element *mapElement) { }
 void path_paint(paint_session * session, uint8 direction, uint16 height, rct_map_element *mapElement) { }
-void scenery_paint(uint8 direction, int height, rct_map_element *mapElement) { }
+void scenery_paint(paint_session * session, uint8 direction, int height, rct_map_element *mapElement) { }
 void fence_paint(paint_session * session, uint8 direction, int height, rct_map_element *mapElement) { }
 void scenery_multiple_paint(paint_session * session, uint8 direction, uint16 height, rct_map_element *mapElement) { }
 

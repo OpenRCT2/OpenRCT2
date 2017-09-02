@@ -256,7 +256,7 @@ static void sub_68B3FB(paint_session * session, sint32 x, sint32 y)
             track_paint(direction, height, map_element);
             break;
         case MAP_ELEMENT_TYPE_SCENERY:
-            scenery_paint(direction, height, map_element);
+            scenery_paint(session, direction, height, map_element);
             break;
         case MAP_ELEMENT_TYPE_ENTRANCE:
             entrance_paint(session, direction, height, map_element);
