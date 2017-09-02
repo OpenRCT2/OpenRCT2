@@ -660,15 +660,15 @@ void paint_session_generate(paint_session * session)
 
         for (; num_vertical_quadrants > 0; --num_vertical_quadrants){
             map_element_paint_setup(session, mapTile.x, mapTile.y);
-            sprite_paint_setup(mapTile.x, mapTile.y);
+            sprite_paint_setup(session, mapTile.x, mapTile.y);
 
-            sprite_paint_setup(mapTile.x - 32, mapTile.y + 32);
+            sprite_paint_setup(session, mapTile.x - 32, mapTile.y + 32);
 
             map_element_paint_setup(session, mapTile.x, mapTile.y + 32);
-            sprite_paint_setup(mapTile.x, mapTile.y + 32);
+            sprite_paint_setup(session, mapTile.x, mapTile.y + 32);
 
             mapTile.x += 32;
-            sprite_paint_setup(mapTile.x, mapTile.y);
+            sprite_paint_setup(session, mapTile.x, mapTile.y);
 
             mapTile.y += 32;
         }
@@ -682,15 +682,15 @@ void paint_session_generate(paint_session * session)
 
         for (; num_vertical_quadrants > 0; --num_vertical_quadrants){
             map_element_paint_setup(session, mapTile.x, mapTile.y);
-            sprite_paint_setup(mapTile.x, mapTile.y);
+            sprite_paint_setup(session, mapTile.x, mapTile.y);
 
-            sprite_paint_setup(mapTile.x - 32, mapTile.y - 32);
+            sprite_paint_setup(session, mapTile.x - 32, mapTile.y - 32);
 
             map_element_paint_setup(session, mapTile.x - 32, mapTile.y);
-            sprite_paint_setup(mapTile.x - 32, mapTile.y);
+            sprite_paint_setup(session, mapTile.x - 32, mapTile.y);
 
             mapTile.y += 32;
-            sprite_paint_setup(mapTile.x, mapTile.y);
+            sprite_paint_setup(session, mapTile.x, mapTile.y);
 
             mapTile.x -= 32;
         }
@@ -704,16 +704,16 @@ void paint_session_generate(paint_session * session)
 
         for (; num_vertical_quadrants > 0; --num_vertical_quadrants){
             map_element_paint_setup(session, mapTile.x, mapTile.y);
-            sprite_paint_setup(mapTile.x, mapTile.y);
+            sprite_paint_setup(session, mapTile.x, mapTile.y);
 
-            sprite_paint_setup(mapTile.x + 32, mapTile.y - 32);
+            sprite_paint_setup(session, mapTile.x + 32, mapTile.y - 32);
 
             map_element_paint_setup(session, mapTile.x, mapTile.y - 32);
-            sprite_paint_setup(mapTile.x, mapTile.y - 32);
+            sprite_paint_setup(session, mapTile.x, mapTile.y - 32);
 
             mapTile.x -= 32;
 
-            sprite_paint_setup(mapTile.x, mapTile.y);
+            sprite_paint_setup(session, mapTile.x, mapTile.y);
 
             mapTile.y -= 32;
         }
@@ -727,16 +727,16 @@ void paint_session_generate(paint_session * session)
 
         for (; num_vertical_quadrants > 0; --num_vertical_quadrants){
             map_element_paint_setup(session, mapTile.x, mapTile.y);
-            sprite_paint_setup(mapTile.x, mapTile.y);
+            sprite_paint_setup(session, mapTile.x, mapTile.y);
 
-            sprite_paint_setup(mapTile.x + 32, mapTile.y + 32);
+            sprite_paint_setup(session, mapTile.x + 32, mapTile.y + 32);
 
             map_element_paint_setup(session, mapTile.x + 32, mapTile.y);
-            sprite_paint_setup(mapTile.x + 32, mapTile.y);
+            sprite_paint_setup(session, mapTile.x + 32, mapTile.y);
 
             mapTile.y -= 32;
 
-            sprite_paint_setup(mapTile.x, mapTile.y);
+            sprite_paint_setup(session, mapTile.x, mapTile.y);
 
             mapTile.x += 32;
         }

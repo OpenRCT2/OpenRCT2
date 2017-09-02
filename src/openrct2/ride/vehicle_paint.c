@@ -2333,7 +2333,7 @@ void vehicle_visual_default(sint32 x, sint32 imageDirection, sint32 y, sint32 z,
  *
  *  rct2: 0x006D4244
  */
-void vehicle_paint(rct_vehicle *vehicle, sint32 imageDirection)
+void vehicle_paint(paint_session * session, rct_vehicle *vehicle, sint32 imageDirection)
 {
     rct_ride_entry *rideEntry = 0;
     const rct_ride_entry_vehicle *vehicleEntry;

@@ -30,7 +30,7 @@ typedef struct vehicle_boundbox {
 
 extern const vehicle_boundbox VehicleBoundboxes[16][224];
 
-void vehicle_paint(rct_vehicle *vehicle, sint32 imageDirection);
+void vehicle_paint(paint_session * session, rct_vehicle *vehicle, sint32 imageDirection);
 
 void vehicle_visual_default(sint32 x, sint32 imageDirection, sint32 y, sint32 z, rct_vehicle *vehicle, const rct_ride_entry_vehicle *vehicleEntry);
 void vehicle_visual_roto_drop(sint32 x, sint32 imageDirection, sint32 y, sint32 z, rct_vehicle *vehicle, const rct_ride_entry_vehicle *vehicleEntry);
