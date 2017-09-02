@@ -253,7 +253,7 @@ static void sub_68B3FB(paint_session * session, sint32 x, sint32 y)
             path_paint(session, direction, height, map_element);
             break;
         case MAP_ELEMENT_TYPE_TRACK:
-            track_paint(direction, height, map_element);
+            track_paint(session, direction, height, map_element);
             break;
         case MAP_ELEMENT_TYPE_SCENERY:
             scenery_paint(session, direction, height, map_element);
