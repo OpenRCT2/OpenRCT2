@@ -268,7 +268,7 @@ static void sub_68B3FB(paint_session * session, sint32 x, sint32 y)
             scenery_multiple_paint(direction, height, map_element);
             break;
         case MAP_ELEMENT_TYPE_BANNER:
-            banner_paint(direction, height, map_element);
+            banner_paint(session, direction, height, map_element);
             break;
         // A corrupt element inserted by OpenRCT2 itself, which skips the drawing of the next element only.
         case MAP_ELEMENT_TYPE_CORRUPT:
@@ -280,7 +280,7 @@ static void sub_68B3FB(paint_session * session, sint32 x, sint32 y)
             // An undefined map element is most likely a corrupt element inserted by 8 cars' MOM feature to skip drawing of all elements after it.
             return;
         }
-        gPaintSession.MapPosition = dword_9DE574;
+        session->MapPosition = dword_9DE574;
     } while (!map_element_is_last_for_tile(map_element++));
 
     if (!gShowSupportSegmentHeights) {

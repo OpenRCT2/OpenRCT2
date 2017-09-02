@@ -35,12 +35,12 @@ const rct_xy16 BannerBoundBoxes[][2] = {
  *
  *  rct2: 0x006B9CC4
  */
-void banner_paint(uint8 direction, sint32 height, rct_map_element* map_element)
+void banner_paint(paint_session * session, uint8 direction, sint32 height, rct_map_element* map_element)
 {
     uint16 boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ;
-    rct_drawpixelinfo* dpi = gPaintSession.Unk140E9A8;
+    rct_drawpixelinfo* dpi = session->Unk140E9A8;
 
-    gPaintSession.InteractionType = VIEWPORT_INTERACTION_ITEM_BANNER;
+    session->InteractionType = VIEWPORT_INTERACTION_ITEM_BANNER;
 
     if (dpi->zoom_level > 1 || gTrackDesignSaveMode) return;
 
@@ -64,7 +64,7 @@ void banner_paint(uint8 direction, sint32 height, rct_map_element* map_element)
 
     if (map_element->flags & MAP_ELEMENT_FLAG_GHOST) // if being placed
     {
-        gPaintSession.InteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
+        session->InteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
         image_id |= construction_markers[gConfigGeneral.construction_marker_colour];
     }
     else{

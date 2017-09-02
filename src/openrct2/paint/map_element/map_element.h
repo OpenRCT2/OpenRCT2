@@ -97,7 +97,7 @@ uint16 paint_util_rotate_segments(uint16 segments, uint8 rotation);
 void map_element_paint_setup(paint_session * session, sint32 x, sint32 y);
 
 void entrance_paint(uint8 direction, sint32 height, rct_map_element* map_element);
-void banner_paint(uint8 direction, sint32 height, rct_map_element* map_element);
+void banner_paint(paint_session * session, uint8 direction, sint32 height, rct_map_element* map_element);
 void surface_paint(paint_session * session, uint8 direction, uint16 height, rct_map_element *mapElement);
 void path_paint(paint_session * session, uint8 direction, uint16 height, rct_map_element *mapElement);
 void scenery_paint(uint8 direction, sint32 height, rct_map_element* mapElement);
