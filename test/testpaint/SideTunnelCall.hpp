@@ -19,7 +19,7 @@
 #include <openrct2/common.h>
 
 extern "C" {
-#include <openrct2/paint/map_element/map_element.h>
+#include <openrct2/paint/paint.h>
 }
 
 enum {

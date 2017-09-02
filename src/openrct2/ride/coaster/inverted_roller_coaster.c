@@ -54,7 +54,7 @@ static void inverted_rc_track_flat(uint8 rideIndex, uint8 trackSequence, uint8 d
     }
 
     paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    if (track_paint_util_should_paint_supports(gPaintMapPosition)) {
+    if (track_paint_util_should_paint_supports(gPaintSession.MapPosition)) {
         metal_a_supports_paint_setup(METAL_SUPPORTS_BOXED, 4, 0, height + 44, gTrackColours[SCHEME_SUPPORTS]);
     }
 
@@ -118,7 +118,7 @@ static void inverted_rc_track_25_deg_up(uint8 rideIndex, uint8 trackSequence, ui
     }
 
     paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    if (track_paint_util_should_paint_supports(gPaintMapPosition)) {
+    if (track_paint_util_should_paint_supports(gPaintSession.MapPosition)) {
         switch (direction) {
         case 0:
             metal_a_supports_paint_setup(METAL_SUPPORTS_BOXED, 6, 0, height + 62, gTrackColours[SCHEME_SUPPORTS]);
@@ -205,7 +205,7 @@ static void inverted_rc_track_flat_to_25_deg_up(uint8 rideIndex, uint8 trackSequ
     }
 
     paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    if (track_paint_util_should_paint_supports(gPaintMapPosition)) {
+    if (track_paint_util_should_paint_supports(gPaintSession.MapPosition)) {
         switch (direction) {
         case 0:
             metal_a_supports_paint_setup(METAL_SUPPORTS_BOXED, 6, 0, height + 54, gTrackColours[SCHEME_SUPPORTS]);
@@ -279,7 +279,7 @@ static void inverted_rc_track_60_deg_up_to_25_deg_up(uint8 rideIndex, uint8 trac
     }
 
     paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    if (track_paint_util_should_paint_supports(gPaintMapPosition)) {
+    if (track_paint_util_should_paint_supports(gPaintSession.MapPosition)) {
         switch (direction) {
         case 0:
             metal_a_supports_paint_setup(METAL_SUPPORTS_BOXED, 6, 0, height + 76, gTrackColours[SCHEME_SUPPORTS]);
@@ -340,7 +340,7 @@ static void inverted_rc_track_25_deg_up_to_flat(uint8 rideIndex, uint8 trackSequ
     }
 
     paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    if (track_paint_util_should_paint_supports(gPaintMapPosition)) {
+    if (track_paint_util_should_paint_supports(gPaintSession.MapPosition)) {
         switch (direction) {
         case 0:
             metal_a_supports_paint_setup(METAL_SUPPORTS_BOXED, 6, 0, height + 52, gTrackColours[SCHEME_SUPPORTS]);
@@ -547,7 +547,7 @@ static void inverted_rc_track_flat_to_left_bank(uint8 rideIndex, uint8 trackSequ
     }
 
     paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
-    if (track_paint_util_should_paint_supports(gPaintMapPosition)) {
+    if (track_paint_util_should_paint_supports(gPaintSession.MapPosition)) {
         metal_a_supports_paint_setup(METAL_SUPPORTS_BOXED, 4, 0, height + 44, gTrackColours[SCHEME_SUPPORTS]);
     }
 
@@ -574,7 +574,7 @@ static void inverted_rc_track_flat_to_right_bank(uint8 rideIndex, uint8 trackSeq
     }
 
     paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    if (track_paint_util_should_paint_supports(gPaintMapPosition)) {
+    if (track_paint_util_should_paint_supports(gPaintSession.MapPosition)) {
         metal_a_supports_paint_setup(METAL_SUPPORTS_BOXED, 4, 0, height + 44, gTrackColours[SCHEME_SUPPORTS]);
     }
 
@@ -601,7 +601,7 @@ static void inverted_rc_track_left_bank_to_flat(uint8 rideIndex, uint8 trackSequ
     }
 
     paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
-    if (track_paint_util_should_paint_supports(gPaintMapPosition)) {
+    if (track_paint_util_should_paint_supports(gPaintSession.MapPosition)) {
         metal_a_supports_paint_setup(METAL_SUPPORTS_BOXED, 4, 0, height + 44, gTrackColours[SCHEME_SUPPORTS]);
     }
 
@@ -628,7 +628,7 @@ static void inverted_rc_track_right_bank_to_flat(uint8 rideIndex, uint8 trackSeq
     }
 
     paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    if (track_paint_util_should_paint_supports(gPaintMapPosition)) {
+    if (track_paint_util_should_paint_supports(gPaintSession.MapPosition)) {
         metal_a_supports_paint_setup(METAL_SUPPORTS_BOXED, 4, 0, height + 44, gTrackColours[SCHEME_SUPPORTS]);
     }
 
@@ -782,7 +782,7 @@ static void inverted_rc_track_left_bank_to_25_deg_up(uint8 rideIndex, uint8 trac
     }
 
     paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
-    if (track_paint_util_should_paint_supports(gPaintMapPosition)) {
+    if (track_paint_util_should_paint_supports(gPaintSession.MapPosition)) {
         switch (direction) {
         case 0:
             metal_a_supports_paint_setup(METAL_SUPPORTS_BOXED, 6, 0, height + 52, gTrackColours[SCHEME_SUPPORTS]);
@@ -826,7 +826,7 @@ static void inverted_rc_track_right_bank_to_25_deg_up(uint8 rideIndex, uint8 tra
     }
 
     paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    if (track_paint_util_should_paint_supports(gPaintMapPosition)) {
+    if (track_paint_util_should_paint_supports(gPaintSession.MapPosition)) {
         switch (direction) {
         case 0:
             metal_a_supports_paint_setup(METAL_SUPPORTS_BOXED, 6, 0, height + 52, gTrackColours[SCHEME_SUPPORTS]);
@@ -870,7 +870,7 @@ static void inverted_rc_track_25_deg_up_to_left_bank(uint8 rideIndex, uint8 trac
     }
 
     paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
-    if (track_paint_util_should_paint_supports(gPaintMapPosition)) {
+    if (track_paint_util_should_paint_supports(gPaintSession.MapPosition)) {
         switch (direction) {
         case 0:
             metal_a_supports_paint_setup(METAL_SUPPORTS_BOXED, 6, 0, height + 52, gTrackColours[SCHEME_SUPPORTS]);
@@ -914,7 +914,7 @@ static void inverted_rc_track_25_deg_up_to_right_bank(uint8 rideIndex, uint8 tra
     }
 
     paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    if (track_paint_util_should_paint_supports(gPaintMapPosition)) {
+    if (track_paint_util_should_paint_supports(gPaintSession.MapPosition)) {
         switch (direction) {
         case 0:
             metal_a_supports_paint_setup(METAL_SUPPORTS_BOXED, 6, 0, height + 52, gTrackColours[SCHEME_SUPPORTS]);
@@ -982,7 +982,7 @@ static void inverted_rc_track_left_bank(uint8 rideIndex, uint8 trackSequence, ui
     }
 
     paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
-    if (track_paint_util_should_paint_supports(gPaintMapPosition)) {
+    if (track_paint_util_should_paint_supports(gPaintSession.MapPosition)) {
         metal_a_supports_paint_setup(METAL_SUPPORTS_BOXED, 4, 0, height + 44, gTrackColours[SCHEME_SUPPORTS]);
     }
 
@@ -2858,7 +2858,7 @@ static void inverted_rc_track_brakes(uint8 rideIndex, uint8 trackSequence, uint8
     }
 
     paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    if (track_paint_util_should_paint_supports(gPaintMapPosition)) {
+    if (track_paint_util_should_paint_supports(gPaintSession.MapPosition)) {
         metal_a_supports_paint_setup(METAL_SUPPORTS_BOXED, 4, 0, height + 44, gTrackColours[SCHEME_SUPPORTS]);
     }
 
@@ -3365,7 +3365,7 @@ static void inverted_rc_track_25_deg_up_left_banked(uint8 rideIndex, uint8 track
     }
 
     paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    if (track_paint_util_should_paint_supports(gPaintMapPosition)) {
+    if (track_paint_util_should_paint_supports(gPaintSession.MapPosition)) {
         switch (direction) {
         case 0:
             metal_a_supports_paint_setup(METAL_SUPPORTS_BOXED, 6, 0, height + 62, gTrackColours[SCHEME_SUPPORTS]);
@@ -3409,7 +3409,7 @@ static void inverted_rc_track_25_deg_up_right_banked(uint8 rideIndex, uint8 trac
     }
 
     paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    if (track_paint_util_should_paint_supports(gPaintMapPosition)) {
+    if (track_paint_util_should_paint_supports(gPaintSession.MapPosition)) {
         switch (direction) {
         case 0:
             metal_a_supports_paint_setup(METAL_SUPPORTS_BOXED, 6, 0, height + 62, gTrackColours[SCHEME_SUPPORTS]);
@@ -6050,7 +6050,7 @@ static void inverted_rc_track_block_brakes(uint8 rideIndex, uint8 trackSequence,
     }
 
     paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    if (track_paint_util_should_paint_supports(gPaintMapPosition)) {
+    if (track_paint_util_should_paint_supports(gPaintSession.MapPosition)) {
         metal_a_supports_paint_setup(METAL_SUPPORTS_BOXED, 4, 0, height + 44, gTrackColours[SCHEME_SUPPORTS]);
     }
 
@@ -6477,7 +6477,7 @@ static void inverted_rc_track_25_deg_up_to_left_banked_25_deg_up(uint8 rideIndex
     }
 
     paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    if (track_paint_util_should_paint_supports(gPaintMapPosition)) {
+    if (track_paint_util_should_paint_supports(gPaintSession.MapPosition)) {
         switch (direction) {
         case 0:
             metal_a_supports_paint_setup(METAL_SUPPORTS_BOXED, 6, 0, height + 62, gTrackColours[SCHEME_SUPPORTS]);
@@ -6521,7 +6521,7 @@ static void inverted_rc_track_25_deg_up_to_right_banked_25_deg_up(uint8 rideInde
     }
 
     paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    if (track_paint_util_should_paint_supports(gPaintMapPosition)) {
+    if (track_paint_util_should_paint_supports(gPaintSession.MapPosition)) {
         switch (direction) {
         case 0:
             metal_a_supports_paint_setup(METAL_SUPPORTS_BOXED, 6, 0, height + 62, gTrackColours[SCHEME_SUPPORTS]);
@@ -6565,7 +6565,7 @@ static void inverted_rc_track_left_banked_25_deg_up_to_25_deg_up(uint8 rideIndex
     }
 
     paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    if (track_paint_util_should_paint_supports(gPaintMapPosition)) {
+    if (track_paint_util_should_paint_supports(gPaintSession.MapPosition)) {
         switch (direction) {
         case 0:
             metal_a_supports_paint_setup(METAL_SUPPORTS_BOXED, 6, 0, height + 62, gTrackColours[SCHEME_SUPPORTS]);
@@ -6609,7 +6609,7 @@ static void inverted_rc_track_right_banked_25_deg_up_to_25_deg_up(uint8 rideInde
     }
 
     paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    if (track_paint_util_should_paint_supports(gPaintMapPosition)) {
+    if (track_paint_util_should_paint_supports(gPaintSession.MapPosition)) {
         switch (direction) {
         case 0:
             metal_a_supports_paint_setup(METAL_SUPPORTS_BOXED, 6, 0, height + 62, gTrackColours[SCHEME_SUPPORTS]);
@@ -6677,7 +6677,7 @@ static void inverted_rc_track_left_banked_flat_to_left_banked_25_deg_up(uint8 ri
     }
 
     paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    if (track_paint_util_should_paint_supports(gPaintMapPosition)) {
+    if (track_paint_util_should_paint_supports(gPaintSession.MapPosition)) {
         switch (direction) {
         case 0:
             metal_a_supports_paint_setup(METAL_SUPPORTS_BOXED, 6, 0, height + 54, gTrackColours[SCHEME_SUPPORTS]);
@@ -6721,7 +6721,7 @@ static void inverted_rc_track_right_banked_flat_to_right_banked_25_deg_up(uint8 
     }
 
     paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    if (track_paint_util_should_paint_supports(gPaintMapPosition)) {
+    if (track_paint_util_should_paint_supports(gPaintSession.MapPosition)) {
         switch (direction) {
         case 0:
             metal_a_supports_paint_setup(METAL_SUPPORTS_BOXED, 6, 0, height + 54, gTrackColours[SCHEME_SUPPORTS]);
@@ -6765,7 +6765,7 @@ static void inverted_rc_track_left_banked_25_deg_up_to_left_banked_flat(uint8 ri
     }
 
     paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    if (track_paint_util_should_paint_supports(gPaintMapPosition)) {
+    if (track_paint_util_should_paint_supports(gPaintSession.MapPosition)) {
         switch (direction) {
         case 0:
             metal_a_supports_paint_setup(METAL_SUPPORTS_BOXED, 6, 0, height + 52, gTrackColours[SCHEME_SUPPORTS]);
@@ -6809,7 +6809,7 @@ static void inverted_rc_track_right_banked_25_deg_up_to_right_banked_flat(uint8 
     }
 
     paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    if (track_paint_util_should_paint_supports(gPaintMapPosition)) {
+    if (track_paint_util_should_paint_supports(gPaintSession.MapPosition)) {
         switch (direction) {
         case 0:
             metal_a_supports_paint_setup(METAL_SUPPORTS_BOXED, 6, 0, height + 52, gTrackColours[SCHEME_SUPPORTS]);
@@ -6877,7 +6877,7 @@ static void inverted_rc_track_flat_to_left_banked_25_deg_up(uint8 rideIndex, uin
     }
 
     paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    if (track_paint_util_should_paint_supports(gPaintMapPosition)) {
+    if (track_paint_util_should_paint_supports(gPaintSession.MapPosition)) {
         switch (direction) {
         case 0:
             metal_a_supports_paint_setup(METAL_SUPPORTS_BOXED, 6, 0, height + 54, gTrackColours[SCHEME_SUPPORTS]);
@@ -6921,7 +6921,7 @@ static void inverted_rc_track_flat_to_right_banked_25_deg_up(uint8 rideIndex, ui
     }
 
     paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    if (track_paint_util_should_paint_supports(gPaintMapPosition)) {
+    if (track_paint_util_should_paint_supports(gPaintSession.MapPosition)) {
         switch (direction) {
         case 0:
             metal_a_supports_paint_setup(METAL_SUPPORTS_BOXED, 6, 0, height + 54, gTrackColours[SCHEME_SUPPORTS]);
@@ -6965,7 +6965,7 @@ static void inverted_rc_track_left_banked_25_deg_up_to_flat(uint8 rideIndex, uin
     }
 
     paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    if (track_paint_util_should_paint_supports(gPaintMapPosition)) {
+    if (track_paint_util_should_paint_supports(gPaintSession.MapPosition)) {
         switch (direction) {
         case 0:
             metal_a_supports_paint_setup(METAL_SUPPORTS_BOXED, 6, 0, height + 52, gTrackColours[SCHEME_SUPPORTS]);
@@ -7009,7 +7009,7 @@ static void inverted_rc_track_right_banked_25_deg_up_to_flat(uint8 rideIndex, ui
     }
 
     paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    if (track_paint_util_should_paint_supports(gPaintMapPosition)) {
+    if (track_paint_util_should_paint_supports(gPaintSession.MapPosition)) {
         switch (direction) {
         case 0:
             metal_a_supports_paint_setup(METAL_SUPPORTS_BOXED, 6, 0, height + 52, gTrackColours[SCHEME_SUPPORTS]);

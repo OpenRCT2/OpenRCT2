@@ -212,7 +212,7 @@ void vehicle_visual_virginia_reel(sint32 x, sint32 imageDirection, sint32 y, sin
     image_id = baseImage_id | SPRITE_ID_PALETTE_COLOUR_2(vehicle->colours.body_colour, vehicle->colours.trim_colour);
     sub_98197C(image_id, 0, 0, bb->length_x, bb->length_y, bb->length_z, z, bb->offset_x, bb->offset_y, bb->offset_z + z, rotation);
 
-    if (unk_140E9A8->zoom_level < 2 && vehicle->num_peeps > 0) {
+    if (gPaintSession.Unk140E9A8->zoom_level < 2 && vehicle->num_peeps > 0) {
         uint8 riding_peep_sprites[4] = {0xFF, 0xFF, 0xFF, 0xFF};
         for (sint32 i = 0; i < vehicle->num_peeps; i++) {
             riding_peep_sprites[((ecx / 8) + i) & 3] = vehicle->peep_tshirt_colours[i];
@@ -270,7 +270,7 @@ static void paint_virginia_reel_track_25_deg_up(uint8 rideIndex, uint8 trackSequ
     }
 
     if (direction == 1 || direction == 2) {
-        gWoodenSupportsPrependTo = ps;
+        gPaintSession.WoodenSupportsPrependTo = ps;
     }
 
     switch (direction) {
@@ -315,14 +315,14 @@ static void paint_virginia_reel_track_flat_to_25_deg_up(uint8 rideIndex, uint8 t
             break;
         case 1:
             ps = sub_98197C(imageId, 0, 0, 27, 32, 2, height, 2, 0, height, get_current_rotation());
-            gWoodenSupportsPrependTo = ps;
+            gPaintSession.WoodenSupportsPrependTo = ps;
 
             wooden_a_supports_paint_setup(1, 2, height, gTrackColours[SCHEME_SUPPORTS], NULL);
             paint_util_push_tunnel_right(height, TUNNEL_8);
             break;
         case 2:
             ps = sub_98197C(imageId, 0, 0, 32, 27, 2, height, 0, 2, height, get_current_rotation());
-            gWoodenSupportsPrependTo = ps;
+            gPaintSession.WoodenSupportsPrependTo = ps;
 
             wooden_a_supports_paint_setup(0, 3, height, gTrackColours[SCHEME_SUPPORTS], NULL);
             paint_util_push_tunnel_left(height, TUNNEL_8);
@@ -357,7 +357,7 @@ static void paint_virginia_reel_track_25_deg_up_to_flat(uint8 rideIndex, uint8 t
     }
 
     if (direction == 1 || direction == 2) {
-        gWoodenSupportsPrependTo = ps;
+        gPaintSession.WoodenSupportsPrependTo = ps;
     }
 
     switch (direction) {

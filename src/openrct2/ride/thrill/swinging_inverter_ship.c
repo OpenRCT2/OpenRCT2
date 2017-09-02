@@ -62,7 +62,7 @@ static const uint32 swinging_inverter_ship_frame_sprites[] = {
 
 static void paint_swinging_inverter_ship_structure(rct_ride * ride, uint8 direction, sint8 axisOffset, uint16 height)
 {
-    rct_map_element * savedMapElement = g_currently_drawn_item;
+    rct_map_element * savedMapElement = gPaintSession.CurrentlyDrawnItem;
 
     rct_ride_entry * rideType = get_ride_entry(ride->subtype);
     rct_vehicle * vehicle = NULL;
@@ -74,8 +74,8 @@ static void paint_swinging_inverter_ship_structure(rct_ride * ride, uint8 direct
         && ride->vehicles[0] != SPRITE_INDEX_NULL) {
         vehicle = GET_VEHICLE(ride->vehicles[0]);
 
-        gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_SPRITE;
-        g_currently_drawn_item = vehicle;
+        gPaintSession.InteractionType = VIEWPORT_INTERACTION_ITEM_SPRITE;
+        gPaintSession.CurrentlyDrawnItem = vehicle;
     }
 
     uint32 vehicleImageId = rideType->vehicles[0].base_image_id + swinging_inverter_ship_base_sprite_offset[direction];
@@ -112,8 +112,8 @@ static void paint_swinging_inverter_ship_structure(rct_ride * ride, uint8 direct
         sub_98199C(vehicleImageId, xOffset, yOffset, boundBox.length_x, boundBox.length_y, 127, height, boundBox.offset_x, boundBox.offset_y, height, get_current_rotation());
     }
 
-    g_currently_drawn_item = savedMapElement;
-    gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
+    gPaintSession.CurrentlyDrawnItem = savedMapElement;
+    gPaintSession.InteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
 }
 
 /** rct2: 0x00760260 */

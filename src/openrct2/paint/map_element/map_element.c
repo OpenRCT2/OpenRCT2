@@ -32,19 +32,6 @@
 #include "../../game.h"
 #include "../supports.h"
 
-#ifdef NO_RCT2
-uint8 g141E9DB;
-uint16 gUnk141E9DC;
-rct_xy16 gPaintMapPosition;
-bool gDidPassSurface;
-rct_map_element * gSurfaceElement;
-tunnel_entry gLeftTunnels[TUNNEL_MAX_COUNT];
-uint8 gLeftTunnelCount;
-tunnel_entry gRightTunnels[TUNNEL_MAX_COUNT];
-uint8 gRightTunnelCount;
-uint8 gVerticalTunnelHeight;
-#endif
-
 #ifdef __TESTPAINT__
 uint16 testPaintVerticalTunnelHeight;
 #endif
@@ -68,8 +55,8 @@ void map_element_paint_setup(sint32 x, sint32 y)
     ) {
         paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
         paint_util_force_set_general_support_height(-1, 0);
-        g141E9DB = 0;
-        gUnk141E9DC = 0xFFFF;
+        gPaintSession.Unk141E9DB = 0;
+        gPaintSession.Unk141E9DC = 0xFFFF;
 
         sub_68B3FB(x, y);
     } else {
@@ -91,8 +78,8 @@ void sub_68B2B7(sint32 x, sint32 y)
     ) {
         paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
         paint_util_force_set_general_support_height(-1, 0);
-        gUnk141E9DC = 0xFFFF;
-        g141E9DB = G141E9DB_FLAG_2;
+        gPaintSession.Unk141E9DC = 0xFFFF;
+        gPaintSession.Unk141E9DB = G141E9DB_FLAG_2;
 
         sub_68B3FB(x, y);
     } else {
@@ -106,7 +93,7 @@ void sub_68B2B7(sint32 x, sint32 y)
  */
 static void blank_tiles_paint(sint32 x, sint32 y)
 {
-    rct_drawpixelinfo *dpi = unk_140E9A8;
+    rct_drawpixelinfo *dpi = gPaintSession.Unk140E9A8;
 
     sint32 dx = 0;
     switch (get_current_rotation()) {
@@ -134,9 +121,9 @@ static void blank_tiles_paint(sint32 x, sint32 y)
     dx -= 20;
     dx -= dpi->height;
     if (dx >= dpi->y) return;
-    gPaintSpritePosition.x = x;
-    gPaintSpritePosition.y = y;
-    gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
+    gPaintSession.SpritePosition.x = x;
+    gPaintSession.SpritePosition.y = y;
+    gPaintSession.InteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
     sub_98196C(3123, 0, 0, 32, 32, -1, 16, get_current_rotation());
 }
 
@@ -148,21 +135,21 @@ bool gShowSupportSegmentHeights = false;
  */
 static void sub_68B3FB(sint32 x, sint32 y)
 {
-    rct_drawpixelinfo *dpi = unk_140E9A8;
+    rct_drawpixelinfo *dpi = gPaintSession.Unk140E9A8;
 
-    gLeftTunnelCount = 0;
-    gRightTunnelCount = 0;
-    gLeftTunnels[0] = (tunnel_entry){0xFF, 0xFF};
-    gRightTunnels[0] = (tunnel_entry){0xFF, 0xFF};
+    gPaintSession.LeftTunnelCount = 0;
+    gPaintSession.RightTunnelCount = 0;
+    gPaintSession.LeftTunnels[0] = (tunnel_entry){0xFF, 0xFF};
+    gPaintSession.RightTunnels[0] = (tunnel_entry){0xFF, 0xFF};
 
-    gVerticalTunnelHeight = 0xFF;
+    gPaintSession.VerticalTunnelHeight = 0xFF;
 
 #ifndef NO_RCT2
     RCT2_GLOBAL(0x009DE56A, uint16) = x;
     RCT2_GLOBAL(0x009DE56E, uint16) = y;
 #endif
-    gPaintMapPosition.x = x;
-    gPaintMapPosition.y = y;
+    gPaintSession.MapPosition.x = x;
+    gPaintSession.MapPosition.y = y;
 
     rct_map_element* map_element = map_get_first_element_at(x >> 5, y >> 5);
     uint8 rotation = get_current_rotation();
@@ -196,8 +183,8 @@ static void sub_68B3FB(sint32 x, sint32 y)
     dx >>= 1;
     // Display little yellow arrow when building footpaths?
     if ((gMapSelectFlags & MAP_SELECT_FLAG_ENABLE_ARROW) &&
-        gPaintMapPosition.x == gMapSelectArrowPosition.x &&
-        gPaintMapPosition.y == gMapSelectArrowPosition.y
+        gPaintSession.MapPosition.x == gMapSelectArrowPosition.x &&
+        gPaintSession.MapPosition.y == gMapSelectArrowPosition.y
     ) {
         uint8 arrowRotation =
             (rotation
@@ -209,9 +196,9 @@ static void sub_68B3FB(sint32 x, sint32 y)
             0x20900C27;
         sint32 arrowZ = gMapSelectArrowPosition.z;
 
-        gPaintSpritePosition.x = x;
-        gPaintSpritePosition.y = y;
-        gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
+        gPaintSession.SpritePosition.x = x;
+        gPaintSession.SpritePosition.y = y;
+        gPaintSession.InteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
 
         sub_98197C(imageId, 0, 0, 32, 32, 0xFF, arrowZ, 0, 0, arrowZ + 18, rotation);
     }
@@ -244,9 +231,9 @@ static void sub_68B3FB(sint32 x, sint32 y)
     if (dx >= dpi->y)
         return;
 
-    gPaintSpritePosition.x = x;
-    gPaintSpritePosition.y = y;
-    gDidPassSurface = false;
+    gPaintSession.SpritePosition.x = x;
+    gPaintSession.SpritePosition.y = y;
+    gPaintSession.DidPassSurface = false;
     do {
         // Only paint map_elements below the clip height.
         if ((gCurrentViewportFlags & VIEWPORT_FLAG_PAINT_CLIP_TO_HEIGHT) && (map_element->base_height > gClipHeight)) break;
@@ -254,8 +241,8 @@ static void sub_68B3FB(sint32 x, sint32 y)
         sint32 direction = map_element_get_direction_with_offset(map_element, rotation);
         sint32 height = map_element->base_height * 8;
 
-        rct_xy16 dword_9DE574 = gPaintMapPosition;
-        g_currently_drawn_item = map_element;
+        rct_xy16 dword_9DE574 = gPaintSession.MapPosition;
+        gPaintSession.CurrentlyDrawnItem = map_element;
         // Setup the painting of for example: the underground, signs, rides, scenery, etc.
         switch (map_element_get_type(map_element))
         {
@@ -293,7 +280,7 @@ static void sub_68B3FB(sint32 x, sint32 y)
             // An undefined map element is most likely a corrupt element inserted by 8 cars' MOM feature to skip drawing of all elements after it.
             return;
         }
-        gPaintMapPosition = dword_9DE574;
+        gPaintSession.MapPosition = dword_9DE574;
     } while (!map_element_is_last_for_tile(map_element++));
 
     if (!gShowSupportSegmentHeights) {
@@ -312,10 +299,10 @@ static void sub_68B3FB(sint32 x, sint32 y)
 
     for (sint32 sy = 0; sy < 3; sy++) {
         for (sint32 sx = 0; sx < 3; sx++) {
-            uint16 segmentHeight = gSupportSegments[segmentPositions[sy][sx]].height;
+            uint16 segmentHeight = gPaintSession.SupportSegments[segmentPositions[sy][sx]].height;
             sint32 imageColourFlats = 0b101111 << 19 | IMAGE_TYPE_TRANSPARENT;
             if (segmentHeight == 0xFFFF) {
-                segmentHeight = gSupport.height;
+                segmentHeight = gPaintSession.Support.height;
                 // white: 0b101101
                 imageColourFlats = 0b111011 << 19 | IMAGE_TYPE_TRANSPARENT;
             }
@@ -337,19 +324,19 @@ static void sub_68B3FB(sint32 x, sint32 y)
 
 void paint_util_push_tunnel_left(uint16 height, uint8 type)
 {
-    gLeftTunnels[gLeftTunnelCount] = (tunnel_entry){.height = (height / 16), .type = type};
-    if (gLeftTunnelCount < TUNNEL_MAX_COUNT - 1) {
-        gLeftTunnels[gLeftTunnelCount + 1] = (tunnel_entry) {0xFF, 0xFF};
-        gLeftTunnelCount++;
+    gPaintSession.LeftTunnels[gPaintSession.LeftTunnelCount] = (tunnel_entry){.height = (height / 16), .type = type};
+    if (gPaintSession.LeftTunnelCount < TUNNEL_MAX_COUNT - 1) {
+        gPaintSession.LeftTunnels[gPaintSession.LeftTunnelCount + 1] = (tunnel_entry) {0xFF, 0xFF};
+        gPaintSession.LeftTunnelCount++;
     }
 }
 
 void paint_util_push_tunnel_right(uint16 height, uint8 type)
 {
-    gRightTunnels[gRightTunnelCount] = (tunnel_entry){.height = (height / 16), .type = type};
-    if (gRightTunnelCount < TUNNEL_MAX_COUNT - 1) {
-        gRightTunnels[gRightTunnelCount + 1] = (tunnel_entry) {0xFF, 0xFF};
-        gRightTunnelCount++;
+    gPaintSession.RightTunnels[gPaintSession.RightTunnelCount] = (tunnel_entry){.height = (height / 16), .type = type};
+    if (gPaintSession.RightTunnelCount < TUNNEL_MAX_COUNT - 1) {
+        gPaintSession.RightTunnels[gPaintSession.RightTunnelCount + 1] = (tunnel_entry) {0xFF, 0xFF};
+        gPaintSession.RightTunnelCount++;
     }
 }
 
@@ -358,12 +345,12 @@ void paint_util_set_vertical_tunnel(uint16 height)
 #ifdef __TESTPAINT__
     testPaintVerticalTunnelHeight = height;
 #endif
-    gVerticalTunnelHeight = height / 16;
+    gPaintSession.VerticalTunnelHeight = height / 16;
 }
 
 void paint_util_set_general_support_height(sint16 height, uint8 slope)
 {
-    if (gSupport.height >= height) {
+    if (gPaintSession.Support.height >= height) {
         return;
     }
 
@@ -372,8 +359,8 @@ void paint_util_set_general_support_height(sint16 height, uint8 slope)
 
 void paint_util_force_set_general_support_height(sint16 height, uint8 slope)
 {
-    gSupport.height = height;
-    gSupport.slope = slope;
+    gPaintSession.Support.height = height;
+    gPaintSession.Support.slope = slope;
 }
 
 const uint16 segment_offsets[9] = {
@@ -390,11 +377,12 @@ const uint16 segment_offsets[9] = {
 
 void paint_util_set_segment_support_height(sint32 segments, uint16 height, uint8 slope)
 {
+    support_height * supportSegments = gPaintSession.SupportSegments;
     for (sint32 s = 0; s < 9; s++) {
         if (segments & segment_offsets[s]) {
-            gSupportSegments[s].height = height;
+            supportSegments[s].height = height;
             if (height != 0xFFFF) {
-                gSupportSegments[s].slope = slope;
+                supportSegments[s].slope = slope;
             }
         }
     }

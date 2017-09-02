@@ -221,7 +221,7 @@ static void wooden_wild_mouse_track_60_deg_up(uint8 rideIndex, uint8 trackSequen
     if (direction == 0 || direction == 3) {
         sub_98197C_rotated(direction, imageId, 0, 2, 32, 25, 1, height, 0, 3, height);
     } else {
-        gWoodenSupportsPrependTo = sub_98197C_rotated(direction, imageId, 0, 6, 2, 24, 93, height, 28, 4, height - 16);
+        gPaintSession.WoodenSupportsPrependTo = sub_98197C_rotated(direction, imageId, 0, 6, 2, 24, 93, height, 28, 4, height - 16);
     }
 
     wooden_a_supports_paint_setup(direction & 1, 21 + direction, height, gTrackColours[SCHEME_SUPPORTS], NULL);
@@ -295,7 +295,7 @@ static void wooden_wild_mouse_track_25_deg_up_to_60_deg_up(uint8 rideIndex, uint
         sub_98197C_rotated(direction, imageId, 0, 2, 32, 25, 1, height, 0, 3, height);
     } else {
         imageId = imageIds[isChained][direction][0] | gTrackColours[SCHEME_TRACK];
-        gWoodenSupportsPrependTo = sub_98197C_rotated(direction, imageId, 0, 6, 2, 24, 43, height, 28, 4, height + 2);
+        gPaintSession.WoodenSupportsPrependTo = sub_98197C_rotated(direction, imageId, 0, 6, 2, 24, 43, height, 28, 4, height + 2);
         imageId = imageIds[isChained][direction][1] | gTrackColours[SCHEME_TRACK];
         sub_98197C_rotated(direction, imageId, 0, 6, 32, 2, 43, height, 0, 4, height);
     }
@@ -336,7 +336,7 @@ static void wooden_wild_mouse_track_60_deg_to_25_deg_up(uint8 rideIndex, uint8 t
         sub_98197C_rotated(direction, imageId, 0, 2, 32, 25, 1, height, 0, 3, height);
     } else {
         imageId = imageIds[isChained][direction][0] | gTrackColours[SCHEME_TRACK];
-        gWoodenSupportsPrependTo = sub_98197C_rotated(direction, imageId, 0, 6, 2, 24, 43, height, 28, 4, height + 2);
+        gPaintSession.WoodenSupportsPrependTo = sub_98197C_rotated(direction, imageId, 0, 6, 2, 24, 43, height, 28, 4, height + 2);
         imageId = imageIds[isChained][direction][1] | gTrackColours[SCHEME_TRACK];
         sub_98197C_rotated(direction, imageId, 0, 6, 32, 2, 43, height, 0, 4, height);
     }

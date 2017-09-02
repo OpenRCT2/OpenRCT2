@@ -25,15 +25,15 @@
  */
 static void paint_circus_show_tent(uint8 rideIndex, uint8 direction, sint8 al, sint8 cl, uint16 height)
 {
-    rct_map_element * savedMapElement = g_currently_drawn_item;
+    rct_map_element * savedMapElement = gPaintSession.CurrentlyDrawnItem;
 
     rct_ride * ride = get_ride(rideIndex);
     rct_ride_entry * rideEntry = get_ride_entry(ride->subtype);
 
     if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK
         && ride->vehicles[0] != SPRITE_INDEX_NULL) {
-        gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_SPRITE;
-        g_currently_drawn_item = GET_VEHICLE(ride->vehicles[0]);
+        gPaintSession.InteractionType = VIEWPORT_INTERACTION_ITEM_SPRITE;
+        gPaintSession.CurrentlyDrawnItem = GET_VEHICLE(ride->vehicles[0]);
     }
 
     uint32 imageColourFlags = gTrackColours[SCHEME_MISC];
@@ -45,8 +45,8 @@ static void paint_circus_show_tent(uint8 rideIndex, uint8 direction, sint8 al, s
 
     sub_98197C(imageId | imageColourFlags, al, cl, 24, 24, 47, height + 3, al + 16, cl + 16, height + 3, get_current_rotation());
 
-    g_currently_drawn_item = savedMapElement;
-    gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
+    gPaintSession.CurrentlyDrawnItem = savedMapElement;
+    gPaintSession.InteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
 }
 /**
  * rct2: 0x0076FAD4
@@ -57,7 +57,7 @@ static void paint_circus_show(uint8 rideIndex, uint8 trackSequence, uint8 direct
 
     sint32 edges = edges_3x3[trackSequence];
     rct_ride * ride = get_ride(rideIndex);
-    rct_xy16 position = {gPaintMapPosition.x, gPaintMapPosition.y};
+    rct_xy16 position = gPaintSession.MapPosition;
 
     wooden_a_supports_paint_setup((direction & 1), 0, height, gTrackColours[SCHEME_MISC], NULL);
 

@@ -201,10 +201,6 @@ enum
     SPR_STATION_COVER_OFFSET_TALL
 };
 
-#ifdef NO_RCT2
-uint32 gTrackColours[4];
-#endif
-
 bool gUseOriginalRidePaint = false;
 
 bool track_paint_util_has_fence(enum edge_t edge, rct_xy16 position, rct_map_element * mapElement, rct_ride * ride, uint8 rotation)
@@ -304,7 +300,7 @@ void track_paint_util_draw_station_3(uint8 rideIndex, uint8 trackSequence, uint8
 
 void track_paint_util_draw_station_impl(uint8 rideIndex, uint8 trackSequence, uint8 direction, uint16 height, uint16 coverHeight, rct_map_element * mapElement, sint32 fenceOffsetA, sint32 fenceOffsetB)
 {
-    rct_xy16 position = {gPaintMapPosition.x, gPaintMapPosition.y};
+    rct_xy16 position = gPaintSession.MapPosition;
     rct_ride * ride = get_ride(rideIndex);
     const rct_ride_entrance_definition * entranceStyle = &RideEntranceDefinitions[ride->entrance_style];
     const bool hasGreenLight = map_element_get_green_light(mapElement);
@@ -438,7 +434,7 @@ void track_paint_util_draw_station_impl(uint8 rideIndex, uint8 trackSequence, ui
 
 void track_paint_util_draw_station_inverted(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement, uint8 stationVariant)
 {
-    rct_xy16 position = {gPaintMapPosition.x, gPaintMapPosition.y};
+    rct_xy16 position = gPaintSession.MapPosition;
     rct_ride * ride = get_ride(rideIndex);
     const rct_ride_entrance_definition * entranceStyle = &RideEntranceDefinitions[ride->entrance_style];
     const bool hasGreenLight = map_element_get_green_light(mapElement);
@@ -577,7 +573,7 @@ bool track_paint_util_draw_station_covers(enum edge_t edge, bool hasFence, const
 
 bool track_paint_util_draw_station_covers_2(enum edge_t edge, bool hasFence, const rct_ride_entrance_definition * entranceStyle, uint8 direction, uint16 height, uint8 stationVariant)
 {
-    if (!(g141E9DB & (G141E9DB_FLAG_1 | G141E9DB_FLAG_2))) {
+    if (!(gPaintSession.Unk141E9DB & (G141E9DB_FLAG_1 | G141E9DB_FLAG_2))) {
         return false;
     }
 
@@ -647,7 +643,7 @@ bool track_paint_util_draw_station_covers_2(enum edge_t edge, bool hasFence, con
 
 void track_paint_util_draw_station_platform(rct_ride *ride, uint8 direction, sint32 height, sint32 zOffset, rct_map_element * mapElement)
 {
-    rct_xy16 position = {gPaintMapPosition.x, gPaintMapPosition.y};
+    rct_xy16 position = gPaintSession.MapPosition;
     const rct_ride_entrance_definition * entranceStyle = &RideEntranceDefinitions[ride->entrance_style];
     if (direction & 1) {
         bool hasFence = track_paint_util_has_fence(EDGE_NE, position, mapElement, ride, get_current_rotation());
@@ -1753,7 +1749,7 @@ void track_paint(uint8 direction, sint32 height, rct_map_element *mapElement)
         ride->entrance_style = RIDE_ENTRANCE_STYLE_PLAIN;
     }
 
-    rct_drawpixelinfo *dpi = unk_140E9A8;
+    rct_drawpixelinfo *dpi = gPaintSession.Unk140E9A8;
 
     if (!gTrackDesignSaveMode || rideIndex == gTrackDesignSaveRideIndex) {
         sint32 trackType = mapElement->properties.track.type;
@@ -1761,7 +1757,7 @@ void track_paint(uint8 direction, sint32 height, rct_map_element *mapElement)
         sint32 trackColourScheme = mapElement->properties.track.colour & 3;
 
         if ((gCurrentViewportFlags & VIEWPORT_FLAG_TRACK_HEIGHTS) && dpi->zoom_level == 0) {
-            gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
+            gPaintSession.InteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
             if (TrackHeightMarkerPositions[trackType] & (1 << trackSequence)) {
                 uint16 ax = RideData5[ride->type].z_offset;
                 uint32 ebx = 0x20381689 + (height + 8) / 16;
@@ -1771,7 +1767,7 @@ void track_paint(uint8 direction, sint32 height, rct_map_element *mapElement)
             }
         }
 
-        gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
+        gPaintSession.InteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
         gTrackColours[SCHEME_TRACK] = SPRITE_ID_PALETTE_COLOUR_2(ride->track_colour_main[trackColourScheme], ride->track_colour_additional[trackColourScheme]);
         gTrackColours[SCHEME_SUPPORTS] = SPRITE_ID_PALETTE_COLOUR_1(ride->track_colour_supports[trackColourScheme]);
         gTrackColours[SCHEME_MISC] = IMAGE_TYPE_REMAP;
@@ -1784,7 +1780,7 @@ void track_paint(uint8 direction, sint32 height, rct_map_element *mapElement)
         }
         if (mapElement->flags & MAP_ELEMENT_FLAG_GHOST) {
             uint32 ghost_id = construction_markers[gConfigGeneral.construction_marker_colour];
-            gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
+            gPaintSession.InteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
             gTrackColours[SCHEME_TRACK] = ghost_id;
             gTrackColours[SCHEME_SUPPORTS] = ghost_id;
             gTrackColours[SCHEME_MISC] = ghost_id;

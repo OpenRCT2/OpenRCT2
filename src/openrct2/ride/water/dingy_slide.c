@@ -379,7 +379,7 @@ static void dinghy_slide_track_flat(uint8 rideIndex, uint8 trackSequence, uint8 
     imageId = imageIds[isChained][direction][1] | gTrackColours[SCHEME_TRACK];
     sub_98197C_rotated(direction, imageId, 0, 0, 32, 1, 26, height, 0, 27, height);
 
-    if (track_paint_util_should_paint_supports(gPaintMapPosition)) {
+    if (track_paint_util_should_paint_supports(gPaintSession.MapPosition)) {
         metal_a_supports_paint_setup(METAL_SUPPORTS_TUBES, 4, 0, height, gTrackColours[SCHEME_SUPPORTS]);
     }
 
@@ -436,7 +436,7 @@ static void dinghy_slide_track_25_deg_up(uint8 rideIndex, uint8 trackSequence, u
     imageId = imageIds[isChained][direction][1] | gTrackColours[SCHEME_TRACK];
     sub_98197C_rotated(direction, imageId, 0, 0, 32, 1, 50, height, 0, 27, height);
 
-    if (track_paint_util_should_paint_supports(gPaintMapPosition)) {
+    if (track_paint_util_should_paint_supports(gPaintSession.MapPosition)) {
         metal_a_supports_paint_setup(METAL_SUPPORTS_TUBES, 4, 8, height, gTrackColours[SCHEME_SUPPORTS]);
     }
 
@@ -465,7 +465,7 @@ static void dinghy_slide_track_60_deg_up(uint8 rideIndex, uint8 trackSequence, u
     imageId = imageIds[direction][1] | gTrackColours[SCHEME_TRACK];
     sub_98197C_rotated(direction, imageId, 0, 0, 32, 1, 98, height, 0, 27, height);
 
-    if (track_paint_util_should_paint_supports(gPaintMapPosition)) {
+    if (track_paint_util_should_paint_supports(gPaintSession.MapPosition)) {
         metal_a_supports_paint_setup(METAL_SUPPORTS_TUBES, 4, 32, height, gTrackColours[SCHEME_SUPPORTS]);
     }
 
@@ -503,7 +503,7 @@ static void dinghy_slide_track_flat_to_25_deg_up(uint8 rideIndex, uint8 trackSeq
     imageId = imageIds[isChained][direction][1] | gTrackColours[SCHEME_TRACK];
     sub_98197C_rotated(direction, imageId, 0, 0, 32, 1, 42, height, 0, 27, height);
 
-    if (track_paint_util_should_paint_supports(gPaintMapPosition)) {
+    if (track_paint_util_should_paint_supports(gPaintSession.MapPosition)) {
         metal_a_supports_paint_setup(METAL_SUPPORTS_TUBES, 4, 3, height, gTrackColours[SCHEME_SUPPORTS]);
     }
 
@@ -532,7 +532,7 @@ static void dinghy_slide_track_25_deg_up_to_60_deg_up(uint8 rideIndex, uint8 tra
     imageId = imageIds[direction][1] | gTrackColours[SCHEME_TRACK];
     sub_98197C_rotated(direction, imageId, 0, 0, 32, 1, 66, height, 0, 27, height);
 
-    if (track_paint_util_should_paint_supports(gPaintMapPosition)) {
+    if (track_paint_util_should_paint_supports(gPaintSession.MapPosition)) {
         metal_a_supports_paint_setup(METAL_SUPPORTS_TUBES, 4, 12, height, gTrackColours[SCHEME_SUPPORTS]);
     }
 
@@ -561,7 +561,7 @@ static void dinghy_slide_track_60_deg_up_to_25_deg_up(uint8 rideIndex, uint8 tra
     imageId = imageIds[direction][1] | gTrackColours[SCHEME_TRACK];
     sub_98197C_rotated(direction, imageId, 0, 0, 32, 1, 66, height, 0, 27, height);
 
-    if (track_paint_util_should_paint_supports(gPaintMapPosition)) {
+    if (track_paint_util_should_paint_supports(gPaintSession.MapPosition)) {
         metal_a_supports_paint_setup(METAL_SUPPORTS_TUBES, 4, 20, height, gTrackColours[SCHEME_SUPPORTS]);
     }
 
@@ -599,7 +599,7 @@ static void dinghy_slide_track_25_deg_up_to_flat(uint8 rideIndex, uint8 trackSeq
     imageId = imageIds[isChained][direction][1] | gTrackColours[SCHEME_TRACK];
     sub_98197C_rotated(direction, imageId, 0, 0, 32, 1, 34, height, 0, 27, height);
 
-    if (track_paint_util_should_paint_supports(gPaintMapPosition)) {
+    if (track_paint_util_should_paint_supports(gPaintSession.MapPosition)) {
         metal_a_supports_paint_setup(METAL_SUPPORTS_TUBES, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
     }
 
@@ -980,7 +980,7 @@ static void dinghy_slide_track_flat_covered(uint8 rideIndex, uint8 trackSequence
     imageId = imageIds[direction][1] | gTrackColours[SCHEME_TRACK];
     sub_98197C_rotated(direction, imageId, 0, 0, 32, 1, 26, height, 0, 27, height);
 
-    if (track_paint_util_should_paint_supports(gPaintMapPosition)) {
+    if (track_paint_util_should_paint_supports(gPaintSession.MapPosition)) {
         metal_a_supports_paint_setup(METAL_SUPPORTS_TUBES, 4, 0, height, gTrackColours[SCHEME_SUPPORTS]);
     }
 
@@ -1005,7 +1005,7 @@ static void dinghy_slide_track_25_deg_up_covered(uint8 rideIndex, uint8 trackSeq
     imageId = imageIds[direction][1] | gTrackColours[SCHEME_TRACK];
     sub_98197C_rotated(direction, imageId, 0, 0, 32, 1, 50, height, 0, 27, height);
 
-    if (track_paint_util_should_paint_supports(gPaintMapPosition)) {
+    if (track_paint_util_should_paint_supports(gPaintSession.MapPosition)) {
         metal_a_supports_paint_setup(METAL_SUPPORTS_TUBES, 4, 8, height, gTrackColours[SCHEME_SUPPORTS]);
     }
 
@@ -1034,7 +1034,7 @@ static void dinghy_slide_track_60_deg_up_covered(uint8 rideIndex, uint8 trackSeq
     imageId = imageIds[direction][1] | gTrackColours[SCHEME_TRACK];
     sub_98197C_rotated(direction, imageId, 0, 0, 32, 1, 98, height, 0, 27, height);
 
-    if (track_paint_util_should_paint_supports(gPaintMapPosition)) {
+    if (track_paint_util_should_paint_supports(gPaintSession.MapPosition)) {
         metal_a_supports_paint_setup(METAL_SUPPORTS_TUBES, 4, 32, height, gTrackColours[SCHEME_SUPPORTS]);
     }
 
@@ -1063,7 +1063,7 @@ static void dinghy_slide_track_flat_to_25_deg_up_covered(uint8 rideIndex, uint8 
     imageId = imageIds[direction][1] | gTrackColours[SCHEME_TRACK];
     sub_98197C_rotated(direction, imageId, 0, 0, 32, 1, 42, height, 0, 27, height);
 
-    if (track_paint_util_should_paint_supports(gPaintMapPosition)) {
+    if (track_paint_util_should_paint_supports(gPaintSession.MapPosition)) {
         metal_a_supports_paint_setup(METAL_SUPPORTS_TUBES, 4, 3, height, gTrackColours[SCHEME_SUPPORTS]);
     }
 
@@ -1092,7 +1092,7 @@ static void dinghy_slide_track_25_deg_up_to_60_deg_up_covered(uint8 rideIndex, u
     imageId = imageIds[direction][1] | gTrackColours[SCHEME_TRACK];
     sub_98197C_rotated(direction, imageId, 0, 0, 32, 1, 66, height, 0, 27, height);
 
-    if (track_paint_util_should_paint_supports(gPaintMapPosition)) {
+    if (track_paint_util_should_paint_supports(gPaintSession.MapPosition)) {
         metal_a_supports_paint_setup(METAL_SUPPORTS_TUBES, 4, 12, height, gTrackColours[SCHEME_SUPPORTS]);
     }
 
@@ -1121,7 +1121,7 @@ static void dinghy_slide_track_60_deg_up_to_25_deg_up_covered(uint8 rideIndex, u
     imageId = imageIds[direction][1] | gTrackColours[SCHEME_TRACK];
     sub_98197C_rotated(direction, imageId, 0, 0, 32, 1, 66, height, 0, 27, height);
 
-    if (track_paint_util_should_paint_supports(gPaintMapPosition)) {
+    if (track_paint_util_should_paint_supports(gPaintSession.MapPosition)) {
         metal_a_supports_paint_setup(METAL_SUPPORTS_TUBES, 4, 20, height, gTrackColours[SCHEME_SUPPORTS]);
     }
 
@@ -1150,7 +1150,7 @@ static void dinghy_slide_track_25_deg_up_to_flat_covered(uint8 rideIndex, uint8 
     imageId = imageIds[direction][1] | gTrackColours[SCHEME_TRACK];
     sub_98197C_rotated(direction, imageId, 0, 0, 32, 1, 34, height, 0, 27, height);
 
-    if (track_paint_util_should_paint_supports(gPaintMapPosition)) {
+    if (track_paint_util_should_paint_supports(gPaintSession.MapPosition)) {
         metal_a_supports_paint_setup(METAL_SUPPORTS_TUBES, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
     }
 

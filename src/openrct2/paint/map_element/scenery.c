@@ -44,7 +44,7 @@ static const rct_xy16 lengths[] = {
  */
 void scenery_paint(uint8 direction, sint32 height, rct_map_element* mapElement) {
     //RCT2_CALLPROC_X(0x6DFF47, 0, 0, direction, height, (sint32)mapElement, 0, 0); return;
-    gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_SCENERY;
+    gPaintSession.InteractionType = VIEWPORT_INTERACTION_ITEM_SCENERY;
     rct_xyz16 boxlength;
     rct_xyz16 boxoffset;
     boxoffset.x = 0;
@@ -58,7 +58,7 @@ void scenery_paint(uint8 direction, sint32 height, rct_map_element* mapElement) 
         }
     }
     if (mapElement->flags & MAP_ELEMENT_FLAG_GHOST) {
-        gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
+        gPaintSession.InteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
         baseImageid = construction_markers[gConfigGeneral.construction_marker_colour];
     }
     uint32 dword_F64EB0 = baseImageid;
@@ -152,7 +152,7 @@ void scenery_paint(uint8 direction, sint32 height, rct_map_element* mapElement) 
     }
 
     if (entry->small_scenery.flags & SMALL_SCENERY_FLAG_ANIMATED) {
-        rct_drawpixelinfo* dpi = unk_140E9A8;
+        rct_drawpixelinfo* dpi = gPaintSession.Unk140E9A8;
         if ( (entry->small_scenery.flags & SMALL_SCENERY_FLAG_VISIBLE_WHEN_ZOOMED) || (dpi->zoom_level <= 1) ) {
             // 6E01A9:
             if (entry->small_scenery.flags & SMALL_SCENERY_FLAG_FOUNTAIN_SPRAY_1) {
@@ -218,8 +218,8 @@ void scenery_paint(uint8 direction, sint32 height, rct_map_element* mapElement) 
             if (entry->small_scenery.flags & SMALL_SCENERY_FLAG_SWAMP_GOO) {
                 // 6E02F6:
                 sint32 image_id = gCurrentTicks;
-                image_id += gPaintSpritePosition.x / 4;
-                image_id += gPaintSpritePosition.y / 4;
+                image_id += gPaintSession.SpritePosition.x / 4;
+                image_id += gPaintSession.SpritePosition.y / 4;
                 image_id = (image_id / 4) & 15;
                 image_id += entry->image;
                 if (dword_F64EB0 != 0) {
@@ -232,7 +232,7 @@ void scenery_paint(uint8 direction, sint32 height, rct_map_element* mapElement) 
                 sint32 frame = gCurrentTicks;
                 if (!(entry->small_scenery.flags & SMALL_SCENERY_FLAG_COG)) {
                     // 6E01F8:
-                    frame += ((gPaintSpritePosition.x / 4) + (gPaintSpritePosition.y / 4));
+                    frame += ((gPaintSession.SpritePosition.x / 4) + (gPaintSession.SpritePosition.y / 4));
                     frame += (mapElement->type & 0xC0) / 16;
                 }
                 // 6E0222:

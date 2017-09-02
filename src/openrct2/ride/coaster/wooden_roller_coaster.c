@@ -530,7 +530,7 @@ static void wooden_rc_track_60_deg_up(uint8 rideIndex, uint8 trackSequence, uint
     if (direction == 0 || direction == 3) {
         wooden_rc_track_paint(imageIds[direction][0], imageIds[direction][1], direction, 0, 0, 32, 25, 2, height, 0, 3, height);
     } else {
-        gWoodenSupportsPrependTo = wooden_rc_track_paint(imageIds[direction][0], imageIds[direction][1], direction, 0, 0, 2, 24, 93, height, 28, 4, height - 16);
+        gPaintSession.WoodenSupportsPrependTo = wooden_rc_track_paint(imageIds[direction][0], imageIds[direction][1], direction, 0, 0, 2, 24, 93, height, 28, 4, height - 16);
     }
     wooden_a_supports_paint_setup(direction & 1, 21 + direction, height, gTrackColours[SCHEME_SUPPORTS], NULL);
 
@@ -592,7 +592,7 @@ static void wooden_rc_track_25_deg_up_to_60_deg_up(uint8 rideIndex, uint8 trackS
     if (direction == 0 || direction == 3) {
         wooden_rc_track_paint(imageIds[direction][0], imageIds[direction][1], direction, 0, 0, 32, 25, 2, height, 0, 3, height);
     } else {
-        gWoodenSupportsPrependTo = wooden_rc_track_paint(imageIds[direction][0], imageIds[direction][1], direction, 0, 0, 2, 24, 43, height, 28, 4, height + 2);
+        gPaintSession.WoodenSupportsPrependTo = wooden_rc_track_paint(imageIds[direction][0], imageIds[direction][1], direction, 0, 0, 2, 24, 43, height, 28, 4, height + 2);
         wooden_rc_track_paint(imageIds[direction][2], imageIds[direction][3], direction, 0, 0, 32, 2, 43, height, 0, 4, height);
     }
     wooden_a_supports_paint_setup(direction & 1, 13 + direction, height, gTrackColours[SCHEME_SUPPORTS], NULL);
@@ -620,7 +620,7 @@ static void wooden_rc_track_60_deg_up_to_25_deg_up(uint8 rideIndex, uint8 trackS
     if (direction == 0 || direction == 3) {
         wooden_rc_track_paint(imageIds[direction][0], imageIds[direction][1], direction, 0, 0, 32, 25, 2, height, 0, 3, height);
     } else {
-        gWoodenSupportsPrependTo = wooden_rc_track_paint(imageIds[direction][0], imageIds[direction][1], direction, 0, 0, 24, 1, 61, height, 4, 28, height - 16);
+        gPaintSession.WoodenSupportsPrependTo = wooden_rc_track_paint(imageIds[direction][0], imageIds[direction][1], direction, 0, 0, 24, 1, 61, height, 4, 28, height - 16);
         wooden_rc_track_paint(imageIds[direction][2], imageIds[direction][3], direction, 0, 0, 32, 2, 43, height, 0, 4, height);
     }
     wooden_a_supports_paint_setup(direction & 1, 17 + direction, height, gTrackColours[SCHEME_SUPPORTS], NULL);

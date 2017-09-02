@@ -100,14 +100,15 @@ static void chairlift_paint_util_draw_supports(sint32 segments, uint16 height)
         return;
     }
 
+    support_height * supportSegments = gPaintSession.SupportSegments;
     for (sint32 s = 0; s < 9; s++) {
         if (!(segments & segment_offsets[s])) {
             continue;
         }
-        uint16 temp = gSupportSegments[s].height;
-        gSupportSegments[s].height = gSupport.height;
+        uint16 temp = supportSegments[s].height;
+        supportSegments[s].height = gPaintSession.Support.height;
         metal_a_supports_paint_setup(METAL_SUPPORTS_TRUSS, s, 0, height, gTrackColours[SCHEME_SUPPORTS]);
-        gSupportSegments[s].height = temp;
+        supportSegments[s].height = temp;
     }
 }
 
@@ -165,7 +166,7 @@ static bool chairlift_paint_util_is_last_track(uint8 rideIndex, const rct_map_el
 
 static void chairlift_paint_station_ne_sw(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
-    const rct_xy16 pos = {gPaintMapPosition.x, gPaintMapPosition.y};
+    const rct_xy16 pos = gPaintSession.MapPosition;
     uint8 trackType = mapElement->properties.track.type;
     rct_ride * ride = get_ride(rideIndex);
     uint32 imageId;
@@ -244,7 +245,7 @@ static void chairlift_paint_station_ne_sw(uint8 rideIndex, uint8 trackSequence, 
 
 static void chairlift_paint_station_se_nw(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
-    const rct_xy16 pos = {gPaintMapPosition.x, gPaintMapPosition.y};
+    const rct_xy16 pos = gPaintSession.MapPosition;
     uint8 trackType = mapElement->properties.track.type;
     rct_ride * ride = get_ride(rideIndex);
     uint32 imageId;

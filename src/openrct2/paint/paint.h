@@ -91,9 +91,6 @@ struct paint_struct {
 assert_struct_size(paint_struct, 0x34);
 #endif
 
-extern paint_struct * g_ps_F1AD28;
-extern attached_paint_struct * g_aps_F1AD2C;
-
 typedef struct paint_string_struct paint_string_struct;
 
 /* size 0x1E */
@@ -133,29 +130,72 @@ typedef struct support_height {
     uint8 pad;
 } support_height;
 
-#ifdef NO_RCT2
-extern void *g_currently_drawn_item;
-extern paint_entry * gEndOfPaintStructArray;
-extern rct_xy16 gPaintSpritePosition;
-extern paint_entry gPaintStructs[4000];
-#else
-#define gPaintStructs RCT2_ADDRESS(0x00EE788C, paint_entry)
-#define g_currently_drawn_item  RCT2_GLOBAL(0x009DE578, void*)
-#define gEndOfPaintStructArray  RCT2_GLOBAL(0x00EE7880, paint_entry *)
-#define gPaintSpritePosition    RCT2_GLOBAL(0x009DE568, rct_xy16)
-#endif
+typedef struct tunnel_entry {
+    uint8 height;
+    uint8 type;
+} tunnel_entry;
 
-#ifndef NO_RCT2
+#define MAX_PAINT_QUADRANTS 512
+#define TUNNEL_MAX_COUNT    65
+
+typedef struct paint_session
+{
+    rct_drawpixelinfo *     Unk140E9A8;
+    paint_entry             PaintStructs[4000];
+    paint_struct *          Quadrants[MAX_PAINT_QUADRANTS];
+    uint32                  QuadrantBackIndex;
+    uint32                  QuadrantFrontIndex;
+    void *                  CurrentlyDrawnItem;
+    paint_entry *           EndOfPaintStructArray;
+    paint_entry *           NextFreePaintStruct;
+    rct_xy16                SpritePosition;
+    paint_struct            UnkF1A4CC;
+    paint_struct *          UnkF1AD28;
+    attached_paint_struct * UnkF1AD2C;
+    uint8                   InteractionType;
+    support_height          SupportSegments[9];
+    support_height          Support;
+    paint_string_struct *   PSStringHead;
+    paint_string_struct *   LastPSString;
+    paint_struct *          WoodenSupportsPrependTo;
+    rct_xy16                MapPosition;
+    tunnel_entry            LeftTunnels[TUNNEL_MAX_COUNT];
+    uint8                   LeftTunnelCount;
+    tunnel_entry            RightTunnels[TUNNEL_MAX_COUNT];
+    uint8                   RightTunnelCount;
+    uint8                   VerticalTunnelHeight;
+    rct_map_element *       SurfaceElement;
+    bool                    DidPassSurface;
+    uint8                   Unk141E9DB;
+    uint16                  Unk141E9DC;
+    uint32                  TrackColours[4];
+} paint_session;
+
+extern paint_session gPaintSession;
+
+#ifdef NO_RCT2
+#define gTrackColours               gPaintSession.TrackColours
+#else
+#define gPaintStructs               RCT2_ADDRESS(0x00EE788C, paint_entry)
+#define g_currently_drawn_item      RCT2_GLOBAL(0x009DE578, void*)
+#define gEndOfPaintStructArray      RCT2_GLOBAL(0x00EE7880, paint_entry *)
+#define gPaintSpritePosition        RCT2_GLOBAL(0x009DE568, rct_xy16)
 #define gPaintInteractionType       RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8)
 #define gSupportSegments            RCT2_ADDRESS(RCT2_ADDRESS_CURRENT_SUPPORT_SEGMENTS, support_height)
 #define gSupport                    RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PAINT_TILE_MAX_HEIGHT, support_height)
-#else
-extern uint8 gPaintInteractionType;
-extern support_height gSupportSegments[9];
-extern support_height gSupport;
+#define gWoodenSupportsPrependTo    RCT2_GLOBAL(0x009DEA58, paint_struct *)
+#define gPaintMapPosition           RCT2_GLOBAL(0x009DE574, rct_xy16)
+#define gLeftTunnels                RCT2_ADDRESS(0x009E3138, tunnel_entry)
+#define gLeftTunnelCount            RCT2_GLOBAL(0x0141F56A, uint8)
+#define gRightTunnels               RCT2_ADDRESS(0x009E30B6, tunnel_entry)
+#define gRightTunnelCount           RCT2_GLOBAL(0x0141F56B, uint8)
+#define gVerticalTunnelHeight       RCT2_GLOBAL(0x009E323C, uint8)
+#define gSurfaceElement             RCT2_GLOBAL(0x009E3250, rct_map_element *)
+#define gDidPassSurface             RCT2_GLOBAL(0x009DE57C, bool)
+#define g141E9DB                    RCT2_GLOBAL(0x0141E9DB, uint8)
+#define gUnk141E9DC                 RCT2_GLOBAL(0x0141E9DC, uint16)
+#define gTrackColours   RCT2_ADDRESS(0x00F44198, uint32)
 #endif
-
-extern paint_string_struct * gPaintPSStringHead;
 
 /** rct2: 0x00993CC4 */
 extern const uint32 construction_markers[];

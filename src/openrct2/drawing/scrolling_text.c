@@ -18,6 +18,7 @@
 #include "../config/Config.h"
 #include "../interface/colour.h"
 #include "../localisation/localisation.h"
+#include "../paint/paint.h"
 #include "../sprites.h"
 #include "drawing.h"
 #include "ttf.h"
@@ -1419,7 +1420,7 @@ sint32 scrolling_text_setup(rct_string_id stringId, uint16 scroll, uint16 scroll
 {
     assert(scrollingMode < MAX_SCROLLING_TEXT_MODES);
 
-    rct_drawpixelinfo* dpi = unk_140E9A8;
+    rct_drawpixelinfo* dpi = gPaintSession.Unk140E9A8;
 
     if (dpi->zoom_level != 0) return SPR_SCROLLING_TEXT_DEFAULT;
 

@@ -443,12 +443,12 @@ static paint_struct * mini_golf_paint_util_7c(
 
 static bool mini_golf_paint_util_should_draw_fence(rct_map_element * mapElement)
 {
-    if (!gDidPassSurface) {
+    if (!gPaintSession.DidPassSurface) {
         // Should be above ground (have passed surface rendering)
         return false;
     }
 
-    rct_map_element * surfaceElement = gSurfaceElement;
+    rct_map_element * surfaceElement = gPaintSession.SurfaceElement;
     if (surfaceElement->base_height != mapElement->base_height) {
         return true;
     }
@@ -623,7 +623,7 @@ static void paint_mini_golf_track_25_deg_down_to_flat(uint8 rideIndex, uint8 tra
 /** rct2: 0x0087F17C, 0x0087F18C, 0x0087F19C */
 static void paint_mini_golf_station(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
-    rct_xy16 position = {gPaintMapPosition.x, gPaintMapPosition.y};
+    rct_xy16 position = gPaintSession.MapPosition;
     rct_ride * ride = get_ride(rideIndex);
     const rct_ride_entrance_definition * entranceStyle = &RideEntranceDefinitions[ride->entrance_style];
     uint32 imageId;
@@ -1028,7 +1028,7 @@ void vehicle_visual_mini_golf_player(sint32 x, sint32 imageDirection, sint32 y, 
         return;
     }
 
-    rct_drawpixelinfo *edi = unk_140E9A8;
+    rct_drawpixelinfo *edi = gPaintSession.Unk140E9A8;
     if (edi->zoom_level >= 2) {
         return;
     }
@@ -1057,7 +1057,7 @@ void vehicle_visual_mini_golf_ball(sint32 x, sint32 imageDirection, sint32 y, si
         return;
     }
 
-    rct_drawpixelinfo *edi = unk_140E9A8;
+    rct_drawpixelinfo *edi = gPaintSession.Unk140E9A8;
     if (edi->zoom_level >= 1) {
         return;
     }

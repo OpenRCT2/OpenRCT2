@@ -522,7 +522,7 @@ static void paint_splash_boats_track_60_deg_up(uint8 rideIndex, uint8 trackSeque
     uint32 imageId = SplashBoats60DegUpImageId[direction] | gTrackColours[SCHEME_TRACK];
     uint32 frontImageId = SplashBoats60DegUpFrontImageId[direction] | gTrackColours[SCHEME_TRACK];
 
-    gWoodenSupportsPrependTo = sub_98197C_rotated(direction, imageId, 0, 0, 32, 20, 2, height, 0, 6, height);
+    gPaintSession.WoodenSupportsPrependTo = sub_98197C_rotated(direction, imageId, 0, 0, 32, 20, 2, height, 0, 6, height);
     sub_98197C_rotated(direction, frontImageId, 0, 0, 32, 1, 98, height, 0, 27, height);
 
     wooden_a_supports_paint_setup((direction & 1), 21 + direction, height, gTrackColours[SCHEME_SUPPORTS], NULL);
@@ -579,7 +579,7 @@ static void paint_splash_boats_track_25_deg_up_to_60_deg_up(uint8 rideIndex, uin
     uint32 imageId = SplashBoats25DegUpTo60DegUpImageId[direction] | gTrackColours[SCHEME_TRACK];
     uint32 frontImageId = SplashBoats25DegUpTo60DegUpFrontImageId[direction] | gTrackColours[SCHEME_TRACK];
 
-    gWoodenSupportsPrependTo = sub_98197C_rotated(direction, imageId, 0, 0, 32, 20, 2, height, 0, 6, height);
+    gPaintSession.WoodenSupportsPrependTo = sub_98197C_rotated(direction, imageId, 0, 0, 32, 20, 2, height, 0, 6, height);
     sub_98197C_rotated(direction, frontImageId, 0, 0, 32, 1, 66, height, 0, 27, height);
 
     wooden_a_supports_paint_setup((direction & 1), 13 + direction, height, gTrackColours[SCHEME_SUPPORTS], NULL);
@@ -598,7 +598,7 @@ static void paint_splash_boats_track_60_deg_up_to_25_deg_up(uint8 rideIndex, uin
     uint32 imageId = SplashBoats60DegUpTo25DegUpImageId[direction] | gTrackColours[SCHEME_TRACK];
     uint32 frontImageId = SplashBoats60DegUpTo25DegUpFrontImageId[direction] | gTrackColours[SCHEME_TRACK];
 
-    gWoodenSupportsPrependTo = sub_98197C_rotated(direction, imageId, 0, 0, 32, 20, 2, height, 0, 6, height);
+    gPaintSession.WoodenSupportsPrependTo = sub_98197C_rotated(direction, imageId, 0, 0, 32, 20, 2, height, 0, 6, height);
     sub_98197C_rotated(direction, frontImageId, 0, 0, 32, 1, 66, height, 0, 27, height);
 
     wooden_a_supports_paint_setup((direction & 1), 17 + direction, height, gTrackColours[SCHEME_SUPPORTS], NULL);
@@ -1044,10 +1044,10 @@ void vehicle_visual_splash_boats_or_water_coaster(sint32 x, sint32 imageDirectio
     } else {
         vehicle = GET_VEHICLE(vehicle->next_vehicle_on_ride);
     }
-    g_currently_drawn_item = vehicle;
+    gPaintSession.CurrentlyDrawnItem = vehicle;
     imageDirection = ((get_current_rotation() * 8) + vehicle->sprite_direction) & 0x1F;
-    gPaintSpritePosition.x = vehicle->x;
-    gPaintSpritePosition.y = vehicle->y;
+    gPaintSession.SpritePosition.x = vehicle->x;
+    gPaintSession.SpritePosition.y = vehicle->y;
     vehicle_paint(vehicle, imageDirection);
 }
 #endif

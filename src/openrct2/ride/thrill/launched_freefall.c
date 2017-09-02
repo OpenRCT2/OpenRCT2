@@ -57,7 +57,7 @@ void vehicle_visual_launched_freefall(sint32 x, sint32 imageDirection, sint32 y,
     sub_98197C(image_id, 0, 0, 16, 16, 41, z, -5, -5, z + 1, rotation);
 
     // Draw peeps:
-    if (unk_140E9A8->zoom_level < 2) {
+    if (gPaintSession.Unk140E9A8->zoom_level < 2) {
         if (vehicle->num_peeps > 0) {
             baseImage_id = vehicleEntry->base_image_id + 9;
             if ((vehicle->restraints_position / 64) == 3) {
@@ -90,7 +90,7 @@ static void paint_launched_freefall_base(uint8 rideIndex, uint8 trackSequence, u
 
     sint32 edges = edges_3x3[trackSequence];
     rct_ride * ride = get_ride(rideIndex);
-    rct_xy16 position = {gPaintMapPosition.x, gPaintMapPosition.y};
+    rct_xy16 position = gPaintSession.MapPosition;
 
     wooden_a_supports_paint_setup((direction & 1), 0, height, gTrackColours[SCHEME_MISC], NULL);
 

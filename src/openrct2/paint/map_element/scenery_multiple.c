@@ -185,7 +185,7 @@ static const boundbox s98E3C4[] = {
 */
 void scenery_multiple_paint(uint8 direction, uint16 height, rct_map_element *mapElement) {
     //RCT2_CALLPROC_X(0x6B7F0C, 0, 0, direction, height, (sint32)mapElement, 0, 0); return;
-    gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_LARGE_SCENERY;
+    gPaintSession.InteractionType = VIEWPORT_INTERACTION_ITEM_LARGE_SCENERY;
     uint32 ebp = mapElement->properties.scenerymultiple.type >> 10;
     rct_scenery_entry *entry = get_large_scenery_entry(mapElement->properties.scenerymultiple.type & 0x3FF);
     if (entry == (void*)-1)
@@ -206,7 +206,7 @@ void scenery_multiple_paint(uint8 direction, uint16 height, rct_map_element *map
         }
     }
     if (mapElement->flags & MAP_ELEMENT_FLAG_GHOST) {
-        gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
+        gPaintSession.InteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
         ebp = construction_markers[gConfigGeneral.construction_marker_colour];
         image_id &= 0x7FFFF;
         dword_F4387C = ebp;
@@ -243,7 +243,7 @@ void scenery_multiple_paint(uint8 direction, uint16 height, rct_map_element *map
                 return;
             }
         }
-        rct_drawpixelinfo* dpi = unk_140E9A8;
+        rct_drawpixelinfo* dpi = gPaintSession.Unk140E9A8;
         if (dpi->zoom_level > 1) {
             scenery_multiple_paint_supports(direction, height, mapElement, dword_F4387C, tile);
             return;
@@ -324,7 +324,7 @@ void scenery_multiple_paint(uint8 direction, uint16 height, rct_map_element *map
         }
         return;
     }
-    rct_drawpixelinfo* dpi = unk_140E9A8;
+    rct_drawpixelinfo* dpi = gPaintSession.Unk140E9A8;
     if (dpi->zoom_level > 0) {
         scenery_multiple_paint_supports(direction, height, mapElement, dword_F4387C, tile);
         return;

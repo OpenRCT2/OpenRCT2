@@ -285,8 +285,8 @@ void lightfx_prepare_light_list()
                     dpi->zoom_level = _viewportDpi1.zoom;
                     dpi->height = 1;
                     dpi->width = 1;
-                    gEndOfPaintStructArray = 0xF1A4CC;
-                    unk_140E9A8 = dpi;
+                    gPaintSession.EndOfPaintStructArray = 0xF1A4CC;
+                    gPaintSession.Unk140E9A8 = dpi;
                     painter_setup();
                     viewport_paint_setup();
                     paint_arrange_structs();
@@ -656,8 +656,8 @@ void lightfx_add_3d_light(uint32 lightID, uint16 lightIDqualifier, sint16 x, sin
 
 void lightfx_add_3d_light_magic_from_drawing_tile(sint16 offsetX, sint16 offsetY, sint16 offsetZ, uint8 lightType)
 {
-    sint16 x = gPaintMapPosition.x + offsetX;
-    sint16 y = gPaintMapPosition.y + offsetY;
+    sint16 x = gPaintSession.MapPosition.x + offsetX;
+    sint16 y = gPaintSession.MapPosition.y + offsetY;
 
     switch (get_current_rotation()) {
     case 0:

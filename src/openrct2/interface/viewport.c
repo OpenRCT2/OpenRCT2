@@ -754,8 +754,8 @@ static void viewport_paint_column(rct_drawpixelinfo * dpi, uint32 viewFlags)
         viewport_paint_weather_gloom(dpi);
     }
 
-    if (gPaintPSStringHead != NULL) {
-        paint_draw_money_structs(dpi, gPaintPSStringHead);
+    if (gPaintSession.PSStringHead != NULL) {
+        paint_draw_money_structs(dpi, gPaintSession.PSStringHead);
     }
 }
 

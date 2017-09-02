@@ -907,7 +907,7 @@ static void vehicle_sprite_paint(rct_vehicle *vehicle, sint32 ebx, sint32 ecx, s
     if (ps != NULL) {
         ps->tertiary_colour = vehicle->colours_extended;
     }
-    rct_drawpixelinfo* dpi = unk_140E9A8;
+    rct_drawpixelinfo* dpi = gPaintSession.Unk140E9A8;
     if (dpi->zoom_level < 2 && vehicle->num_peeps > 0 && vehicleEntry->no_seating_rows > 0) {
         baseImage_id += vehicleEntry->no_vehicle_images;
         for (sint32 i = 0; i < 8; i++){

@@ -272,6 +272,10 @@ static uint8 TestTrackElementPaintCalls(uint8 rideType, uint8 trackType, uint8 t
     gSurfaceElement = &surfaceElement;
     gDidPassSurface = true;
 
+    gPaintSession.CurrentlyDrawnItem = &mapElement;
+    gPaintSession.SurfaceElement = &surfaceElement;
+    gPaintSession.DidPassSurface = true;
+
     TestPaint::ResetEnvironment();
     TestPaint::ResetTunnels();
 
@@ -359,7 +363,7 @@ static uint8 TestTrackElementPaintCalls(uint8 rideType, uint8 trackType, uint8 t
                 PaintIntercept::ClearCalls();
                 testpaint_clear_ignore();
                 TestPaint::ResetSupportHeights();
-                gWoodenSupportsPrependTo = nullptr;
+                gPaintSession.WoodenSupportsPrependTo = nullptr;
 
                 CallNew(rideType, trackType, direction, trackSequence, height, &mapElement);
 
@@ -407,12 +411,16 @@ static uint8 TestTrackElementSegmentSupportHeight(uint8 rideType, uint8 trackTyp
     mapElement.properties.track.type = trackType;
     mapElement.base_height = height / 16;
     g_currently_drawn_item = &mapElement;
-
+    
     rct_map_element surfaceElement = {0};
     surfaceElement.type = MAP_ELEMENT_TYPE_SURFACE;
     surfaceElement.base_height = 2;
     gSurfaceElement = &surfaceElement;
     gDidPassSurface = true;
+
+    gPaintSession.CurrentlyDrawnItem = &mapElement;
+    gPaintSession.SurfaceElement = &surfaceElement;
+    gPaintSession.DidPassSurface = true;
 
     TestPaint::ResetEnvironment();
     TestPaint::ResetTunnels();
@@ -456,8 +464,7 @@ static uint8 TestTrackElementSegmentSupportHeight(uint8 rideType, uint8 trackTyp
             continue;
         }
 
-        std::vector<SegmentSupportCall> newCalls = SegmentSupportHeightCall::getSegmentCalls(gSupportSegments,
-                                                                                             direction);
+        std::vector<SegmentSupportCall> newCalls = SegmentSupportHeightCall::getSegmentCalls(gPaintSession.SupportSegments, direction);
         if (!SegmentSupportHeightCall::CallsEqual(referenceCalls, newCalls)) {
             *error += String::Format(
                 "Segment support heights didn't match. [direction:%d] %s\n",
@@ -489,6 +496,10 @@ static uint8 TestTrackElementGeneralSupportHeight(uint8 rideType, uint8 trackTyp
     surfaceElement.base_height = 2;
     gSurfaceElement = &surfaceElement;
     gDidPassSurface = true;
+
+    gPaintSession.CurrentlyDrawnItem = &mapElement;
+    gPaintSession.SurfaceElement = &surfaceElement;
+    gPaintSession.DidPassSurface = true;
 
     TestPaint::ResetEnvironment();
     TestPaint::ResetTunnels();
@@ -539,11 +550,11 @@ static uint8 TestTrackElementGeneralSupportHeight(uint8 rideType, uint8 trackTyp
 
 
         if (referenceCall.height != -1) {
-            if (gSupport.height != referenceCall.height) {
+            if (gPaintSession.Support.height != referenceCall.height) {
                 *error += String::Format(
                     "General support heights didn't match. (expected height + %d, actual: height + %d) [direction:%d] %s\n",
                     referenceCall.height - height,
-                    gSupport.height - height,
+                    gPaintSession.Support.height - height,
                     direction,
                     state.c_str()
                 );
@@ -551,11 +562,11 @@ static uint8 TestTrackElementGeneralSupportHeight(uint8 rideType, uint8 trackTyp
             }
         }
         if (referenceCall.slope != -1) {
-            if (gSupport.slope != referenceCall.slope) {
+            if (gPaintSession.Support.slope != referenceCall.slope) {
                 *error += String::Format(
                     "General support slopes didn't match. (expected 0x%02X, actual: 0x%02X) [direction:%d] %s\n",
                     referenceCall.slope,
-                    gSupport.slope,
+                    gPaintSession.Support.slope,
                     direction,
                     state.c_str()
                 );
@@ -581,6 +592,10 @@ static uint8 TestTrackElementSideTunnels(uint8 rideType, uint8 trackType, uint8 
     surfaceElement.base_height = 2;
     gSurfaceElement = &surfaceElement;
     gDidPassSurface = true;
+
+    gPaintSession.CurrentlyDrawnItem = &mapElement;
+    gPaintSession.SurfaceElement = &surfaceElement;
+    gPaintSession.DidPassSurface = true;
 
     TestPaint::ResetEnvironment();
     TestPaint::ResetTunnels();
@@ -635,12 +650,8 @@ static uint8 TestTrackElementSideTunnels(uint8 rideType, uint8 trackType, uint8 
         }
 
         bool err = false;
-        newTileTunnelCalls[direction][rightIndex] = SideTunnelCall::ExtractTunnelCalls(gRightTunnels, gRightTunnelCount, height,
-                                                                                       &err);
-
-        newTileTunnelCalls[direction][leftIndex] = SideTunnelCall::ExtractTunnelCalls(gLeftTunnels, gLeftTunnelCount, height,
-                                                                                      &err);
-
+        newTileTunnelCalls[direction][rightIndex] = SideTunnelCall::ExtractTunnelCalls(gPaintSession.RightTunnels, gPaintSession.RightTunnelCount, height, &err);
+        newTileTunnelCalls[direction][leftIndex] = SideTunnelCall::ExtractTunnelCalls(gPaintSession.LeftTunnels, gPaintSession.LeftTunnelCount, height, &err);
         if (err) {
             *error += "Multiple tunnels on one side aren't supported.\n";
             return TEST_FAILED;
@@ -697,6 +708,10 @@ static uint8 TestTrackElementVerticalTunnels(uint8 rideType, uint8 trackType, ui
     surfaceElement.base_height = 2;
     gSurfaceElement = &surfaceElement;
     gDidPassSurface = true;
+
+    gPaintSession.CurrentlyDrawnItem = &mapElement;
+    gPaintSession.SurfaceElement = &surfaceElement;
+    gPaintSession.DidPassSurface = true;
 
     TestPaint::ResetEnvironment();
     TestPaint::ResetTunnels();

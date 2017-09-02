@@ -38,7 +38,7 @@ void sprite_paint_setup(const uint16 eax, const uint16 ecx) {
 
     if (gCurrentViewportFlags & VIEWPORT_FLAG_INVISIBLE_SPRITES) return;
 
-    dpi = unk_140E9A8;
+    dpi = gPaintSession.Unk140E9A8;
     if (dpi->zoom_level > 2) return;
 
 
@@ -51,7 +51,7 @@ void sprite_paint_setup(const uint16 eax, const uint16 ecx) {
         // height of the slope element, and consequently clipped.
         if ((gCurrentViewportFlags & VIEWPORT_FLAG_PAINT_CLIP_TO_HEIGHT) && (spr->unknown.z > (gClipHeight * 8) )) continue;
 
-        dpi = unk_140E9A8;
+        dpi = gPaintSession.Unk140E9A8;
 
         if (dpi->y + dpi->height <= spr->unknown.sprite_top) continue;
         if (spr->unknown.sprite_bottom <= dpi->y)continue;
@@ -63,10 +63,10 @@ void sprite_paint_setup(const uint16 eax, const uint16 ecx) {
         image_direction += spr->unknown.sprite_direction;
         image_direction &= 0x1F;
 
-        g_currently_drawn_item = spr;
-        gPaintSpritePosition.x = spr->unknown.x;
-        gPaintSpritePosition.y = spr->unknown.y;
-        gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_SPRITE;
+        gPaintSession.CurrentlyDrawnItem = spr;
+        gPaintSession.SpritePosition.x = spr->unknown.x;
+        gPaintSession.SpritePosition.y = spr->unknown.y;
+        gPaintSession.InteractionType = VIEWPORT_INTERACTION_ITEM_SPRITE;
 
         switch (spr->unknown.sprite_identifier) {
         case SPRITE_IDENTIFIER_VEHICLE:

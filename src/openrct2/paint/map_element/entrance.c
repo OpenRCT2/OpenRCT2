@@ -81,11 +81,11 @@ static void ride_entrance_exit_paint(uint8 direction, sint32 height, rct_map_ele
     colour_2 = ride->track_colour_additional[0];
     image_id = (colour_1 << 19) | (colour_2 << 24) | IMAGE_TYPE_REMAP | IMAGE_TYPE_REMAP_2_PLUS;
 
-    gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
+    gPaintSession.InteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
     _unk9E32BC = 0;
 
     if (map_element->flags & MAP_ELEMENT_FLAG_GHOST){
-        gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
+        gPaintSession.InteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
         image_id = construction_markers[gConfigGeneral.construction_marker_colour];
         _unk9E32BC = image_id;
         if (transparant_image_id)
@@ -195,11 +195,11 @@ static void park_entrance_paint(uint8 direction, sint32 height, rct_map_element*
     }
 #endif
 
-    gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_PARK;
+    gPaintSession.InteractionType = VIEWPORT_INTERACTION_ITEM_PARK;
     _unk9E32BC = 0;
     uint32 image_id, ghost_id = 0;
     if (map_element->flags & MAP_ELEMENT_FLAG_GHOST){
-        gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
+        gPaintSession.InteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
         ghost_id = construction_markers[gConfigGeneral.construction_marker_colour];
         _unk9E32BC = ghost_id;
     }
@@ -278,9 +278,9 @@ static void park_entrance_paint(uint8 direction, sint32 height, rct_map_element*
  *  rct2: 0x00664FD4
  */
 void entrance_paint(uint8 direction, sint32 height, rct_map_element* map_element){
-    gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_LABEL;
+    gPaintSession.InteractionType = VIEWPORT_INTERACTION_ITEM_LABEL;
 
-    rct_drawpixelinfo* dpi = unk_140E9A8;
+    rct_drawpixelinfo* dpi = gPaintSession.Unk140E9A8;
 
     if (gCurrentViewportFlags & VIEWPORT_FLAG_PATH_HEIGHTS &&
         dpi->zoom_level == 0){
