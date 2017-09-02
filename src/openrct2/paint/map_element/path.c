@@ -415,7 +415,7 @@ static void sub_6A4101(paint_session * session, rct_map_element * map_element, u
             uint16 string_width = gfx_get_string_width(gCommonStringFormatBuffer);
             uint16 scroll = (gCurrentTicks / 2) % string_width;
 
-            sub_98199C(scrolling_text_setup(string_id, scroll, scrollingMode), 0, 0, 1, 1, 21, height + 7,  boundBoxOffsets.x,  boundBoxOffsets.y,  boundBoxOffsets.z, get_current_rotation());
+            sub_98199C(scrolling_text_setup(session, string_id, scroll, scrollingMode), 0, 0, 1, 1, 21, height + 7,  boundBoxOffsets.x,  boundBoxOffsets.y,  boundBoxOffsets.z, get_current_rotation());
         }
 
         session->InteractionType = VIEWPORT_INTERACTION_ITEM_FOOTPATH;
@@ -781,16 +781,16 @@ void path_paint(paint_session * session, uint8 direction, uint16 height, rct_map
             rct_scenery_entry *sceneryEntry = get_footpath_item_entry(footpath_element_get_path_scenery_index(map_element));
             if (sceneryEntry->path_bit.flags & PATH_BIT_FLAG_LAMP) {
                 if (!(map_element->properties.path.edges & (1 << 0))) {
-                    lightfx_add_3d_light_magic_from_drawing_tile(-16, 0, height + 23, LIGHTFX_LIGHT_TYPE_LANTERN_3);
+                    lightfx_add_3d_light_magic_from_drawing_tile(session->MapPosition, -16, 0, height + 23, LIGHTFX_LIGHT_TYPE_LANTERN_3);
                 }
                 if (!(map_element->properties.path.edges & (1 << 1))) {
-                    lightfx_add_3d_light_magic_from_drawing_tile(0, 16, height + 23, LIGHTFX_LIGHT_TYPE_LANTERN_3);
+                    lightfx_add_3d_light_magic_from_drawing_tile(session->MapPosition, 0, 16, height + 23, LIGHTFX_LIGHT_TYPE_LANTERN_3);
                 }
                 if (!(map_element->properties.path.edges & (1 << 2))) {
-                    lightfx_add_3d_light_magic_from_drawing_tile(16, 0, height + 23, LIGHTFX_LIGHT_TYPE_LANTERN_3);
+                    lightfx_add_3d_light_magic_from_drawing_tile(session->MapPosition, 16, 0, height + 23, LIGHTFX_LIGHT_TYPE_LANTERN_3);
                 }
                 if (!(map_element->properties.path.edges & (1 << 3))) {
-                    lightfx_add_3d_light_magic_from_drawing_tile(0, -16, height + 23, LIGHTFX_LIGHT_TYPE_LANTERN_3);
+                    lightfx_add_3d_light_magic_from_drawing_tile(session->MapPosition, 0, -16, height + 23, LIGHTFX_LIGHT_TYPE_LANTERN_3);
                 }
             }
         }

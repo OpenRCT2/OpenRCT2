@@ -382,5 +382,5 @@ void fence_paint(paint_session * session, uint8 direction, sint32 height, rct_ma
     uint16 string_width = gfx_get_string_width(signString);
     uint16 scroll = (gCurrentTicks / 2) % string_width;
 
-    sub_98199C(scrolling_text_setup(stringId, scroll, scrollingMode), 0, 0, 1, 1, 13, height + 8, boundsOffset.x, boundsOffset.y, boundsOffset.z, get_current_rotation());
+    sub_98199C(scrolling_text_setup(session, stringId, scroll, scrollingMode), 0, 0, 1, 1, 13, height + 8, boundsOffset.x, boundsOffset.y, boundsOffset.z, get_current_rotation());
 }

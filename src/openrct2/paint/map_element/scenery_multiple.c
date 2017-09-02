@@ -367,7 +367,7 @@ void scenery_multiple_paint(paint_session * session, uint8 direction, uint16 hei
 
     uint16 string_width = gfx_get_string_width(signString);
     uint16 scroll = (gCurrentTicks / 2) % string_width;
-    sub_98199C(scrolling_text_setup(stringId, scroll, scrollMode), 0, 0, 1, 1, 21, height + 25, boxoffset.x, boxoffset.y, boxoffset.z, get_current_rotation());
+    sub_98199C(scrolling_text_setup(session, stringId, scroll, scrollMode), 0, 0, 1, 1, 21, height + 25, boxoffset.x, boxoffset.y, boxoffset.z, get_current_rotation());
 
     scenery_multiple_paint_supports(direction, height, mapElement, dword_F4387C, tile);
 }

@@ -1416,11 +1416,11 @@ static const sint16* _scrollPositions[MAX_SCROLLING_TEXT_MODES] = {
  * @param scrollingMode (bp)
  * @returns ebx
  */
-sint32 scrolling_text_setup(rct_string_id stringId, uint16 scroll, uint16 scrollingMode)
+sint32 scrolling_text_setup(paint_session * session, rct_string_id stringId, uint16 scroll, uint16 scrollingMode)
 {
     assert(scrollingMode < MAX_SCROLLING_TEXT_MODES);
 
-    rct_drawpixelinfo* dpi = gPaintSession.Unk140E9A8;
+    rct_drawpixelinfo* dpi = session->Unk140E9A8;
 
     if (dpi->zoom_level != 0) return SPR_SCROLLING_TEXT_DEFAULT;
 

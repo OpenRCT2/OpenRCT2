@@ -113,5 +113,5 @@ void banner_paint(paint_session * session, uint8 direction, sint32 height, rct_m
     uint16 string_width = gfx_get_string_width(gCommonStringFormatBuffer);
     uint16 scroll = (gCurrentTicks / 2) % string_width;
 
-    sub_98199C(scrolling_text_setup(string_id, scroll, scrollingMode), 0, 0, 1, 1, 0x15, height + 22, boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ, get_current_rotation());
+    sub_98199C(scrolling_text_setup(session, string_id, scroll, scrollingMode), 0, 0, 1, 1, 0x15, height + 22, boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ, get_current_rotation());
 }

@@ -654,10 +654,10 @@ void lightfx_add_3d_light(uint32 lightID, uint16 lightIDqualifier, sint16 x, sin
 //  log_warning("new 3d light");
 }
 
-void lightfx_add_3d_light_magic_from_drawing_tile(sint16 offsetX, sint16 offsetY, sint16 offsetZ, uint8 lightType)
+void lightfx_add_3d_light_magic_from_drawing_tile(rct_xy16 mapPosition, sint16 offsetX, sint16 offsetY, sint16 offsetZ, uint8 lightType)
 {
-    sint16 x = gPaintSession.MapPosition.x + offsetX;
-    sint16 y = gPaintSession.MapPosition.y + offsetY;
+    sint16 x = mapPosition.x + offsetX;
+    sint16 y = mapPosition.y + offsetY;
 
     switch (get_current_rotation()) {
     case 0:

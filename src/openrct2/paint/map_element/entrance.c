@@ -45,21 +45,21 @@ static void ride_entrance_exit_paint(paint_session * session, uint8 direction, s
 #ifdef __ENABLE_LIGHTFX__
     if (gConfigGeneral.enable_light_fx) {
         if (!is_exit) {
-            lightfx_add_3d_light_magic_from_drawing_tile(0, 0, height + 45, LIGHTFX_LIGHT_TYPE_LANTERN_3);
+            lightfx_add_3d_light_magic_from_drawing_tile(session->MapPosition, 0, 0, height + 45, LIGHTFX_LIGHT_TYPE_LANTERN_3);
         }
 
         switch (map_element_get_direction(map_element)) {
         case 0:
-            lightfx_add_3d_light_magic_from_drawing_tile(16, 0, height + 16, LIGHTFX_LIGHT_TYPE_LANTERN_2);
+            lightfx_add_3d_light_magic_from_drawing_tile(session->MapPosition, 16, 0, height + 16, LIGHTFX_LIGHT_TYPE_LANTERN_2);
             break;
         case 1:
-            lightfx_add_3d_light_magic_from_drawing_tile(0, -16, height + 16, LIGHTFX_LIGHT_TYPE_LANTERN_2);
+            lightfx_add_3d_light_magic_from_drawing_tile(session->MapPosition, 0, -16, height + 16, LIGHTFX_LIGHT_TYPE_LANTERN_2);
             break;
         case 2:
-            lightfx_add_3d_light_magic_from_drawing_tile(-16, 0, height + 16, LIGHTFX_LIGHT_TYPE_LANTERN_2);
+            lightfx_add_3d_light_magic_from_drawing_tile(session->MapPosition, -16, 0, height + 16, LIGHTFX_LIGHT_TYPE_LANTERN_2);
             break;
         case 3:
-            lightfx_add_3d_light_magic_from_drawing_tile(0, 16, height + 16, LIGHTFX_LIGHT_TYPE_LANTERN_2);
+            lightfx_add_3d_light_magic_from_drawing_tile(session->MapPosition, 0, 16, height + 16, LIGHTFX_LIGHT_TYPE_LANTERN_2);
             break;
         };
     }
@@ -166,7 +166,7 @@ static void ride_entrance_exit_paint(paint_session * session, uint8 direction, s
         uint16 string_width = gfx_get_string_width(entrance_string);
         uint16 scroll = (gCurrentTicks / 2) % string_width;
 
-        sub_98199C(scrolling_text_setup(string_id, scroll, style->scrolling_mode), 0, 0, 0x1C, 0x1C, 0x33, height + style->height, 2, 2, height + style->height, get_current_rotation());
+        sub_98199C(scrolling_text_setup(session, string_id, scroll, style->scrolling_mode), 0, 0, 0x1C, 0x1C, 0x33, height + style->height, 2, 2, height + style->height, get_current_rotation());
     }
 
     image_id = _unk9E32BC;
@@ -191,7 +191,7 @@ static void park_entrance_paint(paint_session * session, uint8 direction, sint32
 
 #ifdef __ENABLE_LIGHTFX__
     if (gConfigGeneral.enable_light_fx) {
-        lightfx_add_3d_light_magic_from_drawing_tile(0, 0, 155, LIGHTFX_LIGHT_TYPE_LANTERN_3);
+        lightfx_add_3d_light_magic_from_drawing_tile(session->MapPosition, 0, 0, 155, LIGHTFX_LIGHT_TYPE_LANTERN_3);
     }
 #endif
 
@@ -253,7 +253,7 @@ static void park_entrance_paint(paint_session * session, uint8 direction, sint32
         if (entrance->scrolling_mode == 0xFF)
             break;
 
-        sub_98199C(scrolling_text_setup(park_text_id, scroll, entrance->scrolling_mode + direction / 2), 0, 0, 0x1C, 0x1C, 0x2F, height + entrance->text_height, 2, 2, height + entrance->text_height, get_current_rotation());
+        sub_98199C(scrolling_text_setup(session, park_text_id, scroll, entrance->scrolling_mode + direction / 2), 0, 0, 0x1C, 0x1C, 0x2F, height + entrance->text_height, 2, 2, height + entrance->text_height, get_current_rotation());
         break;
     case 1:
     case 2:
