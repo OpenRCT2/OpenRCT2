@@ -247,7 +247,7 @@ static void sub_68B3FB(paint_session * session, sint32 x, sint32 y)
         switch (map_element_get_type(map_element))
         {
         case MAP_ELEMENT_TYPE_SURFACE:
-            surface_paint(direction, height, map_element);
+            surface_paint(session, direction, height, map_element);
             break;
         case MAP_ELEMENT_TYPE_PATH:
             path_paint(direction, height, map_element);

@@ -353,7 +353,7 @@ static uint8 viewport_surface_paint_setup_get_relative_slope(rct_map_element * m
 /**
  * rct2: 0x0065E890, 0x0065E946, 0x0065E9FC, 0x0065EAB2
  */
-static void viewport_surface_smoothen_edge(enum edge_t edge, struct tile_descriptor self, struct tile_descriptor neighbour)
+static void viewport_surface_smoothen_edge(paint_session * session, enum edge_t edge, struct tile_descriptor self, struct tile_descriptor neighbour)
 {
 
     if (neighbour.map_element == NULL) {
@@ -446,7 +446,7 @@ static void viewport_surface_smoothen_edge(enum edge_t edge, struct tile_descrip
     uint32 image_id = maskImageBase + byte_97B444[self.slope];
 
     if (paint_attach_to_previous_ps(image_id, 0, 0)) {
-        attached_paint_struct * out = gPaintSession.UnkF1AD2C;
+        attached_paint_struct * out = session->UnkF1AD2C;
         // set content and enable masking
         out->colour_image_id = dword_97B804[neighbour.terrain] + cl;
         out->flags |= PAINT_STRUCT_FLAG_IS_MASKED;
@@ -554,7 +554,7 @@ static void viewport_surface_draw_land_side_top(enum edge_t edge, uint8 height, 
 /**
  * rct2: 0x0065EB7D, 0x0065F0D8
  */
-static void viewport_surface_draw_land_side_bottom(enum edge_t edge, uint8 height, uint8 edgeStyle, struct tile_descriptor self, struct tile_descriptor neighbour)
+static void viewport_surface_draw_land_side_bottom(paint_session * session, enum edge_t edge, uint8 height, uint8 edgeStyle, struct tile_descriptor self, struct tile_descriptor neighbour)
 {
     registers regs;
 
@@ -577,7 +577,7 @@ static void viewport_surface_draw_land_side_bottom(enum edge_t edge, uint8 heigh
             tunnelBounds.x = 32;
             tunnelTopBoundBoxOffset.y = 31;
 
-            tunnelArray = gPaintSession.LeftTunnels;
+            tunnelArray = session->LeftTunnels;
             break;
 
         case EDGE_BOTTOMRIGHT:
@@ -592,7 +592,7 @@ static void viewport_surface_draw_land_side_bottom(enum edge_t edge, uint8 heigh
             tunnelBounds.y = 32;
             tunnelTopBoundBoxOffset.x = 31;
 
-            tunnelArray = gPaintSession.RightTunnels;
+            tunnelArray = session->RightTunnels;
             break;
 
         default:
@@ -714,7 +714,7 @@ static void viewport_surface_draw_land_side_bottom(enum edge_t edge, uint8 heigh
 /**
  * rct2: 0x0066039B, 0x006604F1
  */
-static void viewport_surface_draw_water_side_top(enum edge_t edge, uint8 height, uint8 terrain, struct tile_descriptor self, struct tile_descriptor neighbour)
+static void viewport_surface_draw_water_side_top(paint_session * session, enum edge_t edge, uint8 height, uint8 terrain, struct tile_descriptor self, struct tile_descriptor neighbour)
 {
     registers regs;
 
@@ -816,7 +816,7 @@ static void viewport_surface_draw_water_side_top(enum edge_t edge, uint8 height,
 /**
  * rct2: 0x0065F8B9, 0x0065FE26
  */
-static void viewport_surface_draw_water_side_bottom(enum edge_t edge, uint8 height, uint8 edgeStyle, struct tile_descriptor self, struct tile_descriptor neighbour)
+static void viewport_surface_draw_water_side_bottom(paint_session * session, enum edge_t edge, uint8 height, uint8 edgeStyle, struct tile_descriptor self, struct tile_descriptor neighbour)
 {
     registers regs;
 
@@ -839,7 +839,7 @@ static void viewport_surface_draw_water_side_bottom(enum edge_t edge, uint8 heig
             tunnelBounds.x = 32;
             tunnelTopBoundBoxOffset.y = 31;
 
-            tunnelArray = gPaintSession.LeftTunnels;
+            tunnelArray = session->LeftTunnels;
             break;
 
         case EDGE_BOTTOMRIGHT:
@@ -854,7 +854,7 @@ static void viewport_surface_draw_water_side_bottom(enum edge_t edge, uint8 heig
             tunnelBounds.y = 32;
             tunnelTopBoundBoxOffset.x = 31;
 
-            tunnelArray = gPaintSession.RightTunnels;
+            tunnelArray = session->RightTunnels;
             break;
 
         default:
@@ -988,12 +988,12 @@ static void viewport_surface_draw_water_side_bottom(enum edge_t edge, uint8 heig
  * @param height (dx)
  * @param map_element (esi)
  */
-void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
+void surface_paint(paint_session * session, uint8 direction, uint16 height, rct_map_element * mapElement)
 {
-    rct_drawpixelinfo * dpi = gPaintSession.Unk140E9A8;
-    gPaintSession.InteractionType = VIEWPORT_INTERACTION_ITEM_TERRAIN;
-    gPaintSession.DidPassSurface = true;
-    gPaintSession.SurfaceElement = mapElement;
+    rct_drawpixelinfo * dpi = session->Unk140E9A8;
+    session->InteractionType = VIEWPORT_INTERACTION_ITEM_TERRAIN;
+    session->DidPassSurface = true;
+    session->SurfaceElement = mapElement;
 
     uint16 zoomLevel = dpi->zoom_level;
 
@@ -1002,8 +1002,8 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
     uint32 surfaceShape = viewport_surface_paint_setup_get_relative_slope(mapElement, rotation);
 
     rct_xy16 base = {
-        .x = gPaintSession.SpritePosition.x,
-        .y = gPaintSession.SpritePosition.y
+        .x = session->SpritePosition.x,
+        .y = session->SpritePosition.y
     };
 
     corner_height ch = corner_heights[surfaceShape];
@@ -1051,7 +1051,7 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
 
 
     if ((gCurrentViewportFlags & VIEWPORT_FLAG_LAND_HEIGHTS) && (zoomLevel == 0)) {
-        sint16 x = gPaintSession.MapPosition.x, y = gPaintSession.MapPosition.y;
+        sint16 x = session->MapPosition.x, y = session->MapPosition.y;
 
         sint32 dx = map_element_height(x + 16, y + 16) & 0xFFFF;
         dx += 3;
@@ -1065,7 +1065,7 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
 
 
     bool has_surface = false;
-    if (gPaintSession.VerticalTunnelHeight * 16 == height) {
+    if (session->VerticalTunnelHeight * 16 == height) {
         // Vertical tunnels
         sub_98197C(1575, 0, 0, 1, 30, 39, height, -2, 1, height - 40, rotation);
         sub_98197C(1576, 0, 0, 30, 1, 0, height, 1, 31, height, rotation);
@@ -1123,8 +1123,8 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
             case 6:
                 // loc_660C6A
             {
-                sint16 x = gPaintSession.MapPosition.x & 0x20;
-                sint16 y = gPaintSession.MapPosition.y & 0x20;
+                sint16 x = session->MapPosition.x & 0x20;
+                sint16 y = session->MapPosition.y & 0x20;
                 sint32 index = (y | (x << 1)) >> 5;
 
                 if (branch == 6) {
@@ -1141,13 +1141,13 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
         has_surface = true;
     }
 
-// Draw Staff Patrol Areas
+    // Draw Staff Patrol Areas
     // loc_660D02
     if (gStaffDrawPatrolAreas != 0xFFFF) {
         sint32 staffIndex = gStaffDrawPatrolAreas;
         bool is_staff_list = staffIndex & 0x8000;
         uint8 staffType = staffIndex & 0x7FFF;
-        sint16 x = gPaintSession.MapPosition.x, y = gPaintSession.MapPosition.y;
+        sint16 x = session->MapPosition.x, y = session->MapPosition.y;
 
         uint32 image_id = IMAGE_TYPE_REMAP;
         uint8 patrolColour = 7;
@@ -1173,7 +1173,7 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
     if (((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode) &&
         gCurrentViewportFlags & VIEWPORT_FLAG_LAND_OWNERSHIP
     ) {
-        rct_xy16 pos = gPaintSession.MapPosition;
+        rct_xy16 pos = session->MapPosition;
         for (sint32 i = 0; i < MAX_PEEP_SPAWNS; ++i) {
             rct2_peep_spawn * spawn = &gPeepSpawns[i];
 
@@ -1193,11 +1193,11 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
             assert(surfaceShape < countof(byte_97B444));
             paint_attach_to_previous_ps(SPR_TERRAIN_SELECTION_SQUARE + byte_97B444[surfaceShape], 0, 0);
         } else if (mapElement->properties.surface.ownership & OWNERSHIP_AVAILABLE) {
-            rct_xy16 pos = gPaintSession.MapPosition;
-            paint_struct * backup = gPaintSession.UnkF1AD28;
+            rct_xy16 pos = session->MapPosition;
+            paint_struct * backup = session->UnkF1AD28;
             sint32 height2 = (map_element_height(pos.x + 16, pos.y + 16) & 0xFFFF) + 3;
             sub_98196C(SPR_LAND_OWNERSHIP_AVAILABLE, 16, 16, 1, 1, 0, height2, rotation);
-            gPaintSession.UnkF1AD28 = backup;
+            session->UnkF1AD28 = backup;
         }
     }
 
@@ -1207,11 +1207,11 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
             assert(surfaceShape < countof(byte_97B444));
             paint_attach_to_previous_ps(SPR_TERRAIN_SELECTION_DOTTED + byte_97B444[surfaceShape], 0, 0);
         } else if (mapElement->properties.surface.ownership & OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE) {
-            paint_struct * backup = gPaintSession.UnkF1AD28;
-            rct_xy16 pos = gPaintSession.MapPosition;
+            paint_struct * backup = session->UnkF1AD28;
+            rct_xy16 pos = session->MapPosition;
             sint32 height2 = map_element_height(pos.x + 16, pos.y + 16) & 0xFFFF;
             sub_98196C(SPR_LAND_CONSTRUCTION_RIGHTS_AVAILABLE, 16, 16, 1, 1, 0, height2 + 3, rotation);
-            gPaintSession.UnkF1AD28 = backup;
+            session->UnkF1AD28 = backup;
         }
     }
 
@@ -1221,7 +1221,7 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
 
     if (gMapSelectFlags & MAP_SELECT_FLAG_ENABLE) {
         // loc_660FB8:
-        rct_xy16 pos = gPaintSession.MapPosition;
+        rct_xy16 pos = session->MapPosition;
         if (pos.x >= gMapSelectPositionA.x &&
             pos.x <= gMapSelectPositionB.x &&
             pos.y >= gMapSelectPositionA.y &&
@@ -1276,15 +1276,15 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
 
                 sint32 image_id = (SPR_TERRAIN_SELECTION_CORNER + byte_97B444[local_surfaceShape]) | 0x21300000;
 
-                paint_struct * backup = gPaintSession.UnkF1AD28;
+                paint_struct * backup = session->UnkF1AD28;
                 sub_98196C(image_id, 0, 0, 32, 32, 1, local_height, rotation);
-                gPaintSession.UnkF1AD28 = backup;
+                session->UnkF1AD28 = backup;
             }
         }
     }
 
     if (gMapSelectFlags & MAP_SELECT_FLAG_ENABLE_CONSTRUCT) {
-        rct_xy16 pos = gPaintSession.MapPosition;
+        rct_xy16 pos = session->MapPosition;
 
         rct_xy16 * tile;
         for (tile = gMapSelectionTiles; tile->x != -1; tile++) {
@@ -1308,10 +1308,10 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
         && !(gCurrentViewportFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE)
         && !(gCurrentViewportFlags & VIEWPORT_FLAG_HIDE_BASE)
         && gConfigGeneral.landscape_smoothing) {
-        viewport_surface_smoothen_edge(EDGE_TOPLEFT, tileDescriptors[0], tileDescriptors[3]);
-        viewport_surface_smoothen_edge(EDGE_TOPRIGHT, tileDescriptors[0], tileDescriptors[4]);
-        viewport_surface_smoothen_edge(EDGE_BOTTOMLEFT, tileDescriptors[0], tileDescriptors[1]);
-        viewport_surface_smoothen_edge(EDGE_BOTTOMRIGHT, tileDescriptors[0], tileDescriptors[2]);
+        viewport_surface_smoothen_edge(session, EDGE_TOPLEFT, tileDescriptors[0], tileDescriptors[3]);
+        viewport_surface_smoothen_edge(session, EDGE_TOPRIGHT, tileDescriptors[0], tileDescriptors[4]);
+        viewport_surface_smoothen_edge(session, EDGE_BOTTOMLEFT, tileDescriptors[0], tileDescriptors[1]);
+        viewport_surface_smoothen_edge(session, EDGE_BOTTOMRIGHT, tileDescriptors[0], tileDescriptors[2]);
     }
 
 
@@ -1344,42 +1344,42 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
 #ifdef __MINGW32__
         // The other code crashes mingw 4.8.2, as available on Travis
         for (sint32 i = 0; i < TUNNEL_MAX_COUNT; i++) {
-            backupLeftTunnels[i] = gPaintSession.LeftTunnels[i];
-            backupRightTunnels[i] = gPaintSession.RightTunnels[i];
+            backupLeftTunnels[i] = session->LeftTunnels[i];
+            backupRightTunnels[i] = session->RightTunnels[i];
         }
 #else
-        memcpy(backupLeftTunnels, gPaintSession.LeftTunnels, sizeof(tunnel_entry) * TUNNEL_MAX_COUNT);
-        memcpy(backupRightTunnels, gPaintSession.RightTunnels, sizeof(tunnel_entry) * TUNNEL_MAX_COUNT);
+        memcpy(backupLeftTunnels, session->LeftTunnels, sizeof(tunnel_entry) * TUNNEL_MAX_COUNT);
+        memcpy(backupRightTunnels, session->RightTunnels, sizeof(tunnel_entry) * TUNNEL_MAX_COUNT);
 #endif
 
         viewport_surface_draw_land_side_top(EDGE_TOPLEFT, height / 16, eax / 32, tileDescriptors[0], tileDescriptors[3]);
         viewport_surface_draw_land_side_top(EDGE_TOPRIGHT, height / 16, eax / 32, tileDescriptors[0], tileDescriptors[4]);
-        viewport_surface_draw_land_side_bottom(EDGE_BOTTOMLEFT, height / 16, eax / 32, tileDescriptors[0], tileDescriptors[1]);
-        viewport_surface_draw_land_side_bottom(EDGE_BOTTOMRIGHT, height / 16, eax / 32, tileDescriptors[0], tileDescriptors[2]);
+        viewport_surface_draw_land_side_bottom(session, EDGE_BOTTOMLEFT, height / 16, eax / 32, tileDescriptors[0], tileDescriptors[1]);
+        viewport_surface_draw_land_side_bottom(session, EDGE_BOTTOMRIGHT, height / 16, eax / 32, tileDescriptors[0], tileDescriptors[2]);
 
 
 #ifdef __MINGW32__
         // The other code crashes mingw 4.8.2, as available on Travis
         for (sint32 i = 0; i < TUNNEL_MAX_COUNT; i++) {
-            gPaintSession.LeftTunnels[i] = backupLeftTunnels[i];
-            gPaintSession.RightTunnels[i] = backupRightTunnels[i];
+            session->LeftTunnels[i] = backupLeftTunnels[i];
+            session->RightTunnels[i] = backupRightTunnels[i];
         }
 #else
-        memcpy(gPaintSession.LeftTunnels, backupLeftTunnels, sizeof(tunnel_entry) * TUNNEL_MAX_COUNT);
-        memcpy(gPaintSession.RightTunnels, backupRightTunnels, sizeof(tunnel_entry) * TUNNEL_MAX_COUNT);
+        memcpy(session->LeftTunnels, backupLeftTunnels, sizeof(tunnel_entry) * TUNNEL_MAX_COUNT);
+        memcpy(session->RightTunnels, backupRightTunnels, sizeof(tunnel_entry) * TUNNEL_MAX_COUNT);
 #endif
     }
 
     if (map_get_water_height(mapElement) > 0)
     {
         // loc_6615A9: (water height)
-        gPaintSession.InteractionType = VIEWPORT_INTERACTION_ITEM_WATER;
+        session->InteractionType = VIEWPORT_INTERACTION_ITEM_WATER;
 
         uint16 localHeight = height + 16;
         uint16 waterHeight = map_get_water_height(mapElement) * 16;
 
         if (!gTrackDesignSaveMode) {
-            gPaintSession.Unk141E9DC = waterHeight;
+            session->Unk141E9DC = waterHeight;
 
             sint32 image_offset = 0;
             if (waterHeight <= localHeight) {
@@ -1399,10 +1399,10 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
             assert(eax % 32 == 0);
             // end new code
 
-            viewport_surface_draw_water_side_top(EDGE_TOPLEFT, waterHeight / 16, eax / 32, tileDescriptors[0], tileDescriptors[3]);
-            viewport_surface_draw_water_side_top(EDGE_TOPRIGHT, waterHeight / 16, eax / 32, tileDescriptors[0], tileDescriptors[4]);
-            viewport_surface_draw_water_side_bottom(EDGE_BOTTOMLEFT, waterHeight / 16, eax / 32, tileDescriptors[0], tileDescriptors[1]);
-            viewport_surface_draw_water_side_bottom(EDGE_BOTTOMRIGHT, waterHeight / 16, eax / 32, tileDescriptors[0], tileDescriptors[2]);
+            viewport_surface_draw_water_side_top(session, EDGE_TOPLEFT, waterHeight / 16, eax / 32, tileDescriptors[0], tileDescriptors[3]);
+            viewport_surface_draw_water_side_top(session, EDGE_TOPRIGHT, waterHeight / 16, eax / 32, tileDescriptors[0], tileDescriptors[4]);
+            viewport_surface_draw_water_side_bottom(session, EDGE_BOTTOMLEFT, waterHeight / 16, eax / 32, tileDescriptors[0], tileDescriptors[1]);
+            viewport_surface_draw_water_side_bottom(session, EDGE_BOTTOMRIGHT, waterHeight / 16, eax / 32, tileDescriptors[0], tileDescriptors[2]);
         }
     }
 
@@ -1410,7 +1410,7 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
         !gTrackDesignSaveMode
     ) {
         // Owned land boundary fences
-        gPaintSession.InteractionType = VIEWPORT_INTERACTION_ITEM_PARK;
+        session->InteractionType = VIEWPORT_INTERACTION_ITEM_PARK;
 
         registers regs = { 0 };
         regs.al = mapElement->properties.surface.ownership & 0x0F;
@@ -1530,8 +1530,8 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
         }
     }
 
-    gPaintSession.InteractionType = VIEWPORT_INTERACTION_ITEM_TERRAIN;
-    gPaintSession.Unk141E9DB |= G141E9DB_FLAG_1;
+    session->InteractionType = VIEWPORT_INTERACTION_ITEM_TERRAIN;
+    session->Unk141E9DB |= G141E9DB_FLAG_1;
 
     switch (surfaceShape) {
         default:
