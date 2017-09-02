@@ -1037,17 +1037,17 @@ TRACK_PAINT_FUNCTION get_track_paint_function_splash_boats(sint32 trackType, sin
  *
  *  rct2: 0x006D4295
  */
-void vehicle_visual_splash_boats_or_water_coaster(sint32 x, sint32 imageDirection, sint32 y, sint32 z, rct_vehicle *vehicle, const rct_ride_entry_vehicle *vehicleEntry)
+void vehicle_visual_splash_boats_or_water_coaster(paint_session * session, sint32 x, sint32 imageDirection, sint32 y, sint32 z, rct_vehicle *vehicle, const rct_ride_entry_vehicle *vehicleEntry)
 {
     if (vehicle->is_child) {
         vehicle = GET_VEHICLE(vehicle->prev_vehicle_on_ride);
     } else {
         vehicle = GET_VEHICLE(vehicle->next_vehicle_on_ride);
     }
-    gPaintSession.CurrentlyDrawnItem = vehicle;
+    session->CurrentlyDrawnItem = vehicle;
     imageDirection = ((get_current_rotation() * 8) + vehicle->sprite_direction) & 0x1F;
-    gPaintSession.SpritePosition.x = vehicle->x;
-    gPaintSession.SpritePosition.y = vehicle->y;
-    vehicle_paint(&gPaintSession, vehicle, imageDirection);
+    session->SpritePosition.x = vehicle->x;
+    session->SpritePosition.y = vehicle->y;
+    vehicle_paint(session, vehicle, imageDirection);
 }
 #endif

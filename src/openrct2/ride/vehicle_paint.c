@@ -890,7 +890,7 @@ const vehicle_boundbox VehicleBoundboxes[16][224] = {
 };
 
 // 6D5214
-static void vehicle_sprite_paint(rct_vehicle *vehicle, sint32 ebx, sint32 ecx, sint32 z, const rct_ride_entry_vehicle *vehicleEntry)
+static void vehicle_sprite_paint(paint_session * session, rct_vehicle *vehicle, sint32 ebx, sint32 ecx, sint32 z, const rct_ride_entry_vehicle *vehicleEntry)
 {
 
     sint32 baseImage_id = ebx;
@@ -907,7 +907,7 @@ static void vehicle_sprite_paint(rct_vehicle *vehicle, sint32 ebx, sint32 ecx, s
     if (ps != NULL) {
         ps->tertiary_colour = vehicle->colours_extended;
     }
-    rct_drawpixelinfo* dpi = gPaintSession.Unk140E9A8;
+    rct_drawpixelinfo* dpi = session->Unk140E9A8;
     if (dpi->zoom_level < 2 && vehicle->num_peeps > 0 && vehicleEntry->no_seating_rows > 0) {
         baseImage_id += vehicleEntry->no_vehicle_images;
         for (sint32 i = 0; i < 8; i++){
@@ -921,13 +921,13 @@ static void vehicle_sprite_paint(rct_vehicle *vehicle, sint32 ebx, sint32 ecx, s
             }
         }
     }
-    vehicle_visual_splash_effect(z, vehicle, vehicleEntry);
+    vehicle_visual_splash_effect(session, z, vehicle, vehicleEntry);
 }
 
 // 6D520E
 static void vehicle_sprite_paint_6D520E(rct_vehicle *vehicle, sint32 ebx, sint32 ecx, sint32 z, const rct_ride_entry_vehicle *vehicleEntry)
 {
-    vehicle_sprite_paint(vehicle, ebx + vehicle->var_4A, ecx, z, vehicleEntry);
+    vehicle_sprite_paint(&gPaintSession, vehicle, ebx + vehicle->var_4A, ecx, z, vehicleEntry);
 }
 
 // 6D51EB
@@ -941,7 +941,7 @@ static void vehicle_sprite_paint_6D51EB(rct_vehicle *vehicle, sint32 ebx, sint32
         ebx = ebx / 8;
     }
     ebx = (ebx * vehicleEntry->var_16) + vehicle->var_4A + vehicleEntry->base_image_id;
-    vehicle_sprite_paint(vehicle, ebx, ecx, z, vehicleEntry);
+    vehicle_sprite_paint(&gPaintSession, vehicle, ebx, ecx, z, vehicleEntry);
 }
 
 // 6D51DE
@@ -964,7 +964,7 @@ static void vehicle_sprite_paint_6D51DE(rct_vehicle *vehicle, sint32 ebx, sint32
     ebx += ((vehicle->restraints_position - 64) / 64) * 4;
     ebx *= vehicleEntry->var_16;
     ebx += vehicleEntry->var_1C;
-    vehicle_sprite_paint(vehicle, ebx, ecx, z, vehicleEntry);
+    vehicle_sprite_paint(&gPaintSession, vehicle, ebx, ecx, z, vehicleEntry);
 }
 
 // 6D51DE
@@ -2304,7 +2304,7 @@ static void vehicle_visual_splash5_effect(sint32 z, rct_vehicle *vehicle, const 
     sub_98199C(image_id, 0, 0, 1, 1, 0, z, 0, 0, z, get_current_rotation());
 }
 
-void vehicle_visual_splash_effect(sint32 z, rct_vehicle *vehicle, const rct_ride_entry_vehicle *vehicleEntry)
+void vehicle_visual_splash_effect(paint_session * session, sint32 z, rct_vehicle *vehicle, const rct_ride_entry_vehicle *vehicleEntry)
 {
     switch (vehicleEntry->effect_visual) {
         case 1: /* nullsub */ break;
@@ -2321,7 +2321,7 @@ void vehicle_visual_splash_effect(sint32 z, rct_vehicle *vehicle, const rct_ride
  *
  *  rct2: 0x006D45F8
  */
-void vehicle_visual_default(sint32 x, sint32 imageDirection, sint32 y, sint32 z, rct_vehicle *vehicle, const rct_ride_entry_vehicle *vehicleEntry)
+void vehicle_visual_default(paint_session * session, sint32 x, sint32 imageDirection, sint32 y, sint32 z, rct_vehicle *vehicle, const rct_ride_entry_vehicle *vehicleEntry)
 {
     assert(vehicle->vehicle_sprite_type < countof(vehicle_sprite_funcs));
     if (vehicle->vehicle_sprite_type < countof(vehicle_sprite_funcs)) {
@@ -2365,16 +2365,16 @@ void vehicle_paint(paint_session * session, rct_vehicle *vehicle, sint32 imageDi
     }
 
     switch (vehicleEntry->car_visual) {
-    case VEHICLE_VISUAL_DEFAULT:                        vehicle_visual_default(x, imageDirection, y, z, vehicle, vehicleEntry); break;
-    case VEHICLE_VISUAL_LAUNCHED_FREEFALL:              vehicle_visual_launched_freefall(x, imageDirection, y, z, vehicle, vehicleEntry); break;
-    case VEHICLE_VISUAL_OBSERVATION_TOWER:              vehicle_visual_observation_tower(x, imageDirection, y, z, vehicle, vehicleEntry); break;
-    case VEHICLE_VISUAL_RIVER_RAPIDS:                   vehicle_visual_river_rapids(x, imageDirection, y, z, vehicle, vehicleEntry); break;
-    case VEHICLE_VISUAL_MINI_GOLF_PLAYER:               vehicle_visual_mini_golf_player(x, imageDirection, y, z, vehicle); break;
-    case VEHICLE_VISUAL_MINI_GOLF_BALL:                 vehicle_visual_mini_golf_ball(x, imageDirection, y, z, vehicle); break;
-    case VEHICLE_VISUAL_REVERSER:                       vehicle_visual_reverser(x, imageDirection, y, z, vehicle, vehicleEntry); break;
-    case VEHICLE_VISUAL_SPLASH_BOATS_OR_WATER_COASTER:  vehicle_visual_splash_boats_or_water_coaster(x, imageDirection, y, z, vehicle, vehicleEntry); break;
-    case VEHICLE_VISUAL_ROTO_DROP:                      vehicle_visual_roto_drop(x, imageDirection, y, z, vehicle, vehicleEntry); break;
-    case VEHICLE_VISUAL_VIRGINIA_REEL:                  vehicle_visual_virginia_reel(x, imageDirection, y, z, vehicle, vehicleEntry); break;
-    case VEHICLE_VISUAL_SUBMARINE:                      vehicle_visual_submarine(x, imageDirection, y, z, vehicle, vehicleEntry); break;
+    case VEHICLE_VISUAL_DEFAULT:                        vehicle_visual_default(session, x, imageDirection, y, z, vehicle, vehicleEntry); break;
+    case VEHICLE_VISUAL_LAUNCHED_FREEFALL:              vehicle_visual_launched_freefall(session, x, imageDirection, y, z, vehicle, vehicleEntry); break;
+    case VEHICLE_VISUAL_OBSERVATION_TOWER:              vehicle_visual_observation_tower(session, x, imageDirection, y, z, vehicle, vehicleEntry); break;
+    case VEHICLE_VISUAL_RIVER_RAPIDS:                   vehicle_visual_river_rapids(session, x, imageDirection, y, z, vehicle, vehicleEntry); break;
+    case VEHICLE_VISUAL_MINI_GOLF_PLAYER:               vehicle_visual_mini_golf_player(session, x, imageDirection, y, z, vehicle); break;
+    case VEHICLE_VISUAL_MINI_GOLF_BALL:                 vehicle_visual_mini_golf_ball(session, x, imageDirection, y, z, vehicle); break;
+    case VEHICLE_VISUAL_REVERSER:                       vehicle_visual_reverser(session, x, imageDirection, y, z, vehicle, vehicleEntry); break;
+    case VEHICLE_VISUAL_SPLASH_BOATS_OR_WATER_COASTER:  vehicle_visual_splash_boats_or_water_coaster(session, x, imageDirection, y, z, vehicle, vehicleEntry); break;
+    case VEHICLE_VISUAL_ROTO_DROP:                      vehicle_visual_roto_drop(session, x, imageDirection, y, z, vehicle, vehicleEntry); break;
+    case VEHICLE_VISUAL_VIRGINIA_REEL:                  vehicle_visual_virginia_reel(session, x, imageDirection, y, z, vehicle, vehicleEntry); break;
+    case VEHICLE_VISUAL_SUBMARINE:                      vehicle_visual_submarine(session, x, imageDirection, y, z, vehicle, vehicleEntry); break;
     }
 }

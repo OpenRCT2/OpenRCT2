@@ -32,16 +32,16 @@
  *
  *  rct2: 0x006D4453
  */
-void vehicle_visual_reverser(sint32 x, sint32 imageDirection, sint32 y, sint32 z, rct_vehicle *vehicle, const rct_ride_entry_vehicle *vehicleEntry)
+void vehicle_visual_reverser(paint_session * session, sint32 x, sint32 imageDirection, sint32 y, sint32 z, rct_vehicle *vehicle, const rct_ride_entry_vehicle *vehicleEntry)
 {
     rct_vehicle *v1 = GET_VEHICLE(vehicle->prev_vehicle_on_ride);
     rct_vehicle *v2 = GET_VEHICLE(vehicle->next_vehicle_on_ride);
     x = (v1->x + v2->x) / 2;
     y = (v1->y + v2->y) / 2;
     z = (v1->z + v2->z) / 2;
-    gPaintSession.SpritePosition.x = x;
-    gPaintSession.SpritePosition.y = y;
-    vehicle_visual_default(x, imageDirection, y, z, vehicle, vehicleEntry);
+    session->SpritePosition.x = x;
+    session->SpritePosition.y = y;
+    vehicle_visual_default(session, x, imageDirection, y, z, vehicle, vehicleEntry);
 }
 #endif
 
