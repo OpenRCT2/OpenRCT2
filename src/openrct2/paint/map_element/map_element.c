@@ -265,7 +265,7 @@ static void sub_68B3FB(paint_session * session, sint32 x, sint32 y)
             fence_paint(direction, height, map_element);
             break;
         case MAP_ELEMENT_TYPE_SCENERY_MULTIPLE:
-            scenery_multiple_paint(direction, height, map_element);
+            scenery_multiple_paint(session, direction, height, map_element);
             break;
         case MAP_ELEMENT_TYPE_BANNER:
             banner_paint(session, direction, height, map_element);

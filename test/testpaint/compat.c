@@ -86,7 +86,7 @@ void surface_paint(paint_session * session, uint8 direction, uint16 height, rct_
 void path_paint(paint_session * session, uint8 direction, uint16 height, rct_map_element *mapElement) { }
 void scenery_paint(uint8 direction, int height, rct_map_element *mapElement) { }
 void fence_paint(uint8 direction, int height, rct_map_element *mapElement) { }
-void scenery_multiple_paint(uint8 direction, uint16 height, rct_map_element *mapElement) { }
+void scenery_multiple_paint(paint_session * session, uint8 direction, uint16 height, rct_map_element *mapElement) { }
 
 rct_ride *get_ride(int index) {
     if (index < 0 || index >= MAX_RIDES) {

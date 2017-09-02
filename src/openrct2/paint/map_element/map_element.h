@@ -102,7 +102,7 @@ void surface_paint(paint_session * session, uint8 direction, uint16 height, rct_
 void path_paint(paint_session * session, uint8 direction, uint16 height, rct_map_element *mapElement);
 void scenery_paint(uint8 direction, sint32 height, rct_map_element* mapElement);
 void fence_paint(uint8 direction, sint32 height, rct_map_element* mapElement);
-void scenery_multiple_paint(uint8 direction, uint16 height, rct_map_element *mapElement);
+void scenery_multiple_paint(paint_session * session, uint8 direction, uint16 height, rct_map_element *mapElement);
 void track_paint(uint8 direction, sint32 height, rct_map_element *mapElement);
 
 #endif
