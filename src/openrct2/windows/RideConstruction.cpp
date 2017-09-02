@@ -2433,7 +2433,7 @@ static void sub_6CBCE2(
         _tempTrackMapElement.properties.track.ride_index = rideIndex;
 
         // Draw this map tile
-        sub_68B2B7(x, y);
+        sub_68B2B7(session, x, y);
 
         // Restore map elements
         map_set_tile_elements(tileX + 0, tileY + 0, _backupMapElementArrays[0]);

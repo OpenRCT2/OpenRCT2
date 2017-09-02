@@ -27,7 +27,7 @@
  *
  *  rct2: 0x006D44D5
  */
-void vehicle_visual_submarine(sint32 x, sint32 imageDirection, sint32 y, sint32 z, rct_vehicle *vehicle, const rct_ride_entry_vehicle *vehicleEntry)
+void vehicle_visual_submarine(paint_session * session, sint32 x, sint32 imageDirection, sint32 y, sint32 z, rct_vehicle *vehicle, const rct_ride_entry_vehicle *vehicleEntry)
 {
     sint32 baseImage_id = imageDirection;
     sint32 image_id;

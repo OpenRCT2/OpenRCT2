@@ -222,9 +222,9 @@ paint_struct * sub_98199C_rotated(uint8 direction, uint32 image_id, sint8 x_offs
 
 void paint_util_push_tunnel_rotated(uint8 direction, uint16 height, uint8 type);
 
-bool paint_attach_to_previous_attach(uint32 image_id, uint16 x, uint16 y);
-bool paint_attach_to_previous_ps(uint32 image_id, uint16 x, uint16 y);
-void paint_floating_money_effect(money32 amount, rct_string_id string_id, sint16 y, sint16 z, sint8 y_offsets[], sint16 offset_x, uint32 rotation);
+bool paint_attach_to_previous_attach(paint_session * session, uint32 image_id, uint16 x, uint16 y);
+bool paint_attach_to_previous_ps(paint_session * session, uint32 image_id, uint16 x, uint16 y);
+void paint_floating_money_effect(paint_session * session, money32 amount, rct_string_id string_id, sint16 y, sint16 z, sint8 y_offsets[], sint16 offset_x, uint32 rotation);
 
 paint_session * paint_session_alloc(rct_drawpixelinfo * dpi);
 void paint_session_free(paint_session *);

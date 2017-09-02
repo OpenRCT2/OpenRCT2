@@ -175,7 +175,7 @@ static const uint32 virginia_reel_track_pieces_flat_quarter_turn_1_tile[4] = {
  *
  *  rct2: 0x006D5B48
  */
-void vehicle_visual_virginia_reel(sint32 x, sint32 imageDirection, sint32 y, sint32 z, rct_vehicle *vehicle, const rct_ride_entry_vehicle *vehicleEntry)
+void vehicle_visual_virginia_reel(paint_session * session, sint32 x, sint32 imageDirection, sint32 y, sint32 z, rct_vehicle *vehicle, const rct_ride_entry_vehicle *vehicleEntry)
 {
     sint32 image_id;
     sint32 baseImage_id = imageDirection;
@@ -212,7 +212,7 @@ void vehicle_visual_virginia_reel(sint32 x, sint32 imageDirection, sint32 y, sin
     image_id = baseImage_id | SPRITE_ID_PALETTE_COLOUR_2(vehicle->colours.body_colour, vehicle->colours.trim_colour);
     sub_98197C(image_id, 0, 0, bb->length_x, bb->length_y, bb->length_z, z, bb->offset_x, bb->offset_y, bb->offset_z + z, rotation);
 
-    if (gPaintSession.Unk140E9A8->zoom_level < 2 && vehicle->num_peeps > 0) {
+    if (session->Unk140E9A8->zoom_level < 2 && vehicle->num_peeps > 0) {
         uint8 riding_peep_sprites[4] = {0xFF, 0xFF, 0xFF, 0xFF};
         for (sint32 i = 0; i < vehicle->num_peeps; i++) {
             riding_peep_sprites[((ecx / 8) + i) & 3] = vehicle->peep_tshirt_colours[i];

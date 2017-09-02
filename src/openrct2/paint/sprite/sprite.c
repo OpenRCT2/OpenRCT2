@@ -26,7 +26,8 @@
  * Paint Quadrant
  *  rct2: 0x0069E8B0
  */
-void sprite_paint_setup(const uint16 eax, const uint16 ecx) {
+void sprite_paint_setup(paint_session * session, const uint16 eax, const uint16 ecx)
+{
     rct_drawpixelinfo* dpi;
 
     if ((eax & 0xe000) | (ecx & 0xe000)) return;
@@ -38,7 +39,7 @@ void sprite_paint_setup(const uint16 eax, const uint16 ecx) {
 
     if (gCurrentViewportFlags & VIEWPORT_FLAG_INVISIBLE_SPRITES) return;
 
-    dpi = gPaintSession.Unk140E9A8;
+    dpi = session->Unk140E9A8;
     if (dpi->zoom_level > 2) return;
 
 
@@ -51,7 +52,7 @@ void sprite_paint_setup(const uint16 eax, const uint16 ecx) {
         // height of the slope element, and consequently clipped.
         if ((gCurrentViewportFlags & VIEWPORT_FLAG_PAINT_CLIP_TO_HEIGHT) && (spr->unknown.z > (gClipHeight * 8) )) continue;
 
-        dpi = gPaintSession.Unk140E9A8;
+        dpi = session->Unk140E9A8;
 
         if (dpi->y + dpi->height <= spr->unknown.sprite_top) continue;
         if (spr->unknown.sprite_bottom <= dpi->y)continue;
@@ -63,23 +64,23 @@ void sprite_paint_setup(const uint16 eax, const uint16 ecx) {
         image_direction += spr->unknown.sprite_direction;
         image_direction &= 0x1F;
 
-        gPaintSession.CurrentlyDrawnItem = spr;
-        gPaintSession.SpritePosition.x = spr->unknown.x;
-        gPaintSession.SpritePosition.y = spr->unknown.y;
-        gPaintSession.InteractionType = VIEWPORT_INTERACTION_ITEM_SPRITE;
+        session->CurrentlyDrawnItem = spr;
+        session->SpritePosition.x = spr->unknown.x;
+        session->SpritePosition.y = spr->unknown.y;
+        session->InteractionType = VIEWPORT_INTERACTION_ITEM_SPRITE;
 
         switch (spr->unknown.sprite_identifier) {
         case SPRITE_IDENTIFIER_VEHICLE:
-            vehicle_paint((rct_vehicle*)spr, image_direction);
+            vehicle_paint(session, (rct_vehicle*)spr, image_direction);
             break;
         case SPRITE_IDENTIFIER_PEEP:
-            peep_paint((rct_peep*)spr, image_direction);
+            peep_paint(session, (rct_peep*)spr, image_direction);
             break;
         case SPRITE_IDENTIFIER_MISC:
-            misc_paint(spr, image_direction);
+            misc_paint(session, spr, image_direction);
             break;
         case SPRITE_IDENTIFIER_LITTER:
-            litter_paint((rct_litter*)spr, image_direction);
+            litter_paint(session, (rct_litter*)spr, image_direction);
             break;
         default:
             assert(false);

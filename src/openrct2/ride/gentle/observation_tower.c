@@ -34,7 +34,7 @@ enum
  *
  *  rct2: 0x006D6258
  */
-void vehicle_visual_observation_tower(sint32 x, sint32 imageDirection, sint32 y, sint32 z, rct_vehicle *vehicle, const rct_ride_entry_vehicle *vehicleEntry)
+void vehicle_visual_observation_tower(paint_session * session, sint32 x, sint32 imageDirection, sint32 y, sint32 z, rct_vehicle *vehicle, const rct_ride_entry_vehicle *vehicleEntry)
 {
     sint32 image_id;
     sint32 baseImage_id = (vehicle->restraints_position / 64);

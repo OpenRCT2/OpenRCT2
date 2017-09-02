@@ -20,6 +20,7 @@
 #ifdef __ENABLE_LIGHTFX__
 
 #include "../common.h"
+#include "../world/map.h"
 #include "drawing.h"
 
 enum LIGHTFX_LIGHT_TYPE {
@@ -58,7 +59,7 @@ const rct_palette * lightfx_get_palette();
 
 void lightfx_add_3d_light(uint32 lightID, uint16 lightIDqualifier, sint16 x, sint16 y, uint16 z, uint8 lightType);
 
-void lightfx_add_3d_light_magic_from_drawing_tile(sint16 offsetX, sint16 offsetY, sint16 offsetZ, uint8 lightType);
+void lightfx_add_3d_light_magic_from_drawing_tile(rct_xy16 mapPosition, sint16 offsetX, sint16 offsetY, sint16 offsetZ, uint8 lightType);
 
 void lightfx_add_lights_magic_vehicles();
 

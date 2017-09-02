@@ -26,7 +26,7 @@
  *
  *  rct2: 0x0068F0FB
  */
-void peep_paint(rct_peep * peep, sint32 imageDirection)
+void peep_paint(paint_session * session, rct_peep * peep, sint32 imageDirection)
 {
 #ifdef __ENABLE_LIGHTFX__
     if (gConfigGeneral.enable_light_fx) {
@@ -59,7 +59,7 @@ void peep_paint(rct_peep * peep, sint32 imageDirection)
     }
 #endif
 
-    rct_drawpixelinfo * dpi = gPaintSession.Unk140E9A8;
+    rct_drawpixelinfo * dpi = session->Unk140E9A8;
     if (dpi->zoom_level > 2) {
         return;
     }

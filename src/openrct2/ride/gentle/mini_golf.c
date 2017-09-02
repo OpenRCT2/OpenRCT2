@@ -1022,13 +1022,13 @@ TRACK_PAINT_FUNCTION get_track_paint_function_mini_golf(sint32 trackType, sint32
 /**
  * rct2: 0x006D42F0
  */
-void vehicle_visual_mini_golf_player(sint32 x, sint32 imageDirection, sint32 y, sint32 z, rct_vehicle *vehicle)
+void vehicle_visual_mini_golf_player(paint_session * session, sint32 x, sint32 imageDirection, sint32 y, sint32 z, rct_vehicle *vehicle)
 {
     if (vehicle->num_peeps == 0) {
         return;
     }
 
-    rct_drawpixelinfo *edi = gPaintSession.Unk140E9A8;
+    rct_drawpixelinfo *edi = session->Unk140E9A8;
     if (edi->zoom_level >= 2) {
         return;
     }
@@ -1051,13 +1051,13 @@ void vehicle_visual_mini_golf_player(sint32 x, sint32 imageDirection, sint32 y, 
 /**
  * rct2: 0x006D43C6
  */
-void vehicle_visual_mini_golf_ball(sint32 x, sint32 imageDirection, sint32 y, sint32 z, rct_vehicle *vehicle)
+void vehicle_visual_mini_golf_ball(paint_session * session, sint32 x, sint32 imageDirection, sint32 y, sint32 z, rct_vehicle *vehicle)
 {
     if (vehicle->mini_golf_current_animation != 1) {
         return;
     }
 
-    rct_drawpixelinfo *edi = gPaintSession.Unk140E9A8;
+    rct_drawpixelinfo *edi = session->Unk140E9A8;
     if (edi->zoom_level >= 1) {
         return;
     }

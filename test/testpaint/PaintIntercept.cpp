@@ -385,7 +385,7 @@ paint_struct *sub_98199C(
     );
 }
 
-bool paint_attach_to_previous_ps(uint32 image_id, uint16 x, uint16 y) {
+bool paint_attach_to_previous_ps(paint_session * session, uint32 image_id, uint16 x, uint16 y) {
     return false;
 }
 

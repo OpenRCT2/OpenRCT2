@@ -109,7 +109,7 @@ static sint32 div_to_minus_infinity(sint32 a, sint32 b) {
     return (a / b) - (a % b < 0);
 }
 
-static void scenery_multiple_sign_paint_line(const utf8 *str, rct_large_scenery_text *text, sint32 textImage, sint32 textColour, uint8 direction, sint32 y_offset)
+static void scenery_multiple_sign_paint_line(paint_session * session, const utf8 *str, rct_large_scenery_text *text, sint32 textImage, sint32 textColour, uint8 direction, sint32 y_offset)
 {
     const utf8 *fitStr = scenery_multiple_sign_fit_text(str, text, false);
     sint32 width = scenery_multiple_sign_text_width(fitStr, text);
@@ -141,12 +141,12 @@ static void scenery_multiple_sign_paint_line(const utf8 *str, rct_large_scenery_
         }
         sint32 image_id = (textImage + glyph_offset + glyph_type) | textColour;
         if (direction == 3) {
-            paint_attach_to_previous_ps(image_id, x_offset, -div_to_minus_infinity(acc, 2));
+            paint_attach_to_previous_ps(session, image_id, x_offset, -div_to_minus_infinity(acc, 2));
         } else {
             if (text->flags & LARGE_SCENERY_TEXT_FLAG_VERTICAL) {
-                paint_attach_to_previous_ps(image_id, x_offset, div_to_minus_infinity(acc, 2));
+                paint_attach_to_previous_ps(session, image_id, x_offset, div_to_minus_infinity(acc, 2));
             } else {
-                paint_attach_to_previous_attach(image_id, x_offset, div_to_minus_infinity(acc, 2));
+                paint_attach_to_previous_attach(session, image_id, x_offset, div_to_minus_infinity(acc, 2));
             }
         }
         x_offset += scenery_multiple_sign_get_glyph(text, codepoint)->width;
@@ -183,9 +183,9 @@ static const boundbox s98E3C4[] = {
 *
 * rct2: 0x006B7F0C
 */
-void scenery_multiple_paint(uint8 direction, uint16 height, rct_map_element *mapElement) {
+void scenery_multiple_paint(paint_session * session, uint8 direction, uint16 height, rct_map_element *mapElement) {
     //RCT2_CALLPROC_X(0x6B7F0C, 0, 0, direction, height, (sint32)mapElement, 0, 0); return;
-    gPaintSession.InteractionType = VIEWPORT_INTERACTION_ITEM_LARGE_SCENERY;
+    session->InteractionType = VIEWPORT_INTERACTION_ITEM_LARGE_SCENERY;
     uint32 ebp = mapElement->properties.scenerymultiple.type >> 10;
     rct_scenery_entry *entry = get_large_scenery_entry(mapElement->properties.scenerymultiple.type & 0x3FF);
     if (entry == (void*)-1)
@@ -206,7 +206,7 @@ void scenery_multiple_paint(uint8 direction, uint16 height, rct_map_element *map
         }
     }
     if (mapElement->flags & MAP_ELEMENT_FLAG_GHOST) {
-        gPaintSession.InteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
+        session->InteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
         ebp = construction_markers[gConfigGeneral.construction_marker_colour];
         image_id &= 0x7FFFF;
         dword_F4387C = ebp;
@@ -243,7 +243,7 @@ void scenery_multiple_paint(uint8 direction, uint16 height, rct_map_element *map
                 return;
             }
         }
-        rct_drawpixelinfo* dpi = gPaintSession.Unk140E9A8;
+        rct_drawpixelinfo* dpi = session->Unk140E9A8;
         if (dpi->zoom_level > 1) {
             scenery_multiple_paint_supports(direction, height, mapElement, dword_F4387C, tile);
             return;
@@ -280,7 +280,7 @@ void scenery_multiple_paint(uint8 direction, uint16 height, rct_map_element *map
             while ((codepoint = utf8_get_next(fitStrPtr, &fitStrPtr)) != 0) {
                 utf8 str[5] = {0};
                 utf8_write_codepoint(str, codepoint);
-                scenery_multiple_sign_paint_line(str, entry->large_scenery.text, entry->large_scenery.text_image, textColour, direction, y_offset - height2);
+                scenery_multiple_sign_paint_line(session, str, entry->large_scenery.text, entry->large_scenery.text_image, textColour, direction, y_offset - height2);
                 y_offset += scenery_multiple_sign_get_glyph(text, codepoint)->height * 2;
             }
         } else {
@@ -311,20 +311,20 @@ void scenery_multiple_paint(uint8 direction, uint16 height, rct_map_element *map
                             *spacedst = 0;
                             src = spacesrc;
                         }
-                        scenery_multiple_sign_paint_line(str1, entry->large_scenery.text, entry->large_scenery.text_image, textColour, direction, y_offset);
+                        scenery_multiple_sign_paint_line(session, str1, entry->large_scenery.text, entry->large_scenery.text_image, textColour, direction, y_offset);
                         y_offset += (scenery_multiple_sign_get_glyph(text, 'A')->height + 1) * 2;
                     }
                 } else {
-                    scenery_multiple_sign_paint_line(signString, entry->large_scenery.text, entry->large_scenery.text_image, textColour, direction, y_offset);
+                    scenery_multiple_sign_paint_line(session, signString, entry->large_scenery.text, entry->large_scenery.text_image, textColour, direction, y_offset);
                 }
             } else {
                 // Draw one-line sign:
-                scenery_multiple_sign_paint_line(signString, entry->large_scenery.text, entry->large_scenery.text_image, textColour, direction, y_offset);
+                scenery_multiple_sign_paint_line(session, signString, entry->large_scenery.text, entry->large_scenery.text_image, textColour, direction, y_offset);
             }
         }
         return;
     }
-    rct_drawpixelinfo* dpi = gPaintSession.Unk140E9A8;
+    rct_drawpixelinfo* dpi = session->Unk140E9A8;
     if (dpi->zoom_level > 0) {
         scenery_multiple_paint_supports(direction, height, mapElement, dword_F4387C, tile);
         return;
@@ -367,7 +367,7 @@ void scenery_multiple_paint(uint8 direction, uint16 height, rct_map_element *map
 
     uint16 string_width = gfx_get_string_width(signString);
     uint16 scroll = (gCurrentTicks / 2) % string_width;
-    sub_98199C(scrolling_text_setup(stringId, scroll, scrollMode), 0, 0, 1, 1, 21, height + 25, boxoffset.x, boxoffset.y, boxoffset.z, get_current_rotation());
+    sub_98199C(scrolling_text_setup(session, stringId, scroll, scrollMode), 0, 0, 1, 1, 21, height + 25, boxoffset.x, boxoffset.y, boxoffset.z, get_current_rotation());
 
     scenery_multiple_paint_supports(direction, height, mapElement, dword_F4387C, tile);
 }

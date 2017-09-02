@@ -362,9 +362,11 @@ void gfx_draw_string_with_y_offsets(rct_drawpixelinfo *dpi, const utf8 *text, si
 sint32 gfx_clip_string(char* buffer, sint32 width);
 void shorten_path(utf8 *buffer, size_t bufferSize, const utf8 *path, sint32 availableWidth);
 
+typedef struct paint_session paint_session;
+
 // scrolling text
 void scrolling_text_initialise_bitmaps();
-sint32 scrolling_text_setup(rct_string_id stringId, uint16 scroll, uint16 scrollingMode);
+sint32 scrolling_text_setup(paint_session * session, rct_string_id stringId, uint16 scroll, uint16 scrollingMode);
 
 rct_size16 FASTCALL gfx_get_sprite_size(uint32 image_id);
 
