@@ -262,7 +262,7 @@ static void sub_68B3FB(paint_session * session, sint32 x, sint32 y)
             entrance_paint(direction, height, map_element);
             break;
         case MAP_ELEMENT_TYPE_WALL:
-            fence_paint(direction, height, map_element);
+            fence_paint(session, direction, height, map_element);
             break;
         case MAP_ELEMENT_TYPE_SCENERY_MULTIPLE:
             scenery_multiple_paint(session, direction, height, map_element);

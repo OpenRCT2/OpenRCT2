@@ -130,9 +130,9 @@ static void fence_paint_wall(uint32 frameNum, const rct_scenery_entry * sceneryE
  * @param height (dx)
  * @param map_element (esi)
  */
-void fence_paint(uint8 direction, sint32 height, rct_map_element * map_element)
+void fence_paint(paint_session * session, uint8 direction, sint32 height, rct_map_element * map_element)
 {
-    gPaintSession.InteractionType = VIEWPORT_INTERACTION_ITEM_WALL;
+    session->InteractionType = VIEWPORT_INTERACTION_ITEM_WALL;
 
     rct_scenery_entry * sceneryEntry = get_wall_entry(map_element->properties.wall.type);
     if (sceneryEntry == NULL || sceneryEntry == (rct_scenery_entry *)-1) {
@@ -170,7 +170,7 @@ void fence_paint(uint8 direction, sint32 height, rct_map_element * map_element)
     }
 
     if (map_element->flags & MAP_ELEMENT_FLAG_GHOST) {
-        gPaintSession.InteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
+        session->InteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
         dword_141F710 = construction_markers[gConfigGeneral.construction_marker_colour];
     }
 
