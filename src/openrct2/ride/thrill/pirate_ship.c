@@ -66,11 +66,11 @@ static const uint32 pirate_ship_frame_sprites[][2] = {
 };
 
 /** rct2: 0x4AF254 */
-static void paint_pirate_ship_structure(rct_ride * ride, uint8 direction, sint8 axisOffset, uint16 height)
+static void paint_pirate_ship_structure(paint_session * session, rct_ride * ride, uint8 direction, sint8 axisOffset, uint16 height)
 {
     uint32 imageId, baseImageId;
 
-    rct_map_element * savedMapElement = gPaintSession.CurrentlyDrawnItem;
+    rct_map_element * savedMapElement = session->CurrentlyDrawnItem;
 
     rct_ride_entry * rideType = get_ride_entry(ride->subtype);
     rct_vehicle * vehicle = NULL;
@@ -84,8 +84,8 @@ static void paint_pirate_ship_structure(rct_ride * ride, uint8 direction, sint8 
         && ride->vehicles[0] != SPRITE_INDEX_NULL) {
         vehicle = GET_VEHICLE(ride->vehicles[0]);
 
-        gPaintSession.InteractionType = VIEWPORT_INTERACTION_ITEM_SPRITE;
-        gPaintSession.CurrentlyDrawnItem = vehicle;
+        session->InteractionType = VIEWPORT_INTERACTION_ITEM_SPRITE;
+        session->CurrentlyDrawnItem = vehicle;
     }
 
     baseImageId = rideType->vehicles[0].base_image_id + pirate_ship_base_sprite_offset[direction];
@@ -116,7 +116,7 @@ static void paint_pirate_ship_structure(rct_ride * ride, uint8 direction, sint8 
     imageId = baseImageId | imageColourFlags;
     sub_98199C(imageId, xOffset, yOffset, bounds.length_x, bounds.length_y, 80, height, bounds.offset_x, bounds.offset_y, height, get_current_rotation());
 
-    rct_drawpixelinfo * dpi = gPaintSession.Unk140E9A8;
+    rct_drawpixelinfo * dpi = session->Unk140E9A8;
 
     if (dpi->zoom_level <= 1
         && ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK
@@ -152,8 +152,8 @@ static void paint_pirate_ship_structure(rct_ride * ride, uint8 direction, sint8 
     imageId = pirate_ship_frame_sprites[(direction & 1)][1] | gTrackColours[SCHEME_TRACK];
     sub_98199C(imageId, xOffset, yOffset, bounds.length_x, bounds.length_y, 80, height, bounds.offset_x, bounds.offset_y, height, get_current_rotation());
 
-    gPaintSession.CurrentlyDrawnItem = savedMapElement;
-    gPaintSession.InteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
+    session->CurrentlyDrawnItem = savedMapElement;
+    session->InteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
 }
 
 /** rct2: 0x008A85C4 */
@@ -161,7 +161,7 @@ static void paint_pirate_ship(paint_session * session, uint8 rideIndex, uint8 tr
 {
     uint8 relativeTrackSequence = track_map_1x5[direction][trackSequence];
     rct_ride * ride = get_ride(rideIndex);
-    rct_xy16 position = gPaintSession.MapPosition;
+    rct_xy16 position = session->MapPosition;
 
     uint32 imageId;
     bool hasFence;
@@ -247,11 +247,11 @@ static void paint_pirate_ship(paint_session * session, uint8 rideIndex, uint8 tr
     }
 
     switch (relativeTrackSequence) {
-        case 1: paint_pirate_ship_structure(ride, direction, 64, height); break;
-        case 2: paint_pirate_ship_structure(ride, direction, 32, height); break;
-        case 0: paint_pirate_ship_structure(ride, direction, 0, height); break;
-        case 3: paint_pirate_ship_structure(ride, direction, -32, height); break;
-        case 4: paint_pirate_ship_structure(ride, direction, -64, height); break;
+        case 1: paint_pirate_ship_structure(session, ride, direction, 64, height); break;
+        case 2: paint_pirate_ship_structure(session, ride, direction, 32, height); break;
+        case 0: paint_pirate_ship_structure(session, ride, direction, 0, height); break;
+        case 3: paint_pirate_ship_structure(session, ride, direction, -32, height); break;
+        case 4: paint_pirate_ship_structure(session, ride, direction, -64, height); break;
     }
 
     paint_util_set_general_support_height(height + 112, 0x20);

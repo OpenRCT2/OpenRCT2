@@ -161,12 +161,12 @@ static void heartline_twister_rc_track_60_deg_up(paint_session * session, uint8 
             wooden_a_supports_paint_setup(6, 21, height, gTrackColours[SCHEME_SUPPORTS], NULL);
             break;
         case 1:
-            gPaintSession.WoodenSupportsPrependTo = sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 21403, 0, 0, 32, 20, 2, height, 0, 6, height);
+            session->WoodenSupportsPrependTo = sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 21403, 0, 0, 32, 20, 2, height, 0, 6, height);
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 21407, 0, 0, 32, 1, 98, height, 0, 27, height);
             wooden_a_supports_paint_setup(7, 22, height, gTrackColours[SCHEME_SUPPORTS], NULL);
             break;
         case 2:
-            gPaintSession.WoodenSupportsPrependTo = sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 21404, 0, 0, 32, 20, 2, height, 0, 6, height);
+            session->WoodenSupportsPrependTo = sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 21404, 0, 0, 32, 20, 2, height, 0, 6, height);
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 21408, 0, 0, 32, 1, 98, height, 0, 27, height);
             wooden_a_supports_paint_setup(6, 23, height, gTrackColours[SCHEME_SUPPORTS], NULL);
             break;
@@ -184,12 +184,12 @@ static void heartline_twister_rc_track_60_deg_up(paint_session * session, uint8 
             wooden_a_supports_paint_setup(6, 21, height, gTrackColours[SCHEME_SUPPORTS], NULL);
             break;
         case 1:
-            gPaintSession.WoodenSupportsPrependTo = sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 21347, 0, 0, 32, 20, 2, height, 0, 6, height);
+            session->WoodenSupportsPrependTo = sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 21347, 0, 0, 32, 20, 2, height, 0, 6, height);
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 21351, 0, 0, 32, 1, 98, height, 0, 27, height);
             wooden_a_supports_paint_setup(7, 22, height, gTrackColours[SCHEME_SUPPORTS], NULL);
             break;
         case 2:
-            gPaintSession.WoodenSupportsPrependTo = sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 21348, 0, 0, 32, 20, 2, height, 0, 6, height);
+            session->WoodenSupportsPrependTo = sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 21348, 0, 0, 32, 20, 2, height, 0, 6, height);
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 21352, 0, 0, 32, 1, 98, height, 0, 27, height);
             wooden_a_supports_paint_setup(6, 23, height, gTrackColours[SCHEME_SUPPORTS], NULL);
             break;
@@ -279,12 +279,12 @@ static void heartline_twister_rc_track_25_deg_up_to_60_deg_up(paint_session * se
             wooden_a_supports_paint_setup(6, 13, height, gTrackColours[SCHEME_SUPPORTS], NULL);
             break;
         case 1:
-            gPaintSession.WoodenSupportsPrependTo = sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 21387, 0, 0, 32, 20, 2, height, 0, 6, height);
+            session->WoodenSupportsPrependTo = sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 21387, 0, 0, 32, 20, 2, height, 0, 6, height);
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 21391, 0, 0, 32, 1, 66, height, 0, 27, height);
             wooden_a_supports_paint_setup(7, 14, height, gTrackColours[SCHEME_SUPPORTS], NULL);
             break;
         case 2:
-            gPaintSession.WoodenSupportsPrependTo = sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 21388, 0, 0, 32, 20, 2, height, 0, 6, height);
+            session->WoodenSupportsPrependTo = sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 21388, 0, 0, 32, 20, 2, height, 0, 6, height);
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 21392, 0, 0, 32, 1, 66, height, 0, 27, height);
             wooden_a_supports_paint_setup(6, 15, height, gTrackColours[SCHEME_SUPPORTS], NULL);
             break;
@@ -302,12 +302,12 @@ static void heartline_twister_rc_track_25_deg_up_to_60_deg_up(paint_session * se
             wooden_a_supports_paint_setup(6, 13, height, gTrackColours[SCHEME_SUPPORTS], NULL);
             break;
         case 1:
-            gPaintSession.WoodenSupportsPrependTo = sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 21331, 0, 0, 32, 20, 2, height, 0, 6, height);
+            session->WoodenSupportsPrependTo = sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 21331, 0, 0, 32, 20, 2, height, 0, 6, height);
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 21335, 0, 0, 32, 1, 66, height, 0, 27, height);
             wooden_a_supports_paint_setup(7, 14, height, gTrackColours[SCHEME_SUPPORTS], NULL);
             break;
         case 2:
-            gPaintSession.WoodenSupportsPrependTo = sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 21332, 0, 0, 32, 20, 2, height, 0, 6, height);
+            session->WoodenSupportsPrependTo = sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 21332, 0, 0, 32, 20, 2, height, 0, 6, height);
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 21336, 0, 0, 32, 1, 66, height, 0, 27, height);
             wooden_a_supports_paint_setup(6, 15, height, gTrackColours[SCHEME_SUPPORTS], NULL);
             break;
@@ -338,12 +338,12 @@ static void heartline_twister_rc_track_60_deg_up_to_25_deg_up(paint_session * se
             wooden_a_supports_paint_setup(6, 17, height, gTrackColours[SCHEME_SUPPORTS], NULL);
             break;
         case 1:
-            gPaintSession.WoodenSupportsPrependTo = sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 21395, 0, 0, 32, 20, 2, height, 0, 6, height);
+            session->WoodenSupportsPrependTo = sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 21395, 0, 0, 32, 20, 2, height, 0, 6, height);
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 21399, 0, 0, 32, 1, 66, height, 0, 27, height);
             wooden_a_supports_paint_setup(7, 18, height, gTrackColours[SCHEME_SUPPORTS], NULL);
             break;
         case 2:
-            gPaintSession.WoodenSupportsPrependTo = sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 21396, 0, 0, 32, 20, 2, height, 0, 6, height);
+            session->WoodenSupportsPrependTo = sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 21396, 0, 0, 32, 20, 2, height, 0, 6, height);
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 21400, 0, 0, 32, 1, 66, height, 0, 27, height);
             wooden_a_supports_paint_setup(6, 19, height, gTrackColours[SCHEME_SUPPORTS], NULL);
             break;
@@ -361,12 +361,12 @@ static void heartline_twister_rc_track_60_deg_up_to_25_deg_up(paint_session * se
             wooden_a_supports_paint_setup(6, 17, height, gTrackColours[SCHEME_SUPPORTS], NULL);
             break;
         case 1:
-            gPaintSession.WoodenSupportsPrependTo = sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 21339, 0, 0, 32, 20, 2, height, 0, 6, height);
+            session->WoodenSupportsPrependTo = sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 21339, 0, 0, 32, 20, 2, height, 0, 6, height);
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 21343, 0, 0, 32, 1, 66, height, 0, 27, height);
             wooden_a_supports_paint_setup(7, 18, height, gTrackColours[SCHEME_SUPPORTS], NULL);
             break;
         case 2:
-            gPaintSession.WoodenSupportsPrependTo = sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 21340, 0, 0, 32, 20, 2, height, 0, 6, height);
+            session->WoodenSupportsPrependTo = sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 21340, 0, 0, 32, 20, 2, height, 0, 6, height);
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 21344, 0, 0, 32, 1, 66, height, 0, 27, height);
             wooden_a_supports_paint_setup(6, 19, height, gTrackColours[SCHEME_SUPPORTS], NULL);
             break;

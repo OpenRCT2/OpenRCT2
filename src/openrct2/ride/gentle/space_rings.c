@@ -37,9 +37,9 @@ static const uint32 space_rings_fence_sprites[] = {
 };
 
 /** rct2: 0x00768A3B */
-static void paint_space_rings_structure(rct_ride * ride, uint8 direction,  uint32 segment, sint32 height)
+static void paint_space_rings_structure(paint_session * session, rct_ride * ride, uint8 direction,  uint32 segment, sint32 height)
 {
-    rct_map_element * savedMapElement = gPaintSession.CurrentlyDrawnItem;
+    rct_map_element * savedMapElement = session->CurrentlyDrawnItem;
 
     uint32 vehicleIndex = (segment - direction) & 0x3;
 
@@ -53,9 +53,9 @@ static void paint_space_rings_structure(rct_ride * ride, uint8 direction,  uint3
 
         if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK
             && ride->vehicles[0] != SPRITE_INDEX_NULL) {
-            gPaintSession.InteractionType = VIEWPORT_INTERACTION_ITEM_SPRITE;
+            session->InteractionType = VIEWPORT_INTERACTION_ITEM_SPRITE;
             vehicle = GET_VEHICLE(ride->vehicles[vehicleIndex]);
-            gPaintSession.CurrentlyDrawnItem = vehicle;
+            session->CurrentlyDrawnItem = vehicle;
             frameNum += (sint8) vehicle->vehicle_sprite_type * 4;
         }
 
@@ -79,8 +79,8 @@ static void paint_space_rings_structure(rct_ride * ride, uint8 direction,  uint3
         }
     }
 
-    gPaintSession.CurrentlyDrawnItem = savedMapElement;
-    gPaintSession.InteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
+    session->CurrentlyDrawnItem = savedMapElement;
+    session->InteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
 }
 
 /** rct2: 0x00767C40 */
@@ -90,7 +90,7 @@ static void paint_space_rings(paint_session * session, uint8 rideIndex, uint8 tr
 
     sint32 edges = edges_3x3[trackSequence];
     rct_ride * ride = get_ride(rideIndex);
-    rct_xy16 position = gPaintSession.MapPosition;
+    rct_xy16 position = session->MapPosition;
 
     uint32 imageId;
 
@@ -115,10 +115,10 @@ static void paint_space_rings(paint_session * session, uint8 rideIndex, uint8 tr
     }
 
     switch (trackSequence) {
-        case 0: paint_space_rings_structure(ride, direction, 0, height + 3); break;
-        case 5: paint_space_rings_structure(ride, direction, 1, height + 3); break;
-        case 7: paint_space_rings_structure(ride, direction, 2, height + 3); break;
-        case 8: paint_space_rings_structure(ride, direction, 3, height + 3); break;
+        case 0: paint_space_rings_structure(session, ride, direction, 0, height + 3); break;
+        case 5: paint_space_rings_structure(session, ride, direction, 1, height + 3); break;
+        case 7: paint_space_rings_structure(session, ride, direction, 2, height + 3); break;
+        case 8: paint_space_rings_structure(session, ride, direction, 3, height + 3); break;
     }
 
     sint32 cornerSegments = 0;

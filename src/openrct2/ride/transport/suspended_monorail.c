@@ -41,7 +41,7 @@ static void suspended_monorail_track_flat(paint_session * session, uint8 rideInd
     }
 
     paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    if (track_paint_util_should_paint_supports(gPaintSession.MapPosition)) {
+    if (track_paint_util_should_paint_supports(session->MapPosition)) {
         metal_a_supports_paint_setup(METAL_SUPPORTS_BOXED, 4, 0, height + 42, gTrackColours[SCHEME_SUPPORTS]);
     }
 
@@ -88,7 +88,7 @@ static void suspended_monorail_track_25_deg_up(paint_session * session, uint8 ri
     }
 
     paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    if (track_paint_util_should_paint_supports(gPaintSession.MapPosition)) {
+    if (track_paint_util_should_paint_supports(session->MapPosition)) {
         switch (direction) {
         case 0:
             metal_a_supports_paint_setup(METAL_SUPPORTS_BOXED, 6, 0, height + 60, gTrackColours[SCHEME_SUPPORTS]);
@@ -132,7 +132,7 @@ static void suspended_monorail_track_flat_to_25_deg_up(paint_session * session, 
     }
 
     paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    if (track_paint_util_should_paint_supports(gPaintSession.MapPosition)) {
+    if (track_paint_util_should_paint_supports(session->MapPosition)) {
         switch (direction) {
         case 0:
             metal_a_supports_paint_setup(METAL_SUPPORTS_BOXED, 6, 0, height + 52, gTrackColours[SCHEME_SUPPORTS]);
@@ -176,7 +176,7 @@ static void suspended_monorail_track_25_deg_up_to_flat(paint_session * session, 
     }
 
     paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    if (track_paint_util_should_paint_supports(gPaintSession.MapPosition)) {
+    if (track_paint_util_should_paint_supports(session->MapPosition)) {
         switch (direction) {
         case 0:
             metal_a_supports_paint_setup(METAL_SUPPORTS_BOXED, 6, 0, height + 50, gTrackColours[SCHEME_SUPPORTS]);

@@ -82,7 +82,7 @@ const uint32 chairlift_bullwheel_frames[] = {
     SPR_CHAIRLIFT_BULLWHEEL_FRAME_4
 };
 
-static void chairlift_paint_util_draw_supports(sint32 segments, uint16 height)
+static void chairlift_paint_util_draw_supports(paint_session * session, sint32 segments, uint16 height)
 {
     bool success = false;
 
@@ -100,13 +100,13 @@ static void chairlift_paint_util_draw_supports(sint32 segments, uint16 height)
         return;
     }
 
-    support_height * supportSegments = gPaintSession.SupportSegments;
+    support_height * supportSegments = session->SupportSegments;
     for (sint32 s = 0; s < 9; s++) {
         if (!(segments & segment_offsets[s])) {
             continue;
         }
         uint16 temp = supportSegments[s].height;
-        supportSegments[s].height = gPaintSession.Support.height;
+        supportSegments[s].height = session->Support.height;
         metal_a_supports_paint_setup(METAL_SUPPORTS_TRUSS, s, 0, height, gTrackColours[SCHEME_SUPPORTS]);
         supportSegments[s].height = temp;
     }
@@ -166,7 +166,7 @@ static bool chairlift_paint_util_is_last_track(uint8 rideIndex, const rct_map_el
 
 static void chairlift_paint_station_ne_sw(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
-    const rct_xy16 pos = gPaintSession.MapPosition;
+    const rct_xy16 pos = session->MapPosition;
     uint8 trackType = mapElement->properties.track.type;
     rct_ride * ride = get_ride(rideIndex);
     uint32 imageId;
@@ -245,7 +245,7 @@ static void chairlift_paint_station_ne_sw(paint_session * session, uint8 rideInd
 
 static void chairlift_paint_station_se_nw(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
-    const rct_xy16 pos = gPaintSession.MapPosition;
+    const rct_xy16 pos = session->MapPosition;
     uint8 trackType = mapElement->properties.track.type;
     rct_ride * ride = get_ride(rideIndex);
     uint32 imageId;
@@ -432,7 +432,7 @@ static void chairlift_paint_flat_to_25_deg_up(paint_session * session, uint8 rid
             break;
     }
 
-    chairlift_paint_util_draw_supports(SEGMENT_C4, height);
+    chairlift_paint_util_draw_supports(session, SEGMENT_C4, height);
     paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
     paint_util_set_general_support_height(height + 48, 0x20);
 }
@@ -485,7 +485,7 @@ static void chairlift_paint_25_deg_up_to_flat(paint_session * session, uint8 rid
 
     }
 
-    chairlift_paint_util_draw_supports(SEGMENT_C4, height);
+    chairlift_paint_util_draw_supports(session, SEGMENT_C4, height);
     paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
     paint_util_set_general_support_height(height + 40, 0x20);
 }
@@ -566,7 +566,7 @@ static void chairlift_paint_left_quarter_turn_1_tile(paint_session * session, ui
             break;
     }
 
-    chairlift_paint_util_draw_supports(paint_util_rotate_segments(SEGMENT_C8 | SEGMENT_D0, direction), height);
+    chairlift_paint_util_draw_supports(session, paint_util_rotate_segments(SEGMENT_C8 | SEGMENT_D0, direction), height);
 
     paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
     paint_util_set_general_support_height(height + 32, 0x20);

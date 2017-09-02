@@ -54,11 +54,11 @@ static ferris_wheel_bound_box ferris_wheel_data[] = {
 /**
  * rct2: 0x004C3874
  */
-static void paint_ferris_wheel_structure(uint8 rideIndex, uint8 direction, sint8 axisOffset, uint16 height)
+static void paint_ferris_wheel_structure(paint_session * session, uint8 rideIndex, uint8 direction, sint8 axisOffset, uint16 height)
 {
     uint32 imageId, baseImageId;
 
-    rct_map_element * savedMapElement = gPaintSession.CurrentlyDrawnItem;
+    rct_map_element * savedMapElement = session->CurrentlyDrawnItem;
 
     rct_ride * ride = get_ride(rideIndex);
     rct_ride_entry * rideEntry = get_ride_entry(ride->subtype);
@@ -75,8 +75,8 @@ static void paint_ferris_wheel_structure(uint8 rideIndex, uint8 direction, sint8
         && ride->vehicles[0] != SPRITE_INDEX_NULL) {
         vehicle = GET_VEHICLE(ride->vehicles[0]);
 
-        gPaintSession.InteractionType = VIEWPORT_INTERACTION_ITEM_SPRITE;
-        gPaintSession.CurrentlyDrawnItem = vehicle;
+        session->InteractionType = VIEWPORT_INTERACTION_ITEM_SPRITE;
+        session->CurrentlyDrawnItem = vehicle;
     }
 
     uint32 imageOffset = 0;
@@ -120,8 +120,8 @@ static void paint_ferris_wheel_structure(uint8 rideIndex, uint8 direction, sint8
     imageId = (22150 + (direction & 1) * 2 + 1) | gTrackColours[SCHEME_TRACK];
     sub_98199C(imageId, xOffset, yOffset, boundBox.length_x, boundBox.length_y, 127, height, boundBox.offset_x, boundBox.offset_y, height, get_current_rotation());
 
-    gPaintSession.CurrentlyDrawnItem = savedMapElement;
-    gPaintSession.InteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
+    session->CurrentlyDrawnItem = savedMapElement;
+    session->InteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
 }
 
 
@@ -140,7 +140,7 @@ static void paint_ferris_wheel(paint_session * session, uint8 rideIndex, uint8 t
     }
 
     rct_ride * ride = get_ride(rideIndex);
-    rct_xy16 position = gPaintSession.MapPosition;
+    rct_xy16 position = session->MapPosition;
 
     wooden_a_supports_paint_setup(direction & 1, 0, height, gTrackColours[SCHEME_MISC], NULL);
 
@@ -168,10 +168,10 @@ static void paint_ferris_wheel(paint_session * session, uint8 rideIndex, uint8 t
     }
 
     switch (relativeTrackSequence) {
-        case 1: paint_ferris_wheel_structure(rideIndex, direction, 48, height); break;
-        case 2: paint_ferris_wheel_structure(rideIndex, direction, 16, height); break;
-        case 0: paint_ferris_wheel_structure(rideIndex, direction, -16, height); break;
-        case 3: paint_ferris_wheel_structure(rideIndex, direction, -48, height); break;
+        case 1: paint_ferris_wheel_structure(session, rideIndex, direction, 48, height); break;
+        case 2: paint_ferris_wheel_structure(session, rideIndex, direction, 16, height); break;
+        case 0: paint_ferris_wheel_structure(session, rideIndex, direction, -16, height); break;
+        case 3: paint_ferris_wheel_structure(session, rideIndex, direction, -48, height); break;
     }
 
     paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);

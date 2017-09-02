@@ -54,7 +54,7 @@ static void mini_suspended_rc_track_flat(paint_session * session, uint8 rideInde
     }
 
     paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    if (track_paint_util_should_paint_supports(gPaintSession.MapPosition)) {
+    if (track_paint_util_should_paint_supports(session->MapPosition)) {
         switch (direction) {
         case 0:
         case 2:
@@ -127,7 +127,7 @@ static void mini_suspended_rc_track_25_deg_up(paint_session * session, uint8 rid
     }
 
     paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    if (track_paint_util_should_paint_supports(gPaintSession.MapPosition)) {
+    if (track_paint_util_should_paint_supports(session->MapPosition)) {
         switch (direction) {
         case 0:
             metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 6, 0, height + 46, gTrackColours[SCHEME_SUPPORTS]);
@@ -188,7 +188,7 @@ static void mini_suspended_rc_track_flat_to_25_deg_up(paint_session * session, u
     }
 
     paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    if (track_paint_util_should_paint_supports(gPaintSession.MapPosition)) {
+    if (track_paint_util_should_paint_supports(session->MapPosition)) {
         switch (direction) {
         case 0:
             metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 6, 0, height + 38, gTrackColours[SCHEME_SUPPORTS]);
@@ -249,7 +249,7 @@ static void mini_suspended_rc_track_25_deg_up_to_flat(paint_session * session, u
     }
 
     paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    if (track_paint_util_should_paint_supports(gPaintSession.MapPosition)) {
+    if (track_paint_util_should_paint_supports(session->MapPosition)) {
         switch (direction) {
         case 0:
             metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 6, 0, height + 38, gTrackColours[SCHEME_SUPPORTS]);

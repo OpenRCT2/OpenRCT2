@@ -293,7 +293,7 @@ static void paint_river_rapids_station(paint_session * session, uint8 rideIndex,
     paint_util_set_general_support_height(height + 32, 0x20);
 }
 
-static void paint_river_rapids_track_25_deg(uint8 direction, sint32 height, const uint32 sprites[4][2])
+static void paint_river_rapids_track_25_deg(paint_session * session, uint8 direction, sint32 height, const uint32 sprites[4][2])
 {
     uint32 imageId;
     paint_struct * ps;
@@ -313,7 +313,7 @@ static void paint_river_rapids_track_25_deg(uint8 direction, sint32 height, cons
         case 1:
             imageId = sprites[direction][0] | gTrackColours[SCHEME_TRACK];
             ps = sub_98197C(imageId, 0, 0, 24, 32, 4, height, 4, 0, height, get_current_rotation());
-            gPaintSession.WoodenSupportsPrependTo = ps;
+            session->WoodenSupportsPrependTo = ps;
 
             imageId = sprites[direction][1] | gTrackColours[SCHEME_TRACK];
             sub_98197C(imageId, 0, 0, 1, 32, 34, height, 27, 0, height + 16, get_current_rotation());
@@ -325,7 +325,7 @@ static void paint_river_rapids_track_25_deg(uint8 direction, sint32 height, cons
         case 2:
             imageId = sprites[direction][0] | gTrackColours[SCHEME_TRACK];
             ps = sub_98197C(imageId, 0, 0, 32, 24, 4, height, 0, 4, height, get_current_rotation());
-            gPaintSession.WoodenSupportsPrependTo = ps;
+            session->WoodenSupportsPrependTo = ps;
 
             imageId = sprites[direction][1] | gTrackColours[SCHEME_TRACK];
             sub_98197C(imageId, 0, 0, 32, 1, 34, height, 0, 27, height + 16, get_current_rotation());
@@ -350,7 +350,7 @@ static void paint_river_rapids_track_25_deg(uint8 direction, sint32 height, cons
     paint_util_set_general_support_height(height + 56, 0x20);
 }
 
-static void paint_river_rapids_track_25_deg_to_flat_a(uint8 direction, sint32 height, const uint32 sprites[4][2])
+static void paint_river_rapids_track_25_deg_to_flat_a(paint_session * session, uint8 direction, sint32 height, const uint32 sprites[4][2])
 {
     uint32 imageId;
     paint_struct * ps;
@@ -370,7 +370,7 @@ static void paint_river_rapids_track_25_deg_to_flat_a(uint8 direction, sint32 he
         case 1:
             imageId = sprites[direction][0] | gTrackColours[SCHEME_TRACK];
             ps = sub_98197C(imageId, 0, 0, 24, 32, 4, height, 4, 0, height, get_current_rotation());
-            gPaintSession.WoodenSupportsPrependTo = ps;
+            session->WoodenSupportsPrependTo = ps;
 
             imageId = sprites[direction][1] | gTrackColours[SCHEME_TRACK];
             sub_98197C(imageId, 0, 0, 1, 32, 18, height, 27, 0, height + 16, get_current_rotation());
@@ -382,7 +382,7 @@ static void paint_river_rapids_track_25_deg_to_flat_a(uint8 direction, sint32 he
         case 2:
             imageId = sprites[direction][0] | gTrackColours[SCHEME_TRACK];
             ps = sub_98197C(imageId, 0, 0, 32, 24, 4, height, 0, 4, height, get_current_rotation());
-            gPaintSession.WoodenSupportsPrependTo = ps;
+            session->WoodenSupportsPrependTo = ps;
 
             imageId = sprites[direction][1] | gTrackColours[SCHEME_TRACK];
             sub_98197C(imageId, 0, 0, 32, 1, 18, height, 0, 27, height + 16, get_current_rotation());
@@ -407,7 +407,7 @@ static void paint_river_rapids_track_25_deg_to_flat_a(uint8 direction, sint32 he
     paint_util_set_general_support_height(height + 40, 0x20);
 }
 
-static void paint_river_rapids_track_25_deg_to_flat_b(uint8 direction, sint32 height, const uint32 sprites[4][2])
+static void paint_river_rapids_track_25_deg_to_flat_b(paint_session * session, uint8 direction, sint32 height, const uint32 sprites[4][2])
 {
     uint32 imageId;
     paint_struct * ps;
@@ -427,7 +427,7 @@ static void paint_river_rapids_track_25_deg_to_flat_b(uint8 direction, sint32 he
         case 1:
             imageId = sprites[direction][0] | gTrackColours[SCHEME_TRACK];
             ps = sub_98197C(imageId, 0, 0, 24, 32, 11, height, 4, 0, height, get_current_rotation());
-            gPaintSession.WoodenSupportsPrependTo = ps;
+            session->WoodenSupportsPrependTo = ps;
 
             imageId = sprites[direction][1] | gTrackColours[SCHEME_TRACK];
             sub_98197C(imageId, 0, 0, 1, 32, 26, height, 27, 0, height + 16, get_current_rotation());
@@ -439,7 +439,7 @@ static void paint_river_rapids_track_25_deg_to_flat_b(uint8 direction, sint32 he
         case 2:
             imageId = sprites[direction][0] | gTrackColours[SCHEME_TRACK];
             ps = sub_98197C(imageId, 0, 0, 32, 24, 11, height, 0, 4, height, get_current_rotation());
-            gPaintSession.WoodenSupportsPrependTo = ps;
+            session->WoodenSupportsPrependTo = ps;
 
             imageId = sprites[direction][1] | gTrackColours[SCHEME_TRACK];
             sub_98197C(imageId, 0, 0, 32, 1, 26, height, 0, 27, height + 16, get_current_rotation());
@@ -467,37 +467,37 @@ static void paint_river_rapids_track_25_deg_to_flat_b(uint8 direction, sint32 he
 /** rct2: 0x00757660 */
 static void paint_river_rapids_track_25_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
-    paint_river_rapids_track_25_deg(direction, height, river_rapids_track_pieces_25_deg_up);
+    paint_river_rapids_track_25_deg(session, direction, height, river_rapids_track_pieces_25_deg_up);
 }
 
 /** rct2: 0x00757670 */
 static void paint_river_rapids_track_flat_to_25_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
-    paint_river_rapids_track_25_deg_to_flat_b(direction, height, river_rapids_track_pieces_flat_to_25_deg_up);
+    paint_river_rapids_track_25_deg_to_flat_b(session, direction, height, river_rapids_track_pieces_flat_to_25_deg_up);
 }
 
 /** rct2: 0x00757680 */
 static void paint_river_rapids_track_25_deg_up_to_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
-    paint_river_rapids_track_25_deg_to_flat_a(direction, height, river_rapids_track_pieces_25_deg_up_to_flat);
+    paint_river_rapids_track_25_deg_to_flat_a(session, direction, height, river_rapids_track_pieces_25_deg_up_to_flat);
 }
 
 /** rct2: 0x00757690 */
 static void paint_river_rapids_track_25_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
-    paint_river_rapids_track_25_deg((direction + 2) % 4, height, river_rapids_track_pieces_25_deg_down);
+    paint_river_rapids_track_25_deg(session, (direction + 2) % 4, height, river_rapids_track_pieces_25_deg_down);
 }
 
 /** rct2: 0x007576A0 */
 static void paint_river_rapids_track_flat_to_25_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
-    paint_river_rapids_track_25_deg_to_flat_a((direction + 2) % 4, height, river_rapids_track_pieces_flat_to_25_deg_down);
+    paint_river_rapids_track_25_deg_to_flat_a(session, (direction + 2) % 4, height, river_rapids_track_pieces_flat_to_25_deg_down);
 }
 
 /** rct2: 0x007576B0 */
 static void paint_river_rapids_track_25_deg_down_to_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
-    paint_river_rapids_track_25_deg_to_flat_b((direction + 2) % 4, height, river_rapids_track_pieces_25_deg_down_to_flat);
+    paint_river_rapids_track_25_deg_to_flat_b(session, (direction + 2) % 4, height, river_rapids_track_pieces_25_deg_down_to_flat);
 }
 
 /** rct2: 0x007576F0 */

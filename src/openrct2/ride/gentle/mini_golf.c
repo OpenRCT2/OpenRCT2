@@ -441,14 +441,14 @@ static paint_struct * mini_golf_paint_util_7c(
     return sub_98197C(image_id, x_offset, y_offset, bound_box_length_x, bound_box_length_y, bound_box_length_z, z_offset, bound_box_offset_x, bound_box_offset_y, bound_box_offset_z, rotation);
 }
 
-static bool mini_golf_paint_util_should_draw_fence(rct_map_element * mapElement)
+static bool mini_golf_paint_util_should_draw_fence(paint_session * session, rct_map_element * mapElement)
 {
-    if (!gPaintSession.DidPassSurface) {
+    if (!session->DidPassSurface) {
         // Should be above ground (have passed surface rendering)
         return false;
     }
 
-    rct_map_element * surfaceElement = gPaintSession.SurfaceElement;
+    rct_map_element * surfaceElement = session->SurfaceElement;
     if (surfaceElement->base_height != mapElement->base_height) {
         return true;
     }
@@ -478,7 +478,7 @@ static void paint_mini_golf_track_flat(paint_session * session, uint8 rideIndex,
     metal_a_supports_paint_setup(METAL_SUPPORTS_BOXED, 4, 0, height, gTrackColours[SCHEME_SUPPORTS]);
     paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction), 0xFFFF, 0);
 
-    if (mini_golf_paint_util_should_draw_fence(mapElement)) {
+    if (mini_golf_paint_util_should_draw_fence(session, mapElement)) {
         if (direction & 1) {
             imageId = SPR_MINI_GOLF_FLAT_FENCE_BACK_NW_SE | gTrackColours[SCHEME_MISC];
             sub_98197C(imageId, 0, 0, 1, 32, 7, height, 10, 0, height + 2, get_current_rotation());
@@ -623,7 +623,7 @@ static void paint_mini_golf_track_25_deg_down_to_flat(paint_session * session, u
 /** rct2: 0x0087F17C, 0x0087F18C, 0x0087F19C */
 static void paint_mini_golf_station(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
-    rct_xy16 position = gPaintSession.MapPosition;
+    rct_xy16 position = session->MapPosition;
     rct_ride * ride = get_ride(rideIndex);
     const rct_ride_entrance_definition * entranceStyle = &RideEntranceDefinitions[ride->entrance_style];
     uint32 imageId;
@@ -686,7 +686,7 @@ static void paint_mini_golf_track_left_quarter_turn_1_tile(paint_session * sessi
 
     paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C8 | SEGMENT_C4 | SEGMENT_D0, direction), 0xFFFF, 0);
 
-    const bool shouldDrawFence = mini_golf_paint_util_should_draw_fence(mapElement);
+    const bool shouldDrawFence = mini_golf_paint_util_should_draw_fence(session, mapElement);
 
     switch (direction) {
         case 0:

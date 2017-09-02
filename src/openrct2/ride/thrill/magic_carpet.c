@@ -74,7 +74,7 @@ static rct_vehicle *get_first_vehicle(rct_ride *ride)
     return NULL;
 }
 
-static void paint_magic_carpet_frame(uint8 plane, uint8 direction,
+static void paint_magic_carpet_frame(paint_session * session, uint8 plane, uint8 direction,
                                      rct_xyz16 offset, rct_xyz16 bbOffset, rct_xyz16 bbSize)
 {
     uint32 imageId;
@@ -93,7 +93,7 @@ static void paint_magic_carpet_frame(uint8 plane, uint8 direction,
     }
 }
 
-static void paint_magic_carpet_pendulum(uint8 plane, uint32 swingImageId, uint8 direction,
+static void paint_magic_carpet_pendulum(paint_session * session, uint8 plane, uint32 swingImageId, uint8 direction,
                                         rct_xyz16 offset, rct_xyz16 bbOffset, rct_xyz16 bbSize)
 {
     uint32 imageId = swingImageId;
@@ -111,7 +111,7 @@ static void paint_magic_carpet_pendulum(uint8 plane, uint32 swingImageId, uint8 
     sub_98199C(imageId, (sint8)offset.x, (sint8)offset.y, bbSize.x, bbSize.y, 127, offset.z, bbOffset.x, bbOffset.y, bbOffset.z, get_current_rotation());
 }
 
-static void paint_magic_carpet_vehicle(rct_ride *ride, uint8 direction, uint32 swingImageId,
+static void paint_magic_carpet_vehicle(paint_session * session, rct_ride *ride, uint8 direction, uint32 swingImageId,
                                        rct_xyz16 offset, rct_xyz16 bbOffset, rct_xyz16 bbSize)
 {
     rct_ride_entry *rideEntry = get_ride_entry_by_ride(ride);
@@ -136,7 +136,7 @@ static void paint_magic_carpet_vehicle(rct_ride *ride, uint8 direction, uint32 s
     sub_98199C(vehicleImageId | imageColourFlags, (sint8)offset.x, (sint8)offset.y, bbSize.x, bbSize.y, 127, offset.z, bbOffset.x, bbOffset.y, bbOffset.z, get_current_rotation());
 
     // Riders
-    rct_drawpixelinfo *dpi = gPaintSession.Unk140E9A8;
+    rct_drawpixelinfo *dpi = session->Unk140E9A8;
     if (dpi->zoom_level <= 1 && (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK)) {
         rct_vehicle *vehicle = get_first_vehicle(ride);
         if (vehicle != NULL) {
@@ -152,16 +152,16 @@ static void paint_magic_carpet_vehicle(rct_ride *ride, uint8 direction, uint32 s
 }
 
 /** rct2: 0x00899104 */
-static void paint_magic_carpet_structure(rct_ride *ride, uint8 direction, sint8 axisOffset, uint16 height)
+static void paint_magic_carpet_structure(paint_session * session, rct_ride *ride, uint8 direction, sint8 axisOffset, uint16 height)
 {
-    rct_map_element * savedMapElement = gPaintSession.CurrentlyDrawnItem;
+    rct_map_element * savedMapElement = session->CurrentlyDrawnItem;
     rct_vehicle *vehicle = get_first_vehicle(ride);
 
     uint32 swingImageId = 0;
     if (vehicle != NULL) {
         swingImageId = vehicle->vehicle_sprite_type;
-        gPaintSession.InteractionType = VIEWPORT_INTERACTION_ITEM_SPRITE;
-        gPaintSession.CurrentlyDrawnItem = vehicle;
+        session->InteractionType = VIEWPORT_INTERACTION_ITEM_SPRITE;
+        session->CurrentlyDrawnItem = vehicle;
     }
 
     bound_box bb = MagicCarpetBounds[direction];
@@ -176,14 +176,14 @@ static void paint_magic_carpet_structure(rct_ride *ride, uint8 direction, sint8 
     bbSize.y = bb.height;
     bbSize.z = 127;
 
-    paint_magic_carpet_frame(PLANE_BACK, direction, offset, bbOffset, bbSize);
-    paint_magic_carpet_pendulum(PLANE_BACK, swingImageId, direction, offset, bbOffset, bbSize);
-    paint_magic_carpet_vehicle(ride, direction, swingImageId, offset, bbOffset, bbSize);
-    paint_magic_carpet_pendulum(PLANE_FRONT, swingImageId, direction, offset, bbOffset, bbSize);
-    paint_magic_carpet_frame(PLANE_FRONT, direction, offset, bbOffset, bbSize);
+    paint_magic_carpet_frame(session, PLANE_BACK, direction, offset, bbOffset, bbSize);
+    paint_magic_carpet_pendulum(session, PLANE_BACK, swingImageId, direction, offset, bbOffset, bbSize);
+    paint_magic_carpet_vehicle(session, ride, direction, swingImageId, offset, bbOffset, bbSize);
+    paint_magic_carpet_pendulum(session, PLANE_FRONT, swingImageId, direction, offset, bbOffset, bbSize);
+    paint_magic_carpet_frame(session, PLANE_FRONT, direction, offset, bbOffset, bbSize);
 
-    gPaintSession.InteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
-    gPaintSession.CurrentlyDrawnItem = savedMapElement;
+    session->InteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
+    session->CurrentlyDrawnItem = savedMapElement;
 }
 
 /** rct2: 0x00898514 */
@@ -210,10 +210,10 @@ static void paint_magic_carpet(paint_session * session, uint8 rideIndex, uint8 t
 
     rct_ride *ride = get_ride(rideIndex);
     switch (relativeTrackSequence) {
-    case 3: paint_magic_carpet_structure(ride, direction, -48, height); break;
-    case 0: paint_magic_carpet_structure(ride, direction, -16, height); break;
-    case 2: paint_magic_carpet_structure(ride, direction,  16, height); break;
-    case 1: paint_magic_carpet_structure(ride, direction,  48, height); break;
+    case 3: paint_magic_carpet_structure(session, ride, direction, -48, height); break;
+    case 0: paint_magic_carpet_structure(session, ride, direction, -16, height); break;
+    case 2: paint_magic_carpet_structure(session, ride, direction,  16, height); break;
+    case 1: paint_magic_carpet_structure(session, ride, direction,  48, height); break;
     }
 
     paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);

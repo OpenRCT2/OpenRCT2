@@ -1877,7 +1877,7 @@ void junior_rc_paint_track_flat(paint_session * session, uint8 rideIndex, uint8 
     sub_98196C_rotated(direction, imageId, 0, 6, 32, 20, 1, height);
     paint_util_push_tunnel_rotated(direction, height, TUNNEL_0);
 
-    if (track_paint_util_should_paint_supports(gPaintSession.MapPosition)) {
+    if (track_paint_util_should_paint_supports(session->MapPosition)) {
         metal_a_supports_paint_setup((direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, 4, 0, height, gTrackColours[SCHEME_SUPPORTS]);
     }
 
@@ -1941,7 +1941,7 @@ void junior_rc_paint_track_25_deg_up(paint_session * session, uint8 rideIndex, u
     uint8 tunnel_type[4] = { TUNNEL_1, TUNNEL_2, TUNNEL_2, TUNNEL_1 };
     paint_util_push_tunnel_rotated(direction, height + tunnel_height[direction], tunnel_type[direction]);
 
-    if (track_paint_util_should_paint_supports(gPaintSession.MapPosition)) {
+    if (track_paint_util_should_paint_supports(session->MapPosition)) {
         sint32 supportType = (direction & 1) ? 2 : 1;
         metal_a_supports_paint_setup(supportType, 4, 8, height, gTrackColours[SCHEME_SUPPORTS]);
     }
@@ -1961,7 +1961,7 @@ void junior_rc_paint_track_flat_to_25_deg_up(paint_session * session, uint8 ride
         paint_util_push_tunnel_rotated(direction, height, TUNNEL_2);
     }
 
-    if (track_paint_util_should_paint_supports(gPaintSession.MapPosition)) {
+    if (track_paint_util_should_paint_supports(session->MapPosition)) {
         sint32 supportType = (direction & 1) ? 2 : 1;
         uint16 ax = (direction == 0) ? 5 : 3;
         metal_a_supports_paint_setup(supportType, 4, ax, height, gTrackColours[SCHEME_SUPPORTS]);
@@ -1995,7 +1995,7 @@ void junior_rc_paint_track_25_deg_up_to_flat(paint_session * session, uint8 ride
         paint_util_push_tunnel_left(tunnelHeight, tunnelType);
     }
 
-    if (track_paint_util_should_paint_supports(gPaintSession.MapPosition)) {
+    if (track_paint_util_should_paint_supports(session->MapPosition)) {
         sint32 supportType = (direction & 1) ? 2 : 1;
         metal_a_supports_paint_setup(supportType, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
     }
@@ -2090,7 +2090,7 @@ static void junior_rc_flat_to_left_bank_paint_setup(paint_session * session, uin
         }
     }
 
-    const rct_xy16 pos = gPaintSession.MapPosition;
+    const rct_xy16 pos = session->MapPosition;
     if (track_paint_util_should_paint_supports(pos)) {
         sint32 edi = (direction & 1) ? 2 : 1;
         metal_a_supports_paint_setup(edi, 4, 0, height, gTrackColours[SCHEME_SUPPORTS]);
@@ -2130,7 +2130,7 @@ static void junior_rc_flat_to_right_bank_paint_setup(paint_session * session, ui
         }
     }
 
-    const rct_xy16 pos = gPaintSession.MapPosition;
+    const rct_xy16 pos = session->MapPosition;
     if (track_paint_util_should_paint_supports(pos)) {
         sint32 edi = (direction & 1) ? 2 : 1;
         metal_a_supports_paint_setup(edi, 4, 0, height, gTrackColours[SCHEME_SUPPORTS]);
@@ -2298,7 +2298,7 @@ static void junior_rc_left_bank_to_25_deg_up_paint_setup(paint_session * session
         }
     }
 
-    const rct_xy16 pos = gPaintSession.MapPosition;
+    const rct_xy16 pos = session->MapPosition;
     if (track_paint_util_should_paint_supports(pos)) {
         sint32 edi = (direction & 1) ? 2 : 1;
         metal_a_supports_paint_setup(edi, 4, 3, height, gTrackColours[SCHEME_SUPPORTS]);
@@ -2341,7 +2341,7 @@ static void junior_rc_right_bank_to_25_deg_up_paint_setup(paint_session * sessio
         }
     }
 
-    const rct_xy16 pos = gPaintSession.MapPosition;
+    const rct_xy16 pos = session->MapPosition;
     if (track_paint_util_should_paint_supports(pos)) {
         sint32 edi = (direction & 1) ? 2 : 1;
         metal_a_supports_paint_setup(edi, 4, 3, height, gTrackColours[SCHEME_SUPPORTS]);
@@ -2399,7 +2399,7 @@ static void junior_rc_25_deg_up_to_left_bank_paint_setup(paint_session * session
         }
     }
 
-    const rct_xy16 pos = gPaintSession.MapPosition;
+    const rct_xy16 pos = session->MapPosition;
     if (track_paint_util_should_paint_supports(pos)) {
         sint32 edi = (direction & 1) ? 2 : 1;
         metal_a_supports_paint_setup(edi, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
@@ -2450,7 +2450,7 @@ static void junior_rc_25_deg_up_to_right_bank_paint_setup(paint_session * sessio
         }
     }
 
-    const rct_xy16 pos = gPaintSession.MapPosition;
+    const rct_xy16 pos = session->MapPosition;
     if (track_paint_util_should_paint_supports(pos)) {
         sint32 edi = (direction & 1) ? 2 : 1;
         metal_a_supports_paint_setup(edi, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
@@ -2530,7 +2530,7 @@ static void junior_rc_left_bank_paint_setup(paint_session * session, uint8 rideI
         paint_util_push_tunnel_left(height, 0);
     }
 
-    const rct_xy16 pos = gPaintSession.MapPosition;
+    const rct_xy16 pos = session->MapPosition;
     if (track_paint_util_should_paint_supports(pos)) {
         sint32 edi = (direction & 1) ? 2 : 1;
         metal_a_supports_paint_setup(edi, 4, 0, height, gTrackColours[SCHEME_SUPPORTS]);
@@ -3342,7 +3342,7 @@ static void junior_rc_brake_paint_setup(paint_session * session, uint8 rideIndex
         paint_util_push_tunnel_left(height, TUNNEL_0);
     }
 
-    const rct_xy16 pos = gPaintSession.MapPosition;
+    const rct_xy16 pos = session->MapPosition;
     if (track_paint_util_should_paint_supports(pos)) {
         sint32 edi = (direction & 1) ? 2 : 1;
         metal_a_supports_paint_setup(edi, 4, 0, height, gTrackColours[SCHEME_SUPPORTS]);
@@ -3373,7 +3373,7 @@ static void junior_rc_block_brake_paint_setup(paint_session * session, uint8 rid
         paint_util_push_tunnel_left(height, TUNNEL_0);
     }
 
-    const rct_xy16 pos = gPaintSession.MapPosition;
+    const rct_xy16 pos = session->MapPosition;
     if (track_paint_util_should_paint_supports(pos)) {
         sint32 edi = (direction & 1) ? 2 : 1;
         metal_a_supports_paint_setup(edi, 4, 0, height, gTrackColours[SCHEME_SUPPORTS]);
@@ -4296,7 +4296,7 @@ void junior_rc_paint_track_60_deg_up(paint_session * session, uint8 rideIndex, u
         break;
     }
 
-    const rct_xy16 pos = gPaintSession.MapPosition;
+    const rct_xy16 pos = session->MapPosition;
 
     sint8 support[4] = { 35, 29, 25, 32};
     if (track_paint_util_should_paint_supports(pos)) {
@@ -4389,7 +4389,7 @@ void junior_rc_paint_track_25_deg_up_to_60_deg_up(paint_session * session, uint8
         break;
     }
 
-    const rct_xy16 pos = gPaintSession.MapPosition;
+    const rct_xy16 pos = session->MapPosition;
 
     sint8 support[4] = { 12, 12, 12, 14};
     if (track_paint_util_should_paint_supports(pos)) {
@@ -4461,7 +4461,7 @@ void junior_rc_paint_track_60_deg_up_to_25_deg_up(paint_session * session, uint8
         break;
     }
 
-    const rct_xy16 pos = gPaintSession.MapPosition;
+    const rct_xy16 pos = session->MapPosition;
 
     if (track_paint_util_should_paint_supports(pos)) {
         metal_a_supports_paint_setup((direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, 4, 20, height, gTrackColours[SCHEME_SUPPORTS]);
@@ -4705,7 +4705,7 @@ static void junior_rc_flat_to_60_deg_up_paint_setup(paint_session * session, uin
         break;
     }
 
-    const rct_xy16 pos = gPaintSession.MapPosition;
+    const rct_xy16 pos = session->MapPosition;
 
     sint8 support[4] = { 12, 12, 12, 14};
     if (track_paint_util_should_paint_supports(pos)) {
@@ -4774,7 +4774,7 @@ static void junior_rc_60_deg_up_to_flat_paint_setup(paint_session * session, uin
         break;
     }
 
-    const rct_xy16 pos = gPaintSession.MapPosition;
+    const rct_xy16 pos = session->MapPosition;
 
     if (track_paint_util_should_paint_supports(pos)) {
         metal_a_supports_paint_setup((direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, 4, 20, height - 5, gTrackColours[SCHEME_SUPPORTS]);
@@ -4855,7 +4855,7 @@ static void junior_rc_booster_paint_setup(paint_session * session, uint8 rideInd
         paint_util_push_tunnel_left(height, TUNNEL_0);
     }
 
-    const rct_xy16 pos = gPaintSession.MapPosition;
+    const rct_xy16 pos = session->MapPosition;
     if (track_paint_util_should_paint_supports(pos)) {
         uint8 supportType = (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK;
         metal_a_supports_paint_setup(supportType, 4, 0, height, gTrackColours[SCHEME_SUPPORTS]);

@@ -270,7 +270,7 @@ static void paint_virginia_reel_track_25_deg_up(paint_session * session, uint8 r
     }
 
     if (direction == 1 || direction == 2) {
-        gPaintSession.WoodenSupportsPrependTo = ps;
+        session->WoodenSupportsPrependTo = ps;
     }
 
     switch (direction) {
@@ -315,14 +315,14 @@ static void paint_virginia_reel_track_flat_to_25_deg_up(paint_session * session,
             break;
         case 1:
             ps = sub_98197C(imageId, 0, 0, 27, 32, 2, height, 2, 0, height, get_current_rotation());
-            gPaintSession.WoodenSupportsPrependTo = ps;
+            session->WoodenSupportsPrependTo = ps;
 
             wooden_a_supports_paint_setup(1, 2, height, gTrackColours[SCHEME_SUPPORTS], NULL);
             paint_util_push_tunnel_right(height, TUNNEL_8);
             break;
         case 2:
             ps = sub_98197C(imageId, 0, 0, 32, 27, 2, height, 0, 2, height, get_current_rotation());
-            gPaintSession.WoodenSupportsPrependTo = ps;
+            session->WoodenSupportsPrependTo = ps;
 
             wooden_a_supports_paint_setup(0, 3, height, gTrackColours[SCHEME_SUPPORTS], NULL);
             paint_util_push_tunnel_left(height, TUNNEL_8);
@@ -357,7 +357,7 @@ static void paint_virginia_reel_track_25_deg_up_to_flat(paint_session * session,
     }
 
     if (direction == 1 || direction == 2) {
-        gPaintSession.WoodenSupportsPrependTo = ps;
+        session->WoodenSupportsPrependTo = ps;
     }
 
     switch (direction) {

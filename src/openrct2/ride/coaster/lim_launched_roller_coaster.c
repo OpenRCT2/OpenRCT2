@@ -907,7 +907,7 @@ static void lim_launched_rc_track_brakes(paint_session * session, uint8 rideInde
         sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 15019, 0, 0, 32, 20, 3, height, 0, 6, height);
         break;
     }
-    if (track_paint_util_should_paint_supports(gPaintSession.MapPosition)) {
+    if (track_paint_util_should_paint_supports(session->MapPosition)) {
         metal_a_supports_paint_setup(METAL_SUPPORTS_TUBES, 4, 0, height, gTrackColours[SCHEME_SUPPORTS]);
     }
     paint_util_push_tunnel_rotated(direction, height, TUNNEL_0);
@@ -1128,7 +1128,7 @@ static void lim_launched_rc_track_block_brakes(paint_session * session, uint8 ri
         sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 15021, 0, 0, 32, 20, 3, height, 0, 6, height);
         break;
     }
-    if (track_paint_util_should_paint_supports(gPaintSession.MapPosition)) {
+    if (track_paint_util_should_paint_supports(session->MapPosition)) {
         metal_a_supports_paint_setup(METAL_SUPPORTS_TUBES, 4, 0, height, gTrackColours[SCHEME_SUPPORTS]);
     }
     paint_util_push_tunnel_rotated(direction, height, TUNNEL_0);

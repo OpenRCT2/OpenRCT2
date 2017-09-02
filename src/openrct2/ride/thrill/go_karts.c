@@ -178,7 +178,7 @@ static void paint_go_karts_track_25_deg_up(paint_session * session, uint8 rideIn
         sub_98197C(imageId, 0, 0, 1, 32, 11, height, 29, 0, height + 2, get_current_rotation());
     }
 
-    gPaintSession.WoodenSupportsPrependTo = ps;
+    session->WoodenSupportsPrependTo = ps;
 
     switch (direction) {
         case 0:
@@ -223,7 +223,7 @@ static void paint_go_karts_track_flat_to_25_deg_up(paint_session * session, uint
         sub_98197C(imageId, 0, 0, 1, 32, 11, height, 29, 0, height + 2, get_current_rotation());
     }
 
-    gPaintSession.WoodenSupportsPrependTo = ps;
+    session->WoodenSupportsPrependTo = ps;
 
     switch (direction) {
         case 0:
@@ -268,7 +268,7 @@ static void paint_go_karts_track_25_deg_up_to_flat(paint_session * session, uint
         sub_98197C(imageId, 0, 0, 1, 32, 11, height, 29, 0, height + 2, get_current_rotation());
     }
 
-    gPaintSession.WoodenSupportsPrependTo = ps;
+    session->WoodenSupportsPrependTo = ps;
 
     switch (direction) {
         case 0:
@@ -314,7 +314,7 @@ static void paint_go_karts_track_25_deg_down_to_flat(paint_session * session, ui
 /** rct2: 0x */
 static void paint_go_karts_station(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
-    rct_xy16 position = gPaintSession.MapPosition;
+    rct_xy16 position = session->MapPosition;
     rct_ride * ride = get_ride(rideIndex);
     const rct_ride_entrance_definition * entranceStyle = &RideEntranceDefinitions[ride->entrance_style];
 

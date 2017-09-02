@@ -59,7 +59,7 @@ static void paint_mini_helicopters_track_station(paint_session * session, uint8 
 /** rct2: 0x0081F348 */
 static void paint_mini_helicopters_track_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
-    rct_xy16 position = gPaintSession.MapPosition;
+    rct_xy16 position = session->MapPosition;
     uint32 imageId;
 
     if (direction & 1) {
@@ -83,7 +83,7 @@ static void paint_mini_helicopters_track_flat(paint_session * session, uint8 rid
 /** rct2: 0x0081F368 */
 static void paint_mini_helicopters_track_flat_to_25_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
-    rct_xy16 position = gPaintSession.MapPosition;
+    rct_xy16 position = session->MapPosition;
     uint32 imageId;
 
     switch (direction) {
@@ -120,7 +120,7 @@ static void paint_mini_helicopters_track_flat_to_25_deg_up(paint_session * sessi
 /** rct2: 0x0081F358 */
 static void paint_mini_helicopters_track_25_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
-    rct_xy16 position = gPaintSession.MapPosition;
+    rct_xy16 position = session->MapPosition;
     uint32 imageId;
 
     switch (direction) {
@@ -157,7 +157,7 @@ static void paint_mini_helicopters_track_25_deg_up(paint_session * session, uint
 /** rct2: 0x0081F378 */
 static void paint_mini_helicopters_track_25_deg_up_to_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
-    rct_xy16 position = gPaintSession.MapPosition;
+    rct_xy16 position = session->MapPosition;
     uint32 imageId;
 
     switch (direction) {

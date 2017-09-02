@@ -22,9 +22,9 @@
 #include "../track.h"
 
 /** rct2: 0x0076E5C9 */
-static void paint_twist_structure(rct_ride * ride, uint8 direction, sint8 xOffset, sint8 yOffset, uint16 height)
+static void paint_twist_structure(paint_session * session, rct_ride * ride, uint8 direction, sint8 xOffset, sint8 yOffset, uint16 height)
 {
-    rct_map_element * savedMapElement = gPaintSession.CurrentlyDrawnItem;
+    rct_map_element * savedMapElement = session->CurrentlyDrawnItem;
 
     rct_ride_entry * rideEntry = get_ride_entry(ride->subtype);
     rct_vehicle * vehicle = NULL;
@@ -36,8 +36,8 @@ static void paint_twist_structure(rct_ride * ride, uint8 direction, sint8 xOffse
         && ride->vehicles[0] != SPRITE_INDEX_NULL) {
         vehicle = GET_VEHICLE(ride->vehicles[0]);
 
-        gPaintSession.InteractionType = VIEWPORT_INTERACTION_ITEM_SPRITE;
-        gPaintSession.CurrentlyDrawnItem = vehicle;
+        session->InteractionType = VIEWPORT_INTERACTION_ITEM_SPRITE;
+        session->CurrentlyDrawnItem = vehicle;
     }
 
     uint32 frameNum = (direction * 88) % 216;
@@ -58,7 +58,7 @@ static void paint_twist_structure(rct_ride * ride, uint8 direction, sint8 xOffse
     uint32 imageId = (baseImageId + structureFrameNum) | imageColourFlags;
     sub_98197C(imageId, xOffset, yOffset, 24, 24, 48, height, xOffset + 16, yOffset + 16, height, get_current_rotation());
 
-    rct_drawpixelinfo * dpi = gPaintSession.Unk140E9A8;
+    rct_drawpixelinfo * dpi = session->Unk140E9A8;
 
     if (dpi->zoom_level < 1
         && ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK
@@ -73,8 +73,8 @@ static void paint_twist_structure(rct_ride * ride, uint8 direction, sint8 xOffse
         }
     }
 
-    gPaintSession.CurrentlyDrawnItem = savedMapElement;
-    gPaintSession.InteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
+    session->CurrentlyDrawnItem = savedMapElement;
+    session->InteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
 }
 
 
@@ -85,7 +85,7 @@ static void paint_twist(paint_session * session, uint8 rideIndex, uint8 trackSeq
 
     const uint8 edges = edges_3x3[trackSequence];
     rct_ride * ride = get_ride(rideIndex);
-    rct_xy16 position = gPaintSession.MapPosition;
+    rct_xy16 position = session->MapPosition;
 
     uint32 imageId;
 
@@ -111,22 +111,22 @@ static void paint_twist(paint_session * session, uint8 rideIndex, uint8 trackSeq
 
     switch (trackSequence) {
         case 1:
-            paint_twist_structure(ride, direction, 32, 32, height);
+            paint_twist_structure(session, ride, direction, 32, 32, height);
             break;
         case 3:
-            paint_twist_structure(ride, direction, 32, -32, height);
+            paint_twist_structure(session, ride, direction, 32, -32, height);
             break;
         case 5:
-            paint_twist_structure(ride, direction, 0, -32, height);
+            paint_twist_structure(session, ride, direction, 0, -32, height);
             break;
         case 6:
-            paint_twist_structure(ride, direction, -32, 32, height);
+            paint_twist_structure(session, ride, direction, -32, 32, height);
             break;
         case 7:
-            paint_twist_structure(ride, direction, -32, -32, height);
+            paint_twist_structure(session, ride, direction, -32, -32, height);
             break;
         case 8:
-            paint_twist_structure(ride, direction, -32, 0, height);
+            paint_twist_structure(session, ride, direction, -32, 0, height);
             break;
     }
 
