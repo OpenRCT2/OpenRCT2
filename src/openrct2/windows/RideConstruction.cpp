@@ -478,6 +478,7 @@ static void window_ride_construction_draw_track_piece(
 static void window_ride_construction_update_enabled_track_pieces();
 static bool _sub_6CA2DF(sint32 *trackType, sint32 *trackDirection, sint32 *rideIndex, sint32 *_liftHillAndAlternativeState, sint32 *x, sint32 *y, sint32 *z, sint32 *properties);
 static void sub_6CBCE2(
+    rct_drawpixelinfo * dpi,
     sint32 rideIndex, sint32 trackType, sint32 trackDirection, sint32 edx,
     sint32 originX, sint32 originY, sint32 originZ
 );
@@ -2315,12 +2316,11 @@ static void window_ride_construction_draw_track_piece(
     }
     dpi->x += x - width / 2;
     dpi->y += y - height / 2 - 16;
-    gPaintSession.Unk140E9A8 = dpi;
     uint32 d = unknown << 16;
     d |= rideIndex;
     d |= trackType << 8;
 
-    sub_6CBCE2(rideIndex, trackType, trackDirection, d, 4096, 4096, 1024);
+    sub_6CBCE2(dpi, rideIndex, trackType, trackDirection, d, 4096, 4096, 1024);
 }
 
 static rct_map_element _tempTrackMapElement;
@@ -2335,6 +2335,7 @@ static rct_map_element *_backupMapElementArrays[5];
  * dh: trackType
  */
 static void sub_6CBCE2(
+    rct_drawpixelinfo * dpi,
     sint32 rideIndex, sint32 trackType, sint32 trackDirection, sint32 edx,
     sint32 originX, sint32 originY, sint32 originZ
 ) {
@@ -2343,11 +2344,10 @@ static void sub_6CBCE2(
     sint32 preserve_current_viewport_flags;
     sint32 offsetX, offsetY;
 
+    paint_session * session = paint_session_alloc(dpi);
     preserve_current_viewport_flags = gCurrentViewportFlags;
     gCurrentViewportFlags = 0;
     trackDirection &= 3;
-
-    paint_session_init(&gPaintSession, gPaintSession.Unk140E9A8);
 
     ride = get_ride(rideIndex);
 
@@ -2450,8 +2450,9 @@ static void sub_6CBCE2(
     gMapSize = preserveMapSize;
     gMapSizeMaxXY = preserveMapSizeMaxXY;
 
-    paint_struct ps = paint_session_arrange(&gPaintSession);
-    paint_draw_structs(gPaintSession.Unk140E9A8, &ps, gCurrentViewportFlags);
+    paint_struct ps = paint_session_arrange(session);
+    paint_draw_structs(dpi, &ps, gCurrentViewportFlags);
+    paint_session_free(session);
 
     gCurrentViewportFlags = preserve_current_viewport_flags;
 }

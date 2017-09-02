@@ -226,7 +226,8 @@ bool paint_attach_to_previous_attach(uint32 image_id, uint16 x, uint16 y);
 bool paint_attach_to_previous_ps(uint32 image_id, uint16 x, uint16 y);
 void paint_floating_money_effect(money32 amount, rct_string_id string_id, sint16 y, sint16 z, sint8 y_offsets[], sint16 offset_x, uint32 rotation);
 
-void paint_session_init(paint_session * session, rct_drawpixelinfo * dpi);
+paint_session * paint_session_alloc(rct_drawpixelinfo * dpi);
+void paint_session_free(paint_session *);
 void paint_session_generate(paint_session * session);
 paint_struct paint_session_arrange(paint_session * session);
 paint_struct * paint_arrange_structs_helper(paint_struct * ps_next, uint16 quadrantIndex, uint8 flag);

@@ -32,6 +32,7 @@ const uint32 construction_markers[] = {
 };
 
 paint_session gPaintSession;
+static bool _paintSessionInUse;
 
 #ifndef NO_RCT2
 #define _paintQuadrants (RCT2_ADDRESS(0x00F1A50C, paint_struct*))
@@ -58,12 +59,29 @@ static const uint8 BoundBoxDebugColours[] = {
 bool gShowDirtyVisuals;
 bool gPaintBoundingBoxes;
 
+static void paint_session_init(paint_session * session, rct_drawpixelinfo * dpi);
 static void paint_attached_ps(rct_drawpixelinfo * dpi, paint_struct * ps, uint32 viewFlags);
 static void paint_ps_image_with_bounding_boxes(rct_drawpixelinfo * dpi, paint_struct * ps, uint32 imageId, sint16 x, sint16 y);
 static void paint_ps_image(rct_drawpixelinfo * dpi, paint_struct * ps, uint32 imageId, sint16 x, sint16 y);
 static uint32 paint_ps_colourify_image(uint32 imageId, uint8 spriteType, uint32 viewFlags);
 
-void paint_session_init(paint_session * session, rct_drawpixelinfo * dpi)
+paint_session * paint_session_alloc(rct_drawpixelinfo * dpi)
+{
+    // Currently limited to just one session at a time
+    assert(!_paintSessionInUse);
+    _paintSessionInUse = true;
+    paint_session * session = &gPaintSession;
+
+    paint_session_init(session, dpi);
+    return session;
+}
+
+void paint_session_free(paint_session * session)
+{
+    _paintSessionInUse = false;
+}
+
+static void paint_session_init(paint_session * session, rct_drawpixelinfo * dpi)
 {
     memset(session, 0, sizeof(paint_session));
     session->Unk140E9A8 = dpi;

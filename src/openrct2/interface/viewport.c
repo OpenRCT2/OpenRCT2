@@ -743,13 +743,11 @@ static void viewport_paint_column(rct_drawpixelinfo * dpi, uint32 viewFlags)
         gfx_clear(dpi, colour);
     }
 
-    // Allocate a paint session
-    paint_session * session = &gPaintSession;
-    paint_session_init(session, dpi);
-
+    paint_session * session = paint_session_alloc(dpi);
     paint_session_generate(session);
     paint_struct ps = paint_session_arrange(session);
     paint_draw_structs(dpi, &ps, viewFlags);
+    paint_session_free(session);
 
     if (gConfigGeneral.render_weather_gloom &&
         !gTrackDesignSaveMode &&
@@ -1375,13 +1373,11 @@ void get_map_coordinates_from_pos(sint32 screenX, sint32 screenY, sint32 flags, 
             dpi->x = _viewportDpi1.x;
             dpi->width = 1;
 
-            // Allocate a paint session
-            paint_session * session = &gPaintSession;
-            paint_session_init(session, dpi);
-
+            paint_session * session = paint_session_alloc(dpi);
             paint_session_generate(session);
             paint_struct ps = paint_session_arrange(session);
             sub_68862C(dpi, &ps);
+            paint_session_free(session);
         }
         if (viewport != NULL) *viewport = myviewport;
     }
