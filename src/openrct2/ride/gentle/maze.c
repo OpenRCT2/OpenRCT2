@@ -49,7 +49,7 @@ enum {
 /**
  * rct: 0x004ACF4A
  */
-static void maze_paint_setup(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element *mapElement) {
+static void maze_paint_setup(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element *mapElement) {
     uint16 maze_entry = mapElement->properties.track.maze_entry;
     maze_entry = rol16(maze_entry, direction * 4);
 

@@ -27,7 +27,7 @@
 #include "../track_paint.h"
 
 /** rct2: 0x0071BFA4 */
-static void mine_train_rc_track_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void mine_train_rc_track_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     if (track_element_is_lift_hill(mapElement)) {
         switch (direction) {
@@ -68,7 +68,7 @@ static void mine_train_rc_track_flat(uint8 rideIndex, uint8 trackSequence, uint8
 }
 
 /** rct2: 0x0071C154, 0x0071C164, 0x0071C174 */
-static void mine_train_rc_track_station(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void mine_train_rc_track_station(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     static const uint32 imageIds[4][3] = {
         { 20064, 20060, SPR_STATION_BASE_B_SW_NE },
@@ -91,7 +91,7 @@ static void mine_train_rc_track_station(uint8 rideIndex, uint8 trackSequence, ui
 }
 
 /** rct2: 0x0071BFB4 */
-static void mine_train_rc_track_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void mine_train_rc_track_25_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     if (track_element_is_lift_hill(mapElement)) {
         switch (direction) {
@@ -142,7 +142,7 @@ static void mine_train_rc_track_25_deg_up(uint8 rideIndex, uint8 trackSequence, 
 }
 
 /** rct2: 0x0071BFC4 */
-static void mine_train_rc_track_60_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void mine_train_rc_track_60_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     switch (direction) {
     case 0:
@@ -172,7 +172,7 @@ static void mine_train_rc_track_60_deg_up(uint8 rideIndex, uint8 trackSequence, 
 }
 
 /** rct2: 0x0071BFD4 */
-static void mine_train_rc_track_flat_to_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void mine_train_rc_track_flat_to_25_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     if (track_element_is_lift_hill(mapElement)) {
         switch (direction) {
@@ -223,7 +223,7 @@ static void mine_train_rc_track_flat_to_25_deg_up(uint8 rideIndex, uint8 trackSe
 }
 
 /** rct2: 0x0071BFE4 */
-static void mine_train_rc_track_25_deg_up_to_60_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void mine_train_rc_track_25_deg_up_to_60_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     switch (direction) {
     case 0:
@@ -255,7 +255,7 @@ static void mine_train_rc_track_25_deg_up_to_60_deg_up(uint8 rideIndex, uint8 tr
 }
 
 /** rct2: 0x0071BFF4 */
-static void mine_train_rc_track_60_deg_up_to_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void mine_train_rc_track_60_deg_up_to_25_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     switch (direction) {
     case 0:
@@ -287,7 +287,7 @@ static void mine_train_rc_track_60_deg_up_to_25_deg_up(uint8 rideIndex, uint8 tr
 }
 
 /** rct2: 0x0071C004 */
-static void mine_train_rc_track_25_deg_up_to_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void mine_train_rc_track_25_deg_up_to_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     if (track_element_is_lift_hill(mapElement)) {
         switch (direction) {
@@ -338,43 +338,43 @@ static void mine_train_rc_track_25_deg_up_to_flat(uint8 rideIndex, uint8 trackSe
 }
 
 /** rct2: 0x0071C014 */
-static void mine_train_rc_track_25_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void mine_train_rc_track_25_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
-    mine_train_rc_track_25_deg_up(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
+    mine_train_rc_track_25_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
 }
 
 /** rct2: 0x0071C024 */
-static void mine_train_rc_track_60_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void mine_train_rc_track_60_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
-    mine_train_rc_track_60_deg_up(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
+    mine_train_rc_track_60_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
 }
 
 /** rct2: 0x0071C034 */
-static void mine_train_rc_track_flat_to_25_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void mine_train_rc_track_flat_to_25_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
-    mine_train_rc_track_25_deg_up_to_flat(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
+    mine_train_rc_track_25_deg_up_to_flat(session, rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
 }
 
 /** rct2: 0x0071C044 */
-static void mine_train_rc_track_25_deg_down_to_60_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void mine_train_rc_track_25_deg_down_to_60_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
-    mine_train_rc_track_60_deg_up_to_25_deg_up(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
+    mine_train_rc_track_60_deg_up_to_25_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
 }
 
 /** rct2: 0x0071C054 */
-static void mine_train_rc_track_60_deg_down_to_25_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void mine_train_rc_track_60_deg_down_to_25_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
-    mine_train_rc_track_25_deg_up_to_60_deg_up(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
+    mine_train_rc_track_25_deg_up_to_60_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
 }
 
 /** rct2: 0x0071C064 */
-static void mine_train_rc_track_25_deg_down_to_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void mine_train_rc_track_25_deg_down_to_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
-    mine_train_rc_track_flat_to_25_deg_up(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
+    mine_train_rc_track_flat_to_25_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
 }
 
 /** rct2: 0x0071C0B4 */
-static void mine_train_rc_track_left_quarter_turn_5(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void mine_train_rc_track_left_quarter_turn_5(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     switch (trackSequence) {
     case 0:
@@ -510,14 +510,14 @@ static void mine_train_rc_track_left_quarter_turn_5(uint8 rideIndex, uint8 track
 }
 
 /** rct2: 0x0071C0C4 */
-static void mine_train_rc_track_right_quarter_turn_5(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void mine_train_rc_track_right_quarter_turn_5(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-    mine_train_rc_track_left_quarter_turn_5(rideIndex, trackSequence, (direction - 1) & 3, height, mapElement);
+    mine_train_rc_track_left_quarter_turn_5(session, rideIndex, trackSequence, (direction - 1) & 3, height, mapElement);
 }
 
 /** rct2: 0x0071C074 */
-static void mine_train_rc_track_flat_to_left_bank(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void mine_train_rc_track_flat_to_left_bank(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     switch (direction) {
     case 0:
@@ -545,7 +545,7 @@ static void mine_train_rc_track_flat_to_left_bank(uint8 rideIndex, uint8 trackSe
 }
 
 /** rct2: 0x0071C084 */
-static void mine_train_rc_track_flat_to_right_bank(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void mine_train_rc_track_flat_to_right_bank(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     switch (direction) {
     case 0:
@@ -573,7 +573,7 @@ static void mine_train_rc_track_flat_to_right_bank(uint8 rideIndex, uint8 trackS
 }
 
 /** rct2: 0x0071C094 */
-static void mine_train_rc_track_left_bank_to_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void mine_train_rc_track_left_bank_to_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     switch (direction) {
     case 0:
@@ -601,7 +601,7 @@ static void mine_train_rc_track_left_bank_to_flat(uint8 rideIndex, uint8 trackSe
 }
 
 /** rct2: 0x0071C0A4 */
-static void mine_train_rc_track_right_bank_to_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void mine_train_rc_track_right_bank_to_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     switch (direction) {
     case 0:
@@ -629,7 +629,7 @@ static void mine_train_rc_track_right_bank_to_flat(uint8 rideIndex, uint8 trackS
 }
 
 /** rct2: 0x0071C0D4 */
-static void mine_train_rc_track_banked_left_quarter_turn_5(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void mine_train_rc_track_banked_left_quarter_turn_5(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     switch (trackSequence) {
     case 0:
@@ -767,14 +767,14 @@ static void mine_train_rc_track_banked_left_quarter_turn_5(uint8 rideIndex, uint
 }
 
 /** rct2: 0x0071C0E4 */
-static void mine_train_rc_track_banked_right_quarter_turn_5(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void mine_train_rc_track_banked_right_quarter_turn_5(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-    mine_train_rc_track_banked_left_quarter_turn_5(rideIndex, trackSequence, (direction - 1) & 3, height, mapElement);
+    mine_train_rc_track_banked_left_quarter_turn_5(session, rideIndex, trackSequence, (direction - 1) & 3, height, mapElement);
 }
 
 /** rct2: 0x0071C204 */
-static void mine_train_rc_track_left_bank_to_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void mine_train_rc_track_left_bank_to_25_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     switch (direction) {
     case 0:
@@ -806,7 +806,7 @@ static void mine_train_rc_track_left_bank_to_25_deg_up(uint8 rideIndex, uint8 tr
 }
 
 /** rct2: 0x0071C214 */
-static void mine_train_rc_track_right_bank_to_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void mine_train_rc_track_right_bank_to_25_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     switch (direction) {
     case 0:
@@ -838,7 +838,7 @@ static void mine_train_rc_track_right_bank_to_25_deg_up(uint8 rideIndex, uint8 t
 }
 
 /** rct2: 0x0071C224 */
-static void mine_train_rc_track_25_deg_up_to_left_bank(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void mine_train_rc_track_25_deg_up_to_left_bank(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     switch (direction) {
     case 0:
@@ -870,7 +870,7 @@ static void mine_train_rc_track_25_deg_up_to_left_bank(uint8 rideIndex, uint8 tr
 }
 
 /** rct2: 0x0071C234 */
-static void mine_train_rc_track_25_deg_up_to_right_bank(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void mine_train_rc_track_25_deg_up_to_right_bank(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     switch (direction) {
     case 0:
@@ -902,31 +902,31 @@ static void mine_train_rc_track_25_deg_up_to_right_bank(uint8 rideIndex, uint8 t
 }
 
 /** rct2: 0x0071C244 */
-static void mine_train_rc_track_left_bank_to_25_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void mine_train_rc_track_left_bank_to_25_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
-    mine_train_rc_track_25_deg_up_to_right_bank(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
+    mine_train_rc_track_25_deg_up_to_right_bank(session, rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
 }
 
 /** rct2: 0x0071C254 */
-static void mine_train_rc_track_right_bank_to_25_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void mine_train_rc_track_right_bank_to_25_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
-    mine_train_rc_track_25_deg_up_to_left_bank(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
+    mine_train_rc_track_25_deg_up_to_left_bank(session, rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
 }
 
 /** rct2: 0x0071C264 */
-static void mine_train_rc_track_25_deg_down_to_left_bank(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void mine_train_rc_track_25_deg_down_to_left_bank(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
-    mine_train_rc_track_right_bank_to_25_deg_up(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
+    mine_train_rc_track_right_bank_to_25_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
 }
 
 /** rct2: 0x0071C274 */
-static void mine_train_rc_track_25_deg_down_to_right_bank(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void mine_train_rc_track_25_deg_down_to_right_bank(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
-    mine_train_rc_track_left_bank_to_25_deg_up(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
+    mine_train_rc_track_left_bank_to_25_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
 }
 
 /** rct2: 0x0071C304 */
-static void mine_train_rc_track_left_bank(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void mine_train_rc_track_left_bank(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     switch (direction) {
     case 0:
@@ -952,13 +952,13 @@ static void mine_train_rc_track_left_bank(uint8 rideIndex, uint8 trackSequence, 
 }
 
 /** rct2: 0x0071C314 */
-static void mine_train_rc_track_right_bank(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void mine_train_rc_track_right_bank(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
-    mine_train_rc_track_left_bank(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
+    mine_train_rc_track_left_bank(session, rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
 }
 
 /** rct2: 0x0071C0F4 */
-static void mine_train_rc_track_left_quarter_turn_5_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void mine_train_rc_track_left_quarter_turn_5_25_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     switch (trackSequence) {
     case 0:
@@ -1094,7 +1094,7 @@ static void mine_train_rc_track_left_quarter_turn_5_25_deg_up(uint8 rideIndex, u
 }
 
 /** rct2: 0x0071C104 */
-static void mine_train_rc_track_right_quarter_turn_5_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void mine_train_rc_track_right_quarter_turn_5_25_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     switch (trackSequence) {
     case 0:
@@ -1230,21 +1230,21 @@ static void mine_train_rc_track_right_quarter_turn_5_25_deg_up(uint8 rideIndex, 
 }
 
 /** rct2: 0x0071C114 */
-static void mine_train_rc_track_left_quarter_turn_5_25_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void mine_train_rc_track_left_quarter_turn_5_25_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-    mine_train_rc_track_right_quarter_turn_5_25_deg_up(rideIndex, trackSequence, (direction + 1) & 3, height, mapElement);
+    mine_train_rc_track_right_quarter_turn_5_25_deg_up(session, rideIndex, trackSequence, (direction + 1) & 3, height, mapElement);
 }
 
 /** rct2: 0x0071C124 */
-static void mine_train_rc_track_right_quarter_turn_5_25_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void mine_train_rc_track_right_quarter_turn_5_25_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-    mine_train_rc_track_left_quarter_turn_5_25_deg_up(rideIndex, trackSequence, (direction - 1) & 3, height, mapElement);
+    mine_train_rc_track_left_quarter_turn_5_25_deg_up(session, rideIndex, trackSequence, (direction - 1) & 3, height, mapElement);
 }
 
 /** rct2: 0x0071C134 */
-static void mine_train_rc_track_s_bend_left(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void mine_train_rc_track_s_bend_left(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     switch (trackSequence) {
     case 0:
@@ -1350,7 +1350,7 @@ static void mine_train_rc_track_s_bend_left(uint8 rideIndex, uint8 trackSequence
 }
 
 /** rct2: 0x0071C144 */
-static void mine_train_rc_track_s_bend_right(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void mine_train_rc_track_s_bend_right(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     switch (trackSequence) {
     case 0:
@@ -1456,7 +1456,7 @@ static void mine_train_rc_track_s_bend_right(uint8 rideIndex, uint8 trackSequenc
 }
 
 /** rct2: 0x0071C184 */
-static void mine_train_rc_track_left_quarter_turn_3(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void mine_train_rc_track_left_quarter_turn_3(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     switch (trackSequence) {
     case 0:
@@ -1553,14 +1553,14 @@ static void mine_train_rc_track_left_quarter_turn_3(uint8 rideIndex, uint8 track
 }
 
 /** rct2: 0x0071C194 */
-static void mine_train_rc_track_right_quarter_turn_3(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void mine_train_rc_track_right_quarter_turn_3(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    mine_train_rc_track_left_quarter_turn_3(rideIndex, trackSequence, (direction - 1) & 3, height, mapElement);
+    mine_train_rc_track_left_quarter_turn_3(session, rideIndex, trackSequence, (direction - 1) & 3, height, mapElement);
 }
 
 /** rct2: 0x0071C1A4 */
-static void mine_train_rc_track_left_quarter_turn_3_bank(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void mine_train_rc_track_left_quarter_turn_3_bank(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     switch (trackSequence) {
     case 0:
@@ -1659,14 +1659,14 @@ static void mine_train_rc_track_left_quarter_turn_3_bank(uint8 rideIndex, uint8 
 }
 
 /** rct2: 0x0071C1B4 */
-static void mine_train_rc_track_right_quarter_turn_3_bank(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void mine_train_rc_track_right_quarter_turn_3_bank(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    mine_train_rc_track_left_quarter_turn_3_bank(rideIndex, trackSequence, (direction - 1) & 3, height, mapElement);
+    mine_train_rc_track_left_quarter_turn_3_bank(session, rideIndex, trackSequence, (direction - 1) & 3, height, mapElement);
 }
 
 /** rct2: 0x0071C1C4 */
-static void mine_train_rc_track_left_quarter_turn_3_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void mine_train_rc_track_left_quarter_turn_3_25_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     switch (trackSequence) {
     case 0:
@@ -1749,7 +1749,7 @@ static void mine_train_rc_track_left_quarter_turn_3_25_deg_up(uint8 rideIndex, u
 }
 
 /** rct2: 0x0071C1D4 */
-static void mine_train_rc_track_right_quarter_turn_3_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void mine_train_rc_track_right_quarter_turn_3_25_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     switch (trackSequence) {
     case 0:
@@ -1832,21 +1832,21 @@ static void mine_train_rc_track_right_quarter_turn_3_25_deg_up(uint8 rideIndex, 
 }
 
 /** rct2: 0x0071C1E4 */
-static void mine_train_rc_track_left_quarter_turn_3_25_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void mine_train_rc_track_left_quarter_turn_3_25_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    mine_train_rc_track_right_quarter_turn_3_25_deg_up(rideIndex, trackSequence, (direction + 1) & 3, height, mapElement);
+    mine_train_rc_track_right_quarter_turn_3_25_deg_up(session, rideIndex, trackSequence, (direction + 1) & 3, height, mapElement);
 }
 
 /** rct2: 0x0071C1F4 */
-static void mine_train_rc_track_right_quarter_turn_3_25_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void mine_train_rc_track_right_quarter_turn_3_25_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    mine_train_rc_track_left_quarter_turn_3_25_deg_up(rideIndex, trackSequence, (direction - 1) & 3, height, mapElement);
+    mine_train_rc_track_left_quarter_turn_3_25_deg_up(session, rideIndex, trackSequence, (direction - 1) & 3, height, mapElement);
 }
 
 /** rct2: 0x0071C284 */
-static void mine_train_rc_track_left_half_banked_helix_up_small(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void mine_train_rc_track_left_half_banked_helix_up_small(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     switch (trackSequence) {
     case 0:
@@ -2041,7 +2041,7 @@ static void mine_train_rc_track_left_half_banked_helix_up_small(uint8 rideIndex,
 }
 
 /** rct2: 0x0071C294 */
-static void mine_train_rc_track_right_half_banked_helix_up_small(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void mine_train_rc_track_right_half_banked_helix_up_small(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     switch (trackSequence) {
     case 0:
@@ -2236,29 +2236,29 @@ static void mine_train_rc_track_right_half_banked_helix_up_small(uint8 rideIndex
 }
 
 /** rct2: 0x0071C2A4 */
-static void mine_train_rc_track_left_half_banked_helix_down_small(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void mine_train_rc_track_left_half_banked_helix_down_small(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     if (trackSequence >= 4) {
         trackSequence -= 4;
         direction = (direction - 1) & 3;
     }
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    mine_train_rc_track_right_half_banked_helix_up_small(rideIndex, trackSequence, (direction + 1) & 3, height, mapElement);
+    mine_train_rc_track_right_half_banked_helix_up_small(session, rideIndex, trackSequence, (direction + 1) & 3, height, mapElement);
 }
 
 /** rct2: 0x0071C2B4 */
-static void mine_train_rc_track_right_half_banked_helix_down_small(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void mine_train_rc_track_right_half_banked_helix_down_small(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     if (trackSequence >= 4) {
         trackSequence -= 4;
         direction = (direction + 1) & 3;
     }
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    mine_train_rc_track_left_half_banked_helix_up_small(rideIndex, trackSequence, (direction - 1) & 3, height, mapElement);
+    mine_train_rc_track_left_half_banked_helix_up_small(session, rideIndex, trackSequence, (direction - 1) & 3, height, mapElement);
 }
 
 /** rct2: 0x0071C2C4 */
-static void mine_train_rc_track_left_half_banked_helix_up_large(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void mine_train_rc_track_left_half_banked_helix_up_large(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     switch (trackSequence) {
     case 0:
@@ -2537,7 +2537,7 @@ static void mine_train_rc_track_left_half_banked_helix_up_large(uint8 rideIndex,
 }
 
 /** rct2: 0x0071C2D4 */
-static void mine_train_rc_track_right_half_banked_helix_up_large(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void mine_train_rc_track_right_half_banked_helix_up_large(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     switch (trackSequence) {
     case 0:
@@ -2812,29 +2812,29 @@ static void mine_train_rc_track_right_half_banked_helix_up_large(uint8 rideIndex
 }
 
 /** rct2: 0x0071C2E4 */
-static void mine_train_rc_track_left_half_banked_helix_down_large(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void mine_train_rc_track_left_half_banked_helix_down_large(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     if (trackSequence >= 7) {
         trackSequence -= 7;
         direction = (direction - 1) & 3;
     }
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-    mine_train_rc_track_right_half_banked_helix_up_large(rideIndex, trackSequence, (direction + 1) & 3, height, mapElement);
+    mine_train_rc_track_right_half_banked_helix_up_large(session, rideIndex, trackSequence, (direction + 1) & 3, height, mapElement);
 }
 
 /** rct2: 0x0071C2F4 */
-static void mine_train_rc_track_right_half_banked_helix_down_large(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void mine_train_rc_track_right_half_banked_helix_down_large(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     if (trackSequence >= 7) {
         trackSequence -= 7;
         direction = (direction + 1) & 3;
     }
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-    mine_train_rc_track_left_half_banked_helix_up_large(rideIndex, trackSequence, (direction - 1) & 3, height, mapElement);
+    mine_train_rc_track_left_half_banked_helix_up_large(session, rideIndex, trackSequence, (direction - 1) & 3, height, mapElement);
 }
 
 /** rct2: 0x0071C324 */
-static void mine_train_rc_track_brakes(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void mine_train_rc_track_brakes(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     switch (direction) {
     case 0:
@@ -2854,7 +2854,7 @@ static void mine_train_rc_track_brakes(uint8 rideIndex, uint8 trackSequence, uin
 }
 
 /** rct2: 0x0071C334 */
-static void mine_train_rc_track_on_ride_photo(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void mine_train_rc_track_on_ride_photo(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     switch (direction) {
     case 0:
@@ -2881,7 +2881,7 @@ static void mine_train_rc_track_on_ride_photo(uint8 rideIndex, uint8 trackSequen
 }
 
 /** rct2: 0x0071C354 */
-static void mine_train_rc_track_left_eighth_to_diag(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void mine_train_rc_track_left_eighth_to_diag(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     switch (trackSequence) {
     case 0:
@@ -2993,7 +2993,7 @@ static void mine_train_rc_track_left_eighth_to_diag(uint8 rideIndex, uint8 track
 }
 
 /** rct2: 0x0071C364 */
-static void mine_train_rc_track_right_eighth_to_diag(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void mine_train_rc_track_right_eighth_to_diag(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     switch (trackSequence) {
     case 0:
@@ -3105,21 +3105,21 @@ static void mine_train_rc_track_right_eighth_to_diag(uint8 rideIndex, uint8 trac
 }
 
 /** rct2: 0x0071C374 */
-static void mine_train_rc_track_left_eighth_to_orthogonal(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void mine_train_rc_track_left_eighth_to_orthogonal(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
-    mine_train_rc_track_right_eighth_to_diag(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
+    mine_train_rc_track_right_eighth_to_diag(session, rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
 }
 
 /** rct2: 0x0071C384 */
-static void mine_train_rc_track_right_eighth_to_orthogonal(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void mine_train_rc_track_right_eighth_to_orthogonal(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
-    mine_train_rc_track_left_eighth_to_diag(rideIndex, trackSequence, (direction + 3) & 3, height, mapElement);
+    mine_train_rc_track_left_eighth_to_diag(session, rideIndex, trackSequence, (direction + 3) & 3, height, mapElement);
 }
 
 /** rct2: 0x0071C394 */
-static void mine_train_rc_track_left_eighth_bank_to_diag(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void mine_train_rc_track_left_eighth_bank_to_diag(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     switch (trackSequence) {
     case 0:
@@ -3231,7 +3231,7 @@ static void mine_train_rc_track_left_eighth_bank_to_diag(uint8 rideIndex, uint8 
 }
 
 /** rct2: 0x0071C3A4 */
-static void mine_train_rc_track_right_eighth_bank_to_diag(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void mine_train_rc_track_right_eighth_bank_to_diag(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     switch (trackSequence) {
     case 0:
@@ -3343,21 +3343,21 @@ static void mine_train_rc_track_right_eighth_bank_to_diag(uint8 rideIndex, uint8
 }
 
 /** rct2: 0x0071C3B4 */
-static void mine_train_rc_track_left_eighth_bank_to_orthogonal(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void mine_train_rc_track_left_eighth_bank_to_orthogonal(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
-    mine_train_rc_track_right_eighth_bank_to_diag(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
+    mine_train_rc_track_right_eighth_bank_to_diag(session, rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
 }
 
 /** rct2: 0x0071C3C4 */
-static void mine_train_rc_track_right_eighth_bank_to_orthogonal(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void mine_train_rc_track_right_eighth_bank_to_orthogonal(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
-    mine_train_rc_track_left_eighth_bank_to_diag(rideIndex, trackSequence, (direction + 3) & 3, height, mapElement);
+    mine_train_rc_track_left_eighth_bank_to_diag(session, rideIndex, trackSequence, (direction + 3) & 3, height, mapElement);
 }
 
 /** rct2: 0x0071C344 */
-static void mine_train_rc_track_diag_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void mine_train_rc_track_diag_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     switch (trackSequence) {
     case 0:
@@ -3472,7 +3472,7 @@ static void mine_train_rc_track_diag_flat(uint8 rideIndex, uint8 trackSequence, 
 }
 
 /** rct2: 0x0071C414 */
-static void mine_train_rc_track_diag_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void mine_train_rc_track_diag_25_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     switch (trackSequence) {
     case 0:
@@ -3587,7 +3587,7 @@ static void mine_train_rc_track_diag_25_deg_up(uint8 rideIndex, uint8 trackSeque
 }
 
 /** rct2: 0x0071C474 */
-static void mine_train_rc_track_diag_60_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void mine_train_rc_track_diag_60_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     switch (trackSequence) {
     case 0:
@@ -3650,7 +3650,7 @@ static void mine_train_rc_track_diag_60_deg_up(uint8 rideIndex, uint8 trackSeque
 }
 
 /** rct2: 0x0071C3F4 */
-static void mine_train_rc_track_diag_flat_to_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void mine_train_rc_track_diag_flat_to_25_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     switch (trackSequence) {
     case 0:
@@ -3765,7 +3765,7 @@ static void mine_train_rc_track_diag_flat_to_25_deg_up(uint8 rideIndex, uint8 tr
 }
 
 /** rct2: 0x0071C454 */
-static void mine_train_rc_track_diag_25_deg_up_to_60_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void mine_train_rc_track_diag_25_deg_up_to_60_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     switch (trackSequence) {
     case 0:
@@ -3828,7 +3828,7 @@ static void mine_train_rc_track_diag_25_deg_up_to_60_deg_up(uint8 rideIndex, uin
 }
 
 /** rct2: 0x0071C464 */
-static void mine_train_rc_track_diag_60_deg_up_to_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void mine_train_rc_track_diag_60_deg_up_to_25_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     switch (trackSequence) {
     case 0:
@@ -3891,7 +3891,7 @@ static void mine_train_rc_track_diag_60_deg_up_to_25_deg_up(uint8 rideIndex, uin
 }
 
 /** rct2: 0x0071C404 */
-static void mine_train_rc_track_diag_25_deg_up_to_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void mine_train_rc_track_diag_25_deg_up_to_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     switch (trackSequence) {
     case 0:
@@ -4006,7 +4006,7 @@ static void mine_train_rc_track_diag_25_deg_up_to_flat(uint8 rideIndex, uint8 tr
 }
 
 /** rct2: 0x0071C444 */
-static void mine_train_rc_track_diag_25_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void mine_train_rc_track_diag_25_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     switch (trackSequence) {
     case 0:
@@ -4121,7 +4121,7 @@ static void mine_train_rc_track_diag_25_deg_down(uint8 rideIndex, uint8 trackSeq
 }
 
 /** rct2: 0x0071C4A4 */
-static void mine_train_rc_track_diag_60_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void mine_train_rc_track_diag_60_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     switch (trackSequence) {
     case 0:
@@ -4184,7 +4184,7 @@ static void mine_train_rc_track_diag_60_deg_down(uint8 rideIndex, uint8 trackSeq
 }
 
 /** rct2: 0x0071C424 */
-static void mine_train_rc_track_diag_flat_to_25_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void mine_train_rc_track_diag_flat_to_25_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     switch (trackSequence) {
     case 0:
@@ -4297,7 +4297,7 @@ static void mine_train_rc_track_diag_flat_to_25_deg_down(uint8 rideIndex, uint8 
 }
 
 /** rct2: 0x0071C484 */
-static void mine_train_rc_track_diag_25_deg_down_to_60_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void mine_train_rc_track_diag_25_deg_down_to_60_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     switch (trackSequence) {
     case 0:
@@ -4360,7 +4360,7 @@ static void mine_train_rc_track_diag_25_deg_down_to_60_deg_down(uint8 rideIndex,
 }
 
 /** rct2: 0x0071C494 */
-static void mine_train_rc_track_diag_60_deg_down_to_25_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void mine_train_rc_track_diag_60_deg_down_to_25_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     switch (trackSequence) {
     case 0:
@@ -4423,7 +4423,7 @@ static void mine_train_rc_track_diag_60_deg_down_to_25_deg_down(uint8 rideIndex,
 }
 
 /** rct2: 0x0071C434 */
-static void mine_train_rc_track_diag_25_deg_down_to_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void mine_train_rc_track_diag_25_deg_down_to_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     switch (trackSequence) {
     case 0:
@@ -4538,7 +4538,7 @@ static void mine_train_rc_track_diag_25_deg_down_to_flat(uint8 rideIndex, uint8 
 }
 
 /** rct2: 0x0071C4D4 */
-static void mine_train_rc_track_diag_flat_to_left_bank(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void mine_train_rc_track_diag_flat_to_left_bank(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     switch (trackSequence) {
     case 0:
@@ -4602,7 +4602,7 @@ static void mine_train_rc_track_diag_flat_to_left_bank(uint8 rideIndex, uint8 tr
 }
 
 /** rct2: 0x0071C4B4 */
-static void mine_train_rc_track_diag_flat_to_right_bank(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void mine_train_rc_track_diag_flat_to_right_bank(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     switch (trackSequence) {
     case 0:
@@ -4666,7 +4666,7 @@ static void mine_train_rc_track_diag_flat_to_right_bank(uint8 rideIndex, uint8 t
 }
 
 /** rct2: 0x0071C4C4 */
-static void mine_train_rc_track_diag_left_bank_to_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void mine_train_rc_track_diag_left_bank_to_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     switch (trackSequence) {
     case 0:
@@ -4730,7 +4730,7 @@ static void mine_train_rc_track_diag_left_bank_to_flat(uint8 rideIndex, uint8 tr
 }
 
 /** rct2: 0x0071C4E4 */
-static void mine_train_rc_track_diag_right_bank_to_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void mine_train_rc_track_diag_right_bank_to_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     switch (trackSequence) {
     case 0:
@@ -4794,7 +4794,7 @@ static void mine_train_rc_track_diag_right_bank_to_flat(uint8 rideIndex, uint8 t
 }
 
 /** rct2: 0x0071C514 */
-static void mine_train_rc_track_diag_left_bank_to_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void mine_train_rc_track_diag_left_bank_to_25_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     switch (trackSequence) {
     case 0:
@@ -4858,7 +4858,7 @@ static void mine_train_rc_track_diag_left_bank_to_25_deg_up(uint8 rideIndex, uin
 }
 
 /** rct2: 0x0071C524 */
-static void mine_train_rc_track_diag_right_bank_to_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void mine_train_rc_track_diag_right_bank_to_25_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     switch (trackSequence) {
     case 0:
@@ -4922,7 +4922,7 @@ static void mine_train_rc_track_diag_right_bank_to_25_deg_up(uint8 rideIndex, ui
 }
 
 /** rct2: 0x0071C4F4 */
-static void mine_train_rc_track_diag_25_deg_up_to_left_bank(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void mine_train_rc_track_diag_25_deg_up_to_left_bank(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     switch (trackSequence) {
     case 0:
@@ -4986,7 +4986,7 @@ static void mine_train_rc_track_diag_25_deg_up_to_left_bank(uint8 rideIndex, uin
 }
 
 /** rct2: 0x0071C504 */
-static void mine_train_rc_track_diag_25_deg_up_to_right_bank(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void mine_train_rc_track_diag_25_deg_up_to_right_bank(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     switch (trackSequence) {
     case 0:
@@ -5050,7 +5050,7 @@ static void mine_train_rc_track_diag_25_deg_up_to_right_bank(uint8 rideIndex, ui
 }
 
 /** rct2: 0x0071C534 */
-static void mine_train_rc_track_diag_left_bank_to_25_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void mine_train_rc_track_diag_left_bank_to_25_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     switch (trackSequence) {
     case 0:
@@ -5109,7 +5109,7 @@ static void mine_train_rc_track_diag_left_bank_to_25_deg_down(uint8 rideIndex, u
 }
 
 /** rct2: 0x0071C544 */
-static void mine_train_rc_track_diag_right_bank_to_25_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void mine_train_rc_track_diag_right_bank_to_25_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     switch (trackSequence) {
     case 0:
@@ -5168,7 +5168,7 @@ static void mine_train_rc_track_diag_right_bank_to_25_deg_down(uint8 rideIndex, 
 }
 
 /** rct2: 0x0071C554 */
-static void mine_train_rc_track_diag_25_deg_down_to_left_bank(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void mine_train_rc_track_diag_25_deg_down_to_left_bank(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     switch (trackSequence) {
     case 0:
@@ -5232,7 +5232,7 @@ static void mine_train_rc_track_diag_25_deg_down_to_left_bank(uint8 rideIndex, u
 }
 
 /** rct2: 0x0071C564 */
-static void mine_train_rc_track_diag_25_deg_down_to_right_bank(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void mine_train_rc_track_diag_25_deg_down_to_right_bank(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     switch (trackSequence) {
     case 0:
@@ -5296,7 +5296,7 @@ static void mine_train_rc_track_diag_25_deg_down_to_right_bank(uint8 rideIndex, 
 }
 
 /** rct2: 0x0071C3D4 */
-static void mine_train_rc_track_diag_left_bank(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void mine_train_rc_track_diag_left_bank(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     switch (trackSequence) {
     case 0:
@@ -5359,7 +5359,7 @@ static void mine_train_rc_track_diag_left_bank(uint8 rideIndex, uint8 trackSeque
 }
 
 /** rct2: 0x0071C3E4 */
-static void mine_train_rc_track_diag_right_bank(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void mine_train_rc_track_diag_right_bank(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     switch (trackSequence) {
     case 0:
@@ -5422,7 +5422,7 @@ static void mine_train_rc_track_diag_right_bank(uint8 rideIndex, uint8 trackSequ
 }
 
 /** rct2: 0x0071C574 */
-static void mine_train_rc_track_block_brakes(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void mine_train_rc_track_block_brakes(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     switch (direction) {
     case 0:

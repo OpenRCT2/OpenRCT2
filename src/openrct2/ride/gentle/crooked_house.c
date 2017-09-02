@@ -65,7 +65,7 @@ static void paint_crooked_house_structure(uint8 direction, uint8 x_offset, uint8
     sub_98197C(image_id, x_offset, y_offset, boundBox.length_x, boundBox.length_y, 127, height + 3, boundBox.offset_x, boundBox.offset_y, height + 3, get_current_rotation());
 }
 
-static void paint_crooked_house(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void paint_crooked_house(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     trackSequence = track_map_3x3[direction][trackSequence];
 

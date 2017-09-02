@@ -1795,7 +1795,7 @@ void track_paint(paint_session * session, uint8 direction, sint32 height, rct_ma
         if (paintFunctionGetter != NULL && !useOriginalRidePaint) {
             TRACK_PAINT_FUNCTION paintFunction = paintFunctionGetter(trackType, direction);
             if (paintFunction != NULL) {
-                paintFunction(rideIndex, trackSequence, direction, height, mapElement);
+                paintFunction(session, rideIndex, trackSequence, direction, height, mapElement);
             }
         }
         else {

@@ -123,7 +123,7 @@ static void paint_motionsimulator_vehicle(sint8 offsetX, sint8 offsetY, uint8 di
 }
 
 /** rct2: 0x008A85C4 */
-static void paint_motionsimulator(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void paint_motionsimulator(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     trackSequence = track_map_2x2[direction][trackSequence];
 

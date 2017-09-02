@@ -29,7 +29,7 @@
  *  rct2: 0x00762F50
  *  rct2: 0x007630DE
  */
-static void facility_paint_setup(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element* mapElement)
+static void facility_paint_setup(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     bool hasSupports = wooden_a_supports_paint_setup(direction & 1, 0, height, gTrackColours[SCHEME_3], NULL);
 

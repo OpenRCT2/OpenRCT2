@@ -51,7 +51,7 @@ static void paint_circus_show_tent(uint8 rideIndex, uint8 direction, sint8 al, s
 /**
  * rct2: 0x0076FAD4
  */
-static void paint_circus_show(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void paint_circus_show(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     trackSequence = track_map_3x3[direction][trackSequence];
 

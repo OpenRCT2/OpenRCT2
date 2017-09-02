@@ -79,7 +79,7 @@ static void paint_twist_structure(rct_ride * ride, uint8 direction, sint8 xOffse
 
 
 /** rct2: 0x0076D858 */
-static void paint_twist(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void paint_twist(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     trackSequence = track_map_3x3[direction][trackSequence];
 

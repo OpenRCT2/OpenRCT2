@@ -184,7 +184,7 @@ static paint_struct * paint_monorail_cycles_util_7c(
 }
 
 /** rct2: 0x0088AD48 */
-static void paint_monorail_cycles_track_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void paint_monorail_cycles_track_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     uint32 imageId = monorail_cycles_track_pieces_flat[(direction & 1)] | gTrackColours[SCHEME_TRACK];
     paint_monorail_cycles_util_7c((bool) (direction & 1), imageId, 0, 0, 32, 20, 3, height, 0, 6, height, get_current_rotation());
@@ -202,7 +202,7 @@ static void paint_monorail_cycles_track_flat(uint8 rideIndex, uint8 trackSequenc
 }
 
 /** rct2: 0x0088ADD8 */
-static void paint_monorail_cycles_station(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void paint_monorail_cycles_station(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     uint32 imageId;
 
@@ -235,7 +235,7 @@ static void paint_monorail_cycles_station(uint8 rideIndex, uint8 trackSequence, 
 }
 
 /** rct2: 0x0088AD88 */
-static void paint_monorail_cycles_track_left_quarter_turn_3_tiles(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void paint_monorail_cycles_track_left_quarter_turn_3_tiles(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     track_paint_util_left_quarter_turn_3_tiles_paint(3, height, direction, trackSequence, gTrackColours[SCHEME_TRACK], monorail_cycles_track_pieces_flat_quarter_turn_3_tiles, get_current_rotation());
     track_paint_util_left_quarter_turn_3_tiles_tunnel(height, TUNNEL_0, direction, trackSequence);
@@ -260,10 +260,10 @@ static void paint_monorail_cycles_track_left_quarter_turn_3_tiles(uint8 rideInde
 static const uint8 monorail_cycles_right_quarter_turn_3_tiles_to_left_turn_map[] = {3, 1, 2, 0};
 
 /** rct2: 0x0088AD98 */
-static void paint_monorail_cycles_track_right_quarter_turn_3_tiles(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void paint_monorail_cycles_track_right_quarter_turn_3_tiles(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     trackSequence = monorail_cycles_right_quarter_turn_3_tiles_to_left_turn_map[trackSequence];
-    paint_monorail_cycles_track_left_quarter_turn_3_tiles(rideIndex, trackSequence, (direction + 3) % 4, height, mapElement);
+    paint_monorail_cycles_track_left_quarter_turn_3_tiles(session, rideIndex, trackSequence, (direction + 3) % 4, height, mapElement);
 }
 
 static const sint8 monorail_cycles_track_right_quarter_turn_5_tiles_support_height_offset[][7] = {
@@ -281,7 +281,7 @@ static const sint8 monorail_cycles_track_right_quarter_turn_5_tiles_support_spec
 };
 
 /** rct2: 0x0088ADB8 */
-static void paint_monorail_cycles_track_right_quarter_turn_5_tiles(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void paint_monorail_cycles_track_right_quarter_turn_5_tiles(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     track_paint_util_right_quarter_turn_5_tiles_paint(1, height, direction, trackSequence, gTrackColours[SCHEME_TRACK], monorail_cycles_track_pieces_flat_quarter_turn_5_tiles, NULL, defaultRightQuarterTurn5TilesBoundLengths, defaultRightQuarterTurn5TilesBoundOffsets, get_current_rotation());
 
@@ -336,14 +336,14 @@ static void paint_monorail_cycles_track_right_quarter_turn_5_tiles(uint8 rideInd
 }
 
 /** rct2: 0x0088ADA8 */
-static void paint_monorail_cycles_track_left_quarter_turn_5_tiles(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void paint_monorail_cycles_track_left_quarter_turn_5_tiles(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-    paint_monorail_cycles_track_right_quarter_turn_5_tiles(rideIndex, trackSequence, (direction + 1) % 4, height, mapElement);
+    paint_monorail_cycles_track_right_quarter_turn_5_tiles(session, rideIndex, trackSequence, (direction + 1) % 4, height, mapElement);
 }
 
 /** rct2: 0x0088ADC8 */
-static void paint_monorail_cycles_track_s_bend_left(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void paint_monorail_cycles_track_s_bend_left(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     if (direction == 2 || direction == 3) {
         trackSequence = 3 - trackSequence;
@@ -389,7 +389,7 @@ static void paint_monorail_cycles_track_s_bend_left(uint8 rideIndex, uint8 track
 }
 
 /** rct2: 0x*/
-static void paint_monorail_cycles_track_s_bend_right(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void paint_monorail_cycles_track_s_bend_right(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     if (direction == 2 || direction == 3) {
         trackSequence = 3 - trackSequence;

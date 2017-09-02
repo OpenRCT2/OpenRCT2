@@ -117,7 +117,7 @@ static void paint_swinging_inverter_ship_structure(rct_ride * ride, uint8 direct
 }
 
 /** rct2: 0x00760260 */
-static void paint_swinging_inverter_ship(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void paint_swinging_inverter_ship(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     uint8 relativeTrackSequence = track_map_1x4[direction][trackSequence];
 

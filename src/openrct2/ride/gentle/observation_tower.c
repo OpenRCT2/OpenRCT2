@@ -69,7 +69,7 @@ void vehicle_visual_observation_tower(paint_session * session, sint32 x, sint32 
 }
 
 /** rct2: 0x0070DD6C */
-static void paint_observation_tower_base(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void paint_observation_tower_base(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     trackSequence = track_map_3x3[direction][trackSequence];
 
@@ -123,7 +123,7 @@ static void paint_observation_tower_base(uint8 rideIndex, uint8 trackSequence, u
 }
 
 /** rct2: 0x0070DD7C */
-static void paint_observation_tower_section(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void paint_observation_tower_section(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     if (trackSequence == 1) {
         return;

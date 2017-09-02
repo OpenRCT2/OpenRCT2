@@ -27,7 +27,7 @@
 #include "../track_paint.h"
 
 /** rct2: 0x0077839C */
-static void side_friction_rc_track_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void side_friction_rc_track_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     if (track_element_is_lift_hill(mapElement)) {
         switch (direction) {
@@ -74,7 +74,7 @@ static void side_friction_rc_track_flat(uint8 rideIndex, uint8 trackSequence, ui
 }
 
 /** rct2: 0x007784AC, 0x007784BC, 0x007784CC */
-static void side_friction_rc_track_station(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void side_friction_rc_track_station(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     static const uint32 imageIds[4] = {
         21610,
@@ -92,7 +92,7 @@ static void side_friction_rc_track_station(uint8 rideIndex, uint8 trackSequence,
 }
 
 /** rct2: 0x007783AC */
-static void side_friction_rc_track_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void side_friction_rc_track_25_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     if (track_element_is_lift_hill(mapElement)) {
         switch (direction) {
@@ -151,7 +151,7 @@ static void side_friction_rc_track_25_deg_up(uint8 rideIndex, uint8 trackSequenc
 }
 
 /** rct2: 0x007783CC */
-static void side_friction_rc_track_flat_to_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void side_friction_rc_track_flat_to_25_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     if (track_element_is_lift_hill(mapElement)) {
         switch (direction) {
@@ -210,7 +210,7 @@ static void side_friction_rc_track_flat_to_25_deg_up(uint8 rideIndex, uint8 trac
 }
 
 /** rct2: 0x007783FC */
-static void side_friction_rc_track_25_deg_up_to_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void side_friction_rc_track_25_deg_up_to_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     if (track_element_is_lift_hill(mapElement)) {
         switch (direction) {
@@ -269,25 +269,25 @@ static void side_friction_rc_track_25_deg_up_to_flat(uint8 rideIndex, uint8 trac
 }
 
 /** rct2: 0x0077840C */
-static void side_friction_rc_track_25_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void side_friction_rc_track_25_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
-    side_friction_rc_track_25_deg_up(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
+    side_friction_rc_track_25_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
 }
 
 /** rct2: 0x0077842C */
-static void side_friction_rc_track_flat_to_25_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void side_friction_rc_track_flat_to_25_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
-    side_friction_rc_track_25_deg_up_to_flat(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
+    side_friction_rc_track_25_deg_up_to_flat(session, rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
 }
 
 /** rct2: 0x0077845C */
-static void side_friction_rc_track_25_deg_down_to_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void side_friction_rc_track_25_deg_down_to_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
-    side_friction_rc_track_flat_to_25_deg_up(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
+    side_friction_rc_track_flat_to_25_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
 }
 
 /** rct2: 0x0077846C */
-static void side_friction_rc_track_left_quarter_turn_5(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void side_friction_rc_track_left_quarter_turn_5(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     switch (trackSequence) {
     case 0:
@@ -443,14 +443,14 @@ static void side_friction_rc_track_left_quarter_turn_5(uint8 rideIndex, uint8 tr
 }
 
 /** rct2: 0x0077847C */
-static void side_friction_rc_track_right_quarter_turn_5(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void side_friction_rc_track_right_quarter_turn_5(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-    side_friction_rc_track_left_quarter_turn_5(rideIndex, trackSequence, (direction - 1) & 3, height, mapElement);
+    side_friction_rc_track_left_quarter_turn_5(session, rideIndex, trackSequence, (direction - 1) & 3, height, mapElement);
 }
 
 /** rct2: 0x0077848C */
-static void side_friction_rc_track_s_bend_left(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void side_friction_rc_track_s_bend_left(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     switch (trackSequence) {
     case 0:
@@ -572,7 +572,7 @@ static void side_friction_rc_track_s_bend_left(uint8 rideIndex, uint8 trackSeque
 }
 
 /** rct2: 0x0077849C */
-static void side_friction_rc_track_s_bend_right(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void side_friction_rc_track_s_bend_right(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     switch (trackSequence) {
     case 0:
@@ -694,7 +694,7 @@ static void side_friction_rc_track_s_bend_right(uint8 rideIndex, uint8 trackSequ
 }
 
 /** rct2: 0x007784DC */
-static void side_friction_rc_track_left_quarter_turn_3(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void side_friction_rc_track_left_quarter_turn_3(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     switch (trackSequence) {
     case 0:
@@ -789,14 +789,14 @@ static void side_friction_rc_track_left_quarter_turn_3(uint8 rideIndex, uint8 tr
 }
 
 /** rct2: 0x007784EC */
-static void side_friction_rc_track_right_quarter_turn_3(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void side_friction_rc_track_right_quarter_turn_3(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    side_friction_rc_track_left_quarter_turn_3(rideIndex, trackSequence, (direction - 1) & 3, height, mapElement);
+    side_friction_rc_track_left_quarter_turn_3(session, rideIndex, trackSequence, (direction - 1) & 3, height, mapElement);
 }
 
 /** rct2: 0x007784FC */
-static void side_friction_rc_track_brakes(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void side_friction_rc_track_brakes(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     switch (direction) {
     case 0:
@@ -818,7 +818,7 @@ static void side_friction_rc_track_brakes(uint8 rideIndex, uint8 trackSequence, 
 }
 
 /** rct2: 0x007785DC */
-static void side_friction_rc_track_left_eighth_to_diag(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void side_friction_rc_track_left_eighth_to_diag(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     switch (trackSequence) {
     case 0:
@@ -946,7 +946,7 @@ static void side_friction_rc_track_left_eighth_to_diag(uint8 rideIndex, uint8 tr
 }
 
 /** rct2: 0x007785EC */
-static void side_friction_rc_track_right_eighth_to_diag(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void side_friction_rc_track_right_eighth_to_diag(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     switch (trackSequence) {
     case 0:
@@ -1074,21 +1074,21 @@ static void side_friction_rc_track_right_eighth_to_diag(uint8 rideIndex, uint8 t
 }
 
 /** rct2: 0x007785FC */
-static void side_friction_rc_track_left_eighth_to_orthogonal(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void side_friction_rc_track_left_eighth_to_orthogonal(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
-    side_friction_rc_track_right_eighth_to_diag(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
+    side_friction_rc_track_right_eighth_to_diag(session, rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
 }
 
 /** rct2: 0x0077860C */
-static void side_friction_rc_track_right_eighth_to_orthogonal(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void side_friction_rc_track_right_eighth_to_orthogonal(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
-    side_friction_rc_track_left_eighth_to_diag(rideIndex, trackSequence, (direction + 3) & 3, height, mapElement);
+    side_friction_rc_track_left_eighth_to_diag(session, rideIndex, trackSequence, (direction + 3) & 3, height, mapElement);
 }
 
 /** rct2: 0x0077850C */
-static void side_friction_rc_track_diag_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void side_friction_rc_track_diag_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     switch (trackSequence) {
     case 0:
@@ -1207,7 +1207,7 @@ static void side_friction_rc_track_diag_flat(uint8 rideIndex, uint8 trackSequenc
 }
 
 /** rct2: 0x0077853C */
-static void side_friction_rc_track_diag_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void side_friction_rc_track_diag_25_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     switch (trackSequence) {
     case 0:
@@ -1326,7 +1326,7 @@ static void side_friction_rc_track_diag_25_deg_up(uint8 rideIndex, uint8 trackSe
 }
 
 /** rct2: 0x0077851C */
-static void side_friction_rc_track_diag_flat_to_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void side_friction_rc_track_diag_flat_to_25_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     switch (trackSequence) {
     case 0:
@@ -1445,7 +1445,7 @@ static void side_friction_rc_track_diag_flat_to_25_deg_up(uint8 rideIndex, uint8
 }
 
 /** rct2: 0x0077852C */
-static void side_friction_rc_track_diag_25_deg_up_to_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void side_friction_rc_track_diag_25_deg_up_to_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     switch (trackSequence) {
     case 0:
@@ -1564,7 +1564,7 @@ static void side_friction_rc_track_diag_25_deg_up_to_flat(uint8 rideIndex, uint8
 }
 
 /** rct2: 0x0077859C */
-static void side_friction_rc_track_diag_25_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void side_friction_rc_track_diag_25_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     switch (trackSequence) {
     case 0:
@@ -1683,7 +1683,7 @@ static void side_friction_rc_track_diag_25_deg_down(uint8 rideIndex, uint8 track
 }
 
 /** rct2: 0x0077857C */
-static void side_friction_rc_track_diag_flat_to_25_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void side_friction_rc_track_diag_flat_to_25_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     switch (trackSequence) {
     case 0:
@@ -1797,7 +1797,7 @@ static void side_friction_rc_track_diag_flat_to_25_deg_down(uint8 rideIndex, uin
 }
 
 /** rct2: 0x0077858C */
-static void side_friction_rc_track_diag_25_deg_down_to_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void side_friction_rc_track_diag_25_deg_down_to_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     switch (trackSequence) {
     case 0:

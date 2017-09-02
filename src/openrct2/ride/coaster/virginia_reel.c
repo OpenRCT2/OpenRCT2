@@ -230,7 +230,7 @@ void vehicle_visual_virginia_reel(paint_session * session, sint32 x, sint32 imag
 }
 
 /** rct2: 0x00811264 */
-static void paint_virginia_reel_track_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void paint_virginia_reel_track_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     const uint32 * sprites = virginia_reel_track_pieces_flat;
     if (mapElement->type & 0x80) {
@@ -253,7 +253,7 @@ static void paint_virginia_reel_track_flat(uint8 rideIndex, uint8 trackSequence,
 }
 
 /** rct2: 0x00811274 */
-static void paint_virginia_reel_track_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void paint_virginia_reel_track_25_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     const uint32 * sprites = virginia_reel_track_pieces_25_deg_up;
     if (mapElement->type & 0x80) {
@@ -297,7 +297,7 @@ static void paint_virginia_reel_track_25_deg_up(uint8 rideIndex, uint8 trackSequ
 }
 
 /** rct2: 0x00811294 */
-static void paint_virginia_reel_track_flat_to_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void paint_virginia_reel_track_flat_to_25_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     const uint32 * sprites = virginia_reel_track_pieces_flat_to_25_deg_up;
     if (mapElement->type & 0x80) {
@@ -340,7 +340,7 @@ static void paint_virginia_reel_track_flat_to_25_deg_up(uint8 rideIndex, uint8 t
 }
 
 /** rct2: 0x00811294 */
-static void paint_virginia_reel_track_25_deg_up_to_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void paint_virginia_reel_track_25_deg_up_to_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     const uint32 * sprites = virginia_reel_track_pieces_25_deg_up_to_flat;
     if (mapElement->type & 0x80) {
@@ -384,25 +384,25 @@ static void paint_virginia_reel_track_25_deg_up_to_flat(uint8 rideIndex, uint8 t
 }
 
 /** rct2: 0x008112A4 */
-static void paint_virginia_reel_track_25_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void paint_virginia_reel_track_25_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
-    paint_virginia_reel_track_25_deg_up(rideIndex, trackSequence, (direction + 2) % 4, height, mapElement);
+    paint_virginia_reel_track_25_deg_up(session, rideIndex, trackSequence, (direction + 2) % 4, height, mapElement);
 }
 
 /** rct2: 0x008112B4 */
-static void paint_virginia_reel_track_flat_to_25_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void paint_virginia_reel_track_flat_to_25_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
-    paint_virginia_reel_track_25_deg_up_to_flat(rideIndex, trackSequence, (direction + 2) % 4, height, mapElement);
+    paint_virginia_reel_track_25_deg_up_to_flat(session, rideIndex, trackSequence, (direction + 2) % 4, height, mapElement);
 }
 
 /** rct2: 0x008112C4 */
-static void paint_virginia_reel_track_25_deg_down_to_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void paint_virginia_reel_track_25_deg_down_to_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
-    paint_virginia_reel_track_flat_to_25_deg_up(rideIndex, trackSequence, (direction + 2) % 4, height, mapElement);
+    paint_virginia_reel_track_flat_to_25_deg_up(session, rideIndex, trackSequence, (direction + 2) % 4, height, mapElement);
 }
 
 /** rct2: 0x008112D4, 0x008112E4, 0x008112F4 */
-static void paint_virginia_reel_station(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void paint_virginia_reel_station(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     uint32 imageId;
 
@@ -434,7 +434,7 @@ static void paint_virginia_reel_station(uint8 rideIndex, uint8 trackSequence, ui
 static const uint8 virginia_reel_left_quarter_turn_supports[] = {5, 2, 3, 4};
 
 /** rct2: 0x00811304 */
-static void paint_virginia_reel_track_left_quarter_turn_3_tiles(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void paint_virginia_reel_track_left_quarter_turn_3_tiles(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     track_paint_util_left_quarter_turn_3_tiles_paint(2, height, direction, trackSequence, gTrackColours[SCHEME_TRACK], virginia_reel_track_pieces_flat_quarter_turn_3_tiles, get_current_rotation());
     track_paint_util_left_quarter_turn_3_tiles_tunnel(height, TUNNEL_6, direction, trackSequence);
@@ -456,14 +456,14 @@ static void paint_virginia_reel_track_left_quarter_turn_3_tiles(uint8 rideIndex,
 static const uint8 virginia_reel_right_quarter_turn_3_tiles_to_left_turn_map[] = {3, 1, 2, 0};
 
 /** rct2: 0x00811314 */
-static void paint_virginia_reel_track_right_quarter_turn_3_tiles(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void paint_virginia_reel_track_right_quarter_turn_3_tiles(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     trackSequence = virginia_reel_right_quarter_turn_3_tiles_to_left_turn_map[trackSequence];
-    paint_virginia_reel_track_left_quarter_turn_3_tiles(rideIndex, trackSequence, (direction + 3) % 4, height, mapElement);
+    paint_virginia_reel_track_left_quarter_turn_3_tiles(session, rideIndex, trackSequence, (direction + 3) % 4, height, mapElement);
 }
 
 /** rct2: 0x00811324 */
-static void paint_virginia_reel_track_left_quarter_turn_1_tile(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void paint_virginia_reel_track_left_quarter_turn_1_tile(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     track_paint_util_left_quarter_turn_1_tile_paint(2, height, 0, direction, gTrackColours[SCHEME_TRACK], virginia_reel_track_pieces_flat_quarter_turn_1_tile, get_current_rotation());
 
@@ -491,9 +491,9 @@ static void paint_virginia_reel_track_left_quarter_turn_1_tile(uint8 rideIndex, 
 }
 
 /** rct2: 0x00811334 */
-static void paint_virginia_reel_track_right_quarter_turn_1_tile(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void paint_virginia_reel_track_right_quarter_turn_1_tile(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
-    paint_virginia_reel_track_left_quarter_turn_1_tile(rideIndex, trackSequence, (direction + 3) % 4, height, mapElement);
+    paint_virginia_reel_track_left_quarter_turn_1_tile(session, rideIndex, trackSequence, (direction + 3) % 4, height, mapElement);
 }
 
 /**

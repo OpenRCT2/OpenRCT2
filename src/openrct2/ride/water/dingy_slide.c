@@ -355,7 +355,7 @@ enum {
     SPR_DINGHY_SLIDE_S_BEND_COVERED_FRONT_SE_SW_SE_SEQ_3 = 20051,
 };
 
-static void dinghy_slide_track_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void dinghy_slide_track_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     static const uint32 imageIds[2][4][2] = {
         {
@@ -389,7 +389,7 @@ static void dinghy_slide_track_flat(uint8 rideIndex, uint8 trackSequence, uint8 
     paint_util_set_general_support_height(height + 32, 0x20);
 }
 
-static void dinghy_slide_track_station(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void dinghy_slide_track_station(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     static const uint32 imageIds[4][2] = {
         { SPR_DINGHY_SLIDE_STATION_SW_NE, SPR_STATION_BASE_B_SW_NE },
@@ -412,7 +412,7 @@ static void dinghy_slide_track_station(uint8 rideIndex, uint8 trackSequence, uin
     paint_util_set_general_support_height(height + 32, 0x20);
 }
 
-static void dinghy_slide_track_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void dinghy_slide_track_25_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     static const uint32 imageIds[2][4][2] = {
         {
@@ -450,7 +450,7 @@ static void dinghy_slide_track_25_deg_up(uint8 rideIndex, uint8 trackSequence, u
     paint_util_set_general_support_height(height + 56, 0x20);
 }
 
-static void dinghy_slide_track_60_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void dinghy_slide_track_60_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     static const uint32 imageIds[4][2] = {
         { SPR_DINGHY_SLIDE_60_DEG_SW_NE, SPR_DINGHY_SLIDE_60_DEG_FRONT_SW_NE },
@@ -479,7 +479,7 @@ static void dinghy_slide_track_60_deg_up(uint8 rideIndex, uint8 trackSequence, u
     paint_util_set_general_support_height(height + 104, 0x20);
 }
 
-static void dinghy_slide_track_flat_to_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void dinghy_slide_track_flat_to_25_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     static const uint32 imageIds[2][4][2] = {
         {
@@ -517,7 +517,7 @@ static void dinghy_slide_track_flat_to_25_deg_up(uint8 rideIndex, uint8 trackSeq
     paint_util_set_general_support_height(height + 48, 0x20);
 }
 
-static void dinghy_slide_track_25_deg_up_to_60_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void dinghy_slide_track_25_deg_up_to_60_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     static const uint32 imageIds[4][2] = {
         { SPR_DINGHY_SLIDE_25_DEG_TO_60_DEG_SW_NE, SPR_DINGHY_SLIDE_25_DEG_TO_60_DEG_FRONT_SW_NE },
@@ -546,7 +546,7 @@ static void dinghy_slide_track_25_deg_up_to_60_deg_up(uint8 rideIndex, uint8 tra
     paint_util_set_general_support_height(height + 72, 0x20);
 }
 
-static void dinghy_slide_track_60_deg_up_to_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void dinghy_slide_track_60_deg_up_to_25_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     static const uint32 imageIds[4][2] = {
         { SPR_DINGHY_SLIDE_60_DEG_TO_25_DEG_SW_NE, SPR_DINGHY_SLIDE_60_DEG_TO_25_DEG_FRONT_SW_NE },
@@ -575,7 +575,7 @@ static void dinghy_slide_track_60_deg_up_to_25_deg_up(uint8 rideIndex, uint8 tra
     paint_util_set_general_support_height(height + 72, 0x20);
 }
 
-static void dinghy_slide_track_25_deg_up_to_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void dinghy_slide_track_25_deg_up_to_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     static const uint32 imageIds[2][4][2] = {
         {
@@ -613,32 +613,32 @@ static void dinghy_slide_track_25_deg_up_to_flat(uint8 rideIndex, uint8 trackSeq
     paint_util_set_general_support_height(height + 40, 0x20);
 }
 
-static void dinghy_slide_track_25_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void dinghy_slide_track_25_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
-    dinghy_slide_track_25_deg_up(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
+    dinghy_slide_track_25_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
 }
 
-static void dinghy_slide_track_60_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void dinghy_slide_track_60_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
-    dinghy_slide_track_60_deg_up(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
+    dinghy_slide_track_60_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
 }
 
-static void dinghy_slide_track_flat_to_25_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void dinghy_slide_track_flat_to_25_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
-    dinghy_slide_track_25_deg_up_to_flat(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
+    dinghy_slide_track_25_deg_up_to_flat(session, rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
 }
 
-static void dinghy_slide_track_25_deg_down_to_60_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void dinghy_slide_track_25_deg_down_to_60_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
-    dinghy_slide_track_60_deg_up_to_25_deg_up(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
+    dinghy_slide_track_60_deg_up_to_25_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
 }
 
-static void dinghy_slide_track_25_deg_down_to_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void dinghy_slide_track_25_deg_down_to_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
-    dinghy_slide_track_flat_to_25_deg_up(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
+    dinghy_slide_track_flat_to_25_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
 }
 
-static void dinghy_slide_track_right_quarter_turn_5(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void dinghy_slide_track_right_quarter_turn_5(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     static const sprite_bb imageIds[4][5] = {
         {
@@ -735,18 +735,18 @@ static void dinghy_slide_track_right_quarter_turn_5(uint8 rideIndex, uint8 track
     paint_util_set_general_support_height(height + 32, 0x20);
 }
 
-static void dinghy_slide_track_left_quarter_turn_5(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void dinghy_slide_track_left_quarter_turn_5(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-    dinghy_slide_track_right_quarter_turn_5(rideIndex, trackSequence, (direction + 1) % 4, height, mapElement);
+    dinghy_slide_track_right_quarter_turn_5(session, rideIndex, trackSequence, (direction + 1) % 4, height, mapElement);
 }
 
-static void dinghy_slide_track_60_deg_down_to_25_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void dinghy_slide_track_60_deg_down_to_25_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
-    dinghy_slide_track_25_deg_up_to_60_deg_up(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
+    dinghy_slide_track_25_deg_up_to_60_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
 }
 
-static void dinghy_slide_track_s_bend_left(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void dinghy_slide_track_s_bend_left(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     static const uint32 imageIds[4][4][2] =
     {
@@ -818,7 +818,7 @@ static void dinghy_slide_track_s_bend_left(uint8 rideIndex, uint8 trackSequence,
     paint_util_set_general_support_height(height + 32, 0x20);
 }
 
-static void dinghy_slide_track_s_bend_right(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void dinghy_slide_track_s_bend_right(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     static const uint32 imageIds[4][4][2] =
     {
@@ -890,7 +890,7 @@ static void dinghy_slide_track_s_bend_right(uint8 rideIndex, uint8 trackSequence
     paint_util_set_general_support_height(height + 32, 0x20);
 }
 
-static void dinghy_slide_track_right_quarter_turn_3(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void dinghy_slide_track_right_quarter_turn_3(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     static const sprite_bb imageIds[4][3] = {
         {
@@ -959,13 +959,13 @@ static void dinghy_slide_track_right_quarter_turn_3(uint8 rideIndex, uint8 track
     paint_util_set_general_support_height(height + 32, 0x20);
 }
 
-static void dinghy_slide_track_left_quarter_turn_3(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void dinghy_slide_track_left_quarter_turn_3(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    dinghy_slide_track_right_quarter_turn_3(rideIndex, trackSequence, (direction + 1) % 4, height, mapElement);
+    dinghy_slide_track_right_quarter_turn_3(session, rideIndex, trackSequence, (direction + 1) % 4, height, mapElement);
 }
 
-static void dinghy_slide_track_flat_covered(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void dinghy_slide_track_flat_covered(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     static const uint32 imageIds[4][2] = {
         { SPR_DINGHY_SLIDE_FLAT_COVERED_SW_NE, SPR_DINGHY_SLIDE_FLAT_COVERED_FRONT_SW_NE },
@@ -990,7 +990,7 @@ static void dinghy_slide_track_flat_covered(uint8 rideIndex, uint8 trackSequence
     paint_util_set_general_support_height(height + 32, 0x20);
 }
 
-static void dinghy_slide_track_25_deg_up_covered(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void dinghy_slide_track_25_deg_up_covered(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     static const uint32 imageIds[4][2] = {
         { SPR_DINGHY_SLIDE_25_DEG_COVERED_SW_NE, SPR_DINGHY_SLIDE_25_DEG_COVERED_FRONT_SW_NE },
@@ -1019,7 +1019,7 @@ static void dinghy_slide_track_25_deg_up_covered(uint8 rideIndex, uint8 trackSeq
     paint_util_set_general_support_height(height + 56, 0x20);
 }
 
-static void dinghy_slide_track_60_deg_up_covered(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void dinghy_slide_track_60_deg_up_covered(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     static const uint32 imageIds[4][2] = {
         { SPR_DINGHY_SLIDE_60_DEG_COVERED_SW_NE, SPR_DINGHY_SLIDE_60_DEG_COVERED_FRONT_SW_NE },
@@ -1048,7 +1048,7 @@ static void dinghy_slide_track_60_deg_up_covered(uint8 rideIndex, uint8 trackSeq
     paint_util_set_general_support_height(height + 104, 0x20);
 }
 
-static void dinghy_slide_track_flat_to_25_deg_up_covered(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void dinghy_slide_track_flat_to_25_deg_up_covered(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     static const uint32 imageIds[4][2] = {
         { SPR_DINGHY_SLIDE_FLAT_TO_25_DEG_COVERED_SW_NE, SPR_DINGHY_SLIDE_FLAT_TO_25_DEG_COVERED_FRONT_SW_NE },
@@ -1077,7 +1077,7 @@ static void dinghy_slide_track_flat_to_25_deg_up_covered(uint8 rideIndex, uint8 
     paint_util_set_general_support_height(height + 48, 0x20);
 }
 
-static void dinghy_slide_track_25_deg_up_to_60_deg_up_covered(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void dinghy_slide_track_25_deg_up_to_60_deg_up_covered(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     static const uint32 imageIds[4][2] = {
         { SPR_DINGHY_SLIDE_25_DEG_TO_60_DEG_COVERED_SW_NE, SPR_DINGHY_SLIDE_25_DEG_TO_60_DEG_COVERED_FRONT_SW_NE },
@@ -1106,7 +1106,7 @@ static void dinghy_slide_track_25_deg_up_to_60_deg_up_covered(uint8 rideIndex, u
     paint_util_set_general_support_height(height + 72, 0x20);
 }
 
-static void dinghy_slide_track_60_deg_up_to_25_deg_up_covered(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void dinghy_slide_track_60_deg_up_to_25_deg_up_covered(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     static const uint32 imageIds[4][2] = {
         { SPR_DINGHY_SLIDE_60_DEG_TO_25_DEG_COVERED_SW_NE, SPR_DINGHY_SLIDE_60_DEG_TO_25_DEG_COVERED_FRONT_SW_NE },
@@ -1135,7 +1135,7 @@ static void dinghy_slide_track_60_deg_up_to_25_deg_up_covered(uint8 rideIndex, u
     paint_util_set_general_support_height(height + 72, 0x20);
 }
 
-static void dinghy_slide_track_25_deg_up_to_flat_covered(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void dinghy_slide_track_25_deg_up_to_flat_covered(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     static const uint32 imageIds[4][2] = {
         { SPR_DINGHY_SLIDE_25_DEG_TO_FLAT_COVERED_SW_NE, SPR_DINGHY_SLIDE_25_DEG_TO_FLAT_COVERED_FRONT_SW_NE },
@@ -1164,32 +1164,32 @@ static void dinghy_slide_track_25_deg_up_to_flat_covered(uint8 rideIndex, uint8 
     paint_util_set_general_support_height(height + 40, 0x20);
 }
 
-static void dinghy_slide_track_25_deg_down_covered(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void dinghy_slide_track_25_deg_down_covered(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
-    dinghy_slide_track_25_deg_up_covered(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
+    dinghy_slide_track_25_deg_up_covered(session, rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
 }
 
-static void dinghy_slide_track_60_deg_down_covered(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void dinghy_slide_track_60_deg_down_covered(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
-    dinghy_slide_track_60_deg_up_covered(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
+    dinghy_slide_track_60_deg_up_covered(session, rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
 }
 
-static void dinghy_slide_track_flat_to_25_deg_down_covered(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void dinghy_slide_track_flat_to_25_deg_down_covered(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
-    dinghy_slide_track_25_deg_up_to_flat_covered(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
+    dinghy_slide_track_25_deg_up_to_flat_covered(session, rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
 }
 
-static void dinghy_slide_track_25_deg_down_to_60_deg_down_covered(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void dinghy_slide_track_25_deg_down_to_60_deg_down_covered(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
-    dinghy_slide_track_60_deg_up_to_25_deg_up_covered(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
+    dinghy_slide_track_60_deg_up_to_25_deg_up_covered(session, rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
 }
 
-static void dinghy_slide_track_25_deg_down_to_flat_covered(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void dinghy_slide_track_25_deg_down_to_flat_covered(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
-    dinghy_slide_track_flat_to_25_deg_up_covered(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
+    dinghy_slide_track_flat_to_25_deg_up_covered(session, rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
 }
 
-static void dinghy_slide_track_right_quarter_turn_5_covered(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void dinghy_slide_track_right_quarter_turn_5_covered(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     static const sprite_bb imageIds[4][5] = {
         {
@@ -1286,13 +1286,13 @@ static void dinghy_slide_track_right_quarter_turn_5_covered(uint8 rideIndex, uin
     paint_util_set_general_support_height(height + 32, 0x20);
 }
 
-static void dinghy_slide_track_left_quarter_turn_5_covered(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void dinghy_slide_track_left_quarter_turn_5_covered(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-    dinghy_slide_track_right_quarter_turn_5_covered(rideIndex, trackSequence, (direction + 1) % 4, height, mapElement);
+    dinghy_slide_track_right_quarter_turn_5_covered(session, rideIndex, trackSequence, (direction + 1) % 4, height, mapElement);
 }
 
-static void dinghy_slide_track_s_bend_left_covered(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void dinghy_slide_track_s_bend_left_covered(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     static const uint32 imageIds[4][4][2] =
     {
@@ -1364,7 +1364,7 @@ static void dinghy_slide_track_s_bend_left_covered(uint8 rideIndex, uint8 trackS
     paint_util_set_general_support_height(height + 32, 0x20);
 }
 
-static void dinghy_slide_track_s_bend_right_covered(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void dinghy_slide_track_s_bend_right_covered(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     static const uint32 imageIds[4][4][2] =
     {
@@ -1436,7 +1436,7 @@ static void dinghy_slide_track_s_bend_right_covered(uint8 rideIndex, uint8 track
     paint_util_set_general_support_height(height + 32, 0x20);
 }
 
-static void dinghy_slide_track_right_quarter_turn_3_covered(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void dinghy_slide_track_right_quarter_turn_3_covered(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     static const sprite_bb imageIds[4][3] = {
         {
@@ -1505,15 +1505,15 @@ static void dinghy_slide_track_right_quarter_turn_3_covered(uint8 rideIndex, uin
     paint_util_set_general_support_height(height + 32, 0x20);
 }
 
-static void dinghy_slide_track_left_quarter_turn_3_covered(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void dinghy_slide_track_left_quarter_turn_3_covered(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    dinghy_slide_track_right_quarter_turn_3_covered(rideIndex, trackSequence, (direction + 1) % 4, height, mapElement);
+    dinghy_slide_track_right_quarter_turn_3_covered(session, rideIndex, trackSequence, (direction + 1) % 4, height, mapElement);
 }
 
-static void dinghy_slide_track_60_deg_down_to_25_deg_down_covered(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void dinghy_slide_track_60_deg_down_to_25_deg_down_covered(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
-    dinghy_slide_track_25_deg_up_to_60_deg_up_covered(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
+    dinghy_slide_track_25_deg_up_to_60_deg_up_covered(session, rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
 }
 
 TRACK_PAINT_FUNCTION get_track_paint_function_dinghy_slide(sint32 trackType, sint32 direction)

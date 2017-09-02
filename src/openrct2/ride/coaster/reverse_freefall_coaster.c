@@ -204,7 +204,7 @@ static const uint32 reverse_freefall_rc_track_pieces_vertical_supports[4] = {
     SPR_REVERSE_FREEFALL_RC_VERTICAL_SUPPORTS_SE_NW,
 };
 
-static void paint_reverse_freefall_rc_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element *mapElement)
+static void paint_reverse_freefall_rc_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element *mapElement)
 {
     if (direction & 1) {
         uint32 imageId = SPR_REVERSE_FREEFALL_RC_FLAT_NW_SE | gTrackColours[SCHEME_TRACK];
@@ -221,7 +221,7 @@ static void paint_reverse_freefall_rc_flat(uint8 rideIndex, uint8 trackSequence,
     paint_util_set_general_support_height(height + 32, 0x20);
 }
 
-static void paint_reverse_freefall_rc_station(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element *mapElement)
+static void paint_reverse_freefall_rc_station(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element *mapElement)
 {
     rct_ride * ride = get_ride(rideIndex);
     const rct_ride_entrance_definition * entranceStyle = &RideEntranceDefinitions[ride->entrance_style];
@@ -260,7 +260,7 @@ static void paint_reverse_freefall_rc_station(uint8 rideIndex, uint8 trackSequen
     paint_util_set_general_support_height(height + 32, 0x20);
 }
 
-static void paint_reverse_freefall_rc_slope(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element *mapElement)
+static void paint_reverse_freefall_rc_slope(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element *mapElement)
 {
     TESTPAINT_IGNORE_ALL();
 
@@ -331,7 +331,7 @@ static void paint_reverse_freefall_rc_slope(uint8 rideIndex, uint8 trackSequence
     }
 }
 
-static void paint_reverse_freefall_rc_vertical(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element *mapElement)
+static void paint_reverse_freefall_rc_vertical(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element *mapElement)
 {
     uint32 supportsImageId, trackImageId;
     switch (trackSequence) {

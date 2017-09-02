@@ -84,7 +84,7 @@ static void paint_space_rings_structure(rct_ride * ride, uint8 direction,  uint3
 }
 
 /** rct2: 0x00767C40 */
-static void paint_space_rings(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void paint_space_rings(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     trackSequence = track_map_3x3[direction][trackSequence];
 

@@ -461,7 +461,7 @@ static bool mini_golf_paint_util_should_draw_fence(rct_map_element * mapElement)
 }
 
 /** rct2: 0x0087F10C */
-static void paint_mini_golf_track_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void paint_mini_golf_track_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     uint32 imageId;
 
@@ -498,7 +498,7 @@ static void paint_mini_golf_track_flat(uint8 rideIndex, uint8 trackSequence, uin
 }
 
 /** rct2: 0x0087F11C */
-static void paint_mini_golf_track_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void paint_mini_golf_track_25_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     uint32 imageId;
 
@@ -533,7 +533,7 @@ static void paint_mini_golf_track_25_deg_up(uint8 rideIndex, uint8 trackSequence
 }
 
 /** rct2: 0x0087F12C */
-static void paint_mini_golf_track_flat_to_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void paint_mini_golf_track_flat_to_25_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     uint32 imageId;
 
@@ -568,7 +568,7 @@ static void paint_mini_golf_track_flat_to_25_deg_up(uint8 rideIndex, uint8 track
 }
 
 /** rct2: 0x0087F13C */
-static void paint_mini_golf_track_25_deg_up_to_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void paint_mini_golf_track_25_deg_up_to_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     uint32 imageId;
 
@@ -603,25 +603,25 @@ static void paint_mini_golf_track_25_deg_up_to_flat(uint8 rideIndex, uint8 track
 }
 
 /** rct2: 0x0087F14C */
-static void paint_mini_golf_track_25_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void paint_mini_golf_track_25_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
-    paint_mini_golf_track_25_deg_up(rideIndex, trackSequence, (direction + 2) % 4, height, mapElement);
+    paint_mini_golf_track_25_deg_up(session, rideIndex, trackSequence, (direction + 2) % 4, height, mapElement);
 }
 
 /** rct2: 0x0087F15C */
-static void paint_mini_golf_track_flat_to_25_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void paint_mini_golf_track_flat_to_25_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
-    paint_mini_golf_track_25_deg_up_to_flat(rideIndex, trackSequence, (direction + 2) % 4, height, mapElement);
+    paint_mini_golf_track_25_deg_up_to_flat(session, rideIndex, trackSequence, (direction + 2) % 4, height, mapElement);
 }
 
 /** rct2: 0x0087F16C */
-static void paint_mini_golf_track_25_deg_down_to_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void paint_mini_golf_track_25_deg_down_to_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
-    paint_mini_golf_track_flat_to_25_deg_up(rideIndex, trackSequence, (direction + 2) % 4, height, mapElement);
+    paint_mini_golf_track_flat_to_25_deg_up(session, rideIndex, trackSequence, (direction + 2) % 4, height, mapElement);
 }
 
 /** rct2: 0x0087F17C, 0x0087F18C, 0x0087F19C */
-static void paint_mini_golf_station(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void paint_mini_golf_station(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     rct_xy16 position = gPaintSession.MapPosition;
     rct_ride * ride = get_ride(rideIndex);
@@ -676,7 +676,7 @@ static void paint_mini_golf_station(uint8 rideIndex, uint8 trackSequence, uint8 
 }
 
 /** rct2: 0x0087F1AC */
-static void paint_mini_golf_track_left_quarter_turn_1_tile(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void paint_mini_golf_track_left_quarter_turn_1_tile(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     uint32 imageId;
 
@@ -743,9 +743,9 @@ static void paint_mini_golf_track_left_quarter_turn_1_tile(uint8 rideIndex, uint
 }
 
 /** rct2: 0x0087F1BC */
-static void paint_mini_golf_track_right_quarter_turn_1_tile(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void paint_mini_golf_track_right_quarter_turn_1_tile(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
-    paint_mini_golf_track_left_quarter_turn_1_tile(rideIndex, trackSequence, (direction + 3) % 4, height, mapElement);
+    paint_mini_golf_track_left_quarter_turn_1_tile(session, rideIndex, trackSequence, (direction + 3) % 4, height, mapElement);
 }
 
 static void paint_mini_golf_hole_ab(uint8 trackSequence, uint8 direction, sint32 height, const uint32 sprites[4][2][2])
@@ -782,19 +782,19 @@ static void paint_mini_golf_hole_ab(uint8 trackSequence, uint8 direction, sint32
 }
 
 /** rct2: 0x0087F1CC */
-static void paint_mini_golf_hole_a(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void paint_mini_golf_hole_a(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     paint_mini_golf_hole_ab(trackSequence, direction, height, mini_golf_track_sprites_hole_a);
 }
 
 /** rct2: 0x0087F1DC */
-static void paint_mini_golf_hole_b(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void paint_mini_golf_hole_b(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     paint_mini_golf_hole_ab(trackSequence, direction, height, mini_golf_track_sprites_hole_b);
 }
 
 /** rct2: 0x0087F1EC */
-static void paint_mini_golf_hole_c(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void paint_mini_golf_hole_c(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     uint32 imageId;
 
@@ -841,7 +841,7 @@ static void paint_mini_golf_hole_c(uint8 rideIndex, uint8 trackSequence, uint8 d
 }
 
 /** rct2: 0x0087F1FC */
-static void paint_mini_golf_hole_d(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void paint_mini_golf_hole_d(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     uint32 imageId;
 
@@ -907,7 +907,7 @@ static void paint_mini_golf_hole_d(uint8 rideIndex, uint8 trackSequence, uint8 d
 }
 
 /** rct2: 0x0087F1FC */
-static void paint_mini_golf_hole_e(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void paint_mini_golf_hole_e(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     uint32 imageId;
 

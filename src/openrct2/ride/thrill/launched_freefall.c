@@ -84,7 +84,7 @@ void vehicle_visual_launched_freefall(paint_session * session, sint32 x, sint32 
 }
 
 /** rct2: 0x006FD1F8 */
-static void paint_launched_freefall_base(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void paint_launched_freefall_base(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     trackSequence = track_map_3x3[direction][trackSequence];
 
@@ -134,7 +134,7 @@ static void paint_launched_freefall_base(uint8 rideIndex, uint8 trackSequence, u
 }
 
 /** rct2: 0x006FD208 */
-static void paint_launched_freefall_tower_section(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void paint_launched_freefall_tower_section(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     if (trackSequence == 1) {
         return;

@@ -84,7 +84,7 @@ void vehicle_visual_roto_drop(paint_session * session, sint32 x, sint32 imageDir
 }
 
 /** rct2: 0x00886194 */
-static void paint_roto_drop_base(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void paint_roto_drop_base(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     trackSequence = track_map_3x3[direction][trackSequence];
 
@@ -138,7 +138,7 @@ static void paint_roto_drop_base(uint8 rideIndex, uint8 trackSequence, uint8 dir
 }
 
 /** rct2: 0x008861A4 */
-static void paint_roto_drop_tower_section(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void paint_roto_drop_tower_section(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     if (trackSequence == 1) {
         return;

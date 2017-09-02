@@ -128,7 +128,7 @@ static void paint_ferris_wheel_structure(uint8 rideIndex, uint8 direction, sint8
 /**
  * rct2: 0x008A8EC4
  */
-static void paint_ferris_wheel(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void paint_ferris_wheel(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     uint8 relativeTrackSequence = track_map_1x4[direction][trackSequence];
 

@@ -39,7 +39,7 @@ static const uint32 flying_saucers_fence_sprites[] = {
 /**
  * rct2: 0x008873D8
  */
-static void paint_flying_saucers(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void paint_flying_saucers(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     uint8 relativeTrackSequence = track_map_4x4[direction][trackSequence];
 

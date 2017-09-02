@@ -308,7 +308,7 @@ void track_paint_util_right_vertical_loop_segments(uint8 direction, uint8 trackS
 
 void track_paint_util_left_corkscrew_up_supports(uint8 direction, uint16 height);
 
-typedef void (*TRACK_PAINT_FUNCTION)(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element* mapElement);
+typedef void (*TRACK_PAINT_FUNCTION)(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element* mapElement);
 typedef TRACK_PAINT_FUNCTION (*TRACK_PAINT_FUNCTION_GETTER)(sint32 trackType, sint32 direction);
 
 TRACK_PAINT_FUNCTION get_track_paint_function_stand_up_rc(sint32 trackType, sint32 direction);

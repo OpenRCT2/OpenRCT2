@@ -51,7 +51,7 @@ enum {
     SPIRAL_SLIDE_PEEP = 20568, // 46 sprites per direction
 };
 
-static void spiral_slide_paint_tile_right(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement) {
+static void spiral_slide_paint_tile_right(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement) {
     uint32 image_id = 0;
 
     if (direction == 0) image_id = SPIRAL_SLIDE_RIGHT_R0 | gTrackColours[SCHEME_TRACK];
@@ -63,7 +63,7 @@ static void spiral_slide_paint_tile_right(uint8 rideIndex, uint8 trackSequence, 
 
 }
 
-static void spiral_slide_paint_tile_left(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement) {
+static void spiral_slide_paint_tile_left(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement) {
     uint32 image_id = 0;
 
     if (direction == 0) image_id = SPIRAL_SLIDE_LEFT_R0 | gTrackColours[SCHEME_TRACK];
@@ -74,7 +74,7 @@ static void spiral_slide_paint_tile_left(uint8 rideIndex, uint8 trackSequence, u
     sub_98197C(image_id, 16, 16, 16, 16, 108, height, 0, 16, height + 3, get_current_rotation());
 }
 
-static void spiral_slide_paint_tile_front(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement) {
+static void spiral_slide_paint_tile_front(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement) {
     uint32 image_id = 0;
 
     rct_ride *ride = get_ride(rideIndex);
@@ -161,7 +161,7 @@ static const uint32 spiral_slide_fence_sprites[] = {
 /**
  * rct: 0x007485C8
  */
-static void paint_spiral_slide(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element *mapElement) {
+static void paint_spiral_slide(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element *mapElement) {
     trackSequence = track_map_2x2[direction][trackSequence];
 
     sint32 edges = edges_2x2[trackSequence];
@@ -177,9 +177,9 @@ static void paint_spiral_slide(uint8 rideIndex, uint8 trackSequence, uint8 direc
     track_paint_util_paint_fences(edges, position, mapElement, ride, gTrackColours[SCHEME_TRACK], height, spiral_slide_fence_sprites, get_current_rotation());
 
     switch (trackSequence) {
-        case 1: spiral_slide_paint_tile_right(rideIndex, trackSequence, direction, height, mapElement); break;
-        case 2: spiral_slide_paint_tile_left(rideIndex, trackSequence, direction, height, mapElement); break;
-        case 3: spiral_slide_paint_tile_front(rideIndex, trackSequence, direction, height, mapElement); break;
+        case 1: spiral_slide_paint_tile_right(session, rideIndex, trackSequence, direction, height, mapElement); break;
+        case 2: spiral_slide_paint_tile_left(session, rideIndex, trackSequence, direction, height, mapElement); break;
+        case 3: spiral_slide_paint_tile_front(session, rideIndex, trackSequence, direction, height, mapElement); break;
     }
 
     paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
