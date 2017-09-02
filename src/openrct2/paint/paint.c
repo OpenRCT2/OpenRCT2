@@ -63,7 +63,7 @@ static void paint_ps_image_with_bounding_boxes(rct_drawpixelinfo * dpi, paint_st
 static void paint_ps_image(rct_drawpixelinfo * dpi, paint_struct * ps, uint32 imageId, sint16 x, sint16 y);
 static uint32 paint_ps_colourify_image(uint32 imageId, uint8 spriteType, uint32 viewFlags);
 
-static void paint_session_init(paint_session * session, rct_drawpixelinfo * dpi)
+void paint_session_init(paint_session * session, rct_drawpixelinfo * dpi)
 {
     memset(session, 0, sizeof(paint_session));
     session->Unk140E9A8 = dpi;
@@ -79,15 +79,6 @@ static void paint_session_init(paint_session * session, rct_drawpixelinfo * dpi)
     session->PSStringHead = NULL;
     session->LastPSString = NULL;
     session->WoodenSupportsPrependTo = NULL;
-}
-
-/**
- *
- *  rct2: 0x0068615B
- */
-void paint_init(rct_drawpixelinfo * dpi)
-{
-    paint_session_init(&gPaintSession, dpi);
 }
 
 static void paint_session_add_ps_to_quadrant(paint_session * session, paint_struct * ps, sint32 positionHash)
@@ -308,7 +299,7 @@ paint_struct * sub_98196C(
     ps->var_29 = 0;
     ps->map_x = session->MapPosition.x;
     ps->map_y = session->MapPosition.y;
-    ps->mapElement = gPaintSession.CurrentlyDrawnItem;
+    ps->mapElement = session->CurrentlyDrawnItem;
 
     session->UnkF1AD28 = ps;
 
@@ -629,8 +620,9 @@ void paint_floating_money_effect(money32 amount, rct_string_id string_id, sint16
  *
  *  rct2: 0x0068B6C2
  */
-void paint_generate_structs(rct_drawpixelinfo * dpi)
+void paint_session_generate(paint_session * session)
 {
+    rct_drawpixelinfo * dpi = session->Unk140E9A8;
     rct_xy16 mapTile = {
         .x = dpi->x & 0xFFE0,
         .y = (dpi->y - 16) & 0xFFE0
@@ -649,12 +641,12 @@ void paint_generate_structs(rct_drawpixelinfo * dpi)
         mapTile.y &= 0xFFE0;
 
         for (; num_vertical_quadrants > 0; --num_vertical_quadrants){
-            map_element_paint_setup(mapTile.x, mapTile.y);
+            map_element_paint_setup(session, mapTile.x, mapTile.y);
             sprite_paint_setup(mapTile.x, mapTile.y);
 
             sprite_paint_setup(mapTile.x - 32, mapTile.y + 32);
 
-            map_element_paint_setup(mapTile.x, mapTile.y + 32);
+            map_element_paint_setup(session, mapTile.x, mapTile.y + 32);
             sprite_paint_setup(mapTile.x, mapTile.y + 32);
 
             mapTile.x += 32;
@@ -671,12 +663,12 @@ void paint_generate_structs(rct_drawpixelinfo * dpi)
         mapTile.y &= 0xFFE0;
 
         for (; num_vertical_quadrants > 0; --num_vertical_quadrants){
-            map_element_paint_setup(mapTile.x, mapTile.y);
+            map_element_paint_setup(session, mapTile.x, mapTile.y);
             sprite_paint_setup(mapTile.x, mapTile.y);
 
             sprite_paint_setup(mapTile.x - 32, mapTile.y - 32);
 
-            map_element_paint_setup(mapTile.x - 32, mapTile.y);
+            map_element_paint_setup(session, mapTile.x - 32, mapTile.y);
             sprite_paint_setup(mapTile.x - 32, mapTile.y);
 
             mapTile.y += 32;
@@ -693,12 +685,12 @@ void paint_generate_structs(rct_drawpixelinfo * dpi)
         mapTile.y &= 0xFFE0;
 
         for (; num_vertical_quadrants > 0; --num_vertical_quadrants){
-            map_element_paint_setup(mapTile.x, mapTile.y);
+            map_element_paint_setup(session, mapTile.x, mapTile.y);
             sprite_paint_setup(mapTile.x, mapTile.y);
 
             sprite_paint_setup(mapTile.x + 32, mapTile.y - 32);
 
-            map_element_paint_setup(mapTile.x, mapTile.y - 32);
+            map_element_paint_setup(session, mapTile.x, mapTile.y - 32);
             sprite_paint_setup(mapTile.x, mapTile.y - 32);
 
             mapTile.x -= 32;
@@ -716,12 +708,12 @@ void paint_generate_structs(rct_drawpixelinfo * dpi)
         mapTile.y &= 0xFFE0;
 
         for (; num_vertical_quadrants > 0; --num_vertical_quadrants){
-            map_element_paint_setup(mapTile.x, mapTile.y);
+            map_element_paint_setup(session, mapTile.x, mapTile.y);
             sprite_paint_setup(mapTile.x, mapTile.y);
 
             sprite_paint_setup(mapTile.x + 32, mapTile.y + 32);
 
-            map_element_paint_setup(mapTile.x + 32, mapTile.y);
+            map_element_paint_setup(session, mapTile.x + 32, mapTile.y);
             sprite_paint_setup(mapTile.x + 32, mapTile.y);
 
             mapTile.y -= 32;
@@ -850,7 +842,7 @@ paint_struct * paint_arrange_structs_helper(paint_struct * ps_next, uint16 quadr
  *
  *  rct2: 0x00688217
  */
-static paint_struct paint_session_arrange_structs(paint_session * session)
+paint_struct paint_session_arrange(paint_session * session)
 {
     paint_struct psHead = { 0 };
     paint_struct * ps = &psHead;
@@ -876,11 +868,6 @@ static paint_struct paint_session_arrange_structs(paint_session * session)
         }
     }
     return psHead;
-}
-
-paint_struct paint_arrange_structs()
-{
-    return paint_session_arrange_structs(&gPaintSession);
 }
 
 /**

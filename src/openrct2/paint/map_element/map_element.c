@@ -45,7 +45,7 @@ const sint32 SEGMENTS_ALL = SEGMENT_B4 | SEGMENT_B8 | SEGMENT_BC | SEGMENT_C0 | 
  *
  *  rct2: 0x0068B35F
  */
-void map_element_paint_setup(sint32 x, sint32 y)
+void map_element_paint_setup(paint_session * session, sint32 x, sint32 y)
 {
     if (
         x < gMapSizeUnits &&
@@ -55,8 +55,8 @@ void map_element_paint_setup(sint32 x, sint32 y)
     ) {
         paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
         paint_util_force_set_general_support_height(-1, 0);
-        gPaintSession.Unk141E9DB = 0;
-        gPaintSession.Unk141E9DC = 0xFFFF;
+        session->Unk141E9DB = 0;
+        session->Unk141E9DC = 0xFFFF;
 
         sub_68B3FB(x, y);
     } else {

@@ -2347,7 +2347,7 @@ static void sub_6CBCE2(
     gCurrentViewportFlags = 0;
     trackDirection &= 3;
 
-    paint_init(gPaintSession.Unk140E9A8);
+    paint_session_init(&gPaintSession, gPaintSession.Unk140E9A8);
 
     ride = get_ride(rideIndex);
 
@@ -2450,7 +2450,7 @@ static void sub_6CBCE2(
     gMapSize = preserveMapSize;
     gMapSizeMaxXY = preserveMapSizeMaxXY;
 
-    paint_struct ps = paint_arrange_structs();
+    paint_struct ps = paint_session_arrange(&gPaintSession);
     paint_draw_structs(gPaintSession.Unk140E9A8, &ps, gCurrentViewportFlags);
 
     gCurrentViewportFlags = preserve_current_viewport_flags;
