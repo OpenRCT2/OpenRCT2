@@ -109,7 +109,7 @@ static sint32 div_to_minus_infinity(sint32 a, sint32 b) {
     return (a / b) - (a % b < 0);
 }
 
-static void scenery_multiple_sign_paint_line(const utf8 *str, rct_large_scenery_text *text, sint32 textImage, sint32 textColour, uint8 direction, sint32 y_offset)
+static void scenery_multiple_sign_paint_line(paint_session * session, const utf8 *str, rct_large_scenery_text *text, sint32 textImage, sint32 textColour, uint8 direction, sint32 y_offset)
 {
     const utf8 *fitStr = scenery_multiple_sign_fit_text(str, text, false);
     sint32 width = scenery_multiple_sign_text_width(fitStr, text);
@@ -141,12 +141,12 @@ static void scenery_multiple_sign_paint_line(const utf8 *str, rct_large_scenery_
         }
         sint32 image_id = (textImage + glyph_offset + glyph_type) | textColour;
         if (direction == 3) {
-            paint_attach_to_previous_ps(image_id, x_offset, -div_to_minus_infinity(acc, 2));
+            paint_attach_to_previous_ps(session, image_id, x_offset, -div_to_minus_infinity(acc, 2));
         } else {
             if (text->flags & LARGE_SCENERY_TEXT_FLAG_VERTICAL) {
-                paint_attach_to_previous_ps(image_id, x_offset, div_to_minus_infinity(acc, 2));
+                paint_attach_to_previous_ps(session, image_id, x_offset, div_to_minus_infinity(acc, 2));
             } else {
-                paint_attach_to_previous_attach(image_id, x_offset, div_to_minus_infinity(acc, 2));
+                paint_attach_to_previous_attach(session, image_id, x_offset, div_to_minus_infinity(acc, 2));
             }
         }
         x_offset += scenery_multiple_sign_get_glyph(text, codepoint)->width;
@@ -280,7 +280,7 @@ void scenery_multiple_paint(paint_session * session, uint8 direction, uint16 hei
             while ((codepoint = utf8_get_next(fitStrPtr, &fitStrPtr)) != 0) {
                 utf8 str[5] = {0};
                 utf8_write_codepoint(str, codepoint);
-                scenery_multiple_sign_paint_line(str, entry->large_scenery.text, entry->large_scenery.text_image, textColour, direction, y_offset - height2);
+                scenery_multiple_sign_paint_line(session, str, entry->large_scenery.text, entry->large_scenery.text_image, textColour, direction, y_offset - height2);
                 y_offset += scenery_multiple_sign_get_glyph(text, codepoint)->height * 2;
             }
         } else {
@@ -311,15 +311,15 @@ void scenery_multiple_paint(paint_session * session, uint8 direction, uint16 hei
                             *spacedst = 0;
                             src = spacesrc;
                         }
-                        scenery_multiple_sign_paint_line(str1, entry->large_scenery.text, entry->large_scenery.text_image, textColour, direction, y_offset);
+                        scenery_multiple_sign_paint_line(session, str1, entry->large_scenery.text, entry->large_scenery.text_image, textColour, direction, y_offset);
                         y_offset += (scenery_multiple_sign_get_glyph(text, 'A')->height + 1) * 2;
                     }
                 } else {
-                    scenery_multiple_sign_paint_line(signString, entry->large_scenery.text, entry->large_scenery.text_image, textColour, direction, y_offset);
+                    scenery_multiple_sign_paint_line(session, signString, entry->large_scenery.text, entry->large_scenery.text_image, textColour, direction, y_offset);
                 }
             } else {
                 // Draw one-line sign:
-                scenery_multiple_sign_paint_line(signString, entry->large_scenery.text, entry->large_scenery.text_image, textColour, direction, y_offset);
+                scenery_multiple_sign_paint_line(session, signString, entry->large_scenery.text, entry->large_scenery.text_image, textColour, direction, y_offset);
             }
         }
         return;

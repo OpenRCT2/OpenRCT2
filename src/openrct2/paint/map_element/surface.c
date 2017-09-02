@@ -445,7 +445,7 @@ static void viewport_surface_smoothen_edge(paint_session * session, enum edge_t 
 
     uint32 image_id = maskImageBase + byte_97B444[self.slope];
 
-    if (paint_attach_to_previous_ps(image_id, 0, 0)) {
+    if (paint_attach_to_previous_ps(session, image_id, 0, 0)) {
         attached_paint_struct * out = session->UnkF1AD2C;
         // set content and enable masking
         out->colour_image_id = dword_97B804[neighbour.terrain] + cl;
@@ -456,7 +456,7 @@ static void viewport_surface_smoothen_edge(paint_session * session, enum edge_t 
 /**
  * rct2: 0x0065F63B, 0x0065F77D
  */
-static void viewport_surface_draw_land_side_top(enum edge_t edge, uint8 height, uint8 terrain, struct tile_descriptor self, struct tile_descriptor neighbour)
+static void viewport_surface_draw_land_side_top(paint_session * session, enum edge_t edge, uint8 height, uint8 terrain, struct tile_descriptor self, struct tile_descriptor neighbour)
 {
     registers regs;
 
@@ -509,7 +509,7 @@ static void viewport_surface_draw_land_side_top(enum edge_t edge, uint8 height, 
 
         uint32 image_id = _terrainEdgeSpriteIds[terrain][3] + (edge == EDGE_TOPLEFT ? 3 : 0) + incline; // var_c;
         sint16 y = (regs.dl - regs.al) * 16;
-        paint_attach_to_previous_ps(image_id, 0, y);
+        paint_attach_to_previous_ps(session, image_id, 0, y);
         return;
     }
 
@@ -1165,7 +1165,7 @@ void surface_paint(paint_session * session, uint8 direction, uint16 height, rct_
 
             image_id |= SPR_TERRAIN_SELECTION_PATROL_AREA + byte_97B444[surfaceShape];
             image_id |= patrolColour << 19;
-            paint_attach_to_previous_ps(image_id, 0, 0);
+            paint_attach_to_previous_ps(session, image_id, 0, 0);
         }
     }
 
@@ -1191,7 +1191,7 @@ void surface_paint(paint_session * session, uint8 direction, uint16 height, rct_
         // loc_660E9A:
         if (mapElement->properties.surface.ownership & OWNERSHIP_OWNED) {
             assert(surfaceShape < countof(byte_97B444));
-            paint_attach_to_previous_ps(SPR_TERRAIN_SELECTION_SQUARE + byte_97B444[surfaceShape], 0, 0);
+            paint_attach_to_previous_ps(session, SPR_TERRAIN_SELECTION_SQUARE + byte_97B444[surfaceShape], 0, 0);
         } else if (mapElement->properties.surface.ownership & OWNERSHIP_AVAILABLE) {
             rct_xy16 pos = session->MapPosition;
             paint_struct * backup = session->UnkF1AD28;
@@ -1205,7 +1205,7 @@ void surface_paint(paint_session * session, uint8 direction, uint16 height, rct_
         && !(mapElement->properties.surface.ownership & OWNERSHIP_OWNED)) {
         if (mapElement->properties.surface.ownership & OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED) {
             assert(surfaceShape < countof(byte_97B444));
-            paint_attach_to_previous_ps(SPR_TERRAIN_SELECTION_DOTTED + byte_97B444[surfaceShape], 0, 0);
+            paint_attach_to_previous_ps(session, SPR_TERRAIN_SELECTION_DOTTED + byte_97B444[surfaceShape], 0, 0);
         } else if (mapElement->properties.surface.ownership & OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE) {
             paint_struct * backup = session->UnkF1AD28;
             rct_xy16 pos = session->MapPosition;
@@ -1233,13 +1233,13 @@ void surface_paint(paint_session * session, uint8 direction, uint16 height, rct_
                 // loc_661089:
                 uint32 eax = ((((mapSelectionType - 9) + rotation) & 3) + 0x21) << 19;
                 uint32 image_id = (SPR_TERRAIN_SELECTION_EDGE + byte_97B444[surfaceShape]) | eax | IMAGE_TYPE_REMAP;
-                paint_attach_to_previous_ps(image_id, 0, 0);
+                paint_attach_to_previous_ps(session, image_id, 0, 0);
             } else if (mapSelectionType >= MAP_SELECT_TYPE_QUARTER_0) {
                 // loc_661051:(no jump)
                 // Selection split into four quarter segments
                 uint32 eax = ((((mapSelectionType - MAP_SELECT_TYPE_QUARTER_0) + rotation) & 3) + 0x27) << 19;
                 uint32 image_id = (SPR_TERRAIN_SELECTION_QUARTER + byte_97B444[surfaceShape]) | eax | IMAGE_TYPE_REMAP;
-                paint_attach_to_previous_ps(image_id, 0, 0);
+                paint_attach_to_previous_ps(session, image_id, 0, 0);
             } else if (mapSelectionType <= MAP_SELECT_TYPE_FULL) {
                 // Corners
                 uint32 eax = mapSelectionType;
@@ -1249,7 +1249,7 @@ void surface_paint(paint_session * session, uint8 direction, uint16 height, rct_
 
                 eax = (eax + 0x21) << 19;
                 uint32 image_id = (SPR_TERRAIN_SELECTION_CORNER + byte_97B444[surfaceShape]) | eax | IMAGE_TYPE_REMAP;
-                paint_attach_to_previous_ps(image_id, 0, 0);
+                paint_attach_to_previous_ps(session, image_id, 0, 0);
             } else {
                 sint32 local_surfaceShape = surfaceShape;
                 sint32 local_height = height;
@@ -1298,7 +1298,7 @@ void surface_paint(paint_session * session, uint8 direction, uint16 height, rct_
             }
 
             uint32 image_id = (SPR_TERRAIN_SELECTION_CORNER + byte_97B444[surfaceShape]) | colours | IMAGE_TYPE_REMAP;
-            paint_attach_to_previous_ps(image_id, 0, 0);
+            paint_attach_to_previous_ps(session, image_id, 0, 0);
             break;
         }
     }
@@ -1325,7 +1325,7 @@ void surface_paint(paint_session * session, uint8 direction, uint16 height, rct_
             base_image = byte_97B84A[terrain_type];
         }
         uint32 image_id = dword_97B7C8[base_image] + image_offset;
-        paint_attach_to_previous_ps(image_id, 0, 0);
+        paint_attach_to_previous_ps(session, image_id, 0, 0);
     }
 
     if (!(gCurrentViewportFlags & VIEWPORT_FLAG_HIDE_VERTICAL)) {
@@ -1352,8 +1352,8 @@ void surface_paint(paint_session * session, uint8 direction, uint16 height, rct_
         memcpy(backupRightTunnels, session->RightTunnels, sizeof(tunnel_entry) * TUNNEL_MAX_COUNT);
 #endif
 
-        viewport_surface_draw_land_side_top(EDGE_TOPLEFT, height / 16, eax / 32, tileDescriptors[0], tileDescriptors[3]);
-        viewport_surface_draw_land_side_top(EDGE_TOPRIGHT, height / 16, eax / 32, tileDescriptors[0], tileDescriptors[4]);
+        viewport_surface_draw_land_side_top(session, EDGE_TOPLEFT, height / 16, eax / 32, tileDescriptors[0], tileDescriptors[3]);
+        viewport_surface_draw_land_side_top(session, EDGE_TOPRIGHT, height / 16, eax / 32, tileDescriptors[0], tileDescriptors[4]);
         viewport_surface_draw_land_side_bottom(session, EDGE_BOTTOMLEFT, height / 16, eax / 32, tileDescriptors[0], tileDescriptors[1]);
         viewport_surface_draw_land_side_bottom(session, EDGE_BOTTOMRIGHT, height / 16, eax / 32, tileDescriptors[0], tileDescriptors[2]);
 
@@ -1389,7 +1389,7 @@ void surface_paint(paint_session * session, uint8 direction, uint16 height, rct_
             sint32 image_id = (SPR_WATER_MASK + image_offset) | IMAGE_TYPE_REMAP | IMAGE_TYPE_TRANSPARENT | PALETTE_WATER << 19;
             sub_98196C(image_id, 0, 0, 32, 32, -1, waterHeight, rotation);
 
-            paint_attach_to_previous_ps(SPR_WATER_OVERLAY + image_offset, 0, 0);
+            paint_attach_to_previous_ps(session, SPR_WATER_OVERLAY + image_offset, 0, 0);
 
             // This wasn't in the original, but the code depended on globals that were only set in a different conditional
             uint8 al_edgeStyle = mapElement->properties.surface.slope & 0xE0;

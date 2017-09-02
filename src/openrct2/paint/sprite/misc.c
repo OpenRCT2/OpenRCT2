@@ -58,7 +58,7 @@ void misc_paint(paint_session * session, rct_sprite *misc, sint32 imageDirection
             rct_money_effect * moneyEffect = &misc->money_effect;
             money32 value;
             rct_string_id stringId = money_effect_get_string_id(moneyEffect, &value);
-            paint_floating_money_effect(value, stringId, moneyEffect->y, moneyEffect->z, (sint8 *) &money_wave[moneyEffect->wiggle % 22], moneyEffect->offset_x, get_current_rotation());
+            paint_floating_money_effect(session, value, stringId, moneyEffect->y, moneyEffect->z, (sint8 *) &money_wave[moneyEffect->wiggle % 22], moneyEffect->offset_x, get_current_rotation());
             break;
         }
 

@@ -43,7 +43,7 @@ static void paint_dodgems_roof(sint32 height, sint32 offset)
     sub_98196C(image_id, 0, 0, 32, 32, 2, height, get_current_rotation());
 
     image_id = (SPR_DODGEMS_ROOF_GLASS + offset) | (PALETTE_DARKEN_3 << 19) | IMAGE_TYPE_TRANSPARENT;
-    paint_attach_to_previous_ps(image_id, 0, 0);
+    paint_attach_to_previous_ps(&gPaintSession, image_id, 0, 0);
 }
 
 static void paint_dodgems(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)

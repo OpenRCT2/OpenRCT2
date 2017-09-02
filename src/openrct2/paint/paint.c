@@ -520,12 +520,10 @@ paint_struct * sub_98199C(
  * @param y (cx)
  * @return (!CF) success
  */
-bool paint_attach_to_previous_attach(uint32 image_id, uint16 x, uint16 y)
+bool paint_attach_to_previous_attach(paint_session * session, uint32 image_id, uint16 x, uint16 y)
 {
-    paint_session * session = &gPaintSession;
-
     if (session->UnkF1AD2C == NULL) {
-        return paint_attach_to_previous_ps(image_id, x, y);
+        return paint_attach_to_previous_ps(session, image_id, x, y);
     }
 
     if (session->NextFreePaintStruct >= session->EndOfPaintStructArray) {
@@ -557,10 +555,8 @@ bool paint_attach_to_previous_attach(uint32 image_id, uint16 x, uint16 y)
  * @param y (cx)
  * @return (!CF) success
  */
-bool paint_attach_to_previous_ps(uint32 image_id, uint16 x, uint16 y)
+bool paint_attach_to_previous_ps(paint_session * session, uint32 image_id, uint16 x, uint16 y)
 {
-    paint_session * session = &gPaintSession;
-
     if (session->NextFreePaintStruct >= session->EndOfPaintStructArray) {
         return false;
     }
@@ -598,10 +594,8 @@ bool paint_attach_to_previous_ps(uint32 image_id, uint16 x, uint16 y)
  * @param y_offsets (di)
  * @param rotation (ebp)
  */
-void paint_floating_money_effect(money32 amount, rct_string_id string_id, sint16 y, sint16 z, sint8 y_offsets[], sint16 offset_x, uint32 rotation)
+void paint_floating_money_effect(paint_session * session, money32 amount, rct_string_id string_id, sint16 y, sint16 z, sint8 y_offsets[], sint16 offset_x, uint32 rotation)
 {
-    paint_session * session = &gPaintSession;
-
     if (session->NextFreePaintStruct >= session->EndOfPaintStructArray) {
         return;
     }
