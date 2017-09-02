@@ -26,6 +26,8 @@ extern "C" {
 #include <openrct2/sprites.h>
 }
 
+paint_session gPaintSession;
+
 static bool _woodenSupports = false;
 static uint8 _callCount = 0;
 static function_call _calls[256] = {0};
@@ -42,9 +44,9 @@ namespace PaintIntercept {
     static uint8 InterceptPaint9C(registers *regs);
     static uint8 InterceptPaintFull(uint8 function, registers *regs);
 
-    bool PaintMetalSupports(uint8 function, int supportType, uint8 segment, int special, int height, uint32 imageColourFlags);
-    bool PaintWoodenSupports(uint8 function, int supportType, int special, int height, uint32 imageColourFlags, bool *underground);
-    static void CheckSegmentSupportHeight();
+    bool PaintMetalSupports(uint8 function, int supportType, uint8 segment, int special, int height, uint32 imageColourFlags, const support_height * supportSegments);
+    bool PaintWoodenSupports(uint8 function, int supportType, int special, int height, uint32 imageColourFlags, bool *underground, const paint_struct * prependTo);
+    static void CheckSegmentSupportHeight(const support_height * supportSegments);
 
     void InitHooks() {
         addhook(0x006629BC, InterceptWoodenASupports);
@@ -74,7 +76,7 @@ namespace PaintIntercept {
         addhook(0x00687902, InterceptPaint9C);
     }
 
-    bool PaintWoodenSupports(uint8 function, int supportType, int special, int height, uint32 imageColourFlags, bool *underground) {
+    bool PaintWoodenSupports(uint8 function, int supportType, int special, int height, uint32 imageColourFlags, bool *underground, const paint_struct * prependTo) {
         function_call * call = &_calls[_callCount];
         call->function = function;
         call->supports.type = supportType;
@@ -83,11 +85,11 @@ namespace PaintIntercept {
         call->supports.colour_flags = imageColourFlags;
 
         call->supports.prepend_to = SPR_NONE;
-        if (gWoodenSupportsPrependTo != nullptr)
+        if (prependTo != nullptr)
         {
             for (int i = 0; i < _callCount; i++)
             {
-                if (&_calls[i].paint.output_struct == gWoodenSupportsPrependTo)
+                if (&_calls[i].paint.output_struct == prependTo)
                 {
                     call->supports.prepend_to = _calls[i].paint.image_id;
                     break;
@@ -100,8 +102,8 @@ namespace PaintIntercept {
         return _woodenSupports;
     }
 
-    bool PaintMetalSupports(uint8 function, int supportType, uint8 segment, int special, int height, uint32 imageColourFlags) {
-        CheckSegmentSupportHeight();
+    bool PaintMetalSupports(uint8 function, int supportType, uint8 segment, int special, int height, uint32 imageColourFlags, const support_height * supportSegments) {
+        CheckSegmentSupportHeight(supportSegments);
 
         function_call * call = &_calls[_callCount];
         call->function = function;
@@ -175,23 +177,23 @@ namespace PaintIntercept {
 
     static uint8 InterceptMetalASupports(registers *regs)
     {
-        bool output = PaintMetalSupports(SUPPORTS_METAL_A, regs->edi, regs->ebx, (sint16) regs->ax, regs->dx, regs->ebp);
+        bool output = PaintMetalSupports(SUPPORTS_METAL_A, regs->edi, regs->ebx, (sint16) regs->ax, regs->dx, regs->ebp, gSupportSegments);
 
         return output ? X86_FLAG_CARRY : 0;
     }
 
     static uint8 InterceptMetalBSupports(registers *regs)
     {
-        bool output = PaintMetalSupports(SUPPORTS_METAL_B, regs->edi, regs->ebx, (sint16) regs->ax, regs->dx, regs->ebp);
+        bool output = PaintMetalSupports(SUPPORTS_METAL_B, regs->edi, regs->ebx, (sint16) regs->ax, regs->dx, regs->ebp, gSupportSegments);
 
         return output ? X86_FLAG_CARRY : 0;
     }
 
-    static void CheckSegmentSupportHeight() {
+    static void CheckSegmentSupportHeight(const support_height * supportSegments) {
         bool hasChanged = false;
         for (int i = 0; i < 9; i++) {
-            if (gSupportSegments[i].height != 0) hasChanged = true;
-            if (gSupportSegments[i].slope != 0xFF) hasChanged = true;
+            if (supportSegments[i].height != 0) hasChanged = true;
+            if (supportSegments[i].slope != 0xFF) hasChanged = true;
         }
 
         if (!hasChanged) {
@@ -208,7 +210,7 @@ namespace PaintIntercept {
     static uint8 InterceptWoodenASupports(registers *regs)
     {
         bool cf = false;
-        regs->al = PaintWoodenSupports(SUPPORTS_WOOD_A, regs->edi, regs->ax, regs->dx, regs->ebp, &cf);
+        regs->al = PaintWoodenSupports(SUPPORTS_WOOD_A, regs->edi, regs->ax, regs->dx, regs->ebp, &cf, gWoodenSupportsPrependTo);
 
         if (cf)
         {
@@ -221,7 +223,7 @@ namespace PaintIntercept {
     static uint8 InterceptWoodenBSupports(registers *regs)
     {
         bool cf = false;
-        regs->al = PaintWoodenSupports(SUPPORTS_WOOD_B, regs->edi, regs->ax, regs->dx, regs->ebp, &cf);
+        regs->al = PaintWoodenSupports(SUPPORTS_WOOD_B, regs->edi, regs->ax, regs->dx, regs->ebp, &cf, gWoodenSupportsPrependTo);
 
         if (cf)
         {
@@ -307,19 +309,19 @@ namespace PaintIntercept {
 
 extern "C" {
 bool wooden_a_supports_paint_setup(int supportType, int special, int height, uint32 imageColourFlags, bool *underground) {
-    return PaintIntercept::PaintWoodenSupports(SUPPORTS_WOOD_A, supportType, special, height, imageColourFlags, underground);
+    return PaintIntercept::PaintWoodenSupports(SUPPORTS_WOOD_A, supportType, special, height, imageColourFlags, underground, gPaintSession.WoodenSupportsPrependTo);
 }
 
 bool wooden_b_supports_paint_setup(int supportType, int special, int height, uint32 imageColourFlags, bool *underground) {
-    return PaintIntercept::PaintWoodenSupports(SUPPORTS_WOOD_B, supportType, special, height, imageColourFlags, underground);
+    return PaintIntercept::PaintWoodenSupports(SUPPORTS_WOOD_B, supportType, special, height, imageColourFlags, underground, gPaintSession.WoodenSupportsPrependTo);
 }
 
 bool metal_a_supports_paint_setup(uint8 supportType, uint8 segment, int special, int height, uint32 imageColourFlags) {
-    return PaintIntercept::PaintMetalSupports(SUPPORTS_METAL_A, supportType, segment, special, height, imageColourFlags);
+    return PaintIntercept::PaintMetalSupports(SUPPORTS_METAL_A, supportType, segment, special, height, imageColourFlags, gPaintSession.SupportSegments);
 }
 
 bool metal_b_supports_paint_setup(uint8 supportType, uint8 segment, int special, int height, uint32 imageColourFlags) {
-    return PaintIntercept::PaintMetalSupports(SUPPORTS_METAL_B, supportType, segment, special, height, imageColourFlags);
+    return PaintIntercept::PaintMetalSupports(SUPPORTS_METAL_B, supportType, segment, special, height, imageColourFlags, gPaintSession.SupportSegments);
 }
 
 paint_struct *sub_98196C(uint32 image_id, sint8 x_offset, sint8 y_offset, sint16 bound_box_length_x, sint16 bound_box_length_y, sint8 bound_box_length_z, sint16 z_offset, uint32 rotation) {
