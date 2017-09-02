@@ -4440,6 +4440,7 @@ STR_6137    :OpenRCT2, ein freier und quelloffener Klon von RollerCoaster Tycoon
 STR_6138    :OpenRCT2 ist das Werk vieler Autoren, eine vollständige Liste befindet sich in {OPENQUOTES}contributors.md{ENDQUOTES}. Für weitere Informationen, besuche http://github.com/OpenRCT2/OpenRCT2
 STR_6139    :Alle Produkt- und Firmennamen sind Eigentum ihrer jeweiligen Inhaber.{NEWLINE}Die Nutzung dieser stellt keine Zugehörigkeit oder Unterstützung dar.
 STR_6140    :Changelog...
+STR_6141    :Untere Symbolleiste im RCT1-Stil
 
 #############
 # Scenarios #

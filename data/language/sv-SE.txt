@@ -3381,7 +3381,7 @@ STR_3372    :{BLACK}= Bankomat
 STR_3373    :{BLACK}= Toalett
 STR_3374    :Varning: För många markerade objekt!
 STR_3375    :Inte alla objekt i denna dekorationsgrupp kunde markeras
-STR_3376    :Installera ny bandesign...
+STR_3376    :Installera ny 
 STR_3377    :{SMALLFONT}{BLACK}Installera en ny bandesign fil
 STR_3378    :Installera
 STR_3379    :Avbryt
@@ -4446,7 +4446,10 @@ STR_6137    :OpenRCT2, en gratis klon med öppen källkod av Roller Coaster Tyco
 STR_6138    :OpenRCT2 är ett samarbete med flera deltagare, en lista med alla deltagare kan hittas i {OPENQUOTES}contributors.md{ENDQUOTES}. För mer information, besök http://github.com/OpenRCT2/OpenRCT2
 STR_6139    :Alla produkter och företagsnamn tillhör deras respektive innehavare och ägare. Användningen av dem är ingen anknytning eller bekräftelse från respektive innehavare.
 STR_6140    :Ändringslogg...
-STR_6140    :RCT1-bottens Verktygsfält
+STR_6141    :RCT1-bottens Verktygsfält
+STR_6142    :{WINDOW_COLOUR_2}Namn: {BLACK}{STRING}
+STR_6143    :{WINDOW_COLOUR_2}Typ: {BLACK}{STRINGID}
+STR_6144    :Visa visuella-uppdateringar
 
 #############
 # Scenarion #
