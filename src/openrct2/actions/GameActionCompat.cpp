@@ -109,6 +109,11 @@ extern "C"
         auto gameAction = RideCreateAction();
         gameAction.rideType = listItem.type;
         gameAction.rideSubType = listItem.entry_index;
+
+        sint32 rideEntryIndex = ride_get_entry_index(gameAction.rideType, gameAction.rideSubType);
+        gameAction.colourPreset1 = ride_get_random_colour_preset_index(gameAction.rideType);
+        gameAction.colourPreset2 = ride_get_unused_preset_vehicle_colour(gameAction.rideType, rideEntryIndex);
+
         gameAction.SetCallback([](const GameAction *ga, const RideCreateGameActionResult * result)
         {
             if (result->Error != GA_ERROR::OK)
