@@ -36,8 +36,8 @@
 uint16 testPaintVerticalTunnelHeight;
 #endif
 
-static void blank_tiles_paint(sint32 x, sint32 y);
-static void sub_68B3FB(sint32 x, sint32 y);
+static void blank_tiles_paint(paint_session * session, sint32 x, sint32 y);
+static void sub_68B3FB(paint_session * session, sint32 x, sint32 y);
 
 const sint32 SEGMENTS_ALL = SEGMENT_B4 | SEGMENT_B8 | SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4;
 
@@ -58,9 +58,9 @@ void map_element_paint_setup(paint_session * session, sint32 x, sint32 y)
         session->Unk141E9DB = 0;
         session->Unk141E9DC = 0xFFFF;
 
-        sub_68B3FB(x, y);
+        sub_68B3FB(session, x, y);
     } else {
-        blank_tiles_paint(x, y);
+        blank_tiles_paint(session, x, y);
     }
 }
 
@@ -68,7 +68,7 @@ void map_element_paint_setup(paint_session * session, sint32 x, sint32 y)
  *
  *  rct2: 0x0068B2B7
  */
-void sub_68B2B7(sint32 x, sint32 y)
+void sub_68B2B7(paint_session * session, sint32 x, sint32 y)
 {
     if (
         x < gMapSizeUnits &&
@@ -78,12 +78,12 @@ void sub_68B2B7(sint32 x, sint32 y)
     ) {
         paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
         paint_util_force_set_general_support_height(-1, 0);
-        gPaintSession.Unk141E9DC = 0xFFFF;
-        gPaintSession.Unk141E9DB = G141E9DB_FLAG_2;
+        session->Unk141E9DC = 0xFFFF;
+        session->Unk141E9DB = G141E9DB_FLAG_2;
 
-        sub_68B3FB(x, y);
+        sub_68B3FB(session, x, y);
     } else {
-        blank_tiles_paint(x, y);
+        blank_tiles_paint(session, x, y);
     }
 }
 
@@ -91,10 +91,8 @@ void sub_68B2B7(sint32 x, sint32 y)
  *
  *  rct2: 0x0068B60E
  */
-static void blank_tiles_paint(sint32 x, sint32 y)
+static void blank_tiles_paint(paint_session * session, sint32 x, sint32 y)
 {
-    rct_drawpixelinfo *dpi = gPaintSession.Unk140E9A8;
-
     sint32 dx = 0;
     switch (get_current_rotation()) {
     case 0:
@@ -117,13 +115,16 @@ static void blank_tiles_paint(sint32 x, sint32 y)
     dx /= 2;
     dx -= 16;
     sint32 bx = dx + 32;
+
+    rct_drawpixelinfo * dpi = session->Unk140E9A8;
     if (bx <= dpi->y) return;
     dx -= 20;
     dx -= dpi->height;
     if (dx >= dpi->y) return;
-    gPaintSession.SpritePosition.x = x;
-    gPaintSession.SpritePosition.y = y;
-    gPaintSession.InteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
+
+    session->SpritePosition.x = x;
+    session->SpritePosition.y = y;
+    session->InteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
     sub_98196C(3123, 0, 0, 32, 32, -1, 16, get_current_rotation());
 }
 
@@ -133,23 +134,22 @@ bool gShowSupportSegmentHeights = false;
  *
  *  rct2: 0x0068B3FB
  */
-static void sub_68B3FB(sint32 x, sint32 y)
+static void sub_68B3FB(paint_session * session, sint32 x, sint32 y)
 {
-    rct_drawpixelinfo *dpi = gPaintSession.Unk140E9A8;
+    rct_drawpixelinfo *dpi = session->Unk140E9A8;
 
-    gPaintSession.LeftTunnelCount = 0;
-    gPaintSession.RightTunnelCount = 0;
-    gPaintSession.LeftTunnels[0] = (tunnel_entry){0xFF, 0xFF};
-    gPaintSession.RightTunnels[0] = (tunnel_entry){0xFF, 0xFF};
-
-    gPaintSession.VerticalTunnelHeight = 0xFF;
+    session->LeftTunnelCount = 0;
+    session->RightTunnelCount = 0;
+    session->LeftTunnels[0] = (tunnel_entry){0xFF, 0xFF};
+    session->RightTunnels[0] = (tunnel_entry){0xFF, 0xFF};
+    session->VerticalTunnelHeight = 0xFF;
 
 #ifndef NO_RCT2
     RCT2_GLOBAL(0x009DE56A, uint16) = x;
     RCT2_GLOBAL(0x009DE56E, uint16) = y;
 #endif
-    gPaintSession.MapPosition.x = x;
-    gPaintSession.MapPosition.y = y;
+    session->MapPosition.x = x;
+    session->MapPosition.y = y;
 
     rct_map_element* map_element = map_get_first_element_at(x >> 5, y >> 5);
     uint8 rotation = get_current_rotation();
@@ -157,7 +157,7 @@ static void sub_68B3FB(sint32 x, sint32 y)
     /* Check if the first (lowest) map_element is below the clip
      * height. */
     if ((gCurrentViewportFlags & VIEWPORT_FLAG_PAINT_CLIP_TO_HEIGHT) && (map_element->base_height > gClipHeight)) {
-        blank_tiles_paint(x, y);
+        blank_tiles_paint(session, x, y);
         return;
     }
 
@@ -183,8 +183,8 @@ static void sub_68B3FB(sint32 x, sint32 y)
     dx >>= 1;
     // Display little yellow arrow when building footpaths?
     if ((gMapSelectFlags & MAP_SELECT_FLAG_ENABLE_ARROW) &&
-        gPaintSession.MapPosition.x == gMapSelectArrowPosition.x &&
-        gPaintSession.MapPosition.y == gMapSelectArrowPosition.y
+        session->MapPosition.x == gMapSelectArrowPosition.x &&
+        session->MapPosition.y == gMapSelectArrowPosition.y
     ) {
         uint8 arrowRotation =
             (rotation
@@ -196,9 +196,9 @@ static void sub_68B3FB(sint32 x, sint32 y)
             0x20900C27;
         sint32 arrowZ = gMapSelectArrowPosition.z;
 
-        gPaintSession.SpritePosition.x = x;
-        gPaintSession.SpritePosition.y = y;
-        gPaintSession.InteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
+        session->SpritePosition.x = x;
+        session->SpritePosition.y = y;
+        session->InteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
 
         sub_98197C(imageId, 0, 0, 32, 32, 0xFF, arrowZ, 0, 0, arrowZ + 18, rotation);
     }
@@ -231,9 +231,9 @@ static void sub_68B3FB(sint32 x, sint32 y)
     if (dx >= dpi->y)
         return;
 
-    gPaintSession.SpritePosition.x = x;
-    gPaintSession.SpritePosition.y = y;
-    gPaintSession.DidPassSurface = false;
+    session->SpritePosition.x = x;
+    session->SpritePosition.y = y;
+    session->DidPassSurface = false;
     do {
         // Only paint map_elements below the clip height.
         if ((gCurrentViewportFlags & VIEWPORT_FLAG_PAINT_CLIP_TO_HEIGHT) && (map_element->base_height > gClipHeight)) break;
@@ -241,8 +241,8 @@ static void sub_68B3FB(sint32 x, sint32 y)
         sint32 direction = map_element_get_direction_with_offset(map_element, rotation);
         sint32 height = map_element->base_height * 8;
 
-        rct_xy16 dword_9DE574 = gPaintSession.MapPosition;
-        gPaintSession.CurrentlyDrawnItem = map_element;
+        rct_xy16 dword_9DE574 = session->MapPosition;
+        session->CurrentlyDrawnItem = map_element;
         // Setup the painting of for example: the underground, signs, rides, scenery, etc.
         switch (map_element_get_type(map_element))
         {
@@ -299,10 +299,10 @@ static void sub_68B3FB(sint32 x, sint32 y)
 
     for (sint32 sy = 0; sy < 3; sy++) {
         for (sint32 sx = 0; sx < 3; sx++) {
-            uint16 segmentHeight = gPaintSession.SupportSegments[segmentPositions[sy][sx]].height;
+            uint16 segmentHeight = session->SupportSegments[segmentPositions[sy][sx]].height;
             sint32 imageColourFlats = 0b101111 << 19 | IMAGE_TYPE_TRANSPARENT;
             if (segmentHeight == 0xFFFF) {
-                segmentHeight = gPaintSession.Support.height;
+                segmentHeight = session->Support.height;
                 // white: 0b101101
                 imageColourFlats = 0b111011 << 19 | IMAGE_TYPE_TRANSPARENT;
             }
