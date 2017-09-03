@@ -189,7 +189,7 @@ static void air_powered_vertical_rc_track_flat(paint_session * session, uint8 ri
     };
 
     uint32 imageId = imageIds[direction] | gTrackColours[SCHEME_TRACK];
-    sub_98197C_rotated(direction, imageId, 0, 0, 32, 20, 1, height, 0, 6, height);
+    sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 20, 1, height, 0, 6, height);
 
     wooden_a_supports_paint_setup(session, direction & 1, 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
 
@@ -208,8 +208,8 @@ static void air_powered_vertical_rc_track_station(paint_session * session, uint8
         { SPR_AIR_POWERED_VERTICAL_RC_STATION_NW_SE, SPR_STATION_BASE_B_NW_SE },
     };
 
-    sub_98197C_rotated(direction, imageIds[direction][1] | gTrackColours[SCHEME_MISC], 0, 0, 32, 28, 1, height - 2, 0, 2, height);
-    sub_98199C_rotated(direction, imageIds[direction][0] | gTrackColours[SCHEME_TRACK], 0, 0, 32, 20, 1, height, 0, 6, height);
+    sub_98197C_rotated(session, direction, imageIds[direction][1] | gTrackColours[SCHEME_MISC], 0, 0, 32, 28, 1, height - 2, 0, 2, height);
+    sub_98199C_rotated(session, direction, imageIds[direction][0] | gTrackColours[SCHEME_TRACK], 0, 0, 32, 20, 1, height, 0, 6, height);
 
     wooden_a_supports_paint_setup(session, direction & 1, 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
 
@@ -289,11 +289,11 @@ static void air_powered_vertical_rc_track_flat_to_left_bank(paint_session * sess
     };
 
     uint32 imageId = imageIds[direction][0] | gTrackColours[SCHEME_TRACK];
-    sub_98197C_rotated(direction, imageId, 0, 0, 32, 20, 3, height, 0, 6, height);
+    sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 20, 3, height, 0, 6, height);
 
     if (direction == 0 || direction == 1) {
         imageId = imageIds[direction][1] | gTrackColours[SCHEME_TRACK];
-        sub_98197C_rotated(direction, imageId, 0, 0, 32, 1, 26, height, 0, 27, height);
+        sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 1, 26, height, 0, 27, height);
     }
 
     wooden_a_supports_paint_setup(session, direction & 1, 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
@@ -315,11 +315,11 @@ static void air_powered_vertical_rc_track_flat_to_right_bank(paint_session * ses
     };
 
     uint32 imageId = imageIds[direction][0] | gTrackColours[SCHEME_TRACK];
-    sub_98197C_rotated(direction, imageId, 0, 0, 32, 20, 3, height, 0, 6, height);
+    sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 20, 3, height, 0, 6, height);
 
     if (direction == 2 || direction == 3) {
         imageId = imageIds[direction][1] | gTrackColours[SCHEME_TRACK];
-        sub_98197C_rotated(direction, imageId, 0, 0, 32, 1, 26, height, 0, 27, height);
+        sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 1, 26, height, 0, 27, height);
     }
 
     wooden_a_supports_paint_setup(session, direction & 1, 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
@@ -418,9 +418,9 @@ static void air_powered_vertical_rc_track_left_bank(paint_session * session, uin
 
     uint32 imageId = imageIds[direction] | gTrackColours[SCHEME_TRACK];
     if (direction == 0 || direction == 1) {
-        sub_98197C_rotated(direction, imageId, 0, 0, 32, 1, 26, height, 0, 27, height);
+        sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 1, 26, height, 0, 27, height);
     } else {
-        sub_98197C_rotated(direction, imageId, 0, 0, 32, 20, 3, height, 0, 6, height);
+        sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 20, 3, height, 0, 6, height);
     }
 
     wooden_a_supports_paint_setup(session, direction & 1, 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
@@ -446,7 +446,7 @@ static void air_powered_vertical_rc_track_brakes(paint_session * session, uint8 
     };
 
     uint32 imageId = imageIds[direction] | gTrackColours[SCHEME_TRACK];
-    sub_98197C_rotated(direction, imageId, 0, 0, 32, 20, 1, height, 0, 6, height);
+    sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 20, 1, height, 0, 6, height);
 
     wooden_a_supports_paint_setup(session, direction & 1, 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
 
@@ -561,8 +561,8 @@ static void air_powered_vertical_rc_track_vertical_slope_up(paint_session * sess
         // HACK this might be a mistake in original code
         if (direction & 1) {
             bbHeight = bbHeights12[trackSequence];
-            sub_98197C_rotated(direction, supportsImageId, 0, 0, 20, 32, bbHeight, height, 0, 6, height);
-            sub_98199C_rotated(direction, trackImageId, 0, 0, 20, 32, bbHeight, height, 0, 6, height);
+            sub_98197C_rotated(session, direction, supportsImageId, 0, 0, 20, 32, bbHeight, height, 0, 6, height);
+            sub_98199C_rotated(session, direction, trackImageId, 0, 0, 20, 32, bbHeight, height, 0, 6, height);
 
             wooden_a_supports_paint_setup(session, 0, 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
 
@@ -578,12 +578,12 @@ static void air_powered_vertical_rc_track_vertical_slope_up(paint_session * sess
         if (isDirection03) {
             bbHeight = bbHeights03[trackSequence];
 
-            sub_98197C_rotated(direction, supportsImageId, 0, 0, 32, 20, bbHeight, height, 0, 6, height);
-            sub_98199C_rotated(direction, trackImageId, 0, 0, 32, 20, bbHeight, height, 0, 6, height);
+            sub_98197C_rotated(session, direction, supportsImageId, 0, 0, 32, 20, bbHeight, height, 0, 6, height);
+            sub_98199C_rotated(session, direction, trackImageId, 0, 0, 32, 20, bbHeight, height, 0, 6, height);
         } else {
             bbHeight = bbHeights12[trackSequence];
-            sub_98197C_rotated(direction, supportsImageId, 0, 0, 32, 20, bbHeight, height, 0, 6, height);
-            sub_98199C_rotated(direction, trackImageId, 0, 0, 32, 20, bbHeight, height, 0, 6, height);
+            sub_98197C_rotated(session, direction, supportsImageId, 0, 0, 32, 20, bbHeight, height, 0, 6, height);
+            sub_98199C_rotated(session, direction, trackImageId, 0, 0, 32, 20, bbHeight, height, 0, 6, height);
         }
 
         wooden_a_supports_paint_setup(session, direction & 1, 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
@@ -598,12 +598,12 @@ static void air_powered_vertical_rc_track_vertical_slope_up(paint_session * sess
     case 4:
         if (isDirection03) {
             bbHeight = bbHeights03[trackSequence];
-            sub_98197C_rotated(direction, supportsImageId, 0, 0, 32, 20, bbHeight, height, 0, 6, height);
-            sub_98199C_rotated(direction, trackImageId, 0, 0, 32, 20, bbHeight, height, 0, 6, height);
+            sub_98197C_rotated(session, direction, supportsImageId, 0, 0, 32, 20, bbHeight, height, 0, 6, height);
+            sub_98199C_rotated(session, direction, trackImageId, 0, 0, 32, 20, bbHeight, height, 0, 6, height);
         } else {
             bbHeight = bbHeights12[trackSequence];
-            sub_98197C_rotated(direction, trackImageId, 0, 0, 32, 20, bbHeight, height, 0, 6, height);
-            sub_98199C_rotated(direction, supportsImageId, 0, 0, 32, 20, bbHeight, height, 0, 6, height);
+            sub_98197C_rotated(session, direction, trackImageId, 0, 0, 32, 20, bbHeight, height, 0, 6, height);
+            sub_98199C_rotated(session, direction, supportsImageId, 0, 0, 32, 20, bbHeight, height, 0, 6, height);
         }
 
         wooden_a_supports_paint_setup(session, direction & 1, 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
@@ -619,20 +619,20 @@ static void air_powered_vertical_rc_track_vertical_slope_up(paint_session * sess
                 floorImageId = SPR_FLOOR_PLANKS | gTrackColours[SCHEME_SUPPORTS];
             }
             sub_98197C(floorImageId, 0, 0, 26, 26, 126, height, 3, 3, height, get_current_rotation());
-            sub_98199C_rotated(direction, supportsImageId, 0, 0, 26, 26, 126, height, 3, 3, height);
+            sub_98199C_rotated(session, direction, supportsImageId, 0, 0, 26, 26, 126, height, 3, 3, height);
         } else {
-            sub_98197C_rotated(direction, supportsImageId, 0, 0, 26, 26, 126, height, 3, 3, height);
+            sub_98197C_rotated(session, direction, supportsImageId, 0, 0, 26, 26, 126, height, 3, 3, height);
         }
         paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + supportHeights[trackSequence], 0x20);
         break;
     case 6:
         if (isDirection03) {
-            sub_98197C_rotated(direction, supportsImageId, 0, 0, 5, 20, 79, height, 0, 6, height + 128);
-            sub_98199C_rotated(direction, trackImageId, 0, 0, 5, 20, 79, height, 0, 6, height + 128);
+            sub_98197C_rotated(session, direction, supportsImageId, 0, 0, 5, 20, 79, height, 0, 6, height + 128);
+            sub_98199C_rotated(session, direction, trackImageId, 0, 0, 5, 20, 79, height, 0, 6, height + 128);
         } else {
-            sub_98197C_rotated(direction, trackImageId, 0, 0, 1, 20, 126, height, 27, 6, height);
-            sub_98199C_rotated(direction, supportsImageId, 0, 0, 1, 20, 126, height, 27, 6, height);
+            sub_98197C_rotated(session, direction, trackImageId, 0, 0, 1, 20, 126, height, 27, 6, height);
+            sub_98199C_rotated(session, direction, supportsImageId, 0, 0, 1, 20, 126, height, 27, 6, height);
         }
         wooden_a_supports_paint_setup(session, direction & 1, 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
 
@@ -657,14 +657,14 @@ static void air_powered_vertical_rc_track_vertical_up(paint_session * session, u
     switch (trackSequence) {
     case 0:
         imageId = imageIds[direction][0] | air_powered_vertical_rc_get_support_colour(session);
-        sub_98197C_rotated(direction, imageId, 0, 0, 26, 26, 79, height, 3, 3, height);
+        sub_98197C_rotated(session, direction, imageId, 0, 0, 26, 26, 79, height, 3, 3, height);
         break;
     case 1:
         imageId = imageIds[direction][1] | gTrackColours[SCHEME_TRACK];
         if (direction == 0 || direction == 3) {
-            sub_98197C_rotated(direction, imageId, 0, 0, 2, 20, 79, height, 0, 6, height);
+            sub_98197C_rotated(session, direction, imageId, 0, 0, 2, 20, 79, height, 0, 6, height);
         } else {
-            sub_98197C_rotated(direction, imageId, 0, 0, 2, 20, 79, height, 30, 6, height);
+            sub_98197C_rotated(session, direction, imageId, 0, 0, 2, 20, 79, height, 30, 6, height);
         }
 
         paint_util_set_vertical_tunnel(session, height + 80);
@@ -707,28 +707,28 @@ static void air_powered_vertical_rc_track_vertical_top(paint_session * session, 
         imageIdS = imageIds[direction][0] | air_powered_vertical_rc_get_support_colour(session);
         imageIdT = imageIds[direction][1] | gTrackColours[SCHEME_TRACK];
         if (direction == 0) {
-            sub_98197C_rotated(direction, imageIdS, 0, 0, 32, 20, 15, height, 0, 6, height);
-            sub_98199C_rotated(direction, imageIdT, 0, 0, 31, 20, 15, height, 1, 6, height);
+            sub_98197C_rotated(session, direction, imageIdS, 0, 0, 32, 20, 15, height, 0, 6, height);
+            sub_98199C_rotated(session, direction, imageIdT, 0, 0, 31, 20, 15, height, 1, 6, height);
         } else {
-            sub_98197C_rotated(direction, imageIdS, 0, 0, 5, 20, 1, height, 24, 6, height);
-            sub_98199C_rotated(direction, imageIdT, 0, 0, 5, 20, 1, height, 24, 6, height);
+            sub_98197C_rotated(session, direction, imageIdS, 0, 0, 5, 20, 1, height, 24, 6, height);
+            sub_98199C_rotated(session, direction, imageIdT, 0, 0, 5, 20, 1, height, 24, 6, height);
         }
         break;
     case 1:
         imageIdT = imageIds[direction][2] | gTrackColours[SCHEME_TRACK];
         if (direction == 0) {
-            sub_98197C_rotated(direction, imageIdT, 0, 0, 2, 20, 15, height, 0, 6, height);
+            sub_98197C_rotated(session, direction, imageIdT, 0, 0, 2, 20, 15, height, 0, 6, height);
         } else {
-            sub_98197C_rotated(direction, imageIdT, 0, 0, 2, 20, 1, height, 33, 6, height);
+            sub_98197C_rotated(session, direction, imageIdT, 0, 0, 2, 20, 1, height, 33, 6, height);
         }
         paint_util_set_vertical_tunnel(session, height + 80);
         break;
     case 2:
         imageIdT = imageIds[direction][3] | gTrackColours[SCHEME_TRACK];
         if (direction == 0) {
-            sub_98197C_rotated(direction, imageIdT, 0, 0, 2, 20, 1, height, 33, 6, height);
+            sub_98197C_rotated(session, direction, imageIdT, 0, 0, 2, 20, 1, height, 33, 6, height);
         } else {
-            sub_98197C_rotated(direction, imageIdT, 0, 0, 2, 20, 15, height, 0, 6, height);
+            sub_98197C_rotated(session, direction, imageIdT, 0, 0, 2, 20, 15, height, 0, 6, height);
         }
         paint_util_set_vertical_tunnel(session, height + 80);
         break;
@@ -736,11 +736,11 @@ static void air_powered_vertical_rc_track_vertical_top(paint_session * session, 
         imageIdS = imageIds[direction][4] | air_powered_vertical_rc_get_support_colour(session);
         imageIdT = imageIds[direction][5] | gTrackColours[SCHEME_TRACK];
         if (direction == 0) {
-            sub_98197C_rotated(direction, imageIdS, 0, 0, 5, 20, 1, height, 24, 6, height);
-            sub_98199C_rotated(direction, imageIdT, 0, 0, 5, 20, 1, height, 24, 6, height);
+            sub_98197C_rotated(session, direction, imageIdS, 0, 0, 5, 20, 1, height, 24, 6, height);
+            sub_98199C_rotated(session, direction, imageIdT, 0, 0, 5, 20, 1, height, 24, 6, height);
         } else {
-            sub_98197C_rotated(direction, imageIdS, 0, 0, 32, 20, 15, height, 0, 6, height);
-            sub_98199C_rotated(direction, imageIdT, 0, 0, 32, 20, 15, height, 0, 6, height);
+            sub_98197C_rotated(session, direction, imageIdS, 0, 0, 32, 20, 15, height, 0, 6, height);
+            sub_98199C_rotated(session, direction, imageIdT, 0, 0, 32, 20, 15, height, 0, 6, height);
         }
         break;
     }

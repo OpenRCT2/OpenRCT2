@@ -19,6 +19,7 @@
 #include "paint.h"
 
 paint_struct * sub_98196C_rotated(
+    paint_session * session,
     uint8 direction,
     uint32 image_id,
     sint8 x_offset, sint8 y_offset,
@@ -33,6 +34,7 @@ paint_struct * sub_98196C_rotated(
 }
 
 paint_struct * sub_98197C_rotated(
+    paint_session * session,
     uint8 direction,
     uint32 image_id,
     sint8 x_offset, sint8 y_offset,
@@ -48,6 +50,7 @@ paint_struct * sub_98197C_rotated(
 }
 
 paint_struct * sub_98199C_rotated(
+    paint_session * session,
     uint8 direction,
     uint32 image_id,
     sint8 x_offset, sint8 y_offset,

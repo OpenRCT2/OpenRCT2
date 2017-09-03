@@ -580,14 +580,14 @@ static void paint_miniature_railway_track_flat(paint_session * session, uint8 ri
 
     if (isSupported) {
         imageId = miniature_railway_track_floor[direction] | gTrackColours[SCHEME_SUPPORTS];
-        sub_98197C_rotated(direction, imageId, 0, 0, 32, 20, 2, height, 0, 6, height);
+        sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 20, 2, height, 0, 6, height);
 
         imageId = miniature_railway_track_pieces_flat[direction] | gTrackColours[SCHEME_TRACK];
-        sub_98199C_rotated(direction, imageId, 0, 6, 32, 20, 2, height, 0, 6, height);
+        sub_98199C_rotated(session, direction, imageId, 0, 6, 32, 20, 2, height, 0, 6, height);
     }
     else {
         imageId = miniature_railway_track_pieces_flat[direction] | gTrackColours[SCHEME_TRACK];
-        sub_98197C_rotated(direction, imageId, 0, 6, 32, 20, 2, height, 0, 6, height);
+        sub_98197C_rotated(session, direction, imageId, 0, 6, 32, 20, 2, height, 0, 6, height);
     }
 
     paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_6);
@@ -604,10 +604,10 @@ static void paint_miniature_railway_station(paint_session * session, uint8 rideI
     wooden_a_supports_paint_setup(session, direction & 1, 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
 
     imageId = miniature_railway_station_floor[direction] | gTrackColours[SCHEME_MISC];
-    sub_98197C_rotated(direction, imageId, 0, 0, 32, 28, 2, height - 2, 0, 2, height);
+    sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 28, 2, height - 2, 0, 2, height);
 
     imageId = miniature_railway_track_pieces_flat_station[direction] | gTrackColours[SCHEME_TRACK];
-    sub_98199C_rotated(direction, imageId, 0, 6, 32, 20, 2, height, 0, 0, height);
+    sub_98199C_rotated(session, direction, imageId, 0, 6, 32, 20, 2, height, 0, 0, height);
 
     paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_6);
 
@@ -624,7 +624,7 @@ static void paint_miniature_railway_track_25_deg_up(paint_session * session, uin
 
     uint32 imageId = miniature_railway_track_pieces_25_deg_up[direction] | gTrackColours[SCHEME_TRACK];
 
-    sub_98197C_rotated(direction, imageId, 0, 2, 32, 25, 2, height, 0, 3, height);
+    sub_98197C_rotated(session, direction, imageId, 0, 2, 32, 25, 2, height, 0, 3, height);
 
     switch (direction) {
         case 0: paint_util_push_tunnel_left(session, height - 8, TUNNEL_7); break;
@@ -645,7 +645,7 @@ static void paint_miniature_railway_track_flat_to_25_deg_up(paint_session * sess
 
     uint32 imageId = miniature_railway_track_pieces_flat_to_25_deg_up[direction] | gTrackColours[SCHEME_TRACK];
 
-    sub_98197C_rotated(direction, imageId, 0, 2, 32, 25, 2, height, 0, 3, height);
+    sub_98197C_rotated(session, direction, imageId, 0, 2, 32, 25, 2, height, 0, 3, height);
 
     switch (direction) {
         case 0: paint_util_push_tunnel_left(session, height, TUNNEL_6); break;
@@ -666,7 +666,7 @@ static void paint_miniature_railway_track_25_deg_up_to_flat(paint_session * sess
 
     uint32 imageId = miniature_railway_track_pieces_25_deg_up_to_flat[direction] | gTrackColours[SCHEME_TRACK];
 
-    sub_98197C_rotated(direction, imageId, 0, 2, 32, 25, 2, height, 0, 3, height);
+    sub_98197C_rotated(session, direction, imageId, 0, 2, 32, 25, 2, height, 0, 3, height);
 
     switch (direction) {
         case 0: paint_util_push_tunnel_left(session, height - 8, TUNNEL_6); break;
@@ -943,14 +943,14 @@ static void paint_miniature_railway_track_s_bend_left(paint_session * session, u
     rct_xy16 bounds = boundsList[trackSequence];
 
     if (isSupported == false) {
-        sub_98197C_rotated(direction, imageId, (sint8)offset.x, (sint8)offset.y, bounds.x, bounds.y, 2, height, offset.x, offset.y, height);
+        sub_98197C_rotated(session, direction, imageId, (sint8)offset.x, (sint8)offset.y, bounds.x, bounds.y, 2, height, offset.x, offset.y, height);
     }
     else {
         imageId = miniature_railway_s_bend_left_tiles_track_floor[direction & 1][trackSequence] | gTrackColours[SCHEME_SUPPORTS];
-        sub_98197C_rotated(direction, imageId, 0, 0, bounds.x, bounds.y, 2, height, offset.x, offset.y, height);
+        sub_98197C_rotated(session, direction, imageId, 0, 0, bounds.x, bounds.y, 2, height, offset.x, offset.y, height);
 
         imageId = miniature_railway_track_pieces_s_bend_left[direction & 1][trackSequence] | gTrackColours[SCHEME_TRACK];
-        sub_98199C_rotated(direction, imageId, (sint8)offset.x, (sint8)offset.y, bounds.x, bounds.y, 2, height, offset.x, offset.y, height);
+        sub_98199C_rotated(session, direction, imageId, (sint8)offset.x, (sint8)offset.y, bounds.x, bounds.y, 2, height, offset.x, offset.y, height);
     }
     if (direction == 0 || direction == 2) {
         if (trackSequence == 0) {
@@ -1023,14 +1023,14 @@ static void paint_miniature_railway_track_s_bend_right(paint_session * session, 
     rct_xy16 offset = offsetList[trackSequence];
     rct_xy16 bounds = boundsList[trackSequence];
     if (isSupported == false) {
-        sub_98197C_rotated(direction, imageId, (sint8)offset.x, (sint8)offset.y, bounds.x, bounds.y, 2, height, offset.x, offset.y, height);
+        sub_98197C_rotated(session, direction, imageId, (sint8)offset.x, (sint8)offset.y, bounds.x, bounds.y, 2, height, offset.x, offset.y, height);
     }
     else {
         imageId = miniature_railway_s_bend_right_tiles_track_floor[direction & 1][trackSequence] | gTrackColours[SCHEME_SUPPORTS];
-        sub_98197C_rotated(direction, imageId, 0, 0, bounds.x, bounds.y, 2, height, offset.x, offset.y, height);
+        sub_98197C_rotated(session, direction, imageId, 0, 0, bounds.x, bounds.y, 2, height, offset.x, offset.y, height);
 
         imageId = miniature_railway_track_pieces_s_bend_right[direction & 1][trackSequence] | gTrackColours[SCHEME_TRACK];
-        sub_98199C_rotated(direction, imageId, (sint8)offset.x, (sint8)offset.y, bounds.x, bounds.y, 2, height, offset.x, offset.y, height);
+        sub_98199C_rotated(session, direction, imageId, (sint8)offset.x, (sint8)offset.y, bounds.x, bounds.y, 2, height, offset.x, offset.y, height);
     }
 
     if (direction == 0 || direction == 2) {

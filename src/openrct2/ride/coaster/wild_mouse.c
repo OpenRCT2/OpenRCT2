@@ -181,7 +181,7 @@ static void wild_mouse_track_flat(paint_session * session, uint8 rideIndex, uint
 
     uint8 isChained = track_element_is_lift_hill(mapElement) ? 1 : 0;
     uint32 imageId = imageIds[direction][isChained] | gTrackColours[SCHEME_TRACK];
-    sub_98197C_rotated(direction, imageId, 0, 0, 32, 20, 3, height, 0, 6, height);
+    sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 20, 3, height, 0, 6, height);
     if (track_paint_util_should_paint_supports(session->MapPosition)) {
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, -1, height, gTrackColours[SCHEME_SUPPORTS]);
     }
@@ -200,11 +200,11 @@ static void wild_mouse_track_station(paint_session * session, uint8 rideIndex, u
     };
 
     sint32 trackType = mapElement->properties.track.type;
-    sub_98197C_rotated(direction, baseImageIds[direction] | gTrackColours[SCHEME_MISC], 0, 0, 32, 28, 2, height - 2, 0, 2, height);
+    sub_98197C_rotated(session, direction, baseImageIds[direction] | gTrackColours[SCHEME_MISC], 0, 0, 32, 28, 2, height - 2, 0, 2, height);
     if (trackType == TRACK_ELEM_END_STATION) {
-        sub_98199C_rotated(direction, _wild_mouse_block_brakes_image_ids[direction] | gTrackColours[SCHEME_TRACK], 0, 0, 32, 20, 2, height, 0, 0, height);
+        sub_98199C_rotated(session, direction, _wild_mouse_block_brakes_image_ids[direction] | gTrackColours[SCHEME_TRACK], 0, 0, 32, 20, 2, height, 0, 0, height);
     } else {
-        sub_98199C_rotated(direction, _wild_mouse_brakes_image_ids[direction] | gTrackColours[SCHEME_TRACK], 0, 0, 32, 20, 2, height, 0, 0, height);
+        sub_98199C_rotated(session, direction, _wild_mouse_brakes_image_ids[direction] | gTrackColours[SCHEME_TRACK], 0, 0, 32, 20, 2, height, 0, 0, height);
     }
     track_paint_util_draw_station_metal_supports(session, direction, height, gTrackColours[SCHEME_SUPPORTS]);
     track_paint_util_draw_station(session, rideIndex, trackSequence, direction, height, mapElement);
@@ -225,7 +225,7 @@ static void wild_mouse_track_25_deg_up(paint_session * session, uint8 rideIndex,
 
     uint8 isChained = track_element_is_lift_hill(mapElement) ? 1 : 0;
     uint32 imageId = imageIds[direction][isChained] | gTrackColours[SCHEME_TRACK];
-    sub_98197C_rotated(direction, imageId, 0, 0, 32, 20, 3, height, 0, 6, height);
+    sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 20, 3, height, 0, 6, height);
     if (track_paint_util_should_paint_supports(session->MapPosition)) {
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, -9, height, gTrackColours[SCHEME_SUPPORTS]);
     }
@@ -251,9 +251,9 @@ static void wild_mouse_track_60_deg_up(paint_session * session, uint8 rideIndex,
     uint8 isChained = track_element_is_lift_hill(mapElement) ? 1 : 0;
     uint32 imageId = imageIds[direction][isChained] | gTrackColours[SCHEME_TRACK];
     if (direction == 0 || direction == 3) {
-        sub_98197C_rotated(direction, imageId, 0, 0, 32, 20, 3, height, 0, 6, height);
+        sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 20, 3, height, 0, 6, height);
     } else {
-        sub_98197C_rotated(direction, imageId, 0, 0, 32, 1, 98, height, 0, 27, height);
+        sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 1, 98, height, 0, 27, height);
     }
     if (track_paint_util_should_paint_supports(session->MapPosition)) {
         if (direction == 0 || direction == 3) {
@@ -283,7 +283,7 @@ static void wild_mouse_track_flat_to_25_deg_up(paint_session * session, uint8 ri
 
     uint8 isChained = track_element_is_lift_hill(mapElement) ? 1 : 0;
     uint32 imageId = imageIds[direction][isChained] | gTrackColours[SCHEME_TRACK];
-    sub_98197C_rotated(direction, imageId, 0, 0, 32, 20, 3, height, 0, 6, height);
+    sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 20, 3, height, 0, 6, height);
     if (track_paint_util_should_paint_supports(session->MapPosition)) {
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, -4, height, gTrackColours[SCHEME_SUPPORTS]);
     }
@@ -316,10 +316,10 @@ static void wild_mouse_track_25_deg_up_to_60_deg_up(paint_session * session, uin
     uint32 imageId = imageIds[direction][isChained] | gTrackColours[SCHEME_TRACK];
     uint32 frontImageId = frontImageIds[direction][isChained] | gTrackColours[SCHEME_TRACK];
     if (direction == 0 || direction == 3) {
-        sub_98197C_rotated(direction, imageId, 0, 0, 32, 20, 3, height, 0, 6, height);
+        sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 20, 3, height, 0, 6, height);
     } else {
-        sub_98197C_rotated(direction, imageId, 0, 0, 32, 20, 3, height, 0, 6, height);
-        sub_98197C_rotated(direction, frontImageId, 0, 0, 32, 1, 66, height, 0, 27, height);
+        sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 20, 3, height, 0, 6, height);
+        sub_98197C_rotated(session, direction, frontImageId, 0, 0, 32, 1, 66, height, 0, 27, height);
     }
     if (track_paint_util_should_paint_supports(session->MapPosition)) {
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, -13, height, gTrackColours[SCHEME_SUPPORTS]);
@@ -353,10 +353,10 @@ static void wild_mouse_track_60_deg_up_to_25_deg_up(paint_session * session, uin
     uint32 imageId = imageIds[direction][isChained] | gTrackColours[SCHEME_TRACK];
     uint32 frontImageId = frontImageIds[direction][isChained] | gTrackColours[SCHEME_TRACK];
     if (direction == 0 || direction == 3) {
-        sub_98197C_rotated(direction, imageId, 0, 0, 32, 20, 3, height, 0, 6, height);
+        sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 20, 3, height, 0, 6, height);
     } else {
-        sub_98197C_rotated(direction, imageId, 0, 0, 32, 20, 3, height, 0, 6, height);
-        sub_98197C_rotated(direction, frontImageId, 0, 0, 32, 1, 66, height, 0, 27, height);
+        sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 20, 3, height, 0, 6, height);
+        sub_98197C_rotated(session, direction, frontImageId, 0, 0, 32, 1, 66, height, 0, 27, height);
     }
     if (track_paint_util_should_paint_supports(session->MapPosition)) {
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, -21, height, gTrackColours[SCHEME_SUPPORTS]);
@@ -382,7 +382,7 @@ static void wild_mouse_track_25_deg_up_to_flat(paint_session * session, uint8 ri
 
     uint8 isChained = track_element_is_lift_hill(mapElement) ? 1 : 0;
     uint32 imageId = imageIds[direction][isChained] | gTrackColours[SCHEME_TRACK];
-    sub_98197C_rotated(direction, imageId, 0, 0, 32, 20, 3, height, 0, 6, height);
+    sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 20, 3, height, 0, 6, height);
     if (track_paint_util_should_paint_supports(session->MapPosition)) {
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, -7, height, gTrackColours[SCHEME_SUPPORTS]);
     }
@@ -655,10 +655,10 @@ static void wild_mouse_track_flat_to_60_deg_up(paint_session * session, uint8 ri
     uint32 imageId = imageIds[direction][isChained] | gTrackColours[SCHEME_TRACK];
     uint32 frontImageId = frontImageIds[direction][isChained] | gTrackColours[SCHEME_TRACK];
     if (direction == 0 || direction == 3) {
-        sub_98197C_rotated(direction, imageId, 0, 0, 32, 27, 2, height, 0, 2, height);
+        sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 27, 2, height, 0, 2, height);
     } else {
-        sub_98197C_rotated(direction, imageId, 0, 0, 1, 24, 43, height, 29, 4, height + 2);
-        sub_98197C_rotated(direction, frontImageId, 0, 0, 32, 2, 43, height, 0, 4, height);
+        sub_98197C_rotated(session, direction, imageId, 0, 0, 1, 24, 43, height, 29, 4, height + 2);
+        sub_98197C_rotated(session, direction, frontImageId, 0, 0, 32, 2, 43, height, 0, 4, height);
     }
     if (track_paint_util_should_paint_supports(session->MapPosition)) {
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, -5, height, gTrackColours[SCHEME_SUPPORTS]);
@@ -692,10 +692,10 @@ static void wild_mouse_track_60_deg_up_to_flat(paint_session * session, uint8 ri
     uint32 imageId = imageIds[direction][isChained] | gTrackColours[SCHEME_TRACK];
     uint32 frontImageId = frontImageIds[direction][isChained] | gTrackColours[SCHEME_TRACK];
     if (direction == 0 || direction == 3) {
-        sub_98197C_rotated(direction, imageId, 0, 0, 32, 27, 2, height, 0, 2, height);
+        sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 27, 2, height, 0, 2, height);
     } else {
-        sub_98197C_rotated(direction, imageId, 0, 0, 1, 24, 43, height, 29, 4, height + 2);
-        sub_98197C_rotated(direction, frontImageId, 0, 0, 32, 2, 43, height, 0, 4, height);
+        sub_98197C_rotated(session, direction, imageId, 0, 0, 1, 24, 43, height, 29, 4, height + 2);
+        sub_98197C_rotated(session, direction, frontImageId, 0, 0, 32, 2, 43, height, 0, 4, height);
     }
     if (track_paint_util_should_paint_supports(session->MapPosition)) {
         if (direction == 0 || direction == 3) {
@@ -729,7 +729,7 @@ static void wild_mouse_track_60_deg_down_to_flat(paint_session * session, uint8 
 static void wild_mouse_track_brakes(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     uint32 imageId = _wild_mouse_brakes_image_ids[direction] | gTrackColours[SCHEME_TRACK];
-    sub_98197C_rotated(direction, imageId, 0, 0, 32, 20, 3, height, 0, 6, height);
+    sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 20, 3, height, 0, 6, height);
     if (track_paint_util_should_paint_supports(session->MapPosition)) {
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 0, height, gTrackColours[SCHEME_SUPPORTS]);
     }
@@ -749,7 +749,7 @@ static void wild_mouse_track_rotation_control_toggle(paint_session * session, ui
     };
 
     uint32 imageId = imageIds[direction] | gTrackColours[SCHEME_TRACK];
-    sub_98197C_rotated(direction, imageId, 0, 0, 32, 20, 3, height, 0, 6, height);
+    sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 20, 3, height, 0, 6, height);
     if (track_paint_util_should_paint_supports(session->MapPosition)) {
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 0, height, gTrackColours[SCHEME_SUPPORTS]);
     }
@@ -762,7 +762,7 @@ static void wild_mouse_track_rotation_control_toggle(paint_session * session, ui
 static void wild_mouse_track_block_brakes(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     uint32 imageId = _wild_mouse_block_brakes_image_ids[direction] | gTrackColours[SCHEME_TRACK];
-    sub_98197C_rotated(direction, imageId, 0, 0, 32, 20, 3, height, 0, 6, height);
+    sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 20, 3, height, 0, 6, height);
     if (track_paint_util_should_paint_supports(session->MapPosition)) {
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 0, height, gTrackColours[SCHEME_SUPPORTS]);
     }

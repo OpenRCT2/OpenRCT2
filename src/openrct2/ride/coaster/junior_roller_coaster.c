@@ -1874,7 +1874,7 @@ static const uint32 junior_rc_track_pieces_diag_60_deg_down_to_25_deg_down[2][4]
 void junior_rc_paint_track_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, uint16 height, rct_map_element* mapElement, JUNIOR_RC_CHAINTYPE chainType)
 {
     uint32 imageId = junior_rc_track_pieces_flat[chainType][direction] | gTrackColours[SCHEME_TRACK];
-    sub_98196C_rotated(direction, imageId, 0, 6, 32, 20, 1, height);
+    sub_98196C_rotated(session, direction, imageId, 0, 6, 32, 20, 1, height);
     paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
 
     if (track_paint_util_should_paint_supports(session->MapPosition)) {
@@ -1935,7 +1935,7 @@ void junior_rc_paint_station(paint_session * session, uint8 rideIndex, uint8 tra
 void junior_rc_paint_track_25_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, uint16 height, rct_map_element* mapElement, JUNIOR_RC_CHAINTYPE chainType)
 {
     uint32 imageId = junior_rc_track_pieces_25_deg_up[chainType][direction] | gTrackColours[SCHEME_TRACK];
-    sub_98196C_rotated(direction, imageId, 0, 6, 32, 20, 1, height);
+    sub_98196C_rotated(session, direction, imageId, 0, 6, 32, 20, 1, height);
 
     sint8 tunnel_height[4] = { -8, 8, 8, -8 };
     uint8 tunnel_type[4] = { TUNNEL_1, TUNNEL_2, TUNNEL_2, TUNNEL_1 };
@@ -1954,7 +1954,7 @@ void junior_rc_paint_track_flat_to_25_deg_up(paint_session * session, uint8 ride
 {
     uint32 imageId = junior_rc_track_pieces_flat_to_25_deg_up[chainType][direction] | gTrackColours[SCHEME_TRACK];
 
-    sub_98196C_rotated(direction, imageId, 0, 6, 32, 20, 1, height);
+    sub_98196C_rotated(session, direction, imageId, 0, 6, 32, 20, 1, height);
     if (direction == 0 || direction == 3) {
         paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
     } else {
@@ -1974,7 +1974,7 @@ void junior_rc_paint_track_flat_to_25_deg_up(paint_session * session, uint8 ride
 void junior_rc_paint_track_25_deg_up_to_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, uint16 height, rct_map_element* mapElement, JUNIOR_RC_CHAINTYPE chainType)
 {
     uint32 imageId = junior_rc_track_pieces_25_deg_up_to_flat[chainType][direction] | gTrackColours[SCHEME_TRACK];
-    sub_98196C_rotated(direction, imageId, 0, 6, 32, 20, 1, height);
+    sub_98196C_rotated(session, direction, imageId, 0, 6, 32, 20, 1, height);
 
     uint8 tunnelType;
     sint16 tunnelHeight;

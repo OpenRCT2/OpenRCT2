@@ -173,8 +173,8 @@ static void paint_log_flume_track_flat(paint_session * session, uint8 rideIndex,
     uint32 imageId = LogFlumeTrackFlatImageIds[direction][0] | gTrackColours[SCHEME_TRACK];
     uint32 frontImageId = LogFlumeTrackFlatImageIds[direction][1] | gTrackColours[SCHEME_TRACK];
 
-    sub_98197C_rotated(direction, imageId, 0, 0, 32, 20, 2, height, 0, 6, height);
-    sub_98197C_rotated(direction, frontImageId, 0, 0, 32, 1, 26, height, 0, 27, height);
+    sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 20, 2, height, 0, 6, height);
+    sub_98197C_rotated(session, direction, frontImageId, 0, 0, 32, 1, 26, height, 0, 27, height);
 
     if (track_paint_util_should_paint_supports(session->MapPosition)) {
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 4, 0, height, gTrackColours[SCHEME_SUPPORTS]);
@@ -188,7 +188,7 @@ static void paint_log_flume_track_flat(paint_session * session, uint8 rideIndex,
 static void paint_log_flume_track_station(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     uint32 imageId = LogFlumeTrackFlatImageIds[direction][0] | gTrackColours[SCHEME_TRACK];
-    sub_98197C_rotated(direction, imageId, 0, 0, 32, 20, 1, height, 0, 6, height + 3);
+    sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 20, 1, height, 0, 6, height + 3);
 
     if (direction & 1) {
         imageId = SPR_STATION_BASE_B_NW_SE | gTrackColours[SCHEME_MISC];
@@ -227,8 +227,8 @@ static void paint_log_flume_track_25_deg_up(paint_session * session, uint8 rideI
     uint32 imageId = imageIds[direction][0] | gTrackColours[SCHEME_TRACK];
     uint32 frontImageId = imageIds[direction][1] | gTrackColours[SCHEME_TRACK];
 
-    sub_98197C_rotated(direction, imageId, 0, 0, 32, 20, 2, height, 0, 6, height);
-    sub_98197C_rotated(direction, frontImageId, 0, 0, 32, 1, 50, height, 0, 27, height);
+    sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 20, 2, height, 0, 6, height);
+    sub_98197C_rotated(session, direction, frontImageId, 0, 0, 32, 1, 50, height, 0, 27, height);
 
     if (track_paint_util_should_paint_supports(session->MapPosition)) {
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 4, 8, height, gTrackColours[SCHEME_SUPPORTS]);
@@ -256,8 +256,8 @@ static void paint_log_flume_track_flat_to_25_deg_up(paint_session * session, uin
     uint32 imageId = imageIds[direction][0] | gTrackColours[SCHEME_TRACK];
     uint32 frontImageId = imageIds[direction][1] | gTrackColours[SCHEME_TRACK];
 
-    sub_98197C_rotated(direction, imageId, 0, 0, 32, 20, 2, height, 0, 6, height);
-    sub_98197C_rotated(direction, frontImageId, 0, 0, 32, 1, 42, height, 0, 27, height);
+    sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 20, 2, height, 0, 6, height);
+    sub_98197C_rotated(session, direction, frontImageId, 0, 0, 32, 1, 42, height, 0, 27, height);
 
     if (track_paint_util_should_paint_supports(session->MapPosition)) {
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 4, 3, height, gTrackColours[SCHEME_SUPPORTS]);
@@ -285,8 +285,8 @@ static void paint_log_flume_track_25_deg_up_to_flat(paint_session * session, uin
     uint32 imageId = imageIds[direction][0] | gTrackColours[SCHEME_TRACK];
     uint32 frontImageId = imageIds[direction][1] | gTrackColours[SCHEME_TRACK];
 
-    sub_98197C_rotated(direction, imageId, 0, 0, 32, 20, 2, height, 0, 6, height);
-    sub_98197C_rotated(direction, frontImageId, 0, 0, 32, 1, 34, height, 0, 27, height);
+    sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 20, 2, height, 0, 6, height);
+    sub_98197C_rotated(session, direction, frontImageId, 0, 0, 32, 1, 34, height, 0, 27, height);
 
     if (track_paint_util_should_paint_supports(session->MapPosition)) {
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
@@ -314,8 +314,8 @@ static void paint_log_flume_track_25_deg_down(paint_session * session, uint8 rid
     uint32 imageId = imageIds[direction][0] | gTrackColours[SCHEME_TRACK];
     uint32 frontImageId = imageIds[direction][1] | gTrackColours[SCHEME_TRACK];
 
-    sub_98197C_rotated(direction, imageId, 0, 0, 32, 20, 2, height, 0, 6, height);
-    sub_98197C_rotated(direction, frontImageId, 0, 0, 32, 1, 50, height, 0, 27, height);
+    sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 20, 2, height, 0, 6, height);
+    sub_98197C_rotated(session, direction, frontImageId, 0, 0, 32, 1, 50, height, 0, 27, height);
 
     if (track_paint_util_should_paint_supports(session->MapPosition)) {
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 4, 8, height, gTrackColours[SCHEME_SUPPORTS]);
@@ -343,8 +343,8 @@ static void paint_log_flume_track_flat_to_25_deg_down(paint_session * session, u
     uint32 imageId = imageIds[direction][0] | gTrackColours[SCHEME_TRACK];
     uint32 frontImageId = imageIds[direction][1] | gTrackColours[SCHEME_TRACK];
 
-    sub_98197C_rotated(direction, imageId, 0, 0, 32, 20, 2, height, 0, 6, height);
-    sub_98197C_rotated(direction, frontImageId, 0, 0, 32, 1, 34, height, 0, 27, height);
+    sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 20, 2, height, 0, 6, height);
+    sub_98197C_rotated(session, direction, frontImageId, 0, 0, 32, 1, 34, height, 0, 27, height);
 
     if (track_paint_util_should_paint_supports(session->MapPosition)) {
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
@@ -372,8 +372,8 @@ static void paint_log_flume_track_25_deg_down_to_flat(paint_session * session, u
     uint32 imageId = imageIds[direction][0] | gTrackColours[SCHEME_TRACK];
     uint32 frontImageId = imageIds[direction][1] | gTrackColours[SCHEME_TRACK];
 
-    sub_98197C_rotated(direction, imageId, 0, 0, 32, 20, 2, height, 0, 6, height);
-    sub_98197C_rotated(direction, frontImageId, 0, 0, 32, 1, 42, height, 0, 27, height);
+    sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 20, 2, height, 0, 6, height);
+    sub_98197C_rotated(session, direction, frontImageId, 0, 0, 32, 1, 42, height, 0, 27, height);
 
     if (track_paint_util_should_paint_supports(session->MapPosition)) {
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 4, 3, height, gTrackColours[SCHEME_SUPPORTS]);
@@ -416,15 +416,15 @@ static void paint_log_flume_track_s_bend_left(paint_session * session, uint8 rid
 
     switch (trackSequence) {
     case 0:
-        sub_98197C_rotated(direction, imageId, 0, 0, 32, 27, 2, height, 0, 2, height);
-        sub_98197C_rotated(direction, frontImageId, 0, 0, 32, 27, 0, height, 0, 2, height + 27);
+        sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 27, 2, height, 0, 2, height);
+        sub_98197C_rotated(session, direction, frontImageId, 0, 0, 32, 27, 0, height, 0, 2, height + 27);
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 4, 0, height, gTrackColours[SCHEME_SUPPORTS]);
         paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
         break;
     case 1:
         bboy = (direction == 0 || direction == 1) ? 0 : 6;
-        sub_98197C_rotated(direction, imageId, 0, 0, 32, 26, 2, height, 0, bboy, height);
-        sub_98197C_rotated(direction, frontImageId, 0, 0, 32, 26, 0, height, 0, bboy, height + 27);
+        sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 26, 2, height, 0, bboy, height);
+        sub_98197C_rotated(session, direction, frontImageId, 0, 0, 32, 26, 0, height, 0, bboy, height + 27);
         if (direction == 0 || direction == 1) {
             metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 5 + (direction & 1), (direction & 1), height, gTrackColours[SCHEME_SUPPORTS]);
         }
@@ -432,16 +432,16 @@ static void paint_log_flume_track_s_bend_left(paint_session * session, uint8 rid
         break;
     case 2:
         bboy = (direction == 2 || direction == 3) ? 0 : 6;
-        sub_98197C_rotated(direction, imageId, 0, 0, 32, 26, 2, height, 0, bboy, height);
-        sub_98197C_rotated(direction, frontImageId, 0, 0, 32, 26, 0, height, 0, bboy, height + 27);
+        sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 26, 2, height, 0, bboy, height);
+        sub_98197C_rotated(session, direction, frontImageId, 0, 0, 32, 26, 0, height, 0, bboy, height + 27);
         if (direction == 2 || direction == 3) {
             metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 5 + (direction & 1), (direction & 1), height, gTrackColours[SCHEME_SUPPORTS]);
         }
         paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
         break;
     case 3:
-        sub_98197C_rotated(direction, imageId, 0, 0, 32, 27, 2, height, 0, 2, height);
-        sub_98197C_rotated(direction, frontImageId, 0, 0, 32, 27, 0, height, 0, 2, height + 27);
+        sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 27, 2, height, 0, 2, height);
+        sub_98197C_rotated(session, direction, frontImageId, 0, 0, 32, 27, 0, height, 0, 2, height + 27);
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 4, 0, height, gTrackColours[SCHEME_SUPPORTS]);
         paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
         break;
@@ -488,15 +488,15 @@ static void paint_log_flume_track_s_bend_right(paint_session * session, uint8 ri
 
     switch (trackSequence) {
     case 0:
-        sub_98197C_rotated(direction, imageId, 0, 0, 32, 27, 2, height, 0, 2, height);
-        sub_98197C_rotated(direction, frontImageId, 0, 0, 32, 27, 0, height, 0, 2, height + 27);
+        sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 27, 2, height, 0, 2, height);
+        sub_98197C_rotated(session, direction, frontImageId, 0, 0, 32, 27, 0, height, 0, 2, height + 27);
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 4, 0, height, gTrackColours[SCHEME_SUPPORTS]);
         paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
         break;
     case 1:
         bboy = (direction == 2 || direction == 3) ? 0 : 6;
-        sub_98197C_rotated(direction, imageId, 0, 0, 32, 26, 2, height, 0, bboy, height);
-        sub_98197C_rotated(direction, frontImageId, 0, 0, 32, 26, 0, height, 0, bboy, height + 27);
+        sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 26, 2, height, 0, bboy, height);
+        sub_98197C_rotated(session, direction, frontImageId, 0, 0, 32, 26, 0, height, 0, bboy, height + 27);
         if (direction == 0 || direction == 1) {
             metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 8 - (direction & 1), 0, height, gTrackColours[SCHEME_SUPPORTS]);
         }
@@ -504,16 +504,16 @@ static void paint_log_flume_track_s_bend_right(paint_session * session, uint8 ri
         break;
     case 2:
         bboy = (direction == 0 || direction == 1) ? 0 : 6;
-        sub_98197C_rotated(direction, imageId, 0, 0, 32, 26, 2, height, 0, bboy, height);
-        sub_98197C_rotated(direction, frontImageId, 0, 0, 32, 26, 0, height, 0, bboy, height + 27);
+        sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 26, 2, height, 0, bboy, height);
+        sub_98197C_rotated(session, direction, frontImageId, 0, 0, 32, 26, 0, height, 0, bboy, height + 27);
         if (direction == 2 || direction == 3) {
             metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 8 - (direction & 1), 0, height, gTrackColours[SCHEME_SUPPORTS]);
         }
         paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
         break;
     case 3:
-        sub_98197C_rotated(direction, imageId, 0, 0, 32, 27, 2, height, 0, 2, height);
-        sub_98197C_rotated(direction, frontImageId, 0, 0, 32, 27, 0, height, 0, 2, height + 27);
+        sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 27, 2, height, 0, 2, height);
+        sub_98197C_rotated(session, direction, frontImageId, 0, 0, 32, 27, 0, height, 0, 2, height + 27);
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 4, 0, height, gTrackColours[SCHEME_SUPPORTS]);
         paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
         break;
@@ -640,10 +640,10 @@ static void paint_log_flume_track_on_ride_photo(paint_session * session, uint8 r
     }
 
     imageId = LogFlumeTrackFlatImageIds[direction][0] | gTrackColours[SCHEME_TRACK];
-    sub_98197C_rotated(direction, imageId, 0, 0, 32, 20, 0, height, 0, 6, height + 3);
+    sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 20, 0, height, 0, 6, height + 3);
 
     imageId = LogFlumeTrackFlatImageIds[direction][1] | gTrackColours[SCHEME_TRACK];
-    sub_98197C_rotated(direction, imageId, 0, 0, 32, 1, 21, height, 0, 27, height + 5);
+    sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 1, 21, height, 0, 27, height + 5);
 
     track_paint_util_onride_photo_paint(session, direction, height + 3, mapElement);
 
@@ -665,8 +665,8 @@ static void paint_log_flume_track_reverser(paint_session * session, uint8 rideIn
     uint32 imageId = imageIds[direction][0] | gTrackColours[SCHEME_TRACK];
     uint32 frontImageId = imageIds[direction][1] | gTrackColours[SCHEME_TRACK];
 
-    sub_98197C_rotated(direction, imageId, 0, 0, 32, 20, 2, height, 0, 6, height);
-    sub_98197C_rotated(direction, frontImageId, 0, 0, 32, 1, 26, height, 0, 27, height);
+    sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 20, 2, height, 0, 6, height);
+    sub_98197C_rotated(session, direction, frontImageId, 0, 0, 32, 1, 26, height, 0, 27, height);
 
     metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 4, 0, height, gTrackColours[SCHEME_SUPPORTS]);
 

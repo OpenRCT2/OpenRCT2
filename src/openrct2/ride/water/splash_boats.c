@@ -503,8 +503,8 @@ static void paint_splash_boats_track_25_deg_up(paint_session * session, uint8 ri
     uint32 imageId = SplashBoats25DegUpImageId[direction] | gTrackColours[SCHEME_TRACK];
     uint32 frontImageId = SplashBoats25DegUpFrontImageId[direction] | gTrackColours[SCHEME_TRACK];
 
-    sub_98197C_rotated(direction, imageId, 0, 0, 32, 20, 2, height, 0, 6, height);
-    sub_98197C_rotated(direction, frontImageId, 0, 0, 32, 1, 50, height, 0, 27, height);
+    sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 20, 2, height, 0, 6, height);
+    sub_98197C_rotated(session, direction, frontImageId, 0, 0, 32, 1, 50, height, 0, 27, height);
 
     wooden_a_supports_paint_setup(session, (direction & 1), 9 + direction, height, gTrackColours[SCHEME_SUPPORTS], NULL);
 
@@ -522,8 +522,8 @@ static void paint_splash_boats_track_60_deg_up(paint_session * session, uint8 ri
     uint32 imageId = SplashBoats60DegUpImageId[direction] | gTrackColours[SCHEME_TRACK];
     uint32 frontImageId = SplashBoats60DegUpFrontImageId[direction] | gTrackColours[SCHEME_TRACK];
 
-    session->WoodenSupportsPrependTo = sub_98197C_rotated(direction, imageId, 0, 0, 32, 20, 2, height, 0, 6, height);
-    sub_98197C_rotated(direction, frontImageId, 0, 0, 32, 1, 98, height, 0, 27, height);
+    session->WoodenSupportsPrependTo = sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 20, 2, height, 0, 6, height);
+    sub_98197C_rotated(session, direction, frontImageId, 0, 0, 32, 1, 98, height, 0, 27, height);
 
     wooden_a_supports_paint_setup(session, (direction & 1), 21 + direction, height, gTrackColours[SCHEME_SUPPORTS], NULL);
 
@@ -541,8 +541,8 @@ static void paint_splash_boats_track_flat_to_25_deg_up(paint_session * session, 
     uint32 imageId = SplashBoatsFlatTo25DegUpImageId[direction] | gTrackColours[SCHEME_TRACK];
     uint32 frontImageId = SplashBoatsFlatTo25DegUpFrontImageId[direction] | gTrackColours[SCHEME_TRACK];
 
-    sub_98197C_rotated(direction, imageId, 0, 0, 32, 20, 2, height, 0, 6, height);
-    sub_98197C_rotated(direction, frontImageId, 0, 0, 32, 1, 42, height, 0, 27, height);
+    sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 20, 2, height, 0, 6, height);
+    sub_98197C_rotated(session, direction, frontImageId, 0, 0, 32, 1, 42, height, 0, 27, height);
 
     wooden_a_supports_paint_setup(session, (direction & 1), 1 + direction, height, gTrackColours[SCHEME_SUPPORTS], NULL);
 
@@ -560,8 +560,8 @@ static void paint_splash_boats_track_25_deg_up_to_flat(paint_session * session, 
     uint32 imageId = SplashBoats25DegUpToFlatImageId[direction] | gTrackColours[SCHEME_TRACK];
     uint32 frontImageId = SplashBoats25DegUpToFlatFrontImageId[direction] | gTrackColours[SCHEME_TRACK];
 
-    sub_98197C_rotated(direction, imageId, 0, 0, 32, 20, 2, height, 0, 6, height);
-    sub_98197C_rotated(direction, frontImageId, 0, 0, 32, 1, 34, height, 0, 27, height);
+    sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 20, 2, height, 0, 6, height);
+    sub_98197C_rotated(session, direction, frontImageId, 0, 0, 32, 1, 34, height, 0, 27, height);
 
     wooden_a_supports_paint_setup(session, (direction & 1), 5 + direction, height, gTrackColours[SCHEME_SUPPORTS], NULL);
 
@@ -579,8 +579,8 @@ static void paint_splash_boats_track_25_deg_up_to_60_deg_up(paint_session * sess
     uint32 imageId = SplashBoats25DegUpTo60DegUpImageId[direction] | gTrackColours[SCHEME_TRACK];
     uint32 frontImageId = SplashBoats25DegUpTo60DegUpFrontImageId[direction] | gTrackColours[SCHEME_TRACK];
 
-    session->WoodenSupportsPrependTo = sub_98197C_rotated(direction, imageId, 0, 0, 32, 20, 2, height, 0, 6, height);
-    sub_98197C_rotated(direction, frontImageId, 0, 0, 32, 1, 66, height, 0, 27, height);
+    session->WoodenSupportsPrependTo = sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 20, 2, height, 0, 6, height);
+    sub_98197C_rotated(session, direction, frontImageId, 0, 0, 32, 1, 66, height, 0, 27, height);
 
     wooden_a_supports_paint_setup(session, (direction & 1), 13 + direction, height, gTrackColours[SCHEME_SUPPORTS], NULL);
 
@@ -598,8 +598,8 @@ static void paint_splash_boats_track_60_deg_up_to_25_deg_up(paint_session * sess
     uint32 imageId = SplashBoats60DegUpTo25DegUpImageId[direction] | gTrackColours[SCHEME_TRACK];
     uint32 frontImageId = SplashBoats60DegUpTo25DegUpFrontImageId[direction] | gTrackColours[SCHEME_TRACK];
 
-    session->WoodenSupportsPrependTo = sub_98197C_rotated(direction, imageId, 0, 0, 32, 20, 2, height, 0, 6, height);
-    sub_98197C_rotated(direction, frontImageId, 0, 0, 32, 1, 66, height, 0, 27, height);
+    session->WoodenSupportsPrependTo = sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 20, 2, height, 0, 6, height);
+    sub_98197C_rotated(session, direction, frontImageId, 0, 0, 32, 1, 66, height, 0, 27, height);
 
     wooden_a_supports_paint_setup(session, (direction & 1), 17 + direction, height, gTrackColours[SCHEME_SUPPORTS], NULL);
 
@@ -617,8 +617,8 @@ static void paint_splash_boats_track_25_deg_down(paint_session * session, uint8 
     uint32 imageId = SplashBoats25DegDownImageId[direction] | gTrackColours[SCHEME_TRACK];
     uint32 frontImageId = SplashBoats25DegDownFrontImageId[direction] | gTrackColours[SCHEME_TRACK];
 
-    sub_98197C_rotated(direction, imageId, 0, 0, 32, 20, 2, height, 0, 6, height);
-    sub_98197C_rotated(direction, frontImageId, 0, 0, 32, 1, 50, height, 0, 27, height);
+    sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 20, 2, height, 0, 6, height);
+    sub_98197C_rotated(session, direction, frontImageId, 0, 0, 32, 1, 50, height, 0, 27, height);
 
     static const uint8 specialSupport[] = { 11, 12, 9, 10 };
     wooden_a_supports_paint_setup(session, (direction & 1), specialSupport[direction], height, gTrackColours[SCHEME_SUPPORTS], NULL);
@@ -642,8 +642,8 @@ static void paint_splash_boats_track_flat_to_25_deg_down(paint_session * session
     uint32 imageId = SplashBoatsFlatTo25DegDownImageId[direction] | gTrackColours[SCHEME_TRACK];
     uint32 frontImageId = SplashBoatsFlatTo25DegDownFrontImageId[direction] | gTrackColours[SCHEME_TRACK];
 
-    sub_98197C_rotated(direction, imageId, 0, 0, 32, 20, 2, height, 0, 6, height);
-    sub_98197C_rotated(direction, frontImageId, 0, 0, 32, 1, 34, height, 0, 27, height);
+    sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 20, 2, height, 0, 6, height);
+    sub_98197C_rotated(session, direction, frontImageId, 0, 0, 32, 1, 34, height, 0, 27, height);
 
     static const uint8 specialSupport[] = { 7, 8, 5, 6 };
     wooden_a_supports_paint_setup(session, (direction & 1), specialSupport[direction], height, gTrackColours[SCHEME_SUPPORTS], NULL);
@@ -672,8 +672,8 @@ static void paint_splash_boats_track_25_deg_down_to_flat(paint_session * session
     uint32 imageId = SplashBoats25DegDownToFlatImageId[direction] | gTrackColours[SCHEME_TRACK];
     uint32 frontImageId = SplashBoats25DegDownToFlatFrontImageId[direction] | gTrackColours[SCHEME_TRACK];
 
-    sub_98197C_rotated(direction, imageId, 0, 0, 32, 20, 2, height, 0, 6, height);
-    sub_98197C_rotated(direction, frontImageId, 0, 0, 32, 1, 42, height, 0, 27, height);
+    sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 20, 2, height, 0, 6, height);
+    sub_98197C_rotated(session, direction, frontImageId, 0, 0, 32, 1, 42, height, 0, 27, height);
 
     static const uint8 specialSupport[] = { 3, 4, 1, 2 };
     wooden_a_supports_paint_setup(session, (direction & 1), specialSupport[direction], height, gTrackColours[SCHEME_SUPPORTS], NULL);
@@ -863,15 +863,15 @@ static void paint_splash_boats_track_s_bend_left(paint_session * session, uint8 
 
     switch (trackSequence) {
         case 0:
-            sub_98197C_rotated(direction, imageId, 0, 0, 32, 27, 2, height, 0, 2, height);
-            sub_98197C_rotated(direction, frontImageId, 0, 0, 32, 27, 0, height, 0, 2, height + 27);
+            sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 27, 2, height, 0, 2, height);
+            sub_98197C_rotated(session, direction, frontImageId, 0, 0, 32, 27, 0, height, 0, 2, height + 27);
             wooden_a_supports_paint_setup(session, direction & 1, 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
             paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
             break;
         case 1:
             bboy = (direction == 0 || direction == 1) ? 0 : 6;
-            sub_98197C_rotated(direction, imageId, 0, 0, 32, 26, 2, height, 0, bboy, height);
-            sub_98197C_rotated(direction, frontImageId, 0, 0, 32, 26, 0, height, 0, bboy, height + 27);
+            sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 26, 2, height, 0, bboy, height);
+            sub_98197C_rotated(session, direction, frontImageId, 0, 0, 32, 26, 0, height, 0, bboy, height + 27);
 
             static const sint32 supportTypes1[] = { 5, 2, 3, 4 };
             wooden_a_supports_paint_setup(session, supportTypes1[direction], 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
@@ -880,8 +880,8 @@ static void paint_splash_boats_track_s_bend_left(paint_session * session, uint8 
             break;
         case 2:
             bboy = (direction == 2 || direction == 3) ? 0 : 6;
-            sub_98197C_rotated(direction, imageId, 0, 0, 32, 26, 2, height, 0, bboy, height);
-            sub_98197C_rotated(direction, frontImageId, 0, 0, 32, 26, 0, height, 0, bboy, height + 27);
+            sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 26, 2, height, 0, bboy, height);
+            sub_98197C_rotated(session, direction, frontImageId, 0, 0, 32, 26, 0, height, 0, bboy, height + 27);
 
             static const sint32 supportTypes2[] = { 3, 4, 5, 2 };
             wooden_a_supports_paint_setup(session, supportTypes2[direction], 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
@@ -889,8 +889,8 @@ static void paint_splash_boats_track_s_bend_left(paint_session * session, uint8 
             paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
             break;
         case 3:
-            sub_98197C_rotated(direction, imageId, 0, 0, 32, 27, 2, height, 0, 2, height);
-            sub_98197C_rotated(direction, frontImageId, 0, 0, 32, 27, 0, height, 0, 2, height + 27);
+            sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 27, 2, height, 0, 2, height);
+            sub_98197C_rotated(session, direction, frontImageId, 0, 0, 32, 27, 0, height, 0, 2, height + 27);
             wooden_a_supports_paint_setup(session, direction & 1, 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
             paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
             break;
@@ -938,15 +938,15 @@ static void paint_splash_boats_track_s_bend_right(paint_session * session, uint8
 
     switch (trackSequence) {
         case 0:
-            sub_98197C_rotated(direction, imageId, 0, 0, 32, 27, 2, height, 0, 2, height);
-            sub_98197C_rotated(direction, frontImageId, 0, 0, 32, 27, 0, height, 0, 2, height + 27);
+            sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 27, 2, height, 0, 2, height);
+            sub_98197C_rotated(session, direction, frontImageId, 0, 0, 32, 27, 0, height, 0, 2, height + 27);
             wooden_a_supports_paint_setup(session, direction & 1, 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
             paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
             break;
         case 1:
             bboy = (direction == 2 || direction == 3) ? 0 : 6;
-            sub_98197C_rotated(direction, imageId, 0, 0, 32, 26, 2, height, 0, bboy, height);
-            sub_98197C_rotated(direction, frontImageId, 0, 0, 32, 26, 0, height, 0, bboy, height + 27);
+            sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 26, 2, height, 0, bboy, height);
+            sub_98197C_rotated(session, direction, frontImageId, 0, 0, 32, 26, 0, height, 0, bboy, height + 27);
 
             static const sint32 supportTypes1[] = { 4, 5, 2, 3 };
             wooden_a_supports_paint_setup(session, supportTypes1[direction], 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
@@ -955,8 +955,8 @@ static void paint_splash_boats_track_s_bend_right(paint_session * session, uint8
             break;
         case 2:
             bboy = (direction == 0 || direction == 1) ? 0 : 6;
-            sub_98197C_rotated(direction, imageId, 0, 0, 32, 26, 2, height, 0, bboy, height);
-            sub_98197C_rotated(direction, frontImageId, 0, 0, 32, 26, 0, height, 0, bboy, height + 27);
+            sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 26, 2, height, 0, bboy, height);
+            sub_98197C_rotated(session, direction, frontImageId, 0, 0, 32, 26, 0, height, 0, bboy, height + 27);
 
             static const sint32 supportTypes2[] = { 2, 3, 4, 5 };
             wooden_a_supports_paint_setup(session, supportTypes2[direction], 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
@@ -964,8 +964,8 @@ static void paint_splash_boats_track_s_bend_right(paint_session * session, uint8
             paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
             break;
         case 3:
-            sub_98197C_rotated(direction, imageId, 0, 0, 32, 27, 2, height, 0, 2, height);
-            sub_98197C_rotated(direction, frontImageId, 0, 0, 32, 27, 0, height, 0, 2, height + 27);
+            sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 27, 2, height, 0, 2, height);
+            sub_98197C_rotated(session, direction, frontImageId, 0, 0, 32, 27, 0, height, 0, 2, height + 27);
             wooden_a_supports_paint_setup(session, direction & 1, 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
             paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
             break;
